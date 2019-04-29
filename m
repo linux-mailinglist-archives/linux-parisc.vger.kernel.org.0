@@ -2,82 +2,80 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A092BDA34
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Apr 2019 02:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66725E839
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Apr 2019 18:58:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726700AbfD2Abg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 28 Apr 2019 20:31:36 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:46707 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726223AbfD2Abg (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 28 Apr 2019 20:31:36 -0400
-Received: by mail-ot1-f65.google.com with SMTP id 77so1018015otu.13
-        for <linux-parisc@vger.kernel.org>; Sun, 28 Apr 2019 17:31:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=y7cIzG0PVrRis126czyvwHkkalaXGhnWuRZIJrhxFOU=;
-        b=fTALuAGwyf3jxf08jgW5eKJkkWu10Vvv8pl3YSIVhmD42VVMmjMmZFOyBar6jYSBZR
-         Dsspcn9PCs7tSHBdkE+ZFVor39mw0i6PKb6/GzMOQh+pqQjT2PkvvMjQA+WWBn2iv5Aq
-         eB2d9oPBKImaad2aq5sxrwTxXSNXjBxvg42ojU3C3FGLEyL2xDehE2LfLDoTJTWACMyS
-         nGOd/SOcFyQkOGyADcBJV/NQczfXQpz0TybeLQfeRBoh3kYPh5tIHxVmOtkqQG8hyKF8
-         qz2A/SlNK3iVgOuGp/QjDW9dHTvRekwosuMkYBD/jqPOQannVPN6gi0vrPI32sJiAo5d
-         wUqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=y7cIzG0PVrRis126czyvwHkkalaXGhnWuRZIJrhxFOU=;
-        b=FZonnDiBdISLeT6R87/FHp/KoNR5p0ppEqMM2eedMdKWwqs2g++heS/f7TW5dNbfcc
-         yBIfLJZUpzyeAelzaFO0jDK6WB3KSc3m3h9T4y/g7Tcvtdh15PSePmHOTDK1zCzFVU/A
-         cr/Bbb1HX6EbCtluuHxIAAzNRY20k6roWWBFjrMhel00cMOAUtVLDAx5G89XCrHj18ke
-         O90pqF2dt8O0ERQfDKrWXz2nGNTNtDJQkeKesPj06nj0gNoM+xDDEcJV/DtO+LnglLkQ
-         hSRSTt2Bwh89QjgNcHqnlQ4KHYwH0tiXCQMj9H2JoGqW1NGgvc9AiEoGt64vUjIAkYRB
-         mRgw==
-X-Gm-Message-State: APjAAAXmE5dnKTG1pAQLhynfIoA6WZmQpu3Xju0pR0jobh1K0rRhnQWf
-        idLngnWk1xdxsUeiveoWkN+477Qqg2lgbMZldy8=
-X-Google-Smtp-Source: APXvYqxZAN3PtqInmJqcyIq1/yEX6ik6928J5BIFgf7JtdmFK1Hi6MNzE2HvcFva02zvA97L09qZ/HQySdWbiywhFzU=
-X-Received: by 2002:a9d:1:: with SMTP id 1mr37098010ota.276.1556497895698;
- Sun, 28 Apr 2019 17:31:35 -0700 (PDT)
+        id S1728748AbfD2Q6L convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Mon, 29 Apr 2019 12:58:11 -0400
+Received: from mga05.intel.com ([192.55.52.43]:10019 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728737AbfD2Q6L (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 29 Apr 2019 12:58:11 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Apr 2019 09:58:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.60,410,1549958400"; 
+   d="scan'208";a="169009686"
+Received: from orsmsx109.amr.corp.intel.com ([10.22.240.7])
+  by fmsmga001.fm.intel.com with ESMTP; 29 Apr 2019 09:58:10 -0700
+Received: from orsmsx104.amr.corp.intel.com ([169.254.4.183]) by
+ ORSMSX109.amr.corp.intel.com ([169.254.11.52]) with mapi id 14.03.0415.000;
+ Mon, 29 Apr 2019 09:58:09 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Christoph Hellwig <hch@infradead.org>, Meelis Roos <mroos@linux.ee>
+CC:     Christopher Lameter <cl@linux.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+Subject: RE: DISCONTIGMEM is deprecated
+Thread-Topic: DISCONTIGMEM is deprecated
+Thread-Index: AQHU/ZpXmcVCt4ADQUqjpwA1uPgMxaZTXO4w
+Date:   Mon, 29 Apr 2019 16:58:09 +0000
+Message-ID: <3908561D78D1C84285E8C5FCA982C28F7E9140BA@ORSMSX104.amr.corp.intel.com>
+References: <20190419094335.GJ18914@techsingularity.net>
+ <20190419140521.GI7751@bombadil.infradead.org>
+ <0100016a461809ed-be5bd8fc-9925-424d-9624-4a325a7a8860-000000@email.amazonses.com>
+ <25cabb7c-9602-2e09-2fe0-cad3e54595fa@linux.ee>
+ <20190428081353.GB30901@infradead.org>
+In-Reply-To: <20190428081353.GB30901@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiZDZlMGYwOWMtYjMxNC00ZDg2LWI2OTMtNDI5NjUwZDU1NzllIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiR3gxdGpVSlhOVlhRSWZVOExpNUk0emx1dkVMZzdGZ3QrK21zNE95d2g0a0VGR0tvWTVQY1lRUDBuMjkwVWNEZiJ9
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.600.7
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.140]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 2002:a9d:6009:0:0:0:0:0 with HTTP; Sun, 28 Apr 2019 17:31:35
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.com
-From:   AISHA GADDAFI <yakissattajustin@gmail.com>
-Date:   Sun, 28 Apr 2019 17:31:35 -0700
-Message-ID: <CALn3PEwp=XFbr52FGPWJvqT9B+2QwpSbf=h3dq_oJALTKEJ_mQ@mail.gmail.com>
-Subject: Dear Friend (Assalamu Alaikum),
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
--- 
-Dear Friend (Assalamu Alaikum),
+> ia64 has a such a huge number of memory model choices.  Maybe we
+> need to cut it down to a small set that actually work.
 
-I came across your e-mail contact prior a private search while in need of
-your assistance. My name is Aisha  Al-Qaddafi a single Mother and a Widow
-with three Children. I am the only biological Daughter of late Libyan
-President (Late Colonel Muammar Gaddafi).
+SGI systems had extremely discontiguous memory (they used some high
+order physical address bits in the tens/hundreds of terabyte range for the
+node number ... so there would be a few GBytes of actual memory then
+a huge gap before the next node had a few more Gbytes).
 
-I have investment funds worth Twenty Seven Million Five Hundred Thousand
-United State Dollar ($27.500.000.00 ) and i need a trusted investment
-Manager/Partner because of my current refugee status, however, I am
-interested in you for investment project assistance in your country, may be
-from there, we can build business relationship in the nearest future.
+I don't know of anyone still booting upstream on an SN2, so if we start doing
+serious hack and slash the chances are high that SN2 will be broken (if it isn't
+already).
 
-I am willing to negotiate investment/business profit sharing ratio with you
-base on the future investment earning profits.
-
-If you are willing to handle this project on my behalf kindly reply urgent
-to enable me provide you more information about the investment funds.
-
-Your Urgent Reply Will Be Appreciated. write me at this email address(
-ayishagddafio@mail.com ) for further discussion.
-
-Best Regards
-Mrs Aisha Al-Qaddafi
-Reply to: ayishagddafio@mail.com
+-Tony
