@@ -2,66 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33CEEFAA6
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Apr 2019 15:41:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73EA810513
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 May 2019 07:09:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726309AbfD3NlA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 Apr 2019 09:41:00 -0400
-Received: from a9-99.smtp-out.amazonses.com ([54.240.9.99]:55078 "EHLO
-        a9-99.smtp-out.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726145AbfD3NlA (ORCPT
+        id S1725766AbfEAFJf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 1 May 2019 01:09:35 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:44009 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725298AbfEAFJf (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 Apr 2019 09:41:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1556631659;
-        h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type:Feedback-ID;
-        bh=beBu285rmqBNDiQNDcTz2JoVAX9N/IQQNqAAuEjGf9w=;
-        b=QEyLbGOEOCUS+pzuVbWu7CfTSXtyfCXiSu09ABe7LGl3MQTXMcdv5F6CYG7Mn9m9
-        Cr2tVt+C3bCs9O4bKVDgiFAK0s7ET2m4BRnOyzLL0HT/l29zNxm4UfubaGLY/kPzA8v
-        J2Qz0gIalm+NimzzeXwHdPJ+XRPsb0atevd5DX+M=
-Date:   Tue, 30 Apr 2019 13:40:59 +0000
-From:   Christopher Lameter <cl@linux.com>
-X-X-Sender: cl@nuc-kabylake
-To:     Christoph Hellwig <hch@infradead.org>
-cc:     "Luck, Tony" <tony.luck@intel.com>, Meelis Roos <mroos@linux.ee>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
-Subject: Re: DISCONTIGMEM is deprecated
-In-Reply-To: <20190429200957.GB27158@infradead.org>
-Message-ID: <0100016a6e7a22d8-dcd24705-508f-4acc-8883-e5d61f4c0fa4-000000@email.amazonses.com>
-References: <20190419094335.GJ18914@techsingularity.net> <20190419140521.GI7751@bombadil.infradead.org> <0100016a461809ed-be5bd8fc-9925-424d-9624-4a325a7a8860-000000@email.amazonses.com> <25cabb7c-9602-2e09-2fe0-cad3e54595fa@linux.ee> <20190428081353.GB30901@infradead.org>
- <3908561D78D1C84285E8C5FCA982C28F7E9140BA@ORSMSX104.amr.corp.intel.com> <20190429200957.GB27158@infradead.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Wed, 1 May 2019 01:09:35 -0400
+Received: by mail-lj1-f195.google.com with SMTP id t1so4633024lje.10
+        for <linux-parisc@vger.kernel.org>; Tue, 30 Apr 2019 22:09:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=dtCX9Go0nSq9slTFailups7C5VdQgCGX94nqvP0UPbs=;
+        b=Y8NIshLSzcYH2jNRiBBtqXcWtZHetN4KiED6BKD0mvZdsHMCg0og/O3cPPg/yzHna9
+         eHW41n4bae1g/HlPwXErsV8WT40E80JijmgtZHngjCm07le+9EGJSPh6oXiIXGvXscZf
+         m4sWWh/bOwJXmo5cCm8fd/xC1glp/fCZrxUFrLW0rnmx9dCAlqhEarz3XbZURDdjuusV
+         d/+1rtXHhOvcoKcliCQISam540FwP6u/5flW9w6optCVR1Ce19RMxROMI1x+qmFotetL
+         pK1W4FINZeUgt49a+7pYhPbBTtrCbSpFAFST1xRyanfufOOlm7FQeZwwOpvhZ/afjz3c
+         IatQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=dtCX9Go0nSq9slTFailups7C5VdQgCGX94nqvP0UPbs=;
+        b=Wvgw+2bqUaIrmPAAGqIx3SJ2BjmDkP9hlTRMgMJRuSMuia7HAJyYKG/sjPt6VRZsd2
+         g0zgzfOYzEQeEg5v88685OFsyJmDw5bgmDz76fPtwdU/JM24LUa4XPDB4aa6GbWl97Jy
+         92bW7PCXmfphYEOB+ish7KbzsZEHC6pWyqGY1vmi5uNlbVinCZhJ6+X3WXE8KjVk4hh/
+         77eYIj3FopPttG/JQtQKMsK0x/liXiA3HrYhwZwV8+yFt2uCbX/LTXGFS7uxut1bW4R2
+         fzJM8TQaMca9J0ahywbOCW5e3YFdsEZs5aExqytguF/6YbmT4kSxF0Ms7n5m1NafAG8q
+         TlUg==
+X-Gm-Message-State: APjAAAUOkVvJ+SMkC+ymhElMT2K33Z/tB9u4zI5J8dhBXmM4gAaZAYQr
+        /2RAUBPvHe6IcCYvqhqUSrTtwgGPUhZM4WcyxGQ=
+X-Google-Smtp-Source: APXvYqya1bQ7n7nUu+20BsGAUxozfqR0TL/vZem4lhWypuwfVepGqmVMIux9+2CcZcqH3jz3tv03Lr2+hARTP2D3SvE=
+X-Received: by 2002:a2e:7f13:: with SMTP id a19mr37725376ljd.35.1556687373486;
+ Tue, 30 Apr 2019 22:09:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-SES-Outgoing: 2019.04.30-54.240.9.99
-Feedback-ID: 1.us-east-1.fQZZZ0Xtj2+TD7V5apTT/NrT6QKuPgzCT/IC7XYgDKI=:AmazonSES
+Received: by 2002:ab3:7808:0:0:0:0:0 with HTTP; Tue, 30 Apr 2019 22:09:32
+ -0700 (PDT)
+Reply-To: Phillip.Breedlove@usa.com
+From:   General Phillip Breedlove <okybiz247@gmail.com>
+Date:   Wed, 1 May 2019 05:09:32 +0000
+Message-ID: <CAKnvJ9u91xcL-wRQpda4EOS3DsdYBHPLc_6zNcTRyxsw-J4nCg@mail.gmail.com>
+Subject: WAITING FOR YOUR URGENT REPLY..
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, 29 Apr 2019, Christoph Hellwig wrote:
+Hello Dear,
 
-> So maybe it it time to mark SN2 broken and see if anyone screams?
->
-> Without SN2 the whole machvec mess could basically go away - the
-> only real difference between the remaining machvecs is which iommu
-> if any we set up.
+Have you read the mail I sent you initially ?
 
-SPARSEMEM with VMEMMAP was developed to address these
-issues and allow one mapping scheme across the different platforms.
-
-You do not need DISCONTIGMEM support for SN2. And as far as I know (from a
-decade ago ok....) the distributions were using VMEMMAP instead.
-
-
+Sincerely Best Regards,
+Midship Phillip Breedlove
+Special Warfare Operator (MARINES)
