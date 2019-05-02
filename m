@@ -2,98 +2,126 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1A381212A
-	for <lists+linux-parisc@lfdr.de>; Thu,  2 May 2019 19:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E98BE12247
+	for <lists+linux-parisc@lfdr.de>; Thu,  2 May 2019 21:03:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726220AbfEBRkx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 2 May 2019 13:40:53 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:39470 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726145AbfEBRkx (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 2 May 2019 13:40:53 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id EF3C9859FF;
-        Thu,  2 May 2019 17:40:52 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B52BE5C224;
-        Thu,  2 May 2019 17:40:52 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id x42HeqHn032643;
-        Thu, 2 May 2019 13:40:52 -0400
-Received: from localhost (mpatocka@localhost)
-        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id x42Hept6032639;
-        Thu, 2 May 2019 13:40:52 -0400
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date:   Thu, 2 May 2019 13:40:51 -0400 (EDT)
-From:   Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To:     Helge Deller <deller@gmx.de>
-cc:     John David Anglin <dave.anglin@bell.net>,
-        linux-parisc@vger.kernel.org
-Subject: Re: [PATCH][RFC] parisc: Use per-pagetable spinlock (v2)
-In-Reply-To: <a98ef81b-cd8e-b81d-df24-8c508e8a01b0@gmx.de>
-Message-ID: <alpine.LRH.2.02.1905021340230.32620@file01.intranet.prod.int.rdu2.redhat.com>
-References: <20190428173431.GA21286@ls3530.dellerweb.de> <alpine.LRH.2.02.1905011021300.6862@file01.intranet.prod.int.rdu2.redhat.com> <383ae5f2-cfa9-784f-2f19-8bcc5ade53a4@gmx.de> <alpine.LRH.2.02.1905011219190.27284@file01.intranet.prod.int.rdu2.redhat.com>
- <7dfcef75-193f-6373-92f3-f448c59bba63@bell.net> <alpine.LRH.2.02.1905020920560.18084@file01.intranet.prod.int.rdu2.redhat.com> <3595abed-26ea-9aff-60ef-e0893bf07af2@bell.net> <a98ef81b-cd8e-b81d-df24-8c508e8a01b0@gmx.de>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+        id S1726304AbfEBTDT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 2 May 2019 15:03:19 -0400
+Received: from mail-eopbgr770093.outbound.protection.outlook.com ([40.107.77.93]:13275
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726120AbfEBTDT (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 2 May 2019 15:03:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N5vP4AkogQ4iAySrvubINU0ejgtxmv383VKMfJfN8uU=;
+ b=FGA90EGc7npOswhWXNdDBkBfgDW/YA/wBfpJCQnsBf1uiEWNICbqv2coEb6dq+1Y4hICqJ/nl2A2VwS/1ZUlMbldSFF6fWidwS8+avtmYwhLrkNREz5iMe6RkM6Tlq/OsbEaA56KDIXpnYm3xhcIZZ9CO5fMLLwwWKgv9G3slaE=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1216.namprd22.prod.outlook.com (10.174.161.149) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1835.13; Thu, 2 May 2019 19:03:12 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1835.018; Thu, 2 May 2019
+ 19:03:12 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Mike Rapoport <rppt@linux.ibm.com>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
+        Helge Deller <deller@gmx.de>, Ley Foon Tan <lftan@altera.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Sam Creasey <sammy@sammy.net>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "nios2-dev@lists.rocketboards.org" <nios2-dev@lists.rocketboards.org>
+Subject: Re: [PATCH 01/15] asm-generic, x86: introduce generic
+ pte_{alloc,free}_one[_kernel]
+Thread-Topic: [PATCH 01/15] asm-generic, x86: introduce generic
+ pte_{alloc,free}_one[_kernel]
+Thread-Index: AQHVAPvLitxTe6gGvUam7UWTEvfeuaZYMWYA
+Date:   Thu, 2 May 2019 19:03:11 +0000
+Message-ID: <20190502190310.voenw3pwgpelmdgw@pburton-laptop>
+References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
+ <1556810922-20248-2-git-send-email-rppt@linux.ibm.com>
+In-Reply-To: <1556810922-20248-2-git-send-email-rppt@linux.ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR01CA0064.prod.exchangelabs.com (2603:10b6:a03:94::41)
+ To MWHPR2201MB1277.namprd22.prod.outlook.com (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [12.94.197.246]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 5584fd04-cb54-4e5f-1234-08d6cf30d264
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1216;
+x-ms-traffictypediagnostic: MWHPR2201MB1216:
+x-microsoft-antispam-prvs: <MWHPR2201MB1216E79B37D05304A7091D29C1340@MWHPR2201MB1216.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6430;
+x-forefront-prvs: 0025434D2D
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(396003)(366004)(376002)(346002)(39840400004)(199004)(189003)(186003)(26005)(44832011)(6506007)(8936002)(256004)(3846002)(81166006)(446003)(486006)(11346002)(42882007)(102836004)(476003)(76176011)(14454004)(81156014)(478600001)(6246003)(99286004)(229853002)(25786009)(6436002)(6486002)(6116002)(8676002)(7406005)(7416002)(5660300002)(4326008)(305945005)(6916009)(54906003)(58126008)(7736002)(53936002)(386003)(66066001)(6512007)(52116002)(64756008)(66446008)(1076003)(4744005)(71190400001)(2906002)(33716001)(66946007)(68736007)(66556008)(66476007)(316002)(73956011)(71200400001)(9686003)(41533002)(142933001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1216;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: N7pT2D98deMj6gdm9WFDpL/BCReV8Dm4aZB8yOnNr59VPnbj8T7nWBk4fHyWTOq/nmQqMsk83NqSPJJj8qUO7BE6KcNSyMoVbL/0lMquZu7SRYLvDnMKwUxj1JVI/AaUgM/9WT/5ybmz43VEdmyDQv2ljwflxCkVRDT/Bsg90HjOr+I96N/C54k5ibt/TQI8bjY0DvFTHZZRKLHscLDWQrRmiviTh8DROTiodXO6VyPG4wGmPWVgfi+k87s15NnPE+sue9LVHDnHyHDdrW/ci/n6q0a4v9SemaPZBbDVFX9ZHkeAosVjMqd10ZuFYJguVHP31ldjeAcX5ARFt0UfwVozYTru4XPmC1f8l8kWNHlop4thdTqeXvnreCI4Z784VquKXPUdBCVprKJVKSShs+9KhxfovWtW5UkuYQzD1dk=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <FEE563E1598F8E42B0910251031F2C94@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="185206533-572099765-1556818852=:32620"
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Thu, 02 May 2019 17:40:53 +0000 (UTC)
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5584fd04-cb54-4e5f-1234-08d6cf30d264
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 May 2019 19:03:12.0171
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1216
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Mike,
 
---185206533-572099765-1556818852=:32620
-Content-Type: TEXT/PLAIN; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+On Thu, May 02, 2019 at 06:28:28PM +0300, Mike Rapoport wrote:
+> +/**
+> + * pte_free_kernel - free PTE-level user page table page
+> + * @mm: the mm_struct of the current context
+> + * @pte_page: the `struct page` representing the page table
+> + */
+> +static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
+> +{
+> +	pgtable_page_dtor(pte_page);
+> +	__free_page(pte_page);
+> +}
 
+Nit: the comment names the wrong function (s/pte_free_kernel/pte_free/).
 
-
-On Thu, 2 May 2019, Helge Deller wrote:
-
-> On 02.05.19 16:34, John David Anglin wrote:
-> > On 2019-05-02 9:43 a.m., Mikulas Patocka wrote:
-> >> My obeservation is:
-> >>
-> >> CONFIG_FLATMEM_MANUAL=y - doesn't compile. With the Helge's patch, it
-> >> compiles and works - but it only sees the first 1GiB of memory.
-> > I didn't test FLATMEM.
-> 
-> It should compile now if you check out the for-next branch again.
-> And it only sees 1GiB of memory, which is correct for FLATMEM.
-> Instead it tells you to turn on CONFIG_SPARSEMEM:
-> 
-> [0.000000] Large gap in memory detected (786432 pages). Consider turning on CONFIG_SPARSEMEM
-> [0.000000] Memory Ranges:
-> [0.000000]  0) Start 0x0000000000000000 End 0x000000003fffffff Size   1024 MB
-> [0.000000] Total Memory: 1024 MB
-> ..
-> 
-> >> CONFIG_SPARSEMEM_MANUAL=y, CONFIG_SPARSEMEM_VMEMMAP=n - works.
-> >> CONFIG_SPARSEMEM_MANUAL=y, CONFIG_SPARSEMEM_VMEMMAP=y - hangs on boot.
-> > I thought I selected CONFIG_SPARSEMEM_VMEMMAP but will check.  Have multiple
-> > builds with original SPARSEMEM patch that were okay.
-> 
-> It sometimes hung for me too.
-> I think my VMEMMAP patch overwrites other memory and thus only sometimes crashes the machine...
-> 
-> By the way, I've rebased my for-next tree, fixed a few small issues and dropped the VMEMMAP patch for now.
-> Please give it a new try:
-> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/log/?h=for-next
-
-OK. I confirm that this branch works.
-
-Mikulas
-
-> In addition I addded a for-next-testing branch for further testing of the remaining patches (VMEMMAP, JUMP_LABEL, ...).
-> 
-> Helge
-> 
---185206533-572099765-1556818852=:32620--
+Thanks,
+    Paul
