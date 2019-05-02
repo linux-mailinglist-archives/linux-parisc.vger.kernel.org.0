@@ -2,156 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBFFD120AB
-	for <lists+linux-parisc@lfdr.de>; Thu,  2 May 2019 18:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1A381212A
+	for <lists+linux-parisc@lfdr.de>; Thu,  2 May 2019 19:40:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726808AbfEBQ4N (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 2 May 2019 12:56:13 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:38953 "EHLO pegase1.c-s.fr"
+        id S1726220AbfEBRkx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 2 May 2019 13:40:53 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:39470 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726472AbfEBQ4M (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 2 May 2019 12:56:12 -0400
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 44w1cS5Fwsz9v0Sx;
-        Thu,  2 May 2019 18:56:08 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
-        reason="1024-bit key; insecure key"
-        header.d=c-s.fr header.i=@c-s.fr header.b=b8I7W1X+; dkim-adsp=pass;
-        dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id 4wFI9OSqYAkB; Thu,  2 May 2019 18:56:08 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 44w1cS3z29z9v0Sy;
-        Thu,  2 May 2019 18:56:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
-        t=1556816168; bh=Q15LZ3d9bdq9dEoD9BccUn9mlT4iR41PhF1gwPGTDdo=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=b8I7W1X+eD9E6f4QICHVyiGb2O+HBaJpc4Gwg6pUFtlpNKygpjn8VED8m8xg+JkOB
-         IY+qSAZGLB4WFz+ZuAhNE6IOZlIPudaswik9x6vnbwMIKU3+fxYh/fSD0okZc5lnaA
-         cdvwJC11zLQtHCiz8Kggoo4ZlThkHqB1Sg9CxUag=
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 3A25B8B8FE;
-        Thu,  2 May 2019 18:56:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id RamEpSyy5iYB; Thu,  2 May 2019 18:56:10 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id CE4878B899;
-        Thu,  2 May 2019 18:56:08 +0200 (CEST)
-Subject: Re: [PATCH 12/15] powerpc/nohash/64: switch to generic version of pte
- allocation
-To:     Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Michal Hocko <mhocko@suse.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Palmer Dabbelt <palmer@sifive.com>, linux-mips@vger.kernel.org,
-        Guo Ren <guoren@kernel.org>, linux-hexagon@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
-        Helge Deller <deller@gmx.de>, x86@kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Matthew Wilcox <willy@infradead.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Sam Creasey <sammy@sammy.net>, Arnd Bergmann <arnd@arndb.de>,
-        linux-um@lists.infradead.org, Richard Weinberger <richard@nod.at>,
-        linux-m68k@lists.linux-m68k.org, Greentime Hu <green.hu@gmail.com>,
-        nios2-dev@lists.rocketboards.org, Guan Xuetao <gxt@pku.edu.cn>,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Richard Kuo <rkuo@codeaurora.org>,
-        Paul Burton <paul.burton@mips.com>,
-        linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
-        linuxppc-dev@lists.ozlabs.org
-References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
- <1556810922-20248-13-git-send-email-rppt@linux.ibm.com>
-From:   Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <adcb6ae6-48d9-5ba9-2732-a0ab1d96667c@c-s.fr>
-Date:   Thu, 2 May 2019 18:56:07 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726145AbfEBRkx (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 2 May 2019 13:40:53 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id EF3C9859FF;
+        Thu,  2 May 2019 17:40:52 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id B52BE5C224;
+        Thu,  2 May 2019 17:40:52 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id x42HeqHn032643;
+        Thu, 2 May 2019 13:40:52 -0400
+Received: from localhost (mpatocka@localhost)
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id x42Hept6032639;
+        Thu, 2 May 2019 13:40:52 -0400
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date:   Thu, 2 May 2019 13:40:51 -0400 (EDT)
+From:   Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To:     Helge Deller <deller@gmx.de>
+cc:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org
+Subject: Re: [PATCH][RFC] parisc: Use per-pagetable spinlock (v2)
+In-Reply-To: <a98ef81b-cd8e-b81d-df24-8c508e8a01b0@gmx.de>
+Message-ID: <alpine.LRH.2.02.1905021340230.32620@file01.intranet.prod.int.rdu2.redhat.com>
+References: <20190428173431.GA21286@ls3530.dellerweb.de> <alpine.LRH.2.02.1905011021300.6862@file01.intranet.prod.int.rdu2.redhat.com> <383ae5f2-cfa9-784f-2f19-8bcc5ade53a4@gmx.de> <alpine.LRH.2.02.1905011219190.27284@file01.intranet.prod.int.rdu2.redhat.com>
+ <7dfcef75-193f-6373-92f3-f448c59bba63@bell.net> <alpine.LRH.2.02.1905020920560.18084@file01.intranet.prod.int.rdu2.redhat.com> <3595abed-26ea-9aff-60ef-e0893bf07af2@bell.net> <a98ef81b-cd8e-b81d-df24-8c508e8a01b0@gmx.de>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-In-Reply-To: <1556810922-20248-13-git-send-email-rppt@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: MULTIPART/MIXED; BOUNDARY="185206533-572099765-1556818852=:32620"
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Thu, 02 May 2019 17:40:53 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--185206533-572099765-1556818852=:32620
+Content-Type: TEXT/PLAIN; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
 
-Le 02/05/2019 à 17:28, Mike Rapoport a écrit :
-> The 64-bit book-E powerpc implements pte_alloc_one(),
-> pte_alloc_one_kernel(), pte_free_kernel() and pte_free() the same way as
-> the generic version.
 
-Will soon be converted to the same as the 3 other PPC subarches, see
-https://patchwork.ozlabs.org/patch/1091590/
+On Thu, 2 May 2019, Helge Deller wrote:
 
-Christophe
-
+> On 02.05.19 16:34, John David Anglin wrote:
+> > On 2019-05-02 9:43 a.m., Mikulas Patocka wrote:
+> >> My obeservation is:
+> >>
+> >> CONFIG_FLATMEM_MANUAL=y - doesn't compile. With the Helge's patch, it
+> >> compiles and works - but it only sees the first 1GiB of memory.
+> > I didn't test FLATMEM.
 > 
-> Switch it to the generic version that does exactly the same thing.
+> It should compile now if you check out the for-next branch again.
+> And it only sees 1GiB of memory, which is correct for FLATMEM.
+> Instead it tells you to turn on CONFIG_SPARSEMEM:
 > 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->   arch/powerpc/include/asm/nohash/64/pgalloc.h | 35 ++--------------------------
->   1 file changed, 2 insertions(+), 33 deletions(-)
+> [0.000000] Large gap in memory detected (786432 pages). Consider turning on CONFIG_SPARSEMEM
+> [0.000000] Memory Ranges:
+> [0.000000]  0) Start 0x0000000000000000 End 0x000000003fffffff Size   1024 MB
+> [0.000000] Total Memory: 1024 MB
+> ..
 > 
-> diff --git a/arch/powerpc/include/asm/nohash/64/pgalloc.h b/arch/powerpc/include/asm/nohash/64/pgalloc.h
-> index 66d086f..bfb53a0 100644
-> --- a/arch/powerpc/include/asm/nohash/64/pgalloc.h
-> +++ b/arch/powerpc/include/asm/nohash/64/pgalloc.h
-> @@ -11,6 +11,8 @@
->   #include <linux/cpumask.h>
->   #include <linux/percpu.h>
->   
-> +#include <asm-generic/pgalloc.h>	/* for pte_{alloc,free}_one */
-> +
->   struct vmemmap_backing {
->   	struct vmemmap_backing *list;
->   	unsigned long phys;
-> @@ -92,39 +94,6 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
->   	kmem_cache_free(PGT_CACHE(PMD_CACHE_INDEX), pmd);
->   }
->   
-> -
-> -static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
-> -{
-> -	return (pte_t *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-> -}
-> -
-> -static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
-> -{
-> -	struct page *page;
-> -	pte_t *pte;
-> -
-> -	pte = (pte_t *)__get_free_page(GFP_KERNEL | __GFP_ZERO | __GFP_ACCOUNT);
-> -	if (!pte)
-> -		return NULL;
-> -	page = virt_to_page(pte);
-> -	if (!pgtable_page_ctor(page)) {
-> -		__free_page(page);
-> -		return NULL;
-> -	}
-> -	return page;
-> -}
-> -
-> -static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
-> -{
-> -	free_page((unsigned long)pte);
-> -}
-> -
-> -static inline void pte_free(struct mm_struct *mm, pgtable_t ptepage)
-> -{
-> -	pgtable_page_dtor(ptepage);
-> -	__free_page(ptepage);
-> -}
-> -
->   static inline void pgtable_free(void *table, int shift)
->   {
->   	if (!shift) {
+> >> CONFIG_SPARSEMEM_MANUAL=y, CONFIG_SPARSEMEM_VMEMMAP=n - works.
+> >> CONFIG_SPARSEMEM_MANUAL=y, CONFIG_SPARSEMEM_VMEMMAP=y - hangs on boot.
+> > I thought I selected CONFIG_SPARSEMEM_VMEMMAP but will check.  Have multiple
+> > builds with original SPARSEMEM patch that were okay.
 > 
+> It sometimes hung for me too.
+> I think my VMEMMAP patch overwrites other memory and thus only sometimes crashes the machine...
+> 
+> By the way, I've rebased my for-next tree, fixed a few small issues and dropped the VMEMMAP patch for now.
+> Please give it a new try:
+> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/log/?h=for-next
+
+OK. I confirm that this branch works.
+
+Mikulas
+
+> In addition I addded a for-next-testing branch for further testing of the remaining patches (VMEMMAP, JUMP_LABEL, ...).
+> 
+> Helge
+> 
+--185206533-572099765-1556818852=:32620--
