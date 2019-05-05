@@ -2,65 +2,129 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E9B135A9
-	for <lists+linux-parisc@lfdr.de>; Sat,  4 May 2019 00:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B17FC13DAE
+	for <lists+linux-parisc@lfdr.de>; Sun,  5 May 2019 08:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726150AbfECWbh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 3 May 2019 18:31:37 -0400
-Received: from belmont80srvr.owm.bell.net ([184.150.200.80]:44319 "EHLO
-        mtlfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726059AbfECWbg (ORCPT
+        id S1727259AbfEEGPn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 5 May 2019 02:15:43 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:41410 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726385AbfEEGPm (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 3 May 2019 18:31:36 -0400
-Received: from bell.net mtlfep02 184.150.200.30 by mtlfep02.bell.net
-          with ESMTP
-          id <20190503223135.BVWQ4444.mtlfep02.bell.net@mtlspm01.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Fri, 3 May 2019 18:31:35 -0400
-Received: from [192.168.2.49] (really [70.53.52.226]) by mtlspm01.bell.net
-          with ESMTP
-          id <20190503223135.LZUU87666.mtlspm01.bell.net@[192.168.2.49]>;
-          Fri, 3 May 2019 18:31:35 -0400
-Subject: Re: [PATCH] parisc: Add static branch and JUMP_LABEL feature (v2)
-To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <20190501200231.GA7087@ls3530.dellerweb.de>
- <20190502050510.GA10924@t470p.stackframe.org>
- <20190503214006.GA25013@ls3530.dellerweb.de>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Message-ID: <ce170758-ec9a-7f30-64ea-e153ed27242b@bell.net>
-Date:   Fri, 3 May 2019 18:31:33 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Sun, 5 May 2019 02:15:42 -0400
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4566VNC087766
+        for <linux-parisc@vger.kernel.org>; Sun, 5 May 2019 02:15:41 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2s9qjwmvbr-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-parisc@vger.kernel.org>; Sun, 05 May 2019 02:15:40 -0400
+Received: from localhost
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-parisc@vger.kernel.org> from <rppt@linux.ibm.com>;
+        Sun, 5 May 2019 07:15:38 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Sun, 5 May 2019 07:15:31 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x456FUUd61079648
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 5 May 2019 06:15:30 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id EB15F42042;
+        Sun,  5 May 2019 06:15:29 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BE8ED42047;
+        Sun,  5 May 2019 06:15:27 +0000 (GMT)
+Received: from rapoport-lnx (unknown [9.148.8.112])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Sun,  5 May 2019 06:15:27 +0000 (GMT)
+Date:   Sun, 5 May 2019 09:15:26 +0300
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
+        Helge Deller <deller@gmx.de>, Ley Foon Tan <lftan@altera.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Sam Creasey <sammy@sammy.net>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "nios2-dev@lists.rocketboards.org" <nios2-dev@lists.rocketboards.org>
+Subject: Re: [PATCH 01/15] asm-generic, x86: introduce generic
+ pte_{alloc,free}_one[_kernel]
+References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
+ <1556810922-20248-2-git-send-email-rppt@linux.ibm.com>
+ <20190502190310.voenw3pwgpelmdgw@pburton-laptop>
 MIME-Version: 1.0
-In-Reply-To: <20190503214006.GA25013@ls3530.dellerweb.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=ZMOpZkzb c=1 sm=1 tr=0 cx=a_idp_f a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=FBHGMhGWAAAA:8 a=MFz3nphFqa752OitLKMA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfKzCxBuqQWg9tzBt2/r9Js4l6WV6OUVJ7dLb0iEDiqMMKIzZu810U71UcrqKkgDN2wC57u3t0BXDVkeMF9JJV44ykYdVNDNNm7Gfma3KO2Np5sBw0LxH wjfzQqARCwx0yvP2ou74mw7Ep8HxG2mCvCt4IqhYnFWYuD7AsSZoJH4cIE5hetmeNs1tKp7QF3rX+w==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190502190310.voenw3pwgpelmdgw@pburton-laptop>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 19050506-0028-0000-0000-0000036A7624
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050506-0029-0000-0000-00002429E811
+Message-Id: <20190505061525.GC15755@rapoport-lnx>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-05_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=831 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905050056
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-03 5:40 p.m., Helge Deller wrote:
-> +		void *target = (void *)jump_entry_target(entry);
-> +		int distance = target - addr;
-> +		/*
-> +		 * Encode the PA1.1 "b,n" instruction with a 17-bit
-> +		 * displacement.  In case we hit the BUG(), we could use
-> +		 * another branch instruction with a 22-bit displacement on
-> +		 * 64-bit CPUs instead. But this seems sufficient for now.
-> +		 */
-Just a note on the comment.  The branch instruction with 22-bit displacement uses
-the return pointer register %rp.  It is available on 32 and 64-bit PA 2.0 machines but
-one would have to clobber %rp, or save and restore it on stack. The former would cause
-%rp to be saved and restored in the function's prologue and epilogue, respectively.
+On Thu, May 02, 2019 at 07:03:11PM +0000, Paul Burton wrote:
+> Hi Mike,
+> 
+> On Thu, May 02, 2019 at 06:28:28PM +0300, Mike Rapoport wrote:
+> > +/**
+> > + * pte_free_kernel - free PTE-level user page table page
+> > + * @mm: the mm_struct of the current context
+> > + * @pte_page: the `struct page` representing the page table
+> > + */
+> > +static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
+> > +{
+> > +	pgtable_page_dtor(pte_page);
+> > +	__free_page(pte_page);
+> > +}
+> 
+> Nit: the comment names the wrong function (s/pte_free_kernel/pte_free/).
 
-Dave
+Argh, evil copy-paste :)
+Thanks!
+ 
+> Thanks,
+>     Paul
+> 
 
 -- 
-John David Anglin  dave.anglin@bell.net
+Sincerely yours,
+Mike.
 
