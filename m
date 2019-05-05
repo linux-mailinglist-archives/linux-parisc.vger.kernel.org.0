@@ -2,96 +2,56 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37AE01429A
-	for <lists+linux-parisc@lfdr.de>; Sun,  5 May 2019 23:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC356142A3
+	for <lists+linux-parisc@lfdr.de>; Mon,  6 May 2019 00:03:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727816AbfEEVzM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 5 May 2019 17:55:12 -0400
-Received: from mout.gmx.net ([212.227.15.18]:55209 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726905AbfEEVzM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 5 May 2019 17:55:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1557093305;
-        bh=dSrDTxHnJ8+yIJuT0qEpQFhQaWm/lTIE3xC6Yj5ZZa8=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=l4K2mQyX9jMXAZphiWIBTzSBr7oqyR/E+F96pE3DKR4KFaCgGflowQ+upMAD4msHQ
-         WHxXDrLVGGRqllGZ4pW5zwDZ8j8C+WuZtauC0d5Sd+MAabXZxE3g4sITDxVf14jmcM
-         dh2zTTcD2tlzNDV8iMQkm3c16R6cGy9MolFmHnLs=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.dellerweb.de ([92.116.187.88]) by mail.gmx.com (mrgmx003
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0Lt1eU-1gckU71IRW-012WRV; Sun, 05
- May 2019 23:55:05 +0200
-Date:   Sun, 5 May 2019 23:55:02 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] Use PA_ASM_LEVEL in boot code
-Message-ID: <20190505215502.GA25125@ls3530.dellerweb.de>
+        id S1727325AbfEEWDh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 5 May 2019 18:03:37 -0400
+Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:48832 "EHLO
+        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727295AbfEEWDg (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 5 May 2019 18:03:36 -0400
+Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
+          with ESMTP
+          id <20190505220335.FMMT4584.torfep01.bell.net@torspm01.bell.net>
+          for <linux-parisc@vger.kernel.org>;
+          Sun, 5 May 2019 18:03:35 -0400
+Received: from [192.168.2.49] (really [70.53.52.226]) by torspm01.bell.net
+          with ESMTP
+          id <20190505220335.QWZT39285.torspm01.bell.net@[192.168.2.49]>;
+          Sun, 5 May 2019 18:03:35 -0400
+Subject: Re: [PATCH] Rename LEVEL to PA_ASM_LEVEL to avoid name clash with
+ DRBD code
+To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <20190505215434.GA25118@ls3530.dellerweb.de>
+From:   John David Anglin <dave.anglin@bell.net>
+Openpgp: preference=signencrypt
+Message-ID: <eb66a85f-f5e7-d9ee-4a8d-8cd2759fb9f6@bell.net>
+Date:   Sun, 5 May 2019 18:03:33 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Provags-ID: V03:K1:FDHlLgl5ZCFSQGroAEM89lRd/JkF6nbIzUPwrlMyfQQrINw3rqy
- hDFW3RVHD39UkJ7Z2eeiLOOIMVNiFWq/zvavuoLXAaHPG992JZDOBACwHgbeQuV6ECpiQ2Z
- CVxg1Bq8SpK7CE+xjev3BMZ6302Nu9icZoft3Pxu5vpC771Ufl7n7og0eTz9e5iUsgPcqi9
- S90ZGzvKH1cD7L07hJ4hA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qVPCNWSjZdg=:Lmfm5yE9H8fK63etpayi2q
- BGZ5sjE4FvH2m153ff77nRKb5vtwEq4TtrF86iFabEOW+DjK+WY4s7KvyA+3O8LMhJ6UKULK4
- 1jZ0u1RJFO3cJWjpxDSGrpkjhTcoumKArQHNLEpf0rDIKZ7O/2conlgRpbCagbXQ6vIuuLZm5
- JmbnleuNxidsmxN/ItcqjsZ3CQaF2LbKiHTrXzvbKJsuSyFMpzWmBsWDQsMIa61HV+KCWrTMR
- OC6Zwd6Dux7GtubU0fuxEWRNEWYkTPVEAny2Mqy7K8JBOpwj8svsAKMsip907h+bYgDRznmiG
- tZdl/QsI5QspoqvfNPBMgEluc1KJl5cwg0tD71pK/1zJsTAZJIW9delAhPmr2ZdprREEMSVNL
- zhujyfOAecjlgPcScIp2cPq99NIyd4TBX+2c+Eslt6zp/GYxoJhNKoGrAiakns9GgFwmXL3TK
- IYHohOHWfTXAhHHdZyFiryjWdXegle7XA0l6vT9GBjiNpk65nb/RScHGZa8PffQClk80R5H+r
- hcUUejLn1AB4YMXGpl9xyrHqM9UYxhRT9GTkURuMi6pdabn1YXM3pth2VdoXpz46H4YXjClur
- K4AyPsn+KEiHCQDvWMkqtu+o7i49X0qJL02eQWaXw4VeCXwYMmU10/zZvUXMgjrT8UoTR4ysR
- dkCpx1uIVW5C4yi7kKLZx8DaLs17K3gUfZN1qV9s39Q9YcfDOoZhYzmnr1y0NUpmYqaAKKMoN
- sOA6pnU8Sz+WkBRqGoPdzMLJye/h9jHcynmI1hDiocLbsxyGsSeQwl0tLGr3hA1qeDJIARFfE
- PuhqD0HSCJPc87dNpr7riWNtMJsxBhCXh5VwsvnKe13XIDGYnc4KFlcIE2Edw67BYdNwPpRvM
- /XLtEG7yVqlOCDCJvhz/OEZrXwfq7vIZGE0JNqYrdNDTPn8hxCDTS75thgap3R
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190505215434.GA25118@ls3530.dellerweb.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-CM-Analysis: v=2.3 cv=bPxo382Z c=1 sm=1 tr=0 cx=a_idp_f a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=FBHGMhGWAAAA:8 a=Ar3uIOkb1bk2pXN9VYUA:9 a=QEXdDO2ut3YA:10 a=ATlVsGG5QSsA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+X-CM-Envelope: MS4wfHEfMgOf2FN45cCRmaL+kLDuLgn2Y6a4cZwiNF0HRkv0k17bOlUG5zyIZMjB7ddws4elEKHorQQExI81qj0dHXa1ycIcWcDP62lMr8YpwBBW69u4X86a ep7Au72AMPyCRFZdctAn/7lO2CVW+/7dXcVBg9LVO4+uxoSXdYIrCGRS5JFOCKkAkoj105qRjV3Txg==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The LEVEL define clashed with the DRBD code.
+On 2019-05-05 5:54 p.m., Helge Deller wrote:
+> LEVEL is a very common word, and now after many years it suddenly
+> clashed with another LEVEL define in the DRBD code.
+> Rename it to PA_ASM_LEVEL instead.
+I'm sure we used it first ;-)
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v4.14+
+Dave
 
-diff --git a/arch/parisc/boot/compressed/head.S b/arch/parisc/boot/compres=
-sed/head.S
-index 5aba20fa48aa..e8b798fd0cf0 100644
-=2D-- a/arch/parisc/boot/compressed/head.S
-+++ b/arch/parisc/boot/compressed/head.S
-@@ -22,7 +22,7 @@
- 	__HEAD
-
- ENTRY(startup)
--	 .level LEVEL
-+	 .level PA_ASM_LEVEL
-
- #define PSW_W_SM	0x200
- #define PSW_W_BIT       36
-@@ -63,7 +63,7 @@ $bss_loop:
- 	load32	BOOTADDR(decompress_kernel),%r3
-
- #ifdef CONFIG_64BIT
--	.level LEVEL
-+	.level PA_ASM_LEVEL
- 	ssm	PSW_W_SM, %r0		/* set W-bit */
- 	depdi	0, 31, 32, %r3
- #endif
-@@ -72,7 +72,7 @@ $bss_loop:
-
- startup_continue:
- #ifdef CONFIG_64BIT
--	.level LEVEL
-+	.level PA_ASM_LEVEL
- 	rsm	PSW_W_SM, %r0		/* clear W-bit */
- #endif
+-- 
+John David Anglin  dave.anglin@bell.net
 
