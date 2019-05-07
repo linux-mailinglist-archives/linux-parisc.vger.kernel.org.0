@@ -2,143 +2,119 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF92615394
-	for <lists+linux-parisc@lfdr.de>; Mon,  6 May 2019 20:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F356515DB3
+	for <lists+linux-parisc@lfdr.de>; Tue,  7 May 2019 08:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726486AbfEFSZy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 6 May 2019 14:25:54 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:34056 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726218AbfEFSZy (ORCPT
+        id S1726720AbfEGGtq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 May 2019 02:49:46 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:37879 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726538AbfEGGtp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 6 May 2019 14:25:54 -0400
-Received: by mail-pf1-f196.google.com with SMTP id b3so7214655pfd.1
-        for <linux-parisc@vger.kernel.org>; Mon, 06 May 2019 11:25:54 -0700 (PDT)
+        Tue, 7 May 2019 02:49:45 -0400
+Received: by mail-qk1-f194.google.com with SMTP id c1so231509qkk.4;
+        Mon, 06 May 2019 23:49:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NXCCd9DEwpVv+CkVk+97oddxbHXiAPPbrF6iGBSrYgc=;
-        b=NKrWKCiGbzmza35fOtOMvL+ftXETfh3uUcp/GkaCXcI8/XzVP8qVDBZioaj7yzgwas
-         2tQRRTKTuRAtOwQhT+kcUBv2qp2jRZVnznAovTkgFRvmAuuaShMFB+Nx1bbVUNa9A7OX
-         8BLulEh57QbYge20tVCIr34v+fwMGVGOSH1ehzMLel+zcPUV1nVeQpw7cWLe4F7TLSOw
-         ++VBDFOhS3lKU6/bS8dLLIX6A8ANpsIH1DryjqnbCnoWXwVNSYR3C7RBe/CPhV/P7ncT
-         Cg2Mr2IcrlFerHMT/L21aU76jEgkMtiGDQAE6F2Y4uyRJKfpkAmDpf2MCdenO33CvIPF
-         KysQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=pa7Box1aR7yFtR1LX1WDnV3kRpU7SqZCsbjs49Q3I5I=;
+        b=MbpgTNQuafLtAS2Dly735CRfwi2rTUQf2u2v4oGvQgQgSYIdnRpg7VCLomPpMzIscG
+         QaTnC9SQ9ku6gzFOzq1s9XrRaJmYor/1LFKrkhizBLNXIXufH7ZYafVfUTi/hxmPPuHk
+         B/SkK/YRJGmYzfaQ1xghtxinwaerdxpRKizUfkuezccasVKNLUKgHxlEEtCQzs7jj3xl
+         zQkJPXfNNvA3TqInSISCOxmMnYUjkdAFYUZlvI0ouvwsL+dfg4OFY2WIgIiVzRvRisWc
+         5DS8N2wLUkGet8qbU+i0bfGDKHxX5peC2gXK9w9E6zQg9z2uNJlAWgMxSlSz/L/CQjSl
+         IVaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=NXCCd9DEwpVv+CkVk+97oddxbHXiAPPbrF6iGBSrYgc=;
-        b=E88xJiobcuRYU/oqIYt2JdMRlhfBoDVE9WuvlW1cpC+ODHuJzAjr6sQicrcF5pzBAA
-         BZMPP8qEDPW9zkZazPU8jyiFYUFFY1/GoKAF2MA3dAxuPsWlE5kpx/Hk3jDaPbTvCzAV
-         fEdfF6tUDX+ku7uzjTqwfb12yszdv7YO6JOGLggqHlO2gqnxpVpHrL+Vxj76qfR9QWPH
-         /SNAT0LKLb3w/+QfiTAwZzI8kQAoubY93wyZ9+9BbJQnfZUWVr+vq8O3mBLMjNS+J/iw
-         6tST87FM4sBK+ZDd5rcJsUIzjGxE2uLezNvhKH883Mn3QNPMJ95U+3G0Zr1wHv83rsRP
-         ipPQ==
-X-Gm-Message-State: APjAAAVbZW/lYkfVoGXrsQD9yKCvu0JYQCrsoYppOWNKO7HmUU/eqVq4
-        TUfez8X4k7zvUV08w05ZVik+Bw==
-X-Google-Smtp-Source: APXvYqz/rXdpBxODnklgvIEL8bDQcS0bWQdd3xgt2Ribpt+WuSOewfTAdZg7WDT5L829vlRrQKqfdA==
-X-Received: by 2002:a62:121c:: with SMTP id a28mr34935323pfj.58.1557167153191;
-        Mon, 06 May 2019 11:25:53 -0700 (PDT)
-Received: from localhost ([12.206.222.5])
-        by smtp.gmail.com with ESMTPSA id x66sm15776570pfb.78.2019.05.06.11.25.51
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 06 May 2019 11:25:52 -0700 (PDT)
-Date:   Mon, 06 May 2019 11:25:52 -0700 (PDT)
-X-Google-Original-Date: Mon, 06 May 2019 11:25:42 PDT (-0700)
-Subject:     Re: [PATCH 13/15] riscv: switch to generic version of pte allocation
-In-Reply-To: <1556810922-20248-14-git-send-email-rppt@linux.ibm.com>
-CC:     akpm@linux-foundation.org, Arnd Bergmann <arnd@arndb.de>,
-        catalin.marinas@arm.com, geert@linux-m68k.org, green.hu@gmail.com,
-        gxt@pku.edu.cn, guoren@kernel.org, deller@gmx.de, lftan@altera.com,
-        willy@infradead.org, mattst88@gmail.com, mpe@ellerman.id.au,
-        mhocko@suse.com, paul.burton@mips.com, rkuo@codeaurora.org,
-        richard@nod.at, linux@armlinux.org.uk, sammy@sammy.net,
-        x86@kernel.org, linux-alpha@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=pa7Box1aR7yFtR1LX1WDnV3kRpU7SqZCsbjs49Q3I5I=;
+        b=dgpuLZ7Sxs70cd6gfm8S4JBhVsVHVCaxSQnsxQQbHLpj6sAyMOkbFdtkrrSh363qfE
+         SqKVi9BdHAPY+jdqIYwfM+6MAdjZz00uLaaCpylF3GpKSEGAiHaxTGM4nO4YMYIMMZYX
+         DDcYvhLJIfAbKwcnPFP0IcuDMGIAdy6UmHchuR1nEZapUUk8AfNsiB/gP1OcVGO+6a9/
+         I2we6KVblntwp0ZXsHsiiuv96qRZqTiGYXhYmzsvr7rT+WMMzUY6zTAXX0d5UHNHoGvz
+         66dGNXxIT7n127CaN7edP7HtnYQtnLd1o1+WPrDJgEPehN0fkOdA2jCddlpVeHvdIfSQ
+         24kw==
+X-Gm-Message-State: APjAAAVM93RuASodQymRZFilQ/dHOFT8eFhzpoCfqwDwp4+Gx8hCbR2o
+        qpJxz6jk056gefIIni33AnTcemXyaltduTXD2HI=
+X-Google-Smtp-Source: APXvYqzuoQEtPiGnZXwYeWTvh/tWnA2kNb3EmE2Gn3p8SIpj/ShNUcDydJeqXgxDTOHN1axGtXmE2eyXjqUTKs09l0U=
+X-Received: by 2002:a05:620a:1012:: with SMTP id z18mr1671111qkj.205.1557211784520;
+ Mon, 06 May 2019 23:49:44 -0700 (PDT)
+MIME-Version: 1.0
+References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com> <1556810922-20248-10-git-send-email-rppt@linux.ibm.com>
+In-Reply-To: <1556810922-20248-10-git-send-email-rppt@linux.ibm.com>
+From:   Greentime Hu <green.hu@gmail.com>
+Date:   Tue, 7 May 2019 14:49:08 +0800
+Message-ID: <CAEbi=3d=HN0NagdZRu7qYE1KCWGnnGGwyhWKPp31XbzT7JunBQ@mail.gmail.com>
+Subject: Re: [PATCH 09/15] nds32: switch to generic version of pte allocation
+To:     Mike Rapoport <rppt@linux.ibm.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
+        Helge Deller <deller@gmx.de>, Ley Foon Tan <lftan@altera.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Sam Creasey <sammy@sammy.net>, x86@kernel.org,
+        linux-alpha@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
         linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
-        nios2-dev@lists.rocketboards.org, rppt@linux.ibm.com
-From:   Palmer Dabbelt <palmer@sifive.com>
-To:     rppt@linux.ibm.com
-Message-ID: <mhng-c23d2e8b-1dc0-48db-a4cf-d6964ca650c0@palmer-si-x1e>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        nios2-dev@lists.rocketboards.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, 02 May 2019 08:28:40 PDT (-0700), rppt@linux.ibm.com wrote:
-> The only difference between the generic and RISC-V implementation of PTE
-> allocation is the usage of __GFP_RETRY_MAYFAIL for both kernel and user
-> PTEs and the absence of __GFP_ACCOUNT for the user PTEs.
+Hi Mike,
+
+Mike Rapoport <rppt@linux.ibm.com> =E6=96=BC 2019=E5=B9=B45=E6=9C=882=E6=97=
+=A5 =E9=80=B1=E5=9B=9B =E4=B8=8B=E5=8D=8811:30=E5=AF=AB=E9=81=93=EF=BC=9A
 >
-> The conversion to the generic version removes the __GFP_RETRY_MAYFAIL and
-> ensures that GFP_ACCOUNT is used for the user PTE allocations.
-
-Reviewed-by: Palmer Dabbelt <palmer@sifive.com>
-
-I'm assuming this is going in along with the rest of the patches, so I'm not
-going to add it to my tree.
-
+> The nds32 implementation of pte_alloc_one_kernel() differs from the gener=
+ic
+> in the use of __GFP_RETRY_MAYFAIL flag, which is removed after the
+> conversion.
 >
-> The pte_free() and pte_free_kernel() versions are identical to the generic
-> ones and can be simply dropped.
+> The nds32 version of pte_alloc_one() missed the call to pgtable_page_ctor=
+()
+> and also used __GFP_RETRY_MAYFAIL. Switching it to use generic
+> __pte_alloc_one() for the PTE page allocation ensures that page table
+> constructor is run and the user page tables are allocated with
+> __GFP_ACCOUNT.
+>
+> The conversion to the generic version of pte_free_kernel() removes the NU=
+LL
+> check for pte.
+>
+> The pte_free() version on nds32 is identical to the generic one and can b=
+e
+> simply dropped.
 >
 > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 > ---
->  arch/riscv/include/asm/pgalloc.h | 29 ++---------------------------
->  1 file changed, 2 insertions(+), 27 deletions(-)
->
-> diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
-> index 94043cf..48f28bb 100644
-> --- a/arch/riscv/include/asm/pgalloc.h
-> +++ b/arch/riscv/include/asm/pgalloc.h
-> @@ -18,6 +18,8 @@
->  #include <linux/mm.h>
->  #include <asm/tlb.h>
->
-> +#include <asm-generic/pgalloc.h>	/* for pte_{alloc,free}_one */
-> +
->  static inline void pmd_populate_kernel(struct mm_struct *mm,
->  	pmd_t *pmd, pte_t *pte)
->  {
-> @@ -82,33 +84,6 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
->
->  #endif /* __PAGETABLE_PMD_FOLDED */
->
-> -static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
-> -{
-> -	return (pte_t *)__get_free_page(
-> -		GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_ZERO);
-> -}
-> -
-> -static inline struct page *pte_alloc_one(struct mm_struct *mm)
-> -{
-> -	struct page *pte;
-> -
-> -	pte = alloc_page(GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_ZERO);
-> -	if (likely(pte != NULL))
-> -		pgtable_page_ctor(pte);
-> -	return pte;
-> -}
-> -
-> -static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
-> -{
-> -	free_page((unsigned long)pte);
-> -}
-> -
-> -static inline void pte_free(struct mm_struct *mm, pgtable_t pte)
-> -{
-> -	pgtable_page_dtor(pte);
-> -	__free_page(pte);
-> -}
-> -
->  #define __pte_free_tlb(tlb, pte, buf)   \
->  do {                                    \
->  	pgtable_page_dtor(pte);         \
+>  arch/nds32/include/asm/pgalloc.h | 31 ++++---------------------------
+>  1 file changed, 4 insertions(+), 27 deletions(-)
+
+Thanks for your patch.
+I'm assuming this is going in along with the rest of the patches, so I'm no=
+t
+going to add it to my tree.
+
+Acked-by: Greentime Hu <greentime@andestech.com>
