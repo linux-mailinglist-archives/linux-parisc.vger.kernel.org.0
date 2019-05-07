@@ -2,107 +2,191 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82E1916A05
-	for <lists+linux-parisc@lfdr.de>; Tue,  7 May 2019 20:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 530A216A74
+	for <lists+linux-parisc@lfdr.de>; Tue,  7 May 2019 20:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726545AbfEGSTQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 7 May 2019 14:19:16 -0400
-Received: from mout.gmx.net ([212.227.15.15]:53325 "EHLO mout.gmx.net"
+        id S1727679AbfEGSie (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 May 2019 14:38:34 -0400
+Received: from mout.gmx.net ([212.227.17.20]:49935 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726321AbfEGSTQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 7 May 2019 14:19:16 -0400
+        id S1727264AbfEGSie (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 7 May 2019 14:38:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1557253149;
-        bh=GXWnyqTq9JXZVCf1Sjv/d7BtG+W/HEM63VNJDRNSkbE=;
+        s=badeba3b8450; t=1557254301;
+        bh=2scSQ07oSeavjRdJwehx3u2dCjaIy4U1FF+d4BYK7p8=;
         h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=BvN3BNWoRv9llAt9+1yWuKNa2FmMmZn5vtvtKI9i0+ApMntId7D6IWyCCeSHQXH6V
-         /E+xQSMasD5ZfEkRBjjWBh0M282TPiCJPOtj7EExdPlkXwL5CptT1BVwaejgDIcNcY
-         5/6W/OgyyOmy+lD4/vUrAs/pDcTSXMyguB1UESuQ=
+        b=QjAmFuFy/SnMa/OU/Eh6v7arMzvqTVdcHXwguZvJhzarSMcGT+kYHY2igU0qF0TBq
+         M67N/YP9oEHeyYTRHVHs6vsi7esF4G/xfgufOgS4xLXh83rUpS8yOZyLT1dMwYdVQa
+         Q3xmUcccpgJBCzqzbFXaQX9+wy9claczfWdgSOsU=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.dellerweb.de ([92.116.181.99]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MSbxD-1hH9sq1tpx-00SxvL; Tue, 07
- May 2019 20:19:09 +0200
-Date:   Tue, 7 May 2019 20:19:05 +0200
+Received: from ls3530.dellerweb.de ([92.116.181.99]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MZCfJ-1hAYTU18M5-00V7uT; Tue, 07
+ May 2019 20:38:21 +0200
+Date:   Tue, 7 May 2019 20:38:18 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Drop LDCW barrier in CAS code when running UP
-Message-ID: <20190507181905.GA16683@ls3530.dellerweb.de>
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>,
+        Alexandre Ghiti <alex@ghiti.fr>,
+        Mikulas Patocka <mpatocka@redhat.com>
+Subject: [GIT PULL] parisc architecture updates for kernel v5.2
+Message-ID: <20190507183818.GA17218@ls3530.dellerweb.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Provags-ID: V03:K1:PhqNhbicWiK7XxaYsCcUAydWg8QyTMGaKmsPiXx+bZvIPa2/aDr
- dVdjUQc1fLq/C+b2FWp+DvzTgJHvj6G+hWhinmZdWgwnfGnP95Mw3y7tq0FYzVvk+qAOa39
- zmtfIBWX8V9PlYi7zxy0IByiLfKzGD3NEajy3ikJQFXknh2xJ7S0GHXkwTtuF4xqMaHBXe2
- XDVh8470HQNrlAld8MvOA==
+X-Provags-ID: V03:K1:cQwO5lN27S4uuDXBk4Mkoit5YEgMCPm2E1Ws8AYuT+GI8PlbWff
+ ZNPS8rWJfOkXoxjMbrqmu3pfM0aDh+DDoFSOpv4fNHIAb3EbhqFITPzWpb3XuPQiN0c0hRi
+ VbQ3IojvNZzopM9MmfYBBE4jPMIbR07Rkj5rI3jVrPZmRqV0pMCTvqKinTGlOKGQ63Fw8U4
+ 8s3+9PgEErhq7ikEjbpoA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:XepoeB8+8YE=:undtC4KcJyvuZ4o4Fzprzi
- Pc9O0FxlkIsXePmkcd0kyD/vgJ2nprotrTq2KbWrHA0OzpS6tisTkB6H0AHuvaGgeXE7aYUO/
- k1NloITtZtAY/5ZMICBB2aDhi3IDp8SJiKHW1neu649aGNQw86H99SfUewiUp29ZRZbrB/3K/
- MLyKkGYsSas0Q4l6wnZw9JqKi8PMkVbuy6N1lSrRAQq3CrJb8T6eFUdRYv8q1L+n2cZAuxxs+
- Ul51dMN6yXhh0Zs2LerJGqlWLlrBOPj/lzjsLoSmqPJGe9Ac0ocv/GYrHTgyqziOp1LgA6cXX
- tJ22tDOjo0MKL9A1oPESTXsxG1WXL2l0MVZ73z/gqd8xwC82TC+F/o5pC37RGfit4vq1USOII
- ucmNQ7ZTzijDOxHYDNocoqHLaFIbR3R0NZVBA4utipPuo5GtqbzqP/VHMHUVtrdoe5mOWJFKO
- tc7/noS5SzI7Wz61jukwCA5K76WaI+zDTfKNB7c5NpOyhi3ne72cltUYKbReZM7+x6RzC58ai
- yAP4w5BLz/rSEYSFnutVrw6GTyPHBrvN5eoSeqGlDnfdu6Yo/BJmNfL7pEbYqwINkNEZ1B6Oz
- A8NWqJ8ihTMsRl0tNao4zDDjvSzM7xyGVVnSgje24jc7xkdbKIH0vWLSFnIJlfqvDLwnCVn4t
- P7g10CK4UBwV5evfeyucpG6/XVysrh2918U/6FUkZbI+sipDgs1zpvO6ZEPN5r4E7evjj6z2h
- nJDcGmlTKk7fNgV+HutxcbtmWAY0Ci0e5CqDcfHmaG//FfUhkWl4JiaI2LG8cZlVOCq4c+YeK
- 5ha2ODIjPpuLM8+UCJGDsUCfwcnEvt6g2UUUx3TZ7KUk5JqqlxV+ekxrC7qShd7qcP+69NJRJ
- k/B1iQGS50WKO0EWZD8TD0Oqi/oVM+1CuNXDVXUDOY0sX6/0oP34NEMlE6JlQe
+X-UI-Out-Filterresults: notjunk:1;V03:K0:anZ3IMaOLh0=:c7ghpPNAu5k7XSYpwyjSRN
+ PbXbytJ/aj8p8iXUjBy2tARkK4fur3lR7RUIOeUazqygKob+u3KJzafBmAWqbJyvSmMNVkDk6
+ HyKsb4eRh3ZTdBR+cwtSNhT9jK9n3QUWwBkfMu3s2y2qNoTo6aY2462trjFLKtgHvjK9qbToA
+ tKT+0m8bcVTfXZe6SUiJh6fnSLIKLmj1Agp0clnX4v4cV7kc/r8+wVV9v19Z2qv50HywT+hpr
+ 0X49mAHLKYGiySGmPFvc0TqENY1t+s/AUQoxrjvXTIbFvHOaX4sjxeohubQsO0QQU9cPCZzlH
+ jMnAF7WlAyBsytZ8Go2yAxEEJbGZZrB3CBNjmmEtmR7WjBMJTAJg/shkDwVGWEOFA5ReoVbeg
+ Lb1fknqkMi67QKR/hH49YhWBzp/HHiU7/YgBJY6/dFTRQnnDGJ/QfUgdT6rgMYuZ4zP8HduKA
+ KpybSxni7A3h0hfdIAN0MRUz353RMh+1Zq5I/6WClGvG1LQEGC7IsrxQlIX1nHhTW/TG8Atk3
+ /41qhroyxWz9l58T6q7ZEaI57qt6MXgSHrUi+rDIPFV9JZy6S9YnWgZqtZrgdchIRzEP713Yc
+ XOovfZgz4deqJOgnEHOv+iB5P653LD1L1UXnSIykGhZJPuVUH8ZzfTEHw0RYk2v6pLFdN90WE
+ T6OpdA5kL5xKXMVZaX6hk5m1xL60J6WtjJAHtoHsPY0anOsdsZW5vQj+3eEhj4UqX1ZZNG5cJ
+ pvTwFWCsMJHQwNfyAKws5zxvNL20xBY7Y2N/Ttk00rY6ffJ+a8o8xwiLnBt8i+cnrbKS+d0ib
+ wP6cziwNKVYVP87Z0Lo+iSz/iAroQowA+rbAFDiCsghohSK4ZD3IOpaK4BdbGNQm8yMx83Sjv
+ 4cUZr6l5HQ3cwIuuwsNDjZG7YLoh+h/8/zQBUfXHXvaGwxKj76VNEyLm81ByQo
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-When running an SMP kernel on a single-CPU machine, we can speed up the
-CAS code by replacing the LDCW sync barrier with NOP.
+Hi Linus,
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+please pull the parisc architecture updates for kernel 5.2:
 
-diff --git a/arch/parisc/kernel/syscall.S b/arch/parisc/kernel/syscall.S
-index e54d5e4d3489..97ac707c6bff 100644
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -641,7 +641,8 @@ cas_action:
- 2:	stw	%r24, 0(%r26)
- 	/* Free lock */
- #ifdef CONFIG_SMP
--	LDCW	0(%sr2,%r20), %r1			/* Barrier */
-+98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
-+99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
- #endif
- 	stw	%r20, 0(%sr2,%r20)
- #if ENABLE_LWS_DEBUG
-@@ -658,7 +659,8 @@ cas_action:
- 	/* Error occurred on load or store */
- 	/* Free lock */
- #ifdef CONFIG_SMP
--	LDCW	0(%sr2,%r20), %r1			/* Barrier */
-+98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
-+99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
- #endif
- 	stw	%r20, 0(%sr2,%r20)
- #if ENABLE_LWS_DEBUG
-@@ -862,7 +864,8 @@ cas2_action:
- cas2_end:
- 	/* Free lock */
- #ifdef CONFIG_SMP
--	LDCW	0(%sr2,%r20), %r1			/* Barrier */
-+98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
-+99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
- #endif
- 	stw	%r20, 0(%sr2,%r20)
- 	/* Enable interrupts */
-@@ -875,7 +878,8 @@ cas2_end:
- 	/* Error occurred on load or store */
- 	/* Free lock */
- #ifdef CONFIG_SMP
--	LDCW	0(%sr2,%r20), %r1			/* Barrier */
-+98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
-+99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
- #endif
- 	stw	%r20, 0(%sr2,%r20)
- 	ssm	PSW_SM_I, %r0
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.2-1
+
+
+Many great new features, fixes and optimizations, including:
+
+- Convert to use per-pagetable spinlocks which overall improves performance on
+  SMP machines a lot, by Mikulas Patocka
+
+- Kernel debugger (KGDB) support, by Sven Schnelle
+
+- KPROBES support, by Sven Schnelle
+
+- Lots of TLB lock/flush improvements, by Dave Anglin
+
+- Drop DISCONTIGMEM and switch to SPARSEMEM
+
+- Added JUMP_LABEL, branch runtime-patching support
+
+- Lots of other small speedups and cleanups, e.g. for QEMU, stack
+  randomization, avoidance of name clashes, documentation updates, ...
+
+
+Thanks,
+Helge
+
+----------------------------------------------------------------
+Alexandre Ghiti (1):
+      parisc: Consider stack randomization for mmap base only when necessary
+
+Helge Deller (11):
+      parisc: Export running_on_qemu symbol for modules
+      parisc: Tune LASI LAN for QEMU
+      parisc: Skip registering LED when running in QEMU
+      parisc: PA-Linux requires at least 32 MB RAM
+      parisc: Show n/a if product number not available
+      parisc: Switch from DISCONTIGMEM to SPARSEMEM
+      parisc: Add memory barrier to asm pdc and sync instructions
+      parisc: Allow live-patching of __meminit functions
+      parisc: Rename LEVEL to PA_ASM_LEVEL to avoid name clash with DRBD code
+      parisc: Use PA_ASM_LEVEL in boot code
+      parisc: Add static branch and JUMP_LABEL feature
+
+John David Anglin (4):
+      parisc: Remove lock code to serialize TLB operations in pacache.S
+      parisc: Use ldcw instruction for SMP spinlock release barrier
+      parisc: Add memory clobber to TLB purges
+      parisc: Update huge TLB page support to use per-pagetable spinlock
+
+Mikulas Patocka (1):
+      parisc: Use per-pagetable spinlock
+
+Sven Schnelle (11):
+      parisc: add set_fixmap()/clear_fixmap()
+      parisc: add parisc code patching
+      parisc: add KGDB support
+      parisc: add functions required by KPROBE_EVENTS
+      parisc: Implement kprobes
+      parisc: remove kprobes.h from generic-y
+      parisc: Implement kretprobes
+      doc: update kprobes supported architecture list
+      parisc: remove unused flags parameter in __patch_text()
+      parisc: update feature lists
+      parisc: enable wide mode early
+
+ Documentation/features/debug/kgdb/arch-support.txt |   2 +-
+ .../features/debug/kprobes/arch-support.txt        |   2 +-
+ .../features/debug/kretprobes/arch-support.txt     |   2 +-
+ Documentation/kprobes.txt                          |   1 +
+ arch/parisc/Kconfig                                |  17 +-
+ arch/parisc/boot/compressed/head.S                 |   6 +-
+ arch/parisc/boot/compressed/misc.c                 |  31 ++-
+ arch/parisc/include/asm/Kbuild                     |   1 -
+ arch/parisc/include/asm/assembly.h                 |   6 +-
+ arch/parisc/include/asm/cache.h                    |  10 +-
+ arch/parisc/include/asm/fixmap.h                   |  19 +-
+ arch/parisc/include/asm/hardware.h                 |   2 +-
+ arch/parisc/include/asm/jump_label.h               |  43 +++
+ arch/parisc/include/asm/kgdb.h                     |  68 +++++
+ arch/parisc/include/asm/kprobes.h                  |  55 ++++
+ arch/parisc/include/asm/mmzone.h                   |  58 +---
+ arch/parisc/include/asm/page.h                     |   4 +-
+ arch/parisc/include/asm/patch.h                    |  11 +
+ arch/parisc/include/asm/pgalloc.h                  |   1 +
+ arch/parisc/include/asm/pgtable.h                  |  69 +++--
+ arch/parisc/include/asm/ptrace.h                   |  13 +
+ arch/parisc/include/asm/sparsemem.h                |  14 +
+ arch/parisc/include/asm/spinlock.h                 |   4 +
+ arch/parisc/include/asm/tlbflush.h                 |  24 +-
+ arch/parisc/kernel/Makefile                        |   6 +-
+ arch/parisc/kernel/cache.c                         |  15 +-
+ arch/parisc/kernel/drivers.c                       |  25 ++
+ arch/parisc/kernel/entry.S                         |  51 ++--
+ arch/parisc/kernel/head.S                          |  17 +-
+ arch/parisc/kernel/inventory.c                     |   7 +
+ arch/parisc/kernel/jump_label.c                    |  55 ++++
+ arch/parisc/kernel/kgdb.c                          | 209 +++++++++++++++
+ arch/parisc/kernel/kprobes.c                       | 291 +++++++++++++++++++++
+ arch/parisc/kernel/pacache.S                       |  43 ---
+ arch/parisc/kernel/parisc_ksyms.c                  |   6 -
+ arch/parisc/kernel/patch.c                         |  77 ++++++
+ arch/parisc/kernel/process.c                       |   1 +
+ arch/parisc/kernel/processor.c                     |   3 +-
+ arch/parisc/kernel/ptrace.c                        |  35 +++
+ arch/parisc/kernel/setup.c                         |   6 +
+ arch/parisc/kernel/sys_parisc.c                    |   3 +-
+ arch/parisc/kernel/syscall.S                       |  18 +-
+ arch/parisc/kernel/traps.c                         |  31 +++
+ arch/parisc/kernel/vmlinux.lds.S                   |   3 +
+ arch/parisc/mm/Makefile                            |   2 +-
+ arch/parisc/mm/fixmap.c                            |  41 +++
+ arch/parisc/mm/hugetlbpage.c                       |  19 +-
+ arch/parisc/mm/init.c                              | 118 ++++-----
+ drivers/net/ethernet/i825xx/lasi_82596.c           |   5 +-
+ drivers/parisc/led.c                               |   3 +
+ 50 files changed, 1258 insertions(+), 295 deletions(-)
+ create mode 100644 arch/parisc/include/asm/jump_label.h
+ create mode 100644 arch/parisc/include/asm/kgdb.h
+ create mode 100644 arch/parisc/include/asm/kprobes.h
+ create mode 100644 arch/parisc/include/asm/patch.h
+ create mode 100644 arch/parisc/include/asm/sparsemem.h
+ create mode 100644 arch/parisc/kernel/jump_label.c
+ create mode 100644 arch/parisc/kernel/kgdb.c
+ create mode 100644 arch/parisc/kernel/kprobes.c
+ create mode 100644 arch/parisc/kernel/patch.c
+ create mode 100644 arch/parisc/mm/fixmap.c
