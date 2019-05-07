@@ -2,119 +2,107 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F356515DB3
-	for <lists+linux-parisc@lfdr.de>; Tue,  7 May 2019 08:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82E1916A05
+	for <lists+linux-parisc@lfdr.de>; Tue,  7 May 2019 20:19:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726720AbfEGGtq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 7 May 2019 02:49:46 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:37879 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726538AbfEGGtp (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 7 May 2019 02:49:45 -0400
-Received: by mail-qk1-f194.google.com with SMTP id c1so231509qkk.4;
-        Mon, 06 May 2019 23:49:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=pa7Box1aR7yFtR1LX1WDnV3kRpU7SqZCsbjs49Q3I5I=;
-        b=MbpgTNQuafLtAS2Dly735CRfwi2rTUQf2u2v4oGvQgQgSYIdnRpg7VCLomPpMzIscG
-         QaTnC9SQ9ku6gzFOzq1s9XrRaJmYor/1LFKrkhizBLNXIXufH7ZYafVfUTi/hxmPPuHk
-         B/SkK/YRJGmYzfaQ1xghtxinwaerdxpRKizUfkuezccasVKNLUKgHxlEEtCQzs7jj3xl
-         zQkJPXfNNvA3TqInSISCOxmMnYUjkdAFYUZlvI0ouvwsL+dfg4OFY2WIgIiVzRvRisWc
-         5DS8N2wLUkGet8qbU+i0bfGDKHxX5peC2gXK9w9E6zQg9z2uNJlAWgMxSlSz/L/CQjSl
-         IVaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=pa7Box1aR7yFtR1LX1WDnV3kRpU7SqZCsbjs49Q3I5I=;
-        b=dgpuLZ7Sxs70cd6gfm8S4JBhVsVHVCaxSQnsxQQbHLpj6sAyMOkbFdtkrrSh363qfE
-         SqKVi9BdHAPY+jdqIYwfM+6MAdjZz00uLaaCpylF3GpKSEGAiHaxTGM4nO4YMYIMMZYX
-         DDcYvhLJIfAbKwcnPFP0IcuDMGIAdy6UmHchuR1nEZapUUk8AfNsiB/gP1OcVGO+6a9/
-         I2we6KVblntwp0ZXsHsiiuv96qRZqTiGYXhYmzsvr7rT+WMMzUY6zTAXX0d5UHNHoGvz
-         66dGNXxIT7n127CaN7edP7HtnYQtnLd1o1+WPrDJgEPehN0fkOdA2jCddlpVeHvdIfSQ
-         24kw==
-X-Gm-Message-State: APjAAAVM93RuASodQymRZFilQ/dHOFT8eFhzpoCfqwDwp4+Gx8hCbR2o
-        qpJxz6jk056gefIIni33AnTcemXyaltduTXD2HI=
-X-Google-Smtp-Source: APXvYqzuoQEtPiGnZXwYeWTvh/tWnA2kNb3EmE2Gn3p8SIpj/ShNUcDydJeqXgxDTOHN1axGtXmE2eyXjqUTKs09l0U=
-X-Received: by 2002:a05:620a:1012:: with SMTP id z18mr1671111qkj.205.1557211784520;
- Mon, 06 May 2019 23:49:44 -0700 (PDT)
+        id S1726545AbfEGSTQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 May 2019 14:19:16 -0400
+Received: from mout.gmx.net ([212.227.15.15]:53325 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726321AbfEGSTQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 7 May 2019 14:19:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1557253149;
+        bh=GXWnyqTq9JXZVCf1Sjv/d7BtG+W/HEM63VNJDRNSkbE=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=BvN3BNWoRv9llAt9+1yWuKNa2FmMmZn5vtvtKI9i0+ApMntId7D6IWyCCeSHQXH6V
+         /E+xQSMasD5ZfEkRBjjWBh0M282TPiCJPOtj7EExdPlkXwL5CptT1BVwaejgDIcNcY
+         5/6W/OgyyOmy+lD4/vUrAs/pDcTSXMyguB1UESuQ=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.dellerweb.de ([92.116.181.99]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MSbxD-1hH9sq1tpx-00SxvL; Tue, 07
+ May 2019 20:19:09 +0200
+Date:   Tue, 7 May 2019 20:19:05 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Drop LDCW barrier in CAS code when running UP
+Message-ID: <20190507181905.GA16683@ls3530.dellerweb.de>
 MIME-Version: 1.0
-References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com> <1556810922-20248-10-git-send-email-rppt@linux.ibm.com>
-In-Reply-To: <1556810922-20248-10-git-send-email-rppt@linux.ibm.com>
-From:   Greentime Hu <green.hu@gmail.com>
-Date:   Tue, 7 May 2019 14:49:08 +0800
-Message-ID: <CAEbi=3d=HN0NagdZRu7qYE1KCWGnnGGwyhWKPp31XbzT7JunBQ@mail.gmail.com>
-Subject: Re: [PATCH 09/15] nds32: switch to generic version of pte allocation
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
-        Helge Deller <deller@gmx.de>, Ley Foon Tan <lftan@altera.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Hocko <mhocko@suse.com>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        Sam Creasey <sammy@sammy.net>, x86@kernel.org,
-        linux-alpha@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
-        nios2-dev@lists.rocketboards.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Provags-ID: V03:K1:PhqNhbicWiK7XxaYsCcUAydWg8QyTMGaKmsPiXx+bZvIPa2/aDr
+ dVdjUQc1fLq/C+b2FWp+DvzTgJHvj6G+hWhinmZdWgwnfGnP95Mw3y7tq0FYzVvk+qAOa39
+ zmtfIBWX8V9PlYi7zxy0IByiLfKzGD3NEajy3ikJQFXknh2xJ7S0GHXkwTtuF4xqMaHBXe2
+ XDVh8470HQNrlAld8MvOA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:XepoeB8+8YE=:undtC4KcJyvuZ4o4Fzprzi
+ Pc9O0FxlkIsXePmkcd0kyD/vgJ2nprotrTq2KbWrHA0OzpS6tisTkB6H0AHuvaGgeXE7aYUO/
+ k1NloITtZtAY/5ZMICBB2aDhi3IDp8SJiKHW1neu649aGNQw86H99SfUewiUp29ZRZbrB/3K/
+ MLyKkGYsSas0Q4l6wnZw9JqKi8PMkVbuy6N1lSrRAQq3CrJb8T6eFUdRYv8q1L+n2cZAuxxs+
+ Ul51dMN6yXhh0Zs2LerJGqlWLlrBOPj/lzjsLoSmqPJGe9Ac0ocv/GYrHTgyqziOp1LgA6cXX
+ tJ22tDOjo0MKL9A1oPESTXsxG1WXL2l0MVZ73z/gqd8xwC82TC+F/o5pC37RGfit4vq1USOII
+ ucmNQ7ZTzijDOxHYDNocoqHLaFIbR3R0NZVBA4utipPuo5GtqbzqP/VHMHUVtrdoe5mOWJFKO
+ tc7/noS5SzI7Wz61jukwCA5K76WaI+zDTfKNB7c5NpOyhi3ne72cltUYKbReZM7+x6RzC58ai
+ yAP4w5BLz/rSEYSFnutVrw6GTyPHBrvN5eoSeqGlDnfdu6Yo/BJmNfL7pEbYqwINkNEZ1B6Oz
+ A8NWqJ8ihTMsRl0tNao4zDDjvSzM7xyGVVnSgje24jc7xkdbKIH0vWLSFnIJlfqvDLwnCVn4t
+ P7g10CK4UBwV5evfeyucpG6/XVysrh2918U/6FUkZbI+sipDgs1zpvO6ZEPN5r4E7evjj6z2h
+ nJDcGmlTKk7fNgV+HutxcbtmWAY0Ci0e5CqDcfHmaG//FfUhkWl4JiaI2LG8cZlVOCq4c+YeK
+ 5ha2ODIjPpuLM8+UCJGDsUCfwcnEvt6g2UUUx3TZ7KUk5JqqlxV+ekxrC7qShd7qcP+69NJRJ
+ k/B1iQGS50WKO0EWZD8TD0Oqi/oVM+1CuNXDVXUDOY0sX6/0oP34NEMlE6JlQe
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Mike,
+When running an SMP kernel on a single-CPU machine, we can speed up the
+CAS code by replacing the LDCW sync barrier with NOP.
 
-Mike Rapoport <rppt@linux.ibm.com> =E6=96=BC 2019=E5=B9=B45=E6=9C=882=E6=97=
-=A5 =E9=80=B1=E5=9B=9B =E4=B8=8B=E5=8D=8811:30=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> The nds32 implementation of pte_alloc_one_kernel() differs from the gener=
-ic
-> in the use of __GFP_RETRY_MAYFAIL flag, which is removed after the
-> conversion.
->
-> The nds32 version of pte_alloc_one() missed the call to pgtable_page_ctor=
-()
-> and also used __GFP_RETRY_MAYFAIL. Switching it to use generic
-> __pte_alloc_one() for the PTE page allocation ensures that page table
-> constructor is run and the user page tables are allocated with
-> __GFP_ACCOUNT.
->
-> The conversion to the generic version of pte_free_kernel() removes the NU=
-LL
-> check for pte.
->
-> The pte_free() version on nds32 is identical to the generic one and can b=
-e
-> simply dropped.
->
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/nds32/include/asm/pgalloc.h | 31 ++++---------------------------
->  1 file changed, 4 insertions(+), 27 deletions(-)
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-Thanks for your patch.
-I'm assuming this is going in along with the rest of the patches, so I'm no=
-t
-going to add it to my tree.
-
-Acked-by: Greentime Hu <greentime@andestech.com>
+diff --git a/arch/parisc/kernel/syscall.S b/arch/parisc/kernel/syscall.S
+index e54d5e4d3489..97ac707c6bff 100644
+--- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -641,7 +641,8 @@ cas_action:
+ 2:	stw	%r24, 0(%r26)
+ 	/* Free lock */
+ #ifdef CONFIG_SMP
+-	LDCW	0(%sr2,%r20), %r1			/* Barrier */
++98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
++99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+ #endif
+ 	stw	%r20, 0(%sr2,%r20)
+ #if ENABLE_LWS_DEBUG
+@@ -658,7 +659,8 @@ cas_action:
+ 	/* Error occurred on load or store */
+ 	/* Free lock */
+ #ifdef CONFIG_SMP
+-	LDCW	0(%sr2,%r20), %r1			/* Barrier */
++98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
++99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+ #endif
+ 	stw	%r20, 0(%sr2,%r20)
+ #if ENABLE_LWS_DEBUG
+@@ -862,7 +864,8 @@ cas2_action:
+ cas2_end:
+ 	/* Free lock */
+ #ifdef CONFIG_SMP
+-	LDCW	0(%sr2,%r20), %r1			/* Barrier */
++98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
++99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+ #endif
+ 	stw	%r20, 0(%sr2,%r20)
+ 	/* Enable interrupts */
+@@ -875,7 +878,8 @@ cas2_end:
+ 	/* Error occurred on load or store */
+ 	/* Free lock */
+ #ifdef CONFIG_SMP
+-	LDCW	0(%sr2,%r20), %r1			/* Barrier */
++98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
++99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+ #endif
+ 	stw	%r20, 0(%sr2,%r20)
+ 	ssm	PSW_SM_I, %r0
