@@ -2,120 +2,75 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CD8F184DA
-	for <lists+linux-parisc@lfdr.de>; Thu,  9 May 2019 07:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 113AE18DCC
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 May 2019 18:14:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726729AbfEIFeC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 9 May 2019 01:34:02 -0400
-Received: from bilbo.ozlabs.org ([203.11.71.1]:40959 "EHLO ozlabs.org"
+        id S1726727AbfEIQOc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 9 May 2019 12:14:32 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:43240 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726426AbfEIFeB (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 9 May 2019 01:34:01 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        id S1726561AbfEIQOc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 9 May 2019 12:14:32 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 45028636KSz9s9T;
-        Thu,  9 May 2019 15:33:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1557380038;
-        bh=6wGTfafiPBzIjK2iBvjzHAaCadWb3RMqMCS14ESH39I=;
-        h=Date:From:To:Cc:Subject:From;
-        b=dxhKYLmLjvN2yqbYjX9GdWlqhc2OKe6R2l+HyJHEDVOZ0PppdsRvNW6dNhGJF+bPn
-         AxG39fsvv3qbnWTSNlLjtgzHd2fpdkVjk8/CI0SoJgjrGEnM4ad4GMNBPWsJOjQZ0Z
-         z0JKHYjpq4Vave+QRExYHNeI6SZ3pxuPx2szJiZfk61QbBADj3UBmotAIoAuEtu1u9
-         17RMTPDbZ+1WAw6FIZn9kOBv86l1AFTB8pe7uYCf+Aa3LYj2QwdoECgtWRzr4jhATw
-         DsOVCUu6x4Pk+uXh1g4gAhHxHq+HGxqwVtzHTUQuhn1g26KzgITldVSboBqA1KKDXs
-         wPMemjFtRDpTA==
-Date:   Thu, 9 May 2019 15:33:56 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Andrew Morton <akpm@linux-foundation.org>,
+        by mx1.redhat.com (Postfix) with ESMTPS id 54AE3307D910;
+        Thu,  9 May 2019 16:14:30 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.159])
+        by smtp.corp.redhat.com (Postfix) with SMTP id 6B4A060BF3;
+        Thu,  9 May 2019 16:14:22 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Thu,  9 May 2019 18:14:29 +0200 (CEST)
+Date:   Thu, 9 May 2019 18:14:20 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     "Dmitry V. Levin" <ldv@altlinux.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Elvira Khabirova <lineprinter@altlinux.org>,
+        Eugene Syromyatnikov <esyr@redhat.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Greentime Hu <greentime@andestech.com>,
         Helge Deller <deller@gmx.de>,
-        Parisc List <linux-parisc@vger.kernel.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Christoph Hellwig <hch@lst.de>
-Subject: linux-next: manual merge of the akpm-current tree with the
- parisc-hd tree
-Message-ID: <20190509153356.2b70fd73@canb.auug.org.au>
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        James Hogan <jhogan@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Burton <paul.burton@mips.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Shuah Khan <shuah@kernel.org>,
+        Vincent Chen <deanbo422@gmail.com>, linux-api@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        strace-devel@lists.strace.io
+Subject: Re: [PATCH linux-next v10 0/7] ptrace: add PTRACE_GET_SYSCALL_INFO
+ request
+Message-ID: <20190509161420.GD24526@redhat.com>
+References: <20190415234307.GA9364@altlinux.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/QjPicI=x3mHS9imXhZXvRJN"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190415234307.GA9364@altlinux.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Thu, 09 May 2019 16:14:32 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---Sig_/QjPicI=x3mHS9imXhZXvRJN
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 04/16, Dmitry V. Levin wrote:
+>
+> [Andrew, could you take this patchset into your tree, please?]
 
-Hi all,
+Just in case...
 
-Today's linux-next merge of the akpm-current tree got a conflict in:
+I have already acked 6/7.
 
-  arch/parisc/mm/init.c
+Other patches look good to me too, just I don't think I can actually review
+these non-x86 changes.
 
-between commit:
+Oleg.
 
-  98429dded340 ("parisc: Enable SPARSEMEM_VMEMMAP")
-
-from the parisc-hd tree and commit:
-
-  2e5adbd9e97a ("initramfs: provide a generic free_initrd_mem implementatio=
-n")
-
-from the akpm-current tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc arch/parisc/mm/init.c
-index 6fa6d3b1d3f4,437d4c35c562..000000000000
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@@ -928,18 -921,3 +928,11 @@@ void flush_tlb_all(void
-  	spin_unlock(&sid_lock);
-  }
-  #endif
- +
-- #ifdef CONFIG_BLK_DEV_INITRD
-- void free_initrd_mem(unsigned long start, unsigned long end)
-- {
-- 	free_reserved_area((void *)start, (void *)end, -1, "initrd");
-- }
-- #endif
--=20
- +#if defined(CONFIG_SPARSEMEM) && defined(CONFIG_SPARSEMEM_VMEMMAP)
- +int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
- +			       int node, struct vmem_altmap *altmap)
- +{
- +	return vmemmap_populate_basepages(vstart, vend, node);
- +}
- +#endif
-
---Sig_/QjPicI=x3mHS9imXhZXvRJN
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAlzTu8QACgkQAVBC80lX
-0GwSLwf+NA/WKMZENE+LkwTWsh+yMyZ4yH/WElavw9yW1CNQBR4+n2UPoCV3VWb+
-VGw37VOcUtK3R8ho7mvnq8UY7qXLU8J9UQrui6B4VpG2+na9LgPK/Bva4xvJVUm5
-u0CKTuwxG4VyOrWH2zJR8YmocnIn4yu+1MXKQ+SSBOdNoGihDLb6hUF5OVVj5Sna
-3P7uP3lDEZVbs1I68414MzMfZkFeTjsdDmRMWnD4fzwZeNXT5hIjOg3ZktqcIXgO
-Y+ZkBNH5SLY5mJmTdrvitZnAE9v0Xbg04D51dCNBenAD4by7z4pUUSRFod3C1mcs
-wLawNhPu7QU3Q6oDj+JNHdULuGGneQ==
-=rE2q
------END PGP SIGNATURE-----
-
---Sig_/QjPicI=x3mHS9imXhZXvRJN--
