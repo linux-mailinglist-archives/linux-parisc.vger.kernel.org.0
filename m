@@ -2,75 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 113AE18DCC
-	for <lists+linux-parisc@lfdr.de>; Thu,  9 May 2019 18:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40A9C19CDB
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 May 2019 13:43:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726727AbfEIQOc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 9 May 2019 12:14:32 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:43240 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726561AbfEIQOc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 9 May 2019 12:14:32 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 54AE3307D910;
-        Thu,  9 May 2019 16:14:30 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.159])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 6B4A060BF3;
-        Thu,  9 May 2019 16:14:22 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Thu,  9 May 2019 18:14:29 +0200 (CEST)
-Date:   Thu, 9 May 2019 18:14:20 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     "Dmitry V. Levin" <ldv@altlinux.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Elvira Khabirova <lineprinter@altlinux.org>,
-        Eugene Syromyatnikov <esyr@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Greentime Hu <greentime@andestech.com>,
-        Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        James Hogan <jhogan@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Burton <paul.burton@mips.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Shuah Khan <shuah@kernel.org>,
-        Vincent Chen <deanbo422@gmail.com>, linux-api@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        strace-devel@lists.strace.io
-Subject: Re: [PATCH linux-next v10 0/7] ptrace: add PTRACE_GET_SYSCALL_INFO
- request
-Message-ID: <20190509161420.GD24526@redhat.com>
-References: <20190415234307.GA9364@altlinux.org>
+        id S1727170AbfEJLnq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 10 May 2019 07:43:46 -0400
+Received: from mail-yw1-f53.google.com ([209.85.161.53]:45239 "EHLO
+        mail-yw1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727079AbfEJLnq (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 10 May 2019 07:43:46 -0400
+Received: by mail-yw1-f53.google.com with SMTP id w18so4459665ywa.12
+        for <linux-parisc@vger.kernel.org>; Fri, 10 May 2019 04:43:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VUFfxgXb1+0/lZck5qDm8v0Jhznk+t+haEu12y40m3M=;
+        b=NOJBGNevbBLjq0Z0jG+d1OXNrJC81XKjniBlh+DVzTacXjnrQ7OXyyAEzRVD9vxsY2
+         IpHo8arvpmJdSWMNnE/iOV1vIETiCPcnqacyAFYmnfgZhJ9a7bilQj6Hy6dwsLCHlk0k
+         c8EWwd2nyftpV84ulffhJfV+TIs9Q5W98K1bXhkQt2w96EIAtEv9alM5FQngFCTBOxo9
+         98UWAOJV7707fckxd2ziwMPnOYGrmc1xnI+DWKfhoFwnep8MeACsswkpnoTsbcEJ6sPs
+         Yq96BYUNJVQaoWJlMtKDzRGCLAp3IYU+wWNG4JQsZyN7shR5Peh7exNpKDl1+nEm5ueG
+         5wlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VUFfxgXb1+0/lZck5qDm8v0Jhznk+t+haEu12y40m3M=;
+        b=D1ID8AJDLT61NsAOneSerd36qqjui5lz45P7sQQ4zje34vdeToAVcaqOSlEWB1E6zl
+         5fibsVZVrzNHZLGOSthysag/S50AQN5rjm+irARHe0Ch87Kq0YHYV2d7YgAqwH44BnXP
+         bOoH+oS29Ae3EaB7sIhRyb9gIaAtiErgYa/rG7jhcQlFhjZgpUib8g0JlhdFD4M/pHIi
+         F1cHSViUn4pt0Deh/dlsto6Y5fkj0BsIRtWznLy1CoJz8Kvbmdlp0X+EnsSJ78Y8EC+V
+         udjGx5CPIEIpxu1Q4a0aeq7D6G4Gp0ANnKpwyGSjMjQ8ydQltm+ousqQ8X2CVVcYD8R0
+         paAg==
+X-Gm-Message-State: APjAAAU1LQqrdqCeKx99sUtl9BW3jTPhGLL6TfPoEzOCepy2IUPRS18a
+        9mQMhUF5Yir1i8xG8FKooU8sETKBHOh9MACYYSk=
+X-Google-Smtp-Source: APXvYqyvRKmYtyCVXehh7+wZjLhcbsHNPjDQ9wpJTGnOmX/xo5MFSK0y1NYe7ORJ/8b0clXQfRpxbsou/+vZIN6yNaA=
+X-Received: by 2002:a25:4288:: with SMTP id p130mr5013592yba.118.1557488625503;
+ Fri, 10 May 2019 04:43:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190415234307.GA9364@altlinux.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Thu, 09 May 2019 16:14:32 +0000 (UTC)
+References: <c0546c1b-9477-60f8-6fa9-df710e5bbd0c@linux.ee> <325c8de3-3869-08d1-696d-b89f5813d537@gmx.de>
+In-Reply-To: <325c8de3-3869-08d1-696d-b89f5813d537@gmx.de>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Fri, 10 May 2019 13:43:20 +0200
+Message-ID: <CA+QBN9Cuf+O8uKbdhPkfAdpP0YThM4FBkHJV-DdRPYe2M146aQ@mail.gmail.com>
+Subject: Re: 5.2 hppa merge seems to work on my machines
+To:     Helge Deller <deller@gmx.de>
+Cc:     Meelis Roos <mroos@linux.ee>, linux-parisc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 04/16, Dmitry V. Levin wrote:
+hi
+guys, unfortunately, it panics with Marvell MV88SX6081 sata controller.
+I will publish more details later
+
+I am testing a few sata controllers, see here
+http://www.downthebunker.com/reloaded/space/viewtopic.php?f=50&p=1563
+
+Il giorno mer 8 mag 2019 alle ore 21:15 Helge Deller <deller@gmx.de> ha scritto:
 >
-> [Andrew, could you take this patchset into your tree, please?]
-
-Just in case...
-
-I have already acked 6/7.
-
-Other patches look good to me too, just I don't think I can actually review
-these non-x86 changes.
-
-Oleg.
-
+> On 08.05.19 16:23, Meelis Roos wrote:
+> > Just tested v5.1-5445-g80f232121b69 git on A180c, rp2450, rp2470,
+> > rp3410 and rp3440 and it seems to work everywhere for me.
+>
+> Great!
+> Thanks for testing, Meelis!
+>
+> Helge
