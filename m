@@ -2,227 +2,120 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D3661A223
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 May 2019 19:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B70B41A799
+	for <lists+linux-parisc@lfdr.de>; Sat, 11 May 2019 12:47:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727504AbfEJRMx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 10 May 2019 13:12:53 -0400
-Received: from mout.gmx.net ([212.227.17.21]:41479 "EHLO mout.gmx.net"
+        id S1728478AbfEKKrU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 11 May 2019 06:47:20 -0400
+Received: from mout.gmx.net ([212.227.15.15]:49071 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727453AbfEJRMx (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 10 May 2019 13:12:53 -0400
+        id S1726472AbfEKKrU (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 11 May 2019 06:47:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1557508364;
-        bh=/facGOGlHvCTmfoGTb66QL6TEoiU2BxXd45ZjLzWdUw=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=Cx1+yFxVWPk57mRYBtn06I8VRLhAQeb/sljMykoHKkmYaxt6uWOlxEVaMihqDU11L
-         ZNzZaA37XB8Clvhu9+BEZRTrXwfD+deaQ2ezDuIdKSXzQSzPClA4MoDGRa18SAndy3
-         l5y5bmkDlAiXoJ/E/T0YFwUjQpQoDR2kUuVvjTfc=
+        s=badeba3b8450; t=1557571638;
+        bh=oXuQD7tBj5tgmLBGo8rJ21yTh5nJY7Xxh6lmEYp2d14=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=gtTt4WnM/f8G3aIw0xgczp+Duwkdta4KuXFAR6oLTdWXShnA8U5kljcOEV0Gbl7eA
+         0zAlcE5CLNy4iOQ+9oWM5uNLF56nLnisbS7cR/ViongBCZN50mS1y56izvKxpLyddQ
+         6Zr10XfL9VZo5d/U41yI7Qx3g93d3DHrmIFxSBqM=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.dellerweb.de ([92.116.146.113]) by mail.gmx.com
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MrhQC-1gt3zU1G20-00nl7S; Fri, 10 May 2019 19:12:44 +0200
-Date:   Fri, 10 May 2019 19:12:41 +0200
+Received: from [192.168.20.60] ([92.116.179.253]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mqb1W-1guSUI2fPE-00mef1; Sat, 11
+ May 2019 12:47:18 +0200
+Subject: Re: 5.2 hppa merge seems to work on my machines
+To:     Carlo Pisani <carlojpisani@gmail.com>
+Cc:     linux-parisc@vger.kernel.org
+References: <c0546c1b-9477-60f8-6fa9-df710e5bbd0c@linux.ee>
+ <325c8de3-3869-08d1-696d-b89f5813d537@gmx.de>
+ <CA+QBN9Cuf+O8uKbdhPkfAdpP0YThM4FBkHJV-DdRPYe2M146aQ@mail.gmail.com>
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Enable __ro_after_init feature
-Message-ID: <20190510171241.GA20053@ls3530.dellerweb.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=deller@gmx.de; keydata=
+ xsBNBFDPIPYBCAC6PdtagIE06GASPWQJtfXiIzvpBaaNbAGgmd3Iv7x+3g039EV7/zJ1do/a
+ y9jNEDn29j0/jyd0A9zMzWEmNO4JRwkMd5Z0h6APvlm2D8XhI94r/8stwroXOQ8yBpBcP0yX
+ +sqRm2UXgoYWL0KEGbL4XwzpDCCapt+kmarND12oFj30M1xhTjuFe0hkhyNHkLe8g6MC0xNg
+ KW3x7B74Rk829TTAtj03KP7oA+dqsp5hPlt/hZO0Lr0kSAxf3kxtaNA7+Z0LLiBqZ1nUerBh
+ OdiCasCF82vQ4/y8rUaKotXqdhGwD76YZry9AQ9p6ccqKaYEzWis078Wsj7p0UtHoYDbABEB
+ AAHNHEhlbGdlIERlbGxlciA8ZGVsbGVyQGdteC5kZT7CwJIEEwECADwCGwMGCwkIBwMCBhUI
+ AgkKCwQWAgMBAh4BAheAFiEE9M/0wAvkPPtRU6Boh8nBUbUeOGQFAlrHzIICGQEACgkQh8nB
+ UbUeOGT1GAgAt+EeoHB4DbAx+pZoGbBYp6ZY8L6211n8fSi7wiwgM5VppucJ+C+wILoPkqiU
+ +ZHKlcWRbttER2oBUvKOt0+yDfAGcoZwHS0P+iO3HtxR81h3bosOCwek+TofDXl+TH/WSQJa
+ iaitof6iiPZLygzUmmW+aLSSeIAHBunpBetRpFiep1e5zujCglKagsW78Pq0DnzbWugGe26A
+ 288JcK2W939bT1lZc22D9NhXXRHfX2QdDdrCQY7UsI6g/dAm1d2ldeFlGleqPMdaaQMcv5+E
+ vDOur20qjTlenjnR/TFm9tA1zV+K7ePh+JfwKc6BSbELK4EHv8J8WQJjfTphakYLVM7ATQRQ
+ zyD2AQgA2SJJapaLvCKdz83MHiTMbyk8yj2AHsuuXdmB30LzEQXjT3JEqj1mpvcEjXrX1B3h
+ +0nLUHPI2Q4XWRazrzsseNMGYqfVIhLsK6zT3URPkEAp7R1JxoSiLoh4qOBdJH6AJHex4CWu
+ UaSXX5HLqxKl1sq1tO8rq2+hFxY63zbWINvgT0FUEME27Uik9A5t8l9/dmF0CdxKdmrOvGMw
+ T770cTt76xUryzM3fAyjtOEVEglkFtVQNM/BN/dnq4jDE5fikLLs8eaJwsWG9k9wQUMtmLpL
+ gRXeFPRRK+IT48xuG8rK0g2NOD8aW5ThTkF4apznZe74M7OWr/VbuZbYW443QQARAQABwsBf
+ BBgBAgAJBQJQzyD2AhsMAAoJEIfJwVG1HjhkNTgH/idWz2WjLE8DvTi7LvfybzvnXyx6rWUs
+ 91tXUdCzLuOtjqWVsqBtSaZynfhAjlbqRlrFZQ8i8jRyJY1IwqgvHP6PO9s+rIxKlfFQtqhl
+ kR1KUdhNGtiI90sTpi4aeXVsOyG3572KV3dKeFe47ALU6xE5ZL5U2LGhgQkbjr44I3EhPWc/
+ lJ/MgLOPkfIUgjRXt0ZcZEN6pAMPU95+u1N52hmqAOQZvyoyUOJFH1siBMAFRbhgWyv+YE2Y
+ ZkAyVDL2WxAedQgD/YCCJ+16yXlGYGNAKlvp07SimS6vBEIXk/3h5Vq4Hwgg0Z8+FRGtYZyD
+ KrhlU0uMP9QTB5WAUvxvGy8=
+Message-ID: <dd0ba2b8-4267-9e84-6712-6e6463bd496b@gmx.de>
+Date:   Sat, 11 May 2019 12:47:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Provags-ID: V03:K1:rQpe0rz+MjOexWmJ++8lsl6sNo4Nq9UBHXGnxw+z6VJeev1MQH7
- tUUvZOn0kBp2dLBgLphRonmLDF7eDJ+X4K5NheG2qNoKfGKSK7mA/HAWJERJhanb9RLpOgH
- DKuw5t0q6xCagzfUiQmFkp/83yVZGCulNhVbpeMOYHyDjVUZhsxT2/A3XFNTtsSJHDVw+2F
- i9uQVOen9YtFy/eIE6OHA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:V4+I+823kF4=:BSFhLOOUU0fSiB8hAMWGZI
- 6L5CYOEkSh9htJBqc+VFiQXBvF5JzfiPNc+8UbLxUAFk08rebuAv8UGvqzbVFCQtfm6LTzwZV
- Sa8rTp9tI4g8RorLBSAgxyWlE0OfKr3H1/EkSIKFlQUsRseTpNVHBCDWpbA1/VMRZVq79hRjL
- E8I1D7wrPL4UtPmx6OTiP241MCLjfqm7FpkW2hSgA3pIhB1QQjQObI6N/SoY/sGOMreYJvECe
- WNfvEJPjvvXUKPSdyYpxGk1+clfnccqvkKWaZ6v3you1PXEh+GQ8NayIS3kUYsbj3G78QCV/I
- tYN272I6yUHUiOIBxVDL/pUzXUUTTFXr/q1xca51PwLhowkkE6PLsJDrGboe53dAjL24MuYzn
- xnws/39jEyZHgflVreDeODySJ1s2HSDfKg88U/kM86z7rCHEaePs7ZIgFdVoUD9igOCmVLME8
- WHWwFyBI5w2gt2pzBdCAhUcQU4nm5zjHxDjukehp+wiEC3FzsfhltZEYVjQtH0iIVv7wxLDrK
- toMUXVeVljaEl0T9OMckZXqrro9p2Nu395UCY7HKuelXTTvMQEP+mNQHB1UgVywL1y2eLRlk4
- 2Cfp2qJyzUAlTl2ct+MSF83oqi+ij5djwBJMKUhultC321dLBPmrsz5o1a3k7fAlo8ix4K483
- HJhuT3KlIILGnLvp7F1WMybERa1rXd3/2+peecqpq9rIkx0zAS3WbzOdor1YDuANJ6tSWNxHb
- oz2IfU4cJyOJIlvgLUi29SYUn2EnmOiiEB0NbfQhbbKjWnagn4upteHCEWnKJC1Uj5zpCqksh
- yssmNNG5LHO8NI5rT+v2GXdC1/Zakcc0cI7SqyFv7i8+pUYV4oU4WDArnBBpGT4pgOYonOQp1
- 9RqvtoF/tMJ0g+AlJgfT9aCT6sZPG28pOrGxpaBhu6VCwq6CrSOqMS7h/tQwPV
+In-Reply-To: <CA+QBN9Cuf+O8uKbdhPkfAdpP0YThM4FBkHJV-DdRPYe2M146aQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:i4NzdWexQw6hnuq7AUjxKABWjboDYwySDJkrnDqF/WI3OdpzTeF
+ zud8cOR+9RPGCHhCzX/pxKpcccwB7a01v1SsmFe3cF20U5KVo2qRqScgVdG6PJ37rFJkA/6
+ nnwgN8VvS1w5LT9VhVXK0auqqGAQA5eNL2yKUYxGVFaMJ/oevVWzcqFlHptDEA6bEhgEMrU
+ VKVfGeXXGjFTGQeOxCmNQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:K2ckDjzI3r0=:t666eypgvO+momm5a4Rykr
+ 3DVjVcMsO/8RqoNKkefGUKvWvvRAUBWHeYURVKYJNEOflVAZ1rMgEJXIdj/ULotNOMLLmtiDZ
+ 4BIf3iBm464LMyactQeGBMzEcbK7zQjtKXUMXjAs4XH1bwi/HDm1CYk6lljX0XCoOZ07gBdOP
+ sOv+nPWM8eR2tR/LqxBrXhQ/5SD+NqUVTORBwqHe3tQ5S2DU+H1xLRLEnU0GwrQdBxJj0RJpR
+ Iwej2Ybe9/Om5XDlIBku7R+qpRqs/M8oHFPwMYfp9SXD2NeZTjgeqboraUPrfwaNgPEzOqX8r
+ aHgTzJxfuHizZ0MZ8NnNXVcBIfUe3dv/KejFaf0aDP/1Q0Og6FRoc5WjmkFyVlRBY9qcWD7Mq
+ qg0EwNBkRC3qMQ/Gy4xMSSCjJ8ss3vQrOY1/8zVPyxWQidSnsKGQHZgnqVq98B6BkpiOk28Q8
+ nr8eOd7ovW0nvUA4ug2l3/VL6fNQgqmVpOmZEdobnI569R121Mk544pKUCYGOlKkB02Xcab5m
+ 0t76Ps0hcmjJSrHFALz2IKaeKvl0k+XY/r5HkSNu88hdKLTFVcs1qkeVVc09ldEGoDtSpNBNh
+ H4/Mjk31pk/8x+FPI9Sy1erga1gSMV1ZmBgEYo7XMRjHr5XBzHzZbFBqXzc69c5t3L9XGjIvk
+ i6IHwbioWIX58xD0MaFYUuHd1Wwio0iJuEy2a3F0MPsoRNEm5pMFxc7Jvhh+5mu93gs1lvsTI
+ qJKEy4TDbi6lr0Cx43EJ5fCTODXFAe7Sr3gxt+LrmURYyhoPEfMTzEelfNTx2p3L3oOIVoyQ7
+ v3HR/b4Gg+n9PA8veiMcDvg83xf+G4KsV4q2evt0/xM952ZM3ayxP18kWVDUZEaMWGj7zzmd5
+ enQLaRVNBU0j7Qt3q0YhSi9dn97I083Q2x8HLNa5xPscqDTlVoGeNaEUWlHlmO
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This patch modifies the initial page mapping functions in the following wa=
-y:
+On 10.05.19 13:43, Carlo Pisani wrote:
+> hi
+> guys, unfortunately, it panics with Marvell MV88SX6081 sata controller.
+> I will publish more details later
 
-During bootup the init, text and data pages will be mapped RWX and if
-supported, with huge pages.
+syslog ?
 
-At final stage of the bootup, the kernel calls free_initmem() and then all
-pages will be remapped either R-X (for text and read-only data) or RW- (fo=
-r
-data). The __init pages will be dropped.
+> I am testing a few sata controllers, see here
+> http://www.downthebunker.com/reloaded/space/viewtopic.php?f=3D50&p=3D156=
+3
 
-This reflects the behaviour of the x86 platform.
+In one of our buildds we use a
+Silicon Image, Inc. SiI 3112 Serial ATA Controller (rev 02)
+PCI card.
+I'm not sure if it's fast, but at least it seems somewhat stable.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Helge
 
-diff --git a/arch/parisc/include/asm/cache.h b/arch/parisc/include/asm/cac=
-he.h
-index 4016fe1c65a9..73ca89a47f49 100644
-=2D-- a/arch/parisc/include/asm/cache.h
-+++ b/arch/parisc/include/asm/cache.h
-@@ -24,9 +24,6 @@
 
- #define __read_mostly __attribute__((__section__(".data..read_mostly")))
-
--/* Read-only memory is marked before mark_rodata_ro() is called. */
--#define __ro_after_init	__read_mostly
--
- void parisc_cache_init(void);	/* initializes cache-flushing */
- void disable_sr_hashing_asm(int); /* low level support for above */
- void disable_sr_hashing(void);   /* turns off space register hashing */
-diff --git a/arch/parisc/kernel/vmlinux.lds.S b/arch/parisc/kernel/vmlinux=
-.lds.S
-index a8be7a47fcc0..c3b1b9c24ede 100644
-=2D-- a/arch/parisc/kernel/vmlinux.lds.S
-+++ b/arch/parisc/kernel/vmlinux.lds.S
-@@ -18,9 +18,6 @@
- 				*(.data..vm0.pgd) \
- 				*(.data..vm0.pte)
-
--/* No __ro_after_init data in the .rodata section - which will always be =
-ro */
--#define RO_AFTER_INIT_DATA
--
- #include <asm-generic/vmlinux.lds.h>
-
- /* needed for the processor specific cache alignment size */
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index 3b0f9eab7f2c..b99bcbf1ecdb 100644
-=2D-- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -345,16 +345,7 @@ static void __init setup_bootmem(void)
- 	memblock_dump_all();
- }
-
--static int __init parisc_text_address(unsigned long vaddr)
--{
--	static unsigned long head_ptr __initdata;
--
--	if (!head_ptr)
--		head_ptr =3D PAGE_MASK & (unsigned long)
--			dereference_function_descriptor(&parisc_kernel_start);
--
--	return core_kernel_text(vaddr) || vaddr =3D=3D head_ptr;
--}
-+static bool kernel_set_to_readonly;
-
- static void __init map_pages(unsigned long start_vaddr,
- 			     unsigned long start_paddr, unsigned long size,
-@@ -372,10 +363,11 @@ static void __init map_pages(unsigned long start_vad=
-dr,
- 	unsigned long vaddr;
- 	unsigned long ro_start;
- 	unsigned long ro_end;
--	unsigned long kernel_end;
-+	unsigned long kernel_start, kernel_end;
-
- 	ro_start =3D __pa((unsigned long)_text);
- 	ro_end   =3D __pa((unsigned long)&data_start);
-+	kernel_start =3D __pa((unsigned long)&__init_begin);
- 	kernel_end  =3D __pa((unsigned long)&_end);
-
- 	end_paddr =3D start_paddr + size;
-@@ -438,26 +430,30 @@ static void __init map_pages(unsigned long start_vad=
-dr,
- 			pg_table =3D (pte_t *) __va(pg_table) + start_pte;
- 			for (tmp2 =3D start_pte; tmp2 < PTRS_PER_PTE; tmp2++, pg_table++) {
- 				pte_t pte;
--
--				if (force)
--					pte =3D  __mk_pte(address, pgprot);
--				else if (parisc_text_address(vaddr)) {
--					pte =3D __mk_pte(address, PAGE_KERNEL_EXEC);
--					if (address >=3D ro_start && address < kernel_end)
--						pte =3D pte_mkhuge(pte);
-+				pgprot_t prot;
-+				bool huge =3D false;
-+
-+				if (force) {
-+					prot =3D pgprot;
-+				} else if (address < kernel_start || address >=3D kernel_end) {
-+					/* outside kernel memory */
-+					prot =3D PAGE_KERNEL;
-+				} else if (!kernel_set_to_readonly) {
-+					/* still initializing, allow writing to RO memory */
-+					prot =3D PAGE_KERNEL_RWX;
-+					huge =3D true;
-+				} else if (address >=3D ro_start) {
-+					/* Code (ro) and Data areas */
-+					prot =3D (address < ro_end) ?
-+						PAGE_KERNEL_EXEC : PAGE_KERNEL;
-+					huge =3D true;
-+				} else {
-+					prot =3D PAGE_KERNEL;
- 				}
--				else
--#if defined(CONFIG_PARISC_PAGE_SIZE_4KB)
--				if (address >=3D ro_start && address < ro_end) {
--					pte =3D __mk_pte(address, PAGE_KERNEL_EXEC);
-+
-+				pte =3D __mk_pte(address, prot);
-+				if (huge)
- 					pte =3D pte_mkhuge(pte);
--				} else
--#endif
--				{
--					pte =3D __mk_pte(address, pgprot);
--					if (address >=3D ro_start && address < kernel_end)
--						pte =3D pte_mkhuge(pte);
--				}
-
- 				if (address >=3D end_paddr)
- 					break;
-@@ -493,6 +489,12 @@ void __ref free_initmem(void)
- {
- 	unsigned long init_begin =3D (unsigned long)__init_begin;
- 	unsigned long init_end =3D (unsigned long)__init_end;
-+	unsigned long kernel_end  =3D (unsigned long)&_end;
-+
-+	/* Remap kernel text and data, but do not touch init section yet. */
-+	kernel_set_to_readonly =3D true;
-+	map_pages(init_end, __pa(init_end), kernel_end - init_end,
-+		  PAGE_KERNEL, 0);
-
- 	/* The init text pages are marked R-X.  We have to
- 	 * flush the icache and mark them RW-
-@@ -509,7 +511,7 @@ void __ref free_initmem(void)
- 		  PAGE_KERNEL, 1);
-
- 	/* force the kernel to see the new TLB entries */
--	__flush_tlb_range(0, init_begin, init_end);
-+	__flush_tlb_range(0, init_begin, kernel_end);
-
- 	/* finally dump all the instructions which were cached, since the
- 	 * pages are no-longer executable */
-@@ -527,8 +529,9 @@ void mark_rodata_ro(void)
- {
- 	/* rodata memory was already mapped with KERNEL_RO access rights by
-            pagetable_init() and map_pages(). No need to do additional stu=
-ff here */
--	printk (KERN_INFO "Write protecting the kernel read-only data: %luk\n",
--		(unsigned long)(__end_rodata - __start_rodata) >> 10);
-+	unsigned long roai_size =3D __end_ro_after_init - __start_ro_after_init;
-+
-+	pr_info("Write protected read-only-after-init data: %luk\n", roai_size >=
-> 10);
- }
- #endif
+>
+> Il giorno mer 8 mag 2019 alle ore 21:15 Helge Deller <deller@gmx.de> ha =
+scritto:
+>>
+>> On 08.05.19 16:23, Meelis Roos wrote:
+>>> Just tested v5.1-5445-g80f232121b69 git on A180c, rp2450, rp2470,
+>>> rp3410 and rp3440 and it seems to work everywhere for me.
+>>
+>> Great!
+>> Thanks for testing, Meelis!
+>>
+>> Helge
 
