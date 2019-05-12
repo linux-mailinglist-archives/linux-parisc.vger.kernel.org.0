@@ -2,70 +2,57 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D08A81AE29
-	for <lists+linux-parisc@lfdr.de>; Sun, 12 May 2019 22:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF26C1AE35
+	for <lists+linux-parisc@lfdr.de>; Sun, 12 May 2019 23:10:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727016AbfELUts (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 12 May 2019 16:49:48 -0400
-Received: from mail-yw1-f47.google.com ([209.85.161.47]:33109 "EHLO
-        mail-yw1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726934AbfELUtr (ORCPT
+        id S1727000AbfELVKJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 12 May 2019 17:10:09 -0400
+Received: from belmont79srvr.owm.bell.net ([184.150.200.79]:37381 "EHLO
+        mtlfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726997AbfELVKJ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 12 May 2019 16:49:47 -0400
-Received: by mail-yw1-f47.google.com with SMTP id q11so9381316ywb.0
-        for <linux-parisc@vger.kernel.org>; Sun, 12 May 2019 13:49:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:cc;
-        bh=CQS5rVb5A7Wokw7HTdpc5JzdEFnMZc3iivC7IhZNIic=;
-        b=BJU4NUo9A2C30NphLgpiHZCNDLVx3uT5H0nD3FdqJqJmXBVDUpeiMYTbkK8zwiKBou
-         yT7mdbVyeyEy5zVbw9k043OUpInGHp/kgZIy9+csYP2SBd8W2z3nhWpWLYDw2My0bdP2
-         V0zamYBM+k6CblucA7YWW70cfxJ0JCN10RlvEzTKjDhDSFtKrH2y1D1xg6plmf0+pyVW
-         HwdDfQ3EqeZUu7GveNJEws5glsbue3pmKhrKxOaPxRT2ZZYtLGDQzNtLZFX1u0sF24CQ
-         7qw1A8PmHMdXxG/mCyDHwyQFPhk34DW4y6Pitqlh905nb1gM4bQq92HRzk2xMZ7YgJWg
-         WnTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:cc;
-        bh=CQS5rVb5A7Wokw7HTdpc5JzdEFnMZc3iivC7IhZNIic=;
-        b=nXMNzNwfKR+m4JrHJ/Jwo6Vxy2HRKkuDpqre+qKJybsSthosvOWgAXkxPosyabPw/P
-         5tLR3MRWxEu7O81UqpaigaTDzKu32VVZ8Xw68PcKUw/dqD4mettr/ExAeJMOijDHjoO4
-         ugKJpli+SX9hSI4Gulc0YUuzi4bXvPnJHbZApTcG8i1AsqPvwoLiABgbb7Hr7J6NWYEB
-         XZ57XDyPyjtJ1UHuhTK+7HJOL3E7hRWvAqpRRYSRXz6LJ5xmTvFmUX5Ds3G0bP72yMJ0
-         RK4z3dIuFPHWKHxXMbJqo1zRlaCtkH6/IO7KMtDvjrXy8ovkRa/vZp7zKMc72ha0FYsI
-         sczg==
-X-Gm-Message-State: APjAAAXp5kwaPbqPYJdxN14ttqpk+5n2CPUIS6/Xv+vsjuz9s6T/0Clg
-        VTO3p08vdgPKI+GopYhilKNm82zdlyXVXAb2Aj+OYIxq
-X-Received: by 2002:a81:4985:: with SMTP id w127mt11498836ywa.144.1557694186996;
- Sun, 12 May 2019 13:49:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
- <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
-In-Reply-To: <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
-From:   Carlo Pisani <carlojpisani@gmail.com>
-Date:   Sun, 12 May 2019 22:49:18 +0200
-Message-ID: <CA+QBN9BcrrgT-ThOMwSjugTVRqoU10d8juOibLMMROvWvJqd4g@mail.gmail.com>
+        Sun, 12 May 2019 17:10:09 -0400
+Received: from bell.net mtlfep01 184.150.200.30 by mtlfep01.bell.net
+          with ESMTP
+          id <20190512211007.PJE4947.mtlfep01.bell.net@mtlspm02.bell.net>;
+          Sun, 12 May 2019 17:10:07 -0400
+Received: from [192.168.2.49] (really [70.53.52.226]) by mtlspm02.bell.net
+          with ESMTP
+          id <20190512211007.NNZJ21689.mtlspm02.bell.net@[192.168.2.49]>;
+          Sun, 12 May 2019 17:10:07 -0400
 Subject: Re: C3600, sata controller
+To:     Carlo Pisani <carlojpisani@gmail.com>
 Cc:     Parisc List <linux-parisc@vger.kernel.org>,
         Linux Next Mailing List <linux-next@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-To:     unlisted-recipients:; (no To-header on input)
+References: <20190502074519.61272b42@canb.auug.org.au>
+ <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+ <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+From:   John David Anglin <dave.anglin@bell.net>
+Openpgp: preference=signencrypt
+Message-ID: <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
+Date:   Sun, 12 May 2019 17:10:05 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-Analysis: v=2.3 cv=bJBo382Z c=1 sm=1 tr=0 cx=a_idp_f a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=FBHGMhGWAAAA:8 a=ReoYV_r7ABfIaPUG8vIA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+X-CM-Envelope: MS4wfBh0+9ztLhlPK6JpM85nU3RMHM4SQEuolp551HznoTaWC+jfVOi3+hpxMJrfM5bKX4tWgcVVs2ZF+6Im50//tmRYLgNRCDwl4/kgySyY1E1Arv6zELfg yZleUPx3/x46e+LhVkBM96BBW7zRIebAi9/0O4zz9p+KabTWwPJvjQzMcY1x62TZT0bwLAtCIX/MK5I7jN+K7ptw/94+dCU4cpCal3njF+84tOdgkz1BBdLk ZNoarLQxe0osyRjDaQvMeYLSA4IxGPne2Kahj0Yr+UQ=
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-kernel's config and dmesg are here
+The c3600 doesn't have any PCI-X slots (only PCI) as far as I can tell from user manuals.
 
-http://www.downthebunker.com/chunk_of/stuff/public/projects/workstations/hppa/c3600/kernel/5.1-git-v5.2-64bit/
+The SY-PCX40009 PCI-X card that I have says it supports two models: 32-bit at 66 MHz and 64-bit
+at 133 MHz.  The 32-bit slots in c3600 are 33 MHz.  Whether the card will work at 33 MHz is not
+clear.  The card says it's backward compatible to PCI 2.3.
 
-http://www.downthebunker.com/chunk_of/stuff/public/projects/workstations/hppa/c3600/kernel/4.16.2-64bit/
-
-Il giorno dom 12 mag 2019 alle ore 22:44 Carlo Pisani
-<carlojpisani@gmail.com> ha scritto:
->
+On 2019-05-12 4:44 p.m., Carlo Pisani wrote:
 > guys,
 > I asked a friend to lend us his card, which is the card2 listed below
 > and not things are becoming really weird
@@ -100,7 +87,7 @@ Il giorno dom 12 mag 2019 alle ore 22:44 Carlo Pisani
 > badblocks -swv /mnt/ramdrive/test.bin
 >
 > checking for bad blocks in read-write mode
-> From block 0 to 7340031
+> >From block 0 to 7340031
 > Testing with pattern 0xaa: done
 > Reading and comparing: done
 > Testing with pattern 0x55: done
@@ -112,3 +99,9 @@ Il giorno dom 12 mag 2019 alle ore 22:44 Carlo Pisani
 > Pass completed, 0 bad blocks found.
 >
 > no problems found
+>
+
+
+-- 
+John David Anglin  dave.anglin@bell.net
+
