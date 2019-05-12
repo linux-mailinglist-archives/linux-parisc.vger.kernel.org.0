@@ -2,62 +2,103 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CBC1AD07
-	for <lists+linux-parisc@lfdr.de>; Sun, 12 May 2019 18:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D34631AE26
+	for <lists+linux-parisc@lfdr.de>; Sun, 12 May 2019 22:45:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726793AbfELQWN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 12 May 2019 12:22:13 -0400
-Received: from belmont80srvr.owm.bell.net ([184.150.200.80]:33087 "EHLO
-        mtlfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726586AbfELQWN (ORCPT
+        id S1727081AbfELUpB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 12 May 2019 16:45:01 -0400
+Received: from mail-yw1-f45.google.com ([209.85.161.45]:32993 "EHLO
+        mail-yw1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727069AbfELUpA (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 12 May 2019 12:22:13 -0400
-Received: from bell.net mtlfep02 184.150.200.30 by mtlfep02.bell.net
-          with ESMTP
-          id <20190512162212.NXLR4444.mtlfep02.bell.net@mtlspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Sun, 12 May 2019 12:22:12 -0400
-Received: from [192.168.2.49] (really [70.53.52.226]) by mtlspm02.bell.net
-          with ESMTP
-          id <20190512162211.LRPU21689.mtlspm02.bell.net@[192.168.2.49]>;
-          Sun, 12 May 2019 12:22:11 -0400
-Subject: Re: 5.2 hppa merge seems to work on my machines
-To:     Carlo Pisani <carlojpisani@gmail.com>
-Cc:     Helge Deller <deller@gmx.de>, Meelis Roos <mroos@linux.ee>,
-        linux-parisc@vger.kernel.org
-References: <c0546c1b-9477-60f8-6fa9-df710e5bbd0c@linux.ee>
- <325c8de3-3869-08d1-696d-b89f5813d537@gmx.de>
- <CA+QBN9AZzuJe600ngavoVseRFHCBh4ws5-5pHoWEQkkqZ_wU5g@mail.gmail.com>
- <fac5aa59-999f-e61e-774e-b43d0d28779c@bell.net>
- <CA+QBN9D6yQiB2zZAvg51LWoAgFAzO9LeuJQyadRvn3y4+hUxMg@mail.gmail.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Message-ID: <3f9c31a6-7fd0-3ecb-f890-cac0b2744d9c@bell.net>
-Date:   Sun, 12 May 2019 12:22:10 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Sun, 12 May 2019 16:45:00 -0400
+Received: by mail-yw1-f45.google.com with SMTP id q11so9375253ywb.0
+        for <linux-parisc@vger.kernel.org>; Sun, 12 May 2019 13:45:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:cc;
+        bh=rXTZLv/Z8jb2kzjcdk+NYdqir90CjcF1FIy5Z+1TlgE=;
+        b=eTbau4AlAAGdyg4cbB7cGIwK3X4MnhrpMB2A6lCDZQvtwbNz+Za2WH7BZmI2P2udd3
+         A4+EvTpH9CPFeFVC3Sx7KFvX0VOQmV5fuw3cjC0TxGbdDhzNbfjqAS+2expnQkfyx71u
+         P4dwyJB/KmobC+6w7Wft7JUgGHUc+VFfzBelCCC9+RMH8plas8cWN9Q7Xl4S1mU5YQfg
+         KwLGnbR5Gjp/i7MLlVa/lqulgbTpdD9WarE2x0um4tEewVYuwv0EDV12LZmRsIhjwwuc
+         kVfpU7dnxlV2cgk129+57KVjLdD6Hn7AQ2/B/kSrk6HS2/g7FJ7JUQw0y9cca4vP+0KQ
+         993w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:cc;
+        bh=rXTZLv/Z8jb2kzjcdk+NYdqir90CjcF1FIy5Z+1TlgE=;
+        b=aGkSrvtSdSk5ORyVUiOxs1lwqPTn58fXSdfYKCwkUWO9g9tBpSny2bf8aUJRZv0X3b
+         s3Rd/ksPnDHTe5BEyN9NMCTyukcEJhDDDSuZ21m2zSnNv8Q5gsfrMui3ViF2y2cDQ4h1
+         tGGbBMuy5Z5GE9b4dZB9Pw3bvC6WJ4C4hqCQ1SrSV8ZQbOtFFLmc3JZJAlxI1mlQao5q
+         U7LVgVEg82Wk4u0rIQJnSWJ331wDdMQiB4pUfpGTM6SbdGt5zY4dqjf8V0Vd6kfv1Cwc
+         6eb5TkJjKmbo6LAWznGpjG804LdlS1vFkPpFUh2wZ1nBtnvlPEmskZBWxqT7Zj6En9wa
+         jZ9g==
+X-Gm-Message-State: APjAAAVvW2ANIl6IzYD+SjQkL0hhbwMzUNDROep9wtJ25BFOynUEGiZI
+        g9zsw3osH7sK9wa4MxPuGUY1fXnptri8qqSwGY6KTFJK
+X-Received: by 2002:a81:7c2:: with SMTP id 185mt13059386ywh.113.1557693900014;
+ Sun, 12 May 2019 13:45:00 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CA+QBN9D6yQiB2zZAvg51LWoAgFAzO9LeuJQyadRvn3y4+hUxMg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=ZMOpZkzb c=1 sm=1 tr=0 cx=a_idp_f a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=djjhsy-zAAAA:8 a=JoQWYm39AAAA:8 a=FBHGMhGWAAAA:8 a=qKj4x21hgWvU5zUXobMA:9 a=QEXdDO2ut3YA:10 a=T-j7vH17oXcA:10 a=EotaCPLNDJkJNB2bz6rd:22 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfBG1mIFY5SR3HspEKtOHS2MoRrwVOxgNys8+a0Fet3ha481e8Ry88SjwPDPqOcx/FdmsP9utO+q85ZMGAEt+8Hap1AVCFS5qDu8sFeqy5h/mTyWiI5g5 lo8CJ/3G+5L4uyMQff3g5ii9hOn/VTXiC/cVt8xggXKDMFuJ/kQNE4pEOK65lIfpfNewb9Dbdjh+IA==
+References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+In-Reply-To: <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Sun, 12 May 2019 22:44:31 +0200
+Message-ID: <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+Subject: C3600, sata controller
+Cc:     Parisc List <linux-parisc@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-12 2:28 a.m., Carlo Pisani wrote:
-> tested on a C3600
-> with a Silicon Image Sil3124
-> the first card's brand is "SYBA-II" (from Amazon dot com)
-> it's 4 SATA channels, PCI 32bit
-There is also this card with Silicon Image Sil3512:
-https://www.sybausa.com/index.php?route=product/product&product_id=171&search=SD-SATA150R
-https://www.amazon.ca/Syba-Controller-Silicon-Software-Components/dp/B000BU7XNG?th=1
-Keying looks universal.
+guys,
+I asked a friend to lend us his card, which is the card2 listed below
+and not things are becoming really weird
 
--- 
-John David Anglin  dave.anglin@bell.net
+card1, Silicon Image, Inc. Adaptec AAR-1210SA
+card2, Silicon Image, Inc. SiI 3124 PCI-X Serial ATA
 
+the card1 is a PCI32 bit card, and uses the "sata_sil" driver
+the card2 is a PCI64 bit card, and uses the "sata_sil24" driver
+
+card1 is installed in a PCI32 slot, and it's moving 32Gbyte in a loop
+without any issue
+
+I have just tested card2 in each of the PCI-X slot (including the 3.3V
+one) and ... it has always triggered the HPMC unit, crashing the
+machine
+
+the hardware is different, and drivers are also different, but  ....
+maybe the problem is related to 32 vs 64bit?
+
+I am going to repeat the test with card2 installed in a PCI32 slot.
+This should force it to 32bit: will it work correctly?
+(hope this makes sense)
+
+---
+
+we have also checked if the kernel is correctly handling the ram
+we have a C3600 with 8Gbyte of ram
+
+mount -t tmpfs -o size=7G tmpfs /mnt/ramdrive/
+dd if=/dev/zero of=/mnt/ramdrive/test.bin
+badblocks -swv /mnt/ramdrive/test.bin
+
+checking for bad blocks in read-write mode
+From block 0 to 7340031
+Testing with pattern 0xaa: done
+Reading and comparing: done
+Testing with pattern 0x55: done
+Reading and comparing: done
+Testing with pattern 0xff: done
+Reading and comparing: done
+Testing with pattern 0x00: done
+Reading and comparing: done
+Pass completed, 0 bad blocks found.
+
+no problems found
