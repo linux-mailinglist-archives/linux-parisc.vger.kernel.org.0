@@ -2,106 +2,69 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF26C1AE35
-	for <lists+linux-parisc@lfdr.de>; Sun, 12 May 2019 23:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9BD1AE3A
+	for <lists+linux-parisc@lfdr.de>; Sun, 12 May 2019 23:16:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727000AbfELVKJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 12 May 2019 17:10:09 -0400
-Received: from belmont79srvr.owm.bell.net ([184.150.200.79]:37381 "EHLO
-        mtlfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726997AbfELVKJ (ORCPT
+        id S1726983AbfELVQK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 12 May 2019 17:16:10 -0400
+Received: from mail-yw1-f50.google.com ([209.85.161.50]:33736 "EHLO
+        mail-yw1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726664AbfELVQK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 12 May 2019 17:10:09 -0400
-Received: from bell.net mtlfep01 184.150.200.30 by mtlfep01.bell.net
-          with ESMTP
-          id <20190512211007.PJE4947.mtlfep01.bell.net@mtlspm02.bell.net>;
-          Sun, 12 May 2019 17:10:07 -0400
-Received: from [192.168.2.49] (really [70.53.52.226]) by mtlspm02.bell.net
-          with ESMTP
-          id <20190512211007.NNZJ21689.mtlspm02.bell.net@[192.168.2.49]>;
-          Sun, 12 May 2019 17:10:07 -0400
+        Sun, 12 May 2019 17:16:10 -0400
+Received: by mail-yw1-f50.google.com with SMTP id q11so9409542ywb.0;
+        Sun, 12 May 2019 14:16:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qvr0F0kwYHeCbEE7X7nfXJQszg2ULC/PKICf98qkw4g=;
+        b=c/i/NqMVt1JZIJ1y1LfSuoubeXL8EWr451se0bvwshMCfYbs3nwoNle1F6YTUt+bTL
+         RYSIuAkUw1lsbTo9I/zmr+VRloHP4nqr6gPiFrz4+LZABrzaxWkUHsDdYVwCV2TdxbzG
+         cRi1urqkpQI81ooMhN9sFEHPJXdPze8em5fHydCX6cgm4gV2zYAWobPHDLLuiERVYTvr
+         bXCgrcny/k9xMTCneOXtyFP5gDvGOhIimqW/NGkySnxqITDAos3W/H7tmNG9qJkYyPuk
+         sBhXcNZfdOGvnMO1ofV022dNK6+yr2Ddp0VkyoAj3OoghYSIClsTnHur2zq1f1lO61BP
+         1rTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qvr0F0kwYHeCbEE7X7nfXJQszg2ULC/PKICf98qkw4g=;
+        b=N7aF7YLNCaIMOOVEnLBil7vDNgHGI22pa0apbIxNe+wxJDK4E+aFIOS/4F9Ahy7SyS
+         LWEsEObHx1U0wR+En5uspCB7No/m6bg5F84Maasdee4iyYTxMNbGAR8IMTLjpUqSnfX9
+         8siuFt46aRmbQwrowkQVP2qNHZPojblpluVIaEjJxaDH35ruwi/1BWaUuCbsWe9LMyrM
+         ZUuQ4DjL3OBBYm7Y2ueJMxaxML1BQxgC1c3Q9V9ggciXxjTZYcLrzKPaY77pg/fMff2E
+         kQ7otyffBGtfbg2IghDAq5lna9wogbWklKkWBR5AfCRYpQX4agYpP5M0VKqstie8Jmfr
+         yr5g==
+X-Gm-Message-State: APjAAAVsnQn79KQ+TpJW3Nn8NUXi+50/jF/SN1I921IcY4oP7UEb8Eu3
+        bIHcuRAdth+pCDTQfmcV1KJs7dYt9froGJTRoCo=
+X-Google-Smtp-Source: APXvYqxMd+2U5eNGv45W53rbwmDGaCHOze+e4tOGsODAkZixx0nm0NKGCpzuDX7KgKjXeA5oxU3wdSiu455MhQxtmz4=
+X-Received: by 2002:a81:9284:: with SMTP id j126mr10812146ywg.445.1557695769565;
+ Sun, 12 May 2019 14:16:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+ <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com> <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
+In-Reply-To: <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Sun, 12 May 2019 23:15:40 +0200
+Message-ID: <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
 Subject: Re: C3600, sata controller
-To:     Carlo Pisani <carlojpisani@gmail.com>
+To:     John David Anglin <dave.anglin@bell.net>
 Cc:     Parisc List <linux-parisc@vger.kernel.org>,
         Linux Next Mailing List <linux-next@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20190502074519.61272b42@canb.auug.org.au>
- <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
- <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Message-ID: <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
-Date:   Sun, 12 May 2019 17:10:05 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=bJBo382Z c=1 sm=1 tr=0 cx=a_idp_f a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=FBHGMhGWAAAA:8 a=ReoYV_r7ABfIaPUG8vIA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfBh0+9ztLhlPK6JpM85nU3RMHM4SQEuolp551HznoTaWC+jfVOi3+hpxMJrfM5bKX4tWgcVVs2ZF+6Im50//tmRYLgNRCDwl4/kgySyY1E1Arv6zELfg yZleUPx3/x46e+LhVkBM96BBW7zRIebAi9/0O4zz9p+KabTWwPJvjQzMcY1x62TZT0bwLAtCIX/MK5I7jN+K7ptw/94+dCU4cpCal3njF+84tOdgkz1BBdLk ZNoarLQxe0osyRjDaQvMeYLSA4IxGPne2Kahj0Yr+UQ=
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The c3600 doesn't have any PCI-X slots (only PCI) as far as I can tell from user manuals.
+> The c3600 doesn't have any PCI-X slots (only PCI) as far as I can tell from user manuals.
 
-The SY-PCX40009 PCI-X card that I have says it supports two models: 32-bit at 66 MHz and 64-bit
-at 133 MHz.  The 32-bit slots in c3600 are 33 MHz.  Whether the card will work at 33 MHz is not
-clear.  The card says it's backward compatible to PCI 2.3.
+PCI-32/33 device I/O bus
+PCI-64/33 high-performance device I/O bus <----------------- this is
+PCI-X, 64bit 5V
+PCI-64/66 high-performance graphics I/O bus <----------------- this is
+PCI-X, 64bit 3.3V
 
-On 2019-05-12 4:44 p.m., Carlo Pisani wrote:
-> guys,
-> I asked a friend to lend us his card, which is the card2 listed below
-> and not things are becoming really weird
->
-> card1, Silicon Image, Inc. Adaptec AAR-1210SA
-> card2, Silicon Image, Inc. SiI 3124 PCI-X Serial ATA
->
-> the card1 is a PCI32 bit card, and uses the "sata_sil" driver
-> the card2 is a PCI64 bit card, and uses the "sata_sil24" driver
->
-> card1 is installed in a PCI32 slot, and it's moving 32Gbyte in a loop
-> without any issue
->
-> I have just tested card2 in each of the PCI-X slot (including the 3.3V
-> one) and ... it has always triggered the HPMC unit, crashing the
-> machine
->
-> the hardware is different, and drivers are also different, but  ....
-> maybe the problem is related to 32 vs 64bit?
->
-> I am going to repeat the test with card2 installed in a PCI32 slot.
-> This should force it to 32bit: will it work correctly?
-> (hope this makes sense)
->
-> ---
->
-> we have also checked if the kernel is correctly handling the ram
-> we have a C3600 with 8Gbyte of ram
->
-> mount -t tmpfs -o size=7G tmpfs /mnt/ramdrive/
-> dd if=/dev/zero of=/mnt/ramdrive/test.bin
-> badblocks -swv /mnt/ramdrive/test.bin
->
-> checking for bad blocks in read-write mode
-> >From block 0 to 7340031
-> Testing with pattern 0xaa: done
-> Reading and comparing: done
-> Testing with pattern 0x55: done
-> Reading and comparing: done
-> Testing with pattern 0xff: done
-> Reading and comparing: done
-> Testing with pattern 0x00: done
-> Reading and comparing: done
-> Pass completed, 0 bad blocks found.
->
-> no problems found
->
-
-
--- 
-John David Anglin  dave.anglin@bell.net
-
+https://www.openpa.net/systems/hp-visualize_b1000_c3000_c3600.html
