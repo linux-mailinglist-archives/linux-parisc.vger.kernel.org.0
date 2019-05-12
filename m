@@ -2,76 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAA7F1A9B1
-	for <lists+linux-parisc@lfdr.de>; Sun, 12 May 2019 00:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F08891AAE8
+	for <lists+linux-parisc@lfdr.de>; Sun, 12 May 2019 08:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726380AbfEKWgR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 11 May 2019 18:36:17 -0400
-Received: from simcoe208srvr.owm.bell.net ([184.150.200.208]:44610 "EHLO
-        torfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726033AbfEKWgR (ORCPT
+        id S1725978AbfELG2q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 12 May 2019 02:28:46 -0400
+Received: from mail-yw1-f46.google.com ([209.85.161.46]:40874 "EHLO
+        mail-yw1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725934AbfELG2p (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 11 May 2019 18:36:17 -0400
-Received: from bell.net torfep02 184.150.200.158 by torfep02.bell.net
-          with ESMTP
-          id <20190511223615.MJFR4684.torfep02.bell.net@torspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Sat, 11 May 2019 18:36:15 -0400
-Received: from [192.168.2.49] (really [70.53.52.226]) by torspm02.bell.net
-          with ESMTP
-          id <20190511223615.EPUW30132.torspm02.bell.net@[192.168.2.49]>;
-          Sat, 11 May 2019 18:36:15 -0400
-Subject: Re: 5.2 hppa merge seems to work on my machines
-To:     Carlo Pisani <carlojpisani@gmail.com>, Helge Deller <deller@gmx.de>
-Cc:     Meelis Roos <mroos@linux.ee>, linux-parisc@vger.kernel.org
-References: <c0546c1b-9477-60f8-6fa9-df710e5bbd0c@linux.ee>
- <325c8de3-3869-08d1-696d-b89f5813d537@gmx.de>
- <CA+QBN9AZzuJe600ngavoVseRFHCBh4ws5-5pHoWEQkkqZ_wU5g@mail.gmail.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Message-ID: <fac5aa59-999f-e61e-774e-b43d0d28779c@bell.net>
-Date:   Sat, 11 May 2019 18:36:13 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Sun, 12 May 2019 02:28:45 -0400
+Received: by mail-yw1-f46.google.com with SMTP id 18so8303090ywe.7
+        for <linux-parisc@vger.kernel.org>; Sat, 11 May 2019 23:28:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JuAxDHvMkmvrkwWOqNifPPCf9FhTZHojZR1P9pmFxkM=;
+        b=uj0bBVzhPmdfSfsxrXbZcutZu85xU2wn1EO0MqOXmGfHs6sgKuLqC0qNEzjeXwHTr1
+         cBTuG3HnLRobA7MZKCg3AG50y6X/Pnq8xQTIIn8eW2d/nHL4upc4E3bePpbV5EhL6d7/
+         P6FwL3b1U9yN5CEythiDeVVn67UqE4kfVVciWTtL35vk8YxsDfAtAOel3skI7HL6mDHV
+         UNxIlcGA5qqcLIjbPZ95/ndJNR1KFy3twzX9la0TIILinpws0nMYX0H89D52sDd8HRcC
+         EnGWt7U+a5z4AEZMfVZpV+ZNF6U3LK46n9igFRwOwEOplaxFZ4twvv49Ff42NAFW3AZO
+         3xTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JuAxDHvMkmvrkwWOqNifPPCf9FhTZHojZR1P9pmFxkM=;
+        b=MZls8HKwX2wAXWXtDW51180fTNH1GBS9921MsffSBFTtCWTUMsuI0pHMwXev+Zof64
+         L3OuA30wVqUW5cxMeyvWPdf4XbNOTP5+jYplzShiesZhVWHUYHtusRi4Utm9TJzPE3o8
+         wMQIDIxtCmox/XlubgYyveOQd0/y2FhDlXogFeWoI13JPS1jBpRzbSXRJMzO7T4eJUHr
+         hN4QF010s8KbQwLXkONwgA5Q4KeGBKPH24yL7bVHndegTK0RmyUnirAzt7FwLRff0Okd
+         w1Vid2r3hr1AoWZBFnarUsRGtGC3IixOCbCVw+ZkTgwD3XWK4jj0M/2tERJysKU0HVGv
+         HZwg==
+X-Gm-Message-State: APjAAAUDKuYnKBKd2RCxuO7uBoAXbzVe1C+f4ed0gO0y1yJ8pemyyFRo
+        EKOcIIe1hLwq8Ynl8jRp871MEhK/P9+7yLkJCIE=
+X-Google-Smtp-Source: APXvYqxMWZ0G7KM3pW1F+q4naXercgnjTWhrtlORdAxRPcIHP0SSTf3U1PZ6y3TQx7LD4fXs8tT2wDysYSr2clP1SyY=
+X-Received: by 2002:a81:ad20:: with SMTP id l32mr2855574ywh.62.1557642525129;
+ Sat, 11 May 2019 23:28:45 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CA+QBN9AZzuJe600ngavoVseRFHCBh4ws5-5pHoWEQkkqZ_wU5g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=O5JHQy1W c=1 sm=1 tr=0 cx=a_idp_f a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=FBHGMhGWAAAA:8 a=ZfDTkB6afjhJ1xcQYUwA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfM8mO8rDns/wbhdZBKnaPhECeLo4AQnTL5LlkwNs/amnhyPD38Dn6JTj4OZnuDRYMLxPfSf6zbhD6cuzqDapK3MrUQ8QobgHkLrPzuMvrt/kr41vbpCu ZuIDDDXx5hYkNbN4zA+GbAMyazi1Rro59vkBXDt85dqU5Tw8rHq2JJPVLqSyZpA5x+0V7nyYtCpYCQ==
+References: <c0546c1b-9477-60f8-6fa9-df710e5bbd0c@linux.ee>
+ <325c8de3-3869-08d1-696d-b89f5813d537@gmx.de> <CA+QBN9AZzuJe600ngavoVseRFHCBh4ws5-5pHoWEQkkqZ_wU5g@mail.gmail.com>
+ <fac5aa59-999f-e61e-774e-b43d0d28779c@bell.net>
+In-Reply-To: <fac5aa59-999f-e61e-774e-b43d0d28779c@bell.net>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Sun, 12 May 2019 08:28:17 +0200
+Message-ID: <CA+QBN9D6yQiB2zZAvg51LWoAgFAzO9LeuJQyadRvn3y4+hUxMg@mail.gmail.com>
+Subject: Re: 5.2 hppa merge seems to work on my machines
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     Helge Deller <deller@gmx.de>, Meelis Roos <mroos@linux.ee>,
+        linux-parisc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-11 5:41 p.m., Carlo Pisani wrote:
-> guys, bad news!
-> as described here (1) we are testing several sata controllers by a script that
-> 1) copy a very big file cp data_16GB.bin copy.bin
-> 2) compare the md5sum for checking the integrity
->
-> we have a couple of SIL24 controllers, and they both work but only
-> with small files <8Gbyte
-> trying to copy a big file, 16GB, results in the following HPMC error
->
-> A Data I/O Fetch Timeout occurred while CPU 0 was requesting
-> information from a device at the path 10/6/2/0 (PCI slot 2).
-I don't see problem on my c8000:
+> Note card is PCIX slot.
 
-dave@atlas:~/big$ cp x x2
-dave@atlas:~/big$ md5sum *
-9e6b3d79358077360a55861a5054f878  x
-9e6b3d79358077360a55861a5054f878  x2
-dave@atlas:~/big$ ls -l
-total 49152
--rw-r--r-- 1 dave dave 25165824 May 11 18:31 x
--rw-r--r-- 1 dave dave 25165824 May 11 18:31 x2
+tested on a C3600
+with a Silicon Image Sil3124
+the first card's brand is "SYBA-II" (from Amazon dot com)
+it's 4 SATA channels, PCI 32bit
 
-Note card is PCIX slot.
+the second card's brand is "Adaptec 1210SA"
+it's a 2 SATA channels, PCI 32bit
 
-Dave
+we do not have a PCI 64bit Silicon Image Sil3124
 
--- 
-John David Anglin  dave.anglin@bell.net
+which is your card's brand?
 
+are you using PCI-hardfail ? or softfail?
+do you have CONFIG_MLONGCALLS=y ?
+
+unfortunately, we do not have a C8000 to test
