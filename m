@@ -2,77 +2,84 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F2901BFBF
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 01:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4A3A1BFD0
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 01:25:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726265AbfEMXOI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 13 May 2019 19:14:08 -0400
-Received: from simcoe208srvr.owm.bell.net ([184.150.200.208]:50768 "EHLO
-        torfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726233AbfEMXOI (ORCPT
+        id S1726466AbfEMXZT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 13 May 2019 19:25:19 -0400
+Received: from mail-yw1-f41.google.com ([209.85.161.41]:37685 "EHLO
+        mail-yw1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726233AbfEMXZS (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 13 May 2019 19:14:08 -0400
-Received: from bell.net torfep02 184.150.200.158 by torfep02.bell.net
-          with ESMTP
-          id <20190513231406.ZXNA4684.torfep02.bell.net@torspm02.bell.net>;
-          Mon, 13 May 2019 19:14:06 -0400
-Received: from [192.168.2.49] (really [70.53.52.226]) by torspm02.bell.net
-          with ESMTP
-          id <20190513231406.QMCT30132.torspm02.bell.net@[192.168.2.49]>;
-          Mon, 13 May 2019 19:14:06 -0400
-Subject: Re: C3600, sata controller
-To:     Carlo Pisani <carlojpisani@gmail.com>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20190502074519.61272b42@canb.auug.org.au>
- <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
- <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
- <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
- <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Message-ID: <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net>
-Date:   Mon, 13 May 2019 19:14:03 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Mon, 13 May 2019 19:25:18 -0400
+Received: by mail-yw1-f41.google.com with SMTP id 186so12445039ywo.4
+        for <linux-parisc@vger.kernel.org>; Mon, 13 May 2019 16:25:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MitTV56SXCoHHae8nkJmAuNZlze8MLhnrCjzePIYrr0=;
+        b=cpRZLeUFI1eUmApwXLMUi3RA++aO1AfeQs0X/LS7zT3QbA2qvNNmRWByyceTa1Fv0p
+         M675xIoNhGezALQseJu79Jc6lC2mP0IyFr3kwYUXPydrQ91oNd3kD6i4Yz0CMDNEqJMU
+         sONxWaOjA10LxTSPKLYUkjkr0r8bfJY1K2hUALCOqM3VJmVdykzEuSEIlzxGRKvXzozQ
+         VedJD28qXKnPOLRA+hbVfoP5QCnBH8747W0sYw/xxq+P3yrPc4F23AJXbx/U35/QgvkR
+         IZZTHJqVQpp2CkMWu5PXxUSSmUu/HCf8+L5wcXU62cSGqlHWUd7klgGUTtpJHMQrOmuP
+         nOpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MitTV56SXCoHHae8nkJmAuNZlze8MLhnrCjzePIYrr0=;
+        b=qdKW74O039gobMEZ6Z8M3yjnpnh6CvI7H+vWa0O84z/N6/+De7J+RNl2DwHCq1uwXL
+         Ed9Rc5/9WWFWWo2+4jZvCsDcGPJ1arBv5n8Weq2L3kVIQ1C9PV+H/hVTzX0gsYHpvyHK
+         yfYwXiildblm2C8+G672fQcEJmR4Lynvq32sIdZey8yYpZET9Uf9gv573AKj5wOh/mvA
+         y5wEbVw3mnLnRhPbDOg4VNQurf3TMMWSaOvHKEZcY5OSngSdFvet/01YDVr1DQwFIfU4
+         atYPT15hCqUHvk+o6y0oSK0DK9tSDqxsRJbA0NqPc/ERXhWgx9hOoTceuekSpfSbWiz5
+         CDRg==
+X-Gm-Message-State: APjAAAWOQiOu7PUTgj+pwcCHUPEoePy9Tiv9zJ/EFE6l5OHUhQaxBBmi
+        E7yB3/j4YVPd7pEmnV1vJwQHJhA76dX+Dp9MTsY=
+X-Google-Smtp-Source: APXvYqxcj7s4+XRedVo4m0VGekMboxozAGdtltpDsJCliM6vnDy7Dn1QmTQMyvlTX+EOLJxfdf+dxbIHjjqyjGusNLA=
+X-Received: by 2002:a81:7c2:: with SMTP id 185mr16736132ywh.113.1557789917920;
+ Mon, 13 May 2019 16:25:17 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=O5JHQy1W c=1 sm=1 tr=0 cx=a_idp_f a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=5ypQrAzGAAAA:8 a=FBHGMhGWAAAA:8 a=gMXUH_YgnVnNn84jM3AA:9 a=QEXdDO2ut3YA:10 a=1owwN5pLhQMA:10 a=RW6egZ3iF6EA:10 a=QnlTcYk_iZbCEFXf-YqT:22 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfK4WAh+Fq4jLCtWs5OgHHMkWkHH9sKFtHVcfXHN5FKDl/AqcUjDjP6fkt0hpWzjYDKpR13dGH2F7Yil6hOJgnk+eAbsz9hkCwem6X8UhlCHVXmSehYqk iTHsCNoOIR9vnkB5Mk1EXI7GD9kXCPcWKMkNZQesJ7uwsjz1SZBvg1p4GBRD3tlUz1doZ8LAaFvf2DjjWTJpn0fbRkQg8rs9clkjzqUJm1hcOrBKFlgIzS3W g7X8KBUkaFtv9raac32h4gQcWuPNDYN/j/WPWcSb1V0=
+References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+ <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+ <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net> <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
+ <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net>
+In-Reply-To: <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Tue, 14 May 2019 01:24:47 +0200
+Message-ID: <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
+Subject: Re: C3600, sata controller
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     Parisc List <linux-parisc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-12 5:15 p.m., Carlo Pisani wrote:
->> The c3600 doesn't have any PCI-X slots (only PCI) as far as I can tell from user manuals.
-> PCI-32/33 device I/O bus
-> PCI-64/33 high-performance device I/O bus <----------------- this is
-> PCI-X, 64bit 5V
-> PCI-64/66 high-performance graphics I/O bus <----------------- this is
-> PCI-X, 64bit 3.3V
->
-> https://www.openpa.net/systems/hp-visualize_b1000_c3000_c3600.html
-I think that you are wrong.  HP would have said the slots were PCI-X compatible if they were.
-They did in c8000.
+> The issue is probably the signalling voltage and clock rate capability.
 
-The issue is probably the signalling voltage and clock rate capability.  33 MHz always uses 5V
-signalling whereas PCX-X cards typically support 66 and 133 MHz.  Thus, I think PCI-X cards use
-CMOS 3.3V signalling although they may accept 5V on their inputs.  If the c3600 uses older
-TTL logic, it is likely that 3.3V CMOS logic can't provide the high level for 5V TTL logic.
+PCI_X means 64bit, no matter voltage of anything.
+You can have PCI_X at 33Mhz, 66Mhz, 100Mhz
+You can have PCI_X at 5V, or PCI_X at 3.3V
 
-I suspect the only slot that might work with a PCI-X card is the 3.3V SL2.  However, if you see I/O errors
-in the PIM dump following a HPMC, then it's not compatible.
+> TTL logic, it is likely that 3.3V CMOS logic can't provide the high level for 5V TTL logic.
 
-So, probably you would have better luck with the PCI Syba SD-SATA150R in c3600.  However, it is similar
-to the Adaptec 1210SA which works.  Maybe they differ in RAID capability.
+inputs are 5V tolerant, outputs are already ok about their levels
 
-Dave
+> I suspect the only slot that might work with a PCI-X card is the 3.3V SL2.
 
--- 
-John David Anglin  dave.anglin@bell.net
+the SIL24 PCI_X card has been already checked in that slot, and it
+fails in the same way as it fails when it's plugged in one of the 5V
+slots
 
+> However, if you see I/O errors in the PIM dump following an HPMC, then it's not compatible.
+
+if things were that way, it wouldn't be a random failure, but rather
+an immediate failure
+
+to me, it looks more like a timing error, or something bad with DMA 64bit
+
+it's like to force the card to be "DMA32bit" only, just to check it
