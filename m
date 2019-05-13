@@ -2,69 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB9BD1AE3A
-	for <lists+linux-parisc@lfdr.de>; Sun, 12 May 2019 23:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C08A71B21D
+	for <lists+linux-parisc@lfdr.de>; Mon, 13 May 2019 10:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726983AbfELVQK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 12 May 2019 17:16:10 -0400
-Received: from mail-yw1-f50.google.com ([209.85.161.50]:33736 "EHLO
-        mail-yw1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726664AbfELVQK (ORCPT
+        id S1727939AbfEMIyH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 13 May 2019 04:54:07 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:46499 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727634AbfEMIyH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 12 May 2019 17:16:10 -0400
-Received: by mail-yw1-f50.google.com with SMTP id q11so9409542ywb.0;
-        Sun, 12 May 2019 14:16:09 -0700 (PDT)
+        Mon, 13 May 2019 04:54:07 -0400
+Received: by mail-lj1-f195.google.com with SMTP id h21so8422370ljk.13
+        for <linux-parisc@vger.kernel.org>; Mon, 13 May 2019 01:54:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qvr0F0kwYHeCbEE7X7nfXJQszg2ULC/PKICf98qkw4g=;
-        b=c/i/NqMVt1JZIJ1y1LfSuoubeXL8EWr451se0bvwshMCfYbs3nwoNle1F6YTUt+bTL
-         RYSIuAkUw1lsbTo9I/zmr+VRloHP4nqr6gPiFrz4+LZABrzaxWkUHsDdYVwCV2TdxbzG
-         cRi1urqkpQI81ooMhN9sFEHPJXdPze8em5fHydCX6cgm4gV2zYAWobPHDLLuiERVYTvr
-         bXCgrcny/k9xMTCneOXtyFP5gDvGOhIimqW/NGkySnxqITDAos3W/H7tmNG9qJkYyPuk
-         sBhXcNZfdOGvnMO1ofV022dNK6+yr2Ddp0VkyoAj3OoghYSIClsTnHur2zq1f1lO61BP
-         1rTw==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=HqG3RxJRoWkeFIHaUnzU4WoemRz1aeXxc5q3xYQ1SkM=;
+        b=MFTnIJUwi8NuzlAvYt5j00+TenxwbYitLYXttdv1d0PCXjFnbJMyUCe0Kne9EfQ2qf
+         phY4ybo8lmniCA7q3wOnWPHBC9b6C5wFroiLjF6cDzCQi3Z1SiR91g+3p9jXkHY+gbC4
+         bknZAt1JFuzXNP6xJM+okv/K+DK7thI2nfcr93mQ9yz94fWmbcebf1VhUqTy9L/ExIRl
+         bQyODPIWgikrGnCDgpOXzIMkXB5Mi/RAfrQS/cuJY//BJYmPwGUfXbVozAwSpEx6qx62
+         sX1L4jIIOAPrueZ8SGnRStMe5X4uXTC5EpYOXMNx2I1LUpV365a7icRYIj2ytcM/6Lxa
+         xb6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qvr0F0kwYHeCbEE7X7nfXJQszg2ULC/PKICf98qkw4g=;
-        b=N7aF7YLNCaIMOOVEnLBil7vDNgHGI22pa0apbIxNe+wxJDK4E+aFIOS/4F9Ahy7SyS
-         LWEsEObHx1U0wR+En5uspCB7No/m6bg5F84Maasdee4iyYTxMNbGAR8IMTLjpUqSnfX9
-         8siuFt46aRmbQwrowkQVP2qNHZPojblpluVIaEjJxaDH35ruwi/1BWaUuCbsWe9LMyrM
-         ZUuQ4DjL3OBBYm7Y2ueJMxaxML1BQxgC1c3Q9V9ggciXxjTZYcLrzKPaY77pg/fMff2E
-         kQ7otyffBGtfbg2IghDAq5lna9wogbWklKkWBR5AfCRYpQX4agYpP5M0VKqstie8Jmfr
-         yr5g==
-X-Gm-Message-State: APjAAAVsnQn79KQ+TpJW3Nn8NUXi+50/jF/SN1I921IcY4oP7UEb8Eu3
-        bIHcuRAdth+pCDTQfmcV1KJs7dYt9froGJTRoCo=
-X-Google-Smtp-Source: APXvYqxMd+2U5eNGv45W53rbwmDGaCHOze+e4tOGsODAkZixx0nm0NKGCpzuDX7KgKjXeA5oxU3wdSiu455MhQxtmz4=
-X-Received: by 2002:a81:9284:: with SMTP id j126mr10812146ywg.445.1557695769565;
- Sun, 12 May 2019 14:16:09 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=HqG3RxJRoWkeFIHaUnzU4WoemRz1aeXxc5q3xYQ1SkM=;
+        b=J7PKh3FMnMLTHo5NQy/5tIb79teyR1qrj19HpwkLsMKpDFUB0+sy3C0J8JbzgZCwGd
+         sEKHxkf5DsJrHjCduR6dNUDFOuWU+NIDrGOMbK/m06P3G551PNG1fTqqpQ60GL9ea1Mp
+         CzQIfF9ya4BiYXBxX4l5ZcwWm4HL9qX+F7WpyUAu14TPqW1Ej79PSICUY2O8jpuE6Mo6
+         jDsQBZYfj7O62sW14ow/UAj+T3ca+AsGTq0b/vt52og0NXfBHIMF77+Tb9lmAY9v46JM
+         yvj3SGIHFKx1QAD7smmUAhwBXBKzVj6CnbPYeqE7I2cOahu+bTosw6i4KTeciUr95Qm2
+         vD9g==
+X-Gm-Message-State: APjAAAVDyVhwYPa9ZoGiTaxwRmD3mGOLLN0wIUIKww1J2whj33JbEkzx
+        RTBfio8JIlFGHU+uideyhh4RXDwml6vH2R4zpaI=
+X-Google-Smtp-Source: APXvYqwMg8kXbRgqeogvEdt0GRADkmT7U5/NCsLubeSmBzWOmSkLHq7m3L3kiEyDPZDRp9vzdLvIci8hjqpqQzoRkos=
+X-Received: by 2002:a2e:8504:: with SMTP id j4mr13046560lji.171.1557737645881;
+ Mon, 13 May 2019 01:54:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
- <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com> <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
-In-Reply-To: <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
-From:   Carlo Pisani <carlojpisani@gmail.com>
-Date:   Sun, 12 May 2019 23:15:40 +0200
-Message-ID: <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
-Subject: Re: C3600, sata controller
-To:     John David Anglin <dave.anglin@bell.net>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Received: by 2002:a2e:9604:0:0:0:0:0 with HTTP; Mon, 13 May 2019 01:54:05
+ -0700 (PDT)
+Reply-To: huanjlaying808@gmail.com
+From:   Frau Huan Jlaying <venteradriaan808@gmail.com>
+Date:   Mon, 13 May 2019 01:54:05 -0700
+Message-ID: <CACNOTrfEnscEksJFw_V05zk20LfAPxjWcT32NpmijfR=cwq0yw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-> The c3600 doesn't have any PCI-X slots (only PCI) as far as I can tell from user manuals.
+--=20
+Sch=C3=B6nen Tag,
 
-PCI-32/33 device I/O bus
-PCI-64/33 high-performance device I/O bus <----------------- this is
-PCI-X, 64bit 5V
-PCI-64/66 high-performance graphics I/O bus <----------------- this is
-PCI-X, 64bit 3.3V
-
-https://www.openpa.net/systems/hp-visualize_b1000_c3000_c3600.html
+    Ich bin Frau Huan Jlaying, Mitarbeiterin der Wing Hang Bank hier
+in Hongkong. Kann ich einemmTransfer von 13.991.674 USD vertrauen?
+Kontaktieren Sie mich unter meiner E-Mail: huanjlaying808@gmail.com
