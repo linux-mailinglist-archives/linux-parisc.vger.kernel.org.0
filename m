@@ -2,64 +2,85 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C08A71B21D
-	for <lists+linux-parisc@lfdr.de>; Mon, 13 May 2019 10:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C02131B998
+	for <lists+linux-parisc@lfdr.de>; Mon, 13 May 2019 17:10:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727939AbfEMIyH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 13 May 2019 04:54:07 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:46499 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727634AbfEMIyH (ORCPT
+        id S1731121AbfEMPKo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 13 May 2019 11:10:44 -0400
+Received: from mail-yw1-f68.google.com ([209.85.161.68]:45953 "EHLO
+        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731118AbfEMPKn (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 13 May 2019 04:54:07 -0400
-Received: by mail-lj1-f195.google.com with SMTP id h21so8422370ljk.13
-        for <linux-parisc@vger.kernel.org>; Mon, 13 May 2019 01:54:06 -0700 (PDT)
+        Mon, 13 May 2019 11:10:43 -0400
+Received: by mail-yw1-f68.google.com with SMTP id w18so11235639ywa.12
+        for <linux-parisc@vger.kernel.org>; Mon, 13 May 2019 08:10:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=HqG3RxJRoWkeFIHaUnzU4WoemRz1aeXxc5q3xYQ1SkM=;
-        b=MFTnIJUwi8NuzlAvYt5j00+TenxwbYitLYXttdv1d0PCXjFnbJMyUCe0Kne9EfQ2qf
-         phY4ybo8lmniCA7q3wOnWPHBC9b6C5wFroiLjF6cDzCQi3Z1SiR91g+3p9jXkHY+gbC4
-         bknZAt1JFuzXNP6xJM+okv/K+DK7thI2nfcr93mQ9yz94fWmbcebf1VhUqTy9L/ExIRl
-         bQyODPIWgikrGnCDgpOXzIMkXB5Mi/RAfrQS/cuJY//BJYmPwGUfXbVozAwSpEx6qx62
-         sX1L4jIIOAPrueZ8SGnRStMe5X4uXTC5EpYOXMNx2I1LUpV365a7icRYIj2ytcM/6Lxa
-         xb6g==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:cc;
+        bh=/ALChiOKnMbi5IPfVvBTTx9Afx2HTWGWhcKipkGBRc4=;
+        b=DG/ioZxRbc7Psl2Rwn2D9Ljvkt168cPnUdDyG2qr7woivVllgieIszsYuhKHWnIO4G
+         GCqPQrI+BpWFdHAIH/kt7DXJRxvMVOtgd6LJ9tBxFUToeqJVwyuR+mQ7tOzX4yuxxNYs
+         kk0CojDahTsS606dhWKKYke1XmI4IGjFmUjeNW4I5/wyV4JuNPDsewD1h2zNTq5rUiqS
+         I00jbiO0/5kw/mNW/eTXXm0uf6hHgE1V9ZRlMSzPVOJB/bwToMaHWbMPDinrfnWmzdEv
+         lSsVsECDhKyg6U6YZ9K/4TP4A8EvTZ5mi0jZOMHIS2HaSMYNOmETxYOoQZI2uAYidRrj
+         urig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=HqG3RxJRoWkeFIHaUnzU4WoemRz1aeXxc5q3xYQ1SkM=;
-        b=J7PKh3FMnMLTHo5NQy/5tIb79teyR1qrj19HpwkLsMKpDFUB0+sy3C0J8JbzgZCwGd
-         sEKHxkf5DsJrHjCduR6dNUDFOuWU+NIDrGOMbK/m06P3G551PNG1fTqqpQ60GL9ea1Mp
-         CzQIfF9ya4BiYXBxX4l5ZcwWm4HL9qX+F7WpyUAu14TPqW1Ej79PSICUY2O8jpuE6Mo6
-         jDsQBZYfj7O62sW14ow/UAj+T3ca+AsGTq0b/vt52og0NXfBHIMF77+Tb9lmAY9v46JM
-         yvj3SGIHFKx1QAD7smmUAhwBXBKzVj6CnbPYeqE7I2cOahu+bTosw6i4KTeciUr95Qm2
-         vD9g==
-X-Gm-Message-State: APjAAAVDyVhwYPa9ZoGiTaxwRmD3mGOLLN0wIUIKww1J2whj33JbEkzx
-        RTBfio8JIlFGHU+uideyhh4RXDwml6vH2R4zpaI=
-X-Google-Smtp-Source: APXvYqwMg8kXbRgqeogvEdt0GRADkmT7U5/NCsLubeSmBzWOmSkLHq7m3L3kiEyDPZDRp9vzdLvIci8hjqpqQzoRkos=
-X-Received: by 2002:a2e:8504:: with SMTP id j4mr13046560lji.171.1557737645881;
- Mon, 13 May 2019 01:54:05 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:cc;
+        bh=/ALChiOKnMbi5IPfVvBTTx9Afx2HTWGWhcKipkGBRc4=;
+        b=fu0JUcr6fTS81b0sQH33UEc94h8sB2ThaDb0IuhWBO2KFbMjHWGznB9+qSYVdtXB/5
+         8dZeAOzxUQSzJ9CkMi4BMTKA23H/R1GlGYuER8KBHCnLpMnVAIoURHX/vnvP4dVeffCK
+         tLUExr5oOMydSsTte3NLAybaF4lFngY1oAUFVq65VHZFntjZsO5I7dDw3sw8vMaKIOm8
+         HaZ3eeyJwJSgohzpAQw1Y0lg9psXD3NLsxRDPGw77iYI8cUkZLbYavok6MVk/3D0XCLp
+         JJpqGPc8gEvF0RDVyXL18xb4Vv1Y+f2c2R4iLB6f5nU9Qu0ep0/EhZvM1bbvS4R9Iuif
+         Bjbg==
+X-Gm-Message-State: APjAAAWLInawJxUkxbcEIlaHRq6fI29gTsUqjMMv+m8OW6xbj9qSmKgf
+        y30un/HLMMQMVkGbbe1QINhWnrFh2imnSjz17pJTNoiB
+X-Received: by 2002:a81:9284:: with SMTP id j126mt12287878ywg.445.1557760243034;
+ Mon, 13 May 2019 08:10:43 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a2e:9604:0:0:0:0:0 with HTTP; Mon, 13 May 2019 01:54:05
- -0700 (PDT)
-Reply-To: huanjlaying808@gmail.com
-From:   Frau Huan Jlaying <venteradriaan808@gmail.com>
-Date:   Mon, 13 May 2019 01:54:05 -0700
-Message-ID: <CACNOTrfEnscEksJFw_V05zk20LfAPxjWcT32NpmijfR=cwq0yw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+ <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+In-Reply-To: <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Mon, 13 May 2019 17:10:13 +0200
+Message-ID: <CA+QBN9CN=n556f0KYj2LZ4q9wY+wx9mbWpaMcC44GufUqbsgEg@mail.gmail.com>
+Subject: Re: C3600, sata controller
+Cc:     Parisc List <linux-parisc@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---=20
-Sch=C3=B6nen Tag,
+hi, good news!
+after a burn-in test of 8hours, we can affirm that Adaptec 1210SA does work
+The chip is "Silicon Image Sil31122", so the kernel module is
+"sata_sil" (not sata_sil24)
 
-    Ich bin Frau Huan Jlaying, Mitarbeiterin der Wing Hang Bank hier
-in Hongkong. Kann ich einemmTransfer von 13.991.674 USD vertrauen?
-Kontaktieren Sie mich unter meiner E-Mail: huanjlaying808@gmail.com
+while [ 1 ]
+do
+for item in `ls *.bin`
+    do
+        rm -f $copy.out
+        echo -n "$item ... "
+        mycp $item $copy.out
+        echo "done"
+    done
+done
+
+*.bin are giant files, 1GB, 2GB, 4GB, 8GB, 16GB, 32GB
+
+it has been tested on a PCI 32bit lost of a C3600
+with kernel /v4.16!!!
+
+"mycp" does a copy and then checks the md5 checksum
+
+I think this card can be added to the list!
+
+Our list has been already updated
+http://www.downthebunker.com/reloaded/space/viewtopic.php?f=50&p=1632
