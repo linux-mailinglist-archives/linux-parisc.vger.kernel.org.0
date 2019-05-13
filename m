@@ -2,54 +2,54 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4A3A1BFD0
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 01:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD9A91BFEF
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 01:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726466AbfEMXZT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 13 May 2019 19:25:19 -0400
-Received: from mail-yw1-f41.google.com ([209.85.161.41]:37685 "EHLO
-        mail-yw1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726233AbfEMXZS (ORCPT
+        id S1726663AbfEMXrr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 13 May 2019 19:47:47 -0400
+Received: from mail-yw1-f49.google.com ([209.85.161.49]:38821 "EHLO
+        mail-yw1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726541AbfEMXrq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 13 May 2019 19:25:18 -0400
-Received: by mail-yw1-f41.google.com with SMTP id 186so12445039ywo.4
-        for <linux-parisc@vger.kernel.org>; Mon, 13 May 2019 16:25:18 -0700 (PDT)
+        Mon, 13 May 2019 19:47:46 -0400
+Received: by mail-yw1-f49.google.com with SMTP id b74so12473677ywe.5
+        for <linux-parisc@vger.kernel.org>; Mon, 13 May 2019 16:47:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=MitTV56SXCoHHae8nkJmAuNZlze8MLhnrCjzePIYrr0=;
-        b=cpRZLeUFI1eUmApwXLMUi3RA++aO1AfeQs0X/LS7zT3QbA2qvNNmRWByyceTa1Fv0p
-         M675xIoNhGezALQseJu79Jc6lC2mP0IyFr3kwYUXPydrQ91oNd3kD6i4Yz0CMDNEqJMU
-         sONxWaOjA10LxTSPKLYUkjkr0r8bfJY1K2hUALCOqM3VJmVdykzEuSEIlzxGRKvXzozQ
-         VedJD28qXKnPOLRA+hbVfoP5QCnBH8747W0sYw/xxq+P3yrPc4F23AJXbx/U35/QgvkR
-         IZZTHJqVQpp2CkMWu5PXxUSSmUu/HCf8+L5wcXU62cSGqlHWUd7klgGUTtpJHMQrOmuP
-         nOpw==
+        bh=T2JoHeLpcgYT5WmRwz07PSeUGVLQDuFfdMgk5QS9pGg=;
+        b=DwSN2JIq55N/xBX8LUz1OoPomoF2YiA1zBcdXvDtY5K37bBp6zYHIGUnGbjDnIWfzP
+         L4UD5L2pI2p+X1GD/F0XQTt+FpnG+HoXt9sR/OQwVm+b5h/ZId6QQVrqCUWPUvQ2IIQO
+         RfnF7fcaRT/pEzx6CEltITkbzkCUp8oC//wr0pAgQlu/+acZH/nLf5X8ZMlyaVQS8WXj
+         BmeFowKTdakAZxyKBHdQtshzm0bTxvaeEaKi+Y0Zg+HC3ZXqsECN4rpDXRDg2/ju6EcU
+         CTUyJxK8hX60kbIKUWrMZl2uTcu5VOUscfaCDLhDWQQUEDxr3GMkiqxk2hc3N1TOKIwF
+         9U0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=MitTV56SXCoHHae8nkJmAuNZlze8MLhnrCjzePIYrr0=;
-        b=qdKW74O039gobMEZ6Z8M3yjnpnh6CvI7H+vWa0O84z/N6/+De7J+RNl2DwHCq1uwXL
-         Ed9Rc5/9WWFWWo2+4jZvCsDcGPJ1arBv5n8Weq2L3kVIQ1C9PV+H/hVTzX0gsYHpvyHK
-         yfYwXiildblm2C8+G672fQcEJmR4Lynvq32sIdZey8yYpZET9Uf9gv573AKj5wOh/mvA
-         y5wEbVw3mnLnRhPbDOg4VNQurf3TMMWSaOvHKEZcY5OSngSdFvet/01YDVr1DQwFIfU4
-         atYPT15hCqUHvk+o6y0oSK0DK9tSDqxsRJbA0NqPc/ERXhWgx9hOoTceuekSpfSbWiz5
-         CDRg==
-X-Gm-Message-State: APjAAAWOQiOu7PUTgj+pwcCHUPEoePy9Tiv9zJ/EFE6l5OHUhQaxBBmi
-        E7yB3/j4YVPd7pEmnV1vJwQHJhA76dX+Dp9MTsY=
-X-Google-Smtp-Source: APXvYqxcj7s4+XRedVo4m0VGekMboxozAGdtltpDsJCliM6vnDy7Dn1QmTQMyvlTX+EOLJxfdf+dxbIHjjqyjGusNLA=
-X-Received: by 2002:a81:7c2:: with SMTP id 185mr16736132ywh.113.1557789917920;
- Mon, 13 May 2019 16:25:17 -0700 (PDT)
+        bh=T2JoHeLpcgYT5WmRwz07PSeUGVLQDuFfdMgk5QS9pGg=;
+        b=jVJwkJch6WAQk/XMqwBLPzqVGPCoj+R4bU+ji9mH8LvR+UN3qnnpLmWZdKAt9cp+C1
+         VKOFVf6Kks1K8YmBYITqbwijgkxirklECZ1gopNlAgt7sVLKsP/LHLlhNO2GJRQ0m3LC
+         AFVyB2WlG5wvIhP75klPNDrcQ6khCSZDY/kOP0cxh3vEq2VNZ8l7LkjQl2F81PD2oD/h
+         LOms6FvYxij1p3rKSmdBIFqoeS2bZ9Erl8J9rKqBF6ovZHWnHKiWRxyr9bKzPo8bwGCw
+         NFITK2/k4q5D0umC6ALLyR6+smVutHZC4/cC1NOR7bEB18yCq7RqF8GrNLFgCMqpD/sg
+         hSDg==
+X-Gm-Message-State: APjAAAVAhyQ2glPrb3u1DHc+K3Ih8ClAFDS6h0hII8aeMG/2WlTKK36b
+        haJsGHY+7lX6HfOlR88bv7m1zL9CH2toz09PVAE=
+X-Google-Smtp-Source: APXvYqzeRxmNJKPtm5us1SeXYq/30gsVW1zV5FmQySFcPLKjerLOyUtnktaepsrdOPPf9wWypu5guMCDDHlqVp2m88U=
+X-Received: by 2002:a25:84c5:: with SMTP id x5mr14963102ybm.85.1557791266067;
+ Mon, 13 May 2019 16:47:46 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
  <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
  <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net> <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
- <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net>
-In-Reply-To: <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net>
+ <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net> <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
+In-Reply-To: <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
 From:   Carlo Pisani <carlojpisani@gmail.com>
-Date:   Tue, 14 May 2019 01:24:47 +0200
-Message-ID: <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
+Date:   Tue, 14 May 2019 01:47:16 +0200
+Message-ID: <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
 Subject: Re: C3600, sata controller
 To:     John David Anglin <dave.anglin@bell.net>
 Cc:     Parisc List <linux-parisc@vger.kernel.org>
@@ -59,27 +59,29 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-> The issue is probably the signalling voltage and clock rate capability.
+> > The issue is probably the signaling voltage and clock rate capability.
 
-PCI_X means 64bit, no matter voltage of anything.
-You can have PCI_X at 33Mhz, 66Mhz, 100Mhz
-You can have PCI_X at 5V, or PCI_X at 3.3V
+well, I have just checked again, the Italian Wikipedia and the English
+Wikipedia do not report the same things about the PCI_X
 
-> TTL logic, it is likely that 3.3V CMOS logic can't provide the high level for 5V TTL logic.
+X___X
 
-inputs are 5V tolerant, outputs are already ok about their levels
+in short, the Italian Wikipedia says PCI64 = PCI_X, just PCI64 is clocked slower
+while the English Wikipedia says PCI64 != PCI_X, but it doesn't explain why
 
-> I suspect the only slot that might work with a PCI-X card is the 3.3V SL2.
+And the https://www.openpa.net/bus.html#pci doc is even more confusing
+in the table about the PCI buses used in PA-RISC computers overview:
+why things are named differently?!?
 
-the SIL24 PCI_X card has been already checked in that slot, and it
-fails in the same way as it fails when it's plugged in one of the 5V
-slots
+What makes me perplex is: the PCI-X is physically a 3.3 V PCI slot
+with/out a voltage level shifter.
+So levels should be compatible, but so what is the difference between
+64-bit PCI slot and PCI-X slot?
 
-> However, if you see I/O errors in the PIM dump following an HPMC, then it's not compatible.
+In my head, there shouldn't be any significant physical differences
+between the slots. The newer PCI cards - 3.3V will fit and work in a
+PCI-X slot, and PCI-X cards will fit in an older PCI slot as long as
+the voltage - 3.3V - matches, and they should do!
 
-if things were that way, it wouldn't be a random failure, but rather
-an immediate failure
-
-to me, it looks more like a timing error, or something bad with DMA 64bit
-
-it's like to force the card to be "DMA32bit" only, just to check it
+Now, I am even more perplex: need to check the PCI-64 and PCI-X specs,
+and compare them.
