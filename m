@@ -2,98 +2,120 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E16481C067
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 03:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E93271C49B
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 10:23:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726327AbfENBu1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 13 May 2019 21:50:27 -0400
-Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:38676 "EHLO
-        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726233AbfENBu0 (ORCPT
+        id S1726348AbfENIXO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 14 May 2019 04:23:14 -0400
+Received: from mail-yw1-f42.google.com ([209.85.161.42]:34695 "EHLO
+        mail-yw1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726143AbfENIXO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 13 May 2019 21:50:26 -0400
-Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
-          with ESMTP
-          id <20190514015025.WUEZ4584.torfep01.bell.net@torspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Mon, 13 May 2019 21:50:25 -0400
-Received: from [192.168.2.49] (really [70.53.52.226]) by torspm02.bell.net
-          with ESMTP
-          id <20190514015025.RMQH30132.torspm02.bell.net@[192.168.2.49]>;
-          Mon, 13 May 2019 21:50:25 -0400
-Subject: Re: C3600, sata controller
-To:     Carlo Pisani <carlojpisani@gmail.com>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>
-References: <20190502074519.61272b42@canb.auug.org.au>
- <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
- <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
- <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
- <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
- <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net>
- <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
- <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Message-ID: <3fd05da8-3601-a0b3-a212-2c72710520c4@bell.net>
-Date:   Mon, 13 May 2019 21:50:25 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Tue, 14 May 2019 04:23:14 -0400
+Received: by mail-yw1-f42.google.com with SMTP id n76so13348956ywd.1
+        for <linux-parisc@vger.kernel.org>; Tue, 14 May 2019 01:23:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BZiOETr3R52R+4nWq5LZK0qr4G1D2Lua+41YHvuOcv4=;
+        b=fTZErhygREWaQvzjHDazEN/yQJPoFR6CUPkYPhXNrQnFwPRCuIbkg0L17mCAmU0G77
+         vJpOgmCVegE81cfGjKkxtN9fZuyffA9f++q7ZfM8jV4xbe+C3jcIOuDZm7/RgJpEjuRm
+         YofblQ25UmacH0JEKM6ObL2BQdyi0pMpwER9ASKg9j+oB3UH5JrJ27z4ie6NcUR1LdF8
+         xGZtqsSuQ/1XzlVYC0KVnWV4shuxB5RE813w8g247z9SEXiRYZ3CQLIJ9aZYzL1+TgnR
+         UjJ5/Aa1ahVvfPjPhInXuz8HyvWZOaFzyyb4BpzMXFNxkSKgWnia10QpIXGUvhT5GcAj
+         lawQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BZiOETr3R52R+4nWq5LZK0qr4G1D2Lua+41YHvuOcv4=;
+        b=sLYWeR1y/edABr658dM4/17VOU1Y9dGzNmXKYCsCIsdfRAN/X+dnfgap35WnoopF7c
+         T8CUH4JVRGFyBvyL4UblmhR5BkV3SXU89OsAeLGjq/tbK5Ox/vyBzo+GPRWD0ZrYcQPA
+         OED4+BW4Qez2CNHjBf48UvmFG7Gf5SdQyNL0wMt14Dxf4NMr1Z8e+avODbp/rUGpkFMF
+         TMxjfjHJIzGj/UxC6wPC0fyajrerIeiUXCupfGk/dPu5t2B+Pbn5dcn8PxHPDOTm+Rwc
+         ynqk9qL4ulfvi3EG+PBORUzj1WKAs2IAUmtgO7i0o+EXZnN/sDEbmaDSimZfNGSbe0SV
+         zb4w==
+X-Gm-Message-State: APjAAAUYOADRwt65DeuhmKv9dJB7j+mcHJj9dzl3vGFhWhihLIp6WdFk
+        8df7R/Q/6h0qwyPRvbt74uziyKngMwbwSQzIydU=
+X-Google-Smtp-Source: APXvYqzeVV08cYSGt4aAMB2p8XRXOtJrOsg2PoCkcnKFTFSZ6s37Odre/LNYD4Qa3UQclzQ0pjW9MvpAOkwBzT7B7Cw=
+X-Received: by 2002:a81:3411:: with SMTP id b17mr16334179ywa.280.1557822193520;
+ Tue, 14 May 2019 01:23:13 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=bPxo382Z c=1 sm=1 tr=0 cx=a_idp_f a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=8pif782wAAAA:8 a=uBuKx8GwAAAA:8 a=FBHGMhGWAAAA:8 a=VtTVRs8skqw8XmDOKlkA:9 a=-zMSWEylRd51bSRP:21 a=ZJskje-u05Y3Xvyc:21 a=QEXdDO2ut3YA:10 a=wZgZ3yaTFkxMEWn-yT5t:22 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfLxVWnYgo5plYIdwdy/AffxTFkIac49HjWop8UeYmzCSi7POqsoLqmYeFLxTv99yUWLcqvVT9XCnVjTi4jVdV7WDtUniRJMgeV+eBYZq59w8509bcDZl bNw9BMCjsbvPtVguy9HezswhiCx7wnQYodfuWE/pBf5YsmkP7P1aHu27h3VthkMD6Jz7ba7W8beHiA==
+References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+ <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+ <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net> <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
+ <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net> <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
+ <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com> <3fd05da8-3601-a0b3-a212-2c72710520c4@bell.net>
+In-Reply-To: <3fd05da8-3601-a0b3-a212-2c72710520c4@bell.net>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Tue, 14 May 2019 10:22:43 +0200
+Message-ID: <CA+QBN9BfXWN1Wd3jMo_z8e0nbYLuSEH+Zz1MVbAfjF=uzGnusw@mail.gmail.com>
+Subject: Re: C3600, sata controller
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     Parisc List <linux-parisc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-13 7:47 p.m., Carlo Pisani wrote:
-> So levels should be compatible, but so what is the difference between
-> 64-bit PCI slot and PCI-X slot?
-There is no difference in the slots except PCI-X slots are always 3.3V and a 5V card won't work in them.
-The difference is in the bus protocol and timing.
+> "In PCI, a transaction that cannot be completed immediately
+>
 
-This is what I see in wikipedia:
+I think this *is* the only reason for failure, and it's compatible
+with what I observe. The failure usually happens only when moving big
+files.
 
-"In PCI, a transaction that cannot be completed immediately is postponed by either the target or the initiator issuing retry-cycles, during
-which no other agents can use the PCI bus. Since PCI lacks a split-response mechanism to permit the target to return data at a later time, the
-bus remains occupied by the target issuing retry-cycles until the read data is ready. In PCI-X, after the master issues the request, it
-disconnects from the PCI bus, allowing other agents to use the bus. The split-response containing the requested data is generated only when the
-target is ready to return all of the requested data. Split-responses increase bus efficiency by eliminating retry-cycles, during which no data
-can be transferred across the bus.
+one day ago, on a second C3600 (yes, we have two workstations), we
+spent 10 hours at moving small files (<10Mbyte) on a "SY-PCX40009"
+"Silicon Image Sil3124" SIL24 card, with a sleep of 2 seconds between
+each copy, and we registered zero failures.
 
-PCI also suffered from the relative scarcity of unique interrupt lines. With only 4 interrupt lines (INTA/B/C/D), systems with many PCI devices
-require multiple functions to share an interrupt line, complicating host-side interrupt-handling. PCI-X added Message Signaled Interrupts
-<https://en.wikipedia.org/wiki/Message_Signaled_Interrupts>, an interrupt system using writes to host-memory. In MSI-mode, the function's
-interrupt is not signaled by asserting an INTx line. Instead, the function performs a memory-write to a system-configured region in host-memory.
-Since the content and address are configured on a per-function basis, MSI-mode interrupts are dedicated instead of shared. A PCI-X system allows
-both MSI-mode interrupts and legacy INTx interrupts to be used simultaneously (though not by the same function.)
+Whereas, when copying a file bigger than 8Gbyte files we had a
+probability of 0.97 to end with a PCI error on the bus, and repeating
+the test, this usually happened within 10 minutes.
 
-The lack of registered I/Os limited PCI to a maximum frequency of 66 MHz. PCI-X I/Os are registered to the PCI clock, usually through means of a
-PLL to actively control I/O delay the bus pins. The improvement in setup time allows an increase in frequency to 133 MHz."
+results were the same if the card was plugged in PCI_SLOT2 (3.3V), or
+PCI_SLOT1 (5V): all the same behavior!
 
-Nominally, one would think a PCI-X card would fall back to PCI mode but maybe this needs firmware
-support.
+what do I conclude? the voltage of signals is OK, the onboard
+voltage-level-shifter was doing a good job, so I think that it all a
+timing problem: the less an I/O task takes the PCI bus busy, the best
+it is.
 
-I still think the 3.3V signalling of a PCI-X card likely is incompatible with 5V signalling in c3600.  A 5V
-card won't work in a PCI-X slot.  Only slot SL2 is 3.3V.
+maybe, interrupt problem? some got lost? how to investigate the exact
+reason for the failure?
+did a PCI transaction fail when recycled? or did it fail due to interrupt lost?
 
-Wiki also says:
+The MSI stuff is too complex and I haven't understood it, the wiki
+seems confusing to me, and we do not have it enabled in the kernel
+config.
 
-"Many 64-bit PCI-X cards are designed to work in 32-bit mode if inserted in shorter 32-bit connectors, with some loss of speed.[19][20] An
-example of this is the Adaptec 29160 64-bit SCSI interface card.[21] However some 64-bit PCI-X cards do not work in standard 32-bit PCI slots.[22]"
+anyway, if it's a firmware problem, all related to the firmware
+running the SATA card, it may be fixed by a kernel driver forcing the
+chip into PCI64 mode.
 
-So, I think you can only use 5V or universal conventional PCI cards in c3600 (except for slot SL2).
+I am surprised that a PCI-X chip isn't able to switch into PCI64 mode.
+Cards are usually declared "backward compatible", and it would be just
+a matter of "how" to handle the finite state machine that drives the
+PCI, plus the onboard PLL and synchronization.
 
-Here are some Adaptec 64-bit cards that I found.
-https://storage.microsemi.com/en-us/support/raid/sata/aar-2410sa/
-https://storage.microsemi.com/en-us/support/raid/sata/aar-21610sa/
 
-Dave
--- 
+> Here are some Adaptec 64-bit cards that I found.
+> https://storage.microsemi.com/en-us/support/raid/sata/aar-2410sa/
+> https://storage.microsemi.com/en-us/support/raid/sata/aar-21610sa/
 
-John David Anglin  dave.anglin@bell.net
+as written here (1), we have already tested Adaptec 2410SA, and I have
+also recently received an email by AlanCox confirming that the card is
+x86-only!
 
+        Subsystem: Adaptec AAR-2410SA PCI SATA 4ch (Jaguar II)
+
+It fails on every non-x86 machine because it relies on PC-BIOS
+extension for the initialization of the onboard Intel i960 chip, and
+we do not have any Linux kernel driver able to do what the PC-BIOS
+does.
+
+I had opened a BUG report to a Linux mailing list, and Alan Cox
+replied to me privately.
