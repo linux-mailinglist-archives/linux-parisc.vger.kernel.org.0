@@ -2,88 +2,103 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AAB6D1C839
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 14:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 036F71C8AF
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 14:29:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726211AbfENMKm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 14 May 2019 08:10:42 -0400
-Received: from belmont80srvr.owm.bell.net ([184.150.200.80]:34421 "EHLO
-        mtlfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726036AbfENMKm (ORCPT
+        id S1726254AbfENM3j (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 14 May 2019 08:29:39 -0400
+Received: from mail-yw1-f65.google.com ([209.85.161.65]:41209 "EHLO
+        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726174AbfENM3j (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 14 May 2019 08:10:42 -0400
-Received: from bell.net mtlfep02 184.150.200.30 by mtlfep02.bell.net
-          with ESMTP
-          id <20190514121040.QEXB4444.mtlfep02.bell.net@mtlspm01.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Tue, 14 May 2019 08:10:40 -0400
-Received: from [192.168.2.49] (really [70.53.52.226]) by mtlspm01.bell.net
-          with ESMTP
-          id <20190514121040.CLYQ87666.mtlspm01.bell.net@[192.168.2.49]>;
-          Tue, 14 May 2019 08:10:40 -0400
-Subject: Re: C3600, sata controller
-To:     Carlo Pisani <carlojpisani@gmail.com>
-References: <20190502074519.61272b42@canb.auug.org.au>
- <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
- <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
- <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
- <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
- <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net>
- <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
- <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
- <3fd05da8-3601-a0b3-a212-2c72710520c4@bell.net>
- <CA+QBN9CgMRFmv+isvH-Y=FCCFwKhmD5_5s5u32xg+wk-gTLK5A@mail.gmail.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Cc:     linux-parisc <linux-parisc@vger.kernel.org>
-Message-ID: <44c01dbf-4b6c-c37d-d5cc-844e5679dea5@bell.net>
-Date:   Tue, 14 May 2019 08:10:40 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Tue, 14 May 2019 08:29:39 -0400
+Received: by mail-yw1-f65.google.com with SMTP id o65so13805358ywd.8
+        for <linux-parisc@vger.kernel.org>; Tue, 14 May 2019 05:29:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eud1uKWmnCZig3xj+dAh6c25TuIoqTT9tFQPE6ufz/c=;
+        b=m95wOM+bfco0umy8E/uUif5NBw45qWdmQ0ib/RWsVUA+nbuyvsmG8RhumOd5oWBY1o
+         mtcBMQwyOB6xt7RuXgVuU45nIHo02og1NyXHfBro0dQC7jmU2Usys8ExvoQb02UdNkQ/
+         JbgoXEwUicpBUaGa8j+b5GQ65JIw5rPJ1+zp5hXY76m5Zn78y0AhdbX66BzqbGQ7LwXd
+         dDUCenkcPc5Blq7q+yMRZWkVD3tT9AQoYhACeoiXdTGcTUMJ9NuHbef9OcQhdprvPX4s
+         KU0NVO1UC6JOrkFUUpLxvO/r0ySuv/D4bLsA9x7G79o9npU2RvlMUn7iPhxJFOtUzCuI
+         RpNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eud1uKWmnCZig3xj+dAh6c25TuIoqTT9tFQPE6ufz/c=;
+        b=NXCk3zQcWOANdFswtjbbncLBj6dJyZXuSKe/y14WF/I37RqmIeuUsh+jdX4MpLFGHa
+         bwLTcXaBc9/iMXaFuncncmikwkIf2NQdGrXJ7VWEDNmWpXRXUg22VtwJwOAQvYEmtUPm
+         ZEHO4HZs8wI6U5WAM2cTtbtR63tmfS5pgKGAKri8EcByvG1ZGkOe+wsvcatnXWYfIx1+
+         fwZYRlVDCMfHzOxgtESM/Bkq7ivC537ZFQ+cVL6NGZMv4WiZL4ni8JZvC9Odl2x8LD2X
+         bJOpIB1itjnuFJe7x/hBfD+zR0/RCNWSotumTJUuHj6Dr+pcj4JTCbYqz0bZKuzq69N4
+         v2aA==
+X-Gm-Message-State: APjAAAXm3GcSuvYrJb0biEwxls4LPkRQiEk+APlhJTEpqqVkiCS65vVL
+        9srxZyI2JW5rdO/HOMRpPnlSwDNruxzy3/rHRqWprEUf
+X-Google-Smtp-Source: APXvYqxmSxhc00thJ6Dek/D2Xu/2XT7NSxflV/vYKbUjqFWv+Fc5hyw3n86rZyCrIoZkO1A1z+jlpIn88DG+5nesFpc=
+X-Received: by 2002:a25:2706:: with SMTP id n6mr16424204ybn.181.1557836978679;
+ Tue, 14 May 2019 05:29:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CA+QBN9CgMRFmv+isvH-Y=FCCFwKhmD5_5s5u32xg+wk-gTLK5A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=ZMOpZkzb c=1 sm=1 tr=0 cx=a_idp_d a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=uBuKx8GwAAAA:8 a=FBHGMhGWAAAA:8 a=l9yPeklnn_ZQln16ixgA:9 a=QEXdDO2ut3YA:10 a=wZgZ3yaTFkxMEWn-yT5t:22 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfK7BAkASVLgvyK1j+5abiCQP6X9VMxaysQdje89BR6WWrZ8yoamcltbNHqnkuqVO4Py2wnywzPyzl1hzZfipy6YmAsM6oO/nTzcjiuqt5D0Iih0MnjQC BGfEO5GdksSZwmh8MZFztzLg48PSxCB1+tssc7WHqrG/3Xah20vBQouIJEV3JtY7xFRECBzSsjNqXA==
+References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+ <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+ <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net> <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
+ <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net> <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
+ <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
+ <3fd05da8-3601-a0b3-a212-2c72710520c4@bell.net> <CA+QBN9CgMRFmv+isvH-Y=FCCFwKhmD5_5s5u32xg+wk-gTLK5A@mail.gmail.com>
+ <44c01dbf-4b6c-c37d-d5cc-844e5679dea5@bell.net>
+In-Reply-To: <44c01dbf-4b6c-c37d-d5cc-844e5679dea5@bell.net>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Tue, 14 May 2019 14:29:07 +0200
+Message-ID: <CA+QBN9BqufJM+8Jm-x_zMgMo0cLHKxHCxuYPrLgbvGsbdQofvw@mail.gmail.com>
+Subject: Re: C3600, sata controller
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     linux-parisc <linux-parisc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-14 4:15 a.m., Carlo Pisani wrote:
-> I am surprised that a PCI-X chip isn't able to switch into PCI64 mode.
-> Cards are usually declared "backward compatible", and it would be just
-> a matter of "how" to handle the finite state machine that drives the
-> PCI, plus the onboard PLL and synchronization.
-I agree but it appears fallback requires BIOS or a QUIRK to configure card.  One would have to
-look at driver and/or BIOS to see what is/can done. Maybe OpenBIOS has something.
+> I had listed these cards because they are PCI64 and the Adaptec site didn't say Intel
+> architecture was required.
 
-There is ENABLE_HARDFAIL config option in lba_pci.c which determines whether HPMC occurs.
-Soft fail might be useful to debug.  However, I doubt there's enough public information to configure
-card given what Alan said.
->
->
->> Here are some Adaptec 64-bit cards that I found.
->> https://storage.microsemi.com/en-us/support/raid/sata/aar-2410sa/
->> https://storage.microsemi.com/en-us/support/raid/sata/aar-21610sa/
-> as written here (1), we have already tested Adaptec 2410SA, and I have
-> also recently received an email by AlanCox confirming that the card is
-> x86-only!
->
->         Subsystem: Adaptec AAR-2410SA PCI SATA 4ch (Jaguar II)
->
-> It fails on every non-x86 machine because it relies on PC-BIOS
-> extension for the initialization of the onboard Intel i960 chip, and
-> we do not have any Linux kernel driver able to do what the PC-BIOS
-> does.
-I had listed these cards because they are PCI64 and the Adaptec site didn't say Intel
-architecture was required.  There was one card that claimed to be PCI-X and PCI64
-(both 3.3 and 5V signalling) but it required Intel or AMD architecture.
+Adaptec AAR-2410SA was tested on x86, C3600, and Apple PowerMac G4
+MDD. It worked only on x86.
 
-Dave
+01:10:15.0 RAID bus controller: Adaptec AAC-RAID (rev 01)
+        Subsystem: Adaptec AAR-2410SA PCI SATA 4ch (Jaguar II)
+        Flags: 66MHz, slow devsel, IRQ 58
+        Memory at 84000000 (32-bit, prefetchable) [size=64M]
+        Expansion ROM at 80088000 [disabled] [size=32K]
+        Capabilities: [80] Power Management version 2
 
--- 
-John David Anglin  dave.anglin@bell.net
+Alan Cox explained some reasons for this. His email is long, and not
+public, so I summarize what I have understood.
 
+as soon as the computer bootstraps, the firmware in its BIOS scans
+every PCI-peripherical for any BIOS-extension, it finds then there is
+a BIOS-extension ROM on the SATA-card, and it loads and executes it:
+the flash-chip on the card contains x86 opcode! The ROM initializes
+some features on the SATA-card and loads and bootstraps a firmware
+there (the firmware is contained in the flash, but it somehow requires
+to be launched by the PC, dunno how/what), the PC goes ahead and
+bootstrap the OS-loader (Grub? Lilo? ... this stuff), the Linux kernel
+is loaded and bootstrapped too, the kernel is now running, and it
+probes for the SATA-controller device and it finds it, so the
+kernel-driver finds the SATA-controller already configured and - it's
+running its own firmware - so, when the kernel issues commands, it
+responds properly!
+
+So, if you put the Adaptec AAR-2410SA SATA-card into a non-x86
+computer ... the BIOS extension is not expected, and the Linux kernel
+does not find the SATA correctly configured-card, in fact, the kernel
+complains the card is not even found running its own firmware running,
+and this can't be fixed unless you do a full reverse-engineering of
+flash-code, in order to create a new kernel-driver able to directly
+initialize the card instead of waiting for the job done by the
+PC-BIOS.
+
+hardware RAID cards are usually problematic for the same reason.
