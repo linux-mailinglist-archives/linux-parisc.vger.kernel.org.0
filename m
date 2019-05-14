@@ -2,86 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD9A91BFEF
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 01:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E16481C067
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2019 03:50:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726663AbfEMXrr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 13 May 2019 19:47:47 -0400
-Received: from mail-yw1-f49.google.com ([209.85.161.49]:38821 "EHLO
-        mail-yw1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726541AbfEMXrq (ORCPT
+        id S1726327AbfENBu1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 13 May 2019 21:50:27 -0400
+Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:38676 "EHLO
+        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726233AbfENBu0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 13 May 2019 19:47:46 -0400
-Received: by mail-yw1-f49.google.com with SMTP id b74so12473677ywe.5
-        for <linux-parisc@vger.kernel.org>; Mon, 13 May 2019 16:47:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=T2JoHeLpcgYT5WmRwz07PSeUGVLQDuFfdMgk5QS9pGg=;
-        b=DwSN2JIq55N/xBX8LUz1OoPomoF2YiA1zBcdXvDtY5K37bBp6zYHIGUnGbjDnIWfzP
-         L4UD5L2pI2p+X1GD/F0XQTt+FpnG+HoXt9sR/OQwVm+b5h/ZId6QQVrqCUWPUvQ2IIQO
-         RfnF7fcaRT/pEzx6CEltITkbzkCUp8oC//wr0pAgQlu/+acZH/nLf5X8ZMlyaVQS8WXj
-         BmeFowKTdakAZxyKBHdQtshzm0bTxvaeEaKi+Y0Zg+HC3ZXqsECN4rpDXRDg2/ju6EcU
-         CTUyJxK8hX60kbIKUWrMZl2uTcu5VOUscfaCDLhDWQQUEDxr3GMkiqxk2hc3N1TOKIwF
-         9U0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=T2JoHeLpcgYT5WmRwz07PSeUGVLQDuFfdMgk5QS9pGg=;
-        b=jVJwkJch6WAQk/XMqwBLPzqVGPCoj+R4bU+ji9mH8LvR+UN3qnnpLmWZdKAt9cp+C1
-         VKOFVf6Kks1K8YmBYITqbwijgkxirklECZ1gopNlAgt7sVLKsP/LHLlhNO2GJRQ0m3LC
-         AFVyB2WlG5wvIhP75klPNDrcQ6khCSZDY/kOP0cxh3vEq2VNZ8l7LkjQl2F81PD2oD/h
-         LOms6FvYxij1p3rKSmdBIFqoeS2bZ9Erl8J9rKqBF6ovZHWnHKiWRxyr9bKzPo8bwGCw
-         NFITK2/k4q5D0umC6ALLyR6+smVutHZC4/cC1NOR7bEB18yCq7RqF8GrNLFgCMqpD/sg
-         hSDg==
-X-Gm-Message-State: APjAAAVAhyQ2glPrb3u1DHc+K3Ih8ClAFDS6h0hII8aeMG/2WlTKK36b
-        haJsGHY+7lX6HfOlR88bv7m1zL9CH2toz09PVAE=
-X-Google-Smtp-Source: APXvYqzeRxmNJKPtm5us1SeXYq/30gsVW1zV5FmQySFcPLKjerLOyUtnktaepsrdOPPf9wWypu5guMCDDHlqVp2m88U=
-X-Received: by 2002:a25:84c5:: with SMTP id x5mr14963102ybm.85.1557791266067;
- Mon, 13 May 2019 16:47:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
- <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
- <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net> <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
- <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net> <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
-In-Reply-To: <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
-From:   Carlo Pisani <carlojpisani@gmail.com>
-Date:   Tue, 14 May 2019 01:47:16 +0200
-Message-ID: <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
+        Mon, 13 May 2019 21:50:26 -0400
+Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
+          with ESMTP
+          id <20190514015025.WUEZ4584.torfep01.bell.net@torspm02.bell.net>
+          for <linux-parisc@vger.kernel.org>;
+          Mon, 13 May 2019 21:50:25 -0400
+Received: from [192.168.2.49] (really [70.53.52.226]) by torspm02.bell.net
+          with ESMTP
+          id <20190514015025.RMQH30132.torspm02.bell.net@[192.168.2.49]>;
+          Mon, 13 May 2019 21:50:25 -0400
 Subject: Re: C3600, sata controller
-To:     John David Anglin <dave.anglin@bell.net>
+To:     Carlo Pisani <carlojpisani@gmail.com>
 Cc:     Parisc List <linux-parisc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20190502074519.61272b42@canb.auug.org.au>
+ <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+ <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+ <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net>
+ <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
+ <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net>
+ <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
+ <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
+From:   John David Anglin <dave.anglin@bell.net>
+Openpgp: preference=signencrypt
+Message-ID: <3fd05da8-3601-a0b3-a212-2c72710520c4@bell.net>
+Date:   Mon, 13 May 2019 21:50:25 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-Analysis: v=2.3 cv=bPxo382Z c=1 sm=1 tr=0 cx=a_idp_f a=eekNWfHKKKZHbRJeTMr8Cw==:117 a=eekNWfHKKKZHbRJeTMr8Cw==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=8pif782wAAAA:8 a=uBuKx8GwAAAA:8 a=FBHGMhGWAAAA:8 a=VtTVRs8skqw8XmDOKlkA:9 a=-zMSWEylRd51bSRP:21 a=ZJskje-u05Y3Xvyc:21 a=QEXdDO2ut3YA:10 a=wZgZ3yaTFkxMEWn-yT5t:22 a=9gvnlMMaQFpL9xblJ6ne:22
+X-CM-Envelope: MS4wfLxVWnYgo5plYIdwdy/AffxTFkIac49HjWop8UeYmzCSi7POqsoLqmYeFLxTv99yUWLcqvVT9XCnVjTi4jVdV7WDtUniRJMgeV+eBYZq59w8509bcDZl bNw9BMCjsbvPtVguy9HezswhiCx7wnQYodfuWE/pBf5YsmkP7P1aHu27h3VthkMD6Jz7ba7W8beHiA==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-> > The issue is probably the signaling voltage and clock rate capability.
+On 2019-05-13 7:47 p.m., Carlo Pisani wrote:
+> So levels should be compatible, but so what is the difference between
+> 64-bit PCI slot and PCI-X slot?
+There is no difference in the slots except PCI-X slots are always 3.3V and a 5V card won't work in them.
+The difference is in the bus protocol and timing.
 
-well, I have just checked again, the Italian Wikipedia and the English
-Wikipedia do not report the same things about the PCI_X
+This is what I see in wikipedia:
 
-X___X
+"In PCI, a transaction that cannot be completed immediately is postponed by either the target or the initiator issuing retry-cycles, during
+which no other agents can use the PCI bus. Since PCI lacks a split-response mechanism to permit the target to return data at a later time, the
+bus remains occupied by the target issuing retry-cycles until the read data is ready. In PCI-X, after the master issues the request, it
+disconnects from the PCI bus, allowing other agents to use the bus. The split-response containing the requested data is generated only when the
+target is ready to return all of the requested data. Split-responses increase bus efficiency by eliminating retry-cycles, during which no data
+can be transferred across the bus.
 
-in short, the Italian Wikipedia says PCI64 = PCI_X, just PCI64 is clocked slower
-while the English Wikipedia says PCI64 != PCI_X, but it doesn't explain why
+PCI also suffered from the relative scarcity of unique interrupt lines. With only 4 interrupt lines (INTA/B/C/D), systems with many PCI devices
+require multiple functions to share an interrupt line, complicating host-side interrupt-handling. PCI-X added Message Signaled Interrupts
+<https://en.wikipedia.org/wiki/Message_Signaled_Interrupts>, an interrupt system using writes to host-memory. In MSI-mode, the function's
+interrupt is not signaled by asserting an INTx line. Instead, the function performs a memory-write to a system-configured region in host-memory.
+Since the content and address are configured on a per-function basis, MSI-mode interrupts are dedicated instead of shared. A PCI-X system allows
+both MSI-mode interrupts and legacy INTx interrupts to be used simultaneously (though not by the same function.)
 
-And the https://www.openpa.net/bus.html#pci doc is even more confusing
-in the table about the PCI buses used in PA-RISC computers overview:
-why things are named differently?!?
+The lack of registered I/Os limited PCI to a maximum frequency of 66 MHz. PCI-X I/Os are registered to the PCI clock, usually through means of a
+PLL to actively control I/O delay the bus pins. The improvement in setup time allows an increase in frequency to 133 MHz."
 
-What makes me perplex is: the PCI-X is physically a 3.3 V PCI slot
-with/out a voltage level shifter.
-So levels should be compatible, but so what is the difference between
-64-bit PCI slot and PCI-X slot?
+Nominally, one would think a PCI-X card would fall back to PCI mode but maybe this needs firmware
+support.
 
-In my head, there shouldn't be any significant physical differences
-between the slots. The newer PCI cards - 3.3V will fit and work in a
-PCI-X slot, and PCI-X cards will fit in an older PCI slot as long as
-the voltage - 3.3V - matches, and they should do!
+I still think the 3.3V signalling of a PCI-X card likely is incompatible with 5V signalling in c3600.  A 5V
+card won't work in a PCI-X slot.  Only slot SL2 is 3.3V.
 
-Now, I am even more perplex: need to check the PCI-64 and PCI-X specs,
-and compare them.
+Wiki also says:
+
+"Many 64-bit PCI-X cards are designed to work in 32-bit mode if inserted in shorter 32-bit connectors, with some loss of speed.[19][20] An
+example of this is the Adaptec 29160 64-bit SCSI interface card.[21] However some 64-bit PCI-X cards do not work in standard 32-bit PCI slots.[22]"
+
+So, I think you can only use 5V or universal conventional PCI cards in c3600 (except for slot SL2).
+
+Here are some Adaptec 64-bit cards that I found.
+https://storage.microsemi.com/en-us/support/raid/sata/aar-2410sa/
+https://storage.microsemi.com/en-us/support/raid/sata/aar-21610sa/
+
+Dave
+-- 
+
+John David Anglin  dave.anglin@bell.net
+
