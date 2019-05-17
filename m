@@ -2,130 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA2820B32
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 May 2019 17:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17DAE21ADD
+	for <lists+linux-parisc@lfdr.de>; Fri, 17 May 2019 17:43:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727758AbfEPP3V (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 16 May 2019 11:29:21 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:45965 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727753AbfEPP3V (ORCPT
+        id S1728887AbfEQPna (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 17 May 2019 11:43:30 -0400
+Received: from mail-yb1-f177.google.com ([209.85.219.177]:41230 "EHLO
+        mail-yb1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728958AbfEQPna (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 16 May 2019 11:29:21 -0400
-Received: by mail-ed1-f67.google.com with SMTP id g57so5780685edc.12
-        for <linux-parisc@vger.kernel.org>; Thu, 16 May 2019 08:29:20 -0700 (PDT)
+        Fri, 17 May 2019 11:43:30 -0400
+Received: by mail-yb1-f177.google.com with SMTP id a13so2798760ybl.8
+        for <linux-parisc@vger.kernel.org>; Fri, 17 May 2019 08:43:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ZqfBKUXmncS+f99++ptXSxdqupLw9zmhEoHFhOKQ3+w=;
-        b=TH4z/rM7ErguN84LC3AmRg3JM/hVu0pzNCfG54H90jzb63FEyWpgQxI/RMgxJKMw0P
-         YMcyNk31xsPD9o3Q8SwKVFbPkeg8kucRDIsE3yDY3iiXnyBwTwnYxeZvDW5/V+wBXU6a
-         4Whkmp9tF7azl07xuKt/fN1RfMwR7c1B7epJGJ4YizDr1inzgV4yUswyquIaazuD7NSA
-         +Y7PT7f4mQIjQrv4yQyYO9MGe0DD0FnBStZnFHo1gVuPfCi9qKCZU5pU6DsIxSnGA9Ik
-         9SEOtQn5L4G4624dzeKPE3TTelvggQSyZJ+x/s6KcHf9L4yAiTiSgxh1JqlUq122MXzB
-         4CVw==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:cc;
+        bh=XkbfkMjcgOG43BBdT90bEQgkhSPdX2XDKrJO7UhLrcc=;
+        b=krBPX81hkF632s+Q7RQUDj7OEipfNAoUavDRKLRhXnQ9X+jVQtKOLEK8lSrotL407A
+         SM6y9Fx6ecN/Ud3y5GK4dslZufUWwDuCF4MSwqwVGqcAbCZNxuadHH+j82Uo5uPWZpyX
+         KCe1qnzr6QG65OwJKpCaokJjV0SLzSe/UNOc9wFcXUiP2vuB74w+ns6yMmMAFr8bY9Qo
+         FySETr+iQZkuYmh+bZtlJM1zOLvRgAlyVgGdMD+lV30b9ZpVa+gkAC3btr2circVr9Rv
+         dSw98efFmsiya7DfocRC9W66zs+wSM3tRGxt0Ch/IQakJoYiiQZXJK/n6kWn/QAfIbri
+         DWyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ZqfBKUXmncS+f99++ptXSxdqupLw9zmhEoHFhOKQ3+w=;
-        b=TqDyC0sCyjd/AH+CiKqAkaV7uXHWXx+R8UaJiIl0YOPERrNQYQ+u90lWIpJSuapSvX
-         bedzGkN17TxnCwfqR/BkMLLfUWppijWmy9UNdaS5hd24Nu4mKmA3rKAo/G6Z7IId/omo
-         Qi7+WyAW3oVVbv1ZSmttUTwSbyTvlT+OzYPQb+a5afllojlaUZaFFVX2fQW3kZk2Dvtr
-         x6J1/3p7Yf6uY3LjslyCcQJcEke8qWOBkZ9DogBIv4hKp6MrU36vXukDplap314P5mSh
-         UQoLqAdwICshxROgzEfe+2+ByD77jauxIp1zPMH7tX+c76O+YQJWtFgIrxsuLeKd4Juw
-         hacA==
-X-Gm-Message-State: APjAAAVEIe2Zr9mlJHNI4S9R41Pn1rxQo/YgE7TA/oi9VjIGab0ke7E4
-        p7oTthSVVtMzsYq8axJFWQrvqQ==
-X-Google-Smtp-Source: APXvYqzND3qJO+X7rGwmXjyWOGo7yuQQOnxCqVFCr+1kxGCEKNbb6bF5poI+TQvkmuF3C5Oy1BVzkw==
-X-Received: by 2002:a50:a886:: with SMTP id k6mr51048650edc.211.1558020559731;
-        Thu, 16 May 2019 08:29:19 -0700 (PDT)
-Received: from brauner.io ([193.96.224.243])
-        by smtp.gmail.com with ESMTPSA id b4sm1889513edf.7.2019.05.16.08.29.17
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 16 May 2019 08:29:19 -0700 (PDT)
-Date:   Thu, 16 May 2019 17:29:16 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     Aleksa Sarai <cyphar@cyphar.com>, jannh@google.com,
-        viro@zeniv.linux.org.uk, torvalds@linux-foundation.org,
-        linux-kernel@vger.kernel.org, arnd@arndb.de,
-        akpm@linux-foundation.org, dhowells@redhat.com,
-        ebiederm@xmission.com, elena.reshetova@intel.com,
-        keescook@chromium.org, luto@amacapital.net, luto@kernel.org,
-        tglx@linutronix.de, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, joel@joelfernandes.org,
-        dancol@google.com, serge@hallyn.com,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v1 1/2] pid: add pidfd_open()
-Message-ID: <20190516152915.3t2wofeu3xsyhfbd@brauner.io>
-References: <20190516135944.7205-1-christian@brauner.io>
- <20190516142659.GB22564@redhat.com>
- <20190516145607.j43xyj26k6l5vmbd@yavin>
- <20190516150611.GC22564@redhat.com>
- <20190516151202.hrawrx7hxllmz2di@yavin>
- <20190516152252.GD22564@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:cc;
+        bh=XkbfkMjcgOG43BBdT90bEQgkhSPdX2XDKrJO7UhLrcc=;
+        b=J+x89fi9R8lwzpEM3/x/OyB7LvmJnbCTxYIXDh097T3jZfaw5SAAe6ZrWOke+9FVgL
+         QXtgmsMOYyTAgN5WYtoYhuXAvCj6kteRLSF8wA/xFoNlskbsXCm6s7bOb7WGeJPxqJZ4
+         zDPbNQBBPwwi4cC4InxvZOkZNrebISmoJjAltdLUkD1sA0o6yPTwzPBQztdUoTX//OYU
+         GvtCylrk1mZbpuys0PxLKuPb8DY8ueIKnrL4bPbtXGTxX2JIykX1tNacOa05rpLNbdFI
+         04uNlLduLDzC6fWdjQ97z9Oz3DGy5cJ1C/U6B8AAizNlVeUbJeayvXSocYbCMf67O2Fz
+         oslA==
+X-Gm-Message-State: APjAAAUqKvISSkJevX14u2LUp2fx7yD9biup69AC1FHKOOe6SZFbaLg3
+        CWZikloWfkbaZdcKxNjXawU3os5zjoUfzJL+L9oXwM5U
+X-Google-Smtp-Source: APXvYqyGLMyceKcHX/kflYGKdWvOaHQjfXNFN9H5E4Z6PEQaGnc6sFeHclg55QCFo6JFau0MO/H+GKatfDMSCQkDKgg=
+X-Received: by 2002:a25:1dd5:: with SMTP id d204mr4905087ybd.34.1558107809035;
+ Fri, 17 May 2019 08:43:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190516152252.GD22564@redhat.com>
-User-Agent: NeoMutt/20180716
+References: <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+ <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net> <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
+ <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net> <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
+ <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
+ <3fd05da8-3601-a0b3-a212-2c72710520c4@bell.net> <CA+QBN9CgMRFmv+isvH-Y=FCCFwKhmD5_5s5u32xg+wk-gTLK5A@mail.gmail.com>
+ <44c01dbf-4b6c-c37d-d5cc-844e5679dea5@bell.net> <CA+QBN9BqufJM+8Jm-x_zMgMo0cLHKxHCxuYPrLgbvGsbdQofvw@mail.gmail.com>
+ <20190514130151.GA530@t470p.stackframe.org> <922dc8c9-f401-ed07-ce83-a534fecefb04@bell.net>
+In-Reply-To: <922dc8c9-f401-ed07-ce83-a534fecefb04@bell.net>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Fri, 17 May 2019 17:43:23 +0200
+Message-ID: <CA+QBN9Did5PqWkp3rcCN15n+dFd11jqCe+L2q33sTr2d6Ow15g@mail.gmail.com>
+Subject: Re: C3600, sata controller
+Cc:     linux-parisc <linux-parisc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, May 16, 2019 at 05:22:53PM +0200, Oleg Nesterov wrote:
-> On 05/17, Aleksa Sarai wrote:
-> >
-> > On 2019-05-16, Oleg Nesterov <oleg@redhat.com> wrote:
-> > > On 05/17, Aleksa Sarai wrote:
-> > > > On 2019-05-16, Oleg Nesterov <oleg@redhat.com> wrote:
-> > > > > On 05/16, Christian Brauner wrote:
-> > > > > > With the introduction of pidfds through CLONE_PIDFD it is possible to
-> > > > > > created pidfds at process creation time.
-> > > > >
-> > > > > Now I am wondering why do we need CLONE_PIDFD, you can just do
-> > > > >
-> > > > > 	pid = fork();
-> > > > > 	pidfd_open(pid);
-> > > >
-> > > > While the race window would be exceptionally short, there is the
-> > > > possibility that the child will die
-> > >
-> > > Yes,
-> > >
-> > > > and their pid will be recycled
-> > > > before you do pidfd_open().
-> > >
-> > > No.
-> > >
-> > > Unless the caller's sub-thread does wait() before pidfd_open(), of course.
-> > > Or unless you do signal(SIGCHILD, SIG_IGN).
-> >
-> > What about CLONE_PARENT?
-> 
-> I should have mentioned CLONE_PARENT ;)
-> 
-> Of course in this case the child can be reaped before pidfd_open(). But how often
-> do you or other people use clone(CLONE_PARENT) ? not to mention you can trivially
-> eliminate/detect this race if you really need this.
-> 
-> Don't get me wrong, I am not trying to say that CLONE_PIDFD is a bad idea.
-> 
-> But to me pidfd_open() is much more useful. Say, as a perl programmer I can easily
-> use pidfd_open(), but not CLONE_PIDFD.
+guys, new tests(1) with SYBA-SY-PCX40009 on C3600
+tested on different slots: it always fails with the same behavior
 
-Right, but for a libc, service- or container manager CLONE_PIDFD is much
-nicer when spawning processes quickly. :) I think both are very good to
-have.
+I really do not understand the random failure, because it seems
+working for a while, and then, it suddenly fails I don't know how to
+investigate.
 
-Thanks, Oleg. As always super helpful reviews. :)
-Christian
+(1)
+http://www.downthebunker.com/reloaded/space/viewtopic.php?f=50&t=337&p=1663
