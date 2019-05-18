@@ -2,85 +2,172 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31B0821D46
-	for <lists+linux-parisc@lfdr.de>; Fri, 17 May 2019 20:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8B6E222C1
+	for <lists+linux-parisc@lfdr.de>; Sat, 18 May 2019 11:48:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbfEQSZx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 17 May 2019 14:25:53 -0400
-Received: from mail-yw1-f41.google.com ([209.85.161.41]:39586 "EHLO
-        mail-yw1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726282AbfEQSZx (ORCPT
+        id S1729537AbfERJsH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 18 May 2019 05:48:07 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:39667 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729823AbfERJsH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 17 May 2019 14:25:53 -0400
-Received: by mail-yw1-f41.google.com with SMTP id w21so3109494ywd.6
-        for <linux-parisc@vger.kernel.org>; Fri, 17 May 2019 11:25:53 -0700 (PDT)
+        Sat, 18 May 2019 05:48:07 -0400
+Received: by mail-pf1-f195.google.com with SMTP id z26so4878234pfg.6
+        for <linux-parisc@vger.kernel.org>; Sat, 18 May 2019 02:48:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:cc;
-        bh=NMD+tguRNcI0Wh532TzpRrR829CcjmIT9kkuNm9M3DM=;
-        b=qmtQjbTxjJasuaGWXk6j9IfzQoUwZFp9C1kGYHdt1maQ1rt21/odkj0Kot5dVBXEAF
-         8lz4duD2yuaaxKZ6a5Ub/3GmMbd+AhmR+LplCklSJM+AWpruwWDPrdgQqfv9UePyvALp
-         SIP/hGI+dzOgRgYZ4zf9TJC7BdMUAGvuFsG80JQXD0GLLB6u6E6yxyRH59P8dmB5w4xK
-         QeOoIA/V5Ry7GCRvEZWC8K2yzfLRp3gpVx2HxNlCIoVNdb2Lff83eEsob1T0XHfAKmn5
-         oxk6jIHPH+ZVP5yx+J0MZJDPkJhXRtr746EC23O5NcIdQGaJMkNW4BNz5oyVsVy3rc77
-         lVsQ==
+        d=joelfernandes.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=3iehYO9/3dGuR87aVQtHa+k708l2fZGn5LAWJUJw+bI=;
+        b=jbJ+akl1Oebe/G2zixKM7D3g8/7+hvJdUcG9NJHMi65TbSXZ/qBbCGH1hwdCWFXEia
+         v5u721IWYUqsCoQEJBSjN5yxaOqNgOIUlFkv4bfOYzMj0px06ZqOaLQiVXwSfSdOtkCb
+         eut+PHPZD1xgK0wVWmv7MP53RNVrElPU0eYIU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:cc;
-        bh=NMD+tguRNcI0Wh532TzpRrR829CcjmIT9kkuNm9M3DM=;
-        b=Ms7STD5HhjVdxJokfYi3d+bbzOFTgU/lSWE5A9eRqrpI2kcwfmYv37G5P+24taAd5n
-         YGXl5cvhhwEp2khrata0HYO6ij25zzD1L2VzSqe2weajt8IVIbYBPR7tfPPBF5Bo9htr
-         NI8hWC7A+gfmCmzNXYYaZ9XG0zbbvJt7DCVXzxLLbxtaft/0T11OASga5xu42fPAOD2E
-         G+GNKIJ314q069oh4oFjgNUwiBCr7Xs5RUThqlPyvtSh/j2hh+efiNyst97ghanqZX0F
-         BFzb6uE+1dToL+sZDDoC+Actqr/LHKLoRzz6Gw1JIn1lwO1r48alooQV//JbUaMJ/yv/
-         uyhQ==
-X-Gm-Message-State: APjAAAWhfjuZmZH4fG4Rg6jggAe931eYDNiXNENvI8A7gGUNwhEHhPDK
-        xDwu8j2XNjLuY6S1mj0/g+Ds8pbh6Ny/md5mmBZ1+DyL
-X-Google-Smtp-Source: APXvYqz8PZbt8KBTFt0njphoViyQ48cafup2Nk33SzMYimWUehwa+cupV0T6ofyKoxQuaDo3lBQY+Z+0e9gPALhY+VA=
-X-Received: by 2002:a0d:d711:: with SMTP id z17mr16491746ywd.128.1558117552704;
- Fri, 17 May 2019 11:25:52 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=3iehYO9/3dGuR87aVQtHa+k708l2fZGn5LAWJUJw+bI=;
+        b=et1WXf/cvCoGZ7rk8Rn/9OjEC2pQ1U9kTXqvgzNyRRC2OW30rrwbUHILBL6cc16YdW
+         DKjJnsObHS87nsX6ayV9lojJLKl6XSdGpodbWTIZifRhjiG9U1B5MmTFaNPI3CxD2M9O
+         4LDZKkVtZnSH2IvQJDCBU1TJwXH0nhKIwE4+cwJEh1qwq1rj+0FpubCJIkghJ3FpDtWR
+         F5QJP0UQojt8TpJhtNRjjJ/JwdcdGpYGxqn5BGRQKd0R8/HJ3FVC2E6gIDQtGqttn5Fc
+         488j7gxP2H8HYzLRBJ4mpW9kMrq3frcKq+2zuiBiwzS14Eokl9R9buuzbjT/hzxwQ3rR
+         8ZbQ==
+X-Gm-Message-State: APjAAAWwrJzzd1zEGp8YMbPGJ2ayYO+RzFMD9yz/v/0gOn22uw6OWFJc
+        TThSGu6KrzdNtxjRI7BeMRZvEQ==
+X-Google-Smtp-Source: APXvYqxxxsUFV7eN5OTaebnkzWDt0kd+NHIjUI5fT4y6JUXpDdAsQ8fqEFtPRx00MMYQQHacYxzw8Q==
+X-Received: by 2002:a63:f813:: with SMTP id n19mr60994204pgh.273.1558172886290;
+        Sat, 18 May 2019 02:48:06 -0700 (PDT)
+Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+        by smtp.gmail.com with ESMTPSA id q4sm14705283pgb.39.2019.05.18.02.48.04
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 18 May 2019 02:48:05 -0700 (PDT)
+Date:   Sat, 18 May 2019 05:48:03 -0400
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Christian Brauner <christian@brauner.io>
+Cc:     jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
+        torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
+        arnd@arndb.de, akpm@linux-foundation.org, cyphar@cyphar.com,
+        dhowells@redhat.com, ebiederm@xmission.com,
+        elena.reshetova@intel.com, keescook@chromium.org,
+        luto@amacapital.net, luto@kernel.org, tglx@linutronix.de,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.orgg, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-api@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        dancol@google.com, serge@hallyn.com, surenb@google.com,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v1 1/2] pid: add pidfd_open()
+Message-ID: <20190516224949.GA15401@localhost>
+References: <20190516135944.7205-1-christian@brauner.io>
 MIME-Version: 1.0
-References: <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
- <f52cf203-c48a-fd04-5827-19903c3a192f@bell.net> <CA+QBN9AZHQHTGFVc21UfROHObKxAZz+bwCPeMf-Tpjn2UHmDNg@mail.gmail.com>
- <66bf0e79-16a4-a411-19ba-cd7d5a232976@bell.net> <CA+QBN9BkXRp2hCd4ADXtWOisHz1Fa0JvWo-0iR56ZTDZiaG=Yg@mail.gmail.com>
- <CA+QBN9CPdm2q9FMzo0nOq__XZ=0Rf98pnXSG9fUjpXaUbq0skA@mail.gmail.com>
- <3fd05da8-3601-a0b3-a212-2c72710520c4@bell.net> <CA+QBN9CgMRFmv+isvH-Y=FCCFwKhmD5_5s5u32xg+wk-gTLK5A@mail.gmail.com>
- <44c01dbf-4b6c-c37d-d5cc-844e5679dea5@bell.net> <CA+QBN9BqufJM+8Jm-x_zMgMo0cLHKxHCxuYPrLgbvGsbdQofvw@mail.gmail.com>
- <20190514130151.GA530@t470p.stackframe.org> <922dc8c9-f401-ed07-ce83-a534fecefb04@bell.net>
- <CA+QBN9Did5PqWkp3rcCN15n+dFd11jqCe+L2q33sTr2d6Ow15g@mail.gmail.com>
- <9e2370bc-95e2-97fe-ebc8-7e6626d06deb@gmx.de> <9e67ee59-4e13-40be-6c1d-2b3409127515@bell.net>
-In-Reply-To: <9e67ee59-4e13-40be-6c1d-2b3409127515@bell.net>
-From:   Carlo Pisani <carlojpisani@gmail.com>
-Date:   Fri, 17 May 2019 20:25:47 +0200
-Message-ID: <CA+QBN9ALLJLmcszQ3Xfhv3UQzgHh11Y3mffJhOG=G7qseMtR7A@mail.gmail.com>
-Subject: Re: C3600, sata controller
-Cc:     linux-parisc <linux-parisc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190516135944.7205-1-christian@brauner.io>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-> > Random failure could happen because of missing calls to DMA syncs in the driver.
+Hi Christian,
 
-we have tested several drivers and cards, these show the same behavior
--a- Highpoint RocketRAID 1640 HTP374 (PCI)
--b- HighPoint RocketRAID 2224Marvell MV88SX6081 (PCI-X)
--c- SYBA-SY-PCX40009Silicon Image Sil3124 (PCI-X)
+For next revision, could you also CC surenb@google.com as well? He is also
+working on the low memory killer. And also suggest CC to
+kernel-team@android.com. And mentioned some comments below, thanks.
 
-I don't know about the HTP374 because it hasn't yet been tested on our
-PowerMac-G4, but about other cards:
-- they perfectly work on the PowerMacG4 MDD
-- they perfectly work on our x86-box (intel core duo)
-- they randomly fail in the same way on the C3600
+On Thu, May 16, 2019 at 03:59:42PM +0200, Christian Brauner wrote:
+[snip]  
+> diff --git a/kernel/pid.c b/kernel/pid.c
+> index 20881598bdfa..4afca3d6dcb8 100644
+> --- a/kernel/pid.c
+> +++ b/kernel/pid.c
+> @@ -38,6 +38,7 @@
+>  #include <linux/syscalls.h>
+>  #include <linux/proc_ns.h>
+>  #include <linux/proc_fs.h>
+> +#include <linux/sched/signal.h>
+>  #include <linux/sched/task.h>
+>  #include <linux/idr.h>
+>  
+> @@ -451,6 +452,55 @@ struct pid *find_ge_pid(int nr, struct pid_namespace *ns)
+>  	return idr_get_next(&ns->idr, &nr);
+>  }
+>  
+> +/**
+> + * pidfd_open() - Open new pid file descriptor.
+> + *
+> + * @pid:   pid for which to retrieve a pidfd
+> + * @flags: flags to pass
+> + *
+> + * This creates a new pid file descriptor with the O_CLOEXEC flag set for
+> + * the process identified by @pid. Currently, the process identified by
+> + * @pid must be a thread-group leader. This restriction currently exists
+> + * for all aspects of pidfds including pidfd creation (CLONE_PIDFD cannot
+> + * be used with CLONE_THREAD) and pidfd polling (only supports thread group
+> + * leaders).
+> + *
+> + * Return: On success, a cloexec pidfd is returned.
+> + *         On error, a negative errno number will be returned.
+> + */
+> +SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
+> +{
+> +	int fd, ret;
+> +	struct pid *p;
+> +	struct task_struct *tsk;
+> +
+> +	if (flags)
+> +		return -EINVAL;
+> +
+> +	if (pid <= 0)
+> +		return -EINVAL;
+> +
+> +	p = find_get_pid(pid);
+> +	if (!p)
+> +		return -ESRCH;
+> +
+> +	ret = 0;
+> +	rcu_read_lock();
+> +	/*
+> +	 * If this returns non-NULL the pid was used as a thread-group
+> +	 * leader. Note, we race with exec here: If it changes the
+> +	 * thread-group leader we might return the old leader.
+> +	 */
+> +	tsk = pid_task(p, PIDTYPE_TGID);
 
-this might mean something. I Don't know.
+Just trying to understand the comment here. The issue is that we might either
+return the new leader, or the old leader depending on the overlap with
+concurrent de_thread right? In either case, we don't care though.
 
-Anyway, even the I/O performance is not good on our C3600: none of the
-above move more than 20Mbyte/sec, while the internal SCSI moves
-60Mbyte/sec.
+I suggest to remove the "Note..." part of the comment since it doesn't seem the
+race is relevant here unless we are doing something else with tsk in the
+function, but if you want to keep it that's also fine. Comment text should
+probably should be 'return the new leader' though.
 
-So I wonder if there is something really really wrong with the DMA:
-it's too slow!
+> +	if (!tsk)
+> +		ret = -ESRCH;
+
+Perhaps -EINVAL?  AFAICS, this can only happen if a CLONE_THREAD pid was
+passed as argument to pidfd_open which is invalid. But let me know what you
+had in mind..
+
+thanks,
+
+ - Joel
+
+> +	rcu_read_unlock();
+> +
+> +	fd = ret ?: pidfd_create(p);
+> +	put_pid(p);
+> +	return fd;
+> +}
+> +
+>  void __init pid_idr_init(void)
+>  {
+>  	/* Verify no one has done anything silly: */
+> -- 
+> 2.21.0
+> 
