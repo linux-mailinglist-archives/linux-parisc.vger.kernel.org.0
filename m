@@ -2,175 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A6FD22304
-	for <lists+linux-parisc@lfdr.de>; Sat, 18 May 2019 12:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 480B0240C9
+	for <lists+linux-parisc@lfdr.de>; Mon, 20 May 2019 21:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729747AbfERKFI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 18 May 2019 06:05:08 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:33200 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729661AbfERKFH (ORCPT
+        id S1725536AbfETTB3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 20 May 2019 15:01:29 -0400
+Received: from westpalmbeachmassagegroup.com ([45.35.221.60]:42953 "EHLO
+        wolfgangdigital.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726125AbfETTB3 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 18 May 2019 06:05:07 -0400
-Received: by mail-ed1-f67.google.com with SMTP id n17so14783168edb.0
-        for <linux-parisc@vger.kernel.org>; Sat, 18 May 2019 03:05:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=kuxvODYNXQX1UADGYTekrXKJHl9GqTdixhHyMJoLFkg=;
-        b=MzXf8JwF72gJj2Pq8n12P+UywZxc2BVXTvpiVUKrEniJVb1LIFP3IbcOliQYISdvq7
-         CigvtYVzwi+8s8BzhGA7JzeYEAEgELRKSJUGXkBeKo3jIoY+k+AIz1NIGNQ3IbqWFvd/
-         pZcoiBfjP1G87UNeXXgpYPrDlzF+SvvAxTS1B9J01RvJsEbVREubCnWtrpwlE+W8uhC8
-         abJb2p1WNSljrqCFAQH7at9A4yXrlhg+5ZrhECybT+pFDJTv4XLPhvmKoEIQriQEdsEE
-         2qeWRYeIhjWVjN8Omnws0ZotrB2BKKuxhO4+QGekj7Ec6VajrUKLl5oRB10tcR/KFGxb
-         SomA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=kuxvODYNXQX1UADGYTekrXKJHl9GqTdixhHyMJoLFkg=;
-        b=fLaLJfeXpL4e7verrIp2GTiT9ps9ZOgX2TNtWgQCc02hxck3PnHMLFf2qzEOXOlhs4
-         sJTjuYNBNxiXNUSWu+iF92FOjnZYUQRbJQ4xe0GIvz3EreQxTxOF9uUsyNn2Ry1o3jSB
-         rOIBEotxrBQMeQMxnll7RIR/XBkU9XbhEVnJW2Q6N98UqJ1RkNTes20A6eEyGQdN4+8H
-         YkDX94WOUkcw0ULWCilXk0ewRQvvzl+rI8Y+4g6iADO3Dyv4Gox5axLUbNx7ConBL+m5
-         eSdUVd5VBeUUvO4tHfy1a2oYAa5wJ6UZUA33deNYav9qSpkTx8GGx+BPNfgOnVGb6Elw
-         Iujw==
-X-Gm-Message-State: APjAAAW00NgEYL7jIb7+bLAwS3WidCMMKWfFqM4hxI1vGqSM2SlFnwDI
-        UtirvBeeO1RXZplbhE3rSD6LEQ==
-X-Google-Smtp-Source: APXvYqyJ8cSwup5T+wLOXgE4G1RIJN3Q14FiCUfotn6HCvE35vO+QFm+mQrHo4U4TisKcq8ZEYMBDQ==
-X-Received: by 2002:a50:b82d:: with SMTP id j42mr63022736ede.186.1558173905455;
-        Sat, 18 May 2019 03:05:05 -0700 (PDT)
-Received: from brauner.io ([46.183.103.8])
-        by smtp.gmail.com with ESMTPSA id y30sm3741910edc.83.2019.05.18.03.04.59
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 18 May 2019 03:05:04 -0700 (PDT)
-Date:   Sat, 18 May 2019 12:04:46 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
-        torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
-        arnd@arndb.de, akpm@linux-foundation.org, cyphar@cyphar.com,
-        dhowells@redhat.com, ebiederm@xmission.com,
-        elena.reshetova@intel.com, keescook@chromium.org,
-        luto@amacapital.net, luto@kernel.org, tglx@linutronix.de,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.orgg, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-api@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        dancol@google.com, serge@hallyn.com, surenb@google.com,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        kernel-team@android.com
-Subject: Re: [PATCH v1 1/2] pid: add pidfd_open()
-Message-ID: <20190518100435.c5bqpcnra53dsr6p@brauner.io>
-References: <20190516135944.7205-1-christian@brauner.io>
- <20190516224949.GA15401@localhost>
+        Mon, 20 May 2019 15:01:29 -0400
+X-Greylist: delayed 3642 seconds by postgrey-1.27 at vger.kernel.org; Mon, 20 May 2019 15:01:29 EDT
+To:     linux-parisc@vger.kernel.org
+Subject: Printing for your logo
+Message-ID: <f4514ad04594968c765978469b8b2fff@esquire.com>
+Date:   Mon, 20 May 2019 14:55:12 +0200
+From:   "Heather" <heather@usblogo.space>
+Reply-To: flashdrive@aliyun.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190516224949.GA15401@localhost>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, May 18, 2019 at 05:48:03AM -0400, Joel Fernandes wrote:
-> Hi Christian,
-> 
-> For next revision, could you also CC surenb@google.com as well? He is also
-> working on the low memory killer. And also suggest CC to
-> kernel-team@android.com. And mentioned some comments below, thanks.
+Hi,
 
-Yip, totally. Just added them both to my Cc list. :)
-(I saw you added Suren manually. I added the Android kernel team now too.)
+I didn’t know if you had received my email from last week?
 
-> 
-> On Thu, May 16, 2019 at 03:59:42PM +0200, Christian Brauner wrote:
-> [snip]  
-> > diff --git a/kernel/pid.c b/kernel/pid.c
-> > index 20881598bdfa..4afca3d6dcb8 100644
-> > --- a/kernel/pid.c
-> > +++ b/kernel/pid.c
-> > @@ -38,6 +38,7 @@
-> >  #include <linux/syscalls.h>
-> >  #include <linux/proc_ns.h>
-> >  #include <linux/proc_fs.h>
-> > +#include <linux/sched/signal.h>
-> >  #include <linux/sched/task.h>
-> >  #include <linux/idr.h>
-> >  
-> > @@ -451,6 +452,55 @@ struct pid *find_ge_pid(int nr, struct pid_namespace *ns)
-> >  	return idr_get_next(&ns->idr, &nr);
-> >  }
-> >  
-> > +/**
-> > + * pidfd_open() - Open new pid file descriptor.
-> > + *
-> > + * @pid:   pid for which to retrieve a pidfd
-> > + * @flags: flags to pass
-> > + *
-> > + * This creates a new pid file descriptor with the O_CLOEXEC flag set for
-> > + * the process identified by @pid. Currently, the process identified by
-> > + * @pid must be a thread-group leader. This restriction currently exists
-> > + * for all aspects of pidfds including pidfd creation (CLONE_PIDFD cannot
-> > + * be used with CLONE_THREAD) and pidfd polling (only supports thread group
-> > + * leaders).
-> > + *
-> > + * Return: On success, a cloexec pidfd is returned.
-> > + *         On error, a negative errno number will be returned.
-> > + */
-> > +SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
-> > +{
-> > +	int fd, ret;
-> > +	struct pid *p;
-> > +	struct task_struct *tsk;
-> > +
-> > +	if (flags)
-> > +		return -EINVAL;
-> > +
-> > +	if (pid <= 0)
-> > +		return -EINVAL;
-> > +
-> > +	p = find_get_pid(pid);
-> > +	if (!p)
-> > +		return -ESRCH;
-> > +
-> > +	ret = 0;
-> > +	rcu_read_lock();
-> > +	/*
-> > +	 * If this returns non-NULL the pid was used as a thread-group
-> > +	 * leader. Note, we race with exec here: If it changes the
-> > +	 * thread-group leader we might return the old leader.
-> > +	 */
-> > +	tsk = pid_task(p, PIDTYPE_TGID);
-> 
-> Just trying to understand the comment here. The issue is that we might either
-> return the new leader, or the old leader depending on the overlap with
-> concurrent de_thread right? In either case, we don't care though.
-> 
-> I suggest to remove the "Note..." part of the comment since it doesn't seem the
-> race is relevant here unless we are doing something else with tsk in the
-> function, but if you want to keep it that's also fine. Comment text should
-> probably should be 'return the new leader' though.
+We manufacture ALL custom LOGO and branded products – over 300,000 to
+choose from.
 
-Nah, I actually removed the comment already independently (cf. see [1]).
+The most asked about product that we make, is the custom printed USB flash
+drives!
+We can print your logo on them and load your digital images, videos and
+files!
 
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git/commit/?h=pidfd_open&id=dcfc98c2d957bf3ac14b06414cb2cf4c673fc297
-> 
-> > +	if (!tsk)
-> > +		ret = -ESRCH;
-> 
-> Perhaps -EINVAL?  AFAICS, this can only happen if a CLONE_THREAD pid was
-> passed as argument to pidfd_open which is invalid. But let me know what you
-> had in mind..
+Here is what we include:
+-Any size memory you need: 64MB up to 128GB
+-We will print your logo on both sides, just ask!
+-Very Low Order Minimums
+-Need them quickly?  Not a problem, we offer Rush Service
 
-Hm, from the kernel's perspective ESRCH is correct but I guess EINVAL is
-nicer for userspace. So I don't have objections to using EINVAL. My
-first version did too I think.
+Email over a copy of your logo and we will create a design mock up for you
+at no cost!
 
-Thanks!
-Christian
+Our higher memory sizes are a really good option right now!
+
+Pricing is low right now, so let us know what you need and we will get you
+a quick quote.
+
+We always offer great rates for schools and nonprofits as well.
+
+Let us know what you would like quoted?
+
+Regards,
+
+Heather Millons
+Custom USB Account Manager
+
