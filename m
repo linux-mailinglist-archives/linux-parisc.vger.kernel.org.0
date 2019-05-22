@@ -2,87 +2,117 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E182825B31
-	for <lists+linux-parisc@lfdr.de>; Wed, 22 May 2019 02:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2440F25F21
+	for <lists+linux-parisc@lfdr.de>; Wed, 22 May 2019 10:12:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728050AbfEVAgI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 21 May 2019 20:36:08 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:40700 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726083AbfEVAgH (ORCPT
+        id S1726770AbfEVIMY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 22 May 2019 04:12:24 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:33754 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728598AbfEVIMY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 21 May 2019 20:36:07 -0400
-Received: by mail-pg1-f195.google.com with SMTP id d30so352553pgm.7;
-        Tue, 21 May 2019 17:36:07 -0700 (PDT)
+        Wed, 22 May 2019 04:12:24 -0400
+Received: by mail-lf1-f66.google.com with SMTP id x132so993881lfd.0
+        for <linux-parisc@vger.kernel.org>; Wed, 22 May 2019 01:12:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=xbyzh1GJJ8m0Sm1ENljBkms7F5sprXDnDoT8XWgkBJE=;
-        b=PKkfQhz87VyLXywfWJU0zQCGTaOjfOsBWtuSXc8bcUmWt3ddU25a0weMhIItrXdrXY
-         a1AeEKPD19hJGoD92FnQM/EJugJaI6h3BfU7BDUvPHlCiyQm5/99wgOvDyKrSxuQKa74
-         Xf0x2HcIDuFdprsYOgziU9IYsdHigA56WAGBLyLFIF79sUV0fDZYrii1BuDEnaUYGU70
-         VoKttFxTbBrpnEy7zt++M9GgkngCSHpsb91dEamU2bXGia1tpm+AeaNu6jlT1MuD8YP1
-         pYgDQC3UJ3eyUWklehfS9FJHlaWf8A9jlEhYqILCeKMwPsRee4cWQPzao65Jt7TOMsHX
-         objw==
+        d=brauner.io; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NinRxNHyDYbCj8IbjH00ChDPuWJUmzxEB5UBBCZfvuk=;
+        b=FQpPrYcaQxCAFGTYiUsPu0qLO+TyOcW7gshxdKkzEdBEoeF7zfGLnQVrcgcr4gKCeX
+         LJ4YXrL36Z8UOIkkUcBOLv8jo3+1wy2Zrr1Gv+mEl7u90rBwnDVcVlXzHgwabis+F7I/
+         dlJlteIhWCGDFh11b+aiyTTGML6DsZQmYr7FjOpjo+237NiSY/93FSEYu5SmcuC+kMHi
+         w+QbDlfq/QnsLdgPfA6Jf+xdMdism6B4eELfwRuNPZvO4gmtKOqxk/k31Xt7g6ek0i6A
+         6O4E/le0sudnktBxl+9AFEIeQt8N5n9ZAVs90K2h9eXQLV3Rz/8qfSLtahw9cvbBcJ3h
+         1JTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=xbyzh1GJJ8m0Sm1ENljBkms7F5sprXDnDoT8XWgkBJE=;
-        b=BUUz30EBKXNaiKWGD2wKm57EOBBUnwR3orUuNkVtBmhQqCEFh1f7fgP2fQjtFDLifX
-         2VjQ7UB9/VmPGRZazw264Dl0RQG12SXhzhm9di2awlx0pkDH9kFv4/6VBB28q799yVvJ
-         S47orEtuDsQblpH3bKXylqYyJl5TlAmYSmhqR0cp8bQM2/CJBK7DRS5AGs8jvI3mOift
-         BWq27xq3OJsEiE+ElIm3THHEBziQUkhw4enRkdUnswGMzKzNX6pf5doscP+Z6anMCzcx
-         oiFWTw1Pgdd+wq5bk6byQ4tecrRyIFUt3+UGmzmIqyEKEwgTBU9YORt/YMgyKWaZjWqk
-         xjuQ==
-X-Gm-Message-State: APjAAAXrE7upY4VW6BDJsY8bv0AVrhx9z2tCeNaejPsLZHmQAMmRpMT5
-        0S8Cw9GKVkYKFWQcZWGsa6Q=
-X-Google-Smtp-Source: APXvYqyWEM2ys6h9C/EWx0uwlzEjQDxreysX5yp85RmjiTBxeSOaRxKQLGuzPsoBvtLxYOIjQeKCbw==
-X-Received: by 2002:a65:4649:: with SMTP id k9mr87616022pgr.239.1558485367175;
-        Tue, 21 May 2019 17:36:07 -0700 (PDT)
-Received: from localhost ([2601:640:4:f15a:d07:291f:4ccd:776a])
-        by smtp.gmail.com with ESMTPSA id u6sm33092780pfa.1.2019.05.21.17.36.06
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 21 May 2019 17:36:06 -0700 (PDT)
-From:   Yury Norov <yury.norov@gmail.com>
-X-Google-Original-From: Yury Norov <ynorov@marvell.com>
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Yury Norov <ynorov@marvell.com>, Qian Cai <cai@lca.pw>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH] slab: cleanup after /proc/slab_allocators removal
-Date:   Tue, 21 May 2019 17:36:04 -0700
-Message-Id: <20190522003604.28236-1-ynorov@marvell.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NinRxNHyDYbCj8IbjH00ChDPuWJUmzxEB5UBBCZfvuk=;
+        b=JwLxLNwOAPKhFgTaFPtEPLVfVQ8pwOTDX1VPJVTFVXFODqMuiwSmaMBih7e4ivJyVX
+         EICfFh1UF3mrYDUdYKvu3vmv6Py5Jzg9E+fiwDxu+Ru/dCiwVrEwdoyN2OjvZDaM0qzA
+         FL/tz9qLDGQ5R08CEp06cf0fSwX35jdEdFUSbE+fJTTSj+FR2Sp5Cby7NC7Q+XsOwV6K
+         zH8DOV/9su1DX1idyznNQiIBJOhrFUBhSei/zVW8SjzzG2w4nDcp6LYrQvJWCJ3Owupo
+         L5xBanpBugNtiAXHtcUb5J8+El5Fb3JWM4Cwh5gFQ9G9LHCkphQrqWTYYBmUnUsVBNFA
+         gfdw==
+X-Gm-Message-State: APjAAAXRSctjMQ1b9nZReDxXBEG5kh8+y4J5JdpCMW+g9x6JB+/2txXH
+        SBfkLyhlVdFMv9NGrkr4ACsQPySowWN0gspyXlfhXA==
+X-Google-Smtp-Source: APXvYqx7pLLI28SrC6KCXMaRxdNQfwff8OtpKLPW6FHDJY0UodmrushWU4y7kAd+10dOgbbxHnK3LHfXY1UCm8GAhHE=
+X-Received: by 2002:a05:6512:1c1:: with SMTP id f1mr4469627lfp.125.1558512742198;
+ Wed, 22 May 2019 01:12:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190521150006.GJ17978@ZenIV.linux.org.uk> <20190521113448.20654-1-christian@brauner.io>
+ <28114.1558456227@warthog.procyon.org.uk> <20190521164141.rbehqnghiej3gfua@brauner.io>
+ <CAHk-=wgtHm4t71oKbykE=awiVv2H2wCy8yH0L_FsyhHQ5OSO+Q@mail.gmail.com>
+In-Reply-To: <CAHk-=wgtHm4t71oKbykE=awiVv2H2wCy8yH0L_FsyhHQ5OSO+Q@mail.gmail.com>
+From:   Christian Brauner <christian@brauner.io>
+Date:   Wed, 22 May 2019 10:12:11 +0200
+Message-ID: <CAHrFyr4NV_5Z7TRSXTaurd4KCTLiHqKb47dN=bdY46HiL9ZY3Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] open: add close_range()
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Jann Horn <jannh@google.com>,
+        Florian Weimer <fweimer@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
+        Todd Kjos <tkjos@android.com>,
+        "Dmitry V. Levin" <ldv@altlinux.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-ia64@vger.kernel.org,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Yury Norov <ynorov@marvell.com>
+On Tue, May 21, 2019 at 10:23 PM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Tue, May 21, 2019 at 9:41 AM Christian Brauner <christian@brauner.io> wrote:
+> >
+> > Yeah, you mentioned this before. I do like being able to specify an
+> > upper bound to have the ability to place fds strategically after said
+> > upper bound.
+>
+> I suspect that's the case.
+>
+> And if somebody really wants to just close everything and uses a large
+> upper bound, we can - if we really want to - just compare the upper
+> bound to the file table size, and do an optimized case for that. We do
+> that upper bound comparison anyway to limit the size of the walk, so
+> *if* it's a big deal, that case could then do the whole "shrink
+> fdtable" case too.
 
-The commit 7878c231dae0 ("slab: remove /proc/slab_allocators")
-removes DEBUG_SLAB_LEAK config everywhere but a parisc config.
-It doesn't look intentional. Fix it.
+Makes sense.
 
-Signed-off-by: Yury Norov <ynorov@marvell.com>
----
- arch/parisc/configs/c8000_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+>
+> But I don't believe it's worth optimizing for unless somebody really
+> has a load where that is shown to be a big deal.   Just do the silly
+> and simple loop, and add a cond_resched() in the loop, like
+> close_files() does for the "we have a _lot_ of files open" case.
 
-diff --git a/arch/parisc/configs/c8000_defconfig b/arch/parisc/configs/c8000_defconfig
-index 088ab948a5ca..900b00084953 100644
---- a/arch/parisc/configs/c8000_defconfig
-+++ b/arch/parisc/configs/c8000_defconfig
-@@ -225,7 +225,6 @@ CONFIG_UNUSED_SYMBOLS=y
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DEBUG_SLAB=y
--CONFIG_DEBUG_SLAB_LEAK=y
- CONFIG_DEBUG_MEMORY_INIT=y
- CONFIG_DEBUG_STACKOVERFLOW=y
- CONFIG_PANIC_ON_OOPS=y
--- 
-2.17.1
+Ok. I will resend a v1 later with the cond_resched() logic you and Al
+suggested added.
 
+Thanks!
+Christian
