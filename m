@@ -2,117 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2440F25F21
-	for <lists+linux-parisc@lfdr.de>; Wed, 22 May 2019 10:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98159266B7
+	for <lists+linux-parisc@lfdr.de>; Wed, 22 May 2019 17:12:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726770AbfEVIMY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 22 May 2019 04:12:24 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:33754 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728598AbfEVIMY (ORCPT
+        id S1729818AbfEVPMO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 22 May 2019 11:12:14 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:43219 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729634AbfEVPMO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 22 May 2019 04:12:24 -0400
-Received: by mail-lf1-f66.google.com with SMTP id x132so993881lfd.0
-        for <linux-parisc@vger.kernel.org>; Wed, 22 May 2019 01:12:23 -0700 (PDT)
+        Wed, 22 May 2019 11:12:14 -0400
+Received: by mail-ua1-f65.google.com with SMTP id u4so973251uau.10
+        for <linux-parisc@vger.kernel.org>; Wed, 22 May 2019 08:12:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NinRxNHyDYbCj8IbjH00ChDPuWJUmzxEB5UBBCZfvuk=;
-        b=FQpPrYcaQxCAFGTYiUsPu0qLO+TyOcW7gshxdKkzEdBEoeF7zfGLnQVrcgcr4gKCeX
-         LJ4YXrL36Z8UOIkkUcBOLv8jo3+1wy2Zrr1Gv+mEl7u90rBwnDVcVlXzHgwabis+F7I/
-         dlJlteIhWCGDFh11b+aiyTTGML6DsZQmYr7FjOpjo+237NiSY/93FSEYu5SmcuC+kMHi
-         w+QbDlfq/QnsLdgPfA6Jf+xdMdism6B4eELfwRuNPZvO4gmtKOqxk/k31Xt7g6ek0i6A
-         6O4E/le0sudnktBxl+9AFEIeQt8N5n9ZAVs90K2h9eXQLV3Rz/8qfSLtahw9cvbBcJ3h
-         1JTg==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=SAoSdsefzzCmPOTzwU+Ovh/O9jS+esAN3o944dSuqEw=;
+        b=ftgebqZxYXwCvKhP1I1wkuHqyxdl+yAZtg4Wg6pHnk937Q/68EGgYRaYm3JSzevOwC
+         nepkOTWHjJ4vRRDmNaLdB2GGCQCXoDbh+5eiTWMi9Jt47BM2Pq4v7VDoZwPknmsAaeWC
+         dLqeX5W/Jx1uSt2OPrWq5UWJdU/3WW5aKGvSRrCm/fLhw79WQiJMpYUNKJhPzktNYb8Q
+         wjfHHHhgG/REPaEN4YHe4oxdavG6ZK6RQYQRN7ymFISA/7nsLw3bCOsvvTNifIqH1zE4
+         6m6F3EXNAZMxwxjwzPbuybGbhOPErnDnTrOFtcedXRFp1RZduXX7Oz5LRqx0xSToJLeY
+         hNlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NinRxNHyDYbCj8IbjH00ChDPuWJUmzxEB5UBBCZfvuk=;
-        b=JwLxLNwOAPKhFgTaFPtEPLVfVQ8pwOTDX1VPJVTFVXFODqMuiwSmaMBih7e4ivJyVX
-         EICfFh1UF3mrYDUdYKvu3vmv6Py5Jzg9E+fiwDxu+Ru/dCiwVrEwdoyN2OjvZDaM0qzA
-         FL/tz9qLDGQ5R08CEp06cf0fSwX35jdEdFUSbE+fJTTSj+FR2Sp5Cby7NC7Q+XsOwV6K
-         zH8DOV/9su1DX1idyznNQiIBJOhrFUBhSei/zVW8SjzzG2w4nDcp6LYrQvJWCJ3Owupo
-         L5xBanpBugNtiAXHtcUb5J8+El5Fb3JWM4Cwh5gFQ9G9LHCkphQrqWTYYBmUnUsVBNFA
-         gfdw==
-X-Gm-Message-State: APjAAAXRSctjMQ1b9nZReDxXBEG5kh8+y4J5JdpCMW+g9x6JB+/2txXH
-        SBfkLyhlVdFMv9NGrkr4ACsQPySowWN0gspyXlfhXA==
-X-Google-Smtp-Source: APXvYqx7pLLI28SrC6KCXMaRxdNQfwff8OtpKLPW6FHDJY0UodmrushWU4y7kAd+10dOgbbxHnK3LHfXY1UCm8GAhHE=
-X-Received: by 2002:a05:6512:1c1:: with SMTP id f1mr4469627lfp.125.1558512742198;
- Wed, 22 May 2019 01:12:22 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=SAoSdsefzzCmPOTzwU+Ovh/O9jS+esAN3o944dSuqEw=;
+        b=DgvwpGCT1qNojblM2k1mr7IRqOFJHQ1lt5EJ4tA0cwsxOkPvxSnUzcScRXvX+mdHwt
+         RtWz2g6Z4ccFj4FrNJ3wSO7Db+YZ7/FPr/AcPLPGNaWkCRub910/W83+fNmvAsO9PgUe
+         Lkr64WZzbUUMbCCoPoq5syAF3pLKSZ5qV947W5M67au9evys+ohg8BNSeMgWmItPHn9P
+         pbfJVpx106zmE/QZ98BA3+V7MpzxTzm+vl125VywXixtKVrqk41Ep1ST3L7VKxJFrLwU
+         JXnE9yXDY2RVrTLW0If8cBpa8G7HhNjWwlf3KAy0ravEP3IUJVcuC0TbzRIZLz/S8pGj
+         DXGw==
+X-Gm-Message-State: APjAAAVb8/v6A6whT0qwx+mZHmYb1vL1gbiAzBYa0AtLkXJGyfKY5fzt
+        z+Ts/PTesX5rowCGQdHuCosLBh1G2tDQrfqitYY=
+X-Google-Smtp-Source: APXvYqwMcKz9zDLc4Yx0LesOA3XkHl4j+0qCCOf9hAZI3nHIzaOFkkpolDGAYnaNoijHpewOymme4pa8T65pkj6mGiM=
+X-Received: by 2002:ab0:644d:: with SMTP id j13mr14573960uap.98.1558537933015;
+ Wed, 22 May 2019 08:12:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190521150006.GJ17978@ZenIV.linux.org.uk> <20190521113448.20654-1-christian@brauner.io>
- <28114.1558456227@warthog.procyon.org.uk> <20190521164141.rbehqnghiej3gfua@brauner.io>
- <CAHk-=wgtHm4t71oKbykE=awiVv2H2wCy8yH0L_FsyhHQ5OSO+Q@mail.gmail.com>
-In-Reply-To: <CAHk-=wgtHm4t71oKbykE=awiVv2H2wCy8yH0L_FsyhHQ5OSO+Q@mail.gmail.com>
-From:   Christian Brauner <christian@brauner.io>
-Date:   Wed, 22 May 2019 10:12:11 +0200
-Message-ID: <CAHrFyr4NV_5Z7TRSXTaurd4KCTLiHqKb47dN=bdY46HiL9ZY3Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] open: add close_range()
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Jann Horn <jannh@google.com>,
-        Florian Weimer <fweimer@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
-        Todd Kjos <tkjos@android.com>,
-        "Dmitry V. Levin" <ldv@altlinux.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>
+Received: by 2002:a67:8a88:0:0:0:0:0 with HTTP; Wed, 22 May 2019 08:12:12
+ -0700 (PDT)
+Reply-To: eddywilliam0002@gmail.com
+From:   eddy william <missdonnahistory@gmail.com>
+Date:   Wed, 22 May 2019 17:12:12 +0200
+Message-ID: <CACROPfGkCKj=+c0drNdu-PMOmFBkncpy06__S6egq_S6KxY=ww@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, May 21, 2019 at 10:23 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Tue, May 21, 2019 at 9:41 AM Christian Brauner <christian@brauner.io> wrote:
-> >
-> > Yeah, you mentioned this before. I do like being able to specify an
-> > upper bound to have the ability to place fds strategically after said
-> > upper bound.
->
-> I suspect that's the case.
->
-> And if somebody really wants to just close everything and uses a large
-> upper bound, we can - if we really want to - just compare the upper
-> bound to the file table size, and do an optimized case for that. We do
-> that upper bound comparison anyway to limit the size of the walk, so
-> *if* it's a big deal, that case could then do the whole "shrink
-> fdtable" case too.
+Mijn naam is Eddy William. Ik ben van beroep advocaat. Ik wil je aanbieden
+nabestaanden van mijn cli=C3=ABnt. Je ervaart de som van ($ 14,2 miljoen)
+dollars die mijn cli=C3=ABnt voor zijn overlijden op de bank heeft achterge=
+laten.
 
-Makes sense.
+Mijn klant is een burger van jouw land die stierf in auto-ongeluk met zijn =
+vrouw
+en alleen zoon. Ik krijg 50% van het totale fonds en 50% wel
+voor jou zijn.
 
->
-> But I don't believe it's worth optimizing for unless somebody really
-> has a load where that is shown to be a big deal.   Just do the silly
-> and simple loop, and add a cond_resched() in the loop, like
-> close_files() does for the "we have a _lot_ of files open" case.
+Neem hier voor meer informatie contact op met mijn priv=C3=A9mail:
+eddywilliam0002@gmail.com
 
-Ok. I will resend a v1 later with the cond_resched() logic you and Al
-suggested added.
+Bij voorbaat hartelijk dank,
+Eddy William,
 
-Thanks!
-Christian
+
+
+Hello
+
+My name is Eddy William I am a lawyer by profession. I wish to offer you
+the next of kin to my client. You will inherit the sum of ($14.2 Million)
+dollars my client left in the bank before his death.
+
+My client is a citizen of your country who died in auto crash with his wife
+and only son. I will be entitled with 50% of the total fund while 50% will
+be for you.
+
+Please contact my private email here for more details:eddywilliam0002@gmail=
+.com
+
+Many thanks in advance,
+Mr.Eddy William,
