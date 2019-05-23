@@ -2,100 +2,68 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57B88283CA
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2019 18:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CACC28CA9
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2019 23:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730913AbfEWQez (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 23 May 2019 12:34:55 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:42188 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731336AbfEWQex (ORCPT
+        id S2388166AbfEWVst (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 23 May 2019 17:48:49 -0400
+Received: from mail-yw1-f42.google.com ([209.85.161.42]:35599 "EHLO
+        mail-yw1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388136AbfEWVst (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 23 May 2019 12:34:53 -0400
-Received: by mail-io1-f66.google.com with SMTP id g16so5364746iom.9
-        for <linux-parisc@vger.kernel.org>; Thu, 23 May 2019 09:34:53 -0700 (PDT)
+        Thu, 23 May 2019 17:48:49 -0400
+Received: by mail-yw1-f42.google.com with SMTP id k128so2859325ywf.2
+        for <linux-parisc@vger.kernel.org>; Thu, 23 May 2019 14:48:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Iz31yxamDJ4SLEgYHA+H3kjkT5XCb4Zp6/gfezC2Qt0=;
-        b=br9pbADirR+994GWUgAiKh+WIakMAmwjJW/UntS6Vn0UL+m+lo1dO/FTn+atO0TVUF
-         WdA8FOmw4uGU2Bt+yb06vyTwDWlE5VoB/+44IeS//dPUmBtjE65Z0H9wy+5UAvWjM+bU
-         m+bJeRTuOymmNkxLknco9nJkzLY7TqLdw6esosEZQQvPH6sHVcKReo2wvVHJQn0pMBUf
-         OX51ptx8FqYA5dBO+dTICUUbyHUOH7QuXKfV6eA1u0UfOiAAh+Mf72MaHLSqmppeHekG
-         sh6nJDFdLtpjiUyCOrk9t/mGk5+b5qcprSS2UKQvflivDDj11xTdb5tgLHk7Hl+UCr+t
-         3OUA==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kBubKVN61qvQJRdZnQNB4Gq4Rrx5XcT1d5yEYdRoiCk=;
+        b=lKMeHcU2Sk/30/eD0qLhyI9A6X8mcj9t9vsxZlybXUy+lsm1j1K//mFNqIso2O71XN
+         XnGrpkasUfx0+vuocuZaSw1qqTUb/URHyrbrLbfj5ydX3A5ObbcP8ojQnQ5eoI9MCiAS
+         sSF56AaEIVHq22Nh1N2NPgm9Abi8wf0zL3UO986SaCyk9/3qOfV1YygLv+K3hZwlRnln
+         TrKpMDMCJxHcJMMvU70u4wRWjf+cGHCgfmJEfHKlR2pe9phrOefvBM4q8arM26JyAaRI
+         rVAvRLv/+9XnKw/spHigK4p7Q7pSZf8fPKYpZI711WE/wNyUhRgpn8g0+bZ/crd8GZ74
+         rRyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Iz31yxamDJ4SLEgYHA+H3kjkT5XCb4Zp6/gfezC2Qt0=;
-        b=uCIsAhAqZxvMoYxx/1Fxt/QjlnZi4LkY+y74PsKm4iHIqH9GuwC3p8r6rayzkpCb/V
-         9muZpTgCOFsnEYS7QWs+HaHXBPcbu32inrgVOAGBlsEP0ROYQYa3QEDOQR8quk5Hk7VJ
-         0ZRJHbD3DtAK1ofXh9FkGb7ci5QWg5YF1zHeIY7a8nGmtTwbHGKavHsZkBsMAoD2YA4U
-         u9SQ4+b1ixOxPaFdlZJTG2t/wPWPlaZPx+smR7WqZSgtrB9TfzMLSfDJFJATbE5Decfg
-         ZvKTv0MzMd1h70MfLLawQF2bdcsamIJspb3gWoGTU8nBs31FIB2g0rlDv8HqABFefZif
-         4rdQ==
-X-Gm-Message-State: APjAAAUQOo8zxuA8BFBGTIyyV48UECeAa/X5IqGMGsdoA+LfFnPGzjGN
-        E05U+G/Vhls7pe8zyRWRHAN98w==
-X-Google-Smtp-Source: APXvYqxbigL0wIoR0wevysC4IvW0XTy55FvFJYU3fuOueOdFBp/HEFetU0vD2YZ0NHaH83jARAO6OQ==
-X-Received: by 2002:a5e:8e4d:: with SMTP id r13mr57452598ioo.300.1558629293065;
-        Thu, 23 May 2019 09:34:53 -0700 (PDT)
-Received: from brauner.io ([172.56.12.187])
-        by smtp.gmail.com with ESMTPSA id i25sm8797750ioi.42.2019.05.23.09.34.43
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 23 May 2019 09:34:52 -0700 (PDT)
-Date:   Thu, 23 May 2019 18:34:41 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        torvalds@linux-foundation.org, fweimer@redhat.com,
-        jannh@google.com, tglx@linutronix.de, arnd@arndb.de,
-        shuah@kernel.org, dhowells@redhat.com, tkjos@android.com,
-        ldv@altlinux.org, miklos@szeredi.hu, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH v2 1/2] open: add close_range()
-Message-ID: <20190523163439.56ucetlt6duvnhdj@brauner.io>
-References: <20190523154747.15162-1-christian@brauner.io>
- <20190523154747.15162-2-christian@brauner.io>
- <20190523162004.GC23070@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kBubKVN61qvQJRdZnQNB4Gq4Rrx5XcT1d5yEYdRoiCk=;
+        b=svHewNJCu7L2WcVqeLPxvOAYZehpv/XT5WNhf5vfVOyv1PzxmMa/WMsTEyB8O+Lx0S
+         0PeYHDsl2fCoA+MWATffBrEFJ/tuToalv28EkwaOdvXjt15BhpOGJWJNYj2ZweEe/jlB
+         XHaWGHt+xwANUy13LSaiZEYO0y/G8240ETgL4nIxc1v89bluPwNAEUUyY5GJ78FuPiCY
+         1ahykERTosoTsoRmQTZhrcw5ZPXzpjyymxTXht2doIb77VgvQdbrd/pRxwCykgsBbNXA
+         uSjy+zgL9jkELRjDmu2meWs1PULFLlQfl/THCkn33NPy3wTHRxD6I2RS8syge7RtBcsU
+         prqA==
+X-Gm-Message-State: APjAAAWvBwRRBOmyAopyeOECZ87ZYs9o5RbUkqSxuZW0JBjb9s97LZud
+        ONrLpXlrAyk+DZ3cKOVeW7zF//wARfw7yCO8ems=
+X-Google-Smtp-Source: APXvYqwHK2Tdj0fndrnT5aD8qKYBhmT7S5J8Pwev/nbKeJCtb7fWmgozPwwhehZSkwDWNZot1VllBN/xp17HTPOHXBg=
+X-Received: by 2002:a81:a189:: with SMTP id y131mr9953386ywg.245.1558648128296;
+ Thu, 23 May 2019 14:48:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190523162004.GC23070@redhat.com>
-User-Agent: NeoMutt/20180716
+References: <CA+QBN9Cg6QAe5W3vS3dere=K53NAHDrMb9FN5StEfNkC=RTGqg@mail.gmail.com>
+ <CA+QBN9B7B39NARTNYan2wrhRLSEAhxukTy0B6yWRMUxgLJmuNA@mail.gmail.com>
+ <CAP6odjiqDyVB3VyavSHniShe3Mq3KWGdNOWeTmxQ-5q-NrOjbQ@mail.gmail.com>
+ <21dcf273-929a-6fb1-7978-37145ea62301@bell.net> <CAP6odjiwmUXd8m2w-wf7R4t+qT60xiA5bE79RfBMP07xdvCpaw@mail.gmail.com>
+ <7d252322-51dc-07ff-8843-b28cdc5a6762@bell.net>
+In-Reply-To: <7d252322-51dc-07ff-8843-b28cdc5a6762@bell.net>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Thu, 23 May 2019 23:48:48 +0200
+Message-ID: <CA+QBN9DJ2gVwERTs-K=C+EG7mPOpf1OM63VndSNcXAV3BgxzeQ@mail.gmail.com>
+Subject: Re: HPPA problems with the PCI
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     Grant Grundler <grantgrundler@gmail.com>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, May 23, 2019 at 06:20:05PM +0200, Oleg Nesterov wrote:
-> On 05/23, Christian Brauner wrote:
-> >
-> > +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
-> > +{
-> > +	unsigned int cur_max;
-> > +
-> > +	if (fd > max_fd)
-> > +		return -EINVAL;
-> > +
-> > +	rcu_read_lock();
-> > +	cur_max = files_fdtable(files)->max_fds;
-> > +	rcu_read_unlock();
-> > +
-> > +	/* cap to last valid index into fdtable */
-> > +	max_fd = max(max_fd, (cur_max - 1));
->                  ^^^
-> 
-> Hmm. min() ?
+I have just recompiled the kernel with the SMP support and tested the
+sil24 driver.
+No dice, it has failed again.
 
-Yes, thanks! Massive brainf*rt on my end, sorry.
-
-Christian
+I have a PCI64 SCSI card and a SCSI U160 harddrive, so I am going to
+test it with the same workbench that I am using for testing SATA.
