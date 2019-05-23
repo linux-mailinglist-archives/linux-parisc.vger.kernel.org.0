@@ -2,155 +2,133 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9604027FE1
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2019 16:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E889A281A9
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2019 17:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730904AbfEWOhi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 23 May 2019 10:37:38 -0400
-Received: from mail-it1-f195.google.com ([209.85.166.195]:54506 "EHLO
-        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730881AbfEWOhh (ORCPT
+        id S1731094AbfEWPs6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 23 May 2019 11:48:58 -0400
+Received: from mail-it1-f194.google.com ([209.85.166.194]:36376 "EHLO
+        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730951AbfEWPs6 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 23 May 2019 10:37:37 -0400
-Received: by mail-it1-f195.google.com with SMTP id h20so10064609itk.4
-        for <linux-parisc@vger.kernel.org>; Thu, 23 May 2019 07:37:37 -0700 (PDT)
+        Thu, 23 May 2019 11:48:58 -0400
+Received: by mail-it1-f194.google.com with SMTP id e184so9259953ite.1
+        for <linux-parisc@vger.kernel.org>; Thu, 23 May 2019 08:48:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=DahHECUK2AF1J12XBLs2bKF9FH9rjTuzkU7KMfzCZKg=;
-        b=YbCZESmbvCwAQCtgJ5vNBW4fzZ0rmez/RQRMkvQ2gBf8m2vQZ7pZbh6Bnf/yhxyKVI
-         53LigfqSgxhhyV3cJwQAxeBYmchcYj4+L6sb6hM6ANhJ3YzqD5nVaV8VUWyXmRfwM0Js
-         s0qbXNd2fPwKrwA6FMsqrbW+O3oe4jc4dfMVogKbtgea8qKxT3IcnEz6YQoGlNR0pY3m
-         WBeNhDCmn5OB53HQT4TWeQ+Gay0cWaoJ8RQtor16rRwite01Brwb3BNAlCJ/+wg1v28J
-         HJ9HsyrSvI8gu0Uy/czVhZ9L/NkkHH+hj2hN0LXZm7YA7qWQlzwpnrEcctNdcL7rOP5V
-         pe4A==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qdhvyBV5eCUYlrhtprSXvsuKWr+yBvkV1a8SbE6AS60=;
+        b=PHFjvm23caZGYr4uiNYmJAibVBzXG/G68GWrR3KEL+4ubMa1yG52PY5KbD5HgQ94DS
+         UYyKxymb5fEjGeKdBKbPovN4lf1X37+9FR6/IKpeONALi6Pb6Ba6dCiyKGGLwyh/Thfo
+         TBBGEFZCAqITH+9ysPxJvr8e5RDKlYMuQAQ4Vb/7fDfahu0Q9wvBEskpiiSkZAzXwDg0
+         HO3ghqNF44h7BZNoCoOH48Br+sXnnPudMYWxblMnUowckCT/7+BYIAVlMi8aQoMmK9+g
+         efMaCVYPokznZ4LdQiFStyRq1hGeIabBZ6GksyGUTQGFowjocl7wKgtLYpmWvu2C2iki
+         T5Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=DahHECUK2AF1J12XBLs2bKF9FH9rjTuzkU7KMfzCZKg=;
-        b=NTNdxS3MNE0+bNu8F2sZaJ9UTujbQrZV32zs3IjlpQCX8i+gbmSqkyhaeIU7BELvFL
-         78B0/EMuHWjd9l/QmpZEDrTFIQhIbr8CbYUTP3X5Sx/ZKCx0zVbpPwWW2vZgUwYMxxxk
-         sb42JXqLS15X6onVx9G5TO6XzjNI0ZHNw51wzgzUFF0F9hDtSt1uLIwe2yNPrBfqdkuL
-         bi+3nPoX7tra9oTC1/CsZmV/zlpza3Ud9rBjKFfV6vpiqESL770tTC7onnG9lZQzuxNp
-         d/cfVkGB6Ym5OzXq/Gy3MQQWvMsQAIkVOTb0dGDy9u18XcuzcNLo5nYGZJ4JjJFUI4bV
-         sCsA==
-X-Gm-Message-State: APjAAAWfhbQQZ54xnyheRk4LqFBVx5vxfFJD/fnSDVoBekmROSaS8D6k
-        4KpeDkJpz6QDeYldwLRD1qZ7TQ==
-X-Google-Smtp-Source: APXvYqxCsu1nKhbS62harFEpfvgZRg7+s7a4b8LII1alkH5yuzE7xzETotobVwglIakCJJls3jgHwg==
-X-Received: by 2002:a02:9381:: with SMTP id z1mr24471487jah.130.1558622256966;
-        Thu, 23 May 2019 07:37:36 -0700 (PDT)
-Received: from brauner.io ([172.56.12.187])
-        by smtp.gmail.com with ESMTPSA id l186sm4603784itb.5.2019.05.23.07.37.29
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 23 May 2019 07:37:36 -0700 (PDT)
-Date:   Thu, 23 May 2019 16:37:26 +0200
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qdhvyBV5eCUYlrhtprSXvsuKWr+yBvkV1a8SbE6AS60=;
+        b=KuUNdwO1dLTvh7QAa4lYTfJd36oW3lAY5dRNc7f/enVjM6qULmN6SkBxlynvVLKDDU
+         oEd4bjys3hW4LzCul7BiRnEQ6hWm9xtprMhTuymBrkrrO+EtcZcnU69wVyGlVPhoihya
+         Q41uocIRyVt8qtoQf2k9fgGkPdPprJeBzCKxaWO+ReUzjJSDYOAITZRh6Ubf5amhD/pc
+         YqiUdO7TOqrpnSRYFdVYHlNxDE1isRXEcLveJpDxpL523wKc6b2G6fR2pGNw/IJFP2jO
+         9aWBG1oRmcosBlDZmUvq7LTXXvRVRWv2saUsBMPH2WePEfRHq+KCuGzkCRnmgkWAhjQ4
+         TD3w==
+X-Gm-Message-State: APjAAAUqFkgezVmqb7UhaZzbFX0eIgCHo4Nf8WfVDF8mNBifRMwtRg5m
+        LPZbXNzq/BLwTu0MEEb+daEGFg==
+X-Google-Smtp-Source: APXvYqys6QK/iakUDj+Sh+Ogl2zyh29ySOoi4FUzRp4yc77NrnF9Vcc9AkfEItA9paeABX2UyF+z5Q==
+X-Received: by 2002:a24:6212:: with SMTP id d18mr13266189itc.2.1558626537435;
+        Thu, 23 May 2019 08:48:57 -0700 (PDT)
+Received: from localhost.localdomain ([172.56.12.187])
+        by smtp.gmail.com with ESMTPSA id v1sm9124939iob.56.2019.05.23.08.48.49
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 23 May 2019 08:48:56 -0700 (PDT)
 From:   Christian Brauner <christian@brauner.io>
-To:     Jann Horn <jannh@google.com>
-Cc:     Oleg Nesterov <oleg@redhat.com>, Al Viro <viro@zeniv.linux.org.uk>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Todd Kjos <tkjos@android.com>,
-        "Dmitry V. Levin" <ldv@altlinux.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
+To:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        torvalds@linux-foundation.org, fweimer@redhat.com
+Cc:     jannh@google.com, oleg@redhat.com, tglx@linutronix.de,
+        arnd@arndb.de, shuah@kernel.org, dhowells@redhat.com,
+        tkjos@android.com, ldv@altlinux.org, miklos@szeredi.hu,
         linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
         linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [PATCH v1 1/2] open: add close_range()
-Message-ID: <20190523143725.y67czx4jxsy6yqrj@brauner.io>
-References: <20190522155259.11174-1-christian@brauner.io>
- <20190522165737.GC4915@redhat.com>
- <20190523115118.pmscbd6kaqy37dym@brauner.io>
- <CAG48ez0Uq2GQnQsuPkNrDdJVku_6GPeZ_5F_-5J3iy2CULr0_Q@mail.gmail.com>
+        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, x86@kernel.org,
+        Christian Brauner <christian@brauner.io>
+Subject: [PATCH v2 0/2] close_range()
+Date:   Thu, 23 May 2019 17:47:45 +0200
+Message-Id: <20190523154747.15162-1-christian@brauner.io>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAG48ez0Uq2GQnQsuPkNrDdJVku_6GPeZ_5F_-5J3iy2CULr0_Q@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, May 23, 2019 at 04:32:14PM +0200, Jann Horn wrote:
-> On Thu, May 23, 2019 at 1:51 PM Christian Brauner <christian@brauner.io> wrote:
-> [...]
-> > I kept it dumb and was about to reply that your solution introduces more
-> > code when it seemed we wanted to keep this very simple for now.
-> > But then I saw that find_next_opened_fd() already exists as
-> > find_next_fd(). So it's actually not bad compared to what I sent in v1.
-> > So - with some small tweaks (need to test it and all now) - how do we
-> > feel about?:
-> [...]
-> > static int __close_next_open_fd(struct files_struct *files, unsigned *curfd, unsigned maxfd)
-> > {
-> >         struct file *file = NULL;
-> >         unsigned fd;
-> >         struct fdtable *fdt;
-> >
-> >         spin_lock(&files->file_lock);
-> >         fdt = files_fdtable(files);
-> >         fd = find_next_fd(fdt, *curfd);
-> 
-> find_next_fd() finds free fds, not used ones.
-> 
-> >         if (fd >= fdt->max_fds || fd > maxfd)
-> >                 goto out_unlock;
-> >
-> >         file = fdt->fd[fd];
-> >         rcu_assign_pointer(fdt->fd[fd], NULL);
-> >         __put_unused_fd(files, fd);
-> 
-> You can't do __put_unused_fd() if the old pointer in fdt->fd[fd] was
-> NULL - because that means that the fd has been reserved by another
-> thread that is about to put a file pointer in there, and if you
-> release the fd here, that messes up the refcounting (or hits the
-> BUG_ON() in __fd_install()).
-> 
-> > out_unlock:
-> >         spin_unlock(&files->file_lock);
-> >
-> >         if (!file)
-> >                 return -EBADF;
-> >
-> >         *curfd = fd;
-> >         filp_close(file, files);
-> >         return 0;
-> > }
-> >
-> > int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
-> > {
-> >         if (fd > max_fd)
-> >                 return -EINVAL;
-> >
-> >         while (fd <= max_fd) {
-> 
-> Note that with a pattern like this, you have to be careful about what
-> happens if someone gives you max_fd==0xffffffff - then this condition
-> is always true and the loop can not terminate this way.
-> 
-> >                 if (__close_next_fd(files, &fd, maxfd))
-> >                         break;
-> 
-> (obviously it can still terminate this way)
+Hey,
 
-Yup, this was only a quick draft.
-I think the dumb simple thing that I did before was the best way to do
-it for now.
-I first thought that the find_next_open_fd() function already exists but
-when I went to write a POC for testing realized it doesn't anyway.
+This is v2 of this patchset.
+
+In accordance with some comments There's a cond_resched() added to the
+close loop similar to what is done for close_files().
+A common helper pick_file() for __close_fd() and __close_range() has
+been split out. This allows to only make a cond_resched() call when
+filp_close() has been called similar to what is done in close_files().
+Maybe that's not worth it. Jann mentioned that cond_resched() looks
+rather cheap.
+So it maybe that we could simply do:
+
+while (fd <= max_fd) {
+       __close(files, fd++);
+       cond_resched();
+}
+
+I also added a missing test for close_range(fd, fd, 0).
+
+Thanks!
+Christian
+
+Christian Brauner (2):
+  open: add close_range()
+  tests: add close_range() tests
+
+ arch/alpha/kernel/syscalls/syscall.tbl        |   1 +
+ arch/arm/tools/syscall.tbl                    |   1 +
+ arch/arm64/include/asm/unistd32.h             |   2 +
+ arch/ia64/kernel/syscalls/syscall.tbl         |   1 +
+ arch/m68k/kernel/syscalls/syscall.tbl         |   1 +
+ arch/microblaze/kernel/syscalls/syscall.tbl   |   1 +
+ arch/mips/kernel/syscalls/syscall_n32.tbl     |   1 +
+ arch/mips/kernel/syscalls/syscall_n64.tbl     |   1 +
+ arch/mips/kernel/syscalls/syscall_o32.tbl     |   1 +
+ arch/parisc/kernel/syscalls/syscall.tbl       |   1 +
+ arch/powerpc/kernel/syscalls/syscall.tbl      |   1 +
+ arch/s390/kernel/syscalls/syscall.tbl         |   1 +
+ arch/sh/kernel/syscalls/syscall.tbl           |   1 +
+ arch/sparc/kernel/syscalls/syscall.tbl        |   1 +
+ arch/x86/entry/syscalls/syscall_32.tbl        |   1 +
+ arch/x86/entry/syscalls/syscall_64.tbl        |   1 +
+ arch/xtensa/kernel/syscalls/syscall.tbl       |   1 +
+ fs/file.c                                     |  62 +++++++-
+ fs/open.c                                     |  20 +++
+ include/linux/fdtable.h                       |   2 +
+ include/linux/syscalls.h                      |   2 +
+ include/uapi/asm-generic/unistd.h             |   4 +-
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/core/.gitignore       |   1 +
+ tools/testing/selftests/core/Makefile         |   6 +
+ .../testing/selftests/core/close_range_test.c | 142 ++++++++++++++++++
+ 26 files changed, 249 insertions(+), 9 deletions(-)
+ create mode 100644 tools/testing/selftests/core/.gitignore
+ create mode 100644 tools/testing/selftests/core/Makefile
+ create mode 100644 tools/testing/selftests/core/close_range_test.c
+
+-- 
+2.21.0
+
