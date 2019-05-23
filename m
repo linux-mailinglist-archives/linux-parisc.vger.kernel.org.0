@@ -2,74 +2,179 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0A5A27E74
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2019 15:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A9EE27F3D
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2019 16:15:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730681AbfEWNoZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 23 May 2019 09:44:25 -0400
-Received: from mail-yb1-f170.google.com ([209.85.219.170]:40537 "EHLO
-        mail-yb1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730549AbfEWNoY (ORCPT
+        id S1730899AbfEWOPB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 23 May 2019 10:15:01 -0400
+Received: from mail-it1-f196.google.com ([209.85.166.196]:39590 "EHLO
+        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730713AbfEWOPA (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 23 May 2019 09:44:24 -0400
-Received: by mail-yb1-f170.google.com with SMTP id g62so2279665ybg.7
-        for <linux-parisc@vger.kernel.org>; Thu, 23 May 2019 06:44:24 -0700 (PDT)
+        Thu, 23 May 2019 10:15:00 -0400
+Received: by mail-it1-f196.google.com with SMTP id 9so8737513itf.4
+        for <linux-parisc@vger.kernel.org>; Thu, 23 May 2019 07:15:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lBEvz1/eov6t4QWEvVy0qSN/fhnv6zs1kBBX4AcxKWQ=;
-        b=n7qkTtzmyTCMqBh+vgwHZtthFuB6rKfWdo/wRtmaavF99ooA6VHWLoIPy82+r4VVbr
-         h14CAR6PHGTm/57v6/iAOUD4Y1IORJwj6IILm2j26I62AZAmwD9afU8nXu7xUk5HhBOf
-         +bIAatjvQePlMehP/qd2XDxgH/To/Ma2mgp1xAlXuEqszX6t9l5XG+myMDcZyKT9MGQI
-         3b5CVY2HAly+pfEcjg5Z1iBN6h/kmO6vrqPfONhmiAR7o+DIUmwX0ojsSmVkS0VL57kg
-         oyHMpgGN8cNjDVuShifxEZ4w2hx0h1S1IgZjgWyf4U+VXqr7Kp3dfT32MPGcQz0JTyOi
-         Cs/Q==
+        d=brauner.io; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=rgSvHJdgJSnF7/xiB9jp3IYiH1RwVXYwyOL2WgM6elM=;
+        b=agfu05mcW6DVn/laHbq7o5peWWMubiiXLa3+mtVVF+i5l0QEt93/bvKWl3JbPoVwXl
+         0k64ioj3Ph2BkMXRRbAHKAFfkxjOHDSRt5NCBWr2asYnRnNKZL4zjdQz3kH7Jqukj0z6
+         2og5izGp8YNUen+yStzQvEMwIJdLGCCPJJnwa/rcJXm71w0kxDdqtXnMzoicLjGDEAWi
+         ZhH0AtrgRENAHSCoFkVjHZZZaCx513l14vIozc4GzDXmosIFXifqXJPpo1kJBs9fbYoH
+         SAsp9lAUDI9bdzdzBP2B3VcM+Tv5WeTYZNB/it3XGBVA35In6f74kJj0SxBCXK8Oqary
+         LS0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lBEvz1/eov6t4QWEvVy0qSN/fhnv6zs1kBBX4AcxKWQ=;
-        b=FPDyyuzGoTKdHFwDhFh1a+HzfB1Ff1hXmcHeWimOxZlzXp94VMSriIK9yKVU/5yLwO
-         pNY9BhWt00Zi8UIrcIKJtMy0FwyHi4Ow6bM9LbShXjid4+uvZF4cuNmLbmw49cuUgU3y
-         qBtH35ZyMzv7tZcS8L43RVlZuZ7ON/7M/fSNlJ5/WEnn1y9dWHushOlz133lVDq3Qkld
-         sWjJ9WNj82427oItLJ9JDeTDbpzdWTMtcJz8oIKHvpd0rF7zCB/OBNU9STxRPrE8XEAu
-         msCqB12aC+7ZO4ILcXo8nFe/tEX3IOf0fqpvOFk9hEIdQXPWy3DOGepzeJNRL8S8sx/q
-         RCeA==
-X-Gm-Message-State: APjAAAVyxRu3IfyzrBN1umxG5M2M048ZgXHV/Kf65PCJpFhk62HRo8DR
-        kGEySEKY1tMwrW44lIsLt5WkwQyPnm8ZmJBix90tQOK2
-X-Google-Smtp-Source: APXvYqw3U/fToJPUpCI4yGmpKHxtRrv/m7UOgtlAyZ3CbwoMG6lAdkanHUsHC62atNWBSKE1aB8pWskz2ZmFuliTXu0=
-X-Received: by 2002:a25:1dd5:: with SMTP id d204mr22694029ybd.34.1558619064020;
- Thu, 23 May 2019 06:44:24 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=rgSvHJdgJSnF7/xiB9jp3IYiH1RwVXYwyOL2WgM6elM=;
+        b=i7JvpOocsKuoybNfNLtYKnpbtD6axkwD7MnamfviYLQOLpiNkDq8GTNcVqKeLHzdYI
+         rh2z98mmH5F1ENCHgFT67UdvwxoWetaUI3phnHk26OJjWwikHPu2+ft3D6OmLBHFVNMJ
+         OEdrRL7KVX/ZcdKSn0GO64bENHUeXsXhOPxPcWsUREMWA3lLgykszLw/pU5c+dUdIWdK
+         zsjUwmK5RpTDMR1XwEE6o9CT5agrXNE9jFAILDGD99Xdo/6+/IgwQEa/MNaag8vRBgL5
+         kuAE+gWz5XQNKatlhMD40ql+tMsnZU132foymmIZ7TGTsS6dpLxSbSBfraQNlyAxgdUn
+         n2jw==
+X-Gm-Message-State: APjAAAWfHRC2cCWWWZfzelwBhfDDtvLeDXVoWUa8yTFSjaLeb7gyTr3u
+        tJD8XHzmHd1xoFizVpyLSDaybQ==
+X-Google-Smtp-Source: APXvYqy9XAMrNMkQarBeYE8e7HlYFHTwYh86KxFNh1Z1HbzreF/S6QYjLd8wwHWfkp2KJKFiXZBbVg==
+X-Received: by 2002:a24:590f:: with SMTP id p15mr12892482itb.12.1558620899772;
+        Thu, 23 May 2019 07:14:59 -0700 (PDT)
+Received: from brauner.io ([172.56.12.187])
+        by smtp.gmail.com with ESMTPSA id q142sm4141521itb.17.2019.05.23.07.14.51
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 23 May 2019 07:14:58 -0700 (PDT)
+Date:   Thu, 23 May 2019 16:14:48 +0200
+From:   Christian Brauner <christian@brauner.io>
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        torvalds@linux-foundation.org, fweimer@redhat.com,
+        jannh@google.com, tglx@linutronix.de, arnd@arndb.de,
+        shuah@kernel.org, dhowells@redhat.com, tkjos@android.com,
+        ldv@altlinux.org, miklos@szeredi.hu, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH v1 1/2] open: add close_range()
+Message-ID: <20190523141447.34s3kc3fuwmoeq7n@brauner.io>
+References: <20190522155259.11174-1-christian@brauner.io>
+ <20190522165737.GC4915@redhat.com>
+ <20190523115118.pmscbd6kaqy37dym@brauner.io>
 MIME-Version: 1.0
-References: <CA+QBN9Cg6QAe5W3vS3dere=K53NAHDrMb9FN5StEfNkC=RTGqg@mail.gmail.com>
- <CA+QBN9B7B39NARTNYan2wrhRLSEAhxukTy0B6yWRMUxgLJmuNA@mail.gmail.com>
- <CAP6odjiqDyVB3VyavSHniShe3Mq3KWGdNOWeTmxQ-5q-NrOjbQ@mail.gmail.com>
- <21dcf273-929a-6fb1-7978-37145ea62301@bell.net> <CAP6odjh2-HhbPYhFqc40cVCrVc6E689CM65WqbiTOnTRgeQojQ@mail.gmail.com>
- <483d54a6-cbf4-e366-60b3-ae84d025d0e6@bell.net> <CA+QBN9A3Cajm8vYSQ9rm-iZyGjtMBSfmDXqGgrUc5F3pOziEVQ@mail.gmail.com>
-In-Reply-To: <CA+QBN9A3Cajm8vYSQ9rm-iZyGjtMBSfmDXqGgrUc5F3pOziEVQ@mail.gmail.com>
-From:   Carlo Pisani <carlojpisani@gmail.com>
-Date:   Thu, 23 May 2019 15:44:25 +0200
-Message-ID: <CA+QBN9Dg16azb3kLZ4pPi+G5h46C628dWZRdXJmrmxOZZvLn9Q@mail.gmail.com>
-Subject: Re: HPPA problems with the PCI
-To:     John David Anglin <dave.anglin@bell.net>
-Cc:     Grant Grundler <grantgrundler@gmail.com>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190523115118.pmscbd6kaqy37dym@brauner.io>
+User-Agent: NeoMutt/20180716
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-maybe irrelevant, but I have just noticed this line in the dmesg
-(kernel 4.16, running on C3600)
+On Thu, May 23, 2019 at 01:51:18PM +0200, Christian Brauner wrote:
+> On Wed, May 22, 2019 at 06:57:37PM +0200, Oleg Nesterov wrote:
+> > On 05/22, Christian Brauner wrote:
+> > >
+> > > +static struct file *pick_file(struct files_struct *files, unsigned fd)
+> > >  {
+> > > -	struct file *file;
+> > > +	struct file *file = NULL;
+> > >  	struct fdtable *fdt;
+> > >  
+> > >  	spin_lock(&files->file_lock);
+> > > @@ -632,15 +629,65 @@ int __close_fd(struct files_struct *files, unsigned fd)
+> > >  		goto out_unlock;
+> > >  	rcu_assign_pointer(fdt->fd[fd], NULL);
+> > >  	__put_unused_fd(files, fd);
+> > > -	spin_unlock(&files->file_lock);
+> > > -	return filp_close(file, files);
+> > >  
+> > >  out_unlock:
+> > >  	spin_unlock(&files->file_lock);
+> > > -	return -EBADF;
+> > > +	return file;
+> > 
+> > ...
+> > 
+> > > +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
+> > > +{
+> > > +	unsigned int cur_max;
+> > > +
+> > > +	if (fd > max_fd)
+> > > +		return -EINVAL;
+> > > +
+> > > +	rcu_read_lock();
+> > > +	cur_max = files_fdtable(files)->max_fds;
+> > > +	rcu_read_unlock();
+> > > +
+> > > +	/* cap to last valid index into fdtable */
+> > > +	if (max_fd >= cur_max)
+> > > +		max_fd = cur_max - 1;
+> > > +
+> > > +	while (fd <= max_fd) {
+> > > +		struct file *file;
+> > > +
+> > > +		file = pick_file(files, fd++);
+> > 
+> > Well, how about something like
+> > 
+> > 	static unsigned int find_next_opened_fd(struct fdtable *fdt, unsigned start)
+> > 	{
+> > 		unsigned int maxfd = fdt->max_fds;
+> > 		unsigned int maxbit = maxfd / BITS_PER_LONG;
+> > 		unsigned int bitbit = start / BITS_PER_LONG;
+> > 
+> > 		bitbit = find_next_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
+> > 		if (bitbit > maxfd)
+> > 			return maxfd;
+> > 		if (bitbit > start)
+> > 			start = bitbit;
+> > 		return find_next_bit(fdt->open_fds, maxfd, start);
+> > 	}
+> 
+> > 
+> > 	unsigned close_next_fd(struct files_struct *files, unsigned start, unsigned maxfd)
+> > 	{
+> > 		unsigned fd;
+> > 		struct file *file;
+> > 		struct fdtable *fdt;
+> > 	
+> > 		spin_lock(&files->file_lock);
+> > 		fdt = files_fdtable(files);
+> > 		fd = find_next_opened_fd(fdt, start);
+> > 		if (fd >= fdt->max_fds || fd > maxfd) {
+> > 			fd = -1;
+> > 			goto out;
+> > 		}
+> > 
+> > 		file = fdt->fd[fd];
+> > 		rcu_assign_pointer(fdt->fd[fd], NULL);
+> > 		__put_unused_fd(files, fd);
+> > 	out:
+> > 		spin_unlock(&files->file_lock);
+> > 
+> > 		if (fd == -1u)
+> > 			return fd;
+> > 
+> > 		filp_close(file, files);
+> > 		return fd + 1;
+> > 	}
+> 
+> Thanks, Oleg!
+> 
+> I kept it dumb and was about to reply that your solution introduces more
+> code when it seemed we wanted to keep this very simple for now.
+> But then I saw that find_next_opened_fd() already exists as
+> find_next_fd(). So it's actually not bad compared to what I sent in v1.
+> So - with some small tweaks (need to test it and all now) - how do we
+> feel about?:
 
-"runtime IRQ mapping not provided by arch"
+That's obviously not correct atm but I'll send out a tweaked version in
+a bit.
 
-drivers/pci/setup-irq.c:                pci_dbg(dev, "runtime IRQ
-mapping not provided by arch\n");
-
-It's not exactly clear to me, googling I have found this
-https://patchwork.kernel.org/patch/9775659
-
-what do you think?
+Christian
