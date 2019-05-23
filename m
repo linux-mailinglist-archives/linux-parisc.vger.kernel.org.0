@@ -2,71 +2,75 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F72F28230
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2019 18:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 758B0282F6
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2019 18:21:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730904AbfEWQKY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 23 May 2019 12:10:24 -0400
-Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:38756 "EHLO
-        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730782AbfEWQKY (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 23 May 2019 12:10:24 -0400
-Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
-          with ESMTP
-          id <20190523161023.KYNE4584.torfep01.bell.net@torspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Thu, 23 May 2019 12:10:23 -0400
-Received: from [192.168.0.183] (really [65.95.39.186]) by torspm02.bell.net
-          with ESMTP
-          id <20190523161023.XKKZ30132.torspm02.bell.net@[192.168.0.183]>;
-          Thu, 23 May 2019 12:10:23 -0400
-To:     Grant Grundler <grantgrundler@gmail.com>
-Cc:     Carlo Pisani <carlojpisani@gmail.com>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-References: <CA+QBN9Cg6QAe5W3vS3dere=K53NAHDrMb9FN5StEfNkC=RTGqg@mail.gmail.com>
- <CA+QBN9B7B39NARTNYan2wrhRLSEAhxukTy0B6yWRMUxgLJmuNA@mail.gmail.com>
- <CAP6odjiqDyVB3VyavSHniShe3Mq3KWGdNOWeTmxQ-5q-NrOjbQ@mail.gmail.com>
- <21dcf273-929a-6fb1-7978-37145ea62301@bell.net>
- <CAP6odjiwmUXd8m2w-wf7R4t+qT60xiA5bE79RfBMP07xdvCpaw@mail.gmail.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Subject: Re: HPPA problems with the PCI
-Message-ID: <7d252322-51dc-07ff-8843-b28cdc5a6762@bell.net>
-Date:   Thu, 23 May 2019 12:10:22 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1731514AbfEWQUm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 23 May 2019 12:20:42 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:59706 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731256AbfEWQUl (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 23 May 2019 12:20:41 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 408BA6698C;
+        Thu, 23 May 2019 16:20:18 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.159])
+        by smtp.corp.redhat.com (Postfix) with SMTP id 9C59759441;
+        Thu, 23 May 2019 16:20:08 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Thu, 23 May 2019 18:20:15 +0200 (CEST)
+Date:   Thu, 23 May 2019 18:20:05 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Christian Brauner <christian@brauner.io>
+Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        torvalds@linux-foundation.org, fweimer@redhat.com,
+        jannh@google.com, tglx@linutronix.de, arnd@arndb.de,
+        shuah@kernel.org, dhowells@redhat.com, tkjos@android.com,
+        ldv@altlinux.org, miklos@szeredi.hu, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH v2 1/2] open: add close_range()
+Message-ID: <20190523162004.GC23070@redhat.com>
+References: <20190523154747.15162-1-christian@brauner.io>
+ <20190523154747.15162-2-christian@brauner.io>
 MIME-Version: 1.0
-In-Reply-To: <CAP6odjiwmUXd8m2w-wf7R4t+qT60xiA5bE79RfBMP07xdvCpaw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-Analysis: v=2.3 cv=bPxo382Z c=1 sm=1 tr=0 cx=a_idp_d a=Q02bAvDbwyQG9yYSZ9PE5w==:117 a=Q02bAvDbwyQG9yYSZ9PE5w==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=P-IC7800AAAA:8 a=FBHGMhGWAAAA:8 a=4sJpZacIUXVo2Wb5O3EA:9 a=QEXdDO2ut3YA:10 a=d3PnA9EDa4IxuAV0gXij:22 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfGAE5wGpGNOO+8pQ1aKz5vGsABRoWfSiyhVmANGvAL8sMpo6A/Y8RdXkPmwpXqAF2XNvpZnk7P++jmeAY3MchypYaNURPQkmLwD3MdGbGCWuNCXVt6UO NgSUiSMO4OZj5WaZWfHP3hR3b/OjAbM3DUOgRlRkSaeGbJiamYW/016mHW6xNIKW1xX1udUiZkZGLA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190523154747.15162-2-christian@brauner.io>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 23 May 2019 16:20:41 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-23 12:43 a.m., Grant Grundler wrote:
->> On a UP kernel, mb() is currently just a compiler
->> memory barrier.  On a SMP kernel, mb() generates a "sync" instruction.  We also
->> use "ldcw" as a barrier in spinlocks.
-> Yeah, I'm not sure how strong the mb() needs to be and maybe I'm
-> giving the wrong advice: use dma_wmb() for the case I've described
-> above.  Then use dma_rmb() before reading data structures updated by
-> the device. See examples in the existing code:
->    https://elixir.bootlin.com/linux/v4.20/ident/dma_wmb
-> 
-Looking at arm and arm64, I think sync should be used for mb(), rmb() and wmb().  Possibly,
-ldcw can be used for dma_rmb() and dma_wmb() although sync should be okay.  Sync is heavier
-than ldcw.  The __smp barriers could use ldcw.
+On 05/23, Christian Brauner wrote:
+>
+> +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
+> +{
+> +	unsigned int cur_max;
+> +
+> +	if (fd > max_fd)
+> +		return -EINVAL;
+> +
+> +	rcu_read_lock();
+> +	cur_max = files_fdtable(files)->max_fds;
+> +	rcu_read_unlock();
+> +
+> +	/* cap to last valid index into fdtable */
+> +	max_fd = max(max_fd, (cur_max - 1));
+                 ^^^
 
-Arm64 doesn't distinguish between UP and SMP.  32-bit arm has this config option,
-CONFIG_ARM_DMA_MEM_BUFFERABLE, that enables stronger barriers when defined.  I think we
-should use the same barriers on UP and SMP on parisc to ensure we properly synchronize I/O
-operations.
+Hmm. min() ?
 
-Dave
--- 
-John David Anglin  dave.anglin@bell.net
+Oleg.
+
