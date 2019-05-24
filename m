@@ -2,74 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2EE92A040
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 23:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C23322A043
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 23:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404202AbfEXVLa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 May 2019 17:11:30 -0400
-Received: from smtp.duncanthrax.net ([89.31.1.170]:59467 "EHLO
-        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404197AbfEXVLa (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 May 2019 17:11:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:Cc:To:From:Date;
-        bh=u5mSazLUN/uKwSpBLDTE3PqJY4YRpVyjUW7WfPXJI6Q=; b=Ep1s1lKJOuhaFs7xJ+XzoYnMXV
-        lTu0tM9G5ChiEyzdmtNzUmtd0YoD0ONfWMFA974trLTP4/vHS5BfmqGEhzffcTYz7ivPzM+quKumF
-        steMInZXNmVxpW8rcz/ht67zxPV5k25gfD38HC2qZKEcU6fgNr1UjZLLYKx1MaQfMOR0=;
-Received: from [134.3.44.134] (helo=t470p.stackframe.org)
-        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.86_2)
-        (envelope-from <svens@stackframe.org>)
-        id 1hUHTM-0003CN-TE; Fri, 24 May 2019 23:11:28 +0200
-Date:   Fri, 24 May 2019 23:11:27 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-parisc <linux-parisc@vger.kernel.org>
-Subject: Re: PCI HPMC on C240 with alternatives Patching
-Message-ID: <20190524211127.GB20978@t470p.stackframe.org>
-References: <20190524065850.GA9849@t470p.stackframe.org>
- <20190524105003.GE9450@t470p.stackframe.org>
- <20190524113241.GA11609@t470p.stackframe.org>
- <20190524153819.GA778@t470p.stackframe.org>
- <20190524195830.GA18978@ls3530.dellerweb.de>
+        id S2391765AbfEXVQf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 24 May 2019 17:16:35 -0400
+Received: from mout.gmx.net ([212.227.15.19]:32957 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391745AbfEXVQf (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 24 May 2019 17:16:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1558732589;
+        bh=Rxru9r9xRKPbbOADWCsF5uOA+e/FhuEJ4O2hphaK2e4=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=E459sEMWFHSAm1/Ee+vVdiFNBrjFT8hglIJMKZkAyzgr48TvWeYSC0rHoQVZxQ4iM
+         gE6Y+Rn6Z95NNyb/JV1XjguikA9ayCTRHKQVejM/mV+J7HfiIbm7UAUwcw4fhaxXKs
+         oZnfyYKMgQisF4v/Sk6DIdbGQ80lNUYUMsoV3I5Y=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.dellerweb.de ([92.116.183.223]) by mail.gmx.com
+ (mrgmx003 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 0LreCz-1gTx0z41T3-013OnS; Fri, 24 May 2019 23:16:29 +0200
+Date:   Fri, 24 May 2019 23:16:25 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Fix compiler warnings in float emulation code
+Message-ID: <20190524211625.GA8486@ls3530.dellerweb.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190524195830.GA18978@ls3530.dellerweb.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Provags-ID: V03:K1:dOjrff3Wi43B8VfAbmv+92fQFpbW3y3tV+fNt1o5BVkbB9u3CC0
+ ywdAzzTmQdy1+v6BdysgcLjjHjcUNhI7q8dDXI3wGWbwAerg36yCDPj3Z4Z1HafD/ilj6sW
+ DtI85dVoxT3y6+kkVjkdBkFZcOQP2xf4NXRxmfpwblDy0BlE5YFLwPlUEgqb5uT5ZxzrYlw
+ FJdsuXJ9wGjYsUz7SmlEw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:rijHebL31Lc=:2tFKU2iC5UhfpPxUkKyQuU
+ Inx7MGiK3tHGYx0sduE3az0eJEcqePlRYRmFp9eks6rAVNXAi3u78jHXt/z5xJQjDLNwS4piV
+ uODTPpPp2t54q6nV2YzS517g2A+FiD4znQyI/OjnUAtU1qqaOcoKMWynMrgLdGhmx53kc2bHo
+ ksrKzLv37s82bIGKITfntO8nfX0hPE94jbMMUor7sIhkKIXGOZnXESW3sLWycVBFg8By4B4xf
+ yLD3FzAykcqpVMm7YHoTlYiwiZRsU1Fp+Xn4ffhMf2XH6p6oTx7NcqSj12f31JeTAnW2U183V
+ 14jhV/+6gDWSOqDCDFUuVE7j4xEIEjvPZ+O8rRcZrisfjYbSiLUk8Ip6sPiP4Ww7H6+KMIAap
+ RvDv9h+4dVOCJ0XV/+cm5KJl9/vodCaqV8HCHbfJ8a7+J4sBNkxYioeyQHTHPl1BOo8hyjA67
+ pQyDfABjxyGY040FaCXuIGB9Kqj5ui8K7qVRRx+8zYhH9oRLlnga7SBnj/KB/RFef5fTM59Yp
+ MQ6ugwefCqE4Uj8xYZBVNdWijKLIKOjpWS44W39z4o8AZN5JY6kA4tURh/TDLPmcr3x3fZjPy
+ W6l4Scz0uawZJj/47ovVA6xkQ5mVFeuBCaARwvOVS2VjL/oPsE3siK3ajyfErddd3znLHSGX9
+ bTCR7+LpVOMQxNbfXo38WPyyeioH5vXAEMixAVWvL0bgpkgVr0lZ49HFht4Fp5b0JizBdUGcG
+ y0HoREtx0ZjcDPp2k4nKrUkA8gESDeEWYAQ0VloOcNsGt2PfxafGZaVjb568wqz60LLpeKFPN
+ 8WVtl43vZTLI89GPVWqPm7p6pvQGf+JNUCMm6GKBJtLgQgqejhHbN7tCtg/AtpvMnDxZpg1IJ
+ /GVZG7277llwjXAO6I2+4mUO8vrokyx1yrCgIemf9YxNUfQwtjBNEO03m+f7P9hxmaivnSDjd
+ 0u1bMr9581RTQKQ6y4ml/dIsshIEaNNQ=
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Helge,
+Avoid such compiler warnings:
+arch/parisc/math-emu/cnv_float.h:71:27: warning: =E2=80=98<<=E2=80=99 in b=
+oolean context, did you mean =E2=80=98<=E2=80=99 ? [-Wint-in-bool-context]
+     ((Dintp1(dint_valueA) << 33 - SGL_EXP_LENGTH) || Dintp2(dint_valueB))
+arch/parisc/math-emu/fcnvxf.c:257:6: note: in expansion of macro =E2=80=98=
+Dint_isinexact_to_sgl=E2=80=99
+  if (Dint_isinexact_to_sgl(srcp1,srcp2)) {
 
-On Fri, May 24, 2019 at 09:58:30PM +0200, Helge Deller wrote:
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-> > I did the patch below to check for legacy IO Adapters. Is HW_BCPORT the right
-> > type? On my C240 both GSC Adapters are HW_BCPORT.
-> 
-> I'm not sure.
-> Seems to be dependend on the CPU.
-> See comment in drivers/parisc/ccio-dma.c, line 607ff:
-> 
->         /* FIXME: PCX_W platforms don't need FDC/SYNC. (eg C360)
->         **        PCX-U/U+ do. (eg C200/C240)
->         **        PCX-T'? Don't know. (eg C110 or similar K-class)
->         **
->         ** See PDC_MODEL/option 0/SW_CAP word for "Non-coherent IO-PDIR bit".
->         **
->         ** "Since PCX-U employs an offset hash that is incompatible with
->         ** the real mode coherence index generation of U2, the PDIR entry
->         ** must be flushed to memory to retain coherence."
-> 
-> 
-> Can you try this patch instead?
-> [..]
+diff --git a/arch/parisc/math-emu/cnv_float.h b/arch/parisc/math-emu/cnv_f=
+loat.h
+index 933423fa5144..b0db61188a61 100644
+=2D-- a/arch/parisc/math-emu/cnv_float.h
++++ b/arch/parisc/math-emu/cnv_float.h
+@@ -60,19 +60,19 @@
+     ((exponent < (SGL_P - 1)) ?				\
+      (Sall(sgl_value) << (SGL_EXP_LENGTH + 1 + exponent)) : FALSE)
 
-Works on my C240 and C3750. Thanks!
+-#define Int_isinexact_to_sgl(int_value)	(int_value << 33 - SGL_EXP_LENGTH=
+)
++#define Int_isinexact_to_sgl(int_value)	((int_value << 33 - SGL_EXP_LENGT=
+H) !=3D 0)
 
-Regards
-Sven
+ #define Sgl_roundnearest_from_int(int_value,sgl_value)			\
+     if (int_value & 1<<(SGL_EXP_LENGTH - 2))   /* round bit */		\
+-    	if ((int_value << 34 - SGL_EXP_LENGTH) || Slow(sgl_value))	\
++	if (((int_value << 34 - SGL_EXP_LENGTH) !=3D 0) || Slow(sgl_value)) \
+ 		Sall(sgl_value)++
+
+ #define Dint_isinexact_to_sgl(dint_valueA,dint_valueB)		\
+-    ((Dintp1(dint_valueA) << 33 - SGL_EXP_LENGTH) || Dintp2(dint_valueB))
++    (((Dintp1(dint_valueA) << 33 - SGL_EXP_LENGTH) !=3D 0) || Dintp2(dint=
+_valueB))
+
+ #define Sgl_roundnearest_from_dint(dint_valueA,dint_valueB,sgl_value)	\
+     if (Dintp1(dint_valueA) & 1<<(SGL_EXP_LENGTH - 2)) 			\
+-    	if ((Dintp1(dint_valueA) << 34 - SGL_EXP_LENGTH) ||		\
++	if (((Dintp1(dint_valueA) << 34 - SGL_EXP_LENGTH) !=3D 0) ||	\
+     	Dintp2(dint_valueB) || Slow(sgl_value)) Sall(sgl_value)++
+
+ #define Dint_isinexact_to_dbl(dint_value) 	\
