@@ -2,76 +2,137 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 831F729650
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 12:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DABD29669
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 12:54:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390512AbfEXKuF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 May 2019 06:50:05 -0400
-Received: from smtp.duncanthrax.net ([89.31.1.170]:51440 "EHLO
-        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389448AbfEXKuF (ORCPT
+        id S2390459AbfEXKyN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 24 May 2019 06:54:13 -0400
+Received: from mail-it1-f196.google.com ([209.85.166.196]:55452 "EHLO
+        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390565AbfEXKyM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 May 2019 06:50:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:To:From:Date;
-        bh=BudMoQWWqXKiBC+IvYq0p8uR7KUP8oiYXHmSs9pCV0M=; b=a3WDoEPlu5+yiVHQBLBnVaXJmK
-        pem5189+HSrSPmHYsZevPId4bm0X7rYwLe9SjQPzUXKle8fbQLcunarjV0gobl4sPtyUvUbB7MZ92
-        3Jc10ZojXYx7C6vbOsPgZObVJTcTWXFrvauSaI1GWFi4BBZ4Alt7nI283uSDbnQtfGrE=;
-Received: from frobwit.duncanthrax.net ([89.31.1.178] helo=t470p.stackframe.org)
-        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.86_2)
-        (envelope-from <svens@stackframe.org>)
-        id 1hU7m0-0002Mw-Gg
-        for linux-parisc@vger.kernel.org; Fri, 24 May 2019 12:50:04 +0200
-Date:   Fri, 24 May 2019 12:50:03 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     linux-parisc <linux-parisc@vger.kernel.org>
-Subject: Re: PCI HPMC on C240 with alternatives Patching
-Message-ID: <20190524105003.GE9450@t470p.stackframe.org>
-References: <20190524065850.GA9849@t470p.stackframe.org>
+        Fri, 24 May 2019 06:54:12 -0400
+Received: by mail-it1-f196.google.com with SMTP id g24so8069027iti.5
+        for <linux-parisc@vger.kernel.org>; Fri, 24 May 2019 03:54:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=CfQCPeLhxIRZNFUFprUfxjdraaUe3oFHAGmuDz7teoQ=;
+        b=Em430Lcwry47jSvpo2CX3tGth2isfe0jStpDuxS7CMmLdA3d0PXEVPlYO1LA5R1mzt
+         HY4rafqjGQJavFGnE3XaT/sGBtGX54ySCbaX7DVDZMmxBcy/N79r+hv4lU4j2oA3k9uH
+         3qZj79cuHnNGNu2oYXdLcTSXDzUD2I8KQ+AfcVybt1p+pDbSSV/BxOdIjemHzveC4b7q
+         duRReG8ScM5eer/3Afm7cUzTfGgmoE34PFQheJOvRIbKuqLqZGUfkiFLLL9ErcrO39tc
+         F/9MwQeUr7EmYtaiFsYdYlVOLNriujpFjX0na3vmEkcAGEzSA9rJkFtPpvRuu71lHiOs
+         lhuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=CfQCPeLhxIRZNFUFprUfxjdraaUe3oFHAGmuDz7teoQ=;
+        b=fsPa+FIIE/dZwdbIxBNghdDGCVRjOnyYWfQ8vJwonKKvMQ10eeFRsFom9lmWyl2QIR
+         tMLoOe+bU667wnaan9eoRN8cMl+mUNoL/BsihfYNI/KTtmV+LZmQwwDepT/m2fLT6hf3
+         tShph0S1TTbxw/gclBnX8edunc0PC8dugtVg66/0fJoOX6hJgR1uta3L6IzmNCitbC7c
+         w0OHMPe7eFZjanmTY5PSBoHhTO1DiqaqC+aSM7I1xVFFf1sKCwPQy9AK3lROwLqLII4V
+         kVOoQv7vLjEGcqGjymwX/1NJJLzIoULE9UuEt8eNkAGRDXlPOG7THSC0h3SiWiztPqEg
+         nFVg==
+X-Gm-Message-State: APjAAAXOTYztr74VeRaPZRDzbOipv2lSU1FccM+oNLrh6fOKVVtqkf2t
+        EmB6OJgbWEcIwbBSoZ+gQ6NM5A==
+X-Google-Smtp-Source: APXvYqzek4vSIIuFlylSllnN9c1fb45hmMMLlcQcM2y40ZIswZUPrKTiVfMzOtV1j/enrZtL4iFGng==
+X-Received: by 2002:a24:4043:: with SMTP id n64mr17805822ita.25.1558695251429;
+        Fri, 24 May 2019 03:54:11 -0700 (PDT)
+Received: from brauner.io ([172.56.12.37])
+        by smtp.gmail.com with ESMTPSA id f14sm955704itb.31.2019.05.24.03.54.02
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 24 May 2019 03:54:10 -0700 (PDT)
+Date:   Fri, 24 May 2019 12:54:00 +0200
+From:   Christian Brauner <christian@brauner.io>
+To:     jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
+        torvalds@linux-foundation.org, arnd@arndb.de
+Cc:     akpm@linux-foundation.org, cyphar@cyphar.com, dhowells@redhat.com,
+        ebiederm@xmission.com, elena.reshetova@intel.com,
+        keescook@chromium.org, luto@amacapital.net, luto@kernel.org,
+        tglx@linutronix.de, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, joel@joelfernandes.org,
+        dancol@google.com, serge@hallyn.com, surenb@google.com,
+        kernel-team@android.com
+Subject: Re: [PATCH v3 1/2] pid: add pidfd_open()
+Message-ID: <20190524105358.dfnelxhxodkvwbcn@brauner.io>
+References: <20190520155630.21684-1-christian@brauner.io>
+ <20190521143220.crb2zyvdov3fl4g7@brauner.io>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190524065850.GA9849@t470p.stackframe.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190521143220.crb2zyvdov3fl4g7@brauner.io>
+User-Agent: NeoMutt/20180716
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, May 24, 2019 at 08:58:50AM +0200, Sven Schnelle wrote:
-> Hi List,
+On Tue, May 21, 2019 at 04:32:20PM +0200, Christian Brauner wrote:
+> On Mon, May 20, 2019 at 05:56:29PM +0200, Christian Brauner wrote:
+> > This adds the pidfd_open() syscall. It allows a caller to retrieve pollable
+> > pidfds for a process which did not get created via CLONE_PIDFD, i.e. for a
+> > process that is created via traditional fork()/clone() calls that is only
+> > referenced by a PID:
+> > 
+> > int pidfd = pidfd_open(1234, 0);
+> > ret = pidfd_send_signal(pidfd, SIGSTOP, NULL, 0);
+> > 
+> > With the introduction of pidfds through CLONE_PIDFD it is possible to
+> > created pidfds at process creation time.
+> > However, a lot of processes get created with traditional PID-based calls
+> > such as fork() or clone() (without CLONE_PIDFD). For these processes a
+> > caller can currently not create a pollable pidfd. This is a problem for
+> > Android's low memory killer (LMK) and service managers such as systemd.
+> > Both are examples of tools that want to make use of pidfds to get reliable
+> > notification of process exit for non-parents (pidfd polling) and race-free
+> > signal sending (pidfd_send_signal()). They intend to switch to this API for
+> > process supervision/management as soon as possible. Having no way to get
+> > pollable pidfds from PID-only processes is one of the biggest blockers for
+> > them in adopting this api. With pidfd_open() making it possible to retrieve
+> > pidfds for PID-based processes we enable them to adopt this api.
+> > 
+> > In line with Arnd's recent changes to consolidate syscall numbers across
+> > architectures, I have added the pidfd_open() syscall to all architectures
+> > at the same time.
+> > 
+> > Signed-off-by: Christian Brauner <christian@brauner.io>
+> > Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 > 
-> i recently got my hands on an old C240. I see a Kernel oops pretty early when
-> alternatives patching is enabled:
-> [..]
-> My (wild) guess is that we're patching away some memory barrier or cache flush
-> so the SCRIPTS engine in the SCSI controller starts executing garbage and triggers
-> a PCI bus read/write to an invalid address. The reason the INB() is given as the
-> HPMC location is likely caused by the delay between writing DSPS and the chip actually
-> starting to fetch insn/data.
+> This now also carries a Reviewed-by from David.
 > 
-> Does that ring any bell for someone on the list? Otherwise i can check the
-> alternatives patching over the weekend, i think there are not that many locations.
+> > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+> > Cc: Kees Cook <keescook@chromium.org>
+> > Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
+> > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > Cc: Jann Horn <jannh@google.com>
+> > Cc: David Howells <dhowells@redhat.com>
+> > Cc: Andy Lutomirsky <luto@kernel.org>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Aleksa Sarai <cyphar@cyphar.com>
+> > Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> > Cc: Al Viro <viro@zeniv.linux.org.uk>
+> > Cc: linux-api@vger.kernel.org
 > 
-> The good thing is it's reproducible - it always crashes. Either in SCSI or in
-> Tulip.
+> I've moved pidfd_open() into my for-next branch together with Joel's
+> pidfd polling changes. Everything is based on v5.2-rc1.
+> 
+> The chosen syscall number for now is 434. David is going to send out
+> another pile of mount api related syscalls. I'll coordinate with him
+> accordingly prior to the 5.3 merge window.
 
-Did a quick test, removing ALT_COND_N_IOC_FDC from asm_io_fdc() seems to fix this
-issue. Haven't looked in more detail into this though.
+After talking to Arnd, I split the syscall addition and the per-arch
+wiring-up of pidfd_open() into two patches. There are no functional
+changes and everything is still sitting in for-next.
 
-index 73ca89a47f49..d83b1adf2f3f 100644
---- a/arch/parisc/include/asm/cache.h
-+++ b/arch/parisc/include/asm/cache.h
-@@ -52,7 +52,6 @@ void parisc_setup_cache_timing(void);
-
- #define asm_io_fdc(addr) asm volatile("fdc %%r0(%0)" \
-                        ALTERNATIVE(ALT_COND_NO_DCACHE, INSN_NOP) \
--                       ALTERNATIVE(ALT_COND_NO_IOC_FDC, INSN_NOP) \
-                        : : "r" (addr) : "memory")
- #define asm_io_sync()  asm volatile("sync" \
-                        ALTERNATIVE(ALT_COND_NO_DCACHE, INSN_NOP) \
-
-
-Sven
+Thanks!
+Christian
