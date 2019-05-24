@@ -2,101 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2368328DB3
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 01:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 586B029119
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 08:39:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388068AbfEWXSb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 23 May 2019 19:18:31 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:32963 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387693AbfEWXSb (ORCPT
+        id S2388887AbfEXGjS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 24 May 2019 02:39:18 -0400
+Received: from smtp.duncanthrax.net ([89.31.1.170]:36812 "EHLO
+        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388580AbfEXGjS (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 23 May 2019 19:18:31 -0400
-Received: by mail-oi1-f194.google.com with SMTP id q186so5708659oia.0
-        for <linux-parisc@vger.kernel.org>; Thu, 23 May 2019 16:18:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dhCRA0l0q9+XsJtJ7xcL4psIukNmCta9PJGSGgenRPg=;
-        b=d0+BYROLfCQYqzJILmQpC9OKBq3/lzeSHekpuJ5NeSxI8cW0Oo3wBjnlQKvEevSwTJ
-         tGI820QIdxQvgmJGlrNkKOLlp5FnNgpjG73F+OzmEg+veMB7YZ+ssY9BzL/nbyUdmizQ
-         9FRqaGmGVc7FiOXlnrA7uaqai00u6D1CgNDJ1174X63jUNoO/7gUVgu5wdPwh2axkMnh
-         LCfZArnqxMVe1pnmhqF80NH5GpdM3r2VbDn4UbJtBMx6oSBAjcmpeBN8ivjm8tzk00Or
-         FzTU09+s1fHaOXwAtKrbANXL5RKNBfKhCASPGV39DqJKda7oi31ULbGorb1sAkS4BBHZ
-         Am6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dhCRA0l0q9+XsJtJ7xcL4psIukNmCta9PJGSGgenRPg=;
-        b=QDSFkn35AjYvoVLDqntFz+Wy23d8uEZ71dvKTkQCt4cCUHWDQScFxz9DFI1B/L9fJ6
-         VPfHGtvMPHKl1ZZLmxoFOZjS9kNm71OAyKqlr4RGVdMA534fmwBCU8G1kY4mqf0798YC
-         QSyDvVfmaWg1OQatDn4cASKOhJYlZkNfDBksQiiGJ4Vm0DWL860AKR/pc0A6KXR4xfhi
-         eDviKYyE89ZbTdemYFAySJt3c+c9+tmSK8VKYphegLq1xrON2ez/+i12X6RLYKJA+q+z
-         PZA6hDMIUlYpvDKYj5m5bcNfXxhdgQML1Fdobq6j/9TqNjXHkCmW/ZS36azsLB2HBe1p
-         5l0g==
-X-Gm-Message-State: APjAAAXpv7tU1vE3/ZU9Mkbli284Sye83i02NxnM2S6rmS05OEAnZeX8
-        FQNOYvWQj+IFCg/Vjky7e+Ee/wJip8JR3YGAvWw=
-X-Google-Smtp-Source: APXvYqzrRHpQopmEUBrqNu8Npznjygh75Kkc/8hGLmC1JrjxGU5rI1UJs1rWNP0XHZApPfZdvFuaSoKeV1GVs4nh3IQ=
-X-Received: by 2002:aca:4c4e:: with SMTP id z75mr2760684oia.117.1558653510208;
- Thu, 23 May 2019 16:18:30 -0700 (PDT)
-MIME-Version: 1.0
+        Fri, 24 May 2019 02:39:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References
+        :Message-ID:Subject:Cc:To:From:Date;
+        bh=t7FxIPGRaX15FYe2B+VUKDr5S28k9TFwjC3Q6tVuykI=; b=NvmficCXIn3J/9a1TKexfynORT
+        7Mq7esEQlmqmeiSK5TS3b42fYNpYqjaGPaiij0JGrGOtjuDuEsgX3KcwP8lW7t7f4/n/7SSh2JN82
+        iFcYAVXahkw+DE435RBwTjzHDtfCtEGfnDdTR+fWuU/6QM8E2eQ55uLKUqwB0tV9X7b4=;
+Received: from frobwit.duncanthrax.net ([89.31.1.178] helo=t470p.stackframe.org)
+        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.86_2)
+        (envelope-from <svens@stackframe.org>)
+        id 1hU3rI-0002m7-43; Fri, 24 May 2019 08:39:16 +0200
+Date:   Fri, 24 May 2019 08:39:09 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     Grant Grundler <grantgrundler@gmail.com>
+Cc:     Carlo Pisani <carlojpisani@gmail.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Subject: Re: HPPA problems with the PCI
+Message-ID: <20190524063909.GA9661@t470p.stackframe.org>
 References: <CA+QBN9Cg6QAe5W3vS3dere=K53NAHDrMb9FN5StEfNkC=RTGqg@mail.gmail.com>
  <CA+QBN9B7B39NARTNYan2wrhRLSEAhxukTy0B6yWRMUxgLJmuNA@mail.gmail.com>
  <CAP6odjiqDyVB3VyavSHniShe3Mq3KWGdNOWeTmxQ-5q-NrOjbQ@mail.gmail.com>
- <21dcf273-929a-6fb1-7978-37145ea62301@bell.net> <CAP6odjiwmUXd8m2w-wf7R4t+qT60xiA5bE79RfBMP07xdvCpaw@mail.gmail.com>
- <7d252322-51dc-07ff-8843-b28cdc5a6762@bell.net>
-In-Reply-To: <7d252322-51dc-07ff-8843-b28cdc5a6762@bell.net>
-From:   Grant Grundler <grantgrundler@gmail.com>
-Date:   Thu, 23 May 2019 16:18:18 -0700
-Message-ID: <CAP6odjhM=uvhY-kEmf=fCm3Wk2h8Xo61r9yUFsL8x5UALwKnug@mail.gmail.com>
-Subject: Re: HPPA problems with the PCI
-To:     John David Anglin <dave.anglin@bell.net>
-Cc:     Carlo Pisani <carlojpisani@gmail.com>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+ <21dcf273-929a-6fb1-7978-37145ea62301@bell.net>
+ <CAP6odjh2-HhbPYhFqc40cVCrVc6E689CM65WqbiTOnTRgeQojQ@mail.gmail.com>
+ <483d54a6-cbf4-e366-60b3-ae84d025d0e6@bell.net>
+ <CA+QBN9A3Cajm8vYSQ9rm-iZyGjtMBSfmDXqGgrUc5F3pOziEVQ@mail.gmail.com>
+ <CA+QBN9Dg16azb3kLZ4pPi+G5h46C628dWZRdXJmrmxOZZvLn9Q@mail.gmail.com>
+ <CAP6odjiBTYLAMDYxtWKOK1vbftXkf_6_r-_ttwjuswvrMyCdAQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAP6odjiBTYLAMDYxtWKOK1vbftXkf_6_r-_ttwjuswvrMyCdAQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, May 23, 2019 at 9:10 AM John David Anglin <dave.anglin@bell.net> wrote:
->
-> On 2019-05-23 12:43 a.m., Grant Grundler wrote:
-> >> On a UP kernel, mb() is currently just a compiler
-> >> memory barrier.  On a SMP kernel, mb() generates a "sync" instruction.  We also
-> >> use "ldcw" as a barrier in spinlocks.
-> > Yeah, I'm not sure how strong the mb() needs to be and maybe I'm
-> > giving the wrong advice: use dma_wmb() for the case I've described
-> > above.  Then use dma_rmb() before reading data structures updated by
-> > the device. See examples in the existing code:
-> >    https://elixir.bootlin.com/linux/v4.20/ident/dma_wmb
-> >
-> Looking at arm and arm64, I think sync should be used for mb(), rmb() and wmb().  Possibly,
-> ldcw can be used for dma_rmb() and dma_wmb() although sync should be okay.  Sync is heavier
-> than ldcw.  The __smp barriers could use ldcw.
->
-> Arm64 doesn't distinguish between UP and SMP.  32-bit arm has this config option,
-> CONFIG_ARM_DMA_MEM_BUFFERABLE, that enables stronger barriers when defined.  I think we
-> should use the same barriers on UP and SMP on parisc to ensure we properly synchronize I/O
-> operations.
+Hi Grant,
 
-dma_wmb/rmb were added to linux kernel in 2014 - well after I stopped
-working on this. So I never had to think about this while details of
-parisc internals were a bit fresher in my brain. Helge might know
-enough to determine this.
+On Thu, May 23, 2019 at 04:09:34PM -0700, Grant Grundler wrote:
+> 
+> AFAIK, parisc never used firmware to route IRQ lines. For starters,
+> the CPUs never had an IRQ input and always used messages (equivalent
+> to MMIO writes) directed at a CPUs EIEM register.
 
-I suspect ARMs approach is correct: CPU memory model doesn't change
-depending on whether kernel is compiled for UP or SMP. Using same type
-of barriers for DMA makes sense.  Just becareful that the
-implementation for something called "sync" could be completely
-different on ARM64 - even on different ARM64 implementations.
+I think you mean EIRR here?
 
-cheers,
-grant
-
->
-> Dave
-> --
-> John David Anglin  dave.anglin@bell.net
+Regards
+Sven
