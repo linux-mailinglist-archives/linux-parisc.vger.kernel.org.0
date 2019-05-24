@@ -2,200 +2,76 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A4E295DA
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 12:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 831F729650
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 12:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390503AbfEXKbu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 May 2019 06:31:50 -0400
-Received: from mail-it1-f194.google.com ([209.85.166.194]:50517 "EHLO
-        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390162AbfEXKbt (ORCPT
+        id S2390512AbfEXKuF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 24 May 2019 06:50:05 -0400
+Received: from smtp.duncanthrax.net ([89.31.1.170]:51440 "EHLO
+        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389448AbfEXKuF (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 May 2019 06:31:49 -0400
-Received: by mail-it1-f194.google.com with SMTP id a186so5026348itg.0
-        for <linux-parisc@vger.kernel.org>; Fri, 24 May 2019 03:31:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=t6QPS5lwd7cr471Dg03A0AXuNJ/CrzRoO1xYODuKhbA=;
-        b=Vxe1OcgbXiqgWJS2x6TaYm+Cn6jhah0Qj5bXPrvsCh/P7F74y/HXVPKJgfba1esHAh
-         pwR5mq5lwAljwztFYdwuQRV8yQdOUdArsoOfy733CwBcrJjtFBZmm+2psNdK9a0f6LRt
-         rLVXaIubfp97S/kaUSegG/zw06TKZWV2uGoYdfz/HBZMYvpqO26ETRVlzOvec4BsvfMF
-         b/tEWUN6EkieS8aeK40Tf6C3HdOU3ue/E/Pe+SN7+Bn/JSvbY38QUqiXMJBvf9Eosi4J
-         jqg/ZTc6HhZAgAgv8MD/8YVQKF6dun5zVxcWHFX4FzRjCjDe6ZiDbFDHVp+8BPV1oxjx
-         me4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=t6QPS5lwd7cr471Dg03A0AXuNJ/CrzRoO1xYODuKhbA=;
-        b=QBM35V4sCtnE6c94XBSxbv7CAmrnwJVs+JZidu4p31ReOCd/nR3OgmcEqRjc7yhD+g
-         q24qzr8L4z9Mf//4LZXfDrpOCjXmLOUNBllWCGEN6q/tmQvYlmh4SWxFUMBOZI3OoS9P
-         KtttpXwCV93iUbE7mMO/LWnxT3dyLjbt5K+bsLdI7+yL9s8zNrLFCZ9H22rnEzXNBkhN
-         HErVIJuXiQSeI5p5fT+we1hp/WndzFe5/9nF5NNrZW6QFF5izB1Eb9NOOE0uXL/71Fya
-         EBYTYesDydbLU/FeYY38QbLBfW+Kra/qqkKTuf9HZWZ+pFxmRyS8q6SUXOgatACBPz56
-         PIuQ==
-X-Gm-Message-State: APjAAAUe3hkxAptobxETRAPe4cbhiXuZOcibNTSMs1DEA/QjWWJOH03Y
-        Hd9OMur68LxvmeIC+7oCmAe0LQ==
-X-Google-Smtp-Source: APXvYqzsmLzfolt9XPm7istwtQ8OTvFuPcrdmMMZuaT+6LV9wiCluPiGeCgPdZY3zO0tzizi0DzZng==
-X-Received: by 2002:a24:28c1:: with SMTP id h184mr18752225ith.105.1558693908188;
-        Fri, 24 May 2019 03:31:48 -0700 (PDT)
-Received: from brauner.io ([172.56.12.37])
-        by smtp.gmail.com with ESMTPSA id p2sm1028528itb.29.2019.05.24.03.31.41
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 24 May 2019 03:31:47 -0700 (PDT)
-Date:   Fri, 24 May 2019 12:31:39 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        torvalds@linux-foundation.org, fweimer@redhat.com,
-        jannh@google.com, oleg@redhat.com, tglx@linutronix.de,
-        arnd@arndb.de, shuah@kernel.org, dhowells@redhat.com,
-        tkjos@android.com, ldv@altlinux.org, miklos@szeredi.hu,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 1/2] open: add close_range()
-Message-ID: <20190524103137.otw7tbmagiqnf6u6@brauner.io>
-References: <20190522155259.11174-1-christian@brauner.io>
- <67e4458a-9cc4-d1aa-608c-73ebe9e2f7a3@yandex-team.ru>
+        Fri, 24 May 2019 06:50:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References
+        :Message-ID:Subject:To:From:Date;
+        bh=BudMoQWWqXKiBC+IvYq0p8uR7KUP8oiYXHmSs9pCV0M=; b=a3WDoEPlu5+yiVHQBLBnVaXJmK
+        pem5189+HSrSPmHYsZevPId4bm0X7rYwLe9SjQPzUXKle8fbQLcunarjV0gobl4sPtyUvUbB7MZ92
+        3Jc10ZojXYx7C6vbOsPgZObVJTcTWXFrvauSaI1GWFi4BBZ4Alt7nI283uSDbnQtfGrE=;
+Received: from frobwit.duncanthrax.net ([89.31.1.178] helo=t470p.stackframe.org)
+        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.86_2)
+        (envelope-from <svens@stackframe.org>)
+        id 1hU7m0-0002Mw-Gg
+        for linux-parisc@vger.kernel.org; Fri, 24 May 2019 12:50:04 +0200
+Date:   Fri, 24 May 2019 12:50:03 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     linux-parisc <linux-parisc@vger.kernel.org>
+Subject: Re: PCI HPMC on C240 with alternatives Patching
+Message-ID: <20190524105003.GE9450@t470p.stackframe.org>
+References: <20190524065850.GA9849@t470p.stackframe.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <67e4458a-9cc4-d1aa-608c-73ebe9e2f7a3@yandex-team.ru>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190524065850.GA9849@t470p.stackframe.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, May 23, 2019 at 07:22:17PM +0300, Konstantin Khlebnikov wrote:
-> On 22.05.2019 18:52, Christian Brauner wrote:> This adds the close_range() syscall. It allows to efficiently close a range
-> > of file descriptors up to all file descriptors of a calling task.
-> >
-> > The syscall came up in a recent discussion around the new mount API and
-> > making new file descriptor types cloexec by default. During this
-> > discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
-> > syscall in this manner has been requested by various people over time.
-> >
-> > First, it helps to close all file descriptors of an exec()ing task. This
-> > can be done safely via (quoting Al's example from [1] verbatim):
-> >
-> >          /* that exec is sensitive */
-> >          unshare(CLONE_FILES);
-> >          /* we don't want anything past stderr here */
-> >          close_range(3, ~0U);
-> >          execve(....);
-> >
-> > The code snippet above is one way of working around the problem that file
-> > descriptors are not cloexec by default. This is aggravated by the fact that
-> > we can't just switch them over without massively regressing userspace. For
-> > a whole class of programs having an in-kernel method of closing all file
-> > descriptors is very helpful (e.g. demons, service managers, programming
-> > language standard libraries, container managers etc.).
-> > (Please note, unshare(CLONE_FILES) should only be needed if the calling
-> >   task is multi-threaded and shares the file descriptor table with another
-> >   thread in which case two threads could race with one thread allocating
-> >   file descriptors and the other one closing them via close_range(). For the
-> >   general case close_range() before the execve() is sufficient.)
-> >
-> > Second, it allows userspace to avoid implementing closing all file
-> > descriptors by parsing through /proc/<pid>/fd/* and calling close() on each
-> > file descriptor. From looking at various large(ish) userspace code bases
-> > this or similar patterns are very common in:
-> > - service managers (cf. [4])
-> > - libcs (cf. [6])
-> > - container runtimes (cf. [5])
-> > - programming language runtimes/standard libraries
-> >    - Python (cf. [2])
-> >    - Rust (cf. [7], [8])
-> > As Dmitry pointed out there's even a long-standing glibc bug about missing
-> > kernel support for this task (cf. [3]).
-> > In addition, the syscall will also work for tasks that do not have procfs
-> > mounted and on kernels that do not have procfs support compiled in. In such
-> > situations the only way to make sure that all file descriptors are closed
-> > is to call close() on each file descriptor up to UINT_MAX or RLIMIT_NOFILE,
-> > OPEN_MAX trickery (cf. comment [8] on Rust).
-> >
-> > The performance is striking. For good measure, comparing the following
-> > simple close_all_fds() userspace implementation that is essentially just
-> > glibc's version in [6]:
-> >
-> > static int close_all_fds(void)
-> > {
-> >          int dir_fd;
-> >          DIR *dir;
-> >          struct dirent *direntp;
-> >
-> >          dir = opendir("/proc/self/fd");
-> >          if (!dir)
-> >                  return -1;
-> >          dir_fd = dirfd(dir);
-> >          while ((direntp = readdir(dir))) {
-> >                  int fd;
-> >                  if (strcmp(direntp->d_name, ".") == 0)
-> >                          continue;
-> >                  if (strcmp(direntp->d_name, "..") == 0)
-> >                          continue;
-> >                  fd = atoi(direntp->d_name);
-> >                  if (fd == dir_fd || fd == 0 || fd == 1 || fd == 2)
-> >                          continue;
-> >                  close(fd);
-> >          }
-> >          closedir(dir);
-> >          return 0;
-> > }
-> >
-> > to close_range() yields:
-> > 1. closing 4 open files:
-> >     - close_all_fds(): ~280 us
-> >     - close_range():    ~24 us
-> >
-> > 2. closing 1000 open files:
-> >     - close_all_fds(): ~5000 us
-> >     - close_range():   ~800 us
-> >
-> > close_range() is designed to allow for some flexibility. Specifically, it
-> > does not simply always close all open file descriptors of a task. Instead,
-> > callers can specify an upper bound.
-> > This is e.g. useful for scenarios where specific file descriptors are
-> > created with well-known numbers that are supposed to be excluded from
-> > getting closed.
-> > For extra paranoia close_range() comes with a flags argument. This can e.g.
-> > be used to implement extension. Once can imagine userspace wanting to stop
-> > at the first error instead of ignoring errors under certain circumstances.
+On Fri, May 24, 2019 at 08:58:50AM +0200, Sven Schnelle wrote:
+> Hi List,
 > 
-> > There might be other valid ideas in the future. In any case, a flag
-> > argument doesn't hurt and keeps us on the safe side.
+> i recently got my hands on an old C240. I see a Kernel oops pretty early when
+> alternatives patching is enabled:
+> [..]
+> My (wild) guess is that we're patching away some memory barrier or cache flush
+> so the SCRIPTS engine in the SCSI controller starts executing garbage and triggers
+> a PCI bus read/write to an invalid address. The reason the INB() is given as the
+> HPMC location is likely caused by the delay between writing DSPS and the chip actually
+> starting to fetch insn/data.
 > 
-> Here is another strange but real-live scenario: crash handler for dumping core.
+> Does that ring any bell for someone on the list? Otherwise i can check the
+> alternatives patching over the weekend, i think there are not that many locations.
 > 
-> If applications has network connections it would be better to close them all,
-> otherwise clients will wait until end of dumping process or timeout.
-> Also closing normal files might be a good idea for releasing locks.
-> 
-> But simple closing might race with other threads - closed fd will be reused
-> while some code still thinks it refers to original file.
-> 
-> Our solution closes files without freeing fd: it opens /dev/null and
-> replaces all opened descriptors using dup2.
-> 
-> So, special flag for close_range() could close files without clearing bitmap.
-> Effect should be the same - fd wouldn't be reused.
-> 
-> Actually two flags for two phases: closing files and releasing fd.
+> The good thing is it's reproducible - it always crashes. Either in SCSI or in
+> Tulip.
 
-Konstantin, I'm sorry, I totally missed that part of your mail
-yesterday.
-Without speaking to the feasibility of this it's at least a good
-illustration that people really do have the possible need for a flag
-argument.
+Did a quick test, removing ALT_COND_N_IOC_FDC from asm_io_fdc() seems to fix this
+issue. Haven't looked in more detail into this though.
 
-Thanks!
-Christian
+index 73ca89a47f49..d83b1adf2f3f 100644
+--- a/arch/parisc/include/asm/cache.h
++++ b/arch/parisc/include/asm/cache.h
+@@ -52,7 +52,6 @@ void parisc_setup_cache_timing(void);
+
+ #define asm_io_fdc(addr) asm volatile("fdc %%r0(%0)" \
+                        ALTERNATIVE(ALT_COND_NO_DCACHE, INSN_NOP) \
+-                       ALTERNATIVE(ALT_COND_NO_IOC_FDC, INSN_NOP) \
+                        : : "r" (addr) : "memory")
+ #define asm_io_sync()  asm volatile("sync" \
+                        ALTERNATIVE(ALT_COND_NO_DCACHE, INSN_NOP) \
+
+
+Sven
