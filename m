@@ -2,91 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2306C291FA
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 09:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCBE12928E
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 10:12:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389156AbfEXHoM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 May 2019 03:44:12 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:47089 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388911AbfEXHoL (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 May 2019 03:44:11 -0400
-Received: by mail-qk1-f196.google.com with SMTP id a132so6005115qkb.13;
-        Fri, 24 May 2019 00:44:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=k2hM4uRH+xcF6VZw3zZp57FHF0UiIEpfXR9WFJl84UE=;
-        b=PYXq1Idzv0Di7KLMknzWpNB+eY+yAOjbVLGoI5HUbfbPvDLGbeqCylQHAYwjvuSa0e
-         IkMKSeoe3IR3aNnjCBw+MHwc5WWQdgsseuj/aC59yOVLI4d0Twksyz4v5wc494lIhagG
-         tI6f8JhIFaoCJFSmJxKQFc1dQ+AEZABwqBiQEMUXnGdfiMTZB2Gs3uPZ3vGAsGa/AdF7
-         LCIl7WMuGS5y0Bo6e8XQO/aJiEDa/nlQqrbspcGRQGNzl23DvPUNFRrB+4NRjwo/OfAB
-         atqkh0iKBC0EFrVTNrQ50gbR+7yV90h01bA/rQNSKkLlx5BjivcZnCzdDU1XcWXk/L1l
-         WKfA==
-X-Gm-Message-State: APjAAAXwfXByxZKYfWiMo9NPVH0LPLmzUDK7pZnqtwgzF0APfN1TY0OJ
-        4eLsFdXsvJQkA4Q8mb4D3BVwKXzWUO3mq3l/+tQ=
-X-Google-Smtp-Source: APXvYqy/WqyRL4BlbMWLM5GdeDgLkBJI6XwCNcVvXGonN+2oV2dtTQWrObje5U17OKbtEn0pWH9nlYsDR25/fOWgBDY=
-X-Received: by 2002:ac8:2433:: with SMTP id c48mr70119188qtc.18.1558683849757;
- Fri, 24 May 2019 00:44:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190522155259.11174-1-christian@brauner.io> <67e4458a-9cc4-d1aa-608c-73ebe9e2f7a3@yandex-team.ru>
- <20190523163345.q5ynd2ytk7nxcvqf@brauner.io>
-In-Reply-To: <20190523163345.q5ynd2ytk7nxcvqf@brauner.io>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 24 May 2019 09:43:53 +0200
-Message-ID: <CAK8P3a26uvqmExJZsezhB+cp2ADM0Ai9jVUKWOFM6kg848bCKg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] open: add close_range()
-To:     Christian Brauner <christian@brauner.io>
-Cc:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>,
-        Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Shuah Khan <shuah@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Todd Kjos <tkjos@android.com>,
-        "Dmitry V. Levin" <ldv@altlinux.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S2389198AbfEXIMc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 24 May 2019 04:12:32 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:45272 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389093AbfEXIMb (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 24 May 2019 04:12:31 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 5C814307D851;
+        Fri, 24 May 2019 08:12:31 +0000 (UTC)
+Received: from hp-dl380pg8-01.lab.eng.pek2.redhat.com (hp-dl380pg8-01.lab.eng.pek2.redhat.com [10.73.8.10])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3C7ED19C4F;
+        Fri, 24 May 2019 08:12:20 +0000 (UTC)
+From:   Jason Wang <jasowang@redhat.com>
+To:     mst@redhat.com, jasowang@redhat.com, kvm@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, peterx@redhat.com,
+        James.Bottomley@hansenpartnership.com, hch@infradead.org,
+        davem@davemloft.net, jglisse@redhat.com, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+        christophe.de.dinechin@gmail.com, jrdr.linux@gmail.com
+Subject: [PATCH net-next 0/6] vhost: accelerate metadata access
+Date:   Fri, 24 May 2019 04:12:12 -0400
+Message-Id: <20190524081218.2502-1-jasowang@redhat.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Fri, 24 May 2019 08:12:31 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, May 23, 2019 at 6:33 PM Christian Brauner <christian@brauner.io> wrote:
-> On Thu, May 23, 2019 at 07:22:17PM +0300, Konstantin Khlebnikov wrote:
-> > On 22.05.2019 18:52, Christian Brauner wrote:> This adds the close_range() syscall. It allows to efficiently close a range
-> > >   22 files changed, 100 insertions(+), 9 deletions(-)
-> > >
-> >
-> > It would be better to split arch/ wiring into separate patch for better readability.
->
-> Ok. You mean only do x86 - seems to be the standard - and then move the
-> others into a separate patch? Doesn't seem worth to have a patch
-> per-arch, I'd think.
+Hi:
 
-I think I would prefer the first patch to just add the call without wiring it up
-anywhere, and a second patch do add it on all architectures including x86.
+This series tries to access virtqueue metadata through kernel virtual
+address instead of copy_user() friends since they had too much
+overheads like checks, spec barriers or even hardware feature
+toggling like SMAP. This is done through setup kernel address through
+direct mapping and co-opreate VM management with MMU notifiers.
 
-     Arnd
+Test shows about 23% improvement on TX PPS. TCP_STREAM doesn't see
+obvious improvement.
+
+Thanks
+
+Changes from RFC V3:
+- rebase to net-next
+- Tweak on the comments
+Changes from RFC V2:
+- switch to use direct mapping instead of vmap()
+- switch to use spinlock + RCU to synchronize MMU notifier and vhost
+  data/control path
+- set dirty pages in the invalidation callbacks
+- always use copy_to/from_users() friends for the archs that may need
+  flush_dcache_pages()
+- various minor fixes
+Changes from V4:
+- use invalidate_range() instead of invalidate_range_start()
+- track dirty pages
+Changes from V3:
+- don't try to use vmap for file backed pages
+- rebase to master
+Changes from V2:
+- fix buggy range overlapping check
+- tear down MMU notifier during vhost ioctl to make sure
+  invalidation request can read metadata userspace address and vq size
+  without holding vq mutex.
+Changes from V1:
+- instead of pinning pages, use MMU notifier to invalidate vmaps
+  and remap duing metadata prefetch
+- fix build warning on MIPS
+
+Jason Wang (6):
+  vhost: generalize adding used elem
+  vhost: fine grain userspace memory accessors
+  vhost: rename vq_iotlb_prefetch() to vq_meta_prefetch()
+  vhost: introduce helpers to get the size of metadata area
+  vhost: factor out setting vring addr and num
+  vhost: access vq metadata through kernel virtual address
+
+ drivers/vhost/net.c   |   4 +-
+ drivers/vhost/vhost.c | 850 ++++++++++++++++++++++++++++++++++++------
+ drivers/vhost/vhost.h |  38 +-
+ 3 files changed, 766 insertions(+), 126 deletions(-)
+
+-- 
+2.18.1
+
