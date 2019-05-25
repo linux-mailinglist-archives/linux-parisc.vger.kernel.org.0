@@ -2,86 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 210832A38D
-	for <lists+linux-parisc@lfdr.de>; Sat, 25 May 2019 11:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF942A391
+	for <lists+linux-parisc@lfdr.de>; Sat, 25 May 2019 11:06:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726461AbfEYI7c (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 25 May 2019 04:59:32 -0400
-Received: from mail-yb1-f196.google.com ([209.85.219.196]:41380 "EHLO
-        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726462AbfEYI7c (ORCPT
+        id S1726453AbfEYJBb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 25 May 2019 05:01:31 -0400
+Received: from mail-yw1-f52.google.com ([209.85.161.52]:43961 "EHLO
+        mail-yw1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726376AbfEYJBb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 25 May 2019 04:59:32 -0400
-Received: by mail-yb1-f196.google.com with SMTP id d2so4578761ybh.8
-        for <linux-parisc@vger.kernel.org>; Sat, 25 May 2019 01:59:32 -0700 (PDT)
+        Sat, 25 May 2019 05:01:31 -0400
+Received: by mail-yw1-f52.google.com with SMTP id t5so4604912ywf.10
+        for <linux-parisc@vger.kernel.org>; Sat, 25 May 2019 02:01:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:cc;
-        bh=xKKlfF2UNbDVEAghC5Zk8M2SCxRAIex5R2b+OqSnvFU=;
-        b=rPNpjVQgDiaZ5xSQtw6BzqhC9XiAbEwoq5ubUuLAzdHg8Q3krPeT2X0WOdLPTT4Aic
-         ZsgvEIxpTO9SSzLz57ADUGrbRea2qsE+PtUiSspPV+ZBwBFZcRrafUlt/pC6t4FspyIn
-         fV/7Hnbs/VHNwYY33fMmsjOAWKurfbWoxwRpfUQytMCRoZargM3GxoLeweJUQkATIgPw
-         X+n9ckN2qrD3tqCoYDdwnbEv9abq5v+SZvbLSqwIcgtLsmY7pAFw5KjPCr3J5jMRV7G7
-         VVlUb6Tf/+CBzGO8lWKZu73A9M3DOhqEF9DXMiCk54tf1ShQoR5+Vex1L/m2Vk8dAfBM
-         EZ5A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zYgO9uyIeeGJv9LGOHWDiZqjTRffqO4dRs9BqqNVK3I=;
+        b=n4zZEAFMzmbnbk/YqazfTwgsDaC0f++44eZpqqoCQIUP0yyu3j4qPCtFH4iqsLAzVI
+         LixZXXzeVi5ZEzk6xIRY3uPH+aGrB/16zPxmClvepgD1n0hIvae/oN85qZd+guIs4NXj
+         h+Cqng5W0m/YT861RdF2D2lG0nB8HNsdDyKlA+A5ZvbirwXbHjCAxOwzHlzKSoTk98OO
+         HZYOteJ9FeVi+x+NHHDZGM3aNqsT/fXiKu7Q1Lw4CZszLIGf47Fyf1bBbMuVGQKteF6m
+         fdxtpjEMnvUKRBd+1vWB4RinRTxrIyXMON/kN0I0x7tZUqXJqXpzrIxpcNJ3mpTvqN0e
+         O0jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:cc;
-        bh=xKKlfF2UNbDVEAghC5Zk8M2SCxRAIex5R2b+OqSnvFU=;
-        b=a+O5PT3kzplvM/Z7jkN7nxMDqFCpAH9MMv0J6hjpe6KkgfGVDPMjil20oc2++gzRGd
-         6SlRgwUChwDdzXIy9vaBzG5OfgRPALtaJ+gc7cW8S1EUXNfUrBu80I/N/PXW6Uj3+8oJ
-         Tyf9a5PejqWHqeOPg5Ez3W3gZ/1pY0JQPFcXZU4wLjEdCbeTsR+nTVtT3KccwGHk+nz2
-         N2M53jNAyzmCqCS4IP8vvKvrWpChADMAKsfK2bfQ6vk62iYD1mzOF8c2CFU6FDL4l4m9
-         QBDT5vuJcNjCQG4XDapqOIew/0iCCnTdP5uXqsxzcRkHBGjz5qAZKTkT+yOJPU1r2owQ
-         9aZw==
-X-Gm-Message-State: APjAAAWshiFAxpEZqyQ9+iKt4TSbp12Rp3BOX3R6I0SPs/Cm5kPZasGd
-        0RuDvDtRDTgh3gImHObnklIsmvj6tIpA+mO06Nr2qbTn
-X-Received: by 2002:a25:bcf:: with SMTP id 198mt3315064ybl.34.1558774771441;
- Sat, 25 May 2019 01:59:31 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=zYgO9uyIeeGJv9LGOHWDiZqjTRffqO4dRs9BqqNVK3I=;
+        b=GWfVibvoUUG6lgKTlbeHeQwHW0vvZi0u73uJnEdKSsW+khubxXysKkeXGx42DD76Si
+         yODc93dL5xreybIUC+R6OPVWaqAkZvpoUL32e9jbwscgjPuhnJ14wePTXahXqrfdCGuv
+         V32RxZCgvbzYN+mBI0RVDY8bQDWJXriXu9VjujoKSgdHCm78CkADQSHGjHuUffHnqfBj
+         vW8ZbsDPCtlHLUyxGc/hm8HVrab95TVUwu85sM6dBdz6AEAdT8qbn6E+wbGDtmCUO6h8
+         GN3vyGKCuIHW5R/hGozIEfNzojZcxFH1fbxArFFiGnvlTEcI5USKMvi1XoP3Ttx/Qvmm
+         a9rQ==
+X-Gm-Message-State: APjAAAWRlIDMzBrtVsXQegvdvfdfZJH/2AUrzZPYacNh+0TQo94AbSd5
+        foVUnD4jno6ZVCCJO383ThwO+7I4VjhoPPbmJ2E=
+X-Google-Smtp-Source: APXvYqzwnebgg1dfUl/tzHgQ33ADEz/5EU+NveRrWGgIJn7zv4NIiMTVbwvDpp0N0f8Lb6NWIaqPC2IbMxMAFT6ItYQ=
+X-Received: by 2002:a0d:d711:: with SMTP id z17mr39485801ywd.128.1558774890967;
+ Sat, 25 May 2019 02:01:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
- <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
-In-Reply-To: <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+References: <CA+QBN9Cg6QAe5W3vS3dere=K53NAHDrMb9FN5StEfNkC=RTGqg@mail.gmail.com>
+ <CA+QBN9B7B39NARTNYan2wrhRLSEAhxukTy0B6yWRMUxgLJmuNA@mail.gmail.com>
+ <CAP6odjiqDyVB3VyavSHniShe3Mq3KWGdNOWeTmxQ-5q-NrOjbQ@mail.gmail.com>
+ <21dcf273-929a-6fb1-7978-37145ea62301@bell.net> <CAP6odjh2-HhbPYhFqc40cVCrVc6E689CM65WqbiTOnTRgeQojQ@mail.gmail.com>
+ <483d54a6-cbf4-e366-60b3-ae84d025d0e6@bell.net> <CA+QBN9A3Cajm8vYSQ9rm-iZyGjtMBSfmDXqGgrUc5F3pOziEVQ@mail.gmail.com>
+ <CA+QBN9Dg16azb3kLZ4pPi+G5h46C628dWZRdXJmrmxOZZvLn9Q@mail.gmail.com>
+ <CAP6odjiBTYLAMDYxtWKOK1vbftXkf_6_r-_ttwjuswvrMyCdAQ@mail.gmail.com>
+ <20190524063909.GA9661@t470p.stackframe.org> <CAP6odjj0uj3rj==jJbr-otuEn67boqAjCyEqsbZre1JihEScGQ@mail.gmail.com>
+In-Reply-To: <CAP6odjj0uj3rj==jJbr-otuEn67boqAjCyEqsbZre1JihEScGQ@mail.gmail.com>
 From:   Carlo Pisani <carlojpisani@gmail.com>
-Date:   Sat, 25 May 2019 10:59:27 +0200
-Message-ID: <CA+QBN9BPbTHojQcSQZM1KmfsUMkajhLhmJ6jye4PdK8uXO9NcQ@mail.gmail.com>
-Subject: Re: C3600, sata controller
-Cc:     Parisc List <linux-parisc@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Sat, 25 May 2019 11:01:27 +0200
+Message-ID: <CA+QBN9DdzNgH27aNdNt9q_GJBje0hhhAJRrYD4_qC67YO--vQw@mail.gmail.com>
+Subject: Re: HPPA problems with the PCI
+To:     Grant Grundler <grantgrundler@gmail.com>
+Cc:     Sven Schnelle <svens@stackframe.org>,
+        John David Anglin <dave.anglin@bell.net>,
+        linux-parisc <linux-parisc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-guys?
-yahoooooooooooooooo, SYBA-SY-PCX40009 does woooork :D :D
-
-02:03.0 RAID bus controller: Silicon Image, Inc. SiI 3124 PCI-X Serial
-ATA Controller (rev 01)
-
-10 hours burn-in test passed!!!!
-
-while [ 1 ]
-do
-for item in `ls *.bin`
-    do
-        rm -f $copy.out
-        echo -n "$item ... "
-        time cp_and_check_md5sum $item $copy.out
-        echo "done"
-    done
-done
-
-kernel 5.1, from the git repository, compiled with SMP
+on  kernel 5.1, from the git repository, compiled with SMP
 
 dmesg | grep altern
 [    2.551002] alternatives: applied 156 out of 175 patches
 
-only applied this patch:
+this patch has made my day!
+It seems the solution for the problem!
+
+the card is still working after 10 hours of burn-in test!
 
 --- a/arch/parisc/include/asm/cache.h
 +++ b/arch/parisc/include/asm/cache.h
