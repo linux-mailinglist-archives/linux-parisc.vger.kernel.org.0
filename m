@@ -2,122 +2,70 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7778E2A650
-	for <lists+linux-parisc@lfdr.de>; Sat, 25 May 2019 20:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87E982A687
+	for <lists+linux-parisc@lfdr.de>; Sat, 25 May 2019 20:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727149AbfEYSNK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 25 May 2019 14:13:10 -0400
-Received: from smtp.duncanthrax.net ([89.31.1.170]:45020 "EHLO
-        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727126AbfEYSNK (ORCPT
+        id S1727311AbfEYSan (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 25 May 2019 14:30:43 -0400
+Received: from mail-yw1-f46.google.com ([209.85.161.46]:37606 "EHLO
+        mail-yw1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbfEYSan (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 25 May 2019 14:13:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date;
-        bh=DvFZCPP4YDRbeJcBJojgRgaMGvTrgp+VyYAv5z8tfY4=; b=pnAVncTfMoo4ZMCdg22qJkmaJb
-        XtLDaWHdy4u+v1Y5Wgt0Z6eNhKCIgX5WXV4z8ItqTbnKGGwCc3yZMInwBEWwMQILtSwQAdWqdb3Zl
-        Xn4+dL2Qsb5Z3Q2TkCH0JheBva9k505K6xPtOvybkzLBdzHAnkgTVQ4ZoI0awmZGDr9c=;
-Received: from [134.3.44.134] (helo=t470p.stackframe.org)
-        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.86_2)
-        (envelope-from <svens@stackframe.org>)
-        id 1hUbAH-00084b-W9; Sat, 25 May 2019 20:13:06 +0200
-Date:   Sat, 25 May 2019 20:13:04 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     John David Anglin <dave.anglin@bell.net>
-Cc:     Carlo Pisani <carlojpisani@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        Grant Grundler <grantgrundler@gmail.com>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-Subject: Re: HPPA problems with the PCI
-Message-ID: <20190525181304.GA5637@t470p.stackframe.org>
+        Sat, 25 May 2019 14:30:43 -0400
+Received: by mail-yw1-f46.google.com with SMTP id 186so4984497ywo.4
+        for <linux-parisc@vger.kernel.org>; Sat, 25 May 2019 11:30:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fwCT9SvPCEzzuSZDeRTMlJ0ckLlZU6u2X4HcvnAs6JI=;
+        b=lVkGUGygKocSUxRAv2hs/xgtiBXimUGE4QLyNIxW6xVrQBQL94e7/aIbmFQhAoxCwp
+         XH5k25XSBSD8rkFaNrsxSFzw2hNXllJdVbbI9amqOy4Alpp0/UI6SldJqwwca7uVDlZm
+         cijQaqZs9qukW4n5jv5/RGiAZzpclRpuPr/bkRth5qwr5Wf7kaxVeGyAlVABcS9LMQbR
+         Rj6YghjeHsgeqKN3733H4lEjcq9pSVjmsPvg+8MW0XRO4JiqDh5rnPA3qilJCYxHnaDs
+         eSzzNfDTB+tXn/0b1bZc2AwlmtznthHaacg4ipYIcRL3Pm+4pFrkpJUrSGXd3zisPCQR
+         P7nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fwCT9SvPCEzzuSZDeRTMlJ0ckLlZU6u2X4HcvnAs6JI=;
+        b=YaDhnH7HbAlwY0Mn4PWRRUOkQkfLxD+dYfWT+b9tClFgLIB/wOVuEHdamCLMDx6OPn
+         v5C+h1ye1BNPAUDa7y3k02m8eUADN4MHkzXFYxw0mX4frQ3UMiUtPlbEs2slMiTOXyBe
+         +/dSAS2bR/qtOhH0pRT/H0z+3uzDjaktXQJM9JFt5P0H70vPJVUew9g1tF4qoN7nAY4J
+         HTn7IqBRvsdo7Ns32uZ4tPtc3fG6V2tub7OBukMiOraFJqOk22pxHIf5iiCOmvvMX7VW
+         7T+fgxHz2a5dht3xVdNO9Rp5gG3KpTfED6x9b+lT+1PofbwLvE06YcINmHuFTu6AgUww
+         uwNQ==
+X-Gm-Message-State: APjAAAXEa2Yrf52sj9SCeKJSEe42PYfmOfN1XEjtBQE7fnBJQ/dmLTZj
+        uGt6NmhLnCH8JQ1FLSKlu0luQ8dB2Nwcc2d7RDg=
+X-Google-Smtp-Source: APXvYqyyTrS7SwgEdHnuqDPW6aA3I+Y/UBdlNrGg8hl/BZ6jJX4080iXg3/N+H2+4YXWbAghK3E/fCdM3hw99UbnH2Q=
+X-Received: by 2002:a0d:dfd7:: with SMTP id i206mr51037539ywe.256.1558809042833;
+ Sat, 25 May 2019 11:30:42 -0700 (PDT)
+MIME-Version: 1.0
 References: <CA+QBN9A3Cajm8vYSQ9rm-iZyGjtMBSfmDXqGgrUc5F3pOziEVQ@mail.gmail.com>
  <CA+QBN9Dg16azb3kLZ4pPi+G5h46C628dWZRdXJmrmxOZZvLn9Q@mail.gmail.com>
  <CAP6odjiBTYLAMDYxtWKOK1vbftXkf_6_r-_ttwjuswvrMyCdAQ@mail.gmail.com>
- <20190524063909.GA9661@t470p.stackframe.org>
- <CAP6odjj0uj3rj==jJbr-otuEn67boqAjCyEqsbZre1JihEScGQ@mail.gmail.com>
+ <20190524063909.GA9661@t470p.stackframe.org> <CAP6odjj0uj3rj==jJbr-otuEn67boqAjCyEqsbZre1JihEScGQ@mail.gmail.com>
  <CA+QBN9DdzNgH27aNdNt9q_GJBje0hhhAJRrYD4_qC67YO--vQw@mail.gmail.com>
- <9aa6caf2-c9d0-8bbb-8f62-dc1becea841d@bell.net>
- <e033f241-6437-864f-c94b-9b1e15492258@gmx.de>
+ <9aa6caf2-c9d0-8bbb-8f62-dc1becea841d@bell.net> <e033f241-6437-864f-c94b-9b1e15492258@gmx.de>
  <CA+QBN9A9jw-QsZXcDHUMZU03TY_m5=kfcmVhpUNyv-y3xy2Heg@mail.gmail.com>
- <55e937b6-a95e-d6e4-ef30-f9040f4daafd@bell.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <55e937b6-a95e-d6e4-ef30-f9040f4daafd@bell.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ <55e937b6-a95e-d6e4-ef30-f9040f4daafd@bell.net> <20190525181304.GA5637@t470p.stackframe.org>
+In-Reply-To: <20190525181304.GA5637@t470p.stackframe.org>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Sat, 25 May 2019 20:30:37 +0200
+Message-ID: <CA+QBN9DKvdJ+B82-O+xexH4URwMr=z0kXQnSjMjwnZ1XoBED7Q@mail.gmail.com>
+Subject: Re: HPPA problems with the PCI
+To:     Sven Schnelle <svens@stackframe.org>
+Cc:     John David Anglin <dave.anglin@bell.net>,
+        Helge Deller <deller@gmx.de>,
+        Grant Grundler <grantgrundler@gmail.com>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, May 25, 2019 at 01:50:01PM -0400, John David Anglin wrote:
-> On 2019-05-25 1:19 p.m., Carlo Pisani wrote:
-> >> Carlo, can you run "cat /proc/cpuinfo" and paste the output here?
-> > # cat /proc/cpuinfo
-> > processor       : 0
-> > cpu family      : PA-RISC 2.0
-> > cpu             : PA8600 (PCX-W+)
-> > cpu MHz         : 552.000000
-> > physical id     : 0
-> > siblings        : 1
-> > core id         : 0
-> > capabilities    : os32 os64 nva_supported (0x03)
-> > model           : 9000/785/C3600
-> > model name      : Allegro W+
-> > hversion        : 0x00005cf0
-> > sversion        : 0x00000481
-> > I-cache         : 512 KB
-> > D-cache         : 1024 KB (WB, direct mapped)
-> > ITLB entries    : 160
-> > DTLB entries    : 160 - shared with ITLB
-> > bogomips        : 1093.63
-> > software id     : 2007455457
-> > PCI failmode    : soft
-> I think the PDC is buggy on c3600.  The NP (iopdir_fdc) bit is set on my c3750:
-> [..] 
+> It's also set on my C3750, but not on my J5000 (PDC FW 5.0):
 
-It's also set on my C3750, but not on my J5000 (PDC FW 5.0):
-
-root@j5000:~# cat /proc/cpuinfo 
-processor	: 0
-cpu family	: PA-RISC 2.0
-cpu		: PA8500 (PCX-W)
-cpu MHz		: 440.000000
-physical id	: 0
-siblings	: 1
-core id		: 0
-capabilities	: os32 os64 nva_supported (0x03)
-model		: 9000/785/J5000
-model name	: Forte W 2-way
-hversion	: 0x00005bd0
-sversion	: 0x00000491
-I-cache		: 512 KB
-D-cache		: 1024 KB (WB, direct mapped)
-ITLB entries	: 160
-DTLB entries	: 160 - shared with ITLB
-bogomips	: 875.72
-software id	: 2006803539
-
-processor	: 1
-cpu family	: PA-RISC 2.0
-cpu		: PA8500 (PCX-W)
-cpu MHz		: 440.000000
-physical id	: 1
-siblings	: 1
-core id		: 0
-capabilities	: os32 os64 nva_supported (0x03)
-model		: 9000/785/J5000
-model name	: Forte W 2-way
-hversion	: 0x00005bd0
-sversion	: 0x00000491
-I-cache		: 512 KB
-D-cache		: 1024 KB (WB, direct mapped)
-ITLB entries	: 160
-DTLB entries	: 160 - shared with ITLB
-bogomips	: 875.72
-software id	: 2006803539
-
-Sven
+maybe it's related to the firmware version?
