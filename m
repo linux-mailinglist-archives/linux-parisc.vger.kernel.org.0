@@ -2,93 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F12D72A08A
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 May 2019 23:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 210832A38D
+	for <lists+linux-parisc@lfdr.de>; Sat, 25 May 2019 11:00:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404237AbfEXVle (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 May 2019 17:41:34 -0400
-Received: from mout.gmx.net ([212.227.17.22]:56943 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404176AbfEXVle (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 May 2019 17:41:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1558734087;
-        bh=xZGb58EzhPLHxzHebudUgMNYkefPWqA90AL34zeWfbk=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=MNPn2tW6amyzy9U+nDfqyPo8nMNUGV0S1z4zdu8HADHx3SxWxbr1oDuwca3BqeFPE
-         //RWdyE/HFnyjHG9gYvD9D/3RyVqX1ZhvjMp/T+CbW4dhM6tiDHMDDJD1SnVNQAsF0
-         G85+PDQFX3zlxs1h8bEtSpR399w8XuhY0tVn8pa4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.dellerweb.de ([92.116.183.223]) by mail.gmx.com
- (mrgmx101 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 0MVrQS-1h60sA481w-00X2B9; Fri, 24 May 2019 23:41:27 +0200
-Date:   Fri, 24 May 2019 23:41:24 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Fix alternative coding for PCX-U CPUs
-Message-ID: <20190524214124.GA14765@ls3530.dellerweb.de>
+        id S1726461AbfEYI7c (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 25 May 2019 04:59:32 -0400
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:41380 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726462AbfEYI7c (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 25 May 2019 04:59:32 -0400
+Received: by mail-yb1-f196.google.com with SMTP id d2so4578761ybh.8
+        for <linux-parisc@vger.kernel.org>; Sat, 25 May 2019 01:59:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:cc;
+        bh=xKKlfF2UNbDVEAghC5Zk8M2SCxRAIex5R2b+OqSnvFU=;
+        b=rPNpjVQgDiaZ5xSQtw6BzqhC9XiAbEwoq5ubUuLAzdHg8Q3krPeT2X0WOdLPTT4Aic
+         ZsgvEIxpTO9SSzLz57ADUGrbRea2qsE+PtUiSspPV+ZBwBFZcRrafUlt/pC6t4FspyIn
+         fV/7Hnbs/VHNwYY33fMmsjOAWKurfbWoxwRpfUQytMCRoZargM3GxoLeweJUQkATIgPw
+         X+n9ckN2qrD3tqCoYDdwnbEv9abq5v+SZvbLSqwIcgtLsmY7pAFw5KjPCr3J5jMRV7G7
+         VVlUb6Tf/+CBzGO8lWKZu73A9M3DOhqEF9DXMiCk54tf1ShQoR5+Vex1L/m2Vk8dAfBM
+         EZ5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:cc;
+        bh=xKKlfF2UNbDVEAghC5Zk8M2SCxRAIex5R2b+OqSnvFU=;
+        b=a+O5PT3kzplvM/Z7jkN7nxMDqFCpAH9MMv0J6hjpe6KkgfGVDPMjil20oc2++gzRGd
+         6SlRgwUChwDdzXIy9vaBzG5OfgRPALtaJ+gc7cW8S1EUXNfUrBu80I/N/PXW6Uj3+8oJ
+         Tyf9a5PejqWHqeOPg5Ez3W3gZ/1pY0JQPFcXZU4wLjEdCbeTsR+nTVtT3KccwGHk+nz2
+         N2M53jNAyzmCqCS4IP8vvKvrWpChADMAKsfK2bfQ6vk62iYD1mzOF8c2CFU6FDL4l4m9
+         QBDT5vuJcNjCQG4XDapqOIew/0iCCnTdP5uXqsxzcRkHBGjz5qAZKTkT+yOJPU1r2owQ
+         9aZw==
+X-Gm-Message-State: APjAAAWshiFAxpEZqyQ9+iKt4TSbp12Rp3BOX3R6I0SPs/Cm5kPZasGd
+        0RuDvDtRDTgh3gImHObnklIsmvj6tIpA+mO06Nr2qbTn
+X-Received: by 2002:a25:bcf:: with SMTP id 198mt3315064ybl.34.1558774771441;
+ Sat, 25 May 2019 01:59:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Provags-ID: V03:K1:69mxT2wjwvFWLUk8CXxU/6/l/tUSyQHwjGNa/j8oD2crCjUzw6u
- SCAaTaYj0EnmKOHhD26vOHzrs8AjT0Ncy4qh1853QVT6sY5NwALNTY5a5OdgpxNBI+XOKBu
- Ldbalxwsn0yLIDThB5nvUGbCXJEkSXIwXAXJIXm3tI5EXf5bEDm1Kojg0XknvU+20Su2KMk
- 987LwJ+TWpwfeIwq/VbNw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:EE/ugbi2Fs0=:HTKUYAIU15MBUbmW4Lr8Bs
- 24vPakXMaFEbgoJcHNiorYZIEw5txzYOHDkX3zAP/dQn5yxbxYL2HlmD2JF/mkf/EIsaOSoBw
- ZPugjyYXgNlS+hGciSuZBFc4h3AynEsHWwNwGHwXHHEJ9CJOaIiDctQ83BMVUN2yb+TPfRzNv
- 9M0JCRLiOa+WVA3uHaiDV3E1dR9BPWPHqBSANirRVrqKExSmUbqTgKRE9Ovs4sWKwvb2glOoX
- 9/cBlna01AyHwsd3LQJ6ATJGu4/UT8kcd+2scwfgkjvqtdSPNe2mavjNPM1AjlzA6xt5h6Cmc
- mrlV/fODWGd2m85nDRXY9T62/Csu5XpvglkImLW8lWVaZ8ICVcaP4y16Ubc2s8RlrcBjK8QAl
- Uh5TLdkKWZOqESuKmB6x2VFTkPvi5qLEDpWBcsn5ZC445eAecocSD/I5wrv7RaAUmTRVfZPGR
- g2DWikpOTh1WZmxSWMP6EqKAd1Ky+yLjtDyhHOxbjq2sEZfve/+4Tbrs8EscG+oIpmTT2nVEp
- s4X0lINyZer/MQHWButCnPGa2WcyWp8f+kPVjs2HKIN0dU+esjIfdyyqlbF+Nuz9PSoWYOHAG
- N+26AVH4J39V3fh5BLxVD2hFucmvk6FS+pA1qRlDfTWnGXx9xgaqFKlN5ikAQ9JZEh7Qrzd5W
- KVllu2FScRsyeNvIUjWBXPfV36T2VWprCn9HnVF5LaPMnciEdcGQVwf3CLtDVQHTSJ8W+/szm
- FTFZivXefIq5qOtg2nbq78yt545oly34A74GntU6CephhnB9l926EI7XtIr/xoucImgRTNjAm
- puXO6QpVNkfw8MOazk+O6hgseeVlQ9E9Ep4yQYr1nJsEk0sDNUMV5wQcxpz8qhaVYs/G4VDV5
- I5cEa2itJ7UcMLPtQFkyoQ/mPwGfg8DMqlmDvfixWWPjMmfe+0kTfMVDRO3ArpXvZEasT5XSz
- tX6P+b+TTAAUX+QmWdH8iBhywolcSWvY=
-Content-Transfer-Encoding: quoted-printable
+References: <20190502074519.61272b42@canb.auug.org.au> <a645ff18-4c55-6b4c-0913-5b397ab83e03@gmx.de>
+ <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+In-Reply-To: <CA+QBN9A4PhPZ36otsk0TRaO9KKnKL=hfnskfFJGQJEbtb3=i=Q@mail.gmail.com>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Sat, 25 May 2019 10:59:27 +0200
+Message-ID: <CA+QBN9BPbTHojQcSQZM1KmfsUMkajhLhmJ6jye4PdK8uXO9NcQ@mail.gmail.com>
+Subject: Re: C3600, sata controller
+Cc:     Parisc List <linux-parisc@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Sven Schnelle noticed a reproduceable kernel crash (HPMC) on his C240
-machine due to the alternative coding infrastructure.
+guys?
+yahoooooooooooooooo, SYBA-SY-PCX40009 does woooork :D :D
 
-According to the documentation, data cache flushes and sync instructions
-are needed on the PCX-U (e.g. C200/C240) platforms, while PCX-W (e.g.
-C360) platforms don't need those syncs when changing the IO PDIR data
-structures.
+02:03.0 RAID bus controller: Silicon Image, Inc. SiI 3124 PCI-X Serial
+ATA Controller (rev 01)
 
-So, let's not replace the fdc and sync assembler instructions by NOPS if
-we see a CPU < PA8500 (PCX-W).
+10 hours burn-in test passed!!!!
 
-Reported-by: Sven Schnelle <svens@stackframe.org>
-Tested-by: Sven Schnelle <svens@stackframe.org>
-Fixes: 3847dab77421 ("parisc: Add alternative coding infrastructure")
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # 5.0+
+while [ 1 ]
+do
+for item in `ls *.bin`
+    do
+        rm -f $copy.out
+        echo -n "$item ... "
+        time cp_and_check_md5sum $item $copy.out
+        echo "done"
+    done
+done
 
-diff --git a/arch/parisc/kernel/alternative.c b/arch/parisc/kernel/alterna=
-tive.c
-index bf2274e01a96..7c574b21f834 100644
-=2D-- a/arch/parisc/kernel/alternative.c
-+++ b/arch/parisc/kernel/alternative.c
-@@ -56,7 +56,8 @@ void __init_or_module apply_alternatives(struct alt_inst=
-r *start,
- 		 * time IO-PDIR is changed in Ike/Astro.
- 		 */
- 		if ((cond & ALT_COND_NO_IOC_FDC) &&
--			(boot_cpu_data.pdc.capabilities & PDC_MODEL_IOPDIR_FDC))
-+			((boot_cpu_data.cpu_type < pcxw) ||
-+			 (boot_cpu_data.pdc.capabilities & PDC_MODEL_IOPDIR_FDC)))
- 			continue;
+kernel 5.1, from the git repository, compiled with SMP
 
- 		/* Want to replace pdtlb by a pdtlb,l instruction? */
+dmesg | grep altern
+[    2.551002] alternatives: applied 156 out of 175 patches
+
+only applied this patch:
+
+--- a/arch/parisc/include/asm/cache.h
++++ b/arch/parisc/include/asm/cache.h
+@@ -52,7 +52,6 @@ void parisc_setup_cache_timing(void);
+
+ #define asm_io_fdc(addr) asm volatile("fdc %%r0(%0)" \
+                        ALTERNATIVE(ALT_COND_NO_DCACHE, INSN_NOP) \
+-                       ALTERNATIVE(ALT_COND_NO_IOC_FDC, INSN_NOP) \
+                        : : "r" (addr) : "memory")
+ #define asm_io_sync()  asm volatile("sync" \
+                        ALTERNATIVE(ALT_COND_NO_DCACHE, INSN_NOP) \
