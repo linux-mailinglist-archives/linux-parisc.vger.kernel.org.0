@@ -2,60 +2,84 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 151B62BB2C
-	for <lists+linux-parisc@lfdr.de>; Mon, 27 May 2019 22:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89BE22BB54
+	for <lists+linux-parisc@lfdr.de>; Mon, 27 May 2019 22:16:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726837AbfE0UNE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 May 2019 16:13:04 -0400
-Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:49358 "EHLO
-        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726657AbfE0UNE (ORCPT
+        id S1727378AbfE0UPn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 May 2019 16:15:43 -0400
+Received: from smtp.duncanthrax.net ([89.31.1.170]:48446 "EHLO
+        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727193AbfE0UPm (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 May 2019 16:13:04 -0400
-Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
-          with ESMTP
-          id <20190527201302.OBIX4584.torfep01.bell.net@torspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Mon, 27 May 2019 16:13:02 -0400
-Received: from [192.168.0.183] (really [65.95.39.186]) by torspm02.bell.net
-          with ESMTP
-          id <20190527201302.VBMN30132.torspm02.bell.net@[192.168.0.183]>;
-          Mon, 27 May 2019 16:13:02 -0400
+        Mon, 27 May 2019 16:15:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References
+        :Message-ID:Subject:Cc:To:From:Date;
+        bh=ETnj+47iRwL7HfA+yEl7DuaYkO+BWSawe4Bc+7A5XVI=; b=jT5oRFBK0vUJ3TK3DiE0A0aUdF
+        LUBrdib4k134x3euLyQILnRqcrN+u0PqxaHDvYNGOBwoNPKzCkknS6aD6u9TIdguRJE57t9G8azxR
+        ay9XW9anHnC/3beunOOzwJdEcrY+z7CuMDkcv/GjQ+DxC9qLErj4m/gUmv5oq/qLHyLs=;
+Received: from [134.3.44.134] (helo=t470p.stackframe.org)
+        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.86_2)
+        (envelope-from <svens@stackframe.org>)
+        id 1hVM1z-0006zd-Sy; Mon, 27 May 2019 22:15:39 +0200
+Date:   Mon, 27 May 2019 22:15:38 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     Carlo Pisani <carlojpisani@gmail.com>
+Cc:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
 Subject: Re: [PATCH v3] parisc: Fix crash due alternative coding for NP
  iopdir_fdc bit
-To:     Carlo Pisani <carlojpisani@gmail.com>, Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Sven Schnelle <svens@stackframe.org>
+Message-ID: <20190527201538.GD29337@t470p.stackframe.org>
 References: <20190527192000.GA17551@ls3530.dellerweb.de>
  <CA+QBN9BtRGfykehiwV47SNhMgYQfvPX3-Ruoe6-Hvi5ay9skJQ@mail.gmail.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Message-ID: <7bb12d08-6a2a-11e0-774c-2498c7f8b607@bell.net>
-Date:   Mon, 27 May 2019 16:13:02 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <CA+QBN9BtRGfykehiwV47SNhMgYQfvPX3-Ruoe6-Hvi5ay9skJQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=bPxo382Z c=1 sm=1 tr=0 cx=a_idp_d a=Q02bAvDbwyQG9yYSZ9PE5w==:117 a=Q02bAvDbwyQG9yYSZ9PE5w==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=cHUkyknzAAAA:8 a=FBHGMhGWAAAA:8 a=G2aKBvnys06ejr_7Pc4A:9 a=QEXdDO2ut3YA:10 a=lOJfQmpZbiwA:10 a=2w-UfRLKSRkA:10 a=_0NSq4RkwvYA:10 a=Awsxgdc2jwqaVR4UEmqk:22 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfIEskyfusTF49OFOmGcMwrM9OIwNRHlgM9WQg/Xi9WffrMNi1t7SO85e18erJ1Kab2FL1p3oOg6XYCGnEo6eF1/i0bS0jkrG6qyn4PTUrjUPItywg63p c6gr0/k7lUG/7M+A9UNC3kreA+SiuuhG3orzOsPQZSP8qEnSnFdDiGUuo9t1MlwH8k+Lkzmjg51snw==
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-27 3:35 p.m., Carlo Pisani wrote:
+Hi,
+
+On Mon, May 27, 2019 at 09:35:54PM +0200, Carlo Pisani wrote:
 > isn't possible to burn the flash in the C3600 machine with the
 > firmware of C3750?
 > these two look similar.
->
-Highly doubtful.  Don't know where you would find firmware for either.
-Firmware needs to put on bootable device (tape drive!!!):
-https://www.manualslib.com/manual/436656/Hp-Visualize-B1000-Workstation.html?page=187#manual
 
--- 
-John David Anglin  dave.anglin@bell.net
+I have a firmware image here that has '9000/785 B,C,J Workstation PDC', built
+08/10/1999 in the header. In that firmware, the PDC_MODEL capabilities handler
+is pretty simple and static:
+
+  _pdc_model_capabilities
+   fffffff0f002588c 081e0601             add                sp, r0, r1
+   fffffff0f0025890 73c23fe1             std                rp, -0x10(sp)
+   fffffff0f0025894 73c300c8             std,ma             r3, 0x60(sp)
+   fffffff0f0025898 73c43f51             std                r4, -0x58(sp)
+   fffffff0f002589c 0fc112d1             std                r1, -0x10(sp)
+   fffffff0f00258a0 b4210020             addi               0x10, r1, r1
+   fffffff0f00258a4 37430000             copy               r26, r3		; load pointer for capabilites word
+   fffffff0f00258a8 20800000             ldil               0x0, r4
+   fffffff0f00258ac 20200000             ldil               0x0, r1
+   fffffff0f00258b0 34840006             ldo                0x3( r4), r4	; OS32|OS64
+   fffffff0f00258b4 34210000             copy               r1, r1
+   fffffff0f00258b8 f0810c00             depd               r1, 0x1f, 0x20, r4
+   fffffff0f00258bc 0c6412c0             std                r4, 0x0(r3)			; store value
+   fffffff0f00258c0 341c0000             copy               r0, r28
+   fffffff0f00258c4 53c23f21             ldd                -0x70(sp), rp
+   fffffff0f00258c8 53c43f51             ldd                -0x58(sp), r4
+   fffffff0f00258cc e840d000             bv                 ( rp)
+   fffffff0f00258d0 53c33f4d             ldd,mb             -0x60(sp), r3
+
+So at least this version has no clue about the NP bit (or leaves it intentionally
+at zero, which would mean it's independent of CPU/Chipset revisions) - it would
+be interesting how this function looks in newer firmware revisions. Anyone has
+a Firmware update file for any of the B/C/J Class systems flying around? I'll
+take it regardless of the version.
+
+Sven
 
