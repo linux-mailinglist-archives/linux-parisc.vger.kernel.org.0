@@ -2,59 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C02E2BB89
-	for <lists+linux-parisc@lfdr.de>; Mon, 27 May 2019 22:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EFC52BC71
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 May 2019 02:15:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726931AbfE0Ute (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 May 2019 16:49:34 -0400
-Received: from belmont79srvr.owm.bell.net ([184.150.200.79]:59339 "EHLO
-        mtlfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726879AbfE0Ute (ORCPT
+        id S1727018AbfE1APR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 May 2019 20:15:17 -0400
+Received: from simcoe208srvr.owm.bell.net ([184.150.200.208]:53816 "EHLO
+        torfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726979AbfE1APR (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 May 2019 16:49:34 -0400
-Received: from bell.net mtlfep01 184.150.200.30 by mtlfep01.bell.net
+        Mon, 27 May 2019 20:15:17 -0400
+Received: from bell.net torfep02 184.150.200.158 by torfep02.bell.net
           with ESMTP
-          id <20190527204933.VHCR4947.mtlfep01.bell.net@mtlspm02.bell.net>
+          id <20190528001516.YZWE4684.torfep02.bell.net@torspm01.bell.net>
           for <linux-parisc@vger.kernel.org>;
-          Mon, 27 May 2019 16:49:33 -0400
-Received: from [192.168.0.183] (really [65.95.39.186]) by mtlspm02.bell.net
+          Mon, 27 May 2019 20:15:16 -0400
+Received: from [192.168.2.49] (really [70.53.53.104]) by torspm01.bell.net
           with ESMTP
-          id <20190527204933.VPOF21689.mtlspm02.bell.net@[192.168.0.183]>;
-          Mon, 27 May 2019 16:49:33 -0400
-Subject: Re: [PATCH v3] parisc: Fix crash due alternative coding for NP
- iopdir_fdc bit
-To:     Sven Schnelle <svens@stackframe.org>
-Cc:     Carlo Pisani <carlojpisani@gmail.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <20190527192000.GA17551@ls3530.dellerweb.de>
- <CA+QBN9BtRGfykehiwV47SNhMgYQfvPX3-Ruoe6-Hvi5ay9skJQ@mail.gmail.com>
- <7bb12d08-6a2a-11e0-774c-2498c7f8b607@bell.net>
- <20190527202207.GE29337@t470p.stackframe.org>
+          id <20190528001516.XEOC39285.torspm01.bell.net@[192.168.2.49]>;
+          Mon, 27 May 2019 20:15:16 -0400
+To:     linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     Helge Deller <deller@gmx.de>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>
 From:   John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Use implicit space register selection for loading the
+ coherence index of I/O pdirs
 Openpgp: preference=signencrypt
-Message-ID: <322860bc-afb2-c915-3678-6890ac57ffc4@bell.net>
-Date:   Mon, 27 May 2019 16:49:33 -0400
+Message-ID: <f267f3ce-9baa-5e2f-1f0a-c08e59a53a7a@bell.net>
+Date:   Mon, 27 May 2019 20:15:14 -0400
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190527202207.GE29337@t470p.stackframe.org>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=bJBo382Z c=1 sm=1 tr=0 cx=a_idp_d a=Q02bAvDbwyQG9yYSZ9PE5w==:117 a=Q02bAvDbwyQG9yYSZ9PE5w==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=5ypQrAzGAAAA:8 a=_A5TAQVKAAAA:8 a=FBHGMhGWAAAA:8 a=TBB4vbVkARzYnejM8xoA:9 a=QEXdDO2ut3YA:10 a=ATlVsGG5QSsA:10 a=QnlTcYk_iZbCEFXf-YqT:22 a=ypw9U9_ytwuNp2HAL0_X:22 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfOJGBY5NnW5X908yLrLmx0c87TD74IYEJbdu948YrejYsNAETpp1qXKb3/s4FeHjb6yA1zKDCDO8hRLhSObLjpD9QzhidOopWHrC+/n5dn21XoJ6safU /SkMC/OwJtCTrvKOhWUIy2OBtfL1If9kqCK2kriMovW9rxwUnjiINCedkR3MZ1yHpug0DwFdQhFuow==
+Content-Transfer-Encoding: 7bit
+X-CM-Analysis: v=2.3 cv=O5JHQy1W c=1 sm=1 tr=0 cx=a_idp_d a=htCe9XT+XAlGhzqgweArVg==:117 a=htCe9XT+XAlGhzqgweArVg==:17 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=FBHGMhGWAAAA:8 a=RV4OE50Q5uv1swCxaxAA:9 a=7Zwj6sZBwVKJAoWSPKxL6X1jA+E=:19 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+X-CM-Envelope: MS4wfGZe1+b1s0kIzpsgTbteeZ9R1mUfxmi6kKiPJIi3L8LtyILRifBmFNBKzIx49GXXhVg57YMvE0u2m7cBh5KCFx2I6JhV02iWBMQWJEO60viUPAKcrZpt m/YtTB6nXHeYcyPB1gEffLpnWpGS0+eX9wXGptrhA/aYkQEsoVDzvHlPE8t1GviERKUyggiC6r+lZQ==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-27 4:22 p.m., Sven Schnelle wrote:
-> openpa.net has some, and i also extracted a few versions from HP-UX ISOs.
-It would be good to collect in ftp.parisc-linux.org.
+We only support I/O to kernel space.  Using %sr1 to load the coherence index
+may be racy unless interrupts are disabled.  This patch changes the code used
+to load the coherence index to use implicit space register selection.  This saves
+one instruction and eliminates the race.
 
-Dave
+Tested on rp3440, c8000 and c3750.
 
--- 
-John David Anglin  dave.anglin@bell.net
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+---
 
+diff --git a/drivers/parisc/ccio-dma.c b/drivers/parisc/ccio-dma.c
+index acba1f56af3e..d7649a70a0c4 100644
+--- a/drivers/parisc/ccio-dma.c
++++ b/drivers/parisc/ccio-dma.c
+@@ -565,8 +565,6 @@ ccio_io_pdir_entry(u64 *pdir_ptr, space_t sid, unsigned long vba,
+ 	/* We currently only support kernel addresses */
+ 	BUG_ON(sid != KERNEL_SPACE);
+
+-	mtsp(sid,1);
+-
+ 	/*
+ 	** WORD 1 - low order word
+ 	** "hints" parm includes the VALID bit!
+@@ -597,7 +595,7 @@ ccio_io_pdir_entry(u64 *pdir_ptr, space_t sid, unsigned long vba,
+ 	** Grab virtual index [0:11]
+ 	** Deposit virt_idx bits into I/O PDIR word
+ 	*/
+-	asm volatile ("lci %%r0(%%sr1, %1), %0" : "=r" (ci) : "r" (vba));
++	asm volatile ("lci %%r0(%1), %0" : "=r" (ci) : "r" (vba));
+ 	asm volatile ("extru %1,19,12,%0" : "+r" (ci) : "r" (ci));
+ 	asm volatile ("depw  %1,15,12,%0" : "+r" (pa) : "r" (ci));
+
+diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
+index 0a9c762a70fa..5468490d2298 100644
+--- a/drivers/parisc/sba_iommu.c
++++ b/drivers/parisc/sba_iommu.c
+@@ -575,8 +575,7 @@ sba_io_pdir_entry(u64 *pdir_ptr, space_t sid, unsigned long vba,
+ 	pa = virt_to_phys(vba);
+ 	pa &= IOVP_MASK;
+
+-	mtsp(sid,1);
+-	asm("lci 0(%%sr1, %1), %0" : "=r" (ci) : "r" (vba));
++	asm("lci 0(%1), %0" : "=r" (ci) : "r" (vba));
+ 	pa |= (ci >> PAGE_SHIFT) & 0xff;  /* move CI (8 bits) into lowest byte */
+
+ 	pa |= SBA_PDIR_VALID_BIT;	/* set "valid" bit */
