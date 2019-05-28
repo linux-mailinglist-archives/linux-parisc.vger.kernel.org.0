@@ -2,100 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D2F2C563
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 May 2019 13:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8152C2C650
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 May 2019 14:18:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726560AbfE1L2v (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 May 2019 07:28:51 -0400
-Received: from mail.sf-mail.de ([116.202.16.50]:38345 "EHLO mail.sf-mail.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726313AbfE1L2v (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 May 2019 07:28:51 -0400
-Received: (qmail 20035 invoked from network); 28 May 2019 11:28:15 -0000
-Received: from mail.sf-mail.de ([2a01:4f8:1c17:6fae:616d:6c69:616d:6c69]:57842 HELO webmail.sf-mail.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.35dev) with (DHE-RSA-AES256-GCM-SHA384 encrypted) ESMTPSA
-        for <svens@stackframe.org>; Tue, 28 May 2019 13:28:15 +0200
+        id S1726824AbfE1MSr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 May 2019 08:18:47 -0400
+Received: from simcoe208srvr.owm.bell.net ([184.150.200.208]:43913 "EHLO
+        torfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726592AbfE1MSr (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 28 May 2019 08:18:47 -0400
+Received: from bell.net torfep02 184.150.200.158 by torfep02.bell.net
+          with ESMTP
+          id <20190528121845.GBWT4684.torfep02.bell.net@torspm02.bell.net>
+          for <linux-parisc@vger.kernel.org>;
+          Tue, 28 May 2019 08:18:45 -0400
+Received: from [192.168.2.49] (really [70.53.53.104]) by torspm02.bell.net
+          with ESMTP
+          id <20190528121845.YPYC30132.torspm02.bell.net@[192.168.2.49]>;
+          Tue, 28 May 2019 08:18:45 -0400
+Subject: Re: [PATCH] parisc: Use implicit space register selection for loading
+ the coherence index of I/O pdirs
+To:     Helge Deller <deller@gmx.de>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>
+References: <f267f3ce-9baa-5e2f-1f0a-c08e59a53a7a@bell.net>
+ <7f0bb17e-79e1-5718-9bcd-d4eaf57c3a77@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+Openpgp: preference=signencrypt
+Message-ID: <e84e6a7d-aeb1-ab7c-82aa-e4f4930091b6@bell.net>
+Date:   Tue, 28 May 2019 08:18:42 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 28 May 2019 13:28:12 +0200
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     Sven Schnelle <svens@stackframe.org>
-Cc:     Carlo Pisani <carlojpisani@gmail.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        linux-parisc-owner@vger.kernel.org
-Subject: Re: [PATCH v3] parisc: Fix crash due alternative coding for NP
- iopdir_fdc bit
-In-Reply-To: <20190528110627.GA16860@t470p.stackframe.org>
-References: <20190527192000.GA17551@ls3530.dellerweb.de>
- <CA+QBN9BtRGfykehiwV47SNhMgYQfvPX3-Ruoe6-Hvi5ay9skJQ@mail.gmail.com>
- <20190527201538.GD29337@t470p.stackframe.org>
- <20190528110627.GA16860@t470p.stackframe.org>
-Message-ID: <8250bd3cf4a0bf32ff3ecb21dd81eca6@sf-tec.de>
-X-Sender: eike-kernel@sf-tec.de
-User-Agent: Roundcube Webmail/1.3.8
+In-Reply-To: <7f0bb17e-79e1-5718-9bcd-d4eaf57c3a77@gmx.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-Analysis: v=2.3 cv=O5JHQy1W c=1 sm=1 tr=0 cx=a_idp_d a=htCe9XT+XAlGhzqgweArVg==:117 a=htCe9XT+XAlGhzqgweArVg==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=FBHGMhGWAAAA:8 a=UAhQizcGVVUNT4i-JTUA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+X-CM-Envelope: MS4wfDAlpO0CD/XelZxO7vNQVFdgiM3oAIkFwWDwjtoCQdL24q/hKswaTBV8pAHLaGClH2WBdPaDtnjbd1pPlecptsXXL4BdEwK8SkCCPMF7EdYS9fczfBU2 gVaAdqTMVu2uDUqqloMzN0d65vQDgqANXhE3IZEm0tPYsBgkOMnfGg/2W7N9o+8AcUW32EAEYzVrew==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-> FWIW, i hacked up a small driver to read the firmware, i'm attaching it 
-> to this
-> Mail. Would be nice if some people could try reading the firmware from
-> their PA-RISC
-> system so we can collect and archive them. Note that it HPMC's in 32 
-> Bit Mode,
-> but it worked in 64 Bit mode on my C3750/J5000.
+On 2019-05-28 1:01 a.m., Helge Deller wrote:
+> Fun part is, that I had prepared exactly the same patch two days ago too.
+> In addition I added this:
+> +       /* We currently only support kernel addresses, and sr0 is always 0. */
+> +       /* BUG_ON(mfsp(0) != sid); */
+>
+> and explicitely mentioned "%sr0" to make it clear:
+> asm volatile ("lci %%r0(%sr0,%1), %0" : "=r" (ci) : "r" (vba));
+Personally, I prefer not to mention %sr0 in instructions that use 2-bit space id.  The special
+case where s=0 causes the selected space register to be determined from the %1 operand.
+The selected space register will be %sr4, %sr5, %sr6 or %sr7.  These are all 0 when running
+kernel code.
 
-Nice!
+Dave
 
-> +static int __init pdc_firmware_register_sysfs(void)
-> +{
-> +	struct bin_attribute *attr;
-> +	int size, err = -ENOMEM;
-> +
-> +	attr = kzalloc(sizeof(*attr), 0);
-> +	if (!attr)
-> +		return -ENOMEM;
-> +
-> +	size = 1048576; // FIXME
-> +
-> +	sysfs_bin_attr_init(attr);
-> +
-> +	attr->size = size;
-> +	attr->attr.name = "pdcrom";
-> +	attr->attr.mode = S_IRUSR;
-> +	attr->read = pdc_firmware_read_rom;
-> +#ifdef CONFIG_64BIT
-> +	attr->private = ioremap(0xfffffff0f0000000, size);
-> +#else
-> +	attr->private = ioremap(0xf0000000, size);
-> +#endif
-> +	if (!attr->private)
-> +		goto err_attr;
-> +
-> +	err = sysfs_create_bin_file(firmware_kobj, attr);
-> +	if (err)
-> +		goto err_unmap;
-> +
-> +	pdc_firmware_attr = attr;
-> +	return 0;
-> +
-> +err_unmap:
-> +	iounmap(attr->private);
-> +err_attr:
-> +	kfree(attr);
-> +	return err;
-> +}
-> +
-> +static int __init pdc_firmware_init(void)
-> +{
-> +	return pdc_firmware_register_sysfs();
-> +}
+-- 
+John David Anglin  dave.anglin@bell.net
 
-Any particular reason you are not simply using BIN_ATTR_RO?
-
-Eike
