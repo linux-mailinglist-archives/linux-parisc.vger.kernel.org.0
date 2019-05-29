@@ -2,92 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E351B2CECB
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 May 2019 20:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6313D2D435
+	for <lists+linux-parisc@lfdr.de>; Wed, 29 May 2019 05:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726673AbfE1SkH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 May 2019 14:40:07 -0400
-Received: from belmont79srvr.owm.bell.net ([184.150.200.79]:58104 "EHLO
-        mtlfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726400AbfE1SkH (ORCPT
+        id S1726601AbfE2DXD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 May 2019 23:23:03 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:37475 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725856AbfE2DXC (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 May 2019 14:40:07 -0400
-Received: from bell.net mtlfep01 184.150.200.30 by mtlfep01.bell.net
-          with ESMTP
-          id <20190528184005.ZWEO4947.mtlfep01.bell.net@mtlspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Tue, 28 May 2019 14:40:05 -0400
-Received: from [192.168.0.183] (really [65.95.39.186]) by mtlspm02.bell.net
-          with ESMTP
-          id <20190528184005.FPGX21689.mtlspm02.bell.net@[192.168.0.183]>;
-          Tue, 28 May 2019 14:40:05 -0400
-To:     Sven Schnelle <svens@stackframe.org>,
-        Rolf Eike Beer <eike-kernel@sf-tec.de>
-Cc:     Helge Deller <deller@gmx.de>,
-        Carlo Pisani <carlojpisani@gmail.com>,
-        linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <20190527192000.GA17551@ls3530.dellerweb.de>
- <20190528153815.GB16860@t470p.stackframe.org>
- <674f8b61-e897-f657-68a2-648babca00be@bell.net>
- <1943613.tnj53yOHQY@daneel.sf-tec.de>
- <20190528173922.GA32192@t470p.stackframe.org>
-From:   John David Anglin <dave.anglin@bell.net>
+        Tue, 28 May 2019 23:23:02 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.85)
+          with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id <1hVpB6-002Xq4-8c>; Wed, 29 May 2019 05:23:00 +0200
+Received: from p57bd9b47.dip0.t-ipconnect.de ([87.189.155.71] helo=[192.168.178.40])
+          by inpost2.zedat.fu-berlin.de (Exim 4.85)
+          with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id <1hVpB6-003EEB-1p>; Wed, 29 May 2019 05:23:00 +0200
+Subject: Re: Updated installation images for Debian Ports 2019-05-09
+To:     Helge Deller <deller@gmx.de>,
+        "debian-hppa@lists.debian.org" <debian-hppa@lists.debian.org>
+Cc:     linux-parisc <linux-parisc@vger.kernel.org>
+References: <b8a14609-9bf9-5956-4e6e-5415306a95ac@physik.fu-berlin.de>
+ <FseoXokiJzdprrRNbtaWjm5KHvHa5mlMA2PqnBgbvx8PwHGKzYObU38sBMOuJFy9fuNDYJ0Iaf_so-ju5rMz8lvTtgEcMcOjRogVc0mI6FA=@wintercode.de>
+ <d4871533-32c4-e8ec-72ef-6fb5f62f6ef8@gmx.de>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Openpgp: preference=signencrypt
-Subject: Re: [PATCH v3] parisc: Fix crash due alternative coding for NP
- iopdir_fdc bit
-Message-ID: <f782e9cd-0824-6c29-09bc-986813dd1e56@bell.net>
-Date:   Tue, 28 May 2019 14:40:05 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <a465340b-2c1b-5a2d-9b85-7eda113e2fe7@physik.fu-berlin.de>
+Date:   Wed, 29 May 2019 05:22:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190528173922.GA32192@t470p.stackframe.org>
+In-Reply-To: <d4871533-32c4-e8ec-72ef-6fb5f62f6ef8@gmx.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-Analysis: v=2.3 cv=bJBo382Z c=1 sm=1 tr=0 cx=a_idp_d a=Q02bAvDbwyQG9yYSZ9PE5w==:117 a=Q02bAvDbwyQG9yYSZ9PE5w==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=MvuuwTCpAAAA:8 a=cH6R9-kdAAAA:8 a=FBHGMhGWAAAA:8 a=hmqfG1Ze6Ie7Phq4BmQA:9 a=QEXdDO2ut3YA:10 a=zd9IsfMelfkA:10 a=TAmO-0A30C4A:10 a=dVHiktpip_riXrfdqayU:22 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfDrO7N3L4ZuGSQRrZS3mTm6nr5Cw7Jl/L/0ZHD+fnsbS0yhpGRQg6v7y9wTHxMHBszyJpU7Hj85MS8bCNglvx7HL3l5jMzlNn6R6sX+feSWbRQ3k8U4J Z2hlfzXt/1KrdS79bBd8nUd/EayWujYRIGNGJ311AadsNpXgTF419u9/I328fToHIDlpnLnMturEng==
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: 87.189.155.71
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-28 1:39 p.m., Sven Schnelle wrote:
-> Hi,
-> 
-> On Tue, May 28, 2019 at 07:24:29PM +0200, Rolf Eike Beer wrote:
->> Am Dienstag, 28. Mai 2019, 19:06:48 CEST schrieb John David Anglin:
->>> On 2019-05-28 11:38 a.m., Sven Schnelle wrote:
->>>> Interesting. Now that you mention it i see that my C3750 reports the same.
->>>> Google returned the following page
->>>> https://support.hpe.com/hpsc/swd/public/detail?swItemId=PF_CCJ70020
->>>>
->>>> Which is 2.0, and only mentions "C3650/C3700/C3750/J6700/J6750 firmware"
->>>> So maybe these machines have NP set, and machines "below" (like C3600)
->>>> don't have it set.
->>>>
->>>> I wonder what happens if you try to flash a 5.0 firmware to such a box.
->>>
->>> From what I see, the "C3650/C3700/C3750/J6700/J6750" and "HP 9000 Model
->>> B1000/C3000/J5000/J7000" use different firmware.
->>
->> Which makes sense as the former have use a 8600 CPU, while the latter have 
->> 8700 ones.
-> 
-> Exactly. And as:
-> 
-> a) All C3600 PDC versions clear the NP bit
-> b) All C37XX/J5000 PDC version set the NP bit
-> 
-> i don't think there's some bug in the PDC. I would guess that the patch Carlo
-> reported to fix issues is just hiding the real problem. Would be interesting
-> to run Carlo's Test on a C37XX.
+Hi!
 
-Probably, hardware cache coherent I/O is not implemented correctly for Elroy based systems.
-https://www.hpl.hp.com/hpjournal/96feb/feb96a6.pdf
+On 5/27/19 3:56 PM, Helge Deller wrote:
+> I just sucessfully installed a hppa B180L workstation.
+> 
+> Installation happened via serial console, since it seems the kernel has
+> a bug which hangs the machine when started via graphic console (STIcon and stifb).
+> I dropped the 2019-05-09 NETINST ISO image via "dd" to a second hard disc and
+> installed from there, which worked.
+Good to know it works! I will create a new howto at some point which explains how
+to create installation images so that anyone can do that on their own when they
+want to test fixes for d-i or debian-cd.
 
-Does it work on C360?
+I still haven't figured out yet how to include the missing firmware in debian-cd,
+setting FORCE_FIRMWARE in debian-cd isn't enough as the Debian Ports mirror doesn't
+include anything from the non-free section.
 
-Dave
+Adrian
+
 -- 
-John David Anglin  dave.anglin@bell.net
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
