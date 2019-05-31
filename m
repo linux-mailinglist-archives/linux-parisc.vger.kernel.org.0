@@ -2,107 +2,87 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA93E30E07
-	for <lists+linux-parisc@lfdr.de>; Fri, 31 May 2019 14:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D46131147
+	for <lists+linux-parisc@lfdr.de>; Fri, 31 May 2019 17:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726415AbfEaMXl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 31 May 2019 08:23:41 -0400
-Received: from simcoe208srvr.owm.bell.net ([184.150.200.208]:54608 "EHLO
-        torfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726403AbfEaMXl (ORCPT
+        id S1726548AbfEaP11 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 31 May 2019 11:27:27 -0400
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:43145 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726037AbfEaP11 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 31 May 2019 08:23:41 -0400
-Received: from bell.net torfep02 184.150.200.158 by torfep02.bell.net
-          with ESMTP
-          id <20190531122339.YXWP7367.torfep02.bell.net@torspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Fri, 31 May 2019 08:23:39 -0400
-Received: from [192.168.2.49] (really [70.53.53.104]) by torspm02.bell.net
-          with ESMTP
-          id <20190531122339.UKAM30132.torspm02.bell.net@[192.168.2.49]>;
-          Fri, 31 May 2019 08:23:39 -0400
-Subject: Re: [PATCH v3] parisc: Fix crash due alternative coding for NP
- iopdir_fdc bit
-To:     Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>
-Cc:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        Carlo Pisani <carlojpisani@gmail.com>,
-        linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <20190527192000.GA17551@ls3530.dellerweb.de>
- <20190528153815.GB16860@t470p.stackframe.org>
- <674f8b61-e897-f657-68a2-648babca00be@bell.net>
- <1943613.tnj53yOHQY@daneel.sf-tec.de>
- <20190528173922.GA32192@t470p.stackframe.org>
- <f782e9cd-0824-6c29-09bc-986813dd1e56@bell.net>
- <61253aef-2571-f8bb-756a-bf2018e533e4@gmx.de>
- <20190530195543.GB683@t470p.stackframe.org>
- <20190530205955.GD683@t470p.stackframe.org>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Message-ID: <b7763436-cee8-6d8d-87cd-992947a9d651@bell.net>
-Date:   Fri, 31 May 2019 08:23:39 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Fri, 31 May 2019 11:27:27 -0400
+Received: by mail-ot1-f54.google.com with SMTP id i8so9531865oth.10
+        for <linux-parisc@vger.kernel.org>; Fri, 31 May 2019 08:27:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=A3ycwDTNHDJjf+UXsXjsHEYp84E0ELauwzth/G3nXLU=;
+        b=hIdgrjJSJLTpQ3/0pSPz4Oq2k6i50HVJ8pIv+/yOw5KknEWh7VBmI/I8QY1Pmcm1CC
+         E0KTat3qgIk7cpreDqh4kd3bqtACxWv06tmW/GI3EUD1G79DcamzWg4X3gnOjRiFbuX9
+         ZK8J6ZI4U6NrViwsJuD6Wrkj0HAwUDBZVZaslJBw0Vm2ntPGYl9S/WlRBD8xD51Z9bvw
+         A3urJN3w2p1eC0vyCRI6UFmPYDz6qYLz2DcC18LRJcfBiMPgdf88BRTaL7jxw0HYdHXH
+         jrTILA43ksXJ4MlZdPvvYAKW9uLWScqhOzbRF54U1VCGkOqE0Ex+CLXc9kQmAT8+9qaZ
+         F58g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=A3ycwDTNHDJjf+UXsXjsHEYp84E0ELauwzth/G3nXLU=;
+        b=cWgqEqO2BxM/NVQCRuwA/AXfPUonJCSJoK7Ysgxo4tCgWvRzq8Qb3eh80zsj06Ho+t
+         iZWTt9PbvWU6Byjgjie4Ty5g2pNXBL+E0P00RMoVqTAAJuwvsWlj5S93auzt3ZyI58eR
+         PFQoNGU/uIFNcvntSk6lzHnmw1N1F2xLKuh+RyEN4R7yn5zHX4ymbgrw0xBTFBe72ecu
+         JlBUl3Tja4Fs8gRCp52covFToV2rd1tsPgwgNFepKf1hKNy9HPjLBk83HUvxMsmNtX/t
+         ywND9OicmkcTViFOYKBSm3/VVkEghzhjuZYCyfrKFJ9MwcIZMKbDeWHF/fVqMoPOprww
+         S1rw==
+X-Gm-Message-State: APjAAAUyx8je6hdwBGe7bEDLLsOUJAeGGRmAxWK64/XAulVc5zpx4iFR
+        aZFw9UQ2OujdVBtXBEZfOkRRbdCoy/QbKGdu4hzkyA==
+X-Google-Smtp-Source: APXvYqxvOME6++TMLIgyfD8hz61t0wWAndhmfHqLOHIWtzhci7hcTVnp2LqJdXkdN9+uLuOmeUfCPpNEG9aYspLfMz0=
+X-Received: by 2002:a05:6830:106:: with SMTP id i6mr2318564otp.268.1559316446738;
+ Fri, 31 May 2019 08:27:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190530205955.GD683@t470p.stackframe.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=O5JHQy1W c=1 sm=1 tr=0 cx=a_idp_d a=htCe9XT+XAlGhzqgweArVg==:117 a=htCe9XT+XAlGhzqgweArVg==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=E5NmQfObTbMA:10 a=cH6R9-kdAAAA:8 a=FBHGMhGWAAAA:8 a=Xnj0gn6_lV6luUBBi_4A:9 a=QEXdDO2ut3YA:10 a=zd9IsfMelfkA:10 a=TAmO-0A30C4A:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfJ0WNaK0rcZLuPQOdDgjH+DztdUN+OqeCI9qmQ3exEZTnFhA5NOrj0ToWw5U8j8WWbVgLOc6xfLBHv9JmAtjh/Fd2Uu4H6/dLw6gU8Awtyd/oAvgO5pg v5TKT0J2D7p3y5p2u3IrBjp/SmJJzXJTe64wsmW9fqbBfbBxSNSJ5BatyO143/yPXs6HM9E/q9zLiw==
+References: <CA+QBN9Cg6QAe5W3vS3dere=K53NAHDrMb9FN5StEfNkC=RTGqg@mail.gmail.com>
+ <CA+QBN9B7B39NARTNYan2wrhRLSEAhxukTy0B6yWRMUxgLJmuNA@mail.gmail.com>
+ <CAP6odjiqDyVB3VyavSHniShe3Mq3KWGdNOWeTmxQ-5q-NrOjbQ@mail.gmail.com>
+ <21dcf273-929a-6fb1-7978-37145ea62301@bell.net> <CAP6odjh2-HhbPYhFqc40cVCrVc6E689CM65WqbiTOnTRgeQojQ@mail.gmail.com>
+ <483d54a6-cbf4-e366-60b3-ae84d025d0e6@bell.net> <CA+QBN9A3Cajm8vYSQ9rm-iZyGjtMBSfmDXqGgrUc5F3pOziEVQ@mail.gmail.com>
+ <CA+QBN9Dg16azb3kLZ4pPi+G5h46C628dWZRdXJmrmxOZZvLn9Q@mail.gmail.com>
+ <CAP6odjiBTYLAMDYxtWKOK1vbftXkf_6_r-_ttwjuswvrMyCdAQ@mail.gmail.com>
+ <20190524063909.GA9661@t470p.stackframe.org> <CAP6odjj0uj3rj==jJbr-otuEn67boqAjCyEqsbZre1JihEScGQ@mail.gmail.com>
+ <1d20e458-f0fa-982b-ce3c-37f62a9dd171@bell.net>
+In-Reply-To: <1d20e458-f0fa-982b-ce3c-37f62a9dd171@bell.net>
+From:   Grant Grundler <grantgrundler@gmail.com>
+Date:   Fri, 31 May 2019 08:27:15 -0700
+Message-ID: <CAP6odjgaOurD=fQyYaUqZUH16yu0bXGhfargcQC7C8Uk2oQYTQ@mail.gmail.com>
+Subject: Re: HPPA problems with the PCI
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     Sven Schnelle <svens@stackframe.org>,
+        Carlo Pisani <carlojpisani@gmail.com>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-05-30 4:59 p.m., Sven Schnelle wrote:
-> Hi,
+On Mon, May 27, 2019 at 10:43 AM John David Anglin <dave.anglin@bell.net> wrote:
 >
-> On Thu, May 30, 2019 at 09:55:43PM +0200, Sven Schnelle wrote:
->> Hi,
->>
->> On Wed, May 29, 2019 at 04:15:03PM +0200, Helge Deller wrote:
->>>>> Exactly. And as:
->>>>>
->>>>> a) All C3600 PDC versions clear the NP bit
->>>>> b) All C37XX/J5000 PDC version set the NP bit
->>>>>
->>>>> i don't think there's some bug in the PDC. I would guess that the patch Carlo
->>>>> reported to fix issues is just hiding the real problem. Would be interesting
->>>>> to run Carlo's Test on a C37XX.
->>>> Probably, hardware cache coherent I/O is not implemented correctly for Elroy based systems.
->>>> https://www.hpl.hp.com/hpjournal/96feb/feb96a6.pdf
->>>> Does it work on C360?
->>> I slowly start to get confused...
->>> Just thinking about another possibility: Maybe we can rely on the value of the
->>> NP iopdir_fdc bit only on machines with >= PA8700 CPUs?
->>> For older machines (which would need opdir_fdc) HP-UX or other operating
->>> systems decides on the found CPU.
->>> This would explain why it's not  set on Carlo's C3600, and if Sven's C240
->>> (with a PA8200 CPU) doesn't has the bit set too, then this could explain this theory.
->> I just re-tested my kexec branch, and the HPMC i was seeing when kexec'ing a new
->> kernel on my J5000 is now gone with Helge's patch. J5000 also has PCX-W. It was
->> only triggered when i had SMP enabled, but this is somehow not suprising given
->> the fact that a cache flush was missing.
-> Looks like i'm also confused now. My J5000 crashed with the kexec stuff again.
-> It's much less than before, only 1 out of 10 times.
+> Here is another question.  I see this comment in lba-pci.c:
 >
-> The patch does:
+> /* FIXME: B2K/C3600 workaround is always use old method... */
+>         /* if (!LBA_SKIP_PROBE(d)) */ {
+>                 /* original - Generate config cycle on broken elroy
+>                   with risk we will miss PCI bus errors. */
+>                 *data = lba_rd_cfg(d, tok, pos, size);
+>                 DBG_CFG("%s(%x+%2x) -> 0x%x (a)\n", __func__, tok, pos, *data);
+>                 return 0;
+>         }
 >
->                 if ((cond & ALT_COND_NO_IOC_FDC) &&
->                        ((boot_cpu_data.cpu_type < pcxw) ||
->                         (boot_cpu_data.cpu_type == pcxw_) ||
->                         (boot_cpu_data.pdc.capabilities & PDC_MODEL_IOPDIR_FDC)))
->                         continue;
->
-> So there should be no change for PCX-W and my statement that this fixes anything
-> on my J5000 is wrong. I think i'll disable the patching and see whether the problem
-> disappears.
-Is it possible that we are running in a mode where the cache/TLB does not issue coherent
-operations?  There is a PDC_CACHE call to set the coherence state.
+> Which machines are affected by this problem (i.e., are more recent elroy and mercury machines
+> affected by this bug?
 
-Dave
+I've been hoping someone else would answer since I don't know. Sorry. :(
 
--- 
-John David Anglin  dave.anglin@bell.net
-
+cheers,
+grant
