@@ -2,87 +2,68 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D46131147
-	for <lists+linux-parisc@lfdr.de>; Fri, 31 May 2019 17:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF00E32300
+	for <lists+linux-parisc@lfdr.de>; Sun,  2 Jun 2019 12:29:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbfEaP11 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 31 May 2019 11:27:27 -0400
-Received: from mail-ot1-f54.google.com ([209.85.210.54]:43145 "EHLO
-        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726037AbfEaP11 (ORCPT
+        id S1726229AbfFBK3a (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 2 Jun 2019 06:29:30 -0400
+Received: from mail-yw1-f67.google.com ([209.85.161.67]:44456 "EHLO
+        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726212AbfFBK33 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 31 May 2019 11:27:27 -0400
-Received: by mail-ot1-f54.google.com with SMTP id i8so9531865oth.10
-        for <linux-parisc@vger.kernel.org>; Fri, 31 May 2019 08:27:27 -0700 (PDT)
+        Sun, 2 Jun 2019 06:29:29 -0400
+Received: by mail-yw1-f67.google.com with SMTP id m80so264047ywd.11
+        for <linux-parisc@vger.kernel.org>; Sun, 02 Jun 2019 03:29:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=A3ycwDTNHDJjf+UXsXjsHEYp84E0ELauwzth/G3nXLU=;
-        b=hIdgrjJSJLTpQ3/0pSPz4Oq2k6i50HVJ8pIv+/yOw5KknEWh7VBmI/I8QY1Pmcm1CC
-         E0KTat3qgIk7cpreDqh4kd3bqtACxWv06tmW/GI3EUD1G79DcamzWg4X3gnOjRiFbuX9
-         ZK8J6ZI4U6NrViwsJuD6Wrkj0HAwUDBZVZaslJBw0Vm2ntPGYl9S/WlRBD8xD51Z9bvw
-         A3urJN3w2p1eC0vyCRI6UFmPYDz6qYLz2DcC18LRJcfBiMPgdf88BRTaL7jxw0HYdHXH
-         jrTILA43ksXJ4MlZdPvvYAKW9uLWScqhOzbRF54U1VCGkOqE0Ex+CLXc9kQmAT8+9qaZ
-         F58g==
+        bh=P2ZFB2TeHmNPqfRuX+AG7l5k1dQ753LQ/bn58o5IXJk=;
+        b=qYnKDGu3AkGanUfOpkoUqxBqDEge2B7zBrtytdPUYl5nVlyUFHW2IvR47Pu/zhPJhy
+         /uga3vyq9drK8SXzXzP+Na7D9xC/csY3ejJhU0ge6P1TtOyGNtoYsWqpkUAHXIUmfynE
+         S8AHHNI3Wu34m+s7QXn9Vb/tQLBV+PpCsvunhsPx5ZhJcb1s+mED035GTlyKsGWw1yFR
+         D+xoO9iE/xff/DWbL3D9nyfhsFcT75ChCPnj3AprEmsirL702Pbc3DbmGbHKE9chUbxi
+         u2q7ogbVTmghosumFx+jYtUP3F9LvW5n2PEWpu47Y4LSzJytXfEmPlrZ9qTdS2SysZBo
+         YKrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=A3ycwDTNHDJjf+UXsXjsHEYp84E0ELauwzth/G3nXLU=;
-        b=cWgqEqO2BxM/NVQCRuwA/AXfPUonJCSJoK7Ysgxo4tCgWvRzq8Qb3eh80zsj06Ho+t
-         iZWTt9PbvWU6Byjgjie4Ty5g2pNXBL+E0P00RMoVqTAAJuwvsWlj5S93auzt3ZyI58eR
-         PFQoNGU/uIFNcvntSk6lzHnmw1N1F2xLKuh+RyEN4R7yn5zHX4ymbgrw0xBTFBe72ecu
-         JlBUl3Tja4Fs8gRCp52covFToV2rd1tsPgwgNFepKf1hKNy9HPjLBk83HUvxMsmNtX/t
-         ywND9OicmkcTViFOYKBSm3/VVkEghzhjuZYCyfrKFJ9MwcIZMKbDeWHF/fVqMoPOprww
-         S1rw==
-X-Gm-Message-State: APjAAAUyx8je6hdwBGe7bEDLLsOUJAeGGRmAxWK64/XAulVc5zpx4iFR
-        aZFw9UQ2OujdVBtXBEZfOkRRbdCoy/QbKGdu4hzkyA==
-X-Google-Smtp-Source: APXvYqxvOME6++TMLIgyfD8hz61t0wWAndhmfHqLOHIWtzhci7hcTVnp2LqJdXkdN9+uLuOmeUfCPpNEG9aYspLfMz0=
-X-Received: by 2002:a05:6830:106:: with SMTP id i6mr2318564otp.268.1559316446738;
- Fri, 31 May 2019 08:27:26 -0700 (PDT)
+        bh=P2ZFB2TeHmNPqfRuX+AG7l5k1dQ753LQ/bn58o5IXJk=;
+        b=uORKo50SkoVKBHHlYvLwxa7bLlzrbd/UAUzVgijea3O6UxmYQG/kQPfecDxdnaY7aU
+         Sb5iP7gIc7P8CMXbGetVZY0bDXYlsGvNazdUJadCpW6fJ0DkAS8IB+JlWV9gXK4+NFeW
+         Kg63I8nafCf68xRD/kg4fpDy2+i028BXgx89C0HoE5yEU93fHe+03sx0uax0VGvUST4W
+         kYE54GmgAbwXDgkl/lFNmKILUMEl7Vz/6+0pal8bYK4JEwGAcA/4H8WbFk4wZ3uRMzLx
+         JoNobZXj/ybvGOP3YWcZ+dNkYwRix/Hne+ebQVYEBlw1D2f4z+M3FyHLUPFt5N8GxZXl
+         nYtw==
+X-Gm-Message-State: APjAAAUAdWXUQKc45nNdy279CrI3xzF5/rK2ExIbQoxGDgaEjNr6cTLZ
+        aKN2tZHnwr3zD8ezYdzaVCh3VlJmtH4GvBvOTS4=
+X-Google-Smtp-Source: APXvYqzjndsy6wJxu6bFicYGasrgu9uL91+4jYYLeGsRMWRNuC/TX55uEw4mMxKD+NXoXLDkVUMbcSNIrQ81SkcrRV8=
+X-Received: by 2002:a81:2703:: with SMTP id n3mr2586899ywn.53.1559471369181;
+ Sun, 02 Jun 2019 03:29:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <CA+QBN9Cg6QAe5W3vS3dere=K53NAHDrMb9FN5StEfNkC=RTGqg@mail.gmail.com>
- <CA+QBN9B7B39NARTNYan2wrhRLSEAhxukTy0B6yWRMUxgLJmuNA@mail.gmail.com>
- <CAP6odjiqDyVB3VyavSHniShe3Mq3KWGdNOWeTmxQ-5q-NrOjbQ@mail.gmail.com>
- <21dcf273-929a-6fb1-7978-37145ea62301@bell.net> <CAP6odjh2-HhbPYhFqc40cVCrVc6E689CM65WqbiTOnTRgeQojQ@mail.gmail.com>
- <483d54a6-cbf4-e366-60b3-ae84d025d0e6@bell.net> <CA+QBN9A3Cajm8vYSQ9rm-iZyGjtMBSfmDXqGgrUc5F3pOziEVQ@mail.gmail.com>
- <CA+QBN9Dg16azb3kLZ4pPi+G5h46C628dWZRdXJmrmxOZZvLn9Q@mail.gmail.com>
- <CAP6odjiBTYLAMDYxtWKOK1vbftXkf_6_r-_ttwjuswvrMyCdAQ@mail.gmail.com>
- <20190524063909.GA9661@t470p.stackframe.org> <CAP6odjj0uj3rj==jJbr-otuEn67boqAjCyEqsbZre1JihEScGQ@mail.gmail.com>
- <1d20e458-f0fa-982b-ce3c-37f62a9dd171@bell.net>
-In-Reply-To: <1d20e458-f0fa-982b-ce3c-37f62a9dd171@bell.net>
-From:   Grant Grundler <grantgrundler@gmail.com>
-Date:   Fri, 31 May 2019 08:27:15 -0700
-Message-ID: <CAP6odjgaOurD=fQyYaUqZUH16yu0bXGhfargcQC7C8Uk2oQYTQ@mail.gmail.com>
-Subject: Re: HPPA problems with the PCI
+References: <20190527192000.GA17551@ls3530.dellerweb.de> <20190528153815.GB16860@t470p.stackframe.org>
+ <674f8b61-e897-f657-68a2-648babca00be@bell.net> <1943613.tnj53yOHQY@daneel.sf-tec.de>
+ <20190528173922.GA32192@t470p.stackframe.org> <f782e9cd-0824-6c29-09bc-986813dd1e56@bell.net>
+ <61253aef-2571-f8bb-756a-bf2018e533e4@gmx.de> <20190530195543.GB683@t470p.stackframe.org>
+ <20190530205955.GD683@t470p.stackframe.org> <b7763436-cee8-6d8d-87cd-992947a9d651@bell.net>
+In-Reply-To: <b7763436-cee8-6d8d-87cd-992947a9d651@bell.net>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Sun, 2 Jun 2019 12:29:10 +0200
+Message-ID: <CA+QBN9Dt07Rt9Z5BSGYf4gWcPv=66wmU7aq5Z4KcdzMe9HL76w@mail.gmail.com>
+Subject: Re: [PATCH v3] parisc: Fix crash due alternative coding for NP
+ iopdir_fdc bit
 To:     John David Anglin <dave.anglin@bell.net>
-Cc:     Sven Schnelle <svens@stackframe.org>,
-        Carlo Pisani <carlojpisani@gmail.com>,
-        linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>,
+        Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, May 27, 2019 at 10:43 AM John David Anglin <dave.anglin@bell.net> wrote:
->
-> Here is another question.  I see this comment in lba-pci.c:
->
-> /* FIXME: B2K/C3600 workaround is always use old method... */
->         /* if (!LBA_SKIP_PROBE(d)) */ {
->                 /* original - Generate config cycle on broken elroy
->                   with risk we will miss PCI bus errors. */
->                 *data = lba_rd_cfg(d, tok, pos, size);
->                 DBG_CFG("%s(%x+%2x) -> 0x%x (a)\n", __func__, tok, pos, *data);
->                 return 0;
->         }
->
-> Which machines are affected by this problem (i.e., are more recent elroy and mercury machines
-> affected by this bug?
-
-I've been hoping someone else would answer since I don't know. Sorry. :(
-
-cheers,
-grant
+guys, can someone help me to create patches for solving the
+PCI-problem on kernel 4.20?
+currently, I am on kernel 5.1.*, but I also need to have a working 4.20
