@@ -2,76 +2,185 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAAD7340F9
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jun 2019 10:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0687534468
+	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jun 2019 12:32:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726844AbfFDIA2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 4 Jun 2019 04:00:28 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:35945 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726792AbfFDIA2 (ORCPT
+        id S1727157AbfFDKcE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 4 Jun 2019 06:32:04 -0400
+Received: from condef-08.nifty.com ([202.248.20.73]:28586 "EHLO
+        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727118AbfFDKcE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 4 Jun 2019 04:00:28 -0400
-Received: by mail-lj1-f196.google.com with SMTP id i21so4186430ljj.3;
-        Tue, 04 Jun 2019 01:00:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2L8XCkLmDMvU/p7RbEo4G1kyYLV+G71wvJ8lGUNsBwI=;
-        b=uRIrX2Am+GpFkmzmWIB+1TsiSerVuyub17ZL7COQTsK97DyMOeM18Bd03A+lrPU8Z8
-         h2i1ERFAtGlBPtSIfIAlmNZUeVHT6yFpm+aG0iwkFBtWuMrtFy0Fm4bAfKzlN3m0ggle
-         EVTvPxfOweEOkOxoqfs5ZHQMzqJ5b2DJARiRcZn65vQDqGm+h/DUCaLBYz1bZPq0/6Ff
-         D9bZgo5+0kkn04HhlupXswA4TC6ej/M/g5Tot6rPu34pw7Olj7SPMAX0eS/aK/XYGTCP
-         7tY/xiCIZ0Ea5b8FgW1qsSz62nGbxMzrPr/TDKBdfZAaHh27nlnDRMOMlU0ch4VSwclr
-         tRcA==
-X-Gm-Message-State: APjAAAX/iTpmk2/9WSZe7JC7JNTXI5sF//ErbFNsdO8p2vwPCrNK27Fa
-        kO5BVK1YqEj8bubJIiDiWk5sHQDr7i2S043d2tY=
-X-Google-Smtp-Source: APXvYqymyjI708y5PZTas2O0wBhQG7rpPBAnl5mORMT9yPEOwJRvS4Uq7a6ONVoFwvSMDIcmDhPypSShgJJ0qxxF2+Q=
-X-Received: by 2002:a2e:8555:: with SMTP id u21mr15742288ljj.133.1559635226175;
- Tue, 04 Jun 2019 01:00:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <1559635059-20644-1-git-send-email-krzk@kernel.org>
-In-Reply-To: <1559635059-20644-1-git-send-email-krzk@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 4 Jun 2019 10:00:14 +0200
-Message-ID: <CAMuHMdW+Ax1OCohn5DKv=ae33y5Du++hJmW74g-3utW67ohEMQ@mail.gmail.com>
-Subject: Re: [PATCH] parisc: configs: Remove useless UEVENT_HELPER_PATH
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Tue, 4 Jun 2019 06:32:04 -0400
+X-Greylist: delayed 605 seconds by postgrey-1.27 at vger.kernel.org; Tue, 04 Jun 2019 06:32:02 EDT
+Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-08.nifty.com with ESMTP id x54AIdVU027539
+        for <linux-parisc@vger.kernel.org>; Tue, 4 Jun 2019 19:18:40 +0900
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-08.nifty.com with ESMTP id x54AEC76032511;
+        Tue, 4 Jun 2019 19:14:12 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com x54AEC76032511
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1559643254;
+        bh=2Cnt75TjD0TucqN65Zm4F4aK2FsJEMupPn4+qQfaomQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=T4jvQ0G6x7AI4kdGX5qwlpK7HOvTaBPAv/cRO5t4X32Dcs0uPZAvSErXh4DSjGB31
+         HcpKj3d7GK+dEJgeRDnlb3IgG5M1SUitGYK8fWYBHTStYwEem3M/mbalLmPcf7FXff
+         2NyynthHyJ0CxXthF++gCaIlODh+BwsYOnM6Vm7DKEJGoJYT3haZXkmHOejQU4htdI
+         qbLlQa5xUwjLEMB8M7yoUoLHvQw77TZmiZ2m1IsbGjpX7v+Ox9dBMBaEmddSnnMqUe
+         FudqJKtGFxDLUHkFG12GbiN4Ma4TLji3PyPSof/DKDCjFWY8qenZH14JVAqU6EKQqf
+         rZdDvtK1Yi38A==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        linux-riscv@lists.infradead.org,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        linux-s390@vger.kernel.org, Greentime Hu <green.hu@gmail.com>,
         Helge Deller <deller@gmx.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Content-Type: text/plain; charset="UTF-8"
+        Vineet Gupta <vgupta@synopsys.com>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        linux-snps-arc@lists.infradead.org,
+        Song Liu <songliubraving@fb.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Yonghong Song <yhs@fb.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        linux-parisc@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-kernel@vger.kernel.org, Vincent Chen <deanbo422@gmail.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 00/15] kbuild: refactor headers_install and support compile-test of UAPI headers
+Date:   Tue,  4 Jun 2019 19:13:54 +0900
+Message-Id: <20190604101409.2078-1-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Jun 4, 2019 at 9:57 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> Remove the CONFIG_UEVENT_HELPER_PATH because:
-> 1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
->    CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
->    made default to 'n',
-> 2. It is not recommended (help message: "This should not be used today
->    [...] creates a high system load") and was kept only for ancient
->    userland,
-> 3. Certain userland specifically requests it to be disabled (systemd
->    README: "Legacy hotplug slows down the system and confuses udev").
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Multiple people have suggested to compile-test UAPI headers.
 
-Gr{oetje,eeting}s,
+Currently, Kbuild provides simple sanity checks by headers_check
+but they are not enough to catch bugs.
 
-                        Geert
+The most recent patch I know is David Howells' work:
+https://patchwork.kernel.org/patch/10590203/
+
+I agree that we need better tests for UAPI headers,
+but I want to integrate it in a clean way.
+
+The idea that has been in my mind is to compile each header
+to make sure the selfcontainedness.
+
+Recently, Jani Nikula proposed a new syntax 'header-test-y'.
+https://patchwork.kernel.org/patch/10947005/
+
+So, I implemented UAPI compile-testing on top of that.
+
+When adding a new feature, cleaning the code first is a
+good practice.
+
+[1] Remove headers_install_all
+
+This target installs UAPI headers of all architectures
+in a single tree.
+It does not make sense to compile test of headers from
+multiple arches at the same time. Hence, removed.
+
+[2] Split header installation into 'make headers' and 'make headers_install'
+
+To compile-test UAPI headers, we need a work-directory somewhere
+to save objects and .*.cmd files.
+
+usr/include/ will be the work-directory.
+
+Since we cannot pollute the final destination of headers_install,
+
+I split the header installation into two stages.
+
+'make headers' will build up
+the ready-to-install headers in usr/include,
+which will be also used as a work-directory for the compile-test.
+
+'make headers_install' will copy headers
+from usr/include to $(INSTALL_HDR_PATH)/include.
+
+[3] Support compile-test of UAPI headers
+
+This is implemented in usr/include/Makefile
+
+
+Jani Nikula (1):
+  kbuild: add support for ensuring headers are self-contained
+
+Masahiro Yamada (14):
+  kbuild: remove headers_{install,check}_all
+  kbuild: remove stale dependency between Documentation/ and
+    headers_install
+  kbuild: make gdb_script depend on prepare0 instead of prepare
+  kbuild: fix Kconfig prompt of CONFIG_HEADERS_CHECK
+  kbuild: add CONFIG_HEADERS_INSTALL and loosen the dependency of
+    samples
+  kbuild: remove build_unifdef target in scripts/Makefile
+  kbuild: build all prerequisite of headers_install simultaneously
+  kbuild: add 'headers' target to build up ready-to-install uapi headers
+  kbuild: re-implement Makefile.headersinst without directory descending
+  kbuild: move hdr-inst shorthand to top Makefile
+  kbuild: simplify scripts/headers_install.sh
+  kbuild: deb-pkg: do not run headers_check
+  fixup: kbuild: add support for ensuring headers are self-contained
+  kbuild: compile test UAPI headers to ensure they are self-contained
+
+ Documentation/kbuild/headers_install.txt |   7 --
+ Documentation/kbuild/makefiles.txt       |  13 ++-
+ Makefile                                 |  56 +++++-----
+ arch/arc/configs/tb10x_defconfig         |   1 +
+ arch/nds32/configs/defconfig             |   1 +
+ arch/parisc/configs/a500_defconfig       |   1 +
+ arch/parisc/configs/b180_defconfig       |   1 +
+ arch/parisc/configs/c3000_defconfig      |   1 +
+ arch/parisc/configs/default_defconfig    |   1 +
+ arch/powerpc/configs/ppc6xx_defconfig    |   1 +
+ arch/s390/configs/debug_defconfig        |   1 +
+ include/uapi/{linux => }/Kbuild          |   6 +-
+ init/Kconfig                             |  20 ++++
+ lib/Kconfig.debug                        |  25 +++--
+ samples/Kconfig                          |  14 ++-
+ samples/Makefile                         |   4 +-
+ scripts/Kbuild.include                   |   6 --
+ scripts/Makefile                         |   5 -
+ scripts/Makefile.build                   |   9 ++
+ scripts/Makefile.headersinst             | 132 ++++++++++-------------
+ scripts/Makefile.lib                     |   3 +
+ scripts/cc-system-headers.sh             |   8 ++
+ scripts/headers.sh                       |  29 -----
+ scripts/headers_install.sh               |  48 ++++-----
+ scripts/package/builddeb                 |   2 +-
+ usr/.gitignore                           |   1 -
+ usr/Makefile                             |   2 +
+ usr/include/.gitignore                   |   3 +
+ usr/include/Makefile                     | 132 +++++++++++++++++++++++
+ 29 files changed, 329 insertions(+), 204 deletions(-)
+ rename include/uapi/{linux => }/Kbuild (77%)
+ create mode 100755 scripts/cc-system-headers.sh
+ delete mode 100755 scripts/headers.sh
+ create mode 100644 usr/include/.gitignore
+ create mode 100644 usr/include/Makefile
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.17.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
