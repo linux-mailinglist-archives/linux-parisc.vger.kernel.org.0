@@ -2,148 +2,76 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CEED340E0
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jun 2019 09:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAAD7340F9
+	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jun 2019 10:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726926AbfFDH5q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 4 Jun 2019 03:57:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55444 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726711AbfFDH5p (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 4 Jun 2019 03:57:45 -0400
-Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B5DBD24D4B;
-        Tue,  4 Jun 2019 07:57:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559635065;
-        bh=Kr8ly81JxS5zgnxUlI9HS2VCWq8bOoEzhc0n69Sgnc8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=JOpCayegzxbObXW+tee2fulfmIREZiRJQcYtOPA4LO3qFZAsk92RGSaNMDg+Q9i3L
-         ehVPOz3PZWWI0zPsg3FtO4CdWEe0lWyztz6rK+A4FKABQ18YDDWjXr0+cL+UHx+xJC
-         3GgITGPCq/c0c8UbTp0JFPkwm3DN1O5PvZiUHeIw=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        id S1726844AbfFDIA2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 4 Jun 2019 04:00:28 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:35945 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726792AbfFDIA2 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 4 Jun 2019 04:00:28 -0400
+Received: by mail-lj1-f196.google.com with SMTP id i21so4186430ljj.3;
+        Tue, 04 Jun 2019 01:00:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2L8XCkLmDMvU/p7RbEo4G1kyYLV+G71wvJ8lGUNsBwI=;
+        b=uRIrX2Am+GpFkmzmWIB+1TsiSerVuyub17ZL7COQTsK97DyMOeM18Bd03A+lrPU8Z8
+         h2i1ERFAtGlBPtSIfIAlmNZUeVHT6yFpm+aG0iwkFBtWuMrtFy0Fm4bAfKzlN3m0ggle
+         EVTvPxfOweEOkOxoqfs5ZHQMzqJ5b2DJARiRcZn65vQDqGm+h/DUCaLBYz1bZPq0/6Ff
+         D9bZgo5+0kkn04HhlupXswA4TC6ej/M/g5Tot6rPu34pw7Olj7SPMAX0eS/aK/XYGTCP
+         7tY/xiCIZ0Ea5b8FgW1qsSz62nGbxMzrPr/TDKBdfZAaHh27nlnDRMOMlU0ch4VSwclr
+         tRcA==
+X-Gm-Message-State: APjAAAX/iTpmk2/9WSZe7JC7JNTXI5sF//ErbFNsdO8p2vwPCrNK27Fa
+        kO5BVK1YqEj8bubJIiDiWk5sHQDr7i2S043d2tY=
+X-Google-Smtp-Source: APXvYqymyjI708y5PZTas2O0wBhQG7rpPBAnl5mORMT9yPEOwJRvS4Uq7a6ONVoFwvSMDIcmDhPypSShgJJ0qxxF2+Q=
+X-Received: by 2002:a2e:8555:: with SMTP id u21mr15742288ljj.133.1559635226175;
+ Tue, 04 Jun 2019 01:00:26 -0700 (PDT)
+MIME-Version: 1.0
+References: <1559635059-20644-1-git-send-email-krzk@kernel.org>
+In-Reply-To: <1559635059-20644-1-git-send-email-krzk@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 4 Jun 2019 10:00:14 +0200
+Message-ID: <CAMuHMdW+Ax1OCohn5DKv=ae33y5Du++hJmW74g-3utW67ohEMQ@mail.gmail.com>
+Subject: Re: [PATCH] parisc: configs: Remove useless UEVENT_HELPER_PATH
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] parisc: configs: Remove useless UEVENT_HELPER_PATH
-Date:   Tue,  4 Jun 2019 09:57:39 +0200
-Message-Id: <1559635059-20644-1-git-send-email-krzk@kernel.org>
-X-Mailer: git-send-email 2.7.4
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Remove the CONFIG_UEVENT_HELPER_PATH because:
-1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
-   CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
-   made default to 'n',
-2. It is not recommended (help message: "This should not be used today
-   [...] creates a high system load") and was kept only for ancient
-   userland,
-3. Certain userland specifically requests it to be disabled (systemd
-   README: "Legacy hotplug slows down the system and confuses udev").
+On Tue, Jun 4, 2019 at 9:57 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> Remove the CONFIG_UEVENT_HELPER_PATH because:
+> 1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
+>    CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
+>    made default to 'n',
+> 2. It is not recommended (help message: "This should not be used today
+>    [...] creates a high system load") and was kept only for ancient
+>    userland,
+> 3. Certain userland specifically requests it to be disabled (systemd
+>    README: "Legacy hotplug slows down the system and confuses udev").
+>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/parisc/configs/712_defconfig           | 1 -
- arch/parisc/configs/a500_defconfig          | 1 -
- arch/parisc/configs/b180_defconfig          | 1 -
- arch/parisc/configs/c3000_defconfig         | 1 -
- arch/parisc/configs/c8000_defconfig         | 1 -
- arch/parisc/configs/default_defconfig       | 1 -
- arch/parisc/configs/generic-32bit_defconfig | 1 -
- 7 files changed, 7 deletions(-)
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-diff --git a/arch/parisc/configs/712_defconfig b/arch/parisc/configs/712_defconfig
-index ccc109761f44..d3e3d94e90c3 100644
---- a/arch/parisc/configs/712_defconfig
-+++ b/arch/parisc/configs/712_defconfig
-@@ -34,7 +34,6 @@ CONFIG_INET_DIAG=m
- CONFIG_NETFILTER=y
- CONFIG_LLC2=m
- CONFIG_NET_PKTGEN=m
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_STANDALONE is not set
-diff --git a/arch/parisc/configs/a500_defconfig b/arch/parisc/configs/a500_defconfig
-index 5acb93dcaabf..a8859496b0b9 100644
---- a/arch/parisc/configs/a500_defconfig
-+++ b/arch/parisc/configs/a500_defconfig
-@@ -70,7 +70,6 @@ CONFIG_IP_DCCP=m
- # CONFIG_IP_DCCP_CCID3 is not set
- CONFIG_LLC2=m
- CONFIG_NET_PKTGEN=m
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_STANDALONE is not set
-diff --git a/arch/parisc/configs/b180_defconfig b/arch/parisc/configs/b180_defconfig
-index 83ffd161aec5..0cae9664bf67 100644
---- a/arch/parisc/configs/b180_defconfig
-+++ b/arch/parisc/configs/b180_defconfig
-@@ -24,7 +24,6 @@ CONFIG_INET=y
- CONFIG_IP_MULTICAST=y
- CONFIG_IP_PNP=y
- CONFIG_IP_PNP_BOOTP=y
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
-diff --git a/arch/parisc/configs/c3000_defconfig b/arch/parisc/configs/c3000_defconfig
-index 8d41a73bd71b..6c29b841735c 100644
---- a/arch/parisc/configs/c3000_defconfig
-+++ b/arch/parisc/configs/c3000_defconfig
-@@ -32,7 +32,6 @@ CONFIG_INET6_IPCOMP=m
- CONFIG_IPV6_TUNNEL=m
- CONFIG_NETFILTER=y
- CONFIG_NET_PKTGEN=m
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_STANDALONE is not set
-diff --git a/arch/parisc/configs/c8000_defconfig b/arch/parisc/configs/c8000_defconfig
-index 900b00084953..507f0644fcf8 100644
---- a/arch/parisc/configs/c8000_defconfig
-+++ b/arch/parisc/configs/c8000_defconfig
-@@ -57,7 +57,6 @@ CONFIG_IP_DCCP=m
- CONFIG_TIPC=m
- CONFIG_LLC2=m
- CONFIG_DNS_RESOLVER=y
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_STANDALONE is not set
-diff --git a/arch/parisc/configs/default_defconfig b/arch/parisc/configs/default_defconfig
-index 52c9050a7c5c..6a91cc2623e8 100644
---- a/arch/parisc/configs/default_defconfig
-+++ b/arch/parisc/configs/default_defconfig
-@@ -44,7 +44,6 @@ CONFIG_INET6_AH=y
- CONFIG_INET6_ESP=y
- CONFIG_INET6_IPCOMP=y
- CONFIG_LLC2=m
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_STANDALONE is not set
-diff --git a/arch/parisc/configs/generic-32bit_defconfig b/arch/parisc/configs/generic-32bit_defconfig
-index a8f9bbef0975..18b072a47a10 100644
---- a/arch/parisc/configs/generic-32bit_defconfig
-+++ b/arch/parisc/configs/generic-32bit_defconfig
-@@ -47,7 +47,6 @@ CONFIG_INET_ESP=m
- CONFIG_INET_DIAG=m
- CONFIG_LLC2=m
- # CONFIG_WIRELESS is not set
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_STANDALONE is not set
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.7.4
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
