@@ -2,63 +2,121 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4309935079
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jun 2019 21:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E6A23554F
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Jun 2019 04:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726245AbfFDTyC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 4 Jun 2019 15:54:02 -0400
-Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:38295 "EHLO
-        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725933AbfFDTyC (ORCPT
+        id S1726510AbfFECiF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 4 Jun 2019 22:38:05 -0400
+Received: from conssluserg-05.nifty.com ([210.131.2.90]:23777 "EHLO
+        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726460AbfFECiF (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 4 Jun 2019 15:54:02 -0400
-Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
-          with ESMTP
-          id <20190604195401.BULE4584.torfep01.bell.net@torspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Tue, 4 Jun 2019 15:54:01 -0400
-Received: from [192.168.0.183] (really [65.95.39.186]) by torspm02.bell.net
-          with ESMTP
-          id <20190604195401.UXVN30132.torspm02.bell.net@[192.168.0.183]>;
-          Tue, 4 Jun 2019 15:54:01 -0400
-To:     Helge Deller <deller@gmx.de>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-References: <5d53371f-d918-0333-08a7-ad0d04eb3b26@bell.net>
- <5aaedf55-97bf-8d38-da37-bdafa54b5e9f@gmx.de>
-From:   John David Anglin <dave.anglin@bell.net>
-Openpgp: preference=signencrypt
-Subject: Re: [PATCH] parisc: Use lpa instruction to load physical addresses in
- driver code
-Message-ID: <99ef56f8-4814-93ca-4c33-71ccbad5dd61@bell.net>
-Date:   Tue, 4 Jun 2019 15:54:01 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Tue, 4 Jun 2019 22:38:05 -0400
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id x552bwqj023011;
+        Wed, 5 Jun 2019 11:37:59 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com x552bwqj023011
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1559702279;
+        bh=rlXG4KafJ48SszDXPb9veQ1mChqnZopGbbSbM2AtzLc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=reRoC3LCODW2GBXW/hPCv4S/B7CVl9c+nRtJ4VY8VY6hzI24tWZrUHkGNWz420Nxm
+         kA5XCPbqM+OcfHVU2VJwzQuuBHYJqAn1wVeQ72k4q/3g1jhzo46RQXCg/ukFh2Dox7
+         LR1uj6rky7CyY6u4WR0us9bTjJZgclXEUPQxSVVG70hHPG2k8nOGylY2MysCZiL0iG
+         YqMskldpLSmjYFpHCr5Tkh2Ifh48QY8xmg7TBMBkEF8jxDxwwerKaY9jc0GYh1EpfR
+         eGmZCZ4253i7cIrBZj1Z1utua3uwfrvPlahSg5FCD/jXViNq2pL+e8DeNYjaabxd3l
+         fbTOkdui/IHVw==
+X-Nifty-SrcIP: [209.85.217.48]
+Received: by mail-vs1-f48.google.com with SMTP id n21so9083325vsp.12;
+        Tue, 04 Jun 2019 19:37:59 -0700 (PDT)
+X-Gm-Message-State: APjAAAUJSf6uv3e8xz/lSHIFnG7yWBQ4EMyfIbvLeziXJe+cZWKe2PaA
+        BHwSO3AdTPTTF1TIyYuLO8jAgWtqFiGJcWbl6Kk=
+X-Google-Smtp-Source: APXvYqzyi/PN7usug5PnObKBoqJxKJtYCUFINZdd71aBKnjEu2CMU8+EOU/sdcKVYceeBvsBUi01Xqmwcp/M7j6Sefg=
+X-Received: by 2002:a67:f495:: with SMTP id o21mr3047792vsn.54.1559702278042;
+ Tue, 04 Jun 2019 19:37:58 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <5aaedf55-97bf-8d38-da37-bdafa54b5e9f@gmx.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-Analysis: v=2.3 cv=bPxo382Z c=1 sm=1 tr=0 cx=a_idp_d a=Q02bAvDbwyQG9yYSZ9PE5w==:117 a=Q02bAvDbwyQG9yYSZ9PE5w==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=dq6fvYVFJ5YA:10 a=FBHGMhGWAAAA:8 a=euGNDiAxCOXpII1mdLkA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfPYRxMxiPvOQVZBeHzhZ+yoVThIB7a3EdvIBruBBnW9rvyr3HIYWWoj0630hOyDg0W8SnVaJBEpLgBPX3ogdxjrZS2Aew1Q0Faj3Brm4W1vvX1ot1ZgP ELmSQEWlEMQBB/2EnP6nrMY1r44xnrQHYihJzyY5lHHMJqDXQNJ1B35TRoyGendkc2DOD0A+Hf2i1g==
+References: <20190604101409.2078-1-yamada.masahiro@socionext.com>
+In-Reply-To: <20190604101409.2078-1-yamada.masahiro@socionext.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Wed, 5 Jun 2019 11:37:21 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQ50Lnz+1hjHg2PK_h7DyfNkY7D1XGL5_VPDe5xLgx2Kw@mail.gmail.com>
+Message-ID: <CAK7LNAQ50Lnz+1hjHg2PK_h7DyfNkY7D1XGL5_VPDe5xLgx2Kw@mail.gmail.com>
+Subject: Re: [PATCH 00/15] kbuild: refactor headers_install and support
+ compile-test of UAPI headers
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc:     Song Liu <songliubraving@fb.com>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Paul Mackerras <paulus@samba.org>,
+        linux-riscv@lists.infradead.org,
+        Vincent Chen <deanbo422@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Helge Deller <deller@gmx.de>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yonghong Song <yhs@fb.com>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        linux-parisc@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>, bpf@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Martin KaFai Lau <kafai@fb.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2019-06-04 3:36 p.m., Helge Deller wrote:
-> Actually, I think it makes sense to push the drop-sr1/use-lci-without-sr1
-> change backward to the stable kernel series.
-> After that, in the second step, we could add the code to use lpa(), which
-> I don't think should go to stable series.
-> Would it be OK for you if we split it up into two patches?
+On Tue, Jun 4, 2019 at 7:15 PM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+>
+>
+> Multiple people have suggested to compile-test UAPI headers.
+>
+> Currently, Kbuild provides simple sanity checks by headers_check
+> but they are not enough to catch bugs.
+>
+> The most recent patch I know is David Howells' work:
+> https://patchwork.kernel.org/patch/10590203/
+>
+> I agree that we need better tests for UAPI headers,
+> but I want to integrate it in a clean way.
+>
+> The idea that has been in my mind is to compile each header
+> to make sure the selfcontainedness.
 
-No problem.  I didn't have an easy way to separate changes.  There's a possible
-race in using %sr1 so doing a stable backport makes sense.
 
-Using lpa() is slightly slower than virt_to_phys() as it may generate a TLB miss.
-On the other hand, it handles any mapping.
+For convenience, I pushed this series at
 
-dave
+git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild.git
+uapi-header-test-v1
+
+(13/15 was replaced with v2)
+
+
+If you want to test it quickly, please check-out it, then
+
+  $ make -j8 allmodconfig usr/
+
+(As I noted in the commit log, you need to use
+a compiler that provides <stdlib.h>, <sys/time.h>, etc.)
+
 
 -- 
-John David Anglin  dave.anglin@bell.net
+Best Regards
+Masahiro Yamada
