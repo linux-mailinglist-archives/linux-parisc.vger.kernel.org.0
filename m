@@ -2,121 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E6A23554F
-	for <lists+linux-parisc@lfdr.de>; Wed,  5 Jun 2019 04:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 400EF35D00
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Jun 2019 14:38:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfFECiF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 4 Jun 2019 22:38:05 -0400
-Received: from conssluserg-05.nifty.com ([210.131.2.90]:23777 "EHLO
-        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726460AbfFECiF (ORCPT
+        id S1727669AbfFEMi6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 5 Jun 2019 08:38:58 -0400
+Received: from mail-yw1-f51.google.com ([209.85.161.51]:36572 "EHLO
+        mail-yw1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727273AbfFEMi5 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 4 Jun 2019 22:38:05 -0400
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id x552bwqj023011;
-        Wed, 5 Jun 2019 11:37:59 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com x552bwqj023011
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1559702279;
-        bh=rlXG4KafJ48SszDXPb9veQ1mChqnZopGbbSbM2AtzLc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=reRoC3LCODW2GBXW/hPCv4S/B7CVl9c+nRtJ4VY8VY6hzI24tWZrUHkGNWz420Nxm
-         kA5XCPbqM+OcfHVU2VJwzQuuBHYJqAn1wVeQ72k4q/3g1jhzo46RQXCg/ukFh2Dox7
-         LR1uj6rky7CyY6u4WR0us9bTjJZgclXEUPQxSVVG70hHPG2k8nOGylY2MysCZiL0iG
-         YqMskldpLSmjYFpHCr5Tkh2Ifh48QY8xmg7TBMBkEF8jxDxwwerKaY9jc0GYh1EpfR
-         eGmZCZ4253i7cIrBZj1Z1utua3uwfrvPlahSg5FCD/jXViNq2pL+e8DeNYjaabxd3l
-         fbTOkdui/IHVw==
-X-Nifty-SrcIP: [209.85.217.48]
-Received: by mail-vs1-f48.google.com with SMTP id n21so9083325vsp.12;
-        Tue, 04 Jun 2019 19:37:59 -0700 (PDT)
-X-Gm-Message-State: APjAAAUJSf6uv3e8xz/lSHIFnG7yWBQ4EMyfIbvLeziXJe+cZWKe2PaA
-        BHwSO3AdTPTTF1TIyYuLO8jAgWtqFiGJcWbl6Kk=
-X-Google-Smtp-Source: APXvYqzyi/PN7usug5PnObKBoqJxKJtYCUFINZdd71aBKnjEu2CMU8+EOU/sdcKVYceeBvsBUi01Xqmwcp/M7j6Sefg=
-X-Received: by 2002:a67:f495:: with SMTP id o21mr3047792vsn.54.1559702278042;
- Tue, 04 Jun 2019 19:37:58 -0700 (PDT)
+        Wed, 5 Jun 2019 08:38:57 -0400
+Received: by mail-yw1-f51.google.com with SMTP id t126so283168ywf.3
+        for <linux-parisc@vger.kernel.org>; Wed, 05 Jun 2019 05:38:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:cc;
+        bh=FLoW8CyLozSZf8ymm84Gw0WP3MQ1Agik1tyc6HrVIyM=;
+        b=DW1h/jz6BTdLZPcyeISUo4iV95p9Uak+ldgyToSWr0FZ4Lw1h0ON12OXPIVRr1xyWb
+         5KjQs2IfzH2esibfHfHesNshukpHfHmXegfNww84pKoYIWjKAkhQaNjllAR27FEOr32U
+         NiJdHVpiOLq82pGqCh1ebmIi5TkyOH21w5Q/R7vzOXFG8plLVJ00UYCMF4WqZ0tu4w0l
+         OFEcuv+crwboq1KB5JNH0ZIWW7dPe3t5AVhcsdkJcalgeQ1mv8FFGcsfkW8NFGGSWnAt
+         guC9K3rcpmiJesRtlSzbnVX5iDno+KtCfTYLrYM16+aYxHG59FlzJKd4LjctcDqMlAEq
+         ZjyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:cc;
+        bh=FLoW8CyLozSZf8ymm84Gw0WP3MQ1Agik1tyc6HrVIyM=;
+        b=s6Kx9Jl6XV9TR3lw9KISUaN+XKncGfT4el0Kq5aNfvfeoeTS9gJwDxkGtTB5jbNQms
+         Ara5rInBzaCMl/ORd9Mfyz17lJIYAqNLgf1Q3jbHxj5Ry1Kg71nXtXViOmrzrqbjgTOo
+         UTWEjTITRe/T7Xbq6IKBhwnRTPNAWcatRe4CZBYNG+Hh/cIpDMwu7plKU2QoR/Z4O6Uo
+         durOli3/TODvBVY++RE9HRXb9bmO2MFc7FH5P5EI01U6rYFkoCqh9Pw1Ay1GYBeFfKab
+         Vh0GlrkhsjBxCDZgd0C5A9FKrmsn1iRb7CqjiI2dGt3xnIf7q4Jr2uCIma/77Q2+XXyT
+         Mmtw==
+X-Gm-Message-State: APjAAAXo37T7zbOFIM8r5sOS58VhNJQSahah2YpoHBLJtGjrES/5qvBe
+        LBF7o5P6tYCmJw3I/PhqcycTVMcjVpZ56/6e9+agKGa3
+X-Google-Smtp-Source: APXvYqw4li9NJny6VAVUGBDPsVYqjDZLTIYkFdh3oSu5hErWmkT3rGGsoR0YCmaGJkIYq/b8pflS4mibbAIIwR7oHGo=
+X-Received: by 2002:a81:a186:: with SMTP id y128mr7951503ywg.128.1559738336828;
+ Wed, 05 Jun 2019 05:38:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190604101409.2078-1-yamada.masahiro@socionext.com>
-In-Reply-To: <20190604101409.2078-1-yamada.masahiro@socionext.com>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Wed, 5 Jun 2019 11:37:21 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQ50Lnz+1hjHg2PK_h7DyfNkY7D1XGL5_VPDe5xLgx2Kw@mail.gmail.com>
-Message-ID: <CAK7LNAQ50Lnz+1hjHg2PK_h7DyfNkY7D1XGL5_VPDe5xLgx2Kw@mail.gmail.com>
-Subject: Re: [PATCH 00/15] kbuild: refactor headers_install and support
- compile-test of UAPI headers
-To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Cc:     Song Liu <songliubraving@fb.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Paul Mackerras <paulus@samba.org>,
-        linux-riscv@lists.infradead.org,
-        Vincent Chen <deanbo422@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Helge Deller <deller@gmx.de>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yonghong Song <yhs@fb.com>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        linux-parisc@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>, bpf@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Martin KaFai Lau <kafai@fb.com>
+References: <5d53371f-d918-0333-08a7-ad0d04eb3b26@bell.net>
+ <5aaedf55-97bf-8d38-da37-bdafa54b5e9f@gmx.de> <99ef56f8-4814-93ca-4c33-71ccbad5dd61@bell.net>
+In-Reply-To: <99ef56f8-4814-93ca-4c33-71ccbad5dd61@bell.net>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Wed, 5 Jun 2019 14:38:31 +0200
+Message-ID: <CA+QBN9BpA80MORxGafyit4-mPXk9jTWhNzd3Nj90WZwpZHoE=Q@mail.gmail.com>
+Subject: SCSI Adaptec aha-3950u2
+Cc:     linux-parisc <linux-parisc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Jun 4, 2019 at 7:15 PM Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
->
->
-> Multiple people have suggested to compile-test UAPI headers.
->
-> Currently, Kbuild provides simple sanity checks by headers_check
-> but they are not enough to catch bugs.
->
-> The most recent patch I know is David Howells' work:
-> https://patchwork.kernel.org/patch/10590203/
->
-> I agree that we need better tests for UAPI headers,
-> but I want to integrate it in a clean way.
->
-> The idea that has been in my mind is to compile each header
-> to make sure the selfcontainedness.
+hi guys
+has Adaptec aha-3950u2 been tested on HPPA?
+it looks a PCI64 card with a RISC chip on it for processing SCSI commands.
 
+So it looks perfect for a stress test on the PCI bus
 
-For convenience, I pushed this series at
-
-git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild.git
-uapi-header-test-v1
-
-(13/15 was replaced with v2)
-
-
-If you want to test it quickly, please check-out it, then
-
-  $ make -j8 allmodconfig usr/
-
-(As I noted in the commit log, you need to use
-a compiler that provides <stdlib.h>, <sys/time.h>, etc.)
-
-
--- 
-Best Regards
-Masahiro Yamada
+found a discount for qty=4 units, so I am considering it
