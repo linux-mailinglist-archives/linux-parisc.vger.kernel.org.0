@@ -2,60 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C1063A455
-	for <lists+linux-parisc@lfdr.de>; Sun,  9 Jun 2019 10:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE9873ADBE
+	for <lists+linux-parisc@lfdr.de>; Mon, 10 Jun 2019 05:50:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbfFIIVZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 9 Jun 2019 04:21:25 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:49693 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727284AbfFIIVZ (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 9 Jun 2019 04:21:25 -0400
-Received: from infong396.kundenserver.de ([82.165.81.226]) by
- mrelayeu.kundenserver.de (mreue011 [172.19.35.7]) with ESMTPA (Nemesis) id
- 1MvryJ-1gicAW11Jn-00swdq for <linux-parisc@vger.kernel.org>; Sun, 09 Jun 2019
- 10:21:23 +0200
-Received: from 46.166.143.116 (IP may be forged by CGI script)
-    by infong396.kundenserver.de with HTTP
-    id zRL3Vs-1hJj8Z1yYP-00GoPr; Sun, 09 Jun 2019 10:21:22 +0200
-X-Sender-Info: <326082260@infong396.kundenserver.de>
-To:     linux-parisc@vger.kernel.org
-Subject: Kopie von: Trouvez-vous une fille pour la nuit dans votre ville au Royaume-Uni
-Date:   Sun, 9 Jun 2019 10:21:22 +0200
-From:   "Verein Cottbuser Karneval 1980 e.V." <baerbel@vck1980.de>
-Reply-To: ClintonLow <linux-parisc@vger.kernel.org>
-Message-ID: <a264ae53609314ca27a1e5571f29fa88@vck1980.de>
+        id S2387545AbfFJDu6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 9 Jun 2019 23:50:58 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:54932 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387457AbfFJDu6 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 9 Jun 2019 23:50:58 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id D9A5D3082B15;
+        Mon, 10 Jun 2019 03:50:57 +0000 (UTC)
+Received: from [10.72.12.206] (ovpn-12-206.pek2.redhat.com [10.72.12.206])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1AB5660BEC;
+        Mon, 10 Jun 2019 03:50:46 +0000 (UTC)
+Subject: Re: [PATCH net-next 0/6] vhost: accelerate metadata access
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        peterx@redhat.com, James.Bottomley@hansenpartnership.com,
+        hch@infradead.org, davem@davemloft.net, jglisse@redhat.com,
+        linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+        linux-parisc@vger.kernel.org, christophe.de.dinechin@gmail.com,
+        jrdr.linux@gmail.com
+References: <20190524081218.2502-1-jasowang@redhat.com>
+ <20190605162631-mutt-send-email-mst@kernel.org>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <c233324c-cb66-c0ab-45c4-6e6e0499bb22@redhat.com>
+Date:   Mon, 10 Jun 2019 11:50:45 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20190605162631-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:dRG6zBY7GC5KR7lcmG9Ir0ug5Ns/xn3Uy+I7uBB0RXDYVpj9EoZ
- pcST/FAnPBD8FxKh/hZ7nY10v5PdB1Byv7snSry2cuG3vJ0ywMJJxVIWWmKkfjNBgBob9l+
- 1R7SGZi+bejBD5y7Z/1/nBJ42Yiw/VtMnNH7GdrTaXUED7YQpvZZB8TAR0DP2aLz2sfP6EN
- BZKrs3sw75UNg9TtLAYBUKSUsvBKAUEVhmSeRuAL8c=
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gnPhheX3nQM=:9nOEpw/N1BK0rjGOVgHKmD
- 5k77n5dXiPfSfkaNVaRU9HLUqIP1Vvx8wgHuo6nDTW94Xf+BiOSHktaCNfIF94eqRachnSsgU
- aj39MBwnhgrh3dsOhDveiDtu834udcfOLpg4Gu4L1F28FlLdHSx/bybBj9Ly9vfxh051YJRaE
- kXFZdUMZ3HMQ6kPb54veTok1B2Mzr+GbTO7BvaJ6uoGbdeAEWZkY/J37B/ZdW8NIHV0BQ8bMy
- yhoGNhiCya/sHPphT1Smei1ro04aAqB2/mC38IuSxe7qnJ1pn6W3vzo18MWpXrF7HaDfRWEnZ
- OrxqSnsc9b7tTxV1N/jWV8dOMJtaYbJ8l8MgJ6IzX80ms3MonAg1frnBmP+/fQq/4JkYEC6MO
- hzcQ9tlSwP6A1R7uLFKlR5Rt6hgr41XzdkzgP8KxKKVFI55OIMv8Fb37M7gitmWtzhiv7IH6s
- X4OZVCcqKNK9zr1sYUNBXBJopPBDADWG2Sl2YAVgIlaj/E6IvbilpAK3CzGbmh7RWIWVjBE37
- KUjpytuxxZjnA6Rl4uQ/JcbnES/q3UbAye+o9/iGgUPo5i9POB9QJgM1JbYMMjM0sb/fKkY1F
- qb/WsvLW1qQqXZA0/7KNPhEb1c9WChsv0PX+sAYLGHYppp5UgDyJxLuVoNX7EcUU7SAKQ+j/j
- pdb5Pwh52eMorUrKC1Wf2Xy6i8ynHIIgE6Ft8OVUdfcnDalr2lBJE+Oy34RTj3wPRat0ba8ie
- AFMnbCNmzASAyOLhAv03g0LejzNj/BJWEa9gm4uDOUGPA99N4f3vmH3vTTgtbV0E94s0+h/5Q
- wGQ60FZC/0eZJcmbo629luVDG3hEGFBRoQAwRoA3s6e4zwFyPk=
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.45]); Mon, 10 Jun 2019 03:50:58 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Dieses ist eine Kopie der folgenden Nachricht, die an Bärbel Weimann via Verein Cottbuser Karneval 1980 e.V. gesendet wurde:
 
-Dies ist eine Mailanfrage via http://vck1980.de/ von:
-ClintonLow <linux-parisc@vger.kernel.org>
+On 2019/6/6 上午4:27, Michael S. Tsirkin wrote:
+> On Fri, May 24, 2019 at 04:12:12AM -0400, Jason Wang wrote:
+>> Hi:
+>>
+>> This series tries to access virtqueue metadata through kernel virtual
+>> address instead of copy_user() friends since they had too much
+>> overheads like checks, spec barriers or even hardware feature
+>> toggling like SMAP. This is done through setup kernel address through
+>> direct mapping and co-opreate VM management with MMU notifiers.
+>>
+>> Test shows about 23% improvement on TX PPS. TCP_STREAM doesn't see
+>> obvious improvement.
+>>
+>> Thanks
+> Thanks this is queued for next.
+>
+> Did you want to rebase and repost packed ring support on top?
+> IIUC it's on par with split ring with these patches.
+>
+>
 
-Adulte meilleur site de rencontre gratuit canada 2019: http://tinyurl.com/y6ltljsd
+Yes, it's on the way.
+
+Thanks
 
