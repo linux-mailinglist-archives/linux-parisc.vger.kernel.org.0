@@ -2,39 +2,59 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB3CA3C337
-	for <lists+linux-parisc@lfdr.de>; Tue, 11 Jun 2019 07:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8A584206A
+	for <lists+linux-parisc@lfdr.de>; Wed, 12 Jun 2019 11:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391203AbfFKFKA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Tue, 11 Jun 2019 01:10:00 -0400
-Received: from slot0.etcslc.ga ([85.204.116.123]:37687 "EHLO slot0.etcslc.ga"
+        id S2408641AbfFLJMP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 12 Jun 2019 05:12:15 -0400
+Received: from smtp3.ono.com ([62.42.230.163]:46533 "EHLO smtp3.ono.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390911AbfFKFKA (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 11 Jun 2019 01:10:00 -0400
-X-Greylist: delayed 623 seconds by postgrey-1.27 at vger.kernel.org; Tue, 11 Jun 2019 01:09:59 EDT
-Content-Type: text/plain; charset="iso-8859-1"
+        id S2408640AbfFLJMP (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 12 Jun 2019 05:12:15 -0400
+X-Junkmail-Premium-Raw: score=35/50,refid=2.7.2:2019.6.12.83916:17:35.434,ip=62.42.230.144,rules=__HAS_MSGID,
+ __SANE_MSGID, MSGID_JMAIL_DEFAULT, INVALID_MSGID_NO_FQDN, __HAS_FROM,
+ FROM_NAME_PHRASE, __HAS_REPLYTO, __FRAUD_WEBMAIL_REPLYTO,
+ __PHISH_SPEAR_SUBJ_ALERT, __MIME_VERSION, __CT, __CT_TEXT_PLAIN, __CTE,
+ MISSING_HEADERS, __ANY_URI, __FRAUD_BODY_WEBMAIL, __URI_NO_WWW,
+ __FRAUD_INTRO, __STOCK_PHRASE_7, __FRAUD_MONEY_BIG_COIN_DIG, __OEM_PRICE,
+ __FRAUD_MONEY_CURRENCY_DOLLAR, __NO_HTML_TAG_RAW, BODYTEXTP_SIZE_400_LESS,
+ BODYTEXTP_SIZE_3000_LESS, BODY_SIZE_300_399, __MIME_TEXT_P1,
+ __MIME_TEXT_ONLY, __URI_NS, HTML_00_01, HTML_00_10, __FRAUD_MONEY_CURRENCY,
+ __FRAUD_MONEY_BIG_COIN, __FRAUD_MONEY_VALUE, __PHISH_SPEAR_GREETING,
+ __FRAUD_MONEY, FRAUD_X3, BODY_SIZE_5000_LESS, __FRAUD_WEBMAIL,
+ WEBMAIL_REPLYTO_NOT_FROM, FRAUD_WEBMAIL_R_NOT_F, __MIME_TEXT_P,
+ FRAUD_LITTLE_BODY, __PHISH_SPEAR_STRUCTURE_1, BODY_SIZE_1000_LESS,
+ BODY_SIZE_2000_LESS, __PHISH_SPEAR_STRUCTURE_2, REPLYTO_FROM_DIFF_ADDY,
+ NO_URI_HTTPS, BODY_SIZE_7000_LESS, TO_MALFORMED
+Received: from resprs05 (62.42.230.144) by smtp3.ono.com (9.0.019.09-1)
+        id 5CC0A28F025CD59A; Wed, 12 Jun 2019 11:12:10 +0200
+Received: from (149.126.75.3) by webmailcpr05n.ono.com;  Wed, 12 Jun 2019 11:12:09 +0200
+Message-ID: <19091642.419421560330729575.JavaMail.defaultUser@defaultHost>
+Date:   Wed, 12 Jun 2019 11:12:09 +0200 (CEST)
+From:   Mrs Alice Johnson <o0fit@ono.com>
+Reply-To: mrsalicejohnson4@gmail.com
+Subject: Dear Friend,
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Quation needed For June Inquiry
-To:     Recipients <purchase@greattrades.ga>
-From:   "Jpexcc Salesi" <purchase@greattrades.ga>
-Date:   Tue, 11 Jun 2019 07:49:47 +0300
-Reply-To: jpexcc@aol.com
-Message-ID: <0.0.0.CEA.1D520110A2721AA.0@slot0.etcslc.ga>
+Content-Type: text/plain;charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello dear,
- 
-We are in the market for your products after meeting at your stand during last expo.
- 
-Please kindly send us your latest catalog and price list so as to start a new project/order as promised during the exhibition. 
- 
-I would appreciate your response about the above details required so we can revert back to you asap.
- 
-Kind regards
- 
-Rhema Zoeh
+
+
+--
+Dear Friend,
+
+I am Mrs Alice Johnson.am sending you this brief letter to solicit your
+partnership to transfer $18.5 million US Dollars.I shall send you more
+information and procedures when I receive positive response from you.
+please send me a message in my Email box (mrsalicejohnson4@gmail.com)
+as i wait to hear from you.
+
+Best regard
+Mrs Alice Johnson
+--
+
