@@ -2,42 +2,51 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8A584206A
-	for <lists+linux-parisc@lfdr.de>; Wed, 12 Jun 2019 11:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBD5B46E14
+	for <lists+linux-parisc@lfdr.de>; Sat, 15 Jun 2019 06:07:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408641AbfFLJMP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 12 Jun 2019 05:12:15 -0400
-Received: from smtp3.ono.com ([62.42.230.163]:46533 "EHLO smtp3.ono.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2408640AbfFLJMP (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 12 Jun 2019 05:12:15 -0400
-X-Junkmail-Premium-Raw: score=35/50,refid=2.7.2:2019.6.12.83916:17:35.434,ip=62.42.230.144,rules=__HAS_MSGID,
- __SANE_MSGID, MSGID_JMAIL_DEFAULT, INVALID_MSGID_NO_FQDN, __HAS_FROM,
- FROM_NAME_PHRASE, __HAS_REPLYTO, __FRAUD_WEBMAIL_REPLYTO,
- __PHISH_SPEAR_SUBJ_ALERT, __MIME_VERSION, __CT, __CT_TEXT_PLAIN, __CTE,
- MISSING_HEADERS, __ANY_URI, __FRAUD_BODY_WEBMAIL, __URI_NO_WWW,
- __FRAUD_INTRO, __STOCK_PHRASE_7, __FRAUD_MONEY_BIG_COIN_DIG, __OEM_PRICE,
- __FRAUD_MONEY_CURRENCY_DOLLAR, __NO_HTML_TAG_RAW, BODYTEXTP_SIZE_400_LESS,
- BODYTEXTP_SIZE_3000_LESS, BODY_SIZE_300_399, __MIME_TEXT_P1,
- __MIME_TEXT_ONLY, __URI_NS, HTML_00_01, HTML_00_10, __FRAUD_MONEY_CURRENCY,
- __FRAUD_MONEY_BIG_COIN, __FRAUD_MONEY_VALUE, __PHISH_SPEAR_GREETING,
- __FRAUD_MONEY, FRAUD_X3, BODY_SIZE_5000_LESS, __FRAUD_WEBMAIL,
- WEBMAIL_REPLYTO_NOT_FROM, FRAUD_WEBMAIL_R_NOT_F, __MIME_TEXT_P,
- FRAUD_LITTLE_BODY, __PHISH_SPEAR_STRUCTURE_1, BODY_SIZE_1000_LESS,
- BODY_SIZE_2000_LESS, __PHISH_SPEAR_STRUCTURE_2, REPLYTO_FROM_DIFF_ADDY,
- NO_URI_HTTPS, BODY_SIZE_7000_LESS, TO_MALFORMED
-Received: from resprs05 (62.42.230.144) by smtp3.ono.com (9.0.019.09-1)
-        id 5CC0A28F025CD59A; Wed, 12 Jun 2019 11:12:10 +0200
-Received: from (149.126.75.3) by webmailcpr05n.ono.com;  Wed, 12 Jun 2019 11:12:09 +0200
-Message-ID: <19091642.419421560330729575.JavaMail.defaultUser@defaultHost>
-Date:   Wed, 12 Jun 2019 11:12:09 +0200 (CEST)
-From:   Mrs Alice Johnson <o0fit@ono.com>
-Reply-To: mrsalicejohnson4@gmail.com
-Subject: Dear Friend,
+        id S1725805AbfFOEHJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 15 Jun 2019 00:07:09 -0400
+Received: from qf-corp.com ([43.252.215.172]:50091 "EHLO server1.qf-corp.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725786AbfFOEHJ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 15 Jun 2019 00:07:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=qf-corp.com
+        ; s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=x+wk2oDUMoo/hQHPqS9UCKstzOaLw+EthDvW07j7+BE=; b=nojCAhYJvxDj+XWdTFTmFi24kE
+        0sO1Z3RMUfcND/TQ1RSiRO5kmkL3SGa9JRiOP0i/c45guH0L8FYMsWyrqATnpT1erV5gAodK2jAqF
+        8mqqAalDH0ZMYoggv3tM0usyXltmApBtHtSP5+oOgg/96MJxIUpyZJH4auH4NikQzvEtfABZ7lES/
+        K+6I1HOAq57+o0U9M5c99z7NStFvRyOwex92ohu9g3dKp86EzhuB3U7d6WK6KUJAqTSrNc77/DsoG
+        DrUbxRJQOtpboef5nLxZacL5+Inu9WZ1ggEbBdE4WSvvSwh0wuPw8AcmZDdS9oatD7tSaqO/5uVNt
+        1n/9aLpw==;
+Received: from [::1] (port=42000 helo=server1.qf-corp.com)
+        by server1.qf-corp.com with esmtpa (Exim 4.92)
+        (envelope-from <admin@qf-corp.com>)
+        id 1hbSC2-0006ux-VO; Fri, 14 Jun 2019 00:03:15 +0800
 MIME-Version: 1.0
-Content-Type: text/plain;charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Fri, 14 Jun 2019 00:03:14 +0800
+From:   Herr David Williams <admin@qf-corp.com>
+To:     undisclosed-recipients:;
+Subject: dringender Kredit
+Reply-To: david.loanfirm18@gmail.com
+Mail-Reply-To: david.loanfirm18@gmail.com
+Message-ID: <8c4eaccd0b481306b9fae405915cde04@qf-corp.com>
+X-Sender: admin@qf-corp.com
+User-Agent: Roundcube Webmail/1.3.8
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server1.qf-corp.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - qf-corp.com
+X-Get-Message-Sender-Via: server1.qf-corp.com: authenticated_id: admin@qf-corp.com
+X-Authenticated-Sender: server1.qf-corp.com: admin@qf-corp.com
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
@@ -45,16 +54,6 @@ X-Mailing-List: linux-parisc@vger.kernel.org
 
 
 
---
-Dear Friend,
-
-I am Mrs Alice Johnson.am sending you this brief letter to solicit your
-partnership to transfer $18.5 million US Dollars.I shall send you more
-information and procedures when I receive positive response from you.
-please send me a message in my Email box (mrsalicejohnson4@gmail.com)
-as i wait to hear from you.
-
-Best regard
-Mrs Alice Johnson
---
-
+-- 
+Benötigen Sie dringend einen Kredit? Wenn ja, antworten Sie für weitere 
+Details
