@@ -2,58 +2,61 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBD5B46E14
-	for <lists+linux-parisc@lfdr.de>; Sat, 15 Jun 2019 06:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5757A46132
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Jun 2019 16:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725805AbfFOEHJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 15 Jun 2019 00:07:09 -0400
-Received: from qf-corp.com ([43.252.215.172]:50091 "EHLO server1.qf-corp.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725786AbfFOEHJ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 15 Jun 2019 00:07:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=qf-corp.com
-        ; s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=x+wk2oDUMoo/hQHPqS9UCKstzOaLw+EthDvW07j7+BE=; b=nojCAhYJvxDj+XWdTFTmFi24kE
-        0sO1Z3RMUfcND/TQ1RSiRO5kmkL3SGa9JRiOP0i/c45guH0L8FYMsWyrqATnpT1erV5gAodK2jAqF
-        8mqqAalDH0ZMYoggv3tM0usyXltmApBtHtSP5+oOgg/96MJxIUpyZJH4auH4NikQzvEtfABZ7lES/
-        K+6I1HOAq57+o0U9M5c99z7NStFvRyOwex92ohu9g3dKp86EzhuB3U7d6WK6KUJAqTSrNc77/DsoG
-        DrUbxRJQOtpboef5nLxZacL5+Inu9WZ1ggEbBdE4WSvvSwh0wuPw8AcmZDdS9oatD7tSaqO/5uVNt
-        1n/9aLpw==;
-Received: from [::1] (port=42000 helo=server1.qf-corp.com)
-        by server1.qf-corp.com with esmtpa (Exim 4.92)
-        (envelope-from <admin@qf-corp.com>)
-        id 1hbSC2-0006ux-VO; Fri, 14 Jun 2019 00:03:15 +0800
+        id S1728208AbfFNOot (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 14 Jun 2019 10:44:49 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:37892 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727560AbfFNOot (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 14 Jun 2019 10:44:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=Gc779D5myAKPsSuqw4+NRIl28cUlcRu7tNhq+zRZKgI=; b=qQtAGKQlN2ng22ft9to7mr8IN
+        QfvqOVt+lf871hiViIsORHRqNbzfic95Bg4xrBEGTbmJQo+lzijFeBl54HcsFkXKekELmZ4+FU7mI
+        zn521NSvWZ+TrjrMRlwzs/TgYfQzo8YchyTjEwP7ZBtg+7TnJ1a8zu3tOghcAZjQH6Cs3i4Q0PdVH
+        T5izGhMoXafR+ZzHsn39ZVY2VdW1aWBrAWKRE0E1QH1Ek75OP5agoHdsOj9QbeHgyKRllM8aTe2GM
+        121pmf1WOvB4uQrdVQQBoof5Kqf4AxAgYtIgzDmEhOKAtoFUo5eeNXFu5scMqW4STadNi6vevVupQ
+        L5e+8415A==;
+Received: from 213-225-9-13.nat.highway.a1.net ([213.225.9.13] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hbnRU-0005pD-SO; Fri, 14 Jun 2019 14:44:37 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Vineet Gupta <vgupta@synopsys.com>
+Cc:     Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Vladimir Murzin <vladimir.murzin@arm.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org
+Subject: handle "special" dma allocation in common code
+Date:   Fri, 14 Jun 2019 16:44:24 +0200
+Message-Id: <20190614144431.21760-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-Date:   Fri, 14 Jun 2019 00:03:14 +0800
-From:   Herr David Williams <admin@qf-corp.com>
-To:     undisclosed-recipients:;
-Subject: dringender Kredit
-Reply-To: david.loanfirm18@gmail.com
-Mail-Reply-To: david.loanfirm18@gmail.com
-Message-ID: <8c4eaccd0b481306b9fae405915cde04@qf-corp.com>
-X-Sender: admin@qf-corp.com
-User-Agent: Roundcube Webmail/1.3.8
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server1.qf-corp.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - qf-corp.com
-X-Get-Message-Sender-Via: server1.qf-corp.com: authenticated_id: admin@qf-corp.com
-X-Authenticated-Sender: server1.qf-corp.com: admin@qf-corp.com
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Hi all,,
 
+this series ensures that the common dma-direct code handles the somewhat
+special allocation types requested by the DMA_ATTR_NON_CONSISTENT and
+DMA_ATTR_NO_KERNEL_MAPPING flags directly.  To do so it also removes three
+partial and thus broken implementations of DMA_ATTR_NON_CONSISTENT.  Last
+but not least it switches arc to use the generic dma remapping code now
+that arc doesn't implement any special behavior.
 
--- 
-Benötigen Sie dringend einen Kredit? Wenn ja, antworten Sie für weitere 
-Details
