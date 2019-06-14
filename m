@@ -2,37 +2,37 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE26469D5
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Jun 2019 22:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FAC5469A4
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Jun 2019 22:34:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727240AbfFNU3y (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 14 Jun 2019 16:29:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52284 "EHLO mail.kernel.org"
+        id S1727831AbfFNUeM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 14 Jun 2019 16:34:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53254 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727223AbfFNU3x (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 14 Jun 2019 16:29:53 -0400
+        id S1727528AbfFNUaW (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 14 Jun 2019 16:30:22 -0400
 Received: from sasha-vm.mshome.net (unknown [131.107.159.134])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D45FE21841;
-        Fri, 14 Jun 2019 20:29:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 796CF21850;
+        Fri, 14 Jun 2019 20:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560544192;
+        s=default; t=1560544221;
         bh=+sGlqvlLqmA22YlA2dqVbaydWxLo8aCW4MixVvyHZdc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yaC1K+0et5bZPo5GXJXTdecX2KIr3K1pMBnkFLYyRtNbkCi6/Ne+D9GKX5AqNv8PY
-         uP3hsQnkC+mDrWBi8sPF42c58LFhri4xAVPVKnO2BiwY8/TazTMHIgctx0CqpJTaDG
-         bm1Bmr40ysSmvOZGvWLkfzHW1y+9G5sLqCgC2Xwo=
+        b=TtAyFk+KlXWCfjz+LNElR7fnp4Wk/51S3Z6yzlWONcjP9heoIiQKayqz/aHMFeABC
+         R5qxzzOty6jrDqcyKdx16RWivCYTQF9UcKFQL3g+HyhOtHTBu+HIDw2rE4RSLDdJcX
+         LnNwi1HPYOGJzjz8qzzRL+tVBYOA6n3ZyDuVdS1k=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 10/39] parisc: Fix compiler warnings in float emulation code
-Date:   Fri, 14 Jun 2019 16:29:15 -0400
-Message-Id: <20190614202946.27385-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 05/27] parisc: Fix compiler warnings in float emulation code
+Date:   Fri, 14 Jun 2019 16:29:54 -0400
+Message-Id: <20190614203018.27686-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190614202946.27385-1-sashal@kernel.org>
-References: <20190614202946.27385-1-sashal@kernel.org>
+In-Reply-To: <20190614203018.27686-1-sashal@kernel.org>
+References: <20190614203018.27686-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
