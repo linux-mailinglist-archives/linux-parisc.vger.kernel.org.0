@@ -2,133 +2,213 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32FF5473EB
-	for <lists+linux-parisc@lfdr.de>; Sun, 16 Jun 2019 11:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD3C4A5BD
+	for <lists+linux-parisc@lfdr.de>; Tue, 18 Jun 2019 17:46:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725861AbfFPJRa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 16 Jun 2019 05:17:30 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:39125 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725766AbfFPJRa (ORCPT
+        id S1729692AbfFRPqz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 18 Jun 2019 11:46:55 -0400
+Received: from conssluserg-02.nifty.com ([210.131.2.81]:25939 "EHLO
+        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729209AbfFRPqy (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 16 Jun 2019 05:17:30 -0400
-Received: by mail-pg1-f194.google.com with SMTP id 196so4082724pgc.6;
-        Sun, 16 Jun 2019 02:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=WsOS9W6MkxWVUF6PRCv1rpiLrmIxWx7oq/nfwUHXQV4=;
-        b=bhZZN4ZoB10Na0Ic8RGp22L9+faJUjyGlbtTqC3QZGcBGJuewiHIW8tipif4QS7JJa
-         1nrwmgqclU0DIUK1lkjTTcUGhz54dyjqnkBu47eV2Gqxs1j6CHp1U+YLu4EAfw/CAjF1
-         N4Mx0ailxADXlnEYbdKSlfJzz1zls4lLkPIdBQJTSClQ4r1iGVc+xfs0MQuBRfpvwO9k
-         gu8vFQfMyie1SGDmstzys5iH9BtPM5Bh+9RYlpG24Inaj/skYMoNRLkXj6mCNXw8w51x
-         eAcug1S/tqUfOOwe3BZd+VoHBqNwLp+FIOwyB1hK2SzoGYVonIeSrUcHAXxJsyxiRCAl
-         RVrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=WsOS9W6MkxWVUF6PRCv1rpiLrmIxWx7oq/nfwUHXQV4=;
-        b=r0wHhR7IUf16BBFIQId+KVyXk2s0SlofaFLGzUAxTsHBuZkPywBmcq8vHZrp2nPJJA
-         ASwm2KdcMCmUzqEVGgjst1Ifhefl8y9tKnQy68v8EmdY1R/Wdp0hQ7/yZsLO7tfae9Rx
-         54Od+K3ogTdn3F/odA8dTkF08MF55HD2hf2YIl7RDsxlGQjvsInXdsQ23StfjPK6RUJn
-         Vez39PYd9F7vR32W6JCSL2okrNZjtufm4FUhyCW2GgkXi2tiE6QFMyUc63ko/1LJfwmS
-         bD8E4hke9KIONPmDngMUQgaT0L7Pf/PcXpfY3h1QphUI4kuCUxeyrUVPWShYF/UQRfDI
-         NlSw==
-X-Gm-Message-State: APjAAAWxBOfoV4gFWnw5U6xmzfGOiPQFPQT/MjlPurW6fJZdS/DDN1y8
-        Gw/3KqglaNHCRBz+s3Tm52o3h/dkdiE=
-X-Google-Smtp-Source: APXvYqzC4p9c3ZsPQStMlz2hbBAY7Gw8pOpqyBR6LQ5uQv6ZdwfBVqV2rU83/Y0doH7WTm6gXf728g==
-X-Received: by 2002:a65:56c5:: with SMTP id w5mr43407043pgs.434.1560676649025;
-        Sun, 16 Jun 2019 02:17:29 -0700 (PDT)
-Received: from localhost (g30.211-19-85.ppp.wakwak.ne.jp. [211.19.85.30])
-        by smtp.gmail.com with ESMTPSA id q144sm10986713pfc.103.2019.06.16.02.17.27
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sun, 16 Jun 2019 02:17:28 -0700 (PDT)
-Date:   Sun, 16 Jun 2019 18:17:24 +0900
-From:   Stafford Horne <shorne@gmail.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Vineet Gupta <vgupta@synopsys.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Helge Deller <deller@gmx.de>,
-        Vladimir Murzin <vladimir.murzin@arm.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/7] openrisc: remove the partial DMA_ATTR_NON_CONSISTENT
- support
-Message-ID: <20190616091724.GL2358@lianli.shorne-pla.net>
-References: <20190614144431.21760-1-hch@lst.de>
- <20190614144431.21760-4-hch@lst.de>
+        Tue, 18 Jun 2019 11:46:54 -0400
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id x5IFkfN4028453;
+        Wed, 19 Jun 2019 00:46:41 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com x5IFkfN4028453
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1560872802;
+        bh=386ZLEU3NwMBqho2YAfsvSOOObyOn03wy4ojBhvxK60=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=zEO3TjqbGOEvExBhKiAr+1HikWsmWFNgpCAfYBvqzvBYn3batDYk+Q30THkzzJVAi
+         AnDI2sDbURwJ6EawFc9+Ece35Tk04fStXcjIXDdGDhQWoL6w11dMbFama5grXT4j0R
+         V+OC4mb0Ws5539Va/vyrBmdYoQu8kXTFVWaH/UAZoxanZi0BUOfjT+zsRWLHNPFTye
+         piqVckY4JJ7yzRVgtKrHBVSo3c/c5FJA4qcI1V94YH5vl93xRVCn9rUzej4Ssem18q
+         v1tBySID2r88u+8+15EvkwHyxfo2CTpsQFe4gMd0Ab9Pv18fovHBho4ypB94zLM8Vd
+         /rVtx9E/pjG/g==
+X-Nifty-SrcIP: [209.85.222.44]
+Received: by mail-ua1-f44.google.com with SMTP id 8so6428262uaz.11;
+        Tue, 18 Jun 2019 08:46:41 -0700 (PDT)
+X-Gm-Message-State: APjAAAWR7k/6CtXPXCm6OxqQ6XZ9DQTZdUsAEw2DVDg9quBGyrNXTyF5
+        RXj9vCG7r/nNdVyIiCondC+vqOh1EPeGC5viJGU=
+X-Google-Smtp-Source: APXvYqxtLvDnMS0CFAbDTiZ+5ZRw6eQK7Tj+rcqL/cHf9e3ufopPnNNl1cknMI4hmuC4210dH4UbfTG8JkzKXgzkjhE=
+X-Received: by 2002:a67:7fcc:: with SMTP id a195mr44483545vsd.181.1560872800733;
+ Tue, 18 Jun 2019 08:46:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190614144431.21760-4-hch@lst.de>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+References: <20190604101409.2078-1-yamada.masahiro@socionext.com>
+In-Reply-To: <20190604101409.2078-1-yamada.masahiro@socionext.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Wed, 19 Jun 2019 00:46:04 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASv7WP+X2_oEEmp5tGqOxiv2VCj84CLuHhSsesF6AiD8A@mail.gmail.com>
+Message-ID: <CAK7LNASv7WP+X2_oEEmp5tGqOxiv2VCj84CLuHhSsesF6AiD8A@mail.gmail.com>
+Subject: Re: [PATCH 00/15] kbuild: refactor headers_install and support
+ compile-test of UAPI headers
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc:     Song Liu <songliubraving@fb.com>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Paul Mackerras <paulus@samba.org>,
+        linux-riscv@lists.infradead.org,
+        Vincent Chen <deanbo422@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Helge Deller <deller@gmx.de>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yonghong Song <yhs@fb.com>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        linux-parisc@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>, bpf@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Martin KaFai Lau <kafai@fb.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 04:44:27PM +0200, Christoph Hellwig wrote:
-> The openrisc DMA code supports DMA_ATTR_NON_CONSISTENT allocations, but
-> does not provide a cache_sync operation.  This means any user of it
-> will never be able to actually transfer cache ownership and thus cause
-> coherency bugs.
+On Tue, Jun 4, 2019 at 7:15 PM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+>
+>
+> Multiple people have suggested to compile-test UAPI headers.
+>
+> Currently, Kbuild provides simple sanity checks by headers_check
+> but they are not enough to catch bugs.
+>
+> The most recent patch I know is David Howells' work:
+> https://patchwork.kernel.org/patch/10590203/
+>
+> I agree that we need better tests for UAPI headers,
+> but I want to integrate it in a clean way.
+>
+> The idea that has been in my mind is to compile each header
+> to make sure the selfcontainedness.
+>
+> Recently, Jani Nikula proposed a new syntax 'header-test-y'.
+> https://patchwork.kernel.org/patch/10947005/
+>
+> So, I implemented UAPI compile-testing on top of that.
+>
+> When adding a new feature, cleaning the code first is a
+> good practice.
+>
+> [1] Remove headers_install_all
+>
+> This target installs UAPI headers of all architectures
+> in a single tree.
+> It does not make sense to compile test of headers from
+> multiple arches at the same time. Hence, removed.
+>
+> [2] Split header installation into 'make headers' and 'make headers_install'
+>
+> To compile-test UAPI headers, we need a work-directory somewhere
+> to save objects and .*.cmd files.
+>
+> usr/include/ will be the work-directory.
+>
+> Since we cannot pollute the final destination of headers_install,
+>
+> I split the header installation into two stages.
+>
+> 'make headers' will build up
+> the ready-to-install headers in usr/include,
+> which will be also used as a work-directory for the compile-test.
+>
+> 'make headers_install' will copy headers
+> from usr/include to $(INSTALL_HDR_PATH)/include.
+>
+> [3] Support compile-test of UAPI headers
+>
+> This is implemented in usr/include/Makefile
+>
+>
+> Jani Nikula (1):
+>   kbuild: add support for ensuring headers are self-contained
+>
+> Masahiro Yamada (14):
+>   kbuild: remove headers_{install,check}_all
+>   kbuild: remove stale dependency between Documentation/ and
+>     headers_install
+>   kbuild: make gdb_script depend on prepare0 instead of prepare
+>   kbuild: fix Kconfig prompt of CONFIG_HEADERS_CHECK
+>   kbuild: add CONFIG_HEADERS_INSTALL and loosen the dependency of
+>     samples
+>   kbuild: remove build_unifdef target in scripts/Makefile
+>   kbuild: build all prerequisite of headers_install simultaneously
+>   kbuild: add 'headers' target to build up ready-to-install uapi headers
+>   kbuild: re-implement Makefile.headersinst without directory descending
+>   kbuild: move hdr-inst shorthand to top Makefile
+>   kbuild: simplify scripts/headers_install.sh
+>   kbuild: deb-pkg: do not run headers_check
+>   fixup: kbuild: add support for ensuring headers are self-contained
+>   kbuild: compile test UAPI headers to ensure they are self-contained
 
-The below looks good.  I am always happy to what looks like legacy copy & paste
-cruft.
+Series, applied to linux-kbuild.
 
-Acked-by: Stafford Horne <shorne@gmail.com>
 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/openrisc/kernel/dma.c | 22 +++++++++-------------
->  1 file changed, 9 insertions(+), 13 deletions(-)
-> 
-> diff --git a/arch/openrisc/kernel/dma.c b/arch/openrisc/kernel/dma.c
-> index f79457cb3741..9f25fd0fbb5d 100644
-> --- a/arch/openrisc/kernel/dma.c
-> +++ b/arch/openrisc/kernel/dma.c
-> @@ -98,15 +98,13 @@ arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
->  
->  	va = (unsigned long)page;
->  
-> -	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0) {
-> -		/*
-> -		 * We need to iterate through the pages, clearing the dcache for
-> -		 * them and setting the cache-inhibit bit.
-> -		 */
-> -		if (walk_page_range(va, va + size, &walk)) {
-> -			free_pages_exact(page, size);
-> -			return NULL;
-> -		}
-> +	/*
-> +	 * We need to iterate through the pages, clearing the dcache for
-> +	 * them and setting the cache-inhibit bit.
-> +	 */
-> +	if (walk_page_range(va, va + size, &walk)) {
-> +		free_pages_exact(page, size);
-> +		return NULL;
->  	}
->  
->  	return (void *)va;
-> @@ -122,10 +120,8 @@ arch_dma_free(struct device *dev, size_t size, void *vaddr,
->  		.mm = &init_mm
->  	};
->  
-> -	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0) {
-> -		/* walk_page_range shouldn't be able to fail here */
-> -		WARN_ON(walk_page_range(va, va + size, &walk));
-> -	}
-> +	/* walk_page_range shouldn't be able to fail here */
-> +	WARN_ON(walk_page_range(va, va + size, &walk));
->  
->  	free_pages_exact(vaddr, size);
->  }
-> -- 
-> 2.20.1
-> 
+>  Documentation/kbuild/headers_install.txt |   7 --
+>  Documentation/kbuild/makefiles.txt       |  13 ++-
+>  Makefile                                 |  56 +++++-----
+>  arch/arc/configs/tb10x_defconfig         |   1 +
+>  arch/nds32/configs/defconfig             |   1 +
+>  arch/parisc/configs/a500_defconfig       |   1 +
+>  arch/parisc/configs/b180_defconfig       |   1 +
+>  arch/parisc/configs/c3000_defconfig      |   1 +
+>  arch/parisc/configs/default_defconfig    |   1 +
+>  arch/powerpc/configs/ppc6xx_defconfig    |   1 +
+>  arch/s390/configs/debug_defconfig        |   1 +
+>  include/uapi/{linux => }/Kbuild          |   6 +-
+>  init/Kconfig                             |  20 ++++
+>  lib/Kconfig.debug                        |  25 +++--
+>  samples/Kconfig                          |  14 ++-
+>  samples/Makefile                         |   4 +-
+>  scripts/Kbuild.include                   |   6 --
+>  scripts/Makefile                         |   5 -
+>  scripts/Makefile.build                   |   9 ++
+>  scripts/Makefile.headersinst             | 132 ++++++++++-------------
+>  scripts/Makefile.lib                     |   3 +
+>  scripts/cc-system-headers.sh             |   8 ++
+>  scripts/headers.sh                       |  29 -----
+>  scripts/headers_install.sh               |  48 ++++-----
+>  scripts/package/builddeb                 |   2 +-
+>  usr/.gitignore                           |   1 -
+>  usr/Makefile                             |   2 +
+>  usr/include/.gitignore                   |   3 +
+>  usr/include/Makefile                     | 132 +++++++++++++++++++++++
+>  29 files changed, 329 insertions(+), 204 deletions(-)
+>  rename include/uapi/{linux => }/Kbuild (77%)
+>  create mode 100755 scripts/cc-system-headers.sh
+>  delete mode 100755 scripts/headers.sh
+>  create mode 100644 usr/include/.gitignore
+>  create mode 100644 usr/include/Makefile
+>
+> --
+> 2.17.1
+>
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
