@@ -2,78 +2,66 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F28C4FC8C
-	for <lists+linux-parisc@lfdr.de>; Sun, 23 Jun 2019 18:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32898504C6
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jun 2019 10:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726612AbfFWQBy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 23 Jun 2019 12:01:54 -0400
-Received: from mail.sf-mail.de ([116.202.16.50]:50113 "EHLO mail.sf-mail.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726399AbfFWQBy (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 23 Jun 2019 12:01:54 -0400
-Received: (qmail 18769 invoked from network); 23 Jun 2019 16:01:36 -0000
-Received: from dslb-092-076-185-040.092.076.pools.vodafone-ip.de ([::ffff:92.76.185.40]:33320 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.35dev) with (DHE-RSA-AES256-GCM-SHA384 encrypted) ESMTPSA
-        for <efremov@linux.com>; Sun, 23 Jun 2019 18:01:36 +0200
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     Denis Efremov <efremov@linux.com>
+        id S1727270AbfFXIoi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 24 Jun 2019 04:44:38 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:35292 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726690AbfFXIoh (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 24 Jun 2019 04:44:37 -0400
+Received: by mail-lf1-f66.google.com with SMTP id a25so9416478lfg.2;
+        Mon, 24 Jun 2019 01:44:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=eTeIf7xKkh2A2KoD3+Or00SIMEpyxib8waiBIUrcyAg=;
+        b=XVLCBp5r9fje3/Fo7H3ivlDYSaYwVgwDsZyJ2iGRwV4AFomBUPoWrzMCZrgtsadmR+
+         wKQGNYiMGJQ9DtWdqA7w0R0tt78MjgckjKfCmcJSIlSLZwCu3u8rO5PNQ7MNw5AHbyvj
+         GCyfVWRX/4ki5AfBK1sA3ZOOndxIlimb/IG4RT/lZ+enkCnIAIT5lD73Jz1kZAsZIz/U
+         r1t+lQa10HLz7acDN4gavXslYuPjLu+WCHzYT6F2GvSxO4Fl55wjNVj44zgKXeE8QQ50
+         DqycnKo8iZVsk4dPUBnnHl/U/14mAoJRwd4ffpbzIaDdqi67e0KICWxawVuYJKayq4oA
+         fQVg==
+X-Gm-Message-State: APjAAAUebNS/dETdYuHLOVL61xyRV0nmU5hbtvPMXXHJayPEl4qJL5fv
+        R+gvLGzM+tORerob742K6GXtKjAydcI=
+X-Google-Smtp-Source: APXvYqwfFsag4uho3t2Tr17/GEZQrV0CY2It2w0W1t4jFqGN7KU4ymdaiY5qC3iE82pnWAQNwXrVyg==
+X-Received: by 2002:ac2:598d:: with SMTP id w13mr72816384lfn.165.1561365875701;
+        Mon, 24 Jun 2019 01:44:35 -0700 (PDT)
+Received: from [10.68.32.192] (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.gmail.com with ESMTPSA id w28sm1624030ljd.12.2019.06.24.01.44.35
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 01:44:35 -0700 (PDT)
+Subject: Re: [PATCH] parisc: asm: psw.h: missing header guard
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>
 Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] parisc: asm: psw.h: missing header guard
-Date:   Sun, 23 Jun 2019 18:01:41 +0200
-Message-ID: <8264763.oMOxLtkXCx@daneel.sf-tec.de>
-In-Reply-To: <20190623150920.26422-1-efremov@linux.com>
 References: <20190623150920.26422-1-efremov@linux.com>
+ <8264763.oMOxLtkXCx@daneel.sf-tec.de>
+From:   Denis Efremov <efremov@linux.com>
+Message-ID: <00da63b3-e98d-147b-32ad-ede82d7c1e17@linux.com>
+Date:   Mon, 24 Jun 2019 11:44:34 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart8051854.DE1LrJNj9i"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+In-Reply-To: <8264763.oMOxLtkXCx@daneel.sf-tec.de>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart8051854.DE1LrJNj9i
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-
-Denis Efremov wrote:
-> The psw.h header file contains #ifndef directive of the guard,
-> but the complimentary #define directive is missing. The patch
-> adds the appropriate #define to fix the header guard.
+Rolf Eike Beer wrote:
 > 
-> Signed-off-by: Denis Efremov <efremov@linux.com>
-> ---
->  arch/parisc/include/asm/psw.h | 1 +
->  1 file changed, 1 insertion(+)
+> You could have removed one of the 2 empty lines then.
 > 
-> diff --git a/arch/parisc/include/asm/psw.h b/arch/parisc/include/asm/psw.h
-> index 76c301146c31..7a175e866ed0 100644
-> --- a/arch/parisc/include/asm/psw.h
-> +++ b/arch/parisc/include/asm/psw.h
-> @@ -1,5 +1,6 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  #ifndef _PARISC_PSW_H
-> +#define _PARISC_PSW_H
-> 
-> 
->  #define	PSW_I	0x00000001
 
-You could have removed one of the 2 empty lines then.
+Will send the v2 in minutes.
 
-Eike
---nextPart8051854.DE1LrJNj9i
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCXQ+iZQAKCRBcpIk+abn8
-Tq+ZAJ0ShaFX1qk7lxyzXG0d4+P4iEcUMQCgjAcANB3MxFvxsDrfK5u76TCdHDo=
-=xLAY
------END PGP SIGNATURE-----
-
---nextPart8051854.DE1LrJNj9i--
-
-
-
+Denis
