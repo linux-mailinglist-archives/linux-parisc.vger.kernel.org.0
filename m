@@ -2,66 +2,77 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32898504C6
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jun 2019 10:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00B9C504E6
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jun 2019 10:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727270AbfFXIoi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 24 Jun 2019 04:44:38 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:35292 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726690AbfFXIoh (ORCPT
+        id S1726612AbfFXIv6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 24 Jun 2019 04:51:58 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:42137 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725916AbfFXIv6 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 24 Jun 2019 04:44:37 -0400
-Received: by mail-lf1-f66.google.com with SMTP id a25so9416478lfg.2;
-        Mon, 24 Jun 2019 01:44:36 -0700 (PDT)
+        Mon, 24 Jun 2019 04:51:58 -0400
+Received: by mail-pl1-f194.google.com with SMTP id ay6so6464314plb.9;
+        Mon, 24 Jun 2019 01:51:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=eTeIf7xKkh2A2KoD3+Or00SIMEpyxib8waiBIUrcyAg=;
-        b=XVLCBp5r9fje3/Fo7H3ivlDYSaYwVgwDsZyJ2iGRwV4AFomBUPoWrzMCZrgtsadmR+
-         wKQGNYiMGJQ9DtWdqA7w0R0tt78MjgckjKfCmcJSIlSLZwCu3u8rO5PNQ7MNw5AHbyvj
-         GCyfVWRX/4ki5AfBK1sA3ZOOndxIlimb/IG4RT/lZ+enkCnIAIT5lD73Jz1kZAsZIz/U
-         r1t+lQa10HLz7acDN4gavXslYuPjLu+WCHzYT6F2GvSxO4Fl55wjNVj44zgKXeE8QQ50
-         DqycnKo8iZVsk4dPUBnnHl/U/14mAoJRwd4ffpbzIaDdqi67e0KICWxawVuYJKayq4oA
-         fQVg==
-X-Gm-Message-State: APjAAAUebNS/dETdYuHLOVL61xyRV0nmU5hbtvPMXXHJayPEl4qJL5fv
-        R+gvLGzM+tORerob742K6GXtKjAydcI=
-X-Google-Smtp-Source: APXvYqwfFsag4uho3t2Tr17/GEZQrV0CY2It2w0W1t4jFqGN7KU4ymdaiY5qC3iE82pnWAQNwXrVyg==
-X-Received: by 2002:ac2:598d:: with SMTP id w13mr72816384lfn.165.1561365875701;
-        Mon, 24 Jun 2019 01:44:35 -0700 (PDT)
-Received: from [10.68.32.192] (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
-        by smtp.gmail.com with ESMTPSA id w28sm1624030ljd.12.2019.06.24.01.44.35
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 24 Jun 2019 01:44:35 -0700 (PDT)
-Subject: Re: [PATCH] parisc: asm: psw.h: missing header guard
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>
-Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190623150920.26422-1-efremov@linux.com>
- <8264763.oMOxLtkXCx@daneel.sf-tec.de>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=EONwuevFixr8Kq27JTPWM25beefbW1BHfJwJ19KPbZ0=;
+        b=VoDeWW1Ux0XHHnE5tjW1Ew3NZP2ILoWbFvB8O4dysnakAg/LMy2rD0ZaUg9Y+nIVuq
+         3ZP9JRJPTKFc1c8LlqClsFQR7vO9Qudd19dsSqbriD7C/fAl7GbHf1R83VPhdnejF5b6
+         6UK/C0ncYHCV9zYHs8epyoTom1uyLYdhCTtUdJp5yzldDha0VoN/GorYPTA/u2LSbfIs
+         I4+mO8mAVx+nvQLql3JRwfKquBFuBQAS3KlAjQNAk5MbVOYVtlVoWnXPAUJao0/stkrG
+         Uv0YshGimN70n3sL147FMU/4rqplWdob5y5LYSL59KPRn4sFjRe/7BrGQy8grg3HV3S5
+         moxA==
+X-Gm-Message-State: APjAAAVp1oLwHT4BzRLcjph7zdwZodwhhgxV/apiPpAUw1XxRSHphtqb
+        g/9K9L/O5T1hay6x/nyF2Vs=
+X-Google-Smtp-Source: APXvYqz0GotPOPJXVNKI9Abz1knbO1BSWVLmPw5q+x/BqD/KlbvF9ZAkXpdBtlpnF3K9wADXZB139g==
+X-Received: by 2002:a17:902:9a84:: with SMTP id w4mr44099452plp.160.1561366317508;
+        Mon, 24 Jun 2019 01:51:57 -0700 (PDT)
+Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.googlemail.com with ESMTPSA id t13sm9828121pjo.13.2019.06.24.01.51.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 01:51:56 -0700 (PDT)
 From:   Denis Efremov <efremov@linux.com>
-Message-ID: <00da63b3-e98d-147b-32ad-ede82d7c1e17@linux.com>
-Date:   Mon, 24 Jun 2019 11:44:34 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+To:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
+Cc:     Denis Efremov <efremov@linux.com>, Helge Deller <deller@gmx.de>,
+        "Rolf Eike Beer" <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] parisc: asm: psw.h: missing header guard
+Date:   Mon, 24 Jun 2019 11:51:27 +0300
+Message-Id: <20190624085127.5310-1-efremov@linux.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190623150920.26422-1-efremov@linux.com>
+References: <20190623150920.26422-1-efremov@linux.com>
 MIME-Version: 1.0
-In-Reply-To: <8264763.oMOxLtkXCx@daneel.sf-tec.de>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Rolf Eike Beer wrote:
-> 
-> You could have removed one of the 2 empty lines then.
-> 
+The psw.h header file contains #ifndef directive of the guard,
+but the complimentary #define directive is missing. The patch
+adds the appropriate #define to fix the header guard.
 
-Will send the v2 in minutes.
+Signed-off-by: Denis Efremov <efremov@linux.com>
+---
+ arch/parisc/include/asm/psw.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Denis
+diff --git a/arch/parisc/include/asm/psw.h b/arch/parisc/include/asm/psw.h
+index 76c301146c31..46921ffcc407 100644
+--- a/arch/parisc/include/asm/psw.h
++++ b/arch/parisc/include/asm/psw.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef _PARISC_PSW_H
+-
++#define _PARISC_PSW_H
+ 
+ #define	PSW_I	0x00000001
+ #define	PSW_D	0x00000002
+-- 
+2.21.0
+
