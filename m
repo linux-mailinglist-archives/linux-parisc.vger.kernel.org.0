@@ -2,56 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A26851D72
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jun 2019 23:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F2B5234C
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Jun 2019 08:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728152AbfFXVzD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 24 Jun 2019 17:55:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51960 "EHLO mail.kernel.org"
+        id S1729040AbfFYGLg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 25 Jun 2019 02:11:36 -0400
+Received: from verein.lst.de ([213.95.11.211]:59765 "EHLO newverein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726301AbfFXVzC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 24 Jun 2019 17:55:02 -0400
-Subject: Re: [GIT PULL] parisc architecture fix for kernel v5.2-rc7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561413301;
-        bh=YT7OK1srs0W1BEZs43ydwLwMJoXy0wysoghnXVExrg8=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=INRl4mfljjaKo7RjRCUxPditwS2tqxQzc3UHAOuose5oSHwcW+eT2HrlR/ReJMyRW
-         97CUJj6UpL6Mv2yKLKN4LxTnv6QuyPYG798Y0lFGS17BlxSw16dzRV+dGo9L77MGq/
-         ZqFP8bfkb8OcDKqge0CuUzi/XzDl0yyDttckuGX0=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20190624214408.GA9531@ls3530.dellerweb.de>
-References: <20190624214408.GA9531@ls3530.dellerweb.de>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20190624214408.GA9531@ls3530.dellerweb.de>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git
- parisc-5.2-4
-X-PR-Tracked-Commit-Id: d2ba3b1714d754f190ac0527713f9b44513b5857
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 249155c20f9b0754bc1b932a33344cfb4e0c2101
-Message-Id: <156141330192.8327.11764310601122582696.pr-tracker-bot@kernel.org>
-Date:   Mon, 24 Jun 2019 21:55:01 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Jeroen Roovers <jer@gentoo.org>
+        id S1726495AbfFYGLg (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 25 Jun 2019 02:11:36 -0400
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id 413AB68B02; Tue, 25 Jun 2019 08:11:04 +0200 (CEST)
+Date:   Tue, 25 Jun 2019 08:11:04 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Hillf Danton <hdanton@sina.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Vineet Gupta <vgupta@synopsys.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Vladimir Murzin <vladimir.murzin@arm.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/7] dma-direct: handle DMA_ATTR_NON_CONSISTENT in
+ common code
+Message-ID: <20190625061104.GB28986@lst.de>
+References: <20190614144431.21760-1-hch@lst.de> <20190614144431.21760-6-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190614144431.21760-6-hch@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Mon, 24 Jun 2019 23:44:08 +0200:
+On Sun, Jun 16, 2019 at 06:08:40PM +0800, Hillf Danton wrote:
+> Literally, any cpu (call it cpuW) other than pcx12 and pcx1 will no longer do
+> dma alloc for any device with this patch applied.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.2-4
+Yes.  And that is not a chance from the previous code, where only
+pcx1 and pcx12 could do coherent allocations,
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/249155c20f9b0754bc1b932a33344cfb4e0c2101
+> On the other hand, 
+> !dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_NON_CONSISTENT) will ask
+> any cpu to do dma alloc, regardless of pcx1. This patch works imo unless cpuW
+> plays games only with devices that are dma coherent. I doubt it is true.
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+I can't parse these two sentences.  But to explains the bits mentioned
+here - dev_is_dma_coherent will return if a device is coherently
+attached vs the cpu.  This will never be true for the parisc direct
+mapping.  DMA_ATTR_NON_CONSISTENT asks for a non-coherent mapping that
+needs to be explicitly synced.  This support now is in the dma-direct
+core code, and this is what the parisc specific devices used on the
+non-pcxl systems use, as they do not support dma coherency at all.
+(the story slightly changes when using an iommu, but that is irrelevant
+here)
