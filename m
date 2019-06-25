@@ -2,57 +2,77 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A4BA52356
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Jun 2019 08:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 876B854D3F
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Jun 2019 13:07:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728927AbfFYGOF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 25 Jun 2019 02:14:05 -0400
-Received: from verein.lst.de ([213.95.11.211]:59791 "EHLO newverein.lst.de"
+        id S1730394AbfFYLHO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 25 Jun 2019 07:07:14 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:42085 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726495AbfFYGOE (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 25 Jun 2019 02:14:04 -0400
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id 4350A68B02; Tue, 25 Jun 2019 08:13:32 +0200 (CEST)
-Date:   Tue, 25 Jun 2019 08:13:32 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Vladimir Murzin <vladimir.murzin@arm.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Vineet Gupta <vgupta@synopsys.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/7] arm-nommu: remove the partial
- DMA_ATTR_NON_CONSISTENT support
-Message-ID: <20190625061332.GC28986@lst.de>
-References: <20190614144431.21760-1-hch@lst.de> <20190614144431.21760-2-hch@lst.de> <a017e704-c6c4-7718-7f8b-eb8a0eced14d@arm.com>
+        id S1730353AbfFYLHL (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 25 Jun 2019 07:07:11 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 45Y3Jr0G8rz9sCJ;
+        Tue, 25 Jun 2019 21:07:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1561460828;
+        bh=hihaKy7q1Hw5bYXccx1Cll49xww55TabiwALukVXZWw=;
+        h=Date:From:To:Cc:Subject:From;
+        b=jJ/aTvTtkzSN9TZ0pC0NtB/SLZsSu02TiC7sKVL1izYK6xqqIXHX+9vOT7K9IbXar
+         ycn+it9rK+CBAwnvSpadm/DTfU8BkdDzh109Ej99LStphbaOTOySTJ8ksIx0fWxecF
+         mdE4BPelZ3BkmwM9qIQ0SIC+dGIR5j07DfePCMSa5MIBxSEBkjQsc4Jb9NoAW3mfQ/
+         8xRmU8/0EgkuQv1PlB8VQI3S+qBObWKhswZefqJgknPBGA3F422j8SHxCq8fUFBQm4
+         M+3xSgVBi/8ETNxtVYRpojAYhBr1xQnBxV/Bo5DIWDktTgGjmrPS2KqLJTHOzSvU8w
+         MlnGzn/DY4v0A==
+Date:   Tue, 25 Jun 2019 21:07:07 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Helge Deller <deller@gmx.de>,
+        Parisc List <linux-parisc@vger.kernel.org>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: linux-next: Signed-off-by missing for commit in the parisc-hd tree
+Message-ID: <20190625210707.61e689bb@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a017e704-c6c4-7718-7f8b-eb8a0eced14d@arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/9WQy1MhcKPOXptjUFW=p1sI"; protocol="application/pgp-signature"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Jun 24, 2019 at 03:23:08PM +0100, Vladimir Murzin wrote:
-> On 6/14/19 3:44 PM, Christoph Hellwig wrote:
-> > The arm-nommu DMA code supports DMA_ATTR_NON_CONSISTENT allocations, but
-> > does not provide a cache_sync operation.  This means any user of it
-> > will never be able to actually transfer cache ownership and thus cause
-> > coherency bugs.
-> 
-> By the way, Documentation/DMA-attributes.txt doesn't specify cache_sync() as
-> requirement for DMA_ATTR_NON_CONSISTENT it only states that it is responsibility
-> of the driver to have all the correct and necessary sync points.
+--Sig_/9WQy1MhcKPOXptjUFW=p1sI
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-True.  dma_cache_sync has always been a rather odd interface, as it
-doesn't specify in what direction we need to sync and doesn't
-participate in our ownership protocol.  So my mid-term plan is to kill
-it off and replace it with the existing dma_sync_* helpers.  This
-series is the first step towards that.
+Hi all,
+
+Commit
+
+  7148d434d451 ("parisc: asm: psw.h: missing header guard")
+
+is missing a Signed-off-by from its committer.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/9WQy1MhcKPOXptjUFW=p1sI
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl0SAFsACgkQAVBC80lX
+0GxOuQf+PyX4A4K61SVryWsqXxLvnTaiQ7krd5+xLJbUQsRkmGpIC/FoD2rzUns1
+0jnnFuXNpjgzLm7Ezt8P2Kh2C16BIhfmp9+bpcWNBmXjvQCgGA0TJMTzKMAcTncS
+I0BS2ak/kF98GXJGW8hYB0qnSd52RjJpolG+tOuzr6F6117jp90wiK7Ch+J01sho
+tWCZIeOe8gtoqyfQ6bnxVmHIq+XAADYsgf6ugKHWhu0PcGMvQIkwA/e7r2P8loJn
+cNLf1nt4mP2HgHQtC2bG7YrZ5xJxHuvMZFYf7ZnCIpzY6lln2RqfEaToV991nqBe
+VhpHIWBdKLneqUo5l3DxgMU2Lqt/IA==
+=g3Fq
+-----END PGP SIGNATURE-----
+
+--Sig_/9WQy1MhcKPOXptjUFW=p1sI--
