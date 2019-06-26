@@ -2,118 +2,60 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 623C2561AD
-	for <lists+linux-parisc@lfdr.de>; Wed, 26 Jun 2019 07:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F12D556495
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Jun 2019 10:28:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725379AbfFZFVJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 26 Jun 2019 01:21:09 -0400
-Received: from relay6-d.mail.gandi.net ([217.70.183.198]:47667 "EHLO
-        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725308AbfFZFVJ (ORCPT
+        id S1726833AbfFZI2p convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 26 Jun 2019 04:28:45 -0400
+Received: from smail3.liguriadigitale.it ([81.23.92.55]:64266 "EHLO
+        smail3.liguriadigitale.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725379AbfFZI2p (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 26 Jun 2019 01:21:09 -0400
-X-Originating-IP: 79.86.19.127
-Received: from [192.168.0.12] (127.19.86.79.rev.sfr.net [79.86.19.127])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id BAAC4C0003;
-        Wed, 26 Jun 2019 05:20:51 +0000 (UTC)
-From:   Alex Ghiti <alex@ghiti.fr>
-To:     Helge Deller <deller@gmx.de>
-Cc:     "James E . J . Bottomley" <james.bottomley@hansenpartnership.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH RESEND 6/8] parisc: Use mmap_base, not mmap_legacy_base,
- as low_limit for bottom-up mmap
-References: <20190620050328.8942-1-alex@ghiti.fr>
- <20190620050328.8942-7-alex@ghiti.fr>
- <438124ff-6838-7ced-044c-ca57a6b9cc91@gmx.de>
-Message-ID: <7fb32983-3444-0747-4e5f-812d1b4d84c2@ghiti.fr>
-Date:   Wed, 26 Jun 2019 01:20:51 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.4.0
+        Wed, 26 Jun 2019 04:28:45 -0400
+X-Greylist: delayed 301 seconds by postgrey-1.27 at vger.kernel.org; Wed, 26 Jun 2019 04:28:44 EDT
+Received: from smail3.liguriadigitale.it (localhost.localdomain [127.0.0.1])
+        by localhost (Email Security Appliance) with SMTP id 62A50175879_D132B8DB;
+        Wed, 26 Jun 2019 08:23:41 +0000 (GMT)
+Received: from Sfdipaola.usl3.it (owa.asl3.liguria.it [10.100.192.93])
+        by smail3.liguriadigitale.it (Sophos Email Appliance) with ESMTP id 15D1917363A_D132B8DF;
+        Wed, 26 Jun 2019 08:23:41 +0000 (GMT)
+Received: from SCILLA.usl3.it ([10.100.192.90]) by Sfdipaola.usl3.it
+ ([10.100.192.87]) with mapi id 14.03.0382.000; Wed, 26 Jun 2019 10:23:40
+ +0200
+From:   <Giuliana.Bacia@asl3.liguria.it>
+To:     <NO-REPLY@MICROSOFT.NET>
+Subject: =?iso-8859-1?Q?Le_attivit=E0_insolite_rilevate_nel_tuo_account_confermano?=
+ =?iso-8859-1?Q?_gentilmente_il_tuo_account_per_ricevere_la_posta_in_arriv?=
+ =?iso-8859-1?Q?o_in_arrivo?=
+Thread-Topic: =?iso-8859-1?Q?Le_attivit=E0_insolite_rilevate_nel_tuo_account_confermano?=
+ =?iso-8859-1?Q?_gentilmente_il_tuo_account_per_ricevere_la_posta_in_arriv?=
+ =?iso-8859-1?Q?o_in_arrivo?=
+Thread-Index: AdUr+HU6Oxm/S2BlQjyaruGkLHu1JA==
+Date:   Wed, 26 Jun 2019 08:23:39 +0000
+Message-ID: <23C2C7AB008B5945B70535B902AE717DCA1D793C@scilla.usl3.it>
+Accept-Language: it-IT, en-US
+Content-Language: it-IT
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.11.5.8]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-In-Reply-To: <438124ff-6838-7ced-044c-ca57a6b9cc91@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 6/25/19 10:09 AM, Helge Deller wrote:
-> On 20.06.19 07:03, Alexandre Ghiti wrote:
->> Bottom-up mmap scheme is used twice:
->>
->> - for legacy mode, in which mmap_legacy_base and mmap_base are equal.
->>
->> - in case of mmap failure in top-down mode, where there is no need to go
->> through the whole address space again for the bottom-up fallback: the goal
->> of this fallback is to find, as a last resort, space between the top-down
->> mmap base and the stack, which is the only place not covered by the
->> top-down mmap.
->>
->> Then this commit removes the usage of mmap_legacy_base field from parisc
->> code.
->>
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> Boot-tested on parisc and seems to work nicely, thus:
->
-> Acked-by: Helge Deller <deller@gmx.de>
+VERIFICA WEBMAIL
 
-Thanks Helge,
 
-Alex
+Gentile utente di Webmail,
 
->
-> Helge
->
->
->
->> ---
->>   arch/parisc/kernel/sys_parisc.c | 8 +++-----
->>   1 file changed, 3 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
->> index 5d458a44b09c..e987f3a8eb0b 100644
->> --- a/arch/parisc/kernel/sys_parisc.c
->> +++ b/arch/parisc/kernel/sys_parisc.c
->> @@ -119,7 +119,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
->>
->>   	info.flags = 0;
->>   	info.length = len;
->> -	info.low_limit = mm->mmap_legacy_base;
->> +	info.low_limit = mm->mmap_base;
->>   	info.high_limit = mmap_upper_limit(NULL);
->>   	info.align_mask = last_mmap ? (PAGE_MASK & (SHM_COLOUR - 1)) : 0;
->>   	info.align_offset = shared_align_offset(last_mmap, pgoff);
->> @@ -240,13 +240,11 @@ static unsigned long mmap_legacy_base(void)
->>    */
->>   void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
->>   {
->> -	mm->mmap_legacy_base = mmap_legacy_base();
->> -	mm->mmap_base = mmap_upper_limit(rlim_stack);
->> -
->>   	if (mmap_is_legacy()) {
->> -		mm->mmap_base = mm->mmap_legacy_base;
->> +		mm->mmap_base = mmap_legacy_base();
->>   		mm->get_unmapped_area = arch_get_unmapped_area;
->>   	} else {
->> +		mm->mmap_base = mmap_upper_limit(rlim_stack);
->>   		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
->>   	}
->>   }
->>
+Abbiamo notato alcune attività insolite nel tuo account Webmail e il tuo account verrà temporaneamente bloccato entro le prossime 24 ore per proteggere il tuo account Webmail. Ciò potrebbe essere accaduto perché qualcuno potrebbe aver utilizzato il tuo account per inviare un sacco di email spazzatura o qualcos'altro che vìola i nostri Termini di servizio.
+
+Tutte le tue e-mail in arrivo sono state messe in sospeso, per favore assicurati di           FARE CLIC QUI<https://info758794.wixsite.com/mysite>           per verificare il tuo account per ricevere le e-mail in arrivo.
+
+Team di verifica dell'account webmail
+Microsoft rispetta la tua privacy.
+
+Copyright © 2019 Webmail Inc. Tutti i diritti riservati.
