@@ -2,455 +2,619 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D29F158426
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jun 2019 16:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CFC059B10
+	for <lists+linux-parisc@lfdr.de>; Fri, 28 Jun 2019 14:31:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726750AbfF0ODr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 27 Jun 2019 10:03:47 -0400
-Received: from forwardcorp1j.mail.yandex.net ([5.45.199.163]:57708 "EHLO
-        forwardcorp1j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726370AbfF0ODq (ORCPT
+        id S1727326AbfF1MbH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 28 Jun 2019 08:31:07 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:39816 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727180AbfF1Mas (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 27 Jun 2019 10:03:46 -0400
-X-Greylist: delayed 376 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jun 2019 10:03:41 EDT
-Received: from mxbackcorp1g.mail.yandex.net (mxbackcorp1g.mail.yandex.net [IPv6:2a02:6b8:0:1402::301])
-        by forwardcorp1j.mail.yandex.net (Yandex) with ESMTP id BAF9F2E0991;
-        Thu, 27 Jun 2019 16:57:23 +0300 (MSK)
-Received: from smtpcorp1o.mail.yandex.net (smtpcorp1o.mail.yandex.net [2a02:6b8:0:1a2d::30])
-        by mxbackcorp1g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id A9QfKAEBFd-vKmmcEX6;
-        Thu, 27 Jun 2019 16:57:23 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru; s=default;
-        t=1561643843; bh=SGYkaK+Rlbq+Uc7ERgjWGNaZgL9QynbVGqBIggRLS3w=;
-        h=In-Reply-To:Message-ID:From:Date:References:To:Subject:Cc;
-        b=TmIBiFqI6uM3l95NO9ustp4eRdIjTeBMjtd31VpWL0RprfGb6zWlFQ5y9pFXfBs/X
-         1FTPfF7JiMfFZYD5r7z2GONAAxznFsTe2jnC4xfFGggamopna8V2i8JlEDp1xZ+HDY
-         vvA/q8ee7ai60eFDK3uq1Cd7RpciF0IizCey09ys=
-Authentication-Results: mxbackcorp1g.mail.yandex.net; dkim=pass header.i=@yandex-team.ru
-Received: from dynamic-spb.dhcp.yndx.net (dynamic-spb.dhcp.yndx.net [2a02:6b8:0:2309:2859:dd95:c83d:83e8])
-        by smtpcorp1o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id OPDXcNBkSF-vICKkb6W;
-        Thu, 27 Jun 2019 16:57:20 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-Subject: Re: [PATCH v3 1/2] pid: add pidfd_open()
-To:     Christian Brauner <christian@brauner.io>, jannh@google.com,
-        oleg@redhat.com, viro@zeniv.linux.org.uk,
-        torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
-        arnd@arndb.de
-Cc:     akpm@linux-foundation.org, cyphar@cyphar.com, dhowells@redhat.com,
-        ebiederm@xmission.com, elena.reshetova@intel.com,
-        keescook@chromium.org, luto@amacapital.net, luto@kernel.org,
-        tglx@linutronix.de, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, joel@joelfernandes.org,
-        dancol@google.com, serge@hallyn.com, surenb@google.com,
-        kernel-team@android.com
-References: <20190520155630.21684-1-christian@brauner.io>
-From:   Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Message-ID: <6d1cba6c-4dac-4d31-653e-e4211c75803a@yandex-team.ru>
-Date:   Thu, 27 Jun 2019 16:57:18 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        Fri, 28 Jun 2019 08:30:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=t2SlvlYO6vN68ooBWcFQh21aLIzOtka8Klr/M76soBU=; b=GPcFupf5dzfyT165XdM5l7atm7
+        NpunVR4RVyW430xRFKelq2/bs7dtPeXB4qL/NAe4wUu90z3hkDS/UIfIGdcLRgNR2UNHiStAIHDWk
+        b5ipZ/rh5zP1MANqlxnbENYD/fVy7fINuTz8hI/7Xxd5uRjSAc/v12+G6v77fOA6pvH51AXLu2qLr
+        m1H6iZl3askKHReK+jify63bqpxZ2aZmSjKnEi33cR7epWYwKUNyxM6iw0XhbwlMf1Q1R8eIlnGAY
+        g2vrko1I5YdrDNVcbwUdqvarlbeC++auL6Ldh/LGX2VSxCdN+UgvNr4MOiHvRW17Y0Xbs+VJlMxkY
+        FFszEwYQ==;
+Received: from [186.213.242.156] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hgq1U-00055h-OB; Fri, 28 Jun 2019 12:30:37 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
+        (envelope-from <mchehab@bombadil.infradead.org>)
+        id 1hgq1S-0005TB-Lz; Fri, 28 Jun 2019 09:30:34 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Willy Tarreau <willy@haproxy.com>,
+        Ksenija Stanojevic <ksenija.stanojevic@gmail.com>,
+        "Richard Russon (FlatCap)" <ldm@flatcap.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Martin Mares <mj@ucw.cz>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-ntfs-dev@lists.sourceforge.net, linux-rtc@vger.kernel.org,
+        linux-video@atrey.karlin.mff.cuni.cz,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-block@vger.kernel.org
+Subject: [PATCH 28/39] docs: admin-guide: add a series of orphaned documents
+Date:   Fri, 28 Jun 2019 09:30:21 -0300
+Message-Id: <7ee0e33575633f689203f582259c2cbdce477176.1561724493.git.mchehab+samsung@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <cover.1561724493.git.mchehab+samsung@kernel.org>
+References: <cover.1561724493.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20190520155630.21684-1-christian@brauner.io>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-CA
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 20.05.2019 18:56, Christian Brauner wrote:
-> This adds the pidfd_open() syscall. It allows a caller to retrieve pollable
-> pidfds for a process which did not get created via CLONE_PIDFD, i.e. for a
-> process that is created via traditional fork()/clone() calls that is only
-> referenced by a PID:
-> 
-> int pidfd = pidfd_open(1234, 0);
-> ret = pidfd_send_signal(pidfd, SIGSTOP, NULL, 0);
-> 
-> With the introduction of pidfds through CLONE_PIDFD it is possible to
-> created pidfds at process creation time.
-> However, a lot of processes get created with traditional PID-based calls
-> such as fork() or clone() (without CLONE_PIDFD). For these processes a
-> caller can currently not create a pollable pidfd. This is a problem for
-> Android's low memory killer (LMK) and service managers such as systemd.
-> Both are examples of tools that want to make use of pidfds to get reliable
-> notification of process exit for non-parents (pidfd polling) and race-free
-> signal sending (pidfd_send_signal()). They intend to switch to this API for
-> process supervision/management as soon as possible. Having no way to get
-> pollable pidfds from PID-only processes is one of the biggest blockers for
-> them in adopting this api. With pidfd_open() making it possible to retrieve
-> pidfds for PID-based processes we enable them to adopt this api.
-> 
-> In line with Arnd's recent changes to consolidate syscall numbers across
-> architectures, I have added the pidfd_open() syscall to all architectures
-> at the same time.
+There are lots of documents that belong to the admin-guide but
+are on random places (most under Documentation root dir).
 
-As I see pidfd_open() works only within current pid-namespace.
+Move them to the admin guide.
 
-Have you considered separate argument for pidns-fd or flag for opening pid in
-pid-ns referred by nsproxy->pid_ns_for_children set by setns.
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+---
+ Documentation/ABI/stable/sysfs-devices-node     |  2 +-
+ Documentation/ABI/testing/procfs-diskstats      |  2 +-
+ Documentation/ABI/testing/sysfs-block           |  2 +-
+ .../ABI/testing/sysfs-devices-system-cpu        |  4 ++--
+ .../{btmrvl.txt => admin-guide/btmrvl.rst}      |  0
+ .../clearing-warn-once.rst}                     |  0
+ .../{cpu-load.txt => admin-guide/cpu-load.rst}  |  0
+ .../cputopology.rst}                            |  0
+ .../admin-guide/device-mapper/statistics.rst    |  4 ++--
+ .../{efi-stub.txt => admin-guide/efi-stub.rst}  |  0
+ .../{highuid.txt => admin-guide/highuid.rst}    |  0
+ Documentation/admin-guide/hw-vuln/l1tf.rst      |  2 +-
+ .../hw_random.rst}                              |  0
+ Documentation/admin-guide/index.rst             | 17 +++++++++++++++++
+ .../{iostats.txt => admin-guide/iostats.rst}    |  0
+ Documentation/admin-guide/kernel-parameters.txt |  2 +-
+ .../kernel-per-CPU-kthreads.rst}                |  0
+ .../lcd-panel-cgram.rst                         |  2 --
+ Documentation/{ldm.txt => admin-guide/ldm.rst}  |  0
+ .../lockup-watchdogs.rst}                       |  0
+ .../mm/cma_debugfs.rst}                         |  2 --
+ Documentation/admin-guide/mm/index.rst          |  1 +
+ .../{numastat.txt => admin-guide/numastat.rst}  |  0
+ Documentation/{pnp.txt => admin-guide/pnp.rst}  |  0
+ Documentation/{rtc.txt => admin-guide/rtc.rst}  |  0
+ .../{svga.txt => admin-guide/svga.rst}          |  0
+ Documentation/admin-guide/sysctl/kernel.rst     |  2 +-
+ .../video-output.rst}                           |  0
+ Documentation/fb/vesafb.rst                     |  2 +-
+ Documentation/x86/topology.rst                  |  2 +-
+ MAINTAINERS                                     | 12 ++++++------
+ arch/arm/Kconfig                                |  2 +-
+ arch/parisc/Kconfig                             |  2 +-
+ arch/sh/Kconfig                                 |  2 +-
+ arch/sparc/Kconfig                              |  2 +-
+ arch/x86/Kconfig                                |  4 ++--
+ block/partitions/Kconfig                        |  2 +-
+ drivers/char/Kconfig                            |  4 ++--
+ drivers/char/hw_random/core.c                   |  2 +-
+ include/linux/hw_random.h                       |  2 +-
+ 40 files changed, 47 insertions(+), 33 deletions(-)
+ rename Documentation/{btmrvl.txt => admin-guide/btmrvl.rst} (100%)
+ rename Documentation/{clearing-warn-once.txt => admin-guide/clearing-warn-once.rst} (100%)
+ rename Documentation/{cpu-load.txt => admin-guide/cpu-load.rst} (100%)
+ rename Documentation/{cputopology.txt => admin-guide/cputopology.rst} (100%)
+ rename Documentation/{efi-stub.txt => admin-guide/efi-stub.rst} (100%)
+ rename Documentation/{highuid.txt => admin-guide/highuid.rst} (100%)
+ rename Documentation/{hw_random.txt => admin-guide/hw_random.rst} (100%)
+ rename Documentation/{iostats.txt => admin-guide/iostats.rst} (100%)
+ rename Documentation/{kernel-per-CPU-kthreads.txt => admin-guide/kernel-per-CPU-kthreads.rst} (100%)
+ rename Documentation/{auxdisplay => admin-guide}/lcd-panel-cgram.rst (99%)
+ rename Documentation/{ldm.txt => admin-guide/ldm.rst} (100%)
+ rename Documentation/{lockup-watchdogs.txt => admin-guide/lockup-watchdogs.rst} (100%)
+ rename Documentation/{cma/debugfs.rst => admin-guide/mm/cma_debugfs.rst} (98%)
+ rename Documentation/{numastat.txt => admin-guide/numastat.rst} (100%)
+ rename Documentation/{pnp.txt => admin-guide/pnp.rst} (100%)
+ rename Documentation/{rtc.txt => admin-guide/rtc.rst} (100%)
+ rename Documentation/{svga.txt => admin-guide/svga.rst} (100%)
+ rename Documentation/{video-output.txt => admin-guide/video-output.rst} (100%)
 
-This could be used for use cases I've tried to cover by syscall "translate_pid"
-https://lkml.org/lkml/2018/6/1/788
-
-> 
-> Signed-off-by: Christian Brauner <christian@brauner.io>
-> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Jann Horn <jannh@google.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: Andy Lutomirsky <luto@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Aleksa Sarai <cyphar@cyphar.com>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Cc: linux-api@vger.kernel.org
-> ---
-> v1:
-> - kbuild test robot <lkp@intel.com>:
->    - add missing entry for pidfd_open to arch/arm/tools/syscall.tbl
-> - Oleg Nesterov <oleg@redhat.com>:
->    - use simpler thread-group leader check
-> v2:
-> - Oleg Nesterov <oleg@redhat.com>:
->    - avoid using additional variable
->    - remove unneeded comment
-> - Arnd Bergmann <arnd@arndb.de>:
->    - switch from 428 to 434 since the new mount api has taken it
->    - bump syscall numbers in arch/arm64/include/asm/unistd.h
-> - Joel Fernandes (Google) <joel@joelfernandes.org>:
->    - switch from ESRCH to EINVAL when the passed-in pid does not refer to a
->      thread-group leader
-> - Christian Brauner <christian@brauner.io>:
->    - rebase on v5.2-rc1
->    - adapt syscall number to account for new mount api syscalls
-> v3:
-> - Arnd Bergmann <arnd@arndb.de>:
->    - add missing syscall entries for mips-o32 and mips-n64
-> ---
->   arch/alpha/kernel/syscalls/syscall.tbl      |  1 +
->   arch/arm/tools/syscall.tbl                  |  1 +
->   arch/arm64/include/asm/unistd.h             |  2 +-
->   arch/arm64/include/asm/unistd32.h           |  2 +
->   arch/ia64/kernel/syscalls/syscall.tbl       |  1 +
->   arch/m68k/kernel/syscalls/syscall.tbl       |  1 +
->   arch/microblaze/kernel/syscalls/syscall.tbl |  1 +
->   arch/mips/kernel/syscalls/syscall_n32.tbl   |  1 +
->   arch/mips/kernel/syscalls/syscall_n64.tbl   |  1 +
->   arch/mips/kernel/syscalls/syscall_o32.tbl   |  1 +
->   arch/parisc/kernel/syscalls/syscall.tbl     |  1 +
->   arch/powerpc/kernel/syscalls/syscall.tbl    |  1 +
->   arch/s390/kernel/syscalls/syscall.tbl       |  1 +
->   arch/sh/kernel/syscalls/syscall.tbl         |  1 +
->   arch/sparc/kernel/syscalls/syscall.tbl      |  1 +
->   arch/x86/entry/syscalls/syscall_32.tbl      |  1 +
->   arch/x86/entry/syscalls/syscall_64.tbl      |  1 +
->   arch/xtensa/kernel/syscalls/syscall.tbl     |  1 +
->   include/linux/pid.h                         |  1 +
->   include/linux/syscalls.h                    |  1 +
->   include/uapi/asm-generic/unistd.h           |  4 +-
->   kernel/fork.c                               |  2 +-
->   kernel/pid.c                                | 43 +++++++++++++++++++++
->   23 files changed, 68 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
-> index 9e7704e44f6d..1db9bbcfb84e 100644
-> --- a/arch/alpha/kernel/syscalls/syscall.tbl
-> +++ b/arch/alpha/kernel/syscalls/syscall.tbl
-> @@ -473,3 +473,4 @@
->   541	common	fsconfig			sys_fsconfig
->   542	common	fsmount				sys_fsmount
->   543	common	fspick				sys_fspick
-> +544	common	pidfd_open			sys_pidfd_open
-> diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
-> index aaf479a9e92d..81e6e1817c45 100644
-> --- a/arch/arm/tools/syscall.tbl
-> +++ b/arch/arm/tools/syscall.tbl
-> @@ -447,3 +447,4 @@
->   431	common	fsconfig			sys_fsconfig
->   432	common	fsmount				sys_fsmount
->   433	common	fspick				sys_fspick
-> +434	common	pidfd_open			sys_pidfd_open
-> diff --git a/arch/arm64/include/asm/unistd.h b/arch/arm64/include/asm/unistd.h
-> index 70e6882853c0..e8f7d95a1481 100644
-> --- a/arch/arm64/include/asm/unistd.h
-> +++ b/arch/arm64/include/asm/unistd.h
-> @@ -44,7 +44,7 @@
->   #define __ARM_NR_compat_set_tls		(__ARM_NR_COMPAT_BASE + 5)
->   #define __ARM_NR_COMPAT_END		(__ARM_NR_COMPAT_BASE + 0x800)
->   
-> -#define __NR_compat_syscalls		434
-> +#define __NR_compat_syscalls		435
->   #endif
->   
->   #define __ARCH_WANT_SYS_CLONE
-> diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
-> index c39e90600bb3..7a3158ccd68e 100644
-> --- a/arch/arm64/include/asm/unistd32.h
-> +++ b/arch/arm64/include/asm/unistd32.h
-> @@ -886,6 +886,8 @@ __SYSCALL(__NR_fsconfig, sys_fsconfig)
->   __SYSCALL(__NR_fsmount, sys_fsmount)
->   #define __NR_fspick 433
->   __SYSCALL(__NR_fspick, sys_fspick)
-> +#define __NR_pidfd_open 434
-> +__SYSCALL(__NR_pidfd_open, sys_pidfd_open)
->   
->   /*
->    * Please add new compat syscalls above this comment and update
-> diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
-> index e01df3f2f80d..ecc44926737b 100644
-> --- a/arch/ia64/kernel/syscalls/syscall.tbl
-> +++ b/arch/ia64/kernel/syscalls/syscall.tbl
-> @@ -354,3 +354,4 @@
->   431	common	fsconfig			sys_fsconfig
->   432	common	fsmount				sys_fsmount
->   433	common	fspick				sys_fspick
-> +434	common	pidfd_open			sys_pidfd_open
-> diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
-> index 7e3d0734b2f3..9a3eb2558568 100644
-> --- a/arch/m68k/kernel/syscalls/syscall.tbl
-> +++ b/arch/m68k/kernel/syscalls/syscall.tbl
-> @@ -433,3 +433,4 @@
->   431	common	fsconfig			sys_fsconfig
->   432	common	fsmount				sys_fsmount
->   433	common	fspick				sys_fspick
-> +434	common	pidfd_open			sys_pidfd_open
-> diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
-> index 26339e417695..ad706f83c755 100644
-> --- a/arch/microblaze/kernel/syscalls/syscall.tbl
-> +++ b/arch/microblaze/kernel/syscalls/syscall.tbl
-> @@ -439,3 +439,4 @@
->   431	common	fsconfig			sys_fsconfig
->   432	common	fsmount				sys_fsmount
->   433	common	fspick				sys_fspick
-> +434	common	pidfd_open			sys_pidfd_open
-> diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
-> index 0e2dd68ade57..97035e19ad03 100644
-> --- a/arch/mips/kernel/syscalls/syscall_n32.tbl
-> +++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
-> @@ -372,3 +372,4 @@
->   431	n32	fsconfig			sys_fsconfig
->   432	n32	fsmount				sys_fsmount
->   433	n32	fspick				sys_fspick
-> +434	n32	pidfd_open			sys_pidfd_open
-> diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
-> index 5eebfa0d155c..d7292722d3b0 100644
-> --- a/arch/mips/kernel/syscalls/syscall_n64.tbl
-> +++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
-> @@ -348,3 +348,4 @@
->   431	n64	fsconfig			sys_fsconfig
->   432	n64	fsmount				sys_fsmount
->   433	n64	fspick				sys_fspick
-> +434	n64	pidfd_open			sys_pidfd_open
-> diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-> index 3cc1374e02d0..dba084c92f14 100644
-> --- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-> +++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-> @@ -421,3 +421,4 @@
->   431	o32	fsconfig			sys_fsconfig
->   432	o32	fsmount				sys_fsmount
->   433	o32	fspick				sys_fspick
-> +434	o32	pidfd_open			sys_pidfd_open
-> diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-> index c9e377d59232..5022b9e179c2 100644
-> --- a/arch/parisc/kernel/syscalls/syscall.tbl
-> +++ b/arch/parisc/kernel/syscalls/syscall.tbl
-> @@ -430,3 +430,4 @@
->   431	common	fsconfig			sys_fsconfig
->   432	common	fsmount				sys_fsmount
->   433	common	fspick				sys_fspick
-> +434	common	pidfd_open			sys_pidfd_open
-> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-> index 103655d84b4b..f2c3bda2d39f 100644
-> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
-> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-> @@ -515,3 +515,4 @@
->   431	common	fsconfig			sys_fsconfig
->   432	common	fsmount				sys_fsmount
->   433	common	fspick				sys_fspick
-> +434	common	pidfd_open			sys_pidfd_open
-> diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
-> index e822b2964a83..6ebacfeaf853 100644
-> --- a/arch/s390/kernel/syscalls/syscall.tbl
-> +++ b/arch/s390/kernel/syscalls/syscall.tbl
-> @@ -436,3 +436,4 @@
->   431  common	fsconfig		sys_fsconfig			sys_fsconfig
->   432  common	fsmount			sys_fsmount			sys_fsmount
->   433  common	fspick			sys_fspick			sys_fspick
-> +434  common	pidfd_open		sys_pidfd_open			sys_pidfd_open
-> diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-> index 016a727d4357..834c9c7d79fa 100644
-> --- a/arch/sh/kernel/syscalls/syscall.tbl
-> +++ b/arch/sh/kernel/syscalls/syscall.tbl
-> @@ -436,3 +436,4 @@
->   431	common	fsconfig			sys_fsconfig
->   432	common	fsmount				sys_fsmount
->   433	common	fspick				sys_fspick
-> +434	common	pidfd_open			sys_pidfd_open
-> diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-> index e047480b1605..c58e71f21129 100644
-> --- a/arch/sparc/kernel/syscalls/syscall.tbl
-> +++ b/arch/sparc/kernel/syscalls/syscall.tbl
-> @@ -479,3 +479,4 @@
->   431	common	fsconfig			sys_fsconfig
->   432	common	fsmount				sys_fsmount
->   433	common	fspick				sys_fspick
-> +434	common	pidfd_open			sys_pidfd_open
-> diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
-> index ad968b7bac72..43e4429a5272 100644
-> --- a/arch/x86/entry/syscalls/syscall_32.tbl
-> +++ b/arch/x86/entry/syscalls/syscall_32.tbl
-> @@ -438,3 +438,4 @@
->   431	i386	fsconfig		sys_fsconfig			__ia32_sys_fsconfig
->   432	i386	fsmount			sys_fsmount			__ia32_sys_fsmount
->   433	i386	fspick			sys_fspick			__ia32_sys_fspick
-> +434	i386	pidfd_open		sys_pidfd_open			__ia32_sys_pidfd_open
-> diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
-> index b4e6f9e6204a..1bee0a77fdd3 100644
-> --- a/arch/x86/entry/syscalls/syscall_64.tbl
-> +++ b/arch/x86/entry/syscalls/syscall_64.tbl
-> @@ -355,6 +355,7 @@
->   431	common	fsconfig		__x64_sys_fsconfig
->   432	common	fsmount			__x64_sys_fsmount
->   433	common	fspick			__x64_sys_fspick
-> +434	common	pidfd_open		__x64_sys_pidfd_open
->   
->   #
->   # x32-specific system call numbers start at 512 to avoid cache impact
-> diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
-> index 5fa0ee1c8e00..782b81945ccc 100644
-> --- a/arch/xtensa/kernel/syscalls/syscall.tbl
-> +++ b/arch/xtensa/kernel/syscalls/syscall.tbl
-> @@ -404,3 +404,4 @@
->   431	common	fsconfig			sys_fsconfig
->   432	common	fsmount				sys_fsmount
->   433	common	fspick				sys_fspick
-> +434	common	pidfd_open			sys_pidfd_open
-> diff --git a/include/linux/pid.h b/include/linux/pid.h
-> index 3c8ef5a199ca..c938a92eab99 100644
-> --- a/include/linux/pid.h
-> +++ b/include/linux/pid.h
-> @@ -67,6 +67,7 @@ struct pid
->   extern struct pid init_struct_pid;
->   
->   extern const struct file_operations pidfd_fops;
-> +extern int pidfd_create(struct pid *pid);
->   
->   static inline struct pid *get_pid(struct pid *pid)
->   {
-> diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-> index e2870fe1be5b..989055e0b501 100644
-> --- a/include/linux/syscalls.h
-> +++ b/include/linux/syscalls.h
-> @@ -929,6 +929,7 @@ asmlinkage long sys_clock_adjtime32(clockid_t which_clock,
->   				struct old_timex32 __user *tx);
->   asmlinkage long sys_syncfs(int fd);
->   asmlinkage long sys_setns(int fd, int nstype);
-> +asmlinkage long sys_pidfd_open(pid_t pid, unsigned int flags);
->   asmlinkage long sys_sendmmsg(int fd, struct mmsghdr __user *msg,
->   			     unsigned int vlen, unsigned flags);
->   asmlinkage long sys_process_vm_readv(pid_t pid,
-> diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-> index a87904daf103..e5684a4512c0 100644
-> --- a/include/uapi/asm-generic/unistd.h
-> +++ b/include/uapi/asm-generic/unistd.h
-> @@ -844,9 +844,11 @@ __SYSCALL(__NR_fsconfig, sys_fsconfig)
->   __SYSCALL(__NR_fsmount, sys_fsmount)
->   #define __NR_fspick 433
->   __SYSCALL(__NR_fspick, sys_fspick)
-> +#define __NR_pidfd_open 434
-> +__SYSCALL(__NR_pidfd_open, sys_pidfd_open)
->   
->   #undef __NR_syscalls
-> -#define __NR_syscalls 434
-> +#define __NR_syscalls 435
->   
->   /*
->    * 32 bit systems traditionally used different
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index b4cba953040a..c3df226f47a1 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1724,7 +1724,7 @@ const struct file_operations pidfd_fops = {
->    * Return: On success, a cloexec pidfd is returned.
->    *         On error, a negative errno number will be returned.
->    */
-> -static int pidfd_create(struct pid *pid)
-> +int pidfd_create(struct pid *pid)
->   {
->   	int fd;
->   
-> diff --git a/kernel/pid.c b/kernel/pid.c
-> index 89548d35eefb..8fc9d94f6ac1 100644
-> --- a/kernel/pid.c
-> +++ b/kernel/pid.c
-> @@ -37,6 +37,7 @@
->   #include <linux/syscalls.h>
->   #include <linux/proc_ns.h>
->   #include <linux/proc_fs.h>
-> +#include <linux/sched/signal.h>
->   #include <linux/sched/task.h>
->   #include <linux/idr.h>
->   
-> @@ -450,6 +451,48 @@ struct pid *find_ge_pid(int nr, struct pid_namespace *ns)
->   	return idr_get_next(&ns->idr, &nr);
->   }
->   
-> +/**
-> + * pidfd_open() - Open new pid file descriptor.
-> + *
-> + * @pid:   pid for which to retrieve a pidfd
-> + * @flags: flags to pass
-> + *
-> + * This creates a new pid file descriptor with the O_CLOEXEC flag set for
-> + * the process identified by @pid. Currently, the process identified by
-> + * @pid must be a thread-group leader. This restriction currently exists
-> + * for all aspects of pidfds including pidfd creation (CLONE_PIDFD cannot
-> + * be used with CLONE_THREAD) and pidfd polling (only supports thread group
-> + * leaders).
-> + *
-> + * Return: On success, a cloexec pidfd is returned.
-> + *         On error, a negative errno number will be returned.
-> + */
-> +SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
-> +{
-> +	int fd, ret;
-> +	struct pid *p;
-> +
-> +	if (flags)
-> +		return -EINVAL;
-> +
-> +	if (pid <= 0)
-> +		return -EINVAL;
-> +
-> +	p = find_get_pid(pid);
-> +	if (!p)
-> +		return -ESRCH;
-> +
-> +	ret = 0;
-> +	rcu_read_lock();
-> +	if (!pid_task(p, PIDTYPE_TGID))
-> +		ret = -EINVAL;
-> +	rcu_read_unlock();
-> +
-> +	fd = ret ?: pidfd_create(p);
-> +	put_pid(p);
-> +	return fd;
-> +}
-> +
->   void __init pid_idr_init(void)
->   {
->   	/* Verify no one has done anything silly: */
-> 
+diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
+index f7ce68fbd4b9..df8413cf1468 100644
+--- a/Documentation/ABI/stable/sysfs-devices-node
++++ b/Documentation/ABI/stable/sysfs-devices-node
+@@ -61,7 +61,7 @@ Date:		October 2002
+ Contact:	Linux Memory Management list <linux-mm@kvack.org>
+ Description:
+ 		The node's hit/miss statistics, in units of pages.
+-		See Documentation/numastat.txt
++		See Documentation/admin-guide/numastat.rst
+ 
+ What:		/sys/devices/system/node/nodeX/distance
+ Date:		October 2002
+diff --git a/Documentation/ABI/testing/procfs-diskstats b/Documentation/ABI/testing/procfs-diskstats
+index abac31d216de..2c44b4f1b060 100644
+--- a/Documentation/ABI/testing/procfs-diskstats
++++ b/Documentation/ABI/testing/procfs-diskstats
+@@ -29,4 +29,4 @@ Description:
+ 		17 - sectors discarded
+ 		18 - time spent discarding
+ 
+-		For more details refer to Documentation/iostats.txt
++		For more details refer to Documentation/admin-guide/iostats.rst
+diff --git a/Documentation/ABI/testing/sysfs-block b/Documentation/ABI/testing/sysfs-block
+index dfad7427817c..f8c7c7126bb1 100644
+--- a/Documentation/ABI/testing/sysfs-block
++++ b/Documentation/ABI/testing/sysfs-block
+@@ -15,7 +15,7 @@ Description:
+ 		 9 - I/Os currently in progress
+ 		10 - time spent doing I/Os (ms)
+ 		11 - weighted time spent doing I/Os (ms)
+-		For more details refer Documentation/iostats.txt
++		For more details refer Documentation/admin-guide/iostats.rst
+ 
+ 
+ What:		/sys/block/<disk>/<part>/stat
+diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+index d404603c6b52..5f7d7b14fa44 100644
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -34,7 +34,7 @@ Description:	CPU topology files that describe kernel limits related to
+ 		present: cpus that have been identified as being present in
+ 		the system.
+ 
+-		See Documentation/cputopology.txt for more information.
++		See Documentation/admin-guide/cputopology.rst for more information.
+ 
+ 
+ What:		/sys/devices/system/cpu/probe
+@@ -103,7 +103,7 @@ Description:	CPU topology files that describe a logical CPU's relationship
+ 		thread_siblings_list: human-readable list of cpu#'s hardware
+ 		threads within the same core as cpu#
+ 
+-		See Documentation/cputopology.txt for more information.
++		See Documentation/admin-guide/cputopology.rst for more information.
+ 
+ 
+ What:		/sys/devices/system/cpu/cpuidle/current_driver
+diff --git a/Documentation/btmrvl.txt b/Documentation/admin-guide/btmrvl.rst
+similarity index 100%
+rename from Documentation/btmrvl.txt
+rename to Documentation/admin-guide/btmrvl.rst
+diff --git a/Documentation/clearing-warn-once.txt b/Documentation/admin-guide/clearing-warn-once.rst
+similarity index 100%
+rename from Documentation/clearing-warn-once.txt
+rename to Documentation/admin-guide/clearing-warn-once.rst
+diff --git a/Documentation/cpu-load.txt b/Documentation/admin-guide/cpu-load.rst
+similarity index 100%
+rename from Documentation/cpu-load.txt
+rename to Documentation/admin-guide/cpu-load.rst
+diff --git a/Documentation/cputopology.txt b/Documentation/admin-guide/cputopology.rst
+similarity index 100%
+rename from Documentation/cputopology.txt
+rename to Documentation/admin-guide/cputopology.rst
+diff --git a/Documentation/admin-guide/device-mapper/statistics.rst b/Documentation/admin-guide/device-mapper/statistics.rst
+index 3d80a9f850cc..41ded0bc5933 100644
+--- a/Documentation/admin-guide/device-mapper/statistics.rst
++++ b/Documentation/admin-guide/device-mapper/statistics.rst
+@@ -13,7 +13,7 @@ the range specified.
+ 
+ The I/O statistics counters for each step-sized area of a region are
+ in the same format as `/sys/block/*/stat` or `/proc/diskstats` (see:
+-Documentation/iostats.txt).  But two extra counters (12 and 13) are
++Documentation/admin-guide/iostats.rst).  But two extra counters (12 and 13) are
+ provided: total time spent reading and writing.  When the histogram
+ argument is used, the 14th parameter is reported that represents the
+ histogram of latencies.  All these counters may be accessed by sending
+@@ -151,7 +151,7 @@ Messages
+ 	  The first 11 counters have the same meaning as
+ 	  `/sys/block/*/stat or /proc/diskstats`.
+ 
+-	  Please refer to Documentation/iostats.txt for details.
++	  Please refer to Documentation/admin-guide/iostats.rst for details.
+ 
+ 	  1. the number of reads completed
+ 	  2. the number of reads merged
+diff --git a/Documentation/efi-stub.txt b/Documentation/admin-guide/efi-stub.rst
+similarity index 100%
+rename from Documentation/efi-stub.txt
+rename to Documentation/admin-guide/efi-stub.rst
+diff --git a/Documentation/highuid.txt b/Documentation/admin-guide/highuid.rst
+similarity index 100%
+rename from Documentation/highuid.txt
+rename to Documentation/admin-guide/highuid.rst
+diff --git a/Documentation/admin-guide/hw-vuln/l1tf.rst b/Documentation/admin-guide/hw-vuln/l1tf.rst
+index 656aee262e23..f83212fae4d5 100644
+--- a/Documentation/admin-guide/hw-vuln/l1tf.rst
++++ b/Documentation/admin-guide/hw-vuln/l1tf.rst
+@@ -241,7 +241,7 @@ Guest mitigation mechanisms
+    For further information about confining guests to a single or to a group
+    of cores consult the cpusets documentation:
+ 
+-   https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.rst
++   https://www.kernel.org/doc/Documentation/admin-guide/cgroup-v1/cpusets.rst
+ 
+ .. _interrupt_isolation:
+ 
+diff --git a/Documentation/hw_random.txt b/Documentation/admin-guide/hw_random.rst
+similarity index 100%
+rename from Documentation/hw_random.txt
+rename to Documentation/admin-guide/hw_random.rst
+diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
+index d5064f1802c1..2c20607e90cd 100644
+--- a/Documentation/admin-guide/index.rst
++++ b/Documentation/admin-guide/index.rst
+@@ -84,8 +84,25 @@ configure specific aspects of kernel behavior to your liking.
+    perf-security
+    acpi/index
+    aoe/index
++   btmrvl
++   clearing-warn-once
++   cpu-load
++   cputopology
+    device-mapper/index
++   efi-stub
++   highuid
++   hw_random
++   iostats
++   kernel-per-CPU-kthreads
+    laptops/index
++   lcd-panel-cgram
++   ldm
++   lockup-watchdogs
++   numastat
++   pnp
++   rtc
++   svga
++   video-output
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/iostats.txt b/Documentation/admin-guide/iostats.rst
+similarity index 100%
+rename from Documentation/iostats.txt
+rename to Documentation/admin-guide/iostats.rst
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index e833133c8897..713d6f378fbe 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5092,7 +5092,7 @@
+ 
+ 	vga=		[BOOT,X86-32] Select a particular video mode
+ 			See Documentation/x86/boot.rst and
+-			Documentation/svga.txt.
++			Documentation/admin-guide/svga.rst.
+ 			Use vga=ask for menu.
+ 			This is actually a boot loader parameter; the value is
+ 			passed to the kernel using a special protocol.
+diff --git a/Documentation/kernel-per-CPU-kthreads.txt b/Documentation/admin-guide/kernel-per-CPU-kthreads.rst
+similarity index 100%
+rename from Documentation/kernel-per-CPU-kthreads.txt
+rename to Documentation/admin-guide/kernel-per-CPU-kthreads.rst
+diff --git a/Documentation/auxdisplay/lcd-panel-cgram.rst b/Documentation/admin-guide/lcd-panel-cgram.rst
+similarity index 99%
+rename from Documentation/auxdisplay/lcd-panel-cgram.rst
+rename to Documentation/admin-guide/lcd-panel-cgram.rst
+index dfef50286018..a3eb00c62f53 100644
+--- a/Documentation/auxdisplay/lcd-panel-cgram.rst
++++ b/Documentation/admin-guide/lcd-panel-cgram.rst
+@@ -1,5 +1,3 @@
+-:orphan:
+-
+ ======================================
+ Parallel port LCD/Keypad Panel support
+ ======================================
+diff --git a/Documentation/ldm.txt b/Documentation/admin-guide/ldm.rst
+similarity index 100%
+rename from Documentation/ldm.txt
+rename to Documentation/admin-guide/ldm.rst
+diff --git a/Documentation/lockup-watchdogs.txt b/Documentation/admin-guide/lockup-watchdogs.rst
+similarity index 100%
+rename from Documentation/lockup-watchdogs.txt
+rename to Documentation/admin-guide/lockup-watchdogs.rst
+diff --git a/Documentation/cma/debugfs.rst b/Documentation/admin-guide/mm/cma_debugfs.rst
+similarity index 98%
+rename from Documentation/cma/debugfs.rst
+rename to Documentation/admin-guide/mm/cma_debugfs.rst
+index 518fe401b5ee..4e06ffabd78a 100644
+--- a/Documentation/cma/debugfs.rst
++++ b/Documentation/admin-guide/mm/cma_debugfs.rst
+@@ -1,5 +1,3 @@
+-:orphan:
+-
+ =====================
+ CMA Debugfs Interface
+ =====================
+diff --git a/Documentation/admin-guide/mm/index.rst b/Documentation/admin-guide/mm/index.rst
+index 5f61a6c429e0..11db46448354 100644
+--- a/Documentation/admin-guide/mm/index.rst
++++ b/Documentation/admin-guide/mm/index.rst
+@@ -26,6 +26,7 @@ the Linux memory management.
+    :maxdepth: 1
+ 
+    concepts
++   cma_debugfs
+    hugetlbpage
+    idle_page_tracking
+    ksm
+diff --git a/Documentation/numastat.txt b/Documentation/admin-guide/numastat.rst
+similarity index 100%
+rename from Documentation/numastat.txt
+rename to Documentation/admin-guide/numastat.rst
+diff --git a/Documentation/pnp.txt b/Documentation/admin-guide/pnp.rst
+similarity index 100%
+rename from Documentation/pnp.txt
+rename to Documentation/admin-guide/pnp.rst
+diff --git a/Documentation/rtc.txt b/Documentation/admin-guide/rtc.rst
+similarity index 100%
+rename from Documentation/rtc.txt
+rename to Documentation/admin-guide/rtc.rst
+diff --git a/Documentation/svga.txt b/Documentation/admin-guide/svga.rst
+similarity index 100%
+rename from Documentation/svga.txt
+rename to Documentation/admin-guide/svga.rst
+diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
+index a0c1d4ce403a..032c7cd3cede 100644
+--- a/Documentation/admin-guide/sysctl/kernel.rst
++++ b/Documentation/admin-guide/sysctl/kernel.rst
+@@ -327,7 +327,7 @@ when a hard lockup is detected.
+    0 - don't panic on hard lockup
+    1 - panic on hard lockup
+ 
+-See Documentation/lockup-watchdogs.txt for more information.  This can
++See Documentation/admin-guide/lockup-watchdogs.rst for more information.  This can
+ also be set using the nmi_watchdog kernel parameter.
+ 
+ 
+diff --git a/Documentation/video-output.txt b/Documentation/admin-guide/video-output.rst
+similarity index 100%
+rename from Documentation/video-output.txt
+rename to Documentation/admin-guide/video-output.rst
+diff --git a/Documentation/fb/vesafb.rst b/Documentation/fb/vesafb.rst
+index 2ed0dfb661cf..6821c87b7893 100644
+--- a/Documentation/fb/vesafb.rst
++++ b/Documentation/fb/vesafb.rst
+@@ -30,7 +30,7 @@ How to use it?
+ ==============
+ 
+ Switching modes is done using the vga=... boot parameter.  Read
+-Documentation/svga.txt for details.
++Documentation/admin-guide/svga.rst for details.
+ 
+ You should compile in both vgacon (for text mode) and vesafb (for
+ graphics mode). Which of them takes over the console depends on
+diff --git a/Documentation/x86/topology.rst b/Documentation/x86/topology.rst
+index 8e9704f61017..e29739904e37 100644
+--- a/Documentation/x86/topology.rst
++++ b/Documentation/x86/topology.rst
+@@ -9,7 +9,7 @@ representation in the kernel. Update/change when doing changes to the
+ respective code.
+ 
+ The architecture-agnostic topology definitions are in
+-Documentation/cputopology.txt. This file holds x86-specific
++Documentation/admin-guide/cputopology.rst. This file holds x86-specific
+ differences/specialities which must not necessarily apply to the generic
+ definitions. Thus, the way to read up on Linux topology on x86 is to start
+ with the generic one and look at this one in parallel for the x86 specifics.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 82222aa618c5..76b52a20663e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6054,7 +6054,7 @@ M:	Ard Biesheuvel <ard.biesheuvel@linaro.org>
+ L:	linux-efi@vger.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
+ S:	Maintained
+-F:	Documentation/efi-stub.txt
++F:	Documentation/admin-guide/efi-stub.rst
+ F:	arch/*/kernel/efi.c
+ F:	arch/x86/boot/compressed/eboot.[ch]
+ F:	arch/*/include/asm/efi.h
+@@ -7033,7 +7033,7 @@ M:	Herbert Xu <herbert@gondor.apana.org.au>
+ L:	linux-crypto@vger.kernel.org
+ S:	Odd fixes
+ F:	Documentation/devicetree/bindings/rng/
+-F:	Documentation/hw_random.txt
++F:	Documentation/admin-guide/hw_random.rst
+ F:	drivers/char/hw_random/
+ F:	include/linux/hw_random.h
+ 
+@@ -9347,7 +9347,7 @@ M:	"Richard Russon (FlatCap)" <ldm@flatcap.org>
+ L:	linux-ntfs-dev@lists.sourceforge.net
+ W:	http://www.linux-ntfs.org/content/view/19/37/
+ S:	Maintained
+-F:	Documentation/ldm.txt
++F:	Documentation/admin-guide/ldm.rst
+ F:	block/partitions/ldm.*
+ 
+ LSILOGIC MPT FUSION DRIVERS (FC/SAS/SPI)
+@@ -12000,7 +12000,7 @@ PARALLEL LCD/KEYPAD PANEL DRIVER
+ M:	Willy Tarreau <willy@haproxy.com>
+ M:	Ksenija Stanojevic <ksenija.stanojevic@gmail.com>
+ S:	Odd Fixes
+-F:	Documentation/auxdisplay/lcd-panel-cgram.rst
++F:	Documentation/admin-guide/lcd-panel-cgram.rst
+ F:	drivers/auxdisplay/panel.c
+ 
+ PARALLEL PORT SUBSYSTEM
+@@ -13419,7 +13419,7 @@ Q:	http://patchwork.ozlabs.org/project/rtc-linux/list/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux.git
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/rtc/
+-F:	Documentation/rtc.txt
++F:	Documentation/admin-guide/rtc.rst
+ F:	drivers/rtc/
+ F:	include/linux/rtc.h
+ F:	include/uapi/linux/rtc.h
+@@ -15248,7 +15248,7 @@ SVGA HANDLING
+ M:	Martin Mares <mj@ucw.cz>
+ L:	linux-video@atrey.karlin.mff.cuni.cz
+ S:	Maintained
+-F:	Documentation/svga.txt
++F:	Documentation/admin-guide/svga.rst
+ F:	arch/x86/boot/video*
+ 
+ SWIOTLB SUBSYSTEM
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index d5bd4350fcbd..b1ab350b9d60 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1286,7 +1286,7 @@ config SMP
+ 	  will run faster if you say N here.
+ 
+ 	  See also <file:Documentation/x86/i386/IO-APIC.rst>,
+-	  <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO available at
++	  <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO available at
+ 	  <http://tldp.org/HOWTO/SMP-HOWTO.html>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 42875ff15671..6d732e451071 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -277,7 +277,7 @@ config SMP
+ 	  machines, but will use only one CPU of a multiprocessor machine.
+ 	  On a uniprocessor machine, the kernel will run faster if you say N.
+ 
+-	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
++	  See also <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO
+ 	  available at <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index c2858ac6a46a..6b1b5941b618 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -679,7 +679,7 @@ config SMP
+ 	  People using multiprocessor machines who say Y here should also say
+ 	  Y to "Enhanced Real Time Clock Support", below.
+ 
+-	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
++	  See also <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO
+ 	  available at <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index e9f5d62e9817..7926a2e11bdc 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -180,7 +180,7 @@ config SMP
+ 	  Y to "Enhanced Real Time Clock Support", below. The "Advanced Power
+ 	  Management" code will be disabled if you say Y here.
+ 
+-	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
++	  See also <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO
+ 	  available at <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 489fd833b980..2ca471ae6756 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -402,7 +402,7 @@ config SMP
+ 	  Management" code will be disabled if you say Y here.
+ 
+ 	  See also <file:Documentation/x86/i386/IO-APIC.rst>,
+-	  <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO available at
++	  <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO available at
+ 	  <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+@@ -1959,7 +1959,7 @@ config EFI_STUB
+           This kernel feature allows a bzImage to be loaded directly
+ 	  by EFI firmware without the use of a bootloader.
+ 
+-	  See Documentation/efi-stub.txt for more information.
++	  See Documentation/admin-guide/efi-stub.rst for more information.
+ 
+ config EFI_MIXED
+ 	bool "EFI mixed-mode support"
+diff --git a/block/partitions/Kconfig b/block/partitions/Kconfig
+index 37b9710cc80a..702689a628f0 100644
+--- a/block/partitions/Kconfig
++++ b/block/partitions/Kconfig
+@@ -194,7 +194,7 @@ config LDM_PARTITION
+ 	  Normal partitions are now called Basic Disks under Windows 2000, XP,
+ 	  and Vista.
+ 
+-	  For a fuller description read <file:Documentation/ldm.txt>.
++	  For a fuller description read <file:Documentation/admin-guide/ldm.rst>.
+ 
+ 	  If unsure, say N.
+ 
+diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+index 442403abd73a..3e866885a405 100644
+--- a/drivers/char/Kconfig
++++ b/drivers/char/Kconfig
+@@ -291,7 +291,7 @@ config RTC
+ 	  and set the RTC in an SMP compatible fashion.
+ 
+ 	  If you think you have a use for such a device (such as periodic data
+-	  sampling), then say Y here, and read <file:Documentation/rtc.txt>
++	  sampling), then say Y here, and read <file:Documentation/admin-guide/rtc.rst>
+ 	  for details.
+ 
+ 	  To compile this driver as a module, choose M here: the
+@@ -313,7 +313,7 @@ config JS_RTC
+ 	  /dev/rtc.
+ 
+ 	  If you think you have a use for such a device (such as periodic data
+-	  sampling), then say Y here, and read <file:Documentation/rtc.txt>
++	  sampling), then say Y here, and read <file:Documentation/admin-guide/rtc.rst>
+ 	  for details.
+ 
+ 	  To compile this driver as a module, choose M here: the
+diff --git a/drivers/char/hw_random/core.c b/drivers/char/hw_random/core.c
+index 95be7228f327..9044d31ab1a1 100644
+--- a/drivers/char/hw_random/core.c
++++ b/drivers/char/hw_random/core.c
+@@ -4,7 +4,7 @@
+  * Copyright 2006 Michael Buesch <m@bues.ch>
+  * Copyright 2005 (c) MontaVista Software, Inc.
+  *
+- * Please read Documentation/hw_random.txt for details on use.
++ * Please read Documentation/admin-guide/hw_random.rst for details on use.
+  *
+  * This software may be used and distributed according to the terms
+  * of the GNU General Public License, incorporated herein by reference.
+diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
+index c0b93e0ff0c0..8e6dd908da21 100644
+--- a/include/linux/hw_random.h
++++ b/include/linux/hw_random.h
+@@ -1,7 +1,7 @@
+ /*
+ 	Hardware Random Number Generator
+ 
+-	Please read Documentation/hw_random.txt for details on use.
++	Please read Documentation/admin-guide/hw_random.rst for details on use.
+ 
+ 	----------------------------------------------------------
+ 	This software may be used and distributed according to the terms
+-- 
+2.21.0
 
