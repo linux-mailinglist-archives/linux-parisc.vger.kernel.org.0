@@ -2,92 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 608C55AC04
-	for <lists+linux-parisc@lfdr.de>; Sat, 29 Jun 2019 17:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F0845AF9C
+	for <lists+linux-parisc@lfdr.de>; Sun, 30 Jun 2019 12:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726856AbfF2PJS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 29 Jun 2019 11:09:18 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:32790 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726828AbfF2PJR (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 29 Jun 2019 11:09:17 -0400
-Received: by mail-pg1-f193.google.com with SMTP id m4so3922323pgk.0;
-        Sat, 29 Jun 2019 08:09:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=4PDRDSdPlik/3Dz2WUeVgJcUfwA9IGRhonB1MM/wefg=;
-        b=G57SADTMggL8n0pIpOEwPt5rucFLcFzaP0n3oeowJewkuuCijNkliMNKU+dGOlJ2fq
-         EgAKCtiA3mOadRCmiaX8mEmLoId9NM33CuXBJlIVjavZ/WnnrRH6vZHvEDKKT/5R/aNr
-         Y5VefnWEapcSksrsGqA6l2yPB2FUYnOh6Vi+ec1DRkT7wk27vt4ez6cL1TsEWp+WmJJD
-         9czSVDIssaRJU7VtpsTT4SisHJVQZCK2gJ5Zlmlmi/1yGLJ9FoIo0IwwGlCR0OXlLBsy
-         u8gp3kAJF4pXyVF54QHX3ujHIFjdgstGjSggr8TMM7tCgzpMymyRIkW7A3k/oUiZp/ow
-         4BnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=4PDRDSdPlik/3Dz2WUeVgJcUfwA9IGRhonB1MM/wefg=;
-        b=X7cLS9IVUS5iluhdNhB2qi7aMkNE4AThbuJYpXcTT3mjed+niEQkX9aqO84WaNKgXG
-         j6egxcWXHh7/5EuXTM8ZtOhAIJGd/9ocfpOeHogPceDL9VI047db4e08MSyz6+BIRRhU
-         quIwLmUtdnPxeYUUvSs/V300l82Vv7BIxm2DgWgz1UtEfHqTzd/64wiE12J/Q3/njGTX
-         2Obwl8czSjSku6kKlr32OdPTwUCBkhWRsox1+F7ASj3Hyiy9UK32pHY3j9Z6OU39mYQx
-         7lHOSDjZdpFV+flQsl4ZRDfjYSc6tuJAdxNBzfu0Lm1E6zw9XNp/s5cWDzZ6QgAPGd0D
-         84Yw==
-X-Gm-Message-State: APjAAAWIpjpJZCDa6kkZXmta5Hk9dcw3i0prgvcbZdTT+SzPzgRVKA7C
-        e9aK1iRDyaxnUV0Z898inh0=
-X-Google-Smtp-Source: APXvYqyDBBSk+rR6gLpGBEL0OVOHp9fl5zjs/iRj+V1a6MYIR50eUUkJF3Dx9enR+JvisdUNTLheWg==
-X-Received: by 2002:a17:90a:634a:: with SMTP id v10mr20203751pjs.16.1561820957173;
-        Sat, 29 Jun 2019 08:09:17 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id b3sm10519235pfp.65.2019.06.29.08.09.16
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 29 Jun 2019 08:09:16 -0700 (PDT)
-Date:   Sat, 29 Jun 2019 08:09:15 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Vineet Gupta <vgupta@synopsys.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        Vladimir Murzin <vladimir.murzin@arm.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/7] dma-direct: handle DMA_ATTR_NO_KERNEL_MAPPING in
- common code
-Message-ID: <20190629150915.GA817@roeck-us.net>
-References: <20190614144431.21760-1-hch@lst.de>
- <20190614144431.21760-7-hch@lst.de>
+        id S1726531AbfF3KFy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 30 Jun 2019 06:05:54 -0400
+Received: from mail.sf-mail.de ([116.202.16.50]:59039 "EHLO mail.sf-mail.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726482AbfF3KFy (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 30 Jun 2019 06:05:54 -0400
+Received: (qmail 3408 invoked from network); 30 Jun 2019 10:05:15 -0000
+Received: from dyn.ipv6.net-htp.de ([2a02:560:42e9:3c00:b904:f442:46c3:9705]:51526 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.35dev) with (DHE-RSA-AES256-GCM-SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Sun, 30 Jun 2019 12:05:15 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-parisc@vger.kernel.org
+Subject: Re: Running the gdb 7.12.1 testsuite breaks kernel 4.13.8 on C8000
+Date:   Sun, 30 Jun 2019 12:05:46 +0200
+Message-ID: <16444139.ehY7rFqKE1@daneel.sf-tec.de>
+In-Reply-To: <11946948.1Lt8Nslq4k@devpool21>
+References: <11946948.1Lt8Nslq4k@devpool21>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190614144431.21760-7-hch@lst.de>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: multipart/signed; boundary="nextPart4679515.lFrMZkWn1x"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 04:44:30PM +0200, Christoph Hellwig wrote:
-> DMA_ATTR_NO_KERNEL_MAPPING is generally implemented by allocating
-> normal cacheable pages or CMA memory, and then returning the page
-> pointer as the opaque handle.  Lift that code from the xtensa and
-> generic dma remapping implementations into the generic dma-direct
-> code so that we don't even call arch_dma_alloc for these allocations.
+--nextPart4679515.lFrMZkWn1x
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+
+Am Donnerstag, 25. Januar 2018, 09:59:03 CEST schrieb Rolf Eike Beer:
+> The last message I had for the crash below is:
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Running
+> /var/tmp/portage/sys-devel/gdb-7.12.1/work/gdb-7.12.1/gdb/testsuite/gdb.bas
+> e/bp-permanent.exp ...
 
-This patch results in build failures for mips:nlm_xlp_defconfig and
-mips:cavium_octeon_defconfig.
+I just have been told it's still happening with the gdb 8.3 testsuite on the 
+Gentoo test machine:
 
-kernel/dma/direct.c:144: undefined reference to `arch_dma_prep_coherent'
+Linux hake 4.19.52-gentoo #2 Tue Jun 18 13:51:01 EDT 2019 parisc PA8600 (PCX-W
++) 9000/785/C3600 GNU/Linux
 
-Reverting the patch fixes the problem.
+Eike
+--nextPart4679515.lFrMZkWn1x
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-Guenter
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCXRiJegAKCRBcpIk+abn8
+TptQAKCPk3tR3UWLl7eUm2FyIKJkRFsyEwCff2Ssf/C8lKH2X5C/dB2Wk1ruFwU=
+=FtFb
+-----END PGP SIGNATURE-----
+
+--nextPart4679515.lFrMZkWn1x--
+
+
+
