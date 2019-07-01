@@ -2,50 +2,48 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E10B15C518
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Jul 2019 23:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64EEA5C5C2
+	for <lists+linux-parisc@lfdr.de>; Tue,  2 Jul 2019 00:44:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726803AbfGAVln (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 1 Jul 2019 17:41:43 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:34394 "EHLO
+        id S1726439AbfGAWoc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 1 Jul 2019 18:44:32 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:35740 "EHLO
         bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726678AbfGAVln (ORCPT
+        by vger.kernel.org with ESMTP id S1726341AbfGAWoc (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 1 Jul 2019 17:41:43 -0400
+        Mon, 1 Jul 2019 18:44:32 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 0B2DB8EE0E3;
-        Mon,  1 Jul 2019 14:41:43 -0700 (PDT)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 36CE98EE0E3;
+        Mon,  1 Jul 2019 15:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1562017303;
-        bh=Ila4b5XRd2YsZN9gdowvmlkMYONzuykQXYhspC147MI=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=dkzckDMObvDAmP120q0eBDrXj3o1gkvfxOPV//8EsXFzh6UT3kegFO83USiT1PLWc
-         wNd/aVJ+ALanRO65HECqdfb2qoobFABYnBn2+DFK40rmP9zwLmhSOJlwxNK1fc/MZU
-         hDCQyznmRlG8rIxDw6rftjVizQPrTyhen/Y1cWw4=
+        s=20151216; t=1562021072;
+        bh=m0tNNukF7xF3egFzci432mYmOW/txTHRHkDLaD3r0gI=;
+        h=Subject:From:To:Cc:Date:From;
+        b=eEISfa5LQLXOvG/SkdKV8GqMYVDg089+LHRoPt6gSY58WROr08Ldy+H+/gcksv3nZ
+         oNdVjQq5d4PpYU0Y3gTaoHUCPB+iWOHbN7oHQGodV7ckv321IRgL5vbE74F4D3EOYl
+         n+gx45e2HRCThUZw4joEq0yG5zpIk1+z31pPft4g=
 Received: from bedivere.hansenpartnership.com ([127.0.0.1])
         by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id uaRqzyMKV8mD; Mon,  1 Jul 2019 14:41:42 -0700 (PDT)
+        with ESMTP id cl_bLoQOAoej; Mon,  1 Jul 2019 15:44:32 -0700 (PDT)
 Received: from jarvis.lan (unknown [50.35.68.20])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id A3D3B8EE0E0;
-        Mon,  1 Jul 2019 14:41:42 -0700 (PDT)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id B583C8EE0E0;
+        Mon,  1 Jul 2019 15:44:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1562017302;
-        bh=Ila4b5XRd2YsZN9gdowvmlkMYONzuykQXYhspC147MI=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=h6EHEXdw6NKlBvAsNq1aCJCTkOEYIVOrXryWqiZfDrxI7WjclA+bxnoBtPYZzpvIc
-         ldaI+rPsfNUPMmGjTy2sW7myhI+3ACAyIvxK1baZ+w4eK8UJ4bXqhpk4GN2HASz+DY
-         lXLkKcm6O2cLE3D8fTMjmiSXKUAOE9hgLbdH3FfU=
-Message-ID: <1562017301.2762.21.camel@HansenPartnership.com>
-Subject: Re: palo not working on ext2/ext3 partitions
+        s=20151216; t=1562021071;
+        bh=m0tNNukF7xF3egFzci432mYmOW/txTHRHkDLaD3r0gI=;
+        h=Subject:From:To:Cc:Date:From;
+        b=jsX6GdVXxECfcsXbXJMNy0nT+o4FuyJdpvwVdu2IhWxU/0psLUo+4BYvEG9cXXGNV
+         ssQu01I7rxO8KGLpOOEgjcpkaFDBY26SSRpPojpaMsJuliaNLL52KBLz0FsHHbp5Wg
+         i8Y5JvONLVeitVymW91F7DYazx1BUOoWCIJwKjiA=
+Message-ID: <1562021070.2762.36.camel@HansenPartnership.com>
+Subject: [BUG] mke2fs produces corrupt filesystem if badblock list contains
+ a block under 251
 From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Date:   Mon, 01 Jul 2019 14:41:41 -0700
-In-Reply-To: <1562016779.2762.19.camel@HansenPartnership.com>
-References: <1562010854.2762.8.camel@HansenPartnership.com>
-         <cec14b8a-4230-8320-990c-f4808f0ab9f8@gmx.de>
-         <1562016779.2762.19.camel@HansenPartnership.com>
+To:     linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Cc:     Parisc List <linux-parisc@vger.kernel.org>
+Date:   Mon, 01 Jul 2019 15:44:30 -0700
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.26.6 
 Mime-Version: 1.0
@@ -55,35 +53,69 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, 2019-07-01 at 14:32 -0700, James Bottomley wrote:
-[...]
-> Empirically, I've found that as long as the badblocks don't include
-> any block from 0-250 ext2/3 seems to be happy creating a valid
-> filesystem.  Unfortunately with the label being 64k (so even if the
-> palo partition is first it starts at an offset of 64k) and our
-> alignment being on 256k  absolute, we usually end up starting the
-> badblocks at around block 224.
+Background: we actually use the badblocks feature of the ext filesystem
+group to do a poorman's boot filesystem for parisc: Our system chunks
+up the disk searching for an Initial Program Loader (IPL) signature and
+then executes it, so we poke a hole in an ext3 filesystem at creation
+time and place the IPL into it.  Our IP can read ext3 files and
+directories, so it allows us to load the kernel directly from the file.
 
-Based on this observation, this fixes palo for me ... at least I can
-create and check a palo ext2 partition after this.
+The problem is that our IPL needs to be aligned at 256k in absolute
+terms on the disk, so, in the usual situation of having a 64k partition
+label and the boot partition being the first one we usually end up
+poking the badblock hole beginning at block 224 (using a 1k block
+size).
+
+The problem is that this used to work long ago (where the value of long
+seems to be some time before 2011) but no longer does.  The problem can
+be illustrated simply by doing
+
+---
+# dd if=/dev/zero of=bbtest.img bs=1M count=100
+# losetup /dev/loop0 bbtest.img
+# a=237; while [ $a -le 450 ]; do echo $a >> bblist.txt; a=$[$a+1]; done
+# mke2fs -b 1024 -l /home/jejb/bblist.txt  /dev/loop0
+---
+
+Now if you try to do an e2fsck on the partition you'll get this
+
+---
+# e2fsck  -f /dev/loop0
+e2fsck 1.45.2 (27-May-2019)
+Pass 1: Checking inodes, blocks, and sizes
+Programming error?  block #237 claimed for no reason in process_bad_block.
+Programming error?  block #238 claimed for no reason in process_bad_block.
+Programming error?  block #239 claimed for no reason in process_bad_block.
+Programming error?  block #240 claimed for no reason in process_bad_block.
+Programming error?  block #241 claimed for no reason in process_bad_block.
+Programming error?  block #242 claimed for no reason in process_bad_block.
+Programming error?  block #243 claimed for no reason in process_bad_block.
+Programming error?  block #244 claimed for no reason in process_bad_block.
+Programming error?  block #245 claimed for no reason in process_bad_block.
+Programming error?  block #246 claimed for no reason in process_bad_block.
+Programming error?  block #247 claimed for no reason in process_bad_block.
+Programming error?  block #248 claimed for no reason in process_bad_block.
+Programming error?  block #249 claimed for no reason in process_bad_block.
+Programming error?  block #250 claimed for no reason in process_bad_block.
+Programming error?  block #251 claimed for no reason in process_bad_block.
+Programming error?  block #252 claimed for no reason in process_bad_block.
+Programming error?  block #253 claimed for no reason in process_bad_block.
+Programming error?  block #254 claimed for no reason in process_bad_block.
+Programming error?  block #255 claimed for no reason in process_bad_block.
+Programming error?  block #256 claimed for no reason in process_bad_block.
+Programming error?  block #257 claimed for no reason in process_bad_block.
+Programming error?  block #258 claimed for no reason in process_bad_block.
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+Free blocks count wrong for group #0 (7556, counted=7578).
+Fix<y>? 
+---
+
+So mke2fs has created an ab-inito corrupt filesystem.  Empirically,
+this only seems to happen if there is a block in the bad block list
+under 251, but I haven't verified this extensively.
 
 James
 
----
-
-diff --git a/palo/palo.c b/palo/palo.c
-index 68b85cf..ce36612 100644
---- a/palo/palo.c
-+++ b/palo/palo.c
-@@ -443,8 +443,9 @@ do_cdrom(int media, int kernel32, int kernel64,
- #define EXT2_HOLE	((MAXBLSIZE + 1) / EXT2_BLOCKSIZE)
- 
- /* offset in bytes before start of hole,  ext2 doesn't allow holes at
-- * to cover the first four blocks of the filesystem */
--#define EXT2_OFFSET	(4*EXT2_BLOCKSIZE)
-+ * to cover the first four blocks of the filesystem
-+ * FIXME: a problem in mke2fs doesn't allow bad block under 250 */
-+#define EXT2_OFFSET	(251*EXT2_BLOCKSIZE)
- 
- int
- do_formatted(int init, int media, const char *medianame, int partition,
