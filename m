@@ -2,154 +2,144 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F9295C678
-	for <lists+linux-parisc@lfdr.de>; Tue,  2 Jul 2019 02:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A19DA5D3C3
+	for <lists+linux-parisc@lfdr.de>; Tue,  2 Jul 2019 17:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727047AbfGBAxh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 1 Jul 2019 20:53:37 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:37284 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726866AbfGBAxh (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 1 Jul 2019 20:53:37 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 928818EE0E3;
-        Mon,  1 Jul 2019 17:53:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1562028816;
-        bh=ziuFwfAaAOaRzTAhLJllzPXRQqxz5i1F923x1o9A8AM=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=Pvi8aPJMuGWkjN+Z/TudR8FB0jB7oFESWDQMxbJY6361yvwQHnwj5VsIqTtnZxzrf
-         Coi0i1ifWiHKIaoqCfF2xbtm32c+tFnmeL7VZqePa9uYrJzWn0UYOEKMO6vCNJjxeS
-         Hj3fLLi5intkUpYoD4H7GqocYRuJWOVE/o2AOSyA=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id YGa9hrlhEUxS; Mon,  1 Jul 2019 17:53:36 -0700 (PDT)
-Received: from jarvis.lan (unknown [50.35.68.20])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 224E68EE0E0;
-        Mon,  1 Jul 2019 17:53:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1562028816;
-        bh=ziuFwfAaAOaRzTAhLJllzPXRQqxz5i1F923x1o9A8AM=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=Pvi8aPJMuGWkjN+Z/TudR8FB0jB7oFESWDQMxbJY6361yvwQHnwj5VsIqTtnZxzrf
-         Coi0i1ifWiHKIaoqCfF2xbtm32c+tFnmeL7VZqePa9uYrJzWn0UYOEKMO6vCNJjxeS
-         Hj3fLLi5intkUpYoD4H7GqocYRuJWOVE/o2AOSyA=
-Message-ID: <1562028814.2762.50.camel@HansenPartnership.com>
-Subject: Re: [BUG] mke2fs produces corrupt filesystem if badblock list
- contains a block under 251
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Theodore Ts'o <tytso@mit.edu>
-Cc:     linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>
-Date:   Mon, 01 Jul 2019 17:53:34 -0700
-In-Reply-To: <20190702002355.GB3315@mit.edu>
-References: <1562021070.2762.36.camel@HansenPartnership.com>
-         <20190702002355.GB3315@mit.edu>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1725972AbfGBP7y (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 2 Jul 2019 11:59:54 -0400
+Received: from mout.gmx.net ([212.227.15.19]:39057 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725922AbfGBP7y (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 2 Jul 2019 11:59:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1562083162;
+        bh=P5eQDbAW1l5i9YSlJBwVb4E/+swDIeNaoULnJV8sjVc=;
+        h=X-UI-Sender-Class:Subject:From:To:References:Date:In-Reply-To;
+        b=VYwVWHO8DkPbceykId3ZErOQV/hkkJ5PQh79KnGKDjDKM6zCnQUc5CE7MLhnmrpMq
+         f03unef35HWkyjBzWpourGINhwP6ICl6DhiDVKRM3z8UsgBByjACEBJv6CyGwKyK4B
+         dglJhbKRlUX2z95RoPARqvqhdBgwn13W6UbYFO+o=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.165.153]) by mail.gmx.com (mrgmx003
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0MMBiP-1hcXDz2UBB-008570; Tue, 02
+ Jul 2019 17:59:22 +0200
+Subject: Re: Running the gdb 7.12.1 testsuite breaks kernel 4.13.8 on C8000
+From:   Helge Deller <deller@gmx.de>
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org
+References: <11946948.1Lt8Nslq4k@devpool21>
+ <16444139.ehY7rFqKE1@daneel.sf-tec.de> <2240883.3K8JbTncdJ@daneel.sf-tec.de>
+ <ea25ddf3-0e9c-534f-1dc6-41169dc3edcd@gmx.de>
+Message-ID: <029de4f5-62db-7d74-7619-3c7888ce4f9c@gmx.de>
+Date:   Tue, 2 Jul 2019 17:59:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <ea25ddf3-0e9c-534f-1dc6-41169dc3edcd@gmx.de>
+Content-Type: multipart/mixed;
+ boundary="------------0E772DEF2D0E193F6D756351"
+Content-Language: en-US
+X-Provags-ID: V03:K1:9h44auKPepgJHjPMD7ha7qT0tMEnZF/fcnO4W8K/SRmxihTn2Xu
+ PuEKL0rlQoHEcNmJ5O3k4VBlVC5l6l3DVCGhmSQ1bOaAoKGBaCaT8E+Zj0RqlHJcP/3Lsa9
+ 7XnWv3+VBUEVD8qkLc2O4wKQ0fCQVg1kiGpEXkE/Y4BYwPeqK3k3mlpn6cx6e2TQ8nirl0J
+ 1XBi3bXEQ/q8VMvD1BPWQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:cd31nIXJRYY=:HePG1aDaU+iGUl9lYnKV6B
+ muc0/tIr4Y1FQIARTxWWQvLBNWZV1x1M6aB9VbRRPMaLS0yZPwQS5Q/xpVxqTzTyVEnTlmaUH
+ rVmtv2aJLAhnOe0SmLKFlEgKmhIF8UoRh0OyZRx++1ZNt6GbPqCm7sjIeSNtPdPWPiMccOmks
+ 78O5BOkPjqDErTl9ePtk8ajpvJxkkDFVDcOFWJM3TTkyhaSSzF2bBBp248zSe8HMLMP/CuaH5
+ YwpsHs17Srg08Chli8kZ0ukC5T5bZBrut59Xkfjf1liOwyOqpB2/0iPpZkO0zft5wUKuPM2t+
+ 8NbhW6czbdMSajn4rHVituR9q1pVrh2XiH/KBmhagb6xtZiCMUK5bojxD3pUMNf4/5DDYyxgH
+ 87NIooR8tL9YS7nG571eskpr57zPpUfjJdSlxXuPA6Yp8v+rNOyZojBWCsUt1qWRA3YCA++Oi
+ kF0Fb5EFhyFrdyWoZ5cTQ/lkfZuukNQcZJ3f47AXOeUVBwfIL49xohaGkvMJm+luOjw/kWgzE
+ Ut3+Xj6gbDur2ZwYPuEUbuhyHyaj3/gWBL9vIkN7kKLzejw7LMKOB7c52cp7qJPrFUI2A0M1H
+ +D08HBG18CL19TRg5d78YFWS0mL3WJmyfaSJoCg5+CEJSv4uKEhvWPOJcLWMYD2H0TAhaVvC1
+ vqVyZ/9WjOqLeyAGjuhC8Ujk3BW9Gsu26n9qnUlxSvjndxIjXmk8qhqK+hyb6mTE8ChWIUj72
+ xK45k7lbXxhbcSLpCZQ7RgMCbNTMBDFE0xFGct5+itFB6VaZrAGKYPK4rNlr4opMZjRZXLNoz
+ KSKBZWcIc7Hi6YEvszsfHMhruJUxSNMOiSJ0vJjeAS4nGVnuBwVPGsK9Zcv2Yn1LoN9p6rND7
+ qLoxwPTA89gpuN9v8qbpRWJjaGexslkGm5sqRuj9eCIs+m5fA4yWuL++ogc3FNd4vCCWGsS1W
+ mucxIl47iY5b3JMByFpLgbm4OBs34HXpKpMtITcWhQMFSXC7aXHe44ygafw/xfrBkX1P3AkqV
+ /MjINvln6a6dlfl5C3ZYoFeZtV9YoKFlMk73HvJDX1xUAidmqxi/JqJ2ZKQKBHMpcg==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, 2019-07-01 at 20:23 -0400, Theodore Ts'o wrote:
-> On Mon, Jul 01, 2019 at 03:44:30PM -0700, James Bottomley wrote:
-> > Background: we actually use the badblocks feature of the ext
-> > filesystem group to do a poorman's boot filesystem for parisc: Our
-> > system chunks up the disk searching for an Initial Program Loader
-> > (IPL) signature and then executes it, so we poke a hole in an ext3
-> > filesystem at creation time and place the IPL into it.  Our IP can
-> > read ext3 files and directories, so it allows us to load the kernel
-> > directly from the file.
-> > 
-> > The problem is that our IPL needs to be aligned at 256k in absolute
-> > terms on the disk, so, in the usual situation of having a 64k
-> > partition label and the boot partition being the first one we
-> > usually end up poking the badblock hole beginning at block 224
-> > (using a 1k block size).
-> > 
-> > The problem is that this used to work long ago (where the value of
-> > long seems to be some time before 2011) but no longer does.  The
-> > problem can be illustrated simply by doing
-> 
-> It broke sometime around 2006.  E2fsprogs 1.39 is when we started
-> creating file systems with the resize inode to support the online
-> resize feature.
-> 
-> And the problem is with a 100M file system using 1k blocks, when you
-> reserve blocks 237 -- 258, you're conflicting with the reserved
-> blocks used for online resizing:
-> 
-> Group 0: (Blocks 1-8192)
->   Primary superblock at 1, Group descriptors at 2-2
->   Reserved GDT blocks at 3-258 <========= THIS
->   Block bitmap at 451 (+450)
->   Inode bitmap at 452 (+451)
->   Inode table at 453-699 (+452)
->   7456 free blocks, 1965 free inodes, 2 directories
->   Free blocks: 715-8192
->   Free inodes: 12-1976
-> 
-> It's a bug that mke2fs didn't notice this issue and give an error
-> message ("HAHAHAHA... NO.").  And it's also a bug that e2fsck didn't
-> correctly diagnose the nature of the corruption.  Both of these bugs
-> are because how the reserved blocks for online resizing are handled
-> is a bit of a special case.
-> 
-> In any case, the workaround is to do this:
-> 
-> # mke2fs -b 1024 -O ^resize_inode -l
-> /home/jejb/bblist.txt  /dev/loop0
-> 
-> For bonus points, you could even add something like this to
-> /etc/mke2fs.conf:
-> 
-> [fs_types]
->      parisc_boot = {
-> 	features = ^resize_inode
-> 	blocksize = 1024
-> 	inode_size = 128
->     }
-> 
-> Then all you would need to do something like this:
-> 
-> # mke2fs -T parisc_boot -l bblist.txt /dev/sda1
+This is a multi-part message in MIME format.
+--------------0E772DEF2D0E193F6D756351
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Actually, we control the location of the IPL, so as long as mke2fs
-errors out if we get it wrong I can add an offset so it begins at >
-sector 258.  Palo actually executed mke2fs when you initialize the
-partition so it can add any options it likes. I was also thinking I
-should update palo to support ext4 as well.
+>> This seems to be a minimal reproducer:
+>> https://481768.bugs.gentoo.org/attachment.cgi?id=361728
 
-> Also, I guess this answers the other question that had recently
-> crossed my mind, which is I had been thinking of deprecating and
-> eventually removing the badblock feature in e2fsprogs altogether,
-> since no sane user of badblocks should exist in 2019.  I guess I
-> stand corrected.  :-)
+That's a REALLY nasty bug!
+I see at least two issues here: A Linux kernel bug and a gdb (userspace) bug.
 
-Well, we don't have to use badblocks to achieve this, but we would like
-a way to make an inode cover the reserved physical area of the IPL. 
-Effectively it's a single contiguous area on disk with specific
-absolute alignment constraints.  It doesn't actually matter if it
-appears in the directory tree.
+The kernel bug is, that a userspace process (running gdb) is able to crash the machine.
+The attached patch does fix the crashes by preventing userspace to change IAOQ values to point to the gateway page.
+This is what made the kernel crash, which probably happened, when the kernel tried to switch_to() the process.
+I'm still trying to figure out if there is a better patch, e.g. in the switch_to() function or similar.
+So, I don't think it's the final patch.
+Anyway, this patch can help to figure out what's else going wrong.
 
-> 					- Ted
-> 
-> P.S.  Does this mean parisc has been using an amazingly obsolete
-> version of e2fsprogs, which is why no one had noticed?  Or was there
-> a static image file of the 100M boot partition, which you hadn't
-> regenerated until now.... ?
+Then, the second issue is:
+In gdb this crashes the machine: "set tp = { 0,0 }".
+Correct would be: "set *tp = { 0,0 }", which does NOT crash the kernel and works correctly.
+So, for the first test it seems that gdb tries to create a temporary variable on the stack for "tp" in the user process.
+For that gdb analyzes the code and thus somehow starts executing the attached process.
+I think some gdb-expert might be able to fix this, esp. since gdb now prints:
+: The program being debugged stopped while in a function called from GDB.
+: Evaluation of the expression containing the function
+: (malloc) will be abandoned.
+: When the function is done executing, GDB will silently stop.
+Maybe gdb tries to call the "malloc" function to allocate memory?
 
-Yes, since we only do this at boot, and we can actually update the IPL
-on the fly when we need to because the space reserved is the maximum,
-it only gets invoked on a reinitialization, which I haven't done for a
-very long time.  The only reason I did it this time is because I have a
-spare disk in a pa8800 which I used as an install target.
+gdb uses ptrace() to control the attached process. So, adding a
+  printk("PTRACE_REQUEST_PARISC  req=0x%lx  addr=0x%lx  data=0x%lx\n", request, addr, data);
+to arch_ptrace() in arch/parisc/kernel/ptrace.c helps to debug what gdb does.
 
-James
+Helge
 
+--------------0E772DEF2D0E193F6D756351
+Content-Type: text/plain; charset=UTF-8;
+ name="p1"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="p1"
+
+diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
+index a3d2fb4e6dd2..1b1af8a6508f 100644
+--- a/arch/parisc/kernel/ptrace.c
++++ b/arch/parisc/kernel/ptrace.c
+@@ -167,6 +175,14 @@ long arch_ptrace(struct task_struct *child, long request,
+ 		if ((addr & (sizeof(unsigned long)-1)) ||
+ 		     addr >= sizeof(struct pt_regs))
+ 			break;
++		/* Do not allow userspace to set IAOQ to gateway page. */
++		if (addr == PT_IAOQ0 || addr == PT_IAOQ1) {
++			if (data < GATEWAY_PAGE_SIZE) {
++				ret = 0; // return sucess to not disturb gdb
++				// printk("UGH!!!!!!!!!!!!!!!!!!!!\n");
++				break;
++			}
++		}
+ 		if ((addr >= PT_GR1 && addr <= PT_GR31) ||
+ 				addr == PT_IAOQ0 || addr == PT_IAOQ1 ||
+ 				(addr >= PT_FR0 && addr <= PT_FR31 + 4) ||
+@@ -281,6 +297,14 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			addr = translate_usr_offset(addr);
+ 			if (addr >= sizeof(struct pt_regs))
+ 				break;
++			/* Do not allow userspace to set IAOQ to gateway page. */
++			if (addr == PT_IAOQ0 || addr == PT_IAOQ1) {
++				if (data < GATEWAY_PAGE_SIZE) {
++					ret = 0; // return sucess to not disturb gdb
++					// printk("UGH!!!!!!!!!!!!!!!!!!!!\n");
++					break;
++				}
++			}
+ 			if (addr >= PT_FR0 && addr <= PT_FR31 + 4) {
+ 				/* Special case, fp regs are 64 bits anyway */
+ 				*(__u64 *) ((char *) task_regs(child) + addr) = data;
+
+--------------0E772DEF2D0E193F6D756351--
