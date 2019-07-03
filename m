@@ -2,62 +2,100 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 900A55DE12
-	for <lists+linux-parisc@lfdr.de>; Wed,  3 Jul 2019 08:31:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3274E5DE1B
+	for <lists+linux-parisc@lfdr.de>; Wed,  3 Jul 2019 08:36:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726236AbfGCGbk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 3 Jul 2019 02:31:40 -0400
-Received: from mout.gmx.net ([212.227.17.20]:45227 "EHLO mout.gmx.net"
+        id S1726490AbfGCGgI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 3 Jul 2019 02:36:08 -0400
+Received: from mout.gmx.net ([212.227.15.15]:38203 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726670AbfGCGbk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 3 Jul 2019 02:31:40 -0400
+        id S1726236AbfGCGgI (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 3 Jul 2019 02:36:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1562135495;
-        bh=frcCV1k9oG9oKj3dpUqdJg1PxRT2RSN/XKdLCPjaYaY=;
-        h=X-UI-Sender-Class:Date:From:To;
-        b=Br9zQK0IqW8Xzkrrrt7AWQd6aeS7lD5bdkmHBT7hiWyVZGLUbFQT8cLTmjsNYLnH9
-         H2Cs3rF4f0USMjOaSzhi0iteT99ukQ8Tbh8DRoD/EE3q8+usSGrm7bXaxq0kRRmDbW
-         Oat4QKcCIXb117uFs1bHR1Wf/s7mvIz2/+0rQUY4=
+        s=badeba3b8450; t=1562135729;
+        bh=F+zl8mFANOFQgediALk++P2BpDP9KtUyGC0xt5nHQlI=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=YU4lswpHXBb8Ph/4Nni+oQL7ROcqWNo4W0tGjm9Zo65S/uvqtUcAfCWuL/QvycLAj
+         znJdR80yAsaMsu1Tr7GvDk9HXomyq3oqFQ5Ba/U9EEQOB5mrGkdUE6X3jgcp9Ccg8N
+         phgm+bkM2C5T7ZQiFhmSVcrm1oPHeJT4u8rb40iY=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from ls3530.dellerweb.de ([92.116.183.112]) by mail.gmx.com
- (mrgmx101 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 0MUDXS-1i9TK11pRK-00QwtX; Wed, 03 Jul 2019 08:31:35 +0200
-Date:   Wed, 3 Jul 2019 08:31:32 +0200
+ (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MDhlV-1hr7R81DfD-00An6n; Wed, 03 Jul 2019 08:35:29 +0200
+Date:   Wed, 3 Jul 2019 08:35:24 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+To:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Message-ID: <20190703063132.GA27292@ls3530.dellerweb.de>
+Cc:     Jeroen Roovers <jer@gentoo.org>,
+        Rolf Eike Beer <eike-kernel@sf-tec.de>
+Subject: [PATCH] parisc: Fix kernel panic due invalid values of IAOQ0 or IAOQ1
+Message-ID: <20190703063524.GA27797@ls3530.dellerweb.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.12.0 (2019-05-25)
-X-Provags-ID: V03:K1:AQMBZt/cS++AdckiN5SwFwqkuUR8cd+lHt0nOMAOU2Ylxk4imVX
- ZZnvsEWX16Ajm/b1kQAcRIhFGQbH78StHTFUVyu6L1nC7mazZEKH4wo3q1HvLUMe8AhMpHc
- T6JRfWNYFCII9X9792SE3PL0H199KECb2D6Wwv6KvGGc85oHbIc2L1RJMJNimHfycqy7ueU
- N+ywnOVQS6m7Y+jK2/8lg==
+X-Provags-ID: V03:K1:mIouJft4ozNw4UDziPLz5FdNPeH27DhYTJnejXSM8Op8n0X0MuO
+ Y94c2lc28UXJEVjYZx+Ro6L5EFpYQU61SRjDM5UOJ9LKAhDkbpVdw+pgdx9L/QAfW69kS78
+ AAtV6To+C2m+DCfyCQLWXDk451ZVwQiLQ95BPQPOX0BM3GC+KyW4W9qr3W3e1eVQhH8p5rh
+ NOgjRGKthVjTWLWaLWQSA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Ghao0HUWzHw=:s3m676f3rTzwv6YsqyQVFW
- XAOmkiKdSvYClTnmfb8Zg0BFQM2snwyWlOODsuAOgjmp0Ag2HUAl0g5htNbRcuhB4cU5Ktp2P
- jIHqRuZ6K1YE857wM+pmyTqfqWqfal/NB2/uDqc82kwWZrFfTJ1vAVQmTXBZQzrUvp/Fv8Dtg
- Q1lbfwyip/uSm12dBkoNo1BGHNXQYqJRdBYN8TTh9x8xKFpw0rCymTShC18++QoQ/SkD9xCPK
- 94Bs6mqpSDgDfNQNMM65cxXNGd5S+KJZvq/1nj1RAntdSUz3VGe7HX31Fu/BuLXCkFx023LFN
- TEEAb7MQv54P8x/PPrfga/1b/nnA+zdHcFF3oHr+pgp+Lzn99YhHh7BaK9aJvxwoSeoD7BeE3
- V4PaglIgxFNrcTBMpBIltXlImQHVb+KGVn1f/JQR723GvtAEvEkFGsBN5iqpVued8XqCilTkP
- TtSF2YP8Sb6ZWz55tm5JXNi+d79GQUW1Pxj8aizV4+hpLydn6J4hqeh/JO17TBw3YFDTxrQcs
- Ve2MagLGEAP1FStd20fm9Hjil2A8qpR6EfGoPTAOil9SeombqtktM1MQRKE80KG+R3rX+Q8Tf
- +lraDCPWxGm3yEQdD/U8ab8o+hnQrz8nf0M9ik/1DXaFPaZJ/Yg4w0OlEOqZsswxLxlDj/P3V
- 2dmmDic40qMqGDu1Yjd9zG8RHeosqxaJpSTcuVvuBRypWUijz9lL33XVIXCZmh8IEvhVjehxP
- MBZMNVyx0FvpDeeTuJR6VPCAKOWRPMKBcnTFTOMSiVmGFUoNnzFcJmGA2Tzzdvou/f0hWdtzq
- p4PKwMFSMV+m7u/x2Fy+T7S4Vw3buWdgJjDGvpoMrYa639GS+d3gfpRaQ+LD2uCCnZdBb5YF1
- QOJXb3HcO5Dz3TllBLqnV98b1uromNUiFUP8l0k1fneK3hXvctXTBPdKek7tz5zBL+GfeSqHN
- W2SyCOA5u6F2kGxZJUuu9OLXc4fsATH4rZ3a8dpg7P5wJPOcMr0z+oIWwjXVMiHTQ/hMYeh6X
- SQzO+tqHPwE4I+scM9hFckXA6AreoAQVM+cS2xyyY46TZsNuiTZAlytOYFi5mn5el4sfP206Z
- DKqWWUR/NQ3CiiMmTu4kd08DzMUdm+mhQI+/gG66fvRJjBwOJu+GlRxV7gKied6DxcslfAN07
- Fjnvk=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:RfRvv6+ditQ=:PIHs+KIAA8GjjYfEZIe8MP
+ pXhAEDw7ykjqLvGidt2w1ln/XUEhIK8hp+ej7lrfuQTOCmuNCcUa2nRPnVF5u+PPnfYzTF4qW
+ 4OM1gg0cHPQsEs24dt8McKaih3aNwFrnJSGFzNsMwo3N9eNtURmfHszavOmAx8kPH3iZYgB9u
+ JFhl15a4yBKKPq3mn0lsP8QXzSLxwBByWdyuKjLP/airGqTTLVREhekUprkmA/MVKZkpSuncL
+ MqRkPigSyiR8Y+j4xSNxbRNt1UXWGXqS3S4rAH5QPBuPjv4IIaj+BY/Z0Sdm/LChgsONi680W
+ cuvmm6AiDkYxzNfwHrup4Fnn//MNWcoK7URr4D/z/W3u3CzDqwU0pnzXTZY9xp8ljA5N0w5BK
+ S6u8LpS9JAVJy3MScwjAY17ixxQb73C+4sdc4EcoK7JPpVmCECH8gI/sdMXNZBHFq9keiI8DK
+ jbirfl63PDHn74GCGkvgGmUnxSUOS2YSLNsaRlFaBp7rfztHzSFdnJhRLCmckGhQ5zT7oFC8n
+ x/seV41zAaUWvvcaK7SjZqakZm1DPzTZgkR67K+XK5lhoTRy/+IwlJH5TvXbJx9xHlpyfGel6
+ xpy08abmXMPGpUEqblWwj227bu+DztpK2OaYfNTRpDTohJ6ktFF8Y+0R8jcnzLW4QPGm1I+Zb
+ yECPmSB9bRUXwyMReb8bHytLjilSkqyv/T1piBBDaUA0Qh4DqvRkJTCNCDS1Jm6JEM9Tvlr6T
+ wxM8I25gv4nnLJfCDDblVJo10DFfYEYPCN3jyDY12pLHwNAU3gFD/1KHS0rA0O6Z2kT8U+hHA
+ ivk+eA1x9a/pJv3ROJx+wDlyajRbdvOQRiYPFsBthAhGVuY2fj7iux30FxyKVYLmbRCFiVT7H
+ qgbY73WJRHQQXMcn1tPpdNeow8Q0bHQA5ntvzlzl8raXBhzLtTleYbzkhdhhRAvK5jzGbJav7
+ LvpZqAY+ePL40S4xZnm396Ud3Bcdo6Fd1+EmfZ3m9avKOakBvlvKa4D3IbBUdU28UQ7CbZvr4
+ k7DsKPhloZ6DOKDRSB8VWy7d62JfbmgzX1aiuXk7UoePKhMhAnb+dWJJ+EvU/m1ZVw==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On parisc the privilege level of a process is stored in the lowest two bits of
+the instruction pointers (IAOQ0 and IAOQ1). On Linux we use privilege level 0
+for the kernel and privilege level 3 for user-space. So userspace should not be
+allowed to modify IAOQ0 or IAOQ1 of a ptraced process to change it's privilege
+level to e.g. 0 to try to gain kernel privileges.
+
+This patch prevents such modifications by always setting the two lowest bits to
+one (which relates to privilege level 3 for user-space) if IAOQ0 or IAOQ1 are
+modified via ptrace calls.
+
+Fixes: https://bugs.gentoo.org/481768
+Reported-by: Jeroen Roovers <jer@gentoo.org>
+Cc: <stable@vger.kernel.org>
+
+diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
+index a3d2fb4e6dd2..8ecd41938709 100644
+--- a/arch/parisc/kernel/ptrace.c
++++ b/arch/parisc/kernel/ptrace.c
+@@ -167,6 +175,9 @@ long arch_ptrace(struct task_struct *child, long request,
+ 		if ((addr & (sizeof(unsigned long)-1)) ||
+ 		     addr >= sizeof(struct pt_regs))
+ 			break;
++		if (addr == PT_IAOQ0 || addr == PT_IAOQ1) {
++			data |= 3; /* ensure userspace privilege */
++		}
+ 		if ((addr >= PT_GR1 && addr <= PT_GR31) ||
+ 				addr == PT_IAOQ0 || addr == PT_IAOQ1 ||
+ 				(addr >= PT_FR0 && addr <= PT_FR31 + 4) ||
+@@ -281,6 +292,9 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			addr = translate_usr_offset(addr);
+ 			if (addr >= sizeof(struct pt_regs))
+ 				break;
++			if (addr == PT_IAOQ0 || addr == PT_IAOQ1) {
++				data |= 3; /* ensure userspace privilege */
++			}
+ 			if (addr >= PT_FR0 && addr <= PT_FR31 + 4) {
+ 				/* Special case, fp regs are 64 bits anyway */
+ 				*(__u64 *) ((char *) task_regs(child) + addr) = data;
