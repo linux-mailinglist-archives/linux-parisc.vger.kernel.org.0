@@ -2,127 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F1F45EB03
-	for <lists+linux-parisc@lfdr.de>; Wed,  3 Jul 2019 19:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4CC85F105
+	for <lists+linux-parisc@lfdr.de>; Thu,  4 Jul 2019 03:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726473AbfGCR7d (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 3 Jul 2019 13:59:33 -0400
-Received: from mout.gmx.net ([212.227.17.21]:34847 "EHLO mout.gmx.net"
+        id S1726955AbfGDBoc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 3 Jul 2019 21:44:32 -0400
+Received: from mout.gmx.net ([212.227.15.15]:50445 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725933AbfGCR7b (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 3 Jul 2019 13:59:31 -0400
+        id S1726736AbfGDBob (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 3 Jul 2019 21:44:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1562176765;
-        bh=ufdAaLTu1TwRLOXrtRJxnakMcLqdLJyMGjdsc83Ijmg=;
-        h=X-UI-Sender-Class:Subject:From:To:References:Date:In-Reply-To;
-        b=XIoGSRSN2J9IQbDus4WC0vhbdKXoP3a2aRizxbu30akc0WVo5O2dLu4odQo033FL8
-         scoHvIHYj2jSBgiTqQIDfic4trHM+UrsGfEyUEemdVBb4cBq6NnStDQubyAPuLFjGd
-         ER2YRbpQE0eVA9iII8XHtqPmoPcMVVjQAlMngfQE=
+        s=badeba3b8450; t=1562204663;
+        bh=P0/Rc8XDprc+CfLKw/UqiP06D7XOvt+ud9BW3QLmPI0=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=FXP6i/kynlFE3qJpBXrSpEl4QYjQtSWn3Nac3HMm7kuVdjNMS92uqaxHZjoXndmuE
+         fQOtrZIAFGBz4la3Z0k3qUv/3k9g2e3e9UESRMWYZhOqzwkf8g5PYEEb1CHKj3ywqJ
+         hKOlleh7YqZJ7uLhdgP2/oEfkSn2quvvPtHWkdac=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.183.112]) by mail.gmx.com (mrgmx101
- [212.227.17.168]) with ESMTPSA (Nemesis) id 0ME33j-1hkdCU1olT-00HQ4G; Wed, 03
- Jul 2019 19:59:25 +0200
-Subject: Re: [PATCH] palo: fix IPL overlap with ext2/ext3 resize_inode
+Received: from ls3530.dellerweb.de ([92.116.183.112]) by mail.gmx.com
+ (mrgmx002 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 0LwaMR-1ib6Uq0Amt-018MUk; Thu, 04 Jul 2019 03:44:23 +0200
+Date:   Thu, 4 Jul 2019 03:44:17 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Parisc List <linux-parisc@vger.kernel.org>
-References: <1562131344.29304.100.camel@HansenPartnership.com>
- <67376425-6e29-3b20-a0aa-7fce2c030366@gmx.de>
- <1562164221.3438.3.camel@HansenPartnership.com>
- <38866dd3-665e-b71a-961b-d10859bf61d5@gmx.de>
-Message-ID: <271150f3-3509-b657-181a-1d319b44b0f1@gmx.de>
-Date:   Wed, 3 Jul 2019 19:59:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Ensure userspace privilege for ptraced processes in
+ regset functions
+Message-ID: <20190704014417.GA26392@ls3530.dellerweb.de>
 MIME-Version: 1.0
-In-Reply-To: <38866dd3-665e-b71a-961b-d10859bf61d5@gmx.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:g1BMXlkvVhtVPzpllpxcxSlWMrTk33CYOYEi4II1fC1OeWZGTKk
- 2Eg2mm4WfyfM1jhzHp6VMgjNE7miLdVs9oFYvdQ+l2a/LUO44419z+C4cxmCVBvruvg2Own
- 2g8d8M1QNHIsanmt2qviTyQiIldDe7mLTRdI2T8/KHCvbJu8erLg00mwOZ9lpQtZj1Fy6iH
- tIxozSKDHU/3J+XKkzHCA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Provags-ID: V03:K1:jDrZFlAGIUmSWKAIQtLBnIm8fJAvDzN4uKLDxXx2sz/YlaKcSPy
+ o7sGV9CHJiinPvF4UieO9HsGKQuxcmwk1RdYZIJ5+Q5pW/fzVwLJvgS7FD0/058H0FoN7wS
+ S9LXoez3vVd4f2HpiIA0O9F+M8BKZZCPdkfudQgLAW699UOVgt7ygtOST5wJtZIC/dXYajx
+ 2i/ku2lO+BjGJ6LqtO7yg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Y/05h/jdP7E=:etUHPFPBlz1Xn4l8dOcHp+
- XW5e7aX7c7IwHu3p7sfR27um8W/fYtphV/Vp7TWv6f8uDbLQyXcm55q3U/QWjNWNG52+x3Pzr
- o6BVSNm+PE49CH9Pdb3fpBJWYCYxFa09TFJFU562rCRjgepGREVo5pXzWfKqg1PtkiDg1coEA
- gtHQHGcX/sgGtzDOpFGSjKw7INH0YLeNIL4toJT4GCjtuOS4nZpwArMw7+Kw6lhJ1vipTTFEu
- EibKbyIFi4bUJfjmkHfnIXgHSq9jmvVzZAMr306qUBuWj6nvtS8v2q5cd7gWqf8y7s104q53N
- 38DCGK/4BEo9++1g/l4vkirH0YDY2bt2CaLZmWN9x2dDTj+6WxrtC8dbNm4XUUk6qU0toRIN3
- 99BrnIe9V1royWuN/mBBp/W6kUDCPeWq76Lg+Jqh+RNmVObIa0sXmdzK1wAEuuJlfp1Py0bwM
- e1WCuyTVmfVAAtMeAr75Syglvh9SmaKVb/Gpxjp1Dj/pOLacWiMX3rq4MWZ0JPQfXBRS3kGxJ
- SYhhCnpd36IVQpvwBXKwTdy4rOFIfjap80onJlnYjFQhaCON9u3KO+oxKsrS5QfrlpozVDkuS
- 2eYmsiLAkWL/M5kIZ5Z+Syk7geXRhZ+eVlivf8imwyy/zWDHZVqAOj8GU8gGgsVIf4CkMHGCD
- G8xZnmnsF2wk6mxT/9XuRx26KhPqHJ7PBWIAS5M6G3PSQA2TtQm15YpkZK/LhkV4afa/8S1Ct
- M7leNTQb3/MgPxglgHY1bG5h3Q8f3BledXbsvoXkTKOudVRuGrnJNY6HBIzllT+FTHYtl821B
- dHTcKmlea4TSe0A7/Ol/gxocSpt66TupIagw795RVLttANwo3RJJ3KIxEIKa751OfXaL6gY+1
- wMXQ1uCJHBLvlbt9vA4/N6nicr/juVs+y/wWQ+sfdNSvtuxlHd7fbiTYIrDEY1BKWIirOgQP1
- Sp93QL9bLMZl6YPQ035RiWAIetvRSEfL32jlw6juHjqSYH6JJ8mcIZyXO0FEF9SFqYg0/s4+h
- 7OQzTxM3ybIPGL7yRJiom/QZl/O/qUIUo6c1EV8P0AGxL1QYZHZpsSWWeObCfq9ck5TaTTBdH
- 9CgPJVuU2d8g4g=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:F4TcWEAliC0=:YjVRKINW+yU20QU0Qqznet
+ GQSAGr3GSwU7mkUJVTIn9sX+CncCvPJiI5c++Xu/t243FdqQttV/I3sYjw9YLqu9TTsDKWFsJ
+ 4fTBc6N7AUfpiRbq5qNQCN6vXqkp2bdAsEJTU3gdoPJcgZkuVqDC8yyWPn19J6rSo43egwO/4
+ aOuushBICsWspNjt/Uc6gHzKPBVHmYbEmQG5vHMyGOkNZ40Y4ntrh/xxyLfR9bRcA/F6kNLaI
+ /Rb6u3DXrrrJ3RHW8bDNJ2uH6oPNf+JE741g0cYFqZe81CoLVUyb8vzp6ellQrNbtWtPdNZ1P
+ XRzj4i6LTtxHv/IZicHVUSaK8X/Uj3TEyY++sATrjN7TFYob3yNBPmfzUKDLnopqkdo4Cc5OD
+ Ay34ngt/sZVyP0/JkSruaPYpHHVoWctrbI8fMbABX2Gi12qOsgExmYzsZvt4RRpaJO7GlzQdS
+ z5x1KgwKacUZUA8IWQ3yUCAzXc5AGoZA59edx5tthWw8lvP43GH9lvjo+O8Pyp13P0icUW+Wv
+ hsWyPNxuQcLtoTw4c5dmPZK5pbi1lDWHuqkaEEE4SSK1mdkioHAr/8WJsi/cPWBzan2jONmSh
+ m5cHiSbTQg1ZXZ0WeGFOFZR9QFMg2QN2WAuQ1N3BHNSWBia3wp52ogpWk+SMJIGhlPhAxBX4H
+ 25vCULH63IXmVRz8SkjeB0zOd4xnSbHfIguXHZUrmEj5m5zYTce0w6XLSwcPRIKS3NMsqcUTg
+ AsTWsnptY4kI07jXCZzy0Fscz+/tiSstirNRgNchnz1YcZXEP7LZMV8hn64f/1vlAWoGNuN19
+ 4QHUvVU/pWT3T8WSsrjL/WLIfE5muDZWPm6hLOFFG+TmMhvVcz7l0AmyCTmfUtGGgYNJOwK+B
+ O/bIJ0jIt6aVA8Mb3emJimNEWFguwTxnQ32usAvSqvR1suAGZ39FkoVoscFRAkfUK4UpAArhI
+ 9BKxXx/p3ZU+aFE+fFyN1lBuy2NYq0dHBJERxkB4Dj74fTZuLl/OmS5tEyEQVXtZzvz3HE8o9
+ fKspWbcILO7i1xphddkW6rpt4Usj7fjknDdGeSVYko0Kcfqi+telSqWSs5L/3wkLjw==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 03.07.19 16:45, Helge Deller wrote:
-> On 03.07.19 16:30, James Bottomley wrote:
->> On Wed, 2019-07-03 at 07:53 +0200, Helge Deller wrote:
->>> On 03.07.19 07:22, James Bottomley wrote:
->>>> palo is producing corrupt filesystems because ext2 can't cope with
->>>> any of the resize_inode, which is traditionally placed at blocks 3-
->>>> 258, being in the badblocks list.=C2=A0 If this happens, mke2fs silen=
-tly
->>>> produces a corrupt filesystem image and the palo partition will
->>>> eventually trigger a filesystem error.=C2=A0 The fix is to force palo=
- to
->>>> specify -O^resize_inode to mke2fs which prevents ext2/3 from
->>>> allocating a resize_inode (and thus prevents the filesystem from
->>>> being
->>>> resized).
->>>>
->>>> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.c
->>>> om>
->>>> ---
->>>> =C2=A0=C2=A0 palo/palo.c | 8 ++++++--
->>>> =C2=A0=C2=A0 1 file changed, 6 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/palo/palo.c b/palo/palo.c
->>>> index 68b85cf..e088993 100644
->>>> --- a/palo/palo.c
->>>> +++ b/palo/palo.c
->>>> @@ -443,7 +443,11 @@ do_cdrom(int media, int kernel32, int
->>>> kernel64,
->>>> =C2=A0=C2=A0 #define EXT2_HOLE=C2=A0=C2=A0=C2=A0 ((MAXBLSIZE + 1) / E=
-XT2_BLOCKSIZE)
->>>>
->>>> =C2=A0=C2=A0 /* offset in bytes before start of hole,=C2=A0 ext2 does=
-n't allow
->>>> holes at
->>>> - * to cover the first four blocks of the filesystem */
->>>> + * to cover the first four blocks of the filesystem
->>>> + *
->>>> + * Note: modern ext2/3 has a resize_inode covering blocks 3-258 so
->>>> you
->>>> + * must either always include the -O^resize_inode when creating
->>>> the
->>>> + * filesystem or define EXT2_OFFSET to (259*EXT2_BLOCKSIZE)*/
->>>> =C2=A0=C2=A0 #define EXT2_OFFSET=C2=A0=C2=A0=C2=A0 (4*EXT2_BLOCKSIZE)
->>>>
->>>> =C2=A0=C2=A0 int
->>>> @@ -502,7 +506,7 @@ do_formatted(int init, int media, const char
->>>> *medianame, int partition,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>>
->>>> -=C2=A0=C2=A0=C2=A0 sprintf(cmd, "mke2fs %s -b %d -l %s %s", do_forma=
-t =3D=3D 3 ?
->>>> "-j" : "",
->>>> +=C2=A0=C2=A0=C2=A0 sprintf(cmd, "mke2fs %s -O^resize_inode -b %d -l =
-%s %s",
->>>> do_format =3D=3D 3 ? "-j" : "",
+On parisc the privilege level of a process is stored in the lowest two bits of
+the instruction pointers (IAOQ0 and IAOQ1). On Linux we use privilege level 0
+for the kernel and privilege level 3 for user-space. So userspace should not be
+allowed to modify IAOQ0 or IAOQ1 of a ptraced process to change it's privilege
+level to e.g. 0 to try to gain kernel privileges.
 
-Now included in the palo v2.01 release...
+This patch prevents such modifications in the regset support functions by
+always setting the two lowest bits to one (which relates to privilege level 3
+for user-space) if IAOQ0 or IAOQ1 are modified via ptrace regset calls.
 
-Helge
+Link: https://bugs.gentoo.org/481768
+Cc: <stable@vger.kernel.org> # v4.7+
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
+index c60229075a33..4fa0d4c07521 100644
+--- a/arch/parisc/kernel/ptrace.c
++++ b/arch/parisc/kernel/ptrace.c
+@@ -502,7 +510,8 @@ static void set_reg(struct pt_regs *regs, int num, unsigned long val)
+ 			return;
+ 	case RI(iaoq[0]):
+ 	case RI(iaoq[1]):
+-			regs->iaoq[num - RI(iaoq[0])] = val;
++			/* set 2 lowest bits to ensure userspace privilege: */
++			regs->iaoq[num - RI(iaoq[0])] = val | 3;
+ 			return;
+ 	case RI(sar):	regs->sar = val;
+ 			return;
+
