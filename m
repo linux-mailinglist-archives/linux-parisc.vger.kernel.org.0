@@ -2,135 +2,72 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C40461A69
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Jul 2019 07:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A8FC62A5C
+	for <lists+linux-parisc@lfdr.de>; Mon,  8 Jul 2019 22:31:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728741AbfGHFsH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 8 Jul 2019 01:48:07 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:41686 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728654AbfGHFsG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 8 Jul 2019 01:48:06 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id D5ED350844;
-        Mon,  8 Jul 2019 07:47:59 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
-        with ESMTP id 6HYUzmgqQjbZ; Mon,  8 Jul 2019 07:47:45 +0200 (CEST)
-Date:   Mon, 8 Jul 2019 15:47:35 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>,
-        Christian Brauner <christian@brauner.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v9 10/10] selftests: add openat2(2) selftests
-Message-ID: <20190708054735.3fepxxtolqaqwmrp@yavin>
-References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-11-cyphar@cyphar.com>
- <878st9iax4.fsf@concordia.ellerman.id.au>
+        id S2405017AbfGHUbQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 8 Jul 2019 16:31:16 -0400
+Received: from poczta.adminpan.waw.pl ([148.81.192.197]:42454 "EHLO
+        poczta.adminpan.waw.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729370AbfGHUbP (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 8 Jul 2019 16:31:15 -0400
+X-Greylist: delayed 590 seconds by postgrey-1.27 at vger.kernel.org; Mon, 08 Jul 2019 16:31:14 EDT
+Received: from poczta.adminpan.waw.pl (localhost [127.0.0.1])
+        by esets (Postfix) with ESMTP id 2B297181D21
+        for <linux-parisc@vger.kernel.org>; Mon,  8 Jul 2019 22:21:21 +0200 (CEST)
+X-Virus-Scanner: This message was checked by ESET Mail Security
+        for Linux/BSD. For more information on ESET Mail Security,
+        please, visit our website: http://www.eset.com/.
+Received: by poczta.adminpan.waw.pl (Postfix, from userid 115)
+        id 286EC181CE7; Mon,  8 Jul 2019 22:21:21 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on
+        poczta.adminpan.waw.pl
+X-Spam-Level: 
+X-Spam-Status: No, score=-3.6 required=9.0 tests=ALL_TRUSTED,BAYES_00,
+        LOTS_OF_MONEY,T_FRT_CONTACT autolearn=unavailable version=3.3.2
+X-Spam-Report: =?ISO-8859-1?Q?
+        * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+        *  0.0 T_FRT_CONTACT BODY: ReplaceTags: Contact
+        * -2.6 BAYES_00 BODY: Bayesowskie prawdopodobie=f1stwo spamu wynosi 0 do 1%
+        *      [score: 0.0000]
+        *  0.0 LOTS_OF_MONEY Huge... sums of money?=
+Received: from poczta.adminpan.waw.pl (localhost [127.0.0.1])
+        (Authenticated sender: tbaczko@inepan.waw.pl)
+        by poczta.adminpan.waw.pl (Postfix) with ESMTPA id 37867181CCC;
+        Mon,  8 Jul 2019 22:19:26 +0200 (CEST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fv76k6im74ofqhz7"
-Content-Disposition: inline
-In-Reply-To: <878st9iax4.fsf@concordia.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Mon, 08 Jul 2019 13:19:26 -0700
+From:   Mavis Wanczyk <info@drrmlims.ac.in>
+To:     undisclosed-recipients:;
+Subject: Herzlichen =?UTF-8?Q?Gl=C3=BCckwunsch=20lieber=20Beg=C3=BCnstigte?=
+ =?UTF-8?Q?r=2E?=
+Reply-To: maviswanczyk861@gmail.com
+Mail-Reply-To: maviswanczyk861@gmail.com
+Message-ID: <0500422eaa6e38f27ad45479d8a86fc8@inepan.waw.pl>
+X-Sender: info@drrmlims.ac.in
+User-Agent: Roundcube Webmail/1.0.5
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
 
---fv76k6im74ofqhz7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On 2019-07-08, Michael Ellerman <mpe@ellerman.id.au> wrote:
-> Aleksa Sarai <cyphar@cyphar.com> writes:
-> > diff --git a/tools/testing/selftests/openat2/Makefile b/tools/testing/s=
-elftests/openat2/Makefile
-> > new file mode 100644
-> > index 000000000000..8235a49928f6
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/openat2/Makefile
-> > @@ -0,0 +1,12 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +
-> > +CFLAGS +=3D -Wall -O2 -g
-> > +TEST_GEN_PROGS :=3D linkmode_test resolve_test rename_attack_test
-> > +
-> > +include ../lib.mk
-> > +
-> > +$(OUTPUT)/linkmode_test: linkmode_test.c helpers.o
-> > +$(OUTPUT)/rename_attack_test: rename_attack_test.c helpers.o
-> > +$(OUTPUT)/resolve_test: resolve_test.c helpers.o
->=20
-> You don't need to tell make that foo depends on foo.c.
->=20
-> Also if you make the dependency be on helpers.c then you won't get an
-> intermediate helpers.o, and then you don't need to clean it.
->=20
-> So the above three lines could just be:
->=20
-> $(TEST_GEN_PROGS): helpers.c
+-- 
+Sehr geehrter Herr / Frau,
+Wir freuen uns, Ihnen mitteilen zu können, dass Sie ausgewählt wurden, 
+um
+den Betrag von €1.700.000,00 EUR von den Mavis Wanczyk-Hilfsfonds zu
+erhalten. Mein Name ist Mavis Wanczyk. Der Gewinner des Power Ball 
+Lottery
+Jackpot in Höhe von 758,7 Millionen US-Dollar als größter Preis eines
+einzelnen Lottoscheins in den USA. Meine Wohltätigkeitsstiftung hat Sie
+als unseren glücklichen Begünstigten ausgewählt, um den Betrag von EUR
+€1.700.000,00 zu erhalten. Akzeptieren Sie dieses Angebot und
+kontaktieren Sie mich für weitere Informationen.
 
-I had some trouble getting this to work (hence why I went with the
-version in the patch), but it looks like this works. I'll include it in
-the next set.
-
-> > +EXTRA_CLEAN =3D helpers.o $(wildcard /tmp/ksft-openat2-*)
->=20
-> If you follow my advice above you don't need helpers.o in there.
->=20
-> Deleting things from /tmp is also a bit fishy on shared machines, ie. it
-> will error if those files happen to be owned by another user.
-
-Good point. I'll drop that hunk in the next set.
-
-Thanks!
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---fv76k6im74ofqhz7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXSLY8wAKCRCdlLljIbnQ
-Enn2AQC9g0o7YHWuxFtQCLt+aHIE39RQMQDzB5QWrvZA8DdIUQEA69BwekXhnh8X
-m2czJJrJISBz5Nz1y3qJzwUUGBvxEgY=
-=RdsA
------END PGP SIGNATURE-----
-
---fv76k6im74ofqhz7--
+Mavis Wanczyk
