@@ -2,96 +2,100 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AE5561780
-	for <lists+linux-parisc@lfdr.de>; Sun,  7 Jul 2019 22:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D93AE618B4
+	for <lists+linux-parisc@lfdr.de>; Mon,  8 Jul 2019 03:15:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727457AbfGGU6P (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 7 Jul 2019 16:58:15 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:39902 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727073AbfGGU6P (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 7 Jul 2019 16:58:15 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id DCA178EE1CB;
-        Sun,  7 Jul 2019 13:58:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1562533094;
-        bh=gCbzP+d1Gq3LqXojYVGeIGgzCioC5Pq/IC69nFCkgvs=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=W9LyN1J9o2N8JjaBjNpRnp9/0fX1XvWWCOdNSzf5t+8WTKAeE0Q0mg7rGlnHJjL8O
-         duGTI0VYqb78Nm1vO8fHbGfW7yy2ggWdocNYBfIvKh6UJ2fSqjYsy8+MKyzOP9Oiko
-         ZhiZxLayk5Tibk7FsgMCEHr+Y5Mpd1KMfDC9t+UQ=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id esDDKfvDYI02; Sun,  7 Jul 2019 13:58:14 -0700 (PDT)
-Received: from jarvis.lan (unknown [50.35.68.20])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727976AbfGHBPo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 7 Jul 2019 21:15:44 -0400
+Received: from ozlabs.org ([203.11.71.1]:46577 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727949AbfGHBPn (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 7 Jul 2019 21:15:43 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 717398EE1B2;
-        Sun,  7 Jul 2019 13:58:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1562533094;
-        bh=gCbzP+d1Gq3LqXojYVGeIGgzCioC5Pq/IC69nFCkgvs=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=W9LyN1J9o2N8JjaBjNpRnp9/0fX1XvWWCOdNSzf5t+8WTKAeE0Q0mg7rGlnHJjL8O
-         duGTI0VYqb78Nm1vO8fHbGfW7yy2ggWdocNYBfIvKh6UJ2fSqjYsy8+MKyzOP9Oiko
-         ZhiZxLayk5Tibk7FsgMCEHr+Y5Mpd1KMfDC9t+UQ=
-Message-ID: <1562533092.3216.20.camel@HansenPartnership.com>
-Subject: Re: [PATCH] Update palo documentation
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Helge Deller <deller@gmx.de>,
-        Parisc List <linux-parisc@vger.kernel.org>
-Date:   Sun, 07 Jul 2019 13:58:12 -0700
-In-Reply-To: <70b4c08b-de2e-91f7-890d-767cad3dfad1@gmx.de>
-References: <1562522488.3216.15.camel@HansenPartnership.com>
-         <ff1f3d02-20bc-c1fa-5ff6-0520e9ebe8e0@gmx.de>
-         <1562528703.3216.17.camel@HansenPartnership.com>
-         <70b4c08b-de2e-91f7-890d-767cad3dfad1@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 45hnZJ0R8Jz9sN4;
+        Mon,  8 Jul 2019 11:15:35 +1000 (AEST)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>
+Cc:     Aleksa Sarai <cyphar@cyphar.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>,
+        Christian Brauner <christian@brauner.io>,
+        Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v9 10/10] selftests: add openat2(2) selftests
+In-Reply-To: <20190706145737.5299-11-cyphar@cyphar.com>
+References: <20190706145737.5299-1-cyphar@cyphar.com> <20190706145737.5299-11-cyphar@cyphar.com>
+Date:   Mon, 08 Jul 2019 11:15:35 +1000
+Message-ID: <878st9iax4.fsf@concordia.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, 2019-07-07 at 22:01 +0200, Helge Deller wrote:
-> On 07.07.19 21:45, James Bottomley wrote:
-> > On Sun, 2019-07-07 at 20:44 +0200, Helge Deller wrote:
-> > > On 07.07.19 20:01, James Bottomley wrote:
-> > 
-> > [...]
-> > > > +Palo allows you to specify a kernel command line, which is
-> > > > stored
-> > > > in
-> > > > +the firstboot partition.  The format should be kernel first
-> > > > followed
-> > > > +by an optional initrd= and then the rest of the kernel
-> > > > parameters.
-> > > > +For parisc system, you should specify a boot console as
-> > > > console=
-> > > > on
-> > > > +the command line.
-> > > 
-> > > No, that's not recommended.
-> > > palo will detect the currently used console and add it
-> > > automatically,
-> > > so one should NOT specify a console parameter.
-> > 
-> > Ah well, I've got an rp3430 so its console name changes depending
-> > on kernel, which is why I specify it, but I can remove that from
-> > "For parisc system, you should ..."
-> 
-> The rp34xx series should work fine as well.
-> Can you give details, because I pushed a patch into stable series
-> which should have fixed that:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co
-> mmit/?id=bcf3f1752a622f1372d3252d0fea8855d89812e7
+Hi Aleksa,
 
-It's a 3.16 based rescue kernel and ramdisk I built long ago and keep
-around just in case.
+A few minor comments below.
 
-James
+Aleksa Sarai <cyphar@cyphar.com> writes:
+> diff --git a/tools/testing/selftests/openat2/Makefile b/tools/testing/selftests/openat2/Makefile
+> new file mode 100644
+> index 000000000000..8235a49928f6
+> --- /dev/null
+> +++ b/tools/testing/selftests/openat2/Makefile
+> @@ -0,0 +1,12 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +CFLAGS += -Wall -O2 -g
+> +TEST_GEN_PROGS := linkmode_test resolve_test rename_attack_test
+> +
+> +include ../lib.mk
+> +
+> +$(OUTPUT)/linkmode_test: linkmode_test.c helpers.o
+> +$(OUTPUT)/rename_attack_test: rename_attack_test.c helpers.o
+> +$(OUTPUT)/resolve_test: resolve_test.c helpers.o
 
+You don't need to tell make that foo depends on foo.c.
+
+Also if you make the dependency be on helpers.c then you won't get an
+intermediate helpers.o, and then you don't need to clean it.
+
+So the above three lines could just be:
+
+$(TEST_GEN_PROGS): helpers.c
+
+> +EXTRA_CLEAN = helpers.o $(wildcard /tmp/ksft-openat2-*)
+
+If you follow my advice above you don't need helpers.o in there.
+
+Deleting things from /tmp is also a bit fishy on shared machines, ie. it
+will error if those files happen to be owned by another user.
+
+cheers
