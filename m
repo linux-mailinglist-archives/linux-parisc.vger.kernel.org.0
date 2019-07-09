@@ -2,72 +2,105 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A8FC62A5C
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Jul 2019 22:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC1363023
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Jul 2019 07:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405017AbfGHUbQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 8 Jul 2019 16:31:16 -0400
-Received: from poczta.adminpan.waw.pl ([148.81.192.197]:42454 "EHLO
-        poczta.adminpan.waw.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729370AbfGHUbP (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 8 Jul 2019 16:31:15 -0400
-X-Greylist: delayed 590 seconds by postgrey-1.27 at vger.kernel.org; Mon, 08 Jul 2019 16:31:14 EDT
-Received: from poczta.adminpan.waw.pl (localhost [127.0.0.1])
-        by esets (Postfix) with ESMTP id 2B297181D21
-        for <linux-parisc@vger.kernel.org>; Mon,  8 Jul 2019 22:21:21 +0200 (CEST)
-X-Virus-Scanner: This message was checked by ESET Mail Security
-        for Linux/BSD. For more information on ESET Mail Security,
-        please, visit our website: http://www.eset.com/.
-Received: by poczta.adminpan.waw.pl (Postfix, from userid 115)
-        id 286EC181CE7; Mon,  8 Jul 2019 22:21:21 +0200 (CEST)
-X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on
-        poczta.adminpan.waw.pl
-X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=9.0 tests=ALL_TRUSTED,BAYES_00,
-        LOTS_OF_MONEY,T_FRT_CONTACT autolearn=unavailable version=3.3.2
-X-Spam-Report: =?ISO-8859-1?Q?
-        * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-        *  0.0 T_FRT_CONTACT BODY: ReplaceTags: Contact
-        * -2.6 BAYES_00 BODY: Bayesowskie prawdopodobie=f1stwo spamu wynosi 0 do 1%
-        *      [score: 0.0000]
-        *  0.0 LOTS_OF_MONEY Huge... sums of money?=
-Received: from poczta.adminpan.waw.pl (localhost [127.0.0.1])
-        (Authenticated sender: tbaczko@inepan.waw.pl)
-        by poczta.adminpan.waw.pl (Postfix) with ESMTPA id 37867181CCC;
-        Mon,  8 Jul 2019 22:19:26 +0200 (CEST)
+        id S1725856AbfGIFqm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 9 Jul 2019 01:46:42 -0400
+Received: from mout.gmx.net ([212.227.15.19]:53329 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725832AbfGIFqm (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 9 Jul 2019 01:46:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1562651196;
+        bh=joE9GeqsQWrzBQwgXRlkWwo09aacLPPhCLf9GSg+/M8=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=ivffd6vtNBtTScwtrDyKMiaKli+g8N7EMsQoRLmYvLSg2MFFJGl/MZ+2go+Kr6wa+
+         IjLCVDcl9NF4wMY8CHihWtRaHQr7u3xYLFsB8hQCQfquz2StA6bANL4hrmi7Ln0wV1
+         OnbhL4q0UJ30R6Q16Uj9124NfoZy81iLifXO9xwM=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.dellerweb.de ([92.116.158.121]) by mail.gmx.com
+ (mrgmx002 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 0LfSeH-1iI6tB0IYr-00p3Cv; Tue, 09 Jul 2019 07:46:36 +0200
+Date:   Tue, 9 Jul 2019 07:46:32 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture patches for kernel v5.3
+Message-ID: <20190709054632.GA14843@ls3530.dellerweb.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Mon, 08 Jul 2019 13:19:26 -0700
-From:   Mavis Wanczyk <info@drrmlims.ac.in>
-To:     undisclosed-recipients:;
-Subject: Herzlichen =?UTF-8?Q?Gl=C3=BCckwunsch=20lieber=20Beg=C3=BCnstigte?=
- =?UTF-8?Q?r=2E?=
-Reply-To: maviswanczyk861@gmail.com
-Mail-Reply-To: maviswanczyk861@gmail.com
-Message-ID: <0500422eaa6e38f27ad45479d8a86fc8@inepan.waw.pl>
-X-Sender: info@drrmlims.ac.in
-User-Agent: Roundcube Webmail/1.0.5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Provags-ID: V03:K1:VIonYAy/xwcpqwB91oMJFKn7kTKiuuCzDbroEXVUs4XqS5MgDcd
+ DRvD4yuITLvSmSlxtkTX5fDlpLgJ0OLZiB9LStyzBnM3igQS/ur6EtP70FoYthCOPW84hoQ
+ fYUxBn43vJl9L0Ma6t5cYddMWNukj1/+ldg/fwDGHGpJH3NTk6yZSGVWvQCZzWOoYW427tl
+ 8r3smvCvz9sTlRYaj/7xQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:564hTMAUo+A=:5YbLjwZiwUbQQMrRrTAPQb
+ rZS97SxbEm8/CgKHjWn0AxCyZBQJz4IRFZIHU3FP82f4xyzCL5b9N2ZbicpDhtDcsEYS6BS4k
+ qZcFzADZOYvMseYcoVvVR6r71Ko0xIX6VJKE+EolXlRJtDfXH/lrFKDmNYOq8XiwAZ9u8yNps
+ s71OklrYXe0a8ZXfCGnbunfpE7dGJB72N2Dg7RlMPQ5HBxF/SGObvvdYijf2guVwHMJ/lCAY/
+ /+qmWLvbE7Ip4YICEkaQQ9nX5BPLAz0WArV8bESzG+UxrhcB4nwmeUiiaBzLno/GNyRv1LWmO
+ Xn5JtyHGWg0UAlvvvRAfzQ8Qg7GUkfMAZ/rtwRWg26qOh4U7ryW3P9eeHrackInp4+oB49dDj
+ HU+/fEEI7AODXtU8dAW3/kGuyJWdd+kc/pDd5LKKNWIvHRSB+Jt5e9al6v5N6L6xjR7dWUFLC
+ L+Tz4yUdfQP0dX2/Kv5HNIIF54X0hzfE3xtA8l5yjHiG7QQ+5w8qKtaEsOak1BJxcjhFvvxFc
+ zORsdAHZsl7deYI56eLcL4S6yJwQb0kbKCt9BBQKdUBjtJR7xk0KCYY5eLQURJeODfqHwP6Eo
+ sR81SlqdsEsmLTePexzgeQcmx4eNOwY4aM1PfTwfX8oHY1h47yzsDE88NX5vUXZr17K7nAm3C
+ DGZoqYX/CVfq6+FVuRyy+D/IY9xzJr/fOL7xnlBEGaewvvJ+ODNW1xQQIAS/YqBrZlotb231V
+ VUyfzlQFBIYr2gtEB7C5kFF1XaJi+I9rwMRy5jy62ZgTrtxBMuGvxt5qlRidFOGjM8tHE9bFq
+ WJnCm/C2bKbyzeC+w7BMbn2VLahtSUB1Zw4/EZ5ZBq9RzTlbkC7G3jj7pTT89BlwG8E+OBp9I
+ u8xqgGc7NqINZvexqtnNvp1jSekGHNeNxbjuloVKT+PGEIaMS6wDSDPUXG0vyhMfdoR9ho1BZ
+ e1kDvYHECZ2lDgabQQVLKRZHxKn22fUlXOputLSgpIECUPtUAMQtpMzmhs6tcFZREu/ehvskL
+ QLkoycvWaS0FNBpqhiD1V6nl+gZpbODt5yovHyinSYGpTPtidPwrwunTwvsLZAXTww==
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Hi Linus,
 
+please pull enhancements for the parisc architecture for kernel 5.3 from:
 
--- 
-Sehr geehrter Herr / Frau,
-Wir freuen uns, Ihnen mitteilen zu können, dass Sie ausgewählt wurden, 
-um
-den Betrag von €1.700.000,00 EUR von den Mavis Wanczyk-Hilfsfonds zu
-erhalten. Mein Name ist Mavis Wanczyk. Der Gewinner des Power Ball 
-Lottery
-Jackpot in Höhe von 758,7 Millionen US-Dollar als größter Preis eines
-einzelnen Lottoscheins in den USA. Meine Wohltätigkeitsstiftung hat Sie
-als unseren glücklichen Begünstigten ausgewählt, um den Betrag von EUR
-€1.700.000,00 zu erhalten. Akzeptieren Sie dieses Angebot und
-kontaktieren Sie mich für weitere Informationen.
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git pa=
+risc-5.3-1
 
-Mavis Wanczyk
+Dynamic ftrace support by Sven Schnelle and a header guard fix by Denis Ef=
+remov.
+
+Thanks,
+Helge
+
+=2D---------------------------------------------------------------
+Denis Efremov (1):
+      parisc: asm: psw.h: missing header guard
+
+Sven Schnelle (6):
+      parisc: add support for patching multiple words
+      parisc: add spinlock to patch function
+      parisc: add WARN_ON() to clear_fixmap
+      parisc: use pr_debug() in kernel/module.c
+      compiler.h: add CC_USING_PATCHABLE_FUNCTION_ENTRY
+      parisc: add dynamic ftrace
+
+ arch/parisc/Kconfig               |   2 +
+ arch/parisc/Makefile              |  18 ++++++
+ arch/parisc/include/asm/ftrace.h  |  15 ++++-
+ arch/parisc/include/asm/patch.h   |   4 +-
+ arch/parisc/include/asm/psw.h     |   2 +-
+ arch/parisc/kernel/Makefile       |   9 +--
+ arch/parisc/kernel/entry.S        |  64 +++++++++++++++++++
+ arch/parisc/kernel/ftrace.c       | 129 +++++++++++++++++++++++++++++++++=
+++---
+ arch/parisc/kernel/module.c       |  64 +++++++++++--------
+ arch/parisc/kernel/module.lds     |   7 +++
+ arch/parisc/kernel/patch.c        |  88 +++++++++++++++++++++-----
+ arch/parisc/kernel/vmlinux.lds.S  |   2 +
+ arch/parisc/mm/fixmap.c           |   7 ++-
+ include/asm-generic/vmlinux.lds.h |   7 +++
+ include/linux/compiler_types.h    |   2 +
+ 15 files changed, 359 insertions(+), 61 deletions(-)
+ create mode 100644 arch/parisc/kernel/module.lds
