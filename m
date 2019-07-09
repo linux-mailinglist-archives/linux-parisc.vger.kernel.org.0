@@ -2,35 +2,55 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC23463C5F
-	for <lists+linux-parisc@lfdr.de>; Tue,  9 Jul 2019 22:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F5B563C37
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Jul 2019 21:55:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727241AbfGIUDP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 9 Jul 2019 16:03:15 -0400
-Received: from [139.59.80.196] ([139.59.80.196]:32898 "EHLO
-        centos-s-2vcpu-2gb-blr1-01.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727029AbfGIUDP (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 9 Jul 2019 16:03:15 -0400
-X-Greylist: delayed 3430 seconds by postgrey-1.27 at vger.kernel.org; Tue, 09 Jul 2019 16:03:14 EDT
-Received: from localhost (centos-s-2vcpu-2gb-blr1-01 [IPv6:::1])
-        by centos-s-2vcpu-2gb-blr1-01.localdomain (Postfix) with SMTP id 1B71C7C0EA9
-        for <linux-parisc@vger.kernel.org>; Tue,  9 Jul 2019 18:40:47 +0000 (UTC)
-From:   linux-parisc@vger.kernel.org
-Reply-To: prodawez@armyspy.com
-To:     6puVOKKDWlinux-parisc@vger.kernel.org
-Subject: =?utf-8?B?0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1ISDQktCw0YEg?=
-        =?utf-8?B?0LjQvdGC0LXRgNC10YHRg9GO0YIg0LrQu9C40LXQvdGC?=
-        =?utf-8?B?0YHQutC40LUg0LHQsNC30Ysg0LTQsNC90L3Ri9GFPw==?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8";
-Content-Transfer-Encoding: base64
-Message-Id: <20190709184048.1B71C7C0EA9@centos-s-2vcpu-2gb-blr1-01.localdomain>
-Date:   Tue,  9 Jul 2019 18:40:47 +0000 (UTC)
+        id S1729149AbfGITzD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 9 Jul 2019 15:55:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34294 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729535AbfGITzD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 9 Jul 2019 15:55:03 -0400
+Subject: Re: [GIT PULL] parisc architecture patches for kernel v5.3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562702102;
+        bh=sIK9ik4NBdLIu61cTvbc2e+JDjFYM52LBiy3g9tveNg=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=SKe9ytFYljxkJnI6j4874+yrIOXrksdIObOpKM/JTRH+Hk89m/kzKCUANkaBrTHl1
+         WORoiBYhHvlMQaAqq75hxib4z2guQTPiT7XFdN8Xy3ErIchKiBwqvAF0S96/v/voOr
+         CItwkQ/0wY72zE+nrQqne9KOm39h/WW9rtZzccAE=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20190709054632.GA14843@ls3530.dellerweb.de>
+References: <20190709054632.GA14843@ls3530.dellerweb.de>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20190709054632.GA14843@ls3530.dellerweb.de>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git
+ parisc-5.3-1
+X-PR-Tracked-Commit-Id: b3d5f311d3cfdea0b0e2373409e50423b130f847
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 593c75463ab6d6985cdc9916f3d1c28b5f6340cd
+Message-Id: <156270210260.21525.16011441925472712046.pr-tracker-bot@kernel.org>
+Date:   Tue, 09 Jul 2019 19:55:02 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1ISDQktCw0YEg0LjQvdGC0LXRgNC10YHRg9GO0YIg0LrQ
-u9C40LXQvdGC0YHQutC40LUg0LHQsNC30Ysg0LTQsNC90L3Ri9GFPw0K
+The pull request you sent on Tue, 9 Jul 2019 07:46:32 +0200:
+
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.3-1
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/593c75463ab6d6985cdc9916f3d1c28b5f6340cd
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
