@@ -2,75 +2,133 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A8D66422
-	for <lists+linux-parisc@lfdr.de>; Fri, 12 Jul 2019 04:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79CDD66574
+	for <lists+linux-parisc@lfdr.de>; Fri, 12 Jul 2019 06:15:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729433AbfGLCVg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 11 Jul 2019 22:21:36 -0400
-Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:57848 "EHLO
-        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729216AbfGLCUk (ORCPT
+        id S1728693AbfGLEPg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 12 Jul 2019 00:15:36 -0400
+Received: from zeniv.linux.org.uk ([195.92.253.2]:60074 "EHLO
+        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727061AbfGLEPg (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 11 Jul 2019 22:20:40 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01f04391;MF=alex.shi@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0TWfV401_1562898035;
-Received: from localhost(mailfrom:alex.shi@linux.alibaba.com fp:SMTPD_---0TWfV401_1562898035)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 12 Jul 2019 10:20:35 +0800
-From:   Alex Shi <alex.shi@linux.alibaba.com>
-To:     linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>
-Cc:     Alex Shi <alex.shi@linux.alibaba.com>,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
+        Fri, 12 Jul 2019 00:15:36 -0400
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hlmxT-000330-0Q; Fri, 12 Jul 2019 04:14:55 +0000
+Date:   Fri, 12 Jul 2019 05:14:54 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Christian Brauner <christian@brauner.io>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-sh@vger.kernel.org,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org
-Subject: [PATCH 12/12] Documentation/xtensa: repointer docs to Documentation/arch/
-Date:   Fri, 12 Jul 2019 10:20:18 +0800
-Message-Id: <20190712022018.27989-12-alex.shi@linux.alibaba.com>
-X-Mailer: git-send-email 2.19.1.856.g8858448bb
-In-Reply-To: <20190712022018.27989-1-alex.shi@linux.alibaba.com>
-References: <20190712022018.27989-1-alex.shi@linux.alibaba.com>
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v9 01/10] namei: obey trailing magic-link DAC permissions
+Message-ID: <20190712041454.GG17978@ZenIV.linux.org.uk>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-2-cyphar@cyphar.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190706145737.5299-2-cyphar@cyphar.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Since we move Documentation/xtensa docs to Documentation/arch/xtensa
-dir, redirect the doc pointer to them.
+On Sun, Jul 07, 2019 at 12:57:28AM +1000, Aleksa Sarai wrote:
 
-Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-xtensa@linux-xtensa.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/xtensa/include/asm/initialize_mmu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> @@ -514,7 +516,14 @@ static void set_nameidata(struct nameidata *p, int dfd, struct filename *name)
+>  	p->stack = p->internal;
+>  	p->dfd = dfd;
+>  	p->name = name;
+> -	p->total_link_count = old ? old->total_link_count : 0;
+> +	p->total_link_count = 0;
+> +	p->acc_mode = 0;
+> +	p->opath_mask = FMODE_PATH_READ | FMODE_PATH_WRITE;
+> +	if (old) {
+> +		p->total_link_count = old->total_link_count;
+> +		p->acc_mode = old->acc_mode;
+> +		p->opath_mask = old->opath_mask;
+> +	}
 
-diff --git a/arch/xtensa/include/asm/initialize_mmu.h b/arch/xtensa/include/asm/initialize_mmu.h
-index 323d05789159..499fe4847490 100644
---- a/arch/xtensa/include/asm/initialize_mmu.h
-+++ b/arch/xtensa/include/asm/initialize_mmu.h
-@@ -42,7 +42,7 @@
- #if XCHAL_HAVE_S32C1I && (XCHAL_HW_MIN_VERSION >= XTENSA_HWVERSION_RC_2009_0)
- /*
-  * We Have Atomic Operation Control (ATOMCTL) Register; Initialize it.
-- * For details see Documentation/xtensa/atomctl.txt
-+ * For details see Documentation/arch/xtensa/atomctl.txt
-  */
- #if XCHAL_DCACHE_IS_COHERENT
- 	movi	a3, 0x25	/* For SMP/MX -- internal for writeback,
--- 
-2.19.1.856.g8858448bb
+Huh?  Could somebody explain why traversals of NFS4 referrals should inherit
+->acc_mode and ->opath_mask?
 
+>  static __always_inline
+> -const char *get_link(struct nameidata *nd)
+> +const char *get_link(struct nameidata *nd, bool trailing)
+>  {
+>  	struct saved *last = nd->stack + nd->depth - 1;
+>  	struct dentry *dentry = last->link.dentry;
+> @@ -1081,6 +1134,44 @@ const char *get_link(struct nameidata *nd)
+>  		} else {
+>  			res = get(dentry, inode, &last->done);
+>  		}
+> +		/* If we just jumped it was because of a magic-link. */
+> +		if (unlikely(nd->flags & LOOKUP_JUMPED)) {
+
+That's not quite guaranteed (it is possible to bind a symlink on top
+of a regular file, and you will get LOOKUP_JUMPED on the entry into
+trailing_symlink() when looking the result up).  Moreover, why bother
+with LOOKUP_JUMPED here?  See that
+	nd->last_type = LAST_BIND;
+several lines prior?  That's precisely to be able to recognize those
+suckers.
+
+And _that_ would've avoided another piece of ugliness - your LOOKUP_JUMPED
+kludge forces you to handle that cra^Wsclero^Wvaluable security hardening
+in get_link(), instead of trailing_symlink() where you apparently want
+it to be.  Simply because nd_jump_root() done later in get_link() will set
+LOOKUP_JUMPED for absolute symlinks, confusing your test.
+
+Moreover, I'm not sure that trailing_symlink() is the right place for
+that either - I would be rather tempted to fold do_o_path() into
+path_openat(), inline path_lookupat() there (as in
+        s = path_init(nd, flags);
+
+        while (!(error = link_path_walk(s, nd))
+                && ((error = lookup_last(nd)) > 0)) {
+                s = trailing_symlink(nd);
+        }
+        if (!error)
+                error = complete_walk(nd);
+        if (!error && nd->flags & LOOKUP_DIRECTORY)
+                if (!d_can_lookup(nd->path.dentry))
+                        error = -ENOTDIR;
+        if (!error) {
+                audit_inode(nd->name, nd->path.dentry, 0);
+                error = vfs_open(&nd->path, file);
+        }
+        terminate_walk(nd);
+- we don't need LOOKUP_DOWN there) and then we only care about the
+two callers of trailing_symlink() that are in path_openat().  Which
+is where you have your ->acc_mode and ->opath_mask without the need
+to dump them into nameidata.  Or to bring that mess into the
+things like stat(2) et.al. - it simply doesn't belong there.
+
+In any case, this "bool trailing" is completely wrong; whether that
+check belongs in trailing_symlink() or (some of) its callers, putting
+it into get_link() is a mistake, forced by kludgy check for procfs-style
+symlinks.
