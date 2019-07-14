@@ -2,89 +2,191 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63EE867A35
-	for <lists+linux-parisc@lfdr.de>; Sat, 13 Jul 2019 15:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90FA567CE4
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Jul 2019 06:00:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727664AbfGMNJG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 13 Jul 2019 09:09:06 -0400
-Received: from mout.gmx.net ([212.227.17.21]:49173 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726474AbfGMNJF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 13 Jul 2019 09:09:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1563023338;
-        bh=UfLJkogxrlpGYeLgRA0kJbea/s+TTdmLHOX7LQ+RCXU=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=gpkg8H0So9ITDE+4wcvBmSQfPRvaDGYflzWtQ1yC6GqlujrVlyTVePMbOAfbXY2gF
-         b9e4hsckmsb7q1tF4bxyZ9W89mgAxro/u048Bw6NuxsyzciWy6yJ1ZOAf1CkqkNQDU
-         081ShCChVAGVPW3HhdBEIQKgOYcVjDDxj9rHwQLs=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.dellerweb.de ([92.116.128.135]) by mail.gmx.com
- (mrgmx103 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 0MCtLD-1hdnB32RRz-009j64; Sat, 13 Jul 2019 15:08:58 +0200
-Date:   Sat, 13 Jul 2019 15:08:54 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: [PATCH v2][RFC] parisc: sata_sil: Add quirk for Samsung SSD 850 drive
-Message-ID: <20190713130854.GA6688@ls3530.dellerweb.de>
-References: <20190711195957.GA26789@ls3530.dellerweb.de>
+        id S1726029AbfGNEAa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 14 Jul 2019 00:00:30 -0400
+Received: from zeniv.linux.org.uk ([195.92.253.2]:34994 "EHLO
+        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725283AbfGNEAa (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 14 Jul 2019 00:00:30 -0400
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hmVej-000695-Co; Sun, 14 Jul 2019 03:58:41 +0000
+Date:   Sun, 14 Jul 2019 04:58:33 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Christian Brauner <christian@brauner.io>,
+        David Drysdale <drysdale@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org,
+        rgb@redhat.com, paul@paul-moore.com, raven@themaw.net,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
+Message-ID: <20190714035826.GQ17978@ZenIV.linux.org.uk>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-6-cyphar@cyphar.com>
+ <20190712043341.GI17978@ZenIV.linux.org.uk>
+ <20190712105745.nruaftgeat6irhzr@yavin>
+ <20190712123924.GK17978@ZenIV.linux.org.uk>
+ <20190712125552.GL17978@ZenIV.linux.org.uk>
+ <20190712132553.GN17978@ZenIV.linux.org.uk>
+ <20190712150026.GO17978@ZenIV.linux.org.uk>
+ <20190713024153.GA3817@ZenIV.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190711195957.GA26789@ls3530.dellerweb.de>
-User-Agent: Mutt/1.12.0 (2019-05-25)
-X-Provags-ID: V03:K1:UzS8ZXI/9p2zXJggo/AsFLBdVSkzoNBtBuBgSvQUTIn8QvMcC0v
- SIZSt1sD45EuzeCxIFFO936bkIFAAyufFOj/Zj84/rE//agbpT50ndTWGYFWXHaew81+Yw4
- vOBWlK/xaGIHJ36De0jO2sZhqq7Ez96qObi5e2gsFFD1SBDvg89J8eOWbwOgMQh1WCZrHdA
- IZJs9qbbvvmNFjYVSW77A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:z3csye0vY9g=:Z9H8TbkCfC7PlbWcx4xA3/
- 0NrF1wx9xFYE52tO8JWBr6lox9WL7irs2KapovaK6XRXJDPEK60i2zQDipf5vdPdERWzBAf3E
- 4nxBDNgtA42CS4bOY4ycssXtfxtoQQTKclljHiF8y2IE5MGoOkQcuhd4pniXKgHjKBDc28bMb
- ndra8Ru6TEM3ootmUQOO5xDYHE7vgfuce+PqcSrj2/hwTWtAZzmo7M0Q3xZZtdDVKt+nUsKSm
- dQhV3XtCtA8Kaz0ewY49xIhLqXMsxFsyURETGrVjqTBzbK9koEQG/LBVgkAg2/9RBH2wxDekB
- g2TrTELUQcHVgQFeB/IfzjAPTI6tHmxa6YZnZDXpzLaBLckPLfXN1kmv1HsXfuSw969EatrBl
- /lb7QVKrbJVao5olIQtOf0K/jk4nIW5ZSoCkCDJh8z6lDpTQzWoQNW71ydgGCbMuvRC413A4E
- Q02GvIeI9kQcs2QBAjCcP/whOWmKIRW5Y/bfxavFbbxUXDTavfJqYN41Wcox8zElNvVBOeuxE
- 2W85v2Bm4Ody2NmTJT9CrV/sGBHYCkNJgcrUHA8oVi+7FZ5Aeq9+ZGscz/aUXChUWxMcRe4XI
- yOUWeOVjLs3Pe76tQnUf7vF6pA1MAuKCEPprB3ZyfDE/Gg+cRRFaaMgcvSBDy57K+DmuS4AIA
- fbRfKmsabWNhzOblvTPZSBOgnZP0sJvrKMG1fAlQGmViJ48UIxJwR9NQka78JZp9KvGcsm2LF
- AgxKQOVdS2IqRzZ+j1/tnoRvM523RLXTn1TR2fOph601qPvTh3EwPAHMMX2GReS5qD58Xb2Td
- MEiInTmF6vBy4PdbP74GMjvSu0rk4yo1ub+F3fzgJLCsrN/lLbq4tpR18dDRBPRE29phrlpHo
- P3wUfmoTmWlwJMou8ySdk6nY02NKJKbmjhZ9oeI7pSgwlU0LyLzeqVff40K5fACUEz15GwOTZ
- 8r/GumGfHFEg3P4yoNGMbChkAu+FAhlZKLDM9TVLq1cywwkADcIziHDshA9N6QCkP9BmMgBuf
- 6PziASysaPe0B106kOSYNyhIb+KaS3ts1FLdmm+V37n6EccoBLmxekp7atIkmsLA/w==
+In-Reply-To: <20190713024153.GA3817@ZenIV.linux.org.uk>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The Samsung SSD 850 drive needs a quirk to limit ATA requests to 15
-sectors, otherwise one will face lots of read/write errors.
-Alternatively the "sata_sil.slow_down=1" kernel module option can be set
-on the command line to limit all attached drives.
+On Sat, Jul 13, 2019 at 03:41:53AM +0100, Al Viro wrote:
+> On Fri, Jul 12, 2019 at 04:00:26PM +0100, Al Viro wrote:
+> > On Fri, Jul 12, 2019 at 02:25:53PM +0100, Al Viro wrote:
+> > 
+> > > 	if (flags & LOOKUP_BENEATH) {
+> > > 		nd->root = nd->path;
+> > > 		if (!(flags & LOOKUP_RCU))
+> > > 			path_get(&nd->root);
+> > > 		else
+> > > 			nd->root_seq = nd->seq;
+> > 
+> > BTW, this assignment is needed for LOOKUP_RCU case.  Without it
+> > you are pretty much guaranteed that lazy pathwalk will fail,
+> > when it comes to complete_walk().
+> > 
+> > Speaking of which, what would happen if LOOKUP_ROOT/LOOKUP_BENEATH
+> > combination would someday get passed?
+> 
+> I don't understand what's going on with ->r_seq in there - your
+> call of path_is_under() is after having (re-)sampled rename_lock,
+> but if that was the only .. in there, who's going to recheck
+> the value?  For that matter, what's to guarantee that the thing
+> won't get moved just as you are returning from handle_dots()?
+> 
+> IOW, what does LOOKUP_IN_ROOT guarantee for caller (openat2())?
 
-Tested on a HP C8000 PA-RISC workstation.
+Sigh...  Usual effects of trying to document things:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+1) LOOKUP_NO_EVAL looks bogus.  It had been introduced by commit 57d4657716ac
+(audit: ignore fcaps on umount) and AFAICS it's crap.  It is set in
+ksys_umount() and nowhere else.  It's ignored by everything except
+filename_mountpoint().  The thing is, call graph for filename_mountpoint()
+is
+	filename_mountpoint()
+		<- user_path_mountpoint_at()
+			<- ksys_umount()
+		<- kern_path_mountpoint()
+			<- autofs_dev_ioctl_ismountpoint()
+			<- find_autofs_mount()
+				<- autofs_dev_ioctl_open_mountpoint()
+				<- autofs_dev_ioctl_requester()
+				<- autofs_dev_ioctl_ismountpoint()
+In other words, that flag is basically "was filename_mountpoint()
+been called by umount(2) or has it come from an autofs ioctl?".
+And looking at the rationale in that commit, autofs ioctls need
+it just as much as umount(2) does.  Why is it not set for those
+as well?  And why is it conditional at all?
 
---------------
-Changes in v2:
-- Use full ATA identity string
+1b) ... because audit_inode() wants LOOKUP_... as the last argument,
+only to remap it into AUDIT_..., that's why.  So audit needs something
+guaranteed not to conflict with LOOKUP_PARENT (another flag getting
+remapped).  So why do we bother with remapping those, anyway?  Let's look
+at the callers:
 
+fs/namei.c:933: audit_inode(nd->name, nd->stack[0].link.dentry, 0);
+fs/namei.c:2353:                audit_inode(name, path->dentry, flags & LOOKUP_PARENT);
+fs/namei.c:2394:                audit_inode(name, parent->dentry, LOOKUP_PARENT);
+fs/namei.c:2721:                audit_inode(name, path->dentry, flags & LOOKUP_NO_EVAL);
+fs/namei.c:3302:                audit_inode(nd->name, dir, LOOKUP_PARENT);
+fs/namei.c:3336:                audit_inode(nd->name, file->f_path.dentry, 0);
+fs/namei.c:3371:        audit_inode(nd->name, path.dentry, 0);
+fs/namei.c:3389:        audit_inode(nd->name, nd->path.dentry, 0);
+fs/namei.c:3490:        audit_inode(nd->name, child, 0);
+fs/namei.c:3509:                audit_inode(nd->name, path.dentry, 0);
+ipc/mqueue.c:788:       audit_inode(name, dentry, 0);
 
-diff --git a/drivers/ata/sata_sil.c b/drivers/ata/sata_sil.c
-index 25b6a52be5ab..9e851534306d 100644
---- a/drivers/ata/sata_sil.c
-+++ b/drivers/ata/sata_sil.c
-@@ -141,6 +141,7 @@ static const struct sil_drivelist {
- 	{ "ST3120022ASL",	SIL_QUIRK_MOD15WRITE },
- 	{ "ST3160021ASL",	SIL_QUIRK_MOD15WRITE },
- 	{ "TOSHIBA MK2561GSYN",	SIL_QUIRK_MOD15WRITE },
-+	{ "Samsung SSD 850 EVO 250GB", SIL_QUIRK_MOD15WRITE },
- 	{ "Maxtor 4D060H3",	SIL_QUIRK_UDMA5MAX },
- 	{ }
- };
+In all but two of those we have a nice constant value - 0 or AUDIT_INODE_PARENT.
+One of two exceptions is in filename_mountpoint(), and there we want
+unconditional AUDIT_INODE_NOEVAL (see above).  What of the other?  It's
+        if (likely(!retval))
+                audit_inode(name, path->dentry, flags & LOOKUP_PARENT);
+in filename_lookup().  And that is bogus as well.  filename_lookupat() would
+better *NOT* get LOOKUP_PARENT in flags.  And it doesn't - not since
+commit 8bcb77fabd7c (namei: split off filename_lookupat() with LOOKUP_PARENT)
+back in 2015.  In filename_parentat() introduced there we have
+                audit_inode(name, parent->dentry, LOOKUP_PARENT);
+and at the same point the call in filename_lookupat() should've become
+                audit_inode(name, path->dentry, 0);
+It hadn't; my fault.  And after fixing that everything becomes nice and
+unconditional - the last argument of audit_inode() is always an AUDIT_...
+constant or zero.  Moving AUDIT_... definitions outside of ifdef on
+CONFIG_AUDITSYSCALL, getting rid of remapping in audit_inode() and
+passing the right values in 3 callers that don't pass 0 and LOOKUP_NO_EVAL
+can go to hell.
+
+Any objections from audit folks?
+
+2) comment in namei.h is seriously out of sync with reality.  To quote:
+ *  - follow links at the end
+OK, that's LOOKUP_FOLLOW (1)
+ *  - require a directory
+... and LOOKUP_DIRECTORY (2)
+ *  - ending slashes ok even for nonexistent files
+... used to be about LOOKUP_CONTINUE (eight years dead now)
+ *  - internal "there are more path components" flag
+... LOOKUP_PARENT (16)
+ *  - dentry cache is untrusted; force a real lookup
+... LOOKUP_REVAL (32)
+ *  - suppress terminal automount
+... used to be LOOKUP_NO_AUTOMOUNT (128), except that it's been
+replaced with LOOKUP_AUTOMOUNT (at 4) almost eight years ago.  And
+the meaning of LOOKUP_AUTOMOUNT is opposite to the comment,
+of course.
+ *  - skip revalidation
+... LOOKUP_NO_REVAL (128)
+ *  - don't fetch xattrs on audit_inode
+... and that's about soon-to-be dead LOOKUP_NO_EVAL (256)
+
+Note that LOOKUP_RCU (at 64) is quietly skipped and so's the tail
+of the list.  If not for "suppress terminal automount" bit, I wouldn't
+really care, but that one makes for a really nasty trap for readers.
+I'm going to convert that to (accurate) comments next to actual defines...
+
+3) while looking through LOOKUP_AUTOMOUNT users,
+in aa_bind_mount() we have
+        error = kern_path(dev_name, LOOKUP_FOLLOW|LOOKUP_AUTOMOUNT, &old_path);
+matching do_loopback(), while tomoyo_mount_acl() has
+                if (!dev_name || kern_path(dev_name, LOOKUP_FOLLOW, &path)) {
+And yes, that *is* hit on mount --bind.  As well as on new mounts, where
+apparmor (and bdev_lookup()) has plain LOOKUP_FOLLOW.
+
+->sb_mount() is garbage by design (not the least because of the need to
+have pathname lookups in the first place, as well as having to duplicate the
+demultiplexing parts of do_mount() without fucking it up)...
