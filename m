@@ -2,152 +2,123 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 317E56A37E
-	for <lists+linux-parisc@lfdr.de>; Tue, 16 Jul 2019 10:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6698B6A90F
+	for <lists+linux-parisc@lfdr.de>; Tue, 16 Jul 2019 15:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730932AbfGPIEG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 16 Jul 2019 04:04:06 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:35732 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727042AbfGPIEF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 16 Jul 2019 04:04:05 -0400
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 65FB4506CB;
-        Tue, 16 Jul 2019 10:03:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id FP9J3tccLygu; Tue, 16 Jul 2019 10:03:51 +0200 (CEST)
-Date:   Tue, 16 Jul 2019 18:03:38 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Christian Brauner <christian@brauner.io>,
-        David Drysdale <drysdale@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org,
-        rgb@redhat.com, paul@paul-moore.com, raven@themaw.net,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
-Message-ID: <20190716080338.al4cnwdfvdbpzh3r@yavin>
-References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-6-cyphar@cyphar.com>
- <20190712043341.GI17978@ZenIV.linux.org.uk>
- <20190712105745.nruaftgeat6irhzr@yavin>
- <20190712123924.GK17978@ZenIV.linux.org.uk>
- <20190712125552.GL17978@ZenIV.linux.org.uk>
- <20190712132553.GN17978@ZenIV.linux.org.uk>
- <20190712150026.GO17978@ZenIV.linux.org.uk>
- <20190713024153.GA3817@ZenIV.linux.org.uk>
- <20190714035826.GQ17978@ZenIV.linux.org.uk>
+        id S1727849AbfGPNB2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 16 Jul 2019 09:01:28 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:39508 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725926AbfGPNB2 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 16 Jul 2019 09:01:28 -0400
+Received: by mail-pl1-f194.google.com with SMTP id b7so10091888pls.6
+        for <linux-parisc@vger.kernel.org>; Tue, 16 Jul 2019 06:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=SG8qhDoSHsba/3+8ydf3MEjCtTI+ImMVXa2dK2oO2GU=;
+        b=DERN6gnAqU6qZsCxFBTIvVBRLyd5i/7+JTlCdHdaL1YeKZyAe5Ps2055kZSWs0DmP1
+         tJyltUKEeWsUM60c1clDMuCnY282koILWR+2hmjJxQI3klcoDIiXS+85fGlX4aa7l6Wa
+         iNFJFHLkAXJAvl/vzkuUd7dKuwk6V/8+o2k/Z4fxiJk/9OHQc0whLFv1vX2iXxlOB5nU
+         CrKyY+Dbt/iRgTqQsNdHWHEIfgGoSpVu2jRjleGOubzE+TMuKRXITwtyYwLXcSO3Tdt5
+         Mlh0o/80xwbBoeNk9XGwAi7Osp/t+rkB7UQ4YHe43WjYXHXYXBZrKGkVeGZH0I1csK39
+         8RWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=SG8qhDoSHsba/3+8ydf3MEjCtTI+ImMVXa2dK2oO2GU=;
+        b=UUDv17HTfyLFBDJxcUy+WB47FDxtPeMi4c0son9PUt4gyCnCARvfU++tVnNb5IW912
+         QregF5Gb6fT0+hUUJtKldEovJ71RttiuTY+KhQabz+Yg2205BYJT28PSk1ER2Ka1j96G
+         UmXRczigyzfY8qDa1Ri4sRNp9Rp5ZFuRB8Rf2k1q5lyXktDp7iIww2GLGqhhqD5AGo7C
+         GyEKeAL62OdMKU02zI7un2LAHsqkq1OivPC98B53WlYURXpGn0FbzV6+BqvEVRlvfy3B
+         Kw4+F7aCgJprxKSFwwkeuTR2T1au2bEa2X+Pj2ZfWPaTSnK7JBdaJ38iwP1ieSSi81Oq
+         0jIw==
+X-Gm-Message-State: APjAAAUOVQEhT08CGJe1ydD8n8FC21zqogA6JoNTsRPLVEOrz5jWRhRT
+        xF7Jsho8z3+QBqACO2+g/8w=
+X-Google-Smtp-Source: APXvYqx2aTBLkVodX0y6eeF1FDB6532cd2sE9xR5CLMwb5is+eFuQ4ahI8HjMk/oniMhNCnCNNcn0w==
+X-Received: by 2002:a17:902:9689:: with SMTP id n9mr35717349plp.241.1563282087577;
+        Tue, 16 Jul 2019 06:01:27 -0700 (PDT)
+Received: from brauner.io ([172.58.30.188])
+        by smtp.gmail.com with ESMTPSA id k25sm14356979pgt.53.2019.07.16.06.01.24
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 16 Jul 2019 06:01:26 -0700 (PDT)
+Date:   Tue, 16 Jul 2019 15:01:21 +0200
+From:   Christian Brauner <christian@brauner.io>
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org, arnd@arndb.de
+Subject: Re: [PATCH] parisc: Wire up clone3 syscall
+Message-ID: <20190716130118.dlu6hz4mpek6s7nc@brauner.io>
+References: <20190715203326.GA25932@ls3530.fritz.box>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="lshvdcpckvdb4crm"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190714035826.GQ17978@ZenIV.linux.org.uk>
+In-Reply-To: <20190715203326.GA25932@ls3530.fritz.box>
+User-Agent: NeoMutt/20180716
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Mon, Jul 15, 2019 at 10:33:26PM +0200, Helge Deller wrote:
+> Untested patch to wire up the clone3 syscall.
 
---lshvdcpckvdb4crm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+From what I can see from your entry points the treatment for fork and
+clone the relevant bit is:
 
-On 2019-07-14, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Sat, Jul 13, 2019 at 03:41:53AM +0100, Al Viro wrote:
-> > On Fri, Jul 12, 2019 at 04:00:26PM +0100, Al Viro wrote:
-> > > On Fri, Jul 12, 2019 at 02:25:53PM +0100, Al Viro wrote:
-> > >=20
-> > > > 	if (flags & LOOKUP_BENEATH) {
-> > > > 		nd->root =3D nd->path;
-> > > > 		if (!(flags & LOOKUP_RCU))
-> > > > 			path_get(&nd->root);
-> > > > 		else
-> > > > 			nd->root_seq =3D nd->seq;
-> > >=20
-> > > BTW, this assignment is needed for LOOKUP_RCU case.  Without it
-> > > you are pretty much guaranteed that lazy pathwalk will fail,
-> > > when it comes to complete_walk().
-> > >=20
-> > > Speaking of which, what would happen if LOOKUP_ROOT/LOOKUP_BENEATH
-> > > combination would someday get passed?
-> >=20
-> > I don't understand what's going on with ->r_seq in there - your
-> > call of path_is_under() is after having (re-)sampled rename_lock,
-> > but if that was the only .. in there, who's going to recheck
-> > the value?  For that matter, what's to guarantee that the thing
-> > won't get moved just as you are returning from handle_dots()?
-> >=20
-> > IOW, what does LOOKUP_IN_ROOT guarantee for caller (openat2())?
->=20
-> Sigh...  Usual effects of trying to document things:
->=20
-> 1) LOOKUP_NO_EVAL looks bogus.  It had been introduced by commit 57d46577=
-16ac
-> (audit: ignore fcaps on umount) and AFAICS it's crap.  It is set in
-> ksys_umount() and nowhere else.  It's ignored by everything except
-> filename_mountpoint().  The thing is, call graph for filename_mountpoint()
-> is
-> 	filename_mountpoint()
-> 		<- user_path_mountpoint_at()
-> 			<- ksys_umount()
-> 		<- kern_path_mountpoint()
-> 			<- autofs_dev_ioctl_ismountpoint()
-> 			<- find_autofs_mount()
-> 				<- autofs_dev_ioctl_open_mountpoint()
-> 				<- autofs_dev_ioctl_requester()
-> 				<- autofs_dev_ioctl_ismountpoint()
-> In other words, that flag is basically "was filename_mountpoint()
-> been called by umount(2) or has it come from an autofs ioctl?".
-> And looking at the rationale in that commit, autofs ioctls need
-> it just as much as umount(2) does.  Why is it not set for those
-> as well?  And why is it conditional at all?
+	.macro	fork_like name
+ENTRY_CFI(sys_\name\()_wrapper)
+	LDREG	TI_TASK-THREAD_SZ_ALGN-FRAME_SIZE(%r30), %r1
+	ldo	TASK_REGS(%r1),%r1
+	reg_save %r1
+	mfctl	%cr27, %r28
+	ldil	L%sys_\name, %r31
+	be	R%sys_\name(%sr4,%r31)
+	STREG	%r28, PT_CR27(%r1)
+ENDPROC_CFI(sys_\name\()_wrapper)
+	.endm
 
-In addition, LOOKUP_NO_EVAL =3D=3D LOOKUP_OPEN (0x100). Is that meant to be
-the case? Also I just saw you have a patch in work.namei that fixes this
-up -- do you want me to rebase on top of that?
+Which seems to be identical for fork(), vfork(), and clone().
+So parisc doesn't seem to have to muck with any clone-specific args. If
+that's the case things should be fine for clone3 on parisc. I only
+expect issues for arches that need to shove around specific arguments
+for clone.
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---lshvdcpckvdb4crm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXS2E1wAKCRCdlLljIbnQ
-EvUWAP4hDKNKmCaghR/nSF7B9A3mjchQtut9n7vItMKjRPJjLAD9GRABOJCnZ47q
-TqUSuZfxKfq260PQMTx91hQd/K+//QE=
-=XoHc
------END PGP SIGNATURE-----
-
---lshvdcpckvdb4crm--
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> 
+> diff --git a/arch/parisc/include/asm/unistd.h b/arch/parisc/include/asm/unistd.h
+> index b0838dc4dfee..cd438e4150f6 100644
+> --- a/arch/parisc/include/asm/unistd.h
+> +++ b/arch/parisc/include/asm/unistd.h
+> @@ -166,6 +166,7 @@ type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5)	\
+>  #define __ARCH_WANT_SYS_FORK
+>  #define __ARCH_WANT_SYS_VFORK
+>  #define __ARCH_WANT_SYS_CLONE
+> +#define __ARCH_WANT_SYS_CLONE3
+>  #define __ARCH_WANT_COMPAT_SYS_SENDFILE
+> 
+>  #ifdef CONFIG_64BIT
+> diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+> index 3e430590c1e1..d9d3387f7c47 100644
+> --- a/arch/parisc/kernel/entry.S
+> +++ b/arch/parisc/kernel/entry.S
+> @@ -1732,6 +1732,7 @@ ENDPROC_CFI(sys_\name\()_wrapper)
+>  	.endm
+> 
+>  fork_like clone
+> +fork_like clone3
+>  fork_like fork
+>  fork_like vfork
+> 
+> diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+> index 5022b9e179c2..670d1371aca1 100644
+> --- a/arch/parisc/kernel/syscalls/syscall.tbl
+> +++ b/arch/parisc/kernel/syscalls/syscall.tbl
+> @@ -431,3 +431,4 @@
+>  432	common	fsmount				sys_fsmount
+>  433	common	fspick				sys_fspick
+>  434	common	pidfd_open			sys_pidfd_open
+> +435	common	clone3				sys_clone3_wrapper
