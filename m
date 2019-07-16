@@ -2,91 +2,144 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 979806AAF4
-	for <lists+linux-parisc@lfdr.de>; Tue, 16 Jul 2019 16:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA6756ABD0
+	for <lists+linux-parisc@lfdr.de>; Tue, 16 Jul 2019 17:32:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387880AbfGPOvT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 16 Jul 2019 10:51:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41986 "EHLO mail.kernel.org"
+        id S1728390AbfGPPcE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 16 Jul 2019 11:32:04 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:58856 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728470AbfGPOvS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 16 Jul 2019 10:51:18 -0400
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1727796AbfGPPcD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 16 Jul 2019 11:32:03 -0400
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3614B2173C;
-        Tue, 16 Jul 2019 14:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563288677;
-        bh=sonO2Wj/dB2WVkbnigGOIptZBiYzU9g2oAVvNNhm8N0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cJpVGUzwvpQrBfw5VxnjM7fZDMqN8buukyY5uNJV0ilBSNzK8xmxbSP8KeFgOPVGk
-         CdhPYLcquPdpNPv9IfGMnbk93gK1YgS3rEW3NEieCmVZ/yyatbJnN9K/XZrO4tC0sv
-         vpJ81lt0Z15VjbKndmSpPGS7eGfx6pNckGHuM6H8=
-Received: by mail-oi1-f178.google.com with SMTP id w196so15751312oie.7;
-        Tue, 16 Jul 2019 07:51:17 -0700 (PDT)
-X-Gm-Message-State: APjAAAUzNDjM6CkTAVBj689g9/0ymmtl7lnTF+3weDk1ZY69iWxZD8Fb
-        YeSU/Sse0VxX7EvIzce7nrEzXEfu1SiFQCQa6NU=
-X-Google-Smtp-Source: APXvYqznotTEvyaymhJh/wAMu0w2H5gcuDv5j22SZvycyNMyxsk7XBmOnJ7QXnjodYkrV1FF1kduEHzUtbpafqpVCNU=
-X-Received: by 2002:aca:1b0c:: with SMTP id b12mr2605814oib.123.1563288676578;
- Tue, 16 Jul 2019 07:51:16 -0700 (PDT)
+        by mx1.redhat.com (Postfix) with ESMTPS id 020B52F8BCC;
+        Tue, 16 Jul 2019 15:32:03 +0000 (UTC)
+Received: from redhat.com (ovpn-122-108.rdu2.redhat.com [10.10.122.108])
+        by smtp.corp.redhat.com (Postfix) with SMTP id 96BE15B681;
+        Tue, 16 Jul 2019 15:31:52 +0000 (UTC)
+Date:   Tue, 16 Jul 2019 11:31:51 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        aarcange@redhat.com, bharat.bhushan@nxp.com, bhelgaas@google.com,
+        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+        linux-parisc@vger.kernel.org, davem@davemloft.net,
+        eric.auger@redhat.com, gustavo@embeddedor.com, hch@infradead.org,
+        ihor.matushchak@foobox.net, James.Bottomley@hansenpartnership.com,
+        jasowang@redhat.com, jean-philippe.brucker@arm.com,
+        jglisse@redhat.com, mst@redhat.com, natechancellor@gmail.com
+Subject: [PULL] virtio, vhost: fixes, features, performance
+Message-ID: <20190716113151-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-References: <20190712022018.27989-1-alex.shi@linux.alibaba.com> <20190712022018.27989-2-alex.shi@linux.alibaba.com>
-In-Reply-To: <20190712022018.27989-2-alex.shi@linux.alibaba.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Tue, 16 Jul 2019 16:51:05 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPcnMM=h9-MW4qg4OTxaY5eBQ=4tH=Gbd3tSuckFvSOPcw@mail.gmail.com>
-Message-ID: <CAJKOXPcnMM=h9-MW4qg4OTxaY5eBQ=4tH=Gbd3tSuckFvSOPcw@mail.gmail.com>
-Subject: Re: [PATCH 02/12] Documentation/arm: repointer docs to Documentation/arch/arm
-To:     Alex Shi <alex.shi@linux.alibaba.com>
-Cc:     linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-sh@vger.kernel.org,
-        Kukjin Kim <kgene@kernel.org>, linux-crypto@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-serial@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mutt-Fcc: =sent
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Tue, 16 Jul 2019 15:32:03 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, 12 Jul 2019 at 04:20, Alex Shi <alex.shi@linux.alibaba.com> wrote:
->
-> Since we move 'arm/arm64' docs to Documentation/arch/{arm,arm64} dir,
-> redirect the doc pointer to them.
->
-> Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Kukjin Kim <kgene@kernel.org>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: linux-crypto@vger.kernel.org
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-serial@vger.kernel.org
-> ---
->  Documentation/arch/arm/Samsung-S3C24XX/GPIO.txt    |  2 +-
->  .../arch/arm/Samsung-S3C24XX/Overview.txt          |  6 +++---
->  Documentation/arch/arm/Samsung/GPIO.txt            |  2 +-
->  Documentation/arch/arm/Samsung/Overview.txt        |  4 ++--
->  Documentation/devicetree/bindings/arm/xen.txt      |  2 +-
->  Documentation/devicetree/booting-without-of.txt    |  4 ++--
->  Documentation/translations/zh_CN/arm/Booting       |  4 ++--
->  .../translations/zh_CN/arm/kernel_user_helpers.txt |  4 ++--
->  MAINTAINERS                                        |  6 +++---
+The following changes since commit c1ea02f15ab5efb3e93fc3144d895410bf79fcf2:
 
-I assume it will go through doc tree, so for Samsung:
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+  vhost: scsi: add weight support (2019-05-27 11:08:23 -0400)
 
-Best regards,
-Krzysztof
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+
+for you to fetch changes up to 5e663f0410fa2f355042209154029842ba1abd43:
+
+  virtio-mmio: add error check for platform_get_irq (2019-07-11 16:22:29 -0400)
+
+----------------------------------------------------------------
+virtio, vhost: fixes, features, performance
+
+new iommu device
+vhost guest memory access using vmap (just meta-data for now)
+minor fixes
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+Note: due to code driver changes the driver-core tree, the following
+patch is needed when merging tree with commit 92ce7e83b4e5
+("driver_find_device: Unify the match function with
+class_find_device()") in the driver-core tree:
+
+From: Nathan Chancellor <natechancellor@gmail.com>
+Subject: [PATCH] iommu/virtio: Constify data parameter in viommu_match_node
+
+After commit 92ce7e83b4e5 ("driver_find_device: Unify the match
+function with class_find_device()") in the driver-core tree.
+
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+---
+ drivers/iommu/virtio-iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
+index 4620dd221ffd..433f4d2ee956 100644
+--- a/drivers/iommu/virtio-iommu.c
++++ b/drivers/iommu/virtio-iommu.c
+@@ -839,7 +839,7 @@ static void viommu_put_resv_regions(struct device *dev, struct list_head *head)
+ static struct iommu_ops viommu_ops;
+ static struct virtio_driver virtio_iommu_drv;
+
+-static int viommu_match_node(struct device *dev, void *data)
++static int viommu_match_node(struct device *dev, const void *data)
+ {
+ 	return dev->parent->fwnode == data;
+ }
+
+----------------------------------------------------------------
+Gustavo A. R. Silva (1):
+      scsi: virtio_scsi: Use struct_size() helper
+
+Ihor Matushchak (1):
+      virtio-mmio: add error check for platform_get_irq
+
+Jason Wang (6):
+      vhost: generalize adding used elem
+      vhost: fine grain userspace memory accessors
+      vhost: rename vq_iotlb_prefetch() to vq_meta_prefetch()
+      vhost: introduce helpers to get the size of metadata area
+      vhost: factor out setting vring addr and num
+      vhost: access vq metadata through kernel virtual address
+
+Jean-Philippe Brucker (7):
+      dt-bindings: virtio-mmio: Add IOMMU description
+      dt-bindings: virtio: Add virtio-pci-iommu node
+      of: Allow the iommu-map property to omit untranslated devices
+      PCI: OF: Initialize dev->fwnode appropriately
+      iommu: Add virtio-iommu driver
+      iommu/virtio: Add probe request
+      iommu/virtio: Add event queue
+
+Michael S. Tsirkin (1):
+      vhost: fix clang build warning
+
+ Documentation/devicetree/bindings/virtio/iommu.txt |   66 ++
+ Documentation/devicetree/bindings/virtio/mmio.txt  |   30 +
+ MAINTAINERS                                        |    7 +
+ drivers/iommu/Kconfig                              |   11 +
+ drivers/iommu/Makefile                             |    1 +
+ drivers/iommu/virtio-iommu.c                       | 1158 ++++++++++++++++++++
+ drivers/of/base.c                                  |   10 +-
+ drivers/pci/of.c                                   |    8 +
+ drivers/scsi/virtio_scsi.c                         |    2 +-
+ drivers/vhost/net.c                                |    4 +-
+ drivers/vhost/vhost.c                              |  850 +++++++++++---
+ drivers/vhost/vhost.h                              |   43 +-
+ drivers/virtio/virtio_mmio.c                       |    7 +-
+ include/uapi/linux/virtio_ids.h                    |    1 +
+ include/uapi/linux/virtio_iommu.h                  |  161 +++
+ 15 files changed, 2228 insertions(+), 131 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/virtio/iommu.txt
+ create mode 100644 drivers/iommu/virtio-iommu.c
+ create mode 100644 include/uapi/linux/virtio_iommu.h
