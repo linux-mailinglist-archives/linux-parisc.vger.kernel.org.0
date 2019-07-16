@@ -2,100 +2,152 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0457669CD7
-	for <lists+linux-parisc@lfdr.de>; Mon, 15 Jul 2019 22:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 317E56A37E
+	for <lists+linux-parisc@lfdr.de>; Tue, 16 Jul 2019 10:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731534AbfGOUda (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 15 Jul 2019 16:33:30 -0400
-Received: from mout.gmx.net ([212.227.17.20]:49559 "EHLO mout.gmx.net"
+        id S1730932AbfGPIEG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 16 Jul 2019 04:04:06 -0400
+Received: from mx1.mailbox.org ([80.241.60.212]:35732 "EHLO mx1.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731187AbfGOUda (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 15 Jul 2019 16:33:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1563222808;
-        bh=NZSvw7g6SSytcFvSob+0MWjJHNuS5rSJvJPkgaN+gEY=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=fMtOg8NK5RAdE7y9Kda8m8yH4xseXwiuhtCMaEpPcLuRrnjUfQkm2BMK93OjBUO8m
-         MijP2RpW62Zx880a/f3YXYPFUn6LRrZlU2SeCYbKqdzIt+NCTTKLPF8q0p1czAMT5o
-         AoDHAk8mvO3r3jt6MCo6H+g10ntlrOjmifSW7r9E=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.141.80]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MatRT-1iKoWB2TwR-00cPvb; Mon, 15
- Jul 2019 22:33:28 +0200
-Date:   Mon, 15 Jul 2019 22:33:26 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     Christian Brauner <christian@brauner.io>
-Subject: [PATCH] parisc: Wire up clone3 syscall
-Message-ID: <20190715203326.GA25932@ls3530.fritz.box>
+        id S1727042AbfGPIEF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 16 Jul 2019 04:04:05 -0400
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mx1.mailbox.org (Postfix) with ESMTPS id 65FB4506CB;
+        Tue, 16 Jul 2019 10:03:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
+        with ESMTP id FP9J3tccLygu; Tue, 16 Jul 2019 10:03:51 +0200 (CEST)
+Date:   Tue, 16 Jul 2019 18:03:38 +1000
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Christian Brauner <christian@brauner.io>,
+        David Drysdale <drysdale@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org,
+        rgb@redhat.com, paul@paul-moore.com, raven@themaw.net,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
+Message-ID: <20190716080338.al4cnwdfvdbpzh3r@yavin>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-6-cyphar@cyphar.com>
+ <20190712043341.GI17978@ZenIV.linux.org.uk>
+ <20190712105745.nruaftgeat6irhzr@yavin>
+ <20190712123924.GK17978@ZenIV.linux.org.uk>
+ <20190712125552.GL17978@ZenIV.linux.org.uk>
+ <20190712132553.GN17978@ZenIV.linux.org.uk>
+ <20190712150026.GO17978@ZenIV.linux.org.uk>
+ <20190713024153.GA3817@ZenIV.linux.org.uk>
+ <20190714035826.GQ17978@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="lshvdcpckvdb4crm"
 Content-Disposition: inline
-User-Agent: Mutt/1.12.0 (2019-05-25)
-X-Provags-ID: V03:K1:P4o/wtgvr4lTA1RvPEJ04+toVw3ndih8RZS12Cmu/WTqE064b9n
- 7usOkeTOtTFJ5ijPrD2+ODXGZPuQ69S3RAjyq5Pjn5y9SFoRwFQVhdxjxYh6lKUi24zk41I
- /WXwlgV1uAVmFYkdUiO3UM3xr6qVNJnK8FiGv0EY6y201SIIfD9rF6SyO5n3zHexUmwOeVG
- gxwY4BmBp/9b24VE4jgRg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NZzjQ6qBcEM=:pguxyy/CB9eQmM1YSXWEVQ
- 492vKp4p6TYXL1aSywhsF1v7s0MagF6wBHvu2YpnT6fmVcAR66WI429IM1NJSZGFRxNe9cSo/
- 7rqP4dQR+E++FbdEbHEWv9kjauIUuYEp3MG03Uw5713E5LTBlAk6BiMtxO9g6B/AwqwaXPUdK
- xUsHF7cowgrYX7uZ9SifooJAz5eb8KvyyxewhYWIJtlCWROffo0GL4wCdihxWRsydB200ZVz9
- ENJQo+H8hY1Zyh8bVXoXva/KbALJuuQ6zeeELr+bG6DaKtlTw+L/c9bhRxnsWC0NFNGcXKAeE
- wjSAsnIbxH1ER1Ddl+HdPdyXZFR4mFJlv04Y2GNgojlfN9LvvSb4gTxgNr4PBUvayx3KwDF11
- p67JYgxY67MZDWBqAYucpgoMgfzz8M5BAuBMe37EgNuYfo+O1oSC244U3x1UmQVfkia6ffcU5
- O3wo7Z+CaJzImwWEL21Z47gF8YruUoVoVujllvwc/fBud32+E5wDluDaVaIbQYBIh2U4+tlFG
- fYfU0Kujt9Be/wosuXndCMc8jaS0wHsQltfiV87iRiN1AJp4a/kVAkHsO6CXfR+cqcLJHQS8O
- 40dypw2mlwVpXDInUZ+0C8xKSqtpyhuLqn2L/k1rEmzwaoowNdlJz7dGaQMVa8rNc4csv3khV
- QGVxmoj+hcsnjHQEhbwFgmMSavxiYzEaR4GDXiLPcNs4SQJJSi7DbyW0kkBxssPPbIll2WLPR
- D5PvRcZ+SRZCFQqArdsYKar2VcTOZ9VHiM4kpR35ST/KcfqZo8bD+grNOevW1BiTrRLbrBQnv
- X8HA/8rpe1aIgCpNY1mZtjuTwxe36kypydoKJvfCfpSccU+h8Nu3dHDhKFF5TcE4icrbYuNTC
- 6FdWjrEwjqqLLoC/lZrtALuxY5YGVpW1+JZYNX17bruutAgAcEkP8b3NfTJCep+ns4PJ+W74J
- LbJdNBnGF4SUxm65J7xaFEjdkm9pBKd1Vkuhl3HymLgAoAhT93GoHuyeZcR1z7AwUaZKdj2k6
- MEYhgVBfX0BBKruA30C+7B8e27+lBu+VzRJ3HNVFeVlY0L3PJaB8VLt1I0Me/h9k8g==
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190714035826.GQ17978@ZenIV.linux.org.uk>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Untested patch to wire up the clone3 syscall.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+--lshvdcpckvdb4crm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/parisc/include/asm/unistd.h b/arch/parisc/include/asm/un=
-istd.h
-index b0838dc4dfee..cd438e4150f6 100644
-=2D-- a/arch/parisc/include/asm/unistd.h
-+++ b/arch/parisc/include/asm/unistd.h
-@@ -166,6 +166,7 @@ type name(type1 arg1, type2 arg2, type3 arg3, type4 ar=
-g4, type5 arg5)	\
- #define __ARCH_WANT_SYS_FORK
- #define __ARCH_WANT_SYS_VFORK
- #define __ARCH_WANT_SYS_CLONE
-+#define __ARCH_WANT_SYS_CLONE3
- #define __ARCH_WANT_COMPAT_SYS_SENDFILE
+On 2019-07-14, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> On Sat, Jul 13, 2019 at 03:41:53AM +0100, Al Viro wrote:
+> > On Fri, Jul 12, 2019 at 04:00:26PM +0100, Al Viro wrote:
+> > > On Fri, Jul 12, 2019 at 02:25:53PM +0100, Al Viro wrote:
+> > >=20
+> > > > 	if (flags & LOOKUP_BENEATH) {
+> > > > 		nd->root =3D nd->path;
+> > > > 		if (!(flags & LOOKUP_RCU))
+> > > > 			path_get(&nd->root);
+> > > > 		else
+> > > > 			nd->root_seq =3D nd->seq;
+> > >=20
+> > > BTW, this assignment is needed for LOOKUP_RCU case.  Without it
+> > > you are pretty much guaranteed that lazy pathwalk will fail,
+> > > when it comes to complete_walk().
+> > >=20
+> > > Speaking of which, what would happen if LOOKUP_ROOT/LOOKUP_BENEATH
+> > > combination would someday get passed?
+> >=20
+> > I don't understand what's going on with ->r_seq in there - your
+> > call of path_is_under() is after having (re-)sampled rename_lock,
+> > but if that was the only .. in there, who's going to recheck
+> > the value?  For that matter, what's to guarantee that the thing
+> > won't get moved just as you are returning from handle_dots()?
+> >=20
+> > IOW, what does LOOKUP_IN_ROOT guarantee for caller (openat2())?
+>=20
+> Sigh...  Usual effects of trying to document things:
+>=20
+> 1) LOOKUP_NO_EVAL looks bogus.  It had been introduced by commit 57d46577=
+16ac
+> (audit: ignore fcaps on umount) and AFAICS it's crap.  It is set in
+> ksys_umount() and nowhere else.  It's ignored by everything except
+> filename_mountpoint().  The thing is, call graph for filename_mountpoint()
+> is
+> 	filename_mountpoint()
+> 		<- user_path_mountpoint_at()
+> 			<- ksys_umount()
+> 		<- kern_path_mountpoint()
+> 			<- autofs_dev_ioctl_ismountpoint()
+> 			<- find_autofs_mount()
+> 				<- autofs_dev_ioctl_open_mountpoint()
+> 				<- autofs_dev_ioctl_requester()
+> 				<- autofs_dev_ioctl_ismountpoint()
+> In other words, that flag is basically "was filename_mountpoint()
+> been called by umount(2) or has it come from an autofs ioctl?".
+> And looking at the rationale in that commit, autofs ioctls need
+> it just as much as umount(2) does.  Why is it not set for those
+> as well?  And why is it conditional at all?
 
- #ifdef CONFIG_64BIT
-diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-index 3e430590c1e1..d9d3387f7c47 100644
-=2D-- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -1732,6 +1732,7 @@ ENDPROC_CFI(sys_\name\()_wrapper)
- 	.endm
+In addition, LOOKUP_NO_EVAL =3D=3D LOOKUP_OPEN (0x100). Is that meant to be
+the case? Also I just saw you have a patch in work.namei that fixes this
+up -- do you want me to rebase on top of that?
 
- fork_like clone
-+fork_like clone3
- fork_like fork
- fork_like vfork
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
 
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/=
-syscalls/syscall.tbl
-index 5022b9e179c2..670d1371aca1 100644
-=2D-- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -431,3 +431,4 @@
- 432	common	fsmount				sys_fsmount
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
-+435	common	clone3				sys_clone3_wrapper
+--lshvdcpckvdb4crm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXS2E1wAKCRCdlLljIbnQ
+EvUWAP4hDKNKmCaghR/nSF7B9A3mjchQtut9n7vItMKjRPJjLAD9GRABOJCnZ47q
+TqUSuZfxKfq260PQMTx91hQd/K+//QE=
+=XoHc
+-----END PGP SIGNATURE-----
+
+--lshvdcpckvdb4crm--
