@@ -2,144 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6756ABD0
-	for <lists+linux-parisc@lfdr.de>; Tue, 16 Jul 2019 17:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 665456AF4E
+	for <lists+linux-parisc@lfdr.de>; Tue, 16 Jul 2019 20:56:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728390AbfGPPcE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 16 Jul 2019 11:32:04 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:58856 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727796AbfGPPcD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 16 Jul 2019 11:32:03 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 020B52F8BCC;
-        Tue, 16 Jul 2019 15:32:03 +0000 (UTC)
-Received: from redhat.com (ovpn-122-108.rdu2.redhat.com [10.10.122.108])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 96BE15B681;
-        Tue, 16 Jul 2019 15:31:52 +0000 (UTC)
-Date:   Tue, 16 Jul 2019 11:31:51 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        aarcange@redhat.com, bharat.bhushan@nxp.com, bhelgaas@google.com,
-        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-        linux-parisc@vger.kernel.org, davem@davemloft.net,
-        eric.auger@redhat.com, gustavo@embeddedor.com, hch@infradead.org,
-        ihor.matushchak@foobox.net, James.Bottomley@hansenpartnership.com,
-        jasowang@redhat.com, jean-philippe.brucker@arm.com,
-        jglisse@redhat.com, mst@redhat.com, natechancellor@gmail.com
-Subject: [PULL] virtio, vhost: fixes, features, performance
-Message-ID: <20190716113151-mutt-send-email-mst@kernel.org>
+        id S2388414AbfGPS4A (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 16 Jul 2019 14:56:00 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:39831 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388373AbfGPSz7 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 16 Jul 2019 14:55:59 -0400
+Received: by mail-wr1-f66.google.com with SMTP id x4so22070665wrt.6
+        for <linux-parisc@vger.kernel.org>; Tue, 16 Jul 2019 11:55:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=HII1jGmOqJ+ZHDKFI1WGLRVkv6rLuJXcbXOQGuTO2qs=;
+        b=fLx81Axc7fZXcKYyn4FdWmT0VEDGlHROQXan6kCDS1lBwXYOSOZICuwNpupEPxZ1KA
+         wYSXFaoVOjGfUCkS+d8cHlAhu3M2pxovWkqnQFOwALA9QBVmnRkxZxo8H9luuiBMYElW
+         teY5CswjSiHPAphop6UNge3b8FVvFOdl6ZPhV/lGeX4EdVgwNRrnGQgmpMB8qwN4h6Vz
+         CUQTMLSjShRSEkdrxPF+i2v0KnEMWmD2NuZDGJaVq93w9O/93sXEJ13J+BUqFv+mqIR0
+         a2nSPFa0W7ZgTdiFK5BAgfXI4EwftEfi8ScyprvmIm71SEiMx2Gq30N3zYyTNzblFVBj
+         IDqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=HII1jGmOqJ+ZHDKFI1WGLRVkv6rLuJXcbXOQGuTO2qs=;
+        b=NfwUYSijs8sqK7RbPIyZnKG7dFIs1rLnsV0bvLybTq7TWXQibQKun/pcrOIeM3T5rW
+         1PhrE41DbLR9Xk5pJQKZMIHYapGeSdz8hFqcnxooPeh1nEqk0urGMr8HXkwA+uFgZlHQ
+         y+9zwNHQBml8TfpEBEtYp2i3Co3/w8ZDlHc5tOi7mxh+P4t/VDon569QQv0zBKSI3kkk
+         AUD12jYO4FifJDzMd96wbHXLO4D3DPNpTpT5LIYBPvojrTRjcjOZS9LnK0XOAbEoJYoC
+         ZPaW1IGXrXdXuS4cxa/f6tbZ48mNyGq9EobIZU7UOGjDVTe+EATUVQ6jx4F5GJwt+2WI
+         dc9Q==
+X-Gm-Message-State: APjAAAWkjrhcojHOe8jnzCXh9G4R02enp9/Iaz8NpM6lTTLCYm1QoaM/
+        rSZqkzpz7N8I9RMJoRpTeT8=
+X-Google-Smtp-Source: APXvYqxjOiZ+/ZmqnAl0iYfzzo4MAVdDizISydYdFT08PVtYYgV0sowV+fqLU0s1PX6fcTCrkIj0Fw==
+X-Received: by 2002:adf:f8cf:: with SMTP id f15mr36779432wrq.333.1563303357931;
+        Tue, 16 Jul 2019 11:55:57 -0700 (PDT)
+Received: from brauner.io ([213.220.153.21])
+        by smtp.gmail.com with ESMTPSA id j33sm48044545wre.42.2019.07.16.11.55.56
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 16 Jul 2019 11:55:57 -0700 (PDT)
+Date:   Tue, 16 Jul 2019 20:55:55 +0200
+From:   Christian Brauner <christian@brauner.io>
+To:     Sven Schnelle <svens@stackframe.org>
+Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
+        linux-kernel@vger.kernel.org, arnd@arndb.de,
+        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>, mpe@ellerman.id.au
+Subject: Re: [PATCH 1/2] arch: mark syscall number 435 reserved for clone3
+Message-ID: <20190716185554.gwpppirvmxgvnkgb@brauner.io>
+References: <20190714192205.27190-1-christian@brauner.io>
+ <20190714192205.27190-2-christian@brauner.io>
+ <e14eb2f9-43cb-0b9d-dec4-b7e7dcd62091@de.ibm.com>
+ <20190716130631.tohj4ub54md25dys@brauner.io>
+ <20190716185310.GA12537@t470p.stackframe.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mutt-Fcc: =sent
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Tue, 16 Jul 2019 15:32:03 +0000 (UTC)
+In-Reply-To: <20190716185310.GA12537@t470p.stackframe.org>
+User-Agent: NeoMutt/20180716
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The following changes since commit c1ea02f15ab5efb3e93fc3144d895410bf79fcf2:
+On Tue, Jul 16, 2019 at 08:53:10PM +0200, Sven Schnelle wrote:
+> Hi,
+> 
+> [Adding Helge to CC list]
+> 
+> On Tue, Jul 16, 2019 at 03:06:33PM +0200, Christian Brauner wrote:
+> > On Mon, Jul 15, 2019 at 03:56:04PM +0200, Christian Borntraeger wrote:
+> > > I think Vasily already has a clone3 patch for s390x with 435. 
+> > 
+> > A quick follow-up on this. Helge and Michael have asked whether there
+> > are any tests for clone3. Yes, there will be and I try to have them
+> > ready by the end of the this or next week for review. In the meantime I
+> > hope the following minimalistic test program that just verifies very
+> > very basic functionality (It's not pretty.) will help you test:
+> > [..]
+> 
+> On PA-RISC this seems to work fine with Helge's patch to wire up the
+> clone3 syscall.
 
-  vhost: scsi: add weight support (2019-05-27 11:08:23 -0400)
+I think I already responded to Helge before and yes, I think that parisc
+doesn't do anything special for fork, vfork, clone, and by extension
+also probably doesn't need to for clone3.
+It should only be a problem for arches that require mucking explicitly
+with arguments of clone-like syscalls.
+In any case, I saw Helge's patch and I think I might've missed to add an
+Acked-by but feel free to add it.
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-
-for you to fetch changes up to 5e663f0410fa2f355042209154029842ba1abd43:
-
-  virtio-mmio: add error check for platform_get_irq (2019-07-11 16:22:29 -0400)
-
-----------------------------------------------------------------
-virtio, vhost: fixes, features, performance
-
-new iommu device
-vhost guest memory access using vmap (just meta-data for now)
-minor fixes
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-Note: due to code driver changes the driver-core tree, the following
-patch is needed when merging tree with commit 92ce7e83b4e5
-("driver_find_device: Unify the match function with
-class_find_device()") in the driver-core tree:
-
-From: Nathan Chancellor <natechancellor@gmail.com>
-Subject: [PATCH] iommu/virtio: Constify data parameter in viommu_match_node
-
-After commit 92ce7e83b4e5 ("driver_find_device: Unify the match
-function with class_find_device()") in the driver-core tree.
-
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
----
- drivers/iommu/virtio-iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
-index 4620dd221ffd..433f4d2ee956 100644
---- a/drivers/iommu/virtio-iommu.c
-+++ b/drivers/iommu/virtio-iommu.c
-@@ -839,7 +839,7 @@ static void viommu_put_resv_regions(struct device *dev, struct list_head *head)
- static struct iommu_ops viommu_ops;
- static struct virtio_driver virtio_iommu_drv;
-
--static int viommu_match_node(struct device *dev, void *data)
-+static int viommu_match_node(struct device *dev, const void *data)
- {
- 	return dev->parent->fwnode == data;
- }
-
-----------------------------------------------------------------
-Gustavo A. R. Silva (1):
-      scsi: virtio_scsi: Use struct_size() helper
-
-Ihor Matushchak (1):
-      virtio-mmio: add error check for platform_get_irq
-
-Jason Wang (6):
-      vhost: generalize adding used elem
-      vhost: fine grain userspace memory accessors
-      vhost: rename vq_iotlb_prefetch() to vq_meta_prefetch()
-      vhost: introduce helpers to get the size of metadata area
-      vhost: factor out setting vring addr and num
-      vhost: access vq metadata through kernel virtual address
-
-Jean-Philippe Brucker (7):
-      dt-bindings: virtio-mmio: Add IOMMU description
-      dt-bindings: virtio: Add virtio-pci-iommu node
-      of: Allow the iommu-map property to omit untranslated devices
-      PCI: OF: Initialize dev->fwnode appropriately
-      iommu: Add virtio-iommu driver
-      iommu/virtio: Add probe request
-      iommu/virtio: Add event queue
-
-Michael S. Tsirkin (1):
-      vhost: fix clang build warning
-
- Documentation/devicetree/bindings/virtio/iommu.txt |   66 ++
- Documentation/devicetree/bindings/virtio/mmio.txt  |   30 +
- MAINTAINERS                                        |    7 +
- drivers/iommu/Kconfig                              |   11 +
- drivers/iommu/Makefile                             |    1 +
- drivers/iommu/virtio-iommu.c                       | 1158 ++++++++++++++++++++
- drivers/of/base.c                                  |   10 +-
- drivers/pci/of.c                                   |    8 +
- drivers/scsi/virtio_scsi.c                         |    2 +-
- drivers/vhost/net.c                                |    4 +-
- drivers/vhost/vhost.c                              |  850 +++++++++++---
- drivers/vhost/vhost.h                              |   43 +-
- drivers/virtio/virtio_mmio.c                       |    7 +-
- include/uapi/linux/virtio_ids.h                    |    1 +
- include/uapi/linux/virtio_iommu.h                  |  161 +++
- 15 files changed, 2228 insertions(+), 131 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/virtio/iommu.txt
- create mode 100644 drivers/iommu/virtio-iommu.c
- create mode 100644 include/uapi/linux/virtio_iommu.h
+Thanks for testing it and sorry that I couldn't test!
+Christian
