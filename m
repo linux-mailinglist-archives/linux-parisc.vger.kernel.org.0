@@ -2,77 +2,117 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63E286C0A7
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Jul 2019 19:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4DB26C0E7
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Jul 2019 20:21:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727280AbfGQRw2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 Jul 2019 13:52:28 -0400
-Received: from mail.sf-mail.de ([116.202.16.50]:45699 "EHLO mail.sf-mail.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727140AbfGQRw2 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 Jul 2019 13:52:28 -0400
-Received: (qmail 17666 invoked from network); 17 Jul 2019 17:50:56 -0000
-Received: from dslb-088-071-103-253.088.071.pools.vodafone-ip.de ([::ffff:88.71.103.253]:54122 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.35dev) with (DHE-RSA-AES256-GCM-SHA384 encrypted) ESMTPSA
-        for <linux-parisc@vger.kernel.org>; Wed, 17 Jul 2019 19:50:56 +0200
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     linux-parisc@vger.kernel.org
+        id S2388695AbfGQSVJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 17 Jul 2019 14:21:09 -0400
+Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:49547 "EHLO
+        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727434AbfGQSVJ (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 17 Jul 2019 14:21:09 -0400
+X-Greylist: delayed 447 seconds by postgrey-1.27 at vger.kernel.org; Wed, 17 Jul 2019 14:21:08 EDT
+Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
+          with ESMTP
+          id <20190717181340.FJCE4584.torfep01.bell.net@torspm02.bell.net>
+          for <linux-parisc@vger.kernel.org>;
+          Wed, 17 Jul 2019 14:13:40 -0400
+Received: from [192.168.0.101] (really [67.70.71.6]) by torspm02.bell.net
+          with ESMTP
+          id <20190717181340.JVJT30132.torspm02.bell.net@[192.168.0.101]>;
+          Wed, 17 Jul 2019 14:13:40 -0400
 Subject: Re: Running the gdb 7.12.1 testsuite breaks kernel 4.13.8 on C8000
-Date:   Wed, 17 Jul 2019 19:52:20 +0200
-Message-ID: <1957442.0sSArhqTEx@daneel.sf-tec.de>
-In-Reply-To: <5e2ad677-7062-98d2-a6c5-577df02132d4@gmx.de>
-References: <11946948.1Lt8Nslq4k@devpool21> <029de4f5-62db-7d74-7619-3c7888ce4f9c@gmx.de> <5e2ad677-7062-98d2-a6c5-577df02132d4@gmx.de>
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org
+References: <11946948.1Lt8Nslq4k@devpool21>
+ <029de4f5-62db-7d74-7619-3c7888ce4f9c@gmx.de>
+ <5e2ad677-7062-98d2-a6c5-577df02132d4@gmx.de>
+ <1957442.0sSArhqTEx@daneel.sf-tec.de>
+From:   John David Anglin <dave.anglin@bell.net>
+Openpgp: preference=signencrypt
+Message-ID: <a2c04d41-3406-69a7-1df6-0fbf80c1515f@bell.net>
+Date:   Wed, 17 Jul 2019 14:13:27 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2986770.BkX77FEQCQ"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+In-Reply-To: <1957442.0sSArhqTEx@daneel.sf-tec.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="hU8loedizDNeRB8d7hqiMTtbmCOWg9fcJ"
+X-CM-Analysis: v=2.3 cv=bPxo382Z c=1 sm=1 tr=0 cx=a_idp_d a=vkxsL+t31Oi2TKkPQGm2Xg==:117 a=vkxsL+t31Oi2TKkPQGm2Xg==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=0o9FgrsRnhwA:10 a=13zjGPudsaEWiJwPRgMA:9 a=FBHGMhGWAAAA:8 a=HuDKjS6Q_IhhQtS8kxYA:9 a=pILNOxqGKmIA:10 a=m69ebF8Kpi3HNELchV8A:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+X-CM-Envelope: MS4wfGpUyfQpWaiUiYy3gRYGvZ1Ah52PVP5tRafTpHv7A8H8jsA5aNhEQprPOMPDkzo0GeZBVPWMKCuOlrfZRnUTK7ebVecciLqOtzj3XK8VVXeXRnxSyqQS L9vzXMQetZfyQlOzV66LL6XLwB+xokVEAcnOSCW6AvQzLxW0rqCopuiwfCjwCdS4ZbQquGCVxgXWeg==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart2986770.BkX77FEQCQ
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--hU8loedizDNeRB8d7hqiMTtbmCOWg9fcJ
+Content-Type: multipart/mixed; boundary="Mf07g5nnBWPIDWp2VleUzpUcdGPnBAEcC";
+ protected-headers="v1"
+From: John David Anglin <dave.anglin@bell.net>
+To: Rolf Eike Beer <eike-kernel@sf-tec.de>, linux-parisc@vger.kernel.org
+Message-ID: <a2c04d41-3406-69a7-1df6-0fbf80c1515f@bell.net>
+Subject: Re: Running the gdb 7.12.1 testsuite breaks kernel 4.13.8 on C8000
+References: <11946948.1Lt8Nslq4k@devpool21>
+ <029de4f5-62db-7d74-7619-3c7888ce4f9c@gmx.de>
+ <5e2ad677-7062-98d2-a6c5-577df02132d4@gmx.de>
+ <1957442.0sSArhqTEx@daneel.sf-tec.de>
+In-Reply-To: <1957442.0sSArhqTEx@daneel.sf-tec.de>
 
-Helge wrote:
-> Hi Rolf,
-> 
-> On 02.07.19 17:59, Helge Deller wrote:
-> >>> This seems to be a minimal reproducer:
-> >>> https://481768.bugs.gentoo.org/attachment.cgi?id=361728
-> > 
-> > That's a REALLY nasty bug!
-> 
-> I think I finally fixed the issues for 32- and 64-bit kernels.
-> 
-> Can you please test the three patches in my ptrace-bugfix3 git tree?
-> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/log/
-> ?h=ptrace-bugfix3
+--Mf07g5nnBWPIDWp2VleUzpUcdGPnBAEcC
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
 
-I applied them on top of 5.2.0 and tested it on my C8000, it survived the 
-whole gdb 8.1.2 testsuite. The results are horrible, but the machine is still 
-up and running, just a couple of these:
+On 2019-07-17 1:52 p.m., Rolf Eike Beer wrote:
+> I applied them on top of 5.2.0 and tested it on my C8000, it survived t=
+he=20
+> whole gdb 8.1.2 testsuite. The results are horrible, but the machine is=
+ still=20
+> up and running, just a couple of these:
+Sadly, it hasn't been maintained for years.
+>
+> [ 4481.730278] INEQUIVALENT ALIASES 0x41000000 and 0x42e81000 in file k=
+ill-
+> detach-inferiors-cmd
+> [ 8944.224759] INEQUIVALENT ALIASES 0x41ed2000 and 0x4171c000 in file m=
+ulti-
+> attach
+Theoretically, these could crash machine.=A0 It would be useful to try to=
+ debug how they occur.
+I would guess it's a mmap issue.=A0 It shouldn't happen with linker.
 
-[ 4481.730278] INEQUIVALENT ALIASES 0x41000000 and 0x42e81000 in file kill-
-detach-inferiors-cmd
-[ 8944.224759] INEQUIVALENT ALIASES 0x41ed2000 and 0x4171c000 in file multi-
-attach
+Dave
 
-So feel free to add my Tested-by.
+--=20
+John David Anglin  dave.anglin@bell.net
 
-Eike
---nextPart2986770.BkX77FEQCQ
+
+
+--Mf07g5nnBWPIDWp2VleUzpUcdGPnBAEcC--
+
+--hU8loedizDNeRB8d7hqiMTtbmCOWg9fcJ
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCXS9gVAAKCRBcpIk+abn8
-Tky4AJ4jx48BKNui8bK/ti9yehIHER3jywCdG8acJxMQ/Nxsc2MkUOqZuQvXuxQ=
-=iWE6
+iQIzBAEBCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAl0vZVUACgkQXb/Nrl8Z
+TfGrhg/7B+u6P7HEH2tL7kg376FbGYU60MmZS2mn8Mq7pcPr/G8R89YxS91qbAdm
+erqeL9CC7xIg8lU/aPLXdpdx3IETdwGjxIzt9yYaJsmVrD2g64Wmqf/rc4Co/eB3
+wpCLGAh6tAaXH/tD5U6QCAyUmNktm2zqw1I2WHUcoShYRr1gUNcruq+Uog+ykHRm
+5Ezse8EzFQ3LGkk1viO0+gEBYRZHBHgTSBb/tInWgcm8M1jgqfBF1YzlCSARN9py
+1X7qcyJyrlylYWE8AeaJSIKpy4NiEi6MKQ1nDD+3m8bwkgOxjb+RCMnuP7cRgG9m
+HFS7mcmPaP72Jip2YvJe9XjIAJo8R26mLhNKB/jWZ5tBNUBMbyTmhRjEkhRXGem9
+fixIxwOG5DoeXAnV0tjRvFPh4CKOPg8DHrz2mqiw854p7pcxXyuLr74EacmSf5jY
+zIiMWqLaOJ68p8linWs1Wrc+ne/d9R1Uw2OPIjPWrSfsxTl1qEFwn3xL/vcI+Y4A
+PIEIFL5Iuaf71+7MHYZIXTCPSklyuEIBclaFZcNTVcZCuOYSkg88YhMB8Xv+i1Zb
+avp5ECRbQu52591oeN8AhtYezKSHY30VZRacHXjt6yHGCsXqcrf0lsOj3k6p+mfC
+EcN8R924IGdgN4RSjcj2EAzOfGXSa6oK+6bl3BKdxFAtcxjj4Z4=
+=F6OM
 -----END PGP SIGNATURE-----
 
---nextPart2986770.BkX77FEQCQ--
-
-
-
+--hU8loedizDNeRB8d7hqiMTtbmCOWg9fcJ--
