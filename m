@@ -2,52 +2,52 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB0CA6B343
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Jul 2019 03:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5D556B347
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Jul 2019 03:30:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726887AbfGQB3S (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 16 Jul 2019 21:29:18 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:35838 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726734AbfGQB3R (ORCPT
+        id S1726748AbfGQB3U (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 16 Jul 2019 21:29:20 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:40080 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726907AbfGQB3T (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 16 Jul 2019 21:29:17 -0400
-Received: by mail-pf1-f194.google.com with SMTP id u14so9987420pfn.2
-        for <linux-parisc@vger.kernel.org>; Tue, 16 Jul 2019 18:29:17 -0700 (PDT)
+        Tue, 16 Jul 2019 21:29:19 -0400
+Received: by mail-pg1-f195.google.com with SMTP id w10so10300396pgj.7
+        for <linux-parisc@vger.kernel.org>; Tue, 16 Jul 2019 18:29:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sifive.com; s=google;
         h=subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding:cc:from:to;
-        bh=zh7WuypBzbiCD4LyIt7zsx5ys0tmSuJ0Pu/F9tBbNb8=;
-        b=TtgNwfwOuHBDNTfx27GSbA0wFIrCvlbVGtdERIvJL/dSLC5xPpLlJI4ctZLa3TVein
-         m1Ld3VYM2o6ueHoC6BUTFi9EVV6J5vkp4hpaFwv0dPbBJg9MASm8xTShMxxaAzUL/Jw1
-         yobYTWBD9UKgKC/3jAft6L0U9j7pvTLZjv31FKweocqdpx2vkhnuxZ+uMEE08KmXnwWp
-         MDibt88Ug776sq1vC021FOOnrkapoxyW0QFe5XnOb4pcNUD+8H30J/7ffiSmGu/QBmfL
-         Lf5Mr3bXn6TcVlfMc3YJknlSPM+nNqQHh7HdfX52k6Q7byimg1KGRVq64zQHLDP1akT9
-         VhvA==
+        bh=Zt2cGhW98jjWE3OdliFocFdkTeCj4B287sEGZ0SpTug=;
+        b=LRzFJFoIhdEmL95807L32ZJIuoUYPRnejcM4WZZAS5I0UeznU/mAzk5GHoafmOmsHO
+         IM1q2PeVsvlEPnevADzvUbNh7W588och2Rq5fZ7FuM8MS5EZgdQu/E3L+BqIYSfN2XU/
+         fS7NBtFCaQBxI26WtshKHqrbJwSXRxg0DRH2E+7ihFfC5kinDvs9QAQl4LeKl3WMrLal
+         EZk+GjuTQmWvWRkiN6fD0Uh9EK++IoK7hPKkpfs3WJ+9PYY0m//oOKVgI1hVB+8KwfWp
+         /ROJj7wU7v2lVN33h5c47bRwWtpAubgsifHDAD3lPqVXVzkWPuUCHQEfzucJpkMLwZmo
+         z7ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding:cc:from:to;
-        bh=zh7WuypBzbiCD4LyIt7zsx5ys0tmSuJ0Pu/F9tBbNb8=;
-        b=H2Eh59sXvf85Ym0EHJIB2CcFHb3EQ/R1HflRgDntr2tWMVMC+Mxz1rYUAgWPgjddtC
-         5YbcfSDk9WdpnOhWY/YA1mGWClzmYRNEHNYRDJIR86cVELQZLdLp92z2q/CIpxBaYTLw
-         XenfUutxME25TANPY0oHwa8uirHZCEDgKqAGq9owHK9ozXa9IukeibvTBjTFxCt2RjsM
-         EQ2MHBJ4SlyZB0rqSUIJ/RO9Em0ugZETfOSO9jE0E0B6H5v4Rd6fkmWjZ5MBBg13JcwR
-         i73UURS1Yb6lB93LR9FGtGMl/Rqm5T9Xm+jalQfLbvYLUmmYvaT0iBuYTPr7f2rpKwdL
-         SIZg==
-X-Gm-Message-State: APjAAAVy6mhZ2EnYWjhv0a5OrE4vJcXSoL9GDFxy2E/+tsu4IWrk+pyc
-        229xCZY92BItb8kGLETxljn52g==
-X-Google-Smtp-Source: APXvYqwq9WjP5TET/3LfzOmuS30fZSvNWSh5XVAb3DJ+QlmFexoJZUHIITMkaN+oV660FeaCLs/SbQ==
-X-Received: by 2002:a63:5b1d:: with SMTP id p29mr36130504pgb.297.1563326956692;
-        Tue, 16 Jul 2019 18:29:16 -0700 (PDT)
+        bh=Zt2cGhW98jjWE3OdliFocFdkTeCj4B287sEGZ0SpTug=;
+        b=afm8rCcQX7te236HAhuoHbAdbDWVxD+iLa89E9RgbEV2jlvkOkth2T6f0VJW2Y9VZF
+         g1fdSp/IWb5kJ5wx4drt/RV0x29rnVvNIedB2bqql2LE5F2ZHXLybR3P9PLqT7zdTGl4
+         TXFMy66MejWYnHkPGIPywS98dNnQUROrrep7ctfLdvVUQc77cfhDvXTE5tvJ+f1Snxrm
+         gVVVwzwvpMF86VUt+8PeHbnTSXnohnmL8gRFC+mtUIU3h414V3R7wzntD4m89BJ3BFNr
+         Toc1nvhcZh09KDfmNJDlB1e46X6c/btCXZXbggzEwC+FwClKB+DGsqDG2kMqz4micbHa
+         Ya5Q==
+X-Gm-Message-State: APjAAAWo5cdUznLVNx18nIPs5Coa8NnlMfQTKJtF+d9jlWkZoVwPL9yI
+        Eg2s/VTY2Zy8Y5a9bC92zY9Opw==
+X-Google-Smtp-Source: APXvYqxMG1qk1WTJLj8KetMfpnmMGNIO6J68LTkGZfygoiTvSJog6FgoAv0IrheBQXCx4vxGr6+m3Q==
+X-Received: by 2002:a63:e5a:: with SMTP id 26mr36209824pgo.3.1563326958663;
+        Tue, 16 Jul 2019 18:29:18 -0700 (PDT)
 Received: from localhost ([12.206.222.5])
-        by smtp.gmail.com with ESMTPSA id a128sm19045628pfb.185.2019.07.16.18.29.15
+        by smtp.gmail.com with ESMTPSA id i3sm23567398pfo.138.2019.07.16.18.29.17
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 16 Jul 2019 18:29:16 -0700 (PDT)
-Subject: [PATCH v2 3/4] arch: Register fchmodat4, usually as syscall 434
-Date:   Tue, 16 Jul 2019 18:27:18 -0700
-Message-Id: <20190717012719.5524-4-palmer@sifive.com>
+        Tue, 16 Jul 2019 18:29:17 -0700 (PDT)
+Subject: [PATCH v2 4/4] tools: Add fchmodat4
+Date:   Tue, 16 Jul 2019 18:27:19 -0700
+Message-Id: <20190717012719.5524-5-palmer@sifive.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190717012719.5524-1-palmer@sifive.com>
 References: <20190717012719.5524-1-palmer@sifive.com>
@@ -85,174 +85,37 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This registers the new fchmodat4 syscall in most places as nuber 434,
-with alpha being the exception where it's 544.  I found all these sites
-by grepping for fspick, which I assume has found me everything.
+I'm not sure why it's necessary to add this explicitly to tools/ as well
+as arch/, but there were a few instances of fspick in here so I blindly
+added fchmodat4 in the same fashion.
 
 Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
 ---
- arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
- arch/arm/tools/syscall.tbl                  | 1 +
- arch/arm64/include/asm/unistd32.h           | 2 ++
- arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
- arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
- arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
- arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
- arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
- arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
- arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
- arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
- arch/s390/kernel/syscalls/syscall.tbl       | 1 +
- arch/sh/kernel/syscalls/syscall.tbl         | 1 +
- arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
- arch/x86/entry/syscalls/syscall_32.tbl      | 1 +
- arch/x86/entry/syscalls/syscall_64.tbl      | 1 +
- include/uapi/asm-generic/unistd.h           | 5 ++++-
- 17 files changed, 21 insertions(+), 1 deletion(-)
+ tools/include/uapi/asm-generic/unistd.h           | 4 +++-
+ tools/perf/arch/x86/entry/syscalls/syscall_64.tbl | 1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
-index 9e7704e44f6d..6c4ef43c8b52 100644
---- a/arch/alpha/kernel/syscalls/syscall.tbl
-+++ b/arch/alpha/kernel/syscalls/syscall.tbl
-@@ -473,3 +473,4 @@
- 541	common	fsconfig			sys_fsconfig
- 542	common	fsmount				sys_fsmount
- 543	common	fspick				sys_fspick
-+544	common	fcmodat4			sys_fchmodat4
-diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
-index aaf479a9e92d..c008b76fbf92 100644
---- a/arch/arm/tools/syscall.tbl
-+++ b/arch/arm/tools/syscall.tbl
-@@ -447,3 +447,4 @@
- 431	common	fsconfig			sys_fsconfig
- 432	common	fsmount				sys_fsmount
- 433	common	fspick				sys_fspick
-+434	common	fchmodat4			sys_fchmodat4
-diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
-index aa995920bd34..049471b468c1 100644
---- a/arch/arm64/include/asm/unistd32.h
-+++ b/arch/arm64/include/asm/unistd32.h
-@@ -875,6 +875,8 @@ __SYSCALL(__NR_fsconfig, sys_fsconfig)
+diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
+index a87904daf103..36232ea94956 100644
+--- a/tools/include/uapi/asm-generic/unistd.h
++++ b/tools/include/uapi/asm-generic/unistd.h
+@@ -844,9 +844,11 @@ __SYSCALL(__NR_fsconfig, sys_fsconfig)
  __SYSCALL(__NR_fsmount, sys_fsmount)
  #define __NR_fspick 433
  __SYSCALL(__NR_fspick, sys_fspick)
 +#define __NR_fchmodat4 434
 +__SYSCALL(__NR_fchmodat4, sys_fchmodat4)
  
+ #undef __NR_syscalls
+-#define __NR_syscalls 434
++#define __NR_syscalls 435
+ 
  /*
-  * Please add new compat syscalls above this comment and update
-diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
-index e01df3f2f80d..d16e9801fe82 100644
---- a/arch/ia64/kernel/syscalls/syscall.tbl
-+++ b/arch/ia64/kernel/syscalls/syscall.tbl
-@@ -354,3 +354,4 @@
- 431	common	fsconfig			sys_fsconfig
- 432	common	fsmount				sys_fsmount
- 433	common	fspick				sys_fspick
-+434	common	fchmodat4			sys_fchmodat4
-diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
-index 7e3d0734b2f3..1bbff1a9153c 100644
---- a/arch/m68k/kernel/syscalls/syscall.tbl
-+++ b/arch/m68k/kernel/syscalls/syscall.tbl
-@@ -433,3 +433,4 @@
- 431	common	fsconfig			sys_fsconfig
- 432	common	fsmount				sys_fsmount
- 433	common	fspick				sys_fspick
-+434	common	fchmodat4			sys_fchmodat4
-diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
-index 26339e417695..3ed878cb10a3 100644
---- a/arch/microblaze/kernel/syscalls/syscall.tbl
-+++ b/arch/microblaze/kernel/syscalls/syscall.tbl
-@@ -439,3 +439,4 @@
- 431	common	fsconfig			sys_fsconfig
- 432	common	fsmount				sys_fsmount
- 433	common	fspick				sys_fspick
-+434	common	fchmodat4			sys_fchmodat4
-diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
-index 0e2dd68ade57..916cdb808e62 100644
---- a/arch/mips/kernel/syscalls/syscall_n32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
-@@ -372,3 +372,4 @@
- 431	n32	fsconfig			sys_fsconfig
- 432	n32	fsmount				sys_fsmount
- 433	n32	fspick				sys_fspick
-+434	n32	fchmodat4			sys_fchmodat4
-diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
-index 5eebfa0d155c..48b4badb1914 100644
---- a/arch/mips/kernel/syscalls/syscall_n64.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
-@@ -348,3 +348,4 @@
- 431	n64	fsconfig			sys_fsconfig
- 432	n64	fsmount				sys_fsmount
- 433	n64	fspick				sys_fspick
-+434	n64	fchmodat4			sys_fchmodat4
-diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-index 3cc1374e02d0..0a2ec339882a 100644
---- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-@@ -421,3 +421,4 @@
- 431	o32	fsconfig			sys_fsconfig
- 432	o32	fsmount				sys_fsmount
- 433	o32	fspick				sys_fspick
-+434	o32	fchmodat4			sys_fchmodat4
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index c9e377d59232..07d38477f8f7 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -430,3 +430,4 @@
- 431	common	fsconfig			sys_fsconfig
- 432	common	fsmount				sys_fsmount
- 433	common	fspick				sys_fspick
-+434	common	fchmodat4			sys_fchmodat4
-diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-index 103655d84b4b..3542b33d1bf3 100644
---- a/arch/powerpc/kernel/syscalls/syscall.tbl
-+++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-@@ -515,3 +515,4 @@
- 431	common	fsconfig			sys_fsconfig
- 432	common	fsmount				sys_fsmount
- 433	common	fspick				sys_fspick
-+434	common	fchmodat4			sys_fchmodat4
-diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
-index e822b2964a83..cf7b3086ffaa 100644
---- a/arch/s390/kernel/syscalls/syscall.tbl
-+++ b/arch/s390/kernel/syscalls/syscall.tbl
-@@ -436,3 +436,4 @@
- 431  common	fsconfig		sys_fsconfig			sys_fsconfig
- 432  common	fsmount			sys_fsmount			sys_fsmount
- 433  common	fspick			sys_fspick			sys_fspick
-+434  common	fchmodat4		sys_fchmodat4			sys_fchmodat4
-diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-index 016a727d4357..5afa9fb9b4d3 100644
---- a/arch/sh/kernel/syscalls/syscall.tbl
-+++ b/arch/sh/kernel/syscalls/syscall.tbl
-@@ -436,3 +436,4 @@
- 431	common	fsconfig			sys_fsconfig
- 432	common	fsmount				sys_fsmount
- 433	common	fspick				sys_fspick
-+434	common	fchmodat4			sys_fchmodat4
-diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-index e047480b1605..ff19eb8185f3 100644
---- a/arch/sparc/kernel/syscalls/syscall.tbl
-+++ b/arch/sparc/kernel/syscalls/syscall.tbl
-@@ -479,3 +479,4 @@
- 431	common	fsconfig			sys_fsconfig
- 432	common	fsmount				sys_fsmount
- 433	common	fspick				sys_fspick
-+434	common	fchmodat4			sys_fchmodat4
-diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
-index ad968b7bac72..39609fa3536d 100644
---- a/arch/x86/entry/syscalls/syscall_32.tbl
-+++ b/arch/x86/entry/syscalls/syscall_32.tbl
-@@ -438,3 +438,4 @@
- 431	i386	fsconfig		sys_fsconfig			__ia32_sys_fsconfig
- 432	i386	fsmount			sys_fsmount			__ia32_sys_fsmount
- 433	i386	fspick			sys_fspick			__ia32_sys_fspick
-+434	i386	fchmodat4		sys_fchmodat4			__ia32_sys_fchmodat4
-diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+  * 32 bit systems traditionally used different
+diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
 index b4e6f9e6204a..b92d5b195e66 100644
---- a/arch/x86/entry/syscalls/syscall_64.tbl
-+++ b/arch/x86/entry/syscalls/syscall_64.tbl
+--- a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
 @@ -355,6 +355,7 @@
  431	common	fsconfig		__x64_sys_fsconfig
  432	common	fsmount			__x64_sys_fsmount
@@ -261,23 +124,6 @@ index b4e6f9e6204a..b92d5b195e66 100644
  
  #
  # x32-specific system call numbers start at 512 to avoid cache impact
-diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-index a87904daf103..6a7ba1e69e42 100644
---- a/include/uapi/asm-generic/unistd.h
-+++ b/include/uapi/asm-generic/unistd.h
-@@ -845,8 +845,11 @@ __SYSCALL(__NR_fsmount, sys_fsmount)
- #define __NR_fspick 433
- __SYSCALL(__NR_fspick, sys_fspick)
- 
-+#define __NR_fchmodat4 434
-+__SYSCALL(__NR_fchmodat4, sys_fchmodat4)
-+
- #undef __NR_syscalls
--#define __NR_syscalls 434
-+#define __NR_syscalls 435
- 
- /*
-  * 32 bit systems traditionally used different
 -- 
 2.21.0
 
