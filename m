@@ -2,88 +2,178 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CC3F6CB6E
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jul 2019 11:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 882936D03C
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jul 2019 16:48:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727702AbfGRJCv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 18 Jul 2019 05:02:51 -0400
-Received: from mout.gmx.net ([212.227.15.19]:56717 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726383AbfGRJCu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 18 Jul 2019 05:02:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1563440564;
-        bh=QBJLKn+dC85PPnBTLMHzTLIGPoRKi6Pjtg7ozwSWChw=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=l5RsIHa4K1su+VlK5d1tdjFI4lbHTeXIhTQEKSKydIoTXS52oG4HJTW2PNAKEgh7K
-         dNICnhin/zntO93+vhiaFpp3rub+NrmEyqbAnhd0QAthHNEJ6EafIvJtH/TiWJbDhK
-         p2qG0owYaAHMq8hWu8WMp1iUDzKEj5NPuiei3xmM=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([193.16.224.40]) by mail.gmx.com (mrgmx002
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0Mg4FJ-1i2emH0JGf-00NPoZ; Thu, 18
- Jul 2019 11:02:44 +0200
-Date:   Thu, 18 Jul 2019 11:02:41 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture fixes for kernel v5.3-rc1
-Message-ID: <20190718090241.GA14685@ls3530>
+        id S2390758AbfGROsS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 18 Jul 2019 10:48:18 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:46933 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726513AbfGROsS (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 18 Jul 2019 10:48:18 -0400
+Received: by mail-lj1-f196.google.com with SMTP id v24so27678240ljg.13
+        for <linux-parisc@vger.kernel.org>; Thu, 18 Jul 2019 07:48:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=qOzcTnaZtrCxVZ+wrCV9j1v3ZSJaRvDDDE3Ip4m8PX4=;
+        b=BvozhdyNjQm5IKs1TT9YoWn3Ui6wySHrveALu6p1t7AtDp7QFxBLfHh88f5ww+lLJn
+         uwy3k971xxqR/HSbz4pAOIhSLMVdxGZ//qhiRBmEGbP5iSimOi3DrF8NmakZGMPtS2dX
+         7klk9Axk//12MJN1Z1lHBXwZgwDxdfLj6taYs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=qOzcTnaZtrCxVZ+wrCV9j1v3ZSJaRvDDDE3Ip4m8PX4=;
+        b=Oq43X0xtYLMU075cG2y+lmF2FvKeD8VhVvjvjZS4fOuEwBGkjm5Zs674Lv7FBA0/Ho
+         yb6VjHjJ4c1muXiv856WzTpHfxp8ARoas0CZbdjF/w7tWB7OufFFTekFxc3tai0WcKsy
+         Ug2twncdKZlrLJqOndak5iRpXEEPwRBpL/1/n74vhAzz7SoOh5TXlILB1ZMoeRNGxbfU
+         Hl+JejOf6ATLqLMwf23aoy+IB5sFZz65m9nWI4pp78O9KLTX5DyP+QCpeFD+7Z86jdOY
+         8LJmqKBxgrlidyQsE2B3CkqIPQRzj40l9rD9ctnixV8rumeY0lwdPnbkStcvtCSAQuK8
+         GmHQ==
+X-Gm-Message-State: APjAAAVy8FwsfZr4CImA1ikGbVM8KDsOVWvGixWRz1EJ+qsI5Gojbzrj
+        lbwAx7qkcx2AIGW/Kj61+Jc=
+X-Google-Smtp-Source: APXvYqxmTPpUAHG/iv/MbFly8EXHSdBuBHGZ2qYmzwo/cj6avvxhzmR7eZRDDVHxMRGQ2XfudRkVGQ==
+X-Received: by 2002:a05:651c:d1:: with SMTP id 17mr24822389ljr.174.1563461295757;
+        Thu, 18 Jul 2019 07:48:15 -0700 (PDT)
+Received: from [172.16.11.28] ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id t4sm5672901ljh.9.2019.07.18.07.48.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Jul 2019 07:48:15 -0700 (PDT)
+Subject: Re: [PATCH v9 08/10] open: openat2(2) syscall
+To:     Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>
+Cc:     Christian Brauner <christian@brauner.io>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-9-cyphar@cyphar.com>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <845e4364-685f-343b-46fb-c418766dce3e@rasmusvillemoes.dk>
+Date:   Thu, 18 Jul 2019 16:48:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.12.0 (2019-05-25)
-X-Provags-ID: V03:K1:aHvyAxHtghpi/zBwhRwKoL7EnfnYdGJGMe0qrMPr3GieWA/TUlg
- hFVHRiN78tPGjPq1rLjPBvANMhxrcsBcU1vSMDbFW4RDhwaQiiOKf1pSHXzo4yQWLkmNH4U
- qNL0YxFn/IsApbFL9FZzkmzOeaSYXEHqDE/2qpJW6wIPUGfCUh4lRQnIa63EKUSf3blS+Lz
- T/lK5teKV5zelm+8WIAkg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:S7OEbOnUAnE=:2o8XdFrrEv90jkCkZjKVOs
- 7AlAuPyhk2HXPhpBwohvboe5jA9CCzXIAFy0WfHQL/wY6SBV5uENtV4Z/8Lrn4YWTLsck3+xL
- e+dU08Xg9VU+/FcqfEwjjXmUvwgkpm9FRSi5UQPbx8mFVMd8b1iJhmpIWTCcm9fER1rDutg1j
- 6xdqviHxpMPkLQ0dUbiD2zZKLflXMKOclmj9nnldUkHRPvg6f7GOlOOHRoIw1IftTJQMGtK2v
- kcRcYiyPDHmFLRWMM1WMSZyeC8dw5g1yML0P5XLMtkv4lGSvCmjBzDlwAlS5iT/y3DPzkYdlV
- DyxVX8ZuP8HmQHmCCvYbgr5QVaO9C4HaR0xzSaci2X1tcS+lhNd3zA5LilU6agAGHl6EZQzjU
- SeYKyW6fAYdN4ylVhVC3qev80nTcgHrt3um6IJzB3YrQsQZJkdkLLKMCVzVjBkp8lcMzDhuBn
- RrIZA4qZ+wIiPVzNvFayHq3+AAC74KSkB6qD/EFfXCPu2z4EkqmzNkt6ee6+FgyiUzizc1PSN
- 6tL5qYUOdZy06dDoXfV0DPxh4E+xRPBnM8AaFd3Zg/hE2yHW04Qu+7gO9wTJBe3WaW35m4+tH
- JktJkDrlmTPqmqa0KoY3YG9lnBRsCyddGkTSCYAmvCicz4lk3HSpHmk3rPzuL9qH2X2z5QKHC
- zQj/RSgFjN09Krf0fU6EZv36uAbLEfMjzS4jO8SU3/qWRm3gX9+v+Te612tk5hh3WZQSDBOsI
- e28uxzoWrdoebUg6NxnS2SgJKFzyFi5NTxXkHmfemAwCtGiGBEEDBS2Eg/8YjuBDUOvfAk0LU
- 9Z5ac15HsPPUN0RpEi0Etq4JnDfWRjfvCyCF3p9dij06/Trpauelhi4ESNA00J7BdobBos8Us
- DU+uTPnKVxRqRvolNJY7oUeby4vB4TuLzCjd3biLFhFX17iYpfiUj4PvWIVALanmezpa8fnB4
- TOVyfpGCAKooBxbe8U9KW3L012ZrSgCv9qGECW14Nu9u3en2dS4Sjav3LxpDF14YC0wNa5mr0
- sXafhjUrriKk9hMk23RnbC4qjwEIF9uHO7pIYD570eqrs5n8ofFkn3U61Yx1uAEMsA==
+In-Reply-To: <20190706145737.5299-9-cyphar@cyphar.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+On 06/07/2019 16.57, Aleksa Sarai wrote:
+> 
+> --- a/fs/open.c
+> +++ b/fs/open.c
+> @@ -928,24 +928,32 @@ struct file *open_with_fake_path(const struct path *path, int flags,
+>  }
+>  EXPORT_SYMBOL(open_with_fake_path);
+>  
+> -static inline int build_open_flags(int flags, umode_t mode, struct open_flags *op)
+> +static inline int build_open_flags(struct open_how how, struct open_flags *op)
+>  {
 
-please pull a few more fixes for the parisc architecture for kernel 5.3-rc1 from:
+How does passing such a huge struct by value affect code generation?
+Does gcc actually inline the function (and does it even inline the old
+one given that it's already non-trivial and has more than one caller).
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.3-2
+>  	int lookup_flags = 0;
+> -	int acc_mode = ACC_MODE(flags);
+> +	int opath_mask = 0;
+> +	int acc_mode = ACC_MODE(how.flags);
+> +
+> +	if (how.resolve & ~VALID_RESOLVE_FLAGS)
+> +		return -EINVAL;
+> +	if (!(how.flags & (O_PATH | O_CREAT | __O_TMPFILE)) && how.mode != 0)
+> +		return -EINVAL;
+> +	if (memchr_inv(how.reserved, 0, sizeof(how.reserved)))
+> +		return -EINVAL;
 
-Changes:
-- Prevent kernel panics by adding proper checking of register values injected
-  via the ptrace interface.
-- Wire up the new clone3 syscall.
+How about passing how by const reference, and copy the few fields you
+need to local variables. That would at least simplify this patch by
+eliminating a lot of the
 
-Thanks,
-Helge
+> -	flags &= VALID_OPEN_FLAGS;
+> +	how.flags &= VALID_OPEN_FLAGS;
+>  
+> -	if (flags & (O_CREAT | __O_TMPFILE))
+> -		op->mode = (mode & S_IALLUGO) | S_IFREG;
+> +	if (how.flags & (O_CREAT | __O_TMPFILE))
+> +		op->mode = (how.mode & S_IALLUGO) | S_IFREG;
 
-----------------------------------------------------------------
-Helge Deller (4):
-      parisc: Fix kernel panic due invalid values in IAOQ0 or IAOQ1
-      parisc: Ensure userspace privilege for ptraced processes in regset functions
-      parisc: Avoid kernel panic triggered by invalid kprobe
-      parisc: Wire up clone3 syscall
+churn.
 
- arch/parisc/include/asm/unistd.h        |  1 +
- arch/parisc/kernel/entry.S              |  1 +
- arch/parisc/kernel/kprobes.c            |  3 +++
- arch/parisc/kernel/ptrace.c             | 31 ++++++++++++++++++++-----------
- arch/parisc/kernel/syscalls/syscall.tbl |  2 +-
- 5 files changed, 26 insertions(+), 12 deletions(-)
+>  
+> diff --git a/include/linux/fcntl.h b/include/linux/fcntl.h
+> index 2868ae6c8fc1..e59917292213 100644
+> --- a/include/linux/fcntl.h
+> +++ b/include/linux/fcntl.h
+> @@ -4,13 +4,26 @@
+>  
+>  #include <uapi/linux/fcntl.h>
+>  
+> -/* list of all valid flags for the open/openat flags argument: */
+> +/* Should open_how.mode be set for older syscalls wrappers? */
+> +#define OPENHOW_MODE(flags, mode) \
+> +	(((flags) | (O_CREAT | __O_TMPFILE)) ? (mode) : 0)
+> +
+
+Typo: (((flags) & (O_CREAT | __O_TMPFILE)) ? (mode) : 0)
+
+> +/**
+> + * Arguments for how openat2(2) should open the target path. If @extra is zero,
+> + * then openat2(2) is identical to openat(2).
+> + *
+> + * @flags: O_* flags (unknown flags ignored).
+> + * @mode: O_CREAT file mode (ignored otherwise).
+
+should probably say "O_CREAT/O_TMPFILE file mode".
+
+> + * @upgrade_mask: restrict how the O_PATH may be re-opened (ignored otherwise).
+> + * @resolve: RESOLVE_* flags (-EINVAL on unknown flags).
+> + * @reserved: reserved for future extensions, must be zeroed.
+> + */
+> +struct open_how {
+> +	__u32 flags;
+> +	union {
+> +		__u16 mode;
+> +		__u16 upgrade_mask;
+> +	};
+> +	__u16 resolve;
+
+So mode and upgrade_mask are naturally u16 aka mode_t. And yes, they
+probably never need to be used together, so the union works. That then
+makes the next member 2-byte aligned, so using a u16 for the resolve
+flags brings us to an 8-byte boundary, and 11 unused flag bits should be
+enough for a while. But it seems a bit artificial to cram all this
+together and then add 56 bytes of reserved space.
+
+Rasmus
