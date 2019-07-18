@@ -2,107 +2,134 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 915796C263
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Jul 2019 23:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCAEF6C6A6
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jul 2019 05:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727147AbfGQVAf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 Jul 2019 17:00:35 -0400
-Received: from mout.gmx.net ([212.227.15.15]:39969 "EHLO mout.gmx.net"
+        id S2389328AbfGRDSb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 17 Jul 2019 23:18:31 -0400
+Received: from mx1.mailbox.org ([80.241.60.212]:39012 "EHLO mx1.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726063AbfGQVAf (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 Jul 2019 17:00:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1563397203;
-        bh=lbP5TJW7MnckQAfFQUkMeoQUjfES7ZHOxL8cNrMploY=;
-        h=X-UI-Sender-Class:Subject:To:References:From:Date:In-Reply-To;
-        b=ektFhzBNMOGItAKX/muu3nJ5VYyOECS0VpmYtZ/3UYwRm59mOjCmysVKLDu6VSU2y
-         zOxZjD4ZkAjN5HVrkwfg/XUPTsqp0SJOZ/0jtg12L+ToeMoxIBWwvxo99+oksRBddJ
-         g1cuVjv0cCwWXT8OcCq80fH6pO5s7u9HhlaECvv0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.173.44]) by mail.gmx.com (mrgmx003
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0LwZtX-1iW6GK0o51-018MP0; Wed, 17
- Jul 2019 23:00:03 +0200
-Subject: Re: Running the gdb 7.12.1 testsuite breaks kernel 4.13.8 on C8000
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        linux-parisc@vger.kernel.org
-References: <11946948.1Lt8Nslq4k@devpool21>
- <029de4f5-62db-7d74-7619-3c7888ce4f9c@gmx.de>
- <5e2ad677-7062-98d2-a6c5-577df02132d4@gmx.de>
- <1957442.0sSArhqTEx@daneel.sf-tec.de>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <f6f584a9-3bab-a020-9dc8-71cbfe65d716@gmx.de>
-Date:   Wed, 17 Jul 2019 23:00:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2389508AbfGRDSa (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 17 Jul 2019 23:18:30 -0400
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mx1.mailbox.org (Postfix) with ESMTPS id F35D54FE71;
+        Thu, 18 Jul 2019 05:18:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
+        with ESMTP id nZ38r1RPFd3K; Thu, 18 Jul 2019 05:18:14 +0200 (CEST)
+Date:   Thu, 18 Jul 2019 13:17:29 +1000
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Christian Brauner <christian@brauner.io>,
+        David Drysdale <drysdale@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
+Message-ID: <20190718031729.scehpjydhuxgxqjy@yavin>
+References: <20190706145737.5299-6-cyphar@cyphar.com>
+ <20190712043341.GI17978@ZenIV.linux.org.uk>
+ <20190712105745.nruaftgeat6irhzr@yavin>
+ <20190712123924.GK17978@ZenIV.linux.org.uk>
+ <20190712125552.GL17978@ZenIV.linux.org.uk>
+ <20190712132553.GN17978@ZenIV.linux.org.uk>
+ <20190712150026.GO17978@ZenIV.linux.org.uk>
+ <20190713024153.GA3817@ZenIV.linux.org.uk>
+ <20190714070029.m53etvm3y4etidxt@yavin>
+ <20190714143623.GR17978@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-In-Reply-To: <1957442.0sSArhqTEx@daneel.sf-tec.de>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Ue0JJQgmN1Gq6Aat/bYA5MKAWUVrV3K5p53qFY2GLXs2v14MJrB
- Pyxo8DtL/ZmnI6FxaUxg2R6mS7u9P+yziY72pQ0lACQolaR6CQXkKcHmlTvg45LOZHgcQCI
- kHNyhj62C+9fp369tZw/CzV5JYpbvd+ICg2lrA3AgPhw/EZLSvRIY17mUgNc028+z9bvWVh
- hiOCeca3NwIdr3EIAru9w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:uGjeeg5cAVM=:qRhCla2rB+ikmLDJL9rXMn
- E0dyyWMOXCxqo/0rX77dFz+zso2fUaFzStsN0PJLH2C+kOBmu06Dka+TAd0fmJzYOGFJ1alTg
- /kUvn/m/RkqBjpe/wEmFHhdoWPRSbTWx68JAZuyltfPYjt1NLQ+9d/MlHCShKCfLw3t/96Gdg
- j3aMU0prz3MvN60FoMt6j99sbv5771+wh3qFJTdn+CpMRzTCNB03171WC2VCDnc+AuZD7TfUf
- cXn4vYSlYdt0lGh2LUgtTvW9XeL/YjRoDzh5kqtdUyc1/Sw+IQh2oarZHZBKq2Unnr0G0XxgH
- CFerpDo2v6puxhUACZ59g9dbSFDwpW4CdtJ2d7rKQc40Zw7pAL0RWHW1sF41GArg/dvL9EfTO
- VzqW2RmDCnn5co4Nv1BqZTezEJN9/a10Ggb0/pQXI/OkMgJ3lnYy+EHjGg7DwE8pSck1MlNNx
- dRCdd3b+SguGDcx7lMJB4rnkIesYl3plIs0KEHqdCS/uzV5BCP3O2GG5pOBGy7VOeatSvrr3E
- CNkbt70ApTfgFiYLplJ1suz5M40fd9cuR8ztPI3Zxqz1hEEeDL1Gzm6sDb4HYPP4ilGCOrtcS
- A6vS0hyckwQvRsAD1uV6loyv9xWD4jbSrsY+vwNwoN/i72eHfNrgNMuJiVwi7zjuM8yPLjOtp
- 8oCMEnSh3bFvdrpXorxvlSVc7sUprRsdxZu2tKFKw4juRfFwusviKjlkoD1xc+hSbwPzyMaZA
- Bt6yTykgFYRnLzA71LP9NJgevmDUDIXPX+9NsVfW/wXpOzA8xOEsgZY3fE409x3kCmp+4MZk6
- l6x47lLYcg4I5fBYaoVZaAg/4IwF/dCfh3igamWWNr+ivYw+7oQ46+tGEGnamBJ+Q8ZKI9E4y
- DmyYD69D4wvlFqbLKNduvn2Z0LcbOsOH1QQzyCKoA/ybKRjMZnBkJcjNAhRnQyP3qvvVAx95b
- KqfYyEgZW2FsWEbhly0Pi4nnRhO1nye16ORJtqBfeN3skSECpksWwh6g+hsIXkidb2cqCDnrh
- koEw2guFVEQ+aApXqXgEytjBZUu50/0pGUFG+gSgB4/5FNeTRfYVGVcj3HX1e+d/diyP4ZQ3b
- Shs6WyT6Qvnq24=
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="z4aw3kgjubxi6rqg"
+Content-Disposition: inline
+In-Reply-To: <20190714143623.GR17978@ZenIV.linux.org.uk>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 17.07.19 19:52, Rolf Eike Beer wrote:
-> Helge wrote:
->> Hi Rolf,
->>
->> On 02.07.19 17:59, Helge Deller wrote:
->>>>> This seems to be a minimal reproducer:
->>>>> https://481768.bugs.gentoo.org/attachment.cgi?id=3D361728
->>>
->>> That's a REALLY nasty bug!
->>
->> I think I finally fixed the issues for 32- and 64-bit kernels.
->>
->> Can you please test the three patches in my ptrace-bugfix3 git tree?
->> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git=
-/log/
->> ?h=3Dptrace-bugfix3
->
-> I applied them on top of 5.2.0 and tested it on my C8000, it survived th=
-e
-> whole gdb 8.1.2 testsuite.
 
-Great. Thanks for testing.
+--z4aw3kgjubxi6rqg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> The results are horrible, but the machine is still
-> up and running, just a couple of these:
->
-> [ 4481.730278] INEQUIVALENT ALIASES 0x41000000 and 0x42e81000 in file ki=
-ll-
-> detach-inferiors-cmd
-> [ 8944.224759] INEQUIVALENT ALIASES 0x41ed2000 and 0x4171c000 in file mu=
-lti-
-> attach
+On 2019-07-14, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> On Sun, Jul 14, 2019 at 05:00:29PM +1000, Aleksa Sarai wrote:
+> > The basic property being guaranteed by LOOKUP_IN_ROOT is that it will
+> > not result in resolution of a path component which was not inside the
+> > root of the dirfd tree at some point during resolution (and that all
+> > absolute symlink and ".." resolution will be done relative to the
+> > dirfd). This may smell slightly of chroot(2), because unfortunately it
+> > is a similar concept -- the reason for this is to allow for a more
+> > efficient way to safely resolve paths inside a rootfs than spawning a
+> > separate process to then pass back the fd to the caller.
+>=20
+> IDGI...  If attacker can modify your subtree, you have already lost -
+> after all, they can make anything appear inside that tree just before
+> your syscall is made and bring it back out immediately afterwards.
+> And if they can't, what is the race you are trying to protect against?
+> Confused...
 
-Usually those are uncritical.
+I'll be honest, this code mostly exists because Jann Horn said that it
+was necessary in order for this interface to be safe against those kinds
+of attacks. Though, it's also entirely possible I just am
+mis-remembering the attack scenario he described when I posted v1 of
+this series last year.
 
-> So feel free to add my Tested-by.
+The use-case I need this functionality for (as do other container
+runtimes) is one where you are trying to safely interact with a
+directory tree that is a (malicious) container's root filesystem -- so
+the container won't be able to move the directory tree root, nor can
+they move things outside the rootfs into it (or the reverse). Users
+dealing with FTP, web, or file servers probably have similar
+requirements.
 
-I'll do.
+There is an obvious race condition if you allow the attacker to move the
+root (I give an example and test-case of it in the last patch in the
+series), and given that it is fairly trivial to defend against I don't
+see the downside in including it? But it's obviously your call -- and
+maybe Jann Horn can explain the reasoning behind this much better than I
+can.
 
-Helge
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--z4aw3kgjubxi6rqg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXS/kxgAKCRCdlLljIbnQ
+Eo0/AQD7a5jDbww9O+NZeirpVja2r3Y2CFcg1rTXSOeRjy321gEAoJhiO3HmSR50
+nG/Ogapy7jTKDSyCcC7BfUZDZSz67go=
+=wzlY
+-----END PGP SIGNATURE-----
+
+--z4aw3kgjubxi6rqg--
