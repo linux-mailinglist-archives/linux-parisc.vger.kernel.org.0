@@ -2,134 +2,88 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCAEF6C6A6
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jul 2019 05:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CC3F6CB6E
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jul 2019 11:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389328AbfGRDSb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 Jul 2019 23:18:31 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:39012 "EHLO mx1.mailbox.org"
+        id S1727702AbfGRJCv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 18 Jul 2019 05:02:51 -0400
+Received: from mout.gmx.net ([212.227.15.19]:56717 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389508AbfGRDSa (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 Jul 2019 23:18:30 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id F35D54FE71;
-        Thu, 18 Jul 2019 05:18:23 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
-        with ESMTP id nZ38r1RPFd3K; Thu, 18 Jul 2019 05:18:14 +0200 (CEST)
-Date:   Thu, 18 Jul 2019 13:17:29 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Christian Brauner <christian@brauner.io>,
-        David Drysdale <drysdale@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
-Message-ID: <20190718031729.scehpjydhuxgxqjy@yavin>
-References: <20190706145737.5299-6-cyphar@cyphar.com>
- <20190712043341.GI17978@ZenIV.linux.org.uk>
- <20190712105745.nruaftgeat6irhzr@yavin>
- <20190712123924.GK17978@ZenIV.linux.org.uk>
- <20190712125552.GL17978@ZenIV.linux.org.uk>
- <20190712132553.GN17978@ZenIV.linux.org.uk>
- <20190712150026.GO17978@ZenIV.linux.org.uk>
- <20190713024153.GA3817@ZenIV.linux.org.uk>
- <20190714070029.m53etvm3y4etidxt@yavin>
- <20190714143623.GR17978@ZenIV.linux.org.uk>
+        id S1726383AbfGRJCu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 18 Jul 2019 05:02:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1563440564;
+        bh=QBJLKn+dC85PPnBTLMHzTLIGPoRKi6Pjtg7ozwSWChw=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=l5RsIHa4K1su+VlK5d1tdjFI4lbHTeXIhTQEKSKydIoTXS52oG4HJTW2PNAKEgh7K
+         dNICnhin/zntO93+vhiaFpp3rub+NrmEyqbAnhd0QAthHNEJ6EafIvJtH/TiWJbDhK
+         p2qG0owYaAHMq8hWu8WMp1iUDzKEj5NPuiei3xmM=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530 ([193.16.224.40]) by mail.gmx.com (mrgmx002
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0Mg4FJ-1i2emH0JGf-00NPoZ; Thu, 18
+ Jul 2019 11:02:44 +0200
+Date:   Thu, 18 Jul 2019 11:02:41 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture fixes for kernel v5.3-rc1
+Message-ID: <20190718090241.GA14685@ls3530>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="z4aw3kgjubxi6rqg"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190714143623.GR17978@ZenIV.linux.org.uk>
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Provags-ID: V03:K1:aHvyAxHtghpi/zBwhRwKoL7EnfnYdGJGMe0qrMPr3GieWA/TUlg
+ hFVHRiN78tPGjPq1rLjPBvANMhxrcsBcU1vSMDbFW4RDhwaQiiOKf1pSHXzo4yQWLkmNH4U
+ qNL0YxFn/IsApbFL9FZzkmzOeaSYXEHqDE/2qpJW6wIPUGfCUh4lRQnIa63EKUSf3blS+Lz
+ T/lK5teKV5zelm+8WIAkg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:S7OEbOnUAnE=:2o8XdFrrEv90jkCkZjKVOs
+ 7AlAuPyhk2HXPhpBwohvboe5jA9CCzXIAFy0WfHQL/wY6SBV5uENtV4Z/8Lrn4YWTLsck3+xL
+ e+dU08Xg9VU+/FcqfEwjjXmUvwgkpm9FRSi5UQPbx8mFVMd8b1iJhmpIWTCcm9fER1rDutg1j
+ 6xdqviHxpMPkLQ0dUbiD2zZKLflXMKOclmj9nnldUkHRPvg6f7GOlOOHRoIw1IftTJQMGtK2v
+ kcRcYiyPDHmFLRWMM1WMSZyeC8dw5g1yML0P5XLMtkv4lGSvCmjBzDlwAlS5iT/y3DPzkYdlV
+ DyxVX8ZuP8HmQHmCCvYbgr5QVaO9C4HaR0xzSaci2X1tcS+lhNd3zA5LilU6agAGHl6EZQzjU
+ SeYKyW6fAYdN4ylVhVC3qev80nTcgHrt3um6IJzB3YrQsQZJkdkLLKMCVzVjBkp8lcMzDhuBn
+ RrIZA4qZ+wIiPVzNvFayHq3+AAC74KSkB6qD/EFfXCPu2z4EkqmzNkt6ee6+FgyiUzizc1PSN
+ 6tL5qYUOdZy06dDoXfV0DPxh4E+xRPBnM8AaFd3Zg/hE2yHW04Qu+7gO9wTJBe3WaW35m4+tH
+ JktJkDrlmTPqmqa0KoY3YG9lnBRsCyddGkTSCYAmvCicz4lk3HSpHmk3rPzuL9qH2X2z5QKHC
+ zQj/RSgFjN09Krf0fU6EZv36uAbLEfMjzS4jO8SU3/qWRm3gX9+v+Te612tk5hh3WZQSDBOsI
+ e28uxzoWrdoebUg6NxnS2SgJKFzyFi5NTxXkHmfemAwCtGiGBEEDBS2Eg/8YjuBDUOvfAk0LU
+ 9Z5ac15HsPPUN0RpEi0Etq4JnDfWRjfvCyCF3p9dij06/Trpauelhi4ESNA00J7BdobBos8Us
+ DU+uTPnKVxRqRvolNJY7oUeby4vB4TuLzCjd3biLFhFX17iYpfiUj4PvWIVALanmezpa8fnB4
+ TOVyfpGCAKooBxbe8U9KW3L012ZrSgCv9qGECW14Nu9u3en2dS4Sjav3LxpDF14YC0wNa5mr0
+ sXafhjUrriKk9hMk23RnbC4qjwEIF9uHO7pIYD570eqrs5n8ofFkn3U61Yx1uAEMsA==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Hi Linus,
 
---z4aw3kgjubxi6rqg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+please pull a few more fixes for the parisc architecture for kernel 5.3-rc1 from:
 
-On 2019-07-14, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Sun, Jul 14, 2019 at 05:00:29PM +1000, Aleksa Sarai wrote:
-> > The basic property being guaranteed by LOOKUP_IN_ROOT is that it will
-> > not result in resolution of a path component which was not inside the
-> > root of the dirfd tree at some point during resolution (and that all
-> > absolute symlink and ".." resolution will be done relative to the
-> > dirfd). This may smell slightly of chroot(2), because unfortunately it
-> > is a similar concept -- the reason for this is to allow for a more
-> > efficient way to safely resolve paths inside a rootfs than spawning a
-> > separate process to then pass back the fd to the caller.
->=20
-> IDGI...  If attacker can modify your subtree, you have already lost -
-> after all, they can make anything appear inside that tree just before
-> your syscall is made and bring it back out immediately afterwards.
-> And if they can't, what is the race you are trying to protect against?
-> Confused...
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.3-2
 
-I'll be honest, this code mostly exists because Jann Horn said that it
-was necessary in order for this interface to be safe against those kinds
-of attacks. Though, it's also entirely possible I just am
-mis-remembering the attack scenario he described when I posted v1 of
-this series last year.
+Changes:
+- Prevent kernel panics by adding proper checking of register values injected
+  via the ptrace interface.
+- Wire up the new clone3 syscall.
 
-The use-case I need this functionality for (as do other container
-runtimes) is one where you are trying to safely interact with a
-directory tree that is a (malicious) container's root filesystem -- so
-the container won't be able to move the directory tree root, nor can
-they move things outside the rootfs into it (or the reverse). Users
-dealing with FTP, web, or file servers probably have similar
-requirements.
+Thanks,
+Helge
 
-There is an obvious race condition if you allow the attacker to move the
-root (I give an example and test-case of it in the last patch in the
-series), and given that it is fairly trivial to defend against I don't
-see the downside in including it? But it's obviously your call -- and
-maybe Jann Horn can explain the reasoning behind this much better than I
-can.
+----------------------------------------------------------------
+Helge Deller (4):
+      parisc: Fix kernel panic due invalid values in IAOQ0 or IAOQ1
+      parisc: Ensure userspace privilege for ptraced processes in regset functions
+      parisc: Avoid kernel panic triggered by invalid kprobe
+      parisc: Wire up clone3 syscall
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---z4aw3kgjubxi6rqg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXS/kxgAKCRCdlLljIbnQ
-Eo0/AQD7a5jDbww9O+NZeirpVja2r3Y2CFcg1rTXSOeRjy321gEAoJhiO3HmSR50
-nG/Ogapy7jTKDSyCcC7BfUZDZSz67go=
-=wzlY
------END PGP SIGNATURE-----
-
---z4aw3kgjubxi6rqg--
+ arch/parisc/include/asm/unistd.h        |  1 +
+ arch/parisc/kernel/entry.S              |  1 +
+ arch/parisc/kernel/kprobes.c            |  3 +++
+ arch/parisc/kernel/ptrace.c             | 31 ++++++++++++++++++++-----------
+ arch/parisc/kernel/syscalls/syscall.tbl |  2 +-
+ 5 files changed, 26 insertions(+), 12 deletions(-)
