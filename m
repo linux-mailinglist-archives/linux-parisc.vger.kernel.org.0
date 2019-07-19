@@ -2,87 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A5926D7B9
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Jul 2019 02:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4CF06D8AF
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Jul 2019 03:59:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726015AbfGSATF convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Thu, 18 Jul 2019 20:19:05 -0400
-Received: from [185.234.218.148] ([185.234.218.148]:30285 "EHLO webmail.co.za"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725992AbfGSATF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 18 Jul 2019 20:19:05 -0400
-Reply-To: clinton.morgan@opendoorssecurities.co.uk
-From:   opendoorssecurities1@webmail.co.za
-To:     linux-parisc@vger.kernel.org
-Subject: Your diplomatic luggage
-Date:   18 Jul 2019 17:18:57 -0700
-Message-ID: <20190718171857.D57685EF61557FEE@webmail.co.za>
+        id S1726374AbfGSB7j (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 18 Jul 2019 21:59:39 -0400
+Received: from vmicros1.altlinux.org ([194.107.17.57]:55986 "EHLO
+        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726042AbfGSB7j (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 18 Jul 2019 21:59:39 -0400
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+        by vmicros1.altlinux.org (Postfix) with ESMTP id 492A272CA65;
+        Fri, 19 Jul 2019 04:59:34 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+        id 3B39E7CC774; Fri, 19 Jul 2019 04:59:34 +0300 (MSK)
+Date:   Fri, 19 Jul 2019 04:59:34 +0300
+From:   "Dmitry V. Levin" <ldv@altlinux.org>
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Christian Brauner <christian@brauner.io>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v9 08/10] open: openat2(2) syscall
+Message-ID: <20190719015933.GA18022@altlinux.org>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-9-cyphar@cyphar.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="huq684BweRXVnRxX"
+Content-Disposition: inline
+In-Reply-To: <20190706145737.5299-9-cyphar@cyphar.com>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-I'm Clinton Morgan, I have been instructed to notify you of the 
-availability of a package deposited by your relative (our client) 
-in your name at the event of demise. We are entrusted and 
-empowered with diplomatic immunity and status to safe keep 
-valuable packages and baggage in trust for our reputable clients.
- 
-We work in collaboration with top firms and government bodies of 
-various countries as we have earned a reputation as a service 
-whose hallmarks in reliability and confidentiality are revered. 
-Our clienteles also includes international missions, fellow 
-diplomats as well as embassies of different countries.
- 
-A financial security package was deposited by a benefactor whose 
-identity can not be disclosed due to a binding Non-Disclosure 
-Agreement, specifically instructing us to contact you in the 
-event of demise. The Non Circumvention and Non Disclosure 
-Agreement signed with the benefactor  mandates and authorises us 
-to fully divulge and disclose the benefactor's identity 18 months 
-after the beneficiary has received the funds. We confirm that 
-these funds are fully free of any liens or encumbrances and are 
-clean, clear and non-criminal origin and are available in the 
-form of
-CASH.
- 
-By this notice, you are hereby advised to send your Full Contact 
-Information as well as the name of the closest airport to your 
-city in the format stated below. The funds with the 
-documentations of origin will be brought to your country of 
-residence by 3 Diplomats. You will be accompanied to your bank 
-(solely by your request) to deposit the funds in your name with 
-the documentations of its origin which authenticates the facts 
-that the funds are clean with no link to terrorism or drugs as 
-well as exonerates you from any form of investigations and 
-interrogation.
- 
- 
-Kindly ensure that no mistake or error is made in the information 
-provide below and it should be forwarded in the manner stated 
-below:
- 
-Your Full Name: ______________________________
- 
-Your cell number:______________________________
- 
-Your Complete Address: ________________________________
- 
-Name of City of Residence: ____________________
- 
-Name of Closest Airport to your city of 
-Residence:_________________________________
- 
-I hereby confirm the the information provided above is correct 
-and accurate to the best of my knowledge.
-Congratulations in advance.
- 
-Thank you and I sincerely Remain,
- 
- 
-Clinton Morgan
-Email: clinton.morgan@opendoorssecurities.co.uk
+
+--huq684BweRXVnRxX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, Jul 07, 2019 at 12:57:35AM +1000, Aleksa Sarai wrote:
+[...]
+> +/**
+> + * Arguments for how openat2(2) should open the target path. If @extra i=
+s zero,
+> + * then openat2(2) is identical to openat(2).
+> + *
+> + * @flags: O_* flags (unknown flags ignored).
+
+What was the rationale for implementing this semantics?
+Ignoring unknown flags makes potential extension of this new interface
+problematic.  This has bitten us many times already, so ...
+
+> + * @mode: O_CREAT file mode (ignored otherwise).
+> + * @upgrade_mask: restrict how the O_PATH may be re-opened (ignored othe=
+rwise).
+> + * @resolve: RESOLVE_* flags (-EINVAL on unknown flags).
+
+=2E.. could you consider implementing this (-EINVAL on unknown flags) seman=
+tics
+for @flags as well, please?
+
+
+--=20
+ldv
+
+--huq684BweRXVnRxX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJdMSQFAAoJEAVFT+BVnCUIuaAP/3pgUoQA466F6S8jYN6F/icf
+oiQHExdeO3ruxRdNl1gi7af0RxQCiprfNIoD7KQyWSnyUyUm0Cdd7PzpEKXuumQi
+pN6ZTEO2bQeSs7AjCNpLrTgKcuOo/pZbNN7InAHKLB7k2xKKeBbdaVypgGiAEDjT
+JK+4s+8JcJoSg+d69G428QP2qpoHyIZJ5437gYv5rJbL9BRihwwvWF2OQ4TXrd6I
+YnyxPFRRZnfiN3HNbNlJjtMgt5g0AisLuahpJaDMq0NaXnBOosDm9jBAhVOX0CSB
+LUNByCygXeBKv9VuyrO4KnLXS3ORGfK38SDGqz3kFYy1quNRAGKgOXPnGXfb2xbZ
+bRCqyuxkSUOIfLKA6q9jnqO9RoUeOtLglFUT/5JpixTaoxSFN3Y6GlJFcnw+cVm+
+oWH4A/IoST68FCfbOMff976O36pakuWbsVGVsdv384OEHfWaf7c10P9EQc3fhgF3
+JoeY5ht9R1k8HWNOlCuCeHfTwSyLG3T/TROuZYtz65RdPemuuPSPERr+GzOtO9Fn
++wQmK99JlE3nhoyv5CmtqCmMQWhYZedqjbjs5wIq7tjalerg6TakNMmhzTGz5l8T
+i+3EfyMHhEtwq+2YNhdaPEmjfdBzyI3stxtEkURya0BnCgbYsP2mTIP8UbLGDqsY
+EJZiRtPRFfVoePwqT8Ux
+=zLLc
+-----END PGP SIGNATURE-----
+
+--huq684BweRXVnRxX--
