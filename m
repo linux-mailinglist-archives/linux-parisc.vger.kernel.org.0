@@ -2,132 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6D726E5C9
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Jul 2019 14:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D258F6E8DA
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Jul 2019 18:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727891AbfGSMhN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Jul 2019 08:37:13 -0400
-Received: from mta147.atlashoster.net ([5.39.37.51]:42705 "EHLO rajiweb.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727552AbfGSMhM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Jul 2019 08:37:12 -0400
-X-Greylist: delayed 10197 seconds by postgrey-1.27 at vger.kernel.org; Fri, 19 Jul 2019 08:37:11 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=noudeu.com;
-         s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=YfW+noOdClC1aGko2lS9prxVDV6euJq9AOVQNpC+QTY=; b=0nc+GJkRMalA9UI11fkrMiYPQN
-        1xNnvyqHIO/Vc54LR4iL3OSk0Cvqx2+9vbzgLsXZer7G5MW5sHEB0ZxAL3LQ5dAt4nvFn176brh66
-        3//iaW6xJ1j2kf1C1URnq76KsRjNSEZy+T7w45dAADcCCF+Jcpb5FwtyCuB3PoxmjoCq8DsWaE9Pm
-        k3JxbmbzI0oYbX/OcodCELsKXCWStGG7NR3BuUy611Fxv0RR/71/JF2tvPRA64VTuB6VByPVy/fzf
-        mp7IOTwd9SWlrttQ/gigYIJqjSy3kw3k948i8Ls8/u9G8dQoy6ggzI1JdpBIwDmIfynvKsuRj5Ek+
-        0nKUOEYQ==;
-Received: from [::1] (port=35990 helo=hosting.atlashoster.net)
-        by hosting.atlashoster.net with esmtpa (Exim 4.92)
-        (envelope-from <andrewkabore1@gmail.com>)
-        id 1hoPTn-0000gU-Sm; Fri, 19 Jul 2019 11:47:07 +0200
+        id S1731144AbfGSQeB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Jul 2019 12:34:01 -0400
+Received: from mail-io1-f70.google.com ([209.85.166.70]:43579 "EHLO
+        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729228AbfGSQeB (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 19 Jul 2019 12:34:01 -0400
+Received: by mail-io1-f70.google.com with SMTP id q26so35116482ioi.10
+        for <linux-parisc@vger.kernel.org>; Fri, 19 Jul 2019 09:34:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=K0tO5uO221nvtR7gnlqeSa9IqFZGmt58DDiOBmYEiu8=;
+        b=gNlh4J9LXikYcPe6hpRIWa1Toxtbc2lJACJTIeW/vVeerWnUGNeBjia8Y2RX0dPjSG
+         p+J/WT/u7DDWs2bJVEvGMvqza2qHTp7NV8mEnAYx+2WWwAs7K5n5qa0y9sEo5tci5SZf
+         RSkxr/3xLY0l7IkGjxYrUk6ARZJ+HmlFNp1TbprmsOuvyJS2wOE5XDYEkc3BnrGV1HeV
+         hPUMhaVe2wXkDMHLD4tb1Nqc9Be9bfExRsAIP1YKuVo1MhRj8LF7UR35SW6X0QJzwJVe
+         eg1K/vXa2GUyJ8pxgFIB2VHf8GynyOhwMQuUBCat9KnDvcDjsAeTmaQeACQamb1DKd7x
+         Pslg==
+X-Gm-Message-State: APjAAAWKcOrEicGV/d0swYxWwKDfB1dMMdvomcnGs+9soya+JevLaVMn
+        D3oM7KHOEuhnLtf+7zr3CA7Wl2G+IEqJ8rX1jTEdTEd3Wyh3
+X-Google-Smtp-Source: APXvYqzXnjpSQV9iFQbyh8yurehonYeDVnnn919X9PLqsJYbWXJy2VpoCVH3ZDalQ76trhEOtpL1aMd4nm27xBBAS+sOD1mk8YpL
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 19 Jul 2019 11:47:07 +0200
-From:   Mr Andrew Kabora <andrewkabore1@gmail.com>
-To:     undisclosed-recipients:;
-Subject: Greetings my good friend
-Reply-To: mrandrewkabore@yandex.com
-Mail-Reply-To: mrandrewkabore@yandex.com
-Message-ID: <0918c1afad11bde662a4163561cbc3e0@gmail.com>
-X-Sender: andrewkabore1@gmail.com
-User-Agent: Roundcube Webmail/1.3.8
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hosting.atlashoster.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - gmail.com
-X-Get-Message-Sender-Via: hosting.atlashoster.net: authenticated_id: contact@noudeu.com
-X-Authenticated-Sender: hosting.atlashoster.net: contact@noudeu.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-Received: by 2002:a5d:8c87:: with SMTP id g7mr47222471ion.85.1563554040200;
+ Fri, 19 Jul 2019 09:34:00 -0700 (PDT)
+Date:   Fri, 19 Jul 2019 09:34:00 -0700
+In-Reply-To: <000000000000490679058e0245ee@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000027494e058e0b4b3f@google.com>
+Subject: Re: KASAN: use-after-free Read in finish_task_switch (2)
+From:   syzbot <syzbot+7f067c796eee2acbc57a@syzkaller.appspotmail.com>
+To:     aarcange@redhat.com, akpm@linux-foundation.org,
+        christian@brauner.io, davem@davemloft.net, ebiederm@xmission.com,
+        elena.reshetova@intel.com, guro@fb.com, hch@infradead.org,
+        james.bottomley@hansenpartnership.com, jasowang@redhat.com,
+        jglisse@redhat.com, keescook@chromium.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        luto@amacapital.net, mhocko@suse.com, mingo@kernel.org,
+        mst@redhat.com, namit@vmware.com, peterz@infradead.org,
+        syzkaller-bugs@googlegroups.com, wad@chromium.org,
+        yuehaibing@huawei.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+syzbot has bisected this bug to:
 
+commit 7f466032dc9e5a61217f22ea34b2df932786bbfc
+Author: Jason Wang <jasowang@redhat.com>
+Date:   Fri May 24 08:12:18 2019 +0000
 
--- 
-Dear Friend,
+     vhost: access vq metadata through kernel virtual address
 
-With due respect to your person and much sincerity of purpose, I make
-this contact with you as I believe that you can be of great assistance
-to me. My name is Mr Andrew Kabore, from Ouagadougou Republic of BURKINA
-FASO, West Africa . Presently i work in the African development Bank as
-telex manager. I have been searching for your contact since you left our
-country some years ago.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=123faf70600000
+start commit:   22051d9c Merge tag 'platform-drivers-x86-v5.3-2' of git://..
+git tree:       upstream
+final crash:    https://syzkaller.appspot.com/x/report.txt?x=113faf70600000
+console output: https://syzkaller.appspot.com/x/log.txt?x=163faf70600000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=135cb826ac59d7fc
+dashboard link: https://syzkaller.appspot.com/bug?extid=7f067c796eee2acbc57a
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12c1898fa00000
 
-I do not know whether this is your correct email address or not because
-I only used your name initials to search for your contact .In case you
-are not the person I am supposed to contact, please see this as a
-confidential message and do not reveal it to another person but if you
-are not the intended receiver, do let me know whether you can be of
-assistance regarding my proposal below because it is top secret.
+Reported-by: syzbot+7f067c796eee2acbc57a@syzkaller.appspotmail.com
+Fixes: 7f466032dc9e ("vhost: access vq metadata through kernel virtual  
+address")
 
-I am about to retire from active Bank service to start a new life but I
-am sceptical to reveal this particular secret to a stranger. You must
-assure me that everything will be handled confidentially because we are
-not going to suffer again in life.
-
-It has been 10 years now that most of the greedy African Politicians
-used our bank to launder money overseas through the help of their
-Political advisers. Most of the funds which they transferred out of the
-shores of Africa were gold and oil money that was supposed to have been
-used to develop the continent. Their Political advisers always inflated
-the amounts before transfer to foreign accounts so I also used the
-opportunity to divert part of the funds hence I am aware that there is
-no official trace of how much was transferred as all the accounts used
-for such transfers were being closed after transfer.
-
-I acted as the Bank Officer to most of the politicians and when I
-discovered that they were using me to succeed in their greedy act; I
-also cleaned some of their banking records from the Bank files and no
-one cared to ask me because the money was too much for them to control.
-They laundered over $5b Dollars during the process .As I am sending this
-message to you, I was able to divert thirty five million united state
-dollars ($35m) to an escrow account belonging to no one in the bank. The
-bank is anxious now to know who the beneficiary to the funds is because
-they have made a lot of profits with the funds.
-
-It is more than Eight years now and most of the politicians are no
-longer using our bank to transfer funds overseas. The ($35) Million
-Dollars has been laying waste but I don't want to retire from the bank
-without transferring the funds to a foreign account to enable me share
-the proceeds with the receiver. The money will be shared 60% for me and
-40% for you..
-
-There is no one coming to ask you about the funds because I secured
-everything. I only want you to assist me by providing a bank account
-where the funds can be transferred. You are not to face any difficulties
-or legal implications as I am going to handle the transfer personally.
-If you are capable of receiving the funds, do let me know immediately to
-enable me give you a detailed information on what to do.
-
-For me, I have not stolen the money from anyone because the other people
-that took the whole money did not face any problems. This is my chance
-also to grab my own but you must keep the details of the funds secret to
-avoid any leakages as no one in the bank knows about the funds.
-
-Please get back to me if you are interested and capable to handle this
-project
-
-I shall intimate you on what to do when I hear from your confirmation
-and acceptance. If you are capable of being my trusted associate, do
-declare your consent to me .
-
-Waiting for your urgent response.
-Yours Faithfully,
-
-
-Mr Andrew Kabore
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
