@@ -2,147 +2,132 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E4B6E594
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Jul 2019 14:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6D726E5C9
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Jul 2019 14:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728349AbfGSMVP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Jul 2019 08:21:15 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:33899 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728324AbfGSMVK (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Jul 2019 08:21:10 -0400
-Received: by mail-wr1-f65.google.com with SMTP id 31so32116753wrm.1
-        for <linux-parisc@vger.kernel.org>; Fri, 19 Jul 2019 05:21:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ZSNxINB1eoSUuwzdj5DoTcqLmEl60Bp0Y1Hgn40sFfw=;
-        b=YA6EggnrFQ6Rx4knXWvUwz2U9x+1SCXFlO09KhemP39oSM5WYZgQ2m/kFVHmUdPaiL
-         Bm1Ggw6zh2v63WBxSukl1wDC7kjbGrKz1ZXMbEgZLoli/r4F13x+dHAZ6rE4Pz2qeley
-         9tPCOG2cMyDnw62NpBr9grkI92uWPyMgpht0Uw2SLvd9Dz2mAO6avNTIp3+tem/noeAR
-         V4om6zfHYpQNS87JMPrVvHsV4E1J0XeN9bBskUB2432vKBEvTC8+7q2OQdTGZ93iZIvI
-         ohhk/qhXg1mByYO2x65TDsZB/H0HOt+SpMEznQE/4/KLLVO6NYvQR0/hZMhvkRJlJ94I
-         XwzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ZSNxINB1eoSUuwzdj5DoTcqLmEl60Bp0Y1Hgn40sFfw=;
-        b=fWZ9kYDZCiqGpqVb1bdwhUqyfqaSXJAX0l8ZKc3bouAoCbPpEvizBtB5J7uncIt4Qq
-         tWf+Dvi1BHrPKWFWCtR52ZlZqRn5cEE6lcHT/OVc/jTWjAcICLE0S5qyTUoDIRmDXnS9
-         QtxmkUktmMqti8qX/F6OhXUXFkVCQTFByvKYEXw1y/63mCyz/E5QlMDOTpfu5GyAyd6K
-         bijlW/An21FL4dDqvSQ96XxrDEQ3ws3zVHuc7Vt1qmPplNwL3bftdOyC/XRJQgdG2+FF
-         v78soYYxX4gz4u/OMNlS+pkzt4HegVd3bygsGldwZSVSCCp6iYu62+CpeT+YsVvSpTYY
-         6Pyg==
-X-Gm-Message-State: APjAAAUTZjsqEcPbwr884YsgtPu/junPCzwyietmdgIsuW0vvnecywTv
-        o+g496eKrCN0ZhpU+kMxtfU=
-X-Google-Smtp-Source: APXvYqx9gGrYkCwplFu6XW/mRH357ZdxOoELb3Z3UiLqCzSiDwFdDoevEVdtgUgUKpbiqm5tozaFNg==
-X-Received: by 2002:adf:f851:: with SMTP id d17mr56545224wrq.77.1563538868448;
-        Fri, 19 Jul 2019 05:21:08 -0700 (PDT)
-Received: from brauner.io (p5097b50e.dip0.t-ipconnect.de. [80.151.181.14])
-        by smtp.gmail.com with ESMTPSA id r12sm38324623wrt.95.2019.07.19.05.21.05
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 19 Jul 2019 05:21:07 -0700 (PDT)
-Date:   Fri, 19 Jul 2019 14:20:59 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
-        linux-kernel@vger.kernel.org, arnd@arndb.de,
-        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>
-Subject: Re: [PATCH 1/2] arch: mark syscall number 435 reserved for clone3
-Message-ID: <20190719122058.njbtwy2fbd6xrp2d@brauner.io>
-References: <20190714192205.27190-1-christian@brauner.io>
- <20190714192205.27190-2-christian@brauner.io>
- <e14eb2f9-43cb-0b9d-dec4-b7e7dcd62091@de.ibm.com>
- <20190716130631.tohj4ub54md25dys@brauner.io>
- <874l3i8h0l.fsf@concordia.ellerman.id.au>
- <20190719102503.tm3ahvkh4rwykmws@brauner.io>
- <871rym8egj.fsf@concordia.ellerman.id.au>
+        id S1727891AbfGSMhN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Jul 2019 08:37:13 -0400
+Received: from mta147.atlashoster.net ([5.39.37.51]:42705 "EHLO rajiweb.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727552AbfGSMhM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 19 Jul 2019 08:37:12 -0400
+X-Greylist: delayed 10197 seconds by postgrey-1.27 at vger.kernel.org; Fri, 19 Jul 2019 08:37:11 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=noudeu.com;
+         s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=YfW+noOdClC1aGko2lS9prxVDV6euJq9AOVQNpC+QTY=; b=0nc+GJkRMalA9UI11fkrMiYPQN
+        1xNnvyqHIO/Vc54LR4iL3OSk0Cvqx2+9vbzgLsXZer7G5MW5sHEB0ZxAL3LQ5dAt4nvFn176brh66
+        3//iaW6xJ1j2kf1C1URnq76KsRjNSEZy+T7w45dAADcCCF+Jcpb5FwtyCuB3PoxmjoCq8DsWaE9Pm
+        k3JxbmbzI0oYbX/OcodCELsKXCWStGG7NR3BuUy611Fxv0RR/71/JF2tvPRA64VTuB6VByPVy/fzf
+        mp7IOTwd9SWlrttQ/gigYIJqjSy3kw3k948i8Ls8/u9G8dQoy6ggzI1JdpBIwDmIfynvKsuRj5Ek+
+        0nKUOEYQ==;
+Received: from [::1] (port=35990 helo=hosting.atlashoster.net)
+        by hosting.atlashoster.net with esmtpa (Exim 4.92)
+        (envelope-from <andrewkabore1@gmail.com>)
+        id 1hoPTn-0000gU-Sm; Fri, 19 Jul 2019 11:47:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <871rym8egj.fsf@concordia.ellerman.id.au>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 19 Jul 2019 11:47:07 +0200
+From:   Mr Andrew Kabora <andrewkabore1@gmail.com>
+To:     undisclosed-recipients:;
+Subject: Greetings my good friend
+Reply-To: mrandrewkabore@yandex.com
+Mail-Reply-To: mrandrewkabore@yandex.com
+Message-ID: <0918c1afad11bde662a4163561cbc3e0@gmail.com>
+X-Sender: andrewkabore1@gmail.com
+User-Agent: Roundcube Webmail/1.3.8
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - hosting.atlashoster.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - gmail.com
+X-Get-Message-Sender-Via: hosting.atlashoster.net: authenticated_id: contact@noudeu.com
+X-Authenticated-Sender: hosting.atlashoster.net: contact@noudeu.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Jul 19, 2019 at 09:13:16PM +1000, Michael Ellerman wrote:
-> Christian Brauner <christian@brauner.io> writes:
-> > On Fri, Jul 19, 2019 at 08:18:02PM +1000, Michael Ellerman wrote:
-> >> Christian Brauner <christian@brauner.io> writes:
-> >> > On Mon, Jul 15, 2019 at 03:56:04PM +0200, Christian Borntraeger wrote:
-> >> >> I think Vasily already has a clone3 patch for s390x with 435. 
-> >> >
-> >> > A quick follow-up on this. Helge and Michael have asked whether there
-> >> > are any tests for clone3. Yes, there will be and I try to have them
-> >> > ready by the end of the this or next week for review. In the meantime I
-> >> > hope the following minimalistic test program that just verifies very
-> >> > very basic functionality (It's not pretty.) will help you test:
-> >> 
-> >> Hi Christian,
-> >> 
-> >> Thanks for the test.
-> >> 
-> >> This actually oopses on powerpc, it hits the BUG_ON in CHECK_FULL_REGS
-> >> in process.c around line 1633:
-> >> 
-> >> 	} else {
-> >> 		/* user thread */
-> >> 		struct pt_regs *regs = current_pt_regs();
-> >> 		CHECK_FULL_REGS(regs);
-> >> 		*childregs = *regs;
-> >> 		if (usp)
-> >> 
-> >> 
-> >> So I'll have to dig into how we fix that before we wire up clone3.
-> >> 
-> >> Turns out testing is good! :)
-> >
-> > Indeed. I have a test-suite for clone3 in mind and I hope to have it
-> > ready by the end of next week. It's just always the finding the time
-> > part that is annoying. :)
-> 
-> I know the feeling!
-> 
-> > Thanks for digging into this, Michael!
-> 
-> No worries, happy to help where I can.
-> 
-> In the intervening five minutes I remembered how we handle this, we just
-> need a little wrapper to save the non-volatile regs:
-> 
-> _GLOBAL(ppc_clone3)
-> 	bl	save_nvgprs
-> 	bl	sys_clone3
-> 	b	.Lsyscall_exit
 
-Sounds good.
 
-> 
-> 
-> A while back I meant to make it generate those automatically based on a
-> flag in the syscall.tbl but of course haven't got around to it :)
-> 
-> So with the above it seems all good:
-> 
-> $ ./clone3 ; echo $?
-> Parent process received child's pid 4204 as return value
-> Parent process received child's pidfd 3
-> Parent process received child's pid 4204 as return argument
-> Child process with pid 4204
-> 0
-> 
-> I'll send a patch to wire it up on Monday.
+-- 
+Dear Friend,
 
-Excellent! Thank you!
-Christian
+With due respect to your person and much sincerity of purpose, I make
+this contact with you as I believe that you can be of great assistance
+to me. My name is Mr Andrew Kabore, from Ouagadougou Republic of BURKINA
+FASO, West Africa . Presently i work in the African development Bank as
+telex manager. I have been searching for your contact since you left our
+country some years ago.
+
+I do not know whether this is your correct email address or not because
+I only used your name initials to search for your contact .In case you
+are not the person I am supposed to contact, please see this as a
+confidential message and do not reveal it to another person but if you
+are not the intended receiver, do let me know whether you can be of
+assistance regarding my proposal below because it is top secret.
+
+I am about to retire from active Bank service to start a new life but I
+am sceptical to reveal this particular secret to a stranger. You must
+assure me that everything will be handled confidentially because we are
+not going to suffer again in life.
+
+It has been 10 years now that most of the greedy African Politicians
+used our bank to launder money overseas through the help of their
+Political advisers. Most of the funds which they transferred out of the
+shores of Africa were gold and oil money that was supposed to have been
+used to develop the continent. Their Political advisers always inflated
+the amounts before transfer to foreign accounts so I also used the
+opportunity to divert part of the funds hence I am aware that there is
+no official trace of how much was transferred as all the accounts used
+for such transfers were being closed after transfer.
+
+I acted as the Bank Officer to most of the politicians and when I
+discovered that they were using me to succeed in their greedy act; I
+also cleaned some of their banking records from the Bank files and no
+one cared to ask me because the money was too much for them to control.
+They laundered over $5b Dollars during the process .As I am sending this
+message to you, I was able to divert thirty five million united state
+dollars ($35m) to an escrow account belonging to no one in the bank. The
+bank is anxious now to know who the beneficiary to the funds is because
+they have made a lot of profits with the funds.
+
+It is more than Eight years now and most of the politicians are no
+longer using our bank to transfer funds overseas. The ($35) Million
+Dollars has been laying waste but I don't want to retire from the bank
+without transferring the funds to a foreign account to enable me share
+the proceeds with the receiver. The money will be shared 60% for me and
+40% for you..
+
+There is no one coming to ask you about the funds because I secured
+everything. I only want you to assist me by providing a bank account
+where the funds can be transferred. You are not to face any difficulties
+or legal implications as I am going to handle the transfer personally.
+If you are capable of receiving the funds, do let me know immediately to
+enable me give you a detailed information on what to do.
+
+For me, I have not stolen the money from anyone because the other people
+that took the whole money did not face any problems. This is my chance
+also to grab my own but you must keep the details of the funds secret to
+avoid any leakages as no one in the bank knows about the funds.
+
+Please get back to me if you are interested and capable to handle this
+project
+
+I shall intimate you on what to do when I hear from your confirmation
+and acceptance. If you are capable of being my trusted associate, do
+declare your consent to me .
+
+Waiting for your urgent response.
+Yours Faithfully,
+
+
+Mr Andrew Kabore
