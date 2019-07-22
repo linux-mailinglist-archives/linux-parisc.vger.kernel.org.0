@@ -2,56 +2,27 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67AD0704ED
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jul 2019 18:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E82C870525
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jul 2019 18:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726653AbfGVQEw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 22 Jul 2019 12:04:52 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:45085 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729582AbfGVQEv (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 22 Jul 2019 12:04:51 -0400
-Received: by mail-qt1-f195.google.com with SMTP id x22so34118759qtp.12
-        for <linux-parisc@vger.kernel.org>; Mon, 22 Jul 2019 09:04:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vwvk1p704PvrHoU3x+syVrBIr03+GtruOtffq5nOmqI=;
-        b=eCJDQVgp/TUa3SJDw5YNpJdxoRLDUf0uKWF8HiEN2E6tOilw6te7IXdJ74mZFUYqp/
-         9cs4iQsc0KiVAOncyf/4OEnDeZsuNdAdxwUKQmiZzySVbAR5OjTuhXiGRkV1rgBYswjM
-         IQx0Ulu4NMDBwDAviDS9g4pKXJW+xpv+Iy8d6aVLlz84ufr1JzYd1aeEamQT0VorPgKU
-         QT1i21qMa2c8H2+8UBfm4o25QcGgTYS7VKw/3eTMHAe7UkpWzGXLekAdlCSWusHGhsa8
-         cEkwa4My8xWUN30i19bWw4qGMFPnC91vuvyuUJqr/Slt5ziIHR7WpgLw+5d/ULuZjsfk
-         lFPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vwvk1p704PvrHoU3x+syVrBIr03+GtruOtffq5nOmqI=;
-        b=fVCYwsDyP7gCf3lG53WGYHFh/kTy9wGu2rtAmARpNazQlVTCN71hliL9spgu2UQZiE
-         D3NWv2qrgtMotYwgX6jTll4R6Y0OkT9tVNmTK/4sz7LQYfy+Z40gKlhJevLAzussV0lS
-         gEgr06BkRyEQMIB5d/zmCfSr2ZhLWbf7uGgggPS6vL9BW4Nc/s84eLz2AAaEwkEsagK9
-         lsnx3bq/wkd9WPRtjG9nP6S6WHFy2Q3ZU4jiGcYLeDQlUcF6GaYgD8HP1WSRZY+DBnpz
-         R+FxIomq4X2lUyAxBKgqLfQTgv3Gd5j085cIp62QuytWxULT4SFJfn8+SVe+7ryjBukJ
-         e0dw==
-X-Gm-Message-State: APjAAAVupa3pTk888OLq7N+ayH80wxYtNaU08NpDaqxyrgApUJcHedzA
-        lzkctrMKMji4yaGtIiNUJXYfwg==
-X-Google-Smtp-Source: APXvYqwAqmiUCOGD8gRTdb/gKf382wokrezGvhSEToPpHN31WEGoX97JjGxgPReHba9ZDH0CrbO+rw==
-X-Received: by 2002:ac8:431e:: with SMTP id z30mr50035442qtm.291.1563811490053;
-        Mon, 22 Jul 2019 09:04:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
-        by smtp.gmail.com with ESMTPSA id y3sm20100502qtj.46.2019.07.22.09.04.49
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 22 Jul 2019 09:04:49 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1hpanw-00059A-U7; Mon, 22 Jul 2019 13:04:48 -0300
-Date:   Mon, 22 Jul 2019 13:04:48 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
+        id S1730571AbfGVQNv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 22 Jul 2019 12:13:51 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:59380 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728972AbfGVQNv (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 22 Jul 2019 12:13:51 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id BAFB030B8DE2;
+        Mon, 22 Jul 2019 16:13:50 +0000 (UTC)
+Received: from redhat.com (ovpn-124-54.rdu2.redhat.com [10.10.124.54])
+        by smtp.corp.redhat.com (Postfix) with SMTP id AE2A260BEC;
+        Mon, 22 Jul 2019 16:13:42 +0000 (UTC)
+Date:   Mon, 22 Jul 2019 12:13:40 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     "Paul E. McKenney" <paulmck@linux.ibm.com>
-Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+Cc:     Joel Fernandes <joel@joelfernandes.org>,
         Matthew Wilcox <willy@infradead.org>, aarcange@redhat.com,
         akpm@linux-foundation.org, christian@brauner.io,
         davem@davemloft.net, ebiederm@xmission.com,
@@ -65,35 +36,81 @@ Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
         syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
         wad@chromium.org
 Subject: Re: RFC: call_rcu_outstanding (was Re: WARNING in __mmdrop)
-Message-ID: <20190722160448.GH7607@ziepe.ca>
-References: <000000000000964b0d058e1a0483@google.com>
+Message-ID: <20190722120011-mutt-send-email-mst@kernel.org>
+References: <0000000000008dd6bb058e006938@google.com>
+ <000000000000964b0d058e1a0483@google.com>
  <20190721044615-mutt-send-email-mst@kernel.org>
  <20190721081933-mutt-send-email-mst@kernel.org>
  <20190721131725.GR14271@linux.ibm.com>
  <20190721210837.GC363@bombadil.infradead.org>
  <20190721233113.GV14271@linux.ibm.com>
- <20190722035042-mutt-send-email-mst@kernel.org>
- <20190722115149.GY14271@linux.ibm.com>
- <20190722134152.GA13013@ziepe.ca>
- <20190722155235.GF14271@linux.ibm.com>
+ <20190722151439.GA247639@google.com>
+ <20190722114612-mutt-send-email-mst@kernel.org>
+ <20190722155534.GG14271@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190722155235.GF14271@linux.ibm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190722155534.GG14271@linux.ibm.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.47]); Mon, 22 Jul 2019 16:13:51 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Jul 22, 2019 at 08:52:35AM -0700, Paul E. McKenney wrote:
-> So why then is there a problem?
+On Mon, Jul 22, 2019 at 08:55:34AM -0700, Paul E. McKenney wrote:
+> On Mon, Jul 22, 2019 at 11:47:24AM -0400, Michael S. Tsirkin wrote:
+> > On Mon, Jul 22, 2019 at 11:14:39AM -0400, Joel Fernandes wrote:
+> > > [snip]
+> > > > > Would it make sense to have call_rcu() check to see if there are many
+> > > > > outstanding requests on this CPU and if so process them before returning?
+> > > > > That would ensure that frequent callers usually ended up doing their
+> > > > > own processing.
+> > > 
+> > > Other than what Paul already mentioned about deadlocks, I am not sure if this
+> > > would even work for all cases since call_rcu() has to wait for a grace
+> > > period.
+> > > 
+> > > So, if the number of outstanding requests are higher than a certain amount,
+> > > then you *still* have to wait for some RCU configurations for the grace
+> > > period duration and cannot just execute the callback in-line. Did I miss
+> > > something?
+> > > 
+> > > Can waiting in-line for a grace period duration be tolerated in the vhost case?
+> > > 
+> > > thanks,
+> > > 
+> > >  - Joel
+> > 
+> > No, but it has many other ways to recover (try again later, drop a
+> > packet, use a slower copy to/from user).
+> 
+> True enough!  And your idea of taking recovery action based on the number
+> of callbacks seems like a good one while we are getting RCU's callback
+> scheduling improved.
+> 
+> By the way, was this a real problem that you could make happen on real
+> hardware?
 
-I'm not sure there is a real problem, I thought Michael was just
-asking how to design with RCU in the case where the user controls the
-kfree_rcu??
 
-Sounds like the answer is "don't worry about it" ?
+>  If not, I would suggest just letting RCU get improved over
+> the next couple of releases.
 
-Thanks,
-Jason
+
+So basically use kfree_rcu but add a comment saying e.g. "WARNING:
+in the future callers of kfree_rcu might need to check that
+not too many callbacks get queued. In that case, we can
+disable the optimization, or recover in some other way.
+Watch this space."
+
+
+> If it is something that you actually made happen, please let me know
+> what (if anything) you need from me for your callback-counting EBUSY
+> scheme.
+> 
+> 							Thanx, Paul
+
+If you mean kfree_rcu causing OOM then no, it's all theoretical.
+If you mean synchronize_rcu stalling to the point where guest will OOPs,
+then yes, that's not too hard to trigger.
+
