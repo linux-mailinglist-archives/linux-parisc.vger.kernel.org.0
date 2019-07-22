@@ -2,50 +2,50 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91FAA70534
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jul 2019 18:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99AEF70568
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jul 2019 18:26:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730037AbfGVQQF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 22 Jul 2019 12:16:05 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:27700 "EHLO
+        id S1730933AbfGVQ0B (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 22 Jul 2019 12:26:01 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:54276 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728467AbfGVQQF (ORCPT
+        by vger.kernel.org with ESMTP id S1730116AbfGVQ0B (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 22 Jul 2019 12:16:05 -0400
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6MGDffO023261
-        for <linux-parisc@vger.kernel.org>; Mon, 22 Jul 2019 12:16:04 -0400
-Received: from e11.ny.us.ibm.com (e11.ny.us.ibm.com [129.33.205.201])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2twet6dfrs-1
+        Mon, 22 Jul 2019 12:26:01 -0400
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6MGLnZL089403
+        for <linux-parisc@vger.kernel.org>; Mon, 22 Jul 2019 12:26:01 -0400
+Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2twgc810jj-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-parisc@vger.kernel.org>; Mon, 22 Jul 2019 12:16:04 -0400
+        for <linux-parisc@vger.kernel.org>; Mon, 22 Jul 2019 12:26:00 -0400
 Received: from localhost
-        by e11.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-parisc@vger.kernel.org> from <paulmck@linux.vnet.ibm.com>;
-        Mon, 22 Jul 2019 17:16:03 +0100
-Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
-        by e11.ny.us.ibm.com (146.89.104.198) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 22 Jul 2019 17:25:59 +0100
+Received: from b01cxnp23034.gho.pok.ibm.com (9.57.198.29)
+        by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 22 Jul 2019 17:15:54 +0100
+        Mon, 22 Jul 2019 17:25:51 +0100
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
-        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6MGFrNI55312674
+        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6MGPogJ49349098
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 22 Jul 2019 16:15:54 GMT
+        Mon, 22 Jul 2019 16:25:50 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D2013B2067;
-        Mon, 22 Jul 2019 16:15:53 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id 78428B2070;
+        Mon, 22 Jul 2019 16:25:50 +0000 (GMT)
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9308AB2064;
-        Mon, 22 Jul 2019 16:15:53 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id 2FDD0B2065;
+        Mon, 22 Jul 2019 16:25:50 +0000 (GMT)
 Received: from paulmck-ThinkPad-W541 (unknown [9.85.189.166])
         by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
-        Mon, 22 Jul 2019 16:15:53 +0000 (GMT)
+        Mon, 22 Jul 2019 16:25:50 +0000 (GMT)
 Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
-        id 257E516C2E45; Mon, 22 Jul 2019 09:15:55 -0700 (PDT)
-Date:   Mon, 22 Jul 2019 09:15:55 -0700
+        id B68CC16C29D7; Mon, 22 Jul 2019 09:25:51 -0700 (PDT)
+Date:   Mon, 22 Jul 2019 09:25:51 -0700
 From:   "Paul E. McKenney" <paulmck@linux.ibm.com>
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     Joel Fernandes <joel@joelfernandes.org>,
         Matthew Wilcox <willy@infradead.org>, aarcange@redhat.com,
         akpm@linux-foundation.org, christian@brauner.io,
         davem@davemloft.net, ebiederm@xmission.com,
@@ -60,58 +60,101 @@ Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
         wad@chromium.org
 Subject: Re: RFC: call_rcu_outstanding (was Re: WARNING in __mmdrop)
 Reply-To: paulmck@linux.ibm.com
-References: <20190721044615-mutt-send-email-mst@kernel.org>
+References: <000000000000964b0d058e1a0483@google.com>
+ <20190721044615-mutt-send-email-mst@kernel.org>
  <20190721081933-mutt-send-email-mst@kernel.org>
  <20190721131725.GR14271@linux.ibm.com>
  <20190721210837.GC363@bombadil.infradead.org>
  <20190721233113.GV14271@linux.ibm.com>
- <20190722035042-mutt-send-email-mst@kernel.org>
- <20190722115149.GY14271@linux.ibm.com>
- <20190722134152.GA13013@ziepe.ca>
- <20190722155235.GF14271@linux.ibm.com>
- <20190722160448.GH7607@ziepe.ca>
+ <20190722151439.GA247639@google.com>
+ <20190722114612-mutt-send-email-mst@kernel.org>
+ <20190722155534.GG14271@linux.ibm.com>
+ <20190722120011-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190722160448.GH7607@ziepe.ca>
+In-Reply-To: <20190722120011-mutt-send-email-mst@kernel.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 X-TM-AS-GCONF: 00
-x-cbid: 19072216-2213-0000-0000-000003B44BB4
+x-cbid: 19072216-0064-0000-0000-00000401FECB
 X-IBM-SpamModules-Scores: 
 X-IBM-SpamModules-Versions: BY=3.00011475; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000287; SDB=6.01235885; UDB=6.00651341; IPR=6.01017236;
- MB=3.00027839; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-22 16:16:01
+ PH=3.00000004; SC=3.00000287; SDB=6.01235889; UDB=6.00651343; IPR=6.01017239;
+ MB=3.00027839; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-22 16:25:58
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19072216-2214-0000-0000-00005F587017
-Message-Id: <20190722161555.GJ14271@linux.ibm.com>
+x-cbparentid: 19072216-0065-0000-0000-00003E5FF2DB
+Message-Id: <20190722162551.GK14271@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-22_12:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=846 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907220180
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907220182
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Jul 22, 2019 at 01:04:48PM -0300, Jason Gunthorpe wrote:
-> On Mon, Jul 22, 2019 at 08:52:35AM -0700, Paul E. McKenney wrote:
-> > So why then is there a problem?
+On Mon, Jul 22, 2019 at 12:13:40PM -0400, Michael S. Tsirkin wrote:
+> On Mon, Jul 22, 2019 at 08:55:34AM -0700, Paul E. McKenney wrote:
+> > On Mon, Jul 22, 2019 at 11:47:24AM -0400, Michael S. Tsirkin wrote:
+> > > On Mon, Jul 22, 2019 at 11:14:39AM -0400, Joel Fernandes wrote:
+> > > > [snip]
+> > > > > > Would it make sense to have call_rcu() check to see if there are many
+> > > > > > outstanding requests on this CPU and if so process them before returning?
+> > > > > > That would ensure that frequent callers usually ended up doing their
+> > > > > > own processing.
+> > > > 
+> > > > Other than what Paul already mentioned about deadlocks, I am not sure if this
+> > > > would even work for all cases since call_rcu() has to wait for a grace
+> > > > period.
+> > > > 
+> > > > So, if the number of outstanding requests are higher than a certain amount,
+> > > > then you *still* have to wait for some RCU configurations for the grace
+> > > > period duration and cannot just execute the callback in-line. Did I miss
+> > > > something?
+> > > > 
+> > > > Can waiting in-line for a grace period duration be tolerated in the vhost case?
+> > > > 
+> > > > thanks,
+> > > > 
+> > > >  - Joel
+> > > 
+> > > No, but it has many other ways to recover (try again later, drop a
+> > > packet, use a slower copy to/from user).
+> > 
+> > True enough!  And your idea of taking recovery action based on the number
+> > of callbacks seems like a good one while we are getting RCU's callback
+> > scheduling improved.
+> > 
+> > By the way, was this a real problem that you could make happen on real
+> > hardware?
 > 
-> I'm not sure there is a real problem, I thought Michael was just
-> asking how to design with RCU in the case where the user controls the
-> kfree_rcu??
+> >  If not, I would suggest just letting RCU get improved over
+> > the next couple of releases.
 > 
-> Sounds like the answer is "don't worry about it" ?
+> So basically use kfree_rcu but add a comment saying e.g. "WARNING:
+> in the future callers of kfree_rcu might need to check that
+> not too many callbacks get queued. In that case, we can
+> disable the optimization, or recover in some other way.
+> Watch this space."
 
-Unless you can force failures, you should be good.
+That sounds fair.
 
-And either way, improvements to RCU's handling of this sort of situation
-are in the works.  And rcutorture has gained tests of this stuff in the
-last year or so as well, see its "fwd_progress" module parameter and
-the related code.
+> > If it is something that you actually made happen, please let me know
+> > what (if anything) you need from me for your callback-counting EBUSY
+> > scheme.
+> > 
+> > 							Thanx, Paul
+> 
+> If you mean kfree_rcu causing OOM then no, it's all theoretical.
+> If you mean synchronize_rcu stalling to the point where guest will OOPs,
+> then yes, that's not too hard to trigger.
+
+Is synchronize_rcu() being stalled by the userspace loop that is invoking
+your ioctl that does kfree_rcu()?  Or instead by the resulting callback
+invocation?
 
 							Thanx, Paul
 
