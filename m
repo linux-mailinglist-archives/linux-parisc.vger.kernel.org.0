@@ -2,288 +2,167 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 205BF6FE5E
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jul 2019 13:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F13446FEFC
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jul 2019 13:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729849AbfGVLID (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 22 Jul 2019 07:08:03 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:35664 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729843AbfGVLIB (ORCPT
+        id S1728281AbfGVLv6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 22 Jul 2019 07:51:58 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:59936 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728079AbfGVLv6 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 22 Jul 2019 07:08:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=a+bQj1O+XRjfOgK19pvPFmYDIh6VgLh2sOF6Gxqi2+E=; b=WEV9kenwMJfXXQFoAu1jII0oV3
-        fZluZEm6iCvyJy0DYk2C/hV7zIFleSaux6waquQdpDY6cPahrcX8kcvTV2uIDkm4B+SaQKHo7CIJH
-        chp8vYXExfijeRlEw1y2evaHoR4apGas/I/ftdr4UWZiKNEs95vHvx5XRzo3AM0BEzP4H3FOyxUCX
-        gofbwRhY8SAfX0PQ6FgJjOBszMUNTldqmq2qcUz6g5LhPI418gpruGzYoTchvZ61z0ehjcj07M/jO
-        myzIKk79IdaZ4UHkE4XT5oKDmQk28goKB3BrnekJaC/mftyQiJQ3NllextFfHHytLDfNDoiY5Aj6V
-        kDhnISNQ==;
-Received: from 177.157.124.3.dynamic.adsl.gvt.net.br ([177.157.124.3] helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hpWAe-00024w-MN; Mon, 22 Jul 2019 11:07:56 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
-        (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hpWAa-000413-7e; Mon, 22 Jul 2019 08:07:52 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-doc@vger.kernel.org,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH 09/22] docs: parisc: convert to ReST and add to documentation body
-Date:   Mon, 22 Jul 2019 08:07:36 -0300
-Message-Id: <d93490565271fbf6b2e2bea40ec0c2381c86aac5.1563792334.git.mchehab+samsung@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1563792333.git.mchehab+samsung@kernel.org>
-References: <cover.1563792333.git.mchehab+samsung@kernel.org>
+        Mon, 22 Jul 2019 07:51:58 -0400
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6MBlftP046607
+        for <linux-parisc@vger.kernel.org>; Mon, 22 Jul 2019 07:51:57 -0400
+Received: from e14.ny.us.ibm.com (e14.ny.us.ibm.com [129.33.205.204])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2twcct0s8g-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-parisc@vger.kernel.org>; Mon, 22 Jul 2019 07:51:56 -0400
+Received: from localhost
+        by e14.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-parisc@vger.kernel.org> from <paulmck@linux.vnet.ibm.com>;
+        Mon, 22 Jul 2019 12:51:55 +0100
+Received: from b01cxnp22034.gho.pok.ibm.com (9.57.198.24)
+        by e14.ny.us.ibm.com (146.89.104.201) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 22 Jul 2019 12:51:49 +0100
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6MBpmq544761478
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 22 Jul 2019 11:51:48 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3D4A8B206A;
+        Mon, 22 Jul 2019 11:51:48 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DFD7EB2066;
+        Mon, 22 Jul 2019 11:51:47 +0000 (GMT)
+Received: from paulmck-ThinkPad-W541 (unknown [9.85.189.166])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+        Mon, 22 Jul 2019 11:51:47 +0000 (GMT)
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id 2B8E916C2E45; Mon, 22 Jul 2019 04:51:49 -0700 (PDT)
+Date:   Mon, 22 Jul 2019 04:51:49 -0700
+From:   "Paul E. McKenney" <paulmck@linux.ibm.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     Matthew Wilcox <willy@infradead.org>, aarcange@redhat.com,
+        akpm@linux-foundation.org, christian@brauner.io,
+        davem@davemloft.net, ebiederm@xmission.com,
+        elena.reshetova@intel.com, guro@fb.com, hch@infradead.org,
+        james.bottomley@hansenpartnership.com, jasowang@redhat.com,
+        jglisse@redhat.com, keescook@chromium.org, ldv@altlinux.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        luto@amacapital.net, mhocko@suse.com, mingo@kernel.org,
+        namit@vmware.com, peterz@infradead.org,
+        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
+        wad@chromium.org
+Subject: Re: RFC: call_rcu_outstanding (was Re: WARNING in __mmdrop)
+Reply-To: paulmck@linux.ibm.com
+References: <0000000000008dd6bb058e006938@google.com>
+ <000000000000964b0d058e1a0483@google.com>
+ <20190721044615-mutt-send-email-mst@kernel.org>
+ <20190721081933-mutt-send-email-mst@kernel.org>
+ <20190721131725.GR14271@linux.ibm.com>
+ <20190721210837.GC363@bombadil.infradead.org>
+ <20190721233113.GV14271@linux.ibm.com>
+ <20190722035042-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190722035042-mutt-send-email-mst@kernel.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19072211-0052-0000-0000-000003E3F8C7
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011474; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01235799; UDB=6.00651288; IPR=6.01017148;
+ MB=3.00027836; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-22 11:51:55
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19072211-0053-0000-0000-000061CB4F70
+Message-Id: <20190722115149.GY14271@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-22_09:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=672 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907220141
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Manually convert the two PA-RISC documents to ReST, adding them
-to the Linux documentation body.
+On Mon, Jul 22, 2019 at 03:52:05AM -0400, Michael S. Tsirkin wrote:
+> On Sun, Jul 21, 2019 at 04:31:13PM -0700, Paul E. McKenney wrote:
+> > On Sun, Jul 21, 2019 at 02:08:37PM -0700, Matthew Wilcox wrote:
+> > > On Sun, Jul 21, 2019 at 06:17:25AM -0700, Paul E. McKenney wrote:
+> > > > Also, the overhead is important.  For example, as far as I know,
+> > > > current RCU gracefully handles close(open(...)) in a tight userspace
+> > > > loop.  But there might be trouble due to tight userspace loops around
+> > > > lighter-weight operations.
+> > > 
+> > > I thought you believed that RCU was antifragile, in that it would scale
+> > > better as it was used more heavily?
+> > 
+> > You are referring to this?  https://paulmck.livejournal.com/47933.html
+> > 
+> > If so, the last few paragraphs might be worth re-reading.   ;-)
+> > 
+> > And in this case, the heuristics RCU uses to decide when to schedule
+> > invocation of the callbacks needs some help.  One component of that help
+> > is a time-based limit to the number of consecutive callback invocations
+> > (see my crude prototype and Eric Dumazet's more polished patch).  Another
+> > component is an overload warning.
+> > 
+> > Why would an overload warning be needed if RCU's callback-invocation
+> > scheduling heurisitics were upgraded?  Because someone could boot a
+> > 100-CPU system with the rcu_nocbs=0-99, bind all of the resulting
+> > rcuo kthreads to (say) CPU 0, and then run a callback-heavy workload
+> > on all of the CPUs.  Given the constraints, CPU 0 cannot keep up.
+> > 
+> > So warnings are required as well.
+> > 
+> > > Would it make sense to have call_rcu() check to see if there are many
+> > > outstanding requests on this CPU and if so process them before returning?
+> > > That would ensure that frequent callers usually ended up doing their
+> > > own processing.
+> > 
+> > Unfortunately, no.  Here is a code fragment illustrating why:
+> > 
+> > 	void my_cb(struct rcu_head *rhp)
+> > 	{
+> > 		unsigned long flags;
+> > 
+> > 		spin_lock_irqsave(&my_lock, flags);
+> > 		handle_cb(rhp);
+> > 		spin_unlock_irqrestore(&my_lock, flags);
+> > 	}
+> > 
+> > 	. . .
+> > 
+> > 	spin_lock_irqsave(&my_lock, flags);
+> > 	p = look_something_up();
+> > 	remove_that_something(p);
+> > 	call_rcu(p, my_cb);
+> > 	spin_unlock_irqrestore(&my_lock, flags);
+> > 
+> > Invoking the extra callbacks directly from call_rcu() would thus result
+> > in self-deadlock.  Documentation/RCU/UP.txt contains a few more examples
+> > along these lines.
+> 
+> We could add an option that simply fails if overloaded, right?
+> Have caller recover...
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
----
- Documentation/index.rst                       |  1 +
- .../parisc/{debugging => debugging.rst}       |  7 +++
- Documentation/parisc/index.rst                | 18 ++++++
- .../parisc/{registers => registers.rst}       | 59 +++++++++++++------
- 4 files changed, 68 insertions(+), 17 deletions(-)
- rename Documentation/parisc/{debugging => debugging.rst} (94%)
- create mode 100644 Documentation/parisc/index.rst
- rename Documentation/parisc/{registers => registers.rst} (70%)
+For example, return EBUSY from your ioctl?  That should work.  You could
+also sleep for a jiffy or two to let things catch up in this BUSY (or
+similar) case.  Or try three times, waiting a jiffy between each try,
+and return EBUSY if all three tries failed.
 
-diff --git a/Documentation/index.rst b/Documentation/index.rst
-index ef9543c2516d..9bb08d272bd5 100644
---- a/Documentation/index.rst
-+++ b/Documentation/index.rst
-@@ -149,6 +149,7 @@ implementation.
-    ia64/index
-    m68k/index
-    powerpc/index
-+   parisc/index
-    riscv/index
-    s390/index
-    sh/index
-diff --git a/Documentation/parisc/debugging b/Documentation/parisc/debugging.rst
-similarity index 94%
-rename from Documentation/parisc/debugging
-rename to Documentation/parisc/debugging.rst
-index 7d75223fa18d..de1b60402c5b 100644
---- a/Documentation/parisc/debugging
-+++ b/Documentation/parisc/debugging.rst
-@@ -1,8 +1,13 @@
-+=================
-+PA-RISC Debugging
-+=================
-+
- okay, here are some hints for debugging the lower-level parts of
- linux/parisc.
- 
- 
- 1. Absolute addresses
-+=====================
- 
- A lot of the assembly code currently runs in real mode, which means
- absolute addresses are used instead of virtual addresses as in the
-@@ -12,6 +17,7 @@ currently).
- 
- 
- 2. HPMCs
-+========
- 
- When real-mode code tries to access non-existent memory, you'll get
- an HPMC instead of a kernel oops.  To debug an HPMC, try to find
-@@ -27,6 +33,7 @@ access it.
- 
- 
- 3. Q bit fun
-+============
- 
- Certain, very critical code has to clear the Q bit in the PSW.  What
- happens when the Q bit is cleared is the CPU does not update the
-diff --git a/Documentation/parisc/index.rst b/Documentation/parisc/index.rst
-new file mode 100644
-index 000000000000..aa3ee0470425
---- /dev/null
-+++ b/Documentation/parisc/index.rst
-@@ -0,0 +1,18 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+====================
-+PA-RISC Architecture
-+====================
-+
-+.. toctree::
-+   :maxdepth: 2
-+
-+   debugging
-+   registers
-+
-+.. only::  subproject and html
-+
-+   Indices
-+   =======
-+
-+   * :ref:`genindex`
-diff --git a/Documentation/parisc/registers b/Documentation/parisc/registers.rst
-similarity index 70%
-rename from Documentation/parisc/registers
-rename to Documentation/parisc/registers.rst
-index 10c7d1730f5d..59c8ecf3e856 100644
---- a/Documentation/parisc/registers
-+++ b/Documentation/parisc/registers.rst
-@@ -1,11 +1,16 @@
-+================================
- Register Usage for Linux/PA-RISC
-+================================
- 
- [ an asterisk is used for planned usage which is currently unimplemented ]
- 
--	General Registers as specified by ABI
-+General Registers as specified by ABI
-+=====================================
- 
--	Control Registers
-+Control Registers
-+-----------------
- 
-+===============================	===============================================
- CR 0 (Recovery Counter)		used for ptrace
- CR 1-CR 7(undefined)		unused
- CR 8 (Protection ID)		per-process value*
-@@ -29,26 +34,35 @@ CR28 (TR 4)			not used
- CR29 (TR 5)			not used
- CR30 (TR 6)			current / 0
- CR31 (TR 7)			Temporary register, used in various places
-+===============================	===============================================
- 
--	Space Registers (kernel mode)
-+Space Registers (kernel mode)
-+-----------------------------
- 
-+===============================	===============================================
- SR0				temporary space register
- SR4-SR7 			set to 0
- SR1				temporary space register
- SR2				kernel should not clobber this
- SR3				used for userspace accesses (current process)
-+===============================	===============================================
- 
--	Space Registers (user mode)
-+Space Registers (user mode)
-+---------------------------
- 
-+===============================	===============================================
- SR0				temporary space register
- SR1                             temporary space register
- SR2                             holds space of linux gateway page
- SR3                             holds user address space value while in kernel
- SR4-SR7                         Defines short address space for user/kernel
-+===============================	===============================================
- 
- 
--	Processor Status Word
-+Processor Status Word
-+---------------------
- 
-+===============================	===============================================
- W (64-bit addresses)		0
- E (Little-endian)		0
- S (Secure Interval Timer)	0
-@@ -69,15 +83,19 @@ Q (collect interruption state)	1 (0 in code directly preceding an rfi)
- P (Protection Identifiers)	1*
- D (Data address translation)	1, 0 while executing real-mode code
- I (external interrupt mask)	used by cli()/sti() macros
-+===============================	===============================================
- 
--	"Invisible" Registers
-+"Invisible" Registers
-+---------------------
- 
-+===============================	===============================================
- PSW default W value		0
- PSW default E value		0
- Shadow Registers		used by interruption handler code
- TOC enable bit			1
-+===============================	===============================================
- 
--=========================================================================
-+-------------------------------------------------------------------------
- 
- The PA-RISC architecture defines 7 registers as "shadow registers".
- Those are used in RETURN FROM INTERRUPTION AND RESTORE instruction to reduce
-@@ -85,7 +103,8 @@ the state save and restore time by eliminating the need for general register
- (GR) saves and restores in interruption handlers.
- Shadow registers are the GRs 1, 8, 9, 16, 17, 24, and 25.
- 
--=========================================================================
-+-------------------------------------------------------------------------
-+
- Register usage notes, originally from John Marvin, with some additional
- notes from Randolph Chung.
- 
-@@ -96,10 +115,12 @@ course, you need to save them if you care about them, before calling
- another procedure. Some of the above registers do have special meanings
- that you should be aware of:
- 
--    r1: The addil instruction is hardwired to place its result in r1,
-+    r1:
-+	The addil instruction is hardwired to place its result in r1,
- 	so if you use that instruction be aware of that.
- 
--    r2: This is the return pointer. In general you don't want to
-+    r2:
-+	This is the return pointer. In general you don't want to
- 	use this, since you need the pointer to get back to your
- 	caller. However, it is grouped with this set of registers
- 	since the caller can't rely on the value being the same
-@@ -107,23 +128,27 @@ that you should be aware of:
- 	and return through that register after trashing r2, and
- 	that should not cause a problem for the calling routine.
- 
--    r19-r22: these are generally regarded as temporary registers.
-+    r19-r22:
-+	these are generally regarded as temporary registers.
- 	Note that in 64 bit they are arg7-arg4.
- 
--    r23-r26: these are arg3-arg0, i.e. you can use them if you
-+    r23-r26:
-+	these are arg3-arg0, i.e. you can use them if you
- 	don't care about the values that were passed in anymore.
- 
--    r28,r29: are ret0 and ret1. They are what you pass return values
-+    r28,r29:
-+	are ret0 and ret1. They are what you pass return values
- 	in. r28 is the primary return. When returning small structures
- 	r29 may also be used to pass data back to the caller.
- 
--    r30: stack pointer
-+    r30:
-+	stack pointer
- 
--    r31: the ble instruction puts the return pointer in here.
-+    r31:
-+	the ble instruction puts the return pointer in here.
- 
- 
--r3-r18,r27,r30 need to be saved and restored. r3-r18 are just
-+    r3-r18,r27,r30 need to be saved and restored. r3-r18 are just
-     general purpose registers. r27 is the data pointer, and is
-     used to make references to global variables easier. r30 is
-     the stack pointer.
--
--- 
-2.21.0
+Or just keep it simple and return EBUSY on the first try.  ;-)
+
+All of this assumes that this ioctl is the cause of the overload, which
+during early boot seems to me to be a safe assumption.
+
+							Thanx, Paul
 
