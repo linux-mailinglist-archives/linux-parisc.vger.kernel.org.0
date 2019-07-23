@@ -2,23 +2,23 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A78727134A
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jul 2019 09:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7DA71358
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jul 2019 09:56:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388442AbfGWHxR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 Jul 2019 03:53:17 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:49382 "EHLO mx1.redhat.com"
+        id S1732964AbfGWH4A (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 Jul 2019 03:56:00 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:52974 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727170AbfGWHxR (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 Jul 2019 03:53:17 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        id S1727170AbfGWH4A (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 23 Jul 2019 03:56:00 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 4F9A983F42;
-        Tue, 23 Jul 2019 07:53:16 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id CA944859FF;
+        Tue, 23 Jul 2019 07:55:58 +0000 (UTC)
 Received: from [10.72.12.26] (ovpn-12-26.pek2.redhat.com [10.72.12.26])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 68E0B60497;
-        Tue, 23 Jul 2019 07:53:05 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id AD23F60603;
+        Tue, 23 Jul 2019 07:55:46 +0000 (UTC)
 Subject: Re: WARNING in __mmdrop
 To:     "Michael S. Tsirkin" <mst@redhat.com>
 Cc:     syzbot <syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com>,
@@ -36,81 +36,109 @@ Cc:     syzbot <syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com>,
 References: <0000000000008dd6bb058e006938@google.com>
  <000000000000964b0d058e1a0483@google.com>
  <20190721044615-mutt-send-email-mst@kernel.org>
- <20190721081447-mutt-send-email-mst@kernel.org>
- <85dd00e2-37a6-72b7-5d5a-8bf46a3526cf@redhat.com>
- <20190722040230-mutt-send-email-mst@kernel.org>
- <4bd2ff78-6871-55f2-44dc-0982ffef3337@redhat.com>
- <20190723010019-mutt-send-email-mst@kernel.org>
- <b4696f2e-678a-bdb2-4b7c-fb4ce040ec2a@redhat.com>
- <20190723032024-mutt-send-email-mst@kernel.org>
+ <75c43998-3a1c-676f-99ff-3d04663c3fcc@redhat.com>
+ <20190722035657-mutt-send-email-mst@kernel.org>
+ <cfcd330d-5f4a-835a-69f7-c342d5d0d52d@redhat.com>
+ <20190723010156-mutt-send-email-mst@kernel.org>
+ <124be1a2-1c53-8e65-0f06-ee2294710822@redhat.com>
+ <20190723032346-mutt-send-email-mst@kernel.org>
 From:   Jason Wang <jasowang@redhat.com>
-Message-ID: <1d14de4d-0133-1614-9f64-3ded381de04e@redhat.com>
-Date:   Tue, 23 Jul 2019 15:53:06 +0800
+Message-ID: <9a9a7ac0-2657-ff09-2644-f8d7ae0f9222@redhat.com>
+Date:   Tue, 23 Jul 2019 15:55:47 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190723032024-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20190723032346-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.27]); Tue, 23 Jul 2019 07:53:16 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Tue, 23 Jul 2019 07:55:59 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
 
-On 2019/7/23 下午3:23, Michael S. Tsirkin wrote:
->>> Really let's just use kfree_rcu. It's way cleaner: fire and forget.
->> Looks not, you need rate limit the fire as you've figured out?
-> See the discussion that followed. Basically no, it's good enough
-> already and is only going to be better.
->
->> And in fact,
->> the synchronization is not even needed, does it help if I leave a comment to
->> explain?
-> Let's try to figure it out in the mail first. I'm pretty sure the
-> current logic is wrong.
-
-
-Here is what the code what to achieve:
-
-- The map was protected by RCU
-
-- Writers are: MMU notifier invalidation callbacks, file operations 
-(ioctls etc), meta_prefetch (datapath)
-
-- Readers are: memory accessor
-
-Writer are synchronized through mmu_lock. RCU is used to synchronized 
-between writers and readers.
-
-The synchronize_rcu() in vhost_reset_vq_maps() was used to synchronized 
-it with readers (memory accessors) in the path of file operations. But 
-in this case, vq->mutex was already held, this means it has been 
-serialized with memory accessor. That's why I think it could be removed 
-safely.
-
-Anything I miss here?
-
-
->
->>>> Btw, for kvm ioctl it still uses synchronize_rcu() in kvm_vcpu_ioctl(),
->>>> (just a little bit more hard to trigger):
->>> AFAIK these never run in response to guest events.
->>> So they can take very long and guests still won't crash.
->> What if guest manages to escape to qemu?
+On 2019/7/23 下午3:25, Michael S. Tsirkin wrote:
+> On Tue, Jul 23, 2019 at 01:48:52PM +0800, Jason Wang wrote:
+>> On 2019/7/23 下午1:02, Michael S. Tsirkin wrote:
+>>> On Tue, Jul 23, 2019 at 11:55:28AM +0800, Jason Wang wrote:
+>>>> On 2019/7/22 下午4:02, Michael S. Tsirkin wrote:
+>>>>> On Mon, Jul 22, 2019 at 01:21:59PM +0800, Jason Wang wrote:
+>>>>>> On 2019/7/21 下午6:02, Michael S. Tsirkin wrote:
+>>>>>>> On Sat, Jul 20, 2019 at 03:08:00AM -0700, syzbot wrote:
+>>>>>>>> syzbot has bisected this bug to:
+>>>>>>>>
+>>>>>>>> commit 7f466032dc9e5a61217f22ea34b2df932786bbfc
+>>>>>>>> Author: Jason Wang<jasowang@redhat.com>
+>>>>>>>> Date:   Fri May 24 08:12:18 2019 +0000
+>>>>>>>>
+>>>>>>>>         vhost: access vq metadata through kernel virtual address
+>>>>>>>>
+>>>>>>>> bisection log:https://syzkaller.appspot.com/x/bisect.txt?x=149a8a20600000
+>>>>>>>> start commit:   6d21a41b Add linux-next specific files for 20190718
+>>>>>>>> git tree:       linux-next
+>>>>>>>> final crash:https://syzkaller.appspot.com/x/report.txt?x=169a8a20600000
+>>>>>>>> console output:https://syzkaller.appspot.com/x/log.txt?x=129a8a20600000
+>>>>>>>> kernel config:https://syzkaller.appspot.com/x/.config?x=3430a151e1452331
+>>>>>>>> dashboard link:https://syzkaller.appspot.com/bug?extid=e58112d71f77113ddb7b
+>>>>>>>> syz repro:https://syzkaller.appspot.com/x/repro.syz?x=10139e68600000
+>>>>>>>>
+>>>>>>>> Reported-by:syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com
+>>>>>>>> Fixes: 7f466032dc9e ("vhost: access vq metadata through kernel virtual
+>>>>>>>> address")
+>>>>>>>>
+>>>>>>>> For information about bisection process see:https://goo.gl/tpsmEJ#bisection
+>>>>>>> OK I poked at this for a bit, I see several things that
+>>>>>>> we need to fix, though I'm not yet sure it's the reason for
+>>>>>>> the failures:
+>>>>>>>
+>>>>>>>
+>>>>>>> 1. mmu_notifier_register shouldn't be called from vhost_vring_set_num_addr
+>>>>>>>        That's just a bad hack,
+>>>>>> This is used to avoid holding lock when checking whether the addresses are
+>>>>>> overlapped. Otherwise we need to take spinlock for each invalidation request
+>>>>>> even if it was the va range that is not interested for us. This will be very
+>>>>>> slow e.g during guest boot.
+>>>>> KVM seems to do exactly that.
+>>>>> I tried and guest does not seem to boot any slower.
+>>>>> Do you observe any slowdown?
+>>>> Yes I do.
+>>>>
+>>>>
+>>>>> Now I took a hard look at the uaddr hackery it really makes
+>>>>> me nervious. So I think for this release we want something
+>>>>> safe, and optimizations on top. As an alternative revert the
+>>>>> optimization and try again for next merge window.
+>>>> Will post a series of fixes, let me know if you're ok with that.
+>>>>
+>>>> Thanks
+>>> I'd prefer you to take a hard look at the patch I posted
+>>> which makes code cleaner,
+>> I did. But it looks to me a series that is only about 60 lines of code can
+>> fix all the issues we found without reverting the uaddr optimization.
+>>
+>>
+>>>    and ad optimizations on top.
+>>> But other ways could be ok too.
+>> I'm waiting for the test result from syzbot and will post. Let's see if you
+>> are OK with that.
 >>
 >> Thanks
-> Then it's going to be slow. Why do we care?
-> What we do not want is synchronize_rcu that guest is blocked on.
->
+> Oh I didn't know one can push a test to syzbot and get back
+> a result. How does one do that?
 
-Ok, this looks like that I have some misunderstanding here of the reason 
-why synchronize_rcu() is not preferable in the path of ioctl. But in kvm 
-case, if rcu_expedited is set, it can triggers IPIs AFAIK.
+
+See here https://github.com/google/syzkaller/blob/master/docs/syzbot.md
+
+Just reply this thread by attaching a fix with command like: "#syz test: 
+git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git 
+7f466032dc9e5a61217f22ea34b2df932786bbfc"
+
+Btw, I've let syzbot test you patch, and it passes.
 
 Thanks
 
 
+>
