@@ -2,84 +2,55 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 140D4721C6
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jul 2019 23:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3D4972287
+	for <lists+linux-parisc@lfdr.de>; Wed, 24 Jul 2019 00:40:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729895AbfGWVnz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 Jul 2019 17:43:55 -0400
-Received: from mout.gmx.net ([212.227.15.15]:42447 "EHLO mout.gmx.net"
+        id S1731159AbfGWWkE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 Jul 2019 18:40:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49548 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729131AbfGWVnz (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 Jul 2019 17:43:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1563918227;
-        bh=n5+c+t7fbAX/WpckUnxzmiF3JNswIKT2Lwt/imiaxOE=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=Or+FMFk9q3sDs/od5FEs7Vmo+YbbXJrEdgyhKY0sYXa1nTLb6APRHC8hd/r0JqpZ1
-         T7c/YahBD4DpGChjrxSEqcssDb3NgdAGvI3tqKPx3UjZL3cnFoqfAvz76MwLHzjUFu
-         mqFzHjcFDWkrwY62Iu7+dml8DXom3Wm2o3TC5YJ0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([87.191.208.243]) by mail.gmx.com (mrgmx002
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0Lhwgc-1iBZYH0kKY-00n9et; Tue, 23
- Jul 2019 23:43:47 +0200
-Date:   Tue, 23 Jul 2019 23:43:44 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        id S1731091AbfGWWkE (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 23 Jul 2019 18:40:04 -0400
+Subject: Re: [GIT PULL] parisc architecture fixes for kernel v5.3-rc2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563921603;
+        bh=3URHmg5S84zST8FLhBpSgxIgYtv4jOr9FrNf0IW2YzU=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=A6Qb31RpSX+LOFlp0py9dMBXcq4Q3vx3jQwl1yDtVMgrfVoEVxwdAF6CEl9XJGwy9
+         5c0EsZUdH/esihacrZi2Ir6Y7zJzEMHlBaBO1GHPYXiaxm/7GesdxtQGh6wm4FO3lf
+         9Xq/HURCFU2LBvzNhgjirlPdolON1gJQM6YXM3Us=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20190723214344.GA30785@ls3530>
+References: <20190723214344.GA30785@ls3530>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20190723214344.GA30785@ls3530>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git
+ parisc-5.3-3
+X-PR-Tracked-Commit-Id: 69245c97560b40f88c609b078f4b51c5be81d88b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: ad5e427e0f6b702e52c11d1f7b2b7be3bac7de82
+Message-Id: <156392160346.5279.2897687973383997307.pr-tracker-bot@kernel.org>
+Date:   Tue, 23 Jul 2019 22:40:03 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture fixes for kernel v5.3-rc2
-Message-ID: <20190723214344.GA30785@ls3530>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.12.0 (2019-05-25)
-X-Provags-ID: V03:K1:yKWTeekTt8mW3vPn+NuzxqgNNJFcy3Dg94bZfx0tECdORfQ5/ha
- NBE2wKgzfMHMaVTjWk4vBJPeZsFq9bSUbOFcBhK2AfQpVmjc2MnEkB7BBPngk9kdK2jbPhL
- h2X+xT9pRXoENd+uQuCdBeyg6CP9g9tsqpQ5TTTlY/2q9C/ztQTRankl7sgCCdACK9yjSkO
- ksDzhuOG3Dfs81PHJ0PwA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:iD2Nj8GGyXM=:zUt2E4ns5OvNVhZjzq0hd+
- /yBJDGyL9HeQ2J6KqvvqUOFmNF1SqMU/3jMnMUZI8AoZUaBY0Jw9iZYRBe5ktz5lY4s5NNWRe
- Ve2wt9Bg0bGDIqHxyTvrGdOe+1P9fpT/TgH7jZQI2jeIspZo9NmGhrT8imP7MGk/ssIE366Op
- 9JMUFSnapkocv0axho8fic+R5jXP7Nm0SgVognrbUXvqYFhK/VJY0JTMatk1zVJ5DOWHk4uYz
- P5rivqfSm8xUhaHSma4uTnG7dCmGmCB6iw0nJFMSwS52LtaAQkcXaDg0PbYeS04nfsY0kWke0
- p2UbAu70fZ+8XYd91BYNbsT7XFOrdD30wWw0trCRfvEejdpsX87Exwvixfz6ecqO/ieR/Y/zL
- ZqLcPgwnmMNuN2EDr2ZBYRaIi3SmLyGyxQk/VhRcMGarTqy3eONkmSDvI14XEdobcmNimhjrF
- VpO5FyAAIN9f0J5sCFqJVuq+0g4r4X/+FRg/06SSocabLZA2zJYdgyGodOXV0JnqgxaVcolRp
- 4cSWcXCD3V8eIDqeN7caXWWMiC2+R3JkDPgeTpkTDiSa1iwjUJolYSFNXwkb+wJRh8Ipao3zX
- wHi01eugy1+jRN65bFxSfswgdoy1qsckphVKnZybGeNh0NQaQjDlqUN1ztvDWUMV+W1JWaMiW
- WbflL2+IvImd8FdJkrd2jEBlU6LIv/tC8Ue9CnQhPsDZuBKWGzogOZbjCYoQcc9UWTKBOVMdg
- 1dxQ/+eOhPLf6WyXUpsDsS8QX7/Ag4C3rpdUt8fGnjcbFV5BEnDWQZ+7efzglL/fywtFtK6iT
- Hedo+FbX/CTIbkZzMZBZw/7fm/FUTro/LC9Luq4C7QTrYP4CkfX7AKVqvsIIZxMIrcnXeLzmT
- hSPGhLoce3FWXi+7eR2y0s9UUxhzPrviCbLWZjVFuj8XgxHsGk2XhSKNjhwi7QyZjmQZV/bCd
- q6OtDXZAuqNU5qjaoxTRLdEczRxYRHfNH2wq3sXrmCyFzF4GuvcR4E+WJbHJYOEjZgmy2mxJD
- 6WaCx9iFWWq+pxSxH0bz0p4jSAx902Ce1wQp5qT/ozkhWDuq1650OmJINsM/OheumA==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Tue, 23 Jul 2019 23:43:44 +0200:
 
-please pull two patches for the parisc architecture for kernel 5.3-rc2 from:
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.3-3
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.3-3
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/ad5e427e0f6b702e52c11d1f7b2b7be3bac7de82
 
-Changes:
-- Fix build issues when kprobes are enabled
-- Speed up ITLB/DTLB cache flushes when running on machines with combined TLBs
+Thank you!
 
-Thanks,
-Helge
-
-----------------------------------------------------------------
-Helge Deller (1):
-      parisc: Flush ITLB in flush_tlb_all_local() only on split TLB machines
-
-Sven Schnelle (1):
-      parisc: add kprobe_fault_handler()
-
- arch/parisc/include/asm/kprobes.h | 4 ++++
- arch/parisc/kernel/pacache.S      | 3 ++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
