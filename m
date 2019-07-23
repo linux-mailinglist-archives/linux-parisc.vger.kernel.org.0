@@ -2,142 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E0C571B01
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jul 2019 17:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EE8271BF8
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jul 2019 17:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732908AbfGWPCr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 Jul 2019 11:02:47 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:45542 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730674AbfGWPCr (ORCPT
+        id S1728232AbfGWPjw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 Jul 2019 11:39:52 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:35852 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725601AbfGWPjw (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 Jul 2019 11:02:47 -0400
-Received: by mail-qk1-f196.google.com with SMTP id s22so31373744qkj.12
-        for <linux-parisc@vger.kernel.org>; Tue, 23 Jul 2019 08:02:47 -0700 (PDT)
+        Tue, 23 Jul 2019 11:39:52 -0400
+Received: by mail-oi1-f194.google.com with SMTP id q4so3457696oij.3;
+        Tue, 23 Jul 2019 08:39:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=R5M2K4AjBjzXbSZ/zP6imFgwCWLsiDqliCyMwtU6WVA=;
-        b=BpKdl5RDpagdQ2fQG+cPNUJ8jaBG8UnYMKAn19dqrzf8D+6JXQvTqNiALDd6HUoK8f
-         0iSaBR7HxfNzf7dKKvf6F54E12DBj6cbfyK97aTqqAjXksI1UCLzdAZTQw93uBZWRfKb
-         0Oi48nKdSyRJbMfB6PobKdLhegwQZ1lps/hETmtjs4UB1HYhsB4exP8Df+Uk1GPO+e4y
-         N4Mwg7GN92dhdTD5v2jlkuD0zI9KPrW/xd4LDIhdHSvW9shafv5hYm7rm7VjlE7wFuSr
-         Sk2rXTrNIhYGZHvxJ5wG5bxZ1WEwmxZV+PSNJe6QD6OGg+xXbQf/W7EAsk6T9svPtGHt
-         x2FA==
-X-Gm-Message-State: APjAAAXpXxbGI2ie/+XxDBAzUzu5jlhGW0J7kZcDfPbvGlbTMdJvZGMN
-        4tTzNhsUE/Zu5NHOX1rvVqCD5Q==
-X-Google-Smtp-Source: APXvYqxzk6SWsTdinjKSsA/de1iMdf+1ZzQW/oUQt2F/o3dsQk8ga4tD5zxAx4DzheYaNy643xaKrA==
-X-Received: by 2002:ae9:e20c:: with SMTP id c12mr49989037qkc.210.1563894166621;
-        Tue, 23 Jul 2019 08:02:46 -0700 (PDT)
-Received: from redhat.com (bzq-79-181-91-42.red.bezeqint.net. [79.181.91.42])
-        by smtp.gmail.com with ESMTPSA id s25sm18898787qkm.130.2019.07.23.08.02.39
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 23 Jul 2019 08:02:45 -0700 (PDT)
-Date:   Tue, 23 Jul 2019 11:02:37 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Jason Wang <jasowang@redhat.com>
-Cc:     syzbot <syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com>,
-        aarcange@redhat.com, akpm@linux-foundation.org,
-        christian@brauner.io, davem@davemloft.net, ebiederm@xmission.com,
-        elena.reshetova@intel.com, guro@fb.com, hch@infradead.org,
-        james.bottomley@hansenpartnership.com, jglisse@redhat.com,
-        keescook@chromium.org, ldv@altlinux.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-        luto@amacapital.net, mhocko@suse.com, mingo@kernel.org,
-        namit@vmware.com, peterz@infradead.org,
-        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
-        wad@chromium.org
-Subject: Re: WARNING in __mmdrop
-Message-ID: <20190723110219-mutt-send-email-mst@kernel.org>
-References: <20190721044615-mutt-send-email-mst@kernel.org>
- <75c43998-3a1c-676f-99ff-3d04663c3fcc@redhat.com>
- <20190722035657-mutt-send-email-mst@kernel.org>
- <cfcd330d-5f4a-835a-69f7-c342d5d0d52d@redhat.com>
- <20190723010156-mutt-send-email-mst@kernel.org>
- <124be1a2-1c53-8e65-0f06-ee2294710822@redhat.com>
- <20190723032800-mutt-send-email-mst@kernel.org>
- <e2e01a05-63d8-4388-2bcd-b2be3c865486@redhat.com>
- <20190723062221-mutt-send-email-mst@kernel.org>
- <9baa4214-67fd-7ad2-cbad-aadf90bbfc20@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3LRI5UFjq44LBBsGkyZn0c1iwjTBwJ4UTljGvj/dw6Y=;
+        b=h8vwLnbBPQsGxc9Dxgi6cnp+tWZL66OzaUK0LLg5lps8jOzDiMNzLQP4DlBgNNqcAX
+         pveKI/1u+uoctBKef0HfBbHjGns8cK0kmus8RoLprdo0cXf34n7ItPeGGlRWProrTMHp
+         iopk176bO0r4d9tql6rtiF7xEOc+bDCxHTUzBEyrCRr+CpiP0ez6XcsXHjB0OKuMibeq
+         JPUgfrjUIf3VdKwoaPBGllX3HYgu9ScN+K20RkQj3BcLJOuEDJ+ltghRg7m6Nnek+b5K
+         HVHgb3yxBjcAU+PHJ81JyaCbwy4rJ+YlX3pPQJYTZWMwd9xZE1eIAqS/wDi+c+yrXnFz
+         AGAA==
+X-Gm-Message-State: APjAAAVGpZj2loLCqwtzl5KfRYetKi2RpIKSQpIHmKCRWlP7opJsQVEt
+        h9nFnaSEDZzz7qKrs6C9rX0We25AOqI3D2p81WlCZw==
+X-Google-Smtp-Source: APXvYqwCaeRX0/ukewQLWY9NtFhKzlFerKVFsRpBXybOEA8aU+bcGmK/xxtuS8ZeOR85kl+PHrPdml7b97UouubKPrk=
+X-Received: by 2002:aca:bd43:: with SMTP id n64mr34013805oif.148.1563896390666;
+ Tue, 23 Jul 2019 08:39:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9baa4214-67fd-7ad2-cbad-aadf90bbfc20@redhat.com>
+References: <20190723080441.19110-1-geert@linux-m68k.org>
+In-Reply-To: <20190723080441.19110-1-geert@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 23 Jul 2019 17:39:39 +0200
+Message-ID: <CAMuHMdVuVqXnW8SEnpcbvh8agYvPh775rv9tmV9kGUa6Q2wcwA@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.3-rc1
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     linux-um@lists.infradead.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-mips@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Jul 23, 2019 at 09:34:29PM +0800, Jason Wang wrote:
-> 
-> On 2019/7/23 下午6:27, Michael S. Tsirkin wrote:
-> > > Yes, since there could be multiple co-current invalidation requests. We need
-> > > count them to make sure we don't pin wrong pages.
-> > > 
-> > > 
-> > > > I also wonder about ordering. kvm has this:
-> > > >          /*
-> > > >            * Used to check for invalidations in progress, of the pfn that is
-> > > >            * returned by pfn_to_pfn_prot below.
-> > > >            */
-> > > >           mmu_seq = kvm->mmu_notifier_seq;
-> > > >           /*
-> > > >            * Ensure the read of mmu_notifier_seq isn't reordered with PTE reads in
-> > > >            * gfn_to_pfn_prot() (which calls get_user_pages()), so that we don't
-> > > >            * risk the page we get a reference to getting unmapped before we have a
-> > > >            * chance to grab the mmu_lock without mmu_notifier_retry() noticing.
-> > > >            *
-> > > >            * This smp_rmb() pairs with the effective smp_wmb() of the combination
-> > > >            * of the pte_unmap_unlock() after the PTE is zapped, and the
-> > > >            * spin_lock() in kvm_mmu_notifier_invalidate_<page|range_end>() before
-> > > >            * mmu_notifier_seq is incremented.
-> > > >            */
-> > > >           smp_rmb();
-> > > > 
-> > > > does this apply to us? Can't we use a seqlock instead so we do
-> > > > not need to worry?
-> > > I'm not familiar with kvm MMU internals, but we do everything under of
-> > > mmu_lock.
-> > > 
-> > > Thanks
-> > I don't think this helps at all.
-> > 
-> > There's no lock between checking the invalidate counter and
-> > get user pages fast within vhost_map_prefetch. So it's possible
-> > that get user pages fast reads PTEs speculatively before
-> > invalidate is read.
-> > 
-> > -- 
-> 
-> 
-> In vhost_map_prefetch() we do:
-> 
->         spin_lock(&vq->mmu_lock);
-> 
->         ...
-> 
->         err = -EFAULT;
->         if (vq->invalidate_count)
->                 goto err;
-> 
->         ...
-> 
->         npinned = __get_user_pages_fast(uaddr->uaddr, npages,
->                                         uaddr->write, pages);
-> 
->         ...
-> 
->         spin_unlock(&vq->mmu_lock);
-> 
-> Is this not sufficient?
-> 
-> Thanks
+On Tue, Jul 23, 2019 at 5:22 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> Below is the list of build error/warning regressions/improvements in
+> v5.3-rc1[1] compared to v5.2[2].
 
-So what orders __get_user_pages_fast wrt invalidate_count read?
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/5f9e832c137075045d15cd6899ab0505cfb2ca4b/ (241 out of 242 configs)
+> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/0ecfebd2b52404ae0c54a878c872bb93363ada36/ (all 242 configs)
+>
+>
+> *** ERRORS ***
+>
+> 11 error regressions:
+>   + /kisskb/src/drivers/misc/lkdtm/bugs.c: error: 'X86_CR4_SMEP' undeclared (first use in this function):  => 281:13
+>   + /kisskb/src/drivers/misc/lkdtm/bugs.c: error: implicit declaration of function 'native_read_cr4' [-Werror=implicit-function-declaration]:  => 279:8
+>   + /kisskb/src/drivers/misc/lkdtm/bugs.c: error: implicit declaration of function 'native_write_cr4' [-Werror=implicit-function-declaration]:  => 288:2
 
--- 
-MST
+um-all{mod,yes}config
+
+>   + /kisskb/src/drivers/net/wireless/intel/iwlwifi/fw/dbg.c: error: call to '__compiletime_assert_2446' declared with attribute error: BUILD_BUG_ON failed: err_str[sizeof(err_str) - 2] != '\n':  => 2445:3
+>   + /kisskb/src/drivers/net/wireless/intel/iwlwifi/fw/dbg.c: error: call to '__compiletime_assert_2452' declared with attribute error: BUILD_BUG_ON failed: err_str[sizeof(err_str) - 2] != '\n':  => 2451:3
+>   + /kisskb/src/drivers/net/wireless/intel/iwlwifi/fw/dbg.c: error: call to '__compiletime_assert_2790' declared with attribute error: BUILD_BUG_ON failed: invalid_ap_str[sizeof(invalid_ap_str) - 2] != '\n':  => 2789:5
+>   + /kisskb/src/drivers/net/wireless/intel/iwlwifi/fw/dbg.c: error: call to '__compiletime_assert_2801' declared with attribute error: BUILD_BUG_ON failed: invalid_ap_str[sizeof(invalid_ap_str) - 2] != '\n':  => 2800:5
+
+powerpc-all{mod,yes}config{,+64K_PAGES}
+mips-allmodconfig
+
+>   + /kisskb/src/include/linux/kprobes.h: error: implicit declaration of function 'kprobe_fault_handler'; did you mean 'kprobe_page_fault'? [-Werror=implicit-function-declaration]:  => 477:9
+
+parisc-allmodconfig
+
+>   + /kisskb/src/mm/hmm.c: error: implicit declaration of function 'pud_pfn' [-Werror=implicit-function-declaration]:  => 753:3, 753:9
+>   + /kisskb/src/mm/hmm.c: error: implicit declaration of function 'pud_pfn'; did you mean 'pte_pfn'? [-Werror=implicit-function-declaration]:  => 753:9
+
+ppc64_book3e_allmodconfig
+um-all{mod,yes}config
+
+>   + error: "vmf_insert_mixed" [drivers/gpu/drm/exynos/exynosdrm.ko] undefined!:  => N/A
+
+sh-all{mod,yes}config (fix available)
+
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
