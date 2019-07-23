@@ -2,23 +2,23 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49FBD71951
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jul 2019 15:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5AFE7196B
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jul 2019 15:37:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732718AbfGWNei (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 Jul 2019 09:34:38 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:47346 "EHLO mx1.redhat.com"
+        id S1728801AbfGWNht (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 Jul 2019 09:37:49 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:51142 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725827AbfGWNei (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 Jul 2019 09:34:38 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        id S1729782AbfGWNhs (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 23 Jul 2019 09:37:48 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id E9D3785365;
-        Tue, 23 Jul 2019 13:34:37 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 4B9B230C34D1;
+        Tue, 23 Jul 2019 13:37:48 +0000 (UTC)
 Received: from [10.72.12.26] (ovpn-12-26.pek2.redhat.com [10.72.12.26])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4DB5A1001B29;
-        Tue, 23 Jul 2019 13:34:24 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D55375D9C5;
+        Tue, 23 Jul 2019 13:37:18 +0000 (UTC)
 Subject: Re: WARNING in __mmdrop
 To:     "Michael S. Tsirkin" <mst@redhat.com>
 Cc:     syzbot <syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com>,
@@ -43,85 +43,52 @@ References: <0000000000008dd6bb058e006938@google.com>
  <124be1a2-1c53-8e65-0f06-ee2294710822@redhat.com>
  <20190723032800-mutt-send-email-mst@kernel.org>
  <e2e01a05-63d8-4388-2bcd-b2be3c865486@redhat.com>
- <20190723062221-mutt-send-email-mst@kernel.org>
+ <20190723062842-mutt-send-email-mst@kernel.org>
 From:   Jason Wang <jasowang@redhat.com>
-Message-ID: <9baa4214-67fd-7ad2-cbad-aadf90bbfc20@redhat.com>
-Date:   Tue, 23 Jul 2019 21:34:29 +0800
+Message-ID: <025aa12a-c789-7eac-ba96-48e4dd3dd551@redhat.com>
+Date:   Tue, 23 Jul 2019 21:37:23 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190723062221-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20190723062842-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Tue, 23 Jul 2019 13:34:38 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Tue, 23 Jul 2019 13:37:48 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
 
-On 2019/7/23 下午6:27, Michael S. Tsirkin wrote:
->> Yes, since there could be multiple co-current invalidation requests. We need
->> count them to make sure we don't pin wrong pages.
+On 2019/7/23 下午6:42, Michael S. Tsirkin wrote:
+> On Tue, Jul 23, 2019 at 04:42:19PM +0800, Jason Wang wrote:
+>>> So how about this: do exactly what you propose but as a 2 patch series:
+>>> start with the slow safe patch, and add then return uaddr optimizations
+>>> on top. We can then more easily reason about whether they are safe.
 >>
->>
->>> I also wonder about ordering. kvm has this:
->>>          /*
->>>            * Used to check for invalidations in progress, of the pfn that is
->>>            * returned by pfn_to_pfn_prot below.
->>>            */
->>>           mmu_seq = kvm->mmu_notifier_seq;
->>>           /*
->>>            * Ensure the read of mmu_notifier_seq isn't reordered with PTE reads in
->>>            * gfn_to_pfn_prot() (which calls get_user_pages()), so that we don't
->>>            * risk the page we get a reference to getting unmapped before we have a
->>>            * chance to grab the mmu_lock without mmu_notifier_retry() noticing.
->>>            *
->>>            * This smp_rmb() pairs with the effective smp_wmb() of the combination
->>>            * of the pte_unmap_unlock() after the PTE is zapped, and the
->>>            * spin_lock() in kvm_mmu_notifier_invalidate_<page|range_end>() before
->>>            * mmu_notifier_seq is incremented.
->>>            */
->>>           smp_rmb();
->>>
->>> does this apply to us? Can't we use a seqlock instead so we do
->>> not need to worry?
->> I'm not familiar with kvm MMU internals, but we do everything under of
->> mmu_lock.
->>
->> Thanks
-> I don't think this helps at all.
+>> If you stick, I can do this.
+> So I definitely don't insist but I'd like us to get back to where
+> we know existing code is very safe (if not super fast) and
+> optimizing from there.  Bugs happen but I'd like to see a bisect
+> giving us "oh it's because of XYZ optimization" and not the
+> general "it's somewhere within this driver" that we are getting
+> now.
+
+
+Syzbot has bisected to the commit of metadata acceleration in fact :)
+
+
 >
-> There's no lock between checking the invalidate counter and
-> get user pages fast within vhost_map_prefetch. So it's possible
-> that get user pages fast reads PTEs speculatively before
-> invalidate is read.
->
-> -- 
+> Maybe the way to do this is to revert for this release cycle
+> and target the next one. What do you think?
 
 
-In vhost_map_prefetch() we do:
-
-         spin_lock(&vq->mmu_lock);
-
-         ...
-
-         err = -EFAULT;
-         if (vq->invalidate_count)
-                 goto err;
-
-         ...
-
-         npinned = __get_user_pages_fast(uaddr->uaddr, npages,
-                                         uaddr->write, pages);
-
-         ...
-
-         spin_unlock(&vq->mmu_lock);
-
-Is this not sufficient?
+I would try to fix the issues consider packed virtqueue which may use 
+this for a good performance number. But if you insist, I'm ok to revert. 
+Or maybe introduce a config option to disable it by default (almost all 
+optimized could be ruled out).
 
 Thanks
 
