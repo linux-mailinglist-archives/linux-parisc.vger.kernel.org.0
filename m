@@ -2,96 +2,84 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA0B972188
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jul 2019 23:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 140D4721C6
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jul 2019 23:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389341AbfGWVam (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 Jul 2019 17:30:42 -0400
-Received: from mout.gmx.net ([212.227.17.21]:39241 "EHLO mout.gmx.net"
+        id S1729895AbfGWVnz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 Jul 2019 17:43:55 -0400
+Received: from mout.gmx.net ([212.227.15.15]:42447 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731616AbfGWVam (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 Jul 2019 17:30:42 -0400
+        id S1729131AbfGWVnz (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 23 Jul 2019 17:43:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1563917421;
-        bh=ToULRC4irrsdH84boQnpkm5KiZJ47FZlgR9fRYxOddQ=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Mw172/vXJLuMiXnhcNcxkFLc+1aKNWEZ8PiRunLmcf3dhaVRLy3tt6tEfy4Hy2XqC
-         PyJ35c47qRSvmmSrJacGYW026ubBeNnkC3r0iI352l8MRe5TksbAyXXfEfq2ZaSc1L
-         AXwOe3IbD6QKY7TOSbx6Apv6B+fCU/iCs06Tt8DM=
+        s=badeba3b8450; t=1563918227;
+        bh=n5+c+t7fbAX/WpckUnxzmiF3JNswIKT2Lwt/imiaxOE=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=Or+FMFk9q3sDs/od5FEs7Vmo+YbbXJrEdgyhKY0sYXa1nTLb6APRHC8hd/r0JqpZ1
+         T7c/YahBD4DpGChjrxSEqcssDb3NgdAGvI3tqKPx3UjZL3cnFoqfAvz76MwLHzjUFu
+         mqFzHjcFDWkrwY62Iu7+dml8DXom3Wm2o3TC5YJ0=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [172.17.9.180] ([87.191.208.243]) by mail.gmx.com (mrgmx101
- [212.227.17.168]) with ESMTPSA (Nemesis) id 0LtVLE-1iWxrd16mq-010plk; Tue, 23
- Jul 2019 23:30:21 +0200
-Subject: Re: Build regressions/improvements in v5.3-rc1
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     linux-um@lists.infradead.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>
-References: <20190723080441.19110-1-geert@linux-m68k.org>
- <CAMuHMdVuVqXnW8SEnpcbvh8agYvPh775rv9tmV9kGUa6Q2wcwA@mail.gmail.com>
+Received: from ls3530 ([87.191.208.243]) by mail.gmx.com (mrgmx002
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0Lhwgc-1iBZYH0kKY-00n9et; Tue, 23
+ Jul 2019 23:43:47 +0200
+Date:   Tue, 23 Jul 2019 23:43:44 +0200
 From:   Helge Deller <deller@gmx.de>
-Message-ID: <738c1891-6ef3-8cd1-d25e-b9a36255e3e7@gmx.de>
-Date:   Tue, 23 Jul 2019 23:30:19 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture fixes for kernel v5.3-rc2
+Message-ID: <20190723214344.GA30785@ls3530>
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdVuVqXnW8SEnpcbvh8agYvPh775rv9tmV9kGUa6Q2wcwA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:T+b1tb8faTODi5y7+U6ZeYg349SPA/Fh6VMkO4Lv68DcHiqWs38
- yMSq6plB/gXOGf08wjD9XUjitvj8jKdC/8/JaMSNHP9vDAOO7Co7tl7rnvZFkj9FzwyC3he
- Osdq0XH55YVvzrSSpZfz5GyKiXcltMbOZz4gbER+z1VPvO52/fBz44TmPn60QnwkG/uiNZp
- Qd7uZwcF8lw5s0lW1uARg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Provags-ID: V03:K1:yKWTeekTt8mW3vPn+NuzxqgNNJFcy3Dg94bZfx0tECdORfQ5/ha
+ NBE2wKgzfMHMaVTjWk4vBJPeZsFq9bSUbOFcBhK2AfQpVmjc2MnEkB7BBPngk9kdK2jbPhL
+ h2X+xT9pRXoENd+uQuCdBeyg6CP9g9tsqpQ5TTTlY/2q9C/ztQTRankl7sgCCdACK9yjSkO
+ ksDzhuOG3Dfs81PHJ0PwA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SryDnYPWR3k=:YfaURXV31fWbWOLAGMHGGV
- Dmnik+n3qAhqkld+yRDUq/ad82uys9dQKsblccpGM1v+nWFWNXHRGjJnWpTHthVgl5MjKareW
- S8+A4ILBwxCub+9qb285MgdDuTPxS7dGZzzs1i1PXNIU4ej6gydgwM3z7ULTsFyJRl8wF1WoB
- Ciz5DIEkIBiRgLcXVj6nyJH3dJGRtqSPguFrXaPSrV/pmj04wTImaGupFmt+NfX1jhjZjXIcr
- DMhTnVxONS3fiOhWtR/1DjnBOcBw26ctyW1tDbpN2jcDeuXM9VjIYVRCYv75waepvsgzx6z+6
- Y+w+9q+vzUpjB64NgLoPSebj8q0PWxcv5LCm5+4zx+WmEhLPdPZBeZ3593O31bsHpcyWwRKlm
- zM8DeFk6vuhWjzB7chszUwcyxFIzn/PowsWGt7KTEenxppLvGxPwYXGj4xyFsBQoN3YhLxyIn
- 3VE0LcZj3lyD8jeXPQ1tQI2xy+8m1GNDoLpvwW310SEdE2L7UmtfHZ1C9mspC4HKXI4f5MuLX
- wLPTjfr/7eWbl51HcUY2Tozd1IZXhusmqwm+BOXN2AancGej6DJ9BFL+DQfuOaZBlhgugp4An
- UPf8cUynTng/Rs2/LqzKmQmFYtRBSwc37YTxiJO3cIayyLWJDbGidsCRXBjke2Yn2rQpG1vht
- huUmUsiUoIhg6pB0qZEQ6xIf/PdZc0yPvuesx1caABIUUpM3BECtj42ujta5WGmAhrZbK45az
- s0J9qGk2Pf2ZLZyzOGkrgEKjuYspigu8gz2zY93ySXrp/r3sKgUEhrYtc9ZmYkmwz1K2Z8I0m
- e+IcH6RAD5eBsI/TPmjBiBJnnIEpQ/D9j7EjFzCPIFvRKsU6q1kMfeD+1KecjIzSJo4APWbVM
- y2pUQKKW0TSl0QYD02OZ+XNA8gvg+sq9vXPt5e5ZEnthuujlO0Eeaj2TRtYqKx5yaWUkyjkuP
- G26mwOYKDQHdZnvffvqtvcy+HW7DI5GEwBhXj0VE5yPPHcWfD9FUXXe3KfDV/StdlSwan7SVK
- 1ZVRDKGDPYLYW7zOY4L6y0bPCt3UEF7Naw7mqyC7SZzElpiiuBTVJ0jUZNIrfQr6ybEOJqPYZ
- RapDmKg7odABSY=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:iD2Nj8GGyXM=:zUt2E4ns5OvNVhZjzq0hd+
+ /yBJDGyL9HeQ2J6KqvvqUOFmNF1SqMU/3jMnMUZI8AoZUaBY0Jw9iZYRBe5ktz5lY4s5NNWRe
+ Ve2wt9Bg0bGDIqHxyTvrGdOe+1P9fpT/TgH7jZQI2jeIspZo9NmGhrT8imP7MGk/ssIE366Op
+ 9JMUFSnapkocv0axho8fic+R5jXP7Nm0SgVognrbUXvqYFhK/VJY0JTMatk1zVJ5DOWHk4uYz
+ P5rivqfSm8xUhaHSma4uTnG7dCmGmCB6iw0nJFMSwS52LtaAQkcXaDg0PbYeS04nfsY0kWke0
+ p2UbAu70fZ+8XYd91BYNbsT7XFOrdD30wWw0trCRfvEejdpsX87Exwvixfz6ecqO/ieR/Y/zL
+ ZqLcPgwnmMNuN2EDr2ZBYRaIi3SmLyGyxQk/VhRcMGarTqy3eONkmSDvI14XEdobcmNimhjrF
+ VpO5FyAAIN9f0J5sCFqJVuq+0g4r4X/+FRg/06SSocabLZA2zJYdgyGodOXV0JnqgxaVcolRp
+ 4cSWcXCD3V8eIDqeN7caXWWMiC2+R3JkDPgeTpkTDiSa1iwjUJolYSFNXwkb+wJRh8Ipao3zX
+ wHi01eugy1+jRN65bFxSfswgdoy1qsckphVKnZybGeNh0NQaQjDlqUN1ztvDWUMV+W1JWaMiW
+ WbflL2+IvImd8FdJkrd2jEBlU6LIv/tC8Ue9CnQhPsDZuBKWGzogOZbjCYoQcc9UWTKBOVMdg
+ 1dxQ/+eOhPLf6WyXUpsDsS8QX7/Ag4C3rpdUt8fGnjcbFV5BEnDWQZ+7efzglL/fywtFtK6iT
+ Hedo+FbX/CTIbkZzMZBZw/7fm/FUTro/LC9Luq4C7QTrYP4CkfX7AKVqvsIIZxMIrcnXeLzmT
+ hSPGhLoce3FWXi+7eR2y0s9UUxhzPrviCbLWZjVFuj8XgxHsGk2XhSKNjhwi7QyZjmQZV/bCd
+ q6OtDXZAuqNU5qjaoxTRLdEczRxYRHfNH2wq3sXrmCyFzF4GuvcR4E+WJbHJYOEjZgmy2mxJD
+ 6WaCx9iFWWq+pxSxH0bz0p4jSAx902Ce1wQp5qT/ozkhWDuq1650OmJINsM/OheumA==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 23.07.19 17:39, Geert Uytterhoeven wrote:
-> On Tue, Jul 23, 2019 at 5:22 PM Geert Uytterhoeven <geert@linux-m68k.org=
-> wrote:
->> Below is the list of build error/warning regressions/improvements in
->> v5.3-rc1[1] compared to v5.2[2].
->
->> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/5f9e832c13707=
-5045d15cd6899ab0505cfb2ca4b/ (241 out of 242 configs)
->> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/0ecfebd2b5240=
-4ae0c54a878c872bb93363ada36/ (all 242 configs)
->>
->>
->> *** ERRORS ***
->> ...
->>    + /kisskb/src/include/linux/kprobes.h: error: implicit declaration o=
-f function 'kprobe_fault_handler'; did you mean 'kprobe_page_fault'? [-Wer=
-ror=3Dimplicit-function-declaration]:  =3D> 477:9
->
-> parisc-allmodconfig
+Hi Linus,
 
-I've a patch queued up for the next pull request (in the parisc git tree) =
-to fix this:
+please pull two patches for the parisc architecture for kernel 5.3-rc2 from:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/co=
-mmit/?h=3Dfor-next&id=3Df5e03d3a04978d2866f82cb11cc7a6b808c8ce07
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.3-3
 
+Changes:
+- Fix build issues when kprobes are enabled
+- Speed up ITLB/DTLB cache flushes when running on machines with combined TLBs
+
+Thanks,
 Helge
+
+----------------------------------------------------------------
+Helge Deller (1):
+      parisc: Flush ITLB in flush_tlb_all_local() only on split TLB machines
+
+Sven Schnelle (1):
+      parisc: add kprobe_fault_handler()
+
+ arch/parisc/include/asm/kprobes.h | 4 ++++
+ arch/parisc/kernel/pacache.S      | 3 ++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
