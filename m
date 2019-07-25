@@ -2,203 +2,159 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84D937474B
-	for <lists+linux-parisc@lfdr.de>; Thu, 25 Jul 2019 08:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00CBB74855
+	for <lists+linux-parisc@lfdr.de>; Thu, 25 Jul 2019 09:44:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729555AbfGYGe3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 25 Jul 2019 02:34:29 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:33098 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729534AbfGYGeY (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 25 Jul 2019 02:34:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=dRYLE4wAMZUXc1bapMWQYiU6+gIHdEfanG26NMQ1nBw=; b=LLTDjV7o5RqKxbZAvmS7LEBsw2
-        9fWW/cmwf9GAjKeC9Tz9rvREtJ8XHMgQoL8mXhTe/El7RQHLAZXx4zAYw6NXkRXnXjPwd39Uxl7pV
-        WkYtgRBC8qQsI22Uu/kGUOX+gZp/pSV8I71sclnrlOl6082t4WnpAr5UkE3k9BnG/9JPqi9f1ZEpq
-        Q2KNXn3iTMoHq1parkveJjKK3uOQQK0vdx7PS/E31lFqUPzQ97WmUPWEE6nikB8YVXAaKPB0b5+JD
-        MTrhz4mW+W8JCH1xhku+A5sJCQBmfZI6PGHnGa86WbcBtNGkqnIvqlndqdALd4rFLPj2naqcaiWL+
-        iuTFkkYg==;
-Received: from p57b3f613.dip0.t-ipconnect.de ([87.179.246.19] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hqXKT-0000ND-SE; Thu, 25 Jul 2019 06:34:18 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     iommu@lists.linux-foundation.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     Takashi Iwai <tiwai@suse.de>, Robin Murphy <robin.murphy@arm.com>,
-        Michal Simek <monstr@monstr.eu>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-m68k@lists.linux-m68k.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] dma-mapping: remove ARCH_NO_COHERENT_DMA_MMAP
-Date:   Thu, 25 Jul 2019 08:34:01 +0200
-Message-Id: <20190725063401.29904-6-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190725063401.29904-1-hch@lst.de>
-References: <20190725063401.29904-1-hch@lst.de>
+        id S2388214AbfGYHoX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 25 Jul 2019 03:44:23 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:45586 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388193AbfGYHoX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 25 Jul 2019 03:44:23 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id AD73530917AF;
+        Thu, 25 Jul 2019 07:44:21 +0000 (UTC)
+Received: from [10.72.12.18] (ovpn-12-18.pek2.redhat.com [10.72.12.18])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B998060852;
+        Thu, 25 Jul 2019 07:44:04 +0000 (UTC)
+Subject: Re: WARNING in __mmdrop
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     syzbot <syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com>,
+        aarcange@redhat.com, akpm@linux-foundation.org,
+        christian@brauner.io, davem@davemloft.net, ebiederm@xmission.com,
+        elena.reshetova@intel.com, guro@fb.com, hch@infradead.org,
+        james.bottomley@hansenpartnership.com, jglisse@redhat.com,
+        keescook@chromium.org, ldv@altlinux.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        luto@amacapital.net, mhocko@suse.com, mingo@kernel.org,
+        namit@vmware.com, peterz@infradead.org,
+        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
+        wad@chromium.org
+References: <20190722040230-mutt-send-email-mst@kernel.org>
+ <4bd2ff78-6871-55f2-44dc-0982ffef3337@redhat.com>
+ <20190723010019-mutt-send-email-mst@kernel.org>
+ <b4696f2e-678a-bdb2-4b7c-fb4ce040ec2a@redhat.com>
+ <20190723032024-mutt-send-email-mst@kernel.org>
+ <1d14de4d-0133-1614-9f64-3ded381de04e@redhat.com>
+ <20190723035725-mutt-send-email-mst@kernel.org>
+ <3f4178f1-0d71-e032-0f1f-802428ceca59@redhat.com>
+ <20190723051828-mutt-send-email-mst@kernel.org>
+ <caff362a-e208-3468-3688-63e1d093a9d3@redhat.com>
+ <20190725012149-mutt-send-email-mst@kernel.org>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <55e8930c-2695-365f-a07b-3ad169654d28@redhat.com>
+Date:   Thu, 25 Jul 2019 15:43:41 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20190725012149-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Thu, 25 Jul 2019 07:44:22 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Now that we never use a default ->mmap implementation, and non-coherent
-architectures can control the presence of ->mmap support by enabling
-ARCH_HAS_DMA_COHERENT_TO_PFN for the dma direct implementation there
-is no need for a global config option to control the availability
-of dma_common_mmap.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/Kconfig            |  3 ---
- arch/c6x/Kconfig        |  1 -
- arch/m68k/Kconfig       |  1 -
- arch/microblaze/Kconfig |  1 -
- arch/parisc/Kconfig     |  1 -
- arch/sh/Kconfig         |  1 -
- arch/xtensa/Kconfig     |  1 -
- kernel/dma/mapping.c    |  4 ----
- sound/core/pcm_native.c | 10 +---------
- 9 files changed, 1 insertion(+), 22 deletions(-)
+On 2019/7/25 下午1:52, Michael S. Tsirkin wrote:
+> On Tue, Jul 23, 2019 at 09:31:35PM +0800, Jason Wang wrote:
+>> On 2019/7/23 下午5:26, Michael S. Tsirkin wrote:
+>>> On Tue, Jul 23, 2019 at 04:49:01PM +0800, Jason Wang wrote:
+>>>> On 2019/7/23 下午4:10, Michael S. Tsirkin wrote:
+>>>>> On Tue, Jul 23, 2019 at 03:53:06PM +0800, Jason Wang wrote:
+>>>>>> On 2019/7/23 下午3:23, Michael S. Tsirkin wrote:
+>>>>>>>>> Really let's just use kfree_rcu. It's way cleaner: fire and forget.
+>>>>>>>> Looks not, you need rate limit the fire as you've figured out?
+>>>>>>> See the discussion that followed. Basically no, it's good enough
+>>>>>>> already and is only going to be better.
+>>>>>>>
+>>>>>>>> And in fact,
+>>>>>>>> the synchronization is not even needed, does it help if I leave a comment to
+>>>>>>>> explain?
+>>>>>>> Let's try to figure it out in the mail first. I'm pretty sure the
+>>>>>>> current logic is wrong.
+>>>>>> Here is what the code what to achieve:
+>>>>>>
+>>>>>> - The map was protected by RCU
+>>>>>>
+>>>>>> - Writers are: MMU notifier invalidation callbacks, file operations (ioctls
+>>>>>> etc), meta_prefetch (datapath)
+>>>>>>
+>>>>>> - Readers are: memory accessor
+>>>>>>
+>>>>>> Writer are synchronized through mmu_lock. RCU is used to synchronized
+>>>>>> between writers and readers.
+>>>>>>
+>>>>>> The synchronize_rcu() in vhost_reset_vq_maps() was used to synchronized it
+>>>>>> with readers (memory accessors) in the path of file operations. But in this
+>>>>>> case, vq->mutex was already held, this means it has been serialized with
+>>>>>> memory accessor. That's why I think it could be removed safely.
+>>>>>>
+>>>>>> Anything I miss here?
+>>>>>>
+>>>>> So invalidate callbacks need to reset the map, and they do
+>>>>> not have vq mutex. How can they do this and free
+>>>>> the map safely? They need synchronize_rcu or kfree_rcu right?
+>>>> Invalidation callbacks need but file operations (e.g ioctl) not.
+>>>>
+>>>>
+>>>>> And I worry somewhat that synchronize_rcu in an MMU notifier
+>>>>> is a problem, MMU notifiers are supposed to be quick:
+>>>> Looks not, since it can allow to be blocked and lots of driver depends on
+>>>> this. (E.g mmu_notifier_range_blockable()).
+>>> Right, they can block. So why don't we take a VQ mutex and be
+>>> done with it then? No RCU tricks.
+>>
+>> This is how I want to go with RFC and V1. But I end up with deadlock between
+>> vq locks and some MM internal locks. So I decide to use RCU which is 100%
+>> under the control of vhost.
+>>
+>> Thanks
+> And I guess the deadlock is because GUP is taking mmu locks which are
+> taken on mmu notifier path, right?
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index a7b57dd42c26..ec2834206d08 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -790,9 +790,6 @@ config COMPAT_32BIT_TIME
- 	  This is relevant on all 32-bit architectures, and 64-bit architectures
- 	  as part of compat syscall handling.
- 
--config ARCH_NO_COHERENT_DMA_MMAP
--	bool
--
- config ARCH_NO_PREEMPT
- 	bool
- 
-diff --git a/arch/c6x/Kconfig b/arch/c6x/Kconfig
-index b4fb61c83494..e65e8d82442a 100644
---- a/arch/c6x/Kconfig
-+++ b/arch/c6x/Kconfig
-@@ -20,7 +20,6 @@ config C6X
- 	select OF_EARLY_FLATTREE
- 	select GENERIC_CLOCKEVENTS
- 	select MODULES_USE_ELF_RELA
--	select ARCH_NO_COHERENT_DMA_MMAP
- 	select MMU_GATHER_NO_RANGE if MMU
- 
- config MMU
-diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-index c518d695c376..614b355ae338 100644
---- a/arch/m68k/Kconfig
-+++ b/arch/m68k/Kconfig
-@@ -8,7 +8,6 @@ config M68K
- 	select ARCH_HAS_DMA_PREP_COHERENT if HAS_DMA && MMU && !COLDFIRE
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if HAS_DMA
- 	select ARCH_MIGHT_HAVE_PC_PARPORT if ISA
--	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
- 	select ARCH_NO_PREEMPT if !COLDFIRE
- 	select BINFMT_FLAT_ARGVP_ENVP_ON_STACK
- 	select DMA_DIRECT_REMAP if HAS_DMA && MMU && !COLDFIRE
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index d411de05b628..632c9477a0f6 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -9,7 +9,6 @@ config MICROBLAZE
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
--	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select BUILDTIME_EXTABLE_SORT
- 	select TIMER_OF
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 6d732e451071..e9dd88b7f81e 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -52,7 +52,6 @@ config PARISC
- 	select GENERIC_SCHED_CLOCK
- 	select HAVE_UNSTABLE_SCHED_CLOCK if SMP
- 	select GENERIC_CLOCKEVENTS
--	select ARCH_NO_COHERENT_DMA_MMAP
- 	select CPU_NO_EFFICIENT_FFS
- 	select NEED_DMA_MAP_STATE
- 	select NEED_SG_DMA_LENGTH
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 6b1b5941b618..f356ee674d89 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -5,7 +5,6 @@ config SUPERH
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
--	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
- 	select HAVE_PATA_PLATFORM
- 	select CLKDEV_LOOKUP
- 	select DMA_DECLARE_COHERENT
-diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-index ebc135bda921..70653aed3005 100644
---- a/arch/xtensa/Kconfig
-+++ b/arch/xtensa/Kconfig
-@@ -5,7 +5,6 @@ config XTENSA
- 	select ARCH_HAS_BINFMT_FLAT if !MMU
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
--	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
- 	select ARCH_USE_QUEUED_RWLOCKS
- 	select ARCH_USE_QUEUED_SPINLOCKS
- 	select ARCH_WANT_FRAME_POINTERS
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 7dff1829c8c5..815446f76995 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -169,7 +169,6 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- 		void *cpu_addr, dma_addr_t dma_addr, size_t size,
- 		unsigned long attrs)
- {
--#ifndef CONFIG_ARCH_NO_COHERENT_DMA_MMAP
- 	unsigned long user_count = vma_pages(vma);
- 	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
- 	unsigned long off = vma->vm_pgoff;
-@@ -198,9 +197,6 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- 
- 	return remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
- 			user_count << PAGE_SHIFT, vma->vm_page_prot);
--#else
--	return -ENXIO;
--#endif /* !CONFIG_ARCH_NO_COHERENT_DMA_MMAP */
- }
- 
- /**
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 860543a4c840..2dadc708343a 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -218,15 +218,7 @@ int snd_pcm_info_user(struct snd_pcm_substream *substream,
- 
- static bool hw_support_mmap(struct snd_pcm_substream *substream)
- {
--	if (!(substream->runtime->hw.info & SNDRV_PCM_INFO_MMAP))
--		return false;
--	/* architecture supports dma_mmap_coherent()? */
--#if defined(CONFIG_ARCH_NO_COHERENT_DMA_MMAP) || !defined(CONFIG_HAS_DMA)
--	if (!substream->ops->mmap &&
--	    substream->dma_buffer.dev.type == SNDRV_DMA_TYPE_DEV)
--		return false;
--#endif
--	return true;
-+	return substream->runtime->hw.info & SNDRV_PCM_INFO_MMAP;
- }
- 
- static int constrain_mask_params(struct snd_pcm_substream *substream,
--- 
-2.20.1
+
+Yes, but it's not the only lock. I don't remember the details, but I can 
+confirm I meet issues with one or two other locks.
+
+
+>    How about we add a seqlock and take
+> that in invalidate callbacks?  We can then drop the VQ lock before GUP,
+> and take it again immediately after.
+>
+> something like
+> 	if (!vq_meta_mapped(vq)) {
+> 		vq_meta_setup(&uaddrs);
+> 		mutex_unlock(vq->mutex)
+> 		vq_meta_map(&uaddrs);
+
+
+The problem is the vq address could be changed at this time.
+
+
+> 		mutex_lock(vq->mutex)
+>
+> 		/* recheck both sock->private_data and seqlock count. */
+> 		if changed - bail out
+> 	}
+>
+> And also requires that VQ uaddrs is defined like this:
+> - writers must have both vq mutex and dev mutex
+> - readers must have either vq mutex or dev mutex
+>
+>
+> That's a big change though. For now, how about switching to a per-vq SRCU?
+> That is only a little bit more expensive than RCU, and we
+> can use synchronize_srcu_expedited.
+>
+
+Consider we switch to use kfree_rcu(), what's the advantage of per-vq SRCU?
+
+Thanks
 
