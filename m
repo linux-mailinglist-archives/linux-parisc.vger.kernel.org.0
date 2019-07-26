@@ -2,288 +2,177 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABA5976647
-	for <lists+linux-parisc@lfdr.de>; Fri, 26 Jul 2019 14:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DECE776690
+	for <lists+linux-parisc@lfdr.de>; Fri, 26 Jul 2019 14:53:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726686AbfGZMvo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 26 Jul 2019 08:51:44 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:39986 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726617AbfGZMvo (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 26 Jul 2019 08:51:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=zmXAtjNhmIN1BciR4J9skBABlP+cuRuI57shzmR9qVQ=; b=jFeES0HL2zw2RZo00FyW6u8Rjw
-        aUqcdE/FA2O0K54IwSkiCdYCwOmUyPRSUPLNKxczC76yGQPM+/ggpXBKseifCjSdpAKXHfrizZkw8
-        VRt4P9oNWj1Ur/OOXOxgqXXk/2PWDGPYrDPsESeoR1bLfmXpMT6pE8b2nb4mtiJ978UACfsHzD6Uo
-        IDBWcc4S4HCY0FEliArkryP0Rgt9FjlFwF+sIJDbqnxGW+L+zwJqC4VTAZw+smhhGQ+LRaU01r1y3
-        5ucN3cmrlcKzexrwYGwiitLGrzs8u/xpWtEAxhWkYREb00qZrtvpykgtLcjhrupdJI7BhUktMVOwH
-        Ald2CUuQ==;
-Received: from [179.95.31.157] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hqzhE-0006AW-FT; Fri, 26 Jul 2019 12:51:40 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
-        (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hqzhC-0005au-8M; Fri, 26 Jul 2019 09:51:38 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-doc@vger.kernel.org,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH v2 13/26] docs: parisc: convert to ReST and add to documentation body
-Date:   Fri, 26 Jul 2019 09:51:23 -0300
-Message-Id: <bec701fd2748796b33529b42b54557b9667f0883.1564145354.git.mchehab+samsung@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1564145354.git.mchehab+samsung@kernel.org>
-References: <cover.1564145354.git.mchehab+samsung@kernel.org>
+        id S1726900AbfGZMxf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 26 Jul 2019 08:53:35 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:41486 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726897AbfGZMxe (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 26 Jul 2019 08:53:34 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id AE5F6300D1CA;
+        Fri, 26 Jul 2019 12:53:33 +0000 (UTC)
+Received: from [10.72.12.238] (ovpn-12-238.pek2.redhat.com [10.72.12.238])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3F4645DE6F;
+        Fri, 26 Jul 2019 12:53:19 +0000 (UTC)
+Subject: Re: WARNING in __mmdrop
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     syzbot <syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com>,
+        aarcange@redhat.com, akpm@linux-foundation.org,
+        christian@brauner.io, davem@davemloft.net, ebiederm@xmission.com,
+        elena.reshetova@intel.com, guro@fb.com, hch@infradead.org,
+        james.bottomley@hansenpartnership.com, jglisse@redhat.com,
+        keescook@chromium.org, ldv@altlinux.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        luto@amacapital.net, mhocko@suse.com, mingo@kernel.org,
+        namit@vmware.com, peterz@infradead.org,
+        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
+        wad@chromium.org
+References: <20190723051828-mutt-send-email-mst@kernel.org>
+ <caff362a-e208-3468-3688-63e1d093a9d3@redhat.com>
+ <20190725012149-mutt-send-email-mst@kernel.org>
+ <55e8930c-2695-365f-a07b-3ad169654d28@redhat.com>
+ <20190725042651-mutt-send-email-mst@kernel.org>
+ <84bb2e31-0606-adff-cf2a-e1878225a847@redhat.com>
+ <20190725092332-mutt-send-email-mst@kernel.org>
+ <11802a8a-ce41-f427-63d5-b6a4cf96bb3f@redhat.com>
+ <20190726074644-mutt-send-email-mst@kernel.org>
+ <5cc94f15-b229-a290-55f3-8295266edb2b@redhat.com>
+ <20190726082837-mutt-send-email-mst@kernel.org>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <ada10dc9-6cab-e189-5289-6f9d3ff8fed2@redhat.com>
+Date:   Fri, 26 Jul 2019 20:53:18 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20190726082837-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Fri, 26 Jul 2019 12:53:34 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Manually convert the two PA-RISC documents to ReST, adding them
-to the Linux documentation body.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
----
- Documentation/index.rst                       |  1 +
- .../parisc/{debugging => debugging.rst}       |  7 +++
- Documentation/parisc/index.rst                | 18 ++++++
- .../parisc/{registers => registers.rst}       | 59 +++++++++++++------
- 4 files changed, 68 insertions(+), 17 deletions(-)
- rename Documentation/parisc/{debugging => debugging.rst} (94%)
- create mode 100644 Documentation/parisc/index.rst
- rename Documentation/parisc/{registers => registers.rst} (70%)
+On 2019/7/26 下午8:38, Michael S. Tsirkin wrote:
+> On Fri, Jul 26, 2019 at 08:00:58PM +0800, Jason Wang wrote:
+>> On 2019/7/26 下午7:49, Michael S. Tsirkin wrote:
+>>> On Thu, Jul 25, 2019 at 10:25:25PM +0800, Jason Wang wrote:
+>>>> On 2019/7/25 下午9:26, Michael S. Tsirkin wrote:
+>>>>>> Exactly, and that's the reason actually I use synchronize_rcu() there.
+>>>>>>
+>>>>>> So the concern is still the possible synchronize_expedited()?
+>>>>> I think synchronize_srcu_expedited.
+>>>>>
+>>>>> synchronize_expedited sends lots of IPI and is bad for realtime VMs.
+>>>>>
+>>>>>> Can I do this
+>>>>>> on through another series on top of the incoming V2?
+>>>>>>
+>>>>>> Thanks
+>>>>>>
+>>>>> The question is this: is this still a gain if we switch to the
+>>>>> more expensive srcu? If yes then we can keep the feature on,
+>>>> I think we only care about the cost on srcu_read_lock() which looks pretty
+>>>> tiny form my point of view. Which is basically a READ_ONCE() + WRITE_ONCE().
+>>>>
+>>>> Of course I can benchmark to see the difference.
+>>>>
+>>>>
+>>>>> if not we'll put it off until next release and think
+>>>>> of better solutions. rcu->srcu is just a find and replace,
+>>>>> don't see why we need to defer that. can be a separate patch
+>>>>> for sure, but we need to know how well it works.
+>>>> I think I get here, let me try to do that in V2 and let's see the numbers.
+>>>>
+>>>> Thanks
+>>
+>> It looks to me for tree rcu, its srcu_read_lock() have a mb() which is too
+>> expensive for us.
+> I will try to ponder using vq lock in some way.
+> Maybe with trylock somehow ...
 
-diff --git a/Documentation/index.rst b/Documentation/index.rst
-index d9e607d8a9b9..25e080664050 100644
---- a/Documentation/index.rst
-+++ b/Documentation/index.rst
-@@ -148,6 +148,7 @@ implementation.
-    ia64/index
-    m68k/index
-    powerpc/index
-+   parisc/index
-    riscv/index
-    s390/index
-    sh/index
-diff --git a/Documentation/parisc/debugging b/Documentation/parisc/debugging.rst
-similarity index 94%
-rename from Documentation/parisc/debugging
-rename to Documentation/parisc/debugging.rst
-index 7d75223fa18d..de1b60402c5b 100644
---- a/Documentation/parisc/debugging
-+++ b/Documentation/parisc/debugging.rst
-@@ -1,8 +1,13 @@
-+=================
-+PA-RISC Debugging
-+=================
-+
- okay, here are some hints for debugging the lower-level parts of
- linux/parisc.
- 
- 
- 1. Absolute addresses
-+=====================
- 
- A lot of the assembly code currently runs in real mode, which means
- absolute addresses are used instead of virtual addresses as in the
-@@ -12,6 +17,7 @@ currently).
- 
- 
- 2. HPMCs
-+========
- 
- When real-mode code tries to access non-existent memory, you'll get
- an HPMC instead of a kernel oops.  To debug an HPMC, try to find
-@@ -27,6 +33,7 @@ access it.
- 
- 
- 3. Q bit fun
-+============
- 
- Certain, very critical code has to clear the Q bit in the PSW.  What
- happens when the Q bit is cleared is the CPU does not update the
-diff --git a/Documentation/parisc/index.rst b/Documentation/parisc/index.rst
-new file mode 100644
-index 000000000000..aa3ee0470425
---- /dev/null
-+++ b/Documentation/parisc/index.rst
-@@ -0,0 +1,18 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+====================
-+PA-RISC Architecture
-+====================
-+
-+.. toctree::
-+   :maxdepth: 2
-+
-+   debugging
-+   registers
-+
-+.. only::  subproject and html
-+
-+   Indices
-+   =======
-+
-+   * :ref:`genindex`
-diff --git a/Documentation/parisc/registers b/Documentation/parisc/registers.rst
-similarity index 70%
-rename from Documentation/parisc/registers
-rename to Documentation/parisc/registers.rst
-index 10c7d1730f5d..59c8ecf3e856 100644
---- a/Documentation/parisc/registers
-+++ b/Documentation/parisc/registers.rst
-@@ -1,11 +1,16 @@
-+================================
- Register Usage for Linux/PA-RISC
-+================================
- 
- [ an asterisk is used for planned usage which is currently unimplemented ]
- 
--	General Registers as specified by ABI
-+General Registers as specified by ABI
-+=====================================
- 
--	Control Registers
-+Control Registers
-+-----------------
- 
-+===============================	===============================================
- CR 0 (Recovery Counter)		used for ptrace
- CR 1-CR 7(undefined)		unused
- CR 8 (Protection ID)		per-process value*
-@@ -29,26 +34,35 @@ CR28 (TR 4)			not used
- CR29 (TR 5)			not used
- CR30 (TR 6)			current / 0
- CR31 (TR 7)			Temporary register, used in various places
-+===============================	===============================================
- 
--	Space Registers (kernel mode)
-+Space Registers (kernel mode)
-+-----------------------------
- 
-+===============================	===============================================
- SR0				temporary space register
- SR4-SR7 			set to 0
- SR1				temporary space register
- SR2				kernel should not clobber this
- SR3				used for userspace accesses (current process)
-+===============================	===============================================
- 
--	Space Registers (user mode)
-+Space Registers (user mode)
-+---------------------------
- 
-+===============================	===============================================
- SR0				temporary space register
- SR1                             temporary space register
- SR2                             holds space of linux gateway page
- SR3                             holds user address space value while in kernel
- SR4-SR7                         Defines short address space for user/kernel
-+===============================	===============================================
- 
- 
--	Processor Status Word
-+Processor Status Word
-+---------------------
- 
-+===============================	===============================================
- W (64-bit addresses)		0
- E (Little-endian)		0
- S (Secure Interval Timer)	0
-@@ -69,15 +83,19 @@ Q (collect interruption state)	1 (0 in code directly preceding an rfi)
- P (Protection Identifiers)	1*
- D (Data address translation)	1, 0 while executing real-mode code
- I (external interrupt mask)	used by cli()/sti() macros
-+===============================	===============================================
- 
--	"Invisible" Registers
-+"Invisible" Registers
-+---------------------
- 
-+===============================	===============================================
- PSW default W value		0
- PSW default E value		0
- Shadow Registers		used by interruption handler code
- TOC enable bit			1
-+===============================	===============================================
- 
--=========================================================================
-+-------------------------------------------------------------------------
- 
- The PA-RISC architecture defines 7 registers as "shadow registers".
- Those are used in RETURN FROM INTERRUPTION AND RESTORE instruction to reduce
-@@ -85,7 +103,8 @@ the state save and restore time by eliminating the need for general register
- (GR) saves and restores in interruption handlers.
- Shadow registers are the GRs 1, 8, 9, 16, 17, 24, and 25.
- 
--=========================================================================
-+-------------------------------------------------------------------------
-+
- Register usage notes, originally from John Marvin, with some additional
- notes from Randolph Chung.
- 
-@@ -96,10 +115,12 @@ course, you need to save them if you care about them, before calling
- another procedure. Some of the above registers do have special meanings
- that you should be aware of:
- 
--    r1: The addil instruction is hardwired to place its result in r1,
-+    r1:
-+	The addil instruction is hardwired to place its result in r1,
- 	so if you use that instruction be aware of that.
- 
--    r2: This is the return pointer. In general you don't want to
-+    r2:
-+	This is the return pointer. In general you don't want to
- 	use this, since you need the pointer to get back to your
- 	caller. However, it is grouped with this set of registers
- 	since the caller can't rely on the value being the same
-@@ -107,23 +128,27 @@ that you should be aware of:
- 	and return through that register after trashing r2, and
- 	that should not cause a problem for the calling routine.
- 
--    r19-r22: these are generally regarded as temporary registers.
-+    r19-r22:
-+	these are generally regarded as temporary registers.
- 	Note that in 64 bit they are arg7-arg4.
- 
--    r23-r26: these are arg3-arg0, i.e. you can use them if you
-+    r23-r26:
-+	these are arg3-arg0, i.e. you can use them if you
- 	don't care about the values that were passed in anymore.
- 
--    r28,r29: are ret0 and ret1. They are what you pass return values
-+    r28,r29:
-+	are ret0 and ret1. They are what you pass return values
- 	in. r28 is the primary return. When returning small structures
- 	r29 may also be used to pass data back to the caller.
- 
--    r30: stack pointer
-+    r30:
-+	stack pointer
- 
--    r31: the ble instruction puts the return pointer in here.
-+    r31:
-+	the ble instruction puts the return pointer in here.
- 
- 
--r3-r18,r27,r30 need to be saved and restored. r3-r18 are just
-+    r3-r18,r27,r30 need to be saved and restored. r3-r18 are just
-     general purpose registers. r27 is the data pointer, and is
-     used to make references to global variables easier. r30 is
-     the stack pointer.
--
--- 
-2.21.0
+
+Ok, let me retry if necessary (but I do remember I end up with deadlocks 
+last try).
+
+
+>
+>
+>> If we just worry about the IPI,
+> With synchronize_rcu what I would worry about is that guest is stalled
+
+
+Can this synchronize_rcu() be triggered by guest? If yes, there are 
+several other MMU notifiers that can block. Is vhost something special here?
+
+
+> because system is busy because of other guests.
+> With expedited it's the IPIs...
+>
+
+The current synchronize_rcu()  can force a expedited grace period:
+
+void synchronize_rcu(void)
+{
+         ...
+         if (rcu_blocking_is_gp())
+return;
+         if (rcu_gp_is_expedited())
+synchronize_rcu_expedited();
+else
+wait_rcu_gp(call_rcu);
+}
+EXPORT_SYMBOL_GPL(synchronize_rcu);
+
+
+>> can we do something like in
+>> vhost_invalidate_vq_start()?
+>>
+>>          if (map) {
+>>                  /* In order to avoid possible IPIs with
+>>                   * synchronize_rcu_expedited() we use call_rcu() +
+>>                   * completion.
+>> */
+>> init_completion(&c.completion);
+>>                  call_rcu(&c.rcu_head, vhost_finish_vq_invalidation);
+>> wait_for_completion(&c.completion);
+>>                  vhost_set_map_dirty(vq, map, index);
+>> vhost_map_unprefetch(map);
+>>          }
+>>
+>> ?
+> Why would that be faster than synchronize_rcu?
+
+
+No faster but no IPI.
+
+
+>
+>
+>>> There's one other thing that bothers me, and that is that
+>>> for large rings which are not physically contiguous
+>>> we don't implement the optimization.
+>>>
+>>> For sure, that can wait, but I think eventually we should
+>>> vmap large rings.
+>>
+>> Yes, worth to try. But using direct map has its own advantage: it can use
+>> hugepage that vmap can't
+>>
+>> Thanks
+> Sure, so we can do that for small rings.
+
+
+Yes, that's possible but should be done on top.
+
+Thanks
 
