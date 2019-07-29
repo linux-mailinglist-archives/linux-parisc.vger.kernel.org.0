@@ -2,99 +2,75 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC1B0784C0
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jul 2019 07:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8AE37871B
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jul 2019 10:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbfG2F4j (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 29 Jul 2019 01:56:39 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:35918 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726985AbfG2F41 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 29 Jul 2019 01:56:27 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 78B46308FC47;
-        Mon, 29 Jul 2019 05:56:26 +0000 (UTC)
-Received: from [10.72.12.53] (ovpn-12-53.pek2.redhat.com [10.72.12.53])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7C62660C5F;
-        Mon, 29 Jul 2019 05:56:10 +0000 (UTC)
-Subject: Re: WARNING in __mmdrop
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
-        syzbot <syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com>,
-        aarcange@redhat.com, akpm@linux-foundation.org,
-        christian@brauner.io, davem@davemloft.net, ebiederm@xmission.com,
-        elena.reshetova@intel.com, guro@fb.com, hch@infradead.org,
-        james.bottomley@hansenpartnership.com, jglisse@redhat.com,
-        keescook@chromium.org, ldv@altlinux.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-        luto@amacapital.net, mhocko@suse.com, mingo@kernel.org,
-        namit@vmware.com, peterz@infradead.org,
-        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
-        wad@chromium.org
-References: <20190725042651-mutt-send-email-mst@kernel.org>
- <84bb2e31-0606-adff-cf2a-e1878225a847@redhat.com>
- <20190725092332-mutt-send-email-mst@kernel.org>
- <11802a8a-ce41-f427-63d5-b6a4cf96bb3f@redhat.com>
- <20190726074644-mutt-send-email-mst@kernel.org>
- <5cc94f15-b229-a290-55f3-8295266edb2b@redhat.com>
- <20190726082837-mutt-send-email-mst@kernel.org>
- <ada10dc9-6cab-e189-5289-6f9d3ff8fed2@redhat.com>
- <20190726094353-mutt-send-email-mst@kernel.org>
- <63754251-a39a-1e0e-952d-658102682094@redhat.com>
- <20190726150322.GB8695@ziepe.ca>
-From:   Jason Wang <jasowang@redhat.com>
-Message-ID: <e3850664-6c2e-689b-8a1f-4d3b8e03cbc7@redhat.com>
-Date:   Mon, 29 Jul 2019 13:56:08 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727124AbfG2IQB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 29 Jul 2019 04:16:01 -0400
+Received: from mail-io1-f69.google.com ([209.85.166.69]:56693 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727067AbfG2IQB (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 29 Jul 2019 04:16:01 -0400
+Received: by mail-io1-f69.google.com with SMTP id u25so66319262iol.23
+        for <linux-parisc@vger.kernel.org>; Mon, 29 Jul 2019 01:16:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=0rPakemNyIs9fbLrhB6s/ulRRU21c/3n0kSBtdCA0Eo=;
+        b=L8LM9zAfuwGsHzHE4p94vqf+dXZKY73/tiIp2TM41MAdU6SrC2VKjHBHu55HUFQy5v
+         /UBrkR7E00AqrB5LC3m3T8SImq5bbUthE0g/HYktc54+qn+PvrCox+cYkh4ZuHF0SLK0
+         BvTyNOatYAbpQcPJL3OiURXcPTuiPeKC6YkfRNq0lQ9ujSDD7qIWN3DD3j2/68CyWAbc
+         pHteb+Bun254sNQ0rHsp6mJNdeFFsiwuL+7EfGQfYUss3tf3PU+tGxkQ3g/qVf3GV++I
+         HosGFv+udchYq8auOTX60zE6znIq3ixbO7sTlOs4/7wdSpGy7tcYW1FxM9IaNSMovMYb
+         WxrQ==
+X-Gm-Message-State: APjAAAUDHMHdCE1hotrEA3Dx0naEYUHT33bK8NWM0RMzN/M+rOgwbsw/
+        ghWc9zvh0wyTXxqwdDqwVCZXZgIrCj13TmwqAUcHjzOW+U1B
+X-Google-Smtp-Source: APXvYqxSkxuHca0jLTiQmdMdnlp+TfywXlCfVmn/nxBSNrXe+PgHcKdxjXDq/A4yJcJjcL3n5aaCmQIspC/xzgAeN42nGa5pW21x
 MIME-Version: 1.0
-In-Reply-To: <20190726150322.GB8695@ziepe.ca>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.43]); Mon, 29 Jul 2019 05:56:26 +0000 (UTC)
+X-Received: by 2002:a5d:994b:: with SMTP id v11mr53971532ios.165.1564388160200;
+ Mon, 29 Jul 2019 01:16:00 -0700 (PDT)
+Date:   Mon, 29 Jul 2019 01:16:00 -0700
+In-Reply-To: <0000000000005718ef058b3a0fcf@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000094699a058ecd8017@google.com>
+Subject: Re: memory leak in __nf_hook_entries_try_shrink
+From:   syzbot <syzbot+c51f73e78e7e2ce3a31e@syzkaller.appspotmail.com>
+To:     catalin.marinas@arm.com, coreteam@netfilter.org,
+        davem@davemloft.net, deller@gmx.de, fw@strlen.de,
+        jejb@parisc-linux.org, kadlec@blackhole.kfki.hu,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-parisc@vger.kernel.org, mingo@redhat.com,
+        netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        pablo@netfilter.org, rostedt@goodmis.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+syzbot has bisected this bug to:
 
-On 2019/7/26 下午11:03, Jason Gunthorpe wrote:
-> On Fri, Jul 26, 2019 at 10:00:20PM +0800, Jason Wang wrote:
->> The question is, MMU notifier are allowed to be blocked on
->> invalidate_range_start() which could be much slower than synchronize_rcu()
->> to finish.
->>
->> Looking at amdgpu_mn_invalidate_range_start_gfx() which calls
->> amdgpu_mn_invalidate_node() which did:
->>
->>                  r = reservation_object_wait_timeout_rcu(bo->tbo.resv,
->>                          true, false, MAX_SCHEDULE_TIMEOUT);
->>
->> ...
-> The general guidance has been that invalidate_start should block
-> minimally, if at all.
->
-> I would say synchronize_rcu is outside that guidance.
+commit fc79168a7c75423047d60a033dc4844955ccae0b
+Author: Helge Deller <deller@gmx.de>
+Date:   Wed Apr 13 20:44:54 2016 +0000
 
+     parisc: Add syscall tracepoint support
 
-Yes, I get this.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=16ad2cd8600000
+start commit:   b076173a Merge tag 'selinux-pr-20190612' of git://git.kern..
+git tree:       upstream
+final crash:    https://syzkaller.appspot.com/x/report.txt?x=15ad2cd8600000
+console output: https://syzkaller.appspot.com/x/log.txt?x=11ad2cd8600000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=cb38d33cd06d8d48
+dashboard link: https://syzkaller.appspot.com/bug?extid=c51f73e78e7e2ce3a31e
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=105a958ea00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=103c758ea00000
 
+Reported-by: syzbot+c51f73e78e7e2ce3a31e@syzkaller.appspotmail.com
+Fixes: fc79168a7c75 ("parisc: Add syscall tracepoint support")
 
->
-> BTW, always returning EAGAIN for mmu_notifier_range_blockable() is not
-> good either, it should instead only return EAGAIN if any
-> vhost_map_range_overlap() is true.
-
-
-Right, let me optimize that.
-
-Thanks
-
-
->
-> Jason
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
