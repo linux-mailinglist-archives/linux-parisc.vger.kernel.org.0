@@ -2,75 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B35C478294
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jul 2019 02:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22A9E7849E
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jul 2019 07:55:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726417AbfG2AAI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 28 Jul 2019 20:00:08 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:39477 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726251AbfG2AAI (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 28 Jul 2019 20:00:08 -0400
-Received: by mail-ot1-f68.google.com with SMTP id r21so54764271otq.6
-        for <linux-parisc@vger.kernel.org>; Sun, 28 Jul 2019 17:00:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8HerNJ+KPshsmAFkEGOs3SrN9ygWfkRsx5jp23KpQmk=;
-        b=KQXocmxTvcJsoxl9evAcNuSfj3zv4Tdtu1ncnfWPmPz0qaCS3shWVOtnT1e+4XInyw
-         YmTs335H3dbzKRecPiKYibGvewc4rknc4JzXSiqw5/RmSqgocOhmqE6dKzqXYGRiB70+
-         zw2sv70Y8REQD3W0sip7qcXkmOLe9Z7XSJW5rH4CYHg9RDlYi6WovJnbrCDU0ISovMCw
-         DY5A/uIQtD2KcuOsUKB+5L5xtzksvOxQfhQvfqqlkPf0vo0vKQk4dOyq++bg1tmBNElm
-         WsfAo2jaNiAfsuFEhlanzsmpnWapuVw8DZCXZ468mVdoAOVJErNgf/PROuoWchsFxDLI
-         aLKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8HerNJ+KPshsmAFkEGOs3SrN9ygWfkRsx5jp23KpQmk=;
-        b=cO8xyQTnBgWyPFHN2lEiZ0/UBoXEQ4v/YlpdUjljZlhAVTsfMmq4LkOhO3wM0OIgmN
-         4blSAQ71ejtlFlRLx5A/RX7iu55Ene1Grg3v3PkC846+/CA+LjD8mNgVk4+TP4o2u+AH
-         LyxMtpkXjFVjHctRHVIWJsbYRLF1JdndZuW33xMBFP5qkYaMYgtx0cIpdrLYWGw4vcAK
-         KlMOJo0fd9+rfYJ+52sPCsF51SgV1nQg5QxTeZvgiuuL0gdG83wwc9AImusAECub/BXv
-         dmSj1VwzvWZYyFbX//1jmsMQ/xN1svuMtFVWt9WasPejuc0Vgu+phdKycCmHZ22oaME3
-         7s2w==
-X-Gm-Message-State: APjAAAX/AGa/2fX6P4HpHZZtAeDIPR9rvLk/r4IAm7CCkTRB58veMbHd
-        rrH/NBGc6qRlgufDzLBzVwLK87qnDhA+eO/535s=
-X-Google-Smtp-Source: APXvYqxXNh0zMoo/RN3Ki81qVc5Hw7d0sO1ryLJiwJHu2RSUvX3yNLbqBJXcYh73kbiXLTnpmNwmDO9Laupa/I2pkks=
-X-Received: by 2002:a9d:7741:: with SMTP id t1mr61023070otl.178.1564358407940;
- Sun, 28 Jul 2019 17:00:07 -0700 (PDT)
+        id S1726680AbfG2FzD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 29 Jul 2019 01:55:03 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:43666 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725988AbfG2FzD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 29 Jul 2019 01:55:03 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 3B5AF30BD1C0;
+        Mon, 29 Jul 2019 05:55:02 +0000 (UTC)
+Received: from [10.72.12.53] (ovpn-12-53.pek2.redhat.com [10.72.12.53])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3C5D55D9C3;
+        Mon, 29 Jul 2019 05:54:50 +0000 (UTC)
+Subject: Re: WARNING in __mmdrop
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     syzbot <syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com>,
+        aarcange@redhat.com, akpm@linux-foundation.org,
+        christian@brauner.io, davem@davemloft.net, ebiederm@xmission.com,
+        elena.reshetova@intel.com, guro@fb.com, hch@infradead.org,
+        james.bottomley@hansenpartnership.com, jglisse@redhat.com,
+        keescook@chromium.org, ldv@altlinux.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        luto@amacapital.net, mhocko@suse.com, mingo@kernel.org,
+        namit@vmware.com, peterz@infradead.org,
+        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
+        wad@chromium.org
+References: <55e8930c-2695-365f-a07b-3ad169654d28@redhat.com>
+ <20190725042651-mutt-send-email-mst@kernel.org>
+ <84bb2e31-0606-adff-cf2a-e1878225a847@redhat.com>
+ <20190725092332-mutt-send-email-mst@kernel.org>
+ <11802a8a-ce41-f427-63d5-b6a4cf96bb3f@redhat.com>
+ <20190726074644-mutt-send-email-mst@kernel.org>
+ <5cc94f15-b229-a290-55f3-8295266edb2b@redhat.com>
+ <20190726082837-mutt-send-email-mst@kernel.org>
+ <ada10dc9-6cab-e189-5289-6f9d3ff8fed2@redhat.com>
+ <aaefa93e-a0de-1c55-feb0-509c87aae1f3@redhat.com>
+ <20190726094756-mutt-send-email-mst@kernel.org>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <0792ee09-b4b7-673c-2251-e5e0ce0fbe32@redhat.com>
+Date:   Mon, 29 Jul 2019 13:54:49 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Received: by 2002:a9d:7614:0:0:0:0:0 with HTTP; Sun, 28 Jul 2019 17:00:07
- -0700 (PDT)
-Reply-To: williamrobert416@gmail.com
-From:   "Mr. Robert William" <omarmariam373@gmail.com>
-Date:   Mon, 29 Jul 2019 01:00:07 +0100
-Message-ID: <CA+FSRKDYarPvm0RYt4iJtQuYwn6gfZd_uF+ORS1cs3C9w29W1A@mail.gmail.com>
-Subject: Its Urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190726094756-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Mon, 29 Jul 2019 05:55:02 +0000 (UTC)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
--- 
-Hello,
 
-I am Eng. Robert William, a retired Marine Engineer residing in
-Trinidad & Tobago.
-Unfortunately i am admitted to the hospital for a cancer (Sickness)
-over a year now,my doctor reported that i have only few months to pass
-away. Please i need your consent to invest my money (USD$1.8 Million)
-in any business of your
-
-choice in your country before i die, i have no other relatives not
-even children because i lost my family in a fire disaster in 2005.
-Please i need your urgent and
-
-kind response to enable me send you more information on how to contact
-my bank as my next of kin to process the fund into your bank account.
+On 2019/7/26 下午9:49, Michael S. Tsirkin wrote:
+>>> Ok, let me retry if necessary (but I do remember I end up with deadlocks
+>>> last try).
+>> Ok, I play a little with this. And it works so far. Will do more testing
+>> tomorrow.
+>>
+>> One reason could be I switch to use get_user_pages_fast() to
+>> __get_user_pages_fast() which doesn't need mmap_sem.
+>>
+>> Thanks
+> OK that sounds good. If we also set a flag to make
+> vhost_exceeds_weight exit, then I think it will be all good.
 
 
-Mr Robert William
+After some experiments, I came up two methods:
+
+1) switch to use vq->mutex, then we must take the vq lock during range 
+checking (but I don't see obvious slowdown for 16vcpus + 16queues). 
+Setting flags during weight check should work but it still can't address 
+the worst case: wait for the page to be swapped in. Is this acceptable?
+
+2) using current RCU but replace synchronize_rcu() with 
+vhost_work_flush(). The worst case is the same as 1) but we can check 
+range without holding any locks.
+
+Which one did you prefer?
+
+Thanks
+
