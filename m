@@ -2,108 +2,68 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1B9D7A11E
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jul 2019 08:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 082487A142
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jul 2019 08:26:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726167AbfG3GM3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 Jul 2019 02:12:29 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:40455 "EHLO
-        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726128AbfG3GM3 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 Jul 2019 02:12:29 -0400
-Received: from [10.30.1.20] (lneuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 8126E240007;
-        Tue, 30 Jul 2019 06:12:20 +0000 (UTC)
-Subject: Re: [PATCH RESEND 0/8] Fix mmap base in bottom-up mmap
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org
-References: <20190620050328.8942-1-alex@ghiti.fr>
-From:   Alexandre Ghiti <alex@ghiti.fr>
-Message-ID: <175168c1-d25f-7a93-e19b-dbb6ae6289e1@ghiti.fr>
-Date:   Tue, 30 Jul 2019 08:12:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1728897AbfG3G05 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 30 Jul 2019 02:26:57 -0400
+Received: from verein.lst.de ([213.95.11.211]:48085 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726128AbfG3G05 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 30 Jul 2019 02:26:57 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 221D568AEF; Tue, 30 Jul 2019 08:26:52 +0200 (CEST)
+Date:   Tue, 30 Jul 2019 08:26:51 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 4/5] dma-mapping: provide a better default
+ ->get_required_mask
+Message-ID: <20190730062651.GA29518@lst.de>
+References: <20190725063401.29904-1-hch@lst.de> <20190725063401.29904-5-hch@lst.de> <CAMuHMdUBPj8AVSuDwaBB_4gRD6k7vzo0WAFJEkTUbxSw31bzUg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190620050328.8942-1-alex@ghiti.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: fr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUBPj8AVSuDwaBB_4gRD6k7vzo0WAFJEkTUbxSw31bzUg@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 6/20/19 7:03 AM, Alexandre Ghiti wrote:
-> This series fixes the fallback of the top-down mmap: in case of
-> failure, a bottom-up scheme can be tried as a last resort between
-> the top-down mmap base and the stack, hoping for a large unused stack
-> limit.
->
-> Lots of architectures and even mm code start this fallback
-> at TASK_UNMAPPED_BASE, which is useless since the top-down scheme
-> already failed on the whole address space: instead, simply use
-> mmap_base.
->
-> Along the way, it allows to get rid of of mmap_legacy_base and
-> mmap_compat_legacy_base from mm_struct.
->
-> Note that arm and mips already implement this behaviour.
->
-> Alexandre Ghiti (8):
->    s390: Start fallback of top-down mmap at mm->mmap_base
->    sh: Start fallback of top-down mmap at mm->mmap_base
->    sparc: Start fallback of top-down mmap at mm->mmap_base
->    x86, hugetlbpage: Start fallback of top-down mmap at mm->mmap_base
->    mm: Start fallback top-down mmap at mm->mmap_base
->    parisc: Use mmap_base, not mmap_legacy_base, as low_limit for
->      bottom-up mmap
->    x86: Use mmap_*base, not mmap_*legacy_base, as low_limit for bottom-up
->      mmap
->    mm: Remove mmap_legacy_base and mmap_compat_legacy_code fields from
->      mm_struct
->
->   arch/parisc/kernel/sys_parisc.c  |  8 +++-----
->   arch/s390/mm/mmap.c              |  2 +-
->   arch/sh/mm/mmap.c                |  2 +-
->   arch/sparc/kernel/sys_sparc_64.c |  2 +-
->   arch/sparc/mm/hugetlbpage.c      |  2 +-
->   arch/x86/include/asm/elf.h       |  2 +-
->   arch/x86/kernel/sys_x86_64.c     |  4 ++--
->   arch/x86/mm/hugetlbpage.c        |  7 ++++---
->   arch/x86/mm/mmap.c               | 20 +++++++++-----------
->   include/linux/mm_types.h         |  2 --
->   mm/debug.c                       |  4 ++--
->   mm/mmap.c                        |  2 +-
->   12 files changed, 26 insertions(+), 31 deletions(-)
->
+On Mon, Jul 29, 2019 at 11:57:19AM +0200, Geert Uytterhoeven wrote:
+> Hi Christoph,
+> 
+> On Thu, Jul 25, 2019 at 8:35 AM Christoph Hellwig <hch@lst.de> wrote:
+> > Most dma_map_ops instances are IOMMUs that work perfectly fine in 32-bits
+> > of IOVA space, and the generic direct mapping code already provides its
+> > own routines that is intelligent based on the amount of memory actually
+> > present.  Wire up the dma-direct routine for the ARM direct mapping code
+> > as well, and otherwise default to the constant 32-bit mask.  This way
+> > we only need to override it for the occasional odd IOMMU that requires
+> > 64-bit IOVA support, or IOMMU drivers that are more efficient if they
+> > can fall back to the direct mapping.
+> 
+> As I know you like diving into cans of worms ;-)
+> 
+> Does 64-bit IOVA support actually work in general? Or only on 64-bit
+> platforms, due to dma_addr_t to unsigned long truncation on 32-bit?
 
-Hi everyone,
-
-This is just a preparatory series for the merging of x86 mmap top-down 
-functions with
-the generic ones (those should get into v5.3), if you could take some 
-time to take a look,
-that would be great :)
-
-Thanks,
-
-Alex
-
+Most IOMMUs use 32-bit IOVAs, and thus we default to the 32-bit mask
+because it is common and failsafe vs the normal linux assumptions.
+However the ia64 SGI SN2 platform, and the powerpc IBM ebus
+implementations seem to require a 64-bit mask already, so we keep that
+behavior as is.
