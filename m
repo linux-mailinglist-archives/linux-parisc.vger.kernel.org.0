@@ -2,101 +2,80 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D72397C555
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jul 2019 16:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 509407C772
+	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jul 2019 17:49:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387843AbfGaOtq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 31 Jul 2019 10:49:46 -0400
-Received: from mout.gmx.net ([212.227.17.20]:46307 "EHLO mout.gmx.net"
+        id S1727418AbfGaPtp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 31 Jul 2019 11:49:45 -0400
+Received: from mout.gmx.net ([212.227.15.19]:52929 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387593AbfGaOtq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 31 Jul 2019 10:49:46 -0400
+        id S1726755AbfGaPto (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 31 Jul 2019 11:49:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1564584581;
-        bh=c7FRCOGcyydHMCQgEAYk4v4z9NGeHl3QVRadCIKEevY=;
-        h=X-UI-Sender-Class:Subject:To:References:From:Date:In-Reply-To;
-        b=SEXlw+1wIRdNW6nnvC4cY5AgHIOw4PYiWEV+I5t7KlJQapibfjN5uRRyKQYSFFjcW
-         AvbPDRGo5xM4eS62zBKXBrNRStkUrkw6b9T/XGWhFFOhAHdwnuKGvO78bCj5k2LAzW
-         sb+A12cbVH5ZQ94XNu0dKR0NZsHtLlZ9LPcBwkHY=
+        s=badeba3b8450; t=1564588178;
+        bh=M53fzQKZDq0eyS7HLD/TvaYzfplY6POzjtWoWCWAfFo=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=C77t4CA4QK7aiz5v8F96a95DH5fqwnk3KGpPSwQdR3mCIppF693fA9XwAKRqnUnrH
+         aah/TrACV9s2p19U36KYGbqioqq1XT4e4TWhp7u+3VYTzS2ByYJeE2uZQ3gblJnW+a
+         ULzrtwpuLuo9YdrqX3pA8xTohBCSwVwFdAgzOKKw=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [10.88.166.185] ([193.16.224.9]) by mail.gmx.com (mrgmx103
- [212.227.17.168]) with ESMTPSA (Nemesis) id 0LaXmV-1ieEN02J1r-00mJ55; Wed, 31
- Jul 2019 16:49:41 +0200
-Subject: Re: Do NOT upgrade to palo v2.10
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Parisc List <linux-parisc@vger.kernel.org>
-References: <bff56161-3d9c-d4f1-c1cb-fd04de28eb59@gmx.de>
- <1564522225.4300.39.camel@HansenPartnership.com>
- <1564523273.4300.43.camel@HansenPartnership.com>
- <a9b20c26-d334-5626-5c59-8942879e374c@gmx.de>
- <1564584328.3319.5.camel@HansenPartnership.com>
+Received: from ls3530.fritz.box ([92.116.174.24]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M72sP-1i0o8r1oDv-008dRU; Wed, 31
+ Jul 2019 17:49:38 +0200
+Date:   Wed, 31 Jul 2019 17:49:34 +0200
 From:   Helge Deller <deller@gmx.de>
-Message-ID: <79e734c5-64b8-2a56-28bc-eae50ecf5b43@gmx.de>
-Date:   Wed, 31 Jul 2019 16:49:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Fix fall-through warnings in fpudispatch.c
+Message-ID: <20190731154934.GA21186@ls3530.fritz.box>
 MIME-Version: 1.0
-In-Reply-To: <1564584328.3319.5.camel@HansenPartnership.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:RPF9KGNSeqLKfyE5NJlGT/VjxL7vatNVJ/emldTDLpchZPn0B0L
- 9AZRbnWh1cWbKN+cqX3GZum1Ex5vIWi3EFwZHn+PquAjUiFJywCwDVfFiV2WlbHPmbdyI7Z
- nq+pwmY5CeAEIjNJfHREeRI+QXw8qpJsePD823is4jqpBiw+KnCAFV7DQwqd4lUaeWT0TGW
- YIbHaM6aIYaipof959kVg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Provags-ID: V03:K1:3RVRdKsMHOPROgo29ko4VCpkGKePDQljOB+4YKe7TtC9Mi9i3rS
+ k2G9myCOwOQj+yyMmhDjsa5HkrSNp6hUp8o0iZcIa1oeuPmd5DhDvtHbUhR1lYZOIMmfN47
+ n0psoqk+cj1Bgz6d19CHBttuvD3mHPaM7KPu3u/nBFPr8WeWD7eIqbIFellvhVSFji7HJEn
+ CCv5Zu2SPxY8JC6CV5DoQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:01rPcN8cY0U=:UlTBxJc8NW11uP8zVMPxkB
- rkpjGFqnjd7bxp795NH4cS8iwhLhyNxafvwER+DcITM18pq3dBX53/i5hudOhPyaDa34O3yEm
- PZ+iEqcZmU6+ddN1L7lhvUZR8L0AShYhl/Z7SUlt2bk8NA0AVGJp1sXbQk0Z6DxcyQ3pMcNDb
- JyH3rTr8FULzAkw6pYheO7KGJcLlKGXfwm+IT87/v/K58mBtDc4Fgem5lgFB2Sv0ZKuLQfTTH
- YQ5fnFhc5ohoVXHSUc5yutGLRxQwttFUmwzzxq9qivatVOKprORW9HxcAVMJcMbkRQJEBlza8
- 6AY20n0SzwGGpoHRcvKpmY0xsN7+b8i/8nsdTJJ1U5kgZfvpyhLyEyIoCy2AbLh5w1NIWWri9
- cwTS6i4pfDplOOACT06/0jxTpvu2NH7DVyBWSdHelzPKiMuQx6Yf3fIwkHOaAPm9xuR3+64OO
- 4rOxvgCS5m1NxDZ1oQSssHVsxbfiYEECGXN35F5Xlb7owtcVe+8QqcLp6t4I6F9F/eCG7A/oF
- ysC7s1Bq2nwAemxyWuNj/PYWXesChPLCQlzW5BpeRwuVX/RM3H8e1daXZF2FnedrsPDWhcJyt
- vi9xuAJz8GJglc0KQwEPYyTfF+cudd2aCHzz2xaynZFlK4PbgA6hRFnhwsAHVvQ9jMWOud4Ly
- 47xKxPkJkTSHAzu/8aFU6iEny/NhNXvatfpZRwZYK99Cic6Xluar54eCCKtj5s49j2YmjY0qT
- dx0gWhsMjbA4CjtSkHOGAs7X+t/6TJOL17WB7OTYtD9JFAgtk3sbMC1fZEaq8936gW+KjgPcS
- B6MskNOe3DZytASSzRPal+b+iYvpUObFDOOk/IneAWIFzJhSVo/pqEccqen0bwmn8IfAw4zxk
- CEeUfrFls7jdAWphURZr51KxnK60c1oNSM0c4HsgL0Iz/4anoJfLgScM4PYQmx5OAdLedn/PR
- Vlyg3mDgUem7NTBB1jggiFR5Fw8WKD63wk/rhPGohCCKN/TVQR4XLsJ5sSxbxGTsKuwaLLwFd
- blNiLFWmFIYaHMk5msMV2g4XpZrsRGZOUtYnqkGhz5+5UpXsHh2kbs3vcg8ajT6Yj4p8+aO1K
- gBFMFmMJar0Wx4=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MlOIgfVB+vY=:aiVmy0LLdMXfzmUryG+wWR
+ PNbau1dU/ElLeg8QGaJkeg6TmXf1FZ86KvrjWdVAMFs3Ey5YCyd7PGqsOT9wNGxSYkqDDjaiD
+ nfSl6wSGYqg5o4KAjphgPRUb6le2Y4kOYpM2eLAOiO8XiWusIX80GD8ItGps3znxPyVBb4VBw
+ wCOryryH3bE80gjv9CcYW6jLMwt3Rl1g40rQMhqF8rAxpT4ulGT5x0qg3T9E3AM3X1N2bTuvy
+ qQd4SV4PcRRPpskqF4Q8iYHra3dYpYz/SLKBDB+sueGSI8LxAVBQy9OIZGvBwMXsl8Goc5Xw6
+ N8s864EjM5lXnY/PrienxIIiY2eeQiIB/NzBcOSblAznxPETF8TrCTgWYXgJP2L+4wA43Z23a
+ Uv3ScE+9txeAi3LbOPfsMu78bSud3AC3tnVXzM1o0RwC0ocmAj7yOfR7P6Qws1dzaFaa1p3Ye
+ V9eI8hlkb9IxZed7lrhFOAPeaP6vKpqEXd4A/JXTfoipVAS7siWjd0HAeYeFW3L5IhcA4uLBX
+ p+osRfZQKY0csGfVN6NjVG0/SSJKjDIapRpG3OhO0KbV8XENigHjn6dKXXek5OJX3R74Rd63R
+ CaKv+ink78TnE3xIj3kRvWMlisYKtKwwOIW75U2dHeTPAZE8dsck2JgCnfGOOQWU2hw2ZSoM+
+ ueQoqHX40F4/vYhyKWHB++Uzk9Bkl02d06xFyKudLos1DA3pnuOQ2T094yaw04IJLw2DrXEHn
+ KkIeH0iMUhCLRQqyXeQB+tvw5Bn+9HrhDFaStLyOPWIHm8re8Vz/Sr+Tb5Q11IirF8GJsMne3
+ MJbVGycTgUSK1+ZgS6yBn9k4oFuw5WwESQyGhIciCE0B59/KFVw5bpKjk0O/UTzHHsa/A0453
+ YyH/ttagvwMk0NkXTiq20hHBLbZ5uu9vGQhng5F6qNpfvlCCOfIhIwvJX4Q0fvE4C34Clmp0b
+ Ahf/Ci5AiZHVVoCdJUqHDP+XcCPXz0nuXJ9l160120itXr9kQAELe1zMf5jVj+8+ZfEuhLEVi
+ bLoF2q8z7Y2Uids9JGIANY4CHrEo/OUMGCeMPty2PtcFVMwCBMummclk02lIuZhRzg==
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 31.07.19 16:45, James Bottomley wrote:
-> On Tue, 2019-07-30 at 23:54 +0200, Helge Deller wrote:
-> [...]
->> Thanks for the patch below, I'll test tomorrow...
->
-> It passed my test bed.
+In fpudispatch.c we see a lot of fall-through warnings, but for this file =
+we
+prefer to not mark the switches and instead keep it in it's original state=
+ as
+it's copied from HP-UX.
 
-Very good.
+Fixes: a035d552a93b ("Makefile: Globally enable fall-through warning")
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-> Just FYI, the code in question is never
-> exercised unless you see the message:
->
-> load extent tree[%d] block at %d
+diff --git a/arch/parisc/math-emu/Makefile b/arch/parisc/math-emu/Makefile
+index b6c4b254901a..55c1396580a4 100644
+=2D-- a/arch/parisc/math-emu/Makefile
++++ b/arch/parisc/math-emu/Makefile
+@@ -18,3 +18,4 @@ obj-y	 :=3D frnd.o driver.o decode_exc.o fpudispatch.o d=
+enormal.o \
+ # other very old or stripped-down PA-RISC CPUs -- not currently supported
 
-Actually, fyi, in the patch I committed I hided that message behind a
-Debug flag, so normal users would never see that message.
-
-> Somewhere in the boot.  The reason is that if you keep a separate /boot
-> partition, the chances are it has very few files, so those files it has
-> are very contiguous and ext4 doesn't need to build an extent tree so
-> our IPL code handles everything in ext3_extent_leaf_find().  The way to
-> build a fragmented /boot is (starting with an empty /boot):
->
-> mkdir /boot/tmp
-> a=3D0; while dd if=3D/dev/zero of=3D/boot/tmp/block.${a} bs=3D16k count=
-=3D1; do a=3D$[$a+1]; done
-> a=3D0 while rm /boot/tmp/block.${a}; do a=3D$[$a+2]; done
->
-> And then copy the kernels in.
-
-The fixed PALO version 2.11 is now available in the debian repositories.
-
-Helge
+ obj-$(CONFIG_MATH_EMULATION)	+=3D unimplemented-math-emulation.o
++CFLAGS_REMOVE_fpudispatch.o	=3D -Wimplicit-fallthrough=3D3
