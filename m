@@ -2,164 +2,95 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAFB87D04B
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jul 2019 23:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7D187D1A5
+	for <lists+linux-parisc@lfdr.de>; Thu,  1 Aug 2019 01:01:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730110AbfGaVv2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 31 Jul 2019 17:51:28 -0400
-Received: from mout.gmx.net ([212.227.15.18]:41651 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727987AbfGaVv1 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 31 Jul 2019 17:51:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1564609878;
-        bh=kAy7NoaAVmviVQGadWUYyq5eqwBRrWZB50MhaFIISwk=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=ljX1tgljbpDEgdi6qdL3L5mGkaQNT0RSjegMf3ory50CcDza6bi8EU/9j+WmjzOmd
-         LD3mt9HyR5Ek2NuiN2PyVuePaCnpSG35waWE5xyYxMEHWGTR5V3MlUTiPmqZwte+Hd
-         Z+JPkTntNhncBgTRyTt9t9yAsvqUPAxYwc+tNL5g=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.174.24]) by mail.gmx.com (mrgmx001
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0MEoGY-1i7pwl43YI-00G1l8; Wed, 31
- Jul 2019 23:51:18 +0200
-Subject: Re: Compressed kernels currently won't boot
-From:   Helge Deller <deller@gmx.de>
-To:     Sven Schnelle <svens@stackframe.org>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>
-References: <1564591443.3319.30.camel@HansenPartnership.com>
- <20190731173016.GA23520@t470p.stackframe.org>
- <1564595402.3319.40.camel@HansenPartnership.com>
- <1564602012.3319.45.camel@HansenPartnership.com>
- <20190731194413.GB23520@t470p.stackframe.org>
- <1564606894.3319.72.camel@HansenPartnership.com>
- <20190731210819.GE23520@t470p.stackframe.org>
- <4a79ab9c-c791-0c61-0664-60eab3567125@gmx.de>
-Message-ID: <2bd11097-8de3-6cd8-f158-ec9926e47614@gmx.de>
-Date:   Wed, 31 Jul 2019 23:51:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727373AbfGaXBD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 31 Jul 2019 19:01:03 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:46976 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726417AbfGaXBA (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 31 Jul 2019 19:01:00 -0400
+Received: by mail-qt1-f196.google.com with SMTP id h21so68202050qtn.13
+        for <linux-parisc@vger.kernel.org>; Wed, 31 Jul 2019 16:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=his7K/u+JOrtxUOs2Ekh5bM+KWEwFmVBgmJqXbtUu9E=;
+        b=ZqOvaIKn5gpXMKF0lFuPBJqJcfbMtb3MPGVVmN3aQsXXr9MSvDSwnBIoLdfs4Cduzu
+         QRA8c1QAxNjNjf8z0l9WF9x2Kw8+F1laR/NQxc3pyjTGetdSmplJvdURFUqnq6fIi7Y5
+         JS4Uvm5qizwTDtKpRb8KoH2QzFqssZQiMkXG494iOUBy1xVC1xhi6b5WNlWd0gIvaub2
+         W1XaQLBaV1YKYGli71I0JUa9mD2l2THlCEAFuHc01L/n1KcqIaj1oCEo7xdECmJqx39w
+         8DGqiJA1GV5ZIbSfFrgl6Pwwxp6UZXG3UZ0N0Nuntbj6x+BE/tlQ9FyXqpoxRRJYgrFQ
+         ADTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=his7K/u+JOrtxUOs2Ekh5bM+KWEwFmVBgmJqXbtUu9E=;
+        b=VYkNOGJFXKdM2lGO6zIVSc6CQ2bC5i7UnY9z4DKK86/YH+LecZk4lPA2fu1Lda0pEc
+         DXHXDsKIVZ2T+YHY0gD+vj8zYv64yHhtClV0sLoRZ2bMLyVBjUsYNDGqV4nrEKFCg08r
+         hXMHTAFvJ3JFL3Mm0C7lzrSvh0dbWflkVpnSwDDAZ5NJqNd2J2c67+ssixY0lj2vZOi9
+         e5oLO0nDMcm1X7cy4qecjIFW+mzMmUwFULg06vCZWFePElUUAnTpbopS2A/ecObmqxHO
+         ePvqaIHPnaJeDVYbZbb/4PAJ4cPYrStavrsTF1Cl7KMEvOMmUQxXckm/U83MdJdSLDPM
+         9ykw==
+X-Gm-Message-State: APjAAAWZoqwB7NlsKdgFzSzyZL+LjMPRlU7AzQaPpYbZcVxj1tW1aMmH
+        zGAy2IAUu/rJ/aywOz7Cs0dgdA==
+X-Google-Smtp-Source: APXvYqwJPf0PqUhqgGpVR2IzxGvlfGykM1M7nRsba5YS0Ne3y5wjASuoEvOh6D7uIAmXvcUuYYR1nQ==
+X-Received: by 2002:ac8:688:: with SMTP id f8mr11797584qth.130.1564614059446;
+        Wed, 31 Jul 2019 16:00:59 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
+        by smtp.gmail.com with ESMTPSA id n18sm29218512qtr.28.2019.07.31.16.00.57
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 31 Jul 2019 16:00:58 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1hsxab-00009Y-B9; Wed, 31 Jul 2019 20:00:57 -0300
+Date:   Wed, 31 Jul 2019 20:00:57 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Jason Wang <jasowang@redhat.com>
+Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+        syzbot <syzbot+e58112d71f77113ddb7b@syzkaller.appspotmail.com>,
+        aarcange@redhat.com, akpm@linux-foundation.org,
+        christian@brauner.io, davem@davemloft.net, ebiederm@xmission.com,
+        elena.reshetova@intel.com, guro@fb.com, hch@infradead.org,
+        james.bottomley@hansenpartnership.com, jglisse@redhat.com,
+        keescook@chromium.org, ldv@altlinux.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        luto@amacapital.net, mhocko@suse.com, mingo@kernel.org,
+        namit@vmware.com, peterz@infradead.org,
+        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
+        wad@chromium.org
+Subject: Re: WARNING in __mmdrop
+Message-ID: <20190731230057.GA32346@ziepe.ca>
+References: <ada10dc9-6cab-e189-5289-6f9d3ff8fed2@redhat.com>
+ <aaefa93e-a0de-1c55-feb0-509c87aae1f3@redhat.com>
+ <20190726094756-mutt-send-email-mst@kernel.org>
+ <0792ee09-b4b7-673c-2251-e5e0ce0fbe32@redhat.com>
+ <20190729045127-mutt-send-email-mst@kernel.org>
+ <4d43c094-44ed-dbac-b863-48fc3d754378@redhat.com>
+ <20190729104028-mutt-send-email-mst@kernel.org>
+ <96b1d67c-3a8d-1224-e9f0-5f7725a3dc10@redhat.com>
+ <20190730110633-mutt-send-email-mst@kernel.org>
+ <421a1af6-df06-e4a6-b34f-526ac123bc4a@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <4a79ab9c-c791-0c61-0664-60eab3567125@gmx.de>
-Content-Type: multipart/mixed;
- boundary="------------619C74AD75E7C61EFE17A3ED"
-Content-Language: en-US
-X-Provags-ID: V03:K1:+H0dmna7Yx1p3lssp/tQ2wds20iCEvglq+lnIGFb/rwLkDrbwKr
- 1eN1rii4HQ1yt5ERV0s+go7J0qVGSK0/fs/s5u4s/huEWV4j7vzYvXU+ZxJa1iPVionjkd4
- GGmNTGr+/HPs3lu1N8qkjRdS9YlBqqCEcUNqAC8mjdWV4B+EzxwAnEaUnkkkC1kqlUCNMB8
- FdE58vG2x5PvVs34MQI1w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:a8NvUQx0Ea0=:k+mRcAZC3lWAKModnHIMyS
- HEyc0gzEMQ3CxsGcBYPoFgxJDye4k5MPO9KuZJsEmZIk2PP/eH1PR9gaKzBSDbumxaAV5ls+a
- 8r3oNiEdbjfwiPP0cfCfmR5K0X/cpu+OeFH7O940e5q8CbGVhIUgF5cDWBNPHQMz2zn1Nx8pM
- czubUEm+REa+jYnEUUIiFzyPVQls+gOLnTt6B6nMB6ae3WJvE8sUYFmdbdZW9uZEZULggLH1v
- 2UMGrIWA6d1w6xPFzSpQzE8ex8g8kLRmqaT4BR1z046Xk1GBbkW2O9Jjp/cPQX9TT1+OQ6Oz9
- 3g+p9pmF9t08v7I2ry9csuiCkXf0nBy707G8GGYleEvXF5TOlYP3Hb4ZYDv+mKSvPcBXve/gu
- CKPt7npOFmBhzN6qrDJYXDjFuv6TqYq4sUHU9nhGGUlagHWwEmVd5fsOVdaxAzHTo8hqKv8oy
- uieo/RTekuM58yBJ17NCBrg2BMetcBnYNqObpF6sA5qQ/NNneNdTo2OPLGWaIxRVcXNxTKAJg
- uUG9wh88YRdm6ZlAHJqEyHePU+u9Sty0ZcG4FMk7tsQpDpd9UB41XUV5gRdK0MtmJGqcwKeyK
- eA1yAF4Xw8nYUzKLyinG4w6vl78MMYfPNAATh2r4oJ0bt3Fg/ZymQhAq6cl0Pu45igah/nahi
- htScd9sL+yl5R55Ekd4cPHmkJR3mxuYGpyl++s0cI1dZp7coTM0y+AHwOmGLHOU6LXm68fL32
- qQaEjeServ4kPisxAinuA25UnuXuX2xnWcGMdCV+kJm4XyzaLDqD3cpcpa9k4izxd/vIwFVkZ
- mONebrMis1rctMcg8EN7+5AvXNYsR2LXZq7cmYbEgM5a/4OAeTuk5G06bW4LpsgE6/piOgJP9
- 62xpMUYjnGHCAhvVarBObn18W5AFOTBgq05K7edOR6Z6sSlxOMmQdnCmSZ2paJ61AWT6l07uO
- u90yD5+SGYbWkz+WlQQth8gDJcvV7au770N/Kh10oS4N+UP3wiVB7py1WCXhl66li1cQvaeA+
- IrW9ni7b95Mh/Q6XjWK+jq/7yIZFlwwoPoaZ9GuYadND+w3+BXS2VqqnjlFnG0gmflIbI8wDd
- sgWUq7QiXaXT8xarh9PSPYpAF8ap8hFOpU06nKqmu+qA04oBlBEa6Q+sr1RN1rhTxo4jdfRGx
- rSqbd+axUzyPS0kEC6V2/0mpiQzzUw3YWtzy1EMWhHCRThqqYgF4LFF69idV1VUzCFUp4=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <421a1af6-df06-e4a6-b34f-526ac123bc4a@redhat.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------619C74AD75E7C61EFE17A3ED
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jul 31, 2019 at 04:49:32PM +0800, Jason Wang wrote:
+> Yes, looking at the synchronization implemented by other MMU notifiers.
+> Vhost is even the simplest.
 
-On 31.07.19 23:13, Helge Deller wrote:
-> On 31.07.19 23:08, Sven Schnelle wrote:
->> Hi,
->>
->> On Wed, Jul 31, 2019 at 02:01:34PM -0700, James Bottomley wrote:
->>> On Wed, 2019-07-31 at 21:44 +0200, Sven Schnelle wrote:
->>>> Hi James,
->>>>
->>>> On Wed, Jul 31, 2019 at 12:40:12PM -0700, James Bottomley wrote:
->>>>
->>>>> What about causing the compressed make to build both a stripped and
->>>>> a non-stripped bzImage (say sbzImage and bzImage).=C2=A0 That way yo=
-u
->>>>> always have the stripped one available for small size things like
->>>>> boot from tape or DVD?=C2=A0 but in the usual case we use the bzImag=
-e
->>>>> with full contents.
->>>>
->>>> In that case we would also need to build two lifimages - how about
->>>> adding a config option option? Something like "Strip debug
->>>> information from compressed kernel images"?
->>>
->>> Actually, I just looked at what x86 does.=C2=A0 It has this in the
->>> arch/x86/boot/compressed/Makefile:
->>>
->>> OBJCOPYFLAGS_vmlinux.bin :=3D=C2=A0 -R .comment -S
->>> $(obj)/vmlinux.bin: vmlinux FORCE
->>> =C2=A0=C2=A0=C2=A0=C2=A0$(call if_changed,objcopy)
->>>
->>> So it basically strips all the debug information from the kernel befor=
-e
->>> compressing, which argues there's no need to retain the information
->>> because x86 doesn't bother.
->>
->> Nice. So we could convince Helge by saying "Look, x86 is also stripping=
- it"! :-)
->
-> I'm fine with doing exactly why x86 does :-)
+I think that is only because it calls gup under a spinlock, which is,
+IMHO, not great.
 
-Attached is the revised patch, and it gets the compressed kernel down
-from 32MB to 3.8MB.
-
-Helge
-
---------------619C74AD75E7C61EFE17A3ED
-Content-Type: text/x-patch;
- name="drop-debug.patch"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: attachment;
- filename="drop-debug.patch"
-
-diff --git a/arch/parisc/boot/compressed/Makefile b/arch/parisc/boot/compr=
-essed/Makefile
-index 2da8624e5cf6..c54d9d0f6043 100644
-=2D-- a/arch/parisc/boot/compressed/Makefile
-+++ b/arch/parisc/boot/compressed/Makefile
-@@ -55,7 +55,8 @@ $(obj)/misc.o: $(obj)/sizes.h
- CPPFLAGS_vmlinux.lds +=3D -I$(objtree)/$(obj) -DBOOTLOADER
- $(obj)/vmlinux.lds: $(obj)/sizes.h
-
--$(obj)/vmlinux.bin: vmlinux
-+OBJCOPYFLAGS_vmlinux.bin :=3D  -R .comment -S
-+$(obj)/vmlinux.bin: vmlinux FORCE
- 	$(call if_changed,objcopy)
-
- vmlinux.bin.all-y :=3D $(obj)/vmlinux.bin
-diff --git a/arch/parisc/boot/compressed/vmlinux.lds.S b/arch/parisc/boot/=
-compressed/vmlinux.lds.S
-index bfd7872739a3..2ac3a643f2eb 100644
-=2D-- a/arch/parisc/boot/compressed/vmlinux.lds.S
-+++ b/arch/parisc/boot/compressed/vmlinux.lds.S
-@@ -48,8 +48,8 @@ SECTIONS
- 		*(.rodata.compressed)
- 	}
-
--	/* bootloader code and data starts behind area of extracted kernel */
--	. =3D (SZ_end - SZparisc_kernel_start + KERNEL_BINARY_TEXT_START);
-+	/* bootloader code and data starts at least behind area of extracted ker=
-nel */
-+	. =3D MAX(ABSOLUTE(.), (SZ_end - SZparisc_kernel_start + KERNEL_BINARY_T=
-EXT_START));
-
- 	/* align on next page boundary */
- 	. =3D ALIGN(4096);
-
---------------619C74AD75E7C61EFE17A3ED--
+Jason
