@@ -2,112 +2,146 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 093A07CCFF
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jul 2019 21:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72A747CD01
+	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jul 2019 21:40:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726712AbfGaTkO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 31 Jul 2019 15:40:14 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:33738 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726232AbfGaTkO (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 31 Jul 2019 15:40:14 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id BFD2A8EE12F;
-        Wed, 31 Jul 2019 12:40:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1564602013;
-        bh=QOqkWTz27sUPKibneZYX1UGsEGYQ/E4YdBbwN+w6wmM=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=xgGGtDVhJU1MUKbZGOJpvRofGLUWSYbRz9tDZzyvQJkoXPV1andYDqTcf4iy3mXzc
-         liZSLMmCuhFwJEmIn6ERf1k/iRcWpnNhcs3nDL6kmbLk4+r1X0BP+ds3/wEj9O6Kp3
-         8bawxtkON3bF3Osi9ZEHDjpIrJgtgN+tAYWCL5FE=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id toNbEhEqhouu; Wed, 31 Jul 2019 12:40:13 -0700 (PDT)
-Received: from jarvis.lan (unknown [50.35.71.147])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 3A6628EE10C;
-        Wed, 31 Jul 2019 12:40:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1564602013;
-        bh=QOqkWTz27sUPKibneZYX1UGsEGYQ/E4YdBbwN+w6wmM=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=xgGGtDVhJU1MUKbZGOJpvRofGLUWSYbRz9tDZzyvQJkoXPV1andYDqTcf4iy3mXzc
-         liZSLMmCuhFwJEmIn6ERf1k/iRcWpnNhcs3nDL6kmbLk4+r1X0BP+ds3/wEj9O6Kp3
-         8bawxtkON3bF3Osi9ZEHDjpIrJgtgN+tAYWCL5FE=
-Message-ID: <1564602012.3319.45.camel@HansenPartnership.com>
-Subject: Re: Compressed kernels currently won't boot
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Sven Schnelle <svens@stackframe.org>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>
-Date:   Wed, 31 Jul 2019 12:40:12 -0700
-In-Reply-To: <1564595402.3319.40.camel@HansenPartnership.com>
-References: <1564591443.3319.30.camel@HansenPartnership.com>
-         <20190731173016.GA23520@t470p.stackframe.org>
-         <1564595402.3319.40.camel@HansenPartnership.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1726907AbfGaTki (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 31 Jul 2019 15:40:38 -0400
+Received: from mout.gmx.net ([212.227.15.18]:57173 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726865AbfGaTki (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 31 Jul 2019 15:40:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1564602031;
+        bh=KYZVcGpkIJsB6ohouwVGyxQZdepQwBDGOX+s3ObYRjc=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=T3YRGXlg5y4ADK3ux+vh7aKGXxo9JY3K5uepdZiA/jjXf41um9umOjmO9745oKZyv
+         Tut+YirGPL8VpoSqu233+hZUDtQS5b+vgtReXggGJpoqV7Aw9Qu5y8kEHYsXB/QXPZ
+         RSOTd5+grYPZMP5o686SW97F+1fZiofVI8dD3mSM=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.174.24]) by mail.gmx.com (mrgmx003
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0M9JYE-1i5VdR18wA-00ChYa; Wed, 31
+ Jul 2019 21:40:31 +0200
+Subject: Re: [PATCH] parisc: strip debug information when building compressed
+ images
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Sven Schnelle <svens@stackframe.org>
+Cc:     linux-parisc@vger.kernel.org
+References: <20190731171923.24155-1-svens@stackframe.org>
+ <20190731192835.GA14352@ls3530.fritz.box>
+ <1564601859.3319.43.camel@HansenPartnership.com>
+From:   Helge Deller <deller@gmx.de>
+Message-ID: <366ad43f-c9a6-1291-5cca-014172f0fd62@gmx.de>
+Date:   Wed, 31 Jul 2019 21:40:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <1564601859.3319.43.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:v+8UggD/ARb3YwDnJuH6fDXw8xbwdJ08ZibnuLjVa81fEUuwyE/
+ YJ+inKRYCN2Hfd4emvXBAQ+X9AcwN8S0b9TiG2VxmNgXukjvHorxOQXEP3WeyTMat+uIE9A
+ ooVO3a4I/OYszxs/y7U0VrGtqgEfVEb6bNwufMX+ubr0hmMiL5xmBqLoF7c92rkONC1p4fX
+ 4jHUgy2hzfsjAAxxtKRng==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:AgCHofrb8Ho=:Jc45YdTSWPquT+J8fz9X43
+ W+dlMN7Hsyy/I2if+FxyEUu9CaGIeYTEIEVbz0PYb4GBf7LgCs/WOudh7qLnqMK8/hNcSHyGZ
+ GLqvKWAezhJ9Ma2CneBbfaZr6sxip44jxnLYBd1d5+CkVsrrzI9Vo5upKzW+ZQaTu1bt5WXUa
+ PPgBiVos0O7HsfFHY2shPRFKbnmzA5HiP/keU1TWVCZm8Gru4oKNlDhg59OFX4FuxX7yPJ3W5
+ is6YfDUxuxZmUXAuFHqhOG/4+oaIE4GkJd4pqgnZqpwTUAgY1Bl/G9eqTlannaSi6GGkPYZvF
+ Uoh9YcKpUijJF0SCx1+KuPOoBymI2EnT+8eLDOoWszV7HYzBXyszp6ZMaO3osHNMls49HYjTj
+ SpCjME2gi5RZ0ELjKOX07j8S9u1WAk+ytnVceuPl9rVo7YUIFUbxTRQwjMel0isKMJaw45mjh
+ L9szONqKKDh+ZA4plxsPPyi+lJU07CzECvQgW0+waiP3gy1JJjuo/a9UXflqS5IBZHpA2usSD
+ NYTLVqBb4V0eg/zPE6w9TFS88uhusBzbW+B6zbujPsB8V0RQ/1167KaGlYf62WMgwktiINVth
+ Dubo5be/5TioTQRIyvbiC4xE9jumUAIqGcf6i/tBgAd9ZBFFqDeatd0cLLoZrRuxiPM4m7tJD
+ WZzjUgqyznDxtwI0tCVAEJK8b8ClaHyx7TUw3F8oKfEmG+4x3K5Wqz+x6WA6JFc2jtkurDmWD
+ oCubm7t3175m0TcY8MYdmrIvoJXiofT5s+ZFuwFnOeUsdtKGwoBU+k02jLON2XfUJg4Samlj1
+ Qvx1HyooxpG9egRtnU0/TN7VWeGG+hEJn0F7cHnQR0pgUb8NMDXw4iheHuXkeYM7axVlMqM2I
+ 2Jt3OtnThpHJpnFXlPizy5qyj8PtMkkkpX4Va2xEc82GKaOiNCTpuOlbJENSQHgTtrwp3eFga
+ +L+ilNtBAwphZce4nwMdRkvstNcqhJOigyRaJOBBfKRk/A2cSdDg/4ePepaZAxHsodVqV7CWX
+ X9wm7wALdyg6nMwl22ZhkF9x9KsOc2t4OIs49oT/9HqpC07E09S2nJGcs2bU+aRb7EuU2bgTK
+ e3lL/KhLo+NiiI=
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, 2019-07-31 at 10:50 -0700, James Bottomley wrote:
-> On Wed, 2019-07-31 at 19:30 +0200, Sven Schnelle wrote:
-> > Hi,
-> > 
-> > On Wed, Jul 31, 2019 at 09:44:03AM -0700, James Bottomley wrote:
-> > > I noticed this trying to test out compressed kernel booting.  The
-> > > problem is that a compressed kernel is divided into two pieces,
-> > > one
-> > > of which starts at 0x000e0000 and is the bootstrap code which is
-> > > uncompressed into 0x00100000 and the rest of which is the real
-> > > compressed kernel which is loaded above the end of the current
-> > > decompressed size of the entire kernel.  palo decompresses the
-> > > head
-> > > and jumps to it and it then decompresses the rest of the kernel
-> > > into place.  This means that the first part of the compressed
-> > > image
-> > > can't be larger than 0x20000 == 131072 because otherwise it will
-> > > be
-> > > loaded into an area that decompression will alter.
-> > > 
-> > > The problem is that a change was introduced by 
-> > > 
-> > > commit 34c201ae49fe9e0bf3b389da5869d810f201c740
-> > > Author: Helge Deller <deller@gmx.de>
-> > > Date:   Mon Oct 15 22:14:01 2018 +0200
-> > 
-> > Hmm. This is what i've been facing as well.
-> 
-> Yes, except you're a more extreme case than me ... you actually have
-> the compressed segment overlapping the end of the decompressed text. 
-> that does seem to mean we have a lot of no-load debug information
-> which
-> isn't useful to the compressed image.
-> 
-> >  After reading this commit i'm not sure that the patch i've just
-> > sent ("parisc: strip debug information when building compressed
-> > images") is really wanted. However, it is really a pain to always
-> > copy huge lifimages around when booting parisc machines via LAN.
-> > Does someone really extract the vmlinux file from a compressed
-> > kernel images? Should we keep that?
-> 
-> Well, it's a thing.  There's a script in the kernel source tree
-> 
-> scripts/extract-vmlinux
-> 
-> that does it.  It doesn't seem to be packaged by debian, though.
+On 31.07.19 21:37, James Bottomley wrote:
+> On Wed, 2019-07-31 at 21:28 +0200, Helge Deller wrote:
+>> * Sven Schnelle <svens@stackframe.org>:
+>>> When compiling the kernel with debug information i got the
+>>> following error:
+>>>
+>>> hppa-linux-gnu-ld: section .text LMA
+>>> [0000000000e78000,0000000000e7b41f] overlaps section
+>>> .rodata.compressed LMA [00000000000e0078,00000000015ad43d]
+>>> make[3]: *** [/home/svens/parisc-
+>>> linux/src/arch/parisc/boot/compressed/Makefile:28:
+>>> arch/parisc/boot/compressed/vmlinux] Error 1
+>>> make[2]: *** [/home/svens/parisc-
+>>> linux/src/arch/parisc/boot/Makefile:17:
+>>> arch/parisc/boot/compressed/vmlinux] Error 2
+>>> make[2]: Target 'arch/parisc/boot/bzImage' not remade because of
+>>> errors.
+>>>
+>>> While this might also be fixed by adjusting the linker script, i
+>>> think we
+>>> should strip the debug information when generating the compressed
+>>> image. This
+>>> reduces the size of vmlinuz/lifimage from ~69MB to 6.6MB when full
+>>> debug
+>>> information is enabled.
+>>
+>> I think keeping debug info is good.
+>> Can you test this patch instead?
+>> It converts a 141MB vmlinux boot file (with debug info) to a 32M
+>> vmlinuz for me.
+>>
+>> Ideally I would prefer something like
+>>    . =3D MIN_OR_HIGHER_THAN_CURRENT_ADDR((SZ_end - SZparisc_kernel_star=
+t
+>> + KERNEL_BINARY_TEXT_START));
+>> to avoid the ifdef, but I'm missing the linker script expert
+>> knowledge...
+>>
+>> Helge
+>>
+>> ------------------------
+>> [PATCH] parisc: Allow building a compressed vmlinuz with
+>> CONFIG_DEBUG_INFO enabled.
+>>
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>>
+>> diff --git a/arch/parisc/boot/compressed/vmlinux.lds.S
+>> b/arch/parisc/boot/compressed/vmlinux.lds.S
+>> index bfd7872739a3..dac000ec3861 100644
+>> --- a/arch/parisc/boot/compressed/vmlinux.lds.S
+>> +++ b/arch/parisc/boot/compressed/vmlinux.lds.S
+>> @@ -49,7 +49,10 @@ SECTIONS
+>>   	}
+>>
+>>   	/* bootloader code and data starts behind area of extracted
+>> kernel */
+>> +#if !defined(CONFIG_DEBUG_INFO)
+>> +	/* ensure at least max address when compiled without debug
+>> info: */
+>>   	. =3D (SZ_end - SZparisc_kernel_start +
+>> KERNEL_BINARY_TEXT_START);
+>> +#endif
+>
+> This would cause the kernel to be built in a single section
 
-What about causing the compressed make to build both a stripped and a
-non-stripped bzImage (say sbzImage and bzImage).  That way you always
-have the stripped one available for small size things like boot from
-tape or DVD?  but in the usual case we use the bzImage with full
-contents.
+Yes.
 
-James
+> for the
+> !defined(CONFIG_DEBUG_INFO) case, meaning we'd always blow through the
+> 0x00100000-end text hole we need to leave for the compressed kernel to
+> decompress into.
 
+The debug info occupied the memory (and more) in the 0x00100000-end text a=
+rea,
+so we have the room to decompress to.
+But the second patch I just sent is better anyway.
+
+Helge
