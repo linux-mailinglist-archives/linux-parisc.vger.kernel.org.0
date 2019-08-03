@@ -2,56 +2,56 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC268031D
-	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2019 01:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ED03805B9
+	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2019 12:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392588AbfHBXUD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 2 Aug 2019 19:20:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59406 "EHLO mail.kernel.org"
+        id S2388201AbfHCKa3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 3 Aug 2019 06:30:29 -0400
+Received: from verein.lst.de ([213.95.11.211]:59810 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388599AbfHBXUC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 2 Aug 2019 19:20:02 -0400
-Subject: Re: [GIT PULL] parisc architecture fixes for kernel v5.3-rc3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564788001;
-        bh=w7pLLNi5wooNeDeJ/x3nTG9XxghUGlex9IME0/qMU04=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=xolDVK0+9DslIG3/7r77C+chHLfLf6LUTYtKDXdgLEOXKXyzlMVABJWFfogyRSBmx
-         P191Ne3tSBeRe60f/9LfuIQYRqEcSZnJtpIo91p9PWKppk24XA1MDTdcrwA23hIGxw
-         /Uf0okfpfoi5it4dLX6/9CzJbEbU0rNtJNgRD2SI=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20190802160447.GA27285@ls3530.fritz.box>
-References: <20190802160447.GA27285@ls3530.fritz.box>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20190802160447.GA27285@ls3530.fritz.box>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git
- parisc-5.3-4
-X-PR-Tracked-Commit-Id: f2c5ed0dd5004c2cff5c0e3d430a107576fcc17f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 9100fc5ae83e64d99fd3300104893ef0e0b0aadb
-Message-Id: <156478800176.22769.2117525589731444415.pr-tracker-bot@kernel.org>
-Date:   Fri, 02 Aug 2019 23:20:01 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
+        id S2388432AbfHCKa3 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 3 Aug 2019 06:30:29 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 4321A227A81; Sat,  3 Aug 2019 12:30:24 +0200 (CEST)
+Date:   Sat, 3 Aug 2019 12:30:24 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        Robin Murphy <robin.murphy@arm.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 5/5] dma-mapping: remove ARCH_NO_COHERENT_DMA_MMAP
+Message-ID: <20190803103024.GA32624@lst.de>
+References: <20190725063401.29904-1-hch@lst.de> <20190725063401.29904-6-hch@lst.de> <20190802070354.GA8280@lst.de> <s5hh870rn4t.wl-tiwai@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <s5hh870rn4t.wl-tiwai@suse.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Fri, 2 Aug 2019 18:04:47 +0200:
+On Fri, Aug 02, 2019 at 10:24:02AM +0200, Takashi Iwai wrote:
+> I wasn't careful enough to look at that change, sorry.
+> 
+> The code there tries to check whether dma_mmap_coherent() would always
+> fail on some platforms.  Then the driver clears the mmap capability
+> flag at the device open time and notifies user-space to fall back to
+> the dumb read/write mode.
+> 
+> So I'm afraid that simply dropping the check would cause the behavior
+> regression, e.g. on PARISC.
+> 
+> Is there any simple way to test whether dma_mmap_coherent() would work
+> or not in general on the target platform?  It's not necessarily in an
+> ifdef at all.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.3-4
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/9100fc5ae83e64d99fd3300104893ef0e0b0aadb
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+This isn't really a platform, but a per-device question.  I can add a
+"bool dma_can_mmap(struct device *dev)" helper to check that.  But how
+do I get at a suitable struct device in hw_support_mmap()?
