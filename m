@@ -2,31 +2,31 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34971814D8
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2019 11:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEF9D814F7
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2019 11:13:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728079AbfHEJMR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 5 Aug 2019 05:12:17 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:34434 "EHLO
+        id S1728304AbfHEJND (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 5 Aug 2019 05:13:03 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:34602 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728067AbfHEJMQ (ORCPT
+        with ESMTP id S1728095AbfHEJMT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 5 Aug 2019 05:12:16 -0400
+        Mon, 5 Aug 2019 05:12:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=urEmUUgdHQK/RXisjgziTewBbi9Y6Q1gTs0AWjfkJa4=; b=t/QmNF9K0u3YouJ4rprzdwLiu3
-        pq0Ju27OXGFCUDZNcHEg1LqwhycGIlPuO9U6/SIVaWFJ3jJJq32TokI9y+h6Y7nhet9HM9ZQF/6Bi
-        43+BNkAzi4O31w4OniYVzgQ+zBiJ5QxviAimO5OFhNLV5sHoBI2AyB2LMVuj7S0/TbTPB5tlQhODs
-        hPdLd+WCQj4Cckuo2FZHSP27KP/5vA+VqCt+emHHWH/89phj6Iu0X+UgrEdmFrZ+ZpB4dsa6VcnIm
-        GFA3VknvjrcVZbn0/OIVzey1wxfRVSmbi/SwzhAkTswnvvqZz9QHC67atngF7ukZiGzmNlg+BGbKK
-        TtYIr4tQ==;
+        bh=r7VigzYU3BuHUi2BBP1jIMsKqnBbu0+Xmxj4lDWNmG0=; b=Sd4QHDwuC8t+6vutznxfjeQukI
+        02e7uLEYeS7f/4D+3POuYv4ZxgWMNVY7eDp6J7tleaoYU7pppL8xXSM6f81jDZVjJTLDl22ru67IU
+        f4gkXp/yZcv9v0g6Fe0e6IpRC8jSvYiygY/FH5YpQ7cEhg+2bqRMibPUsHrhM1CkxwgHILjqwKIjr
+        w9S/Ulsek9D8832JzD+E1gwns8BTtn/sJUlKJf0FgkxU8wSe/i/Pt3Ogoo/zqFupnMC400hE/3RW6
+        02BmOfALUs2NKEFGJNMHjow/YYbsDC0A9FZEEd6mweswxwTRO0uOaFyhTGmmbxcsxHZurxCwtQotm
+        Oy4PGlhw==;
 Received: from [195.167.85.94] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1huZ2I-0004x8-6E; Mon, 05 Aug 2019 09:12:11 +0000
+        id 1huZ2L-0004ys-Hw; Mon, 05 Aug 2019 09:12:14 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org,
         Marek Szyprowski <m.szyprowski@samsung.com>
@@ -37,9 +37,9 @@ Cc:     Takashi Iwai <tiwai@suse.de>, Robin Murphy <robin.murphy@arm.com>,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 3/7] dma-mapping: add a dma_can_mmap helper
-Date:   Mon,  5 Aug 2019 12:11:55 +0300
-Message-Id: <20190805091159.7826-4-hch@lst.de>
+Subject: [PATCH 4/7] ALSA: pcm: use dma_can_mmap() to check if a device supports dma_mmap_*
+Date:   Mon,  5 Aug 2019 12:11:56 +0300
+Message-Id: <20190805091159.7826-5-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190805091159.7826-1-hch@lst.de>
 References: <20190805091159.7826-1-hch@lst.de>
@@ -51,72 +51,33 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add a helper to check if DMA allocations for a specific device can be
-mapped to userspace using dma_mmap_*.
+Replace the local hack with the dma_can_mmap helper to check if
+a given device supports mapping DMA allocations to userspace.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/dma-mapping.h |  5 +++++
- kernel/dma/mapping.c        | 23 +++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+ sound/core/pcm_native.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index f7d1eea32c78..17271857be5d 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -462,6 +462,7 @@ int dma_get_sgtable_attrs(struct device *dev, struct sg_table *sgt,
- int dma_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
- 		void *cpu_addr, dma_addr_t dma_addr, size_t size,
- 		unsigned long attrs);
-+bool dma_can_mmap(struct device *dev);
- int dma_supported(struct device *dev, u64 mask);
- int dma_set_mask(struct device *dev, u64 mask);
- int dma_set_coherent_mask(struct device *dev, u64 mask);
-@@ -552,6 +553,10 @@ static inline int dma_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index 703857aab00f..81c82c3ee8a2 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -220,12 +220,11 @@ static bool hw_support_mmap(struct snd_pcm_substream *substream)
  {
- 	return -ENXIO;
- }
-+static inline bool dma_can_mmap(struct device *dev)
-+{
-+	return false;
-+}
- static inline int dma_supported(struct device *dev, u64 mask)
- {
- 	return 0;
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index cdb157cd70e7..ab6aa355e1a0 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -203,6 +203,29 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- #endif /* !CONFIG_ARCH_NO_COHERENT_DMA_MMAP */
+ 	if (!(substream->runtime->hw.info & SNDRV_PCM_INFO_MMAP))
+ 		return false;
+-	/* architecture supports dma_mmap_coherent()? */
+-#if defined(CONFIG_ARCH_NO_COHERENT_DMA_MMAP) || !defined(CONFIG_HAS_DMA)
++	if (!dma_can_mmap(substream->dma_buffer.dev.dev))
++		return false;
+ 	if (!substream->ops->mmap &&
+ 	    substream->dma_buffer.dev.type == SNDRV_DMA_TYPE_DEV)
+ 		return false;
+-#endif
+ 	return true;
  }
  
-+/**
-+ * dma_can_mmap - check if a given device supports dma_mmap_*
-+ * @dev: device to check
-+ *
-+ * Returns %true if @dev supports dma_mmap_coherent() and dma_mmap_attrs() to
-+ * map DMA allocations to userspace.
-+ */
-+bool dma_can_mmap(struct device *dev)
-+{
-+	const struct dma_map_ops *ops = get_dma_ops(dev);
-+
-+	if (IS_ENABLED(CONFIG_ARCH_NO_COHERENT_DMA_MMAP))
-+		return false;
-+
-+	if (dma_is_direct(ops)) {
-+		return dev_is_dma_coherent(dev) ||
-+			IS_ENABLED(CONFIG_ARCH_HAS_DMA_COHERENT_TO_PFN);
-+	}
-+
-+	return ops->mmap != NULL;
-+}
-+EXPORT_SYMBOL_GPL(dma_can_mmap);
-+
- /**
-  * dma_mmap_attrs - map a coherent DMA allocation into user space
-  * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices
 -- 
 2.20.1
 
