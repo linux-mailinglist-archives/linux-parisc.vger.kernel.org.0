@@ -2,69 +2,80 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85CC284C25
-	for <lists+linux-parisc@lfdr.de>; Wed,  7 Aug 2019 14:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F411857D6
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2019 03:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387796AbfHGM5x (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 7 Aug 2019 08:57:53 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:43857 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387739AbfHGM5x (ORCPT
+        id S2389565AbfHHBx7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 7 Aug 2019 21:53:59 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:38558 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730467AbfHHBx7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 7 Aug 2019 08:57:53 -0400
-Received: by mail-pl1-f196.google.com with SMTP id 4so33714627pld.10
-        for <linux-parisc@vger.kernel.org>; Wed, 07 Aug 2019 05:57:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=IVi0+NZ0tWSCQF2G+E9doP//jdO8wcwv1z7Q+3dAsws=;
-        b=diTZi+iQpcjIVf+GjOgemDfRU8U2sBiC7SkbFzD7TlOidWSb4riJQ6VLLdDdxRPFaA
-         gVoYmdJ3p/X0vdRKERUCgbxvb91/W6uyQVdrh8AIIhA9zZ1NVnJpDySmK6PM+EqcCRnS
-         MjowmCAQHajdNEGnOZMCSDCc6wY9t7QRHf/RAVuxnfBh4GrsSr/TTpiJsDfM3l4JzIXM
-         41D2AcTLI0AYE/eMUvyc0a4s+yI7iJ5jPm6F9GPi8zKDXxJk2Eu+4iEhwtiQWpzfj/DR
-         TSKAzSjxiW6a+fL7hgJ3uYZrIREtqqVRSl/4IBoFrTKHVrbZ7dz371ATNJhbcn894nNs
-         9/dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=IVi0+NZ0tWSCQF2G+E9doP//jdO8wcwv1z7Q+3dAsws=;
-        b=K4XJOmn/+f+gtryuEe25nj40fcQjg9EqD4zGMKqDOW6jLl50v1EO2BHl+vIvQ3b5/0
-         ItMp1GjFgf8TMNz9xpGNBkXXApfXr1tB8MAtAvGvsOLhhm//HaeaLslJPVmvsPcZ41iW
-         DWaazbfNh0klNxXl2ucshObi+ne1+eh9wGrwfXndRboH2HpIx35RWKeMz6VkPKKNRELB
-         aMjtTOAFo/6J9dOtjznQS52UAF8AUNtiigRFvCnSQ6AsoB0nBryaXjMKgjTqJmoCGfk7
-         74zCoaahmKJ5Q0rVxQRqXEeXkJNNnGzuGJ0Y4DvcUBUzH9eoc0TLkpzw72kqE1vLh/g3
-         TpQw==
-X-Gm-Message-State: APjAAAXBHSpwD9Pn+uS8+jqWJEx0/g26X95wYextX3KLuJEo06q8JmD0
-        g8Iwn9vrHpVRB03R2HqV4Y6lFVgf+Sv34g4fLts=
-X-Google-Smtp-Source: APXvYqy57JrFa1Xo1bykH26NPlUcKNDxfag6licsi3R+t6NErdhPJknpCH2wY36WDIruORS70filqzk6nOh1fnHAvAY=
-X-Received: by 2002:a63:ec48:: with SMTP id r8mr7286482pgj.387.1565182672470;
- Wed, 07 Aug 2019 05:57:52 -0700 (PDT)
+        Wed, 7 Aug 2019 21:53:59 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x781rc7R064913;
+        Thu, 8 Aug 2019 01:53:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=hUI7e8IJKawwesopQNrjZ+5C/MKvVoUHa389tt/eFkQ=;
+ b=KrCQn9QXHoigtQnIh69yYLhBrCWg2A18qTi3t0B0Q9Jl19op2HDq2LINM/X5gpxnjgTc
+ eeiE1gapH7rkhu36NYoMST2XrKeY1mQ955IGvtfnbEwpLfLF/912e8u8BVq/xu5O7We4
+ qe5zpXrMm8jGFNqRE340nsHbhAM+6ER95yG5pzjF4f7AS7R/6TD4HkhBmvtw9WqaQVYJ
+ adlKU0P1uZEjhVxaqIzwOdVhp8DPnetq4b3AUxY7FAwTDxuvgkijEC2rkHNLvYw8RR7e
+ MVGk2EEZNySLf0yjS5ViHTlAg9hc3RF8zvFEwFb4U4cm/BKyBUk74xP33kOsyaqZNCVm TQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2u51pu7neb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 08 Aug 2019 01:53:54 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x781r7UJ074304;
+        Thu, 8 Aug 2019 01:53:53 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2u7578gkf6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 08 Aug 2019 01:53:53 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x781row4015614;
+        Thu, 8 Aug 2019 01:53:50 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 07 Aug 2019 18:53:49 -0700
+To:     Helge Deller <deller@gmx.de>
+Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: Re: [PATCH] scsi: ncr53c8xx: Mark expected switch fall-through
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20190803193443.GA3385@ls3530.fritz.box>
+Date:   Wed, 07 Aug 2019 21:53:47 -0400
+In-Reply-To: <20190803193443.GA3385@ls3530.fritz.box> (Helge Deller's message
+        of "Sat, 3 Aug 2019 21:34:43 +0200")
+Message-ID: <yq1o910cthw.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a17:90a:33e2:0:0:0:0 with HTTP; Wed, 7 Aug 2019 05:57:51
- -0700 (PDT)
-Reply-To: eddywilliam0002@gmail.com
-From:   eddy william <crepinak.vainqueur@gmail.com>
-Date:   Wed, 7 Aug 2019 14:57:51 +0200
-Message-ID: <CAHwNn8K-PfjR=6Y67id-zQncbGqQ5DN8nUcAYDXkoxF6un1Qig@mail.gmail.com>
-Subject: hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9342 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=731
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908080017
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9342 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=794 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908080017
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello
 
-My name is Eddy William I am a lawyer by profession. I wish to offer you
-the next of kin to my client. You will inherit the sum of ($8.5 Million)
-dollars my client left in the bank before his death.
+Helge,
 
-My client is a citizen of your country who died in auto crash with his wife
-and only son. I will be entitled with 50% of the total fund while 50% will
-be for you.
-Please contact my private email here for more details:eddywilliam0002@gmail.com
+Applied to 5.4/scsi-queue. Thanks!
 
-Many thanks in advance,
-Mr.Eddy William,
+-- 
+Martin K. Petersen	Oracle Linux Engineering
