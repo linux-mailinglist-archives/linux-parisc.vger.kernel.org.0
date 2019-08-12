@@ -2,89 +2,167 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA58A87647
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2019 11:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC4818A40A
+	for <lists+linux-parisc@lfdr.de>; Mon, 12 Aug 2019 19:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406162AbfHIJfT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 9 Aug 2019 05:35:19 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:36280 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406140AbfHIJfS (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 9 Aug 2019 05:35:18 -0400
-Received: by mail-lf1-f65.google.com with SMTP id j17so15041767lfp.3
-        for <linux-parisc@vger.kernel.org>; Fri, 09 Aug 2019 02:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZhZIKbPy1ojcvmbIo8mwd7oy4V33VIdwk5j1j74WW9w=;
-        b=VcVeBlNEjS4wa/wbZ2Jy74bbWsbslezZzRDF5L5UlZPXuFgueVv76Apfbc48KCG7go
-         O+JybRtPA55YOzc+rFrImDZn5Uzf4Iypjkw1Q2Jrzsy02VozkkgOmiMWFsyG/90IeJID
-         s7g3Gev/hUXSaIrCTrM7IhGUouQ5uAYJrQU3W3SKx3qZhdrx3pME6i2VY+znRnPsMDZ6
-         IqCV+5+rqLIKHOuF9OdviK0y/AZ3VputL3vLRILFoF8nj2+pSMBc+S3cQ85tH9TO2N3S
-         m8AsLb+p6B1SXzPU1ej0Ppenwk9xbIlPPfP789O8926HVT26h04IVIjFQkPvwouSfOGR
-         RQ1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZhZIKbPy1ojcvmbIo8mwd7oy4V33VIdwk5j1j74WW9w=;
-        b=KKJUfSl4qIa++w+7KFiK4goGu12zeGh1TBItfSH6o08fAx/np8+MkqZxpaoGt9LJX0
-         cr+TrzM4lsxLBYSsXVY5PFOBFTtR9TtCcQXrrjo8pjmMtN63RucFJRQzTLjj1ahhZZhB
-         bO9K1E1HBbV0sLZ/M6cBi8ouRd3SdkAxNRXqCdo6SREEvUEJeR5xLjnUfAWd6yCPvRt/
-         2F73PGzCl01n4TqGY5EkrBocmy1ttPYALsWE/Db2VNB4NP8ecgKXMvr9qcPP3Ixqr116
-         LBzcOeXXoddohnvhgc/YNfrZqm9ckNaB1oEbw4tpkOmO7+GhyJh+oBBQ61AKFqH9RExY
-         j8UQ==
-X-Gm-Message-State: APjAAAWieK86oB9AL3/QVE7VQtATrxSas0EOvOASdeznH+g3kXPPdec5
-        RPFy7tgNjDDBWZRJK7hdYl/lQQ==
-X-Google-Smtp-Source: APXvYqzlq7k/M37b+stHUNm1aCq6nUomyYeuBENCXNdKlF0iST4RYWqRChfyDEB29cAPzX6iW+LIMA==
-X-Received: by 2002:ac2:5981:: with SMTP id w1mr12123067lfn.85.1565343316741;
-        Fri, 09 Aug 2019 02:35:16 -0700 (PDT)
-Received: from ?IPv6:2a00:1fa0:44bf:fcca:cd2a:e5bf:7de5:cd? ([2a00:1fa0:44bf:fcca:cd2a:e5bf:7de5:cd])
-        by smtp.gmail.com with ESMTPSA id t21sm19110864ljg.60.2019.08.09.02.35.14
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Aug 2019 02:35:15 -0700 (PDT)
-Subject: Re: [PATCH 6/8] arm-nommu: call dma_mmap_from_dev_coherent directly
-To:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     Vladimir Murzin <vladimir.murzin@arm.com>,
-        Takashi Iwai <tiwai@suse.de>, Helge Deller <deller@gmx.de>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Michal Simek <monstr@monstr.eu>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-m68k@lists.linux-m68k.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190808160005.10325-1-hch@lst.de>
- <20190808160005.10325-7-hch@lst.de>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <247fabce-5284-8140-c492-fe49e1683ca6@cogentembedded.com>
-Date:   Fri, 9 Aug 2019 12:35:00 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726458AbfHLRLV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 12 Aug 2019 13:11:21 -0400
+Received: from mout.gmx.net ([212.227.15.18]:37625 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726263AbfHLRLV (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 12 Aug 2019 13:11:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1565629870;
+        bh=j6o9KOKpMXkkhk6q7Ed7RMae/O2ABwbAvCJW8z2NJ0Q=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=MIBhghzW2zW1Di3myjcndSFBDMsCPzzVvrJhffgS0WNRDrVZuJJQGbWyTV2ttWSGE
+         CMTSPVdfeZdelRe5PGEA85dgz1GEJp4aPGBqqQh3x/Gxszlx5znOcU7ijU1aGhklXr
+         dq+i0mr0Mcslv6aHw+DDHXWIN4APfCnquKXFIMfY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.135.102]) by mail.gmx.com (mrgmx001
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0Me8di-1hf7AZ3e7a-00PtaZ; Mon, 12
+ Aug 2019 19:11:09 +0200
+Date:   Mon, 12 Aug 2019 19:11:06 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Add ALTERNATIVE_CODE() and ALT_COND_RUN_ON_QEMU
+Message-ID: <20190812171106.GA28906@ls3530.fritz.box>
 MIME-Version: 1.0
-In-Reply-To: <20190808160005.10325-7-hch@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Provags-ID: V03:K1:Uz7AleCDQfloOw4k/ux+48hRKdfoyWp+01vIdpPbFD5zlhGlbnF
+ 1Q3fzEiTUPWqje+T2JaqHtiO5R2NYP9yVdb3dEd06rQojVNB9DXl6J5NHeuXDVj7liogy0u
+ +xolcl7rnXGAksaQe2Wa4VX374UgsUSl/mh81Qh8MgpdtL9tinK4FkRY0OtNY4j64is7gJ3
+ 0KxbpQ59wqv3LGKdPtX9w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:B84RFmFVdNQ=:f1TUTctzdJg1EggUTSOKIR
+ i0NmpW8ed98gEznNYsGuytT5Q71GqBaffvslD9yDNWrShXcLWIpVSU5Iww8Dbt2kBFcbcIjT9
+ chg2lmduihQrNRJdnGw9OTsaxaS/vY16cUFeAcM1dSYoKhyoreN5qQUDOZna0PezwV9IAv5CE
+ FPw5SD9xeQHPIOC6H9hmSlm1Cl/NPd00gKdntm5vOn1zZfgg9MdUdSZZVIfHYw/EQRMNHW2t1
+ DPJ7O0jYFSMXuHrLs7VWMu5l29NA4QAnjehxAdAW/bmRXkK9KOh03uB9NEmFoxVSF6cfovUEt
+ r2NtWvzztpA3IbUueud1EJfrYLaDyfOGxaC372x6jsfskD31bP239qXQQuNqR4z/4QHA0Bih3
+ kIYm0mH+NaYMy6vlWPwVWZCeuYvs8Fcu+aOqXizzpdfJw6vC3G5CR94vyh3LyPEsTRjmzVYrs
+ O8CB1BbXLVOLZUKJ2OW8CWoc2i87DUWyvjPg4WS02LO+kmJlP7x9a0PdaJIAyhlcI/zmF9vp6
+ liZsJcpOKjK4sPPf9XdcDK3KDK8aS/gxdjjups2U+Bx4ilqfhkj8ODOzk4szwcvLiT5tlx2Ao
+ Z0Iq+DHwxAChCxrIWf3QhUet6GoIeWZDkcagxjx8Atrykc8hQ0J1GZhgAAspOZs+VdJxmiFeR
+ VZGXtITWuVJgu08cWgQ0LtsRNl2GaQSp0jw7/cler8y1jDxqRqXn2mFqFqnF1HLjd+xJ3PMUZ
+ 7WPBYhkrrBUewtHk9yqUkOQ7a1J8uCgA3U8QBHUsBaQ6839PPfU1lyEQi3vfRlVRfVK24CixG
+ cjFAqZmL8IbiGFvDBat3AGxj7FjSXUYzNt+MblAwTDIDcLwNkvUyKv7m0ynq1ewK5wnNNidZ8
+ 6lioSt2eD1zsxLC4yHb93J8cm6FwD8uGxnnl6tVpVPQrJisZ1q+CzLQtjT8qk0HqMkBTrxnLi
+ qL68Xctz5YSjzbajpQ0HDuEPUH+rLfnWLvDkrZqMBZWOde2WK/0zHHzfJPuNWhM+BxAocR/Ng
+ foTx1EUkTt4LDKEqtaNHstA6JAcDUGV2L0nO7e3ceJ4lobOmtmC/7Zj+1Qi1E4vxJZyRq4mDG
+ Sm/GabQMUmmur14lAnivogH0oMfq2h+HQpIts8lORf+GkfIR70I4ow89w==
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 08.08.2019 19:00, Christoph Hellwig wrote:
+The macro ALTERNATIVE_CODE() allows assembly code to patch in a series
+of new assembler statements given at a specific start address.
+The ALT_COND_RUN_ON_QEMU condition is true if the kernel is started in a
+qemu emulation.
 
-> Ther is no need to go through dma_common_mmap for the arm-nommu
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-    There. :-)
+diff --git a/arch/parisc/include/asm/alternative.h b/arch/parisc/include/a=
+sm/alternative.h
+index 793d8baa3a10..0ec54f43d6d2 100644
+=2D-- a/arch/parisc/include/asm/alternative.h
++++ b/arch/parisc/include/asm/alternative.h
+@@ -8,6 +8,7 @@
+ #define ALT_COND_NO_ICACHE	0x04	/* if system has no i-cache  */
+ #define ALT_COND_NO_SPLIT_TLB	0x08	/* if split_tlb =3D=3D 0  */
+ #define ALT_COND_NO_IOC_FDC	0x10	/* if I/O cache does not need flushes */
++#define ALT_COND_RUN_ON_QEMU	0x20	/* if running on QEMU */
 
-> dma mmap implementation as the only possible memory not handled above
-> could be that from the per-device coherent pool.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-[...]
+ #define INSN_PxTLB	0x02		/* modify pdtlb, pitlb */
+ #define INSN_NOP	0x08000240	/* nop */
+@@ -21,7 +22,7 @@
 
-MBR, Sergei
+ struct alt_instr {
+ 	s32 orig_offset;	/* offset to original instructions */
+-	u32 len;		/* end of original instructions */
++	s32 len;		/* end of original instructions */
+ 	u32 cond;		/* see ALT_COND_XXX */
+ 	u32 replacement;	/* replacement instruction or code */
+ };
+@@ -40,12 +41,20 @@ void apply_alternatives(struct alt_instr *start, struc=
+t alt_instr *end,
+
+ #else
+
++/* to replace one single instructions by a new instruction */
+ #define ALTERNATIVE(from, to, cond, replacement)\
+ 	.section .altinstructions, "aw"	!	\
+ 	.word (from - .), (to - from)/4	!	\
+ 	.word cond, replacement		!	\
+ 	.previous
+
++/* to replace multiple instructions by new code */
++#define ALTERNATIVE_CODE(from, num_instructions, cond, new_instr_ptr)\
++	.section .altinstructions, "aw"	!	\
++	.word (from - .), -num_instructions !	\
++	.word cond, (new_instr_ptr - .)	!	\
++	.previous
++
+ #endif  /*  __ASSEMBLY__  */
+
+ #endif /* __ASM_PARISC_ALTERNATIVE_H */
+diff --git a/arch/parisc/kernel/alternative.c b/arch/parisc/kernel/alterna=
+tive.c
+index ca1f5ca0540a..3c66d5c4d90d 100644
+=2D-- a/arch/parisc/kernel/alternative.c
++++ b/arch/parisc/kernel/alternative.c
+@@ -28,7 +28,8 @@ void __init_or_module apply_alternatives(struct alt_inst=
+r *start,
+
+ 	for (entry =3D start; entry < end; entry++, index++) {
+
+-		u32 *from, len, cond, replacement;
++		u32 *from, cond, replacement;
++		s32 len;
+
+ 		from =3D (u32 *)((ulong)&entry->orig_offset + entry->orig_offset);
+ 		len =3D entry->len;
+@@ -49,6 +50,8 @@ void __init_or_module apply_alternatives(struct alt_inst=
+r *start,
+ 			continue;
+ 		if ((cond & ALT_COND_NO_ICACHE) && (cache_info.ic_size !=3D 0))
+ 			continue;
++		if ((cond & ALT_COND_RUN_ON_QEMU) && !running_on_qemu)
++			continue;
+
+ 		/*
+ 		 * If the PDC_MODEL capabilities has Non-coherent IO-PDIR bit
+@@ -74,11 +77,19 @@ void __init_or_module apply_alternatives(struct alt_in=
+str *start,
+ 		if (replacement =3D=3D INSN_NOP && len > 1)
+ 			replacement =3D 0xe8000002 + (len-2)*8; /* "b,n .+8" */
+
+-		pr_debug("Do    %d: Cond 0x%x, Replace %02d instructions @ 0x%px with 0=
+x%08x\n",
+-			index, cond, len, from, replacement);
+-
+-		/* Replace instruction */
+-		*from =3D replacement;
++		pr_debug("ALTERNATIVE %3d: Cond %2x, Replace %2d instructions to 0x%08x=
+ @ 0x%px (%pS)\n",
++			index, cond, len, replacement, from, from);
++
++		if (len < 0) {
++			/* Replace multiple instruction by new code */
++			u32 *source;
++			len =3D -len;
++			source =3D (u32 *)((ulong)&entry->replacement + entry->replacement);
++			memcpy(from, source, 4 * len);
++		} else {
++			/* Replace by one instruction */
++			*from =3D replacement;
++		}
+ 		applied++;
+ 	}
+
