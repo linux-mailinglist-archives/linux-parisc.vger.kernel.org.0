@@ -2,107 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC1DC8A9CB
-	for <lists+linux-parisc@lfdr.de>; Mon, 12 Aug 2019 23:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B0228BB16
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 Aug 2019 16:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727703AbfHLVvj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 12 Aug 2019 17:51:39 -0400
-Received: from mail-qk1-f202.google.com ([209.85.222.202]:49346 "EHLO
-        mail-qk1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727513AbfHLVvj (ORCPT
+        id S1729405AbfHMOFe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 13 Aug 2019 10:05:34 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:43848 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729387AbfHMOFe (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 12 Aug 2019 17:51:39 -0400
-Received: by mail-qk1-f202.google.com with SMTP id l14so94380996qke.16
-        for <linux-parisc@vger.kernel.org>; Mon, 12 Aug 2019 14:51:38 -0700 (PDT)
+        Tue, 13 Aug 2019 10:05:34 -0400
+Received: by mail-ed1-f66.google.com with SMTP id h13so4186482edq.10
+        for <linux-parisc@vger.kernel.org>; Tue, 13 Aug 2019 07:05:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=Ci0/dDTEQ/TKTYA4PTTz/x+w1WNnSFlT+0iZElVTbkg=;
-        b=Qz1M7PvURpf39A2GyB2ThYI6sZWekP4kv2/wK2aFuwloN8lbCxPc3rjZudsxak4kpn
-         ajMlDmgK9Lu/NgFxIw4npr3+GQxp/RQRN77R18W7n5T1GJzD68w0MkzsXaIMJTN2I3Le
-         IHTkYpbbFG1xRAubUMnsy18g9+4aGGoJv5yhML4ehVYces0T86ip2lzBf4TV3/1dBFmz
-         rkizrYzDKRP1z/p0c9ysugw9oGhpmhEmP4orYaxGYbj9wc0ZPxEtrXqTMSL0umYO8f9P
-         ZwBLT+KUw35Au9CQtI70zlZPeMbTJ6ylaDdbqr04CdqMW5iZjo+waL464CSdJCPaWl3S
-         Z3Ng==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=MAbCSvmjwaXBxVVmQGgGttdDZ9duJUACQeyJdMc40LQ=;
+        b=gxYlam9MufeQ0jkWbHg9A2H2F0R6cd8EOiuLlE+5Tg8EG/AhZoQRYj4uN1eEnOrvU7
+         G7PIE+uafZsWYb4vqFgKf052ANHbsLmj1pykP1st1Yj0kxC6oBRl9Rbk8xO2mHzTYAsu
+         VodQCT/t6NUyrDGY+i+L/yM5i4msptpSn7hw7w5/t9VDn40Ottlgv12z0x4HojEkFVjt
+         l7D3Jev2/tYo70fj5Pi7KeR7mc8j/dPNATiLooVJwN+eGfjhrwoEFedhsU2LcOPp3vYa
+         GXaYtmn9oAD3p9IcysVxmjGvpyigCVy7R+r1nNCi2CW6TOC0Sv2XoQ4rAnnljPdN34RB
+         0jBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=Ci0/dDTEQ/TKTYA4PTTz/x+w1WNnSFlT+0iZElVTbkg=;
-        b=SlGEAgeXQUYSiUZ4maT3MfhtKhX2P9b9N8xfumdm1VywWdncNA8atkPKR6kjFtchQC
-         wmFrhr+xJFY06go1vS9Gs/fbOBIkg/K3eD0gVVHqciYcexxLein4qwi/zsFqpoIXsx3M
-         ayWlUsAfau+vUYDsau8yZYiWa6ck3FkBBBcfNvgKP2j0D7IBGCnHGr2dQN0nkIOFMoVE
-         bOx7X/ltnBGFaxNKTJxCoSyCzfFiORN3/cytvtFWUIILlLsZPZw2xAp6ocqF/zSibp0L
-         2KdDyYWp0uwNQZsRLWpQgqdg/znTpWTYNdHSMRhFCtDUWVvWLmhBa+40eKCcs6AcaSzm
-         6Tzw==
-X-Gm-Message-State: APjAAAULrf8ki/7PyLs6s6hueXV/a6zzgsmwBOxEahmbJXOAMMPmzjtJ
-        Bp/JGfam/CEq7FC49aG7Wo860w2beGbR+qvyUdM=
-X-Google-Smtp-Source: APXvYqx/cQmoHx7pahdoX11IzIW90P81FVgmK45vE2bdFVoFA+GBOZlIRuQdPPi0pnv12XzVEJvNaipQjrXdt9hMI8o=
-X-Received: by 2002:a0c:98e9:: with SMTP id g38mr31135758qvd.187.1565646697667;
- Mon, 12 Aug 2019 14:51:37 -0700 (PDT)
-Date:   Mon, 12 Aug 2019 14:50:36 -0700
-In-Reply-To: <20190812215052.71840-1-ndesaulniers@google.com>
-Message-Id: <20190812215052.71840-3-ndesaulniers@google.com>
-Mime-Version: 1.0
-References: <20190812215052.71840-1-ndesaulniers@google.com>
-X-Mailer: git-send-email 2.23.0.rc1.153.gdeed80330f-goog
-Subject: [PATCH 03/16] parisc: prefer __section from compiler_attributes.h
-From:   Nick Desaulniers <ndesaulniers@google.com>
-To:     akpm@linux-foundation.org
-Cc:     sedat.dilek@gmail.com, jpoimboe@redhat.com, yhs@fb.com,
-        miguel.ojeda.sandonis@gmail.com,
-        clang-built-linux@googlegroups.com,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, bpf@vger.kernel.org
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=MAbCSvmjwaXBxVVmQGgGttdDZ9duJUACQeyJdMc40LQ=;
+        b=QEKzdX0nH0kjFzfgbcHuqwu4hLhsB1XbKUrWxzXRaksOZifGn+NBIv6dnmILuLD9mc
+         vArlHrxzkQjuV59fZ/d+ca/BDM0pDmAilUc6PSykqxdQ0Xc/HD0g5To/vUEgf1y2n4/h
+         6oS1XOdaqiI4Sok3p1e/adti6AA0GIFjLXqVEkfuHV7KPO9I4yOYqC2FvohzbAWuRpCu
+         QpZVP84eH0X5qC65X1cRXpBH6BSPH81nEkOQt5L6Hnb3t+DQESC3McbtCT6q9BTAhJiE
+         CmovLE/UlAltRaQaNbz45oOdDsGob0Nn1Ur0N/wXoravD4J44XioliPepQsHVd/aWXyS
+         JNbw==
+X-Gm-Message-State: APjAAAUIbp1ub+myWge/UlunEK8FS4nVjSrbyL+ROr4ZVmLq1R9jn/Xz
+        8tozC5qeUGRRXkLocCWXzLMfVgzwE8AmEwXnNMI=
+X-Google-Smtp-Source: APXvYqyoi6mcHDTA/UtXDA2DGNJmLh5O5th02HYm6HzYck8XnsHMKC2a53KjVwbdUpIZC/jNLytnAJYqUwQLx0uoNSE=
+X-Received: by 2002:a17:906:1692:: with SMTP id s18mr14443199ejd.14.1565705133142;
+ Tue, 13 Aug 2019 07:05:33 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:aa7:c682:0:0:0:0:0 with HTTP; Tue, 13 Aug 2019 07:05:32
+ -0700 (PDT)
+Reply-To: angelicalouise2017@yahoo.com
+From:   aa zz <ahmedhassangoldanddiamondminin@gmail.com>
+Date:   Tue, 13 Aug 2019 07:05:32 -0700
+Message-ID: <CACg11_FZxo54YYC95hh8fz7YYKtMzCkG6KJETccm1+PuT+3trw@mail.gmail.com>
+Subject: Lieber Geliebter in Christus,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
-Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
----
- arch/parisc/include/asm/cache.h | 2 +-
- arch/parisc/include/asm/ldcw.h  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Lieber Geliebter in Christus,
 
-diff --git a/arch/parisc/include/asm/cache.h b/arch/parisc/include/asm/cache.h
-index 73ca89a47f49..e5de3f897633 100644
---- a/arch/parisc/include/asm/cache.h
-+++ b/arch/parisc/include/asm/cache.h
-@@ -22,7 +22,7 @@
- 
- #define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
- 
--#define __read_mostly __attribute__((__section__(".data..read_mostly")))
-+#define __read_mostly __section(.data..read_mostly)
- 
- void parisc_cache_init(void);	/* initializes cache-flushing */
- void disable_sr_hashing_asm(int); /* low level support for above */
-diff --git a/arch/parisc/include/asm/ldcw.h b/arch/parisc/include/asm/ldcw.h
-index 3eb4bfc1fb36..e080143e79a3 100644
---- a/arch/parisc/include/asm/ldcw.h
-+++ b/arch/parisc/include/asm/ldcw.h
-@@ -52,7 +52,7 @@
- })
- 
- #ifdef CONFIG_SMP
--# define __lock_aligned __attribute__((__section__(".data..lock_aligned")))
-+# define __lock_aligned __section(.data..lock_aligned)
- #endif
- 
- #endif /* __PARISC_LDCW_H */
--- 
-2.23.0.rc1.153.gdeed80330f-goog
+ICH BRINGE KALVARISCHE GR=C3=9CSSE
 
+Ich bin Frau Angelica Louise aus Kap Verde, ich bin mit Herrn Teo J
+Louise verheiratet, ich und mein verstorbener Ehemann waren vor dem
+Tod meines Ehemanns in der Nachlassverwaltung und auch in einem
+staatlichen Nachlassbauunternehmen. Wir waren elf Jahre ohne Kind
+verheiratet, weil ich ein Faserproblem hatte. Er starb nach einer
+kurzen Krankheit, die nur vier Tage dauerte.
+
+Vor seinem Tod wurden wir beide wieder christlich geboren. Seit dem
+Tod meines Mannes wurde bei mir Speiser=C3=B6hrenkrebs diagnostiziert. Als
+mein verstorbener Ehemann noch lebte, zahlte er 3,5 Millionen
+US-Dollar bei einer Bank ein.
+
+Derzeit ist das Geld noch auf der Bank. Vor kurzem sagte mir mein
+Arzt, dass ich wegen eines Krebsleiden die n=C3=A4chsten vier Monate nicht
+durchhalten w=C3=BCrde. Aus allen Anzeichen geht hervor, dass sich mein
+Zustand wirklich verschlechtert, und es ist offensichtlich, dass ich
+nicht l=C3=A4nger als zwei Monate lebe, da das Krebsstadium ein sehr
+gef=C3=A4hrliches Stadium erreicht hat.
+
+Nachdem ich meinen Zustand gekannt hatte, entschloss ich mich, diesen
+Fonds an eine gute Person zu spenden, die dieses Geld so verwendet,
+wie ich es hier anweisen werde. Ich m=C3=B6chte, dass Sie mindestens 80%
+dieses Fonds f=C3=BCr Waisenh=C3=A4user, Witwen und die Verbreitung des Wor=
+tes
+Gottes verwenden und mich bem=C3=BChen, dass das Haus Gottes erhalten
+bleibt, und die verbleibenden 20% f=C3=BCr die gute Pflege Ihres von Gott
+gegebenen Hauses aufbringen. Ich habe diese Entscheidung getroffen,
+weil ich kein Kind habe, das dieses Geld erbt.
+
+Aus diesem Grund entscheide ich mich, diesen Fonds f=C3=BCr wohlt=C3=A4tige
+Zwecke zu spenden. Ich habe keine Angst vor dem Tod, daher wei=C3=9F ich,
+wohin ich gehe. Ich wei=C3=9F, dass ich in der Brust des Herrn sein werde.
+2. Mose 14 VS 14 sagt, dass "der Herr meinen Fall bek=C3=A4mpfen wird und
+ich meinen Frieden bewahren werde". Ich brauche diesbez=C3=BCglich aus
+gesundheitlichen Gr=C3=BCnden keine Telefonverbindung Gl=C3=BCck ist, dass =
+ich
+ein Leben eines w=C3=BCrdigen Christen gef=C3=BChrt habe. Wer dem Herrn die=
+nen
+will, muss ihm im Geiste und in der Wahrheit dienen. Sei immer dein
+ganzes Leben lang betend. Schreiben Sie mir umgehend unter dieser
+E-Mail Adresse, und jede Verz=C3=B6gerung Ihrer Antwort gibt mir Raum, eine
+andere gute Person f=C3=BCr denselben Zweck zu finden.
+
+Versichere mir, dass du dementsprechend handeln wirst, wie ich es hier
+angegeben habe.
+
+In der Hoffnung, Ihre E-Mail zu erhalten:
+
+Danke und bleibe im Herrn gesegnet.
+
+lch bleibe deine Schwester in Christus.
+
+Frau Angelica Louise.
