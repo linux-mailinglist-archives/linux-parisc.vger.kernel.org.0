@@ -2,93 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C29278E946
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Aug 2019 12:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EF088F605
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Aug 2019 22:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731205AbfHOKuK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 15 Aug 2019 06:50:10 -0400
-Received: from verein.lst.de ([213.95.11.211]:45603 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730969AbfHOKuK (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 15 Aug 2019 06:50:10 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 9FC9468AFE; Thu, 15 Aug 2019 12:50:03 +0200 (CEST)
-Date:   Thu, 15 Aug 2019 12:50:02 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Vladimir Murzin <vladimir.murzin@arm.com>,
-        Takashi Iwai <tiwai@suse.de>, Helge Deller <deller@gmx.de>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Michal Simek <monstr@monstr.eu>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-m68k@lists.linux-m68k.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/8] parisc: don't set ARCH_NO_COHERENT_DMA_MMAP
-Message-ID: <20190815105002.GA30805@lst.de>
-References: <20190808160005.10325-1-hch@lst.de> <20190808160005.10325-8-hch@lst.de> <1565861152.2963.7.camel@HansenPartnership.com>
+        id S1732898AbfHOUxe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 15 Aug 2019 16:53:34 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:45992 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732575AbfHOUxe (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 15 Aug 2019 16:53:34 -0400
+Received: by mail-qt1-f195.google.com with SMTP id k13so3779841qtm.12
+        for <linux-parisc@vger.kernel.org>; Thu, 15 Aug 2019 13:53:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lca.pw; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JSpVZiPBrGYAUGx+Ea3a4Y0npIYaRGCqHD40eUQBGCU=;
+        b=HYBnUyoVPsBJvVkswIQnogJxrcbVs8FykxsadpD+OBBcZSLXZY31yp6SetRVZSo3gw
+         pXzFGNahpp430zsf6TO5hgqAge4ytAHZkg3cz+qsLurhE/NR2LeM/v5U35AorKka9gOm
+         F0/agF8rX0XtBCdT4/DrAcB6EFxp+zi7TzRss7TkheyzTzqRpE6DOQzim91W1HXcSLOE
+         wbTK2OuQvyTNEOSMn5Q8UkH9VBs/SMEVMpdybq9m9vQdnq1OEvPmmwCNhZn9WugTWoTF
+         SFcCB60AjKm8JKJrM2UOHkhWHNhcfq764HCA8eZz6beZKGzsZJxEXd1W7upwpenkYYWx
+         fjpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JSpVZiPBrGYAUGx+Ea3a4Y0npIYaRGCqHD40eUQBGCU=;
+        b=RlCC47fJogujFjXAcse4LsjvHVBXrRtCwQuH9TAAPGfjpj6PzcNWc9PdveUQWz2du8
+         W8Z5bCkuFT/rI46NtYzViCOVtEuOiFrEXyTgTaFPsg5rcRcyi6M3CHlnSvvtOpa7KOsr
+         zHyzYwurv5VOmVAv9MZMelDotYddsXMa97Cuvx54CB85H3kPLJvmAUnEy3RII1UYruXg
+         W+N01/6aGUQZpQSv+j0eCUmJEZtNItetCoTSUyiGAi2m7wUYc/xMcqk/PSJCjFHO2hht
+         pUAatSQUJQqGvDWOfel2E0tFTrvhzooHw3sRGfmN6KnKSY7nLEziCl0SRejKHtuOuQYg
+         MzBA==
+X-Gm-Message-State: APjAAAXfrkrPwn1DH18edAL91J3f/meFvJ/viyQqkHtJKfK6CYoYDeTe
+        AbgjBQoJ7xsllg5qjpVmP7GEWg==
+X-Google-Smtp-Source: APXvYqzbXNyNwRv677yBKxMuVBmtR2yPqIKJwxHbRYZPkBY8ioVL+BuHkgNtj5ndJuuFzEJngE7PkQ==
+X-Received: by 2002:a0c:b0ef:: with SMTP id p44mr4599552qvc.27.1565902413583;
+        Thu, 15 Aug 2019 13:53:33 -0700 (PDT)
+Received: from ovpn-122-72.rdu2.redhat.com (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+        by smtp.gmail.com with ESMTPSA id x3sm1991828qkl.71.2019.08.15.13.53.32
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 15 Aug 2019 13:53:33 -0700 (PDT)
+From:   Qian Cai <cai@lca.pw>
+To:     akpm@linux-foundation.org
+Cc:     James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        linux@roeck-us.net, kirill.shutemov@linux.intel.com,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Qian Cai <cai@lca.pw>
+Subject: [PATCH] parisc: fix compilation errrors
+Date:   Thu, 15 Aug 2019 16:53:05 -0400
+Message-Id: <20190815205305.1382-1-cai@lca.pw>
+X-Mailer: git-send-email 2.20.1 (Apple Git-117)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1565861152.2963.7.camel@HansenPartnership.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Aug 15, 2019 at 10:25:52AM +0100, James Bottomley wrote:
-> >  which means exporting normally cachable memory to userspace is
-> > relatively dangrous due to cache aliasing.
-> > 
-> > But normally cachable memory is only allocated by dma_alloc_coherent
-> > on parisc when using the sba_iommu or ccio_iommu drivers, so just
-> > remove the .mmap implementation for them so that we don't have to set
-> > ARCH_NO_COHERENT_DMA_MMAP, which I plan to get rid of.
-> 
-> So I don't think this is quite right.  We have three architectural
-> variants essentially (hidden behind about 12 cpu types):
-> 
->    1. pa70xx: These can't turn off page caching, so they were the non
->       coherent problem case
->    2. pa71xx: These can manufacture coherent memory simply by turning off
->       the cache on a per page basis
->    3. pa8xxx: these have a full cache flush coherence mechanism.
-> 
-> (I might have this slightly wrong: I vaguely remember the pa71xxlc
-> variants have some weird cache quirks for DMA as well)
-> 
-> So I think pa70xx we can't mmap.  pa71xx we can provided we mark the
-> page as uncached ... which should already have happened in the allocate
-> and pa8xxx which can always mmap dma memory without any special tricks.
+The commit 0cfaee2af3a0 ("include/asm-generic/5level-fixup.h: fix
+variable 'p4d' set but not used") converted a few functions from macros
+to static inline, which causes parisc to complain,
 
-Except for the different naming scheme vs the code this matches my
-assumptions.
+In file included from ./include/asm-generic/4level-fixup.h:38:0,
+                 from ./arch/parisc/include/asm/pgtable.h:5,
+                 from ./arch/parisc/include/asm/io.h:6,
+                 from ./include/linux/io.h:13,
+                 from sound/core/memory.c:9:
+./include/asm-generic/5level-fixup.h:14:18: error: unknown type name
+'pgd_t'; did you mean 'pid_t'?
+ #define p4d_t    pgd_t
+                  ^
+./include/asm-generic/5level-fixup.h:24:28: note: in expansion of macro
+'p4d_t'
+ static inline int p4d_none(p4d_t p4d)
+                            ^~~~~
 
-In the code we have three cases (and a fourth EISA case mention in
-comments, but not actually implemented as far as I can tell):
+It is because "4level-fixup.h" is included before "asm/page.h" where
+"pgd_t" is defined.
 
-arch/parisc/kernel/pci-dma.c says in the top of file comments:
+Fixes: 0cfaee2af3a0 ("include/asm-generic/5level-fixup.h: fix variable 'p4d' set but not used")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Qian Cai <cai@lca.pw>
+---
+ arch/parisc/include/asm/pgtable.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-** AFAIK, all PA7100LC and PA7300LC platforms can use this code.
+diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+index a39b079e73f2..6d58c1739b42 100644
+--- a/arch/parisc/include/asm/pgtable.h
++++ b/arch/parisc/include/asm/pgtable.h
+@@ -2,6 +2,7 @@
+ #ifndef _PARISC_PGTABLE_H
+ #define _PARISC_PGTABLE_H
+ 
++#include <asm/page.h>
+ #include <asm-generic/4level-fixup.h>
+ 
+ #include <asm/fixmap.h>
+@@ -98,8 +99,6 @@ static inline void purge_tlb_entries(struct mm_struct *mm, unsigned long addr)
+ 
+ #endif /* !__ASSEMBLY__ */
+ 
+-#include <asm/page.h>
+-
+ #define pte_ERROR(e) \
+ 	printk("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
+ #define pmd_ERROR(e) \
+-- 
+2.20.1 (Apple Git-117)
 
-and the handles two different case.  for cpu_type == pcxl or pcxl2
-it maps the memory as uncached for dma_alloc_coherent, and for all
-other cpu types it fails the coherent allocations.
-
-In addition to that there are the ccio and sba iommu drivers, of which
-according to your above comment one is always present for pa8xxx.
-
-Which brings us back to this patch, which ensures that no cacheable
-memory is exported to userspace by removing ->mmap from ccio and sba.
-It then enabled dma_mmap_coherent for the pcxl or pcxl2 case that
-allocates uncached memory, which dma_mmap_coherent does not work
-because dma_alloc_coherent already failed for the !pcxl && !pcxl2
-and thus there is no memory to mmap.
-
-So if the description is too confusing please suggest a better
-one, I'm a little lost between all these code names and product
-names (arch/parisc/include/asm/dma-mapping.h uses yet another set).
