@@ -2,92 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D27DE8F621
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Aug 2019 23:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B904690DC6
+	for <lists+linux-parisc@lfdr.de>; Sat, 17 Aug 2019 09:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729514AbfHOVCK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 15 Aug 2019 17:02:10 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:38412 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726008AbfHOVCK (ORCPT
+        id S1726047AbfHQHfR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 17 Aug 2019 03:35:17 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:41948 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725864AbfHQHfR (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 15 Aug 2019 17:02:10 -0400
-Received: by mail-pg1-f194.google.com with SMTP id e11so1827570pga.5;
-        Thu, 15 Aug 2019 14:02:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=BtLaiUFG0I+lDd+yyoqx+gGXxf6RzpGtAnOY1h/Vn7g=;
-        b=O8I4Hv20M1KGrTCAcQzm/iIfhIVNCNVrHhUwX5At4M8PqRhBIucpMeFL4NV123zeDc
-         o3oY7q9606YyJ8GXfK3t0JPYlyp1kdVKYW0dXZhnKhM2pXO0EqIH86V0VCeRYNKW9JiL
-         m1NwNzFoX7vhOqcvw2ZHbTZ15JePYTCfv80eAy+IX9ppZrD1WDqtlUAaBAT7V+oIxJpw
-         Pae8HNVLamX0VeZP6/ZxU7QjzRdpFMWka7Zmn4R270jMrve94Bp+H+MYuPnRCWxVpIQP
-         dxCXBbCnULAuqSpGrY/t9Rx6QQRrKBGQEc5UjMQdyMg0JPPGmMa9bS9TLqFNQGoUKrtP
-         t4OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BtLaiUFG0I+lDd+yyoqx+gGXxf6RzpGtAnOY1h/Vn7g=;
-        b=LR7CEJNTtD2U4mn5bUwuNJH1e2hCqGcgrn0lV33qjRHKVaw+dSP5VHsXRTcWxWxIT4
-         J9HcssYQ3Ys+RUoSj+Ar4G4kFOE9r2kC546RjD7c2BWFxV95+nU9oG/MQXA/kpmWqlKz
-         4YfSJ/prf844hRvHrjFlEHWDAcWVsQvqxbUWODQUmKPIXgTSlIv4dHKBAzC72MfDV90t
-         XSgIo2N8QXe9rxJx5zJUyQTRGXyANoHFmrWz3v+6oJttjifiogKSnN/cKvHcnGatHhQ7
-         VjANpuGZxej3rZUa4hCZTJLeNE37KglmVl5nTKG/RY86HsIFt7wEgS12EV2V8705Uxym
-         hwVA==
-X-Gm-Message-State: APjAAAVUfV7UoQGJycDJ/nSW0GmETS3veSBmweGhmILBMceL2KaytvXc
-        3F4Wh3PdToJWFdd3TzRNr/2HCITp
-X-Google-Smtp-Source: APXvYqymXjNjGUl0DeBYCJHEzb3l5Ece3CkIgKcVwhO5btVVopm6qcGADls7fPCu/ahnlAT21TBTUw==
-X-Received: by 2002:a62:1858:: with SMTP id 85mr7467116pfy.120.1565902930078;
-        Thu, 15 Aug 2019 14:02:10 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h129sm3459816pfb.110.2019.08.15.14.02.09
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 15 Aug 2019 14:02:09 -0700 (PDT)
-Date:   Thu, 15 Aug 2019 14:02:08 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Qian Cai <cai@lca.pw>
-Cc:     akpm@linux-foundation.org, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, kirill.shutemov@linux.intel.com,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] parisc: fix compilation errrors
-Message-ID: <20190815210208.GA9868@roeck-us.net>
-References: <20190815205305.1382-1-cai@lca.pw>
+        Sat, 17 Aug 2019 03:35:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=8stPQbNrg3B/R2Xd5KO2eeuMSLol2LwoVvz90ca57Uc=; b=W0bwqZTtbBiXb6VnEfyfA9mVE
+        9W9bQiZ+oFFnztrtL29HNStHhzgEzKZRwR0Y2Yt9fbTPXro2ana913j8J/x4VOrNIf7Vpp1s5xTBT
+        JBBgWHNPJDHxK8YM2EH/1iy4ZFyxsqX/E8MVm9oFi7/haC79fhkUSp31sjsxo5ixN+LjUtq5YiE/H
+        JgzEH6lBn4zXt6f6tZUImXk13a1mBaoeUkv03QCkMCv+JI9Ou3L3XpKNVs1qsGQXI8TQioogd4019
+        +YKCAK/dGkmyOlN7PU2frQDwzB/jnJxCvAQI78eDWfALqX6NNPVPNQ7KrDd1EV17QZV7xNJeKsN2w
+        pL/zibEBg==;
+Received: from 089144199030.atnat0008.highway.a1.net ([89.144.199.30] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hytEw-0005B4-6B; Sat, 17 Aug 2019 07:35:06 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org
+Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: generic ioremap (and lots of cleanups)
+Date:   Sat, 17 Aug 2019 09:32:27 +0200
+Message-Id: <20190817073253.27819-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190815205305.1382-1-cai@lca.pw>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Aug 15, 2019 at 04:53:05PM -0400, Qian Cai wrote:
-> The commit 0cfaee2af3a0 ("include/asm-generic/5level-fixup.h: fix
-> variable 'p4d' set but not used") converted a few functions from macros
-> to static inline, which causes parisc to complain,
-> 
-> In file included from ./include/asm-generic/4level-fixup.h:38:0,
->                  from ./arch/parisc/include/asm/pgtable.h:5,
->                  from ./arch/parisc/include/asm/io.h:6,
->                  from ./include/linux/io.h:13,
->                  from sound/core/memory.c:9:
-> ./include/asm-generic/5level-fixup.h:14:18: error: unknown type name
-> 'pgd_t'; did you mean 'pid_t'?
->  #define p4d_t    pgd_t
->                   ^
-> ./include/asm-generic/5level-fixup.h:24:28: note: in expansion of macro
-> 'p4d_t'
->  static inline int p4d_none(p4d_t p4d)
->                             ^~~~~
-> 
-> It is because "4level-fixup.h" is included before "asm/page.h" where
-> "pgd_t" is defined.
-> 
-> Fixes: 0cfaee2af3a0 ("include/asm-generic/5level-fixup.h: fix variable 'p4d' set but not used")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: Qian Cai <cai@lca.pw>
+Hi all,
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+the last patches in this series add a generic ioremap implementation,
+and switch our 3 most recent and thus most tidy architeture ports over
+to use it.  With a little work and an additional arch hook or two the
+implementation should be able to eventually cover more than half of
+our ports.
+
+The patches before that clean up various lose ends in the ioremap
+and iounmap implementations.
+
+A git tree is also available here:
+
+    git://git.infradead.org/users/hch/misc.git generic-ioremap
+
+Gitweb:
+
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/generic-ioremap
