@@ -2,99 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BD2291FA9
-	for <lists+linux-parisc@lfdr.de>; Mon, 19 Aug 2019 11:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D63D291FE4
+	for <lists+linux-parisc@lfdr.de>; Mon, 19 Aug 2019 11:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727084AbfHSJIC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 19 Aug 2019 05:08:02 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:43515 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726211AbfHSJIC (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 19 Aug 2019 05:08:02 -0400
-Received: by mail-oi1-f195.google.com with SMTP id y8so758311oih.10;
-        Mon, 19 Aug 2019 02:08:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VlNd5QIaasTzooIZdKPDO/egnQKum+L5EICvSM4gXDg=;
-        b=pPUFE4nUsiEPnL3yFx+c+Pv7q+I5Xu/UuG4CkLEaesiiez1GJbzg9mmlpH968yS9Dy
-         JRYVoRexuqmuXLMUnZPGXEIz4ZeUO19YxPkj/ayxaEg64jbQ0XUCs4NdIyg9sPh58bZ6
-         0ZADUt6p0wWbKv1nbpByMCp/zdTAXWtlRLx3p/b/okhzHq5F+v6cfe3fIXy1lsoNE13O
-         rHrc36R3/wGWh9JDB9rgMtab5ykQG8754TiX3WKH+OfoXFGlPPpPuaTjmaZyelusVDkF
-         zk6sCjc2Xn6cwN0c8cNy6z6DDUi9SHkhjYNyrdBM5qdsDnFvSAcz//3BsBqZyiWnJTbG
-         XQrw==
-X-Gm-Message-State: APjAAAVMzZ0xKRag97NH1OvpX8V1RwZVNF5iH0XG2XmvFoRWjddnE8zq
-        Sts/Pj/TYQJ5sC0w/HkXjGIgCjzUm0laeOW2MXkvnbjt
-X-Google-Smtp-Source: APXvYqzWb95AtpQSIeBNfrhnrtrJhNjoaZx9V6GMU64y3Loy7mY29zoYhILdfjZb57Gv7aBFuDIVXb+hdDpJmtuDWas=
-X-Received: by 2002:a54:478d:: with SMTP id o13mr12733701oic.54.1566205681155;
- Mon, 19 Aug 2019 02:08:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190819081157.9736-1-geert@linux-m68k.org>
-In-Reply-To: <20190819081157.9736-1-geert@linux-m68k.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 19 Aug 2019 11:07:49 +0200
-Message-ID: <CAMuHMdV11Km7yF3gk5uTrPS1mVhjMdkbg28QRymcYyBPiAMBMw@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v5.3-rc5
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
+        id S1727398AbfHSJSx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 19 Aug 2019 05:18:53 -0400
+Received: from verein.lst.de ([213.95.11.211]:45965 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727172AbfHSJSw (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 19 Aug 2019 05:18:52 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 6A7AE68B05; Mon, 19 Aug 2019 11:18:46 +0200 (CEST)
+Date:   Mon, 19 Aug 2019 11:18:46 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Christoph Hellwig <hch@lst.de>, Arnd Bergmann <arnd@arndb.de>,
+        Guo Ren <guoren@kernel.org>, Michal Simek <monstr@monstr.eu>,
         Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org, nios2-dev@lists.rocketboards.org,
+        Openrisc <openrisc@lists.librecores.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv@lists.infradead.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 08/26] m68k: simplify ioremap_nocache
+Message-ID: <20190819091846.GA27890@lst.de>
+References: <20190817073253.27819-1-hch@lst.de> <20190817073253.27819-9-hch@lst.de> <CAMuHMdWyXGjokWi7tn9JHCTz9YMb_vHn6XKeE7KzH5n-54Sy0A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWyXGjokWi7tn9JHCTz9YMb_vHn6XKeE7KzH5n-54Sy0A@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 19, 2019 at 10:47 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> JFYI, when comparing v5.3-rc5[1] to v5.3-rc4[3], the summaries are:
->   - build errors: +7/-0
+On Mon, Aug 19, 2019 at 10:56:02AM +0200, Geert Uytterhoeven wrote:
+> BTW, shouldn't we get rid of the sole user of ioremap_uc(), too?
+> Seems to make a difference on x86 only, where it is "strongly uncached"
+> (whatever that may mean ;-)
 
-  + /kisskb/src/include/asm-generic/5level-fixup.h: error: unknown
-type name 'pgd_t'; did you mean 'pid_t'?:  => 14:18
-  + /kisskb/src/include/asm-generic/pgtable.h: error: implicit
-declaration of function 'p4d_bad'; did you mean 'pgd_bad'?
-[-Werror=implicit-function-declaration]:  => 580:15
-  + /kisskb/src/include/asm-generic/pgtable.h: error: implicit
-declaration of function 'p4d_bad'; did you mean 'pud_bad'?
-[-Werror=implicit-function-declaration]:  => 580:15
-  + /kisskb/src/include/asm-generic/pgtable.h: error: implicit
-declaration of function 'p4d_none'; did you mean 'pgd_none'?
-[-Werror=implicit-function-declaration]:  => 578:6
-  + /kisskb/src/include/asm-generic/pgtable.h: error: implicit
-declaration of function 'p4d_none'; did you mean 'pud_none'?
-[-Werror=implicit-function-declaration]:  => 578:6
+Yes, we probably should.  However that actually seems worth a discussion
+so I wanted to defer it until after this already huge series.
 
-parisc-defconfig
-parisc-allmodconfig
-parisc-allnoconfig
-a500_defconfig
-
-  + error: "can_do_mlock" [drivers/infiniband/sw/siw/siw.ko] undefined!:  => N/A
-
-sh-allmodconfig
-sh-allyesconfig
-
-Note that these are NOMMU!
-
-  + error: rk3399_gru_sound.c: relocation truncated to fit:
-R_NDS32_WORD_9_PCREL_RELA against `.text':  => (.text+0x624)
-
-nds32-allyesconfig
-
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/d1abaeb3be7b5fa6d7a1fbbd2e14e3310005c4c1/ (all 242 configs)
-> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/d45331b00ddb179e291766617259261c112db872/ (all 242 configs)
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Another thing we can do after this series is to kill of ioremap_nocache.
