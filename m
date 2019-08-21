@@ -2,75 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C19C977FC
-	for <lists+linux-parisc@lfdr.de>; Wed, 21 Aug 2019 13:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C76F1986CF
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 Aug 2019 23:48:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726353AbfHULgB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 21 Aug 2019 07:36:01 -0400
-Received: from smtp.duncanthrax.net ([89.31.1.170]:40874 "EHLO
-        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726349AbfHULgA (ORCPT
+        id S1728716AbfHUVrb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 21 Aug 2019 17:47:31 -0400
+Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:51270 "EHLO
+        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728028AbfHUVrb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 21 Aug 2019 07:36:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:Cc:To:From:Date;
-        bh=X5zvVv9Ieb3EMIG3hCtybIcz0q5uCNQZMNTgaJo6mF0=; b=DTHJPH74Sg5X+iehiEG8Atemrx
-        96iyXlm6ilfsmZZ/wM6zn5kdVX4pv1mfY4uIK1BZ2393mIkkrDcEjZNyLsS9/P9R2PbeZ9WhRjEdV
-        nOkED+o36BiRXnFIoBhetGMOL70Ht9URPJkXvC/paanc4JqRTsUQXfjyeup4za6dWdZo=;
-Received: from [2001:470:70c5:1111:5054:ff:febf:83e1] (helo=stackframe.org)
-        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.86_2)
-        (envelope-from <svens@stackframe.org>)
-        id 1i0Ou8-0006r9-Mg; Wed, 21 Aug 2019 13:35:52 +0200
-Date:   Wed, 21 Aug 2019 13:35:51 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-Cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] kprobes/parisc: remove arch_kprobe_on_func_entry()
-Message-ID: <20190821113551.GB14547@stackframe.org>
-References: <20190821174533.5736ca90@xhacker.debian>
+        Wed, 21 Aug 2019 17:47:31 -0400
+X-Greylist: delayed 490 seconds by postgrey-1.27 at vger.kernel.org; Wed, 21 Aug 2019 17:47:30 EDT
+Received: from darkstar.musicnaut.iki.fi (85-76-66-34-nat.elisa-mobile.fi [85.76.66.34])
+        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id A7EC92002C;
+        Thu, 22 Aug 2019 00:39:18 +0300 (EEST)
+Date:   Thu, 22 Aug 2019 00:39:18 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>, Qian Cai <cai@lca.pw>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>
+Subject: Re: Build regressions/improvements in v5.3-rc5
+Message-ID: <20190821213918.GE30291@darkstar.musicnaut.iki.fi>
+References: <20190819081157.9736-1-geert@linux-m68k.org>
+ <CAMuHMdV11Km7yF3gk5uTrPS1mVhjMdkbg28QRymcYyBPiAMBMw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190821174533.5736ca90@xhacker.debian>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAMuHMdV11Km7yF3gk5uTrPS1mVhjMdkbg28QRymcYyBPiAMBMw@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Aug 21, 2019 at 09:56:40AM +0000, Jisheng Zhang wrote:
-> The common kprobes provides a weak implementation of
-> arch_kprobe_on_func_entry(). The parisc version is the same as the
-> common version, so remove it.
-> 
-> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+Hi,
 
-Acked-by: Sven Schnelle <svens@stackframe.org>
+On Mon, Aug 19, 2019 at 11:07:49AM +0200, Geert Uytterhoeven wrote:
+> On Mon, Aug 19, 2019 at 10:47 AM Geert Uytterhoeven
+> <geert@linux-m68k.org> wrote:
+> > JFYI, when comparing v5.3-rc5[1] to v5.3-rc4[3], the summaries are:
+> >   - build errors: +7/-0
+> 
+>   + /kisskb/src/include/asm-generic/5level-fixup.h: error: unknown
+> type name 'pgd_t'; did you mean 'pid_t'?:  => 14:18
+>   + /kisskb/src/include/asm-generic/pgtable.h: error: implicit
+> declaration of function 'p4d_bad'; did you mean 'pgd_bad'?
+> [-Werror=implicit-function-declaration]:  => 580:15
+>   + /kisskb/src/include/asm-generic/pgtable.h: error: implicit
+> declaration of function 'p4d_bad'; did you mean 'pud_bad'?
+> [-Werror=implicit-function-declaration]:  => 580:15
+>   + /kisskb/src/include/asm-generic/pgtable.h: error: implicit
+> declaration of function 'p4d_none'; did you mean 'pgd_none'?
+> [-Werror=implicit-function-declaration]:  => 578:6
+>   + /kisskb/src/include/asm-generic/pgtable.h: error: implicit
+> declaration of function 'p4d_none'; did you mean 'pud_none'?
+> [-Werror=implicit-function-declaration]:  => 578:6
+> 
+> parisc-defconfig
 
-> ---
->  arch/parisc/kernel/kprobes.c | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/arch/parisc/kernel/kprobes.c b/arch/parisc/kernel/kprobes.c
-> index 5d7f2692ac5a..77ec51818916 100644
-> --- a/arch/parisc/kernel/kprobes.c
-> +++ b/arch/parisc/kernel/kprobes.c
-> @@ -281,10 +281,6 @@ int __kprobes arch_trampoline_kprobe(struct kprobe *p)
->  {
->  	return p->addr == trampoline_p.addr;
->  }
-> -bool arch_kprobe_on_func_entry(unsigned long offset)
-> -{
-> -	return !offset;
-> -}
->  
->  int __init arch_init_kprobes(void)
->  {
-> -- 
-> 2.23.0.rc1
-> 
+This commit broke PA-RISC build:
+
+0cfaee2af3a04c0be5f056cebe5f804dedc59a43 is the first bad commit
+commit 0cfaee2af3a04c0be5f056cebe5f804dedc59a43
+Author: Qian Cai <cai@lca.pw>
+Date:   Tue Aug 13 15:37:47 2019 -0700  
+
+    include/asm-generic/5level-fixup.h: fix variable 'p4d' set but not used
+
+A.
