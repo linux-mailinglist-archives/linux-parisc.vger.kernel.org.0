@@ -2,92 +2,101 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 982E9993C3
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Aug 2019 14:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B31B9A17E
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Aug 2019 22:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387634AbfHVMd4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 22 Aug 2019 08:33:56 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:44701 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387664AbfHVMdz (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Aug 2019 08:33:55 -0400
-Received: by mail-lj1-f193.google.com with SMTP id e24so5364495ljg.11
-        for <linux-parisc@vger.kernel.org>; Thu, 22 Aug 2019 05:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=AUhQHTcU1mgF9tzfCfhTROT5gqg6hyWkEW6XXLZ5cKmIG6UWi6GCnenpPcHX4Cri83
-         w1TgBBzhAQ9fJrCgRmYTB4GtgbaO8IYXyp82dYVIMcnRnJj3uIfVM+gak46EuT3WPl1x
-         MyO4bF1hJx29JmhWKS8kScMNA5YTmDoIRwF1/KQAtk31i+8c3IqCHvOpnyvwNseUyrye
-         1IqvNZv01+7i1PNQshNGopcLr8O6ocZqfYYvQlq9uTQ8VyMAZeOwyheLMbZ2C+xE2wz6
-         V+JMN5SgJUKZipPYiSbmyA/OCQqpqeQ5Dv68tcLS5KbcRU0g3nTBmm4Sbfda1dl2wNbG
-         eFAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=Txs5pt2y+ite2M0+SyFdt7k8IOUP2mgT0VNpXKQX+4md9mZqktnJfFk9gd1l0Siabl
-         bhv5sGVtPVaZcggovUFBk4JK5e6sHF1sOVshLvgnuR5dCXn1gRQGgaBBKappFe9Skjtv
-         8zT5jWz1gdfCR09kGeQTI+CWmYWlyqSBis973wRr2WzVrP9u4ZuZwIpCUR8uyBmuYA+g
-         lCXnsfkrCg5DNeHmBmbERWarykTREof4aVxbG6g608dvvpu0J3Xi7Wmyy2aRepMhUOfS
-         btyPvd2xqhitZQRJaKR/glpGdakOcf34rZq+jgo+9DlodFJw2toNlYXT7XLRPNjfjYL+
-         yRhg==
-X-Gm-Message-State: APjAAAViYP31LPfR1sNVZfTWk3igU+/Qh7hUDJNRZZlM4uZRNz64Wgj1
-        xZsls3Dk/7+xR/RMxGq3G2m//PamQqrqkmi6doc=
-X-Google-Smtp-Source: APXvYqxg7AtGyQDADYULNl8nHybD0AJp2ycxrRkCZAvwbR0kvEi3IE06cyQbgNbI8SGqgtUqnsJ3Iq1qssJPpmxZSt8=
-X-Received: by 2002:a2e:970e:: with SMTP id r14mr16736896lji.204.1566477233810;
- Thu, 22 Aug 2019 05:33:53 -0700 (PDT)
+        id S2389031AbfHVUy0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 22 Aug 2019 16:54:26 -0400
+Received: from mout.gmx.net ([212.227.17.21]:59623 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731775AbfHVUy0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 22 Aug 2019 16:54:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1566507233;
+        bh=2hVDH9MWH7A8zBxJ5P7SOwH/Biwrk+8uxfrdZSNVrfk=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=LSvdl0ft7Q5j3dCyx42JoOCtamaA9HRW3AuCxF0ynvftB24uy7UmzJPccXMpgPgVc
+         4Hhr0dgt019MdykmPoZOp3V1wMLRG/pQNsAhLRIobIhwe1xdi+0dHYgOyQ7Wklc3k/
+         +HcDH0uiPN6hWusf6XPfHWOhhBGBjaRM/HRUaA74=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.179.28] ([84.179.83.118]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MmlTC-1ihQdb2UcA-00jnm1; Thu, 22
+ Aug 2019 22:53:53 +0200
+Subject: Re: [PATCH] parisc: fix compilation errrors
+To:     Guenter Roeck <linux@roeck-us.net>, Qian Cai <cai@lca.pw>
+Cc:     akpm@linux-foundation.org, James.Bottomley@HansenPartnership.com,
+        kirill.shutemov@linux.intel.com, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20190815205305.1382-1-cai@lca.pw>
+ <20190815210208.GA9868@roeck-us.net>
+From:   Helge Deller <deller@gmx.de>
+Message-ID: <0f27b102-471a-e472-3e69-d9883a36efeb@gmx.de>
+Date:   Thu, 22 Aug 2019 22:53:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:33:53
- -0700 (PDT)
-Reply-To: eku.lawfirm@gmail.com
-From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
-Date:   Thu, 22 Aug 2019 12:33:53 +0000
-Message-ID: <CAN-_bTaF=eU-LMX4XaaadMGLTp31z=_83HGFhxq7=Kkzk_Q0hg@mail.gmail.com>
-Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190815210208.GA9868@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:GevPktSoCKEVGcbjLu9uz7kPh9LHwo9cSRfsldL4dpSufAnIzAO
+ ir6L4uBz+GbQw6vXMEO6V/FwGBfLzATXkWxsX3CBuFNazxviNOFDNqiIbT/T/7U9XDoq8Uw
+ H83+YhSnhAN3MMFGlddkgJ4raeq727zzaGATIkcwCzyRuXVtcH4X15GY9HbWc3tZrxmyZ7h
+ nxfJOh4pvpoTw1Q9DWYmw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Hb+b3YAh90Q=:SzlH9x7VnAtVmC5gpKHGpI
+ whqN6/ei0NM0NBwGYxwx62A7rRF7BeHW+E1TbzWhTAorN43ap/rMgM3xAU79ZFRaWKgjLbw9z
+ /ryDDISBdXa/9wkw6i/pf6DvUUslEq6bxD5ZL/w8RUXCM04X65gNfa4fJrQz+WBIFlz71SEw7
+ yYdIkRhxN+lAJ391hIfTSGzCJwcAXO4k7kQ9F6L4ZV2yY5RsAzRZdqbD9HIz7rQlGxYE4qKuN
+ ytHwBr4L6ERabk0bnQ0EdJkCKaUozOwueI1TFzsRqavRCjD0ybHgjaKy9gURWGhfgald1tlsV
+ X9ZqpMlLyfQQq1bsVSTURnWPBaI9EmcCvlsnQLtcznWmlkFnJMYOBcvcPsnswQnb55MIJ7O2a
+ Zn131J1M4YkN2AwO8kHaByELbmUdUdLwwwvB5b7gCNnLAyADubyM0sUDeSJrzgg1zsRTzfbvE
+ N6KW4BcO2agXblLfFLalpuC330H3dPEsyWOV2U/2+pTNRdg6Nx45a1pbLpumuiISjxkTlv8wx
+ 2IefimbF8oWu9VyHLGR60+OPMsTRnP6gD8LDiPZDGUj0yR0VCLra6JhcZJ6lvgr1qcvLcth6O
+ Ha7DC78ZnVAgvPOVUxGVaUT1TKEzQmvcM25Q3bcP7YxaAYRLagvzV95TqZKNwHs6kQAFQ6b5U
+ HH9PZPvOKl89dYARXiYmHmu34xQAKZY3wXg+5dQKr74zGp1dtQ1nnc4uUrCaD4+HSnmWnN5Yk
+ b3cYgTIN7KpcH407Alb6qVVMVxX08IIYlomcUGvct3TsOg873LLGUonmOTPzQosx87jb7G7Mf
+ G4YkaE1ayVuSMmhxjGfJewiz0Z95w3UHNjcvWaa4daENdBwNJdKKSX5GewZCjSUHTNEJGfVd3
+ 5wR2EYytJMDza8lKGF4QTO5E3gPvyITjMkxPejvjKI7Gnintz/5hQU0JkLyxHNcF0p6HB4mrs
+ G82yPOrEqTql8Qhb+uk+a+J/GJ3/5zN4cYinJHigajD4Jjdscm93l8uB4pda9xZnZSmYl3BaR
+ vyjeShsCP62nfrkXo+XTHDZzWhYuI/EPTS2hXAw1wOGhsri9OVhyklJGe+JqFukdu0RdqAwxo
+ Lu46tJ6iO6oP0UrkFH+GknLkllMqDAjPtb2CBxVGEX8K71V4EomK404huUeHGxTuyzx1LgWOv
+ dWndE=
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---=20
-Dear,
-With due respect this is not spam or Scam mail, because I have
-contacted you before and there was no response from you,I apologise if
-the contents of this mail are contrary to your moral ethics, which I
-feel may be of great disturbance to your person, but please treat this
-with absolute confidentiality, believing that this email reaches you
-in good faith. My contacting you is not a mistake or a coincidence
-because God can use any person known or unknown to accomplish great
-things.
-I am a lawyer and I have an investment business proposal to offer you.
-It is not official but should be considered as legal and confidential
-business. I have a customer's deposit of $US25 million dollars ready
-to be moved for investment if you can partner with us. We are ready to
-offer you 10% of this total amount as your compensation for supporting
-the transaction to completion. If you are interested to help me please
-reply me with your full details as stated below:
-(1) Your full names:
-(2) Your address:
-(3) Your occupation:
-(4) Your mobile telephone number:
-(5) Your nationality:
-(6) Your present location:
-(7) Your age:
-So that I will provide you more details on what to do and what is
-required for successful completion.
-Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
-MENTIONED DETAILS
+On 15.08.19 23:02, Guenter Roeck wrote:
+> On Thu, Aug 15, 2019 at 04:53:05PM -0400, Qian Cai wrote:
+>> The commit 0cfaee2af3a0 ("include/asm-generic/5level-fixup.h: fix
+>> variable 'p4d' set but not used") converted a few functions from macros
+>> to static inline, which causes parisc to complain,
+>>
+>> In file included from ./include/asm-generic/4level-fixup.h:38:0,
+>>                   from ./arch/parisc/include/asm/pgtable.h:5,
+>>                   from ./arch/parisc/include/asm/io.h:6,
+>>                   from ./include/linux/io.h:13,
+>>                   from sound/core/memory.c:9:
+>> ./include/asm-generic/5level-fixup.h:14:18: error: unknown type name
+>> 'pgd_t'; did you mean 'pid_t'?
+>>   #define p4d_t    pgd_t
+>>                    ^
+>> ./include/asm-generic/5level-fixup.h:24:28: note: in expansion of macro
+>> 'p4d_t'
+>>   static inline int p4d_none(p4d_t p4d)
+>>                              ^~~~~
+>>
+>> It is because "4level-fixup.h" is included before "asm/page.h" where
+>> "pgd_t" is defined.
+>>
+>> Fixes: 0cfaee2af3a0 ("include/asm-generic/5level-fixup.h: fix variable =
+'p4d' set but not used")
+>> Reported-by: Guenter Roeck <linux@roeck-us.net>
+>> Signed-off-by: Qian Cai <cai@lca.pw>
+>
+> Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Sinc=C3=A8rement v=C3=B4tre,
-Avocat Etienne Eku Esq.(Lawfirm)
-Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
-=E2=80=99ouest.
-Skype:westafricalawfirm
+Acked-by: Helge Deller <deller@gmx.de>
+
+Helge
