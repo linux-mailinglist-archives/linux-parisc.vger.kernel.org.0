@@ -2,112 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 346EC9CAE1
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Aug 2019 09:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F45B9D760
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Aug 2019 22:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730190AbfHZHpN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 26 Aug 2019 03:45:13 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:52422 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728198AbfHZHpM (ORCPT
+        id S2387504AbfHZUUK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 26 Aug 2019 16:20:10 -0400
+Received: from 195-159-176-226.customer.powertech.no ([195.159.176.226]:39386
+        "EHLO blaine.gmane.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729600AbfHZUUK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 26 Aug 2019 03:45:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=FqJ6xvyn0LHQ16MKsazT2HhX3KxiVzyDvsY2B23Ctso=; b=bdX927/h7yS5b1qg30jd4ATTN
-        X998dcLFf2XLF3GhMdnEPUlpSbM/iRxAGrhpx+yvAcP6BXLmbwDijPz2wcP/JwkDHBUjSbZxoDB+3
-        YQ57G9VNts3H7N7la3on6VnVzaxdmSveaKRWl58IAtaq38KY9/FnISbhc9828VnPKrpWSuveuwCsf
-        LLkKN5ECiFgMtCQvCGf3g2FcMbmezoDuCh0pBTcRFNTS/Q3Cy+gP7YmApuR0lGoAMiLT59cXHHtB4
-        IueRhEqDIVavy7Y4upqvIZAVIkf6Nx08E5ArJ5fpMQa79c0XUnLbHIWxJnMajZebul2t7vd6teTi+
-        wxeuxTAhA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1i29g9-00028n-7H; Mon, 26 Aug 2019 07:44:41 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 4A7803070F4;
-        Mon, 26 Aug 2019 09:44:04 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id A84BA20B33552; Mon, 26 Aug 2019 09:44:37 +0200 (CEST)
-Date:   Mon, 26 Aug 2019 09:44:37 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Changbin Du <changbin.du@gmail.com>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>, Jessica Yu <jeyu@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH 05/11] ftrace: create memcache for hash entries
-Message-ID: <20190826074437.GM2369@hirez.programming.kicks-ass.net>
-References: <20190825132330.5015-1-changbin.du@gmail.com>
- <20190825132330.5015-6-changbin.du@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190825132330.5015-6-changbin.du@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Mon, 26 Aug 2019 16:20:10 -0400
+Received: from list by blaine.gmane.org with local (Exim 4.89)
+        (envelope-from <glpp-linux-parisc@m.gmane.org>)
+        id 1i2LT8-000nwQ-AX
+        for linux-parisc@vger.kernel.org; Mon, 26 Aug 2019 22:20:02 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To:     linux-parisc@vger.kernel.org
+From:   sbaugh@catern.com
+Subject: Re: [PATCH RESEND v11 7/8] open: openat2(2) syscall
+Date:   Mon, 26 Aug 2019 19:50:50 +0000
+Message-ID: <854l2366zp.fsf@catern.com>
+References: <20190820033406.29796-1-cyphar@cyphar.com>
+        <20190820033406.29796-8-cyphar@cyphar.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Cancel-Lock: sha1:ym8TD2+JE56rxevrCvTf9T8Ptcg=
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Aug 25, 2019 at 09:23:24PM +0800, Changbin Du wrote:
-> When CONFIG_FTRACE_FUNC_PROTOTYPE is enabled, thousands of
-> ftrace_func_entry instances are created. So create a dedicated
-> memcache to enhance performance.
-> 
-> Signed-off-by: Changbin Du <changbin.du@gmail.com>
-> ---
->  kernel/trace/ftrace.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index a314f0768b2c..cfcb8dad93ea 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -94,6 +94,8 @@ struct ftrace_ops *function_trace_op __read_mostly = &ftrace_list_end;
->  /* What to set function_trace_op to */
->  static struct ftrace_ops *set_function_trace_op;
->  
-> +struct kmem_cache *hash_entry_cache;
-> +
->  static bool ftrace_pids_enabled(struct ftrace_ops *ops)
->  {
->  	struct trace_array *tr;
-> @@ -1169,7 +1171,7 @@ static int add_hash_entry(struct ftrace_hash *hash, unsigned long ip,
->  {
->  	struct ftrace_func_entry *entry;
->  
-> -	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
-> +	entry = kmem_cache_alloc(hash_entry_cache, GFP_KERNEL);
->  	if (!entry)
->  		return -ENOMEM;
->  
-> @@ -6153,6 +6155,15 @@ void __init ftrace_init(void)
->  	if (ret)
->  		goto failed;
->  
-> +	hash_entry_cache = kmem_cache_create("ftrace-hash",
-> +					     sizeof(struct ftrace_func_entry),
-> +					     sizeof(struct ftrace_func_entry),
-> +					     0, NULL);
-> +	if (!hash_entry_cache) {
-> +		pr_err("failed to create ftrace hash entry cache\n");
-> +		goto failed;
-> +	}
+Aleksa Sarai <cyphar@cyphar.com> writes:
+> To this end, we introduce the openat2(2) syscall. It provides all of the
+> features of openat(2) through the @how->flags argument, but also
+> also provides a new @how->resolve argument which exposes RESOLVE_* flags
+> that map to our new LOOKUP_* flags. It also eliminates the long-standing
+> ugliness of variadic-open(2) by embedding it in a struct.
 
-Wait what; you already have then in the binary image, now you're
-allocating extra memory for each of them?
+I don't like this usage of a structure in memory to pass arguments that
+would fit in registers. This would be quite inconvenient for me as a
+userspace developer.
 
-Did you look at what ORC does? Is the binary search really not fast
-enough?
+Others have brought up issues with this: the issue of seccomp, and the
+issue of mismatch between the userspace interface and the kernel
+interface, are the most important for me. I want to add another,
+admittedly somewhat niche, concern.
+
+This interfaces requires a program to allocate memory (even on the
+stack) just to pass arguments to the kernel which could be passed
+without allocating that memory. That makes it more difficult and less
+efficient to use this syscall in any case where memory is not so easily
+allocatable: such as early program startup or assembly, where the stack
+may be limited in size or not even available yet, or when injecting a
+syscall while ptracing.
+
+A struct-passing interface was needed for clone, since we ran out of
+registers; but we have not run out of registers yet for openat, so it
+would be nice to avoid this if we can. We can always expand later...
+
