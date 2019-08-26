@@ -2,102 +2,107 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F559C3E1
-	for <lists+linux-parisc@lfdr.de>; Sun, 25 Aug 2019 15:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A52739CAA5
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Aug 2019 09:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728376AbfHYNZP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 25 Aug 2019 09:25:15 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:33450 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725922AbfHYNZO (ORCPT
+        id S1728228AbfHZHeT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 26 Aug 2019 03:34:19 -0400
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:42827 "EHLO
+        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728168AbfHZHeT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 25 Aug 2019 09:25:14 -0400
-Received: by mail-pg1-f195.google.com with SMTP id n190so8764783pgn.0;
-        Sun, 25 Aug 2019 06:25:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=0QzXKgHJNJjac27m2EIm1Lz0/kAofQ72J+526iejRFQ=;
-        b=GO/PVWf3Aip/lj76SnUDb0sMdXD+1tVF4Pr4MtQbEEKh9xmXb2UDDeimXy+D9tSRoG
-         ONfI3x+1GnVxlk4972mu5UBRbB3v9cDn0s0GXIfDvUkoxvFpZB7qpM3Wm7svq08IqXES
-         3/9H/nvW/APPaP6DXd/ZlsqTaXXFgfY5nbRum3oET7EhpHDQM6O7aQgrLYUCx31vh/tp
-         Pj3jnXMeh/9xoFgvF62TEqWkl9dtlG9kZEQ23LqbLsRsqn9qkIxzDaA35xnLfCdk7Yvg
-         kdWiDXZHWBnkOUGF5K8KzJ635D2qzEbl/F8Ge9MZplop+b+vPJfi/jVV3tdF7l5wEKUI
-         HPiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=0QzXKgHJNJjac27m2EIm1Lz0/kAofQ72J+526iejRFQ=;
-        b=Jvvca8TFYhzYsqQ/ZFPDiSNutCaBpej+5YxzhZvvjJSLbcab7uIEPRV4tJHG5HKAJl
-         suuVlly85JWk8GgrzrdO2B0jEvxIm00qLeTDHwk1Cy50T7dGhJiQgTdapAUv4Q/dmFqK
-         ktEHfIU49Eus3RvJ8DDf1p2zeAyBBOT8k0bs7/l1uiYiYfawHQOYTCNW2LXahdcxRees
-         TPbf8FdMQbJvUvdbXBF1OIGIWMrTGrKiBZyed30PdtcPXZQPs0V12fjqtUhi2n+9P8o+
-         tWmTdbVjPxFuQEYrn4nAsfwk73qYxlDYCak06TUX4mXFYkBhhJ3e17kD8XBjdyt02W+2
-         452A==
-X-Gm-Message-State: APjAAAWBPEmoJISmEYJN+ZGWdinrVEqqb+pPMSFlF05v0L2Uug8TFZch
-        Q5tzo4+eWCFxJS4ZJeLe6Vk=
-X-Google-Smtp-Source: APXvYqxZ3PAtXLqHmn+Zgv1+tnSLgb0uWh1NyJ7+nIhirLt8hpEvkUAsM2RAxT5IIyrqsmvFKAmyHw==
-X-Received: by 2002:a17:90a:3465:: with SMTP id o92mr14610155pjb.20.1566739513587;
-        Sun, 25 Aug 2019 06:25:13 -0700 (PDT)
-Received: from localhost.localdomain ([149.28.153.17])
-        by smtp.gmail.com with ESMTPSA id y23sm11076562pfr.86.2019.08.25.06.25.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Aug 2019 06:25:13 -0700 (PDT)
-From:   Changbin Du <changbin.du@gmail.com>
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>, Jessica Yu <jeyu@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Changbin Du <changbin.du@gmail.com>
-Subject: [PATCH 11/11] MAINTAINERS: make scripts/ftrace/ maintained
-Date:   Sun, 25 Aug 2019 21:23:30 +0800
-Message-Id: <20190825132330.5015-12-changbin.du@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190825132330.5015-1-changbin.du@gmail.com>
-References: <20190825132330.5015-1-changbin.du@gmail.com>
+        Mon, 26 Aug 2019 03:34:19 -0400
+X-Originating-IP: 81.250.144.103
+Received: from [10.30.1.20] (lneuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 49BD560003;
+        Mon, 26 Aug 2019 07:34:12 +0000 (UTC)
+Subject: Re: [PATCH RESEND 0/8] Fix mmap base in bottom-up mmap
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+References: <20190620050328.8942-1-alex@ghiti.fr>
+From:   Alexandre Ghiti <alex@ghiti.fr>
+Message-ID: <abc7ed75-0f51-7f21-5a74-d389f968ee55@ghiti.fr>
+Date:   Mon, 26 Aug 2019 09:34:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190620050328.8942-1-alex@ghiti.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: fr
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Make scripts/ftrace/ maintained and I would like to help with reviewing
-related patches.
+On 6/20/19 7:03 AM, Alexandre Ghiti wrote:
+> This series fixes the fallback of the top-down mmap: in case of
+> failure, a bottom-up scheme can be tried as a last resort between
+> the top-down mmap base and the stack, hoping for a large unused stack
+> limit.
+>
+> Lots of architectures and even mm code start this fallback
+> at TASK_UNMAPPED_BASE, which is useless since the top-down scheme
+> already failed on the whole address space: instead, simply use
+> mmap_base.
+>
+> Along the way, it allows to get rid of of mmap_legacy_base and
+> mmap_compat_legacy_base from mm_struct.
+>
+> Note that arm and mips already implement this behaviour.
+>
+> Alexandre Ghiti (8):
+>    s390: Start fallback of top-down mmap at mm->mmap_base
+>    sh: Start fallback of top-down mmap at mm->mmap_base
+>    sparc: Start fallback of top-down mmap at mm->mmap_base
+>    x86, hugetlbpage: Start fallback of top-down mmap at mm->mmap_base
+>    mm: Start fallback top-down mmap at mm->mmap_base
+>    parisc: Use mmap_base, not mmap_legacy_base, as low_limit for
+>      bottom-up mmap
+>    x86: Use mmap_*base, not mmap_*legacy_base, as low_limit for bottom-up
+>      mmap
+>    mm: Remove mmap_legacy_base and mmap_compat_legacy_code fields from
+>      mm_struct
+>
+>   arch/parisc/kernel/sys_parisc.c  |  8 +++-----
+>   arch/s390/mm/mmap.c              |  2 +-
+>   arch/sh/mm/mmap.c                |  2 +-
+>   arch/sparc/kernel/sys_sparc_64.c |  2 +-
+>   arch/sparc/mm/hugetlbpage.c      |  2 +-
+>   arch/x86/include/asm/elf.h       |  2 +-
+>   arch/x86/kernel/sys_x86_64.c     |  4 ++--
+>   arch/x86/mm/hugetlbpage.c        |  7 ++++---
+>   arch/x86/mm/mmap.c               | 20 +++++++++-----------
+>   include/linux/mm_types.h         |  2 --
+>   mm/debug.c                       |  4 ++--
+>   mm/mmap.c                        |  2 +-
+>   12 files changed, 26 insertions(+), 31 deletions(-)
+>
 
-Signed-off-by: Changbin Du <changbin.du@gmail.com>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+Hi everyone,
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9cbcf167bdd0..ca012ea260d7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16293,6 +16293,7 @@ F:	drivers/char/tpm/
- TRACING
- M:	Steven Rostedt <rostedt@goodmis.org>
- M:	Ingo Molnar <mingo@redhat.com>
-+R:	Changbin Du <changbin.du@gmail.com>
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git perf/core
- S:	Maintained
- F:	Documentation/trace/ftrace.rst
-@@ -16303,6 +16304,7 @@ F:	include/linux/trace*.h
- F:	include/trace/
- F:	kernel/trace/
- F:	tools/testing/selftests/ftrace/
-+F:	scripts/ftrace/
- 
- TRACING MMIO ACCESSES (MMIOTRACE)
- M:	Steven Rostedt <rostedt@goodmis.org>
--- 
-2.20.1
+Any thoughts about that series ? As said before, this is just a 
+preparatory patchset in order to
+merge x86 mmap top down code with the generic version.
+
+Thanks for taking a look,
+
+Alex
 
