@@ -2,118 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FB9A9F996
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2019 06:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83EB7A06BA
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2019 17:56:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726104AbfH1ExZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 28 Aug 2019 00:53:25 -0400
-Received: from relay11.mail.gandi.net ([217.70.178.231]:35335 "EHLO
-        relay11.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725907AbfH1ExY (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 28 Aug 2019 00:53:24 -0400
-Received: from [192.168.0.12] (127.19.86.79.rev.sfr.net [79.86.19.127])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay11.mail.gandi.net (Postfix) with ESMTPSA id 4C1CA100005;
-        Wed, 28 Aug 2019 04:53:13 +0000 (UTC)
-Subject: Re: [PATCH RESEND 0/8] Fix mmap base in bottom-up mmap
-To:     Helge Deller <deller@gmx.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org
-References: <20190620050328.8942-1-alex@ghiti.fr>
- <abc7ed75-0f51-7f21-5a74-d389f968ee55@ghiti.fr>
- <9639ebd4-7dcb-0ea5-e0a6-adb8eaecd92a@gmx.de>
-From:   Alex Ghiti <alex@ghiti.fr>
-Message-ID: <904d05d1-e42e-233f-2321-7cd3a2a742eb@ghiti.fr>
-Date:   Wed, 28 Aug 2019 00:53:12 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726917AbfH1Pzv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 28 Aug 2019 11:55:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38158 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726513AbfH1Pzu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 28 Aug 2019 11:55:50 -0400
+Received: from tleilax.poochiereds.net (68-20-15-154.lightspeed.rlghnc.sbcglobal.net [68.20.15.154])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 765322064A;
+        Wed, 28 Aug 2019 15:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567007749;
+        bh=tm23iPOHz5qNiVmbKBRthv6o0H14qpr8dY7bd4MTQKs=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=pqTccn5JcnucNCAhPvukewbhK7LnqfZiA1JhrrT1FDFY4mCrVB8AZyQ8GN7mLjP8y
+         7s9EDdOPkKuIVFWDEaVrPbihjrm8teyPYUCsz+WciUJXkEpW4kr0ySk55f/ASUGrn8
+         zpEFoJeA5Hy5XDMtaE0vrkdWUVKHa2wWQhJO2xxg=
+Message-ID: <4da231cd52880991d8a038adb8fbb2ef3d724db9.camel@kernel.org>
+Subject: Re: [PATCH RESEND v11 7/8] open: openat2(2) syscall
+From:   Jeff Layton <jlayton@kernel.org>
+To:     sbaugh@catern.com, linux-fsdevel@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Date:   Wed, 28 Aug 2019 11:55:47 -0400
+In-Reply-To: <854l2366zp.fsf@catern.com>
+References: <20190820033406.29796-1-cyphar@cyphar.com>
+         <20190820033406.29796-8-cyphar@cyphar.com> <854l2366zp.fsf@catern.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
-In-Reply-To: <9639ebd4-7dcb-0ea5-e0a6-adb8eaecd92a@gmx.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: sv-FI
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 8/26/19 6:37 PM, Helge Deller wrote:
-> On 26.08.19 09:34, Alexandre Ghiti wrote:
->> On 6/20/19 7:03 AM, Alexandre Ghiti wrote:
->>> This series fixes the fallback of the top-down mmap: in case of
->>> failure, a bottom-up scheme can be tried as a last resort between
->>> the top-down mmap base and the stack, hoping for a large unused stack
->>> limit.
->>>
->>> Lots of architectures and even mm code start this fallback
->>> at TASK_UNMAPPED_BASE, which is useless since the top-down scheme
->>> already failed on the whole address space: instead, simply use
->>> mmap_base.
->>>
->>> Along the way, it allows to get rid of of mmap_legacy_base and
->>> mmap_compat_legacy_base from mm_struct.
->>>
->>> Note that arm and mips already implement this behaviour.
->>>
->>> Alexandre Ghiti (8):
->>>    s390: Start fallback of top-down mmap at mm->mmap_base
->>>    sh: Start fallback of top-down mmap at mm->mmap_base
->>>    sparc: Start fallback of top-down mmap at mm->mmap_base
->>>    x86, hugetlbpage: Start fallback of top-down mmap at mm->mmap_base
->>>    mm: Start fallback top-down mmap at mm->mmap_base
->>>    parisc: Use mmap_base, not mmap_legacy_base, as low_limit for
->>>      bottom-up mmap
->>>    x86: Use mmap_*base, not mmap_*legacy_base, as low_limit for 
->>> bottom-up
->>>      mmap
->>>    mm: Remove mmap_legacy_base and mmap_compat_legacy_code fields from
->>>      mm_struct
->>>
->>>   arch/parisc/kernel/sys_parisc.c  |  8 +++-----
->>>   arch/s390/mm/mmap.c              |  2 +-
->>>   arch/sh/mm/mmap.c                |  2 +-
->>>   arch/sparc/kernel/sys_sparc_64.c |  2 +-
->>>   arch/sparc/mm/hugetlbpage.c      |  2 +-
->>>   arch/x86/include/asm/elf.h       |  2 +-
->>>   arch/x86/kernel/sys_x86_64.c     |  4 ++--
->>>   arch/x86/mm/hugetlbpage.c        |  7 ++++---
->>>   arch/x86/mm/mmap.c               | 20 +++++++++-----------
->>>   include/linux/mm_types.h         |  2 --
->>>   mm/debug.c                       |  4 ++--
->>>   mm/mmap.c                        |  2 +-
->>>   12 files changed, 26 insertions(+), 31 deletions(-)
->>>
->>
->> Any thoughts about that series ? As said before, this is just a 
->> preparatory patchset in order to
->> merge x86 mmap top down code with the generic version.
->
-> I just tested your patch series successfully on the parisc
-> architeture. You may add:
->
-> Tested-by: Helge Deller <deller@gmx.de> # parisc
+On Mon, 2019-08-26 at 19:50 +0000, sbaugh@catern.com wrote:
+> Aleksa Sarai <cyphar@cyphar.com> writes:
+> > To this end, we introduce the openat2(2) syscall. It provides all of the
+> > features of openat(2) through the @how->flags argument, but also
+> > also provides a new @how->resolve argument which exposes RESOLVE_* flags
+> > that map to our new LOOKUP_* flags. It also eliminates the long-standing
+> > ugliness of variadic-open(2) by embedding it in a struct.
+> 
+> I don't like this usage of a structure in memory to pass arguments that
+> would fit in registers. This would be quite inconvenient for me as a
+> userspace developer.
+> 
+> Others have brought up issues with this: the issue of seccomp, and the
+> issue of mismatch between the userspace interface and the kernel
+> interface, are the most important for me. I want to add another,
+> admittedly somewhat niche, concern.
+> 
+> This interfaces requires a program to allocate memory (even on the
+> stack) just to pass arguments to the kernel which could be passed
+> without allocating that memory. That makes it more difficult and less
+> efficient to use this syscall in any case where memory is not so easily
+> allocatable: such as early program startup or assembly, where the stack
+> may be limited in size or not even available yet, or when injecting a
+> syscall while ptracing.
+> 
+> A struct-passing interface was needed for clone, since we ran out of
+> registers; but we have not run out of registers yet for openat, so it
+> would be nice to avoid this if we can. We can always expand later...
+> 
 
-Thanks again Helge !
+We can't really expand later like you suggest.
 
-Alex
+Suppose in a couple of years that we need to add some new argument to
+openat2 that isn't just a new flag. If all these values are passed by
+individual arguments, you can't add one later without adding yet another
+syscall.
 
+Using a struct for this allows this to be extended later, OTOH. You can
+extend it, and add a flag that tells the kernel that it can access the
+new field. No new syscall required.
+-- 
+Jeff Layton <jlayton@kernel.org>
 
->
-> Thanks!
-> Helge
