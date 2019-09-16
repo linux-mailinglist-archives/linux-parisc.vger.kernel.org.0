@@ -2,64 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39E7BB4033
-	for <lists+linux-parisc@lfdr.de>; Mon, 16 Sep 2019 20:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E807B4053
+	for <lists+linux-parisc@lfdr.de>; Mon, 16 Sep 2019 20:30:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732489AbfIPST7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 16 Sep 2019 14:19:59 -0400
-Received: from mout.gmx.net ([212.227.15.19]:56367 "EHLO mout.gmx.net"
+        id S2390364AbfIPSaY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 16 Sep 2019 14:30:24 -0400
+Received: from mout.gmx.net ([212.227.15.18]:37475 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732262AbfIPST7 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 16 Sep 2019 14:19:59 -0400
+        id S1726648AbfIPSaX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 16 Sep 2019 14:30:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1568657971;
+        s=badeba3b8450; t=1568658578;
         bh=5JYExOoizKoku5K5TgA/HNnjAWp4gGtovIt70J4r0CE=;
         h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=a1xUXMngN8A/VYMs9yfw5Er1SMSHUY2BnPHoljlQicXB85OqvWN0s7XeC1kNw/vOy
-         cCVPd9wzjQRcXUj1dfFZpFljWGPBY6cQgvUrONPah0xtkmxd378kG9Xlslx5QHUWK0
-         yQKbgFCWxluwn0RvAnIkTsM5/kwcm0NBxIILSEn4=
+        b=dgCGCeR81F8b9hOraeryyMarZeGV+JHEu9LMJQ5ulZCJ1kMCF3PEcWyQGlESpoVeN
+         G6nsCv9JzTn+g7Kwa0UTBu1HfBaUftg4KqOc3IIBqTx1bi99wl7f+8+If7P0Pq1dYL
+         hfi2UN/pGcmr2tH3T4dMEPedKB4nkSU/9RXK5JiE=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.141.197]) by mail.gmx.com (mrgmx003
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0MVMgI-1hbEuT36Uw-00Ymeq; Mon, 16
- Sep 2019 20:19:31 +0200
-Date:   Mon, 16 Sep 2019 20:19:25 +0200
+Received: from ls3530.fritz.box ([92.116.141.197]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MnJlW-1iZ7ZO1qBo-00jMH4; Mon, 16
+ Sep 2019 20:29:38 +0200
+Date:   Mon, 16 Sep 2019 20:29:32 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
 Cc:     Sven Schnelle <svens@stackframe.org>,
         Jeroen Roovers <jer@gentoo.org>,
         Jisheng Zhang <Jisheng.Zhang@synaptics.com>
 Subject: [GIT PULL] parisc architecture updates for kernel v5.4
-Message-ID: <20190916181925.GA7698@ls3530.fritz.box>
+Message-ID: <20190916182932.GA8097@ls3530.fritz.box>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Provags-ID: V03:K1:dDYuydDYelHVLCS548gk0UyJbeIQsck4F+4fj2HfgT9aQrwTtLM
- ymITBXU8bMI69QKeq5X7yIYTbcE1V+0pkTpIuN/F7H8mZ2AM7FsZekUqIaiP6a3FunBo2CD
- 9qeoKIL+/DP/sG3M59W7o0QybxZw41DYgL6yauYCvqlZYqylu/AxR1v/pqpr6ZLFE0FFe9D
- W8GVWwvL7Ek0zqpwaQ/3w==
+X-Provags-ID: V03:K1:440bKVaa1Q+3xLpUEUoFEcM5u1Bu8qPzEsOFS5a9qYSTqegTcu4
+ 3+uGsrPtdej3qhD8uC0MgJKpVsnx6ZwBa2fzzMKrFOJxQWY+Bg2H9TCIXx144RqvI9+n8OM
+ TgT0HcFglI8raLZo+5v2K3WeIsMjzFKmwUeWBEHcjEwHhj5IOdCtgS34tdPq5eV+CX0kbtL
+ UCBhBDYUF1k5VEr4TRSeg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qRYIt3cfNyA=:IW7cwNCTWf6ShoRiFoTJqi
- swbptmyCe5MucNnnKnx4CEzOrIjau9DlXKEfUNDTkdv8ffzNzXWj44WdZQKZEwAbL/dZzya9z
- E4yfzhUg32xWsZPIoS4g8AAuW9unPkmjN2KlstRFyaci4VTpw0eR1qMkIOUWFpjHAb/Rou97P
- fauvYwmcytCnq8RbFi28RJWH/wm5mtjiX2z4JFQhRSqyO5AQCzYYQkp/jjgTqmxpVIduqSDEv
- wDU4t/Bw5NgIQr5MLuMNHK4jFEXD5lUxuUyx3shl5+20/1gDIwVqKPynxhyMsmPolF0PWXj5N
- hXzju+705AGzQqPqg6+vWHDFR1Hja4plJ39k9qQRCkfskiRhACNhDAA97IizSmiavDXFsEkwM
- Z0yWN0cC3q9CWz2gjCHTWTpvaPO0uSLEljnW7o9pGBS9I+0Oi5Bg/tw0QHnnWgoaP+mCq5Dmg
- GmDd1dQTqOk/bXyd5HrEQ+j2u03ufh1+obAdQJs50+eYtZD03usQ4SNX+hRMt/ucNQOXB5jEj
- zev/BLuy27v/9emrlhyPSMlC/F4wOpr49m0CvfOdhNGS8wL27iDEOAjGu3QOtAu/Ns3A6ekE/
- rSrXp02hNobgvhhto+6bufjSJi9cuOEgPIMlhi7Ce3iD7sqdRwpvzIQZLxjvq02RUIH4iXk3D
- QmeGWsr9K/KW5cZ7w95Q0EiZFkeP79anoFnpWHy7zMzPT1fwa3DONFKBq/RbRiHoMw4uQs/DN
- /AWVuJ2eptpymghQ3fEtILotVy6+3Nu3+7oNJeYsS444nEhGGh6k0q404CoJmthWvtZTkoxq7
- PMaqlMTGuz6qW4zZAamsJz6TRwjrAw8qBVp4tZ8H558LvV9KJTB+7epI0OCd7mejpGf0gbvpe
- w4UHQn/cE2Bnluh79bGKSNpAbAEJixp+Bl1q66s9w/4iTTC5OAnNU9ciLXlpqAwklQ6OUFRWs
- 1BLvCSStZMOX+toPgzRDeHQXQdg/TJl0PG3w1iuaRI4BjV8mIYJqTKStxKhM1DNVD3dv9PBDB
- jTQgSv7l3zNlYrZjqpSaLlFrqOPyeWKS7iBcZpb4mOSq+cfaij+sLZ6+F6dFxE9ig/ZFHSFGn
- V0s67lEUMzKlnsScAoWPUZMlijEnrJxG6u1DxpqkKpx2wF5dmGSOH3XDwVzOX7fTXn80swUoj
- b8RNZImLo8WbCKmthNS43gnbVURtncvfvoRpgMH9plPXoYDM2tB67cqjmnVFci8iZsF2tP41m
- t29Y4ftLu69US2wsm/umDo9jtBy6dGkbDE+/xKA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:6LUP+KjmiZs=:B3RVywv9l2zy0I+HselXkS
+ a69OURBWixa5VN0Db7QUuNo5Aqzyy4N2a2kp94kKE+kROUyQ5rCaHc2dpdVTThzGbmlc+YBz0
+ Hz8dA8wTeGYxagO3wp9KXTJftTl0T+6ITA2QXxIKwn8TvT8QDWrFck3K2ZBtPSSV4Uv+LAuKl
+ qyWgGA0cKeNOy7cgK7vKZnqTVGS/Twqeuzl/izVgoWRJVmLO/920yjASRhgSY5VJKX7HN1wJ5
+ DRPtt9ziqHuZiU5hKuNro89SsMQtUe+WsgHtfGURHC9i8o38Vvu8FCWRxZsuHUZ91AvfPhMV6
+ a6OGKhQmbW+1AhRMQVCIG/dh8HsctaMI+2hw6M78OEN3BAAe3PHRs4o6IaSyfRRllXUht8R7H
+ /qkstakpkrTPGni48EUM+qke0/CrRgJULis3H+ijt3MH7SU06n4u2fKRkS8Rz2sQRsgiW0VuI
+ BjvLFyLk/FEwtqu4zGkJ7wxY+ArZlort17T3B58pY9fjzJ0Hiawm4QtIeoHHJGtN2vzsJr6HP
+ Uvgqu/QSsjIUiV7hof0+3aHqEDieNWEb+WXICVcToTA538gL/Ok16M7ctqnA6HiW5B98NSWes
+ 0t2Y/l+xhSRwKaLIxpg+FfubZqrnjubQwNMZw4540vASUbcjoTtorOpD5Xpyg90DDM9Nueu/m
+ Si3UOiPGIjOAEMwHFK0AiBC0ys8zwM2toldouy1gWRIknnV/md2F+d8uHgQMSnRcXKHMMXChf
+ +OUPMvpyrZxy9yvNfP4+DqT67Y2WRwjnu86f8WLv/7D3Df7tedTr7qytRpeUMhehk8h/Bebd8
+ 3wOs3+cu5S7HXpUKLcRQK4nG5NZ0r8vpDhfyPa++bU2YKcpgWEKAEdIJDrossJtV8ve9rlMuG
+ sGG1hHM7SA7YjZKq3G2PpWSRPYPbnNGKmQnE+d0icf8RDkLiqhw9EnJ99LxF7jD116pTPhIow
+ QY+kaaHZEjF+V+djASec7ukkrvH5Q3yVhobQDP0Q9wdRHIfzd6ePDxngPMxuA+fyjeN6SKnri
+ J6fL/wogjiWB/Q0AxVLGtv6Zd1xzT9w3Zhxa8KX+0fl5ove0xF4Od6YcB2V4abhyDHrqAJpLl
+ QpJlTT2BriCK0BuNPH1pRxCiWMCEPpHlNi/eA7/sgvduqNXgEwDhiboOSpFMVj3MeR5/PMGla
+ rFpWg0hbD0fcLTY+E9mFcTmImcESyKQZuS1GMNlfO7J4ziLtlZZ0Bg+nfUexJX2UxBAbGuSJL
+ x6wYqSRvEhQYVagxDS4csV6Tcj26MOEStqYPEfA==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
