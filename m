@@ -2,138 +2,57 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A423DB57AD
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 Sep 2019 23:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9CB6B584E
+	for <lists+linux-parisc@lfdr.de>; Wed, 18 Sep 2019 00:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728555AbfIQVhM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 Sep 2019 17:37:12 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:43568 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726719AbfIQVhL (ORCPT
+        id S1726500AbfIQW6I (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 Sep 2019 18:58:08 -0400
+Received: from belmont94srvr.owm.bell.net ([184.150.200.94]:43596 "EHLO
+        mtlfep08.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726201AbfIQW6I (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 Sep 2019 17:37:11 -0400
-Received: by mail-pf1-f195.google.com with SMTP id a2so2903125pfo.10
-        for <linux-parisc@vger.kernel.org>; Tue, 17 Sep 2019 14:37:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IWZyGnTuUXe6mInqirs/V2Jra4CVO2Bebqh0F6XSVWY=;
-        b=tFs+S5kA+2T0TuwnELnYmfmp6QR7u4BcTRFU9Vt7rwB20ByIWxuR8P3RFqrmLBEy8q
-         UkZMPn9Xj2tpD7r6Nqb7vJWZeBkNMe+FAu8HUa1Cb6XUsAb4lbfEdD0mISZQk4EqsbgP
-         LNTGpyKgoblsTrbJIkXDUMAcxZ/XH91iUtwpoh640fm/nhFKKSyujrDW6+2WHCoOCimS
-         lpMk0J8Ar174jnwcyrdDkx+iZgZoP+PTYXD30yiQQontAcyMo+sNjIvFrJ7FcZhkQPLG
-         UVULoCRrnUZ+IVNBXJjDPcq6zrbNRlcmRQa4XCpMOHDC0ezS2fo8h6T74Hi6iWwBf6ej
-         q2aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IWZyGnTuUXe6mInqirs/V2Jra4CVO2Bebqh0F6XSVWY=;
-        b=pITUBn6XZKX7vCFnyxkSQIjfAU1xHZ++mbpgRJl3U+PvjFQ/NSySvWqCfq5RjpBelm
-         IlHZM+kX1AK9Kca8zO+2k+Jqbhr6CcjxHdueUB9P2MSeSIlBobzSBKuCkSXDvCBCdOxT
-         FBrqSkF0LsYd/c+vacCNMOEndPJX6eL32aemWEaxvPVo8X8SQFg/Hd3uXnt+Uimc5sB0
-         0SyTwBgFktO2yArtkkNTFQ42mWbyBJ9aZui2BZjmjKhjepJQDKgkHjfvl1TaeZectbWD
-         BOuACfEGpIbg/HTPwqB0rRl4kzbKiRP8AjNU00iYwarZvX0quEogOU5leq/cYoqvtbzn
-         WuAA==
-X-Gm-Message-State: APjAAAVv+ltYp1CgnoPvN/5EuL9E+3ArexrqHNAXPUGvf+jMU6Ehkdot
-        rmxiLm7uEqNVC0+BNqrM5gNnaN6D9dB4JU/Jn+uw3Q==
-X-Google-Smtp-Source: APXvYqxPaxu/JL+zxvzVdiV6XryuclEXRH+Gsgf3ti3HpQhjPFPILizUDOCgchY+FHGoVbWml+Lo9ursR2pMb56cYaI=
-X-Received: by 2002:a63:d846:: with SMTP id k6mr898180pgj.378.1568756230483;
- Tue, 17 Sep 2019 14:37:10 -0700 (PDT)
-MIME-Version: 1.0
+        Tue, 17 Sep 2019 18:58:08 -0400
+X-Greylist: delayed 371 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Sep 2019 18:58:07 EDT
+Received: from bell.net mtlfep01 184.150.200.30 by mtlfep01.bell.net
+          with ESMTP
+          id <20190917225155.DGOM4947.mtlfep01.bell.net@mtlspm02.bell.net>;
+          Tue, 17 Sep 2019 18:51:55 -0400
+Received: from [192.168.2.49] (really [70.53.53.104]) by mtlspm02.bell.net
+          with ESMTP
+          id <20190917225155.WYIW21689.mtlspm02.bell.net@[192.168.2.49]>;
+          Tue, 17 Sep 2019 18:51:55 -0400
+Subject: Re: Bug report (with fix) for DEC Tulip driver (de2104x.c)
+To:     Arlie Davis <arlied@google.com>, Andrew Lunn <andrew@lunn.ch>
+Cc:     netdev@vger.kernel.org, linux-parisc@vger.kernel.org
 References: <CAK-9enMxA68mRYFG=2zD02guvCqe-aa3NO0YZuJcTdBWn5MPqg@mail.gmail.com>
  <20190917212844.GJ9591@lunn.ch>
-In-Reply-To: <20190917212844.GJ9591@lunn.ch>
-From:   Arlie Davis <arlied@google.com>
-Date:   Tue, 17 Sep 2019 14:36:59 -0700
-Message-ID: <CAK-9enOx8xt_+t6-rpCGEL0j-HJGm=sFXYq9-pgHQ26AwrGm5Q@mail.gmail.com>
-Subject: Re: Bug report (with fix) for DEC Tulip driver (de2104x.c)
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     netdev@vger.kernel.org, linux-parisc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+ <CAK-9enOx8xt_+t6-rpCGEL0j-HJGm=sFXYq9-pgHQ26AwrGm5Q@mail.gmail.com>
+From:   John David Anglin <dave.anglin@bell.net>
+Openpgp: preference=signencrypt
+Message-ID: <df0f961d-2d53-63e3-8087-6f0b09e14317@bell.net>
+Date:   Tue, 17 Sep 2019 18:51:55 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <CAK-9enOx8xt_+t6-rpCGEL0j-HJGm=sFXYq9-pgHQ26AwrGm5Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-Analysis: v=2.3 cv=bJBo382Z c=1 sm=1 tr=0 cx=a_idp_d a=htCe9XT+XAlGhzqgweArVg==:117 a=htCe9XT+XAlGhzqgweArVg==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=J70Eh1EUuV4A:10 a=FBHGMhGWAAAA:8 a=5AqVkEmHKqrW15nwexgA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+X-CM-Envelope: MS4wfI+Gpp/YVxFu+k72iT20OxkijuFUlV4iufv1Xx6Ahx/i1xfaDy1js4b1Hyg0jiRm3f/DTzouBI2+25wK5JHL/XBRrXp5WnATPXATE8LU8sAFyaususjv ZYFy5xt20tgxYdpR4CzeiPbipsO1L3zRpBtUSLBt9Sw6fy25XfZdmC0gtB2bvaiQpSEpVOyzsVPHOdfOsq39N4mHLOXUwWNVY/6QHDbs9b/wW9CAvyOFt1C3
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-I checked QEMU v3.1, and I don't see any Tulip implementation for it.
-I haven't checked any other emulators. A few cursory searches didn't
-turn up anything.
+On 2019-09-17 5:36 p.m., Arlie Davis wrote:
+> Likewise, I'm at a loss for testing with real hardware. It's hard to
+> find such things, now.
+How does de2104x compare to ds2142/43?  I have a c3750 with ds2142/43 tulip.  Helge
+or some others might have a machine with a de2104x.
 
-I checked the FreeBSD driver for the same device. It just treats the
-control field as a write-only field; the driver just uses its own
-internal state, rather than reading anything from the transfer
-descriptor, aside from the relevant status bits.
+Dave
 
-My guess is that the hardware just always sets bit 30 = 1, in the
-status field. In this Linux driver, for a normal packet (non-SETUP,
-non-DUMMY), all packets use a single TX descriptor, so LastFrag=1 is
-always true. Because of this, I considered changing the Linux driver
-to just remove the "if (status & LastFrag)" check, and make it
-unconditional, since this driver never uses more than 1 descriptor per
-transmitted packet. Would you support that change?
+-- 
+John David Anglin  dave.anglin@bell.net
 
-Likewise, I'm at a loss for testing with real hardware. It's hard to
-find such things, now.
-
-On Tue, Sep 17, 2019 at 2:28 PM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Mon, Sep 16, 2019 at 02:50:53PM -0700, Arlie Davis wrote:
-> > Hello. I'm a developer on GCE, Google's virtual machine platform. As
-> > part of my work, we needed to emulate a DEC Tulip 2104x NIC, so I
-> > implemented a basic virtual device for it.
-> >
-> > While doing so, I believe I found a bug in the Linux driver for this
-> > device, in de2104x.c. I see in MAINTAINERS that this is an orphaned
-> > device driver, but I was wondering if the kernel would still accept a
-> > patch for it.  Should I submit this patch, and if so, where should I
-> > submit it?
-> >
-> > Below is the commit text from my local repo, and the patch diffs
-> > (they're quite short).
-> >
-> >     Fix a bug in DEC Tulip driver (de2104x.c)
-> >
-> >     The DEC Tulip Ethernet controller uses a 16-byte transfer descriptor for
-> >     both its transmit (tx) and receive (rx) rings. Each descriptor has a
-> >     "status" uint32 field (called opts1 in de2104x.c, and called TDES0 /
-> >     Status in the DEC hardware specifications) and a "control" field (called
-> >     opts2 in de2104x.c and called TDES1 / Control in the DEC
-> >     specifications). In the "control" field, bit 30 is the LastSegment bit,
-> >     which indicates that this is the last transfer descriptor in a sequence
-> >     of descriptors (in case a single Ethernet frame spans more than one
-> >     descriptor).
-> >
-> >     The de2104x driver correctly sets LastSegment, in the de_start_xmit
-> >     function. (The code calls it LastFrag, not LastSegment). However, in the
-> >     interrupt handler (in function de_tx), the driver incorrectly checks for
-> >     this bit in the status field, not the control field. This means that the
-> >     driver is reading bits that are undefined in the specification; the
-> >     spec does not make any guarantees at all about the contents of bits 29
-> >     and bits 30 in the "status" field.
-> >
-> >     The effect of the bug is that the driver may think that a TX ring entry
-> >     is never finished, even though a compliant DEC Tulip hardware device (or
-> >     a virtualized device, in a VM) actually did finish sending the Ethernet
-> >     frame.
-> >
-> >     The fix is to read the correct "control" field from the TX descriptor.
-> >
-> >     DEC Tulip programming specification:
-> >
-> >     https://web.archive.org/web/20050805091751/http://www.intel.com/design/network/manuals/21140ahm.pdf
->
-> Hi Arlie
->
-> Without having access to real hardware, it is hard to verify
-> this. Maybe the programming specification is wrong? It could be, the
-> hardware designer thought the control field should be write only from
-> the CPU side, and the status field read only from the CPU side, to
-> avoid race conditions. So in practice it does mirror the LastSegment
-> bit from control to status?
->
-> Are there any other emulators of this out there? Any silicon vendor
-> who produces devices which claim to be compatible?
->
->     Andrew
