@@ -2,197 +2,129 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C34B3B6766
-	for <lists+linux-parisc@lfdr.de>; Wed, 18 Sep 2019 17:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1371B68FE
+	for <lists+linux-parisc@lfdr.de>; Wed, 18 Sep 2019 19:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731748AbfIRPqh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 18 Sep 2019 11:46:37 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:18286 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726676AbfIRPqg (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 18 Sep 2019 11:46:36 -0400
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id A4F6050D4B;
-        Wed, 18 Sep 2019 17:46:30 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de [80.241.56.125]) (amavisd-new, port 10030)
-        with ESMTP id ZgCJrYNr5TyO; Wed, 18 Sep 2019 17:46:22 +0200 (CEST)
-Date:   Wed, 18 Sep 2019 17:46:15 +0200
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Jann Horn <jannh@google.com>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Christian Brauner <christian@brauner.io>,
-        Andy Lutomirski <luto@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux Containers <containers@lists.linux-foundation.org>,
-        linux-alpha@vger.kernel.org, Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        kernel list <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH v12 05/12] namei: obey trailing magic-link DAC permissions
-Message-ID: <20190918154615.suruy5v5xjftfwyl@yavin.microfocus.com>
-References: <20190904201933.10736-1-cyphar@cyphar.com>
- <20190904201933.10736-6-cyphar@cyphar.com>
- <CAG48ez1_64249RdX6Nj_32YS+jhuXZBAd_ZL9ozggbSQy+cc-A@mail.gmail.com>
- <20190918135100.sdxdmdluq6wlwryv@yavin.microfocus.com>
+        id S1729207AbfIRRW1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 18 Sep 2019 13:22:27 -0400
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:10048 "EHLO mtaw.cdmx.gob.mx"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728872AbfIRRW1 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 18 Sep 2019 13:22:27 -0400
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1568826356; h=X-Virus-Scanned:Content-Type:
+         MIME-Version:Content-Transfer-Encoding:Content-Description:
+         Subject:To:From:Date:Reply-To:Message-Id:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-SAAS-TrackingID:X-NAIMIME-Disclaimer:X-NAIMIME-Modified:
+         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
+         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=K
+        jij0GhOpdKSaBiEpb4h9F2ukULK7Zgku7ZRRhmMNN
+        U=; b=eX2jJYM3+naAaZvqH+kBjtUiRAbxQoF6zpaXIogyOGbi
+        G7LjViZ3ZhXEml0mg/kkMK0JBk6YpOMVWIZmR7nrG2DA9gODFQ
+        P0qu+wdQbOXGkodV6ueFEnLRHgIzBLC3oZ3OnEGQAIg/oQchxV
+        eEYgSzrautb76979YGl4G6Ylr90=
+Received: from correo.seciti.cdmx.gob.mx (gdf-correo.cdmx.gob.mx [10.250.102.17]) by mtaw.cdmx.gob.mx with smtp
+         id 0310_ebfd_b9a57a85_5ec3_4124_8ae0_432812fc27fd;
+        Wed, 18 Sep 2019 12:05:55 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTP id 341B52B4B;
+        Wed, 18 Sep 2019 12:05:51 -0500 (CDT)
+Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
+        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id TXhg8smhXFeb; Wed, 18 Sep 2019 12:05:50 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTP id B0DFACD5;
+        Wed, 18 Sep 2019 12:05:50 -0500 (CDT)
+X-Virus-Scanned: amavisd-new at gdf-correo.df.gob.mx
+Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
+        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id WyySOaVc2IHz; Wed, 18 Sep 2019 12:05:50 -0500 (CDT)
+Received: from [41.148.42.229] (8ta-148-42-229.telkomadsl.co.za [41.148.42.229])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTPSA id 39A1E2B4B;
+        Wed, 18 Sep 2019 12:05:29 -0500 (CDT)
+Content-Type: text/plain;
+  charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="blplt4ksioniygek"
-Content-Disposition: inline
-In-Reply-To: <20190918135100.sdxdmdluq6wlwryv@yavin.microfocus.com>
+Content-Transfer-Encoding: base64
+Content-Description: Mail message body
+Subject: Spende von 5 Millionen Euro
+To:     Recipients <mramirezg@mexicocity.gob.mx>
+From:   "Shane Missler" <mramirezg@mexicocity.gob.mx>
+Date:   Wed, 18 Sep 2019 19:05:13 +0200
+Reply-To: shanemissler3@gmail.com
+Message-Id: <20190918170530.39A1E2B4B@gdf-correo.df.gob.mx>
+X-AnalysisOut: [v=2.2 cv=ALO4jLJd c=1 sm=1 tr=0 p=ELT1L0JgSr8A:10 p=09-KjH]
+X-AnalysisOut: [S_CW8A:10 p=bEr4i4eggGkA:10 p=emDABjehN2fqPHqc8RbT:22 p=Ly]
+X-AnalysisOut: [qu6MUUigPyaOuRX7ce:22 a=KsSCQl7LcZej77FuluUcQw==:117 a=oLf]
+X-AnalysisOut: [NtqljNgXPa7RrmTwnGA==:17 a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:]
+X-AnalysisOut: [10 a=J70Eh1EUuV4A:10 a=pGLkceISAAAA:8 a=wN7rT8hNlMSaUXRpxS]
+X-AnalysisOut: [gA:9 a=K7tsimcRO30Sg2YH:21 a=QOCYt1FwmxBrUrRv:21 a=QEXdDO2]
+X-AnalysisOut: [ut3YA:10]
+X-SAAS-TrackingID: 4f3628d5.0.82759146.00-2298.139040002.s12p02m002.mxlogic.net
+X-NAIMIME-Disclaimer: 1
+X-NAIMIME-Modified: 1
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6637> : inlines <7143> : streams
+ <1833131> : uri <2906071>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-
---blplt4ksioniygek
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On 2019-09-18, Aleksa Sarai <cyphar@cyphar.com> wrote:
-> On 2019-09-17, Jann Horn <jannh@google.com> wrote:
-> > On Wed, Sep 4, 2019 at 10:21 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
-> > > The ability for userspace to "re-open" file descriptors through
-> > > /proc/self/fd has been a very useful tool for all sorts of usecases
-> > > (container runtimes are one common example). However, the current
-> > > interface for doing this has resulted in some pretty subtle security
-> > > holes. Userspace can re-open a file descriptor with more permissions
-> > > than the original, which can result in cases such as /proc/$pid/exe
-> > > being re-opened O_RDWR at a later date even though (by definition)
-> > > /proc/$pid/exe cannot be opened for writing. When combined with O_PATH
-> > > the results can get even more confusing.
-> > [...]
-> > > Instead we have to restrict it in such a way that it doesn't break
-> > > (good) users but does block potential attackers. The solution applied=
- in
-> > > this patch is to restrict *re-opening* (not resolution through)
-> > > magic-links by requiring that mode of the link be obeyed. Normal
-> > > symlinks have modes of a+rwx but magic-links have other modes. These
-> > > magic-link modes were historically ignored during path resolution, but
-> > > they've now been re-purposed for more useful ends.
-> >=20
-> > Thanks for dealing with this issue!
-> >=20
-> > [...]
-> > > diff --git a/fs/namei.c b/fs/namei.c
-> > > index 209c51a5226c..54d57dad0f91 100644
-> > > --- a/fs/namei.c
-> > > +++ b/fs/namei.c
-> > > @@ -872,7 +872,7 @@ void nd_jump_link(struct path *path)
-> > >
-> > >         nd->path =3D *path;
-> > >         nd->inode =3D nd->path.dentry->d_inode;
-> > > -       nd->flags |=3D LOOKUP_JUMPED;
-> > > +       nd->flags |=3D LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
-> > >  }
-> > [...]
-> > > +static int trailing_magiclink(struct nameidata *nd, int acc_mode,
-> > > +                             fmode_t *opath_mask)
-> > > +{
-> > > +       struct inode *inode =3D nd->link_inode;
-> > > +       fmode_t upgrade_mask =3D 0;
-> > > +
-> > > +       /* Was the trailing_symlink() a magic-link? */
-> > > +       if (!(nd->flags & LOOKUP_MAGICLINK_JUMPED))
-> > > +               return 0;
-> > > +
-> > > +       /*
-> > > +        * Figure out the upgrade-mask of the link_inode. Since these=
- aren't
-> > > +        * strictly POSIX semantics we don't do an acl_permission_che=
-ck() here,
-> > > +        * so we only care that at least one bit is set for each upgr=
-ade-mode.
-> > > +        */
-> > > +       if (inode->i_mode & S_IRUGO)
-> > > +               upgrade_mask |=3D FMODE_PATH_READ;
-> > > +       if (inode->i_mode & S_IWUGO)
-> > > +               upgrade_mask |=3D FMODE_PATH_WRITE;
-> > > +       /* Restrict the O_PATH upgrade-mask of the caller. */
-> > > +       if (opath_mask)
-> > > +               *opath_mask &=3D upgrade_mask;
-> > > +       return may_open_magiclink(upgrade_mask, acc_mode);
-> > >  }
-> >=20
-> > This looks racy because entries in the file descriptor table can be
-> > switched out as long as task->files->file_lock isn't held. Unless I'm
-> > missing something, something like the following (untested) would
-> > bypass this restriction:
->=20
-> You're absolutely right -- good catch!
->=20
-> > Perhaps you could change nd_jump_link() to "void nd_jump_link(struct
-> > path *path, umode_t link_mode)", and let proc_pid_get_link() pass the
-> > link_mode through from an out-argument of .proc_get_link()? Then
-> > proc_fd_link() could grab the proper mode in a race-free manner. And
-> > nd_jump_link() could stash the mode in the nameidata.
->=20
-> This indeed does appear to be the simplest solution -- I'm currently
-> testing a variation of the patch you proposed (with a few extra bits to
-> deal with nd_jump_link and proc_get_link being used elsewhere).
->=20
-> I'll include this change (assuming it fixes the flaw you found) in the
-> v13 series I'll send around next week. Thanks, Jann!
-
-In case you're interested -- I've also included a selftest based on this
-attack in my series (though it uses CLONE_FILES so that we could also
-test O_EMPTYPATH, which wasn't affected because it didn't go through
-procfs and thus couldn't hit the "outdated inode->i_mode" problem).
-
-The attack script succeeds around 20% of the time on the original
-patchset, and with the updated patchset it doesn't succeed in several
-hundred thousand attempts (which I've repeated a few times).
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---blplt4ksioniygek
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXYJRRAAKCRCdlLljIbnQ
-Ep3WAP0cvG8YTD9aS1zuiIbFfMQLKt1nuxBciHwn7LaCHk9Z0QEAtNdPaxztVO/p
-utsBd24Q6vZYzx6vj8OnW5nGpjaLpQA=
-=rL8c
------END PGP SIGNATURE-----
-
---blplt4ksioniygek--
+RGllcyBpc3QgZWluZSBwZXJzw7ZubGljaGUgTWFpbCwgZGllIGljaCBhbiBTaWUgYWRyZXNzaWVy
+ZS4gSWNoIGJpbiBTSEFORSBNSVNTTEVSIGF1cyBGbG9yaWRhLCBVU0EuIFdpZSBTaWUgYmVyZWl0
+cyB3aXNzZW4sIGhhYmUgaWNoIGVpbmVuIExvdHRvLUphY2twb3QgaW4gSMO2aGUgdm9uIDQ1MSBN
+aW8uIFVTRCAoMzMwIE1pby4gR0JQKSBnZXdvbm5lbiB1bmQgZGFzIEdlbGQgaGF0IG1laW4gTGVi
+ZW4gdW5kIG1laW4gRmFtaWxpZW5sZWJlbiB2ZXLDpG5kZXJ0LCBhYmVyIGVzIHdpcmQgbWVpbiBI
+ZXJ6IG5pY2h0IHZlcsOkbmRlcm4sIHdpZSBpY2ggYW4gZGVtIFRhZyBzYWd0ZSwgYW4gZGVtIGlj
+aCBtZWluIEdlbGQgaGFiZSwgZGFzIGljaCB2ZXJ3ZW5kZW4gd2VyZGUgRGllc2VzIEdlbGQgZsO8
+ciBkaWUgSGlsZmUgZGVyIE1lbnNjaGhlaXQuIEljaCBoYWJlIGJlc2NobG9zc2VuLCBJaG5lbiB1
+bmQgSWhyZXIgR2VtZWluZGUgZWluZW4gQmV0cmFnIHZvbiA1IE1pbGxpb25lbiBFdXJvIHp1IHNw
+ZW5kZW4sIHVtIGRpZXNlIFNwZW5kZSBhbnp1Zm9yZGVybi4gRS1NYWlsOiAoc2hhbmVtaXNzbGVy
+MEBnbWFpbC5jb20pCgoKQ2VjaSBlc3QgdW4gY291cnJpZXIgcGVyc29ubmVsIHF1ZSBqZSB2b3Vz
+IGFkcmVzc2UuIEplIHN1aXMgU0hBTkUgTUlTU0xFUiwgZGUgRmxvcmlkZSwgw4l0YXRzLVVuaXMu
+IENvbW1lIHZvdXMgbGUgc2F2ZXogZMOpasOgLCBqJ2FpIGdhZ27DqSA0NTEgbWlsbGlvbnMgZGUg
+ZG9sbGFycyAoTG90dG8gSmFja3BvdCkgZXQgbCdhcmdlbnQgYSBjaGFuZ8OpIG1hIHZpZSBldCBj
+ZWxsZSBkZSBtYSBmYW1pbGxlLCBtYWlzIGNlbGEgbmUgY2hhbmdlcmEgcGFzIG1vbiBjxZN1ciwg
+Y29tbWUgamUgbCdhaSBkaXQgbGUgam91ciBvw7kgaidhaSBtb24gYXJnZW50LCBqJ3V0aWxpc2Vy
+YWkgY2V0IGFyZ2VudCBwb3VyIGwnYWlkZSBkZSBsJ2h1bWFuaXTDqS5KJ2FpIGTDqWNpZMOpIGRl
+IHZvdXMgZG9ubmVyIGxhIHNvbW1lIGRlIDUgbWlsbGlvbnMgZCdldXJvcyDDoCB2b3VzIGV0IMOg
+IHZvdHJlIGNvbW11bmF1dMOpLCBwb3VyIHLDqWNsYW1lciBjZSBkb24sIGVtYWlsLSAoc2hhbmVt
+aXNzbGVyMEBnbWFpbC5jb20pCgoKCgouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4KCgpMYSBpbmZvcm1hY2lvbiBjb250ZW5pZGEgZW4gZXN0ZSBjb3JyZW8sIGFzaSBj
+b21vIGxhIGNvbnRlbmlkYSBlbiBsb3MgZG9jdW1lbnRvcyBhbmV4b3MsIHB1ZWRlIGNvbnRlbmVy
+IGRhdG9zIHBlcnNvbmFsZXMsIHBvciBsbyBxdWUgc3UgZGlmdXNpb24gZXMgcmVzcG9uc2FiaWxp
+ZGFkIGRlIHF1aWVuIGxvcyB0cmFuc21pdGUgeSBxdWllbiBsb3MgcmVjaWJlLCBlbiB0w6lybWlu
+b3MgZGUgbG8gZGlzcHVlc3RvIHBvciBsYXMgZnJhY2Npb25lcyBJSSB5IFZJSSBkZWwgYXJ0aWN1
+bG8gNCwgdWx0aW1vIHBhcnJhZm8gZGVsIGFydGljdWxvIDgsIGFydGljdWxvIDM2IHBhcnJhZm8g
+SUksIDM4IGZyYWNjaW9uIEkgeSBkZW1hcyBhcGxpY2FibGVzIGRlIGxhIExleSBkZSBUcmFuc3Bh
+cmVuY2lhIHkgQWNjZXNvIGEgbGEgSW5mb3JtYWNpb24gUHVibGljYSBkZWwgRGlzdHJpdG8gRmVk
+ZXJhbC4NCkxvcyBEYXRvcyBQZXJzb25hbGVzIHNlIGVuY3VlbnRyYW4gcHJvdGVnaWRvcyBwb3Ig
+bGEgTGV5IGRlIFByb3RlY2Npb24gZGUgRGF0b3MgUGVyc29uYWxlcyBkZWwgRGlzdHJpdG8gRmVk
+ZXJhbCwgcG9yIGxvIHF1ZSBzdSBkaWZ1c2lvbiBzZSBlbmN1ZW50cmEgdHV0ZWxhZGEgZW4gc3Vz
+IGFydGljdWxvcyAyLCA1LCAxNiwgMjEsIDQxIHkgZGVtYXMgcmVsYXRpdm9zIHkgYXBsaWNhYmxl
+cywgZGViaWVuZG8gc3VqZXRhcnNlIGVuIHN1IGNhc28sIGEgbGFzIGRpc3Bvc2ljaW9uZXMgcmVs
+YXRpdmFzIGEgbGEgY3JlYWNpb24sIG1vZGlmaWNhY2lvbiBvIHN1cHJlc2lvbiBkZSBkYXRvcyBw
+ZXJzb25hbGVzIHByZXZpc3Rvcy4gQXNpbWlzbW8sIGRlYmVyYSBlc3RhcnNlIGEgbG8gc2XDsWFs
+YWRvIGVuIGxvcyBudW1lcmFsZXMgMSAsIDMsIDEyLCAxOCwgMTksIDIwLCAyMSwgMjMsIDI0LCAy
+OSwgMzUgeSBkZW1hcyBhcGxpY2FibGVzIGRlIGxvcyBMaW5lYW1pZW50b3MgcGFyYSBsYSBQcm90
+ZWNjaW9uIGRlIERhdG9zIFBlcnNvbmFsZXMgZW4gZWwgRGlzdHJpdG8gRmVkZXJhbC4NCkVuIGVs
+IHVzbyBkZSBsYXMgdGVjbm9sb2dpYXMgZGUgbGEgaW5mb3JtYWNpb24geSBjb211bmljYWNpb25l
+cyBkZWwgR29iaWVybm8gZGVsIERpc3RyaXRvIEZlZGVyYWwsIGRlYmVyYSBvYnNlcnZhcnNlIHB1
+bnR1YWxtZW50ZSBsbyBkaXNwdWVzdG8gcG9yIGxhIExleSBHb2JpZXJubyBFbGVjdHJvbmljbyBk
+ZWwgRGlzdHJpdG8gRmVkZXJhbCwgbGEgbGV5IHBhcmEgaGFjZXIgZGUgbGEgQ2l1ZGFkIGRlIE1l
+eGljbyB1bmEgQ2l1ZGFkIE1hcyBBYmllcnRhLCBlbCBhcGFydGFkbyAxMCBkZSBsYSBDaXJjdWxh
+ciBVbm8gdmlnZW50ZSB5IGxhcyBOb3JtYXMgR2VuZXJhbGVzIHF1ZSBkZWJlcmFuIG9ic2VydmFy
+c2UgZW4gbWF0ZXJpYSBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpb24gZW4gbGEgQWRtaW5p
+c3RyYWNpb24gUHVibGljYSBkZWwgRGlzdHJpdG8gRmVkZXJhbC4K
