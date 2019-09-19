@@ -2,129 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1371B68FE
-	for <lists+linux-parisc@lfdr.de>; Wed, 18 Sep 2019 19:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BACB7B7BF7
+	for <lists+linux-parisc@lfdr.de>; Thu, 19 Sep 2019 16:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729207AbfIRRW1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 18 Sep 2019 13:22:27 -0400
-Received: from mtax.cdmx.gob.mx ([187.141.35.197]:10048 "EHLO mtaw.cdmx.gob.mx"
+        id S2388397AbfISOSV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 19 Sep 2019 10:18:21 -0400
+Received: from mail-sy3aus01hn2073.outbound.protection.outlook.com ([52.103.199.73]:45580
+        "EHLO AUS01-SY3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728872AbfIRRW1 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 18 Sep 2019 13:22:27 -0400
-X-NAI-Header: Modified by McAfee Email Gateway (4500)
+        id S2388006AbfISOSV (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 19 Sep 2019 10:18:21 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VgnBM2DzSEWU2LrODD1vc1xLusjeTwXo9di3BeF8EU+IgAAP+6qm9zRx6Mu0L9jRHlov7F7PVZ4ccPZRUH5rK9XywdG3ypvPYlkwnQaQ1wQPXsif0n2etQy4G3GEUn08hkEpRhnvYm9ccJhWuvFUW+H5Hx7TSB4zRj2icCUgT49iq2/2zOMniicQ8rncztF3Dmi8K3/gRPEvLleH2ngJfBVYL3fkZICjbBqq/zCxVRlEEiKDWO9Fupt3u2OhYpI4TyTD8SQTM5MLBRMr9DpnumDuTO3iRTsi8HdB/qKGwe6IcXV4VQdMi34I3fxXn4jPgNIN8pWzaM2ym+PggepkKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ctOHH2mTYytKOkOB/KQgjBv82LXnbGG7XKgNOOQYhPo=;
+ b=SM9qLCJFKM82Ai/uiftfZixSfRCCK9p3tF7ZRR6P8WV/FPcLBj0ygl0GIRVkrd1gtzpRAEzkcTEDiIATnIimR8AESO1WEjai1Yqsh5avwxmMEmrO8ZpyeADWKmcYYxPL7RXe+4ZCadFQ+7a1oP+NnbQ5DTJtmA1dn+TY9xpKrSPn/lQYa8VBkTVqqAWcPXzkDiUV+PL0E9Zr1vEeQXIwV/5QUPMFJooOcNm7R6lr1t56+QI0FPDpa711ASgQndrV5kTPRyMkLGBoJ3Xliwm0Ot//JvTXOL4eiKoPfRNlDx/W5G68cVKIIgbOPilIydzembipamrWu2yIQacYcku55Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=student.uts.edu.au; dmarc=pass action=none
+ header.from=student.uts.edu.au; dkim=pass header.d=student.uts.edu.au;
+ arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
-        t=1568826356; h=X-Virus-Scanned:Content-Type:
-         MIME-Version:Content-Transfer-Encoding:Content-Description:
-         Subject:To:From:Date:Reply-To:Message-Id:X-AnalysisOut:
-         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
-         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
-         X-SAAS-TrackingID:X-NAIMIME-Disclaimer:X-NAIMIME-Modified:
-         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
-         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=K
-        jij0GhOpdKSaBiEpb4h9F2ukULK7Zgku7ZRRhmMNN
-        U=; b=eX2jJYM3+naAaZvqH+kBjtUiRAbxQoF6zpaXIogyOGbi
-        G7LjViZ3ZhXEml0mg/kkMK0JBk6YpOMVWIZmR7nrG2DA9gODFQ
-        P0qu+wdQbOXGkodV6ueFEnLRHgIzBLC3oZ3OnEGQAIg/oQchxV
-        eEYgSzrautb76979YGl4G6Ylr90=
-Received: from correo.seciti.cdmx.gob.mx (gdf-correo.cdmx.gob.mx [10.250.102.17]) by mtaw.cdmx.gob.mx with smtp
-         id 0310_ebfd_b9a57a85_5ec3_4124_8ae0_432812fc27fd;
-        Wed, 18 Sep 2019 12:05:55 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by gdf-correo.df.gob.mx (Postfix) with ESMTP id 341B52B4B;
-        Wed, 18 Sep 2019 12:05:51 -0500 (CDT)
-Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
-        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id TXhg8smhXFeb; Wed, 18 Sep 2019 12:05:50 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-        by gdf-correo.df.gob.mx (Postfix) with ESMTP id B0DFACD5;
-        Wed, 18 Sep 2019 12:05:50 -0500 (CDT)
-X-Virus-Scanned: amavisd-new at gdf-correo.df.gob.mx
-Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
-        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id WyySOaVc2IHz; Wed, 18 Sep 2019 12:05:50 -0500 (CDT)
-Received: from [41.148.42.229] (8ta-148-42-229.telkomadsl.co.za [41.148.42.229])
-        by gdf-correo.df.gob.mx (Postfix) with ESMTPSA id 39A1E2B4B;
-        Wed, 18 Sep 2019 12:05:29 -0500 (CDT)
-Content-Type: text/plain;
-  charset="utf-8"
+ d=studentutsedu.onmicrosoft.com; s=selector2-studentutsedu-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ctOHH2mTYytKOkOB/KQgjBv82LXnbGG7XKgNOOQYhPo=;
+ b=vjTfvoBR+icalYW85csMLlUskz1ZrLMAIbBbQJxRAaW+KdNZmQ4Rw4aMQ3Oj/RuchQMNgWHFIGUUjs4KaA6CXFx2u7OSDuaTzbIYTi9ZHnZ8M28y6cd93gVpM7noY+MUCMOM7N1lMmEcAoqqfOSQvPQsae541xQVgvYYHvRGVn8=
+Received: from MEAPR01MB3910.ausprd01.prod.outlook.com (52.134.217.76) by
+ MEAPR01MB2565.ausprd01.prod.outlook.com (52.134.194.15) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2263.17; Thu, 19 Sep 2019 14:18:16 +0000
+Received: from MEAPR01MB3910.ausprd01.prod.outlook.com
+ ([fe80::29d5:bad1:3777:50c7]) by MEAPR01MB3910.ausprd01.prod.outlook.com
+ ([fe80::29d5:bad1:3777:50c7%3]) with mapi id 15.20.2263.028; Thu, 19 Sep 2019
+ 14:18:16 +0000
+From:   <13623879@student.uts.edu.au>
+To:     David Gillis <David.Gillis@student.uts.edu.au>
+Subject: Darlehensangebot
+Thread-Topic: Darlehensangebot
+Thread-Index: AQHVbvUU9pWietEqh0Gw8ymS7ITRBw==
+Date:   Thu, 19 Sep 2019 14:18:16 +0000
+Message-ID: <MEAPR01MB391039A884EBBCA9425D2A84AC890@MEAPR01MB3910.ausprd01.prod.outlook.com>
+Reply-To: "chelsealoan4@gmail.com" <chelsealoan4@gmail.com>
+Accept-Language: en-AU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: LNXP265CA0001.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:5e::13) To MEAPR01MB3910.ausprd01.prod.outlook.com
+ (2603:10c6:201:3d::12)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=David.Gillis@student.uts.edu.au; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [154.160.6.189]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ef2a206d-0f93-424e-00b6-08d73d0c36dd
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MEAPR01MB2565;
+x-ms-traffictypediagnostic: MEAPR01MB2565:
+x-microsoft-antispam-prvs: <MEAPR01MB2565C37BB40B828D19082D88EB890@MEAPR01MB2565.ausprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1728;
+x-forefront-prvs: 016572D96D
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(366004)(376002)(136003)(39860400002)(346002)(199004)(189003)(14454004)(3846002)(186003)(386003)(22416003)(43066004)(7696005)(305945005)(52536014)(478600001)(2906002)(2171002)(55016002)(74316002)(6862004)(8936002)(7116003)(81166006)(81156014)(7416002)(4744005)(325944009)(8796002)(102836004)(6436002)(8676002)(52116002)(6116002)(5003540100004)(99286004)(33656002)(6636002)(6506007)(66556008)(66446008)(66066001)(66476007)(2860700004)(26005)(66806009)(5660300002)(3480700005)(7736002)(88552002)(9686003)(66946007)(221733001)(25786009)(476003)(786003)(71190400001)(316002)(66574012)(71200400001)(256004)(486006)(14444005)(64756008)(81742002);DIR:OUT;SFP:1501;SCL:1;SRVR:MEAPR01MB2565;H:MEAPR01MB3910.ausprd01.prod.outlook.com;FPR:;SPF:None;LANG:de;PTR:InfoNoRecords;A:0;MX:1;
+received-spf: None (protection.outlook.com: student.uts.edu.au does not
+ designate permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: V2BxdS0HrKKu57pd7V7VvV6WH79Jk9Lx36HXFxgRo+uKd3AgNAGkz/VsTRi3i8yYTY6k6HzpiStIq8AFLS7LIGDZ9GSUbK6YMfKJDASndS06QqPRx7l7dQDXJYwG1wERyXGWCY8/fudWAyxXII5xTO11k3LEAmcYvtPjPlb5NNt1bVJXZO5pD+M/ShCTLhauac+5D0wAIs8zEzqUK8j1/BVZwkI59dauYcCoK6z6MabrRrvUMnZW8wDR7lwqbbKw1zEEBHpTMUL0i1sryufWXhNObJxmArn1zNxctfcOCPh3TQqBRDOl4+r3wp5Sq5TSpAN/RuoNJf31veMDnSu6ySH8iFnlH27jMqUHTydSBcRuys4cT7RjoAkRdrN6omAG6+g5f2i6+z+H6n0Eny011PD7goWi6FQp47bRjB2JpyQ=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <0C5DC3355AEB8647B6179E2DB0486496@ausprd01.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Description: Mail message body
-Subject: Spende von 5 Millionen Euro
-To:     Recipients <mramirezg@mexicocity.gob.mx>
-From:   "Shane Missler" <mramirezg@mexicocity.gob.mx>
-Date:   Wed, 18 Sep 2019 19:05:13 +0200
-Reply-To: shanemissler3@gmail.com
-Message-Id: <20190918170530.39A1E2B4B@gdf-correo.df.gob.mx>
-X-AnalysisOut: [v=2.2 cv=ALO4jLJd c=1 sm=1 tr=0 p=ELT1L0JgSr8A:10 p=09-KjH]
-X-AnalysisOut: [S_CW8A:10 p=bEr4i4eggGkA:10 p=emDABjehN2fqPHqc8RbT:22 p=Ly]
-X-AnalysisOut: [qu6MUUigPyaOuRX7ce:22 a=KsSCQl7LcZej77FuluUcQw==:117 a=oLf]
-X-AnalysisOut: [NtqljNgXPa7RrmTwnGA==:17 a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:]
-X-AnalysisOut: [10 a=J70Eh1EUuV4A:10 a=pGLkceISAAAA:8 a=wN7rT8hNlMSaUXRpxS]
-X-AnalysisOut: [gA:9 a=K7tsimcRO30Sg2YH:21 a=QOCYt1FwmxBrUrRv:21 a=QEXdDO2]
-X-AnalysisOut: [ut3YA:10]
-X-SAAS-TrackingID: 4f3628d5.0.82759146.00-2298.139040002.s12p02m002.mxlogic.net
-X-NAIMIME-Disclaimer: 1
-X-NAIMIME-Modified: 1
-X-NAI-Spam-Flag: NO
-X-NAI-Spam-Threshold: 3
-X-NAI-Spam-Score: -5000
-X-NAI-Spam-Rules: 1 Rules triggered
-        WHITELISTED=-5000
-X-NAI-Spam-Version: 2.3.0.9418 : core <6637> : inlines <7143> : streams
- <1833131> : uri <2906071>
+X-OriginatorOrg: student.uts.edu.au
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef2a206d-0f93-424e-00b6-08d73d0c36dd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Sep 2019 14:18:16.6988
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: e8911c26-cf9f-4a9c-878e-527807be8791
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BkIFVAjST9T8oi3REhgGG0d9AENtdQYuHC8vBm887rcm6dzQdHaTc0iWawgwTApCT7fhweKWRGnP0pNv+f/lw9O1tnckPkZIUfyS6xiCz4A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MEAPR01MB2565
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-RGllcyBpc3QgZWluZSBwZXJzw7ZubGljaGUgTWFpbCwgZGllIGljaCBhbiBTaWUgYWRyZXNzaWVy
-ZS4gSWNoIGJpbiBTSEFORSBNSVNTTEVSIGF1cyBGbG9yaWRhLCBVU0EuIFdpZSBTaWUgYmVyZWl0
-cyB3aXNzZW4sIGhhYmUgaWNoIGVpbmVuIExvdHRvLUphY2twb3QgaW4gSMO2aGUgdm9uIDQ1MSBN
-aW8uIFVTRCAoMzMwIE1pby4gR0JQKSBnZXdvbm5lbiB1bmQgZGFzIEdlbGQgaGF0IG1laW4gTGVi
-ZW4gdW5kIG1laW4gRmFtaWxpZW5sZWJlbiB2ZXLDpG5kZXJ0LCBhYmVyIGVzIHdpcmQgbWVpbiBI
-ZXJ6IG5pY2h0IHZlcsOkbmRlcm4sIHdpZSBpY2ggYW4gZGVtIFRhZyBzYWd0ZSwgYW4gZGVtIGlj
-aCBtZWluIEdlbGQgaGFiZSwgZGFzIGljaCB2ZXJ3ZW5kZW4gd2VyZGUgRGllc2VzIEdlbGQgZsO8
-ciBkaWUgSGlsZmUgZGVyIE1lbnNjaGhlaXQuIEljaCBoYWJlIGJlc2NobG9zc2VuLCBJaG5lbiB1
-bmQgSWhyZXIgR2VtZWluZGUgZWluZW4gQmV0cmFnIHZvbiA1IE1pbGxpb25lbiBFdXJvIHp1IHNw
-ZW5kZW4sIHVtIGRpZXNlIFNwZW5kZSBhbnp1Zm9yZGVybi4gRS1NYWlsOiAoc2hhbmVtaXNzbGVy
-MEBnbWFpbC5jb20pCgoKQ2VjaSBlc3QgdW4gY291cnJpZXIgcGVyc29ubmVsIHF1ZSBqZSB2b3Vz
-IGFkcmVzc2UuIEplIHN1aXMgU0hBTkUgTUlTU0xFUiwgZGUgRmxvcmlkZSwgw4l0YXRzLVVuaXMu
-IENvbW1lIHZvdXMgbGUgc2F2ZXogZMOpasOgLCBqJ2FpIGdhZ27DqSA0NTEgbWlsbGlvbnMgZGUg
-ZG9sbGFycyAoTG90dG8gSmFja3BvdCkgZXQgbCdhcmdlbnQgYSBjaGFuZ8OpIG1hIHZpZSBldCBj
-ZWxsZSBkZSBtYSBmYW1pbGxlLCBtYWlzIGNlbGEgbmUgY2hhbmdlcmEgcGFzIG1vbiBjxZN1ciwg
-Y29tbWUgamUgbCdhaSBkaXQgbGUgam91ciBvw7kgaidhaSBtb24gYXJnZW50LCBqJ3V0aWxpc2Vy
-YWkgY2V0IGFyZ2VudCBwb3VyIGwnYWlkZSBkZSBsJ2h1bWFuaXTDqS5KJ2FpIGTDqWNpZMOpIGRl
-IHZvdXMgZG9ubmVyIGxhIHNvbW1lIGRlIDUgbWlsbGlvbnMgZCdldXJvcyDDoCB2b3VzIGV0IMOg
-IHZvdHJlIGNvbW11bmF1dMOpLCBwb3VyIHLDqWNsYW1lciBjZSBkb24sIGVtYWlsLSAoc2hhbmVt
-aXNzbGVyMEBnbWFpbC5jb20pCgoKCgouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4KCgpMYSBpbmZvcm1hY2lvbiBjb250ZW5pZGEgZW4gZXN0ZSBjb3JyZW8sIGFzaSBj
-b21vIGxhIGNvbnRlbmlkYSBlbiBsb3MgZG9jdW1lbnRvcyBhbmV4b3MsIHB1ZWRlIGNvbnRlbmVy
-IGRhdG9zIHBlcnNvbmFsZXMsIHBvciBsbyBxdWUgc3UgZGlmdXNpb24gZXMgcmVzcG9uc2FiaWxp
-ZGFkIGRlIHF1aWVuIGxvcyB0cmFuc21pdGUgeSBxdWllbiBsb3MgcmVjaWJlLCBlbiB0w6lybWlu
-b3MgZGUgbG8gZGlzcHVlc3RvIHBvciBsYXMgZnJhY2Npb25lcyBJSSB5IFZJSSBkZWwgYXJ0aWN1
-bG8gNCwgdWx0aW1vIHBhcnJhZm8gZGVsIGFydGljdWxvIDgsIGFydGljdWxvIDM2IHBhcnJhZm8g
-SUksIDM4IGZyYWNjaW9uIEkgeSBkZW1hcyBhcGxpY2FibGVzIGRlIGxhIExleSBkZSBUcmFuc3Bh
-cmVuY2lhIHkgQWNjZXNvIGEgbGEgSW5mb3JtYWNpb24gUHVibGljYSBkZWwgRGlzdHJpdG8gRmVk
-ZXJhbC4NCkxvcyBEYXRvcyBQZXJzb25hbGVzIHNlIGVuY3VlbnRyYW4gcHJvdGVnaWRvcyBwb3Ig
-bGEgTGV5IGRlIFByb3RlY2Npb24gZGUgRGF0b3MgUGVyc29uYWxlcyBkZWwgRGlzdHJpdG8gRmVk
-ZXJhbCwgcG9yIGxvIHF1ZSBzdSBkaWZ1c2lvbiBzZSBlbmN1ZW50cmEgdHV0ZWxhZGEgZW4gc3Vz
-IGFydGljdWxvcyAyLCA1LCAxNiwgMjEsIDQxIHkgZGVtYXMgcmVsYXRpdm9zIHkgYXBsaWNhYmxl
-cywgZGViaWVuZG8gc3VqZXRhcnNlIGVuIHN1IGNhc28sIGEgbGFzIGRpc3Bvc2ljaW9uZXMgcmVs
-YXRpdmFzIGEgbGEgY3JlYWNpb24sIG1vZGlmaWNhY2lvbiBvIHN1cHJlc2lvbiBkZSBkYXRvcyBw
-ZXJzb25hbGVzIHByZXZpc3Rvcy4gQXNpbWlzbW8sIGRlYmVyYSBlc3RhcnNlIGEgbG8gc2XDsWFs
-YWRvIGVuIGxvcyBudW1lcmFsZXMgMSAsIDMsIDEyLCAxOCwgMTksIDIwLCAyMSwgMjMsIDI0LCAy
-OSwgMzUgeSBkZW1hcyBhcGxpY2FibGVzIGRlIGxvcyBMaW5lYW1pZW50b3MgcGFyYSBsYSBQcm90
-ZWNjaW9uIGRlIERhdG9zIFBlcnNvbmFsZXMgZW4gZWwgRGlzdHJpdG8gRmVkZXJhbC4NCkVuIGVs
-IHVzbyBkZSBsYXMgdGVjbm9sb2dpYXMgZGUgbGEgaW5mb3JtYWNpb24geSBjb211bmljYWNpb25l
-cyBkZWwgR29iaWVybm8gZGVsIERpc3RyaXRvIEZlZGVyYWwsIGRlYmVyYSBvYnNlcnZhcnNlIHB1
-bnR1YWxtZW50ZSBsbyBkaXNwdWVzdG8gcG9yIGxhIExleSBHb2JpZXJubyBFbGVjdHJvbmljbyBk
-ZWwgRGlzdHJpdG8gRmVkZXJhbCwgbGEgbGV5IHBhcmEgaGFjZXIgZGUgbGEgQ2l1ZGFkIGRlIE1l
-eGljbyB1bmEgQ2l1ZGFkIE1hcyBBYmllcnRhLCBlbCBhcGFydGFkbyAxMCBkZSBsYSBDaXJjdWxh
-ciBVbm8gdmlnZW50ZSB5IGxhcyBOb3JtYXMgR2VuZXJhbGVzIHF1ZSBkZWJlcmFuIG9ic2VydmFy
-c2UgZW4gbWF0ZXJpYSBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpb24gZW4gbGEgQWRtaW5p
-c3RyYWNpb24gUHVibGljYSBkZWwgRGlzdHJpdG8gRmVkZXJhbC4K
+Sch=F6nen Tag
+
+Ben=F6tigen Sie ein echtes Darlehen online, um Ihre Rechnungen zu sichern u=
+nd starten Sie ein
+neues Gesch=E4ft? Ben=F6tigen Sie einen pers=F6nlichen Kredit? Wir bieten a=
+lle Arten von Darlehen
+mit 3% zinssatz und auch mit einem erschwinglichen r=FCckzahlungsbedingunge=
+n.
+
+F=FCr weitere Informationen antworten Sie mit den unten stehenden Informati=
+onen.
+
+Name:
+Land:
+Zustand:
+Ben=F6tigte Menge:
+Dauer:
+Telefonnummer:
+Monatliches Einkommen:
+
+Bitte beachten Sie, dass auf Kontakt-E-Mail:
+chelsealoan4@gmail.com
