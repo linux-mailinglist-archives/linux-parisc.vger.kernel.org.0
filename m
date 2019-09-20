@@ -2,81 +2,70 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB766B8277
-	for <lists+linux-parisc@lfdr.de>; Thu, 19 Sep 2019 22:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5B4B8EB8
+	for <lists+linux-parisc@lfdr.de>; Fri, 20 Sep 2019 12:57:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388145AbfISUbq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 19 Sep 2019 16:31:46 -0400
-Received: from smtp.duncanthrax.net ([89.31.1.170]:49170 "EHLO
-        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387854AbfISUbq (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 19 Sep 2019 16:31:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date;
-        bh=a6NdcU33Bx4aQeV3CboJshOFL1ALJJW5J50WL/j+jj0=; b=PVsxZf+gY1CJZuDx2pQvZDM3Dq
-        Ekwc9dtM4eCc5MxEIHXSSALJYFoFmNJL/86yi+1Zfcvxaeq+3O4WfMMLnBbThKAOj4yC1vmHC+8pb
-        YTUwWPLV33v5FxTNE8l2Uz+uyKWN/LgCkJ3vTzN0nDGQm3TcE0JZF8tRr0xCI9UJn+vU=;
-Received: from hsi-kbw-046-005-233-221.hsi8.kabel-badenwuerttemberg.de ([46.5.233.221] helo=t470p.stackframe.org)
-        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.86_2)
-        (envelope-from <svens@stackframe.org>)
-        id 1iB35S-00028A-Cx; Thu, 19 Sep 2019 22:31:34 +0200
-Date:   Thu, 19 Sep 2019 22:31:32 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     John David Anglin <dave.anglin@bell.net>,
-        Arlie Davis <arlied@google.com>, Andrew Lunn <andrew@lunn.ch>,
-        netdev@vger.kernel.org, linux-parisc@vger.kernel.org
+        id S2391930AbfITK5y (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 20 Sep 2019 06:57:54 -0400
+Received: from elvis.franken.de ([193.175.24.41]:52334 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390701AbfITK5x (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 20 Sep 2019 06:57:53 -0400
+Received: from uucp (helo=alpha)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1iBGbo-0006yE-00; Fri, 20 Sep 2019 12:57:52 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+        id C8D8AC279E; Fri, 20 Sep 2019 12:43:53 +0200 (CEST)
+Date:   Fri, 20 Sep 2019 12:43:53 +0200
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Arlie Davis <arlied@google.com>
+Cc:     netdev@vger.kernel.org, linux-parisc@vger.kernel.org
 Subject: Re: Bug report (with fix) for DEC Tulip driver (de2104x.c)
-Message-ID: <20190919203132.GA9107@t470p.stackframe.org>
+Message-ID: <20190920104353.GA10706@alpha.franken.de>
 References: <CAK-9enMxA68mRYFG=2zD02guvCqe-aa3NO0YZuJcTdBWn5MPqg@mail.gmail.com>
- <20190917212844.GJ9591@lunn.ch>
- <CAK-9enOx8xt_+t6-rpCGEL0j-HJGm=sFXYq9-pgHQ26AwrGm5Q@mail.gmail.com>
- <df0f961d-2d53-63e3-8087-6f0b09e14317@bell.net>
- <f71e9773-5cfb-f20b-956f-d98b11a5d4a7@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f71e9773-5cfb-f20b-956f-d98b11a5d4a7@gmx.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAK-9enMxA68mRYFG=2zD02guvCqe-aa3NO0YZuJcTdBWn5MPqg@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi,
-
-On Wed, Sep 18, 2019 at 07:56:16AM +0200, Helge Deller wrote:
-> On 18.09.19 00:51, John David Anglin wrote:
-> > On 2019-09-17 5:36 p.m., Arlie Davis wrote:
-> >> Likewise, I'm at a loss for testing with real hardware. It's hard to
-> >> find such things, now.
-> > How does de2104x compare to ds2142/43?  I have a c3750 with ds2142/43 tulip.  Helge
-> > or some others might have a machine with a de2104x.
+On Mon, Sep 16, 2019 at 02:50:53PM -0700, Arlie Davis wrote:
+>     See section 4.2.2 for the specs on the transfer descriptor.
 > 
-> The machines we could test are
-> * a C240 with a DS21140 tulip chip (Sven has one),
+> Here's my patch that fixes it:
+> 
+> diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c
+> b/drivers/net/ethernet/dec/tulip/de2104x.c
+> index f1a2da15dd0a..3a420ceb52e5 100644
+> --- a/drivers/net/ethernet/dec/tulip/de2104x.c
+> +++ b/drivers/net/ethernet/dec/tulip/de2104x.c
+> @@ -545,6 +545,7 @@ static void de_tx (struct de_private *de)
+>         while (tx_tail != tx_head) {
+>                 struct sk_buff *skb;
+>                 u32 status;
+> +               u32 control;
+> 
+>                 rmb();
+>                 status = le32_to_cpu(de->tx_ring[tx_tail].opts1);
+> @@ -565,7 +566,8 @@ static void de_tx (struct de_private *de)
+>                 pci_unmap_single(de->pdev, de->tx_skb[tx_tail].mapping,
+>                                  skb->len, PCI_DMA_TODEVICE);
+> 
+> -               if (status & LastFrag) {
+> +               control = le32_to_cpu(de->tx_ring[tx_tail].opts2);
+> +               if (control & LastFrag) {
 
-My C240 identifies as C240+:
+how about just remove the complete if ? We know that we always
+use one descriptor per packet and chip doesn't touch control
+field. So I see no reason to check it here. Tulip driver for
+2114x cards doesn't check it neither.
 
-[    0.000000] model 9000/782/C240+
+Thomas.
 
-which has a 21143 (verified by looking at the board):
-
-root@c240:/# lspci -kvvnn -s 00:14.0
-00:14.0 Ethernet controller [0200]: Digital Equipment Corporation DECchip 21142/43 [1011:0019] (rev 30)
-	Subsystem: Hewlett-Packard Company DECchip 21142/43 [103c:104f]
-	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV+ VGASnoop- ParErr+ Stepping- SERR+ FastB2B- DisINTx-
-	Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-	Latency: 255 (5000ns min, 10000ns max), Cache Line Size: 32 bytes
-	Interrupt: pin A routed to IRQ 23
-	Region 0: I/O ports at 0080 [size=128]
-	Region 1: Memory at f2802000 (32-bit, non-prefetchable) [size=128]
-	Expansion ROM at f2f80000 [disabled] [size=256K]
-	Kernel driver in use: tulip
-
-Regards
-Sven
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
