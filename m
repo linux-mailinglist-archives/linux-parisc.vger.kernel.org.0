@@ -2,84 +2,51 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C4C4BD056
-	for <lists+linux-parisc@lfdr.de>; Tue, 24 Sep 2019 19:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D66BD43D
+	for <lists+linux-parisc@lfdr.de>; Tue, 24 Sep 2019 23:26:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394715AbfIXRMJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 24 Sep 2019 13:12:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34704 "EHLO mail.kernel.org"
+        id S2633431AbfIXV0C (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 24 Sep 2019 17:26:02 -0400
+Received: from verein.lst.de ([213.95.11.211]:52754 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394283AbfIXRMJ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 24 Sep 2019 13:12:09 -0400
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5F28821A4C
-        for <linux-parisc@vger.kernel.org>; Tue, 24 Sep 2019 17:12:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569345128;
-        bh=SRE4w45g2rUmKQrrhnWYkWFb0+EjC7R6yTgfc4Pc+Es=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Cul4lPj43R8SyZJQUrm1p46lCQuMZI9UnsJcDgpnHzZJ8uDFW8mskgD538ujFAp7r
-         GMQjnCrwIiJv5CpFT5sD2o9WeddqpRNSJZ+ZvBu1++0hAreStOeIqgualI3wNRokzO
-         FJFSzQhe72b1eUfPKiXabbR3dq929RWk06sPT5YY=
-Received: by mail-wm1-f51.google.com with SMTP id v17so890860wml.4
-        for <linux-parisc@vger.kernel.org>; Tue, 24 Sep 2019 10:12:08 -0700 (PDT)
-X-Gm-Message-State: APjAAAX5BrmSPHKHy0TgplsHbW5J+zcyKOET1VLNREJco5gzUcMuLTUV
-        7LtFap+VjsEtqEhsn0lGGG+L31ouqAKdNgNQZpnR9w==
-X-Google-Smtp-Source: APXvYqz3Q0HHqCyDvH+elSspozaob5vsw8VZ7sTVeqI9f4cRrzEBFK5bbTHm3tCuCwTdatbEuC0akEIkOQ4fshlQF84=
-X-Received: by 2002:a1c:3803:: with SMTP id f3mr1303822wma.161.1569345126773;
- Tue, 24 Sep 2019 10:12:06 -0700 (PDT)
+        id S2441769AbfIXVZ7 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 24 Sep 2019 17:25:59 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 3E12D68B05; Tue, 24 Sep 2019 23:25:55 +0200 (CEST)
+Date:   Tue, 24 Sep 2019 23:25:54 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     Sven Schnelle <svens@stackframe.org>,
+        Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: allow larger than require DMA masks
+Message-ID: <20190924212554.GA31357@lst.de>
+References: <20190215144559.8777-1-hch@lst.de> <20190923211415.GA1875@stackframe.org> <1569286782.3657.29.camel@HansenPartnership.com>
 MIME-Version: 1.0
-References: <20190920131907.6886-1-christian.brauner@ubuntu.com> <20190924064420.6353-1-christian.brauner@ubuntu.com>
-In-Reply-To: <20190924064420.6353-1-christian.brauner@ubuntu.com>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Tue, 24 Sep 2019 10:11:55 -0700
-X-Gmail-Original-Message-ID: <CALCETrUdjCZ2tyGHuYi0TOQDtxEDAYdv-17=-5MKpfzFdiPNMw@mail.gmail.com>
-Message-ID: <CALCETrUdjCZ2tyGHuYi0TOQDtxEDAYdv-17=-5MKpfzFdiPNMw@mail.gmail.com>
-Subject: Re: [PATCH v1] seccomp: simplify secure_computing()
-To:     Christian Brauner <christian.brauner@ubuntu.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linux-um@lists.infradead.org, Andrew Lutomirski <luto@kernel.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Drewry <wad@chromium.org>, X86 ML <x86@kernel.org>,
-        Borislav Petkov <bp@alien8.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1569286782.3657.29.camel@HansenPartnership.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Sep 23, 2019 at 11:44 PM Christian Brauner
-<christian.brauner@ubuntu.com> wrote:
->
-> Afaict, the struct seccomp_data argument to secure_computing() is unused
-> by all current callers. So let's remove it.
-> The argument was added in [1]. It was added because having the arch
-> supply the syscall arguments used to be faster than having it done by
-> secure_computing() (cf. Andy's comment in [2]). This is not true anymore
-> though.
->
-> /* References */
-> [1]: 2f275de5d1ed ("seccomp: Add a seccomp_data parameter secure_computing()")
-> [2]: https://lore.kernel.org/r/CALCETrU_fs_At-hTpr231kpaAd0z7xJN4ku-DvzhRU6cvcJA_w@mail.gmail.com
->
-> Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Will Drewry <wad@chromium.org>
-> Cc: Oleg Nesterov <oleg@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> Cc: x86@kernel.org
+On Mon, Sep 23, 2019 at 08:59:42PM -0400, James Bottomley wrote:
+> > 	if (mask > ~0U)
+> > »     »       return 0;
+> > 
+> > Removing the if() makes the DMA mapping work. It's almost midnight
+> > here, so i won't look into that any further today. Does anyone have
+> > an opinion on this behaviour? Otherwise i will look a bit more into
+> > this in the next days.
+> 
+> The reason for the if was to kick the device into 32 bit descriptors,
+> which are usually more efficient, especially with older dual descriptor
+> format cards like we have on parisc systems.
 
-Acked-by: Andy Lutomirski <luto@kernel.org>
+These days we use the dma_get_required_mask API to query for that.
+
+Svens patch looks right for how we are now using the DMA mask setting
+API.
