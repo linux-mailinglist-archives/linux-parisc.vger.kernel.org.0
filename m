@@ -2,87 +2,168 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE8CFBECF5
-	for <lists+linux-parisc@lfdr.de>; Thu, 26 Sep 2019 09:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C5FBF889
+	for <lists+linux-parisc@lfdr.de>; Thu, 26 Sep 2019 19:58:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726900AbfIZH6m (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 26 Sep 2019 03:58:42 -0400
-Received: from smtp.duncanthrax.net ([89.31.1.170]:41116 "EHLO
-        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726418AbfIZH6m (ORCPT
+        id S1728462AbfIZR55 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 26 Sep 2019 13:57:57 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:39530 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728000AbfIZR4W (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 26 Sep 2019 03:58:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:Cc:To:From:Date;
-        bh=8Lg4yatCKD7X4fsvvkrBx2B6erVSI9xd/Gf3vtOMCRg=; b=kZ08d99MtIyox77pa2hbYEgswa
-        qsZsocQJHhdjf/xELBRkBwZILVUc7LpcQ674UqyV7p3M1fJSv/+6naGn3ZSbCH8lsBOGQnbUWDKGf
-        Wk2kXZFeMJk7vArKpP97Z4WRq4w/3I1liTu8QeFLzBCR5bzdABb2b/15lXINdeVXFrYc=;
-Received: from [2001:470:70c5:1111:5054:ff:febf:83e1] (helo=stackframe.org)
-        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.86_2)
-        (envelope-from <svens@stackframe.org>)
-        id 1iDOfh-0002Ar-2w; Thu, 26 Sep 2019 09:58:41 +0200
-Date:   Thu, 26 Sep 2019 09:58:39 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org
-Subject: Re: [PATCH] parisc: remove 32-bit DMA enforcement from sba_iommu
-Message-ID: <20190926075839.GA9516@stackframe.org>
-References: <20190924150131.24404-1-svens@stackframe.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190924150131.24404-1-svens@stackframe.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        Thu, 26 Sep 2019 13:56:22 -0400
+Received: by mail-pf1-f196.google.com with SMTP id v4so2257422pff.6
+        for <linux-parisc@vger.kernel.org>; Thu, 26 Sep 2019 10:56:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=QEG/EaNbne2aV7OKhHfoYngDByBBcJ0cppuY/pozywQ=;
+        b=C+3Ew31NmGJo/s34rbNfqjLTRqvYTUPk4Fzn1v6DxaCv0bUz5Itel2G7bPEbzOO7la
+         fZED90J+wL+qVcUlkffN4PYCPS/j/nBCQCnH3CopXImwLAl74lL+UhVoxl4VitCgKmD2
+         8kak6FLso8A712fVwjhhMVHLwKEZrzvyynFis=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=QEG/EaNbne2aV7OKhHfoYngDByBBcJ0cppuY/pozywQ=;
+        b=mOuPB5BZa5+GddWr/OXfO8znmr5V7mHsu2UssonnDEEOvlN9jt0QKovphsOdrHQRdH
+         Hol1fDx3lup020gum5i0TbFD/Qbcf4VV7HxVfCX4ioNsNlsljZTsB1+Tx73V21Qe/pZE
+         1JujA55LuMrdHiwyZDmnSq68Xu59pbLiuhYlX3x4A95qj3yevq2GT/xebFfwVjMnDJYy
+         SUL4v8Ch8Y+WAejzqxuvoP8NcgeB2vtw6dpM2ECxZqS9N2QYF6KHaAktlYaNdKeXSsc2
+         hkWO3bJxTTm4iIDJU95ThG3fZR6/UDfRfTLQ8ZSKIFqZnzOsetO8d9EXPzmKrYRZIvai
+         QhtA==
+X-Gm-Message-State: APjAAAWFdwS4sPbq6WufyaHmTOo5YDThFbWHfnBuKOub32tAWYK8yGg8
+        U14A5au8IPBUghmQY9u8rikOIQ==
+X-Google-Smtp-Source: APXvYqyGBYTkR69ROZhnYj3Ai7+SxN5uk+xjkc2oWKjzkLJSeo/f2CV0bxk4Z/YCXLw5XMrEqBkdJw==
+X-Received: by 2002:a63:355:: with SMTP id 82mr4552661pgd.81.1569520580971;
+        Thu, 26 Sep 2019 10:56:20 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id q3sm2995021pgj.54.2019.09.26.10.56.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Sep 2019 10:56:17 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-c6x-dev@linux-c6x.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 00/29] vmlinux.lds.h: Refactor EXCEPTION_TABLE and NOTES
+Date:   Thu, 26 Sep 2019 10:55:33 -0700
+Message-Id: <20190926175602.33098-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Helge,
+This series works to move the linker sections for NOTES and
+EXCEPTION_TABLE into the RO_DATA area, where they belong on most
+(all?) architectures. The problem being addressed was the discovery
+by Rick Edgecombe that the exception table was accidentally marked
+executable while he was developing his execute-only-memory series. When
+permissions were flipped from readable-and-executable to only-executable,
+the exception table became unreadable, causing things to explode rather
+badly. :)
 
-On Tue, Sep 24, 2019 at 05:01:31PM +0200, Sven Schnelle wrote:
-> This breaks booting from sata_sil24 with the recent DMA
-> change. According to James Bottomley this was in to improve
-> performance. Remove it for now to make DMA working again.
-> 
-> Signed-off-by: Sven Schnelle <svens@stackframe.org>
-> ---
->  drivers/parisc/sba_iommu.c | 8 --------
->  1 file changed, 8 deletions(-)
-> 
-> diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
-> index 296668caf7e5..6ac9500f2752 100644
-> --- a/drivers/parisc/sba_iommu.c
-> +++ b/drivers/parisc/sba_iommu.c
-> @@ -678,14 +678,6 @@ static int sba_dma_supported( struct device *dev, u64 mask)
->  		return(0);
->  	}
->  
-> -	/* Documentation/DMA-API-HOWTO.txt tells drivers to try 64-bit
-> -	 * first, then fall back to 32-bit if that fails.
-> -	 * We are just "encouraging" 32-bit DMA masks here since we can
-> -	 * never allow IOMMU bypass unless we add special support for ZX1.
-> -	 */
-> -	if (mask > ~0U)
-> -		return 0;
-> -
->  	ioc = GET_IOC(dev);
->  	if (!ioc)
->  		return 0;
-> -- 
-> 2.23.0.rc1
-> 
+Roughly speaking, the steps are:
 
-please drop that patch for now. With 64-bit DMA my C8000 crashes with HPMCs
-likely caused by invalid DMA transfers. So i have to read up a bit on the DMA
-capabilites, and what "since we can never allow IOMMU bypass unless we add
-special support for ZX1" means.
+- regularize the linker names for PT_NOTE and PT_LOAD program headers
+  (to "note" and "text" respectively)
+- regularize restoration of linker section to program header assignment
+  (when PT_NOTE exists)
+- move NOTES into RO_DATA
+- finish macro naming conversions for RO_DATA and RW_DATA
+- move EXCEPTION_TABLE into RO_DATA on architectures where this is clear
+- clean up some x86-specific reporting of kernel memory resources
+- switch x86 linker fill byte from x90 (NOP) to 0xcc (INT3), just because
+  I finally realized what that trailing ": 0x9090" meant -- and we should
+  trap, not slide, if execution lands in section padding
 
-The other option is to prepare a patch that limits the DMA mask with the
-API Christoph mentioned, but i would first like to understand the
-capabilities of the chipset.
+Since these changes are treewide, I'd love to get architecture-maintainer
+Acks and either have this live in x86 -tip or in my own tree, however
+people think it should go.
 
-Regards
-Sven
+Thanks!
+
+-Kees
+
+Kees Cook (29):
+  powerpc: Rename "notes" PT_NOTE to "note"
+  powerpc: Remove PT_NOTE workaround
+  powerpc: Rename PT_LOAD identifier "kernel" to "text"
+  alpha: Rename PT_LOAD identifier "kernel" to "text"
+  ia64: Rename PT_LOAD identifier "code" to "text"
+  s390: Move RO_DATA into "text" PT_LOAD Program Header
+  x86: Restore "text" Program Header with dummy section
+  vmlinux.lds.h: Provide EMIT_PT_NOTE to indicate export of .notes
+  vmlinux.lds.h: Move Program Header restoration into NOTES macro
+  vmlinux.lds.h: Move NOTES into RO_DATA
+  vmlinux.lds.h: Replace RODATA with RO_DATA
+  vmlinux.lds.h: Replace RO_DATA_SECTION with RO_DATA
+  vmlinux.lds.h: Replace RW_DATA_SECTION with RW_DATA
+  vmlinux.lds.h: Allow EXCEPTION_TABLE to live in RO_DATA
+  x86: Actually use _etext for end of text segment
+  x86: Move EXCEPTION_TABLE to RO_DATA segment
+  alpha: Move EXCEPTION_TABLE to RO_DATA segment
+  arm64: Move EXCEPTION_TABLE to RO_DATA segment
+  c6x: Move EXCEPTION_TABLE to RO_DATA segment
+  h8300: Move EXCEPTION_TABLE to RO_DATA segment
+  ia64: Move EXCEPTION_TABLE to RO_DATA segment
+  microblaze: Move EXCEPTION_TABLE to RO_DATA segment
+  parisc: Move EXCEPTION_TABLE to RO_DATA segment
+  powerpc: Move EXCEPTION_TABLE to RO_DATA segment
+  xtensa: Move EXCEPTION_TABLE to RO_DATA segment
+  x86/mm: Remove redundant &s on addresses
+  x86/mm: Report which part of kernel image is freed
+  x86/mm: Report actual image regions in /proc/iomem
+  x86: Use INT3 instead of NOP for linker fill bytes
+
+ arch/alpha/kernel/vmlinux.lds.S      | 18 +++++-----
+ arch/arc/kernel/vmlinux.lds.S        |  6 ++--
+ arch/arm/kernel/vmlinux-xip.lds.S    |  4 +--
+ arch/arm/kernel/vmlinux.lds.S        |  4 +--
+ arch/arm64/kernel/vmlinux.lds.S      |  9 ++---
+ arch/c6x/kernel/vmlinux.lds.S        |  8 ++---
+ arch/csky/kernel/vmlinux.lds.S       |  5 ++-
+ arch/h8300/kernel/vmlinux.lds.S      |  9 ++---
+ arch/hexagon/kernel/vmlinux.lds.S    |  5 ++-
+ arch/ia64/kernel/vmlinux.lds.S       | 20 +++++------
+ arch/m68k/kernel/vmlinux-nommu.lds   |  4 +--
+ arch/m68k/kernel/vmlinux-std.lds     |  2 +-
+ arch/m68k/kernel/vmlinux-sun3.lds    |  2 +-
+ arch/microblaze/kernel/vmlinux.lds.S |  8 ++---
+ arch/mips/kernel/vmlinux.lds.S       | 15 ++++----
+ arch/nds32/kernel/vmlinux.lds.S      |  5 ++-
+ arch/nios2/kernel/vmlinux.lds.S      |  5 ++-
+ arch/openrisc/kernel/vmlinux.lds.S   |  7 ++--
+ arch/parisc/kernel/vmlinux.lds.S     | 11 +++---
+ arch/powerpc/kernel/vmlinux.lds.S    | 37 ++++---------------
+ arch/riscv/kernel/vmlinux.lds.S      |  5 ++-
+ arch/s390/kernel/vmlinux.lds.S       | 12 +++----
+ arch/sh/kernel/vmlinux.lds.S         |  3 +-
+ arch/sparc/kernel/vmlinux.lds.S      |  3 +-
+ arch/um/include/asm/common.lds.S     |  3 +-
+ arch/unicore32/kernel/vmlinux.lds.S  |  5 ++-
+ arch/x86/include/asm/processor.h     |  2 +-
+ arch/x86/include/asm/sections.h      |  1 -
+ arch/x86/kernel/setup.c              | 12 ++++++-
+ arch/x86/kernel/vmlinux.lds.S        | 16 ++++-----
+ arch/x86/mm/init.c                   |  8 ++---
+ arch/x86/mm/init_64.c                | 16 +++++----
+ arch/x86/mm/pti.c                    |  2 +-
+ arch/xtensa/kernel/vmlinux.lds.S     |  8 ++---
+ include/asm-generic/vmlinux.lds.h    | 53 ++++++++++++++++++++--------
+ 35 files changed, 159 insertions(+), 174 deletions(-)
+
+-- 
+2.17.1
+
