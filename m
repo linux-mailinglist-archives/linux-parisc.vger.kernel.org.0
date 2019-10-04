@@ -2,79 +2,93 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F926C962E
-	for <lists+linux-parisc@lfdr.de>; Thu,  3 Oct 2019 03:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F5DFCB9DC
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Oct 2019 14:06:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727315AbfJCB3w (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 2 Oct 2019 21:29:52 -0400
-Received: from eddie.linux-mips.org ([148.251.95.138]:43768 "EHLO
-        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726214AbfJCB3w (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 2 Oct 2019 21:29:52 -0400
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23992741AbfJCB3r1Jipn (ORCPT
-        <rfc822;linux-alpha@vger.kernel.org> + 2 others);
-        Thu, 3 Oct 2019 03:29:47 +0200
-Date:   Thu, 3 Oct 2019 02:29:47 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-cc:     Helge Deller <deller@gmx.de>,
-        John David Anglin <dave.anglin@bell.net>,
-        Arlie Davis <arlied@google.com>, Andrew Lunn <andrew@lunn.ch>,
-        netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-alpha@vger.kernel.org
-Subject: Re: Bug report (with fix) for DEC Tulip driver (de2104x.c)
-In-Reply-To: <20190918132736.GA9231@alpha.franken.de>
-Message-ID: <alpine.LFD.2.21.1910030146380.29399@eddie.linux-mips.org>
-References: <CAK-9enMxA68mRYFG=2zD02guvCqe-aa3NO0YZuJcTdBWn5MPqg@mail.gmail.com> <20190917212844.GJ9591@lunn.ch> <CAK-9enOx8xt_+t6-rpCGEL0j-HJGm=sFXYq9-pgHQ26AwrGm5Q@mail.gmail.com> <df0f961d-2d53-63e3-8087-6f0b09e14317@bell.net> <f71e9773-5cfb-f20b-956f-d98b11a5d4a7@gmx.de>
- <20190918132736.GA9231@alpha.franken.de>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+        id S1729586AbfJDMGx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 4 Oct 2019 08:06:53 -0400
+Received: from elvis.franken.de ([193.175.24.41]:44293 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726002AbfJDMGx (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 4 Oct 2019 08:06:53 -0400
+Received: from uucp (helo=alpha)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1iGMMF-0001Ak-00; Fri, 04 Oct 2019 14:06:51 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+        id 43AE2C01D9; Fri,  4 Oct 2019 14:06:32 +0200 (CEST)
+Date:   Fri, 4 Oct 2019 14:06:32 +0200
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     Sven Schnelle <svens@stackframe.org>, linux-parisc@vger.kernel.org,
+        deller@gmx.de
+Subject: Re: some progress with radeon on C8000
+Message-ID: <20191004120632.GA7472@alpha.franken.de>
+References: <20190928214436.GC18685@stackframe.org>
+ <20191002141907.GA8897@alpha.franken.de>
+ <c9ef7686-96fc-e4ed-33d2-ebee7fb4aeed@bell.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c9ef7686-96fc-e4ed-33d2-ebee7fb4aeed@bell.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, 18 Sep 2019, Thomas Bogendoerfer wrote:
+On Wed, Oct 02, 2019 at 04:37:41PM -0400, John David Anglin wrote:
+> On 2019-10-02 10:19 a.m., Thomas Bogendoerfer wrote:
+> > +	pa = addr & IOVP_MASK;
+> > +	mtsp(0,1);
+> > +	asm("lci 0(%%sr1, %1), %0" : "=r" (ci) : "r" (__va(pa)));
+> I believe you can remove the mtsp and just use "lci 0(%1), %0" to load the coherence index.� The space
+> registers sr4 to sr7 are always 0 in kernel.
 
-> > >> Likewise, I'm at a loss for testing with real hardware. It's hard to
-> > >> find such things, now.
-> > > How does de2104x compare to ds2142/43?  I have a c3750 with ds2142/43 tulip.  Helge
-> > > or some others might have a machine with a de2104x.
-> > 
-> > The machines we could test are
-> > * a C240 with a DS21140 tulip chip (Sven has one),
-> > * a C3000 or similiar with DS21142 and/or DS21143 (me).
-> > 
-> > If the patch does not show any regressions, I'd suggest to
-> > apply it upstream.
-> 
-> 2114x chips use a different driver, so it won't help here.
+ok, good to know.
 
- Asking at `linux-alpha' (cc-ed) might help; these chips used to be 
-ubiquitous with older Alpha systems, so someone subscribed there might be 
-able to step in and help right away.  Also testing with an Alpha always 
-has the advantage of exposing any weak ordering issues.
+while reading this I realized what the other hacks were for, which I didn't
+include in my first mail. 
 
- Myself I have an AS 300 (or AS 250 really as I suspect a mismatch between 
-the enclosure and the MB; the two systems are almost identical anyway) and 
-it does have a real 21040 chip on its riser I/O module.  However I have 
-never got to setting up Linux on that machine and it may take me a bit to 
-get it running suitably to get any verification done I'm afraid.
+diff --git a/drivers/gpu/drm/ttm/ttm_agp_backend.c b/drivers/gpu/drm/ttm/ttm_agp_backend.c
+index 028ab6007873..e84c7652eb1b 100644
+--- a/drivers/gpu/drm/ttm/ttm_agp_backend.c
++++ b/drivers/gpu/drm/ttm/ttm_agp_backend.c
+@@ -66,7 +67,8 @@ static int ttm_agp_bind(struct ttm_tt *ttm, struct ttm_mem_reg *bo_mem)
+ 		if (!page)
+ 			page = ttm->dummy_read_page;
+ 
+-		mem->pages[mem->page_count++] = page;
++		mem->pages[(ttm->num_pages - 1) - mem->page_count] = page;
++		mem->page_count++;
+ 	}
+ 	agp_be->mem = mem;
+ 
+diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
+index d0459b392e5e..4bb301cab128 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo_util.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+@@ -571,8 +571,14 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
+ 		 */
+ 		prot = ttm_io_prot(mem->placement, PAGE_KERNEL);
+ 		map->bo_kmap_type = ttm_bo_map_vmap;
++		printk("vmap %p\n", ttm->pages[start_page]);
++#if 0
+ 		map->virtual = vmap(ttm->pages + start_page, num_pages,
+ 				    0, prot);
++#else
++		map->virtual = kmap(ttm->pages[start_page]);
++#endif
++		
+ 	}
+ 	return (!map->virtual) ? -ENOMEM : 0;
+ }
 
- NB for the original 21040 part "DECchip 21040 Ethernet LAN Controller for 
-PCI Hardware Reference Manual", Order Number: EC-N0752-72, available here:
-<ftp://ftp.netbsd.org/pub/NetBSD/misc/dec-docs/ec-n0752-72.ps.gz> is 
-probably more relevant, although in the area concerned here it seems the 
-same.
+ 
+This is needed to be able to get the virtual address with __va(pa).
 
- Finally I don't expect any race condition in possibly examining control 
-bits in the transmit interrupt handler as this is what the descriptor 
-ownership bit guards against -- only when a descriptor is owned by the 
-host accesses from the CPU side are allowed, and then it is safe to fiddle 
-with any field.
+Thomas.
 
-  Maciej
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
