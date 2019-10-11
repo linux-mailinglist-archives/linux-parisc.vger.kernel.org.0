@@ -2,113 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6416CD4509
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2019 18:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBBEDD451C
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2019 18:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728089AbfJKQJ0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 11 Oct 2019 12:09:26 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:38246 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726698AbfJKQJ0 (ORCPT
+        id S1726666AbfJKQLq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 11 Oct 2019 12:11:46 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:35036 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728205AbfJKQLq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 11 Oct 2019 12:09:26 -0400
-Received: by mail-pg1-f196.google.com with SMTP id x10so6055805pgi.5
-        for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2019 09:09:26 -0700 (PDT)
+        Fri, 11 Oct 2019 12:11:46 -0400
+Received: by mail-pl1-f196.google.com with SMTP id c3so4686670plo.2
+        for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2019 09:11:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=rz208JH/bAYgb34feMbXc7rOAmJSapYVvu3TBVmWgf0=;
-        b=k3VEdnK1XLODdhPbFCe/vXjRUrVGk8LtbhfzFlecnP8Kmv9f4bYkCsfO3n/TqN0AdN
-         qBPqcub0N0dKdLHi1OxIweb3/6eczWoee7LuePEuJPxxCrmCNRf0LI9uLqFq5rTIaXHw
-         uP6X5tVwyIUzUKipWUOB9mLE9R+uA81t/qC+c=
+        bh=G6L52gHbcOVXjcPSYcPZfDCdfNGSvtith//1lglITt4=;
+        b=U5/N6JMiUj9QDTd24aIgmkS/ZCmGBjpKwM7U8CzxrzMf1lqZSNfbZ7O4pwV0bhEzEg
+         wudUUYrZzrgNiboJm0ChoceZ3O1LmYFYV3Bvx9uhV6vTeclkuNrnADNJMjD6VX65LBtL
+         he7FMaEjTbOKTJQ5f79wUMqxbvVvSYa6+a7mg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=rz208JH/bAYgb34feMbXc7rOAmJSapYVvu3TBVmWgf0=;
-        b=KndP6PMVGRcwxo6X8trYffbrTF3E6O8m2EEBKeXU3xR7oagbYp/oGPcfMMIx1GZTTi
-         /MTuXiJoJvsLDFu4VfuFVMKFHTAUl9j8WywsT6O+KxKY5z1igj39fd9avReo4Qu9FCks
-         1akikedGbnEpQPAid4UC5jXfqT1le2/dDA1ZyobS8Vzf0aUV3J6HLgosLBueNAlyxinH
-         uLTP/LmNU9n3/FgADQhVmVLLgYtQehpbuzYWJdbtRuy5TpwJQYAj3vnNNUAD7OgREV1q
-         xySIseuE2EmdDXv05bI/QrFgjPcEbqMlc4+DcLYdVPXsrsySMeIBIRk7XmUIlARTGWGe
-         TFTQ==
-X-Gm-Message-State: APjAAAWdk6ttwoAoj7Sme7f5qZtQuCIS6ixu1vEDiA45yVlrY52risLm
-        oKFoqA83HT64Cafg8zaCgs+lLA==
-X-Google-Smtp-Source: APXvYqzRI04wjSOtKB/baIR7njDLMah96e9dDVUlsW+Ic2nxptL0dLB9zZ6sMSyGO7t7MBKia+2VpQ==
-X-Received: by 2002:a63:b5b:: with SMTP id a27mr18354873pgl.262.1570810165767;
-        Fri, 11 Oct 2019 09:09:25 -0700 (PDT)
+        bh=G6L52gHbcOVXjcPSYcPZfDCdfNGSvtith//1lglITt4=;
+        b=nr0B9KVyDrAITo45usCfzs5HEgOFPImfyVp+IwtiQK/ApaIThMN3HW/m4U/4Tjh/sQ
+         GK7s7j7UeSzUV78Tm6C3d2ZS1H63RcnnxFtOgCT+W8Pw0wiOWO+FknIWxZmvDzjwA8s/
+         pytOenO45RqY9eB6BM23rPB6t0EEtTdvgjvyU8+XZuoLh8kbCPLUN2gjzDLEKPgCmhmn
+         a8Bk3HRDs4/MnDJiiCyurmOPhsUlWFgGDt/igrovsA49NUoP9tuMHLFq8w10dUnCjBDg
+         vTzj03F2cYhDgNwa0h+fA9eX21qVeEbaVncwpB8jm4Lhd2p8rubNKbTlUs5dEEGEt4aF
+         Eiog==
+X-Gm-Message-State: APjAAAUoP8HtoLXUrsPqg1dinBQ0aXVjg9V1sFi8c/yvimVjUgWK4Ohi
+        lNZISJY3uhTTw56grT+0qkmp/w==
+X-Google-Smtp-Source: APXvYqybFKi8DEP43HWkgZPyfZo8SqqFMMtnLHZ2tVbdiQx6dZitTSLWHEWMqDIFXmSN2gN3R3/hRg==
+X-Received: by 2002:a17:902:bf45:: with SMTP id u5mr15982728pls.62.1570810305781;
+        Fri, 11 Oct 2019 09:11:45 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id d3sm8459551pgb.3.2019.10.11.09.09.23
+        by smtp.gmail.com with ESMTPSA id f6sm9294369pfq.169.2019.10.11.09.11.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2019 09:09:24 -0700 (PDT)
-Date:   Fri, 11 Oct 2019 09:09:22 -0700
+        Fri, 11 Oct 2019 09:11:44 -0700 (PDT)
+Date:   Fri, 11 Oct 2019 09:11:43 -0700
 From:   Kees Cook <keescook@chromium.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+To:     Segher Boessenkool <segher@kernel.crashing.org>
+Cc:     Borislav Petkov <bp@alien8.de>, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+        x86@kernel.org, linux-ia64@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-xtensa@linux-xtensa.org,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-c6x-dev@linux-c6x.org,
+        linuxppc-dev@lists.ozlabs.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, Joel Stanley <joel@jms.id.au>,
-        Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH v2 02/29] powerpc: Remove PT_NOTE workaround
-Message-ID: <201910110908.040009F27@keescook>
+        linux-parisc@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org
+Subject: Re: [PATCH v2 01/29] powerpc: Rename "notes" PT_NOTE to "note"
+Message-ID: <201910110910.48270FC97@keescook>
 References: <20191011000609.29728-1-keescook@chromium.org>
- <20191011000609.29728-3-keescook@chromium.org>
- <878sprx1br.fsf@mpe.ellerman.id.au>
+ <20191011000609.29728-2-keescook@chromium.org>
+ <20191011082519.GI9749@gate.crashing.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <878sprx1br.fsf@mpe.ellerman.id.au>
+In-Reply-To: <20191011082519.GI9749@gate.crashing.org>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 05:07:04PM +1100, Michael Ellerman wrote:
-> Kees Cook <keescook@chromium.org> writes:
-> > In preparation for moving NOTES into RO_DATA, remove the PT_NOTE
-> > workaround since the kernel requires at least gcc 4.6 now.
-> >
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  arch/powerpc/kernel/vmlinux.lds.S | 24 ++----------------------
-> >  1 file changed, 2 insertions(+), 22 deletions(-)
+On Fri, Oct 11, 2019 at 03:25:19AM -0500, Segher Boessenkool wrote:
+> On Thu, Oct 10, 2019 at 05:05:41PM -0700, Kees Cook wrote:
+> > The Program Header identifiers are internal to the linker scripts. In
+> > preparation for moving the NOTES segment declaration into RO_DATA,
+> > standardize the identifier for the PT_NOTE entry to "note" as used by
+> > all other architectures that emit PT_NOTE.
 > 
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+> All other archs are wrong, and "notes" is a much better name.  This
+> segment does not contain a single "note", but multiple "notes".
 
-Thanks!
-
-> For the archives, Joel tried a similar patch a while back which caused
-> some problems, see:
-> 
->   https://lore.kernel.org/linuxppc-dev/20190321003253.22100-1-joel@jms.id.au/
-> 
-> and a v2:
-> 
->   https://lore.kernel.org/linuxppc-dev/20190329064453.12761-1-joel@jms.id.au/
-> 
-> This is similar to his v2. The only outstanding comment on his v2 was
-> from Segher:
->   (And I do not know if there are any tools that expect the notes in a phdr,
->   or even specifically the second phdr).
-> 
-> But this patch solves that by not changing the note.
-
-Ah yes. Agreed: I'm retaining the note and dropping the workarounds.
-FWIW, this builds happily for me in my tests.
-
--Kees
+True, but the naming appears to be based off the Program Header name of
+"PT_NOTE". Regardless, it is an entirely internal-to-the-linker-script
+identifier, so I am just consolidating on a common name with the least
+number of collateral changes.
 
 -- 
 Kees Cook
