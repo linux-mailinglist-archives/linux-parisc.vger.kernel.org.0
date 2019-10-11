@@ -2,59 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2361FD3B07
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2019 10:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC72BD3CA2
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2019 11:45:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726508AbfJKI0b (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 11 Oct 2019 04:26:31 -0400
-Received: from gate.crashing.org ([63.228.1.57]:43040 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726290AbfJKI0a (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 11 Oct 2019 04:26:30 -0400
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9B8PNOs001341;
-        Fri, 11 Oct 2019 03:25:24 -0500
-Received: (from segher@localhost)
-        by gate.crashing.org (8.14.1/8.14.1/Submit) id x9B8PJiY001329;
-        Fri, 11 Oct 2019 03:25:19 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date:   Fri, 11 Oct 2019 03:25:19 -0500
-From:   Segher Boessenkool <segher@kernel.crashing.org>
+        id S1727755AbfJKJpc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 11 Oct 2019 05:45:32 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34704 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726863AbfJKJpc (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 11 Oct 2019 05:45:32 -0400
+Received: from v22018046084765073.goodsrv.de ([185.183.158.195] helo=wittgenstein)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <christian.brauner@ubuntu.com>)
+        id 1iIrUH-0004RM-Md; Fri, 11 Oct 2019 09:45:29 +0000
+Date:   Fri, 11 Oct 2019 11:45:28 +0200
+From:   Christian Brauner <christian.brauner@ubuntu.com>
 To:     Kees Cook <keescook@chromium.org>
-Cc:     Borislav Petkov <bp@alien8.de>, linux-arch@vger.kernel.org,
-        linux-s390@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
-        x86@kernel.org, linux-ia64@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, linux-xtensa@linux-xtensa.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-parisc@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Will Deacon <will@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org
-Subject: Re: [PATCH v2 01/29] powerpc: Rename "notes" PT_NOTE to "note"
-Message-ID: <20191011082519.GI9749@gate.crashing.org>
-References: <20191011000609.29728-1-keescook@chromium.org> <20191011000609.29728-2-keescook@chromium.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-um@lists.infradead.org, luto@kernel.org, oleg@redhat.com,
+        tglx@linutronix.de, wad@chromium.org, x86@kernel.org,
+        Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH v1] seccomp: simplify secure_computing()
+Message-ID: <20191011094527.ftevtkeitjqafhdd@wittgenstein>
+References: <20190920131907.6886-1-christian.brauner@ubuntu.com>
+ <20190924064420.6353-1-christian.brauner@ubuntu.com>
+ <201910101450.0B13B7F@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20191011000609.29728-2-keescook@chromium.org>
-User-Agent: Mutt/1.4.2.3i
+In-Reply-To: <201910101450.0B13B7F@keescook>
+User-Agent: NeoMutt/20180716
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 10, 2019 at 05:05:41PM -0700, Kees Cook wrote:
-> The Program Header identifiers are internal to the linker scripts. In
-> preparation for moving the NOTES segment declaration into RO_DATA,
-> standardize the identifier for the PT_NOTE entry to "note" as used by
-> all other architectures that emit PT_NOTE.
+On Thu, Oct 10, 2019 at 02:53:24PM -0700, Kees Cook wrote:
+> On Tue, Sep 24, 2019 at 08:44:20AM +0200, Christian Brauner wrote:
+> > Afaict, the struct seccomp_data argument to secure_computing() is unused
+> > by all current callers. So let's remove it.
+> > The argument was added in [1]. It was added because having the arch
+> > supply the syscall arguments used to be faster than having it done by
+> > secure_computing() (cf. Andy's comment in [2]). This is not true anymore
+> > though.
+> 
+> Yes; thanks for cleaning this up!
+> 
+> > diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
+> > index ad71132374f0..ed80bdfbf5fe 100644
+> > --- a/arch/s390/kernel/ptrace.c
+> > +++ b/arch/s390/kernel/ptrace.c
+> > @@ -439,7 +439,7 @@ static int poke_user(struct task_struct *child, addr_t addr, addr_t data)
+> >  long arch_ptrace(struct task_struct *child, long request,
+> >  		 unsigned long addr, unsigned long data)
+> >  {
+> > -	ptrace_area parea; 
+> > +	ptrace_area parea;
+> >  	int copied, ret;
+> >  
+> >  	switch (request) {
+> 
+> If this were whitespace cleanup in kernel/seccomp.c, I'd take it without
+> flinching. As this is only tangentially related and in an arch
+> directory, I've dropped this hunk out of a cowardly fear of causing
+> (a likely very unlikely) merge conflict.
+> 
+> I'd rather we globally clean up trailing whitespace at the end of -rc1
+> and ask Linus to run some crazy script. :)
 
-All other archs are wrong, and "notes" is a much better name.  This
-segment does not contain a single "note", but multiple "notes".
+Oh that was on accident probably. It usally happens because I have vim
+do whitespace fixups automatically and then they end up slipping in...
+Sorry. Thanks for removing it! :)
 
-
-Segher
+Christian
