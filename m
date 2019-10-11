@@ -2,79 +2,113 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC72BD3CA2
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2019 11:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6416CD4509
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2019 18:09:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727755AbfJKJpc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 11 Oct 2019 05:45:32 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34704 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726863AbfJKJpc (ORCPT
+        id S1728089AbfJKQJ0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 11 Oct 2019 12:09:26 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:38246 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726698AbfJKQJ0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 11 Oct 2019 05:45:32 -0400
-Received: from v22018046084765073.goodsrv.de ([185.183.158.195] helo=wittgenstein)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <christian.brauner@ubuntu.com>)
-        id 1iIrUH-0004RM-Md; Fri, 11 Oct 2019 09:45:29 +0000
-Date:   Fri, 11 Oct 2019 11:45:28 +0200
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-um@lists.infradead.org, luto@kernel.org, oleg@redhat.com,
-        tglx@linutronix.de, wad@chromium.org, x86@kernel.org,
-        Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH v1] seccomp: simplify secure_computing()
-Message-ID: <20191011094527.ftevtkeitjqafhdd@wittgenstein>
-References: <20190920131907.6886-1-christian.brauner@ubuntu.com>
- <20190924064420.6353-1-christian.brauner@ubuntu.com>
- <201910101450.0B13B7F@keescook>
+        Fri, 11 Oct 2019 12:09:26 -0400
+Received: by mail-pg1-f196.google.com with SMTP id x10so6055805pgi.5
+        for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2019 09:09:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=rz208JH/bAYgb34feMbXc7rOAmJSapYVvu3TBVmWgf0=;
+        b=k3VEdnK1XLODdhPbFCe/vXjRUrVGk8LtbhfzFlecnP8Kmv9f4bYkCsfO3n/TqN0AdN
+         qBPqcub0N0dKdLHi1OxIweb3/6eczWoee7LuePEuJPxxCrmCNRf0LI9uLqFq5rTIaXHw
+         uP6X5tVwyIUzUKipWUOB9mLE9R+uA81t/qC+c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=rz208JH/bAYgb34feMbXc7rOAmJSapYVvu3TBVmWgf0=;
+        b=KndP6PMVGRcwxo6X8trYffbrTF3E6O8m2EEBKeXU3xR7oagbYp/oGPcfMMIx1GZTTi
+         /MTuXiJoJvsLDFu4VfuFVMKFHTAUl9j8WywsT6O+KxKY5z1igj39fd9avReo4Qu9FCks
+         1akikedGbnEpQPAid4UC5jXfqT1le2/dDA1ZyobS8Vzf0aUV3J6HLgosLBueNAlyxinH
+         uLTP/LmNU9n3/FgADQhVmVLLgYtQehpbuzYWJdbtRuy5TpwJQYAj3vnNNUAD7OgREV1q
+         xySIseuE2EmdDXv05bI/QrFgjPcEbqMlc4+DcLYdVPXsrsySMeIBIRk7XmUIlARTGWGe
+         TFTQ==
+X-Gm-Message-State: APjAAAWdk6ttwoAoj7Sme7f5qZtQuCIS6ixu1vEDiA45yVlrY52risLm
+        oKFoqA83HT64Cafg8zaCgs+lLA==
+X-Google-Smtp-Source: APXvYqzRI04wjSOtKB/baIR7njDLMah96e9dDVUlsW+Ic2nxptL0dLB9zZ6sMSyGO7t7MBKia+2VpQ==
+X-Received: by 2002:a63:b5b:: with SMTP id a27mr18354873pgl.262.1570810165767;
+        Fri, 11 Oct 2019 09:09:25 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id d3sm8459551pgb.3.2019.10.11.09.09.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Oct 2019 09:09:24 -0700 (PDT)
+Date:   Fri, 11 Oct 2019 09:09:22 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-c6x-dev@linux-c6x.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, Joel Stanley <joel@jms.id.au>,
+        Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH v2 02/29] powerpc: Remove PT_NOTE workaround
+Message-ID: <201910110908.040009F27@keescook>
+References: <20191011000609.29728-1-keescook@chromium.org>
+ <20191011000609.29728-3-keescook@chromium.org>
+ <878sprx1br.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <201910101450.0B13B7F@keescook>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <878sprx1br.fsf@mpe.ellerman.id.au>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 10, 2019 at 02:53:24PM -0700, Kees Cook wrote:
-> On Tue, Sep 24, 2019 at 08:44:20AM +0200, Christian Brauner wrote:
-> > Afaict, the struct seccomp_data argument to secure_computing() is unused
-> > by all current callers. So let's remove it.
-> > The argument was added in [1]. It was added because having the arch
-> > supply the syscall arguments used to be faster than having it done by
-> > secure_computing() (cf. Andy's comment in [2]). This is not true anymore
-> > though.
+On Fri, Oct 11, 2019 at 05:07:04PM +1100, Michael Ellerman wrote:
+> Kees Cook <keescook@chromium.org> writes:
+> > In preparation for moving NOTES into RO_DATA, remove the PT_NOTE
+> > workaround since the kernel requires at least gcc 4.6 now.
+> >
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > ---
+> >  arch/powerpc/kernel/vmlinux.lds.S | 24 ++----------------------
+> >  1 file changed, 2 insertions(+), 22 deletions(-)
 > 
-> Yes; thanks for cleaning this up!
-> 
-> > diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
-> > index ad71132374f0..ed80bdfbf5fe 100644
-> > --- a/arch/s390/kernel/ptrace.c
-> > +++ b/arch/s390/kernel/ptrace.c
-> > @@ -439,7 +439,7 @@ static int poke_user(struct task_struct *child, addr_t addr, addr_t data)
-> >  long arch_ptrace(struct task_struct *child, long request,
-> >  		 unsigned long addr, unsigned long data)
-> >  {
-> > -	ptrace_area parea; 
-> > +	ptrace_area parea;
-> >  	int copied, ret;
-> >  
-> >  	switch (request) {
-> 
-> If this were whitespace cleanup in kernel/seccomp.c, I'd take it without
-> flinching. As this is only tangentially related and in an arch
-> directory, I've dropped this hunk out of a cowardly fear of causing
-> (a likely very unlikely) merge conflict.
-> 
-> I'd rather we globally clean up trailing whitespace at the end of -rc1
-> and ask Linus to run some crazy script. :)
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Oh that was on accident probably. It usally happens because I have vim
-do whitespace fixups automatically and then they end up slipping in...
-Sorry. Thanks for removing it! :)
+Thanks!
 
-Christian
+> For the archives, Joel tried a similar patch a while back which caused
+> some problems, see:
+> 
+>   https://lore.kernel.org/linuxppc-dev/20190321003253.22100-1-joel@jms.id.au/
+> 
+> and a v2:
+> 
+>   https://lore.kernel.org/linuxppc-dev/20190329064453.12761-1-joel@jms.id.au/
+> 
+> This is similar to his v2. The only outstanding comment on his v2 was
+> from Segher:
+>   (And I do not know if there are any tools that expect the notes in a phdr,
+>   or even specifically the second phdr).
+> 
+> But this patch solves that by not changing the note.
+
+Ah yes. Agreed: I'm retaining the note and dropping the workarounds.
+FWIW, this builds happily for me in my tests.
+
+-Kees
+
+-- 
+Kees Cook
