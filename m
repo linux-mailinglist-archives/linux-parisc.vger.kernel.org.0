@@ -2,67 +2,56 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 533D9D5159
-	for <lists+linux-parisc@lfdr.de>; Sat, 12 Oct 2019 19:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF5C9D521E
+	for <lists+linux-parisc@lfdr.de>; Sat, 12 Oct 2019 21:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729527AbfJLRVC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 12 Oct 2019 13:21:02 -0400
-Received: from smtp.duncanthrax.net ([89.31.1.170]:38196 "EHLO
-        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728162AbfJLRVB (ORCPT
+        id S1729426AbfJLTXv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 12 Oct 2019 15:23:51 -0400
+Received: from nms02.ip-net.mgrs.ru ([178.237.242.9]:56412 "EHLO
+        nms02.ip-net.mgrs.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728579AbfJLTXv (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 12 Oct 2019 13:21:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date;
-        bh=UfXVJgl3M8MWL2edg+efyKWcd9i2rDggtEJ51Z/1Twk=; b=Ij1zwyaCJv1sYuxWEE3Y2FUydB
-        4qKitFdByEvV7QDkepdQjEC0uyDSZvE4zVcQSz45WSG+nqqKWp4jY909Rm3p462/pPjveAKMFMcpH
-        u5CrJrvchwNrs3yv/239if5jgtqrtwO4M1duiTeGC8xwcivvHc/UFV2FvMyrWpCmxhGY=;
-Received: from hsi-kbw-046-005-233-221.hsi8.kabel-badenwuerttemberg.de ([46.5.233.221] helo=t470p.stackframe.org)
-        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.86_2)
-        (envelope-from <svens@stackframe.org>)
-        id 1iJL4b-000115-5q; Sat, 12 Oct 2019 19:20:57 +0200
-Date:   Sat, 12 Oct 2019 19:20:55 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Yang Wei <yang.wei9@zte.com.cn>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
-        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>
-Subject: Re: net: tulip: de2104x: Checking a kmemdup() call in
- de21041_get_srom_info()
-Message-ID: <20191012172055.GA22569@t470p.stackframe.org>
-References: <eb1f904a-a2e4-fe9b-c50e-b8087d7e57c4@web.de>
+        Sat, 12 Oct 2019 15:23:51 -0400
+Received: from User (localhost.localdomain [127.0.0.1])
+        by nms02.ip-net.mgrs.ru (Postfix) with SMTP id C89BE4E11B8;
+        Sat, 12 Oct 2019 08:16:19 +0300 (MSK)
+Reply-To: <kepe19655@aol.com>
+From:   "Mr. Henk Boelens" <info@wholeearth.com>
+To:     henkboelens2016@contractor.net
+Subject: GOOD DAY?
+Date:   Fri, 11 Oct 2019 22:17:04 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <eb1f904a-a2e4-fe9b-c50e-b8087d7e57c4@web.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20191012051620.C89BE4E11B8@nms02.ip-net.mgrs.ru>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Oct 12, 2019 at 07:03:09PM +0200, Markus Elfring wrote:
-> Hello,
-> 
-> I tried another script for the semantic patch language out.
-> This source code analysis approach points out that the implementation
-> of the function “de21041_get_srom_info” contains still an unchecked call
-> of the function “kmemdup”.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ethernet/dec/tulip/de2104x.c?id=1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n1940
-> https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/net/ethernet/dec/tulip/de2104x.c#L1940
-> 
-> How do you think about to improve it?
+Western Associate Bank
+Bank Address:Tower Building 83 Hull Road
+Oxwich Brussels Belgium
 
-If i have not missed a place, the only user is de_get_eeprom(), which checks
-whether de->ee_data is valid. So i think although not obvious, there's no
-problem here.
+Dear Friend
 
-Regards
-Sven
+Please accept my apologies if this request does not meet your personal ethics as it is not intended to cause you any embarrassment in what ever form. I got your
+contact email address from the internet directory and decided to contact you for this transaction that is based on trust and your outstanding. I have an interesting business proposal for you that will be of immense benefit to both of us. Although this may be hard for you to believe because i know that there is absolutely going to be a great doubt and distrust in your heart in respect of this email as this might sound strange to you and coupled with the fact that, so many individuals have taken possession of the Internet to facilitate their nefarious deeds, thereby making it extremely difficult for genuine and legitimate persons to get attention and recognition. Please grant me the benefit of doubt and hear me out.
+
+My name is Henk Boelens . I work with Western Associate Bank here in Belgium as a branch bank manager. I discovered an abandoned sum of GBP 19,850,000.00 (Nineteen Million Eight Hundred And Fifty Thousand British Pounds) in an account that belongs to one of our foreign customers Late Dr. Erin Jacobson, an American citizen who unfortunately lost his life and his entire family in Montana plane crash on March 23, 2009, on their way to a group ski vacation. The choice of contacting you is aroused from the geographical nature of where you live, particularly due to the sensitivity of this transaction and the confidentiality herein. Now our bank has been waiting for any of the relatives to come up for the claim but nobody has done that. I personally tried to locate any member of his family but have been unsuccessful in locating the relatives for 7 years now, i have also checked the deposit documents and discovered that he did not declare any next of kin on the deposit.
+
+Now the Management of our bank as instructed me to look for the next of kin or they will convert the funds into the Government Treasury Account as unclaimed funds and the funds will be wasted. Therefore, I cannot claim these funds without presenting a foreigner to stand as next of kin. This is reason why I contacted you to seek your consent to present you as an next of kin so that the funds will be release to you, then we share it 55% for me and 45% for you because am not a
+greedy person and is deal between me and you.
+
+I have employed the service of an Attorney who will secure all necessary legal documents that could be used to back up this claim. All the attorney need to do is to fill in your names to the documents and legalize it in the Court here to prove you as the legitimate next of kin to the late depositor Dr. Erin Jacobson then the bank will release the funds to you as the rightful beneficiary.
+
+This is a fair deal without any risk attached either on your part or on my part as long as we comply with the laws governing the claiming of funds in our establishment. All I require is your honest co-operation to enable us see this deal through, and with my position in the bank as a bank manager, I will do every thing possible to protect your interest and to make sure everything workout successfully.
+
+If you are interested in this deal, kindly send me your complete information, your full names and address, Your Private telephone and Fax numbers, and Cell phone so that the attorney will start processing the necessary paperwork that would facilitate the release of the funds to you.
+
+Mr. Henk Boelens
