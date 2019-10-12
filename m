@@ -2,65 +2,195 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C793D4852
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2019 21:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF842D4C9A
+	for <lists+linux-parisc@lfdr.de>; Sat, 12 Oct 2019 06:08:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728799AbfJKTRt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 11 Oct 2019 15:17:49 -0400
-Received: from mail-yw1-f42.google.com ([209.85.161.42]:40317 "EHLO
-        mail-yw1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728776AbfJKTRt (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 11 Oct 2019 15:17:49 -0400
-Received: by mail-yw1-f42.google.com with SMTP id e205so3864237ywc.7
-        for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2019 12:17:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=2blXQH4xpdxyI97yuUuQWy5lbIFQN+mGnSf3CJ9yl+c=;
-        b=mz80xrkzkqqu9byRpPTgmFLVZmJZJlWcarfAbgqLNd157+Z3y3bmts5ou4+FmHS9sf
-         xv6n7NAZCbH8S26QTWhmJf17VO8x4zCVSs+MPkvQnrvR/9GjamwTE+jE9RQ4GWM8ynho
-         1F/MtiYm7of1Y4/b7yvfoPedUVcMn8MIPRFBzOZREUrAydkzJIv6lR7PHY5agNQdRhmx
-         UtokylgUymvpAJJQglFYKf5lEFBsZX/ye7gffwvsRLTtz8o73+3V3bC0l+HGzoXEn9kU
-         xJN9nJHrMxETW5aLy/4vkc82QXN73kXOB7/SeIcHcA1fWOScluU1vD4BEuepw0Um6wYP
-         IFtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=2blXQH4xpdxyI97yuUuQWy5lbIFQN+mGnSf3CJ9yl+c=;
-        b=OhCuOeNnabWhWNnbqxcestw8/YCzSTeDR4aH8nj6RWIY83XDIoLHqrz6nFSx9tv59j
-         awzyfWs3BTwOa8ISR6tOroBpQORdlVEPUY67IB1OrOnOBXLcTeHjQY9BsM0y8bULKWNM
-         DYFzDP1L5ClTGyziXra27tno5RQFd3XohnxmFqo9n4YY+amyZd+f3rPI1YljYeI4NVpa
-         9OpsKuZwl1c49TOS7qAXobEmX69CsYOuLJ2XJ9hJK+L0k1uLFIjw7bo5LEOy7yD9CwsM
-         EeYGNxvQnQaLlVhN6hNLOPz2m4HnL0S32huEAreg26Zt4mboGZA0a59NcX+SdrJqqFsF
-         /psA==
-X-Gm-Message-State: APjAAAWZP5t1Yi0CFJ/A1P38g6bbEce4RYM9Svb8T1LDtu5mQ2v79BLj
-        ekfqLcseX8UKThMPFRDuJeLmGRONYYX3EnPjF8qiDEFs
-X-Google-Smtp-Source: APXvYqxD0w6WerN4ME1s6y7+XvO0XwIr6g18kQpOsD5WhlsaWk72YAAtftio+aay+AG19X24P19BqG2ceYmYR2FxyjQ=
-X-Received: by 2002:a81:1a85:: with SMTP id a127mr3846084ywa.53.1570821468206;
- Fri, 11 Oct 2019 12:17:48 -0700 (PDT)
+        id S1727891AbfJLEIz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 12 Oct 2019 00:08:55 -0400
+Received: from mx2a.mailbox.org ([80.241.60.219]:42745 "EHLO mx2a.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727440AbfJLEIy (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 12 Oct 2019 00:08:54 -0400
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mx2a.mailbox.org (Postfix) with ESMTPS id 0485AA1104;
+        Sat, 12 Oct 2019 06:08:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
+        with ESMTP id WQcjjXFgeVVi; Sat, 12 Oct 2019 06:08:40 +0200 (CEST)
+Date:   Sat, 12 Oct 2019 15:08:15 +1100
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Christian Brauner <christian@brauner.io>,
+        Aleksa Sarai <asarai@suse.de>,
+        Linux Containers <containers@lists.linux-foundation.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        GNU C Library <libc-alpha@sourceware.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path
+ resolution
+Message-ID: <20191012040815.gnc43cfmo5mnv67u@yavin.dot.cyphar.com>
+References: <20191010054140.8483-1-cyphar@cyphar.com>
+ <20191010054140.8483-3-cyphar@cyphar.com>
+ <CAHk-=wh8L50f31vW8BwRUXhLiq3eoCQ3tg8ER4Yp2dzuU1w5rQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20190909133856.GA32746@ls3530.fritz.box> <20190930082026.6ac087ff@wim.jer>
- <66fcabcb-ba00-b6c4-7d46-c1fdd9b05283@gmx.de>
-In-Reply-To: <66fcabcb-ba00-b6c4-7d46-c1fdd9b05283@gmx.de>
-From:   Carlo Pisani <carlojpisani@gmail.com>
-Date:   Fri, 11 Oct 2019 21:17:36 +0200
-Message-ID: <CA+QBN9CPyOyZC5aeJS+X5CG0wdHvn0Mc4G7j9AXxbYBw=W-52w@mail.gmail.com>
-Subject: pATA Promise Technologies PDC20265 (datasheet)
-To:     linux-parisc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="t2fxesclfr677pzw"
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wh8L50f31vW8BwRUXhLiq3eoCQ3tg8ER4Yp2dzuU1w5rQ@mail.gmail.com>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-hi
-perhaps a bit OT, but I really don't know where to ask.
-I googled a lot these days, but couldn't find a datasheet about the
-Promise Technologies PDC20265 chip.
 
-does anyone happen to have a copy of it?
+--t2fxesclfr677pzw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-thanks
-=)
+On 2019-10-10, Linus Torvalds <torvalds@linux-foundation.org> wrote:
+> On Wed, Oct 9, 2019 at 10:42 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
+> >
+> > --- a/fs/namei.c
+> > +++ b/fs/namei.c
+> > @@ -2277,6 +2277,11 @@ static const char *path_init(struct nameidata *n=
+d, unsigned flags)
+> >
+> >         nd->m_seq =3D read_seqbegin(&mount_lock);
+> >
+> > +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-to-di=
+rfd. */
+> > +       if (flags & LOOKUP_IN_ROOT)
+> > +               while (*s =3D=3D '/')
+> > +                       s++;
+> > +
+> >         /* Figure out the starting path and root (if needed). */
+> >         if (*s =3D=3D '/') {
+> >                 error =3D nd_jump_root(nd);
+>=20
+> Hmm. Wouldn't this make more sense all inside the if (*s =3D- '/') test?
+> That way if would be where we check for "should we start at the root",
+> which seems to make more sense conceptually.
+
+I don't really agree (though I do think that both options are pretty
+ugly). Doing it before the block makes it clear that absolute paths are
+just treated relative-to-dirfd -- doing it inside the block makes it
+look more like "/" is a special-case for nd_jump_root(). And while that
+is somewhat true, this is just a side-effect of making the code more
+clean -- my earlier versions reworked the dirfd handling to always grab
+nd->root first if LOOKUP_IS_SCOPED. I switched to this method based on
+Al's review.
+
+In fairness, I do agree that the lonely while loop looks ugly.
+
+> That test for '/' currently has a "} else if (..)", but that's
+> pointless since it ends with a "return" anyway. So the "else" logic is
+> just noise.
+
+This depends on the fact that LOOKUP_BENEATH always triggers -EXDEV for
+nd_jump_root() -- if we ever add another "scoped lookup" flag then the
+logic will have to be further reworked.
+
+(It should be noted that the new version doesn't always end with a
+"return", but you could change it to act that way given the above
+assumption.)
+
+> And if you get rid of the unnecessary else, moving the LOOKUP_IN_ROOT
+> inside the if-statement works fine.
+>=20
+> So this could be something like
+>=20
+>     --- a/fs/namei.c
+>     +++ b/fs/namei.c
+>     @@ -2194,11 +2196,19 @@ static const char *path_init(struct
+> nameidata *nd, unsigned flags)
+>=20
+>         nd->m_seq =3D read_seqbegin(&mount_lock);
+>         if (*s =3D=3D '/') {
+>     -           set_root(nd);
+>     -           if (likely(!nd_jump_root(nd)))
+>     -                   return s;
+>     -           return ERR_PTR(-ECHILD);
+>     -   } else if (nd->dfd =3D=3D AT_FDCWD) {
+>     +           /* LOOKUP_IN_ROOT treats absolute paths as being
+> relative-to-dirfd. */
+>     +           if (!(flags & LOOKUP_IN_ROOT)) {
+>     +                   set_root(nd);
+>     +                   if (likely(!nd_jump_root(nd)))
+>     +                           return s;
+>     +                   return ERR_PTR(-ECHILD);
+>     +           }
+>     +
+>     +           /* Skip initial '/' for LOOKUP_IN_ROOT */
+>     +           do { s++; } while (*s =3D=3D '/');
+>     +   }
+>     +
+>     +   if (nd->dfd =3D=3D AT_FDCWD) {
+>                 if (flags & LOOKUP_RCU) {
+>                         struct fs_struct *fs =3D current->fs;
+>                         unsigned seq;
+>=20
+> instead. The patch ends up slightly bigger (due to the re-indentation)
+> but now it handles all the "start at root" in the same place. Doesn't
+> that make sense?
+
+It is correct (though I'd need to clean it up a bit to handle
+nd_jump_root() correctly), and if you really would like me to change it
+I will -- but I just don't agree that it's cleaner.
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--t2fxesclfr677pzw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXaFRqQAKCRCdlLljIbnQ
+El00AQDKyu1GNvL91tAxvDZP/2rrqVrUf7Ad1T8uobD+aKQbgwEAvz9eeuLveRVq
+aqnd3Ifu8HO4SYcqYn+hDFgDz5D5Kwo=
+=XXCi
+-----END PGP SIGNATURE-----
+
+--t2fxesclfr677pzw--
