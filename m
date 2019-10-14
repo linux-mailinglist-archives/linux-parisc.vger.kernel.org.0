@@ -2,61 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD803D53F6
-	for <lists+linux-parisc@lfdr.de>; Sun, 13 Oct 2019 05:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B26E5D5C8E
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Oct 2019 09:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728198AbfJMDLe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 12 Oct 2019 23:11:34 -0400
-Received: from [206.81.8.171] ([206.81.8.171]:33076 "EHLO varon.localdomain"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727184AbfJMDLe (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 12 Oct 2019 23:11:34 -0400
-Received: from 127.0.0.1 (varon [127.0.0.1])
-        by varon.localdomain (Postfix) with SMTP id 4D75B55D63A;
-        Fri, 11 Oct 2019 10:21:17 +0000 (UTC)
-Received: from [28.133.97.201] by 127.0.0.1 with ESMTP id 87416658 for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2019 12:18:18 +0200
-Message-ID: <x88-n7-w-gky86-0$2@f47sl.w57>
-From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-To:     linux-parisc@vger.kernel.org
-Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA ??
-Date:   Fri, 11 Oct 19 12:18:18 GMT
-X-Mailer: Microsoft Outlook, Build 10.0.2616
+        id S1726452AbfJNHlS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 14 Oct 2019 03:41:18 -0400
+Received: from mail-yw1-f68.google.com ([209.85.161.68]:45479 "EHLO
+        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725934AbfJNHlS (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 14 Oct 2019 03:41:18 -0400
+Received: by mail-yw1-f68.google.com with SMTP id x65so5791654ywf.12;
+        Mon, 14 Oct 2019 00:41:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=sEN7o3yuO56xvPDuUwKgUiAGNAgWvdh9IYFyMwir9eg=;
+        b=ULg0x+kVwo2eT+iIl7xEqgOGbAzw68nEs+Tf1EX6WbkwD6JZiL1PJq9RZFvkDJEthU
+         ocfdC+Pu3HU8yKboyYft824CwBNxjIEzx8zyCCvt9khKX2P3rnlv1B/RrEDuwgE/1mG/
+         dO9bqvuIwHg7kYFJ6cR8Rxh98z5xxnACgBkXR6UU0aSIjsvAx7CLSTrvS1W1Yc6B2hbM
+         xVKkvAsHm4h5LvwOcL7O3xZNwPSbX/1EH8Ha7BFbRmH59L7FLoc17rAHr/p/fi2/0aQd
+         XhR8EuPvAa5rR0cGHGbuZEBAsY6jzipW6b/VsB7pAItTeOGbyHWLGnGRGwAir0skqH6K
+         QqgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sEN7o3yuO56xvPDuUwKgUiAGNAgWvdh9IYFyMwir9eg=;
+        b=DXvyBS28aRlaI4Nm2zm9PDsokcJzfyPcLEHlYJsVU0j0RHrmAa9qEDD5zxVlK28ji4
+         ml1ztiNxDpla9MB/4Fi6/e67HLH03pYAZoxK24oqgyeM2ZEFSDP9bjQEkz+e2oKC6ADc
+         H1F0xnYUr1xJg21vou4jZXSwuji2q3qZYxLxyqlQ+QvbZZPNmIGO3V4zQbNXCPNHIEp6
+         5Ppbyox73jtqN1nu7Y5TwwH5bE0LXwUlymUgLQm08nUaahNkm+cmln4m1l6f8zusPJnG
+         rcYMWa5pswj0kfIpeeAh6h8c4ymQr0kO4s/VjnbbjHsnrNGtONPuSscQJEv3P3MeVx0T
+         eb9g==
+X-Gm-Message-State: APjAAAXWByfGe4yxcOb2m9/B6/Skxx0BU/08NY6/RscdEt2lLW451RjK
+        F+wNl0HAM+zeC8huxgzgneyV7yaAcPAcYwgMqSU=
+X-Google-Smtp-Source: APXvYqw4VB+FAxVRs0lcX+ZIr7P8ykk483BJkOe9a1ta9sipUpx8Dmb1cwz7VKpxf94e6Vopzx6wAvxttFQCwsQ1L0I=
+X-Received: by 2002:a81:254d:: with SMTP id l74mr12130385ywl.409.1571038877410;
+ Mon, 14 Oct 2019 00:41:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="C.F387.BA..3D"
-X-Priority: 3
-X-MSMail-Priority: Normal
+References: <20191011000609.29728-1-keescook@chromium.org> <20191011000609.29728-26-keescook@chromium.org>
+In-Reply-To: <20191011000609.29728-26-keescook@chromium.org>
+From:   Max Filippov <jcmvbkbc@gmail.com>
+Date:   Mon, 14 Oct 2019 00:41:06 -0700
+Message-ID: <CAMo8BfKexMmMusB3XOeaMOZHdU4ccz+PMGA=Jy+KQhgD8H_8UQ@mail.gmail.com>
+Subject: Re: [PATCH v2 25/29] xtensa: Move EXCEPTION_TABLE to RO_DATA segment
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Will Deacon <will@kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org,
+        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
+        "open list:IA64 (Itanium) PL..." <linux-ia64@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linux-c6x-dev@linux-c6x.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>,
+        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>,
+        "maintainer:X86 ARCHITECTURE..." <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Thu, Oct 10, 2019 at 5:16 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> Since the EXCEPTION_TABLE is read-only, collapse it into RO_DATA.
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/xtensa/kernel/vmlinux.lds.S | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
---C.F387.BA..3D
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+Acked-by: Max Filippov <jcmvbkbc@gmail.com>
 
-Greetings
-
-My name is Barrister Hans Erich.
-
-I have a client who is interested to invest in your country, she is a well=
- known politician in her country and deserve a lucrative investment partne=
-rship with you outside her country without any delay   Please can you mana=
-ge such investment please Kindly reply for further details.
-
-Your full nameS -----------
-
-
-Your urgent response will be appreciated
-
-Thank you and God bless you.
-
-Barrister Hans Erich
-
-Yours sincerely,
-Barrister Hans Erich
-
---C.F387.BA..3D--
-
+-- 
+Thanks.
+-- Max
