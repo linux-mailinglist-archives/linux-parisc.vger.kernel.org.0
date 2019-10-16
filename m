@@ -2,105 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CC01D8AF0
-	for <lists+linux-parisc@lfdr.de>; Wed, 16 Oct 2019 10:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02913D9048
+	for <lists+linux-parisc@lfdr.de>; Wed, 16 Oct 2019 14:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391631AbfJPI2o (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 16 Oct 2019 04:28:44 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:21670 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2391642AbfJPI2o (ORCPT
+        id S2387873AbfJPMCa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 16 Oct 2019 08:02:30 -0400
+Received: from mail-yb1-f171.google.com ([209.85.219.171]:46893 "EHLO
+        mail-yb1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726372AbfJPMCa (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 16 Oct 2019 04:28:44 -0400
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9G8RfV3035679
-        for <linux-parisc@vger.kernel.org>; Wed, 16 Oct 2019 04:28:43 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2vnxjhtmv3-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-parisc@vger.kernel.org>; Wed, 16 Oct 2019 04:28:42 -0400
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-parisc@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
-        Wed, 16 Oct 2019 09:28:40 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 16 Oct 2019 09:28:33 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9G8SWqN19661040
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 16 Oct 2019 08:28:33 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C7E88A4057;
-        Wed, 16 Oct 2019 08:28:32 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1C7A3A4040;
-        Wed, 16 Oct 2019 08:28:32 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.85])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Wed, 16 Oct 2019 08:28:32 +0000 (GMT)
-Date:   Wed, 16 Oct 2019 10:28:30 +0200
-From:   Heiko Carstens <heiko.carstens@de.ibm.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-c6x-dev@linux-c6x.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 00/29] vmlinux.lds.h: Refactor EXCEPTION_TABLE and
- NOTES
-References: <20191011000609.29728-1-keescook@chromium.org>
+        Wed, 16 Oct 2019 08:02:30 -0400
+Received: by mail-yb1-f171.google.com with SMTP id h202so7686337ybg.13;
+        Wed, 16 Oct 2019 05:02:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EOhSKFRNbWN9yAKzmfHZhTX3n/eFbcTEsWwMp45CFAs=;
+        b=TyIjvHv1QNRUaN9ssWTSYEbK8f71Pqr3Kvr83aPOr/hw6LT/GfgSrLD2+591ntEA1+
+         8GsDrCPs48egEjJ4IwvVxdlmj1RVflJKN7/0COHg+ZFp+px7zTN1JjUgLn2Gqzs+PEkL
+         4lOaIXR+OIh2v9fVniopcIyvdHCIr9Qk9Uy9YIYX4SL5XE0Sd/No7WHReeCMLC+lxowG
+         fuXrJt0dRRzsPu9JOhTEg6lzRY7Vto2uGYpwzF2hivVskp4GrooW/vWjJDTTfjpJOIu7
+         /yWF944aOvp8Kn/h8XCmrR8Auc10Yu7QcN1/LIqWasRL4906nTIQ9LfJ9hQJol8YidHP
+         w9xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EOhSKFRNbWN9yAKzmfHZhTX3n/eFbcTEsWwMp45CFAs=;
+        b=moLOURSrbXjuvb3AAdXAtTIykj5nrpwAIq8alUzptr9inmYkveW3QLOLunjgT/zNDq
+         B+26YbM6RrH9XY4hiWergf7r5kKOkP69/TXm1ramwqDJuZ2HFE5CPAQX8IvfHgcX+th8
+         R/U9cJhvJBb+4P6RLbqfdF/Pb9stCyEJdOwyQFwSSAsySo+dsyzuULy0sABYLc7AZon3
+         1g6yeQEi+nX0CxgtZgnyQwlUFWCXI9GqIg3xI5vYeBmtmkqnWrfyhOhj22reRLC/XiaQ
+         Y7qSh4CEWWFg1U3zF/NUxuRstBcFXgmuVzP/vVV+30cn7YQubJ1lyDYNE277refe9w6M
+         Hqwg==
+X-Gm-Message-State: APjAAAWRbwJDnHL2Dqe2f/lwzeUobv6wkIac8tVFHtPkFldYvFuC2ITW
+        ndrN/v8JnNc/eaEmk6snxAhKEIPDX0piZDUau9c=
+X-Google-Smtp-Source: APXvYqyKwoSy9uDdUFDL7IGWquqEML0FnzeC6V6viQRoFG5+7DuKUjwaS7f9Rs5Uelml6CR6n79ZYlIgLQA9f2e/vGc=
+X-Received: by 2002:a25:cdca:: with SMTP id d193mr27663420ybf.60.1571227349079;
+ Wed, 16 Oct 2019 05:02:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191011000609.29728-1-keescook@chromium.org>
-X-TM-AS-GCONF: 00
-x-cbid: 19101608-0016-0000-0000-000002B87DFE
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101608-0017-0000-0000-000033199F8D
-Message-Id: <20191016082830.GC4267@osiris>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-16_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=960 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910160075
+References: <20191015123830.GA1797@ls3530.fritz.box> <157115910290.6841.17729342283243489680.pr-tracker-bot@kernel.org>
+In-Reply-To: <157115910290.6841.17729342283243489680.pr-tracker-bot@kernel.org>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Wed, 16 Oct 2019 14:02:17 +0200
+Message-ID: <CA+QBN9D+hg3PkJG9Wb99TqK7AHb-tVEo3R7Um0zuegqc_YTqrA@mail.gmail.com>
+Subject: working PCI SATA cards
+To:     pr-tracker-bot@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 10, 2019 at 05:05:40PM -0700, Kees Cook wrote:
-> Arch maintainers: please send Acks (if you haven't already) for your
-> respective linker script changes; the intention is for this series to
-> land via -tip.
-> 
-> v1: https://lore.kernel.org/lkml/20190926175602.33098-1-keescook@chromium.org
-> v2: clean up commit messages, rename RO_EXCEPTION_TABLE (bp)
-> 
-> 
-> This series works to move the linker sections for NOTES and
-> EXCEPTION_TABLE into the RO_DATA area, where they belong on most
-> (all?) architectures. The problem being addressed was the discovery
-> by Rick Edgecombe that the exception table was accidentally marked
-> executable while he was developing his execute-only-memory series. When
-> permissions were flipped from readable-and-executable to only-executable,
-> the exception table became unreadable, causing things to explode rather
-> badly. :)
+hi
+after weeks of testing activities, I confirm the following SATA cards
+do work with C3600 workstation running Linux >= 5.1
 
-Feel free to add
-Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
-to every patch in this series which touches s390.
-
+- HighPoint RocketRAID 2224
+- Highpoint RocketRAID 1640
+- SYBA-SY-PCX40009
+- Adaptec 1210SA
