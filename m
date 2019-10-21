@@ -2,135 +2,120 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3FEBDBE5A
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Oct 2019 09:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C166DE5A4
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Oct 2019 09:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504618AbfJRHbJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 18 Oct 2019 03:31:09 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:36638 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394031AbfJRHbI (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 18 Oct 2019 03:31:08 -0400
-Received: by mail-ot1-f66.google.com with SMTP id 67so4178483oto.3;
-        Fri, 18 Oct 2019 00:31:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1vcvhB5CLF/+MeUyHDDl7fZL+tAXhkabxwY8RzqlUc4=;
-        b=K7Yt9YoviXa1EKl7IKMUxzV7fJKccYRkl/f/zlrsDAxPX7Y9NmcboBMaiUIBkisj6s
-         K/0rvmrdS4ruOkQk5Hdy5r6QgqM1ptvNEsMgEXyzH8j6K0hnmphrD4eoFVYR+YrhhTji
-         sv+lhgqy6QZRgZD9UXmKb0NmFnA2KEJsRyI8XTEnOKaVxHXC04Fd1wRItkbgJivTsSzv
-         WEjfcgaPLmReo38CmBMZ/lqF/gNrP8OH1ATnQNrGFeXk1zTfNbGS0Z139E6RYM4lQPHa
-         YGrHDrKdq3kF/mSl878GMtb0SEYzxy5WW3bYfpCTb0nm0HnvYBXtXxIRewJLiRbL9mf0
-         r1zg==
-X-Gm-Message-State: APjAAAUdHG9sRGDmTM/26149dvkFYcNaNyzvjXWe3Xz+3DsVdopC+4VX
-        Fd9KC55bUts+HuDpW7qo55LwNuOur/drHhczNuw=
-X-Google-Smtp-Source: APXvYqz5ZTzm2szPG0oqRjP0bYm68wI5cC2zWPx8OuV5blCVSPhZgU0siPaT+bnCFclqt0wG9CC25EAYDHrDP1i11C0=
-X-Received: by 2002:a9d:70d0:: with SMTP id w16mr6117171otj.107.1571383865678;
- Fri, 18 Oct 2019 00:31:05 -0700 (PDT)
+        id S1727614AbfJUH6n (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 21 Oct 2019 03:58:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47006 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727239AbfJUH6n (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 21 Oct 2019 03:58:43 -0400
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 77CC5218AC;
+        Mon, 21 Oct 2019 07:58:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571644721;
+        bh=HaNxatOx3Yl+LjuXNZSg9j6rwSnjKUPc8eLVmd61SU0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=luHraHozlqKNUHwEUrw+p/CKnNkzg4GhLnRI3IQVw1ZUnmvt4Cwl7ABV+5EzHS34g
+         CqVlZgKrjSy7nsjEnaLPBzt8i8/jWykyodKl+iP31wL1BC0A++0dn8emaiIgMxVUqa
+         6AeBtKgvcbANkPSenLQVsuD5VltHn5JOl0JQoRvI=
+Received: by mail-wr1-f50.google.com with SMTP id e11so3977103wrv.4;
+        Mon, 21 Oct 2019 00:58:41 -0700 (PDT)
+X-Gm-Message-State: APjAAAV4W1flYsylqq7vFVqeS8VJ1GRc94UTgTHPcKHekPMu1UneTyX2
+        fiut8z6q/ojUxrW+GLZU26l8jt0rhpc0sk23yzg=
+X-Google-Smtp-Source: APXvYqzvF6HJCASpTMUMf7HweDv3Hno9oEAxiqhI3GBGEOPTWQrWQiETxVnKLeVHbQ3ma/xucSMvECIDZp2EBxJkKe8=
+X-Received: by 2002:adf:ebcb:: with SMTP id v11mr17344477wrn.24.1571644719802;
+ Mon, 21 Oct 2019 00:58:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191017174554.29840-1-hch@lst.de> <20191017174554.29840-14-hch@lst.de>
-In-Reply-To: <20191017174554.29840-14-hch@lst.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 18 Oct 2019 09:30:54 +0200
-Message-ID: <CAMuHMdWaQ15j7fQ9-8XKgrSwgf96nT=yY+FCPWPxoPC9LGqvbQ@mail.gmail.com>
-Subject: Re: [PATCH 13/21] m68k: rename __iounmap and mark it static
+References: <20191017174554.29840-1-hch@lst.de> <20191017174554.29840-21-hch@lst.de>
+In-Reply-To: <20191017174554.29840-21-hch@lst.de>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Mon, 21 Oct 2019 15:58:28 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQ_VeBfi1uaafgtp+uA2skq-w2px12ig=5QD1O9J+PgbA@mail.gmail.com>
+Message-ID: <CAJF2gTQ_VeBfi1uaafgtp+uA2skq-w2px12ig=5QD1O9J+PgbA@mail.gmail.com>
+Subject: Re: [PATCH 20/21] csky: remove ioremap_cache
 To:     Christoph Hellwig <hch@lst.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
+Cc:     Arnd Bergmann <arnd@arndb.de>, Michal Simek <monstr@monstr.eu>,
         Greentime Hu <green.hu@gmail.com>,
         Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, linux-mips@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Openrisc <openrisc@lists.librecores.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        nios2-dev@lists.rocketboards.org, linux-riscv@lists.infradead.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Christoph,
+Acked-by: Guo Ren <guoren@kernel.org>
 
-On Thu, Oct 17, 2019 at 7:53 PM Christoph Hellwig <hch@lst.de> wrote:
-> m68k uses __iounmap as the name for an internal helper that is only
-> used for some CPU types.  Mark it static and give it a better name.
+On Fri, Oct 18, 2019 at 1:47 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> No driver that can be used on csky uses ioremap_cache, and this
+> interface has been deprecated in favor of memremap.
 >
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Thanks for your patch!
-
-> --- a/arch/m68k/mm/kmap.c
-> +++ b/arch/m68k/mm/kmap.c
-> @@ -52,6 +52,7 @@ static inline void free_io_area(void *addr)
+> ---
+>  arch/csky/include/asm/io.h | 2 --
+>  arch/csky/mm/ioremap.c     | 7 -------
+>  2 files changed, 9 deletions(-)
 >
->  #define IO_SIZE                (256*1024)
->
-> +static void __free_io_area(void *addr, unsigned long size);
->  static struct vm_struct *iolist;
->
->  static struct vm_struct *get_io_area(unsigned long size)
-> @@ -90,7 +91,7 @@ static inline void free_io_area(void *addr)
->                 if (tmp->addr == addr) {
->                         *p = tmp->next;
->                         /* remove gap added in get_io_area() */
-> -                       __iounmap(tmp->addr, tmp->size - IO_SIZE);
-> +                       __free_io_area(tmp->addr, tmp->size - IO_SIZE);
->                         kfree(tmp);
->                         return;
->                 }
-> @@ -249,12 +250,13 @@ void iounmap(void __iomem *addr)
->  }
->  EXPORT_SYMBOL(iounmap);
->
-> +#ifndef CPU_M68040_OR_M68060_ONLY
-
-Can you please move this block up, instead of adding more #ifdef cluttery?
-That would also remove the need for a forward declaration.
-
+> diff --git a/arch/csky/include/asm/io.h b/arch/csky/include/asm/io.h
+> index a4b9fb616faa..f572605d5ad5 100644
+> --- a/arch/csky/include/asm/io.h
+> +++ b/arch/csky/include/asm/io.h
+> @@ -36,13 +36,11 @@
 >  /*
-> - * __iounmap unmaps nearly everything, so be careful
-> + * __free_io_area unmaps nearly everything, so be careful
->   * Currently it doesn't free pointer/page tables anymore but this
->   * wasn't used anyway and might be added later.
+>   * I/O memory mapping functions.
 >   */
-> -void __iounmap(void *addr, unsigned long size)
-> +static void __free_io_area(void *addr, unsigned long size)
->  {
->         unsigned long virtaddr = (unsigned long)addr;
->         pgd_t *pgd_dir;
-> @@ -297,6 +299,7 @@ void __iounmap(void *addr, unsigned long size)
+> -extern void __iomem *ioremap_cache(phys_addr_t addr, size_t size);
+>  extern void __iomem *__ioremap(phys_addr_t addr, size_t size, pgprot_t prot);
+>  extern void iounmap(void *addr);
 >
->         flush_tlb_all();
+>  #define ioremap(addr, size)            __ioremap((addr), (size), pgprot_noncached(PAGE_KERNEL))
+>  #define ioremap_wc(addr, size)         __ioremap((addr), (size), pgprot_writecombine(PAGE_KERNEL))
+> -#define ioremap_cache                  ioremap_cache
+>
+>  #include <asm-generic/io.h>
+>
+> diff --git a/arch/csky/mm/ioremap.c b/arch/csky/mm/ioremap.c
+> index e13cd3497628..ae78256a56fd 100644
+> --- a/arch/csky/mm/ioremap.c
+> +++ b/arch/csky/mm/ioremap.c
+> @@ -44,13 +44,6 @@ void __iomem *__ioremap(phys_addr_t phys_addr, size_t size, pgprot_t prot)
 >  }
-> +#endif /* CPU_M68040_OR_M68060_ONLY */
+>  EXPORT_SYMBOL(__ioremap);
 >
->  /*
->   * Set new cache mode for some kernel address space.
+> -void __iomem *ioremap_cache(phys_addr_t phys_addr, size_t size)
+> -{
+> -       return __ioremap_caller(phys_addr, size, PAGE_KERNEL,
+> -                               __builtin_return_address(0));
+> -}
+> -EXPORT_SYMBOL(ioremap_cache);
+> -
+>  void iounmap(void __iomem *addr)
+>  {
+>         vunmap((void *)((unsigned long)addr & PAGE_MASK));
+> --
+> 2.20.1
+>
 
-Gr{oetje,eeting}s,
-
-                        Geert
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Best Regards
+ Guo Ren
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+ML: https://lore.kernel.org/linux-csky/
