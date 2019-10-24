@@ -2,94 +2,172 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA246E2DE5
-	for <lists+linux-parisc@lfdr.de>; Thu, 24 Oct 2019 11:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 266E5E31B9
+	for <lists+linux-parisc@lfdr.de>; Thu, 24 Oct 2019 14:02:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390961AbfJXJvH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 24 Oct 2019 05:51:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58756 "EHLO mail.kernel.org"
+        id S1726352AbfJXMCa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 24 Oct 2019 08:02:30 -0400
+Received: from mout.gmx.net ([212.227.15.19]:42985 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725775AbfJXJvH (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 24 Oct 2019 05:51:07 -0400
-Received: from rapoport-lnx (nesher1.haifa.il.ibm.com [195.110.40.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A218C20856;
-        Thu, 24 Oct 2019 09:50:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571910666;
-        bh=/+Ql7TLHSuqRBTRatle/8UuavLp8M4wg90FkQYvX1ZA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fHWraPApPelpUnhz80IdJ6qZ3Jw5R++RrLd4l7PfuOCafzao2ErCM/1ApQ91lUK7E
-         0uYS2e9f/H3CF0FLyqr+11wZLk0ellanlE4rDMkvpBd62/g9WmtWFtWw6GDYvxb0sb
-         DxnPSUgn8n7OenmDPbNDDb0vZF9lfVpAL0VLc18U=
-Date:   Thu, 24 Oct 2019 12:50:54 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Peter Rosin <peda@axentia.se>
-Cc:     "James.Bottomley@HansenPartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        "Vineet.Gupta1@synopsys.com" <Vineet.Gupta1@synopsys.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "anton.ivanov@cambridgegreys.com" <anton.ivanov@cambridgegreys.com>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "deanbo422@gmail.com" <deanbo422@gmail.com>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "geert@linux-m68k.org" <geert@linux-m68k.org>,
-        "gerg@linux-m68k.org" <gerg@linux-m68k.org>,
-        "green.hu@gmail.com" <green.hu@gmail.com>,
-        "jdike@addtoit.com" <jdike@addtoit.com>,
-        "kirill@shutemov.name" <kirill@shutemov.name>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-c6x-dev@linux-c6x.org" <linux-c6x-dev@linux-c6x.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
-        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "mattst88@gmail.com" <mattst88@gmail.com>,
-        "monstr@monstr.eu" <monstr@monstr.eu>,
-        "msalter@redhat.com" <msalter@redhat.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
-        "sammy@sammy.net" <sammy@sammy.net>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>
+        id S1726167AbfJXMCa (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 24 Oct 2019 08:02:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1571918532;
+        bh=BtPN5byu76jvQFbrBcOcxvBymOTJxo5DdTxvJCjqupU=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=arp4N/FbyrbbrWU2bD10SeR2AHU/OtThpy/vmPEoLp4mB3hmt6/tLqAjj9MLN4FME
+         ZJg28B8TRDhkXFzuy/9wvgf33CaVYEmHYHbzyvCrkb0i3EIteFJYqzfToSFaYMCCKN
+         kAFJV20xpM53FPOnRslQhkGZSALUVtoyN+494HMw=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.166.174]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MPGRz-1idtks3oVh-00PdKv; Thu, 24
+ Oct 2019 14:02:11 +0200
+Date:   Thu, 24 Oct 2019 14:02:08 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Mike Rapoport <rppt@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Mike Rapoport <rppt@linux.ibm.com>
 Subject: Re: [PATCH 08/12] parisc: use pgtable-nopXd instead of 4level-fixup
-Message-ID: <20191024095053.GC12281@rapoport-lnx>
-References: <1571822941-29776-9-git-send-email-rppt@kernel.org>
- <20191024093451.15161-1-peda@axentia.se>
+Message-ID: <20191024120208.GA17545@ls3530.fritz.box>
+References: <1571822941-29776-1-git-send-email-rppt@kernel.org>
+ <1571822941-29776-9-git-send-email-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191024093451.15161-1-peda@axentia.se>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <1571822941-29776-9-git-send-email-rppt@kernel.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Provags-ID: V03:K1:r1gv/v0lqEe+bOB9wfxWZhIMST35qEY+LNwPO498vtsnue1RXl2
+ lWQDLVWd80Z6a4Lj04aLo5FkmTg3OVUbn4v8jLwYceC1cgAZYOhiEAmkfk0R2eWIIxUv9gA
+ cbubaamfTzFraEZ3mzmS2EFn24YRuV495qnagXRfvZoqh4K9b3N6jXYf5O3VWfod+/MTcmQ
+ CN76kMYrHU87gXf/G1QHw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:iFOcPc+fCqA=:5hjzE9MtPU6n/6E7zSmXXU
+ vJmjNuJ/0EYDqaUyH3HGtsNlpH2mXkPbwvmlQ/LFEeqrTQSy2gH7lTHRbwLirGOvXSU6IpWfR
+ GcgI/eUOsdbtk2G2xIwPCY2SxPcFVIh1HNmpxqzBAPug89a0mNEsepSDEM7GFKhfdGtI2bltZ
+ dPO9/usBAc4ROUDTvAHnWWWcuEu2TfV2Z8WMgaPtIjTN9qc78oZaoaEfEKzcB5j0GVrPLpDm9
+ vzxGDbCHguHfr4FfBvl1Zy7kyr6Q5GZG8rg3edQmKQWDtFTvo4F3rjoqiyNzhII+XR8x6w6pk
+ +94THkXKOVwumBi7Cu06zOiJEaNHnhqaERR6yduGtadCSxtUdT/TRrilO+JLRq/npk8PZ4N4/
+ pXtCpT8/KkJxOKXRwZfdMNLqPHsIO/+2lRexjES0xnRxTZOpZZupplQGoNe2mxfxfHze/vxdL
+ wW2zFmJsU0WWKxED5IOgZnkt9g0K7urfcqCCYtIrDGlCMc+4kxVNCdux0w4RGN6HGRtaP0ugo
+ NWjE06Nkj+M3XWf8u4//ZXABix1FEnyvFrhDL3+IWmSoz0PpC439uEkks/RSEQFz3nSCM8nZ0
+ bKDTtptootL7Ivacj6vh3lnCdjgfiX9ri59UfUu8nyAxVtWeC87EIyz4EHpxKbD4rpBA6T3O2
+ /9sG0pYVSVoF037pbGXgZ+Sf9JxCVQ76ejH9vb2AnD5g01YfQG5mstre90Uj+Iatfj0FqnGBL
+ 6XTfyj/54bhXh5HNAlyqjiwyPCCZgCZboVw3UrKQzDfx2X7JM9tqUtJme8Yse0NjT8mz+msY1
+ /OQP+JDsrDfz3AtxOtk2LbkF81bYt9Qx9VjswluvAudCxy746DoM+hkXqbUZzk4e/QZog1Do4
+ 99TIsrrTZbKZmuup4qGj9LV6Xq5T7EbkrayAKfA2RhepIRLTY6y71d1srK++gVTY8gXKNFF5J
+ sXUNH0UNpNa8u91Vf4Vi225DOl0ImcQRAKC2I2Q/pC/3BaplwliJmRXLKkhjD9T5yzQPnRAJU
+ 8hhtbAyFiFTvLCVzGhyeW5MBrwD5S/fHQwIxeo+EAS/8lIGh2y1+zz9B6yWpHPKFSZSknipza
+ WjXDZ1g292htA5hXnYrC01xRvRNxbaucQvWvcTXaBgPP5VFmmWRzSEI41jssIWVNaajaN4Gr0
+ AVmO9BbOR9bEqpJ2yFFjuiaRVm35NNM15DcuyvVFi/ZuHa2GFUEzco6ahuaamUyU3EMSxPy3i
+ CDPXCle0+T3MuFUtNsbbdAOd7DvUtNynrNcAMRw==
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 09:35:12AM +0000, Peter Rosin wrote:
-> On 2019-10-23 12:28, Mike Rapoport <rppt@kernel.org> wrote:
-> > parisc has two or three levels of page tables and can use appropriate
-> > pgtable-nopXd and folding of the upper layers.
-> >
-> > Replace usage of include/asm-generic/4level-fixup.h and explicit
-> > definitions of __PAGETABLE_PxD_FOLDED in parisc with
-> > include/asm-generic/pgtable-nopmd.h for two-level configurations and with
-> > include/asm-generic/pgtable-nopmd.h for three-lelve configurations and
-> 
-> I think you mean .../pgtable-nopud.h in the latter case.
+* Mike Rapoport <rppt@kernel.org>:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+>
+> parisc has two or three levels of page tables and can use appropriate
+> pgtable-nopXd and folding of the upper layers.
+>
+> Replace usage of include/asm-generic/4level-fixup.h and explicit
+> definitions of __PAGETABLE_PxD_FOLDED in parisc with
+> include/asm-generic/pgtable-nopmd.h for two-level configurations and wit=
+h
+> include/asm-generic/pgtable-nopmd.h for three-lelve configurations and
+> adjust page table manipulation macros and functions accordingly.
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/parisc/include/asm/page.h    | 30 +++++++++++++---------
+>  arch/parisc/include/asm/pgalloc.h | 41 +++++++++++-------------------
+>  arch/parisc/include/asm/pgtable.h | 52 +++++++++++++++++++-------------=
+-------
+>  arch/parisc/include/asm/tlb.h     |  2 ++
+>  arch/parisc/kernel/cache.c        | 13 ++++++----
+>  arch/parisc/kernel/pci-dma.c      |  9 +++++--
+>  arch/parisc/mm/fixmap.c           | 10 +++++---
+>  7 files changed, 81 insertions(+), 76 deletions(-)
 
-Right, thanks!
- 
-> Cheers,
-> Peter
+Mike, thanks for this clean-up!
 
--- 
-Sincerely yours,
-Mike.
+Your patch is functional OK. I successfully tested it with a 32-bit
+kernel in qemu, and with a 64-bit kernel on a physical box.
+For 64-bit you missed to adapt the parisc hugetlb code, so maybe you
+can add the patch below to your series?
+
+Other than that (and the lexical corrections which other already mentioned=
+):
+Acked-by: Helge Deller <deller@gmx.de>
+
+Thanks!
+Helge
+
+=2D---------------
+parisc/hugetlb: use pgtable-nopXd instead of 4level-fixup
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/arch/parisc/mm/hugetlbpage.c b/arch/parisc/mm/hugetlbpage.c
+index d578809e55cf..0e1e212f1c96 100644
+=2D-- a/arch/parisc/mm/hugetlbpage.c
++++ b/arch/parisc/mm/hugetlbpage.c
+@@ -49,6 +49,7 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
+ 			unsigned long addr, unsigned long sz)
+ {
+ 	pgd_t *pgd;
++	p4d_t *p4d;
+ 	pud_t *pud;
+ 	pmd_t *pmd;
+ 	pte_t *pte =3D NULL;
+@@ -61,7 +62,8 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
+ 	addr &=3D HPAGE_MASK;
+
+ 	pgd =3D pgd_offset(mm, addr);
+-	pud =3D pud_alloc(mm, pgd, addr);
++	p4d =3D p4d_offset(pgd, addr);
++	pud =3D pud_alloc(mm, p4d, addr);
+ 	if (pud) {
+ 		pmd =3D pmd_alloc(mm, pud, addr);
+ 		if (pmd)
+@@ -74,6 +76,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+ 		       unsigned long addr, unsigned long sz)
+ {
+ 	pgd_t *pgd;
++	p4d_t *p4d;
+ 	pud_t *pud;
+ 	pmd_t *pmd;
+ 	pte_t *pte =3D NULL;
+@@ -82,11 +85,14 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+
+ 	pgd =3D pgd_offset(mm, addr);
+ 	if (!pgd_none(*pgd)) {
+-		pud =3D pud_offset(pgd, addr);
+-		if (!pud_none(*pud)) {
+-			pmd =3D pmd_offset(pud, addr);
+-			if (!pmd_none(*pmd))
+-				pte =3D pte_offset_map(pmd, addr);
++		p4d =3D p4d_offset(pgd, addr);
++		if (!p4d_none(*p4d)) {
++			pud =3D pud_offset(p4d, addr);
++			if (!pud_none(*pud)) {
++				pmd =3D pmd_offset(pud, addr);
++				if (!pmd_none(*pmd))
++					pte =3D pte_offset_map(pmd, addr);
++			}
+ 		}
+ 	}
+ 	return pte;
+
+
+
+
+
