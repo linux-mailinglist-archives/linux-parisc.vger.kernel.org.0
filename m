@@ -2,146 +2,93 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DECAE63CA
-	for <lists+linux-parisc@lfdr.de>; Sun, 27 Oct 2019 16:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB87CE69C8
+	for <lists+linux-parisc@lfdr.de>; Sun, 27 Oct 2019 22:51:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727562AbfJ0Pl4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 27 Oct 2019 11:41:56 -0400
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:27440 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727056AbfJ0Plz (ORCPT
+        id S1727385AbfJ0Vvp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 27 Oct 2019 17:51:45 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:44055 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727347AbfJ0Vvo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 27 Oct 2019 11:41:55 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 471MXZ3cz5zQl8s;
-        Sun, 27 Oct 2019 16:41:50 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de [80.241.56.115]) (amavisd-new, port 10030)
-        with ESMTP id HKUBceS7i6hF; Sun, 27 Oct 2019 16:41:40 +0100 (CET)
-Date:   Mon, 28 Oct 2019 02:41:15 +1100
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Christian Brauner <christian@brauner.io>,
-        Aleksa Sarai <asarai@suse.de>,
-        Linux Containers <containers@lists.linux-foundation.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        GNU C Library <libc-alpha@sourceware.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH RESEND v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path
- resolution
-Message-ID: <20191027154115.ex55njkysey4m6pu@yavin.dot.cyphar.com>
-References: <20191026185700.10708-1-cyphar@cyphar.com>
- <20191026185700.10708-3-cyphar@cyphar.com>
- <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
+        Sun, 27 Oct 2019 17:51:44 -0400
+Received: by mail-pl1-f195.google.com with SMTP id q16so4159959pll.11
+        for <linux-parisc@vger.kernel.org>; Sun, 27 Oct 2019 14:51:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=okI+WKXZnivApTS1Oqi6dD5Ms0rFCprYxF1H61WduWk=;
+        b=pw2dJkukUJXYvfEOm45F2Hl5b1XAvOsw8K+TujmDuru67lSmeWPXnSAEispuggEtjw
+         3g2meR3BKmFp3CFSfy0jMec99hckR/6oI+3oNAFe8uoWwJX1AafRV2S1UPkOl4gqcYvH
+         teQqmueircw9ALzG6gYSR043Of96NX4QOBxJD//R8eQHIO8BSES6h227mHVJaeEWcp/N
+         3r1of9d+MatgyYALqw+H3sTalBpVjXDaO/qNb+mwSZPgBxaPezGVKZv4nq8KsZmbv/IG
+         GqkKY6lkvDfB+kZqbLAm+QlFXPCtP1WoRCG7sHrV+R/4ICVAQ0QF8XWF/T9eOF0sAG1d
+         IlHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=okI+WKXZnivApTS1Oqi6dD5Ms0rFCprYxF1H61WduWk=;
+        b=FP1AiZ6oAMR4GA3OGPEA8yNRuIyJivIqDnuWp5UtynMrScyx2HO5p/RCI+/6ejg8lI
+         kc8brdB2DgiybyT8oF0suPFjccKnXfeUqhcdmnB+8etZC+udSUWG5oOGk60q6ihSyzUL
+         /MbVb7IZzgugIy2nWIMkUda2DrYh/baGdLn+mdq/4A+0LezmgyUb0Ls//OABLExKloir
+         shhK12khctBZf+TbpVdtOmXzlb4cbsNuNFCkuuYdqemS89RMdtOozHBuZkOS4+2dMQnl
+         0Aj2e6fL0l5lPJmVv6WDO08EKAnp/kZRksOgx4ryxVRNptLDlqxlhmVY0d0dqeRD0HYE
+         Xu5g==
+X-Gm-Message-State: APjAAAUWyfm3qF73z8WPQirSkaVGy4rf5OZ+cqQPFRIilbU6e1e2DhUd
+        NK0uUnrx9e8echALKtMnRyEhEV8fvzmTVN5aPIM=
+X-Google-Smtp-Source: APXvYqzFYDCeXwS3l7qAXpXXTzKpHx8yWjDZplXFTh2ouNxJfPy4SmPlupkIhMGG7P4DB3SEqq/4c5l37AncWxPYMlU=
+X-Received: by 2002:a17:902:8307:: with SMTP id bd7mr12872514plb.73.1572213104117;
+ Sun, 27 Oct 2019 14:51:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="x254sstnuxqz6cbi"
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
+Received: by 2002:a17:90a:9f84:0:0:0:0 with HTTP; Sun, 27 Oct 2019 14:51:43
+ -0700 (PDT)
+Reply-To: eddywilliam0002@gmail.com
+From:   eddy william <crepinak.vainqueur@gmail.com>
+Date:   Sun, 27 Oct 2019 22:51:43 +0100
+Message-ID: <CAHwNn8+bzgJ8hxocBm15ctxjC8H26dFWg_EYC3Q3rw7X9vPD_g@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Hallo
 
---x254sstnuxqz6cbi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Mein Name ist Eddy William. Ich bin von Beruf Rechtsanwalt. Ich m=C3=B6chte
+Ihnen anbieten
+die n=C3=A4chsten Verwandten zu meinem Klienten. Sie erben die Summe von
+($8,5 Millionen US-Dollar)
+Dollar, die mein Kunde vor seinem Tod in der Bank gelassen hat.
 
-On 2019-10-27, Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> On Sat, Oct 26, 2019 at 2:58 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
-> >
-> > +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-to-di=
-rfd. */
-> > +       if (flags & LOOKUP_IN_ROOT)
-> > +               while (*s =3D=3D '/')
-> > +                       s++;
-> > +
-> >         /* Figure out the starting path and root (if needed). */
-> >         if (*s =3D=3D '/') {
-> >                 error =3D nd_jump_root(nd);
->=20
-> So I'm still hung up on this.
->=20
-> I guess I can't help it, but I look at the above, and it makes me go
-> "whoever wrote those tests wasn't thinking".
->=20
-> It just annoys me how it tests for '/' completely unnecessarily.
->=20
-> If LOOKUP_IN_ROOT is true, we know the subsequent test for '/' is not
-> going to match, because we just removed it. So I look at that code and
-> go "that code is doing stupid things".
+Mein Mandant ist ein Staatsb=C3=BCrger Ihres Landes, der mit seiner Frau
+bei einem Autounfall ums Leben gekommen ist
+und nur Sohn. Ich werde mit 50% des Gesamtfonds berechtigt sein, w=C3=A4hre=
+nd 50%
+sein f=C3=BCr dich.
+Bitte kontaktieren Sie meine private E-Mail hier f=C3=BCr weitere
+Informationen: eddywilliam0002gmail.com
 
-Okay, fair enough.
+Vielen Dank im Voraus,
+Mr. Eddy William,
 
-> That's why I suggested moving the LOOKUP_IN_ROOT check inside the '/' tes=
-t.
->=20
-> Alternatively, just make the logic be
->=20
->         if (flags & LOOKUP_IN_ROOT) {
->                .. remove '/'s ...
->         } else if (*s =3D=3D '/') {
->                 .. handl;e root ..
->=20
-> and remove the next "else" clause
 
-I've gone with the latter since I think it reads better.
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+Hello
 
---x254sstnuxqz6cbi
-Content-Type: application/pgp-signature; name="signature.asc"
+My name is Eddy William I am a lawyer by profession. I wish to offer you
+the next of kin to my client. You will inherit the sum of ($8.5 Million)
+dollars my client left in the bank before his death.
 
------BEGIN PGP SIGNATURE-----
+My client is a citizen of your country who died in auto crash with his wife
+and only son. I will be entitled with 50% of the total fund while 50% will
+be for you.
+Please contact my private email here for more details:eddywilliam0002gmail.=
+com
 
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXbW6lwAKCRCdlLljIbnQ
-EoPNAP0TH7raCw5NCLFnqJEAJ2bl+pDz8oGtxQKGtoXC7HohOQEAqFv71cuFJjle
-mvHPyKwhvNv8coIv55o8qUxny+XxIAg=
-=0iVb
------END PGP SIGNATURE-----
-
---x254sstnuxqz6cbi--
+Many thanks in advance,
+Mr.Eddy William,
