@@ -2,127 +2,93 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B54E8E8D71
-	for <lists+linux-parisc@lfdr.de>; Tue, 29 Oct 2019 17:59:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9CEAE9194
+	for <lists+linux-parisc@lfdr.de>; Tue, 29 Oct 2019 22:15:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390785AbfJ2Q72 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 29 Oct 2019 12:59:28 -0400
-Received: from foss.arm.com ([217.140.110.172]:54760 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390802AbfJ2Q72 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 29 Oct 2019 12:59:28 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F8347AD;
-        Tue, 29 Oct 2019 09:59:27 -0700 (PDT)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0B57C3F71F;
-        Tue, 29 Oct 2019 09:59:24 -0700 (PDT)
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org, amit.kachhap@arm.com,
-        catalin.marinas@arm.com, deller@gmx.de, duwe@suse.de,
-        James.Bottomley@HansenPartnership.com, james.morse@arm.com,
-        jeyu@kernel.org, jpoimboe@redhat.com, jthierry@redhat.com,
-        linux-parisc@vger.kernel.org, mark.rutland@arm.com,
-        mingo@redhat.com, peterz@infradead.org, rostedt@goodmis.org,
-        svens@stackframe.org, takahiro.akashi@linaro.org, will@kernel.org
-Subject: [PATCHv2 8/8] arm64: ftrace: minimize ifdeffery
-Date:   Tue, 29 Oct 2019 16:58:32 +0000
-Message-Id: <20191029165832.33606-9-mark.rutland@arm.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20191029165832.33606-1-mark.rutland@arm.com>
-References: <20191029165832.33606-1-mark.rutland@arm.com>
+        id S1729034AbfJ2VPm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 29 Oct 2019 17:15:42 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:39374 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728530AbfJ2VPm (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 29 Oct 2019 17:15:42 -0400
+Received: by mail-pl1-f196.google.com with SMTP id t12so3680622plo.6
+        for <linux-parisc@vger.kernel.org>; Tue, 29 Oct 2019 14:15:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=4W0RQy7L8eh7pRvWVxgcmtPohgICmGJuDBiUC3OtQXc=;
+        b=I8U+d2V8b9DcvszTpNkYzx8YDIuowvCEAN8/hq06mWUBrW1C9IFc9zOdTV8NmetYIx
+         XdchWOKTprtzj7BrCs1SWXwtizr/5Svkqrapz3CRCsQMazLT/znGCXGXfPoHk47uKD4s
+         H8DeqA+Bp69QYF4iTcRYw2od2qrlqFz95t1aQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=4W0RQy7L8eh7pRvWVxgcmtPohgICmGJuDBiUC3OtQXc=;
+        b=AKzYh0bHSRh931LiOSdnLL+2eCg94148LLotfgl7ooja0FmW9mzQnTKf2yz/gwu1/A
+         tdR36QI//mUgKQTTBZiuG2z3lzZ7Xtpj55GZscqcxcS/L+NR3oTpQqYLzyyHFeZZe2AM
+         Wfvc9R9ie+wj9O0uCuynOTz6EI/agSFwxiYQo/SmAve3bfieOqHKiJnv61bDr1ddpder
+         fyNUfOOhiwTVx1cSZp0FOKYXfcM4liC7WwIDrcoBVYkWkdsxGR2qX8u530cIk0yXYpWS
+         9eSGqtxtcjvJ/bbvqI5d8UwWoXKq4Kv8KEy6OG764p2aI1PlJ0hxyDExtdyODE0xFc0E
+         NvfQ==
+X-Gm-Message-State: APjAAAUviD6Iceq07HQk9uuEZAzbwV3E7AMt55nXAqpEhDDfSkS1VBV/
+        qD2cd9waThIAHRACpP04M2mvJw==
+X-Google-Smtp-Source: APXvYqxcKsW5UISFe0oAVMX295CcWwGO1CFi+pF1WGPYr1NNtMArlvLHufwgOSgweI/u+V6GrCnhCQ==
+X-Received: by 2002:a17:902:a98c:: with SMTP id bh12mr723589plb.289.1572383741354;
+        Tue, 29 Oct 2019 14:15:41 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id z18sm27341pfq.182.2019.10.29.14.15.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2019 14:15:40 -0700 (PDT)
+Date:   Tue, 29 Oct 2019 14:15:39 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Segher Boessenkool <segher@kernel.crashing.org>,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>, x86@kernel.org,
+        linux-ia64@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-xtensa@linux-xtensa.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-parisc@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org
+Subject: Re: [PATCH v2 01/29] powerpc: Rename "notes" PT_NOTE to "note"
+Message-ID: <201910291414.F29F738B7@keescook>
+References: <20191011000609.29728-1-keescook@chromium.org>
+ <20191011000609.29728-2-keescook@chromium.org>
+ <20191011082519.GI9749@gate.crashing.org>
+ <201910110910.48270FC97@keescook>
+ <20191011162552.GK9749@gate.crashing.org>
+ <20191015165412.GD596@zn.tnic>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191015165412.GD596@zn.tnic>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Now that we no longer refer to mod->arch.ftrace_trampolines in the body
-of ftrace_make_call(), we can use IS_ENABLED() rather than ifdeffery,
-and make the code easier to follow. Likewise in ftrace_make_nop().
+On Tue, Oct 15, 2019 at 06:54:13PM +0200, Borislav Petkov wrote:
+> On Fri, Oct 11, 2019 at 11:25:52AM -0500, Segher Boessenkool wrote:
+> > Names *matter*, internal names doubly so.  So why replace a good name with
+> > a worse name?  Because it is slightly less work for you?
+> 
+> So if we agree on the name "notes" and we decide to rename the other
+> arches, this should all be done in a separate patchset anyway, and ontop
+> of this one. And I believe Kees wouldn't mind doing it ontop since he's
+> gotten his hands dirty already. :-P
 
-Let's do so.
+I've added more rationale to patch #1 in the just-sent v3 of this
+series. If I still can't convince you Segher, I'm happy to send "patch
+30/29" to do a bulk rename to "notes". Let me know. :)
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
----
- arch/arm64/kernel/ftrace.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
-
-diff --git a/arch/arm64/kernel/ftrace.c b/arch/arm64/kernel/ftrace.c
-index aea652c33a38..8618faa82e6d 100644
---- a/arch/arm64/kernel/ftrace.c
-+++ b/arch/arm64/kernel/ftrace.c
-@@ -62,18 +62,18 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 	return ftrace_modify_code(pc, 0, new, false);
- }
- 
--#ifdef CONFIG_ARM64_MODULE_PLTS
- static struct plt_entry *get_ftrace_plt(struct module *mod, unsigned long addr)
- {
-+#ifdef CONFIG_ARM64_MODULE_PLTS
- 	struct plt_entry *plt = mod->arch.ftrace_trampolines;
- 
- 	if (addr == FTRACE_ADDR)
- 		return &plt[FTRACE_PLT_IDX];
- 	if (addr == FTRACE_REGS_ADDR && IS_ENABLED(CONFIG_FTRACE_WITH_REGS))
- 		return &plt[FTRACE_REGS_PLT_IDX];
-+#endif
- 	return NULL;
- }
--#endif
- 
- /*
-  * Turn on the call to ftrace_caller() in instrumented function
-@@ -85,10 +85,12 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 	long offset = (long)pc - (long)addr;
- 
- 	if (offset < -SZ_128M || offset >= SZ_128M) {
--#ifdef CONFIG_ARM64_MODULE_PLTS
- 		struct module *mod;
- 		struct plt_entry *plt;
- 
-+		if (!IS_ENABLED(CONFIG_ARM64_MODULE_PLTS))
-+			return -EINVAL;
-+
- 		/*
- 		 * On kernels that support module PLTs, the offset between the
- 		 * branch instruction and its target may legally exceed the
-@@ -113,9 +115,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 		}
- 
- 		addr = (unsigned long)plt;
--#else /* CONFIG_ARM64_MODULE_PLTS */
--		return -EINVAL;
--#endif /* CONFIG_ARM64_MODULE_PLTS */
- 	}
- 
- 	old = aarch64_insn_gen_nop();
-@@ -185,9 +184,11 @@ int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec,
- 	long offset = (long)pc - (long)addr;
- 
- 	if (offset < -SZ_128M || offset >= SZ_128M) {
--#ifdef CONFIG_ARM64_MODULE_PLTS
- 		u32 replaced;
- 
-+		if (!IS_ENABLED(CONFIG_ARM64_MODULE_PLTS))
-+			return -EINVAL;
-+
- 		/*
- 		 * 'mod' is only set at module load time, but if we end up
- 		 * dealing with an out-of-range condition, we can assume it
-@@ -218,9 +219,6 @@ int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec,
- 			return -EINVAL;
- 
- 		validate = false;
--#else /* CONFIG_ARM64_MODULE_PLTS */
--		return -EINVAL;
--#endif /* CONFIG_ARM64_MODULE_PLTS */
- 	} else {
- 		old = aarch64_insn_gen_branch_imm(pc, addr,
- 						  AARCH64_INSN_BRANCH_LINK);
 -- 
-2.11.0
-
+Kees Cook
