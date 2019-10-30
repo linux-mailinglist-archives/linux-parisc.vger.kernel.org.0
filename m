@@ -2,73 +2,81 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3903E9E2F
-	for <lists+linux-parisc@lfdr.de>; Wed, 30 Oct 2019 16:01:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 837E4E9E41
+	for <lists+linux-parisc@lfdr.de>; Wed, 30 Oct 2019 16:03:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726713AbfJ3PBC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 30 Oct 2019 11:01:02 -0400
-Received: from mx2.suse.de ([195.135.220.15]:47620 "EHLO mx1.suse.de"
+        id S1726269AbfJ3PDF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 30 Oct 2019 11:03:05 -0400
+Received: from mx2.suse.de ([195.135.220.15]:48256 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726246AbfJ3PBC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 30 Oct 2019 11:01:02 -0400
+        id S1726175AbfJ3PDF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 30 Oct 2019 11:03:05 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 25C5BB232;
-        Wed, 30 Oct 2019 15:01:00 +0000 (UTC)
-Date:   Wed, 30 Oct 2019 16:00:58 +0100 (CET)
-From:   Miroslav Benes <mbenes@suse.cz>
+        by mx1.suse.de (Postfix) with ESMTP id D41D1B3B1;
+        Wed, 30 Oct 2019 15:03:03 +0000 (UTC)
+Date:   Wed, 30 Oct 2019 16:03:02 +0100
+From:   Torsten Duwe <duwe@suse.de>
 To:     Mark Rutland <mark.rutland@arm.com>
-cc:     linux-arm-kernel@lists.infradead.org,
-        Steven Rostedt <rostedt@goodmis.org>,
+Cc:     linux-arm-kernel@lists.infradead.org, Jessica Yu <jeyu@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         linux-kernel@vger.kernel.org, amit.kachhap@arm.com,
-        catalin.marinas@arm.com, deller@gmx.de, duwe@suse.de,
-        James.Bottomley@HansenPartnership.com, james.morse@arm.com,
-        jeyu@kernel.org, jpoimboe@redhat.com, jthierry@redhat.com,
-        linux-parisc@vger.kernel.org, mingo@redhat.com,
-        peterz@infradead.org, svens@stackframe.org,
-        takahiro.akashi@linaro.org, will@kernel.org
-Subject: Re: [PATCHv2 1/8] ftrace: add ftrace_init_nop()
-In-Reply-To: <20191029165832.33606-2-mark.rutland@arm.com>
-Message-ID: <alpine.LSU.2.21.1910301559340.18400@pobox.suse.cz>
-References: <20191029165832.33606-1-mark.rutland@arm.com> <20191029165832.33606-2-mark.rutland@arm.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        catalin.marinas@arm.com, james.morse@arm.com, jpoimboe@redhat.com,
+        jthierry@redhat.com, linux-parisc@vger.kernel.org,
+        mingo@redhat.com, peterz@infradead.org, rostedt@goodmis.org,
+        svens@stackframe.org, takahiro.akashi@linaro.org, will@kernel.org
+Subject: Re: [PATCHv2 2/8] module/ftrace: handle patchable-function-entry
+Message-ID: <20191030150302.GA965@suse.de>
+References: <20191029165832.33606-1-mark.rutland@arm.com>
+ <20191029165832.33606-3-mark.rutland@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191029165832.33606-3-mark.rutland@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, 29 Oct 2019, Mark Rutland wrote:
+On Tue, Oct 29, 2019 at 04:58:26PM +0000, Mark Rutland wrote:
+> When using patchable-function-entry, the compiler will record the
+> callsites into a section named "__patchable_function_entries" rather
+> than "__mcount_loc". Let's abstract this difference behind a new
+> FTRACE_CALLSITE_SECTION, so that architectures don't have to handle this
+> explicitly (e.g. with custom module linker scripts).
+> 
+> As parisc currently handles this explicitly, it is fixed up accordingly,
+> with its custom linker script removed. Since FTRACE_CALLSITE_SECTION is
+> only defined when DYNAMIC_FTRACE is selected, the parisc module loading
+> code is updated to only use the definition in that case. When
+> DYNAMIC_FTRACE is not selected, modules shouldn't have this section, so
+> this removes some redundant work in that case.
+> 
+> I built parisc generic-{32,64}bit_defconfig with DYNAMIC_FTRACE enabled,
+> and verified that the section made it into the .ko files for modules.
 
-> Architectures may need to perform special initialization of ftrace
-> callsites, and today they do so by special-casing ftrace_make_nop() when
-> the expected branch address is MCOUNT_ADDR. In some cases (e.g. for
-> patchable-function-entry), we don't have an mcount-like symbol and don't
-> want a synthetic MCOUNT_ADDR, but we may need to perform some
-> initialization of callsites.
-> 
-> To make it possible to separate initialization from runtime
-> modification, and to handle cases without an mcount-like symbol, this
-> patch adds an optional ftrace_init_nop() function that architectures can
-> implement, which does not pass a branch address.
-> 
-> Where an architecture does not provide ftrace_init_nop(), we will fall
-> back to the existing behaviour of calling ftrace_make_nop() with
-> MCOUNT_ADDR.
-> 
-> At the same time, ftrace_code_disable() is renamed to
-> ftrace_nop_initialize() to make it clearer that it is intended to
-> intialize a callsite into a disabled state, and is not for disabling a
-> callsite that has been runtime enabled. The kerneldoc description of rec
-> arguments is updated to cover non-mcount callsites.
-> 
-> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Torsten Duwe <duwe@suse.de>
+This is because of remaining #ifdeffery in include/asm-generic/vmlinux.lds.h:
 
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+#ifdef CC_USING_PATCHABLE_FUNCTION_ENTRY
+#define MCOUNT_REC()    . = ALIGN(8);                           \
+                        __start_mcount_loc = .;                 \
+                        KEEP(*(__patchable_function_entries))   \
+                        __stop_mcount_loc = .;
+#else
+#define MCOUNT_REC()    . = ALIGN(8);                           \
+                        __start_mcount_loc = .;                 \
+                        KEEP(*(__mcount_loc))                   \
+                        __stop_mcount_loc = .;
+#endif
 
-M
+Maybe you want to tackle that as well? I suggest to have at least one
+FTRACE_CALLSITE_SECTION definition without double quotes. Alternatively, my
+earlier solution just kept both sections, in case either one or both are
+present.
+
+                        KEEP(*(__patchable_function_entries))   \
+                        KEEP(*(__mcount_loc))                   \
+
+	Torsten
