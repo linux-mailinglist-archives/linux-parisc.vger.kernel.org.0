@@ -2,80 +2,53 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73120EB0AB
-	for <lists+linux-parisc@lfdr.de>; Thu, 31 Oct 2019 14:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23299EB5F0
+	for <lists+linux-parisc@lfdr.de>; Thu, 31 Oct 2019 18:16:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726506AbfJaNA3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 31 Oct 2019 09:00:29 -0400
-Received: from foss.arm.com ([217.140.110.172]:48184 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726462AbfJaNA3 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 31 Oct 2019 09:00:29 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2D1B1FB;
-        Thu, 31 Oct 2019 06:00:28 -0700 (PDT)
-Received: from blommer (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD8B03F71E;
-        Thu, 31 Oct 2019 06:00:24 -0700 (PDT)
-Date:   Thu, 31 Oct 2019 13:00:22 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Torsten Duwe <duwe@suse.de>
-Cc:     linux-arm-kernel@lists.infradead.org, Jessica Yu <jeyu@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-kernel@vger.kernel.org, amit.kachhap@arm.com,
-        catalin.marinas@arm.com, james.morse@arm.com, jpoimboe@redhat.com,
-        jthierry@redhat.com, linux-parisc@vger.kernel.org,
-        mingo@redhat.com, peterz@infradead.org, rostedt@goodmis.org,
-        svens@stackframe.org, takahiro.akashi@linaro.org, will@kernel.org
-Subject: Re: [PATCHv2 2/8] module/ftrace: handle patchable-function-entry
-Message-ID: <20191031130022.GB3477@blommer>
+        id S1728655AbfJaRQq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 31 Oct 2019 13:16:46 -0400
+Received: from mx2.suse.de ([195.135.220.15]:44788 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728547AbfJaRQq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 31 Oct 2019 13:16:46 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 21002B88F;
+        Thu, 31 Oct 2019 17:16:43 +0000 (UTC)
+Date:   Thu, 31 Oct 2019 18:16:41 +0100
+From:   Torsten Duwe <duwe@suse.de>
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        amit.kachhap@arm.com, catalin.marinas@arm.com, deller@gmx.de,
+        James.Bottomley@hansenpartnership.com, james.morse@arm.com,
+        jeyu@kernel.org, jpoimboe@redhat.com, jthierry@redhat.com,
+        linux-parisc@vger.kernel.org, mingo@redhat.com,
+        peterz@infradead.org, rostedt@goodmis.org, svens@stackframe.org,
+        takahiro.akashi@linaro.org, will@kernel.org
+Subject: Re: [PATCHv2 0/8] arm64: ftrace cleanup + FTRACE_WITH_REGS
+Message-ID: <20191031171641.GB11684@suse.de>
 References: <20191029165832.33606-1-mark.rutland@arm.com>
- <20191029165832.33606-3-mark.rutland@arm.com>
- <20191030150302.GA965@suse.de>
- <20191031090231.GA3340@blommer>
- <20191031114223.GA11684@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191031114223.GA11684@suse.de>
-User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
+In-Reply-To: <20191029165832.33606-1-mark.rutland@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 31, 2019 at 12:42:23PM +0100, Torsten Duwe wrote:
-> On Thu, Oct 31, 2019 at 09:02:32AM +0000, Mark Rutland wrote:
-> > I agree that the CC_USING_PATCHABLE_FUNCTION_ENTRY ifdeffery could be
-> > simplified, and that it would be nice to consistently use
-> > FTRACE_CALLSITE_SECTION if we can. However, the generic linker script doesn't
-> > include anything, and I don't see a good location for that to live.
-> > 
-> > What I could do is add an explicit comment:
-> > 
-> > /*
-> >  * The ftrace call sites are logged to a section whose name depends on the
-> >  * compiler option used. A given kernel image will only use one, AKA
-> >  * FTRACE_CALLSITE_SECTION. We capture all of them here to avoid header
-> >  * dependencies.
-> >  */
-> > #define MCOUNT_REC()						\
-> > 			. = ALIGN(8);				\
-> > 			__start_mcount_loc = .;			\
-> > 			KEEP(*(__patchable_function_entries))   \
-> > 			KEEP(*(__mcount_loc))                   \
-> > 			__stop_mcount_loc = .;			
-> > 
-> > ... which should make the dependency clear. Does that sound good to you?
-> 
-> Beautiful. I just didn't want to miss the opportunity to have this cleaned
-> up as well, and deemed this patch "closest" because of the definition of 
-> FTRACE_CALLSITE_SECTION. Put it where you see it fit best.
+After yesterday's testing, now
 
-Sure. I've folded the above into this patch, and pushed out an updated branch:
+Reviewed-by: Torsten Duwe <duwe@suse.de>
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=arm64/ftrace-with-regs
+for the series. 
 
-Thanks,
-Mark.
+Executive summary: where I used x28 as scratch register in ftrace_regs_caller
+which I had to save for that reason, you switched to x10, which is so obvious
+that I failed to see it. Then the PLT initialisation on module load, and
+finally the ftrace_init_nop() hook that got you started initially. The rest
+I'd call more or less cosmetic deviations from my v8. IOW: fine with me.
+
+	Torsten
+
