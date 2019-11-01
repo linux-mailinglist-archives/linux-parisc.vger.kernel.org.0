@@ -2,75 +2,80 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 444D9EC62B
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Nov 2019 16:56:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4086FEC6BA
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Nov 2019 17:29:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729288AbfKAP4S (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Nov 2019 11:56:18 -0400
-Received: from mail-il1-f195.google.com ([209.85.166.195]:44377 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729299AbfKAP4K (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Nov 2019 11:56:10 -0400
-Received: by mail-il1-f195.google.com with SMTP id w1so235944ilq.11
-        for <linux-parisc@vger.kernel.org>; Fri, 01 Nov 2019 08:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=jkikiuxKNQxBjumG32R/xAOzBpTQzIQOGlQ9PlZMzROUxuROhIRW7LOTcmmKqgHbY3
-         GOAi1JnMWEnE/cHrGKrepuphWKFno/pbedjX9XbUWfuIb71+aWSjlL5ZBdl2tkqhPPKE
-         upGJ5iT/1C19qe7FISRldhXG8lpP7RchXgCPpOby1LewLJ9oB1SrBH33yMLjEi7ivjNF
-         o703S5ww1Ql1WeM1aVK41ldtWwBkirNy1eGYI9RnsPVvXaYfqhEH77U0dn8RQUxe2Nnp
-         f+7QOSjXXt7VdhDDkepSvRzDGCUBO3iHq8K6k3uKK4gkq+wr+4nHyD89dMwGRy4pl6Pa
-         lYoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=RmgK6rKrN7tJiuOcmO4eUi/RmN1eRpuigZ1p9tGLfhX3si0zuRUs73JZqJHTNn18wp
-         qcVDlzc8MF1NaEZjWea3yDjU8dHoE5w15R2tQ9GJk00XeVeiaC0CTv5UXgptcdZi7t15
-         aPYxjGbq0bEcFsZruh8G/JBQ9GC3nIdfzQx3t/ghM/79d8jM+ZVvMCU3Hh+N3cZaBuQx
-         948J1DDHstaLD29ShbDgC/aCsVFQMNfGgiCYbDiw9re9gWCUPWIgjkmfETu8xwNtCC9c
-         oMjwoZb62lVgodKfZkR3J6mbM1+zz601urDqXyzyqcZlvsVWAAadQiTnlDScs//Nb+gI
-         mgww==
-X-Gm-Message-State: APjAAAUVTCMGIgPiGhMtiNC81UxeDxOj1Sw2Fv4ysWB8VxEupZ4FJXD+
-        cHnAFMbiEK58t5oE1QgMboOn5EUzPsrn06QNyQ==
-X-Google-Smtp-Source: APXvYqykJV+0/JwFtVH+nsMp7ykNvWlhcV0rRy9Az9oSoBx/tmbFcQXrrs+n9sPNEOpMU4VQknLk5nY+7hLQNduMfzM=
-X-Received: by 2002:a92:9ac2:: with SMTP id c63mr13404416ill.8.1572623769676;
- Fri, 01 Nov 2019 08:56:09 -0700 (PDT)
+        id S1728808AbfKAQ3M (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 Nov 2019 12:29:12 -0400
+Received: from foss.arm.com ([217.140.110.172]:38210 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726701AbfKAQ3M (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 1 Nov 2019 12:29:12 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A11591FB;
+        Fri,  1 Nov 2019 09:29:11 -0700 (PDT)
+Received: from blommer (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5829C3F719;
+        Fri,  1 Nov 2019 09:29:08 -0700 (PDT)
+Date:   Fri, 1 Nov 2019 16:28:58 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Sven Schnelle <svens@stackframe.org>
+Cc:     jthierry@redhat.com, linux-parisc@vger.kernel.org,
+        peterz@infradead.org, catalin.marinas@arm.com, deller@gmx.de,
+        jpoimboe@redhat.com, linux-kernel@vger.kernel.org,
+        rostedt@goodmis.org, James.Bottomley@HansenPartnership.com,
+        takahiro.akashi@linaro.org, mingo@redhat.com, james.morse@arm.com,
+        jeyu@kernel.org, amit.kachhap@arm.com, will@kernel.org,
+        duwe@suse.de, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCHv2 0/8] arm64: ftrace cleanup + FTRACE_WITH_REGS
+Message-ID: <20191101162847.GA3677@blommer>
+References: <20191029165832.33606-1-mark.rutland@arm.com>
+ <20191101153929.GA9053@t470p.stackframe.org>
 MIME-Version: 1.0
-Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:56:08 -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Mary Coster, I.M.F director-Benin" 
-        <info.zennitbankplcnigerian@gmail.com>
-Date:   Fri, 1 Nov 2019 16:56:08 +0100
-Message-ID: <CABHzvrmbRd3tt-E2+9AO2XvrMQFKQcn+kao_7DN4rb=grxZAcA@mail.gmail.com>
-Subject: Contact Money Gram international service-Benin to receive your
- payment funds US$2.500,000 Million
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191101153929.GA9053@t470p.stackframe.org>
+User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Attn Dear,Funds Beneficiary.
-Contact Money Gram international service-Benin to receive your payment
-funds US$2.500,000 Million approved this morning through the UN
-payment settlement organization.
-Contact Person, Mr. John Dave.
-Official Director.Money Gram-Benin
-Email: moneygram.1820@outlook.fr
-Telephone +229 62619517
-Once you get intouch with Mr. John Dave, Money Gram Director, send to
-him your address including your phone numbers. He will be sending the
-transfer to you  $5000.00 USD daily until you received your complete
-payment $2.5m from the office.
-Note,I have paid the whole service fees for you but only small money
-you been required to send to this office is $23.00 only via Money Gram
-transfer.
-God bless
-Mary Coster, I.M.F director-Benin
-m.coster@aol.com
+On Fri, Nov 01, 2019 at 04:39:30PM +0100, Sven Schnelle wrote:
+> On Tue, Oct 29, 2019 at 04:58:24PM +0000, Mark Rutland wrote:
+> > This series is a reworked version of Torsten's FTRACE_WITH_REGS series
+> > [1]. I've tried to rework the existing code in preparatory patches so
+> > that the patchable-function-entry bits slot in with fewer surprises.
+> > This version is based on v5.4-rc3, and can be found in my
+> > arm64/ftrace-with-regs branch [2].
+> > 
+> > Patch 1 adds an (optional) ftrace_init_nop(), which the core code uses
+> > to initialize callsites. This allows us to avoid a synthetic MCOUNT_ADDR
+> > symbol, and more cleanly separates the one-time initialization of the
+> > callsite from dynamic NOP<->CALL modification. Architectures which don't
+> > implement this get the existing ftrace_make_nop() with MCOUNT_ADDR.
+> > 
+> > Recently parisc gained ftrace support using patchable-function-entry.
+> > Patch 2 makes the handling of module callsite locations common in
+> > kernel/module.c with a new FTRACE_CALLSITE_SECTION definition, and
+> > removed the newly redundant bits from arch/parisc.
+
+> > Since v1 [3]:
+> > * Add a couple of people to Cc
+> > * Fold in Ard's Reviewed-by tag
+> > * Rename ftrace_code_init_disabled() to ftrace_nop_initialize()
+> > * Move ftrace_init_nop() to <linux/ftrace.h>, with kerneldoc
+> > * Update kerneldoc for rec parameters
+> [..]
+> 
+> I tested this series on parisc both with ftracing kernel internal functions and
+> module functions. Both are working fine, so feel free to add my
+> 
+> Tested-by: Sven Schnelle <svens@stackframe.org>
+
+Thanks! That's much appreciated.
+
+I've applied that to patches 1 and 2, since the remainder of the series was
+confined to arch/arm64/.
+
+Mark.
