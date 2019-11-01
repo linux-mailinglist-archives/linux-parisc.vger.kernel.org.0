@@ -2,81 +2,87 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D5ABEC984
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Nov 2019 21:20:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B32F4ECAA5
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Nov 2019 23:00:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbfKAUUl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Nov 2019 16:20:41 -0400
-Received: from mout.gmx.net ([212.227.17.22]:56975 "EHLO mout.gmx.net"
+        id S1727515AbfKAV7Y (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 Nov 2019 17:59:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42918 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726477AbfKAUUl (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Nov 2019 16:20:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1572639624;
-        bh=gEEhob0QambsBd+8IP8sk2yJj2Asu79OD/yDb2XsK9Q=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=JOwFEArDmfVv/FPhbTG9KN5livXCRnB5ZhL6y6g5mVwyGAEeWlNdFElWZlzJgByCd
-         VRU+1CCtUsWaB+iFkAN8f9Z3RNw+nTTA7q5wNvaCwRlq2ElIhbKVChWdq3J9CCX0SE
-         kW77GmK60XY4+13GnmW7YvJBi2RMzbjKTKnE4kZA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([80.187.110.91]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MJE6F-1igvtz1MCJ-00KgtW; Fri, 01
- Nov 2019 21:20:24 +0100
-Date:   Fri, 1 Nov 2019 21:20:19 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Cc:     Sven Schnelle <svens@stackframe.org>
-Subject: [GIT PULL] parisc architecture fix for kernel v5.4
-Message-ID: <20191101202019.GA22999@ls3530>
+        id S1726229AbfKAV7Y (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 1 Nov 2019 17:59:24 -0400
+Received: from rapoport-lnx (190.228.71.37.rev.sfr.net [37.71.228.190])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E6ED020679;
+        Fri,  1 Nov 2019 21:59:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572645563;
+        bh=QiZm9ub4TObxGGKcca2WTm6kN/XMUXB/j0wvSJ5M3eA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IHcZXPG5aOVX7THF5w1BhXuPpEAFbXmlm1YNYoLN1/wia+WcGzRCfkdX1Ruwcf8B0
+         7VsDchfB2H1tc1VfaQdn38Nf40YHULbzg3WrgWUI8RNC8o7I6dxUJNNV8Ww/2Gbls9
+         tJJ3TSp8O0lGrXdZetQvfatdTrJJjGLz2VuJU/Ck=
+Date:   Fri, 1 Nov 2019 22:59:11 +0100
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mark Salter <msalter@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Michal Simek <monstr@monstr.eu>, Peter Rosin <peda@axentia.se>,
+        Richard Weinberger <richard@nod.at>,
+        Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Sam Creasey <sammy@sammy.net>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
+        sparclinux@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH v2 01/13] alpha: use pgtable-nop4d instead of 4level-fixup
+Message-ID: <20191101215905.GB20065@rapoport-lnx>
+References: <1572597584-6390-1-git-send-email-rppt@kernel.org>
+ <1572597584-6390-2-git-send-email-rppt@kernel.org>
+ <20191101091157.q4cesn6vsiy5qj2j@box>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Provags-ID: V03:K1:lmdelkpxDYCvc+DQjD6pvjzZzZKWwNd0Ihgy0KIcKfoXwUw18kA
- sgUW8wf/UhtZnSlFfwJUp6VoVHuYCsJzcqCl8NEBB3Lu4KozrYYZDbjr85sEHcRAdQj59Yo
- 97jCtbgxEAH345JQfDtsbh2ZcdYJFwYBQyeb5ySnEZckHs944ZIHE6WcRwN9kr9dhKhNasA
- dXPwga9ZUiSKetsoUz69w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Y6vrH0e2sQ4=:1zuAaB8186z/5wpMy5Aex3
- Lmjf1Fy/r9SaV0mGsPuPoFNbn4Z66Ft4GNeGX+jMxORsAhDpPKUdNN3gUax9z7nMvh/Fj9Nxx
- 8AyyJrdNzzJQSaqOctaPY0nxG5Tg4BWh71xB45VWkCnBatYmSKbkwS9R+M5lYanrsZxoSKgpR
- DJ85fC+RjrGFgfLUtH1mxj3nYppVLyS3tTAY2JNoTud9gaaoCMWh0cbWAaPkj4uSdW20VQ88y
- 179V0Xu8CalwBaFCMo8wE/FAP4LJH42NkUfRbqWLRyA08JZnrP0h+VqNi9pK/XynAIKH1huNT
- kj/ZM8l98E8THCX0+NUUPpTBJvm/sW8Y8NCgg3thaDt9+3oSbka45YpGK5bJiQyFx+YvbWpkL
- ldeytF4oy3RaDqevokmtEJL91j3YCm0pJyE/+ULWf2BNLdbPtSbQ1uhAQS6+YgRLHZ8y/CM2Y
- hp0h0tyhClJUBl7TnDWIvn+/d5T8u+mkTtHP1Thm+FcFLqvMrNnBuI7uYMtLP4BesFv/Acmqp
- 8CTx+3FUXRW5R/VAmuWWjy/ad8j1xxYVRosVQ6h+8nZ+kI1p6+3KgARJmQ1l67Odq5ki9QlIm
- exTSUh3LlKe3MmwxzDVAiyGHjsvA2GgGGFqKjcU549wKLHVBJ3cYarVQJfuCZIlOLitCxI+MU
- CvSHhCDV5eAlfeNRCrauuBxaS639uwQBmZXR4xAtqd73yQfw/V1FhmaidGI16sTLs6zrsGf4o
- SuaU0YLVej29r837ZIQWwZmT2R2m49H2n0tL2mzKPFasmChG3QUZTcWIqmJHlwfnbmUa78/ws
- aWUNsZN163p1wyj6hoJf3soxKfXfwOn/v60U4fjndDb/Xltn6s+BVBsdO2lB/jmVdwj3k5HNR
- shxAwroSI5uPeKQfQVPD7/vjj/yr5Hm6odwQiKj4Dnj7LzmEjSyoIQp0ekmhKj/bf1BjgoZ5z
- 5JGS2MYPGqTI2GaaMk+VRf/mga5TiECz27STkvCRXVJOgzr/QwbE9/zRoB4fnKpciFsFBfzQw
- WvHMjrEm7DfnV5IgyuG3NR5S3SuV7rKUce3wNUlNj1PO59xhQ13qmY6SV2TJudkP6PniW1Ljr
- 5hgCXSL7UbTxGNxO3mJcqzFW5Yjp55VmC2IFYk1QV2rShAaD22ijjCG0p1UoByKQ4d96Fu0g9
- IR7OyWEe1iY0wqHSnapzHaGXlfNK7iKdj9QFyZP10nE73DY0rbHv+2WfDAL8DMQmPNdnteXVu
- PyPMIi8eANOBsROb55sRo/ZIRkt17RR5pXX2iSw==
+In-Reply-To: <20191101091157.q4cesn6vsiy5qj2j@box>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+On Fri, Nov 01, 2019 at 12:11:57PM +0300, Kirill A. Shutemov wrote:
+> On Fri, Nov 01, 2019 at 10:39:32AM +0200, Mike Rapoport wrote:
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> > 
+> > It is not likely alpha will have 5-level page tables.
+> > 
+> > Replace usage of include/asm-generic/4level-fixup.h and implied
+> > __ARCH_HAS_4LEVEL_HACK with include/asm-generic/pgtable-nop4d.h and adjust
+> > page table manipulation macros and functions accordingly.
+> 
+> Not pgtable-nop4d.h, but pgtable-nopud.h. Also in subject.
 
-please pull a one-line fix for the parisc architecture for kernel 5.4 from:
+Ouch, of course.
+ 
+> -- 
+>  Kirill A. Shutemov
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.4-3
-
-Fix a parisc kernel crash with ftrace functions when compiled without frame
-pointers.
-
-Thanks,
-Helge
-
-----------------------------------------------------------------
-Sven Schnelle (1):
-      parisc: fix frame pointer in ftrace_regs_caller()
-
+-- 
+Sincerely yours,
+Mike.
