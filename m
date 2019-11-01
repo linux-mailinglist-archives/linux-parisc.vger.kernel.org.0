@@ -2,80 +2,81 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4086FEC6BA
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Nov 2019 17:29:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D5ABEC984
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Nov 2019 21:20:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728808AbfKAQ3M (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Nov 2019 12:29:12 -0400
-Received: from foss.arm.com ([217.140.110.172]:38210 "EHLO foss.arm.com"
+        id S1726701AbfKAUUl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 Nov 2019 16:20:41 -0400
+Received: from mout.gmx.net ([212.227.17.22]:56975 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726701AbfKAQ3M (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Nov 2019 12:29:12 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A11591FB;
-        Fri,  1 Nov 2019 09:29:11 -0700 (PDT)
-Received: from blommer (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5829C3F719;
-        Fri,  1 Nov 2019 09:29:08 -0700 (PDT)
-Date:   Fri, 1 Nov 2019 16:28:58 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Sven Schnelle <svens@stackframe.org>
-Cc:     jthierry@redhat.com, linux-parisc@vger.kernel.org,
-        peterz@infradead.org, catalin.marinas@arm.com, deller@gmx.de,
-        jpoimboe@redhat.com, linux-kernel@vger.kernel.org,
-        rostedt@goodmis.org, James.Bottomley@HansenPartnership.com,
-        takahiro.akashi@linaro.org, mingo@redhat.com, james.morse@arm.com,
-        jeyu@kernel.org, amit.kachhap@arm.com, will@kernel.org,
-        duwe@suse.de, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCHv2 0/8] arm64: ftrace cleanup + FTRACE_WITH_REGS
-Message-ID: <20191101162847.GA3677@blommer>
-References: <20191029165832.33606-1-mark.rutland@arm.com>
- <20191101153929.GA9053@t470p.stackframe.org>
+        id S1726477AbfKAUUl (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 1 Nov 2019 16:20:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1572639624;
+        bh=gEEhob0QambsBd+8IP8sk2yJj2Asu79OD/yDb2XsK9Q=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=JOwFEArDmfVv/FPhbTG9KN5livXCRnB5ZhL6y6g5mVwyGAEeWlNdFElWZlzJgByCd
+         VRU+1CCtUsWaB+iFkAN8f9Z3RNw+nTTA7q5wNvaCwRlq2ElIhbKVChWdq3J9CCX0SE
+         kW77GmK60XY4+13GnmW7YvJBi2RMzbjKTKnE4kZA=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530 ([80.187.110.91]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MJE6F-1igvtz1MCJ-00KgtW; Fri, 01
+ Nov 2019 21:20:24 +0100
+Date:   Fri, 1 Nov 2019 21:20:19 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Cc:     Sven Schnelle <svens@stackframe.org>
+Subject: [GIT PULL] parisc architecture fix for kernel v5.4
+Message-ID: <20191101202019.GA22999@ls3530>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191101153929.GA9053@t470p.stackframe.org>
-User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Provags-ID: V03:K1:lmdelkpxDYCvc+DQjD6pvjzZzZKWwNd0Ihgy0KIcKfoXwUw18kA
+ sgUW8wf/UhtZnSlFfwJUp6VoVHuYCsJzcqCl8NEBB3Lu4KozrYYZDbjr85sEHcRAdQj59Yo
+ 97jCtbgxEAH345JQfDtsbh2ZcdYJFwYBQyeb5ySnEZckHs944ZIHE6WcRwN9kr9dhKhNasA
+ dXPwga9ZUiSKetsoUz69w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Y6vrH0e2sQ4=:1zuAaB8186z/5wpMy5Aex3
+ Lmjf1Fy/r9SaV0mGsPuPoFNbn4Z66Ft4GNeGX+jMxORsAhDpPKUdNN3gUax9z7nMvh/Fj9Nxx
+ 8AyyJrdNzzJQSaqOctaPY0nxG5Tg4BWh71xB45VWkCnBatYmSKbkwS9R+M5lYanrsZxoSKgpR
+ DJ85fC+RjrGFgfLUtH1mxj3nYppVLyS3tTAY2JNoTud9gaaoCMWh0cbWAaPkj4uSdW20VQ88y
+ 179V0Xu8CalwBaFCMo8wE/FAP4LJH42NkUfRbqWLRyA08JZnrP0h+VqNi9pK/XynAIKH1huNT
+ kj/ZM8l98E8THCX0+NUUPpTBJvm/sW8Y8NCgg3thaDt9+3oSbka45YpGK5bJiQyFx+YvbWpkL
+ ldeytF4oy3RaDqevokmtEJL91j3YCm0pJyE/+ULWf2BNLdbPtSbQ1uhAQS6+YgRLHZ8y/CM2Y
+ hp0h0tyhClJUBl7TnDWIvn+/d5T8u+mkTtHP1Thm+FcFLqvMrNnBuI7uYMtLP4BesFv/Acmqp
+ 8CTx+3FUXRW5R/VAmuWWjy/ad8j1xxYVRosVQ6h+8nZ+kI1p6+3KgARJmQ1l67Odq5ki9QlIm
+ exTSUh3LlKe3MmwxzDVAiyGHjsvA2GgGGFqKjcU549wKLHVBJ3cYarVQJfuCZIlOLitCxI+MU
+ CvSHhCDV5eAlfeNRCrauuBxaS639uwQBmZXR4xAtqd73yQfw/V1FhmaidGI16sTLs6zrsGf4o
+ SuaU0YLVej29r837ZIQWwZmT2R2m49H2n0tL2mzKPFasmChG3QUZTcWIqmJHlwfnbmUa78/ws
+ aWUNsZN163p1wyj6hoJf3soxKfXfwOn/v60U4fjndDb/Xltn6s+BVBsdO2lB/jmVdwj3k5HNR
+ shxAwroSI5uPeKQfQVPD7/vjj/yr5Hm6odwQiKj4Dnj7LzmEjSyoIQp0ekmhKj/bf1BjgoZ5z
+ 5JGS2MYPGqTI2GaaMk+VRf/mga5TiECz27STkvCRXVJOgzr/QwbE9/zRoB4fnKpciFsFBfzQw
+ WvHMjrEm7DfnV5IgyuG3NR5S3SuV7rKUce3wNUlNj1PO59xhQ13qmY6SV2TJudkP6PniW1Ljr
+ 5hgCXSL7UbTxGNxO3mJcqzFW5Yjp55VmC2IFYk1QV2rShAaD22ijjCG0p1UoByKQ4d96Fu0g9
+ IR7OyWEe1iY0wqHSnapzHaGXlfNK7iKdj9QFyZP10nE73DY0rbHv+2WfDAL8DMQmPNdnteXVu
+ PyPMIi8eANOBsROb55sRo/ZIRkt17RR5pXX2iSw==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Nov 01, 2019 at 04:39:30PM +0100, Sven Schnelle wrote:
-> On Tue, Oct 29, 2019 at 04:58:24PM +0000, Mark Rutland wrote:
-> > This series is a reworked version of Torsten's FTRACE_WITH_REGS series
-> > [1]. I've tried to rework the existing code in preparatory patches so
-> > that the patchable-function-entry bits slot in with fewer surprises.
-> > This version is based on v5.4-rc3, and can be found in my
-> > arm64/ftrace-with-regs branch [2].
-> > 
-> > Patch 1 adds an (optional) ftrace_init_nop(), which the core code uses
-> > to initialize callsites. This allows us to avoid a synthetic MCOUNT_ADDR
-> > symbol, and more cleanly separates the one-time initialization of the
-> > callsite from dynamic NOP<->CALL modification. Architectures which don't
-> > implement this get the existing ftrace_make_nop() with MCOUNT_ADDR.
-> > 
-> > Recently parisc gained ftrace support using patchable-function-entry.
-> > Patch 2 makes the handling of module callsite locations common in
-> > kernel/module.c with a new FTRACE_CALLSITE_SECTION definition, and
-> > removed the newly redundant bits from arch/parisc.
+Hi Linus,
 
-> > Since v1 [3]:
-> > * Add a couple of people to Cc
-> > * Fold in Ard's Reviewed-by tag
-> > * Rename ftrace_code_init_disabled() to ftrace_nop_initialize()
-> > * Move ftrace_init_nop() to <linux/ftrace.h>, with kerneldoc
-> > * Update kerneldoc for rec parameters
-> [..]
-> 
-> I tested this series on parisc both with ftracing kernel internal functions and
-> module functions. Both are working fine, so feel free to add my
-> 
-> Tested-by: Sven Schnelle <svens@stackframe.org>
+please pull a one-line fix for the parisc architecture for kernel 5.4 from:
 
-Thanks! That's much appreciated.
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.4-3
 
-I've applied that to patches 1 and 2, since the remainder of the series was
-confined to arch/arm64/.
+Fix a parisc kernel crash with ftrace functions when compiled without frame
+pointers.
 
-Mark.
+Thanks,
+Helge
+
+----------------------------------------------------------------
+Sven Schnelle (1):
+      parisc: fix frame pointer in ftrace_regs_caller()
+
