@@ -2,91 +2,135 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 948C6ECDC6
-	for <lists+linux-parisc@lfdr.de>; Sat,  2 Nov 2019 09:50:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FAE3ECE90
+	for <lists+linux-parisc@lfdr.de>; Sat,  2 Nov 2019 13:12:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726532AbfKBIuw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 2 Nov 2019 04:50:52 -0400
-Received: from mout.gmx.net ([212.227.17.22]:53987 "EHLO mout.gmx.net"
+        id S1726229AbfKBMMd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 2 Nov 2019 08:12:33 -0400
+Received: from foss.arm.com ([217.140.110.172]:46692 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726529AbfKBIuw (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 2 Nov 2019 04:50:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1572684641;
-        bh=g6NSlVrdYozZKmLDMtTnXGfyrkAJufS1AfHzOLf/s+M=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=cgalMXuO5P7Q4QBYDwV8Rk4rYa8Zr/I83JcUR4URsomxP24BQ+XozR5uAazIWZx43
-         rRGxZnR+4cPKh1zYuKVJxsTq+dRkToMlNZiZi/e295DsDlAKKozysGP9xKVya1MAab
-         z2U/YLz9bVx0uWPo53lJSLsnD/htZS4g7FuWxJDs=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.43.192] ([80.187.110.91]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCbEp-1iIKWY1xcB-009dyo; Sat, 02
- Nov 2019 09:50:41 +0100
-Subject: Re: [GIT PULL] parisc architecture fix for kernel v5.4
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-References: <20191101202019.GA22999@ls3530>
- <CAHk-=whPiZSgzj_FtrDWbP1x6rssAQaD6t4zvwC_s9UbsOwM=A@mail.gmail.com>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <fcc5e547-9512-e416-a640-0d8c1d50318c@gmx.de>
-Date:   Sat, 2 Nov 2019 09:50:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1726163AbfKBMMd (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 2 Nov 2019 08:12:33 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 820ED31F;
+        Sat,  2 Nov 2019 05:12:32 -0700 (PDT)
+Received: from [10.162.0.144] (a075553-lin.blr.arm.com [10.162.0.144])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D83913F718;
+        Sat,  2 Nov 2019 05:12:27 -0700 (PDT)
+Subject: Re: [PATCHv2 0/8] arm64: ftrace cleanup + FTRACE_WITH_REGS
+To:     Mark Rutland <mark.rutland@arm.com>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, catalin.marinas@arm.com,
+        deller@gmx.de, duwe@suse.de, James.Bottomley@HansenPartnership.com,
+        james.morse@arm.com, jeyu@kernel.org, jpoimboe@redhat.com,
+        jthierry@redhat.com, linux-parisc@vger.kernel.org,
+        mingo@redhat.com, peterz@infradead.org, rostedt@goodmis.org,
+        svens@stackframe.org, takahiro.akashi@linaro.org, will@kernel.org
+References: <20191029165832.33606-1-mark.rutland@arm.com>
+From:   Amit Daniel Kachhap <amit.kachhap@arm.com>
+Message-ID: <42c113ee-e7fc-3e94-cca0-f05f1c89fdb8@arm.com>
+Date:   Sat, 2 Nov 2019 17:42:25 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-In-Reply-To: <CAHk-=whPiZSgzj_FtrDWbP1x6rssAQaD6t4zvwC_s9UbsOwM=A@mail.gmail.com>
+In-Reply-To: <20191029165832.33606-1-mark.rutland@arm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ayd2mbjpXRKCL8+qiqAUH9D9htmjCIA8oGZvRMJw82kZB1R3rzG
- TK5LSV4tf8pgSGBYQSdcnxibfzlYrj2kZHpsm2WjSXO9UJaHjm7lQKHirahldd4r8kZwqAC
- 74x0H73GiEZMr9qxDZ2cTFzGmy/+vO+6C1H6jHIbJRQiNxXRzX7VaGJ0HBA15dMR3v2pOfA
- +pExvu800cBQUJo1oc/yQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:KGryRhUcfIc=:ciB7MouVYJuL3x6BCHzJ/3
- cRx8WIoj0yD40RUJD/ffw19eWqO620mnVg6EWJKHbJpHaKRoqKdIBYUjIpggTydIILVSWYEiz
- Yp7sJeIOS5NPWluZ1+INkQybwGjeD56MQUbE5FwYWgiQ6CBauffnZZQBVLCS6nBBF0woQHgVt
- aBXJBSN1w0pJAJ0632P2KayQTVEyj4YoXLK2YKUBKLwSRzAaTGjD7RTIOp2Y8jyL329wQaKq3
- W2PKAzOmU3xDENDH5srrrzPkon6kdm5fiQjYymm9RqYcmQJVcmLsqD62Y7VoekwsTbr0KLHiy
- pIZ5dsvWNnQc29Mfay19YIuW4zDKjSK32cls3TY1jX2iQDjT6Qdavk3CjZu4PRc6DbQZqI6aq
- F4+sTYM4RR2Yi4Wk99YWQ5WiBztAlQhw4bFXbbzNFMA4dfdikHYumYz5oUf30hfRTrWIKbUO6
- 6IHaJvdlNYiQ8xpQ5qoaKYB51HAk/FDccC8j1mkcUUKL6O4W1IOk5+obVKS61ecFi0tJSqlgk
- e0ev6k5FjQoOefnVXQnt1aTRpeibWnb2wyAk9xP3acm9kAb/7RtBOhPhxXJiOPxVZs8lOF2ui
- Zb9orxwT8c7DFue2DyiN8643VMeWl4dwajLKGYXVk+MpXaMGRfmYr4GB+PedjW7XX3ARVbDYS
- IjCFJwdFwJjpXHDO3x+FBSQ2fsIBsBneRznNoUDps0NWxO/TqwK2mdkDNQENsAyqlyMi/76s8
- W0iBlIn/WM0pQwLO41JJRo/Q3WFddim5P19GThlX1CxF9B88cPn5Qz5ikUFRBvWa1BrP59Nbz
- rwNOil8P4RF7NoLVLOmj1PiknriiVF8H4RzwTgFjwYZBLOb/t+gkBjAtkdYRkB367tclGT28m
- 96yB37r+JeCOMSSJ9sim+FRGwja9+g57q3l26yLrprgtQMPZsjH9uyZRM/shZU8c1oun2fz1c
- XVDjL5xc1wAU/bOtbL0PTLeuFhmBvRZyje/tZme3151MGDPUfyLDxI8nPyNONTGpdmLxqn4J4
- zNHx/XHs08qqXaQmTxJ8qO3A9Xk1xoyuLGpAZptwjIJLxxsjq9fmDZiKZjJI5AyKU5tFhbI19
- ZilZ9Rj0iVQmk2yHPTEGDceECxoG9HteRP9appFLc7LCGY1ntn/Xq3gnERG3EMaDYMVF/Omx7
- YYz0C3j4ZnmU/P5rwVOoMSK3iljNdRX2zejlPxH+djoWKcIy8nNSUmUIfIR50fcI6/r5CIBVe
- xGEcLOWNr1bZlaWXT6AUI8iG5zfGIF5oqkWTlJw==
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 01.11.19 23:17, Linus Torvalds wrote:
-> On Fri, Nov 1, 2019 at 1:20 PM Helge Deller <deller@gmx.de> wrote:
->>
->> please pull a one-line fix for the parisc architecture for kernel 5.4 f=
-rom:
->
-> You do say "one-line fix", but I'd still like to see a diffstat for it.
-> Pulled, but please check your pull-request script.
+Hi Mark,
 
-Oh, sorry. I deleted the diffstat manually by mistake before sending.
-For the record, here is the changelog and diffstat again:
-=2D---------------------------------------------------------------
-Sven Schnelle (1):
-       parisc: fix frame pointer in ftrace_regs_caller()
+On 10/29/19 10:28 PM, Mark Rutland wrote:
+> Hi,
+> 
+> This series is a reworked version of Torsten's FTRACE_WITH_REGS series
+> [1]. I've tried to rework the existing code in preparatory patches so
+> that the patchable-function-entry bits slot in with fewer surprises.
+> This version is based on v5.4-rc3, and can be found in my
+> arm64/ftrace-with-regs branch [2].
+> 
+> Patch 1 adds an (optional) ftrace_init_nop(), which the core code uses
+> to initialize callsites. This allows us to avoid a synthetic MCOUNT_ADDR
+> symbol, and more cleanly separates the one-time initialization of the
+> callsite from dynamic NOP<->CALL modification. Architectures which don't
+> implement this get the existing ftrace_make_nop() with MCOUNT_ADDR.
+> 
+> Recently parisc gained ftrace support using patchable-function-entry.
+> Patch 2 makes the handling of module callsite locations common in
+> kernel/module.c with a new FTRACE_CALLSITE_SECTION definition, and
+> removed the newly redundant bits from arch/parisc.
+> 
+> Patches 3 and 4 move the module PLT initialization to module load time,
+> which simplifies runtime callsite modification. This also means that we
+> don't transitently mark the module text RW, and will allow for the
+> removal of module_disable_ro().
+> 
+> Patches 5 and 6 add some trivial infrastructure, with patch 7 finally
+> adding FTRACE_WITH_REGS support. Additional work will be required for
+> livepatching (e.g. implementing reliable stack trace), which is
+> commented as part of patch 7.
+> 
+> Patch 8 is a trivial cleanup atop of the rest of the series, making the
+> code easier to read and less susceptible to config-specific breakage.
+I tested the whole series with my latest in-kernel ptrauth patches [1]
+and graph_tracer/function_graph_tracer works fine, So for the whole series,
+Tested-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
 
-  arch/parisc/kernel/entry.S | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
+Also I gave few minor comments in the individual patches. With those
+comments,
+Signed-off-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
 
-
-Helge
+Thanks,
+Amit Daniel
+[1]: https://patchwork.kernel.org/cover/11195085/
+> 
+> Since v1 [3]:
+> * Add a couple of people to Cc
+> * Fold in Ard's Reviewed-by tag
+> * Rename ftrace_code_init_disabled() to ftrace_nop_initialize()
+> * Move ftrace_init_nop() to <linux/ftrace.h>, with kerneldoc
+> * Update kerneldoc for rec parameters
+> 
+> Thanks,
+> Mark.
+> 
+> [1] https://lore.kernel.org/r/20190208150826.44EBC68DD2@newverein.lst.de
+> [2] git://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git arm64/ftrace-with-regs
+> [3] https://lore.kernel.org/r/20191021163426.9408-1-mark.rutland@arm.com
+> 
+> Mark Rutland (7):
+>    ftrace: add ftrace_init_nop()
+>    module/ftrace: handle patchable-function-entry
+>    arm64: module: rework special section handling
+>    arm64: module/ftrace: intialize PLT at load time
+>    arm64: insn: add encoder for MOV (register)
+>    arm64: asm-offsets: add S_FP
+>    arm64: ftrace: minimize ifdeffery
+> 
+> Torsten Duwe (1):
+>    arm64: implement ftrace with regs
+> 
+>   arch/arm64/Kconfig               |   2 +
+>   arch/arm64/Makefile              |   5 ++
+>   arch/arm64/include/asm/ftrace.h  |  23 +++++++
+>   arch/arm64/include/asm/insn.h    |   3 +
+>   arch/arm64/include/asm/module.h  |   2 +-
+>   arch/arm64/kernel/asm-offsets.c  |   1 +
+>   arch/arm64/kernel/entry-ftrace.S | 140 +++++++++++++++++++++++++++++++++++++--
+>   arch/arm64/kernel/ftrace.c       | 123 ++++++++++++++++++++--------------
+>   arch/arm64/kernel/insn.c         |  13 ++++
+>   arch/arm64/kernel/module-plts.c  |   3 +-
+>   arch/arm64/kernel/module.c       |  57 +++++++++++++---
+>   arch/parisc/Makefile             |   1 -
+>   arch/parisc/kernel/module.c      |  10 ++-
+>   arch/parisc/kernel/module.lds    |   7 --
+>   include/linux/ftrace.h           |  40 ++++++++++-
+>   kernel/module.c                  |   2 +-
+>   kernel/trace/ftrace.c            |   6 +-
+>   17 files changed, 355 insertions(+), 83 deletions(-)
+>   delete mode 100644 arch/parisc/kernel/module.lds
+> 
