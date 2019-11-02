@@ -2,56 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9295AECB4C
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Nov 2019 23:20:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 948C6ECDC6
+	for <lists+linux-parisc@lfdr.de>; Sat,  2 Nov 2019 09:50:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726023AbfKAWUC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Nov 2019 18:20:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50714 "EHLO mail.kernel.org"
+        id S1726532AbfKBIuw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 2 Nov 2019 04:50:52 -0400
+Received: from mout.gmx.net ([212.227.17.22]:53987 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725989AbfKAWUC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Nov 2019 18:20:02 -0400
+        id S1726529AbfKBIuw (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 2 Nov 2019 04:50:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1572684641;
+        bh=g6NSlVrdYozZKmLDMtTnXGfyrkAJufS1AfHzOLf/s+M=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=cgalMXuO5P7Q4QBYDwV8Rk4rYa8Zr/I83JcUR4URsomxP24BQ+XozR5uAazIWZx43
+         rRGxZnR+4cPKh1zYuKVJxsTq+dRkToMlNZiZi/e295DsDlAKKozysGP9xKVya1MAab
+         z2U/YLz9bVx0uWPo53lJSLsnD/htZS4g7FuWxJDs=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.43.192] ([80.187.110.91]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCbEp-1iIKWY1xcB-009dyo; Sat, 02
+ Nov 2019 09:50:41 +0100
 Subject: Re: [GIT PULL] parisc architecture fix for kernel v5.4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572646802;
-        bh=nq94pIIwfxzOaW6/9p5VoikDsKMKqN53yODcP2vYWBM=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=ALPvJw9vCXO9cKCdJ0PvrlrSg3p9a8drIGF49pYkB9wzoGZjod2MwPkL7UodwlKIH
-         sQ9qK7u1K6TmQgvF2/UnZgqWiMVVLiqjNA4oeu2a2SrR+4LsJ5VOSx7DfZys0HsBGn
-         svQGsjj3ibWuKAx83VWB4T3/lH2oJMf/0D8DPbwM=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20191101202019.GA22999@ls3530>
-References: <20191101202019.GA22999@ls3530>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20191101202019.GA22999@ls3530>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git
- parisc-5.4-3
-X-PR-Tracked-Commit-Id: 3d252454edd0fe88c8250cb7f9dfb9ec12d208d7
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 31408fbe33d1d5e6209fa89fa5b45459197b8970
-Message-Id: <157264680212.18172.12099761353547722974.pr-tracker-bot@kernel.org>
-Date:   Fri, 01 Nov 2019 22:20:02 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
         Sven Schnelle <svens@stackframe.org>
+References: <20191101202019.GA22999@ls3530>
+ <CAHk-=whPiZSgzj_FtrDWbP1x6rssAQaD6t4zvwC_s9UbsOwM=A@mail.gmail.com>
+From:   Helge Deller <deller@gmx.de>
+Message-ID: <fcc5e547-9512-e416-a640-0d8c1d50318c@gmx.de>
+Date:   Sat, 2 Nov 2019 09:50:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
+MIME-Version: 1.0
+In-Reply-To: <CAHk-=whPiZSgzj_FtrDWbP1x6rssAQaD6t4zvwC_s9UbsOwM=A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ayd2mbjpXRKCL8+qiqAUH9D9htmjCIA8oGZvRMJw82kZB1R3rzG
+ TK5LSV4tf8pgSGBYQSdcnxibfzlYrj2kZHpsm2WjSXO9UJaHjm7lQKHirahldd4r8kZwqAC
+ 74x0H73GiEZMr9qxDZ2cTFzGmy/+vO+6C1H6jHIbJRQiNxXRzX7VaGJ0HBA15dMR3v2pOfA
+ +pExvu800cBQUJo1oc/yQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:KGryRhUcfIc=:ciB7MouVYJuL3x6BCHzJ/3
+ cRx8WIoj0yD40RUJD/ffw19eWqO620mnVg6EWJKHbJpHaKRoqKdIBYUjIpggTydIILVSWYEiz
+ Yp7sJeIOS5NPWluZ1+INkQybwGjeD56MQUbE5FwYWgiQ6CBauffnZZQBVLCS6nBBF0woQHgVt
+ aBXJBSN1w0pJAJ0632P2KayQTVEyj4YoXLK2YKUBKLwSRzAaTGjD7RTIOp2Y8jyL329wQaKq3
+ W2PKAzOmU3xDENDH5srrrzPkon6kdm5fiQjYymm9RqYcmQJVcmLsqD62Y7VoekwsTbr0KLHiy
+ pIZ5dsvWNnQc29Mfay19YIuW4zDKjSK32cls3TY1jX2iQDjT6Qdavk3CjZu4PRc6DbQZqI6aq
+ F4+sTYM4RR2Yi4Wk99YWQ5WiBztAlQhw4bFXbbzNFMA4dfdikHYumYz5oUf30hfRTrWIKbUO6
+ 6IHaJvdlNYiQ8xpQ5qoaKYB51HAk/FDccC8j1mkcUUKL6O4W1IOk5+obVKS61ecFi0tJSqlgk
+ e0ev6k5FjQoOefnVXQnt1aTRpeibWnb2wyAk9xP3acm9kAb/7RtBOhPhxXJiOPxVZs8lOF2ui
+ Zb9orxwT8c7DFue2DyiN8643VMeWl4dwajLKGYXVk+MpXaMGRfmYr4GB+PedjW7XX3ARVbDYS
+ IjCFJwdFwJjpXHDO3x+FBSQ2fsIBsBneRznNoUDps0NWxO/TqwK2mdkDNQENsAyqlyMi/76s8
+ W0iBlIn/WM0pQwLO41JJRo/Q3WFddim5P19GThlX1CxF9B88cPn5Qz5ikUFRBvWa1BrP59Nbz
+ rwNOil8P4RF7NoLVLOmj1PiknriiVF8H4RzwTgFjwYZBLOb/t+gkBjAtkdYRkB367tclGT28m
+ 96yB37r+JeCOMSSJ9sim+FRGwja9+g57q3l26yLrprgtQMPZsjH9uyZRM/shZU8c1oun2fz1c
+ XVDjL5xc1wAU/bOtbL0PTLeuFhmBvRZyje/tZme3151MGDPUfyLDxI8nPyNONTGpdmLxqn4J4
+ zNHx/XHs08qqXaQmTxJ8qO3A9Xk1xoyuLGpAZptwjIJLxxsjq9fmDZiKZjJI5AyKU5tFhbI19
+ ZilZ9Rj0iVQmk2yHPTEGDceECxoG9HteRP9appFLc7LCGY1ntn/Xq3gnERG3EMaDYMVF/Omx7
+ YYz0C3j4ZnmU/P5rwVOoMSK3iljNdRX2zejlPxH+djoWKcIy8nNSUmUIfIR50fcI6/r5CIBVe
+ xGEcLOWNr1bZlaWXT6AUI8iG5zfGIF5oqkWTlJw==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Fri, 1 Nov 2019 21:20:19 +0100:
+On 01.11.19 23:17, Linus Torvalds wrote:
+> On Fri, Nov 1, 2019 at 1:20 PM Helge Deller <deller@gmx.de> wrote:
+>>
+>> please pull a one-line fix for the parisc architecture for kernel 5.4 f=
+rom:
+>
+> You do say "one-line fix", but I'd still like to see a diffstat for it.
+> Pulled, but please check your pull-request script.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.4-3
+Oh, sorry. I deleted the diffstat manually by mistake before sending.
+For the record, here is the changelog and diffstat again:
+=2D---------------------------------------------------------------
+Sven Schnelle (1):
+       parisc: fix frame pointer in ftrace_regs_caller()
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/31408fbe33d1d5e6209fa89fa5b45459197b8970
+  arch/parisc/kernel/entry.S | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you!
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+Helge
