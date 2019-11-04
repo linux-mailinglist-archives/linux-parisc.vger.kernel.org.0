@@ -2,103 +2,228 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08F19EDACF
-	for <lists+linux-parisc@lfdr.de>; Mon,  4 Nov 2019 09:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CB17EDAD4
+	for <lists+linux-parisc@lfdr.de>; Mon,  4 Nov 2019 09:53:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728165AbfKDIts (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 4 Nov 2019 03:49:48 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:37305 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726100AbfKDIts (ORCPT
+        id S1727138AbfKDIxr convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Mon, 4 Nov 2019 03:53:47 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:38732 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726633AbfKDIxr (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 4 Nov 2019 03:49:48 -0500
-Received: by mail-wm1-f67.google.com with SMTP id q130so15070493wme.2
-        for <linux-parisc@vger.kernel.org>; Mon, 04 Nov 2019 00:49:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=AZd8DxR702MwoAlKE7sREzCDnCS7TFuUgJFAdqqjsLA=;
-        b=h92Y4u9I19V2o1s+5lGhO17NSFYSHZk9QgvM5mDhCb3p4Vr39mQBIAAeC5nqfpsi7E
-         4Bu32H/W8VKvnuNSVHaBWMXpaykRQBdpqblyb005vmpwKAd2pPajeArxEgBntM3nBLKj
-         CddUtibvOMTxVJx2KNlPjR3XoBIJe+NH2U3j4K0JJelFf1HEtWdgk3iyAHOejVVD2gf+
-         RJwDT9t3Hb7iL4cAFs4mdD4rEQqzd1PD/0A6AYCrvWEvFCYF3aqv09lC/5EFGKCN59wI
-         T1KGPDXOWiB478W6LZxF6RvwiHkYgYy1j3yOyQ1KqccT28HwFd28G/rbXCZe5nN7BE4U
-         VQdw==
+        Mon, 4 Nov 2019 03:53:47 -0500
+Received: by mail-oi1-f193.google.com with SMTP id v186so13415641oie.5;
+        Mon, 04 Nov 2019 00:53:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=AZd8DxR702MwoAlKE7sREzCDnCS7TFuUgJFAdqqjsLA=;
-        b=ot5FtPP35u5puvTbJ3oLufsc9Vt+g+EjT0Ol+Qu5y279H4OtSY1uEoNnp0Br36TdJM
-         YRH4R2Hegx1gT0ShEqRcmQpXl+52tPLhzgKr/wpNHtxVzhqUGdS92UmyrcrucoXB4l1S
-         d0IZm+6vIA5zXJiwtGzAV2YC265YQwX2yXH6jQsmz6uPxvfBISYQLBNSMUL5YUS9PwcN
-         DdAGBeeRy88IpfWGj+93KjdaG8TcrC0e7B24TA6XFoedEIrymRn7KKbtdUYAumNNGxuv
-         cwpaOFzEzH9h3JDLTOEsbDfTtuFozFfaU65LKzZ5ZnVTAM+GtDsIieyN7gLwgOwHIquj
-         LH4Q==
-X-Gm-Message-State: APjAAAVOO5hpwBHvKdp1HIMDPVL9THGO3EX7DVtaHHBuhIoIpYJDp6K0
-        YdsNAz6EJkU8rSaAnIs7jc0jkA==
-X-Google-Smtp-Source: APXvYqzYY3HzDkh794xMS1oJwQdQFMlMRYGSpRhna8XwoC1msLOBd9EdnxKhwo914zrovZJbmWsmAw==
-X-Received: by 2002:a05:600c:2383:: with SMTP id m3mr18810088wma.166.1572857385472;
-        Mon, 04 Nov 2019 00:49:45 -0800 (PST)
-Received: from [192.168.86.166] (83-86-89-107.cable.dynamic.v4.ziggo.nl. [83.86.89.107])
-        by smtp.gmail.com with ESMTPSA id o187sm15137370wmo.20.2019.11.04.00.49.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Nov 2019 00:49:44 -0800 (PST)
-Subject: Re: ALSA: pcm: use dma_can_mmap() to check if a device supports
- dma_mmap_*
-From:   Greg Kroah-Hartman <gregkh@google.com>
-To:     youling 257 <youling257@gmail.com>, Takashi Iwai <tiwai@suse.de>
-Cc:     linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
-        Vladimir Murzin <vladimir.murzin@arm.com>,
-        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Helge Deller <deller@gmx.de>,
-        x86@kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-m68k@lists.linux-m68k.org,
-        Robin Murphy <robin.murphy@arm.com>,
-        linux-arm-kernel@lists.infradead.org, hch@lst.de
-References: <CAOzgRdYSaaF6OkXGME2=fn1dfTbpyt_GqEs=10oXH=V6SudfyA@mail.gmail.com>
- <s5himo0cbmm.wl-tiwai@suse.de>
- <CAOzgRdYTa-nAa7QV6c2aZs910BACg91vAjcjw4V-Oy8KCZVmmQ@mail.gmail.com>
- <60ee349a-1fe7-46f0-5161-1dcfcb6fbee9@google.com>
-Message-ID: <19c3f0ca-9b21-0c5e-894d-976594f38a86@google.com>
-Date:   Mon, 4 Nov 2019 09:49:43 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ftGbwwjNOfRweFmtue9SSD86OxwGEsa99D0pa3CKj2k=;
+        b=HpbztpII/svDnq10yz1drtIH+d4+R+GSoswoV9RyteMMcorLbbVYVxWjQKvryyilng
+         PoC3cCpQ3LIRwjtw5/qrbJPNq+lCcz6tY8h+9DAKhqO+UTUfCklqmQRKSpgN9xMgJyNe
+         b/IlplB6H5c5F0bMjpxsZAY7PXm+6nwEJqqVf3z71/NIf2GU9a3Luo3lAbfhglE1By6X
+         ZV7/6j410o5ECiXg5/dO71WRU4Z06pA4WPIToC7UeeWtwnYLNSxLIEpax+U4fuVUNfcP
+         lBbLRYHonW26kqi348Js3ptBp7MmFpGdTTfiLB/mp63I0e8/rbsO2wwf+4ni46Bpk2HY
+         V95Q==
+X-Gm-Message-State: APjAAAWzcvVjKRZhoJMS+TTmMiqZGm9qUcpU7pOjuIx4R+Yuaxkbljty
+        84gA9Vvo0uaWic3edABUtm1cf7wIdXEULxGIv+8=
+X-Google-Smtp-Source: APXvYqwHBlxWvX9baD3gMlRXyGYNGxo8XeR6zpTu9ocP235D46KuJQHptAVE+pdBySSjAAujVU5GG1b4JqAjn27tERM=
+X-Received: by 2002:aca:882:: with SMTP id 124mr32125oii.54.1572857625673;
+ Mon, 04 Nov 2019 00:53:45 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <60ee349a-1fe7-46f0-5161-1dcfcb6fbee9@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US-large
-Content-Transfer-Encoding: 7bit
+References: <1572850587-20314-1-git-send-email-rppt@kernel.org> <1572850587-20314-6-git-send-email-rppt@kernel.org>
+In-Reply-To: <1572850587-20314-6-git-send-email-rppt@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 4 Nov 2019 09:53:34 +0100
+Message-ID: <CAMuHMdUG3V7uxzhbetw75vVeobeP0-bQySb3r=0V5XujUF123g@mail.gmail.com>
+Subject: Re: [PATCH v3 05/13] m68k: mm: use pgtable-nopXd instead of 4level-fixup
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Linux MM <linux-mm@kvack.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greentime Hu <green.hu@gmail.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mark Salter <msalter@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Michal Simek <monstr@monstr.eu>, Peter Rosin <peda@axentia.se>,
+        Richard Weinberger <richard@nod.at>,
+        Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Sam Creasey <sammy@sammy.net>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-c6x-dev@linux-c6x.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-um@lists.infradead.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 11/4/19 9:32 AM, Greg Kroah-Hartman wrote:
- > On 11/4/19 9:27 AM, youling 257 wrote:
- >  > This driver
- > 
-https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/drivers/usb/gadget/function/f_audio_source.c 
+Hi Mike,
 
- >
- >  >
- >
- > The driver is broken and needs to be fixed.  Please feel free to submit
- > patches to AOSP to do so as you can trigger this easily.
+On Mon, Nov 4, 2019 at 7:57 AM Mike Rapoport <rppt@kernel.org> wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> m68k has two or three levels of page tables and can use appropriate
+> pgtable-nopXd and folding of the upper layers.
+>
+> Replace usage of include/asm-generic/4level-fixup.h and explicit
+> definitions of __PAGETABLE_PxD_FOLDED in m68k with
+> include/asm-generic/pgtable-nopmd.h for two-level configurations and with
+> include/asm-generic/pgtable-nopud.h for three-lelve configurations and
+> adjust page table manipulation macros and functions accordingly.
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> Acked-by: Greg Ungerer <gerg@linux-m68k.org>
 
-Hm, maybe the driver isn't broken...
+Thanks for your patch!
 
-snd_pcm_lib_preallocate_pages_for_all() is called with
-SNDRV_DMA_TYPE_DEV set, so that should be fine, and the only other
-buffer I can see allocate here is with a call to
-snd_pcm_lib_alloc_vmalloc_buffer() which _should_ be ok, right?
+The build error reported for v1 by kbuild test robot when building for
+sun3x is still there (m68k defconfig or sun3x_defconfig):
 
-I don't see any buffers coming off the stack here, unless the gadget
-controller is the one creating them?
+    arch/m68k/sun3x/dvma.c: In function ‘dvma_map_cpu’:
+    arch/m68k/sun3x/dvma.c:98:33: error: passing argument 2 of
+‘pmd_alloc’ from incompatible pointer type
+[-Werror=incompatible-pointer-types]
+       if((pmd = pmd_alloc(&init_mm, pgd, vaddr)) == NULL) {
+                                     ^~~
+    In file included from arch/m68k/sun3x/dvma.c:17:
+    include/linux/mm.h:1875:61: note: expected ‘pud_t *’ {aka ‘struct
+<anonymous> *’} but argument is of type ‘pgd_t *’ {aka ‘struct
+<anonymous> *’}
+     static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud,
+unsigned long address)
+                                                          ~~~~~~~^~~
 
-thanks,
+This indeed boots fine on ARAnyM, which emulates on 68040.
+It would be good to have some boot testing on '020/030, too.
 
-greg k-h
+> --- a/arch/m68k/mm/kmap.c
+> +++ b/arch/m68k/mm/kmap.c
+
+> @@ -196,17 +198,21 @@ void __iomem *__ioremap(unsigned long physaddr, unsigned long size, int cachefla
+>                         printk ("\npa=%#lx va=%#lx ", physaddr, virtaddr);
+>  #endif
+>                 pgd_dir = pgd_offset_k(virtaddr);
+> -               pmd_dir = pmd_alloc(&init_mm, pgd_dir, virtaddr);
+> +               p4d_dir = p4d_offset(pgd_dir, virtaddr);
+> +               pud_dir = pud_offset(p4d_dir, virtaddr);
+> +               pmd_dir = pmd_alloc(&init_mm, pud_dir, virtaddr);
+>                 if (!pmd_dir) {
+>                         printk("ioremap: no mem for pmd_dir\n");
+>                         return NULL;
+>                 }
+>
+>                 if (CPU_IS_020_OR_030) {
+> +#if CONFIG_PGTABLE_LEVELS == 3
+
+This check puzzled me a bit: when we get here, CONFIG_PGTABLE_LEVELS is
+always true.
+However, the check cannot be removed, as the code it protects fails to compile
+when building for Coldfire.
+
+Perhaps this can be made more clear by reverting the order?
+I.e.
+
+    #if CONFIG_PGTABLE_LEVELS == 3
+            if (CPU_IS_020_OR_030) {
+                    ...
+            } else
+    #endif
+            {
+
+Or is there some better way?
+
+>                         pmd_dir->pmd[(virtaddr/PTRTREESIZE) & 15] = physaddr;
+>                         physaddr += PTRTREESIZE;
+>                         virtaddr += PTRTREESIZE;
+>                         size -= PTRTREESIZE;
+> +#endif
+>                 } else {
+>                         pte_dir = pte_alloc_kernel(pmd_dir, virtaddr);
+>                         if (!pte_dir) {
+> @@ -258,19 +264,24 @@ void __iounmap(void *addr, unsigned long size)
+>  {
+>         unsigned long virtaddr = (unsigned long)addr;
+>         pgd_t *pgd_dir;
+> +       p4d_t *p4d_dir;
+> +       pud_t *pud_dir;
+>         pmd_t *pmd_dir;
+>         pte_t *pte_dir;
+>
+>         while ((long)size > 0) {
+>                 pgd_dir = pgd_offset_k(virtaddr);
+> -               if (pgd_bad(*pgd_dir)) {
+> -                       printk("iounmap: bad pgd(%08lx)\n", pgd_val(*pgd_dir));
+> -                       pgd_clear(pgd_dir);
+> +               p4d_dir = p4d_offset(pgd_dir, virtaddr);
+> +               pud_dir = pud_offset(p4d_dir, virtaddr);
+> +               if (pud_bad(*pud_dir)) {
+> +                       printk("iounmap: bad pgd(%08lx)\n", pud_val(*pud_dir));
+> +                       pud_clear(pud_dir);
+>                         return;
+>                 }
+> -               pmd_dir = pmd_offset(pgd_dir, virtaddr);
+> +               pmd_dir = pmd_offset(pud_dir, virtaddr);
+>
+>                 if (CPU_IS_020_OR_030) {
+> +#if CONFIG_PGTABLE_LEVELS == 3
+
+Likewise.
+
+>                         int pmd_off = (virtaddr/PTRTREESIZE) & 15;
+>                         int pmd_type = pmd_dir->pmd[pmd_off] & _DESCTYPE_MASK;
+>
+
+> @@ -341,14 +355,17 @@ void kernel_set_cachemode(void *addr, unsigned long size, int cmode)
+>
+>         while ((long)size > 0) {
+>                 pgd_dir = pgd_offset_k(virtaddr);
+> -               if (pgd_bad(*pgd_dir)) {
+> -                       printk("iocachemode: bad pgd(%08lx)\n", pgd_val(*pgd_dir));
+> -                       pgd_clear(pgd_dir);
+> +               p4d_dir = p4d_offset(pgd_dir, virtaddr);
+> +               pud_dir = pud_offset(p4d_dir, virtaddr);
+> +               if (pud_bad(*pud_dir)) {
+> +                       printk("iocachemode: bad pud(%08lx)\n", pud_val(*pud_dir));
+> +                       pud_clear(pud_dir);
+>                         return;
+>                 }
+> -               pmd_dir = pmd_offset(pgd_dir, virtaddr);
+> +               pmd_dir = pmd_offset(pud_dir, virtaddr);
+>
+>                 if (CPU_IS_020_OR_030) {
+> +#if CONFIG_PGTABLE_LEVELS == 3
+
+Likewise
+
+>                         int pmd_off = (virtaddr/PTRTREESIZE) & 15;
+>
+>                         if ((pmd_dir->pmd[pmd_off] & _DESCTYPE_MASK) == _PAGE_PRESENT) {
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
