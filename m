@@ -2,107 +2,193 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B35EE1D1
-	for <lists+linux-parisc@lfdr.de>; Mon,  4 Nov 2019 15:04:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 038EAEE443
+	for <lists+linux-parisc@lfdr.de>; Mon,  4 Nov 2019 16:51:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729092AbfKDOEq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 4 Nov 2019 09:04:46 -0500
-Received: from foss.arm.com ([217.140.110.172]:43744 "EHLO foss.arm.com"
+        id S1729058AbfKDPvl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 4 Nov 2019 10:51:41 -0500
+Received: from foss.arm.com ([217.140.110.172]:45972 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727782AbfKDOEp (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 4 Nov 2019 09:04:45 -0500
+        id S1727998AbfKDPvl (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 4 Nov 2019 10:51:41 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F30A01FB;
-        Mon,  4 Nov 2019 06:04:44 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 15BE41FB;
+        Mon,  4 Nov 2019 07:51:40 -0800 (PST)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BA3EA3F6C4;
-        Mon,  4 Nov 2019 06:04:42 -0800 (PST)
-Date:   Mon, 4 Nov 2019 14:04:40 +0000
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA20A3F71A;
+        Mon,  4 Nov 2019 07:51:37 -0800 (PST)
+Date:   Mon, 4 Nov 2019 15:51:33 +0000
 From:   Mark Rutland <mark.rutland@arm.com>
-To:     Amit Kachhap <Amit.Kachhap@arm.com>
-Cc:     Will Deacon <will@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Catalin Marinas <Catalin.Marinas@arm.com>,
-        "deller@gmx.de" <deller@gmx.de>, "duwe@suse.de" <duwe@suse.de>,
-        "James.Bottomley@HansenPartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        James Morse <James.Morse@arm.com>,
-        "jeyu@kernel.org" <jeyu@kernel.org>,
-        "jpoimboe@redhat.com" <jpoimboe@redhat.com>,
-        "jthierry@redhat.com" <jthierry@redhat.com>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "svens@stackframe.org" <svens@stackframe.org>,
-        "takahiro.akashi@linaro.org" <takahiro.akashi@linaro.org>
-Subject: Re: [PATCHv2 0/8] arm64: ftrace cleanup + FTRACE_WITH_REGS
-Message-ID: <20191104140440.GJ45140@lakrids.cambridge.arm.com>
+To:     linux-arm-kernel@lists.infradead.org, Jessica Yu <jeyu@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     linux-kernel@vger.kernel.org, amit.kachhap@arm.com,
+        catalin.marinas@arm.com, duwe@suse.de, james.morse@arm.com,
+        jpoimboe@redhat.com, jthierry@redhat.com,
+        linux-parisc@vger.kernel.org, mingo@redhat.com,
+        peterz@infradead.org, rostedt@goodmis.org, svens@stackframe.org,
+        takahiro.akashi@linaro.org, will@kernel.org
+Subject: Re: [PATCHv2 2/8] module/ftrace: handle patchable-function-entry
+Message-ID: <20191104155132.GA1643@lakrids.cambridge.arm.com>
 References: <20191029165832.33606-1-mark.rutland@arm.com>
- <42c113ee-e7fc-3e94-cca0-f05f1c89fdb8@arm.com>
- <20191104125637.GB24108@willie-the-truck>
- <d9b738fa-b7c5-f1b2-3878-d7afa4ba7ba5@arm.com>
+ <20191029165832.33606-3-mark.rutland@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d9b738fa-b7c5-f1b2-3878-d7afa4ba7ba5@arm.com>
+In-Reply-To: <20191029165832.33606-3-mark.rutland@arm.com>
 User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Nov 04, 2019 at 01:03:51PM +0000, Amit Kachhap wrote:
-> 
-> 
-> On 11/4/19 6:26 PM, Will Deacon wrote:
-> > On Sat, Nov 02, 2019 at 05:42:25PM +0530, Amit Daniel Kachhap wrote:
-> >> On 10/29/19 10:28 PM, Mark Rutland wrote:
-> >>> This series is a reworked version of Torsten's FTRACE_WITH_REGS series
-> >>> [1]. I've tried to rework the existing code in preparatory patches so
-> >>> that the patchable-function-entry bits slot in with fewer surprises.
-> >>> This version is based on v5.4-rc3, and can be found in my
-> >>> arm64/ftrace-with-regs branch [2].
-> >>>
-> >>> Patch 1 adds an (optional) ftrace_init_nop(), which the core code uses
-> >>> to initialize callsites. This allows us to avoid a synthetic MCOUNT_ADDR
-> >>> symbol, and more cleanly separates the one-time initialization of the
-> >>> callsite from dynamic NOP<->CALL modification. Architectures which don't
-> >>> implement this get the existing ftrace_make_nop() with MCOUNT_ADDR.
-> >>>
-> >>> Recently parisc gained ftrace support using patchable-function-entry.
-> >>> Patch 2 makes the handling of module callsite locations common in
-> >>> kernel/module.c with a new FTRACE_CALLSITE_SECTION definition, and
-> >>> removed the newly redundant bits from arch/parisc.
-> >>>
-> >>> Patches 3 and 4 move the module PLT initialization to module load time,
-> >>> which simplifies runtime callsite modification. This also means that we
-> >>> don't transitently mark the module text RW, and will allow for the
-> >>> removal of module_disable_ro().
-> >>>
-> >>> Patches 5 and 6 add some trivial infrastructure, with patch 7 finally
-> >>> adding FTRACE_WITH_REGS support. Additional work will be required for
-> >>> livepatching (e.g. implementing reliable stack trace), which is
-> >>> commented as part of patch 7.
-> >>>
-> >>> Patch 8 is a trivial cleanup atop of the rest of the series, making the
-> >>> code easier to read and less susceptible to config-specific breakage.
-> >> I tested the whole series with my latest in-kernel ptrauth patches [1]
-> >> and graph_tracer/function_graph_tracer works fine, So for the whole series,
-> >> Tested-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
-> >>
-> >> Also I gave few minor comments in the individual patches. With those
-> >> comments,
-> >> Signed-off-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
-> Oops sorry I meant,
-> Reviewed-off-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
+Hi Jessica, Helge,
 
-Thanks!
+Are you ok with the module and parisc changes, repectively?
 
-I've added the Tested-by for the whole series, and the Reviewed-by for
-patches 4 and 7. I haven't added it for patch 1 just yet; please reply
-to my comment there if you'd still like to add a Reviewed-by.
+The kbuild test robot is happy building this for multiple architectures,
+Sven has tested that this works correctly on parisc, and others have
+tested other architectures.
 
+I'd like to queue this in the arm64 tree soon if possible.
+
+Thanks,
 Mark.
+
+On Tue, Oct 29, 2019 at 04:58:26PM +0000, Mark Rutland wrote:
+> When using patchable-function-entry, the compiler will record the
+> callsites into a section named "__patchable_function_entries" rather
+> than "__mcount_loc". Let's abstract this difference behind a new
+> FTRACE_CALLSITE_SECTION, so that architectures don't have to handle this
+> explicitly (e.g. with custom module linker scripts).
+> 
+> As parisc currently handles this explicitly, it is fixed up accordingly,
+> with its custom linker script removed. Since FTRACE_CALLSITE_SECTION is
+> only defined when DYNAMIC_FTRACE is selected, the parisc module loading
+> code is updated to only use the definition in that case. When
+> DYNAMIC_FTRACE is not selected, modules shouldn't have this section, so
+> this removes some redundant work in that case.
+> 
+> I built parisc generic-{32,64}bit_defconfig with DYNAMIC_FTRACE enabled,
+> and verified that the section made it into the .ko files for modules.
+> 
+> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+> Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+> Cc: Jessica Yu <jeyu@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Sven Schnelle <svens@stackframe.org>
+> Cc: linux-parisc@vger.kernel.org
+> ---
+>  arch/parisc/Makefile          |  1 -
+>  arch/parisc/kernel/module.c   | 10 +++++++---
+>  arch/parisc/kernel/module.lds |  7 -------
+>  include/linux/ftrace.h        |  5 +++++
+>  kernel/module.c               |  2 +-
+>  5 files changed, 13 insertions(+), 12 deletions(-)
+>  delete mode 100644 arch/parisc/kernel/module.lds
+> 
+> diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
+> index 36b834f1c933..dca8f2de8cf5 100644
+> --- a/arch/parisc/Makefile
+> +++ b/arch/parisc/Makefile
+> @@ -60,7 +60,6 @@ KBUILD_CFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY=1 \
+>  		 -DFTRACE_PATCHABLE_FUNCTION_SIZE=$(NOP_COUNT)
+>  
+>  CC_FLAGS_FTRACE := -fpatchable-function-entry=$(NOP_COUNT),$(shell echo $$(($(NOP_COUNT)-1)))
+> -KBUILD_LDS_MODULE += $(srctree)/arch/parisc/kernel/module.lds
+>  endif
+>  
+>  OBJCOPY_FLAGS =-O binary -R .note -R .comment -S
+> diff --git a/arch/parisc/kernel/module.c b/arch/parisc/kernel/module.c
+> index ac5f34993b53..1c50093e2ebe 100644
+> --- a/arch/parisc/kernel/module.c
+> +++ b/arch/parisc/kernel/module.c
+> @@ -43,6 +43,7 @@
+>  #include <linux/elf.h>
+>  #include <linux/vmalloc.h>
+>  #include <linux/fs.h>
+> +#include <linux/ftrace.h>
+>  #include <linux/string.h>
+>  #include <linux/kernel.h>
+>  #include <linux/bug.h>
+> @@ -862,7 +863,7 @@ int module_finalize(const Elf_Ehdr *hdr,
+>  	const char *strtab = NULL;
+>  	const Elf_Shdr *s;
+>  	char *secstrings;
+> -	int err, symindex = -1;
+> +	int symindex = -1;
+>  	Elf_Sym *newptr, *oldptr;
+>  	Elf_Shdr *symhdr = NULL;
+>  #ifdef DEBUG
+> @@ -946,11 +947,13 @@ int module_finalize(const Elf_Ehdr *hdr,
+>  			/* patch .altinstructions */
+>  			apply_alternatives(aseg, aseg + s->sh_size, me->name);
+>  
+> +#ifdef CONFIG_DYNAMIC_FTRACE
+>  		/* For 32 bit kernels we're compiling modules with
+>  		 * -ffunction-sections so we must relocate the addresses in the
+> -		 *__mcount_loc section.
+> +		 *  ftrace callsite section.
+>  		 */
+> -		if (symindex != -1 && !strcmp(secname, "__mcount_loc")) {
+> +		if (symindex != -1 && !strcmp(secname, FTRACE_CALLSITE_SECTION)) {
+> +			int err;
+>  			if (s->sh_type == SHT_REL)
+>  				err = apply_relocate((Elf_Shdr *)sechdrs,
+>  							strtab, symindex,
+> @@ -962,6 +965,7 @@ int module_finalize(const Elf_Ehdr *hdr,
+>  			if (err)
+>  				return err;
+>  		}
+> +#endif
+>  	}
+>  	return 0;
+>  }
+> diff --git a/arch/parisc/kernel/module.lds b/arch/parisc/kernel/module.lds
+> deleted file mode 100644
+> index 1a9a92aca5c8..000000000000
+> --- a/arch/parisc/kernel/module.lds
+> +++ /dev/null
+> @@ -1,7 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0 */
+> -
+> -SECTIONS {
+> -	__mcount_loc : {
+> -		*(__patchable_function_entries)
+> -	}
+> -}
+> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+> index 9867d90d635e..9141f2263286 100644
+> --- a/include/linux/ftrace.h
+> +++ b/include/linux/ftrace.h
+> @@ -738,6 +738,11 @@ static inline unsigned long get_lock_parent_ip(void)
+>  
+>  #ifdef CONFIG_FTRACE_MCOUNT_RECORD
+>  extern void ftrace_init(void);
+> +#ifdef CC_USING_PATCHABLE_FUNCTION_ENTRY
+> +#define FTRACE_CALLSITE_SECTION	"__patchable_function_entries"
+> +#else
+> +#define FTRACE_CALLSITE_SECTION	"__mcount_loc"
+> +#endif
+>  #else
+>  static inline void ftrace_init(void) { }
+>  #endif
+> diff --git a/kernel/module.c b/kernel/module.c
+> index ff2d7359a418..acf7962936c4 100644
+> --- a/kernel/module.c
+> +++ b/kernel/module.c
+> @@ -3222,7 +3222,7 @@ static int find_module_sections(struct module *mod, struct load_info *info)
+>  #endif
+>  #ifdef CONFIG_FTRACE_MCOUNT_RECORD
+>  	/* sechdrs[0].sh_size is always zero */
+> -	mod->ftrace_callsites = section_objs(info, "__mcount_loc",
+> +	mod->ftrace_callsites = section_objs(info, FTRACE_CALLSITE_SECTION,
+>  					     sizeof(*mod->ftrace_callsites),
+>  					     &mod->num_ftrace_callsites);
+>  #endif
+> -- 
+> 2.11.0
+> 
