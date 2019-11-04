@@ -2,66 +2,157 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CED62EE118
-	for <lists+linux-parisc@lfdr.de>; Mon,  4 Nov 2019 14:28:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 031C7EE15E
+	for <lists+linux-parisc@lfdr.de>; Mon,  4 Nov 2019 14:37:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbfKDN2T (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 4 Nov 2019 08:28:19 -0500
-Received: from smtprelay0238.hostedemail.com ([216.40.44.238]:58063 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727236AbfKDN2T (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 4 Nov 2019 08:28:19 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id C13FB182CED2A;
-        Mon,  4 Nov 2019 13:28:17 +0000 (UTC)
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,rostedt@goodmis.org,:::::::::::::::::::::::::::::::::::,RULES_HIT:41:355:379:541:599:800:960:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1537:1566:1593:1594:1711:1714:1730:1747:1777:1792:2393:2525:2553:2559:2563:2682:2685:2859:2895:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3622:3743:3865:3867:3868:3870:3873:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4362:5007:6248:6261:6742:7875:9025:9040:10004:10400:10848:10967:11232:11657:11658:11914:12043:12114:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:14777:21080:21433:21627:30054:30070:30090:30091,0,RBL:146.247.46.6:@goodmis.org:.lbl8.mailshell.net-62.8.41.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:25,LUA_SUMMARY:none
-X-HE-Tag: rain90_db18710e4e53
-X-Filterd-Recvd-Size: 1789
-Received: from grimm.local.home (unknown [146.247.46.6])
-        (Authenticated sender: rostedt@goodmis.org)
-        by omf09.hostedemail.com (Postfix) with ESMTPA;
-        Mon,  4 Nov 2019 13:28:13 +0000 (UTC)
-Date:   Mon, 4 Nov 2019 08:28:10 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     Torsten Duwe <duwe@suse.de>, linux-arm-kernel@lists.infradead.org,
-        Jessica Yu <jeyu@kernel.org>, Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-kernel@vger.kernel.org, amit.kachhap@arm.com,
-        catalin.marinas@arm.com, james.morse@arm.com, jpoimboe@redhat.com,
+        id S1727499AbfKDNhD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 4 Nov 2019 08:37:03 -0500
+Received: from foss.arm.com ([217.140.110.172]:43160 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727236AbfKDNhD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 4 Nov 2019 08:37:03 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6117A1FB;
+        Mon,  4 Nov 2019 05:37:02 -0800 (PST)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2702E3F6C4;
+        Mon,  4 Nov 2019 05:37:00 -0800 (PST)
+Date:   Mon, 4 Nov 2019 13:36:58 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Amit Daniel Kachhap <amit.kachhap@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Steven Rostedt <rostedt@goodmis.org>,
+        linux-kernel@vger.kernel.org, catalin.marinas@arm.com,
+        deller@gmx.de, duwe@suse.de, James.Bottomley@HansenPartnership.com,
+        james.morse@arm.com, jeyu@kernel.org, jpoimboe@redhat.com,
         jthierry@redhat.com, linux-parisc@vger.kernel.org,
         mingo@redhat.com, peterz@infradead.org, svens@stackframe.org,
         takahiro.akashi@linaro.org, will@kernel.org
-Subject: Re: [PATCHv2 2/8] module/ftrace: handle patchable-function-entry
-Message-ID: <20191104082810.70f1b72a@grimm.local.home>
-In-Reply-To: <20191031130022.GB3477@blommer>
+Subject: Re: [PATCHv2 1/8] ftrace: add ftrace_init_nop()
+Message-ID: <20191104133657.GE45140@lakrids.cambridge.arm.com>
 References: <20191029165832.33606-1-mark.rutland@arm.com>
-        <20191029165832.33606-3-mark.rutland@arm.com>
-        <20191030150302.GA965@suse.de>
-        <20191031090231.GA3340@blommer>
-        <20191031114223.GA11684@suse.de>
-        <20191031130022.GB3477@blommer>
-X-Mailer: Claws Mail 3.17.4git49 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ <20191029165832.33606-2-mark.rutland@arm.com>
+ <daad0785-a33f-3cfb-cf0f-657b6c677257@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <daad0785-a33f-3cfb-cf0f-657b6c677257@arm.com>
+User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, 31 Oct 2019 13:00:22 +0000
-Mark Rutland <mark.rutland@arm.com> wrote:
+On Sat, Nov 02, 2019 at 05:49:00PM +0530, Amit Daniel Kachhap wrote:
+> Hi Mark,
 
-> Sure. I've folded the above into this patch, and pushed out an updated branch:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=arm64/ftrace-with-regs
+Hi Amit,
 
-Just to keep this change in lore, can you at a minimum reply to this
-patch's thread with the new update?
+Thanks for the review!
+ 
+> On 10/29/19 10:28 PM, Mark Rutland wrote:
+> > Architectures may need to perform special initialization of ftrace
+> > callsites, and today they do so by special-casing ftrace_make_nop() when
+> > the expected branch address is MCOUNT_ADDR. In some cases (e.g. for
+> > patchable-function-entry), we don't have an mcount-like symbol and don't
+> s/an mcount/a mcount.
+> > want a synthetic MCOUNT_ADDR, but we may need to perform some
+> > initialization of callsites.
+> > 
+> > To make it possible to separate initialization from runtime
+> > modification, and to handle cases without an mcount-like symbol, this
+> Same as above.
 
-Thanks!
+Using 'an' in both of these cases is correct, even though 'mcount'
+starts with a consonant, since it's pronounced as-if it were 'emcount'.
+I will leave this as-is.
 
--- Steve
+> > patch adds an optional ftrace_init_nop() function that architectures can
+> > implement, which does not pass a branch address.
+> > 
+> > Where an architecture does not provide ftrace_init_nop(), we will fall
+> > back to the existing behaviour of calling ftrace_make_nop() with
+> > MCOUNT_ADDR.
+> > 
+> > At the same time, ftrace_code_disable() is renamed to
+> > ftrace_nop_initialize() to make it clearer that it is intended to
+> > intialize a callsite into a disabled state, and is not for disabling a
+> > callsite that has been runtime enabled. The kerneldoc description of rec
+> > arguments is updated to cover non-mcount callsites.
+> > 
+> > Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+> > Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> > Cc: Ingo Molnar <mingo@redhat.com>
+> > Cc: Steven Rostedt <rostedt@goodmis.org>
+> > Cc: Torsten Duwe <duwe@suse.de>
+> > ---
+> >   include/linux/ftrace.h | 35 ++++++++++++++++++++++++++++++++---
+> >   kernel/trace/ftrace.c  |  6 +++---
+> >   2 files changed, 35 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+> > index 8a8cb3c401b2..9867d90d635e 100644
+> > --- a/include/linux/ftrace.h
+> > +++ b/include/linux/ftrace.h
+> > @@ -499,7 +499,7 @@ static inline int ftrace_disable_ftrace_graph_caller(void) { return 0; }
+> >   /**
+> >    * ftrace_make_nop - convert code into nop
+> >    * @mod: module structure if called by module load initialization
+> > - * @rec: the mcount call site record
+> > + * @rec: the call site record (e.g. mcount/fentry)
+> >    * @addr: the address that the call site should be calling
+> >    *
+> >    * This is a very sensitive operation and great care needs
+> > @@ -520,9 +520,38 @@ static inline int ftrace_disable_ftrace_graph_caller(void) { return 0; }
+> >   extern int ftrace_make_nop(struct module *mod,
+> >   			   struct dyn_ftrace *rec, unsigned long addr);
+> > +
+> > +/**
+> > + * ftrace_init_nop - initialize a nop call site
+> > + * @mod: module structure if called by module load initialization
+> > + * @rec: the call site record (e.g. mcount/fentry)
+> > + *
+> > + * This is a very sensitive operation and great care needs
+> > + * to be taken by the arch.  The operation should carefully
+> > + * read the location, check to see if what is read is indeed
+> > + * what we expect it to be, and then on success of the compare,
+> > + * it should write to the location.
+> > + *
+> > + * The code segment at @rec->ip should contain the contents created by
+> > + * the compiler
+> Nit: Will it be better to write it as "@rec->ip should store the adjusted
+> ftrace entry address of the call site" or something like that.
+
+This was the specific wording requested by Steve, and it's trying to
+describe the instructions at rec->ip, rather than the value of rec->ip,
+so I think it's better to leave this as-is.
+
+> > + *
+> > + * Return must be:
+> > + *  0 on success
+> > + *  -EFAULT on error reading the location
+> > + *  -EINVAL on a failed compare of the contents
+> > + *  -EPERM  on error writing to the location
+> > + * Any other value will be considered a failure.
+> > + */
+> > +#ifndef ftrace_init_nop
+> > +static inline int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+> > +{
+> > +	return ftrace_make_nop(mod, rec, MCOUNT_ADDR);
+> > +}
+> > +#endif
+> > +
+> Now that ftrace_init_nop is also an arch implemented function so it may be
+> added in Documentation/trace/ftrace-design.rst along with ftrace_make_nop.
+> In general also, adding some description about patchable-function-entry
+> in kernel Documentation will be useful.
+
+I agree that would be a good thing, but as Steve suggests I will leave
+this for subsequent rework, as I think that also implies more
+rework/renaming in the core code (e.g. to more cleanly separate the
+notion of a callsite from mcount specifically).
+
+Steve, if you'd like help with that (or review), I'd be happy to help.
+
+Thanks,
+Mark.
