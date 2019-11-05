@@ -2,127 +2,205 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4780EF956
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Nov 2019 10:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2829DEFFC2
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Nov 2019 15:29:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388622AbfKEJ32 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 5 Nov 2019 04:29:28 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40610 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730755AbfKEJ2G (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 5 Nov 2019 04:28:06 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iRv7Y-0007Ie-Jc; Tue, 05 Nov 2019 10:27:28 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E4781C0178;
-        Tue,  5 Nov 2019 10:27:28 +0100 (CET)
-Date:   Tue, 05 Nov 2019 09:27:27 -0000
-From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] parisc: Move EXCEPTION_TABLE to RO_DATA segment
-Cc:     Kees Cook <keescook@chromium.org>, Borislav Petkov <bp@suse.de>,
-        Helge Deller <deller@gmx.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        id S2389411AbfKEO3a (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 5 Nov 2019 09:29:30 -0500
+Received: from mout.gmx.net ([212.227.17.22]:55725 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727858AbfKEO33 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 5 Nov 2019 09:29:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1572964151;
+        bh=1ccRhMfOjQfCWgxZtJzM4hP1zgDfrNPilzzEdo9nVpk=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=Y0fiQZVlL53W17TOlZbi6XyMv5zjwVPRrWuOHJMTc50mzth8UTL/m2E1lYcbSheEF
+         8jorhA7eYWbpK5PWaPEPGi/wJtl+L33sVAQqL300Yc0SHDjTKJjeHWLOB6GN35q3YS
+         +a7NPrubb/JJYnsmHtwYU8sEHifg8Yl87BpLmw98=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.150.99]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MpUYu-1i9DSt0bLI-00pqwr; Tue, 05
+ Nov 2019 15:29:11 +0100
+Subject: Re: [PATCH 07/21] parisc: remove __ioremap
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
         Michal Simek <monstr@monstr.eu>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Segher Boessenkool <segher@kernel.crashing.org>,
-        Sven Schnelle <svens@stackframe.org>,
-        Will Deacon <will@kernel.org>, "x86-ml" <x86@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20191029211351.13243-24-keescook@chromium.org>
-References: <20191029211351.13243-24-keescook@chromium.org>
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191029064834.23438-1-hch@lst.de>
+ <20191029064834.23438-8-hch@lst.de>
+From:   Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+ oiAieEtb6a/7+jPKZnRFTw==
+Message-ID: <23dd12c1-8af2-dd97-18f2-da3203d49a48@gmx.de>
+Date:   Tue, 5 Nov 2019 15:29:05 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Message-ID: <157294604796.29376.17677093479346528065.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+In-Reply-To: <20191029064834.23438-8-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:K84d31/CVvwIJRKgEkYeLn7nG07Ceq3NW0dsqaiRS5IsUys1PNO
+ B3wZA6JSQUR3ASpFYkzv5n9DIUepkHMiZULCTf1KC+BWlAXPXnF8HuJwokTu9RHIoaGeecm
+ Ci3RRzeiRWquDPKN9RN+JUnecDqMAenupRgKRqv99/LWiBv0xQpgWSKokC8ejSoOAF87fIb
+ GlxUK3lSPzPHSDlD+KOEg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qywLIYXxQ6w=:uquN0cefM1Gv+iPhjMDm4y
+ WzeGInW3/ErqTG1UoKT/xRidojOzqlKb5yOcKxyKZooWk6bL0fIl5AhbM6blTwH8c66Kn8H1J
+ WGQc1ZJSoco0WhSHDXQ7118RQcJ0xrZYuyKBlHofDr66VPHNcDWKy5kH8jKybSP7WJTfqINRw
+ XxrfJB4efx2ltV+lzx058SbsYx4C2h/rBJPKR7Kqu12s97bSiY+nyblh2s/yxfeKFuFc/wjCs
+ lFYevasBI4YCaAngtQ6appEtRUuMVex0GquZfTkuN9kQa+RTc+z5tNk/7jbcLhxfdgxDb2A4Y
+ A/K7Bt5gq41M7Jn+KWZX/6P2XqsNOt+6inw4TwVnCWKxgaw4xs9j+1+zOqMQZiYL/+b0EeS0h
+ brYf9g9CAaFNjtMq6+/VAW2IOZ5Nv94fAwRDijmOwyrTdd18Y6DPZNsURYzGl5eEPOeFfkL/F
+ JQUcovMUYYj9ZyJXaUrtQ2Lv1lLkNS2AbR8d6Z/6jfAFZlQsxf8UPI82eUYeX00lWlgIp/SYH
+ cMXDYNrAgF3fA02cefaga+ToL9W+PJkdoWMNamBPYbInO41HfM4bO0JLXBJxLu8NxsIHwyYbL
+ jISx7DcFcwYuhtufHVwYQb2iUXssyinN3j5YlEUD5kcq0apbnaksTH/qQGR+n+GfJqmwZUeTP
+ LwRpD/4coGlhAyp/lmnCABsVRB5lwbpRNVUVoJzONql8z4AriXnPaX9nbHtB3uJ8FT1k1bImz
+ E56ha19Q0Hnmpw/rCFgb7UT4+4PlAIXgifeujs/4EfgAtwZeLMDSJkAL3PBHGUAs62iq2qh1m
+ vpSXwvx1tptIrnrGAtzQHlpMTiy3aP3TJHvhozmVGgOaIR3xRyA9CXUTBI+Hk0XuwymklVM5A
+ BvFZUGwg1Wb55/+OdgYFXa6p9XFxMk+XBpGa8NYWQXBZxnCXVRMf3ucDkauRT/6fdyMaVUBvx
+ qywVTNg1ILLrPVRP63jplKrFoDllanZJZNwQQgR0kyBWBaUMEBKRGhOn8wdgaWGOB5aC65RGx
+ AkhXGJIgOkrsNq3xEuYujqPxATUS2ohV5/RQJjOfpLXgeBUx7ZOhe063AQZ72pgAsRhU5l5bP
+ p/KTjTIG/oyqLgCyNVW9DucS2YjDRVYuPoK5r+qOQfF1oFXgONBCwUTL7hhhu/VtZ6J52BURA
+ uUYYBM/GzpGVcgiHzTrdtFtF4RDNhEibY8tLl2/IpBAL3fwmJg8W+IziWuaj77zX1IdQfs5WW
+ sY7znfNyevOrgCAOqWYYuW4MFkdA7qd6WtFYbUg==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+On 29.10.19 07:48, Christoph Hellwig wrote:
+> __ioremap is always called with the _PAGE_NO_CACHE, so fold the whole
+> thing and rename it to ioremap.  This also allows to remove the special
+> EISA quirk to force _PAGE_NO_CACHE.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Commit-ID:     6e85e23ef2d004def8e1acd36eb155411499b7cc
-Gitweb:        https://git.kernel.org/tip/6e85e23ef2d004def8e1acd36eb155411499b7cc
-Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Tue, 29 Oct 2019 14:13:45 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 Nov 2019 18:22:10 +01:00
-
-parisc: Move EXCEPTION_TABLE to RO_DATA segment
-
-Since the EXCEPTION_TABLE is read-only, collapse it into RO_DATA.
-
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
 Acked-by: Helge Deller <deller@gmx.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-c6x-dev@linux-c6x.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michal Simek <monstr@monstr.eu>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: Sven Schnelle <svens@stackframe.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: x86-ml <x86@kernel.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Link: https://lkml.kernel.org/r/20191029211351.13243-24-keescook@chromium.org
----
- arch/parisc/kernel/vmlinux.lds.S | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/parisc/kernel/vmlinux.lds.S b/arch/parisc/kernel/vmlinux.lds.S
-index 12b3d7d..53e29d8 100644
---- a/arch/parisc/kernel/vmlinux.lds.S
-+++ b/arch/parisc/kernel/vmlinux.lds.S
-@@ -19,6 +19,7 @@
- 				*(.data..vm0.pte)
- 
- #define CC_USING_PATCHABLE_FUNCTION_ENTRY
-+#define RO_EXCEPTION_TABLE_ALIGN	8
- 
- #include <asm-generic/vmlinux.lds.h>
- 
-@@ -129,9 +130,6 @@ SECTIONS
- 
- 	RO_DATA(8)
- 
--	/* RO because of BUILDTIME_EXTABLE_SORT */
--	EXCEPTION_TABLE(8)
--
- 	/* unwind info */
- 	.PARISC.unwind : {
- 		__start___unwind = .;
+Helge
+
+> ---
+>  arch/parisc/include/asm/io.h | 11 +----------
+>  arch/parisc/mm/ioremap.c     | 10 ++++------
+>  2 files changed, 5 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+> index 93d37010b375..46212b52c23e 100644
+> --- a/arch/parisc/include/asm/io.h
+> +++ b/arch/parisc/include/asm/io.h
+> @@ -127,16 +127,7 @@ static inline void gsc_writeq(unsigned long long va=
+l, unsigned long addr)
+>  /*
+>   * The standard PCI ioremap interfaces
+>   */
+> -
+> -extern void __iomem * __ioremap(unsigned long offset, unsigned long siz=
+e, unsigned long flags);
+> -
+> -/* Most machines react poorly to I/O-space being cacheable... Instead l=
+et's
+> - * define ioremap() in terms of ioremap_nocache().
+> - */
+> -static inline void __iomem * ioremap(unsigned long offset, unsigned lon=
+g size)
+> -{
+> -	return __ioremap(offset, size, _PAGE_NO_CACHE);
+> -}
+> +void __iomem *ioremap(unsigned long offset, unsigned long size);
+>  #define ioremap_nocache(off, sz)	ioremap((off), (sz))
+>  #define ioremap_wc			ioremap_nocache
+>  #define ioremap_uc			ioremap_nocache
+> diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
+> index f29f682352f0..6e7c005aa09b 100644
+> --- a/arch/parisc/mm/ioremap.c
+> +++ b/arch/parisc/mm/ioremap.c
+> @@ -25,7 +25,7 @@
+>   * have to convert them into an offset in a page-aligned mapping, but t=
+he
+>   * caller shouldn't need to know that small detail.
+>   */
+> -void __iomem * __ioremap(unsigned long phys_addr, unsigned long size, u=
+nsigned long flags)
+> +void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
+>  {
+>  	void __iomem *addr;
+>  	struct vm_struct *area;
+> @@ -36,10 +36,8 @@ void __iomem * __ioremap(unsigned long phys_addr, uns=
+igned long size, unsigned l
+>  	unsigned long end =3D phys_addr + size - 1;
+>  	/* Support EISA addresses */
+>  	if ((phys_addr >=3D 0x00080000 && end < 0x000fffff) ||
+> -	    (phys_addr >=3D 0x00500000 && end < 0x03bfffff)) {
+> +	    (phys_addr >=3D 0x00500000 && end < 0x03bfffff))
+>  		phys_addr |=3D F_EXTEND(0xfc000000);
+> -		flags |=3D _PAGE_NO_CACHE;
+> -	}
+>  #endif
+>
+>  	/* Don't allow wraparound or zero size */
+> @@ -65,7 +63,7 @@ void __iomem * __ioremap(unsigned long phys_addr, unsi=
+gned long size, unsigned l
+>  	}
+>
+>  	pgprot =3D __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY |
+> -			  _PAGE_ACCESSED | flags);
+> +			  _PAGE_ACCESSED | _PAGE_NO_CACHE);
+>
+>  	/*
+>  	 * Mappings have to be page-aligned
+> @@ -90,7 +88,7 @@ void __iomem * __ioremap(unsigned long phys_addr, unsi=
+gned long size, unsigned l
+>
+>  	return (void __iomem *) (offset + (char __iomem *)addr);
+>  }
+> -EXPORT_SYMBOL(__ioremap);
+> +EXPORT_SYMBOL(ioremap);
+>
+>  void iounmap(const volatile void __iomem *io_addr)
+>  {
+>
+
