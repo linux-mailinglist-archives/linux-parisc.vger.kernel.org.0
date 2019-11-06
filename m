@@ -2,119 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E65F072D
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Nov 2019 21:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56E30F0B7C
+	for <lists+linux-parisc@lfdr.de>; Wed,  6 Nov 2019 02:13:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727095AbfKEUo5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 5 Nov 2019 15:44:57 -0500
-Received: from foss.arm.com ([217.140.110.172]:60796 "EHLO foss.arm.com"
+        id S1730677AbfKFBNN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 5 Nov 2019 20:13:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40906 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725806AbfKEUo4 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 5 Nov 2019 15:44:56 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 37749A64;
-        Tue,  5 Nov 2019 12:44:56 -0800 (PST)
-Received: from [10.162.40.121] (a075563-lin.blr.arm.com [10.162.40.121])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 73F753FB4E;
-        Mon,  4 Nov 2019 23:09:33 -0800 (PST)
-Subject: Re: [PATCHv2 0/8] arm64: ftrace cleanup + FTRACE_WITH_REGS
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     Will Deacon <will@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Catalin Marinas <Catalin.Marinas@arm.com>,
-        "deller@gmx.de" <deller@gmx.de>, "duwe@suse.de" <duwe@suse.de>,
-        "James.Bottomley@HansenPartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        James Morse <James.Morse@arm.com>,
-        "jeyu@kernel.org" <jeyu@kernel.org>,
-        "jpoimboe@redhat.com" <jpoimboe@redhat.com>,
-        "jthierry@redhat.com" <jthierry@redhat.com>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "svens@stackframe.org" <svens@stackframe.org>,
-        "takahiro.akashi@linaro.org" <takahiro.akashi@linaro.org>
-References: <20191029165832.33606-1-mark.rutland@arm.com>
- <42c113ee-e7fc-3e94-cca0-f05f1c89fdb8@arm.com>
- <20191104125637.GB24108@willie-the-truck>
- <d9b738fa-b7c5-f1b2-3878-d7afa4ba7ba5@arm.com>
- <20191104140440.GJ45140@lakrids.cambridge.arm.com>
-From:   Amit Kachhap <amit.kachhap@arm.com>
-Message-ID: <3a0dd498-ffd0-3e47-c1b4-3e9dbfe935d8@arm.com>
-Date:   Tue, 5 Nov 2019 12:36:36 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20191104140440.GJ45140@lakrids.cambridge.arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+        id S1729614AbfKFBNM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 5 Nov 2019 20:13:12 -0500
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7CB1721A49;
+        Wed,  6 Nov 2019 01:13:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573002791;
+        bh=F8oZBAZiUgNBGiV+WdUohtNWYyfzETDe01QBSwwnbUE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=LnltnbcoEvw0zudUzaix987ZKsj6MqDuFqsZC0+IjmxZ0XpTcoy82THWXKyrYQ0Ye
+         mv5Z8zeYgtccYtyRipnP9TZaP3/JrnK54F4aJa9wN2ypZkOFNbFlBBd661zaIpobQL
+         OZchQhXSAp1sAaj7ISlI/bn8Ev4MXWgPMnouR5wE=
+Date:   Tue, 5 Nov 2019 17:13:09 -0800
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     linux-mm@kvack.org, Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mark Salter <msalter@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Michal Simek <monstr@monstr.eu>, Peter Rosin <peda@axentia.se>,
+        Richard Weinberger <richard@nod.at>,
+        Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Sam Creasey <sammy@sammy.net>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-kernel@vger.kernel.org, linux-m68k@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
+        sparclinux@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH v4 13/13] mm: remove __ARCH_HAS_4LEVEL_HACK and
+ include/asm-generic/4level-fixup.h
+Message-Id: <20191105171309.9a5ccf9cf14d7288f7adf198@linux-foundation.org>
+In-Reply-To: <1572938135-31886-14-git-send-email-rppt@kernel.org>
+References: <1572938135-31886-1-git-send-email-rppt@kernel.org>
+        <1572938135-31886-14-git-send-email-rppt@kernel.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi,
+On Tue,  5 Nov 2019 09:15:35 +0200 Mike Rapoport <rppt@kernel.org> wrote:
 
-On 11/4/19 7:34 PM, Mark Rutland wrote:
-> On Mon, Nov 04, 2019 at 01:03:51PM +0000, Amit Kachhap wrote:
->>
->>
->> On 11/4/19 6:26 PM, Will Deacon wrote:
->>> On Sat, Nov 02, 2019 at 05:42:25PM +0530, Amit Daniel Kachhap wrote:
->>>> On 10/29/19 10:28 PM, Mark Rutland wrote:
->>>>> This series is a reworked version of Torsten's FTRACE_WITH_REGS series
->>>>> [1]. I've tried to rework the existing code in preparatory patches so
->>>>> that the patchable-function-entry bits slot in with fewer surprises.
->>>>> This version is based on v5.4-rc3, and can be found in my
->>>>> arm64/ftrace-with-regs branch [2].
->>>>>
->>>>> Patch 1 adds an (optional) ftrace_init_nop(), which the core code uses
->>>>> to initialize callsites. This allows us to avoid a synthetic MCOUNT_ADDR
->>>>> symbol, and more cleanly separates the one-time initialization of the
->>>>> callsite from dynamic NOP<->CALL modification. Architectures which don't
->>>>> implement this get the existing ftrace_make_nop() with MCOUNT_ADDR.
->>>>>
->>>>> Recently parisc gained ftrace support using patchable-function-entry.
->>>>> Patch 2 makes the handling of module callsite locations common in
->>>>> kernel/module.c with a new FTRACE_CALLSITE_SECTION definition, and
->>>>> removed the newly redundant bits from arch/parisc.
->>>>>
->>>>> Patches 3 and 4 move the module PLT initialization to module load time,
->>>>> which simplifies runtime callsite modification. This also means that we
->>>>> don't transitently mark the module text RW, and will allow for the
->>>>> removal of module_disable_ro().
->>>>>
->>>>> Patches 5 and 6 add some trivial infrastructure, with patch 7 finally
->>>>> adding FTRACE_WITH_REGS support. Additional work will be required for
->>>>> livepatching (e.g. implementing reliable stack trace), which is
->>>>> commented as part of patch 7.
->>>>>
->>>>> Patch 8 is a trivial cleanup atop of the rest of the series, making the
->>>>> code easier to read and less susceptible to config-specific breakage.
->>>> I tested the whole series with my latest in-kernel ptrauth patches [1]
->>>> and graph_tracer/function_graph_tracer works fine, So for the whole series,
->>>> Tested-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
->>>>
->>>> Also I gave few minor comments in the individual patches. With those
->>>> comments,
->>>> Signed-off-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
->> Oops sorry I meant,
->> Reviewed-off-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
-> 
-> Thanks!
-> 
-> I've added the Tested-by for the whole series, and the Reviewed-by for
-> patches 4 and 7. I haven't added it for patch 1 just yet; please reply
-> to my comment there if you'd still like to add a Reviewed-by.
+> There are no architectures that use include/asm-generic/4level-fixup.h
+> therefore it can be removed along with __ARCH_HAS_4LEVEL_HACK define.
 
-Those were minor comments. Please go ahead and add the Reviewed-by's.
-Thanks,
-Amit
+Conflicts a bit with Vineet's "asm-generic/tlb: stub out pud_free_tlb()
+if nopud ...", from
+http://lkml.kernel.org/r/20191016162400.14796-2-vgupta@synopsys.com
 
-> 
-> Mark.
-> 
+I fixed it up by removing include/asm-generic/4level-fixup.h anyway and
+removing the removal of "#ifndef __ARCH_HAS_4LEVEL_HAC" from
+include/asm-generic/tlb.h.
