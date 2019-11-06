@@ -2,86 +2,151 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AEFBF1836
-	for <lists+linux-parisc@lfdr.de>; Wed,  6 Nov 2019 15:15:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DBC3F1CF0
+	for <lists+linux-parisc@lfdr.de>; Wed,  6 Nov 2019 18:56:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727237AbfKFOPf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 6 Nov 2019 09:15:35 -0500
-Received: from foss.arm.com ([217.140.110.172]:40580 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727128AbfKFOPf (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 6 Nov 2019 09:15:35 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2AAD47CD;
-        Wed,  6 Nov 2019 06:15:35 -0800 (PST)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E5A693F6C4;
-        Wed,  6 Nov 2019 06:15:32 -0800 (PST)
-Date:   Wed, 6 Nov 2019 14:15:30 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Amit Kachhap <amit.kachhap@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        linux-kernel@vger.kernel.org, catalin.marinas@arm.com,
-        deller@gmx.de, duwe@suse.de, James.Bottomley@HansenPartnership.com,
-        james.morse@arm.com, jeyu@kernel.org, jpoimboe@redhat.com,
-        jthierry@redhat.com, linux-parisc@vger.kernel.org,
-        mingo@redhat.com, peterz@infradead.org, svens@stackframe.org,
-        takahiro.akashi@linaro.org, will@kernel.org
-Subject: Re: [PATCHv2 1/8] ftrace: add ftrace_init_nop()
-Message-ID: <20191106141530.GC50610@lakrids.cambridge.arm.com>
-References: <20191029165832.33606-1-mark.rutland@arm.com>
- <20191029165832.33606-2-mark.rutland@arm.com>
- <daad0785-a33f-3cfb-cf0f-657b6c677257@arm.com>
- <20191104133657.GE45140@lakrids.cambridge.arm.com>
- <8e68de1f-f961-752d-9c07-ce41ce624d35@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8e68de1f-f961-752d-9c07-ce41ce624d35@arm.com>
-User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
+        id S1732462AbfKFR4j (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 6 Nov 2019 12:56:39 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:39130 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732460AbfKFR4h (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 6 Nov 2019 12:56:37 -0500
+Received: by mail-pg1-f194.google.com with SMTP id 29so6332791pgm.6
+        for <linux-parisc@vger.kernel.org>; Wed, 06 Nov 2019 09:56:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+        h=date:subject:in-reply-to:cc:from:to:message-id;
+        bh=xZW1gMrCUoJqpGWBEYHWFfV09K+K/0uVmzI4MIoxGS8=;
+        b=PGZwZeqhjPGqmbBUrw44Auucb8k6dPtlYxXbuNpTAeEMGmKlsnFWXhrKzSARRD1P5Z
+         ofkafacEFrUvuMMQ8srHmApZNGXOM2FXgWNtdGS1rg8UPKc85d79tzD5/t3BF7GMjDtX
+         WoCFpoFoR/nlY6sa8P7ME55iO2h9Yfcb7ZSd7Zw+om2XJAjYyCK0yIJtNHDyXsnWFiZL
+         JcRZR97cwQ2ZvZRsXx81CQhAqwyUUPUY90oJrysCQQ7l1b0iCyPludGEBBLbIE1elh0S
+         JIqszC7OB8xZ2n5/8rEoDBU7MzMibg41EDmgXW2rJwIAtaViAg8zHwFVYITgL2sVpvu1
+         UzBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id;
+        bh=xZW1gMrCUoJqpGWBEYHWFfV09K+K/0uVmzI4MIoxGS8=;
+        b=TptEc3TXtL6Uy6Bo9fAVBzXcii+VMmVs3jdi8iHr3JtJHpSc4y0O8VRNW8NXOjibln
+         /zBqq7xBWURxSGrNkzsVNlmskRumwxMJ//1DfIP81FkFhBkgikgFmgSBnT8X0fsKW9Iq
+         jfLH7DFCpYuYW7zyoRnKh6dP36gJ7jXQ6NS65XXs+S7QLKFHpifB7M6mL2ZaBJt7MaG4
+         IgaRHrCYIsGzNLwxYdRv04bF1X7Dy/QYHVa4J3+zQ89vrCbtFvIpmMsMH4/HlRdMoEgD
+         SwVNrnNAN51KpqBHy7PpB2EkZXw2kjvdmIowpnBpeCw3wfZyi5H0EXuulwlrnyAZZnZs
+         ZYTQ==
+X-Gm-Message-State: APjAAAVUWyJ4/R8P1BuO/BFHUGbOznE0g22IVNNLjF04GoJRAIn2LO4O
+        pPqQA2nxUMhKpHpBouvODrqEew==
+X-Google-Smtp-Source: APXvYqyZI0/opOONYHdOR3l6SH/z69P+ajsTKg8L6ObdzcVPlsahU45e+bD0ChxR/pgAJsTDNgZ9EA==
+X-Received: by 2002:a17:90a:340c:: with SMTP id o12mr5529604pjb.18.1573062994968;
+        Wed, 06 Nov 2019 09:56:34 -0800 (PST)
+Received: from localhost ([12.206.222.5])
+        by smtp.gmail.com with ESMTPSA id z11sm32745913pfg.117.2019.11.06.09.56.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2019 09:56:34 -0800 (PST)
+Date:   Wed, 06 Nov 2019 09:56:34 -0800 (PST)
+X-Google-Original-Date: Wed, 06 Nov 2019 09:56:23 PST (-0800)
+Subject:     Re: [PATCH 10/21] asm-generic: ioremap_uc should behave the same with and without MMU
+In-Reply-To: <20191029064834.23438-11-hch@lst.de>
+CC:     Arnd Bergmann <arnd@arndb.de>, guoren@kernel.org, monstr@monstr.eu,
+        green.hu@gmail.com, deanbo422@gmail.com, gxt@pku.edu.cn,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     Christoph Hellwig <hch@lst.de>
+Message-ID: <mhng-3f709a8a-a8c3-4612-b4de-847d13b4af0a@palmer-si-x1c4>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Nov 05, 2019 at 12:17:26PM +0530, Amit Kachhap wrote:
-> On 11/4/19 7:06 PM, Mark Rutland wrote:
-> > On Sat, Nov 02, 2019 at 05:49:00PM +0530, Amit Daniel Kachhap wrote:
-> > > On 10/29/19 10:28 PM, Mark Rutland wrote:
-> > > > +/**
-> > > > + * ftrace_init_nop - initialize a nop call site
-> > > > + * @mod: module structure if called by module load initialization
-> > > > + * @rec: the call site record (e.g. mcount/fentry)
-> > > > + *
-> > > > + * This is a very sensitive operation and great care needs
-> > > > + * to be taken by the arch.  The operation should carefully
-> > > > + * read the location, check to see if what is read is indeed
-> > > > + * what we expect it to be, and then on success of the compare,
-> > > > + * it should write to the location.
-> > > > + *
-> > > > + * The code segment at @rec->ip should contain the contents created by
-> > > > + * the compiler
-> > > Nit: Will it be better to write it as "@rec->ip should store the adjusted
-> > > ftrace entry address of the call site" or something like that.
-> > 
-> > This was the specific wording requested by Steve, and it's trying to
-> > describe the instructions at rec->ip, rather than the value of rec->ip,
-> > so I think it's better to leave this as-is.
-> ok Its fine this way too. Actually from the comment, I could not understand
-> which one of the compiler contents this points to as in this case there are
-> 2 nops.
+On Mon, 28 Oct 2019 23:48:23 PDT (-0700), Christoph Hellwig wrote:
+> Whatever reason there is for the existence of ioremap_uc, and the fact
+> that it returns NULL by default on architectures with an MMU applies
+> equally to nommu architectures, so don't provide different defaults.
+>
+> In practice the difference is meaningless as the only portable driver
+> that uses ioremap_uc is atyfb which probably doesn't show up on nommu
+> devices.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  include/asm-generic/io.h | 36 ++++++++++++++++--------------------
+>  1 file changed, 16 insertions(+), 20 deletions(-)
+>
+> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> index d02806513670..a98ed6325727 100644
+> --- a/include/asm-generic/io.h
+> +++ b/include/asm-generic/io.h
+> @@ -935,18 +935,7 @@ static inline void *phys_to_virt(unsigned long address)
+>   * defined your own ioremap_*() variant you must then declare your own
+>   * ioremap_*() variant as defined to itself to avoid the default NULL return.
+>   */
+> -
+> -#ifdef CONFIG_MMU
+> -
+> -#ifndef ioremap_uc
+> -#define ioremap_uc ioremap_uc
+> -static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> -{
+> -	return NULL;
+> -}
+> -#endif
+> -
+> -#else /* !CONFIG_MMU */
+> +#ifndef CONFIG_MMU
+>
+>  /*
+>   * Change "struct page" to physical address.
+> @@ -980,14 +969,6 @@ static inline void __iomem *ioremap_nocache(phys_addr_t offset, size_t size)
+>  }
+>  #endif
+>
+> -#ifndef ioremap_uc
+> -#define ioremap_uc ioremap_uc
+> -static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> -{
+> -	return ioremap_nocache(offset, size);
+> -}
+> -#endif
+> -
+>  #ifndef ioremap_wc
+>  #define ioremap_wc ioremap_wc
+>  static inline void __iomem *ioremap_wc(phys_addr_t offset, size_t size)
+> @@ -1004,6 +985,21 @@ static inline void __iomem *ioremap_wt(phys_addr_t offset, size_t size)
+>  }
+>  #endif
+>
+> +/*
+> + * ioremap_uc is special in that we do require an explicit architecture
+> + * implementation.  In general you do now want to use this function in a
 
-We can't say what the compiler contents will be. An architecture may use
-this callback if it's using mcount, mfentry, patchable-function-entry,
-or some other mechanism we're not aware of today. Depending on the
-architecture and mechanism, the callsite could contain a number of
-distinct things.
+Presumably that's supposed to be "do not want to use"?
 
-All the comment is trying to say is that when ftrace_init_nop() is
-called, the callsite has not been modified in any way since being
-compiled, so we can expect the contents to be whatever the compiler
-generated.
+> + * driver and use plain ioremap, which is uncached by default.  Similarly
+> + * architectures should not implement it unless they have a very good
+> + * reason.
+> + */
+> +#ifndef ioremap_uc
+> +#define ioremap_uc ioremap_uc
+> +static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> +{
+> +	return NULL;
+> +}
+> +#endif
+> +
+>  #ifdef CONFIG_HAS_IOPORT_MAP
+>  #ifndef CONFIG_GENERIC_IOMAP
+>  #ifndef ioport_map
 
-Thanks,
-Mark.
+With the fix:
+
+Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
