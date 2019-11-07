@@ -2,65 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2150AF1D89
-	for <lists+linux-parisc@lfdr.de>; Wed,  6 Nov 2019 19:29:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6898AF269C
+	for <lists+linux-parisc@lfdr.de>; Thu,  7 Nov 2019 05:41:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732469AbfKFS3C (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 6 Nov 2019 13:29:02 -0500
-Received: from verein.lst.de ([213.95.11.211]:52707 "EHLO verein.lst.de"
+        id S1733066AbfKGElC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 6 Nov 2019 23:41:02 -0500
+Received: from foss.arm.com ([217.140.110.172]:49702 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727276AbfKFS3C (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 6 Nov 2019 13:29:02 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id B095A68AFE; Wed,  6 Nov 2019 19:28:57 +0100 (CET)
-Date:   Wed, 6 Nov 2019 19:28:57 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Guo Ren <guoren@kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-riscv@lists.infradead.org,
-        Vincent Chen <deanbo422@gmail.com>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Openrisc <openrisc@lists.librecores.org>,
-        Greentime Hu <green.hu@gmail.com>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-mips@vger.kernel.org, alpha <linux-alpha@vger.kernel.org>,
-        nios2-dev@lists.rocketboards.org
-Subject: Re: [PATCH 11/21] asm-generic: don't provide ioremap for CONFIG_MMU
-Message-ID: <20191106182857.GA21062@lst.de>
-References: <20191029064834.23438-12-hch@lst.de> <mhng-33ea9141-2440-4a2d-8133-62094486fc48@palmer-si-x1c4> <CAMuHMdVuDp_8UDeWv8tdPAH5JS84=-yfwZjOk-YQcoYKM9za+w@mail.gmail.com>
+        id S1726935AbfKGElC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 6 Nov 2019 23:41:02 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 069AE7A7;
+        Wed,  6 Nov 2019 20:41:01 -0800 (PST)
+Received: from [10.162.42.33] (a075563-lin.blr.arm.com [10.162.42.33])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 430353F71A;
+        Wed,  6 Nov 2019 20:40:56 -0800 (PST)
+Subject: Re: [PATCHv2 1/8] ftrace: add ftrace_init_nop()
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Steven Rostedt <rostedt@goodmis.org>,
+        linux-kernel@vger.kernel.org, catalin.marinas@arm.com,
+        deller@gmx.de, duwe@suse.de, James.Bottomley@HansenPartnership.com,
+        james.morse@arm.com, jeyu@kernel.org, jpoimboe@redhat.com,
+        jthierry@redhat.com, linux-parisc@vger.kernel.org,
+        mingo@redhat.com, peterz@infradead.org, svens@stackframe.org,
+        takahiro.akashi@linaro.org, will@kernel.org
+References: <20191029165832.33606-1-mark.rutland@arm.com>
+ <20191029165832.33606-2-mark.rutland@arm.com>
+ <daad0785-a33f-3cfb-cf0f-657b6c677257@arm.com>
+ <20191104133657.GE45140@lakrids.cambridge.arm.com>
+ <8e68de1f-f961-752d-9c07-ce41ce624d35@arm.com>
+ <20191106141530.GC50610@lakrids.cambridge.arm.com>
+From:   Amit Kachhap <amit.kachhap@arm.com>
+Message-ID: <77ba9a77-7971-77b6-c3f9-e3e0adf6cf54@arm.com>
+Date:   Thu, 7 Nov 2019 10:10:52 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVuDp_8UDeWv8tdPAH5JS84=-yfwZjOk-YQcoYKM9za+w@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20191106141530.GC50610@lakrids.cambridge.arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Nov 06, 2019 at 07:16:38PM +0100, Geert Uytterhoeven wrote:
-> > shouldn't they all just be that first one?  In other words, wouldn't it be
-> > better to always provide the generic ioremap prototype and unify the ports
-> > instead?
-> 
-> Agreed. But I'd go for the second one.
 
-Eventually we should unify it and only have a single prototype.
-But we have lots of implementations including inline functions, so
-this will take a few more steps.
+
+On 11/6/19 7:45 PM, Mark Rutland wrote:
+> On Tue, Nov 05, 2019 at 12:17:26PM +0530, Amit Kachhap wrote:
+>> On 11/4/19 7:06 PM, Mark Rutland wrote:
+>>> On Sat, Nov 02, 2019 at 05:49:00PM +0530, Amit Daniel Kachhap wrote:
+>>>> On 10/29/19 10:28 PM, Mark Rutland wrote:
+>>>>> +/**
+>>>>> + * ftrace_init_nop - initialize a nop call site
+>>>>> + * @mod: module structure if called by module load initialization
+>>>>> + * @rec: the call site record (e.g. mcount/fentry)
+>>>>> + *
+>>>>> + * This is a very sensitive operation and great care needs
+>>>>> + * to be taken by the arch.  The operation should carefully
+>>>>> + * read the location, check to see if what is read is indeed
+>>>>> + * what we expect it to be, and then on success of the compare,
+>>>>> + * it should write to the location.
+>>>>> + *
+>>>>> + * The code segment at @rec->ip should contain the contents created by
+>>>>> + * the compiler
+>>>> Nit: Will it be better to write it as "@rec->ip should store the adjusted
+>>>> ftrace entry address of the call site" or something like that.
+>>>
+>>> This was the specific wording requested by Steve, and it's trying to
+>>> describe the instructions at rec->ip, rather than the value of rec->ip,
+>>> so I think it's better to leave this as-is.
+>> ok Its fine this way too. Actually from the comment, I could not understand
+>> which one of the compiler contents this points to as in this case there are
+>> 2 nops.
+> 
+> We can't say what the compiler contents will be. An architecture may use
+> this callback if it's using mcount, mfentry, patchable-function-entry,
+> or some other mechanism we're not aware of today. Depending on the
+> architecture and mechanism, the callsite could contain a number of
+> distinct things.
+> 
+> All the comment is trying to say is that when ftrace_init_nop() is
+> called, the callsite has not been modified in any way since being
+> compiled, so we can expect the contents to be whatever the compiler
+> generated.
+
+ok. Your details seems reasonable.
+
+Thanks,
+Amit Daniel
+> 
+> Thanks,
+> Mark.
+> 
