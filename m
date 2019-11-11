@@ -2,65 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 695F7F786C
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 Nov 2019 17:08:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC59F794B
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 Nov 2019 17:58:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726888AbfKKQIq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 11 Nov 2019 11:08:46 -0500
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:42943 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726845AbfKKQIq (ORCPT
+        id S1726928AbfKKQ6S (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 11 Nov 2019 11:58:18 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:38250 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726879AbfKKQ6S (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 11 Nov 2019 11:08:46 -0500
-Received: by mail-pg1-f193.google.com with SMTP id q17so9715755pgt.9
-        for <linux-parisc@vger.kernel.org>; Mon, 11 Nov 2019 08:08:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7mZ/Y5oCbM8kxU6mPUW0cYkuvGMoQBky+a6/+2ek48o=;
-        b=VQHHodFxyJlsFbersRqAcVGk+60lCmI2Q+OodwiQefXJv/objBxESK8LEvbh0x6dAA
-         E4GrznjpuhxSBi+n2LjJNZnjbIJB8RT9gYgp4r+ltLVgp06F1v3Jdjbe+cWlrUSojp74
-         Vrq1u8BNllBfriVIkLMZ3f/xN1g1ftqEiUeZkOzouO4cx7fNEPSKq8v5rQuF/6IMGCru
-         JEIn6ZOdpVjRFbRuefPK1W5fxWaJToZyV05vnWsGRbOpnonxE8VM4WO3onY3aw3Cqbdf
-         lJ805/G8Rg3rK2dDzzAec0GhxS3UYYeQVJfmkrec3stConssLuchJKdsBL6NW5D9IUdv
-         r3sQ==
+        Mon, 11 Nov 2019 11:58:18 -0500
+Received: by mail-oi1-f196.google.com with SMTP id a14so12092567oid.5;
+        Mon, 11 Nov 2019 08:58:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7mZ/Y5oCbM8kxU6mPUW0cYkuvGMoQBky+a6/+2ek48o=;
-        b=AcIa/NB6JxOAFPji/sehVIEfHJaay+bdfUSeTd/2FM1QU3TiMAHLSSE+8qnsfNhPgX
-         Sb4BiSmopaJG1LLQ2zIg71qrt3wVB4g+0qEjYfQpnUdMRk0LiWT8rkQ/8eeSyj6orysX
-         U9d+yLJEsJUfZBftKJFfsCLAswFwvS5Msa+PuPf1NYCR0FQN705qtlE8iwW3Qw9GnT/U
-         ScJAwd1qwXx631sCnUACssJVqXNC0fpEeH1RGUDlfDwIYZpux5f3otBvxdzjCPapbhjJ
-         HjuHrcVoGgHpxQg6t6EN/0j4/5YFYzVF6+g//USIM6yzYeICU/X2elYb7qV528Nwmg9X
-         07ng==
-X-Gm-Message-State: APjAAAUY2ASOCw54D3dkg6fDyTmaS2S++lTjUqLuq0fOBBiHFolKhOEb
-        3+v49y2BRmP/W86CxkPwiYrkJbmKwU9zLd+XGyzXGSSj0MY=
-X-Google-Smtp-Source: APXvYqxXgj2DzGbau2jRfU8yB1P6ugPqcEFA9Y8b92Zla+nOCm7v7/KczGbUY2ysct312qQy0M1PsONEm5NKwZol5IU=
-X-Received: by 2002:a62:108:: with SMTP id 8mr30829154pfb.53.1573488525663;
- Mon, 11 Nov 2019 08:08:45 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=N5Vcj3yE2rkXP4doP0O2V7gRihUnv+nSjX4pf/13Rw8=;
+        b=CBQ8W26nBhfvyynYKCEr3k8TGOtrtm34pDWrxm8OKM7Um9zQELtwz7Umd1M/a6q8Mi
+         Onlte7cJBZM/IajBJgyVCrO1wacbaIh/ws+ue+BsmgLhbtThvvFKBs602VdJbQkt/CXu
+         CmWa51IaSDH4hnQUuJpCm2FcvVpAXPYVqoDA8mWAFIRfCnxU9gKgBFR2QJ1aZfoWWhiz
+         WoIdYP+9++Y2feuBw5/gKL2Ke8sd2f6XlgPYionZf2kwaaityTsdGBnoMNtP12Y2XWFF
+         RLAkdyR+pOj1alVTcfuWhByYoYDkHMH1MgKwbB9k63qBkauP4Yor8yI9HM/Yr8ZLo6MR
+         bs0w==
+X-Gm-Message-State: APjAAAUHXO2fEm89dRaWb3V9JHhwcK3sJ+QcJL7RokoyXfyCOgZip+hS
+        JiDyK5/jBvsdjxM3r2XN9eFHc5BwGqc8LxHCzOw=
+X-Google-Smtp-Source: APXvYqy/vMjYcYeqIvTqdLd5GGnLez7ZmWGDKl5AqUc+6PF8GisVTiuTjJisyx2dw7CZpTj+GRrxuJBIdtOSyrbYjfw=
+X-Received: by 2002:aca:fc92:: with SMTP id a140mr23499698oii.153.1573491497306;
+ Mon, 11 Nov 2019 08:58:17 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a17:90a:7f82:0:0:0:0 with HTTP; Mon, 11 Nov 2019 08:08:45
- -0800 (PST)
-Reply-To: barristermusa32@gmail.com
-From:   Barrister Musa <alexwilliams0046@gmail.com>
-Date:   Mon, 11 Nov 2019 16:08:45 +0000
-Message-ID: <CAE+aWPP-APH+3+E31Ri8zJaCFF2r_6XcTYnaUS91sJvBXuS3+A@mail.gmail.com>
-Subject: greeting
-To:     undisclosed-recipients:;
+References: <20191011000609.29728-1-keescook@chromium.org> <20191011000609.29728-12-keescook@chromium.org>
+In-Reply-To: <20191011000609.29728-12-keescook@chromium.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 11 Nov 2019 17:58:06 +0100
+Message-ID: <CAMuHMdXfPyti1wFBb0hhf3CeDSQ=zVv7cV-taeYCmDswMQkXPQ@mail.gmail.com>
+Subject: Re: [PATCH v2 11/29] vmlinux.lds.h: Replace RODATA with RO_DATA
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Will Deacon <will@kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linux-c6x-dev@linux-c6x.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello, Please be informed that this email that came to your inbox is
-not an error but has been specifically addressed to you for review. I
-have a proposal for ($ 7,500,000.00) left by my late client Engineer
-Carlos, who bears the same name with you who previously worked and
-lived here in Lome Togo. My late client and my family were involved in
-a catastrophe that took their lives. I am contacting you as a close
-relative of the deceased so that you can receive your claims.
-Following your prompt response, I will inform you of how to fulfill
-this covenant. Contact me at these emails (barristermusa32@gmail.com)
+Hi Kees,
+
+On Fri, Oct 11, 2019 at 2:07 AM Kees Cook <keescook@chromium.org> wrote:
+> There's no reason to keep the RODATA macro: replace the callers with
+> the expected RO_DATA macro.
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/alpha/kernel/vmlinux.lds.S      | 2 +-
+>  arch/ia64/kernel/vmlinux.lds.S       | 2 +-
+>  arch/microblaze/kernel/vmlinux.lds.S | 2 +-
+>  arch/mips/kernel/vmlinux.lds.S       | 2 +-
+>  arch/um/include/asm/common.lds.S     | 2 +-
+>  arch/xtensa/kernel/vmlinux.lds.S     | 2 +-
+>  include/asm-generic/vmlinux.lds.h    | 4 +---
+>  7 files changed, 7 insertions(+), 9 deletions(-)
+
+Somehow you missed:
+
+    arch/m68k/kernel/vmlinux-std.lds:  RODATA
+    arch/m68k/kernel/vmlinux-sun3.lds:      RODATA
+
+Leading to build failures in next-20191111:
+
+    /opt/cross/kisskb/gcc-4.6.3-nolibc/m68k-linux/bin/m68k-linux-ld:./arch/m68k/kernel/vmlinux.lds:29:
+syntax error
+    make[1]: *** [/kisskb/src/Makefile:1075: vmlinux] Error 1
+
+Reported-by: noreply@ellerman.id.au
+http://kisskb.ellerman.id.au/kisskb/buildresult/14022846/
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
