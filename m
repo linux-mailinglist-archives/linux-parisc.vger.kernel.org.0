@@ -2,102 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30164103844
-	for <lists+linux-parisc@lfdr.de>; Wed, 20 Nov 2019 12:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F4E1046BB
+	for <lists+linux-parisc@lfdr.de>; Wed, 20 Nov 2019 23:49:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728997AbfKTLJi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 20 Nov 2019 06:09:38 -0500
-Received: from foss.arm.com ([217.140.110.172]:37448 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728995AbfKTLJi (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 20 Nov 2019 06:09:38 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BFC131B;
-        Wed, 20 Nov 2019 03:09:37 -0800 (PST)
-Received: from e107158-lin.cambridge.arm.com (e107158-lin.cambridge.arm.com [10.1.195.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 720363F6C4;
-        Wed, 20 Nov 2019 03:09:36 -0800 (PST)
-Date:   Wed, 20 Nov 2019 11:09:34 +0000
-From:   Qais Yousef <qais.yousef@arm.com>
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>
-Cc:     Richard Fontana <rfontana@redhat.com>,
-        Armijn Hemel <armijn@tjaldur.nl>, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 06/12] parisc: Replace cpu_up/down with
- device_online/offline
-Message-ID: <20191120110933.wjtmpc4pmqmxhmma@e107158-lin.cambridge.arm.com>
-References: <20191030153837.18107-1-qais.yousef@arm.com>
- <20191030153837.18107-7-qais.yousef@arm.com>
+        id S1726574AbfKTWts (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 20 Nov 2019 17:49:48 -0500
+Received: from imap1.codethink.co.uk ([176.9.8.82]:37388 "EHLO
+        imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725820AbfKTWtr (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 20 Nov 2019 17:49:47 -0500
+Received: from [167.98.27.226] (helo=xylophone)
+        by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
+        id 1iXYmm-0006Lg-Um; Wed, 20 Nov 2019 22:49:21 +0000
+Message-ID: <dd1a30609f05e800550097080c1d1b27065f91ff.camel@codethink.co.uk>
+Subject: Re: [Y2038] [PATCH 08/23] y2038: ipc: remove __kernel_time_t
+ reference from headers
+From:   Ben Hutchings <ben.hutchings@codethink.co.uk>
+To:     Arnd Bergmann <arnd@arndb.de>, y2038@lists.linaro.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org
+Cc:     linux-arch@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Date:   Wed, 20 Nov 2019 22:49:19 +0000
+In-Reply-To: <20191108210824.1534248-8-arnd@arndb.de>
+References: <20191108210236.1296047-1-arnd@arndb.de>
+         <20191108210824.1534248-8-arnd@arndb.de>
+Organization: Codethink Ltd.
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20191030153837.18107-7-qais.yousef@arm.com>
-User-Agent: NeoMutt/20171215
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/30/19 15:38, Qais Yousef wrote:
-> The core device API performs extra housekeeping bits that are missing
-> from directly calling cpu_up/down.
-> 
-> See commit a6717c01ddc2 ("powerpc/rtas: use device model APIs and
-> serialization during LPM") for an example description of what might go
-> wrong.
-> 
-> This also prepares to make cpu_up/down a private interface for anything
-> but the cpu subsystem.
-> 
-> Signed-off-by: Qais Yousef <qais.yousef@arm.com>
-> CC: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> CC: Helge Deller <deller@gmx.de>
-> CC: Richard Fontana <rfontana@redhat.com>
-> CC: Armijn Hemel <armijn@tjaldur.nl>
-> CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> CC: Thomas Gleixner <tglx@linutronix.de>
-> CC: linux-parisc@vger.kernel.org
-> CC: linux-kernel@vger.kernel.org
-> ---
-> 
-> Couldn't compile test this one.
-> 
-> I'm not confident that this is a correct patch to be honest. This __init
-> indicates we're booting the secondary cpus and that might be too early in the
-> process to use the core API..?
-
-Helge, James
-
-Do you have any comment on this? I have no means to test it and I'd
-appreciate if you can spin it through one of your systems.
-
-Thanks
-
---
-Qais Yousef
-
-> 
-> 
->  arch/parisc/kernel/processor.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor.c
-> index 13f771f74ee3..4dde5fe78f0c 100644
-> --- a/arch/parisc/kernel/processor.c
-> +++ b/arch/parisc/kernel/processor.c
-> @@ -212,7 +212,9 @@ static int __init processor_probe(struct parisc_device *dev)
->  #ifdef CONFIG_SMP
->  	if (cpuid) {
->  		set_cpu_present(cpuid, true);
-> -		cpu_up(cpuid);
-> +		lock_device_hotplug();
-> +		device_online(get_cpu_device(cpuid));
-> +		unlock_device_hotplug();
->  	}
+On Fri, 2019-11-08 at 22:07 +0100, Arnd Bergmann wrote:
+[...]
+> --- a/arch/x86/include/uapi/asm/sembuf.h
+> +++ b/arch/x86/include/uapi/asm/sembuf.h
+> @@ -21,9 +21,9 @@ struct semid64_ds {
+>  	unsigned long	sem_ctime;	/* last change time */
+>  	unsigned long	sem_ctime_high;
+>  #else
+> -	__kernel_time_t	sem_otime;	/* last semop time */
+> +	long		sem_otime;	/* last semop time */
+>  	__kernel_ulong_t __unused1;
+> -	__kernel_time_t	sem_ctime;	/* last change time */
+> +	long		sem_ctime;	/* last change time */
+>  	__kernel_ulong_t __unused2;
 >  #endif
->  
-> -- 
-> 2.17.1
-> 
+>  	__kernel_ulong_t sem_nsems;	/* no. of semaphores in array */
+[...]
+
+We need to use __kernel_long_t here to do the right thing on x32.
+
+Ben.
+
+-- 
+Ben Hutchings, Software Developer                         Codethink Ltd
+https://www.codethink.co.uk/                 Dale House, 35 Dale Street
+                                     Manchester, M1 2HF, United Kingdom
+
