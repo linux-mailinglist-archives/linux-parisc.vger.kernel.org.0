@@ -2,80 +2,144 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 644F0108CEE
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Nov 2019 12:28:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25EEB10A200
+	for <lists+linux-parisc@lfdr.de>; Tue, 26 Nov 2019 17:25:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727786AbfKYL2T (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Nov 2019 06:28:19 -0500
-Received: from foss.arm.com ([217.140.110.172]:49048 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727779AbfKYL2S (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Nov 2019 06:28:18 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C678511D4;
-        Mon, 25 Nov 2019 03:28:17 -0800 (PST)
-Received: from e107158-lin.cambridge.arm.com (e107158-lin.cambridge.arm.com [10.1.195.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 914F53F52E;
-        Mon, 25 Nov 2019 03:28:16 -0800 (PST)
-From:   Qais Yousef <qais.yousef@arm.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Qais Yousef <qais.yousef@arm.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Richard Fontana <rfontana@redhat.com>,
-        Armijn Hemel <armijn@tjaldur.nl>, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 08/14] parisc: Replace cpu_up/down with device_online/offline
-Date:   Mon, 25 Nov 2019 11:27:48 +0000
-Message-Id: <20191125112754.25223-9-qais.yousef@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191125112754.25223-1-qais.yousef@arm.com>
-References: <20191125112754.25223-1-qais.yousef@arm.com>
+        id S1727580AbfKZQZc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 26 Nov 2019 11:25:32 -0500
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:42001 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727269AbfKZQZb (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 26 Nov 2019 11:25:31 -0500
+Received: by mail-pl1-f195.google.com with SMTP id j12so8360585plt.9
+        for <linux-parisc@vger.kernel.org>; Tue, 26 Nov 2019 08:25:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=1hOraEYfhl1CfHNUuJ9PdJuLSAhfXrel88lp028GyuE=;
+        b=ofXBE/7VkptXvyZUZ8nCpnF8LnSUO7HEYT1LoAa9Am/hhjFzn63h+s86Xpuxq0Imbq
+         jUQVSTWIj7em0wn8lhMOpFYO0/YgE+PlYLu1zC6sZNJlmQnhCSb5Cm639iotn9wnQsOH
+         94e3PBGT1YD16gYa0ACD2djV5jMozSNFZRB8s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=1hOraEYfhl1CfHNUuJ9PdJuLSAhfXrel88lp028GyuE=;
+        b=YzPNRRiZlPkzoXEJ5TPXWnmwJ21MD9xheBKWWSAw2+wXXdSCR7MPQYOeKurH/lnvcJ
+         x3tmWhje+KMknVLJpUrtne084ObdrzcU5VatEqd92OGy/rVzt5acj7LWaZnjQlzERNhZ
+         91nY6fbUVAXZoJqaIJneZ7iMLpUR6mfGrRt7xieSBIojRyEJqhDafsny1SDyKwH3szPa
+         i3jZZG7P8lNwCG6dcdEdaTd1ncoum8pUgc4t3aJB+vy6RL2dY4iKCmkds8rf6RIhuThw
+         kN+Jc0iNbhVsgGMjgagkTAYXsPuzsQxF2Pdx4aHl+XJf25ATOhWHKfW5F1f2b88AB7cT
+         nyRg==
+X-Gm-Message-State: APjAAAWOcD0a7PUVQ2YMmZq81v0xRydINSgQs5y4+nsIz2OJHklqQB9j
+        iB1zBEw2vDTNeCcwXseqeo5jZQ==
+X-Google-Smtp-Source: APXvYqxdb3m8lvitpYcVMwL44atFGySYuA7LVySZPpCySFXgRV4Lv/KUVp10g+KjQW8s8fRGDFE4FQ==
+X-Received: by 2002:a17:902:ab82:: with SMTP id f2mr32593783plr.276.1574785530825;
+        Tue, 26 Nov 2019 08:25:30 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id j4sm3993110pjf.25.2019.11.26.08.25.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Nov 2019 08:25:29 -0800 (PST)
+Date:   Tue, 26 Nov 2019 08:25:28 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+        David Abdurachmanov <david.abdurachmanov@sifive.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@suse.de>, bpf@vger.kernel.org,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        kernel test robot <rong.a.chen@intel.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+        Martin KaFai Lau <kafai@fb.com>, netdev@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        Song Liu <songliubraving@fb.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tycho Andersen <tycho@tycho.ws>,
+        Tyler Hicks <tyhicks@canonical.com>,
+        Will Drewry <wad@chromium.org>, x86@kernel.org,
+        Yonghong Song <yhs@fb.com>
+Subject: [GIT PULL] seccomp updates for v5.5-rc1
+Message-ID: <201911260818.9C5DC1E@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The core device API performs extra housekeeping bits that are missing
-from directly calling cpu_up/down.
+Hi Linus,
 
-See commit a6717c01ddc2 ("powerpc/rtas: use device model APIs and
-serialization during LPM") for an example description of what might go
-wrong.
+Please pull these seccomp updates for v5.5-rc1. Mostly this is
+implementing the new flag SECCOMP_USER_NOTIF_FLAG_CONTINUE, but there
+are cleanups as well. Most notably, the secure_computing() prototype
+has changed (to remove an unused argument), but this has happened at the
+same time as riscv adding seccomp support, so the cleanest merge order
+would be to merge riscv first, then seccomp with the following patch for
+riscv to handle the change from "seccomp: simplify secure_computing()":
 
-This also prepares to make cpu_up/down a private interface for anything
-but the cpu subsystem.
-
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Qais Yousef <qais.yousef@arm.com>
-CC: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-CC: Helge Deller <deller@gmx.de>
-CC: Richard Fontana <rfontana@redhat.com>
-CC: Armijn Hemel <armijn@tjaldur.nl>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Thomas Gleixner <tglx@linutronix.de>
-CC: linux-parisc@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
----
- arch/parisc/kernel/processor.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor.c
-index 13f771f74ee3..4dde5fe78f0c 100644
---- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -212,7 +212,9 @@ static int __init processor_probe(struct parisc_device *dev)
- #ifdef CONFIG_SMP
- 	if (cpuid) {
- 		set_cpu_present(cpuid, true);
--		cpu_up(cpuid);
-+		lock_device_hotplug();
-+		device_online(get_cpu_device(cpuid));
-+		unlock_device_hotplug();
+diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
+index 0f84628b9385..407464201b91 100644
+--- a/arch/riscv/kernel/ptrace.c
++++ b/arch/riscv/kernel/ptrace.c
+@@ -159,7 +159,7 @@ __visible void do_syscall_trace_enter(struct pt_regs *regs)
+ 	 * If this fails we might have return value in a0 from seccomp
+ 	 * (via SECCOMP_RET_ERRNO/TRACE).
+ 	 */
+-	if (secure_computing(NULL) == -1) {
++	if (secure_computing() == -1) {
+ 		syscall_set_nr(current, regs, -1);
+ 		return;
  	}
- #endif
- 
--- 
-2.17.1
 
+Thanks!
+
+-Kees
+
+The following changes since commit da0c9ea146cbe92b832f1b0f694840ea8eb33cce:
+
+  Linux 5.4-rc2 (2019-10-06 14:27:30 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git tags/seccomp-v5.5-rc1
+
+for you to fetch changes up to 23b2c96fad21886c53f5e1a4ffedd45ddd2e85ba:
+
+  seccomp: rework define for SECCOMP_USER_NOTIF_FLAG_CONTINUE (2019-10-28 12:29:46 -0700)
+
+----------------------------------------------------------------
+seccomp updates for v5.5
+
+- implement SECCOMP_USER_NOTIF_FLAG_CONTINUE (Christian Brauner)
+- fixes to selftests (Christian Brauner)
+- remove secure_computing() argument (Christian Brauner)
+
+----------------------------------------------------------------
+Christian Brauner (6):
+      seccomp: avoid overflow in implicit constant conversion
+      seccomp: add SECCOMP_USER_NOTIF_FLAG_CONTINUE
+      seccomp: test SECCOMP_USER_NOTIF_FLAG_CONTINUE
+      seccomp: simplify secure_computing()
+      seccomp: fix SECCOMP_USER_NOTIF_FLAG_CONTINUE test
+      seccomp: rework define for SECCOMP_USER_NOTIF_FLAG_CONTINUE
+
+ arch/arm/kernel/ptrace.c                      |   2 +-
+ arch/arm64/kernel/ptrace.c                    |   2 +-
+ arch/parisc/kernel/ptrace.c                   |   2 +-
+ arch/s390/kernel/ptrace.c                     |   2 +-
+ arch/um/kernel/skas/syscall.c                 |   2 +-
+ arch/x86/entry/vsyscall/vsyscall_64.c         |   2 +-
+ include/linux/seccomp.h                       |   6 +-
+ include/uapi/linux/seccomp.h                  |  29 +++++++
+ kernel/seccomp.c                              |  28 +++++--
+ tools/testing/selftests/seccomp/seccomp_bpf.c | 110 +++++++++++++++++++++++++-
+ 10 files changed, 169 insertions(+), 16 deletions(-)
+
+-- 
+Kees Cook
