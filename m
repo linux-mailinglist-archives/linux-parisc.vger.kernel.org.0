@@ -2,71 +2,89 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF6110E011
-	for <lists+linux-parisc@lfdr.de>; Sun,  1 Dec 2019 02:40:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54E8B10E333
+	for <lists+linux-parisc@lfdr.de>; Sun,  1 Dec 2019 19:42:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727413AbfLABkF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 30 Nov 2019 20:40:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46496 "EHLO mail.kernel.org"
+        id S1727318AbfLASms (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 1 Dec 2019 13:42:48 -0500
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:13726 "EHLO mtax.cdmx.gob.mx"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726906AbfLABkE (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 30 Nov 2019 20:40:04 -0500
-Subject: Re: [GIT PULL] seccomp updates for v5.5-rc1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575164403;
-        bh=ajBvj1IaLYQkSA/v/7Hod991P4s7CVCuIKBejh5pxg0=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=kDQly26WJo5YJvsn/LzUkhhjzAbbvTcxecHnSpiUFC8U97ES9N5DdXAy/GZSEdcMO
-         okriinkm2YBXTi6WKKnlrAzV0PoPrCF2os90+EL++4P9JWLP7OjusJhRIZ5c4SPwIf
-         trItpK1jsUwqxZLH+Rd885EDUMUrMh7dkdsR/JSk=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <201911260818.9C5DC1E@keescook>
-References: <201911260818.9C5DC1E@keescook>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <201911260818.9C5DC1E@keescook>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git
- tags/seccomp-v5.5-rc1
-X-PR-Tracked-Commit-Id: 23b2c96fad21886c53f5e1a4ffedd45ddd2e85ba
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b94ae8ad9fe79da61231999f347f79645b909bda
-Message-Id: <157516440360.28955.6948106020327612727.pr-tracker-bot@kernel.org>
-Date:   Sun, 01 Dec 2019 01:40:03 +0000
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-        David Abdurachmanov <david.abdurachmanov@sifive.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@suse.de>, bpf@vger.kernel.org,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        kernel test robot <rong.a.chen@intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
-        Martin KaFai Lau <kafai@fb.com>, netdev@vger.kernel.org,
-        Oleg Nesterov <oleg@redhat.com>, Shuah Khan <shuah@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tycho Andersen <tycho@tycho.ws>,
-        Tyler Hicks <tyhicks@canonical.com>,
-        Will Drewry <wad@chromium.org>, x86@kernel.org,
-        Yonghong Song <yhs@fb.com>
+        id S1727275AbfLASmr (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 1 Dec 2019 13:42:47 -0500
+X-Greylist: delayed 7802 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:42:47 EST
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1575217651; h=DKIM-Filter:X-Virus-Scanned:
+         Content-Type:MIME-Version:Content-Transfer-Encoding:
+         Content-Description:Subject:To:From:Date:Message-Id:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
+         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
+         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
+        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
+        8=; b=EU6IHNv2FpJujqYaVqg4S2cikCNlBAYlAYO+A7dwstU/
+        il02qJQF68/GXvnmdF9TzPKiOlnmgHAjrYahNMU0x4LtO4fcIu
+        4B/ASqmUx6Uq2fKREYv8Ml5/GgClBNctfKP1jdKJSy5mX+mVCF
+        7LEVP4Gcfn8agJpuBCmHudplW1M=
+Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
+        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
+         id 1dee_65f9_e1920368_f3ad_42ea_8780_5d7dc7ada885;
+        Sun, 01 Dec 2019 10:27:30 -0600
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id A8DAF1E2B01;
+        Sun,  1 Dec 2019 10:18:52 -0600 (CST)
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id wmEwHShxcJgh; Sun,  1 Dec 2019 10:18:52 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id 443C51E2FF8;
+        Sun,  1 Dec 2019 10:14:21 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx 443C51E2FF8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
+        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216861;
+        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Message-Id;
+        b=kTmZgGqhdRs9UNMRh7P+YONLCPj75cdgsFrL2r9MvZ4g6YUbFVZ0btbV75BAEE8+b
+         QTrG53fjGRyyRNqPP+dZR/os0w9fe9eZU7X18zB8Fimu89weBo9wgUtMAtXRg4F9S3
+         V1XDSedRGwLV1av8pJ/3Zk3BZOkom+nn7PNbFtmQ=
+X-Virus-Scanned: amavisd-new at cdmx.gob.mx
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id UgdLJ73ow-ud; Sun,  1 Dec 2019 10:14:21 -0600 (CST)
+Received: from [192.168.0.104] (unknown [188.125.168.160])
+        by cdmx.gob.mx (Postfix) with ESMTPSA id 36BEF1E3275;
+        Sun,  1 Dec 2019 10:05:42 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Congratulations
+To:     Recipients <aac-styfe@cdmx.gob.mx>
+From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
+Date:   Sun, 01 Dec 2019 17:05:35 +0100
+Message-Id: <20191201160543.36BEF1E3275@cdmx.gob.mx>
+X-AnalysisOut: [v=2.2 cv=JYXMlQCV c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
+X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
+X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
+X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
+X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
+X-SAAS-TrackingID: 0f9e3ed5.0.7834648.00-2361.13425677.s12p02m003.mxlogic.net
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
+ <1840193> : uri <2949750>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Tue, 26 Nov 2019 08:25:28 -0800:
+Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
+ them with this email for more information =
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git tags/seccomp-v5.5-rc1
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b94ae8ad9fe79da61231999f347f79645b909bda
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+EMail: allenandvioletlargeaward@gmail.com
