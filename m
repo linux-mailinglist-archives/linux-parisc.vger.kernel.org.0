@@ -2,110 +2,95 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02CDB124347
-	for <lists+linux-parisc@lfdr.de>; Wed, 18 Dec 2019 10:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C72124B38
+	for <lists+linux-parisc@lfdr.de>; Wed, 18 Dec 2019 16:14:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726725AbfLRJbT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 18 Dec 2019 04:31:19 -0500
-Received: from mga06.intel.com ([134.134.136.31]:41254 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725785AbfLRJbS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 18 Dec 2019 04:31:18 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Dec 2019 01:31:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,329,1571727600"; 
-   d="scan'208";a="218091630"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga003.jf.intel.com with ESMTP; 18 Dec 2019 01:31:17 -0800
-Received: from [10.125.252.219] (abudanko-mobl.ccr.corp.intel.com [10.125.252.219])
-        by linux.intel.com (Postfix) with ESMTP id 33127580458;
-        Wed, 18 Dec 2019 01:31:09 -0800 (PST)
-Subject: [PATCH v4 9/9] drivers/oprofile: open access for CAP_SYS_PERFMON
- privileged process
-From:   Alexey Budankov <alexey.budankov@linux.intel.com>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
-        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
-        "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "james.bottomley@hansenpartnership.com" 
-        <james.bottomley@hansenpartnership.com>,
-        Serge Hallyn <serge@hallyn.com>,
-        James Morris <jmorris@namei.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Robert Richter <rric@kernel.org>
-Cc:     Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
-        Stephane Eranian <eranian@google.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-        Song Liu <songliubraving@fb.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org, oprofile-list@lists.sf.net
-References: <c0460c78-b1a6-b5f7-7119-d97e5998f308@linux.intel.com>
-Organization: Intel Corp.
-Message-ID: <70eb48f8-34ae-8aa3-ca64-d433b75ea2ae@linux.intel.com>
-Date:   Wed, 18 Dec 2019 12:31:08 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+        id S1727406AbfLRPON (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 18 Dec 2019 10:14:13 -0500
+Received: from mail-io1-f68.google.com ([209.85.166.68]:39645 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727404AbfLRPOE (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 18 Dec 2019 10:14:04 -0500
+Received: by mail-io1-f68.google.com with SMTP id c16so907916ioh.6
+        for <linux-parisc@vger.kernel.org>; Wed, 18 Dec 2019 07:14:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=RfaUJbE64AqObBUWyZFAX00yFzfv+PMQBeMlfEbyOTSSIZSlP9dNPzblRe9C4/Xp5G
+         OOrfzjlEIPRCszaxaclLviha/Gl6J+8MNE2wJIlQr3g8uWJn+m5NNx6dyOIWXJDzHKAu
+         CFfw6ayoPSChbR+RAE0+B68G/pEf5o1uZqam8GCW/DM3JVJn1rrKg09G5nyaA4x8K46C
+         DidFmOGbhUnnebgzWtKvL2IYqcm0dJ4hRYsroJX5h4wZl5ygcdMBOrPylnEG0iZgtaC4
+         tctA6UVKTV1ZO7eaOpJeM3zJ9lY8Otzi6Az77Sm1wv6CYLTS/yvcKPbBaIHIL7wY9gk+
+         23sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=JccGT4K26G4ecbS3+ZTQUi2T/ZZawayKw4Rbx8VXzjU9jaVKFxMi+RNU7hILaMNCBz
+         vqX2JTsLt0aEVM2MsCh3aS/A3BwY3e9jmJsJrUQtOFYnoql05Xo1xEeda5CtyckAJN40
+         sTTgOJ0A9eQ150NLT0bAZvRAr3lph4McnYkEnL7CFe1kdNXyj7ODQ+9nTOWIss2jqS5g
+         KoTGhSggkMOOUKDmTrIt8bD387M6md2dmnEaruIKWkvU/so8mPMEQ98+0eHKH2NrmMfu
+         yZv0RCqe/YCB2MwqZqTNLL7UCy2NWiUTrur8soBLbTod4YiQB7YFw2dHNWwup3ufDBqA
+         TPmQ==
+X-Gm-Message-State: APjAAAWEhFvXuruMpAczgtS1qegw6rXjVkiIdIJLkoa2tBjt668EED+H
+        /kdUzAnzTFebw/f9WFofQX0eillNJJJpNTiAvw==
+X-Google-Smtp-Source: APXvYqyIz9CrpHcrXivylieLEiE1VxRyGUw+E9DXz6VIYz+kYlOCef915g/qsmML8+OoqrwbsBK3G0eW6o6RBALrF/E=
+X-Received: by 2002:a05:6638:950:: with SMTP id f16mr2789501jad.107.1576682043767;
+ Wed, 18 Dec 2019 07:14:03 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <c0460c78-b1a6-b5f7-7119-d97e5998f308@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:14:03
+ -0800 (PST)
+Reply-To: dhl.expresscourier102156@outlook.fr
+From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
+Date:   Wed, 18 Dec 2019 16:14:03 +0100
+Message-ID: <CABHzvr=Pq7-TqhY8TPvFCsr+5-DhDQy=XOg-TM13qqbFWeemfQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Urgent_delivery_Notification_of_your_ATM_MASTER_CARD?=
+        =?UTF-8?Q?_Amount=2C=2415=2E800=E2=80=99000=E2=80=9900=2C?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Attn Dear.
 
-Open access to monitoring for CAP_SYS_PERFMON privileged processes.
-For backward compatibility reasons access to the monitoring remains open
-for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for secure
-monitoring is discouraged with respect to CAP_SYS_PERFMON capability.
+Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
+ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
+=9900, as
+approved this morning, Date, 18/12/2019. Through the Intruction from
+INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
 
-Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
----
- drivers/oprofile/event_buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+REGISTRATION NO :EG58945
+PARCEL NUMBER: 140479
+Delivery Schuleded now,
+Finally all we required from you is your ATM Card Proccessing Delivery
+fees $19.00 only which you must send to this DHL service to enable us
+dispatch the parcel to your destination today.
 
-diff --git a/drivers/oprofile/event_buffer.c b/drivers/oprofile/event_buffer.c
-index 12ea4a4ad607..6c9edc8bbc95 100644
---- a/drivers/oprofile/event_buffer.c
-+++ b/drivers/oprofile/event_buffer.c
-@@ -113,7 +113,7 @@ static int event_buffer_open(struct inode *inode, struct file *file)
- {
- 	int err = -EPERM;
- 
--	if (!capable(CAP_SYS_ADMIN))
-+	if (!perfmon_capable())
- 		return -EPERM;
- 
- 	if (test_and_set_bit_lock(0, &buffer_opened))
--- 
-2.20.1
+Here is our receiving payment details.
+You are advised to send it Via Money Gram Service.
 
+Receiver's Name--------Alan Ude
+Country-------Benin Republic.
+City/ Address--------Cotonou
+Test Question--------In God
+Answer-------We Trust
+Amount------------$US19.00 only
+Mtcn-------------
+Sender's Name-------
 
+Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
+Is Due for delivery to your address today upon confirmation of
+required fee from you asap.
+
+Call us on this phone number for any inquiry. +229 62819378
+Awaiting your urgent response.
+
+MS. MARYANNA B. THOMASON, Shipment director, DHL Express
+Courier Company-Benin
