@@ -2,82 +2,103 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 251FB128257
-	for <lists+linux-parisc@lfdr.de>; Fri, 20 Dec 2019 19:46:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B8C21282FC
+	for <lists+linux-parisc@lfdr.de>; Fri, 20 Dec 2019 21:00:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727406AbfLTSq0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 20 Dec 2019 13:46:26 -0500
-Received: from mout.gmx.net ([212.227.15.19]:34875 "EHLO mout.gmx.net"
+        id S1727413AbfLTUA1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 20 Dec 2019 15:00:27 -0500
+Received: from mout.gmx.net ([212.227.17.21]:39975 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727394AbfLTSq0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 20 Dec 2019 13:46:26 -0500
+        id S1727411AbfLTUA1 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 20 Dec 2019 15:00:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1576867580;
-        bh=ozhm70U2WiBRv4FB3mIrsDBLO8nuhxdC+43oNb8DtVs=;
+        s=badeba3b8450; t=1576872022;
+        bh=e6yeiVFatuyStjuRpRL9Ddb2nb1owAxvNuaKrH0Oh5Y=;
         h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=DppS8y/s2KhMcBjA4f3aiiMMPR9K6DQtXHnwWvv1lLI+L6858a6sZjTFw5felfwyg
-         xIHAPVvcDllyL6fyRqelXMPpcSEDT/0+FS8v1sJJcFtEKBcDoVCQVxO1RcWRQSjCAo
-         nVZUiFloBGz2SEDZw10il4NstX2dKoJzIICCR7/E=
+        b=UgctRokGF+3KNGMVIBfIp9+Ssi59RxL20KbqrBUw8g4yM5O3cxDnHSEysvVS6VaEW
+         gaueN1lZSyQEyRzUh4ViO/JQjLu/0cJKdNPWiscXe04Fu5CiVP2zRdOc1e3aqHAIu8
+         hCM7Wm8zKp+ZJ9zWv3lEIi3jPVM83GfqeniZSvy4=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.172.235]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N5G9n-1hhdkX1CNh-0117NG; Fri, 20
- Dec 2019 19:46:20 +0100
-Date:   Fri, 20 Dec 2019 19:46:17 +0100
+Received: from ls3530.fritz.box ([92.116.172.235]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mlf4c-1i13Ho1hfG-00ilSi; Fri, 20
+ Dec 2019 21:00:22 +0100
+Date:   Fri, 20 Dec 2019 21:00:19 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: soft_offline_page() now takes the pfn
-Message-ID: <20191220184617.GA16345@ls3530.fritz.box>
+Subject: [PATCH] parisc: Fix compiler warnings in debug_core.c
+Message-ID: <20191220200019.GA20308@ls3530.fritz.box>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Provags-ID: V03:K1:6QULxCrbmwRHieC32YkCo4jEfI25ahfN5OhcmzYJ+DA6vHrHErr
- 1YeveAbz/bxAdXrbQn+y561NP0424P74vdnggqP76DOIvl9QiNuMNg5f7BpXeUf7cGk0MtS
- bty8AtVxpkTniH0aJrKkY/hNqnAiI7h04w0U0+ydcvZox6Bzy24Nr7mX3bfZkvc80ld/DWs
- mgeb37//m7TpJVa+5M9mQ==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:tyWlO0mlTpd6w0BeqZ0qKLZZKbgg3aRXIZq0qiDyo+gLVTtBhtT
+ qRB7wbgrVCZft4+sUP2m1H2tWDoz6Jfphb0j+N2J3VNNiVAd3DJqGz6zJejJpDWByVowqY9
+ +xBrKKqaic9ZDqkInbCaI5koPMPv6MM7az0vf3cejJ7cqnm15D5st2W5jebvrE/K8J71yxE
+ hgqAK5DOYvNPwgA53hhSw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lQRZFFy4bkE=:+ICuD7Gp2Evyx4meH1Innc
- DAEqisW83g2D92EggF8K7RTAhufkj2iiNtUY6be6+F2naXF3i82y+LvAs3nvZrfmFl7S7QT/n
- 2jMcyZeaDzPWmkwo2YW5xqvZ221qj3b+aNLy4Tr6fRwsVZkj6rupkh9Dj2L9MXcgR/tBJ7NCl
- vHC9J6uB/Rw/qxz1BPLc70BANdtbVnDx/xXfXY+i1AtEsvmlFN2zftyTEhgcfIgBckpaorLZS
- 8KJJ9+gmC7mFgzuj23TZRU7kj7xtYWJiufzKGZ5KsCcSx+/5LBkTbQVl1HSQ/XqLX8nqSFgr/
- qVh6T7mKSkAIAP9Y3mVJA/gpvmvXyf+14j3SKetJOVo00J9LCCnjrraoPe5rqVzAjRM4yqUe6
- BSLDVEKvTppgB4hhpeGW4LUapllJgiIQIiCw3Qc9hEpo1wy45BTWFoCi1F4obCbVvFcbeiSZa
- kkB9iKFlT6ifcje8GR6JBPjSMMF2Ma2n8DdUQ+Gy44LQDrsYQRxo/7brWu+LeHrTcZPccAVlz
- w6Yc452Qhnn/TcfJNAFT2uGdxxEUd2yH3MdblMBowgVj53NljRhdWI0F2m79uoajyqKqrSA9v
- gt3UkSdk4O/tzV0Qe6Hpeeo4zzGM8RTbEncZ50Xp4ccR8JHKi5vbxsuWcUATsfMfmh2QCAWOk
- lWrYNX+6NkkwSkK5zQvStkkib26ur0/etQMvTKmCf6BiQ/5N39TFf6Sbd3sxawIWxOCSF15Zk
- Fm2XrBxCS7ZB3MfkUPG8wf7R4l9Xn1zrh+WxDIf7UCoeZt8wWRhfDRQXx45TjMyjtqEdMzpw1
- PT79JRnKNg1CLCcBKS6zMLteJzGREX+EHD0N92wjXwxXpltqKFFWn8ChnImUyYGW4Zsv940ux
- +TZV7qz1d9nBnElEWChf1sjvjUNVhXExR2CfOtg0ebTq31gSWimCrS9jSSqJmHbw8Mfo+iWiB
- C6UmnG80IrHgpk7wgPopU4dB1iohYWTmKPed/niyT3A66RCFOcP+1kLkTf4JFl+N+i4XQPl7E
- WkrQoBUFBNjgQeO9xTVeei1BJyIIPPnG6aXLm6qdX0R6VRnj/T5MqtulrOFNL/m3NleWBch90
- 417rZatKvUiAuxAso76mlM8qcF5Uif5F2xW5prlKzar48TmfyUGHwhpoABls5zLBAagR8H6xE
- 1v+PI7W3lfWIpb13wIMZqnrx1c9Dn+tDgB2S6ibB/fDXYgPaR4jFwleiof+CIs6Ss4DOv40B3
- ubEOHRNFSFnrQuqkPb0NjVJLlFPf3euUTyNuYSQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:sRFpxfBof38=:h9ePR/DKGDvsDYATq7jQTx
+ 9KmvTVZMDoH+vzPuMobM7Zo9NPU5WhEXH/YlTrEKrmUmn8OtBoN70xM8M64++rWw7BWqDOaUH
+ WbWmKMiDNzKHe2JTxsTnwYVYjsfxoXbWuCctCZl5asoXVDPg5cW6aJw7gMT6zRC+2MI1nWNXC
+ Cw6wgcrefVxAxYj/K7hOr6oQGOHMSmZhVq6EH8HPUS2ZcgAAM+pkqFBOLzIEYGgxQ63TF4JOV
+ gychuqrnn6KyXkdLnEWW9geCIi9ovSizeVEdAalN/RC5XsEA8rtgWDUg0VJJUoHaTOBqDsbnv
+ J+60KDdBYkYKpDMwe9iO+Ht3UvH/+4GlkN35p16GXyNbmnZprcpmToWBX/URDWAmQFrwsbv8J
+ 3zD6y7EbIKVEEotf6e2LFcegLxcmUWEA3vrCZEf+aBtkL6qhUo0tSd2YlIDWgmCzl0w4f2XnS
+ bkUytKfrZjliztbuMtbMkIS0v8jVb8rW2T/9JeX7THwN0Ug5pVIAA1Cws3YYWPQ09xkXrCBLR
+ G07mo0++aeZ9DFTLzhOexIpWvqi6LuFlAqs78YWI8oOmDudzkZuJlhsKP52H81QOrNOFl6fln
+ dcN1ZDoLhsEpXxkujeDh2SCqcQHZB9bHM85WMfW7JDmtGNbfw4ZnHiHupmEtWTF3rYos/6hJ8
+ BTKnoIlmqGU0uCem/0tfo9p/0ZuAkXawOnDSuDjkWyST5nHQq3bZrbBoCU+4SItc4THqvQP2r
+ J/4loYQrNeEfQHD0aqnd6bACYQ8KBdJr4BmNALKqjYVDb3D7vlRAyNcfkVv/Dc8+SdgvPmlfo
+ lii16qsIiYgiSGYDI4SiI1iQLu7CVJXtJQF7FBqLZ0GhU9OkTe4GOjyWiTYJ7Ba5HqnjHywJ1
+ rix04mbyKW9apgy3glB688NyfD7wIbgCxePGDBEoejQ+uagDT6FNAP6TtYyC51zW8392Y2FNO
+ stmyYh1xby8zsDFXFX6O/0BcJwoctSU5EUFhwXJrAgoakQmCl54q4nxR2Qh4aTaMxOpLN2Er/
+ JYJxEvORQSB80jT2vZHx6uvel7Cdu8ATQ4h2kfNwzE5Lfa6CjV9EIsiYPJMNUaJjUe2Oc2c4f
+ YQhEhj697reuYdw2jE2MZh2F8JayYIXafjDevT7Kl/kqD0cytr0ekLJAGx3oh7MKHiHizWICN
+ z+CdWZmgxe6S1bJQeUrJlSV9bAmhKdauMQfhpYSWpfPxfh1/l3uNXrJtfcSjr+GSgrCIaxIst
+ Qg3VhNYve0oQzUQJyUzr07teFALOHVe/n6AaWMA==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Switch page deallocation table (pdt) driver to use pfn instead of a page
-pointer in soft_offline_page().
+Fix this compiler warning:
+kernel/debug/debug_core.c: In function =E2=80=98kgdb_cpu_enter=E2=80=99:
+arch/parisc/include/asm/cmpxchg.h:48:3: warning: value computed is not use=
+d [-Wunused-value]
+   48 |  ((__typeof__(*(ptr)))__xchg((unsigned long)(x), (ptr), sizeof(*(p=
+tr))))
+arch/parisc/include/asm/atomic.h:78:30: note: in expansion of macro =E2=80=
+=98xchg=E2=80=99
+   78 | #define atomic_xchg(v, new) (xchg(&((v)->counter), new))
+      |                              ^~~~
+kernel/debug/debug_core.c:596:4: note: in expansion of macro =E2=80=98atom=
+ic_xchg=E2=80=99
+  596 |    atomic_xchg(&kgdb_active, cpu);
+      |    ^~~~~~~~~~~
 
-Fixes: feec24a6139d ("mm, soft-offline: convert parameter to pfn")
 Signed-off-by: Helge Deller <deller@gmx.de>
 
-diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
-index 36434d4da381..749c4579db0d 100644
---- a/arch/parisc/kernel/pdt.c
-+++ b/arch/parisc/kernel/pdt.c
-@@ -327,8 +327,7 @@ static int pdt_mainloop(void *unused)
- 			    ((pde & PDT_ADDR_SINGLE_ERR) == 0))
- 				memory_failure(pde >> PAGE_SHIFT, 0);
- 			else
--				soft_offline_page(
--					pfn_to_page(pde >> PAGE_SHIFT), 0);
-+				soft_offline_page(pde >> PAGE_SHIFT, 0);
- #else
- 			pr_crit("PDT: memory error at 0x%lx ignored.\n"
- 				"Rebuild kernel with CONFIG_MEMORY_FAILURE=y "
+diff --git a/arch/parisc/include/asm/cmpxchg.h b/arch/parisc/include/asm/c=
+mpxchg.h
+index f627c37dad9c..ab5c215cf46c 100644
+=2D-- a/arch/parisc/include/asm/cmpxchg.h
++++ b/arch/parisc/include/asm/cmpxchg.h
+@@ -44,8 +44,14 @@ __xchg(unsigned long x, __volatile__ void *ptr, int siz=
+e)
+ **		if (((unsigned long)p & 0xf) =3D=3D 0)
+ **			return __ldcw(p);
+ */
+-#define xchg(ptr, x) \
+-	((__typeof__(*(ptr)))__xchg((unsigned long)(x), (ptr), sizeof(*(ptr))))
++#define xchg(ptr, x)							\
++({									\
++	__typeof__(*(ptr)) __ret;					\
++	__typeof__(*(ptr)) _x_ =3D (x);					\
++	__ret =3D (__typeof__(*(ptr)))					\
++		__xchg((unsigned long)_x_, (ptr), sizeof(*(ptr)));	\
++	__ret;								\
++})
+
+ /* bug catcher for when unsupported size is used - won't link */
+ extern void __cmpxchg_called_with_bad_pointer(void);
