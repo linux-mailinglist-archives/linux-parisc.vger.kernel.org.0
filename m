@@ -2,145 +2,82 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 415DB125D55
-	for <lists+linux-parisc@lfdr.de>; Thu, 19 Dec 2019 10:10:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 251FB128257
+	for <lists+linux-parisc@lfdr.de>; Fri, 20 Dec 2019 19:46:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726736AbfLSJKk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 19 Dec 2019 04:10:40 -0500
-Received: from mga09.intel.com ([134.134.136.24]:19859 "EHLO mga09.intel.com"
+        id S1727406AbfLTSq0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 20 Dec 2019 13:46:26 -0500
+Received: from mout.gmx.net ([212.227.15.19]:34875 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726719AbfLSJKk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 19 Dec 2019 04:10:40 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Dec 2019 01:10:39 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,331,1571727600"; 
-   d="scan'208";a="212954494"
-Received: from bbartede-mobl2.ger.corp.intel.com (HELO [10.252.33.233]) ([10.252.33.233])
-  by fmsmga007.fm.intel.com with ESMTP; 19 Dec 2019 01:10:30 -0800
-Subject: Re: [PATCH v4 4/9] drm/i915/perf: open access for CAP_SYS_PERFMON
- privileged process
-To:     Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
-        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
-        "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "james.bottomley@hansenpartnership.com" 
-        <james.bottomley@hansenpartnership.com>,
-        Serge Hallyn <serge@hallyn.com>,
-        James Morris <jmorris@namei.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Robert Richter <rric@kernel.org>
-Cc:     Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
-        Stephane Eranian <eranian@google.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Song Liu <songliubraving@fb.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org, oprofile-list@lists.sf.net
-References: <c0460c78-b1a6-b5f7-7119-d97e5998f308@linux.intel.com>
- <ea050255-a125-8831-ce91-ee23bd6ad08b@linux.intel.com>
-From:   Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Organization: Intel Corporation (UK) Ltd. - Co. Reg. #1134945 - Pipers Way,
- Swindon SN3 1RJ
-Message-ID: <d5f908f3-b545-7953-8c72-ceb7177609d3@intel.com>
-Date:   Thu, 19 Dec 2019 11:10:29 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1727394AbfLTSq0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 20 Dec 2019 13:46:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1576867580;
+        bh=ozhm70U2WiBRv4FB3mIrsDBLO8nuhxdC+43oNb8DtVs=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=DppS8y/s2KhMcBjA4f3aiiMMPR9K6DQtXHnwWvv1lLI+L6858a6sZjTFw5felfwyg
+         xIHAPVvcDllyL6fyRqelXMPpcSEDT/0+FS8v1sJJcFtEKBcDoVCQVxO1RcWRQSjCAo
+         nVZUiFloBGz2SEDZw10il4NstX2dKoJzIICCR7/E=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.172.235]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N5G9n-1hhdkX1CNh-0117NG; Fri, 20
+ Dec 2019 19:46:20 +0100
+Date:   Fri, 20 Dec 2019 19:46:17 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: soft_offline_page() now takes the pfn
+Message-ID: <20191220184617.GA16345@ls3530.fritz.box>
 MIME-Version: 1.0
-In-Reply-To: <ea050255-a125-8831-ce91-ee23bd6ad08b@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:6QULxCrbmwRHieC32YkCo4jEfI25ahfN5OhcmzYJ+DA6vHrHErr
+ 1YeveAbz/bxAdXrbQn+y561NP0424P74vdnggqP76DOIvl9QiNuMNg5f7BpXeUf7cGk0MtS
+ bty8AtVxpkTniH0aJrKkY/hNqnAiI7h04w0U0+ydcvZox6Bzy24Nr7mX3bfZkvc80ld/DWs
+ mgeb37//m7TpJVa+5M9mQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lQRZFFy4bkE=:+ICuD7Gp2Evyx4meH1Innc
+ DAEqisW83g2D92EggF8K7RTAhufkj2iiNtUY6be6+F2naXF3i82y+LvAs3nvZrfmFl7S7QT/n
+ 2jMcyZeaDzPWmkwo2YW5xqvZ221qj3b+aNLy4Tr6fRwsVZkj6rupkh9Dj2L9MXcgR/tBJ7NCl
+ vHC9J6uB/Rw/qxz1BPLc70BANdtbVnDx/xXfXY+i1AtEsvmlFN2zftyTEhgcfIgBckpaorLZS
+ 8KJJ9+gmC7mFgzuj23TZRU7kj7xtYWJiufzKGZ5KsCcSx+/5LBkTbQVl1HSQ/XqLX8nqSFgr/
+ qVh6T7mKSkAIAP9Y3mVJA/gpvmvXyf+14j3SKetJOVo00J9LCCnjrraoPe5rqVzAjRM4yqUe6
+ BSLDVEKvTppgB4hhpeGW4LUapllJgiIQIiCw3Qc9hEpo1wy45BTWFoCi1F4obCbVvFcbeiSZa
+ kkB9iKFlT6ifcje8GR6JBPjSMMF2Ma2n8DdUQ+Gy44LQDrsYQRxo/7brWu+LeHrTcZPccAVlz
+ w6Yc452Qhnn/TcfJNAFT2uGdxxEUd2yH3MdblMBowgVj53NljRhdWI0F2m79uoajyqKqrSA9v
+ gt3UkSdk4O/tzV0Qe6Hpeeo4zzGM8RTbEncZ50Xp4ccR8JHKi5vbxsuWcUATsfMfmh2QCAWOk
+ lWrYNX+6NkkwSkK5zQvStkkib26ur0/etQMvTKmCf6BiQ/5N39TFf6Sbd3sxawIWxOCSF15Zk
+ Fm2XrBxCS7ZB3MfkUPG8wf7R4l9Xn1zrh+WxDIf7UCoeZt8wWRhfDRQXx45TjMyjtqEdMzpw1
+ PT79JRnKNg1CLCcBKS6zMLteJzGREX+EHD0N92wjXwxXpltqKFFWn8ChnImUyYGW4Zsv940ux
+ +TZV7qz1d9nBnElEWChf1sjvjUNVhXExR2CfOtg0ebTq31gSWimCrS9jSSqJmHbw8Mfo+iWiB
+ C6UmnG80IrHgpk7wgPopU4dB1iohYWTmKPed/niyT3A66RCFOcP+1kLkTf4JFl+N+i4XQPl7E
+ WkrQoBUFBNjgQeO9xTVeei1BJyIIPPnG6aXLm6qdX0R6VRnj/T5MqtulrOFNL/m3NleWBch90
+ 417rZatKvUiAuxAso76mlM8qcF5Uif5F2xW5prlKzar48TmfyUGHwhpoABls5zLBAagR8H6xE
+ 1v+PI7W3lfWIpb13wIMZqnrx1c9Dn+tDgB2S6ibB/fDXYgPaR4jFwleiof+CIs6Ss4DOv40B3
+ ubEOHRNFSFnrQuqkPb0NjVJLlFPf3euUTyNuYSQ==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 18/12/2019 11:27, Alexey Budankov wrote:
-> Open access to i915_perf monitoring for CAP_SYS_PERFMON privileged
-> processes. For backward compatibility reasons access to i915_perf
-> subsystem remains open for CAP_SYS_ADMIN privileged processes but
-> CAP_SYS_ADMIN usage for secure i915_perf monitoring is discouraged
-> with respect to CAP_SYS_PERFMON capability.
->
-> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+Switch page deallocation table (pdt) driver to use pfn instead of a page
+pointer in soft_offline_page().
 
-Acked-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Fixes: feec24a6139d ("mm, soft-offline: convert parameter to pfn")
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-> ---
->   drivers/gpu/drm/i915/i915_perf.c | 13 ++++++-------
->   1 file changed, 6 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/i915_perf.c b/drivers/gpu/drm/i915/i915_perf.c
-> index e42b86827d6b..e2697f8d04de 100644
-> --- a/drivers/gpu/drm/i915/i915_perf.c
-> +++ b/drivers/gpu/drm/i915/i915_perf.c
-> @@ -2748,10 +2748,10 @@ i915_perf_open_ioctl_locked(struct drm_i915_private *dev_priv,
->   	/* Similar to perf's kernel.perf_paranoid_cpu sysctl option
->   	 * we check a dev.i915.perf_stream_paranoid sysctl option
->   	 * to determine if it's ok to access system wide OA counters
-> -	 * without CAP_SYS_ADMIN privileges.
-> +	 * without CAP_SYS_PERFMON or CAP_SYS_ADMIN privileges.
->   	 */
->   	if (privileged_op &&
-> -	    i915_perf_stream_paranoid && !capable(CAP_SYS_ADMIN)) {
-> +	    i915_perf_stream_paranoid && !perfmon_capable()) {
->   		DRM_DEBUG("Insufficient privileges to open system-wide i915 perf stream\n");
->   		ret = -EACCES;
->   		goto err_ctx;
-> @@ -2939,9 +2939,8 @@ static int read_properties_unlocked(struct drm_i915_private *dev_priv,
->   			} else
->   				oa_freq_hz = 0;
->   
-> -			if (oa_freq_hz > i915_oa_max_sample_rate &&
-> -			    !capable(CAP_SYS_ADMIN)) {
-> -				DRM_DEBUG("OA exponent would exceed the max sampling frequency (sysctl dev.i915.oa_max_sample_rate) %uHz without root privileges\n",
-> +			if (oa_freq_hz > i915_oa_max_sample_rate && !perfmon_capable()) {
-> +				DRM_DEBUG("OA exponent would exceed the max sampling frequency (sysctl dev.i915.oa_max_sample_rate) %uHz without CAP_SYS_PERFMON or CAP_SYS_ADMIN privileges\n",
->   					  i915_oa_max_sample_rate);
->   				return -EACCES;
->   			}
-> @@ -3328,7 +3327,7 @@ int i915_perf_add_config_ioctl(struct drm_device *dev, void *data,
->   		return -EINVAL;
->   	}
->   
-> -	if (i915_perf_stream_paranoid && !capable(CAP_SYS_ADMIN)) {
-> +	if (i915_perf_stream_paranoid && !perfmon_capable()) {
->   		DRM_DEBUG("Insufficient privileges to add i915 OA config\n");
->   		return -EACCES;
->   	}
-> @@ -3474,7 +3473,7 @@ int i915_perf_remove_config_ioctl(struct drm_device *dev, void *data,
->   		return -ENOTSUPP;
->   	}
->   
-> -	if (i915_perf_stream_paranoid && !capable(CAP_SYS_ADMIN)) {
-> +	if (i915_perf_stream_paranoid && !perfmon_capable()) {
->   		DRM_DEBUG("Insufficient privileges to remove i915 OA config\n");
->   		return -EACCES;
->   	}
-
-
+diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
+index 36434d4da381..749c4579db0d 100644
+--- a/arch/parisc/kernel/pdt.c
++++ b/arch/parisc/kernel/pdt.c
+@@ -327,8 +327,7 @@ static int pdt_mainloop(void *unused)
+ 			    ((pde & PDT_ADDR_SINGLE_ERR) == 0))
+ 				memory_failure(pde >> PAGE_SHIFT, 0);
+ 			else
+-				soft_offline_page(
+-					pfn_to_page(pde >> PAGE_SHIFT), 0);
++				soft_offline_page(pde >> PAGE_SHIFT, 0);
+ #else
+ 			pr_crit("PDT: memory error at 0x%lx ignored.\n"
+ 				"Rebuild kernel with CONFIG_MEMORY_FAILURE=y "
