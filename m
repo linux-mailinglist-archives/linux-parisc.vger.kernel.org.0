@@ -2,103 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B8C21282FC
-	for <lists+linux-parisc@lfdr.de>; Fri, 20 Dec 2019 21:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E88128990
+	for <lists+linux-parisc@lfdr.de>; Sat, 21 Dec 2019 15:35:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727413AbfLTUA1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 20 Dec 2019 15:00:27 -0500
-Received: from mout.gmx.net ([212.227.17.21]:39975 "EHLO mout.gmx.net"
+        id S1726750AbfLUOfy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 21 Dec 2019 09:35:54 -0500
+Received: from mout.gmx.net ([212.227.15.15]:37113 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727411AbfLTUA1 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 20 Dec 2019 15:00:27 -0500
+        id S1726715AbfLUOfy (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 21 Dec 2019 09:35:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1576872022;
-        bh=e6yeiVFatuyStjuRpRL9Ddb2nb1owAxvNuaKrH0Oh5Y=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=UgctRokGF+3KNGMVIBfIp9+Ssi59RxL20KbqrBUw8g4yM5O3cxDnHSEysvVS6VaEW
-         gaueN1lZSyQEyRzUh4ViO/JQjLu/0cJKdNPWiscXe04Fu5CiVP2zRdOc1e3aqHAIu8
-         hCM7Wm8zKp+ZJ9zWv3lEIi3jPVM83GfqeniZSvy4=
+        s=badeba3b8450; t=1576938943;
+        bh=Tkb7joQstLAGu2IIOjJB8aYKaEv/nA6o+B4sSnBN9Ek=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=OpgTtrM2VMRAP/h12Fd71+07VYgZ9FrN1W/yWnNwC5lhjJRVyKnR/9LiaRk1q+D5A
+         fW6lDbRbxl03Dz+jkn7+atRU/+5bzlQM2jB0zQf0eIvwJvpkbLTjAUjdqmpnsScf2h
+         ZPtAf5HjFdFUHYBeruRg+qeLVEU2etSB2Mi5f1mk=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.172.235]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mlf4c-1i13Ho1hfG-00ilSi; Fri, 20
- Dec 2019 21:00:22 +0100
-Date:   Fri, 20 Dec 2019 21:00:19 +0100
+Received: from ls3530.fritz.box ([92.116.169.139]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYvcA-1iDvZv0vVA-00UpMa; Sat, 21
+ Dec 2019 15:35:43 +0100
+Date:   Sat, 21 Dec 2019 15:35:39 +0100
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Fix compiler warnings in debug_core.c
-Message-ID: <20191220200019.GA20308@ls3530.fritz.box>
+Cc:     Sven Schnelle <svens@stackframe.org>
+Subject: [GIT PULL] parisc architecture fixes for kernel v5.5-rc3
+Message-ID: <20191221143539.GA29263@ls3530.fritz.box>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tyWlO0mlTpd6w0BeqZ0qKLZZKbgg3aRXIZq0qiDyo+gLVTtBhtT
- qRB7wbgrVCZft4+sUP2m1H2tWDoz6Jfphb0j+N2J3VNNiVAd3DJqGz6zJejJpDWByVowqY9
- +xBrKKqaic9ZDqkInbCaI5koPMPv6MM7az0vf3cejJ7cqnm15D5st2W5jebvrE/K8J71yxE
- hgqAK5DOYvNPwgA53hhSw==
+X-Provags-ID: V03:K1:Eu1VqnZExhaM2p9mJ3lDYG25ZhP7zssG8jpDj9wAueBi1ee/QLB
+ 4lvX2upPhcCbllIu5iJDIdYYzrqBKqPcLehSHwk0pVT8+lUrlDqh2l5YN0pMqVOwMypdsuQ
+ 0/rb/odisXFnxcbvkQA6NIoZQefF/JgHW/R99dXoHpobZR7Fb91gWr8SdauG6NxUJEZ3eMY
+ gyaoUxiT+5R0fbjNTPjDw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:sRFpxfBof38=:h9ePR/DKGDvsDYATq7jQTx
- 9KmvTVZMDoH+vzPuMobM7Zo9NPU5WhEXH/YlTrEKrmUmn8OtBoN70xM8M64++rWw7BWqDOaUH
- WbWmKMiDNzKHe2JTxsTnwYVYjsfxoXbWuCctCZl5asoXVDPg5cW6aJw7gMT6zRC+2MI1nWNXC
- Cw6wgcrefVxAxYj/K7hOr6oQGOHMSmZhVq6EH8HPUS2ZcgAAM+pkqFBOLzIEYGgxQ63TF4JOV
- gychuqrnn6KyXkdLnEWW9geCIi9ovSizeVEdAalN/RC5XsEA8rtgWDUg0VJJUoHaTOBqDsbnv
- J+60KDdBYkYKpDMwe9iO+Ht3UvH/+4GlkN35p16GXyNbmnZprcpmToWBX/URDWAmQFrwsbv8J
- 3zD6y7EbIKVEEotf6e2LFcegLxcmUWEA3vrCZEf+aBtkL6qhUo0tSd2YlIDWgmCzl0w4f2XnS
- bkUytKfrZjliztbuMtbMkIS0v8jVb8rW2T/9JeX7THwN0Ug5pVIAA1Cws3YYWPQ09xkXrCBLR
- G07mo0++aeZ9DFTLzhOexIpWvqi6LuFlAqs78YWI8oOmDudzkZuJlhsKP52H81QOrNOFl6fln
- dcN1ZDoLhsEpXxkujeDh2SCqcQHZB9bHM85WMfW7JDmtGNbfw4ZnHiHupmEtWTF3rYos/6hJ8
- BTKnoIlmqGU0uCem/0tfo9p/0ZuAkXawOnDSuDjkWyST5nHQq3bZrbBoCU+4SItc4THqvQP2r
- J/4loYQrNeEfQHD0aqnd6bACYQ8KBdJr4BmNALKqjYVDb3D7vlRAyNcfkVv/Dc8+SdgvPmlfo
- lii16qsIiYgiSGYDI4SiI1iQLu7CVJXtJQF7FBqLZ0GhU9OkTe4GOjyWiTYJ7Ba5HqnjHywJ1
- rix04mbyKW9apgy3glB688NyfD7wIbgCxePGDBEoejQ+uagDT6FNAP6TtYyC51zW8392Y2FNO
- stmyYh1xby8zsDFXFX6O/0BcJwoctSU5EUFhwXJrAgoakQmCl54q4nxR2Qh4aTaMxOpLN2Er/
- JYJxEvORQSB80jT2vZHx6uvel7Cdu8ATQ4h2kfNwzE5Lfa6CjV9EIsiYPJMNUaJjUe2Oc2c4f
- YQhEhj697reuYdw2jE2MZh2F8JayYIXafjDevT7Kl/kqD0cytr0ekLJAGx3oh7MKHiHizWICN
- z+CdWZmgxe6S1bJQeUrJlSV9bAmhKdauMQfhpYSWpfPxfh1/l3uNXrJtfcSjr+GSgrCIaxIst
- Qg3VhNYve0oQzUQJyUzr07teFALOHVe/n6AaWMA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VH+g+yyVafM=:BjCvHx8x0S+GnR/jjf+R2t
+ AQD4e6O2YCPkkt2Lr2G+Y8R1gyiteNeQrTEobHf64U4AWhCwTknhJ/WStqedmPDv371BZGNFF
+ 3+wr4K89RIQlKuSkcdNMWt1XONlILUUechwyCIvcLys5b1BSDkR9SLox1bfQA6Yuk+5kJZgrI
+ mQk59cmKywS7cTMTyN4Z5gaI5awtWg6836hVTE8071xRnGRKtjelwzm+K6cOmq6DzXpc8gXci
+ LTW6ekHk2duvQiT17aBCUZj9JGorOG3h+pkwpknm6kTpPaNSZCawq+q6GRg0syFzgnBdWJDql
+ pg2NQvZbfJGk/Fhu1z+5jQEM7g8V6xaHNHkp999DuzCBlf5Q9H3WTnnROc+g6pNgPIqXH10CH
+ bNPr65twNX5j27RTInvfkwhi5VwaTqaN//H4ZTfKk1dwg42C+waJ7w1xYYTmvnMkyKFf228jj
+ DYbRyifWaPuNiBDmabgYxUcqvQHw1I8s7glPjYy+RU2bUmVGJv4rLDeluzuaXHvVu1DJVS8bV
+ 97XQsCsoxpPrHkxtW7ApnRTQFILzwg6OWy6isI4FhAUQ9rQYWP4E6A8fY8P1aWk1AKsf8UpnI
+ s0owKydFVNPQ59pzP227lgZQ3hTWwuuYC0DfJwA9l0TEA2TfxZUQECL8bvEJJ7OyKuHzS9okU
+ OQE5jBEvihLFcback0PwDxQHzayl/uVWko8YxI9b/B7MQGtFekE4H4qlluuNvSFyr/xGgbA1S
+ LnWNp40wkNM9Ln1azKKmlVUDvYbNZPJ+akiDDm16yxgKkcbqSMPl3wNrvDUDhfyKy4x1FiwTO
+ zKijr1AIROP+aYpxXoiGK6YQTLGth9XnRhpF5wsKyP12mdQwaAk3uVqsIGUYrUbGK1CyuY7Gz
+ urh9KKvkOJSgQLQQ4tBKZTpUOdKXCMofT+2VIeXlotd8XnXYgIB2NG+nCAk3J159O5CHk5Qn8
+ NEjzBFyWJQPKIZyjilVQD4WVt9MDRR7OqisIKCvuFXNmJWmhswNTB3DPoQto1PtlKJ2URkeD2
+ qttSy98sdVFcvfidLbtDoxpHmeJDOgIBI/5YJGJJQDFE6v43OG3pR67iL14BSUiM+n64fx4ou
+ L5AcvPwzWWndKQtFUH7z6r/E515rjNjnxk2JUsSSo5QyXIp3hQUQchwEvrB75hJEGlm2Ji+BD
+ vjN1xl9U/lJiWXPS/g3BYoep1AOx7GsT0EoD09d7aB8Unsm9sM+XreASDXwPyOkRiIt7vOXAh
+ 6ui6sCE7CppXRAykUsAelOH1r1c8WAaUGpsWVPw==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Fix this compiler warning:
-kernel/debug/debug_core.c: In function =E2=80=98kgdb_cpu_enter=E2=80=99:
-arch/parisc/include/asm/cmpxchg.h:48:3: warning: value computed is not use=
-d [-Wunused-value]
-   48 |  ((__typeof__(*(ptr)))__xchg((unsigned long)(x), (ptr), sizeof(*(p=
-tr))))
-arch/parisc/include/asm/atomic.h:78:30: note: in expansion of macro =E2=80=
-=98xchg=E2=80=99
-   78 | #define atomic_xchg(v, new) (xchg(&((v)->counter), new))
-      |                              ^~~~
-kernel/debug/debug_core.c:596:4: note: in expansion of macro =E2=80=98atom=
-ic_xchg=E2=80=99
-  596 |    atomic_xchg(&kgdb_active, cpu);
-      |    ^~~~~~~~~~~
+Hi Linus,
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+please pull a few small fixes for the parisc architecture for kernel 5.5-rc3 from:
 
-diff --git a/arch/parisc/include/asm/cmpxchg.h b/arch/parisc/include/asm/c=
-mpxchg.h
-index f627c37dad9c..ab5c215cf46c 100644
-=2D-- a/arch/parisc/include/asm/cmpxchg.h
-+++ b/arch/parisc/include/asm/cmpxchg.h
-@@ -44,8 +44,14 @@ __xchg(unsigned long x, __volatile__ void *ptr, int siz=
-e)
- **		if (((unsigned long)p & 0xf) =3D=3D 0)
- **			return __ldcw(p);
- */
--#define xchg(ptr, x) \
--	((__typeof__(*(ptr)))__xchg((unsigned long)(x), (ptr), sizeof(*(ptr))))
-+#define xchg(ptr, x)							\
-+({									\
-+	__typeof__(*(ptr)) __ret;					\
-+	__typeof__(*(ptr)) _x_ =3D (x);					\
-+	__ret =3D (__typeof__(*(ptr)))					\
-+		__xchg((unsigned long)_x_, (ptr), sizeof(*(ptr)));	\
-+	__ret;								\
-+})
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.5-2
 
- /* bug catcher for when unsupported size is used - won't link */
- extern void __cmpxchg_called_with_bad_pointer(void);
+Two build error fixes, one for the soft_offline_page() parameter change and one
+for a specific KEXEC/KEXEC_FILE configuration, as well as a compiler and a
+linker warning fix.
+
+Thanks,
+Helge
+
+----------------------------------------------------------------
+Helge Deller (2):
+      parisc: soft_offline_page() now takes the pfn
+      parisc: Fix compiler warnings in debug_core.c
+
+Sven Schnelle (2):
+      parisc: fix compilation when KEXEC=n and KEXEC_FILE=y
+      parisc: add missing __init annotation
+
+ arch/parisc/include/asm/cmpxchg.h | 10 ++++++++--
+ arch/parisc/include/asm/kexec.h   |  4 ----
+ arch/parisc/kernel/Makefile       |  2 +-
+ arch/parisc/kernel/drivers.c      |  2 +-
+ arch/parisc/kernel/pdt.c          |  3 +--
+ 5 files changed, 11 insertions(+), 10 deletions(-)
