@@ -2,83 +2,95 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5878312A6CD
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Dec 2019 09:33:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CC4412B7D0
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 Dec 2019 18:51:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726400AbfLYIdT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 25 Dec 2019 03:33:19 -0500
-Received: from mail02.vodafone.es ([217.130.24.81]:27624 "EHLO
-        mail02.vodafone.es" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726185AbfLYIdT (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 25 Dec 2019 03:33:19 -0500
-X-Greylist: delayed 302 seconds by postgrey-1.27 at vger.kernel.org; Wed, 25 Dec 2019 03:33:18 EST
-IronPort-SDR: PlwLikndLn8vmN3OFkaewEPqLvregsBjPStfIpHjnV5Ytot+lKzRmXJc0+CwrtH0sXMD5z2nt8
- LHkGM//V59oA==
-IronPort-PHdr: =?us-ascii?q?9a23=3AOHVHehOvs5dVcersSN0l6mtUPXoX/o7sNwtQ0K?=
- =?us-ascii?q?IMzox0Iv38rarrMEGX3/hxlliBBdydt6sfzbCM6Ou/AyQp2tWoiDg6aptCVh?=
- =?us-ascii?q?sI2409vjcLJ4q7M3D9N+PgdCcgHc5PBxdP9nC/NlVJSo6lPwWB6nK94iQPFR?=
- =?us-ascii?q?rhKAF7Ovr6GpLIj8Swyuu+54Dfbx9HiTagb75+Ngu6oRvfu8UZg4ZuNLs6xw?=
- =?us-ascii?q?fUrHdPZ+lY335jK0iJnxb76Mew/Zpj/DpVtvk86cNOUrj0crohQ7BAAzsoL2?=
- =?us-ascii?q?465MvwtRneVgSP/WcTUn8XkhVTHQfI6gzxU4rrvSv7sup93zSaPdHzQLspVz?=
- =?us-ascii?q?mu87tnRRn1gyoBKjU38nzYitZogaxVoByhvQJxzY3Jbo6aKPVwcbjQfc8YSG?=
- =?us-ascii?q?VdQspdSzBNDp26YoASD+QBJ+FYr4zlqlUItxS1GBOiBPnuyj9Nh3/2waw60/?=
- =?us-ascii?q?o7Hgrb2wEgA88OsHDIo9X0KagdS/u1wbLNzTrZbvNW3S3x6JTWfRAlv/6MRa?=
- =?us-ascii?q?h/ftbLxUk3CwPIl1OdopHmMTONzukBrXWX4uh6We6yhWMrtxt9riagy8s2hI?=
- =?us-ascii?q?TEhoQYwU3e+ypj2oY6P9i4RVZ+Yd6jDZRfqTmXN5BzQsM+W2Fovzs6yqEetZ?=
- =?us-ascii?q?67YicKzJMnygbaa/OdcoiI5gjjW/iVITtki39pYqy/hxGv/ke6xO38Uc+030?=
- =?us-ascii?q?hQoiVbidnArnEN1xrN5cibUvZx4Fqt1DSV2wzO5OxIPVo4mbTUJpI7zLM9lo?=
- =?us-ascii?q?IfsUHZES/3nEX2grWWdkIh+uWw9+Tnf7HmqYOdN4BpkA7+Kb8jmsmlDuQ5Ng?=
- =?us-ascii?q?gCRXSb9vq41LL95U32WqlFgucukqnFqJzaP9gUpralAw9J1YYu8xK/Dzag0N?=
- =?us-ascii?q?QFkngLNUpFdwidj4joIFHBPOv1Demwg1uyijdn3fPGMaP7ApXLMHfDlK3tfb?=
- =?us-ascii?q?Fn605Tm0IPyoVb5pRJGvQZKejyQUTZqtPVFFk6PhayzuKhD89yhbkTQWaePq?=
- =?us-ascii?q?jMFKqaiUWJ4+MzIveFLNsRsS7nKv0k+//whHIisU0afa6s1JoTLn2lSKdIOU?=
- =?us-ascii?q?KcNF7lyu8bEGILogsgRaS+lECGWj9fbm2aWqs94ncnBYarFY7IAJix1u/SlB?=
- =?us-ascii?q?ynF4FbMzgVQmuHFm3lIt2J?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2GTKgBOHQNemCMYgtllgkQBGAEBgns?=
- =?us-ascii?q?3GyASk0JUBnUdihKFM4N8FYYaDIFbDQEBAQEBNQIBAYRAgiIkOBMCAw0BAQU?=
- =?us-ascii?q?BAQEBAQUEAQECEAEBAQEBCAsLBimFSkIBDAGBayKEF4EDgSyDA4JTKa0XGgK?=
- =?us-ascii?q?FI4R1gTYBjBgaeYEHgUSCMoUCARIBbIUhBI1FIYhLYZd+gj4EljANgikBjDg?=
- =?us-ascii?q?DglSJEacigjdVgQuBCnFNOIFyGYEdTxgNjSyOLUCBFhACT4VAh1yCMgEB?=
-X-IPAS-Result: =?us-ascii?q?A2GTKgBOHQNemCMYgtllgkQBGAEBgns3GyASk0JUBnUdi?=
- =?us-ascii?q?hKFM4N8FYYaDIFbDQEBAQEBNQIBAYRAgiIkOBMCAw0BAQUBAQEBAQUEAQECE?=
- =?us-ascii?q?AEBAQEBCAsLBimFSkIBDAGBayKEF4EDgSyDA4JTKa0XGgKFI4R1gTYBjBgae?=
- =?us-ascii?q?YEHgUSCMoUCARIBbIUhBI1FIYhLYZd+gj4EljANgikBjDgDglSJEacigjdVg?=
- =?us-ascii?q?QuBCnFNOIFyGYEdTxgNjSyOLUCBFhACT4VAh1yCMgEB?=
-X-IronPort-AV: E=Sophos;i="5.69,353,1571695200"; 
-   d="scan'208";a="317906378"
-Received: from mailrel04.vodafone.es ([217.130.24.35])
-  by mail02.vodafone.es with ESMTP; 25 Dec 2019 09:27:58 +0100
-Received: (qmail 32233 invoked from network); 25 Dec 2019 04:33:51 -0000
-Received: from unknown (HELO 192.168.1.88) (seigo@[217.217.179.17])
-          (envelope-sender <tulcidas@mail.telepac.pt>)
-          by mailrel04.vodafone.es (qmail-ldap-1.03) with SMTP
-          for <linux-parisc@vger.kernel.org>; 25 Dec 2019 04:33:51 -0000
-Date:   Wed, 25 Dec 2019 05:33:42 +0100 (CET)
-From:   La Primitiva <tulcidas@mail.telepac.pt>
-Reply-To: La Primitiva <laprimitivaes@zohomail.eu>
-To:     linux-parisc@vger.kernel.org
-Message-ID: <27026285.259381.1577248423113.JavaMail.javamailuser@localhost>
-Subject: Take home 750,000 Euros this end of year
+        id S1728207AbfL0RnU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 27 Dec 2019 12:43:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40766 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728204AbfL0RnU (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 27 Dec 2019 12:43:20 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AF58624125;
+        Fri, 27 Dec 2019 17:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577468599;
+        bh=zOuj6n+fYGJwlWbMnFsq3QNqgVU7cb1hz3VpkEgVXtw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=czF3PFaFOytCq8N9iKpJ9RCyyCQUd59/JGNQGsKbQ7+XVA4qp3+1en/fMFxKDMtg3
+         OUrv8yPTrvppVhfcVagSGK6uqGz6oDjM4UC+UzdwvckLm+qxXTKeQ5ZzfPd0yTcxWF
+         ALN2QvmMOIDUcpQWvVO/ofxud74CsEV77MWhw5j0=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Sven Schnelle <svens@stackframe.org>,
+        kbuild test robot <lkp@intel.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
+        linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 120/187] parisc: fix compilation when KEXEC=n and KEXEC_FILE=y
+Date:   Fri, 27 Dec 2019 12:39:48 -0500
+Message-Id: <20191227174055.4923-120-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191227174055.4923-1-sashal@kernel.org>
+References: <20191227174055.4923-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Attn: Email User,
+From: Sven Schnelle <svens@stackframe.org>
 
-You have won, you are to reply back with your name and phone number for
-claim.
+[ Upstream commit e16260c21f87b16a33ae8ecac9e8c79f3a8b89bd ]
 
-La Primitiva
+Fix compilation when the CONFIG_KEXEC_FILE=y and
+CONFIG_KEXEC=n.
 
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/parisc/include/asm/kexec.h | 4 ----
+ arch/parisc/kernel/Makefile     | 2 +-
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-
-
-----------------------------------------------------
-This email was sent by the shareware version of Postman Professional.
+diff --git a/arch/parisc/include/asm/kexec.h b/arch/parisc/include/asm/kexec.h
+index a99ea747d7ed..87e174006995 100644
+--- a/arch/parisc/include/asm/kexec.h
++++ b/arch/parisc/include/asm/kexec.h
+@@ -2,8 +2,6 @@
+ #ifndef _ASM_PARISC_KEXEC_H
+ #define _ASM_PARISC_KEXEC_H
+ 
+-#ifdef CONFIG_KEXEC
+-
+ /* Maximum physical address we can use pages from */
+ #define KEXEC_SOURCE_MEMORY_LIMIT (-1UL)
+ /* Maximum address we can reach in physical address mode */
+@@ -32,6 +30,4 @@ static inline void crash_setup_regs(struct pt_regs *newregs,
+ 
+ #endif /* __ASSEMBLY__ */
+ 
+-#endif /* CONFIG_KEXEC */
+-
+ #endif /* _ASM_PARISC_KEXEC_H */
+diff --git a/arch/parisc/kernel/Makefile b/arch/parisc/kernel/Makefile
+index 2663c8f8be11..068d90950d93 100644
+--- a/arch/parisc/kernel/Makefile
++++ b/arch/parisc/kernel/Makefile
+@@ -37,5 +37,5 @@ obj-$(CONFIG_FUNCTION_GRAPH_TRACER)	+= ftrace.o
+ obj-$(CONFIG_JUMP_LABEL)		+= jump_label.o
+ obj-$(CONFIG_KGDB)			+= kgdb.o
+ obj-$(CONFIG_KPROBES)			+= kprobes.o
+-obj-$(CONFIG_KEXEC)			+= kexec.o relocate_kernel.o
++obj-$(CONFIG_KEXEC_CORE)		+= kexec.o relocate_kernel.o
+ obj-$(CONFIG_KEXEC_FILE)		+= kexec_file.o
+-- 
+2.20.1
 
