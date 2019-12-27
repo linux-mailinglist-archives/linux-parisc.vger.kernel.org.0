@@ -2,37 +2,37 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83EDE12B9FB
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 Dec 2019 19:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A82F612BA1C
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 Dec 2019 19:16:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727561AbfL0SPd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 Dec 2019 13:15:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40112 "EHLO mail.kernel.org"
+        id S1726527AbfL0SQc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 27 Dec 2019 13:16:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41456 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727910AbfL0SPS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 Dec 2019 13:15:18 -0500
+        id S1727695AbfL0SQQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 27 Dec 2019 13:16:16 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C6D06208C4;
-        Fri, 27 Dec 2019 18:15:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E71DF21927;
+        Fri, 27 Dec 2019 18:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577470518;
-        bh=Czplure2xZKgEkKI4XC5UMk7izwZoY4ItYjVWnKukSo=;
+        s=default; t=1577470575;
+        bh=GYAiOy07T+ykLeb+hCT6lXSIG+xqYiuRzQzeHMN3wWA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mtL9+c7ppH2soJS2OhwFLMqgYzdtWqxFuQhJwjPszi+hn+JgI7hbHAH/QRQ/2ixnf
-         RUYg51iuaqZziL7i/x6GOZCf6CBBuAdYdnXlrtuNLw57x3GOCvlXZTxmkBqNXRFQjj
-         wy2r37cIvmWEuwkd/GEaSqeHYZaoMSpTw3MIxqzY=
+        b=T184cwJhylxIKXZoF1kNn5oAzH27G67hH5/qvo+m/Z/h7HzmNCVDWZCCClY7zZMqZ
+         kZik95fKzcj2DRN1C7L4SAjAOXVO11set+lPKUS6eGzqEH1+PXRFeAwNz7OKoUSlKW
+         BfmpPbsmzAwxIY76hosfzLROqedGmOiYMcNv/bUo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 35/38] parisc: Fix compiler warnings in debug_core.c
-Date:   Fri, 27 Dec 2019 13:14:32 -0500
-Message-Id: <20191227181435.7644-35-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 22/25] parisc: Fix compiler warnings in debug_core.c
+Date:   Fri, 27 Dec 2019 13:15:46 -0500
+Message-Id: <20191227181549.8040-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191227181435.7644-1-sashal@kernel.org>
-References: <20191227181435.7644-1-sashal@kernel.org>
+In-Reply-To: <20191227181549.8040-1-sashal@kernel.org>
+References: <20191227181549.8040-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -65,7 +65,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/arch/parisc/include/asm/cmpxchg.h b/arch/parisc/include/asm/cmpxchg.h
-index 7ada30900807..90253bdc2ee5 100644
+index 0a90b965cccb..9849bef2a766 100644
 --- a/arch/parisc/include/asm/cmpxchg.h
 +++ b/arch/parisc/include/asm/cmpxchg.h
 @@ -43,8 +43,14 @@ __xchg(unsigned long x, __volatile__ void *ptr, int size)
