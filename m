@@ -2,324 +2,117 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AF7A12E7A0
-	for <lists+linux-parisc@lfdr.de>; Thu,  2 Jan 2020 15:58:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC27712E94E
+	for <lists+linux-parisc@lfdr.de>; Thu,  2 Jan 2020 18:24:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728616AbgABO6W (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 2 Jan 2020 09:58:22 -0500
-Received: from mout.kundenserver.de ([212.227.126.131]:48225 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728544AbgABO6W (ORCPT
+        id S1727422AbgABRYn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 2 Jan 2020 12:24:43 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:33920 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727854AbgABRYV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 2 Jan 2020 09:58:22 -0500
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MKsSj-1j1g5N1e73-00LJ2E; Thu, 02 Jan 2020 15:57:20 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Robert Richter <rric@kernel.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        oprofile-list@lists.sf.net, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: [PATCH v3 02/22] compat: provide compat_ptr() on all architectures
-Date:   Thu,  2 Jan 2020 15:55:20 +0100
-Message-Id: <20200102145552.1853992-3-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-In-Reply-To: <20200102145552.1853992-1-arnd@arndb.de>
-References: <20200102145552.1853992-1-arnd@arndb.de>
+        Thu, 2 Jan 2020 12:24:21 -0500
+Received: by mail-wr1-f68.google.com with SMTP id t2so39963464wrr.1;
+        Thu, 02 Jan 2020 09:24:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=L1XTkfPnf+xygEwiEa8xupdElziS0T1yXcRh//IpEmk=;
+        b=aTDKPpiCwVSTja4oES5GrKlvuc++gzMK0wRFPgM9RFp6FDFXnhIvqVR37S1wOloKgc
+         8PHFWsZHUUHwNchW5ypD7FMh/aRveA56atk+VfNafRRwcVvHiOpTg5RMehfRqicVzeZi
+         fgyWXfvccl7ZR6kNFLcInbO+IEPQiwOrEsFnyu2Lqc+kUv1Wyc7MEnLCoFmZ72dPRrHD
+         QUW5sbxh60hYTgM3WAcJb7tk2gyqGqP1FUyc6uDPfLRlWZbCX+rjc5or/MW0e82ORdGp
+         xkVnWXOyQaOQm60PpakJZI94qub7G9owf/iV0kfm0dW1A3NsIujTEEbx6iUYvr2vsruo
+         A9qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=L1XTkfPnf+xygEwiEa8xupdElziS0T1yXcRh//IpEmk=;
+        b=PUdlRTn4gsudEDyYL3yss9lTpH68DQLIJpmgyaNNrt8hoDHl9Q/nKSto1tcB2tYioF
+         oT88YexY9ckgfa6pEkUoH2Mu9vOQEw2Mh6nUkcaK6UbYds6rMTOHMF8RcSMqbjrGZ/2t
+         kaEDr53GigcoUmO3SUH/JWdg55+0nge/W4mvAWV/BpDvMkZYtUYrSO1VpdrY53TQ0GA7
+         6kUO+1nZTWEIF9ArRlkjr4I4r8pZAwYWa4wH5z09mrsHaRJAid5czTWHAE8WynFi0iV7
+         5jeHUc/m71oXZh3pY7qMtLw3CN8PHA1kVlXTBQVNyDad4ZQ+QgU7NSYXXC84vtAKRZ4y
+         SztA==
+X-Gm-Message-State: APjAAAVJ4ZoREFter5Qnu5Y0APHDHCkYdw7OiL020BZBhUhwdsH4EkBH
+        UJzqIEbXnMTZXhSjOYMcrF1Rc8VFhzaBepW8
+X-Google-Smtp-Source: APXvYqzmOOKoMQKUxWUbitYsx3DhPyjVEL1vmWvRp3MkUNKIFndDIEsRrTuY+pZUkYhi78MTdV2b3A==
+X-Received: by 2002:adf:ea88:: with SMTP id s8mr83518881wrm.293.1577985859767;
+        Thu, 02 Jan 2020 09:24:19 -0800 (PST)
+Received: from amanieu-laptop.home ([2a01:cb19:8051:6200:3fe7:84:7f3:e713])
+        by smtp.gmail.com with ESMTPSA id z21sm9480328wml.5.2020.01.02.09.24.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jan 2020 09:24:19 -0800 (PST)
+From:   Amanieu d'Antras <amanieu@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Christian Brauner <christian@brauner.io>, stable@vger.kernel.org,
+        Amanieu d'Antras <amanieu@gmail.com>,
+        linux-parisc@vger.kernel.org
+Subject: [PATCH 4/7] parisc: Implement copy_thread_tls
+Date:   Thu,  2 Jan 2020 18:24:10 +0100
+Message-Id: <20200102172413.654385-5-amanieu@gmail.com>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200102172413.654385-1-amanieu@gmail.com>
+References: <20200102172413.654385-1-amanieu@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:2hX7IDTUYkAbF/HhQ6TYtzbjyBbqDNNLh+1GSIq8v43IxijC5jg
- IxCrNJ39AdLrHWtRvImmwZpTQaolJl/S2HV0sH4qgRii84CosdPsPdLkqE4AQdF19U2rwxu
- o8mx4dmOF2UdkOCL4EKQj2riMOwmeudimbJ3FbghXzFACFG4Z/gsnhMgeNu9FJi+ezUWH/e
- Ki2D1edrm4O22iSq+mRaw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:iRaRDLaZqiQ=:dCjjrqiMCTZI4CY8mY6J1F
- LgGw/52xqyKMiJ9kTcQPJE3ph6PNa39y3I6j3qJPMBAXCr+IcDtkTv65553CD7J6PBfRzmYHV
- pLDOMi+XLuxeUC3wmJktG3NY6ciGPgt+qxRgBLCsivTUyOATXh1EC6z76yfaZ2LgQe23uA2QX
- k+L2WYQIXQAP8S6+D7ApHQ7B8Eb0bIUGgSyEYbinXWi27nC3IUIsTcwFKiZSLo9nkoGEs4qPQ
- RjaLT5n2/14goOXuM7GS/7D3hvVGlrYgekwlnSp2SoRijVHFr83H9/bp8U43jJvYdDd+S+FTv
- Et4xcSspYq8kBwI1sEeBlzb095qWlf1EkfEE4o6tvTPciO3bSXcdian2fgZadSWOqspCa7GZQ
- d9Mq3fl/7Oog20lD8sZxAQqAWz7O3fnUo7yH7Byw8qq4cVtfjz5Sz3zZCa4Gp4fnMxUMGlrxC
- rK1ywoDvpwW5SoLvWIm+GZTOHar+l6tBeUAAQjLUMrkWmAvatTkk3Al6xxq05y1YW92TwncK6
- omMszIrgjfzzBKEfGmb8XrMG+S1osXmEjmNShtFsUGZrQG205nnYdRnDB4Gs9ELZQMCjdJDjn
- 0dv0qr1bah3HryE6/8BJ5jnY/5hwvDLuBqKKPQtSycu/Fn+WdGyaqJWz2NC0NOq4XS7gvpyl7
- qFe6Pt4n3600Dtg9xczdjrrkiPTV5nkLT5YHPUjHSZdhSFO8W1YcEGwA0D3BszE//0rbCGn09
- 8PghH7gQLStJ0W9m3HJcBVVmJBC1b2NlkhwpuaxQqlmUnN81kxkmydZrJ4rernRj+fOffEM0v
- UrCnkUZ3QtFSy6ENM6cvspMOaOnYhbmdFKIQe5QhwFCRjBHIVCg6kDufznqOOIixUOma06k69
- ioLVB4SVJi6cniBG9uTw==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-In order to avoid needless #ifdef CONFIG_COMPAT checks,
-move the compat_ptr() definition to linux/compat.h
-where it can be seen by any file regardless of the
-architecture.
+This is required for clone3 which passes the TLS value through a
+struct rather than a register.
 
-Only s390 needs a special definition, this can use the
-self-#define trick we have elsewhere.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Amanieu d'Antras <amanieu@gmail.com>
+Cc: linux-parisc@vger.kernel.org
+Cc: <stable@vger.kernel.org> # 5.3.x
 ---
- arch/arm64/include/asm/compat.h   | 17 -----------------
- arch/mips/include/asm/compat.h    | 18 ------------------
- arch/parisc/include/asm/compat.h  | 17 -----------------
- arch/powerpc/include/asm/compat.h | 17 -----------------
- arch/powerpc/oprofile/backtrace.c |  2 +-
- arch/s390/include/asm/compat.h    |  6 +-----
- arch/sparc/include/asm/compat.h   | 17 -----------------
- arch/x86/include/asm/compat.h     | 17 -----------------
- include/linux/compat.h            | 18 ++++++++++++++++++
- 9 files changed, 20 insertions(+), 109 deletions(-)
+ arch/parisc/Kconfig          | 1 +
+ arch/parisc/kernel/process.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/compat.h b/arch/arm64/include/asm/compat.h
-index 7b4172ce497c..935d2aa231bf 100644
---- a/arch/arm64/include/asm/compat.h
-+++ b/arch/arm64/include/asm/compat.h
-@@ -114,23 +114,6 @@ typedef u32		compat_sigset_word;
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index b16237c95ea3..0c29d6cb2c8d 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -62,6 +62,7 @@ config PARISC
+ 	select HAVE_FTRACE_MCOUNT_RECORD if HAVE_DYNAMIC_FTRACE
+ 	select HAVE_KPROBES_ON_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS
++	select HAVE_COPY_THREAD_TLS
  
- #define COMPAT_OFF_T_MAX	0x7fffffff
- 
--/*
-- * A pointer passed in from user mode. This should not
-- * be used for syscall parameters, just declare them
-- * as pointers because the syscall entry code will have
-- * appropriately converted them already.
-- */
--
--static inline void __user *compat_ptr(compat_uptr_t uptr)
--{
--	return (void __user *)(unsigned long)uptr;
--}
--
--static inline compat_uptr_t ptr_to_compat(void __user *uptr)
--{
--	return (u32)(unsigned long)uptr;
--}
--
- #define compat_user_stack_pointer() (user_stack_pointer(task_pt_regs(current)))
- #define COMPAT_MINSIGSTKSZ	2048
- 
-diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
-index c99166eadbde..255afcdd79c9 100644
---- a/arch/mips/include/asm/compat.h
-+++ b/arch/mips/include/asm/compat.h
-@@ -100,24 +100,6 @@ typedef u32		compat_sigset_word;
- 
- #define COMPAT_OFF_T_MAX	0x7fffffff
- 
--/*
-- * A pointer passed in from user mode. This should not
-- * be used for syscall parameters, just declare them
-- * as pointers because the syscall entry code will have
-- * appropriately converted them already.
-- */
--
--static inline void __user *compat_ptr(compat_uptr_t uptr)
--{
--	/* cast to a __user pointer via "unsigned long" makes sparse happy */
--	return (void __user *)(unsigned long)(long)uptr;
--}
--
--static inline compat_uptr_t ptr_to_compat(void __user *uptr)
--{
--	return (u32)(unsigned long)uptr;
--}
--
- static inline void __user *arch_compat_alloc_user_space(long len)
+ 	help
+ 	  The PA-RISC microprocessor is designed by Hewlett-Packard and used
+diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
+index ecc5c2771208..230a6422b99f 100644
+--- a/arch/parisc/kernel/process.c
++++ b/arch/parisc/kernel/process.c
+@@ -208,8 +208,8 @@ arch_initcall(parisc_idle_init);
+  * Copy architecture-specific thread state
+  */
+ int
+-copy_thread(unsigned long clone_flags, unsigned long usp,
+-	    unsigned long kthread_arg, struct task_struct *p)
++copy_thread_tls(unsigned long clone_flags, unsigned long usp,
++	    unsigned long kthread_arg, struct task_struct *p, unsigned long tls)
  {
- 	struct pt_regs *regs = (struct pt_regs *)
-diff --git a/arch/parisc/include/asm/compat.h b/arch/parisc/include/asm/compat.h
-index e03e3c849f40..2f4f66a3bac0 100644
---- a/arch/parisc/include/asm/compat.h
-+++ b/arch/parisc/include/asm/compat.h
-@@ -173,23 +173,6 @@ struct compat_shmid64_ds {
- #define COMPAT_ELF_NGREG 80
- typedef compat_ulong_t compat_elf_gregset_t[COMPAT_ELF_NGREG];
+ 	struct pt_regs *cregs = &(p->thread.regs);
+ 	void *stack = task_stack_page(p);
+@@ -254,9 +254,9 @@ copy_thread(unsigned long clone_flags, unsigned long usp,
+ 		cregs->ksp = (unsigned long)stack + THREAD_SZ_ALGN + FRAME_SIZE;
+ 		cregs->kpc = (unsigned long) &child_return;
  
--/*
-- * A pointer passed in from user mode. This should not
-- * be used for syscall parameters, just declare them
-- * as pointers because the syscall entry code will have
-- * appropriately converted them already.
-- */
--
--static inline void __user *compat_ptr(compat_uptr_t uptr)
--{
--	return (void __user *)(unsigned long)uptr;
--}
--
--static inline compat_uptr_t ptr_to_compat(void __user *uptr)
--{
--	return (u32)(unsigned long)uptr;
--}
--
- static __inline__ void __user *arch_compat_alloc_user_space(long len)
- {
- 	struct pt_regs *regs = &current->thread.regs;
-diff --git a/arch/powerpc/include/asm/compat.h b/arch/powerpc/include/asm/compat.h
-index 74d0db511099..3e3cdfaa76c6 100644
---- a/arch/powerpc/include/asm/compat.h
-+++ b/arch/powerpc/include/asm/compat.h
-@@ -96,23 +96,6 @@ typedef u32		compat_sigset_word;
+-		/* Setup thread TLS area from the 4th parameter in clone */
++		/* Setup thread TLS area */
+ 		if (clone_flags & CLONE_SETTLS)
+-			cregs->cr27 = cregs->gr[23];
++			cregs->cr27 = tls;
+ 	}
  
- #define COMPAT_OFF_T_MAX	0x7fffffff
- 
--/*
-- * A pointer passed in from user mode. This should not
-- * be used for syscall parameters, just declare them
-- * as pointers because the syscall entry code will have
-- * appropriately converted them already.
-- */
--
--static inline void __user *compat_ptr(compat_uptr_t uptr)
--{
--	return (void __user *)(unsigned long)uptr;
--}
--
--static inline compat_uptr_t ptr_to_compat(void __user *uptr)
--{
--	return (u32)(unsigned long)uptr;
--}
--
- static inline void __user *arch_compat_alloc_user_space(long len)
- {
- 	struct pt_regs *regs = current->thread.regs;
-diff --git a/arch/powerpc/oprofile/backtrace.c b/arch/powerpc/oprofile/backtrace.c
-index 43245f4a9bcb..6ffcb80cf844 100644
---- a/arch/powerpc/oprofile/backtrace.c
-+++ b/arch/powerpc/oprofile/backtrace.c
-@@ -9,7 +9,7 @@
- #include <linux/sched.h>
- #include <asm/processor.h>
- #include <linux/uaccess.h>
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #include <asm/oprofile_impl.h>
- 
- #define STACK_SP(STACK)		*(STACK)
-diff --git a/arch/s390/include/asm/compat.h b/arch/s390/include/asm/compat.h
-index 63b46e30b2c3..9547cd5d6cdc 100644
---- a/arch/s390/include/asm/compat.h
-+++ b/arch/s390/include/asm/compat.h
-@@ -177,11 +177,7 @@ static inline void __user *compat_ptr(compat_uptr_t uptr)
- {
- 	return (void __user *)(unsigned long)(uptr & 0x7fffffffUL);
- }
--
--static inline compat_uptr_t ptr_to_compat(void __user *uptr)
--{
--	return (u32)(unsigned long)uptr;
--}
-+#define compat_ptr(uptr) compat_ptr(uptr)
- 
- #ifdef CONFIG_COMPAT
- 
-diff --git a/arch/sparc/include/asm/compat.h b/arch/sparc/include/asm/compat.h
-index 30b1763580b1..40a267b3bd52 100644
---- a/arch/sparc/include/asm/compat.h
-+++ b/arch/sparc/include/asm/compat.h
-@@ -125,23 +125,6 @@ typedef u32		compat_sigset_word;
- 
- #define COMPAT_OFF_T_MAX	0x7fffffff
- 
--/*
-- * A pointer passed in from user mode. This should not
-- * be used for syscall parameters, just declare them
-- * as pointers because the syscall entry code will have
-- * appropriately converted them already.
-- */
--
--static inline void __user *compat_ptr(compat_uptr_t uptr)
--{
--	return (void __user *)(unsigned long)uptr;
--}
--
--static inline compat_uptr_t ptr_to_compat(void __user *uptr)
--{
--	return (u32)(unsigned long)uptr;
--}
--
- #ifdef CONFIG_COMPAT
- static inline void __user *arch_compat_alloc_user_space(long len)
- {
-diff --git a/arch/x86/include/asm/compat.h b/arch/x86/include/asm/compat.h
-index 22c4dfe65992..52e9f3480f69 100644
---- a/arch/x86/include/asm/compat.h
-+++ b/arch/x86/include/asm/compat.h
-@@ -177,23 +177,6 @@ typedef struct user_regs_struct compat_elf_gregset_t;
- 	(!!(task_pt_regs(current)->orig_ax & __X32_SYSCALL_BIT))
- #endif
- 
--/*
-- * A pointer passed in from user mode. This should not
-- * be used for syscall parameters, just declare them
-- * as pointers because the syscall entry code will have
-- * appropriately converted them already.
-- */
--
--static inline void __user *compat_ptr(compat_uptr_t uptr)
--{
--	return (void __user *)(unsigned long)uptr;
--}
--
--static inline compat_uptr_t ptr_to_compat(void __user *uptr)
--{
--	return (u32)(unsigned long)uptr;
--}
--
- static inline void __user *arch_compat_alloc_user_space(long len)
- {
- 	compat_uptr_t sp;
-diff --git a/include/linux/compat.h b/include/linux/compat.h
-index 68f79d855c3d..11083d84eb23 100644
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -958,4 +958,22 @@ static inline bool in_compat_syscall(void) { return false; }
- 
- #endif /* CONFIG_COMPAT */
- 
-+/*
-+ * A pointer passed in from user mode. This should not
-+ * be used for syscall parameters, just declare them
-+ * as pointers because the syscall entry code will have
-+ * appropriately converted them already.
-+ */
-+#ifndef compat_ptr
-+static inline void __user *compat_ptr(compat_uptr_t uptr)
-+{
-+	return (void __user *)(unsigned long)uptr;
-+}
-+#endif
-+
-+static inline compat_uptr_t ptr_to_compat(void __user *uptr)
-+{
-+	return (u32)(unsigned long)uptr;
-+}
-+
- #endif /* _LINUX_COMPAT_H */
+ 	return 0;
 -- 
-2.20.0
+2.24.1
 
