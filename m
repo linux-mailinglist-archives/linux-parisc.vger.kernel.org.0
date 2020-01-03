@@ -2,117 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC27712E94E
-	for <lists+linux-parisc@lfdr.de>; Thu,  2 Jan 2020 18:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4821512F4FD
+	for <lists+linux-parisc@lfdr.de>; Fri,  3 Jan 2020 08:38:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727422AbgABRYn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 2 Jan 2020 12:24:43 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:33920 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727854AbgABRYV (ORCPT
+        id S1726005AbgACHiC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 3 Jan 2020 02:38:02 -0500
+Received: from sonic301-30.consmr.mail.ne1.yahoo.com ([66.163.184.199]:41840
+        "EHLO sonic301-30.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726390AbgACHiA (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 2 Jan 2020 12:24:21 -0500
-Received: by mail-wr1-f68.google.com with SMTP id t2so39963464wrr.1;
-        Thu, 02 Jan 2020 09:24:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=L1XTkfPnf+xygEwiEa8xupdElziS0T1yXcRh//IpEmk=;
-        b=aTDKPpiCwVSTja4oES5GrKlvuc++gzMK0wRFPgM9RFp6FDFXnhIvqVR37S1wOloKgc
-         8PHFWsZHUUHwNchW5ypD7FMh/aRveA56atk+VfNafRRwcVvHiOpTg5RMehfRqicVzeZi
-         fgyWXfvccl7ZR6kNFLcInbO+IEPQiwOrEsFnyu2Lqc+kUv1Wyc7MEnLCoFmZ72dPRrHD
-         QUW5sbxh60hYTgM3WAcJb7tk2gyqGqP1FUyc6uDPfLRlWZbCX+rjc5or/MW0e82ORdGp
-         xkVnWXOyQaOQm60PpakJZI94qub7G9owf/iV0kfm0dW1A3NsIujTEEbx6iUYvr2vsruo
-         A9qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=L1XTkfPnf+xygEwiEa8xupdElziS0T1yXcRh//IpEmk=;
-        b=PUdlRTn4gsudEDyYL3yss9lTpH68DQLIJpmgyaNNrt8hoDHl9Q/nKSto1tcB2tYioF
-         oT88YexY9ckgfa6pEkUoH2Mu9vOQEw2Mh6nUkcaK6UbYds6rMTOHMF8RcSMqbjrGZ/2t
-         kaEDr53GigcoUmO3SUH/JWdg55+0nge/W4mvAWV/BpDvMkZYtUYrSO1VpdrY53TQ0GA7
-         6kUO+1nZTWEIF9ArRlkjr4I4r8pZAwYWa4wH5z09mrsHaRJAid5czTWHAE8WynFi0iV7
-         5jeHUc/m71oXZh3pY7qMtLw3CN8PHA1kVlXTBQVNyDad4ZQ+QgU7NSYXXC84vtAKRZ4y
-         SztA==
-X-Gm-Message-State: APjAAAVJ4ZoREFter5Qnu5Y0APHDHCkYdw7OiL020BZBhUhwdsH4EkBH
-        UJzqIEbXnMTZXhSjOYMcrF1Rc8VFhzaBepW8
-X-Google-Smtp-Source: APXvYqzmOOKoMQKUxWUbitYsx3DhPyjVEL1vmWvRp3MkUNKIFndDIEsRrTuY+pZUkYhi78MTdV2b3A==
-X-Received: by 2002:adf:ea88:: with SMTP id s8mr83518881wrm.293.1577985859767;
-        Thu, 02 Jan 2020 09:24:19 -0800 (PST)
-Received: from amanieu-laptop.home ([2a01:cb19:8051:6200:3fe7:84:7f3:e713])
-        by smtp.gmail.com with ESMTPSA id z21sm9480328wml.5.2020.01.02.09.24.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jan 2020 09:24:19 -0800 (PST)
-From:   Amanieu d'Antras <amanieu@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Christian Brauner <christian@brauner.io>, stable@vger.kernel.org,
-        Amanieu d'Antras <amanieu@gmail.com>,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH 4/7] parisc: Implement copy_thread_tls
-Date:   Thu,  2 Jan 2020 18:24:10 +0100
-Message-Id: <20200102172413.654385-5-amanieu@gmail.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200102172413.654385-1-amanieu@gmail.com>
-References: <20200102172413.654385-1-amanieu@gmail.com>
+        Fri, 3 Jan 2020 02:38:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1578037079; bh=MJdpASvZnpj3gXKZxrNskiGAl+hYYwdjGUMDZ9fMpsI=; h=Date:From:Reply-To:Subject:References:From:Subject; b=QSzh+FyK+PQqbNd1K5cuBfArUFqLiHiJAQkXv9ezOJqgEXC8QGQMQgZAHUyU4Q0YcLWtuY4D2Sr0/dr6OjadKmrFpRakTwV7xCp1Dw9f3Q8q2/NkQ+4lnuwCSU6ZzF+/SD5BmTiB2snpNWbd/vjroSKHRXVe13Ijb3DEHq61gm+41ZOBxaPDbGxUDpkZ8SREJ0VaTp1sKxjjUlqQ71XhzeDKepMbeP55ACCKICPw3k8vC84jh5JeEVKUf4+ADYt70sDmqegTPKmZMC9QOWyFjc5PX3rjn6/D10NDWKEFrjS7h/8J9Y+dKohuMDQAzRvoNR6eF6qw7FzJN6TwUm1t6Q==
+X-YMail-OSG: yXnmVBcVM1nFNSolob2gHkbHPZ3yfZSyZjIbiwo.24pXbh3OORIC9CiEzjjKfH6
+ 8rSqYYnETRF7LhGLdUPzfYxNL6Gya8Ka3CCZWTtjqUbND6M5a2wBG3Y7vYCztdFqeu78uLMNZC5m
+ b7EeHWZ4xaoadYgjjjfuitcXMc36jsOezDOKkecQ9TRe6DtHyC5EvQqVsYwapO8tlf4JYG6EG.FO
+ fpu2auCbIRLs2MMA4vMibGMiLjZrSyX1kCZbgDexAdD_u8b6KDCrEjd.8YF8F5qs3Fs_VGdMsOR0
+ jZsb6E8Efoq_Si6fVJggXbZQTFHf8MpBVXhO5euMma_ZBUlsoQi2o0U1Odi4aNmPfRfOEgmR90h.
+ jdRum8_.6VtYtI_pOGkH2YCHRtFFd476aeEECdrF.AFtyXeOxs2o7H749gRc9BNV6sXxBwgMOj2E
+ ShP09eiehvu.hKrhwu6x6yrDIIpsTqX7LCK0nHuyzZs1uvNd2EfdAbHabW7zBrJJLPT5PaIY4ovG
+ p0Szss.hm_6Pz4O9p5anMdPoK43XMHT03yxf6swDbirj_O98EUYSPd9C6B1LXMD0iWHjuSl4tu4z
+ GIkIvc5lErAM8tTr24dgvhNxDUiJjvDKO8aA9jRuhSAko29MJ2iRVxJezRLqhuWEeVdzlkskH9EI
+ ZD_4G3.v4_qxcPOSs4ITL4lFHkQ3bJ1Y3Sy7rM5os5jjdtpUycMyD5TDpD__0Zyv.rpIlc3Kp6oq
+ ina.QJE1E6rtxYYhIcDId1NSX8jEd6EvQxUOBktCleihXRVNPm2g0PWI_eEw1eFFFD7gOcvtR7WD
+ BH75SicEpJ4UxtblvYRCgbF4nBbu07TsJlDBqpoYhXjSllQlGGLt66pzu0itIp62Il08vY2UkuvB
+ 47aUc1oLbRxxjU.ZjgJiYHzj6rspZAMCHXwdber4wpv4kbkhO7B1ErJ9czk266z92WRVUmIXubFy
+ xoCO4fNiGxGSeULLlJXDzuatxKFNeZOshtAHHZsIYIpy8hqudstdD960GzqSzolnSothWFrZ9lPk
+ fdpDXQjhh_Bhq4AyRjbclegvE0E2Q6oVs48sZAx4e9.9jOD53UK9T51iW.8Qg4gQ7WDyjiFU097R
+ zRDteTFA2hFNqSihVhw0S70tRmOJUBWFF02lceT0zzN5czDm.R0ujSijrvskZZ8FRh6voapbwD2b
+ 2ZlGVZU0NAjdPxBL5xsAIPzLSSlYf_w7Z.xyZ7MCtzl.LRHZTR7.FX2iNvzladPYgxttJZOgLMCI
+ m7qk3S8Vtp3MqstvSjUF8K5e9axmV8qc4Htq4lQZhpUQ8zddeP2QVwyQbhsfIP2LKdUbWexqI
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ne1.yahoo.com with HTTP; Fri, 3 Jan 2020 07:37:59 +0000
+Date:   Fri, 3 Jan 2020 07:37:55 +0000 (UTC)
+From:   Brian Gilvary <1brian.gilvary@gmail.com>
+Reply-To: gilvarybrian@aol.com
+Message-ID: <466166173.6197256.1578037075711@mail.yahoo.com>
+Subject: Happy New Year For Our Mutual Benefits
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+References: <466166173.6197256.1578037075711.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.14873 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This is required for clone3 which passes the TLS value through a
-struct rather than a register.
+Hi
 
-Signed-off-by: Amanieu d'Antras <amanieu@gmail.com>
-Cc: linux-parisc@vger.kernel.org
-Cc: <stable@vger.kernel.org> # 5.3.x
----
- arch/parisc/Kconfig          | 1 +
- arch/parisc/kernel/process.c | 8 ++++----
- 2 files changed, 5 insertions(+), 4 deletions(-)
+As the Chief Financial Officer, British Petroleum Company plc (BP), I am in=
+ a position to facilitate immediate transfer of =C2=A3 48,000,000.00 (Forty=
+ Eight Million British Pounds Sterling), to any of your nominated Bank Acco=
+unt.
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index b16237c95ea3..0c29d6cb2c8d 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -62,6 +62,7 @@ config PARISC
- 	select HAVE_FTRACE_MCOUNT_RECORD if HAVE_DYNAMIC_FTRACE
- 	select HAVE_KPROBES_ON_FTRACE
- 	select HAVE_DYNAMIC_FTRACE_WITH_REGS
-+	select HAVE_COPY_THREAD_TLS
- 
- 	help
- 	  The PA-RISC microprocessor is designed by Hewlett-Packard and used
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index ecc5c2771208..230a6422b99f 100644
---- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -208,8 +208,8 @@ arch_initcall(parisc_idle_init);
-  * Copy architecture-specific thread state
-  */
- int
--copy_thread(unsigned long clone_flags, unsigned long usp,
--	    unsigned long kthread_arg, struct task_struct *p)
-+copy_thread_tls(unsigned long clone_flags, unsigned long usp,
-+	    unsigned long kthread_arg, struct task_struct *p, unsigned long tls)
- {
- 	struct pt_regs *cregs = &(p->thread.regs);
- 	void *stack = task_stack_page(p);
-@@ -254,9 +254,9 @@ copy_thread(unsigned long clone_flags, unsigned long usp,
- 		cregs->ksp = (unsigned long)stack + THREAD_SZ_ALGN + FRAME_SIZE;
- 		cregs->kpc = (unsigned long) &child_return;
- 
--		/* Setup thread TLS area from the 4th parameter in clone */
-+		/* Setup thread TLS area */
- 		if (clone_flags & CLONE_SETTLS)
--			cregs->cr27 = cregs->gr[23];
-+			cregs->cr27 = tls;
- 	}
- 
- 	return 0;
--- 
-2.24.1
+Source of Funds: An over-invoiced payment from a past project executed in m=
+y department. I cannot successfully achieve this transaction without presen=
+ting you as foreign contractor who will provide the bank account to receive=
+ the funds. Every documentation for the claim of the funds will be legally =
+processed and documented, so I will need your full co-operation for our mut=
+ual benefits.
 
+We will discuss details if you are interested to work with me to secure thi=
+s funds, as I said for our mutual benefits. I will be looking forward to yo=
+ur prompt response.
+
+Best regards
+Brian Gilvary
+Chief financial officer
+BP, Plc.
