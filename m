@@ -2,70 +2,101 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE42C12FAA8
-	for <lists+linux-parisc@lfdr.de>; Fri,  3 Jan 2020 17:39:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F23E412FDC1
+	for <lists+linux-parisc@lfdr.de>; Fri,  3 Jan 2020 21:20:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728024AbgACQje (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 3 Jan 2020 11:39:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44882 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727859AbgACQjd (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 3 Jan 2020 11:39:33 -0500
-Received: from localhost.localdomain (unknown [194.230.155.149])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C4208206DB;
-        Fri,  3 Jan 2020 16:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578069573;
-        bh=KcvtLb+TfRw1uY1bkvdvgbpsv4uEyCRqJ6XVxzKKvF0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=LOZmr+i4jRgwSxWi5VgUA43TvKSnrW8qnE6mK25b30xr16UOeTUcaErQWMoD9qcpg
-         8B/9TLXN7UCk8ZoD7SaC9Lv1rS4KYBHAbPSV1IVdIYgkbR7YAiiy66zDTa79ID0zPH
-         zGq/Ij7X9oIc//Otvl1X7ZH6i8D5CQFRYN32r1dY=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] parisc: Use proper printk format for resource_size_t
-Date:   Fri,  3 Jan 2020 17:39:25 +0100
-Message-Id: <20200103163925.3967-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1728650AbgACUUS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 3 Jan 2020 15:20:18 -0500
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:34464 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728757AbgACUUJ (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 3 Jan 2020 15:20:09 -0500
+Received: by mail-qk1-f195.google.com with SMTP id j9so35122953qkk.1
+        for <linux-parisc@vger.kernel.org>; Fri, 03 Jan 2020 12:20:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
+        b=JHYDNcOHsw5Vg59sFwNh4MhnXNKJfQKDhV3JhQemZ8O0wjy4NOClQJHVO9/XZY1B2e
+         7N2r8FlVbF9YCIZf1O8PJKqvP+J732CrXrgkZLQFQD6r8xa5PmtrOPXurr4eE1D10/dY
+         mFNu91hy8xJJRta6mrMYIQyNs0OE0ozgPWJvUT4Jmr91vUmPG9p04hCqKp3daJ6nspkN
+         ZTnUyt7jeaXiRVZmI5OCw3hnhqJr3CafoKv3hfbaHkDpeu4215n4LA4JUWv5RDO6VsPp
+         wo4bmuxUPsJ+VBxSxq4NIVVGqRtUU4TTV0YA8c6/GhqTjpJxCcyOyITBnIawjrG3MRiM
+         hUyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
+        b=Rw0RzvyNY3LlvV8jgNd6+IYqQRy4FVHV9NYhlNzz8fCuL8wgpjyP80XD+AjmnftEf0
+         1HWrGjQC4uTmDe/RnGfEwlPCMV24iGDAQS8j23PDvz8IXFe4FHSfVvMxkY5xOuPu1IDX
+         9oWJiR6P3YxBxY6YVd4/6jj+0Ue9Ej04RzBHYWl2KZptvE82qupV9KVNEIUeVh4dsQNh
+         elDQaIGUJ1wMP66+x8J/HtyJSq8mxHkOonOK8tSBTHypbvhB1nSkIw4fcdy0Jyyg/vuJ
+         JQTNFUhmtFRVb7yqp/ZhAgRVuyQvEzcy6uHPWipS82JnmebQSqMvJI0sJEmqPU2jHTFv
+         xhig==
+X-Gm-Message-State: APjAAAUjvgDRSXkW1fj1vkozVcXPnTemJxc5zW7J9IOjPgcq3BV9U2j1
+        z+39Z9xA7sxS1edmPW6WJqWJAWvr0ydZRRsHYRc=
+X-Google-Smtp-Source: APXvYqzazOZ1eDGwLjA5b5joJwHBsXYUc3xk3mwbut9BpsYKwbpZffl6B/gnfGOg4rASQDOizOWq9gQ5QJjCh6l6GTs=
+X-Received: by 2002:a37:4141:: with SMTP id o62mr70745354qka.282.1578082808591;
+ Fri, 03 Jan 2020 12:20:08 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:ac8:4410:0:0:0:0:0 with HTTP; Fri, 3 Jan 2020 12:20:08 -0800 (PST)
+From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
+        <westernunion.benin982@gmail.com>
+Date:   Fri, 3 Jan 2020 21:20:08 +0100
+Message-ID: <CAP=nHBJWiJ9KpSSbF4jP9u5UiU5d_kGjSUyPYDmdB2x1uiJFMw@mail.gmail.com>
+Subject: I promise you must be happy today, God has uplifted you and your
+ family ok
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-resource_size_t should be printed with its own size-independent format
-to fix warnings when compiling on 64-bit platform (e.g. with
-COMPILE_TEST):
+Dear Friend
 
-    arch/parisc/kernel/drivers.c: In function 'print_parisc_device':
-    arch/parisc/kernel/drivers.c:892:9: warning:
-        format '%p' expects argument of type 'void *',
-        but argument 4 has type 'resource_size_t {aka unsigned int}' [-Wformat=]
+i hope all is well with you,if so, glory be to God almighty. I'm very
+happy to inform you, about my success in getting payment funds under
+the cooperation of a new partner from United States of
+America.Presently I am in uk for investment projects with my own share
+of the total sum. I didn't forget your past efforts. IMF finally
+approved your compensation payment funds this morning by prepaid (ATM)
+Debit card of US$12,500.000.00Million Dollars, Since you not received
+this payment yet, I was not certified
+but it is not your fault and not my fault, I hold nothing against
+you.than bank official whom has been detaining the transfer in the
+bank, trying to claim your funds by themselves.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/parisc/kernel/drivers.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Therefore, in appreciation of your effort I have raised an
+International prepaid (ATM) Debit card of US$12,500.000.00 in your
+favor as compensation to you.
 
-diff --git a/arch/parisc/kernel/drivers.c b/arch/parisc/kernel/drivers.c
-index a6c9f49c6612..a154de424421 100644
---- a/arch/parisc/kernel/drivers.c
-+++ b/arch/parisc/kernel/drivers.c
-@@ -889,8 +889,8 @@ static void print_parisc_device(struct parisc_device *dev)
- 	static int count;
- 
- 	print_pa_hwpath(dev, hw_path);
--	pr_info("%d. %s at 0x%px [%s] { %d, 0x%x, 0x%.3x, 0x%.5x }",
--		++count, dev->name, (void*) dev->hpa.start, hw_path, dev->id.hw_type,
-+	pr_info("%d. %s at %pa[p] [%s] { %d, 0x%x, 0x%.3x, 0x%.5x }",
-+		++count, dev->name, &(dev->hpa.start), hw_path, dev->id.hw_type,
- 		dev->id.hversion_rev, dev->id.hversion, dev->id.sversion);
- 
- 	if (dev->num_addrs) {
--- 
-2.17.1
+Now, i want you to contact my Diplomatic Agent, His name is Mike Benz
+on His  e-mail Address (mikebenz550@aol.com
 
+ask Him to send the Prepaid (ATM) Debit card to you. Bear in mind that
+the money is in Prepaid (ATM) Debit card, not cash, so you need to
+send to him,
+your full name
+address  where the prepaid (ATM) Debit card will be delivered to you,
+including your cell phone number. Finally, I left explicit
+instructions with him, on how to send the (ATM CARD) to you.
+
+The Prepaid (ATM) Debit card, will be send to you through my
+Diplomatic Agent Mr. Mike Benz immediately you contact him. So contact
+my Diplomatic Agent Mr. Mike Benz immediately you receive this letter.
+Below is his contact information:
+
+NAME : MIKE BENZ
+EMAIL ADDRESS: mikebenz550@aol.com
+Text Him, (256) 284-4886
+
+Request for Delivery of the Prepaid (ATM) Debit card  to you today.
+Note, please I have paid for the whole service fees for you, so the
+only money you will send to my Diplomatic Agent Mr. Mike Benz is
+$50.00 for your prepaid (ATM) Debit card DELIVERY FEE to your address
+ok.
+Let me know once you receive this Card at your address.
+Best regards,
+Rev.Dr, George Adadar
