@@ -2,114 +2,118 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA85B132C46
-	for <lists+linux-parisc@lfdr.de>; Tue,  7 Jan 2020 17:57:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDAA0132D8E
+	for <lists+linux-parisc@lfdr.de>; Tue,  7 Jan 2020 18:51:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728787AbgAGQzo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 7 Jan 2020 11:55:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44234 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728391AbgAGQzn (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 7 Jan 2020 11:55:43 -0500
-Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4236B2467F;
-        Tue,  7 Jan 2020 16:55:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578416142;
-        bh=zdByYEGMS3ESVQ5qOHN1kIYsWdU38BLlIlo+0ZPdrE4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B9XX5z37aO9kO6TkoMZBWRljecz6mxaLsnUJweo1Opz89I73sTah4aguq2M+qbAtk
-         jJqm5ERlXNfIDH66LmWHTiUD9ISWyzlIjrcT5hLgLk+5mFBneKkY4HBIjWPl8jboDN
-         drdv6nwNwT+gPU/NfUpzBRq4v5bgiFQUyIlD1qE4=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        id S1728211AbgAGRvh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 Jan 2020 12:51:37 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:41748 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728348AbgAGRvh (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 7 Jan 2020 12:51:37 -0500
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 007HeGp9062392
+        for <linux-parisc@vger.kernel.org>; Tue, 7 Jan 2020 12:51:35 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2xapd6mmf7-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-parisc@vger.kernel.org>; Tue, 07 Jan 2020 12:51:34 -0500
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-parisc@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
+        Tue, 7 Jan 2020 17:51:33 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 7 Jan 2020 17:51:24 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 007HpN7f58654844
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 7 Jan 2020 17:51:23 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 485AFA405C;
+        Tue,  7 Jan 2020 17:51:23 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4789EA4062;
+        Tue,  7 Jan 2020 17:51:22 +0000 (GMT)
+Received: from osiris (unknown [9.145.85.21])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue,  7 Jan 2020 17:51:22 +0000 (GMT)
+Date:   Tue, 7 Jan 2020 18:51:20 +0100
+From:   Heiko Carstens <heiko.carstens@de.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        Robert Richter <rric@kernel.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [RFT 13/13] virtio: pci: Constify ioreadX() iomem argument (as in generic implementation)
-Date:   Tue,  7 Jan 2020 17:53:12 +0100
-Message-Id: <1578415992-24054-16-git-send-email-krzk@kernel.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1578415992-24054-1-git-send-email-krzk@kernel.org>
-References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        oprofile-list@lists.sf.net, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH v3 02/22] compat: provide compat_ptr() on all
+ architectures
+References: <20200102145552.1853992-1-arnd@arndb.de>
+ <20200102145552.1853992-3-arnd@arndb.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200102145552.1853992-3-arnd@arndb.de>
+X-TM-AS-GCONF: 00
+x-cbid: 20010717-0016-0000-0000-000002DB3EDC
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20010717-0017-0000-0000-0000333DB70D
+Message-Id: <20200107175120.GC4684@osiris>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-01-07_06:2020-01-07,2020-01-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 clxscore=1011 suspectscore=1 adultscore=0 phishscore=0
+ priorityscore=1501 bulkscore=0 mlxlogscore=416 mlxscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001070140
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The ioreadX() helpers have inconsistent interface.  On some architectures
-void *__iomem address argument is a pointer to const, on some not.
+On Thu, Jan 02, 2020 at 03:55:20PM +0100, Arnd Bergmann wrote:
+> In order to avoid needless #ifdef CONFIG_COMPAT checks,
+> move the compat_ptr() definition to linux/compat.h
+> where it can be seen by any file regardless of the
+> architecture.
+> 
+> Only s390 needs a special definition, this can use the
+> self-#define trick we have elsewhere.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/arm64/include/asm/compat.h   | 17 -----------------
+>  arch/mips/include/asm/compat.h    | 18 ------------------
+>  arch/parisc/include/asm/compat.h  | 17 -----------------
+>  arch/powerpc/include/asm/compat.h | 17 -----------------
+>  arch/powerpc/oprofile/backtrace.c |  2 +-
+>  arch/s390/include/asm/compat.h    |  6 +-----
+>  arch/sparc/include/asm/compat.h   | 17 -----------------
+>  arch/x86/include/asm/compat.h     | 17 -----------------
+>  include/linux/compat.h            | 18 ++++++++++++++++++
+>  9 files changed, 20 insertions(+), 109 deletions(-)
 
-Implementations of ioreadX() do not modify the memory under the address
-so they can be converted to a "const" version for const-safety and
-consistency among architectures.
+For s390:
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- drivers/virtio/virtio_pci_modern.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
-index 7abcc50838b8..fc58db4ab6c3 100644
---- a/drivers/virtio/virtio_pci_modern.c
-+++ b/drivers/virtio/virtio_pci_modern.c
-@@ -26,16 +26,16 @@
-  * method, i.e. 32-bit accesses for 32-bit fields, 16-bit accesses
-  * for 16-bit fields and 8-bit accesses for 8-bit fields.
-  */
--static inline u8 vp_ioread8(u8 __iomem *addr)
-+static inline u8 vp_ioread8(const u8 __iomem *addr)
- {
- 	return ioread8(addr);
- }
--static inline u16 vp_ioread16 (__le16 __iomem *addr)
-+static inline u16 vp_ioread16 (const __le16 __iomem *addr)
- {
- 	return ioread16(addr);
- }
- 
--static inline u32 vp_ioread32(__le32 __iomem *addr)
-+static inline u32 vp_ioread32(const __le32 __iomem *addr)
- {
- 	return ioread32(addr);
- }
--- 
-2.7.4
+Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
 
