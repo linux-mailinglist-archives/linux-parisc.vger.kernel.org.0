@@ -2,159 +2,144 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9105A133D98
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jan 2020 09:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86BCB133ED9
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jan 2020 11:05:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727465AbgAHIsu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 8 Jan 2020 03:48:50 -0500
-Received: from pegase1.c-s.fr ([93.17.236.30]:9734 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727313AbgAHIsu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 8 Jan 2020 03:48:50 -0500
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 47t2wF6zpLz9v3Hd;
-        Wed,  8 Jan 2020 09:48:45 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
-        reason="1024-bit key; insecure key"
-        header.d=c-s.fr header.i=@c-s.fr header.b=Cd0z8iC9; dkim-adsp=pass;
-        dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id eHCnKMUwPC8j; Wed,  8 Jan 2020 09:48:45 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 47t2wF5Z8xz9v3Hc;
-        Wed,  8 Jan 2020 09:48:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
-        t=1578473325; bh=kWCAIl6qlr/NQhjX84pOmCSHzIhFMSBDwvFc83ztIuI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Cd0z8iC9RC8pjwPeyNjKHDYp8ooejNu3HGALPmb6+R1rGPni1Gqd3Osr1pzBr++DW
-         qVroJ655pO9/GIgcKq73QC5BW2ualhxp5CandPHCNUTG1TbQ4ytfyemBB8YchvhikW
-         Jys4zIMmlSAmxqdhihc3mS1nPdn3QvL04p1qUK10=
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id BCA2B8B7ED;
-        Wed,  8 Jan 2020 09:48:46 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id Z-k90vSTB5Ao; Wed,  8 Jan 2020 09:48:46 +0100 (CET)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 2CC498B7EA;
-        Wed,  8 Jan 2020 09:48:46 +0100 (CET)
-Subject: Re: [RFT 00/13] iomap: Constify ioreadX() iomem argument
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Rich Felker <dalias@libc.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Jason Wang <jasowang@redhat.com>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        virtualization@lists.linux-foundation.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        netdev <netdev@vger.kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Helge Deller <deller@gmx.de>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Ben Skeggs <bskeggs@redhat.com>, nouveau@lists.freedesktop.org,
-        Dave Airlie <airlied@redhat.com>,
+        id S1726567AbgAHKFk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 8 Jan 2020 05:05:40 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:59375 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726368AbgAHKFk (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 8 Jan 2020 05:05:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1578477939;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=XYNRjJ4ki8ZOiAW4tvRvbpcfvmsaNw/kNwbZmqeksiM=;
+        b=L5s3sEFQ1dlow8d9hGAtvGtWXzsoFaarTpUX63wjkE/wB0op5tGI4FwjWYSDssFdAMkwau
+        ptWCjudO/X+f17jh3gb3ADHvIqEwxHWg2lN4fgp5Qqymz/3VZLqYqhvHP3zlb+ldceCTjW
+        39UtHiu5QdDRTJLX6wvFgdFIVqMpgY8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-183-7P8UxfkjOOy-AsMo5ZU2Cg-1; Wed, 08 Jan 2020 05:05:36 -0500
+X-MC-Unique: 7P8UxfkjOOy-AsMo5ZU2Cg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8915E8A2C40;
+        Wed,  8 Jan 2020 10:05:31 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id A98C57C34E;
+        Wed,  8 Jan 2020 10:05:28 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 008A5S4w002092;
+        Wed, 8 Jan 2020 05:05:28 -0500
+Received: from localhost (mpatocka@localhost)
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 008A5O8c002083;
+        Wed, 8 Jan 2020 05:05:24 -0500
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date:   Wed, 8 Jan 2020 05:05:24 -0500 (EST)
+From:   Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To:     Mike Rapoport <rppt@linux.ibm.com>
+cc:     Jeroen Roovers <jer@gentoo.org>, linux-parisc@vger.kernel.org,
+        Meelis Roos <mroos@linux.ee>, Helge Deller <deller@gmx.de>,
+        Anatoly Pugachev <matorola@gmail.com>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Mark Salter <msalter@redhat.com>,
         Matt Turner <mattst88@gmail.com>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Allen Hubbe <allenbh@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Daniel Vetter <daniel@ffwll.ch>, Jon Mason <jdmason@kudzu.us>,
-        linux-ntb@googlegroups.com,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>
-References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
- <CAMuHMdW4ek0OYQDrrbcpZjNUTTP04nSbwkmiZvBmKcU=PQM9qA@mail.gmail.com>
- <CAMuHMdUBmYtJKtSYzS_5u67hVZOqcKSgFY1rDGme6gLNRBJ_gA@mail.gmail.com>
- <CAJKOXPfq9vS4kSyx1jOPHBvi9_HjviRv0LU2A8ZwdmqgUuebHQ@mail.gmail.com>
- <2355489c-a207-1927-54cf-85c04b62f18f@c-s.fr>
- <CAMuHMdV=-m-eN4rOa=XQhk2oBDZZwgXXMU6RMVQRVsc6ALyeoA@mail.gmail.com>
-From:   Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <00a43e5c-0708-d49a-9cc4-eb2ce8b4cf99@c-s.fr>
-Date:   Wed, 8 Jan 2020 09:48:46 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+        Michal Simek <monstr@monstr.eu>, Peter Rosin <peda@axentia.se>,
+        Richard Weinberger <richard@nod.at>,
+        Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Sam Creasey <sammy@sammy.net>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: new panic in 5.5-rc1 (parisc, kmem_cache_open)
+In-Reply-To: <20200108080208.GA8272@linux.ibm.com>
+Message-ID: <alpine.LRH.2.02.2001080504340.1997@file01.intranet.prod.int.rdu2.redhat.com>
+References: <de6b77cc-9c32-23fa-5caf-b6d370792e85@linux.ee> <20191209202626.0f2c2112@wim.jer> <alpine.LRH.2.02.2001070944280.18122@file01.intranet.prod.int.rdu2.redhat.com> <20200108080208.GA8272@linux.ibm.com>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdV=-m-eN4rOa=XQhk2oBDZZwgXXMU6RMVQRVsc6ALyeoA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Geert,
 
-Le 08/01/2020 à 09:43, Geert Uytterhoeven a écrit :
-> Hi Christophe,
+
+On Wed, 8 Jan 2020, Mike Rapoport wrote:
+
+> On Tue, Jan 07, 2020 at 09:52:20AM -0500, Mikulas Patocka wrote:
+> > 
+> > On Mon, 9 Dec 2019, Jeroen Roovers wrote:
+> > 
+> > > On Mon, 9 Dec 2019 20:22:17 +0200
+> > > Meelis Roos <mroos@linux.ee> wrote:
+> > > 
+> > > > I tried 5.5-rc1 on RP3440 and got a surprise panic on boot (5.4
+> > > > worked):
+> > > 
+> > > Ah, I was going to reported this, too.
+> > > 
+> > > > mem auto-init: stack:off, heap alloc:off, heap free:off
+> > > > Memory: 12348004K/12580864K available (6438K kernel code, 2148K
+> > > > rwdata, 954K rodata, 1193K init, 500K bss, 232860K reserved, 0K
+> > > > cma-reserved)
+> > > 
+> > > I see an additional message after this:
+> > > 
+> > > random: get_random_u64 called from __kmem_cache_create+0x70/0x660 with
+> > > crng_init=0
+> > > 
+> > > And then the same or similar enough backtrace.
+> > > 
+> > > 
+> > > Regards,
+> > >      jer
+> > 
+> > Hi
+> > 
+> > I also have this panic. I bisected it and it is caused by the patch 
+> > d96885e277b5edcd1e474e8b1579005163f23dbe.
 > 
-> On Wed, Jan 8, 2020 at 9:35 AM Christophe Leroy <christophe.leroy@c-s.fr> wrote:
->> Le 08/01/2020 à 09:18, Krzysztof Kozlowski a écrit :
->>> On Wed, 8 Jan 2020 at 09:13, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->>>> On Wed, Jan 8, 2020 at 9:07 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->>>>> On Tue, Jan 7, 2020 at 5:53 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>>>>> The ioread8/16/32() and others have inconsistent interface among the
->>>>>> architectures: some taking address as const, some not.
->>>>>>
->>>>>> It seems there is nothing really stopping all of them to take
->>>>>> pointer to const.
->>>>>
->>>>> Shouldn't all of them take const volatile __iomem pointers?
->>>>> It seems the "volatile" is missing from all but the implementations in
->>>>> include/asm-generic/io.h.
->>>>
->>>> As my "volatile" comment applies to iowrite*(), too, probably that should be
->>>> done in a separate patch.
->>>>
->>>> Hence with patches 1-5 squashed, and for patches 11-13:
->>>> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
->>>
->>> I'll add to this one also changes to ioreadX_rep() and add another
->>> patch for volatile for reads and writes. I guess your review will be
->>> appreciated once more because of ioreadX_rep()
->>
->> volatile should really only be used where deemed necessary:
->>
->> https://www.kernel.org/doc/html/latest/process/volatile-considered-harmful.html
->>
->> It is said: " ...  accessor functions might use volatile on
->> architectures where direct I/O memory access does work. Essentially,
->> each accessor call becomes a little critical section on its own and
->> ensures that the access happens as expected by the programmer."
+> My guess would be that pgd is not populated after the change.
+> Can you please check if the below hack fixes the crash?
 > 
-> That is exactly the use case here: all above are accessor functions.
 > 
-> Why would ioreadX() not need volatile, while readY() does?
-> 
+> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+> index ddca8287d43b..354cf060b67f 100644
+> --- a/arch/parisc/mm/init.c
+> +++ b/arch/parisc/mm/init.c
+> @@ -401,7 +401,7 @@ static void __init map_pages(unsigned long start_vaddr,
+>  			pmd = (pmd_t *) __pa(pmd);
+>  		}
+>  
+> -		pgd_populate(NULL, pg_dir, __va(pmd));
+> +		pud_populate(NULL, (pud_t *)pg_dir, __va(pmd));
+>  #endif
+>  		pg_dir++;
+>  
+>  
 
-My point was: it might be necessary for some arches and not for others.
+Test-by: Mikulas Patocka <mpatocka@redhat.com>
 
-And as pointed by Arnd, the volatile is really only necessary for the 
-dereference itself, should the arch use dereferencing.
+This patch fixes it.
 
-So I guess the best would be to go in the other direction: remove 
-volatile keyword wherever possible instead of adding it where it is not 
-needed.
+Mikulas
 
-Christophe
