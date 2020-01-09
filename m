@@ -2,213 +2,122 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB47013530D
-	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jan 2020 07:05:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A41113535A
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jan 2020 07:51:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727978AbgAIGEs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 9 Jan 2020 01:04:48 -0500
-Received: from mx2.suse.de ([195.135.220.15]:43740 "EHLO mx2.suse.de"
+        id S1728057AbgAIGvk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 9 Jan 2020 01:51:40 -0500
+Received: from mout.gmx.net ([212.227.17.22]:36415 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725893AbgAIGEs (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 9 Jan 2020 01:04:48 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id DF4A4AEE0;
-        Thu,  9 Jan 2020 06:04:42 +0000 (UTC)
-Subject: Re: [PATCH v2 6/9] drm/mgag200: Constify ioreadX() iomem argument (as
- in generic implementation)
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-References: <20200108200528.4614-1-krzk@kernel.org>
- <20200108200528.4614-7-krzk@kernel.org>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
- BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
- irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
- clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
- mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
- KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
- Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
- UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
- RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
- dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
- ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
- 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
- wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
- h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
- n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
- aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
- HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
- 3H26qrE=
-Message-ID: <ff03b149-b825-47f3-f92e-100899bb05fd@suse.de>
-Date:   Thu, 9 Jan 2020 07:04:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+        id S1726541AbgAIGvk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 9 Jan 2020 01:51:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1578552660;
+        bh=50wkIf2j3bSuVaQbjQeyQqMF794GvhIKb6N4Rwk/e4s=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=e5YTgzrxZm+19ZdKErqtSww/XWMfAO7zj98Nv72wyuE9wI375uEEYimzFzW0CNLTh
+         hjmdnfBnwJ9yiAW2UqLGktrqoSPUfIjJSVLVG6Utyh+wVeUEsAGQyvekII8/sFBqYO
+         VuEFoCbM+AqNXC5RWnxZ9rolxcYtLI2TJPkTT2G0=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.133.168]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MIx3C-1j8cP829HO-00KOD5; Thu, 09
+ Jan 2020 07:51:00 +0100
+Date:   Thu, 9 Jan 2020 07:50:55 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
+        Meelis Roos <mroos@linux.ee>, Jeroen Roovers <jer@gentoo.org>,
+        Mikulas Patocka <mpatocka@redhat.com>
+Subject: Re: [PATCH] parisc: fix map_pages() to actually populate upper
+ directory
+Message-ID: <20200109065055.GA13038@ls3530.fritz.box>
+References: <20200108125852.19823-1-rppt@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200108200528.4614-7-krzk@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="3rd3nqEKmviIlgYXLgxkt4GDz8CFTZqke"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200108125852.19823-1-rppt@kernel.org>
+X-Provags-ID: V03:K1:RouwXvLm/K7tK2RObMV4/68vrcf/1lzoB40AEaqMH5Y/eLZ76Hg
+ nQIErEWeY/eFEMvl+BRVbbt6dASKI1jrlXD/MJv1z6tfpEvxwwdkcC7iYy8M+TVNw8JC337
+ meKLX46dY9WOdS6IpIz/QoKbfir2TELCK7MYnbWGxyqLzvMUK1eF4bkUR9ygXOLNPCXTSM2
+ 0Lci4c1NrIeNMyrWuTbIA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:IC4pifuUL9o=:r2pFbZznz8vqxtAJfEkvce
+ fD+SEwDkBJlStI07upp7kN9XuOTdPma0OhzBmH0F9+LPerKMFNTbNkvYeW8F5VWPVw4S/kWoU
+ WEym63MKHf5/bvh8+95tQFsuJuvgaKMYWXpJQJPCUw5ueAKjwssZcuTSKd4TCMkw5A6XpwU4/
+ f+BmQrRNBtCuvow8iNuP4XlmTAVkiaSxWPu35NyDHlPLfxc7KCltfv9u51BaDJ5X789mWGp3b
+ zdIrrKmEOcym67e6aaD+yH79wIAK7T9f3UGLN4AU7196sEnR27pvFdhRMgTpd9B6u+71xQUp6
+ 9CNXOazzmIbrpNX+Ynd1U0dJYAPUzHiUGU5nH3dKvPWa5n4Ua2VjucoDusUAEXbd//R7f7izt
+ ine/wMuSxJajnmhwdCSKrjmGRUomCpFIW/AUfSY4oZO5QIHjoeV1pxrp2Y6cZ1KBhruBh7J32
+ WK1lhjzYE5CaFXftGk2Co5abzhCVcUU0jyWwznZOF8tfuLpuNGlK3uz61U3o5WAVzH4exdRYc
+ 3BtyxZiOwFGnTmF27M1GYxFe46k725lQN4NbtzDqg+SL1MjFcpnd1KGMr+BmfZu50D9hcnyAn
+ Xuks3fH6T4VWLQouoJYb+/VZ7Vd9P7h1v3kJ+whYYTrbEO/0uOzdf0ZLmPv7G1ktTQlZartfu
+ ijkUEMx2TNPVW4SthOgAW563W2PThZUs3X1mZfQZYQZ7YtCUzanDmFlL8BWNFzjOdv1K3eZHj
+ RfJ/9alo2Omrv/XHGcmPzEt3qBbkPVQ5Yxcw7q3SkZAeAeivT+9piScMiceMbLEt+kqYGT2oU
+ EVbQI2wmByfSlAwQ7Z5nRTp3iejBXlWhZXsDygFAfQfsHYDwIWdCdZHuBqFgaukbwkOxzNSzk
+ L0YGZBdCg7EuIE58WA1rXevFIuZd6RPyNu3xPPDk9ODqyLFaSCGhd/KMyHm8zdYcx72e3mqBQ
+ xNrYi33+0VYBsJg5N8biJlQiFt8IgYmv2/RZbW6qQz4ySx7nOjpRaldPPA0+im++fqs+gjmxz
+ Px5hIi49aPuhtX4L8dWqrTnKmbhODvQGA8Rp0FX6+Jhm/e6I9jJmU7ubjxNF2sJ0cfrowrGM0
+ tPs/86+4YTOxAKMXS5geBSsAqTzbraSUrxOkkAWpP/lBRRF0waScvZ/DONPf6F69qDgf7/HxB
+ cWXMdstDXR5xvZ4ac/6AiB7DAqvlpYEWuwNabytzj+7fBonHSM5ZWu42oofVDzLIcji79TO7F
+ SWsHCIXPrprW3dyUXJxtEyv/fWkpPzmqiu883Sw==
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---3rd3nqEKmviIlgYXLgxkt4GDz8CFTZqke
-Content-Type: multipart/mixed; boundary="EqxkoMtfePcRgHH0AtAZfgeT52t9h5L9b";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>, Richard Henderson
- <rth@twiddle.net>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Matt Turner <mattst88@gmail.com>, Alexey Brodkin <abrodkin@synopsys.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
- Daniel Vetter <daniel@ffwll.ch>, Ben Skeggs <bskeggs@redhat.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Jiri Slaby
- <jirislaby@gmail.com>, Nick Kossifidis <mickflemm@gmail.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
- "David S. Miller" <davem@davemloft.net>, Dave Jiang <dave.jiang@intel.com>,
- Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Arnd Bergmann <arnd@arndb.de>, Geert Uytterhoeven <geert+renesas@glider.be>,
- Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, linux-media@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
- linux-arch@vger.kernel.org
-Message-ID: <ff03b149-b825-47f3-f92e-100899bb05fd@suse.de>
-Subject: Re: [PATCH v2 6/9] drm/mgag200: Constify ioreadX() iomem argument (as
- in generic implementation)
-References: <20200108200528.4614-1-krzk@kernel.org>
- <20200108200528.4614-7-krzk@kernel.org>
-In-Reply-To: <20200108200528.4614-7-krzk@kernel.org>
+> The commit d96885e277b5 ("parisc: use pgtable-nopXd instead of
+> 4level-fixup") converted PA-RISC to use folded page tables, but it misse=
+d
+> the conversion of pgd_populate() to pud_populate() in maps_pages()
+> function. This caused the upper page table directory to remain empty and
+> the system would crash as a result.
+>
+> Using pud_populate() that actually populates the page table instead of
+> dummy pgd_populate() fixes the issue.
+> ...
+> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+> index ddca8287d43b..354cf060b67f 100644
+> --- a/arch/parisc/mm/init.c
+> +++ b/arch/parisc/mm/init.c
+> @@ -401,7 +401,7 @@ static void __init map_pages(unsigned long start_vad=
+dr,
+>  			pmd =3D (pmd_t *) __pa(pmd);
+>  		}
+>
+> -		pgd_populate(NULL, pg_dir, __va(pmd));
+> +		pud_populate(NULL, (pud_t *)pg_dir, __va(pmd));
+>  #endif
 
---EqxkoMtfePcRgHH0AtAZfgeT52t9h5L9b
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Wouldn't the untested patch below be more clean?
 
-Hi
+Helge
 
-Am 08.01.20 um 21:05 schrieb Krzysztof Kozlowski:
-> The ioreadX() helpers have inconsistent interface.  On some architectur=
-es
-> void *__iomem address argument is a pointer to const, on some not.
->=20
-> Implementations of ioreadX() do not modify the memory under the address=
+diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+index ddca8287d43b..73de58f31f5f 100644
+=2D-- a/arch/parisc/mm/init.c
++++ b/arch/parisc/mm/init.c
+@@ -387,6 +387,8 @@ static void __init map_pages(unsigned long start_vaddr=
+,
+ #if PTRS_PER_PMD =3D=3D 1
+ 		pmd =3D (pmd_t *)__pa(pg_dir);
+ #else
++		p4d_t *p4d;
++		pud_t *pud;
+ 		pmd =3D (pmd_t *)pgd_address(*pg_dir);
 
-> so they can be converted to a "const" version for const-safety and
-> consistency among architectures.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+ 		/*
+@@ -401,7 +403,9 @@ static void __init map_pages(unsigned long start_vaddr=
+,
+ 			pmd =3D (pmd_t *) __pa(pmd);
+ 		}
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+-		pgd_populate(NULL, pg_dir, __va(pmd));
++		p4d =3D p4d_offset(pg_dir, vaddr);
++		pud =3D pud_offset(p4d, vaddr);
++		pud_populate(NULL, pud, __va(pmd));
+ #endif
+ 		pg_dir++;
 
-> ---
->  drivers/gpu/drm/mgag200/mgag200_drv.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mg=
-ag200/mgag200_drv.h
-> index aa32aad222c2..6512b3af4fb7 100644
-> --- a/drivers/gpu/drm/mgag200/mgag200_drv.h
-> +++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
-> @@ -34,9 +34,9 @@
-> =20
->  #define MGAG200FB_CONN_LIMIT 1
-> =20
-> -#define RREG8(reg) ioread8(((void __iomem *)mdev->rmmio) + (reg))
-> +#define RREG8(reg) ioread8(((const void __iomem *)mdev->rmmio) + (reg)=
-)
->  #define WREG8(reg, v) iowrite8(v, ((void __iomem *)mdev->rmmio) + (reg=
-))
-> -#define RREG32(reg) ioread32(((void __iomem *)mdev->rmmio) + (reg))
-> +#define RREG32(reg) ioread32(((const void __iomem *)mdev->rmmio) + (re=
-g))
->  #define WREG32(reg, v) iowrite32(v, ((void __iomem *)mdev->rmmio) + (r=
-eg))
-> =20
->  #define ATTR_INDEX 0x1fc0
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---EqxkoMtfePcRgHH0AtAZfgeT52t9h5L9b--
-
---3rd3nqEKmviIlgYXLgxkt4GDz8CFTZqke
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl4WwngACgkQaA3BHVML
-eiOKNgf/dNIJuZ1NzHHcf9BEmT/BV7QlRe6/FHHA4aiJdqTNYEZ4xQWzoZBT3FUD
-+t1ZzbPtJWF3dx/Bi2AyeI9UK9D5lqSqMPpjgfAgMdT60DkhStpiz4k80WtBG7NY
-dDcotCOrSeaYxImtCFAchwYcIw0l/cAD/ohiQYTfXx3FRj2Sb2hRIKx2h5Mr7k6G
-3lSOqlEt69S2/G/Xlb37VeI2f07RsVR+b89pQPgS5WWUyITa5ukgxWrI5sc7Sn5U
-ogamIdJCPT06fCNVF1JRsOBlI4qw+LNh5Z63REuA8V0qPytUKOW9kdxMwUlhkZJ/
-bQNkg8ibheQ3Xn8Bq6EjM/UUSS7XyQ==
-=C0TM
------END PGP SIGNATURE-----
-
---3rd3nqEKmviIlgYXLgxkt4GDz8CFTZqke--
