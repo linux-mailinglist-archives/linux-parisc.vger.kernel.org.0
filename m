@@ -2,156 +2,73 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C31213860D
-	for <lists+linux-parisc@lfdr.de>; Sun, 12 Jan 2020 12:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 842A6138B3C
+	for <lists+linux-parisc@lfdr.de>; Mon, 13 Jan 2020 06:52:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732697AbgALLg3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 12 Jan 2020 06:36:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57260 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732673AbgALLg3 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 12 Jan 2020 06:36:29 -0500
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3B36422314;
-        Sun, 12 Jan 2020 11:36:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578828988;
-        bh=x3lkok6yMxz/trfKMecT0QU+pQYlkaiXwXy+75fbrL4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=y2N7sm80JAw90ZvCwM/MuJup7eE879aePES4MtLWzqKqolaCBQYLa2a0UFOt0jSBo
-         J3LOSzuEsSjP+SmMKZmyzYfD4tRxa/kzb+z3SECqVmorgDiCM5Q6i6l/r7LHwROtBj
-         hxBVfV7ma3bBILFyx+19usU+Y/ZpbsM3PXGEuYr8=
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Meelis Roos <mroos@linux.ee>, Jeroen Roovers <jer@gentoo.org>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCH] parisc: map_pages(): cleanup page table initialization
-Date:   Sun, 12 Jan 2020 13:36:15 +0200
-Message-Id: <20200112113615.24198-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.24.0
+        id S1726669AbgAMFw3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 13 Jan 2020 00:52:29 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:44865 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729099AbgAMFw1 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 13 Jan 2020 00:52:27 -0500
+Received: by mail-oi1-f193.google.com with SMTP id d62so7173369oia.11
+        for <linux-parisc@vger.kernel.org>; Sun, 12 Jan 2020 21:52:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=El5YZgtDEXJCHEtZrRB1ujEJT5GnrR9nqQvx3oNXkD1KXWKAy5lE4fahagwXmNRBuY
+         Z373bCStdjZZAvrcMmyjZhqXNYKD7qS8gpQ1uKt4Zm/CJYofbOmd6y2KCfdaIf8lu4gx
+         e04Qq2Wd5k0QzXhgODgXLh9+BTAbr7mIJG1kvrHD2cB5892G2QaMtoQjZ8YbwAsn/v/R
+         qN1ulSwy8kLJzDOOwwvDkEa6g0paOaNUUW6lO8NcaOsOsQMTh2eV34LXY/bnRxfyDcL+
+         OFIAYoYpyWTxvo4nB11oXa8J2BNLiFXnr18VfN4DCPOmpXqWPT8f/9GzmZX8VWLxs4VK
+         s+8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=bgLoDfe0p1BtHG62KhOgVzF3JmiEb8KsyQgUiCj6l5tr8U3P5iqZ5VIOqTcnnTykA0
+         Kft5eheFE88MN1b5eso3oCjrgS71bNh6QeGUFbqQBHIkanTHnMHN1wXGRhvolVJPlXms
+         OJ5dcTORelav+F3JbCJACSrRvT26MdABRQjbp+NxxIi93FZZ2NGfquRXlBvfR2rENy0c
+         IZC9zg9tOOdZ8UyzX4ZDw+1dl8Ux2x98aR5r84FtLl/WZxLsqNH79rtog/eVzmVrxk9E
+         pze9Pt/c+RffEQKIwzCzXngyLa1ORb5kfq7y/y/g0DiNaUd0nLdIfDcFI7VgTokTabfY
+         /78Q==
+X-Gm-Message-State: APjAAAWbmlLAOVauZ6O0LqiYsRuQzenD8igK572JdM5vJoGOTj7mPBHa
+        hQvZVORLV8BYjQxc58QBgZgYxmrG84b0EkmI1VOrjaaz
+X-Google-Smtp-Source: APXvYqy7JhGBt0ZjJ/1t4CT74GIhTuvbOMnCynReBbsGRcTAfZPwoiLBCe9XiPA9xaK1JAPmy14eucUMWI9DLkbKsUo=
+X-Received: by 2002:a54:4713:: with SMTP id k19mr11513430oik.113.1578894745174;
+ Sun, 12 Jan 2020 21:52:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a4a:41cb:0:0:0:0:0 with HTTP; Sun, 12 Jan 2020 21:52:24
+ -0800 (PST)
+Reply-To: rickschaech@gmail.com
+From:   Rick Schaech <cathben72@gmail.com>
+Date:   Mon, 13 Jan 2020 01:52:24 -0400
+Message-ID: <CAEcBxO=TAnFn5LzizHa22hUC0Db5FuiZJF28m=yX3_9m--jRqg@mail.gmail.com>
+Subject: I wait for your swift response,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
+know we have not meet each other before but sometimes in life God have
+a reason of bringing two people from two different countries together
+as business partners or life partners.
 
-The current code uses '#if PTRS_PER_PMD == 1' to distinguish 2 vs 3 levels,
-setup, it casts pgd to pgd to cope with page table folding and converts
-addresses of page table entries from physical to virtual and back for no
-good reason.
+My dear friend, I have the sum of 15.7 Million USD i wish to put in
+your name due to the death of my late client who died several years
+ago as his next of kin column still remain blank. Though the internet
+medium is highly abuse these days but am assuring you that this
+transaction is legitimate and I am contacting you that we may have a
+deal, note for your cooperation and collaboration 40% of the sum will
+be for you while the other 60% will be for me as well. I wait for your
+swift response for more details. please forward your response to my
+personal E-mail: rickschaech@gmail.com
 
-Simplify the accesses to the page table entries using proper unfolding of
-the upper layers and replacing '#if PTRS_PER_PMD' with explicit
-'#if CONFIG_PGTABLE_LEVELS == 3'
-
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
-Hi,
-
-This patch is on top of the current parisc/for-next.
-I've build-tested for generic-{32,64}_defconfig and was able to boot
-qemu-system-parisc up to rootfs mount.
-
- arch/parisc/mm/init.c | 50 +++++++++++--------------------------------
- 1 file changed, 12 insertions(+), 38 deletions(-)
-
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index 354cf060b67f..5224fb38d766 100644
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -351,7 +351,6 @@ static void __init map_pages(unsigned long start_vaddr,
- 			     unsigned long start_paddr, unsigned long size,
- 			     pgprot_t pgprot, int force)
- {
--	pgd_t *pg_dir;
- 	pmd_t *pmd;
- 	pte_t *pg_table;
- 	unsigned long end_paddr;
-@@ -372,62 +371,37 @@ static void __init map_pages(unsigned long start_vaddr,
- 
- 	end_paddr = start_paddr + size;
- 
--	pg_dir = pgd_offset_k(start_vaddr);
--
--#if PTRS_PER_PMD == 1
--	start_pmd = 0;
--#else
-+	/* for 2-level configuration PTRS_PER_PMD is 0 so start_pmd will be 0 */
- 	start_pmd = ((start_vaddr >> PMD_SHIFT) & (PTRS_PER_PMD - 1));
--#endif
- 	start_pte = ((start_vaddr >> PAGE_SHIFT) & (PTRS_PER_PTE - 1));
- 
- 	address = start_paddr;
- 	vaddr = start_vaddr;
- 	while (address < end_paddr) {
--#if PTRS_PER_PMD == 1
--		pmd = (pmd_t *)__pa(pg_dir);
--#else
--		pmd = (pmd_t *)pgd_address(*pg_dir);
--
--		/*
--		 * pmd is physical at this point
--		 */
-+		pgd_t *pgd = pgd_offset_k(vaddr);
-+		p4d_t *p4d = p4d_offset(pgd, vaddr);
-+		pud_t *pud = pud_offset(p4d, vaddr);
- 
--		if (!pmd) {
-+#if CONFIG_PGTABLE_LEVELS == 3
-+		if (pud_none(*pud)) {
- 			pmd = memblock_alloc(PAGE_SIZE << PMD_ORDER,
- 					     PAGE_SIZE << PMD_ORDER);
- 			if (!pmd)
- 				panic("pmd allocation failed.\n");
--			pmd = (pmd_t *) __pa(pmd);
-+			pud_populate(NULL, pud, pmd);
- 		}
--
--		pud_populate(NULL, (pud_t *)pg_dir, __va(pmd));
- #endif
--		pg_dir++;
--
--		/* now change pmd to kernel virtual addresses */
- 
--		pmd = (pmd_t *)__va(pmd) + start_pmd;
-+		pmd = pmd_offset(pud, vaddr);
- 		for (tmp1 = start_pmd; tmp1 < PTRS_PER_PMD; tmp1++, pmd++) {
--
--			/*
--			 * pg_table is physical at this point
--			 */
--
--			pg_table = (pte_t *)pmd_address(*pmd);
--			if (!pg_table) {
--				pg_table = memblock_alloc(PAGE_SIZE,
--							  PAGE_SIZE);
-+			if (pmd_none(*pmd)) {
-+				pg_table = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
- 				if (!pg_table)
- 					panic("page table allocation failed\n");
--				pg_table = (pte_t *) __pa(pg_table);
-+				pmd_populate_kernel(NULL, pmd, pg_table);
- 			}
- 
--			pmd_populate_kernel(NULL, pmd, __va(pg_table));
--
--			/* now change pg_table to kernel virtual addresses */
--
--			pg_table = (pte_t *) __va(pg_table) + start_pte;
-+			pg_table = pte_offset_kernel(pmd, vaddr);
- 			for (tmp2 = start_pte; tmp2 < PTRS_PER_PTE; tmp2++, pg_table++) {
- 				pte_t pte;
- 				pgprot_t prot;
-
-base-commit: 9cf86a639ffdd9c38d510d35efcc15ed6dfb2efa
--- 
-2.24.0
-
+Yours sincerely,
+Rick Schaech.
