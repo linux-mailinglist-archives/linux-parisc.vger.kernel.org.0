@@ -2,91 +2,101 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A84EE13A345
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 Jan 2020 09:53:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E007613A536
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 Jan 2020 11:08:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725956AbgANIxt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 14 Jan 2020 03:53:49 -0500
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:39942 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725842AbgANIxt (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 14 Jan 2020 03:53:49 -0500
-Received: by mail-ed1-f65.google.com with SMTP id b8so11184459edx.7;
-        Tue, 14 Jan 2020 00:53:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=jF2tdIecki+DQ7lqcMG62cCuHUle8BdpmOn9fa7Pb5c=;
-        b=XgUxkIZf2/8IWtmEjm5X5/5HeW0rj3U1RIe3C+gr0bITBJrYjAwJA+s/V9I2xpe5zw
-         VWWECr/0YuXWPgpxgSqC/74wZ1TiPP4mSHISFICZ1v1Q92aHkVLUfClpPDOafyujvTIw
-         oaOJUcH7hhla2Y17E2vURRbQkvrB60Jt8FWdoffF9icIv/sLgHnKof0FKojYbfTk1Wba
-         QIpB/HADpek+a5uB8apJFwROnTSbuRG6/LWTpXCBJtHQMqqA/pryES1kHiea/5bY74o6
-         y8x4/UnIwSDdPtAEP9jV+djY+3Ytej7JwPr10sEK0LQ50ds7zDWbOcOC69vG2z/YN0rg
-         bgxA==
-X-Gm-Message-State: APjAAAWLNOEPJFgwmNDz+4l4572dijr2OAT+ZAS/sHzWMhiHlVNoaT45
-        fpBIWAZcrwx2yykhCi6wal5DeZxh
-X-Google-Smtp-Source: APXvYqygVkOwFasGwl9eMHv6ocMtP0ea95/KypoS9E6mF12yxzivVsRyX1xxQB3pZu4HC2c1cf3TkA==
-X-Received: by 2002:a17:906:489:: with SMTP id f9mr21472460eja.27.1578992027395;
-        Tue, 14 Jan 2020 00:53:47 -0800 (PST)
-Received: from pi3 ([194.230.155.229])
-        by smtp.googlemail.com with ESMTPSA id qw15sm577405ejb.92.2020.01.14.00.53.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2020 00:53:46 -0800 (PST)
-Date:   Tue, 14 Jan 2020 09:53:44 +0100
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] parisc: Use proper printk format for resource_size_t
-Message-ID: <20200114085344.GA4976@pi3>
-References: <20200103163925.3967-1-krzk@kernel.org>
- <82e79053-00bf-283e-458d-0b2711258585@gmx.de>
+        id S1729164AbgANKFi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 14 Jan 2020 05:05:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33796 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729531AbgANKFg (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 14 Jan 2020 05:05:36 -0500
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 137FD24683;
+        Tue, 14 Jan 2020 10:05:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578996335;
+        bh=ZgMGAjc1Tj8ADvk10RiUDnwnbLBquCBX3M4ZhVaYJVg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=cI2vONeDyfFGleTYjJ4f1jl5Msn10wdq5zpPZwkhlH7+B6UWJuL6FysSZ0xu+YsZa
+         j9OUlRVg2RmT5TkESYz9g/5LXPk+w7LiA9fudLciDmeoi/C3BK1Z0toOq3fCB0Q7KT
+         xK1QH++EwhsjMcAZ4e7kKLOPxjViOkaJxKQ7bZuY=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Amanieu dAntras <amanieu@gmail.com>,
+        linux-parisc@vger.kernel.org,
+        Christian Brauner <christian.brauner@ubuntu.com>
+Subject: [PATCH 5.4 60/78] parisc: Implement copy_thread_tls
+Date:   Tue, 14 Jan 2020 11:01:34 +0100
+Message-Id: <20200114094401.489409411@linuxfoundation.org>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200114094352.428808181@linuxfoundation.org>
+References: <20200114094352.428808181@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <82e79053-00bf-283e-458d-0b2711258585@gmx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Jan 14, 2020 at 09:27:35AM +0100, Helge Deller wrote:
-> On 03.01.20 17:39, Krzysztof Kozlowski wrote:
-> > resource_size_t should be printed with its own size-independent format
-> > to fix warnings when compiling on 64-bit platform (e.g. with
-> > COMPILE_TEST):
-> >
-> >     arch/parisc/kernel/drivers.c: In function 'print_parisc_device':
-> >     arch/parisc/kernel/drivers.c:892:9: warning:
-> >         format '%p' expects argument of type 'void *',
-> >         but argument 4 has type 'resource_size_t {aka unsigned int}' [-Wformat=]
-> >
-> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > ---
-> >  arch/parisc/kernel/drivers.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/parisc/kernel/drivers.c b/arch/parisc/kernel/drivers.c
-> > index a6c9f49c6612..a154de424421 100644
-> > --- a/arch/parisc/kernel/drivers.c
-> > +++ b/arch/parisc/kernel/drivers.c
-> > @@ -889,8 +889,8 @@ static void print_parisc_device(struct parisc_device *dev)
-> >  	static int count;
-> >
-> >  	print_pa_hwpath(dev, hw_path);
-> > -	pr_info("%d. %s at 0x%px [%s] { %d, 0x%x, 0x%.3x, 0x%.5x }",
-> > -		++count, dev->name, (void*) dev->hpa.start, hw_path, dev->id.hw_type,
-> > +	pr_info("%d. %s at %pa[p] [%s] { %d, 0x%x, 0x%.3x, 0x%.5x }",
-> 
-> It needs to be    %pap   instead of   %pa[p].
-> The documentation in Documentation/core-api/printk-formats.rst is correct, but misleading.
-> I corrected & applied it.
-> Thanks!
+From: Amanieu d'Antras <amanieu@gmail.com>
 
-Damn it, you're right. Thanks for noticing!
+commit d2f36c787b2181561d8b95814f8cdad64b348ad7 upstream.
 
-Best regards,
-Krzysztof
+This is required for clone3 which passes the TLS value through a
+struct rather than a register.
+
+Signed-off-by: Amanieu d'Antras <amanieu@gmail.com>
+Cc: linux-parisc@vger.kernel.org
+Cc: <stable@vger.kernel.org> # 5.3.x
+Link: https://lore.kernel.org/r/20200102172413.654385-5-amanieu@gmail.com
+Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/parisc/Kconfig          |    1 +
+ arch/parisc/kernel/process.c |    8 ++++----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -62,6 +62,7 @@ config PARISC
+ 	select HAVE_FTRACE_MCOUNT_RECORD if HAVE_DYNAMIC_FTRACE
+ 	select HAVE_KPROBES_ON_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS
++	select HAVE_COPY_THREAD_TLS
+ 
+ 	help
+ 	  The PA-RISC microprocessor is designed by Hewlett-Packard and used
+--- a/arch/parisc/kernel/process.c
++++ b/arch/parisc/kernel/process.c
+@@ -208,8 +208,8 @@ arch_initcall(parisc_idle_init);
+  * Copy architecture-specific thread state
+  */
+ int
+-copy_thread(unsigned long clone_flags, unsigned long usp,
+-	    unsigned long kthread_arg, struct task_struct *p)
++copy_thread_tls(unsigned long clone_flags, unsigned long usp,
++	    unsigned long kthread_arg, struct task_struct *p, unsigned long tls)
+ {
+ 	struct pt_regs *cregs = &(p->thread.regs);
+ 	void *stack = task_stack_page(p);
+@@ -254,9 +254,9 @@ copy_thread(unsigned long clone_flags, u
+ 		cregs->ksp = (unsigned long)stack + THREAD_SZ_ALGN + FRAME_SIZE;
+ 		cregs->kpc = (unsigned long) &child_return;
+ 
+-		/* Setup thread TLS area from the 4th parameter in clone */
++		/* Setup thread TLS area */
+ 		if (clone_flags & CLONE_SETTLS)
+-			cregs->cr27 = cregs->gr[23];
++			cregs->cr27 = tls;
+ 	}
+ 
+ 	return 0;
+
 
