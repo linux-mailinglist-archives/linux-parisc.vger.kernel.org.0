@@ -2,25 +2,53 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D41313D8C0
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jan 2020 12:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FD491402E0
+	for <lists+linux-parisc@lfdr.de>; Fri, 17 Jan 2020 05:16:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726366AbgAPLLY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 16 Jan 2020 06:11:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51303 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726100AbgAPLLY (ORCPT
+        id S1729669AbgAQEQb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 16 Jan 2020 23:16:31 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:41082 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726653AbgAQEQb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 16 Jan 2020 06:11:24 -0500
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1is33A-00050C-K7; Thu, 16 Jan 2020 12:10:56 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-        id 3D46D101B66; Thu, 16 Jan 2020 12:10:56 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Hsin-Yi Wang <hsinyi@chromium.org>
+        Thu, 16 Jan 2020 23:16:31 -0500
+Received: by mail-pf1-f196.google.com with SMTP id w62so11309392pfw.8
+        for <linux-parisc@vger.kernel.org>; Thu, 16 Jan 2020 20:16:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=mRpBlfriiKBtpHdle3gY+6OvDi0xi+PHO3+1yxBhNW0=;
+        b=YpgoWq+f5KBHqJRceCkoXiAZ2cahZQK+2UyaAJe+K9OIe+XXcWUZL8U209yNlM3H75
+         KA7pvnOh+24zjdkJ7WMUJ3KA1+3nkIcrRF31rPO++SI7wQlThs4GJGs5B3nYoQLKW5HT
+         2eh3iHvTi3Xy88JGMBRbo122EsU8mcdZ/ksMWQv5AaykeNtw4L241TPf0aaaNgQ6oplO
+         UcCJxtf9XAGTsWbYYHU+gy2NpZnW2+Cl0nQVAovymBpgWIrdrUczQb4tNfSu/jIOSSvr
+         fG9ZirxeCQXz5lZPNcJRcNLxJM6Wbp3fKAwDJBz0ddZdtMZOh9o+PFBxxH/QKym4+LGz
+         VCIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=mRpBlfriiKBtpHdle3gY+6OvDi0xi+PHO3+1yxBhNW0=;
+        b=EcbjRX2AyW3q1/amTsFZVAHxIYATvTTCwomUGGJlf1Tzk8t21RROxMStxSQjl7Dv2k
+         SeL5naU8GrsDOpht9JgXSx9vIinhNJwrfkMXTRzJOe+EicVh5QZMnJCtVcc9fdW6k21V
+         FEhR5yYvG1oHdgOr/wNHGH0NQma+HU9XWc3/sxAvnG75w9zGwDX5/dcOO5veBWfMDo0S
+         /Q5We0/PzYbJKcPaCgxpDqssE2C4Y5g/tdTqffRTpZTm9tF19wBNGUS80y/aW5APFZGc
+         rIBa/j9p5auwqYRpt5pCqKFrq6cN9Drw0/NuF72ghasKjQluZMH24RSs9Wl2oOMQ8lP3
+         ovTw==
+X-Gm-Message-State: APjAAAUF/q189kyrRVxyai3g4+k5WoYNEzIXC7vbskxmmSanw+zweNKD
+        fAqlE2mtF0fMsvzTQKo1qQwV3g==
+X-Google-Smtp-Source: APXvYqxeLUKQP31a9O4MOSQTYDXXhKgO23RrfuN2OHejqkFLLCBgUZ8QQnxFYMZQ3Ktxo8BDhU+O2Q==
+X-Received: by 2002:a62:e30d:: with SMTP id g13mr1054005pfh.92.1579234591085;
+        Thu, 16 Jan 2020 20:16:31 -0800 (PST)
+Received: from [192.168.11.4] (softbank126112255110.biz.bbtec.net. [126.112.255.110])
+        by smtp.googlemail.com with ESMTPSA id l66sm26355096pga.30.2020.01.16.20.16.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 16 Jan 2020 20:16:30 -0800 (PST)
+Subject: Re: [PATCH RESEND v4] reboot: support offline CPUs before reboot
+To:     Hsin-Yi Wang <hsinyi@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>
 Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         Ingo Molnar <mingo@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
@@ -36,61 +64,55 @@ Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Guenter Roeck <groeck@chromium.org>,
         Stephen Boyd <swboyd@chromium.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "moderated list\:ARM\/FREESCALE IMX \/ MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>, linux-csky@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390@vger.kernel.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v5] reboot: support offline CPUs before reboot
-In-Reply-To: <CAJMQK-jDi+AACE1Cv_hKSMq8VhGTBeh+kyHO2U4sx9w=9bO2mA@mail.gmail.com>
-References: <20200115063410.131692-1-hsinyi@chromium.org> <8736cgxmxi.fsf@nanos.tec.linutronix.de> <CAJMQK-jDi+AACE1Cv_hKSMq8VhGTBeh+kyHO2U4sx9w=9bO2mA@mail.gmail.com>
-Date:   Thu, 16 Jan 2020 12:10:56 +0100
-Message-ID: <87h80vwta7.fsf@nanos.tec.linutronix.de>
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-pm@vger.kernel.org
+References: <20200114110620.164861-1-hsinyi@chromium.org>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <a701522f-73aa-2277-4a25-f84a27f38118@landley.net>
+Date:   Thu, 16 Jan 2020 22:20:28 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200114110620.164861-1-hsinyi@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hsin-Yi Wang <hsinyi@chromium.org> writes:
-> On Thu, Jan 16, 2020 at 8:30 AM Thomas Gleixner <tglx@linutronix.de> wrote:
-> We saw this issue on regular reboot (not panic) on arm64: If tick
-> broadcast and smp_send_stop() happen together and the first broadcast
-> arrives to some idled CPU that hasn't already executed reboot ipi to
-> run in spinloop, it would try to broadcast to another CPU, but that
-> target CPU is already marked as offline by set_cpu_online() in reboot
-> ipi, and a warning comes out since tick_handle_oneshot_broadcast()
-> would check if it tries to broadcast to offline cpus. Most of the time
-> the CPU getting the broadcast interrupt is already in the spinloop and
-> thus isn't going to receive interrupts from the broadcast timer.
+On 1/14/20 5:06 AM, Hsin-Yi Wang wrote:
+> This patch adds a config ARCH_OFFLINE_CPUS_ON_REBOOT, which would offline cpus in
+> migrate_to_reboot_cpu(). If non reboot cpus are all offlined here, the loop for
+> checking online cpus would be an empty loop. If architecture don't enable this
+> config, or some cpus somehow fails to offline, it would fallback to ipi
+> function.
 
-The timer broadcasting is obviously broken by the existing reboot unplug
-mechanism as the outgoing CPU should remove itself from the broadcast.
+I'm curious:
 
-Just addressing the broadcast issue is not sufficient as there are tons
-of other places which rely on consistency of the various cpu masks.
+> +# Select to do a full offline on secondary CPUs before reboot.
+> +config ARCH_OFFLINE_CPUS_ON_REBOOT
+> +	bool "Support for offline CPUs before reboot"
+> +	depends on HOTPLUG_CPU
 
-> If system supports hotplug, _cpu_down() would properly handle tasks
-> termination such as remove CPU from timer broadcasting by
-> tick_offline_cpu()...etc, as well as some interrupt handling.
+The new symbol can't be selected without the other symbol.
 
-Well, emphasis on 'if system supports hotplug'. If not, then you are
-back to square one. On ARM64 hotplug is selectable by a config option.
+> +	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
 
-So either we mandate HOTPLUG_CPU for SMP and get rid of all the
-ifdeffery or we need to have a mechanism which works on !HOTPLUG_CPU as
-well.
+And the other symbol automatically selects the new one.
 
-That whole reboot/shutdown stuff is an unpenetrable mess of notifiers
-and architecture hackery, so something generic and understandable is
-really required.
+Why are you adding a second symbol that means the same thing as the existing symbol?
 
-Thanks,
+> +#if defined(CONFIG_PM_SLEEP_SMP) || defined(CONFIG_ARCH_OFFLINE_CPUS_ON_REBOOT)
+> +extern int freeze_secondary_cpus(int primary, bool reboot);
+> +#endif
 
-        tglx
+Couldn't that just test HOTPLUG_CPU? What's the second symbol for? (You can have
+empty stub functions when architectures don't support a thing...)
+
+Rob
