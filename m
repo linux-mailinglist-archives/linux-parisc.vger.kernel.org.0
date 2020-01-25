@@ -2,88 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B8F148D47
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Jan 2020 18:59:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44F94149453
+	for <lists+linux-parisc@lfdr.de>; Sat, 25 Jan 2020 11:25:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390446AbgAXR7v (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 Jan 2020 12:59:51 -0500
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:40288 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2389013AbgAXR7u (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 Jan 2020 12:59:50 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 4B42B8EE149;
-        Fri, 24 Jan 2020 09:59:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1579888790;
-        bh=hPgrSS5YnlOUtCNuI8GwgklA11NYYzD/CN5hBJfeBds=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=aTLhhcfWsa3AymWaW8LLB7mSZ7R3tvkl+Cghw9tN0k7A09EeizqnltmOeX10HzaNy
-         F5bnPLip25b08CqprZp9tQ2YDJuYcd0rlnpTWyoIZADcJ0sbpPWc0IjImSssZvcggu
-         yU6Xy9s898jY2DUey7EIlhSI6BOfuXYjluZWDaMo=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Eb-lTrOvMaFc; Fri, 24 Jan 2020 09:59:50 -0800 (PST)
-Received: from jarvis.lan (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id D762C8EE0D4;
-        Fri, 24 Jan 2020 09:59:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1579888790;
-        bh=hPgrSS5YnlOUtCNuI8GwgklA11NYYzD/CN5hBJfeBds=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=aTLhhcfWsa3AymWaW8LLB7mSZ7R3tvkl+Cghw9tN0k7A09EeizqnltmOeX10HzaNy
-         F5bnPLip25b08CqprZp9tQ2YDJuYcd0rlnpTWyoIZADcJ0sbpPWc0IjImSssZvcggu
-         yU6Xy9s898jY2DUey7EIlhSI6BOfuXYjluZWDaMo=
-Message-ID: <1579888788.3001.26.camel@HansenPartnership.com>
-Subject: Re: [PATCH v1] parisc: Use for_each_console() helper
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S1726612AbgAYKZe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 25 Jan 2020 05:25:34 -0500
+Received: from mga06.intel.com ([134.134.136.31]:18162 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726181AbgAYKZe (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 25 Jan 2020 05:25:34 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Jan 2020 02:25:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,361,1574150400"; 
+   d="scan'208";a="400894449"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga005.jf.intel.com with ESMTP; 25 Jan 2020 02:25:07 -0800
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ivIcm-0003eG-Hz; Sat, 25 Jan 2020 12:25:08 +0200
+Date:   Sat, 25 Jan 2020 12:25:08 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
 Cc:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Date:   Fri, 24 Jan 2020 09:59:48 -0800
-In-Reply-To: <20200124173846.GL32742@smile.fi.intel.com>
+Subject: Re: [PATCH v1] parisc: Use for_each_console() helper
+Message-ID: <20200125102508.GQ32742@smile.fi.intel.com>
 References: <20200124160739.65256-1-andriy.shevchenko@linux.intel.com>
-         <1579883942.3001.14.camel@HansenPartnership.com>
-         <20200124173846.GL32742@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ <1579883942.3001.14.camel@HansenPartnership.com>
+ <20200124173846.GL32742@smile.fi.intel.com>
+ <1579888788.3001.26.camel@HansenPartnership.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1579888788.3001.26.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, 2020-01-24 at 19:38 +0200, Andy Shevchenko wrote:
-> On Fri, Jan 24, 2020 at 08:39:02AM -0800, James Bottomley wrote:
-> > On Fri, 2020-01-24 at 18:07 +0200, Andy Shevchenko wrote:
-> > > Replace open coded single-linked list iteration loop with
-> > > for_each_console()
-> > > helper in use.
-> > > -	while ((console = console_drivers) != NULL)
-> > > -		unregister_console(console_drivers);
-> > > +	for_each_console(console)
-> > > +		unregister_console(console);
+On Fri, Jan 24, 2020 at 09:59:48AM -0800, James Bottomley wrote:
+> On Fri, 2020-01-24 at 19:38 +0200, Andy Shevchenko wrote:
+> > On Fri, Jan 24, 2020 at 08:39:02AM -0800, James Bottomley wrote:
+> > > On Fri, 2020-01-24 at 18:07 +0200, Andy Shevchenko wrote:
+> > > > Replace open coded single-linked list iteration loop with
+> > > > for_each_console()
+> > > > helper in use.
+> > > > -	while ((console = console_drivers) != NULL)
+> > > > -		unregister_console(console_drivers);
+> > > > +	for_each_console(console)
+> > > > +		unregister_console(console);
+> > > 
+> > > This is wrong.  The old formulation iterates correctly in the face
+> > > of element removal.  for_each_console is defined:
+> > > 
+> > > #define for_each_console(con) \
+> > > 	for (con = console_drivers; con != NULL; con = con->next)
+> > > 
+> > > So it's not safe for any iteration that alters the list elements.
 > > 
-> > This is wrong.  The old formulation iterates correctly in the face
-> > of element removal.  for_each_console is defined:
-> > 
-> > #define for_each_console(con) \
-> > 	for (con = console_drivers; con != NULL; con = con->next)
-> > 
-> > So it's not safe for any iteration that alters the list elements.
+> > Ah, I see. In this case we need to keep a pointer to the next
+> > element. Though, the original code assumes that console_drivers after
+> > unregistration will be promoted to the next element. Do we have this
+> > assumption solid?
 > 
-> Ah, I see. In this case we need to keep a pointer to the next
-> element. Though, the original code assumes that console_drivers after
-> unregistration will be promoted to the next element. Do we have this
-> assumption solid?
+> Yes, the original code simply removes the head until the list is empty.
+>  That's a recognized way of emptying any list while letting the remove
+> code take care of the locking ... it works because parisc doesn't have
+> a braille console.
 
-Yes, the original code simply removes the head until the list is empty.
- That's a recognized way of emptying any list while letting the remove
-code take care of the locking ... it works because parisc doesn't have
-a braille console.
+By the way, consider this code from register_console()
 
-James
+  for_each_console(bcon)
+    if (bcon->flags & CON_BOOT)
+      unregister_console(bcon);
+
+It works based on assumption that next pointer of the just unregistered console
+is not damaged. So, My initial patch will work in the same way.
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
