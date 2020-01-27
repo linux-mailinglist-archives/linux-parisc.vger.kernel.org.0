@@ -2,35 +2,70 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E680914A007
-	for <lists+linux-parisc@lfdr.de>; Mon, 27 Jan 2020 09:49:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C07614A021
+	for <lists+linux-parisc@lfdr.de>; Mon, 27 Jan 2020 09:53:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729147AbgA0ItL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Jan 2020 03:49:11 -0500
-Received: from mout.gmx.net ([212.227.15.15]:51121 "EHLO mout.gmx.net"
+        id S1728782AbgA0Ixc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Jan 2020 03:53:32 -0500
+Received: from mout.gmx.net ([212.227.15.18]:42071 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726769AbgA0ItL (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Jan 2020 03:49:11 -0500
+        id S1726191AbgA0Ixb (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 27 Jan 2020 03:53:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1580114939;
-        bh=I/5PZnrrgZxO7dwKini8I5E4vTRqom7xKPuBjoqav+k=;
+        s=badeba3b8450; t=1580115137;
+        bh=5J3yFAs/di5oKgW1gMmea+vs9/kXgj7kul9UGWXzJDI=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=JKhO8jhA91h6qgKi+8ZMrWIHPPnLizjHooOhQnWj9WX4Rgb3jzFY7xuZvUBo7zfgg
-         7M4Zi79s7whcfl+3GzjuxdIcOZQtdyF3X4oNWaIsp2jbVGkRD+gReLAfzRdbDjA59f
-         FRhidP1DJdxzVXv9Xy3Yx7cwFCF3ol7+xTi3iNHU=
+        b=VMM/NbVJG7Kw6ZTrKLFnAP1UestTNoHBei4c68L/RMO3FcWjF8q3Wf/no9c2dV9wf
+         1bF8qbtP9+cY/rqxLF2/Y6NSw2RHC+OqFXXtyBIM5clttjZXVhGIkfTC21yzJEdGfn
+         TXwsgk/LAw+LtArm7fwkgVaQkkSmnLKxYewcMarQ=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.146.84]) by mail.gmx.com (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mn2aD-1jKqtg2TDT-00k7Om; Mon, 27
- Jan 2020 09:48:59 +0100
-Subject: Re: [PATCH v1] parisc: Use for_each_console() helper
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     linux-parisc@vger.kernel.org
-References: <20200124160739.65256-1-andriy.shevchenko@linux.intel.com>
- <1579883942.3001.14.camel@HansenPartnership.com>
- <20200124173846.GL32742@smile.fi.intel.com>
- <1579888788.3001.26.camel@HansenPartnership.com>
- <20200125102508.GQ32742@smile.fi.intel.com>
+Received: from [192.168.20.60] ([92.116.146.84]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MHXBj-1irrPM2OBt-00DV4v; Mon, 27
+ Jan 2020 09:52:17 +0100
+Subject: Re: [PATCH v4 7/9] parisc/perf: open access for CAP_SYS_PERFMON
+ privileged process
+To:     Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+        "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "james.bottomley@hansenpartnership.com" 
+        <james.bottomley@hansenpartnership.com>,
+        Serge Hallyn <serge@hallyn.com>,
+        James Morris <jmorris@namei.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Robert Richter <rric@kernel.org>
+Cc:     Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
+        Stephane Eranian <eranian@google.com>,
+        Igor Lubashev <ilubashe@akamai.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+        Song Liu <songliubraving@fb.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org, oprofile-list@lists.sf.net
+References: <c0460c78-b1a6-b5f7-7119-d97e5998f308@linux.intel.com>
+ <806e4881-5c22-5914-a656-5eeb65130dbe@linux.intel.com>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -89,87 +124,73 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <310fb56d-8b7e-6dca-f36a-41729ef66e25@gmx.de>
-Date:   Mon, 27 Jan 2020 09:48:58 +0100
+Message-ID: <00d0213a-dce8-45b1-1905-11ea4af2d207@gmx.de>
+Date:   Mon, 27 Jan 2020 09:52:10 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20200125102508.GQ32742@smile.fi.intel.com>
+In-Reply-To: <806e4881-5c22-5914-a656-5eeb65130dbe@linux.intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:HJOLuYIHbNhT39iTQ6nT+y+XbKaJiS4qglCKaR9UIq3GPJUkKnN
- ZVH6gP9+XT1ej2tzvpaU2/v3I2tYGNiCE//MmdWSvZxO/08IKv9xvBdBcctEnU3HNHbjpnk
- kcU2vdl7qmDaGFtFyjcWtMrhHEXdADS7Pd2I/bAZEFqfe3dxTc/eAurYuuraCAq8rUys7oJ
- IPNpfXFKJbkKHjXYhUpWQ==
+X-Provags-ID: V03:K1:aIpVETSkQFdyEHqjZO3h7rjr8aYRDxnS7V9FaZk2Tm7dLtDU63A
+ IqqI0FrCVX1l2wUjdNPMhrS7zbwhyFSFduTdfuFttOI/a7pD2/g2QldnaBBwAGjDI+98JC3
+ TLPxWC9yPiQPO2UM/tzq5s+LhzGIoRXQBWMlcqqBjhWSWyt9CeSVBnNpC+X0NNNAgsGwQCC
+ Co1FNj38ObcObdv3FA0Jg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:yyIRyhqEK9Y=:84hKae1K3YWAEnw5qnN26t
- qughQcx+nwe/nZ2HWzPlrMmMU1JBiT1tDGffpCSxhnXpsbujAAgYxlKpuuX0rMW0VOun52qw0
- /YckKOeKTDG8ExRHCAuSMOntZGPxOOOrXp4YQl9xPl/6BJNuJ4L4l5aRgccMJ+NmecEmiE+i8
- S7CuLzfeEp01YM4tcSRcOAp+01toUvJKEvv2Jej+fC78xV0P4FQCzHn6/flOCvr36hVNM4yln
- 6lDsjH43pnVRLhq3n+Jdu83RrefUuVk6DykcxyJ8THScVApkyV7gOPW7eoWIZB0HdPqcAu+VS
- 3pslc63PbZ11DY+xdSGfCY4y55S4lv/PfCiBg+7sAUJ/vS+cBcnJeNB9U1om/o/1GBruOrfr9
- Qxftrc0QyfnqzxuUstHkK2i+BaVO54X3aHEtX/QupmfLos9pUxrCiNrKbhgdEE6g1Sz9EoXwh
- H7Yhjnc10+RedmrEeuTinYckrjfSVmunT48fzycxvhp8OQQgCOnHbYA9lEICCg8anuNOZhfaW
- JjWdVEWb46mjcbRVvfi4bxmsmzPUlQrrrie/sLu/t0HmCxXT8/QlJsUI+bcnJN8Rmvjsm7Z1i
- G4Z6hB/zSnT/o0AREuYfeQ1KCyE/Ip8ZRQGvcqI2KxmALsz015JyG66Kqe49nhSJKf8XSfnwZ
- 2/92xbhefX9ZqSDy02VqHQ1gbSY8V+R41B1NY18FCiZeVPWQQgog0x8SiwPrI/CyzdfelNNze
- BVPLnEYZ2BC6F6KDX1C26f6rOJVwGTCFiA0BKLAQCE9DcEm9FuecnDsTWbJ7mlM/RTijSdBQe
- +Q8xFa6QtCC24rxt4f66LYDTmBvkPu+ThQvExWLrztp8VtE29tmyPlfCFfLNqIC2sjYHSz7wv
- ehFssjeLmHMKOnGPGX7nt4e8y+rxnR1DxZhtpZTvpV5UXWeq02aqOhxyk4qQVeBig3Y9039Vh
- mOOZMQTjiUobcZEdbuXvi0Iq1UphM21KnBxkQRv/32rp+BCQds98r9To3zAmgzh0mqp7/UIYl
- tYezu+X4lbFc3T5NdohJJQwzsqdCEn7EFc+fqzVTHb9dRyQf24JPZons+mRcXu79RWYCTv8T5
- vyJMOp2yM2Ouz4yfIrIxWAenDj3SYh5Bu+kahIzXzMmCWEQqC1QH9zbAOfQkoohNDLHL876Nu
- 0YuVg4ByLI3lhY0dAhDWc+dMndzWYzZiwQnx5XH9LJpj6fPSdXOCFlPDxY89ZzhXutWet0MLm
- /dlJQW/tUPdKZn91r
+X-UI-Out-Filterresults: notjunk:1;V03:K0:BOEbCTgCEy4=:MwUtX7VDuQ8Pm7Q9fXXE3y
+ m6+Wzto5tVfFi84hTj75AXbPx0rySVkPXUl7S5AfRF+i5wCQvON7B5L9LXn3rSXwkRHjJL2bc
+ zNKd3lWjpRsaYJo3PCag6iVs8J8juB0/n4cM6O/nYIaEouHl4vaU4U1O52oPikrt/Hqss9YDd
+ UoowL2mu7pUWWiqdR7rYxnvTvNa4OL5w20rxfoWKig2+SxvgsARrv90cxNEU/d9WGPygKMR9Y
+ ry6d6abMhxbrfz3aEtq4H2rsvgQhGq3yBjrekxferXfr0GFnlOcQyiedKOZD4osJfSI1sh7ja
+ t/LQhSiYULP46aPhFbbGpDlbHoBX7NA8OKm60GLclBc8WDbSsZRQKUL1zQNproIVTOeqJS8Xb
+ Fxdeyjs07y0WxdaqUcf/5BdbyFhR1fwW61FP7m03Pkw63CWKawDuZE3ECXCo1BtiDAblzUfyN
+ Q1pNIILT9HnVN5Ono64xI5E74+TQ8auzrPfmhU5cp+g4xGLIjW3gmPi5UI0ar7GBoyNjyXXR0
+ Sfjh7BVjtvQx7m92ZMq3WCzjGS2iYIMy/JgPcs0KkppMrYhIp4+7bfGsgaSjn6C6lW3ABQ9Pi
+ CFolfuw8jNu98IoIyngd9Dwm9aaUvlOjg5Kf6JSEHuEZbLIN5cUmvVPab4O5OCyVMVXhCWaK1
+ CYMow24k1P4brb2DXmVpnUjbKrFktbYkt71F+SCk6KxBj6TwhbV9BdJSmlvfpuzfJ4ckRUgfM
+ iHasreYa1aiiwM6umPLnET9pEk+WNxt7xVCNXoaRWviI/+uRL8cKkLkrx9KByu3gdgMS25mll
+ zqNcvQh/c/fWmlUF6X7GuVcGRedQxvyP91eKACPPUCm2XNn8TOgZeVG3uoOj09f5LUCMrKgLi
+ UjrwOhmoHC5mrvVVqUUC/YOE+9JRnSvPAmDKSyTofGWIynqC6ayY9xnggeBIgpvASFVn9IYYT
+ zIQvinZfsWvecb2nMvc6pLBpAIhlYcUj/yB8hf5HpYooG2U2gCOg7O23gHgj95I3fHL3CI2dI
+ F7t7gG66GsxfbCVv8gUw3g5wOvZ+kx3fNRlR2a6z9jfN2rwOO+vqPf6kc9LqudtZGusdmFkjl
+ kzibafMuSHXTYZv0t5QXAA7yL4VZiJ5/2F9itXzks4WhJiqPTKVW7i3mgUy7ri43OFnEPRbHs
+ PMtWRD4UdppG0SwcIMbve/Z8rmAbldeOLcJXubwNcUY4+KUPuKq29jPy82M+s6qHeH2Zb9Edk
+ gjF8tb2EunU8U+2vR
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 25.01.20 11:25, Andy Shevchenko wrote:
-> On Fri, Jan 24, 2020 at 09:59:48AM -0800, James Bottomley wrote:
->> On Fri, 2020-01-24 at 19:38 +0200, Andy Shevchenko wrote:
->>> On Fri, Jan 24, 2020 at 08:39:02AM -0800, James Bottomley wrote:
->>>> On Fri, 2020-01-24 at 18:07 +0200, Andy Shevchenko wrote:
->>>>> Replace open coded single-linked list iteration loop with
->>>>> for_each_console()
->>>>> helper in use.
->>>>> -	while ((console =3D console_drivers) !=3D NULL)
->>>>> -		unregister_console(console_drivers);
->>>>> +	for_each_console(console)
->>>>> +		unregister_console(console);
->>>>
->>>> This is wrong.  The old formulation iterates correctly in the face
->>>> of element removal.  for_each_console is defined:
->>>>
->>>> #define for_each_console(con) \
->>>> 	for (con =3D console_drivers; con !=3D NULL; con =3D con->next)
->>>>
->>>> So it's not safe for any iteration that alters the list elements.
->>>
->>> Ah, I see. In this case we need to keep a pointer to the next
->>> element. Though, the original code assumes that console_drivers after
->>> unregistration will be promoted to the next element. Do we have this
->>> assumption solid?
->>
->> Yes, the original code simply removes the head until the list is empty.
->>  That's a recognized way of emptying any list while letting the remove
->> code take care of the locking ... it works because parisc doesn't have
->> a braille console.
+On 18.12.19 10:29, Alexey Budankov wrote:
 >
-> By the way, consider this code from register_console()
+> Open access to monitoring for CAP_SYS_PERFMON privileged processes.
+> For backward compatibility reasons access to the monitoring remains open
+> for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for secur=
+e
+> monitoring is discouraged with respect to CAP_SYS_PERFMON capability.
 >
->   for_each_console(bcon)
->     if (bcon->flags & CON_BOOT)
->       unregister_console(bcon);
->
-> It works based on assumption that next pointer of the just unregistered =
-console
-> is not damaged. So, My initial patch will work in the same way.
+> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
 
-Yeah, but that's a typical use-after-free issue, which I wouldn't count on=
-.
-Isn't there a way to make both safe?
+Acked-by: Helge Deller <deller@gmx.de>
 
-Helge
+> ---
+>  arch/parisc/kernel/perf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/parisc/kernel/perf.c b/arch/parisc/kernel/perf.c
+> index 676683641d00..c4208d027794 100644
+> --- a/arch/parisc/kernel/perf.c
+> +++ b/arch/parisc/kernel/perf.c
+> @@ -300,7 +300,7 @@ static ssize_t perf_write(struct file *file, const c=
+har __user *buf,
+>  	else
+>  		return -EFAULT;
+>
+> -	if (!capable(CAP_SYS_ADMIN))
+> +	if (!perfmon_capable())
+>  		return -EACCES;
+>
+>  	if (count !=3D sizeof(uint32_t))
+>
+
