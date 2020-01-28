@@ -2,31 +2,22 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B0514AF9C
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jan 2020 07:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C68414C206
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jan 2020 22:19:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725829AbgA1GOc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 Jan 2020 01:14:32 -0500
-Received: from mga05.intel.com ([192.55.52.43]:28219 "EHLO mga05.intel.com"
+        id S1726428AbgA1VT3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 Jan 2020 16:19:29 -0500
+Received: from namei.org ([65.99.196.166]:60442 "EHLO namei.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725774AbgA1GOc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 Jan 2020 01:14:32 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Jan 2020 22:14:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,372,1574150400"; 
-   d="scan'208";a="427538213"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga005.fm.intel.com with ESMTP; 27 Jan 2020 22:14:30 -0800
-Received: from [10.252.25.124] (abudanko-mobl.ccr.corp.intel.com [10.252.25.124])
-        by linux.intel.com (Postfix) with ESMTP id C3E41580277;
-        Mon, 27 Jan 2020 22:14:22 -0800 (PST)
-Subject: [PATCH v6 10/10] drivers/oprofile: open access for CAP_PERFMON
- privileged process
-From:   Alexey Budankov <alexey.budankov@linux.intel.com>
-To:     Peter Zijlstra <peterz@infradead.org>,
+        id S1726211AbgA1VT2 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 28 Jan 2020 16:19:28 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by namei.org (8.14.4/8.14.4) with ESMTP id 00SLGD0G004501;
+        Tue, 28 Jan 2020 21:16:14 GMT
+Date:   Wed, 29 Jan 2020 08:16:13 +1100 (AEDT)
+From:   James Morris <jmorris@namei.org>
+To:     Alexey Budankov <alexey.budankov@linux.intel.com>
+cc:     Peter Zijlstra <peterz@infradead.org>,
         Arnaldo Carvalho de Melo <acme@kernel.org>,
         Ingo Molnar <mingo@redhat.com>,
         "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
@@ -36,8 +27,8 @@ To:     Peter Zijlstra <peterz@infradead.org>,
         <james.bottomley@hansenpartnership.com>,
         Serge Hallyn <serge@hallyn.com>, Will Deacon <will@kernel.org>,
         Robert Richter <rric@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>
-Cc:     "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
         Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
         Stephane Eranian <eranian@google.com>,
         Igor Lubashev <ilubashe@akamai.com>,
@@ -54,58 +45,34 @@ Cc:     "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
         "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
         "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
         oprofile-list@lists.sf.net
-References: <74d524ab-ac11-a7b8-1052-eba10f117e09@linux.intel.com>
-Organization: Intel Corp.
-Message-ID: <eff5e211-7114-f854-f53f-08491f9dcc26@linux.intel.com>
-Date:   Tue, 28 Jan 2020 09:14:21 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+Subject: Re: [PATCH v6 01/10] capabilities: introduce CAP_PERFMON to kernel
+ and user space
+In-Reply-To: <62274abc-6067-9121-9397-c9b626ca5f7a@linux.intel.com>
+Message-ID: <alpine.LRH.2.21.2001290815420.2204@namei.org>
+References: <74d524ab-ac11-a7b8-1052-eba10f117e09@linux.intel.com> <62274abc-6067-9121-9397-c9b626ca5f7a@linux.intel.com>
+User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <74d524ab-ac11-a7b8-1052-eba10f117e09@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Tue, 28 Jan 2020, Alexey Budankov wrote:
 
-Open access to monitoring for CAP_PERFMON privileged process. Providing
-the access under CAP_PERFMON capability singly, without the rest of
-CAP_SYS_ADMIN credentials, excludes chances to misuse the credentials and
-makes operation more secure.
+> 
+> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+> ---
+>  include/linux/capability.h          | 4 ++++
+>  include/uapi/linux/capability.h     | 8 +++++++-
+>  security/selinux/include/classmap.h | 4 ++--
+>  3 files changed, 13 insertions(+), 3 deletions(-)
 
-CAP_PERFMON implements the principal of least privilege for performance
-monitoring and observability operations (POSIX IEEE 1003.1e 2.2.2.39 principle
-of least privilege: A security design principle that states that a process
-or program be granted only those privileges (e.g., capabilities) necessary
-to accomplish its legitimate function, and only for the time that such
-privileges are actually required)
 
-For backward compatibility reasons access to the monitoring remains open
-for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for secure
-monitoring is discouraged with respect to CAP_PERFMON capability.
+Acked-by: James Morris <jamorris@linux.microsoft.com>
 
-Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
----
- drivers/oprofile/event_buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/oprofile/event_buffer.c b/drivers/oprofile/event_buffer.c
-index 12ea4a4ad607..6c9edc8bbc95 100644
---- a/drivers/oprofile/event_buffer.c
-+++ b/drivers/oprofile/event_buffer.c
-@@ -113,7 +113,7 @@ static int event_buffer_open(struct inode *inode, struct file *file)
- {
- 	int err = -EPERM;
- 
--	if (!capable(CAP_SYS_ADMIN))
-+	if (!perfmon_capable())
- 		return -EPERM;
- 
- 	if (test_and_set_bit_lock(0, &buffer_opened))
 -- 
-2.20.1
-
+James Morris
+<jmorris@namei.org>
 
