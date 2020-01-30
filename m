@@ -2,106 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF5414C224
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jan 2020 22:21:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A75D14DC70
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jan 2020 15:07:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbgA1VVF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 Jan 2020 16:21:05 -0500
-Received: from namei.org ([65.99.196.166]:60568 "EHLO namei.org"
+        id S1727107AbgA3OHw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 30 Jan 2020 09:07:52 -0500
+Received: from mx2.suse.de ([195.135.220.15]:51562 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726211AbgA1VVF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 Jan 2020 16:21:05 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by namei.org (8.14.4/8.14.4) with ESMTP id 00SLIGx1004605;
-        Tue, 28 Jan 2020 21:18:16 GMT
-Date:   Wed, 29 Jan 2020 08:18:16 +1100 (AEDT)
-From:   James Morris <jmorris@namei.org>
-To:     Alexey Budankov <alexey.budankov@linux.intel.com>
-cc:     Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "james.bottomley@hansenpartnership.com" 
-        <james.bottomley@hansenpartnership.com>,
-        Serge Hallyn <serge@hallyn.com>, Will Deacon <will@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
-        Stephane Eranian <eranian@google.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
-        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
-        oprofile-list@lists.sf.net
-Subject: Re: [PATCH v6 10/10] drivers/oprofile: open access for CAP_PERFMON
- privileged process
-In-Reply-To: <eff5e211-7114-f854-f53f-08491f9dcc26@linux.intel.com>
-Message-ID: <alpine.LRH.2.21.2001290818090.2204@namei.org>
-References: <74d524ab-ac11-a7b8-1052-eba10f117e09@linux.intel.com> <eff5e211-7114-f854-f53f-08491f9dcc26@linux.intel.com>
-User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+        id S1727001AbgA3OHw (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 30 Jan 2020 09:07:52 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id C1B88AC66;
+        Thu, 30 Jan 2020 14:07:49 +0000 (UTC)
+Date:   Thu, 30 Jan 2020 15:07:49 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Helge Deller <deller@gmx.de>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        linux-parisc@vger.kernel.org,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v1] parisc: Use for_each_console() helper
+Message-ID: <20200130140748.ugetnys4vabf6vqx@pathway.suse.cz>
+References: <20200124160739.65256-1-andriy.shevchenko@linux.intel.com>
+ <1579883942.3001.14.camel@HansenPartnership.com>
+ <20200124173846.GL32742@smile.fi.intel.com>
+ <1579888788.3001.26.camel@HansenPartnership.com>
+ <20200125102508.GQ32742@smile.fi.intel.com>
+ <310fb56d-8b7e-6dca-f36a-41729ef66e25@gmx.de>
+ <20200127094722.GU32742@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200127094722.GU32742@smile.fi.intel.com>
+User-Agent: NeoMutt/20170912 (1.9.0)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, 28 Jan 2020, Alexey Budankov wrote:
-
+On Mon 2020-01-27 11:47:22, Andy Shevchenko wrote:
+> On Mon, Jan 27, 2020 at 09:48:58AM +0100, Helge Deller wrote:
+> > On 25.01.20 11:25, Andy Shevchenko wrote:
+> > > On Fri, Jan 24, 2020 at 09:59:48AM -0800, James Bottomley wrote:
 > 
-> Open access to monitoring for CAP_PERFMON privileged process. Providing
-> the access under CAP_PERFMON capability singly, without the rest of
-> CAP_SYS_ADMIN credentials, excludes chances to misuse the credentials and
-> makes operation more secure.
+> ...
 > 
-> CAP_PERFMON implements the principal of least privilege for performance
-> monitoring and observability operations (POSIX IEEE 1003.1e 2.2.2.39 principle
-> of least privilege: A security design principle that states that a process
-> or program be granted only those privileges (e.g., capabilities) necessary
-> to accomplish its legitimate function, and only for the time that such
-> privileges are actually required)
+> > > By the way, consider this code from register_console()
+> > >
+> > >   for_each_console(bcon)
+> > >     if (bcon->flags & CON_BOOT)
+> > >       unregister_console(bcon);
+> > >
+> > > It works based on assumption that next pointer of the just unregistered console
+> > > is not damaged. So, My initial patch will work in the same way.
+> > 
+> > Yeah, but that's a typical use-after-free issue, which I wouldn't count on.
 > 
-> For backward compatibility reasons access to the monitoring remains open
-> for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for secure
-> monitoring is discouraged with respect to CAP_PERFMON capability.
-> 
-> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
-> ---
->  drivers/oprofile/event_buffer.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> I think here is misinterpretation, i.e. unregister != free.
+> Entire console code is written in the assumption that console is not being
+> freed when unregistered.
 
+Honestly, I am not sure if this is true for all console drivers
+and if it is by design.
 
-Acked-by: James Morris <jamorris@linux.microsoft.com>
+I would prefer to stay on the safe side and keep the original
+code. Hotplug practices are more and more popular as everything
+gets virtualized.
 
-> 
-> diff --git a/drivers/oprofile/event_buffer.c b/drivers/oprofile/event_buffer.c
-> index 12ea4a4ad607..6c9edc8bbc95 100644
-> --- a/drivers/oprofile/event_buffer.c
-> +++ b/drivers/oprofile/event_buffer.c
-> @@ -113,7 +113,7 @@ static int event_buffer_open(struct inode *inode, struct file *file)
->  {
->  	int err = -EPERM;
->  
-> -	if (!capable(CAP_SYS_ADMIN))
-> +	if (!perfmon_capable())
->  		return -EPERM;
->  
->  	if (test_and_set_bit_lock(0, &buffer_opened))
-> 
-
--- 
-James Morris
-<jmorris@namei.org>
-
+Best Regards,
+Petr
