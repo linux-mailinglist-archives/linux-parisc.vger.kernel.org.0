@@ -2,117 +2,72 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B88F3155896
-	for <lists+linux-parisc@lfdr.de>; Fri,  7 Feb 2020 14:39:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 943EF156015
+	for <lists+linux-parisc@lfdr.de>; Fri,  7 Feb 2020 21:44:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727009AbgBGNjX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 7 Feb 2020 08:39:23 -0500
-Received: from mga17.intel.com ([192.55.52.151]:44098 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726861AbgBGNjW (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 7 Feb 2020 08:39:22 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Feb 2020 05:39:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,413,1574150400"; 
-   d="scan'208";a="220798400"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga007.jf.intel.com with ESMTP; 07 Feb 2020 05:39:21 -0800
-Received: from [10.125.252.178] (abudanko-mobl.ccr.corp.intel.com [10.125.252.178])
-        by linux.intel.com (Postfix) with ESMTP id 7EB57580458;
-        Fri,  7 Feb 2020 05:39:13 -0800 (PST)
-From:   Alexey Budankov <alexey.budankov@linux.intel.com>
-Subject: Re: [PATCH v5 01/10] capabilities: introduce CAP_PERFMON to kernel
- and user space
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Serge Hallyn <serge@hallyn.com>,
-        James Morris <jmorris@namei.org>
-Cc:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
-        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
-        "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Robert Richter <rric@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
-        Stephane Eranian <eranian@google.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
-        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
-        oprofile-list@lists.sf.net, Andy Lutomirski <luto@amacapital.net>
-References: <875zgizkyk.fsf@nanos.tec.linutronix.de>
-Organization: Intel Corp.
-Message-ID: <7d6f4210-423f-e454-3910-9f8e17dff1aa@linux.intel.com>
-Date:   Fri, 7 Feb 2020 16:39:12 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+        id S1727317AbgBGUoR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 7 Feb 2020 15:44:17 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:35185 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727558AbgBGUoK (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 7 Feb 2020 15:44:10 -0500
+Received: by mail-ot1-f65.google.com with SMTP id r16so621787otd.2
+        for <linux-parisc@vger.kernel.org>; Fri, 07 Feb 2020 12:44:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=WJgFJ9PR0yBQ+ciD08Pby60OVZzn3dTgtieZ17slfRQssKmPnwQmAwZPgDIpR6heck
+         dDY9m0nAiR73dL1CtCDLlqWI9lV6barO9i6phYUUcmMyI9lhyUunotwwGjtLNjZZXHps
+         B+ZJy7kS8IDHqb+LatDXLkBcGkPTiMku+kX9Fb92ZmFsnK1n3liOHkc4TmrSz2VBzqpm
+         gOXxQUuwBna/l8aq9nu864h1RGE/T5vMQdJwoV4IagKfmqrsTX7n4WpDLnLJobosvK0X
+         9Z7fBUirFx02ZREq+PBFhuGxFcksAi/eOnsjoHpvtfcuXe3k+tw0qtyYWnKvHtkX+Drl
+         CMWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=bCxt+XlnC/xvxNrobcWMhylQX/0nswO2M+s/CO1wnFjPu7VX5CcQx5kSgy09moBktn
+         uQrSvgwpMF6i1QOBEjb2yJ7CazAI6wavHtyZ+7/o+7mtkopi1Ywt1E4Ppphz75z7M2Yl
+         KgCZvnfDLCFIwHvq1u4j5/15xOLvKZeRwakHDLOrwNu2QxcjYkcCuIqwot5zqF7C+lja
+         a+i96ezznW22krth6s874flsNuLFO0SJ5NB8E26Cj7ZCcbr/qPIBBPM7441SF1IaHDmM
+         nGk6nYWCTvjV6PqJpsWGx7j+/1thFKAPhq76r0mODG0xqPFX/tGAsHm9KsWGrF4udOeF
+         aptQ==
+X-Gm-Message-State: APjAAAVk/Y36hIGJz4W5AcVb/3wC9KSMTXMSy/UfDIf3504BGyAPNcLM
+        FjEFp7PgqU+KYg3VVw9PAyd6qGYeMncFa+oBuYg=
+X-Google-Smtp-Source: APXvYqxZ0BHxezvYatUCwR5ujJY2IO6fZCUlpHww8WEnDHAAAY+0VvtiMdEe6JnWZWwDRH8AP8uVvx3q0Y+IviYPdhQ=
+X-Received: by 2002:a9d:7305:: with SMTP id e5mr948882otk.64.1581108248790;
+ Fri, 07 Feb 2020 12:44:08 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <875zgizkyk.fsf@nanos.tec.linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:44:08 -0800 (PST)
+Reply-To: auch197722@gmail.com
+From:   "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
+Date:   Fri, 7 Feb 2020 15:44:08 -0500
+Message-ID: <CAPNvSTj-8q7w5QPmnH26+_3xCKjEWyE+9xcb8QyQs9Xie+iYgg@mail.gmail.com>
+Subject: LETTER OF INQUIRY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Good Day,
 
-On 07.02.2020 14:38, Thomas Gleixner wrote:
-> Alexey Budankov <alexey.budankov@linux.intel.com> writes:
->> On 22.01.2020 17:25, Alexey Budankov wrote:
->>> On 22.01.2020 17:07, Stephen Smalley wrote:
->>>>> It keeps the implementation simple and readable. The implementation is more
->>>>> performant in the sense of calling the API - one capable() call for CAP_PERFMON
->>>>> privileged process.
->>>>>
->>>>> Yes, it bloats audit log for CAP_SYS_ADMIN privileged and unprivileged processes,
->>>>> but this bloating also advertises and leverages using more secure CAP_PERFMON
->>>>> based approach to use perf_event_open system call.
->>>>
->>>> I can live with that.  We just need to document that when you see
->>>> both a CAP_PERFMON and a CAP_SYS_ADMIN audit message for a process,
->>>> try only allowing CAP_PERFMON first and see if that resolves the
->>>> issue.  We have a similar issue with CAP_DAC_READ_SEARCH versus
->>>> CAP_DAC_OVERRIDE.
->>>
->>> perf security [1] document can be updated, at least, to align and document 
->>> this audit logging specifics.
->>
->> And I plan to update the document right after this patch set is accepted.
->> Feel free to let me know of the places in the kernel docs that also
->> require update w.r.t CAP_PERFMON extension.
-> 
-> The documentation update wants be part of the patch set and not planned
-> to be done _after_ the patch set is merged.
+I work as a clerk in a Bank here in Nigeria, I have a very
+confidential Business Proposition for you. There is a said amount of
+money floating in the bank unclaimed, belonging to the bank Foreign
+customer who die with his family in the Ethiopian Airline crash of
+March 11, 2019.
 
-Well, accepted. It is going to make patches #11 and beyond.
+I seek your good collaboration to move the fund for our benefit. we
+have agreed that 40% be yours once you help claim.
 
-Thanks,
-Alexey
+Do get back to with 1) Your Full Name: (2) Residential Address: (3)
+Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
+funds.
 
-> 
-> Thanks,
-> 
->         tglx
-> 
+Regards
+Theophilus Odadudu
