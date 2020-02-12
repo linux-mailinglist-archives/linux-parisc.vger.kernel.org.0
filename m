@@ -2,163 +2,144 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8050E15A2BB
-	for <lists+linux-parisc@lfdr.de>; Wed, 12 Feb 2020 09:05:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B732C15A401
+	for <lists+linux-parisc@lfdr.de>; Wed, 12 Feb 2020 09:53:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728430AbgBLIER (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 12 Feb 2020 03:04:17 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:43921 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728393AbgBLIER (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 12 Feb 2020 03:04:17 -0500
-Received: by mail-pl1-f193.google.com with SMTP id p11so647960plq.10;
-        Wed, 12 Feb 2020 00:04:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=7AIHJ7j1EEobB8zZTvtJAkT0p5VwQeFcI7NkRJU/t0Q=;
-        b=q5SSauM13DrzscQWb8ZkGyOBuZ1Vmrmr9mUv6Qdet2InfRK5EjYE1zceP0XWRRG6M1
-         5dR0Rafft2wMdkRO9PLU3vvSjRZpHy+qCWYas0jOwRcxJAmLrtfGnqQK3F9HinWk7hnc
-         2/IPB7axnFjdlgqtkVOqcbAhWv76Lhk7m992nwFg7nN8paJCkgEOdRkEp7ILG6ce5wzH
-         Bn58dfHBzj1/jMgDi+qF6Q3AoM6impQNA6YfdRGnVdesGujZ1FPHEAFBxEaylg+z4HNN
-         mbAKYN1KEpm0JZO8NJhF31T7GNy3y5EtsvRMnZyZkvgxuY5Ps0FBgeyfvj/k3MLNwluF
-         nXNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=7AIHJ7j1EEobB8zZTvtJAkT0p5VwQeFcI7NkRJU/t0Q=;
-        b=TJuGl3nuCnZ3evpzamaSpIZcnDEw6OOy4zm45mcEgUnMGDuWOYDGhP1bOuNb40Zb+7
-         SH/oftqOS8b8uKAJMael8Gkxp+bJMc7URMk8w2iTXO0PJ7tyz5YPHeOHRiwJaCmbU1Ji
-         kbvWvV6iDLKOMntOUddR82TPrGRWFKrHNmEcZ5Xttgq7TjqfQrO2jm2DTIlQ/1DDkGO+
-         6r18UdIG/JZPYxOaQPC36uEPbwyv84IrOkp1C7liXkJ2+fbjnQPAvGqgRjVgME2bZFbC
-         CiuRX7yL7VUmYn8ThduylSS05KTeeWwvVKx2EvhIRGmpnTlpkhFo8/vqq8Y6tPeSlC0q
-         jFJA==
-X-Gm-Message-State: APjAAAXMfOIhlQ+rmdB6SJTYgkY2+anm4Rqg1ynJ8Faz3W+FY3PrvxEz
-        weKlEXbPcBpCsVbBQrkTu/sElICOV1U=
-X-Google-Smtp-Source: APXvYqyO7GVGVB77AJIpJXGLm4LOrCcRzAFK+DAo2r7xUZ6KayXCIdYgKFVg10nm5pyQe2PgPOW/3A==
-X-Received: by 2002:a17:90a:21c7:: with SMTP id q65mr8703896pjc.8.1581494656192;
-        Wed, 12 Feb 2020 00:04:16 -0800 (PST)
-Received: from localhost ([106.51.21.91])
-        by smtp.gmail.com with ESMTPSA id y197sm7126036pfc.79.2020.02.12.00.04.15
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 12 Feb 2020 00:04:15 -0800 (PST)
-Date:   Wed, 12 Feb 2020 13:34:14 +0530
-From:   afzal mohammed <afzal.mohd.ma@gmail.com>
-To:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Allison Randal <allison@lohutok.net>,
-        Richard Fontana <rfontana@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 09/18] parisc: Replace setup_irq() by request_irq()
-Message-ID: <ce37741c4606e3b86b2b1db51c42e68e61d43563.1581478324.git.afzal.mohd.ma@gmail.com>
-References: <cover.1581478323.git.afzal.mohd.ma@gmail.com>
+        id S1728595AbgBLIxv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 12 Feb 2020 03:53:51 -0500
+Received: from mga12.intel.com ([192.55.52.136]:5613 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728550AbgBLIxv (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 12 Feb 2020 03:53:51 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Feb 2020 00:53:50 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,428,1574150400"; 
+   d="scan'208";a="226740960"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmsmga007.fm.intel.com with ESMTP; 12 Feb 2020 00:53:37 -0800
+Received: from [10.125.252.164] (abudanko-mobl.ccr.corp.intel.com [10.125.252.164])
+        by linux.intel.com (Postfix) with ESMTP id 25BB9580409;
+        Wed, 12 Feb 2020 00:53:28 -0800 (PST)
+Subject: Re: [PATCH v5 01/10] capabilities: introduce CAP_PERFMON to kernel
+ and user space
+To:     Stephen Smalley <sds@tycho.nsa.gov>
+Cc:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+        "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "james.bottomley@hansenpartnership.com" 
+        <james.bottomley@hansenpartnership.com>,
+        Serge Hallyn <serge@hallyn.com>,
+        James Morris <jmorris@namei.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Robert Richter <rric@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
+        Stephane Eranian <eranian@google.com>,
+        Igor Lubashev <ilubashe@akamai.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Song Liu <songliubraving@fb.com>,
+        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+        oprofile-list@lists.sf.net, Andy Lutomirski <luto@amacapital.net>
+References: <0548c832-7f4b-dc4c-8883-3f2b6d351a08@linux.intel.com>
+ <9b77124b-675d-5ac7-3741-edec575bd425@linux.intel.com>
+ <64cab472-806e-38c4-fb26-0ffbee485367@tycho.nsa.gov>
+ <05297eff-8e14-ccdf-55a4-870c64516de8@linux.intel.com>
+ <CAADnVQK-JzK-GUk4KOozn4c1xr=7TiCpB9Fi0QDC9nE6iVn8iQ@mail.gmail.com>
+ <537bdb28-c9e4-f44f-d665-25250065a6bb@linux.intel.com>
+ <63d9700f-231d-7973-5307-3e56a48c54cb@linux.intel.com>
+ <d7213569-9578-7201-6106-f5ebc95bd6be@tycho.nsa.gov>
+From:   Alexey Budankov <alexey.budankov@linux.intel.com>
+Organization: Intel Corp.
+Message-ID: <2e38c33d-f085-1320-8cc2-45f74b6ad86d@linux.intel.com>
+Date:   Wed, 12 Feb 2020 11:53:27 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1581478323.git.afzal.mohd.ma@gmail.com>
-User-Agent: Mutt/1.9.3 (2018-01-21)
+In-Reply-To: <d7213569-9578-7201-6106-f5ebc95bd6be@tycho.nsa.gov>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-request_irq() is preferred over setup_irq(). Existing callers of
-setup_irq() reached mostly via 'init_IRQ()' & 'time_init()', while
-memory allocators are ready by 'mm_init()'.
+Hi Stephen,
 
-Per tglx[1], setup_irq() existed in olden days when allocators were not
-ready by the time early interrupts were initialized.
+On 22.01.2020 17:07, Stephen Smalley wrote:
+> On 1/22/20 5:45 AM, Alexey Budankov wrote:
+>>
+>> On 21.01.2020 21:27, Alexey Budankov wrote:
+>>>
+>>> On 21.01.2020 20:55, Alexei Starovoitov wrote:
+>>>> On Tue, Jan 21, 2020 at 9:31 AM Alexey Budankov
+>>>> <alexey.budankov@linux.intel.com> wrote:
+>>>>>
+>>>>>
+>>>>> On 21.01.2020 17:43, Stephen Smalley wrote:
+>>>>>> On 1/20/20 6:23 AM, Alexey Budankov wrote:
+>>>>>>>
+<SNIP>
+>>>>>>> Introduce CAP_PERFMON capability designed to secure system performance
+>>>>>>
+>>>>>> Why _noaudit()?  Normally only used when a permission failure is non-fatal to the operation.  Otherwise, we want the audit message.
+>>
+>> So far so good, I suggest using the simplest version for v6:
+>>
+>> static inline bool perfmon_capable(void)
+>> {
+>>     return capable(CAP_PERFMON) || capable(CAP_SYS_ADMIN);
+>> }
+>>
+>> It keeps the implementation simple and readable. The implementation is more
+>> performant in the sense of calling the API - one capable() call for CAP_PERFMON
+>> privileged process.
+>>
+>> Yes, it bloats audit log for CAP_SYS_ADMIN privileged and unprivileged processes,
+>> but this bloating also advertises and leverages using more secure CAP_PERFMON
+>> based approach to use perf_event_open system call.
+> 
+> I can live with that.  We just need to document that when you see both a CAP_PERFMON and a CAP_SYS_ADMIN audit message for a process, try only allowing CAP_PERFMON first and see if that resolves the issue.  We have a similar issue with CAP_DAC_READ_SEARCH versus CAP_DAC_OVERRIDE.
 
-Hence replace setup_irq() by request_irq().
+I am trying to reproduce this double logging with CAP_PERFMON.
+I am using the refpolicy version with enabled perf_event tclass [1], in permissive mode.
+When running perf stat -a I am observing this AVC audit messages:
 
-Seldom remove_irq() usage has been observed coupled with setup_irq(),
-wherever that has been found, it too has been replaced by free_irq().
+type=AVC msg=audit(1581496695.666:8691): avc:  denied  { open } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
+type=AVC msg=audit(1581496695.666:8691): avc:  denied  { kernel } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
+type=AVC msg=audit(1581496695.666:8691): avc:  denied  { cpu } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
+type=AVC msg=audit(1581496695.666:8692): avc:  denied  { write } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
 
-[1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
+However there is no capability related messages around. I suppose my refpolicy should 
+be modified somehow to observe capability related AVCs.
 
-Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+Could you please comment or clarify on how to enable caps related AVCs in order
+to test the concerned logging.
+
+Thanks,
+Alexey
+
 ---
-
-Since cc'ing cover letter to all maintainers/reviewers would be too
-many, refer for cover letter,
- https://lkml.kernel.org/r/cover.1581478323.git.afzal.mohd.ma@gmail.com
-
- arch/parisc/kernel/irq.c | 21 +++++----------------
- drivers/parisc/eisa.c    |  8 ++------
- 2 files changed, 7 insertions(+), 22 deletions(-)
-
-diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
-index e5fcfb70cc7c..b8fd4ae6b2cf 100644
---- a/arch/parisc/kernel/irq.c
-+++ b/arch/parisc/kernel/irq.c
-@@ -560,20 +560,6 @@ void do_cpu_irq_mask(struct pt_regs *regs)
- 	goto out;
- }
- 
--static struct irqaction timer_action = {
--	.handler = timer_interrupt,
--	.name = "timer",
--	.flags = IRQF_TIMER | IRQF_PERCPU | IRQF_IRQPOLL,
--};
--
--#ifdef CONFIG_SMP
--static struct irqaction ipi_action = {
--	.handler = ipi_interrupt,
--	.name = "IPI",
--	.flags = IRQF_PERCPU,
--};
--#endif
--
- static void claim_cpu_irqs(void)
- {
- 	int i;
-@@ -583,10 +569,13 @@ static void claim_cpu_irqs(void)
- 	}
- 
- 	irq_set_handler(TIMER_IRQ, handle_percpu_irq);
--	setup_irq(TIMER_IRQ, &timer_action);
-+	if (request_irq(TIMER_IRQ, timer_interrupt,
-+			IRQF_TIMER | IRQF_PERCPU | IRQF_IRQPOLL, "timer", NULL))
-+		pr_err("request_irq() on %s failed\n", "timer");
- #ifdef CONFIG_SMP
- 	irq_set_handler(IPI_IRQ, handle_percpu_irq);
--	setup_irq(IPI_IRQ, &ipi_action);
-+	if (request_irq(IPI_IRQ, ipi_interrupt, IRQF_PERCPU, "IPI", NULL))
-+		pr_err("request_irq() on %s failed\n", "IPI");
- #endif
- }
- 
-diff --git a/drivers/parisc/eisa.c b/drivers/parisc/eisa.c
-index 9d00a24277aa..fa75e6740de2 100644
---- a/drivers/parisc/eisa.c
-+++ b/drivers/parisc/eisa.c
-@@ -243,11 +243,6 @@ static irqreturn_t dummy_irq2_handler(int _, void *dev)
- 	return IRQ_HANDLED;
- }
- 
--static struct irqaction irq2_action = {
--	.handler = dummy_irq2_handler,
--	.name = "cascade",
--};
--
- static void init_eisa_pic(void)
- {
- 	unsigned long flags;
-@@ -335,7 +330,8 @@ static int __init eisa_probe(struct parisc_device *dev)
- 	}
- 
- 	/* Reserve IRQ2 */
--	setup_irq(2, &irq2_action);
-+	if (request_irq(2, dummy_irq2_handler, 0, "cascade", NULL))
-+		pr_err("request_irq() on %s failed\n", "cascade");
- 	for (i = 0; i < 16; i++) {
- 		irq_set_chip_and_handler(i, &eisa_interrupt_type,
- 					 handle_simple_irq);
--- 
-2.24.1
-
+[1] https://github.com/SELinuxProject/refpolicy.git
