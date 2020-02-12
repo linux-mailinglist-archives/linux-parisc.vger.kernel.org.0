@@ -2,144 +2,187 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B732C15A401
-	for <lists+linux-parisc@lfdr.de>; Wed, 12 Feb 2020 09:53:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAE0415A46A
+	for <lists+linux-parisc@lfdr.de>; Wed, 12 Feb 2020 10:16:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728595AbgBLIxv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 12 Feb 2020 03:53:51 -0500
-Received: from mga12.intel.com ([192.55.52.136]:5613 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728550AbgBLIxv (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 12 Feb 2020 03:53:51 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Feb 2020 00:53:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,428,1574150400"; 
-   d="scan'208";a="226740960"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga007.fm.intel.com with ESMTP; 12 Feb 2020 00:53:37 -0800
-Received: from [10.125.252.164] (abudanko-mobl.ccr.corp.intel.com [10.125.252.164])
-        by linux.intel.com (Postfix) with ESMTP id 25BB9580409;
-        Wed, 12 Feb 2020 00:53:28 -0800 (PST)
-Subject: Re: [PATCH v5 01/10] capabilities: introduce CAP_PERFMON to kernel
- and user space
-To:     Stephen Smalley <sds@tycho.nsa.gov>
-Cc:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
-        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
-        "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "james.bottomley@hansenpartnership.com" 
-        <james.bottomley@hansenpartnership.com>,
-        Serge Hallyn <serge@hallyn.com>,
-        James Morris <jmorris@namei.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Robert Richter <rric@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
-        Stephane Eranian <eranian@google.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
-        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
-        oprofile-list@lists.sf.net, Andy Lutomirski <luto@amacapital.net>
-References: <0548c832-7f4b-dc4c-8883-3f2b6d351a08@linux.intel.com>
- <9b77124b-675d-5ac7-3741-edec575bd425@linux.intel.com>
- <64cab472-806e-38c4-fb26-0ffbee485367@tycho.nsa.gov>
- <05297eff-8e14-ccdf-55a4-870c64516de8@linux.intel.com>
- <CAADnVQK-JzK-GUk4KOozn4c1xr=7TiCpB9Fi0QDC9nE6iVn8iQ@mail.gmail.com>
- <537bdb28-c9e4-f44f-d665-25250065a6bb@linux.intel.com>
- <63d9700f-231d-7973-5307-3e56a48c54cb@linux.intel.com>
- <d7213569-9578-7201-6106-f5ebc95bd6be@tycho.nsa.gov>
-From:   Alexey Budankov <alexey.budankov@linux.intel.com>
-Organization: Intel Corp.
-Message-ID: <2e38c33d-f085-1320-8cc2-45f74b6ad86d@linux.intel.com>
-Date:   Wed, 12 Feb 2020 11:53:27 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+        id S1728615AbgBLJQj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 12 Feb 2020 04:16:39 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:42190 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728150AbgBLJQi (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 12 Feb 2020 04:16:38 -0500
+Received: by mail-wr1-f67.google.com with SMTP id k11so1252832wrd.9
+        for <linux-parisc@vger.kernel.org>; Wed, 12 Feb 2020 01:16:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=monstr-eu.20150623.gappssmtp.com; s=20150623;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Uk+gFfcB3b6FjGRTP1nlFspmuyGmgWlIC086s4vck+w=;
+        b=tx63Leo7FrRp0l54LTIEM0mJaUSmFSJs8Jtan6w3TdwyKCuw0Eu7b2I9GrPzaP8mjr
+         XjDvfMlhRKTbK/pdenWOIi2NtyBIR/rlcogzVZTLoqIly3RaBeNH3ROBYO4InWV35ScG
+         R1EixNT+YyHv7e19HkIfVYZgEpqErrhzxhTcgUR8V2cXKWQTYuS21lrCOcbTmRPuT5uy
+         I3KNIQovuRRaTeyytRIGb04+jn/BEfv9MdaQPyXAx8RZVVsiVINu0g67BeESTKqIkxlT
+         sM+jQ3MQZkAw6e5tAkX7AuFgwDJyeZcbcqYJeb0Kl/frjkzNH9bv24q+C50KvozngigY
+         pfeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=Uk+gFfcB3b6FjGRTP1nlFspmuyGmgWlIC086s4vck+w=;
+        b=nba+Pv/Vs5SH+MZa/imfJFDFapdt93n4ZdQm1tN+qQgZHbCE+xXcCuN2LRzhDoFB3a
+         owYQCZ3JdZI1vbSA6YH6xibleFDH3M8xM/Lo/7Hs92NIuvsNLo+Nsnox3rJUgi/gqrXC
+         nr93VAJMMwQ2p7va6sAWa/6+PoGW817nMc0UO1Y7U6sJg3mmEc8IvRhX2khELe3muKmM
+         VpDa6yK5DgH4QkOaL2LS20Qg+gGkxKps/zueXZmFYJtRDNboLqIxnbPU+lFdL+rPVjTG
+         cZEOjDfvtvLwOB+LtL/8WyrwSyxuoI8WyxY3Nuinx6Ta2fIE+qaZ0byLDh15lL56ya9e
+         GoLA==
+X-Gm-Message-State: APjAAAWMlru9wV5UtSBU+2Mfxtu4yhakmv5/R6X8KRKPhRxJGiwCmBfH
+        wk3VQVqb4Y6nintfAWcY+N2q4A==
+X-Google-Smtp-Source: APXvYqzdt6o6j4qqNJoPYtoq55Sx9ZpUuHqgwT8USJjl8gjw+SUMB3okJ1S6XFjAX10CeKKJ9aqCWg==
+X-Received: by 2002:a5d:68cf:: with SMTP id p15mr13657787wrw.31.1581498995201;
+        Wed, 12 Feb 2020 01:16:35 -0800 (PST)
+Received: from localhost (nat-35.starnet.cz. [178.255.168.35])
+        by smtp.gmail.com with ESMTPSA id l17sm8579262wro.77.2020.02.12.01.16.34
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 12 Feb 2020 01:16:34 -0800 (PST)
+From:   Michal Simek <michal.simek@xilinx.com>
+To:     linux-kernel@vger.kernel.org, monstr@monstr.eu,
+        michal.simek@xilinx.com, git@xilinx.com, arnd@arndb.de,
+        akpm@linux-foundation.org
+Cc:     Stefan Asserhall <stefan.asserhall@xilinx.com>,
+        Chris Zankel <chris@zankel.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Rich Felker <dalias@libc.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Tony Luck <tony.luck@intel.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        sparclinux@vger.kernel.org
+Subject: [PATCH v2] asm-generic: Fix unistd_32.h generation format
+Date:   Wed, 12 Feb 2020 10:16:33 +0100
+Message-Id: <dcdd615f77dacf8a98e18950b66fb5a675277f38.1581498987.git.michal.simek@xilinx.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <d7213569-9578-7201-6106-f5ebc95bd6be@tycho.nsa.gov>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Stephen,
+Generated files are also checked by sparse that's why add newline
+to remove sparse (C=1) warning.
 
-On 22.01.2020 17:07, Stephen Smalley wrote:
-> On 1/22/20 5:45 AM, Alexey Budankov wrote:
->>
->> On 21.01.2020 21:27, Alexey Budankov wrote:
->>>
->>> On 21.01.2020 20:55, Alexei Starovoitov wrote:
->>>> On Tue, Jan 21, 2020 at 9:31 AM Alexey Budankov
->>>> <alexey.budankov@linux.intel.com> wrote:
->>>>>
->>>>>
->>>>> On 21.01.2020 17:43, Stephen Smalley wrote:
->>>>>> On 1/20/20 6:23 AM, Alexey Budankov wrote:
->>>>>>>
-<SNIP>
->>>>>>> Introduce CAP_PERFMON capability designed to secure system performance
->>>>>>
->>>>>> Why _noaudit()?  Normally only used when a permission failure is non-fatal to the operation.  Otherwise, we want the audit message.
->>
->> So far so good, I suggest using the simplest version for v6:
->>
->> static inline bool perfmon_capable(void)
->> {
->>     return capable(CAP_PERFMON) || capable(CAP_SYS_ADMIN);
->> }
->>
->> It keeps the implementation simple and readable. The implementation is more
->> performant in the sense of calling the API - one capable() call for CAP_PERFMON
->> privileged process.
->>
->> Yes, it bloats audit log for CAP_SYS_ADMIN privileged and unprivileged processes,
->> but this bloating also advertises and leverages using more secure CAP_PERFMON
->> based approach to use perf_event_open system call.
-> 
-> I can live with that.  We just need to document that when you see both a CAP_PERFMON and a CAP_SYS_ADMIN audit message for a process, try only allowing CAP_PERFMON first and see if that resolves the issue.  We have a similar issue with CAP_DAC_READ_SEARCH versus CAP_DAC_OVERRIDE.
+The issue was found on Microblaze and reported like this:
+./arch/microblaze/include/generated/uapi/asm/unistd_32.h:438:45:
+warning: no newline at end of file
 
-I am trying to reproduce this double logging with CAP_PERFMON.
-I am using the refpolicy version with enabled perf_event tclass [1], in permissive mode.
-When running perf stat -a I am observing this AVC audit messages:
-
-type=AVC msg=audit(1581496695.666:8691): avc:  denied  { open } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
-type=AVC msg=audit(1581496695.666:8691): avc:  denied  { kernel } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
-type=AVC msg=audit(1581496695.666:8691): avc:  denied  { cpu } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
-type=AVC msg=audit(1581496695.666:8692): avc:  denied  { write } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
-
-However there is no capability related messages around. I suppose my refpolicy should 
-be modified somehow to observe capability related AVCs.
-
-Could you please comment or clarify on how to enable caps related AVCs in order
-to test the concerned logging.
-
-Thanks,
-Alexey
-
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Reviewed-by: Stefan Asserhall <stefan.asserhall@xilinx.com>
 ---
-[1] https://github.com/SELinuxProject/refpolicy.git
+
+Changes in v2:
+- Update also others archs not just microblaze - Arnd
+- Align subject and description to match multiarch chagne
+
+ arch/alpha/kernel/syscalls/syscallhdr.sh      | 1 +
+ arch/ia64/kernel/syscalls/syscallhdr.sh       | 1 +
+ arch/m68k/kernel/syscalls/syscallhdr.sh       | 1 +
+ arch/microblaze/kernel/syscalls/syscallhdr.sh | 1 +
+ arch/parisc/kernel/syscalls/syscallhdr.sh     | 1 +
+ arch/sh/kernel/syscalls/syscallhdr.sh         | 1 +
+ arch/sparc/kernel/syscalls/syscallhdr.sh      | 1 +
+ arch/xtensa/kernel/syscalls/syscallhdr.sh     | 1 +
+ 8 files changed, 8 insertions(+)
+
+diff --git a/arch/alpha/kernel/syscalls/syscallhdr.sh b/arch/alpha/kernel/syscalls/syscallhdr.sh
+index e5b99bd2e5e7..524c69fbcab7 100644
+--- a/arch/alpha/kernel/syscalls/syscallhdr.sh
++++ b/arch/alpha/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/ia64/kernel/syscalls/syscallhdr.sh b/arch/ia64/kernel/syscalls/syscallhdr.sh
+index 0c2d2c748565..8e462a9be54a 100644
+--- a/arch/ia64/kernel/syscalls/syscallhdr.sh
++++ b/arch/ia64/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/m68k/kernel/syscalls/syscallhdr.sh b/arch/m68k/kernel/syscalls/syscallhdr.sh
+index 6f357d68ef44..8ac15be01ac2 100644
+--- a/arch/m68k/kernel/syscalls/syscallhdr.sh
++++ b/arch/m68k/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */\n" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/microblaze/kernel/syscalls/syscallhdr.sh b/arch/microblaze/kernel/syscalls/syscallhdr.sh
+index 2e9062a926a3..4f4238433644 100644
+--- a/arch/microblaze/kernel/syscalls/syscallhdr.sh
++++ b/arch/microblaze/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/parisc/kernel/syscalls/syscallhdr.sh b/arch/parisc/kernel/syscalls/syscallhdr.sh
+index 50242b747d7c..77eb95416eae 100644
+--- a/arch/parisc/kernel/syscalls/syscallhdr.sh
++++ b/arch/parisc/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/sh/kernel/syscalls/syscallhdr.sh b/arch/sh/kernel/syscalls/syscallhdr.sh
+index 1de0334e577f..7c45d405547c 100644
+--- a/arch/sh/kernel/syscalls/syscallhdr.sh
++++ b/arch/sh/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/sparc/kernel/syscalls/syscallhdr.sh b/arch/sparc/kernel/syscalls/syscallhdr.sh
+index 626b5740a9f1..76e4d1a1f8bf 100644
+--- a/arch/sparc/kernel/syscalls/syscallhdr.sh
++++ b/arch/sparc/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/xtensa/kernel/syscalls/syscallhdr.sh b/arch/xtensa/kernel/syscalls/syscallhdr.sh
+index d37db641ca31..c946c6b2a506 100644
+--- a/arch/xtensa/kernel/syscalls/syscallhdr.sh
++++ b/arch/xtensa/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+-- 
+2.25.0
+
