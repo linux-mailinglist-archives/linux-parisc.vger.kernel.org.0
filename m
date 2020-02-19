@@ -2,139 +2,174 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3FD516466E
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Feb 2020 15:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98147164C86
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Feb 2020 18:51:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728105AbgBSOJs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Feb 2020 09:09:48 -0500
-Received: from mout.gmx.net ([212.227.15.18]:38567 "EHLO mout.gmx.net"
+        id S1726645AbgBSRvF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Feb 2020 12:51:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49980 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727786AbgBSOJs (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Feb 2020 09:09:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1582121380;
-        bh=xbE6eA9MBqvG8pB6J+HAfxztNDTpYVT7w6C2yRa7mZo=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=LsKzlIobNWN0ZUDoHUl+prTDVODvGtu7gGjj9uvD04yAuMLUnDi6Gf3ygP7PinClr
-         h7mOvMO3Y2t3XrSsnVLAHpPtQkqMF7k8kU6HxL1t4EK8gQZbxYlBz06I56RBdh6u9y
-         /XefX92DckoLnNC01WHxkhyA7np4l6Qyuveb5TAU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.186.19]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MowKi-1joGmQ2Zoc-00qNwI; Wed, 19
- Feb 2020 15:09:40 +0100
-Date:   Wed, 19 Feb 2020 15:09:38 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Add arch_trigger_cpumask_backtrace() function
-Message-ID: <20200219140938.GA27510@ls3530.fritz.box>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:2nHx+pRpw/FApTpHYujUCyRXjQX25bho8Al/PfzvhmkNmMdf/0o
- FYpju0H0s3jm/dfvW4dF8iOBuNDr3FmxvEGBPLyyHJqiA9NsPru3MMbAijgt/G6aDZSQIwD
- 1EfM1Ou3L1ocA9QrSSbnINpdp0soXElwp+/IpkGKl+zPtG1o73aM0SRqimWhWYES1Z2OZqo
- +Kf7KqWKbDiwRpNSKiXdw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:evSLJ0Mvgz8=:6Gq+6TTkG5Hx+drm4sg2Sb
- xQnAahuOt51CI7eRv9WNDHHkxv7I1T/VEF+SXwyae4rjmXA+2eOxqmCQQ5Jx0paZZvGlrubiZ
- 47RO266cQ5hW6RoxUfH1+vsiYweEq8/+TjOJct61O/iTrtkOfVV6dqr01WiwY51v9If4fHLgv
- mWfI5CKiX+mc7u3IxPVyeVYnPf5FZ9fr7AJYSoKQsdw6MRdmakS9GZ1IaU5Jgq7GUyIHsjz1N
- fvn1DVEQ4D+4hqEwIcW2SehsYuIyNAsxKPHzwM5XM1u74qur1Ca0FzatLRuzP61u5fb6EZPF8
- 1fIxlJclAhn/So5Xw8MpVTc9+hehiWTU1nNYPdZD4Rk76MkFCQZMGAfdOhO2FGUpxSZd7+dao
- VFmiale5bJ/KZ2G3HEHyb1YnXje1Xt+WnJUI0lddqNlokvm9v0n0WK77y+31jvGgwjuxvi+KJ
- MaxUzAHvnjf33tyt0hLJc/fa1kA9GmB70C8maKda2jpEUTjHo7wOnw4YiRNU3Dnvosll6d+xp
- gikOt2FNsxERpg5Oc9ZPGx+YuHa7UdwbrnnW03FPBylKeirB1MArvOXHHzJ0x4nOU1IAPxZBj
- jVDESzuCY0k0rywHPZ6YMAxFmfxaCcNmTb8C+B9dVktJKbfTDu61ZE2iUfIVuJriAC0fsFLSS
- fw63tNmUdcj3grkrOwMT3Gbt7i6Iur7ZkmlTHtcJQlYKmjrKch8bqqM7tptZSFLX5QYsPBuC1
- CKbFP5XJotql9Ngca/UvJjhvCzzf3XkNEL4oF4KkDE62jPtVzvRiuVgNN/HgAWmi39H+fWqWr
- VDD7zHpW6NQmU/9gC+mfdFDF9ugLzORr+hloVerc8rqsb6ZFMrQCA/iKm+CCPHSmlQylufwje
- fRF48Ztkb1xT/+8c3n1UcWtyn4SJXVMVv43YXg+cCyDzB3vXJtGNafgCam88RZE4ctCZF9iRy
- 139g5P1zQ2w5CDl7YMTH8ar4WwzJzW8r3BH5hKUuhi7GZxanX69RmXVxOKZS739+rd6/7FCu1
- lwICLrFm/boGGc9CZ9vsj8A2KZExHCCNoT0cnPWAC5n/UOqHMVx4Z2EpUWZAVwqmuva05xgbw
- QkXOZ+/TvA5g7gBYT5BQSG5arr1LtqDkg7uFww+ST+NFQg7GMzOfRIeV/5ruS5H3DFIRGGyES
- vucoS//ucazjxDXLQFs0lQqVeXXy4epanXBZcTB9hm5pCF9xC7V8pXTjD61HVpj9hAOr0p9y5
- 0/wb3bvAWWJpQqQc+
-Content-Transfer-Encoding: quoted-printable
+        id S1726539AbgBSRvF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 19 Feb 2020 12:51:05 -0500
+Received: from localhost.localdomain (unknown [194.230.155.125])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0A9F7206DB;
+        Wed, 19 Feb 2020 17:50:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582134663;
+        bh=HVHQjGSEocd9AVyWevt6joEF+d2PPbwr8+8k6h+A34M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PxIaHkLn5XTar1EPyISd4vtwzk0Yb8ho6/2/5bpHXPVckPViPmh7xJy5CDKknCISe
+         aVweOki+hxup4Tb6Es9L3KhQ8BxFokAKuut29izMLGuhQbvVvdmhKIAJt21HDJ6Icz
+         WQ/bI2EQHItOjyTVPfGGfciGRDULmeQrq4s9rqPA=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        virtualization@lists.linux-foundation.org,
+        linux-arch@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [RESEND PATCH v2 0/9] iomap: Constify ioreadX() iomem argument
+Date:   Wed, 19 Feb 2020 18:49:58 +0100
+Message-Id: <20200219175007.13627-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Implement the parisc version for the arch_trigger_cpumask_backtrace()
-function to provide IPI-triggered per-CPU backtrace printouts.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/arch/parisc/include/asm/irq.h b/arch/parisc/include/asm/irq.h
-index 959e79cd2c14..c978d50bd29e 100644
-=2D-- a/arch/parisc/include/asm/irq.h
-+++ b/arch/parisc/include/asm/irq.h
-@@ -50,4 +50,10 @@ extern int cpu_check_affinity(struct irq_data *d, const=
- struct cpumask *dest);
- /* soft power switch support (power.c) */
- extern struct tasklet_struct power_tasklet;
-
-+#ifdef CONFIG_SMP
-+extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
-+					   bool exclude_self);
-+#define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
-+#endif
-+
- #endif	/* _ASM_PARISC_IRQ_H */
-diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
-index e202c37e56af..7cdbe98c26a8 100644
-=2D-- a/arch/parisc/kernel/smp.c
-+++ b/arch/parisc/kernel/smp.c
-@@ -29,6 +29,7 @@
- #include <linux/bitops.h>
- #include <linux/ftrace.h>
- #include <linux/cpu.h>
-+#include <linux/nmi.h>
-
- #include <linux/atomic.h>
- #include <asm/current.h>
-@@ -71,7 +72,8 @@ enum ipi_message_type {
- 	IPI_CALL_FUNC,
- 	IPI_CPU_START,
- 	IPI_CPU_STOP,
--	IPI_CPU_TEST
-+	IPI_CPU_TEST,
-+	IPI_CPU_BACKTRACE
- };
+Hi,
 
 
-@@ -170,6 +172,14 @@ ipi_interrupt(int irq, void *dev_id)
- 				smp_debug(100, KERN_DEBUG "CPU%d is alive!\n", this_cpu);
- 				break;
+Changes since v1
+================
+https://lore.kernel.org/lkml/1578415992-24054-1-git-send-email-krzk@kernel.org/
+1. Constify also ioreadX_rep() and mmio_insX(),
+2. Squash lib+alpha+powerpc+parisc+sh into one patch for bisectability,
+3. Add acks and reviews,
+4. Re-order patches so all optional driver changes are at the end.
 
-+			case IPI_CPU_BACKTRACE:
-+				printk_nmi_enter();
-+				irq_enter();
-+				nmi_cpu_backtrace(get_irq_regs());
-+				irq_exit();
-+				printk_nmi_exit();
-+				break;
-+
- 			default:
- 				printk(KERN_CRIT "Unknown IPI num on CPU%d: %lu\n",
- 					this_cpu, which);
-@@ -248,6 +258,16 @@ void arch_send_call_function_single_ipi(int cpu)
- 	send_IPI_single(cpu, IPI_CALL_FUNC);
- }
 
-+static void raise_nmi(cpumask_t *mask)
-+{
-+	send_IPI_mask(mask, IPI_CPU_BACKTRACE);
-+}
-+
-+void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_s=
-elf)
-+{
-+	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_nmi);
-+}
-+
- /*
-  * Called by secondaries to update state and initialize CPU registers.
-  */
+Description
+===========
+The ioread8/16/32() and others have inconsistent interface among the
+architectures: some taking address as const, some not.
+
+It seems there is nothing really stopping all of them to take
+pointer to const.
+
+Patchset was only compile tested on affected architectures.  No real
+testing.
+
+
+volatile
+========
+There is still interface inconsistency between architectures around
+"volatile" qualifier:
+ - include/asm-generic/io.h:static inline u32 ioread32(const volatile void __iomem *addr)
+ - include/asm-generic/iomap.h:extern unsigned int ioread32(const void __iomem *);
+
+This is still discussed and out of scope of this patchset.
+
+
+Merging
+=======
+Multiple architectures are affected in first patch so acks are welcomed.
+
+1. All patches depend on first patch,
+2. Patches 2-4 unify the interface also in few drivers,
+3. PAtches 5-9 are optional cleanup, without actual impact.
+
+
+Best regards,
+Krzysztof
+
+
+Krzysztof Kozlowski (9):
+  iomap: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  rtl818x: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  ntb: intel: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  virtio: pci: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  arc: Constify ioreadX() iomem argument (as in generic implementation)
+  drm/mgag200: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  drm/nouveau: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  media: fsl-viu: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  ath5k: Constify ioreadX() iomem argument (as in generic
+    implementation)
+
+ arch/alpha/include/asm/core_apecs.h           |  6 +-
+ arch/alpha/include/asm/core_cia.h             |  6 +-
+ arch/alpha/include/asm/core_lca.h             |  6 +-
+ arch/alpha/include/asm/core_marvel.h          |  4 +-
+ arch/alpha/include/asm/core_mcpcia.h          |  6 +-
+ arch/alpha/include/asm/core_t2.h              |  2 +-
+ arch/alpha/include/asm/io.h                   | 12 ++--
+ arch/alpha/include/asm/io_trivial.h           | 16 ++---
+ arch/alpha/include/asm/jensen.h               |  2 +-
+ arch/alpha/include/asm/machvec.h              |  6 +-
+ arch/alpha/kernel/core_marvel.c               |  2 +-
+ arch/alpha/kernel/io.c                        | 12 ++--
+ arch/arc/plat-axs10x/axs10x.c                 |  4 +-
+ arch/parisc/include/asm/io.h                  |  4 +-
+ arch/parisc/lib/iomap.c                       | 72 +++++++++----------
+ arch/powerpc/kernel/iomap.c                   | 28 ++++----
+ arch/sh/kernel/iomap.c                        | 22 +++---
+ drivers/gpu/drm/mgag200/mgag200_drv.h         |  4 +-
+ drivers/gpu/drm/nouveau/nouveau_bo.c          |  2 +-
+ drivers/media/platform/fsl-viu.c              |  2 +-
+ drivers/net/wireless/ath/ath5k/ahb.c          | 10 +--
+ .../realtek/rtl818x/rtl8180/rtl8180.h         |  6 +-
+ drivers/ntb/hw/intel/ntb_hw_gen1.c            |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_gen3.h            |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_intel.h           |  2 +-
+ drivers/virtio/virtio_pci_modern.c            |  6 +-
+ include/asm-generic/iomap.h                   | 28 ++++----
+ include/linux/io-64-nonatomic-hi-lo.h         |  4 +-
+ include/linux/io-64-nonatomic-lo-hi.h         |  4 +-
+ lib/iomap.c                                   | 30 ++++----
+ 30 files changed, 156 insertions(+), 156 deletions(-)
+
+-- 
+2.17.1
+
