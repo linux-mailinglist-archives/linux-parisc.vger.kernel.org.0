@@ -2,78 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42F04163B6C
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Feb 2020 04:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F9F6163E3D
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Feb 2020 08:55:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726475AbgBSDhw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 18 Feb 2020 22:37:52 -0500
-Received: from zmail.nuczu.edu.ua ([91.234.43.158]:52171 "EHLO
-        zmail.nuczu.edu.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726446AbgBSDhw (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 18 Feb 2020 22:37:52 -0500
-X-Greylist: delayed 6088 seconds by postgrey-1.27 at vger.kernel.org; Tue, 18 Feb 2020 22:37:51 EST
-Received: from localhost (localhost [127.0.0.1])
-        by zmail.nuczu.edu.ua (Postfix) with ESMTP id 4C32F6C313B;
-        Tue, 18 Feb 2020 23:41:12 +0200 (EET)
-Received: from zmail.nuczu.edu.ua ([127.0.0.1])
-        by localhost (zmail.nuczu.edu.ua [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 9CXkZWIN_5hy; Tue, 18 Feb 2020 23:41:11 +0200 (EET)
-Received: from localhost (localhost [127.0.0.1])
-        by zmail.nuczu.edu.ua (Postfix) with ESMTP id 64688741488;
-        Tue, 18 Feb 2020 22:39:21 +0200 (EET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zmail.nuczu.edu.ua 64688741488
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nuczu.edu.ua;
-        s=A52E72AE-E4EF-11E9-9906-53CE3145A657; t=1582058362;
-        bh=o+H3O7n1+zJcXo0FhJs7spyf8HmE4ClnBa/Y2Gk0DL0=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=bL39mu/NXaD3Cvv7zy8lxAqrsRh2sE3AabXhcpNsJkL0yHhnpXubZi7/0L2bP69sh
-         qNiQzwiFmkF9s2RROmllMRf5BiU4OqVZskoP+mI2ubnXJuzuOKK8LgT2ktxtjfWw5R
-         XCpsWlZ1Nh+mTzbL/5IrWvjW997gjTE+DDDFX8ldnxObTymoGKFrYbNshRUZw+g/nt
-         9xnLbdfxv7ySl34Fj1wGz2Inx7s9GiVJb7tlU7QkWIs1DpliY9aoG/oqn5sTCHVG6j
-         oTy/bCW3YcVYOf2/iGK00kJyaJKz6yAOgvanlNmTgYxvuVuoRHuAt73Pj6j8I7Q8BD
-         nuQTnW2/qKWQQ==
-X-Virus-Scanned: amavisd-new at nuczu.edu.ua
-Received: from zmail.nuczu.edu.ua ([127.0.0.1])
-        by localhost (zmail.nuczu.edu.ua [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id u1mfYMLZs9ev; Tue, 18 Feb 2020 22:39:21 +0200 (EET)
-Received: from [10.109.183.140] (unknown [105.12.3.161])
-        by zmail.nuczu.edu.ua (Postfix) with ESMTPSA id DBED34FBB1D;
-        Tue, 18 Feb 2020 21:51:14 +0200 (EET)
-Content-Type: text/plain; charset="utf-8"
+        id S1726163AbgBSHyp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Feb 2020 02:54:45 -0500
+Received: from mga07.intel.com ([134.134.136.100]:6491 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726156AbgBSHyp (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 19 Feb 2020 02:54:45 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Feb 2020 23:54:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,459,1574150400"; 
+   d="scan'208";a="436148633"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmsmga006.fm.intel.com with ESMTP; 18 Feb 2020 23:54:42 -0800
+Received: from [10.125.252.130] (abudanko-mobl.ccr.corp.intel.com [10.125.252.130])
+        by linux.intel.com (Postfix) with ESMTP id 40E9A580270;
+        Tue, 18 Feb 2020 23:54:36 -0800 (PST)
+Subject: Re: [PATCH v7 01/12] capabilities: introduce CAP_PERFMON to kernel
+ and user space
+To:     James Morris <jmorris@namei.org>
+Cc:     Serge Hallyn <serge@hallyn.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andi Kleen <ak@linux.intel.com>,
+        Stephane Eranian <eranian@google.com>,
+        Igor Lubashev <ilubashe@akamai.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        oprofile-list@lists.sf.net,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        linux-man@vger.kernel.org
+References: <c8de937a-0b3a-7147-f5ef-69f467e87a13@linux.intel.com>
+ <f56fbb5c-1477-44d5-7346-85a1ca0869dc@linux.intel.com>
+ <alpine.LRH.2.21.2002190621180.10165@namei.org>
+From:   Alexey Budankov <alexey.budankov@linux.intel.com>
+Organization: Intel Corp.
+Message-ID: <4664bbc7-e4ef-5d6e-7f71-96e5567fcf60@linux.intel.com>
+Date:   Wed, 19 Feb 2020 10:54:35 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Euro?=
-To:     Recipients <dushkin@nuczu.edu.ua>
-From:   ''Michael weirsky'' <dushkin@nuczu.edu.ua>
-Date:   Tue, 18 Feb 2020 21:51:06 +0200
-Reply-To: mikeweirskyspende@gmail.com
-Message-Id: <20200218195115.DBED34FBB1D@zmail.nuczu.edu.ua>
+In-Reply-To: <alpine.LRH.2.21.2002190621180.10165@namei.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Lieber Freund,
 
-Ich bin Herr Mike Weirsky, New Jersey, Vereinigte Staaten von Amerika, der =
-Mega-Gewinner von $ 273million In Mega Millions Jackpot, spende ich an 5 zu=
-f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
-il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
-meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
-und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
-Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
- spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen.
-Das ist dein Spendencode: [MW530342019]
-www.youtube.com/watch?v=3Dun8yRTmrYMY
+On 18.02.2020 22:21, James Morris wrote:
+> On Mon, 17 Feb 2020, Alexey Budankov wrote:
+> 
+>>
+>> Introduce CAP_PERFMON capability designed to secure system performance
+>> monitoring and observability operations so that CAP_PERFMON would assist
+>> CAP_SYS_ADMIN capability in its governing role for performance
+>> monitoring and observability subsystems.
+> 
+> 
+> Acked-by: James Morris <jamorris@linux.microsoft.com>
 
-Antworten Sie mit dem SPENDE-CODE an diese =
+Thanks James! 
+I appreciate your involvement and collaboration 
+w.r.t to the whole patch set.
 
-
-E-Mail:mikeweirskyspende@gmail.com
-
-Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
-
-Gr=C3=BC=C3=9Fe
-Herr Mike Weirsky
+Gratefully,
+Alexey
