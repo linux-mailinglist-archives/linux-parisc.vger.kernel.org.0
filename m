@@ -2,91 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F9F6163E3D
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Feb 2020 08:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE8A1645C2
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Feb 2020 14:38:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726163AbgBSHyp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Feb 2020 02:54:45 -0500
-Received: from mga07.intel.com ([134.134.136.100]:6491 "EHLO mga07.intel.com"
+        id S1727895AbgBSNiC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 19 Feb 2020 08:38:02 -0500
+Received: from scm.imp.edu.mx ([132.247.16.103]:22019 "EHLO scm.imp.edu.mx"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726156AbgBSHyp (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Feb 2020 02:54:45 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Feb 2020 23:54:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,459,1574150400"; 
-   d="scan'208";a="436148633"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga006.fm.intel.com with ESMTP; 18 Feb 2020 23:54:42 -0800
-Received: from [10.125.252.130] (abudanko-mobl.ccr.corp.intel.com [10.125.252.130])
-        by linux.intel.com (Postfix) with ESMTP id 40E9A580270;
-        Tue, 18 Feb 2020 23:54:36 -0800 (PST)
-Subject: Re: [PATCH v7 01/12] capabilities: introduce CAP_PERFMON to kernel
- and user space
-To:     James Morris <jmorris@namei.org>
-Cc:     Serge Hallyn <serge@hallyn.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andi Kleen <ak@linux.intel.com>,
-        Stephane Eranian <eranian@google.com>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        oprofile-list@lists.sf.net,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        linux-man@vger.kernel.org
-References: <c8de937a-0b3a-7147-f5ef-69f467e87a13@linux.intel.com>
- <f56fbb5c-1477-44d5-7346-85a1ca0869dc@linux.intel.com>
- <alpine.LRH.2.21.2002190621180.10165@namei.org>
-From:   Alexey Budankov <alexey.budankov@linux.intel.com>
-Organization: Intel Corp.
-Message-ID: <4664bbc7-e4ef-5d6e-7f71-96e5567fcf60@linux.intel.com>
-Date:   Wed, 19 Feb 2020 10:54:35 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1727858AbgBSNiA (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 19 Feb 2020 08:38:00 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 2C9AB18AD35;
+        Wed, 19 Feb 2020 06:11:29 -0600 (CST)
+X-Virus-Scanned: by SpamTitan at imp.edu.mx
+Received: from scm.imp.edu.mx (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 747EF18DA23;
+        Wed, 19 Feb 2020 04:51:48 -0600 (CST)
+Authentication-Results: scm.imp.edu.mx; none
+Received: from imp.edu.mx (unknown [10.249.93.105])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 6601218DA09;
+        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id 028EF180635F47;
+        Wed, 19 Feb 2020 04:51:45 -0600 (CST)
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id L1r4O4HbURj1; Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id C63C2180635F48;
+        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+X-Virus-Scanned: amavisd-new at imp.edu.mx
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id f4-Gv0EPnxDI; Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+Received: from [45.147.4.119] (unknown [45.147.4.119])
+        by imp.edu.mx (Postfix) with ESMTPSA id 8B166180635F47;
+        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <alpine.LRH.2.21.2002190621180.10165@namei.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: 19-02-2020
+To:     Recipients <mucios@imp.edu.mx>
+From:   "urs portmann" <mucios@imp.edu.mx>
+Date:   Wed, 19 Feb 2020 21:51:41 +1100
+Reply-To: onube@qq.com
+Message-Id: <20200219105143.8B166180635F47@imp.edu.mx>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Guten Morgen,
+                                          19-02-2020
+Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehört. Haben Sie unsere letzte E-Mail über Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
 
-On 18.02.2020 22:21, James Morris wrote:
-> On Mon, 17 Feb 2020, Alexey Budankov wrote:
-> 
->>
->> Introduce CAP_PERFMON capability designed to secure system performance
->> monitoring and observability operations so that CAP_PERFMON would assist
->> CAP_SYS_ADMIN capability in its governing role for performance
->> monitoring and observability subsystems.
-> 
-> 
-> Acked-by: James Morris <jamorris@linux.microsoft.com>
+Wir warten darauf, von Ihnen zu hören, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterstützt.
 
-Thanks James! 
-I appreciate your involvement and collaboration 
-w.r.t to the whole patch set.
-
-Gratefully,
-Alexey
+Mfg
+urs portmann
