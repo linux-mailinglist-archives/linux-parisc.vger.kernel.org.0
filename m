@@ -2,81 +2,122 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A61BB165AB3
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Feb 2020 10:58:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A125165E26
+	for <lists+linux-parisc@lfdr.de>; Thu, 20 Feb 2020 14:05:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726921AbgBTJ6U (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 20 Feb 2020 04:58:20 -0500
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:39965 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726839AbgBTJ6U (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 20 Feb 2020 04:58:20 -0500
-Received: by mail-pl1-f196.google.com with SMTP id y1so1359878plp.7
-        for <linux-parisc@vger.kernel.org>; Thu, 20 Feb 2020 01:58:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
-        b=NkHcXZ23RD4PLxp6iBrPhOa4FcAKHkQ/6Q+QWKZNS0V5xjuR0lfw3/mL5TYJuO0v2/
-         PLkGVqhbbfNYGHoeUZwNImOU2jauJmSIBRkM+ZwVMEZ6TsUH9J1kOOFGT//cd5nZ1SAZ
-         LSOvEI7Qs1mRytBtm55aAEvjJC0zSdjHgGAl9ikzs60bxKRt+tY21zLGBcH0gx2hmfXt
-         ssAxlwyLnLIB+Ax9avh4r4JPfCzcvlrrrGlx+W1GG16DcMgTqJhPAYxGpv5qe+Lv03xt
-         JR4sMNe0W0z2xTFtlD/PA33si0MARRZXZOHaggrGdmpYGAEjJngsN/kaNtdA8NzIgKCv
-         TWFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
-        b=JRiIPrQFbDvcdLldqcLWSdUfzU2qJN8WFq67sRTOuRkl4ogZwV5R3mikoGVSC6o6zS
-         Uf1nTNnMbcKA7tx5FLYB8aW9pCngFWOvyiBdrhCyJF04/hlHFp1Fz+PmKSMfkuWuOiC6
-         zl4nWSGoRDQ4tNZsBeOUui7uKAI9nCwqq61/QAxnDZYAhDyMhW2gSlufoql+Jym+kRL4
-         jVj2n+bSX37v9VZPxymych0rT5HR+vx9gP/+QO34LrlcMz2jBTBMFc4Rhf4QfSRJhUhL
-         XQ3Ohzm2N6gRp8ak29WksAnZg1GN2tDYGPks629ZYafEk5vkrbv45HQBVe420Pb9JHjl
-         7XBw==
-X-Gm-Message-State: APjAAAWVMrkyU3YLBdSsj0d+BHrKn0Zip7+THlS6WNPEdrRnhuwZz83a
-        gaVzIEIAE9k24u3R+KzulU73ePI2kRXxXJz2Cic=
-X-Google-Smtp-Source: APXvYqwvpLIZCyogIfDFKaLIg7i9G6ixpPV8MUf+tyTNjQxw00FpgQ1lTzpyrRtJq3+hDwOwXgeFviJJWYxodr2aFao=
-X-Received: by 2002:a17:90a:2545:: with SMTP id j63mr2709115pje.128.1582192699958;
- Thu, 20 Feb 2020 01:58:19 -0800 (PST)
+        id S1728051AbgBTNFj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 20 Feb 2020 08:05:39 -0500
+Received: from mga03.intel.com ([134.134.136.65]:57895 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727989AbgBTNFj (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 20 Feb 2020 08:05:39 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Feb 2020 05:05:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,464,1574150400"; 
+   d="scan'208";a="283399590"
+Received: from linux.intel.com ([10.54.29.200])
+  by FMSMGA003.fm.intel.com with ESMTP; 20 Feb 2020 05:05:21 -0800
+Received: from [10.125.252.166] (abudanko-mobl.ccr.corp.intel.com [10.125.252.166])
+        by linux.intel.com (Postfix) with ESMTP id 253CC580472;
+        Thu, 20 Feb 2020 05:05:12 -0800 (PST)
+Subject: Re: [PATCH v5 01/10] capabilities: introduce CAP_PERFMON to kernel
+ and user space
+From:   Alexey Budankov <alexey.budankov@linux.intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Serge Hallyn <serge@hallyn.com>,
+        James Morris <jmorris@namei.org>
+Cc:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+        "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Robert Richter <rric@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
+        Stephane Eranian <eranian@google.com>,
+        Igor Lubashev <ilubashe@akamai.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Song Liu <songliubraving@fb.com>,
+        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+        oprofile-list@lists.sf.net, Andy Lutomirski <luto@amacapital.net>
+References: <875zgizkyk.fsf@nanos.tec.linutronix.de>
+ <7d6f4210-423f-e454-3910-9f8e17dff1aa@linux.intel.com>
+Organization: Intel Corp.
+Message-ID: <95aa57e6-4d78-39df-386c-a98734f19777@linux.intel.com>
+Date:   Thu, 20 Feb 2020 16:05:11 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Received: by 2002:a17:90a:90f:0:0:0:0 with HTTP; Thu, 20 Feb 2020 01:58:19
- -0800 (PST)
-Reply-To: cagesusan199@gmail.com
-From:   "Mrs. Susan S. Cage" <drgoodluckebelejonathan061@gmail.com>
-Date:   Thu, 20 Feb 2020 01:58:19 -0800
-Message-ID: <CALjo5=8BV+_6XZKmrCCcLyY69CCnN0uBGO39dLunr3zZiL0MRg@mail.gmail.com>
-Subject: Attention:Beneficiary
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <7d6f4210-423f-e454-3910-9f8e17dff1aa@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
--- 
-Dearest Friend,
 
-Sorry for invading your privacy, my name is Susan S. Cage I am 81
-years, citizen of United States and presently in hospital undergoing
-chromatography for bronchogenic carcinomas (Lung cancer) which
-affected both Lungs. The doctors said I have few days to live because
-the cancer has now affected my brain.
+On 07.02.2020 16:39, Alexey Budankov wrote:
+> 
+> On 07.02.2020 14:38, Thomas Gleixner wrote:
+>> Alexey Budankov <alexey.budankov@linux.intel.com> writes:
+>>> On 22.01.2020 17:25, Alexey Budankov wrote:
+>>>> On 22.01.2020 17:07, Stephen Smalley wrote:
+>>>>>> It keeps the implementation simple and readable. The implementation is more
+>>>>>> performant in the sense of calling the API - one capable() call for CAP_PERFMON
+>>>>>> privileged process.
+>>>>>>
+>>>>>> Yes, it bloats audit log for CAP_SYS_ADMIN privileged and unprivileged processes,
+>>>>>> but this bloating also advertises and leverages using more secure CAP_PERFMON
+>>>>>> based approach to use perf_event_open system call.
+>>>>>
+>>>>> I can live with that.  We just need to document that when you see
+>>>>> both a CAP_PERFMON and a CAP_SYS_ADMIN audit message for a process,
+>>>>> try only allowing CAP_PERFMON first and see if that resolves the
+>>>>> issue.  We have a similar issue with CAP_DAC_READ_SEARCH versus
+>>>>> CAP_DAC_OVERRIDE.
+>>>>
+>>>> perf security [1] document can be updated, at least, to align and document 
+>>>> this audit logging specifics.
+>>>
+>>> And I plan to update the document right after this patch set is accepted.
+>>> Feel free to let me know of the places in the kernel docs that also
+>>> require update w.r.t CAP_PERFMON extension.
+>>
+>> The documentation update wants be part of the patch set and not planned
+>> to be done _after_ the patch set is merged.
+> 
+> Well, accepted. It is going to make patches #11 and beyond.
 
-My late husband left Fifteen Million, Five Hundred British Pounds
-Sterling in my account, I want to transfer the money to you and I want
-you to use it as a donate for charitable and help the needy,
-motherless, less privileged and widows within your location.
+Patches #11 and #12 of v7 [1] contain information on CAP_PERFMON intention and usage.
+Patch for man-pages [2] extends perf_event_open.2 documentation.
 
-I need your assurance that you will use the fund for charity, once I a
-favorable reply from you, will inform my Bank through my lawyer to
-transfer the fund to you as my Next of Kin and Sole Beneficiary. Once
-I receive your response, I will inform my bank in writing through my
-lawyer.
+Thanks,
+Alexey
 
+---
+[1] https://lore.kernel.org/lkml/c8de937a-0b3a-7147-f5ef-69f467e87a13@linux.intel.com/
+[2] https://lore.kernel.org/lkml/18d1083d-efe5-f5f8-c531-d142c0e5c1a8@linux.intel.com/
 
-
-Thank you and God bless you.
-
-Mrs. Susan S. Cage
