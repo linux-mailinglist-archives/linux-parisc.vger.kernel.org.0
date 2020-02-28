@@ -2,99 +2,77 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D03161715A8
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Feb 2020 12:07:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5C38173322
+	for <lists+linux-parisc@lfdr.de>; Fri, 28 Feb 2020 09:42:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728895AbgB0LHT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 27 Feb 2020 06:07:19 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:36781 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728761AbgB0LHS (ORCPT
+        id S1726148AbgB1Imw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 28 Feb 2020 03:42:52 -0500
+Received: from smtprelay0211.hostedemail.com ([216.40.44.211]:40172 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725877AbgB1Imw (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 27 Feb 2020 06:07:18 -0500
-Received: by mail-pl1-f193.google.com with SMTP id a6so1000999plm.3;
-        Thu, 27 Feb 2020 03:07:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=lmJQ36No1Gca/vcFrG4Eq9htTy7KPRzUbksdwrxz8LI=;
-        b=FY89/SsX+eLNCZfl66UEb1ue7T2rDlxc39BUUNyQcUvYHLhQYmTZm8AV265dDcZriC
-         n+pnoFgE+Sf8zXMbshaCCS6PUdHyFAtJ6zdH/VH1FXYuwfzu7iVLsjLF6SXNOrrDux5S
-         VamD+96xP7YyeTt6xJaJYHlRfPSsbdooqEZo5JblB/xTNMzIpcuEBudbBh1o9hd+8Pp3
-         VCC1Cl49y6FD+xnV0DQbsVUKowy7XWxJSXmwRChAoXpyUp1BbPkGQQ1IWMsgmCulUb0i
-         idnYS7ecLxRWLTUTaFORqK3tstLgLRTwqSSk0D4o9TOL/U8ZbVv3Bk/xfDvuCNpgSmSI
-         BGEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=lmJQ36No1Gca/vcFrG4Eq9htTy7KPRzUbksdwrxz8LI=;
-        b=B7feNdwjh5TqNbMKHGaFRUmb0LEZVI3udn9LqR1WtmSU5BNehdbZhO/LCW4wWt2kY1
-         Hd1M62LNST72ZMH62bJjgFdhYY2HIp5yoDZYDU3e8p/6kKQ25gQJ4xLHHrS+P7TXNO5d
-         k/NHR+dO7Y5iBrR1ViLPHNwZmDmpBHIqY7jnMYNnQ8fXD3VLcqwy3gnlROLGnP8etXRo
-         RfqOrOcNltSWjfMAAb6BS60kh9eH3v7oZpoStYmlEYMYScYgusAjiSw/XGsnPsG62b7+
-         3zNVbGXiELxRCmpALBIb7VZzpUI0L6x4tlTrohpnKBGzqvA7nMoQzxQy+GsciFBx+FlC
-         zlkw==
-X-Gm-Message-State: APjAAAUOf6w8sbfVyKcn0SEoeoz1+JCCGXDTdudsgVdtGnZSJFgmIeZV
-        fY0MeI1uRkSmdKBE3G+S6QI=
-X-Google-Smtp-Source: APXvYqxWerA+MNtWPhmtZePrzWtN41f/X1PPHbm1Zy+BYl6m6MsiGmn5uHRszUhnUu+SXUCNhUoPbQ==
-X-Received: by 2002:a17:902:8b89:: with SMTP id ay9mr3891143plb.309.1582801636613;
-        Thu, 27 Feb 2020 03:07:16 -0800 (PST)
-Received: from localhost ([106.51.232.35])
-        by smtp.gmail.com with ESMTPSA id c5sm6662799pfi.10.2020.02.27.03.07.15
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 27 Feb 2020 03:07:15 -0800 (PST)
-Date:   Thu, 27 Feb 2020 16:37:13 +0530
-From:   afzal mohammed <afzal.mohd.ma@gmail.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, x86@kernel.org,
-        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-c6x-dev@linux-c6x.org, linux-omap@vger.kernel.org,
-        linux-alpha@vger.kernel.org, Julia Lawall <Julia.Lawall@lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Michal Marek <michal.lkml@markovi.net>
-Subject: Re: [PATCH 00/18] genirq: Remove setup_irq()
-Message-ID: <20200227110713.GA5708@afzalpc>
-References: <cover.1581478323.git.afzal.mohd.ma@gmail.com>
- <87y2somido.fsf@nanos.tec.linutronix.de>
+        Fri, 28 Feb 2020 03:42:52 -0500
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave01.hostedemail.com (Postfix) with ESMTP id CA2F918024BEE
+        for <linux-parisc@vger.kernel.org>; Fri, 28 Feb 2020 08:33:56 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 3107E180265A6;
+        Fri, 28 Feb 2020 08:33:55 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:69:355:379:541:960:973:988:989:1260:1311:1314:1345:1359:1437:1515:1534:1541:1711:1730:1747:1777:1792:1978:1981:2194:2199:2393:2559:2562:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3871:4250:4605:5007:6261:10004:10848:11658:11914:12043:12296:12297:12679:12683:12895:13069:13311:13357:13894:14096:14384:14394:14721:21080:21222:21433:21451:21627:30054,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: power64_796178c799809
+X-Filterd-Recvd-Size: 2097
+Received: from joe-laptop.perches.com (unknown [47.151.143.254])
+        (Authenticated sender: joe@perches.com)
+        by omf04.hostedemail.com (Postfix) with ESMTPA;
+        Fri, 28 Feb 2020 08:33:54 +0000 (UTC)
+From:   Joe Perches <joe@perches.com>
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-parisc@vger.kernel.org
+Cc:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] parport: Use generic kernel logging styles
+Date:   Fri, 28 Feb 2020 00:32:11 -0800
+Message-Id: <cover.1582878393.git.joe@perches.com>
+X-Mailer: git-send-email 2.24.0
+In-Reply-To: <69fb1d36-b6cf-7c46-96d1-9403de6ab47a@infradead.org>
+References: <69fb1d36-b6cf-7c46-96d1-9403de6ab47a@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y2somido.fsf@nanos.tec.linutronix.de>
-User-Agent: Mutt/1.9.3 (2018-01-21)
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Thomas,
+Well, if the parport logging is getting some generic fixing,
+here's some more generic logging fixing...
 
-On Thu, Feb 27, 2020 at 11:31:15AM +0100, Thomas Gleixner wrote:
+Joe Perches (7):
+  parport: Convert printk(KERN_<LEVEL> to pr_<level>(
+  parport: Use more comon logging styles
+  parport: daisy: Convert DPRINTK to pr_debug
+  parport_amiga: Convert DPRINTK to pr_debug
+  parport_mfc3: Convert DPRINTK to pr_debug
+  parport_pc: Convert DPRINTK to pr_debug
+  parport: Standardize use of printmode
 
-> Vs. merging this series, I suggest the following approach:
-> 
->    - Resubmit the individual changes as single patches or small series
->      to the relevant maintainers and subsystem mailing lists. They have
->      no dependency on a core change and can be applied where they belong
->      to.
-> 
->    - After 5.6-rc6, verify which parts have made their way into
->      linux-next and resubmit the ignored ones as a series to me along
->      with the removal of the core parts.
-> 
-> That way we can avoid conflicting changes between subsystems and the tip
-> irq/core branch as much as possible.
+ drivers/parport/daisy.c          |  29 +---
+ drivers/parport/ieee1284.c       |   4 +-
+ drivers/parport/ieee1284_ops.c   |   3 +-
+ drivers/parport/parport_amiga.c  |  22 +--
+ drivers/parport/parport_atari.c  |   2 +-
+ drivers/parport/parport_cs.c     |   6 +-
+ drivers/parport/parport_gsc.c    |  25 +--
+ drivers/parport/parport_gsc.h    |  21 ++-
+ drivers/parport/parport_ip32.c   | 117 +++++++-------
+ drivers/parport/parport_mfc3.c   |  21 +--
+ drivers/parport/parport_pc.c     | 263 +++++++++++++------------------
+ drivers/parport/parport_sunbpp.c |   2 +-
+ drivers/parport/probe.c          |  34 ++--
+ drivers/parport/procfs.c         |   6 +-
+ drivers/parport/share.c          |  37 +++--
+ 15 files changed, 261 insertions(+), 331 deletions(-)
 
-Okay, i will do accordingly.
+-- 
+2.24.0
 
-[ your mail crossed my v3 (only one patch) posting ]
-
-Regards
-afzal
