@@ -2,132 +2,87 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F147F173324
-	for <lists+linux-parisc@lfdr.de>; Fri, 28 Feb 2020 09:44:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C8C217481E
+	for <lists+linux-parisc@lfdr.de>; Sat, 29 Feb 2020 17:40:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726207AbgB1IoF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 28 Feb 2020 03:44:05 -0500
-Received: from smtprelay0084.hostedemail.com ([216.40.44.84]:56676 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725877AbgB1IoF (ORCPT
+        id S1727349AbgB2QkO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 29 Feb 2020 11:40:14 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:44936 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727193AbgB2QkO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 28 Feb 2020 03:44:05 -0500
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave05.hostedemail.com (Postfix) with ESMTP id A558B1828959B
-        for <linux-parisc@vger.kernel.org>; Fri, 28 Feb 2020 08:34:11 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 1E292181D3025;
-        Fri, 28 Feb 2020 08:34:10 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:541:800:960:973:988:989:1260:1311:1314:1345:1359:1437:1515:1534:1542:1711:1730:1747:1777:1792:2393:2559:2562:3138:3139:3140:3141:3142:3353:3865:3866:3868:4321:4605:5007:6261:7904:10004:10848:11026:11473:11658:11914:12043:12048:12296:12297:12438:12555:12679:12895:13894:14181:14394:14721:21080:21451:21627:21990:30054,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:0,LUA_SUMMARY:none
-X-HE-Tag: bat74_7b8fc09646c23
-X-Filterd-Recvd-Size: 3343
-Received: from joe-laptop.perches.com (unknown [47.151.143.254])
-        (Authenticated sender: joe@perches.com)
-        by omf04.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 28 Feb 2020 08:34:09 +0000 (UTC)
-From:   Joe Perches <joe@perches.com>
-To:     Randy Dunlap <rdunlap@infradead.org>,
+        Sat, 29 Feb 2020 11:40:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=QKxTCrWTi/nBnxdSjd5RMFTXvxgyun4TFo8efZJ13XI=; b=l9EQuuIWGaVP/vj9Z3i5+dLoQE
+        jRJJbU2s4kedO8kne+4uf9LmU4mCuv/g4cAe3tYmuBZiQvDx9JE9OfEzkjnx2AzzFAiXu3E3FR3wV
+        Gp6k64adhxHt7sQCPnRTtyLYaWoTxTKdMUilUrEDcedpPMy61uAmB1Ba1EU0XRxXt3m4QFwpbKiHi
+        l/J548t1HmGN3dGhn6rgUQOpsrFUWYRJ/z5JlIvB6idG5DPnsAfHvUE01wafuWkPgQtnvPUCg8uvp
+        TgjRgn3gcKVU48nh9CNxPAxJykzsOTJ8YcwXykExObluInnr9x0k2j+FVNIGx+VRDdi/o79JOFA1r
+        zDnHaPVQ==;
+Received: from [2601:1c0:6280:3f0::19c2]
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1j859x-0001b0-N1; Sat, 29 Feb 2020 16:40:13 +0000
+Subject: Re: [PATCH 0/7] parport: Use generic kernel logging styles
+To:     Joe Perches <joe@perches.com>, linux-parisc@vger.kernel.org
+Cc:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] parport: Standardize use of printmode
-Date:   Fri, 28 Feb 2020 00:32:18 -0800
-Message-Id: <7cf26906db4976a5455de5776c8a220fb37d37cb.1582878394.git.joe@perches.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <cover.1582878393.git.joe@perches.com>
-References: <cover.1582878393.git.joe@perches.com>
+        Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org
+References: <69fb1d36-b6cf-7c46-96d1-9403de6ab47a@infradead.org>
+ <cover.1582878393.git.joe@perches.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <d03d6ce4-f40e-2905-1641-089a82720383@infradead.org>
+Date:   Sat, 29 Feb 2020 08:40:06 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1582878393.git.joe@perches.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Standardize the define and the uses of printmode.
+On 2/28/20 12:32 AM, Joe Perches wrote:
+> Well, if the parport logging is getting some generic fixing,
+> here's some more generic logging fixing...
+> 
+> Joe Perches (7):
+>   parport: Convert printk(KERN_<LEVEL> to pr_<level>(
+>   parport: Use more comon logging styles
+>   parport: daisy: Convert DPRINTK to pr_debug
+>   parport_amiga: Convert DPRINTK to pr_debug
+>   parport_mfc3: Convert DPRINTK to pr_debug
+>   parport_pc: Convert DPRINTK to pr_debug
+>   parport: Standardize use of printmode
 
-Miscellanea:
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 
-o Add missing statement termination ; where necessary
+Thanks, Joe.
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- drivers/parport/parport_gsc.c |  8 ++++++--
- drivers/parport/parport_pc.c  | 14 ++++++--------
- drivers/parport/procfs.c      |  6 +++++-
- 3 files changed, 17 insertions(+), 11 deletions(-)
+>  drivers/parport/daisy.c          |  29 +---
+>  drivers/parport/ieee1284.c       |   4 +-
+>  drivers/parport/ieee1284_ops.c   |   3 +-
+>  drivers/parport/parport_amiga.c  |  22 +--
+>  drivers/parport/parport_atari.c  |   2 +-
+>  drivers/parport/parport_cs.c     |   6 +-
+>  drivers/parport/parport_gsc.c    |  25 +--
+>  drivers/parport/parport_gsc.h    |  21 ++-
+>  drivers/parport/parport_ip32.c   | 117 +++++++-------
+>  drivers/parport/parport_mfc3.c   |  21 +--
+>  drivers/parport/parport_pc.c     | 263 +++++++++++++------------------
+>  drivers/parport/parport_sunbpp.c |   2 +-
+>  drivers/parport/probe.c          |  34 ++--
+>  drivers/parport/procfs.c         |   6 +-
+>  drivers/parport/share.c          |  37 +++--
+>  15 files changed, 261 insertions(+), 331 deletions(-)
+> 
 
-diff --git a/drivers/parport/parport_gsc.c b/drivers/parport/parport_gsc.c
-index cb6a08..9228e8 100644
---- a/drivers/parport/parport_gsc.c
-+++ b/drivers/parport/parport_gsc.c
-@@ -299,12 +299,16 @@ struct parport *parport_gsc_probe_port(unsigned long base,
- 		p->dma = PARPORT_DMA_NONE;
- 
- 	pr_cont(" [");
--#define printmode(x) {if(p->modes&PARPORT_MODE_##x){pr_cont("%s%s",f?",":"",#x);f++;}}
-+#define printmode(x)							\
-+do {									\
-+	if (p->modes & PARPORT_MODE_##x)				\
-+		pr_cont("%s%s", f++ ? "," : "", #x);			\
-+} while (0)
- 	{
- 		int f = 0;
- 		printmode(PCSPP);
- 		printmode(TRISTATE);
--		printmode(COMPAT)
-+		printmode(COMPAT);
- 		printmode(EPP);
- //		printmode(ECP);
- //		printmode(DMA);
-diff --git a/drivers/parport/parport_pc.c b/drivers/parport/parport_pc.c
-index aae03b..77e37e3 100644
---- a/drivers/parport/parport_pc.c
-+++ b/drivers/parport/parport_pc.c
-@@ -2134,19 +2134,17 @@ struct parport *parport_pc_probe_port(unsigned long int base,
- 
- 	pr_cont(" [");
- 
--#define printmode(x) \
--	{\
--		if (p->modes & PARPORT_MODE_##x) {\
--			pr_cont("%s%s", f ? "," : "", #x);	\
--			f++;\
--		} \
--	}
-+#define printmode(x)							\
-+do {									\
-+	if (p->modes & PARPORT_MODE_##x)				\
-+		pr_cont("%s%s", f++ ? "," : "", #x);			\
-+} while (0)
- 
- 	{
- 		int f = 0;
- 		printmode(PCSPP);
- 		printmode(TRISTATE);
--		printmode(COMPAT)
-+		printmode(COMPAT);
- 		printmode(EPP);
- 		printmode(ECP);
- 		printmode(DMA);
-diff --git a/drivers/parport/procfs.c b/drivers/parport/procfs.c
-index 488040..e957be 100644
---- a/drivers/parport/procfs.c
-+++ b/drivers/parport/procfs.c
-@@ -213,7 +213,11 @@ static int do_hardware_modes(struct ctl_table *table, int write,
- 		return -EACCES;
- 
- 	{
--#define printmode(x) {if(port->modes&PARPORT_MODE_##x){len+=sprintf(buffer+len,"%s%s",f?",":"",#x);f++;}}
-+#define printmode(x)							\
-+do {									\
-+	if (port->modes & PARPORT_MODE_##x)				\
-+		len += sprintf(buffer + len, "%s%s", f++ ? "," : "", #x); \
-+} while (0)
- 		int f = 0;
- 		printmode(PCSPP);
- 		printmode(TRISTATE);
+
 -- 
-2.24.0
+~Randy
 
