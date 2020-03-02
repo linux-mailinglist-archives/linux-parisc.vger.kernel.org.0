@@ -2,301 +2,172 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45E6B176450
-	for <lists+linux-parisc@lfdr.de>; Mon,  2 Mar 2020 20:51:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E84176508
+	for <lists+linux-parisc@lfdr.de>; Mon,  2 Mar 2020 21:35:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726809AbgCBTvn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 2 Mar 2020 14:51:43 -0500
-Received: from namei.org ([65.99.196.166]:49042 "EHLO namei.org"
+        id S1726755AbgCBUf0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 2 Mar 2020 15:35:26 -0500
+Received: from mout.gmx.net ([212.227.17.20]:60163 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726418AbgCBTvn (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 2 Mar 2020 14:51:43 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by namei.org (8.14.4/8.14.4) with ESMTP id 022JiQle012020;
-        Mon, 2 Mar 2020 19:44:26 GMT
-Date:   Mon, 2 Mar 2020 11:44:26 -0800 (PST)
-From:   James Morris <jmorris@namei.org>
-To:     Serge Hallyn <serge@hallyn.com>
-cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-man@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        Igor Lubashev <ilubashe@akamai.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Stephane Eranian <eranian@google.com>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        oprofile-list@lists.sf.net, Jiri Olsa <jolsa@redhat.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [Intel-gfx] [PATCH v7 00/12] Introduce CAP_PERFMON to secure
- system performance monitoring and observability
-In-Reply-To: <20200302001913.GA21145@sl>
-Message-ID: <alpine.LRH.2.21.2003021144060.11016@namei.org>
-References: <c8de937a-0b3a-7147-f5ef-69f467e87a13@linux.intel.com> <3ae0bed5-204e-de81-7647-5f0d8106cd67@linux.intel.com> <20200302001913.GA21145@sl>
-User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+        id S1725911AbgCBUf0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 2 Mar 2020 15:35:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1583181313;
+        bh=6e+M36ttER99x7kYZFh6MiZeo1sjmywxIwpgstZVw4g=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=OBwZ48eB2pVjL+QQ/o4mOtXcZ0z0+K6ukH3klWV8EBgS+d8g0JuhokTHsX8qng/3P
+         R9IabB9EfjiDnmtQAcdcZCiXbYadqN+hKaILJlrA1J6Jo81Xd46+Z5xUb0K3jPQDP4
+         3k6Bj37/bfE3QXPyAbPuvO7i+5/O+Cj7pHUSHQKs=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.130.108]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N0oBx-1jKm4C0Jld-00woGf; Mon, 02
+ Mar 2020 21:35:13 +0100
+Subject: Re: [PATCH 2/7] parport: Use more comon logging styles
+To:     Joe Perches <joe@perches.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1582878393.git.joe@perches.com>
+ <1da80f696e3602cc2533988b20f9a47cd42db1c4.1582878394.git.joe@perches.com>
+ <b4a4f5a8-9ff0-e3d3-93c9-260a11cdb439@gmx.de>
+ <ff833cf6a9a489ff446910c85e2a56ff1c11ccb4.camel@perches.com>
+From:   Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+ c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
+Message-ID: <3f313e06-8e6e-49ee-e2eb-89224b1d2aa1@gmx.de>
+Date:   Mon, 2 Mar 2020 21:35:10 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <ff833cf6a9a489ff446910c85e2a56ff1c11ccb4.camel@perches.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:BIqykeU/7uXvlXpa8cyZzkT/tC7seLvRvl1r+IYa28MQN4Ebali
+ Lxzkd1vqBtI4z0yopol88TtgNtS+/1xU2FGR8E9kbW62o+DmBbvXjMJrWD0PqA0fcKgMMxN
+ hKZkYshKmj6yPMHhVw42gj1OueHmBzTFx0hFvh2dqLsNLNyG+MI3Wd5LfAm91uVrXV44r3O
+ St2ruHt3vxkEOHAJLnCOw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ZIX/GxpddQQ=:qU7cd1q/IrgwNbTE4JMxAx
+ hdlm3ybwm+FNfNk9DiSRxZ2lI/UK86gwuj1kwpZd8rWX2ltIQs3kgYwhCDgxN9TQUU0v0GC1N
+ tqaUNuCvhzN/d60QIOsEjkslOkO6Vx0gFcMfpmEs4NRnTHLq3YGqXvvrLDpd1ixAZB+WfrWEC
+ HQENYogfUedOFUetbo2oDmyhPyZz0cUMG6rdXtqJ0Q31CbdkjgXZQiT+vrSt7GRpHS2pVxzaN
+ wMvjL8ywzjCQCHtJV3NTFvc91maMUlkHcYjEnKpVuGXFpFmDt3431A38+4xaSw7JMnzTqmIEr
+ atqSY8+bdKnVQPpieUTqScd8ka4oBQSVhsK5Wu+PEeQnbv4q29eeinJSd2+23uPC1DEc7KzUR
+ Jz5DVD7imffKHw+ZwSyodC4wsh4XdVp605C9pXdM3aQe+WBUvZz1ZYet6t7nUdmE+QwutdN6E
+ 3xu0ypsGafJsNvGJPI8cJaHYVm3AisdsKBDNQANblkxVl2Rc7ldi3jVPWFcqGnlWDuLZ8Ix6n
+ Sah5FMTcA3ZTUKMQnF4OkiulKHzKv3Kgiw19duDSAVnZgehocQbfqKWpX5vkL3OhHSEmVI+2g
+ /Ih/w2APWf1G/wbDp3A0gKNIaEV9mEkQdTq6+cHp3JHzqHEFvhvMCigPuOiw5KOIFxsL7/CWn
+ pNewXEZx2BQ5UEQtYFEfxQ/XWhlSR1MW8uhySOhbzJcNa9dIKbueKUM+ekCczy0X/IR/OzLt2
+ tS9DI29okI5mAjGRXFg5AJUsDz2yfQdUj6dxzzCH8qLNzuGj3atbnt3C+KQTY3hCuRHJTNDLx
+ iEmB6hIhkNFYSdBQS5Zm7KhKNh9GjIE2he2sY4OwN4NtLskAOR6OxmHhcpKRV+ym8HNCciFRZ
+ EnOoCKUzlsKYTV43nXimIBYNruFhzxVK9UiZv+cZS5XrHwNG9oWpGviG/3L9K86u2huQB65Wh
+ 2vhX1BVxFUh6QHGWw8Gd6GmpKm7RxD9zQPHmIH+25OZnI+M2Uus4ba1zJqIOCvWV+LiH8KjCF
+ G0MVp5QeYIMBrnFQcFTs8EEAAxRoLwwASc9SYdPjU9AKTNIlaX8VhSoeaGXxHefdivCCBWDMG
+ hj0Jz64Vt7ae80X92vTknExFUXlrJYIQekEhF9NRB+b/U+OqwspYuOHHijwMKKZGHIxfalgZE
+ 3grtu6SmclFZo+VcOZbcIRMj3xv29a2wFs6JWnDoj9vHJsYwf7qHDl68f3W+s1s+zKNEKfiPB
+ GChOWgwQAaFMClGiJ
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, 1 Mar 2020, Serge Hallyn wrote:
+On 02.03.20 20:39, Joe Perches wrote:
+> On Mon, 2020-03-02 at 20:29 +0100, Helge Deller wrote:
+>> On 28.02.20 09:32, Joe Perches wrote:
+>>> Some of the logging can be poorly formatted because of unexpected
+>>> line breaks given printks without KERN_CONT that should be pr_cont.
+> []
+>>> diff --git a/drivers/parport/parport_gsc.c b/drivers/parport/parport_g=
+sc.c
+> []
+>>> @@ -238,14 +238,14 @@ struct parport *parport_gsc_probe_port(unsigned =
+long base,
+>>>
+>>>  	priv =3D kzalloc (sizeof (struct parport_gsc_private), GFP_KERNEL);
+>>>  	if (!priv) {
+>>> -		printk (KERN_DEBUG "parport (0x%lx): no memory!\n", base);
+>>> +		printk(KERN_DEBUG "parport (0x%lx): no memory!\n", base);
+>>
+>> pr_warn() instead?
+>
+> For all of your remarks, the intent here is to keep the
+> same output.
 
-> Thanks, this looks good to me, in keeping with the CAP_SYSLOG break.
-> 
-> Acked-by: Serge E. Hallyn <serge@hallyn.com>
-> 
-> for the set.
-> 
-> James/Ingo/Peter, if noone has remaining objections, whose branch
-> should these go in through?
-> 
-> thanks,
+Ok.
 
-I was assuming via the perf tree, but I am happy to take them.
+> Logging level changes and printk(KERN_DEBUG -> pr_debug(
+> conversions cause the dmesg output to be different.
+>
+> 	printk(KERN_DEBUG...)
+>
+> is always emitted when the console level allows but
+>
+> 	pr_debug(...)
+>
+> is not normally compiled in at all.
+>
+> So it's possible for all printk(KERN_DEBUG to be pr_debug
+> but that causes no logging at all to be emitted when
+> DEBUG is not defined or CONFIG_DYNAMIC_DEBUG not enabled.
 
+Ok, then keep it as you had.
 
-> -serge
-> 
-> On Tue, Feb 25, 2020 at 12:55:54PM +0300, Alexey Budankov wrote:
-> > 
-> > Hi,
-> > 
-> > Is there anything else I could do in order to move the changes forward
-> > or is something still missing from this patch set?
-> > Could you please share you mind?
-> > 
-> > Thanks,
-> > Alexey
-> > 
-> > On 17.02.2020 11:02, Alexey Budankov wrote:
-> > > 
-> > > Currently access to perf_events, i915_perf and other performance
-> > > monitoring and observability subsystems of the kernel is open only for
-> > > a privileged process [1] with CAP_SYS_ADMIN capability enabled in the
-> > > process effective set [2].
-> > > 
-> > > This patch set introduces CAP_PERFMON capability designed to secure
-> > > system performance monitoring and observability operations so that
-> > > CAP_PERFMON would assist CAP_SYS_ADMIN capability in its governing role
-> > > for performance monitoring and observability subsystems of the kernel.
-> > > 
-> > > CAP_PERFMON intends to harden system security and integrity during
-> > > performance monitoring and observability operations by decreasing attack
-> > > surface that is available to a CAP_SYS_ADMIN privileged process [2].
-> > > Providing the access to performance monitoring and observability
-> > > operations under CAP_PERFMON capability singly, without the rest of
-> > > CAP_SYS_ADMIN credentials, excludes chances to misuse the credentials
-> > > and makes the operation more secure. Thus, CAP_PERFMON implements the
-> > > principal of least privilege for performance monitoring and
-> > > observability operations (POSIX IEEE 1003.1e: 2.2.2.39 principle of
-> > > least privilege: A security design principle that states that a process
-> > > or program be granted only those privileges (e.g., capabilities)
-> > > necessary to accomplish its legitimate function, and only for the time
-> > > that such privileges are actually required)
-> > > 
-> > > CAP_PERFMON intends to meet the demand to secure system performance
-> > > monitoring and observability operations for adoption in security
-> > > sensitive, restricted, multiuser production environments (e.g. HPC
-> > > clusters, cloud and virtual compute environments), where root or
-> > > CAP_SYS_ADMIN credentials are not available to mass users of a system,
-> > > and securely unblock accessibility of system performance monitoring and
-> > > observability operations beyond root and CAP_SYS_ADMIN use cases.
-> > > 
-> > > CAP_PERFMON intends to take over CAP_SYS_ADMIN credentials related to
-> > > system performance monitoring and observability operations and balance
-> > > amount of CAP_SYS_ADMIN credentials following the recommendations in
-> > > the capabilities man page [2] for CAP_SYS_ADMIN: "Note: this capability
-> > > is overloaded; see Notes to kernel developers, below." For backward
-> > > compatibility reasons access to system performance monitoring and
-> > > observability subsystems of the kernel remains open for CAP_SYS_ADMIN
-> > > privileged processes but CAP_SYS_ADMIN capability usage for secure
-> > > system performance monitoring and observability operations is
-> > > discouraged with respect to the designed CAP_PERFMON capability.
-> > > 
-> > > Possible alternative solution to this system security hardening,
-> > > capabilities balancing task of making performance monitoring and
-> > > observability operations more secure and accessible could be to use
-> > > the existing CAP_SYS_PTRACE capability to govern system performance
-> > > monitoring and observability subsystems. However CAP_SYS_PTRACE
-> > > capability still provides users with more credentials than are
-> > > required for secure performance monitoring and observability
-> > > operations and this excess is avoided by the designed CAP_PERFMON.
-> > > 
-> > > Although software running under CAP_PERFMON can not ensure avoidance of
-> > > related hardware issues, the software can still mitigate those issues
-> > > following the official hardware issues mitigation procedure [3]. The
-> > > bugs in the software itself can be fixed following the standard kernel
-> > > development process [4] to maintain and harden security of system
-> > > performance monitoring and observability operations. Finally, the patch
-> > > set is shaped in the way that simplifies backtracking procedure of
-> > > possible induced issues [5] as much as possible.
-> > > 
-> > > The patch set is for tip perf/core repository:
-> > > git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip perf/core
-> > > sha1: fdb64822443ec9fb8c3a74b598a74790ae8d2e22
-> > > 
-> > > ---
-> > > Changes in v7:
-> > > - updated and extended kernel.rst and perf-security.rst documentation 
-> > >   files with the information about CAP_PERFMON capability and its use cases
-> > > - documented the case of double audit logging of CAP_PERFMON and CAP_SYS_ADMIN
-> > >   capabilities on a SELinux enabled system
-> > > Changes in v6:
-> > > - avoided noaudit checks in perfmon_capable() to explicitly advertise
-> > >   CAP_PERFMON usage thru audit logs to secure system performance
-> > >   monitoring and observability
-> > > Changes in v5:
-> > > - renamed CAP_SYS_PERFMON to CAP_PERFMON
-> > > - extended perfmon_capable() with noaudit checks
-> > > Changes in v4:
-> > > - converted perfmon_capable() into an inline function
-> > > - made perf_events kprobes, uprobes, hw breakpoints and namespaces data
-> > >   available to CAP_SYS_PERFMON privileged processes
-> > > - applied perfmon_capable() to drivers/perf and drivers/oprofile
-> > > - extended __cmd_ftrace() with support of CAP_SYS_PERFMON
-> > > Changes in v3:
-> > > - implemented perfmon_capable() macros aggregating required capabilities
-> > >   checks
-> > > Changes in v2:
-> > > - made perf_events trace points available to CAP_SYS_PERFMON privileged
-> > >   processes
-> > > - made perf_event_paranoid_check() treat CAP_SYS_PERFMON equally to
-> > >   CAP_SYS_ADMIN
-> > > - applied CAP_SYS_PERFMON to i915_perf, bpf_trace, powerpc and parisc
-> > >   system performance monitoring and observability related subsystems
-> > > 
-> > > ---
-> > > Alexey Budankov (12):
-> > >   capabilities: introduce CAP_PERFMON to kernel and user space
-> > >   perf/core: open access to the core for CAP_PERFMON privileged process
-> > >   perf/core: open access to probes for CAP_PERFMON privileged process
-> > >   perf tool: extend Perf tool with CAP_PERFMON capability support
-> > >   drm/i915/perf: open access for CAP_PERFMON privileged process
-> > >   trace/bpf_trace: open access for CAP_PERFMON privileged process
-> > >   powerpc/perf: open access for CAP_PERFMON privileged process
-> > >   parisc/perf: open access for CAP_PERFMON privileged process
-> > >   drivers/perf: open access for CAP_PERFMON privileged process
-> > >   drivers/oprofile: open access for CAP_PERFMON privileged process
-> > >   doc/admin-guide: update perf-security.rst with CAP_PERFMON information
-> > >   doc/admin-guide: update kernel.rst with CAP_PERFMON information
-> > > 
-> > >  Documentation/admin-guide/perf-security.rst | 65 +++++++++++++--------
-> > >  Documentation/admin-guide/sysctl/kernel.rst | 16 +++--
-> > >  arch/parisc/kernel/perf.c                   |  2 +-
-> > >  arch/powerpc/perf/imc-pmu.c                 |  4 +-
-> > >  drivers/gpu/drm/i915/i915_perf.c            | 13 ++---
-> > >  drivers/oprofile/event_buffer.c             |  2 +-
-> > >  drivers/perf/arm_spe_pmu.c                  |  4 +-
-> > >  include/linux/capability.h                  |  4 ++
-> > >  include/linux/perf_event.h                  |  6 +-
-> > >  include/uapi/linux/capability.h             |  8 ++-
-> > >  kernel/events/core.c                        |  6 +-
-> > >  kernel/trace/bpf_trace.c                    |  2 +-
-> > >  security/selinux/include/classmap.h         |  4 +-
-> > >  tools/perf/builtin-ftrace.c                 |  5 +-
-> > >  tools/perf/design.txt                       |  3 +-
-> > >  tools/perf/util/cap.h                       |  4 ++
-> > >  tools/perf/util/evsel.c                     | 10 ++--
-> > >  tools/perf/util/util.c                      |  1 +
-> > >  18 files changed, 98 insertions(+), 61 deletions(-)
-> > > 
-> > > ---
-> > > Validation (Intel Skylake, 8 cores, Fedora 29, 5.5.0-rc3+, x86_64):
-> > > 
-> > > libcap library [6], [7], [8] and Perf tool can be used to apply
-> > > CAP_PERFMON capability for secure system performance monitoring and
-> > > observability beyond the scope permitted by the system wide
-> > > perf_event_paranoid kernel setting [9] and below are the steps for
-> > > evaluation:
-> > > 
-> > >   - patch, build and boot the kernel
-> > >   - patch, build Perf tool e.g. to /home/user/perf
-> > >   ...
-> > >   # git clone git://git.kernel.org/pub/scm/libs/libcap/libcap.git libcap
-> > >   # pushd libcap
-> > >   # patch libcap/include/uapi/linux/capabilities.h with [PATCH 1]
-> > >   # make
-> > >   # pushd progs
-> > >   # ./setcap "cap_perfmon,cap_sys_ptrace,cap_syslog=ep" /home/user/perf
-> > >   # ./setcap -v "cap_perfmon,cap_sys_ptrace,cap_syslog=ep" /home/user/perf
-> > >   /home/user/perf: OK
-> > >   # ./getcap /home/user/perf
-> > >   /home/user/perf = cap_sys_ptrace,cap_syslog,cap_perfmon+ep
-> > >   # echo 2 > /proc/sys/kernel/perf_event_paranoid
-> > >   # cat /proc/sys/kernel/perf_event_paranoid 
-> > >   2
-> > >   ...
-> > >   $ /home/user/perf top
-> > >     ... works as expected ...
-> > >   $ cat /proc/`pidof perf`/status
-> > >   Name:	perf
-> > >   Umask:	0002
-> > >   State:	S (sleeping)
-> > >   Tgid:	2958
-> > >   Ngid:	0
-> > >   Pid:	2958
-> > >   PPid:	9847
-> > >   TracerPid:	0
-> > >   Uid:	500	500	500	500
-> > >   Gid:	500	500	500	500
-> > >   FDSize:	256
-> > >   ...
-> > >   CapInh:	0000000000000000
-> > >   CapPrm:	0000004400080000
-> > >   CapEff:	0000004400080000 => 01000100 00000000 00001000 00000000 00000000
-> > >                                      cap_perfmon,cap_sys_ptrace,cap_syslog
-> > >   CapBnd:	0000007fffffffff
-> > >   CapAmb:	0000000000000000
-> > >   NoNewPrivs:	0
-> > >   Seccomp:	0
-> > >   Speculation_Store_Bypass:	thread vulnerable
-> > >   Cpus_allowed:	ff
-> > >   Cpus_allowed_list:	0-7
-> > >   ...
-> > > 
-> > > Usage of cap_perfmon effectively avoids unused credentials excess:
-> > > 
-> > > - with cap_sys_admin:
-> > >   CapEff:	0000007fffffffff => 01111111 11111111 11111111 11111111 11111111
-> > > 
-> > > - with cap_perfmon:
-> > >   CapEff:	0000004400080000 => 01000100 00000000 00001000 00000000 00000000
-> > >                                     38   34               19
-> > >                                perfmon   syslog           sys_ptrace
-> > > 
-> > > ---
-> > > [1] https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html
-> > > [2] http://man7.org/linux/man-pages/man7/capabilities.7.html
-> > > [3] https://www.kernel.org/doc/html/latest/process/embargoed-hardware-issues.html
-> > > [4] https://www.kernel.org/doc/html/latest/admin-guide/security-bugs.html
-> > > [5] https://www.kernel.org/doc/html/latest/process/management-style.html#decisions
-> > > [6] http://man7.org/linux/man-pages/man8/setcap.8.html
-> > > [7] https://git.kernel.org/pub/scm/libs/libcap/libcap.git
-> > > [8] https://sites.google.com/site/fullycapable/, posix_1003.1e-990310.pdf
-> > > [9] http://man7.org/linux/man-pages/man2/perf_event_open.2.html
-> > > 
-> > _______________________________________________
-> > Intel-gfx mailing list
-> > Intel-gfx@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/intel-gfx
-> 
-
--- 
-James Morris
-<jmorris@namei.org>
-
+Thanks!
+Helge
