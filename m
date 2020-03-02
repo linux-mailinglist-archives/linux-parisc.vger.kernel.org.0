@@ -2,360 +2,294 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99BC7174DCC
-	for <lists+linux-parisc@lfdr.de>; Sun,  1 Mar 2020 15:45:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC56817514C
+	for <lists+linux-parisc@lfdr.de>; Mon,  2 Mar 2020 01:19:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726970AbgCAOpv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 1 Mar 2020 09:45:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52680 "EHLO mail.kernel.org"
+        id S1726755AbgCBATa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 1 Mar 2020 19:19:30 -0500
+Received: from mail.hallyn.com ([178.63.66.53]:59076 "EHLO mail.hallyn.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726954AbgCAOpu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 1 Mar 2020 09:45:50 -0500
-Received: from localhost (unknown [193.47.165.251])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726562AbgCBATa (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 1 Mar 2020 19:19:30 -0500
+Received: from sl (122.sub-174-235-8.myvzw.com [174.235.8.122])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 06A9124672;
-        Sun,  1 Mar 2020 14:45:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583073949;
-        bh=+9GX7VkO5fDM/7wMfNiHz9/xCKTxapBnnwA9bJJjVWo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Who2DHvFLTV5H4FF0upHhA/5uZb6exv33F9Edya/XDTV3HRsFTMfwrBtuobgz9w1H
-         9ecQoAGFojnSa9syHmSFn48j1OXtVdKGm6V5YxfPT1qzAGWZnx45NFMy8R29VveunF
-         h36uugM6YnjYnNZB04aQNlSmJUlLyENn2hzcItHg=
-From:   Leon Romanovsky <leon@kernel.org>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Leon Romanovsky <leonro@mellanox.com>,
-        linux-parisc@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH net-next 14/23] net/dec: Delete driver versions
-Date:   Sun,  1 Mar 2020 16:44:47 +0200
-Message-Id: <20200301144457.119795-15-leon@kernel.org>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200301144457.119795-1-leon@kernel.org>
-References: <20200301144457.119795-1-leon@kernel.org>
+        (Authenticated sender: serge)
+        by mail.hallyn.com (Postfix) with ESMTPSA id 4C54066E;
+        Sun,  1 Mar 2020 18:19:19 -0600 (CST)
+Date:   Sun, 1 Mar 2020 18:19:13 -0600
+From:   Serge Hallyn <serge@hallyn.com>
+To:     Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc:     James Morris <jmorris@namei.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-man@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        Igor Lubashev <ilubashe@akamai.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        oprofile-list@lists.sf.net, Jiri Olsa <jolsa@redhat.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [Intel-gfx] [PATCH v7 00/12] Introduce CAP_PERFMON to secure
+ system performance monitoring and observability
+Message-ID: <20200302001913.GA21145@sl>
+References: <c8de937a-0b3a-7147-f5ef-69f467e87a13@linux.intel.com>
+ <3ae0bed5-204e-de81-7647-5f0d8106cd67@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3ae0bed5-204e-de81-7647-5f0d8106cd67@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Leon Romanovsky <leonro@mellanox.com>
+Thanks, this looks good to me, in keeping with the CAP_SYSLOG break.
 
-There is no need in assignments of driver version while linux kernel
-is released as a monolith where the whole code base is aligned to one
-general version.
+Acked-by: Serge E. Hallyn <serge@hallyn.com>
 
-Signed-off-by: Leon Romanovsky <leonro@mellanox.com>
----
- drivers/net/ethernet/dec/tulip/de2104x.c     | 15 -----------
- drivers/net/ethernet/dec/tulip/dmfe.c        | 14 -----------
- drivers/net/ethernet/dec/tulip/tulip_core.c  | 26 ++------------------
- drivers/net/ethernet/dec/tulip/uli526x.c     | 13 ----------
- drivers/net/ethernet/dec/tulip/winbond-840.c | 12 ---------
- 5 files changed, 2 insertions(+), 78 deletions(-)
+for the set.
 
-diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
-index 42b798a3fad4..592454f444ce 100644
---- a/drivers/net/ethernet/dec/tulip/de2104x.c
-+++ b/drivers/net/ethernet/dec/tulip/de2104x.c
-@@ -30,7 +30,6 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #define DRV_NAME		"de2104x"
--#define DRV_VERSION		"0.7"
- #define DRV_RELDATE		"Mar 17, 2004"
- 
- #include <linux/module.h>
-@@ -52,14 +51,9 @@
- #include <linux/uaccess.h>
- #include <asm/unaligned.h>
- 
--/* These identify the driver base version and may not be removed. */
--static char version[] =
--"PCI Ethernet driver v" DRV_VERSION " (" DRV_RELDATE ")";
--
- MODULE_AUTHOR("Jeff Garzik <jgarzik@pobox.com>");
- MODULE_DESCRIPTION("Intel/Digital 21040/1 series PCI Ethernet driver");
- MODULE_LICENSE("GPL");
--MODULE_VERSION(DRV_VERSION);
- 
- static int debug = -1;
- module_param (debug, int, 0);
-@@ -1603,7 +1597,6 @@ static void de_get_drvinfo (struct net_device *dev,struct ethtool_drvinfo *info)
- 	struct de_private *de = netdev_priv(dev);
- 
- 	strlcpy(info->driver, DRV_NAME, sizeof(info->driver));
--	strlcpy(info->version, DRV_VERSION, sizeof(info->version));
- 	strlcpy(info->bus_info, pci_name(de->pdev), sizeof(info->bus_info));
- }
- 
-@@ -1980,11 +1973,6 @@ static int de_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	board_idx++;
- 
--#ifndef MODULE
--	if (board_idx == 0)
--		pr_info("%s\n", version);
--#endif
--
- 	/* allocate a new ethernet device structure, and fill in defaults */
- 	dev = alloc_etherdev(sizeof(struct de_private));
- 	if (!dev)
-@@ -2196,9 +2184,6 @@ static struct pci_driver de_driver = {
- 
- static int __init de_init (void)
- {
--#ifdef MODULE
--	pr_info("%s\n", version);
--#endif
- 	return pci_register_driver(&de_driver);
- }
- 
-diff --git a/drivers/net/ethernet/dec/tulip/dmfe.c b/drivers/net/ethernet/dec/tulip/dmfe.c
-index 32d470d4122a..c1884fc9ad32 100644
---- a/drivers/net/ethernet/dec/tulip/dmfe.c
-+++ b/drivers/net/ethernet/dec/tulip/dmfe.c
-@@ -56,8 +56,6 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #define DRV_NAME	"dmfe"
--#define DRV_VERSION	"1.36.4"
--#define DRV_RELDATE	"2002-01-17"
- 
- #include <linux/module.h>
- #include <linux/kernel.h>
-@@ -280,10 +278,6 @@ enum dmfe_CR6_bits {
- };
- 
- /* Global variable declaration ----------------------------- */
--static int printed_version;
--static const char version[] =
--	"Davicom DM9xxx net driver, version " DRV_VERSION " (" DRV_RELDATE ")";
--
- static int dmfe_debug;
- static unsigned char dmfe_media_mode = DMFE_AUTO;
- static u32 dmfe_cr6_user_set;
-@@ -364,9 +358,6 @@ static int dmfe_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	DMFE_DBUG(0, "dmfe_init_one()", 0);
- 
--	if (!printed_version++)
--		pr_info("%s\n", version);
--
- 	/*
- 	 *	SPARC on-board DM910x chips should be handled by the main
- 	 *	tulip driver, except for early DM9100s.
-@@ -1081,7 +1072,6 @@ static void dmfe_ethtool_get_drvinfo(struct net_device *dev,
- 	struct dmfe_board_info *np = netdev_priv(dev);
- 
- 	strlcpy(info->driver, DRV_NAME, sizeof(info->driver));
--	strlcpy(info->version, DRV_VERSION, sizeof(info->version));
- 	strlcpy(info->bus_info, pci_name(np->pdev), sizeof(info->bus_info));
- }
- 
-@@ -2177,7 +2167,6 @@ static struct pci_driver dmfe_driver = {
- MODULE_AUTHOR("Sten Wang, sten_wang@davicom.com.tw");
- MODULE_DESCRIPTION("Davicom DM910X fast ethernet driver");
- MODULE_LICENSE("GPL");
--MODULE_VERSION(DRV_VERSION);
- 
- module_param(debug, int, 0);
- module_param(mode, byte, 0);
-@@ -2204,9 +2193,6 @@ static int __init dmfe_init_module(void)
- {
- 	int rc;
- 
--	pr_info("%s\n", version);
--	printed_version = 1;
--
- 	DMFE_DBUG(0, "init_module() ", debug);
- 
- 	if (debug)
-diff --git a/drivers/net/ethernet/dec/tulip/tulip_core.c b/drivers/net/ethernet/dec/tulip/tulip_core.c
-index 9e9d9eee29d9..48ea658aa1a6 100644
---- a/drivers/net/ethernet/dec/tulip/tulip_core.c
-+++ b/drivers/net/ethernet/dec/tulip/tulip_core.c
-@@ -12,13 +12,6 @@
- #define pr_fmt(fmt) "tulip: " fmt
- 
- #define DRV_NAME	"tulip"
--#ifdef CONFIG_TULIP_NAPI
--#define DRV_VERSION    "1.1.15-NAPI" /* Keep at least for test */
--#else
--#define DRV_VERSION	"1.1.15"
--#endif
--#define DRV_RELDATE	"Feb 27, 2007"
--
- 
- #include <linux/module.h>
- #include <linux/pci.h>
-@@ -37,9 +30,6 @@
- #include <asm/prom.h>
- #endif
- 
--static char version[] =
--	"Linux Tulip driver version " DRV_VERSION " (" DRV_RELDATE ")\n";
--
- /* A few user-configurable values. */
- 
- /* Maximum events (Rx packets, etc.) to handle at each interrupt. */
-@@ -109,7 +99,6 @@ static int csr0;
- MODULE_AUTHOR("The Linux Kernel Team");
- MODULE_DESCRIPTION("Digital 21*4* Tulip ethernet driver");
- MODULE_LICENSE("GPL");
--MODULE_VERSION(DRV_VERSION);
- module_param(tulip_debug, int, 0);
- module_param(max_interrupt_work, int, 0);
- module_param(rx_copybreak, int, 0);
-@@ -868,7 +857,6 @@ static void tulip_get_drvinfo(struct net_device *dev, struct ethtool_drvinfo *in
- {
- 	struct tulip_private *np = netdev_priv(dev);
- 	strlcpy(info->driver, DRV_NAME, sizeof(info->driver));
--	strlcpy(info->version, DRV_VERSION, sizeof(info->version));
- 	strlcpy(info->bus_info, pci_name(np->pdev), sizeof(info->bus_info));
- }
- 
-@@ -1314,11 +1302,6 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	unsigned int eeprom_missing = 0;
- 	unsigned int force_csr0 = 0;
- 
--#ifndef MODULE
--	if (tulip_debug > 0)
--		printk_once(KERN_INFO "%s", version);
--#endif
--
- 	board_idx++;
- 
- 	/*
-@@ -1800,14 +1783,13 @@ static void tulip_set_wolopts (struct pci_dev *pdev, u32 wolopts)
- 	void __iomem *ioaddr = tp->base_addr;
- 
- 	if (tp->flags & COMET_PM) {
--	  
- 		unsigned int tmp;
--			
-+
- 		tmp = ioread32(ioaddr + CSR18);
- 		tmp &= ~(comet_csr18_pmes_sticky | comet_csr18_apm_mode | comet_csr18_d3a);
- 		tmp |= comet_csr18_pm_mode;
- 		iowrite32(tmp, ioaddr + CSR18);
--			
-+
- 		/* Set the Wake-up Control/Status Register to the given WOL options*/
- 		tmp = ioread32(ioaddr + CSR13);
- 		tmp &= ~(comet_csr13_linkoffe | comet_csr13_linkone | comet_csr13_wfre | comet_csr13_lsce | comet_csr13_mpre);
-@@ -1969,10 +1951,6 @@ static struct pci_driver tulip_driver = {
- 
- static int __init tulip_init (void)
- {
--#ifdef MODULE
--	pr_info("%s", version);
--#endif
--
- 	if (!csr0) {
- 		pr_warn("tulip: unknown CPU architecture, using default csr0\n");
- 		/* default to 8 longword cache line alignment */
-diff --git a/drivers/net/ethernet/dec/tulip/uli526x.c b/drivers/net/ethernet/dec/tulip/uli526x.c
-index 117ffe08800d..f726436b1985 100644
---- a/drivers/net/ethernet/dec/tulip/uli526x.c
-+++ b/drivers/net/ethernet/dec/tulip/uli526x.c
-@@ -7,8 +7,6 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #define DRV_NAME	"uli526x"
--#define DRV_VERSION	"0.9.3"
--#define DRV_RELDATE	"2005-7-29"
- 
- #include <linux/module.h>
- 
-@@ -196,10 +194,6 @@ enum uli526x_CR6_bits {
- };
- 
- /* Global variable declaration ----------------------------- */
--static int printed_version;
--static const char version[] =
--	"ULi M5261/M5263 net driver, version " DRV_VERSION " (" DRV_RELDATE ")";
--
- static int uli526x_debug;
- static unsigned char uli526x_media_mode = ULI526X_AUTO;
- static u32 uli526x_cr6_user_set;
-@@ -282,9 +276,6 @@ static int uli526x_init_one(struct pci_dev *pdev,
- 
- 	ULI526X_DBUG(0, "uli526x_init_one()", 0);
- 
--	if (!printed_version++)
--		pr_info("%s\n", version);
--
- 	/* Init network device */
- 	dev = alloc_etherdev(sizeof(*db));
- 	if (dev == NULL)
-@@ -972,7 +963,6 @@ static void netdev_get_drvinfo(struct net_device *dev,
- 	struct uli526x_board_info *np = netdev_priv(dev);
- 
- 	strlcpy(info->driver, DRV_NAME, sizeof(info->driver));
--	strlcpy(info->version, DRV_VERSION, sizeof(info->version));
- 	strlcpy(info->bus_info, pci_name(np->pdev), sizeof(info->bus_info));
- }
- 
-@@ -1799,9 +1789,6 @@ MODULE_PARM_DESC(mode, "ULi M5261/M5263: Bit 0: 10/100Mbps, bit 2: duplex, bit 8
- static int __init uli526x_init_module(void)
- {
- 
--	pr_info("%s\n", version);
--	printed_version = 1;
--
- 	ULI526X_DBUG(0, "init_module() ", debug);
- 
- 	if (debug)
-diff --git a/drivers/net/ethernet/dec/tulip/winbond-840.c b/drivers/net/ethernet/dec/tulip/winbond-840.c
-index 7f136488e67c..4d5e4fa53023 100644
---- a/drivers/net/ethernet/dec/tulip/winbond-840.c
-+++ b/drivers/net/ethernet/dec/tulip/winbond-840.c
-@@ -47,9 +47,6 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #define DRV_NAME	"winbond-840"
--#define DRV_VERSION	"1.01-e"
--#define DRV_RELDATE	"Sep-11-2006"
--
- 
- /* Automatically extracted configuration info:
- probe-func: winbond840_probe
-@@ -139,16 +136,9 @@ static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
- #undef PKT_BUF_SZ			/* tulip.h also defines this */
- #define PKT_BUF_SZ		1536	/* Size of each temporary Rx buffer.*/
- 
--/* These identify the driver base version and may not be removed. */
--static const char version[] __initconst =
--	"v" DRV_VERSION " (2.4 port) "
--	DRV_RELDATE "  Donald Becker <becker@scyld.com>\n"
--	"  http://www.scyld.com/network/drivers.html\n";
--
- MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
- MODULE_DESCRIPTION("Winbond W89c840 Ethernet driver");
- MODULE_LICENSE("GPL");
--MODULE_VERSION(DRV_VERSION);
- 
- module_param(max_interrupt_work, int, 0);
- module_param(debug, int, 0);
-@@ -1385,7 +1375,6 @@ static void netdev_get_drvinfo (struct net_device *dev, struct ethtool_drvinfo *
- 	struct netdev_private *np = netdev_priv(dev);
- 
- 	strlcpy(info->driver, DRV_NAME, sizeof(info->driver));
--	strlcpy(info->version, DRV_VERSION, sizeof(info->version));
- 	strlcpy(info->bus_info, pci_name(np->pci_dev), sizeof(info->bus_info));
- }
- 
-@@ -1650,7 +1639,6 @@ static struct pci_driver w840_driver = {
- 
- static int __init w840_init(void)
- {
--	printk(version);
- 	return pci_register_driver(&w840_driver);
- }
- 
--- 
-2.24.1
+James/Ingo/Peter, if noone has remaining objections, whose branch
+should these go in through?
 
+thanks,
+-serge
+
+On Tue, Feb 25, 2020 at 12:55:54PM +0300, Alexey Budankov wrote:
+> 
+> Hi,
+> 
+> Is there anything else I could do in order to move the changes forward
+> or is something still missing from this patch set?
+> Could you please share you mind?
+> 
+> Thanks,
+> Alexey
+> 
+> On 17.02.2020 11:02, Alexey Budankov wrote:
+> > 
+> > Currently access to perf_events, i915_perf and other performance
+> > monitoring and observability subsystems of the kernel is open only for
+> > a privileged process [1] with CAP_SYS_ADMIN capability enabled in the
+> > process effective set [2].
+> > 
+> > This patch set introduces CAP_PERFMON capability designed to secure
+> > system performance monitoring and observability operations so that
+> > CAP_PERFMON would assist CAP_SYS_ADMIN capability in its governing role
+> > for performance monitoring and observability subsystems of the kernel.
+> > 
+> > CAP_PERFMON intends to harden system security and integrity during
+> > performance monitoring and observability operations by decreasing attack
+> > surface that is available to a CAP_SYS_ADMIN privileged process [2].
+> > Providing the access to performance monitoring and observability
+> > operations under CAP_PERFMON capability singly, without the rest of
+> > CAP_SYS_ADMIN credentials, excludes chances to misuse the credentials
+> > and makes the operation more secure. Thus, CAP_PERFMON implements the
+> > principal of least privilege for performance monitoring and
+> > observability operations (POSIX IEEE 1003.1e: 2.2.2.39 principle of
+> > least privilege: A security design principle that states that a process
+> > or program be granted only those privileges (e.g., capabilities)
+> > necessary to accomplish its legitimate function, and only for the time
+> > that such privileges are actually required)
+> > 
+> > CAP_PERFMON intends to meet the demand to secure system performance
+> > monitoring and observability operations for adoption in security
+> > sensitive, restricted, multiuser production environments (e.g. HPC
+> > clusters, cloud and virtual compute environments), where root or
+> > CAP_SYS_ADMIN credentials are not available to mass users of a system,
+> > and securely unblock accessibility of system performance monitoring and
+> > observability operations beyond root and CAP_SYS_ADMIN use cases.
+> > 
+> > CAP_PERFMON intends to take over CAP_SYS_ADMIN credentials related to
+> > system performance monitoring and observability operations and balance
+> > amount of CAP_SYS_ADMIN credentials following the recommendations in
+> > the capabilities man page [2] for CAP_SYS_ADMIN: "Note: this capability
+> > is overloaded; see Notes to kernel developers, below." For backward
+> > compatibility reasons access to system performance monitoring and
+> > observability subsystems of the kernel remains open for CAP_SYS_ADMIN
+> > privileged processes but CAP_SYS_ADMIN capability usage for secure
+> > system performance monitoring and observability operations is
+> > discouraged with respect to the designed CAP_PERFMON capability.
+> > 
+> > Possible alternative solution to this system security hardening,
+> > capabilities balancing task of making performance monitoring and
+> > observability operations more secure and accessible could be to use
+> > the existing CAP_SYS_PTRACE capability to govern system performance
+> > monitoring and observability subsystems. However CAP_SYS_PTRACE
+> > capability still provides users with more credentials than are
+> > required for secure performance monitoring and observability
+> > operations and this excess is avoided by the designed CAP_PERFMON.
+> > 
+> > Although software running under CAP_PERFMON can not ensure avoidance of
+> > related hardware issues, the software can still mitigate those issues
+> > following the official hardware issues mitigation procedure [3]. The
+> > bugs in the software itself can be fixed following the standard kernel
+> > development process [4] to maintain and harden security of system
+> > performance monitoring and observability operations. Finally, the patch
+> > set is shaped in the way that simplifies backtracking procedure of
+> > possible induced issues [5] as much as possible.
+> > 
+> > The patch set is for tip perf/core repository:
+> > git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip perf/core
+> > sha1: fdb64822443ec9fb8c3a74b598a74790ae8d2e22
+> > 
+> > ---
+> > Changes in v7:
+> > - updated and extended kernel.rst and perf-security.rst documentation 
+> >   files with the information about CAP_PERFMON capability and its use cases
+> > - documented the case of double audit logging of CAP_PERFMON and CAP_SYS_ADMIN
+> >   capabilities on a SELinux enabled system
+> > Changes in v6:
+> > - avoided noaudit checks in perfmon_capable() to explicitly advertise
+> >   CAP_PERFMON usage thru audit logs to secure system performance
+> >   monitoring and observability
+> > Changes in v5:
+> > - renamed CAP_SYS_PERFMON to CAP_PERFMON
+> > - extended perfmon_capable() with noaudit checks
+> > Changes in v4:
+> > - converted perfmon_capable() into an inline function
+> > - made perf_events kprobes, uprobes, hw breakpoints and namespaces data
+> >   available to CAP_SYS_PERFMON privileged processes
+> > - applied perfmon_capable() to drivers/perf and drivers/oprofile
+> > - extended __cmd_ftrace() with support of CAP_SYS_PERFMON
+> > Changes in v3:
+> > - implemented perfmon_capable() macros aggregating required capabilities
+> >   checks
+> > Changes in v2:
+> > - made perf_events trace points available to CAP_SYS_PERFMON privileged
+> >   processes
+> > - made perf_event_paranoid_check() treat CAP_SYS_PERFMON equally to
+> >   CAP_SYS_ADMIN
+> > - applied CAP_SYS_PERFMON to i915_perf, bpf_trace, powerpc and parisc
+> >   system performance monitoring and observability related subsystems
+> > 
+> > ---
+> > Alexey Budankov (12):
+> >   capabilities: introduce CAP_PERFMON to kernel and user space
+> >   perf/core: open access to the core for CAP_PERFMON privileged process
+> >   perf/core: open access to probes for CAP_PERFMON privileged process
+> >   perf tool: extend Perf tool with CAP_PERFMON capability support
+> >   drm/i915/perf: open access for CAP_PERFMON privileged process
+> >   trace/bpf_trace: open access for CAP_PERFMON privileged process
+> >   powerpc/perf: open access for CAP_PERFMON privileged process
+> >   parisc/perf: open access for CAP_PERFMON privileged process
+> >   drivers/perf: open access for CAP_PERFMON privileged process
+> >   drivers/oprofile: open access for CAP_PERFMON privileged process
+> >   doc/admin-guide: update perf-security.rst with CAP_PERFMON information
+> >   doc/admin-guide: update kernel.rst with CAP_PERFMON information
+> > 
+> >  Documentation/admin-guide/perf-security.rst | 65 +++++++++++++--------
+> >  Documentation/admin-guide/sysctl/kernel.rst | 16 +++--
+> >  arch/parisc/kernel/perf.c                   |  2 +-
+> >  arch/powerpc/perf/imc-pmu.c                 |  4 +-
+> >  drivers/gpu/drm/i915/i915_perf.c            | 13 ++---
+> >  drivers/oprofile/event_buffer.c             |  2 +-
+> >  drivers/perf/arm_spe_pmu.c                  |  4 +-
+> >  include/linux/capability.h                  |  4 ++
+> >  include/linux/perf_event.h                  |  6 +-
+> >  include/uapi/linux/capability.h             |  8 ++-
+> >  kernel/events/core.c                        |  6 +-
+> >  kernel/trace/bpf_trace.c                    |  2 +-
+> >  security/selinux/include/classmap.h         |  4 +-
+> >  tools/perf/builtin-ftrace.c                 |  5 +-
+> >  tools/perf/design.txt                       |  3 +-
+> >  tools/perf/util/cap.h                       |  4 ++
+> >  tools/perf/util/evsel.c                     | 10 ++--
+> >  tools/perf/util/util.c                      |  1 +
+> >  18 files changed, 98 insertions(+), 61 deletions(-)
+> > 
+> > ---
+> > Validation (Intel Skylake, 8 cores, Fedora 29, 5.5.0-rc3+, x86_64):
+> > 
+> > libcap library [6], [7], [8] and Perf tool can be used to apply
+> > CAP_PERFMON capability for secure system performance monitoring and
+> > observability beyond the scope permitted by the system wide
+> > perf_event_paranoid kernel setting [9] and below are the steps for
+> > evaluation:
+> > 
+> >   - patch, build and boot the kernel
+> >   - patch, build Perf tool e.g. to /home/user/perf
+> >   ...
+> >   # git clone git://git.kernel.org/pub/scm/libs/libcap/libcap.git libcap
+> >   # pushd libcap
+> >   # patch libcap/include/uapi/linux/capabilities.h with [PATCH 1]
+> >   # make
+> >   # pushd progs
+> >   # ./setcap "cap_perfmon,cap_sys_ptrace,cap_syslog=ep" /home/user/perf
+> >   # ./setcap -v "cap_perfmon,cap_sys_ptrace,cap_syslog=ep" /home/user/perf
+> >   /home/user/perf: OK
+> >   # ./getcap /home/user/perf
+> >   /home/user/perf = cap_sys_ptrace,cap_syslog,cap_perfmon+ep
+> >   # echo 2 > /proc/sys/kernel/perf_event_paranoid
+> >   # cat /proc/sys/kernel/perf_event_paranoid 
+> >   2
+> >   ...
+> >   $ /home/user/perf top
+> >     ... works as expected ...
+> >   $ cat /proc/`pidof perf`/status
+> >   Name:	perf
+> >   Umask:	0002
+> >   State:	S (sleeping)
+> >   Tgid:	2958
+> >   Ngid:	0
+> >   Pid:	2958
+> >   PPid:	9847
+> >   TracerPid:	0
+> >   Uid:	500	500	500	500
+> >   Gid:	500	500	500	500
+> >   FDSize:	256
+> >   ...
+> >   CapInh:	0000000000000000
+> >   CapPrm:	0000004400080000
+> >   CapEff:	0000004400080000 => 01000100 00000000 00001000 00000000 00000000
+> >                                      cap_perfmon,cap_sys_ptrace,cap_syslog
+> >   CapBnd:	0000007fffffffff
+> >   CapAmb:	0000000000000000
+> >   NoNewPrivs:	0
+> >   Seccomp:	0
+> >   Speculation_Store_Bypass:	thread vulnerable
+> >   Cpus_allowed:	ff
+> >   Cpus_allowed_list:	0-7
+> >   ...
+> > 
+> > Usage of cap_perfmon effectively avoids unused credentials excess:
+> > 
+> > - with cap_sys_admin:
+> >   CapEff:	0000007fffffffff => 01111111 11111111 11111111 11111111 11111111
+> > 
+> > - with cap_perfmon:
+> >   CapEff:	0000004400080000 => 01000100 00000000 00001000 00000000 00000000
+> >                                     38   34               19
+> >                                perfmon   syslog           sys_ptrace
+> > 
+> > ---
+> > [1] https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html
+> > [2] http://man7.org/linux/man-pages/man7/capabilities.7.html
+> > [3] https://www.kernel.org/doc/html/latest/process/embargoed-hardware-issues.html
+> > [4] https://www.kernel.org/doc/html/latest/admin-guide/security-bugs.html
+> > [5] https://www.kernel.org/doc/html/latest/process/management-style.html#decisions
+> > [6] http://man7.org/linux/man-pages/man8/setcap.8.html
+> > [7] https://git.kernel.org/pub/scm/libs/libcap/libcap.git
+> > [8] https://sites.google.com/site/fullycapable/, posix_1003.1e-990310.pdf
+> > [9] http://man7.org/linux/man-pages/man2/perf_event_open.2.html
+> > 
+> _______________________________________________
+> Intel-gfx mailing list
+> Intel-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
