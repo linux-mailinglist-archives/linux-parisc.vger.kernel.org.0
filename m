@@ -2,67 +2,171 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 029181781B1
-	for <lists+linux-parisc@lfdr.de>; Tue,  3 Mar 2020 20:02:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42837178733
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Mar 2020 01:50:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388073AbgCCSF1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 3 Mar 2020 13:05:27 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:43810 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388186AbgCCSF0 (ORCPT
+        id S1727903AbgCDAuc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 3 Mar 2020 19:50:32 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:41043 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727958AbgCDAub (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 3 Mar 2020 13:05:26 -0500
-Received: by mail-il1-f196.google.com with SMTP id o18so3565144ilg.10
-        for <linux-parisc@vger.kernel.org>; Tue, 03 Mar 2020 10:05:26 -0800 (PST)
+        Tue, 3 Mar 2020 19:50:31 -0500
+Received: by mail-pg1-f193.google.com with SMTP id b1so128414pgm.8;
+        Tue, 03 Mar 2020 16:50:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
-        b=d57E+TjYnXBS5utFthqgjCzs5gzf2YK9WH5NGkJridOgtqp3wVAUPcyEBFtGiCER54
-         6WxsYg6g2KxpFGatddSsjazp+hKl/oyJ5OKJ2uC9KJtcATRNo83GGTHGVPilGREyURxn
-         Z1AWyRZRo/ls3PYs/eXVbfhGle8wc+vQa7nE8xliAofU32+n8Bxn9AxGOega5QSRynXM
-         n+wqCsJmmPzJF44r5ZkDoUidFxTZjorvsWAVZOXOixMNlr7ypx7VaGK/zals4SMfkjZx
-         EJ/HJ18Xw2Sxnr6D7Xe4VCnARhfWRa8yWu1eyAm8GayQVmhlaVfsPmlIK6SzOSEAMnfJ
-         gSBQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=4i5Gs/Sv4Lt/cK2/XelvZbksB2WGpOmI+ebmeTuAw3k=;
+        b=Zgrfj9HWQDfYBP/g4bKX+LsQ/AYbxX7PBhz1sV1WAm+fX9wrOTRaClFlFuHNpRQE9M
+         RHgEz3DVUW05rnuAbH/88rV/PCAxRA+fbytqMHG2cOTX3kqCb5i0KhP4cQxAEHBC2TA1
+         ZZoGCbwi5G2dVeLji7lSQdjUkgpHw59IyHWWShK9xkIW3xyk7fXRu9b/Aq230l4+Klb2
+         YJ0RJ8QNevuwjQLfwHOiGm52WcJSaVqUOEZuxFjC5o89D7SVibB64t1dYH/FktVanrNE
+         pZduxRXVKD+y/rxHsPdEJ3fHazausM0elvIlmwiUN7xkgUkEPuYlL2fqU/Io9itENrXA
+         J4Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
-        b=A8GFAxXradwxLUhFh10GR4PHBmfGEHcV7bMPec7CujM3VOc9lEWNc4r723wkbgU20e
-         O2cGM3IuTZ7rv6CWi2hRF4QYlZqIvl69EsCOg2QR0PvT2SkI5gu+fQJIkQHoWIVdlvqE
-         cZdcDWIxot1gGKtbiCbpiSlclQQA0cGPQC/TK7KZ01HOGfAiITYbNKu1pWM+XPqValEP
-         IgyWhMKqruIZpQjgEW5DdQT+9eVqesBE+PZjKsMEJRC0xMkKK76hJ4KYQCi6LNx+4dci
-         TCE0iP52LKq0FvZQS5+8FDxJ8nE/dUB6wMRFTKaB/lUJM+xor5yFjFwPIMHM+SJtoa2A
-         gc4w==
-X-Gm-Message-State: ANhLgQ3c/98/kzOHE+GsHWzg+5ERODAFcEeQrp31NjH47sj4xSY1Jn1J
-        lJr1qLiPJfgb8OKg30wksAoBjUQBSm2wfhodjaCZW//5
-X-Google-Smtp-Source: ADFU+vtyrSYL7z1VjGtve+7Jvf5g505V9ftsCJZgfM7HFZ1owQBkqegEuKlaj0Ww/sjlhpmjswSK17r3U09Gjdqh6DY=
-X-Received: by 2002:a92:d2c5:: with SMTP id w5mr256087ilg.196.1583258726270;
- Tue, 03 Mar 2020 10:05:26 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a02:9f04:0:0:0:0:0 with HTTP; Tue, 3 Mar 2020 10:05:25 -0800 (PST)
-Reply-To: dr.challynoah@gmail.com
-From:   DR CHALLY NOAH <mayorabrahamedge404@gmail.com>
-Date:   Tue, 3 Mar 2020 19:05:25 +0100
-Message-ID: <CALqVJWdXs9icUMy7WWz15chUBSHbuLgeF4vj_6SPuetvkiJYVw@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=4i5Gs/Sv4Lt/cK2/XelvZbksB2WGpOmI+ebmeTuAw3k=;
+        b=iVL2bLLw04H/rl52Ci51GNQ04MZR3Et6W/TqzZHCsYgG8hbACR6aQTR8nSWK3EPVrx
+         fEHtNaJcespl7PoHXLW75HCpQW3szfaKZ4hGXL5c8/m19+9krT4XD1czrFJGZdoHJ1y/
+         cJ37Ugwrbw+VW86PzCPqqnMYHzaQgy6p2CRyrN/Nmz0EDwLDEX2xaQVNB9nddIE3E78g
+         53aHCuM6rYRpSHZgWw6dwomS5AU2sxqLTSeoSrdoQZC+m93+xincEYC+5GCxJIFxiAFo
+         ZRR0xyr9jzhQZuvLq52NufPCGGNoWfuMS6w9d5wa3M4XlRpgWT0Myl7AUy661T3EBg67
+         GX0g==
+X-Gm-Message-State: ANhLgQ2FKFhy+wucFg0IM1CSfdbk37bjjf5kdYRQSb2lHo6hZi2EZVb9
+        SwhuFL8GSr9ggIBUUfpuQH+I3q9v
+X-Google-Smtp-Source: ADFU+vto7qeGWxTXYn+Nw8Dl/kD7gogfFj7/Si3GbeJXMDT8c5Kn0G0k6Yd1nqEBHaUMWyVCAjOkYA==
+X-Received: by 2002:a63:cf14:: with SMTP id j20mr130606pgg.67.1583283030448;
+        Tue, 03 Mar 2020 16:50:30 -0800 (PST)
+Received: from localhost.localdomain ([106.51.232.35])
+        by smtp.gmail.com with ESMTPSA id d186sm7555662pfc.8.2020.03.03.16.50.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2020 16:50:29 -0800 (PST)
+From:   afzal mohammed <afzal.mohd.ma@gmail.com>
+To:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     afzal mohammed <afzal.mohd.ma@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>
+Subject: [PATCH v3] parisc: Replace setup_irq() by request_irq()
+Date:   Wed,  4 Mar 2020 06:20:24 +0530
+Message-Id: <20200304005025.5179-1-afzal.mohd.ma@gmail.com>
+X-Mailer: git-send-email 2.18.0
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello Dear,
-What Have Kept You Waiting To Claim Your $600,000.00 USD Compensation Award?
-This said fund was issued out by the UNITED NATIONS To compensate
-you.Please If You Have Not Claim Your Fund (Award),Kindly contact me
-at   DR.CHALLYNOAH@GMAIL.COM   for further details on how to proceed your
-fund (award)release to you or better still reply back Immediately You
-Receive This Information For An Urgent Confirmation And Release Of Your
-Fund To You Without Delays, as your email was listed among those to be
-compensated this year.Congratulations..
-Best Regards,
-Dr Chally Noah.
-Minister Of Finance On Foreign Remittance:
+request_irq() is preferred over setup_irq(). Invocations of setup_irq()
+occur after memory allocators are ready.
+
+Per tglx[1], setup_irq() existed in olden days when allocators were not
+ready by the time early interrupts were initialized.
+
+Hence replace setup_irq() by request_irq().
+
+[1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
+
+Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+---
+Hi parisc maintainers,
+
+if okay w/ this change, please consider taking it thr' your tree, else please
+let me know.
+
+Regards
+afzal
+
+Link to v2 & v1,
+[v2] https://lkml.kernel.org/r/cover.1582471508.git.afzal.mohd.ma@gmail.com
+[v1] https://lkml.kernel.org/r/cover.1581478323.git.afzal.mohd.ma@gmail.com
+
+v3:
+ * Split out from tree wide series, as Thomas suggested to get it thr'
+	respective maintainers
+ * Modify pr_err displayed in case of error
+ * Re-arrange code & choose pr_err args as required to improve readability
+ * Remove irrelevant parts from commit message & improve
+ 
+v2:
+ * Replace pr_err("request_irq() on %s failed" by
+           pr_err("%s: request_irq() failed"
+ * Commit message massage
+
+ arch/parisc/kernel/irq.c | 22 ++++++----------------
+ drivers/parisc/eisa.c    |  8 ++------
+ 2 files changed, 8 insertions(+), 22 deletions(-)
+
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index e5fcfb70cc7c..e76c86619949 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -560,33 +560,23 @@ void do_cpu_irq_mask(struct pt_regs *regs)
+ 	goto out;
+ }
+ 
+-static struct irqaction timer_action = {
+-	.handler = timer_interrupt,
+-	.name = "timer",
+-	.flags = IRQF_TIMER | IRQF_PERCPU | IRQF_IRQPOLL,
+-};
+-
+-#ifdef CONFIG_SMP
+-static struct irqaction ipi_action = {
+-	.handler = ipi_interrupt,
+-	.name = "IPI",
+-	.flags = IRQF_PERCPU,
+-};
+-#endif
+-
+ static void claim_cpu_irqs(void)
+ {
++	unsigned long flags = IRQF_TIMER | IRQF_PERCPU | IRQF_IRQPOLL;
+ 	int i;
++
+ 	for (i = CPU_IRQ_BASE; i <= CPU_IRQ_MAX; i++) {
+ 		irq_set_chip_and_handler(i, &cpu_interrupt_type,
+ 					 handle_percpu_irq);
+ 	}
+ 
+ 	irq_set_handler(TIMER_IRQ, handle_percpu_irq);
+-	setup_irq(TIMER_IRQ, &timer_action);
++	if (request_irq(TIMER_IRQ, timer_interrupt, flags, "timer", NULL))
++		pr_err("Failed to register timer interrupt\n");
+ #ifdef CONFIG_SMP
+ 	irq_set_handler(IPI_IRQ, handle_percpu_irq);
+-	setup_irq(IPI_IRQ, &ipi_action);
++	if (request_irq(IPI_IRQ, ipi_interrupt, IRQF_PERCPU, "IPI", NULL))
++		pr_err("Failed to register IPI interrupt\n");
+ #endif
+ }
+ 
+diff --git a/drivers/parisc/eisa.c b/drivers/parisc/eisa.c
+index 9d00a24277aa..f96e5eaee87e 100644
+--- a/drivers/parisc/eisa.c
++++ b/drivers/parisc/eisa.c
+@@ -243,11 +243,6 @@ static irqreturn_t dummy_irq2_handler(int _, void *dev)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static struct irqaction irq2_action = {
+-	.handler = dummy_irq2_handler,
+-	.name = "cascade",
+-};
+-
+ static void init_eisa_pic(void)
+ {
+ 	unsigned long flags;
+@@ -335,7 +330,8 @@ static int __init eisa_probe(struct parisc_device *dev)
+ 	}
+ 
+ 	/* Reserve IRQ2 */
+-	setup_irq(2, &irq2_action);
++	if (request_irq(2, dummy_irq2_handler, 0, "cascade", NULL))
++		pr_err("Failed to request irq 2 (cascade)\n");
+ 	for (i = 0; i < 16; i++) {
+ 		irq_set_chip_and_handler(i, &eisa_interrupt_type,
+ 					 handle_simple_irq);
+-- 
+2.25.1
+
