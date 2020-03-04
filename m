@@ -2,74 +2,176 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ECED1787C5
-	for <lists+linux-parisc@lfdr.de>; Wed,  4 Mar 2020 02:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F3C41789F8
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Mar 2020 06:19:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387501AbgCDBzV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 3 Mar 2020 20:55:21 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:38238 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387406AbgCDBzV (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 3 Mar 2020 20:55:21 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 90AF515AD9731;
-        Tue,  3 Mar 2020 17:55:18 -0800 (PST)
-Date:   Tue, 03 Mar 2020 17:55:17 -0800 (PST)
-Message-Id: <20200303.175517.2166029762450403219.davem@davemloft.net>
-To:     leon@kernel.org
-Cc:     kuba@kernel.org, leonro@mellanox.com, ajit.khaparde@broadcom.com,
-        aelior@marvell.com, bcm-kernel-feedback-list@broadcom.com,
-        leedom@chelsio.com, benve@cisco.com, claudiu.manoil@nxp.com,
-        kda@linux-powerpc.org, dchickles@marvell.com, opendmb@gmail.com,
-        fmanlunas@marvell.com, f.fainelli@gmail.com, fugang.duan@nxp.com,
-        _govind@gmx.com, GR-everest-linux-l2@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, ulli.kroll@googlemail.com,
-        hsweeten@visionengravers.com, linus.walleij@linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        id S1725861AbgCDFTd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 4 Mar 2020 00:19:33 -0500
+Received: from foss.arm.com ([217.140.110.172]:55908 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725283AbgCDFTc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 4 Mar 2020 00:19:32 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3EE0E31B;
+        Tue,  3 Mar 2020 21:19:31 -0800 (PST)
+Received: from [10.163.1.88] (unknown [10.163.1.88])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5DDBA3F6CF;
+        Tue,  3 Mar 2020 21:19:16 -0800 (PST)
+Subject: Re: [RFC 1/3] mm/vma: Define a default value for
+ VM_DATA_DEFAULT_FLAGS
+To:     Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
+Cc:     Richard Henderson <rth@twiddle.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Salter <msalter@redhat.com>, Guo Ren <guoren@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Brian Cain <bcain@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        Nick Hu <nickhu@andestech.com>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guan Xuetao <gxt@pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jeff Dike <jdike@addtoit.com>, Chris Zankel <chris@zankel.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        leoyang.li@nxp.com, madalin.bucur@nxp.com,
-        michael.chan@broadcom.com, netdev@vger.kernel.org,
-        pantelis.antoniou@gmail.com, pkaustub@cisco.com,
-        prashant@broadcom.com, rvatsavayi@caviumnetworks.com,
-        rmody@marvell.com, rrichter@marvell.com, sburla@marvell.com,
-        sathya.perla@broadcom.com, siva.kallam@broadcom.com,
-        somnath.kotur@broadcom.com, sriharsha.basavapatna@broadcom.com,
-        skalluru@marvell.com, sgoutham@marvell.com, vishal@chelsio.com
-Subject: Re: [PATCH net-next 00/23] Clean driver, module and FW versions
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200301144457.119795-1-leon@kernel.org>
-References: <20200301144457.119795-1-leon@kernel.org>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org
+References: <1583131666-15531-1-git-send-email-anshuman.khandual@arm.com>
+ <1583131666-15531-2-git-send-email-anshuman.khandual@arm.com>
+ <b243be54-7b5e-c6e9-fb68-46369d7d7aa4@suse.cz>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <8b0f4c1b-f693-e139-4f66-ee4e1e88b95c@arm.com>
+Date:   Wed, 4 Mar 2020 10:49:13 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <b243be54-7b5e-c6e9-fb68-46369d7d7aa4@suse.cz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 03 Mar 2020 17:55:20 -0800 (PST)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Leon Romanovsky <leon@kernel.org>
-Date: Sun,  1 Mar 2020 16:44:33 +0200
 
-> From: Leon Romanovsky <leonro@mellanox.com>
-> 
-> Hi,
-> 
-> This is second batch of the series which removes various static versions
-> in favour of globaly defined Linux kernel version.
-> 
-> The first part with better cover letter can be found here
-> https://lore.kernel.org/lkml/20200224085311.460338-1-leon@kernel.org
-> 
-> The code is based on
-> 68e2c37690b0 ("Merge branch 'hsr-several-code-cleanup-for-hsr-module'")
-> 
-> and WIP branch is
-> https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=ethtool
 
-Series applied, thanks.
+On 03/03/2020 10:55 PM, Vlastimil Babka wrote:
+> On 3/2/20 7:47 AM, Anshuman Khandual wrote:
+>> There are many platforms with exact same value for VM_DATA_DEFAULT_FLAGS
+>> This creates a default value for VM_DATA_DEFAULT_FLAGS in line with the
+>> existing VM_STACK_DEFAULT_FLAGS. While here, also define some more macros
+>> with standard VMA access flag combinations that are used frequently across
+>> many platforms. Apart from simplification, this reduces code duplication
+>> as well.
+>>
+>> Cc: Richard Henderson <rth@twiddle.net>
+>> Cc: Vineet Gupta <vgupta@synopsys.com>
+>> Cc: Russell King <linux@armlinux.org.uk>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Mark Salter <msalter@redhat.com>
+>> Cc: Guo Ren <guoren@kernel.org>
+>> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+>> Cc: Brian Cain <bcain@codeaurora.org>
+>> Cc: Tony Luck <tony.luck@intel.com>
+>> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+>> Cc: Michal Simek <monstr@monstr.eu>
+>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>> Cc: Paul Burton <paulburton@kernel.org>
+>> Cc: Nick Hu <nickhu@andestech.com>
+>> Cc: Ley Foon Tan <ley.foon.tan@intel.com>
+>> Cc: Jonas Bonn <jonas@southpole.se>
+>> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+>> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+>> Cc: Rich Felker <dalias@libc.org>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Guan Xuetao <gxt@pku.edu.cn>
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Cc: Jeff Dike <jdike@addtoit.com>
+>> Cc: Chris Zankel <chris@zankel.net>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: linux-alpha@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: linux-snps-arc@lists.infradead.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-c6x-dev@linux-c6x.org
+>> Cc: uclinux-h8-devel@lists.sourceforge.jp
+>> Cc: linux-hexagon@vger.kernel.org
+>> Cc: linux-ia64@vger.kernel.org
+>> Cc: linux-m68k@lists.linux-m68k.org
+>> Cc: linux-mips@vger.kernel.org
+>> Cc: nios2-dev@lists.rocketboards.org
+>> Cc: openrisc@lists.librecores.org
+>> Cc: linux-parisc@vger.kernel.org
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: linux-riscv@lists.infradead.org
+>> Cc: linux-s390@vger.kernel.org
+>> Cc: linux-sh@vger.kernel.org
+>> Cc: sparclinux@vger.kernel.org
+>> Cc: linux-um@lists.infradead.org
+>> Cc: linux-xtensa@linux-xtensa.org
+>> Cc: linux-mm@kvack.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com
+> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> 
+> Nit:
+> 
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index b0e53ef13ff1..7a764ae6ab68 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -342,6 +342,21 @@ extern unsigned int kobjsize(const void *objp);
+>>  /* Bits set in the VMA until the stack is in its final location */
+>>  #define VM_STACK_INCOMPLETE_SETUP	(VM_RAND_READ | VM_SEQ_READ)
+>>  
+>> +#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
+>> +
+>> +/* Common data flag combinations */
+>> +#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
+>> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+>> +#define VM_DATA_FLAGS_NON_EXEC	(VM_READ | VM_WRITE | VM_MAYREAD | \
+>> +				 VM_MAYWRITE | VM_MAYEXEC)
+>> +#define VM_DATA_FLAGS_EXEC	(VM_READ | VM_WRITE | VM_EXEC | \
+>> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+>> +
+>> +#ifndef VM_DATA_DEFAULT_FLAGS		/* arch can override this */
+>> +#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
+>> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+> 
+> Should you use VM_DATA_FLAGS_EXEC here? Yeah one more macro to expand, but it's
+> right above this.
+
+Sure, can do that.
+
+> 
+>> +#endif
+>> +
+>>  #ifndef VM_STACK_DEFAULT_FLAGS		/* arch can override this */
+>>  #define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
+>>  #endif
+>>
+> 
+> 
+> 
