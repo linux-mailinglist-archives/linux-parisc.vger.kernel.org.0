@@ -2,173 +2,72 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C312182E5D
-	for <lists+linux-parisc@lfdr.de>; Thu, 12 Mar 2020 11:56:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74956183839
+	for <lists+linux-parisc@lfdr.de>; Thu, 12 Mar 2020 19:07:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726731AbgCLK4E (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 12 Mar 2020 06:56:04 -0400
-Received: from ozlabs.org ([203.11.71.1]:35749 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725978AbgCLK4D (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 12 Mar 2020 06:56:03 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 48dQjL3pfwz9sPF;
-        Thu, 12 Mar 2020 21:55:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1584010558;
-        bh=72/MkVf9VVMOXQXQBCEOJd5iIUWgKkmEQGqh1LToq2c=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=kjtDKke2a24ahWnaI2Uj0G4Fe2Y+Jmmv/GYwuEOLFEW9uRKLJ/Eh8hY/uIvPOkWOq
-         hSpbFhZ+nkMkq9HnJFD5n60KJODzNOkbfNQ2xKBvxmtGjcLFu/cP0AF6WyLXOSMULb
-         6fFjUvKvb8/nZ+iPRU20W0VkcxW1QK6SeQvdds5ZfmEH3nf/wYggGS/dPu8fp0XU/0
-         5piT2dBaqMVbWuvgxSVjBFiUYMtS2zI6exgAeql41Nme4eoBMZr+hItq7bW8gr3rM3
-         jCRuhb1gAjdGh5ftRaRGO6Z5fFXzHCOWGuRXdE2RxOkjZdMiy8L8pyOPyQMC+hwaj9
-         VAqGftLnfpYYg==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [RESEND PATCH v2 1/9] iomap: Constify ioreadX() iomem argument (as in generic implementation)
-In-Reply-To: <20200219175007.13627-2-krzk@kernel.org>
-References: <20200219175007.13627-1-krzk@kernel.org> <20200219175007.13627-2-krzk@kernel.org>
-Date:   Thu, 12 Mar 2020 21:55:44 +1100
-Message-ID: <87ftedj0zz.fsf@mpe.ellerman.id.au>
+        id S1726508AbgCLSHQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 12 Mar 2020 14:07:16 -0400
+Received: from sonic311-14.consmr.mail.bf2.yahoo.com ([74.6.131.124]:38704
+        "EHLO sonic311-14.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726328AbgCLSHQ (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 12 Mar 2020 14:07:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584036435; bh=ntCsvVlsVYNXsouoo59ZH21v1wHZ5nZJzCG4NsnkusM=; h=Date:From:Reply-To:Subject:References:From:Subject; b=D7FXcQjq5yGcy+9UIzGvT1auReeucJL/vbt5gI9v1BvxEUiXsH7PXBOKlF2c7onZaQ5lext8c/n4/H0eJE6l0B4524Q/wgMaPPa93cjRGxF3dUjPzeHUHvJp8yze8c+0chOflgmlPog66Q16OAymIRNO2RXG7ALiVaXricMM4PSwy4UbOWip8ZuP305aOzP/V1NlG8D1cIlOIx4SUp4qTiuE6a3e/dW6+5zHwpZZ3DroaN4wRvvotxDvejnN5OoZOEPCK3b15saARpKvYcf6YsC12WqOl3ml6VIE9lQK12fIu8yQnTDkd1as/B8HiVs0s5U701WJUBCz9XrFcHG+6g==
+X-YMail-OSG: w8elTssVM1kLekshqqqpG5dwuLt4rZsZL2SOh1LrJwn5wlfYbp4Oo6MgbqkCpHK
+ .uhAx7852VfKzGg4I6ikFIPUUBk5PEzxIY4c3lcoAQoqzUpGLjINEB35DIrvDvdgIK4EmWS6XUr4
+ yx9tAnzjz9DeC90jwHCw7T904y1bc.NRvrDrAsl5ebjyVwAdbV5SQHYve4OTKYbxb59Z3TXTShTX
+ MDZizxeBoLca.BKF4xZdH_Kejh__hhIAWf9iWfhYccAxyExubF6ANJt6oWoTVDnBrimLvpLHdZEp
+ RmKhIsSAk8AOnhUMmIkhP7Zd.VI8nw3Ut58Beo1GStV_xdfDviaK4tRt3stftTp3FkF3CZrYbZF.
+ r1SFu86mIGN_.9VipNxVUyrE_zCj4IFw9FKYgBOkRXJDFXtX9VhG4NqUpIVlYq5eJj46h_KnAP0w
+ _qfkNKqpPQdcSfsB44acrLOjPKRto6mlqTqbk5UL4mScdHzKK0pyGJ6fpRXijbaZDSY3ixAbvWqb
+ 5FaroBfU8BN_3ORfSrWASolNAy1aTf_mai07nQuGKopYiv.M_x2iots6GKLHfiXI19Ny6NKcyI0u
+ DpMrRMdflra3PIozB8lTnLEHUIs7ztYn9PCUOxyfXaf6zpCMQQF5zwbFDSOQg87817yBbR07s5B0
+ L8RFXiHgbLFbOe_wX7MmhSDk5M99JSA7j02cw46dbsTMdZPplAxBjyAuBuTYb4Ttnu_tsrVxCaao
+ tGsJix6_.Pranuw36rMEpzcih67sQTm58EA5xVAHpYpk6Mf0CAyXQA.yjElilQ5cGHWUcVV8Xopp
+ 1SW7hPCbT1CdPNm1BPRkKtvgHCyw3.ZWmB5iFxsaut04N.SQHGDrGjgNkH6tXu5UHf9z6Yt8nkQZ
+ MGOo9nQ.ZhohduOcIKd6pY0ou6DsDlz9gbfsR7xWJ4Uk_M6tFhvbk.Fc37CQqA_XzOLDUTNVuV3H
+ QglOo0Ca9zTZCX0SddxvMDmw3DaOh47uNvcOmo7QQFeGnZPiA3wmpUOTbxpYMSQyxPvNnpLKLGQj
+ Uj_VvsHAUTHpYzYTg6mtpIkPfCRp0RnOBXbTmxOLlfxGkfxQOiQMtHzpQqVMIRNisnsQezhUObh3
+ exWiIUOVdVclhvZxqolh4UJakqUeIf4t9t0VCc5_cORI1RjA.7fUc1WCUNWkr.p1LMDcH0Fq.CfH
+ 61_A3llKbtQ5e3f7vhA5IguHm6Lon_x9VSjMkUEh2avxD6za.k8JIDEEvcQqqybbsBhsTHkPvv8t
+ RppHQT8B8zOkRsGnXaKXToFZECo6IZ88SHBZfZZ01wMvPbiLdmYMe16dLUJh1Y9rm3tT_7g--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.bf2.yahoo.com with HTTP; Thu, 12 Mar 2020 18:07:15 +0000
+Date:   Thu, 12 Mar 2020 18:07:14 +0000 (UTC)
+From:   "Hello My Dear Beloved Friend," <akanbiakinbobola1@gmail.com>
+Reply-To: miss.aminatouzainab@gmail.com
+Message-ID: <666436464.2618536.1584036434795@mail.yahoo.com>
+Subject: WITH DUE RESPECT YOUR ATTENTION IS VERY VERY NEEDED URGENT.
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <666436464.2618536.1584036434795.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:73.0) Gecko/20100101 Firefox/73.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Krzysztof Kozlowski <krzk@kernel.org> writes:
-> diff --git a/arch/powerpc/kernel/iomap.c b/arch/powerpc/kernel/iomap.c
-> index 5ac84efc6ede..9fe4fb3b08aa 100644
-> --- a/arch/powerpc/kernel/iomap.c
-> +++ b/arch/powerpc/kernel/iomap.c
-> @@ -15,23 +15,23 @@
->   * Here comes the ppc64 implementation of the IOMAP 
->   * interfaces.
->   */
-> -unsigned int ioread8(void __iomem *addr)
-> +unsigned int ioread8(const void __iomem *addr)
->  {
->  	return readb(addr);
->  }
-> -unsigned int ioread16(void __iomem *addr)
-> +unsigned int ioread16(const void __iomem *addr)
->  {
->  	return readw(addr);
->  }
-> -unsigned int ioread16be(void __iomem *addr)
-> +unsigned int ioread16be(const void __iomem *addr)
->  {
->  	return readw_be(addr);
->  }
-> -unsigned int ioread32(void __iomem *addr)
-> +unsigned int ioread32(const void __iomem *addr)
->  {
->  	return readl(addr);
->  }
-> -unsigned int ioread32be(void __iomem *addr)
-> +unsigned int ioread32be(const void __iomem *addr)
->  {
->  	return readl_be(addr);
->  }
-> @@ -41,27 +41,27 @@ EXPORT_SYMBOL(ioread16be);
->  EXPORT_SYMBOL(ioread32);
->  EXPORT_SYMBOL(ioread32be);
->  #ifdef __powerpc64__
-> -u64 ioread64(void __iomem *addr)
-> +u64 ioread64(const void __iomem *addr)
->  {
->  	return readq(addr);
->  }
-> -u64 ioread64_lo_hi(void __iomem *addr)
-> +u64 ioread64_lo_hi(const void __iomem *addr)
->  {
->  	return readq(addr);
->  }
-> -u64 ioread64_hi_lo(void __iomem *addr)
-> +u64 ioread64_hi_lo(const void __iomem *addr)
->  {
->  	return readq(addr);
->  }
-> -u64 ioread64be(void __iomem *addr)
-> +u64 ioread64be(const void __iomem *addr)
->  {
->  	return readq_be(addr);
->  }
-> -u64 ioread64be_lo_hi(void __iomem *addr)
-> +u64 ioread64be_lo_hi(const void __iomem *addr)
->  {
->  	return readq_be(addr);
->  }
-> -u64 ioread64be_hi_lo(void __iomem *addr)
-> +u64 ioread64be_hi_lo(const void __iomem *addr)
->  {
->  	return readq_be(addr);
->  }
-> @@ -139,15 +139,15 @@ EXPORT_SYMBOL(iowrite64be_hi_lo);
->   * FIXME! We could make these do EEH handling if we really
->   * wanted. Not clear if we do.
->   */
-> -void ioread8_rep(void __iomem *addr, void *dst, unsigned long count)
-> +void ioread8_rep(const void __iomem *addr, void *dst, unsigned long count)
->  {
->  	readsb(addr, dst, count);
->  }
-> -void ioread16_rep(void __iomem *addr, void *dst, unsigned long count)
-> +void ioread16_rep(const void __iomem *addr, void *dst, unsigned long count)
->  {
->  	readsw(addr, dst, count);
->  }
-> -void ioread32_rep(void __iomem *addr, void *dst, unsigned long count)
-> +void ioread32_rep(const void __iomem *addr, void *dst, unsigned long count)
->  {
->  	readsl(addr, dst, count);
->  }
 
-This looks OK to me.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-cheers
+
+ATTENTION: DEAR BENEFICIARY CONGRATULATIONS TO YOU,
+
+I RECEIVE YOUR CONTENT OF YOUR EMAIL FROM FEDEX ATM CARD OFFICES YOUR FUNDS SUM OF $10.500,000, 000. MILLION DOLLARS, HAS DISCOVER HERE AFTER THE BOARD OF DIRECTORS MEETINGS, THE UNITED NATIONS GOVERNMENT HAVE DECIDED TO ISSUE YOU YOUR (ATM CARD) VALUED @ TEN MILLION FIVE HUNDRED THOUSAND DOLLARS ($) COMPENSATION FUND THROUGH THIS (ATM) CARD.
+
+THIS IS TO BRING TO YOUR NOTICE THAT YOUR VALUED SUM OF 10.5 MILLION DOLLARS HAS BEING CREDITED IN YOUR NAME AS BENEFICIARY TO THIS (ATM CARD), AND HAS BEEN HANDLE TO THE FOREIGN REMITTANCE DEPARTMENT TO SEND IT TO YOU IN YOUR FAVOR IMMEDIATELY WITHOUT ANY DELAY,
+
+YOU HAVE ACCESS TO MAKE DAILY WITHDRAWALS OF ($5,500) UNITED STATE DOLLARS DAILY.
+
+WE RECEIVE YOUR INFORMATIONS AND YOUR HOME ADDRESS OF YOUR COUNTRY AND WE WILL SEND TO YOU YOUR (ATM CARD), WE HAVE ALSO RECEIVED A SIGNAL FROM THE SWISS WORLD BANK TO TRANSFER YOUR BELONGING (ATM) TO YOU WITHIN ONE WEEK, WITHOUT ANY DELAY AS WE RECORD.
+
+WE HAVE JUST FINISHED OUR ANNUAL GENERAL MEETING WITH BANK OF AMERICA (BOA).
+
+FOR MORE INFORMATION PLEASE GET BACK TO ME AS SOON AS POSSIBLE.
+
+YOURS
+SINCERELY.
+
+DIRECTOR FEDEX SERVICE (USA).
+MRS. AMINATOU. Z. MAKEL.
