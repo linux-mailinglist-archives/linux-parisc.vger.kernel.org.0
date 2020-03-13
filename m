@@ -2,72 +2,89 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74956183839
-	for <lists+linux-parisc@lfdr.de>; Thu, 12 Mar 2020 19:07:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74468184709
+	for <lists+linux-parisc@lfdr.de>; Fri, 13 Mar 2020 13:39:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726508AbgCLSHQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 12 Mar 2020 14:07:16 -0400
-Received: from sonic311-14.consmr.mail.bf2.yahoo.com ([74.6.131.124]:38704
-        "EHLO sonic311-14.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726328AbgCLSHQ (ORCPT
+        id S1726605AbgCMMj2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 13 Mar 2020 08:39:28 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:40649 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726216AbgCMMj1 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 12 Mar 2020 14:07:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584036435; bh=ntCsvVlsVYNXsouoo59ZH21v1wHZ5nZJzCG4NsnkusM=; h=Date:From:Reply-To:Subject:References:From:Subject; b=D7FXcQjq5yGcy+9UIzGvT1auReeucJL/vbt5gI9v1BvxEUiXsH7PXBOKlF2c7onZaQ5lext8c/n4/H0eJE6l0B4524Q/wgMaPPa93cjRGxF3dUjPzeHUHvJp8yze8c+0chOflgmlPog66Q16OAymIRNO2RXG7ALiVaXricMM4PSwy4UbOWip8ZuP305aOzP/V1NlG8D1cIlOIx4SUp4qTiuE6a3e/dW6+5zHwpZZ3DroaN4wRvvotxDvejnN5OoZOEPCK3b15saARpKvYcf6YsC12WqOl3ml6VIE9lQK12fIu8yQnTDkd1as/B8HiVs0s5U701WJUBCz9XrFcHG+6g==
-X-YMail-OSG: w8elTssVM1kLekshqqqpG5dwuLt4rZsZL2SOh1LrJwn5wlfYbp4Oo6MgbqkCpHK
- .uhAx7852VfKzGg4I6ikFIPUUBk5PEzxIY4c3lcoAQoqzUpGLjINEB35DIrvDvdgIK4EmWS6XUr4
- yx9tAnzjz9DeC90jwHCw7T904y1bc.NRvrDrAsl5ebjyVwAdbV5SQHYve4OTKYbxb59Z3TXTShTX
- MDZizxeBoLca.BKF4xZdH_Kejh__hhIAWf9iWfhYccAxyExubF6ANJt6oWoTVDnBrimLvpLHdZEp
- RmKhIsSAk8AOnhUMmIkhP7Zd.VI8nw3Ut58Beo1GStV_xdfDviaK4tRt3stftTp3FkF3CZrYbZF.
- r1SFu86mIGN_.9VipNxVUyrE_zCj4IFw9FKYgBOkRXJDFXtX9VhG4NqUpIVlYq5eJj46h_KnAP0w
- _qfkNKqpPQdcSfsB44acrLOjPKRto6mlqTqbk5UL4mScdHzKK0pyGJ6fpRXijbaZDSY3ixAbvWqb
- 5FaroBfU8BN_3ORfSrWASolNAy1aTf_mai07nQuGKopYiv.M_x2iots6GKLHfiXI19Ny6NKcyI0u
- DpMrRMdflra3PIozB8lTnLEHUIs7ztYn9PCUOxyfXaf6zpCMQQF5zwbFDSOQg87817yBbR07s5B0
- L8RFXiHgbLFbOe_wX7MmhSDk5M99JSA7j02cw46dbsTMdZPplAxBjyAuBuTYb4Ttnu_tsrVxCaao
- tGsJix6_.Pranuw36rMEpzcih67sQTm58EA5xVAHpYpk6Mf0CAyXQA.yjElilQ5cGHWUcVV8Xopp
- 1SW7hPCbT1CdPNm1BPRkKtvgHCyw3.ZWmB5iFxsaut04N.SQHGDrGjgNkH6tXu5UHf9z6Yt8nkQZ
- MGOo9nQ.ZhohduOcIKd6pY0ou6DsDlz9gbfsR7xWJ4Uk_M6tFhvbk.Fc37CQqA_XzOLDUTNVuV3H
- QglOo0Ca9zTZCX0SddxvMDmw3DaOh47uNvcOmo7QQFeGnZPiA3wmpUOTbxpYMSQyxPvNnpLKLGQj
- Uj_VvsHAUTHpYzYTg6mtpIkPfCRp0RnOBXbTmxOLlfxGkfxQOiQMtHzpQqVMIRNisnsQezhUObh3
- exWiIUOVdVclhvZxqolh4UJakqUeIf4t9t0VCc5_cORI1RjA.7fUc1WCUNWkr.p1LMDcH0Fq.CfH
- 61_A3llKbtQ5e3f7vhA5IguHm6Lon_x9VSjMkUEh2avxD6za.k8JIDEEvcQqqybbsBhsTHkPvv8t
- RppHQT8B8zOkRsGnXaKXToFZECo6IZ88SHBZfZZ01wMvPbiLdmYMe16dLUJh1Y9rm3tT_7g--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.bf2.yahoo.com with HTTP; Thu, 12 Mar 2020 18:07:15 +0000
-Date:   Thu, 12 Mar 2020 18:07:14 +0000 (UTC)
-From:   "Hello My Dear Beloved Friend," <akanbiakinbobola1@gmail.com>
-Reply-To: miss.aminatouzainab@gmail.com
-Message-ID: <666436464.2618536.1584036434795@mail.yahoo.com>
-Subject: WITH DUE RESPECT YOUR ATTENTION IS VERY VERY NEEDED URGENT.
+        Fri, 13 Mar 2020 08:39:27 -0400
+Received: by mail-pg1-f193.google.com with SMTP id t24so4934871pgj.7;
+        Fri, 13 Mar 2020 05:39:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=82fh5ikZzwKUrDyxKdkrVpEoXp45d69vwfzZrK4OB9Y=;
+        b=pCaYXykyMMfYJbyQ038KVkMaZj5sVhcE1wI9n+DIITZBD1COymiWYDlC2+vi3BkDe5
+         i7kQH6pmbvgu8eANJjGjeZlLUrWXum7PjEX4DjLSqgLEctKva8qM21NXiDYAf/DDQQQE
+         L8rxZMTefdgs00WF8xnVu/Y2y8Mwji2lTJixln5E6Q0Vu8eaUMKHQUSworyvlNbGMb4w
+         IHqkVBWBsEsO6tOsMRMy+L9MW6A5kxdx//5JLo7nnCLfITirV2XeXYXFuyW/ULCzklY1
+         3TmT73s3kFSu496C7jyF5KB3W39w/czyDIczygu6zBAEbcnfy6NyYVEfe8Q2rCDwcn7K
+         XoiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=82fh5ikZzwKUrDyxKdkrVpEoXp45d69vwfzZrK4OB9Y=;
+        b=lrrAXZ/ySUvrtMzKrk//L5Kt30ErUfhJjKOnPz2rypAQmYXQcp35oN6vb0ZvBTpEXi
+         uU4iblh2d89b2cCIm8IHxKFEk76G76ii6E7tWXD0jwhC9OqjiVk++fhTgM5tETx6eGni
+         R/JNvHiixn3SttHRK3JKn73dnGO7DMY4FLxIQJTQzeJd+aMVMcuYoK8AVyNT76vmnFNn
+         eQyPhLA2lUDXQp19vQgY1FebMsDcGDKjQ1tlCzBQZDo57xuEnLS2Y3HArSUmcQW4kCRR
+         B4y9leaOulBKnKGcsGW0d6F1i17qvtu+b8EkTs8LFoWA0L3yk4tt+ZFYmw9JcCzdbi8j
+         1/0Q==
+X-Gm-Message-State: ANhLgQ1CWs0+y+J2J/aRdq+/j/q2VulJHbTz4wfmSsppfzZrBRhpLGDH
+        E4GkIgfzfPkWIIkThVuxLTwPX+AZ
+X-Google-Smtp-Source: ADFU+vuImrtM0XybOBDGHeqm5s5eZa/2ofaKmPkRzVsqKSc+epZy8Mo8eq/uT1r3tLISxjO+lRdp6w==
+X-Received: by 2002:aa7:81d6:: with SMTP id c22mr5822084pfn.147.1584103166804;
+        Fri, 13 Mar 2020 05:39:26 -0700 (PDT)
+Received: from localhost ([106.51.232.35])
+        by smtp.gmail.com with ESMTPSA id t17sm57522622pgn.94.2020.03.13.05.39.25
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 13 Mar 2020 05:39:26 -0700 (PDT)
+Date:   Fri, 13 Mar 2020 18:09:24 +0530
+From:   afzal mohammed <afzal.mohd.ma@gmail.com>
+To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] parisc: Replace setup_irq() by request_irq()
+Message-ID: <20200313123924.GA7225@afzalpc>
+References: <20200304005025.5179-1-afzal.mohd.ma@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <666436464.2618536.1584036434795.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:73.0) Gecko/20100101 Firefox/73.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200304005025.5179-1-afzal.mohd.ma@gmail.com>
+User-Agent: Mutt/1.9.3 (2018-01-21)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Hi Helge Deller,
 
+On Wed, Mar 04, 2020 at 06:20:24AM +0530, afzal mohammed wrote:
+> request_irq() is preferred over setup_irq(). Invocations of setup_irq()
+> occur after memory allocators are ready.
+> 
+> Per tglx[1], setup_irq() existed in olden days when allocators were not
+> ready by the time early interrupts were initialized.
+> 
+> Hence replace setup_irq() by request_irq().
+> 
+> [1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
+> 
+> Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+> ---
+> Hi parisc maintainers,
+> 
+> if okay w/ this change, please consider taking it thr' your tree, else please
+> let me know.
 
+Seems you handle the pull requests for parisc, if this patch is okay,
+can you please consider for inclusion in your tree.
 
-
-ATTENTION: DEAR BENEFICIARY CONGRATULATIONS TO YOU,
-
-I RECEIVE YOUR CONTENT OF YOUR EMAIL FROM FEDEX ATM CARD OFFICES YOUR FUNDS SUM OF $10.500,000, 000. MILLION DOLLARS, HAS DISCOVER HERE AFTER THE BOARD OF DIRECTORS MEETINGS, THE UNITED NATIONS GOVERNMENT HAVE DECIDED TO ISSUE YOU YOUR (ATM CARD) VALUED @ TEN MILLION FIVE HUNDRED THOUSAND DOLLARS ($) COMPENSATION FUND THROUGH THIS (ATM) CARD.
-
-THIS IS TO BRING TO YOUR NOTICE THAT YOUR VALUED SUM OF 10.5 MILLION DOLLARS HAS BEING CREDITED IN YOUR NAME AS BENEFICIARY TO THIS (ATM CARD), AND HAS BEEN HANDLE TO THE FOREIGN REMITTANCE DEPARTMENT TO SEND IT TO YOU IN YOUR FAVOR IMMEDIATELY WITHOUT ANY DELAY,
-
-YOU HAVE ACCESS TO MAKE DAILY WITHDRAWALS OF ($5,500) UNITED STATE DOLLARS DAILY.
-
-WE RECEIVE YOUR INFORMATIONS AND YOUR HOME ADDRESS OF YOUR COUNTRY AND WE WILL SEND TO YOU YOUR (ATM CARD), WE HAVE ALSO RECEIVED A SIGNAL FROM THE SWISS WORLD BANK TO TRANSFER YOUR BELONGING (ATM) TO YOU WITHIN ONE WEEK, WITHOUT ANY DELAY AS WE RECORD.
-
-WE HAVE JUST FINISHED OUR ANNUAL GENERAL MEETING WITH BANK OF AMERICA (BOA).
-
-FOR MORE INFORMATION PLEASE GET BACK TO ME AS SOON AS POSSIBLE.
-
-YOURS
-SINCERELY.
-
-DIRECTOR FEDEX SERVICE (USA).
-MRS. AMINATOU. Z. MAKEL.
+Regards
+afzal
