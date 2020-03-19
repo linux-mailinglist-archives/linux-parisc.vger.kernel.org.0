@@ -2,62 +2,58 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E782A188355
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 Mar 2020 13:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5F218B988
+	for <lists+linux-parisc@lfdr.de>; Thu, 19 Mar 2020 15:38:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726917AbgCQMLq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 Mar 2020 08:11:46 -0400
-Received: from sonic307-2.consmr.mail.ne1.yahoo.com ([66.163.190.121]:33282
-        "EHLO sonic307-2.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726856AbgCQMLq (ORCPT
+        id S1727082AbgCSOiz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 19 Mar 2020 10:38:55 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:43995 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727279AbgCSOiy (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 Mar 2020 08:11:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584447105; bh=kcevCRoll2+Bsa3FDERpIV72LVcB1A4YV1b5N2AWYBk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Mm+amEABuqOJSxEgMJ/+nsPA/ert+WBMiBEAweTDEsx0N036ol3lmnkGKYWfx1C2elo7X2MRdIotA+1oIY3R33KgQYVWZPOomU9AK+h0oYREGlTeqU6XgPE8Hm4IMzgjKLifqesthHoal8PP8ZNv5J/Rs4JtryuX+7H6/zqwwNqpCB8gMjj1IOA11oJY10PxvQ8kq2gzmJYi8JFmaIovHksWCkDP2+khyElBjOAwmHHqoEgc3O6qHrU8EA5jJvBTCWL180Y1bbtqpD4D3F6cMF0bErwQBIDmrVVWDIWiJYdSEfKS2QbzeAXQJJg3unqJTzWmN7nkDdLYNJLh27eZ9g==
-X-YMail-OSG: meabeLkVM1kj4Qo1UjIKZPmYD57gR7gOgoKWAJhAgndzEP8FpYomA0vodT2zgoo
- 7sGgK.kVySqbLaFz.W_wkblfN0jMp5w9BAW3QXr902Dv_G_zrhaCZzbV5wPqfES1rrrtb6SPZI2E
- pznk8b9RjhucMPpNVS8_iBj4VWaQIr2RxGjq9ZKK4xgUkbNwEwq6EtwDvQHBuiYmue13bfoywmx2
- ClCujEeJt7CoC_GmYMMhTuOo.QP8U6.RI222je7MxVK7SrULUS6l_osTHUuteMP78NY7l.PDTFqI
- glY09FeQ0qMvYADM6VZ3OClo8hcWXRW3GaWATtORTGYFet9mMRuAwZWM5u_26HoYyw1zYKFGoPIC
- XB5nswWjghnuoqXAeGtZEsjRUJG9LhgJyQDkc6cL00qYKir_uCXfE1Yf7R1cImjyWjTnPgQeTSVw
- hOECgCxqGfQYp5I2rVed9WhPiBiRwnoZFuW3cafYUeDVyV4didE8dS2uk8cXhBKMqLOnTpkdGG6O
- a2oeCSGv49CgeOKgZLD3f7bm.eabxtUAqIOV__b9udeCc0lIGeXVuaWknhwAPPHX.aOJJS7Wo0mT
- Cb_15kkvpBs00Oq6cyHwGkrUG71QGXQ.kzSe708iYcSGZ4IFFBQZq3U78tQBVT6zmKdemUY7Qsx9
- mg6El.vRbjJzEP74i_gaHx.6dKnENZZvFNvnNuIcb8zklHvgwZS01Df.tDJBa01xGoq_DEwEm_O3
- N48x7AVSyU1OVZEI2EvOyGtTY6NeRsSPSKMSO5RcC_22Sj0aClWQOt.0IMou5DfrakujXXz3I4ov
- h4LGzvx5Sm45iKCZS79a84ZEerqaaENotu.40RYrtsD8TmX2QsMijpduFznz3YG_I08.c1tT4Rel
- 9BbD_vtcKKmNYLyyDqT6z.yEN0Icq51wncO4XK.oa9Uw8AzfLGRRigifle87lSIMPipCGDhig3IQ
- Vh.oMt8wiWk0gz0XNhVvu3GUxmyHRYPNHd6KpvsHfcXHPIfg4FgodNhyKAn1VC33D5DHi3fQI0I3
- NFDezcnyxTcoaUPJFtPpGiD8TUuWg_hI2QjLiIy8SgfpB4WLyhya2F3EBGQFwyc9Guxnw4..ROt7
- Wtq27ankkDbapMf80Xq0xAN762_4GTU2kJD6CNytnpBfJmiTPXjn.ZWmg3kbg5_Xm5D3Tv05X4uy
- M_OA4zS72HdEIFhqlBXy0zJaQye7Sje767SEvPxEr7kvrF7SD0GZzLXAGOxQO8xrD21jWAdDZiX4
- R3kAEKZk7kjrfXPZ1akGXosn4j4uYPL4Ou1rjpKlhq76S8vU4JOiZ_tK872l7DM84Qy965IpeihH
- P8YIG.GJzM0xKyipjV76O7oiBQWA-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Mar 2020 12:11:45 +0000
-Date:   Tue, 17 Mar 2020 12:09:44 +0000 (UTC)
-From:   Stephen Li <stenn6@gabg.net>
-Reply-To: stephli947701@gmail.com
-Message-ID: <2047002212.1846736.1584446984727@mail.yahoo.com>
-Subject: REF
+        Thu, 19 Mar 2020 10:38:54 -0400
+Received: by mail-lf1-f66.google.com with SMTP id n20so1818552lfl.10
+        for <linux-parisc@vger.kernel.org>; Thu, 19 Mar 2020 07:38:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=MkfEc6MRH89syDpHugGsyUmRoLIB+ex3PIfLXsCoWS0=;
+        b=VNKsnixrSGPf8yrO/jo6xJSlXKQVopNMoQT6BraznVYO9v6c604ckBPJK3qWjK+FAb
+         5svsp89rDIRokuRXORX2g5NtGFxK8vbSgXi1i17ILZ0/lR0v51HB+IGnOnTQk2PauOtp
+         sTIf1QK661uLD3q0DhnSAhAYpDv9dReh6RuvHQ8mu6v7rigFgplhUdhtJhVoecPfYNUD
+         vK7up9VYGBMQ9LRA8Jflc2WH49An0EuiGvBAjq/Hq3kZeRHWgFe7vVFyaSHgMdBMrZrT
+         AyIV7YgmnlEAlYFbWbmWMsMJryP2WWtaO5o3yf7G1r9AtkO3LBrad8C/Xz13iUTNhR8V
+         J6tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=MkfEc6MRH89syDpHugGsyUmRoLIB+ex3PIfLXsCoWS0=;
+        b=ZjANYR+ZfAn0TKHyVpF3WtzBfRckqsx4t1bbKe2G7c2+Q23W+T9nB3JAYykqgu9WTL
+         B3lxV9sfiXSYOKbsjOzcsTaok3DsbcSiQatSrhOsI4Qi6OcQQYUswVGJwn7YCqts1AtQ
+         7LYM+qJoUxqGR0bzIQGx80sd/b758uDWF3AOg8cBMMYmnSw8PwTqFxwmI32xZ0QWDeOZ
+         wYtzHtwFg8QA9N62brDzB0qdW/9SW/+lOr++JtRxJIpJ58l+F003LryS8GKtpSymb9Hp
+         njJknyH3DL/p7Rn/tpWgzIGzOg2TOp+Vu9FxVRLOahmK32S0M6NvTZvl9a70nCVqL00S
+         NLMQ==
+X-Gm-Message-State: ANhLgQ2qYAGURS9MYdixykBpWiX0Iq91sRuaJ9Drqo+oXe/vzIvbmf0+
+        /uxKgpKsUQpFvzcSV3R0VfwgVcOEdWTZuU7Lb7g=
+X-Google-Smtp-Source: ADFU+vvs48PcHTruOCCw8qtCf1y3JhdkdGqb+alGXikcZyv5RHItou9TIvti3tj6+wPCyO5s3hsxrX4/fiPcteRF7Kw=
+X-Received: by 2002:ac2:4a6d:: with SMTP id q13mr2366850lfp.27.1584628731473;
+ Thu, 19 Mar 2020 07:38:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <2047002212.1846736.1584446984727.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+Received: by 2002:a05:6504:74f:0:0:0:0 with HTTP; Thu, 19 Mar 2020 07:38:51
+ -0700 (PDT)
+Reply-To: georgebrownlevi@outlook.com
+From:   George <okeke.tg@gmail.com>
+Date:   Thu, 19 Mar 2020 14:38:51 +0000
+Message-ID: <CACtp8BHRtQ0YMhgMQb6NvCZ+dWy8kxOuziE87GerxEwX=mdaHQ@mail.gmail.com>
+Subject: from George
+To:     georgebrownlevi@outlook.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-
-
-Greetings,
-I was searching through a local business directory when I found your
-profile. I am Soliciting On-Behalf of my private client who is
-interested in having a serious business investment in your country. If
-you have a valid business, investment or project he can invest
-back to me for more details. Your swift response is highly needed.
-Sincerely
-Stephen Li
-Please response back to me with is my private email below for more details
-stephli947701@gmail.com
+-- 
+Do you received my previous email?
