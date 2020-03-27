@@ -2,82 +2,56 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 023BD196032
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 Mar 2020 22:06:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3459A196092
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 Mar 2020 22:40:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727600AbgC0VGr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 Mar 2020 17:06:47 -0400
-Received: from mout.gmx.net ([212.227.17.21]:44509 "EHLO mout.gmx.net"
+        id S1727707AbgC0VkC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 27 Mar 2020 17:40:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59988 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727352AbgC0VGr (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 Mar 2020 17:06:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1585343179;
-        bh=BkicKu3vszgAZYB5VVjsQBFzgHoqTmVLs6lBPNlNKRM=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=O+5fIL/dZ7jLVM4bY+E7Pxc7vPhZ2wEc7RqUxUbMQlbVRUKW/E7MOd1IzmGf1FlLG
-         KBNrq5XBpSRXL94Wh3VT263eOIE/KbDepp8X6vbYULIhsPh6MTt4T5/752YSiTYyd8
-         ddaTn1z1hYADEAafprWePJvTWWszTHd8Lxw+9JgQ=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.180.137]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MbzyJ-1jngxg1NPj-00dSsV; Fri, 27
- Mar 2020 22:06:19 +0100
-Date:   Fri, 27 Mar 2020 22:06:15 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        id S1727652AbgC0VkC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 27 Mar 2020 17:40:02 -0400
+Subject: Re: [GIT PULL] parisc architecture fix for kernel v5.6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585345201;
+        bh=TY7P5d5edbnMhkbhgi62QGmhGXd/DzW+Rqe8AgkY9rI=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=Bhc64j73RVg0DHGeTSqetjriaSoB0mMPVsympF3fKVlX52M+inHBiyAmjWPVT5L0A
+         SsiEfqe7O+GdDpd+vZ73M//FmL5BMZpBxC23SHIqTjBUev7ixyK0yb3YSLV41J5Ky1
+         8AvwzH766qUcHciccrFb01QkN9ezschdk3PDsuek=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20200327210615.GA25160@ls3530.fritz.box>
+References: <20200327210615.GA25160@ls3530.fritz.box>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20200327210615.GA25160@ls3530.fritz.box>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git
+ parisc-5.6-2
+X-PR-Tracked-Commit-Id: ededa081ed203165cea441fca706bdf358026bab
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 69c5eea3128e775fd3c70ecf0098105d96dee330
+Message-Id: <158534520175.30868.17955849616976139806.pr-tracker-bot@kernel.org>
+Date:   Fri, 27 Mar 2020 21:40:01 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Cc:     Guenter Roeck <linux@roeck-us.net>
-Subject: [GIT PULL] parisc architecture fix for kernel v5.6
-Message-ID: <20200327210615.GA25160@ls3530.fritz.box>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:74xy4lam6JN392Y1Z7adHT3ALcmGhlta014WpTFBjKZkGK0AlPt
- Cdq16U1bJejuePbVNyd458Mm/OuQVBgtSXcfraUbcpsimRSroIdM6hGNxr76+RXjSjK+ekq
- x4kU+kWqDNnhwbKX+a0+nHoHcRgmRC/wv6acki7d0e+qyFHKXuOsUw87QuxcRCq0bScLZEI
- LmnqKJpl45jBQefaA1x3Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:n8d/9FVN/pQ=:QD1e28Baaca3R5MADWPzIu
- Zwd7itVXuspvZG2o4k7iiS34tPK0085qvqq2n4B/uRvjqNnnhKQB9a+i0jsxhD28cggneKj6w
- dWfNT1ut6vcAgI6bygzvmvoZ8TI9KVZPpG4iz/0hXAneP7CzFPdfvqRAt2yHcWY8eYHAVTEA4
- L+KBUGf3+f0njWgyuUDmsGJxUITEfBl1r0lMvnXvKMRTNSNGOaibYl+lhxEQFoafyQJy/NxGq
- MLdDIriWIJUCzojQzzaS/wTjUTIlZZQ4WxXbFy8p6K+YMyPyQj0tz/2PkgWP8Wm3QUIuabSMa
- dnPJutAp89I1hbS2CCYmPwRcnDvAYGlnhzRVxG3z5gsXazKLe0i2hTlrX9QL1GuakdV76Zf9O
- 3D8to1Pe91sftQ6Am5Le8vpWudW5NToJTc63xGL9q6Jgk4cJXvRvquNMJm9BG39LiKMtuoSNu
- H5AkST18RVgWUQ24AVkQ/jf2tEmnQAD283v/CjtKTSyfRW2/d1iq7L2hDN78Z6BqROXwgk+qI
- wI6WJKm9+A47vIhw6lsOcTytFaqMpu/2D2xTKU1nXhEWgc40TEw7vhz8bYFj5qqmXokgpLncm
- McmGKBbZ6njjHdZm0uZjJCzHEswhssg66EARnrgoN+VrC0oU4x++hjYFoj7J5XdA48yOzC4ly
- jIrW++DdkR9pOdxJnINGL2Vr7caGSXxa52RJ6UKpC/u646ko2tKcLPRS7im7LHnpc2Age9k6+
- iWUsnYDtKuQbM46uCdyWk5qEfFL5Gk6p4I/GyLGWdPCG1Lz/naRgVzL/pA4J+BpOKwyUuiOxv
- ObrfrJ7WrR2l2C3kxzntZsld3ovGhGrA8zYxSP+lA7WqNtlXTRWmr78dWpsegG24CqK8rxIRC
- i5G0qXeykba1yVuEYeVHRVmSxBoZJPzK7/L/bxvdpmKmL5UhMvdf0RdzHxql+7ZInB0AC1F6D
- LlebTr7mKIU4qtkAqzfUaCGDD62ht9lpBwDxfSiuDQXFIUGGqKS7qu4VBVFXrkXYvu9hrCTCb
- 6dHxtmFDpzNgAS9iAWgssSNWa34YKHVCzXQ7zws118WmBOemZkchlxRskDOA6amqAULUXTUgD
- PRPyYJtSWlbKqvZtkK3g/5GeRCKDCLUSCCordlyh1Z/CZFQYM6dwuKn49eIlu9Lb2aFwiM+8/
- LYkGatfkxaU7f7IqO7wSK1f4qcJDBkT+N8FTh7GTTEu6W2WpPZSknR/+6gco8eyaIc/itfFSg
- 706s00CH6w+0/j66n
+        John David Anglin <dave.anglin@bell.net>,
+        Guenter Roeck <linux@roeck-us.net>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Fri, 27 Mar 2020 22:06:15 +0100:
 
-please pull one late patch for the parisc architecture for kernel 5.6 from:
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.6-2
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.6-2
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/69c5eea3128e775fd3c70ecf0098105d96dee330
 
-Fix a recursive loop when running "make ARCH=parisc defconfig".
+Thank you!
 
-Thanks,
-Helge
-
-----------------------------------------------------------------
-Helge Deller (1):
-      parisc: Fix defconfig selection
-
- arch/parisc/Kconfig  | 5 +++++
- arch/parisc/Makefile | 7 +++++++
- 2 files changed, 12 insertions(+)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
