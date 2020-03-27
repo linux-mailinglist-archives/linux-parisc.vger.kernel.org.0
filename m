@@ -2,142 +2,82 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 873A3195AA2
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 Mar 2020 17:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 023BD196032
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 Mar 2020 22:06:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727703AbgC0QIZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 Mar 2020 12:08:25 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:41063 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727354AbgC0QIY (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 Mar 2020 12:08:24 -0400
-Received: by mail-pg1-f193.google.com with SMTP id b1so4774996pgm.8;
-        Fri, 27 Mar 2020 09:08:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=v3WW2gICCRcfa0oGxmZ+LfSQn5AikLIQ+ZRnRYdwUfA=;
-        b=an6bUaMWa/gge8dt35mNz51d8Pj8Aa/qVvKR0POiYMe4zuNsTFMbWsDqtJpu8Vfgps
-         HodQ817xNYHI9SLLHcYrsshSCnFQVPdRz5miPel3a6dQh30+182sG4GpKzSYGg0Moaql
-         oICMZDkEloRd8GN1T9OAdis5YEzicvSdRi2cwTkeLqxIisdfp6u4WrF2upjoOm0b/Nqv
-         xJs9hkC3swEZG36oeWhAa8kBkb2p598PAhHmrKt9TC86LDUy19H7w13AsSWaFeOMFBw1
-         1kiJmtgBbfIhYEZfNNWHTKYdN5NFa73OW2vgKUh7ekKVHy/s1yLOWQQExWS6RBTI4i5f
-         lubA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=v3WW2gICCRcfa0oGxmZ+LfSQn5AikLIQ+ZRnRYdwUfA=;
-        b=K61t+aL22V7z1zCxdy92iLEGfcUUfCcui1nXRjhlhBoF1i5bSiZeUHJHo9tj8E3hl7
-         LkfP1UHq6zAWyukKSnmDoWQTb2yZrra+7+orFlf/8phatZvSEc7pQjNcOeAdyBTCb1y6
-         IhuKSgp++nxg6di5pN8GCuKkAZhlw9fp7Td3Lqfr5w+nMRQdLyxPHMKR29SWvVUjhJ8u
-         KM5b+m29XY3GGJbeEYgD0GcJ292B3HsiMUi15O2xGS7FQMVnNnCv5TnoJeHcfiL/xGDE
-         AvNCTKvVXOnoWxUGyLgLhfXf1T5W5Vt6svfYf4q1S3rQ8N8kaoK9bCv7okpY4oL/5JOk
-         3qgw==
-X-Gm-Message-State: ANhLgQ3vw/FfWuBbGxGGxSE2ZiBjUx8kOAWKqaEKYZYl9EBGZhw3jGAy
-        sz3DwZrD1BEUqvJS4J1F57A=
-X-Google-Smtp-Source: ADFU+vs5xl4PN9llzz39JwJNhgmk9dgWBu5u30cb77PT2OtFyYrOeXBrJPUM82BlUm8kk65OLbcqNQ==
-X-Received: by 2002:aa7:947d:: with SMTP id t29mr14654589pfq.184.1585325301244;
-        Fri, 27 Mar 2020 09:08:21 -0700 (PDT)
-Received: from localhost ([49.207.55.57])
-        by smtp.gmail.com with ESMTPSA id v185sm4391917pfv.32.2020.03.27.09.08.20
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 27 Mar 2020 09:08:20 -0700 (PDT)
-Date:   Fri, 27 Mar 2020 21:38:18 +0530
-From:   afzal mohammed <afzal.mohd.ma@gmail.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, x86@kernel.org,
-        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-c6x-dev@linux-c6x.org, linux-omap@vger.kernel.org,
-        linux-alpha@vger.kernel.org
-Subject: [PATCH 0/6] Kill setup_irq()
-Message-ID: <cover.1585320721.git.afzal.mohd.ma@gmail.com>
-References: <20200321174303.GA7930@afzalpc>
+        id S1727600AbgC0VGr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 27 Mar 2020 17:06:47 -0400
+Received: from mout.gmx.net ([212.227.17.21]:44509 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727352AbgC0VGr (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 27 Mar 2020 17:06:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1585343179;
+        bh=BkicKu3vszgAZYB5VVjsQBFzgHoqTmVLs6lBPNlNKRM=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=O+5fIL/dZ7jLVM4bY+E7Pxc7vPhZ2wEc7RqUxUbMQlbVRUKW/E7MOd1IzmGf1FlLG
+         KBNrq5XBpSRXL94Wh3VT263eOIE/KbDepp8X6vbYULIhsPh6MTt4T5/752YSiTYyd8
+         ddaTn1z1hYADEAafprWePJvTWWszTHd8Lxw+9JgQ=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.180.137]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MbzyJ-1jngxg1NPj-00dSsV; Fri, 27
+ Mar 2020 22:06:19 +0100
+Date:   Fri, 27 Mar 2020 22:06:15 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Cc:     Guenter Roeck <linux@roeck-us.net>
+Subject: [GIT PULL] parisc architecture fix for kernel v5.6
+Message-ID: <20200327210615.GA25160@ls3530.fritz.box>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200321174303.GA7930@afzalpc>
-User-Agent: Mutt/1.9.3 (2018-01-21)
+X-Provags-ID: V03:K1:74xy4lam6JN392Y1Z7adHT3ALcmGhlta014WpTFBjKZkGK0AlPt
+ Cdq16U1bJejuePbVNyd458Mm/OuQVBgtSXcfraUbcpsimRSroIdM6hGNxr76+RXjSjK+ekq
+ x4kU+kWqDNnhwbKX+a0+nHoHcRgmRC/wv6acki7d0e+qyFHKXuOsUw87QuxcRCq0bScLZEI
+ LmnqKJpl45jBQefaA1x3Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:n8d/9FVN/pQ=:QD1e28Baaca3R5MADWPzIu
+ Zwd7itVXuspvZG2o4k7iiS34tPK0085qvqq2n4B/uRvjqNnnhKQB9a+i0jsxhD28cggneKj6w
+ dWfNT1ut6vcAgI6bygzvmvoZ8TI9KVZPpG4iz/0hXAneP7CzFPdfvqRAt2yHcWY8eYHAVTEA4
+ L+KBUGf3+f0njWgyuUDmsGJxUITEfBl1r0lMvnXvKMRTNSNGOaibYl+lhxEQFoafyQJy/NxGq
+ MLdDIriWIJUCzojQzzaS/wTjUTIlZZQ4WxXbFy8p6K+YMyPyQj0tz/2PkgWP8Wm3QUIuabSMa
+ dnPJutAp89I1hbS2CCYmPwRcnDvAYGlnhzRVxG3z5gsXazKLe0i2hTlrX9QL1GuakdV76Zf9O
+ 3D8to1Pe91sftQ6Am5Le8vpWudW5NToJTc63xGL9q6Jgk4cJXvRvquNMJm9BG39LiKMtuoSNu
+ H5AkST18RVgWUQ24AVkQ/jf2tEmnQAD283v/CjtKTSyfRW2/d1iq7L2hDN78Z6BqROXwgk+qI
+ wI6WJKm9+A47vIhw6lsOcTytFaqMpu/2D2xTKU1nXhEWgc40TEw7vhz8bYFj5qqmXokgpLncm
+ McmGKBbZ6njjHdZm0uZjJCzHEswhssg66EARnrgoN+VrC0oU4x++hjYFoj7J5XdA48yOzC4ly
+ jIrW++DdkR9pOdxJnINGL2Vr7caGSXxa52RJ6UKpC/u646ko2tKcLPRS7im7LHnpc2Age9k6+
+ iWUsnYDtKuQbM46uCdyWk5qEfFL5Gk6p4I/GyLGWdPCG1Lz/naRgVzL/pA4J+BpOKwyUuiOxv
+ ObrfrJ7WrR2l2C3kxzntZsld3ovGhGrA8zYxSP+lA7WqNtlXTRWmr78dWpsegG24CqK8rxIRC
+ i5G0qXeykba1yVuEYeVHRVmSxBoZJPzK7/L/bxvdpmKmL5UhMvdf0RdzHxql+7ZInB0AC1F6D
+ LlebTr7mKIU4qtkAqzfUaCGDD62ht9lpBwDxfSiuDQXFIUGGqKS7qu4VBVFXrkXYvu9hrCTCb
+ 6dHxtmFDpzNgAS9iAWgssSNWa34YKHVCzXQ7zws118WmBOemZkchlxRskDOA6amqAULUXTUgD
+ PRPyYJtSWlbKqvZtkK3g/5GeRCKDCLUSCCordlyh1Z/CZFQYM6dwuKn49eIlu9Lb2aFwiM+8/
+ LYkGatfkxaU7f7IqO7wSK1f4qcJDBkT+N8FTh7GTTEu6W2WpPZSknR/+6gco8eyaIc/itfFSg
+ 706s00CH6w+0/j66n
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Thomas,
+Hi Linus,
 
-As compared to the situation mentioned earlier[1], now powerpc patch is
-also in -next, and the pending ARM patches has been picked up by ARM SoC
-maintainers today and is expected to show up in next -next. All other
-subsytem patches has been picked by relevant maintainers & are already
-in -next except alpha, c6x, hexagon, unicore32 & sh.
+please pull one late patch for the parisc architecture for kernel 5.6 from:
 
-As it is the case, i am sending you patches for the above 5
-architecture's plus the core removal patch.
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.6-2
 
-Status of 5 arch's:
--------------------
-alpha:		received ack from Matt Turner, build test success
-c6x:		did receive ack from Mark Salter in v1, the final
-		 version (v3) was with minor changes, hence removed his
-		 ack & cc'ed him, build test success
-hexagon:	build test success
-unicore32:	couldn't get toolchain from kernel.org, 0day test robot
-		 or Segher's buildall
-sh:		To compile the relevant changes sh64 compiler is
-		 required, couldn't get it from above mentioned 3
-		 sources.
+Fix a recursive loop when running "make ARCH=parisc defconfig".
 
-Note 1: sh toolchain is available, but that will not make the
- relevant changes compile as it has dependency of 64bit arch toolchain,
- did try a Kconfig hack to make it compile w/ 32bit sh toolchain, but it
- failed due to other reasons (unknown operands), so gave up on that.
-Note 2: hexagon final image creation fails even w/o my patch, but it
- has been ensured that w/ my changes relevant object files are getting
- built  w/o warnings.
+Thanks,
+Helge
 
-Regards
-afzal
+----------------------------------------------------------------
+Helge Deller (1):
+      parisc: Fix defconfig selection
 
-[1] https://lkml.kernel.org/r/20200321172626.GA6323@afzalpc
-
-afzal mohammed (6):
-  alpha: Replace setup_irq() by request_irq()
-  c6x: replace setup_irq() by request_irq()
-  hexagon: replace setup_irq() by request_irq()
-  sh: replace setup_irq() by request_irq()
-  unicore32: replace setup_irq() by request_irq()
-  genirq: Remove setup_irq() and remove_irq()
-
- arch/alpha/kernel/irq_alpha.c     | 29 ++++----------------
- arch/alpha/kernel/irq_i8259.c     |  8 ++----
- arch/alpha/kernel/irq_impl.h      |  7 +----
- arch/alpha/kernel/irq_pyxis.c     |  3 ++-
- arch/alpha/kernel/sys_alcor.c     |  3 ++-
- arch/alpha/kernel/sys_cabriolet.c |  3 ++-
- arch/alpha/kernel/sys_eb64p.c     |  3 ++-
- arch/alpha/kernel/sys_marvel.c    |  2 +-
- arch/alpha/kernel/sys_miata.c     |  6 +++--
- arch/alpha/kernel/sys_ruffian.c   |  3 ++-
- arch/alpha/kernel/sys_rx164.c     |  3 ++-
- arch/alpha/kernel/sys_sx164.c     |  3 ++-
- arch/alpha/kernel/sys_wildfire.c  |  7 ++---
- arch/alpha/kernel/time.c          |  6 ++---
- arch/c6x/platforms/timer64.c      | 11 +++-----
- arch/hexagon/kernel/smp.c         | 22 ++++++++--------
- arch/hexagon/kernel/time.c        | 11 +++-----
- arch/sh/boards/mach-cayman/irq.c  | 18 +++++--------
- arch/sh/drivers/dma/dma-pvr2.c    |  9 +++----
- arch/unicore32/kernel/time.c      | 11 +++-----
- include/linux/irq.h               |  2 --
- kernel/irq/manage.c               | 44 -------------------------------
- 22 files changed, 60 insertions(+), 154 deletions(-)
-
--- 
-2.25.1
-
+ arch/parisc/Kconfig  | 5 +++++
+ arch/parisc/Makefile | 7 +++++++
+ 2 files changed, 12 insertions(+)
