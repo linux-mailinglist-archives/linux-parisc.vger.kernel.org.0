@@ -2,130 +2,142 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 536FE1958E4
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 Mar 2020 15:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 873A3195AA2
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 Mar 2020 17:08:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726656AbgC0OYr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 Mar 2020 10:24:47 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:46639 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726739AbgC0OYr (ORCPT
+        id S1727703AbgC0QIZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 27 Mar 2020 12:08:25 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:41063 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727354AbgC0QIY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 Mar 2020 10:24:47 -0400
-Received: by mail-pf1-f195.google.com with SMTP id q3so4552336pff.13;
-        Fri, 27 Mar 2020 07:24:45 -0700 (PDT)
+        Fri, 27 Mar 2020 12:08:24 -0400
+Received: by mail-pg1-f193.google.com with SMTP id b1so4774996pgm.8;
+        Fri, 27 Mar 2020 09:08:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=17U6L9tGyMCHVkiST5CkKaOri+nTbWcsXl7RhEej8W4=;
-        b=qm8L2wm6D85QrWVVd+dGck9d/K4ciM0Xg1RaOsnpkbp85YV4asNfPDcSpa7xo0glee
-         RijW2YT/T15cS6gysbNJuAU/M6WU4MtlfK8Ggl8WxM9uKUZ5t3bsT50GVSS2pgMf2csI
-         VM0mscPbpVoMFEtcrTcHooBvadOlVhsT2gPyS8peLO07pupDOrDIwZi+XCIUWPZ9X+i0
-         ezbF8PEQQcNZ6L9FvOhS83EI+n6Ziyphsw52MpZ0dxoPR+XrUD0sTj4vNFaXofzH+dtV
-         qthRYnvF+IowEU9lC27RCbsUk4DJFUDMhkybZgaSGj4rDcmqLJDf7RZoJ6zVE1vlJxkg
-         h34g==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=v3WW2gICCRcfa0oGxmZ+LfSQn5AikLIQ+ZRnRYdwUfA=;
+        b=an6bUaMWa/gge8dt35mNz51d8Pj8Aa/qVvKR0POiYMe4zuNsTFMbWsDqtJpu8Vfgps
+         HodQ817xNYHI9SLLHcYrsshSCnFQVPdRz5miPel3a6dQh30+182sG4GpKzSYGg0Moaql
+         oICMZDkEloRd8GN1T9OAdis5YEzicvSdRi2cwTkeLqxIisdfp6u4WrF2upjoOm0b/Nqv
+         xJs9hkC3swEZG36oeWhAa8kBkb2p598PAhHmrKt9TC86LDUy19H7w13AsSWaFeOMFBw1
+         1kiJmtgBbfIhYEZfNNWHTKYdN5NFa73OW2vgKUh7ekKVHy/s1yLOWQQExWS6RBTI4i5f
+         lubA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=17U6L9tGyMCHVkiST5CkKaOri+nTbWcsXl7RhEej8W4=;
-        b=ShNc4HzFYI1BLF77m4seirut4FL0UevGJplR3ELPxOuGP9quyoBkRyr6nXYC54Q4Ok
-         vox3hBHv0jBNgJHSYtf5vgd3HpKPB/yh7GAoMzcY6+lEsDOM6bnyz7Np6osnKgDL/R2b
-         fNX7WcxS1RXIsKIsxDEs9N0vnkUPONc2YoN6cmNQVlAy5Q+EppP4dkNcsUiHEMHC1vbj
-         WNSQpO3+VBIyGg47+lObocc8nqBon/wRJeLhzXi1XWp3L26dUTLkHfEiqwoKsATcj6xL
-         NhrQ9LjuYE68clwue+Fvlr+QeUgOX25p13tiGWYhtn8fMqj+SSro0mZc3aFdUu5+p6jc
-         OMTw==
-X-Gm-Message-State: ANhLgQ0Ia50t0VixMmlE8x2vXSIB0iBtqFZUmWjhEX/VRzqjJtp6iOlK
-        9Us7Y+d95YR4SAQ+2zZhG+HMJUMZ
-X-Google-Smtp-Source: ADFU+vt2SP6uSpN87ppo1wa8L9solEh2CfKTp/grzvg/3GkEMGuJ6txXOJT9YfZuVmjiMOlg2fa9XA==
-X-Received: by 2002:a63:5123:: with SMTP id f35mr13657400pgb.217.1585319084782;
-        Fri, 27 Mar 2020 07:24:44 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id r8sm3898871pjo.22.2020.03.27.07.24.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Mar 2020 07:24:43 -0700 (PDT)
-Subject: Re: [PATCH] parisc: Regenerate parisc defconfigs
-To:     John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200326202006.GA160630@roeck-us.net>
- <20200326221921.GA20495@ls3530.fritz.box>
- <d83868cb-12cd-054e-db85-bcbb9121683a@roeck-us.net>
- <bcfc4d29-7b21-a3f3-8659-ee8ed369dfff@bell.net>
-From:   Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-Message-ID: <3b2f1736-08c0-62b3-5d1f-e34f97f06ba4@roeck-us.net>
-Date:   Fri, 27 Mar 2020 07:24:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=v3WW2gICCRcfa0oGxmZ+LfSQn5AikLIQ+ZRnRYdwUfA=;
+        b=K61t+aL22V7z1zCxdy92iLEGfcUUfCcui1nXRjhlhBoF1i5bSiZeUHJHo9tj8E3hl7
+         LkfP1UHq6zAWyukKSnmDoWQTb2yZrra+7+orFlf/8phatZvSEc7pQjNcOeAdyBTCb1y6
+         IhuKSgp++nxg6di5pN8GCuKkAZhlw9fp7Td3Lqfr5w+nMRQdLyxPHMKR29SWvVUjhJ8u
+         KM5b+m29XY3GGJbeEYgD0GcJ292B3HsiMUi15O2xGS7FQMVnNnCv5TnoJeHcfiL/xGDE
+         AvNCTKvVXOnoWxUGyLgLhfXf1T5W5Vt6svfYf4q1S3rQ8N8kaoK9bCv7okpY4oL/5JOk
+         3qgw==
+X-Gm-Message-State: ANhLgQ3vw/FfWuBbGxGGxSE2ZiBjUx8kOAWKqaEKYZYl9EBGZhw3jGAy
+        sz3DwZrD1BEUqvJS4J1F57A=
+X-Google-Smtp-Source: ADFU+vs5xl4PN9llzz39JwJNhgmk9dgWBu5u30cb77PT2OtFyYrOeXBrJPUM82BlUm8kk65OLbcqNQ==
+X-Received: by 2002:aa7:947d:: with SMTP id t29mr14654589pfq.184.1585325301244;
+        Fri, 27 Mar 2020 09:08:21 -0700 (PDT)
+Received: from localhost ([49.207.55.57])
+        by smtp.gmail.com with ESMTPSA id v185sm4391917pfv.32.2020.03.27.09.08.20
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 27 Mar 2020 09:08:20 -0700 (PDT)
+Date:   Fri, 27 Mar 2020 21:38:18 +0530
+From:   afzal mohammed <afzal.mohd.ma@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, x86@kernel.org,
+        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-c6x-dev@linux-c6x.org, linux-omap@vger.kernel.org,
+        linux-alpha@vger.kernel.org
+Subject: [PATCH 0/6] Kill setup_irq()
+Message-ID: <cover.1585320721.git.afzal.mohd.ma@gmail.com>
+References: <20200321174303.GA7930@afzalpc>
 MIME-Version: 1.0
-In-Reply-To: <bcfc4d29-7b21-a3f3-8659-ee8ed369dfff@bell.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200321174303.GA7930@afzalpc>
+User-Agent: Mutt/1.9.3 (2018-01-21)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 3/27/20 5:28 AM, John David Anglin wrote:
-> On 2020-03-27 2:43 a.m., Guenter Roeck wrote:
->> It would be nice if there was a better way to select 32-bit
->> vs. 64-bit defconfigs (for example based on the compiler,
->> or with ARCH={parisc,parisc64}). However, that never worked
->> for parisc, so I guess we can't expect it to magically work
->> now, and much less so for a bug fix.
-> LP64 is defined when using the 64-bit compiler.
-> 
+Hi Thomas,
 
-I know. However, as I said, parisc has never used compiler
-capabilities to determine the content of defconfig.
-Changing that should be done with a separate patch, if there
-is interest to do so.
+As compared to the situation mentioned earlier[1], now powerpc patch is
+also in -next, and the pending ARM patches has been picked up by ARM SoC
+maintainers today and is expected to show up in next -next. All other
+subsytem patches has been picked by relevant maintainers & are already
+in -next except alpha, c6x, hexagon, unicore32 & sh.
 
-Guenter
+As it is the case, i am sending you patches for the above 5
+architecture's plus the core removal patch.
+
+Status of 5 arch's:
+-------------------
+alpha:		received ack from Matt Turner, build test success
+c6x:		did receive ack from Mark Salter in v1, the final
+		 version (v3) was with minor changes, hence removed his
+		 ack & cc'ed him, build test success
+hexagon:	build test success
+unicore32:	couldn't get toolchain from kernel.org, 0day test robot
+		 or Segher's buildall
+sh:		To compile the relevant changes sh64 compiler is
+		 required, couldn't get it from above mentioned 3
+		 sources.
+
+Note 1: sh toolchain is available, but that will not make the
+ relevant changes compile as it has dependency of 64bit arch toolchain,
+ did try a Kconfig hack to make it compile w/ 32bit sh toolchain, but it
+ failed due to other reasons (unknown operands), so gave up on that.
+Note 2: hexagon final image creation fails even w/o my patch, but it
+ has been ensured that w/ my changes relevant object files are getting
+ built  w/o warnings.
+
+Regards
+afzal
+
+[1] https://lkml.kernel.org/r/20200321172626.GA6323@afzalpc
+
+afzal mohammed (6):
+  alpha: Replace setup_irq() by request_irq()
+  c6x: replace setup_irq() by request_irq()
+  hexagon: replace setup_irq() by request_irq()
+  sh: replace setup_irq() by request_irq()
+  unicore32: replace setup_irq() by request_irq()
+  genirq: Remove setup_irq() and remove_irq()
+
+ arch/alpha/kernel/irq_alpha.c     | 29 ++++----------------
+ arch/alpha/kernel/irq_i8259.c     |  8 ++----
+ arch/alpha/kernel/irq_impl.h      |  7 +----
+ arch/alpha/kernel/irq_pyxis.c     |  3 ++-
+ arch/alpha/kernel/sys_alcor.c     |  3 ++-
+ arch/alpha/kernel/sys_cabriolet.c |  3 ++-
+ arch/alpha/kernel/sys_eb64p.c     |  3 ++-
+ arch/alpha/kernel/sys_marvel.c    |  2 +-
+ arch/alpha/kernel/sys_miata.c     |  6 +++--
+ arch/alpha/kernel/sys_ruffian.c   |  3 ++-
+ arch/alpha/kernel/sys_rx164.c     |  3 ++-
+ arch/alpha/kernel/sys_sx164.c     |  3 ++-
+ arch/alpha/kernel/sys_wildfire.c  |  7 ++---
+ arch/alpha/kernel/time.c          |  6 ++---
+ arch/c6x/platforms/timer64.c      | 11 +++-----
+ arch/hexagon/kernel/smp.c         | 22 ++++++++--------
+ arch/hexagon/kernel/time.c        | 11 +++-----
+ arch/sh/boards/mach-cayman/irq.c  | 18 +++++--------
+ arch/sh/drivers/dma/dma-pvr2.c    |  9 +++----
+ arch/unicore32/kernel/time.c      | 11 +++-----
+ include/linux/irq.h               |  2 --
+ kernel/irq/manage.c               | 44 -------------------------------
+ 22 files changed, 60 insertions(+), 154 deletions(-)
+
+-- 
+2.25.1
+
