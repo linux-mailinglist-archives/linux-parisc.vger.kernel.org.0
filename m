@@ -2,267 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B6D19C373
-	for <lists+linux-parisc@lfdr.de>; Thu,  2 Apr 2020 16:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C643C19C561
+	for <lists+linux-parisc@lfdr.de>; Thu,  2 Apr 2020 17:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731861AbgDBOAV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 2 Apr 2020 10:00:21 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:45156 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732584AbgDBOAU (ORCPT
+        id S2388942AbgDBPDg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 2 Apr 2020 11:03:36 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:14969 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2389107AbgDBPDf (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 2 Apr 2020 10:00:20 -0400
-Received: by mail-qk1-f196.google.com with SMTP id o18so1125550qko.12
-        for <linux-parisc@vger.kernel.org>; Thu, 02 Apr 2020 07:00:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lca.pw; s=google;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=cUYfx1/T0rN3mmFSrP/uDZKg64qpxAJKitWtdbfwY10=;
-        b=omxUUzlycbm6U7R5rMbWth+4jjmtiEhYEoR12fCOy1sdDWnOAPSIIXJh7R+Efn+Cbd
-         Uu4Tk+98wjCUIb6CuNDLH+rHr+IfybHi88VPNxjzsjVQG/lw1BoPZHvObgC01Zb306kc
-         QCrQRFggKQoNhju4vvOowe+CK3eu+f9xXw28+KRtXT0HBgUZyTEPN9UxVWqFvvC8DXh1
-         sShoPU1V/0lTskUfYlEPg/9He/pHE7q6DCHREq5C9PSzS/rLs7zsQ0YKm+5rn5qH4Mel
-         Iu6R+KKVMIKYaITbA4KU4Qs7BVAy+px6435a8IJ53LCGfSAv/gP7L3NwV+MHCN6SRXlq
-         jGoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=cUYfx1/T0rN3mmFSrP/uDZKg64qpxAJKitWtdbfwY10=;
-        b=EIyC1d+ZEZZVZ/N79bfohFauEUcY4vsZZDIOLGuKgZGqEYTqfSVj96PNbiXD7nxRdo
-         kdAGoD8NOFR8O9kifbHefaf6EA1t2IxSWnlysAKCPH9GKD5sd8IuADM4w4a3StVKy7gW
-         N6f3r+I8poRIKdY0CKOjQrDK7t2fHNMWzkgysUq4VryZGpKK/6pEOM0WQ1rL+5IzNnhX
-         aHKlgx+zQ7wpZkijB/P9OpxSDnPiSqSvYaEMjITsd+R1OPjNNgxf7FjEevJJ4dAn3jpr
-         kjXnRaxfQkeGj/V3dIKu0sjnbZ75l2Iwr4kvMGjyJA2+6vNGoKwYC1LFVdFsHyIVJy8/
-         HoVQ==
-X-Gm-Message-State: AGi0PuZu7qNpeqvoP4sVcTuCaK4nck4wVTz4sfbIM/kCvv7lxvUkHLhW
-        jU8GHhxon7MSdAuddCTeoFuhMw==
-X-Google-Smtp-Source: APiQypIVFhJKX2ObXQDsmXbTYI41ob/mLqs87vmhRlymjY4OyVQ61SbpuN1/XLuJmTuJdRxUNBIjnQ==
-X-Received: by 2002:a37:a93:: with SMTP id 141mr3601217qkk.244.1585836018508;
-        Thu, 02 Apr 2020 07:00:18 -0700 (PDT)
-Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
-        by smtp.gmail.com with ESMTPSA id 206sm704735qkd.122.2020.04.02.07.00.16
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 02 Apr 2020 07:00:17 -0700 (PDT)
+        Thu, 2 Apr 2020 11:03:35 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585839815; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Reply-To: Sender;
+ bh=MFdcBokfw79s+7lRCHgLw9NzMSmYZr6xzGhOl6ZSO68=; b=rPgl4ClIY1h+4+n7Qnv7DW7zcymXIvMfiNRuRjCvmvGDdaTdLSHKy3RFFy+gPThiUWOsN/aa
+ h4MJZ+iGFnCO2VRmQR+ZZ18e/rDLqU+N4UQLA29mlspeiOtg+UJjwb1ZpWuUD6lJEmjXBgvm
+ bEDXGVyQGPzmQR4H5uCaBM5RBqY=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyIxY2RiMSIsICJsaW51eC1wYXJpc2NAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e85fec5.7f860c730110-smtp-out-n01;
+ Thu, 02 Apr 2020 15:03:33 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5C71DC433F2; Thu,  2 Apr 2020 15:03:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        SUSPICIOUS_RECIPS autolearn=no autolearn_force=no version=3.4.0
+Received: from BCAIN (104-54-226-75.lightspeed.austtx.sbcglobal.net [104.54.226.75])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bcain)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 866DFC43636;
+        Thu,  2 Apr 2020 15:03:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 866DFC43636
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=bcain@codeaurora.org
+Reply-To: <bcain@codeaurora.org>
+From:   "Brian Cain" <bcain@codeaurora.org>
+To:     "'afzal mohammed'" <afzal.mohd.ma@gmail.com>
+Cc:     "'Thomas Gleixner'" <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>, <x86@kernel.org>,
+        <linux-sh@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-parisc@vger.kernel.org>,
+        <linux-mips@vger.kernel.org>, <linux-m68k@lists.linux-m68k.org>,
+        <linux-ia64@vger.kernel.org>, <linux-hexagon@vger.kernel.org>,
+        <linux-c6x-dev@linux-c6x.org>, <linux-omap@vger.kernel.org>,
+        <linux-alpha@vger.kernel.org>
+References: <20200321174303.GA7930@afzalpc> <cover.1585320721.git.afzal.mohd.ma@gmail.com> <059b01d604ab$637355b0$2a5a0110$@codeaurora.org> <20200328073253.GA5250@afzalpc>
+In-Reply-To: <20200328073253.GA5250@afzalpc>
+Subject: RE: [PATCH 0/6] Kill setup_irq()
+Date:   Thu, 2 Apr 2020 10:03:28 -0500
+Message-ID: <0fc601d608ff$df0ea550$9d2beff0$@codeaurora.org>
+MIME-Version: 1.0
 Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Re: [PATCH v2] sched/core: fix illegal RCU from offline CPUs
-From:   Qian Cai <cai@lca.pw>
-In-Reply-To: <87369mt9kf.fsf@mpe.ellerman.id.au>
-Date:   Thu, 2 Apr 2020 10:00:16 -0400
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, juri.lelli@redhat.com,
-        dietmar.eggemann@arm.com, vincent.guittot@linaro.org,
-        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-        paulmck@kernel.org, tglx@linutronix.de,
-        "James.Bottomley@hansenpartnership.com" 
-        <James.Bottomley@HansenPartnership.com>, deller@gmx.de,
-        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Nicholas Piggin <npiggin@gmail.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C0F26F4C-77A0-41DF-856A-B7E29C56A4B6@lca.pw>
-References: <20200401214033.8448-1-cai@lca.pw>
- <87369mt9kf.fsf@mpe.ellerman.id.au>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
+        charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-us
+Thread-Index: AQH+2owB65JuA03jeOLwO39OK5TmSwJQWNztApEZe3IB1U/c2KfelGEA
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+> -----Original Message-----
+> From: linux-hexagon-owner@vger.kernel.org <linux-hexagon-
+> owner@vger.kernel.org> On Behalf Of afzal mohammed
+...
+> On Fri, Mar 27, 2020 at 09:48:38PM -0500, Brian Cain wrote:
+> 
+> > > Note 2: hexagon final image creation fails even w/o my patch
+> 
+> > 	What's the nature of the failure in "Note 2"?
+> 
+> drivers/base/firmware_loader/main.o: In function `fw_is_builtin_firmware':
+> /devel/src/kernel6/drivers/base/firmware_loader/main.c:132:(.text+0xc8):
+> relocation truncated to fit: R_HEX_16_X against symbol
+`__start_builtin_fw'
+> defined in .modinfo section in .tmp_vmlinux1
+> Makefile:1077: recipe for target 'vmlinux' failed
+> make: *** [vmlinux] Error 1
 
+Thanks for reporting it -- I will make a patch to fix it.
 
-> On Apr 2, 2020, at 7:24 AM, Michael Ellerman <mpe@ellerman.id.au> =
-wrote:
->=20
-> Qian Cai <cai@lca.pw> writes:
->> From: Peter Zijlstra <peterz@infradead.org>
->>=20
->> In the CPU-offline process, it calls mmdrop() after idle entry and =
-the
->> subsequent call to cpuhp_report_idle_dead(). Once execution passes =
-the
->> call to rcu_report_dead(), RCU is ignoring the CPU, which results in
->> lockdep complaining when mmdrop() uses RCU from either memcg or
->> debugobjects below.
->>=20
->> Fix it by cleaning up the active_mm state from BP instead. Every arch
->> which has CONFIG_HOTPLUG_CPU should have already called =
-idle_task_exit()
->> from AP. The only exception is parisc because it switches them to
->> &init_mm unconditionally (see smp_boot_one_cpu() and smp_cpu_init()),
->> but the patch will still work there because it calls mmgrab(&init_mm) =
-in
->> smp_cpu_init() and then should call mmdrop(&init_mm) in finish_cpu().
->=20
-> Thanks for debugging this. How did you hit it in the first place?
-
-Just repeatedly offline/online CPUs which will eventually cause an idle =
-thread
-refcount goes to 0 and trigger __mmdrop() and of course it needs to =
-enable
-lockdep (PROVE_RCU?) as well as having luck to hit the cgroup, workqueue
-or debugobject code paths to call RCU.
-
->=20
-> A link to the original thread would have helped me:
->=20
->  https://lore.kernel.org/lkml/20200113190331.12788-1-cai@lca.pw/
->=20
->> WARNING: suspicious RCU usage
->> -----------------------------
->> kernel/workqueue.c:710 RCU or wq_pool_mutex should be held!
->>=20
->> other info that might help us debug this:
->>=20
->> RCU used illegally from offline CPU!
->> Call Trace:
->> dump_stack+0xf4/0x164 (unreliable)
->> lockdep_rcu_suspicious+0x140/0x164
->> get_work_pool+0x110/0x150
->> __queue_work+0x1bc/0xca0
->> queue_work_on+0x114/0x120
->> css_release+0x9c/0xc0
->> percpu_ref_put_many+0x204/0x230
->> free_pcp_prepare+0x264/0x570
->> free_unref_page+0x38/0xf0
->> __mmdrop+0x21c/0x2c0
->> idle_task_exit+0x170/0x1b0
->> pnv_smp_cpu_kill_self+0x38/0x2e0
->> cpu_die+0x48/0x64
->> arch_cpu_idle_dead+0x30/0x50
->> do_idle+0x2f4/0x470
->> cpu_startup_entry+0x38/0x40
->> start_secondary+0x7a8/0xa80
->> start_secondary_resume+0x10/0x14
->=20
-> Do we know when this started happening? ie. can we determine a Fixes
-> tag?
-
-I don=E2=80=99t know. I looked at some commits that it seems the code =
-was like that
-even 10-year ago. It must be nobody who cares to run lockdep =
-(PROVE_RCU?)
-with CPU hotplug very regularly.
-
->=20
->> <Peter to sign off here>
->> Signed-off-by: Qian Cai <cai@lca.pw>
->> ---
->> arch/powerpc/platforms/powernv/smp.c |  1 -
->> include/linux/sched/mm.h             |  2 ++
->> kernel/cpu.c                         | 18 +++++++++++++++++-
->> kernel/sched/core.c                  |  5 +++--
->> 4 files changed, 22 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/arch/powerpc/platforms/powernv/smp.c =
-b/arch/powerpc/platforms/powernv/smp.c
->> index 13e251699346..b2ba3e95bda7 100644
->> --- a/arch/powerpc/platforms/powernv/smp.c
->> +++ b/arch/powerpc/platforms/powernv/smp.c
->> @@ -167,7 +167,6 @@ static void pnv_smp_cpu_kill_self(void)
->> 	/* Standard hot unplug procedure */
->>=20
->> 	idle_task_exit();
->> -	current->active_mm =3D NULL; /* for sanity */
->=20
-> If I'm reading it right, we'll now be running with active_mm =3D=3D =
-init_mm
-> in the offline loop.
->=20
-> I guess that's fine, I can't think of any reason it would matter, and =
-it
-> seems like we were NULL'ing it out just for paranoia's sake not =
-because
-> of any actual problem.
->=20
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
->=20
->=20
-> cheers
->=20
->> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
->> index c49257a3b510..a132d875d351 100644
->> --- a/include/linux/sched/mm.h
->> +++ b/include/linux/sched/mm.h
->> @@ -49,6 +49,8 @@ static inline void mmdrop(struct mm_struct *mm)
->> 		__mmdrop(mm);
->> }
->>=20
->> +void mmdrop(struct mm_struct *mm);
->> +
->> /*
->>  * This has to be called after a get_task_mm()/mmget_not_zero()
->>  * followed by taking the mmap_sem for writing before modifying the
->> diff --git a/kernel/cpu.c b/kernel/cpu.c
->> index 2371292f30b0..244d30544377 100644
->> --- a/kernel/cpu.c
->> +++ b/kernel/cpu.c
->> @@ -3,6 +3,7 @@
->>  *
->>  * This code is licenced under the GPL.
->>  */
->> +#include <linux/sched/mm.h>
->> #include <linux/proc_fs.h>
->> #include <linux/smp.h>
->> #include <linux/init.h>
->> @@ -564,6 +565,21 @@ static int bringup_cpu(unsigned int cpu)
->> 	return bringup_wait_for_ap(cpu);
->> }
->>=20
->> +static int finish_cpu(unsigned int cpu)
->> +{
->> +	struct task_struct *idle =3D idle_thread_get(cpu);
->> +	struct mm_struct *mm =3D idle->active_mm;
->> +
->> +	/*
->> +	 * idle_task_exit() will have switched to &init_mm, now
->> +	 * clean up any remaining active_mm state.
->> +	 */
->> +	if (mm !=3D &init_mm)
->> +		idle->active_mm =3D &init_mm;
->> +	mmdrop(mm);
->> +	return 0;
->> +}
->> +
->> /*
->>  * Hotplug state machine related functions
->>  */
->> @@ -1549,7 +1565,7 @@ static struct cpuhp_step cpuhp_hp_states[] =3D =
-{
->> 	[CPUHP_BRINGUP_CPU] =3D {
->> 		.name			=3D "cpu:bringup",
->> 		.startup.single		=3D bringup_cpu,
->> -		.teardown.single	=3D NULL,
->> +		.teardown.single	=3D finish_cpu,
->> 		.cant_stop		=3D true,
->> 	},
->> 	/* Final state before CPU kills itself */
->> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
->> index a2694ba82874..8787958339d5 100644
->> --- a/kernel/sched/core.c
->> +++ b/kernel/sched/core.c
->> @@ -6200,13 +6200,14 @@ void idle_task_exit(void)
->> 	struct mm_struct *mm =3D current->active_mm;
->>=20
->> 	BUG_ON(cpu_online(smp_processor_id()));
->> +	BUG_ON(current !=3D this_rq()->idle);
->>=20
->> 	if (mm !=3D &init_mm) {
->> 		switch_mm(mm, &init_mm, current);
->> -		current->active_mm =3D &init_mm;
->> 		finish_arch_post_lock_switch();
->> 	}
->> -	mmdrop(mm);
->> +
->> +	/* finish_cpu(), as ran on the BP, will clean up the active_mm =
-state */
->> }
->>=20
->> /*
->> --=20
->> 2.21.0 (Apple Git-122.2)
-
+-Brian
