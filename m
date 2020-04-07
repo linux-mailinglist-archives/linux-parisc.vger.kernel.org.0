@@ -2,95 +2,81 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F35D19FEE8
-	for <lists+linux-parisc@lfdr.de>; Mon,  6 Apr 2020 22:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8447E1A063B
+	for <lists+linux-parisc@lfdr.de>; Tue,  7 Apr 2020 07:12:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726254AbgDFUQ1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 6 Apr 2020 16:16:27 -0400
-Received: from mout.gmx.net ([212.227.17.20]:55685 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725895AbgDFUQ0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 6 Apr 2020 16:16:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1586204178;
-        bh=oG1yq8a/DhIc/9gEG2YsWIiXtkuwm4ES6uWA/6KSCjk=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=GnOpoaPsH58dBiAx7bZGg1akExGH7ESKyRLpT0rolkR0kWsJzcbVRbyIHOBNVM17V
-         jdpdcw3dXldUjZ8DfQQD3acOHRbbpaVg+vr1JdV6nFqe0YVkIzuECfeQsfWqhKXT+3
-         41lMSFvQQePw4D6boiwPJdajMURtq5p+NaGh00AU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.138.44]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MBDnC-1jSieF3dRW-00ClUE; Mon, 06
- Apr 2020 22:16:17 +0200
-Date:   Mon, 6 Apr 2020 22:16:15 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture fixes for kernel v5.7
-Message-ID: <20200406201615.GA23183@ls3530.fritz.box>
+        id S1726973AbgDGFMq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 Apr 2020 01:12:46 -0400
+Received: from mail-yb1-f194.google.com ([209.85.219.194]:41705 "EHLO
+        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726878AbgDGFMn (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 7 Apr 2020 01:12:43 -0400
+Received: by mail-yb1-f194.google.com with SMTP id t10so1140595ybk.8
+        for <linux-parisc@vger.kernel.org>; Mon, 06 Apr 2020 22:12:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=m9m/DCsFRus/zRmIuphflM5sHyenmkMN/TOEnECOGthbLJHVg8u2+iqtFZpNbyb2/k
+         2tLF//qwyXGtNVJKRleGUy+KbEtVjN+06Aw6FbGL98d5M/QEqB9c9SHaIsBPFlQYoUCh
+         Lj+P9EPUGdvyQRip4KeH3oSvDVhqDTV0IJcbcI66BzYP/b9Y/1y4LF++1q0teLhPl3GM
+         v15gBTxOBB8qvH4CNaCnwdm2sugBL+St8qIlm7SqBWweWj6hdsos1F0mjeWO8qJt64R9
+         xl3tya8AfljNAFdSOkZ4tC7INitomO8JQPFHHcp+JAODUsaup01At9KIYDntXEoTQZb0
+         DmdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=jE+IXF4pXup+exX9xhOBlt4Z6O+PGA1JDNGe59L6Gh3XwaEsC7hgIlfHjydAvQXJiQ
+         rXidWdgmxgMhLksmirOdVJghuo6+pq0hC2ucn0TG1sVecaaheGImsDHfzK4A8vFcSQ1F
+         E3Rh58AZj/1USZ2cjunz0VvUDcgeQeppA11kCztSk5vwL7orDCcvDTLqzYL/GHKEr+lR
+         JNXl6M0XiMi35i1JD6s0iyFrLIbpvlbcuHxWR6f3wGidg0djGpoStkgy83xbLrZ6WMIo
+         X0LChW19DGPbE2IXUKdLrPhrujg7LvKExuCipXbp6BozDjcbJvqlT8uWLqilxVDEWd//
+         QrYA==
+X-Gm-Message-State: AGi0PuZyIdN5PRVS5KjiKyuHpc2P5jRCu0ZTRTvXMTwQlAQUEHKaG2tH
+        +POsCKhY4ASFL30hHU8teI3DqlZiuJImqSnznsiko5cI9sc=
+X-Google-Smtp-Source: APiQypIYXniGQUHEpASwiGNjKth4Cu9ElCz4yjrJ2uXbYBYunhfz0887D/TRydUbTstl7MwaeVftG8QxF1P80ST3qos=
+X-Received: by 2002:ab0:a9:: with SMTP id 38mr504317uaj.61.1586236361040; Mon,
+ 06 Apr 2020 22:12:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:g0DlnhRdrNw8HmoSXCXhHF8diqMYig6+OyRgPRSdgBy2WzFL2sf
- QhQIPzC93CNQYPiuiFFWrgqZclj/Os5T2uuaslKSez1XCTecqjuk18ufYne9fR3+MwB2z7F
- C6U9ks+1CWsWUeIWW8ofZX0vIZDzdWKKeder1sU/BQSdQN763A9vNcpUVo4lcRbbwFq/7dZ
- ZMOpdXzb/DpRjSYF9lAvw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cDYWPsDJmIQ=:8cF9npHUYDS7HwxW6TwB7g
- nbMTjQo5wZvqL85LNIeIaB+B7bdHi7H3VpqoIvep+Kyepo+xzpDMXCicy84E5wzQoS4izj9dV
- yU7DX0g7+BjCZrDfipWJ40h76iWddApI1OHJdQmBPxCO9F3JPXSJ/r3uRSgVlLDXbc4BUzbgc
- ZVydxx4SN7lm3gzCuFzEh7uXCPxiesReMWoyP6dPNbhSQSXkX+eFUdQmN4gtYiIYUn6FO2Ymi
- mmTYYdw8ni3yp4FpavJLyfW0pTygVMalAuBY8lA5vMU2PqaJ6VPSpqEzwW38F4RgWSgZT2/wb
- KU3mLgtgFuoLR7SEHzuiJGeuNFSbNOfX+ofyFWOGhux3PAyChacN95ic/buBMzLZU45sPJafQ
- zuGTfJur5jVJQaMI3uNh/oHJGlP0Btfw1uQIhY7FPol/0BTg2BG4N3c2UqTLyPBKmTXPZKCTq
- zPjYbUiLNa7oKiwFvh4rClYIGb3+W0KzYzPUpQR50aX5PZy9DCgjGB7TLpcW/9fOHXxH9bvMy
- FEd8mi/liA29iCa8H1UjWkNJr+ely72tDQj88KvT5tpbtvmq4C4GWGEuetxjeAvXJziVjOiQ0
- V6fVkR27ILb7t6dFsXeEzqI6Sg1vK5BTJlHL7eBq2HElAYZKku1kIQx5KTN0/Mux5cqveD7qy
- 37Z/GOaE4g3AP1iTGoNLK2uPj5ksP3aGuf7kNMeXJwoyakUsM06FJ2w75VUQ2iQJAilWHpn4B
- drOKajClzMTyttCD4Mm501RZN+jTD4GXg6b+/ZFnYpYgKm/DoBeVuNgWK30jn+SlUiZQkrOHW
- 5ZLcaWxY+Cuh5kNxsaYVCQeZfDvWbVzCMD0TTHuiFUbCUNRGThQdjZhH1WMhXKSdDzpbsNBaj
- HrEihsj4q8VxmieJ/ZwF6XTqLXBptNE5RtFMSPS0wQxjmMpPHmQnDCkF6M1oMVXQyn7X3SuKf
- GDY4vdmUTbZl7+keaI1HbiKa+E6VMoSjm71FKFN9w1y/qdxaN6N6sfDo3OMetvMcc0mbFjrzE
- Ulcuth+AxGFLLG0ezfIsJboYGpEYWJ0Z6KI18JINL9s/oUXeU8blYeRiEPrl5xmDp7yLiUKRq
- veFvaymxXoOl9vMxq+qfYVVhifu5rXmOqmDi1fqgNr4lFXrZLS8RrYyIQWD9EjX/V3t2GM61g
- Cxtjv4nmqFH7YX5ilhRmDQ0m6/z0YYRt+JdtWXp1pUTO1ekL5HttWPOB9Uh3Tj6Z8oBroZG89
- CNT4lwA6VXyjTU/f9
+Received: by 2002:ab0:4929:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:12:40 -0700 (PDT)
+From:   SANDRA DEWI <dewisandra154@gmail.com>
+Date:   Tue, 7 Apr 2020 05:12:40 +0000
+Message-ID: <CABRVPWys0xe4CWBkaU0ZXQW+4d=tjDOjyo8cKohc5-VFkWPkcA@mail.gmail.com>
+Subject: whether this is your correct email address or not
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+Dear ,Pastor
 
-please pull the updates for the parisc architecture for kernel 5.7 from:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.7-1
 
-Some cleanups in arch_rw locking functions, improved interrupt handling in arch
-spinlocks, coversions to request_irq() and syscall table generation cleanups.
+I have a client who is an oil business man and he made a fixed deposit
+of $26 million USD in my bank, where I am the director of the branch,
+My client died with his entire family in Jordanian
 
-Thanks,
-Helge
+50% of the fund will be for the church  for the work of God,the
+balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
+50% for me
 
-----------------------------------------------------------------
-Firoz Khan (1):
-      parisc: remove nargs from __SYSCALL
+intervention in the Syrian Civil War 2014 leaving behind no next of
+kin. I Propose to present you as next of kin to claim the funds, if
+interested reply me for full details and how we are to
 
-Helge Deller (3):
-      parisc: Improve interrupt handling in arch_spin_lock_flags()
-      parisc: Rework arch_rw locking functions
-      parisc: Refactor alternative code to accept multiple conditions
 
-afzal mohammed (1):
-      parisc: Replace setup_irq() by request_irq()
 
- arch/parisc/include/asm/spinlock.h        | 160 ++++++++++++++----------------
- arch/parisc/include/asm/spinlock_types.h  |  14 ++-
- arch/parisc/kernel/alternative.c          |  37 +++----
- arch/parisc/kernel/irq.c                  |  22 ++--
- arch/parisc/kernel/syscall.S              |   2 +-
- arch/parisc/kernel/syscalls/syscalltbl.sh |   4 +-
- drivers/parisc/eisa.c                     |   8 +-
- 7 files changed, 114 insertions(+), 133 deletions(-)
+proceed to close this deal.
+
+
+
+
+Mrs. Sandra Dewi
+
+
+
+Email  mrsdewi@gmx.com
