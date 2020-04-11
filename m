@@ -2,55 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BC641A163D
-	for <lists+linux-parisc@lfdr.de>; Tue,  7 Apr 2020 21:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76C071A5243
+	for <lists+linux-parisc@lfdr.de>; Sat, 11 Apr 2020 15:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727009AbgDGTzD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 7 Apr 2020 15:55:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56354 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726712AbgDGTzD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 7 Apr 2020 15:55:03 -0400
-Subject: Re: [GIT PULL] parisc architecture fixes for kernel v5.7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586289302;
-        bh=r+VImNmnLBQUKy6aPx4G7SRNP8Qk/clSP1tZpxClntI=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=f+VShvUrPZxu1C1Ms2KDU5EdVJqfo1DVQFjuvXIE2D7VSZ9q5S+etPphEm0wfuRAK
-         BMcRBUWWUrW7lnZUJLcac5lJlye54Y39VAKA9wZDvX1TO3s/jiNG/xKisWu7tlciFI
-         I6BUIPq7nie29FcuY0bc7opuFp6UEakT2v6vZ6sE=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20200406201615.GA23183@ls3530.fritz.box>
-References: <20200406201615.GA23183@ls3530.fritz.box>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20200406201615.GA23183@ls3530.fritz.box>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git
- parisc-5.7-1
-X-PR-Tracked-Commit-Id: 106c90922e1e0cd5fcbb34be8ebbb3e8a8e71909
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f9db97d751870cbffc85f4aa0d8aca8a79432691
-Message-Id: <158628930265.3792.541815435181788203.pr-tracker-bot@kernel.org>
-Date:   Tue, 07 Apr 2020 19:55:02 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
+        id S1726054AbgDKNGt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 11 Apr 2020 09:06:49 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:13153 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726037AbgDKNGt (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 11 Apr 2020 09:06:49 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id B30933196E5B490457B4;
+        Sat, 11 Apr 2020 21:06:41 +0800 (CST)
+Received: from use12-sp2.huawei.com (10.67.189.174) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 11 Apr 2020 21:06:22 +0800
+From:   Xiaoming Ni <nixiaoming@huawei.com>
+To:     <mcgrof@kernel.org>, <keescook@chromium.org>, <yzaikin@google.com>,
+        <James.Bottomley@HansenPartnership.com>, <deller@gmx.de>
+CC:     <nixiaoming@huawei.com>, <linux-kernel@vger.kernel.org>,
+        <linux-fsdevel@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
+        <wangle6@huawei.com>, <victor.lisheng@huawei.com>
+Subject: [PATCH] parisc: add sysctl file interface panic_on_stackoverflow
+Date:   Sat, 11 Apr 2020 21:06:19 +0800
+Message-ID: <1586610379-51745-1-git-send-email-nixiaoming@huawei.com>
+X-Mailer: git-send-email 1.8.5.6
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.67.189.174]
+X-CFilter-Loop: Reflected
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Mon, 6 Apr 2020 22:16:15 +0200:
+The variable sysctl_panic_on_stackoverflow is used in
+arch/parisc/kernel/irq.c and arch/x86/kernel/irq_32.c, but the sysctl file
+interface panic_on_stackoverflow only exists on x86.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.7-1
+Add sysctl file interface panic_on_stackoverflow for parisc
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f9db97d751870cbffc85f4aa0d8aca8a79432691
+Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+---
+ kernel/sysctl.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-Thank you!
-
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 8a176d8..b9ff323 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -994,30 +994,32 @@ static int sysrq_sysctl_handler(struct ctl_table *table, int write,
+ 		.proc_handler   = proc_dointvec,
+ 	},
+ #endif
+-#if defined(CONFIG_X86)
++
++#if (defined(CONFIG_X86_32) || defined(CONFIG_PARISC)) && \
++	defined(CONFIG_DEBUG_STACKOVERFLOW)
+ 	{
+-		.procname	= "panic_on_unrecovered_nmi",
+-		.data		= &panic_on_unrecovered_nmi,
++		.procname	= "panic_on_stackoverflow",
++		.data		= &sysctl_panic_on_stackoverflow,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec,
+ 	},
++#endif
++#if defined(CONFIG_X86)
+ 	{
+-		.procname	= "panic_on_io_nmi",
+-		.data		= &panic_on_io_nmi,
++		.procname	= "panic_on_unrecovered_nmi",
++		.data		= &panic_on_unrecovered_nmi,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec,
+ 	},
+-#ifdef CONFIG_DEBUG_STACKOVERFLOW
+ 	{
+-		.procname	= "panic_on_stackoverflow",
+-		.data		= &sysctl_panic_on_stackoverflow,
++		.procname	= "panic_on_io_nmi",
++		.data		= &panic_on_io_nmi,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec,
+ 	},
+-#endif
+ 	{
+ 		.procname	= "bootloader_type",
+ 		.data		= &bootloader_type,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+1.8.5.6
+
