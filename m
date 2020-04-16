@@ -2,52 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F7B1AB42B
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Apr 2020 01:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1EB21AB49A
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Apr 2020 02:09:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389035AbgDOXWg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 15 Apr 2020 19:22:36 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:47074 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389018AbgDOXWe (ORCPT
+        id S2391344AbgDPAJr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 15 Apr 2020 20:09:47 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:44539 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732827AbgDPAJo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 15 Apr 2020 19:22:34 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6CA85120ED569;
-        Wed, 15 Apr 2020 16:22:33 -0700 (PDT)
-Date:   Wed, 15 Apr 2020 16:22:32 -0700 (PDT)
-Message-Id: <20200415.162232.1194362016278310196.davem@davemloft.net>
-To:     yanaijie@huawei.com
-Cc:     snelson@pensando.io, kuba@kernel.org, hkallweit1@gmail.com,
-        leon@kernel.org, mst@redhat.com, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        hulkci@huawei.com
-Subject: Re: [PATCH] net: tulip: make early_486_chipsets static
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200415084248.24378-1-yanaijie@huawei.com>
-References: <20200415084248.24378-1-yanaijie@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 15 Apr 2020 16:22:34 -0700 (PDT)
+        Wed, 15 Apr 2020 20:09:44 -0400
+Received: by mail-pf1-f194.google.com with SMTP id b72so791223pfb.11;
+        Wed, 15 Apr 2020 17:09:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=MpW66db2TQolWnI94YZHor4fyLu1EvPbEE+3crcrgOA=;
+        b=aT9XffR2zO2o8DBzAsHDzQ9lZki09VTdlA0sGuWrpNmacdEUMdnNCk4r82xaPrQsUv
+         CmS60ERiO40DdDbXUrf1bMQnbMsnvmWqMaPPw1+ighQXy8A5UVeVMwcrkUZblaMygLLy
+         gIybm1q8WNNTatdzGBV2AQa0r+8lYsId0ulLi5ToYJYpZ0YHN+ZmDZYbr06c0EJlbUx3
+         gnIWXWS+tlezqcrG7ZeRoOoKsE44SLGEwJt0PvVy3ODg9K/zVEez9tly+BwYjYEQPSID
+         xC8ZQjVqM2Apdaf801rF16bGjkVlwOGxuTCvLgRNHrJNWpdyyIHJkvReL2g9HbZD/dgO
+         6LHg==
+X-Gm-Message-State: AGi0PuZrOPF57EMbZgsK2NC456IMZPwP9PJLdZ+uXV5SkRuuvK7lJUiT
+        lB7Q/p/r9u7WGrb4rU6dvps=
+X-Google-Smtp-Source: APiQypLrQO2DM+Ep9IB6PtTHaaRO59cFlOYiTyody/qhtTsCEdrSI5RZRl9YI2E2UEk4F4CVu8xz7A==
+X-Received: by 2002:a65:6887:: with SMTP id e7mr8956981pgt.318.1586995782145;
+        Wed, 15 Apr 2020 17:09:42 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id t12sm9468095pgm.37.2020.04.15.17.09.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2020 17:09:40 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 2070140277; Thu, 16 Apr 2020 00:09:40 +0000 (UTC)
+Date:   Thu, 16 Apr 2020 00:09:40 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Xiaoming Ni <nixiaoming@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     keescook@chromium.org, yzaikin@google.com,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-parisc@vger.kernel.org, wangle6@huawei.com,
+        victor.lisheng@huawei.com
+Subject: Re: [PATCH] parisc: add sysctl file interface panic_on_stackoverflow
+Message-ID: <20200416000940.GY11244@42.do-not-panic.com>
+References: <1586610379-51745-1-git-send-email-nixiaoming@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1586610379-51745-1-git-send-email-nixiaoming@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Jason Yan <yanaijie@huawei.com>
-Date: Wed, 15 Apr 2020 16:42:48 +0800
-
-> Fix the following sparse warning:
+On Sat, Apr 11, 2020 at 09:06:19PM +0800, Xiaoming Ni wrote:
+> The variable sysctl_panic_on_stackoverflow is used in
+> arch/parisc/kernel/irq.c and arch/x86/kernel/irq_32.c, but the sysctl file
+> interface panic_on_stackoverflow only exists on x86.
 > 
-> drivers/net/ethernet/dec/tulip/tulip_core.c:1280:28: warning: symbol
-> 'early_486_chipsets' was not declared. Should it be static?
+> Add sysctl file interface panic_on_stackoverflow for parisc
 > 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
 
-Applied, thanks.
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+
+  Luis
