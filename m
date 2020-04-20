@@ -2,257 +2,136 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B8611AF505
-	for <lists+linux-parisc@lfdr.de>; Sat, 18 Apr 2020 22:55:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90AB21B028B
+	for <lists+linux-parisc@lfdr.de>; Mon, 20 Apr 2020 09:16:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728243AbgDRUz1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 18 Apr 2020 16:55:27 -0400
-Received: from mout.gmx.net ([212.227.15.18]:51509 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726014AbgDRUz0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 18 Apr 2020 16:55:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1587243275;
-        bh=VKy0dQDCaD8oqgDy725ir2gKt+Kxucb5P54PGywTa38=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=kQCGXWhVlpl6QVtIxnd0SMXMLVVzhHrIirSGtbnTLIDazLoohm8RpK/5TlhcxSksh
-         m7p17hMubGAgexag9MlrcUVhhMQNHW9yLNYYTFK75QoDithmq4DehK5dNBYxvG7Xxt
-         LZXP0naIIi4tS7T51GLTcykOt7R2rz/nNZGfzTLY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.147.134]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MJmGZ-1jexKE1zDt-00K9bL; Sat, 18
- Apr 2020 22:54:35 +0200
-Subject: Re: [PATCHv3 25/50] parisc: Add show_stack_loglvl()
-To:     Dmitry Safonov <dima@arista.com>, linux-kernel@vger.kernel.org
-Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Slaby <jslaby@suse.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        id S1726039AbgDTHQO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 20 Apr 2020 03:16:14 -0400
+Received: from mail-dm6nam12on2117.outbound.protection.outlook.com ([40.107.243.117]:57049
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725773AbgDTHQN (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 20 Apr 2020 03:16:13 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ITQS8bQSZfEkBfWEqYRoeO2K+t6He4hAkgoRaLbGJc5NrDcsVGlqf7ArYa2fMkNGTd/2Ja2YLlYCR5OQVvqQEmWSHb6/A33igGJU/x8RKWpLJvlKrkXZQNc6C2Mgn+IePd38rFHY5Xzjh1XtasMfPVAkDjdAboLIvrJdCuNjQP5kZOu6ydJzXGt/KPZ+Unrm6ZWSl+JKAo9mEP7q1RMd9MEk45gThuPNZ6D87mA+lbkCREcShDBODivuhuHz2ldEmufUGBdgG4g0CU2iie9oJ93U7p8w62bQhwN73thz4dYqE+HRo9ChBMI3/jaY+zjbuDEUFl9Uh11jK00ezfJ8Ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Obf8vJL6eB5UeU879i1Y2ZaUrwAqXiDjQeosQo0DGk0=;
+ b=OsGF/OK4v8EurgiZItl4OzhHFoWVhbgKRzGMy8beoVzBs2VvkVKDXUtMoB0bTyWswkNgrkr6r6d8f1vjAUlJ4g8KUP5RYtvpY8+ID1DiDVycBnKsa64ahobGYWxWqi+JCIZ1HzcZNw0EKnHDHVJlU7JzzLmTp7/b0C2nS9oAT2/VE02sYGrnZnOvCGaVhZQB4I+Egu//xe3EiMoS3o/e2sD2Z7Qx4GVHaQLu6eDpv1xhX1rmkW9DT2IYay14jNQsl39NFTSY9Xm2VG7G4s3IsNZ2BSvo2/h9TBYrw1aaKIS2lsPXrJcvdMbLDIUm9dVsJUYZdgcBHZV0XUNOo94iNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
+ is 204.77.163.244) smtp.rcpttodomain=zeniv.linux.org.uk
+ smtp.mailfrom=garmin.com; dmarc=temperror action=none header.from=garmin.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garmin.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Obf8vJL6eB5UeU879i1Y2ZaUrwAqXiDjQeosQo0DGk0=;
+ b=CU8fPaE/YUAdbdWZNiws63RKc4CHYrpnREhetAoYNuj88hjKb31Zgo4wug6abVk0ATDgU0K/WgcPkTIWwdC7LVF6cCeDRQkku1Uv08k4aXLPkjM/G8iFRe1lBiRSKVOGDS28kTsE6qRj0q8q7xEngOsqdnDnZSU8Ta7wkNv3rtiAUERKkd+8lr9JavZYo7YC22mHFqXKuS/QFUfq2Otc0PApoHuebMBteRW6dd8m1am8sOuMP9KmT1jM1yIKrercv/L63wvjGnSeHxdpIMxtr9qGIONXmAs/niGUo0GKb5GCP2S0IiYelHeijCgb18AAQ0v7J//lc/CmN/BwdXCyTw==
+Received: from MWHPR1701CA0021.namprd17.prod.outlook.com
+ (2603:10b6:301:14::31) by MN2PR04MB6943.namprd04.prod.outlook.com
+ (2603:10b6:208:1e8::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2921.29; Mon, 20 Apr
+ 2020 07:16:10 +0000
+Received: from MW2NAM10FT023.eop-nam10.prod.protection.outlook.com
+ (2603:10b6:301:14:cafe::73) by MWHPR1701CA0021.outlook.office365.com
+ (2603:10b6:301:14::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2921.25 via Frontend
+ Transport; Mon, 20 Apr 2020 07:16:10 +0000
+Authentication-Results: spf=temperror (sender IP is 204.77.163.244)
+ smtp.mailfrom=garmin.com; zeniv.linux.org.uk; dkim=none (message not signed)
+ header.d=none;zeniv.linux.org.uk; dmarc=temperror action=none
+ header.from=garmin.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of garmin.com: DNS Timeout)
+Received: from edgetransport.garmin.com (204.77.163.244) by
+ MW2NAM10FT023.mail.protection.outlook.com (10.13.154.154) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2921.25 via Frontend Transport; Mon, 20 Apr 2020 07:16:09 +0000
+Received: from OLAWPA-EXMB7.ad.garmin.com (10.5.144.21) by
+ olawpa-edge5.garmin.com (10.60.4.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.1466.3; Mon, 20 Apr 2020 02:16:08 -0500
+Received: from ola-d01c000-vm.ad.garmin.com (10.5.84.15) by
+ OLAWPA-EXMB7.ad.garmin.com (10.5.144.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.1913.5; Mon, 20 Apr 2020 02:16:07 -0500
+From:   Nate Karstens <nate.karstens@garmin.com>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org
-References: <20200418201944.482088-1-dima@arista.com>
- <20200418201944.482088-26-dima@arista.com>
-From:   Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
- c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <55e2b275-b232-f009-ab8e-0469506e6e96@gmx.de>
-Date:   Sat, 18 Apr 2020 22:54:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        <linux-fsdevel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+        <linux-alpha@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
+        <sparclinux@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Changli Gao <xiaosuo@gmail.com>
+Subject: Implement close-on-fork
+Date:   Mon, 20 Apr 2020 02:15:44 -0500
+Message-ID: <20200420071548.62112-1-nate.karstens@garmin.com>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-In-Reply-To: <20200418201944.482088-26-dima@arista.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:g9CB259vry3HDjlljUe/oUrpw0PWkQ4fR6VngeJnzUiqDc8zCYQ
- mEWAeVJhlz4FVDmqkaGkiRBKITR+wI/ln2COKmNt4ZpEGoz1ZceD7B986Ii7xVnAwKSaHZu
- KshAg8W3rTul9xVbf9DTsHqkagFfd4vtM6PfQ1LAsuNjpidY0yjL6d452nYsIdOQmrub3tw
- LN1Vbe5UwYyz/cDKSXBww==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:IkVwbkTWS/0=:VWKEmA6jhZFGLnMaN+jZMa
- Nx4YX4OGNFPQzbZ0khwtZe2hkLfnFa7n+GNZUUF/imydPnINV4uEwKpU6boB0fhILvqpQY05U
- 2ip9iu8B+r3yTUyS4h9zMxjpP7XXsFh7lTtwa3ljHbpW4KaefH/l0NV9GiXwMuPUNJDMKWolX
- b6VYK9lEb2nqQtYRC0REZ4W43Y+Qp7jKp5M/Z4QwXQwsnNmwK+Ett6MUhaM7C+ll7lPJ4OFSd
- OLwCSxeHwYsRYYg5Pe93bRV2U/HTM4ZH+29R2tBJvxOOSUGh41hnYpcXDcMLCXsqoj6Aw2FCm
- DrEcIeDTBG0XcPKKmhWAyEbRDn34VdeoQgkH0QOROhYPXuIU0ZQtQEQcPlZeT6Z22Z+IBdcQC
- slDmVIXqrO2OmAbI9yHJRH/I3Yyske8/lkcg2tjePqcbwSbZD4fIaw+wr89jalvK0rlQ1Ajth
- s22P2/XUw9pTb2H1hUoB1gwVtvTboqT1k9cDPL3N1M3jQv464SqGv4qClAex/4k9kKC0uiXoK
- KKnPHgQa/Rz2GQkh+KMrFhBRnuOy5pxDmiXBTXqNOH7kRyvB6dm0eSYYc36TytY6INrOtBG5P
- 5ItwwD+6t91yuXjG6VVZJuZM/JGVtT5G0G+t0hN3Xqmx4b9uk0bjYxKRk0qyHu08Kk7G2pY2H
- fyZIDpbFXQMERia3SSdp5ar2IZUo83EJ1Ak9kZXCnGauVHCIvMGwljOaLvYBlGYPQzHBjGVob
- nPo0RN9Kz6yHP+CG2zpw1FzSi3I3LEFv6XGJ11ChQA8ApbUmzQlMsxrL8jvmCbL0oe/cnuTEH
- nym6H7ACpHdfXOkZo24lJyA+5+7xhzzaOG7XH1dJ0DMEuBcb0Ox7BIbLiQx0N2DZZf01JK6S1
- KyIfkfhWPUtkOTtX+pLysPfMZmDx6rihoECOctOaLv4y9RKXuoJyOIzIig0GO5jqofVFTNTrM
- q7Ha3MGyrIfIqvnINrL93mpdo8Z02UMskq2fyG92pcSIRhKsCA4LgZ1LkBiqoCoG+dPZn+hrM
- 0T/o5X3Dgr9uNxuxSSdJKlmIn6u7qNa7lOh74Woj9R0cjxfnNonhDFKhAOKzRKl0KboUe5mYp
- f/DVuSgWscbsGPn5Y5w2aIhJZNuodRbYJaR1XTndB2i+a+PPj61lbJLLHWmCjlcD8G2wD8Q4u
- NhT9ZxWfzbhnNo/fcTVVzlFyAteMQqd36WHvPtROoOwIInOV/FlvVKzjvLDoo5Q7tsl6k7jfA
- FD2jkA6wbn0M7/92O
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: OLAWPA-EXMB3.ad.garmin.com (10.5.144.15) To
+ OLAWPA-EXMB7.ad.garmin.com (10.5.144.21)
+X-TM-AS-Product-Ver: SMEX-12.5.0.1300-8.5.1020-25366.005
+X-TM-AS-Result: No-2.672700-8.000000-10
+X-TMASE-MatchedRID: C0yCreAKqhU6Vyyhf+5DyNnDq+aDZjGZopGQY5bbP3IS39b8+3nDx2yH
+        arFSgTJkrAcfB2a374DtuEV8riQqnUL5qYNMJ0izSJA7ysb1rf4MoIRV9JcRcJgEXULQnZA+REq
+        3u7TSlyQQjJKRYDGkqiLlzUWeMnOUG9+YWBtn9f02Kcs0U8NADwD4keG7QhHmkaEC8FJraL9VBT
+        xVtaxF+PJULsnDyV0omyiLZetSf8nyb6HMFK1qexQabjOuIvShC24oEZ6SpSk6XEE7Yhw4FnGVL
+        azt5ExJKPeGqR8ehy43+ClJRg1TEJQKb8/efJar62rAP15pkWFJxvTFjNlhWphE9dJLY+2Ccilc
+        ogl42gi8ddZeVE3wUqPxvuJPX7GvZjWfMVA8wvMfAjFbCsqQWX7h78xQkeMv5UQ9TF0JjMw=
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--2.672700-8.000000
+X-TMASE-Version: SMEX-12.5.0.1300-8.5.1020-25366.005
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:204.77.163.244;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:edgetransport.garmin.com;PTR:extedge.garmin.com;CAT:NONE;SFTY:;SFS:(10019020)(396003)(346002)(376002)(136003)(39860400002)(46966005)(44832011)(8936002)(82740400003)(356005)(426003)(86362001)(8676002)(63350400001)(2906002)(63370400001)(2616005)(7636003)(4326008)(36756003)(478600001)(5660300002)(4744005)(3480700007)(26005)(7696005)(110136005)(966005)(47076004)(316002)(336012)(6666004)(70206006)(70586007)(246002)(1076003)(186003)(7416002)(921003);DIR:OUT;SFP:1102;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 3cebdd2a-378c-43a9-2eb3-08d7e4fab32f
+X-MS-TrafficTypeDiagnostic: MN2PR04MB6943:
+X-Microsoft-Antispam-PRVS: <MN2PR04MB6943FC5329299259A807F4529CD40@MN2PR04MB6943.namprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Forefront-PRVS: 03793408BA
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: m17TNnMaRIyO1oiSpiZwXGsMZvV085XaKj6cIq9LcdAlPse18AqAT5jmB0Pfph+DE56qOp/ls93+OtaHM3hDYWXM+t9Livwz4yaMr2GHRexfElAHXNTtptwdUqo+GBAP6UOA/8mrI+JsuFhJ+cEsJ60B6Kv9y/0U5nxiZ9z+9Jkboy3r86s5FILAAsXrApz76dvKLmFju84NLojir1cFDfFnJ0vGyuKAxBLB86VFqjejN5MVr85F7lv96hIDS0jEbovGBEOzeIlGDejU0GCf3yU4SnBYsqdUw/QreLKxdROMNl0LlqioduW57/nDuNw41Na+fixQ23Mzhpvzz346TRClrROBj49KhxrfZMN4F+elyaz2PYIii8ZawTgV6F8wyKu1l/9OuOXv0Ym5izUnJyGPOFvmR+N/1E70r0lOtn1Ov590XsxkCIWe87pEECs7pDdVjb7In1DTZSL4pdxIgZED15l9BuPj1qk1MLkhMxi5RCzvEh9apnYKIt3Q7Kgtjv+ppO2ILGqERXHWWH5T/MaYJLpTk8H/9OoA4/90Pdqo8DCmgIjCU501LVzhTSJc+PoWshGTD4yCyImwWvO5wYxpxVNAhQk3Hu57meqGmEk=
+X-OriginatorOrg: garmin.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2020 07:16:09.4056
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3cebdd2a-378c-43a9-2eb3-08d7e4fab32f
+X-MS-Exchange-CrossTenant-Id: 38d0d425-ba52-4c0a-a03e-2a65c8e82e2d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=38d0d425-ba52-4c0a-a03e-2a65c8e82e2d;Ip=[204.77.163.244];Helo=[edgetransport.garmin.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB6943
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 18.04.20 22:19, Dmitry Safonov wrote:
-> Currently, the log-level of show_stack() depends on a platform
-> realization. It creates situations where the headers are printed with
-> lower log level or higher than the stacktrace (depending on
-> a platform or user).
->
-> Furthermore, it forces the logic decision from user to an architecture
-> side. In result, some users as sysrq/kdb/etc are doing tricks with
-> temporary rising console_loglevel while printing their messages.
-> And in result it not only may print unwanted messages from other CPUs,
-> but also omit printing at all in the unlucky case where the printk()
-> was deferred.
->
-> Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems
-> an easier approach than introducing more printk buffers.
-> Also, it will consolidate printings with headers.
->
-> Introduce show_stack_loglvl(), that eventually will substitute
-> show_stack().
->
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: linux-parisc@vger.kernel.org
-> [1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/=
-T/#u
-> Signed-off-by: Dmitry Safonov <dima@arista.com>
-> ---
->  arch/parisc/kernel/traps.c | 28 +++++++++++++++++-----------
->  1 file changed, 17 insertions(+), 11 deletions(-)
+Series of 4 patches to implement close-on-fork. Tests have been
+published to https://github.com/nkarstens/ltp/tree/close-on-fork.
 
-Acked-by: Helge Deller <deller@gmx.de>
+close-on-fork addresses race conditions in system(), which
+(depending on the implementation) is non-atomic in that it
+first calls a fork() and then an exec().
 
-Thanks!
-Helge
+This functionality was approved by the Austin Common Standards
+Revision Group for inclusion in the next revision of the POSIX
+standard (see issue 1318 in the Austin Group Defect Tracker).
 
-
->
-> diff --git a/arch/parisc/kernel/traps.c b/arch/parisc/kernel/traps.c
-> index 82fc01189488..c2411de3730f 100644
-> --- a/arch/parisc/kernel/traps.c
-> +++ b/arch/parisc/kernel/traps.c
-> @@ -49,7 +49,7 @@
->  #include "../math-emu/math-emu.h"	/* for handle_fpe() */
->
->  static void parisc_show_stack(struct task_struct *task,
-> -	struct pt_regs *regs);
-> +	struct pt_regs *regs, const char *loglvl);
->
->  static int printbinary(char *buf, unsigned long x, int nbits)
->  {
-> @@ -155,7 +155,7 @@ void show_regs(struct pt_regs *regs)
->  		printk("%s IAOQ[1]: %pS\n", level, (void *) regs->iaoq[1]);
->  		printk("%s RP(r2): %pS\n", level, (void *) regs->gr[2]);
->
-> -		parisc_show_stack(current, regs);
-> +		parisc_show_stack(current, regs, KERN_DEFAULT);
->  	}
->  }
->
-> @@ -170,37 +170,43 @@ static DEFINE_RATELIMIT_STATE(_hppa_rs,
->  }
->
->
-> -static void do_show_stack(struct unwind_frame_info *info)
-> +static void do_show_stack(struct unwind_frame_info *info, const char *l=
-oglvl)
->  {
->  	int i =3D 1;
->
-> -	printk(KERN_CRIT "Backtrace:\n");
-> +	printk("%sBacktrace:\n", loglvl);
->  	while (i <=3D MAX_UNWIND_ENTRIES) {
->  		if (unwind_once(info) < 0 || info->ip =3D=3D 0)
->  			break;
->
->  		if (__kernel_text_address(info->ip)) {
-> -			printk(KERN_CRIT " [<" RFMT ">] %pS\n",
-> -				info->ip, (void *) info->ip);
-> +			printk("%s [<" RFMT ">] %pS\n",
-> +				loglvl, info->ip, (void *) info->ip);
->  			i++;
->  		}
->  	}
-> -	printk(KERN_CRIT "\n");
-> +	printk("%s\n", loglvl);
->  }
->
->  static void parisc_show_stack(struct task_struct *task,
-> -	struct pt_regs *regs)
-> +	struct pt_regs *regs, const char *loglvl)
->  {
->  	struct unwind_frame_info info;
->
->  	unwind_frame_init_task(&info, task, regs);
->
-> -	do_show_stack(&info);
-> +	do_show_stack(&info, loglvl);
-> +}
-> +
-> +void show_stack_loglvl(struct task_struct *t, unsigned long *sp,
-> +		       const char *loglvl)
-> +{
-> +	parisc_show_stack(t, NULL, loglvl);
->  }
->
->  void show_stack(struct task_struct *t, unsigned long *sp)
->  {
-> -	parisc_show_stack(t, NULL);
-> +	show_stack_loglvl(t, sp, KERN_CRIT)
->  }
->
->  int is_valid_bugaddr(unsigned long iaoq)
-> @@ -446,7 +452,7 @@ void parisc_terminate(char *msg, struct pt_regs *reg=
-s, int code, unsigned long o
->  		/* show_stack(NULL, (unsigned long *)regs->gr[30]); */
->  		struct unwind_frame_info info;
->  		unwind_frame_init(&info, current, regs);
-> -		do_show_stack(&info);
-> +		do_show_stack(&info, KERN_CRIT);
->  	}
->
->  	printk("\n");
->
+[PATCH 1/4] fs: Implement close-on-fork
+[PATCH 2/4] fs: Add O_CLOFORK flag for open(2) and dup3(2)
+[PATCH 3/4] fs: Add F_DUPFD_CLOFORK to fcntl(2)
+[PATCH 4/4] net: Add SOCK_CLOFORK
 
