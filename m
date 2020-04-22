@@ -2,35 +2,26 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56AC31B4902
-	for <lists+linux-parisc@lfdr.de>; Wed, 22 Apr 2020 17:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A0A21B4954
+	for <lists+linux-parisc@lfdr.de>; Wed, 22 Apr 2020 18:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726593AbgDVPoF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 22 Apr 2020 11:44:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57330 "EHLO
+        id S1726183AbgDVQBI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 22 Apr 2020 12:01:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726154AbgDVPoE (ORCPT
+        with ESMTP id S1726006AbgDVQBH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 22 Apr 2020 11:44:04 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB1F5C03C1A9;
-        Wed, 22 Apr 2020 08:44:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=d189Ht66WkNhS7qEev42XSV+pMJKpBQ+6wQXP4iX/B0=; b=nw4Xj1fY4FG1c+4lbVWravMDJg
-        FmJrQLxqg8GzrzqGIYlmpd4sbmocteJxuRA0UlFGIAtBEPVd8EtW0bO+XUYXYRGqoYWTkELYcq7Hk
-        PiOmvar7kH7mjR6YHZlQIIEtCU3WK6WpmPL7AhpJ4kxkDAz4qoGMAoc677HYTMwbqm2+mXtbjI6bO
-        EHSSg8CVovE2aDqNn3EGvysLCibViHIEs/7lXsfKT+1Y0ADQDs8wU6mWsqdT/ZR44ibgrGt87y0G3
-        T5VUBSvN8BIwJxipP0FAkplmTKSsCTDs/mUN5D9Fv6HicsQ2PmqoTca6GAbQZYAiUKDKA+kAGudKu
-        /vf0E95w==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jRHXY-0001vC-BB; Wed, 22 Apr 2020 15:43:56 +0000
-Date:   Wed, 22 Apr 2020 08:43:56 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     "Karstens, Nate" <Nate.Karstens@garmin.com>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Wed, 22 Apr 2020 12:01:07 -0400
+X-Greylist: delayed 3563 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 22 Apr 2020 09:01:07 PDT
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B466C03C1A9;
+        Wed, 22 Apr 2020 09:01:07 -0700 (PDT)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jRHnc-008Yo8-Vd; Wed, 22 Apr 2020 16:00:33 +0000
+Date:   Wed, 22 Apr 2020 17:00:32 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Nate Karstens <nate.karstens@garmin.com>,
         Jeff Layton <jlayton@kernel.org>,
         "J. Bruce Fields" <bfields@fieldses.org>,
         Arnd Bergmann <arnd@arndb.de>,
@@ -41,44 +32,66 @@ Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Helge Deller <deller@gmx.de>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Laight <David.Laight@aculab.com>,
-        Changli Gao <xiaosuo@gmail.com>
-Subject: Re: [PATCH 1/4] fs: Implement close-on-fork
-Message-ID: <20200422154356.GU5820@bombadil.infradead.org>
+        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Changli Gao <xiaosuo@gmail.com>
+Subject: Re: Implement close-on-fork
+Message-ID: <20200422160032.GL23230@ZenIV.linux.org.uk>
 References: <20200420071548.62112-1-nate.karstens@garmin.com>
- <20200420071548.62112-2-nate.karstens@garmin.com>
- <fa6c5c9c7c434f878c94a7c984cd43ba@garmin.com>
+ <20200422150107.GK23230@ZenIV.linux.org.uk>
+ <20200422151815.GT5820@bombadil.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fa6c5c9c7c434f878c94a7c984cd43ba@garmin.com>
+In-Reply-To: <20200422151815.GT5820@bombadil.infradead.org>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Apr 22, 2020 at 03:36:09PM +0000, Karstens, Nate wrote:
-> There was some skepticism about whether our practice of
-> closing/reopening sockets was advisable. Regardless, it does expose what
-> I believe to be something that was overlooked in the forking process
-> model. We posted two solutions to the Austin Group defect tracker:
+On Wed, Apr 22, 2020 at 08:18:15AM -0700, Matthew Wilcox wrote:
+> On Wed, Apr 22, 2020 at 04:01:07PM +0100, Al Viro wrote:
+> > On Mon, Apr 20, 2020 at 02:15:44AM -0500, Nate Karstens wrote:
+> > > Series of 4 patches to implement close-on-fork. Tests have been
+> > > published to https://github.com/nkarstens/ltp/tree/close-on-fork.
+> > > 
+> > > close-on-fork addresses race conditions in system(), which
+> > > (depending on the implementation) is non-atomic in that it
+> > > first calls a fork() and then an exec().
+> > > 
+> > > This functionality was approved by the Austin Common Standards
+> > > Revision Group for inclusion in the next revision of the POSIX
+> > > standard (see issue 1318 in the Austin Group Defect Tracker).
+> > 
+> > What exactly the reasons are and why would we want to implement that?
+> > 
+> > Pardon me, but going by the previous history, "The Austin Group Says It's
+> > Good" is more of a source of concern regarding the merits, general sanity
+> > and, most of all, good taste of a proposal.
+> > 
+> > I'm not saying that it's automatically bad, but you'll have to go much
+> > deeper into the rationale of that change before your proposal is taken
+> > seriously.
+> 
+> https://www.mail-archive.com/austin-group-l@opengroup.org/msg05324.html
+> might be useful
 
-I don't think it was "overlooked" at all.  It's not safe to call system()
-from a threaded app.  That's all.  It's right there in the DESCRIPTION:
+*snort*
 
-   The system() function need not be thread-safe.
-https://pubs.opengroup.org/onlinepubs/9699919799/functions/system.html
+Alan Coopersmith in that thread:
+|| https://lwn.net/Articles/785430/ suggests AIX, BSD, & MacOS have also defined
+|| it, and though it's been proposed multiple times for Linux, never adopted there.
 
-> Ultimately the Austin Group felt that close-on-fork
-> was the preferred approach. I think it's also worth
-> pointing that out Solaris reportedly has this feature
-> (https://www.mail-archive.com/austin-group-l@opengroup.org/msg05359.html).
+Now, look at the article in question.  You'll see that it should've been
+"someone's posting in the end of comments thread under LWN article says that
+apparently it exists on AIX, BSD, ..."
 
-I am perplexed that the Austin Group thought this was a good idea.
+The strength of evidence aside, that got me curious; I have checked the
+source of FreeBSD, NetBSD and OpenBSD.  No such thing exists in either of
+their kernels, so at least that part can be considered an urban legend.
+
+As for the original problem...  what kind of exclusion is used between
+the reaction to netlink notifications (including closing every socket,
+etc.) and actual IO done on those sockets?
+
