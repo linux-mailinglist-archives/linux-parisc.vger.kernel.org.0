@@ -2,70 +2,166 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E7B1B289D
-	for <lists+linux-parisc@lfdr.de>; Tue, 21 Apr 2020 15:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A5971B359E
+	for <lists+linux-parisc@lfdr.de>; Wed, 22 Apr 2020 05:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728745AbgDUN5j (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 21 Apr 2020 09:57:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43688 "EHLO
+        id S1726412AbgDVDiq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 21 Apr 2020 23:38:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726018AbgDUN5i (ORCPT
+        by vger.kernel.org with ESMTP id S1726228AbgDVDip (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 21 Apr 2020 09:57:38 -0400
-Received: from merlin.infradead.org (unknown [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D17A6C061A10;
-        Tue, 21 Apr 2020 06:57:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=Pp2bG4fEbryHc3bEtGL1LFuRU1cWx4G4+7sc9Othu1I=; b=HTj4tJC67EYOgK0QECIFmCjDq2
-        21F8Clxqw+0cNAw8vb5Ch1Z60ErYNeLv3JvecCZTWpnd/y0UHVf2/x3sptdRiRDuLIPfYArRTq0Rh
-        UTxf5Y9PYN16bjwvebhPSiX36ouWYtDHwYsqcf1YINvEOjhA9GWtEM35IhAus34CYcKHAYy/Z3Srw
-        KTeYWcD8/3tarYix+ekD/Hpx9XbhrqyKDv33lxxl/w/IXk3tjcf7bH/4y6V5NMLLi3+0AQUfmWE5j
-        j43DhsWBA67Taj6/B6+RRXxpok6kqcfE2j73Q5djFQJ/XaWu3UOjgIYazNBPQGQ1szPRYOyyO0iJm
-        p6eMMAWQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jQtOA-0000CI-6H; Tue, 21 Apr 2020 13:56:38 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B31F5300739;
-        Tue, 21 Apr 2020 15:56:35 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 9906D2BAC7931; Tue, 21 Apr 2020 15:56:35 +0200 (CEST)
-Date:   Tue, 21 Apr 2020 15:56:35 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Qian Cai <cai@lca.pw>
-Cc:     Michael Ellerman <mpe@ellerman.id.au>,
-        Ingo Molnar <mingo@redhat.com>, juri.lelli@redhat.com,
-        dietmar.eggemann@arm.com, vincent.guittot@linaro.org,
-        Steven Rostedt <rostedt@goodmis.org>, bsegall@google.com,
-        mgorman@suse.de, paulmck@kernel.org, tglx@linutronix.de,
-        "James.Bottomley@hansenpartnership.com" 
-        <James.Bottomley@HansenPartnership.com>, deller@gmx.de,
-        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2] sched/core: fix illegal RCU from offline CPUs
-Message-ID: <20200421135635.GT20730@hirez.programming.kicks-ass.net>
-References: <20200401214033.8448-1-cai@lca.pw>
- <87369mt9kf.fsf@mpe.ellerman.id.au>
- <BBA124FA-7924-4782-AC9D-7B1B98BE817F@lca.pw>
+        Tue, 21 Apr 2020 23:38:45 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41D40C0610D6;
+        Tue, 21 Apr 2020 20:38:45 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id t11so448885lfe.4;
+        Tue, 21 Apr 2020 20:38:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cjSTi7hlF1/NelCXmbeNWnOnAcO/OjzgBK0nAtkVF1M=;
+        b=HsYir1MD1qN3cOFB5Lr3179LEcQcQ1a/Qq3NCUTytLRTeuLM6l9Rixek6ovajwT16b
+         BMP9vfjjaXChJCfi00vAzyGiJPpHofR2+PIw9/z7h8vSXN9Ha0RkgU3gQTFJgkAe2HGQ
+         W5fCz7w7LP1mkVNxJDhgDJsp586/okfTrd0rancohGo7/OAN863jRiEwLN8kGkOC4P+h
+         9IPyvWOfG/qXyqqXp4L2tadElFAk//2zk3q6qm3zcY0lBsTOw3BLEg0BSy6YGPPF+otf
+         pnpXsE6oUgHvE10hJqnJrncoARHmSXGczeEb3AZtba2V4x0ku1caTdPk7cba5nhn1Mw3
+         hYkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cjSTi7hlF1/NelCXmbeNWnOnAcO/OjzgBK0nAtkVF1M=;
+        b=oCHQFWo9/CeYmde5RL7xiQClD3oiFv1UVYIQ3O3G9k/dvWUmjfBhEzS9F7KSQVCeYn
+         fFp6teUs6ge8OmAnH848Nfq7KXeD1h9teTWI9LrwJ0gvmVl1xBIM2HQ1rCKlRHvmJ+2V
+         b4lw/Q+Qxd/aw5XZ4tW74HiZfXov/qo7T5T/Z3VnkGxlMF6V4Bk7UPcQohvZk8kkhMmK
+         b3bwUf9iTy3vKmx4srDyCzWsJL7mF7mXqnfheSqdxbLxXpRlRii+0YgkxX6xpn94ieIU
+         aGoMMtxCyqNCASc0CfuSyUssfL/8woZQ8WLQCr4YjBeT8dI+BK3FmsfGIpNXgOvGulmV
+         EvxA==
+X-Gm-Message-State: AGi0PubJvgD6GgKLOZbF/6AvPWX7OBDj9vKh1qI7/hM9S2hK+8WaTgHm
+        rJZPeUJIHmmcrtXuBzWzxMNev59chdo1E0feBkBtM4FiKQ0=
+X-Google-Smtp-Source: APiQypIpUMoiM4pLlpvoneXnVmUpQwIHtS5zEdjT4qynaypGLsgcvfd5TCUNGVuboXjX5mw49Gl/fP8JXcB430T44RI=
+X-Received: by 2002:ac2:519c:: with SMTP id u28mr15656394lfi.17.1587526723542;
+ Tue, 21 Apr 2020 20:38:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BBA124FA-7924-4782-AC9D-7B1B98BE817F@lca.pw>
+References: <20200420071548.62112-1-nate.karstens@garmin.com>
+ <20200420071548.62112-2-nate.karstens@garmin.com> <36dce9b4-a0bf-0015-f6bc-1006938545b1@gmail.com>
+In-Reply-To: <36dce9b4-a0bf-0015-f6bc-1006938545b1@gmail.com>
+From:   Changli Gao <xiaosuo@gmail.com>
+Date:   Wed, 22 Apr 2020 11:38:32 +0800
+Message-ID: <CABa6K_HWsy9DdjsKXE2d_JrC+OsNuW+OALS+-_HiV3r2XgC1bw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] fs: Implement close-on-fork
+To:     Eric Dumazet <eric.dumazet@gmail.com>
+Cc:     Nate Karstens <nate.karstens@garmin.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        Linux Netdev List <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Apr 17, 2020 at 09:26:56AM -0400, Qian Cai wrote:
+On Mon, Apr 20, 2020 at 6:25 PM Eric Dumazet <eric.dumazet@gmail.com> wrote:
+>
+>
+>
+> On 4/20/20 12:15 AM, Nate Karstens wrote:
+> > The close-on-fork flag causes the file descriptor to be closed
+> > atomically in the child process before the child process returns
+> > from fork(). Implement this feature and provide a method to
+> > get/set the close-on-fork flag using fcntl(2).
+> >
+> > This functionality was approved by the Austin Common Standards
+> > Revision Group for inclusion in the next revision of the POSIX
+> > standard (see issue 1318 in the Austin Group Defect Tracker).
+>
+> Oh well... yet another feature slowing down a critical path.
+>
+> >
+> > Co-developed-by: Changli Gao <xiaosuo@gmail.com>
+> > Signed-off-by: Changli Gao <xiaosuo@gmail.com>
+> > Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
+> > ---
+> >  fs/fcntl.c                             |  2 ++
+> >  fs/file.c                              | 50 +++++++++++++++++++++++++-
+> >  include/linux/fdtable.h                |  7 ++++
+> >  include/linux/file.h                   |  2 ++
+> >  include/uapi/asm-generic/fcntl.h       |  5 +--
+> >  tools/include/uapi/asm-generic/fcntl.h |  5 +--
+> >  6 files changed, 66 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/fs/fcntl.c b/fs/fcntl.c
+> > index 2e4c0fa2074b..23964abf4a1a 100644
+> > --- a/fs/fcntl.c
+> > +++ b/fs/fcntl.c
+> > @@ -335,10 +335,12 @@ static long do_fcntl(int fd, unsigned int cmd, unsigned long arg,
+> >               break;
+> >       case F_GETFD:
+> >               err = get_close_on_exec(fd) ? FD_CLOEXEC : 0;
+> > +             err |= get_close_on_fork(fd) ? FD_CLOFORK : 0;
+> >               break;
+> >       case F_SETFD:
+> >               err = 0;
+> >               set_close_on_exec(fd, arg & FD_CLOEXEC);
+> > +             set_close_on_fork(fd, arg & FD_CLOFORK);
+> >               break;
+> >       case F_GETFL:
+> >               err = filp->f_flags;
+> > diff --git a/fs/file.c b/fs/file.c
+> > index c8a4e4c86e55..de7260ba718d 100644
+> > --- a/fs/file.c
+> > +++ b/fs/file.c
+> > @@ -57,6 +57,8 @@ static void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
+> >       memset((char *)nfdt->open_fds + cpy, 0, set);
+> >       memcpy(nfdt->close_on_exec, ofdt->close_on_exec, cpy);
+> >       memset((char *)nfdt->close_on_exec + cpy, 0, set);
+> > +     memcpy(nfdt->close_on_fork, ofdt->close_on_fork, cpy);
+> > +     memset((char *)nfdt->close_on_fork + cpy, 0, set);
+> >
+>
+> I suggest we group the two bits of a file (close_on_exec, close_on_fork) together,
+> so that we do not have to dirty two separate cache lines.
+>
+> Otherwise we will add yet another cache line miss at every file opening/closing for processes
+> with big file tables.
+>
+> Ie having a _single_ bitmap array, even bit for close_on_exec, odd bit for close_on_fork
+>
+> static inline void __set_close_on_exec(unsigned int fd, struct fdtable *fdt)
+> {
+>         __set_bit(fd * 2, fdt->close_on_fork_exec);
+> }
+>
+> static inline void __set_close_on_fork(unsigned int fd, struct fdtable *fdt)
+> {
+>         __set_bit(fd * 2 + 1, fdt->close_on_fork_exec);
+> }
+>
+> Also the F_GETFD/F_SETFD implementation must use a single function call,
+> to not acquire the spinlock twice.
+>
 
-> > Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> 
-> Peter, can you take a look at this patch when you have a chance?
+Good suggestions.
 
-Sorry, -ETOOMUCHEMAIL, got it now, thanks!
+At the same time, we'd better extend other syscalls, which set the
+FD_CLOEXEC when  creating FDs. i.e. open, pipe3...
+
+
+-- 
+Regards,
+Changli Gao(xiaosuo@gmail.com)
