@@ -2,65 +2,43 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CE2C1C1899
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 May 2020 16:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8207E1C18AA
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 May 2020 16:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729665AbgEAOsM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 May 2020 10:48:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52646 "EHLO mail.kernel.org"
+        id S1729965AbgEAOst (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 May 2020 10:48:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52490 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729352AbgEAOpI (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 May 2020 10:45:08 -0400
+        id S1729321AbgEAOpH (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 1 May 2020 10:45:07 -0400
 Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 13CC324959;
+        by mail.kernel.org (Postfix) with ESMTPSA id EFEE924953;
         Fri,  1 May 2020 14:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=default; t=1588344305;
-        bh=pgEeloihUJtDW9NEkL6jmFDK/ZInSPDNQO7niKknL3E=;
-        h=From:To:Cc:Subject:Date:From;
-        b=SVEs1VMhjyuHELBkXcF4/1fWlbsaS7MgiAohJ3ePux485XSRhFIw+LT9CMyjWvZFi
-         ihz7fPrKmb/CyIscv5iZo1ghZ6L6por1RndA5qbcxiN/hqpCEtOv80OoyKzd7LfsEg
-         e5L/qaobT9VXcglAQbs4CKkx5QoFsFVnzoG5mfmc=
+        bh=rN4VaRsq4TFWMvYDcHSDc7rGeR1oz6sxZaa1mHVtzsk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=DnjBkLQ1SaYjkaqEQzDvb4oM2sQ7mcVe8hAI8/aRC7GnF8+93aedJKYAuzyc3o3Qq
+         hCgthIi1Ea35Jbu0JOyLWrW1bqbk5yTD2sMtjCLfgGX3ZDLsDmIqJis9Gnr3rMWBAp
+         Hhda0SfGoUCxHrBE/zO305lvallw0pxtcnANtiMg=
 Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
         (envelope-from <mchehab@kernel.org>)
-        id 1jUWuT-00FCcS-77; Fri, 01 May 2020 16:45:01 +0200
+        id 1jUWuT-00FCe3-NJ; Fri, 01 May 2020 16:45:01 +0200
 From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Samuel Chessman <chessman@tux.org>, netdev@vger.kernel.org,
-        Andrew Hendry <andrew.hendry@gmail.com>,
-        Zorik Machulsky <zorik@amazon.com>,
-        Sean Tranchetti <stranche@codeaurora.org>,
-        Igor Russkikh <irusskikh@marvell.com>,
-        Jon Mason <jdmason@kudzu.us>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        linux-x25@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
-        linux-hyperv@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Subash Abhinov Kasiviswanathan <subashab@codeaurora.org>,
-        David Ahern <dsahern@kernel.org>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Ishizaki Kou <kou.ishizaki@toshiba.co.jp>,
-        Joerg Reuter <jreuter@yaina.de>,
-        Saeed Bishara <saeedb@amazon.com>,
-        Shrijeet Mukherjee <shrijeet@gmail.com>,
-        Netanel Belgazal <netanel@amazon.com>,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Guy Tzalik <gtzalik@amazon.com>,
-        Maxim Krasnyansky <maxk@qti.qualcomm.com>,
-        Arthur Kiyanovski <akiyano@amazon.com>,
-        linux-wireless@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        Steffen Klassert <klassert@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Stephen Hemminger <sthemmin@microsoft.com>
-Subject: [PATCH 00/37]net: manually convert files to ReST format - part 3 (final)
-Date:   Fri,  1 May 2020 16:44:22 +0200
-Message-Id: <cover.1588344146.git.mchehab+huawei@kernel.org>
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-parisc@vger.kernel.org
+Subject: [PATCH 19/37] docs: networking: device drivers: convert dec/de4x5.txt to ReST
+Date:   Fri,  1 May 2020 16:44:41 +0200
+Message-Id: <33e9444fb07448fd12cef68b8f469d7c4325a417.1588344146.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.25.4
+In-Reply-To: <cover.1588344146.git.mchehab+huawei@kernel.org>
+References: <cover.1588344146.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
@@ -68,165 +46,218 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-That's the third part (and the final one) of my work to convert the networking
-text files into ReST. it is based on linux-next next-20200430 branch.
+- add SPDX header;
+- add a document title;
+- mark code blocks and literals as such;
+- adjust identation, whitespaces and blank lines where needed;
+- add to networking/index.rst.
 
-The full series (including those ones) are at:
-
-	https://git.linuxtv.org/mchehab/experimental.git/log/?h=net-docs
-
-The  built output documents, on html format is at:
-
-	https://www.infradead.org/~mchehab/kernel_docs/networking/
-
-
-Mauro Carvalho Chehab (37):
-  docs: networking: convert tuntap.txt to ReST
-  docs: networking: convert udplite.txt to ReST
-  docs: networking: convert vrf.txt to ReST
-  docs: networking: convert vxlan.txt to ReST
-  docs: networking: convert x25-iface.txt to ReST
-  docs: networking: convert x25.txt to ReST
-  docs: networking: convert xfrm_device.txt to ReST
-  docs: networking: convert xfrm_proc.txt to ReST
-  docs: networking: convert xfrm_sync.txt to ReST
-  docs: networking: convert xfrm_sysctl.txt to ReST
-  docs: networking: convert z8530drv.txt to ReST
-  docs: networking: device drivers: convert 3com/3c509.txt to ReST
-  docs: networking: device drivers: convert 3com/vortex.txt to ReST
-  docs: networking: device drivers: convert amazon/ena.txt to ReST
-  docs: networking: device drivers: convert aquantia/atlantic.txt to
-    ReST
-  docs: networking: device drivers: convert chelsio/cxgb.txt to ReST
-  docs: networking: device drivers: convert cirrus/cs89x0.txt to ReST
-  docs: networking: device drivers: convert davicom/dm9000.txt to ReST
-  docs: networking: device drivers: convert dec/de4x5.txt to ReST
-  docs: networking: device drivers: convert dec/dmfe.txt to ReST
-  docs: networking: device drivers: convert dlink/dl2k.txt to ReST
-  docs: networking: device drivers: convert freescale/dpaa.txt to ReST
-  docs: networking: device drivers: convert freescale/gianfar.txt to
-    ReST
-  docs: networking: device drivers: convert intel/ipw2100.txt to ReST
-  docs: networking: device drivers: convert intel/ipw2200.txt to ReST
-  docs: networking: device drivers: convert microsoft/netvsc.txt to ReST
-  docs: networking: device drivers: convert neterion/s2io.txt to ReST
-  docs: networking: device drivers: convert neterion/vxge.txt to ReST
-  docs: networking: device drivers: convert qualcomm/rmnet.txt to ReST
-  docs: networking: device drivers: convert sb1000.txt to ReST
-  docs: networking: device drivers: convert smsc/smc9.txt to ReST
-  docs: networking: device drivers: convert ti/cpsw_switchdev.txt to
-    ReST
-  docs: networking: device drivers: convert ti/cpsw.txt to ReST
-  docs: networking: device drivers: convert ti/tlan.txt to ReST
-  docs: networking: device drivers: convert toshiba/spider_net.txt to
-    ReST
-  net: docs: add page_pool.rst to index.rst
-  docs: networking: arcnet-hardware.rst: don't duplicate chapter names
-
- Documentation/networking/arcnet-hardware.rst  |   8 +-
- .../3com/{3c509.txt => 3c509.rst}             | 158 +++--
- .../3com/{vortex.txt => vortex.rst}           | 223 ++++---
- .../amazon/{ena.txt => ena.rst}               | 142 ++--
- .../aquantia/{atlantic.txt => atlantic.rst}   | 373 ++++++-----
- .../chelsio/{cxgb.txt => cxgb.rst}            | 183 ++++--
- .../cirrus/{cs89x0.txt => cs89x0.rst}         | 557 ++++++++--------
- .../davicom/{dm9000.txt => dm9000.rst}        |  24 +-
- .../dec/{de4x5.txt => de4x5.rst}              | 105 +--
- .../device_drivers/dec/{dmfe.txt => dmfe.rst} |  35 +-
- .../dlink/{dl2k.txt => dl2k.rst}              | 228 ++++---
- .../freescale/{dpaa.txt => dpaa.rst}          | 139 ++--
- .../freescale/{gianfar.txt => gianfar.rst}    |  21 +-
- .../networking/device_drivers/index.rst       |  24 +
- .../intel/{ipw2100.txt => ipw2100.rst}        | 242 ++++---
- .../intel/{ipw2200.txt => ipw2200.rst}        | 410 +++++++-----
- .../microsoft/{netvsc.txt => netvsc.rst}      |  57 +-
- .../device_drivers/neterion/s2io.rst          | 196 ++++++
- .../device_drivers/neterion/s2io.txt          | 141 ----
- .../neterion/{vxge.txt => vxge.rst}           |  60 +-
- .../qualcomm/{rmnet.txt => rmnet.rst}         |  43 +-
- .../networking/device_drivers/sb1000.rst      | 222 +++++++
- .../networking/device_drivers/sb1000.txt      | 207 ------
- .../networking/device_drivers/smsc/smc9.rst   |  49 ++
- .../networking/device_drivers/smsc/smc9.txt   |  42 --
- .../networking/device_drivers/ti/cpsw.rst     | 587 +++++++++++++++++
- .../networking/device_drivers/ti/cpsw.txt     | 541 ----------------
- ...{cpsw_switchdev.txt => cpsw_switchdev.rst} | 239 ++++---
- .../device_drivers/ti/{tlan.txt => tlan.rst}  |  73 ++-
- .../{spider_net.txt => spider_net.rst}        |  58 +-
- Documentation/networking/index.rst            |  12 +
- .../networking/{tuntap.txt => tuntap.rst}     | 200 +++---
- .../networking/{udplite.txt => udplite.rst}   | 175 ++---
- Documentation/networking/vrf.rst              | 451 +++++++++++++
- Documentation/networking/vrf.txt              | 418 ------------
- .../networking/{vxlan.txt => vxlan.rst}       |  33 +-
- .../{x25-iface.txt => x25-iface.rst}          |  10 +-
- Documentation/networking/{x25.txt => x25.rst} |   4 +
- .../{xfrm_device.txt => xfrm_device.rst}      |  33 +-
- .../{xfrm_proc.txt => xfrm_proc.rst}          |  31 +
- .../{xfrm_sync.txt => xfrm_sync.rst}          |  66 +-
- .../{xfrm_sysctl.txt => xfrm_sysctl.rst}      |   7 +
- .../networking/{z8530drv.txt => z8530drv.rst} | 609 +++++++++---------
- MAINTAINERS                                   |  30 +-
- drivers/net/Kconfig                           |   4 +-
- drivers/net/ethernet/3com/3c59x.c             |   4 +-
- drivers/net/ethernet/3com/Kconfig             |   2 +-
- drivers/net/ethernet/chelsio/Kconfig          |   2 +-
- drivers/net/ethernet/cirrus/Kconfig           |   2 +-
- drivers/net/ethernet/dec/tulip/Kconfig        |   4 +-
- drivers/net/ethernet/dlink/dl2k.c             |   2 +-
- drivers/net/ethernet/neterion/Kconfig         |   4 +-
- drivers/net/ethernet/smsc/Kconfig             |   4 +-
- drivers/net/ethernet/ti/Kconfig               |   2 +-
- drivers/net/ethernet/ti/tlan.c                |   2 +-
- drivers/net/hamradio/Kconfig                  |   4 +-
- drivers/net/hamradio/scc.c                    |   2 +-
- drivers/net/wireless/intel/ipw2x00/Kconfig    |   4 +-
- drivers/net/wireless/intel/ipw2x00/ipw2100.c  |   2 +-
- include/uapi/linux/if_x25.h                   |   2 +-
- net/x25/Kconfig                               |   4 +-
- 61 files changed, 4175 insertions(+), 3341 deletions(-)
- rename Documentation/networking/device_drivers/3com/{3c509.txt => 3c509.rst} (68%)
- rename Documentation/networking/device_drivers/3com/{vortex.txt => vortex.rst} (72%)
- rename Documentation/networking/device_drivers/amazon/{ena.txt => ena.rst} (86%)
- rename Documentation/networking/device_drivers/aquantia/{atlantic.txt => atlantic.rst} (63%)
- rename Documentation/networking/device_drivers/chelsio/{cxgb.txt => cxgb.rst} (81%)
- rename Documentation/networking/device_drivers/cirrus/{cs89x0.txt => cs89x0.rst} (61%)
- rename Documentation/networking/device_drivers/davicom/{dm9000.txt => dm9000.rst} (92%)
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ .../dec/{de4x5.txt => de4x5.rst}              | 105 ++++++++++--------
+ .../networking/device_drivers/index.rst       |   1 +
+ drivers/net/ethernet/dec/tulip/Kconfig        |   2 +-
+ 3 files changed, 60 insertions(+), 48 deletions(-)
  rename Documentation/networking/device_drivers/dec/{de4x5.txt => de4x5.rst} (78%)
- rename Documentation/networking/device_drivers/dec/{dmfe.txt => dmfe.rst} (68%)
- rename Documentation/networking/device_drivers/dlink/{dl2k.txt => dl2k.rst} (59%)
- rename Documentation/networking/device_drivers/freescale/{dpaa.txt => dpaa.rst} (79%)
- rename Documentation/networking/device_drivers/freescale/{gianfar.txt => gianfar.rst} (82%)
- rename Documentation/networking/device_drivers/intel/{ipw2100.txt => ipw2100.rst} (70%)
- rename Documentation/networking/device_drivers/intel/{ipw2200.txt => ipw2200.rst} (64%)
- rename Documentation/networking/device_drivers/microsoft/{netvsc.txt => netvsc.rst} (83%)
- create mode 100644 Documentation/networking/device_drivers/neterion/s2io.rst
- delete mode 100644 Documentation/networking/device_drivers/neterion/s2io.txt
- rename Documentation/networking/device_drivers/neterion/{vxge.txt => vxge.rst} (80%)
- rename Documentation/networking/device_drivers/qualcomm/{rmnet.txt => rmnet.rst} (73%)
- create mode 100644 Documentation/networking/device_drivers/sb1000.rst
- delete mode 100644 Documentation/networking/device_drivers/sb1000.txt
- create mode 100644 Documentation/networking/device_drivers/smsc/smc9.rst
- delete mode 100644 Documentation/networking/device_drivers/smsc/smc9.txt
- create mode 100644 Documentation/networking/device_drivers/ti/cpsw.rst
- delete mode 100644 Documentation/networking/device_drivers/ti/cpsw.txt
- rename Documentation/networking/device_drivers/ti/{cpsw_switchdev.txt => cpsw_switchdev.rst} (51%)
- rename Documentation/networking/device_drivers/ti/{tlan.txt => tlan.rst} (73%)
- rename Documentation/networking/device_drivers/toshiba/{spider_net.txt => spider_net.rst} (88%)
- rename Documentation/networking/{tuntap.txt => tuntap.rst} (58%)
- rename Documentation/networking/{udplite.txt => udplite.rst} (65%)
- create mode 100644 Documentation/networking/vrf.rst
- delete mode 100644 Documentation/networking/vrf.txt
- rename Documentation/networking/{vxlan.txt => vxlan.rst} (73%)
- rename Documentation/networking/{x25-iface.txt => x25-iface.rst} (96%)
- rename Documentation/networking/{x25.txt => x25.rst} (96%)
- rename Documentation/networking/{xfrm_device.txt => xfrm_device.rst} (92%)
- rename Documentation/networking/{xfrm_proc.txt => xfrm_proc.rst} (95%)
- rename Documentation/networking/{xfrm_sync.txt => xfrm_sync.rst} (82%)
- rename Documentation/networking/{xfrm_sysctl.txt => xfrm_sysctl.rst} (52%)
- rename Documentation/networking/{z8530drv.txt => z8530drv.rst} (57%)
 
+diff --git a/Documentation/networking/device_drivers/dec/de4x5.txt b/Documentation/networking/device_drivers/dec/de4x5.rst
+similarity index 78%
+rename from Documentation/networking/device_drivers/dec/de4x5.txt
+rename to Documentation/networking/device_drivers/dec/de4x5.rst
+index 452aac58341d..e03e9c631879 100644
+--- a/Documentation/networking/device_drivers/dec/de4x5.txt
++++ b/Documentation/networking/device_drivers/dec/de4x5.rst
+@@ -1,48 +1,54 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++===================================
++DEC EtherWORKS Ethernet De4x5 cards
++===================================
++
+     Originally,   this  driver  was    written  for the  Digital   Equipment
+     Corporation series of EtherWORKS Ethernet cards:
+ 
+-        DE425 TP/COAX EISA
+-	DE434 TP PCI
+-	DE435 TP/COAX/AUI PCI
+-	DE450 TP/COAX/AUI PCI
+-	DE500 10/100 PCI Fasternet
++	 - DE425 TP/COAX EISA
++	 - DE434 TP PCI
++	 - DE435 TP/COAX/AUI PCI
++	 - DE450 TP/COAX/AUI PCI
++	 - DE500 10/100 PCI Fasternet
+ 
+     but it  will  now attempt  to  support all  cards which   conform to the
+     Digital Semiconductor   SROM   Specification.    The  driver   currently
+     recognises the following chips:
+ 
+-        DC21040  (no SROM) 
+-	DC21041[A]  
+-	DC21140[A] 
+-	DC21142 
+-	DC21143 
++	 - DC21040  (no SROM)
++	 - DC21041[A]
++	 - DC21140[A]
++	 - DC21142
++	 - DC21143
+ 
+     So far the driver is known to work with the following cards:
+ 
+-        KINGSTON
+-	Linksys
+-	ZNYX342
+-	SMC8432
+-	SMC9332 (w/new SROM)
+-	ZNYX31[45]
+-	ZNYX346 10/100 4 port (can act as a 10/100 bridge!) 
++	 - KINGSTON
++	 - Linksys
++	 - ZNYX342
++	 - SMC8432
++	 - SMC9332 (w/new SROM)
++	 - ZNYX31[45]
++	 - ZNYX346 10/100 4 port (can act as a 10/100 bridge!)
+ 
+     The driver has been tested on a relatively busy network using the DE425,
+     DE434, DE435 and DE500 cards and benchmarked with 'ttcp': it transferred
+-    16M of data to a DECstation 5000/200 as follows:
++    16M of data to a DECstation 5000/200 as follows::
+ 
+-                TCP           UDP
+-             TX     RX     TX     RX
+-    DE425   1030k  997k   1170k  1128k
+-    DE434   1063k  995k   1170k  1125k
+-    DE435   1063k  995k   1170k  1125k
+-    DE500   1063k  998k   1170k  1125k  in 10Mb/s mode
++		  TCP           UDP
++	       TX     RX     TX     RX
++      DE425   1030k  997k   1170k  1128k
++      DE434   1063k  995k   1170k  1125k
++      DE435   1063k  995k   1170k  1125k
++      DE500   1063k  998k   1170k  1125k  in 10Mb/s mode
+ 
+     All  values are typical (in   kBytes/sec) from a  sample  of 4 for  each
+     measurement. Their error is +/-20k on a quiet (private) network and also
+     depend on what load the CPU has.
+ 
+-    =========================================================================
++----------------------------------------------------------------------------
+ 
+     The ability to load this  driver as a loadable  module has been included
+     and used extensively  during the driver development  (to save those long
+@@ -55,31 +61,33 @@
+ 
+     0) have a copy of the loadable modules code installed on your system.
+     1) copy de4x5.c from the  /linux/drivers/net directory to your favourite
+-    temporary directory.
++       temporary directory.
+     2) for fixed  autoprobes (not  recommended),  edit the source code  near
+-    line 5594 to reflect the I/O address  you're using, or assign these when
+-    loading by:
++       line 5594 to reflect the I/O address  you're using, or assign these when
++       loading by::
+ 
+-                   insmod de4x5 io=0xghh           where g = bus number
+-		                                        hh = device number   
++		   insmod de4x5 io=0xghh           where g = bus number
++							hh = device number
+ 
+-       NB: autoprobing for modules is now supported by default. You may just
+-           use:
++       .. note::
+ 
+-                   insmod de4x5
++	   autoprobing for modules is now supported by default. You may just
++	   use::
+ 
+-           to load all available boards. For a specific board, still use
++		   insmod de4x5
++
++	   to load all available boards. For a specific board, still use
+ 	   the 'io=?' above.
+     3) compile  de4x5.c, but include -DMODULE in  the command line to ensure
+-    that the correct bits are compiled (see end of source code).
++       that the correct bits are compiled (see end of source code).
+     4) if you are wanting to add a new  card, goto 5. Otherwise, recompile a
+-    kernel with the de4x5 configuration turned off and reboot.
++       kernel with the de4x5 configuration turned off and reboot.
+     5) insmod de4x5 [io=0xghh]
+-    6) run the net startup bits for your new eth?? interface(s) manually 
+-    (usually /etc/rc.inet[12] at boot time). 
++    6) run the net startup bits for your new eth?? interface(s) manually
++       (usually /etc/rc.inet[12] at boot time).
+     7) enjoy!
+ 
+-    To unload a module, turn off the associated interface(s) 
++    To unload a module, turn off the associated interface(s)
+     'ifconfig eth?? down' then 'rmmod de4x5'.
+ 
+     Automedia detection is included so that in  principle you can disconnect
+@@ -90,7 +98,7 @@
+     By  default,  the driver will  now   autodetect any  DECchip based card.
+     Should you have a need to restrict the driver to DIGITAL only cards, you
+     can compile with a  DEC_ONLY define, or if  loading as a module, use the
+-    'dec_only=1'  parameter. 
++    'dec_only=1'  parameter.
+ 
+     I've changed the timing routines to  use the kernel timer and scheduling
+     functions  so that the  hangs  and other assorted problems that occurred
+@@ -158,18 +166,21 @@
+     either at the end of the parameter list or with another board name.  The
+     following parameters are allowed:
+ 
+-            fdx        for full duplex
+-	    autosense  to set the media/speed; with the following 
+-	               sub-parameters:
++	    =========  ===============================================
++	    fdx        for full duplex
++	    autosense  to set the media/speed; with the following
++		       sub-parameters:
+ 		       TP, TP_NW, BNC, AUI, BNC_AUI, 100Mb, 10Mb, AUTO
++	    =========  ===============================================
+ 
+     Case sensitivity is important  for  the sub-parameters. They *must*   be
+-    upper case. Examples:
++    upper case. Examples::
+ 
+-        insmod de4x5 args='eth1:fdx autosense=BNC eth0:autosense=100Mb'.
++	insmod de4x5 args='eth1:fdx autosense=BNC eth0:autosense=100Mb'.
+ 
+-    For a compiled in driver, in linux/drivers/net/CONFIG, place e.g.
+-	DE4X5_OPTS = -DDE4X5_PARM='"eth0:fdx autosense=AUI eth2:autosense=TP"' 
++    For a compiled in driver, in linux/drivers/net/CONFIG, place e.g.::
++
++	DE4X5_OPTS = -DDE4X5_PARM='"eth0:fdx autosense=AUI eth2:autosense=TP"'
+ 
+     Yes,  I know full duplex  isn't permissible on BNC  or AUI; they're just
+     examples. By default, full duplex is turned  off and AUTO is the default
+diff --git a/Documentation/networking/device_drivers/index.rst b/Documentation/networking/device_drivers/index.rst
+index e8db57fef2e9..4ad13ffb5800 100644
+--- a/Documentation/networking/device_drivers/index.rst
++++ b/Documentation/networking/device_drivers/index.rst
+@@ -34,6 +34,7 @@ Contents:
+    chelsio/cxgb
+    cirrus/cs89x0
+    davicom/dm9000
++   dec/de4x5
+ 
+ .. only::  subproject and html
+ 
+diff --git a/drivers/net/ethernet/dec/tulip/Kconfig b/drivers/net/ethernet/dec/tulip/Kconfig
+index 8ce6888ea722..8c4245d94bb2 100644
+--- a/drivers/net/ethernet/dec/tulip/Kconfig
++++ b/drivers/net/ethernet/dec/tulip/Kconfig
+@@ -114,7 +114,7 @@ config DE4X5
+ 	  These include the DE425, DE434, DE435, DE450 and DE500 models.  If
+ 	  you have a network card of this type, say Y.  More specific
+ 	  information is contained in
+-	  <file:Documentation/networking/device_drivers/dec/de4x5.txt>.
++	  <file:Documentation/networking/device_drivers/dec/de4x5.rst>.
+ 
+ 	  To compile this driver as a module, choose M here. The module will
+ 	  be called de4x5.
 -- 
 2.25.4
-
 
