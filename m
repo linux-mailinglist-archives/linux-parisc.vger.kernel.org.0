@@ -2,89 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17E3C1C0C80
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 May 2020 05:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF7F81C0DD6
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 May 2020 07:43:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728083AbgEADUa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 30 Apr 2020 23:20:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40428 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727889AbgEADUa (ORCPT
+        id S1728118AbgEAFnN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 May 2020 01:43:13 -0400
+Received: from condef-02.nifty.com ([202.248.20.67]:53211 "EHLO
+        condef-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726452AbgEAFnN (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 30 Apr 2020 23:20:30 -0400
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F23C035494;
-        Thu, 30 Apr 2020 20:20:29 -0700 (PDT)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jUMDs-00FZCv-Qj; Fri, 01 May 2020 03:20:20 +0000
-Date:   Fri, 1 May 2020 04:20:20 +0100
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     ira.weiny@intel.com
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH V1 09/10] arch/kmap: Define kmap_atomic_prot() for all
- arch's
-Message-ID: <20200501032020.GG23230@ZenIV.linux.org.uk>
-References: <20200430203845.582900-1-ira.weiny@intel.com>
- <20200430203845.582900-10-ira.weiny@intel.com>
- <20200501023734.GF23230@ZenIV.linux.org.uk>
+        Fri, 1 May 2020 01:43:13 -0400
+Received: from conssluserg-05.nifty.com ([10.126.8.84])by condef-02.nifty.com with ESMTP id 0415aNA1027372
+        for <linux-parisc@vger.kernel.org>; Fri, 1 May 2020 14:36:23 +0900
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id 0415ZtH0030635;
+        Fri, 1 May 2020 14:35:55 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 0415ZtH0030635
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1588311356;
+        bh=RK1lYUnnP0WlP/hnwXzHLTQYCVHAytVKSgzDdS9A6Fw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=awlm5PbWnuwgfunAQ6C27PoQIqgh8eCXGDntc2EPoeST9EzCPa0WeUwRXKqlu+RGe
+         1i+HtyWwRYkPvMBTBpqJEJDoNptIMbKJBSwOPWSlCS9O69rU2+tm5WRPbEXcyxBu6/
+         y29W6OgqHEI+EjB3YV0v3PuxSeX7T+fZ5p16nrI8WyQTNDFtxZMqftMVT7MY3jEbBU
+         eLvZNbyeKqCZdkjW+p2RBmyeMpRy+biPGAFhVq58vKD760DKiE6RjDEetzdh4Ta24r
+         9AcAO7dHe4uS0ZarDgEwezk2v1g9fdL87NCgaw5GO78gCMSbq7ADp0N2XMTSIt38oO
+         08h4wzFSQg15Q==
+X-Nifty-SrcIP: [209.85.222.45]
+Received: by mail-ua1-f45.google.com with SMTP id 36so3396346uaf.9;
+        Thu, 30 Apr 2020 22:35:55 -0700 (PDT)
+X-Gm-Message-State: AGi0PuZn9Rb7UWMwhHIxQzHthqjQTICFntWnnv3r/rjRl1YgpRHfl7wu
+        5p+cNHWBqJXxqrZ3bR1XIxqETqVd6u+U00rCosg=
+X-Google-Smtp-Source: APiQypJWnnbAeOsaCZwHmXskNjKj1KeFu9yK2RWbukNpj0yZJb1WzmTijTDPEJsD0TtVCOh0KsFWJM29syzsDcKrEWk=
+X-Received: by 2002:a9f:28c5:: with SMTP id d63mr1745290uad.25.1588311354484;
+ Thu, 30 Apr 2020 22:35:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200501023734.GF23230@ZenIV.linux.org.uk>
+References: <20200425054659.814774-1-masahiroy@kernel.org>
+In-Reply-To: <20200425054659.814774-1-masahiroy@kernel.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Fri, 1 May 2020 14:35:18 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQk_fLFCWuFCC0NK3nxVE0bs-n7E+T-dbn14aCZVg_pgQ@mail.gmail.com>
+Message-ID: <CAK7LNAQk_fLFCWuFCC0NK3nxVE0bs-n7E+T-dbn14aCZVg_pgQ@mail.gmail.com>
+Subject: Re: [PATCH] parisc: suppress error messages for 'make clean'
+To:     "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, May 01, 2020 at 03:37:34AM +0100, Al Viro wrote:
-> On Thu, Apr 30, 2020 at 01:38:44PM -0700, ira.weiny@intel.com wrote:
-> 
-> > -static inline void *kmap_atomic(struct page *page)
-> > +static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
-> >  {
-> >  	preempt_disable();
-> >  	pagefault_disable();
-> >  	if (!PageHighMem(page))
-> >  		return page_address(page);
-> > -	return kmap_atomic_high(page);
-> > +	return kmap_atomic_high_prot(page, prot);
-> >  }
-> > +#define kmap_atomic(page)	kmap_atomic_prot(page, kmap_prot)
-> 
-> OK, so it *was* just a bisect hazard - you return to original semantics
-> wrt preempt_disable()...
+On Sat, Apr 25, 2020 at 2:47 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> 'make ARCH=parisc clean' emits a tons of error messages as follows:
+>
+>   $ make ARCH=parisc clean
+>   gcc: error: unrecognized command line option '-mno-space-regs'
+>   gcc: error: unrecognized command line option '-mfast-indirect-calls'; did you mean '-mforce-indirect-call'?
+>   gcc: error: unrecognized command line option '-mdisable-fpregs'
+>   gcc: error: missing argument to '-Wframe-larger-than='
+>   gcc: error: unrecognized command line option '-mno-space-regs'
+>   gcc: error: unrecognized command line option '-mfast-indirect-calls'; did you mean '-mforce-indirect-call'?
+>   gcc: error: unrecognized command line option '-mdisable-fpregs'
+>   gcc: error: missing argument to '-Wframe-larger-than='
+>     ...
+>
+> You can supporess them except '-Wframe-larger-than' by setting correct
+> CROSS_COMPILE=, but we should not require any compiler for cleaning.
+>
+> This $(shell ...) is evaluated so many times because LIBGCC is exported.
+> Use the ':=' operator to evaluate it just once, and sink the stderr.
+>
 
-FWIW, how about doing the following: just before #5/10 have a patch
-that would touch only microblaze, ppc and x86 splitting their
-kmap_atomic_prot() into an inline helper + kmap_atomic_high_prot().
-Then your #5 would leave their kmap_atomic_prot() as-is (it would
-use kmap_atomic_prot_high() instead).  The rest of the series plays
-out pretty much the same way it does now, and wrappers on those
-3 architectures would go away when an identical generic one is
-introduced in this commit (#9/10).
 
-AFAICS, that would avoid the bisect hazard and might even end
-up with less noise in the patches...
+
+Applied to linux-kbuild.
+
+
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+>  arch/parisc/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
+> index 628cd8bb7ad8..d82787da43cd 100644
+> --- a/arch/parisc/Makefile
+> +++ b/arch/parisc/Makefile
+> @@ -21,7 +21,7 @@ KBUILD_IMAGE := vmlinuz
+>
+>  NM             = sh $(srctree)/arch/parisc/nm
+>  CHECKFLAGS     += -D__hppa__=1
+> -LIBGCC         = $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
+> +LIBGCC         := $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name 2>/dev/null)
+>  export LIBGCC
+>
+>  ifdef CONFIG_64BIT
+> --
+> 2.25.1
+>
+
+
+-- 
+Best Regards
+Masahiro Yamada
