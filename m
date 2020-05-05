@@ -2,151 +2,150 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 896C01C4A42
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 May 2020 01:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB0071C4C64
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 May 2020 04:52:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728307AbgEDX12 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 4 May 2020 19:27:28 -0400
-Received: from mga06.intel.com ([134.134.136.31]:31042 "EHLO mga06.intel.com"
+        id S1727088AbgEECwS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 4 May 2020 22:52:18 -0400
+Received: from foss.arm.com ([217.140.110.172]:57846 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726911AbgEDX11 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 4 May 2020 19:27:27 -0400
-IronPort-SDR: lbnx4feHI1aVj/ziqVyEYLXW9QTn6RLW7Ylz3d/TDHq+iGPZHtqN7StH7FOQmR4Z7118MeuafW
- whneddWFOKZw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2020 16:27:27 -0700
-IronPort-SDR: FfmHJ+ZXo1f5ZQiiqbjWS0lOXVjHvUwnQi1XbTU0n32Bds1d2LVvsjbZwDRAuatgMzoWj4tKIj
- rnIe76RxdCiA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,353,1583222400"; 
-   d="scan'208";a="248380428"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by orsmga007.jf.intel.com with ESMTP; 04 May 2020 16:27:26 -0700
-Date:   Mon, 4 May 2020 16:27:26 -0700
-From:   Ira Weiny <ira.weiny@intel.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>,
+        id S1726516AbgEECwS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 4 May 2020 22:52:18 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3D5C41FB;
+        Mon,  4 May 2020 19:52:17 -0700 (PDT)
+Received: from [192.168.0.129] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20A803F71F;
+        Mon,  4 May 2020 19:52:04 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH 3/3] mm/hugetlb: Introduce HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-mm@kvack.org, Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         "David S. Miller" <davem@davemloft.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH V2 00/11] Subject: Remove duplicated kmap code
-Message-ID: <20200504232725.GA1084304@iweiny-DESK2.sc.intel.com>
-References: <20200504010912.982044-1-ira.weiny@intel.com>
- <20200504013509.GU23230@ZenIV.linux.org.uk>
- <20200504050447.GA979899@iweiny-DESK2.sc.intel.com>
- <20200504053357.GV23230@ZenIV.linux.org.uk>
- <20200504201740.GA985739@iweiny-DESK2.sc.intel.com>
- <20200504210225.GW23230@ZenIV.linux.org.uk>
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1586864670-21799-1-git-send-email-anshuman.khandual@arm.com>
+ <1586864670-21799-4-git-send-email-anshuman.khandual@arm.com>
+ <20200425175511.7a68efb5e2f4436fe0328c1d@linux-foundation.org>
+ <87d37591-caa2-b82b-392a-3a29b2c7e9a6@arm.com>
+ <20200425200124.20d0c75fcaef05d062d3667c@linux-foundation.org>
+Message-ID: <21460cbc-8e9a-b956-5797-57b2e1df9fb1@arm.com>
+Date:   Tue, 5 May 2020 08:21:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200504210225.GW23230@ZenIV.linux.org.uk>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20200425200124.20d0c75fcaef05d062d3667c@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, May 04, 2020 at 10:02:25PM +0100, Al Viro wrote:
-> On Mon, May 04, 2020 at 01:17:41PM -0700, Ira Weiny wrote:
+
+
+On 04/26/2020 08:31 AM, Andrew Morton wrote:
+> On Sun, 26 Apr 2020 08:13:17 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 > 
-> > > || * arm: much, much worse.  We have several files that pull linux/highmem.h:
-> > > || arch/arm/mm/cache-feroceon-l2.c, arch/arm/mm/cache-xsc3l2.c,
-> > > || arch/arm/mm/copypage-*.c, arch/arm/mm/dma-mapping.c, arch/arm/mm/flush.c,
-> > > || arch/arm/mm/highmem.c, arch/arm/probes/uprobes/core.c,
-> > > || arch/arm/include/asm/kvm_mmu.h (kmap_atomic_pfn()).
-> > > || Those are fine, but we also have this:
-> > > || arch/arm/include/asm/pgtable.h:200:#define __pte_map(pmd)               (pte_t *)kmap_atomic(pmd_page(*(pmd)))
-> > > || arch/arm/include/asm/pgtable.h:208:#define pte_offset_map(pmd,addr)     (__pte_map(pmd) + pte_index(addr))
-> > > || and sure as hell, asm/pgtable.h does *NOT* pull linux/highmem.h.
-> > 
-> > It does not pull asm/highmem.h either...
+>>
+>>
+>> On 04/26/2020 06:25 AM, Andrew Morton wrote:
+>>> On Tue, 14 Apr 2020 17:14:30 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+>>>
+>>>> There are multiple similar definitions for arch_clear_hugepage_flags() on
+>>>> various platforms. This introduces HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS for those
+>>>> platforms that need to define their own arch_clear_hugepage_flags() while
+>>>> also providing a generic fallback definition for others to use. This help
+>>>> reduce code duplication.
+>>>>
+>>>> ...
+>>>>
+>>>> --- a/include/linux/hugetlb.h
+>>>> +++ b/include/linux/hugetlb.h
+>>>> @@ -544,6 +544,10 @@ static inline int is_hugepage_only_range(struct mm_struct *mm,
+>>>>  }
+>>>>  #endif
+>>>>  
+>>>> +#ifndef HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
+>>>> +static inline void arch_clear_hugepage_flags(struct page *page) { }
+>>>> +#endif
+>>>> +
+>>>>  #ifndef arch_make_huge_pte
+>>>>  static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
+>>>>  				       struct page *page, int writable)
+>>>
+>>> This is the rather old-school way of doing it.  The Linus-suggested way is
+>>>
+>>> #ifndef arch_clear_hugepage_flags
+>>> static inline void arch_clear_hugepage_flags(struct page *page)
+>>> {
+>>> }
+>>> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+>>
+>> Do we need that above line here ? Is not that implicit.
 > 
-> No, but the users of those macros need to be considered.
-
-Agreed, I was trying to point out that highmem.h was being pulled from
-somewhere else prior to my series, sorry.
-
+> It depends if other header files want to test whether
+> arch_clear_hugepage_flags is already defined.  If the header heorarchy
+> is well-defined and working properly, they shouldn't need to, because
+> we're reliably indluding the relevant arch header before (or early
+> within) include/linux/hugetlb.h.
 > 
-> > > || #define pte_offset_map(dir, addr)               \
-> > > ||         ((pte_t *) kmap_atomic(pmd_page(*(dir))) + pte_index(addr))
-> > > ||         One pte_offset_map user in arch/microblaze:
-> > > || arch/microblaze/kernel/signal.c:207:    ptep = pte_offset_map(pmdp, address);
-> > > || Messy, but doesn't require any changes (we have asm/pgalloc.h included
-> > > || there, and that pull linux/highmem.h).
-> > 
-> > AFAICS asm/pgtable.h does not include asm/highmem.h here...
-> > 
-> > So looks like arch/microblaze/kernel/signal.c will need linux/highmem.h
+> It would be nice if
 > 
-> See above - line 39 in there is
-> #include <asm/pgalloc.h>
-> and line 14 in arch/microblaze/include/asm/pgalloc.h is
-> #include <linux/highmem.h>
-> It's conditional upon CONFIG_MMU in there, but so's the use of
-> pte_offset_map() in arch/microblaze/kernel/signal.c 
+> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
 > 
-> So it shouldn't be a problem.
-
-Ah ok, I did not see that one.  Ok I'll drop that change and this series should
-be good.
-
-I was setting up to submit another version with 3 more patches you have
-suggested:
-
-kmap: Remove kmap_atomic_to_page()
-parisc/kmap: Remove duplicate kmap code
-sparc: Remove unnecessary includes
-
-Would you like to see those folded in?  I submitted 2 of the above as a
-separate series already.
-
+> were to generate an compiler error but it doesn't.  If it did we could
+> detect these incorrect inclusion orders.
 > 
-> > > || * xtensa: users in arch/xtensa/kernel/pci-dma.c, arch/xtensa/mm/highmem.c,
-> > > || arch/xtensa/mm/cache.c and arch/xtensa/platforms/iss/simdisk.c (all pull
-> > > || linux/highmem.h).
-> > 
-> > Actually
-> > 
-> > arch/xtensa/mm/cache.c gets linux/highmem.h from linux/pagemap.h
-> > 
-> > arch/xtensa/platforms/iss/simdisk.c may have an issue?
-> > 	linux/blkdev.h -> CONFIG_BLOCK -> linux/pagemap.h -> linux/highmem.h
-> > 	But simdisk.c requires BLK_DEV_SIMDISK -> CONFIG_BLOCK...
-> > 	<sigh>
+>>> #endif
+>>>
+>>> And the various arch headers do
+>>>
+>>> static inline void arch_clear_hugepage_flags(struct page *page)
+>>> {
+>>> 	<some implementation>
+>>> }
+>>> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+>>>
+>>> It's a small difference - mainly to avoid adding two variables to the
+>>> overall namespace where one would do.
+>>
+>> Understood, will change and resend.
 > 
-> Yep - see above re major chain of indirect includes conditional upon CONFIG_BLOCK
-> and its uses in places that only build with such configs.  There's a plenty of
-> similar considerations outside of arch/*, unfortunately...
+> That's OK - I've queued up that fix.
+>
 
-Indeed.
+Hello Andrew,
 
-FWIW the last 2 versions of this series have had no build failures with 0-day.
+I might not have searched all the relevant trees or might have just searched
+earlier than required. But I dont see these patches (or your proposed fixes)
+either in mmotm (2020-04-29-23-04) or in next-20200504. Wondering if you are
+waiting on a V2 for this series accommodating the changes you had proposed.
 
-This series in particular just finished 164 configs without issue.
-
-Would you like me to submit a new series?  With your additional patches?
-
-Ira
+- Anshuman
