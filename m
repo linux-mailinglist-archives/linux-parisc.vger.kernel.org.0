@@ -2,90 +2,101 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 505021C68B3
-	for <lists+linux-parisc@lfdr.de>; Wed,  6 May 2020 08:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6CC61C7200
+	for <lists+linux-parisc@lfdr.de>; Wed,  6 May 2020 15:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728422AbgEFGXT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 6 May 2020 02:23:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58842 "EHLO
+        id S1728647AbgEFNqF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 6 May 2020 09:46:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727051AbgEFGXM (ORCPT
+        by vger.kernel.org with ESMTP id S1728616AbgEFNqE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 6 May 2020 02:23:12 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D52C061A10;
-        Tue,  5 May 2020 23:23:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=1V9FXGwvoUyADOJtECmZzXrzilRy7l0jj6styYqt0KU=; b=WRFvLxLA/MEdLMrePczuELjuEW
-        72WQod2YCGoc0J7XuWxFW5Y83J/ykdaW/Fvtk4rs7oIQKRnkopymKyz3EwOuypFcUXYqHVjttqChT
-        ZWZNpoWAW9huIiQ+2137fhpck8Jvk/OBURKnP8nGMpNXmGD2pqVc7U+++Rpk2a2Bk7XJ02fZnKKsU
-        IEroVJ/nwQQ94XE+aNULG0kXWN5Eggp6JsjK1mQHpJq/Xtrfl5qzt8d1FvzbHRkBpEs4Bug8AGZs1
-        Sj9Fq+m0wtnluKjoULPl+k1peWL6urmnAGcvGAut03L8y2xEcPesIPXq+cvi5XhfJas+TJjKchnlZ
-        cprmKauQ==;
-Received: from [2001:4bb8:191:66b6:c70:4a89:bc61:2] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jWDSY-0006rv-M1; Wed, 06 May 2020 06:23:11 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     x86@kernel.org, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
-        netdev@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 15/15] x86: use non-set_fs based maccess routines
-Date:   Wed,  6 May 2020 08:22:23 +0200
-Message-Id: <20200506062223.30032-16-hch@lst.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200506062223.30032-1-hch@lst.de>
-References: <20200506062223.30032-1-hch@lst.de>
+        Wed, 6 May 2020 09:46:04 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E99C061A0F
+        for <linux-parisc@vger.kernel.org>; Wed,  6 May 2020 06:46:03 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id t199so1749468oif.7
+        for <linux-parisc@vger.kernel.org>; Wed, 06 May 2020 06:46:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=EfojLiI+GaT5nKyzQCVJ5TtAw/hxFgoXMKL9If5Pw1Q=;
+        b=E3o9pPc1ZoXEocM/jmifmHtJy82dfAaDi9smdSI1/ND8+0ANKgwy7ebQ/fuiPn90tH
+         JOIb3/cxU7T93LOKYK5qhICG2qKnFdyZTd9w8YQK5wqPVIKklhUW5HS9myYuX3n7nQ/0
+         515nuzniM6oQw2HSfEd4/suNy/eLz2X4at8Kd20DzazMOs2FwcprsDTUhPf55cs/6l11
+         TsBsar8RiWx0fC05N8qSlCV0aFU0RPjeMR0/Hu6tFe+RcUfByV72rKEkeI7pJFo54kq2
+         B3iJQ6U9+IkXBqt9zEvLNxkAjtU1v7nUin4bQg57Dnf/EEsbsbTJokDVXt4/kI831kzW
+         0GZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=EfojLiI+GaT5nKyzQCVJ5TtAw/hxFgoXMKL9If5Pw1Q=;
+        b=M1XFeBKm9bihx58H1CLL4oEtFwv7eUuHcR7K4qTlieDrBlpWGg4i7Fj9CsQrqquU6e
+         4OAJaTySSUF6pQ2VdX2HwRqo69hmFRSMMInLK+hOtoFVWA2EVSF6xAc8svw+iE2ITPws
+         mLzi5vMHl2w8xj8uaT9PnhE/rjBMR6gjK88wwDLcv3n91h05s1HPeBG+s1rIlt8TsOjd
+         +Bk8XvIRfyBcw25RnZ8lhg0XRexC/8Do2qH0kcpbwbrPOtv7XLOdPv4HhMArbWx4D/bv
+         4bJTEVlJMpRG//YWrq8xEntf+pWmi2VW28l5RgcPROvMXuEZCKUFW05UwgKMc1dnL/Sm
+         2XaA==
+X-Gm-Message-State: AGi0PuZPDuCmYpHPPR6PYx+BNvllcz0dVrfN6YMlkjD/jZwysy6nCdq6
+        tKlz+4u1jcZDxGxh2k5N1rfBm4gwZWHtzK9Iz7o=
+X-Google-Smtp-Source: APiQypL5QxTME/wpf4atraWDX6bqbuwXTmWe/LxnHmVLspSkuRnzc/10WdYzdwYmylHgHDdi4p+l+7Tb89h2iE3nL0M=
+X-Received: by 2002:aca:c142:: with SMTP id r63mr2639661oif.84.1588772762412;
+ Wed, 06 May 2020 06:46:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+From:   =?UTF-8?B?5Lq/5LiA?= <teroincn@gmail.com>
+Date:   Wed, 6 May 2020 21:45:49 +0800
+Message-ID: <CANTwqXDmktrv=wTFdg7+2+eLqRGbmaQ6qHvOrUXa=CiLjcX1yA@mail.gmail.com>
+Subject: is there a memleak in function pdcs_register_pathentries
+To:     James.Bottomley@hansenpartnership.com, deller@gmx.de
+Cc:     linux-parisc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Provide arch_kernel_read and arch_kernel_write routines to implement the
-maccess routines without messing with set_fs and without stac/clac that
-opens up access to user space.
+Hi all,
+I notice that most of the usage of kobject_init_and_add in drivers are
+wrong, and now some drivers code has maken it right,
+please see commit dfb5394f804e (https://lkml.org/lkml/2020/4/11/282).
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/x86/include/asm/uaccess.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+function pdcs_register_pathentries() in drivers/parisc/pdc_stable.c may
+have the similar issue and leak kobject.
+if kobject_init_and_add() failed, the entry->kobj  may already
+increased it's refcnt and allocated memory to store it's name,
+so a kobject_put is need before return.
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index d8f283b9a569c..765e18417b3ba 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -523,5 +523,21 @@ do {									\
- 	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
- } while (0)
- 
-+#define HAVE_ARCH_PROBE_KERNEL
-+
-+#define arch_kernel_read(dst, src, type, err_label)			\
-+do {									\
-+        int __kr_err;							\
-+									\
-+	__get_user_size(*((type *)dst), (__force type __user *)src,	\
-+			sizeof(type), __kr_err);			\
-+        if (unlikely(__kr_err))						\
-+		goto err_label;						\
-+} while (0)
-+
-+#define arch_kernel_write(dst, src, type, err_label)			\
-+	__put_user_size(*((type *)(src)), (__force type __user *)(dst),	\
-+			sizeof(type), err_label)
-+
- #endif /* _ASM_X86_UACCESS_H */
- 
--- 
-2.26.2
+static inline int __init
+pdcs_register_pathentries(void)
+{
+..
 
+for (i = 0; (entry = pdcspath_entries[i]); i++) {
+...
+
+    entry->kobj.kset = paths_kset;
+    err = kobject_init_and_add(&entry->kobj, &ktype_pdcspath, NULL,
+"%s", entry->name);
+    if (err)
+        return err;
+
+    /* kobject is now registered */
+    write_lock(&entry->rw_lock);
+    entry->ready = 2;
+    write_unlock(&entry->rw_lock);
+
+    /* Add a nice symlink to the real device */
+    if (entry->dev) {
+        err = sysfs_create_link(&entry->kobj, &entry->dev->kobj, "device");
+        WARN_ON(err);
+    }
+
+    kobject_uevent(&entry->kobj, KOBJ_ADD);
+    }
+
+    return 0;
+}
+
+
+Best regards,
+Lin Yi
