@@ -2,22 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DF0D1C7887
-	for <lists+linux-parisc@lfdr.de>; Wed,  6 May 2020 19:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF3761C78AF
+	for <lists+linux-parisc@lfdr.de>; Wed,  6 May 2020 19:52:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729334AbgEFRrv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 6 May 2020 13:47:51 -0400
-Received: from verein.lst.de ([213.95.11.211]:42252 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728566AbgEFRrv (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 6 May 2020 13:47:51 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id C3AAB68C7B; Wed,  6 May 2020 19:47:47 +0200 (CEST)
-Date:   Wed, 6 May 2020 19:47:47 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        the arch/x86 maintainers <x86@kernel.org>,
+        id S1729827AbgEFRwN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 6 May 2020 13:52:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53846 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728682AbgEFRwM (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 6 May 2020 13:52:12 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E5F3C061A0F
+        for <linux-parisc@vger.kernel.org>; Wed,  6 May 2020 10:52:12 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id l19so3317680lje.10
+        for <linux-parisc@vger.kernel.org>; Wed, 06 May 2020 10:52:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3iDM/PlD1cl2Emprrc8UkVlx+lvpjZ6KITj+kMZS4vU=;
+        b=Onj6RpBSdppxiHflDIfnU8/+fh2nF8mikY4k8DOvMwZvX/ZFfIXNMSG/+sP3oK2sr9
+         mIhcfJjCn3ECmIQwwRaGtud3qgvzJv+DPfXc8ePIDpNWfdp4Yhjfmi+BT3ywIKw7jV7e
+         fK1DuRTDXTp/q9VjTTMWhXsXHEy4B8ih7FSH0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3iDM/PlD1cl2Emprrc8UkVlx+lvpjZ6KITj+kMZS4vU=;
+        b=lCJrVPUelw/6x/lIeRbgOcWe+NPeksa+uweeSjIZO29utS+pcLyPQPjqp4BEWtKnDJ
+         3jMlOH1sIAoNy5OpglcJ0joamYyaBa9XpH+iANCgHNzoyyEibdqgz7jY7SkVicdvtGS/
+         cURHMIa+rXlgmNNdpIR60Q+Y14cZWvKSahK4IcH4wU+9t0ONpjQWmf2X00BNOCeY4zqJ
+         Gd/n2M0eVdj+DgovcpdzjvULpL3LNUcY+bDNZZaLzvpbNxiSItKTcWrpqRuGNPQs6agP
+         48GUXREc8HHB2ykz750dG/orfMACXg1a7s7FLg/DnpxEevHci46QlHsbJM0BoOCfCZke
+         gsMg==
+X-Gm-Message-State: AGi0PubXPO64IMeIn0h4nqgfAenFLaECIQXUng4A1sLxGARbfp9S2aHm
+        ZYzufihVrNz3h+xOvGhQvO3W1sr3jp0=
+X-Google-Smtp-Source: APiQypIEiSYLCzRD5ESE9yuUcc2xXV7DWfNjQHmycXvMDYwYrRtKEPBXO6qRMQkLa6Wr+Z4U79kSkQ==
+X-Received: by 2002:a2e:8512:: with SMTP id j18mr5894009lji.201.1588787529606;
+        Wed, 06 May 2020 10:52:09 -0700 (PDT)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com. [209.85.208.172])
+        by smtp.gmail.com with ESMTPSA id g22sm1744436ljl.17.2020.05.06.10.52.08
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 May 2020 10:52:08 -0700 (PDT)
+Received: by mail-lj1-f172.google.com with SMTP id l19so3317532lje.10
+        for <linux-parisc@vger.kernel.org>; Wed, 06 May 2020 10:52:08 -0700 (PDT)
+X-Received: by 2002:a2e:8512:: with SMTP id j18mr5893926lji.201.1588787527821;
+ Wed, 06 May 2020 10:52:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200506062223.30032-1-hch@lst.de> <20200506062223.30032-16-hch@lst.de>
+In-Reply-To: <20200506062223.30032-16-hch@lst.de>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 6 May 2020 10:51:51 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wi6E5z_aKr9NX+QcEJqJvSyrDbO3ypPugxstcPV5EPSMQ@mail.gmail.com>
+Message-ID: <CAHk-=wi6E5z_aKr9NX+QcEJqJvSyrDbO3ypPugxstcPV5EPSMQ@mail.gmail.com>
+Subject: Re: [PATCH 15/15] x86: use non-set_fs based maccess routines
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
         Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
         Masami Hiramatsu <mhiramat@kernel.org>,
@@ -27,52 +69,36 @@ Cc:     Christoph Hellwig <hch@lst.de>,
         Netdev <netdev@vger.kernel.org>, bpf@vger.kernel.org,
         Linux-MM <linux-mm@kvack.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 08/15] maccess: rename strnlen_unsafe_user to
- strnlen_user_unsafe
-Message-ID: <20200506174747.GA7549@lst.de>
-References: <20200506062223.30032-1-hch@lst.de> <20200506062223.30032-9-hch@lst.de> <CAHk-=wj3T6u_kj8r9f3aGXCjuyN210_gJC=AXPFm9=wL-dGALA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wj3T6u_kj8r9f3aGXCjuyN210_gJC=AXPFm9=wL-dGALA@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, May 06, 2020 at 10:44:15AM -0700, Linus Torvalds wrote:
-> So while I think using a consistent convention is good, and it's true
-> that there is a difference in the convention between the two cases
-> ("unsafe" at the beginning vs end), one of them is actually about the
-> safety and security of the operation (and we have automated logic
-> these days to verify it on x86), the other has nothing to do with
-> "safety", really.
-> 
-> Would it be better to standardize around a "probe_xyz()" naming?
+On Tue, May 5, 2020 at 11:23 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> +#define arch_kernel_read(dst, src, type, err_label)                    \
+> +       __get_user_size(*((type *)dst), (__force type __user *)src,     \
+> +                       sizeof(type), __kr_err);                        \
+..
+> +#define arch_kernel_write(dst, src, type, err_label)                   \
+> +       __put_user_size(*((type *)(src)), (__force type __user *)(dst), \
+> +                       sizeof(type), err_label)
 
-So:
+My private tree no longer has those __get/put_user_size() things,
+because "unsafe_get/put_user()" is the only thing that remains with my
+conversion to asm goto.
 
-  probe_strncpy, probe_strncpy_user, probe_strnlen_user?
+And we're actively trying to get rid of the whole __get_user() mess.
+Admittedly "__get_user_size()" is just the internal helper that
+doesn't have the problem, but it really is an internal helper for a
+legacy operation, and the new op that uses it is that
+"unsafe_get_user()".
 
-Sounds weird, but at least it is consistent.
+Also, because you use __get_user_size(), you then have to duplicate
+the error handling logic that we already have in unsafe_get_user().
 
-> Or perhaps a "xyz_nofault()" naming?
+IOW - is there some reason why you didn't just make these use
+"unsafe_get/put_user()" directly, and avoid both of those issues?
 
-That sounds a little better:
-
-   strncpy_nofault, strncpy_user_nofault, strnlen_user_nofault
-
-> I realize this is nit-picky, and I think the patch series as-is is
-> already an improvement, but I do think our naming in this area is
-> really quite bad.
-
-Always open for improvements :)
-
-> The fact that we have "probe_kernel_read()" but then
-> "strncpy_from_user_unsafe()" for the _same_ conceptual difference
-> really tells me how inconsistent the naming for these kinds of "we
-> can't take page faults" is. No?
-
-True.  If we wanted to do _nofaul, what would the basic read/write
-versions be?
+              Linus
