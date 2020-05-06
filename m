@@ -2,259 +2,118 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A6031C79D0
-	for <lists+linux-parisc@lfdr.de>; Wed,  6 May 2020 21:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 993751C7B2F
+	for <lists+linux-parisc@lfdr.de>; Wed,  6 May 2020 22:25:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726495AbgEFTBx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 6 May 2020 15:01:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36516 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726356AbgEFTBx (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 6 May 2020 15:01:53 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22D02C061A0F
-        for <linux-parisc@vger.kernel.org>; Wed,  6 May 2020 12:01:53 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id j3so3554201ljg.8
-        for <linux-parisc@vger.kernel.org>; Wed, 06 May 2020 12:01:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1YW5neYx+I7djIl9P+IGxfzCb/g7o5/jSWaOCUs8+Og=;
-        b=GCmZceTe0bAxpUQhR6yPzoxL+CFuUYpbyX43pLbYRvXDmV1oNfPybKIyh9x2MgPLEa
-         qpKspNJpMJPZ3YcRNr6quQhzNhYzGUbB3tJTkbf0hxTa9KzLjc8tj8vd7LdCWbyOwQlm
-         2bdLxh+719yGT6LrvBVPW8JkltxIPBuRV4avc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1YW5neYx+I7djIl9P+IGxfzCb/g7o5/jSWaOCUs8+Og=;
-        b=CpMONS09ma3p3Pkjgvm6fAsTOLvUMvZ96oJJVPrBehRJNQDN/4lpQqFgKOHcA+PA85
-         GCaKjhlq97ZKSUw30ZnNrMY8j71CnXanMqe79Zz4zTdjmDq2a2f+UIgR8pSapVarY+YB
-         h6+yu6usMWwJ5bdWRsvQt/T9Dn6r4wkhaqcy/oJjdJT2a9htHXlmxRfO3HD0uAH93X7a
-         2o0W3tSxqp+EHuZLPPTLlDlx/QGeIVJOt5x3TZToePrPh3KyGR9inFHjbHE0pUp6gDWD
-         n1eeQPsYUAHJ1QimDC86W+5xBuabBiba/SuoUEi9uuLy12VaxLmPwS24gwC6GeNFagBF
-         BvRA==
-X-Gm-Message-State: AGi0PuZgWyJGIzGebOzC7C2gYgNYBH6SYhMklbEklbQxUh9chZqFct71
-        STVWq6PWusrCGTdxn9kIawACDdeoV2A=
-X-Google-Smtp-Source: APiQypL5xHh5j8zNF+QiP6sa0u6DvLDjDeBgMv4fsg9MrNmnRNUq982mbObdVlVnFyWT42QUVzA5Nw==
-X-Received: by 2002:a2e:8752:: with SMTP id q18mr5882093ljj.72.1588791710921;
-        Wed, 06 May 2020 12:01:50 -0700 (PDT)
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
-        by smtp.gmail.com with ESMTPSA id d28sm2161946lfe.76.2020.05.06.12.01.49
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 May 2020 12:01:49 -0700 (PDT)
-Received: by mail-lf1-f47.google.com with SMTP id s9so2291442lfp.1
-        for <linux-parisc@vger.kernel.org>; Wed, 06 May 2020 12:01:49 -0700 (PDT)
-X-Received: by 2002:a19:6e4e:: with SMTP id q14mr6033958lfk.192.1588791708783;
- Wed, 06 May 2020 12:01:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200506062223.30032-1-hch@lst.de> <20200506062223.30032-16-hch@lst.de>
- <CAHk-=wi6E5z_aKr9NX+QcEJqJvSyrDbO3ypPugxstcPV5EPSMQ@mail.gmail.com> <20200506181543.GA7873@lst.de>
-In-Reply-To: <20200506181543.GA7873@lst.de>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 6 May 2020 12:01:32 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wghKpGdTmD4EDfwX2uyppwxksU+nFyS1B--kbopcQAgwg@mail.gmail.com>
-Message-ID: <CAHk-=wghKpGdTmD4EDfwX2uyppwxksU+nFyS1B--kbopcQAgwg@mail.gmail.com>
-Subject: Re: [PATCH 15/15] x86: use non-set_fs based maccess routines
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
+        id S1727995AbgEFUZQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 6 May 2020 16:25:16 -0400
+Received: from mga07.intel.com ([134.134.136.100]:32872 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726627AbgEFUZQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 6 May 2020 16:25:16 -0400
+IronPort-SDR: iuyKOFRaSc5UDnIYcz6oLu/mTlBbbftpP66PZXTW2HTv2aLBgBX9vidybh/Bj2eRxHi6t8EZbY
+ i+43cy2henJw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2020 13:25:15 -0700
+IronPort-SDR: xSrhp4VCcSvP5bv2WtfYo6vFeSsnnsv3N44sSopWfpFOgIk9uc/zRJt3WrQM/g5MZyK9rPCoAV
+ JVwDj2vxz4ng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,360,1583222400"; 
+   d="scan'208";a="461881349"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+  by fmsmga006.fm.intel.com with ESMTP; 06 May 2020 13:25:14 -0700
+Date:   Wed, 6 May 2020 13:25:14 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     linux-kernel@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
-        linux-parisc@vger.kernel.org,
-        linux-um <linux-um@lists.infradead.org>,
-        Netdev <netdev@vger.kernel.org>, bpf@vger.kernel.org,
-        Linux-MM <linux-mm@kvack.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: multipart/mixed; boundary="0000000000006d706205a4ff6575"
+        Christian Koenig <christian.koenig@amd.com>,
+        Huang Rui <ray.huang@amd.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH V2 05/11] {x86,powerpc,microblaze}/kmap: Move preempt
+ disable
+Message-ID: <20200506202514.GF1084880@iweiny-DESK2.sc.intel.com>
+References: <20200504010912.982044-1-ira.weiny@intel.com>
+ <20200504010912.982044-6-ira.weiny@intel.com>
+ <20200506061113.GA5192@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200506061113.GA5192@infradead.org>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---0000000000006d706205a4ff6575
-Content-Type: text/plain; charset="UTF-8"
+On Tue, May 05, 2020 at 11:11:13PM -0700, Christoph Hellwig wrote:
+> On Sun, May 03, 2020 at 06:09:06PM -0700, ira.weiny@intel.com wrote:
+> > From: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > During this kmap() conversion series we must maintain bisect-ability.
+> > To do this, kmap_atomic_prot() in x86, powerpc, and microblaze need to
+> > remain functional.
+> > 
+> > Create a temporary inline version of kmap_atomic_prot within these
+> > architectures so we can rework their kmap_atomic() calls and then lift
+> > kmap_atomic_prot() to the core.
+> > 
+> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > ---
+> > Changes from V1:
+> > 	New patch
+> > ---
+> >  arch/microblaze/include/asm/highmem.h | 11 ++++++++++-
+> >  arch/microblaze/mm/highmem.c          | 10 ++--------
+> >  arch/powerpc/include/asm/highmem.h    | 11 ++++++++++-
+> >  arch/powerpc/mm/highmem.c             |  9 ++-------
+> >  arch/x86/include/asm/highmem.h        | 11 ++++++++++-
+> >  arch/x86/mm/highmem_32.c              | 10 ++--------
+> >  6 files changed, 36 insertions(+), 26 deletions(-)
+> > 
+> > diff --git a/arch/microblaze/include/asm/highmem.h b/arch/microblaze/include/asm/highmem.h
+> > index 0c94046f2d58..ec9954b091e1 100644
+> > --- a/arch/microblaze/include/asm/highmem.h
+> > +++ b/arch/microblaze/include/asm/highmem.h
+> > @@ -51,7 +51,16 @@ extern pte_t *pkmap_page_table;
+> >  #define PKMAP_NR(virt)  ((virt - PKMAP_BASE) >> PAGE_SHIFT)
+> >  #define PKMAP_ADDR(nr)  (PKMAP_BASE + ((nr) << PAGE_SHIFT))
+> >  
+> > -extern void *kmap_atomic_prot(struct page *page, pgprot_t prot);
+> > +extern void *kmap_atomic_high_prot(struct page *page, pgprot_t prot);
+> > +void *kmap_atomic_prot(struct page *page, pgprot_t prot)
+> 
+> Shouldn't this be marked inline?
 
-On Wed, May 6, 2020 at 11:15 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> That was the first prototype, and or x86 it works great, just the
-> __user cases in maccess.c are a little ugly.  And they point to
-> the real problem - for architectures like sparc and s390 that use
-> an entirely separate address space for the kernel vs userspace
-> I dont think just use unsafe_{get,put}_user will work, as they need
-> different instructions.
+Yes Thanks.  Done.
 
-Oh, absolutely. I did *NOT* mean that you'd use "unsafe_get_user()" as
-the actual interface. I just meant that as an implementation detail on
-x86, using "unsafe_get_user()" instead of "__get_user_size()"
-internally both simplifies the implementation, and means that it
-doesn't clash horribly with my local changes.
+> 
+> The rest looks fine:
+> 
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-Btw, that brings up another issue: so that people can't mis-use those
-kernel accessors and use them for user addresses, they probably should
-actually do something like
+Thanks,
+Ira
 
-        if ((long)addr >= 0)
-                goto error_label;
-
-on x86. IOW, have the "strict" kernel pointer behavior.
-
-Otherwise somebody will start using them for user pointers, and it
-will happen to work on old x86 without CLAC/STAC support.
-
-Of course, maybe CLAC/STAC is so common these days (at least with
-developers) that we don't have to worry about it.
-
-> Btw, where is you magic private tree and what is the plan for it?
-
-I don't want to make it a public branch, but here's a private bundle.
-
-It's based on top of my current -git tree - I just maintain a separate
-tree that I keep up-to-date locally for testing. My "normal" tree I do
-build tests on (allmodconfig etc), this separate tree I keep around to
-actually do boot tests on, and I end up using "current Linus' tree
-plus this" as the code I actually run om my main desktop.
-
-But this *ONLY* works with clang, and only with current HEAD of the
-clang development tree. So it's almosty entirely useless to anybody
-else right now. You literally have to clone the llvm tree, build your
-own clang, and install it to even _build_ this.
-
-I'm not planning on going any further than my local testing until the
-whole thing calms down. The llvm tree still has some known bugs in the
-asm goto with output area, and I want there to be an actual release of
-it before I actually merge anything like this (and I need to do the
-small extra work to then have that conditional "does the compiler
-support asm goto with outputs" so that it works with gcc too).
-
-But here you see what it is, if you want to. __get_user_size()
-technically still exists, but it has the "target branch" semantics in
-here, so your patch clashes badly with it. (Well, those are the
-semantics you want, so "badly" may not be the right word, but
-basically it means that if you _had_ used unsafe_get_user(), there
-wouldn't have been those kinds of semantic conflicts).
-
-                Linus
-
---0000000000006d706205a4ff6575
-Content-Type: application/octet-stream; name="asm-goto-outputs.bundle"
-Content-Disposition: attachment; filename="asm-goto-outputs.bundle"
-Content-Transfer-Encoding: base64
-Content-ID: <f_k9vpfa000>
-X-Attachment-Id: f_k9vpfa000
-
-IyB2MiBnaXQgYnVuZGxlCi0zYzQwY2RiMGU5M2VjMTY2ZjFmYTRmZWUxZWI2MmQ0NWI1NDUxNTE1
-IE1lcmdlIGJyYW5jaCAnbGludXMnIG9mIGdpdDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGlu
-dXgva2VybmVsL2dpdC9oZXJiZXJ0L2NyeXB0by0yLjYKY2QyZDZmYjI3NmY1YjMyMWE1ZDJhYjZi
-NGVlOWZiMGQ0ZGMwZDE0MCBIRUFECgpQQUNLAAAAAgAAACCeEXicnc5BasMwEIXhvU4xZJ8yciRr
-DKH0AF22BxhbI8dgS0EatT1+vegJunvww8fTKgJo3RwE2VEchkROIqZpEnTJSZg8s4ujBHHmyVWy
-wnKzc7QogTjyHMLIN4zeL078yDKK9VPCwc+Guz5Khfct9wYfpX7xHhvc9W+97Wf4uabSc2TdSn4p
-dX0F68mSdcESXJEQzVKOY1OV/0gUKCC5UwqnZD6bwIXbAWvRcoHvTR9Quj67Nkjn1WXnvIJK0y2v
-5heJmVxtkhF4nJ2QQU4EIRBF95yiLjAGummgEjPxAC71ACVVNUPSA4amjd5eFp7A3cv7yVv80UWA
-kbNVq26jyEsW8ux5SgrOY8asfgtOrZhP6lIHhIXVRtTMuApacRl1QY9+zUtYJpLillZr6Bz31uG1
-1POAt9a/aOcDnscfvexz+L5oOyvTKK0+tX67gtuSwxBjQrjYZK3J7fEoY8h/SimmaJOfpThL5v0Q
-yDvVG3z8AIvSuQ8oFca9HDDmGeYXoQRYGJwjeJyVkNtu2zAMQN/1FfyBdHaT6BIMQ4sM64ZtTYG4
-zwYtUbZQxzQkOdn+fko7YMDe+sbbOSCZIxFIY5St1rLupCNj0bvaKFPfmrVx0jrpNG60RyVmjDRl
-6JBQKW2NQltv117aW1S6Mg5RKtPZLUkt3cYJXPLAER6DfYHPlHAZp0AxwcfJ/cvueuZ+pBvLp09Q
-b3Wtai1NDatKV5Uo1VPImSL8CNOSoOF4xtEVR/4b3Y2l8WvleZkc5sDTDcf+1aSVVpXeFJMqJvHd
-8uRDvwN0Dt5i4PlKgC9bYjpBz5nh8gF4yfOSkxDNEBLgOPIlwb5AjqBMnPCFYEkE7EvtNIfxetUl
-5AHSMs8c86vxzSLOGAN2I11FPPWQBwJfnHmIvPQDzFi4c0CYI82RLaVUYEc+TLQTAmB/ePzy7aHd
-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
---0000000000006d706205a4ff6575--
