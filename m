@@ -2,83 +2,105 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51A1A1C8136
-	for <lists+linux-parisc@lfdr.de>; Thu,  7 May 2020 06:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B14321C8162
+	for <lists+linux-parisc@lfdr.de>; Thu,  7 May 2020 07:12:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbgEGE4m (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 7 May 2020 00:56:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44482 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725763AbgEGE4l (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 7 May 2020 00:56:41 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F38C061A0F;
-        Wed,  6 May 2020 21:56:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=e6F2FSy+90a4CBJo4OFpHQu5UPPeprM5/VV6nvsaHNM=; b=IlQ1KLt/gfQCNp/2YYACfzUAvM
-        X/D5zrnZbBJxt4fTTkPRbO0abBcL5UXSvP84F3pPiIKxAGFEcl0xmqfpM7SKTkfFhy+zfxZO3G62A
-        uZthWGV2OnNDMsi0cfOMM+An4MO1GRWhWTkz1lsyuUFOkgyogfeK3xhYK3nVrNJFK4P9k2YApbYLS
-        xaT/yyR80cCXHfwpXgNAv58HSFjqMIUPIpU0BCSBWczC4w2kz827bDjcqGkFfFvM6T7zRK1d2rlLh
-        YklmG0qnLg1nMAomIrEjNIjAlS1kupgS9seSUIxmvcLlYnLCQ3TeufhT7atUo69S5WcDWW83nplQQ
-        mAh83sVw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jWYaE-0001Ho-Mm; Thu, 07 May 2020 04:56:30 +0000
-Date:   Wed, 6 May 2020 21:56:30 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     ira.weiny@intel.com
-Cc:     linux-kernel@vger.kernel.org,
+        id S1725819AbgEGFMR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 7 May 2020 01:12:17 -0400
+Received: from verein.lst.de ([213.95.11.211]:44501 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725783AbgEGFMR (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 7 May 2020 01:12:17 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 990EF68B05; Thu,  7 May 2020 07:12:13 +0200 (CEST)
+Date:   Thu, 7 May 2020 07:12:13 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH V2 08/11] arch/kmap: Ensure kmap_prot visibility
-Message-ID: <20200507045630.GA22061@infradead.org>
-References: <20200504010912.982044-1-ira.weiny@intel.com>
- <20200504010912.982044-9-ira.weiny@intel.com>
+        linux-parisc@vger.kernel.org,
+        linux-um <linux-um@lists.infradead.org>,
+        Netdev <netdev@vger.kernel.org>, bpf@vger.kernel.org,
+        Linux-MM <linux-mm@kvack.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 15/15] x86: use non-set_fs based maccess routines
+Message-ID: <20200507051213.GB4501@lst.de>
+References: <20200506062223.30032-1-hch@lst.de> <20200506062223.30032-16-hch@lst.de> <CAHk-=wi6E5z_aKr9NX+QcEJqJvSyrDbO3ypPugxstcPV5EPSMQ@mail.gmail.com> <20200506181543.GA7873@lst.de> <CAHk-=wghKpGdTmD4EDfwX2uyppwxksU+nFyS1B--kbopcQAgwg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200504010912.982044-9-ira.weiny@intel.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <CAHk-=wghKpGdTmD4EDfwX2uyppwxksU+nFyS1B--kbopcQAgwg@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, May 03, 2020 at 06:09:09PM -0700, ira.weiny@intel.com wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
-> 
-> We want to support kmap_atomic_prot() on all architectures and it makes
-> sense to define kmap_atomic() to use the default kmap_prot.
-> 
-> So we ensure all arch's have a globally available kmap_prot either as a
-> define or exported symbol.
-> 
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+On Wed, May 06, 2020 at 12:01:32PM -0700, Linus Torvalds wrote:
+> Oh, absolutely. I did *NOT* mean that you'd use "unsafe_get_user()" as
+> the actual interface. I just meant that as an implementation detail on
+> x86, using "unsafe_get_user()" instead of "__get_user_size()"
+> internally both simplifies the implementation, and means that it
+> doesn't clash horribly with my local changes.
 
-Looks good,
+I had a version that just wrapped them, but somehow wasn't able to
+make it work due to all the side effects vs macros issues.  Maybe I
+need to try again, the current version seemed like a nice way out
+as it avoided a lot of the silly casting.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+
+> Btw, that brings up another issue: so that people can't mis-use those
+> kernel accessors and use them for user addresses, they probably should
+> actually do something like
+> 
+>         if ((long)addr >= 0)
+>                 goto error_label;
+> 
+> on x86. IOW, have the "strict" kernel pointer behavior.
+> 
+> Otherwise somebody will start using them for user pointers, and it
+> will happen to work on old x86 without CLAC/STAC support.
+> 
+> Of course, maybe CLAC/STAC is so common these days (at least with
+> developers) that we don't have to worry about it.
+
+The actual public routines (probe_kernel_read and co) get these
+checks through probe_kernel_read_allowed, which is implemented by
+the x86 code.  Doing this for every 1-8 byte access might be a little
+slow, though.  Do you really fear drivers starting to use the low-level
+helper?  Maybe we need to move those into a different header than
+<asm/uaccess.h> that makes it more clear that they are internal?
+
+> But here you see what it is, if you want to. __get_user_size()
+> technically still exists, but it has the "target branch" semantics in
+> here, so your patch clashes badly with it.
+
+The target branch semantics actually are what I want, that is how the
+maccess code is structured.  This is the diff I'd need for the calling
+conventions in your bundle:
+
+
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index 765e18417b3ba..d1c8aacedade1 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -526,14 +526,8 @@ do {									\
+ #define HAVE_ARCH_PROBE_KERNEL
+ 
+ #define arch_kernel_read(dst, src, type, err_label)			\
+-do {									\
+-        int __kr_err;							\
+-									\
+ 	__get_user_size(*((type *)dst), (__force type __user *)src,	\
+-			sizeof(type), __kr_err);			\
+-        if (unlikely(__kr_err))						\
+-		goto err_label;						\
+-} while (0)
++			sizeof(type), err_label);			\
+ 
+ #define arch_kernel_write(dst, src, type, err_label)			\
+ 	__put_user_size(*((type *)(src)), (__force type __user *)(dst),	\
