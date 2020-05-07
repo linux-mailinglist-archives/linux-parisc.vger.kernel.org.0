@@ -2,90 +2,155 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 896FD1C87AA
-	for <lists+linux-parisc@lfdr.de>; Thu,  7 May 2020 13:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D691C932A
+	for <lists+linux-parisc@lfdr.de>; Thu,  7 May 2020 17:02:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726518AbgEGLJi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 7 May 2020 07:09:38 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3843 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725809AbgEGLJh (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 7 May 2020 07:09:37 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 77D7E37C0B2A99914725;
-        Thu,  7 May 2020 19:09:33 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Thu, 7 May 2020
- 19:09:26 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <davem@davemloft.net>, <yanaijie@huawei.com>,
-        <netdev@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next] net: tulip: de4x5: make PCI_signature() return void
-Date:   Thu, 7 May 2020 19:08:47 +0800
-Message-ID: <20200507110847.37940-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.21.1
+        id S1727999AbgEGPAg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 7 May 2020 11:00:36 -0400
+Received: from mga14.intel.com ([192.55.52.115]:14344 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726268AbgEGPAZ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 7 May 2020 11:00:25 -0400
+IronPort-SDR: +g5TY5L3ZD/a79EGUOM9SkMvHLm1quMEAsn3Vq+Qje1vBIUzFI7bKue4D9HZ3/HlfoCClMFOld
+ Sj/nIGRJZKBQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2020 08:00:07 -0700
+IronPort-SDR: b/s7ZWxVBNmG4J2I+k7yxw4bkhrO5iMaLGMsoiM7CLNhxvnQQ99q0hnTaoBLVOL1NGGxx8SlhW
+ 4VsFNQaNuTzg==
+X-IronPort-AV: E=Sophos;i="5.73,364,1583222400"; 
+   d="scan'208";a="407664102"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2020 08:00:06 -0700
+From:   ira.weiny@intel.com
+To:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Ira Weiny <ira.weiny@intel.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org,
+        Christian Koenig <christian.koenig@amd.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@lst.de>
+Subject: [PATCH V3 00/15] Remove duplicated kmap code
+Date:   Thu,  7 May 2020 07:59:48 -0700
+Message-Id: <20200507150004.1423069-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This function always return 0 now, we can make it return void to
-simplify the code. This fixes the following coccicheck warning:
+From: Ira Weiny <ira.weiny@intel.com>
 
-drivers/net/ethernet/dec/tulip/de4x5.c:3908:11-17: Unneeded variable:
-"status". Return "0" on line 3912
+The kmap infrastructure has been copied almost verbatim to every architecture.
+This series consolidates obvious duplicated code by defining core functions
+which call into the architectures only when needed.
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
+Some of the k[un]map_atomic() implementations have some similarities but the
+similarities were not sufficient to warrant further changes.
+
+In addition we remove a duplicate implementation of kmap() in DRM.
+
+Testing was done by 0day to cover all the architectures I can't readily
+build/test.
+
 ---
- drivers/net/ethernet/dec/tulip/de4x5.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+Changes from V2:
+	Collect review/acks
+	Add kmap_prot consolidation patch from Christoph
+	Add 3 suggested patches from Al Viro
+	Fix include for microblaze
+	Fix static inline for microblaze
 
-diff --git a/drivers/net/ethernet/dec/tulip/de4x5.c b/drivers/net/ethernet/dec/tulip/de4x5.c
-index f16853c3c851..0ccd9994ad45 100644
---- a/drivers/net/ethernet/dec/tulip/de4x5.c
-+++ b/drivers/net/ethernet/dec/tulip/de4x5.c
-@@ -951,7 +951,7 @@ static void    reset_init_sia(struct net_device *dev, s32 sicr, s32 strr, s32 si
- static int     test_ans(struct net_device *dev, s32 irqs, s32 irq_mask, s32 msec);
- static int     test_tp(struct net_device *dev, s32 msec);
- static int     EISA_signature(char *name, struct device *device);
--static int     PCI_signature(char *name, struct de4x5_private *lp);
-+static void    PCI_signature(char *name, struct de4x5_private *lp);
- static void    DevicePresent(struct net_device *dev, u_long iobase);
- static void    enet_addr_rst(u_long aprom_addr);
- static int     de4x5_bad_srom(struct de4x5_private *lp);
-@@ -3902,14 +3902,14 @@ EISA_signature(char *name, struct device *device)
- /*
- ** Look for a particular board name in the PCI configuration space
- */
--static int
-+static void
- PCI_signature(char *name, struct de4x5_private *lp)
- {
--    int i, status = 0, siglen = ARRAY_SIZE(de4x5_signatures);
-+    int i, siglen = ARRAY_SIZE(de4x5_signatures);
- 
-     if (lp->chipset == DC21040) {
- 	strcpy(name, "DE434/5");
--	return status;
-+	return;
-     } else {                           /* Search for a DEC name in the SROM */
- 	int tmp = *((char *)&lp->srom + 19) * 3;
- 	strncpy(name, (char *)&lp->srom + 26 + tmp, 8);
-@@ -3935,8 +3935,6 @@ PCI_signature(char *name, struct de4x5_private *lp)
-     } else if ((lp->chipset & ~0x00ff) == DC2114x) {
- 	lp->useSROM = true;
-     }
--
--    return status;
- }
- 
- /*
+Changes from V1:
+	Fix bisect-ability
+	Update commit message and fix line lengths
+	Remove unneded kunmap_atomic_high() declarations
+	Remove unneded kmap_atomic_high() declarations
+	collect reviews
+	rebase to 5.7-rc4
+
+Changes from V0:
+	Define kmap_flush_tlb() and make kmap() truely arch independent.
+	Redefine the k[un]map_atomic_* code to call into the architectures for
+		high mem pages
+	Ensure all architectures define kmap_prot, use it appropriately, and
+		define kmap_atomic_prot()
+	Remove drm implementation of kmap_atomic()
+
+
+Ira Weiny (15):
+  arch/kmap: Remove BUG_ON()
+  arch/xtensa: Move kmap build bug out of the way
+  arch/kmap: Remove redundant arch specific kmaps
+  arch/kunmap: Remove duplicate kunmap implementations
+  {x86,powerpc,microblaze}/kmap: Move preempt disable
+  arch/kmap_atomic: Consolidate duplicate code
+  arch/kunmap_atomic: Consolidate duplicate code
+  arch/kmap: Ensure kmap_prot visibility
+  arch/kmap: Don't hard code kmap_prot values
+  arch/kmap: Define kmap_atomic_prot() for all arch's
+  drm: Remove drm specific kmap_atomic code
+  kmap: Remove kmap_atomic_to_page()
+  parisc/kmap: Remove duplicate kmap code
+  sparc: Remove unnecessary includes
+  kmap: Consolidate kmap_prot definitions
+
+ arch/arc/include/asm/highmem.h        | 18 -------
+ arch/arc/mm/highmem.c                 | 28 ++--------
+ arch/arm/include/asm/highmem.h        |  9 ----
+ arch/arm/mm/highmem.c                 | 35 ++-----------
+ arch/csky/include/asm/highmem.h       | 12 +----
+ arch/csky/mm/highmem.c                | 56 ++++----------------
+ arch/microblaze/include/asm/highmem.h | 27 ----------
+ arch/microblaze/mm/highmem.c          | 16 ++----
+ arch/microblaze/mm/init.c             |  3 --
+ arch/mips/include/asm/highmem.h       | 11 +---
+ arch/mips/mm/cache.c                  |  6 +--
+ arch/mips/mm/highmem.c                | 49 +++---------------
+ arch/nds32/include/asm/highmem.h      |  9 ----
+ arch/nds32/mm/highmem.c               | 39 ++------------
+ arch/parisc/include/asm/cacheflush.h  | 30 +----------
+ arch/powerpc/include/asm/highmem.h    | 28 ----------
+ arch/powerpc/mm/highmem.c             | 21 ++------
+ arch/powerpc/mm/mem.c                 |  3 --
+ arch/sparc/include/asm/highmem.h      | 25 +--------
+ arch/sparc/mm/highmem.c               | 20 ++------
+ arch/sparc/mm/io-unit.c               |  1 -
+ arch/sparc/mm/iommu.c                 |  1 -
+ arch/x86/include/asm/fixmap.h         |  1 -
+ arch/x86/include/asm/highmem.h        |  9 ----
+ arch/x86/mm/highmem_32.c              | 50 ++----------------
+ arch/xtensa/include/asm/highmem.h     | 27 ----------
+ arch/xtensa/mm/highmem.c              | 22 ++++----
+ drivers/gpu/drm/ttm/ttm_bo_util.c     | 56 ++------------------
+ drivers/gpu/drm/vmwgfx/vmwgfx_blit.c  | 16 +++---
+ include/drm/ttm/ttm_bo_api.h          |  4 --
+ include/linux/highmem.h               | 74 ++++++++++++++++++++++++---
+ 31 files changed, 150 insertions(+), 556 deletions(-)
+
 -- 
-2.21.1
+2.25.1
 
