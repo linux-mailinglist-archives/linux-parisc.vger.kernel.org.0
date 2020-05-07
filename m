@@ -2,32 +2,32 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A46C71C9CBF
-	for <lists+linux-parisc@lfdr.de>; Thu,  7 May 2020 22:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 374491C9EB2
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 May 2020 00:50:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726815AbgEGUxK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 7 May 2020 16:53:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35262 "EHLO mail.kernel.org"
+        id S1726533AbgEGWum (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 7 May 2020 18:50:42 -0400
+Received: from mga18.intel.com ([134.134.136.126]:62950 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726218AbgEGUxK (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 7 May 2020 16:53:10 -0400
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 635C4208D6;
-        Thu,  7 May 2020 20:53:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588884789;
-        bh=hMm94zV9WGH7Tl9oZXIOfH3+eFqjMiH47dainavvzmQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Xo0uB0jzEa+6RQj31qDV5iepwWr5b+doPXcry4uWKXnR6W6xL9I88EI0MA39g9SuS
-         5U/3zuoJRDt8b6/Q0n2onWLVPdRnd11VRA3YS2nqAKv/QZZqRC8GdpFAaS/d7ESL7c
-         ZnKJEnreBWqqWrZToty2CxiWaRWmtHuPnx6/3ffI=
-Date:   Thu, 7 May 2020 13:53:07 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     ira.weiny@intel.com
-Cc:     linux-kernel@vger.kernel.org,
-        Christoph Hellwig <hch@infradead.org>,
+        id S1726515AbgEGWum (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 7 May 2020 18:50:42 -0400
+IronPort-SDR: RjZvXOEqyBvSauYfgqDB9pF/wYilMCoFFAk8qkHwD1DpNoz2FLFas2I/BmmR0VJvaV5dM6o1YG
+ 7TQrydJZzprg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2020 15:50:41 -0700
+IronPort-SDR: A94YOimG+GBTCtRnotihIHXo/4uYOm9rsXy8xtuLX5Aw2+CVkRWX3diLimU1sfCOXtFd1OcX1r
+ bTWfMT7evkVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,365,1583222400"; 
+   d="scan'208";a="278753786"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+  by orsmga002.jf.intel.com with ESMTP; 07 May 2020 15:50:40 -0700
+Date:   Thu, 7 May 2020 15:50:40 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
@@ -49,71 +49,73 @@ Cc:     linux-kernel@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org,
         Christian Koenig <christian.koenig@amd.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
         Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH V3 15/15] kmap: Consolidate kmap_prot definitions
-Message-Id: <20200507135307.4ba10d99c611f17beab31751@linux-foundation.org>
-In-Reply-To: <20200507150004.1423069-16-ira.weiny@intel.com>
+Subject: Re: [PATCH V3 13/15] parisc/kmap: Remove duplicate kmap code
+Message-ID: <20200507225039.GA1428632@iweiny-DESK2.sc.intel.com>
 References: <20200507150004.1423069-1-ira.weiny@intel.com>
-        <20200507150004.1423069-16-ira.weiny@intel.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ <20200507150004.1423069-14-ira.weiny@intel.com>
+ <20200507135258.f430182578c0d63b7488916e@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200507135258.f430182578c0d63b7488916e@linux-foundation.org>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu,  7 May 2020 08:00:03 -0700 ira.weiny@intel.com wrote:
-
-> From: Ira Weiny <ira.weiny@intel.com>
+On Thu, May 07, 2020 at 01:52:58PM -0700, Andrew Morton wrote:
+> On Thu,  7 May 2020 08:00:01 -0700 ira.weiny@intel.com wrote:
 > 
-> Most architectures define kmap_prot to be PAGE_KERNEL.
+> > parisc reimplements the kmap calls except to flush it's dcache.  This is
+> > arguably an abuse of kmap but regardless it is messy and confusing.
+> > 
+> > Remove the duplicate code and have parisc define
+> > ARCH_HAS_FLUSH_ON_KUNMAP for a kunmap_flush_on_unmap() architecture
+> > specific call to flush the cache.
 > 
-> Let sparc and xtensa define there own and define PAGE_KERNEL as the
-> default if not overridden.
+> checkpatch says:
 > 
+> ERROR: #define of 'ARCH_HAS_FLUSH_ON_KUNMAP' is wrong - use Kconfig variables or standard guards instead
+> #69: FILE: arch/parisc/include/asm/cacheflush.h:103:
+> +#define ARCH_HAS_FLUSH_ON_KUNMAP
+> 
+> which is fair enough, I guess.  More conventional would be
+> 
+> arch/parisc/include/asm/cacheflush.h:
+> 
+> static inline void kunmap_flush_on_unmap(void *addr)
+> {
+> 	...
+> }
+> #define kunmap_flush_on_unmap kunmap_flush_on_unmap
+> 
+> 
+> include/linux/highmem.h:
+> 
+> #ifndef kunmap_flush_on_unmap
+> static inline void kunmap_flush_on_unmap(void *addr)
+> {
+> }
+> #define kunmap_flush_on_unmap kunmap_flush_on_unmap
+> #endif
+> 
+> 
+> static inline void kunmap_atomic_high(void *addr)
+> {
+> 	/* Mostly nothing to do in the CONFIG_HIGHMEM=n case as kunmap_atomic()
+> 	 * handles re-enabling faults + preemption */
+> 	kunmap_flush_on_unmap(addr);
+> }
+> 
+> 
+> but I don't really think it's worth bothering changing it.	
+> 
+> (Ditto patch 3/15)
 
-checkpatch considered useful ;)
+Yes I was following the pattern already there.
 
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: kmap-consolidate-kmap_prot-definitions-checkpatch-fixes
-
-WARNING: macros should not use a trailing semicolon
-#134: FILE: arch/sparc/include/asm/highmem.h:33:
-+#define kmap_prot __pgprot(SRMMU_ET_PTE | SRMMU_PRIV | SRMMU_CACHE);
-
-total: 0 errors, 1 warnings, 100 lines checked
-
-NOTE: For some of the reported defects, checkpatch may be able to
-      mechanically convert to the typical style using --fix or --fix-inplace.
-
-./patches/kmap-consolidate-kmap_prot-definitions.patch has style problems, please review.
-
-NOTE: If any of the errors are false positives, please report
-      them to the maintainer, see CHECKPATCH in MAINTAINERS.
-
-Please run checkpatch prior to sending patches
-
-Cc: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/sparc/include/asm/highmem.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/sparc/include/asm/highmem.h~kmap-consolidate-kmap_prot-definitions-checkpatch-fixes
-+++ a/arch/sparc/include/asm/highmem.h
-@@ -30,7 +30,7 @@
- /* declarations for highmem.c */
- extern unsigned long highstart_pfn, highend_pfn;
- 
--#define kmap_prot __pgprot(SRMMU_ET_PTE | SRMMU_PRIV | SRMMU_CACHE);
-+#define kmap_prot __pgprot(SRMMU_ET_PTE | SRMMU_PRIV | SRMMU_CACHE)
- extern pte_t *pkmap_page_table;
- 
- void kmap_init(void) __init;
-_
+I'll fix up the last patch now.
+Ira
 
