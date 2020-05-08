@@ -2,34 +2,32 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67B111CB9F1
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 May 2020 23:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A50E1CB9F7
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 May 2020 23:40:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727082AbgEHVh4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 8 May 2020 17:37:56 -0400
-Received: from mout.gmx.net ([212.227.15.18]:37759 "EHLO mout.gmx.net"
+        id S1727774AbgEHVkw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 8 May 2020 17:40:52 -0400
+Received: from mout.gmx.net ([212.227.15.18]:33551 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726811AbgEHVhz (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 8 May 2020 17:37:55 -0400
+        id S1726811AbgEHVkw (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 8 May 2020 17:40:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1588973856;
-        bh=WKXXYzFFxdzyYo6IHb1/GDCVJXoS8xMLgI8O9ZwqPOM=;
+        s=badeba3b8450; t=1588974040;
+        bh=XJmya1y8SnT4hBUSXuXigAogkzQtp1rc1Z/Frb1VJLQ=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=W+7cQS3XoSaK8Mh7JgXfIn8XS0J3twN9FO8MZzxw1+nLGCiRohdHclhjWRJumCl92
-         3zi+Fa2iqDz9CXOR4kTH7BCkWIz/QL2t9KnjG6mowaqQGPLLdooWTGHQAcKKFdgXke
-         MNAK4qxIIABJW9n7R19FkBUVhkNDLditsBPUrmU4=
+        b=ajfVEzn+zwtAE5OVl5TsC4IL/96ZzmKl/VbUT0ZYSWUl6cBfatf2+PWYt3tiDy6JH
+         HaVY/NOMpSYcAWaL41L8Yhpkk2DWqrSeCfr80XEz4rcsCnd0V9AJ2FmtQD/7RNltzm
+         7gG5LMjBcS+wSiT/hffoIndgDK6YjtDalUzHDFZQ=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.155.246]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mo6qv-1in8gt0hCd-00pcgE; Fri, 08
- May 2020 23:37:36 +0200
-Subject: Re: [PATCH] parisc: add sysctl file interface panic_on_stackoverflow
-To:     Xiaoming Ni <nixiaoming@huawei.com>, mcgrof@kernel.org,
-        keescook@chromium.org, yzaikin@google.com,
-        James.Bottomley@HansenPartnership.com
-Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, wangle6@huawei.com,
-        victor.lisheng@huawei.com
-References: <1586610379-51745-1-git-send-email-nixiaoming@huawei.com>
+Received: from [192.168.20.60] ([92.116.155.246]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MLR1V-1joyhX2ZiV-00IUyI; Fri, 08
+ May 2020 23:40:40 +0200
+Subject: Re: [PATCH] parisc: use -fno-strict-aliasing for decompressor
+To:     Arnd Bergmann <arnd@arndb.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     kbuild test robot <lkp@intel.com>, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20200508093553.2742898-1-arnd@arndb.de>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -88,109 +86,93 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <e43deb0d-d01e-dde7-b8dc-7988ae38f1b0@gmx.de>
-Date:   Fri, 8 May 2020 23:37:34 +0200
+Message-ID: <5849978b-7330-1dae-0896-7ecbc6083d34@gmx.de>
+Date:   Fri, 8 May 2020 23:40:37 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <1586610379-51745-1-git-send-email-nixiaoming@huawei.com>
+In-Reply-To: <20200508093553.2742898-1-arnd@arndb.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:DcAAyHTgrFYd4JxFUyC/egffrU3rAT8QFaZO73P4a2cOpADPFYA
- yc9nQjFVQm6StL3jGxvANz+RjSsZMPvbg8AElCvNEgnjE6aaXzZ6rVPuG7dCphcqpxxjfZ4
- JshwbvrMZB8WfWZpGh6Qq+zWBpYW1wID+hFaRWFT1aalEPGA1i3ZuA+jU8MnLeoqxxkTHgE
- eF5GXL/lA8yRVd1Jvxn+Q==
+X-Provags-ID: V03:K1:UGxuUXaGz7NpVCArGrRLq1hDnXA3xUz/E/hZufP40aiZUtJOkWN
+ HKrtUYg9G5Ti4HDNj+wm8TRUpcTlhKSRcH3Dg12PPy7jej1y6rGT1zIDe2w8WChliEDjOu1
+ hVzEXg5svuZz14Ck9rY6a4AfSj1cZbxYFyi3EeuT0AKgCCYEbjAfufvprsG0aele8mViLon
+ jK9SP2ICpoyu72jURiW1g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gowYXBUdlRU=:symO9DH33cb1rA1WMPNKlM
- OQgbIpCk655fBpOMgIxWJJaHt5PECkzFPY2w5Eh4ZlZx80Ew5dZR0sxTgGi/OpBhftpOEQdkF
- Z5dOSQpvtOF12ct/QLmKdjz9bGv6OwCf0CJBObk/ZZJqlJPHq4TWRx+feLPwYAK7OKcG/TnR2
- akFR40Tog5z4xtuHRYP5JXYRVwcOqi44bl8JeTCGqLdQkconyZdiTUETu7EVP2wrCbRiXlkRe
- 3Fqa6b//+BWBKKbkj9jvdq8wNOkwKYz3uK5v2r4p0UOjhMg82HSvjlgTOVZTUkAjd42CX+nbH
- X8+LE7UgLlex9OsRy2Z/FykJkh+Sxp0BYDTuUsR5fGOi54M09ddKBmcqiQClSjgdoIehHyJTR
- o6v5HZ/M95bGNOq3kMzkvfQIE2yMwI60Oi1KX7bq5TqatVrPzl6aA3Q5tbLLWN5PVntgz5F8w
- G6xv4HNc1iJ0W52azFi45Pum+Z2Y2qnZ2CWk5jAYheWe7NBxdeu1cExjOopPlMcytYmietbaJ
- rXAwpp7gP9hQJX8UnOr0ov4nTWkEThlXhVJFGw9PVOQZljbtQwTnoCe3By63geKDv1Yr2ikxw
- 9NW4qVP8UFV9cNTAXSjuzYda+SvL+8BgfrcBNYT7wNMx3jCGBQTjZcwPkoG8JdUGiDA/KIZWi
- 7D3ZIjvzha0XselzXUf8eATq0MYa08upPTeufs6OiWnxvYfg91oIzgtC2hu7cmmtKOXxJ8U6g
- b89w0szykSnWkgc5NYdWmdVMdhIf/NGLH/RFzJ2sD7eAjazhcYAVNJXMNc87tAHKQsEGC3nn7
- EwHNnrINluuvdqTLzE8LFZY4xlDzX4F+5Bk7445qaGUrRhZEUbkys4dTQDSdm9O8fsLLxS53L
- ku6c/aiZKZrY7U/y86Ynhw3VxwZmjLChRrinL9Xk0Ny26xTeSbPh1GqSnBuVXkfAXDpW/vkEX
- uQ4UBuNBpMccVkAt66k78z63oRZ292wa3rDW4oSd6vgzEdV0o9IZbcEDg2L5G6whxwyYPakN4
- /AqfGyi1RXBi8wvL+MD8JeOqkHQvzouw1DcSRi5Fr9joXCafEC2pUmIwoV1CcBFpYMzhfjPOu
- ++rNbGg/+qgZu9QeLO+rDpMGdEjom0/8R53cMWOzt1BmV4nHoadcoXbyG/dwKJyzX59or3qze
- baopV8sx1HpDIuZUudpf2h9uilIWz4A918YGmFwyjqgIho0k/g8NOFyigvPPdQkZV10sAvsxD
- qiTV9FHaQNMdA3ooj
+X-UI-Out-Filterresults: notjunk:1;V03:K0:vwuBalWZn4w=:nvPLEcsuviK4pyboNNdPrw
+ Wc66mib7ze5EVSjnCdQuUq8Fcx+r8xLULhrMI19A86sVEcAq5M0eLSNOau6wXggSX5czIKd1D
+ VKvBPu0JGYVC2Hlpg/8iUlZHy5qFgU59fjzvuFRexQ3AZlnw+CQoy0NW3VNn4/2DZFZHJA2Cx
+ +v1aEKSpwhrunwETAhe2nkLm32X6DjVZg8EZRtgw0lYQ5yL3ubJ33lcgwNLk5/RAbRV5NumDZ
+ JTR2C+JGP5rdvRtiJS8XKyaons98aqBb3avJLtbXCZakPT9TJeqT4rKpvi72KSOn37ZracSpi
+ iuc0ZjpRqE091os2jTjSfrV3laiD6hBg3luPR1+RYUUlH9pr9qHdXXRtVkVg1u/+T+w4446LF
+ U+TEhSz2nd+k4lEzw2oGGaBgIRHSaTPytcYWHBg9oxp3rIsTqxFobwZu6g3SvDevxlfIo2lQ2
+ xUyyqJ5tKdF89A32apAaNiO/OI9r8f3pmIQFKQZrbbg5VM8aOQvdA9vjV3CeN2MI7znL9fQnF
+ Lx9Kdxsx88NqjgGgWWtJuZXXfm3TxYpJWKjvqebfeyu4MAop8EPaf5FrFCzp4l8ngsm+zSEQ7
+ HudfblVcW4alUm71ufLLitG7A8whNs5XQ2exINYbSm54Le0ooogpWMLwg/v+K5dbtK7FKn5v1
+ Ncb7UkXHuGPvywYDqNvhAYOn1F/bRvMQbLwZ2vFW4is2U0qWL3Rw3R+QDsMXHJVkA08GnLjRi
+ dDZER5s2ysIx3jpizIyah4OVe9LK+Utn5BPiS9S70myXtwCrCB3OuNGchpDEWX4NSuG1s/pxz
+ j5ORpXpgxZebKULgFBwEiiReXzZ70vaCQ3qRyhc+6WlnDrAme8yikc+zAOXZz9N3XXyIm4r0v
+ zBxU+QdxJ3WT+z2atkro2IkHSIBjE/VBQdCNPUPPTROmD0fujlSYItWKVjOUJiFclU0+LLRDD
+ gpFpucQGeljbgwfYVhzqk5Mlb8FhlTLtyORYr7UpNKDmythLW1p+f685wNQuv7FX5dU64DXCG
+ UMg1SnwIkdDRhmIzSA7/kYD4AY/DdrtvWNNFoTgoj0NroE30X50O43gV7wfk6czb1nY3oB2cF
+ 9wfQV3Ll2mycJlFJoH7e9yrYlMOkjql2IYVOC+PM6SxZdCPu9KzcgrpdsM/9xxkiYqzOHchHA
+ cibcZKhb7AKPcFLcHPS6ceh8PsaEboKIicAgaxZBquRPXRiRw4Gw8bxl+Io/ps05fULAwatGe
+ nRuXakZNiswcEsCuj
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 11.04.20 15:06, Xiaoming Ni wrote:
-> The variable sysctl_panic_on_stackoverflow is used in
-> arch/parisc/kernel/irq.c and arch/x86/kernel/irq_32.c, but the sysctl fi=
-le
-> interface panic_on_stackoverflow only exists on x86.
+On 08.05.20 11:35, Arnd Bergmann wrote:
+> An experimental patch series of mine reworks how warnings are processed
+> in Kbuild. A side effect is a new warning about a harmless aliasing
+> rule violation in an inline function:
 >
-> Add sysctl file interface panic_on_stackoverflow for parisc
+> In file included from
+> include/linux/rhashtable-types.h:15:0,
+>                  from include/linux/ipc.h:7,
+>                  from include/uapi/linux/sem.h:5,
+>                  from include/linux/sem.h:5,
+>                  from include/linux/sched.h:15,
+>                  from include/linux/uaccess.h:6,
+>                  from arch/parisc/boot/compressed/misc.c:7:
+> include/linux/workqueue.h: In function 'work_static':
+> include/linux/workqueue.h:212:2: warning: dereferencing
+> type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+>   return *work_data_bits(work) & WORK_STRUCT_STATIC;
 >
-> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+> Make the decompressor use -fno-strict-aliasing like the rest of
+> the kernel for consistency, and to ensure this warning never makes
+> it into a release.
+>
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
 Acked-by: Helge Deller <deller@gmx.de>
 
+Arnd, will you take it through your trees when you push your experimental
+patches, or do you want me to take it through the parisc tree?
+
 Helge
 
-
 > ---
->  kernel/sysctl.c | 20 +++++++++++---------
->  1 file changed, 11 insertions(+), 9 deletions(-)
+>  arch/parisc/boot/compressed/Makefile | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-> index 8a176d8..b9ff323 100644
-> --- a/kernel/sysctl.c
-> +++ b/kernel/sysctl.c
-> @@ -994,30 +994,32 @@ static int sysrq_sysctl_handler(struct ctl_table *=
-table, int write,
->  		.proc_handler   =3D proc_dointvec,
->  	},
->  #endif
-> -#if defined(CONFIG_X86)
-> +
-> +#if (defined(CONFIG_X86_32) || defined(CONFIG_PARISC)) && \
-> +	defined(CONFIG_DEBUG_STACKOVERFLOW)
->  	{
-> -		.procname	=3D "panic_on_unrecovered_nmi",
-> -		.data		=3D &panic_on_unrecovered_nmi,
-> +		.procname	=3D "panic_on_stackoverflow",
-> +		.data		=3D &sysctl_panic_on_stackoverflow,
->  		.maxlen		=3D sizeof(int),
->  		.mode		=3D 0644,
->  		.proc_handler	=3D proc_dointvec,
->  	},
-> +#endif
-> +#if defined(CONFIG_X86)
->  	{
-> -		.procname	=3D "panic_on_io_nmi",
-> -		.data		=3D &panic_on_io_nmi,
-> +		.procname	=3D "panic_on_unrecovered_nmi",
-> +		.data		=3D &panic_on_unrecovered_nmi,
->  		.maxlen		=3D sizeof(int),
->  		.mode		=3D 0644,
->  		.proc_handler	=3D proc_dointvec,
->  	},
-> -#ifdef CONFIG_DEBUG_STACKOVERFLOW
->  	{
-> -		.procname	=3D "panic_on_stackoverflow",
-> -		.data		=3D &sysctl_panic_on_stackoverflow,
-> +		.procname	=3D "panic_on_io_nmi",
-> +		.data		=3D &panic_on_io_nmi,
->  		.maxlen		=3D sizeof(int),
->  		.mode		=3D 0644,
->  		.proc_handler	=3D proc_dointvec,
->  	},
-> -#endif
->  	{
->  		.procname	=3D "bootloader_type",
->  		.data		=3D &bootloader_type,
+> diff --git a/arch/parisc/boot/compressed/Makefile b/arch/parisc/boot/com=
+pressed/Makefile
+> index 1e5879c6a752..dff453687530 100644
+> --- a/arch/parisc/boot/compressed/Makefile
+> +++ b/arch/parisc/boot/compressed/Makefile
+> @@ -16,6 +16,7 @@ targets +=3D real2.S firmware.c
+>
+>  KBUILD_CFLAGS :=3D -D__KERNEL__ -O2 -DBOOTLOADER
+>  KBUILD_CFLAGS +=3D -DDISABLE_BRANCH_PROFILING
+> +KBUILD_CFLAGS +=3D -fno-strict-aliasing
+>  KBUILD_CFLAGS +=3D $(cflags-y) -fno-delete-null-pointer-checks -fno-bui=
+ltin-printf
+>  KBUILD_CFLAGS +=3D -fno-PIE -mno-space-regs -mdisable-fpregs -Os
+>  ifndef CONFIG_64BIT
 >
 
