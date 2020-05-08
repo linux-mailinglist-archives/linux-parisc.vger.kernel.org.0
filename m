@@ -2,148 +2,189 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 270F81CBA0B
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 May 2020 23:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C47E1CBAAD
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 May 2020 00:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727816AbgEHVrB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 8 May 2020 17:47:01 -0400
-Received: from mout.gmx.net ([212.227.17.22]:43651 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727095AbgEHVrA (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 8 May 2020 17:47:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1588974413;
-        bh=9l39QLxBV07/J5gh9iXCiy4mZv1+0EQ1bUM0oRzFTRs=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=i85kVSAFeI9TqAhgaKvN4EXDgiZEwbcJi0rZesppDhlyngMDiMZELSsG03OUovYWb
-         wH8+3UFmVB4xEhCRN2hV0qkxm0nnq9OvJPjNzHk9ymovz+Byk28dZx1LpbARM2+IqA
-         ItvUz8oM5GPk7cvX7u7sQACVs7EcVujMr5P66nr4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.155.246]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Md6Mt-1iy6ve0MoF-00aFkr; Fri, 08
- May 2020 23:46:53 +0200
-Date:   Fri, 8 May 2020 23:46:50 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] parisc: suppress error messages for 'make clean'
-Message-ID: <20200508214650.GA3482@ls3530.fritz.box>
-References: <20200425054659.814774-1-masahiroy@kernel.org>
- <CAK7LNAQk_fLFCWuFCC0NK3nxVE0bs-n7E+T-dbn14aCZVg_pgQ@mail.gmail.com>
+        id S1728119AbgEHWY6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 8 May 2020 18:24:58 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:54558 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727082AbgEHWY5 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 8 May 2020 18:24:57 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048MHrOh185785;
+        Fri, 8 May 2020 22:23:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=301Crul+nU3gSji5hSdljROXFIONJpvv32f+FfnQMcY=;
+ b=bb6H3noLPeAZHjR/7hyTxoDJH6VG9hCOVX5QCqiYi1+KDlvnL27ZkNF912WPqANn2fYc
+ CSJNNHPQb48mLyxlqO9fH8AbYFL2lZt4x5fVI4k1EOWAqN5PSQU+GL0e1e1eCwdX8w+3
+ ETRC6ae/Wo3e+5jfu0OYCi+R4INWjI3qMJNjdwp/n6rlVGMZ6Br44EU/75cHKFlW9Syk
+ S9iVN6OU253mMA+xTN+dQ52gifkTNpKtCG73hhismPvUksNyKhizuEA0J7A696jWW5SN
+ 2lOi2N6Fcol7v6T3v/Nf/E7q/50Sz9BlZYfYwJ1tbPUkc1GmOe9V43C1Cs5tYP+UVXkL EA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 30vtewwfg2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 May 2020 22:23:20 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048MLlag183500;
+        Fri, 8 May 2020 22:23:19 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 30vtehnftv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 May 2020 22:23:19 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 048MMcC2014403;
+        Fri, 8 May 2020 22:22:39 GMT
+Received: from [192.168.2.157] (/71.63.128.209)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 08 May 2020 15:22:38 -0700
+Subject: Re: [PATCH V3 2/3] mm/hugetlb: Define a generic fallback for
+ is_hugepage_only_range()
+To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+        akpm@linux-foundation.org
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1588907271-11920-1-git-send-email-anshuman.khandual@arm.com>
+ <1588907271-11920-3-git-send-email-anshuman.khandual@arm.com>
+From:   Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <9fc622e1-45ff-b79f-ebe0-35614837456c@oracle.com>
+Date:   Fri, 8 May 2020 15:22:34 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAQk_fLFCWuFCC0NK3nxVE0bs-n7E+T-dbn14aCZVg_pgQ@mail.gmail.com>
-X-Provags-ID: V03:K1:b4LN4xIqIoKPljC/0GVhOUeX9HKqEyRmw9NmuAtFs/Yoje0ccJ6
- MVEqmYROtfi81dS+rIHz+sD8r1yrS4RiJ8GC2NMNkpBPUum4d4QF5cd+0JyPvT6DkYRW3/y
- 77eEVwhkRLS4F3KmpnyoWcXx4ByL18VWFKpbeECGTlj0Z2BQkNjz1eZ6LK074Ho63H+V56M
- jFi78s5HV7+hhmyGj5/vA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Q1r0pOGg+RM=:waxsjIwMvlGmvXhJ4l+DV5
- kpXupI03CbJVPslAS8pcu0dLQZwss9xNMpVYYJjlJTGEVxBcbHLZZBveNBw89/O7HwKAjyrUT
- HHqJTmt5kmc/s9nxYME7rm6ozoGrIKLBD7iIOC0NdVrQK75XDp8bJ3nEYkDWjqDGwSgpVeI9X
- HeU7Buzmyfgnipf7zNjugD65byEKu3damdNQkqyRcopt1I/Y+4W6xN5YyfxkZwcg6psoe7OO6
- 6KAfhzPaYsILBgE6JDk9jR1Xo/htPr6Wuz0eRL5ljzK82CjkOAomsL2N2neizEfzKNUtDUaz/
- bld7g4YISjD/59IMamQ+vL4y2QitOP3QB27cRP/Cj2dQMqy4HlYOewA3GnGnHihJUzqDOyj+J
- Es7wvsTr32x1VvY5PYs0e0uwvz2E0rpFYw9s96QEnI+UxG2rpLk8Ku5fvpuheXbkubOAdd8QP
- CnblzhkVNZN2bFNxvAeizZ6bF+cF1bncy3iM7bIXMgiSfBjRHVpY63XWugm1vyi0O0rDkV4z0
- wlx7yAInR9HmIfHH+6zaJe3je4yTcJ1F0lLkeIqbdRAKCvZ2usdxhT87O/eH+dWLc9lwT8cJo
- 8s7arBHX9hnMNyBynsdlC2Ju63+e/JsTBCvBSGUH8wf0G7OUIfEkCfhhnK9L65qhtGPqaErS8
- +JKdZ8apdHk2OLURzRe2LePEDYqe0LeLaTdrZnk5sKkhd+tORnK7dPKXQ+W22FvKfXnC9lU0Q
- QNtMrzHJX3AP21pdwlSkvBzlRHhTx7SlWRnUpIADZ9gGC8sZJtkWI1RP9vHp0EMUCy8ilIlij
- DfQxMnf3zPQF/cFNwfZwAjEXIWK0KanCbbOL7jz7aorWbsT1ayDlXw+qErO1XOVQOPiVnaPdf
- /d9ggodqFs0gesmnEgiEFWHaQnmZ1G8hAPxrfjuX3VdQzVvWvvjcEiOnJeMqqEcslSAcpTKBf
- qNshvHblkadDVq5BtU2an922+jTwbvw5Kkq3TDXHK5nKXnXVSt/HsIVZqHJ3Gp6OuRHaZDw+g
- q6e2Ypfqe74oneVz543BAhwWWTaXDqsTIFWaZYecesev+JS9uYt/u5gRNyBMVft+vUuxCsHNO
- emqz5Ax+Snf9ST1MFkg0/q4wlZDgYG1MlH5KXYEzptQ+h398KIr178IkNDOck5SrRKp7ygXkq
- kILszuraAzqjNnyj6zH8PJl57YZxyx1reoYpmQiyb8Jgnrhjl52CjT6lWKxyVyuvReBTTpGWN
- uolU2wV37J6sYtR9h
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1588907271-11920-3-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9615 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005080188
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9615 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 mlxlogscore=999
+ malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 adultscore=0 clxscore=1011 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005080188
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-* Masahiro Yamada <masahiroy@kernel.org>:
-> On Sat, Apr 25, 2020 at 2:47 PM Masahiro Yamada <masahiroy@kernel.org> w=
-rote:
-> >
-> > 'make ARCH=3Dparisc clean' emits a tons of error messages as follows:
-> >
-> >   $ make ARCH=3Dparisc clean
-> >   gcc: error: unrecognized command line option '-mno-space-regs'
-> >   gcc: error: unrecognized command line option '-mfast-indirect-calls'=
-; did you mean '-mforce-indirect-call'?
-> >   gcc: error: unrecognized command line option '-mdisable-fpregs'
-> >   gcc: error: missing argument to '-Wframe-larger-than=3D'
-> >   gcc: error: unrecognized command line option '-mno-space-regs'
-> >   gcc: error: unrecognized command line option '-mfast-indirect-calls'=
-; did you mean '-mforce-indirect-call'?
-> >   gcc: error: unrecognized command line option '-mdisable-fpregs'
-> >   gcc: error: missing argument to '-Wframe-larger-than=3D'
-> >     ...
-> >
-> > You can supporess them except '-Wframe-larger-than' by setting correct
-> > CROSS_COMPILE=3D, but we should not require any compiler for cleaning.
-> >
-> > This $(shell ...) is evaluated so many times because LIBGCC is exporte=
-d.
-> > Use the ':=3D' operator to evaluate it just once, and sink the stderr.
-> >
->
-> Applied to linux-kbuild.
+On 5/7/20 8:07 PM, Anshuman Khandual wrote:
+> There are multiple similar definitions for is_hugepage_only_range() on
+> various platforms. Lets just add it's generic fallback definition for
+> platforms that do not override. This help reduce code duplication.
+> 
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Mike Kravetz <mike.kravetz@oracle.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: x86@kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/arm/include/asm/hugetlb.h     | 6 ------
+>  arch/arm64/include/asm/hugetlb.h   | 6 ------
+>  arch/ia64/include/asm/hugetlb.h    | 1 +
+>  arch/mips/include/asm/hugetlb.h    | 7 -------
+>  arch/parisc/include/asm/hugetlb.h  | 6 ------
+>  arch/powerpc/include/asm/hugetlb.h | 1 +
+>  arch/riscv/include/asm/hugetlb.h   | 6 ------
+>  arch/s390/include/asm/hugetlb.h    | 7 -------
+>  arch/sh/include/asm/hugetlb.h      | 6 ------
+>  arch/sparc/include/asm/hugetlb.h   | 6 ------
+>  arch/x86/include/asm/hugetlb.h     | 6 ------
+>  include/linux/hugetlb.h            | 9 +++++++++
+>  12 files changed, 11 insertions(+), 56 deletions(-)
+> 
+<snip>
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 43a1cef8f0f1..c01c0c6f7fd4 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -591,6 +591,15 @@ static inline unsigned int blocks_per_huge_page(struct hstate *h)
+>  
+>  #include <asm/hugetlb.h>
+>  
+> +#ifndef is_hugepage_only_range
+> +static inline int is_hugepage_only_range(struct mm_struct *mm,
+> +					unsigned long addr, unsigned long len)
+> +{
+> +	return 0;
+> +}
+> +#define is_hugepage_only_range is_hugepage_only_range
+> +#endif
+> +
+>  #ifndef arch_make_huge_pte
+>  static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
+>  				       struct page *page, int writable)
+> 
 
-That patch breaks then building the boot loader/compressor:
-...
-  hppa-linux-gnu-ld    -X -e startup --as-needed -T arch/parisc/boot/compr=
-essed/vmlinux.lds arch/parisc/boot/compressed/head.o arch/parisc/boot/comp=
-ressed/real2.o arch/parisc/boot/compressed/firmware.o arch/parisc/boot/com=
-pressed/misc.o arch/parisc/boot/compressed/piggy.o -o arch/parisc/boot/com=
-pressed/vmlinux
-hppa-linux-gnu-ld: arch/parisc/boot/compressed/misc.o: in function `dec_vl=
-i':
-(.text+0x104): undefined reference to `__ashldi3'
-hppa-linux-gnu-ld: arch/parisc/boot/compressed/misc.o: in function `lzma_l=
-en':
-(.text+0x2b0): undefined reference to `$$mulI'
-hppa-linux-gnu-ld: (.text+0x344): undefined reference to `$$mulI'
-hppa-linux-gnu-ld: (.text+0x3f8): undefined reference to `$$mulI'
+Did you try building without CONFIG_HUGETLB_PAGE defined?  I'm guessing
+that you need a stub for is_hugepage_only_range().  Or, perhaps add this
+to asm-generic/hugetlb.h?
 
-
-The patch below works, but I wonder if it's possible to avoid
-to examine LIBGCC twice....?
-
-Helge
-
-
-diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
-index 628cd8bb7ad8..aeea20abbf01 100644
-=2D-- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -21,8 +21,7 @@ KBUILD_IMAGE :=3D vmlinuz
-
- NM		=3D sh $(srctree)/arch/parisc/nm
- CHECKFLAGS	+=3D -D__hppa__=3D1
--LIBGCC		=3D $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
--export LIBGCC
-+LIBGCC		:=3D $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
-
- ifdef CONFIG_64BIT
- UTS_MACHINE	:=3D parisc64
-diff --git a/arch/parisc/boot/compressed/Makefile b/arch/parisc/boot/compr=
-essed/Makefile
-index 1e5879c6a752..b008cf1b5c1e 100644
-=2D-- a/arch/parisc/boot/compressed/Makefile
-+++ b/arch/parisc/boot/compressed/Makefile
-@@ -22,6 +22,8 @@ ifndef CONFIG_64BIT
- KBUILD_CFLAGS +=3D -mfast-indirect-calls
- endif
-
-+LIBGCC  :=3D $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
-+
- OBJECTS +=3D $(obj)/head.o $(obj)/real2.o $(obj)/firmware.o $(obj)/misc.o=
- $(obj)/piggy.o
-
- LDFLAGS_vmlinux :=3D -X -e startup --as-needed -T
+-- 
+Mike Kravetz
