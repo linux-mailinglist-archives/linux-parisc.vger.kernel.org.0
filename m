@@ -2,167 +2,95 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6921CC347
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 May 2020 19:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C72001CC3C0
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 May 2020 20:50:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728110AbgEIRjl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 9 May 2020 13:39:41 -0400
-Received: from mout.gmx.net ([212.227.15.18]:55435 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726214AbgEIRjk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 9 May 2020 13:39:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1589045967;
-        bh=5Na8YxJhPBBVFX7/f9ixlEVkKOYhJWLOj2uO2rcfXaM=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=MEfS6hr+BLhvGyv6eKPdXolY1UMlZVpRUU2ew5PCjCXBFRcmlwPIVVPj3C5XQ4DwH
-         Nzstf3iKsZ0BOPbfRchXuR80mRLU/Pjs1edaz/WXo/VKancWfTdyrO3xZw9Jc/l58V
-         ofvpzQsXW/diNy/ChUUL9Vzir5LyShgusI/gqTsI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.180.101]) by mail.gmx.com (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MUXpK-1jgAbn2AcK-00QVD4; Sat, 09
- May 2020 19:39:27 +0200
-Date:   Sat, 9 May 2020 19:39:25 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Helge Deller <deller@gmx.de>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] parisc: suppress error messages for 'make clean'
-Message-ID: <20200509173925.GA30635@ls3530.fritz.box>
-References: <20200425054659.814774-1-masahiroy@kernel.org>
- <CAK7LNAQk_fLFCWuFCC0NK3nxVE0bs-n7E+T-dbn14aCZVg_pgQ@mail.gmail.com>
- <20200508214650.GA3482@ls3530.fritz.box>
- <CAK7LNAS0PVA7stUE9nmOuiP=MfPGDp1u-QDzfpk7Juq-JFehVw@mail.gmail.com>
+        id S1728171AbgEISu3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 9 May 2020 14:50:29 -0400
+Received: from sonic309-25.consmr.mail.ir2.yahoo.com ([77.238.179.83]:35126
+        "EHLO sonic309-25.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728162AbgEISu2 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 9 May 2020 14:50:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1589050226; bh=q1Er/SdqxATomBDx27mJAnsQxxrJWpCL+Y8MaW3053A=; h=Date:From:Reply-To:Subject:References:From:Subject; b=KYrB3iuud7SRX9nsj+vszLgDEE9AmJyQ/AouucQHZZZFr4HYF3g1q2Ug6F0owmJ+uNUyx8E0sWUgULYi7zyJtQ07W3MQqJMzC/4i0FjFEQ9YJlTXvVqQcA8WFC3mem1CcuClNE2+Ip/LvH7htQbGYWEtEi+4tJ2Vg/eV+UT1ucwuOfD9x1g73c1miFJx11/uC7CCTz8pgwlkbIh+ZNL1k7ZBTo9FXoC2RsZl+fLs8R3Ls34WlSnN8OTfKb5zOn+yQFhUoMmIhYmuBdLf4bEJ+pDEqeXoViN4ng3Ly4abb/oNJmukRmvar1avoBU54Mxj+FMu8YXo1Z53HaZwsXQTdQ==
+X-YMail-OSG: oKo66FwVM1m.GxpzYW3llSaXdWlLuDiciI2AcfUOU0fGX0o2GMotIrabhmxT2tB
+ XwXmEbX3J8WGgdLpb5JQKVG8i_gFj19Hqoq.P5GmgVndPpVogU_A2zNn2YtgytYWyyrzrysB22b2
+ 9rmctuIg4E06dXyrMm.Dbur5Mh7vaqTkqHlC51Zmo5ja_xFyUdNQtdrr50WMxLDS2iRDRH3QoEwm
+ 379I1gpE1_ln81YqMW3YTkB1.T5qEK0WpUkGiK.cZaQgJVaghf6o1v2cELEI_SIBcfuviOXmt_tj
+ fUfYEHZbzbzvzg_G0p.CmvVBZOfS0mRRqDvjKq_J42_Zn7B.VMcxV7O46IW_Shkyo.U0JORu3GyF
+ kIBBjERFsN5NEBIug.IHLdmvwV8qrgwe61xHQRlSY69lf5vmVGedJ8mBh5IXXDE0MyrScoBy4dlw
+ RVd0g2W7Vq2j6vrfi1pt2DEfZH2j7rgHgJl9DNUor.fOEifslfQRKHotPR1NGXW8qd7fIDrwP28c
+ pgWz0imyH4eirKLXgU.36Elk6cQYGN8LmNMuATK1UDTLFayOHqOFQdOK7Z.s9JyRwGN_dfxszmzY
+ P6pmspX_f.YF1IBBHj0bpEjzocpFIzER0I6sVLyCg5AfT.BlZxJMlQUYg50c14jg5KwkUIU2or3Q
+ jH22QZSja0pXLzvu6XdiCW_3ir0Kedto3b6IgdXEH7PHfmnwcdI6AZc6lwnc.1kN9uXnPduBEunK
+ uGT.Nc5DaqO2ng_Uejx4wtgF60OjwxJPLaWHuRlemEVyMuQMCK7.sYmXD7MgIxeK1BdL_gIt2wtS
+ Gu1Y19eTD3.MxPE5pXzps_Rn6sH5YesooauDHB4hN.eJGPWf0DiG04JdSb2fCiWYkBydg7IqFL22
+ 7FfgRt2u7_DZqzMmRTLHFNoL8tej.4qanJvkeJb4cJxvS84AqawOuM5BoipGsyZ9xcc1qxAKZLPK
+ PosFkLj7LDHBBcF_4.0WrEynMv4hPzNBRZ2CLoLAqG.AxxRstycmdkxZoeA2ZQS9Y2_uZzSXstY1
+ J1Y5JB9GGNz4UQvDf5.TJXCY5uFjoKYFlmZji9_1xVGA2t02Y_owyaoJNiuehICtIUtazZ7REjhB
+ wGQjKTAF8NcvGfEUV69LBbJwtLfLTDU9aUUYKOgEDh9JsxhIo6ogDJ_mNVHNxByXJZhTBFkw_wHj
+ Goped0V_PfQBWzZVEHXGgOjWTmEmD3QjZuL2MZToDgd17z0xRHUaej9Mb9tT0sx7BgiBI32SrznC
+ gtWWdhhZlyvoTQG2UCicGS2E1v1YjXmjVNqfbBSv97W6mCugw.YuLHPXQ0hLnR6oVbOi6SjWO
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ir2.yahoo.com with HTTP; Sat, 9 May 2020 18:50:26 +0000
+Date:   Sat, 9 May 2020 18:50:21 +0000 (UTC)
+From:   "Mrs. Mina A. Brunel" <mrsminaabrunelm@gmail.com>
+Reply-To: mrs.minaabrunel2021@aol.com
+Message-ID: <1477954482.1290917.1589050221564@mail.yahoo.com>
+Subject: My Dear in the lord
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAS0PVA7stUE9nmOuiP=MfPGDp1u-QDzfpk7Juq-JFehVw@mail.gmail.com>
-X-Provags-ID: V03:K1:tGaT+acMXMXyn+KuOYDABqomMWlLft370X1ncEndOP1JFXu86Wk
- PH3OEs0PuRcCRPF5U+zz5/fzbnoAvKbj880QmenyImeDvcz1h9sRTRi5wiVXh6oBhOrpXGZ
- ws5LjJksw7mFkJt4SF8jtX/ZZHIPJeJ2Vz1hO02d26oZqqEnl6UkJR373q7KkXPhTnHKBKv
- 6Uwsy71W0ojEwMswKC/6g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:B84dymr/0Fo=:C+HdP9OqoUNac0GfuV3FTD
- /0aib+vEZMQ/+Wja7cqH7jYIZ4o3cOSwTkWPX0X+RuCy+RA8LvqWpdK9wor4w4MUBy1XsKw7O
- q3k7edDrDDH4NXdFTF/vkROIrhKz/mVwuMlpe5Aod67xW9OfEEDi2hSEav6VUo991jnfd5ZR4
- 8NRc6m7djBD9xjlrlGprU6RBoRm8BwhJ9wXXueqWil+PWN8S07IpMnY4XaKALp4eB0BCRZfRW
- fXqnXZ7/PArXgkh6cENpW/TITIKEoZFqfggfX75CpF21nllPsxNZFkXEaE+OiebujPrKCEQjV
- noZhdHkOZqIPmpolvjik5vMFx7RWi3P7cG07p214b6KRpJWtIE1nIdvSskT5GsVfiy0ilv/oG
- YqBUB5UpGdI/K5V15YdEvvDMuKfYBTn8+f8PuRXxsuNmCuCz3nHEXXZpvfcptEA7BSPTzBMZl
- gJnL66asI9jqAMOtYKQbCmk2NljKHVNb5kNb4yPJTQkBMISycnMVWKQ/N3SJNxnIznSH2+PeB
- DZSupbKDPYUXVv8DvOKe0GbVa6ZIz5pCsxUcWrPhdwn+hGTrLhiiJGvGHhJ1AchgFJE62FDUN
- w3PC9JjwmXGZwHB7EWx2btwcMnb4J6l2RLx7uyoOXvOlGdoyLpzN3ngyzG7p1PbIW8qrnNj9W
- zhiWzUtndxD6yN+6b7Irpfjf2+6dtJ4gfpLkAFIdLZp5GsYYZl/zQAjAZ0dTKYG0aaGDErehx
- VuEhDIExi3nA/UeOhx2JnMGV+AGD3/+P6fIhikXU6V6+VVbGmh2yFUVv+CcSmFwN5BRXWCkae
- CTMsLNVlLGw0tMqrkFomXLtFp/rCDdoqCCmhzae7wN5KVK6EZ3K1woTEK5L47uTNfGSkq/Ema
- QnXiMF7xdDxviEg/b/HRBWGyd1O9J46iG5JiLhOMlMrgq9GzdrtRpMCixcI5Ce5rF4mL6z/m6
- Qxcr/yEM6loyEWbcUyUF1KYH7Jg26Zgc1uOH3m5Gzl0YeDa7Ncim+KORDO3BC3iwyzBQZvS4q
- FF1OK/l/MYmBULco7vlirj/W2irAj4zSWYal8RPtJnrG8xg2XDw60pffH6YMqiE4i2q+JKK7W
- VlHKxNrq3uzhG5lIudVHESTNH3oS4bk4LlsrFNE6ZJYu4yVNPQkPq+AASSusGLJZpFDWBECYu
- LFuYNeKq6RR1IfzLhVVoGAaBr4LhKokJKRZ6rj8K1Udz+Qq6WXCDZdtsUdIl8TckSp13SvZOO
- ZuQtCadka9hPGL+E/
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+References: <1477954482.1290917.1589050221564.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15902 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:76.0) Gecko/20100101 Firefox/76.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-* Masahiro Yamada <masahiroy@kernel.org>:
-> Hi Helge,
->
-> On Sat, May 9, 2020 at 6:46 AM Helge Deller <deller@gmx.de> wrote:
-> >
-> > * Masahiro Yamada <masahiroy@kernel.org>:
-> > > On Sat, Apr 25, 2020 at 2:47 PM Masahiro Yamada <masahiroy@kernel.or=
-g> wrote:
-> > > >
-> > > > 'make ARCH=3Dparisc clean' emits a tons of error messages as follo=
-ws:
-> > > >
-> > > >   $ make ARCH=3Dparisc clean
-> > > >   gcc: error: unrecognized command line option '-mno-space-regs'
-> > > >   gcc: error: unrecognized command line option '-mfast-indirect-ca=
-lls'; did you mean '-mforce-indirect-call'?
-> > > >   gcc: error: unrecognized command line option '-mdisable-fpregs'
-> > > >   gcc: error: missing argument to '-Wframe-larger-than=3D'
-> > > >   gcc: error: unrecognized command line option '-mno-space-regs'
-> > > >   gcc: error: unrecognized command line option '-mfast-indirect-ca=
-lls'; did you mean '-mforce-indirect-call'?
-> > > >   gcc: error: unrecognized command line option '-mdisable-fpregs'
-> > > >   gcc: error: missing argument to '-Wframe-larger-than=3D'
-> > > >     ...
-> > > >
-> > > > You can supporess them except '-Wframe-larger-than' by setting cor=
-rect
-> > > > CROSS_COMPILE=3D, but we should not require any compiler for clean=
-ing.
-> > > >
-> > > > This $(shell ...) is evaluated so many times because LIBGCC is exp=
-orted.
-> > > > Use the ':=3D' operator to evaluate it just once, and sink the std=
-err.
-> > > >
-> > >
-> > > Applied to linux-kbuild.
-> >
-> > That patch breaks then building the boot loader/compressor:
-> > ...
-> >   hppa-linux-gnu-ld    -X -e startup --as-needed -T arch/parisc/boot/c=
-ompressed/vmlinux.lds arch/parisc/boot/compressed/head.o arch/parisc/boot/=
-compressed/real2.o arch/parisc/boot/compressed/firmware.o arch/parisc/boot=
-/compressed/misc.o arch/parisc/boot/compressed/piggy.o -o arch/parisc/boot=
-/compressed/vmlinux
-> > hppa-linux-gnu-ld: arch/parisc/boot/compressed/misc.o: in function `de=
-c_vli':
-> > (.text+0x104): undefined reference to `__ashldi3'
-> > hppa-linux-gnu-ld: arch/parisc/boot/compressed/misc.o: in function `lz=
-ma_len':
-> > (.text+0x2b0): undefined reference to `$$mulI'
-> > hppa-linux-gnu-ld: (.text+0x344): undefined reference to `$$mulI'
-> > hppa-linux-gnu-ld: (.text+0x3f8): undefined reference to `$$mulI'
-> >
-> >
-> > The patch below works, but I wonder if it's possible to avoid
-> > to examine LIBGCC twice....?
-> >
-> > Helge
->
->
-> Sorry for the breakage.
->
-> How about moving LIBGCC below ?
-
-Good idea.
-The patch below does work for me.
-We do not need $KBUILD_CFLAGS to get the libgcc.a filename,
-so we do not need to pipe the output to /dev/null either.
-Can you try if that works, and if yes, can you apply it?
-
-Helge
 
 
-diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
-index 628cd8bb7ad8..fadbbd010337 100644
-=2D-- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -21,8 +21,6 @@ KBUILD_IMAGE :=3D vmlinuz
+My Dear in the lord
 
- NM		=3D sh $(srctree)/arch/parisc/nm
- CHECKFLAGS	+=3D -D__hppa__=3D1
--LIBGCC		=3D $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
--export LIBGCC
 
- ifdef CONFIG_64BIT
- UTS_MACHINE	:=3D parisc64
-@@ -110,6 +108,8 @@ cflags-$(CONFIG_PA8X00)		+=3D -march=3D2.0 -mschedule=
-=3D8000
- head-y			:=3D arch/parisc/kernel/head.o
+My name is Mrs. Mina A. Brunel I am a Norway Citizen who is living in Burki=
+na Faso, I am married to Mr. Brunel Patrice, a politician who owns a small =
+gold company in Burkina Faso; He died of Leprosy and Radesyge, in the year =
+February 2010, During his lifetime he deposited the sum of =E2=82=AC 8.5 Mi=
+llion Euro) Eight million, Five hundred thousand Euros in a bank in Rome th=
+e capital city of Italy in Southern Europe. The money was from the sale of =
+his company and death benefits payment and entitlements of my deceased husb=
+and by his company.
 
- KBUILD_CFLAGS	+=3D $(cflags-y)
-+LIBGCC		:=3D $(shell $(CC) -print-libgcc-file-name)
-+export LIBGCC
+I am sending you this message with heavy tears in my eyes and great sorrow =
+in my heart, and also praying that it will reach you in good health because=
+ I am not in good health, I sleep every night without knowing if I may be a=
+live to see the next day. I am suffering from long time cancer and presentl=
+y I am partially suffering from Leprosy, which has become difficult for me =
+to move around. I was married to my late husband for more than 6 years with=
+out having a child and my doctor confided that I have less chance to live, =
+having to know when the cup of death will come, I decided to contact you to=
+ claim the fund since I don't have any relation I grew up from an orphanage=
+ home.
 
- kernel-y			:=3D mm/ kernel/ math-emu/
+I have decided to donate this money for the support of helping Motherless b=
+abies/Less privileged/Widows and churches also to build the house of God be=
+cause I am dying and diagnosed with cancer for about 3 years ago. I have de=
+cided to donate from what I have inherited from my late husband to you for =
+the good work of Almighty God; I will be going in for an operation surgery =
+soon.
 
+Now I want you to stand as my next of kin to claim the funds for charity pu=
+rposes. Because of this money remains unclaimed after my death, the bank ex=
+ecutives or the government will take the money as unclaimed fund and maybe =
+use it for selfishness and worthless ventures, I need a very honest person =
+who can claim this money and use it for Charity works, for orphanages, wido=
+ws and also build schools and churches for less privilege that will be name=
+d after my late husband and my name.
+
+I need your urgent answer to know if you will be able to execute this proje=
+ct, and I will give you more information on how the fund will be transferre=
+d to your bank account or online banking.
+
+Thanks
+Mrs. Mina A. Brunel
