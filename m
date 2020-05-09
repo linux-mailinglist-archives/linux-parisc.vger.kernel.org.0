@@ -2,198 +2,167 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1921CBEC9
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 May 2020 10:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F6921CC347
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 May 2020 19:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725920AbgEIIRA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 9 May 2020 04:17:00 -0400
-Received: from conssluserg-03.nifty.com ([210.131.2.82]:63348 "EHLO
-        conssluserg-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725901AbgEIIQ7 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 9 May 2020 04:16:59 -0400
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52]) (authenticated)
-        by conssluserg-03.nifty.com with ESMTP id 0498Gf3e008409;
-        Sat, 9 May 2020 17:16:41 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 0498Gf3e008409
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1589012203;
-        bh=soO6uzCEBflhcaAUsvN03dAXAWJPI4aKCk23nQk4D8s=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=kDhkp8ojwwX1lOdOItTUiRunon2J43+2QUFYuxZu2QDMOalyLzBU+/26QaNR7QLzI
-         K1pVPQSUBlgfm1hThhkS/0XKeg0gNhJt7bcKe01StsYPjNFSYI9Pf19MPYTTzbPAhm
-         u8d/TVIQsWGlUpWr9OAXewOV2dIVqcUiKtaAKNYRxm6TX09ZCKgcC/5cHmfAC8PWsQ
-         VKMM1fHnPuS8exK9ZqcxOKcssGdB6MVDyfNm8HYOTsEktNnOfg/5pegO0wkOgkDGy3
-         nr1QGLq2czW8jyUV9uZwLuedR4/Vq6QVzadWyPkoWCjlgXA9poKaOts2pm8KK8Df8S
-         r3eFpen4oyhlQ==
-X-Nifty-SrcIP: [209.85.222.52]
-Received: by mail-ua1-f52.google.com with SMTP id z16so1563934uae.11;
-        Sat, 09 May 2020 01:16:41 -0700 (PDT)
-X-Gm-Message-State: AOAM533IzrxR6eRvV8ux4R4c42Thc9Ggr1H6hFfbzl36S6NQyVkpq5Hy
-        P+A6uz+YDgzdwobTmJvoimZyGJPFHkS05OnTc4Y=
-X-Google-Smtp-Source: ABdhPJyZmk49SYuIoqnfKQFYQUCGnWeFLQLYuiJMQ5znNNs46rw6l1Qy5IUap249/ccl6aw6JKdK9eLRO1YFA4a5p+E=
-X-Received: by 2002:a9f:3e0d:: with SMTP id o13mr27528uai.25.1589012200418;
- Sat, 09 May 2020 01:16:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200425054659.814774-1-masahiroy@kernel.org> <CAK7LNAQk_fLFCWuFCC0NK3nxVE0bs-n7E+T-dbn14aCZVg_pgQ@mail.gmail.com>
- <20200508214650.GA3482@ls3530.fritz.box>
-In-Reply-To: <20200508214650.GA3482@ls3530.fritz.box>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sat, 9 May 2020 17:16:04 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAS0PVA7stUE9nmOuiP=MfPGDp1u-QDzfpk7Juq-JFehVw@mail.gmail.com>
-Message-ID: <CAK7LNAS0PVA7stUE9nmOuiP=MfPGDp1u-QDzfpk7Juq-JFehVw@mail.gmail.com>
-Subject: Re: [PATCH] parisc: suppress error messages for 'make clean'
-To:     Helge Deller <deller@gmx.de>
-Cc:     "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        id S1728110AbgEIRjl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 9 May 2020 13:39:41 -0400
+Received: from mout.gmx.net ([212.227.15.18]:55435 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726214AbgEIRjk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 9 May 2020 13:39:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1589045967;
+        bh=5Na8YxJhPBBVFX7/f9ixlEVkKOYhJWLOj2uO2rcfXaM=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=MEfS6hr+BLhvGyv6eKPdXolY1UMlZVpRUU2ew5PCjCXBFRcmlwPIVVPj3C5XQ4DwH
+         Nzstf3iKsZ0BOPbfRchXuR80mRLU/Pjs1edaz/WXo/VKancWfTdyrO3xZw9Jc/l58V
+         ofvpzQsXW/diNy/ChUUL9Vzir5LyShgusI/gqTsI=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.180.101]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MUXpK-1jgAbn2AcK-00QVD4; Sat, 09
+ May 2020 19:39:27 +0200
+Date:   Sat, 9 May 2020 19:39:25 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Helge Deller <deller@gmx.de>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
         linux-parisc@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] parisc: suppress error messages for 'make clean'
+Message-ID: <20200509173925.GA30635@ls3530.fritz.box>
+References: <20200425054659.814774-1-masahiroy@kernel.org>
+ <CAK7LNAQk_fLFCWuFCC0NK3nxVE0bs-n7E+T-dbn14aCZVg_pgQ@mail.gmail.com>
+ <20200508214650.GA3482@ls3530.fritz.box>
+ <CAK7LNAS0PVA7stUE9nmOuiP=MfPGDp1u-QDzfpk7Juq-JFehVw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNAS0PVA7stUE9nmOuiP=MfPGDp1u-QDzfpk7Juq-JFehVw@mail.gmail.com>
+X-Provags-ID: V03:K1:tGaT+acMXMXyn+KuOYDABqomMWlLft370X1ncEndOP1JFXu86Wk
+ PH3OEs0PuRcCRPF5U+zz5/fzbnoAvKbj880QmenyImeDvcz1h9sRTRi5wiVXh6oBhOrpXGZ
+ ws5LjJksw7mFkJt4SF8jtX/ZZHIPJeJ2Vz1hO02d26oZqqEnl6UkJR373q7KkXPhTnHKBKv
+ 6Uwsy71W0ojEwMswKC/6g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:B84dymr/0Fo=:C+HdP9OqoUNac0GfuV3FTD
+ /0aib+vEZMQ/+Wja7cqH7jYIZ4o3cOSwTkWPX0X+RuCy+RA8LvqWpdK9wor4w4MUBy1XsKw7O
+ q3k7edDrDDH4NXdFTF/vkROIrhKz/mVwuMlpe5Aod67xW9OfEEDi2hSEav6VUo991jnfd5ZR4
+ 8NRc6m7djBD9xjlrlGprU6RBoRm8BwhJ9wXXueqWil+PWN8S07IpMnY4XaKALp4eB0BCRZfRW
+ fXqnXZ7/PArXgkh6cENpW/TITIKEoZFqfggfX75CpF21nllPsxNZFkXEaE+OiebujPrKCEQjV
+ noZhdHkOZqIPmpolvjik5vMFx7RWi3P7cG07p214b6KRpJWtIE1nIdvSskT5GsVfiy0ilv/oG
+ YqBUB5UpGdI/K5V15YdEvvDMuKfYBTn8+f8PuRXxsuNmCuCz3nHEXXZpvfcptEA7BSPTzBMZl
+ gJnL66asI9jqAMOtYKQbCmk2NljKHVNb5kNb4yPJTQkBMISycnMVWKQ/N3SJNxnIznSH2+PeB
+ DZSupbKDPYUXVv8DvOKe0GbVa6ZIz5pCsxUcWrPhdwn+hGTrLhiiJGvGHhJ1AchgFJE62FDUN
+ w3PC9JjwmXGZwHB7EWx2btwcMnb4J6l2RLx7uyoOXvOlGdoyLpzN3ngyzG7p1PbIW8qrnNj9W
+ zhiWzUtndxD6yN+6b7Irpfjf2+6dtJ4gfpLkAFIdLZp5GsYYZl/zQAjAZ0dTKYG0aaGDErehx
+ VuEhDIExi3nA/UeOhx2JnMGV+AGD3/+P6fIhikXU6V6+VVbGmh2yFUVv+CcSmFwN5BRXWCkae
+ CTMsLNVlLGw0tMqrkFomXLtFp/rCDdoqCCmhzae7wN5KVK6EZ3K1woTEK5L47uTNfGSkq/Ema
+ QnXiMF7xdDxviEg/b/HRBWGyd1O9J46iG5JiLhOMlMrgq9GzdrtRpMCixcI5Ce5rF4mL6z/m6
+ Qxcr/yEM6loyEWbcUyUF1KYH7Jg26Zgc1uOH3m5Gzl0YeDa7Ncim+KORDO3BC3iwyzBQZvS4q
+ FF1OK/l/MYmBULco7vlirj/W2irAj4zSWYal8RPtJnrG8xg2XDw60pffH6YMqiE4i2q+JKK7W
+ VlHKxNrq3uzhG5lIudVHESTNH3oS4bk4LlsrFNE6ZJYu4yVNPQkPq+AASSusGLJZpFDWBECYu
+ LFuYNeKq6RR1IfzLhVVoGAaBr4LhKokJKRZ6rj8K1Udz+Qq6WXCDZdtsUdIl8TckSp13SvZOO
+ ZuQtCadka9hPGL+E/
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Helge,
-
-On Sat, May 9, 2020 at 6:46 AM Helge Deller <deller@gmx.de> wrote:
+* Masahiro Yamada <masahiroy@kernel.org>:
+> Hi Helge,
 >
-> * Masahiro Yamada <masahiroy@kernel.org>:
-> > On Sat, Apr 25, 2020 at 2:47 PM Masahiro Yamada <masahiroy@kernel.org> =
-wrote:
-> > >
-> > > 'make ARCH=3Dparisc clean' emits a tons of error messages as follows:
-> > >
-> > >   $ make ARCH=3Dparisc clean
-> > >   gcc: error: unrecognized command line option '-mno-space-regs'
-> > >   gcc: error: unrecognized command line option '-mfast-indirect-calls=
-'; did you mean '-mforce-indirect-call'?
-> > >   gcc: error: unrecognized command line option '-mdisable-fpregs'
-> > >   gcc: error: missing argument to '-Wframe-larger-than=3D'
-> > >   gcc: error: unrecognized command line option '-mno-space-regs'
-> > >   gcc: error: unrecognized command line option '-mfast-indirect-calls=
-'; did you mean '-mforce-indirect-call'?
-> > >   gcc: error: unrecognized command line option '-mdisable-fpregs'
-> > >   gcc: error: missing argument to '-Wframe-larger-than=3D'
-> > >     ...
-> > >
-> > > You can supporess them except '-Wframe-larger-than' by setting correc=
-t
-> > > CROSS_COMPILE=3D, but we should not require any compiler for cleaning=
-.
-> > >
-> > > This $(shell ...) is evaluated so many times because LIBGCC is export=
-ed.
-> > > Use the ':=3D' operator to evaluate it just once, and sink the stderr=
-.
-> > >
+> On Sat, May 9, 2020 at 6:46 AM Helge Deller <deller@gmx.de> wrote:
 > >
-> > Applied to linux-kbuild.
+> > * Masahiro Yamada <masahiroy@kernel.org>:
+> > > On Sat, Apr 25, 2020 at 2:47 PM Masahiro Yamada <masahiroy@kernel.or=
+g> wrote:
+> > > >
+> > > > 'make ARCH=3Dparisc clean' emits a tons of error messages as follo=
+ws:
+> > > >
+> > > >   $ make ARCH=3Dparisc clean
+> > > >   gcc: error: unrecognized command line option '-mno-space-regs'
+> > > >   gcc: error: unrecognized command line option '-mfast-indirect-ca=
+lls'; did you mean '-mforce-indirect-call'?
+> > > >   gcc: error: unrecognized command line option '-mdisable-fpregs'
+> > > >   gcc: error: missing argument to '-Wframe-larger-than=3D'
+> > > >   gcc: error: unrecognized command line option '-mno-space-regs'
+> > > >   gcc: error: unrecognized command line option '-mfast-indirect-ca=
+lls'; did you mean '-mforce-indirect-call'?
+> > > >   gcc: error: unrecognized command line option '-mdisable-fpregs'
+> > > >   gcc: error: missing argument to '-Wframe-larger-than=3D'
+> > > >     ...
+> > > >
+> > > > You can supporess them except '-Wframe-larger-than' by setting cor=
+rect
+> > > > CROSS_COMPILE=3D, but we should not require any compiler for clean=
+ing.
+> > > >
+> > > > This $(shell ...) is evaluated so many times because LIBGCC is exp=
+orted.
+> > > > Use the ':=3D' operator to evaluate it just once, and sink the std=
+err.
+> > > >
+> > >
+> > > Applied to linux-kbuild.
+> >
+> > That patch breaks then building the boot loader/compressor:
+> > ...
+> >   hppa-linux-gnu-ld    -X -e startup --as-needed -T arch/parisc/boot/c=
+ompressed/vmlinux.lds arch/parisc/boot/compressed/head.o arch/parisc/boot/=
+compressed/real2.o arch/parisc/boot/compressed/firmware.o arch/parisc/boot=
+/compressed/misc.o arch/parisc/boot/compressed/piggy.o -o arch/parisc/boot=
+/compressed/vmlinux
+> > hppa-linux-gnu-ld: arch/parisc/boot/compressed/misc.o: in function `de=
+c_vli':
+> > (.text+0x104): undefined reference to `__ashldi3'
+> > hppa-linux-gnu-ld: arch/parisc/boot/compressed/misc.o: in function `lz=
+ma_len':
+> > (.text+0x2b0): undefined reference to `$$mulI'
+> > hppa-linux-gnu-ld: (.text+0x344): undefined reference to `$$mulI'
+> > hppa-linux-gnu-ld: (.text+0x3f8): undefined reference to `$$mulI'
+> >
+> >
+> > The patch below works, but I wonder if it's possible to avoid
+> > to examine LIBGCC twice....?
+> >
+> > Helge
 >
-> That patch breaks then building the boot loader/compressor:
-> ...
->   hppa-linux-gnu-ld    -X -e startup --as-needed -T arch/parisc/boot/comp=
-ressed/vmlinux.lds arch/parisc/boot/compressed/head.o arch/parisc/boot/comp=
-ressed/real2.o arch/parisc/boot/compressed/firmware.o arch/parisc/boot/comp=
-ressed/misc.o arch/parisc/boot/compressed/piggy.o -o arch/parisc/boot/compr=
-essed/vmlinux
-> hppa-linux-gnu-ld: arch/parisc/boot/compressed/misc.o: in function `dec_v=
-li':
-> (.text+0x104): undefined reference to `__ashldi3'
-> hppa-linux-gnu-ld: arch/parisc/boot/compressed/misc.o: in function `lzma_=
-len':
-> (.text+0x2b0): undefined reference to `$$mulI'
-> hppa-linux-gnu-ld: (.text+0x344): undefined reference to `$$mulI'
-> hppa-linux-gnu-ld: (.text+0x3f8): undefined reference to `$$mulI'
 >
+> Sorry for the breakage.
 >
-> The patch below works, but I wonder if it's possible to avoid
-> to examine LIBGCC twice....?
->
-> Helge
+> How about moving LIBGCC below ?
 
+Good idea.
+The patch below does work for me.
+We do not need $KBUILD_CFLAGS to get the libgcc.a filename,
+so we do not need to pipe the output to /dev/null either.
+Can you try if that works, and if yes, can you apply it?
 
-Sorry for the breakage.
-
-How about moving LIBGCC below ?
-
-
+Helge
 
 
 diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
-index d82787da43cd..6b37aa37a365 100644
---- a/arch/parisc/Makefile
+index 628cd8bb7ad8..fadbbd010337 100644
+=2D-- a/arch/parisc/Makefile
 +++ b/arch/parisc/Makefile
 @@ -21,8 +21,6 @@ KBUILD_IMAGE :=3D vmlinuz
 
- NM             =3D sh $(srctree)/arch/parisc/nm
- CHECKFLAGS     +=3D -D__hppa__=3D1
--LIBGCC         :=3D $(shell $(CC) $(KBUILD_CFLAGS)
--print-libgcc-file-name 2>/dev/null)
+ NM		=3D sh $(srctree)/arch/parisc/nm
+ CHECKFLAGS	+=3D -D__hppa__=3D1
+-LIBGCC		=3D $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
 -export LIBGCC
 
  ifdef CONFIG_64BIT
- UTS_MACHINE    :=3D parisc64
-@@ -114,6 +112,10 @@ KBUILD_CFLAGS      +=3D $(cflags-y)
- kernel-y                       :=3D mm/ kernel/ math-emu/
+ UTS_MACHINE	:=3D parisc64
+@@ -110,6 +108,8 @@ cflags-$(CONFIG_PA8X00)		+=3D -march=3D2.0 -mschedule=
+=3D8000
+ head-y			:=3D arch/parisc/kernel/head.o
 
- core-y +=3D $(addprefix arch/parisc/, $(kernel-y))
-+
-+LIBGCC :=3D $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name 2>/dev/=
-null)
+ KBUILD_CFLAGS	+=3D $(cflags-y)
++LIBGCC		:=3D $(shell $(CC) -print-libgcc-file-name)
 +export LIBGCC
-+
- libs-y +=3D arch/parisc/lib/ $(LIBGCC)
 
- drivers-$(CONFIG_OPROFILE)             +=3D arch/parisc/oprofile/
+ kernel-y			:=3D mm/ kernel/ math-emu/
 
-
-
-
-
-
-
-
-
-
-
-
-
->
-> diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
-> index 628cd8bb7ad8..aeea20abbf01 100644
-> --- a/arch/parisc/Makefile
-> +++ b/arch/parisc/Makefile
-> @@ -21,8 +21,7 @@ KBUILD_IMAGE :=3D vmlinuz
->
->  NM             =3D sh $(srctree)/arch/parisc/nm
->  CHECKFLAGS     +=3D -D__hppa__=3D1
-> -LIBGCC         =3D $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-nam=
-e)
-> -export LIBGCC
-> +LIBGCC         :=3D $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-na=
-me)
->
->  ifdef CONFIG_64BIT
->  UTS_MACHINE    :=3D parisc64
-> diff --git a/arch/parisc/boot/compressed/Makefile b/arch/parisc/boot/comp=
-ressed/Makefile
-> index 1e5879c6a752..b008cf1b5c1e 100644
-> --- a/arch/parisc/boot/compressed/Makefile
-> +++ b/arch/parisc/boot/compressed/Makefile
-> @@ -22,6 +22,8 @@ ifndef CONFIG_64BIT
->  KBUILD_CFLAGS +=3D -mfast-indirect-calls
->  endif
->
-> +LIBGCC  :=3D $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
-> +
->  OBJECTS +=3D $(obj)/head.o $(obj)/real2.o $(obj)/firmware.o $(obj)/misc.=
-o $(obj)/piggy.o
->
->  LDFLAGS_vmlinux :=3D -X -e startup --as-needed -T
-
-
-
---=20
-Best Regards
-Masahiro Yamada
