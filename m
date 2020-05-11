@@ -2,160 +2,296 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E2A1CD046
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 May 2020 05:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED3511CD130
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 May 2020 07:05:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728466AbgEKDPV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 10 May 2020 23:15:21 -0400
-Received: from foss.arm.com ([217.140.110.172]:50292 "EHLO foss.arm.com"
+        id S1726013AbgEKFFn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 11 May 2020 01:05:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50700 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726013AbgEKDPV (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 10 May 2020 23:15:21 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B3601FB;
-        Sun, 10 May 2020 20:15:20 -0700 (PDT)
-Received: from [10.163.72.179] (unknown [10.163.72.179])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F18C63F305;
-        Sun, 10 May 2020 20:15:09 -0700 (PDT)
-Subject: Re: [PATCH V3 2/3] mm/hugetlb: Define a generic fallback for
- is_hugepage_only_range()
-To:     Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org,
-        akpm@linux-foundation.org
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        id S1725916AbgEKFFm (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 11 May 2020 01:05:42 -0400
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7DB922082E;
+        Mon, 11 May 2020 05:05:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589173541;
+        bh=OccYV41EjR0H/rhVcZ9I7FliXAUSId9al3z7li2y18g=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=jtG6thU2hDFQBsxnFNEcJglOdVxLrtZFF7gcgjjRKA4JhIyV86NWR5mPtWf1y7Pi2
+         ZxdRSpx9Md590okoiqOOZ2b5UGidQrqdAJ7Xoemg498lgsaYmS/7rovoW/GEpmNEfw
+         uKOKvTy52tu5CH3ClSkG+aSXZJuVo9VfE0HzExwc=
+Date:   Mon, 11 May 2020 14:05:36 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     x86@kernel.org, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
+        netdev@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org
-References: <1588907271-11920-1-git-send-email-anshuman.khandual@arm.com>
- <1588907271-11920-3-git-send-email-anshuman.khandual@arm.com>
- <9fc622e1-45ff-b79f-ebe0-35614837456c@oracle.com>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <c21ab871-da06-baf6-ba31-80b13402b8c9@arm.com>
-Date:   Mon, 11 May 2020 08:44:39 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <9fc622e1-45ff-b79f-ebe0-35614837456c@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Subject: Re: [PATCH 12/15] maccess: always use strict semantics for
+ probe_kernel_read
+Message-Id: <20200511140536.a15f3f15c71309fdf219c2e4@kernel.org>
+In-Reply-To: <20200506062223.30032-13-hch@lst.de>
+References: <20200506062223.30032-1-hch@lst.de>
+        <20200506062223.30032-13-hch@lst.de>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Hi Christoph,
+
+At first, thank you for your work on cleaning up these functions!
+
+On Wed,  6 May 2020 08:22:20 +0200
+Christoph Hellwig <hch@lst.de> wrote:
+
+> Except for historical confusion in the kprobes/uprobes and bpf tracers
+> there is no good reason to ever allow user memory accesses from
+> probe_kernel_read.
+
+Yes, thus now trace_kprobe supports "ustring" type for accessing
+user space memory. (If the address spaces are overwrapped, we have
+no way to distinguish whether an address is kernel or user)
+
+>  Make the tracers fall back to a probe_user_read
+> if the probe_kernel_read falls to keep the core API clean.
+
+For trace_kprobes doesn't need to fall back. User must specify
+the probe should be read from user space or kernel space. This is
+because it has  fetch_store_string_user() and probe_mem_read_user()
+variants.
+
+Thank you,
 
 
-On 05/09/2020 03:52 AM, Mike Kravetz wrote:
-> On 5/7/20 8:07 PM, Anshuman Khandual wrote:
->> There are multiple similar definitions for is_hugepage_only_range() on
->> various platforms. Lets just add it's generic fallback definition for
->> platforms that do not override. This help reduce code duplication.
->>
->> Cc: Russell King <linux@armlinux.org.uk>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: Tony Luck <tony.luck@intel.com>
->> Cc: Fenghua Yu <fenghua.yu@intel.com>
->> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
->> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
->> Cc: Helge Deller <deller@gmx.de>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Paul Walmsley <paul.walmsley@sifive.com>
->> Cc: Palmer Dabbelt <palmer@dabbelt.com>
->> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
->> Cc: Vasily Gorbik <gor@linux.ibm.com>
->> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
->> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
->> Cc: Rich Felker <dalias@libc.org>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: Thomas Gleixner <tglx@linutronix.de>
->> Cc: Ingo Molnar <mingo@redhat.com>
->> Cc: Borislav Petkov <bp@alien8.de>
->> Cc: "H. Peter Anvin" <hpa@zytor.com>
->> Cc: Mike Kravetz <mike.kravetz@oracle.com>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: x86@kernel.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-ia64@vger.kernel.org
->> Cc: linux-mips@vger.kernel.org
->> Cc: linux-parisc@vger.kernel.org
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: linux-riscv@lists.infradead.org
->> Cc: linux-s390@vger.kernel.org
->> Cc: linux-sh@vger.kernel.org
->> Cc: sparclinux@vger.kernel.org
->> Cc: linux-mm@kvack.org
->> Cc: linux-arch@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  arch/arm/include/asm/hugetlb.h     | 6 ------
->>  arch/arm64/include/asm/hugetlb.h   | 6 ------
->>  arch/ia64/include/asm/hugetlb.h    | 1 +
->>  arch/mips/include/asm/hugetlb.h    | 7 -------
->>  arch/parisc/include/asm/hugetlb.h  | 6 ------
->>  arch/powerpc/include/asm/hugetlb.h | 1 +
->>  arch/riscv/include/asm/hugetlb.h   | 6 ------
->>  arch/s390/include/asm/hugetlb.h    | 7 -------
->>  arch/sh/include/asm/hugetlb.h      | 6 ------
->>  arch/sparc/include/asm/hugetlb.h   | 6 ------
->>  arch/x86/include/asm/hugetlb.h     | 6 ------
->>  include/linux/hugetlb.h            | 9 +++++++++
->>  12 files changed, 11 insertions(+), 56 deletions(-)
->>
-> <snip>
->> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->> index 43a1cef8f0f1..c01c0c6f7fd4 100644
->> --- a/include/linux/hugetlb.h
->> +++ b/include/linux/hugetlb.h
->> @@ -591,6 +591,15 @@ static inline unsigned int blocks_per_huge_page(struct hstate *h)
->>  
->>  #include <asm/hugetlb.h>
->>  
->> +#ifndef is_hugepage_only_range
->> +static inline int is_hugepage_only_range(struct mm_struct *mm,
->> +					unsigned long addr, unsigned long len)
->> +{
->> +	return 0;
->> +}
->> +#define is_hugepage_only_range is_hugepage_only_range
->> +#endif
->> +
->>  #ifndef arch_make_huge_pte
->>  static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
->>  				       struct page *page, int writable)
->>
 > 
-> Did you try building without CONFIG_HUGETLB_PAGE defined?  I'm guessing
-
-Yes I did for multiple platforms (s390, arm64, ia64, x86, powerpc etc).
-
-> that you need a stub for is_hugepage_only_range().  Or, perhaps add this
-> to asm-generic/hugetlb.h?
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/parisc/lib/memcpy.c    |  3 +--
+>  arch/um/kernel/maccess.c    |  3 +--
+>  arch/x86/mm/maccess.c       |  5 +----
+>  include/linux/uaccess.h     |  4 +---
+>  kernel/trace/bpf_trace.c    | 20 +++++++++++++------
+>  kernel/trace/trace_kprobe.c | 11 ++++++++++-
+>  mm/maccess.c                | 39 ++++++-------------------------------
+>  7 files changed, 34 insertions(+), 51 deletions(-)
 > 
-There is already a stub (include/linux/hugetlb.h) when !CONFIG_HUGETLB_PAGE.
+> diff --git a/arch/parisc/lib/memcpy.c b/arch/parisc/lib/memcpy.c
+> index 5ef648bd33119..9fe662b3b5604 100644
+> --- a/arch/parisc/lib/memcpy.c
+> +++ b/arch/parisc/lib/memcpy.c
+> @@ -57,8 +57,7 @@ void * memcpy(void * dst,const void *src, size_t count)
+>  EXPORT_SYMBOL(raw_copy_in_user);
+>  EXPORT_SYMBOL(memcpy);
+>  
+> -bool probe_kernel_read_allowed(void *dst, const void *unsafe_src, size_t size,
+> -		bool strict)
+> +bool probe_kernel_read_allowed(void *dst, const void *unsafe_src, size_t size)
+>  {
+>  	if ((unsigned long)unsafe_src < PAGE_SIZE)
+>  		return false;
+> diff --git a/arch/um/kernel/maccess.c b/arch/um/kernel/maccess.c
+> index 90a1bec923158..734f3d7e57c0f 100644
+> --- a/arch/um/kernel/maccess.c
+> +++ b/arch/um/kernel/maccess.c
+> @@ -7,8 +7,7 @@
+>  #include <linux/kernel.h>
+>  #include <os.h>
+>  
+> -bool probe_kernel_read_allowed(void *dst, const void *src, size_t size,
+> -		bool strict)
+> +bool probe_kernel_read_allowed(void *dst, const void *src, size_t size)
+>  {
+>  	void *psrc = (void *)rounddown((unsigned long)src, PAGE_SIZE);
+>  
+> diff --git a/arch/x86/mm/maccess.c b/arch/x86/mm/maccess.c
+> index 5c323ab187b27..a1bd81677aa72 100644
+> --- a/arch/x86/mm/maccess.c
+> +++ b/arch/x86/mm/maccess.c
+> @@ -26,10 +26,7 @@ static __always_inline bool invalid_probe_range(u64 vaddr)
+>  }
+>  #endif
+>  
+> -bool probe_kernel_read_allowed(void *dst, const void *unsafe_src, size_t size,
+> -		bool strict)
+> +bool probe_kernel_read_allowed(void *dst, const void *unsafe_src, size_t size)
+>  {
+> -	if (!strict)
+> -		return true;
+>  	return !invalid_probe_range((unsigned long)unsafe_src);
+>  }
+> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+> index 09d6e358883cc..99e2c2a41164a 100644
+> --- a/include/linux/uaccess.h
+> +++ b/include/linux/uaccess.h
+> @@ -301,11 +301,9 @@ copy_struct_from_user(void *dst, size_t ksize, const void __user *src,
+>  	return 0;
+>  }
+>  
+> -bool probe_kernel_read_allowed(void *dst, const void *unsafe_src,
+> -		size_t size, bool strict);
+> +bool probe_kernel_read_allowed(void *dst, const void *unsafe_src, size_t size);
+>  
+>  extern long probe_kernel_read(void *dst, const void *src, size_t size);
+> -extern long probe_kernel_read_strict(void *dst, const void *src, size_t size);
+>  extern long probe_user_read(void *dst, const void __user *src, size_t size);
+>  
+>  extern long notrace probe_kernel_write(void *dst, const void *src, size_t size);
+> diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+> index ffe841433caa1..f694befe8ec9b 100644
+> --- a/kernel/trace/bpf_trace.c
+> +++ b/kernel/trace/bpf_trace.c
+> @@ -183,12 +183,20 @@ bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr,
+>  	int ret = security_locked_down(LOCKDOWN_BPF_READ);
+>  
+>  	if (unlikely(ret < 0))
+> -		goto out;
+> -	ret = compat ? probe_kernel_read(dst, unsafe_ptr, size) :
+> -	      probe_kernel_read_strict(dst, unsafe_ptr, size);
+> -	if (unlikely(ret < 0))
+> -out:
+> -		memset(dst, 0, size);
+> +		goto fail;
+> +
+> +	ret = probe_kernel_read(dst, unsafe_ptr, size);
+> +	if (unlikely(ret < 0)) {
+> +		if (compat)
+> +			ret = probe_user_read(dst,
+> +				(__force const void __user *)unsafe_ptr, size);
+> +		if (unlikely(ret < 0))
+> +			goto fail;
+> +	}
+> +
+> +	return 0;
+> +fail:
+> +	memset(dst, 0, size);
+>  	return ret;
+>  }
+>  
+> diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+> index 525d12137325c..1300c9fd5c755 100644
+> --- a/kernel/trace/trace_kprobe.c
+> +++ b/kernel/trace/trace_kprobe.c
+> @@ -1203,6 +1203,9 @@ fetch_store_strlen(unsigned long addr)
+>  
+>  	do {
+>  		ret = probe_kernel_read(&c, (u8 *)addr + len, 1);
+> +		if (ret)
+> +			ret = probe_user_read(&c,
+> +				(__force u8 __user *)addr + len, 1);
+>  		len++;
+>  	} while (c && ret == 0 && len < MAX_STRING_SIZE);
+>  
+> @@ -1275,7 +1278,13 @@ fetch_store_string_user(unsigned long addr, void *dest, void *base)
+>  static nokprobe_inline int
+>  probe_mem_read(void *dest, void *src, size_t size)
+>  {
+> -	return probe_kernel_read(dest, src, size);
+> +	int ret;
+> +
+> +	ret = probe_kernel_read(dest, src, size);
+> +	if (ret)
+> +		ret = probe_user_read(dest, (__force const void __user *)src,
+> +				size);
+> +	return ret;
+>  }
+>  
+>  static nokprobe_inline int
+> diff --git a/mm/maccess.c b/mm/maccess.c
+> index cbd9d668aa46e..811f49e8de113 100644
+> --- a/mm/maccess.c
+> +++ b/mm/maccess.c
+> @@ -6,36 +6,14 @@
+>  #include <linux/mm.h>
+>  #include <linux/uaccess.h>
+>  
+> -static long __probe_kernel_read(void *dst, const void *src, size_t size,
+> -		bool strict);
+> -
+>  bool __weak probe_kernel_read_allowed(void *dst, const void *unsafe_src,
+> -		size_t size, bool strict)
+> +		size_t size)
+>  {
+>  	return true;
+>  }
+>  
+>  /**
+> - * probe_kernel_read(): safely attempt to read from any location
+> - * @dst: pointer to the buffer that shall take the data
+> - * @src: address to read from
+> - * @size: size of the data chunk
+> - *
+> - * Same as probe_kernel_read_strict() except that for architectures with
+> - * not fully separated user and kernel address spaces this function also works
+> - * for user address tanges.
+> - *
+> - * DO NOT USE THIS FUNCTION - it is broken on architectures with entirely
+> - * separate kernel and user address spaces, and also a bad idea otherwise.
+> - */
+> -long probe_kernel_read(void *dst, const void *src, size_t size)
+> -{
+> -	return __probe_kernel_read(dst, src, size, false);
+> -}
+> -EXPORT_SYMBOL_GPL(probe_kernel_read);
+> -
+> -/**
+> - * probe_kernel_read_strict(): safely attempt to read from kernel-space
+> + * probe_kernel_read(): safely attempt to read from kernel-space
+>   * @dst: pointer to the buffer that shall take the data
+>   * @src: address to read from
+>   * @size: size of the data chunk
+> @@ -48,18 +26,12 @@ EXPORT_SYMBOL_GPL(probe_kernel_read);
+>   * probe_kernel_read() suitable for use within regions where the caller
+>   * already holds mmap_sem, or other locks which nest inside mmap_sem.
+>   */
+> -long probe_kernel_read_strict(void *dst, const void *src, size_t size)
+> -{
+> -	return __probe_kernel_read(dst, src, size, true);
+> -}
+> -
+> -static long __probe_kernel_read(void *dst, const void *src, size_t size,
+> -		bool strict)
+> +long probe_kernel_read(void *dst, const void *src, size_t size)
+>  {
+>  	long ret;
+>  	mm_segment_t old_fs = get_fs();
+>  
+> -	if (!probe_kernel_read_allowed(dst, src, size, strict))
+> +	if (!probe_kernel_read_allowed(dst, src, size))
+>  		return -EFAULT;
+>  
+>  	set_fs(KERNEL_DS);
+> @@ -73,6 +45,7 @@ static long __probe_kernel_read(void *dst, const void *src, size_t size,
+>  		return -EFAULT;
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL_GPL(probe_kernel_read);
+>  
+>  /**
+>   * probe_user_read(): safely attempt to read from a user-space location
+> @@ -180,7 +153,7 @@ long strncpy_from_kernel_unsafe(char *dst, const void *unsafe_addr, long count)
+>  
+>  	if (unlikely(count <= 0))
+>  		return 0;
+> -	if (!probe_kernel_read_allowed(dst, unsafe_addr, count, true))
+> +	if (!probe_kernel_read_allowed(dst, unsafe_addr, count))
+>  		return -EFAULT;
+>  
+>  	set_fs(KERNEL_DS);
+> -- 
+> 2.26.2
+> 
+
+
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
