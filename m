@@ -2,91 +2,160 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90D871CCF4C
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 May 2020 03:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75E2A1CD046
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 May 2020 05:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729192AbgEKBz1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 10 May 2020 21:55:27 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:51308 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729177AbgEKBz1 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 10 May 2020 21:55:27 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 36CC5B2F649EB3DADC61;
-        Mon, 11 May 2020 09:55:24 +0800 (CST)
-Received: from [127.0.0.1] (10.67.102.197) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Mon, 11 May 2020
- 09:55:22 +0800
-Subject: Re: linux-next: manual merge of the vfs tree with the parisc-hd tree
-To:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Al Viro <viro@ZenIV.linux.org.uk>,
+        id S1728466AbgEKDPV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 10 May 2020 23:15:21 -0400
+Received: from foss.arm.com ([217.140.110.172]:50292 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726013AbgEKDPV (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 10 May 2020 23:15:21 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B3601FB;
+        Sun, 10 May 2020 20:15:20 -0700 (PDT)
+Received: from [10.163.72.179] (unknown [10.163.72.179])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F18C63F305;
+        Sun, 10 May 2020 20:15:09 -0700 (PDT)
+Subject: Re: [PATCH V3 2/3] mm/hugetlb: Define a generic fallback for
+ is_hugepage_only_range()
+To:     Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org,
+        akpm@linux-foundation.org
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        <mcgrof@kernel.org>, <keescook@chromium.org>, <yzaikin@google.com>,
-        <linux-fsdevel@vger.kernel.org>
-CC:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        Christoph Hellwig <hch@lst.de>
-References: <20200511111123.68ccbaa3@canb.auug.org.au>
-From:   Xiaoming Ni <nixiaoming@huawei.com>
-Message-ID: <99095805-8cbe-d140-e2f1-0c5a3e84d7e7@huawei.com>
-Date:   Mon, 11 May 2020 09:55:16 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1588907271-11920-1-git-send-email-anshuman.khandual@arm.com>
+ <1588907271-11920-3-git-send-email-anshuman.khandual@arm.com>
+ <9fc622e1-45ff-b79f-ebe0-35614837456c@oracle.com>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <c21ab871-da06-baf6-ba31-80b13402b8c9@arm.com>
+Date:   Mon, 11 May 2020 08:44:39 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20200511111123.68ccbaa3@canb.auug.org.au>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+In-Reply-To: <9fc622e1-45ff-b79f-ebe0-35614837456c@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.197]
-X-CFilter-Loop: Reflected
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2020/5/11 9:11, Stephen Rothwell wrote:
-> Hi all,
-> 
-> Today's linux-next merge of the vfs tree got a conflict in:
-> 
->    kernel/sysctl.c
-> 
-> between commit:
-> 
->    b6522fa409cf ("parisc: add sysctl file interface panic_on_stackoverflow")
-> 
-> from the parisc-hd tree and commit:
-> 
->    f461d2dcd511 ("sysctl: avoid forward declarations")
-> 
-> from the vfs tree.
-> 
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
-> 
 
 
-Kernel/sysctl.c contains more than 190 interface files, and there are a 
-large number of config macro controls. When modifying the sysctl 
-interface directly in kernel/sysctl.c , conflicts are very easy to occur.
+On 05/09/2020 03:52 AM, Mike Kravetz wrote:
+> On 5/7/20 8:07 PM, Anshuman Khandual wrote:
+>> There are multiple similar definitions for is_hugepage_only_range() on
+>> various platforms. Lets just add it's generic fallback definition for
+>> platforms that do not override. This help reduce code duplication.
+>>
+>> Cc: Russell King <linux@armlinux.org.uk>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Tony Luck <tony.luck@intel.com>
+>> Cc: Fenghua Yu <fenghua.yu@intel.com>
+>> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+>> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+>> Cc: Helge Deller <deller@gmx.de>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+>> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+>> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+>> Cc: Vasily Gorbik <gor@linux.ibm.com>
+>> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+>> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+>> Cc: Rich Felker <dalias@libc.org>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Cc: Ingo Molnar <mingo@redhat.com>
+>> Cc: Borislav Petkov <bp@alien8.de>
+>> Cc: "H. Peter Anvin" <hpa@zytor.com>
+>> Cc: Mike Kravetz <mike.kravetz@oracle.com>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: x86@kernel.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-ia64@vger.kernel.org
+>> Cc: linux-mips@vger.kernel.org
+>> Cc: linux-parisc@vger.kernel.org
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: linux-riscv@lists.infradead.org
+>> Cc: linux-s390@vger.kernel.org
+>> Cc: linux-sh@vger.kernel.org
+>> Cc: sparclinux@vger.kernel.org
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-arch@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>>  arch/arm/include/asm/hugetlb.h     | 6 ------
+>>  arch/arm64/include/asm/hugetlb.h   | 6 ------
+>>  arch/ia64/include/asm/hugetlb.h    | 1 +
+>>  arch/mips/include/asm/hugetlb.h    | 7 -------
+>>  arch/parisc/include/asm/hugetlb.h  | 6 ------
+>>  arch/powerpc/include/asm/hugetlb.h | 1 +
+>>  arch/riscv/include/asm/hugetlb.h   | 6 ------
+>>  arch/s390/include/asm/hugetlb.h    | 7 -------
+>>  arch/sh/include/asm/hugetlb.h      | 6 ------
+>>  arch/sparc/include/asm/hugetlb.h   | 6 ------
+>>  arch/x86/include/asm/hugetlb.h     | 6 ------
+>>  include/linux/hugetlb.h            | 9 +++++++++
+>>  12 files changed, 11 insertions(+), 56 deletions(-)
+>>
+> <snip>
+>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>> index 43a1cef8f0f1..c01c0c6f7fd4 100644
+>> --- a/include/linux/hugetlb.h
+>> +++ b/include/linux/hugetlb.h
+>> @@ -591,6 +591,15 @@ static inline unsigned int blocks_per_huge_page(struct hstate *h)
+>>  
+>>  #include <asm/hugetlb.h>
+>>  
+>> +#ifndef is_hugepage_only_range
+>> +static inline int is_hugepage_only_range(struct mm_struct *mm,
+>> +					unsigned long addr, unsigned long len)
+>> +{
+>> +	return 0;
+>> +}
+>> +#define is_hugepage_only_range is_hugepage_only_range
+>> +#endif
+>> +
+>>  #ifndef arch_make_huge_pte
+>>  static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
+>>  				       struct page *page, int writable)
+>>
+> 
+> Did you try building without CONFIG_HUGETLB_PAGE defined?  I'm guessing
 
-At the same time, the register_sysctl_table() provided by the system can 
-easily add the sysctl interface, and there is no conflict of 
-kernel/sysctl.c .
+Yes I did for multiple platforms (s390, arm64, ia64, x86, powerpc etc).
 
-Should we add instructions in the patch guide (coding-style.rst 
-submitting-patches.rst):
-Preferentially use register_sysctl_table() to add a new sysctl 
-interface, centralize feature codes, and avoid directly modifying 
-kernel/sysctl.c ?
-
-In addition, is it necessary to transfer the architecture-related sysctl 
-interface to arch/xxx/kernel/sysctl.c ?
-
-Thanks
-Xiaoming Ni
-
+> that you need a stub for is_hugepage_only_range().  Or, perhaps add this
+> to asm-generic/hugetlb.h?
+> 
+There is already a stub (include/linux/hugetlb.h) when !CONFIG_HUGETLB_PAGE.
