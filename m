@@ -2,32 +2,29 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7822B1D22E9
-	for <lists+linux-parisc@lfdr.de>; Thu, 14 May 2020 01:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFB0C1D22F5
+	for <lists+linux-parisc@lfdr.de>; Thu, 14 May 2020 01:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732541AbgEMXVC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 13 May 2020 19:21:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42132 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732374AbgEMXVB (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 13 May 2020 19:21:01 -0400
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E88B0205ED;
-        Wed, 13 May 2020 23:20:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589412060;
-        bh=YDpY+oFCkFIHw2paw3aSACA9Hw6Wo+2HjdFDzhL6e38=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VY6ReKk0+WrAeE5ZcMXyCwAji3tlYNb/nbD2ggy3exjFLZEjT+0+pc5M2WrrXmQH0
-         JQWCoAo25rOLn65XcG+voP2CL/K9HMF/5jLJiguZCbvKj7Ig9RkfxHptSOAPl7eg+4
-         c+G4ppBlY+/44iQvxYyUGGeiJfjGc2UNIDz5ZKPs=
-Date:   Thu, 14 May 2020 08:20:54 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Daniel Borkmann <daniel@iogearbox.net>
+        id S1732630AbgEMXYX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 13 May 2020 19:24:23 -0400
+Received: from www62.your-server.de ([213.133.104.62]:39596 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732374AbgEMXYW (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 13 May 2020 19:24:22 -0400
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jZ0jb-0000nW-H0; Thu, 14 May 2020 01:24:19 +0200
+Received: from [178.196.57.75] (helo=pc-9.home)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jZ0jb-0007qv-2t; Thu, 14 May 2020 01:24:19 +0200
+Subject: Re: [PATCH 11/18] maccess: remove strncpy_from_unsafe
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Christoph Hellwig <hch@lst.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         the arch/x86 maintainers <x86@kernel.org>,
         Alexei Starovoitov <ast@kernel.org>,
         Masami Hiramatsu <mhiramat@kernel.org>,
@@ -36,86 +33,67 @@ Cc:     Christoph Hellwig <hch@lst.de>,
         linux-um <linux-um@lists.infradead.org>,
         Netdev <netdev@vger.kernel.org>, bpf@vger.kernel.org,
         Linux-MM <linux-mm@kvack.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 11/18] maccess: remove strncpy_from_unsafe
-Message-Id: <20200514082054.f817721ce196f134e6820644@kernel.org>
-In-Reply-To: <0c1a7066-b269-9695-b94a-bb5f4f20ebd8@iogearbox.net>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        bgregg@netflix.com
 References: <20200513160038.2482415-1-hch@lst.de>
-        <20200513160038.2482415-12-hch@lst.de>
-        <CAHk-=wj=u+nttmd1huNES2U=9nePtmk7WgR8cMLCYS8wc=rhdA@mail.gmail.com>
-        <20200513192804.GA30751@lst.de>
-        <0c1a7066-b269-9695-b94a-bb5f4f20ebd8@iogearbox.net>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ <20200513160038.2482415-12-hch@lst.de>
+ <CAHk-=wj=u+nttmd1huNES2U=9nePtmk7WgR8cMLCYS8wc=rhdA@mail.gmail.com>
+ <20200513192804.GA30751@lst.de>
+ <0c1a7066-b269-9695-b94a-bb5f4f20ebd8@iogearbox.net>
+ <CAHk-=wiivWJ70PotzCK-j7K4Y612NJBA2d+iN6Rz-bfMxCpwjQ@mail.gmail.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <2a03633b-419d-643f-b787-ca1520e2229b@iogearbox.net>
+Date:   Thu, 14 May 2020 01:24:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <CAHk-=wiivWJ70PotzCK-j7K4Y612NJBA2d+iN6Rz-bfMxCpwjQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25811/Wed May 13 14:11:53 2020)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, 14 May 2020 00:36:28 +0200
-Daniel Borkmann <daniel@iogearbox.net> wrote:
-
-> On 5/13/20 9:28 PM, Christoph Hellwig wrote:
-> > On Wed, May 13, 2020 at 12:11:27PM -0700, Linus Torvalds wrote:
-> >> On Wed, May 13, 2020 at 9:01 AM Christoph Hellwig <hch@lst.de> wrote:
-> >>>
-> >>> +static void bpf_strncpy(char *buf, long unsafe_addr)
-> >>> +{
-> >>> +       buf[0] = 0;
-> >>> +       if (strncpy_from_kernel_nofault(buf, (void *)unsafe_addr,
-> >>> +                       BPF_STRNCPY_LEN))
-> >>> +               strncpy_from_user_nofault(buf, (void __user *)unsafe_addr,
-> >>> +                               BPF_STRNCPY_LEN);
-> >>> +}
-> >>
-> >> This seems buggy when I look at it.
-> >>
-> >> It seems to think that strncpy_from_kernel_nofault() returns an error code.
-> >>
-> >> Not so, unless I missed where you changed the rules.
-> > 
-> > I didn't change the rules, so yes, this is wrong.
-> > 
-> >> Also, I do wonder if we shouldn't gate this on TASK_SIZE, and do the
-> >> user trial first. On architectures where this thing is valid in the
-> >> first place (ie kernel and user addresses are separate), the test for
-> >> address size would allow us to avoid a pointless fault due to an
-> >> invalid kernel access to user space.
-> >>
-> >> So I think this function should look something like
-> >>
-> >>    static void bpf_strncpy(char *buf, long unsafe_addr)
-> >>    {
-> >>            /* Try user address */
-> >>            if (unsafe_addr < TASK_SIZE) {
-> >>                    void __user *ptr = (void __user *)unsafe_addr;
-> >>                    if (strncpy_from_user_nofault(buf, ptr, BPF_STRNCPY_LEN) >= 0)
-> >>                            return;
-> >>            }
-> >>
-> >>            /* .. fall back on trying kernel access */
-> >>            buf[0] = 0;
-> >>            strncpy_from_kernel_nofault(buf, (void *)unsafe_addr,
-> >> BPF_STRNCPY_LEN);
-> >>    }
-> >>
-> >> or similar. No?
-> > 
-> > So on say s390 TASK_SIZE_USUALLy is (-PAGE_SIZE), which means we'd alway
-> > try the user copy first, which seems odd.
-> > 
-> > I'd really like to here from the bpf folks what the expected use case
-> > is here, and if the typical argument is kernel or user memory.
+On 5/14/20 1:03 AM, Linus Torvalds wrote:
+> On Wed, May 13, 2020 at 3:36 PM Daniel Borkmann <daniel@iogearbox.net> wrote:
+>>
+>> It's used for both.
 > 
-> It's used for both. Given this is enabled on pretty much all program types, my
-> assumption would be that usage is still more often on kernel memory than user one.
+> Daniel, BPF real;ly needs to make up its mind about that.
+> 
+> You *cannot* use ti for both.
+> 
+> Yes, it happens to work on x86 and some other architectures.
+> 
+> But on other architectures, the exact same pointer value can be a
+> kernel pointer or a user pointer.
 
-For trace_kprobe.c current order (kernel -> user fallback) is preferred
-because it has another function dedicated for user memory.
+Right, it has the same issue as with the old probe helper. I was merely stating that
+there are existing users (on x86) out there that use it this way, even though broken
+generally.
 
-Thank you,
+>> Given this is enabled on pretty much all program types, my
+>> assumption would be that usage is still more often on kernel memory than user one.
+> 
+> You need to pick one.
+> 
+> If you know it is a user pointer, use strncpy_from_user() (possibly
+> with disable_pagefault() aka strncpy_from_user_nofault()).
+> 
+> And if you know it is a kernel pointer, use strncpy_from_unsafe() (aka
+> strncpy_from_kernel_nofault()).
+> 
+> You really can't pick the "randomly one or the other guess what I mean " option.
 
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+My preference would be to have %s, %sK, %sU for bpf_trace_printk() where the latter two
+result in an explicit strncpy_from_kernel_nofault() or strncpy_from_user_nofault()
+choice while the %s is converted as per your suggestion and it would still allow for a
+grace period to convert existing users to the new variants, similar with what we did on
+the bpf_probe_read_kernel() and bpf_probe_read_user() helpers to get this sorted out.
+
+Thanks,
+Daniel
