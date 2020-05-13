@@ -2,22 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FBF41D1F2E
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 May 2020 21:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFC4E1D1F50
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 May 2020 21:36:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390642AbgEMT2J (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 13 May 2020 15:28:09 -0400
-Received: from verein.lst.de ([213.95.11.211]:48313 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390291AbgEMT2J (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 13 May 2020 15:28:09 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 3747968B05; Wed, 13 May 2020 21:28:05 +0200 (CEST)
-Date:   Wed, 13 May 2020 21:28:04 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        the arch/x86 maintainers <x86@kernel.org>,
+        id S2387469AbgEMTgj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 13 May 2020 15:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56320 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2389392AbgEMTgi (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 13 May 2020 15:36:38 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63756C061A0E
+        for <linux-parisc@vger.kernel.org>; Wed, 13 May 2020 12:36:38 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id a9so518895lfb.8
+        for <linux-parisc@vger.kernel.org>; Wed, 13 May 2020 12:36:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jxiMveoP0RhCR8vjDCp/HmQWj731R3On/oP1uZF2PQE=;
+        b=eyGhYtEXi8PPzZXswj9fBVzAZ7MKdPyfDFJANIY5Qa8lnG4B6PQlkLIvCnEsRuAYDd
+         cijbLp3K6GqvurO+mnvtFYs9Cit1WsfsH6w5mAvZOtdvpGdoJxKX+co3FEMrxzMFBuxb
+         6U4kH5ee2J4uHKUOq+K6Hnjpw8SSIL615vIlE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jxiMveoP0RhCR8vjDCp/HmQWj731R3On/oP1uZF2PQE=;
+        b=C/5IK4WLfxQxm8ktwonCY9v31YMQNP/AHGMG4ReltRVX7E7QZoq09ER6UFKU3hIRGB
+         Bj5qHls6qt88fHUWxnAWZ8YYX66g87L9U50PUlhS1FKUQ3atgLm8Ho0xmCkfEI/Sm3ph
+         cphVyuz5Vq/LuG8RzOjiokjyhh7oGYzd2EB6gqspg+ba6EBYxHTZEX6HTn7vz0RJIlBr
+         l+lLHQhnYEEU3wpb9Ha1xfeSRoAP4uQQCKQIpj9SspvWbv+4JnWZzJdvlgZx+pnPoOHO
+         pBrfQwGfrnD+fbYRipgtdXL7z8UZANlBoxHen0eSJLmZGNnxfMQN65pWXdJjuw5BYiVn
+         8Dfg==
+X-Gm-Message-State: AOAM5321gBbNearo6ps/wDeEdaO4wUescFK281BIrkMoDDEmBbAGOmx0
+        4YVBGitfqKpyPjKDo4mGqq1X9TBMXaA=
+X-Google-Smtp-Source: ABdhPJxvGYY8Tk8X8abTTyWljv8u2Q2gVeU+hMn1Oi0a/wM/kOxDSx0teUv8D3mCTCWfYqpJ5wWn0g==
+X-Received: by 2002:ac2:5dd5:: with SMTP id x21mr664473lfq.107.1589398596372;
+        Wed, 13 May 2020 12:36:36 -0700 (PDT)
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
+        by smtp.gmail.com with ESMTPSA id p6sm323280lfc.15.2020.05.13.12.36.34
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 May 2020 12:36:35 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id g4so925301ljl.2
+        for <linux-parisc@vger.kernel.org>; Wed, 13 May 2020 12:36:34 -0700 (PDT)
+X-Received: by 2002:a2e:9641:: with SMTP id z1mr394092ljh.201.1589398594575;
+ Wed, 13 May 2020 12:36:34 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200513160038.2482415-1-hch@lst.de> <20200513160038.2482415-15-hch@lst.de>
+In-Reply-To: <20200513160038.2482415-15-hch@lst.de>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 13 May 2020 12:36:18 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgzXqgYQQt2NCdZTtxLmV1FV1nbZ_gKw0O_mRkXZj57zg@mail.gmail.com>
+Message-ID: <CAHk-=wgzXqgYQQt2NCdZTtxLmV1FV1nbZ_gKw0O_mRkXZj57zg@mail.gmail.com>
+Subject: Re: [PATCH 14/18] maccess: allow architectures to provide kernel
+ probing directly
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
         Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
         Masami Hiramatsu <mhiramat@kernel.org>,
@@ -27,66 +70,56 @@ Cc:     Christoph Hellwig <hch@lst.de>,
         Netdev <netdev@vger.kernel.org>, bpf@vger.kernel.org,
         Linux-MM <linux-mm@kvack.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 11/18] maccess: remove strncpy_from_unsafe
-Message-ID: <20200513192804.GA30751@lst.de>
-References: <20200513160038.2482415-1-hch@lst.de> <20200513160038.2482415-12-hch@lst.de> <CAHk-=wj=u+nttmd1huNES2U=9nePtmk7WgR8cMLCYS8wc=rhdA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wj=u+nttmd1huNES2U=9nePtmk7WgR8cMLCYS8wc=rhdA@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, May 13, 2020 at 12:11:27PM -0700, Linus Torvalds wrote:
-> On Wed, May 13, 2020 at 9:01 AM Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > +static void bpf_strncpy(char *buf, long unsafe_addr)
-> > +{
-> > +       buf[0] = 0;
-> > +       if (strncpy_from_kernel_nofault(buf, (void *)unsafe_addr,
-> > +                       BPF_STRNCPY_LEN))
-> > +               strncpy_from_user_nofault(buf, (void __user *)unsafe_addr,
-> > +                               BPF_STRNCPY_LEN);
-> > +}
-> 
-> This seems buggy when I look at it.
-> 
-> It seems to think that strncpy_from_kernel_nofault() returns an error code.
-> 
-> Not so, unless I missed where you changed the rules.
+On Wed, May 13, 2020 at 9:01 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> +               arch_kernel_read(dst, src, type, err_label);            \
 
-I didn't change the rules, so yes, this is wrong.
+I'm wondering if
 
-> Also, I do wonder if we shouldn't gate this on TASK_SIZE, and do the
-> user trial first. On architectures where this thing is valid in the
-> first place (ie kernel and user addresses are separate), the test for
-> address size would allow us to avoid a pointless fault due to an
-> invalid kernel access to user space.
-> 
-> So I think this function should look something like
-> 
->   static void bpf_strncpy(char *buf, long unsafe_addr)
->   {
->           /* Try user address */
->           if (unsafe_addr < TASK_SIZE) {
->                   void __user *ptr = (void __user *)unsafe_addr;
->                   if (strncpy_from_user_nofault(buf, ptr, BPF_STRNCPY_LEN) >= 0)
->                           return;
->           }
-> 
->           /* .. fall back on trying kernel access */
->           buf[0] = 0;
->           strncpy_from_kernel_nofault(buf, (void *)unsafe_addr,
-> BPF_STRNCPY_LEN);
->   }
-> 
-> or similar. No?
+ (a) we shouldn't expose this as an interface in general
 
-So on say s390 TASK_SIZE_USUALLy is (-PAGE_SIZE), which means we'd alway
-try the user copy first, which seems odd.
+ (b) it wouldn't be named differently..
 
-I'd really like to here from the bpf folks what the expected use case
-is here, and if the typical argument is kernel or user memory.
+The reason for (a) is that several users of the
+"copy_from_kernel_nofault()" interfaces just seem to want a single
+access from kernel mode.
+
+The reason for (b) is that if we do expose this as a normal interface,
+it shouldn't be called "arch_kernel_read", and it should have the same
+semantics as "get_user_unsafe()".
+
+IOW, maybe we should simply do exactly that: have a
+"get_kernel_nofault()" thing that looks exactly like
+unsafe_get_user().
+
+On x86, it would basically be identical to unsafe_get_user().
+
+And on architectures that only have the copy function, you'd just have
+a fallback something like this:
+
+  #define get_kernel_nofault(dst, src, err_label) do {  \
+        typeof (*src) __gkn_result;                     \
+        if (probe_kernel_read(&__gkn_result, src) < 0)  \
+                goto err_label;                         \
+        (dst) = __gkn_result;                           \
+  } while (0)
+
+and now the people who want to read a single kernel word can just do
+
+        get_kernel_nofault(n, untrusted_pointer, error);
+
+and they're done.
+
+And some day - when we get reliably "asm goto" wiith outputs - that
+"get_kernel_fault()" will literally be a single instruction asm with
+the proper exception handler marker, the way "put_user_unsafe()"
+already works (and the way "put_kernel_nofault()" would already work
+if it does the above).
+
+             Linus
