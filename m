@@ -2,30 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 375E51D2219
-	for <lists+linux-parisc@lfdr.de>; Thu, 14 May 2020 00:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A37C81D2299
+	for <lists+linux-parisc@lfdr.de>; Thu, 14 May 2020 01:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729342AbgEMWge (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 13 May 2020 18:36:34 -0400
-Received: from www62.your-server.de ([213.133.104.62]:60982 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726034AbgEMWgd (ORCPT
+        id S1732243AbgEMXDl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 13 May 2020 19:03:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60606 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1732238AbgEMXDl (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 13 May 2020 18:36:33 -0400
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jYzzJ-0003yk-NJ; Thu, 14 May 2020 00:36:29 +0200
-Received: from [178.196.57.75] (helo=pc-9.home)
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1jYzzJ-000Svu-Af; Thu, 14 May 2020 00:36:29 +0200
+        Wed, 13 May 2020 19:03:41 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4F39C061A0F
+        for <linux-parisc@vger.kernel.org>; Wed, 13 May 2020 16:03:40 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id h188so207770lfd.7
+        for <linux-parisc@vger.kernel.org>; Wed, 13 May 2020 16:03:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wdZg4gkYTds/C4KUVy9erLK1Ch+WqNN+RvFMTseVuAg=;
+        b=C1TcjV6OtJpa2YRiWAUnGcZZ/u09cBy851Mx94wSMSQa9VrdsWV1jVHW4P1sNrL8Bh
+         F6WpmJ1tQWre2J0ca6Wb2LX04yqV6LxMJpd1Tpa6EPb8PrEYBkkbwpuLaAdO/BjmCZ2G
+         9egVYPaqRVmuIV8Yift2HwrZ/fz1dHM99i9n0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wdZg4gkYTds/C4KUVy9erLK1Ch+WqNN+RvFMTseVuAg=;
+        b=OlI824X54VlRvkzcWo6p97gvd1+Ud38M4lLbu+bp7UBOKAS/09OP9M+mpcpqSN1I3F
+         DE2IA8AjW/eYUsasH1KZ7aUYMWzFjPdRu0FNCMMkiAlYxoNIgu2b4zB/OHm4WGor0rJ2
+         D5JdNPwXIC/4pDd85Wln2KXnHtEyWdEb2mhwzPl6GRHPgiF9Mc7U+UF04LyULP8q//1p
+         JBa+TbRrAsF3v69m9vOOMBZZSSHeuTgWIfVCfIOPZ9Gydhk9KntXeOaO+lf8lXodNGqk
+         mEdLL3YQsSqUjiDxVVBhWs0qS8DlRkkJPNRH//hFAvtwv4KiEk9tKL2OnC2LScFgxgge
+         aGdQ==
+X-Gm-Message-State: AOAM5318Ajo/J9c4Tcin+FlAwNvFVbqGo6vMOQdbYPh/gi4VIIvKMjSt
+        Pm0bgseTmAzl1mqsz6Ju3rUjkC6AIxk=
+X-Google-Smtp-Source: ABdhPJzyknNDRjF+TZ1KmYgqIwxCgVPAZOXnKUPHW1o1Q4LFVXBNOeFj7bhQb/8Bk+tkZuW01T683w==
+X-Received: by 2002:a19:4a97:: with SMTP id x145mr1147850lfa.66.1589411018320;
+        Wed, 13 May 2020 16:03:38 -0700 (PDT)
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
+        by smtp.gmail.com with ESMTPSA id b25sm419989ljp.105.2020.05.13.16.03.36
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 May 2020 16:03:36 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id b26so951075lfa.5
+        for <linux-parisc@vger.kernel.org>; Wed, 13 May 2020 16:03:36 -0700 (PDT)
+X-Received: by 2002:ac2:58c8:: with SMTP id u8mr1177915lfo.142.1589411015919;
+ Wed, 13 May 2020 16:03:35 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200513160038.2482415-1-hch@lst.de> <20200513160038.2482415-12-hch@lst.de>
+ <CAHk-=wj=u+nttmd1huNES2U=9nePtmk7WgR8cMLCYS8wc=rhdA@mail.gmail.com>
+ <20200513192804.GA30751@lst.de> <0c1a7066-b269-9695-b94a-bb5f4f20ebd8@iogearbox.net>
+In-Reply-To: <0c1a7066-b269-9695-b94a-bb5f4f20ebd8@iogearbox.net>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 13 May 2020 16:03:20 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiivWJ70PotzCK-j7K4Y612NJBA2d+iN6Rz-bfMxCpwjQ@mail.gmail.com>
+Message-ID: <CAHk-=wiivWJ70PotzCK-j7K4Y612NJBA2d+iN6Rz-bfMxCpwjQ@mail.gmail.com>
 Subject: Re: [PATCH 11/18] maccess: remove strncpy_from_unsafe
-To:     Christoph Hellwig <hch@lst.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     the arch/x86 maintainers <x86@kernel.org>,
+To:     Daniel Borkmann <daniel@iogearbox.net>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
         Alexei Starovoitov <ast@kernel.org>,
         Masami Hiramatsu <mhiramat@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -34,78 +71,36 @@ Cc:     the arch/x86 maintainers <x86@kernel.org>,
         Netdev <netdev@vger.kernel.org>, bpf@vger.kernel.org,
         Linux-MM <linux-mm@kvack.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20200513160038.2482415-1-hch@lst.de>
- <20200513160038.2482415-12-hch@lst.de>
- <CAHk-=wj=u+nttmd1huNES2U=9nePtmk7WgR8cMLCYS8wc=rhdA@mail.gmail.com>
- <20200513192804.GA30751@lst.de>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <0c1a7066-b269-9695-b94a-bb5f4f20ebd8@iogearbox.net>
-Date:   Thu, 14 May 2020 00:36:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <20200513192804.GA30751@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25811/Wed May 13 14:11:53 2020)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/13/20 9:28 PM, Christoph Hellwig wrote:
-> On Wed, May 13, 2020 at 12:11:27PM -0700, Linus Torvalds wrote:
->> On Wed, May 13, 2020 at 9:01 AM Christoph Hellwig <hch@lst.de> wrote:
->>>
->>> +static void bpf_strncpy(char *buf, long unsafe_addr)
->>> +{
->>> +       buf[0] = 0;
->>> +       if (strncpy_from_kernel_nofault(buf, (void *)unsafe_addr,
->>> +                       BPF_STRNCPY_LEN))
->>> +               strncpy_from_user_nofault(buf, (void __user *)unsafe_addr,
->>> +                               BPF_STRNCPY_LEN);
->>> +}
->>
->> This seems buggy when I look at it.
->>
->> It seems to think that strncpy_from_kernel_nofault() returns an error code.
->>
->> Not so, unless I missed where you changed the rules.
-> 
-> I didn't change the rules, so yes, this is wrong.
-> 
->> Also, I do wonder if we shouldn't gate this on TASK_SIZE, and do the
->> user trial first. On architectures where this thing is valid in the
->> first place (ie kernel and user addresses are separate), the test for
->> address size would allow us to avoid a pointless fault due to an
->> invalid kernel access to user space.
->>
->> So I think this function should look something like
->>
->>    static void bpf_strncpy(char *buf, long unsafe_addr)
->>    {
->>            /* Try user address */
->>            if (unsafe_addr < TASK_SIZE) {
->>                    void __user *ptr = (void __user *)unsafe_addr;
->>                    if (strncpy_from_user_nofault(buf, ptr, BPF_STRNCPY_LEN) >= 0)
->>                            return;
->>            }
->>
->>            /* .. fall back on trying kernel access */
->>            buf[0] = 0;
->>            strncpy_from_kernel_nofault(buf, (void *)unsafe_addr,
->> BPF_STRNCPY_LEN);
->>    }
->>
->> or similar. No?
-> 
-> So on say s390 TASK_SIZE_USUALLy is (-PAGE_SIZE), which means we'd alway
-> try the user copy first, which seems odd.
-> 
-> I'd really like to here from the bpf folks what the expected use case
-> is here, and if the typical argument is kernel or user memory.
+On Wed, May 13, 2020 at 3:36 PM Daniel Borkmann <daniel@iogearbox.net> wrote:
+>
+> It's used for both.
 
-It's used for both. Given this is enabled on pretty much all program types, my
-assumption would be that usage is still more often on kernel memory than user one.
+Daniel, BPF real;ly needs to make up its mind about that.
+
+You *cannot* use ti for both.
+
+Yes, it happens to work on x86 and some other architectures.
+
+But on other architectures, the exact same pointer value can be a
+kernel pointer or a user pointer.
+
+> Given this is enabled on pretty much all program types, my
+> assumption would be that usage is still more often on kernel memory than user one.
+
+You need to pick one.
+
+If you know it is a user pointer, use strncpy_from_user() (possibly
+with disable_pagefault() aka strncpy_from_user_nofault()).
+
+And if you know it is a kernel pointer, use strncpy_from_unsafe() (aka
+strncpy_from_kernel_nofault()).
+
+You really can't pick the "randomly one or the other guess what I mean " option.
+
+                  Linus
