@@ -2,24 +2,31 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91A331D1FB5
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 May 2020 21:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 375E51D2219
+	for <lists+linux-parisc@lfdr.de>; Thu, 14 May 2020 00:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733135AbgEMTzA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 13 May 2020 15:55:00 -0400
-Received: from verein.lst.de ([213.95.11.211]:48422 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732218AbgEMTzA (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 13 May 2020 15:55:00 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 2D25668B05; Wed, 13 May 2020 21:54:57 +0200 (CEST)
-Date:   Wed, 13 May 2020 21:54:56 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        the arch/x86 maintainers <x86@kernel.org>,
+        id S1729342AbgEMWge (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 13 May 2020 18:36:34 -0400
+Received: from www62.your-server.de ([213.133.104.62]:60982 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726034AbgEMWgd (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 13 May 2020 18:36:33 -0400
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jYzzJ-0003yk-NJ; Thu, 14 May 2020 00:36:29 +0200
+Received: from [178.196.57.75] (helo=pc-9.home)
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1jYzzJ-000Svu-Af; Thu, 14 May 2020 00:36:29 +0200
+Subject: Re: [PATCH 11/18] maccess: remove strncpy_from_unsafe
+To:     Christoph Hellwig <hch@lst.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     the arch/x86 maintainers <x86@kernel.org>,
         Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
         Masami Hiramatsu <mhiramat@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         linux-parisc@vger.kernel.org,
@@ -27,45 +34,78 @@ Cc:     Christoph Hellwig <hch@lst.de>,
         Netdev <netdev@vger.kernel.org>, bpf@vger.kernel.org,
         Linux-MM <linux-mm@kvack.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 14/18] maccess: allow architectures to provide kernel
- probing directly
-Message-ID: <20200513195456.GA31096@lst.de>
-References: <20200513160038.2482415-1-hch@lst.de> <20200513160038.2482415-15-hch@lst.de> <CAHk-=wgzXqgYQQt2NCdZTtxLmV1FV1nbZ_gKw0O_mRkXZj57zg@mail.gmail.com> <20200513194003.GA31028@lst.de> <CAHk-=whtGLxezkdMP6+859LFDgb++6dgYa6Vrc=zJ9+GB7UMFQ@mail.gmail.com>
+References: <20200513160038.2482415-1-hch@lst.de>
+ <20200513160038.2482415-12-hch@lst.de>
+ <CAHk-=wj=u+nttmd1huNES2U=9nePtmk7WgR8cMLCYS8wc=rhdA@mail.gmail.com>
+ <20200513192804.GA30751@lst.de>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <0c1a7066-b269-9695-b94a-bb5f4f20ebd8@iogearbox.net>
+Date:   Thu, 14 May 2020 00:36:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=whtGLxezkdMP6+859LFDgb++6dgYa6Vrc=zJ9+GB7UMFQ@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20200513192804.GA30751@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25811/Wed May 13 14:11:53 2020)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, May 13, 2020 at 12:48:54PM -0700, Linus Torvalds wrote:
-> Looking at the current users of "probe_kernel_read()", it looks like
-> it's almost mostly things that just want a single byte or word.
+On 5/13/20 9:28 PM, Christoph Hellwig wrote:
+> On Wed, May 13, 2020 at 12:11:27PM -0700, Linus Torvalds wrote:
+>> On Wed, May 13, 2020 at 9:01 AM Christoph Hellwig <hch@lst.de> wrote:
+>>>
+>>> +static void bpf_strncpy(char *buf, long unsafe_addr)
+>>> +{
+>>> +       buf[0] = 0;
+>>> +       if (strncpy_from_kernel_nofault(buf, (void *)unsafe_addr,
+>>> +                       BPF_STRNCPY_LEN))
+>>> +               strncpy_from_user_nofault(buf, (void __user *)unsafe_addr,
+>>> +                               BPF_STRNCPY_LEN);
+>>> +}
+>>
+>> This seems buggy when I look at it.
+>>
+>> It seems to think that strncpy_from_kernel_nofault() returns an error code.
+>>
+>> Not so, unless I missed where you changed the rules.
 > 
-> It's not 100% that: we definitely do several things that want the
-> "copy" semantics vs the "get" semantics: on the x86 side we have
-> CALL_INSN_SIZE and MAX_INSN_SIZE, and the ldttss_desc.
+> I didn't change the rules, so yes, this is wrong.
 > 
-> But the bulk of them do seem to be a single value.
+>> Also, I do wonder if we shouldn't gate this on TASK_SIZE, and do the
+>> user trial first. On architectures where this thing is valid in the
+>> first place (ie kernel and user addresses are separate), the test for
+>> address size would allow us to avoid a pointless fault due to an
+>> invalid kernel access to user space.
+>>
+>> So I think this function should look something like
+>>
+>>    static void bpf_strncpy(char *buf, long unsafe_addr)
+>>    {
+>>            /* Try user address */
+>>            if (unsafe_addr < TASK_SIZE) {
+>>                    void __user *ptr = (void __user *)unsafe_addr;
+>>                    if (strncpy_from_user_nofault(buf, ptr, BPF_STRNCPY_LEN) >= 0)
+>>                            return;
+>>            }
+>>
+>>            /* .. fall back on trying kernel access */
+>>            buf[0] = 0;
+>>            strncpy_from_kernel_nofault(buf, (void *)unsafe_addr,
+>> BPF_STRNCPY_LEN);
+>>    }
+>>
+>> or similar. No?
 > 
-> I don't know if performance really matters here, but to me the whole
-> "most users seem to want to read a single value" is what makes me
-> think that maybe that should be the primary model, rather than have
-> the copy model be the primary one and then we implement the single
-> value case (badly) with a copy.
+> So on say s390 TASK_SIZE_USUALLy is (-PAGE_SIZE), which means we'd alway
+> try the user copy first, which seems odd.
 > 
-> It probably doesn't matter that much. I certainly wouldn't hold this
-> series up over it - it can be a future thing.
+> I'd really like to here from the bpf folks what the expected use case
+> is here, and if the typical argument is kernel or user memory.
 
-I can make the get_kernel_nofault implementation suck a little less :)
-
-Note that the arch helper (we could call it unsafe_get_kernel_nofault)
-we still need to have a pagefault_disable / pagefault_enable pair
-around the calls.  So maybe keep the get_kernel_nofault interface
-as-is (without the goto label), and prepare the arch helpers for
-being used similar to unsafe_get_user once all architectures are
-converted.  And I can throw in a few patches to convert callers
-from the copy semantics to the get semantics.
+It's used for both. Given this is enabled on pretty much all program types, my
+assumption would be that usage is still more often on kernel memory than user one.
