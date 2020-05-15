@@ -2,294 +2,222 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4734B1D3649
-	for <lists+linux-parisc@lfdr.de>; Thu, 14 May 2020 18:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21BC91D5454
+	for <lists+linux-parisc@lfdr.de>; Fri, 15 May 2020 17:24:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725979AbgENQSY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 14 May 2020 12:18:24 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4785 "EHLO huawei.com"
+        id S1726407AbgEOPYA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 15 May 2020 11:24:00 -0400
+Received: from mail-bn7nam10on2108.outbound.protection.outlook.com ([40.107.92.108]:60595
+        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726088AbgENQSX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 14 May 2020 12:18:23 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id EEAEA8ABD276537A7522;
-        Fri, 15 May 2020 00:18:17 +0800 (CST)
-Received: from [127.0.0.1] (10.67.102.197) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Fri, 15 May 2020
- 00:17:57 +0800
-Subject: Re: linux-next: manual merge of the vfs tree with the parisc-hd tree
-From:   Xiaoming Ni <nixiaoming@huawei.com>
-To:     Luis Chamberlain <mcgrof@kernel.org>
-CC:     "Eric W. Biederman" <ebiederm@xmission.com>,
-        Al Viro <viro@ZenIV.linux.org.uk>,
-        Kees Cook <keescook@chromium.org>,
-        "Stephen Rothwell" <sfr@canb.auug.org.au>,
+        id S1726362AbgEOPX7 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 15 May 2020 11:23:59 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TnfNi5yKilKMleoDfh27zMhVRE6DLyV+iw5RDp9CuNS7T34M0neMomjIos3y/fBeIAcEVgoQyMv2hURmr0oSVdHOVEoJCRUvDoPuQr+sCkE6fKydh0bQlDWxV5EwIxJ/7JPnuokMUrRQAK6BzC7crm2q0iGW+gKpWViGWjvMvpPMCXo+Dtd7Bsz69lGJSF40+jNnylnCKhm/TAmHUhfiU8466KOpEO/WWPo6XeBj0s6IE3P3hyXvovo957XDiEGFU0cnW84Xxy8Kkyfe4ZDC/v+YEzdawc6XoVDTbSmspo8gEdVUTko55IO1CSsSdMZNijk8svECBjsPUHQlTPmM6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ilk8yXGSyYiOz0awkgNVn6KxziVdemqlAeyIHcDCoqc=;
+ b=DQ7cl7M0nYyFFwzSv3uYMNVZdfVuBIWen2FA7JE6AZaL1Caq1m6Q5wNYJb2SWXbd6xz3xX0sSoUmkUUu6yuAThe0CCe9k//jOpyJI7asRPM+/4YvAWDK43J/YMLHSdABh7Dn4s5rtJZIdhpLhdpg1W5kmN5iXKSOMhGugOgOfWdupnyWOVlOfg/PUG7EjFSYrBl6H1ENCaU5JQQ6kdnQhNDBWbgeZoOYWe7Vo2P87WuDPU7D3AGPX53pe4FCLeg/yuOpBQgIHHEcw/wyzY/T6aM7cLj2qi2fEUR15EDacOaVGg2V5Fyad1Xo0jzxrIGWzxwPA9y30aj0O3+m9s4jhg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 204.77.163.244) smtp.rcpttodomain=zeniv.linux.org.uk
+ smtp.mailfrom=garmin.com; dmarc=pass (p=quarantine sp=quarantine pct=100)
+ action=none header.from=garmin.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garmin.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ilk8yXGSyYiOz0awkgNVn6KxziVdemqlAeyIHcDCoqc=;
+ b=lqNHJDrwIGl2wEs7E1f2nqvZucWEYwWGbJpANNjOipQwsd4GPUjx2kENPzdl5+jSyA9dJgvTw+BfjWS6Jm0SDgDfEyEB05gVNTrxW4/L5YU3bBjBRGTZJWIobKF9kp8KDwEy71PwGmu2vlAa+B4zcE7ZpqAGDZYMZeeV3YKWziOZTxB5MT0a8kzvwzG/b0q1qAjzSJ/3681y7uMsDx/dq68/SWnfVPgqFLSO6O035wqxAe7qFuZQxqBSpXovKsssaM3JZEJRk4DJ6xwBMI4K1aPJm4xZ5m5U7yRtx+We+aoivDKlO2GNOTCIB6O78j4Ztpi0qFKd+oi23v9Myb6FhQ==
+Received: from DM6PR14CA0061.namprd14.prod.outlook.com (2603:10b6:5:18f::38)
+ by BN8PR04MB5633.namprd04.prod.outlook.com (2603:10b6:408:76::25) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.35; Fri, 15 May
+ 2020 15:23:53 +0000
+Received: from DM6NAM10FT011.eop-nam10.prod.protection.outlook.com
+ (2603:10b6:5:18f:cafe::a4) by DM6PR14CA0061.outlook.office365.com
+ (2603:10b6:5:18f::38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.24 via Frontend
+ Transport; Fri, 15 May 2020 15:23:53 +0000
+Authentication-Results: spf=pass (sender IP is 204.77.163.244)
+ smtp.mailfrom=garmin.com; zeniv.linux.org.uk; dkim=none (message not signed)
+ header.d=none;zeniv.linux.org.uk; dmarc=pass action=none
+ header.from=garmin.com;
+Received-SPF: Pass (protection.outlook.com: domain of garmin.com designates
+ 204.77.163.244 as permitted sender) receiver=protection.outlook.com;
+ client-ip=204.77.163.244; helo=edgetransport.garmin.com;
+Received: from edgetransport.garmin.com (204.77.163.244) by
+ DM6NAM10FT011.mail.protection.outlook.com (10.13.152.178) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3000.19 via Frontend Transport; Fri, 15 May 2020 15:23:53 +0000
+Received: from OLAWPA-EXMB7.ad.garmin.com (10.5.144.21) by
+ olawpa-edge3.garmin.com (10.60.4.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.1466.3; Fri, 15 May 2020 10:23:51 -0500
+Received: from ola-d01c000-vm.ad.garmin.com (10.5.84.15) by
+ OLAWPA-EXMB7.ad.garmin.com (10.5.144.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.1913.5; Fri, 15 May 2020 10:23:50 -0500
+From:   Nate Karstens <nate.karstens@garmin.com>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        <yzaikin@google.com>, <linux-fsdevel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Christoph Hellwig <hch@lst.de>, <gregkh@linuxfoundation.org>
-References: <20200511111123.68ccbaa3@canb.auug.org.au>
- <99095805-8cbe-d140-e2f1-0c5a3e84d7e7@huawei.com>
- <20200512003305.GX11244@42.do-not-panic.com>
- <87y2pxs73w.fsf@x220.int.ebiederm.org>
- <20200512172413.GC11244@42.do-not-panic.com>
- <87k11hrqzc.fsf@x220.int.ebiederm.org>
- <20200512220341.GE11244@42.do-not-panic.com>
- <3ccd08a5-cac6-3ca1-ed33-3cb62c982443@huawei.com>
- <20200513125057.GM11244@42.do-not-panic.com>
- <2f8363b3-781e-b065-82f4-f84e6e787fad@huawei.com>
-Message-ID: <aaae0a1e-8b80-7d31-d747-a2e350e3b247@huawei.com>
-Date:   Fri, 15 May 2020 00:17:52 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        David Laight <David.Laight@aculab.com>,
+        <linux-fsdevel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+        <linux-alpha@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
+        <sparclinux@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Changli Gao <xiaosuo@gmail.com>
+Subject: [PATCH v2] Implement close-on-fork
+Date:   Fri, 15 May 2020 10:23:17 -0500
+Message-ID: <20200515152321.9280-1-nate.karstens@garmin.com>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-In-Reply-To: <2f8363b3-781e-b065-82f4-f84e6e787fad@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.102.197]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-ClientProxiedBy: OLAWPA-EXMB3.ad.garmin.com (10.5.144.15) To
+ OLAWPA-EXMB7.ad.garmin.com (10.5.144.21)
+X-TM-AS-Product-Ver: SMEX-12.5.0.1300-8.5.1020-25422.000
+X-TM-AS-Result: No-13.985100-8.000000-10
+X-TMASE-MatchedRID: IXhV89UCBiY6Vyyhf+5DyNnDq+aDZjGZopGQY5bbP3IS39b8+3nDx2yH
+        arFSgTJkrAcfB2a374DHQzCkIEC0MCXWu5LW+2slttAWxuM5sl4MoIRV9JcRcMAkyHiYDAQbe/7
+        cxerWwk9dE4VPub+akrZRvD7ck6n3Qvmpg0wnSLNIkDvKxvWt/sPHY2htBa2bt2rjS6M+VNmden
+        40SZnzP+nmptgQI8s0Ybr1wIpI4EVWSqhPlGB831D5LQ3Tl9H7ekMgTOQbVFsurUcwuzZNE6ajP
+        ZFMk1nHs8gqOsWgajKJfU10X8ghjdhG27sGev85xVtvemNbkyejDWAh29R3WgGfIv/fwf55uCiL
+        r1XhSf1O2zwC9+COqXuPZJ1vRHBhMDvZPMbvTD6cxB01DrjF9zsgUw68UQrY4PdcWsl+C/PKmnu
+        HRSucyphkL8KXkZk1p5/Il/dAvJmHbsX/GOLqdoZAUzvhoe1TSuH+GfgmQGfHg+01BR0lp4R/LZ
+        ztAiL/3sCrH2zrbRbih8z9AblAgxt445IfplOKolVO7uyOCDUEa8g1x8eqF7Ee96bzLpOvblTlt
+        k7oaowCP4PWwXxfsfh941Sx72KBqicT/Ai+cAlhXXywTJLpfOdppbZRNp/IMTkWY9HYyZF7IzUF
+        yCuNEEMfE3d94vHd42WC8ffme7UfE8yM4pjsDwtuKBGekqUpI/NGWt0UYPBO91OWsR4zA1MFbch
+        rTlu21gtmLk8Eyf6K9JFdhRVepfO9MJDeh2W+
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--13.985100-8.000000
+X-TMASE-Version: SMEX-12.5.0.1300-8.5.1020-25422.000
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:204.77.163.244;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:edgetransport.garmin.com;PTR:extedge.garmin.com;CAT:NONE;SFTY:;SFS:(396003)(136003)(376002)(39860400002)(346002)(46966005)(36756003)(316002)(7416002)(2616005)(7696005)(110136005)(426003)(82310400002)(478600001)(356005)(966005)(7636003)(82740400003)(70586007)(186003)(6666004)(44832011)(70206006)(1076003)(4326008)(86362001)(5660300002)(47076004)(2906002)(8676002)(26005)(336012)(8936002)(921003);DIR:OUT;SFP:1102;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0128c414-a6b4-4edb-b0bd-08d7f8e3f9fa
+X-MS-TrafficTypeDiagnostic: BN8PR04MB5633:
+X-Microsoft-Antispam-PRVS: <BN8PR04MB563313ADCF486E724E40E63B9CBD0@BN8PR04MB5633.namprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-Forefront-PRVS: 04041A2886
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qfgXT7kaDU1eLZzOlrNoWE7dCvP/70MqO9H41T/ZoxwH6WcFAIDI7/T08I+fmWk/Lxasp5vpfVpDoLA38onehzHyawaTGFtoVY/WF8CKuX7bifsI5tYMarDLqlYiLC8/DvxByGlSS880yV+kpwPn+gURczQ2o8VpFwSpzSVUFsuUcU2xe+xWoMQRiHYMEa9smL/PcWxn9XIAyKXZIgNEArkOS8+EqHu+pNzphD2kbOXnWL81yPeTc29DTWlQZRmP3g9vBg/0tO8zuHrZ82mjRp/1ZRixLBZvRdwrGtDMor/w9AFp0gsUhmxbDBoypLtpBPPDCSzsYSeTD8BmhIqqp1lXpxpDnU9usPH6EQvfX9orLxaO8gjiK27lle/BztJ+SoOZQtkViT98BLsicYBzBQdUtm419OlJHue4Z84uRP/NB/FozO2wgj4svVd0WXD+Fv6OiPTwJwms6/vrXAqiy21nBYqraKmLWEPigpTVbMtufdLfwp6Sy/DcXxXpY+UStloyxN8CsGqzEM4WaerShttNqI/Qkq5FQHemnlFgnji4YbjjegiO6e2PAJTqcdwSRU+fYnflTo+wEkqQJqam/UrZgLJpXRLVTKYxiumki2o=
+X-OriginatorOrg: garmin.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2020 15:23:53.0395
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0128c414-a6b4-4edb-b0bd-08d7f8e3f9fa
+X-MS-Exchange-CrossTenant-Id: 38d0d425-ba52-4c0a-a03e-2a65c8e82e2d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=38d0d425-ba52-4c0a-a03e-2a65c8e82e2d;Ip=[204.77.163.244];Helo=[edgetransport.garmin.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR04MB5633
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2020/5/14 14:05, Xiaoming Ni wrote:
-> On 2020/5/13 20:50, Luis Chamberlain wrote:
->> On Wed, May 13, 2020 at 12:04:02PM +0800, Xiaoming Ni wrote:
->>> On 2020/5/13 6:03, Luis Chamberlain wrote:
->>>> On Tue, May 12, 2020 at 12:40:55PM -0500, Eric W. Biederman wrote:
->>>>> Luis Chamberlain <mcgrof@kernel.org> writes:
->>>>>
->>>>>> On Tue, May 12, 2020 at 06:52:35AM -0500, Eric W. Biederman wrote:
->>>>>>> Luis Chamberlain <mcgrof@kernel.org> writes:
->>>>>>>
->>>>>>>> +static struct ctl_table fs_base_table[] = {
->>>>>>>> +    {
->>>>>>>> +        .procname    = "fs",
->>>>>>>> +        .mode        = 0555,
->>>>>>>> +        .child        = fs_table,
->>>>>>>> +    },
->>>>>>>> +    { }
->>>>>>>> +};
->>>>>>>     ^^^^^^^^^^^^^^^^^^^^^^^^ You don't need this at all.
->>>>>>>>> +static int __init fs_procsys_init(void)
->>>>>>>> +{
->>>>>>>> +    struct ctl_table_header *hdr;
->>>>>>>> +
->>>>>>>> +    hdr = register_sysctl_table(fs_base_table);
->>>>>>>                 ^^^^^^^^^^^^^^^^^^^^^ Please use register_sysctl 
->>>>>>> instead.
->>>>>>>     AKA
->>>>>>>           hdr = register_sysctl("fs", fs_table);
->>>>>>
->>>>>> Ah, much cleaner thanks!
->>>>>
->>>>> It is my hope you we can get rid of register_sysctl_table one of these
->>>>> days.  It was the original interface but today it is just a
->>>>> compatibility wrapper.
->>>>>
->>>>> I unfortunately ran out of steam last time before I finished 
->>>>> converting
->>>>> everything over.
->>>>
->>>> Let's give it one more go. I'll start with the fs stuff.
->>>>
->>>>     Luis
->>>>
->>>> .
->>>>
->>>
->>> If we register each feature in its own feature code file using 
->>> register() to
->>> register the sysctl interface. To avoid merge conflicts when different
->>> features modify sysctl.c at the same time.
->>> that is, try to Avoid mixing code with multiple features in the same 
->>> code
->>> file.
->>>
->>> For example, the multiple file interfaces defined in sysctl.c by the
->>> hung_task feature can  be moved to hung_task.c.
->>>
->>> Perhaps later, without centralized sysctl.c ?
->>> Is this better?
->>>
->>> Thanks
->>> Xiaoming Ni
->>>
->>> ---
->>>   include/linux/sched/sysctl.h |  8 +----
->>>   kernel/hung_task.c           | 78
->>> +++++++++++++++++++++++++++++++++++++++++++-
->>>   kernel/sysctl.c              | 50 ----------------------------
->>>   3 files changed, 78 insertions(+), 58 deletions(-)
->>>
->>> diff --git a/include/linux/sched/sysctl.h b/include/linux/sched/sysctl.h
->>> index d4f6215..bb4e0d3 100644
->>> --- a/include/linux/sched/sysctl.h
->>> +++ b/include/linux/sched/sysctl.h
->>> @@ -7,14 +7,8 @@
->>>   struct ctl_table;
->>>
->>>   #ifdef CONFIG_DETECT_HUNG_TASK
->>> -extern int         sysctl_hung_task_check_count;
->>> -extern unsigned int  sysctl_hung_task_panic;
->>> +/* used for block/ */
->>>   extern unsigned long sysctl_hung_task_timeout_secs;
->>> -extern unsigned long sysctl_hung_task_check_interval_secs;
->>> -extern int sysctl_hung_task_warnings;
->>> -extern int proc_dohung_task_timeout_secs(struct ctl_table *table, int
->>> write,
->>> -                     void __user *buffer,
->>> -                     size_t *lenp, loff_t *ppos);
->>>   #else
->>>   /* Avoid need for ifdefs elsewhere in the code */
->>>   enum { sysctl_hung_task_timeout_secs = 0 };
->>> diff --git a/kernel/hung_task.c b/kernel/hung_task.c
->>> index 14a625c..53589f2 100644
->>> --- a/kernel/hung_task.c
->>> +++ b/kernel/hung_task.c
->>> @@ -20,10 +20,10 @@
->>>   #include <linux/utsname.h>
->>>   #include <linux/sched/signal.h>
->>>   #include <linux/sched/debug.h>
->>> +#include <linux/kmemleak.h>
->>>   #include <linux/sched/sysctl.h>
->>>
->>>   #include <trace/events/sched.h>
->>> -
->>>   /*
->>>    * The number of tasks checked:
->>>    */
->>> @@ -296,8 +296,84 @@ static int watchdog(void *dummy)
->>>       return 0;
->>>   }
->>>
->>> +/*
->>> + * This is needed for proc_doulongvec_minmax of
->>> sysctl_hung_task_timeout_secs
->>> + * and hung_task_check_interval_secs
->>> + */
->>> +static unsigned long hung_task_timeout_max = (LONG_MAX / HZ);
->>
->> This is not generic so it can stay in this file.
->>
->>> +static int __maybe_unused neg_one = -1;
->>
->> This is generic so we can share it, I suggest we just rename this
->> for now to sysctl_neg_one, export it to a symbol namespace,
->> EXPORT_SYMBOL_NS_GPL(sysctl_neg_one, SYSCTL) and then import it with
->> MODULE_IMPORT_NS(SYSCTL)
 
-When I made the patch, I found that only sysctl_writes_strict and 
-hung_task_warnings use the neg_one variable, so is it necessary to merge 
-and generate the SYSCTL_NEG_ONE variable?
+Series of 4 patches to implement close-on-fork. Tests have been
+published to https://github.com/nkarstens/ltp/tree/close-on-fork
+and cover close-on-fork functionality in the following syscalls:
 
-In addition, the SYSCTL symbol namespace has not been created yet. Do I 
-just need to add a new member -1 to the sysctl_vals array?
+ * accept(4)
+ * dup3(2)
+ * fcntl(2)
+ * open(2)
+ * socket(2)
+ * socketpair(2)
+ * unshare(2)
 
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index b6f5d45..acae1fa 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -23,7 +23,7 @@
-  static const struct inode_operations proc_sys_dir_operations;
+Addresses underlying issue in that there is no way to prevent
+a fork() from duplicating a file descriptor. The existing
+close-on-exec flag partially-addresses this by allowing the
+parent process to mark a file descriptor as exclusive to itself,
+but there is still a period of time the failure can occur
+because the auto-close only occurs during the exec().
 
-  /* shared constants to be used in various sysctls */
--const int sysctl_vals[] = { 0, 1, INT_MAX };
-+const int sysctl_vals[] = { 0, 1, INT_MAX, -1 };
-  EXPORT_SYMBOL(sysctl_vals);
+One manifestation of this is a race conditions in system(), which
+(depending on the implementation) is non-atomic in that it first
+calls a fork() and then an exec().
 
-  /* Support for permanently empty directories */
-diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
-index 02fa844..6d741d6 100644
---- a/include/linux/sysctl.h
-+++ b/include/linux/sysctl.h
-@@ -41,6 +41,7 @@
-  #define SYSCTL_ZERO    ((void *)&sysctl_vals[0])
-  #define SYSCTL_ONE     ((void *)&sysctl_vals[1])
-  #define SYSCTL_INT_MAX ((void *)&sysctl_vals[2])
-+#define SYSCTL_NEG_ONE       ((void *)&sysctl_vals[3])
+This functionality was approved by the Austin Common Standards
+Revision Group for inclusion in the next revision of the POSIX
+standard (see issue 1318 in the Austin Group Defect Tracker).
 
-  extern const int sysctl_vals[];
+---
 
-Thanks
-Xiaoming Ni
+This is v2 of the change. See https://lkml.org/lkml/2020/4/20/113
+for the original work.
 
+Thanks to everyone who provided comments on the first series of
+patches. Here are replies to specific comments:
 
->>
->>
->>> +static struct ctl_table hung_task_sysctls[] = {
->>
->> We want to wrap this around with CONFIG_SYSCTL, so a cleaner solution
->> is something like this:
->>
->> diff --git a/kernel/Makefile b/kernel/Makefile
->> index a42ac3a58994..689718351754 100644
->> --- a/kernel/Makefile
->> +++ b/kernel/Makefile
->> @@ -88,7 +88,9 @@ obj-$(CONFIG_KCOV) += kcov.o
->>   obj-$(CONFIG_KPROBES) += kprobes.o
->>   obj-$(CONFIG_FAIL_FUNCTION) += fail_function.o
->>   obj-$(CONFIG_KGDB) += debug/
->> -obj-$(CONFIG_DETECT_HUNG_TASK) += hung_task.o
->> +obj-$(CONFIG_DETECT_HUNG_TASK) += hung_tasks.o
->> +hung_tasks-y := hung_task.o
->> +hung_tasks-$(CONFIG_SYSCTL) += hung_task_sysctl.o
->>   obj-$(CONFIG_LOCKUP_DETECTOR) += watchdog.o
->>   obj-$(CONFIG_HARDLOCKUP_DETECTOR_PERF) += watchdog_hld.o
->>   obj-$(CONFIG_SECCOMP) += seccomp.o
->>
->>> +/* get /proc/sys/kernel root */
->>> +static struct ctl_table sysctls_root[] = {
->>> +    {
->>> +        .procname       = "kernel",
->>> +        .mode           = 0555,
->>> +        .child          = hung_task_sysctls,
->>> +    },
->>> +    {}
->>> +};
->>> +
->>
->> And as per Eric, this is not needed, we can simplify this more, as noted
->> below.
->>
->>> +static int __init hung_task_sysctl_init(void)
->>> +{
->>> +    struct ctl_table_header *srt = register_sysctl_table(sysctls_root);
->>
->> You want instead something like::
->>
->>          struct ctl_table_header *srt;
->>
->>     srt = register_sysctl("kernel", hung_task_sysctls);
->>> +
->>> +    if (!srt)
->>> +        return -ENOMEM;
->>> +    kmemleak_not_leak(srt);
->>> +    return 0;
->>> +}
->>> +
->>
->>>   static int __init hung_task_init(void)
->>>   {
->>> +    int ret = hung_task_sysctl_init();
->>> +
->>> +    if (ret != 0)
->>> +        return ret;
->>> +
->>
->> And just #ifdef this around CONFIG_SYSCTL.
->>
->>    Luis
->>
->> .
->>
-> 
-> Thank you for your guidance, I will send the patch later
-> 
-> Xiaoming Ni
-> 
+> I suggest we group the two bits of a file (close_on_exec, close_on_fork)
+> together, so that we do not have to dirty two separate cache lines.
 
+I could be mistaken, but I don't think this would improve efficiency.
+The close-on-fork and close-on-exec flags are read at different
+times. If you assume separate syscalls for fork and exec then
+there are several switches between when the two flags are read.
+In addition, the close-on-fork flags in the new process must be
+cleared, which will be much harder if the flags are interleaved.
+
+> Also the F_GETFD/F_SETFD implementation must use a single function call,
+> to not acquire the spinlock twice.
+
+Good point, done.
+
+> How about only allocating the 'close on fork' bitmap the first time
+> a process sets a bit in it?
+
+I looked into it and there are side effects I dont't think we want.
+For example, if fcntl is used to set the close-on-fork flag, then
+there is a chance that it cannot allocate memory, and so we'd have
+to return ENOMEM. Seems cleaner to allocate memory up front so that
+we know the file has all of the memory it needs.
+
+> You should be able to use the same 'close the fds in this bitmap'
+> function for both cases.
+
+I looked into this and I think it is more efficient to prevent the
+new process from having a reference to the open file than it is to
+temporarily give the new process a reference and then close it later.
+
+> I'm not sure dup_fd() is the best place to check the close-on-fork flag.
+> For example, the ksys_unshare() > unshare_fd() > dup_fd() execution path
+> seems suspect.
+
+I have a better understanding of clone(2)/unshare(2) now and believe
+that dup_fd() is the appropriate place to handle this. clone(2) with
+CLONE_FILES set intentionally shares the file descriptor table, so
+close-on-fork should not impact that. However, if unshare(2) is later
+used to unshare the file descriptor table then the process calling
+unshare(2) should automatically close its copy of any file descriptor
+with close-on-fork set.
+
+> If the close-on-fork flag is set, then __clear_open_fd() should be
+> called instead of just __clear_bit(). This will ensure that
+> fdt->full_fds_bits() is updated.
+
+Done. It falls through to the case where the file had not finished
+opening yet and leverages its call to __clear_open_fd().
+
+> Need to investigate if the close-on-fork (or close-on-exec) flags
+> need to be cleared when the file is closed as part of the
+> close-on-fork execution path.
+
+Done. The new file descriptor table starts with all close-on-fork
+flags being cleared and dup_fd() gets the close-on-fork flag from
+the old file descriptor table.
 
