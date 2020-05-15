@@ -2,88 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E234C1D594A
-	for <lists+linux-parisc@lfdr.de>; Fri, 15 May 2020 20:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21DDC1D598F
+	for <lists+linux-parisc@lfdr.de>; Fri, 15 May 2020 21:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726298AbgEOSoV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 15 May 2020 14:44:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46576 "EHLO
+        id S1726221AbgEOTA3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 15 May 2020 15:00:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726206AbgEOSoU (ORCPT
+        with ESMTP id S1726144AbgEOTA3 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 15 May 2020 14:44:20 -0400
+        Fri, 15 May 2020 15:00:29 -0400
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4481C061A0C;
-        Fri, 15 May 2020 11:44:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B6C2C061A0C;
+        Fri, 15 May 2020 12:00:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
         :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=eFWvwLKFGzyiQJFsBdanngzoQxBkkdEj+F7mphDLxWo=; b=lTfU4JiLO4rvJaOgBk2NqxYW3T
-        r7Kubiu5kiBwMf7d1hoMbm0czYSTR9RH9Kms3OSitDKBTX1a53oSE57RFovvFwN0YaEPjoFuUc/9n
-        lAnw4XnNRIRCeGwfzN9s/qYZSF8kdXKQQ3Fr9M9Ij+J1A4QmBI16m/czKM4ARCjvpY0oP/ezuFSPk
-        TOfDeFiEMIqTrtZ30ED6vqh8O2YQjW8dp+BOTi8k7xslvQjBNJ24tjD/MDRPsufRY4EWb012d0DK4
-        8ATYyVr/WmqUmT1ZQPQrSi0Huu4+3s4d06hGb+JVg0OaMwWNhxPvVIdAYeGOekKbML0my53lEPx0C
-        azFjaYAQ==;
+        bh=cpdp67EUtxwQ4pvAlHHorIRNUGF4UtquU7Pnx9Rww6E=; b=oJBvAo8ZP0MxYVgwBCVArAwAjU
+        ksi/m0csrnuZAbzFyX+GIi2y9tiwHZYjJUb9SWcRqRtAmVb/CL9oI2cGKoVw95o9gl+NlsGLOQvoG
+        Fg3QpYPy1cBLS6cdmi1kA1P0I7I4LVkxO64m23SkXTDu3tt/AotueGrwOkzDjJLTS3P0qnsoQYy7F
+        xAqYTLA06l0bJV0g84y3ZuqtM6UZjHvgoykv8NZBVSKUaiI/4dimcgIRb8+ajUcQ9iHaJ6AgeJjko
+        k0NLU9xyh5P5L5dCsKDJUm6q0DX4ly03R4uOHxEyZg8WjqhbToo8C81op/n0x9ndGLqRqa65ALEQw
+        rRDGLbUg==;
 Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jZfJO-0001Ee-Vd; Fri, 15 May 2020 18:43:58 +0000
-Date:   Fri, 15 May 2020 11:43:58 -0700
+        id 1jZfZK-0005ND-Lw; Fri, 15 May 2020 19:00:26 +0000
+Date:   Fri, 15 May 2020 12:00:26 -0700
 From:   Matthew Wilcox <willy@infradead.org>
-To:     "Karstens, Nate" <Nate.Karstens@garmin.com>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>, Helge Deller <deller@gmx.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        David Laight <David.Laight@aculab.com>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Changli Gao <xiaosuo@gmail.com>,
-        "a.josey@opengroup.org" <a.josey@opengroup.org>
-Subject: Re: [PATCH v2] Implement close-on-fork
-Message-ID: <20200515184358.GH16070@bombadil.infradead.org>
-References: <20200515152321.9280-1-nate.karstens@garmin.com>
- <20200515155730.GF16070@bombadil.infradead.org>
- <5b1929aa9f424e689c7f430663891827@garmin.com>
- <1589559950.3653.11.camel@HansenPartnership.com>
- <4964fe0ccdf7495daf4045c195b14ed6@garmin.com>
+To:     kbuild test robot <lkp@intel.com>
+Cc:     Michal Simek <monstr@monstr.eu>, kbuild-all@lists.01.org,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Stefan Asserhall <stefan.asserhall@xilinx.com>,
+        linux-scsi@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: Re: drivers/scsi/ncr53c8xx.c:5306:9: sparse: sparse: cast truncates
+ bits from constant value (58f becomes 8f)
+Message-ID: <20200515190026.GI16070@bombadil.infradead.org>
+References: <202005160227.h6Ieqnmz%lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4964fe0ccdf7495daf4045c195b14ed6@garmin.com>
+In-Reply-To: <202005160227.h6Ieqnmz%lkp@intel.com>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, May 15, 2020 at 06:28:20PM +0000, Karstens, Nate wrote:
-> Our first attempt, which was to use the pthread_atfork() handlers, failed because system() is not required to call the handlers.
+On Sat, May 16, 2020 at 02:20:38AM +0800, kbuild test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> head:   051e6b7e34b9bd24f46725f74994a4d3a653966e
+> commit: 06e85c7e9a1c1356038936566fc23f7c0d363b96 asm-generic: fix unistd_32.h generation format
+> date:   5 weeks ago
+
+I don't see how that commit in any way reflects this error message.
+
+> reproduce:
+>         # apt-get install sparse
+>         # sparse version: v0.6.1-193-gb8fad4bc-dirty
+>         git checkout 06e85c7e9a1c1356038936566fc23f7c0d363b96
+>         make ARCH=x86_64 allmodconfig
+
+I can't even see a way to build the ncr53c8xx module with this config.
+Unless somebody reenabled EISA on x86, the only way I can see to
+still build this driver is on PA-RISC with the ZALON code.
+
+>         make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
 > 
-> Most of the feedback we're getting on this seems to say "don't use system(), it is unsafe for threaded applications". Is that documented anywhere? The man page says it is "MT-Safe".
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> 
+> sparse warnings: (new ones prefixed by >>)
+> 
+> >> drivers/scsi/ncr53c8xx.c:5306:9: sparse: sparse: cast truncates bits from constant value (58f becomes 8f)
+> 
+> ^1da177e4c3f41 Linus Torvalds 2005-04-16 @5306  	OUTW (nc_sien , STO|HTH|MA|SGE|UDC|RST|PAR);
 
-https://pubs.opengroup.org/onlinepubs/9699919799/functions/system.html
+This seems entirely intentional.
 
-> Aside from that, even if we remove all uses of system() from our application (which we already have), then our application, like many other applications, needs to use third-party shared libraries. There is nothing that prevents those libraries from using system(). We can audit those libraries and go back with the vendor with a request to replace system() with a standard fork/exec, but they will also want documentation supporting that.
+Something like this should do the job (whitespace damaged):
 
-They might also be using any number of other interfaces which aren't
-thread-safe.
++++ b/drivers/scsi/ncr53c8xx.h
+@@ -407,7 +407,7 @@
+ 
+ #ifdef CONFIG_SCSI_NCR53C8XX_NO_WORD_TRANSFERS
+ /* Only 8 or 32 bit transfers allowed */
+-#define OUTW_OFF(o, val)       do { writeb((char)((val) >> 8), (char __iomem *)np->reg + ncr_offw(o)); writeb((char)(val), (char __iomem *)np->reg + ncr_offw(o) + 1); } while (0)
++#define OUTW_OFF(o, val)       do { writeb((char)((val) >> 8), (char __iomem *)np->reg + ncr_offw(o)); writeb((char)((val) & 0xff), (char __iomem *)np->reg + ncr_offw(o) + 1); } while (0)
+ #else
+ #define OUTW_OFF(o, val)       writew_raw((val), (char __iomem *)np->reg + ncr_offw(o))
+ #endif
 
-> If the feedback from the community is truly and finally that system() should not be used in these applications, then is there support for updating the man page to better communicate that?
 
-Yes, absolutely.
-
-I think you're mischaracterising our feedback.  It's not "We don't want
-to fix this interface".  It's "We don't want to slow down everything else
-to fix this interface (and by the way there are lots of other problems
-with this interface that you aren't even trying to address)".
