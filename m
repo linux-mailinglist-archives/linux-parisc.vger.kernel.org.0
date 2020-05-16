@@ -2,110 +2,176 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B25B1D5B36
-	for <lists+linux-parisc@lfdr.de>; Fri, 15 May 2020 23:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FDCA1D5E3F
+	for <lists+linux-parisc@lfdr.de>; Sat, 16 May 2020 05:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726860AbgEOVKM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Fri, 15 May 2020 17:10:12 -0400
-Received: from mtaextp1.scidom.de ([146.107.3.202]:43134 "EHLO
-        mtaextp1.scidom.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726183AbgEOVKL (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 15 May 2020 17:10:11 -0400
-X-Greylist: delayed 538 seconds by postgrey-1.27 at vger.kernel.org; Fri, 15 May 2020 17:10:11 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mtaextp1.scidom.de (Postfix) with ESMTP id 9BA061823014F;
-        Fri, 15 May 2020 23:01:06 +0200 (CEST)
-Received: from mtaextp1.scidom.de ([127.0.0.1])
-        by localhost (mtaextp1.scidom.de [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id fhcqLEGG841M; Fri, 15 May 2020 23:01:01 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mtaextp1.scidom.de (Postfix) with ESMTP id 11F9318230402;
-        Fri, 15 May 2020 22:46:05 +0200 (CEST)
-X-Amavis-Modified: Mail body modified (using disclaimer) - mtaextp1.scidom.de
-X-Virus-Scanned: amavisd-new at 
-Received: from mtaextp1.scidom.de ([127.0.0.1])
-        by localhost (mtaextp1.scidom.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 2xemN3WCfuTb; Fri, 15 May 2020 22:46:05 +0200 (CEST)
-Received: from [192.168.8.101] (unknown [197.211.61.35])
-        by mtaextp1.scidom.de (Postfix) with ESMTPSA id B147C1820F91A;
-        Fri, 15 May 2020 22:33:32 +0200 (CEST)
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Re: Vorschlag
-To:     Recipients <min.fan@helmholtz-muenchen.de>
-From:   Yi Huiman <min.fan@helmholtz-muenchen.de>
-Date:   Fri, 15 May 2020 21:33:37 +0100
-Reply-To: info@huiman.cf
-Message-Id: <20200515203332.B147C1820F91A@mtaextp1.scidom.de>
+        id S1727938AbgEPDnG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 15 May 2020 23:43:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45792 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726247AbgEPDnF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 15 May 2020 23:43:05 -0400
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 773F320728;
+        Sat, 16 May 2020 03:43:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589600585;
+        bh=9Yr3NqlaT8J3yD/oIp4iOMhtlWnif5o5ocW4LHaILdM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=gyBQnTy1kkqh/qqbQgXTvgoLZUb4vpkCq+qjNMxNfH2LO1uD/nFf2CQ93t2pqZ2HH
+         Nvv3z8XinGroioseW6l362KaQNKI1k7UrzuUhEywWLMpAOhwLDsF/32qhs84qDVP/z
+         cpTKthgjLlt17JXXUVZs8KirdFerSU19m7odBjKc=
+Date:   Sat, 16 May 2020 12:42:59 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     x86@kernel.org, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
+        netdev@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 14/18] maccess: allow architectures to provide kernel
+ probing directly
+Message-Id: <20200516124259.5b68a4e1d4670efa1397a1e0@kernel.org>
+In-Reply-To: <20200513160038.2482415-15-hch@lst.de>
+References: <20200513160038.2482415-1-hch@lst.de>
+        <20200513160038.2482415-15-hch@lst.de>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Ein Vorschlag für Sie
+Hi Christoph,
+
+On Wed, 13 May 2020 18:00:34 +0200
+Christoph Hellwig <hch@lst.de> wrote:
+
+> Provide alternative versions of probe_kernel_read, probe_kernel_write
+> and strncpy_from_kernel_unsafe that don't need set_fs magic, but instead
+> use arch hooks that are modelled after unsafe_{get,put}_user to access
+> kernel memory in an exception safe way.
+
+This patch seems to introduce new implementation of probe_kernel_read/write()
+and strncpy_from_kernel_unsafe(), but also drops copy_from/to_kernel_nofault()
+and strncpy_from_kernel_nofault() if HAVE_ARCH_PROBE_KERNEL is defined.
+In the result, this cause a link error with BPF and kprobe events.
+
+BTW, what is the difference of *_unsafe() and *_nofault()?
+(maybe we make those to *_nofault() finally?)
+
+Thank you,
+
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  mm/maccess.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 76 insertions(+)
+> 
+> diff --git a/mm/maccess.c b/mm/maccess.c
+> index 9773e2253b495..e9efe2f98e34a 100644
+> --- a/mm/maccess.c
+> +++ b/mm/maccess.c
+> @@ -12,6 +12,81 @@ bool __weak probe_kernel_read_allowed(void *dst, const void *unsafe_src,
+>  	return true;
+>  }
+>  
+> +#ifdef HAVE_ARCH_PROBE_KERNEL
+> +
+> +#define probe_kernel_read_loop(dst, src, len, type, err_label)		\
+> +	while (len >= sizeof(type)) {					\
+> +		arch_kernel_read(dst, src, type, err_label);		\
+> +		dst += sizeof(type);					\
+> +		src += sizeof(type);					\
+> +		len -= sizeof(type);					\
+> +	}
+> +
+> +long probe_kernel_read(void *dst, const void *src, size_t size)
+> +{
+> +	if (!probe_kernel_read_allowed(dst, src, size))
+> +		return -EFAULT;
+> +
+> +	pagefault_disable();
+> +	probe_kernel_read_loop(dst, src, size, u64, Efault);
+> +	probe_kernel_read_loop(dst, src, size, u32, Efault);
+> +	probe_kernel_read_loop(dst, src, size, u16, Efault);
+> +	probe_kernel_read_loop(dst, src, size, u8, Efault);
+> +	pagefault_enable();
+> +	return 0;
+> +Efault:
+> +	pagefault_enable();
+> +	return -EFAULT;
+> +}
+> +EXPORT_SYMBOL_GPL(probe_kernel_read);
+> +
+> +#define probe_kernel_write_loop(dst, src, len, type, err_label)		\
+> +	while (len >= sizeof(type)) {					\
+> +		arch_kernel_write(dst, src, type, err_label);		\
+> +		dst += sizeof(type);					\
+> +		src += sizeof(type);					\
+> +		len -= sizeof(type);					\
+> +	}
+> +
+> +long probe_kernel_write(void *dst, const void *src, size_t size)
+> +{
+> +	pagefault_disable();
+> +	probe_kernel_write_loop(dst, src, size, u64, Efault);
+> +	probe_kernel_write_loop(dst, src, size, u32, Efault);
+> +	probe_kernel_write_loop(dst, src, size, u16, Efault);
+> +	probe_kernel_write_loop(dst, src, size, u8, Efault);
+> +	pagefault_enable();
+> +	return 0;
+> +Efault:
+> +	pagefault_enable();
+> +	return -EFAULT;
+> +}
+> +
+> +long strncpy_from_kernel_unsafe(char *dst, const void *unsafe_addr, long count)
+> +{
+> +	const void *src = unsafe_addr;
+> +
+> +	if (unlikely(count <= 0))
+> +		return 0;
+> +	if (!probe_kernel_read_allowed(dst, unsafe_addr, count))
+> +		return -EFAULT;
+> +
+> +	pagefault_disable();
+> +	do {
+> +		arch_kernel_read(dst, src, u8, Efault);
+> +		dst++;
+> +		src++;
+> +	} while (dst[-1] && src - unsafe_addr < count);
+> +	pagefault_enable();
+> +
+> +	dst[-1] = '\0';
+> +	return src - unsafe_addr;
+> +Efault:
+> +	pagefault_enable();
+> +	dst[-1] = '\0';
+> +	return -EFAULT;
+> +}
+> +#else /* HAVE_ARCH_PROBE_KERNEL */
+>  /**
+>   * probe_kernel_read(): safely attempt to read from kernel-space
+>   * @dst: pointer to the buffer that shall take the data
+> @@ -114,6 +189,7 @@ long strncpy_from_kernel_nofault(char *dst, const void *unsafe_addr, long count)
+>  
+>  	return ret ? -EFAULT : src - unsafe_addr;
+>  }
+> +#endif /* HAVE_ARCH_PROBE_KERNEL */
+>  
+>  /**
+>   * probe_user_read(): safely attempt to read from a user-space location
+> -- 
+> 2.26.2
+> 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Helmholtz Zentrum Muenchen
-Deutsches Forschungszentrum fuer Gesundheit und Umwelt (GmbH)
-Ingolstaedter Landstr. 1
-85764 Neuherberg
-www.helmholtz-muenchen.de
-Aufsichtsratsvorsitzende: MinDir.in Prof. Dr. Veronika von Messling
-Geschaeftsfuehrung: Prof. Dr. med. Dr. h.c. Matthias Tschoep, Kerstin Guenther
-Registergericht: Amtsgericht Muenchen HRB 6466
-USt-IdNr: DE 129521671
-
-
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
