@@ -2,53 +2,53 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A49B1D6480
-	for <lists+linux-parisc@lfdr.de>; Sun, 17 May 2020 00:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB1921D6B89
+	for <lists+linux-parisc@lfdr.de>; Sun, 17 May 2020 19:37:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726703AbgEPWdJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 16 May 2020 18:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53316 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726290AbgEPWdJ (ORCPT
+        id S1726288AbgEQRh0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 17 May 2020 13:37:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60700 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726248AbgEQRhZ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 16 May 2020 18:33:09 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF864C061A0C;
-        Sat, 16 May 2020 15:33:08 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id hi11so2840447pjb.3;
-        Sat, 16 May 2020 15:33:08 -0700 (PDT)
+        Sun, 17 May 2020 13:37:25 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 335AFC061A0C;
+        Sun, 17 May 2020 10:37:25 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id n15so502836pfd.0;
+        Sun, 17 May 2020 10:37:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=vj3ZKk5i0HEzrSyFnN96bWdCY5i8K/6dkf5RChzT2ig=;
-        b=ZexPATSHr7TALdW5suzyO0HE9DmxJQXNVHQ0JYd3NgIX/IZ0oCHjwnG0InSE40wRkY
-         oxyal/oLFc0JhbpQqvIrfCEeGgUpVJV+GGU3iHCGwGRQq+zFWcgiE0onR5j/uJFtYKXu
-         f0vU3LvSwcsRbyPK/k35OqSiFkk2ARLROQvkc07gSiGk9q1VqPHncuDmJC3Zz/e5NEBi
-         N2RixgwTrQI6Dpk4/oJl0LJJykwxI0dqRNcVy8OxUq388yjIWGHs0NMrVPlJiuk6UECl
-         NX9zX08qdEGrKDSrLmDEZrNnRxqqjpaHSDmsxnAMxOdv9+w3HJtGo7DYt/Q8BDDMwjlF
-         6vAw==
+        bh=N6CjXhfKgzMdjTkMsOSfHSCzekjDsrkPUllIpjZMEsA=;
+        b=VezDvIKHA27OHO31ugrUdXUqKKpBquo57afxIcuQr/vuEw1cOmotnihHkp50L3q14s
+         5TjDd+FjgxpZuRCtBUDrUCrkRLecTz654w/Mb+hGbxnR6wxHlLj3EYSmO4PSXLmGCylP
+         cMOC9Wtm8IqfPoKDE+COAOGxJ5av26/bQAWwxHPwytnYUxfoCLrBKWeMkMCpNnHVAcjI
+         dkHq/Jygw2IqTs7Q1Cil1G4pjRZZ8uskuvP+l91wuW3DxrP2ZLY9zVwCd+9qqRmBzdm1
+         zNwvn2jaDlW0Ifxvq0iBwK2cZ/z4GhkmG0DzjtVDFpiAX9hLHnN45lFnjX+ZWovn9xub
+         wVrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vj3ZKk5i0HEzrSyFnN96bWdCY5i8K/6dkf5RChzT2ig=;
-        b=KA6rklDxiQD/Yo64+90ejd1xKqf9Wzt9BcCEg6x45fZyCXDOPnGiX5dnGB1A9BXb7q
-         ihWs/T39gP4ks3E0meGLQddpgBhnBe037tvZDlnc26TtOkw/7dWGJy5y17v9Iwdl1YUr
-         ULoXtzCszXnkGtye89Hh/GY0Vme5eMTqNLpvCHH41sZbbUT4gz8jx1hqnsc4CiYQeuzU
-         zuw+hh2JfsEVJJ4NdykZq7MbF5gxuumMfg+x4a39ZKYsTprma1nhkrdaAOAnxF5Gfyg9
-         HukBCd+5Y01L7PzliwTFnVshUODUexJZz2csInmFkAi7FIRHMXZblHMea/j2paqBwXYF
-         IOoA==
-X-Gm-Message-State: AOAM532W5vuncHvxNppMHEcVbMVOrKgwK0KIo0F9LuQ8vP5KdKP7zYwy
-        1xUpvfsprcs/+n4lPqM+tts=
-X-Google-Smtp-Source: ABdhPJwpG0/yP7Vs4M/H3HPMY6d7xUvEDfPCG28ANMmHTAEHrZxhJBJVmBjSecSOTX5/ONZsU65JGA==
-X-Received: by 2002:a17:902:bc86:: with SMTP id bb6mr9492182plb.243.1589668388271;
-        Sat, 16 May 2020 15:33:08 -0700 (PDT)
+        bh=N6CjXhfKgzMdjTkMsOSfHSCzekjDsrkPUllIpjZMEsA=;
+        b=YyIiAYnl1X0hb7IlCMurO08ligZ0Bo3dhA4Q6HR4ago0CHr6gR4HZzvdtQGrXOe668
+         U8pU9E5cC4Kkjl/X5cl+QyQ3bnX2klarB8JI9Ks4DYLtMKDSM4XAkdR+agJ1Wb9BaEZb
+         Pb69Xt7eh1ttkEYheFrlVSjM+488mcPZQ5qy6FrD6V7dNOGGejIfj5ryBMbdJeuj2RuG
+         J12kIMTirqMaUmSaJA0slZXNVn0SjCZ6mWO9UoO9xjxQRlTKGdl4uO1P7zN80YfOptTH
+         cvXtwk8dXs7PY4Dl3AGitcfIdEuYdaAe/jf3ETRcY4oYktn1k5IiepdLOROOTub3LJ3K
+         FDcA==
+X-Gm-Message-State: AOAM530vUH24TVAHyhfKrqA57UAhel//ggSulW0MhocXYmsaU+PSdKp9
+        g1ulIj4Bc1uLp6+1UCdqWT4=
+X-Google-Smtp-Source: ABdhPJz9I8n19ybGJ4kPrlWY6HmksOOo4etCMGfETIO+p1RAzLZs3vA8L4OUDwjwk0dol2fzq4kKYQ==
+X-Received: by 2002:a63:7a12:: with SMTP id v18mr10682540pgc.131.1589737044720;
+        Sun, 17 May 2020 10:37:24 -0700 (PDT)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id dw12sm4633881pjb.31.2020.05.16.15.33.07
+        by smtp.gmail.com with ESMTPSA id d203sm6684666pfd.79.2020.05.17.10.37.23
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 16 May 2020 15:33:07 -0700 (PDT)
-Date:   Sat, 16 May 2020 15:33:06 -0700
+        Sun, 17 May 2020 10:37:23 -0700 (PDT)
+Date:   Sun, 17 May 2020 10:37:22 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     ira.weiny@intel.com
 Cc:     linux-kernel@vger.kernel.org,
@@ -76,44 +76,106 @@ Cc:     linux-kernel@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org,
         Christian Koenig <christian.koenig@amd.com>,
         Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH V3 07/15] arch/kunmap_atomic: Consolidate duplicate code
-Message-ID: <20200516223306.GA161252@roeck-us.net>
+Subject: Re: [PATCH V3 10/15] arch/kmap: Define kmap_atomic_prot() for all
+ arch's
+Message-ID: <20200517173722.GA33341@roeck-us.net>
 References: <20200507150004.1423069-1-ira.weiny@intel.com>
- <20200507150004.1423069-8-ira.weiny@intel.com>
+ <20200507150004.1423069-11-ira.weiny@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200507150004.1423069-8-ira.weiny@intel.com>
+In-Reply-To: <20200507150004.1423069-11-ira.weiny@intel.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, May 07, 2020 at 07:59:55AM -0700, ira.weiny@intel.com wrote:
+Hi,
+
+On Thu, May 07, 2020 at 07:59:58AM -0700, ira.weiny@intel.com wrote:
 > From: Ira Weiny <ira.weiny@intel.com>
 > 
-> Every single architecture (including !CONFIG_HIGHMEM) calls...
+> To support kmap_atomic_prot(), all architectures need to support
+> protections passed to their kmap_atomic_high() function.  Pass
+> protections into kmap_atomic_high() and change the name to
+> kmap_atomic_high_prot() to match.
 > 
-> 	pagefault_enable();
-> 	preempt_enable();
+> Then define kmap_atomic_prot() as a core function which calls
+> kmap_atomic_high_prot() when needed.
 > 
-> ... before returning from __kunmap_atomic().  Lift this code into the
-> kunmap_atomic() macro.
-> 
-> While we are at it rename __kunmap_atomic() to kunmap_atomic_high() to
-> be consistent.
+> Finally, redefine kmap_atomic() as a wrapper of kmap_atomic_prot() with
+> the default kmap_prot exported by the architectures.
 > 
 > Reviewed-by: Christoph Hellwig <hch@lst.de>
 > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
-This patch results in:
+This patch causes a variety of crashes whem booting powerpc images in qemu.
 
-Starting init: /bin/sh exists but couldn't execute it (error -14)
+There are lots of warnings such as:
 
-when trying to boot microblazeel:petalogix-ml605 in qemu.
+WARNING: CPU: 0 PID: 0 at lib/locking-selftest.c:743 irqsafe1_hard_spin_12+0x50/0xb0
+Modules linked in:
+CPU: 0 PID: 0 Comm: swapper Tainted: G        W         5.7.0-rc5-next-20200515 #1
+NIP:  c0660c7c LR: c0660c44 CTR: c0660c2c
+REGS: c1223e68 TRAP: 0700   Tainted: G        W          (5.7.0-rc5-next-20200515)
+MSR:  00021000 <CE,ME>  CR: 28000224  XER: 20000000
 
-Bisect log attached.
+GPR00: c0669c78 c1223f20 c113d560 c0660c44 00000000 00000001 c1223ea8 00000001
+GPR08: 00000000 00000001 0000fffc ffffffff 88000222 00000000 00000000 00000000
+GPR16: 00000000 00000000 00000000 00000000 c0000000 00000000 00000000 c1125084
+GPR24: c1125084 c1230000 c1879538 fffffffc 00000001 00000000 c1011afc c1230000
+NIP [c0660c7c] irqsafe1_hard_spin_12+0x50/0xb0
+LR [c0660c44] irqsafe1_hard_spin_12+0x18/0xb0
+Call Trace:
+[c1223f20] [c1880000] megasas_mgmt_info+0xee4/0x1008 (unreliable)
+[c1223f40] [c0669c78] dotest+0x38/0x550
+[c1223f70] [c066aa4c] locking_selftest+0x8bc/0x1d54
+[c1223fa0] [c10e0bc8] start_kernel+0x3ec/0x510
+[c1223ff0] [c00003a0] set_ivor+0x118/0x154
+Instruction dump:
+81420000 38e80001 3d4a0001 2c080000 91420000 90e20488 40820008 91020470
+81290000 5529031e 7d290034 5529d97e <0f090000> 3fe0c11c 3bff3964 3bff00ac
+irq event stamp: 588
+hardirqs last  enabled at (587): [<c00b9fe4>] vprintk_emit+0x1b4/0x33c
+hardirqs last disabled at (588): [<c0660c44>] irqsafe1_hard_spin_12+0x18/0xb0
+softirqs last  enabled at (0): [<00000000>] 0x0
+softirqs last disabled at (0): [<00000000>] 0x0
+---[ end trace b18fe9e172f99d03 ]---
+
+This is followed by:
+
+BUG: sleeping function called from invalid context at lib/mpi/mpi-pow.c:245
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 14, name: cryptomgr_test
+INFO: lockdep is turned off.
+CPU: 0 PID: 14 Comm: cryptomgr_test Tainted: G        W         5.7.0-rc5-next-20200515 #1
+Call Trace:
+[ce221b58] [c008755c] ___might_sleep+0x280/0x2a8 (unreliable)
+[ce221b78] [c06bc524] mpi_powm+0x634/0xc50
+[ce221c38] [c05eafdc] rsa_dec+0x88/0x134
+[ce221c78] [c05f3b40] test_akcipher_one+0x678/0x804
+[ce221dc8] [c05f3d7c] alg_test_akcipher+0xb0/0x130
+[ce221df8] [c05ee674] alg_test.part.0+0xb4/0x458
+[ce221ed8] [c05ed2b0] cryptomgr_test+0x30/0x50
+[ce221ef8] [c007cd74] kthread+0x134/0x170
+[ce221f38] [c001433c] ret_from_kernel_thread+0x14/0x1c
+Kernel panic - not syncing: Aiee, killing interrupt handler!
+CPU: 0 PID: 14 Comm: cryptomgr_test Tainted: G        W         5.7.0-rc5-next-20200515 #1
+Call Trace:
+[ce221e08] [c00530fc] panic+0x148/0x34c (unreliable)
+[ce221e68] [c0056460] do_exit+0xac0/0xb40
+[ce221eb8] [c00f5be8] find_kallsyms_symbol_value+0x0/0x128
+[ce221ed8] [c05ed2d0] crypto_alg_put+0x0/0x70
+[ce221ef8] [c007cd74] kthread+0x134/0x170
+[ce221f38] [c001433c] ret_from_kernel_thread+0x14/0x1c
+
+Bisect log is attached. The patch can not easily be reverted since
+it results in compile errors.
+
+Note that similar failures are seen with sparc32 images. Those bisect
+to a different patch, but reverting that patch doesn't fix the problem.
+The failure pattern (warnings followed by a crash in cryptomgr_test)
+is the same.
 
 Guenter
 
@@ -139,14 +201,14 @@ git bisect good 6cd8137ff37e9a37aee2d2a8889c8beb8eab192f
 git bisect bad 6987da379826ed01b8a1cf046b67cc8cc10117cc
 # good: [bc17b545388f64c09e83e367898e28f60277c584] mm/hugetlb: define a generic fallback for is_hugepage_only_range()
 git bisect good bc17b545388f64c09e83e367898e28f60277c584
-# bad: [9b5aa5b43f957f03a1f4a9aff5f7924e2ebbc011] arch-kmap_atomic-consolidate-duplicate-code-checkpatch-fixes
-git bisect bad 9b5aa5b43f957f03a1f4a9aff5f7924e2ebbc011
-# good: [0941a38ff0790c1004270f952067a5918a4ba32d] arch/kmap: remove redundant arch specific kmaps
-git bisect good 0941a38ff0790c1004270f952067a5918a4ba32d
-# good: [56e635a64c2cbfa815c851af10e0f811e809977b] arch-kunmap-remove-duplicate-kunmap-implementations-fix
-git bisect good 56e635a64c2cbfa815c851af10e0f811e809977b
-# bad: [60f96b2233c790d4f1c49317643051f1670bcb29] arch/kmap_atomic: consolidate duplicate code
-git bisect bad 60f96b2233c790d4f1c49317643051f1670bcb29
-# good: [7b3708dc3bf72a647243064fe7ddf9a76248ddfd] {x86,powerpc,microblaze}/kmap: move preempt disable
-git bisect good 7b3708dc3bf72a647243064fe7ddf9a76248ddfd
-# first bad commit: [60f96b2233c790d4f1c49317643051f1670bcb29] arch/kmap_atomic: consolidate duplicate code
+# good: [9b5aa5b43f957f03a1f4a9aff5f7924e2ebbc011] arch-kmap_atomic-consolidate-duplicate-code-checkpatch-fixes
+git bisect good 9b5aa5b43f957f03a1f4a9aff5f7924e2ebbc011
+# bad: [89194ba5ee31567eeee9c81101b334c8e3248198] arch/kmap: define kmap_atomic_prot() for all arch's
+git bisect bad 89194ba5ee31567eeee9c81101b334c8e3248198
+# good: [022785d2bea99f8bc2a37b7b6c525eea26f6ac59] arch-kunmap_atomic-consolidate-duplicate-code-checkpatch-fixes
+git bisect good 022785d2bea99f8bc2a37b7b6c525eea26f6ac59
+# good: [a13c2f39e3f0519ddee57d26cc66ec70e3546106] arch/kmap: don't hard code kmap_prot values
+git bisect good a13c2f39e3f0519ddee57d26cc66ec70e3546106
+# first bad commit: [89194ba5ee31567eeee9c81101b334c8e3248198] arch/kmap: define kmap_atomic_prot() for all arch's
+
+
