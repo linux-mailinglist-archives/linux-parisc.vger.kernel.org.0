@@ -2,56 +2,52 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DD261D75EA
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 May 2020 13:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0E7F1D7C64
+	for <lists+linux-parisc@lfdr.de>; Mon, 18 May 2020 17:09:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726939AbgERLIf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 18 May 2020 07:08:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726279AbgERLIf (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 18 May 2020 07:08:35 -0400
-X-Greylist: delayed 300 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 18 May 2020 04:08:34 PDT
-Received: from vps.dvp24.com (unknown [IPv6:2a02:348:36:5b8c::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DCE1C061A0C;
-        Mon, 18 May 2020 04:08:34 -0700 (PDT)
-Received: from localhost ([127.0.0.1] helo=dvp24.com)
-        by vps.dvp24.com with esmtpa (Exim 4.77)
-        (envelope-from <abhay@dvp24.com>)
-        id 1jadYS-0006r4-97; Mon, 18 May 2020 13:03:32 +0200
+        id S1728133AbgERPJH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 18 May 2020 11:09:07 -0400
+Received: from verein.lst.de ([213.95.11.211]:38896 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726918AbgERPJH (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 18 May 2020 11:09:07 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 27D5268B02; Mon, 18 May 2020 17:09:04 +0200 (CEST)
+Date:   Mon, 18 May 2020 17:09:03 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Christoph Hellwig <hch@lst.de>, x86@kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
+        netdev@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 14/18] maccess: allow architectures to provide kernel
+ probing directly
+Message-ID: <20200518150903.GD8871@lst.de>
+References: <20200513160038.2482415-1-hch@lst.de> <20200513160038.2482415-15-hch@lst.de> <20200516124259.5b68a4e1d4670efa1397a1e0@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Mon, 18 May 2020 12:03:32 +0100
-From:   pedro hills <abhay@dvp24.com>
-To:     undisclosed-recipients:;
-Subject: (DONATION) $2 Million Has Been Donated
-Reply-To: <pedrohills@outlook.es>
-Mail-Reply-To: <pedrohills@outlook.es>
-Message-ID: <4f8b251c274cf8e27d8c41dd4ed99b52@dvp24.com>
-X-Sender: abhay@dvp24.com
-User-Agent: Roundcube Webmail/0.7.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200516124259.5b68a4e1d4670efa1397a1e0@kernel.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Sat, May 16, 2020 at 12:42:59PM +0900, Masami Hiramatsu wrote:
+> > Provide alternative versions of probe_kernel_read, probe_kernel_write
+> > and strncpy_from_kernel_unsafe that don't need set_fs magic, but instead
+> > use arch hooks that are modelled after unsafe_{get,put}_user to access
+> > kernel memory in an exception safe way.
+> 
+> This patch seems to introduce new implementation of probe_kernel_read/write()
+> and strncpy_from_kernel_unsafe(), but also drops copy_from/to_kernel_nofault()
+> and strncpy_from_kernel_nofault() if HAVE_ARCH_PROBE_KERNEL is defined.
+> In the result, this cause a link error with BPF and kprobe events.
 
-
--- 
-$2 Million Has Been Donated To You,By PEDRO this is Real For More Info
-  Contact PEDRO immediately for your clame This Email:
-  pedrohills@outlook.es
-
-  Contact phone number +34632232897
-  Send Your Response To: pedrohills@outlook.es
-
-  2 Millionen US-Dollar wurden an Sie gespendet. Von PEDRO ist dies für
-weitere Informationen real
-  Wenden Sie sich umgehend an PEDRO. Diese E-Mail:
-  pedrohills@outlook.es
-
-  Kontakttelefonnummer +34632232897
-  Senden Sie Ihre Antwort an: pedrohills@outlook.es
+That was just a bug as I didn't commit the changes to switch everything
+to _nofault and remove _unsafe entirely, sorry.
