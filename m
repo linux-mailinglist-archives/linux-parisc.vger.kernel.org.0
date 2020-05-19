@@ -2,62 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C6F11D9CD0
-	for <lists+linux-parisc@lfdr.de>; Tue, 19 May 2020 18:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 518811D9CE5
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 May 2020 18:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729458AbgESQd2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 19 May 2020 12:33:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47840 "EHLO
+        id S1729303AbgESQfL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 19 May 2020 12:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729455AbgESQd1 (ORCPT
+        with ESMTP id S1729219AbgESQfK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 19 May 2020 12:33:27 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19CF3C08C5C0
-        for <linux-parisc@vger.kernel.org>; Tue, 19 May 2020 09:33:27 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id z6so357846ljm.13
-        for <linux-parisc@vger.kernel.org>; Tue, 19 May 2020 09:33:27 -0700 (PDT)
+        Tue, 19 May 2020 12:35:10 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77573C08C5C2
+        for <linux-parisc@vger.kernel.org>; Tue, 19 May 2020 09:35:10 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 82so88348lfh.2
+        for <linux-parisc@vger.kernel.org>; Tue, 19 May 2020 09:35:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linux-foundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=TFvy+u64rADS0X9wXPVDcnjojb1U9iWCN3n097gO97s=;
-        b=KITgpUd5bP2WD+I3Ft3adLmt6MH7MS4MFJexni61RXcXlzD9Gqjwa8Lmdkq9TYyfqS
-         KL4aFjs9x04ZYvGYs2IsxZG5dgyhwKLIBJrjoMKhrn6xZPweQeBnKjN1RmntmQCr96TY
-         jycjBR645lH/xqU7rOHokwZ9wup3usfS+9Z3A=
+        bh=54tiBIP0EU7n2aZj7YIONdjaPqjtzHIpQK/HSrYUxTM=;
+        b=BKlafAkH7UQm8tvxZZNMBXFgkeIFjR+sjrqKcA5zu8XfgLo2XsHzCIggLB+hau5PqY
+         bXm4UtHx7/hgToK6wSRtXVRYfkosw2PzhwIv8qXaSb+oYyfc0spNrlQZmy04cFyxd8aX
+         2/kuksBERD9XsYiDJcDnbRjB+/bFhGsJeMkcs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=TFvy+u64rADS0X9wXPVDcnjojb1U9iWCN3n097gO97s=;
-        b=osKDe45GOpJcg3HlGI4E+WpgPNr58OoevTQSf9VWtZ1pLX4P4rK9fA95zfp28PY/Vz
-         egCrVPlnw1nxYwA9EX1NfxRG4L8Kv27uL8ym9EYK3Uj7lSr4kMFJh4WMB7/7yXoXSf43
-         uzXUuHfIJOqDuB9U/Q72pN3yO253voLVZmJNhsDX1V6zaktoU5NSL4dQemx3DDjS8lxH
-         s+29Q45pxlqqKSwPf6kjm5thDmbBo5Vpu7npOZ1W3GmBMR929/7sWOEV0BGU9XCKkarE
-         gNLKBns6tE1sdrQZgn6xCPdWSVY+v2f2+CdS188yyKAG7Ue1Y5PGN472asNQykmUtcTQ
-         LyBg==
-X-Gm-Message-State: AOAM533Ikb8Kse3Sk74kYrejCateS6d2nGgjsti26vOQgth80bcc+GbO
-        mUjTlFC6L0ZC211mj1lhTJhQrINTVCM=
-X-Google-Smtp-Source: ABdhPJzzFdHkyqfUn3M23/nRw88oKz0JWZpHVZkiRR47Dc5Fc6ApRMtfy2dM1xrpBqRYubZNjKpwlw==
-X-Received: by 2002:a2e:8108:: with SMTP id d8mr165873ljg.248.1589906005008;
-        Tue, 19 May 2020 09:33:25 -0700 (PDT)
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com. [209.85.208.177])
-        by smtp.gmail.com with ESMTPSA id u20sm52856ljk.103.2020.05.19.09.33.22
+        bh=54tiBIP0EU7n2aZj7YIONdjaPqjtzHIpQK/HSrYUxTM=;
+        b=nHYwjxD0Yx3icNHqi/69F5htef52Gkadx4Ur9tmyvxuwAckXoVnw4lUJW9Uu8UT6UY
+         RJzRJHhbYwvMJFbQf6y5Vn7p9DjFvIQCLzIWWn7tR33vMDQMAO6luiRKsbNFhDb16/Zu
+         uqs6h0ZReJM3BD/q/TodDFyYq+V8zbynSAjNTIPwOvR0Vv+LS1PI9Da8bG76x1QwLBLz
+         /1AzdmJbkXETH5ZDZt/k//uz83vevNrUwZfpqxzBReuDqaYAHzfXWNmaQT5s75+AkRe6
+         mrLbPDwPe5dxKsi+BOpHWU1X59L+DeQIFDRYHPCu3+MOshe8EbNDyLRLfbn+3XR64K2e
+         5Okg==
+X-Gm-Message-State: AOAM5327zFf4ZAKg/PmnLcwwmNc+XKETlXU8v9xxy8Za7G7w4SNHdC5W
+        BZRfJs5VM4p3GCjPvAICv9VE+Co7GvA=
+X-Google-Smtp-Source: ABdhPJzfCxqF0Z7RLN/vPLnIfkhFl/kuYTLEJtaE3gLvOrNCKqY37iFw3sbGSfgIIHrNLdSG8zW/Jg==
+X-Received: by 2002:a05:6512:682:: with SMTP id t2mr1906170lfe.101.1589906107910;
+        Tue, 19 May 2020 09:35:07 -0700 (PDT)
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
+        by smtp.gmail.com with ESMTPSA id n2sm9277347lfl.53.2020.05.19.09.35.06
         for <linux-parisc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2020 09:33:23 -0700 (PDT)
-Received: by mail-lj1-f177.google.com with SMTP id o14so426943ljp.4
-        for <linux-parisc@vger.kernel.org>; Tue, 19 May 2020 09:33:22 -0700 (PDT)
-X-Received: by 2002:a2e:9641:: with SMTP id z1mr145949ljh.201.1589906002260;
- Tue, 19 May 2020 09:33:22 -0700 (PDT)
+        Tue, 19 May 2020 09:35:06 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 82so88215lfh.2
+        for <linux-parisc@vger.kernel.org>; Tue, 19 May 2020 09:35:06 -0700 (PDT)
+X-Received: by 2002:ac2:5a4c:: with SMTP id r12mr1549357lfn.10.1589906105818;
+ Tue, 19 May 2020 09:35:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200519134449.1466624-1-hch@lst.de> <20200519134449.1466624-14-hch@lst.de>
-In-Reply-To: <20200519134449.1466624-14-hch@lst.de>
+References: <20200519134449.1466624-1-hch@lst.de>
+In-Reply-To: <20200519134449.1466624-1-hch@lst.de>
 From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 19 May 2020 09:33:06 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjg6v1NU31ku2aAMfX7Yu0oDKRvKeBJVGZFQB7AjcwhAA@mail.gmail.com>
-Message-ID: <CAHk-=wjg6v1NU31ku2aAMfX7Yu0oDKRvKeBJVGZFQB7AjcwhAA@mail.gmail.com>
-Subject: Re: [PATCH 13/20] maccess: always use strict semantics for probe_kernel_read
+Date:   Tue, 19 May 2020 09:34:49 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whj0zVP-ErHcqGNrM0-bZ+TvSFAwpEd+pKFadZeFXj5PA@mail.gmail.com>
+Message-ID: <CAHk-=whj0zVP-ErHcqGNrM0-bZ+TvSFAwpEd+pKFadZeFXj5PA@mail.gmail.com>
+Subject: Re: clean up and streamline probe_kernel_* and friends v3
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
         Alexei Starovoitov <ast@kernel.org>,
@@ -75,39 +75,11 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, May 19, 2020 at 6:45 AM Christoph Hellwig <hch@lst.de> wrote:
+On Tue, May 19, 2020 at 6:44 AM Christoph Hellwig <hch@lst.de> wrote:
 >
-> +
-> +       if (IS_ENABLED(CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE) &&
-> +           compat && (unsigned long)unsafe_ptr < TASK_SIZE)
-> +               ret = probe_user_read(dst, user_ptr, size);
-> +       else
-> +               ret = probe_kernel_read(dst, unsafe_ptr, size);
-...
-> -               ret = probe_kernel_read(&c, (u8 *)addr + len, 1);
-> +               if (IS_ENABLED(CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE) &&
-> +                   (unsigned long)addr < TASK_SIZE) {
-> +                       ret = probe_user_read(&c,
-> +                               (__force u8 __user *)addr + len, 1);
-> +               } else {
-> +                       ret = probe_kernel_read(&c, (u8 *)addr + len, 1);
-> +               }
-...
-> +       if (IS_ENABLED(CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE) &&
-> +           (unsigned long)src < TASK_SIZE) {
-> +               return probe_user_read(dest, (__force const void __user *)src,
-> +                               size);
+>  - rebased on 5.7-rc6 with the bpf trace format string changes
 
-If you can't make the conditional legible and fit on a single line and
-make it obvious _why_ you have that conditional, just use a helper
-function.
+Other than the critique about illegible conditionals in the result
+when doing that bpf/trace conversion, I like it.
 
-Either for just the conditional itself, or for the whole operation.
-And at least for the bpf case, since you want the whole operation for
-that error handling and clearing of the result buffer anyway, I
-suspect it would be cleaner to have that kind of
-"bpf_copy_legacy_nofault()" function or whatever.
-
-(And see previous email why I dislike that "compat" naming in the bpf case)
-
-                    Linus
+                  Linus
