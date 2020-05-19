@@ -2,32 +2,34 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1947E1D8782
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 May 2020 20:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE69F1D8BFE
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 May 2020 02:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729341AbgERSsq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 18 May 2020 14:48:46 -0400
-Received: from mga18.intel.com ([134.134.136.126]:27176 "EHLO mga18.intel.com"
+        id S1726786AbgESAD4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 18 May 2020 20:03:56 -0400
+Received: from mga04.intel.com ([192.55.52.120]:15755 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728954AbgERSsq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 18 May 2020 14:48:46 -0400
-IronPort-SDR: hH7GOhgOu/8BxW1LJsBrficmOhzK65UIieCBFQq8/WeTR/38m4PUk1i759mDO26+cxJc+FNrh7
- bMcC2yUF2vlA==
+        id S1726053AbgESAD4 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 18 May 2020 20:03:56 -0400
+IronPort-SDR: 4o71gxn0tT7ufF7vpLhgmViSMEgrvunI93WOiA44dcTdLXeCDzUOvKIBfeAdVasaJ6xHThRanl
+ OlChzB1FEWLg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2020 11:48:45 -0700
-IronPort-SDR: A0dNOJcp3XVBRer+3SvVGXusda3bUk5OmiTTHwwN4BXAPX4zWgYa/kiDwvCtGSiDC+7pgbW2fC
- b75hGkYrg3kw==
-X-IronPort-AV: E=Sophos;i="5.73,407,1583222400"; 
-   d="scan'208";a="253140387"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2020 11:48:45 -0700
-From:   ira.weiny@intel.com
-To:     linux-kernel@vger.kernel.org,
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2020 17:03:54 -0700
+IronPort-SDR: CQuTQnTz1+JwZWX2d1WkK2LuNRFRtRrXIRjWbZwMShXh3iry4az0PRxvklanrFBM1Vj0az/yVj
+ 2Cp/II0Msphg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,408,1583222400"; 
+   d="scan'208";a="439413806"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+  by orsmga005.jf.intel.com with ESMTP; 18 May 2020 17:03:52 -0700
+Date:   Mon, 18 May 2020 17:03:52 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Ira Weiny <ira.weiny@intel.com>,
+        Christoph Hellwig <hch@lst.de>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
@@ -49,103 +51,156 @@ Cc:     Ira Weiny <ira.weiny@intel.com>,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org,
         Christian Koenig <christian.koenig@amd.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@lst.de>
-Subject: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable pagefault/preempt twice
-Date:   Mon, 18 May 2020 11:48:43 -0700
-Message-Id: <20200518184843.3029640-1-ira.weiny@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200507150004.1423069-8-ira.weiny@intel.com>
-References: <20200507150004.1423069-8-ira.weiny@intel.com>
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH V3 07/15] arch/kunmap_atomic: Consolidate duplicate code
+Message-ID: <20200519000352.GF3025231@iweiny-DESK2.sc.intel.com>
+References: <20200507150004.1423069-1-ira.weiny@intel.com>
+ <20200507150004.1423069-8-ira.weiny@intel.com>
+ <20200516223306.GA161252@roeck-us.net>
+ <20200518034938.GA3023182@iweiny-DESK2.sc.intel.com>
+ <20200518042932.GA59205@roeck-us.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200518042932.GA59205@roeck-us.net>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Ira Weiny <ira.weiny@intel.com>
+On Sun, May 17, 2020 at 09:29:32PM -0700, Guenter Roeck wrote:
+> On Sun, May 17, 2020 at 08:49:39PM -0700, Ira Weiny wrote:
+> > On Sat, May 16, 2020 at 03:33:06PM -0700, Guenter Roeck wrote:
+> > > On Thu, May 07, 2020 at 07:59:55AM -0700, ira.weiny@intel.com wrote:
+> > > > From: Ira Weiny <ira.weiny@intel.com>
+> > > > 
+> > > > Every single architecture (including !CONFIG_HIGHMEM) calls...
+> > > > 
+> > > > 	pagefault_enable();
+> > > > 	preempt_enable();
+> > > > 
+> > > > ... before returning from __kunmap_atomic().  Lift this code into the
+> > > > kunmap_atomic() macro.
+> > > > 
+> > > > While we are at it rename __kunmap_atomic() to kunmap_atomic_high() to
+> > > > be consistent.
+> > > > 
+> > > > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > > 
+> > > This patch results in:
+> > > 
+> > > Starting init: /bin/sh exists but couldn't execute it (error -14)
+> > > 
+> > > when trying to boot microblazeel:petalogix-ml605 in qemu.
+> > 
+> > Thanks for the report.  I'm not readily seeing the issue.
+> > 
+> > Do you have a kernel config?  Specifically is CONFIG_HIGHMEM set?
+> > 
+> See below. Yes, CONFIG_HIGHMEM is set.
+> 
+> The scripts used to build and boot the image are at:
+> 
+> https://github.com/groeck/linux-build-test/tree/master/rootfs/microblazeel
 
-The kunmap_atomic clean up failed to remove one set of pagefault/preempt
-enables when vaddr is not in the fixmap.
+Despite finding the obvious error earlier today I've still been trying to get
+this to work.
 
-Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
----
- arch/microblaze/mm/highmem.c | 5 +----
- arch/mips/mm/highmem.c       | 5 +----
- arch/powerpc/mm/highmem.c    | 5 +----
- arch/sparc/mm/highmem.c      | 5 +----
- 4 files changed, 4 insertions(+), 16 deletions(-)
+I had to make some slight modifications to use the 0-day cross compile build
+and my local qemu build.  But those were pretty minor modifications.  I'm
+running on x86_64 host.
 
-diff --git a/arch/microblaze/mm/highmem.c b/arch/microblaze/mm/highmem.c
-index ee8a422b2b76..92e0890416c9 100644
---- a/arch/microblaze/mm/highmem.c
-+++ b/arch/microblaze/mm/highmem.c
-@@ -57,11 +57,8 @@ void kunmap_atomic_high(void *kvaddr)
- 	int type;
- 	unsigned int idx;
- 
--	if (vaddr < __fix_to_virt(FIX_KMAP_END)) {
--		pagefault_enable();
--		preempt_enable();
-+	if (vaddr < __fix_to_virt(FIX_KMAP_END))
- 		return;
--	}
- 
- 	type = kmap_atomic_idx();
- 
-diff --git a/arch/mips/mm/highmem.c b/arch/mips/mm/highmem.c
-index 37e244cdb14e..8e8726992720 100644
---- a/arch/mips/mm/highmem.c
-+++ b/arch/mips/mm/highmem.c
-@@ -41,11 +41,8 @@ void kunmap_atomic_high(void *kvaddr)
- 	unsigned long vaddr = (unsigned long) kvaddr & PAGE_MASK;
- 	int type __maybe_unused;
- 
--	if (vaddr < FIXADDR_START) { // FIXME
--		pagefault_enable();
--		preempt_enable();
-+	if (vaddr < FIXADDR_START)
- 		return;
--	}
- 
- 	type = kmap_atomic_idx();
- #ifdef CONFIG_DEBUG_HIGHMEM
-diff --git a/arch/powerpc/mm/highmem.c b/arch/powerpc/mm/highmem.c
-index 35071c2913f1..624b4438aff9 100644
---- a/arch/powerpc/mm/highmem.c
-+++ b/arch/powerpc/mm/highmem.c
-@@ -44,11 +44,8 @@ void kunmap_atomic_high(void *kvaddr)
- {
- 	unsigned long vaddr = (unsigned long) kvaddr & PAGE_MASK;
- 
--	if (vaddr < __fix_to_virt(FIX_KMAP_END)) {
--		pagefault_enable();
--		preempt_enable();
-+	if (vaddr < __fix_to_virt(FIX_KMAP_END))
- 		return;
--	}
- 
- 	if (IS_ENABLED(CONFIG_DEBUG_HIGHMEM)) {
- 		int type = kmap_atomic_idx();
-diff --git a/arch/sparc/mm/highmem.c b/arch/sparc/mm/highmem.c
-index d237d902f9c3..6ff6e2a9f9b3 100644
---- a/arch/sparc/mm/highmem.c
-+++ b/arch/sparc/mm/highmem.c
-@@ -86,11 +86,8 @@ void kunmap_atomic_high(void *kvaddr)
- 	unsigned long vaddr = (unsigned long) kvaddr & PAGE_MASK;
- 	int type;
- 
--	if (vaddr < FIXADDR_START) { // FIXME
--		pagefault_enable();
--		preempt_enable();
-+	if (vaddr < FIXADDR_START)
- 		return;
--	}
- 
- 	type = kmap_atomic_idx();
- 
--- 
-2.25.1
+With those slight mods to the scripts I get the following error even without my
+patch set on 5.7-rc4.  I have 1 cpu pegged at 100% while it is running...  Is
+there anything I can do to get more debug output?  Perhaps I just need to let
+it run longer?
 
+Thanks,
+Ira
+
+16:46:54 > ../linux-build-test/rootfs/microblazeel/run-qemu-microblazeel.sh 
+Build reference: v5.7-rc4-2-g7c2411d7fb6a
+
+Building microblaze:petalogix-s3adsp1800:qemu_microblazeel_defconfig ...
+running ................ failed (silent)
+------------
+qemu log:
+qemu-system-microblazeel: terminating on signal 15 from pid 3277686 (/bin/bash)
+------------
+Building microblaze:petalogix-ml605:qemu_microblazeel_ml605_defconfig ...
+running ................ failed (silent)
+------------
+qemu log:
+qemu-system-microblazeel: terminating on signal 15 from pid 3277686 (/bin/bash)
+------------
+
+<env changes>
+16:47:23 > git di
+diff --git a/rootfs/microblazeel/run-qemu-microblazeel.sh b/rootfs/microblazeel/run-qemu-microblazeel.sh
+index 68d4de39ab50..0d6a4f85308f 100755
+--- a/rootfs/microblazeel/run-qemu-microblazeel.sh
++++ b/rootfs/microblazeel/run-qemu-microblazeel.sh
+@@ -3,7 +3,8 @@
+ dir=$(cd $(dirname $0); pwd)
+ . ${dir}/../scripts/common.sh
+ 
+-QEMU=${QEMU:-${QEMU_BIN}/qemu-system-microblazeel}
++#QEMU=${QEMU:-${QEMU_BIN}/qemu-system-microblazeel}
++QEMU=/home/iweiny/dev/qemu/microblazeel-softmmu/qemu-system-microblazeel
+ PREFIX=microblazeel-linux-
+ ARCH=microblaze
+ PATH_MICROBLAZE=/opt/kernel/microblazeel/gcc-4.9.1/usr/bin
+diff --git a/rootfs/scripts/common.sh b/rootfs/scripts/common.sh
+index 8fa6a9be2b2f..c4550a27beaa 100644
+--- a/rootfs/scripts/common.sh
++++ b/rootfs/scripts/common.sh
+@@ -1,5 +1,9 @@
+ #!/bin/bash
+ 
++# Set up make.cross
++export COMPILER_INSTALL_PATH=$HOME/0day
++export GCC_VERSION=6.5.0
++
+ # Set the following variable to true to skip DC395/AM53C97 build tests
+ __skip_dc395=0
+ 
+@@ -569,7 +573,7 @@ doclean()
+        then
+                git clean -x -d -f -q
+        else
+-               make ARCH=${ARCH} mrproper >/dev/null 2>&1
++               make.cross ARCH=${ARCH} mrproper >/dev/null 2>&1
+        fi
+ }
+ 
+@@ -669,7 +673,7 @@ __setup_config()
+        cp ${__progdir}/${defconfig} arch/${arch}/configs
+     fi
+ 
+-    if ! make ARCH=${ARCH} CROSS_COMPILE=${PREFIX} ${defconfig} >/dev/null 2>&1 </dev/null; then
++    if ! make.cross ARCH=${ARCH} ${defconfig} >/dev/null 2>&1 </dev/null; then
+        return 2
+     fi
+ 
+@@ -687,7 +691,7 @@ __setup_config()
+        if [[ "${rel}" = "v3.16" ]]; then
+            target="oldconfig"
+        fi
+-       if ! make ARCH=${ARCH} CROSS_COMPILE=${PREFIX} ${target} >/dev/null 2>&1 </dev/null; then
++       if ! make.cross ARCH=${ARCH} ${target} >/dev/null 2>&1 </dev/null; then
+            return 1
+        fi
+     fi
+@@ -1038,7 +1042,7 @@ dosetup()
+     rootfs="$(setup_rootfs ${dynamic} ${rootfs})"
+     __common_fixups "${fixups}" "${rootfs}"
+ 
+-    make -j${maxload} ARCH=${ARCH} CROSS_COMPILE=${PREFIX} ${EXTRAS} </dev/null >/dev/null 2>${logfile}
++    make.cross -j${maxload} ARCH=${ARCH} ${EXTRAS} </dev/null >/dev/null 2>${logfile}
+     rv=$?
+     if [ ${rv} -ne 0 ]
+     then
+
+</env changes>
