@@ -2,60 +2,118 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E08921DB03F
-	for <lists+linux-parisc@lfdr.de>; Wed, 20 May 2020 12:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E94C51DB0E5
+	for <lists+linux-parisc@lfdr.de>; Wed, 20 May 2020 13:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbgETKcL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 20 May 2020 06:32:11 -0400
-Received: from lb1-smtp-cloud8.xs4all.net ([194.109.24.21]:41421 "EHLO
-        lb1-smtp-cloud8.xs4all.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726443AbgETKcK (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 20 May 2020 06:32:10 -0400
-Received: from cust-3a8def63 ([IPv6:fc0c:c1c9:903d:e9b4:326e:d2bd:718e:17cc])
-        by smtp-cloud8.xs4all.net with ESMTPA
-        id bM15jarQCdPgTbM1BjLwCW; Wed, 20 May 2020 12:32:09 +0200
-From:   Jeroen Roovers <jer@gentoo.org>
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>,
-        James.Bottomley@HansenPartnership.com,
-        Jeroen Roovers <jer@gentoo.org>
-Subject: [PATCH palo] ipl: Ensure no GCC builtins replace string functions
-Date:   Wed, 20 May 2020 12:30:56 +0200
-Message-Id: <20200520103055.31943-1-jer@gentoo.org>
-X-Mailer: git-send-email 2.26.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4wfPznz3lIHqGy16su/Hu3hXypMUKpamMC2OGrHPErUod9A7C1+0wBNjk81pI7ezWic8fjL4/OnVVrgRlkuH+YxdhwQeXKOA9U+RtPZd4IE2S+1IeeUZIt
- t9HDOFOuisGK9Xn4lz299Kw16LvjcWsVTxoQCUOAdShGTOV6MPAi4BVoR3H3gbpCFmMivDGy1VYP3FCB+/86gdaLJguBOABN5FH4OCOadNhVNUQfUaR/5FB2
- AzdrxeGoz6X0V8d1ryjOPD0NrnxjYcfRMWu1KYg3fNg=
+        id S1726436AbgETLDC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 20 May 2020 07:03:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53600 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726403AbgETLDC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 20 May 2020 07:03:02 -0400
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 54C63206F1;
+        Wed, 20 May 2020 11:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589972581;
+        bh=utyPQ/u7bwlzb7x8dQEbcEoU71e3JC9vp1bcYs20I9U=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rngQvLz2MUGKZpewOVsH0Gp996X30NtOhiZA6Cbl0hEqhTknZQkQtDQFiHZHAEToY
+         fgDm7RfVUybJvMWZuXAQNFp0jtJjFgHde5QiBByfKknhdpkLQu8UBIfHPc464pgZrb
+         8JcdoCjPSOev7Zt6WeeVeI+PkJexXjdwsOwSI3WI=
+Date:   Wed, 20 May 2020 20:02:55 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     x86@kernel.org, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
+        netdev@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 20/20] maccess: return -ERANGE when
+ copy_from_kernel_nofault_allowed fails
+Message-Id: <20200520200255.3db6d27304f0b4c29c52ebcc@kernel.org>
+In-Reply-To: <20200519134449.1466624-21-hch@lst.de>
+References: <20200519134449.1466624-1-hch@lst.de>
+        <20200519134449.1466624-21-hch@lst.de>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-With GCC 10, the ipl is built with the compiler overriding local
-definitions of some string functions, causing the ipl to trigger an
-HPMC. Fix this by setting the -fno-builtin compiler flag.
+On Tue, 19 May 2020 15:44:49 +0200
+Christoph Hellwig <hch@lst.de> wrote:
 
-Signed-off-by: Jeroen Roovers <jer@gentoo.org>
----
- ipl/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Allow the callers to distinguish a real unmapped address vs a range
+> that can't be probed.
+> 
+> Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-diff --git a/ipl/Makefile b/ipl/Makefile
-index 913ec66..c1d608b 100644
---- a/ipl/Makefile
-+++ b/ipl/Makefile
-@@ -39,7 +39,7 @@ endif
- VPATH=../lib:.
- 
- AFLAGS	= -I../lib
--CFLAGS	= -DIPL_LOADER -I. -I../lib -I../include -O2 -mdisable-fpregs -Wall -fno-delete-null-pointer-checks
-+CFLAGS	= -DIPL_LOADER -I. -I../lib -I../include -O2 -mdisable-fpregs -Wall -fno-delete-null-pointer-checks -fno-builtin
- LDFLAGS  = -N --section-start .init=0x60000 -e '$$START$$'
- 
- all:	iplelf
+Hi Christoph,
+
+Can you also update the kerneldoc comment too?
+Other than that, this looks good to me.
+
+Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
+
+Thank you!
+
+> ---
+>  mm/maccess.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/maccess.c b/mm/maccess.c
+> index 1e7d77656c596..4010d64189d21 100644
+> --- a/mm/maccess.c
+> +++ b/mm/maccess.c
+> @@ -25,7 +25,7 @@ bool __weak copy_from_kernel_nofault_allowed(void *dst, const void *unsafe_src,
+>  long copy_from_kernel_nofault(void *dst, const void *src, size_t size)
+>  {
+>  	if (!copy_from_kernel_nofault_allowed(dst, src, size))
+> -		return -EFAULT;
+> +		return -ERANGE;
+>  
+>  	pagefault_disable();
+>  	copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
+> @@ -69,7 +69,7 @@ long strncpy_from_kernel_nofault(char *dst, const void *unsafe_addr, long count)
+>  	if (unlikely(count <= 0))
+>  		return 0;
+>  	if (!copy_from_kernel_nofault_allowed(dst, unsafe_addr, count))
+> -		return -EFAULT;
+> +		return -ERANGE;
+>  
+>  	pagefault_disable();
+>  	do {
+> @@ -107,7 +107,7 @@ long copy_from_kernel_nofault(void *dst, const void *src, size_t size)
+>  	mm_segment_t old_fs = get_fs();
+>  
+>  	if (!copy_from_kernel_nofault_allowed(dst, src, size))
+> -		return -EFAULT;
+> +		return -ERANGE;
+>  
+>  	set_fs(KERNEL_DS);
+>  	pagefault_disable();
+> @@ -174,7 +174,7 @@ long strncpy_from_kernel_nofault(char *dst, const void *unsafe_addr, long count)
+>  	if (unlikely(count <= 0))
+>  		return 0;
+>  	if (!copy_from_kernel_nofault_allowed(dst, unsafe_addr, count))
+> -		return -EFAULT;
+> +		return -ERANGE;
+>  
+>  	set_fs(KERNEL_DS);
+>  	pagefault_disable();
+> -- 
+> 2.26.2
+> 
+
+
 -- 
-2.26.2
-
+Masami Hiramatsu <mhiramat@kernel.org>
