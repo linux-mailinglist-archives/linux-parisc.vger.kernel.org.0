@@ -2,66 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C56D1DFA0E
-	for <lists+linux-parisc@lfdr.de>; Sat, 23 May 2020 20:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95A551E088E
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 May 2020 10:16:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388260AbgEWSA4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 23 May 2020 14:00:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55824 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388259AbgEWSAl (ORCPT
+        id S1731301AbgEYIQ3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 May 2020 04:16:29 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:52540 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727894AbgEYIQ3 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 23 May 2020 14:00:41 -0400
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 463F1C02A19A
-        for <linux-parisc@vger.kernel.org>; Sat, 23 May 2020 11:00:39 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id o19so10921467qtr.10
-        for <linux-parisc@vger.kernel.org>; Sat, 23 May 2020 11:00:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=vhvRG4iP0p/cCM0/gHqK0xx0MaMNF3/azTtn5P0fCT1b4XLjGRAoR85FXgvwYtowP6
-         J1ev3dPiedOMtPyOzUYmKFEqsj6BkIi2lR8s0YRNLylOZ8MbeWQpwNTWDXPX57LUrKeO
-         FLL54WToKnc9WyFCTQNZdn8yjuqVF61dsdwJrbIWn1f8+mXNgwQXd1Xox425XdFJLCTr
-         UNYtD5Mkr7J8HytQpl125rrGiBWdOVTtdeDic18s2v1Ex5H4EMrCDseWe8z8QJUA2DPl
-         pMcmWf9nM5lni1dYRbVMyTKtLHSFCzrJM5oRvB7Hp9K31CMWsqtaG47ZQbJG6ZEre6uU
-         kwNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=pUqmnJdJR8Igrs/K8inLYSqzOOlpoMHNN/MUcEvpEvA8WvmT2gY3wS4rUUsFvVY/OA
-         sYoaGlrSzDHb8BTpS2YNsGqKBQBDMzJJGFkoHoFo5XdlBKZDmKBGNvVQqvs84u+79STN
-         MYLDv/g9CjplcxepHLrvEKDKUknBZTx2yJ+7MIJJCVEkvdQvxAyO0g1Rbemo1UByZXMX
-         iUv7rdZS0cTjV0qbCjVP0snmbVB5UX75Of8TdHN+eGSEIsUTd8A+yWO+G2xn1/I03xV2
-         MvyLTsI4UKgeP/e5tWUAadvIPQgp8wUuYdMqWY2fUZa0Wev8iiWesSz+/tjspsSgL94x
-         O4fw==
-X-Gm-Message-State: AOAM532UDQp2OBcj/zoK0xVVYPDKWAeQ6etTAZvr0Hy5WNnDEuzjdflc
-        13A7VvDcimhl+irb1lTDcv30P/agbpNyo/gC0dQ=
-X-Google-Smtp-Source: ABdhPJw4JSLl4s8hKmdikxPHOZTjp7LuShJQWo5DKJXfhdyHNpRWrWLXX1iWw/azZwGF2Nz0kU5bTrWvyq5YmK6naS0=
-X-Received: by 2002:ac8:1e16:: with SMTP id n22mr21502226qtl.78.1590256838401;
- Sat, 23 May 2020 11:00:38 -0700 (PDT)
+        Mon, 25 May 2020 04:16:29 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id C429A1C02AB; Mon, 25 May 2020 10:16:26 +0200 (CEST)
+Date:   Mon, 25 May 2020 10:16:26 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     "Karstens, Nate" <Nate.Karstens@garmin.com>
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>, Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        David Laight <David.Laight@aculab.com>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Changli Gao <xiaosuo@gmail.com>,
+        "a.josey@opengroup.org" <a.josey@opengroup.org>
+Subject: Re: [PATCH v2] Implement close-on-fork
+Message-ID: <20200525081626.GA16796@amd>
+References: <20200515152321.9280-1-nate.karstens@garmin.com>
+ <20200515155730.GF16070@bombadil.infradead.org>
+ <5b1929aa9f424e689c7f430663891827@garmin.com>
+ <1589559950.3653.11.camel@HansenPartnership.com>
+ <4964fe0ccdf7495daf4045c195b14ed6@garmin.com>
 MIME-Version: 1.0
-Received: by 2002:a37:9fd3:0:0:0:0:0 with HTTP; Sat, 23 May 2020 11:00:37
- -0700 (PDT)
-Reply-To: mrs.chantala2055@gmail.com
-From:   mrs chantal <mrs.chantalas1@gmail.com>
-Date:   Sat, 23 May 2020 18:00:37 +0000
-Message-ID: <CAMdkyyDY_0O7YgysHCjgRTJ=8-B7XurK7o1razRHDVOjgr2V2g@mail.gmail.com>
-Subject: jjCompliment
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="5vNYLRcllDrimb99"
+Content-Disposition: inline
+In-Reply-To: <4964fe0ccdf7495daf4045c195b14ed6@garmin.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-     Compliment of the day to you. I am Mrs.CHANTAL I am sending this brief
-    letter to solicit your partnership to transfer $13.5 Million US
-    Dollars.I shall send you more information and procedures when I receive
-    positive response From you. Please send me a message in My private
-    email address is ( mrschantal066@gmail.com  )
-    Best Regards
-    MrS.Chantal
+
+--5vNYLRcllDrimb99
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+>=20
+> If the feedback from the community is truly and finally that system() sho=
+uld not be used in these applications, then is there support for updating t=
+he man page to better communicate that?
+>=20
+
+Clarifying documenation might be the best way forward. Note you'd have
+to do that anyway, since people would not know about O_CLOFORK without
+pointers in documentation.
+
+Best regards,
+									Pavel
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--5vNYLRcllDrimb99
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl7LftoACgkQMOfwapXb+vJqEACcD+lR3XKYglSp+Req63ZwDi9m
+e/8An0k5uMvqkwoEcFAXFS3vLQ/eJejy
+=GABB
+-----END PGP SIGNATURE-----
+
+--5vNYLRcllDrimb99--
