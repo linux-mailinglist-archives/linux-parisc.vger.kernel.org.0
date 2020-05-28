@@ -2,212 +2,175 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4EDB1E53E0
-	for <lists+linux-parisc@lfdr.de>; Thu, 28 May 2020 04:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63D371E54C7
+	for <lists+linux-parisc@lfdr.de>; Thu, 28 May 2020 05:47:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726277AbgE1C1T (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 27 May 2020 22:27:19 -0400
-Received: from mx0a-00082601.pphosted.com ([67.231.145.42]:11220 "EHLO
-        mx0a-00082601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725849AbgE1C1T (ORCPT
+        id S1727062AbgE1DrC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 27 May 2020 23:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55334 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726907AbgE1DrB (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 27 May 2020 22:27:19 -0400
-Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
-        by mx0a-00082601.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04S2NAnA016270;
-        Wed, 27 May 2020 19:26:55 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=facebook;
- bh=VpkCS8UwLIQfwOHYW6Zix77gZeckddU/lMQJVkDRmw8=;
- b=K4b0icFOTtTLoxuDl0v268VD6twcV6JoFgRJwLMwmkD4Y7SZEQVOtWMJSL6mYasjyoje
- bO9bFZWGm8nzydM9+tMsGrD3xADJdNow8vIow9O3HK8CV7wctIWB15YO8cp20SHt6H2o
- zLry9leJGKLnz1VFqyZ95ZABVRIRNbYecsk= 
-Received: from maileast.thefacebook.com ([163.114.130.16])
-        by mx0a-00082601.pphosted.com with ESMTP id 317ktsv83y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 27 May 2020 19:26:55 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (100.104.31.183)
- by o365-in.thefacebook.com (100.104.36.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Wed, 27 May 2020 19:26:53 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YqI1J/XKjrEoNqEQv6w364WXX1vy3qYBAXtpbhF/LCg0aP7fz7vBDAKKsXPhlQ4eSzF0qFhDLx327lLf5TuQ8g17SMen0xVJ6ZvVN1XDwjMrtwUxg2TJ9+EkiQyW9hAyLXzJJhClgkt3yEB37+lZu2YaRH2JLcHmxWkuCso7OG8kKAFNQxkf7Tl3dG+fKQu1jxGQ4EPuK8BQ8yi4rVbWuFFp4Z9ZeAGoq26UQ/xyb+CyYwsTITWNIHnoNFwaQNxfBpdeZhQFcRWfJZ019kLqboODIPDt7gpSL/G1FGti7F3hHjIlcQE739J/MrNGQhbuTjwOj4nI6HbWGntVEC5W+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VpkCS8UwLIQfwOHYW6Zix77gZeckddU/lMQJVkDRmw8=;
- b=E7GMkh+Y87RQ/8KlAlUaNtHhj+hx5K4g20dfN1WWSk6lEOberqO/ux6tTCS9cbGTVHbtHuSsN6+Bvp63AKVE7J/RZwFIyJIL0D7Fze9MLN0ahxFHJ9zbZXnzSRAl8I9JMiyQstCHtqnT60+FFSz+ghaohwBQMXOg5v+JDYJDTKnu3SG9MRXOPPC2utExGi2eAQ2EaId+o+hlridOLZLzXeAMzL5foVlR5iKWspVa8U0G00s8fUegLgLtpiJeSNlx30e/G9lCNTLXMx5Gr55K0lKzj3yNjknq9xx5dyUtWULC9JqhCvtY4JoohAG/JUlHM2+DFEln/myUOgmTvQevJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fb.com; dmarc=pass action=none header.from=fb.com; dkim=pass
- header.d=fb.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.onmicrosoft.com;
- s=selector2-fb-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VpkCS8UwLIQfwOHYW6Zix77gZeckddU/lMQJVkDRmw8=;
- b=Osw7WNTlwPU7FPks8m+tahYe0Vy413voz0kbf01OKTF89wSHsoC3K4KsddWj+Zr53Jrglsd5ZDe9cyoK/HMCvMaiF7RhAXedhgkt7MqKE7ImHqLr3p1lIRWs3Zc1PeGwuPXNRSR+cUxgEDrd5gHNNm+dwkBMLmctyv/tE+ECQ4k=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=fb.com;
-Received: from BYAPR15MB4088.namprd15.prod.outlook.com (52.135.225.146) by
- BYAPR15MB2566.namprd15.prod.outlook.com (20.179.155.152) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3021.24; Thu, 28 May 2020 02:26:53 +0000
-Received: from BYAPR15MB4088.namprd15.prod.outlook.com
- ([fe80::4922:9927:5d6c:5301]) by BYAPR15MB4088.namprd15.prod.outlook.com
- ([fe80::4922:9927:5d6c:5301%7]) with mapi id 15.20.3021.030; Thu, 28 May 2020
- 02:26:53 +0000
-Subject: Re: [PATCH 12/23] bpf: handle the compat string in
- bpf_trace_copy_string better
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>
-CC:     <x86@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        <linux-parisc@vger.kernel.org>, <linux-um@lists.infradead.org>,
-        <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-References: <20200521152301.2587579-1-hch@lst.de>
- <20200521152301.2587579-13-hch@lst.de>
- <20200527190432.e4af1fba00c13cb1421f5a37@linux-foundation.org>
-From:   Yonghong Song <yhs@fb.com>
-Message-ID: <2b64fae6-394c-c1e5-8963-c256f4284065@fb.com>
-Date:   Wed, 27 May 2020 19:26:30 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.8.1
-In-Reply-To: <20200527190432.e4af1fba00c13cb1421f5a37@linux-foundation.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR17CA0053.namprd17.prod.outlook.com
- (2603:10b6:a03:167::30) To BYAPR15MB4088.namprd15.prod.outlook.com
- (2603:10b6:a02:c3::18)
+        Wed, 27 May 2020 23:47:01 -0400
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B707C08C5C3
+        for <linux-parisc@vger.kernel.org>; Wed, 27 May 2020 20:47:00 -0700 (PDT)
+Received: by mail-oi1-x242.google.com with SMTP id 23so22541706oiq.8
+        for <linux-parisc@vger.kernel.org>; Wed, 27 May 2020 20:47:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version;
+        bh=2qx91aVPuFO0vUiP0/I7F3TMnsxZODsCo0wW/nZA/Ek=;
+        b=PL6zETkbGU9mqzrGsocE1HBzwqKl3IMV7yV8wFZbGm4wHOwRBD8OMMG+y5JKGvCgPi
+         vm5n3+sf1eGzsQmqX4L8++JRmCX3DzLApuWLh2lFuHx1IPNt0zVceXBi8JMZm08yMjJi
+         dgTLtqCBs6olHY2rqJsuK9NL5GyMjlA9kP/Cz6nR6Si2xwGFFoE603kc/Dr53G3rQp6S
+         gFBb+PddTEBGiaWOuBvRGs40Im9zVq8VTNmoIb/MzDf19j1pLiqnHKik2BuMsIkBrRbh
+         TYnm6OVvmQUcyWzw/IOjcAS7zNs0Q98eBrYT94efLyjDduG9AxjlXGJtnrsATHUpOImZ
+         HIag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version;
+        bh=2qx91aVPuFO0vUiP0/I7F3TMnsxZODsCo0wW/nZA/Ek=;
+        b=SINIHPIGCDVRHiIgXRnUJ86J1zuMCa3GpVa6RjHFy+uHVajhjfXxAFgk1kTKdqmMgP
+         2tFxG9WAYjxLZ4DD4g74SMhDyq3IjKZSrHDBhYheiMtrNTd6qV/2ggRDotFjBmNEt1v+
+         GtKZ4opCnNuE7SYe3NyuW1UHEAJF1gY10mqS7a+O8P8JuYJmDTQi1QZpk/5fhSK9G5fP
+         3l6dwAoscj0hV1ftH5Qd3uYgYgj+yc5Q47AogkPZUYHbGFpy6zh6jX7EbPGir3RGqhFG
+         9sn2+RJdk3jEYkYS2BjvRcEOawrKz+E3xWecp9jsr9OcoOExvPbH6TA/zdcjGCGbOxDm
+         5NnQ==
+X-Gm-Message-State: AOAM530f6+8krQa7cJhKG+4qolDGtHEIVedVlyCAoNRjVeG/InhuI965
+        Uad4+S9x/fL9vTbKVye5pZ6iWQ==
+X-Google-Smtp-Source: ABdhPJyOlEQNd0DWG0KMQ3iclWevL0B8TV/DHISOzSWHCezO7ksCSIPPniMHO6dFdL8N85bmZfl1CA==
+X-Received: by 2002:aca:d856:: with SMTP id p83mr958723oig.38.1590637619384;
+        Wed, 27 May 2020 20:46:59 -0700 (PDT)
+Received: from eggly.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id v10sm1036334oov.15.2020.05.27.20.46.55
+        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
+        Wed, 27 May 2020 20:46:58 -0700 (PDT)
+Date:   Wed, 27 May 2020 20:46:22 -0700 (PDT)
+From:   Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@eggly.anvils
+To:     Jerome Glisse <jglisse@redhat.com>
+cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Huang Ying <ying.huang@intel.com>,
+        linux-kernel@vger.kernel.org,
+        Steven Capper <steve.capper@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Rabin Vincent <rabinv@axis.com>,
+        linux-arm-kernel@lists.infradead.org, rmk+kernel@arm.linux.org.uk,
+        Guo Ren <guoren@kernel.org>, linux-mips@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        nios2-dev@lists.rocketboards.org, linux-parisc@vger.kernel.org,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Guan Xuetao <gxt@pku.edu.cn>,
+        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
+        Chris Zankel <chris@zankel.net>
+Subject: Re: Cache flush issue with page_mapping_file() and swap back shmem
+ page ?
+In-Reply-To: <20200528002033.GB1992500@redhat.com>
+Message-ID: <alpine.LSU.2.11.2005272021220.3857@eggly.anvils>
+References: <20200528002033.GB1992500@redhat.com>
+User-Agent: Alpine 2.11 (LSU 23 2013-08-11)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from macbook-pro-52.local.dhcp.thefacebook.com (2620:10d:c090:400::5:730d) by BY5PR17CA0053.namprd17.prod.outlook.com (2603:10b6:a03:167::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3045.17 via Frontend Transport; Thu, 28 May 2020 02:26:50 +0000
-X-Originating-IP: [2620:10d:c090:400::5:730d]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 68f4f339-7cfa-44d5-e2c9-08d802ae9555
-X-MS-TrafficTypeDiagnostic: BYAPR15MB2566:
-X-Microsoft-Antispam-PRVS: <BYAPR15MB256681A825F92783F8E55456D38E0@BYAPR15MB2566.namprd15.prod.outlook.com>
-X-FB-Source: Internal
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-Forefront-PRVS: 0417A3FFD2
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cO+2vWK0q4q6n8OWfeoOpbjmCIQa4i075hzSJJgxcKQPQH3C6C6n+sau5NvtdB7YqSztLJitkvpkWMS8lpR3AgsKDxu0UDYkGfREzsvyHZu8lacnrYslJy2wWWy7+6hlu2Q5Pem/oCotGIAGATpB/IhRj0N2KQRMxTbgJqLKr6NtetTnA0RCYJSzzBifaxLG6JMV/ZdORe7PTj98bqX8qH3RSTnPzDeYNd/b7hnYLZq6HRsRswd7QB9haQ/ULY0cAjGfJpL1ZL2oXZZOv7gxzHKwpUpXCJvKpvMZLskCGyIrcXMO6fPybR/Mo8sI2rZnzYW5fZIQMClsD6W/ZLHN+9NBuWMg0qbZXmvsTjVBQdkCasJQ/W5niJMw9DacDiA5zYCnsdxNA7ffhWlBr0SWLw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR15MB4088.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(39860400002)(366004)(346002)(136003)(376002)(2616005)(110136005)(478600001)(316002)(31686004)(8676002)(53546011)(66556008)(8936002)(66946007)(6666004)(6506007)(66476007)(4326008)(6486002)(54906003)(31696002)(5660300002)(2906002)(7416002)(6512007)(16526019)(52116002)(86362001)(83380400001)(36756003)(186003)(21314003)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: iNLhMXT5NuIG4iVeuFVfwjB06rdGcGNs2C8tqo+TXTXDY+TH/8Q9gBe8ls+UJuDeRSDslARHpEav9QHth2wnXw3wpKSwEhdS99aQVuTCWNwVL4MRa7m+5GNmwVs3D4i6jx6l+AEc66mzFYzPL9qEkwTNAYdSFY658zd6aafW6N51Fv4DhnCSYhaaQ2z9nf8Ok3Y7SFWkEnSnzg95XgKj92NJxTxnB3ZsLqVjaeWd0FEABRXLrZBo9EzDijxzxf8Tzp/m0ery7UPqTFEzJw61+SMl5Itrw9NGUoMgTiiUViWLQtKLzmKhylogtWAqAFW41eB0OLttTLZ5k9iEQXnrLZHXWdbhNg8mtwRm1/W8gufIRTi1NWnQZ8/7XHCIMQSLwy8gQzLUyoXJoV0UzTK6m/fA/wV0su1JExQNkMesAyK3MgQDIsKdclrLsZYskD25QjbDCXbzarTd74mr66SDu7pCP4zvB8kgP8+l1m4SVeZo1uByKUoOF4EvQia4j4OEYRJdEaZ5VqDGn7OJ0QCaBw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68f4f339-7cfa-44d5-e2c9-08d802ae9555
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2020 02:26:52.8842
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xDxFUc48sZRxKJAVibavYQjZJVrUNBgBKvL5de8isesxUeL39liqDVG8Z9aTyrSe
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR15MB2566
-X-OriginatorOrg: fb.com
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-05-27_04:2020-05-27,2020-05-27 signatures=0
-X-Proofpoint-Spam-Details: rule=fb_default_notspam policy=fb_default score=0 priorityscore=1501
- cotscore=-2147483648 phishscore=0 impostorscore=0 adultscore=0
- mlxlogscore=999 clxscore=1011 bulkscore=0 spamscore=0 mlxscore=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005280009
-X-FB-Internal: deliver
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Hi Jerome,
 
+On Wed, 27 May 2020, Jerome Glisse wrote:
+> So any arch code which uses page_mapping_file() might get the wrong
+> answer, this function will return NULL for a swap backed page which
+> can be a shmem pages. But shmem pages can still be shared among
+> multiple process (and possibly at different virtual addresses if
+> mremap was use).
+> 
+> Attached is a patch that changes page_mapping_file() to return the
+> shmem mapping for swap backed shmem page. I have not tested it (no
+> way for me to test all those architecture) and i spotted this while
+> working on something else. So i hope someone can take a closer look.
 
-On 5/27/20 7:04 PM, Andrew Morton wrote:
-> On Thu, 21 May 2020 17:22:50 +0200 Christoph Hellwig <hch@lst.de> wrote:
+I'm certainly no expert on flush_dcache_page() and friends, but I'd
+be very surprised if such a problem exists, yet has gone unnoticed
+for so long.  page_mapping_file() itself is fairly new, added when
+a risk of crashing on a race with swapoff came in: but the previous
+use of page_mapping() would have suffered equally if there were such
+a cache flushinhg problem here.
+
+And I'm afraid your patch won't do anything to help if there is a
+problem: very soon after shmem calls add_to_swap_cache(), it calls
+shmem_delete_from_page_cache(), which sets page->mapping to NULL.
+
+But I can assure you that a shmem page (unlike an anon page) is never
+put into swap cache while it is mapped into userspace, and never
+mapped into userspace while it is still in swap cache: does that help?
+
+Hugh
+
+> This might be a shmem page that is in a sense a file that
+> can be mapped multiple times in different processes at
+> possibly different virtual addresses (fork + mremap). So
+> return the shmem mapping that will allow any arch code to
+> find all mappings of the page.
 > 
->> User the proper helper for kernel or userspace addresses based on
->> TASK_SIZE instead of the dangerous strncpy_from_unsafe function.
->>
->> ...
->>
->> --- a/kernel/trace/bpf_trace.c
->> +++ b/kernel/trace/bpf_trace.c
->> @@ -331,8 +331,11 @@ static void bpf_trace_copy_string(char *buf, void *unsafe_ptr, char fmt_ptype,
->>   	switch (fmt_ptype) {
->>   	case 's':
->>   #ifdef CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
->> -		strncpy_from_unsafe(buf, unsafe_ptr, bufsz);
->> -		break;
->> +		if ((unsigned long)unsafe_ptr < TASK_SIZE) {
->> +			strncpy_from_user_nofault(buf, user_ptr, bufsz);
->> +			break;
->> +		}
->> +		fallthrough;
->>   #endif
->>   	case 'k':
->>   		strncpy_from_kernel_nofault(buf, unsafe_ptr, bufsz);
+> Note that even if page is not anonymous then the page might
+> have a NULL page->mapping field if it is being truncated,
+> but then it is fine as each pte poiting to the page will be
+> remove and cache flushing should be handled properly by that
+> part of the code.
 > 
-> Another user of strncpy_from_unsafe() has popped up in linux-next's
-> bpf.  I did the below, but didn't try very hard - it's probably wrong
-> if CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE=n?
-> 
-> Anyway, please take a look at all the bpf_trace.c changes in
-> linux-next.
-> 
-> 
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: bpf:bpf_seq_printf(): handle potentially unsafe format string better
-> 
-> User the proper helper for kernel or userspace addresses based on
-> TASK_SIZE instead of the dangerous strncpy_from_unsafe function.
-> 
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Alexei Starovoitov <ast@kernel.org>
-> Cc: Daniel Borkmann <daniel@iogearbox.net>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Ingo Molnar <mingo@elte.hu>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Jerome Glisse <jglisse@redhat.com>
+> Cc: "Huang, Ying" <ying.huang@intel.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Mel Gorman <mgorman@techsingularity.net>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
 > ---
+>  mm/util.c | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
 > 
->   kernel/trace/bpf_trace.c |   13 ++++++++++---
->   1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> --- a/kernel/trace/bpf_trace.c~xxx
-> +++ a/kernel/trace/bpf_trace.c
-> @@ -588,15 +588,22 @@ BPF_CALL_5(bpf_seq_printf, struct seq_fi
->   		}
->   
->   		if (fmt[i] == 's') {
-> +			void *unsafe_ptr;
-> +
->   			/* try our best to copy */
->   			if (memcpy_cnt >= MAX_SEQ_PRINTF_MAX_MEMCPY) {
->   				err = -E2BIG;
->   				goto out;
->   			}
->   
-> -			err = strncpy_from_unsafe(bufs->buf[memcpy_cnt],
-> -						  (void *) (long) args[fmt_cnt],
-> -						  MAX_SEQ_PRINTF_STR_LEN);
-> +			unsafe_ptr = (void *)(long)args[fmt_cnt];
-> +			if ((unsigned long)unsafe_ptr < TASK_SIZE) {
-> +				err = strncpy_from_user_nofault(
-> +					bufs->buf[memcpy_cnt], unsafe_ptr,
-> +					MAX_SEQ_PRINTF_STR_LEN);
-> +			} else {
-> +				err = -EFAULT;
-> +			}
-
-This probably not right.
-The pointer stored at args[fmt_cnt] is a kernel pointer,
-but it could be an invalid address and we do not want to fault.
-Not sure whether it exists or not, we should use 
-strncpy_from_kernel_nofault()?
-
->   			if (err < 0)
->   				bufs->buf[memcpy_cnt][0] = '\0';
->   			params[fmt_cnt] = (u64)(long)bufs->buf[memcpy_cnt];
-> _
-> 
+> diff --git a/mm/util.c b/mm/util.c
+> index 988d11e6c17c..ec8739ab0cc3 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -685,8 +685,24 @@ EXPORT_SYMBOL(page_mapping);
+>   */
+>  struct address_space *page_mapping_file(struct page *page)
+>  {
+> -	if (unlikely(PageSwapCache(page)))
+> +	if (unlikely(PageSwapCache(page))) {
+> +		/*
+> +		 * This might be a shmem page that is in a sense a file that
+> +		 * can be mapped multiple times in different processes at
+> +		 * possibly different virtual addresses (fork + mremap). So
+> +		 * return the shmem mapping that will allow any arch code to
+> +		 * find all mappings of the page.
+> +		 *
+> +		 * Note that even if page is not anonymous then the page might
+> +		 * have a NULL page->mapping field if it is being truncated,
+> +		 * but then it is fine as each pte poiting to the page will be
+> +		 * remove and cache flushing should be handled properly by that
+> +		 * part of the code.
+> +		 */
+> +		if (!PageAnon(page))
+> +			return page->mapping;
+>  		return NULL;
+> +	}
+>  	return page_mapping(page);
+>  }
+>  
+> -- 
+> 2.26.2
