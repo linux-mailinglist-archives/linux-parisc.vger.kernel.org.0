@@ -2,55 +2,164 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0577A1E44E5
-	for <lists+linux-parisc@lfdr.de>; Wed, 27 May 2020 15:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26B3C1E522C
+	for <lists+linux-parisc@lfdr.de>; Thu, 28 May 2020 02:20:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389090AbgE0N6N (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 27 May 2020 09:58:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39522 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389091AbgE0N6L (ORCPT
+        id S1725780AbgE1AUu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 27 May 2020 20:20:50 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:48436 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725385AbgE1AUu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 27 May 2020 09:58:11 -0400
-X-Greylist: delayed 2677 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 27 May 2020 06:58:10 PDT
-Received: from msa12.plala.or.jp (msa12.plala.or.jp [IPv6:2400:7800:0:502e::12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C57ADC08C5C3;
-        Wed, 27 May 2020 06:58:10 -0700 (PDT)
-Received: from mwebp13 ([172.23.13.133]) by msa12.plala.or.jp with ESMTP
-          id <20200527135809.MXPY4246.msa12.plala.or.jp@mwebp13>;
-          Wed, 27 May 2020 22:58:09 +0900
-Date:   Wed, 27 May 2020 22:58:09 +0900
-From:   "Mrs.Judith Rice" <hamurafujimi@tmail.plala.or.jp>
-Reply-To: jonesevansje@gmail.com
-Message-ID: <20200527225809.ABH27.1023.root@mwebp13>
-Subject: Spende
+        Wed, 27 May 2020 20:20:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1590625247;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=3NfM/YRWw8tWtCVntluiCugDqJX5J7Mi6y5RyulO5Co=;
+        b=V+vf37fqjKvJdB4OPnBANqsMIvplHDRMhvYS2t7cRGLy1bUtduenGK1tPTIpGDLD12pvDU
+        eZYe8+QObPEaWnoTcHH7Tj8aMoIhJefIylQyAxxmOcaHIzWSqoCGTYZqN7mkBL449/7pKc
+        q4FDERwYU7yqw0fHINIyc2pg4nHkD/M=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-262--4PlExgtPwKJVseeIiuy9A-1; Wed, 27 May 2020 20:20:44 -0400
+X-MC-Unique: -4PlExgtPwKJVseeIiuy9A-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D96EC460;
+        Thu, 28 May 2020 00:20:40 +0000 (UTC)
+Received: from redhat.com (ovpn-119-19.rdu2.redhat.com [10.10.119.19])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 2FCE85D9CC;
+        Thu, 28 May 2020 00:20:35 +0000 (UTC)
+Date:   Wed, 27 May 2020 20:20:33 -0400
+From:   Jerome Glisse <jglisse@redhat.com>
+To:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Huang Ying <ying.huang@intel.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Steven Capper <steve.capper@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Rabin Vincent <rabinv@axis.com>,
+        linux-arm-kernel@lists.infradead.org, rmk+kernel@arm.linux.org.uk,
+        Guo Ren <guoren@kernel.org>, linux-mips@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        nios2-dev@lists.rocketboards.org, linux-parisc@vger.kernel.org,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Guan Xuetao <gxt@pku.edu.cn>,
+        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
+        Chris Zankel <chris@zankel.net>
+Subject: Cache flush issue with page_mapping_file() and swap back shmem page ?
+Message-ID: <20200528002033.GB1992500@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-2022-jp
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-Sensitivity: Normal
-X-VirusScan: Outbound; mvir-ac12; Wed, 27 May 2020 22:58:10 +0900
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: multipart/mixed; boundary="/04w6evG8XlLl3ft"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Attn:
 
-Es tut uns leid, dass wir Sie aufgrund eines Mismanagent of Beneficaries-Fonds von unseren ernannten Zonal Managern versp&#228;tet kontaktiert haben. Bitte beachten Sie, dass Sie qualifiziert sind, die Zahlung von 900.000,00 USD an der ATM-Karte mit neunhunderttausend Dollar zu erhalten.
+--/04w6evG8XlLl3ft
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Als Entsch&#228;digung von WORLD BANK / IWF (Internationaler W&#228;hrungsfonds) f&#252;r die automatisch &#252;ber einen E-Mail-Wahlautomaten gezogenen, die in der Vergangenheit noch nicht abgeschlossene Transaktionen hatten.
+So any arch code which uses page_mapping_file() might get the wrong
+answer, this function will return NULL for a swap backed page which
+can be a shmem pages. But shmem pages can still be shared among
+multiple process (and possibly at different virtual addresses if
+mremap was use).
 
-F&#252;r weitere Informationen kontaktieren Sie bitte Rev.EVANS JONES ( jonesevansje@gmail.com )
+Attached is a patch that changes page_mapping_file() to return the
+shmem mapping for swap backed shmem page. I have not tested it (no
+way for me to test all those architecture) and i spotted this while
+working on something else. So i hope someone can take a closer look.
 
-Bitte senden Sie ihm Ihre pers&#246;nlichen Daten wie:
+Cheers,
+Jérôme
 
-Vollst&#228;ndiger Name:
-Wohnanschrift:
-Telefonnummer:
-Herkunftsland:
+--/04w6evG8XlLl3ft
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: attachment;
+	filename="0001-mm-fix-cache-flush-for-shmem-page-that-are-swap-back.patch"
+Content-Transfer-Encoding: 8bit
 
-Gr&#252;&#223;e,
-Mrs. Judith Rice
+From 6c76b9f8baa87ff872f6be5a44805a74c1e07fea Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>
+Date: Wed, 27 May 2020 20:18:59 -0400
+Subject: [PATCH] mm: fix cache flush for shmem page that are swap backed.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This might be a shmem page that is in a sense a file that
+can be mapped multiple times in different processes at
+possibly different virtual addresses (fork + mremap). So
+return the shmem mapping that will allow any arch code to
+find all mappings of the page.
+
+Note that even if page is not anonymous then the page might
+have a NULL page->mapping field if it is being truncated,
+but then it is fine as each pte poiting to the page will be
+remove and cache flushing should be handled properly by that
+part of the code.
+
+Signed-off-by: Jérôme Glisse <jglisse@redhat.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
+---
+ mm/util.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/mm/util.c b/mm/util.c
+index 988d11e6c17c..ec8739ab0cc3 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -685,8 +685,24 @@ EXPORT_SYMBOL(page_mapping);
+  */
+ struct address_space *page_mapping_file(struct page *page)
+ {
+-	if (unlikely(PageSwapCache(page)))
++	if (unlikely(PageSwapCache(page))) {
++		/*
++		 * This might be a shmem page that is in a sense a file that
++		 * can be mapped multiple times in different processes at
++		 * possibly different virtual addresses (fork + mremap). So
++		 * return the shmem mapping that will allow any arch code to
++		 * find all mappings of the page.
++		 *
++		 * Note that even if page is not anonymous then the page might
++		 * have a NULL page->mapping field if it is being truncated,
++		 * but then it is fine as each pte poiting to the page will be
++		 * remove and cache flushing should be handled properly by that
++		 * part of the code.
++		 */
++		if (!PageAnon(page))
++			return page->mapping;
+ 		return NULL;
++	}
+ 	return page_mapping(page);
+ }
+ 
+-- 
+2.26.2
+
+
+--/04w6evG8XlLl3ft--
 
