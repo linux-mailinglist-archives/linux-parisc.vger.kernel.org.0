@@ -2,175 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63D371E54C7
-	for <lists+linux-parisc@lfdr.de>; Thu, 28 May 2020 05:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D742D1E5523
+	for <lists+linux-parisc@lfdr.de>; Thu, 28 May 2020 06:40:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727062AbgE1DrC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 27 May 2020 23:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55334 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726907AbgE1DrB (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 27 May 2020 23:47:01 -0400
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B707C08C5C3
-        for <linux-parisc@vger.kernel.org>; Wed, 27 May 2020 20:47:00 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id 23so22541706oiq.8
-        for <linux-parisc@vger.kernel.org>; Wed, 27 May 2020 20:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=2qx91aVPuFO0vUiP0/I7F3TMnsxZODsCo0wW/nZA/Ek=;
-        b=PL6zETkbGU9mqzrGsocE1HBzwqKl3IMV7yV8wFZbGm4wHOwRBD8OMMG+y5JKGvCgPi
-         vm5n3+sf1eGzsQmqX4L8++JRmCX3DzLApuWLh2lFuHx1IPNt0zVceXBi8JMZm08yMjJi
-         dgTLtqCBs6olHY2rqJsuK9NL5GyMjlA9kP/Cz6nR6Si2xwGFFoE603kc/Dr53G3rQp6S
-         gFBb+PddTEBGiaWOuBvRGs40Im9zVq8VTNmoIb/MzDf19j1pLiqnHKik2BuMsIkBrRbh
-         TYnm6OVvmQUcyWzw/IOjcAS7zNs0Q98eBrYT94efLyjDduG9AxjlXGJtnrsATHUpOImZ
-         HIag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=2qx91aVPuFO0vUiP0/I7F3TMnsxZODsCo0wW/nZA/Ek=;
-        b=SINIHPIGCDVRHiIgXRnUJ86J1zuMCa3GpVa6RjHFy+uHVajhjfXxAFgk1kTKdqmMgP
-         2tFxG9WAYjxLZ4DD4g74SMhDyq3IjKZSrHDBhYheiMtrNTd6qV/2ggRDotFjBmNEt1v+
-         GtKZ4opCnNuE7SYe3NyuW1UHEAJF1gY10mqS7a+O8P8JuYJmDTQi1QZpk/5fhSK9G5fP
-         3l6dwAoscj0hV1ftH5Qd3uYgYgj+yc5Q47AogkPZUYHbGFpy6zh6jX7EbPGir3RGqhFG
-         9sn2+RJdk3jEYkYS2BjvRcEOawrKz+E3xWecp9jsr9OcoOExvPbH6TA/zdcjGCGbOxDm
-         5NnQ==
-X-Gm-Message-State: AOAM530f6+8krQa7cJhKG+4qolDGtHEIVedVlyCAoNRjVeG/InhuI965
-        Uad4+S9x/fL9vTbKVye5pZ6iWQ==
-X-Google-Smtp-Source: ABdhPJyOlEQNd0DWG0KMQ3iclWevL0B8TV/DHISOzSWHCezO7ksCSIPPniMHO6dFdL8N85bmZfl1CA==
-X-Received: by 2002:aca:d856:: with SMTP id p83mr958723oig.38.1590637619384;
-        Wed, 27 May 2020 20:46:59 -0700 (PDT)
-Received: from eggly.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id v10sm1036334oov.15.2020.05.27.20.46.55
-        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
-        Wed, 27 May 2020 20:46:58 -0700 (PDT)
-Date:   Wed, 27 May 2020 20:46:22 -0700 (PDT)
-From:   Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@eggly.anvils
-To:     Jerome Glisse <jglisse@redhat.com>
-cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Huang Ying <ying.huang@intel.com>,
-        linux-kernel@vger.kernel.org,
-        Steven Capper <steve.capper@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Rabin Vincent <rabinv@axis.com>,
-        linux-arm-kernel@lists.infradead.org, rmk+kernel@arm.linux.org.uk,
-        Guo Ren <guoren@kernel.org>, linux-mips@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        nios2-dev@lists.rocketboards.org, linux-parisc@vger.kernel.org,
-        Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Guan Xuetao <gxt@pku.edu.cn>,
-        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
-        Chris Zankel <chris@zankel.net>
-Subject: Re: Cache flush issue with page_mapping_file() and swap back shmem
- page ?
-In-Reply-To: <20200528002033.GB1992500@redhat.com>
-Message-ID: <alpine.LSU.2.11.2005272021220.3857@eggly.anvils>
-References: <20200528002033.GB1992500@redhat.com>
-User-Agent: Alpine 2.11 (LSU 23 2013-08-11)
+        id S1726085AbgE1EkB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 28 May 2020 00:40:01 -0400
+Received: from verein.lst.de ([213.95.11.211]:54138 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725298AbgE1EkB (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 28 May 2020 00:40:01 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id C991B68B05; Thu, 28 May 2020 06:39:57 +0200 (CEST)
+Date:   Thu, 28 May 2020 06:39:57 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Yonghong Song <yhs@fb.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>, x86@kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
+        netdev@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 12/23] bpf: handle the compat string in
+ bpf_trace_copy_string better
+Message-ID: <20200528043957.GA28494@lst.de>
+References: <20200521152301.2587579-1-hch@lst.de> <20200521152301.2587579-13-hch@lst.de> <20200527190432.e4af1fba00c13cb1421f5a37@linux-foundation.org> <2b64fae6-394c-c1e5-8963-c256f4284065@fb.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2b64fae6-394c-c1e5-8963-c256f4284065@fb.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Jerome,
+On Wed, May 27, 2020 at 07:26:30PM -0700, Yonghong Song wrote:
+>> --- a/kernel/trace/bpf_trace.c~xxx
+>> +++ a/kernel/trace/bpf_trace.c
+>> @@ -588,15 +588,22 @@ BPF_CALL_5(bpf_seq_printf, struct seq_fi
+>>   		}
+>>     		if (fmt[i] == 's') {
+>> +			void *unsafe_ptr;
+>> +
+>>   			/* try our best to copy */
+>>   			if (memcpy_cnt >= MAX_SEQ_PRINTF_MAX_MEMCPY) {
+>>   				err = -E2BIG;
+>>   				goto out;
+>>   			}
+>>   -			err = strncpy_from_unsafe(bufs->buf[memcpy_cnt],
+>> -						  (void *) (long) args[fmt_cnt],
+>> -						  MAX_SEQ_PRINTF_STR_LEN);
+>> +			unsafe_ptr = (void *)(long)args[fmt_cnt];
+>> +			if ((unsigned long)unsafe_ptr < TASK_SIZE) {
+>> +				err = strncpy_from_user_nofault(
+>> +					bufs->buf[memcpy_cnt], unsafe_ptr,
+>> +					MAX_SEQ_PRINTF_STR_LEN);
+>> +			} else {
+>> +				err = -EFAULT;
+>> +			}
+>
+> This probably not right.
+> The pointer stored at args[fmt_cnt] is a kernel pointer,
+> but it could be an invalid address and we do not want to fault.
+> Not sure whether it exists or not, we should use 
+> strncpy_from_kernel_nofault()?
 
-On Wed, 27 May 2020, Jerome Glisse wrote:
-> So any arch code which uses page_mapping_file() might get the wrong
-> answer, this function will return NULL for a swap backed page which
-> can be a shmem pages. But shmem pages can still be shared among
-> multiple process (and possibly at different virtual addresses if
-> mremap was use).
-> 
-> Attached is a patch that changes page_mapping_file() to return the
-> shmem mapping for swap backed shmem page. I have not tested it (no
-> way for me to test all those architecture) and i spotted this while
-> working on something else. So i hope someone can take a closer look.
-
-I'm certainly no expert on flush_dcache_page() and friends, but I'd
-be very surprised if such a problem exists, yet has gone unnoticed
-for so long.  page_mapping_file() itself is fairly new, added when
-a risk of crashing on a race with swapoff came in: but the previous
-use of page_mapping() would have suffered equally if there were such
-a cache flushinhg problem here.
-
-And I'm afraid your patch won't do anything to help if there is a
-problem: very soon after shmem calls add_to_swap_cache(), it calls
-shmem_delete_from_page_cache(), which sets page->mapping to NULL.
-
-But I can assure you that a shmem page (unlike an anon page) is never
-put into swap cache while it is mapped into userspace, and never
-mapped into userspace while it is still in swap cache: does that help?
-
-Hugh
-
-> This might be a shmem page that is in a sense a file that
-> can be mapped multiple times in different processes at
-> possibly different virtual addresses (fork + mremap). So
-> return the shmem mapping that will allow any arch code to
-> find all mappings of the page.
-> 
-> Note that even if page is not anonymous then the page might
-> have a NULL page->mapping field if it is being truncated,
-> but then it is fine as each pte poiting to the page will be
-> remove and cache flushing should be handled properly by that
-> part of the code.
-> 
-> Signed-off-by: Jerome Glisse <jglisse@redhat.com>
-> Cc: "Huang, Ying" <ying.huang@intel.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Mel Gorman <mgorman@techsingularity.net>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
-> ---
->  mm/util.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/util.c b/mm/util.c
-> index 988d11e6c17c..ec8739ab0cc3 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -685,8 +685,24 @@ EXPORT_SYMBOL(page_mapping);
->   */
->  struct address_space *page_mapping_file(struct page *page)
->  {
-> -	if (unlikely(PageSwapCache(page)))
-> +	if (unlikely(PageSwapCache(page))) {
-> +		/*
-> +		 * This might be a shmem page that is in a sense a file that
-> +		 * can be mapped multiple times in different processes at
-> +		 * possibly different virtual addresses (fork + mremap). So
-> +		 * return the shmem mapping that will allow any arch code to
-> +		 * find all mappings of the page.
-> +		 *
-> +		 * Note that even if page is not anonymous then the page might
-> +		 * have a NULL page->mapping field if it is being truncated,
-> +		 * but then it is fine as each pte poiting to the page will be
-> +		 * remove and cache flushing should be handled properly by that
-> +		 * part of the code.
-> +		 */
-> +		if (!PageAnon(page))
-> +			return page->mapping;
->  		return NULL;
-> +	}
->  	return page_mapping(page);
->  }
->  
-> -- 
-> 2.26.2
+If you know it is a kernel pointer with this series it should be
+strncpy_from_kernel_nofault.  But even before the series it should have
+been strncpy_from_unsafe_strict.
