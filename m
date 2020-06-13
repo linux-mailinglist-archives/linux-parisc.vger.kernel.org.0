@@ -2,36 +2,33 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB591F85C4
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 Jun 2020 00:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9935A1F85D3
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Jun 2020 01:09:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726442AbgFMWtD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 13 Jun 2020 18:49:03 -0400
-Received: from mout.gmx.net ([212.227.17.20]:55633 "EHLO mout.gmx.net"
+        id S1726442AbgFMXJL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 13 Jun 2020 19:09:11 -0400
+Received: from mout.gmx.net ([212.227.17.21]:51341 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726272AbgFMWtC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 13 Jun 2020 18:49:02 -0400
+        id S1726258AbgFMXJK (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 13 Jun 2020 19:09:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1592088505;
-        bh=ZQoSmYn5DR4f1XEtFIcs/HRDaC0pyj6G16R31BFM678=;
+        s=badeba3b8450; t=1592089715;
+        bh=jnVcnFBff2T/un5fgbc7oUacNUtfZQxS34DA1FEN64o=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=hfK0M7gdeuiMA5rh9qdqXHKZWA2eJYeYSQ902fhWmPtTKR06kQNloa32KAnsT9/eF
-         fXV67CyXDaFHj9apv5G9aj+qN8XZYSRlsLVgotW+BU/BN+kaJ/PaNBiOPxRCp6zfly
-         1XVPP/B+bYhC5IJ2tsGR9C7Ke0NmwJU2PIGY8FxM=
+        b=JkoPejafYkkBODOIbvxAiFGCva6N/enHvBYVzUMgVEAjGmufGqMvkaJ6hjL8+G26E
+         XqZSO1r706UMMRfFcqrmsmZDTnlQwYZfINAywphwgkbo4z584OckWOrDENTYCd7cXv
+         mvNR2g0EkvXpcKHRRx18/76oVdNJGkl+61OTgay8=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from [192.168.20.60] ([92.116.151.203]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MUosT-1jJX0z3g7V-00QjnM; Sun, 14
- Jun 2020 00:48:24 +0200
-Subject: Re: [PATCH] parisc: suppress error messages for 'make clean'
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20200425054659.814774-1-masahiroy@kernel.org>
- <CAK7LNAR+jEzqqFJbCzfEbdnt-H4ZRpfLFA30ODfhhH=QXSk5nQ@mail.gmail.com>
- <11e05a6d-e4bd-e381-7015-2d52e8fdef39@gmx.de>
- <2867805.ELcs8R50RY@daneel.sf-tec.de>
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N7QxB-1ipwq62Bn3-017kMx; Sun, 14
+ Jun 2020 01:08:35 +0200
+Subject: Re: [PATCH] parisc: Prevent optimization of loads and stores in
+ atomic operations
+To:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Rolf Eike Beer <eike@sf-mail.de>
+References: <55841e49-cf36-e49a-5b33-7b60d3275e56@bell.net>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -90,99 +87,125 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <73a996ae-92b3-32fa-e796-23b049266631@gmx.de>
-Date:   Sun, 14 Jun 2020 00:48:22 +0200
+Message-ID: <aca3f8ae-1cf1-6920-ef6a-7a3585dd1d09@gmx.de>
+Date:   Sun, 14 Jun 2020 01:08:34 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <2867805.ELcs8R50RY@daneel.sf-tec.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="11JXvv6rkxWNxO4WV6HQ3YFb37GdS0QD5"
-X-Provags-ID: V03:K1:23q5nT0BkvdlSEGaWXcBY1d2CHCmIoL2XVZmLhkLaf2F8QdnAwe
- hHysZupNM7EZ6mjSbz5r3irxCqqDnLTeQ5DB8/f80FQ++uK8ofiDyLiaSBy4/7SnaNYcyiN
- nOTgKWYPnO8AmwT37BBxlb6Ki5xsI5rMRPXEkZsZ4cMc4IuLTW/4bzrDjWZZCGFfWs0cXcy
- feHKJA7LD89DpPpyid0hw==
+In-Reply-To: <55841e49-cf36-e49a-5b33-7b60d3275e56@bell.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:35uPYGUDHLyEBcReIFjvEGmg8UofoVgNPp6XaNrm21ieXDoGrei
+ MDDqErpRSjKqB2nswWb/VrHOsoxBNiFWZwkGPOeQVj8yOLDha7Qap2/LzEIRIDvylQOoF50
+ s4nXdm/wu7uFZjh5FR2tUtZXyzFXDgG60lRrRHllHAoLrroeADtf87/ySxFFmLrqsrgL5ZL
+ pQrBASEl/PT650qCX7UuA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:2qcEw6tCsUg=:/CfT5PC3EMtSv5L1kicFjn
- Oi1vKGF9iwNRuF9jz5ndsuqXzAl2kDYvs2N0mF0NRX0gFlRxb8OUUDsrlnsZy2YXsDBtEyonP
- MxP1Dsoh4HP36UoBcQLHmX0W9RUPyt34xX3B9DxC6mRNLRzXwJW9yX8rl3zA+FO0CYclZTnvc
- aaZx+duUdAeeKG9ThKhpqva6Qwn8glz/mpvYg2+GBZuBOwOnJ8nDaY7Y+huWkKkBVC4VcCAh4
- qulZSGtcCiensakOHN4eBRh4ea+Bi380pyDF+4h28gOaiOy3ZfZ6PUtz8KGCp1fZTTVFCWGn1
- 5q+UCVPGnw4iXhEndOKaqfM+RFD+lz3RwrxJJMckAU/7+DyIDs83Vmx/UfopPp6g11R+juRVS
- UxEMV4C0cNRaI/cBKuQ3HFPmWc7sfKi2YOtyo9RLdg8MHUqEzf9eON+FHSF7r5d9sOLET8tUs
- 8gYsr5ApuyjmsmbrMh9x188AnMvuSE+5rVG3YYxF94mDZgwMdArPfkhyFOnl4y2SMoiwNhf1c
- 4uFPUcaSvSdVCSUTr9UfJ9iq3Yb2zN33DH7iEpzuSfIgMUv7dF4UE0NDyQDrXnRLP1nWim5lR
- v+HGKezUDSO1GxVWwZakwaCw1Gx8msMQxvr2sNoUVi4dfEdpyfRD1vkpPrNe+m2R2h1ucrnrR
- zNQ3Qt+WCvN1uLvZEv4IDcSyPfjPf8eUeLJjyasdpn8ogiqvrpHZ/sYz+mwa4s8gKcDYdEfib
- U7uDs7CZvXTDe593xst9pN5Wk/CBbmjlm3cYygg1lgFqtP3NW2QEh1A4VryqoWmw3s2aqWy6W
- d5NliFedGarK9sWfkjnaJtpV9paTzwt9EsKdwnhOq+H6cXcOitdklA0EZ6ahIsWipWxBcVp10
- bJFhSCQeAcKLRM/cTMnOhPVLOWHcu0/uPYvLV2BGE0K7KChK01mqEKKtUU6OYYiFqxBe+bPtc
- +dFXZXWliVvX1dgvKl8YGl3mf+pNww5Cskugoks0pUsunpFhYW6uFyaF/GvrbIhbvBtG8e05e
- vin+ez59rPoXaA89oXlyP5FtMBrnDnpuKRJ77F+YEAwWroE064fi3beOFCkvFsOvt/iHWmeCN
- 11SZGnc4HPueRbm+hT+2ec1VzlH8MvmhjolpjyVtCGLqNGklIZ+qctSAQ1fh8JwNwkadAWRLK
- ckZarF7/bzZQIs1O88iI2iJoW6SJDwd34M2TsrigKlwrw4vtOiYyzIlaueTWd9G4xwf08=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:yAZHiBl9ryk=:2qRuh4ALrVmvgCgr9dvd/0
+ pBgygNkOydoBiJQdkF331f8pshG6nLUNlNWsvh7nPtJXf8xmWY3UaJNlHhW/H6sqmWI0sGma8
+ Y7DfcW9Sd7Snljn8/GuoAPGOrjhX6NYz35dFVF+lAOdfI8im+2er4xr63MbhN0LnCL0EdE75i
+ tJpHgQu/IrtoP8UBNT0nL4baS7Sqx7srGcf4/a6Gd4iXfY3YA8LMh0NeXEouRIyll+nbv7Y+7
+ +Te7oLAUte2l0oYY3oeXdHHFiO6+Z+l+4gdIpAK+f5VzgxDwyeJmDd7itdxkwo71irfxZSAEU
+ 43bVSrFvxSxndt3Rn5NsSmSsglXiwSpyoemkb9/6k828Vclf0kd28HFnKGdvoKOY+dbDIH2cC
+ 8U6ny43Kdsvw7iTLlB6txLTQtF0BOrCOOfMhw7WdBFNqWjpKUAjeuZQIgRTpgII1a9nj6eeLQ
+ eHWhFEYwuvO8hzUjNt1A15XM9x9W5on5IjARZUXNu6Qnz73JX89AyuF9s7TI+Slhw5D20CY88
+ LiVMiQpiDj29DuQlTmh9inzCKJ0cmYAVa6y75oEvL7YqZBFbOAPgpHVeRzY5LcumolK0X7KM5
+ ER26hxfVjvKKXcSQaP3Tby2DzWC2Ea/qhGVW8Vdtbs5LJW3h9Bp32C7zCWcnkXghn0XvfQPSy
+ +p31eodtQAhx9jqE+1tdEB6DXzw+h/rwuNDKs8eUVhPuMY1zuZjnb+ZQE2sPGFpUK+ZwGZhv1
+ 1+eolucJWt1E5Fz0l7uIHLg1ftN5OeeG6FTMA9D73hYvSy/4fgHOepVG4Eson7o9Ph/jrsnHf
+ 9EperdX7oBASZi5BLRzBHMv5g9nwYqsmZeS0A6fgYqsJKQwO/OMx1ys/OydovHP1Xhnqc/6KZ
+ +6r6aixKXopRbzMPw8eaGGWiQxZ7iYZtP9igB3vNAo1wAVMSM3Yo7GhiRsPBTRJC25+aEVgZA
+ Nnumi4RMlj5/LIYsXVENKO4onMx58aZmQGxodcn5T7Lj3nB+SmER5c1edCNTjjVLMztHilBq5
+ 7V8lxnHar4U4TMy2TRWKqhNBTZiW+R3A4ebvkd3X6NSTcx3heDPjTDqHn/h6BlhcuB+mT1isP
+ MvMKwC1ukv7q5FllkO4NgBTlzMr14lMc4G5KkqKpuTfEwlBLnpJvh1DDQW6onBK9ZiSJxjE8M
+ RHTMtwhwn7N/i8a06uKLPGDwX9bFNZ0pfpPaWfZzO0WWKRy0jt9dAvVbn9vjnxeGDs88taUG8
+ yQ6zLSjj6z0ZMKz4Q
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---11JXvv6rkxWNxO4WV6HQ3YFb37GdS0QD5
-Content-Type: multipart/mixed; boundary="CBJDS3axAHGQm4wgtPcq3oqNTCodU6XTb"
+On 13.06.20 17:20, John David Anglin wrote:
+> Stalls are quite frequent with recent kernels.  When the stall is detect=
+ed by rcu_sched, we
+> get a backtrace similar to the following:
+...
+> The fix is to use a volatile pointer for the accesses in spinlocks.  Thi=
+s prevents gcc from
+> optimizing the accesses.
 
---CBJDS3axAHGQm4wgtPcq3oqNTCodU6XTb
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Very nice finding!
+If this really fixes the stalls we have seen in the past, then that's a BI=
+G step forward!
 
-On 13.06.20 21:36, Rolf Eike Beer wrote:
-> Helge Deller wrote:
->> On 10.05.20 03:19, Masahiro Yamada wrote:
->>> Hi Helge,
->>>
->>> On Sun, May 10, 2020 at 2:39 AM Helge Deller <deller@gmx.de> wrote:
->=20
->>> I will drop this patch from my kbuild tree,
->>> then you will apply what you think is best
->>> to your tree.
->>>
->>> What do you think?
->>
->> Sure, I'll take it through the parisc tree.
->=20
-> Is this already in 5.7.2?=20
+...
+> diff --git a/arch/parisc/lib/bitops.c b/arch/parisc/lib/bitops.c
+> index 70ffbcf889b8..5904966ca957 100644
+> --- a/arch/parisc/lib/bitops.c
+> +++ b/arch/parisc/lib/bitops.c
+> @@ -21,11 +21,12 @@ arch_spinlock_t __atomic_hash[ATOMIC_HASH_SIZE] __lo=
+ck_aligned =3D {
+>  unsigned long __xchg64(unsigned long x, unsigned long *ptr)
+>  {
+>  	unsigned long temp, flags;
+> +	volatile unsigned long *p =3D ptr;
 
-No, because it went into 5.8 kernel and not backwards into 5.7.x:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/?id=3D0d341e0ddb1a3444716420ad9151949c02adbe4e
+Regarding your changes to bitops.c, can't we instead
+simply tag the parameter ptr with "volatile", e.g.
+ unsigned long __xchg64(unsigned long x, volatile unsigned long *ptr)
+ unsigned long __xchg32(int x, volatile int *ptr)
+ unsigned long __xchg8(char x, volatile char *ptr)
 
 Helge
 
-> I get these:
->=20
-> pioneer /usr/src/linux-5.7.1-gentoo #  make distclean
-> gcc: error: missing argument to '-Wframe-larger-than=3D'
-> gcc: error: missing argument to '-Wframe-larger-than=3D'
->   CLEAN   arch/parisc/kernel
-> gcc: error: missing argument to '-Wframe-larger-than=3D'
-> gcc: error: missing argument to '-Wframe-larger-than=3D'
 
+>
+> -	_atomic_spin_lock_irqsave(ptr, flags);
+> -	temp =3D *ptr;
+> -	*ptr =3D x;
+> -	_atomic_spin_unlock_irqrestore(ptr, flags);
+> +	_atomic_spin_lock_irqsave(p, flags);
+> +	temp =3D *p;
+> +	*p =3D x;
+> +	_atomic_spin_unlock_irqrestore(p, flags);
+>  	return temp;
+>  }
+>  #endif
+> @@ -33,12 +34,13 @@ unsigned long __xchg64(unsigned long x, unsigned lon=
+g *ptr)
+>  unsigned long __xchg32(int x, int *ptr)
+>  {
+>  	unsigned long flags;
+> +	volatile int *p =3D ptr;
+>  	long temp;
+>
+> -	_atomic_spin_lock_irqsave(ptr, flags);
+> -	temp =3D (long) *ptr;	/* XXX - sign extension wanted? */
+> -	*ptr =3D x;
+> -	_atomic_spin_unlock_irqrestore(ptr, flags);
+> +	_atomic_spin_lock_irqsave(p, flags);
+> +	temp =3D (long) *p;	/* XXX - sign extension wanted? */
+> +	*p =3D x;
+> +	_atomic_spin_unlock_irqrestore(p, flags);
+>  	return (unsigned long)temp;
+>  }
+>
+> @@ -46,12 +48,13 @@ unsigned long __xchg32(int x, int *ptr)
+>  unsigned long __xchg8(char x, char *ptr)
+>  {
+>  	unsigned long flags;
+> +	volatile char *p =3D ptr;
+>  	long temp;
+>
+> -	_atomic_spin_lock_irqsave(ptr, flags);
+> -	temp =3D (long) *ptr;	/* XXX - sign extension wanted? */
+> -	*ptr =3D x;
+> -	_atomic_spin_unlock_irqrestore(ptr, flags);
+> +	_atomic_spin_lock_irqsave(p, flags);
+> +	temp =3D (long) *p;	/* XXX - sign extension wanted? */
+> +	*p =3D x;
+> +	_atomic_spin_unlock_irqrestore(p, flags);
+>  	return (unsigned long)temp;
+>  }
+>
 
---CBJDS3axAHGQm4wgtPcq3oqNTCodU6XTb--
-
---11JXvv6rkxWNxO4WV6HQ3YFb37GdS0QD5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQS86RI+GtKfB8BJu973ErUQojoPXwUCXuVXtgAKCRD3ErUQojoP
-XwmoAP9iWsPIrz2JQZbJpWsF5ASKBKTtD+a8Ne1TF16e33xUqwEAykdgqIpn6/Oj
-RcKqZkj4xt8A3K3mo4qqpVrWxnTDbQA=
-=Crz2
------END PGP SIGNATURE-----
-
---11JXvv6rkxWNxO4WV6HQ3YFb37GdS0QD5--
