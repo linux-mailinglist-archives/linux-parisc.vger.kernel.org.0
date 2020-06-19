@@ -2,134 +2,103 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76DC520149F
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Jun 2020 18:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7BAA201CFB
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Jun 2020 23:17:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404361AbgFSQN0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Jun 2020 12:13:26 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:40978 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2394381AbgFSQNY (ORCPT
+        id S1727111AbgFSVRF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Jun 2020 17:17:05 -0400
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:38222 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726313AbgFSVRF (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Jun 2020 12:13:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592583203;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eYfbH2Z9PmFD3YC1EEjF5e5lSljD0oX0ZInZG0GJcWM=;
-        b=E2Bt/kk3UazV2elMUPc0lQ9Nx8Tu31D6wZGh7wo06a0tRQu5SA4Co1Jc8BdE3VnzsLXwKN
-        eh9XMP6JPrdLVM0f4OyNALtbWJVnr3bP+oAkN+7desZwj1HPR2KggtRd5u6dKE/bSfjEdi
-        koTC2WC28juHGa3RMzrD2LDBAjyv7eA=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-90-zoIEix9uOYeRwqUlwxlMlg-1; Fri, 19 Jun 2020 12:13:21 -0400
-X-MC-Unique: zoIEix9uOYeRwqUlwxlMlg-1
-Received: by mail-qt1-f198.google.com with SMTP id s30so4442471qts.18
-        for <linux-parisc@vger.kernel.org>; Fri, 19 Jun 2020 09:13:21 -0700 (PDT)
+        Fri, 19 Jun 2020 17:17:05 -0400
+Received: by mail-pj1-f68.google.com with SMTP id d6so4814960pjs.3;
+        Fri, 19 Jun 2020 14:17:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=eYfbH2Z9PmFD3YC1EEjF5e5lSljD0oX0ZInZG0GJcWM=;
-        b=H4qYLBvgW11REbjL85aF4QupmKd8w/lGIbj3Fdz+8NKv8c5Vx7zxqk48dfzMDiJ5Kf
-         oz79941q/uVaQEYGX2fuG6/o2MqQNL8X0IsM3n+O5Bh5NerLNMpBivxaY92NoBSYvOE1
-         DkHlG0iCR0wPnkGvlNNhtub4KxEuwP8lhLsmdODvbVP2YsidV4Ah4HKU2g9EAb0iLPIZ
-         yqSJZkQgqOSV6/xcOBv7IkH2QJ4eMUEY6fyqwnggrqYme4Jtei34pxnpHynb8eVSyLKS
-         jRfFRVoIZekbPp/jtgljqPKG1w3bngxts+vnpbjllJLN7uH/HQCD6ihpkn0aJX3uxjM2
-         5GNQ==
-X-Gm-Message-State: AOAM533EYdnlA8Bc5cJC7UxKQIGCWXu2KxK++ifbcWydm4QfXdJer9GZ
-        /Ggh0t1tB+40DLURLxSrZw5rh4LUEoTLsWrSbObJxN2Bcz8k0rzl+Qo9FZrQg4jynhk7yVG1Bnp
-        Dg2aXTW/0ZQQaCe4r6g0hEqOp
-X-Received: by 2002:a37:5d6:: with SMTP id 205mr4101507qkf.46.1592583200973;
-        Fri, 19 Jun 2020 09:13:20 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJx+/kXn6XM9J3AHchJ11d9906jc9OEfvlqbxTG9lTxQJaaFL7aW/z0ASmv5F6WdZBp/RES2MA==
-X-Received: by 2002:a37:5d6:: with SMTP id 205mr4101475qkf.46.1592583200713;
-        Fri, 19 Jun 2020 09:13:20 -0700 (PDT)
-Received: from xz-x1.redhat.com ([2607:9880:19c0:32::2])
-        by smtp.gmail.com with ESMTPSA id c83sm7040588qkb.75.2020.06.19.09.13.19
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=7hNihcV3mvm2VbgzMCb3VuZiHFSALZHgtjxranVJTmE=;
+        b=dFoRRUIOPhGwq71xQ3P5RaSFVt3bmwjhvl5AdFG+meSI/NEIzNPMMe/xEPhAxzdJ2r
+         d50+IrkTF9f1gGmcHySTy01RmU8QPumj3DOkYArg6zbHLPBcw8QAg2cFZul0l3Sfs5Ob
+         NVZGBZgPzPK/dF4mW9jtu+ycQkiChDdC242EIgLwTR5vM4A45huK/cVwNkPc7kfAs1FK
+         m7UJxPpQrCKNg5x8vWei+3cZ5f2S2K93IBHb8+03qBUtQ3soUjocdfODW8pK0tITf5Vj
+         D4165oNfL+4ZtFffGDbWOQc0n+3yUNv/uGpxRsf6guBFMPf8m7zetLKit9qzowIDS4L/
+         BPFw==
+X-Gm-Message-State: AOAM53268EVEXHpnR3d9xMFMIGRV9mClDCGDRBXanluYcF3KQrPbMdqW
+        AL+PA3LJMsLIrsDQrzB1QNQ=
+X-Google-Smtp-Source: ABdhPJzVFn2+ANNt35xVqck48K2jzOLKssbmFAqliq16/KCjcWBHQm/+K7WAIhdQVl6WxrZdgzhwhg==
+X-Received: by 2002:a17:90a:7a8f:: with SMTP id q15mr4751132pjf.116.1592601423167;
+        Fri, 19 Jun 2020 14:17:03 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id s188sm6551320pfb.118.2020.06.19.14.17.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2020 09:13:20 -0700 (PDT)
-From:   Peter Xu <peterx@redhat.com>
-To:     linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc:     Peter Xu <peterx@redhat.com>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Fri, 19 Jun 2020 14:17:01 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 0E5884063E; Fri, 19 Jun 2020 21:17:00 +0000 (UTC)
+Date:   Fri, 19 Jun 2020 21:17:00 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Christoph Hellwig <hch@lst.de>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH 15/26] mm/parisc: Use general page fault accounting
-Date:   Fri, 19 Jun 2020 12:13:18 -0400
-Message-Id: <20200619161318.9492-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200619160538.8641-1-peterx@redhat.com>
-References: <20200619160538.8641-1-peterx@redhat.com>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>,
+        Brian Gerst <brgerst@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] kernel: add a kernel_wait helper
+Message-ID: <20200619211700.GS11244@42.do-not-panic.com>
+References: <20200618144627.114057-1-hch@lst.de>
+ <20200618144627.114057-7-hch@lst.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200618144627.114057-7-hch@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Use the general page fault accounting by passing regs into handle_mm_fault().
-It naturally solve the issue of multiple page fault accounting when page fault
-retry happened.
+On Thu, Jun 18, 2020 at 04:46:27PM +0200, Christoph Hellwig wrote:
+> --- a/kernel/exit.c
+> +++ b/kernel/exit.c
+> @@ -1626,6 +1626,22 @@ long kernel_wait4(pid_t upid, int __user *stat_addr, int options,
+>  	return ret;
+>  }
+>  
+> +int kernel_wait(pid_t pid, int *stat)
+> +{
+> +	struct wait_opts wo = {
+> +		.wo_type	= PIDTYPE_PID,
+> +		.wo_pid		= find_get_pid(pid),
+> +		.wo_flags	= WEXITED,
+> +	};
+> +	int ret;
+> +
+> +	ret = do_wait(&wo);
+> +	if (ret > 0 && wo.wo_stat)
+> +		*stat = wo.wo_stat;
 
-Add the missing PERF_COUNT_SW_PAGE_FAULTS perf events too.  Note, the other two
-perf events (PERF_COUNT_SW_PAGE_FAULTS_[MAJ|MIN]) were done in handle_mm_fault().
+Since all we care about is WEXITED, that could be simplified
+to something like this:
 
-CC: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-CC: Helge Deller <deller@gmx.de>
-CC: linux-parisc@vger.kernel.org
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- arch/parisc/mm/fault.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+if (ret > 0 && KWIFEXITED(wo.wo_stat)
+ 	*stat = KWEXITSTATUS(wo.wo_stat)
 
-diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-index c10908ea8803..65661e22678e 100644
---- a/arch/parisc/mm/fault.c
-+++ b/arch/parisc/mm/fault.c
-@@ -18,6 +18,7 @@
- #include <linux/extable.h>
- #include <linux/uaccess.h>
- #include <linux/hugetlb.h>
-+#include <linux/perf_event.h>
- 
- #include <asm/traps.h>
- 
-@@ -281,6 +282,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 	acc_type = parisc_acctyp(code, regs->iir);
- 	if (acc_type & VM_WRITE)
- 		flags |= FAULT_FLAG_WRITE;
-+	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
- retry:
- 	down_read(&mm->mmap_sem);
- 	vma = find_vma_prev(mm, address, &prev_vma);
-@@ -302,7 +304,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 	 * fault.
- 	 */
- 
--	fault = handle_mm_fault(vma, address, flags, NULL);
-+	fault = handle_mm_fault(vma, address, flags, regs);
- 
- 	if (fault_signal_pending(fault, regs))
- 		return;
-@@ -323,10 +325,6 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 		BUG();
- 	}
- 	if (flags & FAULT_FLAG_ALLOW_RETRY) {
--		if (fault & VM_FAULT_MAJOR)
--			current->maj_flt++;
--		else
--			current->min_flt++;
- 		if (fault & VM_FAULT_RETRY) {
- 			/*
- 			 * No need to up_read(&mm->mmap_sem) as we would
--- 
-2.26.2
+Otherwise callers have to use W*() wrappers.
 
+> +	put_pid(wo.wo_pid);
+> +	return ret;
+> +}
+
+Then we don't get *any* in-kernel code dealing with the W*() crap.
+I just unwrapped this for the umh [0], given that otherwise we'd
+have to use KW*() callers elsewhere. Doing it upshot one level
+further would be even better.
+
+[0] https://lkml.kernel.org/r/20200610154923.27510-1-mcgrof@kernel.org              
+
+  Luis
