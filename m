@@ -2,103 +2,88 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7BAA201CFB
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Jun 2020 23:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAD46201FBC
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 Jun 2020 04:25:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727111AbgFSVRF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Jun 2020 17:17:05 -0400
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:38222 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726313AbgFSVRF (ORCPT
+        id S1731834AbgFTCZG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Jun 2020 22:25:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48158 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731812AbgFTCZF (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Jun 2020 17:17:05 -0400
-Received: by mail-pj1-f68.google.com with SMTP id d6so4814960pjs.3;
-        Fri, 19 Jun 2020 14:17:03 -0700 (PDT)
+        Fri, 19 Jun 2020 22:25:05 -0400
+Received: from mail-oo1-xc42.google.com (mail-oo1-xc42.google.com [IPv6:2607:f8b0:4864:20::c42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FFC2C0613EF
+        for <linux-parisc@vger.kernel.org>; Fri, 19 Jun 2020 19:25:05 -0700 (PDT)
+Received: by mail-oo1-xc42.google.com with SMTP id f2so2277384ooo.5
+        for <linux-parisc@vger.kernel.org>; Fri, 19 Jun 2020 19:25:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Z7qZkCC78niGrQpOK/h//rZ5fVXVPMkzzzEIQT+ASg4=;
+        b=NBahMNEoLov06X/O7/g04X4PinFr7MHfu2LdLnZnWclM4aHfyYYZhwIxdGHklOuM5j
+         LlzO2hyri34gSFPYxNuvU29UhXPJIZd6P46RQpg+2CooADh2cKEszY2hUU+sO4QxhJMS
+         DlJXI8sIw2QK4jcR+6FOPkN82KmRY0PnGcnHHxk35yYFSbk7PtO75aU8MKFEWEw9XjWT
+         N1JmkQQ12MnK6gGLC/hiDk/KhizhrBYpGcjj/AlkaSu7rVSF+tHM86TA8JvzpR9oqFSL
+         UuoHdXMpC+1MQfvHFQiAdHbgxHf/AU985I5iJAwLGkmvJhT0agE8u/kDvWHXPaSwzI91
+         4Pmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=7hNihcV3mvm2VbgzMCb3VuZiHFSALZHgtjxranVJTmE=;
-        b=dFoRRUIOPhGwq71xQ3P5RaSFVt3bmwjhvl5AdFG+meSI/NEIzNPMMe/xEPhAxzdJ2r
-         d50+IrkTF9f1gGmcHySTy01RmU8QPumj3DOkYArg6zbHLPBcw8QAg2cFZul0l3Sfs5Ob
-         NVZGBZgPzPK/dF4mW9jtu+ycQkiChDdC242EIgLwTR5vM4A45huK/cVwNkPc7kfAs1FK
-         m7UJxPpQrCKNg5x8vWei+3cZ5f2S2K93IBHb8+03qBUtQ3soUjocdfODW8pK0tITf5Vj
-         D4165oNfL+4ZtFffGDbWOQc0n+3yUNv/uGpxRsf6guBFMPf8m7zetLKit9qzowIDS4L/
-         BPFw==
-X-Gm-Message-State: AOAM53268EVEXHpnR3d9xMFMIGRV9mClDCGDRBXanluYcF3KQrPbMdqW
-        AL+PA3LJMsLIrsDQrzB1QNQ=
-X-Google-Smtp-Source: ABdhPJzVFn2+ANNt35xVqck48K2jzOLKssbmFAqliq16/KCjcWBHQm/+K7WAIhdQVl6WxrZdgzhwhg==
-X-Received: by 2002:a17:90a:7a8f:: with SMTP id q15mr4751132pjf.116.1592601423167;
-        Fri, 19 Jun 2020 14:17:03 -0700 (PDT)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id s188sm6551320pfb.118.2020.06.19.14.17.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2020 14:17:01 -0700 (PDT)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 0E5884063E; Fri, 19 Jun 2020 21:17:00 +0000 (UTC)
-Date:   Fri, 19 Jun 2020 21:17:00 +0000
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>,
-        Brian Gerst <brgerst@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] kernel: add a kernel_wait helper
-Message-ID: <20200619211700.GS11244@42.do-not-panic.com>
-References: <20200618144627.114057-1-hch@lst.de>
- <20200618144627.114057-7-hch@lst.de>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Z7qZkCC78niGrQpOK/h//rZ5fVXVPMkzzzEIQT+ASg4=;
+        b=PtaQed2hzuMI3sbUkZ89Gcy0JWQoWcEy5+OAZnodYEFCNdnbJNqtlUP7lMgnQVN8Y+
+         uVE8XOTjoHUu613VbnroQr6OH0OFeckCO/PYxvW3kJXXx43zWxDG/f9Tt9A06P8oslqE
+         HYeGCxPGQ5olWpol0PMH4Dq8rlvOWv9QoVYx5pu7aE2E56mp0u5P3Oht9AhaKqKaN7NS
+         61ss+h0gUgn4B0Itm2M40zVTN7f2k9N6uMTNyjPbewvhAd6a9gB7nVt4a1SZWldzMRwm
+         FtaIxcxzFNLhmmYrNxjoryWOVAgosznJ2rx5gVvPu+oiP0GezqazKq2Cmv6yv0r1DWaW
+         CSyw==
+X-Gm-Message-State: AOAM531n+VWNysHLZO16oUvLFBjird4UMiY71B6Gltga6z8Akn97v712
+        8TpjWKL4KSrcokAObcYqyptdxMHDNLub2raT8+E=
+X-Google-Smtp-Source: ABdhPJyrcCtEQOoaJMVPzrsoW9XRBgrws3eDP92vV3LCY/5KlOM0lPBpyg8yQ2GO935u1UsgGDt9qkUFbBfyHGCms/0=
+X-Received: by 2002:a4a:e658:: with SMTP id q24mr5731087oot.87.1592619904890;
+ Fri, 19 Jun 2020 19:25:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200618144627.114057-7-hch@lst.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a05:6830:1bc5:0:0:0:0 with HTTP; Fri, 19 Jun 2020 19:25:04
+ -0700 (PDT)
+Reply-To: tofilbaman@gmail.com
+From:   Tofil Bama <aliftomarn6@gmail.com>
+Date:   Fri, 19 Jun 2020 19:25:04 -0700
+Message-ID: <CACwWz1r4EGCuyF59ZDh2RNrQqSmNym-HVD9PP3vcZn7wN8xT=w@mail.gmail.com>
+Subject: KINDEST MESSAGE.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Jun 18, 2020 at 04:46:27PM +0200, Christoph Hellwig wrote:
-> --- a/kernel/exit.c
-> +++ b/kernel/exit.c
-> @@ -1626,6 +1626,22 @@ long kernel_wait4(pid_t upid, int __user *stat_addr, int options,
->  	return ret;
->  }
->  
-> +int kernel_wait(pid_t pid, int *stat)
-> +{
-> +	struct wait_opts wo = {
-> +		.wo_type	= PIDTYPE_PID,
-> +		.wo_pid		= find_get_pid(pid),
-> +		.wo_flags	= WEXITED,
-> +	};
-> +	int ret;
-> +
-> +	ret = do_wait(&wo);
-> +	if (ret > 0 && wo.wo_stat)
-> +		*stat = wo.wo_stat;
+Dear,
 
-Since all we care about is WEXITED, that could be simplified
-to something like this:
+My name is Mr Alif Tomar, I am the Bill and Exchange (assistant)
+Manager of Bank of Africa Ouagadougou, Burkina Faso. In my department
+I discovered an abandoned sum of eighteen million three hundred
+thousand United State of American dollars (18.3MILLION USA DOLLARS) in
+an account that belongs to one of our foreign customer who died in
+airline that crashed on 4th October 2001.
 
-if (ret > 0 && KWIFEXITED(wo.wo_stat)
- 	*stat = KWEXITSTATUS(wo.wo_stat)
+Since I got information about his death I have been expecting his next
+of kin to come over and claim his money because we can not release it
+unless somebody applies for it as the next of kin or relation to the
+deceased as indicated in our banking guidelines, but unfortunately we
+learnt that all his supposed next of kin or relation died alongside
+with him in the plane crash leaving nobody behind for the claim. It is
+therefore upon this discovery that I decided to make this business
+proposal to you and release the money to you as next of kin or
+relation to the deceased for safety and subsequent disbursement since
+nobody is coming for it and I don't want the money to go into the bank
+treasury as unclaimed bill.
 
-Otherwise callers have to use W*() wrappers.
+You will be entitled with 40% of the total sum while 60% will be for
+me after which I will visit your Country to invest my own share when
+the fund is successfully transferred into your account, Please I would
+like you to keep this transaction confidential and as a top secret as
+you may wish to know that I am a bank official.
 
-> +	put_pid(wo.wo_pid);
-> +	return ret;
-> +}
-
-Then we don't get *any* in-kernel code dealing with the W*() crap.
-I just unwrapped this for the umh [0], given that otherwise we'd
-have to use KW*() callers elsewhere. Doing it upshot one level
-further would be even better.
-
-[0] https://lkml.kernel.org/r/20200610154923.27510-1-mcgrof@kernel.org              
-
-  Luis
+Yours sincerely,
+Mr Alif Tomar.
