@@ -2,122 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A3C7202575
-	for <lists+linux-parisc@lfdr.de>; Sat, 20 Jun 2020 19:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AACD2035F8
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jun 2020 13:44:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727866AbgFTRCY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 20 Jun 2020 13:02:24 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:38352 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726043AbgFTRCX (ORCPT
+        id S1727799AbgFVLoG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 22 Jun 2020 07:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59730 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727806AbgFVLoE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 20 Jun 2020 13:02:23 -0400
-Received: by mail-pf1-f195.google.com with SMTP id x207so6087215pfc.5;
-        Sat, 20 Jun 2020 10:02:23 -0700 (PDT)
+        Mon, 22 Jun 2020 07:44:04 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2059BC061794;
+        Mon, 22 Jun 2020 04:44:04 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id q22so5181821pgk.2;
+        Mon, 22 Jun 2020 04:44:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZPn01r6wkXnMIHGh/thIPTlSxs28rdWp4NIXuzwx0oQ=;
+        b=FTA7ISWLI4A9wg3ouOgx4YNdJh6le0da9LW3IxYp8AUgvV84ghq39qDPNlErkkjgkS
+         6n7yR++UXq0RhCO0bGYxDcWQroLp4MJjinLXikt6ktxSaHE/xdx5pw/9+UsYUCPzzmFX
+         T6OMMHt1MG63b9lVgOhZOhTtk32Q5L9/wy1Exz6sY/Qyatk2ZF19UdaVS/buFpsSwc7k
+         aXe2ikHii5w35iVohD4NaSMTeNPAlrs8BVKDEu9exIIN8KCozhA/23oWq/xoD8NMLQ84
+         3IeJMkoPknDdeGaM0E04h/LLzw9sYnbt7+O7iONBdNFqdMti8nPM0+NtuJlulUrRX1sM
+         vGuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=hkYGXZYFNkz40ca5bdh2l8rwBQsGz5Dfq7lbQQ/ZMb4=;
-        b=X9q8UfJZmL34AI1GiO5Dnai9g9KS072++uMh4hlNtqTqlfTy5/ba7jBlkjyo535lWC
-         tUjHuWsJ6BPP/ng5gG33nwINjMbyZyZXMLjmIIqzIeVChyJTJIG4F6u8B9q4RB2Ma+y8
-         WJcvd4TZ3OI9OplZ3O/vxXPXbSeB8wfjr/U6oY6tCu2sC50Vye2G/kNYpLsk6cIOSamP
-         guRd24fxw8r53lgGCHCwHvgsFDXv+sVkbrHH5E41l0PLB8LSubGIpnQ6sJj/G6Mscd93
-         SSnVhc8HhP3+CXxlv76lEjbFs4oQuFkWahQsOtVi5j94GE4u11uRpTmvgCdU01InmuDF
-         noQw==
-X-Gm-Message-State: AOAM532IfNgmHSESpXOm/8YZ5RnmvNPpxNVpAeW2B8+AFwNFEkzkSkgR
-        tAqhwQpGJwLLW+PloRYKDzduPcQOyUA=
-X-Google-Smtp-Source: ABdhPJw4cY69dDBjGxi+dEmU+lne2Jaj+Kt7j3+OOL+ZesgQbK+T06ayny/Nuk+eU5cbc92qa9tynQ==
-X-Received: by 2002:a63:7c5e:: with SMTP id l30mr7050243pgn.276.1592672542711;
-        Sat, 20 Jun 2020 10:02:22 -0700 (PDT)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id x18sm9195784pfr.106.2020.06.20.10.02.20
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZPn01r6wkXnMIHGh/thIPTlSxs28rdWp4NIXuzwx0oQ=;
+        b=amQfkCQm789lwhXUWBjEHLwWxmdl72oNUTVCi9RXgbdhgCiojzOtUjwCeKHKk78D33
+         fERu5M9Vy/OILP+4rb11sSq4RvqY5W8mqDdnU/FK7c1P8D7CbbwtvKEy23EEN48BV/QT
+         NPTRPXzwsz/Boh26WapaJN3yhzyhgqkbDLxpGgI2tBEtTghmNjq09ni+/bNXgaSNYuNe
+         u7K1xpTPUuPp21txK4j9toi3HMxk5zwMUfLFpNsuCDmdEa6kKxitw1wcyd4q2cDzVB90
+         rSBS8nQsSdKVhvN2VyaskmeaQLVUmVw/nuN1w2MFEE3way3WjVTxNo9iN1Z8C4x1qEIv
+         yJpw==
+X-Gm-Message-State: AOAM5328MWziSqhcijB+ZiMf3vDGQieYlgS/q4nzREtNmTV/l0nVYtLx
+        uzY0RQGUlinU1Aj3igaHIWg=
+X-Google-Smtp-Source: ABdhPJyMdkCLlkB48Di9E70YagohvSIbysJTGd9ixEwryDW489vir8n7x1GTRBGyvbi/fqwswBpNbQ==
+X-Received: by 2002:a62:ee08:: with SMTP id e8mr18838245pfi.93.1592826243593;
+        Mon, 22 Jun 2020 04:44:03 -0700 (PDT)
+Received: from varodek.localdomain ([2401:4900:b8b:123e:d7ae:5602:b3d:9c0])
+        by smtp.gmail.com with ESMTPSA id j17sm14081032pjy.22.2020.06.22.04.43.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Jun 2020 10:02:20 -0700 (PDT)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id B439940430; Sat, 20 Jun 2020 17:02:19 +0000 (UTC)
-Date:   Sat, 20 Jun 2020 17:02:19 +0000
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>, Brian Gerst <brgerst@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] kernel: add a kernel_wait helper
-Message-ID: <20200620170219.GT11244@42.do-not-panic.com>
-References: <20200618144627.114057-1-hch@lst.de>
- <20200618144627.114057-7-hch@lst.de>
- <20200619211700.GS11244@42.do-not-panic.com>
- <20200620063538.GA2408@lst.de>
+        Mon, 22 Jun 2020 04:44:02 -0700 (PDT)
+From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, bjorn@helgaas.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>
+Cc:     Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        skhan@linuxfoundation.org, netdev@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/5] ethernet: dec: tulip: use generic power management
+Date:   Mon, 22 Jun 2020 17:12:23 +0530
+Message-Id: <20200622114228.60027-1-vaibhavgupta40@gmail.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200620063538.GA2408@lst.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Jun 20, 2020 at 08:35:38AM +0200, Christoph Hellwig wrote:
-> On Fri, Jun 19, 2020 at 09:17:00PM +0000, Luis Chamberlain wrote:
-> > On Thu, Jun 18, 2020 at 04:46:27PM +0200, Christoph Hellwig wrote:
-> > > --- a/kernel/exit.c
-> > > +++ b/kernel/exit.c
-> > > @@ -1626,6 +1626,22 @@ long kernel_wait4(pid_t upid, int __user *stat_addr, int options,
-> > >  	return ret;
-> > >  }
-> > >  
-> > > +int kernel_wait(pid_t pid, int *stat)
-> > > +{
-> > > +	struct wait_opts wo = {
-> > > +		.wo_type	= PIDTYPE_PID,
-> > > +		.wo_pid		= find_get_pid(pid),
-> > > +		.wo_flags	= WEXITED,
-> > > +	};
-> > > +	int ret;
-> > > +
-> > > +	ret = do_wait(&wo);
-> > > +	if (ret > 0 && wo.wo_stat)
-> > > +		*stat = wo.wo_stat;
-> > 
-> > Since all we care about is WEXITED, that could be simplified
-> > to something like this:
-> > 
-> > if (ret > 0 && KWIFEXITED(wo.wo_stat)
-> >  	*stat = KWEXITSTATUS(wo.wo_stat)
-> > 
-> > Otherwise callers have to use W*() wrappers.
-> > 
-> > > +	put_pid(wo.wo_pid);
-> > > +	return ret;
-> > > +}
-> > 
-> > Then we don't get *any* in-kernel code dealing with the W*() crap.
-> > I just unwrapped this for the umh [0], given that otherwise we'd
-> > have to use KW*() callers elsewhere. Doing it upshot one level
-> > further would be even better.
-> > 
-> > [0] https://lkml.kernel.org/r/20200610154923.27510-1-mcgrof@kernel.org              
-> Do you just want to pick this patch up, add your suggested bits and
-> add it to the beginning of your series?  That should clean the whole
-> thing up a bit.  Nothing else in this series depends on the patch.
+Linux Kernel Mentee: Remove Legacy Power Management.
 
-Sure but let's wait to hear from the NFS folks.
+The purpose of this patch series is to remove legacy power management
+callbacks and invocation of PCI helper functions, from tulip ethernet drivers.
 
-I'm waiting to hear from NFS folks if the one place where the UMH is
-fixed for the error code (on fs/nfsd/nfs4recover.c we never were
-disabling the upcall as the error code of -ENOENT or -EACCES was *never*
-properly checked for) to see how critical that was. If it can help
-stable kernels the fix can go in as I proposed, followed by this patch
-to further take the KWEXITSTATUS() up further, and ensure we *never*
-deal with this in-kernel. If its not a fix stable kernels should care
-for what you suggest of taking this patch first would be best and I'd be
-happy to do that.
+With legacy PM, drivers themselves are responsible for handling the device's
+power states. And they do this with the help of PCI helper functions like
+pci_enable/disable_device(), pci_set/restore_state(), pci_set_powr_state(), etc.
+which is not recommended.
 
-  Luis
+In generic PM, all the required tasks are handled by PCI core and drivers need
+to perform device-specific operations only.
+
+All patches are compile-tested only.
+
+Vaibhav Gupta (5):
+  tulip: dmfe: use generic power management
+  tulip: windbond-840: use generic power management
+  tulip: de2104x: use generic power management
+  tulip: tulip_core: use generic power management
+  tulip: uli526x: use generic power management
+
+ drivers/net/ethernet/dec/tulip/de2104x.c     | 25 +++-------
+ drivers/net/ethernet/dec/tulip/dmfe.c        | 49 ++++---------------
+ drivers/net/ethernet/dec/tulip/tulip_core.c  | 51 +++++---------------
+ drivers/net/ethernet/dec/tulip/uli526x.c     | 48 +++---------------
+ drivers/net/ethernet/dec/tulip/winbond-840.c | 26 +++-------
+ 5 files changed, 45 insertions(+), 154 deletions(-)
+
+-- 
+2.27.0
+
