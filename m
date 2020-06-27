@@ -2,292 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B6A20BF7A
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jun 2020 09:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4114D20C1DB
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jun 2020 15:45:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726430AbgF0H1w (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 27 Jun 2020 03:27:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58582 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726412AbgF0H1t (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 27 Jun 2020 03:27:49 -0400
-Received: from casper.infradead.org (unknown [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01F01C03E97A;
-        Sat, 27 Jun 2020 00:27:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description;
-        bh=mURemflipje9eYopYQ4h3uusWn3YXYVAu+uuVrAN7pQ=; b=TlPnTimqsO2m30LvldYZKWVizZ
-        hpNyMesz2KmBGpNgKstCa9x+hZjeq/G/LSRMkegjvZ22YoGmrkgnX+pZNWw5KGTu0v468zw9T4sZI
-        Xu/MpJ2eSYmAE+ipVFlRyXHmj7yINmDtCVRDeT4inn/UpLST2JkhmV8QUh9BXIQDcWZI6goY8hoTK
-        4LzatZU6wTyWdTn1fSGkRe6TQ02ZarzjB0rP81o5Zm/pl6DVfHmLMMgslXwjVzsTycl+tfWpI1waO
-        hEgw54/dYKj+ZkSuM7HhgjVT0BbFo583J9Wu65cTYBtF8e6ZyiugH7Oj2JWPx8rHz3ol1injsjGRn
-        /VsHUW/A==;
-Received: from [2001:4bb8:184:76e3:595:ba65:ae56:65a6] (helo=localhost)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jp5FI-0006XS-Jx; Sat, 27 Jun 2020 07:27:30 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Brian Gerst <brgerst@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] exec: add a kernel_execveat helper
-Date:   Sat, 27 Jun 2020 09:27:04 +0200
-Message-Id: <20200627072704.2447163-6-hch@lst.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200627072704.2447163-1-hch@lst.de>
-References: <20200627072704.2447163-1-hch@lst.de>
+        id S1726177AbgF0NpH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 Jun 2020 09:45:07 -0400
+Received: from mout.gmx.net ([212.227.15.18]:41645 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725850AbgF0NpG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 27 Jun 2020 09:45:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1593265462;
+        bh=lFWXqdePd4DyXgNpm31xytWm1F1ZN/XcJboKFJ2akTc=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=U5oGykqjhCeWQ6VOBTNmh03M6XCAm+pD09uH4+T7DrDwY1SKQhxbtOL/ABnStEa/S
+         PfoTVIE0VA04JG9UkzA1YktiDtrzAYLz9JeFpb2MCwwMNzeA6fREx2Q9KuzMHPOy5C
+         4OSneFLG1uqkqFNYxcRHmqoVLVQnPbxaES8rt2oI=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost.localdomain ([79.150.73.70]) by mail.gmx.com
+ (mrgmx005 [212.227.17.184]) with ESMTPSA (Nemesis) id
+ 1N7zBR-1ikTo63WZH-014y1o; Sat, 27 Jun 2020 15:44:21 +0200
+From:   Oscar Carter <oscar.carter@gmx.com>
+To:     Kees Cook <keescook@chromium.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>
+Cc:     kernel-hardening@lists.openwall.com, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
+Subject: [PATCH] parisc/kernel/ftrace: Remove function callback casts
+Date:   Sat, 27 Jun 2020 15:43:48 +0200
+Message-Id: <20200627134348.30601-1-oscar.carter@gmx.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:wIA4UEOVrMPBixJrC6vud+7JWju+3dUuA9dgRmOulVfkomqN98k
+ J686MFh0NZuXx/c979VCYvyYbzDfk2va4O6y6reWPq02BtPDMcl5z718wLB3jUZSdt51xSI
+ VxifaDCeidc4XqZTDBYctS5uThXMfngzbm8w6w59pLFMUNO6WB8X1mfgGPi47RxiOthkzqE
+ rZnnXYY3g3OktLNANK8Fw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+bxAtbELlTU=:AIVXJGBmVMIT65YrALMuS8
+ SKARVtgwT6z9XLB+mawgeRIbj0E7ldANgLcChrGyzj7rIenKH5VEMbIqOWLIesYkeOxXquZoD
+ 7jer8nKfPuNEl3mQpi6UPgJZs9b9K8uO9sxL/nSGS82dhTHNlKy+z46COcerbravGzKPjtJM7
+ 89Rpwj3GU6l+JY/oJ7HK4AUnsddckYU7s0I5lZXrmK9reSioubHrIIO7/0WN748hLzKL5YtRq
+ 6tyrG3k6QTxD+v7nwV2sFp8mf+2o8d3ETUFnELAnw8y0W6l7pkbUdpfnIl7b1ooUTcDdPbjdT
+ P8OvyCur47xAO6eBfQV4OBN2FZvUtOQj38hgdKUy1WWDbyR2mx6hjkBxvY8FFFCXabH/B16FQ
+ 4h40iXu+afncRyB6XQoH0bhmn7wG+lGUQFgbTojkE8Qr8ydlIipAm3nzpCzbIr32c+JXkutff
+ +n5ArbwBkHUv15tEGZwK4kkaYUtN7MPARtWLpw4S9h6zst3sH765BSAOgyI7BPTvmYrdCQA5u
+ bC1J9DW+kIbIt+wHB8YfMqYLGDo7SVApVDQrbFRA3DSicRi95alGCJaVy/XSwOIGg1s7Up0J/
+ iVgjv+i4wpCNO1sAAp2VGSI0ja8osyzgFJEJ8fETrTXcqFtl82wopajFFGW8aaHatA7q27p65
+ fkyskIbY6OktGhl8B2JqDpc69rw9WsXLkCLDsyCn+D/UQA6xoGMhyDPIthUFjaOyFZ102rDfB
+ oKIRs4OlYx6RFyTUms9ymo2+WoPTxoEFpCI+EyDKg8MZ4xxftdnBLs411Gscofwg+pPnwDfXU
+ uZZHF1PoGAUHVUOuJCrR2Qwsmzl3CSENblP8VXcsNeVSB/dOtoyOR7Vgqn1OdaBKLD+5J5kdA
+ rydtWW7LkBtpkC5fMukERaKfFqOSQ4z3qVsOaPRUMCsMd2JxCU2hR4oVEGQtZScgJCJJOTyZ/
+ lzFYO/7KLg9UqjyPjJ332wL1ljFooR48m108euwoN6m4p+idHtFxvIYv05FgXUVNQMhA15mMu
+ 3Gl27uha8kIgM3Za3URdV9riEUBMI5UwFXQ4VrZi/KcXzOcYqdKsN5avw3RkLEeNbPzt8hin9
+ Dy6RfQ/N6f4GYSWT00QPU7q5Y38jp1NSJ8pK4uVD+4aHPnmxcth4UPKZjcDURYLTMswkgDudk
+ J694lY5ivXx4PHgJyHnev0QFBLuTRfCx5tvzmmxelBg6RVcRkc9oEMrCQph63Zc/QjBLYXq2n
+ Q4KjZA5K9R7yBeJXC
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add a kernel_execveat helper to execute a binary with kernel space argv
-and envp pointers.  Switch executing init and user mode helpers to this
-new helper instead of relying on the implicit set_fs(KERNEL_DS) for early
-init code and kernel threads, and move the getname call into the
-do_execve helper.
+In an effort to enable -Wcast-function-type in the top-level Makefile to
+support Control Flow Integrity builds, remove all the function callback
+casts.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- fs/exec.c               | 109 ++++++++++++++++++++++++++++++++--------
- include/linux/binfmts.h |   6 +--
- init/main.c             |   6 +--
- kernel/umh.c            |   8 ++-
- 4 files changed, 95 insertions(+), 34 deletions(-)
+To do this remove the cast to a function pointer type in the comparison
+statement and add to the right and left operand a cast to unsigned long
+type. This can be done since the comparison is against function address
+(these operands are not function calls).
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 34781db6bf6889..7923b8334ae600 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -435,6 +435,21 @@ static int count_strings(const char __user *const __user *argv)
- 	return i;
- }
- 
-+static int count_kernel_strings(const char *const *argv)
-+{
-+	int i;
-+
-+	if (!argv)
-+		return 0;
-+
-+	for (i = 0; argv[i]; i++) {
-+		if (i >= MAX_ARG_STRINGS)
-+			return -E2BIG;
-+	}
-+
-+	return i;
-+}
-+
- static int check_arg_limit(struct linux_binprm *bprm)
- {
- 	unsigned long limit, ptr_size;
-@@ -611,6 +626,19 @@ int copy_string_kernel(const char *arg, struct linux_binprm *bprm)
- }
- EXPORT_SYMBOL(copy_string_kernel);
- 
-+static int copy_strings_kernel(int argc, const char *const *argv,
-+		struct linux_binprm *bprm)
-+{
-+	int ret;
-+
-+	while (argc-- > 0) {
-+		ret = copy_string_kernel(argv[argc], bprm);
-+		if (ret)
-+			break;
-+	}
-+	return ret;
-+}
-+
- #ifdef CONFIG_MMU
- 
- /*
-@@ -1793,9 +1821,11 @@ static int exec_binprm(struct linux_binprm *bprm)
- 	return 0;
- }
- 
--int do_execveat(int fd, struct filename *filename,
-+static int __do_execveat(int fd, struct filename *filename,
- 		const char __user *const __user *argv,
- 		const char __user *const __user *envp,
-+		const char *const *kernel_argv,
-+		const char *const *kernel_envp,
- 		int flags, struct file *file)
- {
- 	char *pathbuf = NULL;
-@@ -1876,16 +1906,30 @@ int do_execveat(int fd, struct filename *filename,
- 	if (retval)
- 		goto out_unmark;
- 
--	bprm->argc = count_strings(argv);
--	if (bprm->argc < 0) {
--		retval = bprm->argc;
--		goto out;
--	}
-+	if (unlikely(kernel_argv)) {
-+		bprm->argc = count_kernel_strings(kernel_argv);
-+		if (bprm->argc < 0) {
-+			retval = bprm->argc;
-+			goto out;
-+		}
- 
--	bprm->envc = count_strings(envp);
--	if (bprm->envc < 0) {
--		retval = bprm->envc;
--		goto out;
-+		bprm->envc = count_kernel_strings(kernel_envp);
-+		if (bprm->envc < 0) {
-+			retval = bprm->envc;
-+			goto out;
-+		}
-+	} else {
-+		bprm->argc = count_strings(argv);
-+		if (bprm->argc < 0) {
-+			retval = bprm->argc;
-+			goto out;
-+		}
-+
-+		bprm->envc = count_strings(envp);
-+		if (bprm->envc < 0) {
-+			retval = bprm->envc;
-+			goto out;
-+		}
- 	}
- 
- 	retval = check_arg_limit(bprm);
-@@ -1902,13 +1946,22 @@ int do_execveat(int fd, struct filename *filename,
- 		goto out;
- 
- 	bprm->exec = bprm->p;
--	retval = copy_strings(bprm->envc, envp, bprm);
--	if (retval < 0)
--		goto out;
- 
--	retval = copy_strings(bprm->argc, argv, bprm);
--	if (retval < 0)
--		goto out;
-+	if (unlikely(kernel_argv)) {
-+		retval = copy_strings_kernel(bprm->envc, kernel_envp, bprm);
-+		if (retval < 0)
-+			goto out;
-+		retval = copy_strings_kernel(bprm->argc, kernel_argv, bprm);
-+		if (retval < 0)
-+			goto out;
-+	} else {
-+		retval = copy_strings(bprm->envc, envp, bprm);
-+		if (retval < 0)
-+			goto out;
-+		retval = copy_strings(bprm->argc, argv, bprm);
-+		if (retval < 0)
-+			goto out;
-+	}
- 
- 	retval = exec_binprm(bprm);
- 	if (retval < 0)
-@@ -1959,6 +2012,23 @@ int do_execveat(int fd, struct filename *filename,
- 	return retval;
- }
- 
-+static int do_execveat(int fd, const char *filename,
-+		       const char __user *const __user *argv,
-+		       const char __user *const __user *envp, int flags)
-+{
-+	int lookup_flags = (flags & AT_EMPTY_PATH) ? LOOKUP_EMPTY : 0;
-+	struct filename *name = getname_flags(filename, lookup_flags, NULL);
-+
-+	return __do_execveat(fd, name, argv, envp, NULL, NULL, flags, NULL);
-+}
-+
-+int kernel_execveat(int fd, const char *filename, const char *const *argv,
-+		const char *const *envp, int flags, struct file *file)
-+{
-+	return __do_execveat(fd, getname_kernel(filename), NULL, NULL, argv,
-+			     envp, flags, file);
-+}
-+
- void set_binfmt(struct linux_binfmt *new)
- {
- 	struct mm_struct *mm = current->mm;
-@@ -1988,7 +2058,7 @@ SYSCALL_DEFINE3(execve,
- 		const char __user *const __user *, argv,
- 		const char __user *const __user *, envp)
- {
--	return do_execveat(AT_FDCWD, getname(filename), argv, envp, 0, NULL);
-+	return do_execveat(AT_FDCWD, filename, argv, envp, 0);
- }
- 
- SYSCALL_DEFINE5(execveat,
-@@ -1997,8 +2067,5 @@ SYSCALL_DEFINE5(execveat,
- 		const char __user *const __user *, envp,
- 		int, flags)
- {
--	int lookup_flags = (flags & AT_EMPTY_PATH) ? LOOKUP_EMPTY : 0;
--	struct filename *name = getname_flags(filename, lookup_flags, NULL);
--
--	return do_execveat(fd, name, argv, envp, flags, NULL);
-+	return do_execveat(fd, filename, argv, envp, flags);
- }
-diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
-index bed702e4b1fbd9..1e61c980c16354 100644
---- a/include/linux/binfmts.h
-+++ b/include/linux/binfmts.h
-@@ -134,9 +134,7 @@ int copy_string_kernel(const char *arg, struct linux_binprm *bprm);
- extern void set_binfmt(struct linux_binfmt *new);
- extern ssize_t read_code(struct file *, unsigned long, loff_t, size_t);
- 
--int do_execveat(int fd, struct filename *filename,
--		const char __user *const __user *__argv,
--		const char __user *const __user *__envp,
--		int flags, struct file *file);
-+int kernel_execveat(int fd, const char *filename, const char *const *argv,
-+		const char *const *envp, int flags, struct file *file);
- 
- #endif /* _LINUX_BINFMTS_H */
-diff --git a/init/main.c b/init/main.c
-index 838950ea7bca22..33de235dc2aa00 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -1329,10 +1329,8 @@ static int run_init_process(const char *init_filename)
- 	pr_debug("  with environment:\n");
- 	for (p = envp_init; *p; p++)
- 		pr_debug("    %s\n", *p);
--	return do_execveat(AT_FDCWD, getname_kernel(init_filename),
--			(const char __user *const __user *)argv_init,
--			(const char __user *const __user *)envp_init,
--			0, NULL);
-+	return kernel_execveat(AT_FDCWD, init_filename, argv_init, envp_init, 0,
-+			       NULL);
- }
- 
- static int try_to_run_init_process(const char *init_filename)
-diff --git a/kernel/umh.c b/kernel/umh.c
-index 7aa9a5817582ca..1284823dbad338 100644
---- a/kernel/umh.c
-+++ b/kernel/umh.c
-@@ -103,11 +103,9 @@ static int call_usermodehelper_exec_async(void *data)
- 	commit_creds(new);
- 
- 	sub_info->pid = task_pid_nr(current);
--	retval = do_execveat(AT_FDCWD,
--			sub_info->path ? getname_kernel(sub_info->path) : NULL,
--			(const char __user *const __user *)sub_info->argv,
--			(const char __user *const __user *)sub_info->envp,
--			0, sub_info->file);
-+	retval = kernel_execveat(AT_FDCWD, sub_info->path,
-+			(const char *const *)sub_info->argv,
-+			(const char *const *)sub_info->envp, 0, sub_info->file);
- 	if (sub_info->file && !retval)
- 		current->flags |= PF_UMH;
- out:
--- 
-2.26.2
+Signed-off-by: Oscar Carter <oscar.carter@gmx.com>
+=2D--
+ arch/parisc/kernel/ftrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
+index 1df0f67ed667..86b49a5fc049 100644
+=2D-- a/arch/parisc/kernel/ftrace.c
++++ b/arch/parisc/kernel/ftrace.c
+@@ -64,7 +64,7 @@ void notrace __hot ftrace_function_trampoline(unsigned l=
+ong parent,
+ 				function_trace_op, regs);
+
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+-	if (ftrace_graph_return !=3D (trace_func_graph_ret_t) ftrace_stub ||
++	if ((unsigned long)ftrace_graph_return !=3D (unsigned long)ftrace_stub |=
+|
+ 	    ftrace_graph_entry !=3D ftrace_graph_entry_stub) {
+ 		unsigned long *parent_rp;
+
+=2D-
+2.20.1
 
