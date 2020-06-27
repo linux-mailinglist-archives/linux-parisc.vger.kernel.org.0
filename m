@@ -2,104 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E1E120C459
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jun 2020 23:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73AC120C47D
+	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jun 2020 00:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726530AbgF0VXk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 27 Jun 2020 17:23:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44620 "EHLO
+        id S1726101AbgF0WBw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 Jun 2020 18:01:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725907AbgF0VXj (ORCPT
+        with ESMTP id S1725912AbgF0WBw (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 27 Jun 2020 17:23:39 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE54DC061794;
-        Sat, 27 Jun 2020 14:23:38 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id f9so6214936pfn.0;
-        Sat, 27 Jun 2020 14:23:38 -0700 (PDT)
+        Sat, 27 Jun 2020 18:01:52 -0400
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8848AC061794
+        for <linux-parisc@vger.kernel.org>; Sat, 27 Jun 2020 15:01:51 -0700 (PDT)
+Received: by mail-yb1-xb43.google.com with SMTP id 187so6365562ybq.2
+        for <linux-parisc@vger.kernel.org>; Sat, 27 Jun 2020 15:01:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=mizxgkzS/h5RAiTRnXHHAMYgNZSKy87tz0psMUuXu0c=;
-        b=KrOHe2AlaGQ7tV28Vl9qyOQ0elfd8r//wq4xzvB5xDb5jWlg6mXfsKxabi0zi9yPbE
-         a3CGp38U8cqw2mebqkt6TnvwzPA6E6KEcgpIj8HCQ1rHyHT3QVxyrownujSHvkYTCVSa
-         Gy95rzA2weVyQoDCaBGwSARvG5wXI2h42LYwK1iUZUWKUYeZG14+sFo/aPCYLw2NwZJj
-         nBqydL7WFvWCAVkBuzJ2gva+wATslrp9imqMIKL3E0H/YMoAyiaNhBbjIsjfeCv51DOd
-         WRdGRRQ8YZYlJSkPBIPY8Mf5k8q0bkdsr138mWgQL9YfzyKrJwEngJSJT/C0ZJyP38ue
-         p6eA==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=uvaWEz0dd8Ac3CT35qBSqfznpY4sgxsz7Od3pFBzZIuQcY/8TViLhlHXQU9leeTEpY
+         AGovLfmyzd6U3Cq2lgZLwHP1J5YFMSD+Pyz17XxyLzQnjVOPPz8Ik+J+fYFM18bC4Fqc
+         JhO+jF294xtXRRnL3TKWvGE6eKydOzo9lI+qnLW3YVbUSLfu7Gq0pi7M8z5WpDddMN8M
+         WWaoRGs8g5M97omhRASDLgcJhl5wyTXcCK3cENHMncLoSakV7dWBQ+2v4jCXqV+88itT
+         y9KXfYDXgC/gw5+BqchOAKmUvgcqp5Y71+LwruoBL/ShzO8C2ON+xs5RLFzJg/awZL11
+         9lUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mizxgkzS/h5RAiTRnXHHAMYgNZSKy87tz0psMUuXu0c=;
-        b=WL5XpW+ecyqMidd+epiIEdTGXOpDdY1OzGTc9e11WJZQAeE+PCot1Rl7hKWyW2Pw+i
-         BCgxyGZLfayOq7kE63ciWQGohAhNuK9+gYynA5kEXes899u+p15Br/kwQxajkRyPI9Bo
-         POv7KSQP126MCTmALZJOhGoyDlOgZt6scb7yaSz+NLQTJ61zi+RFY83dT1dStDjhjS85
-         3Cj5At/iHhpGdmigOIB5jXLYrvJeYa/LHz3aLJtpXIP7D/6MORQ7lcl6g+ddbh6Hc7/2
-         DxyBeXu3zBOvxLun3YZr1XxhYdIrhgT2pjZli1+d3HjRQD8Oi1bUbijlqFRWWdcIWwMc
-         YoNA==
-X-Gm-Message-State: AOAM531mPBFfXHW2bJOYyAWxjVmDg9Lw4YVbSUmJVkUnYWpcF/6HQ7d+
-        JYL/XN5aeYDQLnAXt6CpebwweO2oE20=
-X-Google-Smtp-Source: ABdhPJyLzAtm2TextcgHnw6pDE2t7RidtLOm1t9FNzgTafND17DEExqOaKhxKo2F07v49LSV9JtDbQ==
-X-Received: by 2002:a62:e305:: with SMTP id g5mr8523544pfh.115.1593293018476;
-        Sat, 27 Jun 2020 14:23:38 -0700 (PDT)
-Received: from localhost (g2.222-224-226.ppp.wakwak.ne.jp. [222.224.226.2])
-        by smtp.gmail.com with ESMTPSA id mw5sm15217406pjb.27.2020.06.27.14.23.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jun 2020 14:23:37 -0700 (PDT)
-Date:   Sun, 28 Jun 2020 06:23:35 +0900
-From:   Stafford Horne <shorne@gmail.com>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Joerg Roedel <joro@8bytes.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, openrisc@lists.librecores.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH 2/8] opeinrisc: switch to generic version of pte
- allocation
-Message-ID: <20200627212335.GJ1401039@lianli.shorne-pla.net>
-References: <20200627143453.31835-1-rppt@kernel.org>
- <20200627143453.31835-3-rppt@kernel.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=RaTwd8jH+O7bI0TvkF9lAWDsVlS34jKvdxzRu0fSutY9LSnBRJ4ADYhuQHclBFxggK
+         x+Znp+nYNh28BW5o+HTW+LCsbQjzR2qoGJEtKC9MqsgLDRmTthUH2AWtgaglXxMt33gm
+         Qkmky5aIB8H6zs43xLUFTPFMumWkmNLMUDNpro2up6OETdzbEC5xDNEfodFdJrJCv5vD
+         kaZsNJY/sdWVmPDwO7NdaHlB3pr/qUUhUB37x+Nbwwmt6VDDnG0OyofdcK9TrW6EKNvs
+         7N99NRm/XYTr+yNfe6rgLK66/XmDj26cDYiTDlCswbcqnci14Il/ovuBupmhESNW/U27
+         FTyg==
+X-Gm-Message-State: AOAM533gaFrXElQmLNCM9l+xtatQUeoW41aJhDQZwrxl90AUVRAl5Zc2
+        gict+lweLAExlDY9jEWCYmbORg/NT7UBBRUOsDtmvH51AqY=
+X-Google-Smtp-Source: ABdhPJynf4CV3u/z+wvqAxCFESu7ee7lLWI0u2+Rd2bRIf462RpI7Q5/OgPmYRkZuywkeS9iG1gTukKnSolbNLelkro=
+X-Received: by 2002:a05:6830:1dba:: with SMTP id z26mr8074641oti.180.1593294943879;
+ Sat, 27 Jun 2020 14:55:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200627143453.31835-3-rppt@kernel.org>
+Received: by 2002:a9d:12d3:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:55:43
+ -0700 (PDT)
+Reply-To: un.org@i.ua
+From:   helen <taxofficebenin@gmail.com>
+Date:   Sat, 27 Jun 2020 22:55:43 +0100
+Message-ID: <CAK9MGy3D5UBf06OY16UW=c+Cybm67x+0kH_OWJkX7ywdQD9CNA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Jun 27, 2020 at 05:34:47PM +0300, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Replace pte_alloc_one(), pte_free() and pte_free_kernel() with the generic
-> implementation. The only actual functional change is the addition of
-> __GFP_ACCOUT for the allocation of the user page tables.
-> 
-> The pte_alloc_one_kernel() is kept back because its implementation on
-> openrisc is different than the generic one.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+MONEY-GRAM TRANSFERRED PAYMENT INFO:
 
-Thank's for this.
+Below is the sender=E2=80=99s information
 
-Acked-by: Stafford Horne <shorne@gmail.com>
+
+
+1. MG. REFERENCE NO#: 36360857
+
+2. SENDER'S NAME: Johnson Williams
+
+3. AMOUNT TO PICKUP: US$10,000
+
+
+
+Go to any Money Gram office near you and pick up the payment Track the
+
+Reference Number by visiting and click the link below
+
+(https://secure.moneygram.com/embed/track) and enter the Reference
+
+Number: 36360857 and the Last Name: Williams, you will find the payment
+
+available for pickup instantly.
+
+Yours Sincerely,
+
+Mrs. Helen Marvis
+United Nations Liaison Office
+Directorate for International Payments
