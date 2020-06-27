@@ -2,92 +2,167 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F342D20C3A3
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jun 2020 21:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10D6620C3FC
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jun 2020 22:10:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726704AbgF0TDZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 27 Jun 2020 15:03:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51534 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725975AbgF0TDY (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 27 Jun 2020 15:03:24 -0400
-Received: from casper.infradead.org (unknown [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 675ADC061794;
-        Sat, 27 Jun 2020 12:03:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=OR7OBaJyU20QVLaZTPXddMLTo5rxOsqU6iEIJEupuWE=; b=rq00ouSxMdTmSFa28hDOUKTHBg
-        3dXyfPXkTUDZyQHTetqsyMna5fwntHa6QKcic/h71IwcUCnGNbErGyqkiwiLcgU2nYHZh16/QaPeb
-        b5zkBVG9gFL5QSc/VNDuNclsIuluvuMI/LYza+5r2JW/cLhLN6jZ5ik5eKIuodERFMabxSNfOI2Bi
-        +dL26IWnzvmxsRx2Z0NmVql7PiiPOtRewW4aUiQeNyCevs8ZZkzP0faCH2uqSnyC23QLvVtj1Wi9z
-        Fo+73sfYzK5rnUfqtXfFwYUwyfilRDtoIcUUPTCSGsmVmOCF5BvgZD7yS/O5QwZNMhirY3o8KlkeY
-        6JIFEkYQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jpG6S-0005fe-2n; Sat, 27 Jun 2020 19:03:04 +0000
-Date:   Sat, 27 Jun 2020 20:03:04 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Joerg Roedel <joro@8bytes.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
-        Stafford Horne <shorne@gmail.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
+        id S1726678AbgF0UKf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 Jun 2020 16:10:35 -0400
+Received: from mout.gmx.net ([212.227.17.22]:37841 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725975AbgF0UKe (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 27 Jun 2020 16:10:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1593288581;
+        bh=0xRFBPnhnaPrlHc1tRYH+09EADTZE+3Mw2WcK+6MPMA=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=Hijh+mwszlEaeRAwzlRJz3k+6Zcgg+7Z2pgdvcjD8nqCqpSbSnjnlsfVp4+jkoRx1
+         6G5Iokt/9kjDqfodRAjdTwActu90pnedpp7A0kmiVZBtz37r5IkNu5syvVeuf/Wz2B
+         GXQpwxVeHflbGTReLVAg3w/Yz+ZnBFwCbM5Uu+sg=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.164.11]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mt79F-1j0LHg2wvZ-00tRKl; Sat, 27
+ Jun 2020 22:09:41 +0200
+Subject: Re: [PATCH] parisc/kernel/ftrace: Remove function callback casts
+To:     Oscar Carter <oscar.carter@gmx.com>,
+        Kees Cook <keescook@chromium.org>,
         Steven Rostedt <rostedt@goodmis.org>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, openrisc@lists.librecores.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH 4/8] asm-generic: pgalloc: provide generic
- pmd_alloc_one() and pmd_free_one()
-Message-ID: <20200627190304.GG25039@casper.infradead.org>
-References: <20200627143453.31835-1-rppt@kernel.org>
- <20200627143453.31835-5-rppt@kernel.org>
+        Ingo Molnar <mingo@redhat.com>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     kernel-hardening@lists.openwall.com, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20200627134348.30601-1-oscar.carter@gmx.com>
+From:   Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+ c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
+Message-ID: <97375269-f6f1-6157-c8a8-3b925232f00c@gmx.de>
+Date:   Sat, 27 Jun 2020 22:09:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200627143453.31835-5-rppt@kernel.org>
+In-Reply-To: <20200627134348.30601-1-oscar.carter@gmx.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ijfqLiA+RCGLQiCBZppckhhgNlNUWEsBwLIIegBt/vFVeox2CJL
+ 6v1lNvnCaxVKABnlNGkZFB+o6xaDKeSnC76HrYrxX4pzgVUJBa3FJCKAg09EnkGNy7tWlhd
+ 3NXe4tjcwgCrC20XGpW0Ysnqpm9x50nC36MlfY3IsDJXMBRraZ2m1wwnnyE16+WoPJevcOe
+ w7ciIRlz9UoEGjh9U2F5Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:gW/zsCM3uFA=:E+UYYiBJkNhlFVVyunILvs
+ vBOAaQZ1vErTvEJDPymkL0EEHZ1JrxZc2XBn07oTWvolQZe3M9dJeupeybT06FJBvzavGFT7w
+ DRNdDWnRtLXX/eNTi8+Z9g3vvS8ZRdScAPT5WEdT1h6MhPzmRwJcz8lvIpOpg3iycPTs/6UZb
+ tOodBD4nQgXOAIW+Q93O9+SBtHXqYd3HU1pDcHSWsxrnKqRps01e6TTNaI+frHuLyDfaNZvHh
+ x44fmPYYgBoSbjmKNvFXoyrpY2fvqL5UA8C7NBdqVMP4Pvg70wjMdt+4jXyQ0QGwTRiVk4BIU
+ YDvtqC/FBeosQhKXuo40dlokdORSMkc06hbeWLsjaqqjeXLez4ibdYa4XREgLrbfOt3TmzRFs
+ MEFdlnDFK/V6fTG4txTyu+22JODHuxCOGcFnuushhwczory54IcTjuIPYIxTixky0P49JQHZj
+ c58AMa2stWqj5aIoUdSHhQF0DyRNc4WoUOb5S1e+/WtZj63wy2XHlkM4ZAvB9zLhM6+8UP9iN
+ QezZvSZBjaXMJrSCtv1hC6JAsiIUQKU7KpjCGpnRlvX9J/Ogyr4XmuqH+1cQmMvyDrIoEUnla
+ gT03Ilsd//laH4f49LgM17MJN1oArJZBigEhu+Q7cJmrgarL3UBBx4AlHVOa5olfBZ76MOh+q
+ ORKrdekZ7FHs6fDim0gQhuMkz5+Hv6MWFTti4D9kqyDOrW28cYIjMWpgRVJPEDWBCBD+OynDS
+ N/HcR/WbMSQxZiECoFOJZgwJUm8+2htVmbv18addLsJmSw6PzRnZA0Ygshjgt1TrNwEGqnfCp
+ cpJ1Iy1wltLRMT6IluRaeko9fsftIAkrNpbUZZoraamOpU/I2YQyGxk+HiWpLYs76GBujBNUe
+ XiaGRFQTXdKKG6piFCzA31OtZa8odI3pmavXKeJhVqLx0y3niMb2aw8e7jzmoMJq6VXg9QOdB
+ XGXD9bn8q1Og1B4h97mFPzzP94dVuod47thTTlXeIgRjP2KTZHaDNXRokn+J3j1TZeK/rJ3e0
+ jyOf/3S8kdRu7KVgqoIFsum43lcb8U1JoTPXBjF7Mxzy8H4NxgmrA5Be+X2SgbF0fopxoY6ch
+ Dnlvqf8zTq5ekUKUPMmV1g2JXAs3N5fgBdTAJA2P1+uJ8JRfXkVe2sc2ZvWc7C9R1eLUQ72X/
+ Z0QQ3v69axpGKCvsQ40Sw1VXsnWXsEE9trWIqm1YeM8gXhijI28isQVdj8TvbJuFrYLdlWWfK
+ y13CG6itfPwPygxsk
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Jun 27, 2020 at 05:34:49PM +0300, Mike Rapoport wrote:
-> More elaborate versions on arm64 and x86 account memory for the user page
-> tables and call to pgtable_pmd_page_ctor() as the part of PMD page
-> initialization.
-> 
-> Move the arm64 version to include/asm-generic/pgalloc.h and use the generic
-> version on several architectures.
-> 
-> The pgtable_pmd_page_ctor() is a NOP when ARCH_ENABLE_SPLIT_PMD_PTLOCK is
-> not enabled, so there is no functional change for most architectures except
-> of the addition of __GFP_ACCOUNT for allocation of user page tables.
+On 27.06.20 15:43, Oscar Carter wrote:
+> In an effort to enable -Wcast-function-type in the top-level Makefile to
+> support Control Flow Integrity builds, remove all the function callback
+> casts.
+>
+> To do this remove the cast to a function pointer type in the comparison
+> statement and add to the right and left operand a cast to unsigned long
+> type. This can be done since the comparison is against function address
+> (these operands are not function calls).
 
-Thanks for including this line; it reminded me that we're not setting
-the PageTable flag on the page, nor accounting it to the zone page stats.
-Hope you don't mind me tagging a patch to do that on as 9/8.
+On some architectures (namely ia64, ppc64 and parisc64) function pointers
+actually refer to function descriptors, which in turn point to the real
+function address. The compiler usually takes care of such comparism.
+That said, casting to "unsigned long" might break this...
 
-We could also do with a pud_page_[cd]tor and maybe even p4d/pgd versions.
-But that brings me to the next question -- could/should some of this
-be moved over to asm-generic/pgalloc.h?  The ctor/dtor aren't called
-from anywhere else, and there's value to reducing the total amount of
-code in mm.h, but then there's also value to keeping all the ifdef
-ARCH_ENABLE_SPLIT_PMD_PTLOCK code together too.  So I'm a bit torn.
-What do you think?
+> Signed-off-by: Oscar Carter <oscar.carter@gmx.com>
+> ---
+>  arch/parisc/kernel/ftrace.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
+> index 1df0f67ed667..86b49a5fc049 100644
+> --- a/arch/parisc/kernel/ftrace.c
+> +++ b/arch/parisc/kernel/ftrace.c
+> @@ -64,7 +64,7 @@ void notrace __hot ftrace_function_trampoline(unsigned=
+ long parent,
+>  				function_trace_op, regs);
+>
+>  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+> -	if (ftrace_graph_return !=3D (trace_func_graph_ret_t) ftrace_stub ||
+> +	if ((unsigned long)ftrace_graph_return !=3D (unsigned long)ftrace_stub=
+ ||
+
+Untested, but maybe better use:
+	dereference_function_descriptor(ftrace_graph_return) !=3D
+		dereference_function_descriptor(ftrace_stub)
+
+?
+Helge
