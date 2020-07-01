@@ -2,131 +2,89 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABE520FE32
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jun 2020 22:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92FEB2111BC
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 Jul 2020 19:15:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725862AbgF3UwM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 Jun 2020 16:52:12 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:40034 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725845AbgF3UwL (ORCPT
+        id S1732668AbgGARPp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 1 Jul 2020 13:15:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48664 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732361AbgGARPp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 Jun 2020 16:52:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1593550330;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=dSLF2JUETXiqlgMgrNmE+7rrHD1HC1gVnVSET6GUPpA=;
-        b=LS/+/2KX5cLeugO6yTK+K3O1HbdfT8ndGkPfEDi8f9Ze178BOjWjAlsjDiDxuFyNX78uLs
-        /fsxdCL4nKdlc1aHP5Csw0G1Ag0qzfTJZ/hC8V4k/vmfc73WUXM6pMDwbG40ChwYQvlKUw
-        tBcrS0JhEEc1a6+vLshjtJhk8oZCfMw=
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-347-mUWVp022Nq2Nlz2vP_Bmsw-1; Tue, 30 Jun 2020 16:52:08 -0400
-X-MC-Unique: mUWVp022Nq2Nlz2vP_Bmsw-1
-Received: by mail-io1-f72.google.com with SMTP id l16so13908871ioc.15
-        for <linux-parisc@vger.kernel.org>; Tue, 30 Jun 2020 13:52:08 -0700 (PDT)
+        Wed, 1 Jul 2020 13:15:45 -0400
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6860C08C5DC
+        for <linux-parisc@vger.kernel.org>; Wed,  1 Jul 2020 10:15:44 -0700 (PDT)
+Received: by mail-qt1-x842.google.com with SMTP id o38so19026908qtf.6
+        for <linux-parisc@vger.kernel.org>; Wed, 01 Jul 2020 10:15:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=4ctMXEvTixjKM6olI5YVhvCcO1778vVFj3shNrjFepw=;
+        b=lBpDnHWcDJl71ZJIsRCV+yrtgnERN7dcOwOyxdOvdSb0eDM9XgLeE8/nGqyx9FU/ie
+         g7Yi+Q98cTY04KVy/KmbRigQscosM1rOyx1jmcuZl0bNTeXh6FG4ruysTeDTkJ8LEn07
+         GFDbMx6ZUYE7f+u39Alw+CE5goRDBdkmC0U3jcU/8FY8c/3gi9EefKYyX6c+3dZ5cTnX
+         ulaJTaIk0cQL+PrdHNhqtoSGOo6gXPiwRv/2aWy8sOisbx90RcNUSOfwieamFESNBUSh
+         fOZypppX0wVX11KaIXtK9dvXIoTWj9EhcsVYTIPTSFipxVAn4IIBdUB7Q5qYsPoNyObY
+         kkHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=dSLF2JUETXiqlgMgrNmE+7rrHD1HC1gVnVSET6GUPpA=;
-        b=hQAO7pj6jphjaFfEx32WvSYkX/SfSsXya5D5UCwf9anakm/4SrfQv2SMnYYZaAXRkK
-         42Ohsu3dV8mD5UfwbfvaGz6U0ZLgFSm/+BTCxC+pqzD8Thn4gdg3XIEYH5zlebfjWLug
-         UfyougFTolM/PQ3Pt5v/OAjItymzZyBrO/ykNFP3NA8pG4IJXeykkJUOTrXNSdZasQ/9
-         rhq84yYSfV+1G+NO2TDRJHeXquqAb7IhI+t7Kp7xfWL/OqJR7TdbpHCB40H8rPEA1Jcm
-         Thb8qQSzvNzGii/vK+fZRiCiMBPCOMieO9JgenEZ0c/HuBwuqdwYdvyf5YcvzH/KMCKK
-         fY5w==
-X-Gm-Message-State: AOAM531HriB9P3IBJnNmlB/DQdoB/UoKZH1WDT3UW+8MbjiTyyR/cbf3
-        HKobK04TMKrUWTQaExyP9rUUOrLjeIuy4tmamqR35/o4mKJ7uXdDqT3LkeXkcm+4B4TqI5kjdfN
-        N/XvTn6VQX7BSRa/Gu/bosEAC
-X-Received: by 2002:a05:6638:118:: with SMTP id x24mr25757296jao.48.1593550323727;
-        Tue, 30 Jun 2020 13:52:03 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyvoEV2FUJkvA5qAwTsI4mdiDZPCkCjdD/AwbVYfXw8WHclHjXZP0TyZnfiU/sv0k2kSJZuSg==
-X-Received: by 2002:aed:204e:: with SMTP id 72mr22146487qta.313.1593549942977;
-        Tue, 30 Jun 2020 13:45:42 -0700 (PDT)
-Received: from xz-x1.redhat.com ([2607:9880:19c0:32::2])
-        by smtp.gmail.com with ESMTPSA id t5sm3840619qkh.46.2020.06.30.13.45.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2020 13:45:42 -0700 (PDT)
-From:   Peter Xu <peterx@redhat.com>
-To:     linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>, peterx@redhat.com,
-        John Hubbard <jhubbard@nvidia.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Will Deacon <will@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH v4 15/26] mm/parisc: Use general page fault accounting
-Date:   Tue, 30 Jun 2020 16:45:40 -0400
-Message-Id: <20200630204540.39197-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.26.2
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=4ctMXEvTixjKM6olI5YVhvCcO1778vVFj3shNrjFepw=;
+        b=FzngVpSCGXqEK3f30r52CZ3NfNwEdY3ehXxQ1JBNcMGWxCdl7zSVzLvUBSPkOzyjBp
+         yIdYTqrLk7qdMyxRTT3S5LvMdcbmomSkJQ+H85HcFHGrlzHiYhJqBX8mwJGmCwmEHrKB
+         t1C/5Ro4Hjw6HQ41or/OQvvwzyINp/VgvOSgaBLpNOyJNItLDyRUlHK0l8nredoH9ziK
+         T+jpfvgiadz5kEz+1A+8vU7WrNCjEF9pd+9hnHubTWs9P2KufJnaB+3rVUTEzeCmvMvI
+         jRWl7YcKgeOIXiZhQWaV4TbgjrpYuDEvn0ahgP/DFV2x011BGx4hMVNClEyh1GYtnkkt
+         Xx4w==
+X-Gm-Message-State: AOAM530JutvDWZH7LssyyETDor6g2b4NxUYVsBw2abCN7qMVGQSgHs5H
+        ASa5QJQd88ezDinf0d+10I34gSU26olFcYA6Drk=
+X-Google-Smtp-Source: ABdhPJxCZGOQA1sE0GTZcNlT5J+mnHwZ+HmwbvcFtcg1r2/DVJCtgLJB17Non53tqk2KyoXfeBJggopyDJFptQmXaqY=
+X-Received: by 2002:ac8:44ad:: with SMTP id a13mr20092678qto.387.1593623743883;
+ Wed, 01 Jul 2020 10:15:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ac8:16ac:0:0:0:0:0 with HTTP; Wed, 1 Jul 2020 10:15:43 -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <missjankipkalya@gmail.com>
+Date:   Wed, 1 Jul 2020 10:15:43 -0700
+Message-ID: <CANYA1jSf2Apk+FwV4sS83-Nhr-+4mSNKqaK_8ysz-VykUZr0Dg@mail.gmail.com>
+Subject: Hello, Please
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Use the general page fault accounting by passing regs into handle_mm_fault().
-It naturally solve the issue of multiple page fault accounting when page fault
-retry happened.
+Dear Friend,
+I'm Mr. Scott Donald a Successful business Man dealing with
+Exportation, I got your mail contact through search to let you know my
+Ugly Situation Am a dying Man here in Los Angeles California Hospital
+Bed in (USA), I Lost my Wife and my only Daughter for Covid-19 I'm
+dying with same symptoms. my Doctor open-up to me that he is Afraid to
+tell me my Condition and inside me, I already know that I'm not going
+to survive this alone in this Health,
 
-Add the missing PERF_COUNT_SW_PAGE_FAULTS perf events too.  Note, the other two
-perf events (PERF_COUNT_SW_PAGE_FAULTS_[MAJ|MIN]) were done in handle_mm_fault().
+I have a project that I am about to hand over to you. I have already
+instructed the Bank to make the transfer to you as soon as the Account
+Manager hears from you. the bank will commence the fund transfer into
+your account. I want you to give 50% to Charitable Home and take 50%
+Please, don't think otherwise and why would anybody send someone you
+barely know a huge amount of money is this real or what? please do as
+I said there was someone from your State that I deeply love so very
+very much and I miss her so very very much I have no means to reach
+any Charitable Home there. that is why I go for a personal search of
+the Country and State and I got your mail contact through search to
+let you know my Bitterness and please, help me is getting Dark I ask
+my Doctor to help me keep you notice failure for me to reach you in
+person Your urgent Response, here is my Doctor Whats-app Number for
+urgent notice +13019692737
 
-CC: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-CC: Helge Deller <deller@gmx.de>
-CC: linux-parisc@vger.kernel.org
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- arch/parisc/mm/fault.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you.
 
-diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-index e32d06928c24..4bfe2da9fbe3 100644
---- a/arch/parisc/mm/fault.c
-+++ b/arch/parisc/mm/fault.c
-@@ -18,6 +18,7 @@
- #include <linux/extable.h>
- #include <linux/uaccess.h>
- #include <linux/hugetlb.h>
-+#include <linux/perf_event.h>
- 
- #include <asm/traps.h>
- 
-@@ -281,6 +282,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 	acc_type = parisc_acctyp(code, regs->iir);
- 	if (acc_type & VM_WRITE)
- 		flags |= FAULT_FLAG_WRITE;
-+	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
- retry:
- 	mmap_read_lock(mm);
- 	vma = find_vma_prev(mm, address, &prev_vma);
-@@ -302,7 +304,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 	 * fault.
- 	 */
- 
--	fault = handle_mm_fault(vma, address, flags, NULL);
-+	fault = handle_mm_fault(vma, address, flags, regs);
- 
- 	if (fault_signal_pending(fault, regs))
- 		return;
-@@ -323,10 +325,6 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 		BUG();
- 	}
- 	if (flags & FAULT_FLAG_ALLOW_RETRY) {
--		if (fault & VM_FAULT_MAJOR)
--			current->maj_flt++;
--		else
--			current->min_flt++;
- 		if (fault & VM_FAULT_RETRY) {
- 			/*
- 			 * No need to mmap_read_unlock(mm) as we would
--- 
-2.26.2
+My Regards.
 
+Mr. Scott Donald
+CEO
