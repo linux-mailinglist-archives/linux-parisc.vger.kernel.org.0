@@ -2,133 +2,85 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50BA2214718
-	for <lists+linux-parisc@lfdr.de>; Sat,  4 Jul 2020 17:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70A0C214842
+	for <lists+linux-parisc@lfdr.de>; Sat,  4 Jul 2020 20:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726739AbgGDPwW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 4 Jul 2020 11:52:22 -0400
-Received: from mout.gmx.net ([212.227.15.18]:49151 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726643AbgGDPwV (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 4 Jul 2020 11:52:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1593877892;
-        bh=tAtI5rS5UHUyRq0DpLyYLjxEsQq2XtSEjG4HHyuWRE8=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=KaPTBn58KwDtI+RAJoTdSRRO2RqVshAASEmbHz4ul5cZgdMYJZ0JDRLyoVX/Ja2bo
-         VCaTmIlxuauNdxkSO/IEOoSQ42qs+MeojULRY7HcHwO+CQGmlVC3IaXew3P7b4EFqT
-         J3H16MesehMKeQ5y3ih+CxOFGprxuQSpCbJcxvc0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([79.150.73.70]) by mail.gmx.com
- (mrgmx004 [212.227.17.184]) with ESMTPSA (Nemesis) id
- 1MzhnH-1knAOb2GEz-00vhSn; Sat, 04 Jul 2020 17:51:32 +0200
-From:   Oscar Carter <oscar.carter@gmx.com>
-To:     Kees Cook <keescook@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>
-Cc:     kernel-hardening@lists.openwall.com, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
-Subject: [PATCH v2] parisc/kernel/ftrace: Remove function callback casts
-Date:   Sat,  4 Jul 2020 17:50:57 +0200
-Message-Id: <20200704155057.3959-1-oscar.carter@gmx.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727833AbgGDS7i (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 4 Jul 2020 14:59:38 -0400
+Received: from sonic301-22.consmr.mail.ir2.yahoo.com ([77.238.176.99]:37222
+        "EHLO sonic301-22.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727785AbgGDS7g (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 4 Jul 2020 14:59:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1593889173; bh=ZWeDLwf4cGlLDzTwCuOen1zTINlp5j+f2ywobrqBR9o=; h=Date:From:Reply-To:Subject:References:From:Subject; b=ntJ3spp+PoyEufaAOy2iW+jZu8FjLflwsAbkW49Qn/h6B+G4jpxCm2Q7yTkHlwmj1+djSm4jourWfpaVKO+z3eKjTAeRgqAX+3ePyVMePYODmzex4gAxs2vkpeyX9Q9o6PenuPgxZvo/JDGqw6S/H3ggH6feTVsrrEksa5WHxo9nDzK9m/UsRx3Ecwwl+MwCKjtrrlYHVmM71soyds9gHUzg3lfxWRQ5TwGQOohgGKQAEYs37LFlzt0GoW2QVI677ic17Q8DbUXUV+PdmjiuBBivQrVYzDtGFfrDge39KeuqNXDi30fHLO1Xj9VPPnpxoXsR3xZ81RPmDZJcYj1lNg==
+X-YMail-OSG: IEXMUeAVM1m1gPtltFK.fyn.DxvmXyKwB4p72nQRIEpIBUINTRsbraNT_NxPQj0
+ 5DRBSoij_Pj6y6dGMJPIMCI.RKchAVBEhdeA.3Xhkllqho0W6t5WEubdtOtqxn6lcwOZMTSHAB54
+ aPqsiAG9YwGDHoigR7gj1PrRVsR7ImQIcuPOyHn81qTVWFm4DXqi4Tm8mXYqdLN.DITlW1wmexaL
+ PZp6vj9YP2p_SlToPg.0D5GCUOX008lrZis7ubQqtPz9VO.1EwFDpRm2Gv6N.nvmUl5wJHOreagz
+ vMoAfblCzDzUej4rQhLxJbBv_7haeT7BpOFMvtcyX43OCbZHTFETn5ojAjQShP7fwFik4S_6Cyft
+ ASvjVes9FBdPLMpvQs1NSk8TlTUMsshDAPkGEui1A.XlzsVJrURRdMBm0Fmnr2xQlrSQqd5oAsp3
+ .Nm.IGHrSMzWNuh.3Re39dAh41jJYhQKHqqA8Ftx925Z3IDrT8ZurUzLKZsr2GL.2aivMGFvg32p
+ eS8Uw43r4Ip3GT3xJSmKkEAq8rqJ_up.gvl7qvofFGw0CFyKf8uVCjqiUV1j1hlwPBiTwYSXMrwJ
+ 53oYa3ZsoxTjD2Cilkcujz4pfzcuh80MBQYUFPt3AITD.xhLov_1_QJL3pIsseJCTcW9XqJA.42p
+ nquUKQUQ.8OvlZCOZfygX.Ociwo5YoEq1hpMri.O7TpxI2jvcKp0wnZAm8XWIhQyjnWAUb2Ooy_i
+ bFlrRPIOrB9kJnB1dFcHyJhGDEP2syFAO8Usi5NJvKnF16QSGWzuN_kJyasDnHEyDXTiHqkhaC1P
+ 5qVJ3L..jirVyLSb5fVnCNqyY3eGep8yfLhjAgmAlZ6UM2QJ3Nv8RO2n5CpmMf7Dsx6TtzjxvK.z
+ uI3X7EIIU.9ENINcSsPLpvfUMCarvbjYQHuKWHP.WUFwU_9wwZU8iwqrzishROiPWT4h1tBBQw.V
+ _y2Fnm1VmvYqOsO_j1ZvMgA5bJ8IbMuY8H0ub64ZaMXOR6gY7vYuW74whzROrbhPQnNRifncTqiy
+ TuLgBAY68zL3J90BvLcNbmE7UxH4rtvm9uqy.9fpxKmu0C.edDz1aQs3GLsM8f2Ss0FBb9xHKvD1
+ B293W_SxVy9OyyQ9OSDZrgcq.JGQp0qfxNP5wAg4iBmLQgBSzW4jX6atrYU.V_QSRsniM7QAY5Jj
+ MBJJp9vIlpU3BJXuREpbeYP7D6giGBqoTTaStb7fj6EPSlGdOs1nEl22CdoSkXV7xkecmNPiKy1R
+ YGZAvAquBLm3PUPfOK7y2JuBI4dSQsGp2txWkRmoFFLbGN6DUVGFDBbiZoZ91Tl.LDRI9sYituqW
+ w
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ir2.yahoo.com with HTTP; Sat, 4 Jul 2020 18:59:33 +0000
+Date:   Sat, 4 Jul 2020 18:59:30 +0000 (UTC)
+From:   Theresa Han <serena@lantermo.it>
+Reply-To: theresahan21@hotmail.com
+Message-ID: <1469227910.4479605.1593889170815@mail.yahoo.com>
+Subject: =?UTF-8?Q?Ich_gr=C3=BC=C3=9Fe_dich_im_Namen_des_Herrn?=
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:R5hfiGVWqGDQ+lgUWVBXTSSU4VXpztSPSCW5LLJmeHirtrL6qjS
- h/OkEOlAmkQWjNgwbAmZBSa18vPP+iqfKLX1U55rOelFaBbimJgHUQ++ryBIxErjaluqiMt
- RIzTxmbduIX0Te4N5eAl07WmZfV7y8e3KkR/b3vie7Da24pcW5tpc54brxK6iJQd4j0bTmC
- oYpkkQ5YWFw1jesnCFPEw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:KPr6d6wU2Tk=:/XQpyyxWJW59BDAc3HhAH3
- IXHbCmVEp97xXSOOgw3mmkjjdvuOjilAakJ42ogmcW37xhPjuG+LBkIujb/40lbDwhI2sKR3o
- nw2ExcoF2Gfyu1RBajF8GQ9IYcl9gGYABYcHhsjwnYmijWCqvnXsikMaQ1VKSoLZoNx/bu+0F
- 2CfJLJuMYfg1RisPaW4sJev9yiH0lPeRenDfWG6FC0nIUm2YVMuQd9gJkv3v1Q8L6jeQ2XFzc
- i5ecrrKCczi+Eekugon/tn200O31pD5v05hvJHXCqNch5DskoOlFNMXA1gtLfoL4oNkCBk84P
- 95XHMl7bQuoFOLPDFzyPKWlvjRNhcRYAA4aNJx/UnRWPxms5sWppXqL2x+XrXZjnqDpv6Qb0m
- Hxah4Nysds2rJy04IjB3qQxXBTYMZ0vQuXsjH1DtB64/ANF9Fmhc5ZBp3iGVdL5Ce5taP+0z1
- 68wHrNOfK9htjl+G4ZFl2fY0qh0PhCBOI1f/sk61sEJsp0rTPTzD1q3CzvymtjwFYorT9ubgk
- 8iJAe6uOWEIAv1zg2/aorozWcGRGyGpgrZWpubv6OAOay9FZo/HkrwjQ7V0u4R9iRh0fmzWKG
- BeFKtNXjXeXXgaBXlrrysojX8CfzL8ZKxtUVyhdsZGhwV3qOiKaJ37Wb/YOX5t67DPsJrFC/o
- EXUA8fhlkNR4GpcgOhmgRS0dJTV7CyvOyrCFSYJgKxPOiRP5fcxq1+j2S6mlLTqiQap5ekY6e
- 0uZs1XR3k4eMrLdxcTX6kcW22uj00lmKibRTiUIFp60Z1C5ppaM905kN7nRHUR93MYcmLik6a
- oHubOPv7Fslx49tL+K0EzCuoWpfxSCu2go5L4ZujE9WgmmcSW0n6t1iq/eJlfdlROcVZ5S3Ok
- wnQVb8V0cyFpjcQOFUgLLChyowo7x3lTATF5jtMIYYtDKliZMh2n2LFVXpLoB8LxL7MwPJRg1
- +j1HEHL43UUeox/AocpLz29sVHEfLZc9/8dRDDrCK598eDdcaJBxi0b1QaeN3A+fhTBgQB04B
- XTOK3vljJGNbTxfl9KkqXfecWjdJI8UHy1dRiYRppNb9lLAl5ogm1xZzroDF7A2MyG40WFtGK
- VYmOFabofs9uEkQZZF8A0A7mmVbYyDRlCZ+wWbEEZeOrmC2Ikt22MYMhE9PaIFca/CbQqaD4s
- KprKJSzGlLU8Bt+fqqZwUpqd5pgYHicIJiLEDIfoNKojbL53ODavYRlZ5SZg55XXdaTlBLkXw
- bsFBe4bDUCsu/sDF+zwCgueVfXEs9SF69YsjqCw==
+References: <1469227910.4479605.1593889170815.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16197 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-In an effort to enable -Wcast-function-type in the top-level Makefile to
-support Control Flow Integrity builds, remove all the function callback
-casts.
+Ich gr=C3=BC=C3=9Fe dich im Namen des Herrn
 
-To do this add an inline function helper to get the address of a
-function. This helper uses the "dereference_function_descriptor" as the
-parisc64 architecture uses function descriptors instead of direct
-addresses for functions.
-
-Then, remove the cast to a function pointer type in the comparison
-statement and use the function helper to get the address of every
-function in the right and left operand. This can be done since the
-comparison is against function address (these operands are not function
-calls).
-
-Co-developed-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Oscar Carter <oscar.carter@gmx.com>
-=2D--
-Hi,
-
-I have added the Co-develop-by tag and Signed-off-by tag to give credit to
-Helge Deller if there are no objections.
-
-Thanks.
-
-Changelog v1->v2
-- Use the function "dereference_function_descriptor" to get the function
-  address instead of a direct cast to unsigned long type.
-- Modify the commit changelog accordingly.
-- Add the Co-developed-by tag and Signed-off-by tag to give credit to Helg=
-e
-  Deller.
-
- arch/parisc/kernel/ftrace.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
-index 1df0f67ed667..c53576890881 100644
-=2D-- a/arch/parisc/kernel/ftrace.c
-+++ b/arch/parisc/kernel/ftrace.c
-@@ -24,6 +24,11 @@
- #define __hot __attribute__ ((__section__ (".text.hot")))
-
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-+static inline unsigned long ftrace_get_function_address(void *function)
-+{
-+	return (unsigned long)dereference_function_descriptor(function);
-+}
-+
- /*
-  * Hook the return address and push it in the stack of return addrs
-  * in current thread info.
-@@ -64,7 +69,8 @@ void notrace __hot ftrace_function_trampoline(unsigned l=
-ong parent,
- 				function_trace_op, regs);
-
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
--	if (ftrace_graph_return !=3D (trace_func_graph_ret_t) ftrace_stub ||
-+	if (ftrace_get_function_address(ftrace_graph_return) !=3D
-+	    ftrace_get_function_address(ftrace_stub) ||
- 	    ftrace_graph_entry !=3D ftrace_graph_entry_stub) {
- 		unsigned long *parent_rp;
-
-=2D-
-2.20.1
-
+Ich kann mir nicht vorstellen wie du dich f=C3=BChlen wirst Sie einen pl=C3=
+=B6tzlichen Brief aus einem abgelegenen Land in der fernen Elfenbeink=C3=BC=
+ste erhalten werden und wahrscheinlich von jemandem, mit dem Sie nicht gut =
+verwandt sind. Ich appelliere an Sie, etwas Geduld zu =C3=BCben und meinen =
+Brief zu lesen Umgang mit Ihnen in dieser wichtigen Transaktion
+=20
+Ich bin Frau Theresa Han, 65 Jahre alt, in der Elfenbeink=C3=BCste, an Kreb=
+sleiden leidend. Ich war mit Herrn Johnson Han verheiratet, der bei der Reg=
+ierung von Elfenbeink=C3=BCste als Auftragnehmer t=C3=A4tig war, bevor er n=
+ach einigen Tagen im Krankenhaus starb
+=20
+Mein verstorbener Ehemann hat die Summe von US$2,5 Millionen (zwei Millione=
+n f=C3=BCnfhunderttausend USD) bei einer Bank in der Elfenbeink=C3=BCste hi=
+nterlegt. Ich habe an Krebs gelitten. K=C3=BCrzlich sagte mir mein Arzt, da=
+ss ich aufgrund der Krebserkrankungen, an denen ich leide, nur noch begrenz=
+te Lebenstage habe. Ich m=C3=B6chte wissen, ob ich Ihnen vertrauen kann, di=
+ese Mittel f=C3=BCr Wohlt=C3=A4tigkeit / Waisenhaus zu verwenden, und 20 Pr=
+ozent werden f=C3=BCr Sie als Entsch=C3=A4digung sein
+=20
+Ich habe diese Entscheidung getroffen, weil ich kein Kind habe, das dieses =
+Geld erben w=C3=BCrde, und mein Ehemann Verwandte sind b=C3=BCrgerliche und=
+ sehr wohlhabende Personen und ich m=C3=B6chte nicht, dass mein Ehemann har=
+t verdientes Geld missbraucht wird
+=20
+Bitte nehmen Sie Kontakt mit mir auf, damit ich Ihnen weitere Einzelheiten =
+mitteilen kann und jede Verz=C3=B6gerung Ihrer Antwort mir Raum geben wird,=
+ eine weitere gute Person f=C3=BCr diesen Zweck zu gewinnen
+=20
+Warten auf Ihre dringende Antwort Mit Gott sind alle Dinge m=C3=B6glich
+=20
+Deine Schwester in Christus
+=20
+Frau Theresa Han
