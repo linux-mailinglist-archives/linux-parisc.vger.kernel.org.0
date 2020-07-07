@@ -2,99 +2,135 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79019216577
-	for <lists+linux-parisc@lfdr.de>; Tue,  7 Jul 2020 06:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF251217B4C
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jul 2020 00:52:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726946AbgGGElP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 7 Jul 2020 00:41:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46170 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725766AbgGGElP (ORCPT
+        id S1729647AbgGGWuz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 Jul 2020 18:50:55 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:37388 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729688AbgGGWuy (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 7 Jul 2020 00:41:15 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D91C061755
-        for <linux-parisc@vger.kernel.org>; Mon,  6 Jul 2020 21:41:14 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id k15so23956245lfc.4
-        for <linux-parisc@vger.kernel.org>; Mon, 06 Jul 2020 21:41:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=tlFkNeWVqCKqCpaFN2ZhxZYlevKnjqhsVTNgrhhaZ2RDT18b6lcAhNP8hwMjglEgOJ
-         JRrhd5sCrcPXcRjb/F8i+qXRuFrdow62Kk0LCTaGNdn/R12lB4+3ZH1iNTvGb57NxEGH
-         TOK3UqUTx2iqAiVwI1pjngJhOVCUCf/4QYUA4hRIiK9JixA7VcqC90X5tPyk407RxDio
-         vu0fUwwKGYS8xL3xDrcDrycounHCvHDFFk99Fy4byqghO9j75mds1BzrnlGyeWYE3xHz
-         X4d5uwR/Qwxfv2AE3y13GpatyO6uIoMsRBr4DNeu7b9ur6lH5gHgcZA+qo1LXlYGF8kU
-         DYDA==
+        Tue, 7 Jul 2020 18:50:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1594162253;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dSLF2JUETXiqlgMgrNmE+7rrHD1HC1gVnVSET6GUPpA=;
+        b=dGlQpsg4ZkK3a+rhiTUo11N0zKKC0nMwNofJCkqHwJzxOHn+r5akScap7acqxlQWhmJZP4
+        PmSzpndqz69TtFDx65RBLmiixycCOl5hRSTou9qSw6zU0VMaDgWlOWgcKLdM90Rku26eGm
+        coqVu/kPAbrCH/N934fYftsmVYY9pEE=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-493-qJkGghSCNeC5f1BCiKOTOA-1; Tue, 07 Jul 2020 18:50:49 -0400
+X-MC-Unique: qJkGghSCNeC5f1BCiKOTOA-1
+Received: by mail-qk1-f199.google.com with SMTP id q6so21047438qke.21
+        for <linux-parisc@vger.kernel.org>; Tue, 07 Jul 2020 15:50:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=BEYnugqwEmiiADuJiA7grGCV+qy3KzEGcWONfgNTK4kO9lXLhMobu5GXWGBqwNo/rh
-         N3r//gjYbvKuUsiCVc8syvD1jYAJEuaG28uVgPe989AONGE+Po3ud0IvVxEdUcR4qXOV
-         D2xrEw+Y/cN6ltkxtAvumASeCk73pZ+08laABFxXXyuvmZfR3kBtlgyiTlqhBCUPyVLH
-         rwSEEGMzUGT3AKOm8MSTzoC2Ue049JE1AZ7Lzl6ZmRXT3VXcY4TdJFjyOob7AsxGuJDJ
-         +eiJuCNSJlNg6CvcywbQUiHxEUD8jAlDhIl+tjDBxbfzqF4rB7YqgfkbRtt9bJpLf5OD
-         mDUA==
-X-Gm-Message-State: AOAM530J9hZEPlXtQqXPcrp9d8EtzOo/2Kpa96VA6kmpoTng3GZjS2+3
-        YQKcZ0mkcFWL72EPJeNLtCeIzVRh5qv00wGQj0M=
-X-Google-Smtp-Source: ABdhPJzQCgXqbSQm6mkzO4D8AFK03srCLifInf41dOx33oxCgP98rIfVrXt89WENH0TQVOyrg0YKCw16FR2dUNeaI4o=
-X-Received: by 2002:a19:ccc5:: with SMTP id c188mr31863582lfg.163.1594096872897;
- Mon, 06 Jul 2020 21:41:12 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=dSLF2JUETXiqlgMgrNmE+7rrHD1HC1gVnVSET6GUPpA=;
+        b=H2mM/kTF/It5isVX6mTxL0dyI2xVZI45HcUz4L+RzwmLl2qAWXcV+H0Pa4Eq5EwKDk
+         oPVSAX9ANa1UsnLW7bHng3C+C8mvweI4flxXooioiKUAd3+BNn32uTdT9w5aMVxlntwC
+         mjyK7x/5LqoWkxZVYz/yj+JWdNQ0gibzIea/xEDoKqaeB3GSPt/tytPghUKumGWZRAMV
+         fdM7BIpJkVwxBpyAoBrJicC0J+3jYD8ITTyrdhjbXK6GStzCCrpZws79weGfUIWTWvcX
+         /g6z8ORwxhHYQw8Gfe1FXELypPOAycpSX10BXyeeL/vwmpnRE+U4Rgy5xVh0qUXHDs86
+         MF9w==
+X-Gm-Message-State: AOAM531SZo2Kv1fCCXR3sEUTTtobTlaIf8Xg8vzIcGAzhem07os99VK5
+        Z3PaeE3mEGLi/Vmh42+fqiZWuiyO6GfOtHwy7d11aQIkRS8EmjIVBdYXhTuYC4WNCrDOkmrI1X9
+        MZ6Xe9NEI9tjPzanhJ4VlnNGB
+X-Received: by 2002:ad4:5307:: with SMTP id y7mr54932482qvr.63.1594162248905;
+        Tue, 07 Jul 2020 15:50:48 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxZZjK6Nn1bIXhPvAgy7jT1o0DD/8o7Kmnv40jvO5ZPTVwAW66E615v62v4cElkkeaFLjMBdA==
+X-Received: by 2002:ad4:5307:: with SMTP id y7mr54932474qvr.63.1594162248721;
+        Tue, 07 Jul 2020 15:50:48 -0700 (PDT)
+Received: from xz-x1.redhat.com ([2607:9880:19c0:32::2])
+        by smtp.gmail.com with ESMTPSA id j16sm26267642qtp.92.2020.07.07.15.50.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2020 15:50:48 -0700 (PDT)
+From:   Peter Xu <peterx@redhat.com>
+To:     linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc:     Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        peterx@redhat.com, Andrew Morton <akpm@linux-foundation.org>,
+        Will Deacon <will@kernel.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: [PATCH v5 15/25] mm/parisc: Use general page fault accounting
+Date:   Tue,  7 Jul 2020 18:50:11 -0400
+Message-Id: <20200707225021.200906-16-peterx@redhat.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200707225021.200906-1-peterx@redhat.com>
+References: <20200707225021.200906-1-peterx@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6504:518c:0:0:0:0 with HTTP; Mon, 6 Jul 2020 21:41:11
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   AISHA GADDAFI <mahasaliou4444@gmail.com>
-Date:   Mon, 6 Jul 2020 21:41:11 -0700
-Message-ID: <CAKHB8qdmUeJMAHc2fxMhfmZtkUUj7NqUNe3yEfprcCg3nxTzUw@mail.gmail.com>
-Subject: Lieber Freund (Assalamu Alaikum),?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---=20
-Lieber Freund (Assalamu Alaikum),
+Use the general page fault accounting by passing regs into handle_mm_fault().
+It naturally solve the issue of multiple page fault accounting when page fault
+retry happened.
 
-Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
-Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
-Mutter und eine Witwe
-mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
-hen
-Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
+Add the missing PERF_COUNT_SW_PAGE_FAULTS perf events too.  Note, the other two
+perf events (PERF_COUNT_SW_PAGE_FAULTS_[MAJ|MIN]) were done in handle_mm_fault().
 
-Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
-f=C3=BCnfhunderttausend
-United State Dollar ($ 27.500.000.00) und ich brauche eine
-vertrauensw=C3=BCrdige Investition
-Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
-jedoch
-M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
-von
-Investitionsprojekten in Ihrem Land
-Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
-bauen.
+CC: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+CC: Helge Deller <deller@gmx.de>
+CC: linux-parisc@vger.kernel.org
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ arch/parisc/mm/fault.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
-n und
-Unternehmensgewinn zu verhandeln
-Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
+diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
+index e32d06928c24..4bfe2da9fbe3 100644
+--- a/arch/parisc/mm/fault.c
++++ b/arch/parisc/mm/fault.c
+@@ -18,6 +18,7 @@
+ #include <linux/extable.h>
+ #include <linux/uaccess.h>
+ #include <linux/hugetlb.h>
++#include <linux/perf_event.h>
+ 
+ #include <asm/traps.h>
+ 
+@@ -281,6 +282,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
+ 	acc_type = parisc_acctyp(code, regs->iir);
+ 	if (acc_type & VM_WRITE)
+ 		flags |= FAULT_FLAG_WRITE;
++	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
+ retry:
+ 	mmap_read_lock(mm);
+ 	vma = find_vma_prev(mm, address, &prev_vma);
+@@ -302,7 +304,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
+ 	 * fault.
+ 	 */
+ 
+-	fault = handle_mm_fault(vma, address, flags, NULL);
++	fault = handle_mm_fault(vma, address, flags, regs);
+ 
+ 	if (fault_signal_pending(fault, regs))
+ 		return;
+@@ -323,10 +325,6 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
+ 		BUG();
+ 	}
+ 	if (flags & FAULT_FLAG_ALLOW_RETRY) {
+-		if (fault & VM_FAULT_MAJOR)
+-			current->maj_flt++;
+-		else
+-			current->min_flt++;
+ 		if (fault & VM_FAULT_RETRY) {
+ 			/*
+ 			 * No need to mmap_read_unlock(mm) as we would
+-- 
+2.26.2
 
-Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
-antworten Sie bitte dringend
-Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
-.
-
-Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
-esse (
-ayishagddafio@mail.ru ) zur weiteren Diskussion.
-
-Freundliche Gr=C3=BC=C3=9Fe
-Frau Aisha Al-Qaddafi
