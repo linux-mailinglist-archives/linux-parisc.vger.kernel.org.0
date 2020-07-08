@@ -2,135 +2,85 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF251217B4C
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jul 2020 00:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1144521826B
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jul 2020 10:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729647AbgGGWuz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 7 Jul 2020 18:50:55 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:37388 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729688AbgGGWuy (ORCPT
+        id S1728189AbgGHI2i (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 8 Jul 2020 04:28:38 -0400
+Received: from mail.elsol.com.pe ([170.231.82.35]:53919 "EHLO
+        mail.elsol.com.pe" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726795AbgGHI2f (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 7 Jul 2020 18:50:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594162253;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dSLF2JUETXiqlgMgrNmE+7rrHD1HC1gVnVSET6GUPpA=;
-        b=dGlQpsg4ZkK3a+rhiTUo11N0zKKC0nMwNofJCkqHwJzxOHn+r5akScap7acqxlQWhmJZP4
-        PmSzpndqz69TtFDx65RBLmiixycCOl5hRSTou9qSw6zU0VMaDgWlOWgcKLdM90Rku26eGm
-        coqVu/kPAbrCH/N934fYftsmVYY9pEE=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-493-qJkGghSCNeC5f1BCiKOTOA-1; Tue, 07 Jul 2020 18:50:49 -0400
-X-MC-Unique: qJkGghSCNeC5f1BCiKOTOA-1
-Received: by mail-qk1-f199.google.com with SMTP id q6so21047438qke.21
-        for <linux-parisc@vger.kernel.org>; Tue, 07 Jul 2020 15:50:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=dSLF2JUETXiqlgMgrNmE+7rrHD1HC1gVnVSET6GUPpA=;
-        b=H2mM/kTF/It5isVX6mTxL0dyI2xVZI45HcUz4L+RzwmLl2qAWXcV+H0Pa4Eq5EwKDk
-         oPVSAX9ANa1UsnLW7bHng3C+C8mvweI4flxXooioiKUAd3+BNn32uTdT9w5aMVxlntwC
-         mjyK7x/5LqoWkxZVYz/yj+JWdNQ0gibzIea/xEDoKqaeB3GSPt/tytPghUKumGWZRAMV
-         fdM7BIpJkVwxBpyAoBrJicC0J+3jYD8ITTyrdhjbXK6GStzCCrpZws79weGfUIWTWvcX
-         /g6z8ORwxhHYQw8Gfe1FXELypPOAycpSX10BXyeeL/vwmpnRE+U4Rgy5xVh0qUXHDs86
-         MF9w==
-X-Gm-Message-State: AOAM531SZo2Kv1fCCXR3sEUTTtobTlaIf8Xg8vzIcGAzhem07os99VK5
-        Z3PaeE3mEGLi/Vmh42+fqiZWuiyO6GfOtHwy7d11aQIkRS8EmjIVBdYXhTuYC4WNCrDOkmrI1X9
-        MZ6Xe9NEI9tjPzanhJ4VlnNGB
-X-Received: by 2002:ad4:5307:: with SMTP id y7mr54932482qvr.63.1594162248905;
-        Tue, 07 Jul 2020 15:50:48 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxZZjK6Nn1bIXhPvAgy7jT1o0DD/8o7Kmnv40jvO5ZPTVwAW66E615v62v4cElkkeaFLjMBdA==
-X-Received: by 2002:ad4:5307:: with SMTP id y7mr54932474qvr.63.1594162248721;
-        Tue, 07 Jul 2020 15:50:48 -0700 (PDT)
-Received: from xz-x1.redhat.com ([2607:9880:19c0:32::2])
-        by smtp.gmail.com with ESMTPSA id j16sm26267642qtp.92.2020.07.07.15.50.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2020 15:50:48 -0700 (PDT)
-From:   Peter Xu <peterx@redhat.com>
-To:     linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc:     Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        peterx@redhat.com, Andrew Morton <akpm@linux-foundation.org>,
-        Will Deacon <will@kernel.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        David Rientjes <rientjes@google.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH v5 15/25] mm/parisc: Use general page fault accounting
-Date:   Tue,  7 Jul 2020 18:50:11 -0400
-Message-Id: <20200707225021.200906-16-peterx@redhat.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200707225021.200906-1-peterx@redhat.com>
-References: <20200707225021.200906-1-peterx@redhat.com>
+        Wed, 8 Jul 2020 04:28:35 -0400
+X-Greylist: delayed 4442 seconds by postgrey-1.27 at vger.kernel.org; Wed, 08 Jul 2020 04:28:34 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.elsol.com.pe (Postfix) with ESMTP id 045A860787A;
+        Wed,  8 Jul 2020 02:05:46 -0500 (-05)
+Received: from mail.elsol.com.pe ([127.0.0.1])
+        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ap9lZapl6Sqq; Wed,  8 Jul 2020 02:05:45 -0500 (-05)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.elsol.com.pe (Postfix) with ESMTP id 3CDFC607860;
+        Wed,  8 Jul 2020 02:05:45 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.elsol.com.pe 3CDFC607860
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=elsol.com.pe;
+        s=17F39D2A-FFD0-11E7-BCBF-081969246B0E; t=1594191945;
+        bh=7Y6RtNhSVAIVHdJEU2gHHWYvaP8LRgEAhMNj0EoKaAA=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=ApRtDBptkICb2t/zJSWTDwiHcDaa87JGbRDOEe3/EdrYxwy8qj3CegzFCQmHT7540
+         DphMAE///xHO3I+RBT82RPG+og9e1YaFbkuV+fAG7mVT3/B2QVm8+BgyR/XZ7+Pw6D
+         P8d20r+SzvUxRWNHB8R2OGA5dqZfbIZ1z39Wq1ObpFuwEJARCHTwJZ5arRKk9uxWAC
+         BJiSRP8YJtyvgXKR5OuN1hzUWyYm/b1eayiCH9/yopYJZ1H//vIXdt9w8eTMZp+Von
+         eWhQvjB0hFsucr0eLxtsuZ6TcXC1zF3wThIiySoAJbtWrQFCnRa1Q0LVT0+u6046uG
+         Ryei3yEIM7vqg==
+X-Virus-Scanned: amavisd-new at elsol.com.pe
+Received: from mail.elsol.com.pe ([127.0.0.1])
+        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id VzQTyyy3QHym; Wed,  8 Jul 2020 02:05:45 -0500 (-05)
+Received: from [10.86.65.172] (unknown [105.8.7.225])
+        by mail.elsol.com.pe (Postfix) with ESMTPSA id 8E6866077CA;
+        Wed,  8 Jul 2020 02:05:33 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <dreyes@elsol.com.pe>
+From:   ''Tayeb Souami'' <dreyes@elsol.com.pe>
+Date:   Wed, 08 Jul 2020 09:01:46 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200708070533.8E6866077CA@mail.elsol.com.pe>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Use the general page fault accounting by passing regs into handle_mm_fault().
-It naturally solve the issue of multiple page fault accounting when page fault
-retry happened.
+Lieber Freund,
 
-Add the missing PERF_COUNT_SW_PAGE_FAULTS perf events too.  Note, the other two
-perf events (PERF_COUNT_SW_PAGE_FAULTS_[MAJ|MIN]) were done in handle_mm_fault().
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
+ou Tube Seite unten.
 
-CC: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-CC: Helge Deller <deller@gmx.de>
-CC: linux-parisc@vger.kernel.org
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- arch/parisc/mm/fault.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
 
-diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-index e32d06928c24..4bfe2da9fbe3 100644
---- a/arch/parisc/mm/fault.c
-+++ b/arch/parisc/mm/fault.c
-@@ -18,6 +18,7 @@
- #include <linux/extable.h>
- #include <linux/uaccess.h>
- #include <linux/hugetlb.h>
-+#include <linux/perf_event.h>
- 
- #include <asm/traps.h>
- 
-@@ -281,6 +282,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 	acc_type = parisc_acctyp(code, regs->iir);
- 	if (acc_type & VM_WRITE)
- 		flags |= FAULT_FLAG_WRITE;
-+	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
- retry:
- 	mmap_read_lock(mm);
- 	vma = find_vma_prev(mm, address, &prev_vma);
-@@ -302,7 +304,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 	 * fault.
- 	 */
- 
--	fault = handle_mm_fault(vma, address, flags, NULL);
-+	fault = handle_mm_fault(vma, address, flags, regs);
- 
- 	if (fault_signal_pending(fault, regs))
- 		return;
-@@ -323,10 +325,6 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 		BUG();
- 	}
- 	if (flags & FAULT_FLAG_ALLOW_RETRY) {
--		if (fault & VM_FAULT_MAJOR)
--			current->maj_flt++;
--		else
--			current->min_flt++;
- 		if (fault & VM_FAULT_RETRY) {
- 			/*
- 			 * No need to mmap_read_unlock(mm) as we would
--- 
-2.26.2
 
+
+Das ist dein Spendencode: [TS530342018]
+
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Tayeb Souami
