@@ -2,96 +2,151 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DCBF21877D
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jul 2020 14:33:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23FF72199B7
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jul 2020 09:28:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729252AbgGHMdj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 8 Jul 2020 08:33:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60364 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729244AbgGHMdc (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 8 Jul 2020 08:33:32 -0400
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBD9FC08E876
-        for <linux-parisc@vger.kernel.org>; Wed,  8 Jul 2020 05:33:30 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id 6so8999187qtt.0
-        for <linux-parisc@vger.kernel.org>; Wed, 08 Jul 2020 05:33:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=CtDA46Te1kJYGFqAkgr9Vub/YrG6WB2S+VlEURQEEM4x6m9sjli+Jz/yotFRmV/AMR
-         T/h2d+e8At09eChsFX2C+mUFLH+FsdwAy78KAtzHqTPpG69rhvmbmMUpZSALFUdgKxT3
-         rKV4TF8A0J+Za5tWsTPtObTKnCJJSeTUvLM0KCUCLapZUiUA/CE0qJguNsnmAcBYT7Bw
-         PUSSiRKtit7eL05YbTu8d4vZk3Rk52mtpEQs926eluhEg6IUrqIesfOKILheZFFzZp0P
-         0kRnPxRkSyAb2gIupk6cQmoDhkGW5ga2ONIfRh7Ui0T+vXHI9OfE4hLpnUDNkQjQgdsE
-         pxTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=pdnXl2ONiLxmTnAj/27qhvp483nh9eZgpBeddOA+ru83VsCp0egTIJ4vIx5j3LLfN9
-         0EajUjith1gUefTJa9ADfeL8kjQle+kiHEXVLHG1bByAXGEWZqR0MWAXXm63i7DUsS0u
-         /KPxH1kgz/9lenwDrWNyXTrpSS46fBJHzWZcj4t8oqvVzq1exJPKLCORP921+4Rf1w90
-         V1MQILE4Ak42yQoUVZb5tFtNQQsCmk/Xw3PrwTTjXJmoaOiLz9uYKAQAaO9t8r8TFgRY
-         f/Y4ZNyDiPA+LiJYtQYmCSJsfRt/0VgSWW8yQG/POCiVPTDXUYuAwGbLhRdlu3fZs49m
-         ar5w==
-X-Gm-Message-State: AOAM531e/PSaIzKWJQT+HD5UX/rAHqOLayn0vfvrLHRr4WMVleCetrX9
-        Ctzi5ftwVxJZKW8Q2JWqnNXFu/5wVlwoCLdxWggaG6VgzAw=
-X-Google-Smtp-Source: ABdhPJy69qBRFRW2d2u+0xyGHVfmVbQRW6SQ4gKLQIvGwSNWfhZDhNcIlxNh+7AirNZFy3An0aJSkt25Q8y7juQZu8o=
-X-Received: by 2002:a05:6638:12c7:: with SMTP id v7mr64754290jas.56.1594211609022;
- Wed, 08 Jul 2020 05:33:29 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a05:6602:1582:0:0:0:0 with HTTP; Wed, 8 Jul 2020 05:33:28
- -0700 (PDT)
-Reply-To: mmsafiatou057@gmail.com
-From:   "Mrs. Safitaou Zoungrana" <richardlaurentdr@gmail.com>
-Date:   Wed, 8 Jul 2020 12:33:28 +0000
-Message-ID: <CALJAiTVXhrKZYOHVoupnx6hmXXD0i2k4MOSO6HW+mj1BAydXhA@mail.gmail.com>
-Subject: My Dear Beloved One,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S1726275AbgGIH2u (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 9 Jul 2020 03:28:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42088 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726006AbgGIH2t (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 9 Jul 2020 03:28:49 -0400
+Received: from kozik-lap.mshome.net (unknown [194.230.155.195])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6505D2070E;
+        Thu,  9 Jul 2020 07:28:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594279728;
+        bh=ihrn0AVJZvkOuVrPMlLyS+S/P5UfhHadBXpyvV7CV34=;
+        h=From:To:Cc:Subject:Date:From;
+        b=05Zm0mLcRLT//JVQcYmwazKkHZEz773gn+ecJt0+HI6mS6C7jmlKkroRhVIDWD0a8
+         VPJs/6kEeTX0CWU4RMvaQ8WJH/8qgSyOS7shRx9Bhe8Knx92xZOyEbNHwTE/QQSe/l
+         cpBi/YFMPbiseb3kp430S8rscEO/UbEc3Jy5t97o=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        virtualization@lists.linux-foundation.org,
+        linux-arch@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH v3 0/4] iomap: Constify ioreadX() iomem argument
+Date:   Thu,  9 Jul 2020 09:28:33 +0200
+Message-Id: <20200709072837.5869-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-My Dear Beloved One,
+Hi,
 
-I greet you in the name of God almighty the givers of all good things
-in life. Please kindly pardon me for any inconvenience this letter may
-cost you because I know it may come to you as a surprise as we have no
-previous correspondence.  I sent this mail praying for it to reach you
-in good health, since I myself are in a very critical health condition
-in which I sleep every night without knowing if I may be alive to see
-the next day.
+Multiple architectures are affected in the first patch and all further
+patches depend on the first.
 
-I am Mrs. Safiatou Zoungrana,  the wife of late Engineer Ralph
-Alphonso Zoungrana from Paris France but based here in Burkina Faso
-West Africa since eight years ago as a business woman dealing with
-gold exportation and Sales. We have been married for years before his
-sudden death although we were childless. I have been diagnosed with
-ovarian cancer and I have been battling with the sickness when my late
-lovely husband of a blessed memory was alive. May his soul rest in
-peace, Amen.
+Maybe this could go in through Andrew Morton's tree?
 
-My late Husband left the sum of =E2=82=AC7.900.000.00 Seven Million Nine
-Hundred Thousand Euros in a fix/suspense account in one of the prime
-bank here in Burkina Faso. Recently, my Doctor told me that I have few
-days to live due to the cancer problem. The one that disturbs me most
-is my blood pressure sickness.
 
-Having known my health condition I decided to seek for your kind
-assistance to transfer this fund into your account and you will use it
-to establish an orphanage home in my name. I will give you more
-details about the project as soon as I receive your reply in my
-private email (mmsafiatou057@gmail.com) to handle this project because
-I do not want to state all here until I see your reply, desire and
-commitment to handle this project.
+Changes since v2
+================
+1. Drop all non-essential patches (cleanups),
+2. Update also drivers/sh/clk/cpg.c .
 
-My Regards to your family.
-Mrs. Safiatou Zoungrana.
+
+Changes since v1
+================
+https://lore.kernel.org/lkml/1578415992-24054-1-git-send-email-krzk@kernel.org/
+1. Constify also ioreadX_rep() and mmio_insX(),
+2. Squash lib+alpha+powerpc+parisc+sh into one patch for bisectability,
+3. Add acks and reviews,
+4. Re-order patches so all optional driver changes are at the end.
+
+
+Description
+===========
+The ioread8/16/32() and others have inconsistent interface among the
+architectures: some taking address as const, some not.
+
+It seems there is nothing really stopping all of them to take
+pointer to const.
+
+Patchset was only compile tested on affected architectures.  No real
+testing.
+
+
+volatile
+========
+There is still interface inconsistency between architectures around
+"volatile" qualifier:
+ - include/asm-generic/io.h:static inline u32 ioread32(const volatile void __iomem *addr)
+ - include/asm-generic/iomap.h:extern unsigned int ioread32(const void __iomem *);
+
+This is still discussed and out of scope of this patchset.
+
+
+Best regards,
+Krzysztof
+
+
+Krzysztof Kozlowski (4):
+  iomap: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  rtl818x: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  ntb: intel: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  virtio: pci: Constify ioreadX() iomem argument (as in generic
+    implementation)
+
+ arch/alpha/include/asm/core_apecs.h           |  6 +-
+ arch/alpha/include/asm/core_cia.h             |  6 +-
+ arch/alpha/include/asm/core_lca.h             |  6 +-
+ arch/alpha/include/asm/core_marvel.h          |  4 +-
+ arch/alpha/include/asm/core_mcpcia.h          |  6 +-
+ arch/alpha/include/asm/core_t2.h              |  2 +-
+ arch/alpha/include/asm/io.h                   | 12 ++--
+ arch/alpha/include/asm/io_trivial.h           | 16 ++---
+ arch/alpha/include/asm/jensen.h               |  2 +-
+ arch/alpha/include/asm/machvec.h              |  6 +-
+ arch/alpha/kernel/core_marvel.c               |  2 +-
+ arch/alpha/kernel/io.c                        | 12 ++--
+ arch/parisc/include/asm/io.h                  |  4 +-
+ arch/parisc/lib/iomap.c                       | 72 +++++++++----------
+ arch/powerpc/kernel/iomap.c                   | 28 ++++----
+ arch/sh/kernel/iomap.c                        | 22 +++---
+ .../realtek/rtl818x/rtl8180/rtl8180.h         |  6 +-
+ drivers/ntb/hw/intel/ntb_hw_gen1.c            |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_gen3.h            |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_intel.h           |  2 +-
+ drivers/sh/clk/cpg.c                          |  2 +-
+ drivers/virtio/virtio_pci_modern.c            |  6 +-
+ include/asm-generic/iomap.h                   | 28 ++++----
+ include/linux/io-64-nonatomic-hi-lo.h         |  4 +-
+ include/linux/io-64-nonatomic-lo-hi.h         |  4 +-
+ lib/iomap.c                                   | 30 ++++----
+ 26 files changed, 146 insertions(+), 146 deletions(-)
+
+-- 
+2.17.1
+
