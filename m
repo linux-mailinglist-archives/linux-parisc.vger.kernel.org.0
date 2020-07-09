@@ -2,100 +2,149 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0F33219A01
-	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jul 2020 09:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3832921A0CD
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jul 2020 15:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726409AbgGIHc5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 9 Jul 2020 03:32:57 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:39018 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726184AbgGIHc4 (ORCPT
+        id S1726506AbgGIN03 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 9 Jul 2020 09:26:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36836 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726376AbgGIN03 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 9 Jul 2020 03:32:56 -0400
-Received: by mail-ed1-f65.google.com with SMTP id d18so1023768edv.6;
-        Thu, 09 Jul 2020 00:32:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=j7DqbPSyBqq2qwNcdYTCxivolsap4LLnpECg1M+YJYk=;
-        b=qZiNwlyRJ57VPjR+dosZ69Gym7GNS4FukUdkgaYsGriBesMWF22pXa3pVLiOfXPOJQ
-         tqPklsHrjCnY4xSsVGStmBcWYDca3eRq3xqpWrLoLZuZkxUTIRZSAS5SVCN/jt7UBvfC
-         JWkPCkrp2b7mAm7VCHEy3g5i2dU2f5qBGCOYds9I/9NHL+mxbckjgBUxczwV44RdlwiX
-         VuOd4cuKP7tVGADCX94TArCvW7SI+nzGX6N/nbOwRfqgA+xd2Rvlyo+rGQW756j6YjI8
-         RNUMh0ewYcb483hIjKyOB8jrUfNHW6gpl6RZ6jCN72lxM9HmtY9eqJ4CJ1sZY+/I4NUG
-         Tx/Q==
-X-Gm-Message-State: AOAM531GEd/SInI4qyhu3bABdWnHgQNCsywdZCeke95PuT+Mo+P9zEBG
-        EuYDAHLIhUr+a0PVB8zlGxQ=
-X-Google-Smtp-Source: ABdhPJwrkOg1VmskPen0ndAgGUffYWkrKR783vprCdOePKnp0T8h/KXoPOC3hmTqCSglRRVLLvqDkw==
-X-Received: by 2002:a50:d8c2:: with SMTP id y2mr62468108edj.114.1594279973653;
-        Thu, 09 Jul 2020 00:32:53 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.195])
-        by smtp.googlemail.com with ESMTPSA id sa10sm1258696ejb.79.2020.07.09.00.32.51
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 09 Jul 2020 00:32:52 -0700 (PDT)
-Date:   Thu, 9 Jul 2020 09:32:49 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Thu, 9 Jul 2020 09:26:29 -0400
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27550C08C5CE
+        for <linux-parisc@vger.kernel.org>; Thu,  9 Jul 2020 06:26:28 -0700 (PDT)
+Received: (qmail 25780 invoked from network); 9 Jul 2020 13:24:23 -0000
+Received: from p548d5453.dip0.t-ipconnect.de ([::ffff:84.141.84.83]:55472 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.37dev) with (DHE-RSA-AES256-GCM-SHA384 encrypted) ESMTPSA
+        for <dave.anglin@bell.net>; Thu, 09 Jul 2020 15:24:23 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     linux-parisc <linux-parisc@vger.kernel.org>,
         Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] iomap: Constify ioreadX() iomem argument (as in
- generic implementation)
-Message-ID: <20200709073249.GA6335@kozik-lap>
-References: <20200709072837.5869-1-krzk@kernel.org>
- <20200709072837.5869-2-krzk@kernel.org>
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: Re: [PATCH] parisc: Fix spinlock barriers
+Date:   Thu, 09 Jul 2020 15:26:13 +0200
+Message-ID: <35432085.F4uqhuS8rR@daneel.sf-tec.de>
+In-Reply-To: <9b28e07e-3d11-d24b-410b-4732a828e588@bell.net>
+References: <9b28e07e-3d11-d24b-410b-4732a828e588@bell.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200709072837.5869-2-krzk@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: multipart/signed; boundary="nextPart2293833.NV2VNcvjgP"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Jul 09, 2020 at 09:28:34AM +0200, Krzysztof Kozlowski wrote:
-> The ioreadX() and ioreadX_rep() helpers have inconsistent interface.  On
-> some architectures void *__iomem address argument is a pointer to const,
-> on some not.
-> 
-> Implementations of ioreadX() do not modify the memory under the address
-> so they can be converted to a "const" version for const-safety and
-> consistency among architectures.
-> 
-> Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+--nextPart2293833.NV2VNcvjgP
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-I forgot to put here one more Ack, for PowerPC:
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Am Freitag, 3. Juli 2020, 22:32:35 CEST schrieb John David Anglin:
+> Stalls are quite frequent with recent kernels.  When the stall is detected
+> by rcu_sched, we get a backtrace similar to the following:
 
-https://lore.kernel.org/lkml/87ftedj0zz.fsf@mpe.ellerman.id.au/
+With this patch on top of 5.7.7 I still get:
 
-Best regards,
-Krzysztof
+pioneer login: [14567.086716] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[14567.086716] rcu:     1-...!: (1 GPs behind) idle=2be/1/0x4000000000000000 softirq=1301330/1301331 fqs=6
+[14567.086716] rcu:     2-...!: (1 GPs behind) idle=de2/1/0x4000000000000000 softirq=1324750/1324751 fqs=6
+[14567.086716]  (detected by 0, t=15002 jiffies, g=2903305, q=43)
+[14567.086716] Task dump for CPU 1:
+[14567.086716] sh              R  running task        0 28260  28257 0x00000012
+[14567.086716] Backtrace:
+[14567.086716]
+[14567.086716] Task dump for CPU 2:
+[14567.086716] sh              t    0 28253  28247 0x00000011
+[14567.086716] Backtrace:
+[14567.086716]
+[14567.086716] rcu: rcu_sched kthread starved for 14990 jiffies! g2903305 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=3
+[14567.086716] rcu: RCU grace-period kthread stack dump:
+[14567.086716] rcu_sched       R  running task        0    10      2 0x00000000
+[14567.086716] Backtrace:
+[14567.086716]
+[14747.106716] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[14747.106716] rcu:     1-...!: (1 GPs behind) idle=2be/1/0x4000000000000000 softirq=1301330/1301331 fqs=6
+[14747.106716] rcu:     2-...!: (1 GPs behind) idle=de2/1/0x4000000000000000 softirq=1324750/1324751 fqs=6
+[14747.106716]  (detected by 0, t=60007 jiffies, g=2903305, q=43)
+[14747.106716] Task dump for CPU 1:
+[14747.106716] sh              R  running task        0 28260  28257 0x00000012
+[14747.106716] Backtrace:
+[14747.106716]
+[14747.106716] Task dump for CPU 2:
+[14747.106716] sh              t    0 28253  28247 0x00000011
+[14747.106716] Backtrace:
+[14747.106716]
+[14747.106716] rcu: rcu_sched kthread starved for 59995 jiffies! g2903305 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=3
+[14747.106716] rcu: RCU grace-period kthread stack dump:
+[14747.106716] rcu_sched       R  running task        0    10      2 0x00000000
+[14747.106716] Backtrace:
+[14747.106716]
+[14927.126716] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[14927.126716] rcu:     1-...!: (1 GPs behind) idle=2be/1/0x4000000000000000 softirq=1301330/1301331 fqs=6
+[14927.126716] rcu:     2-...!: (1 GPs behind) idle=de2/1/0x4000000000000000 softirq=1324750/1324751 fqs=6
+[14927.126716]  (detected by 0, t=105012 jiffies, g=2903305, q=43)
+[14927.126716] Task dump for CPU 1:
+[14927.126716] sh              R  running task        0 28260  28257 0x00000012
+[14927.126716] Backtrace:
+[14927.126716]
+[14927.126716] Task dump for CPU 2:
+[14927.126716] sh              t    0 28253  28247 0x00000011
+[14927.126716] Backtrace:
+[14927.126716]
+[14927.126716] rcu: rcu_sched kthread starved for 105000 jiffies! g2903305 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=3
+[14927.126716] rcu: RCU grace-period kthread stack dump:
+[14927.126716] rcu_sched       R  running task        0    10      2 0x00000000
+[14927.126716] Backtrace:
+[14927.126716]
+[15107.146716] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[15107.146716] rcu:     1-...!: (1 GPs behind) idle=2be/1/0x4000000000000000 softirq=1301330/1301331 fqs=6
+[15107.146716] rcu:     2-...!: (1 GPs behind) idle=de2/1/0x4000000000000000 softirq=1324750/1324751 fqs=6
+[15107.146716]  (detected by 0, t=150017 jiffies, g=2903305, q=43)
+[15107.146716] Task dump for CPU 1:
+[15107.146716] sh              R  running task        0 28260  28257 0x00000012
+[15107.146716] Backtrace:
+[15107.146716]
+[15107.146716] Task dump for CPU 2:
+[15107.146716] sh              t    0 28253  28247 0x00000011
+[15107.146716] Backtrace:
+[15107.146716]
+[15107.146716] rcu: rcu_sched kthread starved for 150005 jiffies! g2903305 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=3
+[15107.146716] rcu: RCU grace-period kthread stack dump:
+[15107.146716] rcu_sched       R  running task        0    10      2 0x00000000
+[15107.146716] Backtrace:
+[15107.146716]
+[15287.166716] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[15287.166716] rcu:     1-...!: (1 GPs behind) idle=2be/1/0x4000000000000000 softirq=1301330/1301331 fqs=6
+[15287.166716] rcu:     2-...!: (1 GPs behind) idle=de2/1/0x4000000000000000 softirq=1324750/1324751 fqs=6
+[15287.166716]  (detected by 0, t=195022 jiffies, g=2903305, q=43)
+[15287.166716] Task dump for CPU 1:
+[15287.166716] sh              R  running task        0 28260  28257 0x00000012
+[15287.166716] Backtrace:
+[15287.166716]
+[15287.166716] Task dump for CPU 2:
+[15287.166716] sh              t    0 28253  28247 0x00000011
+[15287.166716] Backtrace:
+[15287.166716]
+[15287.166716] rcu: rcu_sched kthread starved for 195010 jiffies! g2903305 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=3
+[15287.166716] rcu: RCU grace-period kthread stack dump:
+[15287.166716] rcu_sched       R  running task        0    10      2 0x00000000
+[15287.166716] Backtrace:
+[15287.166716]
+
+--nextPart2293833.NV2VNcvjgP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCXwca9QAKCRBcpIk+abn8
+TtBdAJ94p3reNwUM4B3vR+860JtFYlpTWwCglUxPq0Am7ORZ1s1o7QYq5jM/TrQ=
+=54K3
+-----END PGP SIGNATURE-----
+
+--nextPart2293833.NV2VNcvjgP--
+
+
 
