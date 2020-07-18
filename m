@@ -2,78 +2,147 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1E73224D81
-	for <lists+linux-parisc@lfdr.de>; Sat, 18 Jul 2020 20:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF4E224DC6
+	for <lists+linux-parisc@lfdr.de>; Sat, 18 Jul 2020 22:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbgGRSX2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 18 Jul 2020 14:23:28 -0400
-Received: from belmont79srvr.owm.bell.net ([184.150.200.79]:53188 "EHLO
-        mtlfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726604AbgGRSX2 (ORCPT
+        id S1727096AbgGRUKq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 18 Jul 2020 16:10:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34628 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727042AbgGRUKq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 18 Jul 2020 14:23:28 -0400
-Received: from bell.net mtlfep01 184.150.200.30 by mtlfep01.bell.net
-          with ESMTP
-          id <20200718182327.QPUT5779.mtlfep01.bell.net@mtlspm01.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Sat, 18 Jul 2020 14:23:27 -0400
-Received: from [192.168.2.49] (really [70.53.53.104]) by mtlspm01.bell.net
-          with ESMTP
-          id <20200718182327.BAIG130487.mtlspm01.bell.net@[192.168.2.49]>;
-          Sat, 18 Jul 2020 14:23:27 -0400
-Subject: Re: [PATCH v2] parisc: Fix spinlock barriers
-From:   John David Anglin <dave.anglin@bell.net>
-To:     Helge Deller <deller@gmx.de>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>
-References: <9b28e07e-3d11-d24b-410b-4732a828e588@bell.net>
- <7e4fa270-7fb7-d726-da01-7da04f109747@bell.net>
- <d5d093f1-8e7b-24bc-2f72-215381821043@gmx.de>
- <6257f3f4-d5a6-5a70-0152-80156470bb10@bell.net>
-Message-ID: <828884ae-1608-dfff-1824-c56c5053ae63@bell.net>
-Date:   Sat, 18 Jul 2020 14:23:27 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Sat, 18 Jul 2020 16:10:46 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF07C0619D2;
+        Sat, 18 Jul 2020 13:10:46 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id q2so1008640qkc.8;
+        Sat, 18 Jul 2020 13:10:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HfCfI9Ry75jIS0L/AMZU07uS7wzGWMcWBCKEzsuKDmw=;
+        b=BJfohwtAWZYl+V/uOHQpuI6c80rvv4c/VWAzTk7/5Cwaeov80khoFC6+OIuRNT15ei
+         FCwDNd3ketUB2X2JE/zpWPJdZaNhK4id8NP/bLUbkC5hAMlfv1yVLDIxr6m2MpETrdmT
+         jlsJkhkBru5VOIwwhpEouIJtA4TT54TwBazZd8fOmavtS+U5dO8udi0q3omo9Srp76Lh
+         ZbugOIaW7bPnKYOu1hcWg4codNGrglaYtaHiN0dojjd8JSggp5XHmfvMtjweZyK7riND
+         ARgGklsTKQAYn+TM+M254/VB4w4brQbuy0v+NAgZ3SZalap4xr68tx+e61TGICYdIT4m
+         9tNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HfCfI9Ry75jIS0L/AMZU07uS7wzGWMcWBCKEzsuKDmw=;
+        b=LUMZEHFGqOn1y6Y+NKQ2lQzIMHLZ0MoYLN5w30uNbxHFp1idG/AOebrj31KFbybPmV
+         Dzj73LTuz03HUjR4hlNA0WxTvgbsgyiOliQ1SIoBnhkNc4Xz9OivFsqMgtjAOYA6UwyN
+         zISXQQC35xlPtocrRZRYvBo+MyirSV9FIP2t1Hdaddia75gKCaE1JQRjfzl7ix70z0de
+         Gcz7NeanssmUtg19XH7HvojO8cEbkNfsVgFcNDz1iMhAv4xgDPddHeNFFM83L1R4qjin
+         wwDRhuvdIk/Z8yGBl2e2dwid7DGIAa2fEqJ6drpaLK1gWZms1cFYqbAM0YJIxh7uVytY
+         Ob3A==
+X-Gm-Message-State: AOAM533Z0yWvoGJUtBIIrGG9jNCa/R+reBkkXxUGu6mqHyVDtjAetPbc
+        Q2WTByQ/eqes+6DIg7TeQJ4=
+X-Google-Smtp-Source: ABdhPJxSg+ZIn5RKcVAYAYCk2vFVoyC3hKZRN4xqtTX769Xev4mHOCrXI+AgMs37AA7VtTV3up+i5g==
+X-Received: by 2002:a37:9b01:: with SMTP id d1mr15314073qke.65.1595103045341;
+        Sat, 18 Jul 2020 13:10:45 -0700 (PDT)
+Received: from atris.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
+        by smtp.gmail.com with ESMTPSA id l3sm14436287qtn.69.2020.07.18.13.10.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jul 2020 13:10:44 -0700 (PDT)
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     liambeguin@gmail.com, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH v1 1/1] parisc: add support for cmpxchg on u8 pointers
+Date:   Sat, 18 Jul 2020 16:10:21 -0400
+Message-Id: <20200718201021.23918-1-liambeguin@gmail.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <6257f3f4-d5a6-5a70-0152-80156470bb10@bell.net>
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=E9SzWpVl c=1 sm=1 tr=0 a=htCe9XT+XAlGhzqgweArVg==:117 a=htCe9XT+XAlGhzqgweArVg==:17 a=IkcTkHD0fZMA:10 a=_RQrkK6FrEwA:10 a=FBHGMhGWAAAA:8 a=6WVYPuE6IYrXJnEUCjYA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfE+v5oDZlW4iWDEFsTyVGAALr/CUSOMWmLNLFcz9GohBUwISpuUZoo/Bu9scARbApFej+B8Jzet+WTqucSdmYilYtbWfWX2h8qQ7IlA6qLyFrY5o2rDP tC/qgeo5A4cpLzd0T7b5uA31H41bRga9843RTqM/5dQ99KxlbW6o/J3hf+BEVPVWkB3f6ZH4WJTjqg==
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2020-07-18 9:08 a.m., John David Anglin wrote:
->>> -static inline void arch_spin_lock(arch_spinlock_t *x)
->>> +static inline int __pa_ldcw (volatile unsigned int *a)
->>> +{
->>> +#if __PA_LDCW_ALIGNMENT==16
->>> +	*(volatile char *)a = 0;
->>> +#endif
->>>
->>> I assume this is planned as a kind of prefetching into cache here?
->>> But doesn't it maybe introduce a bug when the first byte
->>> (in which you write zero) wasn't zero at the beginning?
->>> In that case the following ldcw():
-> The intention is to dirty the cache line.  Note the above generates a stb instruction that operates
-> on the most significant byte of the lock word.  The release uses a stw and sets bit 31 in the least
-> significant byte of the spin lock word.  So, the stb doesn't affect the state of the lock.
->
-> When the cache line is dirty, the ldcw instruction may be optimized to operate in cache.  This speeds
-> up the operation.
->
-> Another alternative is to use the stby instruction.  See the programming note on page 7-135 of the
-> architecture manual.  It doesn't write anything when the address is the left most byte of a word but
-> it still can be used to dirty the cache line.
-Wait, you are correct.  We use other values to free the lock in entry.S and syscall.S.  Using the space register
-value in entry.S  might be problematic as it's a long value.  Could we end up with the least significant 32 bits
-all zero?
+The kernel test bot reported[1] that using set_mask_bits on a u8 causes
+the following issue on parisc:
 
-Dave
+	hppa-linux-ld: drivers/phy/ti/phy-tusb1210.o: in function `tusb1210_probe':
+	>> (.text+0x2f4): undefined reference to `__cmpxchg_called_with_bad_pointer'
+	>> hppa-linux-ld: (.text+0x324): undefined reference to `__cmpxchg_called_with_bad_pointer'
+	hppa-linux-ld: (.text+0x354): undefined reference to `__cmpxchg_called_with_bad_pointer'
 
+Add support for cmpxchg on u8 pointers.
+
+[1] https://lore.kernel.org/patchwork/patch/1272617/#1468946
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Liam Beguin <liambeguin@gmail.com>
+---
+ arch/parisc/include/asm/cmpxchg.h |  2 ++
+ arch/parisc/lib/bitops.c          | 12 ++++++++++++
+ 2 files changed, 14 insertions(+)
+
+Hi,
+
+This was reported by the kernel test bot on an architecture I can't
+really test on. I was only able to make sure this builds, nothing more.
+
+Should I also add __cmpxchg_u8 in the cmpxchg_local switch case?
+
+There are one or two minor cleanups we can do around that patch, but
+because of my limited testing options, I kept the changes to a minimum.
+
+If there's interest, I can include these in follow up patches:
+- update __cmpxchg_u32 to use u32 instead of unsigned int for
+  consistency
+- add support for __cmpxchg_u16
+
+Thanks,
+Liam
+
+diff --git a/arch/parisc/include/asm/cmpxchg.h b/arch/parisc/include/asm/cmpxchg.h
+index ab5c215cf46c..068958575871 100644
+--- a/arch/parisc/include/asm/cmpxchg.h
++++ b/arch/parisc/include/asm/cmpxchg.h
+@@ -60,6 +60,7 @@ extern void __cmpxchg_called_with_bad_pointer(void);
+ extern unsigned long __cmpxchg_u32(volatile unsigned int *m, unsigned int old,
+ 				   unsigned int new_);
+ extern u64 __cmpxchg_u64(volatile u64 *ptr, u64 old, u64 new_);
++extern u8 __cmpxchg_u8(volatile u8 *ptr, u8 old, u8 new_);
+ 
+ /* don't worry...optimizer will get rid of most of this */
+ static inline unsigned long
+@@ -71,6 +72,7 @@ __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new_, int size)
+ #endif
+ 	case 4: return __cmpxchg_u32((unsigned int *)ptr,
+ 				     (unsigned int)old, (unsigned int)new_);
++	case 1: return __cmpxchg_u8((u8 *)ptr, (u8)old, (u8)new_);
+ 	}
+ 	__cmpxchg_called_with_bad_pointer();
+ 	return old;
+diff --git a/arch/parisc/lib/bitops.c b/arch/parisc/lib/bitops.c
+index 70ffbcf889b8..2e4d1f05a926 100644
+--- a/arch/parisc/lib/bitops.c
++++ b/arch/parisc/lib/bitops.c
+@@ -79,3 +79,15 @@ unsigned long __cmpxchg_u32(volatile unsigned int *ptr, unsigned int old, unsign
+ 	_atomic_spin_unlock_irqrestore(ptr, flags);
+ 	return (unsigned long)prev;
+ }
++
++u8 __cmpxchg_u8(volatile u8 *ptr, u8 old, u8 new)
++{
++	unsigned long flags;
++	u8 prev;
++
++	_atomic_spin_lock_irqsave(ptr, flags);
++	if ((prev = *ptr) == old)
++		*ptr = new;
++	_atomic_spin_unlock_irqrestore(ptr, flags);
++	return prev;
++}
+
+base-commit: 6cf7ccba29dcf39ab27630c383a3844078a6d5cd
 -- 
-John David Anglin  dave.anglin@bell.net
+2.27.0
 
