@@ -2,106 +2,66 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 100912280A7
-	for <lists+linux-parisc@lfdr.de>; Tue, 21 Jul 2020 15:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1E8D228A45
+	for <lists+linux-parisc@lfdr.de>; Tue, 21 Jul 2020 23:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728378AbgGUNLC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 21 Jul 2020 09:11:02 -0400
-Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:33639 "EHLO
-        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726769AbgGUNLB (ORCPT
+        id S1730214AbgGUVA3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 21 Jul 2020 17:00:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58960 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726029AbgGUVA2 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 21 Jul 2020 09:11:01 -0400
-Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
-          with ESMTP
-          id <20200721131100.GQWV6697.torfep01.bell.net@torspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Tue, 21 Jul 2020 09:11:00 -0400
-Received: from [192.168.2.49] (really [70.53.53.104]) by torspm02.bell.net
-          with ESMTP
-          id <20200721131100.MFAM16325.torspm02.bell.net@[192.168.2.49]>;
-          Tue, 21 Jul 2020 09:11:00 -0400
-To:     linux-parisc <linux-parisc@vger.kernel.org>
-Cc:     Helge Deller <deller@gmx.de>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Remove ldcw barriers from LWS routines in syscall.S
-Message-ID: <4e679f6d-e7e7-fe38-5d79-8de3a022a510@bell.net>
-Date:   Tue, 21 Jul 2020 09:10:59 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Tue, 21 Jul 2020 17:00:28 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859BFC061794;
+        Tue, 21 Jul 2020 14:00:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=delRZux0mLS0jQqWSa4cDSDXHbHgMN/MHMG8w/uxu8c=; b=29p9nJvrs6X3lwKd5pPKY+xqGi
+        eyOAAKyqwhilFECaRrWdAPVa2mkabSqX2bffVqMvESVAEa0j6F7zloG3zHxACmuaYuK7q48dNrw7D
+        Ab1uW3hK2Z+vHmRbF1+zpxrp3/7Uf5148tvJKGoqzZjTizaqLSFK4lwfSohNtG5B/WEorZdEgjE32
+        ru2zR6KPC46eHwKpRTfi+gS17+45uddawhXZJt4JFOuhCPZX5ehGX4usOj9P8aGWPg6FhkAOLrhg0
+        CXYQVoAMXdg/wH39qYhUeYs3dPwqPbaVZ4a7CIV52RNDRbj5sC3LjiVQnoIJqUXcOBgdJgWnFJcE+
+        5g+XEcfg==;
+Received: from [2601:1c0:6280:3f0::19c2] (helo=smtpauth.infradead.org)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jxzNC-0000bK-6B; Tue, 21 Jul 2020 21:00:26 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: [PATCH] PARISC: elf.h: delete a duplicated word
+Date:   Tue, 21 Jul 2020 14:00:22 -0700
+Message-Id: <20200721210022.15354-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CM-Analysis: v=2.3 cv=XvWExmN9 c=1 sm=1 tr=0 a=htCe9XT+XAlGhzqgweArVg==:117 a=htCe9XT+XAlGhzqgweArVg==:17 a=IkcTkHD0fZMA:10 a=_RQrkK6FrEwA:10 a=FBHGMhGWAAAA:8 a=20HY8SAuM6c2nFZf5YoA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfDeAgHyYQK3ldyc9kwFWQWh2a/fKTxQun0NRBDi4NFwNC4EJJPklR8872a2gTcsZZtXs74K8FENuqtMPBQIuAojaIM0HbdkEx3hHqtDgaZjkM3Z54e9t FeFK0gPhcTjFf5qVslOZsW2LEDRHTPDqkW+h6DoZ868mAk9yZBEyWrB2K8ah2pxzAmsaglDVDia/bQ==
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The LDCW barriers in the light-weight system (LWS) calls in syscall.S can be removed.  Ordered stores
-can be used to provide the necessary release semantics.  This saves an instruction that is relatively
-expensive.
+Drop the repeated word "the".
 
-Signed-off-by: Dave Anglin <dave.anglin@bell.net>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
 ---
+ arch/parisc/include/asm/elf.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/parisc/kernel/syscall.S b/arch/parisc/kernel/syscall.S
-index f05c9d5b6b9e..069c7c93d16b 100644
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -640,11 +640,7 @@ cas_action:
- 	sub,<>	%r28, %r25, %r0
- 2:	stw	%r24, 0(%r26)
- 	/* Free lock */
--#ifdef CONFIG_SMP
--98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
--99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
--#endif
--	stw	%r20, 0(%sr2,%r20)
-+	stw,ma	%r20, 0(%sr2,%r20)			/* Ordered store */
- #if ENABLE_LWS_DEBUG
- 	/* Clear thread register indicator */
- 	stw	%r0, 4(%sr2,%r20)
-@@ -658,11 +654,7 @@ cas_action:
- 3:		
- 	/* Error occurred on load or store */
- 	/* Free lock */
--#ifdef CONFIG_SMP
--98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
--99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
--#endif
--	stw	%r20, 0(%sr2,%r20)
-+	stw,ma	%r20, 0(%sr2,%r20)			/* Ordered store */
- #if ENABLE_LWS_DEBUG
- 	stw	%r0, 4(%sr2,%r20)
- #endif
-@@ -863,11 +855,7 @@ cas2_action:
-
- cas2_end:
- 	/* Free lock */
--#ifdef CONFIG_SMP
--98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
--99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
--#endif
--	stw	%r20, 0(%sr2,%r20)
-+	stw,ma	%r20, 0(%sr2,%r20)			/* Ordered store */
- 	/* Enable interrupts */
- 	ssm	PSW_SM_I, %r0
- 	/* Return to userspace, set no error */
-@@ -876,12 +864,7 @@ cas2_end:
-
- 22:
- 	/* Error occurred on load or store */
--	/* Free lock */
--#ifdef CONFIG_SMP
--98:	LDCW	0(%sr2,%r20), %r1			/* Barrier */
--99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
--#endif
--	stw	%r20, 0(%sr2,%r20)
-+	stw,ma	%r20, 0(%sr2,%r20)			/* Ordered store */
- 	ssm	PSW_SM_I, %r0
- 	ldo	1(%r0),%r28
- 	b	lws_exit
+--- linux-next-20200720.orig/arch/parisc/include/asm/elf.h
++++ linux-next-20200720/arch/parisc/include/asm/elf.h
+@@ -152,7 +152,7 @@
+ /* The following are PA function descriptors 
+  *
+  * addr:	the absolute address of the function
+- * gp:		either the data pointer (r27) for non-PIC code or the
++ * gp:		either the data pointer (r27) for non-PIC code or
+  *		the PLT pointer (r19) for PIC code */
+ 
+ /* Format for the Elf32 Function descriptor */
