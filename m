@@ -2,66 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1E8D228A45
-	for <lists+linux-parisc@lfdr.de>; Tue, 21 Jul 2020 23:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 494FE228EE5
+	for <lists+linux-parisc@lfdr.de>; Wed, 22 Jul 2020 06:12:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730214AbgGUVA3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 21 Jul 2020 17:00:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58960 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726029AbgGUVA2 (ORCPT
+        id S1726032AbgGVEMk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 22 Jul 2020 00:12:40 -0400
+Received: from mail.conatel.gob.ve ([201.248.69.230]:59919 "EHLO
+        mail.conatel.gob.ve" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725710AbgGVEMk (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 21 Jul 2020 17:00:28 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859BFC061794;
-        Tue, 21 Jul 2020 14:00:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=delRZux0mLS0jQqWSa4cDSDXHbHgMN/MHMG8w/uxu8c=; b=29p9nJvrs6X3lwKd5pPKY+xqGi
-        eyOAAKyqwhilFECaRrWdAPVa2mkabSqX2bffVqMvESVAEa0j6F7zloG3zHxACmuaYuK7q48dNrw7D
-        Ab1uW3hK2Z+vHmRbF1+zpxrp3/7Uf5148tvJKGoqzZjTizaqLSFK4lwfSohNtG5B/WEorZdEgjE32
-        ru2zR6KPC46eHwKpRTfi+gS17+45uddawhXZJt4JFOuhCPZX5ehGX4usOj9P8aGWPg6FhkAOLrhg0
-        CXYQVoAMXdg/wH39qYhUeYs3dPwqPbaVZ4a7CIV52RNDRbj5sC3LjiVQnoIJqUXcOBgdJgWnFJcE+
-        5g+XEcfg==;
-Received: from [2601:1c0:6280:3f0::19c2] (helo=smtpauth.infradead.org)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jxzNC-0000bK-6B; Tue, 21 Jul 2020 21:00:26 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH] PARISC: elf.h: delete a duplicated word
-Date:   Tue, 21 Jul 2020 14:00:22 -0700
-Message-Id: <20200721210022.15354-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+        Wed, 22 Jul 2020 00:12:40 -0400
+X-Greylist: delayed 506 seconds by postgrey-1.27 at vger.kernel.org; Wed, 22 Jul 2020 00:12:39 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.conatel.gob.ve (Postfix) with ESMTP id 288661348C37;
+        Wed, 22 Jul 2020 00:05:49 -0400 (-04)
+Received: from mail.conatel.gob.ve ([127.0.0.1])
+        by localhost (mail.conatel.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 30-5dLFW9g89; Wed, 22 Jul 2020 00:05:48 -0400 (-04)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.conatel.gob.ve (Postfix) with ESMTP id CEB091348C49;
+        Wed, 22 Jul 2020 00:05:47 -0400 (-04)
+DKIM-Filter: OpenDKIM Filter v2.9.2 mail.conatel.gob.ve CEB091348C49
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=conatel.gob.ve;
+        s=5C18DDE8-FD64-11E3-A8EF-B68B774165DB; t=1595390748;
+        bh=qHntwlxyfk1wGFYNFGIaQfkZ2NWrar+v71e/s8td7iM=;
+        h=Date:From:Reply-To:Message-ID:Subject:MIME-Version:Content-Type:
+         Content-Transfer-Encoding;
+        b=SmP+gfJAsJxPI2VapF9HCv1htSwnMUfwoBejGlIDNWP1PpJreBnz0vqlO9TOKn5f4
+         Has3uMg/iKpVKZKOivACaHxR1Rzc1gZH01TmZAMy82xxHoVFTkeEhVRWBuiruWDXE3
+         UZBeXELF1ujUY8bN6eRR/HuJy/ju3AOf+K2S/ypo=
+X-Virus-Scanned: amavisd-new at conatel.gob.ve
+Received: from mail.conatel.gob.ve ([127.0.0.1])
+        by localhost (mail.conatel.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id psTpgkfwR8hP; Wed, 22 Jul 2020 00:05:47 -0400 (-04)
+Received: from mail.conatel.gob.ve (correo.conatel.int [10.1.1.21])
+        by mail.conatel.gob.ve (Postfix) with ESMTP id F154E1348C37;
+        Wed, 22 Jul 2020 00:05:46 -0400 (-04)
+Date:   Tue, 21 Jul 2020 23:35:46 -0430 (VET)
+From:   Lerynne West <acarrasquel@conatel.gob.ve>
+Reply-To: Lerynne West <callumfoundation01@outlook.com>
+Message-ID: <650083246.68206.1595390746724.JavaMail.zimbra@conatel.gob.ve>
+Subject: RE
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [165.0.4.46]
+X-Mailer: Zimbra 8.6.0_GA_1242 (zclient/8.6.0_GA_1242)
+Thread-Topic: RE
+Thread-Index: J5g0teazopdyNFzKEPGgdB/8soLAXg==
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Drop the repeated word "the".
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
----
- arch/parisc/include/asm/elf.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20200720.orig/arch/parisc/include/asm/elf.h
-+++ linux-next-20200720/arch/parisc/include/asm/elf.h
-@@ -152,7 +152,7 @@
- /* The following are PA function descriptors 
-  *
-  * addr:	the absolute address of the function
-- * gp:		either the data pointer (r27) for non-PIC code or the
-+ * gp:		either the data pointer (r27) for non-PIC code or
-  *		the PLT pointer (r19) for PIC code */
- 
- /* Format for the Elf32 Function descriptor */
+Hallo, Sie haben eine Spende in H&ouml;he von 2.800.000,00 &euro;. Ich habe die America-Lotterie in Amerika im Wert von 343 Millionen Dollar gewonnen und einen Teil davon an f&uuml;nf gl&uuml;ckliche Menschen und Wohlt&auml;tigkeitsorganisationen gespendet, um an das Leben meines verstorbenen Sohnes zu erinnern, der an Krebs gestorben ist Viele Menschen, die von diesem Coronavirus betroffen sind, kontaktieren mich f&uuml;r weitere Informationen unter; callumfoundation01@outlook.com
+
+Gr&uuml;&szlig;e
+Mrs.Lerynne West
