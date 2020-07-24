@@ -2,51 +2,61 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1602F228FF3
-	for <lists+linux-parisc@lfdr.de>; Wed, 22 Jul 2020 07:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E3722C8E1
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 Jul 2020 17:19:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728130AbgGVFmE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 22 Jul 2020 01:42:04 -0400
-Received: from smtp.utu.edu.uy ([190.0.150.6]:49256 "EHLO delta45.utu.edu.uy"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726696AbgGVFmD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 22 Jul 2020 01:42:03 -0400
-X-Greylist: delayed 481 seconds by postgrey-1.27 at vger.kernel.org; Wed, 22 Jul 2020 01:41:53 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by delta45.utu.edu.uy (Postfix) with ESMTP id A0FDF1D0EF10;
-        Wed, 22 Jul 2020 02:32:12 -0300 (GMT+3)
-Received: from delta45.utu.edu.uy ([127.0.0.1])
-        by localhost (delta45.utu.edu.uy [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id j-d5-xIHkuKF; Wed, 22 Jul 2020 02:32:12 -0300 (GMT+3)
-Received: from localhost (localhost [127.0.0.1])
-        by delta45.utu.edu.uy (Postfix) with ESMTP id DC7E81D0EF09;
-        Wed, 22 Jul 2020 02:32:11 -0300 (GMT+3)
-X-Virus-Scanned: amavisd-new at delta45.utu.edu.uy
-Received: from delta45.utu.edu.uy ([127.0.0.1])
-        by localhost (delta45.utu.edu.uy [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id z5KYbxFuF39p; Wed, 22 Jul 2020 02:32:11 -0300 (GMT+3)
-Received: from delta45.utu.edu.uy (delta45 [172.17.1.45])
-        by delta45.utu.edu.uy (Postfix) with ESMTP id 7FB051D0EEFB;
-        Wed, 22 Jul 2020 02:32:10 -0300 (GMT+3)
-Date:   Wed, 22 Jul 2020 02:32:10 -0300 (GMT-03:00)
-From:   Darlehen Bedienung <aemartinez@utu.edu.uy>
-Reply-To: info_innoxcapitalservicesolution@aol.com
-Message-ID: <754360867.138094.1595395930510.JavaMail.zimbra@utu.edu.uy>
-Subject: 
+        id S1726535AbgGXPT5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 24 Jul 2020 11:19:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54812 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726317AbgGXPT5 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 24 Jul 2020 11:19:57 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC711C0619D3
+        for <linux-parisc@vger.kernel.org>; Fri, 24 Jul 2020 08:19:56 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id x5so7724952wmi.2
+        for <linux-parisc@vger.kernel.org>; Fri, 24 Jul 2020 08:19:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=GUvht+RQ0YwWo80rgmYxfC1betFt1FcfhknEOHYLHHY=;
+        b=exQt0ZwWpzv2Y2n0AcqzJr6JigMbugeFWjqbjVJnNdVCK50XI0QJRjUXlUn0kJ2geg
+         C4dyn7yGZnsi/90zb7YLEZTjpaPyAe2ks7zlnPfWQpLyAaQ8t3ZQ4Okdw8esBRjOO/e1
+         di7B3zQe3pE7rdXetFG17chkuwAGNjz3Ve5D9PJpBO/508Upp27eCHIMWKJRa6c+dfqT
+         Y/cWpvZyEa+i2FXxpzLFsK94UHZ2j/P6NgXxNU19UO1TAv9RXn4DZWAa1F+KIlQ0PuUh
+         61Jy8hRyQZ+tWGczSmCKe4pwefpZGt6uGc8tcn+Qo6qftLVhkJIf2EQ/I3s/NQ3XIAC4
+         zXHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=GUvht+RQ0YwWo80rgmYxfC1betFt1FcfhknEOHYLHHY=;
+        b=TK4EjKy/1+ag9jNIC14Gn7PlgCEPvN/6Lh9W4LvCghbC6V3Ezqm42YtXyukDEVQwf0
+         ExCD4y0fqeA5Ykin8fe/wUbHbr42ES9HDSq2nA4s4AKBwt0uk1kK7ciIiFgKjdPmYOIE
+         Do2acu9fyyhKpUBkYCihPuMBtgl5agnRP+JUkJA0ZFczBV16gC9Zv9uCAHimbf495QY7
+         xbQPdDEBk/lZtYR0yKu5DDf24mjbG2SSnq8sH5vY9tW8JgLepiMRAZoYaGSInyplK9GK
+         6MOnP9bchLLYHlsfffCjFgqo7Whm6I8ZGIu2lf1smvbnBYVXDQBskJLojtvvS6zAQlpO
+         CFsw==
+X-Gm-Message-State: AOAM530FZN8QUpVECViQA9YpWKx4F16d1zbx5rU8GeaTHLAi5NgsJNHf
+        gxl0nnQQqQb+y0iql6MNenv6VA1tPsO2nwZX3kRa8g==
+X-Google-Smtp-Source: ABdhPJx8Gn+bKuJGLzBj4Dmol2uLGo5k14pHYeDnrX20MgvJZ3tKLXeOa9YzQ5HpeFHGL/tDgwQMRyVOlgzzHV9KueE=
+X-Received: by 2002:a05:600c:285:: with SMTP id 5mr9560166wmk.41.1595603995287;
+ Fri, 24 Jul 2020 08:19:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [172.17.1.45]
-X-Mailer: Zimbra 8.8.12_GA_3866 (zclient/8.8.12_GA_3866)
-X-Authenticated-User: aemartinez@utu.edu.uy
-Thread-Index: sHxyVNlBzwToKpIuoIGp0++CnI1oLA==
-Thread-Topic: 
-To:     unlisted-recipients:; (no To-header on input)
+Received: by 2002:adf:f491:0:0:0:0:0 with HTTP; Fri, 24 Jul 2020 08:19:54
+ -0700 (PDT)
+From:   Tina Hook <obama.financialservice@gmail.com>
+Date:   Fri, 24 Jul 2020 18:19:54 +0300
+Message-ID: <CA+joSXJ=Ao85rWOO29oUGHbws6gnOfCvV+Me84Zqeay+mExC3A@mail.gmail.com>
+Subject: Brauchen Sie einen Kredit?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+-- 
+Brauchen Sie einen Kredit?
 
-
-Schönen Tag,Wir sind zuverlässige, vertrauenswürdige Kreditgeber, Wir bieten Darlehen an Unternehmen und Privatpersonen zu niedrigen und günstigen Zinssatz von 2%. Sind Sie auf der Suche nach einem Business-Darlehen, persönliche Darlehen, Schuldenkonsolidierung, unbesicherte Darlehen, Venture Capital. Kontaktieren Sie uns mit Name, Land, Darlehensbetrag, Dauer und Telefonnummer.GrüßeHerr DA COSTA DARREN FAY
+Do you Need a Loan?
