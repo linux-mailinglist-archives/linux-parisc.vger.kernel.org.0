@@ -2,91 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9191B22CBE5
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Jul 2020 19:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A10E022E229
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jul 2020 21:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbgGXRSI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 Jul 2020 13:18:08 -0400
-Received: from mout.gmx.net ([212.227.15.15]:38425 "EHLO mout.gmx.net"
+        id S1726106AbgGZTO1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 26 Jul 2020 15:14:27 -0400
+Received: from mout.gmx.net ([212.227.17.20]:59361 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726326AbgGXRSH (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 Jul 2020 13:18:07 -0400
+        id S1726081AbgGZTO1 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 26 Jul 2020 15:14:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1595611075;
-        bh=SZYj7n6G4Lhr5a+IFOi8aym3UDQ2GOS0mtYwI3tKtaI=;
+        s=badeba3b8450; t=1595790849;
+        bh=60NzAn7wnfuCvZlkpoMbEGO/BzoL1A1qe443ZKZ302M=;
         h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=KQ30s2opY0ZXSTHEPqoBVxDyX9yCgFChFpc/sEMIvu57ngCh2vmOd5nkjBa//yhnM
-         PVKGDW2HdFQO8Dhoyz4Judz9XhM7sZn/cRkDfzUJBavzG/ZfKuicYHeptJutPHcvJj
-         OsOU/pDXEDI1PG1GqLSFbnK1s2MtjJkHPzWsgMYc=
+        b=b22FlzyDbBjh9EaK/6kPyTIP8eVzpAKzVX7ZBtlzn3Cs/FxlRZ2+kNTFOHOnM8tq7
+         NfEFU4f+lU0UC17pZIiNv82CY8yT8af1PnDRx6zSYirpJeGuwFKfyPQiyUd2ZkG34r
+         h7C5m3YZ3TRRk0F2EcmFD/KdNMi9yYt8Myqnc6N4=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.174.101]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N2E1M-1kxD0H3Fqo-013hJX; Fri, 24
- Jul 2020 19:17:55 +0200
-Date:   Fri, 24 Jul 2020 19:17:52 +0200
+Received: from ls3530.fritz.box ([92.116.163.214]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M8hVB-1jv5Gq0psn-004kSP; Sun, 26
+ Jul 2020 21:14:09 +0200
+Date:   Sun, 26 Jul 2020 21:14:04 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Report bad pages as HardwareCorrupted
-Message-ID: <20200724171752.GA17395@ls3530.fritz.box>
+Subject: [GIT PULL] parisc architecture fixes for kernel v5.8
+Message-ID: <20200726191404.GA10491@ls3530.fritz.box>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:lsxVAOnxNQKqVex1nzSVcn+s+11/ToTbxLe5Gu3tpsvfulh205S
- dBdy59uSNLnTBU+tF5aJzmINrToNFpiehY+0HKkdqh55oimvwkvl94VXWemW8PaUBPr0ovB
- HX3hK4jo/MCbYd5re1RP4S5qJXFxfBcLEIu/3+qNQNRcOMc6S7NHJokDHpxC7v1SgZmcxWX
- NfdzxkAn1PylqXZXVPMrA==
+X-Provags-ID: V03:K1:dMlUJld1YZPiDQoY661/BVRfo2xVuolqWCEM6a2y3HZUsTpcZiU
+ TCBxNIfmdZi8TzCsWzuvyXCgpFxXBZs0h2uJWPXG8jjU0q1ctTIM93qM4mNxPb6ayAs5nE0
+ Va9ZslTU8Az3RKLWN5gVeiRur6Dm1Bq7sSqCvd8xnicLZ17c/G+YGRcSG0eORS8cpQbnt3A
+ Th2oUDSpidLmqObyxQGjg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:oifaUMNM2Go=:TIe+9QfoZynwYi+4eEVqzw
- qyq50msloQIeDnxZKtcm6wFm+cifg4xGp8oPENX0AWBrORA5zybS33ygENCNW/iQ8SDMBg6jL
- lsNchl+E4NG6XXZrCQzJ6uS4RMTtVIZNJ3x4JGymX8hh6YxMulInSaIOi0O4dEzDIWif9w40k
- bK3z6b7OpV1OU1tVy11VNHq6r7MNZxuAc10dfywUEXrRUTaI3p7VT2b1SGG4cQlBJY1j0foHH
- YBf+NZ45rYRcfGn1LIOqkMy1Y2fgxzvfF+s7xQW3eAXPZs6414VkfvX6pfpdObY4Fk2KJnsin
- Jlt/hL0iq4VpR8vqWtYggvaH0jpzT9v/Cdf0jP7wxKX1I+TvX2I9TI/VAt+ce36oM1ixRoZGJ
- PSmXkO6sG4YW2VSXGjbIX6HotQSjIJk1QJUQio4gytq2Kf5DyGB8rRlQlWaQyESzaPiLbL8PO
- t+AtifuFdAGlJ8Qh1CAB+HWwJgXBLsyFjpKFhzr2B6o39EGM4iwRmshuaTm4yr4aqxHNGbio2
- BIsrDfLJ24ae1ksSvy9e+g7jxhfMfLeiCQkLnVgwngrmo8njvuRZ9TEU/1gZ2QQWbloxhiqAz
- T66k0zLjVpPRFKrAA4LMXhhSCskBVxCrAbNLgiPtpqKy5GgP+7Dx6MHA2U73VlP4vBAS3+/uO
- Y4nj3mIB0+Ta/H4C+WbZZrdV/ozqv3atzOr2nhBPw2VAsajyXNS03wruEA+Jthc4Led4spVMm
- VS9Gw/tkdaLmQY3hTn7/J658OicAMQ7O3IyWC0A0a33nDP6Xyon8KJtsMvwzKVYsnU8bnPl7T
- VP2LrlEdc8PQ4Y6sG0fEj6n+a00JqdTa39ZyFie8asr5VjuUSivTDM1+113FwIpXn6sCAdsnn
- Q502lb8D1xVSQHRhbaXfqXxc9KbmtaUbxU01ASwDnlrVWiFSnClzu2dRixUO9M5hF06vrf4l3
- n1uyLLbtt6LMiak2h2VH1kFnhCX7RhVuHfgU4NrkmtAtEFm45kYSax+84f4dBoULxRa6eBZCi
- LJei+1bZgCt+btlfpHWSxBiLolvOKc13qIXVehla/wZhaRuwGfqcEgZu9Bq+XcyNgmFEL2qTq
- ZETVMVoovZN/OWBcg+GvNSyC2QEIOCurBf7bCdoXnbyPaiwvvpiBeYYLiwRK4ilo8YBMfByhS
- 2UBuaIFORf5c59f93waJsujHOsO45qQziSykbY02ZfZg4aLU2lJQ35prd9gUA/Bij8IVlUBRE
- 4e9wKKhEoRG+ecZWb
-Content-Transfer-Encoding: quoted-printable
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7YXXF+3avIw=:KSHfhqrlhYWA+Q1bMCm6Ar
+ IsjTwSc3IP9uowYVafKO0ikLwEKZ3aSagTZG1gxVIrWFU+DtgKqEfny1spSB+1IQg9P95Iwhp
+ c/UiwciLbZtEGXxPBsMs/9eK5vS61X05LA3Xf4eFpV5bdN65RedDHEV5eR6wNrrR0T7yRRTPH
+ fp0hi0GBnefOQ/U4omcrmzTl6aaulSCcfYCAqlVP83/mRyhabhsrnqybKhCjf7pPtTH3RIVJi
+ UaJzWO2GohlrcORD1tRznBtA6b+/ycOVW0pbqszSW8Snte+M2v8o6xF7MP14jYJkpbt4En4LM
+ mHV/XLCMBCQsBxTEneUylPsnPExK6/ID4p2hFZun0twNmQUWLhCGdw4+cCcabXmaM2fAQlF35
+ UFMKQGACojRkzS8GVCWBkSs0/MZZ61XO5006k81AothwA3wdlCB+9+oC71DJb+rHwoIZh5Hxe
+ yTM9m5t5n3o/meTWywSxspZeC6Bj2/ZoLlD4TrU4nAgVOD5uzuKVS5lMb6soYM72ReDCmmXfr
+ ZuwzQWPjXZHaJyaoy3NZJsxL0hctq+ZrV/GjfghC5Of0pR0ICuyJd7XbKGeh8Ey8hbsOaglOj
+ bJ+ifl2CipcAJh95Q1MohMIFt2nKWYK7CDQ5WC46SGDfLMZ/uxQ/pHzd7eoIUo78RILcpN75x
+ sTq7JDbcyjxVJh1jRlvSd28VRfgvNeSsivjQGmtTu60NZpcttUezK2FgjX6oHjAhFUjWzBLqb
+ egYmTZQNCvpfvRciPJIFtCmYQFbUatHd5vp+/bFFvGwr3jEuEuOiZlEENxEChw6AQ51nyZ83Q
+ 8A2IiwuOUqzWPpfTJetYOKq7iunv0pUlNyis8JEn56DYDoMux7bcuV68mh5sGT595JF1LU3cm
+ kYd66k0uPq43zXQtxVeuykkX8vWAg9qPHv1XQICYF3DElX2vEvurueG1fH2I3vRUQNiAL1cNR
+ Uvn6ApTGJ4h3aXZK9Eebsj7tx8+8iN4nbs7QFEpShQ1zsMIHbzg3WVWqQDKDv94ql+aSRkxtb
+ DcV9VvnIhyhW55FubCvML/DrZVbEdqUcQ/4aNtT3w1tG+nwFgLun70E3KUNvQVxTYNaNEAvah
+ vK8v+RHNqz+P7hb1kS5sLp8iWi9XeiiKtBxgMJGS+NVp/1ofSiOUshTy8v86kbufGWAUuC71h
+ WW1W6G+2GNL4X7z+NLZffhnyqPjwpW/MRHb5V7V87h92iT7LtMgBNbRecAhmm0wJIPpJO4sLX
+ YgHA/gm1x2YdM46kr
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The /proc/meminfo file reports physically broken memory pages in the
-HardwareCorrupted field. When the parisc kernel boots report physically
-bad pages which were recorded in the page deallocation table (PDT) as
-HardwareCorrupted too.
+Hi Linus,
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+please pull two late parisc architecture fixes for kernel 5.8 from:
 
-diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
-index 6e8550fefad6..fcc761b0e11b 100644
-=2D-- a/arch/parisc/kernel/pdt.c
-+++ b/arch/parisc/kernel/pdt.c
-@@ -18,6 +18,8 @@
- #include <linux/kthread.h>
- #include <linux/initrd.h>
- #include <linux/pgtable.h>
-+#include <linux/swap.h>
-+#include <linux/swapops.h>
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.8-2
 
- #include <asm/pdc.h>
- #include <asm/pdcpat.h>
-@@ -230,6 +232,7 @@ void __init pdc_pdt_init(void)
+Two fixes:
+- Add the cmpxchg() function for pointers to u8 values. This fixes a kernel
+  linking error when building the tusb1210 driver (from Liam Beguin).
+- Add a define for atomic64_set_release() to fix CPU soft lockups which happen
+  because of missing unlocks while processing bit operations (from John David
+  Anglin).
 
- 		/* mark memory page bad */
- 		memblock_reserve(pdt_entry[i] & PAGE_MASK, PAGE_SIZE);
-+		num_poisoned_pages_inc();
- 	}
- }
+Thanks,
+Helge
 
+----------------------------------------------------------------
+John David Anglin (1):
+      parisc: Add atomic64_set_release() define to avoid CPU soft lockups
+
+Liam Beguin (1):
+      parisc: add support for cmpxchg on u8 pointers
+
+ arch/parisc/include/asm/atomic.h  |  2 ++
+ arch/parisc/include/asm/cmpxchg.h |  2 ++
+ arch/parisc/lib/bitops.c          | 12 ++++++++++++
+ 3 files changed, 16 insertions(+)
