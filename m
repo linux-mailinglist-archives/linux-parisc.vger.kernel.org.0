@@ -2,27 +2,27 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4A5A22FDC2
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jul 2020 01:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD56722FD8E
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jul 2020 01:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728053AbgG0X3m (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Jul 2020 19:29:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34902 "EHLO mail.kernel.org"
+        id S1728039AbgG0X23 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Jul 2020 19:28:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35590 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728031AbgG0XYD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Jul 2020 19:24:03 -0400
+        id S1728263AbgG0XYc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 27 Jul 2020 19:24:32 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E0BD720786;
-        Mon, 27 Jul 2020 23:24:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 78434208E4;
+        Mon, 27 Jul 2020 23:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595892242;
+        s=default; t=1595892271;
         bh=cW0MevAFt8H5njALXBT6v761SRuxFMSBRNmZHnFg2CY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YZXRdeOd2cSNfODRUMEjB7x3qUctZYdsepvCzjTc2ZK3U/ZhvQ99UULwr4iwwQrzh
-         XjJ+rgoGAW+eHeh/o13omclNBkomgc8qCrUYLnEvlZBdVTmn5ruxuj/5pI0LXhsXSp
-         qjIRxyRazBHa3Ug435lVEarHB7UXmpeFGXH1sVOs=
+        b=FDzpR+5idfp90EOGHWZeYJ0giYUM3rOgTgphftqvGPHT+uTqH/m4qm2rmMELlcFG6
+         LeIEvTyqGxEj4Lk/DWUOlGciZPTW4uzO6ZiLBOpUllRGouWgxOEKuVNX20m/xjcNuE
+         CqiaN33S3XjuqWnXR3X3iz7AR6xSoSNVLjvCj8sA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Liam Beguin <liambeguin@gmail.com>,
@@ -30,12 +30,12 @@ Cc:     Liam Beguin <liambeguin@gmail.com>,
         Dave Anglin <dave.anglin@bell.net>,
         Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 12/25] parisc: add support for cmpxchg on u8 pointers
-Date:   Mon, 27 Jul 2020 19:23:32 -0400
-Message-Id: <20200727232345.717432-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 08/17] parisc: add support for cmpxchg on u8 pointers
+Date:   Mon, 27 Jul 2020 19:24:11 -0400
+Message-Id: <20200727232420.717684-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200727232345.717432-1-sashal@kernel.org>
-References: <20200727232345.717432-1-sashal@kernel.org>
+In-Reply-To: <20200727232420.717684-1-sashal@kernel.org>
+References: <20200727232420.717684-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
