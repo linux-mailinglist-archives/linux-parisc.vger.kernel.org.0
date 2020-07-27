@@ -2,27 +2,27 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47C5022FD4F
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jul 2020 01:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1E3E22FD3C
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jul 2020 01:26:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728500AbgG0XZG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Jul 2020 19:25:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36306 "EHLO mail.kernel.org"
+        id S1728714AbgG0X0Q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Jul 2020 19:26:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36632 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728492AbgG0XZF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Jul 2020 19:25:05 -0400
+        id S1728582AbgG0XZU (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 27 Jul 2020 19:25:20 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E0BAB20A8B;
-        Mon, 27 Jul 2020 23:25:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 89E9620A8B;
+        Mon, 27 Jul 2020 23:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595892304;
-        bh=cW0MevAFt8H5njALXBT6v761SRuxFMSBRNmZHnFg2CY=;
+        s=default; t=1595892320;
+        bh=DkVXnVt7u6fmRfPOHCdUfUeOBDxtqXkAcojtf0bbp9A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0x1HAWRt5una4wHRP5eCJTirHsG2LDw0JaHkHd5973/KcwWm2uDKbosg9oBqbU0jE
-         GUKxoHX1Kd5a4gR5piJIJKq7/mtRtAevKFJy9gNWf2gv0uBS91NFfwiaDaJd1eiB+9
-         /zgh4T1QY2kVmKBIaYsEvYYA0XPSA8XQ8ylyOJY4=
+        b=jdK7E7fqLUydiHpuT3KuLDVGDpOe+CcCZ14BI5q/oRijQdybTa8NCMU2BQLgI5lgQ
+         azK2UYCHH9f5Jl8SKu2lHkwJaPBIsFA0iKEXxQNqMG7xRZsmz/g+AZCagv9lm0SK4v
+         aPyseK6KqLSBMYyPiKUlWP6LLtMS26nZUK6gUkKI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Liam Beguin <liambeguin@gmail.com>,
@@ -30,12 +30,12 @@ Cc:     Liam Beguin <liambeguin@gmail.com>,
         Dave Anglin <dave.anglin@bell.net>,
         Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 04/10] parisc: add support for cmpxchg on u8 pointers
-Date:   Mon, 27 Jul 2020 19:24:52 -0400
-Message-Id: <20200727232458.718131-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 4/7] parisc: add support for cmpxchg on u8 pointers
+Date:   Mon, 27 Jul 2020 19:25:11 -0400
+Message-Id: <20200727232514.718265-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200727232458.718131-1-sashal@kernel.org>
-References: <20200727232458.718131-1-sashal@kernel.org>
+In-Reply-To: <20200727232514.718265-1-sashal@kernel.org>
+References: <20200727232514.718265-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -72,10 +72,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 14 insertions(+)
 
 diff --git a/arch/parisc/include/asm/cmpxchg.h b/arch/parisc/include/asm/cmpxchg.h
-index ab5c215cf46c3..0689585758717 100644
+index 90253bdc2ee5e..536690a68917c 100644
 --- a/arch/parisc/include/asm/cmpxchg.h
 +++ b/arch/parisc/include/asm/cmpxchg.h
-@@ -60,6 +60,7 @@ extern void __cmpxchg_called_with_bad_pointer(void);
+@@ -59,6 +59,7 @@ extern void __cmpxchg_called_with_bad_pointer(void);
  extern unsigned long __cmpxchg_u32(volatile unsigned int *m, unsigned int old,
  				   unsigned int new_);
  extern u64 __cmpxchg_u64(volatile u64 *ptr, u64 old, u64 new_);
@@ -83,7 +83,7 @@ index ab5c215cf46c3..0689585758717 100644
  
  /* don't worry...optimizer will get rid of most of this */
  static inline unsigned long
-@@ -71,6 +72,7 @@ __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new_, int size)
+@@ -70,6 +71,7 @@ __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new_, int size)
  #endif
  	case 4: return __cmpxchg_u32((unsigned int *)ptr,
  				     (unsigned int)old, (unsigned int)new_);
@@ -92,10 +92,10 @@ index ab5c215cf46c3..0689585758717 100644
  	__cmpxchg_called_with_bad_pointer();
  	return old;
 diff --git a/arch/parisc/lib/bitops.c b/arch/parisc/lib/bitops.c
-index 70ffbcf889b8e..2e4d1f05a9264 100644
+index 8e45b0a97abf6..3284a7adb0a35 100644
 --- a/arch/parisc/lib/bitops.c
 +++ b/arch/parisc/lib/bitops.c
-@@ -79,3 +79,15 @@ unsigned long __cmpxchg_u32(volatile unsigned int *ptr, unsigned int old, unsign
+@@ -78,3 +78,15 @@ unsigned long __cmpxchg_u32(volatile unsigned int *ptr, unsigned int old, unsign
  	_atomic_spin_unlock_irqrestore(ptr, flags);
  	return (unsigned long)prev;
  }
