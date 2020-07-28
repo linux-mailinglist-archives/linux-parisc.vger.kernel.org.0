@@ -2,127 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02A6D230037
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jul 2020 05:35:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFCD5230710
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jul 2020 11:53:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727929AbgG1DfR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Jul 2020 23:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47438 "EHLO
+        id S1728558AbgG1JxI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 Jul 2020 05:53:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727889AbgG1DfQ (ORCPT
+        with ESMTP id S1728288AbgG1JxH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Jul 2020 23:35:16 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF048C061794;
-        Mon, 27 Jul 2020 20:35:15 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id t1so25462plq.0;
-        Mon, 27 Jul 2020 20:35:15 -0700 (PDT)
+        Tue, 28 Jul 2020 05:53:07 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D54FC0619D2
+        for <linux-parisc@vger.kernel.org>; Tue, 28 Jul 2020 02:53:07 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id q75so11936751iod.1
+        for <linux-parisc@vger.kernel.org>; Tue, 28 Jul 2020 02:53:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=+UmEzZhiPmisvbll7oEJdJkdQLeJHaSjFNwT4kfLFeI=;
-        b=NBLIEBziSUKeh73IjmJleu8E8SgNKOIcKBiJPr0MC2P56V7thIUc8GQY2cVLRReF1f
-         jofwolDuDOKPAnoFoNN36vVks1/7WpIslDewwf8eHfvFeuUxedsEFHXBLYMWYFx1AEdm
-         nYW34dxA2YhoTMMjAp6an0Q/7b6HNgGOqY0fPYycNxAE0qKpMsrefABHPNKNNOIUbjaQ
-         QgYcyxeuTJX1/5Wfc7DzrMAt5+hgUe5cmdYuRZlAnm7IjmLa8mgIQ3sxn/APLmY9+XWn
-         GAOF5euTRYk3JrHP+ej5JQ/0Rw2tmbXH1PvNs4J7JNiniIG5UPP8/3tOuwLk8dNURNSZ
-         U1lw==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=F08oeD2vpzf26eJV+e9uuXuUitIIoXTQkLFpWIuJYZY=;
+        b=NDRcWvbPX8+El0Hm8l2zZRi86BlKHdkPPc/1aSj6c5ks7mWo7/RH3hvlqSSRZYF/2v
+         bSD19PJrd/r/ylbeaXvjz3NjXT8iEFAq7I+w20pTCDHWCN8tsLgMlTrA7e26bUnqBlYV
+         Qs5jGM+SRfAMjqBAZjCsSIGFKjoZDBht7XW0DnlRLNwAyOViFaB+iM8x6wF+NGCPHNx7
+         QPtrvdBYm8oR4PzaFDvo/4G2MSglJ4DHJ1+O104X+gpwkdyN71QYWkxIgA81eF4bd0R9
+         TUNipWoQVzCANXLVYnz6L3tZ5El3+8M670KfcFI09N5b04376SLfguKX5zaVABSH3e8Y
+         LEOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=+UmEzZhiPmisvbll7oEJdJkdQLeJHaSjFNwT4kfLFeI=;
-        b=cRyXW4Oh8L5LZhOYF1sA9xD8+BRES5MjIEQR06e8jxzxDC+fbiFYEweWnfdTx+yEdi
-         4Rj9RtwrRtmDv/CFnqBjm3aW7COtI4aYWivmd+Lvq3yfmydTus+t6LOhdpf9Mc9F1dHn
-         nH9SxWzsM2dEDRYoGDnIIopQsi14WY7eDiJvqA3QgCXkTrnglND+GGTfzYy/EhBPOmUK
-         8zDYJ5w8kGpCd+hkFnzBcy/ht/QNqBZ6KqRLWOhlCnO8Is9Crtyj7PlHy5rFcIG47GHP
-         k00Bg5D1Ko9RKrcOcm146GF9uQu+WS2CDOXuEyDNRsNjg9gyxikMDkkSJSBHIyM8gPgT
-         RQ4A==
-X-Gm-Message-State: AOAM531hSk4Th1I9LcxxsbRNT5jqpPRInELhmLnk1uvXQqblHBEc4eAj
-        RMrB+1aP0fUpHngRuBXLxxTUXpWF
-X-Google-Smtp-Source: ABdhPJyxmfIxm31ZlyLcRWm1fbvoFARyVjQ9SkiBxu4lx9zz6vwRMcmi+fNZuU0y04kQFc06xx4pxw==
-X-Received: by 2002:a17:90a:1589:: with SMTP id m9mr2444530pja.122.1595907315336;
-        Mon, 27 Jul 2020 20:35:15 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (110-174-173-27.tpgi.com.au. [110.174.173.27])
-        by smtp.gmail.com with ESMTPSA id r4sm998707pji.37.2020.07.27.20.35.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2020 20:35:14 -0700 (PDT)
-From:   Nicholas Piggin <npiggin@gmail.com>
-To:     linux-arch@vger.kernel.org
-Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH 15/24] parisc: use asm-generic/mmu_context.h for no-op implementations
-Date:   Tue, 28 Jul 2020 13:33:56 +1000
-Message-Id: <20200728033405.78469-16-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200728033405.78469-1-npiggin@gmail.com>
-References: <20200728033405.78469-1-npiggin@gmail.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=F08oeD2vpzf26eJV+e9uuXuUitIIoXTQkLFpWIuJYZY=;
+        b=rwJmyV3e/DI7zjQPEmIc1Zl4tx/NUs08bV1SdxZkaT6VrO2QejEf42AsQ/WE9aPcrj
+         UEOr/fGEONdfpByh3WhSonxa3y296qJXYBuXF3ssjHVVbKO1XP9Ls/SpoBoI4ibdV1A8
+         rgX+oxmEeotIslVfBeXTQOOCtNf/hjmTtgcKs7RG0jFAM3bT+/ytoG/E+TS8JF62IP/n
+         Y2IIzC/V8/LwmZsbeqyr7aEVtFe24blOMZwrBH4tfilNO+35vf92DlfQ2n/Lp9DXFO6S
+         6I85tie+S1Oj1DrGzC1YYOKauCZU08y0dtXGwmdtWr2go7EP7UYtboniX1DX54jNC1XE
+         unbw==
+X-Gm-Message-State: AOAM531FrKqam3btNsqgLyxN4e291VCkcNnQtEJvaSw54A2ufOmK+NGs
+        Vj4Gu6sqbW3TjXTi9d+Aol5HzIiPDr2Ih0waheA=
+X-Google-Smtp-Source: ABdhPJzhWJlCvn4qx2MUmVaGupk22vNSFYQeS0FishwxF0sVk8aV8kiI0mWh7AVgUKYHjazJhYb4AqWtoflXBOmkn8w=
+X-Received: by 2002:a6b:e211:: with SMTP id z17mr21271891ioc.82.1595929986745;
+ Tue, 28 Jul 2020 02:53:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ac0:8a88:0:0:0:0:0 with HTTP; Tue, 28 Jul 2020 02:53:06
+ -0700 (PDT)
+Reply-To: mrsjaneyzachary4@gmail.com
+From:   "Mrs.Janey Zachary" <thompsonclark699@gmail.com>
+Date:   Tue, 28 Jul 2020 09:53:06 +0000
+Message-ID: <CAFmscFbBVk+R5CwuGF_1_QbfbY2zUYHz1Bg7ZC+96Ph+i_wbCQ@mail.gmail.com>
+Subject: HI
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/parisc/include/asm/mmu_context.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+--=20
 
-diff --git a/arch/parisc/include/asm/mmu_context.h b/arch/parisc/include/asm/mmu_context.h
-index 07b89c74abeb..71f8a3679b83 100644
---- a/arch/parisc/include/asm/mmu_context.h
-+++ b/arch/parisc/include/asm/mmu_context.h
-@@ -8,16 +8,13 @@
- #include <asm/pgalloc.h>
- #include <asm-generic/mm_hooks.h>
- 
--static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
--{
--}
--
- /* on PA-RISC, we actually have enough contexts to justify an allocator
-  * for them.  prumpf */
- 
- extern unsigned long alloc_sid(void);
- extern void free_sid(unsigned long);
- 
-+#define init_new_context init_new_context
- static inline int
- init_new_context(struct task_struct *tsk, struct mm_struct *mm)
- {
-@@ -27,6 +24,7 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
- 	return 0;
- }
- 
-+#define destroy_context destroy_context
- static inline void
- destroy_context(struct mm_struct *mm)
- {
-@@ -72,8 +70,7 @@ static inline void switch_mm(struct mm_struct *prev,
- }
- #define switch_mm_irqs_off switch_mm_irqs_off
- 
--#define deactivate_mm(tsk,mm)	do { } while (0)
--
-+#define activate_mm activate_mm
- static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
- {
- 	/*
-@@ -91,4 +88,7 @@ static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
- 
- 	switch_mm(prev,next,current);
- }
-+
-+#include <asm-generic/mmu_context.h>
-+
- #endif
--- 
-2.23.0
+Dear Beloved,
 
+I=E2=80=99m Mrs.Benson Safia, 69years old affected with breast cancer, the =
+wife of
+
+late Benson Safia,  the Director of High River Gold Mines Ltd Burkina Faso
+
+West Africa. I am contacting you because of my health condition,i need a
+
+reliable person, who will handle this project accordingly, accomplish my
+
+heart desire and utilize this fund. I have decided to donate the sum
+
+Twenty-Five Million Two Hundred Thousand United State Dollars Only
+
+($25,200,000.00) to Charity Organizations or to support the Orphans,
+
+Motherless Babies,Less privileged and free Medical & Medicine Poor
+
+People's around the World since I don t have any child and do not want the
+
+bank take over the fund. I don't really know if i am going to survive this
+
+stage, therefore if you ready to handle this project, kindly response so
+
+that i will instruct the bank to transfer the fund to your account.
+
+Contact my private email only if you are interested
+
+(mrs.bensonsafia1@gmail.com)
+
+Remain blessed in the name of the Lord.
+
+Regards
+
+Mrs.Benson Safia,
