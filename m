@@ -2,115 +2,127 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1E3E22FD3C
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jul 2020 01:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A6D230037
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jul 2020 05:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728714AbgG0X0Q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Jul 2020 19:26:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36632 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728582AbgG0XZU (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Jul 2020 19:25:20 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 89E9620A8B;
-        Mon, 27 Jul 2020 23:25:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595892320;
-        bh=DkVXnVt7u6fmRfPOHCdUfUeOBDxtqXkAcojtf0bbp9A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jdK7E7fqLUydiHpuT3KuLDVGDpOe+CcCZ14BI5q/oRijQdybTa8NCMU2BQLgI5lgQ
-         azK2UYCHH9f5Jl8SKu2lHkwJaPBIsFA0iKEXxQNqMG7xRZsmz/g+AZCagv9lm0SK4v
-         aPyseK6KqLSBMYyPiKUlWP6LLtMS26nZUK6gUkKI=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Liam Beguin <liambeguin@gmail.com>,
-        kernel test robot <lkp@intel.com>,
-        Dave Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 4/7] parisc: add support for cmpxchg on u8 pointers
-Date:   Mon, 27 Jul 2020 19:25:11 -0400
-Message-Id: <20200727232514.718265-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200727232514.718265-1-sashal@kernel.org>
-References: <20200727232514.718265-1-sashal@kernel.org>
+        id S1727929AbgG1DfR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Jul 2020 23:35:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47438 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727889AbgG1DfQ (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 27 Jul 2020 23:35:16 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF048C061794;
+        Mon, 27 Jul 2020 20:35:15 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id t1so25462plq.0;
+        Mon, 27 Jul 2020 20:35:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=+UmEzZhiPmisvbll7oEJdJkdQLeJHaSjFNwT4kfLFeI=;
+        b=NBLIEBziSUKeh73IjmJleu8E8SgNKOIcKBiJPr0MC2P56V7thIUc8GQY2cVLRReF1f
+         jofwolDuDOKPAnoFoNN36vVks1/7WpIslDewwf8eHfvFeuUxedsEFHXBLYMWYFx1AEdm
+         nYW34dxA2YhoTMMjAp6an0Q/7b6HNgGOqY0fPYycNxAE0qKpMsrefABHPNKNNOIUbjaQ
+         QgYcyxeuTJX1/5Wfc7DzrMAt5+hgUe5cmdYuRZlAnm7IjmLa8mgIQ3sxn/APLmY9+XWn
+         GAOF5euTRYk3JrHP+ej5JQ/0Rw2tmbXH1PvNs4J7JNiniIG5UPP8/3tOuwLk8dNURNSZ
+         U1lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=+UmEzZhiPmisvbll7oEJdJkdQLeJHaSjFNwT4kfLFeI=;
+        b=cRyXW4Oh8L5LZhOYF1sA9xD8+BRES5MjIEQR06e8jxzxDC+fbiFYEweWnfdTx+yEdi
+         4Rj9RtwrRtmDv/CFnqBjm3aW7COtI4aYWivmd+Lvq3yfmydTus+t6LOhdpf9Mc9F1dHn
+         nH9SxWzsM2dEDRYoGDnIIopQsi14WY7eDiJvqA3QgCXkTrnglND+GGTfzYy/EhBPOmUK
+         8zDYJ5w8kGpCd+hkFnzBcy/ht/QNqBZ6KqRLWOhlCnO8Is9Crtyj7PlHy5rFcIG47GHP
+         k00Bg5D1Ko9RKrcOcm146GF9uQu+WS2CDOXuEyDNRsNjg9gyxikMDkkSJSBHIyM8gPgT
+         RQ4A==
+X-Gm-Message-State: AOAM531hSk4Th1I9LcxxsbRNT5jqpPRInELhmLnk1uvXQqblHBEc4eAj
+        RMrB+1aP0fUpHngRuBXLxxTUXpWF
+X-Google-Smtp-Source: ABdhPJyxmfIxm31ZlyLcRWm1fbvoFARyVjQ9SkiBxu4lx9zz6vwRMcmi+fNZuU0y04kQFc06xx4pxw==
+X-Received: by 2002:a17:90a:1589:: with SMTP id m9mr2444530pja.122.1595907315336;
+        Mon, 27 Jul 2020 20:35:15 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (110-174-173-27.tpgi.com.au. [110.174.173.27])
+        by smtp.gmail.com with ESMTPSA id r4sm998707pji.37.2020.07.27.20.35.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2020 20:35:14 -0700 (PDT)
+From:   Nicholas Piggin <npiggin@gmail.com>
+To:     linux-arch@vger.kernel.org
+Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: [PATCH 15/24] parisc: use asm-generic/mmu_context.h for no-op implementations
+Date:   Tue, 28 Jul 2020 13:33:56 +1000
+Message-Id: <20200728033405.78469-16-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20200728033405.78469-1-npiggin@gmail.com>
+References: <20200728033405.78469-1-npiggin@gmail.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Liam Beguin <liambeguin@gmail.com>
-
-[ Upstream commit b344d6a83d01c52fddbefa6b3b4764da5b1022a0 ]
-
-The kernel test bot reported[1] that using set_mask_bits on a u8 causes
-the following issue on parisc:
-
-	hppa-linux-ld: drivers/phy/ti/phy-tusb1210.o: in function `tusb1210_probe':
-	>> (.text+0x2f4): undefined reference to `__cmpxchg_called_with_bad_pointer'
-	>> hppa-linux-ld: (.text+0x324): undefined reference to `__cmpxchg_called_with_bad_pointer'
-	hppa-linux-ld: (.text+0x354): undefined reference to `__cmpxchg_called_with_bad_pointer'
-
-Add support for cmpxchg on u8 pointers.
-
-[1] https://lore.kernel.org/patchwork/patch/1272617/#1468946
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-Tested-by: Dave Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/parisc/include/asm/cmpxchg.h |  2 ++
- arch/parisc/lib/bitops.c          | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
+ arch/parisc/include/asm/mmu_context.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/parisc/include/asm/cmpxchg.h b/arch/parisc/include/asm/cmpxchg.h
-index 90253bdc2ee5e..536690a68917c 100644
---- a/arch/parisc/include/asm/cmpxchg.h
-+++ b/arch/parisc/include/asm/cmpxchg.h
-@@ -59,6 +59,7 @@ extern void __cmpxchg_called_with_bad_pointer(void);
- extern unsigned long __cmpxchg_u32(volatile unsigned int *m, unsigned int old,
- 				   unsigned int new_);
- extern u64 __cmpxchg_u64(volatile u64 *ptr, u64 old, u64 new_);
-+extern u8 __cmpxchg_u8(volatile u8 *ptr, u8 old, u8 new_);
+diff --git a/arch/parisc/include/asm/mmu_context.h b/arch/parisc/include/asm/mmu_context.h
+index 07b89c74abeb..71f8a3679b83 100644
+--- a/arch/parisc/include/asm/mmu_context.h
++++ b/arch/parisc/include/asm/mmu_context.h
+@@ -8,16 +8,13 @@
+ #include <asm/pgalloc.h>
+ #include <asm-generic/mm_hooks.h>
  
- /* don't worry...optimizer will get rid of most of this */
- static inline unsigned long
-@@ -70,6 +71,7 @@ __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new_, int size)
- #endif
- 	case 4: return __cmpxchg_u32((unsigned int *)ptr,
- 				     (unsigned int)old, (unsigned int)new_);
-+	case 1: return __cmpxchg_u8((u8 *)ptr, (u8)old, (u8)new_);
- 	}
- 	__cmpxchg_called_with_bad_pointer();
- 	return old;
-diff --git a/arch/parisc/lib/bitops.c b/arch/parisc/lib/bitops.c
-index 8e45b0a97abf6..3284a7adb0a35 100644
---- a/arch/parisc/lib/bitops.c
-+++ b/arch/parisc/lib/bitops.c
-@@ -78,3 +78,15 @@ unsigned long __cmpxchg_u32(volatile unsigned int *ptr, unsigned int old, unsign
- 	_atomic_spin_unlock_irqrestore(ptr, flags);
- 	return (unsigned long)prev;
+-static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
+-{
+-}
+-
+ /* on PA-RISC, we actually have enough contexts to justify an allocator
+  * for them.  prumpf */
+ 
+ extern unsigned long alloc_sid(void);
+ extern void free_sid(unsigned long);
+ 
++#define init_new_context init_new_context
+ static inline int
+ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
+ {
+@@ -27,6 +24,7 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
+ 	return 0;
+ }
+ 
++#define destroy_context destroy_context
+ static inline void
+ destroy_context(struct mm_struct *mm)
+ {
+@@ -72,8 +70,7 @@ static inline void switch_mm(struct mm_struct *prev,
+ }
+ #define switch_mm_irqs_off switch_mm_irqs_off
+ 
+-#define deactivate_mm(tsk,mm)	do { } while (0)
+-
++#define activate_mm activate_mm
+ static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
+ {
+ 	/*
+@@ -91,4 +88,7 @@ static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
+ 
+ 	switch_mm(prev,next,current);
  }
 +
-+u8 __cmpxchg_u8(volatile u8 *ptr, u8 old, u8 new)
-+{
-+	unsigned long flags;
-+	u8 prev;
++#include <asm-generic/mmu_context.h>
 +
-+	_atomic_spin_lock_irqsave(ptr, flags);
-+	if ((prev = *ptr) == old)
-+		*ptr = new;
-+	_atomic_spin_unlock_irqrestore(ptr, flags);
-+	return prev;
-+}
+ #endif
 -- 
-2.25.1
+2.23.0
 
