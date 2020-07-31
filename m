@@ -2,174 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B5FC233281
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jul 2020 14:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ACAA2346C6
+	for <lists+linux-parisc@lfdr.de>; Fri, 31 Jul 2020 15:22:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727776AbgG3M7O (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 30 Jul 2020 08:59:14 -0400
-Received: from belmont79srvr.owm.bell.net ([184.150.200.79]:33822 "EHLO
-        mtlfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726799AbgG3M7N (ORCPT
+        id S1732402AbgGaNV4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 31 Jul 2020 09:21:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40318 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730237AbgGaNVz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 30 Jul 2020 08:59:13 -0400
-Received: from bell.net mtlfep01 184.150.200.30 by mtlfep01.bell.net
-          with ESMTP
-          id <20200730125912.VFIK5779.mtlfep01.bell.net@mtlspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Thu, 30 Jul 2020 08:59:12 -0400
-Received: from [192.168.2.49] (really [70.53.53.104]) by mtlspm02.bell.net
-          with ESMTP
-          id <20200730125912.WKVI16482.mtlspm02.bell.net@[192.168.2.49]>;
-          Thu, 30 Jul 2020 08:59:12 -0400
-To:     linux-parisc <linux-parisc@vger.kernel.org>
-Cc:     Helge Deller <deller@gmx.de>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Implement __smp_store_release and __smp_load_acquire
- barriers
-Message-ID: <042c9180-a392-4b4d-3154-9ade806173bf@bell.net>
-Date:   Thu, 30 Jul 2020 08:59:12 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Fri, 31 Jul 2020 09:21:55 -0400
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6408FC061574
+        for <linux-parisc@vger.kernel.org>; Fri, 31 Jul 2020 06:21:55 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id l17so15081556ilq.13
+        for <linux-parisc@vger.kernel.org>; Fri, 31 Jul 2020 06:21:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
+        b=PVBzqO5V0lczT9KKCKlsJFN0ogUwFA0i7lX6j3d1IjsHKYDH6/jKMvXDIzuPghbdiu
+         6FsW3dPbwm3wa+UWUTV03Y8wE4eeUkxuzab27EdZg/T6CKKuji9Z/h8UinvtuBFm/dif
+         ukK9ctbFeMR8/YMSC71tpjMRKx8c+Iu2/a0waKMb5uHZs/jgFsyKHIpsfeUrHHTS3NeW
+         qsORbvy7E5lkWjG22VO6mm0zTzj2Kn0vGRzKvbzH2pVV2UalaQNodUGlRiHMl0bBHE7P
+         cDn4ZNqs89a+2mqAgpeehd+q0HkReJOqmXYmCuTSbvbDlct/JXo0aQmnhKvlzxCT4NkG
+         oUGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
+        b=a7Uvi+tzVrciCXJHX29CMwtsWMe5Zt9tbyh4m4jtW87218tBUeDmgmTQ/L/JD+Qrt4
+         BRLgz9TYjBjGKvlgPOTfs4Ia94S+K2tPjpj3x/SLMFI0iU0WcbWZ70s6A3HxOF3zHgPF
+         2Y7WHC25IX96z1Z3sVH57c+zyFWODd4lrvwpM474L7cFjRDceJDCDv+tvHkCDrRlF8dG
+         mTUyhy17bTa0Ueyof2CE7mWW1+9KtsVYYczxX4UgANbx6yKMVTnCYeyBspjFe4PtU+fm
+         eexR3iHZUVRYCMXSrIr7OvBjeE1oHl1IBA8fAVO7Gsw4tXuffVLXDvz36odmjrt7mRMm
+         g7Gw==
+X-Gm-Message-State: AOAM532zu4S8dYou4WcgXgkEXDnLr/aflj4quMWMGeCdVMOyYP2cOiII
+        qmALeS06eME8nP8XtAQrlg5RCn6lNO12jHj/w0pZBhL+
+X-Google-Smtp-Source: ABdhPJw+Gmzd0kvjH80OwHfW4300Stjz6nIX8gSzEXwZL+m8lTOqegw3MZSE6jxno7hDDowNDehv+wf6ISDF//X0788=
+X-Received: by 2002:a92:8946:: with SMTP id n67mr3886538ild.168.1596201714689;
+ Fri, 31 Jul 2020 06:21:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CM-Analysis: v=2.3 cv=E9SzWpVl c=1 sm=1 tr=0 a=htCe9XT+XAlGhzqgweArVg==:117 a=htCe9XT+XAlGhzqgweArVg==:17 a=IkcTkHD0fZMA:10 a=_RQrkK6FrEwA:10 a=FBHGMhGWAAAA:8 a=jOa2Ci3pj8ZkyaXqPEUA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfDEFJxsw3uzC5TTOziXQCgipxo+Q027m1Uy4PLDb09jLd2KAYhxROynsPA+xtm68mGlak/F36gk+Wqe5ICNc52H1QJUbd1+nfMo8Z60wctfK552247+i M+LfzSKPt4WMpOhSS+66FIjS8UCpJdUi72BJ2aMramcg4BxZwCeCsM01bXUpIz83XOHpmtvDJ5JpSQ==
+Received: by 2002:a6b:7508:0:0:0:0:0 with HTTP; Fri, 31 Jul 2020 06:21:54
+ -0700 (PDT)
+Reply-To: ayishagddafio@mail.ru
+From:   AISHA GADDAFI <mahasaliou99999@gmail.com>
+Date:   Fri, 31 Jul 2020 06:21:54 -0700
+Message-ID: <CAMugOs8q3wO3hYFUDuXpGihSrGLKc9rvevgFcbjivRQF7Qmi4A@mail.gmail.com>
+Subject: Lieber Freund (Assalamu Alaikum),?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This patch implements the __smp_store_release and __smp_load_acquire barriers using ordered stores
-and loads.  This avoids the sync instruction present in the generic implementation.
+--=20
+Lieber Freund (Assalamu Alaikum),
 
-Lightly tested on c8000 and rp3440.
+Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
+Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
+Mutter und eine Witwe
+mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
+hen
+Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
 
-Signed-off-by: Dave Anglin <dave.anglin@bell.net>
----
+Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
+f=C3=BCnfhunderttausend
+United State Dollar ($ 27.500.000.00) und ich brauche eine
+vertrauensw=C3=BCrdige Investition
+Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
+jedoch
+M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
+von
+Investitionsprojekten in Ihrem Land
+Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
+bauen.
 
-diff --git a/arch/parisc/include/asm/barrier.h b/arch/parisc/include/asm/barrier.h
-index dbaaca84f27f..a8e0d942c297 100644
---- a/arch/parisc/include/asm/barrier.h
-+++ b/arch/parisc/include/asm/barrier.h
-@@ -26,6 +26,118 @@
- #define __smp_rmb()	mb()
- #define __smp_wmb()	mb()
+Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
+n und
+Unternehmensgewinn zu verhandeln
+Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
 
-+#ifdef CONFIG_64BIT
-+#define __smp_store_release(p, v)					\
-+do {									\
-+	typeof(p) __p = (p);						\
-+        union { typeof(*p) __val; char __c[1]; } __u =			\
-+                { .__val = (__force typeof(*p)) (v) };			\
-+	compiletime_assert_atomic_type(*p);				\
-+	switch (sizeof(*p)) {						\
-+	case 1:								\
-+		asm volatile("stb,ma %0,0(%1)"				\
-+				: : "r"(*(__u8 *)__u.__c), "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 2:								\
-+		asm volatile("sth,ma %0,0(%1)"				\
-+				: : "r"(*(__u16 *)__u.__c), "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 4:								\
-+		asm volatile("stw,ma %0,0(%1)"				\
-+				: : "r"(*(__u32 *)__u.__c), "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 8:								\
-+		asm volatile("std,ma %0,0(%1)"				\
-+				: : "r"(*(__u64 *)__u.__c), "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	}								\
-+} while (0)
-+
-+#define __smp_load_acquire(p)						\
-+({									\
-+	union { typeof(*p) __val; char __c[1]; } __u;			\
-+	typeof(p) __p = (p);						\
-+	compiletime_assert_atomic_type(*p);				\
-+	switch (sizeof(*p)) {						\
-+	case 1:								\
-+		asm volatile("ldb,ma 0(%1),%0"				\
-+				: "=r"(*(__u8 *)__u.__c) : "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 2:								\
-+		asm volatile("ldh,ma 0(%1),%0"				\
-+				: "=r"(*(__u16 *)__u.__c) : "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 4:								\
-+		asm volatile("ldw,ma 0(%1),%0"				\
-+				: "=r"(*(__u32 *)__u.__c) : "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 8:								\
-+		asm volatile("ldd,ma 0(%1),%0"				\
-+				: "=r"(*(__u64 *)__u.__c) : "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	}								\
-+	__u.__val;							\
-+})
-+#else
-+#define __smp_store_release(p, v)					\
-+do {									\
-+	typeof(p) __p = (p);						\
-+        union { typeof(*p) __val; char __c[1]; } __u =			\
-+                { .__val = (__force typeof(*p)) (v) };			\
-+	compiletime_assert_atomic_type(*p);				\
-+	switch (sizeof(*p)) {						\
-+	case 1:								\
-+		asm volatile("stb,ma %0,0(%1)"				\
-+				: : "r"(*(__u8 *)__u.__c), "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 2:								\
-+		asm volatile("sth,ma %0,0(%1)"				\
-+				: : "r"(*(__u16 *)__u.__c), "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 4:								\
-+		asm volatile("stw,ma %0,0(%1)"				\
-+				: : "r"(*(__u32 *)__u.__c), "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	}								\
-+} while (0)
-+
-+#define __smp_load_acquire(p)						\
-+({									\
-+	union { typeof(*p) __val; char __c[1]; } __u;			\
-+	typeof(p) __p = (p);						\
-+	compiletime_assert_atomic_type(*p);				\
-+	switch (sizeof(*p)) {						\
-+	case 1:								\
-+		asm volatile("ldb,ma 0(%1),%0"				\
-+				: "=r"(*(__u8 *)__u.__c) : "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 2:								\
-+		asm volatile("ldh,ma 0(%1),%0"				\
-+				: "=r"(*(__u16 *)__u.__c) : "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	case 4:								\
-+		asm volatile("ldw,ma 0(%1),%0"				\
-+				: "=r"(*(__u32 *)__u.__c) : "r"(__p)	\
-+				: "memory");				\
-+		break;							\
-+	}								\
-+	__u.__val;							\
-+})
-+#endif
-+
- #include <asm-generic/barrier.h>
+Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
+antworten Sie bitte dringend
+Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
+.
 
- #endif /* !__ASSEMBLY__ */
+Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
+esse (
+ayishagddafio@mail.ru ) zur weiteren Diskussion.
+
+Freundliche Gr=C3=BC=C3=9Fe
+Frau Aisha Al-Qaddafi
