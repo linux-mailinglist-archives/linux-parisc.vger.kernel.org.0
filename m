@@ -2,19 +2,19 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCB9223FD66
-	for <lists+linux-parisc@lfdr.de>; Sun,  9 Aug 2020 10:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A8B423FD67
+	for <lists+linux-parisc@lfdr.de>; Sun,  9 Aug 2020 10:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726207AbgHIIjV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Sun, 9 Aug 2020 04:39:21 -0400
-Received: from mail.furshetcrimea.ru ([193.27.243.220]:49512 "EHLO
+        id S1726120AbgHIIl2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Sun, 9 Aug 2020 04:41:28 -0400
+Received: from mail.furshetcrimea.ru ([193.27.243.220]:52426 "EHLO
         furshetcrimea.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726012AbgHIIjV (ORCPT
+        with ESMTP id S1726012AbgHIIl1 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 9 Aug 2020 04:39:21 -0400
+        Sun, 9 Aug 2020 04:41:27 -0400
 Received: from [41.217.58.131] (account info@furshetcrimea.ru HELO [192.168.8.101])
   by furshetcrimea.ru (CommuniGate Pro SMTP 6.1.10)
-  with ESMTPA id 11420561; Sun, 09 Aug 2020 11:49:13 +0300
+  with ESMTPA id 11422411; Sun, 09 Aug 2020 11:53:00 +0300
 Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
@@ -22,11 +22,11 @@ Content-Description: Mail message body
 Subject: Bei Interesse antworten.
 To:     Recipients <info@furshetcrimea.ru>
 From:   info@furshetcrimea.ru
-Date:   Sun, 09 Aug 2020 09:36:30 +0100
+Date:   Sun, 09 Aug 2020 09:40:19 +0100
 Reply-To: mattiassjoborg751@gmail.com
 X-Antivirus: Avast (VPS 200808-4, 08/08/2020), Outbound message
 X-Antivirus-Status: Clean
-Message-ID: <auto-000011420561@furshetcrimea.ru>
+Message-ID: <auto-000011422411@furshetcrimea.ru>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
