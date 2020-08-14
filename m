@@ -2,85 +2,137 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BA55244A34
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Aug 2020 15:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 774EE244A54
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Aug 2020 15:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726283AbgHNNOQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 14 Aug 2020 09:14:16 -0400
-Received: from mout.gmx.net ([212.227.15.15]:46267 "EHLO mout.gmx.net"
+        id S1726690AbgHNNUc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 14 Aug 2020 09:20:32 -0400
+Received: from mout.gmx.net ([212.227.17.20]:50553 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726139AbgHNNOQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 14 Aug 2020 09:14:16 -0400
+        id S1726283AbgHNNUc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 14 Aug 2020 09:20:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1597410854;
-        bh=5/6YE+luh/bGB4iUD9EIoTiEvNgh1Fl8xFdHapJoG8k=;
+        s=badeba3b8450; t=1597411230;
+        bh=YIqVM/eAj7nM/erOBjsDnQmMIxobZQEbysaGFkZ4mPI=;
         h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=GrArZpXp9iIzMGEHgw2EXx0w8yOigFsG2d4Qxq1JvbYbiVFMfAv+d2v6AgKiNdXCZ
-         +TeZ1JHYIXz98gsJ0DY0iQwatgozGsfVRfIX/3UfzqpBjs7o6bAGUbFyLaVRZWdQmM
-         NUEMlcU4OEqENEkv3Nk+83HpoWDvdEw3Wpcd6VCk=
+        b=C4ApkZqD2ghXiWsYwG+d42Ol/z+tLWLAFwtiXIora1VgbBfk2489BzwvrePNzCX59
+         djAp2UTkCR+V4J1a101yxq4o5dpxmd3GnQ1kAGa+fNwA5w4ufbOUiiv+SZi/t7E437
+         pBQ+G9cx9Y0ZTeye5gOsUOTNw+p6hILpDpsxDgnc=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.148.19]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mqs0R-1kSlGR1KID-00moaQ; Fri, 14
- Aug 2020 15:14:14 +0200
-Date:   Fri, 14 Aug 2020 15:14:12 +0200
+Received: from ls3530 ([92.116.148.19]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N0G1n-1krXJK487b-00xHYX; Fri, 14
+ Aug 2020 15:20:30 +0200
+Date:   Fri, 14 Aug 2020 15:20:28 +0200
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
-Subject: [PATCH] parisc: Avoid external interrupts when IPI finishes
-Message-ID: <20200814131412.GA9797@ls3530>
+Subject: [PATCH v3] parisc: Add raise_nmi() and
+ arch_trigger_cpumask_backtrace()
+Message-ID: <20200814132028.GA10165@ls3530>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:qh1+MzZ/BV43atAwBAsGirnWLpnHtRly+nueJfBdaMCy24uLqov
- 1CxcDevRW8cVuQ592FaepHS31Q17UUrydPJSZ10AsZXCtiG1frvNYBTVUk4umkdIDgtGHZ+
- 3Pl4BSKv4m5vaii8a1VoEEZeNLi30vPLVpcIYktemGIrBoh/N8qhV20/zOrfzfCpFBpq+F2
- 4OTCu0p9mNlIRen8WjvHw==
+X-Provags-ID: V03:K1:Gy/5ampeFM1UaqacSxt1HpjlGD7mWrViCB+k5FCnWCGM7oswqxP
+ O0CoryibCDKfiKSJDvmHzePZKZLSPXEBa0Azt7CZV7gBx4xc6MHBmej+CJP/nK5EZAv1HcL
+ vqGzEnQHLAnGpiFQJJ7CnV/BHWS7T0Ikp6Zrf3lhtSsImkxzqX9uBCbGjRJHSVKLkQlp8S1
+ wjHpDQAxcM5c5DHOMbUWA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SUUKVA2EOIQ=:2b2SyI4JwnYX2CYEOS+8eo
- LMuG7gYox2HQDuIHkQ1gTQ9ENqF8jJaIfED9XmEbHNLUDzOoAw4QoToYXZBbmX4ms4DEupZkD
- u0E9YwJr4YBFTZ+9KGwgRxj3K7oVGEbPve0i5oEW8J+28zAQybZRYV4e7Dy6s3mBRbiRootp+
- xZouG9cLjT7UNT7ecA/G57fm873FmaN/LelXkS8bC/15l3V+K+mYxWY1gTgP0TqLe8VFfqVqE
- RsX59s2UIRKeFyT0Y0tQMTqERBOAEyoE8iDhCI9u+gfBR/XG+NX/WRr5ZfRgS5VTlJxAkrSbu
- rCo/TsJzhZtDeHIlThszRbMsIL5oJzmdnzlFWWHxjAegQ4FbsUVOQ10wVIwYa19ps6DJrtZKT
- KxlJJmk0qAXWSKpBY3dUOaFCd/P2PCJFaw76XASN58KWdjLZkWerZD8ZjhuwKNMXlHj0qOkO4
- lKwJQbOEkFmdqpEAAYfVeyu78U/lG8g6kjJaqh61YYO+IBAHhK27Aib/Z2lGkJeeNOP8wKTl2
- DcWyIM3mtRFxg0ivp5nxvewB7QG57diCkyYp2XH47Za04XS1LUHnptuIzLErDgW83DvIyOPWP
- BMpaK5mkWVfB+F7WR7oExNse47AvpXKBKBDOhHO4d9vzfBpVfBZ8MYn0FDxVfEUcR2ntUG7vt
- 2vhRMSx6jbECndXzI8Vij1/9IC6Pj4KGiYYluSY3ogeCZ1rMBUpo/7l6fEpaogCsSKfyM3UBN
- cPWoHP8W+rfAFvmbYKJVzyhrOKfTdxwJ1Hbwy1lDC/iCsKsKlQ3oDCXfckejkrt+8W3Ow5fRF
- pHBloLoY+xXm+GFgQBUnFBeD266IGXo8J//UJcQ9Dm3OuqQv+C9QUIJeYChaXpIl9Udzmw5U9
- CMNUekW79WwPF4myDqUAzuZMFYCQX7/Cg7dFjCyokhIiHv0vH0+gxDzbHFDJAsyNaZ6GdoZwr
- Yv3oJyUScuP3cJJZzzHOVPwSkS+R89LRfU+H481C9j1wtCAmH0TryCEpmAkV+2Zo/kKLyB4Wo
- frHr0oHnqIJi8IMvqvA/VT+MZYImw5meOBxFM/r00gW96QeMpopAXE7Pe0zdP/2BGj1PuhKCE
- 1lHsiHnrbqN1S2zNA2CHQdl0AoNlxyFJT/ibzKnWiBiYZmbncYOM6cWIxN4cCQxmxbaHgDgiL
- qKO/aS/rcqkmXC6fNgFc5YP6lQke/GjXpEwRTIKHTKGVyD+wseUGUcHQu0aLnJkdRGV6QAbCX
- 761gr6ySJKN+bsCjl
+X-UI-Out-Filterresults: notjunk:1;V03:K0:55w9cTGwtnQ=:HgsUenuKmtkKtE6DP6Nhlg
+ QjVdzM2+T7vVdRsjJpSTQlFxqThVJJDFzmI2Kw8zNw/9fYmmRTPUvZjikyyTW1Km8dr0mX+vt
+ 2zMV+UMBfTEeFr8sztzOgi0zys9LipJSvQshpyThxclTbG7otmjGEz+LQHpi0mEl3aOUu3Tnm
+ 3PEwm8wD10DNjbTWldAGVfL8/g/nixv6ZqcE8+J1Ia4xZrUTUiMSjV4BDWMe68mC+Qz56gAAb
+ oxOHKqz37npPOSknfMPbypLGcJ5CE1moODnUvIKHh0/RlDSbu/KTGWpvKFdfz5LfGm9zNPnNr
+ ZiPwG5yyBXrk7GY0qSJtUzNhxqVuE84vOMPODqx4o8s6h0w8P0+vS1oAwCV0HkSh6ZJhjWwVh
+ aNIGeJrPyJlQRNPoKxfeVenfvvTUwdfd3RKHQ5UGJtYlVu8i9jBUoLkryBy1VtJbNACTQl2GX
+ eEHxLMLpbmD9wjhvU7PVYoWxR61kUOoI+U1NfJdKq2fQhV0ZyPOJ0ICELv49ifyZZ+Oq6oK4n
+ daQeeLpTvvhHwgGMpSXJrt7mOxEtTRinbNZhjPN7j8fKxj+TgNLpoJMKxMeBd+cUzXNTBlDiR
+ +zDGdhGDDOxHBsLl6C1/x6VJYOyalH44W+wnh0l7kySR6A3L7iao5MkJn8N3jXCMShCOiLaQz
+ dTBG2O8EQG5woobe/U8BDUwiVH0ZAVXP3aeb0yEmvl0uzBryryXZmNKki7dM6i+TwZOnBZ6/U
+ UWgelw40rw1Yq6iZ56i9Yl6A/d44dcKkoYhdz7CCuCB2H3t7eL9oxuRZ4+mhcL7847SOAdSpB
+ w3he9IH5KP7DZz/DHg5l3SH2BnFHswOz9J8S7FMccLlqeRvoHwqX/qbjHT25iSAZTkmVgBhWJ
+ HE/RyUsI3NjsyfBWdzDeie1qzGQURL6AmP8VksWnIM2mT/8bJkVTg84Ttx/wj6gm4rL3lA6Xy
+ Ab20sV+B5gB2U1j/cKcX8cn20VTTb7wcgkuuQF02X+mWixcQTLdpkzUqlKacWGYCYEFaMK564
+ /TaITesB+gAPYwAvyP1R9G8ysiL49YtIQ39kdL6h7r5Ehf1A6TabPEeJSz8t3NO2qIRYokUv7
+ LI/0n3u5cTK4VDmTQEodcVFe8v++lYyhPM0BFN5YB+KD7sA72U8EfYRyWsAJcP1hhhXpSscqK
+ DctjUA8hrDUkaDMrUo+zFjiP0OmYrx3aH9CmkXtEhUt3f4clxn0Ab5eXL4Omm/dhDIcjwkhUv
+ jRzfdD3lMVthgMoVR
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-No need to allow external interrupts when the IPI loop is going to
-finish now.
+Implement the parisc versions for raise_nmi() and arch_trigger_cpumask_bac=
+ktrace()
+functions to provide IPI-triggered per-CPU backtrace printouts.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 
+diff --git a/arch/parisc/include/asm/irq.h b/arch/parisc/include/asm/irq.h
+index 959e79cd2c14..c978d50bd29e 100644
+=2D-- a/arch/parisc/include/asm/irq.h
++++ b/arch/parisc/include/asm/irq.h
+@@ -50,4 +50,10 @@ extern int cpu_check_affinity(struct irq_data *d, const=
+ struct cpumask *dest);
+ /* soft power switch support (power.c) */
+ extern struct tasklet_struct power_tasklet;
+
++#ifdef CONFIG_SMP
++extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
++					   bool exclude_self);
++#define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
++#endif
++
+ #endif	/* _ASM_PARISC_IRQ_H */
 diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
 index 6271139d2213..cd7694497428 100644
---- a/arch/parisc/kernel/smp.c
+=2D-- a/arch/parisc/kernel/smp.c
 +++ b/arch/parisc/kernel/smp.c
-@@ -173,9 +183,12 @@ ipi_interrupt(int irq, void *dev_id)
- 					this_cpu, which);
- 				return IRQ_NONE;
- 			} /* Switch */
--		/* let in any pending interrupts */
--		local_irq_enable();
--		local_irq_disable();
+@@ -29,6 +29,7 @@
+ #include <linux/bitops.h>
+ #include <linux/ftrace.h>
+ #include <linux/cpu.h>
++#include <linux/nmi.h>
+
+ #include <linux/atomic.h>
+ #include <asm/current.h>
+@@ -69,6 +70,7 @@ enum ipi_message_type {
+ 	IPI_CALL_FUNC,
+ 	IPI_CPU_START,
+ 	IPI_CPU_STOP,
++	IPI_CPU_BACKTRACE,
+ 	IPI_CPU_TEST
+ };
+
+@@ -164,6 +166,14 @@ ipi_interrupt(int irq, void *dev_id)
+ 				halt_processor();
+ 				break;
+
++			case IPI_CPU_BACKTRACE:
++				printk_nmi_enter();
++				irq_enter();
++				nmi_cpu_backtrace(get_irq_regs());
++				irq_exit();
++				printk_nmi_exit();
++				break;
 +
-+			/* before doing more, let in any pending interrupts */
-+			if (ops) {
-+				local_irq_enable();
-+				local_irq_disable();
-+			}
- 		} /* while (ops) */
- 	}
- 	return IRQ_HANDLED;
+ 			case IPI_CPU_TEST:
+ 				smp_debug(100, KERN_DEBUG "CPU%d is alive!\n", this_cpu);
+ 				break;
+@@ -246,6 +259,16 @@ void arch_send_call_function_single_ipi(int cpu)
+ 	send_IPI_single(cpu, IPI_CALL_FUNC);
+ }
+
++static void raise_nmi(cpumask_t *mask)
++{
++	send_IPI_mask(mask, IPI_CPU_BACKTRACE);
++}
++
++void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_s=
+elf)
++{
++	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_nmi);
++}
++
+ /*
+  * Called by secondaries to update state and initialize CPU registers.
+  */
