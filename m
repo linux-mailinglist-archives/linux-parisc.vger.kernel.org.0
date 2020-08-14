@@ -2,137 +2,158 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 774EE244A54
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Aug 2020 15:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A759244E46
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Aug 2020 20:01:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726690AbgHNNUc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 14 Aug 2020 09:20:32 -0400
-Received: from mout.gmx.net ([212.227.17.20]:50553 "EHLO mout.gmx.net"
+        id S1727849AbgHNSBN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 14 Aug 2020 14:01:13 -0400
+Received: from mout.gmx.net ([212.227.15.19]:44645 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726283AbgHNNUc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 14 Aug 2020 09:20:32 -0400
+        id S1726681AbgHNSBM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 14 Aug 2020 14:01:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1597411230;
-        bh=YIqVM/eAj7nM/erOBjsDnQmMIxobZQEbysaGFkZ4mPI=;
+        s=badeba3b8450; t=1597428064;
+        bh=B+/wRrxb+Xwc2Bu7H8IPy+zYicBnYCO1vO56BPTEI2E=;
         h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=C4ApkZqD2ghXiWsYwG+d42Ol/z+tLWLAFwtiXIora1VgbBfk2489BzwvrePNzCX59
-         djAp2UTkCR+V4J1a101yxq4o5dpxmd3GnQ1kAGa+fNwA5w4ufbOUiiv+SZi/t7E437
-         pBQ+G9cx9Y0ZTeye5gOsUOTNw+p6hILpDpsxDgnc=
+        b=L7x6mYX33t7swkYFNxKEb72Vbve5WDQto7IVJ7ckCSenaR6hJEHJkLFAxqZmYEmUE
+         WobkaSmKMBfZ8IML98nJycsws3bIYcNJg7qJJnSGtrK+P/sD4FpDpIyhcMf+EjG56E
+         aCQ75gVHwBJhYzgi4d+YPTLs5isoLFIfJm5UEzpg=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.148.19]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N0G1n-1krXJK487b-00xHYX; Fri, 14
- Aug 2020 15:20:30 +0200
-Date:   Fri, 14 Aug 2020 15:20:28 +0200
+Received: from ls3530.fritz.box ([92.116.148.19]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MnJhO-1kVqPU2sFw-00jFk8; Fri, 14
+ Aug 2020 20:01:04 +0200
+Date:   Fri, 14 Aug 2020 20:00:59 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Subject: [PATCH v3] parisc: Add raise_nmi() and
- arch_trigger_cpumask_backtrace()
-Message-ID: <20200814132028.GA10165@ls3530>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Add qemu fw_cfg interface
+Message-ID: <20200814180059.GA12471@ls3530.fritz.box>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:Gy/5ampeFM1UaqacSxt1HpjlGD7mWrViCB+k5FCnWCGM7oswqxP
- O0CoryibCDKfiKSJDvmHzePZKZLSPXEBa0Azt7CZV7gBx4xc6MHBmej+CJP/nK5EZAv1HcL
- vqGzEnQHLAnGpiFQJJ7CnV/BHWS7T0Ikp6Zrf3lhtSsImkxzqX9uBCbGjRJHSVKLkQlp8S1
- wjHpDQAxcM5c5DHOMbUWA==
+X-Provags-ID: V03:K1:mee+qXbeITgNMrdAxOWGccd1nTGpOPZ+fiP9ekmTSasRAkPjIaM
+ SKHi/ME0b3aaaf7shgGECi8pORUIV1CP/Ac1v8U299OcFmBkTAX0sygmbGNOoqghRcv1WpK
+ qGGSz+oLOm/bzZcn2ORlIZ86QjQv6Fie7ax8U18gG+XmWuzLcJ0DXmees4QjfYjdzRp/BpS
+ vBVY/Dbt0v1bJv8C4TZkA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:55w9cTGwtnQ=:HgsUenuKmtkKtE6DP6Nhlg
- QjVdzM2+T7vVdRsjJpSTQlFxqThVJJDFzmI2Kw8zNw/9fYmmRTPUvZjikyyTW1Km8dr0mX+vt
- 2zMV+UMBfTEeFr8sztzOgi0zys9LipJSvQshpyThxclTbG7otmjGEz+LQHpi0mEl3aOUu3Tnm
- 3PEwm8wD10DNjbTWldAGVfL8/g/nixv6ZqcE8+J1Ia4xZrUTUiMSjV4BDWMe68mC+Qz56gAAb
- oxOHKqz37npPOSknfMPbypLGcJ5CE1moODnUvIKHh0/RlDSbu/KTGWpvKFdfz5LfGm9zNPnNr
- ZiPwG5yyBXrk7GY0qSJtUzNhxqVuE84vOMPODqx4o8s6h0w8P0+vS1oAwCV0HkSh6ZJhjWwVh
- aNIGeJrPyJlQRNPoKxfeVenfvvTUwdfd3RKHQ5UGJtYlVu8i9jBUoLkryBy1VtJbNACTQl2GX
- eEHxLMLpbmD9wjhvU7PVYoWxR61kUOoI+U1NfJdKq2fQhV0ZyPOJ0ICELv49ifyZZ+Oq6oK4n
- daQeeLpTvvhHwgGMpSXJrt7mOxEtTRinbNZhjPN7j8fKxj+TgNLpoJMKxMeBd+cUzXNTBlDiR
- +zDGdhGDDOxHBsLl6C1/x6VJYOyalH44W+wnh0l7kySR6A3L7iao5MkJn8N3jXCMShCOiLaQz
- dTBG2O8EQG5woobe/U8BDUwiVH0ZAVXP3aeb0yEmvl0uzBryryXZmNKki7dM6i+TwZOnBZ6/U
- UWgelw40rw1Yq6iZ56i9Yl6A/d44dcKkoYhdz7CCuCB2H3t7eL9oxuRZ4+mhcL7847SOAdSpB
- w3he9IH5KP7DZz/DHg5l3SH2BnFHswOz9J8S7FMccLlqeRvoHwqX/qbjHT25iSAZTkmVgBhWJ
- HE/RyUsI3NjsyfBWdzDeie1qzGQURL6AmP8VksWnIM2mT/8bJkVTg84Ttx/wj6gm4rL3lA6Xy
- Ab20sV+B5gB2U1j/cKcX8cn20VTTb7wcgkuuQF02X+mWixcQTLdpkzUqlKacWGYCYEFaMK564
- /TaITesB+gAPYwAvyP1R9G8ysiL49YtIQ39kdL6h7r5Ehf1A6TabPEeJSz8t3NO2qIRYokUv7
- LI/0n3u5cTK4VDmTQEodcVFe8v++lYyhPM0BFN5YB+KD7sA72U8EfYRyWsAJcP1hhhXpSscqK
- DctjUA8hrDUkaDMrUo+zFjiP0OmYrx3aH9CmkXtEhUt3f4clxn0Ab5eXL4Omm/dhDIcjwkhUv
- jRzfdD3lMVthgMoVR
+X-UI-Out-Filterresults: notjunk:1;V03:K0:f0ItsOYekkk=:5O5pAv4UJ+H3R5NjxZxUK0
+ 0uXxjeyCKFIZINW2FuSyM1HSVt3ATHya6hb5e44Fslx8g1CZxT96zK5mkkf7Qj1dNVf5I1MCe
+ 3cEIBm1RsruLZzvZiJYqXsg3z3hfIlNuFZvJF0C5l5VuQ1kpbq8GQg4re3UgcpExiF6S3Be8L
+ HesEzIhG21El8XLwfG+YdWc+VEvtVH2Ac21B3JtXZt+rrO5OKP4qoZCub9JZqHtpSsOpZud5B
+ Yy0RDqARbsCvyuPgVY2/eDYB6OwuYSDzEEY4+9XlNXBEcZp84/cgcom8Fz+VaDrsoO6eZOSHr
+ d0+URzGj7O81L1wbEMhgfsIzHsHuZgFd8QxpuonrAfDwgX3QZKE5dbvXQ18xpo3AdRDtFwkMO
+ 3tiTxxAns3j9dyrOqSYkJeeHWA834UEQmDi2zp8Eo8+pjOn0PoIElrZeTExY/sGnHRmImPCRJ
+ yBciIIOAtn7ijzR/Y/WlwdSOP/0Zn8Z2HnJq4NUPRDX/3zZRH0FJDOh3B9h3gHa9j1fkOeSS9
+ X9wdAQr6CbNqf5r1bzvqK7M4aZ8t6qFowHtcNCQuvp1+YB+7g04R6jvJKTN8qBXm4X4GjkC+e
+ VUnnKALzjy3JKk/1L1GEIYTzyGYnrLlJ6kXAi23juOe40i+XuwCz9HWaOxGYbB97HXNbl4aG4
+ 9qrlxICCJGi/WCVcKquu/5tl+Wy6tx+IbuqcaUgaZowKAXrncIVic4rgyxaYLy+0GSb5q19f4
+ iBEZ8RO/Gigdga6dWF7rHi34CERJG+SKTXDtllHFRdSh53Bs6b3ZVsXfVXpFQ1pl6SsOlysMM
+ ShHIzXiu8oYfSpjICeVa9kxwsURmutLPITX/fuVuYTwMhxQvQ6cVgkKYiJMAOh8gX+KkuDJCr
+ sPWa5v2QZuYTNODoNQWbwovhcJh8dV3K+rUCSlSu6JkpFt6iSg2ulgWCxFdyxMEPCZBZPM8uo
+ nGAKgWZmuFYKpiS+RiLGRl/h5Y99jYQMTdUfejv8fnkDAdrkJHkNPkFOc19itMdch5zxZbKZD
+ uzcxcVgGTq04EVfoIqwGAUWx+EnNbZCyoRJI01hO+nziea7XJC+FtdmWL3BJlFtFtl7Wga3Ko
+ nc6TLaZV1/y+IyWidoa07dklJfFzw2+VGB7vFWpP0AKlO2CUlKDKVC1v5uiLdEq7ek0EVi9Rg
+ 06Fm3y/9wSaNwFG/upVLnu8nBHvGgjGs309/MbcdRZ5/tKA0/2OgfVOpA0A/XzOC7XXtAMOvI
+ opi0KBlpJbZODma0k
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Implement the parisc versions for raise_nmi() and arch_trigger_cpumask_bac=
-ktrace()
-functions to provide IPI-triggered per-CPU backtrace printouts.
+When running on qemu, SeaBIOS-hppa stores the iomem address for the
+emulated fw_cfg port in PAGE0_>pad0[2/3]. Let the Linux driver
+auto-configure the fw_cfg interface with it, so that the fw_cfg info
+shows up in /sys/firmware/qemu_fw_cfg.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 
-diff --git a/arch/parisc/include/asm/irq.h b/arch/parisc/include/asm/irq.h
-index 959e79cd2c14..c978d50bd29e 100644
-=2D-- a/arch/parisc/include/asm/irq.h
-+++ b/arch/parisc/include/asm/irq.h
-@@ -50,4 +50,10 @@ extern int cpu_check_affinity(struct irq_data *d, const=
- struct cpumask *dest);
- /* soft power switch support (power.c) */
- extern struct tasklet_struct power_tasklet;
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 8e4c3708773d..ba26d224c653 100644
+=2D-- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -376,6 +376,7 @@ config KEXEC_FILE
 
-+#ifdef CONFIG_SMP
-+extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
-+					   bool exclude_self);
-+#define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+ endmenu
+
++source "drivers/firmware/Kconfig"
+
+ source "drivers/parisc/Kconfig"
+
+diff --git a/arch/parisc/kernel/inventory.c b/arch/parisc/kernel/inventory=
+.c
+index 9298f2285510..7ab2f2a54400 100644
+=2D-- a/arch/parisc/kernel/inventory.c
++++ b/arch/parisc/kernel/inventory.c
+@@ -19,6 +19,7 @@
+ #include <linux/init.h>
+ #include <linux/slab.h>
+ #include <linux/mm.h>
++#include <linux/platform_device.h>
+ #include <asm/hardware.h>
+ #include <asm/io.h>
+ #include <asm/mmzone.h>
+@@ -641,4 +642,33 @@ void __init do_device_inventory(void)
+ 	if (pa_serialize_tlb_flushes)
+ 		pr_info("Merced bus found: Enable PxTLB serialization.\n");
+ #endif
++
++#if defined(CONFIG_FW_CFG_SYSFS)
++	if (running_on_qemu) {
++		struct resource res[3] =3D {0,};
++		unsigned int base;
++
++		base =3D ((unsigned long long) PAGE0->pad0[2] << 32)
++			| PAGE0->pad0[3]; /* SeaBIOS stored it here */
++
++		res[0].name =3D "fw_cfg";
++		res[0].start =3D base;
++		res[0].end =3D base + 8 - 1;
++		res[0].flags =3D IORESOURCE_MEM;
++
++		res[1].name =3D "ctrl";
++		res[1].start =3D 0;
++		res[1].flags =3D IORESOURCE_REG;
++
++		res[2].name =3D "data";
++		res[2].start =3D 4;
++		res[2].flags =3D IORESOURCE_REG;
++
++		if (base) {
++			pr_info("Found qemu fw_cfg interface at %#08x\n", base);
++			platform_device_register_simple("fw_cfg",
++				PLATFORM_DEVID_NONE, res, 3);
++		}
++	}
 +#endif
-+
- #endif	/* _ASM_PARISC_IRQ_H */
-diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
-index 6271139d2213..cd7694497428 100644
-=2D-- a/arch/parisc/kernel/smp.c
-+++ b/arch/parisc/kernel/smp.c
-@@ -29,6 +29,7 @@
- #include <linux/bitops.h>
- #include <linux/ftrace.h>
- #include <linux/cpu.h>
-+#include <linux/nmi.h>
-
- #include <linux/atomic.h>
- #include <asm/current.h>
-@@ -69,6 +70,7 @@ enum ipi_message_type {
- 	IPI_CALL_FUNC,
- 	IPI_CPU_START,
- 	IPI_CPU_STOP,
-+	IPI_CPU_BACKTRACE,
- 	IPI_CPU_TEST
- };
-
-@@ -164,6 +166,14 @@ ipi_interrupt(int irq, void *dev_id)
- 				halt_processor();
- 				break;
-
-+			case IPI_CPU_BACKTRACE:
-+				printk_nmi_enter();
-+				irq_enter();
-+				nmi_cpu_backtrace(get_irq_regs());
-+				irq_exit();
-+				printk_nmi_exit();
-+				break;
-+
- 			case IPI_CPU_TEST:
- 				smp_debug(100, KERN_DEBUG "CPU%d is alive!\n", this_cpu);
- 				break;
-@@ -246,6 +259,16 @@ void arch_send_call_function_single_ipi(int cpu)
- 	send_IPI_single(cpu, IPI_CALL_FUNC);
  }
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index fbd785dd0513..25f51b60194b 100644
+=2D-- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -187,7 +187,7 @@ config RASPBERRYPI_FIRMWARE
 
-+static void raise_nmi(cpumask_t *mask)
-+{
-+	send_IPI_mask(mask, IPI_CPU_BACKTRACE);
-+}
-+
-+void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_s=
-elf)
-+{
-+	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_nmi);
-+}
-+
- /*
-  * Called by secondaries to update state and initialize CPU registers.
-  */
+ config FW_CFG_SYSFS
+ 	tristate "QEMU fw_cfg device support in sysfs"
+-	depends on SYSFS && (ARM || ARM64 || PPC_PMAC || SPARC || X86)
++	depends on SYSFS && (ARM || ARM64 || PARISC || PPC_PMAC || SPARC || X86)
+ 	depends on HAS_IOPORT_MAP
+ 	default n
+ 	help
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg=
+.c
+index 6945c3c96637..0078260fbabe 100644
+=2D-- a/drivers/firmware/qemu_fw_cfg.c
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -215,6 +215,9 @@ static void fw_cfg_io_cleanup(void)
+ #  define FW_CFG_CTRL_OFF 0x08
+ #  define FW_CFG_DATA_OFF 0x00
+ #  define FW_CFG_DMA_OFF 0x10
++# elif defined(CONFIG_PARISC)	/* parisc */
++#  define FW_CFG_CTRL_OFF 0x00
++#  define FW_CFG_DATA_OFF 0x04
+ # elif (defined(CONFIG_PPC_PMAC) || defined(CONFIG_SPARC32)) /* ppc/mac,s=
+un4m */
+ #  define FW_CFG_CTRL_OFF 0x00
+ #  define FW_CFG_DATA_OFF 0x02
