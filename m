@@ -2,125 +2,85 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F1C24481C
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Aug 2020 12:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BA55244A34
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Aug 2020 15:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbgHNKd1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 14 Aug 2020 06:33:27 -0400
-Received: from mx2.cyber.ee ([193.40.6.72]:42934 "EHLO mx2.cyber.ee"
+        id S1726283AbgHNNOQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 14 Aug 2020 09:14:16 -0400
+Received: from mout.gmx.net ([212.227.15.15]:46267 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726012AbgHNKd0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 14 Aug 2020 06:33:26 -0400
-X-Greylist: delayed 477 seconds by postgrey-1.27 at vger.kernel.org; Fri, 14 Aug 2020 06:33:25 EDT
+        id S1726139AbgHNNOQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 14 Aug 2020 09:14:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1597410854;
+        bh=5/6YE+luh/bGB4iUD9EIoTiEvNgh1Fl8xFdHapJoG8k=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=GrArZpXp9iIzMGEHgw2EXx0w8yOigFsG2d4Qxq1JvbYbiVFMfAv+d2v6AgKiNdXCZ
+         +TeZ1JHYIXz98gsJ0DY0iQwatgozGsfVRfIX/3UfzqpBjs7o6bAGUbFyLaVRZWdQmM
+         NUEMlcU4OEqENEkv3Nk+83HpoWDvdEw3Wpcd6VCk=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530 ([92.116.148.19]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mqs0R-1kSlGR1KID-00moaQ; Fri, 14
+ Aug 2020 15:14:14 +0200
+Date:   Fri, 14 Aug 2020 15:14:12 +0200
+From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
-From:   Meelis Roos <mroos@linux.ee>
-Subject: rp2470 boot crash in post-5.8 git
-Message-ID: <820716ab-0c6d-5154-0789-072b01011313@linux.ee>
-Date:   Fri, 14 Aug 2020 13:24:55 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+Subject: [PATCH] parisc: Avoid external interrupts when IPI finishes
+Message-ID: <20200814131412.GA9797@ls3530>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:qh1+MzZ/BV43atAwBAsGirnWLpnHtRly+nueJfBdaMCy24uLqov
+ 1CxcDevRW8cVuQ592FaepHS31Q17UUrydPJSZ10AsZXCtiG1frvNYBTVUk4umkdIDgtGHZ+
+ 3Pl4BSKv4m5vaii8a1VoEEZeNLi30vPLVpcIYktemGIrBoh/N8qhV20/zOrfzfCpFBpq+F2
+ 4OTCu0p9mNlIRen8WjvHw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SUUKVA2EOIQ=:2b2SyI4JwnYX2CYEOS+8eo
+ LMuG7gYox2HQDuIHkQ1gTQ9ENqF8jJaIfED9XmEbHNLUDzOoAw4QoToYXZBbmX4ms4DEupZkD
+ u0E9YwJr4YBFTZ+9KGwgRxj3K7oVGEbPve0i5oEW8J+28zAQybZRYV4e7Dy6s3mBRbiRootp+
+ xZouG9cLjT7UNT7ecA/G57fm873FmaN/LelXkS8bC/15l3V+K+mYxWY1gTgP0TqLe8VFfqVqE
+ RsX59s2UIRKeFyT0Y0tQMTqERBOAEyoE8iDhCI9u+gfBR/XG+NX/WRr5ZfRgS5VTlJxAkrSbu
+ rCo/TsJzhZtDeHIlThszRbMsIL5oJzmdnzlFWWHxjAegQ4FbsUVOQ10wVIwYa19ps6DJrtZKT
+ KxlJJmk0qAXWSKpBY3dUOaFCd/P2PCJFaw76XASN58KWdjLZkWerZD8ZjhuwKNMXlHj0qOkO4
+ lKwJQbOEkFmdqpEAAYfVeyu78U/lG8g6kjJaqh61YYO+IBAHhK27Aib/Z2lGkJeeNOP8wKTl2
+ DcWyIM3mtRFxg0ivp5nxvewB7QG57diCkyYp2XH47Za04XS1LUHnptuIzLErDgW83DvIyOPWP
+ BMpaK5mkWVfB+F7WR7oExNse47AvpXKBKBDOhHO4d9vzfBpVfBZ8MYn0FDxVfEUcR2ntUG7vt
+ 2vhRMSx6jbECndXzI8Vij1/9IC6Pj4KGiYYluSY3ogeCZ1rMBUpo/7l6fEpaogCsSKfyM3UBN
+ cPWoHP8W+rfAFvmbYKJVzyhrOKfTdxwJ1Hbwy1lDC/iCsKsKlQ3oDCXfckejkrt+8W3Ow5fRF
+ pHBloLoY+xXm+GFgQBUnFBeD266IGXo8J//UJcQ9Dm3OuqQv+C9QUIJeYChaXpIl9Udzmw5U9
+ CMNUekW79WwPF4myDqUAzuZMFYCQX7/Cg7dFjCyokhIiHv0vH0+gxDzbHFDJAsyNaZ6GdoZwr
+ Yv3oJyUScuP3cJJZzzHOVPwSkS+R89LRfU+H481C9j1wtCAmH0TryCEpmAkV+2Zo/kKLyB4Wo
+ frHr0oHnqIJi8IMvqvA/VT+MZYImw5meOBxFM/r00gW96QeMpopAXE7Pe0zdP/2BGj1PuhKCE
+ 1lHsiHnrbqN1S2zNA2CHQdl0AoNlxyFJT/ibzKnWiBiYZmbncYOM6cWIxN4cCQxmxbaHgDgiL
+ qKO/aS/rcqkmXC6fNgFc5YP6lQke/GjXpEwRTIKHTKGVyD+wseUGUcHQu0aLnJkdRGV6QAbCX
+ 761gr6ySJKN+bsCjl
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-While 5.8.0 worked fine on my HP RP2470 (Gentoo with 10.2.0 kgcc), yesterdays dddcbc139e96 and todays a1d21081a60d crash on boot. I have started bisecting it.
+No need to allow external interrupts when the IPI loop is going to
+finish now.
 
-Last output lines from 5.8.0-13161-gdddcbc139e96:
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-[    1.150985] 1. Crescendo 750 W2 at 0xfffffffffffa0000 [160] { 0, 0x0, 0x5e3, 0x00004 }
-[    1.243570] 2. Memory at 0xfffffffffed08000 [8] { 1, 0x0, 0x09b, 0x00009 }
-[    1.243792] 3. Astro BC Runway Port at 0xfffffffffed00000 [0] { 12, 0x0, 0x582, 0x0000b }
-[    1.382893] 4. Elroy PCI Bridge at 0xfffffffffed30000 [0/0] { 13, 0x0, 0x782, 0x0000a }
-[    1.522243] 5. Elroy PCI Bridge at 0xfffffffffed34000 [0/2] { 13, 0x0, 0x782, 0x0000a }
-[    1.660767] 6. Elroy PCI Bridge at 0xfffffffffed38000 [0/4] { 13, 0x0, 0x782, 0x0000a }
-[    1.799247] 7. Elroy PCI Bridge at 0xfffffffffed3c000 [0/6] { 13, 0x0, 0x782, 0x0000a }
-[    1.799500]
-********** VIRTUAL FRONT PANEL **********
-System Boot detected
-*****************************************
-LEDs:  RUN      ATTENTION     FAULT     REMOTE     POWER
-        ON       FLASH         OFF       ON         ON
-LED State: There was a system interruption that did not take the system down.
-Check Chassis and Console Logs for error messages.
-
-processor                 system initialization      1C00
-
-*****************************************
-
-************ EARLY BOOT VFP *************
-End of early boot detected
-*****************************************
-h support not available.
-[    2.639001] HugeTLB registered 2.00 MiB page size, pre-allocated 0 pages
-
-********** VIRTUAL FRONT PANEL **********
-System Boot detected
-*****************************************
-LEDs:  RUN      ATTENTION     FAULT     REMOTE     POWER
-        ON       FLASH         FLASH     ON         ON
-LED State: System Running.  Unexpected Reboot.  Non-critical Error Detected.
-Check Chassis and Console Logs for error messages.
-
-processor                 system panic               1B00
-
----------------------------------------------------------------------------------------------------
-Last output lines from 5.8.0-13249-ga1d21081a60d:
-
-[    1.151696] 1. Crescendo 750 W2 at 0xfffffffffffa0000 [160] { 0, 0x0, 0x5e3, 0x00004 }
-[    1.242819] 2. Memory at 0xfffffffffed08000 [8] { 1, 0x0, 0x09b, 0x00009 }
-[    1.243041] 3. Astro BC Runway Port at 0xfffffffffed00000 [0] { 12, 0x0, 0x582, 0x0000b }
-[    1.383414] 4. Elroy PCI Bridge at 0xfffffffffed30000 [0/0] { 13, 0x0, 0x782, 0x0000a }
-[    1.523072] 5. Elroy PCI Bridge at 0xfffffffffed34000 [0/2] { 13, 0x0, 0x782, 0x0000a }
-[    1.662053] 6. Elroy PCI Bridge at 0xfffffffffed38000 [0/4] { 13, 0x0, 0x782, 0x0000a }
-[    1.800405] 7. Elroy PCI Bridge at 0xfffffffffed3c000 [0/6] { 13, 0x0, 0x782, 0x0000a }
-[    1.800658]
-********** VIRTUAL FRONT PANEL **********
-System Boot detected
-*****************************************
-LEDs:  RUN      ATTENTION     FAULT     REMOTE     POWER
-        ON       FLASH         OFF       ON         ON
-LED State: There was a system interruption that did not take the system down.
-Check Chassis and Console Logs for error messages.
-
-processor                 system initialization      1C00
-
-*****************************************
-
-************ EARLY BOOT VFP *************
-End of early boot detected
-*****************************************
-
-********** VIRTUAL FRONT PANEL **********
-System Boot detected
-*****************************************
-LEDs:  RUN      ATTENTION     FAULT     REMOTE     POWER
-        ON       FLASH         FLASH     ON         ON
-LED State: System Running.  Unexpected Reboot.  Non-critical Error Detected.
-Check Chassis and Console Logs for error messages.
-
-processor                 system panic               1B00
-
-*****************************************
-
-************ EARLY BOOT VFP *************
-End of early boot detected
-*****************************************
-
-********** VIRTUAL FRONT PANEL **********
-System Boot detected
-*****************************************
-LEDs:  RUN      ATTENTION     FAULT     REMOTE     POWER
-        ON       FLASH         FLASH     ON         ON
-LED State: System Running.  Unexpected Reboot.  Non-critical Error Detected.
-Check Chassis and Console Logs for error messages.
-
-processor                 system panic               1B00
-
-
--- 
-Meelis Roos <mroos@linux.ee>
+diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
+index 6271139d2213..cd7694497428 100644
+--- a/arch/parisc/kernel/smp.c
++++ b/arch/parisc/kernel/smp.c
+@@ -173,9 +183,12 @@ ipi_interrupt(int irq, void *dev_id)
+ 					this_cpu, which);
+ 				return IRQ_NONE;
+ 			} /* Switch */
+-		/* let in any pending interrupts */
+-		local_irq_enable();
+-		local_irq_disable();
++
++			/* before doing more, let in any pending interrupts */
++			if (ops) {
++				local_irq_enable();
++				local_irq_disable();
++			}
+ 		} /* while (ops) */
+ 	}
+ 	return IRQ_HANDLED;
