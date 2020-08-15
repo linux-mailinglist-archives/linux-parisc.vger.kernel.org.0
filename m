@@ -2,158 +2,152 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A759244E46
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Aug 2020 20:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13E38245427
+	for <lists+linux-parisc@lfdr.de>; Sun, 16 Aug 2020 00:13:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727849AbgHNSBN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 14 Aug 2020 14:01:13 -0400
-Received: from mout.gmx.net ([212.227.15.19]:44645 "EHLO mout.gmx.net"
+        id S1728047AbgHOWNe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 15 Aug 2020 18:13:34 -0400
+Received: from mx2.cyber.ee ([193.40.6.72]:46889 "EHLO mx2.cyber.ee"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726681AbgHNSBM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 14 Aug 2020 14:01:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1597428064;
-        bh=B+/wRrxb+Xwc2Bu7H8IPy+zYicBnYCO1vO56BPTEI2E=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=L7x6mYX33t7swkYFNxKEb72Vbve5WDQto7IVJ7ckCSenaR6hJEHJkLFAxqZmYEmUE
-         WobkaSmKMBfZ8IML98nJycsws3bIYcNJg7qJJnSGtrK+P/sD4FpDpIyhcMf+EjG56E
-         aCQ75gVHwBJhYzgi4d+YPTLs5isoLFIfJm5UEzpg=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.148.19]) by mail.gmx.com (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MnJhO-1kVqPU2sFw-00jFk8; Fri, 14
- Aug 2020 20:01:04 +0200
-Date:   Fri, 14 Aug 2020 20:00:59 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Add qemu fw_cfg interface
-Message-ID: <20200814180059.GA12471@ls3530.fritz.box>
+        id S1727994AbgHOWNe (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 15 Aug 2020 18:13:34 -0400
+Subject: (bisected) parisc boot crash in post-5.8 git - pgalloc changes
+From:   Meelis Roos <mroos@linux.ee>
+To:     Mike Rapoport <rppt@linux.ibm.com>
+References: <820716ab-0c6d-5154-0789-072b01011313@linux.ee>
+Cc:     linux-parisc@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Pekka Enberg <penberg@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Joerg Roedel <joro@8bytes.org>, Joerg Roedel <jroedel@suse.de>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+        Stafford Horne <shorne@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Message-ID: <9f2b5ebd-e4a4-0fa1-6cd3-4b9f6892d1ad@linux.ee>
+Date:   Sat, 15 Aug 2020 21:35:05 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:mee+qXbeITgNMrdAxOWGccd1nTGpOPZ+fiP9ekmTSasRAkPjIaM
- SKHi/ME0b3aaaf7shgGECi8pORUIV1CP/Ac1v8U299OcFmBkTAX0sygmbGNOoqghRcv1WpK
- qGGSz+oLOm/bzZcn2ORlIZ86QjQv6Fie7ax8U18gG+XmWuzLcJ0DXmees4QjfYjdzRp/BpS
- vBVY/Dbt0v1bJv8C4TZkA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:f0ItsOYekkk=:5O5pAv4UJ+H3R5NjxZxUK0
- 0uXxjeyCKFIZINW2FuSyM1HSVt3ATHya6hb5e44Fslx8g1CZxT96zK5mkkf7Qj1dNVf5I1MCe
- 3cEIBm1RsruLZzvZiJYqXsg3z3hfIlNuFZvJF0C5l5VuQ1kpbq8GQg4re3UgcpExiF6S3Be8L
- HesEzIhG21El8XLwfG+YdWc+VEvtVH2Ac21B3JtXZt+rrO5OKP4qoZCub9JZqHtpSsOpZud5B
- Yy0RDqARbsCvyuPgVY2/eDYB6OwuYSDzEEY4+9XlNXBEcZp84/cgcom8Fz+VaDrsoO6eZOSHr
- d0+URzGj7O81L1wbEMhgfsIzHsHuZgFd8QxpuonrAfDwgX3QZKE5dbvXQ18xpo3AdRDtFwkMO
- 3tiTxxAns3j9dyrOqSYkJeeHWA834UEQmDi2zp8Eo8+pjOn0PoIElrZeTExY/sGnHRmImPCRJ
- yBciIIOAtn7ijzR/Y/WlwdSOP/0Zn8Z2HnJq4NUPRDX/3zZRH0FJDOh3B9h3gHa9j1fkOeSS9
- X9wdAQr6CbNqf5r1bzvqK7M4aZ8t6qFowHtcNCQuvp1+YB+7g04R6jvJKTN8qBXm4X4GjkC+e
- VUnnKALzjy3JKk/1L1GEIYTzyGYnrLlJ6kXAi23juOe40i+XuwCz9HWaOxGYbB97HXNbl4aG4
- 9qrlxICCJGi/WCVcKquu/5tl+Wy6tx+IbuqcaUgaZowKAXrncIVic4rgyxaYLy+0GSb5q19f4
- iBEZ8RO/Gigdga6dWF7rHi34CERJG+SKTXDtllHFRdSh53Bs6b3ZVsXfVXpFQ1pl6SsOlysMM
- ShHIzXiu8oYfSpjICeVa9kxwsURmutLPITX/fuVuYTwMhxQvQ6cVgkKYiJMAOh8gX+KkuDJCr
- sPWa5v2QZuYTNODoNQWbwovhcJh8dV3K+rUCSlSu6JkpFt6iSg2ulgWCxFdyxMEPCZBZPM8uo
- nGAKgWZmuFYKpiS+RiLGRl/h5Y99jYQMTdUfejv8fnkDAdrkJHkNPkFOc19itMdch5zxZbKZD
- uzcxcVgGTq04EVfoIqwGAUWx+EnNbZCyoRJI01hO+nziea7XJC+FtdmWL3BJlFtFtl7Wga3Ko
- nc6TLaZV1/y+IyWidoa07dklJfFzw2+VGB7vFWpP0AKlO2CUlKDKVC1v5uiLdEq7ek0EVi9Rg
- 06Fm3y/9wSaNwFG/upVLnu8nBHvGgjGs309/MbcdRZ5/tKA0/2OgfVOpA0A/XzOC7XXtAMOvI
- opi0KBlpJbZODma0k
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <820716ab-0c6d-5154-0789-072b01011313@linux.ee>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-When running on qemu, SeaBIOS-hppa stores the iomem address for the
-emulated fw_cfg port in PAGE0_>pad0[2/3]. Let the Linux driver
-auto-configure the fw_cfg interface with it, so that the fw_cfg info
-shows up in /sys/firmware/qemu_fw_cfg.
+> While 5.8.0 worked fine on my HP RP2470 (Gentoo with 10.2.0 kgcc), yesterdays dddcbc139e96 and todays a1d21081a60d crash on boot. I have started bisecting it.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+And finished now. I included all CC-s and SOB-s from the commit to this mail - sorry if too broad.
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 8e4c3708773d..ba26d224c653 100644
-=2D-- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -376,6 +376,7 @@ config KEXEC_FILE
+1355c31eeb7ea61a7f2f2937d17cd4e343a6b5af is the first bad commit
+commit 1355c31eeb7ea61a7f2f2937d17cd4e343a6b5af
+Author: Mike Rapoport <rppt@linux.ibm.com>
+Date:   Thu Aug 6 23:22:39 2020 -0700
 
- endmenu
+     asm-generic: pgalloc: provide generic pmd_alloc_one() and pmd_free_one()
+     
+     For most architectures that support >2 levels of page tables,
+     pmd_alloc_one() is a wrapper for __get_free_pages(), sometimes with
+     __GFP_ZERO and sometimes followed by memset(0) instead.
+     
+     More elaborate versions on arm64 and x86 account memory for the user page
+     tables and call to pgtable_pmd_page_ctor() as the part of PMD page
+     initialization.
+     
+     Move the arm64 version to include/asm-generic/pgalloc.h and use the
+     generic version on several architectures.
+     
+     The pgtable_pmd_page_ctor() is a NOP when ARCH_ENABLE_SPLIT_PMD_PTLOCK is
+     not enabled, so there is no functional change for most architectures
+     except of the addition of __GFP_ACCOUNT for allocation of user page
+     tables.
+     
+     The pmd_free() is a wrapper for free_page() in all the cases, so no
+     functional change here.
+     
+     Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+     Reviewed-by: Pekka Enberg <penberg@kernel.org>
+     Cc: Matthew Wilcox <willy@infradead.org>
+     Cc: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+     Cc: Andy Lutomirski <luto@kernel.org>
+     Cc: Arnd Bergmann <arnd@arndb.de>
+     Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+     Cc: Joerg Roedel <joro@8bytes.org>
+     Cc: Joerg Roedel <jroedel@suse.de>
+     Cc: Max Filippov <jcmvbkbc@gmail.com>
+     Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+     Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+     Cc: Stafford Horne <shorne@gmail.com>
+     Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+     Cc: Steven Rostedt <rostedt@goodmis.org>
+     Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+     Link: http://lkml.kernel.org/r/20200627143453.31835-5-rppt@kernel.org
+     Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 
-+source "drivers/firmware/Kconfig"
+  arch/alpha/include/asm/pgalloc.h     | 15 +------------
+  arch/arm/include/asm/pgalloc.h       | 11 ---------
+  arch/arm64/include/asm/pgalloc.h     | 27 +---------------------
+  arch/ia64/include/asm/pgalloc.h      | 10 ---------
+  arch/mips/include/asm/pgalloc.h      |  8 ++-----
+  arch/parisc/include/asm/pgalloc.h    | 11 ++-------
+  arch/riscv/include/asm/pgalloc.h     | 13 +----------
+  arch/sh/include/asm/pgalloc.h        |  3 +++
+  arch/um/include/asm/pgalloc.h        |  8 +------
+  arch/um/include/asm/pgtable-3level.h |  3 ---
+  arch/um/kernel/mem.c                 | 12 ----------
+  arch/x86/include/asm/pgalloc.h       | 26 +---------------------
+  include/asm-generic/pgalloc.h        | 43 ++++++++++++++++++++++++++++++++++++
+  13 files changed, 55 insertions(+), 135 deletions(-)
 
- source "drivers/parisc/Kconfig"
+> Last output lines from 5.8.0-13161-gdddcbc139e96:
+> 
+> [    1.150985] 1. Crescendo 750 W2 at 0xfffffffffffa0000 [160] { 0, 0x0, 0x5e3, 0x00004 }
+> [    1.243570] 2. Memory at 0xfffffffffed08000 [8] { 1, 0x0, 0x09b, 0x00009 }
+> [    1.243792] 3. Astro BC Runway Port at 0xfffffffffed00000 [0] { 12, 0x0, 0x582, 0x0000b }
+> [    1.382893] 4. Elroy PCI Bridge at 0xfffffffffed30000 [0/0] { 13, 0x0, 0x782, 0x0000a }
+> [    1.522243] 5. Elroy PCI Bridge at 0xfffffffffed34000 [0/2] { 13, 0x0, 0x782, 0x0000a }
+> [    1.660767] 6. Elroy PCI Bridge at 0xfffffffffed38000 [0/4] { 13, 0x0, 0x782, 0x0000a }
+> [    1.799247] 7. Elroy PCI Bridge at 0xfffffffffed3c000 [0/6] { 13, 0x0, 0x782, 0x0000a }
+> [    1.799500]
+> ********** VIRTUAL FRONT PANEL **********
+> System Boot detected
+> *****************************************
+> LEDs:  RUN      ATTENTION     FAULT     REMOTE     POWER
+>         ON       FLASH         OFF       ON         ON
+> LED State: There was a system interruption that did not take the system down.
+> Check Chassis and Console Logs for error messages.
+> 
+> processor                 system initialization      1C00
+> 
+> *****************************************
+> 
+> ************ EARLY BOOT VFP *************
+> End of early boot detected
+> *****************************************
+> h support not available.
+> [    2.639001] HugeTLB registered 2.00 MiB page size, pre-allocated 0 pages
+> 
+> ********** VIRTUAL FRONT PANEL **********
+> System Boot detected
+> *****************************************
+> LEDs:  RUN      ATTENTION     FAULT     REMOTE     POWER
+>         ON       FLASH         FLASH     ON         ON
+> LED State: System Running.  Unexpected Reboot.  Non-critical Error Detected.
+> Check Chassis and Console Logs for error messages.
+> 
+> processor                 system panic               1B00
 
-diff --git a/arch/parisc/kernel/inventory.c b/arch/parisc/kernel/inventory=
-.c
-index 9298f2285510..7ab2f2a54400 100644
-=2D-- a/arch/parisc/kernel/inventory.c
-+++ b/arch/parisc/kernel/inventory.c
-@@ -19,6 +19,7 @@
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/mm.h>
-+#include <linux/platform_device.h>
- #include <asm/hardware.h>
- #include <asm/io.h>
- #include <asm/mmzone.h>
-@@ -641,4 +642,33 @@ void __init do_device_inventory(void)
- 	if (pa_serialize_tlb_flushes)
- 		pr_info("Merced bus found: Enable PxTLB serialization.\n");
- #endif
-+
-+#if defined(CONFIG_FW_CFG_SYSFS)
-+	if (running_on_qemu) {
-+		struct resource res[3] =3D {0,};
-+		unsigned int base;
-+
-+		base =3D ((unsigned long long) PAGE0->pad0[2] << 32)
-+			| PAGE0->pad0[3]; /* SeaBIOS stored it here */
-+
-+		res[0].name =3D "fw_cfg";
-+		res[0].start =3D base;
-+		res[0].end =3D base + 8 - 1;
-+		res[0].flags =3D IORESOURCE_MEM;
-+
-+		res[1].name =3D "ctrl";
-+		res[1].start =3D 0;
-+		res[1].flags =3D IORESOURCE_REG;
-+
-+		res[2].name =3D "data";
-+		res[2].start =3D 4;
-+		res[2].flags =3D IORESOURCE_REG;
-+
-+		if (base) {
-+			pr_info("Found qemu fw_cfg interface at %#08x\n", base);
-+			platform_device_register_simple("fw_cfg",
-+				PLATFORM_DEVID_NONE, res, 3);
-+		}
-+	}
-+#endif
- }
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index fbd785dd0513..25f51b60194b 100644
-=2D-- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -187,7 +187,7 @@ config RASPBERRYPI_FIRMWARE
-
- config FW_CFG_SYSFS
- 	tristate "QEMU fw_cfg device support in sysfs"
--	depends on SYSFS && (ARM || ARM64 || PPC_PMAC || SPARC || X86)
-+	depends on SYSFS && (ARM || ARM64 || PARISC || PPC_PMAC || SPARC || X86)
- 	depends on HAS_IOPORT_MAP
- 	default n
- 	help
-diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg=
-.c
-index 6945c3c96637..0078260fbabe 100644
-=2D-- a/drivers/firmware/qemu_fw_cfg.c
-+++ b/drivers/firmware/qemu_fw_cfg.c
-@@ -215,6 +215,9 @@ static void fw_cfg_io_cleanup(void)
- #  define FW_CFG_CTRL_OFF 0x08
- #  define FW_CFG_DATA_OFF 0x00
- #  define FW_CFG_DMA_OFF 0x10
-+# elif defined(CONFIG_PARISC)	/* parisc */
-+#  define FW_CFG_CTRL_OFF 0x00
-+#  define FW_CFG_DATA_OFF 0x04
- # elif (defined(CONFIG_PPC_PMAC) || defined(CONFIG_SPARC32)) /* ppc/mac,s=
-un4m */
- #  define FW_CFG_CTRL_OFF 0x00
- #  define FW_CFG_DATA_OFF 0x02
+-- 
+Meelis Roos <mroos@linux.ee>
