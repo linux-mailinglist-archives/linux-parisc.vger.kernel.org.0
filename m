@@ -2,118 +2,84 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1DEF2458D8
-	for <lists+linux-parisc@lfdr.de>; Sun, 16 Aug 2020 19:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F1332458DD
+	for <lists+linux-parisc@lfdr.de>; Sun, 16 Aug 2020 19:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729481AbgHPRnw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 16 Aug 2020 13:43:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50882 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728346AbgHPRnv (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 16 Aug 2020 13:43:51 -0400
-Received: from kernel.org (unknown [87.70.91.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C1A6A20829;
-        Sun, 16 Aug 2020 17:43:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597599830;
-        bh=bqE1iqfMyAjA8fEzhnRGRBNdeXVZNubrkm4U2/bWM3w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yCUO1IGloRsvUPgBykcADjw3OiDi9XO0/7SBIX7O/x4Hae4xdOR4RPYSjlr9wqxbY
-         7ly2vhDarRt8vh42qZKZOSe5eTj/M0jsGymhPPVKygLZ3uYokRz0oukRd8GnoJgNr4
-         pHKmAuPe8UKr6+a8Xse1XCRVaXlFlxmoW5lwI0Og=
-Date:   Sun, 16 Aug 2020 20:43:43 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Matthew Wilcox <willy@infradead.org>, Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        id S1729523AbgHPRwo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 16 Aug 2020 13:52:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726511AbgHPRwl (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 16 Aug 2020 13:52:41 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE7B4C061786
+        for <linux-parisc@vger.kernel.org>; Sun, 16 Aug 2020 10:52:40 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id h8so7225265lfp.9
+        for <linux-parisc@vger.kernel.org>; Sun, 16 Aug 2020 10:52:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PS6YoGVPLniRRR+c8md/gMFUFC1gIYcQxqCkJrdFzyg=;
+        b=atHbRpzX6ojST77P61yeW9XWzXo2nLP5AMbcUAvcz94HZSRc7IvqmssoNwyKSnrFTE
+         DEQ2JrNhqTbFjWeACmgu2ERhWblD1TEhgmWMUsveOg+GQJ/iTeakIhN3FfG/sEmTox/6
+         m6TfjQMw5kejjvlwOkgyOjxOWvqrG3Lh/w3H8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PS6YoGVPLniRRR+c8md/gMFUFC1gIYcQxqCkJrdFzyg=;
+        b=Fp/afmBzdMY9Vkg6QjohaiKH4PXpkOwmAoBv85D3z3gb0/2m10rEu8CCceM7aqxlUN
+         rJbL/u92hPhZvw9doz2kMYqjMRgd6XTHgUeRwfC0ge8AegH+LgHB6Hn0ruNeFc7uJ76n
+         yPyThQgjLmQcFRx6roCYO85vyFclc96qCdJi0d1V/Ue90WHfBoQLj0auoXccSC9zye7S
+         zWVyp1VhrsNtowqHlualQDd5KLb8jkq+/YG2GtD2qCqFSeuU/4eDZTemGc9YOfR4Ad53
+         KiWww868/anu5co0mozpsgHUuTTaqrmh2Tq8TeakWABRVvz82crfAezi/9q8yIk5bW5A
+         h7CQ==
+X-Gm-Message-State: AOAM532JSEl54rLEFT3/vGvGy5tyFKS/rormPxSvjFlfK3pb7/567jHY
+        DiZqlvxIZHE3eSyptKFV+uJiVwzSh/aIVQ==
+X-Google-Smtp-Source: ABdhPJzGyn1dZP/kolWpJ5qPqy4FAXncGjqzviQ8QLhC2wo7+AJve1OrXITPaRUOx/kkjqE5+fdIaQ==
+X-Received: by 2002:a19:c752:: with SMTP id x79mr5485483lff.197.1597600358553;
+        Sun, 16 Aug 2020 10:52:38 -0700 (PDT)
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
+        by smtp.gmail.com with ESMTPSA id r19sm3947421ljc.59.2020.08.16.10.52.37
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 16 Aug 2020 10:52:37 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id y2so6002798ljc.1
+        for <linux-parisc@vger.kernel.org>; Sun, 16 Aug 2020 10:52:37 -0700 (PDT)
+X-Received: by 2002:a2e:92d0:: with SMTP id k16mr5330870ljh.70.1597600356971;
+ Sun, 16 Aug 2020 10:52:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200816142403.15449-1-rppt@kernel.org> <20200816144209.GH17456@casper.infradead.org>
+ <20200816174343.GK752365@kernel.org>
+In-Reply-To: <20200816174343.GK752365@kernel.org>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun, 16 Aug 2020 10:52:21 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiPUKCC490nd6Y5A1Sq=VpTpO=Li5cYb0iztp-x19nqiA@mail.gmail.com>
+Message-ID: <CAHk-=wiPUKCC490nd6Y5A1Sq=VpTpO=Li5cYb0iztp-x19nqiA@mail.gmail.com>
+Subject: Re: [PATCH] parisc: fix PMD pages allocation by restoring pmd_alloc_one()
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Matthew Wilcox <willy@infradead.org>, Helge Deller <deller@gmx.de>,
+        linux-parisc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         Pekka Enberg <penberg@kernel.org>,
         Meelis Roos <mroos@linux.ee>,
         Mike Rapoport <rppt@linux.ibm.com>,
         Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCH] parisc: fix PMD pages allocation by restoring
- pmd_alloc_one()
-Message-ID: <20200816174343.GK752365@kernel.org>
-References: <20200816142403.15449-1-rppt@kernel.org>
- <20200816144209.GH17456@casper.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200816144209.GH17456@casper.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Aug 16, 2020 at 03:42:09PM +0100, Matthew Wilcox wrote:
-> On Sun, Aug 16, 2020 at 05:24:03PM +0300, Mike Rapoport wrote:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> > 
-> > Commit 1355c31eeb7e ("asm-generic: pgalloc: provide generic pmd_alloc_one()
-> > and pmd_free_one()") converted parisc to use generic version of
-> > pmd_alloc_one() but it missed the fact that parisc uses order-1 pages for
-> > PMD.
-> > 
-> > Restore the original version of pmd_alloc_one() for parisc, just use
-> > GFP_PGTABLE_KERNEL that implies __GFP_ZERO instead of GFP_KERNEL and
-> > memset.
-> > 
-> > Fixes: 1355c31eeb7e ("asm-generic: pgalloc: provide generic pmd_alloc_one() and pmd_free_one()")
-> > Repoerted-by: Meelis Roos <mroos@linux.ee>
-> 
-> typo, "Reported-by"
+On Sun, Aug 16, 2020 at 10:43 AM Mike Rapoport <rppt@kernel.org> wrote:
+>
+> I presume this is going via parisc tree, do you mind fixing up
+> while applying?
 
-Helge,
+I'll take it directly to not miss rc1, and I'll fix up the typo too.
 
-I presume this is going via parisc tree, do you mind fixing up
-while applying?
-
-> Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> 
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > Tested-by: Meelis Roos <mroos@linux.ee>
-> > Link: https://lkml.kernel.org/r/9f2b5ebd-e4a4-0fa1-6cd3-4b9f6892d1ad@linux.ee 
-> > ---
-> > 
-> > Hi,
-> > 
-> > I've trimmed the 'cc list relatively to the bug report and added parisc
-> > maintainers.
-> > 
-> >  arch/parisc/include/asm/pgalloc.h | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/arch/parisc/include/asm/pgalloc.h b/arch/parisc/include/asm/pgalloc.h
-> > index cc7ecc2ef55d..a6482b2ce0ea 100644
-> > --- a/arch/parisc/include/asm/pgalloc.h
-> > +++ b/arch/parisc/include/asm/pgalloc.h
-> > @@ -10,6 +10,7 @@
-> >  
-> >  #include <asm/cache.h>
-> >  
-> > +#define __HAVE_ARCH_PMD_ALLOC_ONE
-> >  #define __HAVE_ARCH_PMD_FREE
-> >  #define __HAVE_ARCH_PGD_FREE
-> >  #include <asm-generic/pgalloc.h>
-> > @@ -67,6 +68,11 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
-> >  			(__u32)(__pa((unsigned long)pmd) >> PxD_VALUE_SHIFT)));
-> >  }
-> >  
-> > +static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
-> > +{
-> > +	return (pmd_t *)__get_free_pages(GFP_PGTABLE_KERNEL, PMD_ORDER);
-> > +}
-> > +
-> >  static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
-> >  {
-> >  	if (pmd_flag(*pmd) & PxD_FLAG_ATTACHED) {
-> > -- 
-> > 2.26.2
-> > 
-
--- 
-Sincerely yours,
-Mike.
+              Linus
