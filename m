@@ -2,37 +2,32 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FFE9245834
-	for <lists+linux-parisc@lfdr.de>; Sun, 16 Aug 2020 16:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1DEF2458D8
+	for <lists+linux-parisc@lfdr.de>; Sun, 16 Aug 2020 19:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726349AbgHPOmR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 16 Aug 2020 10:42:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59210 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726304AbgHPOmQ (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 16 Aug 2020 10:42:16 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09FDC061786;
-        Sun, 16 Aug 2020 07:42:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=Fi/5i+oI6s+PTOkb3E6yrfOZGSj+tbh+5f4ilJf9nLw=; b=UveeSUgbP1DWhLeC+lqEWp0X5j
-        ndnA52j0HtpC7YRKQ8s//PCLdf3LirmH7KwNMG9xeVo54UNw1Rw0vAY94VSGFk2epX+AoAE8xSyRa
-        OBnp6a80L7QgYMFXUlaLj4LuBvKW6KRvJhMkIT6XaKIuENs08LXVK7EELE7RyPFvXTgQCK7T9JCAZ
-        75tmkOsmmcjNV4JC4m+u+DlWoOG4sWJhuLncD1r1G0Is9usTEBabY+gwR4eVgbRRnuMxgY/daZNyZ
-        A7S9MgMb4OhAoTPTp6WekRtWoyIbhTkEcokCCOc7GaXqzslYPXfzZDW0e6Zlpt5c+eAAjx63SLHeB
-        9HQDA8kQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1k7JrO-00076D-21; Sun, 16 Aug 2020 14:42:10 +0000
-Date:   Sun, 16 Aug 2020 15:42:09 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Mike Rapoport <rppt@kernel.org>
+        id S1729481AbgHPRnw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 16 Aug 2020 13:43:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50882 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728346AbgHPRnv (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 16 Aug 2020 13:43:51 -0400
+Received: from kernel.org (unknown [87.70.91.42])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C1A6A20829;
+        Sun, 16 Aug 2020 17:43:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597599830;
+        bh=bqE1iqfMyAjA8fEzhnRGRBNdeXVZNubrkm4U2/bWM3w=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yCUO1IGloRsvUPgBykcADjw3OiDi9XO0/7SBIX7O/x4Hae4xdOR4RPYSjlr9wqxbY
+         7ly2vhDarRt8vh42qZKZOSe5eTj/M0jsGymhPPVKygLZ3uYokRz0oukRd8GnoJgNr4
+         pHKmAuPe8UKr6+a8Xse1XCRVaXlFlxmoW5lwI0Og=
+Date:   Sun, 16 Aug 2020 20:43:43 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Matthew Wilcox <willy@infradead.org>, Helge Deller <deller@gmx.de>
 Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
-        Helge Deller <deller@gmx.de>,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Pekka Enberg <penberg@kernel.org>,
@@ -41,73 +36,84 @@ Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Stephen Rothwell <sfr@canb.auug.org.au>
 Subject: Re: [PATCH] parisc: fix PMD pages allocation by restoring
  pmd_alloc_one()
-Message-ID: <20200816144209.GH17456@casper.infradead.org>
+Message-ID: <20200816174343.GK752365@kernel.org>
 References: <20200816142403.15449-1-rppt@kernel.org>
+ <20200816144209.GH17456@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200816142403.15449-1-rppt@kernel.org>
+In-Reply-To: <20200816144209.GH17456@casper.infradead.org>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Aug 16, 2020 at 05:24:03PM +0300, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
+On Sun, Aug 16, 2020 at 03:42:09PM +0100, Matthew Wilcox wrote:
+> On Sun, Aug 16, 2020 at 05:24:03PM +0300, Mike Rapoport wrote:
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> > 
+> > Commit 1355c31eeb7e ("asm-generic: pgalloc: provide generic pmd_alloc_one()
+> > and pmd_free_one()") converted parisc to use generic version of
+> > pmd_alloc_one() but it missed the fact that parisc uses order-1 pages for
+> > PMD.
+> > 
+> > Restore the original version of pmd_alloc_one() for parisc, just use
+> > GFP_PGTABLE_KERNEL that implies __GFP_ZERO instead of GFP_KERNEL and
+> > memset.
+> > 
+> > Fixes: 1355c31eeb7e ("asm-generic: pgalloc: provide generic pmd_alloc_one() and pmd_free_one()")
+> > Repoerted-by: Meelis Roos <mroos@linux.ee>
 > 
-> Commit 1355c31eeb7e ("asm-generic: pgalloc: provide generic pmd_alloc_one()
-> and pmd_free_one()") converted parisc to use generic version of
-> pmd_alloc_one() but it missed the fact that parisc uses order-1 pages for
-> PMD.
-> 
-> Restore the original version of pmd_alloc_one() for parisc, just use
-> GFP_PGTABLE_KERNEL that implies __GFP_ZERO instead of GFP_KERNEL and
-> memset.
-> 
-> Fixes: 1355c31eeb7e ("asm-generic: pgalloc: provide generic pmd_alloc_one() and pmd_free_one()")
-> Repoerted-by: Meelis Roos <mroos@linux.ee>
+> typo, "Reported-by"
 
-typo, "Reported-by"
+Helge,
 
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+I presume this is going via parisc tree, do you mind fixing up
+while applying?
 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> Tested-by: Meelis Roos <mroos@linux.ee>
-> Link: https://lkml.kernel.org/r/9f2b5ebd-e4a4-0fa1-6cd3-4b9f6892d1ad@linux.ee 
-> ---
+> Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 > 
-> Hi,
-> 
-> I've trimmed the 'cc list relatively to the bug report and added parisc
-> maintainers.
-> 
->  arch/parisc/include/asm/pgalloc.h | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/arch/parisc/include/asm/pgalloc.h b/arch/parisc/include/asm/pgalloc.h
-> index cc7ecc2ef55d..a6482b2ce0ea 100644
-> --- a/arch/parisc/include/asm/pgalloc.h
-> +++ b/arch/parisc/include/asm/pgalloc.h
-> @@ -10,6 +10,7 @@
->  
->  #include <asm/cache.h>
->  
-> +#define __HAVE_ARCH_PMD_ALLOC_ONE
->  #define __HAVE_ARCH_PMD_FREE
->  #define __HAVE_ARCH_PGD_FREE
->  #include <asm-generic/pgalloc.h>
-> @@ -67,6 +68,11 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
->  			(__u32)(__pa((unsigned long)pmd) >> PxD_VALUE_SHIFT)));
->  }
->  
-> +static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
-> +{
-> +	return (pmd_t *)__get_free_pages(GFP_PGTABLE_KERNEL, PMD_ORDER);
-> +}
-> +
->  static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
->  {
->  	if (pmd_flag(*pmd) & PxD_FLAG_ATTACHED) {
-> -- 
-> 2.26.2
-> 
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > Tested-by: Meelis Roos <mroos@linux.ee>
+> > Link: https://lkml.kernel.org/r/9f2b5ebd-e4a4-0fa1-6cd3-4b9f6892d1ad@linux.ee 
+> > ---
+> > 
+> > Hi,
+> > 
+> > I've trimmed the 'cc list relatively to the bug report and added parisc
+> > maintainers.
+> > 
+> >  arch/parisc/include/asm/pgalloc.h | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/arch/parisc/include/asm/pgalloc.h b/arch/parisc/include/asm/pgalloc.h
+> > index cc7ecc2ef55d..a6482b2ce0ea 100644
+> > --- a/arch/parisc/include/asm/pgalloc.h
+> > +++ b/arch/parisc/include/asm/pgalloc.h
+> > @@ -10,6 +10,7 @@
+> >  
+> >  #include <asm/cache.h>
+> >  
+> > +#define __HAVE_ARCH_PMD_ALLOC_ONE
+> >  #define __HAVE_ARCH_PMD_FREE
+> >  #define __HAVE_ARCH_PGD_FREE
+> >  #include <asm-generic/pgalloc.h>
+> > @@ -67,6 +68,11 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
+> >  			(__u32)(__pa((unsigned long)pmd) >> PxD_VALUE_SHIFT)));
+> >  }
+> >  
+> > +static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
+> > +{
+> > +	return (pmd_t *)__get_free_pages(GFP_PGTABLE_KERNEL, PMD_ORDER);
+> > +}
+> > +
+> >  static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
+> >  {
+> >  	if (pmd_flag(*pmd) & PxD_FLAG_ATTACHED) {
+> > -- 
+> > 2.26.2
+> > 
+
+-- 
+Sincerely yours,
+Mike.
