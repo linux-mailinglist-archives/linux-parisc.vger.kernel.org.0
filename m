@@ -2,141 +2,143 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E57DC2477E6
-	for <lists+linux-parisc@lfdr.de>; Mon, 17 Aug 2020 22:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B99C247CE0
+	for <lists+linux-parisc@lfdr.de>; Tue, 18 Aug 2020 05:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729398AbgHQUDR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 17 Aug 2020 16:03:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48292 "EHLO
+        id S1726328AbgHRDeE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 17 Aug 2020 23:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729407AbgHQUCW (ORCPT
+        with ESMTP id S1726302AbgHRDeE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 17 Aug 2020 16:02:22 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045F1C061342
-        for <linux-parisc@vger.kernel.org>; Mon, 17 Aug 2020 13:02:22 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id s15so8619306pgc.8
-        for <linux-parisc@vger.kernel.org>; Mon, 17 Aug 2020 13:02:21 -0700 (PDT)
+        Mon, 17 Aug 2020 23:34:04 -0400
+Received: from mail-qk1-x749.google.com (mail-qk1-x749.google.com [IPv6:2607:f8b0:4864:20::749])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E9E1C061389
+        for <linux-parisc@vger.kernel.org>; Mon, 17 Aug 2020 20:34:03 -0700 (PDT)
+Received: by mail-qk1-x749.google.com with SMTP id f18so12282838qke.0
+        for <linux-parisc@vger.kernel.org>; Mon, 17 Aug 2020 20:34:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=97DJCt1f0pZE/lulXm7MIIWiJdssbmLKs4FWP+jsWew=;
-        b=aSZhdkNSZ87cEFa5bVOxaRgbLX85Ac+f9y0d86ayXObRrHbI44P6QsGc3j0vxCaOtG
-         T2k2WOgfibXFL7wthStQUZ2a3THDVNOGIm8YJURtA34YheOr2MAVAuh07KvbwkyanYJS
-         0EG510E/ggHXtfUb6SqMiyn275eeX4FnCQjVBA0Ynkest98IGBIFATGO7FCiNvsrRbkh
-         fmWOvmbqhkjk1q/XQS+NvaPIgrNKptwTVoidsz8P1vd8W5lrCq8X1NqQRsc/NszaPSZV
-         B+EkeoLweuq1QOusC/DDv9aQ54VFoeSpo/Y8VIPH3trT8rbQk4iBVBt328RQJCy4a+pu
-         mrUw==
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=I6DOB6OCHVtcBnphcSa29MMaJF442XKQMk52U/1RC+0=;
+        b=ZzhmZpaoOxtncOzeWKYsi4/jDjbjwi9gDikzcdHrNeTztQ1vuzJfTeqPCl53ftDQBK
+         Iao0rT+515AU0UB+KhIMuzAyio7SmYih3+sYNif8Q9R4e1cPI+KzOtQv7tkpkP+kRa0k
+         SPpdxcIN5PDMVRTHrkveL92MxPKD00ApgTXCxiXqBpfFdoPqgo3gCAsI0E+0km/wDYG6
+         zVRGSIrocO0NE0ojebETygFyJlalhbTxbI8ozaZHUMMxyeisk39fsF9sYxB9v0xkkH4p
+         2pFIPrcSlTpbujapEBAqGTA8BHd6n7/19tSpt65+UaFBy5pJ2sUXiaEuKnM+Oi306ViS
+         Q5Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=97DJCt1f0pZE/lulXm7MIIWiJdssbmLKs4FWP+jsWew=;
-        b=OMHTgHzcefNfK820clnOzU/OgmTeHQFJPB4C4SQ17MMYtqYzztMpsG0MVuzqEbMrtH
-         ITysTK5P7uMfM6mcQmSPZHhjzH+c5FedmpkZGCdFTKWpX73LET/08vSRxfLwmOT8CpX2
-         Ki7Dfx/oCIUl/jaJycuJdjqYCc/1cIAiyxwmU1iUgiXpZ8DvuijpPkW29zEGQViTfz1m
-         8sgWI1x2nAV6GK+/GSEu34zi5ySbiFXXqoXdsdhq4aVb31cTikD+xwQrgMMdeqQ1pE9H
-         q95sK/5xBmk4lPghjJQuEKG7uFNbKn6veSSpd8nVq3hugNxOsF6wDUY0NTT9Sgyhs5qa
-         hIrw==
-X-Gm-Message-State: AOAM532ae6eSSN7BZF/l2+b5fDq/1141h8h/NPAP/3rk6eBSbF4pfGQ9
-        r96Y1WSU4guFo5bbYIlmAuT7vw==
-X-Google-Smtp-Source: ABdhPJx6fgKnzdqFet7WfKg8Bw76iQ/G91m6PuMxHTNY08ReQtFVhesqdO2JpfqR2BskRMIqTcZ09Q==
-X-Received: by 2002:a63:d143:: with SMTP id c3mr10873272pgj.306.1597694541448;
-        Mon, 17 Aug 2020 13:02:21 -0700 (PDT)
-Received: from ?IPv6:2605:e000:100e:8c61:bd62:5cef:d7f8:5bff? ([2605:e000:100e:8c61:bd62:5cef:d7f8:5bff])
-        by smtp.gmail.com with ESMTPSA id c27sm18199498pgn.86.2020.08.17.13.02.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Aug 2020 13:02:20 -0700 (PDT)
-Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Allen Pais <allen.cryptic@gmail.com>, jdike@addtoit.com,
-        richard@nod.at, anton.ivanov@cambridgegreys.com, 3chas3@gmail.com,
-        stefanr@s5r6.in-berlin.de, airlied@linux.ie, daniel@ffwll.ch,
-        sre@kernel.org, James.Bottomley@HansenPartnership.com,
-        kys@microsoft.com, deller@gmx.de, dmitry.torokhov@gmail.com,
-        jassisinghbrar@gmail.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, maximlevitsky@gmail.com, oakad@yahoo.com,
-        ulf.hansson@linaro.org, mporter@kernel.crashing.org,
-        alex.bou9@gmail.com, broonie@kernel.org, martyn@welchs.me.uk,
-        manohar.vanga@gmail.com, mitch@sfgoth.com, davem@davemloft.net,
-        kuba@kernel.org, linux-um@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux1394-devel@lists.sourceforge.net,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-hyperv@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-ntb@googlegroups.com, linux-s390@vger.kernel.org,
-        linux-spi@vger.kernel.org, devel@driverdev.osuosl.org,
-        Allen Pais <allen.lkml@gmail.com>,
-        Romain Perier <romain.perier@gmail.com>
-References: <20200817091617.28119-1-allen.cryptic@gmail.com>
- <20200817091617.28119-2-allen.cryptic@gmail.com>
- <b5508ca4-0641-7265-2939-5f03cbfab2e2@kernel.dk>
- <202008171228.29E6B3BB@keescook>
- <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
- <202008171246.80287CDCA@keescook>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
-Date:   Mon, 17 Aug 2020 13:02:17 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <202008171246.80287CDCA@keescook>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=I6DOB6OCHVtcBnphcSa29MMaJF442XKQMk52U/1RC+0=;
+        b=NXw0UnLEdCYpdNsSlq+my27mNFhBuhNmIp2Z3TiHhYTrvPHzwbLp6ttRGkpio95ml5
+         CDPly2YoIxeISN7TDn4lRszctsKLf0lGHGwKg7hKmqtH4+fpMw1mqIWxnddH7oD5yqxQ
+         VjXQz4Khc4CgWYJ6TEFog7ZU3nTwuwZ3f5/QJJHsxW7LWsZFvWJHjhWIukvMrJgbfyAh
+         2ztSchz9kVYavxjOPZL4R2/rZ5NVmcrY4rule/2KMNQzTrnGSpNZUs+/ANr0wpUjeImR
+         wvtax+5/LSACzt4o5+Ckdtwk3EiJuuise6abhpBkVf+2IcZV4l+LBo4VAMc+tmqVKw/D
+         qg9w==
+X-Gm-Message-State: AOAM530bDKNID3WZpas7WTyrk+qNzfQXNslINkqtp4BtzcXC+hoiiaXc
+        SoSRSL80nqlba9B5vpaTxE5UAXQ=
+X-Google-Smtp-Source: ABdhPJwsGI+sNs94Ofrco+J81pp2KvZEjJERYjCUozSUIGKt67XI/stlC827tloJ1X+jwI+P5Il9rBU=
+X-Received: by 2002:ad4:478c:: with SMTP id z12mr17667928qvy.145.1597721641911;
+ Mon, 17 Aug 2020 20:34:01 -0700 (PDT)
+Date:   Mon, 17 Aug 2020 20:33:45 -0700
+Message-Id: <cover.1597720138.git.pcc@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.28.0.220.ged08abb693-goog
+Subject: [PATCH v9 0/6] arm64: expose FAR_EL1 tag bits in siginfo
+From:   Peter Collingbourne <pcc@google.com>
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        Evgenii Stepanov <eugenis@google.com>,
+        Kostya Serebryany <kcc@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Dave Martin <Dave.Martin@arm.com>,
+        Will Deacon <will@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     Peter Collingbourne <pcc@google.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        linux-parisc@vger.kernel.org,
+        David Spickett <david.spickett@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 8/17/20 12:48 PM, Kees Cook wrote:
-> On Mon, Aug 17, 2020 at 12:44:34PM -0700, Jens Axboe wrote:
->> On 8/17/20 12:29 PM, Kees Cook wrote:
->>> On Mon, Aug 17, 2020 at 06:56:47AM -0700, Jens Axboe wrote:
->>>> On 8/17/20 2:15 AM, Allen Pais wrote:
->>>>> From: Allen Pais <allen.lkml@gmail.com>
->>>>>
->>>>> In preparation for unconditionally passing the
->>>>> struct tasklet_struct pointer to all tasklet
->>>>> callbacks, switch to using the new tasklet_setup()
->>>>> and from_tasklet() to pass the tasklet pointer explicitly.
->>>>
->>>> Who came up with the idea to add a macro 'from_tasklet' that is just
->>>> container_of? container_of in the code would be _much_ more readable,
->>>> and not leave anyone guessing wtf from_tasklet is doing.
->>>>
->>>> I'd fix that up now before everything else goes in...
->>>
->>> As I mentioned in the other thread, I think this makes things much more
->>> readable. It's the same thing that the timer_struct conversion did
->>> (added a container_of wrapper) to avoid the ever-repeating use of
->>> typeof(), long lines, etc.
->>
->> But then it should use a generic name, instead of each sub-system using
->> some random name that makes people look up exactly what it does. I'm not
->> huge fan of the container_of() redundancy, but adding private variants
->> of this doesn't seem like the best way forward. Let's have a generic
->> helper that does this, and use it everywhere.
-> 
-> I'm open to suggestions, but as things stand, these kinds of treewide
+The kernel currently clears the tag bits (i.e. bits 56-63) in the fault
+address exposed via siginfo.si_addr and sigcontext.fault_address. However,
+the tag bits may be needed by tools in order to accurately diagnose
+memory errors, such as HWASan [1] or future tools based on the Memory
+Tagging Extension (MTE).
 
-On naming? Implementation is just as it stands, from_tasklet() is
-totally generic which is why I objected to it. from_member()? Not great
-with naming... But I can see this going further and then we'll suddenly
-have tons of these. It's not good for readability.
+We should not stop clearing these bits in the existing fault address
+fields, because there may be existing userspace applications that are
+expecting the tag bits to be cleared. Instead, create a new pair of
+union fields in siginfo._sigfault, and store the tag bits of FAR_EL1
+there, together with a mask specifying which bits are valid.
 
-> changes end up getting whole-release delays because of the need to have
-> the API in place for everyone before patches to do the changes can be
-> sent to multiple maintainers, etc.
+However, one does not simply add fields to siginfo, especially since
+userspace would have no way to detect that they are present and valid.
+Therefore, the first five patches in this series introduce a mechanism
+for userspace to detect the presence of our new siginfo fields,
+and the last patch uses it to advertise the presence of said fields.
 
-Sure, that's always true of treewide changes like that.
+The series can be viewed on Gerrit here:
+https://linux-review.googlesource.com/q/Ia8876bad8c798e0a32df7c2ce1256c4771c81446
+
+[1] http://clang.llvm.org/docs/HardwareAssistedAddressSanitizerDesign.html
+
+Peter Collingbourne (6):
+  parisc: start using signal-defs.h
+  arch: move SA_* definitions to generic headers
+  signal: clear non-uapi flag bits when passing/returning sa_flags
+  signal: define the SA_UNSUPPORTED bit in sa_flags
+  signal: define the field siginfo.si_xflags
+  arm64: expose FAR_EL1 tag bits in siginfo
+
+ Documentation/arm64/tagged-pointers.rst    | 21 ++++--
+ arch/alpha/include/uapi/asm/signal.h       | 14 ----
+ arch/arm/include/asm/signal.h              |  5 ++
+ arch/arm/include/uapi/asm/signal.h         | 28 +-------
+ arch/arm64/include/asm/exception.h         |  2 +-
+ arch/arm64/include/asm/traps.h             |  7 +-
+ arch/arm64/kernel/debug-monitors.c         |  4 +-
+ arch/arm64/kernel/entry-common.c           |  2 -
+ arch/arm64/kernel/ptrace.c                 |  2 +-
+ arch/arm64/kernel/traps.c                  | 15 +++--
+ arch/arm64/mm/fault.c                      | 54 ++++++++-------
+ arch/h8300/include/uapi/asm/signal.h       | 24 -------
+ arch/ia64/include/uapi/asm/signal.h        | 24 -------
+ arch/m68k/include/uapi/asm/signal.h        | 24 -------
+ arch/mips/include/uapi/asm/signal.h        | 12 ----
+ arch/mips/kernel/traps.c                   |  2 +-
+ arch/parisc/include/asm/signal.h           |  4 ++
+ arch/parisc/include/uapi/asm/signal.h      | 22 +------
+ arch/parisc/kernel/ptrace.c                |  2 +-
+ arch/parisc/mm/fault.c                     |  2 +-
+ arch/powerpc/include/uapi/asm/signal.h     | 24 -------
+ arch/powerpc/mm/fault.c                    |  2 +-
+ arch/powerpc/platforms/powernv/vas-fault.c |  1 +
+ arch/s390/include/uapi/asm/signal.h        | 24 -------
+ arch/sparc/include/uapi/asm/signal.h       |  4 +-
+ arch/x86/include/uapi/asm/signal.h         | 24 -------
+ arch/x86/kernel/signal_compat.c            |  7 --
+ arch/x86/mm/fault.c                        |  3 +-
+ arch/xtensa/include/uapi/asm/signal.h      | 24 -------
+ include/linux/compat.h                     |  4 ++
+ include/linux/sched/signal.h               | 12 +++-
+ include/linux/signal_types.h               | 12 ++++
+ include/uapi/asm-generic/siginfo.h         | 13 ++++
+ include/uapi/asm-generic/signal-defs.h     | 64 ++++++++++++++++++
+ include/uapi/asm-generic/signal.h          | 29 --------
+ kernel/signal.c                            | 77 ++++++++++++++++++++--
+ mm/memory-failure.c                        |  2 +-
+ 37 files changed, 261 insertions(+), 335 deletions(-)
 
 -- 
-Jens Axboe
+2.28.0.220.ged08abb693-goog
 
