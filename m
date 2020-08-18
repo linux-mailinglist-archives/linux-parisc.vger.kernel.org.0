@@ -2,55 +2,55 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 760C2247CE9
+	by mail.lfdr.de (Postfix) with ESMTP id E2512247CEA
 	for <lists+linux-parisc@lfdr.de>; Tue, 18 Aug 2020 05:34:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726640AbgHRDe3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 17 Aug 2020 23:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33470 "EHLO
+        id S1726451AbgHRDec (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 17 Aug 2020 23:34:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726302AbgHRDeS (ORCPT
+        with ESMTP id S1726514AbgHRDeV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 17 Aug 2020 23:34:18 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E364C061343
-        for <linux-parisc@vger.kernel.org>; Mon, 17 Aug 2020 20:34:18 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id x6so15922028ybp.10
-        for <linux-parisc@vger.kernel.org>; Mon, 17 Aug 2020 20:34:18 -0700 (PDT)
+        Mon, 17 Aug 2020 23:34:21 -0400
+Received: from mail-qt1-x84a.google.com (mail-qt1-x84a.google.com [IPv6:2607:f8b0:4864:20::84a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06487C061389
+        for <linux-parisc@vger.kernel.org>; Mon, 17 Aug 2020 20:34:21 -0700 (PDT)
+Received: by mail-qt1-x84a.google.com with SMTP id q7so13535640qtd.1
+        for <linux-parisc@vger.kernel.org>; Mon, 17 Aug 2020 20:34:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=OIV+JjlSvP74bt353WlsLQVKXwA1SRaGmfeB6qc+Op4=;
-        b=siNn5z+/P9RQdcbL5YsFtKeDoRjH4kD5DG75ZlbqQOSvtaNcPtEWa4HpwBzDQgsWWD
-         fNKYFqIGAQvyQGPvT4+S31bXlL4Sjs1KUa3RplRufB8XfOS3L/7BrWl2Q9PfhIuq0v4H
-         1y/UMrOlureXFQW2Ii/04PBcE5mZXkZO8NR7vCal03g2WJ71gTpGs8rUJd7H3K3A8EPK
-         GohvJRvjOZeezxx30zcG9CIl7B26EmpLzN65Y55S6SoOXuJU2RjyMv7qvt+UFmKhZnTe
-         Y+fIMk8UUpREjXPnk8eUkfn4Y75dzN7kG+lxKTyvta0aFprvBvkc8g5fHpuHNQ7x/Wvi
-         fixQ==
+        bh=npprgfL/uLMAeliUNY+sB036ouxQiUcUXlTHizf6U/k=;
+        b=Wli9XbfnBUzvuyM2WXQ6WRb5U5JUjarGxIArtKs8gH11Y007YSb4/u5bOJIYk6gCPN
+         J6vSTRLPpv7mziGNOnEEZuRseSkbEDU+H+pLiqOlYpdyRzYKmxno0R7mbsgc8v0D4A7v
+         ha1XazysZvZkalH23Owq4q9qSehVGaqVibfqM7posd6LxX1ONMsL5bqolBZxFvC+e/wo
+         juzD6MgqrPe4XYjszCtKmQsi8XrFEhVr08OM4WqcGWIBvu7k8a5almTgt3X4M9VrY/pD
+         iK0sTEUEO5XMf78US3bO8GoeTeQNKiK6CYx8lkkBVcOdox/P1qsjmsSZ/79IkEyF2u2M
+         kaJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=OIV+JjlSvP74bt353WlsLQVKXwA1SRaGmfeB6qc+Op4=;
-        b=U98N11xj/D/lg1/k+iTv1WdmF9I1GZzjkBLWev7FKQ14NI+G4imN10v1vIR3nJihuM
-         11tr63miEMcrxLxPMurHaKxqqPog6xOQE+JFVhqWZOIRlodIzo0OZOSpvt6FceL+9XmN
-         +MTckvZUZtzXinBW1wHRhUQqjHCeQaXGypSy+yj4f3B41SaDhCUJyWrPKbgwtiYYIu7V
-         xYGvomqH+SxVIrVz6r3Gx8PAVGM/hxmMNmkV3mHWsKh42Skj+dTY4Z8rexJVOqUoPtmf
-         D/49uV6nYBGKU/ixhDEACn3aeIQY6vgaAcIktservW5CtGW6X28CXwwnOlfDVGju9MBs
-         tupQ==
-X-Gm-Message-State: AOAM533bMq19Hd9dplHUoZsyUPLuDdvT2FPMVVtzbCYtEPitxg68kJGJ
-        IHUm1EtWqmWsqVSAo/fQ5Orv/ig=
-X-Google-Smtp-Source: ABdhPJy4RbqAWFaGKX+yn7KWWeWnOBXraPoBRFb5wSpoSjy8ueyjsq7Slc6WF5/1hgE8mWmC87k/8Lk=
-X-Received: by 2002:a25:1904:: with SMTP id 4mr24465670ybz.5.1597721657627;
- Mon, 17 Aug 2020 20:34:17 -0700 (PDT)
-Date:   Mon, 17 Aug 2020 20:33:50 -0700
+        bh=npprgfL/uLMAeliUNY+sB036ouxQiUcUXlTHizf6U/k=;
+        b=d3LiohzQ/3WemtLgMlr3pTnYSwzR1jftCwZCequ3tHq1MhWI/+aoFnguqGEO+PuUA7
+         lyJArWZFf31HR+ApSkY1tsNs7g7dYEX5BFcoNbGn/Q0VCwjvdmLZcN35sKn98g00zqzZ
+         TfCYPPyVNeF4GgO7qhp6MqEeosSfEs3Rwoge933nXYMXUGRMvFNCav+omj5RMfA8KOkl
+         s5/yX8+0JVqKXISubdtLzqQx/c2GTpJgIciVvmw618bcdzb4zKr3HjKZLtYuKnkJNSMQ
+         amqFPOAioHa7yTtKbx6ffn8mriWlSfl9r5QFJrms4jZsK95BTX/YN8pdODfMqQSRdeKF
+         qQyA==
+X-Gm-Message-State: AOAM530qoQLE3R09KbVyQdVn+/k3jVxbYsmnYSZ004vkdWGJ72ILQ9zt
+        FQYQj88OjadX0XpeKlJcTy6DqOo=
+X-Google-Smtp-Source: ABdhPJxF6It84blx4W3290JkJdItFpP+F377ohGLBD+Bj+kaYdNIQaLGZWcSXDPlk5WBwW1GDdQT0Z0=
+X-Received: by 2002:ad4:5349:: with SMTP id v9mr17534910qvs.160.1597721660106;
+ Mon, 17 Aug 2020 20:34:20 -0700 (PDT)
+Date:   Mon, 17 Aug 2020 20:33:51 -0700
 In-Reply-To: <cover.1597720138.git.pcc@google.com>
-Message-Id: <e26271d2b3767cdbd265033e6f7eb28f828f3a28.1597720138.git.pcc@google.com>
+Message-Id: <9df0de08df310052df01d63bc8bddc5dd71c2bdb.1597720138.git.pcc@google.com>
 Mime-Version: 1.0
 References: <cover.1597720138.git.pcc@google.com>
 X-Mailer: git-send-email 2.28.0.220.ged08abb693-goog
-Subject: [PATCH v9 5/6] signal: define the field siginfo.si_xflags
+Subject: [PATCH v9 6/6] arm64: expose FAR_EL1 tag bits in siginfo
 From:   Peter Collingbourne <pcc@google.com>
 To:     Catalin Marinas <catalin.marinas@arm.com>,
         Evgenii Stepanov <eugenis@google.com>,
@@ -73,280 +73,723 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This field will contain flags that may be used by signal handlers to
-determine whether other fields in the _sigfault portion of siginfo are
-valid. An example use case is the following patch, which introduces
-the si_addr_ignored_bits{,_mask} fields.
+The kernel currently clears the tag bits (i.e. bits 56-63) in the fault
+address exposed via siginfo.si_addr and sigcontext.fault_address. However,
+the tag bits may be needed by tools in order to accurately diagnose
+memory errors, such as HWASan [1] or future tools based on the Memory
+Tagging Extension (MTE).
 
-A new sigcontext flag, SA_XFLAGS, is introduced in order to allow
-a signal handler to require the kernel to set the field (but note
-that the field will be set anyway if the kernel supports the flag,
-regardless of its value). In combination with the previous patches,
-this allows a userspace program to determine whether the kernel will
-set the field.
+We should not stop clearing these bits in the existing fault address
+fields, because there may be existing userspace applications that are
+expecting the tag bits to be cleared. Instead, create a new pair of
+union fields in siginfo._sigfault, and store the tag bits of FAR_EL1
+there, together with a mask specifying which bits are valid.
 
-Ideally this field could have just been named si_flags, but that
-name was already taken by ia64, so a different name was chosen.
+A flag is added to si_xflags to allow userspace to determine whether
+the values in the fields are valid.
 
-Alternatively, we may consider making ia64's si_flags a generic field
-and having it appear at the end of _sigfault (in the same place as
-this patch has si_xflags) on non-ia64, keeping it in the same place
-on ia64. ia64's si_flags is a 32-bit field with only one flag bit
-allocated, so we would have 31 bits to use if we do this.
+[1] http://clang.llvm.org/docs/HardwareAssistedAddressSanitizerDesign.html
 
 Signed-off-by: Peter Collingbourne <pcc@google.com>
 ---
-View this change in Gerrit: https://linux-review.googlesource.com/q/Ide155ce29366c3eab2a944ae4c51205982e5b8b2
+View this change in Gerrit: https://linux-review.googlesource.com/q/Ia8876bad8c798e0a32df7c2ce1256c4771c81446
 
- arch/arm/include/asm/signal.h              |  3 ++-
- arch/parisc/include/asm/signal.h           |  2 +-
- arch/powerpc/platforms/powernv/vas-fault.c |  1 +
- include/linux/compat.h                     |  2 ++
- include/linux/signal_types.h               |  4 ++--
- include/uapi/asm-generic/siginfo.h         |  3 +++
- include/uapi/asm-generic/signal-defs.h     |  4 ++++
- kernel/signal.c                            | 15 +++++++++++++++
- 8 files changed, 30 insertions(+), 4 deletions(-)
+v9:
+- make the ignored bits fields generic
+- add some new dependent patches that prepare us to store the
+  field in such a way that userspace can detect their presence
 
-diff --git a/arch/arm/include/asm/signal.h b/arch/arm/include/asm/signal.h
-index d1070a783993..6b2630dfe1df 100644
---- a/arch/arm/include/asm/signal.h
-+++ b/arch/arm/include/asm/signal.h
-@@ -19,7 +19,8 @@ typedef struct {
+v8:
+- rebase onto 5.8rc2
+
+v7:
+- switch to a new siginfo field instead of using sigcontext
+- merge the patch back into one since the other patches are now
+  unnecessary
+
+v6:
+- move fault address and fault code into the kernel_siginfo data structure
+- split the patch in three since it was getting large and now has
+  generic and arch-specific parts
+
+v5:
+- add padding to fault_addr_top_byte_context in order to ensure the correct
+  size and preserve sp alignment
+
+v4:
+- expose only the tag bits in the context instead of the entire FAR_EL1
+- remove mention of the new context from the sigcontext.__reserved[] note
+
+v3:
+- add documentation to tagged-pointers.rst
+- update comments in sigcontext.h
+
+v2:
+- revert changes to hw_breakpoint.c
+- rename set_thread_esr to set_thread_far_esr
+
+ Documentation/arm64/tagged-pointers.rst | 21 +++++++---
+ arch/arm64/include/asm/exception.h      |  2 +-
+ arch/arm64/include/asm/traps.h          |  7 +++-
+ arch/arm64/kernel/debug-monitors.c      |  4 +-
+ arch/arm64/kernel/entry-common.c        |  2 -
+ arch/arm64/kernel/ptrace.c              |  2 +-
+ arch/arm64/kernel/traps.c               | 15 ++++---
+ arch/arm64/mm/fault.c                   | 54 ++++++++++++++-----------
+ arch/mips/kernel/traps.c                |  2 +-
+ arch/parisc/kernel/ptrace.c             |  2 +-
+ arch/parisc/mm/fault.c                  |  2 +-
+ arch/powerpc/mm/fault.c                 |  2 +-
+ arch/x86/mm/fault.c                     |  3 +-
+ include/linux/compat.h                  |  2 +
+ include/linux/sched/signal.h            | 12 +++++-
+ include/uapi/asm-generic/siginfo.h      | 10 +++++
+ kernel/signal.c                         | 50 +++++++++++++++++++----
+ mm/memory-failure.c                     |  2 +-
+ 18 files changed, 136 insertions(+), 58 deletions(-)
+
+diff --git a/Documentation/arm64/tagged-pointers.rst b/Documentation/arm64/tagged-pointers.rst
+index eab4323609b9..bd23039841a5 100644
+--- a/Documentation/arm64/tagged-pointers.rst
++++ b/Documentation/arm64/tagged-pointers.rst
+@@ -53,12 +53,21 @@ visibility.
+ Preserving tags
+ ---------------
  
- #define SA_UAPI_FLAGS                                                          \
- 	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_THIRTYTWO |             \
--	 SA_RESTORER | SA_ONSTACK | SA_RESTART | SA_NODEFER | SA_RESETHAND)
-+	 SA_RESTORER | SA_ONSTACK | SA_RESTART | SA_NODEFER | SA_RESETHAND |   \
-+	 SA_XFLAGS)
+-Non-zero tags are not preserved when delivering signals. This means that
+-signal handlers in applications making use of tags cannot rely on the
+-tag information for user virtual addresses being maintained for fields
+-inside siginfo_t. One exception to this rule is for signals raised in
+-response to watchpoint debug exceptions, where the tag information will
+-be preserved.
++Non-zero tags are not preserved in the fault address fields
++siginfo.si_addr or sigcontext.fault_address when delivering
++signals. This means that signal handlers in applications making use
++of tags cannot rely on the tag information for user virtual addresses
++being maintained in these fields. One exception to this rule is for
++signals raised in response to watchpoint debug exceptions, where the
++tag information will be preserved.
++
++The fault address tag is preserved in the si_addr_ignored_bits field
++of siginfo, which is set for signals raised in response to data aborts
++and instruction aborts. The si_addr_ignored_bits_mask field indicates
++which bits of the field are valid. The validity of these fields is
++indicated by the SI_XFLAG_IGNORED_BITS flag in siginfo.si_xflags,
++and the validity of si_xflags in turn is indicated by the kernel
++indicating support for the sigaction.sa_flags flag SA_XFLAGS.
  
- #define __ARCH_HAS_SA_RESTORER
+ The architecture prevents the use of a tagged PC, so the upper byte will
+ be set to a sign-extension of bit 55 on exception return.
+diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
+index 7577a754d443..950d55dae948 100644
+--- a/arch/arm64/include/asm/exception.h
++++ b/arch/arm64/include/asm/exception.h
+@@ -32,7 +32,7 @@ static inline u32 disr_to_esr(u64 disr)
+ }
  
-diff --git a/arch/parisc/include/asm/signal.h b/arch/parisc/include/asm/signal.h
-index ad06e14f6e8a..3582bce44520 100644
---- a/arch/parisc/include/asm/signal.h
-+++ b/arch/parisc/include/asm/signal.h
-@@ -23,7 +23,7 @@ typedef struct {
+ asmlinkage void enter_from_user_mode(void);
+-void do_mem_abort(unsigned long addr, unsigned int esr, struct pt_regs *regs);
++void do_mem_abort(unsigned long far, unsigned int esr, struct pt_regs *regs);
+ void do_undefinstr(struct pt_regs *regs);
+ void do_bti(struct pt_regs *regs);
+ asmlinkage void bad_mode(struct pt_regs *regs, int reason, unsigned int esr);
+diff --git a/arch/arm64/include/asm/traps.h b/arch/arm64/include/asm/traps.h
+index cee5928e1b7d..8e4f6c5b97af 100644
+--- a/arch/arm64/include/asm/traps.h
++++ b/arch/arm64/include/asm/traps.h
+@@ -26,8 +26,11 @@ void register_undef_hook(struct undef_hook *hook);
+ void unregister_undef_hook(struct undef_hook *hook);
+ void force_signal_inject(int signal, int code, unsigned long address);
+ void arm64_notify_segfault(unsigned long addr);
+-void arm64_force_sig_fault(int signo, int code, void __user *addr, const char *str);
+-void arm64_force_sig_mceerr(int code, void __user *addr, short lsb, const char *str);
++void arm64_force_sig_fault(int signo, int code, void __user *addr,
++			   unsigned long far, unsigned char far_tb_mask,
++			   const char *str);
++void arm64_force_sig_mceerr(int code, void __user *addr, short lsb,
++			    unsigned long far, const char *str);
+ void arm64_force_sig_ptrace_errno_trap(int errno, void __user *addr, const char *str);
  
- #define SA_UAPI_FLAGS                                                          \
- 	(SA_ONSTACK | SA_RESETHAND | SA_NOCLDSTOP | SA_SIGINFO | SA_NODEFER |  \
--	 SA_RESTART | SA_NOCLDWAIT | _SA_SIGGFAULT)
-+	 SA_RESTART | SA_NOCLDWAIT | _SA_SIGGFAULT | SA_XFLAGS)
+ /*
+diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
+index 7310a4f7f993..bc9e02fbb710 100644
+--- a/arch/arm64/kernel/debug-monitors.c
++++ b/arch/arm64/kernel/debug-monitors.c
+@@ -235,8 +235,8 @@ static void send_user_sigtrap(int si_code)
+ 		local_irq_enable();
  
- #include <asm/sigcontext.h>
+ 	arm64_force_sig_fault(SIGTRAP, si_code,
+-			     (void __user *)instruction_pointer(regs),
+-			     "User debug trap");
++			      (void __user *)instruction_pointer(regs), 0, 0,
++			      "User debug trap");
+ }
  
-diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
-index 3d21fce254b7..3bbb335561f5 100644
---- a/arch/powerpc/platforms/powernv/vas-fault.c
-+++ b/arch/powerpc/platforms/powernv/vas-fault.c
-@@ -154,6 +154,7 @@ static void update_csb(struct vas_window *window,
- 	info.si_errno = EFAULT;
- 	info.si_code = SEGV_MAPERR;
- 	info.si_addr = csb_addr;
-+	info.si_xflags = 0;
+ static int single_step_handler(unsigned long unused, unsigned int esr,
+diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
+index d3be9dbf5490..65ed01606480 100644
+--- a/arch/arm64/kernel/entry-common.c
++++ b/arch/arm64/kernel/entry-common.c
+@@ -22,7 +22,6 @@ static void notrace el1_abort(struct pt_regs *regs, unsigned long esr)
+ 	unsigned long far = read_sysreg(far_el1);
  
+ 	local_daif_inherit(regs);
+-	far = untagged_addr(far);
+ 	do_mem_abort(far, esr, regs);
+ }
+ NOKPROBE_SYMBOL(el1_abort);
+@@ -104,7 +103,6 @@ static void notrace el0_da(struct pt_regs *regs, unsigned long esr)
+ 
+ 	user_exit_irqoff();
+ 	local_daif_restore(DAIF_PROCCTX);
+-	far = untagged_addr(far);
+ 	do_mem_abort(far, esr, regs);
+ }
+ NOKPROBE_SYMBOL(el0_da);
+diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+index d8ebfd813e28..c73312064220 100644
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -197,7 +197,7 @@ static void ptrace_hbptriggered(struct perf_event *bp,
+ 	}
+ #endif
+ 	arm64_force_sig_fault(SIGTRAP, TRAP_HWBKPT,
+-			      (void __user *)(bkpt->trigger),
++			      (void __user *)(bkpt->trigger), 0, 0,
+ 			      desc);
+ }
+ 
+diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+index 13ebd5ca2070..c945c5cc1312 100644
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -235,20 +235,25 @@ static void arm64_show_signal(int signo, const char *str)
+ }
+ 
+ void arm64_force_sig_fault(int signo, int code, void __user *addr,
++			   unsigned long far, unsigned char far_tb_mask,
+ 			   const char *str)
+ {
++	unsigned long ignored_bits_mask = ((unsigned long)far_tb_mask) << 56;
++
+ 	arm64_show_signal(signo, str);
+ 	if (signo == SIGKILL)
+ 		force_sig(SIGKILL);
+ 	else
+-		force_sig_fault(signo, code, addr);
++		force_sig_fault_with_ignored_bits(signo, code, addr,
++						  far & ignored_bits_mask,
++						  ignored_bits_mask);
+ }
+ 
+ void arm64_force_sig_mceerr(int code, void __user *addr, short lsb,
+-			    const char *str)
++			    unsigned long far, const char *str)
+ {
+ 	arm64_show_signal(SIGBUS, str);
+-	force_sig_mceerr(code, addr, lsb);
++	force_sig_mceerr(code, addr, lsb, far & (0xffUL << 56), 0xffUL << 56);
+ }
+ 
+ void arm64_force_sig_ptrace_errno_trap(int errno, void __user *addr,
+@@ -267,7 +272,7 @@ void arm64_notify_die(const char *str, struct pt_regs *regs,
+ 		current->thread.fault_address = 0;
+ 		current->thread.fault_code = err;
+ 
+-		arm64_force_sig_fault(signo, sicode, addr, str);
++		arm64_force_sig_fault(signo, sicode, addr, 0, 0, str);
+ 	} else {
+ 		die(str, regs, err);
+ 	}
+@@ -829,7 +834,7 @@ void bad_el0_sync(struct pt_regs *regs, int reason, unsigned int esr)
+ 	current->thread.fault_address = 0;
+ 	current->thread.fault_code = esr;
+ 
+-	arm64_force_sig_fault(SIGILL, ILL_ILLOPC, pc,
++	arm64_force_sig_fault(SIGILL, ILL_ILLOPC, pc, 0, 0,
+ 			      "Bad EL0 synchronous exception");
+ }
+ 
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index f07333e86c2f..82f05644417e 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -40,7 +40,7 @@
+ #include <asm/traps.h>
+ 
+ struct fault_info {
+-	int	(*fn)(unsigned long addr, unsigned int esr,
++	int	(*fn)(unsigned long far, unsigned int esr,
+ 		      struct pt_regs *regs);
+ 	int	sig;
+ 	int	code;
+@@ -383,8 +383,11 @@ static void set_thread_esr(unsigned long address, unsigned int esr)
+ 	current->thread.fault_code = esr;
+ }
+ 
+-static void do_bad_area(unsigned long addr, unsigned int esr, struct pt_regs *regs)
++static void do_bad_area(unsigned long far, unsigned int esr,
++			struct pt_regs *regs)
+ {
++	unsigned long addr = untagged_addr(far);
++
  	/*
- 	 * process will be polling on csb.flags after request is sent to
+ 	 * If we are in kernel mode at this point, we have no context to
+ 	 * handle this fault with.
+@@ -394,7 +397,7 @@ static void do_bad_area(unsigned long addr, unsigned int esr, struct pt_regs *re
+ 
+ 		set_thread_esr(addr, esr);
+ 		arm64_force_sig_fault(inf->sig, inf->code, (void __user *)addr,
+-				      inf->name);
++				      far, 0xff, inf->name);
+ 	} else {
+ 		__do_kernel_fault(addr, esr, regs);
+ 	}
+@@ -446,7 +449,7 @@ static bool is_write_abort(unsigned int esr)
+ 	return (esr & ESR_ELx_WNR) && !(esr & ESR_ELx_CM);
+ }
+ 
+-static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
++static int __kprobes do_page_fault(unsigned long far, unsigned int esr,
+ 				   struct pt_regs *regs)
+ {
+ 	const struct fault_info *inf;
+@@ -454,6 +457,7 @@ static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
+ 	vm_fault_t fault;
+ 	unsigned long vm_flags = VM_ACCESS_FLAGS;
+ 	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
++	unsigned long addr = untagged_addr(far);
+ 
+ 	if (kprobe_page_fault(regs, esr))
+ 		return 0;
+@@ -566,7 +570,7 @@ static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
+ 		 * this page fault.
+ 		 */
+ 		arm64_force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)addr,
+-				      inf->name);
++				      far, 0xff, inf->name);
+ 	} else if (fault & (VM_FAULT_HWPOISON_LARGE | VM_FAULT_HWPOISON)) {
+ 		unsigned int lsb;
+ 
+@@ -575,7 +579,7 @@ static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
+ 			lsb = hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
+ 
+ 		arm64_force_sig_mceerr(BUS_MCEERR_AR, (void __user *)addr, lsb,
+-				       inf->name);
++				       far, inf->name);
+ 	} else {
+ 		/*
+ 		 * Something tried to access memory that isn't in our memory
+@@ -583,8 +587,7 @@ static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
+ 		 */
+ 		arm64_force_sig_fault(SIGSEGV,
+ 				      fault == VM_FAULT_BADACCESS ? SEGV_ACCERR : SEGV_MAPERR,
+-				      (void __user *)addr,
+-				      inf->name);
++				      (void __user *)addr, far, 0xff, inf->name);
+ 	}
+ 
+ 	return 0;
+@@ -594,30 +597,32 @@ static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
+ 	return 0;
+ }
+ 
+-static int __kprobes do_translation_fault(unsigned long addr,
++static int __kprobes do_translation_fault(unsigned long far,
+ 					  unsigned int esr,
+ 					  struct pt_regs *regs)
+ {
++	unsigned long addr = untagged_addr(far);
++
+ 	if (is_ttbr0_addr(addr))
+-		return do_page_fault(addr, esr, regs);
++		return do_page_fault(far, esr, regs);
+ 
+-	do_bad_area(addr, esr, regs);
++	do_bad_area(far, esr, regs);
+ 	return 0;
+ }
+ 
+-static int do_alignment_fault(unsigned long addr, unsigned int esr,
++static int do_alignment_fault(unsigned long far, unsigned int esr,
+ 			      struct pt_regs *regs)
+ {
+-	do_bad_area(addr, esr, regs);
++	do_bad_area(far, esr, regs);
+ 	return 0;
+ }
+ 
+-static int do_bad(unsigned long addr, unsigned int esr, struct pt_regs *regs)
++static int do_bad(unsigned long far, unsigned int esr, struct pt_regs *regs)
+ {
+ 	return 1; /* "fault" */
+ }
+ 
+-static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
++static int do_sea(unsigned long far, unsigned int esr, struct pt_regs *regs)
+ {
+ 	const struct fault_info *inf;
+ 	void __user *siaddr;
+@@ -635,7 +640,7 @@ static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
+ 	if (esr & ESR_ELx_FnV)
+ 		siaddr = NULL;
+ 	else
+-		siaddr  = (void __user *)addr;
++		siaddr  = (void __user *)untagged_addr(far);
+ 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
+ 
+ 	return 0;
+@@ -708,11 +713,12 @@ static const struct fault_info fault_info[] = {
+ 	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 63"			},
+ };
+ 
+-void do_mem_abort(unsigned long addr, unsigned int esr, struct pt_regs *regs)
++void do_mem_abort(unsigned long far, unsigned int esr, struct pt_regs *regs)
+ {
+ 	const struct fault_info *inf = esr_to_fault_info(esr);
++	unsigned long addr = untagged_addr(far);
+ 
+-	if (!inf->fn(addr, esr, regs))
++	if (!inf->fn(far, esr, regs))
+ 		return;
+ 
+ 	if (!user_mode(regs)) {
+@@ -721,8 +727,8 @@ void do_mem_abort(unsigned long addr, unsigned int esr, struct pt_regs *regs)
+ 		show_pte(addr);
+ 	}
+ 
+-	arm64_notify_die(inf->name, regs,
+-			 inf->sig, inf->code, (void __user *)addr, esr);
++	arm64_notify_die(inf->name, regs, inf->sig, inf->code,
++			 (void __user *)addr, esr);
+ }
+ NOKPROBE_SYMBOL(do_mem_abort);
+ 
+@@ -735,8 +741,8 @@ NOKPROBE_SYMBOL(do_el0_irq_bp_hardening);
+ 
+ void do_sp_pc_abort(unsigned long addr, unsigned int esr, struct pt_regs *regs)
+ {
+-	arm64_notify_die("SP/PC alignment exception", regs,
+-			 SIGBUS, BUS_ADRALN, (void __user *)addr, esr);
++	arm64_notify_die("SP/PC alignment exception", regs, SIGBUS, BUS_ADRALN,
++			 (void __user *)addr, esr);
+ }
+ NOKPROBE_SYMBOL(do_sp_pc_abort);
+ 
+@@ -862,8 +868,8 @@ void do_debug_exception(unsigned long addr_if_watchpoint, unsigned int esr,
+ 		arm64_apply_bp_hardening();
+ 
+ 	if (inf->fn(addr_if_watchpoint, esr, regs)) {
+-		arm64_notify_die(inf->name, regs,
+-				 inf->sig, inf->code, (void __user *)pc, esr);
++		arm64_notify_die(inf->name, regs, inf->sig, inf->code,
++				 (void __user *)pc, esr);
+ 	}
+ 
+ 	debug_exception_exit(regs);
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 38aa07ccdbcc..73a181c904b0 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -775,7 +775,7 @@ void force_fcr31_sig(unsigned long fcr31, void __user *fault_addr,
+ 	else if (fcr31 & FPU_CSR_INE_X)
+ 		si_code = FPE_FLTRES;
+ 
+-	force_sig_fault_to_task(SIGFPE, si_code, fault_addr, tsk);
++	force_sig_fault_to_task(SIGFPE, si_code, fault_addr, 0, 0, tsk);
+ }
+ 
+ int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
+diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
+index 2127974982df..62c8bb0d7d31 100644
+--- a/arch/parisc/kernel/ptrace.c
++++ b/arch/parisc/kernel/ptrace.c
+@@ -89,7 +89,7 @@ void user_enable_single_step(struct task_struct *task)
+ 		   parent know something happened. */
+ 		force_sig_fault_to_task(SIGTRAP, TRAP_TRACE,
+ 					(void __user *) (task_regs(task)->iaoq[0] & ~3),
+-					task);
++					0, 0, task);
+ 		/* notify_parent(task, SIGCHLD); */
+ 		return;
+ 	}
+diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
+index 4bfe2da9fbe3..2a6064ea2dfc 100644
+--- a/arch/parisc/mm/fault.c
++++ b/arch/parisc/mm/fault.c
+@@ -400,7 +400,7 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
+ 				lsb = PAGE_SHIFT;
+ 
+ 			force_sig_mceerr(BUS_MCEERR_AR, (void __user *) address,
+-					 lsb);
++					 lsb, 0, 0);
+ 			return;
+ 		}
+ #endif
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index 0add963a849b..4ffe2fb8e31a 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -152,7 +152,7 @@ static int do_sigbus(struct pt_regs *regs, unsigned long address,
+ 		if (fault & VM_FAULT_HWPOISON)
+ 			lsb = PAGE_SHIFT;
+ 
+-		force_sig_mceerr(BUS_MCEERR_AR, (void __user *)address, lsb);
++		force_sig_mceerr(BUS_MCEERR_AR, (void __user *)address, lsb, 0, 0);
+ 		return 0;
+ 	}
+ 
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 35f1498e9832..a443eec157f6 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -898,7 +898,8 @@ do_sigbus(struct pt_regs *regs, unsigned long error_code, unsigned long address,
+ 			lsb = hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
+ 		if (fault & VM_FAULT_HWPOISON)
+ 			lsb = PAGE_SHIFT;
+-		force_sig_mceerr(BUS_MCEERR_AR, (void __user *)address, lsb);
++		force_sig_mceerr(BUS_MCEERR_AR, (void __user *)address, lsb, 0,
++				 0);
+ 		return;
+ 	}
+ #endif
 diff --git a/include/linux/compat.h b/include/linux/compat.h
-index d38c4d7e83bd..55d4228dfd88 100644
+index 55d4228dfd88..273146cf30fd 100644
 --- a/include/linux/compat.h
 +++ b/include/linux/compat.h
-@@ -231,7 +231,9 @@ typedef struct compat_siginfo {
- 					char _dummy_pkey[__COMPAT_ADDR_BND_PKEY_PAD];
- 					u32 _pkey;
- 				} _addr_pkey;
-+				compat_uptr_t _pad[6];
+@@ -234,6 +234,8 @@ typedef struct compat_siginfo {
+ 				compat_uptr_t _pad[6];
  			};
-+			compat_uptr_t _xflags;
+ 			compat_uptr_t _xflags;
++			compat_uptr_t _addr_ignored_bits;
++			compat_uptr_t _addr_ignored_bits_mask;
  		} _sigfault;
  
  		/* SIGPOLL */
-diff --git a/include/linux/signal_types.h b/include/linux/signal_types.h
-index e792f29b5846..cd3d08dde47a 100644
---- a/include/linux/signal_types.h
-+++ b/include/linux/signal_types.h
-@@ -72,11 +72,11 @@ struct ksignal {
- #ifdef SA_RESTORER
- #define SA_UAPI_FLAGS                                                          \
- 	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
--	 SA_NODEFER | SA_RESETHAND | SA_RESTORER)
-+	 SA_NODEFER | SA_RESETHAND | SA_RESTORER | SA_XFLAGS)
- #else
- #define SA_UAPI_FLAGS                                                          \
- 	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
--	 SA_NODEFER | SA_RESETHAND)
-+	 SA_NODEFER | SA_RESETHAND | SA_XFLAGS)
- #endif
- #endif
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index 1bad18a1d8ba..f62a014a5a4d 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -311,16 +311,24 @@ static inline void kernel_signal_stop(void)
+ int force_sig_fault_to_task(int sig, int code, void __user *addr
+ 	___ARCH_SI_TRAPNO(int trapno)
+ 	___ARCH_SI_IA64(int imm, unsigned int flags, unsigned long isr)
+-	, struct task_struct *t);
++	, unsigned long addr_ignored_bits, unsigned long addr_ignored_bits_mask,
++	struct task_struct *t);
+ int force_sig_fault(int sig, int code, void __user *addr
+ 	___ARCH_SI_TRAPNO(int trapno)
+ 	___ARCH_SI_IA64(int imm, unsigned int flags, unsigned long isr));
++int force_sig_fault_with_ignored_bits(int sig, int code, void __user *addr
++	___ARCH_SI_TRAPNO(int trapno)
++	___ARCH_SI_IA64(int imm, unsigned int flags, unsigned long isr)
++	, unsigned long addr_ignored_bits,
++	unsigned long addr_ignored_bits_mask);
+ int send_sig_fault(int sig, int code, void __user *addr
+ 	___ARCH_SI_TRAPNO(int trapno)
+ 	___ARCH_SI_IA64(int imm, unsigned int flags, unsigned long isr)
+ 	, struct task_struct *t);
  
+-int force_sig_mceerr(int code, void __user *, short);
++int force_sig_mceerr(int code, void __user *addr, short addr_lsb,
++		     unsigned long addr_ignored_bits,
++		     unsigned long addr_ignored_bits_mask);
+ int send_sig_mceerr(int code, void __user *, short, struct task_struct *);
+ 
+ int force_sig_bnderr(void __user *addr, void __user *lower, void __user *upper);
 diff --git a/include/uapi/asm-generic/siginfo.h b/include/uapi/asm-generic/siginfo.h
-index cb3d6c267181..413d804623c0 100644
+index 413d804623c0..1fc6482b0ad4 100644
 --- a/include/uapi/asm-generic/siginfo.h
 +++ b/include/uapi/asm-generic/siginfo.h
-@@ -91,7 +91,9 @@ union __sifields {
- 				char _dummy_pkey[__ADDR_BND_PKEY_PAD];
- 				__u32 _pkey;
- 			} _addr_pkey;
-+			void *_pad[6];
+@@ -94,6 +94,8 @@ union __sifields {
+ 			void *_pad[6];
  		};
-+		unsigned long _xflags;
+ 		unsigned long _xflags;
++		unsigned long _addr_ignored_bits;
++		unsigned long _addr_ignored_bits_mask;
  	} _sigfault;
  
  	/* SIGPOLL */
-@@ -152,6 +154,7 @@ typedef struct siginfo {
- #define si_trapno	_sifields._sigfault._trapno
+@@ -155,6 +157,8 @@ typedef struct siginfo {
  #endif
  #define si_addr_lsb	_sifields._sigfault._addr_lsb
-+#define si_xflags	_sifields._sigfault._xflags
+ #define si_xflags	_sifields._sigfault._xflags
++#define si_addr_ignored_bits		_sifields._sigfault._addr_ignored_bits
++#define si_addr_ignored_bits_mask	_sifields._sigfault._addr_ignored_bits_mask
  #define si_lower	_sifields._sigfault._addr_bnd._lower
  #define si_upper	_sifields._sigfault._addr_bnd._upper
  #define si_pkey		_sifields._sigfault._addr_pkey._pkey
-diff --git a/include/uapi/asm-generic/signal-defs.h b/include/uapi/asm-generic/signal-defs.h
-index c30a9c1a77b2..aeee6bb0763b 100644
---- a/include/uapi/asm-generic/signal-defs.h
-+++ b/include/uapi/asm-generic/signal-defs.h
-@@ -19,6 +19,9 @@
-  * so this bit allows flag bit support to be detected from userspace while
-  * allowing an old kernel to be distinguished from a kernel that supports every
-  * flag bit.
-+ * SA_XFLAGS indicates that the signal handler requires the siginfo.si_xflags
-+ * field to be valid. Note that if the kernel supports SA_XFLAGS, the field will
-+ * be valid regardless of the value of this flag.
-  *
-  * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
-  * Unix names RESETHAND and NODEFER respectively.
-@@ -49,6 +52,7 @@
-  * should be avoided for new generic flags: 3, 4, 5, 6, 7, 8, 9, 16, 24, 25, 26.
-  */
- #define SA_UNSUPPORTED	0x00000400
-+#define SA_XFLAGS	0x00000800
+@@ -295,6 +299,12 @@ typedef struct siginfo {
+ #define EMT_TAGOVF	1	/* tag overflow */
+ #define NSIGEMT		1
  
- #define SA_NOMASK	SA_NODEFER
- #define SA_ONESHOT	SA_RESETHAND
++/*
++ * SIGILL, SIGFPE, SIGSEGV, SIGBUS, SIGTRAP, SIGEMT si_xflags
++ */
++#define SI_XFLAG_IGNORED_BITS	1
++/* si_addr_ignored_bits{,_mask} fields valid */
++
+ /*
+  * sigevent definitions
+  * 
 diff --git a/kernel/signal.c b/kernel/signal.c
-index 664a6c31137e..72182eed1b8d 100644
+index 72182eed1b8d..1f1e42adc57d 100644
 --- a/kernel/signal.c
 +++ b/kernel/signal.c
-@@ -1669,6 +1669,7 @@ int force_sig_fault_to_task(int sig, int code, void __user *addr
+@@ -1652,7 +1652,8 @@ void force_sigsegv(int sig)
+ int force_sig_fault_to_task(int sig, int code, void __user *addr
+ 	___ARCH_SI_TRAPNO(int trapno)
+ 	___ARCH_SI_IA64(int imm, unsigned int flags, unsigned long isr)
+-	, struct task_struct *t)
++	, unsigned long addr_ignored_bits, unsigned long addr_ignored_bits_mask,
++	struct task_struct *t)
+ {
+ 	struct kernel_siginfo info;
+ 
+@@ -1669,17 +1670,32 @@ int force_sig_fault_to_task(int sig, int code, void __user *addr
  	info.si_flags = flags;
  	info.si_isr = isr;
  #endif
-+	info.si_xflags = 0;
+-	info.si_xflags = 0;
++	info.si_xflags = SI_XFLAG_IGNORED_BITS;
++	info.si_addr_ignored_bits = addr_ignored_bits;
++	info.si_addr_ignored_bits_mask = addr_ignored_bits_mask;
  	return force_sig_info_to_task(&info, t);
  }
  
-@@ -1701,6 +1702,7 @@ int send_sig_fault(int sig, int code, void __user *addr
- 	info.si_flags = flags;
- 	info.si_isr = isr;
- #endif
-+	info.si_xflags = 0;
+-int force_sig_fault(int sig, int code, void __user *addr
++int force_sig_fault_with_ignored_bits(int sig, int code, void __user *addr
+ 	___ARCH_SI_TRAPNO(int trapno)
+-	___ARCH_SI_IA64(int imm, unsigned int flags, unsigned long isr))
++	___ARCH_SI_IA64(int imm, unsigned int flags, unsigned long isr),
++	unsigned long addr_ignored_bits, unsigned long addr_ignored_bits_mask)
+ {
+ 	return force_sig_fault_to_task(sig, code, addr
+ 				       ___ARCH_SI_TRAPNO(trapno)
+-				       ___ARCH_SI_IA64(imm, flags, isr), current);
++				       ___ARCH_SI_IA64(imm, flags, isr),
++				       addr_ignored_bits,
++				       addr_ignored_bits_mask, current);
++}
++
++int force_sig_fault(int sig, int code, void __user *addr
++	___ARCH_SI_TRAPNO(int trapno)
++	___ARCH_SI_IA64(int imm, unsigned int flags, unsigned long isr))
++{
++	return force_sig_fault_with_ignored_bits(sig, code, addr
++						 ___ARCH_SI_TRAPNO(trapno)
++						 ___ARCH_SI_IA64(imm, flags,
++								 isr), 0, 0);
+ }
+ 
+ int send_sig_fault(int sig, int code, void __user *addr
+@@ -1706,7 +1722,9 @@ int send_sig_fault(int sig, int code, void __user *addr
  	return send_sig_info(info.si_signo, &info, t);
  }
  
-@@ -1715,6 +1717,7 @@ int force_sig_mceerr(int code, void __user *addr, short lsb)
+-int force_sig_mceerr(int code, void __user *addr, short lsb)
++int force_sig_mceerr(int code, void __user *addr, short lsb,
++		     unsigned long addr_ignored_bits,
++		     unsigned long addr_ignored_bits_mask)
+ {
+ 	struct kernel_siginfo info;
+ 
+@@ -1717,7 +1735,9 @@ int force_sig_mceerr(int code, void __user *addr, short lsb)
  	info.si_code = code;
  	info.si_addr = addr;
  	info.si_addr_lsb = lsb;
-+	info.si_xflags = 0;
+-	info.si_xflags = 0;
++	info.si_xflags = SI_XFLAG_IGNORED_BITS;
++	info.si_addr_ignored_bits = addr_ignored_bits;
++	info.si_addr_ignored_bits_mask = addr_ignored_bits_mask;
  	return force_sig_info(&info);
  }
  
-@@ -1729,6 +1732,7 @@ int send_sig_mceerr(int code, void __user *addr, short lsb, struct task_struct *
- 	info.si_code = code;
- 	info.si_addr = addr;
- 	info.si_addr_lsb = lsb;
-+	info.si_xflags = 0;
- 	return send_sig_info(info.si_signo, &info, t);
- }
- EXPORT_SYMBOL(send_sig_mceerr);
-@@ -1744,6 +1748,7 @@ int force_sig_bnderr(void __user *addr, void __user *lower, void __user *upper)
- 	info.si_addr  = addr;
- 	info.si_lower = lower;
- 	info.si_upper = upper;
-+	info.si_xflags = 0;
- 	return force_sig_info(&info);
- }
- 
-@@ -1758,6 +1763,7 @@ int force_sig_pkuerr(void __user *addr, u32 pkey)
- 	info.si_code  = SEGV_PKUERR;
- 	info.si_addr  = addr;
- 	info.si_pkey  = pkey;
-+	info.si_xflags = 0;
- 	return force_sig_info(&info);
- }
- #endif
-@@ -1774,6 +1780,7 @@ int force_sig_ptrace_errno_trap(int errno, void __user *addr)
- 	info.si_errno = errno;
- 	info.si_code  = TRAP_HWBKPT;
- 	info.si_addr  = addr;
-+	info.si_xflags = 0;
- 	return force_sig_info(&info);
- }
- 
-@@ -3290,6 +3297,7 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
- #ifdef __ARCH_SI_TRAPNO
+@@ -3298,6 +3318,8 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
  		to->si_trapno = from->si_trapno;
  #endif
-+		to->si_xflags = from->si_xflags;
+ 		to->si_xflags = from->si_xflags;
++		to->si_addr_ignored_bits = from->si_addr_ignored_bits;
++		to->si_addr_ignored_bits_mask = from->si_addr_ignored_bits_mask;
  		break;
  	case SIL_FAULT_MCEERR:
  		to->si_addr = ptr_to_compat(from->si_addr);
-@@ -3297,6 +3305,7 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
- 		to->si_trapno = from->si_trapno;
+@@ -3306,6 +3328,8 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
  #endif
  		to->si_addr_lsb = from->si_addr_lsb;
-+		to->si_xflags = from->si_xflags;
+ 		to->si_xflags = from->si_xflags;
++		to->si_addr_ignored_bits = from->si_addr_ignored_bits;
++		to->si_addr_ignored_bits_mask = from->si_addr_ignored_bits_mask;
  		break;
  	case SIL_FAULT_BNDERR:
  		to->si_addr = ptr_to_compat(from->si_addr);
-@@ -3305,6 +3314,7 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
- #endif
+@@ -3315,6 +3339,8 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
  		to->si_lower = ptr_to_compat(from->si_lower);
  		to->si_upper = ptr_to_compat(from->si_upper);
-+		to->si_xflags = from->si_xflags;
+ 		to->si_xflags = from->si_xflags;
++		to->si_addr_ignored_bits = from->si_addr_ignored_bits;
++		to->si_addr_ignored_bits_mask = from->si_addr_ignored_bits_mask;
  		break;
  	case SIL_FAULT_PKUERR:
  		to->si_addr = ptr_to_compat(from->si_addr);
-@@ -3312,6 +3322,7 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
- 		to->si_trapno = from->si_trapno;
+@@ -3323,6 +3349,8 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
  #endif
  		to->si_pkey = from->si_pkey;
-+		to->si_xflags = from->si_xflags;
+ 		to->si_xflags = from->si_xflags;
++		to->si_addr_ignored_bits = from->si_addr_ignored_bits;
++		to->si_addr_ignored_bits_mask = from->si_addr_ignored_bits_mask;
  		break;
  	case SIL_CHLD:
  		to->si_pid = from->si_pid;
-@@ -3370,6 +3381,7 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
- #ifdef __ARCH_SI_TRAPNO
+@@ -3382,6 +3410,8 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
  		to->si_trapno = from->si_trapno;
  #endif
-+		to->si_xflags = from->si_xflags;
+ 		to->si_xflags = from->si_xflags;
++		to->si_addr_ignored_bits = from->si_addr_ignored_bits;
++		to->si_addr_ignored_bits_mask = from->si_addr_ignored_bits_mask;
  		break;
  	case SIL_FAULT_MCEERR:
  		to->si_addr = compat_ptr(from->si_addr);
-@@ -3377,6 +3389,7 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
- 		to->si_trapno = from->si_trapno;
+@@ -3390,6 +3420,8 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
  #endif
  		to->si_addr_lsb = from->si_addr_lsb;
-+		to->si_xflags = from->si_xflags;
+ 		to->si_xflags = from->si_xflags;
++		to->si_addr_ignored_bits = from->si_addr_ignored_bits;
++		to->si_addr_ignored_bits_mask = from->si_addr_ignored_bits_mask;
  		break;
  	case SIL_FAULT_BNDERR:
  		to->si_addr = compat_ptr(from->si_addr);
-@@ -3385,6 +3398,7 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
- #endif
+@@ -3399,6 +3431,8 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
  		to->si_lower = compat_ptr(from->si_lower);
  		to->si_upper = compat_ptr(from->si_upper);
-+		to->si_xflags = from->si_xflags;
+ 		to->si_xflags = from->si_xflags;
++		to->si_addr_ignored_bits = from->si_addr_ignored_bits;
++		to->si_addr_ignored_bits_mask = from->si_addr_ignored_bits_mask;
  		break;
  	case SIL_FAULT_PKUERR:
  		to->si_addr = compat_ptr(from->si_addr);
-@@ -3392,6 +3406,7 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
- 		to->si_trapno = from->si_trapno;
+@@ -3407,6 +3441,8 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
  #endif
  		to->si_pkey = from->si_pkey;
-+		to->si_xflags = from->si_xflags;
+ 		to->si_xflags = from->si_xflags;
++		to->si_addr_ignored_bits = from->si_addr_ignored_bits;
++		to->si_addr_ignored_bits_mask = from->si_addr_ignored_bits_mask;
  		break;
  	case SIL_CHLD:
  		to->si_pid    = from->si_pid;
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index f1aa6433f404..e85e0bd4f0da 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -218,7 +218,7 @@ static int kill_proc(struct to_kill *tk, unsigned long pfn, int flags)
+ 	if (flags & MF_ACTION_REQUIRED) {
+ 		WARN_ON_ONCE(t != current);
+ 		ret = force_sig_mceerr(BUS_MCEERR_AR,
+-					 (void __user *)tk->addr, addr_lsb);
++					 (void __user *)tk->addr, addr_lsb, 0, 0);
+ 	} else {
+ 		/*
+ 		 * Don't use force here, it's convenient if the signal
 -- 
 2.28.0.220.ged08abb693-goog
 
