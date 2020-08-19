@@ -2,173 +2,137 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC15F24A893
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 23:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7676F24A8A8
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 23:39:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726570AbgHSVfg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Aug 2020 17:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59952 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726482AbgHSVfg (ORCPT
+        id S1726754AbgHSVjj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Aug 2020 17:39:39 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:47048 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726482AbgHSVji (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Aug 2020 17:35:36 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6604C061757
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 14:35:35 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id b17so242858ion.7
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 14:35:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WAP7x8x0foqdAgUJXCUbXtNF5KKqkXgkWQ24I3dADlA=;
-        b=SFRjK/3Rk8PcHuB/L93zfgQzVwqX5kDbHpUIb0oL2BGbijiRO1S+hC6HUSDKA2BJx9
-         JE6BGXjHLEcwAUZYCKcjZHUqeWnlxWZVPNebaBd6HhiNIsx/9qBiki7pmlZyevmZZ+vt
-         K+oKIbFI+dAJdUk1VbRoYqeLVtH7VVH/lpQQpOoWbgGojlqBDBjoCIzyPTPae27y5M5k
-         9RQ0ZhPbRZQXpQ8MX/7cOQHF+PGSdyl92s+L6b44SSJyyWBb4ngxsIg65vDeZy9ddU3l
-         /AO3BDe7da3Euj4PHqUeA8tw3TOF8LzdbllPqm/UkuO9KTdrGZ3Zmkh2lUSz0OZRUliU
-         QzZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WAP7x8x0foqdAgUJXCUbXtNF5KKqkXgkWQ24I3dADlA=;
-        b=jrNurYpkvkMfsJWwkj7albfRlMS6mAtxlKlpD04jAEo4iRBh2UDTvLaVHSxhEVMkih
-         AcW0NpB9Smy+aB/qqc1RTlNdc6Cv4nZkT4/mp+VubIcRSdkJDufBYyMsGtORZUDeFMes
-         mhrTHKjvIkNOS5/yBamOLK2xXVeHbSdgF6LihD9J5mdotBC8w430onaHLWyCj4t2+F2d
-         Q3wuagEe2x5fZHHQTK28X9I1r+iS9RfyjftASebGkiToOdrQ9oPPHIA9ICvkboc/T7hW
-         SeF24fr4Me8EPx9KZYKtHZDhhyD+Aut8nDFiiaYe00evJOT7xcjMqiFc2/APxcdREkYB
-         w1lA==
-X-Gm-Message-State: AOAM530xQ3Ift3KFnhmu40bkFRqbeO5zqcq2L/u6PCznWepncsHgwN1D
-        pqzSMo7qxsFdVS0IkLDLHSewYDCnvwiKZ7nhK6v1fQ==
-X-Google-Smtp-Source: ABdhPJywK64kEgYlf9g65it0YFXG84UBvWyptMMPeq3iPvTXG67vDOt8P/aosOE1T16rmASnV1GGpF0zYCd09abuvBM=
-X-Received: by 2002:a6b:b2cb:: with SMTP id b194mr22278287iof.105.1597872934959;
- Wed, 19 Aug 2020 14:35:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1597720138.git.pcc@google.com> <691510496a422023a2934d42b068493ed2d60ccc.1597720138.git.pcc@google.com>
- <20200819103000.GE6642@arm.com>
-In-Reply-To: <20200819103000.GE6642@arm.com>
-From:   Peter Collingbourne <pcc@google.com>
-Date:   Wed, 19 Aug 2020 14:35:23 -0700
-Message-ID: <CAMn1gO4y3x4y-RmvTXxVd-V5cxXmFDedDkvBCpAuGk9AFwYqgQ@mail.gmail.com>
-Subject: Re: [PATCH v9 2/6] arch: move SA_* definitions to generic headers
-To:     Dave Martin <Dave.Martin@arm.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Evgenii Stepanov <eugenis@google.com>,
-        Kostya Serebryany <kcc@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Will Deacon <will@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Spickett <david.spickett@linaro.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Richard Henderson <rth@twiddle.net>
+        Wed, 19 Aug 2020 17:39:38 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 770738EE1F3;
+        Wed, 19 Aug 2020 14:39:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1597873176;
+        bh=P5Nf0m7rIb0VsmSGOAvsuubsuKdLazFJ3PWgYJpOQYo=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=QZWzNY/RNv5GTOLC344QkDqvWPLVlJoIZZa/1SvyuRWg2n4Pm6sT1giNF3hS4dmal
+         2AgGeohtLxDuIx9MBYzKgKxS5vVGSeJVIhAssuqGCPXbCp5oJD0WlnV+VnG46ikJ5j
+         S3mk3MHG2hrcnsbyoMzE7CI3TS+/7QS3hnb2Remw=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id bHKZiEX-QbYl; Wed, 19 Aug 2020 14:39:36 -0700 (PDT)
+Received: from [153.66.254.174] (c-73-35-198-56.hsd1.wa.comcast.net [73.35.198.56])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 07F3F8EE0E9;
+        Wed, 19 Aug 2020 14:39:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1597873176;
+        bh=P5Nf0m7rIb0VsmSGOAvsuubsuKdLazFJ3PWgYJpOQYo=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=QZWzNY/RNv5GTOLC344QkDqvWPLVlJoIZZa/1SvyuRWg2n4Pm6sT1giNF3hS4dmal
+         2AgGeohtLxDuIx9MBYzKgKxS5vVGSeJVIhAssuqGCPXbCp5oJD0WlnV+VnG46ikJ5j
+         S3mk3MHG2hrcnsbyoMzE7CI3TS+/7QS3hnb2Remw=
+Message-ID: <1597873172.4030.2.camel@HansenPartnership.com>
+Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Allen <allen.lkml@gmail.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Kees Cook <keescook@chromium.org>,
+        Allen Pais <allen.cryptic@gmail.com>, jdike@addtoit.com,
+        richard@nod.at, anton.ivanov@cambridgegreys.com, 3chas3@gmail.com,
+        stefanr@s5r6.in-berlin.de, airlied@linux.ie,
+        Daniel Vetter <daniel@ffwll.ch>, sre@kernel.org,
+        kys@microsoft.com, deller@gmx.de, dmitry.torokhov@gmail.com,
+        jassisinghbrar@gmail.com, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, maximlevitsky@gmail.com, oakad@yahoo.com,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        mporter@kernel.crashing.org, alex.bou9@gmail.com,
+        broonie@kernel.org, martyn@welchs.me.uk, manohar.vanga@gmail.com,
+        mitch@sfgoth.com, David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-um@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux1394-devel@lists.sourceforge.net,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-hyperv@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-ntb@googlegroups.com, linux-s390@vger.kernel.org,
+        linux-spi@vger.kernel.org, devel@driverdev.osuosl.org,
+        Romain Perier <romain.perier@gmail.com>
+Date:   Wed, 19 Aug 2020 14:39:32 -0700
+In-Reply-To: <CAOMdWSJRR0BhjJK1FxD7UKxNd5sk4ycmEX6TYtJjRNR6UFAj6Q@mail.gmail.com>
+References: <20200817091617.28119-1-allen.cryptic@gmail.com>
+         <20200817091617.28119-2-allen.cryptic@gmail.com>
+         <b5508ca4-0641-7265-2939-5f03cbfab2e2@kernel.dk>
+         <202008171228.29E6B3BB@keescook>
+         <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
+         <202008171246.80287CDCA@keescook>
+         <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
+         <1597780833.3978.3.camel@HansenPartnership.com>
+         <f3312928-430c-25f3-7112-76f2754df080@kernel.dk>
+         <1597849185.3875.7.camel@HansenPartnership.com>
+         <CAOMdWSJRR0BhjJK1FxD7UKxNd5sk4ycmEX6TYtJjRNR6UFAj6Q@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 3:30 AM Dave Martin <Dave.Martin@arm.com> wrote:
->
-> On Mon, Aug 17, 2020 at 08:33:47PM -0700, Peter Collingbourne wrote:
-> > Most architectures with the exception of alpha, mips, parisc and
-> > sparc use the same values for these flags. Move their definitions into
-> > asm-generic/signal-defs.h and allow the architectures with non-standard
-> > values to override them. Also, document the non-standard flag values
-> > in order to make it easier to add new generic flags in the future.
-> >
-> > Signed-off-by: Peter Collingbourne <pcc@google.com>
-> > ---
-> > View this change in Gerrit: https://linux-review.googlesource.com/q/Ia3849f18b8009bf41faca374e701cdca36974528
-> >
-> >  arch/alpha/include/uapi/asm/signal.h   | 14 --------
-> >  arch/arm/include/uapi/asm/signal.h     | 28 ++-------------
-> >  arch/h8300/include/uapi/asm/signal.h   | 24 -------------
-> >  arch/ia64/include/uapi/asm/signal.h    | 24 -------------
-> >  arch/m68k/include/uapi/asm/signal.h    | 24 -------------
-> >  arch/mips/include/uapi/asm/signal.h    | 12 -------
-> >  arch/parisc/include/uapi/asm/signal.h  | 13 -------
-> >  arch/powerpc/include/uapi/asm/signal.h | 24 -------------
-> >  arch/s390/include/uapi/asm/signal.h    | 24 -------------
-> >  arch/sparc/include/uapi/asm/signal.h   |  4 +--
-> >  arch/x86/include/uapi/asm/signal.h     | 24 -------------
-> >  arch/xtensa/include/uapi/asm/signal.h  | 24 -------------
-> >  include/uapi/asm-generic/signal-defs.h | 47 ++++++++++++++++++++++++++
-> >  include/uapi/asm-generic/signal.h      | 29 ----------------
-> >  14 files changed, 51 insertions(+), 264 deletions(-)
->
-> Nice diffstat!
->
-> >
-> > diff --git a/arch/alpha/include/uapi/asm/signal.h b/arch/alpha/include/uapi/asm/signal.h
-> > index 74c750bf1c1a..a69dd8d080a8 100644
-> > --- a/arch/alpha/include/uapi/asm/signal.h
-> > +++ b/arch/alpha/include/uapi/asm/signal.h
-> > @@ -60,20 +60,6 @@ typedef unsigned long sigset_t;
-> >  #define SIGRTMIN     32
-> >  #define SIGRTMAX     _NSIG
-> >
-> > -/*
-> > - * SA_FLAGS values:
-> > - *
-> > - * SA_ONSTACK indicates that a registered stack_t will be used.
-> > - * SA_RESTART flag to get restarting signals (which were the default long ago)
-> > - * SA_NOCLDSTOP flag to turn off SIGCHLD when children stop.
-> > - * SA_RESETHAND clears the handler when the signal is delivered.
-> > - * SA_NOCLDWAIT flag on SIGCHLD to inhibit zombies.
-> > - * SA_NODEFER prevents the current signal from being masked in the handler.
-> > - *
-> > - * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
-> > - * Unix names RESETHAND and NODEFER respectively.
-> > - */
-> > -
-> >  #define SA_ONSTACK   0x00000001
-> >  #define SA_RESTART   0x00000002
-> >  #define SA_NOCLDSTOP 0x00000004
-> > diff --git a/arch/arm/include/uapi/asm/signal.h b/arch/arm/include/uapi/asm/signal.h
-> > index 9b4185ba4f8a..7727f0984d26 100644
-> > --- a/arch/arm/include/uapi/asm/signal.h
-> > +++ b/arch/arm/include/uapi/asm/signal.h
-> > @@ -60,33 +60,11 @@ typedef unsigned long sigset_t;
-> >  #define SIGSWI               32
-> >
-> >  /*
-> > - * SA_FLAGS values:
-> > - *
-> > - * SA_NOCLDSTOP              flag to turn off SIGCHLD when children stop.
-> > - * SA_NOCLDWAIT              flag on SIGCHLD to inhibit zombies.
-> > - * SA_SIGINFO                deliver the signal with SIGINFO structs
-> > - * SA_THIRTYTWO              delivers the signal in 32-bit mode, even if the task
-> > - *                   is running in 26-bit.
-> > - * SA_ONSTACK                allows alternate signal stacks (see sigaltstack(2)).
-> > - * SA_RESTART                flag to get restarting signals (which were the default long ago)
-> > - * SA_NODEFER                prevents the current signal from being masked in the handler.
-> > - * SA_RESETHAND              clears the handler when the signal is delivered.
-> > - *
-> > - * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
-> > - * Unix names RESETHAND and NODEFER respectively.
-> > + * SA_THIRTYTWO historically meant deliver the signal in 32-bit mode, even if
-> > + * the task is running in 26-bit. But since the kernel no longer supports
-> > + * 26-bit mode, the flag has no effect.
-> >   */
-> > -#define SA_NOCLDSTOP 0x00000001
-> > -#define SA_NOCLDWAIT 0x00000002
-> > -#define SA_SIGINFO   0x00000004
-> >  #define SA_THIRTYTWO 0x02000000
->
-> Can we add a placeholder for this in the common header?  We don't want
-> people accidentally defining a new generic flag that clashes with this.
+On Wed, 2020-08-19 at 21:54 +0530, Allen wrote:
+> > [...]
+> > > > Since both threads seem to have petered out, let me suggest in
+> > > > kernel.h:
+> > > > 
+> > > > #define cast_out(ptr, container, member) \
+> > > >     container_of(ptr, typeof(*container), member)
+> > > > 
+> > > > It does what you want, the argument order is the same as
+> > > > container_of with the only difference being you name the
+> > > > containing structure instead of having to specify its type.
+> > > 
+> > > Not to incessantly bike shed on the naming, but I don't like
+> > > cast_out, it's not very descriptive. And it has connotations of
+> > > getting rid of something, which isn't really true.
+> > 
+> > Um, I thought it was exactly descriptive: you're casting to the
+> > outer container.  I thought about following the C++ dynamic casting
+> > style, so out_cast(), but that seemed a bit pejorative.  What about
+> > outer_cast()?
+> > 
+> > > FWIW, I like the from_ part of the original naming, as it has
+> > > some clues as to what is being done here. Why not just
+> > > from_container()? That should immediately tell people what it
+> > > does without having to look up the implementation, even before
+> > > this becomes a part of the accepted coding norm.
+> > 
+> > I'm not opposed to container_from() but it seems a little less
+> > descriptive than outer_cast() but I don't really care.  I always
+> > have to look up container_of() when I'm using it so this would just
+> > be another macro of that type ...
+> > 
+> 
+>  So far we have a few which have been suggested as replacement
+> for from_tasklet()
+> 
+> - out_cast() or outer_cast()
+> - from_member().
+> - container_from() or from_container()
+> 
+> from_container() sounds fine, would trimming it a bit work? like
+> from_cont().
 
-This flag (bit 25) is covered by the comment in
-include/uapi/asm-generic/signal-defs.h that reads:
+I'm fine with container_from().  It's the same form as container_of()
+and I think we need urgent agreement to not stall everything else so
+the most innocuous name is likely to get the widest acceptance.
 
-/*
- * The following bits are used in architecture-specific SA_* definitions and
- * should be avoided for new generic flags: 3, 4, 5, 6, 7, 8, 9, 16, 24, 25, 26.
- */
+James
 
-Peter
