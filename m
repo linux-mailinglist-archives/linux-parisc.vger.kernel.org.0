@@ -2,62 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 727ED24A9AC
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Aug 2020 00:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B4B024A9FE
+	for <lists+linux-parisc@lfdr.de>; Thu, 20 Aug 2020 01:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726342AbgHSWoX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Aug 2020 18:44:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42510 "EHLO
+        id S1726715AbgHSXkI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Aug 2020 19:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726466AbgHSWoV (ORCPT
+        with ESMTP id S1726342AbgHSXkI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Aug 2020 18:44:21 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D515C061757
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 15:44:21 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id b17so400250ion.7
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 15:44:21 -0700 (PDT)
+        Wed, 19 Aug 2020 19:40:08 -0400
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9A5AC061757
+        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 16:40:07 -0700 (PDT)
+Received: by mail-vs1-xe43.google.com with SMTP id y8so223386vsq.8
+        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 16:40:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=3aI3GYQ8yCVJYE2jDTBDvoVmD6exr+CyvcwBd7jUGj4=;
-        b=I2tyLF5tOSbc3/gUUps856aJrJA2JazzNCPVe0EHbe6TJdQB5bteyeeDWbcy4l7y7S
-         v5nkUaRWh7R4l8kCEDYMPUqEfAszf9AhupjWCrDcfE9RIkUgy90qlnTEFBDdP4gLzcdN
-         6AgetYGayDjh52fOUxhWCZ01DdeJbh4HpEOLaV50wi93lJ7apWVZmlNTnWXMihEA4F+Y
-         cRc6uNOIKqi/Tjw/32pMY7pkp+px+vv429SEzKYAiXhJ69WEK9xJAHpXnwpr4NICpPO2
-         Oq/JEz8LhEa575ogZ/1yXGg4+Q9f3g9Bei/mr/MHhGtlUi2ilOQVXvC18IiPu2PRaTl/
-         iOcw==
+        bh=KhiCG1w9GuR0gbWinCTK5o/KvX/CL8jWKufJDJ+qAqY=;
+        b=m+JdwNcJonu4+ObU6gfwHqeAIyM7d+7C7UGfcWp2mXREHaVOQq5MgAM8Kot1Zul/Is
+         KeWLoR9j3TN2vdPcvqwoHYPxcuMvLwVjcyz9mJsCGmP3oUtv4hJr35uRiRM0bu1dDYw+
+         evWES2ktlkTpnKu/3iIBYVHJtwPKmlLhQKS+S52vXmEypX4xOqOZ8wBSlF0LQm0ZsB7d
+         j29VCucJKCVHfTQJC3MPjTRUrEC5wvUKqCWgIA7qlzpATEGgcvAK4fe2LlD64U5va9GH
+         r05LSr4hLihPjEFWIa0EX2GG4CGwwPtFREw93GGWPdo/bU+vunL3uMHJ7Y7gutXezPH7
+         Jywg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3aI3GYQ8yCVJYE2jDTBDvoVmD6exr+CyvcwBd7jUGj4=;
-        b=tAhTWWTgFUTQzG085b1S++AC8m1zCoVFADr+Korqvt2oasWubUcj5Md0D+upCs8zWa
-         E5QNEpxK96i0etz1lSvjJlDeb8XCW7LMwqeYsjbA4irU0BPAGJQGrfrC71we48JGRHzq
-         lwpgqOfBoEuQAh1gry3s+XpndoJ8WKF7o7ax5DEWWSoV1f63QWDzuTtAqvxSSWBCIhph
-         PqZb+ZjldVFVC49XQIrS/laG/2IOVSFtBprsvHORLHJXnT5RR2Tb/VXyV37cpMlQ9p7m
-         HGOAzl9Dw/BGJbHBoDB9OtKSALo3Hy4zs4kyoMXz09tcJUcEhG4XT57IOmz2QzGhdtIi
-         VNxw==
-X-Gm-Message-State: AOAM532qwhUMXIpD/DVjD+O+zOI5sZ2W1BNC4JiCzElekChzfir8OMya
-        tkGqNhAP0N61iKM+E018lO0luaiA7C66GuKGeNlGPg==
-X-Google-Smtp-Source: ABdhPJzhPYeraUsteKY/Vuc+QwNIWvBHTQTbcPFuwcWlHSICK2lAjmat4u6qYG6NNZdlR89aG1oI0KLodOfD/XRpZCI=
-X-Received: by 2002:a02:730b:: with SMTP id y11mr595522jab.126.1597877060398;
- Wed, 19 Aug 2020 15:44:20 -0700 (PDT)
+        bh=KhiCG1w9GuR0gbWinCTK5o/KvX/CL8jWKufJDJ+qAqY=;
+        b=I/lOSYRZhRE3M+8+ViZJ+HxVINF3EeUYwz2fqE8RvlLHzjlhkcqCtpiTrXr265CPap
+         /mtyLBOPtWRwzB3buv9byjEwHv7rj8t6XHZZjjUxvI/XjfMlhyS3g5FzQTHvHMLjcwVz
+         p5p+GmeY8Enu/Wm6RSdjBuaOBWgq92Yob74UBRf6skF9wFDCkGpuAydJXeDvDY17dd+N
+         WarrpefouFDBn3ELeX5Z7OUcvX5iJPenxcP3+gdOD37aNPqEHXyltcLqY0BdvzHFOxcL
+         /uvbY6pHQzpm1ZDrJBjLUAxsnovSN47yM3KWlbvBg9yR6bgLK5g2Rus4nT3bZPz4eToY
+         Kbww==
+X-Gm-Message-State: AOAM530E4U9o2jI8DJrw17RmYvIw3aermtWiCqeahlQwBD1n9DugQRja
+        i6Lj13y9GUrKwqWgKW/ovwoGvAQzsCJj89V7FrFCIQ==
+X-Google-Smtp-Source: ABdhPJysZE+IyEq37xBzcwadGupZNoKlhwL4mOGmNYvVh9lUJ678hgZFOOse2O7iOHBUFhLN//pTCVNt2FBoxVbA/Js=
+X-Received: by 2002:a67:69c3:: with SMTP id e186mr455373vsc.20.1597880405201;
+ Wed, 19 Aug 2020 16:40:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1597720138.git.pcc@google.com> <691510496a422023a2934d42b068493ed2d60ccc.1597720138.git.pcc@google.com>
- <CAMuHMdV9teGX8pJg5H6qYhAh=vB5D8wYddhcEyJBOGWPh_jfEQ@mail.gmail.com>
-In-Reply-To: <CAMuHMdV9teGX8pJg5H6qYhAh=vB5D8wYddhcEyJBOGWPh_jfEQ@mail.gmail.com>
+References: <cover.1597720138.git.pcc@google.com> <68bd2d6544fb17bbe2fb90862e28ec38e079549a.1597720138.git.pcc@google.com>
+ <20200819103948.GF6642@arm.com>
+In-Reply-To: <20200819103948.GF6642@arm.com>
 From:   Peter Collingbourne <pcc@google.com>
-Date:   Wed, 19 Aug 2020 15:44:08 -0700
-Message-ID: <CAMn1gO4MKTgyYpL3eidW4nK2Ve1JcBRULHt2DFTZ6N59-GxrOw@mail.gmail.com>
-Subject: Re: [PATCH v9 2/6] arch: move SA_* definitions to generic headers
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 19 Aug 2020 16:39:53 -0700
+Message-ID: <CAMn1gO5dW8MyPyOvZKk0Au8ggeqJA=mkvZpXZDWuJDLuZh2Fpg@mail.gmail.com>
+Subject: Re: [PATCH v9 3/6] signal: clear non-uapi flag bits when
+ passing/returning sa_flags
+To:     Dave Martin <Dave.Martin@arm.com>
 Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         Evgenii Stepanov <eugenis@google.com>,
         Kostya Serebryany <kcc@google.com>,
         Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Dave Martin <Dave.Martin@arm.com>,
         Will Deacon <will@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
         "Eric W. Biederman" <ebiederm@xmission.com>,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
@@ -73,83 +73,169 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 12:14 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
+On Wed, Aug 19, 2020 at 3:39 AM Dave Martin <Dave.Martin@arm.com> wrote:
 >
-> Hi Peter,
+> On Mon, Aug 17, 2020 at 08:33:48PM -0700, Peter Collingbourne wrote:
 >
-> On Tue, Aug 18, 2020 at 5:39 AM Peter Collingbourne <pcc@google.com> wrote:
-> > Most architectures with the exception of alpha, mips, parisc and
-> > sparc use the same values for these flags. Move their definitions into
-> > asm-generic/signal-defs.h and allow the architectures with non-standard
-> > values to override them. Also, document the non-standard flag values
-> > in order to make it easier to add new generic flags in the future.
+> Nit: please say what the patch does.  Subject line should summarise
+> what is done, but should not add new information that is not present in
+> the description proper.
+>
+> (Same for all the other patches.)
+
+Will do.
+
+> > This allows userspace to detect missing support for flag bits and
+> > allows the kernel to use non-uapi bits internally, as we are already
+> > doing in arch/x86 for two flag bits. Now that this change is in
+> > place, we no longer need the code in arch/x86 that was hiding these
+> > bits from userspace, so remove it.
 > >
 > > Signed-off-by: Peter Collingbourne <pcc@google.com>
->
-> Thanks for your patch!
->
-> >  arch/m68k/include/uapi/asm/signal.h    | 24 -------------
->
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
->
-> > --- a/include/uapi/asm-generic/signal-defs.h
-> > +++ b/include/uapi/asm-generic/signal-defs.h
-> > @@ -4,6 +4,53 @@
+> > ---
+> > View this change in Gerrit: https://linux-review.googlesource.com/q/I35aab6f5be932505d90f3b3450c083b4db1eca86
 > >
-> >  #include <linux/compiler.h>
+> >  arch/arm/include/asm/signal.h    |  4 ++++
+> >  arch/parisc/include/asm/signal.h |  4 ++++
+> >  arch/x86/kernel/signal_compat.c  |  7 -------
+> >  include/linux/signal_types.h     | 12 ++++++++++++
+> >  kernel/signal.c                  | 10 ++++++++++
+> >  5 files changed, 30 insertions(+), 7 deletions(-)
 > >
-> > +/*
-> > + * SA_FLAGS values:
-> > + *
-> > + * SA_ONSTACK indicates that a registered stack_t will be used.
-> > + * SA_RESTART flag to get restarting signals (which were the default long ago)
-> > + * SA_NOCLDSTOP flag to turn off SIGCHLD when children stop.
-> > + * SA_RESETHAND clears the handler when the signal is delivered.
-> > + * SA_NOCLDWAIT flag on SIGCHLD to inhibit zombies.
-> > + * SA_NODEFER prevents the current signal from being masked in the handler.
+> > diff --git a/arch/arm/include/asm/signal.h b/arch/arm/include/asm/signal.h
+> > index 65530a042009..d1070a783993 100644
+> > --- a/arch/arm/include/asm/signal.h
+> > +++ b/arch/arm/include/asm/signal.h
+> > @@ -17,6 +17,10 @@ typedef struct {
+> >       unsigned long sig[_NSIG_WORDS];
+> >  } sigset_t;
+> >
+> > +#define SA_UAPI_FLAGS                                                          \
+> > +     (SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_THIRTYTWO |             \
+> > +      SA_RESTORER | SA_ONSTACK | SA_RESTART | SA_NODEFER | SA_RESETHAND)
+> > +
 >
-> Perhaps the order should match the order of the definitions below?
-> Then it becomes obvious SA_SIGINFO is not documented (it was on arm).
+> I wonder whether all these per-arch definitions will tend to bitrot when
+> people add new common flags.
+>
+> Can we have a common definition for the common bits, and just add the
+> extra arch-specific ones here?
 
-That makes sense. I'll copy the deleted arm comment for SA_SIGINFO here as well.
+I think so. We could have something like:
 
-> > + *
-> > + * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
-> > + * Unix names RESETHAND and NODEFER respectively.
->
-> I think moving this last comment below, just above the definitions of
-> SA_NOMASK and SA_ONESHOT, would make this easier to read.
->
-> > + */
-> > +#ifndef SA_NOCLDSTOP
-> > +#define SA_NOCLDSTOP   0x00000001
-> > +#endif
-> > +#ifndef SA_NOCLDWAIT
-> > +#define SA_NOCLDWAIT   0x00000002
-> > +#endif
-> > +#ifndef SA_SIGINFO
-> > +#define SA_SIGINFO     0x00000004
-> > +#endif
-> > +#ifndef SA_ONSTACK
-> > +#define SA_ONSTACK     0x08000000
-> > +#endif
-> > +#ifndef SA_RESTART
-> > +#define SA_RESTART     0x10000000
-> > +#endif
-> > +#ifndef SA_NODEFER
-> > +#define SA_NODEFER     0x40000000
-> > +#endif
-> > +#ifndef SA_RESETHAND
-> > +#define SA_RESETHAND   0x80000000
-> > +#endif
-> > +/*
-> > + * The following bits are used in architecture-specific SA_* definitions and
-> > + * should be avoided for new generic flags: 3, 4, 5, 6, 7, 8, 9, 16, 24, 25, 26.
->
-> And I think this belongs to the previous comment block.
+#define ARCH_UAPI_SA_FLAGS SA_THIRTYTWO
 
-I put the comment block here to make it more likely that it will be
-seen when adding new flags, but either location is fine with me.
+here. Then in signal_types.h we can do:
+
+#ifndef ARCH_UAPI_SA_FLAGS
+#define ARCH_UAPI_SA_FLAGS 0
+#endif
+
+#define UAPI_SA_FLAGS (... | ARCH_UAPI_SA_FLAGS)
+
+I'll do that in v10.
+
+> Also, I wonder whether we should avoid the "SA_" prefix here.  Maybe
+> UAPI_SA_FLAGS?
+
+Sounds good to me.
+
+>
+> >  #define __ARCH_HAS_SA_RESTORER
+> >
+> >  #include <asm/sigcontext.h>
+> > diff --git a/arch/parisc/include/asm/signal.h b/arch/parisc/include/asm/signal.h
+> > index 715c96ba2ec8..ad06e14f6e8a 100644
+> > --- a/arch/parisc/include/asm/signal.h
+> > +++ b/arch/parisc/include/asm/signal.h
+> > @@ -21,6 +21,10 @@ typedef struct {
+> >       unsigned long sig[_NSIG_WORDS];
+> >  } sigset_t;
+> >
+> > +#define SA_UAPI_FLAGS                                                          \
+> > +     (SA_ONSTACK | SA_RESETHAND | SA_NOCLDSTOP | SA_SIGINFO | SA_NODEFER |  \
+> > +      SA_RESTART | SA_NOCLDWAIT | _SA_SIGGFAULT)
+> > +
+> >  #include <asm/sigcontext.h>
+> >
+> >  #endif /* !__ASSEMBLY */
+> > diff --git a/arch/x86/kernel/signal_compat.c b/arch/x86/kernel/signal_compat.c
+> > index 9ccbf0576cd0..c599013ae8cb 100644
+> > --- a/arch/x86/kernel/signal_compat.c
+> > +++ b/arch/x86/kernel/signal_compat.c
+> > @@ -165,16 +165,9 @@ void sigaction_compat_abi(struct k_sigaction *act, struct k_sigaction *oact)
+> >  {
+> >       signal_compat_build_tests();
+> >
+> > -     /* Don't leak in-kernel non-uapi flags to user-space */
+> > -     if (oact)
+> > -             oact->sa.sa_flags &= ~(SA_IA32_ABI | SA_X32_ABI);
+> > -
+> >       if (!act)
+> >               return;
+> >
+> > -     /* Don't let flags to be set from userspace */
+> > -     act->sa.sa_flags &= ~(SA_IA32_ABI | SA_X32_ABI);
+> > -
+> >       if (in_ia32_syscall())
+> >               act->sa.sa_flags |= SA_IA32_ABI;
+> >       if (in_x32_syscall())
+> > diff --git a/include/linux/signal_types.h b/include/linux/signal_types.h
+> > index f8a90ae9c6ec..e792f29b5846 100644
+> > --- a/include/linux/signal_types.h
+> > +++ b/include/linux/signal_types.h
+> > @@ -68,4 +68,16 @@ struct ksignal {
+> >       int sig;
+> >  };
+> >
+> > +#ifndef SA_UAPI_FLAGS
+> > +#ifdef SA_RESTORER
+> > +#define SA_UAPI_FLAGS                                                          \
+> > +     (SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
+> > +      SA_NODEFER | SA_RESETHAND | SA_RESTORER)
+> > +#else
+> > +#define SA_UAPI_FLAGS                                                          \
+> > +     (SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
+> > +      SA_NODEFER | SA_RESETHAND)
+> > +#endif
+> > +#endif
+> > +
+> >  #endif /* _LINUX_SIGNAL_TYPES_H */
+> > diff --git a/kernel/signal.c b/kernel/signal.c
+> > index 42b67d2cea37..348b7981f1ff 100644
+> > --- a/kernel/signal.c
+> > +++ b/kernel/signal.c
+> > @@ -3984,6 +3984,16 @@ int do_sigaction(int sig, struct k_sigaction *act, struct k_sigaction *oact)
+> >       if (oact)
+> >               *oact = *k;
+> >
+> > +     /*
+> > +      * Clear unknown flag bits in order to allow userspace to detect missing
+> > +      * support for flag bits and to allow the kernel to use non-uapi bits
+> > +      * internally.
+> > +      */
+> > +     if (act)
+> > +             act->sa.sa_flags &= SA_UAPI_FLAGS;
+> > +     if (oact)
+> > +             oact->sa.sa_flags &= SA_UAPI_FLAGS;
+> > +
+>
+> Seems reasonable.
+
+Thanks. I also decided to check how other operating systems handle
+unknown flag bits in sigaction.sa_flags. It looks like OpenBSD and
+illumos also accept unknown bits but (implicitly, as a result of using
+a different internal representation) end up clearing them in oldact:
+
+https://github.com/openbsd/src/blob/f634a6a4b5bf832e9c1de77f7894ae2625e74484/sys/kern/kern_sig.c#L278
+https://github.com/illumos/illumos-gate/blob/76f19f5fdc974fe5be5c82a556e43a4df93f1de1/usr/src/uts/common/syscall/sigaction.c#L86
+
+and FreeBSD and NetBSD fail the syscall if unknown bits are set:
+
+https://github.com/freebsd/freebsd/blob/eded70c37057857c6e23fae51f86b8f8f43cd2d0/sys/kern/kern_sig.c#L699
+https://github.com/NetBSD/src/blob/3365779becdcedfca206091a645a0e8e22b2946e/sys/kern/sys_sig.c#L473
+
+So there is some precedent for doing what we're planning to do here,
+which makes it yet more likely that we'll be okay doing this.
 
 Peter
