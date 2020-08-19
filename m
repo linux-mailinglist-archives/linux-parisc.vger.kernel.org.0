@@ -2,153 +2,173 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7161B24A473
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 18:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC15F24A893
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 23:35:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726968AbgHSQ41 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Aug 2020 12:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44924 "EHLO
+        id S1726570AbgHSVfg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Aug 2020 17:35:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726752AbgHSQ4R (ORCPT
+        with ESMTP id S1726482AbgHSVfg (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Aug 2020 12:56:17 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB32C061383
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 09:56:15 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id kr4so1384096pjb.2
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 09:56:15 -0700 (PDT)
+        Wed, 19 Aug 2020 17:35:36 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6604C061757
+        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 14:35:35 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id b17so242858ion.7
+        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 14:35:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=DyPe34DueaqLfEcDqZqm300kn/odPwqy1uJt22bP0Z8=;
-        b=XsGUJB1Hdc8az/rXuro1bWhBsdgGdQHjYKQpuunAo8x0WekUdWBNsmSDFJj67GVWVG
-         5hPdTKlI6scfsCliWtIOLtIYsVj1YwZaDB5Moe7+6/awpbvAiGHWPGqlMMiQH755AjTS
-         vfPiJNDbB+aPu6VjtibhyAOy9LSk3+Tr2jZ+44/eXBtbf+XOZ8K+VQwL9BGEgF8JGQKK
-         5KG7zpuu/Xea1f/72jgUaeUpmt4D/ORaIe5NpGI/tYWzxvMEzO/L884n90j+BH7HiH1m
-         QMIIcf8a02yI8nCtJ4GjS4kGwrIFsNa8Q8Tri7Y3/f7lv1J5QYlIRrGUMNjHynb2RGMA
-         GacA==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WAP7x8x0foqdAgUJXCUbXtNF5KKqkXgkWQ24I3dADlA=;
+        b=SFRjK/3Rk8PcHuB/L93zfgQzVwqX5kDbHpUIb0oL2BGbijiRO1S+hC6HUSDKA2BJx9
+         JE6BGXjHLEcwAUZYCKcjZHUqeWnlxWZVPNebaBd6HhiNIsx/9qBiki7pmlZyevmZZ+vt
+         K+oKIbFI+dAJdUk1VbRoYqeLVtH7VVH/lpQQpOoWbgGojlqBDBjoCIzyPTPae27y5M5k
+         9RQ0ZhPbRZQXpQ8MX/7cOQHF+PGSdyl92s+L6b44SSJyyWBb4ngxsIg65vDeZy9ddU3l
+         /AO3BDe7da3Euj4PHqUeA8tw3TOF8LzdbllPqm/UkuO9KTdrGZ3Zmkh2lUSz0OZRUliU
+         QzZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=DyPe34DueaqLfEcDqZqm300kn/odPwqy1uJt22bP0Z8=;
-        b=UzGaPvRALsa0If3xn/oVpQuxeWZSTUW1hJNSiZ3ev3aGBNiR8zVWTMedHDP94BVjPm
-         zd/qP6AosjbLKAPCsyRYvsHJvIbwWaZdZd4xIQk9WKneN0NSKVcWF0ffv3pUZHVRiu45
-         oFj3hWa5I+ZReHmuQwrxIEJ1OWQizzg9aRCbr8Cm742kQ+kOVXRQVdRNOGqOT3HjsJJ2
-         rrCrR87JUZE/8K4yR5wP4wNq+AkV90e9k0URaMElD7YzeRim5S/OmtP2tVBp1VFuA14E
-         vNtzyhGUqn+aiv/TTM+mIjGBMlQXDCqPh9xusNVl0qiSSGleiOHU0d0o3esj6+M9qB83
-         biOQ==
-X-Gm-Message-State: AOAM533z9MuMoMjJofd/hYZtVeFXBlW1CrI5d06IrOPwEHx036lj73pj
-        pZEAPkVpIK/fG615A9/frBAN1Q==
-X-Google-Smtp-Source: ABdhPJwmU9GVpeA/a5GSwGnni05DgMGKqd87OvDU6WClq1X+wlrKxKnBzQboSPP7uq4T48DrxExHZQ==
-X-Received: by 2002:a17:90a:f2c7:: with SMTP id gt7mr4669042pjb.204.1597856175023;
-        Wed, 19 Aug 2020 09:56:15 -0700 (PDT)
-Received: from [192.168.1.182] ([66.219.217.173])
-        by smtp.gmail.com with ESMTPSA id w23sm25765910pgj.5.2020.08.19.09.56.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Aug 2020 09:56:14 -0700 (PDT)
-Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
-To:     Allen <allen.lkml@gmail.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Allen Pais <allen.cryptic@gmail.com>, jdike@addtoit.com,
-        richard@nod.at, anton.ivanov@cambridgegreys.com, 3chas3@gmail.com,
-        stefanr@s5r6.in-berlin.de, airlied@linux.ie,
-        Daniel Vetter <daniel@ffwll.ch>, sre@kernel.org,
-        kys@microsoft.com, deller@gmx.de, dmitry.torokhov@gmail.com,
-        jassisinghbrar@gmail.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, maximlevitsky@gmail.com, oakad@yahoo.com,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        mporter@kernel.crashing.org, alex.bou9@gmail.com,
-        broonie@kernel.org, martyn@welchs.me.uk, manohar.vanga@gmail.com,
-        mitch@sfgoth.com, David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-um@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux1394-devel@lists.sourceforge.net,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-hyperv@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-ntb@googlegroups.com, linux-s390@vger.kernel.org,
-        linux-spi@vger.kernel.org, devel@driverdev.osuosl.org,
-        Romain Perier <romain.perier@gmail.com>
-References: <20200817091617.28119-1-allen.cryptic@gmail.com>
- <20200817091617.28119-2-allen.cryptic@gmail.com>
- <b5508ca4-0641-7265-2939-5f03cbfab2e2@kernel.dk>
- <202008171228.29E6B3BB@keescook>
- <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
- <202008171246.80287CDCA@keescook>
- <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
- <1597780833.3978.3.camel@HansenPartnership.com>
- <f3312928-430c-25f3-7112-76f2754df080@kernel.dk>
- <1597849185.3875.7.camel@HansenPartnership.com>
- <CAOMdWSJRR0BhjJK1FxD7UKxNd5sk4ycmEX6TYtJjRNR6UFAj6Q@mail.gmail.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <2b1a5987-9b54-d63e-b3da-d3024505776c@kernel.dk>
-Date:   Wed, 19 Aug 2020 10:56:08 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WAP7x8x0foqdAgUJXCUbXtNF5KKqkXgkWQ24I3dADlA=;
+        b=jrNurYpkvkMfsJWwkj7albfRlMS6mAtxlKlpD04jAEo4iRBh2UDTvLaVHSxhEVMkih
+         AcW0NpB9Smy+aB/qqc1RTlNdc6Cv4nZkT4/mp+VubIcRSdkJDufBYyMsGtORZUDeFMes
+         mhrTHKjvIkNOS5/yBamOLK2xXVeHbSdgF6LihD9J5mdotBC8w430onaHLWyCj4t2+F2d
+         Q3wuagEe2x5fZHHQTK28X9I1r+iS9RfyjftASebGkiToOdrQ9oPPHIA9ICvkboc/T7hW
+         SeF24fr4Me8EPx9KZYKtHZDhhyD+Aut8nDFiiaYe00evJOT7xcjMqiFc2/APxcdREkYB
+         w1lA==
+X-Gm-Message-State: AOAM530xQ3Ift3KFnhmu40bkFRqbeO5zqcq2L/u6PCznWepncsHgwN1D
+        pqzSMo7qxsFdVS0IkLDLHSewYDCnvwiKZ7nhK6v1fQ==
+X-Google-Smtp-Source: ABdhPJywK64kEgYlf9g65it0YFXG84UBvWyptMMPeq3iPvTXG67vDOt8P/aosOE1T16rmASnV1GGpF0zYCd09abuvBM=
+X-Received: by 2002:a6b:b2cb:: with SMTP id b194mr22278287iof.105.1597872934959;
+ Wed, 19 Aug 2020 14:35:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAOMdWSJRR0BhjJK1FxD7UKxNd5sk4ycmEX6TYtJjRNR6UFAj6Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <cover.1597720138.git.pcc@google.com> <691510496a422023a2934d42b068493ed2d60ccc.1597720138.git.pcc@google.com>
+ <20200819103000.GE6642@arm.com>
+In-Reply-To: <20200819103000.GE6642@arm.com>
+From:   Peter Collingbourne <pcc@google.com>
+Date:   Wed, 19 Aug 2020 14:35:23 -0700
+Message-ID: <CAMn1gO4y3x4y-RmvTXxVd-V5cxXmFDedDkvBCpAuGk9AFwYqgQ@mail.gmail.com>
+Subject: Re: [PATCH v9 2/6] arch: move SA_* definitions to generic headers
+To:     Dave Martin <Dave.Martin@arm.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Evgenii Stepanov <eugenis@google.com>,
+        Kostya Serebryany <kcc@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Will Deacon <will@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        linux-parisc@vger.kernel.org,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Spickett <david.spickett@linaro.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Richard Henderson <rth@twiddle.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 8/19/20 9:24 AM, Allen wrote:
->> [...]
->>>> Since both threads seem to have petered out, let me suggest in
->>>> kernel.h:
->>>>
->>>> #define cast_out(ptr, container, member) \
->>>>     container_of(ptr, typeof(*container), member)
->>>>
->>>> It does what you want, the argument order is the same as
->>>> container_of with the only difference being you name the containing
->>>> structure instead of having to specify its type.
->>>
->>> Not to incessantly bike shed on the naming, but I don't like
->>> cast_out, it's not very descriptive. And it has connotations of
->>> getting rid of something, which isn't really true.
->>
->> Um, I thought it was exactly descriptive: you're casting to the outer
->> container.  I thought about following the C++ dynamic casting style, so
->> out_cast(), but that seemed a bit pejorative.  What about outer_cast()?
->>
->>> FWIW, I like the from_ part of the original naming, as it has some
->>> clues as to what is being done here. Why not just from_container()?
->>> That should immediately tell people what it does without having to
->>> look up the implementation, even before this becomes a part of the
->>> accepted coding norm.
->>
->> I'm not opposed to container_from() but it seems a little less
->> descriptive than outer_cast() but I don't really care.  I always have
->> to look up container_of() when I'm using it so this would just be
->> another macro of that type ...
->>
-> 
->  So far we have a few which have been suggested as replacement
-> for from_tasklet()
-> 
-> - out_cast() or outer_cast()
-> - from_member().
-> - container_from() or from_container()
-> 
-> from_container() sounds fine, would trimming it a bit work? like from_cont().
+On Wed, Aug 19, 2020 at 3:30 AM Dave Martin <Dave.Martin@arm.com> wrote:
+>
+> On Mon, Aug 17, 2020 at 08:33:47PM -0700, Peter Collingbourne wrote:
+> > Most architectures with the exception of alpha, mips, parisc and
+> > sparc use the same values for these flags. Move their definitions into
+> > asm-generic/signal-defs.h and allow the architectures with non-standard
+> > values to override them. Also, document the non-standard flag values
+> > in order to make it easier to add new generic flags in the future.
+> >
+> > Signed-off-by: Peter Collingbourne <pcc@google.com>
+> > ---
+> > View this change in Gerrit: https://linux-review.googlesource.com/q/Ia3849f18b8009bf41faca374e701cdca36974528
+> >
+> >  arch/alpha/include/uapi/asm/signal.h   | 14 --------
+> >  arch/arm/include/uapi/asm/signal.h     | 28 ++-------------
+> >  arch/h8300/include/uapi/asm/signal.h   | 24 -------------
+> >  arch/ia64/include/uapi/asm/signal.h    | 24 -------------
+> >  arch/m68k/include/uapi/asm/signal.h    | 24 -------------
+> >  arch/mips/include/uapi/asm/signal.h    | 12 -------
+> >  arch/parisc/include/uapi/asm/signal.h  | 13 -------
+> >  arch/powerpc/include/uapi/asm/signal.h | 24 -------------
+> >  arch/s390/include/uapi/asm/signal.h    | 24 -------------
+> >  arch/sparc/include/uapi/asm/signal.h   |  4 +--
+> >  arch/x86/include/uapi/asm/signal.h     | 24 -------------
+> >  arch/xtensa/include/uapi/asm/signal.h  | 24 -------------
+> >  include/uapi/asm-generic/signal-defs.h | 47 ++++++++++++++++++++++++++
+> >  include/uapi/asm-generic/signal.h      | 29 ----------------
+> >  14 files changed, 51 insertions(+), 264 deletions(-)
+>
+> Nice diffstat!
+>
+> >
+> > diff --git a/arch/alpha/include/uapi/asm/signal.h b/arch/alpha/include/uapi/asm/signal.h
+> > index 74c750bf1c1a..a69dd8d080a8 100644
+> > --- a/arch/alpha/include/uapi/asm/signal.h
+> > +++ b/arch/alpha/include/uapi/asm/signal.h
+> > @@ -60,20 +60,6 @@ typedef unsigned long sigset_t;
+> >  #define SIGRTMIN     32
+> >  #define SIGRTMAX     _NSIG
+> >
+> > -/*
+> > - * SA_FLAGS values:
+> > - *
+> > - * SA_ONSTACK indicates that a registered stack_t will be used.
+> > - * SA_RESTART flag to get restarting signals (which were the default long ago)
+> > - * SA_NOCLDSTOP flag to turn off SIGCHLD when children stop.
+> > - * SA_RESETHAND clears the handler when the signal is delivered.
+> > - * SA_NOCLDWAIT flag on SIGCHLD to inhibit zombies.
+> > - * SA_NODEFER prevents the current signal from being masked in the handler.
+> > - *
+> > - * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
+> > - * Unix names RESETHAND and NODEFER respectively.
+> > - */
+> > -
+> >  #define SA_ONSTACK   0x00000001
+> >  #define SA_RESTART   0x00000002
+> >  #define SA_NOCLDSTOP 0x00000004
+> > diff --git a/arch/arm/include/uapi/asm/signal.h b/arch/arm/include/uapi/asm/signal.h
+> > index 9b4185ba4f8a..7727f0984d26 100644
+> > --- a/arch/arm/include/uapi/asm/signal.h
+> > +++ b/arch/arm/include/uapi/asm/signal.h
+> > @@ -60,33 +60,11 @@ typedef unsigned long sigset_t;
+> >  #define SIGSWI               32
+> >
+> >  /*
+> > - * SA_FLAGS values:
+> > - *
+> > - * SA_NOCLDSTOP              flag to turn off SIGCHLD when children stop.
+> > - * SA_NOCLDWAIT              flag on SIGCHLD to inhibit zombies.
+> > - * SA_SIGINFO                deliver the signal with SIGINFO structs
+> > - * SA_THIRTYTWO              delivers the signal in 32-bit mode, even if the task
+> > - *                   is running in 26-bit.
+> > - * SA_ONSTACK                allows alternate signal stacks (see sigaltstack(2)).
+> > - * SA_RESTART                flag to get restarting signals (which were the default long ago)
+> > - * SA_NODEFER                prevents the current signal from being masked in the handler.
+> > - * SA_RESETHAND              clears the handler when the signal is delivered.
+> > - *
+> > - * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
+> > - * Unix names RESETHAND and NODEFER respectively.
+> > + * SA_THIRTYTWO historically meant deliver the signal in 32-bit mode, even if
+> > + * the task is running in 26-bit. But since the kernel no longer supports
+> > + * 26-bit mode, the flag has no effect.
+> >   */
+> > -#define SA_NOCLDSTOP 0x00000001
+> > -#define SA_NOCLDWAIT 0x00000002
+> > -#define SA_SIGINFO   0x00000004
+> >  #define SA_THIRTYTWO 0x02000000
+>
+> Can we add a placeholder for this in the common header?  We don't want
+> people accidentally defining a new generic flag that clashes with this.
 
-I like container_from() the most, since it's the closest to contain_of()
-which is a well known idiom for years. The lines will already be shorter
-without the need to specify the struct, so don't like the idea of
-squeezing container into cont for any of them. For most people, cont is
-usually short for continue, not container.
+This flag (bit 25) is covered by the comment in
+include/uapi/asm-generic/signal-defs.h that reads:
 
--- 
-Jens Axboe
+/*
+ * The following bits are used in architecture-specific SA_* definitions and
+ * should be avoided for new generic flags: 3, 4, 5, 6, 7, 8, 9, 16, 24, 25, 26.
+ */
 
+Peter
