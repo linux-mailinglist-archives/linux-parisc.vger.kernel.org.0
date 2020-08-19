@@ -2,210 +2,335 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A69C24A290
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 17:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B09224A351
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 17:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726809AbgHSPLo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Aug 2020 11:11:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57022 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726636AbgHSPLm (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Aug 2020 11:11:42 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DF2DC061757
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 08:11:41 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id c16so26700278ejx.12
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 08:11:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gblnYCzc62i56nCc5LRWss+Qf5wc+kIzyZ60hUww65Y=;
-        b=CmFRV9MF78Io9lyU3ZTHQoxCUWL8rgrVpgpqOj4nEXWpRTCd1+KGSochi2kuoVhtFt
-         PQJJembCFDIORAph3WzrpDoRd2cIGJpwf9VAtP5a9ydpphhRkHDHcmKRPuhZGWASaGfl
-         y6rPrnsIqK2MPfXnYUVbYzJtuDwuiigpqdGRc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gblnYCzc62i56nCc5LRWss+Qf5wc+kIzyZ60hUww65Y=;
-        b=bN8er5n7rdMW8dHOSN+iqDpvTPf5/D2pn91zZ0+lE2hpYQeNcMbm9YhR9OdifeVliM
-         0OGFQAcypWnVIaC66YWMS+2jcsYiwklS0u5jgJfQlQxwvOqObY6xzYMC9EbPZOoeJawh
-         ve+/ObXn59ZA2M+7y0n5p18ln0N/EHx6rya3ACln+bAK2AD3lo6n4VS5G5BkvjZAGnQe
-         ivlLOb7xZByx2rLd134KbMfLdUaFnz3JR9oDtOjhCyYooIaX/sHnZOhbyc+SymeOi0qT
-         Gf4qdew6+fj8UfP2bR5KxXHTIOi+c4hBUPmuSXHRGc1nV+SEJKyth7lJehRWHA9EPY5z
-         Mznw==
-X-Gm-Message-State: AOAM530JDEUqMT2uas5GZl+pIW3qSEFoMUorqVtSafoYpMQADMGSygZn
-        M4fi0MP7eB4MnIlv1lRy4FbW/LgCnLYCQQ==
-X-Google-Smtp-Source: ABdhPJy0ZcnyNZ+0zJw9CpzYp66QC9xVmUj2FuL+wZrXW/bdBoMcuJdGN9wNbutaRr0FwPFWtynAoA==
-X-Received: by 2002:a17:906:2e86:: with SMTP id o6mr26664242eji.380.1597849899983;
-        Wed, 19 Aug 2020 08:11:39 -0700 (PDT)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com. [209.85.128.44])
-        by smtp.gmail.com with ESMTPSA id p23sm13942202edm.31.2020.08.19.08.11.39
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Aug 2020 08:11:39 -0700 (PDT)
-Received: by mail-wm1-f44.google.com with SMTP id g8so2433601wmk.3
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Aug 2020 08:11:39 -0700 (PDT)
-X-Received: by 2002:a1c:4d12:: with SMTP id o18mr5316483wmh.55.1597849448826;
- Wed, 19 Aug 2020 08:04:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200819065555.1802761-1-hch@lst.de> <20200819065555.1802761-20-hch@lst.de>
-In-Reply-To: <20200819065555.1802761-20-hch@lst.de>
-From:   Tomasz Figa <tfiga@chromium.org>
-Date:   Wed, 19 Aug 2020 17:03:52 +0200
-X-Gmail-Original-Message-ID: <CAAFQd5Bbp-eAVKS1MKS8xtrT4ZoOmBPfZyw9mys=eOmDb6r8Lw@mail.gmail.com>
-Message-ID: <CAAFQd5Bbp-eAVKS1MKS8xtrT4ZoOmBPfZyw9mys=eOmDb6r8Lw@mail.gmail.com>
-Subject: Re: [PATCH 19/28] dma-mapping: replace DMA_ATTR_NON_CONSISTENT with
- dma_{alloc, free}_pages
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Pawel Osciak <pawel@osciak.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
-        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        alsa-devel@alsa-project.org,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        linux-ia64@vger.kernel.org, linux-scsi@vger.kernel.org,
+        id S1726794AbgHSPkg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Aug 2020 11:40:36 -0400
+Received: from foss.arm.com ([217.140.110.172]:40000 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728259AbgHSPke (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 19 Aug 2020 11:40:34 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E08B1045;
+        Wed, 19 Aug 2020 08:40:33 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C6BF3F71F;
+        Wed, 19 Aug 2020 08:40:31 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 16:40:29 +0100
+From:   Dave Martin <Dave.Martin@arm.com>
+To:     Peter Collingbourne <pcc@google.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Evgenii Stepanov <eugenis@google.com>,
+        Kostya Serebryany <kcc@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Will Deacon <will@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         linux-parisc@vger.kernel.org,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        nouveau@lists.freedesktop.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-nvme@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, netdev@vger.kernel.org,
-        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
-        Roedel <joro@8bytes.org>," <linux-arm-kernel@lists.infradead.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Andrey Konovalov <andreyknvl@google.com>,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Spickett <david.spickett@linaro.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Richard Henderson <rth@twiddle.net>
+Subject: Re: [PATCH v9 5/6] signal: define the field siginfo.si_xflags
+Message-ID: <20200819154028.GH6642@arm.com>
+References: <cover.1597720138.git.pcc@google.com>
+ <e26271d2b3767cdbd265033e6f7eb28f828f3a28.1597720138.git.pcc@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e26271d2b3767cdbd265033e6f7eb28f828f3a28.1597720138.git.pcc@google.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Christoph,
+On Mon, Aug 17, 2020 at 08:33:50PM -0700, Peter Collingbourne wrote:
+> This field will contain flags that may be used by signal handlers to
+> determine whether other fields in the _sigfault portion of siginfo are
+> valid. An example use case is the following patch, which introduces
+> the si_addr_ignored_bits{,_mask} fields.
+> 
+> A new sigcontext flag, SA_XFLAGS, is introduced in order to allow
+> a signal handler to require the kernel to set the field (but note
+> that the field will be set anyway if the kernel supports the flag,
+> regardless of its value). In combination with the previous patches,
+> this allows a userspace program to determine whether the kernel will
+> set the field.
+> 
+> Ideally this field could have just been named si_flags, but that
+> name was already taken by ia64, so a different name was chosen.
+> 
+> Alternatively, we may consider making ia64's si_flags a generic field
+> and having it appear at the end of _sigfault (in the same place as
+> this patch has si_xflags) on non-ia64, keeping it in the same place
+> on ia64. ia64's si_flags is a 32-bit field with only one flag bit
+> allocated, so we would have 31 bits to use if we do this.
 
-On Wed, Aug 19, 2020 at 8:57 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> Add a new API to allocate and free pages that are guaranteed to be
-> addressable by a device, but otherwise behave like pages allocated by
-> alloc_pages.  The intended APIs to sync them for use with the device
-> and cpu are dma_sync_single_for_{device,cpu} that are also used for
-> streaming mappings.
->
-> Switch all drivers over to this new API, but keep the usage of the
-> crufty dma_cache_sync API for now, which will be cleaned up on a driver
-> by driver basis.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+For clarity, is the new si_xflags field supposed to be valid for all
+signal types, or just certain signals and si_codes?
+
+What happens for things like a rt_sigqueueinfo() from userspace?
+
+> 
+> Signed-off-by: Peter Collingbourne <pcc@google.com>
 > ---
->  Documentation/core-api/dma-api.rst        | 68 +++++++++++------------
->  Documentation/core-api/dma-attributes.rst |  8 ---
->  arch/alpha/kernel/pci_iommu.c             |  2 +
->  arch/arm/mm/dma-mapping-nommu.c           |  2 +
->  arch/arm/mm/dma-mapping.c                 |  4 ++
->  arch/ia64/hp/common/sba_iommu.c           |  2 +
->  arch/mips/jazz/jazzdma.c                  |  7 +--
->  arch/powerpc/kernel/dma-iommu.c           |  2 +
->  arch/powerpc/platforms/ps3/system-bus.c   |  4 ++
->  arch/powerpc/platforms/pseries/vio.c      |  2 +
->  arch/s390/pci/pci_dma.c                   |  2 +
->  arch/x86/kernel/amd_gart_64.c             |  2 +
->  drivers/iommu/dma-iommu.c                 |  2 +
->  drivers/iommu/intel/iommu.c               |  4 ++
->  drivers/net/ethernet/i825xx/lasi_82596.c  | 13 ++---
->  drivers/net/ethernet/seeq/sgiseeq.c       | 12 ++--
->  drivers/parisc/ccio-dma.c                 |  2 +
->  drivers/parisc/sba_iommu.c                |  2 +
->  drivers/scsi/53c700.c                     |  8 +--
->  drivers/scsi/sgiwd93.c                    | 12 ++--
->  drivers/xen/swiotlb-xen.c                 |  2 +
->  include/linux/dma-direct.h                |  5 ++
->  include/linux/dma-mapping.h               | 29 ++++++++--
->  include/linux/dma-noncoherent.h           |  3 -
->  kernel/dma/direct.c                       | 51 ++++++++++++++++-
->  kernel/dma/mapping.c                      | 43 +++++++++++++-
->  kernel/dma/ops_helpers.c                  | 35 ++++++++++++
->  kernel/dma/virt.c                         |  2 +
->  sound/mips/hal2.c                         | 20 +++----
->  29 files changed, 254 insertions(+), 96 deletions(-)
->
+> View this change in Gerrit: https://linux-review.googlesource.com/q/Ide155ce29366c3eab2a944ae4c51205982e5b8b2
+> 
+>  arch/arm/include/asm/signal.h              |  3 ++-
+>  arch/parisc/include/asm/signal.h           |  2 +-
+>  arch/powerpc/platforms/powernv/vas-fault.c |  1 +
+>  include/linux/compat.h                     |  2 ++
+>  include/linux/signal_types.h               |  4 ++--
+>  include/uapi/asm-generic/siginfo.h         |  3 +++
+>  include/uapi/asm-generic/signal-defs.h     |  4 ++++
+>  kernel/signal.c                            | 15 +++++++++++++++
+>  8 files changed, 30 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm/include/asm/signal.h b/arch/arm/include/asm/signal.h
+> index d1070a783993..6b2630dfe1df 100644
+> --- a/arch/arm/include/asm/signal.h
+> +++ b/arch/arm/include/asm/signal.h
+> @@ -19,7 +19,8 @@ typedef struct {
+>  
+>  #define SA_UAPI_FLAGS                                                          \
+>  	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_THIRTYTWO |             \
+> -	 SA_RESTORER | SA_ONSTACK | SA_RESTART | SA_NODEFER | SA_RESETHAND)
+> +	 SA_RESTORER | SA_ONSTACK | SA_RESTART | SA_NODEFER | SA_RESETHAND |   \
+> +	 SA_XFLAGS)
+>  
+>  #define __ARCH_HAS_SA_RESTORER
+>  
+> diff --git a/arch/parisc/include/asm/signal.h b/arch/parisc/include/asm/signal.h
+> index ad06e14f6e8a..3582bce44520 100644
+> --- a/arch/parisc/include/asm/signal.h
+> +++ b/arch/parisc/include/asm/signal.h
+> @@ -23,7 +23,7 @@ typedef struct {
+>  
+>  #define SA_UAPI_FLAGS                                                          \
+>  	(SA_ONSTACK | SA_RESETHAND | SA_NOCLDSTOP | SA_SIGINFO | SA_NODEFER |  \
+> -	 SA_RESTART | SA_NOCLDWAIT | _SA_SIGGFAULT)
+> +	 SA_RESTART | SA_NOCLDWAIT | _SA_SIGGFAULT | SA_XFLAGS)
+>  
+>  #include <asm/sigcontext.h>
+>  
+> diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
+> index 3d21fce254b7..3bbb335561f5 100644
+> --- a/arch/powerpc/platforms/powernv/vas-fault.c
+> +++ b/arch/powerpc/platforms/powernv/vas-fault.c
+> @@ -154,6 +154,7 @@ static void update_csb(struct vas_window *window,
+>  	info.si_errno = EFAULT;
+>  	info.si_code = SEGV_MAPERR;
+>  	info.si_addr = csb_addr;
+> +	info.si_xflags = 0;
+>  
+>  	/*
+>  	 * process will be polling on csb.flags after request is sent to
+> diff --git a/include/linux/compat.h b/include/linux/compat.h
+> index d38c4d7e83bd..55d4228dfd88 100644
+> --- a/include/linux/compat.h
+> +++ b/include/linux/compat.h
+> @@ -231,7 +231,9 @@ typedef struct compat_siginfo {
+>  					char _dummy_pkey[__COMPAT_ADDR_BND_PKEY_PAD];
+>  					u32 _pkey;
+>  				} _addr_pkey;
+> +				compat_uptr_t _pad[6];
+>  			};
+> +			compat_uptr_t _xflags;
+>  		} _sigfault;
+>  
+>  		/* SIGPOLL */
+> diff --git a/include/linux/signal_types.h b/include/linux/signal_types.h
+> index e792f29b5846..cd3d08dde47a 100644
+> --- a/include/linux/signal_types.h
+> +++ b/include/linux/signal_types.h
+> @@ -72,11 +72,11 @@ struct ksignal {
+>  #ifdef SA_RESTORER
+>  #define SA_UAPI_FLAGS                                                          \
+>  	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
+> -	 SA_NODEFER | SA_RESETHAND | SA_RESTORER)
+> +	 SA_NODEFER | SA_RESETHAND | SA_RESTORER | SA_XFLAGS)
+>  #else
+>  #define SA_UAPI_FLAGS                                                          \
+>  	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
+> -	 SA_NODEFER | SA_RESETHAND)
+> +	 SA_NODEFER | SA_RESETHAND | SA_XFLAGS)
+>  #endif
+>  #endif
+>  
+> diff --git a/include/uapi/asm-generic/siginfo.h b/include/uapi/asm-generic/siginfo.h
+> index cb3d6c267181..413d804623c0 100644
+> --- a/include/uapi/asm-generic/siginfo.h
+> +++ b/include/uapi/asm-generic/siginfo.h
+> @@ -91,7 +91,9 @@ union __sifields {
+>  				char _dummy_pkey[__ADDR_BND_PKEY_PAD];
+>  				__u32 _pkey;
+>  			} _addr_pkey;
+> +			void *_pad[6];
+>  		};
+> +		unsigned long _xflags;
+>  	} _sigfault;
+>  
+>  	/* SIGPOLL */
+> @@ -152,6 +154,7 @@ typedef struct siginfo {
+>  #define si_trapno	_sifields._sigfault._trapno
+>  #endif
+>  #define si_addr_lsb	_sifields._sigfault._addr_lsb
+> +#define si_xflags	_sifields._sigfault._xflags
+>  #define si_lower	_sifields._sigfault._addr_bnd._lower
+>  #define si_upper	_sifields._sigfault._addr_bnd._upper
+>  #define si_pkey		_sifields._sigfault._addr_pkey._pkey
+> diff --git a/include/uapi/asm-generic/signal-defs.h b/include/uapi/asm-generic/signal-defs.h
+> index c30a9c1a77b2..aeee6bb0763b 100644
+> --- a/include/uapi/asm-generic/signal-defs.h
+> +++ b/include/uapi/asm-generic/signal-defs.h
+> @@ -19,6 +19,9 @@
+>   * so this bit allows flag bit support to be detected from userspace while
+>   * allowing an old kernel to be distinguished from a kernel that supports every
+>   * flag bit.
+> + * SA_XFLAGS indicates that the signal handler requires the siginfo.si_xflags
+> + * field to be valid. Note that if the kernel supports SA_XFLAGS, the field will
+> + * be valid regardless of the value of this flag.
+>   *
+>   * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
+>   * Unix names RESETHAND and NODEFER respectively.
+> @@ -49,6 +52,7 @@
+>   * should be avoided for new generic flags: 3, 4, 5, 6, 7, 8, 9, 16, 24, 25, 26.
+>   */
+>  #define SA_UNSUPPORTED	0x00000400
+> +#define SA_XFLAGS	0x00000800
+>  
+>  #define SA_NOMASK	SA_NODEFER
+>  #define SA_ONESHOT	SA_RESETHAND
+> diff --git a/kernel/signal.c b/kernel/signal.c
+> index 664a6c31137e..72182eed1b8d 100644
+> --- a/kernel/signal.c
+> +++ b/kernel/signal.c
+> @@ -1669,6 +1669,7 @@ int force_sig_fault_to_task(int sig, int code, void __user *addr
+>  	info.si_flags = flags;
+>  	info.si_isr = isr;
+>  #endif
+> +	info.si_xflags = 0;
+>  	return force_sig_info_to_task(&info, t);
+>  }
+>  
+> @@ -1701,6 +1702,7 @@ int send_sig_fault(int sig, int code, void __user *addr
+>  	info.si_flags = flags;
+>  	info.si_isr = isr;
+>  #endif
+> +	info.si_xflags = 0;
+>  	return send_sig_info(info.si_signo, &info, t);
+>  }
+>  
+> @@ -1715,6 +1717,7 @@ int force_sig_mceerr(int code, void __user *addr, short lsb)
+>  	info.si_code = code;
+>  	info.si_addr = addr;
+>  	info.si_addr_lsb = lsb;
+> +	info.si_xflags = 0;
+>  	return force_sig_info(&info);
+>  }
+>  
+> @@ -1729,6 +1732,7 @@ int send_sig_mceerr(int code, void __user *addr, short lsb, struct task_struct *
+>  	info.si_code = code;
+>  	info.si_addr = addr;
+>  	info.si_addr_lsb = lsb;
+> +	info.si_xflags = 0;
+>  	return send_sig_info(info.si_signo, &info, t);
+>  }
+>  EXPORT_SYMBOL(send_sig_mceerr);
+> @@ -1744,6 +1748,7 @@ int force_sig_bnderr(void __user *addr, void __user *lower, void __user *upper)
+>  	info.si_addr  = addr;
+>  	info.si_lower = lower;
+>  	info.si_upper = upper;
+> +	info.si_xflags = 0;
+>  	return force_sig_info(&info);
+>  }
+>  
+> @@ -1758,6 +1763,7 @@ int force_sig_pkuerr(void __user *addr, u32 pkey)
+>  	info.si_code  = SEGV_PKUERR;
+>  	info.si_addr  = addr;
+>  	info.si_pkey  = pkey;
+> +	info.si_xflags = 0;
+>  	return force_sig_info(&info);
+>  }
+>  #endif
+> @@ -1774,6 +1780,7 @@ int force_sig_ptrace_errno_trap(int errno, void __user *addr)
+>  	info.si_errno = errno;
+>  	info.si_code  = TRAP_HWBKPT;
+>  	info.si_addr  = addr;
+> +	info.si_xflags = 0;
+>  	return force_sig_info(&info);
+>  }
+>  
+> @@ -3290,6 +3297,7 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
+>  #ifdef __ARCH_SI_TRAPNO
+>  		to->si_trapno = from->si_trapno;
+>  #endif
+> +		to->si_xflags = from->si_xflags;
+>  		break;
+>  	case SIL_FAULT_MCEERR:
+>  		to->si_addr = ptr_to_compat(from->si_addr);
+> @@ -3297,6 +3305,7 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
+>  		to->si_trapno = from->si_trapno;
+>  #endif
+>  		to->si_addr_lsb = from->si_addr_lsb;
+> +		to->si_xflags = from->si_xflags;
+>  		break;
+>  	case SIL_FAULT_BNDERR:
+>  		to->si_addr = ptr_to_compat(from->si_addr);
+> @@ -3305,6 +3314,7 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
+>  #endif
+>  		to->si_lower = ptr_to_compat(from->si_lower);
+>  		to->si_upper = ptr_to_compat(from->si_upper);
+> +		to->si_xflags = from->si_xflags;
+>  		break;
+>  	case SIL_FAULT_PKUERR:
+>  		to->si_addr = ptr_to_compat(from->si_addr);
+> @@ -3312,6 +3322,7 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
+>  		to->si_trapno = from->si_trapno;
+>  #endif
+>  		to->si_pkey = from->si_pkey;
+> +		to->si_xflags = from->si_xflags;
+>  		break;
+>  	case SIL_CHLD:
+>  		to->si_pid = from->si_pid;
+> @@ -3370,6 +3381,7 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
+>  #ifdef __ARCH_SI_TRAPNO
+>  		to->si_trapno = from->si_trapno;
+>  #endif
+> +		to->si_xflags = from->si_xflags;
+>  		break;
+>  	case SIL_FAULT_MCEERR:
+>  		to->si_addr = compat_ptr(from->si_addr);
+> @@ -3377,6 +3389,7 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
+>  		to->si_trapno = from->si_trapno;
+>  #endif
+>  		to->si_addr_lsb = from->si_addr_lsb;
+> +		to->si_xflags = from->si_xflags;
+>  		break;
+>  	case SIL_FAULT_BNDERR:
+>  		to->si_addr = compat_ptr(from->si_addr);
+> @@ -3385,6 +3398,7 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
+>  #endif
+>  		to->si_lower = compat_ptr(from->si_lower);
+>  		to->si_upper = compat_ptr(from->si_upper);
+> +		to->si_xflags = from->si_xflags;
+>  		break;
+>  	case SIL_FAULT_PKUERR:
+>  		to->si_addr = compat_ptr(from->si_addr);
+> @@ -3392,6 +3406,7 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
+>  		to->si_trapno = from->si_trapno;
+>  #endif
+>  		to->si_pkey = from->si_pkey;
+> +		to->si_xflags = from->si_xflags;
 
-Thanks for the patch. The general design looks quite nice, but please
-see my comments inline.
+How did you figure out the list of places to make these changes?  I'm
+not sure how to confirm that it's exhaustive.
 
+It's a shame if we can't simply apply the change in one place.
+Would the refactoring be too invasive to accomplish that?
 
-> diff --git a/Documentation/core-api/dma-api.rst b/Documentation/core-api/dma-api.rst
-> index 90239348b30f6f..047fcfffa0e5cf 100644
-> --- a/Documentation/core-api/dma-api.rst
-> +++ b/Documentation/core-api/dma-api.rst
-> @@ -516,48 +516,53 @@ routines, e.g.:::
->         }
->
->
-> -Part II - Advanced dma usage
-> -----------------------------
-> +Part II - Non-coherent DMA allocations
-> +--------------------------------------
->
-> -Warning: These pieces of the DMA API should not be used in the
-> -majority of cases, since they cater for unlikely corner cases that
-> -don't belong in usual drivers.
-> +These APIs allow to allocate pages that can be used like normal pages
-> +in the kernel direct mapping, but are guaranteed to be DMA addressable.
-
-Could we elaborate a bit more on what "like normal pages in kernel
-direct mapping" mean from the driver perspective?
-
->
->  If you don't understand how cache line coherency works between a
->  processor and an I/O device, you should not be using this part of the
-> -API at all.
-> +API.
->
->  ::
->
->         void *
-> -       dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
-> -                       gfp_t flag, unsigned long attrs)
-> +       dma_alloc_pages(struct device *dev, size_t size, dma_addr_t *dma_handle,
-> +                       enum dma_data_direction dir, gfp_t gfp)
-> +
-> +This routine allocates a region of <size> bytes of consistent memory.  It
-> +returns a pointer to the allocated region (in the processor's virtual address
-> +space) or NULL if the allocation failed. The returned memory is guanteed to
-> +behave like memory allocated using alloc_pages.
-
-There is one aspect that the existing dma_alloc_attrs() handles, but
-this new function doesn't: IOMMU support. The function will always
-allocate a physically-contiguous block memory, which is a costly
-operation and not even guaranteed to succeed, even if enough free
-memory is available.
-
-Modern SoCs employ IOMMUs to avoid the need to allocate
-physically-contiguous memory and those happen to be also the devices
-that could benefit from non-coherent allocations a lot. One of the
-tasks of the DMA API was making it possible to allocate suitable
-memory for a given device, without having the driver know about the
-SoC integration details, such as the presence of an IOMMU.
-
-Today, dma_alloc_attrs() uses the .alloc callback of the dma_ops
-struct and the IOMMU-aware implementations, like the dma-iommu helpers
-[1], would allocate discontiguous pages. Therefore, while I see the
-DMA-aware page allocation functionality as a useful functionality on
-its own for scatter-gather-capable hardware, I believe it is not a
-complete replacement for dma_alloc_attrs() with the
-DMA_ATTR_NON_CONSISTENT attribute.
-
-[1] https://elixir.bootlin.com/linux/v5.9-rc1/source/drivers/iommu/dma-iommu.c#L510
-
-Best regards,
-Tomasz
+Cheers
+---Dave
