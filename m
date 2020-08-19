@@ -2,22 +2,22 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57B9B249A67
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 12:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A16F249A8D
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 12:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726752AbgHSKaG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Aug 2020 06:30:06 -0400
-Received: from foss.arm.com ([217.140.110.172]:60378 "EHLO foss.arm.com"
+        id S1727910AbgHSKj4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Aug 2020 06:39:56 -0400
+Received: from foss.arm.com ([217.140.110.172]:60598 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726466AbgHSKaF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Aug 2020 06:30:05 -0400
+        id S1727943AbgHSKjx (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 19 Aug 2020 06:39:53 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C5727101E;
-        Wed, 19 Aug 2020 03:30:04 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8AACC101E;
+        Wed, 19 Aug 2020 03:39:52 -0700 (PDT)
 Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE9BF3F6CF;
-        Wed, 19 Aug 2020 03:30:02 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 11:30:00 +0100
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C3483F6CF;
+        Wed, 19 Aug 2020 03:39:50 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 11:39:48 +0100
 From:   Dave Martin <Dave.Martin@arm.com>
 To:     Peter Collingbourne <pcc@google.com>
 Cc:     Catalin Marinas <catalin.marinas@arm.com>,
@@ -33,124 +33,161 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         David Spickett <david.spickett@linaro.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Richard Henderson <rth@twiddle.net>
-Subject: Re: [PATCH v9 2/6] arch: move SA_* definitions to generic headers
-Message-ID: <20200819103000.GE6642@arm.com>
+Subject: Re: [PATCH v9 3/6] signal: clear non-uapi flag bits when
+ passing/returning sa_flags
+Message-ID: <20200819103948.GF6642@arm.com>
 References: <cover.1597720138.git.pcc@google.com>
- <691510496a422023a2934d42b068493ed2d60ccc.1597720138.git.pcc@google.com>
+ <68bd2d6544fb17bbe2fb90862e28ec38e079549a.1597720138.git.pcc@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <691510496a422023a2934d42b068493ed2d60ccc.1597720138.git.pcc@google.com>
+In-Reply-To: <68bd2d6544fb17bbe2fb90862e28ec38e079549a.1597720138.git.pcc@google.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 17, 2020 at 08:33:47PM -0700, Peter Collingbourne wrote:
-> Most architectures with the exception of alpha, mips, parisc and
-> sparc use the same values for these flags. Move their definitions into
-> asm-generic/signal-defs.h and allow the architectures with non-standard
-> values to override them. Also, document the non-standard flag values
-> in order to make it easier to add new generic flags in the future.
+On Mon, Aug 17, 2020 at 08:33:48PM -0700, Peter Collingbourne wrote:
+
+Nit: please say what the patch does.  Subject line should summarise
+what is done, but should not add new information that is not present in
+the description proper.
+
+(Same for all the other patches.)
+
+> This allows userspace to detect missing support for flag bits and
+> allows the kernel to use non-uapi bits internally, as we are already
+> doing in arch/x86 for two flag bits. Now that this change is in
+> place, we no longer need the code in arch/x86 that was hiding these
+> bits from userspace, so remove it.
 > 
 > Signed-off-by: Peter Collingbourne <pcc@google.com>
 > ---
-> View this change in Gerrit: https://linux-review.googlesource.com/q/Ia3849f18b8009bf41faca374e701cdca36974528
+> View this change in Gerrit: https://linux-review.googlesource.com/q/I35aab6f5be932505d90f3b3450c083b4db1eca86
 > 
->  arch/alpha/include/uapi/asm/signal.h   | 14 --------
->  arch/arm/include/uapi/asm/signal.h     | 28 ++-------------
->  arch/h8300/include/uapi/asm/signal.h   | 24 -------------
->  arch/ia64/include/uapi/asm/signal.h    | 24 -------------
->  arch/m68k/include/uapi/asm/signal.h    | 24 -------------
->  arch/mips/include/uapi/asm/signal.h    | 12 -------
->  arch/parisc/include/uapi/asm/signal.h  | 13 -------
->  arch/powerpc/include/uapi/asm/signal.h | 24 -------------
->  arch/s390/include/uapi/asm/signal.h    | 24 -------------
->  arch/sparc/include/uapi/asm/signal.h   |  4 +--
->  arch/x86/include/uapi/asm/signal.h     | 24 -------------
->  arch/xtensa/include/uapi/asm/signal.h  | 24 -------------
->  include/uapi/asm-generic/signal-defs.h | 47 ++++++++++++++++++++++++++
->  include/uapi/asm-generic/signal.h      | 29 ----------------
->  14 files changed, 51 insertions(+), 264 deletions(-)
-
-Nice diffstat!
-
+>  arch/arm/include/asm/signal.h    |  4 ++++
+>  arch/parisc/include/asm/signal.h |  4 ++++
+>  arch/x86/kernel/signal_compat.c  |  7 -------
+>  include/linux/signal_types.h     | 12 ++++++++++++
+>  kernel/signal.c                  | 10 ++++++++++
+>  5 files changed, 30 insertions(+), 7 deletions(-)
 > 
-> diff --git a/arch/alpha/include/uapi/asm/signal.h b/arch/alpha/include/uapi/asm/signal.h
-> index 74c750bf1c1a..a69dd8d080a8 100644
-> --- a/arch/alpha/include/uapi/asm/signal.h
-> +++ b/arch/alpha/include/uapi/asm/signal.h
-> @@ -60,20 +60,6 @@ typedef unsigned long sigset_t;
->  #define SIGRTMIN	32
->  #define SIGRTMAX	_NSIG
+> diff --git a/arch/arm/include/asm/signal.h b/arch/arm/include/asm/signal.h
+> index 65530a042009..d1070a783993 100644
+> --- a/arch/arm/include/asm/signal.h
+> +++ b/arch/arm/include/asm/signal.h
+> @@ -17,6 +17,10 @@ typedef struct {
+>  	unsigned long sig[_NSIG_WORDS];
+>  } sigset_t;
 >  
-> -/*
-> - * SA_FLAGS values:
-> - *
-> - * SA_ONSTACK indicates that a registered stack_t will be used.
-> - * SA_RESTART flag to get restarting signals (which were the default long ago)
-> - * SA_NOCLDSTOP flag to turn off SIGCHLD when children stop.
-> - * SA_RESETHAND clears the handler when the signal is delivered.
-> - * SA_NOCLDWAIT flag on SIGCHLD to inhibit zombies.
-> - * SA_NODEFER prevents the current signal from being masked in the handler.
-> - *
-> - * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
-> - * Unix names RESETHAND and NODEFER respectively.
-> - */
+> +#define SA_UAPI_FLAGS                                                          \
+> +	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_THIRTYTWO |             \
+> +	 SA_RESTORER | SA_ONSTACK | SA_RESTART | SA_NODEFER | SA_RESETHAND)
+> +
+
+I wonder whether all these per-arch definitions will tend to bitrot when
+people add new common flags.
+
+Can we have a common definition for the common bits, and just add the
+extra arch-specific ones here?
+
+
+Also, I wonder whether we should avoid the "SA_" prefix here.  Maybe
+UAPI_SA_FLAGS?
+
+>  #define __ARCH_HAS_SA_RESTORER
+>  
+>  #include <asm/sigcontext.h>
+> diff --git a/arch/parisc/include/asm/signal.h b/arch/parisc/include/asm/signal.h
+> index 715c96ba2ec8..ad06e14f6e8a 100644
+> --- a/arch/parisc/include/asm/signal.h
+> +++ b/arch/parisc/include/asm/signal.h
+> @@ -21,6 +21,10 @@ typedef struct {
+>  	unsigned long sig[_NSIG_WORDS];
+>  } sigset_t;
+>  
+> +#define SA_UAPI_FLAGS                                                          \
+> +	(SA_ONSTACK | SA_RESETHAND | SA_NOCLDSTOP | SA_SIGINFO | SA_NODEFER |  \
+> +	 SA_RESTART | SA_NOCLDWAIT | _SA_SIGGFAULT)
+> +
+>  #include <asm/sigcontext.h>
+>  
+>  #endif /* !__ASSEMBLY */
+> diff --git a/arch/x86/kernel/signal_compat.c b/arch/x86/kernel/signal_compat.c
+> index 9ccbf0576cd0..c599013ae8cb 100644
+> --- a/arch/x86/kernel/signal_compat.c
+> +++ b/arch/x86/kernel/signal_compat.c
+> @@ -165,16 +165,9 @@ void sigaction_compat_abi(struct k_sigaction *act, struct k_sigaction *oact)
+>  {
+>  	signal_compat_build_tests();
+>  
+> -	/* Don't leak in-kernel non-uapi flags to user-space */
+> -	if (oact)
+> -		oact->sa.sa_flags &= ~(SA_IA32_ABI | SA_X32_ABI);
 > -
->  #define SA_ONSTACK	0x00000001
->  #define SA_RESTART	0x00000002
->  #define SA_NOCLDSTOP	0x00000004
-> diff --git a/arch/arm/include/uapi/asm/signal.h b/arch/arm/include/uapi/asm/signal.h
-> index 9b4185ba4f8a..7727f0984d26 100644
-> --- a/arch/arm/include/uapi/asm/signal.h
-> +++ b/arch/arm/include/uapi/asm/signal.h
-> @@ -60,33 +60,11 @@ typedef unsigned long sigset_t;
->  #define SIGSWI		32
+>  	if (!act)
+>  		return;
 >  
->  /*
-> - * SA_FLAGS values:
-> - *
-> - * SA_NOCLDSTOP		flag to turn off SIGCHLD when children stop.
-> - * SA_NOCLDWAIT		flag on SIGCHLD to inhibit zombies.
-> - * SA_SIGINFO		deliver the signal with SIGINFO structs
-> - * SA_THIRTYTWO		delivers the signal in 32-bit mode, even if the task 
-> - *			is running in 26-bit.
-> - * SA_ONSTACK		allows alternate signal stacks (see sigaltstack(2)).
-> - * SA_RESTART		flag to get restarting signals (which were the default long ago)
-> - * SA_NODEFER		prevents the current signal from being masked in the handler.
-> - * SA_RESETHAND		clears the handler when the signal is delivered.
-> - *
-> - * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
-> - * Unix names RESETHAND and NODEFER respectively.
-> + * SA_THIRTYTWO historically meant deliver the signal in 32-bit mode, even if
-> + * the task is running in 26-bit. But since the kernel no longer supports
-> + * 26-bit mode, the flag has no effect.
->   */
-> -#define SA_NOCLDSTOP	0x00000001
-> -#define SA_NOCLDWAIT	0x00000002
-> -#define SA_SIGINFO	0x00000004
->  #define SA_THIRTYTWO	0x02000000
-
-Can we add a placeholder for this in the common header?  We don't want
-people accidentally defining a new generic flag that clashes with this.
-
-> -#define SA_RESTORER	0x04000000
-> -#define SA_ONSTACK	0x08000000
-> -#define SA_RESTART	0x10000000
-> -#define SA_NODEFER	0x40000000
-> -#define SA_RESETHAND	0x80000000
+> -	/* Don't let flags to be set from userspace */
+> -	act->sa.sa_flags &= ~(SA_IA32_ABI | SA_X32_ABI);
 > -
-> -#define SA_NOMASK	SA_NODEFER
-> -#define SA_ONESHOT	SA_RESETHAND
+>  	if (in_ia32_syscall())
+>  		act->sa.sa_flags |= SA_IA32_ABI;
+>  	if (in_x32_syscall())
+> diff --git a/include/linux/signal_types.h b/include/linux/signal_types.h
+> index f8a90ae9c6ec..e792f29b5846 100644
+> --- a/include/linux/signal_types.h
+> +++ b/include/linux/signal_types.h
+> @@ -68,4 +68,16 @@ struct ksignal {
+>  	int sig;
+>  };
 >  
->  #define MINSIGSTKSZ	2048
->  #define SIGSTKSZ	8192
+> +#ifndef SA_UAPI_FLAGS
+> +#ifdef SA_RESTORER
+> +#define SA_UAPI_FLAGS                                                          \
+> +	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
+> +	 SA_NODEFER | SA_RESETHAND | SA_RESTORER)
+> +#else
+> +#define SA_UAPI_FLAGS                                                          \
+> +	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
+> +	 SA_NODEFER | SA_RESETHAND)
+> +#endif
+> +#endif
+> +
+>  #endif /* _LINUX_SIGNAL_TYPES_H */
+> diff --git a/kernel/signal.c b/kernel/signal.c
+> index 42b67d2cea37..348b7981f1ff 100644
+> --- a/kernel/signal.c
+> +++ b/kernel/signal.c
+> @@ -3984,6 +3984,16 @@ int do_sigaction(int sig, struct k_sigaction *act, struct k_sigaction *oact)
+>  	if (oact)
+>  		*oact = *k;
+>  
+> +	/*
+> +	 * Clear unknown flag bits in order to allow userspace to detect missing
+> +	 * support for flag bits and to allow the kernel to use non-uapi bits
+> +	 * internally.
+> +	 */
+> +	if (act)
+> +		act->sa.sa_flags &= SA_UAPI_FLAGS;
+> +	if (oact)
+> +		oact->sa.sa_flags &= SA_UAPI_FLAGS;
+> +
 
-[...]
-
-Otherwise, looks like a sensible cleanup.
+Seems reasonable.
 
 Cheers
 ---Dave
+
+>  	sigaction_compat_abi(act, oact);
+>  
+>  	if (act) {
+> -- 
+> 2.28.0.220.ged08abb693-goog
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
