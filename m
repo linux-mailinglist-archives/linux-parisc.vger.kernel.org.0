@@ -2,192 +2,139 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A16F249A8D
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 12:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3057249AD4
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Aug 2020 12:48:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727910AbgHSKj4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Aug 2020 06:39:56 -0400
-Received: from foss.arm.com ([217.140.110.172]:60598 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727943AbgHSKjx (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Aug 2020 06:39:53 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8AACC101E;
-        Wed, 19 Aug 2020 03:39:52 -0700 (PDT)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C3483F6CF;
-        Wed, 19 Aug 2020 03:39:50 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 11:39:48 +0100
-From:   Dave Martin <Dave.Martin@arm.com>
-To:     Peter Collingbourne <pcc@google.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Evgenii Stepanov <eugenis@google.com>,
-        Kostya Serebryany <kcc@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Will Deacon <will@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Spickett <david.spickett@linaro.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Richard Henderson <rth@twiddle.net>
-Subject: Re: [PATCH v9 3/6] signal: clear non-uapi flag bits when
- passing/returning sa_flags
-Message-ID: <20200819103948.GF6642@arm.com>
-References: <cover.1597720138.git.pcc@google.com>
- <68bd2d6544fb17bbe2fb90862e28ec38e079549a.1597720138.git.pcc@google.com>
+        id S1728060AbgHSKsf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Aug 2020 06:48:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44222 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728013AbgHSKs3 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 19 Aug 2020 06:48:29 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 910FCC061757;
+        Wed, 19 Aug 2020 03:48:28 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id h22so18666179otq.11;
+        Wed, 19 Aug 2020 03:48:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JFCS1wWCaky01GdCrS5KhBNLCXiKvx8eu/9Q1CWY57o=;
+        b=SAlnLFGsaJJ2xUQvXdp6/REunLAQzaLpmNpCPkhdMyKVNOL4zXoJc+uTpvFb1PLXQe
+         nN8aQpwx9KlR0QpjA0U0Eq9qCAcvJ1BkG1Pmvfae+wF16AUCkU8W0GDQheD/o4B1VrUX
+         PelVL5WwDQloIppGpod8O4LcRauK/SLT0vBKv+BhPM4L1DU+6rZBrJ0Dt0oV8Ce4u200
+         wfYajuI8k/buRZ/KOQgJS9xFj6qU+vsS6Mi/Pic5cr7hyqCbNaPaM64dCQ32B92C7zpm
+         twdkgIcY8FJxVqqD5N4bDX/Yu8aavznJiTYE5JD98MkyaozlEe8FkOVjNVcv9NBfu1pV
+         5Fgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JFCS1wWCaky01GdCrS5KhBNLCXiKvx8eu/9Q1CWY57o=;
+        b=uV1mk1B8VaF8tL03zX+JPDnTfyoDnCNxK3gH+iz+/rwHDaDH4hm566X1iC7oIitBQH
+         76P+QolpXTnIPEpqoQakVKdpGCMLf9musvyF1ESa7fTgxLvxsLlpc9mPgIglJ6Kdla24
+         N8C0ll+EATzolfkBKVJR3Th4rTUbCZNC/XglL/+byfkSD3y7hRaxWENgiDBdmfdfIh7U
+         Y8u1VPbZ6UuIL0gQsEiUx/i0BCYo7UPKLblql0q/72bOZsBHTbT7d2E3QZ0r9u5OlQ0m
+         V+td2rohBLQWIW0bo8naZ0z3+W9oIiIEvVpYQg8JLKwoORrOSoCIb7L0Ar3cWHzKVTZN
+         wXTA==
+X-Gm-Message-State: AOAM532ZQXvxDI/UlAajImfHfGl6AguDlbcNSDwj79tVy7i26jUl5ncm
+        IzmhgbQKiBsqdofNGeV5Bj3KUQ6wrj+EC22/IMQ=
+X-Google-Smtp-Source: ABdhPJwYTK+IRxToH0hqhLtJ7NIIqDs8lKmtEJkzNzElCKB5MQaF3rOwIOaAYWCB8rMlfnOVuvrNcqGFlbqr+yW4gKM=
+X-Received: by 2002:a9d:128c:: with SMTP id g12mr17527086otg.242.1597834108000;
+ Wed, 19 Aug 2020 03:48:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68bd2d6544fb17bbe2fb90862e28ec38e079549a.1597720138.git.pcc@google.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+References: <20200817091617.28119-1-allen.cryptic@gmail.com>
+ <20200817091617.28119-2-allen.cryptic@gmail.com> <b5508ca4-0641-7265-2939-5f03cbfab2e2@kernel.dk>
+ <202008171228.29E6B3BB@keescook> <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
+ <202008171246.80287CDCA@keescook> <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
+ <1597780833.3978.3.camel@HansenPartnership.com> <202008181309.FD3940A2D5@keescook>
+In-Reply-To: <202008181309.FD3940A2D5@keescook>
+From:   Allen <allen.lkml@gmail.com>
+Date:   Wed, 19 Aug 2020 16:18:16 +0530
+Message-ID: <CAOMdWSLi-aUeKDN8Xn-X2uW_LmWsp2n=NL3dPGiUbQKm_MxcAg@mail.gmail.com>
+Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
+To:     Kees Cook <keescook@chromium.org>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Allen Pais <allen.cryptic@gmail.com>, jdike@addtoit.com,
+        richard@nod.at, anton.ivanov@cambridgegreys.com, 3chas3@gmail.com,
+        stefanr@s5r6.in-berlin.de, airlied@linux.ie, daniel@ffwll.ch,
+        sre@kernel.org, kys@microsoft.com, deller@gmx.de,
+        dmitry.torokhov@gmail.com, jassisinghbrar@gmail.com,
+        shawnguo@kernel.org, s.hauer@pengutronix.de,
+        maximlevitsky@gmail.com, oakad@yahoo.com,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        mporter@kernel.crashing.org, alex.bou9@gmail.com,
+        broonie@kernel.org, martyn@welchs.me.uk, manohar.vanga@gmail.com,
+        mitch@sfgoth.com, David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-um@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux1394-devel@lists.sourceforge.net,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-hyperv@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-ntb@googlegroups.com, linux-s390@vger.kernel.org,
+        linux-spi@vger.kernel.org, devel@driverdev.osuosl.org,
+        Romain Perier <romain.perier@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 17, 2020 at 08:33:48PM -0700, Peter Collingbourne wrote:
+> > > > > > > >
+> > > > > > > > In preparation for unconditionally passing the
+> > > > > > > > struct tasklet_struct pointer to all tasklet
+> > > > > > > > callbacks, switch to using the new tasklet_setup()
+> > > > > > > > and from_tasklet() to pass the tasklet pointer explicitly.
+> > > > > > >
+> > > > > > > Who came up with the idea to add a macro 'from_tasklet' that
+> > > > > > > is just container_of? container_of in the code would be
+> > > > > > > _much_ more readable, and not leave anyone guessing wtf
+> > > > > > > from_tasklet is doing.
+> > > > > > >
+> > > > > > > I'd fix that up now before everything else goes in...
+> > > > > >
+> > > > > > As I mentioned in the other thread, I think this makes things
+> > > > > > much more readable. It's the same thing that the timer_struct
+> > > > > > conversion did (added a container_of wrapper) to avoid the
+> > > > > > ever-repeating use of typeof(), long lines, etc.
+> > > > >
+> > > > > But then it should use a generic name, instead of each sub-system
+> > > > > using some random name that makes people look up exactly what it
+> > > > > does. I'm not huge fan of the container_of() redundancy, but
+> > > > > adding private variants of this doesn't seem like the best way
+> > > > > forward. Let's have a generic helper that does this, and use it
+> > > > > everywhere.
+> > > >
+> > > > I'm open to suggestions, but as things stand, these kinds of
+> > > > treewide
+> > >
+> > > On naming? Implementation is just as it stands, from_tasklet() is
+> > > totally generic which is why I objected to it. from_member()? Not
+> > > great with naming... But I can see this going further and then we'll
+> > > suddenly have tons of these. It's not good for readability.
+> >
+> > Since both threads seem to have petered out, let me suggest in
+> > kernel.h:
+> >
+> > #define cast_out(ptr, container, member) \
+> >       container_of(ptr, typeof(*container), member)
+> >
+> > It does what you want, the argument order is the same as container_of
+> > with the only difference being you name the containing structure
+> > instead of having to specify its type.
+>
+> I like this! Shall I send this to Linus to see if this can land in -rc2
+> for use going forward?
+>
 
-Nit: please say what the patch does.  Subject line should summarise
-what is done, but should not add new information that is not present in
-the description proper.
+Cool, I shall wait for it to be accepted and then spin out V2 with cast_out()
 
-(Same for all the other patches.)
-
-> This allows userspace to detect missing support for flag bits and
-> allows the kernel to use non-uapi bits internally, as we are already
-> doing in arch/x86 for two flag bits. Now that this change is in
-> place, we no longer need the code in arch/x86 that was hiding these
-> bits from userspace, so remove it.
-> 
-> Signed-off-by: Peter Collingbourne <pcc@google.com>
-> ---
-> View this change in Gerrit: https://linux-review.googlesource.com/q/I35aab6f5be932505d90f3b3450c083b4db1eca86
-> 
->  arch/arm/include/asm/signal.h    |  4 ++++
->  arch/parisc/include/asm/signal.h |  4 ++++
->  arch/x86/kernel/signal_compat.c  |  7 -------
->  include/linux/signal_types.h     | 12 ++++++++++++
->  kernel/signal.c                  | 10 ++++++++++
->  5 files changed, 30 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm/include/asm/signal.h b/arch/arm/include/asm/signal.h
-> index 65530a042009..d1070a783993 100644
-> --- a/arch/arm/include/asm/signal.h
-> +++ b/arch/arm/include/asm/signal.h
-> @@ -17,6 +17,10 @@ typedef struct {
->  	unsigned long sig[_NSIG_WORDS];
->  } sigset_t;
->  
-> +#define SA_UAPI_FLAGS                                                          \
-> +	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_THIRTYTWO |             \
-> +	 SA_RESTORER | SA_ONSTACK | SA_RESTART | SA_NODEFER | SA_RESETHAND)
-> +
-
-I wonder whether all these per-arch definitions will tend to bitrot when
-people add new common flags.
-
-Can we have a common definition for the common bits, and just add the
-extra arch-specific ones here?
-
-
-Also, I wonder whether we should avoid the "SA_" prefix here.  Maybe
-UAPI_SA_FLAGS?
-
->  #define __ARCH_HAS_SA_RESTORER
->  
->  #include <asm/sigcontext.h>
-> diff --git a/arch/parisc/include/asm/signal.h b/arch/parisc/include/asm/signal.h
-> index 715c96ba2ec8..ad06e14f6e8a 100644
-> --- a/arch/parisc/include/asm/signal.h
-> +++ b/arch/parisc/include/asm/signal.h
-> @@ -21,6 +21,10 @@ typedef struct {
->  	unsigned long sig[_NSIG_WORDS];
->  } sigset_t;
->  
-> +#define SA_UAPI_FLAGS                                                          \
-> +	(SA_ONSTACK | SA_RESETHAND | SA_NOCLDSTOP | SA_SIGINFO | SA_NODEFER |  \
-> +	 SA_RESTART | SA_NOCLDWAIT | _SA_SIGGFAULT)
-> +
->  #include <asm/sigcontext.h>
->  
->  #endif /* !__ASSEMBLY */
-> diff --git a/arch/x86/kernel/signal_compat.c b/arch/x86/kernel/signal_compat.c
-> index 9ccbf0576cd0..c599013ae8cb 100644
-> --- a/arch/x86/kernel/signal_compat.c
-> +++ b/arch/x86/kernel/signal_compat.c
-> @@ -165,16 +165,9 @@ void sigaction_compat_abi(struct k_sigaction *act, struct k_sigaction *oact)
->  {
->  	signal_compat_build_tests();
->  
-> -	/* Don't leak in-kernel non-uapi flags to user-space */
-> -	if (oact)
-> -		oact->sa.sa_flags &= ~(SA_IA32_ABI | SA_X32_ABI);
-> -
->  	if (!act)
->  		return;
->  
-> -	/* Don't let flags to be set from userspace */
-> -	act->sa.sa_flags &= ~(SA_IA32_ABI | SA_X32_ABI);
-> -
->  	if (in_ia32_syscall())
->  		act->sa.sa_flags |= SA_IA32_ABI;
->  	if (in_x32_syscall())
-> diff --git a/include/linux/signal_types.h b/include/linux/signal_types.h
-> index f8a90ae9c6ec..e792f29b5846 100644
-> --- a/include/linux/signal_types.h
-> +++ b/include/linux/signal_types.h
-> @@ -68,4 +68,16 @@ struct ksignal {
->  	int sig;
->  };
->  
-> +#ifndef SA_UAPI_FLAGS
-> +#ifdef SA_RESTORER
-> +#define SA_UAPI_FLAGS                                                          \
-> +	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
-> +	 SA_NODEFER | SA_RESETHAND | SA_RESTORER)
-> +#else
-> +#define SA_UAPI_FLAGS                                                          \
-> +	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
-> +	 SA_NODEFER | SA_RESETHAND)
-> +#endif
-> +#endif
-> +
->  #endif /* _LINUX_SIGNAL_TYPES_H */
-> diff --git a/kernel/signal.c b/kernel/signal.c
-> index 42b67d2cea37..348b7981f1ff 100644
-> --- a/kernel/signal.c
-> +++ b/kernel/signal.c
-> @@ -3984,6 +3984,16 @@ int do_sigaction(int sig, struct k_sigaction *act, struct k_sigaction *oact)
->  	if (oact)
->  		*oact = *k;
->  
-> +	/*
-> +	 * Clear unknown flag bits in order to allow userspace to detect missing
-> +	 * support for flag bits and to allow the kernel to use non-uapi bits
-> +	 * internally.
-> +	 */
-> +	if (act)
-> +		act->sa.sa_flags &= SA_UAPI_FLAGS;
-> +	if (oact)
-> +		oact->sa.sa_flags &= SA_UAPI_FLAGS;
-> +
-
-Seems reasonable.
-
-Cheers
----Dave
-
->  	sigaction_compat_abi(act, oact);
->  
->  	if (act) {
-> -- 
-> 2.28.0.220.ged08abb693-goog
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+-- 
+       - Allen
