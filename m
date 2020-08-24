@@ -2,97 +2,158 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63EB224E756
-	for <lists+linux-parisc@lfdr.de>; Sat, 22 Aug 2020 14:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F251124FF18
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Aug 2020 15:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726704AbgHVMR3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 22 Aug 2020 08:17:29 -0400
-Received: from sonic301-2.consmr.mail.bf2.yahoo.com ([74.6.129.41]:35480 "EHLO
-        sonic301-2.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727087AbgHVMR0 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 22 Aug 2020 08:17:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1598098644; bh=+NKq2YP/4c3bLm2HmGhxa/KCZOXr0NIUKHs/ECuC0yk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=df5O1wYp5zwe9M6b8MDkN/zW0g9pjJD65+beiSaYAkKZ6bVnO9s740fPCvxjRpoSQYuzmd3QE6dPOcajugE0pzrwcv3hPg+zb4tgOwDxaKsTp1/jbhyF0Ghn1WfnLxhXH0aokiod6ohwb8ghP3vOqAJw/uYB2MJixIKrsgNm7VsQ8chbu+Iz7OYxbnXGmPXqvqsWe09yueIt02+tUZqP/FJqtpVauXDni6CHHuymEoW5isP5pV7iqlk3I+POrXv9Zygma+QJkyaB7O0a8OoXgPmZR3/i3moGcqUVKkiWFHn8Qd1IGAuauZfQ4i0Po3um8y4FVengG4zG/PUoTVScBQ==
-X-YMail-OSG: oJJfDB4VM1lmAvWrfaXsKHeJGiTN8aKc1dShS0MWitdWu.cyVdo6He1XtkZgWLA
- kZflFKRK9TJLQbhwFyhSL5Qs311LI5139VOsvou04VgIeFEqFfUQJCaOGOcsoecaB_QazK9W7v9g
- JNOda3zuS8EYe79sUsLhrh3ZVLS99zQLEtmxv8CQ7XMAcQeYG6MIfEOT60bYksJnAso4sfYQ_XBr
- P3Jmg3CEfRpi8ej.TAzu3aJWjJrRTYg.2s2NQMqrmPuaaDKflb1vaY_oDyHn65TCHsP8dUfzbXWY
- IMiBY79izLTbmswUkVANTb8FvBCo96HRKT2XoZEkJaRsJgA.pGtVd_tVrmLgV7oTcG.LAkU6lyLQ
- aYYhOyXIu9.TLNHrG69vVppf5A1CavQFN52Txr6O5ozuk5Cg4rLlQK72iYXcJFCDNhV.AYuwQqL_
- u5Zc.lx35gglLr49F57rO19TQhBV01ImYrv4V7nukpyaFtfTguA901jv8wCVAnUuwpsz_IxU3uTg
- vQtMzFBcdCMF216Zd_QxuZhpti_0mfOdFl0b_7Z0Z2IgfZwCrt5WF9IN3kDIYjhtrTk63ofFWKGN
- ntFcmBL0NtMcTiG0p44MkiWvmbOhv0Vce9Tsp9BfvLK1gVPeDyyF5SpQ8jjAbfd1fcHjKuewn7i6
- 7y3heU99x9c3h2ApDaG495ZJKSXWUwOkUEWy3O9bignyPnr8KKiYDyk1flj275X7.aojbfKndVuJ
- Hep1PqOKenJQL2RRetce96Z2Oj2p7SP3ldhcAvg3bo97D7vLfbqLhWHIx9KWxYemjsN6ZNNbaz0L
- mK0kahiXIHehP2CzYNtKzSLkdObzcaoFCbb3rFl6eeSK7j9LYOEqmavm610y9dXDiO8IJhqsNvLQ
- VieCHKoVkdfMGLK_2V7GV0kvodB58pMxc8W7uA43VwvLCPmTeyAO6.u9l7zhBc77GDHiutVmW9I8
- IMarwYbVfud2qfxqUUvpS92r958htkQ5NWF0Jc4er5mRtZhgsTWre4.nIoEoviOTrV91XTWMDlWj
- HOS_akTbnCi55mIqb9NDw3XDvKx4_LF3TeA22EBVbSUzPFf3YguUG9NTJj8Mp4Ysp4beyFBQsV.N
- xoJ.uwo3S0BjpkJH350N_W2mO42Qpok6RUNkzzhYx78AOJtyaNHVgxJ9gCcQaLk66RIDw0GSNdo8
- HdiJx9684Z5_BTicYLV4fy.G03vywDla_cue.Wh_ME.m1IxE9bdHLkrAZjrfr6498sBODqZg0.dS
- o9ynuyAs0b558L3T.VqDs.Nq4_JGM7DGhDdxYyrd1ga12ucO54NOVU9b01Z3Dsc7v9tau7HSL6JS
- vsn5ULt0yu2IXsF.hzZEVHpbV01RCq3sLHSnbp4Pp1AyiTEC7FdPBrJ46e69iyL6gU9CcP0w_gPM
- zISt6ET4QvjSE52w6.8nSV7Vh2GtHFvhF5owcYWlM
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Aug 2020 12:17:24 +0000
-Date:   Sat, 22 Aug 2020 12:17:20 +0000 (UTC)
-From:   "Mrs. Mina A. Brunel" <mrsminaabrunel21@gmail.com>
-Reply-To: mrsminaabrunel373@gmail.com
-Message-ID: <503334856.4416742.1598098640736@mail.yahoo.com>
-Subject: My Dear in the lord
+        id S1727860AbgHXNkY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 24 Aug 2020 09:40:24 -0400
+Received: from foss.arm.com ([217.140.110.172]:34190 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727066AbgHXNkG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 24 Aug 2020 09:40:06 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F2971FB;
+        Mon, 24 Aug 2020 06:40:05 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2DAC63F66B;
+        Mon, 24 Aug 2020 06:40:03 -0700 (PDT)
+Date:   Mon, 24 Aug 2020 14:40:01 +0100
+From:   Dave Martin <Dave.Martin@arm.com>
+To:     Peter Collingbourne <pcc@google.com>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Kostya Serebryany <kcc@google.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        David Spickett <david.spickett@linaro.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Evgenii Stepanov <eugenis@google.com>,
+        Richard Henderson <rth@twiddle.net>
+Subject: Re: [PATCH v9 3/6] signal: clear non-uapi flag bits when
+ passing/returning sa_flags
+Message-ID: <20200824134000.GK6642@arm.com>
+References: <cover.1597720138.git.pcc@google.com>
+ <68bd2d6544fb17bbe2fb90862e28ec38e079549a.1597720138.git.pcc@google.com>
+ <20200819103948.GF6642@arm.com>
+ <CAMn1gO5dW8MyPyOvZKk0Au8ggeqJA=mkvZpXZDWuJDLuZh2Fpg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <503334856.4416742.1598098640736.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16455 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMn1gO5dW8MyPyOvZKk0Au8ggeqJA=mkvZpXZDWuJDLuZh2Fpg@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-
-
-My Dear in the lord
-
-
-My name is Mrs. Mina A. Brunel I am a Norway Citizen who is living in Burki=
-na Faso, I am married to Mr. Brunel Patrice, a politician who owns a small =
-gold company in Burkina Faso; He died of Leprosy and Radesyge, in the year =
-February 2010, During his lifetime he deposited the sum of =E2=82=AC 8.5 Mi=
-llion Euro) Eight million, Five hundred thousand Euros in a bank in Ouagado=
-ugou the capital city of Burkina Faso in West Africa. The money was from th=
-e sale of his company and death benefits payment and entitlements of my dec=
-eased husband by his company.
-
-I am sending you this message with heavy tears in my eyes and great sorrow =
-in my heart, and also praying that it will reach you in good health because=
- I am not in good health, I sleep every night without knowing if I may be a=
-live to see the next day. I am suffering from long time cancer and presentl=
-y I am partially suffering from Leprosy, which has become difficult for me =
-to move around. I was married to my late husband for more than 6 years with=
-out having a child and my doctor confided that I have less chance to live, =
-having to know when the cup of death will come, I decided to contact you to=
- claim the fund since I don't have any relation I grew up from an orphanage=
- home.
-
-I have decided to donate this money for the support of helping Motherless b=
-abies/Less privileged/Widows and churches also to build the house of God be=
-cause I am dying and diagnosed with cancer for about 3 years ago. I have de=
-cided to donate from what I have inherited from my late husband to you for =
-the good work of Almighty God; I will be going in for an operation surgery =
-soon.
-
-Now I want you to stand as my next of kin to claim the funds for charity pu=
-rposes. Because of this money remains unclaimed after my death, the bank ex=
-ecutives or the government will take the money as unclaimed fund and maybe =
-use it for selfishness and worthless ventures, I need a very honest person =
-who can claim this money and use it for Charity works, for orphanages, wido=
-ws and also build schools and churches for less privilege that will be name=
-d after my late husband and my name.
-
-I need your urgent answer to know if you will be able to execute this proje=
-ct, and I will give you more information on how the fund will be transferre=
-d to your bank account or online banking.
+On Wed, Aug 19, 2020 at 04:39:53PM -0700, Peter Collingbourne wrote:
+> On Wed, Aug 19, 2020 at 3:39 AM Dave Martin <Dave.Martin@arm.com> wrote:
+> >
+> > On Mon, Aug 17, 2020 at 08:33:48PM -0700, Peter Collingbourne wrote:
+> >
+> > Nit: please say what the patch does.  Subject line should summarise
+> > what is done, but should not add new information that is not present in
+> > the description proper.
+> >
+> > (Same for all the other patches.)
+> 
+> Will do.
 
 Thanks
-Mrs. Mina A. Brunel
+
+[...]
+
+> > > diff --git a/arch/arm/include/asm/signal.h b/arch/arm/include/asm/signal.h
+> > > index 65530a042009..d1070a783993 100644
+> > > --- a/arch/arm/include/asm/signal.h
+> > > +++ b/arch/arm/include/asm/signal.h
+> > > @@ -17,6 +17,10 @@ typedef struct {
+> > >       unsigned long sig[_NSIG_WORDS];
+> > >  } sigset_t;
+> > >
+> > > +#define SA_UAPI_FLAGS                                                          \
+> > > +     (SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_THIRTYTWO |             \
+> > > +      SA_RESTORER | SA_ONSTACK | SA_RESTART | SA_NODEFER | SA_RESETHAND)
+> > > +
+> >
+> > I wonder whether all these per-arch definitions will tend to bitrot when
+> > people add new common flags.
+> >
+> > Can we have a common definition for the common bits, and just add the
+> > extra arch-specific ones here?
+> 
+> I think so. We could have something like:
+> 
+> #define ARCH_UAPI_SA_FLAGS SA_THIRTYTWO
+> 
+> here. Then in signal_types.h we can do:
+> 
+> #ifndef ARCH_UAPI_SA_FLAGS
+> #define ARCH_UAPI_SA_FLAGS 0
+> #endif
+> 
+> #define UAPI_SA_FLAGS (... | ARCH_UAPI_SA_FLAGS)
+> 
+> I'll do that in v10.
+
+Yes, something like that would be fine, I should think.
+
+> > Also, I wonder whether we should avoid the "SA_" prefix here.  Maybe
+> > UAPI_SA_FLAGS?
+> 
+> Sounds good to me.
+
+OK, great.
+
+[...]
+
+> > > diff --git a/kernel/signal.c b/kernel/signal.c
+> > > index 42b67d2cea37..348b7981f1ff 100644
+> > > --- a/kernel/signal.c
+> > > +++ b/kernel/signal.c
+> > > @@ -3984,6 +3984,16 @@ int do_sigaction(int sig, struct k_sigaction *act, struct k_sigaction *oact)
+> > >       if (oact)
+> > >               *oact = *k;
+> > >
+> > > +     /*
+> > > +      * Clear unknown flag bits in order to allow userspace to detect missing
+> > > +      * support for flag bits and to allow the kernel to use non-uapi bits
+> > > +      * internally.
+> > > +      */
+> > > +     if (act)
+> > > +             act->sa.sa_flags &= SA_UAPI_FLAGS;
+> > > +     if (oact)
+> > > +             oact->sa.sa_flags &= SA_UAPI_FLAGS;
+> > > +
+> >
+> > Seems reasonable.
+> 
+> Thanks. I also decided to check how other operating systems handle
+> unknown flag bits in sigaction.sa_flags. It looks like OpenBSD and
+> illumos also accept unknown bits but (implicitly, as a result of using
+> a different internal representation) end up clearing them in oldact:
+> 
+> https://github.com/openbsd/src/blob/f634a6a4b5bf832e9c1de77f7894ae2625e74484/sys/kern/kern_sig.c#L278
+> https://github.com/illumos/illumos-gate/blob/76f19f5fdc974fe5be5c82a556e43a4df93f1de1/usr/src/uts/common/syscall/sigaction.c#L86
+> 
+> and FreeBSD and NetBSD fail the syscall if unknown bits are set:
+> 
+> https://github.com/freebsd/freebsd/blob/eded70c37057857c6e23fae51f86b8f8f43cd2d0/sys/kern/kern_sig.c#L699
+> https://github.com/NetBSD/src/blob/3365779becdcedfca206091a645a0e8e22b2946e/sys/kern/sys_sig.c#L473
+> 
+> So there is some precedent for doing what we're planning to do here,
+> which makes it yet more likely that we'll be okay doing this.
+
+Ack, it's good to have that extra evidence to support this approach.
+
+This also means that other OSes could adopt the new Linux flag(s) with
+comatible semantics, if they wanted to.  Or have I misunderstood
+something there?
+
+Cheers
+---Dave
