@@ -2,191 +2,165 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E82D8250EE2
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Aug 2020 04:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACBA9251675
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Aug 2020 12:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbgHYCSc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 24 Aug 2020 22:18:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59764 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725947AbgHYCSb (ORCPT
+        id S1729746AbgHYKRg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 25 Aug 2020 06:17:36 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:16426 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728117AbgHYKRf (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 24 Aug 2020 22:18:31 -0400
-Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898C0C061574
-        for <linux-parisc@vger.kernel.org>; Mon, 24 Aug 2020 19:18:31 -0700 (PDT)
-Received: by mail-vs1-xe41.google.com with SMTP id b26so5538996vsa.13
-        for <linux-parisc@vger.kernel.org>; Mon, 24 Aug 2020 19:18:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VVcpc40yOHQYM+GLqCfQnefB/67Yjln2EQHPU82TFFw=;
-        b=jKvZkOvfgeusuUaekDee3JNQ8i6+H69qB1txWoM2jSeRVhQP9ZMD2xpjVsctXPz0lf
-         diCrLTa/oyQUwqVpWawiW1ZYwK0tPubxx21uIHLa+zCfwoiFN/9AdLLUKipTGXcDqe+n
-         WelUjQh9jfYMTH0UZTLfULWPglUSV2vk3AnSrMsZMyQkN13beO4NeUA1XcTQQceQoa0J
-         lMUVJwp2nR7A2Wj3mf1a6CLbJfvYFwdg5tc0ypH5nPkVgj/Q1wmq1ps/BUCjrI1MwRAD
-         rsr/CXqc9D/Gg8JWqtx3qoGUXgu6OuDBaodkls1mku0ehMFJGXRbEXdfrO6TRUaqZ/DA
-         9J2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VVcpc40yOHQYM+GLqCfQnefB/67Yjln2EQHPU82TFFw=;
-        b=VLcExP3ME3LbhXPPdKxp7WK5K4QUeJKNGI39/JNEZwjq4nBh0z7bULV6TMZU75fb8x
-         PzSdMf+qk381pvaXN8PzqLBrJ2SXHVbzOECWm0DH5OKAn+jPsLfPCetct+SUpdQDqoCD
-         HYIndiYOXfJ+uCjAeE22GvQ/YToRSW2iZ87WGW8nhAp92x/n33K+ZTjB2tiX70QHCppW
-         Z6lZ0FIrvI4+dENUQ27f2Dm8jIIK8QmoQR044xJNlbxe4k4fZDZFhRsTT77Qdf4bbqKw
-         LpnH8LITnQrsOge//ZJUP8yICgwxzHOTeJxa1kuMogA2TG57tmkSHloxa4vc/zmKctd3
-         2n9Q==
-X-Gm-Message-State: AOAM5316W2ClMKO1eSLtUaIE8qSH6e8ve/AmhQj7UoUIBP0Eg+4tTBMg
-        XMEnAHy/nqTeI+KyAMq1yzHzpCXILv9buav7Ju8Y3Q==
-X-Google-Smtp-Source: ABdhPJyQB1i6jjivS0ELmsCHBFpKrK32cgTfEukhHY510u3PhQRaNYyxPZjvC7xPEnYHQ8mAWbqf3ReMeVzRPAp3VMo=
-X-Received: by 2002:a67:fdc4:: with SMTP id l4mr4457300vsq.51.1598321909764;
- Mon, 24 Aug 2020 19:18:29 -0700 (PDT)
+        Tue, 25 Aug 2020 06:17:35 -0400
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07PA4pWp154169;
+        Tue, 25 Aug 2020 06:16:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=EOBUoNumc+lfxeSxOyM8nxTJchcZ8SasJG/UKpKCePc=;
+ b=FLMfaI34xTiJCIrm5uFNqbuk0uT2DGykGFonCKV9ValbKJI3Gb8aJ1pjUCvH1rBMViHH
+ a+46qMxkOoSEKYil9BF1E0fCNjqHrqN02uE3u63nGbSY/ajxgIwKwmxxu46FESXlA2nM
+ CSrGWVcVfhlmX34vqVger2iojhSeXB+dFv+4FsmjCV6iJGBcX6jS2sIknOsTSUArI8jv
+ pWnbWazaY41s/AVuWDg2oC/WN57VTsUafbWj+P2oGiWZap4gTf8wGpUUY7J7pjuNx8tf
+ G6kTrWxeMCgWUXkLDaUJi/CEnjLBtbu0oz+Lo59EIPqzoCxSQsIPS9X7KAhGXPUvR8Iv 7g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 334yc52e4u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 25 Aug 2020 06:16:35 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07PA7kP9161517;
+        Tue, 25 Aug 2020 06:16:34 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 334yc52e43-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 25 Aug 2020 06:16:34 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07PAFFq5019135;
+        Tue, 25 Aug 2020 10:16:32 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+        by ppma04ams.nl.ibm.com with ESMTP id 33498u97t7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 25 Aug 2020 10:16:32 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07PAGT9N24445372
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 25 Aug 2020 10:16:29 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6B3F1A4054;
+        Tue, 25 Aug 2020 10:16:29 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C6052A4062;
+        Tue, 25 Aug 2020 10:16:27 +0000 (GMT)
+Received: from oc5500677777.ibm.com (unknown [9.145.83.242])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 25 Aug 2020 10:16:27 +0000 (GMT)
+Subject: Re: [RFT][PATCH 0/7] Avoid overflow at boundary_size
+To:     Nicolin Chen <nicoleotsuka@gmail.com>, mpe@ellerman.id.au,
+        benh@kernel.crashing.org, paulus@samba.org, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com, tony.luck@intel.com,
+        fenghua.yu@intel.com, gerald.schaefer@linux.ibm.com,
+        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@de.ibm.com,
+        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de
+Cc:     sfr@canb.auug.org.au, hch@lst.de, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org
+References: <20200820231923.23678-1-nicoleotsuka@gmail.com>
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+Message-ID: <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
+Date:   Tue, 25 Aug 2020 12:16:27 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <cover.1597720138.git.pcc@google.com> <9df0de08df310052df01d63bc8bddc5dd71c2bdb.1597720138.git.pcc@google.com>
- <20200819155650.GI6642@arm.com> <CAMn1gO5pFUGDLJEWe1uOetz0ohE1-pdWGvz7_XxOMZROOfO=ag@mail.gmail.com>
- <20200824142348.GN6642@arm.com>
-In-Reply-To: <20200824142348.GN6642@arm.com>
-From:   Peter Collingbourne <pcc@google.com>
-Date:   Mon, 24 Aug 2020 19:18:19 -0700
-Message-ID: <CAMn1gO7DErthDi5EGQh=-MVBP9x_MTsfPHdP_wnS2=xY7kpt2g@mail.gmail.com>
-Subject: Re: [PATCH v9 6/6] arm64: expose FAR_EL1 tag bits in siginfo
-To:     Dave Martin <Dave.Martin@arm.com>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Kevin Brodsky <kevin.brodsky@arm.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Kostya Serebryany <kcc@google.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        David Spickett <david.spickett@linaro.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Evgenii Stepanov <eugenis@google.com>,
-        Richard Henderson <rth@twiddle.net>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200820231923.23678-1-nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-08-25_02:2020-08-24,2020-08-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ spamscore=0 impostorscore=0 priorityscore=1501 clxscore=1011
+ mlxlogscore=999 malwarescore=0 suspectscore=2 adultscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008250073
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 24, 2020 at 7:23 AM Dave Martin <Dave.Martin@arm.com> wrote:
->
-> On Wed, Aug 19, 2020 at 06:49:01PM -0700, Peter Collingbourne wrote:
-> > On Wed, Aug 19, 2020 at 8:56 AM Dave Martin <Dave.Martin@arm.com> wrote:
-> > >
-> > > On Mon, Aug 17, 2020 at 08:33:51PM -0700, Peter Collingbourne wrote:
-> > > > The kernel currently clears the tag bits (i.e. bits 56-63) in the fault
-> > > > address exposed via siginfo.si_addr and sigcontext.fault_address. However,
-> > > > the tag bits may be needed by tools in order to accurately diagnose
-> > > > memory errors, such as HWASan [1] or future tools based on the Memory
-> > > > Tagging Extension (MTE).
-> > > >
-> > > > We should not stop clearing these bits in the existing fault address
-> > > > fields, because there may be existing userspace applications that are
-> > > > expecting the tag bits to be cleared. Instead, create a new pair of
-> > > > union fields in siginfo._sigfault, and store the tag bits of FAR_EL1
-> > > > there, together with a mask specifying which bits are valid.
-> > > >
-> > > > A flag is added to si_xflags to allow userspace to determine whether
-> > > > the values in the fields are valid.
-> > > >
-> > > > [1] http://clang.llvm.org/docs/HardwareAssistedAddressSanitizerDesign.html
-> > > >
-> > > > Signed-off-by: Peter Collingbourne <pcc@google.com>
-> > > > ---
->
-> [...]
->
-> > > > diff --git a/kernel/signal.c b/kernel/signal.c
-> > > > index 72182eed1b8d..1f1e42adc57d 100644
-> > > > --- a/kernel/signal.c
-> > > > +++ b/kernel/signal.c
->
-> [...]
->
-> > > > @@ -1706,7 +1722,9 @@ int send_sig_fault(int sig, int code, void __user *addr
-> > > >       return send_sig_info(info.si_signo, &info, t);
-> > > >  }
-> > > >
-> > > > -int force_sig_mceerr(int code, void __user *addr, short lsb)
-> > > > +int force_sig_mceerr(int code, void __user *addr, short lsb,
-> > > > +                  unsigned long addr_ignored_bits,
-> > > > +                  unsigned long addr_ignored_bits_mask)
-> > >
-> > > Rather than having to pass these extra arguments all over the place, can
-> > > we just pass the far for addr, and have an arch-specific hook for
-> > > splitting the ignored from non-ignored bits.  For now at least, I expect
-> > > that ignored bits mask to be constant for a given platform and kernel.
-> >
-> > That sounds like a good idea. I think that for MTE we will want to
-> > make it conditional on the si_code (so SEGV_MTESERR would get 0xf <<
-> > 56 while everything else would get 0xff << 56) so I can hook that up
-> > at the same time.
->
-> OK, I think that's reasonable.
->
-> Mind you, we seem to have 3 kinds of bits here, so I'm starting to
-> wonder whether this is really sufficient:
->
->         1) address bits used in the faulted access
->         2) attribute/permission bits used in the faulted access
->         3) unavailable bits.
->
-> si_addr contains (1).
->
-> si_addr_ignored_bits contains (2).
->
-> The tag bits from non-MTE faults seem to fall under case (3).  Code that
-> looks for these bits in si_addr_ignored_bits won't find them.
 
-I'm reasonably sure that the tag bits are available for non-MTE
-faults. From https://developer.arm.com/docs/ddi0595/h/aarch64-system-registers/far_el1
-:
-"For a Data Abort or Watchpoint exception, if address tagging is
-enabled for the address accessed by the data access that caused the
-exception, then this field includes the tag."
 
-This language applies to non-tag-check-fault data aborts but is
-superseded by the following paragraph for tag check faults:
-"For a synchronous Tag Check Fault abort, bits[63:60] are UNKNOWN."
+On 8/21/20 1:19 AM, Nicolin Chen wrote:
+> We are expending the default DMA segmentation boundary to its
+> possible maximum value (ULONG_MAX) to indicate that a device
+> doesn't specify a boundary limit. So all dma_get_seg_boundary
+> callers should take a precaution with the return values since
+> it would easily get overflowed.
+> 
+> I scanned the entire kernel tree for all the existing callers
+> and found that most of callers may get overflowed in two ways:
+> either "+ 1" or passing it to ALIGN() that does "+ mask".
+> 
+> According to kernel defines:
+>     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
+>     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
+> 
+> We can simplify the logic here:
+>   ALIGN(boundary + 1, 1 << shift) >> shift
+> = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
+> = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
+> = [b + 1 + (1 << s) - 1] >> s
+> = [b + (1 << s)] >> s
+> = (b >> s) + 1
+> 
+> So this series of patches fix the potential overflow with this
+> overflow-free shortcut.
 
-> So perhaps it would make sense to amend the design a bit.  We'd have
->
->         si_addr = address bits only
->         si_attr = attribute bits only
->         si_attr_mask = mask of valid bits in si_addr
->
-> Thinking about it, I've just shortened/changed some named and changed
-> the meaning of the mask, so it's very similar to what you already have.
+Hi Nicolin,
 
-Did you mean "si_attr_mask = mask of valid bits in si_attr"? I assume
-so because below you talk about si_addr_mask also being the mask of
-valid bits in si_addr, but I don't think this is a change in meaning
-for the mask field as I specified it. Maybe, given your claim above
-that the tag bits are unavailable for non-tag check faults, you
-misunderstood why I am setting si_addr_ignored_bits_mask to 0xf << 56
-for tag check faults and 0xff << 56 for non-tag check faults?
+haven't seen any other feedback from other maintainers,
+so I guess you will resend this?
+On first glance it seems to make sense.
+I'm a little confused why it is only a "potential overflow"
+while this part
 
-That being said, maybe we can make the names shorter with something
-like your suggestion.
+"We are expending the default DMA segmentation boundary to its
+ possible maximum value (ULONG_MAX) to indicate that a device
+ doesn't specify a boundary limit"
 
-> The mask of valid bits in si_addr is decided by architectural
-> convention (i.e., ~0xffUL << 56), but we could also expose
->
->         si_addr_mask = mask of valid bits in si_addr
->
-> This is a bit redundant though.  I think people would already assume
-> that all bits required for classifying the faulting location accurately
-> must already be provided there.
+sounds to me like ULONG_MAX is actually used, does that
+mean there are currently no devices which do not specify a
+boundary limit?
 
-I think it's fine for this to be an architectural convention. If we
-really wanted to expose something like this to userspace then I think
-we should expose TASK_SIZE (this is something that I've wanted in the
-past). But that's really a separate discussion.
 
-Peter
+> 
+> As I don't think that I have these platforms, marking RFT.
+> 
+> Thanks
+> Nic
+> 
+> Nicolin Chen (7):
+>   powerpc/iommu: Avoid overflow at boundary_size
+>   alpha: Avoid overflow at boundary_size
+>   ia64/sba_iommu: Avoid overflow at boundary_size
+>   s390/pci_dma: Avoid overflow at boundary_size
+>   sparc: Avoid overflow at boundary_size
+>   x86/amd_gart: Avoid overflow at boundary_size
+>   parisc: Avoid overflow at boundary_size
+> 
+>  arch/alpha/kernel/pci_iommu.c    | 10 ++++------
+>  arch/ia64/hp/common/sba_iommu.c  |  4 ++--
+>  arch/powerpc/kernel/iommu.c      | 11 +++++------
+>  arch/s390/pci/pci_dma.c          |  4 ++--
+>  arch/sparc/kernel/iommu-common.c |  9 +++------
+>  arch/sparc/kernel/iommu.c        |  4 ++--
+>  arch/sparc/kernel/pci_sun4v.c    |  4 ++--
+>  arch/x86/kernel/amd_gart_64.c    |  4 ++--
+>  drivers/parisc/ccio-dma.c        |  4 ++--
+>  drivers/parisc/sba_iommu.c       |  4 ++--
+>  10 files changed, 26 insertions(+), 32 deletions(-)
+> 
