@@ -2,57 +2,57 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C57F1250E33
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Aug 2020 03:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E82D8250EE2
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Aug 2020 04:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725921AbgHYB2F (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 24 Aug 2020 21:28:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51958 "EHLO
+        id S1726758AbgHYCSc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 24 Aug 2020 22:18:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725890AbgHYB2F (ORCPT
+        with ESMTP id S1725947AbgHYCSb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 24 Aug 2020 21:28:05 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAA72C061795
-        for <linux-parisc@vger.kernel.org>; Mon, 24 Aug 2020 18:28:04 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id t13so9021241ile.9
-        for <linux-parisc@vger.kernel.org>; Mon, 24 Aug 2020 18:28:04 -0700 (PDT)
+        Mon, 24 Aug 2020 22:18:31 -0400
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898C0C061574
+        for <linux-parisc@vger.kernel.org>; Mon, 24 Aug 2020 19:18:31 -0700 (PDT)
+Received: by mail-vs1-xe41.google.com with SMTP id b26so5538996vsa.13
+        for <linux-parisc@vger.kernel.org>; Mon, 24 Aug 2020 19:18:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=SB8RWE8ob3xziaFEC5nb8LonIMAGKaY28tqmr0Th24c=;
-        b=qXuM3pHfe0kHwiTDrvp2DWLFrlwDf9OcxJIUjYVOucVyCH8qnvat8Xek+nt3jRmWYv
-         aWDzr41uCPwuYV52G3HDITw499mkkFoPhphdckHas//Yf15SBSauN13ERNPkYRILydhV
-         gPYGmx1cNqjNJUI+HZZzwQtk2HgbbZLSAYAUC7sEf8Skwzj3ACOYenChwGDdM5HCJs50
-         RX1SAmLfZaaIJ3x2EOeRLj+fdZIXNoV+puknu5EWbGyxMImKjF8IfJ89tHxKiAvdZOHb
-         pN1V5k0/dGZWPiQ7oThyfR8e29Stv8ODWqqOHK5HHQvK2DYVTjnR/tbbar/fcvRkN2oB
-         VBkg==
+        bh=VVcpc40yOHQYM+GLqCfQnefB/67Yjln2EQHPU82TFFw=;
+        b=jKvZkOvfgeusuUaekDee3JNQ8i6+H69qB1txWoM2jSeRVhQP9ZMD2xpjVsctXPz0lf
+         diCrLTa/oyQUwqVpWawiW1ZYwK0tPubxx21uIHLa+zCfwoiFN/9AdLLUKipTGXcDqe+n
+         WelUjQh9jfYMTH0UZTLfULWPglUSV2vk3AnSrMsZMyQkN13beO4NeUA1XcTQQceQoa0J
+         lMUVJwp2nR7A2Wj3mf1a6CLbJfvYFwdg5tc0ypH5nPkVgj/Q1wmq1ps/BUCjrI1MwRAD
+         rsr/CXqc9D/Gg8JWqtx3qoGUXgu6OuDBaodkls1mku0ehMFJGXRbEXdfrO6TRUaqZ/DA
+         9J2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=SB8RWE8ob3xziaFEC5nb8LonIMAGKaY28tqmr0Th24c=;
-        b=YoD8Ln64yTmEv6qZ/Ymku34t9IYZFdgUvA7uky0ydkxGUZ/MBhN7PgIVjcUYJskhb5
-         PYf3BQeeJRC6uSayMhNwQel8f3CTjzzFW40ijMZ2L264EVZlQXBlviyMmizKQkbYh04K
-         EEexHldqNzmBOM/ObgVeMFcFxY/58gC+VI8o3t2KuxzgqE0PG2bcCm1En0sdEE8wG/es
-         rhkTR6QofmZeSgJJQLBgRq13CDDUv+/UTWSot8uJ0e/EHERX1KTxEG3DN20C9pYVTUD5
-         nH3ZWInVSa+QlVipBFYOWDMft19AKqFNio7N0D7XTa3JzPL09yDPm6vxWAe5wBaDKfZE
-         hOqg==
-X-Gm-Message-State: AOAM531y1wXELOw64934QOepOTWfJLpK6eM8LsL0SkaTbpEMCi7Q5DbJ
-        2jgfLRq9A/bMmnxBJGT3+uyRPjbXXzYKZn2NhExGs2FAxodbkysf
-X-Google-Smtp-Source: ABdhPJw4Ra3YVZRlknonk35uFgRIq2XYFcZLP6dJh15CNrzEJIXVKTpQezzKApl5WJmOgL1wXivfZhNC54QsjvTEMZw=
-X-Received: by 2002:a92:d7c1:: with SMTP id g1mr7464958ilq.145.1598318882712;
- Mon, 24 Aug 2020 18:28:02 -0700 (PDT)
+        bh=VVcpc40yOHQYM+GLqCfQnefB/67Yjln2EQHPU82TFFw=;
+        b=VLcExP3ME3LbhXPPdKxp7WK5K4QUeJKNGI39/JNEZwjq4nBh0z7bULV6TMZU75fb8x
+         PzSdMf+qk381pvaXN8PzqLBrJ2SXHVbzOECWm0DH5OKAn+jPsLfPCetct+SUpdQDqoCD
+         HYIndiYOXfJ+uCjAeE22GvQ/YToRSW2iZ87WGW8nhAp92x/n33K+ZTjB2tiX70QHCppW
+         Z6lZ0FIrvI4+dENUQ27f2Dm8jIIK8QmoQR044xJNlbxe4k4fZDZFhRsTT77Qdf4bbqKw
+         LpnH8LITnQrsOge//ZJUP8yICgwxzHOTeJxa1kuMogA2TG57tmkSHloxa4vc/zmKctd3
+         2n9Q==
+X-Gm-Message-State: AOAM5316W2ClMKO1eSLtUaIE8qSH6e8ve/AmhQj7UoUIBP0Eg+4tTBMg
+        XMEnAHy/nqTeI+KyAMq1yzHzpCXILv9buav7Ju8Y3Q==
+X-Google-Smtp-Source: ABdhPJyQB1i6jjivS0ELmsCHBFpKrK32cgTfEukhHY510u3PhQRaNYyxPZjvC7xPEnYHQ8mAWbqf3ReMeVzRPAp3VMo=
+X-Received: by 2002:a67:fdc4:: with SMTP id l4mr4457300vsq.51.1598321909764;
+ Mon, 24 Aug 2020 19:18:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1597720138.git.pcc@google.com> <e26271d2b3767cdbd265033e6f7eb28f828f3a28.1597720138.git.pcc@google.com>
- <20200819154028.GH6642@arm.com> <CAMn1gO5DebvFmUPcY=i_wKNZpdaybpCOdbZrDPsTQ32N5UQg7g@mail.gmail.com>
- <20200824140319.GM6642@arm.com>
-In-Reply-To: <20200824140319.GM6642@arm.com>
+References: <cover.1597720138.git.pcc@google.com> <9df0de08df310052df01d63bc8bddc5dd71c2bdb.1597720138.git.pcc@google.com>
+ <20200819155650.GI6642@arm.com> <CAMn1gO5pFUGDLJEWe1uOetz0ohE1-pdWGvz7_XxOMZROOfO=ag@mail.gmail.com>
+ <20200824142348.GN6642@arm.com>
+In-Reply-To: <20200824142348.GN6642@arm.com>
 From:   Peter Collingbourne <pcc@google.com>
-Date:   Mon, 24 Aug 2020 18:27:51 -0700
-Message-ID: <CAMn1gO7KiL4e-O=-bj1Ur1CLKQJ=pOuVnwDBUma0jyE443ODeg@mail.gmail.com>
-Subject: Re: [PATCH v9 5/6] signal: define the field siginfo.si_xflags
+Date:   Mon, 24 Aug 2020 19:18:19 -0700
+Message-ID: <CAMn1gO7DErthDi5EGQh=-MVBP9x_MTsfPHdP_wnS2=xY7kpt2g@mail.gmail.com>
+Subject: Re: [PATCH v9 6/6] arm64: expose FAR_EL1 tag bits in siginfo
 To:     Dave Martin <Dave.Martin@arm.com>
 Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Parisc List <linux-parisc@vger.kernel.org>,
@@ -74,108 +74,119 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 24, 2020 at 7:03 AM Dave Martin <Dave.Martin@arm.com> wrote:
+On Mon, Aug 24, 2020 at 7:23 AM Dave Martin <Dave.Martin@arm.com> wrote:
 >
-> On Wed, Aug 19, 2020 at 06:37:25PM -0700, Peter Collingbourne wrote:
-> > On Wed, Aug 19, 2020 at 8:40 AM Dave Martin <Dave.Martin@arm.com> wrote:
+> On Wed, Aug 19, 2020 at 06:49:01PM -0700, Peter Collingbourne wrote:
+> > On Wed, Aug 19, 2020 at 8:56 AM Dave Martin <Dave.Martin@arm.com> wrote:
 > > >
-> > > On Mon, Aug 17, 2020 at 08:33:50PM -0700, Peter Collingbourne wrote:
-> > > > This field will contain flags that may be used by signal handlers to
-> > > > determine whether other fields in the _sigfault portion of siginfo are
-> > > > valid. An example use case is the following patch, which introduces
-> > > > the si_addr_ignored_bits{,_mask} fields.
+> > > On Mon, Aug 17, 2020 at 08:33:51PM -0700, Peter Collingbourne wrote:
+> > > > The kernel currently clears the tag bits (i.e. bits 56-63) in the fault
+> > > > address exposed via siginfo.si_addr and sigcontext.fault_address. However,
+> > > > the tag bits may be needed by tools in order to accurately diagnose
+> > > > memory errors, such as HWASan [1] or future tools based on the Memory
+> > > > Tagging Extension (MTE).
 > > > >
-> > > > A new sigcontext flag, SA_XFLAGS, is introduced in order to allow
-> > > > a signal handler to require the kernel to set the field (but note
-> > > > that the field will be set anyway if the kernel supports the flag,
-> > > > regardless of its value). In combination with the previous patches,
-> > > > this allows a userspace program to determine whether the kernel will
-> > > > set the field.
+> > > > We should not stop clearing these bits in the existing fault address
+> > > > fields, because there may be existing userspace applications that are
+> > > > expecting the tag bits to be cleared. Instead, create a new pair of
+> > > > union fields in siginfo._sigfault, and store the tag bits of FAR_EL1
+> > > > there, together with a mask specifying which bits are valid.
 > > > >
-> > > > Ideally this field could have just been named si_flags, but that
-> > > > name was already taken by ia64, so a different name was chosen.
+> > > > A flag is added to si_xflags to allow userspace to determine whether
+> > > > the values in the fields are valid.
 > > > >
-> > > > Alternatively, we may consider making ia64's si_flags a generic field
-> > > > and having it appear at the end of _sigfault (in the same place as
-> > > > this patch has si_xflags) on non-ia64, keeping it in the same place
-> > > > on ia64. ia64's si_flags is a 32-bit field with only one flag bit
-> > > > allocated, so we would have 31 bits to use if we do this.
+> > > > [1] http://clang.llvm.org/docs/HardwareAssistedAddressSanitizerDesign.html
+> > > >
+> > > > Signed-off-by: Peter Collingbourne <pcc@google.com>
+> > > > ---
+>
+> [...]
+>
+> > > > diff --git a/kernel/signal.c b/kernel/signal.c
+> > > > index 72182eed1b8d..1f1e42adc57d 100644
+> > > > --- a/kernel/signal.c
+> > > > +++ b/kernel/signal.c
+>
+> [...]
+>
+> > > > @@ -1706,7 +1722,9 @@ int send_sig_fault(int sig, int code, void __user *addr
+> > > >       return send_sig_info(info.si_signo, &info, t);
+> > > >  }
+> > > >
+> > > > -int force_sig_mceerr(int code, void __user *addr, short lsb)
+> > > > +int force_sig_mceerr(int code, void __user *addr, short lsb,
+> > > > +                  unsigned long addr_ignored_bits,
+> > > > +                  unsigned long addr_ignored_bits_mask)
 > > >
-> > > For clarity, is the new si_xflags field supposed to be valid for all
-> > > signal types, or just certain signals and si_codes?
+> > > Rather than having to pass these extra arguments all over the place, can
+> > > we just pass the far for addr, and have an arch-specific hook for
+> > > splitting the ignored from non-ignored bits.  For now at least, I expect
+> > > that ignored bits mask to be constant for a given platform and kernel.
 > >
-> > It is intended to be valid for all signal types that use the _sigfault
-> > union member of siginfo. As listed in siginfo.h these are: SIGILL,
-> > SIGFPE, SIGSEGV, SIGBUS, SIGTRAP, SIGEMT.
+> > That sounds like a good idea. I think that for MTE we will want to
+> > make it conditional on the si_code (so SEGV_MTESERR would get 0xf <<
+> > 56 while everything else would get 0xff << 56) so I can hook that up
+> > at the same time.
 >
-> SIGSYS is similar to SIGILL, is that included also?
-
-I think that SIGSYS is covered by a separate _sigsys union member.
-
-> > > What happens for things like a rt_sigqueueinfo() from userspace?
-> >
-> > Hmm. Let's enumerate each of these things, which I believe are all of
-> > the call sites of the function copy_siginfo_from_user and related
-> > functions (correct me if I'm wrong):
-> >
-> > - ptrace(PTRACE_SETSIGINFO)
-> > - pidfd_send_signal
-> > - rt_sigqueueinfo
-> > - rt_tgsigqueueinfo
-> >
-> > We can handle the last three by observing that the kernel forbids
-> > sending a signal with these syscalls if si_code >= 0, so we can say
-> > that the value of si_xflags is only valid if si_code >= 0.
+> OK, I think that's reasonable.
 >
-> Hmmm, that's what the code says (actually >= 0 or SI_TKILL), but it's
-> illogical.  Those are user signals, so there's no obvious reason why
-> userspace shouldn't be allowed to generate their siginfo.  It would
-> probably be better for the kernel to police si_pid etc. in the SI_USER
-> and SI_TKILL cases rather than flatly refusing, but I guess that's a
-> discussion for another day.
+> Mind you, we seem to have 3 kinds of bits here, so I'm starting to
+> wonder whether this is really sufficient:
 >
-> I guess the combination of SI_FROMKERNEL() and the signal number being a
-> known fault signal if probably sufficient for now.
-
-In v10 I ended up adding a comment saying that si_xflags is only valid
-if 0 <= si_code < SI_KERNEL (the SI_KERNEL part was due to my
-discovery of kernel code that was calling force_sig(SIGSEGV) where
-force_sig uses the _kill union member). Your comment about SI_USER
-made me realize that is not exactly true (since kill and
-pidfd_send_signal can send a fault signal with si_code == SI_USER). I
-was not aware of the SI_FROMKERNEL() macro. In v11 I will update the
-comment to say that SI_FROMKERNEL(si) && si->si_code != SI_KERNEL must
-be true in order for si_xflags to be valid.
-
-> It might be helpful to have a helper to identify fault signals, but we
-> don't have this today, and it's unlikely that a new kind of fault signal
-> will crop up any time soon.
+>         1) address bits used in the faulted access
+>         2) attribute/permission bits used in the faulted access
+>         3) unavailable bits.
 >
-> Handlers that handle specific signal types won't care, but debuggers and
-> generic backtracer code would have to be hand-hacked to add new kinds of
-> fault signal today -- not a huge priority though, and orthogonal to this
-> series.
+> si_addr contains (1).
 >
-> > As for the first one, it's more tricky. Arguably something like a
-> > debugger should be able to send arbitrary signals to a debuggee, and
-> > there's no reason why it shouldn't be able to set si_xflags in
-> > siginfo, but on the other hand who knows how existing debuggers end up
-> > setting this field today. Maybe all that we can do is have the kernel
-> > clear si_xflags if it detects that the signal uses _sigfault, and let
-> > si_xflags aware debuggers opt out of this behavior, perhaps by
-> > introducing a PTRACE_SETSIGINFO2 or something.
+> si_addr_ignored_bits contains (2).
 >
-> Most likely a debugger usually amends an existing siginfo from a trapped
-> signal than generating a new one from scratch.
+> The tag bits from non-MTE faults seem to fall under case (3).  Code that
+> looks for these bits in si_addr_ignored_bits won't find them.
 
-Right, but it could have copied the fields by hand from a
-kernel-supplied siginfo before amending it.
+I'm reasonably sure that the tag bits are available for non-MTE
+faults. From https://developer.arm.com/docs/ddi0595/h/aarch64-system-registers/far_el1
+:
+"For a Data Abort or Watchpoint exception, if address tagging is
+enabled for the address accessed by the data access that caused the
+exception, then this field includes the tag."
 
-> Given the other things that ptrace can do to the target process I don't
-> think we need to police here, but your suggestion about a
-> PTRACE_SETSIGINFO2 or similar, and zeroing this field by default with
-> PTRACE_SETSIGINFO, does make sense.
+This language applies to non-tag-check-fault data aborts but is
+superseded by the following paragraph for tag check faults:
+"For a synchronous Tag Check Fault abort, bits[63:60] are UNKNOWN."
 
-Ack. I've implemented that in v10.
+> So perhaps it would make sense to amend the design a bit.  We'd have
+>
+>         si_addr = address bits only
+>         si_attr = attribute bits only
+>         si_attr_mask = mask of valid bits in si_addr
+>
+> Thinking about it, I've just shortened/changed some named and changed
+> the meaning of the mask, so it's very similar to what you already have.
+
+Did you mean "si_attr_mask = mask of valid bits in si_attr"? I assume
+so because below you talk about si_addr_mask also being the mask of
+valid bits in si_addr, but I don't think this is a change in meaning
+for the mask field as I specified it. Maybe, given your claim above
+that the tag bits are unavailable for non-tag check faults, you
+misunderstood why I am setting si_addr_ignored_bits_mask to 0xf << 56
+for tag check faults and 0xff << 56 for non-tag check faults?
+
+That being said, maybe we can make the names shorter with something
+like your suggestion.
+
+> The mask of valid bits in si_addr is decided by architectural
+> convention (i.e., ~0xffUL << 56), but we could also expose
+>
+>         si_addr_mask = mask of valid bits in si_addr
+>
+> This is a bit redundant though.  I think people would already assume
+> that all bits required for classifying the faulting location accurately
+> must already be provided there.
+
+I think it's fine for this to be an architectural convention. If we
+really wanted to expose something like this to userspace then I think
+we should expose TASK_SIZE (this is something that I've wanted in the
+past). But that's really a separate discussion.
 
 Peter
