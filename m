@@ -2,205 +2,134 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1724E252354
-	for <lists+linux-parisc@lfdr.de>; Wed, 26 Aug 2020 00:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87D58252405
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Aug 2020 01:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726483AbgHYWGw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 25 Aug 2020 18:06:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48162 "EHLO
+        id S1726551AbgHYXTO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 25 Aug 2020 19:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726475AbgHYWGw (ORCPT
+        with ESMTP id S1726483AbgHYXTN (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 25 Aug 2020 18:06:52 -0400
-Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F9A3C061574
-        for <linux-parisc@vger.kernel.org>; Tue, 25 Aug 2020 15:06:52 -0700 (PDT)
-Received: by mail-ua1-x944.google.com with SMTP id g11so118608ual.2
-        for <linux-parisc@vger.kernel.org>; Tue, 25 Aug 2020 15:06:52 -0700 (PDT)
+        Tue, 25 Aug 2020 19:19:13 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C00C061574;
+        Tue, 25 Aug 2020 16:19:12 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id 31so64876pgy.13;
+        Tue, 25 Aug 2020 16:19:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UdUIzyEEx/bKfLnKhLmenBJvgOvQPod37NsVLWS9PYc=;
-        b=F4VVzzSL3QOR4N2TBABCmI9MxPwO3AZV1jD2wxEf8FX3avz4sALiwl16KtkOrJvDzb
-         EJrxJe0blCoZZmbiNmTtcwxLPUEAXnh3C8na5TetNz7VsxZHfj88Wr0KdIEkO8RSvbai
-         hd2CJ/y3O3I6moLKGN6hu72S2+augg7ZznFfTcMfEuhwARJ73L1XQAHk3hLUfZnfEnA9
-         agjmOKH7RX2sW3ZWaHgZD6Z3somLAqZTa2X5/CeQLJJv6IIRZl6NqnMGHFGNj7NX78l0
-         tv4vFOXXLMONl1LVvu/fWf9IlBLgEtEvyVyvy3vRT9Bq5XszrRLwwlbHQPJR97jGJhs6
-         yRkA==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=nzT4cIv5aZloZUa85ooGLcuJKku+lTzXEIFwdhhhrM4=;
+        b=g17iV+Lc6aSBOLe+PXWahWJW6Y2WovRbdTAFwXkgWGEBHeis8BwaGJ1/CrBTJ6wOxj
+         UKRTRHo+JKIkjHdtn9pMcUYhCibnMervY6vIJWwS4RQlE3LSjVqmLUTaL39UbAGj4g6L
+         0j0826j4CHEZnT2exq6W7xhcrJUuL+xeGwEr2VpfFjtGbo9lANRsknS4EVWyKfxKl7Il
+         /yIG9aDg8s8XYB33HFnAKY/2MhxQ2vY2S/m+geHEPThOE90LQ6W/H7XBdg78bySpsa/G
+         t/9acHQaOTqhr0MpHdKlJO7fxd8cXHOELXVJXXUfDBije2GdrgU/aZZQogR8XNVpmWFo
+         c4uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UdUIzyEEx/bKfLnKhLmenBJvgOvQPod37NsVLWS9PYc=;
-        b=SOtJof3AlHpqCubl9E0ulC/IuRLY5VcgQwbqU0o4JnGe8c5WnUFHNfBLSIywtNTKkF
-         B4fm7ofnzUqCrOfRi3wENhlbwDbnwWtLkR3qri3P/3dNZ1rk+bYnthTQO465BsU8c1PV
-         WGOyq47laMRFXfBFyXYerk/bUIdgjMKPfC7do2fYTi0q8YgAfjmOpN7JWAOfC6V1LYgo
-         YDLZPdmtntEUPhV8wVaLKZSqnWKE1okPGlH53GusUVXoggTCwLk5fDXSvCVDlMccDfN8
-         TUj61LjF0dhRN1OIzUQuhZiGmAYgxWaaAm/+MSiUzIRMWqvKYWJmC3A1+/pxDZE3myhL
-         zCgA==
-X-Gm-Message-State: AOAM53123sG60qkn4An/bt9Qeu5a3926nbqmqYGeiNljTm+fjhZF1HYw
-        snOBacIx5t32HV3uS1ectUlJCB73JjlsbRsABCllQg==
-X-Google-Smtp-Source: ABdhPJyoWoOK5LPoopf7O9U/0JM0TsusuJGhmLzprxKAJ1roGRR6NnTf9FdRTjukcAn0r4k7hLwimLRdYL0KZe9++Ag=
-X-Received: by 2002:ab0:2996:: with SMTP id u22mr6954698uap.108.1598393211158;
- Tue, 25 Aug 2020 15:06:51 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=nzT4cIv5aZloZUa85ooGLcuJKku+lTzXEIFwdhhhrM4=;
+        b=UH/AJUyQZxDqGfdAJrvy99L/wXSWNJqoMJeRcOnBBVJkiv0FnY3SySyXVH/LTKr60j
+         oMvu9nv0sFDYhJGzELcZ3RObUu37x69fdGcXhnuzNpOqe6MNKC7y+Fn7gv64q8XuMMJg
+         Fl/eP0aSuFiu5pTmLOrzpLx8br1sQTZlQyXUhzOSibkUz4oxHdSfWryc4Mc3Ow+lQf8E
+         kXR5NI9FQOkmvVvLv3n6ToXl9kjbhk8F9gnPIuR0Y24DQJNCdYMdb/zSgrZW+vXqnDjT
+         1raRdZuevUW5Y4ua4eq/gaf4K5OnDme1ys2qxDCmhnOMw7tV2rXShWxAGLpeAT/rDtzH
+         8pFg==
+X-Gm-Message-State: AOAM531RQ2CB+J5qzUPdxAeAslK88XaaXW/rHNA4fX23yd1QFCE7iQE3
+        XhNF4EW1mA0cye4p0n3KMpM=
+X-Google-Smtp-Source: ABdhPJyK06Dvh5ZLh8ZEvQMG4jqMYYcFE+LKTmieWcScqEbOmexcuH0IBvKor0u/mjocM4FCOCK/kw==
+X-Received: by 2002:a63:4545:: with SMTP id u5mr8237031pgk.229.1598397551754;
+        Tue, 25 Aug 2020 16:19:11 -0700 (PDT)
+Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
+        by smtp.gmail.com with ESMTPSA id v78sm344700pfc.121.2020.08.25.16.19.10
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 25 Aug 2020 16:19:11 -0700 (PDT)
+Date:   Tue, 25 Aug 2020 16:19:00 -0700
+From:   Nicolin Chen <nicoleotsuka@gmail.com>
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+Cc:     mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        tony.luck@intel.com, fenghua.yu@intel.com,
+        gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, borntraeger@de.ibm.com, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+        hpa@zytor.com, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, sfr@canb.auug.org.au, hch@lst.de,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-parisc@vger.kernel.org
+Subject: Re: [RFT][PATCH 0/7] Avoid overflow at boundary_size
+Message-ID: <20200825231900.GA4726@Asurada-Nvidia>
+References: <20200820231923.23678-1-nicoleotsuka@gmail.com>
+ <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
 MIME-Version: 1.0
-References: <cover.1597720138.git.pcc@google.com> <9df0de08df310052df01d63bc8bddc5dd71c2bdb.1597720138.git.pcc@google.com>
- <20200819155650.GI6642@arm.com> <CAMn1gO5pFUGDLJEWe1uOetz0ohE1-pdWGvz7_XxOMZROOfO=ag@mail.gmail.com>
- <20200824142348.GN6642@arm.com> <CAMn1gO7DErthDi5EGQh=-MVBP9x_MTsfPHdP_wnS2=xY7kpt2g@mail.gmail.com>
- <20200825150204.GS6642@arm.com>
-In-Reply-To: <20200825150204.GS6642@arm.com>
-From:   Peter Collingbourne <pcc@google.com>
-Date:   Tue, 25 Aug 2020 15:06:39 -0700
-Message-ID: <CAMn1gO69WBanZ0awr=xMsH8NJXmaQRfnGnX04t-vJTLiYpjx3g@mail.gmail.com>
-Subject: Re: [PATCH v9 6/6] arm64: expose FAR_EL1 tag bits in siginfo
-To:     Dave Martin <Dave.Martin@arm.com>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Kevin Brodsky <kevin.brodsky@arm.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Evgenii Stepanov <eugenis@google.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Kostya Serebryany <kcc@google.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        David Spickett <david.spickett@linaro.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Richard Henderson <rth@twiddle.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Aug 25, 2020 at 8:02 AM Dave Martin <Dave.Martin@arm.com> wrote:
->
-> On Mon, Aug 24, 2020 at 07:18:19PM -0700, Peter Collingbourne wrote:
-> > On Mon, Aug 24, 2020 at 7:23 AM Dave Martin <Dave.Martin@arm.com> wrote:
-> > >
-> > > On Wed, Aug 19, 2020 at 06:49:01PM -0700, Peter Collingbourne wrote:
-> > > > On Wed, Aug 19, 2020 at 8:56 AM Dave Martin <Dave.Martin@arm.com> wrote:
-> > > > >
-> > > > > On Mon, Aug 17, 2020 at 08:33:51PM -0700, Peter Collingbourne wrote:
-> > > > > > The kernel currently clears the tag bits (i.e. bits 56-63) in the fault
-> > > > > > address exposed via siginfo.si_addr and sigcontext.fault_address. However,
-> > > > > > the tag bits may be needed by tools in order to accurately diagnose
-> > > > > > memory errors, such as HWASan [1] or future tools based on the Memory
-> > > > > > Tagging Extension (MTE).
-> > > > > >
-> > > > > > We should not stop clearing these bits in the existing fault address
-> > > > > > fields, because there may be existing userspace applications that are
-> > > > > > expecting the tag bits to be cleared. Instead, create a new pair of
-> > > > > > union fields in siginfo._sigfault, and store the tag bits of FAR_EL1
-> > > > > > there, together with a mask specifying which bits are valid.
-> > > > > >
-> > > > > > A flag is added to si_xflags to allow userspace to determine whether
-> > > > > > the values in the fields are valid.
-> > > > > >
-> > > > > > [1] http://clang.llvm.org/docs/HardwareAssistedAddressSanitizerDesign.html
-> > > > > >
-> > > > > > Signed-off-by: Peter Collingbourne <pcc@google.com>
-> > > > > > ---
-> > >
-> > > [...]
-> > >
-> > > > > > diff --git a/kernel/signal.c b/kernel/signal.c
-> > > > > > index 72182eed1b8d..1f1e42adc57d 100644
-> > > > > > --- a/kernel/signal.c
-> > > > > > +++ b/kernel/signal.c
-> > >
-> > > [...]
-> > >
-> > > > > > @@ -1706,7 +1722,9 @@ int send_sig_fault(int sig, int code, void __user *addr
-> > > > > >       return send_sig_info(info.si_signo, &info, t);
-> > > > > >  }
-> > > > > >
-> > > > > > -int force_sig_mceerr(int code, void __user *addr, short lsb)
-> > > > > > +int force_sig_mceerr(int code, void __user *addr, short lsb,
-> > > > > > +                  unsigned long addr_ignored_bits,
-> > > > > > +                  unsigned long addr_ignored_bits_mask)
-> > > > >
-> > > > > Rather than having to pass these extra arguments all over the place, can
-> > > > > we just pass the far for addr, and have an arch-specific hook for
-> > > > > splitting the ignored from non-ignored bits.  For now at least, I expect
-> > > > > that ignored bits mask to be constant for a given platform and kernel.
-> > > >
-> > > > That sounds like a good idea. I think that for MTE we will want to
-> > > > make it conditional on the si_code (so SEGV_MTESERR would get 0xf <<
-> > > > 56 while everything else would get 0xff << 56) so I can hook that up
-> > > > at the same time.
-> > >
-> > > OK, I think that's reasonable.
-> > >
-> > > Mind you, we seem to have 3 kinds of bits here, so I'm starting to
-> > > wonder whether this is really sufficient:
-> > >
-> > >         1) address bits used in the faulted access
-> > >         2) attribute/permission bits used in the faulted access
-> > >         3) unavailable bits.
-> > >
-> > > si_addr contains (1).
-> > >
-> > > si_addr_ignored_bits contains (2).
-> > >
-> > > The tag bits from non-MTE faults seem to fall under case (3).  Code that
-> > > looks for these bits in si_addr_ignored_bits won't find them.
-> >
-> > I'm reasonably sure that the tag bits are available for non-MTE
-> > faults. From https://developer.arm.com/docs/ddi0595/h/aarch64-system-registers/far_el1
-> > :
-> > "For a Data Abort or Watchpoint exception, if address tagging is
-> > enabled for the address accessed by the data access that caused the
-> > exception, then this field includes the tag."
->
-> Right, but I wonder whether it would still be good idea to have a way to
-> tell userspace which bits are valid.
+Hi Niklas,
 
-I'm a bit confused by this. si_addr_ignored_bits_mask is exactly the
-mechanism for telling userspace which bits are valid. Or maybe you're
-arguing that we should consider *not* having the mask of valid bits in
-siginfo?
+On Tue, Aug 25, 2020 at 12:16:27PM +0200, Niklas Schnelle wrote:
+> On 8/21/20 1:19 AM, Nicolin Chen wrote:
+> > We are expending the default DMA segmentation boundary to its
+> > possible maximum value (ULONG_MAX) to indicate that a device
+> > doesn't specify a boundary limit. So all dma_get_seg_boundary
+> > callers should take a precaution with the return values since
+> > it would easily get overflowed.
+> > 
+> > I scanned the entire kernel tree for all the existing callers
+> > and found that most of callers may get overflowed in two ways:
+> > either "+ 1" or passing it to ALIGN() that does "+ mask".
+> > 
+> > According to kernel defines:
+> >     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
+> >     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
+> > 
+> > We can simplify the logic here:
+> >   ALIGN(boundary + 1, 1 << shift) >> shift
+> > = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
+> > = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
+> > = [b + 1 + (1 << s) - 1] >> s
+> > = [b + (1 << s)] >> s
+> > = (b >> s) + 1
+> > 
+> > So this series of patches fix the potential overflow with this
+> > overflow-free shortcut.
+ 
+> haven't seen any other feedback from other maintainers,
 
-> Collecting and synchronising all the correct information for reporting a
-> fault is notoriously easy to mess up in the implementation, and
-> misreporting of the tag bits might be regarded as a tolerable fail.
+I am wondering this too...whether I sent correctly or not.
 
-It really depends. Imagine that a future change to the architecture
-exposes bits 60-63 in FAR_EL1 in tag fault errors (we have a number of
-ideas for how to use these bits to distinguish between different
-use-after-frees in error reports). It would be nice for userspace to
-be able to distinguish between the situation where bits 60-63 are 0
-and the situation where the bits are unknown, in order to avoid
-producing an incorrect/misleading report.
+> so I guess you will resend this?
 
-> We also don't get tag bits for prefetch aborts (which may be reported
-> via SIGSEGV).  Arguably the architecture doesn't allow a nonzero tag
-> (BR etc. likely just throw those bits on the floor).  But it might be
-> nice to be explicit about this.
+Do I need to? Though I won't mind doing so if it's necessary..
 
-If we view the PC as being a 64-bit value where the architecture does
-not allow setting bits 56-63, I think it would be correct to claim
-that addresses derived from the PC have bits 56-63 clear.
+> On first glance it seems to make sense.
+> I'm a little confused why it is only a "potential overflow"
+> while this part
+> 
+> "We are expending the default DMA segmentation boundary to its
+>  possible maximum value (ULONG_MAX) to indicate that a device
+>  doesn't specify a boundary limit"
+> 
+> sounds to me like ULONG_MAX is actually used, does that
+> mean there are currently no devices which do not specify a
+> boundary limit?
 
-> Other architectures may also have other reasons why the additional bits
-> are sometimes available, sometimes not.
+Sorry for the confusion. We actually applied ULONG_MAX change
+last week but reverted it right after, due to a bug report at
+one of these "potential" overflows. So at this moment the top
+of the tree doesn't set default boundary to ULONG_MAX yet.
 
-If this is the case for an architecture, it can always report the bits
-to be unavailable until it can figure out in which cases the bits are
-available.
-
-> > This language applies to non-tag-check-fault data aborts but is
-> > superseded by the following paragraph for tag check faults:
-> > "For a synchronous Tag Check Fault abort, bits[63:60] are UNKNOWN."
->
-> Right, so in this case we should squash those bits and not report them
-> in the mask.  Currently are you implying that these are address bits,
-> because you exclude them from si_addr_ignored_mask?
-
-My intent was that these are implied to be unavailable bits, as they
-are not set in the architecturally-defined si_addr mask ~(0xff << 56)
-nor in si_addr_ignored_mask.
-
-Peter
+Thanks
+Nic
