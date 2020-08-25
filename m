@@ -2,165 +2,164 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACBA9251675
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Aug 2020 12:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 161A22517AA
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Aug 2020 13:32:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729746AbgHYKRg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 25 Aug 2020 06:17:36 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:16426 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728117AbgHYKRf (ORCPT
+        id S1730007AbgHYLcT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 25 Aug 2020 07:32:19 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:54919 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730009AbgHYLar (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 25 Aug 2020 06:17:35 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07PA4pWp154169;
-        Tue, 25 Aug 2020 06:16:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=EOBUoNumc+lfxeSxOyM8nxTJchcZ8SasJG/UKpKCePc=;
- b=FLMfaI34xTiJCIrm5uFNqbuk0uT2DGykGFonCKV9ValbKJI3Gb8aJ1pjUCvH1rBMViHH
- a+46qMxkOoSEKYil9BF1E0fCNjqHrqN02uE3u63nGbSY/ajxgIwKwmxxu46FESXlA2nM
- CSrGWVcVfhlmX34vqVger2iojhSeXB+dFv+4FsmjCV6iJGBcX6jS2sIknOsTSUArI8jv
- pWnbWazaY41s/AVuWDg2oC/WN57VTsUafbWj+P2oGiWZap4gTf8wGpUUY7J7pjuNx8tf
- G6kTrWxeMCgWUXkLDaUJi/CEnjLBtbu0oz+Lo59EIPqzoCxSQsIPS9X7KAhGXPUvR8Iv 7g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 334yc52e4u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Aug 2020 06:16:35 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07PA7kP9161517;
-        Tue, 25 Aug 2020 06:16:34 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 334yc52e43-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Aug 2020 06:16:34 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07PAFFq5019135;
-        Tue, 25 Aug 2020 10:16:32 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma04ams.nl.ibm.com with ESMTP id 33498u97t7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Aug 2020 10:16:32 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07PAGT9N24445372
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 25 Aug 2020 10:16:29 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6B3F1A4054;
-        Tue, 25 Aug 2020 10:16:29 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C6052A4062;
-        Tue, 25 Aug 2020 10:16:27 +0000 (GMT)
-Received: from oc5500677777.ibm.com (unknown [9.145.83.242])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 25 Aug 2020 10:16:27 +0000 (GMT)
-Subject: Re: [RFT][PATCH 0/7] Avoid overflow at boundary_size
-To:     Nicolin Chen <nicoleotsuka@gmail.com>, mpe@ellerman.id.au,
-        benh@kernel.crashing.org, paulus@samba.org, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com, tony.luck@intel.com,
-        fenghua.yu@intel.com, gerald.schaefer@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@de.ibm.com,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de
-Cc:     sfr@canb.auug.org.au, hch@lst.de, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <20200820231923.23678-1-nicoleotsuka@gmail.com>
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-Message-ID: <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
-Date:   Tue, 25 Aug 2020 12:16:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Tue, 25 Aug 2020 07:30:47 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200825113043euoutp029b99b2b5d4e4c122c06a24de49bf5f1f~uf3GnO18n1479914799euoutp02U
+        for <linux-parisc@vger.kernel.org>; Tue, 25 Aug 2020 11:30:43 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200825113043euoutp029b99b2b5d4e4c122c06a24de49bf5f1f~uf3GnO18n1479914799euoutp02U
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1598355043;
+        bh=X8gDcs427W02/qFtPNsPSdmNDXjqciYwh7aa0XOpqik=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=bf/T+vWpq9orb92VKlt6rntA6M0vAXl4taqwUbJIAGHnDbeMzHeZRFEFmsAXDYrNq
+         Wr9AKv7vwxCWJ/Vo6hIhRgWr9K0GkTMScEkS+wDoQCoPXqBM2W4KpgH6J+25PIJB7S
+         XU9Qwn50dCGine2uiKApqXnlXT7+4oTjOnOc6UhQ=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200825113043eucas1p2a677e17885157748102be36111dd7cf0~uf3GIA3vS2151921519eucas1p2e;
+        Tue, 25 Aug 2020 11:30:43 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 2B.B0.06456.366F44F5; Tue, 25
+        Aug 2020 12:30:43 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200825113042eucas1p156019fa8529e69de368498a0a7b4279f~uf3FqdPEE0129601296eucas1p1w;
+        Tue, 25 Aug 2020 11:30:42 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200825113042eusmtrp2f1d062dd589e815ab44765282723204c~uf3FpmMBe1642116421eusmtrp26;
+        Tue, 25 Aug 2020 11:30:42 +0000 (GMT)
+X-AuditID: cbfec7f2-7efff70000001938-75-5f44f663c15d
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 45.58.06017.266F44F5; Tue, 25
+        Aug 2020 12:30:42 +0100 (BST)
+Received: from [106.210.88.143] (unknown [106.210.88.143]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200825113041eusmtip26d77690ed3da6b991eebf229d4dff802~uf3EXjFCA0971809718eusmtip2L;
+        Tue, 25 Aug 2020 11:30:41 +0000 (GMT)
+Subject: Re: a saner API for allocating DMA addressable pages
+To:     Christoph Hellwig <hch@lst.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        iommu@lists.linux-foundation.org
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org,
+        netdev@vger.kernel.org, linux-nvme@lists.infradead.org,
+        linux-scsi@vger.kernel.org, linux-mm@kvack.org,
+        alsa-devel@alsa-project.org
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Message-ID: <8fa1ce36-c783-1a02-6890-211eb504a33b@samsung.com>
+Date:   Tue, 25 Aug 2020 13:30:41 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+        Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200820231923.23678-1-nicoleotsuka@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <20200819065555.1802761-1-hch@lst.de>
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-25_02:2020-08-24,2020-08-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- spamscore=0 impostorscore=0 priorityscore=1501 clxscore=1011
- mlxlogscore=999 malwarescore=0 suspectscore=2 adultscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008250073
+Content-Language: en-US
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0yTZxT2/e6g1dd64QQX1C4Yt8RL1ZjXqHiN+UZm4g+XbMsG1vIFUC7a
+        ghf+WAsabsFZ0LLaBdgMzG6KfgMHGktEpSLhbkXxrvVSY1EpYkpUpHyg/HvOc55znuckR6DV
+        tVy4kJiSJhlSdEkaLpQ52xBonafvXx+7cKAXk+vt9RTxVmQjcuKfKxQprVtOzhwSyPN77Qxp
+        Nr/kifz4BkvKDh5nyOvsHpZ0nrNzJP90NUty5GpE7v07yJKS8ic8eXStjSLFrU6K5HXVcKRc
+        fk+RI63vaNJQOp28KyhgSZEvwJPiQi9HLhc5WXLJfJFeHS4e6KhgxNN+MzeEPnDiUcs1Tsx/
+        mcWKsiOHE+VeCy/ez3NR4n/H94mFNyuQeP6WiRMfD3g58ZXTzYkFVQ4k+uWITZN+Dl0RJyUl
+        7pIMC6K2hCbIXQ5qx7NJe7rP25EJeSbkohAB8BJoqm5kc1GooMZ/I7BVukeKPgTNOQEuqFJj
+        P4KTV5eNTtw5YaUUUQWCPFsNpxSvEPR9yEZB1RS8EnrkB8OrpuIuGkrsATrYoHErDZ7K8UHM
+        YS3k+nKHLVQ4CrL8Vj6IGRwJV+quMkE8DcdAtctNKZrJ0Pi7Z5gPwYvg2OWnvLJzJvzvs4/s
+        D4NuT8lwPMCDAvSdOcQoudfDbbOfV/AUeOGqGsFfwWDt6EAmgoctJ3mlyEfQaS5Gimo53GkZ
+        GIoqDFl8A5XnFij0GmioO8wEacAT4aZvshJiIljOWmmFVkH2QbWingM216nPthfbOujfkMY2
+        5jTbmHNsY86xffEtRYwDhUnpxuR4yahNkXbPN+qSjekp8fP1qckyGnropo+u3hr0tmNrPcIC
+        0kxQmZzrYtWsbpdxb3I9AoHWTFWtbW6KUavidHszJENqrCE9STLWoxkCowlTLf7T+6sax+vS
+        pO2StEMyjHYpISTchAx/lP1VGTVOdyGiMWdzgr7Wl7ZFu7Dq7oYLT3w/ZJS791szflzrjF7U
+        5o20buJ7ZiZ29s+aW7jUEmPVrirLN2daEtM7ZjuKrv/ydrM7YmP7gzf6rw07o+fGpUa3RA/+
+        NK972oHFge8zN3gj9f3bXuyhs56a7N/ZT+EVWcyxmK1z7nsYDWNM0Gm/pQ1G3SdTBG82zAMA
+        AA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTcRTH+d3X7sThbWr9sqhYBVE523TuZ6VICd2CIOqfqHSuuqi1h+xu
+        kkE1zIVOs8d8lJkamqKV2E1TKpQ0M7UwzSwlzXKVi2YP6YllzhX434fzPZ9zOHBoXPqQDKKT
+        DGbOZNDqZJQP0fWnfTh477cYzZpBZzDq62nBkKsyA6CqK20YKm1eh66fotHYcA+BHqV9ECFh
+        tJ9El06UE+hTxjiJntwqolB2bT2JMoV6gIavTpGopOKNCL3ufIyhc91NGMp61kihCmESQ3nd
+        33F0v3Qu+p6TQ6Jc908ROudwUehebhOJWtPu4tFBrK23kmBrJ9KoafpNsflnOyk2+0M6yQrV
+        mRQrfDkrYl9mtWPsjfJjrON5JWBvD1gpdvSXi2I/Nj2l2Jy6asBOCIu2+e2SrzcZLWZuSaKR
+        N0fKdiuQUq6IQHJlWIRcEaqOXatUyUKi1u/ndEkpnCkkKl6eKDyrxpLf+R0avF0ErMDpawdi
+        GjJh8EVVAWYHPrSUuQygraEN8wYLYUe+lfSyP5zst1PeJjeA7v7juCfwZyLhuDBCeoIAZgCH
+        v93vCU+AM9047MxgvYYNwPeZZTOjKEYB7W7PKDEtYaJg+kSByMMEsxy2NT+YkQOZODh6cgr3
+        9syBHeedM3Uxo4QX7r0VeReEw+Ibr3AvL4YN7qJ/PA8OOkuw00BaOEsvnKUUzlIKZymlgKgG
+        AZyF1yfoeaWc1+p5iyFBvs+oF8D0J928/7OuEdjHd7QAhgYyX4m1aaNGSmpT+FR9C4A0LguQ
+        bHjUFSeV7NemHuZMRo3JouP4FqCaPu4MHhS4zzj9lwazRqFSqFGEQh2qDg1HsnmSDObuHimT
+        oDVzBzkumTP99zBaHGQF6s2TqrboElXxCnFsqs9YmGG5j41w1ehaG4bqv9kji5ZohyrT66aO
+        9LWmhuQ9HvG9ltxY9lXXt3OVaYE6PuxA8IPtJUcv/gjPn9+xbdzZW9Vscdx5GOiwXYqK2Cra
+        Ep8uf65Z6oifU9Ne23q5ZpO6Z3VMRU2cK7kXvzC2ZZly3WeRjOATtYqVuInX/gXVsGUeXwMA
+        AA==
+X-CMS-MailID: 20200825113042eucas1p156019fa8529e69de368498a0a7b4279f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200819065610eucas1p2fde88e81917071b1888e7cc01ba0f298
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200819065610eucas1p2fde88e81917071b1888e7cc01ba0f298
+References: <CGME20200819065610eucas1p2fde88e81917071b1888e7cc01ba0f298@eucas1p2.samsung.com>
+        <20200819065555.1802761-1-hch@lst.de>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Hi Christoph,
 
+On 19.08.2020 08:55, Christoph Hellwig wrote:
+> this series replaced the DMA_ATTR_NON_CONSISTENT flag to dma_alloc_attrs
+> with a separate new dma_alloc_pages API, which is available on all
+> platforms.  In addition to cleaning up the convoluted code path, this
+> ensures that other drivers that have asked for better support for
+> non-coherent DMA to pages with incurring bounce buffering over can finally
+> be properly supported.
+>
+> I'm still a little unsure about the API naming, as alloc_pages sort of
+> implies a struct page return value, but we return a kernel virtual
+> address.  The other alternative would be to name the API
+> dma_alloc_noncoherent, but the whole non-coherent naming seems to put
+> people off.  As a follow up I plan to move the implementation of the
+> DMA_ATTR_NO_KERNEL_MAPPING flag over to this framework as well, given
+> that is also is a fundamentally non coherent allocation.  The replacement
+> for that flag would then return a struct page, as it is allowed to
+> actually return pages without a kernel mapping as the name suggested
+> (although most of the time they will actually have a kernel mapping..)
+>
+> In addition to the conversions of the existing non-coherent DMA users
+> the last three patches also convert the DMA coherent allocations in
+> the NVMe driver to use this new framework through a dmapool addition.
+> This was both to give me a good testing vehicle, but also because it
+> should speed up the NVMe driver on platforms with non-coherent DMA
+> nicely, without a downside on platforms with cache coherent DMA.
 
-On 8/21/20 1:19 AM, Nicolin Chen wrote:
-> We are expending the default DMA segmentation boundary to its
-> possible maximum value (ULONG_MAX) to indicate that a device
-> doesn't specify a boundary limit. So all dma_get_seg_boundary
-> callers should take a precaution with the return values since
-> it would easily get overflowed.
-> 
-> I scanned the entire kernel tree for all the existing callers
-> and found that most of callers may get overflowed in two ways:
-> either "+ 1" or passing it to ALIGN() that does "+ mask".
-> 
-> According to kernel defines:
->     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
->     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
-> 
-> We can simplify the logic here:
->   ALIGN(boundary + 1, 1 << shift) >> shift
-> = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
-> = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
-> = [b + 1 + (1 << s) - 1] >> s
-> = [b + (1 << s)] >> s
-> = (b >> s) + 1
-> 
-> So this series of patches fix the potential overflow with this
-> overflow-free shortcut.
+I really wonder what is the difference between this new API and 
+alloc_pages(GFP_DMA, n). Is this API really needed? I thought that this 
+is legacy thing to be removed one day...
 
-Hi Nicolin,
+Maybe it would make more sense to convert the few remaining drivers to 
+regular dma_map_page()/dma_sync_*()/dma_unmap_page() or have I missed 
+something?
 
-haven't seen any other feedback from other maintainers,
-so I guess you will resend this?
-On first glance it seems to make sense.
-I'm a little confused why it is only a "potential overflow"
-while this part
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-"We are expending the default DMA segmentation boundary to its
- possible maximum value (ULONG_MAX) to indicate that a device
- doesn't specify a boundary limit"
-
-sounds to me like ULONG_MAX is actually used, does that
-mean there are currently no devices which do not specify a
-boundary limit?
-
-
-> 
-> As I don't think that I have these platforms, marking RFT.
-> 
-> Thanks
-> Nic
-> 
-> Nicolin Chen (7):
->   powerpc/iommu: Avoid overflow at boundary_size
->   alpha: Avoid overflow at boundary_size
->   ia64/sba_iommu: Avoid overflow at boundary_size
->   s390/pci_dma: Avoid overflow at boundary_size
->   sparc: Avoid overflow at boundary_size
->   x86/amd_gart: Avoid overflow at boundary_size
->   parisc: Avoid overflow at boundary_size
-> 
->  arch/alpha/kernel/pci_iommu.c    | 10 ++++------
->  arch/ia64/hp/common/sba_iommu.c  |  4 ++--
->  arch/powerpc/kernel/iommu.c      | 11 +++++------
->  arch/s390/pci/pci_dma.c          |  4 ++--
->  arch/sparc/kernel/iommu-common.c |  9 +++------
->  arch/sparc/kernel/iommu.c        |  4 ++--
->  arch/sparc/kernel/pci_sun4v.c    |  4 ++--
->  arch/x86/kernel/amd_gart_64.c    |  4 ++--
->  drivers/parisc/ccio-dma.c        |  4 ++--
->  drivers/parisc/sba_iommu.c       |  4 ++--
->  10 files changed, 26 insertions(+), 32 deletions(-)
-> 
