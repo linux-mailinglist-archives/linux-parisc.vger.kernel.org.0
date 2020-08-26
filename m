@@ -2,170 +2,202 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AE0E25332F
-	for <lists+linux-parisc@lfdr.de>; Wed, 26 Aug 2020 17:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F0D12533C0
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Aug 2020 17:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728078AbgHZPNt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 26 Aug 2020 11:13:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728071AbgHZPNh (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 26 Aug 2020 11:13:37 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7ABC061796
-        for <linux-parisc@vger.kernel.org>; Wed, 26 Aug 2020 08:13:32 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id m34so1154555pgl.11
-        for <linux-parisc@vger.kernel.org>; Wed, 26 Aug 2020 08:13:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=CmlsOBKmXTTcSfq5zGubBNNUb0gupInXkPP8EnZ3d+A=;
-        b=ZqQGx8lCIpp9MgN3WVINar6Fy8irHzrpJRsjxGoHQTeWbqHYD6il/g9q7DvpK/dmQm
-         0qW7aVa3Tr+PGt5edZDuPZxHNjlNPlIhusw3juLIWAAlHZXHD4KNjNATv1u3ZoCJvNEC
-         S2smx23jdqkXqQh3IP6NS4LTsP6Gm53DxBdKk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=CmlsOBKmXTTcSfq5zGubBNNUb0gupInXkPP8EnZ3d+A=;
-        b=fiztw0WwlQmm0651es55iGKjceOoNMwhP1rtSAS1lFQa1YtJg710ObXJz4CmDQ5uyI
-         D6bUCcviGtp7nkNFlNcj830HR+z+zS/tY1i5d/jH3dpuWvocG9LCH02T4/SUZpVBydvD
-         amT/9Tl/1vzs0vyNP8cpOkaVwKGgkqZXxhxLS89BpPu0Ct5mHnAI1WxYUncjN/raCLF9
-         LrNo8XaM4JGDWxJqMZI1ntbxAfRFn6O5TrhwWTjJCGf3/MbqxFOtou93B1Rc1gzljI4c
-         66GShop43sZ4AyglTY2SW72HW81e/+Hm7pWbJToZH9gI9jgst8w07yfJiysBhXf+ZGSR
-         AtNA==
-X-Gm-Message-State: AOAM531o4vHgo8EclQKiP1yfOxYNBslGg6TqL7VjnT4p+TiFQ+NQ5/Yq
-        2SRaa8vI5pMup53I8+S0DGr8Sw==
-X-Google-Smtp-Source: ABdhPJz9xFq7qO/RuT9QubtB+V2mx2933Vq5WDSuN5fCly0WI0GYA2lIh7xhcXijBK2JnQjkWRm3gA==
-X-Received: by 2002:a63:f909:: with SMTP id h9mr10562477pgi.250.1598454811989;
-        Wed, 26 Aug 2020 08:13:31 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id d127sm3380122pfc.175.2020.08.26.08.13.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 08:13:30 -0700 (PDT)
-Date:   Wed, 26 Aug 2020 08:13:29 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Allen Pais <allen.cryptic@gmail.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-atm-general@lists.sourceforge.net, manohar.vanga@gmail.com,
-        airlied@linux.ie, linux-hyperv@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, sre@kernel.org,
-        anton.ivanov@cambridgegreys.com, devel@driverdev.osuosl.org,
-        linux-s390@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        maximlevitsky@gmail.com, richard@nod.at, deller@gmx.de,
-        jassisinghbrar@gmail.com, linux-spi@vger.kernel.org,
-        3chas3@gmail.com, intel-gfx@lists.freedesktop.org,
-        Jakub Kicinski <kuba@kernel.org>, mporter@kernel.crashing.org,
-        jdike@addtoit.com, oakad@yahoo.com, s.hauer@pengutronix.de,
-        linux-input@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-block@vger.kernel.org, broonie@kernel.org,
-        openipmi-developer@lists.sourceforge.net, mitch@sfgoth.com,
-        linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
-        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
-        martyn@welchs.me.uk, dmitry.torokhov@gmail.com,
-        linux-mmc@vger.kernel.org, Allen <allen.lkml@gmail.com>,
-        linux-kernel@vger.kernel.org, alex.bou9@gmail.com,
-        stefanr@s5r6.in-berlin.de, Daniel Vetter <daniel@ffwll.ch>,
-        linux-ntb@googlegroups.com,
-        Romain Perier <romain.perier@gmail.com>, shawnguo@kernel.org,
-        David Miller <davem@davemloft.net>
-Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
-Message-ID: <202008260811.1CE425B5C2@keescook>
-References: <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
- <202008171246.80287CDCA@keescook>
- <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
- <1597780833.3978.3.camel@HansenPartnership.com>
- <f3312928-430c-25f3-7112-76f2754df080@kernel.dk>
- <1597849185.3875.7.camel@HansenPartnership.com>
- <CAOMdWSJRR0BhjJK1FxD7UKxNd5sk4ycmEX6TYtJjRNR6UFAj6Q@mail.gmail.com>
- <1597873172.4030.2.camel@HansenPartnership.com>
- <CAEogwTCH8qqjAnSpT0GDn+NuAps8dNbfcPVQ9h8kfOWNbzrD0w@mail.gmail.com>
- <20200826095528.GX1793@kadam>
+        id S1727923AbgHZPce (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 26 Aug 2020 11:32:34 -0400
+Received: from foss.arm.com ([217.140.110.172]:48078 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726757AbgHZPc3 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 26 Aug 2020 11:32:29 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6317B31B;
+        Wed, 26 Aug 2020 08:32:25 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 81B6E3F68F;
+        Wed, 26 Aug 2020 08:32:23 -0700 (PDT)
+Date:   Wed, 26 Aug 2020 16:32:21 +0100
+From:   Dave Martin <Dave.Martin@arm.com>
+To:     Peter Collingbourne <pcc@google.com>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Kostya Serebryany <kcc@google.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        David Spickett <david.spickett@linaro.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Evgenii Stepanov <eugenis@google.com>,
+        Richard Henderson <rth@twiddle.net>
+Subject: Re: [PATCH v9 6/6] arm64: expose FAR_EL1 tag bits in siginfo
+Message-ID: <20200826153218.GT6642@arm.com>
+References: <cover.1597720138.git.pcc@google.com>
+ <9df0de08df310052df01d63bc8bddc5dd71c2bdb.1597720138.git.pcc@google.com>
+ <20200819155650.GI6642@arm.com>
+ <CAMn1gO5pFUGDLJEWe1uOetz0ohE1-pdWGvz7_XxOMZROOfO=ag@mail.gmail.com>
+ <20200824142348.GN6642@arm.com>
+ <CAMn1gO7DErthDi5EGQh=-MVBP9x_MTsfPHdP_wnS2=xY7kpt2g@mail.gmail.com>
+ <20200825150204.GS6642@arm.com>
+ <CAMn1gO69WBanZ0awr=xMsH8NJXmaQRfnGnX04t-vJTLiYpjx3g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200826095528.GX1793@kadam>
+In-Reply-To: <CAMn1gO69WBanZ0awr=xMsH8NJXmaQRfnGnX04t-vJTLiYpjx3g@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Aug 26, 2020 at 12:55:28PM +0300, Dan Carpenter wrote:
-> On Wed, Aug 26, 2020 at 07:21:35AM +0530, Allen Pais wrote:
-> > On Thu, Aug 20, 2020 at 3:09 AM James Bottomley
-> > <James.Bottomley@hansenpartnership.com> wrote:
-> > >
-> > > On Wed, 2020-08-19 at 21:54 +0530, Allen wrote:
-> > > > > [...]
-> > > > > > > Since both threads seem to have petered out, let me suggest in
-> > > > > > > kernel.h:
-> > > > > > >
-> > > > > > > #define cast_out(ptr, container, member) \
-> > > > > > >     container_of(ptr, typeof(*container), member)
-> > > > > > >
-> > > > > > > It does what you want, the argument order is the same as
-> > > > > > > container_of with the only difference being you name the
-> > > > > > > containing structure instead of having to specify its type.
+On Tue, Aug 25, 2020 at 03:06:39PM -0700, Peter Collingbourne wrote:
+> On Tue, Aug 25, 2020 at 8:02 AM Dave Martin <Dave.Martin@arm.com> wrote:
+> >
+> > On Mon, Aug 24, 2020 at 07:18:19PM -0700, Peter Collingbourne wrote:
+> > > On Mon, Aug 24, 2020 at 7:23 AM Dave Martin <Dave.Martin@arm.com> wrote:
+> > > >
+> > > > On Wed, Aug 19, 2020 at 06:49:01PM -0700, Peter Collingbourne wrote:
+> > > > > On Wed, Aug 19, 2020 at 8:56 AM Dave Martin <Dave.Martin@arm.com> wrote:
 > > > > > >
-> > > > > > Not to incessantly bike shed on the naming, but I don't like
-> > > > > > cast_out, it's not very descriptive. And it has connotations of
-> > > > > > getting rid of something, which isn't really true.
-> > > > >
-> > > > > Um, I thought it was exactly descriptive: you're casting to the
-> > > > > outer container.  I thought about following the C++ dynamic casting
-> > > > > style, so out_cast(), but that seemed a bit pejorative.  What about
-> > > > > outer_cast()?
-> > > > >
-> > > > > > FWIW, I like the from_ part of the original naming, as it has
-> > > > > > some clues as to what is being done here. Why not just
-> > > > > > from_container()? That should immediately tell people what it
-> > > > > > does without having to look up the implementation, even before
-> > > > > > this becomes a part of the accepted coding norm.
-> > > > >
-> > > > > I'm not opposed to container_from() but it seems a little less
-> > > > > descriptive than outer_cast() but I don't really care.  I always
-> > > > > have to look up container_of() when I'm using it so this would just
-> > > > > be another macro of that type ...
-> > > > >
+> > > > > > On Mon, Aug 17, 2020 at 08:33:51PM -0700, Peter Collingbourne wrote:
+> > > > > > > The kernel currently clears the tag bits (i.e. bits 56-63) in the fault
+> > > > > > > address exposed via siginfo.si_addr and sigcontext.fault_address. However,
+> > > > > > > the tag bits may be needed by tools in order to accurately diagnose
+> > > > > > > memory errors, such as HWASan [1] or future tools based on the Memory
+> > > > > > > Tagging Extension (MTE).
+> > > > > > >
+> > > > > > > We should not stop clearing these bits in the existing fault address
+> > > > > > > fields, because there may be existing userspace applications that are
+> > > > > > > expecting the tag bits to be cleared. Instead, create a new pair of
+> > > > > > > union fields in siginfo._sigfault, and store the tag bits of FAR_EL1
+> > > > > > > there, together with a mask specifying which bits are valid.
+> > > > > > >
+> > > > > > > A flag is added to si_xflags to allow userspace to determine whether
+> > > > > > > the values in the fields are valid.
+> > > > > > >
+> > > > > > > [1] http://clang.llvm.org/docs/HardwareAssistedAddressSanitizerDesign.html
+> > > > > > >
+> > > > > > > Signed-off-by: Peter Collingbourne <pcc@google.com>
+> > > > > > > ---
 > > > >
-> > > >  So far we have a few which have been suggested as replacement
-> > > > for from_tasklet()
+> > > > [...]
 > > > >
-> > > > - out_cast() or outer_cast()
-> > > > - from_member().
-> > > > - container_from() or from_container()
+> > > > > > > diff --git a/kernel/signal.c b/kernel/signal.c
+> > > > > > > index 72182eed1b8d..1f1e42adc57d 100644
+> > > > > > > --- a/kernel/signal.c
+> > > > > > > +++ b/kernel/signal.c
 > > > >
-> > > > from_container() sounds fine, would trimming it a bit work? like
-> > > > from_cont().
+> > > > [...]
+> > > >
+> > > > > > > @@ -1706,7 +1722,9 @@ int send_sig_fault(int sig, int code, void __user *addr
+> > > > > > >       return send_sig_info(info.si_signo, &info, t);
+> > > > > > >  }
+> > > > > > >
+> > > > > > > -int force_sig_mceerr(int code, void __user *addr, short lsb)
+> > > > > > > +int force_sig_mceerr(int code, void __user *addr, short lsb,
+> > > > > > > +                  unsigned long addr_ignored_bits,
+> > > > > > > +                  unsigned long addr_ignored_bits_mask)
+> > > > > >
+> > > > > > Rather than having to pass these extra arguments all over the place, can
+> > > > > > we just pass the far for addr, and have an arch-specific hook for
+> > > > > > splitting the ignored from non-ignored bits.  For now at least, I expect
+> > > > > > that ignored bits mask to be constant for a given platform and kernel.
+> > > > >
+> > > > > That sounds like a good idea. I think that for MTE we will want to
+> > > > > make it conditional on the si_code (so SEGV_MTESERR would get 0xf <<
+> > > > > 56 while everything else would get 0xff << 56) so I can hook that up
+> > > > > at the same time.
+> > > >
+> > > > OK, I think that's reasonable.
+> > > >
+> > > > Mind you, we seem to have 3 kinds of bits here, so I'm starting to
+> > > > wonder whether this is really sufficient:
+> > > >
+> > > >         1) address bits used in the faulted access
+> > > >         2) attribute/permission bits used in the faulted access
+> > > >         3) unavailable bits.
+> > > >
+> > > > si_addr contains (1).
+> > > >
+> > > > si_addr_ignored_bits contains (2).
+> > > >
+> > > > The tag bits from non-MTE faults seem to fall under case (3).  Code that
+> > > > looks for these bits in si_addr_ignored_bits won't find them.
 > > >
-> > > I'm fine with container_from().  It's the same form as container_of()
-> > > and I think we need urgent agreement to not stall everything else so
-> > > the most innocuous name is likely to get the widest acceptance.
-> > 
-> > Kees,
-> > 
-> >   Will you be  sending the newly proposed API to Linus? I have V2
-> > which uses container_from()
-> > ready to be sent out.
+> > > I'm reasonably sure that the tag bits are available for non-MTE
+> > > faults. From https://developer.arm.com/docs/ddi0595/h/aarch64-system-registers/far_el1
+> > > :
+> > > "For a Data Abort or Watchpoint exception, if address tagging is
+> > > enabled for the address accessed by the data access that caused the
+> > > exception, then this field includes the tag."
+> >
+> > Right, but I wonder whether it would still be good idea to have a way to
+> > tell userspace which bits are valid.
 > 
-> I liked that James swapped the first two arguments so that it matches
-> container_of().  Plus it's nice that when you have:
+> I'm a bit confused by this. si_addr_ignored_bits_mask is exactly the
+> mechanism for telling userspace which bits are valid. Or maybe you're
+> arguing that we should consider *not* having the mask of valid bits in
+> siginfo?
 > 
-> 	struct whatever *foo = container_from(ptr, foo, member);
+> > Collecting and synchronising all the correct information for reporting a
+> > fault is notoriously easy to mess up in the implementation, and
+> > misreporting of the tag bits might be regarded as a tolerable fail.
 > 
-> Then it means that "ptr == &foo->member".
+> It really depends. Imagine that a future change to the architecture
+> exposes bits 60-63 in FAR_EL1 in tag fault errors (we have a number of
+> ideas for how to use these bits to distinguish between different
+> use-after-frees in error reports). It would be nice for userspace to
+> be able to distinguish between the situation where bits 60-63 are 0
+> and the situation where the bits are unknown, in order to avoid
+> producing an incorrect/misleading report.
+> 
+> > We also don't get tag bits for prefetch aborts (which may be reported
+> > via SIGSEGV).  Arguably the architecture doesn't allow a nonzero tag
+> > (BR etc. likely just throw those bits on the floor).  But it might be
+> > nice to be explicit about this.
+> 
+> If we view the PC as being a 64-bit value where the architecture does
+> not allow setting bits 56-63, I think it would be correct to claim
+> that addresses derived from the PC have bits 56-63 clear.
+> 
+> > Other architectures may also have other reasons why the additional bits
+> > are sometimes available, sometimes not.
+> 
+> If this is the case for an architecture, it can always report the bits
+> to be unavailable until it can figure out in which cases the bits are
+> available.
+> 
+> > > This language applies to non-tag-check-fault data aborts but is
+> > > superseded by the following paragraph for tag check faults:
+> > > "For a synchronous Tag Check Fault abort, bits[63:60] are UNKNOWN."
+> >
+> > Right, so in this case we should squash those bits and not report them
+> > in the mask.  Currently are you implying that these are address bits,
+> > because you exclude them from si_addr_ignored_mask?
+> 
+> My intent was that these are implied to be unavailable bits, as they
+> are not set in the architecturally-defined si_addr mask ~(0xff << 56)
+> nor in si_addr_ignored_mask.
 
-I'm a bit stalled right now -- the merge window was keeping me busy, and
-this week is the Linux Plumbers Conference. This is on my list, but I
-haven't gotten back around to it. If you want, feel free to send the
-container_from() patch; you might be able to unblock this faster than me
-right now. :)
+OK, I think part of my confusion here is coming from the "ignored_bits"
+naming.
 
--Kees
+These really aren't ignored, but rather they are meaningful -- that's
+why you're implementing this extension.  True, they're ignored for
+addressing purposes (i.e., these bits can never distinguish a memory
+location from a second, distinct, memory location).  So for backwards
+compatibility we mask them out from si_addr.
 
--- 
-Kees Cook
+In the interests of moving on to reviewing the actual code and avoiding
+the discussion from getting too fragmented, can I suggest that you
+don't reply in detail to this: I'll reflect, and then reiterate my
+comments on the v10/v11 thread if I still have concerns.  I may not get
+to it this week -- apologies for that -- but if I can start looking at
+the updated series today I will.
+
+Cheers
+---Dave
