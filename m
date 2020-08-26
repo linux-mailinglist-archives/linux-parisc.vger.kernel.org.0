@@ -2,127 +2,170 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6E4925326F
-	for <lists+linux-parisc@lfdr.de>; Wed, 26 Aug 2020 16:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AE0E25332F
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Aug 2020 17:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727116AbgHZO4I (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 26 Aug 2020 10:56:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34116 "EHLO
+        id S1728078AbgHZPNt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 26 Aug 2020 11:13:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727892AbgHZOxy (ORCPT
+        with ESMTP id S1728071AbgHZPNh (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 26 Aug 2020 10:53:54 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32939C061756;
-        Wed, 26 Aug 2020 07:53:54 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id a8so792956plm.2;
-        Wed, 26 Aug 2020 07:53:54 -0700 (PDT)
+        Wed, 26 Aug 2020 11:13:37 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7ABC061796
+        for <linux-parisc@vger.kernel.org>; Wed, 26 Aug 2020 08:13:32 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id m34so1154555pgl.11
+        for <linux-parisc@vger.kernel.org>; Wed, 26 Aug 2020 08:13:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=e8+XEx65ih5RYTqzxYTgKflRaIZKD/7jhLd8hvjKhoA=;
-        b=FGy4UDYo6m6GBc2xXeUMxJap23UMwNdjY7eL7lGlWn9KfQkpaS6sESmgITWra6DZWm
-         /Mi97hnvE4hUwic1kShBHCbSYLi9ZFJsPz03Xeu0qGaYv5HxF2dJqkk3yhQTkdWSFlPp
-         th/meyADJ+ihbqDWHsVSOV0gf872gpLJoyNzaA7xYGYJnlkyct+Dmp9VmScC4LHjsit7
-         tF0/fMFPxL9KmUBHWldmPbDCLnpMNAHrPrSidGnVKtes9JoAwZfB4HDN7IQCNYoBOgYm
-         0EHrvoANNw8g1VgaYJW/DA+RY0dAEcb0xX4JPILHib0sQ4UO26ugArAdKVANsYAp5Q65
-         gZzQ==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=CmlsOBKmXTTcSfq5zGubBNNUb0gupInXkPP8EnZ3d+A=;
+        b=ZqQGx8lCIpp9MgN3WVINar6Fy8irHzrpJRsjxGoHQTeWbqHYD6il/g9q7DvpK/dmQm
+         0qW7aVa3Tr+PGt5edZDuPZxHNjlNPlIhusw3juLIWAAlHZXHD4KNjNATv1u3ZoCJvNEC
+         S2smx23jdqkXqQh3IP6NS4LTsP6Gm53DxBdKk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=e8+XEx65ih5RYTqzxYTgKflRaIZKD/7jhLd8hvjKhoA=;
-        b=b6iAWrOswA8tI5bkhXy8q8OvV5N5gWye2yPSStsFjv0KHCO7ZfCaPd+RhFkwcTgdZm
-         Hi9KIkI7srxEU6kHjYkaVkUwhe8Wmu9VVcibFmkLvLKT2Q0UwLKYdeUH3y5bIlwHZ8fc
-         M5aOYA/NXx7DRy9ib6Sz7WkR+e0l++RcqG4WtAcqP3MBRrMVjJZGIf2ys7HpBbPwq2jP
-         fgx4GVmiHPwHjGxBl7pkLy3Yzv2Vro/JipoY/i0NAF/KQ2oX8qLfk5f+NW9rDjWeCKlM
-         gWxv2gl2OrUeZ0qid5r9QZOR814kZypUfvRaAWtcWgF/lS9/DxRTmnSobSsdroH0x0wp
-         A6JA==
-X-Gm-Message-State: AOAM531TLXA/do7NCqr0IHeXMcpn5mAyH7kwlEa4ywChhlYsToyGJTlq
-        HoyhKUk4tmv+2vHUGzZVugaM8dr/NVw=
-X-Google-Smtp-Source: ABdhPJyqVaB3WiBe6Kt/rHoBpwVXo+qfNE5apFM8ZRbLHw2soLnSS1xm7aEAeYy53WlJjsaefeOdgQ==
-X-Received: by 2002:a17:90a:d594:: with SMTP id v20mr6749324pju.227.1598453633587;
-        Wed, 26 Aug 2020 07:53:53 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (61-68-212-105.tpgi.com.au. [61.68.212.105])
-        by smtp.gmail.com with ESMTPSA id r7sm3327140pfl.186.2020.08.26.07.53.50
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=CmlsOBKmXTTcSfq5zGubBNNUb0gupInXkPP8EnZ3d+A=;
+        b=fiztw0WwlQmm0651es55iGKjceOoNMwhP1rtSAS1lFQa1YtJg710ObXJz4CmDQ5uyI
+         D6bUCcviGtp7nkNFlNcj830HR+z+zS/tY1i5d/jH3dpuWvocG9LCH02T4/SUZpVBydvD
+         amT/9Tl/1vzs0vyNP8cpOkaVwKGgkqZXxhxLS89BpPu0Ct5mHnAI1WxYUncjN/raCLF9
+         LrNo8XaM4JGDWxJqMZI1ntbxAfRFn6O5TrhwWTjJCGf3/MbqxFOtou93B1Rc1gzljI4c
+         66GShop43sZ4AyglTY2SW72HW81e/+Hm7pWbJToZH9gI9jgst8w07yfJiysBhXf+ZGSR
+         AtNA==
+X-Gm-Message-State: AOAM531o4vHgo8EclQKiP1yfOxYNBslGg6TqL7VjnT4p+TiFQ+NQ5/Yq
+        2SRaa8vI5pMup53I8+S0DGr8Sw==
+X-Google-Smtp-Source: ABdhPJz9xFq7qO/RuT9QubtB+V2mx2933Vq5WDSuN5fCly0WI0GYA2lIh7xhcXijBK2JnQjkWRm3gA==
+X-Received: by 2002:a63:f909:: with SMTP id h9mr10562477pgi.250.1598454811989;
+        Wed, 26 Aug 2020 08:13:31 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id d127sm3380122pfc.175.2020.08.26.08.13.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 07:53:53 -0700 (PDT)
-From:   Nicholas Piggin <npiggin@gmail.com>
-To:     linux-arch@vger.kernel.org
-Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH v2 15/23] parisc: use asm-generic/mmu_context.h for no-op implementations
-Date:   Thu, 27 Aug 2020 00:52:41 +1000
-Message-Id: <20200826145249.745432-16-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200826145249.745432-1-npiggin@gmail.com>
-References: <20200826145249.745432-1-npiggin@gmail.com>
+        Wed, 26 Aug 2020 08:13:30 -0700 (PDT)
+Date:   Wed, 26 Aug 2020 08:13:29 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Allen Pais <allen.cryptic@gmail.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-atm-general@lists.sourceforge.net, manohar.vanga@gmail.com,
+        airlied@linux.ie, linux-hyperv@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, sre@kernel.org,
+        anton.ivanov@cambridgegreys.com, devel@driverdev.osuosl.org,
+        linux-s390@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        maximlevitsky@gmail.com, richard@nod.at, deller@gmx.de,
+        jassisinghbrar@gmail.com, linux-spi@vger.kernel.org,
+        3chas3@gmail.com, intel-gfx@lists.freedesktop.org,
+        Jakub Kicinski <kuba@kernel.org>, mporter@kernel.crashing.org,
+        jdike@addtoit.com, oakad@yahoo.com, s.hauer@pengutronix.de,
+        linux-input@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-block@vger.kernel.org, broonie@kernel.org,
+        openipmi-developer@lists.sourceforge.net, mitch@sfgoth.com,
+        linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        martyn@welchs.me.uk, dmitry.torokhov@gmail.com,
+        linux-mmc@vger.kernel.org, Allen <allen.lkml@gmail.com>,
+        linux-kernel@vger.kernel.org, alex.bou9@gmail.com,
+        stefanr@s5r6.in-berlin.de, Daniel Vetter <daniel@ffwll.ch>,
+        linux-ntb@googlegroups.com,
+        Romain Perier <romain.perier@gmail.com>, shawnguo@kernel.org,
+        David Miller <davem@davemloft.net>
+Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
+Message-ID: <202008260811.1CE425B5C2@keescook>
+References: <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
+ <202008171246.80287CDCA@keescook>
+ <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
+ <1597780833.3978.3.camel@HansenPartnership.com>
+ <f3312928-430c-25f3-7112-76f2754df080@kernel.dk>
+ <1597849185.3875.7.camel@HansenPartnership.com>
+ <CAOMdWSJRR0BhjJK1FxD7UKxNd5sk4ycmEX6TYtJjRNR6UFAj6Q@mail.gmail.com>
+ <1597873172.4030.2.camel@HansenPartnership.com>
+ <CAEogwTCH8qqjAnSpT0GDn+NuAps8dNbfcPVQ9h8kfOWNbzrD0w@mail.gmail.com>
+ <20200826095528.GX1793@kadam>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200826095528.GX1793@kadam>
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/parisc/include/asm/mmu_context.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+On Wed, Aug 26, 2020 at 12:55:28PM +0300, Dan Carpenter wrote:
+> On Wed, Aug 26, 2020 at 07:21:35AM +0530, Allen Pais wrote:
+> > On Thu, Aug 20, 2020 at 3:09 AM James Bottomley
+> > <James.Bottomley@hansenpartnership.com> wrote:
+> > >
+> > > On Wed, 2020-08-19 at 21:54 +0530, Allen wrote:
+> > > > > [...]
+> > > > > > > Since both threads seem to have petered out, let me suggest in
+> > > > > > > kernel.h:
+> > > > > > >
+> > > > > > > #define cast_out(ptr, container, member) \
+> > > > > > >     container_of(ptr, typeof(*container), member)
+> > > > > > >
+> > > > > > > It does what you want, the argument order is the same as
+> > > > > > > container_of with the only difference being you name the
+> > > > > > > containing structure instead of having to specify its type.
+> > > > > >
+> > > > > > Not to incessantly bike shed on the naming, but I don't like
+> > > > > > cast_out, it's not very descriptive. And it has connotations of
+> > > > > > getting rid of something, which isn't really true.
+> > > > >
+> > > > > Um, I thought it was exactly descriptive: you're casting to the
+> > > > > outer container.  I thought about following the C++ dynamic casting
+> > > > > style, so out_cast(), but that seemed a bit pejorative.  What about
+> > > > > outer_cast()?
+> > > > >
+> > > > > > FWIW, I like the from_ part of the original naming, as it has
+> > > > > > some clues as to what is being done here. Why not just
+> > > > > > from_container()? That should immediately tell people what it
+> > > > > > does without having to look up the implementation, even before
+> > > > > > this becomes a part of the accepted coding norm.
+> > > > >
+> > > > > I'm not opposed to container_from() but it seems a little less
+> > > > > descriptive than outer_cast() but I don't really care.  I always
+> > > > > have to look up container_of() when I'm using it so this would just
+> > > > > be another macro of that type ...
+> > > > >
+> > > >
+> > > >  So far we have a few which have been suggested as replacement
+> > > > for from_tasklet()
+> > > >
+> > > > - out_cast() or outer_cast()
+> > > > - from_member().
+> > > > - container_from() or from_container()
+> > > >
+> > > > from_container() sounds fine, would trimming it a bit work? like
+> > > > from_cont().
+> > >
+> > > I'm fine with container_from().  It's the same form as container_of()
+> > > and I think we need urgent agreement to not stall everything else so
+> > > the most innocuous name is likely to get the widest acceptance.
+> > 
+> > Kees,
+> > 
+> >   Will you be  sending the newly proposed API to Linus? I have V2
+> > which uses container_from()
+> > ready to be sent out.
+> 
+> I liked that James swapped the first two arguments so that it matches
+> container_of().  Plus it's nice that when you have:
+> 
+> 	struct whatever *foo = container_from(ptr, foo, member);
+> 
+> Then it means that "ptr == &foo->member".
 
-diff --git a/arch/parisc/include/asm/mmu_context.h b/arch/parisc/include/asm/mmu_context.h
-index cb5f2f730421..46f8c22c5977 100644
---- a/arch/parisc/include/asm/mmu_context.h
-+++ b/arch/parisc/include/asm/mmu_context.h
-@@ -7,16 +7,13 @@
- #include <linux/atomic.h>
- #include <asm-generic/mm_hooks.h>
- 
--static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
--{
--}
--
- /* on PA-RISC, we actually have enough contexts to justify an allocator
-  * for them.  prumpf */
- 
- extern unsigned long alloc_sid(void);
- extern void free_sid(unsigned long);
- 
-+#define init_new_context init_new_context
- static inline int
- init_new_context(struct task_struct *tsk, struct mm_struct *mm)
- {
-@@ -26,6 +23,7 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
- 	return 0;
- }
- 
-+#define destroy_context destroy_context
- static inline void
- destroy_context(struct mm_struct *mm)
- {
-@@ -71,8 +69,7 @@ static inline void switch_mm(struct mm_struct *prev,
- }
- #define switch_mm_irqs_off switch_mm_irqs_off
- 
--#define deactivate_mm(tsk,mm)	do { } while (0)
--
-+#define activate_mm activate_mm
- static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
- {
- 	/*
-@@ -90,4 +87,7 @@ static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
- 
- 	switch_mm(prev,next,current);
- }
-+
-+#include <asm-generic/mmu_context.h>
-+
- #endif
+I'm a bit stalled right now -- the merge window was keeping me busy, and
+this week is the Linux Plumbers Conference. This is on my list, but I
+haven't gotten back around to it. If you want, feel free to send the
+container_from() patch; you might be able to unblock this faster than me
+right now. :)
+
+-Kees
+
 -- 
-2.23.0
-
+Kees Cook
