@@ -2,267 +2,169 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40B5E253497
-	for <lists+linux-parisc@lfdr.de>; Wed, 26 Aug 2020 18:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE8F6253B82
+	for <lists+linux-parisc@lfdr.de>; Thu, 27 Aug 2020 03:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728015AbgHZQQE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 26 Aug 2020 12:16:04 -0400
-Received: from foss.arm.com ([217.140.110.172]:48552 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726946AbgHZQPk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 26 Aug 2020 12:15:40 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9E97101E;
-        Wed, 26 Aug 2020 09:15:38 -0700 (PDT)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D91843F68F;
-        Wed, 26 Aug 2020 09:15:36 -0700 (PDT)
-Date:   Wed, 26 Aug 2020 17:15:34 +0100
-From:   Dave Martin <Dave.Martin@arm.com>
-To:     Peter Collingbourne <pcc@google.com>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Kevin Brodsky <kevin.brodsky@arm.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Kostya Serebryany <kcc@google.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        David Spickett <david.spickett@linaro.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Evgenii Stepanov <eugenis@google.com>,
-        Richard Henderson <rth@twiddle.net>
-Subject: Re: [PATCH v9 5/6] signal: define the field siginfo.si_xflags
-Message-ID: <20200826161532.GU6642@arm.com>
-References: <cover.1597720138.git.pcc@google.com>
- <e26271d2b3767cdbd265033e6f7eb28f828f3a28.1597720138.git.pcc@google.com>
- <20200819154028.GH6642@arm.com>
- <CAMn1gO5DebvFmUPcY=i_wKNZpdaybpCOdbZrDPsTQ32N5UQg7g@mail.gmail.com>
- <20200824140319.GM6642@arm.com>
- <CAMn1gO7KiL4e-O=-bj1Ur1CLKQJ=pOuVnwDBUma0jyE443ODeg@mail.gmail.com>
- <20200825144735.GR6642@arm.com>
- <CAMn1gO5vncjmSuhEYOkqTyA3rfesR8xLyxgRaNp6Vs=F1NeW7A@mail.gmail.com>
+        id S1727015AbgH0BiD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 26 Aug 2020 21:38:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49800 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726784AbgH0BiA (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 26 Aug 2020 21:38:00 -0400
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDE32C0617BD;
+        Wed, 26 Aug 2020 18:37:59 -0700 (PDT)
+Received: by mail-oi1-x242.google.com with SMTP id j18so3306654oig.5;
+        Wed, 26 Aug 2020 18:37:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Rsb5LLd+wEYl5+11BE05ItDTZCXQhjeMW019xM5KW9w=;
+        b=I80xaBRJ50n8a6fI5zGd+zDFXBJzdkM/CYwdFxWUUjYU3c+2p64n4BZ92Q57vwyNvT
+         WA9AXEE5mkmSWs9RicapGSPmYl7SBg2jYYPKSa/nI/+15pdR7K1Y4Cu0DHfnjPwN8yXR
+         icr8tNGeIcQL3s2nHPbJyB6yfauHJDS+gWazTyaRFZfsu6K/xYzwtyDy670Ye8cnRtyg
+         TR/hJM9qLFyVWX5fPwsxGxi/JNo/PLB2M5jflTu50Xv+DnpTnsNDIefohCCH/iR6ipaV
+         nyjrEne62FM9W1doljqrO4mZtREkO1PUraYtOXDLLpGubpcLL1+FWyQrEJDylKkUrU3D
+         wKgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Rsb5LLd+wEYl5+11BE05ItDTZCXQhjeMW019xM5KW9w=;
+        b=qMrmCoI84efbjfMD7KDJeqH7ZE33nfwRRNOEBDAFYAmZ64MsLb0ZHHlmeiS88hcBs/
+         ePZRVD7kvVwt0V3JIeUZNVchFLfCE4W71m3YT4aLSd3nmkquG7Do6CZLFNsoeiMvq/8m
+         7eBMWCRGCjwEEg3kdEiLW7PkKj9deR3HKx29fxqjfr1l6DrDV3B3pcu8x5vRoCQxHULk
+         uKYTS7xg/Ij+dqdeKmaM5a4d1FaO6SFQCwd0X8+YwKI2CMLZKtd68GsCfPuiJgvwKDSr
+         SdQUDJfjvavMsEQhNwg4twUVJjEuCnTOmUfz2lCrFGoLqVcNIFth6Rfm5ezVKMBd8lYx
+         KLeg==
+X-Gm-Message-State: AOAM530nhtFrgOEAHBAa60mRHRHzv4Y1VRGh2sOmswDl1vRN71bxp2Te
+        +GqlxbfzB4/4540wWxRq/8ANkCdXo7Dbv53ePZk=
+X-Google-Smtp-Source: ABdhPJwhCHTUyQeL6NO7VZ9TErlPHSPJaUSJlRG8on4DJcl3XVowSsSaDNvfXk39W2OiRUOfnXZzLQickeYXItlZbbE=
+X-Received: by 2002:aca:ec95:: with SMTP id k143mr5299041oih.76.1598492278869;
+ Wed, 26 Aug 2020 18:37:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMn1gO5vncjmSuhEYOkqTyA3rfesR8xLyxgRaNp6Vs=F1NeW7A@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+References: <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
+ <202008171246.80287CDCA@keescook> <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
+ <1597780833.3978.3.camel@HansenPartnership.com> <f3312928-430c-25f3-7112-76f2754df080@kernel.dk>
+ <1597849185.3875.7.camel@HansenPartnership.com> <CAOMdWSJRR0BhjJK1FxD7UKxNd5sk4ycmEX6TYtJjRNR6UFAj6Q@mail.gmail.com>
+ <1597873172.4030.2.camel@HansenPartnership.com> <CAEogwTCH8qqjAnSpT0GDn+NuAps8dNbfcPVQ9h8kfOWNbzrD0w@mail.gmail.com>
+ <20200826095528.GX1793@kadam> <202008260811.1CE425B5C2@keescook>
+In-Reply-To: <202008260811.1CE425B5C2@keescook>
+From:   Allen <allen.lkml@gmail.com>
+Date:   Thu, 27 Aug 2020 07:07:47 +0530
+Message-ID: <CAOMdWSLyacdeoqnZBuLu6z1B6cY-WbtUJQm6+8=WHyE49tVaEg@mail.gmail.com>
+Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Allen Pais <allen.cryptic@gmail.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-atm-general@lists.sourceforge.net, manohar.vanga@gmail.com,
+        airlied@linux.ie, linux-hyperv@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, sre@kernel.org,
+        anton.ivanov@cambridgegreys.com, devel@driverdev.osuosl.org,
+        linux-s390@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        maximlevitsky@gmail.com, richard@nod.at, deller@gmx.de,
+        jassisinghbrar@gmail.com, linux-spi@vger.kernel.org,
+        3chas3@gmail.com, intel-gfx@lists.freedesktop.org,
+        Jakub Kicinski <kuba@kernel.org>, mporter@kernel.crashing.org,
+        jdike@addtoit.com, oakad@yahoo.com, s.hauer@pengutronix.de,
+        linux-input@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-block@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        openipmi-developer@lists.sourceforge.net, mitch@sfgoth.com,
+        linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        martyn@welchs.me.uk, dmitry.torokhov@gmail.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alex.bou9@gmail.com, stefanr@s5r6.in-berlin.de,
+        Daniel Vetter <daniel@ffwll.ch>, linux-ntb@googlegroups.com,
+        Romain Perier <romain.perier@gmail.com>, shawnguo@kernel.org,
+        David Miller <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Aug 25, 2020 at 01:08:35PM -0700, Peter Collingbourne wrote:
-> On Tue, Aug 25, 2020 at 7:47 AM Dave Martin <Dave.Martin@arm.com> wrote:
-> >
-> > On Mon, Aug 24, 2020 at 06:27:51PM -0700, Peter Collingbourne wrote:
-> > > On Mon, Aug 24, 2020 at 7:03 AM Dave Martin <Dave.Martin@arm.com> wrote:
+On Wed, Aug 26, 2020 at 8:43 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Wed, Aug 26, 2020 at 12:55:28PM +0300, Dan Carpenter wrote:
+> > On Wed, Aug 26, 2020 at 07:21:35AM +0530, Allen Pais wrote:
+> > > On Thu, Aug 20, 2020 at 3:09 AM James Bottomley
+> > > <James.Bottomley@hansenpartnership.com> wrote:
 > > > >
-> > > > On Wed, Aug 19, 2020 at 06:37:25PM -0700, Peter Collingbourne wrote:
-> > > > > On Wed, Aug 19, 2020 at 8:40 AM Dave Martin <Dave.Martin@arm.com> wrote:
+> > > > On Wed, 2020-08-19 at 21:54 +0530, Allen wrote:
+> > > > > > [...]
+> > > > > > > > Since both threads seem to have petered out, let me suggest in
+> > > > > > > > kernel.h:
+> > > > > > > >
+> > > > > > > > #define cast_out(ptr, container, member) \
+> > > > > > > >     container_of(ptr, typeof(*container), member)
+> > > > > > > >
+> > > > > > > > It does what you want, the argument order is the same as
+> > > > > > > > container_of with the only difference being you name the
+> > > > > > > > containing structure instead of having to specify its type.
+> > > > > > >
+> > > > > > > Not to incessantly bike shed on the naming, but I don't like
+> > > > > > > cast_out, it's not very descriptive. And it has connotations of
+> > > > > > > getting rid of something, which isn't really true.
 > > > > > >
-> > > > > > On Mon, Aug 17, 2020 at 08:33:50PM -0700, Peter Collingbourne wrote:
-> > > > > > > This field will contain flags that may be used by signal handlers to
-> > > > > > > determine whether other fields in the _sigfault portion of siginfo are
-> > > > > > > valid. An example use case is the following patch, which introduces
-> > > > > > > the si_addr_ignored_bits{,_mask} fields.
-> > > > > > >
-> > > > > > > A new sigcontext flag, SA_XFLAGS, is introduced in order to allow
-> > > > > > > a signal handler to require the kernel to set the field (but note
-> > > > > > > that the field will be set anyway if the kernel supports the flag,
-> > > > > > > regardless of its value). In combination with the previous patches,
-> > > > > > > this allows a userspace program to determine whether the kernel will
-> > > > > > > set the field.
-> > > > > > >
-> > > > > > > Ideally this field could have just been named si_flags, but that
-> > > > > > > name was already taken by ia64, so a different name was chosen.
-> > > > > > >
-> > > > > > > Alternatively, we may consider making ia64's si_flags a generic field
-> > > > > > > and having it appear at the end of _sigfault (in the same place as
-> > > > > > > this patch has si_xflags) on non-ia64, keeping it in the same place
-> > > > > > > on ia64. ia64's si_flags is a 32-bit field with only one flag bit
-> > > > > > > allocated, so we would have 31 bits to use if we do this.
+> > > > > > Um, I thought it was exactly descriptive: you're casting to the
+> > > > > > outer container.  I thought about following the C++ dynamic casting
+> > > > > > style, so out_cast(), but that seemed a bit pejorative.  What about
+> > > > > > outer_cast()?
 > > > > > >
-> > > > > > For clarity, is the new si_xflags field supposed to be valid for all
-> > > > > > signal types, or just certain signals and si_codes?
+> > > > > > > FWIW, I like the from_ part of the original naming, as it has
+> > > > > > > some clues as to what is being done here. Why not just
+> > > > > > > from_container()? That should immediately tell people what it
+> > > > > > > does without having to look up the implementation, even before
+> > > > > > > this becomes a part of the accepted coding norm.
+> > > > > >
+> > > > > > I'm not opposed to container_from() but it seems a little less
+> > > > > > descriptive than outer_cast() but I don't really care.  I always
+> > > > > > have to look up container_of() when I'm using it so this would just
+> > > > > > be another macro of that type ...
+> > > > > >
 > > > > >
-> > > > > It is intended to be valid for all signal types that use the _sigfault
-> > > > > union member of siginfo. As listed in siginfo.h these are: SIGILL,
-> > > > > SIGFPE, SIGSEGV, SIGBUS, SIGTRAP, SIGEMT.
+> > > > >  So far we have a few which have been suggested as replacement
+> > > > > for from_tasklet()
+> > > > >
+> > > > > - out_cast() or outer_cast()
+> > > > > - from_member().
+> > > > > - container_from() or from_container()
+> > > > >
+> > > > > from_container() sounds fine, would trimming it a bit work? like
+> > > > > from_cont().
 > > > >
-> > > > SIGSYS is similar to SIGILL, is that included also?
+> > > > I'm fine with container_from().  It's the same form as container_of()
+> > > > and I think we need urgent agreement to not stall everything else so
+> > > > the most innocuous name is likely to get the widest acceptance.
 > > >
-> > > I think that SIGSYS is covered by a separate _sigsys union member.
+> > > Kees,
 > > >
-> > > > > > What happens for things like a rt_sigqueueinfo() from userspace?
-> > > > >
-> > > > > Hmm. Let's enumerate each of these things, which I believe are all of
-> > > > > the call sites of the function copy_siginfo_from_user and related
-> > > > > functions (correct me if I'm wrong):
-> > > > >
-> > > > > - ptrace(PTRACE_SETSIGINFO)
-> > > > > - pidfd_send_signal
-> > > > > - rt_sigqueueinfo
-> > > > > - rt_tgsigqueueinfo
-> > > > >
-> > > > > We can handle the last three by observing that the kernel forbids
-> > > > > sending a signal with these syscalls if si_code >= 0, so we can say
-> > > > > that the value of si_xflags is only valid if si_code >= 0.
-> > > >
-> > > > Hmmm, that's what the code says (actually >= 0 or SI_TKILL), but it's
-> > > > illogical.  Those are user signals, so there's no obvious reason why
-> > > > userspace shouldn't be allowed to generate their siginfo.  It would
-> > > > probably be better for the kernel to police si_pid etc. in the SI_USER
-> > > > and SI_TKILL cases rather than flatly refusing, but I guess that's a
-> > > > discussion for another day.
-> > > >
-> > > > I guess the combination of SI_FROMKERNEL() and the signal number being a
-> > > > known fault signal if probably sufficient for now.
-> > >
-> > > In v10 I ended up adding a comment saying that si_xflags is only valid
-> > > if 0 <= si_code < SI_KERNEL (the SI_KERNEL part was due to my
-> > > discovery of kernel code that was calling force_sig(SIGSEGV) where
-> > > force_sig uses the _kill union member). Your comment about SI_USER
+> > >   Will you be  sending the newly proposed API to Linus? I have V2
+> > > which uses container_from()
+> > > ready to be sent out.
 > >
-> > Although it's been there a long time, is this a bug?
+> > I liked that James swapped the first two arguments so that it matches
+> > container_of().  Plus it's nice that when you have:
 > >
-> > sigaction(2) says that SI_KERNEL can be reported for any signal, but
-> > doesn't say how/why.  It also says that si_addr is [unconditionally]
-> > valid for [kernel-generated] SIGSEGV.  ([] are my insertions).
+> >       struct whatever *foo = container_from(ptr, foo, member);
 > >
-> > While it may be reasonable to expect userspace code to filter out user
-> > signals before assuming that siginfo fields are value, requiring user
-> > code to check for specific si_codes is a bit nastier.
-> >
-> > I rather suspect that little or no code out there is explicity checking
-> > for SI_KERNEL before assuming that si_addr etc. are valid today.
-> 
-> Right, but maybe that can be attributed to poor documentation (in the
-> man page), so maybe the right thing to do here is to make the
-> documentation more explicit. The kernel code itself is fairly clear
-> that SI_KERNEL does not use the _sigfault layout:
-> https://github.com/torvalds/linux/blob/6a9dc5fd6170d0a41c8a14eb19e63d94bea5705a/kernel/signal.c#L3173
-> 
-> And note that force_sig does not make the si_addr field valid either,
-> it sets it to 0 (on most architectures, as a result of si_addr
-> overlapping si_pid/si_uid which get set to 0 by that function), which
-> is not necessarily the correct value. For example, on 64-bit x86,
-> executing this code:
-> 
->   volatile auto ptr = (char *)0xfedcba9876543210;
->   *ptr = 42;
-> 
-> (i.e. accessing outside of the TASK_SIZE limit) will result in a call
-> to force_sig(SIGSEGV) setting si_addr=0. But this is clearly not an
-> accurate fault address. I don't know how x86 reports the fault address
-> to the kernel in this case but maybe it simply isn't available for
-> addresses larger than TASK_SIZE, so the right thing for the kernel to
-> do would be to indicate that the address is unavailable (for example,
-> by setting si_code=SI_KERNEL, as it is already doing). Then through
-> documentation updates, userspace can know that si_code=SI_KERNEL means
-> that the address is unavailable.
-> 
-> > > made me realize that is not exactly true (since kill and
-> > > pidfd_send_signal can send a fault signal with si_code == SI_USER). I
-> > > was not aware of the SI_FROMKERNEL() macro. In v11 I will update the
-> > > comment to say that SI_FROMKERNEL(si) && si->si_code != SI_KERNEL must
-> > > be true in order for si_xflags to be valid.
-> >
-> > Given the above, maybe it would be better to say nothing explicit about
-> > SI_KERNEL, but make sure that the additional siginfo fields are sanely
-> > zeroed anyway.
-> 
-> I think that for si_addr this happens as a result of setting
-> si_pid/si_uid, and for the other fields this happens as a result of
-> zeroing the padding between fields. I know that we'd prefer not to
-> rely on zeroing padding, but perhaps the zero padding can more be seen
-> as a last resort for keeping things working in case userspace fails to
-> check for SI_KERNEL.
+> > Then it means that "ptr == &foo->member".
+>
+> I'm a bit stalled right now -- the merge window was keeping me busy, and
+> this week is the Linux Plumbers Conference. This is on my list, but I
+> haven't gotten back around to it. If you want, feel free to send the
+> container_from() patch; you might be able to unblock this faster than me
+> right now. :)
+>
 
-Yes, I think this is reasonable -- slightly icky, but it should work in
-practice.
-
-As you say, things are already a bit of a mess in this area, so the best
-we can reasonably aim for just now is to avoid making it the situation
-worse.
+Sure, Thanks.
 
 
-So, can we make the condition something like:
 
-For a given signal delivery, si_xflags exists if and only if:
-
-	a) the sigaction() trickery worked, _and_
-	b) si_addr exists.
-
-
-We could provide a helper macro for this test, but the condition for (b)
-will be fragile and tend to bitrot unless the problem is addressed more
-broadly.  Seems out of scope for this series, though.
-
-
-[--- This is a digression, but:
-
-Yielding SI_KERNEL for SIGSEGV seems to be against POSIX, unless
-SI_KERNEL provides si_addr -- see [1]:
-
-	[...] the following signal-specific information shall be
-	available: [...] SIGSEGV, SIGBUS: void *si_addr: Address of
-	faulting memory references.
-
-(stated unconditionally).  Though, also:
-
-	For some implementations, the value of si_addr may be
-	inaccurate.
-
-IMHO, raising SIGSEGV from the kernel with an si_code that doesn't
-provide an si_addr (contents notwithstanding) is simply wrong, and in
-some of the affected cases (such as access to kernel memory) it's wrong
-to use non-POSIX codes at all.  This is obviously just access to a duff
-address, so we should probably use SEGV_MAPERR for this.  POSIX permits
-that si_addr is not always "accurate", so we could happily yield
-si_addr == 0 for such cases, if we don't have the address or would
-rather not expose it (though if the address came from userspace, it
-probably doesn't hurt to expose it).
-
-AFAICT, SI_KERNEL most naturally applies to situations that closely
-resemble kill(2) but don't originate from userspace, such as when the
-OOM killer kills a task.  It doesn't seem right to be reporting any such
-thing via SIGSEGV.
-
-Anyway, this is a separate discussion from this series...
-
- --
-
-[1] SUSv7, signal.h:
-https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html
-
----]
-
-> 
-> > For kernel-generated signals we can guarantee this, so I
-> > think that requiring userspace to check explicitly for SI_KERNEL is too
-> > unrealistic (i.e., 90% of the time, people will forget ... and 99% of
-> > the time they will get away with it).
-> 
-> It's unfortunate that the conditions for accessing these fields are so
-> complex, but again this seems like part of the hand that we've been
-> dealt with this API. Fortunately the requirement to check for
-> SI_KERNEL should only really apply in practice to code accessing our
-> new fields. We can make it retroactively apply to existing fields, but
-> since that wouldn't be a change to the kernel code, just the
-> documentation, existing code will continue to operate in the same way
-> as it did before.
-
-Agreed.  Again, we should try not to make things worse, but that's all.
-
-si_code stinks generally, because it's so inextensible.  There's no way
-to add new values without leaving software utterly baffled (or more
-likely mistaken, since software often ignores si_code or doesn't check
-it exhaustively, before relying on si_* fields).
-
-[...]
-
-Cheers
----Dave
+-- 
+       - Allen
