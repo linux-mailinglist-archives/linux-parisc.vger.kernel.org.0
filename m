@@ -2,35 +2,48 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D05256630
-	for <lists+linux-parisc@lfdr.de>; Sat, 29 Aug 2020 11:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7079E2566A1
+	for <lists+linux-parisc@lfdr.de>; Sat, 29 Aug 2020 11:47:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726405AbgH2JJe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 29 Aug 2020 05:09:34 -0400
-Received: from mout.gmx.net ([212.227.17.20]:46331 "EHLO mout.gmx.net"
+        id S1727112AbgH2Jrz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 29 Aug 2020 05:47:55 -0400
+Received: from mout.gmx.net ([212.227.17.21]:41697 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726258AbgH2JJ3 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 29 Aug 2020 05:09:29 -0400
+        id S1726912AbgH2Jrw (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 29 Aug 2020 05:47:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1598692150;
-        bh=LA8e3x7OTH7TmqUpRSk2U1gxj9jGzODKHY7UgSrCaC8=;
+        s=badeba3b8450; t=1598694423;
+        bh=3F15H2PNzBIc0EFjrxqHH0XfkEEFa8OSmYddqGK8H+0=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=UZCInnwE+t5P0z8mWC0e962bsCtNuP+7fz1IV97jG6qozBFaJJRIOXO3ELstNrmM8
-         /5YmRdkktxcbLfeaSIzenktDR0lM8JEASUsd6ZPFHQKM47UsiNivmKZFd43qFLV6aq
-         oL2c0CNGzt45aT8daRS6odvsev6smIYy2ZGxaKnA=
+        b=hRmWoz6rZevnpTgcGALcudzkz+sRJOQ0ltLUeGjQ1hiGHADIz7w+PLuQnJplTpS25
+         Qto8lTm0NsBGfkg2KJTy+wnqmbnRguZCa00cMk7o+ZMXlFDTxk3DNxHoapovDbfSzV
+         MAj78BvYtiEvWHkojaanyM4LFeVjGHtFgvra5dlY=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from [192.168.20.60] ([92.116.169.105]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M8ykg-1kGsnj3Zhu-0066tf; Sat, 29
- Aug 2020 11:09:09 +0200
-Subject: Re: [PATCH v2 15/23] parisc: use asm-generic/mmu_context.h for no-op
- implementations
-To:     Nicholas Piggin <npiggin@gmail.com>, linux-arch@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Arnd Bergmann <arnd@arndb.de>,
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MryTF-1kzqb42Rgj-00nwOw; Sat, 29
+ Aug 2020 11:47:03 +0200
+Subject: Re: a saner API for allocating DMA addressable pages
+To:     Christoph Hellwig <hch@lst.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org
-References: <20200826145249.745432-1-npiggin@gmail.com>
- <20200826145249.745432-16-npiggin@gmail.com>
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        iommu@lists.linux-foundation.org
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org,
+        netdev@vger.kernel.org, linux-nvme@lists.infradead.org,
+        linux-scsi@vger.kernel.org, linux-mm@kvack.org,
+        alsa-devel@alsa-project.org
+References: <20200819065555.1802761-1-hch@lst.de>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -89,108 +102,150 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <05545df2-416a-a034-059a-a8404292143e@gmx.de>
-Date:   Sat, 29 Aug 2020 11:09:06 +0200
+Message-ID: <73b81ba2-3f1c-cce9-0bcf-e739c2a2f6d8@gmx.de>
+Date:   Sat, 29 Aug 2020 11:46:56 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200826145249.745432-16-npiggin@gmail.com>
+In-Reply-To: <20200819065555.1802761-1-hch@lst.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:MVu3F6cq3b3CpnuUMt96+KyaW7G8/TfrnMJKVxNZ3c+n5NTx0Ae
- t97uEKwepS/LVxjNOY/ELldLhFhU14cn55K0G6T7E59tPaU0dJLK5Qe9MqRCr7IcnbvU9Sq
- 5JshNO7482QnBDtrkO+Zh1dNwBmutM+eE1XOY+uVptWyTTlQCLil5jlJd/kjiO1JPNhw/fx
- aVxXh4mini3Ri1j/zdI0A==
+X-Provags-ID: V03:K1:oJ0DWTaeXj/z2c6/t19vHP7YStT4MiWtTWeFmCetTtBo49Hh4sa
+ MXIOt4fOrWhKcajKOQn9yDtXPWoBtqQjT0jJihKGRY7MdilOq6ZLvEQJAHP/3tQc3VMSqjw
+ 8nrw+oyKRGNPfYAhYsTPKH1SOnK7ozn1tLaEFYkGuZxVaZV1fMUaMHgotwKVH1EV+Qr8QAH
+ zOF0hIOTIYaJkqfweauPA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:TjA0suBSCNU=:Z1eOmwhoqF8LfwOJofhBET
- TmJy5LJRJ9npHJpvWnTce1TAZb/b8hnvt+KtjuZ1RcxOpA5TO44kUE1Vjw458RAXbNdfOAso8
- 6C/yNye0i4kmPmQlAUsc9aYoXBSkZmEhQS76DGBiTmXliQc4BOk2D4UMcEJpG6cW/zbPa3Vn5
- z0AbMjICenLNPhlqcE+g2ZoNMiIqft48c679m5MT88xPBuUdVwSITjRBKGnU3D4BAeCW/W53N
- XSHyTL7gg7wm2vuBRHjhrtlnWm+bDquTdWAQ4u4SnPV1Q8vYCLtOtB/4F1cUndeWxiRG219QL
- GvU9c1vSSZZakY2fNb6ROs05NsZnZUAYSgCsToZj4ykzVMgTGwe8NxoGMkQ47bZa1tAZOyZoI
- nN/HvWWqgjXJ5Q7kj2Qxbi+5BAxotfRk9U48g65XPMHo/eSB8fn43L3huwAxDcd6ub//oy59a
- ZwFE/uP7fNOpZTlFVsyuq3R8+/I5XLGSaqdX6uEwadGudgrW4VnrA4t7KyRDUZFt9Rl6BNA3g
- 3me/mdHhIFrpUA9rVlXILWXwbrb8/b9/Sbq/xGX4aZR3sgsDWjzrlAWu3VfoBs51sEYeumi/R
- mf9eHcNvUoxH5yQkPDie6sJK+pNlfoWgkjUjyedGPph3k27I+MQO+DjvegyT0TX8vJY27prOJ
- VglHLCiHkDd6MUWi/7axv9nxqFMRN5eZcUDy3mWXSyMwRCyJtpYvXqd6P5sEq3RHEYwSwOAKE
- AS8czUxl3Vw6yM4arJxLduIcVUaXKiO524g+DV1K6FQKDnn6m6z1gb6CUZP2bf/849fn0Utsa
- QJ1ZHangVK039kyasJE+5XsG8eGDjcbge35aqEu9odQWIRBZwukyIXVjiMbnva6qLjas+M1g/
- TRn2JMtG3R6cIQirXUYwZh91tJrlOE6MBuRxErcvKtjM3qyWlN5xxkikDnUA37hJEYQXxtiQZ
- DxSI3j3UqUjEKULz8u0uMb4wR/fzVlfG4n8kTZVbVltzp2ud7u6YF8xjLMX39OHcOA2SpUfth
- TAPsOIBQ2wm5aq5i8NSvZVpqjo0W1wYdMCveeFjoUzt2+GojmIOLMIeOS/P2h0ZR/0t4mvq98
- 6uFVY4xACwAovirnNdFlTVXfGfRrYCZVqSAfnnQ3xyczSbhk5VaauthQCa1Ns1RvAfSjEd55A
- pcMprEkJ32ENY5aucsDJnveQ6gSSA++v+DcuGGNO5f+FNBTKH7d3RGLAfWR5LtpvNQr3gVCGe
- PpHEY1TAz5KSV8aRE
+X-UI-Out-Filterresults: notjunk:1;V03:K0:mkE72tOExKA=:aTlUtADXpjDZT7OxFiuYUj
+ v8/4kHwb2Mua8hEhk7Go/U2/ZVjYzuTKybn/zEYMtbMxrUlv2KV8hlNK/aX0VjGkoOI0DwG22
+ n3rsdAjGaSUVVg/X62fzzWnbNoOST8/wh+BbxtDxG02I7XrmtJ6pPsi6+sFOMvHTB9vOrNvXG
+ AwrT6QlUq2sykd+XUwh5bjMi1ghb1VeBINeLz01bZMxgasdT3SwXsBly2VULyLKKMWvqsBIFQ
+ C/pu6CzlTJwktGeYeOmP93ppFx8zyomEinE6j97hLi8ACR2Vv4+EdRnza7fHIwzn6Z4o/e68T
+ CL+o7ZMuMfdCf83r3xd+wKzNEpL8MUbkQsj81LCh/N4+7EAwcj2sY9eCAeIS734k2x9WKzhOm
+ k5p/dzqW4h3NVw/bvw1II7RtoSntk6Nu2jssSbqE+e5UGhYAO64IRI100wLj0j+ydVaVBiMEr
+ ewBbRKh2MG35gTQhi2tbxYtq3AMM79pnsf/DEKNe1Vhfn3oXdPr0xR3d5+51lntmf5Cszy0Sh
+ 4gIARnAPzJtKh/Ftm7D1haHNvG6EMaYJm/1016zyvm8wFY+xMfndGAtOJGBg2gl72/OklVTTU
+ 4r8J65WvqyNxCGHBlcYl13FQo0ig1JukwtnidnbUgGPh1vPmVSUh0QGRlo+FZ/9rCQG6emvf6
+ sYQUlP0/rJjjQvVqS9WpipHHEhsDh/tVYqOFC9hbLhoxzsgqHiNe31n96SHCT9n5eeprzIQnY
+ zKs2u4K2cB+S/ewejdeXOepPMED8Z/Yvf3CYwTT/W1YWuMpJtOqDHA+B9gOkRixd9kH9WPDwl
+ Yq8YwexQ2fo0rXZ6Hb/LNMwtILrHFTAdqcmwQ30yHCqZs71Ka4yRR1YO0J0lMlVan091rWU3P
+ XmdvZ/T1ABg8LZuI9xFe4NeHLjSlHmrq2qIi+D10YlCZv5iYCBg7odt83vpLZQNixoDJ/PWSA
+ ZUoS3p7GoFjjm+scTc3Z+vtqks5pWfXGgKvq7FgERXN5SoVS1DDUGkbsyoEMLpFCiPARvSnC9
+ Zw5byRRwwNj766pNE2YDmj3LOYWf9x4zwovaUS1T3ywgN7ZtUkr4Wgr7YKIoGBbAmQ+PW3oI0
+ mhMcdUTFFR/wrCYaY2SZvOHJANBD9TdeGyZCpOIBtqGlXbwTfRnIVypZEfee2tKfCWnFrRngi
+ xV4RAwdwqSQkWctal3BkGgiFZbu3byNVAX4Phev8myjqyGmpeZ1XvNcHSGoismCnziw8e3+Lp
+ ihUo0gzdHci+IKtQW
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 26.08.20 16:52, Nicholas Piggin wrote:
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-parisc@vger.kernel.org
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Hi Christoph,
 
-Acked-by: Helge Deller <deller@gmx.de>
+On 19.08.20 08:55, Christoph Hellwig wrote:
+> this series replaced the DMA_ATTR_NON_CONSISTENT flag to dma_alloc_attrs
+> with a separate new dma_alloc_pages API, which is available on all
+> platforms.  In addition to cleaning up the convoluted code path, this
+> ensures that other drivers that have asked for better support for
+> non-coherent DMA to pages with incurring bounce buffering over can final=
+ly
+> be properly supported.
+> ....
+> A git tree is available here:
+>
+>     git://git.infradead.org/users/hch/misc.git dma_alloc_pages
 
-> ---
->  arch/parisc/include/asm/mmu_context.h | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+I've tested this tree on my parisc machine which uses the 53c700
+and lasi_82596 drivers.
+Everything worked as expected, so you may add:
+
+Tested-by: Helge Deller <deller@gmx.de> # parisc
+
+Thanks!
+Helge
+
 >
-> diff --git a/arch/parisc/include/asm/mmu_context.h b/arch/parisc/include=
-/asm/mmu_context.h
-> index cb5f2f730421..46f8c22c5977 100644
-> --- a/arch/parisc/include/asm/mmu_context.h
-> +++ b/arch/parisc/include/asm/mmu_context.h
-> @@ -7,16 +7,13 @@
->  #include <linux/atomic.h>
->  #include <asm-generic/mm_hooks.h>
+> Gitweb:
 >
-> -static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_str=
-uct *tsk)
-> -{
-> -}
-> -
->  /* on PA-RISC, we actually have enough contexts to justify an allocator
->   * for them.  prumpf */
+>     http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma_=
+alloc_pages
 >
->  extern unsigned long alloc_sid(void);
->  extern void free_sid(unsigned long);
 >
-> +#define init_new_context init_new_context
->  static inline int
->  init_new_context(struct task_struct *tsk, struct mm_struct *mm)
->  {
-> @@ -26,6 +23,7 @@ init_new_context(struct task_struct *tsk, struct mm_st=
-ruct *mm)
->  	return 0;
->  }
->
-> +#define destroy_context destroy_context
->  static inline void
->  destroy_context(struct mm_struct *mm)
->  {
-> @@ -71,8 +69,7 @@ static inline void switch_mm(struct mm_struct *prev,
->  }
->  #define switch_mm_irqs_off switch_mm_irqs_off
->
-> -#define deactivate_mm(tsk,mm)	do { } while (0)
-> -
-> +#define activate_mm activate_mm
->  static inline void activate_mm(struct mm_struct *prev, struct mm_struct=
- *next)
->  {
->  	/*
-> @@ -90,4 +87,7 @@ static inline void activate_mm(struct mm_struct *prev,=
- struct mm_struct *next)
->
->  	switch_mm(prev,next,current);
->  }
-> +
-> +#include <asm-generic/mmu_context.h>
-> +
->  #endif
+> Diffstat:
+>  Documentation/core-api/dma-api.rst                       |   92 ++----
+>  Documentation/core-api/dma-attributes.rst                |    8
+>  Documentation/userspace-api/media/v4l/buffer.rst         |   17 -
+>  Documentation/userspace-api/media/v4l/vidioc-reqbufs.rst |    1
+>  arch/alpha/kernel/pci_iommu.c                            |    2
+>  arch/arm/include/asm/dma-direct.h                        |    4
+>  arch/arm/mm/dma-mapping-nommu.c                          |    2
+>  arch/arm/mm/dma-mapping.c                                |    4
+>  arch/ia64/Kconfig                                        |    3
+>  arch/ia64/hp/common/sba_iommu.c                          |    2
+>  arch/ia64/kernel/dma-mapping.c                           |   14
+>  arch/ia64/mm/init.c                                      |    3
+>  arch/mips/Kconfig                                        |    1
+>  arch/mips/bmips/dma.c                                    |    4
+>  arch/mips/cavium-octeon/dma-octeon.c                     |    4
+>  arch/mips/include/asm/dma-direct.h                       |    4
+>  arch/mips/include/asm/jazzdma.h                          |    2
+>  arch/mips/jazz/jazzdma.c                                 |  102 +------
+>  arch/mips/loongson2ef/fuloong-2e/dma.c                   |    4
+>  arch/mips/loongson2ef/lemote-2f/dma.c                    |    4
+>  arch/mips/loongson64/dma.c                               |    4
+>  arch/mips/mm/dma-noncoherent.c                           |   48 +--
+>  arch/mips/pci/pci-ar2315.c                               |    4
+>  arch/mips/pci/pci-xtalk-bridge.c                         |    4
+>  arch/mips/sgi-ip32/ip32-dma.c                            |    4
+>  arch/parisc/Kconfig                                      |    1
+>  arch/parisc/kernel/pci-dma.c                             |    6
+>  arch/powerpc/include/asm/dma-direct.h                    |    4
+>  arch/powerpc/kernel/dma-iommu.c                          |    2
+>  arch/powerpc/platforms/ps3/system-bus.c                  |    4
+>  arch/powerpc/platforms/pseries/vio.c                     |    2
+>  arch/s390/pci/pci_dma.c                                  |    2
+>  arch/x86/kernel/amd_gart_64.c                            |    8
+>  drivers/gpu/drm/exynos/exynos_drm_gem.c                  |    2
+>  drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c      |    3
+>  drivers/iommu/dma-iommu.c                                |    2
+>  drivers/iommu/intel/iommu.c                              |    6
+>  drivers/media/common/videobuf2/videobuf2-core.c          |   36 --
+>  drivers/media/common/videobuf2/videobuf2-dma-contig.c    |   19 -
+>  drivers/media/common/videobuf2/videobuf2-dma-sg.c        |    3
+>  drivers/media/common/videobuf2/videobuf2-v4l2.c          |   12
+>  drivers/net/ethernet/amd/au1000_eth.c                    |   15 -
+>  drivers/net/ethernet/i825xx/lasi_82596.c                 |   36 +-
+>  drivers/net/ethernet/i825xx/lib82596.c                   |  148 +++++--=
+---
+>  drivers/net/ethernet/i825xx/sni_82596.c                  |   23 -
+>  drivers/net/ethernet/seeq/sgiseeq.c                      |   24 -
+>  drivers/nvme/host/pci.c                                  |   79 ++---
+>  drivers/parisc/ccio-dma.c                                |    2
+>  drivers/parisc/sba_iommu.c                               |    2
+>  drivers/scsi/53c700.c                                    |  120 ++++---=
+-
+>  drivers/scsi/53c700.h                                    |    9
+>  drivers/scsi/sgiwd93.c                                   |   14
+>  drivers/xen/swiotlb-xen.c                                |    2
+>  include/linux/dma-direct.h                               |   55 ++-
+>  include/linux/dma-mapping.h                              |   32 +-
+>  include/linux/dma-noncoherent.h                          |   21 -
+>  include/linux/dmapool.h                                  |   23 +
+>  include/linux/gfp.h                                      |    6
+>  include/media/videobuf2-core.h                           |    3
+>  include/uapi/linux/videodev2.h                           |    2
+>  kernel/dma/Kconfig                                       |    9
+>  kernel/dma/Makefile                                      |    1
+>  kernel/dma/coherent.c                                    |   17 +
+>  kernel/dma/direct.c                                      |  112 +++++--
+>  kernel/dma/mapping.c                                     |  104 ++-----
+>  kernel/dma/ops_helpers.c                                 |   86 ++++++
+>  kernel/dma/pool.c                                        |    2
+>  kernel/dma/swiotlb.c                                     |    4
+>  kernel/dma/virt.c                                        |    2
+>  mm/dmapool.c                                             |  211 +++++++=
+++------
+>  sound/mips/hal2.c                                        |   58 +---
+>  71 files changed, 872 insertions(+), 803 deletions(-)
 >
 
