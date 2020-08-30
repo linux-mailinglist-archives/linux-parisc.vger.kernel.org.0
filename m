@@ -2,32 +2,32 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3066925691A
-	for <lists+linux-parisc@lfdr.de>; Sat, 29 Aug 2020 18:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64411256F73
+	for <lists+linux-parisc@lfdr.de>; Sun, 30 Aug 2020 19:07:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728350AbgH2QjD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 29 Aug 2020 12:39:03 -0400
-Received: from mout.gmx.net ([212.227.15.15]:44475 "EHLO mout.gmx.net"
+        id S1726452AbgH3RHu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 30 Aug 2020 13:07:50 -0400
+Received: from mout.gmx.net ([212.227.15.15]:59491 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726562AbgH2QjA (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 29 Aug 2020 12:39:00 -0400
+        id S1726105AbgH3RHs (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 30 Aug 2020 13:07:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1598719130;
-        bh=7GScJlVWcrsKh0VbR80SpJlNc3H7KU4sl4q7FEj42h8=;
-        h=X-UI-Sender-Class:Subject:To:References:From:Date:In-Reply-To;
-        b=DciaXo176IjJRi/IE62bb72BtwaldrmeybE1j3sG0wEPoe0AdIlUd6eUR3Pukt1EL
-         43fsliGJz1IAYHWBGCAuOVLyMneUxChKffSvyKWn8PwpbU55kGRUy/9HGw+Ilu5srz
-         oc1f6RLo6l2g57T+O10pjt+yaZlAsZS7C7iu8TA0=
+        s=badeba3b8450; t=1598807244;
+        bh=4V6QVme2vsGjmuUx5kScXxPjxkzq+v2XaKAlBP/W6Zs=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=NyT0d6JBZBCVrBe0RI0T3yY2ulGl67jjbT9LV4XYqA9rGet9ewZcC/5Heta+gebLf
+         2vojau+DTniJzFzTWv4STPN/Kksmh9yZaMlCumtXy1ph32aW6T/idz/GozvLny/aIt
+         r/AWtiFrRUWXmdOyKeLUwd8UP6tDioJxMTIUZxBE=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.169.105]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MN5eR-1jvu4V07sL-00J1AX; Sat, 29
- Aug 2020 18:38:50 +0200
-Subject: Re: [PATCH] parisc: Drop useless comments in uapi/asm/signal.h
-To:     John David Anglin <dave.anglin@bell.net>,
-        linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <20200829160924.GA5329@ls3530.fritz.box>
- <94f89eec-5792-0521-ea90-15e3da56bfab@bell.net>
+Received: from [192.168.20.60] ([92.116.160.119]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MWih0-1k5ltE1Ung-00X0yo; Sun, 30
+ Aug 2020 19:07:24 +0200
+Subject: Re: [PATCH v10 1/7] parisc: start using signal-defs.h
+To:     Peter Collingbourne <pcc@google.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     Richard Henderson <rth@twiddle.net>, linux-parisc@vger.kernel.org
+References: <cover.1598072840.git.pcc@google.com>
+ <efdbcb5fc45a2dbdf1e2363d68ab0f7b5a276980.1598072840.git.pcc@google.com>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -86,51 +86,118 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <703e3e67-4dc3-41c2-2494-3cb2292c8d7d@gmx.de>
-Date:   Sat, 29 Aug 2020 18:38:49 +0200
+Message-ID: <c83eeeff-ae86-14e0-a8a4-bcf71e5acb5a@gmx.de>
+Date:   Sun, 30 Aug 2020 19:07:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <94f89eec-5792-0521-ea90-15e3da56bfab@bell.net>
+In-Reply-To: <efdbcb5fc45a2dbdf1e2363d68ab0f7b5a276980.1598072840.git.pcc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:+gr7OVdHubmfBmPZytYjcNPi9r2kmZy2/LDCoKja8uzIy/spkbO
- 2IahucfpAgAzO/Iw/7JR0YSbP3z90DSfcpjvjksI5TEieG+Pr4W/4D+SqwJNy0v4ZfL4+XE
- +w/JRhmyvJvx6skFJV1DvhO39XR0htTpzp0LYj2nm08kkTaCBEzEpTGtZUfw7VnobD9TO5R
- pY6ltxWB8W79AaS+0E2DA==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:r4o6psoawvtYa4k5ZSrFAnVh5x03Imkx6e1vrzA6z3IVx3PI3IW
+ D6xkC/0NY2ZVrLe+9Nj5Cy8Fw6GDiL+nMTQPTO38JFmSuxrhs/fAQf6SLcnMnYxQLQPlZ2p
+ 6cC+DCU3CmO9xVZMGjcFhewAF+1dmV1qeP4ZVl3Qf6+cc/D0041GuMpZr0dOwJFjuTzeLFj
+ l1jlZQKUcw64jeP2m8Kxg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YTe7H5+NOcQ=:RRhzVdrTPs7e/wLnHCq0Ne
- AOv+Gc+5zrtOS1EByqLqLwchWvBJlOw8b74Md55G7Ks/ZbiRdOvtpry9T6nrQRRRrk3Sl+/YS
- l1ug7LNZkxOuieSj/c/LXmbdrojH7A1cxTiSyOh8PDZlWXBATItI7F1xiyiv/c75C4suaSTNv
- /BiHokvfE0D0ifiCYCe+/kBjCzV4x64sE9qMRnYNVFRmbAW02WtNszbtIPphaJ20C8Jm+nX7M
- cp7oSe1ZutsIU6Mc6mDYdBsAO8puLC2QsENTAlfT5DMsBERXxwBpmCiBnAVYqk2lkz+bygWJ5
- tGkjR7kJwf7swO9/B/j/qKuc1B6zRJFiK0afDy1BTI+QMARLNDq6IGIC04cDnsa8Bags3wk+N
- lefatMirKH4KEG0TuWSY9YSeZcMzUolW/g+en9QgAKdvV2Ia/khoFw0ABbe1FHVNf6KJbcB+X
- DDlMIfYSkzEAoj48Uk3Jl1LUa1SPDTDjfokXYsUtpUEySqkFawVxpb6PHUDvkGPVUJHVnNLd6
- SK+VsVpSsA+XVTamKwWavr2v+Uztdcl3Wz/L3Vs6PdvQV+K4WEB6X+tlms0gs2yROl17QK46W
- Uzst+aHLyRCc9xXeISvN5us16YXzP9t8f165+mpDTS6ObkWMuuP/0lQniIgEWaJTPQCqvVoiN
- 9/WyD+Pl4EzS0e8PD19StaFZBRbqmYT0xR96QIy0j53ZKnqGLqUX+bbT5kxoeoRnVxs92nmzh
- A7P/GJggczn8qtzRs9whvMOGRhoEuOeMl62v00idN2sFfDU4jrkSsvqFAU10eVjapv4e9KxXd
- r8qG/SiDrX76jbVyYdDovIZjGDTXnzXEnU4+8nsH+p+7ejjbgJxCp/aDlGtbsnnUAtfRS6y72
- ksgUnRyk73IEYtPKGVP+hF17F3qxwueDxzR0DZAqzBr0IgEO/dGRakfaY2PhXCDSFiM913HPh
- 5zBA+4R3bnHINP0MA8UIHoZlXDLl2FnLnLbDuVLkaZr2KmFAJcOU7VOaji9WY3p9uC7IN+4+j
- eM4DFRNWrU1XfIlIl5bmJtlKtpFmBEw3eU7DHrDCYcoohdlek+Ko1aHjD/KqbmHSsh8qJFz24
- uqB1NEMgHVOpYNniiZdpMnCbXm+biQqx+0wHCSU+IQ63evPam1gPrJg0M7CIZR3VIMZVvgCLz
- 7tgd1ijpQDHCvX0/jExxe2cqFKVmCbz75lJJ/hI+QbCGHcqz4v7JxzaEzKDAxmF76hxM93l6e
- ssk3preFH+B/SG5wG
+X-UI-Out-Filterresults: notjunk:1;V03:K0:sleGZCWcvH0=:2B18HdtZrkjKdx6jAzS7S2
+ 6Jjo6j9PoIP2h+Cs5a9cCPILriX6PRFhBwru8qfiD8a6wK1cjMeUPe6piEc9SnJ8ULPANF/Ox
+ 9hk4faCG21GfMK935h94C+COCOgPpqbODbax3MDSxpIDtQTO8x8BkJ6mVwBBpu5oJ6uIjB0wO
+ 9OwxBwqwcI6O+f22z01/8hHxWoU8D1yPaYxAQvrnB95DImClJE69aGEuK1CWCb8ET+fiqw66v
+ IBNIooYz/xHqB1saqmqR2f7rCTzytGradZHVO8ClmgF/YiZU03VJhT/MyU/6CEt1daD3v4F7T
+ tTsyefK2EprCXVfgmmKNRlX7hiot/cFrYVCpy0MXwwHwa96cY2KjlzkRZkfVogYHwxBK2tb8b
+ bjGHaD0j2KoPFg48FODZg+x1Fr66s6zdW7Hf9jdkmtmg1mvUhQvDc4mIKGt6Cu+lEKywvRl/g
+ 7WFm76wIlJLEqxs7TeFNhZ4b0sbiLsqtlP3URN/exDQnY5CCTiaB4J+8Evg/pQob0nLakl61E
+ ttfx7mR2ePkzzVdd/t/jV5w5jvw+bwTqG5dxovxz7+mEe/ph369lR+NCgl3zCdZa+2eFrnNKD
+ mVMXga58eEXmQDTDt90Guwu510EZSMGGG+jnLF5XMJCr/G8dg2alfhUSRWaMSCD4Wu3WFYFoC
+ A9bGz7B65aaPUz6uVv12W150B+SZrovORhGOPl44XpboEPed+KsF+YX18bUKwVIHLnYNRcte1
+ 0tr0D+rF0lThvgAamhuF8q/uOt2Ej4rPBIxr82tgXf8bgEO8perHhgGVbw/NIVvs3z3p1smHU
+ TSpZdv7CMpZUW+EeHFX+5ASGEQNKgrPHlw5k+9dACp5Yzcg58y2nmT/58rBnZlAe2r15C5iR+
+ S5B9qJZu2ZkfWHDtAw8G3Qpq+SV8YtxZmAsD0w2PKrEZLxphT64oo166vhlnhBFexFBS+QfFO
+ ngibdaO7LWL9rAh3lI8BcuPymTNPTil5o1wqoSshAM9hqNqNK55ZH8iOxZxljlN5OYBJW9XFR
+ NV0ULRbr9v8TsTj4JQi0PqsNAJtCZOfXGIqbSnGbgkjyfMgDkJiIBGFAoyYABVcj6cyx0lSpI
+ DLKWZy7jdDDW1d3VYGocrgElSMBz8+FoE4a7ls0hAVBDvU4zlZ1lQ3lNp1hroyQq3ars+90DD
+ BUI6/G2szQaI4s+gGqtR8idQHboKsKgJfkxJH/kCkpLrM14hPa4m1A2kAuFLeGyajaNpVwFAn
+ 9F3rqr9A/RmdvFev4
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 29.08.20 18:25, John David Anglin wrote:
-> On 2020-08-29 12:09 p.m., Helge Deller wrote:
->> -#define SIGSYS		31 /* Linux doesn't use this */
->> +#define SIGSYS		31
-> ?
+On 22.08.20 07:10, Peter Collingbourne wrote:
+> We currently include signal-defs.h on all architectures except parisc.
+> Make parisc fall in line. This will make maintenance easier once the
+> flag bits are moved here.
 
-Yeah. I don't know why the comment was there.
-Other arches don't have this comment either.
+The patch is basically OK, but....
 
+> Signed-off-by: Peter Collingbourne <pcc@google.com>
+> ---
+> View this change in Gerrit: https://linux-review.googlesource.com/q/If03=
+a5135fb514fe96548fb74610e6c3586a04064
+>
+>  arch/parisc/include/uapi/asm/signal.h  | 9 +--------
+>  include/uapi/asm-generic/signal-defs.h | 6 ++++++
+>  2 files changed, 7 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/parisc/include/uapi/asm/signal.h b/arch/parisc/include=
+/uapi/asm/signal.h
+> index d38563a394f2..92a1c7ea44b4 100644
+> --- a/arch/parisc/include/uapi/asm/signal.h
+> +++ b/arch/parisc/include/uapi/asm/signal.h
+> @@ -69,14 +69,7 @@
+>  #define MINSIGSTKSZ	2048
+>  #define SIGSTKSZ	8192
+>
+> -
+> -#define SIG_BLOCK          0	/* for blocking signals */
+> -#define SIG_UNBLOCK        1	/* for unblocking signals */
+> -#define SIG_SETMASK        2	/* for setting the signal mask */
+> -
+> -#define SIG_DFL	((__sighandler_t)0)	/* default signal handling */
+> -#define SIG_IGN	((__sighandler_t)1)	/* ignore signal */
+> -#define SIG_ERR	((__sighandler_t)-1)	/* error return from signal */
+> +#include <asm/signal-defs.h>
+>
+>  # ifndef __ASSEMBLY__
+>
+> diff --git a/include/uapi/asm-generic/signal-defs.h b/include/uapi/asm-g=
+eneric/signal-defs.h
+> index e9304c95ceea..ecdf6312bfa5 100644
+> --- a/include/uapi/asm-generic/signal-defs.h
+> +++ b/include/uapi/asm-generic/signal-defs.h
+> @@ -15,8 +15,14 @@
+>  #endif
+>
+>  #ifndef __ASSEMBLY__
+
+> +#ifndef __hppa__
+> +/*
+> + * These have a special definition on parisc, see:
+> + * arch/parisc/include/uapi/asm/signal.h
+> + */
+>  typedef void __signalfn_t(int);
+>  typedef __signalfn_t __user *__sighandler_t;
+
+please drop this special-case/#ifdef for hppa/parisc.
+Instead please drop the typedef in arch/parisc/include/uapi/asm/signal.h,
+same as you did for the other architectures.
+
+I've committed this patch to my tree, which will collide with yours:
+ https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/c=
+ommit/?h=3Dfor-next
+If you like I can drop mine, and you fix it up on your side.
+Just let me know.
+
+Other than that you can add:
+Acked-by: Helge Deller <deller@gmx.de>
+
+Thanks!
 Helge
+
+> +#endif
+>
+>  typedef void __restorefn_t(void);
+>  typedef __restorefn_t __user *__sigrestore_t;
+>
+
