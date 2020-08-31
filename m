@@ -2,208 +2,235 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1E96257E96
-	for <lists+linux-parisc@lfdr.de>; Mon, 31 Aug 2020 18:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27CB725823C
+	for <lists+linux-parisc@lfdr.de>; Mon, 31 Aug 2020 22:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728266AbgHaQWV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 31 Aug 2020 12:22:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35044 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727046AbgHaQWU (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 31 Aug 2020 12:22:20 -0400
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66AD6C061573
-        for <linux-parisc@vger.kernel.org>; Mon, 31 Aug 2020 09:21:46 -0700 (PDT)
-Received: (qmail 7297 invoked from network); 31 Aug 2020 16:21:00 -0000
-Received: from p548d4372.dip0.t-ipconnect.de ([::ffff:84.141.67.114]:57308 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.37dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <linux-parisc@vger.kernel.org>; Mon, 31 Aug 2020 18:21:00 +0200
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     linux-parisc <linux-parisc@vger.kernel.org>,
-        John David Anglin <dave.anglin@bell.net>
-Cc:     Helge Deller <deller@gmx.de>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
+        id S1729808AbgHaUG7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 31 Aug 2020 16:06:59 -0400
+Received: from mout.gmx.net ([212.227.15.18]:52581 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726939AbgHaUG6 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 31 Aug 2020 16:06:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1598904382;
+        bh=HwhPLMJ5YyJzVuy/MOPGt3/1Qa1l+iDWiaSEOfJLOqc=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=A8mnvkmu9CbHJ409gQ2Cy03PsO7+kCCuTrzXoO5iea8XvXgb4m9SVmpx+ye/ef5Tg
+         Us+QZAepwn9KDPQUV/Fr0C2OvqNS9hO4jFkQCQdV4FeYyLtHgdz0QyUbla166TANAM
+         86K9ynxnyZX6ChnU8qhe+VU9iAIGDh/mPi84IfdY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.173.252]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M3UZ6-1kDOIe0Juc-000fW9; Mon, 31
+ Aug 2020 22:06:22 +0200
 Subject: Re: [PATCH v5] parisc: Fix spinlock barriers
-Date:   Mon, 31 Aug 2020 18:21:29 +0200
-Message-ID: <11590248.O9o76ZdvQC@daneel.sf-tec.de>
-In-Reply-To: <b38abd19-0a61-8968-b98d-9b8b2efb6747@bell.net>
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        John David Anglin <dave.anglin@bell.net>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>
 References: <b38abd19-0a61-8968-b98d-9b8b2efb6747@bell.net>
+ <11590248.O9o76ZdvQC@daneel.sf-tec.de>
+From:   Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+ c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
+Message-ID: <ed2b7cd4-7c65-e4cb-632b-45fc84ebd49d@gmx.de>
+Date:   Mon, 31 Aug 2020 22:06:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5387554.DvuYhMxLoT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+In-Reply-To: <11590248.O9o76ZdvQC@daneel.sf-tec.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="QOTTpfwbOWiq4HiOk9hHk9kHVZPiCB4IV"
+X-Provags-ID: V03:K1:twfLiTXKPjOE+gx5Mc2X4s6NlE/wjaxiZWcHHbA7/1E+Fau9wqs
+ dIBQifETRLDjeKUujdbeXHv8x1aGHLu33C5XdKWlwugrVF6Ah8KbOfWJcKeDv0Y7xWQO27I
+ mRPINHo34FyyfWyj5m4BF8Q/8l4+KB2opQdKPoglnuBiYX0ETFX8I3nQ18bosbNueD4yM+P
+ M0yhJXHHZQisk+RUjC0nw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:5ys8SDAmB2E=:OLm8nvedAmJlt/pzNWp2ul
+ gsaVVn3eZDO4txJJXwQbk6car0tqStvRJ1zQiQqiBQhGzHbt7xCwKuc2Rqak9I9ojdRyiH/KC
+ hCj5sHZiUMMPfv43Vcbm50bKlEjauge+qpkYqLDFgWyO/mLdFW1OZ4gyYsjdAF7whb9WXwujF
+ 4oQisWpHdTnYeOGWZAj8luOGQ8lbZRR6GvCjWrHNQiwGCQa96DmgqV/SyEyrRWJXoV3OIQttz
+ dDeab++wARiLdFoqeit2ywUV9hgSyDdwlTpWIADIVfLDbhny9GpFtgj4tAilAj1Jk2/Ak+d95
+ oHuQe+Xmp1I2Yb2ohd045fpB70ea4sk9/RMCEyO1hjNtF3LrKEwqqecY/F/NtaT4TCVul5S+Y
+ fJbBz62iGfECbgfANzsa+tjmBEhROOsJsg9H7CBAL9kxtsy79Ug3vki3a7Xh1EvYlZkNcooLk
+ UxB/LDeRIkUIGDXO2jV8lVZ2ao75bqeX5OxespXnZ6Y2xW0Y9bUxRAKeZovKvYEjCXrqKfSCj
+ DDRaTRx69yoxo2SugoSbsSXCg/HAXyEhDBNqOCOkHajmgCPRHvR34AgWKq7cXApEgo7PkzWbL
+ MrawedR7qj9bfIUfI4vGJ/prusdBFaVA0Nuox4kFR88qikqhckbJhnmKVR3qkiUvUjQiniTYR
+ 0oDM9MW5NVCjeaOwYrjEoA1KZFcLEXOP2xZd6xA5C/UlEanV3I1uFMuMH5PksLxi9+mL8Lbdz
+ EV6lllcyYod0ZUmdnJxtPmNnjAOI5F5FIRwirdP+Qhl/pM6x3/sJgr53tIt40J1oxETd7ymjx
+ 5pNB6lTLKUZAOg9jgUo9YD0XNkF30in7JCUwgN1ANYn9jaAgV8Oy4JYDFDTJ3ucLRvicIORXc
+ 5a2H7IO8OWFo9N3L0LGnVALbjuvtWUzUOI31L7qSXbl5LbuqUtznZKV/HJ0z6Nbnuic+QaXYY
+ NV8voYV8N5EIvlHDn1JuMDuE1ZYFg1Y2V3kZ8lz3ZYdiWyuS+DqCVw2wwl7Vg/YSgBcQUZtVG
+ 2juKBHwQzbYp+7ZnRLTJTgsoAZJUqcS+5iK0F0kxzQMR1AnbjW8XDOE4EFaBwcmmTNe3pAfwR
+ jmU753CiTvRyaRWqI3wHTL4MD4k7BKQTA1ie6/NdhTxRwz3KOzPQQgHYSRWyP48x1rLLe2Jpo
+ T4e6daMNc7zBSHeutKX2fG0hUj1VkIytrYXqBqRzBfBKSq92IcGskdOtg1dWGWuedCLYBZc2B
+ P2Hh+gHAdVS1iILYs
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart5387554.DvuYhMxLoT
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--QOTTpfwbOWiq4HiOk9hHk9kHVZPiCB4IV
+Content-Type: multipart/mixed; boundary="hBZBfRmiu83OSOBHry8gvqAnXTVgACXNI"
 
-These things are in 5.8.4 AFAICT, and the lockups are still there:
+--hBZBfRmiu83OSOBHry8gvqAnXTVgACXNI
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-[320616.602705] watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [hppa2.0-unknown:29093]
-[320616.602705] Modules linked in: 8021q ipmi_poweroff ipmi_si ipmi_devintf sata_via ipmi_msghandler cbc dm_zero dm_snapshot dm_mirror dm_region_hash dm_log dm_crypt dm_bufio pata_sil680 libata
-[320616.602705] CPU: 0 PID: 29093 Comm: hppa2.0-unknown Not tainted 5.8.4-gentoo-parisc64 #1
-[320616.602705] Hardware name: 9000/785/C8000
-[320616.602705]
-[320616.602705]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-[320616.602705] PSW: 00001000000001101111111100001111 Not tainted
-[320616.602705] r00-03  000000ff0806ff0f 0000000040558f08 00000000402706a8 00000040838787e0
-[320616.602705] r04-07  0000000040a303e0 00000000409eafa0 0000000040c5b690 0000000041fce0d0
-[320616.602705] r08-11  00000040838787e0 0000000000000001 00000000409fbf80 0000000040c5b740
-[320616.602705] r12-15  0000000041fce0d8 00000000409eafa0 0000000040187140 0000000040a56be0
-[320616.602705] r16-19  0000000040a56be0 0000000000000004 0000000001e92000 0000000000000002
-[320616.602705] r20-23  0000000000000001 0000000000000000 0000000000000000 0000000000000002
-[320616.602705] r24-27  0000000000000004 0000000000000000 0000000000000002 0000000040a303e0
-[320616.602705] r28-31  0000000000000011 00000040838788e0 0000004083878810 0000000042001140
-[320616.602705] sr00-03  00000000072a0800 0000000007296800 0000000000000000 00000000072a0800
-[320616.602705] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[320616.602705]
-[320616.602705] IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000402706d0 00000000402706d4
-[320616.602705]  IIR: 0ff0109c    ISR: 000000005836f8a0  IOR: 0000000000000001
-[320616.602705]  CPU:        0   CR30: 0000004083878000 CR31: ffffffffffffffff
-[320616.602705]  ORIG_R28: 0000000000000801
-[320616.602705]  IAOQ[0]: smp_call_function_many_cond+0x490/0x500
-[320616.602705]  IAOQ[1]: smp_call_function_many_cond+0x494/0x500
-[320616.602705]  RP(r2): smp_call_function_many_cond+0x468/0x500
-[320616.602705] Backtrace:
-[320616.602705]  [<0000000040270824>] on_each_cpu+0x5c/0x98
-[320616.602705]  [<0000000040186a0c>] flush_tlb_all+0x204/0x228
-[320616.602705]  [<00000000402ef1f8>] tlb_finish_mmu+0x1d8/0x210
-[320616.602705]  [<00000000402eb820>] exit_mmap+0x1d8/0x370
-[320616.602705]  [<00000000401b5ec0>] mmput+0xe8/0x260
-[320616.602705]  [<00000000401c1690>] do_exit+0x558/0x12e8
-[320616.602705]  [<00000000401c3f18>] do_group_exit+0x50/0x118
-[320616.602705]  [<00000000401c4000>] sys_exit_group+0x20/0x28
-[320616.602705]  [<0000000040192018>] syscall_exit+0x0/0x14
-[320616.602705]
-[320619.854705] watchdog: BUG: soft lockup - CPU#1 stuck for 22s! [sh:29109]
-[320619.854705] Modules linked in: 8021q ipmi_poweroff ipmi_si ipmi_devintf sata_via ipmi_msghandler cbc dm_zero dm_snapshot dm_mirror dm_region_hash dm_log dm_crypt dm_bufio pata_sil680 libata
-[320619.854705] CPU: 1 PID: 29109 Comm: sh Tainted: G             L    5.8.4-gentoo-parisc64 #1
-[320619.854705] Hardware name: 9000/785/C8000
-[320619.854705]
-[320619.854705]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-[320619.854705] PSW: 00001000000001001111111100001111 Tainted: G             L
-[320619.854705] r00-03  000000ff0804ff0f 0000000040558f08 00000000402706a8 0000004083b089e0
-[320619.854705] r04-07  0000000040a303e0 00000000409eafa0 0000000040c5b690 0000000041fe60d0
-[320619.854705] r08-11  0000004083b089e0 0000000000000001 00000000409fbf80 0000000040c5b740
-[320619.854705] r12-15  0000000041fe60d8 00000000409eafa0 0000000040187ce0 0000000040a56be0
-[320619.854705] r16-19  0000000040a56be0 0000000000000004 0000000001e92000 0000000000000002
-[320619.854705] r20-23  0000000000000001 0000000000000000 0000000000000000 0000000000000002
-[320619.854705] r24-27  0000000000000004 0000000000000000 0000000000000002 0000000040a303e0
-[320619.854705] r28-31  0000000000000011 0000004083b08ae0 0000004083b08a10 0000000042001ce0
-[320619.854705] sr00-03  00000000072a4800 00000000072a4800 0000000000000000 00000000072a5800
-[320619.854705] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[320619.854705]
-[320619.854705] IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000402706d0 00000000402706d4
-[320619.854705]  IIR: 0ff0109c    ISR: 0000000000000000  IOR: 0000000000000001
-[320619.854705]  CPU:        1   CR30: 0000004083b08000 CR31: ffffffffffffffff
-[320619.854705]  ORIG_R28: 0000000000000801
-[320619.854705]  IAOQ[0]: smp_call_function_many_cond+0x490/0x500
-[320619.854705]  IAOQ[1]: smp_call_function_many_cond+0x494/0x500
-[320619.854705]  RP(r2): smp_call_function_many_cond+0x468/0x500
-[320619.854705] Backtrace:
-[320619.854705]  [<0000000040270824>] on_each_cpu+0x5c/0x98
-[320619.854705]  [<0000000040186a0c>] flush_tlb_all+0x204/0x228
-[320619.854705]  [<00000000402ef1f8>] tlb_finish_mmu+0x1d8/0x210
-[320619.854705]  [<00000000402eb820>] exit_mmap+0x1d8/0x370
-[320619.854705]  [<00000000401b5ec0>] mmput+0xe8/0x260
-[320619.854705]  [<0000000040343254>] begin_new_exec+0x684/0x1140
-[320619.854705]  [<00000000403e5790>] load_elf_binary+0xc00/0x18e0
-[320619.854705]  [<000000004034237c>] __do_execve_file.isra.0+0xaa4/0x10d0
-[320619.854705]  [<0000000040343eb8>] compat_sys_execve+0x70/0x88
-[320619.854705]  [<0000000040192018>] syscall_exit+0x0/0x14
-[320619.854705]
-[320656.138705] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-[320656.138705]         (detected by 0, t=15002 jiffies, g=29568801, q=103)
-[320656.138705] rcu: All QSes seen, last rcu_sched kthread activity 15000 (4375056330-4375041330), jiffies_till_next_fqs=1, root ->qsmask 0x0
-[320656.138705] rcu: rcu_sched kthread starved for 15000 jiffies! g29568801 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200 ->cpu=3
-[320656.138705] rcu:    Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
-[320656.138705] rcu: RCU grace-period kthread stack dump:
-[320656.138705] rcu_sched       R    0    10      2 0x00000000
-[320656.138705] Backtrace:
-[320656.138705]
-[320656.922716] BUG: workqueue lockup - pool cpus=0 node=0 flags=0x0 nice=0 stuck for 60s!
-[320657.026717] BUG: workqueue lockup - pool cpus=1 node=0 flags=0x0 nice=0 stuck for 60s!
-[320657.130716] Showing busy workqueues and worker pools:
-[320657.198716] workqueue events: flags=0x0
-[320657.250717]   pwq 0: cpus=0 node=0 flags=0x0 nice=0 active=1/256 refcnt=2
-[320657.254705]     pending: vmstat_shepherd
-[320657.394718] workqueue events_power_efficient: flags=0x80
-[320657.466715]   pwq 2: cpus=1 node=0 flags=0x0 nice=0 active=1/256 refcnt=2
-[320657.470705]     pending: fb_flashcursor
-[320657.610716]   pwq 0: cpus=0 node=0 flags=0x0 nice=0 active=2/256 refcnt=3
-[320657.614705]     pending: neigh_periodic_work, neigh_periodic_work
-[320657.782719] workqueue mm_percpu_wq: flags=0x8
-[320657.842715]   pwq 2: cpus=1 node=0 flags=0x0 nice=0 active=1/256 refcnt=2
-[320657.846705]     pending: vmstat_update
-[320657.982713]   pwq 0: cpus=0 node=0 flags=0x0 nice=0 active=1/256 refcnt=2
-[320657.986705]     pending: vmstat_update
-[320658.126726] workqueue mpt_poll_1: flags=0x8
-[320658.182716]   pwq 0: cpus=0 node=0 flags=0x0 nice=0 active=1/256 refcnt=2
-[320658.186705]     pending: mpt_fault_reset_work
-[320684.602705] watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [hppa2.0-unknown:29093]
-[320684.602705] Modules linked in: 8021q ipmi_poweroff ipmi_si ipmi_devintf sata_via ipmi_msghandler cbc dm_zero dm_snapshot dm_mirror dm_region_hash dm_log dm_crypt dm_bufio pata_sil680 libata
-[320684.602705] CPU: 0 PID: 29093 Comm: hppa2.0-unknown Tainted: G             L    5.8.4-gentoo-parisc64 #1
-[320684.602705] Hardware name: 9000/785/C8000
-[320684.602705]
-[320684.602705]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-[320684.602705] PSW: 00001000000001101111111100001111 Tainted: G             L
-[320684.602705] r00-03  000000ff0806ff0f 0000000040558f08 00000000402706a8 00000040838787e0
-[320684.602705] r04-07  0000000040a303e0 00000000409eafa0 0000000040c5b690 0000000041fce0d0
-[320684.602705] r08-11  00000040838787e0 0000000000000001 00000000409fbf80 0000000040c5b740
-[320684.602705] r12-15  0000000041fce0d8 00000000409eafa0 0000000040187140 0000000040a56be0
-[320684.602705] r16-19  0000000040a56be0 0000000000000004 0000000001e92000 0000000000000002
-[320684.602705] r20-23  0000000000000001 0000000000000000 0000000000000000 0000000000000002
-[320684.602705] r24-27  0000000000000004 0000000000000000 0000000000000002 0000000040a303e0
-[320684.602705] r28-31  0000000000000011 00000040838788e0 0000004083878810 0000000042001140
-[320684.602705] sr00-03  00000000072a0800 0000000007296800 0000000000000000 00000000072a0800
-[320684.602705] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[320684.602705]
-[320684.602705] IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000402706d0 00000000402706d4
-[320684.602705]  IIR: 0ff0109c    ISR: 000000005836f8a0  IOR: 0000000000000001
-[320684.602705]  CPU:        0   CR30: 0000004083878000 CR31: ffffffffffffffff
-[320684.602705]  ORIG_R28: 0000000000000801
-[320684.602705]  IAOQ[0]: smp_call_function_many_cond+0x490/0x500
-[320684.602705]  IAOQ[1]: smp_call_function_many_cond+0x494/0x500
-[320684.602705]  RP(r2): smp_call_function_many_cond+0x468/0x500
-[320684.602705] Backtrace:
-[320684.602705]  [<0000000040270824>] on_each_cpu+0x5c/0x98
-[320684.602705]  [<0000000040186a0c>] flush_tlb_all+0x204/0x228
-[320684.602705]  [<00000000402ef1f8>] tlb_finish_mmu+0x1d8/0x210
-[320684.602705]  [<00000000402eb820>] exit_mmap+0x1d8/0x370
-[320684.602705]  [<00000000401b5ec0>] mmput+0xe8/0x260
-[320684.602705]  [<00000000401c1690>] do_exit+0x558/0x12e8
-[320684.602705]  [<00000000401c3f18>] do_group_exit+0x50/0x118
-[320684.602705]  [<00000000401c4000>] sys_exit_group+0x20/0x28
-[320684.602705]  [<0000000040192018>] syscall_exit+0x0/0x14
-[320684.602705]
-[320836.158705] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-[320836.158705]         (detected by 0, t=60007 jiffies, g=29568801, q=103)
-[320836.158705] rcu: All QSes seen, last rcu_sched kthread activity 60005 (4375101335-4375041330), jiffies_till_next_fqs=1, root ->qsmask 0x0
-[320836.158705] rcu: rcu_sched kthread starved for 60005 jiffies! g29568801 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200 ->cpu=3
-[320836.158705] rcu:    Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
-[320836.158705] rcu: RCU grace-period kthread stack dump:
-[320836.158705] rcu_sched       R    0    10      2 0x00000000
-[320836.158705] Backtrace:
-[320836.158705]
+Hi Rolf,
 
-And then the machine rebooted.
+On 31.08.20 18:21, Rolf Eike Beer wrote:
+> These things are in 5.8.4 AFAICT, and the lockups are still there:
 
---nextPart5387554.DvuYhMxLoT
+Thanks for testing!
+=20
+> [320616.602705] watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [hppa=
+2.0-unknown:29093]
+> [320616.602705] Modules linked in: 8021q ipmi_poweroff ipmi_si ipmi_dev=
+intf sata_via ipmi_msghandler cbc dm_zero dm_snapshot dm_mirror dm_region=
+_hash dm_log dm_crypt dm_bufio pata_sil680 libata
+> [320616.602705] CPU: 0 PID: 29093 Comm: hppa2.0-unknown Not tainted 5.8=
+=2E4-gentoo-parisc64 #1
+> [320616.602705] Hardware name: 9000/785/C8000
+>...
+> [320616.602705] IASQ: 0000000000000000 0000000000000000 IAOQ: 000000004=
+02706d0 00000000402706d4
+> [320616.602705]  IIR: 0ff0109c    ISR: 000000005836f8a0  IOR: 000000000=
+0000001
+> [320616.602705]  CPU:        0   CR30: 0000004083878000 CR31: fffffffff=
+fffffff
+> [320616.602705]  ORIG_R28: 0000000000000801
+> [320616.602705]  IAOQ[0]: smp_call_function_many_cond+0x490/0x500
+> [320616.602705]  IAOQ[1]: smp_call_function_many_cond+0x494/0x500
+> [320616.602705]  RP(r2): smp_call_function_many_cond+0x468/0x500
+> [320616.602705] Backtrace:
+> [320616.602705]  [<0000000040270824>] on_each_cpu+0x5c/0x98
+> [320616.602705]  [<0000000040186a0c>] flush_tlb_all+0x204/0x228
+> [320616.602705]  [<00000000402ef1f8>] tlb_finish_mmu+0x1d8/0x210
+> [320616.602705]  [<00000000402eb820>] exit_mmap+0x1d8/0x370
+> [320616.602705]  [<00000000401b5ec0>] mmput+0xe8/0x260
+> [320616.602705]  [<00000000401c1690>] do_exit+0x558/0x12e8
+> [320616.602705]  [<00000000401c3f18>] do_group_exit+0x50/0x118
+> [320616.602705]  [<00000000401c4000>] sys_exit_group+0x20/0x28
+> [320616.602705]  [<0000000040192018>] syscall_exit+0x0/0x14
+
+I agree. I have seen the same stall too.
+I think we should try to analyze how the stall in smp_call_function_many_=
+cond()
+can happen. The trace seems always to point to do_exit().
+
+I think those patches from Linus helped for the "old kind of stalls" whic=
+h we have had in the last months/years:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/?id=3Dc6fe44d96fc1536af5b11cd859686453d1b7bfd1 and=20
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/?id=3D2a9127fcf2296674d58024f83981f40b128fffea
+Those old stalls were something like this and didn't pointed to do_exit()=
+:
+
+[111395.307021] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[111395.311001] rcu:    3-...0: (1 GPs behind) idle=3D04e/1/0x40000000000=
+00000 softirq=3D13650053/13650054 fqs=3D2625
+[111395.311001]         (detected by 0, t=3D5252 jiffies, g=3D25258025, q=
+=3D1240)
+[111395.311001] Task dump for CPU 3:
+[111395.311001] init            R  running task        0     1      0 0x0=
+0000016
+[111395.311001] Backtrace:
+[111395.311001]  [<0000000040416110>] hrtimer_try_to_cancel+0x13c/0x1f8
+[111395.311001]  [<0000000040e65a18>] schedule_hrtimeout_range_clock+0x10=
+c/0x1b8
+[111395.311001]  [<0000000040e65af4>] schedule_hrtimeout_range+0x30/0x60
+[111395.311001]  [<0000000040e5ebbc>] _cond_resched+0x40/0xb8
+[111395.311001]  [<00000000403617a4>] get_signal+0x348/0xf00
+[111395.311001]  [<000000004031cec0>] do_signal+0x54/0x230
+[111395.311001]  [<000000004031d0f8>] do_notify_resume+0x5c/0x164
+[111395.311001]  [<0000000040310110>] syscall_do_signal+0x54/0xa0
+[111395.311001]  [<000000004030f074>] intr_return+0x0/0xc
+[111395.311001]
+[111458.330562] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[111458.330562] rcu:    3-...0: (1 GPs behind) idle=3D04e/1/0x40000000000=
+00000 softirq=3D13650053/13650054 fqs=3D4653
+[111458.330562]         (detected by 0, t=3D21007 jiffies, g=3D25258025, =
+q=3D1361)
+[111458.330562] Task dump for CPU 3:
+[111458.330562] init            R  running task        0     1      0 0x0=
+0000016
+=2E..
+
+Helge
+
+
+--hBZBfRmiu83OSOBHry8gvqAnXTVgACXNI--
+
+--QOTTpfwbOWiq4HiOk9hHk9kHVZPiCB4IV
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCX00jiQAKCRBcpIk+abn8
-Tgy2AKCHfK4dn34rsdqX5JJtPpSnZ44lIACfanBQnbN1Ocuv6Lj2ATTZoIm/bG0=
-=Q1NR
+iHUEARYIAB0WIQS86RI+GtKfB8BJu973ErUQojoPXwUCX01YOgAKCRD3ErUQojoP
+XxM8AQD5XR/BOfayKbVM9q7XPe56sb6Ri/jzCXI7w6e1iisQmQD/ZHySFZSZTlb/
+JBqnUbm0LjbdYP4nY+KBzeYOlkYELw4=
+=wsJt
 -----END PGP SIGNATURE-----
 
---nextPart5387554.DvuYhMxLoT--
-
-
-
+--QOTTpfwbOWiq4HiOk9hHk9kHVZPiCB4IV--
