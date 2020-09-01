@@ -2,81 +2,160 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE009259D54
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Sep 2020 19:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D88025A035
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Sep 2020 22:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729149AbgIARiw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 1 Sep 2020 13:38:52 -0400
-Received: from elvis.franken.de ([193.175.24.41]:46057 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729009AbgIARiu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 1 Sep 2020 13:38:50 -0400
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1kDAF0-0004vS-00; Tue, 01 Sep 2020 19:38:42 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id 46A35C0E70; Tue,  1 Sep 2020 19:38:10 +0200 (CEST)
-Date:   Tue, 1 Sep 2020 19:38:10 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     alsa-devel@alsa-project.org, linux-ia64@vger.kernel.org,
-        linux-doc@vger.kernel.org, nouveau@lists.freedesktop.org,
-        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-mm@kvack.org, Marek Szyprowski <m.szyprowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        linux-scsi@vger.kernel.org,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        linux-media@vger.kernel.org,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Pawel Osciak <pawel@osciak.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-        netdev@vger.kernel.org, Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org
-Subject: Re: [PATCH 22/28] sgiseeq: convert from dma_cache_sync to
- dma_sync_single_for_device
-Message-ID: <20200901173810.GA25282@alpha.franken.de>
-References: <20200819065555.1802761-1-hch@lst.de>
- <20200819065555.1802761-23-hch@lst.de>
- <20200901152209.GA14288@alpha.franken.de>
- <20200901171241.GA20685@alpha.franken.de>
- <20200901171627.GA8255@lst.de>
+        id S1727851AbgIAUyY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 1 Sep 2020 16:54:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47892 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726091AbgIAUyX (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 1 Sep 2020 16:54:23 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E6AC061244;
+        Tue,  1 Sep 2020 13:54:22 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id m8so1542295pfh.3;
+        Tue, 01 Sep 2020 13:54:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=FRTR1pQ5xaQZ2uOprnJ9rvvshbUxSZlhlKoxnO7URRM=;
+        b=eELfQzbSGjuv8KyOMVHl+sTrzSe3ziixFesUVCgWOu7/Z9muIvFP7Bi4DRJZMs6RcJ
+         uhMvWISw8EQN1/7gxRmFAFsNBG5Sh9QbZV6QgcFDjmSpu/uuHUY9boYcGOBpACpZ2QKm
+         2xrLnc3Zu6wcDZtzf6kTWiFrA/YhL2qcA9RPBXgRzmQs/uy/H7Jn+SzylyQeVuoHjASv
+         vAVeYbXCILJrBBwG1cAuMAGgHRm6simSr4if2kYJM3hqSroABMSvzIJAMe0A2WueufHt
+         t5wBEp5mZqpgLu3vzcoJLecspOTik/9RM6BJkEqtdcJgnSSWtV2vjAN/aVdEovSHd2Tj
+         jceg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=FRTR1pQ5xaQZ2uOprnJ9rvvshbUxSZlhlKoxnO7URRM=;
+        b=N5aNCXzxJApOPZFxE4JGLzB6qJYXuGF2hBysLwgYBRO0rMQLtkR5JMIM4tBdOsM9u6
+         R05VHXGifDA9tjY9aSxNRt06ZcqvyJm0LQtWHS2QihRFCKLmf0yR8hyrWOHVF11dBLKk
+         CK3xj6M017lQcXyQM9lInXZhLEBd86YFdVsJh1aPUtvmwIMp4KkwvTfUQoGmZVEX+/n9
+         Jck4BRaxSITI7vxUNATMP2XxDJ/aOLZDLWsSLJYf6c3W98rLlOcUQLXHLHjY2Dh5vqHH
+         btVzDhBru9ZC0fNcku3cL8CVQS6NgVySlRyhb4WABlDoJzy8jLTQm88oNQHpj7/gYk4g
+         292g==
+X-Gm-Message-State: AOAM531aw/rl0fXU/RIE2O7CVcyV6csCx6lLGeSpu7ZTkNav71UdcbbY
+        ZeIkpYqTdxJKS5Zwmeywrlw=
+X-Google-Smtp-Source: ABdhPJybz8lKswfhAONDTigR0brpOOZSb0wvBo43ZZyZYaJi6PxdmqR6MUqDZmJI2ioaYEYqLLibGw==
+X-Received: by 2002:a63:384b:: with SMTP id h11mr3124012pgn.113.1598993661459;
+        Tue, 01 Sep 2020 13:54:21 -0700 (PDT)
+Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
+        by smtp.gmail.com with ESMTPSA id y1sm3016263pgr.3.2020.09.01.13.54.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 01 Sep 2020 13:54:21 -0700 (PDT)
+Date:   Tue, 1 Sep 2020 13:53:47 -0700
+From:   Nicolin Chen <nicoleotsuka@gmail.com>
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     benh@kernel.crashing.org, paulus@samba.org, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com, tony.luck@intel.com,
+        fenghua.yu@intel.com, schnelle@linux.ibm.com,
+        gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, borntraeger@de.ibm.com, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+        hpa@zytor.com, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, sfr@canb.auug.org.au, hch@lst.de,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-parisc@vger.kernel.org
+Subject: Re: [RESEND][PATCH 1/7] powerpc/iommu: Avoid overflow at
+ boundary_size
+Message-ID: <20200901205346.GA17362@Asurada-Nvidia>
+References: <20200831203811.8494-1-nicoleotsuka@gmail.com>
+ <20200831203811.8494-2-nicoleotsuka@gmail.com>
+ <87lfht1vav.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200901171627.GA8255@lst.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <87lfht1vav.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Sep 01, 2020 at 07:16:27PM +0200, Christoph Hellwig wrote:
-> Well, if IP22 doesn't speculate (which I'm pretty sure is the case),
-> dma_sync_single_for_cpu should indeeed be a no-op.  But then there
-> also shouldn't be anything in the cache, as the previous
-> dma_sync_single_for_device should have invalidated it.  So it seems like
-> we are missing one (or more) ownership transfers to the device.  I'll
-> try to look at the the ownership management in a little more detail
-> tomorrow.
+On Tue, Sep 01, 2020 at 11:27:36PM +1000, Michael Ellerman wrote:
+> Nicolin Chen <nicoleotsuka@gmail.com> writes:
+> > The boundary_size might be as large as ULONG_MAX, which means
+> > that a device has no specific boundary limit. So either "+ 1"
+> > or passing it to ALIGN() would potentially overflow.
+> >
+> > According to kernel defines:
+> >     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
+> >     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
+> >
+> > We can simplify the logic here:
+> >   ALIGN(boundary + 1, 1 << shift) >> shift
+> > = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
+> > = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
+> > = [b + 1 + (1 << s) - 1] >> s
+> > = [b + (1 << s)] >> s
+> > = (b >> s) + 1
+> >
+> > So fixing a potential overflow with the safer shortcut.
+> >
+> > Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> > Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
+> > Cc: Christoph Hellwig <hch@lst.de>
+> > ---
+> >  arch/powerpc/kernel/iommu.c | 11 +++++------
+> >  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> Are you asking for acks, or for maintainers to merge the patches
+> individually?
 
-this is the problem:
+I was expecting that but Christoph just suggested me to squash them
+into one so he would merge it: https://lkml.org/lkml/2020/9/1/159
 
-       /* Always check for received packets. */
-        sgiseeq_rx(dev, sp, hregs, sregs);
+Though I feel it'd be nice to get maintainers' acks before merging.
 
-so the driver will look at the rx descriptor on every interrupt, so
-we cache the rx descriptor on the first interrupt and if there was
-$no rx packet, we will only see it, if cache line gets flushed for
-some other reason. kick_tx() does a busy loop checking tx descriptors,
-with just sync_desc_cpu...
+> > diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+> > index 9704f3f76e63..c01ccbf8afdd 100644
+> > --- a/arch/powerpc/kernel/iommu.c
+> > +++ b/arch/powerpc/kernel/iommu.c
+> > @@ -236,15 +236,14 @@ static unsigned long iommu_range_alloc(struct device *dev,
+> >  		}
+> >  	}
+> >  
+> > -	if (dev)
+> > -		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
+> > -				      1 << tbl->it_page_shift);
+> > -	else
+> > -		boundary_size = ALIGN(1UL << 32, 1 << tbl->it_page_shift);
+> >  	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
+> > +	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
+> 
+> Is there any path that passes a NULL dev anymore?
+> 
+> Both iseries_hv_alloc() and iseries_hv_map() were removed years ago.
+> See:
+>   8ee3e0d69623 ("powerpc: Remove the main legacy iSerie platform code")
+> 
+> 
+> So maybe we should do a lead-up patch that drops the NULL dev support,
+> which will then make this patch simpler.
 
-Thomas.
+The next version of this change will follow Christoph's suggestion
+by having a helper function that takes care of !dev internally.
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+Thanks
+Nic
+
+> 
+> 
+> > +	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+> > +	boundary_size = (boundary_size >> tbl->it_page_shift) + 1;
+> >  
+> >  	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
+> > -			     boundary_size >> tbl->it_page_shift, align_mask);
+> > +			     boundary_size, align_mask);
+> >  	if (n == -1) {
+> >  		if (likely(pass == 0)) {
+> >  			/* First try the pool from the start */
+> > -- 
+> > 2.17.1
