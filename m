@@ -2,129 +2,242 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AE002582E0
-	for <lists+linux-parisc@lfdr.de>; Mon, 31 Aug 2020 22:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CBFF25894C
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Sep 2020 09:36:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730075AbgHaUjI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 31 Aug 2020 16:39:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47232 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729028AbgHaUiy (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 31 Aug 2020 16:38:54 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93804C06123A;
-        Mon, 31 Aug 2020 13:38:53 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id mm21so491705pjb.4;
-        Mon, 31 Aug 2020 13:38:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=/pybmE7a8FIpjQvJ6DGP3d+JulP7r92A2J59iMGiCLM=;
-        b=oHRLDva7bE8NCj84o3Pw6XZLnP1yvvF0hDph2uVI7flXevbbdOYILUTOYyZCQ8otre
-         cCxr652BWFhSBLsdzy27Cb7Mddqacgb0iPwA8elKbwwEAVUBN15xECe0ThRuaHCOMdkR
-         dc3HEMkslEYv9RGiOcoN0hJsz9vazpaaDe3s/dlsGh7DjUCEhA4GdnYvIBBSn8VtTHcx
-         lvbLByvCgW0dL5AoLO91GPQcrbxAg2llOaYkOG9iH1BZqv6X0lnc9Cwlvy6dFLfDqm2M
-         w4tgaSsKeklGE8LZkIFRnECIGasMSWsPpNmoSLShXelmGeMJiFCs2p43c9vhVvKrOpPS
-         4Bvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=/pybmE7a8FIpjQvJ6DGP3d+JulP7r92A2J59iMGiCLM=;
-        b=UnSbHLKTXEq1A8r6vt0UX7AC46YWjUgPNwUSQmcDyh49u8duuD56N1q9VtIK8vZB33
-         11c3dUM/7aPVdAn/V2NZJkNee7mBF38lvS2CQl1Za7dNdGPkkwvKJGPRlVncKjJWqXfn
-         y3hO1EOkqq/pOiGvO8Obr4418D1uoqzS+dCQtFApcgtBH7mgzmxHBdcD/jP9aJJAlEyP
-         jhcD+knCtmv8dLwFQBuxvM7mF/xVkuuHh8d6RGA0ITa1qJk1PhMzfPg3RAwCQy1jooM1
-         7+pBr0CIMvxpywuLeib5AdtmsLJBcXQzRSsf+lnD5rd4cr9Dy1KZAEZz7aMJ5K1bg5j+
-         3dwA==
-X-Gm-Message-State: AOAM5319ivjbF5lsnhOXqIx1O0V3y2VLArZgw2lkuUOFbbVH6UdwGB6x
-        JfOyZ9QVZyrGeBRReaSXaUM=
-X-Google-Smtp-Source: ABdhPJzxmla8Fw1rXgmVa/RE16rISQFkMFWRT5MPsRMrCIi9V2DCsAyGzGk3H5CzIrYzvPZULqAD2A==
-X-Received: by 2002:a17:902:a412:: with SMTP id p18mr2318693plq.283.1598906333078;
-        Mon, 31 Aug 2020 13:38:53 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com. [216.228.112.22])
-        by smtp.gmail.com with ESMTPSA id a26sm116850pfn.93.2020.08.31.13.38.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2020 13:38:52 -0700 (PDT)
-From:   Nicolin Chen <nicoleotsuka@gmail.com>
-To:     mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        id S1726144AbgIAHg3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 1 Sep 2020 03:36:29 -0400
+Received: from verein.lst.de ([213.95.11.211]:52232 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726044AbgIAHg3 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 1 Sep 2020 03:36:29 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id B49E568B05; Tue,  1 Sep 2020 09:36:23 +0200 (CEST)
+Date:   Tue, 1 Sep 2020 09:36:23 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Nicolin Chen <nicoleotsuka@gmail.com>
+Cc:     mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
         rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
         tony.luck@intel.com, fenghua.yu@intel.com, schnelle@linux.ibm.com,
         gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
         gor@linux.ibm.com, borntraeger@de.ibm.com, davem@davemloft.net,
         tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com, James.Bottomley@HansenPartnership.com, deller@gmx.de
-Cc:     sfr@canb.auug.org.au, hch@lst.de, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: [RESEND][PATCH 7/7] parisc: Avoid overflow at boundary_size
-Date:   Mon, 31 Aug 2020 13:38:11 -0700
-Message-Id: <20200831203811.8494-8-nicoleotsuka@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200831203811.8494-1-nicoleotsuka@gmail.com>
+        hpa@zytor.com, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, sfr@canb.auug.org.au, hch@lst.de,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-parisc@vger.kernel.org
+Subject: Re: [RESEND][PATCH 0/7] Avoid overflow at boundary_size
+Message-ID: <20200901073623.GA30418@lst.de>
 References: <20200831203811.8494-1-nicoleotsuka@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200831203811.8494-1-nicoleotsuka@gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The boundary_size might be as large as ULONG_MAX, which means
-that a device has no specific boundary limit. So either "+ 1"
-or passing it to ALIGN() would potentially overflow.
+I really don't like all the open coded smarts in the various drivers.
+What do you think about a helper like the one in the untested patch
+below (on top of your series).  Also please include the original
+segment boundary patch with the next resend so that the series has
+the full context.
 
-According to kernel defines:
-    #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
-    #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
-
-We can simplify the logic here:
-  ALIGN(boundary + 1, 1 << shift) >> shift
-= ALIGN_MASK(b + 1, (1 << s) - 1) >> s
-= {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
-= [b + 1 + (1 << s) - 1] >> s
-= [b + (1 << s)] >> s
-= (b >> s) + 1
-
-So fixing a potential overflow with the safer shortcut.
-
-Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>
----
- drivers/parisc/ccio-dma.c  | 4 ++--
- drivers/parisc/sba_iommu.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
+diff --git a/arch/alpha/kernel/pci_iommu.c b/arch/alpha/kernel/pci_iommu.c
+index 1ef2c647bd3ec2..6f7de4f4e191e7 100644
+--- a/arch/alpha/kernel/pci_iommu.c
++++ b/arch/alpha/kernel/pci_iommu.c
+@@ -141,10 +141,7 @@ iommu_arena_find_pages(struct device *dev, struct pci_iommu_arena *arena,
+ 	unsigned long boundary_size;
+ 
+ 	base = arena->dma_base >> PAGE_SHIFT;
+-
+-	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	boundary_size = (boundary_size >> PAGE_SHIFT) + 1;
++	boundary_size = dma_get_seg_boundary_nr_pages(dev, PAGE_SHIFT);
+ 
+ 	/* Search forward for the first mask-aligned sequence of N free ptes */
+ 	ptes = arena->ptes;
+diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
+index 945954903bb0ba..b49b73a95067d2 100644
+--- a/arch/ia64/hp/common/sba_iommu.c
++++ b/arch/ia64/hp/common/sba_iommu.c
+@@ -485,8 +485,7 @@ sba_search_bitmap(struct ioc *ioc, struct device *dev,
+ 	ASSERT(((unsigned long) ioc->res_hint & (sizeof(unsigned long) - 1UL)) == 0);
+ 	ASSERT(res_ptr < res_end);
+ 
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	boundary_size = (dma_get_seg_boundary(dev) >> iovp_shift) + 1;
++	boundary_size = dma_get_seg_boundary_nr_pages(dev, iovp_shift);
+ 
+ 	BUG_ON(ioc->ibase & ~iovp_mask);
+ 	shift = ioc->ibase >> iovp_shift;
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index c01ccbf8afdd42..cbc2e62db597cf 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -236,11 +236,7 @@ static unsigned long iommu_range_alloc(struct device *dev,
+ 		}
+ 	}
+ 
+-	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
+-	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
+-
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	boundary_size = (boundary_size >> tbl->it_page_shift) + 1;
++	boundary_size = dma_get_seg_boundary_nr_pages(dev, tbl->it_page_shift);
+ 
+ 	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
+ 			     boundary_size, align_mask);
+diff --git a/arch/s390/pci/pci_dma.c b/arch/s390/pci/pci_dma.c
+index ecb067acc6d532..4a37d8f4de9d9d 100644
+--- a/arch/s390/pci/pci_dma.c
++++ b/arch/s390/pci/pci_dma.c
+@@ -261,13 +261,11 @@ static unsigned long __dma_alloc_iommu(struct device *dev,
+ 				       unsigned long start, int size)
+ {
+ 	struct zpci_dev *zdev = to_zpci(to_pci_dev(dev));
+-	unsigned long boundary_size;
+ 
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	boundary_size = (dma_get_seg_boundary(dev) >> PAGE_SHIFT) + 1;
+ 	return iommu_area_alloc(zdev->iommu_bitmap, zdev->iommu_pages,
+ 				start, size, zdev->start_dma >> PAGE_SHIFT,
+-				boundary_size, 0);
++				dma_get_seg_boundary_nr_pages(dev, PAGE_SHIFT),
++				0);
+ }
+ 
+ static dma_addr_t dma_alloc_address(struct device *dev, int size)
+diff --git a/arch/sparc/kernel/iommu-common.c b/arch/sparc/kernel/iommu-common.c
+index 843e71894d0482..e6139c99762e11 100644
+--- a/arch/sparc/kernel/iommu-common.c
++++ b/arch/sparc/kernel/iommu-common.c
+@@ -166,10 +166,6 @@ unsigned long iommu_tbl_range_alloc(struct device *dev,
+ 		}
+ 	}
+ 
+-	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
+-
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	boundary_size = (boundary_size >> iommu->table_shift) + 1;
+ 	/*
+ 	 * if the skip_span_boundary_check had been set during init, we set
+ 	 * things up so that iommu_is_span_boundary() merely checks if the
+@@ -178,7 +174,11 @@ unsigned long iommu_tbl_range_alloc(struct device *dev,
+ 	if ((iommu->flags & IOMMU_NO_SPAN_BOUND) != 0) {
+ 		shift = 0;
+ 		boundary_size = iommu->poolsize * iommu->nr_pools;
++	} else {
++		boundary_size = dma_get_seg_boundary_nr_pages(dev,
++					iommu->table_shift);
+ 	}
++
+ 	n = iommu_area_alloc(iommu->map, limit, start, npages, shift,
+ 			     boundary_size, align_mask);
+ 	if (n == -1) {
+diff --git a/arch/sparc/kernel/iommu.c b/arch/sparc/kernel/iommu.c
+index d981c37305ae31..c3e4e2df26a8b8 100644
+--- a/arch/sparc/kernel/iommu.c
++++ b/arch/sparc/kernel/iommu.c
+@@ -472,8 +472,7 @@ static int dma_4u_map_sg(struct device *dev, struct scatterlist *sglist,
+ 	outs->dma_length = 0;
+ 
+ 	max_seg_size = dma_get_max_seg_size(dev);
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	seg_boundary_size = (dma_get_seg_boundary(dev) >> IO_PAGE_SHIFT) + 1;
++	seg_boundary_size = dma_get_seg_boundary_nr_pages(dev, IO_PAGE_SHIFT);
+ 	base_shift = iommu->tbl.table_map_base >> IO_PAGE_SHIFT;
+ 	for_each_sg(sglist, s, nelems, i) {
+ 		unsigned long paddr, npages, entry, out_entry = 0, slen;
+diff --git a/arch/sparc/kernel/pci_sun4v.c b/arch/sparc/kernel/pci_sun4v.c
+index 233fe8a20cec33..6b92dd51c0026f 100644
+--- a/arch/sparc/kernel/pci_sun4v.c
++++ b/arch/sparc/kernel/pci_sun4v.c
+@@ -508,8 +508,7 @@ static int dma_4v_map_sg(struct device *dev, struct scatterlist *sglist,
+ 	iommu_batch_start(dev, prot, ~0UL);
+ 
+ 	max_seg_size = dma_get_max_seg_size(dev);
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	seg_boundary_size = (dma_get_seg_boundary(dev) >> IO_PAGE_SHIFT) + 1;
++	seg_boundary_size = dma_get_seg_boundary_nr_pages(dev, IO_PAGE_SHIFT);
+ 
+ 	mask = *dev->dma_mask;
+ 	if (!iommu_use_atu(iommu, mask))
+diff --git a/arch/x86/kernel/amd_gart_64.c b/arch/x86/kernel/amd_gart_64.c
+index 7fa0bb490065a1..bccc5357bffd6c 100644
+--- a/arch/x86/kernel/amd_gart_64.c
++++ b/arch/x86/kernel/amd_gart_64.c
+@@ -96,8 +96,7 @@ static unsigned long alloc_iommu(struct device *dev, int size,
+ 
+ 	base_index = ALIGN(iommu_bus_base & dma_get_seg_boundary(dev),
+ 			   PAGE_SIZE) >> PAGE_SHIFT;
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	boundary_size = (dma_get_seg_boundary(dev) >> PAGE_SHIFT) + 1;
++	boundary_size = dma_get_seg_boundary_nr_pages(dev, PAGE_SHIFT);
+ 
+ 	spin_lock_irqsave(&iommu_bitmap_lock, flags);
+ 	offset = iommu_area_alloc(iommu_gart_bitmap, iommu_pages, next_bit,
 diff --git a/drivers/parisc/ccio-dma.c b/drivers/parisc/ccio-dma.c
-index a5507f75b524..c667d6aba764 100644
+index c667d6aba7646e..ba16b7f8f80612 100644
 --- a/drivers/parisc/ccio-dma.c
 +++ b/drivers/parisc/ccio-dma.c
-@@ -356,8 +356,8 @@ ccio_alloc_range(struct ioc *ioc, struct device *dev, size_t size)
+@@ -356,8 +356,7 @@ ccio_alloc_range(struct ioc *ioc, struct device *dev, size_t size)
  	** ggg sacrifices another 710 to the computer gods.
  	*/
  
--	boundary_size = ALIGN((unsigned long long)dma_get_seg_boundary(dev) + 1,
--			      1ULL << IOVP_SHIFT) >> IOVP_SHIFT;
-+	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-+	boundary_size = (dma_get_seg_boundary(dev) >> IOVP_SHIFT) + 1;
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	boundary_size = (dma_get_seg_boundary(dev) >> IOVP_SHIFT) + 1;
++	boundary_size = dma_get_seg_boundary_nr_pages(dev, IOVP_SHIFT);
  
  	if (pages_needed <= 8) {
  		/*
 diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
-index d4314fba0269..96bc2c617cbd 100644
+index 96bc2c617cbd19..959bda193b9603 100644
 --- a/drivers/parisc/sba_iommu.c
 +++ b/drivers/parisc/sba_iommu.c
-@@ -342,8 +342,8 @@ sba_search_bitmap(struct ioc *ioc, struct device *dev,
+@@ -342,8 +342,7 @@ sba_search_bitmap(struct ioc *ioc, struct device *dev,
  	unsigned long shift;
  	int ret;
  
--	boundary_size = ALIGN((unsigned long long)dma_get_seg_boundary(dev) + 1,
--			      1ULL << IOVP_SHIFT) >> IOVP_SHIFT;
-+	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-+	boundary_size = (dma_get_seg_boundary(dev) >> IOVP_SHIFT) + 1;
+-	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
+-	boundary_size = (dma_get_seg_boundary(dev) >> IOVP_SHIFT) + 1;
++	boundary_size = dma_get_seg_boundary_nr_pages(dev, IOVP_SHIFT);
  
  #if defined(ZX1_SUPPORT)
  	BUG_ON(ioc->ibase & ~IOVP_MASK);
--- 
-2.17.1
-
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index 52635e91143b25..7477a164500adb 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -632,6 +632,25 @@ static inline unsigned long dma_get_seg_boundary(struct device *dev)
+ 	return DMA_BIT_MASK(32);
+ }
+ 
++/**
++ * dma_get_seg_boundary_nr_pages - return the segment boundary in "page" units
++ * @dev: device to guery the boundary for
++ * @page_shift: ilog() of the the IOMMU page size
++ *
++ * Return the segment boundary in IOMMU page units (which may be different from
++ * the CPU page size) for the passed in device.
++ *
++ * If @dev is NULL a boundary of U32_MAX is assumed, this case is just for
++ * non-DMA API callers.
++ */
++static inline unsigned long dma_get_seg_boundary_nr_pages(struct device *dev,
++		unsigned int page_shift)
++{
++	if (!dev)
++		return (U32_MAX >> page_shift) + 1;
++	return (dma_get_seg_boundary(dev) >> page_shift) + 1;
++}
++
+ static inline int dma_set_seg_boundary(struct device *dev, unsigned long mask)
+ {
+ 	if (dev->dma_parms) {
