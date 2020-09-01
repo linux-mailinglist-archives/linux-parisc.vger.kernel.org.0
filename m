@@ -2,127 +2,165 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85A272590F7
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Sep 2020 16:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2C3425919C
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Sep 2020 16:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728229AbgIAOl1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 1 Sep 2020 10:41:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42714 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728064AbgIAOQr (ORCPT
+        id S1728832AbgIAOxO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 1 Sep 2020 10:53:14 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42334 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728454AbgIAOwp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 1 Sep 2020 10:16:47 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DDE2C061261;
-        Tue,  1 Sep 2020 07:16:46 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id y6so594209plk.10;
-        Tue, 01 Sep 2020 07:16:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=y4GBbdasJ+e4fXYSTpkmty5k9s9dG8wP/iD9sZCcgX8=;
-        b=dH53FvbwzWxDPpzL9QLv3ud71sC04i3yZyx9BEpedyXYGMjxGjGFMSmDwQcpfzAEEy
-         vpSo5/Ssw929AdvF66gJ4EUjNg01+rqWJADkqajPmugZI1cbQAXmVSj6ATR4mATxYZqH
-         StOhG2/Q59wO/SBRFJMcUkKHyQoQdbKQJlED2G3mJ7htzmdI0Zh2Zdhs0Cv3n/p+oH/1
-         kE0qTNQ3Bqmrx7ekV15OYdhIAub17fAkyfseKS7B2buMfZ/qQBoGhcxLveEZcA75ymJP
-         y6PMCBs43bHoN7cVjZVwPskK2amXulF6VSw3I15761Sa+g80a4BKj9qIorWICbpQQ+KC
-         ENKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=y4GBbdasJ+e4fXYSTpkmty5k9s9dG8wP/iD9sZCcgX8=;
-        b=VhXuys2v/ThF5qXYTKGqrf3JyQLlwfA+acmUGH8TW2rW7geHuhodS0DB0fyYjoHZFk
-         o4wa/Ilop5Dfw7gRwt008JrveAH7FU7QOh6FDCRNriCkde3jcvpDCKHcb3m89K/RP6w1
-         c1xfCaS2nZT6AZOpCaYK17y7r4xtU+jgLq8eMrTX2g/1l8OboNDNysTy2pHzylgscCqB
-         52OftpUOpmuqN3Ln53uqA01F/0PpFLe66w/IIK/GGjqYJktF3dNAEmPDYdQ/ZTUE0uk1
-         j6wTR4/N7Sg2deBd1kCrB2qLiUdBlk6lOD+dPWFVqA/yTp7shSs7nRZQF+KsWmnuoVTJ
-         DOGg==
-X-Gm-Message-State: AOAM531wGDli4t8BYddsSIhLVrnhMXXMVPOPylFwcs89EIzIH1/z5jEC
-        LCyEkv5Eq3MM9EaH1mVUqP0B4mO0pns=
-X-Google-Smtp-Source: ABdhPJzG/volX6VbEzTef+Kk6CT0A/sPbJrNNCyu6DH4e9IuiAX8jzUmomEjOSXABzmiyGq1oa2Vnw==
-X-Received: by 2002:a17:902:7d85:: with SMTP id a5mr1644916plm.148.1598969805983;
-        Tue, 01 Sep 2020 07:16:45 -0700 (PDT)
-Received: from bobo.ibm.com ([203.185.249.227])
-        by smtp.gmail.com with ESMTPSA id w9sm2212816pgg.76.2020.09.01.07.16.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2020 07:16:45 -0700 (PDT)
-From:   Nicholas Piggin <npiggin@gmail.com>
-To:     linux-arch@vger.kernel.org
-Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>
-Subject: [PATCH v3 15/23] parisc: use asm-generic/mmu_context.h for no-op implementations
-Date:   Wed,  2 Sep 2020 00:15:31 +1000
-Message-Id: <20200901141539.1757549-16-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200901141539.1757549-1-npiggin@gmail.com>
-References: <20200901141539.1757549-1-npiggin@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Tue, 1 Sep 2020 10:52:45 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 2FA1E8EE112;
+        Tue,  1 Sep 2020 07:52:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1598971964;
+        bh=5QgiJp1XQuU8WeasWKUrByXxrzK/9M/xvKJovjxtOSE=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=wObSEMiIFiMQqpuLxaCfGj6fWwMB1SR5uR3WpqveV9O4eMPwCERYxZe+pGeu45B1s
+         Hh0lHOhPmaDzTL+z1MwoTQwce39LAcI0HTI6j6IhhJYI3h5nKO0TMp801H3LPYpAS2
+         cAlNurtUenHcZUudnTaoIqyV7yZakslR9e7UqKeA=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 0Zy3Ukh5UkrA; Tue,  1 Sep 2020 07:52:44 -0700 (PDT)
+Received: from [153.66.254.174] (c-73-35-198-56.hsd1.wa.comcast.net [73.35.198.56])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id C9BD38EE0F5;
+        Tue,  1 Sep 2020 07:52:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1598971963;
+        bh=5QgiJp1XQuU8WeasWKUrByXxrzK/9M/xvKJovjxtOSE=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=aKMifmu3auQ6FWaycnVm58I6hz9G+D25US7ZBIQmKPWtl/OO3oAlisEasTKoEqxvs
+         l6ihGgc23PPx6Vjc2Wtc/36E47y53pW7IPIx5bd2ov50jG73PyojCzhwq4i11ZzTyB
+         Dg3UC/gKa12A9sw0Wl45QN34rTiyU/vUbrJxeAio=
+Message-ID: <1598971960.4238.5.camel@HansenPartnership.com>
+Subject: Re: [PATCH 07/28] 53c700: improve non-coherent DMA handling
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Christoph Hellwig <hch@lst.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        iommu@lists.linux-foundation.org
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org,
+        netdev@vger.kernel.org, linux-nvme@lists.infradead.org,
+        linux-scsi@vger.kernel.org, linux-mm@kvack.org,
+        alsa-devel@alsa-project.org
+Date:   Tue, 01 Sep 2020 07:52:40 -0700
+In-Reply-To: <20200819065555.1802761-8-hch@lst.de>
+References: <20200819065555.1802761-1-hch@lst.de>
+         <20200819065555.1802761-8-hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: linux-parisc@vger.kernel.org
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/parisc/include/asm/mmu_context.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+On Wed, 2020-08-19 at 08:55 +0200, Christoph Hellwig wrote:
+> Switch the 53c700 driver to only use non-coherent descriptor memory
+> if it really has to because dma_alloc_coherent fails.  This doesn't
+> matter for any of the platforms it runs on currently, but that will
+> change soon.
+> 
+> To help with this two new helpers to transfer ownership to and from
+> the device are added that abstract the syncing of the non-coherent
+> memory. The two current bidirectional cases are mapped to transfers
+> to the device, as that appears to what they are used for.  Note that
+> for parisc, which is the only architecture this driver needs to use
+> non-coherent memory on, the direction argument of dma_cache_sync is
+> ignored, so this will not change behavior in any way.
 
-diff --git a/arch/parisc/include/asm/mmu_context.h b/arch/parisc/include/asm/mmu_context.h
-index cb5f2f730421..46f8c22c5977 100644
---- a/arch/parisc/include/asm/mmu_context.h
-+++ b/arch/parisc/include/asm/mmu_context.h
-@@ -7,16 +7,13 @@
- #include <linux/atomic.h>
- #include <asm-generic/mm_hooks.h>
- 
--static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
--{
--}
--
- /* on PA-RISC, we actually have enough contexts to justify an allocator
-  * for them.  prumpf */
- 
- extern unsigned long alloc_sid(void);
- extern void free_sid(unsigned long);
- 
-+#define init_new_context init_new_context
- static inline int
- init_new_context(struct task_struct *tsk, struct mm_struct *mm)
- {
-@@ -26,6 +23,7 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
- 	return 0;
- }
- 
-+#define destroy_context destroy_context
- static inline void
- destroy_context(struct mm_struct *mm)
- {
-@@ -71,8 +69,7 @@ static inline void switch_mm(struct mm_struct *prev,
- }
- #define switch_mm_irqs_off switch_mm_irqs_off
- 
--#define deactivate_mm(tsk,mm)	do { } while (0)
--
-+#define activate_mm activate_mm
- static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
- {
- 	/*
-@@ -90,4 +87,7 @@ static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
- 
- 	switch_mm(prev,next,current);
- }
-+
-+#include <asm-generic/mmu_context.h>
-+
- #endif
--- 
-2.23.0
+I think this looks mostly OK, except for one misnamed parameter below. 
+Unfortunately, the last non-coherent parisc was the 700 series and I no
+longer own a box, so I can't test that part of it (I can fire up the
+C360 to test it on a coherent arch).
+
+[...]
+> diff --git a/drivers/scsi/53c700.h b/drivers/scsi/53c700.h
+> index 05fe439b66afe5..0f545b05fe611d 100644
+> --- a/drivers/scsi/53c700.h
+> +++ b/drivers/scsi/53c700.h
+> @@ -209,6 +209,7 @@ struct NCR_700_Host_Parameters {
+>  #endif
+>  	__u32	chip710:1;	/* set if really a 710 not
+> 700 */
+>  	__u32	burst_length:4;	/* set to 0 to disable
+> 710 bursting */
+> +	__u32	noncoherent:1;	/* needs to use non-
+> coherent DMA */
+>  
+>  	/* NOTHING BELOW HERE NEEDS ALTERING */
+>  	__u32	fast:1;		/* if we can alter the
+> SCSI bus clock
+> @@ -429,7 +430,7 @@ struct NCR_700_Host_Parameters {
+>  	for(i=0; i< (sizeof(A_##symbol##_used) / sizeof(__u32));
+> i++) { \
+>  		__u32 val =
+> bS_to_cpu((script)[A_##symbol##_used[i]]) + da; \
+>  		(script)[A_##symbol##_used[i]] = bS_to_host(val); \
+> -		dma_cache_sync((dev),
+> &(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); \
+> +		dma_sync_to_dev((dev),
+> &(script)[A_##symbol##_used[i]], 4); \
+>  		DEBUG((" script, patching %s at %d to %pad\n", \
+>  		       #symbol, A_##symbol##_used[i], &da)); \
+>  	} \
+> @@ -441,7 +442,7 @@ struct NCR_700_Host_Parameters {
+>  	dma_addr_t da = value; \
+>  	for(i=0; i< (sizeof(A_##symbol##_used) / sizeof(__u32));
+> i++) { \
+>  		(script)[A_##symbol##_used[i]] = bS_to_host(da); \
+> -		dma_cache_sync((dev),
+> &(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); \
+> +		dma_sync_to_dev((dev),
+> &(script)[A_##symbol##_used[i]], 4); \
+>  		DEBUG((" script, patching %s at %d to %pad\n", \
+>  		       #symbol, A_##symbol##_used[i], &da)); \
+>  	} \
+> @@ -456,7 +457,7 @@ struct NCR_700_Host_Parameters {
+>  		val &= 0xff00ffff; \
+>  		val |= ((value) & 0xff) << 16; \
+>  		(script)[A_##symbol##_used[i]] = bS_to_host(val); \
+> -		dma_cache_sync((dev),
+> &(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); \
+> +		dma_sync_to_dev((dev),
+> &(script)[A_##symbol##_used[i]], 4); \
+>  		DEBUG((" script, patching ID field %s at %d to
+> 0x%x\n", \
+>  		       #symbol, A_##symbol##_used[i], val)); \
+>  	} \
+> @@ -470,7 +471,7 @@ struct NCR_700_Host_Parameters {
+>  		val &= 0xffff0000; \
+>  		val |= ((value) & 0xffff); \
+>  		(script)[A_##symbol##_used[i]] = bS_to_host(val); \
+> -		dma_cache_sync((dev),
+> &(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); \
+> +		dma_sync_to_dev((dev),
+> &(script)[A_##symbol##_used[i]], 4); \
+>  		DEBUG((" script, patching short field %s at %d to
+> 0x%x\n", \
+>  		       #symbol, A_##symbol##_used[i], val)); \
+>  	} \
+
+These macro arguments need updating.  Since you changed the input from
+hostdata->dev to hostdata, leaving the macro argument as dev is simply
+misleading.  It needs to become hostdata or h.
+
+James
 
