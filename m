@@ -2,21 +2,21 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3426A258F9F
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Sep 2020 15:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85ACF258FDA
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Sep 2020 16:08:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728258AbgIAN4V (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 1 Sep 2020 09:56:21 -0400
-Received: from elvis.franken.de ([193.175.24.41]:45709 "EHLO elvis.franken.de"
+        id S1728222AbgIANz6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 1 Sep 2020 09:55:58 -0400
+Received: from elvis.franken.de ([193.175.24.41]:45704 "EHLO elvis.franken.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728294AbgIANzc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        id S1728292AbgIANzc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
         Tue, 1 Sep 2020 09:55:32 -0400
 Received: from uucp (helo=alpha)
         by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1kD6kf-0001nf-02; Tue, 01 Sep 2020 15:55:09 +0200
+        id 1kD6kf-0001nf-00; Tue, 01 Sep 2020 15:55:09 +0200
 Received: by alpha.franken.de (Postfix, from userid 1000)
-        id 62CB0C0E4C; Tue,  1 Sep 2020 15:53:04 +0200 (CEST)
-Date:   Tue, 1 Sep 2020 15:53:04 +0200
+        id 202E0C0E4B; Tue,  1 Sep 2020 15:49:35 +0200 (CEST)
+Date:   Tue, 1 Sep 2020 15:49:35 +0200
 From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
@@ -37,33 +37,26 @@ Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
         nouveau@lists.freedesktop.org, netdev@vger.kernel.org,
         linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
         linux-mm@kvack.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 08/28] MIPS: make dma_sync_*_for_cpu a little less
- overzealous
-Message-ID: <20200901135304.GC11944@alpha.franken.de>
+Subject: Re: [PATCH 09/28] MIPS/jazzdma: remove the unused vdma_remap function
+Message-ID: <20200901134935.GA11944@alpha.franken.de>
 References: <20200819065555.1802761-1-hch@lst.de>
- <20200819065555.1802761-9-hch@lst.de>
+ <20200819065555.1802761-10-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200819065555.1802761-9-hch@lst.de>
+In-Reply-To: <20200819065555.1802761-10-hch@lst.de>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 08:55:35AM +0200, Christoph Hellwig wrote:
-> When transferring DMA ownership back to the CPU there should never
-> be any writeback from the cache, as the buffer was owned by the
-> device until now.  Instead it should just be invalidated for the
-> mapping directions where the device could have written data.
-> Note that the changes rely on the fact that kmap_atomic is stubbed
-> out for the !HIGHMEM case to simplify the code a bit.
-> 
+On Wed, Aug 19, 2020 at 08:55:36AM +0200, Christoph Hellwig wrote:
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->  arch/mips/mm/dma-noncoherent.c | 44 +++++++++++++++++++++-------------
->  1 file changed, 28 insertions(+), 16 deletions(-)
+>  arch/mips/include/asm/jazzdma.h |  2 -
+>  arch/mips/jazz/jazzdma.c        | 70 ---------------------------------
+>  2 files changed, 72 deletions(-)
 
 Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
