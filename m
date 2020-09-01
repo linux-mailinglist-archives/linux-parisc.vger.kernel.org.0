@@ -2,67 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9AF2258B19
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Sep 2020 11:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAA47258D61
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Sep 2020 13:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726327AbgIAJLK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 1 Sep 2020 05:11:10 -0400
-Received: from verein.lst.de ([213.95.11.211]:52607 "EHLO verein.lst.de"
+        id S1726858AbgIALZC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 1 Sep 2020 07:25:02 -0400
+Received: from verein.lst.de ([213.95.11.211]:53056 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726064AbgIAJLK (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 1 Sep 2020 05:11:10 -0400
+        id S1726107AbgIALYH (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 1 Sep 2020 07:24:07 -0400
 Received: by verein.lst.de (Postfix, from userid 2407)
-        id 5724168B05; Tue,  1 Sep 2020 11:11:05 +0200 (CEST)
-Date:   Tue, 1 Sep 2020 11:11:05 +0200
+        id 508E268B05; Tue,  1 Sep 2020 13:06:18 +0200 (CEST)
+Date:   Tue, 1 Sep 2020 13:06:17 +0200
 From:   Christoph Hellwig <hch@lst.de>
-To:     Nicolin Chen <nicoleotsuka@gmail.com>
-Cc:     Christoph Hellwig <hch@lst.de>, mpe@ellerman.id.au,
-        benh@kernel.crashing.org, paulus@samba.org, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com, tony.luck@intel.com,
-        fenghua.yu@intel.com, schnelle@linux.ibm.com,
-        gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, borntraeger@de.ibm.com, davem@davemloft.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, sfr@canb.auug.org.au, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [RESEND][PATCH 0/7] Avoid overflow at boundary_size
-Message-ID: <20200901091105.GA4959@lst.de>
-References: <20200831203811.8494-1-nicoleotsuka@gmail.com> <20200901073623.GA30418@lst.de> <20200901075401.GA5667@Asurada-Nvidia>
+To:     Tomasz Figa <tfiga@chromium.org>
+Cc:     Christoph Hellwig <hch@lst.de>, alsa-devel@alsa-project.org,
+        linux-ia64@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        nouveau@lists.freedesktop.org, linux-nvme@lists.infradead.org,
+        linux-mips@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        linux-mm@kvack.org,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        linux-scsi@vger.kernel.org,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <linux-arm-kernel@lists.infradead.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>
+Subject: Re: [PATCH 05/28] media/v4l2: remove
+ V4L2-FLAG-MEMORY-NON-CONSISTENT
+Message-ID: <20200901110617.GA13232@lst.de>
+References: <20200819065555.1802761-1-hch@lst.de> <20200819065555.1802761-6-hch@lst.de> <CAAFQd5COLxjydDYrfx47ht8tj-aNPiaVnC+WyQA7nvpW4gs=ww@mail.gmail.com> <20200819135454.GA17098@lst.de> <CAAFQd5BuXP7t3d-Rwft85j=KTyXq7y4s24mQxLr=VoY9krEGZw@mail.gmail.com> <20200820044347.GA4533@lst.de> <20200820052004.GA5305@lst.de> <CAAFQd5CFiA2WBaaPQ9ezvMjYZfNw37c42UEy9Pk7kJyCi1mLzQ@mail.gmail.com> <20200820165407.GD12693@lst.de> <CAAFQd5D=NzgjosB51-O_cH27a8V6CPgCfaPSfHHz7nKJPbazgg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200901075401.GA5667@Asurada-Nvidia>
+In-Reply-To: <CAAFQd5D=NzgjosB51-O_cH27a8V6CPgCfaPSfHHz7nKJPbazgg@mail.gmail.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Sep 01, 2020 at 12:54:01AM -0700, Nicolin Chen wrote:
-> Hi Christoph,
+On Thu, Aug 20, 2020 at 07:33:48PM +0200, Tomasz Figa wrote:
+> > It wasn't meant to be too insulting, but I found this out when trying
+> > to figure out how to just disable it.  But it also ends up using
+> > the actual dma attr flags for it's own consistency checks, so just
+> > not setting the flag did not turn out to work that easily.
+> >
 > 
-> On Tue, Sep 01, 2020 at 09:36:23AM +0200, Christoph Hellwig wrote:
-> > I really don't like all the open coded smarts in the various drivers.
-> > What do you think about a helper like the one in the untested patch
-> 
-> A helper function will be actually better. I was thinking of
-> one yet not very sure about the naming and where to put it.
-> 
-> > below (on top of your series).  Also please include the original
-> > segment boundary patch with the next resend so that the series has
-> > the full context.
-> 
-> I will use your change instead and resend with the ULONG_MAX
-> change. But in that case, should I make separate changes for
-> different files like this series, or just one single change
-> like yours?
-> 
-> Asking this as I was expecting that those changes would get
-> applied by different maintainers. But now it feels like you
-> will merge it to your tree at once?
+> Yes, sadly the videobuf2 ended up becoming quite counterintuitive
+> after growing for the long years and that is reflected in the design
+> of this feature as well. I think we need to do something about it.
 
-I guess one patch is fine.  I can queue it up in the dma-mapping
-tree as a prep patch for the default boundary change.
+So I'm about to respin the series and wonder how we should proceed.
+I've failed to come up with a clean patch to keep the flag and make
+it a no-op.  Can you or your team give it a spin?
+
+Also I wonder if the flag should be renamed from NON_CONSISTENT
+to NON_COHERENT - the consistent thing is a weird wart from the times
+the old PCI DMA API that is mostly gone now.
