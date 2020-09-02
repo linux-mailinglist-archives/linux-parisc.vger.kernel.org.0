@@ -2,163 +2,372 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E8BB25AF79
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Sep 2020 17:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC16625AF7E
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Sep 2020 17:40:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728331AbgIBPiz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 2 Sep 2020 11:38:55 -0400
-Received: from mout.gmx.net ([212.227.17.20]:50663 "EHLO mout.gmx.net"
+        id S1726490AbgIBPkU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 2 Sep 2020 11:40:20 -0400
+Received: from mout.gmx.net ([212.227.15.19]:39511 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728107AbgIBPC6 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 2 Sep 2020 11:02:58 -0400
+        id S1726794AbgIBPj5 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 2 Sep 2020 11:39:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1599058860;
-        bh=9mONAPviboKjYh84a+hy1GCQTwP3D+gQs9CslXOAS7A=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=L8sV5DSyxZUjMdCJhBHYorScxg6Z4vf+qm5xzt+bAm4G4iOhKeQORYS34kwE/JbdB
-         rSg/pnYjdeGX/vczI3Au4GC/AISEAjmvpla+YBUSsn1+9ZZIThR1CZxpTTFl/pWKKE
-         2JYJbWOBPJPv1+9uzRxIQ/Bk/261ZOsS/Kx0dlF8=
+        s=badeba3b8450; t=1599061186;
+        bh=+vDFz1s2/Tsi0y7/tMsq/ZOI6SDFFdLXoWtqoTtS2c0=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=VpyMe0u0s0TN6+UO1d0p76FjxpeBne6rcJYIUs8ownFjQ0XoG/74idZY63lQ6SMUa
+         YHzAS9beK8TF92DT/Po7CC78BrgU2V+AY/l7RmEx1BwoyQK5ifqsfC5QhS5WY4bMW2
+         B2xnweaIPf5GF1Ex2Fbfc/NVvZScOOcpJN28jQYw=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.155.63]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MZTmY-1k7SOI0Ure-00WV2u; Wed, 02
- Sep 2020 17:01:00 +0200
-Subject: Re: [PATCH 07/28] 53c700: improve non-coherent DMA handling
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Pawel Osciak <pawel@osciak.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        iommu@lists.linux-foundation.org,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        nouveau@lists.freedesktop.org, netdev@vger.kernel.org,
-        linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
-        linux-mm@kvack.org, alsa-devel@alsa-project.org
-References: <20200819065555.1802761-1-hch@lst.de>
- <20200819065555.1802761-8-hch@lst.de>
- <1598971960.4238.5.camel@HansenPartnership.com>
- <20200901150554.GN14765@casper.infradead.org>
- <1598973776.4238.11.camel@HansenPartnership.com>
- <3369218e-eea4-14e9-15f1-870269e4649d@gmx.de>
- <77c9b2b6-bedc-d090-8b23-6ac664df1d1f@gmx.de>
- <20200901165311.GS14765@casper.infradead.org>
+Received: from ls3530.fritz.box ([92.116.155.63]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MQvCv-1jyQI11Ek3-00O1q1; Wed, 02
+ Sep 2020 17:39:46 +0200
+Date:   Wed, 2 Sep 2020 17:39:43 +0200
 From:   Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
- c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <30bfa844-00ea-1abe-9022-d73cf309e580@gmx.de>
-Date:   Wed, 2 Sep 2020 17:00:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+To:     linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc/stifb: Convert STI core driver to dynamic printk
+Message-ID: <20200902153943.GA16250@ls3530.fritz.box>
 MIME-Version: 1.0
-In-Reply-To: <20200901165311.GS14765@casper.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ylKgDqFU+gFaPC2d+WzSCQXxiLQIXKySkLqivXa28qMeQ0h5Pxr
- tXM5x2Bo4S8TIKWGUWrbkkNuyKUME2NUvg3jtsmf8vkXFe4smPhe14q2DVLmoJE/VrrUvC8
- 63TbKzPDS66vjFhBhFr+EMjQN0laqJgo2Hk+foHitxLhjyTxAJGMdprDPYH1wX4OBUsoyKp
- QMsIM54OSGNwhG+Lr3XfQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:Umg/OjOpgUCSvZW3nYgmb9eivldKOGCVC0ur83jz7r7/xokALuO
+ xphtSQg9Pni8Kd/jEAEn8DdAS+KkNIDmPdfTcr3HNZriyiuJrihw+nBceg/yk0DpwUSkiaM
+ fNd2LZQiDiDsEDMORCnqSY8D6jbCfIWWx7PoS+PXUyagFj03pMc+N6tMxAP+gTkdf+1Bgs/
+ i/QE4w+PvrcMO0oWuZs1A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:aS28Gzfeplo=:J9k98LfUdjGOuaDrD12GXy
- mzSgOO4XwP9o4WwUrfevHPZft60XRYzaydJg0seTLUP9PUMe4SCR8wnt+FqJb2KmNErTSF3Yz
- mlEuV2ypNQhyeT8Zb7TFH9gIDYr63Tn/49r4uWCsv7KGts2XskLUKRIcTRjTyZ3fFf2AfYibs
- BzDfzF9v3j4/idusDth0av+x88Bd3jXvRuZ7oJJF2HqnBG4SkKXa0NLw7UkTYhhf//eGiBY6L
- Tz4eqwGRg7UwwOHV8G+kLUYax69snHYMWRmONRp+4GHeEto3D1SVN2jF+XEdTo8EG6GK7mVkf
- REE4YOujtqDjHiR6Ot35dAEtJQsFsZG4uNaEY+BHAPdoB2Df8TOc3SqjwTa1Ieccn9gGFcI0v
- HHi8UTCZoevjnXCWVau4Y/zHGSN/AvvivjSjDJh7E2zIcG2RsvnL1QRgMV2O5i8o0o0mkywRA
- 7f7mDxGgqyo/OXeuv19tt2n2HqKCUEns1YJ87JOE/tZhZzKHulZvXXB66rnFRt+wNw/tRV1ft
- 9Hv0ciJkPH32Jjmj3fbLVbhytxvULtITMmRk6+0rf0MLbgyAu89Ax6nNGds65lCXxgsshpdaw
- 73NW8eCpFbuCSovlK4TWz1l58mYvKCfFcm7x2NeJ0dOieetl4mzs3HcI5qq6WHdSH4o4WvPww
- lGbsyrOodVY3EiL6Dvj0o+RCTbWMiZaG9cwrWeQzIsjYAFnZ0YNI7k5IOxf8FqZ3FZilscmm4
- 1aHFf1DqijKWy8YrPe5SLLGm7jipNlbM97JdT8Rky3LFIzh6n4cS92aBdLFDSMG5m8JFPzZyV
- nSDYrKeU19FFhsekzwqljpEW2mIFGl9Wl07u9Sip7k6aoMhwb74pJUjrtd4RazX00tgfI3Jv5
- cbyBhn+XCUXDCMbBCHZGsG23/3V32rVakAqts6bEfUkqclD0zAytopG2cvnwsLqpYdubwTIN3
- kUmpUTgLkIzzdNSz9uF58RQPOyRSV2yH/L/klzgKzaIZC8LHyq6i1S7e2N4ZD+jcidq45xXM7
- dxde84/84J6CvL4H+9k93kdrMM+as6D+M+klxCE/E51ydob240bTvF6xRBq0aTd9xSQcRJTBm
- Kb4lpYVFKQfTy9KqWPa1ZEWaqLY8gC2E/gIYnnMq+m49vVWvY/xMJdiGLExTZ7lfIdx9XsKQZ
- bj3+thm3qGCfuP6o6d33ewaGx84nW8EaWKaRAZZqHK0i4qKqTW7aR2AL4dtU4tMIrbzNV/2DK
- 7fOan6bBrutQ8vuLD
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ORPYNsMP6W4=:r8VXu8FGX4KFyNPh4CzsBx
+ 37xCTd4cDwR5dtORU0n7d6zoNl40RxK1FTCTzx9rAZ3dfpwQo8x6t2tYasHJyjyzKzC1JqLNo
+ WKVy+lZPrCPJwN1CnET9xYiUqGHnP9VaD7vokG33qxMpy7SFci3OHp+/8MvTY5sfOhThGP9ml
+ 1l9JrfI1KkaQN7WnkW0aFG6Zneuz6mOfjbEPUnieWpgZBXoP53ksFV/BV+6IMgLkV5TGjQVbL
+ KaJ/atpJTjx6fIcXIttDHCEKV76AcEDqlZudWHtU7Bd5NrVmALcjGsHX3HzLYcpLclJD2jLPr
+ yxXPsfJFbH6frh50oFa8iEKznzi/TysG7PRny2hADF46SXUapg32y/GfZS48cJloH60soIUGz
+ tAsKOoywMTrm4eFAo891LG+m5psSIMgQNnYOzz6FEk3hzpJ8pMAoAQkat10OBAfkZ3nqxNmqt
+ YtkjU+OVGpEzTTeiCBWS6wUyM2v8h0EnXD6s3kdNfUaUhnghBPtwlQeC+RW4qZekeII/MVFaQ
+ PaTyTT8A3tOn5UINGOMMGbxrp4uXz6CKtq43dx/s3F7c9NShrS9qokqScHSrrnns0BqufAM1f
+ cefKn3U3DdTOeNSckOBRHV7CMvy/WTthT/NweMP3+IHcktW0iVWAh0ShHDAdBtPyEj85gV8Wc
+ ACj78k4eeZxuJraOrNSExJLyI45wsQnXIBByiB+WQ9DTKq1J+GaOzHwBgROOU4tNTiPzIK89T
+ 46x4pZ1+KSkINMfkchT/0mA6u7bFi0RUqyzuhSyEAJ/CoDOohM0at+USqcgSCVvSZXh4RDwRb
+ jrqHc/PsnGjnNfRrZBtWjoIdhd4sWWDoO2LJ01gap8p53w2ksPpxMzHMAPjDovxoGLwnS1wSL
+ PIYLL1gFZg0Z5J0ulzt/2A8yea937FaPUmeP5uKWt2L/c5pWoBP13/h99UESauGrCb6c2MVfq
+ JjI5EAbzF4Q5wu4Dd36ds5uhBAiw6jwWtA7yDOcs9gwLJeIeP8ocAfoWM2yQlG3txoMDbgnW0
+ 4lLJDR6BB4Wmz+B4C9as/JFSN8cZdRBNQuvjj9DD4SIe7YRs4+T200nUOrRyhBNXUV3ynhku1
+ +X+Cyruabsn8M9vz53/QDdZs062ImySMwq4IRRoJvg4Cs7psJXjmCI8+341SLD96kUfgz/zUt
+ FUfH8xNsd8DngLcVORw9m2ld8RaFsGAQezmOslGtvLbyFojrlQBwmjVEyRSAquNqxQ0iu1MDT
+ ZjRNkbZi0e/MCLtCB
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Willy,
+Convert to dynamic printk - this helps me during development of the STI
+emulation for qemu.
 
-On 01.09.20 18:53, Matthew Wilcox wrote:
-> On Tue, Sep 01, 2020 at 06:41:12PM +0200, Helge Deller wrote:
->>> I still have a zoo of machines running for such testing, including a
->>> 715/64 and two 730.
->>> I'm going to test this git tree on the 715/64:
->
-> The 715/64 is a 7100LC machine though.  I think you need to boot on
-> the 730 to test the non-coherent path.
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-Just tested the 730, and it works as well.
+diff --git a/drivers/video/console/sticore.c b/drivers/video/console/stico=
+re.c
+index 84c3ca37040a..41b6f2505e16 100644
+=2D-- a/drivers/video/console/sticore.c
++++ b/drivers/video/console/sticore.c
+@@ -14,6 +14,8 @@
+  *
+  */
 
-Helge
++#define pr_fmt(fmt) "%s: " fmt, KBUILD_MODNAME
++
+ #include <linux/module.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+@@ -364,8 +366,7 @@ static void sti_dump_globcfg(struct sti_glob_cfg *glob=
+_cfg,
+ {
+ 	struct sti_glob_cfg_ext *cfg;
+
+-	DPRINTK((KERN_INFO
+-		"%d text planes\n"
++	pr_debug("%d text planes\n"
+ 		"%4d x %4d screen resolution\n"
+ 		"%4d x %4d offscreen\n"
+ 		"%4d x %4d layout\n"
+@@ -382,13 +383,12 @@ static void sti_dump_globcfg(struct sti_glob_cfg *gl=
+ob_cfg,
+ 		glob_cfg->region_ptrs[4], glob_cfg->region_ptrs[5],
+ 		glob_cfg->region_ptrs[6], glob_cfg->region_ptrs[7],
+ 		glob_cfg->reent_lvl,
+-		glob_cfg->save_addr));
++		glob_cfg->save_addr);
+
+ 	/* dump extended cfg */
+ 	cfg =3D PTR_STI((unsigned long)glob_cfg->ext_ptr);
+-	DPRINTK(( KERN_INFO
+-		"monitor %d\n"
+-		"in friendly mode: %d\n"
++	pr_debug("monitor %d\n"
++		"   in friendly mode: %d\n"
+ 		"power consumption %d watts\n"
+ 		"freq ref %d\n"
+ 		"sti_mem_addr %08x (size=3D%d bytes)\n",
+@@ -396,20 +396,19 @@ static void sti_dump_globcfg(struct sti_glob_cfg *gl=
+ob_cfg,
+ 		cfg->friendly_boot,
+ 		cfg->power,
+ 		cfg->freq_ref,
+-		cfg->sti_mem_addr, sti_mem_request));
++		cfg->sti_mem_addr, sti_mem_request);
+ }
+
+ static void sti_dump_outptr(struct sti_struct *sti)
+ {
+-	DPRINTK((KERN_INFO
+-		"%d bits per pixel\n"
++	pr_debug("%d bits per pixel\n"
+ 		"%d used bits\n"
+ 		"%d planes\n"
+ 		"attributes %08x\n",
+ 		 sti->sti_data->inq_outptr.bits_per_pixel,
+ 		 sti->sti_data->inq_outptr.bits_used,
+ 		 sti->sti_data->inq_outptr.planes,
+-		 sti->sti_data->inq_outptr.attributes));
++		 sti->sti_data->inq_outptr.attributes);
+ }
+
+ static int sti_init_glob_cfg(struct sti_struct *sti, unsigned long rom_ad=
+dress,
+@@ -448,8 +447,7 @@ static int sti_init_glob_cfg(struct sti_struct *sti, u=
+nsigned long rom_address,
+ 			if (offs !=3D PCI_ROM_ADDRESS &&
+ 			    (offs < PCI_BASE_ADDRESS_0 ||
+ 			     offs > PCI_BASE_ADDRESS_5)) {
+-				printk (KERN_WARNING
+-					"STI pci region mapping for region %d (%02x) can't be mapped\n",
++				pr_warn("STI pci region mapping for region %d (%02x) can't be mapped\=
+n",
+ 					i,sti->rm_entry[i]);
+ 				continue;
+ 			}
+@@ -464,14 +462,14 @@ static int sti_init_glob_cfg(struct sti_struct *sti,=
+ unsigned long rom_address,
+ 		if (len)
+ 			glob_cfg->region_ptrs[i] =3D sti->regions_phys[i];
+
+-		DPRINTK(("region #%d: phys %08lx, region_ptr %08x, len=3D%lukB, "
++		pr_debug("region #%d: phys %08lx, region_ptr %08x, len=3D%lukB, "
+ 			 "btlb=3D%d, sysonly=3D%d, cache=3D%d, last=3D%d\n",
+ 			i, sti->regions_phys[i], glob_cfg->region_ptrs[i],
+ 			len/1024,
+ 			sti->regions[i].region_desc.btlb,
+ 			sti->regions[i].region_desc.sys_only,
+ 			sti->regions[i].region_desc.cache,
+-			sti->regions[i].region_desc.last));
++			sti->regions[i].region_desc.last);
+
+ 		/* last entry reached ? */
+ 		if (sti->regions[i].region_desc.last)
+@@ -479,8 +477,8 @@ static int sti_init_glob_cfg(struct sti_struct *sti, u=
+nsigned long rom_address,
+ 	}
+
+ 	if (++i<8 && sti->regions[i].region)
+-		printk(KERN_WARNING "%s: *future ptr (0x%8x) not yet supported !\n",
+-				__FILE__, sti->regions[i].region);
++		pr_warn("future ptr (0x%8x) not yet supported !\n",
++			sti->regions[i].region);
+
+ 	glob_cfg_ext->sti_mem_addr =3D STI_PTR(sti_mem_addr);
+
+@@ -580,18 +578,18 @@ static struct sti_cooked_font *sti_select_font(struc=
+t sti_cooked_rom *rom,
+
+ static void sti_dump_rom(struct sti_rom *rom)
+ {
+-	printk(KERN_INFO "    id %04x-%04x, conforms to spec rev. %d.%02x\n",
++	pr_info("  id %04x-%04x, conforms to spec rev. %d.%02x\n",
+ 		rom->graphics_id[0],
+ 		rom->graphics_id[1],
+ 		rom->revno[0] >> 4,
+ 		rom->revno[0] & 0x0f);
+-	DPRINTK(("      supports %d monitors\n", rom->num_mons));
+-	DPRINTK(("      font start %08x\n", rom->font_start));
+-	DPRINTK(("      region list %08x\n", rom->region_list));
+-	DPRINTK(("      init_graph %08x\n", rom->init_graph));
+-	DPRINTK(("      bus support %02x\n", rom->bus_support));
+-	DPRINTK(("      ext bus support %02x\n", rom->ext_bus_support));
+-	DPRINTK(("      alternate code type %d\n", rom->alt_code_type));
++	pr_debug("  supports %d monitors\n", rom->num_mons);
++	pr_debug("  font start %08x\n", rom->font_start);
++	pr_debug("  region list %08x\n", rom->region_list);
++	pr_debug("  init_graph %08x\n", rom->init_graph);
++	pr_debug("  bus support %02x\n", rom->bus_support);
++	pr_debug("  ext bus support %02x\n", rom->ext_bus_support);
++	pr_debug("  alternate code type %d\n", rom->alt_code_type);
+ }
+
+
+@@ -747,7 +745,7 @@ static int sti_read_rom(int wordmode, struct sti_struc=
+t *sti,
+ 		goto out_err;
+
+ 	if (!sti_cook_fonts(cooked, raw)) {
+-		printk(KERN_ERR "No font found for STI at %08lx\n", address);
++		pr_warn("No font found for STI at %08lx\n", address);
+ 		goto out_err;
+ 	}
+
+@@ -804,9 +802,9 @@ static int sti_read_rom(int wordmode, struct sti_struc=
+t *sti,
+ 	return 1;
+
+ msg_not_supported:
+-	printk(KERN_ERR "Sorry, this GSC/STI card is not yet supported.\n");
+-	printk(KERN_ERR "Please see http://parisc-linux.org/faq/"
+-			"graphics-howto.html for more info.\n");
++	pr_warn("Sorry, this GSC/STI card is not yet supported.\n");
++	pr_warn("Please see https://parisc.wiki.kernel.org/"
++		"index.php/Graphics_howto for more info.\n");
+ 	/* fall through */
+ out_err:
+ 	kfree(raw);
+@@ -823,7 +821,7 @@ static struct sti_struct *sti_try_rom_generic(unsigned=
+ long address,
+ 	u32 sig;
+
+ 	if (num_sti_roms >=3D MAX_STI_ROMS) {
+-		printk(KERN_WARNING "maximum number of STI ROMS reached !\n");
++		pr_warn("maximum number of STI ROMS reached !\n");
+ 		return NULL;
+ 	}
+
+@@ -849,16 +847,15 @@ static struct sti_struct *sti_try_rom_generic(unsign=
+ed long address,
+ 		if (i !=3D 1) {
+ 			/* The ROM could have multiple architecture
+ 			 * dependent images (e.g. i386, parisc,...) */
+-			printk(KERN_WARNING
+-				"PCI ROM is not a STI ROM type image (0x%8x)\n", i);
++			pr_warn("PCI ROM is not a STI ROM type image (0x%8x)\n", i);
+ 			goto out_err;
+ 		}
+
+ 		sti->pd =3D pd;
+
+ 		i =3D gsc_readl(address+0x0c);
+-		DPRINTK(("PCI ROM size (from header) =3D %d kB\n",
+-			le16_to_cpu(i>>16)*512/1024));
++		pr_debug("PCI ROM size (from header) =3D %d kB\n",
++			le16_to_cpu(i>>16)*512/1024);
+ 		rm_offset =3D le16_to_cpu(i & 0xffff);
+ 		if (rm_offset) {
+ 			/* read 16 bytes from the pci region mapper array */
+@@ -867,29 +864,28 @@ static struct sti_struct *sti_try_rom_generic(unsign=
+ed long address,
+ 			*rm++ =3D gsc_readl(address+rm_offset+0x04);
+ 			*rm++ =3D gsc_readl(address+rm_offset+0x08);
+ 			*rm++ =3D gsc_readl(address+rm_offset+0x0c);
+-			DPRINTK(("PCI region Mapper offset =3D %08x: ",
+-				rm_offset));
++			pr_debug("PCI region map offset =3D %08x: ", rm_offset);
+ 			for (i=3D0; i<16; i++)
+-				DPRINTK(("%02x ", sti->rm_entry[i]));
+-			DPRINTK(("\n"));
++				pr_debug("%02x ", sti->rm_entry[i]);
++			pr_debug("\n");
+ 		}
+
+ 		address +=3D le32_to_cpu(gsc_readl(address+8));
+-		DPRINTK(("sig %04x, PCI STI ROM at %08lx\n", sig, address));
++		pr_debug("sig %04x, PCI STI ROM at %08lx\n", sig, address);
+ 		goto test_rom;
+ 	}
+
+ 	ok =3D 0;
+
+ 	if ((sig & 0xff) =3D=3D 0x01) {
+-		DPRINTK(("    byte mode ROM at %08lx, hpa at %08lx\n",
+-		       address, hpa));
++		pr_debug("    byte mode ROM at %08lx, hpa at %08lx\n",
++		       address, hpa);
+ 		ok =3D sti_read_rom(0, sti, address);
+ 	}
+
+ 	if ((sig & 0xffff) =3D=3D 0x0303) {
+-		DPRINTK(("    word mode ROM at %08lx, hpa at %08lx\n",
+-		       address, hpa));
++		pr_debug("    word mode ROM at %08lx, hpa at %08lx\n",
++		       address, hpa);
+ 		ok =3D sti_read_rom(1, sti, address);
+ 	}
+
+@@ -906,7 +902,7 @@ static struct sti_struct *sti_try_rom_generic(unsigned=
+ long address,
+ 		unsigned long rom_base;
+ 		rom_base =3D pci_resource_start(sti->pd, PCI_ROM_RESOURCE);
+ 		pci_write_config_dword(sti->pd, PCI_ROM_ADDRESS, rom_base & ~PCI_ROM_AD=
+DRESS_ENABLE);
+-		DPRINTK((KERN_DEBUG "STI PCI ROM disabled\n"));
++		pr_debug("STI PCI ROM disabled\n");
+ 	}
+
+ 	if (sti_init_graph(sti))
+@@ -981,14 +977,14 @@ static int sticore_pci_init(struct pci_dev *pd, cons=
+t struct pci_device_id *ent)
+ 	rom_len =3D pci_resource_len(pd, PCI_ROM_RESOURCE);
+ 	if (rom_base) {
+ 		pci_write_config_dword(pd, PCI_ROM_ADDRESS, rom_base | PCI_ROM_ADDRESS_=
+ENABLE);
+-		DPRINTK((KERN_DEBUG "STI PCI ROM enabled at 0x%08lx\n", rom_base));
++		pr_debug("STI PCI ROM enabled at 0x%08lx\n", rom_base);
+ 	}
+
+-	printk(KERN_INFO "STI PCI graphic ROM found at %08lx (%u kB), fb at %08l=
+x (%u MB)\n",
++	pr_info("STI PCI graphic ROM found at %08lx (%u kB), fb at %08lx (%u MB)=
+\n",
+ 		rom_base, rom_len/1024, fb_base, fb_len/1024/1024);
+
+-	DPRINTK((KERN_DEBUG "Trying PCI STI ROM at %08lx, PCI hpa at %08lx\n",
+-		    rom_base, fb_base));
++	pr_debug("Trying PCI STI ROM at %08lx, PCI hpa at %08lx\n",
++		    rom_base, fb_base);
+
+ 	sti =3D sti_try_rom_generic(rom_base, fb_base, pd);
+ 	if (sti) {
+@@ -998,8 +994,7 @@ static int sticore_pci_init(struct pci_dev *pd, const =
+struct pci_device_id *ent)
+ 	}
+
+ 	if (!sti) {
+-		printk(KERN_WARNING "Unable to handle STI device '%s'\n",
+-			pci_name(pd));
++		pr_warn("Unable to handle STI device '%s'\n", pci_name(pd));
+ 		return -ENODEV;
+ 	}
+ #endif /* CONFIG_PCI */
+@@ -1058,7 +1053,7 @@ static void sti_init_roms(void)
+
+ 	sticore_initialized =3D 1;
+
+-	printk(KERN_INFO "STI GSC/PCI core graphics driver "
++	pr_info("STI GSC/PCI core graphics driver "
+ 			STI_DRIVERVERSION "\n");
+
+ 	/* Register drivers for native & PCI cards */
+diff --git a/drivers/video/fbdev/sticore.h b/drivers/video/fbdev/sticore.h
+index fb8f58f9867a..9c7f4aa92a16 100644
+=2D-- a/drivers/video/fbdev/sticore.h
++++ b/drivers/video/fbdev/sticore.h
+@@ -4,12 +4,6 @@
+
+ /* generic STI structures & functions */
+
+-#if 0
+-#define DPRINTK(x)	printk x
+-#else
+-#define DPRINTK(x)
+-#endif
+-
+ #define MAX_STI_ROMS 4		/* max no. of ROMs which this driver handles */
+
+ #define STI_REGION_MAX 8	/* hardcoded STI constants */
