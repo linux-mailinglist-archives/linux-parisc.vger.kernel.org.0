@@ -2,85 +2,86 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 426E225B95B
-	for <lists+linux-parisc@lfdr.de>; Thu,  3 Sep 2020 05:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A6A125BD86
+	for <lists+linux-parisc@lfdr.de>; Thu,  3 Sep 2020 10:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728073AbgICDr6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 2 Sep 2020 23:47:58 -0400
-Received: from bilbo.ozlabs.org ([203.11.71.1]:57905 "EHLO ozlabs.org"
+        id S1728254AbgICImf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 3 Sep 2020 04:42:35 -0400
+Received: from verein.lst.de ([213.95.11.211]:37001 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726776AbgICDr5 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 2 Sep 2020 23:47:57 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bhmwh08jXz9sR4;
-        Thu,  3 Sep 2020 13:47:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1599104874;
-        bh=4yAcDTxLmVtFlFmBwViPiQqBxkMUq1/v+ltMjACdmTw=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=sLw7B6tBL0tYeiS7UbUp4SBXAdWw1BiuX1rzRD7UWBO4tYjHsDcRVzXhtw9LnwBSb
-         TVkfoqm3UH9AlqDYsgMpWDtdLM9KmPlrSHeDnjaQHBRgQyRaye8SGf9zquJweA35N7
-         ilN3da+kZMlwnOIFaqVvO5w2y0IGDyDnVFG1VcyDqd8GjM2NTURgLs8goa8r9z4rAX
-         bS7CaEKouymf+JkB9pMsYKQDB1pDC1x6WHKsbhAVF7YeLmzAfKXrfbmEv+zmCeShnW
-         T7ZxEkdC9W8WnKJu7u5s2wHJv1TU45hmfsmEVHLbTCR7rbxTHbwfqjSrB0uc+2ymCK
-         IggJReIsXvpLw==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Nicolin Chen <nicoleotsuka@gmail.com>, hch@lst.de
-Cc:     sfr@canb.auug.org.au, benh@kernel.crashing.org, paulus@samba.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        linux-alpha@vger.kernel.org, tony.luck@intel.com,
-        fenghua.yu@intel.com, linux-ia64@vger.kernel.org,
-        schnelle@linux.ibm.com, gerald.schaefer@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@de.ibm.com,
-        linux-s390@vger.kernel.org, davem@davemloft.net,
-        sparclinux@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        linux-parisc@vger.kernel.org
-Subject: Re: [PATCH 1/2] dma-mapping: introduce dma_get_seg_boundary_nr_pages()
-In-Reply-To: <20200901221646.26491-2-nicoleotsuka@gmail.com>
-References: <20200901221646.26491-1-nicoleotsuka@gmail.com> <20200901221646.26491-2-nicoleotsuka@gmail.com>
-Date:   Thu, 03 Sep 2020 13:47:43 +1000
-Message-ID: <87363z1py8.fsf@mpe.ellerman.id.au>
+        id S1726025AbgICImd (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 3 Sep 2020 04:42:33 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 2B13F68BEB; Thu,  3 Sep 2020 10:42:27 +0200 (CEST)
+Date:   Thu, 3 Sep 2020 10:42:26 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     Christoph Hellwig <hch@lst.de>, alsa-devel@alsa-project.org,
+        linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
+        nouveau@lists.freedesktop.org, linux-nvme@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        linux-mm@kvack.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        linux-scsi@vger.kernel.org,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        linux-media@vger.kernel.org,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+        netdev@vger.kernel.org, Seung-Woo Kim <sw0312.kim@samsung.com>,
+        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org
+Subject: Re: [PATCH 22/28] sgiseeq: convert from dma_cache_sync to
+ dma_sync_single_for_device
+Message-ID: <20200903084226.GA24410@lst.de>
+References: <20200819065555.1802761-1-hch@lst.de> <20200819065555.1802761-23-hch@lst.de> <20200901152209.GA14288@alpha.franken.de> <20200901171241.GA20685@alpha.franken.de> <20200901171627.GA8255@lst.de> <20200901173810.GA25282@alpha.franken.de> <20200902213809.GA7998@alpha.franken.de>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200902213809.GA7998@alpha.franken.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Nicolin Chen <nicoleotsuka@gmail.com> writes:
-> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-> index 9704f3f76e63..cbc2e62db597 100644
-> --- a/arch/powerpc/kernel/iommu.c
-> +++ b/arch/powerpc/kernel/iommu.c
-> @@ -236,15 +236,10 @@ static unsigned long iommu_range_alloc(struct device *dev,
->  		}
->  	}
+On Wed, Sep 02, 2020 at 11:38:09PM +0200, Thomas Bogendoerfer wrote:
+> the patch below fixes the problem.
+
+But is very wrong unfortunately.
+
+>  static inline void dma_sync_desc_cpu(struct net_device *dev, void *addr)
+>  {
+> -       dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
+> -                      DMA_FROM_DEVICE);
+> +       struct sgiseeq_private *sp = netdev_priv(dev);
+> +
+> +       dma_sync_single_for_device(dev->dev.parent, VIRT_TO_DMA(sp, addr),
+> +                       sizeof(struct sgiseeq_rx_desc), DMA_FROM_DEVICE);
+>  }
 >  
-> -	if (dev)
-> -		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
-> -				      1 << tbl->it_page_shift);
-> -	else
-> -		boundary_size = ALIGN(1UL << 32, 1 << tbl->it_page_shift);
-> -	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
-> +	boundary_size = dma_get_seg_boundary_nr_pages(dev, tbl->it_page_shift);
+>  static inline void dma_sync_desc_dev(struct net_device *dev, void *addr)
+>  {
+> -       dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
+> -                      DMA_TO_DEVICE);
+> +       struct sgiseeq_private *sp = netdev_priv(dev);
+> +
+> +       dma_sync_single_for_device(dev->dev.parent, VIRT_TO_DMA(sp, addr),
+> +                       sizeof(struct sgiseeq_rx_desc), DMA_TO_DEVICE);
+
+This is not how the DMA API works.  You can only call
+dma_sync_single_for_{device,cpu} with the direction that the memory
+was mapped.  It then transfer ownership to the device or the cpu,
+and the ownership of the memory is a fundamental concept that allows
+for reasoning about the caching interaction.
+
+>  }
 >  
->  	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
-> -			     boundary_size >> tbl->it_page_shift, align_mask);
-> +			     boundary_size, align_mask);
-
-This has changed the units of boundary_size, but it's unused elsewhere
-in the function so that's OK.
-
-If you need to do a v2 for any other reason, then I'd just drop
-boundary_size and call dma_get_seg_boundary_nr_pages() directly in the
-function call.
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
+> -- 
+> Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+> good idea.                                                [ RFC1925, 2.3 ]
+---end quoted text---
