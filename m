@@ -2,112 +2,100 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5167625B600
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Sep 2020 23:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EC1A25B932
+	for <lists+linux-parisc@lfdr.de>; Thu,  3 Sep 2020 05:26:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726714AbgIBVid (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 2 Sep 2020 17:38:33 -0400
-Received: from elvis.franken.de ([193.175.24.41]:49452 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726355AbgIBVic (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 2 Sep 2020 17:38:32 -0400
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1kDaSO-0001KH-00; Wed, 02 Sep 2020 23:38:16 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id 29A9AC0E7B; Wed,  2 Sep 2020 23:38:09 +0200 (CEST)
-Date:   Wed, 2 Sep 2020 23:38:09 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     alsa-devel@alsa-project.org, linux-ia64@vger.kernel.org,
-        linux-doc@vger.kernel.org, nouveau@lists.freedesktop.org,
-        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-mm@kvack.org, Marek Szyprowski <m.szyprowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        linux-scsi@vger.kernel.org,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        linux-media@vger.kernel.org,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Pawel Osciak <pawel@osciak.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-        netdev@vger.kernel.org, Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org
-Subject: Re: [PATCH 22/28] sgiseeq: convert from dma_cache_sync to
- dma_sync_single_for_device
-Message-ID: <20200902213809.GA7998@alpha.franken.de>
-References: <20200819065555.1802761-1-hch@lst.de>
- <20200819065555.1802761-23-hch@lst.de>
- <20200901152209.GA14288@alpha.franken.de>
- <20200901171241.GA20685@alpha.franken.de>
- <20200901171627.GA8255@lst.de>
- <20200901173810.GA25282@alpha.franken.de>
+        id S1727990AbgICD0v (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 2 Sep 2020 23:26:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726821AbgICD0s (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 2 Sep 2020 23:26:48 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8316C061244;
+        Wed,  2 Sep 2020 20:26:48 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id o20so1074408pfp.11;
+        Wed, 02 Sep 2020 20:26:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=lYNxVzL5l70V80L5B0Ue2jMJbnoo4IGKc3sUTTOXxxE=;
+        b=TwfrR7yrH/ZmCJKVq785xFnzcAW0rnrJtR2XAGj+ZbDY+vu1Bzp+l97m8nb8JpPUcN
+         p8btnPGhknC5ymFX9NQp13zuslf6PXJBBlssl7s9dmeietFQ6hIhcpy/J9PwaJmrWffv
+         32jsH4jdqFlLmsW++ObZL5lWUM2zfYC2PwAfo1my2rDxsy/jbBzY7jlHnuJdcWB8guKk
+         1EDF7beW1xGiI4Tp/afrAOhNNdifprGE+enYaoD/xIiwiU0zssfWFLNt8BJnod33aGzs
+         eDoH3yXto9deLRSw/Ead+1NvLFpo1Bek8s30VDf89NNTBImvQDMk/DFU0/Fp7Yrc9w3V
+         Vxeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=lYNxVzL5l70V80L5B0Ue2jMJbnoo4IGKc3sUTTOXxxE=;
+        b=nQFcGapFqXZPLsNkcc41k+YD/ZwlukdI3l7hgbbcnKEh+uR87IfABNfiODL3ESOcO0
+         vLgXDRBa3FmBC/lXMGyyX3Dej2F6z4RZi2PerbV0gHcEPYRF8kFMomgKEQpLkw1gLL3K
+         0dYOtdpHWgWqpYp7BM4yklnBIdjXIWsgjVd+57IuNWZ3N8gzJL9R+Cdx0ua9oKKmjcDi
+         NrzLYK02WTjZyxu2lJGWySfbYQLRJa1E+CzgDc4f73ZOg1K+FR6jawNKxUmKrYEwdmYZ
+         cfJd4D4rCvQ1HxqJdtldGgT1cK6Ga3lAC9PiJFWGrgdVv5Ozv/xFnp3IuJHVRNPkZDfg
+         sWnA==
+X-Gm-Message-State: AOAM5330HR3/qNoYoAvBLmvWXnCuPEAfRr/8VNBwiDr0CRlKqPdcfHkQ
+        ZUUh+VUGOiIVyjyLlT+fquU=
+X-Google-Smtp-Source: ABdhPJyip7LHIa7QrFYS72EGsjmUF2oCbwaBJw2vq8sciVi3qTjTPlQFaDFcEKJyT/c1Yu9ACiqkAw==
+X-Received: by 2002:aa7:9625:0:b029:13c:1611:66c5 with SMTP id r5-20020aa796250000b029013c161166c5mr98010pfg.16.1599103607264;
+        Wed, 02 Sep 2020 20:26:47 -0700 (PDT)
+Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
+        by smtp.gmail.com with ESMTPSA id r33sm740198pgm.75.2020.09.02.20.26.46
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 02 Sep 2020 20:26:46 -0700 (PDT)
+Date:   Wed, 2 Sep 2020 20:26:00 -0700
+From:   Nicolin Chen <nicoleotsuka@gmail.com>
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+Cc:     hch@lst.de, sfr@canb.auug.org.au, mpe@ellerman.id.au,
+        benh@kernel.crashing.org, paulus@samba.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        linux-alpha@vger.kernel.org, tony.luck@intel.com,
+        fenghua.yu@intel.com, linux-ia64@vger.kernel.org,
+        gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, borntraeger@de.ibm.com,
+        linux-s390@vger.kernel.org, davem@davemloft.net,
+        sparclinux@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        linux-parisc@vger.kernel.org
+Subject: Re: [PATCH 0/2] dma-mapping: update default segment_boundary_mask
+Message-ID: <20200903032559.GA4517@Asurada-Nvidia>
+References: <20200901221646.26491-1-nicoleotsuka@gmail.com>
+ <2c8db0aa-e8b5-e577-b971-1de10ecc6747@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200901173810.GA25282@alpha.franken.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <2c8db0aa-e8b5-e577-b971-1de10ecc6747@linux.ibm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Sep 01, 2020 at 07:38:10PM +0200, Thomas Bogendoerfer wrote:
-> On Tue, Sep 01, 2020 at 07:16:27PM +0200, Christoph Hellwig wrote:
-> > Well, if IP22 doesn't speculate (which I'm pretty sure is the case),
-> > dma_sync_single_for_cpu should indeeed be a no-op.  But then there
-> > also shouldn't be anything in the cache, as the previous
-> > dma_sync_single_for_device should have invalidated it.  So it seems like
-> > we are missing one (or more) ownership transfers to the device.  I'll
-> > try to look at the the ownership management in a little more detail
-> > tomorrow.
+On Wed, Sep 02, 2020 at 10:13:12AM +0200, Niklas Schnelle wrote:
+> On 9/2/20 12:16 AM, Nicolin Chen wrote:
+> > These two patches are to update default segment_boundary_mask.
+> > 
+> > PATCH-1 fixes overflow issues in callers of dma_get_seg_boundary.
+> > Previous version was a series: https://lkml.org/lkml/2020/8/31/1026
+> > 
+> > Then PATCH-2 sets default segment_boundary_mask to ULONG_MAX.
+> > 
+> > Nicolin Chen (2):
+> >   dma-mapping: introduce dma_get_seg_boundary_nr_pages()
+> >   dma-mapping: set default segment_boundary_mask to ULONG_MAX
 > 
-> this is the problem:
+> I gave both of your patches a quick test ride on a couple of dev mainframes,
+> both NVMe, ConnectX and virtio-pci devices all seems to work fine.
+> I already commented on Christoph's mail that I like the helper approach,
+> so as for s390 you can add my
 > 
->        /* Always check for received packets. */
->         sgiseeq_rx(dev, sp, hregs, sregs);
-> 
-> so the driver will look at the rx descriptor on every interrupt, so
-> we cache the rx descriptor on the first interrupt and if there was
-> $no rx packet, we will only see it, if cache line gets flushed for
-> some other reason. kick_tx() does a busy loop checking tx descriptors,
-> with just sync_desc_cpu...
-
-the patch below fixes the problem.
-
-Thomas.
-
-
-diff --git a/drivers/net/ethernet/seeq/sgiseeq.c b/drivers/net/ethernet/seeq/sgiseeq.c
-index 8507ff242014..876e3700a0e4 100644
---- a/drivers/net/ethernet/seeq/sgiseeq.c
-+++ b/drivers/net/ethernet/seeq/sgiseeq.c
-@@ -112,14 +112,18 @@ struct sgiseeq_private {
+> Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
  
- static inline void dma_sync_desc_cpu(struct net_device *dev, void *addr)
- {
--       dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
--                      DMA_FROM_DEVICE);
-+       struct sgiseeq_private *sp = netdev_priv(dev);
-+
-+       dma_sync_single_for_device(dev->dev.parent, VIRT_TO_DMA(sp, addr),
-+                       sizeof(struct sgiseeq_rx_desc), DMA_FROM_DEVICE);
- }
- 
- static inline void dma_sync_desc_dev(struct net_device *dev, void *addr)
- {
--       dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
--                      DMA_TO_DEVICE);
-+       struct sgiseeq_private *sp = netdev_priv(dev);
-+
-+       dma_sync_single_for_device(dev->dev.parent, VIRT_TO_DMA(sp, addr),
-+                       sizeof(struct sgiseeq_rx_desc), DMA_TO_DEVICE);
- }
- 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+Thanks for testing and the ack! 
