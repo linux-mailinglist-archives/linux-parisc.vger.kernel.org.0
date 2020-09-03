@@ -2,99 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADBC725C84C
-	for <lists+linux-parisc@lfdr.de>; Thu,  3 Sep 2020 19:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EEEE25E0DA
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Sep 2020 19:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728719AbgICR7J (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 3 Sep 2020 13:59:09 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:45298 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726327AbgICR7I (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 3 Sep 2020 13:59:08 -0400
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 4Bj7pv2kRxz9vG1d;
-        Thu,  3 Sep 2020 19:59:03 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id GpPnJOAGb8-M; Thu,  3 Sep 2020 19:59:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 4Bj7pv1bKMz9vG1Z;
-        Thu,  3 Sep 2020 19:59:03 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 03E038B805;
-        Thu,  3 Sep 2020 19:59:05 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id gRZ56r8LcyT0; Thu,  3 Sep 2020 19:59:04 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 6AC828B803;
-        Thu,  3 Sep 2020 19:59:02 +0200 (CEST)
-Subject: Re: [PATCH 1/2] dma-mapping: introduce
- dma_get_seg_boundary_nr_pages()
-To:     Christoph Hellwig <hch@lst.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-ia64@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Helge Deller <deller@gmx.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, schnelle@linux.ibm.com,
-        hca@linux.ibm.com, Nicolin Chen <nicoleotsuka@gmail.com>,
-        ink@jurassic.park.msu.ru, Thomas Gleixner <tglx@linutronix.de>,
-        gerald.schaefer@linux.ibm.com, rth@twiddle.net,
-        Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
-        linux-s390@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
-        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
-        <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>
-References: <20200901221646.26491-1-nicoleotsuka@gmail.com>
- <20200901221646.26491-2-nicoleotsuka@gmail.com>
- <CAHp75VcVJBSnPQ6NfdF8FdEDfM+oQ=Sr+cH5VGX4SrAqrgpf-g@mail.gmail.com>
- <20200903161252.GA24841@lst.de>
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <7e1c3632-0917-0892-c1ca-8048674a3b05@csgroup.eu>
-Date:   Thu, 3 Sep 2020 19:53:07 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1727872AbgIDRak (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 4 Sep 2020 13:30:40 -0400
+Received: from rrcs-67-53-52-108.west.biz.rr.com ([67.53.52.108]:58065 "EHLO
+        thirdlane.local" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727964AbgIDRaj (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 4 Sep 2020 13:30:39 -0400
+Received: from Shop01 (localhost [127.0.0.1])
+        by thirdlane.local (Postfix) with SMTP id 6BD1F28232E;
+        Thu,  3 Sep 2020 13:44:51 -1000 (HST)
+Received: from (HELO 1dat1gj) [81.90.20.156] by Shop01 with ESMTP id 37713973 for <linux-mac68k-request@mac.linux-m68k.org>; Thu, 03 Sep 2020 19:59:02 -0400
+Message-ID: <61he5qtzr4r3$51ywylq43b97-rixs4@7dl.qig.pj52>
+From:   "William Saha" <wils@send.com>
+Reply-To: "William Saha" <wils@send.com>
+To:     linux-mac68k-request@mac.linux-m68k.org
+Subject: Greetings
+Date:   Thu, 03 Sep 20 19:59:02 GMT
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
 MIME-Version: 1.0
-In-Reply-To: <20200903161252.GA24841@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+        boundary="_D3F_8EF_5_CCE.5B."
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
 
+--_D3F_8EF_5_CCE.5B.
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-Le 03/09/2020 à 18:12, Christoph Hellwig a écrit :
-> On Thu, Sep 03, 2020 at 01:57:39PM +0300, Andy Shevchenko wrote:
->>> +{
->>> +       if (!dev)
->>> +               return (U32_MAX >> page_shift) + 1;
->>> +       return (dma_get_seg_boundary(dev) >> page_shift) + 1;
->>
->> Can it be better to do something like
->>    unsigned long boundary = dev ? dma_get_seg_boundary(dev) : U32_MAX;
->>
->>    return (boundary >> page_shift) + 1;
->>
->> ?
-> 
-> I don't really see what that would buy us.
-> 
+Send your reply to: fkinneyofd@tampabay.rr.com 
 
-I guess it would avoid the duplication of    >> page_shift) + 1
+Greetings
 
-Christophe
+This notification memo has been sent to you three times without a response=
+ from you and this will be the last time and I do hope you receive it.
+This inquiry is about an account holder, who died and has no successor ove=
+r his fund with the bank.
+The essence of this communication with you is to request your willingness =
+to accept this inheritance left behind by my client if you are legally and=
+ legitimately appointed.
+You must appreciate that I am constrained from providing you with more det=
+ailed information at this point. Upon your response, I will give you more =
+detailed information on the deceased client and the process of nominating =
+you to inherit his wealth. Send your comments with your full names and you=
+r telephone number to enable us discuss .
+
+Yours faithfully,
+William Saha.
+fkinneyofd@tampabay.rr.com
+
+--_D3F_8EF_5_CCE.5B.--
+
