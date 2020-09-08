@@ -2,22 +2,22 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD417261E57
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Sep 2020 21:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68571261E55
+	for <lists+linux-parisc@lfdr.de>; Tue,  8 Sep 2020 21:51:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730799AbgIHTuw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 8 Sep 2020 15:50:52 -0400
-Received: from foss.arm.com ([217.140.110.172]:56348 "EHLO foss.arm.com"
+        id S1730808AbgIHTuy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 8 Sep 2020 15:50:54 -0400
+Received: from foss.arm.com ([217.140.110.172]:56344 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730808AbgIHPuk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        id S1730804AbgIHPuk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
         Tue, 8 Sep 2020 11:50:40 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DCD5616A3;
-        Tue,  8 Sep 2020 08:13:30 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 429DA16F2;
+        Tue,  8 Sep 2020 08:13:42 -0700 (PDT)
 Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 092AF3F73C;
-        Tue,  8 Sep 2020 08:13:28 -0700 (PDT)
-Date:   Tue, 8 Sep 2020 16:13:26 +0100
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 610C23F73C;
+        Tue,  8 Sep 2020 08:13:40 -0700 (PDT)
+Date:   Tue, 8 Sep 2020 16:13:38 +0100
 From:   Dave Martin <Dave.Martin@arm.com>
 To:     Peter Collingbourne <pcc@google.com>
 Cc:     Catalin Marinas <catalin.marinas@arm.com>,
@@ -33,260 +33,243 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         David Spickett <david.spickett@linaro.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Richard Henderson <rth@twiddle.net>
-Subject: Re: [PATCH v10 5/7] signal: deduplicate code dealing with common
- _sigfault fields
-Message-ID: <20200908151326.GV6642@arm.com>
+Subject: Re: [PATCH v10 6/7] signal: define the field siginfo.si_xflags
+Message-ID: <20200908151337.GW6642@arm.com>
 References: <cover.1598072840.git.pcc@google.com>
- <a360ad2d44d0971f5864033022b53fbdcf105b90.1598072840.git.pcc@google.com>
+ <8a12152d54ea782f47bc55d791b064abe478473e.1598072840.git.pcc@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a360ad2d44d0971f5864033022b53fbdcf105b90.1598072840.git.pcc@google.com>
+In-Reply-To: <8a12152d54ea782f47bc55d791b064abe478473e.1598072840.git.pcc@google.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Aug 21, 2020 at 10:10:15PM -0700, Peter Collingbourne wrote:
-> We're about to add more common _sigfault fields, so deduplicate the
-> existing code for initializing _sigfault fields in {send,force}_sig_*,
-> and for copying _sigfault fields in copy_siginfo_to_external32 and
-> post_copy_siginfo_from_user32, to reduce the number of places that
-> will need to be updated by upcoming changes.
+On Fri, Aug 21, 2020 at 10:10:16PM -0700, Peter Collingbourne wrote:
+
+[ Add a new siginfo member sa_xflags, for fault signals. ]
+
+> This field will contain flags that may be used by signal handlers to
+> determine whether other fields in the _sigfault portion of siginfo are
+> valid. An example use case is the following patch, which introduces
+> the si_addr_ignored_bits{,_mask} fields.
+> 
+> A new sigcontext flag, SA_XFLAGS, is introduced in order to allow
+> a signal handler to require the kernel to set the field (but note
+> that the field will be set anyway if the kernel supports the flag,
+> regardless of its value). In combination with the previous patches,
+> this allows a userspace program to determine whether the kernel will
+> set the field.
+> 
+> It is possible for an si_xflags-unaware program to cause a signal
+> handler in an si_xflags-aware program to be called with a provided
+> siginfo data structure by using one of the following syscalls:
+> 
+> - ptrace(PTRACE_SETSIGINFO)
+> - pidfd_send_signal
+> - rt_sigqueueinfo
+> - rt_tgsigqueueinfo
+> 
+> So we need to prevent the si_xflags-unaware program from causing an
+> uninitialized read of si_xflags in the si_xflags-aware program when
+> it uses one of these syscalls.
+> 
+> The last three cases can be handled by observing that each of these
+> syscalls fails if si_code >= 0, so we define si_xflags to only be
+> valid if si_code >= 0.
+
+I would say >.  0 is SI_USER, and the fact that those other interfaces
+reject SI_USER seems inconsistent or a bug.
+
+We can always relax the rule later.
+
+Since si_xflags only makes sense for "real" fault signals, it would
+never be applicable in combination with SI_USER.  Or am I missing
+something?
+
+Either way, I think this is just a documentation ossue in practice.
+
+> 
+> There is no such check on si_code in ptrace(PTRACE_SETSIGINFO), so
+> we make ptrace(PTRACE_SETSIGINFO) clear the si_xflags field if it
+> detects that the signal would use the _sigfault layout, and introduce
+> a new ptrace request type, PTRACE_SETSIGINFO2, that a si_xflags-aware
+> program may use to opt out of this behavior.
+
+Will we need to introduce PTRACE_SETSIGINFO3, 4 etc., every time a new
+field comes up?
+
+I wonder whether we should make this more flexible, say accepting some
+flags argument to say which fields the caller understands (and so
+doesn't want clobbered).  Maybe we can (ab)use the sa_flags bit
+definitions for indicating which extensions the caller understands.
+
+> It is also possible for the kernel to inject a signal specified to
+> use _sigfault by calling force_sig (e.g. there are numerous calls to
+> force_sig(SIGSEGV)). In this case si_code is set to SI_KERNEL and the
+> _kill union member is used, so document that si_code must be < SI_KERNEL.
+
+Ack.  I'm still wondering if some of those SIGSEGV/SI_KERNEL instances
+should be changed to one of the standard SIGSEGV codes, but either way,
+having si_xflags validity require si_code < SI_KERNEL seems appropriate.
+
+
+> Ideally this field could have just been named si_flags, but that
+> name was already taken by ia64, so a different name was chosen.
+> 
+> Alternatively, we may consider making ia64's si_flags a generic field
+> and having it appear at the end of _sigfault (in the same place as
+> this patch has si_xflags) on non-ia64, keeping it in the same place
+> on ia64. ia64's si_flags is a 32-bit field with only one flag bit
+> allocated, so we would have 31 bits to use if we do this.
+
+Hmm, that might be an idea.
+
+It would mean that x86 would have different rules from other
+architectures regarding how to know when the field is valid, which might
+lull x86-first projects into a false sense of security.  Perhaps we could
+refuse to expose any of the arch-independent flags in si_flags unless
+explicitly requested via SA_XFLAGS, but that would be a departure from
+what this series implements today.
+
+So maybe it's simpler to keep the two fields separate, unless somebody
+objects.
+
 > 
 > Signed-off-by: Peter Collingbourne <pcc@google.com>
 > ---
-> View this change in Gerrit: https://linux-review.googlesource.com/q/I4f56174e1b7b2bf4a3c8139e6879cbfd52750a24
+> View this change in Gerrit: https://linux-review.googlesource.com/q/Ide155ce29366c3eab2a944ae4c51205982e5b8b2
 > 
->  include/linux/signal.h |  13 ++++++
->  kernel/signal.c        | 101 ++++++++++++++++-------------------------
->  2 files changed, 53 insertions(+), 61 deletions(-)
+> v10:
+> - make the new field compatible with the various ways
+>   that a siginfo can be injected from another process
+> - eliminate some duplication by adding a refactoring patch
+>   before this one
 > 
-> diff --git a/include/linux/signal.h b/include/linux/signal.h
-> index 6bb1a3f0258c..3edbf54493ee 100644
-> --- a/include/linux/signal.h
-> +++ b/include/linux/signal.h
-> @@ -50,6 +50,19 @@ enum siginfo_layout {
+>  arch/powerpc/platforms/powernv/vas-fault.c |  1 +
+>  arch/x86/kernel/signal_compat.c            |  4 +--
+>  include/linux/compat.h                     |  2 ++
+>  include/linux/signal_types.h               |  2 +-
+>  include/uapi/asm-generic/siginfo.h         |  4 +++
+>  include/uapi/asm-generic/signal-defs.h     |  4 +++
+>  include/uapi/linux/ptrace.h                |  2 ++
+>  kernel/ptrace.c                            | 29 ++++++++++++++++++++++
+>  kernel/signal.c                            |  3 +++
+>  9 files changed, 48 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
+> index 3d21fce254b7..3bbb335561f5 100644
+> --- a/arch/powerpc/platforms/powernv/vas-fault.c
+> +++ b/arch/powerpc/platforms/powernv/vas-fault.c
+> @@ -154,6 +154,7 @@ static void update_csb(struct vas_window *window,
+>  	info.si_errno = EFAULT;
+>  	info.si_code = SEGV_MAPERR;
+>  	info.si_addr = csb_addr;
+> +	info.si_xflags = 0;
 >  
->  enum siginfo_layout siginfo_layout(unsigned sig, int si_code);
->  
-> +static inline bool siginfo_layout_is_fault(enum siginfo_layout layout)
-> +{
-> +	switch (layout) {
-> +	case SIL_FAULT:
-> +	case SIL_FAULT_MCEERR:
-> +	case SIL_FAULT_BNDERR:
-> +	case SIL_FAULT_PKUERR:
-> +		return true;
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
->  /*
->   * Define some primitives to manipulate sigset_t.
->   */
-> diff --git a/kernel/signal.c b/kernel/signal.c
-> index c80e70bde11d..4ee9dc03f20f 100644
-> --- a/kernel/signal.c
-> +++ b/kernel/signal.c
-> @@ -1649,6 +1649,15 @@ void force_sigsegv(int sig)
->  	force_sig(SIGSEGV);
->  }
->  
-> +static void set_sigfault_common_fields(struct kernel_siginfo *info, int sig,
-> +				       int code, void __user *addr)
-> +{
-> +	info->si_signo = sig;
-> +	info->si_errno = 0;
-> +	info->si_code = code;
-> +	info->si_addr = addr;
-> +}
-> +
->  int force_sig_fault_to_task(int sig, int code, void __user *addr
->  	___ARCH_SI_TRAPNO(int trapno)
->  	___ARCH_SI_IA64(int imm, unsigned int flags, unsigned long isr)
-> @@ -1657,10 +1666,7 @@ int force_sig_fault_to_task(int sig, int code, void __user *addr
->  	struct kernel_siginfo info;
->  
->  	clear_siginfo(&info);
-> -	info.si_signo = sig;
-> -	info.si_errno = 0;
-> -	info.si_code  = code;
-> -	info.si_addr  = addr;
-> +	set_sigfault_common_fields(&info, sig, code, addr);
->  #ifdef __ARCH_SI_TRAPNO
->  	info.si_trapno = trapno;
+>  	/*
+>  	 * process will be polling on csb.flags after request is sent to
+> diff --git a/arch/x86/kernel/signal_compat.c b/arch/x86/kernel/signal_compat.c
+> index c599013ae8cb..6b99f0c8a068 100644
+> --- a/arch/x86/kernel/signal_compat.c
+> +++ b/arch/x86/kernel/signal_compat.c
+> @@ -121,8 +121,8 @@ static inline void signal_compat_build_tests(void)
 >  #endif
-> @@ -1689,10 +1695,7 @@ int send_sig_fault(int sig, int code, void __user *addr
->  	struct kernel_siginfo info;
 >  
->  	clear_siginfo(&info);
-> -	info.si_signo = sig;
-> -	info.si_errno = 0;
-> -	info.si_code  = code;
-> -	info.si_addr  = addr;
-> +	set_sigfault_common_fields(&info, sig, code, addr);
->  #ifdef __ARCH_SI_TRAPNO
->  	info.si_trapno = trapno;
+>  	CHECK_CSI_OFFSET(_sigfault);
+> -	CHECK_CSI_SIZE  (_sigfault, 4*sizeof(int));
+> -	CHECK_SI_SIZE   (_sigfault, 8*sizeof(int));
+> +	CHECK_CSI_SIZE  (_sigfault, 8*sizeof(int));
+> +	CHECK_SI_SIZE   (_sigfault, 16*sizeof(int));
+
+(Yuk, but at least you make this no worse.)
+
+>  
+>  	BUILD_BUG_ON(offsetof(siginfo_t, si_addr) != 0x10);
+>  	BUILD_BUG_ON(offsetof(compat_siginfo_t, si_addr) != 0x0C);
+> diff --git a/include/linux/compat.h b/include/linux/compat.h
+> index d38c4d7e83bd..55d4228dfd88 100644
+> --- a/include/linux/compat.h
+> +++ b/include/linux/compat.h
+> @@ -231,7 +231,9 @@ typedef struct compat_siginfo {
+>  					char _dummy_pkey[__COMPAT_ADDR_BND_PKEY_PAD];
+>  					u32 _pkey;
+>  				} _addr_pkey;
+> +				compat_uptr_t _pad[6];
+>  			};
+> +			compat_uptr_t _xflags;
+
+Should we have the same type here for native and compat?
+
+I don't have a very strong opinion on this, but currently native on
+64-bit arches will have 32 extra bits in _xflags that can never be used
+(or have to be defined differently for compat).
+
+
+>  		} _sigfault;
+>  
+>  		/* SIGPOLL */
+> diff --git a/include/linux/signal_types.h b/include/linux/signal_types.h
+> index a7887ad84d36..75ca861d982a 100644
+> --- a/include/linux/signal_types.h
+> +++ b/include/linux/signal_types.h
+> @@ -78,6 +78,6 @@ struct ksignal {
+>  
+>  #define UAPI_SA_FLAGS                                                          \
+>  	(SA_NOCLDSTOP | SA_NOCLDWAIT | SA_SIGINFO | SA_ONSTACK | SA_RESTART |  \
+> -	 SA_NODEFER | SA_RESETHAND | __ARCH_UAPI_SA_FLAGS)
+> +	 SA_NODEFER | SA_RESETHAND | SA_XFLAGS | __ARCH_UAPI_SA_FLAGS)
+>  
+>  #endif /* _LINUX_SIGNAL_TYPES_H */
+> diff --git a/include/uapi/asm-generic/siginfo.h b/include/uapi/asm-generic/siginfo.h
+> index cb3d6c267181..1fbd88d64f38 100644
+> --- a/include/uapi/asm-generic/siginfo.h
+> +++ b/include/uapi/asm-generic/siginfo.h
+> @@ -91,7 +91,9 @@ union __sifields {
+>  				char _dummy_pkey[__ADDR_BND_PKEY_PAD];
+>  				__u32 _pkey;
+>  			} _addr_pkey;
+> +			void *_pad[6];
+
+6?
+
+Obviously we'll need something here, but I'm curious as to where this
+value came from.
+
+(Same for compat.)
+
+>  		};
+> +		unsigned long _xflags;
+>  	} _sigfault;
+>  
+>  	/* SIGPOLL */
+> @@ -152,6 +154,8 @@ typedef struct siginfo {
+>  #define si_trapno	_sifields._sigfault._trapno
 >  #endif
-> @@ -1710,10 +1713,7 @@ int force_sig_mceerr(int code, void __user *addr, short lsb)
->  
->  	WARN_ON((code != BUS_MCEERR_AO) && (code != BUS_MCEERR_AR));
->  	clear_siginfo(&info);
-> -	info.si_signo = SIGBUS;
-> -	info.si_errno = 0;
-> -	info.si_code = code;
-> -	info.si_addr = addr;
-> +	set_sigfault_common_fields(&info, SIGBUS, code, addr);
->  	info.si_addr_lsb = lsb;
->  	return force_sig_info(&info);
->  }
-> @@ -1724,10 +1724,7 @@ int send_sig_mceerr(int code, void __user *addr, short lsb, struct task_struct *
->  
->  	WARN_ON((code != BUS_MCEERR_AO) && (code != BUS_MCEERR_AR));
->  	clear_siginfo(&info);
-> -	info.si_signo = SIGBUS;
-> -	info.si_errno = 0;
-> -	info.si_code = code;
-> -	info.si_addr = addr;
-> +	set_sigfault_common_fields(&info, SIGBUS, code, addr);
->  	info.si_addr_lsb = lsb;
->  	return send_sig_info(info.si_signo, &info, t);
->  }
-> @@ -1738,10 +1735,7 @@ int force_sig_bnderr(void __user *addr, void __user *lower, void __user *upper)
->  	struct kernel_siginfo info;
->  
->  	clear_siginfo(&info);
-> -	info.si_signo = SIGSEGV;
-> -	info.si_errno = 0;
-> -	info.si_code  = SEGV_BNDERR;
-> -	info.si_addr  = addr;
-> +	set_sigfault_common_fields(&info, SIGSEGV, SEGV_BNDERR, addr);
->  	info.si_lower = lower;
->  	info.si_upper = upper;
->  	return force_sig_info(&info);
-> @@ -1753,10 +1747,7 @@ int force_sig_pkuerr(void __user *addr, u32 pkey)
->  	struct kernel_siginfo info;
->  
->  	clear_siginfo(&info);
-> -	info.si_signo = SIGSEGV;
-> -	info.si_errno = 0;
-> -	info.si_code  = SEGV_PKUERR;
-> -	info.si_addr  = addr;
-> +	set_sigfault_common_fields(&info, SIGSEGV, SEGV_PKUERR, addr);
->  	info.si_pkey  = pkey;
->  	return force_sig_info(&info);
->  }
-> @@ -1770,10 +1761,8 @@ int force_sig_ptrace_errno_trap(int errno, void __user *addr)
->  	struct kernel_siginfo info;
->  
->  	clear_siginfo(&info);
-> -	info.si_signo = SIGTRAP;
-> +	set_sigfault_common_fields(&info, SIGTRAP, TRAP_HWBKPT, addr);
->  	info.si_errno = errno;
-> -	info.si_code  = TRAP_HWBKPT;
-> -	info.si_addr  = addr;
->  	return force_sig_info(&info);
->  }
->  
-> @@ -3266,12 +3255,23 @@ int copy_siginfo_from_user(kernel_siginfo_t *to, const siginfo_t __user *from)
->  void copy_siginfo_to_external32(struct compat_siginfo *to,
->  		const struct kernel_siginfo *from)
->  {
-> +	enum siginfo_layout layout =
-> +		siginfo_layout(from->si_signo, from->si_code);
-> +
->  	memset(to, 0, sizeof(*to));
->  
->  	to->si_signo = from->si_signo;
->  	to->si_errno = from->si_errno;
->  	to->si_code  = from->si_code;
-> -	switch(siginfo_layout(from->si_signo, from->si_code)) {
-> +
-> +	if (siginfo_layout_is_fault(layout)) {
-> +		to->si_addr = ptr_to_compat(from->si_addr);
-> +#ifdef __ARCH_SI_TRAPNO
-> +		to->si_trapno = from->si_trapno;
-> +#endif
-> +	}
-> +
-> +	switch (layout) {
+>  #define si_addr_lsb	_sifields._sigfault._addr_lsb
+> +/* si_xflags is only valid if 0 <= si_code < SI_KERNEL */
+> +#define si_xflags	_sifields._sigfault._xflags
+>  #define si_lower	_sifields._sigfault._addr_bnd._lower
+>  #define si_upper	_sifields._sigfault._addr_bnd._upper
+>  #define si_pkey		_sifields._sigfault._addr_pkey._pkey
+> diff --git a/include/uapi/asm-generic/signal-defs.h b/include/uapi/asm-generic/signal-defs.h
+> index e853cbe8722d..bdbe1fe7a779 100644
+> --- a/include/uapi/asm-generic/signal-defs.h
+> +++ b/include/uapi/asm-generic/signal-defs.h
+> @@ -20,6 +20,9 @@
+>   * so this bit allows flag bit support to be detected from userspace while
+>   * allowing an old kernel to be distinguished from a kernel that supports every
+>   * flag bit.
+> + * SA_XFLAGS indicates that the signal handler requires the siginfo.si_xflags
+> + * field to be valid. Note that if the kernel supports SA_XFLAGS, the field will
 
-I find the code flow slightly awkward with this change, because the
-fault signal fields are populated partly in the if() above and partly
-in the switch().  Previously, only the universal stuff was done outside.
-
-Would this be easier on future maintainers if we pulled the common
-stuff out into a helper and then called it from the appropriate switch
-cases?  The compiler will probably output some duplicated code in that
-case (depending on how clever it is at undoing the duplication), but
-the amount of affected code is small.
-
-
->  	case SIL_KILL:
->  		to->si_pid = from->si_pid;
->  		to->si_uid = from->si_uid;
-> @@ -3286,31 +3286,15 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
->  		to->si_fd   = from->si_fd;
->  		break;
->  	case SIL_FAULT:
-> -		to->si_addr = ptr_to_compat(from->si_addr);
-> -#ifdef __ARCH_SI_TRAPNO
-> -		to->si_trapno = from->si_trapno;
-> -#endif
->  		break;
->  	case SIL_FAULT_MCEERR:
-> -		to->si_addr = ptr_to_compat(from->si_addr);
-> -#ifdef __ARCH_SI_TRAPNO
-> -		to->si_trapno = from->si_trapno;
-> -#endif
->  		to->si_addr_lsb = from->si_addr_lsb;
->  		break;
->  	case SIL_FAULT_BNDERR:
-> -		to->si_addr = ptr_to_compat(from->si_addr);
-> -#ifdef __ARCH_SI_TRAPNO
-> -		to->si_trapno = from->si_trapno;
-> -#endif
->  		to->si_lower = ptr_to_compat(from->si_lower);
->  		to->si_upper = ptr_to_compat(from->si_upper);
->  		break;
->  	case SIL_FAULT_PKUERR:
-> -		to->si_addr = ptr_to_compat(from->si_addr);
-> -#ifdef __ARCH_SI_TRAPNO
-> -		to->si_trapno = from->si_trapno;
-> -#endif
->  		to->si_pkey = from->si_pkey;
->  		break;
->  	case SIL_CHLD:
-> @@ -3347,11 +3331,22 @@ int __copy_siginfo_to_user32(struct compat_siginfo __user *to,
->  static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
->  					 const struct compat_siginfo *from)
->  {
-> +	enum siginfo_layout layout =
-> +		siginfo_layout(from->si_signo, from->si_code);
-> +
->  	clear_siginfo(to);
->  	to->si_signo = from->si_signo;
->  	to->si_errno = from->si_errno;
->  	to->si_code  = from->si_code;
-> -	switch(siginfo_layout(from->si_signo, from->si_code)) {
-> +
-> +	if (siginfo_layout_is_fault(layout)) {
-> +		to->si_addr = compat_ptr(from->si_addr);
-> +#ifdef __ARCH_SI_TRAPNO
-> +		to->si_trapno = from->si_trapno;
-> +#endif
-> +	}
-> +
-> +	switch (layout) {
-
-Same comment as for copy_siginfo_to_external32()?
+Maybe "valid for fault signals (SIGSEGV etc.)"
 
 [...]
 
-Otherwise, looks reasonable.
+Otherwise, this looks sensible overall to me.
 
 Cheers
 ---Dave
