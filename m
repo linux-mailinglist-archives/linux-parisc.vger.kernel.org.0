@@ -2,22 +2,22 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E53F261F2A
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Sep 2020 22:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08CB0261E4F
+	for <lists+linux-parisc@lfdr.de>; Tue,  8 Sep 2020 21:50:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731075AbgIHUAF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 8 Sep 2020 16:00:05 -0400
-Received: from foss.arm.com ([217.140.110.172]:55914 "EHLO foss.arm.com"
+        id S1730770AbgIHTus (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 8 Sep 2020 15:50:48 -0400
+Received: from foss.arm.com ([217.140.110.172]:56350 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730480AbgIHPfg (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 8 Sep 2020 11:35:36 -0400
+        id S1730802AbgIHPuk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 8 Sep 2020 11:50:40 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 579E91045;
-        Tue,  8 Sep 2020 08:12:05 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4D2E1692;
+        Tue,  8 Sep 2020 08:12:27 -0700 (PDT)
 Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 760ED3F73C;
-        Tue,  8 Sep 2020 08:12:03 -0700 (PDT)
-Date:   Tue, 8 Sep 2020 16:12:01 +0100
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C50A03F73C;
+        Tue,  8 Sep 2020 08:12:25 -0700 (PDT)
+Date:   Tue, 8 Sep 2020 16:12:23 +0100
 From:   Dave Martin <Dave.Martin@arm.com>
 To:     Peter Collingbourne <pcc@google.com>
 Cc:     Catalin Marinas <catalin.marinas@arm.com>,
@@ -33,82 +33,68 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         David Spickett <david.spickett@linaro.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Richard Henderson <rth@twiddle.net>
-Subject: Re: [PATCH v10 1/7] parisc: start using signal-defs.h
-Message-ID: <20200908151200.GR6642@arm.com>
+Subject: Re: [PATCH v10 2/7] arch: move SA_* definitions to generic headers
+Message-ID: <20200908151223.GS6642@arm.com>
 References: <cover.1598072840.git.pcc@google.com>
- <efdbcb5fc45a2dbdf1e2363d68ab0f7b5a276980.1598072840.git.pcc@google.com>
+ <f5b9b91e7401d82c899fb6d1bb7fb2158103e5f3.1598072840.git.pcc@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <efdbcb5fc45a2dbdf1e2363d68ab0f7b5a276980.1598072840.git.pcc@google.com>
+In-Reply-To: <f5b9b91e7401d82c899fb6d1bb7fb2158103e5f3.1598072840.git.pcc@google.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Aug 21, 2020 at 10:10:11PM -0700, Peter Collingbourne wrote:
-> We currently include signal-defs.h on all architectures except parisc.
-> Make parisc fall in line. This will make maintenance easier once the
-> flag bits are moved here.
+On Fri, Aug 21, 2020 at 10:10:12PM -0700, Peter Collingbourne wrote:
+> Most architectures with the exception of alpha, mips, parisc and
+> sparc use the same values for these flags. Move their definitions into
+> asm-generic/signal-defs.h and allow the architectures with non-standard
+> values to override them. Also, document the non-standard flag values
+> in order to make it easier to add new generic flags in the future.
 > 
 > Signed-off-by: Peter Collingbourne <pcc@google.com>
-> ---
-> View this change in Gerrit: https://linux-review.googlesource.com/q/If03a5135fb514fe96548fb74610e6c3586a04064
-> 
->  arch/parisc/include/uapi/asm/signal.h  | 9 +--------
->  include/uapi/asm-generic/signal-defs.h | 6 ++++++
->  2 files changed, 7 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/parisc/include/uapi/asm/signal.h b/arch/parisc/include/uapi/asm/signal.h
-> index d38563a394f2..92a1c7ea44b4 100644
-> --- a/arch/parisc/include/uapi/asm/signal.h
-> +++ b/arch/parisc/include/uapi/asm/signal.h
-> @@ -69,14 +69,7 @@
->  #define MINSIGSTKSZ	2048
->  #define SIGSTKSZ	8192
->  
-> -
-> -#define SIG_BLOCK          0	/* for blocking signals */
-> -#define SIG_UNBLOCK        1	/* for unblocking signals */
-> -#define SIG_SETMASK        2	/* for setting the signal mask */
-> -
-> -#define SIG_DFL	((__sighandler_t)0)	/* default signal handling */
-> -#define SIG_IGN	((__sighandler_t)1)	/* ignore signal */
-> -#define SIG_ERR	((__sighandler_t)-1)	/* error return from signal */
-> +#include <asm/signal-defs.h>
->  
->  # ifndef __ASSEMBLY__
->  
-> diff --git a/include/uapi/asm-generic/signal-defs.h b/include/uapi/asm-generic/signal-defs.h
-> index e9304c95ceea..ecdf6312bfa5 100644
-> --- a/include/uapi/asm-generic/signal-defs.h
-> +++ b/include/uapi/asm-generic/signal-defs.h
-> @@ -15,8 +15,14 @@
->  #endif
->  
->  #ifndef __ASSEMBLY__
-> +#ifndef __hppa__
-> +/*
-> + * These have a special definition on parisc, see:
-> + * arch/parisc/include/uapi/asm/signal.h
-> + */
->  typedef void __signalfn_t(int);
->  typedef __signalfn_t __user *__sighandler_t;
-> +#endif
 
-Could we do something like
+While this looks reasonable, I've just realised that you strip the "U"
+from some arches' definitions here.
 
-	#ifndef __sighandler_t
-	/* ... */
-	#define __sighandler_t __sighandler_t
+So, on powerpc and x86, this changes the type of flags other than
+SA_RESETHAND from unsigned int to int.
+
+While I can't see this breaking any sensible use of these flags, there's
+a chance that there is software relying on this distinction by
+accident.
+
+
+I wonder whether it's worth doing something like
+
+	#ifdef ARCH_WANT_STRICTLY_UNSIGNED_SA_FLAGS
+	#define __SA_FLAG_VAL(x) x ## U
+	#else
+	#define __SA_FLAG_VAL(x) x
 	#endif
 
-Then we don't have to have anything parisc-specific in the common
-header, and arches can override this definition independently.
+	#ifndef SA_NOCLDSTOP
+	#define SA_NOCLDSTOP __SA_FLAG_VAL(0x00000001)
+	#endif
 
-Not a big deal either way, though, and best to keep the comment about
-why this is here in any case.
+	/* ... */
+
+
+Mind you, the historical situation also has issues, e.g. because
+sa_flags in struct sigaction is an int, assigning
+
+	struct sigaction sa;
+
+	sa.sa_flags = SA_RESETHAND;
+
+implies an overflow and so isn't portably safe (at least in theory).  I
+guess we are getting away with it today.  Preserving the situation by
+keeping the "U"s where appropriate would at least avoid making the
+situation worse.
+
+[...]
 
 Cheers
 ---Dave
