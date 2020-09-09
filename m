@@ -2,29 +2,57 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6676A2637FF
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Sep 2020 22:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 159A7263924
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Sep 2020 00:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729779AbgIIU4F (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 9 Sep 2020 16:56:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58626 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726534AbgIIU4E (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 9 Sep 2020 16:56:04 -0400
-Received: from dhcp-10-100-145-180.wdl.wdc.com (unknown [199.255.45.60])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A2AC920BED;
-        Wed,  9 Sep 2020 20:56:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599684963;
-        bh=HOi/gRnNWCADuH3C2tuPouagH6ACKRSW8Me9mQGESc8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MIR0n2v6jYMLvL9ylCeswSmSkNjM38pD+hUWnq3QNBxdxavUAFW1nFlTLHe2pybfD
-         odrRmpSK6VaBtY4y/JW5mI6voxGDP7xP7wyaKsNWcxcK7TIQVymwmw1HPj8MEaIJrr
-         wYpwdfF4aTXncxhcjdHkCnRIxxiQ6/mo+8A6FHH4=
-Date:   Wed, 9 Sep 2020 13:55:58 -0700
-From:   Keith Busch <kbusch@kernel.org>
+        id S1728350AbgIIWgV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 9 Sep 2020 18:36:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57030 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729622AbgIIWgK (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 9 Sep 2020 18:36:10 -0400
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F988C06179B
+        for <linux-parisc@vger.kernel.org>; Wed,  9 Sep 2020 15:36:05 -0700 (PDT)
+Received: by mail-qk1-x741.google.com with SMTP id p4so4155227qkf.0
+        for <linux-parisc@vger.kernel.org>; Wed, 09 Sep 2020 15:36:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=c134n78aG+T1D05fG/7gwyDy+RohECK5LAEVlOiODCw=;
+        b=NyzBsT+JUu0U0kwfTlzpDClheXiWwFCChT8B3B3AnRObKvk4drNujFjFruGeHjyE5E
+         J/ekKdFGX4ZPNWUfEPhKExoK0sWWjXwST+pbBqDSQQLO3bhHO97u7XE9KwITCllyZTNP
+         KD49/yc1MfvhSPgbWZUU1AxUsv6U0vCFkivBcLxiu3ppVdmJeK1Itxs2CD5ayafEhare
+         Y4u34snA9MTl4Likr5RS+E4LR0hKde+fx41J4h2BvlUn7go15Yxb6eLzvLXVka4Mre/N
+         zumvX8Blxljzlanq14R9XGa7dbkpGn90Uvx/RhT36f5UMVOZXDvQeH4wAZB+Eu6xRGBh
+         woew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=c134n78aG+T1D05fG/7gwyDy+RohECK5LAEVlOiODCw=;
+        b=FDY2M7AO5efZ+1Ru4zbuBsF88cTCmQZMb/221KB1ZesTH/5cpxIVET3T6/r4nmNWuE
+         YnK2z0ESjXjq9II8mTQ4n25MkfhkWZGam8WNn6NPoPrCd+zE7enJsNVJ5P7TChDQE+2X
+         Ch1ZoR340k5Gki70LnrtVuiB+P9m+SH2pQH5rEa4rnDQOxKQG28qCipJ3YE7OAD/WLaU
+         gvipT5FFltqtZw05g0vw+pnOz1qyTkicVN/kqQMynFKguZ2cMabz9eUP3stiLkJ++K3C
+         syebQnZXX0rwzTZWfAiXmzOrr+PfhSIVG1nfnVuddZfYAVC0iAIknVDiBOP0tNb7O6eR
+         t/Dw==
+X-Gm-Message-State: AOAM531PKjy1R4tdtHaJg/iv3fJl+tNVQj8AYeeEqdfIE254EQYXkmy0
+        ReAVLb3N2abJS735xYfBFgDquA==
+X-Google-Smtp-Source: ABdhPJx7fgh7UgPdTXT6uFy6snoRxxciP2Hd+WS8NFMVek051RlvF5/SRN4VKGquIHZA++zqp1uC0Q==
+X-Received: by 2002:a05:620a:2225:: with SMTP id n5mr5229154qkh.171.1599690963887;
+        Wed, 09 Sep 2020 15:36:03 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
+        by smtp.gmail.com with ESMTPSA id g5sm4497430qtx.43.2020.09.09.15.36.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2020 15:36:03 -0700 (PDT)
+Received: from jgg by mlx with local (Exim 4.94)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1kG8h8-004BIN-8t; Wed, 09 Sep 2020 19:36:02 -0300
+Date:   Wed, 9 Sep 2020 19:36:02 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
 To:     Joe Perches <joe@perches.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Jiri Kosina <trivial@kernel.org>,
@@ -54,7 +82,7 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         alsa-devel <alsa-devel@alsa-project.org>
 Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
  break;
-Message-ID: <20200909205558.GA3384631@dhcp-10-100-145-180.wdl.wdc.com>
+Message-ID: <20200909223602.GJ87483@ziepe.ca>
 References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -66,20 +94,29 @@ List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
 On Wed, Sep 09, 2020 at 01:06:39PM -0700, Joe Perches wrote:
-> diff --git a/crypto/tcrypt.c b/crypto/tcrypt.c
-> index eea0f453cfb6..8aac5bc60f4c 100644
-> --- a/crypto/tcrypt.c
-> +++ b/crypto/tcrypt.c
-> @@ -2464,7 +2464,7 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
->  		test_hash_speed("streebog512", sec,
->  				generic_hash_speed_template);
->  		if (mode > 300 && mode < 400) break;
-> -		fallthrough;
-> +		break;
->  	case 399:
->  		break;
+> fallthrough to a separate case/default label break; isn't very readable.
+> 
+> Convert pseudo-keyword fallthrough; statements to a simple break; when
+> the next label is case or default and the only statement in the next
+> label block is break;
+> 
+> Found using:
+> 
+> $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
+> 
+> Miscellanea:
+> 
+> o Move or coalesce a couple label blocks above a default: block.
+> 
+> Signed-off-by: Joe Perches <joe@perches.com>
+> ---
+> 
+> Compiled allyesconfig x86-64 only.
+> A few files for other arches were not compiled.
 
-Just imho, this change makes the preceding 'if' look even more
-pointless. Maybe the fallthrough was a deliberate choice? Not that my
-opinion matters here as I don't know this module, but it looked a bit
-odd to me.
+IB part looks OK, I prefer it like this
+
+You could do the same for continue as well, I saw a few of those..
+
+Thanks,
+Jason
