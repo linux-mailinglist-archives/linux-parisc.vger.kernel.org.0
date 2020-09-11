@@ -2,128 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 352DF26580D
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Sep 2020 06:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D86FE265DD3
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Sep 2020 12:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725819AbgIKETt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 11 Sep 2020 00:19:49 -0400
-Received: from smtprelay0064.hostedemail.com ([216.40.44.64]:51536 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725283AbgIKETs (ORCPT
+        id S1725781AbgIKK1v (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 11 Sep 2020 06:27:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43856 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725710AbgIKK1v (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 11 Sep 2020 00:19:48 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 12942837F24A;
-        Fri, 11 Sep 2020 04:19:43 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:5007:6742:6743:10004:10400:10848:11026:11232:11473:11657:11658:11914:12043:12297:12438:12555:12740:12760:12895:13153:13161:13228:13229:13439:14096:14097:14181:14659:14721:21080:21433:21627:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: seat91_4d0f80d270eb
-X-Filterd-Recvd-Size: 4376
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf19.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 11 Sep 2020 04:19:36 +0000 (UTC)
-Message-ID: <f4ad706519917d493a0af32ea2da8565227cc74a.camel@perches.com>
-Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
- break;
-From:   Joe Perches <joe@perches.com>
-To:     Robin Murphy <robin.murphy@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jiri Kosina <trivial@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
-        alsa-devel <alsa-devel@alsa-project.org>,
-        dri-devel@lists.freedesktop.org, linux-ide@vger.kernel.org,
-        dm-devel@redhat.com, linux-mtd@lists.infradead.org,
-        linux-i2c@vger.kernel.org, sparclinux@vger.kernel.org,
-        kvmarm@lists.cs.columbia.edu, linux-rtc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
-        dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-afs@lists.infradead.org, coreteam@netfilter.org,
-        intel-wired-lan@lists.osuosl.org, linux-serial@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
-        Kees Cook <kees.cook@canonical.com>,
-        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
-        storagedev@microchip.com, ceph-devel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
-        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Will Deacon <will@kernel.org>
-Date:   Thu, 10 Sep 2020 21:19:35 -0700
-In-Reply-To: <9372456a-8dcf-2735-57a4-e126aa5df3a6@arm.com>
-References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-         <9372456a-8dcf-2735-57a4-e126aa5df3a6@arm.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        Fri, 11 Sep 2020 06:27:51 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B628C061573
+        for <linux-parisc@vger.kernel.org>; Fri, 11 Sep 2020 03:27:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=skXTEAaQAa0DM6z2RpC3bzmnDEa0Qoj++b8K2MiDj54=; b=dyjL7JMkvJ9m8TxdBlZ7KZdf2Q
+        LN5/zr4BXDgUqu7wlPU0Vw0jX1055cLJ/vvXWIRgU5tSXdIkD8ZEiP4hJbInP6jBNVlwA54VDjW+c
+        P8E+qFgKEQQP7/pvKNhOGAoON84CqsWTYKJTSMD+jgCphXshdUScPB2tXFta4BWXNxm6jHfINsd14
+        17UgXcuKhxuplQJ3pBSoCJH8cmclVZXLpcutfq1HLPgNCc15raoROSNugeMairUGgOxIWW8r6wg+K
+        M2t6H8gYLpo4Vc6KwqHzkn3093lHKEwI5NPm9Uzr2HIBI+LPg9ZBYc6kHdoEDtpWstN14bhOVI8UU
+        IIIKcWfA==;
+Received: from [2001:4bb8:184:af1:f3a9:a7a5:a666:7e03] (helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kGgHT-0006sd-4i; Fri, 11 Sep 2020 10:27:47 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     James.Bottomley@HansenPartnership.com, deller@gmx.de
+Cc:     linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc: disable CONFIG_IDE in defconfigs
+Date:   Fri, 11 Sep 2020 12:27:46 +0200
+Message-Id: <20200911102746.1287829-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, 2020-09-10 at 15:21 +0100, Robin Murphy wrote:
-> On 2020-09-09 21:06, Joe Perches wrote:
-> > fallthrough to a separate case/default label break; isn't very readable.
-> > 
-> > Convert pseudo-keyword fallthrough; statements to a simple break; when
-> > the next label is case or default and the only statement in the next
-> > label block is break;
-> > 
-> > Found using:
-> > 
-> > $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
-> > 
-> > Miscellanea:
-> > 
-> > o Move or coalesce a couple label blocks above a default: block.
-> > 
-> > Signed-off-by: Joe Perches <joe@perches.com>
-> > ---
-> > 
-> > Compiled allyesconfig x86-64 only.
-> > A few files for other arches were not compiled.
-> > 
-> 
-> [...]
-> > diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> > index c192544e874b..743db1abec40 100644
-> > --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> > +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> > @@ -3777,7 +3777,7 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
-> >   	switch (FIELD_GET(IDR0_TTF, reg)) {
-> >   	case IDR0_TTF_AARCH32_64:
-> >   		smmu->ias = 40;
-> > -		fallthrough;
-> > +		break;
-> >   	case IDR0_TTF_AARCH64:
-> >   		break;
-> >   	default:
-> 
-> I have to say I don't really agree with the readability argument for 
-> this one - a fallthrough is semantically correct here, since the first 
-> case is a superset of the second. It just happens that anything we would 
-> do for the common subset is implicitly assumed (there are other 
-> potential cases we simply haven't added support for at the moment), thus 
-> the second case is currently empty.
-> This change actively obfuscates that distinction.
+Enable libata support for the Nat Semi NS87415 controller, and
+disable the soon to be removed legacy ide driver entirely.
 
-Then perhaps comments should be added to usefully
-describe the mechanisms.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/parisc/configs/generic-32bit_defconfig | 6 ++----
+ arch/parisc/configs/generic-64bit_defconfig | 6 +-----
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
-	case IDR0_TTF_AARCH32_64:
-		smmu->ias = 40;
-		fallthrough;	/* and still do the 64 bit processing */
-	case IDR0_TTF_AARCH64:
-		/* Nothing specific yet */
-		break;
-
-> Robin.
+diff --git a/arch/parisc/configs/generic-32bit_defconfig b/arch/parisc/configs/generic-32bit_defconfig
+index 61bac8ff8f228f..3cbcfad5f7249d 100644
+--- a/arch/parisc/configs/generic-32bit_defconfig
++++ b/arch/parisc/configs/generic-32bit_defconfig
+@@ -52,10 +52,6 @@ CONFIG_BLK_DEV_LOOP=y
+ CONFIG_BLK_DEV_CRYPTOLOOP=y
+ CONFIG_BLK_DEV_RAM=y
+ CONFIG_BLK_DEV_RAM_SIZE=6144
+-CONFIG_IDE=y
+-CONFIG_BLK_DEV_IDECD=y
+-CONFIG_BLK_DEV_GENERIC=y
+-CONFIG_BLK_DEV_NS87415=y
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_CHR_DEV_ST=y
+ CONFIG_BLK_DEV_SR=y
+@@ -65,6 +61,8 @@ CONFIG_SCSI_SYM53C8XX_2=y
+ CONFIG_SCSI_ZALON=y
+ CONFIG_SCSI_DH=y
+ CONFIG_ATA=y
++CONFIG_ATA_GENERIC=y
++CONFIG_PATA_NS87415=y
+ CONFIG_MD=y
+ CONFIG_BLK_DEV_MD=m
+ CONFIG_MD_LINEAR=m
+diff --git a/arch/parisc/configs/generic-64bit_defconfig b/arch/parisc/configs/generic-64bit_defconfig
+index 59561e04e6593f..7e2d7026285ec5 100644
+--- a/arch/parisc/configs/generic-64bit_defconfig
++++ b/arch/parisc/configs/generic-64bit_defconfig
+@@ -58,11 +58,6 @@ CONFIG_PCI_IOV=y
+ CONFIG_DEVTMPFS=y
+ CONFIG_DEVTMPFS_MOUNT=y
+ CONFIG_BLK_DEV_LOOP=y
+-CONFIG_IDE=y
+-CONFIG_IDE_GD=m
+-CONFIG_IDE_GD_ATAPI=y
+-CONFIG_BLK_DEV_IDECD=m
+-CONFIG_BLK_DEV_NS87415=y
+ # CONFIG_SCSI_PROC_FS is not set
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_BLK_DEV_SR=y
+@@ -76,6 +71,7 @@ CONFIG_SCSI_ZALON=y
+ CONFIG_SCSI_QLA_ISCSI=m
+ CONFIG_SCSI_DH=y
+ CONFIG_ATA=y
++CONFIG_PATA_NS87415=y
+ CONFIG_PATA_SIL680=y
+ CONFIG_ATA_GENERIC=y
+ CONFIG_MD=y
+-- 
+2.28.0
 
