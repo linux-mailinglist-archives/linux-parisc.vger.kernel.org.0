@@ -2,88 +2,326 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7362F2679A4
-	for <lists+linux-parisc@lfdr.de>; Sat, 12 Sep 2020 12:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0472E267E3C
+	for <lists+linux-parisc@lfdr.de>; Sun, 13 Sep 2020 08:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725825AbgILKvz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 12 Sep 2020 06:51:55 -0400
-Received: from mout.gmx.net ([212.227.15.15]:48153 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725820AbgILKvx (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 12 Sep 2020 06:51:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1599907905;
-        bh=SuZQc4F1e50rQLUc+N9sxG+irJvw7Qea6IpD11Cajgk=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=kTCD1jtQn8s+OqLBE4Xxgk3ttI0jKDVxlwaBp5IJO7M68uQuezlsFJO3/pqsj5N1M
-         pgE8aIUZirnhuu3XMZP/Q/PlkcMMJ9SV0l4UJgWZuQ5NzdbJfroQy35jqDx46iExNl
-         REUYRAo+/Zz8fEA3pc+C1b0H+7NQccUeTi0Ep1mE=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.134.185]) by mail.gmx.com (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1ML9uK-1k04Tj3MX4-00IGvG; Sat, 12
- Sep 2020 12:51:45 +0200
-Date:   Sat, 12 Sep 2020 12:51:43 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org
-Cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH] ata: pata_ns87415.c: Driver works on parisc with superio chip
-Message-ID: <20200912105143.GA28477@ls3530.fritz.box>
+        id S1725938AbgIMG5W (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 13 Sep 2020 02:57:22 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:29032 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725924AbgIMG5W (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 13 Sep 2020 02:57:22 -0400
+Received: from localhost.localdomain ([93.23.14.57])
+        by mwinf5d69 with ME
+        id TJxE230041Drbmd03JxEmw; Sun, 13 Sep 2020 08:57:18 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 13 Sep 2020 08:57:18 +0200
+X-ME-IP: 93.23.14.57
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net, kuba@kernel.org, hkallweit1@gmail.com,
+        gustavoars@kernel.org, vaibhavgupta40@gmail.com, mst@redhat.com,
+        leon@kernel.org
+Cc:     linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] tulip: windbond-840: switch from 'pci_' to 'dma_' API
+Date:   Sun, 13 Sep 2020 08:57:11 +0200
+Message-Id: <20200913065711.351802-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:Ybu7Xv23dKbjvX7adwSRR7TxxEs0uGjyYuudEcU9u8hPhBwaFLm
- YRy9B9tAo2zgr4JlAbLNDhdK3ILOODLereOCr4jHbhmVZofb4oLhIXvJHe5H++wEyLF00ft
- PgHcjIp69YNSfpFKA3f5buSjC+t9Vr1xX+bLRFnlEOj/xLvXcJa74Wv3njI70i21FNOcgnY
- oZGXe/EZTgdZchPCPP+kA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NtNyMhJge4E=:zOfek3GMjPfhSWw5jkaMSQ
- FIeCsWBIkTmtsAEEzqSgrOJsNkLgYawk+P8n8HExf71eZbMCx2O8xQYhN7whdBA7zZtTZEfoB
- eeVfjLDpX8V6BG8UJfUyyd5kFRlezrBJKWnB77vP7UoKs0WI0lwOwm7Qerse7xbmdjN9iy7cb
- 2kaYA7wldo8n5k9t3KXDtsUuz4WdXBbi2OfHYCYtTS6paV7tyLTDty3uVOLpWZyUwNLuKl/aV
- 4+GiM9dRxFeqtKOYVcA+UlCyCOaXkDmYMbOkFDXYhdgAmDk7hXlu6r/4zufyvHJov4qro8hF9
- AHWJol9XDxUcQETgTOIDfiGzBQ1YbwMdqda9UXUFfZZ9Ea9gMJCeq5Zw+t3Osvu+/tIMKKRCC
- npbGphn7fSVde95TUITWAMhflKHk/Y6P3nqlo/xQywX5vMb+xwG5wpx8KGSmGsGQOCbBgMxMA
- X7v4V76ABgKdek5TRzutu0DWUPqhuZ1BCRS14/jX9v9mprJhN4DaWvCUhxaAeqjwVBKAio0dp
- g+F3PK9NqqwbwukKA0lqbbkV3GhM53V03ZnQ7S2hFkVoaYe1wsP3Pe0fpWhcZxqgO8y40kRdk
- tcLbhv4MLyZYAOx27KuSEstFNycUUzsK85t8cqJv6z/6O9638sDaqCtXuTbULa/l59szb0riq
- 4kvl6jeyvp4nFeiMM7KMxYTPtSqFVPHLHCVzS4dLsEtZcnxSSj1mV9SzM6SYFC8zDpGzPWyZW
- PrZhcgFW5NCavQHwS9Pr3CuXA7h+Gdi8VClFWMm+4rZYaVXHbT+f8T9HJOxotna/7qWIXibm8
- wfldNSPNvucQTOug9x90G7/K2q5wRbkkiziWM7yKRCMhovV+ew33xTcvk7PLUGmWtxyfZtXOE
- kyjwzKyc715QJS1FYMwdJAE6GCSRX+O5rEip2tpiCI8FkpYUOBSnNYE1gDrogjUZiq2AhFICu
- Rv5CRCBdlMtUDF/gTwpO3kSSV6e7y/Ap3+8+vp5yg2ce2LgMbMyBiwXKk6qtBSIxaNkmOoH0p
- E8Pk5DMuICh2xUCZu/ImXssPZP2PbHg5opZLmUzdunB8Ryw+ordrVrVEY2k1GuqHQMVjStLEK
- 7+rg2qv9Xs62NE4oSLJ68jizcNvvqPUo5nRpENedSpnAZBhW/+a1Dn+/JPLmmjUpPmA5mjfml
- 7BL1uovYmsG5DQlG4BjoYggOA6Rug79llM54Y6kaIeHAnn/OOk2qzD8KepJVzN7zIxASw6RCn
- Ot5yyabTuT59hWcVY
+Content-Transfer-Encoding: 8bit
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-I tested this driver on my HP PA-RISC C3000 workstation, and it works
-with the built-in TEAC CD-532E-B CD-ROM drive.
-So drop the TODO item and adjust the file header.
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-diff --git a/drivers/ata/pata_ns87415.c b/drivers/ata/pata_ns87415.c
-index 4b2ba813dcab..1532b2e3c672 100644
---- a/drivers/ata/pata_ns87415.c
-+++ b/drivers/ata/pata_ns87415.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- *    pata_ns87415.c - NS87415 (non PARISC) PATA
-+ *    pata_ns87415.c - NS87415 (and PARISC SUPERIO 87560) PATA
-  *
-  *	(C) 2005 Red Hat <alan@lxorguk.ukuu.org.uk>
-  *
-@@ -16,7 +16,6 @@
-  *    systems. This has its own special mountain of errata.
-  *
-  *    TODO:
-- *	Test PARISC SuperIO
-  *	Get someone to test on SPARC
-  *	Implement lazy pio/dma switching for better performance
-  *	8bit shared timing.
+When memory is allocated in 'alloc_ringdesc()' GFP_KERNEL can be used
+because it is only called from 'netdev_open()' which is a '.ndo_open'
+function. Such functions are synchronized using the rtnl_lock() semaphore
+and no lock is taken in the between.
+
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/net/ethernet/dec/tulip/winbond-840.c | 73 ++++++++++----------
+ 1 file changed, 37 insertions(+), 36 deletions(-)
+
+diff --git a/drivers/net/ethernet/dec/tulip/winbond-840.c b/drivers/net/ethernet/dec/tulip/winbond-840.c
+index 5a43be327f58..7388e58486a6 100644
+--- a/drivers/net/ethernet/dec/tulip/winbond-840.c
++++ b/drivers/net/ethernet/dec/tulip/winbond-840.c
+@@ -364,7 +364,7 @@ static int w840_probe1(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	irq = pdev->irq;
+ 
+-	if (pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) {
++	if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) {
+ 		pr_warn("Device %s disabled due to DMA limitations\n",
+ 			pci_name(pdev));
+ 		return -EIO;
+@@ -802,8 +802,9 @@ static void init_rxtx_rings(struct net_device *dev)
+ 		np->rx_skbuff[i] = skb;
+ 		if (skb == NULL)
+ 			break;
+-		np->rx_addr[i] = pci_map_single(np->pci_dev,skb->data,
+-					np->rx_buf_sz,PCI_DMA_FROMDEVICE);
++		np->rx_addr[i] = dma_map_single(&np->pci_dev->dev, skb->data,
++						np->rx_buf_sz,
++						DMA_FROM_DEVICE);
+ 
+ 		np->rx_ring[i].buffer1 = np->rx_addr[i];
+ 		np->rx_ring[i].status = DescOwned;
+@@ -833,20 +834,17 @@ static void free_rxtx_rings(struct netdev_private* np)
+ 	for (i = 0; i < RX_RING_SIZE; i++) {
+ 		np->rx_ring[i].status = 0;
+ 		if (np->rx_skbuff[i]) {
+-			pci_unmap_single(np->pci_dev,
+-						np->rx_addr[i],
+-						np->rx_skbuff[i]->len,
+-						PCI_DMA_FROMDEVICE);
++			dma_unmap_single(&np->pci_dev->dev, np->rx_addr[i],
++					 np->rx_skbuff[i]->len,
++					 DMA_FROM_DEVICE);
+ 			dev_kfree_skb(np->rx_skbuff[i]);
+ 		}
+ 		np->rx_skbuff[i] = NULL;
+ 	}
+ 	for (i = 0; i < TX_RING_SIZE; i++) {
+ 		if (np->tx_skbuff[i]) {
+-			pci_unmap_single(np->pci_dev,
+-						np->tx_addr[i],
+-						np->tx_skbuff[i]->len,
+-						PCI_DMA_TODEVICE);
++			dma_unmap_single(&np->pci_dev->dev, np->tx_addr[i],
++					 np->tx_skbuff[i]->len, DMA_TO_DEVICE);
+ 			dev_kfree_skb(np->tx_skbuff[i]);
+ 		}
+ 		np->tx_skbuff[i] = NULL;
+@@ -964,10 +962,10 @@ static int alloc_ringdesc(struct net_device *dev)
+ 
+ 	np->rx_buf_sz = (dev->mtu <= 1500 ? PKT_BUF_SZ : dev->mtu + 32);
+ 
+-	np->rx_ring = pci_alloc_consistent(np->pci_dev,
+-			sizeof(struct w840_rx_desc)*RX_RING_SIZE +
+-			sizeof(struct w840_tx_desc)*TX_RING_SIZE,
+-			&np->ring_dma_addr);
++	np->rx_ring = dma_alloc_coherent(&np->pci_dev->dev,
++					 sizeof(struct w840_rx_desc) * RX_RING_SIZE +
++					 sizeof(struct w840_tx_desc) * TX_RING_SIZE,
++					 &np->ring_dma_addr, GFP_KERNEL);
+ 	if(!np->rx_ring)
+ 		return -ENOMEM;
+ 	init_rxtx_rings(dev);
+@@ -976,10 +974,10 @@ static int alloc_ringdesc(struct net_device *dev)
+ 
+ static void free_ringdesc(struct netdev_private *np)
+ {
+-	pci_free_consistent(np->pci_dev,
+-			sizeof(struct w840_rx_desc)*RX_RING_SIZE +
+-			sizeof(struct w840_tx_desc)*TX_RING_SIZE,
+-			np->rx_ring, np->ring_dma_addr);
++	dma_free_coherent(&np->pci_dev->dev,
++			  sizeof(struct w840_rx_desc) * RX_RING_SIZE +
++			  sizeof(struct w840_tx_desc) * TX_RING_SIZE,
++			  np->rx_ring, np->ring_dma_addr);
+ 
+ }
+ 
+@@ -994,8 +992,8 @@ static netdev_tx_t start_tx(struct sk_buff *skb, struct net_device *dev)
+ 	/* Calculate the next Tx descriptor entry. */
+ 	entry = np->cur_tx % TX_RING_SIZE;
+ 
+-	np->tx_addr[entry] = pci_map_single(np->pci_dev,
+-				skb->data,skb->len, PCI_DMA_TODEVICE);
++	np->tx_addr[entry] = dma_map_single(&np->pci_dev->dev, skb->data,
++					    skb->len, DMA_TO_DEVICE);
+ 	np->tx_skbuff[entry] = skb;
+ 
+ 	np->tx_ring[entry].buffer1 = np->tx_addr[entry];
+@@ -1078,9 +1076,8 @@ static void netdev_tx_done(struct net_device *dev)
+ 			np->stats.tx_packets++;
+ 		}
+ 		/* Free the original skb. */
+-		pci_unmap_single(np->pci_dev,np->tx_addr[entry],
+-					np->tx_skbuff[entry]->len,
+-					PCI_DMA_TODEVICE);
++		dma_unmap_single(&np->pci_dev->dev, np->tx_addr[entry],
++				 np->tx_skbuff[entry]->len, DMA_TO_DEVICE);
+ 		np->tx_q_bytes -= np->tx_skbuff[entry]->len;
+ 		dev_kfree_skb_irq(np->tx_skbuff[entry]);
+ 		np->tx_skbuff[entry] = NULL;
+@@ -1217,18 +1214,21 @@ static int netdev_rx(struct net_device *dev)
+ 			if (pkt_len < rx_copybreak &&
+ 			    (skb = netdev_alloc_skb(dev, pkt_len + 2)) != NULL) {
+ 				skb_reserve(skb, 2);	/* 16 byte align the IP header */
+-				pci_dma_sync_single_for_cpu(np->pci_dev,np->rx_addr[entry],
+-							    np->rx_skbuff[entry]->len,
+-							    PCI_DMA_FROMDEVICE);
++				dma_sync_single_for_cpu(&np->pci_dev->dev,
++							np->rx_addr[entry],
++							np->rx_skbuff[entry]->len,
++							DMA_FROM_DEVICE);
+ 				skb_copy_to_linear_data(skb, np->rx_skbuff[entry]->data, pkt_len);
+ 				skb_put(skb, pkt_len);
+-				pci_dma_sync_single_for_device(np->pci_dev,np->rx_addr[entry],
+-							       np->rx_skbuff[entry]->len,
+-							       PCI_DMA_FROMDEVICE);
++				dma_sync_single_for_device(&np->pci_dev->dev,
++							   np->rx_addr[entry],
++							   np->rx_skbuff[entry]->len,
++							   DMA_FROM_DEVICE);
+ 			} else {
+-				pci_unmap_single(np->pci_dev,np->rx_addr[entry],
+-							np->rx_skbuff[entry]->len,
+-							PCI_DMA_FROMDEVICE);
++				dma_unmap_single(&np->pci_dev->dev,
++						 np->rx_addr[entry],
++						 np->rx_skbuff[entry]->len,
++						 DMA_FROM_DEVICE);
+ 				skb_put(skb = np->rx_skbuff[entry], pkt_len);
+ 				np->rx_skbuff[entry] = NULL;
+ 			}
+@@ -1258,9 +1258,10 @@ static int netdev_rx(struct net_device *dev)
+ 			np->rx_skbuff[entry] = skb;
+ 			if (skb == NULL)
+ 				break;			/* Better luck next round. */
+-			np->rx_addr[entry] = pci_map_single(np->pci_dev,
+-							skb->data,
+-							np->rx_buf_sz, PCI_DMA_FROMDEVICE);
++			np->rx_addr[entry] = dma_map_single(&np->pci_dev->dev,
++							    skb->data,
++							    np->rx_buf_sz,
++							    DMA_FROM_DEVICE);
+ 			np->rx_ring[entry].buffer1 = np->rx_addr[entry];
+ 		}
+ 		wmb();
+-- 
+2.25.1
+
