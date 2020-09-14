@@ -2,112 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5CBB268300
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Sep 2020 05:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F087268AD2
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Sep 2020 14:25:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726061AbgINDEt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 13 Sep 2020 23:04:49 -0400
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:33141 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726042AbgINDEq (ORCPT
+        id S1726338AbgINMZr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 14 Sep 2020 08:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46680 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726243AbgINMZA (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 13 Sep 2020 23:04:46 -0400
-Received: by mail-pj1-f68.google.com with SMTP id md22so4500377pjb.0;
-        Sun, 13 Sep 2020 20:04:46 -0700 (PDT)
+        Mon, 14 Sep 2020 08:25:00 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9DC3C0698D8
+        for <linux-parisc@vger.kernel.org>; Mon, 14 Sep 2020 05:20:46 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id gf14so5274964pjb.5
+        for <linux-parisc@vger.kernel.org>; Mon, 14 Sep 2020 05:20:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=gxYQz48aGorfvze6exW0FuIKKJvVhs5z+cRnEenJUaY=;
+        b=lJcNVyJRUAayno9hKEOIsIdL3+GyVQ/j9Lr9ZyFYG69r1aDcVoLpxxU1phtSR//7uN
+         f9ilKxsHZK1nfhGLtZy2g94PIHMN8OfFLoHWwQ0rr4cbfGAThGEUhP3LY2QErRulyXND
+         pzTe0IWkSk8TwdGqzI6ZsaYjjrl9ZkFDHfCuNi42WHSOd5g97dQY02xUYw0iRhZdjBS8
+         XRdNRdIOMO3u9Y5ZxduO9cs/SiV8eyiN4axlb+8ovJ/cjd/ZnfBdboPNlHeQCGg2Z4eE
+         3aAz425R7nSfhvVdkRkxrB/Xgm5wkxiqK8TB2O+J293VVVM5719Botpbmqc2FK3yvUHs
+         S3yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=wslV7kc2OWlQiNYx6OI1TuXMh83MtChw+AW7PwzF+ro=;
-        b=mPIq42oLQQwZPeph0I/GC+c8qJnt/f3DdFzWNMY3gxujgLp30o6tnG80LrBQgqk03Z
-         gIkm8/dUyA2yrJnL0dbF830VMiLkpd1S6vpXAsNSewzG4A5JZ+Fmkk0pqhSp/t8OPVf+
-         4uv+gI2KAcUN9MYWAE/XX/cS4I60DGnSxV67Hc/C00zvnveBL4I2MoKzzdAzfA1kpcDA
-         SdbBRf/lfFexfLLsJzEJKR2kGbXoEPBMOyotfR7vye5nocxxwE77NdB5dBrMSP5DnDuq
-         I6V82ygq/rS3/8L84EWOMxYTcG8crGK2M+RY4LNdv1O9ZFT1NKQOSwbEY5v3AxmRO3io
-         NdNA==
-X-Gm-Message-State: AOAM530Y5JWLpejPovVGAORgWJJMcwF5VLxTzs6qXUw7TGm4iBBj1BuO
-        fH2YMkjOgscWfLlUuEHUmwc=
-X-Google-Smtp-Source: ABdhPJwkWuf6DfzGlBx7srcAs/Wny3kc9OOhUctFy8t0zGlFn2N/FKnl3KPovaV6BnflvIvVgsFOAw==
-X-Received: by 2002:a17:90a:8593:: with SMTP id m19mr12267271pjn.104.1600052685777;
-        Sun, 13 Sep 2020 20:04:45 -0700 (PDT)
-Received: from localhost ([2601:647:5b00:1162:1ac0:17a6:4cc6:d1ef])
-        by smtp.gmail.com with ESMTPSA id q65sm6809774pga.88.2020.09.13.20.04.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2020 20:04:45 -0700 (PDT)
-Date:   Sun, 13 Sep 2020 20:04:43 -0700
-From:   Moritz Fischer <mdf@kernel.org>
-To:     Moritz Fischer <mdf@kernel.org>
-Cc:     davem@davemloft.net, snelson@pensando.io, mst@redhat.com,
-        hkallweit1@gmail.com, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        moritzf@google.com
-Subject: Re: [PATCH net-next 2/3] net: dec: tulip: de2104x: Replace
- pci_enable_device with devres version
-Message-ID: <20200914030443.GA12542@archbook>
-References: <20200914001002.8623-1-mdf@kernel.org>
- <20200914001002.8623-3-mdf@kernel.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=gxYQz48aGorfvze6exW0FuIKKJvVhs5z+cRnEenJUaY=;
+        b=oGWs0Oyj9sCfxC5f/6RbU6wIfAXLvhs1AF8NbQazg9G13S4Vm3SPu9pjwsN+KVDssb
+         45ycMSxvrrl3qhrfW1J9CweNNkMR7spj72OHzXbbNLZ2aCY+xut3aWdobvDQxFGMzijj
+         zuC1k1sWoSnsTQyozBi4GwcNHHOWsW7a7xA+a4ciFSe3KSFATzhCwa8reAP/cUkfQh3Q
+         boytf+FyjLxozm59v8PIUWQPk8JSNNMxPxPlfMVkTF+6BbFsFLEJn89KEMLBFMkRCoc0
+         S/2Fk7KC5BnxLYTR1YNzcGUKFSIKXr6vA2AKMadmQFHlBQSqD9ABNNaGc2doxYsGqMjR
+         0R/w==
+X-Gm-Message-State: AOAM532tekOXHaagYQeodNuzDxMcL42BUumPw5IfV7yMdaOGiXpjjJh4
+        fmRLSMaROX3JCxyedR7MUXUuwHYKKrRKKEAE+aQ=
+X-Google-Smtp-Source: ABdhPJxKR0QUNIk322nIsyoegB7/CSaUPrFdm+1F40HcFCzWm1l5lKrWkUC+D013L1tiQdptqBgCxk1QvhOke8LoKDk=
+X-Received: by 2002:a17:90a:fe07:: with SMTP id ck7mr13670472pjb.20.1600086045990;
+ Mon, 14 Sep 2020 05:20:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200914001002.8623-3-mdf@kernel.org>
+Received: by 2002:a05:6a10:60d1:0:0:0:0 with HTTP; Mon, 14 Sep 2020 05:20:45
+ -0700 (PDT)
+Reply-To: mrsmegwilliam6@gmail.com
+From:   Ms Mary Mcniff <diplomaticstoragecourier@gmail.com>
+Date:   Mon, 14 Sep 2020 05:20:45 -0700
+Message-ID: <CAD72A3Muh_1fkpyzfpFBQnqnV=AHHE4vpnvPwLqC6xkvhwktdw@mail.gmail.com>
+Subject: Your Respond ASAP
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Sep 13, 2020 at 05:10:01PM -0700, Moritz Fischer wrote:
-> Replace pci_enable_device() with its devres counterpart
-> pcim_enable_device().
-> 
-> Signed-off-by: Moritz Fischer <mdf@kernel.org>
-> ---
->  drivers/net/ethernet/dec/tulip/de2104x.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
-> index 9bcfc82b71d1..e4189c45c2ba 100644
-> --- a/drivers/net/ethernet/dec/tulip/de2104x.c
-> +++ b/drivers/net/ethernet/dec/tulip/de2104x.c
-> @@ -2009,14 +2009,14 @@ static int de_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->  	netif_carrier_off(dev);
->  
->  	/* wake up device, assign resources */
-> -	rc = pci_enable_device(pdev);
-> +	rc = pcim_enable_device(pdev);
->  	if (rc)
->  		return rc;
->  
->  	/* reserve PCI resources to ensure driver atomicity */
->  	rc = pci_request_regions(pdev, DRV_NAME);
->  	if (rc)
-> -		goto err_out_disable;
-> +		return rc;
->  
->  	/* check for invalid IRQ value */
->  	if (pdev->irq < 2) {
-> @@ -2096,8 +2096,6 @@ static int de_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->  	iounmap(regs);
->  err_out_res:
->  	pci_release_regions(pdev);
-> -err_out_disable:
-> -	pci_disable_device(pdev);
->  	return rc;
->  }
->  
-> @@ -2111,7 +2109,6 @@ static void de_remove_one(struct pci_dev *pdev)
->  	kfree(de->ee_data);
->  	iounmap(de->regs);
->  	pci_release_regions(pdev);
-> -	pci_disable_device(pdev);
->  }
->  
->  #ifdef CONFIG_PM
-> -- 
-> 2.28.0
-> 
+-- 
+From Chief Compliance Officer, Citigroup Inc CITIBANK
+388 Greenwich St, New York, 10013, United States United.
+PAYMENT CODE: FRB010
+Swift: PTBLBXXX
+==============================================
 
-Ugh, sorry for the noise, I missed the instances in the suspend/resume.
-Let me resend a v2 of this ...
+Attention: Beneficiary,
 
-Thanks,
-Moritz
+We write to inform you that Series of meetings have been held over the
+past 2 weeks with the Secretary General of United Nations,U.S
+Department of State and Dubai Union Organization this ended last
+week.And parcel is under our custody right now, It will deliver to you
+within 24 hours once you clear the charges which will cost you
+according to the BANKERS COURIER SERVICES that wish to deliver your
+ATM CARD card to
+you immediately.
+
+However, it is the pleasure of this office to inform you that your ATM
+CARD number; is 29741733 and it has been approved and upgraded in your
+favor .you call me for the pin code numbers. The ATM CARD value is us
+$10.5 Million only.
+
+Kindly contact the paying bank for the claim of your ATM visa card
+payment fund $10,500,000.00 through the below contact information;
+
+Contact Person:Mr Williams S Young
+Director of Financial Controller
+Bank Name: CITIBANK
+Bank address; 388 Greenwich St,
+New York City,10013, United States
+Email:mrsmegwilliam6@gmail.com
+
+Reconfirm the following information?
+
+(1)Your Full Name=============
+(2)Mobile Phone Number======
+(3)Current Home Address==== ====
+(4)Fax Number================
+(5)Passport/Drivers license ======
+
+Endeavor to keep me posted once you contacted the officer in charge
+through the above mentioned information.
+
+Your timely response is highly appreciated.To this end, you are
+required to forward your payment information as follows to enable us
+load your fund into the card with your information and deliver it to
+your door step. as the BANKERS COURIER SERVICES are in charge of the
+delivery services to your destination.
+
+Yours truly;
+
+Ms Mary Mcniff.
+Chief Compliance Officer, Citigroup Inc
+FEDERAL RESERVE SYSTEM.
+Email: marymcniff7@gmail.com.
