@@ -2,82 +2,93 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 654F1269EA3
-	for <lists+linux-parisc@lfdr.de>; Tue, 15 Sep 2020 08:36:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4FD626A19E
+	for <lists+linux-parisc@lfdr.de>; Tue, 15 Sep 2020 11:07:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726095AbgIOGg2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 15 Sep 2020 02:36:28 -0400
-Received: from verein.lst.de ([213.95.11.211]:46605 "EHLO verein.lst.de"
+        id S1726414AbgIOJGi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 15 Sep 2020 05:06:38 -0400
+Received: from mga03.intel.com ([134.134.136.65]:35019 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726056AbgIOGgY (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 15 Sep 2020 02:36:24 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id CFEFC6736F; Tue, 15 Sep 2020 08:36:18 +0200 (CEST)
-Date:   Tue, 15 Sep 2020 08:36:18 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        iommu@lists.linux-foundation.org,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        linux1394-devel@lists.sourceforge.net, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        nouveau@lists.freedesktop.org, netdev@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-mm@kvack.org,
-        alsa-devel@alsa-project.org
-Subject: Re: a saner API for allocating DMA addressable pages v2
-Message-ID: <20200915063618.GD19113@lst.de>
-References: <20200914144433.1622958-1-hch@lst.de> <20200914152617.GR6583@casper.infradead.org>
+        id S1726269AbgIOJGe (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 15 Sep 2020 05:06:34 -0400
+IronPort-SDR: RZD/fFWTjvWyaYIJCtNMDzEdl4brC47SlQmB8DC403Dr6vIA5u/jFu0AFJj/JoHYnbKKWwa4bw
+ iw1Jurkpfvfw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9744"; a="159272034"
+X-IronPort-AV: E=Sophos;i="5.76,429,1592895600"; 
+   d="scan'208";a="159272034"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 02:06:31 -0700
+IronPort-SDR: JN6muYTQqB3wm3kCXqk1xsORqKL94poqyPOQLwwV9SSOFBG1M/RLedvNq9ruyR1KSefDfAWvPJ
+ brvH/uTc728w==
+X-IronPort-AV: E=Sophos;i="5.76,429,1592895600"; 
+   d="scan'208";a="482690707"
+Received: from emoriart-mobl.ger.corp.intel.com (HELO localhost) ([10.252.7.208])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 02:06:16 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Joe Perches <joe@perches.com>, LKML <linux-kernel@vger.kernel.org>,
+        Jiri Kosina <trivial@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
+        alsa-devel <alsa-devel@alsa-project.org>,
+        dri-devel@lists.freedesktop.org, linux-ide@vger.kernel.org,
+        dm-devel@redhat.com, linux-mtd@lists.infradead.org,
+        linux-i2c@vger.kernel.org, sparclinux@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-rtc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-afs@lists.infradead.org, coreteam@netfilter.org,
+        intel-wired-lan@lists.osuosl.org, linux-serial@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        Kees Cook <kees.cook@canonical.com>,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
+        storagedev@microchip.com, ceph-devel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [Intel-gfx] [trivial PATCH] treewide: Convert switch/case fallthrough; to break;
+In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+Date:   Tue, 15 Sep 2020 12:06:21 +0300
+Message-ID: <87d02nxvci.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200914152617.GR6583@casper.infradead.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Sep 14, 2020 at 04:26:17PM +0100, Matthew Wilcox wrote:
-> On Mon, Sep 14, 2020 at 04:44:16PM +0200, Christoph Hellwig wrote:
-> > I'm still a little unsure about the API naming, as alloc_pages sort of
-> > implies a struct page return value, but we return a kernel virtual
-> > address.
-> 
-> Erm ... dma_alloc_pages() returns a struct page, so is this sentence
-> stale?
+On Wed, 09 Sep 2020, Joe Perches <joe@perches.com> wrote:
+> diff --git a/drivers/gpu/drm/i915/display/intel_sprite.c b/drivers/gpu/drm/i915/display/intel_sprite.c
+> index 5ac0dbf0e03d..35ac539cc2b1 100644
+> --- a/drivers/gpu/drm/i915/display/intel_sprite.c
+> +++ b/drivers/gpu/drm/i915/display/intel_sprite.c
+> @@ -2861,7 +2861,7 @@ static bool gen12_plane_format_mod_supported(struct drm_plane *_plane,
+>  	case I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS:
+>  		if (!gen12_plane_supports_mc_ccs(dev_priv, plane->id))
+>  			return false;
+> -		fallthrough;
+> +		break;
+>  	case DRM_FORMAT_MOD_LINEAR:
+>  	case I915_FORMAT_MOD_X_TILED:
+>  	case I915_FORMAT_MOD_Y_TILED:
 
-Yes.
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 
-> You say that like it's a bad thing.  I think the problem is more that
-> people don't understand what non-coherent means and think they're
-> supporting it when they're not.
-> 
-> dma_alloc_manual_flushing()?
+for merging via whichever tree seems best.
 
-That sounds pretty awkward..
+BR,
+Jani.
 
-> 
-> > As a follow up I plan to move the implementation of the
-> > DMA_ATTR_NO_KERNEL_MAPPING flag over to this framework as well, given
-> > that is also is a fundamentally non coherent allocation.  The replacement
-> > for that flag would then return a struct page, as it is allowed to
-> > actually return pages without a kernel mapping as the name suggested
-> > (although most of the time they will actually have a kernel mapping..)
-> 
-> If the page doesn't have a kernel mapping, shouldn't it return a PFN
-> or a phys_addr?
 
-Most APIs we'll feed it into need a struct page.  The difference is just
-that it can be a highmem page.  And if we want to get fancy we could
-change the kernel mapping to PROT_NONE eventually.
+-- 
+Jani Nikula, Intel Open Source Graphics Center
