@@ -2,95 +2,58 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 213AD269D74
-	for <lists+linux-parisc@lfdr.de>; Tue, 15 Sep 2020 06:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13D27269E6F
+	for <lists+linux-parisc@lfdr.de>; Tue, 15 Sep 2020 08:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726280AbgIOEZ3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 15 Sep 2020 00:25:29 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:45793 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726208AbgIOEZI (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 15 Sep 2020 00:25:08 -0400
-Received: by mail-pl1-f193.google.com with SMTP id bh1so665246plb.12;
-        Mon, 14 Sep 2020 21:25:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=+J3UCnmg7D+m+RuZsfbFv8LhAw39Q6wjHS6C2zB0jTk=;
-        b=Y9qSGvEpBON01XJMvD7wI6HJZ1OU/TjFC7m616ZvOZWCcW5T0DUDdhJBDBYmBnIYxM
-         LoYBcY7t+U6+geSPyiZDX68pfKVLlQIgTLTUPqbKc1pq9PdV3yZFFV+Xc73Hh+Hy8z8Q
-         NCzYF+h0sKwstm3lgsttr3jpyXkIXOrmzMhERpEZlkpZWZoGXL4f7x/QggQMnp1B6hX3
-         CDK+dJfBmQfU1w/MLVfZBnrTfWOeHODVGodEYij4tZpw8YNeYvL2hy0/qcKiDBOZXK8X
-         LTFpVY0wNsUqjuK20J0C+oJ8Jt+C5aZMsCt9PlmEX/GrplmUDOJ+quA3Q0myzGbhD8DC
-         W/aA==
-X-Gm-Message-State: AOAM530XFKMBwmIxxtu7628jdrtZg8r4itSSOBlXL6bixYV7yrAO9roV
-        VtC9/pUSeK66SQkVYshTBKsd2OyDhctNlA==
-X-Google-Smtp-Source: ABdhPJxIK5c0wk+11dlCt9T2YI8bLtCgH4oCjCK8z8tvXl6nTA1L5yFTZVPKmvaUGUqj49km944ykg==
-X-Received: by 2002:a17:90a:5304:: with SMTP id x4mr2348592pjh.16.1600143907578;
-        Mon, 14 Sep 2020 21:25:07 -0700 (PDT)
-Received: from localhost ([2601:647:5b00:1162:1ac0:17a6:4cc6:d1ef])
-        by smtp.gmail.com with ESMTPSA id a2sm11511070pfr.104.2020.09.14.21.25.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2020 21:25:07 -0700 (PDT)
-From:   Moritz Fischer <mdf@kernel.org>
-To:     davem@davemloft.net
-Cc:     snelson@pensando.io, mst@redhat.com, hkallweit1@gmail.com,
-        netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, moritzf@google.com,
-        Moritz Fischer <mdf@kernel.org>
-Subject: [PATCH net-next v2 3/3] net: dec: tulip: de2104x: Replace kmemdup() with devm_kmempdup()
-Date:   Mon, 14 Sep 2020 21:24:52 -0700
-Message-Id: <20200915042452.26155-4-mdf@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200915042452.26155-1-mdf@kernel.org>
-References: <20200915042452.26155-1-mdf@kernel.org>
+        id S1726066AbgIOG1q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 15 Sep 2020 02:27:46 -0400
+Received: from verein.lst.de ([213.95.11.211]:46528 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726048AbgIOG1p (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 15 Sep 2020 02:27:45 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 527E66736F; Tue, 15 Sep 2020 08:27:39 +0200 (CEST)
+Date:   Tue, 15 Sep 2020 08:27:38 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        iommu@lists.linux-foundation.org,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        linux1394-devel@lists.sourceforge.net, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        nouveau@lists.freedesktop.org, netdev@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-mm@kvack.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 07/17] 53c700: improve non-coherent DMA handling
+Message-ID: <20200915062738.GA19113@lst.de>
+References: <20200914144433.1622958-1-hch@lst.de> <20200914144433.1622958-8-hch@lst.de> <1600096818.4061.7.camel@HansenPartnership.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1600096818.4061.7.camel@HansenPartnership.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Replace an instance of kmemdup() with the devres counted version
-instead.
+On Mon, Sep 14, 2020 at 08:20:18AM -0700, James Bottomley wrote:
+> If you're going to change the macros from taking a device to taking a
+> hostdata structure then the descriptive argument name needs to change
+> ... it can't be dev anymore.  I'm happy with it simply becoming 'h' if
+> hostdata is too long.
+> 
+> I already asked for this on the first go around:
 
-Signed-off-by: Moritz Fischer <mdf@kernel.org>
----
- drivers/net/ethernet/dec/tulip/de2104x.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
-index 698d79bc4784..a3a002c8e9ac 100644
---- a/drivers/net/ethernet/dec/tulip/de2104x.c
-+++ b/drivers/net/ethernet/dec/tulip/de2104x.c
-@@ -1940,7 +1940,8 @@ static void de21041_get_srom_info(struct de_private *de)
- 			de->media[i].csr15 = t21041_csr15[i];
- 	}
- 
--	de->ee_data = kmemdup(&ee_data[0], DE_EEPROM_SIZE, GFP_KERNEL);
-+	de->ee_data = devm_kmemdup(&de->pdev->dev, &ee_data[0], DE_EEPROM_SIZE,
-+				   GFP_KERNEL);
- 
- 	return;
- 
-@@ -2092,7 +2093,6 @@ static int de_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	return 0;
- 
- err_out_iomap:
--	kfree(de->ee_data);
- 	iounmap(regs);
- err_out_res:
- 	pci_release_regions(pdev);
-@@ -2106,7 +2106,6 @@ static void de_remove_one(struct pci_dev *pdev)
- 
- 	BUG_ON(!dev);
- 	unregister_netdev(dev);
--	kfree(de->ee_data);
- 	iounmap(de->regs);
- 	pci_release_regions(pdev);
- }
--- 
-2.28.0
-
+And I did rename them, those hunks just accidentally slipped into patch
+12 instead of this one.  Fixed for the next versions.
