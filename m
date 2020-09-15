@@ -2,173 +2,76 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF4C2691E5
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Sep 2020 18:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 667FA269D75
+	for <lists+linux-parisc@lfdr.de>; Tue, 15 Sep 2020 06:25:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726166AbgINQmf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 14 Sep 2020 12:42:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44762 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726172AbgINPNb (ORCPT
+        id S1726149AbgIOEZF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 15 Sep 2020 00:25:05 -0400
+Received: from mail-pf1-f174.google.com ([209.85.210.174]:36481 "EHLO
+        mail-pf1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726019AbgIOEZE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 14 Sep 2020 11:13:31 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 226CBC06174A;
-        Mon, 14 Sep 2020 08:13:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description;
-        bh=RqQGv7rUrofRqLyMSzfEtcHVgVUslC8cDoNR577KrIg=; b=dP3pKRmpC+I0E+dOSbraRXJ35X
-        3haQwB40uPuLpGR5zn67wQbMCYeYUDIDCnlsB5tNCLi9vaoDWIjbKg2ty0ncKAbUYHiAWQ1Gwe4T2
-        /L1d3ii2rUMCke8WZymWHb2tl/HocPOnGFPqgOwVy0kntsQ5+2r+a5DBRhRIc7Qwt5AhJHft+rUwc
-        cUuL4BH3aNOU3nrCkiiuv/cztMGgjnYHVBqE36sUV2hPE4iUig7eK9l316jWvenjHMhEIQ2Nevj2v
-        NzaWOE2Dnmj9Uqr/OYUKSLadMvLX2JkZjrKxFODSeBkgfvxBjLKXD/2ClVZgj/x7V7GdULKR4vyHX
-        B3N9jL+g==;
-Received: from 089144214092.atnat0023.highway.a1.net ([89.144.214.92] helo=localhost)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kHqAB-0003UL-04; Mon, 14 Sep 2020 15:13:03 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        iommu@lists.linux-foundation.org
-Cc:     Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        linux1394-devel@lists.sourceforge.net, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        nouveau@lists.freedesktop.org, netdev@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-mm@kvack.org,
-        alsa-devel@alsa-project.org
-Subject: [PATCH 12/17] 53c700: convert to dma_alloc_noncoherent
-Date:   Mon, 14 Sep 2020 16:44:28 +0200
-Message-Id: <20200914144433.1622958-13-hch@lst.de>
+        Tue, 15 Sep 2020 00:25:04 -0400
+Received: by mail-pf1-f174.google.com with SMTP id d9so1205643pfd.3;
+        Mon, 14 Sep 2020 21:25:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=a4IG6lJBh6+U1SoIVawTeMs0yszM6z5/EUlgPnbAuPA=;
+        b=UOrmey3VOUIGx84G9Q11//2BYlIxsxV5rQfgs1sLpP+7Y2gyd2wbV9zWX84i40J1Yi
+         Y4UcpEH9QHUvvDV+k+oIdlnpMcpKairQB/bU9GxBmX/uiq/dkMB3EPuLjExKU0F7iCgo
+         +/JRbhXod5vT5ZexxNIOeQtIxHNHaihtLIExaHIYI8+nliKppKyNIGFS+kUgYmpIUstL
+         /+5tn8Cpu5Pby/W7l0du1y/pTcteru3e8cNcgSwx87KvNF32KwYztV4FtQKL1ijO57qq
+         Iz/flinbGK9W6jp1zZhgtJszFobpDPstVJvB68no2Bs69wpPkzCALJC9U6zsQIsn/U6N
+         HHjA==
+X-Gm-Message-State: AOAM530xd4RJ0LODAEIjdRBnXmxp7kWRz7GDAu0Zbmzpgu5BX/HwXR2C
+        BD73M8Vq3EACzoRTi22kmRM=
+X-Google-Smtp-Source: ABdhPJxftlbBHrAra9hCmc3vttixPBShGwbtAGyveXCVih49Izh99S//I/vM1Kci+AZDjRHT80y3tQ==
+X-Received: by 2002:a63:1252:: with SMTP id 18mr13649891pgs.246.1600143903796;
+        Mon, 14 Sep 2020 21:25:03 -0700 (PDT)
+Received: from localhost ([2601:647:5b00:1162:1ac0:17a6:4cc6:d1ef])
+        by smtp.gmail.com with ESMTPSA id a3sm11897923pfl.213.2020.09.14.21.25.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2020 21:25:03 -0700 (PDT)
+From:   Moritz Fischer <mdf@kernel.org>
+To:     davem@davemloft.net
+Cc:     snelson@pensando.io, mst@redhat.com, hkallweit1@gmail.com,
+        netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, moritzf@google.com,
+        Moritz Fischer <mdf@kernel.org>
+Subject: [PATCH net-next v2 0/3] First bunch of Tulip cleanups
+Date:   Mon, 14 Sep 2020 21:24:49 -0700
+Message-Id: <20200915042452.26155-1-mdf@kernel.org>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200914144433.1622958-1-hch@lst.de>
-References: <20200914144433.1622958-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-parisc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Use the new non-coherent DMA API including proper ownership transfers.
+This series is the first bunch of minor cleanups for the de2104x driver
+to make it look and behave more like a modern driver.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- drivers/scsi/53c700.c | 11 +++++++++--
- drivers/scsi/53c700.h | 16 ++++++++--------
- 2 files changed, 17 insertions(+), 10 deletions(-)
+These changes replace some of the non-devres versions with devres
+versions of functions to simplify the error paths.
 
-diff --git a/drivers/scsi/53c700.c b/drivers/scsi/53c700.c
-index 9a343f8ecb6c3e..5117d90ccd9edf 100644
---- a/drivers/scsi/53c700.c
-+++ b/drivers/scsi/53c700.c
-@@ -269,18 +269,25 @@ NCR_700_get_SXFER(struct scsi_device *SDp)
- 					      spi_period(SDp->sdev_target));
- }
- 
-+static inline dma_addr_t virt_to_dma(struct NCR_700_Host_Parameters *h, void *p)
-+{
-+	return h->pScript + ((uintptr_t)p - (uintptr_t)h->script);
-+}
-+
- static inline void dma_sync_to_dev(struct NCR_700_Host_Parameters *h,
- 		void *addr, size_t size)
- {
- 	if (h->noncoherent)
--		dma_cache_sync(h->dev, addr, size, DMA_TO_DEVICE);
-+		dma_sync_single_for_device(h->dev, virt_to_dma(h, addr),
-+					   size, DMA_BIDIRECTIONAL);
- }
- 
- static inline void dma_sync_from_dev(struct NCR_700_Host_Parameters *h,
- 		void *addr, size_t size)
- {
- 	if (h->noncoherent)
--		dma_cache_sync(h->dev, addr, size, DMA_FROM_DEVICE);
-+		dma_sync_single_for_device(h->dev, virt_to_dma(h, addr), size,
-+					   DMA_BIDIRECTIONAL);
- }
- 
- struct Scsi_Host *
-diff --git a/drivers/scsi/53c700.h b/drivers/scsi/53c700.h
-index 0f545b05fe611d..c9f8c497babb3d 100644
---- a/drivers/scsi/53c700.h
-+++ b/drivers/scsi/53c700.h
-@@ -423,33 +423,33 @@ struct NCR_700_Host_Parameters {
- #define NCR_710_MIN_XFERP	0
- #define NCR_700_MIN_PERIOD	25 /* for SDTR message, 100ns */
- 
--#define script_patch_32(dev, script, symbol, value) \
-+#define script_patch_32(h, script, symbol, value) \
- { \
- 	int i; \
- 	dma_addr_t da = value; \
- 	for(i=0; i< (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { \
- 		__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]) + da; \
- 		(script)[A_##symbol##_used[i]] = bS_to_host(val); \
--		dma_sync_to_dev((dev), &(script)[A_##symbol##_used[i]], 4); \
-+		dma_sync_to_dev((h), &(script)[A_##symbol##_used[i]], 4); \
- 		DEBUG((" script, patching %s at %d to %pad\n", \
- 		       #symbol, A_##symbol##_used[i], &da)); \
- 	} \
- }
- 
--#define script_patch_32_abs(dev, script, symbol, value) \
-+#define script_patch_32_abs(h, script, symbol, value) \
- { \
- 	int i; \
- 	dma_addr_t da = value; \
- 	for(i=0; i< (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { \
- 		(script)[A_##symbol##_used[i]] = bS_to_host(da); \
--		dma_sync_to_dev((dev), &(script)[A_##symbol##_used[i]], 4); \
-+		dma_sync_to_dev((h), &(script)[A_##symbol##_used[i]], 4); \
- 		DEBUG((" script, patching %s at %d to %pad\n", \
- 		       #symbol, A_##symbol##_used[i], &da)); \
- 	} \
- }
- 
- /* Used for patching the SCSI ID in the SELECT instruction */
--#define script_patch_ID(dev, script, symbol, value) \
-+#define script_patch_ID(h, script, symbol, value) \
- { \
- 	int i; \
- 	for(i=0; i< (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { \
-@@ -457,13 +457,13 @@ struct NCR_700_Host_Parameters {
- 		val &= 0xff00ffff; \
- 		val |= ((value) & 0xff) << 16; \
- 		(script)[A_##symbol##_used[i]] = bS_to_host(val); \
--		dma_sync_to_dev((dev), &(script)[A_##symbol##_used[i]], 4); \
-+		dma_sync_to_dev((h), &(script)[A_##symbol##_used[i]], 4); \
- 		DEBUG((" script, patching ID field %s at %d to 0x%x\n", \
- 		       #symbol, A_##symbol##_used[i], val)); \
- 	} \
- }
- 
--#define script_patch_16(dev, script, symbol, value) \
-+#define script_patch_16(h, script, symbol, value) \
- { \
- 	int i; \
- 	for(i=0; i< (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { \
-@@ -471,7 +471,7 @@ struct NCR_700_Host_Parameters {
- 		val &= 0xffff0000; \
- 		val |= ((value) & 0xffff); \
- 		(script)[A_##symbol##_used[i]] = bS_to_host(val); \
--		dma_sync_to_dev((dev), &(script)[A_##symbol##_used[i]], 4); \
-+		dma_sync_to_dev((h), &(script)[A_##symbol##_used[i]], 4); \
- 		DEBUG((" script, patching short field %s at %d to 0x%x\n", \
- 		       #symbol, A_##symbol##_used[i], val)); \
- 	} \
+Next up after this will be the ioremap part.
+
+Changes from v1:
+- Fix issue with the pci_enable_device patch.
+
+Moritz Fischer (3):
+  net: dec: tulip: de2104x: Replace alloc_etherdev by
+    devm_alloc_etherdev
+  net: dec: tulip: de2104x: Replace pci_enable_device with devres
+    version
+  net: dec: tulip: de2104x: Replace kmemdup() with devm_kmempdup()
+
+ drivers/net/ethernet/dec/tulip/de2104x.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
+
 -- 
 2.28.0
 
