@@ -2,55 +2,33 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C86E326D61D
-	for <lists+linux-parisc@lfdr.de>; Thu, 17 Sep 2020 10:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D354526E629
+	for <lists+linux-parisc@lfdr.de>; Thu, 17 Sep 2020 22:05:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726344AbgIQIN2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 17 Sep 2020 04:13:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726520AbgIQINI (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 17 Sep 2020 04:13:08 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD142C061225
-        for <linux-parisc@vger.kernel.org>; Thu, 17 Sep 2020 01:03:40 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id l9so1043356wme.3
-        for <linux-parisc@vger.kernel.org>; Thu, 17 Sep 2020 01:03:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=netronome-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=TUShtxADeMIRUv08jDyFnIdO2h4AVdi1g89uLOtrWXw=;
-        b=Xm9muXpLMfdw+3JTaQ5+6nxJDSneO0K8th2wgQ0VLh2VI2BmK+XWoQ9cDtIn8+KaRJ
-         B45Xbntr5JjNU8mF7nIZd8VP+CTHviEtF1Um5VazOhr6GEQCgh9bbRNIM6C+XWioNjmk
-         ImuOo8Gi8eD0FtSQ7hHZ1yPAo82BLFHJwGGg0UxKCYs0oMSSpMWIe45dJUN+DzUELaKQ
-         JzvvcS8KVPQMZJTfgm/lLBewbBl9UGKGHM3XV6hYGQwunOqgCSfJKO8sQaLl1M6X9BRD
-         K+XM2hJttDJQqNZl5Xftk9yd2fnhmTZR2ol6vfSH0itoQkT2+o/FcX7saxpuLl0f47l5
-         EzpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=TUShtxADeMIRUv08jDyFnIdO2h4AVdi1g89uLOtrWXw=;
-        b=LOlcUszgSLi3LrB12Zoac6OOGgHbNlwTeiXSesls1jm/JC3AgUHenCLr/n24+ThMiY
-         t9ekpWAKU6hc9C5J6gEd/kC3InLHBaA/Q3QAUf1sdy0yPPXda2SlgaOslQHgOc858it8
-         pe96w3LXntuI/l5q8kKh9vCr5Vb4p24qbgku4+t9ArEExxM40ov+xnusLKyfidfoDfpT
-         Gn94WiVTx4Ska3D6Mjd1eVtQdWdIIbNMB9q2SEInv7BswUo9fpoLcUxRaAWdqyHvp34P
-         xXyO+LZk+n4+VANASQ4wlcyT+UBAvEZG3vCNXg5G63YRgbOLrJaN2ls1TC8EqUB+Jf3j
-         G83Q==
-X-Gm-Message-State: AOAM5311Gd6Ko6VzpOYBHtJjDR3iqXPCDKJwFdFkh85cIcdxfxTqt4G9
-        vVjyiEaWiR6ZJEf7Tb31zyNkTA==
-X-Google-Smtp-Source: ABdhPJzTwzfeJOnCQh65prZummqH9JR09Yxja+zvv2OTSAZpPcom4k7xuvXSyH3Yv50qn/8+2aIWyQ==
-X-Received: by 2002:a1c:e256:: with SMTP id z83mr8793930wmg.33.1600329817598;
-        Thu, 17 Sep 2020 01:03:37 -0700 (PDT)
-Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
-        by smtp.gmail.com with ESMTPSA id a13sm9836030wme.26.2020.09.17.01.03.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2020 01:03:36 -0700 (PDT)
-Date:   Thu, 17 Sep 2020 10:03:35 +0200
-From:   Simon Horman <simon.horman@netronome.com>
-To:     Joe Perches <joe@perches.com>
+        id S1726637AbgIQUFe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 17 Sep 2020 16:05:34 -0400
+Received: from mga06.intel.com ([134.134.136.31]:35244 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726438AbgIQUFc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 17 Sep 2020 16:05:32 -0400
+IronPort-SDR: 1EqDDV9SWySMMXQjgrHW1/Tq43ZTXe22s50bgNybd15hjg4bWdlaVn0ZUNNKZFGLILKPh0ZVw+
+ 9up+rZjLo4DQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9747"; a="221336979"
+X-IronPort-AV: E=Sophos;i="5.77,271,1596524400"; 
+   d="scan'208";a="221336979"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2020 12:40:16 -0700
+IronPort-SDR: OJtaUmUU2VRk9KtKnU2JOdZ0Wx6lNOu+0+CFBjlBeB4odozE5Gxp9wTpGmmaUJi2k6Nfsj2iiR
+ 1ryN5FpIrCvQ==
+X-IronPort-AV: E=Sophos;i="5.77,271,1596524400"; 
+   d="scan'208";a="483882946"
+Received: from jekeller-mobl1.amr.corp.intel.com (HELO [10.212.151.155]) ([10.212.151.155])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2020 12:40:13 -0700
+Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
+ break;
+To:     Keith Busch <kbusch@kernel.org>, Joe Perches <joe@perches.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Jiri Kosina <trivial@kernel.org>,
         Kees Cook <kees.cook@canonical.com>,
@@ -77,53 +55,44 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         dccp@vger.kernel.org, netfilter-devel@vger.kernel.org,
         coreteam@netfilter.org, linux-sctp@vger.kernel.org,
         alsa-devel <alsa-devel@alsa-project.org>
-Subject: Re: [oss-drivers] [trivial PATCH] treewide: Convert switch/case
- fallthrough; to break;
-Message-ID: <20200917080334.GB5769@netronome.com>
 References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+ <20200909205558.GA3384631@dhcp-10-100-145-180.wdl.wdc.com>
+From:   Jacob Keller <jacob.e.keller@intel.com>
+Organization: Intel Corporation
+Message-ID: <321069c8-a4c1-56ff-49fb-4c2bce1e6352@intel.com>
+Date:   Thu, 17 Sep 2020 12:40:13 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200909205558.GA3384631@dhcp-10-100-145-180.wdl.wdc.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Sep 09, 2020 at 01:06:39PM -0700, Joe Perches wrote:
-> fallthrough to a separate case/default label break; isn't very readable.
-> 
-> Convert pseudo-keyword fallthrough; statements to a simple break; when
-> the next label is case or default and the only statement in the next
-> label block is break;
-> 
-> Found using:
-> 
-> $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
-> 
-> Miscellanea:
-> 
-> o Move or coalesce a couple label blocks above a default: block.
-> 
-> Signed-off-by: Joe Perches <joe@perches.com>
 
-...
 
-> diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
-> index 252fe06f58aa..1d5b87079104 100644
-> --- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
-> +++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
-> @@ -345,7 +345,7 @@ static int matching_bar(struct nfp_bar *bar, u32 tgt, u32 act, u32 tok,
->  		baract = NFP_CPP_ACTION_RW;
->  		if (act == 0)
->  			act = NFP_CPP_ACTION_RW;
-> -		fallthrough;
-> +		break;
->  	case NFP_PCIE_BAR_PCIE2CPP_MapType_FIXED:
->  		break;
->  	default:
+On 9/9/2020 1:55 PM, Keith Busch wrote:
+> On Wed, Sep 09, 2020 at 01:06:39PM -0700, Joe Perches wrote:
+>> diff --git a/crypto/tcrypt.c b/crypto/tcrypt.c
+>> index eea0f453cfb6..8aac5bc60f4c 100644
+>> --- a/crypto/tcrypt.c
+>> +++ b/crypto/tcrypt.c
+>> @@ -2464,7 +2464,7 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
+>>  		test_hash_speed("streebog512", sec,
+>>  				generic_hash_speed_template);
+>>  		if (mode > 300 && mode < 400) break;
+>> -		fallthrough;
+>> +		break;
+>>  	case 399:
+>>  		break;
+> 
+> Just imho, this change makes the preceding 'if' look even more
+> pointless. Maybe the fallthrough was a deliberate choice? Not that my
+> opinion matters here as I don't know this module, but it looked a bit
+> odd to me.
+> 
 
-This is a cascading fall-through handling all map types.
-I don't think this change improves readability.
-
-...
+Yea this does look very odd..
