@@ -2,692 +2,156 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CD127A162
-	for <lists+linux-parisc@lfdr.de>; Sun, 27 Sep 2020 16:24:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93E2527A2E7
+	for <lists+linux-parisc@lfdr.de>; Sun, 27 Sep 2020 21:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726239AbgI0OYs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 27 Sep 2020 10:24:48 -0400
-Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:35601 "EHLO
-        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726149AbgI0OYs (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 27 Sep 2020 10:24:48 -0400
-X-Greylist: delayed 432 seconds by postgrey-1.27 at vger.kernel.org; Sun, 27 Sep 2020 10:24:48 EDT
-Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
-          with ESMTP
-          id <20200927141735.YCLO6892.torfep01.bell.net@torspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Sun, 27 Sep 2020 10:17:35 -0400
-Received: from [192.168.2.49] (really [70.53.61.197]) by torspm02.bell.net
-          with ESMTP
-          id <20200927141735.CIUO16325.torspm02.bell.net@[192.168.2.49]>;
-          Sun, 27 Sep 2020 10:17:35 -0400
-To:     linux-parisc <linux-parisc@vger.kernel.org>
-Cc:     Helge Deller <deller@gmx.de>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Subject: v5.8.x stability on parisc
-Message-ID: <bd1c6298-db1a-79ab-279b-60daad6bed22@bell.net>
-Date:   Sun, 27 Sep 2020 10:17:35 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1726309AbgI0Tul (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 27 Sep 2020 15:50:41 -0400
+Received: from mout.gmx.net ([212.227.15.18]:52993 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726255AbgI0Tul (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 27 Sep 2020 15:50:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1601236231;
+        bh=S4aqp1OyAd/ZxjZF3/hNkPffFT8IFkKLEFV3utsgLPI=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=dHREeIKnYZIF/2DJGZWS5soF4J+FgKgcPIIHR553zRKo5JGOvJEeGunuD5wVIORRx
+         kvid2cv9CRuJsLLBSQ2fq2w20WoFEQ+nraJ3f5reGMa2N3ogrgV6NiGCzAtkrJXS8W
+         tFndFQnPyhfcOfEBo1tjr1jBrgYOFHyfD329WVGY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.189.180]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N7zFZ-1kRcRM08mp-014xRK; Sun, 27
+ Sep 2020 21:45:23 +0200
+Subject: Re: v5.8.x stability on parisc
+To:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>
+References: <bd1c6298-db1a-79ab-279b-60daad6bed22@bell.net>
+From:   Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
+ HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
+ r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
+ CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
+ 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
+ dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
+ Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
+ GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
+ aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
+ 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABtBxIZWxnZSBEZWxs
+ ZXIgPGRlbGxlckBnbXguZGU+iQJRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
+ FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
+ uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
+ uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
+ REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
+ qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
+ iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
+ gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
+ Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
+ qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
+ 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
+ dbZgPwou7pD8MTfQhGmDJFKm2ju5Ag0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
+ rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
+ UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
+ eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
+ ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
+ dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
+ lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
+ 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
+ xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
+ wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
+ fTBRABEBAAGJAjYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
+ Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
+ l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
+ RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
+ BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
+ Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
+ XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
+ MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
+ FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
+ 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
+ ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLrgzBF3IbakWCSsGAQQB2kcP
+ AQEHQNdEF2C6q5MwiI+3akqcRJWo5mN24V3vb3guRJHo8xbFiQKtBBgBCAAgFiEERUSCKCzZ
+ ENvvPSX4Pl89BKeiRgMFAl3IbakCGwIAgQkQPl89BKeiRgN2IAQZFggAHRYhBLzpEj4a0p8H
+ wEm73vcStRCiOg9fBQJdyG2pAAoJEPcStRCiOg9fto8A/3cti96iIyCLswnSntdzdYl72SjJ
+ HnsUYypLPeKEXwCqAQDB69QCjXHPmQ/340v6jONRMH6eLuGOdIBx8D+oBp8+BGLiD/9qu5H/
+ eGe0rrmE5lLFRlnm5QqKKi4gKt2WHMEdGi7fXggOTZbuKJA9+DzPxcf9ShuQMJRQDkgzv/VD
+ V1fvOdaIMlM1EjMxIS2fyyI+9KZD7WwFYK3VIOsC7PtjOLYHSr7o7vDHNqTle7JYGEPlxuE6
+ hjMU7Ew2Ni4SBio8PILVXE+dL/BELp5JzOcMPnOnVsQtNbllIYvXRyX0qkTD6XM2Jbh+xI9P
+ xajC+ojJ/cqPYBEALVfgdh6MbA8rx3EOCYj/n8cZ/xfo+wR/zSQ+m9wIhjxI4XfbNz8oGECm
+ xeg1uqcyxfHx+N/pdg5Rvw9g+rtlfmTCj8JhNksNr0NcsNXTkaOy++4Wb9lKDAUcRma7TgMk
+ Yq21O5RINec5Jo3xeEUfApVwbueBWCtq4bljeXG93iOWMk4cYqsRVsWsDxsplHQfh5xHk2Zf
+ GAUYbm/rX36cdDBbaX2+rgvcHDTx9fOXozugEqFQv9oNg3UnXDWyEeiDLTC/0Gei/Jd/YL1p
+ XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
+ ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
+ c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
+Message-ID: <387e5574-a270-f3cc-d0f2-a26d0383b7e6@gmx.de>
+Date:   Sun, 27 Sep 2020 21:45:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+In-Reply-To: <bd1c6298-db1a-79ab-279b-60daad6bed22@bell.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CM-Analysis: v=2.3 cv=XvWExmN9 c=1 sm=1 tr=0 a=6x1y2OhCX1CAR/Lk3lU3cg==:117 a=6x1y2OhCX1CAR/Lk3lU3cg==:17 a=IkcTkHD0fZMA:10 a=reM5J-MqmosA:10 a=p6DNFGte62J2v5j3AqEA:9 a=FrVjGLf7adc_4jdm:21 a=5BGrVuhFl43365Mp:21 a=QEXdDO2ut3YA:10
-X-CM-Envelope: MS4wfDZTabOppa7SNfGC5UU4CbJc4Z60lPzVRXZT0JjrJag75m3DUinCrkxMDnKzzCXnnrVONQ/etoAXQdbHPRXRnA0NMeTxdsRJrVh07X4FSVAxjZxJQ7XC jPv/P3yi+55aBJmC6TA1RWC2cGc8E95uCAqdCaifllT+2MndslNVY0pjI+6y9WCPDtVpFLIQaNM35g==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:/UAi6UQtFK0MTW1X5WPRfgDkpo2hE+1Gai9sbo/w+NpxuoeTZ4Z
+ 7ZNM2ndmjFeQNxZcC6VNLSRYz7H+662pNvJWEKuZehMkyl3T4lRLcxufWRt0sxmiTe6RHUI
+ 0wnsR219Q8d1er1KCm4R4R5hpYH87PiqjHa7J3wNXLhNz+aszTjjAiIsZ2cX4CWqGbbLEHj
+ FMdw0OOwgsBnDujEG2kWA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jo7jGqJsS7A=:XTKhytMkPCcn1SJlRMYOMQ
+ xVvuhAeTuJVKhWkZs3kU/VIJba32a7uWfFVycDreuo/D7v7sVoFWh1hDlq/hCwsqSnj6tF44q
+ b/tG196IRNvoLlMGuPMwmpTFsFHsJRKoecY6JR2E0xiIo5/jqO96Sy3K04HytlqFe6MynLkxh
+ nch6fBqdTAYASq/H4N+KQxObBdDmXhiSAg4Z+KEg9BTj2bvnJ5DvSgL0eoYoJTgxBT3oc5wAa
+ dJD8OccAVK0gCGFIoCmNO+0AtwrUG4SunyAXOqUloCtEnBTjQghThJ8z9egkNxwDiaW/Tv6LT
+ UCjYEPTomtBRbLWKRDCUisEP2Z/O/19PExDHiL1juQpg23YUpgNLlfuIAwukioaUm3yLH0rr6
+ Stt1JdlVQkIOacr9c0L9s6+B6bT5OePvGURJlzT4n0eBdJw69cME6QYzSSlamhVoll3YfDFcg
+ IlvHcJBxZK5065VjR+JDPteUtdybjqkx4Oz9RXLLqMk2CCvZJjzLghWjPsiaqbU7KD3G/yoIJ
+ jvV34U6z/cgGMHt3kccIYR6yVlBJ2ErJ0+6i7KNmmmWoJsK8r4m9Fw87kX8D1ZCEAoWiSyn+s
+ LLn4vasp2kzIXG+vvSyDzOnf18RimfKc9Ru6h98YCcRpbkaqicAP5Ijc1oh3rJRJyZwCAkDQB
+ 49JoAgzG1nK0P8hsSNr3y3Tgeiy1JvwIvcLxle2FJk5SDhtc5Ig2f9rmrlEVFtWVe6ZZwdUcM
+ ZxWVyAQQ6QzCM4Kh8ggXnjb6m4RZT4IYClspgcO0Juj/m1orNO7xaMSotRtUVjc/Gcac/gmep
+ 4HAo3YLm0mf94OojrpivV/HA6IQaXCZg1YKhyACuBMHStGb5zOofMq52cJ7jKM0RzlQyNqQKO
+ 1IzvnhH1xenIMCI9UmYh1/ML71VR/VPMXqvPpJTdO1YJQ2p83r/MWOPxdsfnBydegrW4aB+Dt
+ ltDLb5WTIzEUewvkaubuEulPDFfnePJ6DCKcycFT347VsSs5rZy9yiIlChIJPoT+1ZW6IOFwE
+ SLfK3npw6w65rrusYL7fWzmjgIYCOKMPsrcw4XuoWta9ex0JZHa1yhvSFivJOTSFkRz5eybx4
+ xwiRFmzieO/0LQaYC3hk+F6R5PyT1ag5EaVFqloP/7tYKltSfedr3IIRCeKJM7DSOufH1kdlD
+ 5eUaKoCDJY5XJe4bzavGgEdOhH6WJA++vy3CCZXO4TRMln1QzCGuo550801ynjxJN8QMbhIeJ
+ 3fURWm26BoQlf/pHO
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-With this patch collection, I haven't seen any stalls on my rp3440 and c8000 running v5.8.x.  Further,
-I haven't had any signing failures on the buildd machine.  The rp3440 (mx3210) has also been successful in
-building several packages that failed multiple time on the c8000 buildd.
-
-I think this is due to the three changes at the bottom from Linus.
-
-Regards,
-Dave
-
-diff --git a/arch/parisc/include/asm/barrier.h b/arch/parisc/include/asm/barrier.h
-index 640d46edf32e..c705decf2bed 100644
---- a/arch/parisc/include/asm/barrier.h
-+++ b/arch/parisc/include/asm/barrier.h
-@@ -2,11 +2,15 @@
- #ifndef __ASM_BARRIER_H
- #define __ASM_BARRIER_H
-
-+#include <asm/alternative.h>
-+
- #ifndef __ASSEMBLY__
-
- /* The synchronize caches instruction executes as a nop on systems in
-    which all memory references are performed in order. */
--#define synchronize_caches() __asm__ __volatile__ ("sync" : : : "memory")
-+#define synchronize_caches() asm volatile("sync" \
-+	ALTERNATIVE(ALT_COND_NO_SMP, INSN_NOP) \
-+	: : : "memory")
-
- #if defined(CONFIG_SMP)
- #define mb()		do { synchronize_caches(); } while (0)
-diff --git a/arch/parisc/include/asm/cmpxchg.h b/arch/parisc/include/asm/cmpxchg.h
-index 068958575871..cf5ee9b0b393 100644
---- a/arch/parisc/include/asm/cmpxchg.h
-+++ b/arch/parisc/include/asm/cmpxchg.h
-@@ -14,22 +14,22 @@
- extern void __xchg_called_with_bad_pointer(void);
-
- /* __xchg32/64 defined in arch/parisc/lib/bitops.c */
--extern unsigned long __xchg8(char, char *);
--extern unsigned long __xchg32(int, int *);
-+extern unsigned long __xchg8(char, volatile char *);
-+extern unsigned long __xchg32(int, volatile int *);
- #ifdef CONFIG_64BIT
--extern unsigned long __xchg64(unsigned long, unsigned long *);
-+extern unsigned long __xchg64(unsigned long, volatile unsigned long *);
- #endif
-
- /* optimizer better get rid of switch since size is a constant */
- static inline unsigned long
--__xchg(unsigned long x, __volatile__ void *ptr, int size)
-+__xchg(unsigned long x, volatile void *ptr, int size)
- {
- 	switch (size) {
- #ifdef CONFIG_64BIT
--	case 8: return __xchg64(x, (unsigned long *) ptr);
-+	case 8: return __xchg64(x, (volatile unsigned long *) ptr);
- #endif
--	case 4: return __xchg32((int) x, (int *) ptr);
--	case 1: return __xchg8((char) x, (char *) ptr);
-+	case 4: return __xchg32((int) x, (volatile int *) ptr);
-+	case 1: return __xchg8((char) x, (volatile char *) ptr);
- 	}
- 	__xchg_called_with_bad_pointer();
- 	return x;
-diff --git a/arch/parisc/include/asm/futex.h b/arch/parisc/include/asm/futex.h
-index c459f656c8c3..fceb9cf02fb3 100644
---- a/arch/parisc/include/asm/futex.h
-+++ b/arch/parisc/include/asm/futex.h
-@@ -16,7 +16,7 @@ static inline void
- _futex_spin_lock_irqsave(u32 __user *uaddr, unsigned long int *flags)
- {
- 	extern u32 lws_lock_start[];
--	long index = ((long)uaddr & 0xf0) >> 2;
-+	long index = ((long)uaddr & 0x3f8) >> 1;
- 	arch_spinlock_t *s = (arch_spinlock_t *)&lws_lock_start[index];
- 	local_irq_save(*flags);
- 	arch_spin_lock(s);
-@@ -26,7 +26,7 @@ static inline void
- _futex_spin_unlock_irqrestore(u32 __user *uaddr, unsigned long int *flags)
- {
- 	extern u32 lws_lock_start[];
--	long index = ((long)uaddr & 0xf0) >> 2;
-+	long index = ((long)uaddr & 0x3f8) >> 1;
- 	arch_spinlock_t *s = (arch_spinlock_t *)&lws_lock_start[index];
- 	arch_spin_unlock(s);
- 	local_irq_restore(*flags);
-diff --git a/arch/parisc/include/asm/ldcw.h b/arch/parisc/include/asm/ldcw.h
-index e080143e79a3..0b182450a2fb 100644
---- a/arch/parisc/include/asm/ldcw.h
-+++ b/arch/parisc/include/asm/ldcw.h
-@@ -51,6 +51,19 @@
- 	__ret;							\
- })
-
-+/* LDCW is strongly ordered and can be used as a memory barrier
-+   when a suitably aligned address is available. */
-+#ifdef CONFIG_SMP
-+#define __ldcw_mb(a) ({						\
-+	unsigned __tmp;						\
-+	__asm__ __volatile__(__LDCW " 0(%1),%0"			\
-+	ALTERNATIVE(ALT_COND_NO_SMP, INSN_NOP)			\
-+	: "=r" (__tmp) : "r" (a) : "memory");			\
-+})
-+#else
-+#define __ldcw_mb(a) barrier();
-+#endif
-+
- #ifdef CONFIG_SMP
- # define __lock_aligned __section(.data..lock_aligned)
- #endif
-diff --git a/arch/parisc/include/asm/spinlock.h b/arch/parisc/include/asm/spinlock.h
-index 51b6c47f802f..fa5ee8a45dbd 100644
---- a/arch/parisc/include/asm/spinlock.h
-+++ b/arch/parisc/include/asm/spinlock.h
-@@ -10,13 +10,21 @@
- static inline int arch_spin_is_locked(arch_spinlock_t *x)
- {
- 	volatile unsigned int *a = __ldcw_align(x);
--	return *a == 0;
-+	return READ_ONCE(*a) == 0;
- }
-
--#define arch_spin_lock(lock) arch_spin_lock_flags(lock, 0)
-+static inline void arch_spin_lock(arch_spinlock_t *x)
-+{
-+	volatile unsigned int *a;
-+
-+	a = __ldcw_align(x);
-+	while (__ldcw(a) == 0)
-+		while (*a == 0)
-+			continue;
-+}
-
- static inline void arch_spin_lock_flags(arch_spinlock_t *x,
--					 unsigned long flags)
-+					unsigned long flags)
- {
- 	volatile unsigned int *a;
-
-@@ -25,10 +33,8 @@ static inline void arch_spin_lock_flags(arch_spinlock_t *x,
- 		while (*a == 0)
- 			if (flags & PSW_SM_I) {
- 				local_irq_enable();
--				cpu_relax();
- 				local_irq_disable();
--			} else
--				cpu_relax();
-+			}
- }
- #define arch_spin_lock_flags arch_spin_lock_flags
-
-@@ -44,12 +50,9 @@ static inline void arch_spin_unlock(arch_spinlock_t *x)
- static inline int arch_spin_trylock(arch_spinlock_t *x)
- {
- 	volatile unsigned int *a;
--	int ret;
-
- 	a = __ldcw_align(x);
--        ret = __ldcw(a) != 0;
--
--	return ret;
-+	return __ldcw(a) != 0;
- }
-
- /*
-diff --git a/arch/parisc/install.sh b/arch/parisc/install.sh
-index 6f68784fea25..056d588befdd 100644
---- a/arch/parisc/install.sh
-+++ b/arch/parisc/install.sh
-@@ -43,7 +43,7 @@ fi
-
- # Default install
-
--if [ "$(basename $2)" = "zImage" ]; then
-+if [ "$(basename $2)" = "vmlinuz" ]; then
- # Compressed install
-   echo "Installing compressed kernel"
-   base=vmlinuz
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 1eedfecc5137..3686f496fd27 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -384,12 +384,12 @@ EXPORT_SYMBOL(flush_kernel_icache_range_asm);
- static unsigned long parisc_cache_flush_threshold __ro_after_init = FLUSH_THRESHOLD;
-
- #define FLUSH_TLB_THRESHOLD (16*1024) /* 16 KiB minimum TLB threshold */
--static unsigned long parisc_tlb_flush_threshold __ro_after_init = FLUSH_TLB_THRESHOLD;
-+static unsigned long parisc_tlb_flush_threshold __ro_after_init = ~0UL;
-
- void __init parisc_setup_cache_timing(void)
- {
- 	unsigned long rangetime, alltime;
--	unsigned long size, start;
-+	unsigned long size;
- 	unsigned long threshold;
-
- 	alltime = mfctl(16);
-@@ -423,14 +423,9 @@ void __init parisc_setup_cache_timing(void)
- 		goto set_tlb_threshold;
- 	}
-
--	size = 0;
--	start = (unsigned long) _text;
-+	size = (unsigned long)_end - (unsigned long)_text;
- 	rangetime = mfctl(16);
--	while (start < (unsigned long) _end) {
--		flush_tlb_kernel_range(start, start + PAGE_SIZE);
--		start += PAGE_SIZE;
--		size += PAGE_SIZE;
--	}
-+	flush_tlb_kernel_range((unsigned long)_text, (unsigned long)_end);
- 	rangetime = mfctl(16) - rangetime;
-
- 	alltime = mfctl(16);
-@@ -445,8 +440,11 @@ void __init parisc_setup_cache_timing(void)
- 		threshold/1024);
-
- set_tlb_threshold:
--	if (threshold > parisc_tlb_flush_threshold)
-+	if (threshold > FLUSH_TLB_THRESHOLD)
- 		parisc_tlb_flush_threshold = threshold;
-+	else
-+		parisc_tlb_flush_threshold = FLUSH_TLB_THRESHOLD;
-+
- 	printk(KERN_INFO "TLB flush threshold set to %lu KiB\n",
- 		parisc_tlb_flush_threshold/1024);
- }
-diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-index 519f9056fd00..f6f28e41bb5e 100644
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -899,20 +899,20 @@ intr_check_sig:
- 	 * Only do signals if we are returning to user space
- 	 */
- 	LDREG	PT_IASQ0(%r16), %r20
--	cmpib,COND(=),n LINUX_GATEWAY_SPACE, %r20, intr_restore /* backward */
-+	cmpib,COND(=),n LINUX_GATEWAY_SPACE, %r20, intr_restore /* forward */
- 	LDREG	PT_IASQ1(%r16), %r20
--	cmpib,COND(=),n LINUX_GATEWAY_SPACE, %r20, intr_restore /* backward */
--
--	/* NOTE: We need to enable interrupts if we have to deliver
--	 * signals. We used to do this earlier but it caused kernel
--	 * stack overflows. */
--	ssm     PSW_SM_I, %r0
-+	cmpib,COND(=),n LINUX_GATEWAY_SPACE, %r20, intr_restore /* forward */
-
- 	copy	%r0, %r25			/* long in_syscall = 0 */
- #ifdef CONFIG_64BIT
- 	ldo	-16(%r30),%r29			/* Reference param save area */
- #endif
-
-+	/* NOTE: We need to enable interrupts if we have to deliver
-+	 * signals. We used to do this earlier but it caused kernel
-+	 * stack overflows. */
-+	ssm	PSW_SM_I, %r0
-+
- 	BL	do_notify_resume,%r2
- 	copy	%r16, %r26			/* struct pt_regs *regs */
-
-diff --git a/arch/parisc/kernel/head.S b/arch/parisc/kernel/head.S
-index aa93d775c34d..cd3e5fd39410 100644
---- a/arch/parisc/kernel/head.S
-+++ b/arch/parisc/kernel/head.S
-@@ -340,6 +340,19 @@ smp_slave_stext:
- 	bv              (%rp)
- 	ssm             PSW_SM_W,%r0
- 2:
-+#endif
-+
-+#ifdef CONFIG_64BIT
-+	/*
-+	 *  Enable Wide mode early, in case smp_init_current_idle_task was
-+	 *  allocated above 4GB.
-+         */
-+1:	mfia            %rp             /* clear upper part of pcoq */
-+	ldo             2f-1b(%rp),%rp
-+	depdi           0,31,32,%rp
-+	bv              (%rp)
-+	ssm             PSW_SM_W,%r0
-+2:
- #endif
-
- 	/*  Initialize the SP - monarch sets up smp_init_current_idle_task */
-diff --git a/arch/parisc/kernel/hpmc.S b/arch/parisc/kernel/hpmc.S
-index 81de5e2b391c..c2981401775c 100644
---- a/arch/parisc/kernel/hpmc.S
-+++ b/arch/parisc/kernel/hpmc.S
-@@ -289,13 +289,3 @@ os_hpmc_6:
- 	b .
- 	nop
- 	.align 16	/* make function length multiple of 16 bytes */
--.os_hpmc_end:
--
--
--	__INITRODATA
--.globl os_hpmc_size
--	.align 4
--	.type   os_hpmc_size, @object
--	.size   os_hpmc_size, 4
--os_hpmc_size:
--	.word .os_hpmc_end-.os_hpmc
-diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
-index 6e8550fefad6..fcc761b0e11b 100644
---- a/arch/parisc/kernel/pdt.c
-+++ b/arch/parisc/kernel/pdt.c
-@@ -18,6 +18,8 @@
- #include <linux/kthread.h>
- #include <linux/initrd.h>
- #include <linux/pgtable.h>
-+#include <linux/swap.h>
-+#include <linux/swapops.h>
-
- #include <asm/pdc.h>
- #include <asm/pdcpat.h>
-@@ -230,6 +232,7 @@ void __init pdc_pdt_init(void)
-
- 		/* mark memory page bad */
- 		memblock_reserve(pdt_entry[i] & PAGE_MASK, PAGE_SIZE);
-+		num_poisoned_pages_inc();
- 	}
- }
-
-diff --git a/arch/parisc/kernel/syscall.S b/arch/parisc/kernel/syscall.S
-index 3ad61a177f5b..322503780db6 100644
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -571,8 +571,8 @@ lws_compare_and_swap:
- 	ldil	L%lws_lock_start, %r20
- 	ldo	R%lws_lock_start(%r20), %r28
-
--	/* Extract four bits from r26 and hash lock (Bits 4-7) */
--	extru  %r26, 27, 4, %r20
-+	/* Extract eight bits from r26 and hash lock (Bits 3-11) */
-+	extru  %r26, 28, 8, %r20
-
- 	/* Find lock to use, the hash is either one of 0 to
- 	   15, multiplied by 16 (keep it 16-byte aligned)
-@@ -761,8 +761,8 @@ cas2_lock_start:
- 	ldil	L%lws_lock_start, %r20
- 	ldo	R%lws_lock_start(%r20), %r28
-
--	/* Extract four bits from r26 and hash lock (Bits 4-7) */
--	extru  %r26, 27, 4, %r20
-+	/* Extract eight bits from r26 and hash lock (Bits 3-11) */
-+	extru  %r26, 28, 8, %r20
-
- 	/* Find lock to use, the hash is either one of 0 to
- 	   15, multiplied by 16 (keep it 16-byte aligned)
-@@ -950,7 +950,7 @@ END(sys_call_table64)
- 	.align	L1_CACHE_BYTES
- ENTRY(lws_lock_start)
- 	/* lws locks */
--	.rept 16
-+	.rept 256
- 	/* Keep locks aligned at 16-bytes */
- 	.word 1
- 	.word 0
-diff --git a/arch/parisc/kernel/traps.c b/arch/parisc/kernel/traps.c
-index 5400e23a77a1..0c3064a927b8 100644
---- a/arch/parisc/kernel/traps.c
-+++ b/arch/parisc/kernel/traps.c
-@@ -799,14 +799,13 @@ void notrace handle_interruption(int code, struct pt_regs *regs)
-
- void __init initialize_ivt(const void *iva)
- {
--	extern u32 os_hpmc_size;
- 	extern const u32 os_hpmc[];
-
- 	int i;
- 	u32 check = 0;
- 	u32 *ivap;
- 	u32 *hpmcp;
--	u32 length, instr;
-+	u32 instr;
-
- 	if (strcmp((const char *)iva, "cows can fly"))
- 		panic("IVT invalid");
-@@ -837,18 +836,14 @@ void __init initialize_ivt(const void *iva)
-
- 	/* Setup IVA and compute checksum for HPMC handler */
- 	ivap[6] = (u32)__pa(os_hpmc);
--	length = os_hpmc_size;
--	ivap[7] = length;
-
- 	hpmcp = (u32 *)os_hpmc;
-
--	for (i=0; i<length/4; i++)
--	    check += *hpmcp++;
--
- 	for (i=0; i<8; i++)
- 	    check += ivap[i];
-
- 	ivap[5] = -check;
-+	pr_info("initialize_ivt: IVA[6] = 0x%08x\n", ivap[6]);
- }
- 	
-
-diff --git a/arch/parisc/lib/bitops.c b/arch/parisc/lib/bitops.c
-index 2e4d1f05a926..9ac683bf6ae7 100644
---- a/arch/parisc/lib/bitops.c
-+++ b/arch/parisc/lib/bitops.c
-@@ -18,7 +18,7 @@ arch_spinlock_t __atomic_hash[ATOMIC_HASH_SIZE] __lock_aligned = {
- #endif
-
- #ifdef CONFIG_64BIT
--unsigned long __xchg64(unsigned long x, unsigned long *ptr)
-+unsigned long __xchg64(unsigned long x, volatile unsigned long *ptr)
- {
- 	unsigned long temp, flags;
-
-@@ -30,7 +30,7 @@ unsigned long __xchg64(unsigned long x, unsigned long *ptr)
- }
- #endif
-
--unsigned long __xchg32(int x, int *ptr)
-+unsigned long __xchg32(int x, volatile int *ptr)
- {
- 	unsigned long flags;
- 	long temp;
-@@ -43,7 +43,7 @@ unsigned long __xchg32(int x, int *ptr)
- }
-
-
--unsigned long __xchg8(char x, char *ptr)
-+unsigned long __xchg8(char x, volatile char *ptr)
- {
- 	unsigned long flags;
- 	long temp;
-diff --git a/include/linux/list.h b/include/linux/list.h
-index aff44d34f4e4..0d0d17a10d25 100644
---- a/include/linux/list.h
-+++ b/include/linux/list.h
-@@ -282,6 +282,24 @@ static inline int list_empty(const struct list_head *head)
- 	return READ_ONCE(head->next) == head;
- }
-
-+/**
-+ * list_del_init_careful - deletes entry from list and reinitialize it.
-+ * @entry: the element to delete from the list.
-+ *
-+ * This is the same as list_del_init(), except designed to be used
-+ * together with list_empty_careful() in a way to guarantee ordering
-+ * of other memory operations.
-+ *
-+ * Any memory operations done before a list_del_init_careful() are
-+ * guaranteed to be visible after a list_empty_careful() test.
-+ */
-+static inline void list_del_init_careful(struct list_head *entry)
-+{
-+	__list_del_entry(entry);
-+	entry->prev = entry;
-+	smp_store_release(&entry->next, entry);
-+}
-+
- /**
-  * list_empty_careful - tests whether a list is empty and not being modified
-  * @head: the list to test
-@@ -297,7 +315,7 @@ static inline int list_empty(const struct list_head *head)
-  */
- static inline int list_empty_careful(const struct list_head *head)
- {
--	struct list_head *next = head->next;
-+	struct list_head *next = smp_load_acquire(&head->next);
- 	return (next == head) && (next == head->prev);
- }
-
-diff --git a/kernel/sched/wait.c b/kernel/sched/wait.c
-index ba059fbfc53a..01f5d3020589 100644
---- a/kernel/sched/wait.c
-+++ b/kernel/sched/wait.c
-@@ -389,7 +389,7 @@ int autoremove_wake_function(struct wait_queue_entry *wq_entry, unsigned mode, i
- 	int ret = default_wake_function(wq_entry, mode, sync, key);
-
- 	if (ret)
--		list_del_init(&wq_entry->entry);
-+		list_del_init_careful(&wq_entry->entry);
-
- 	return ret;
- }
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 385759c4ce4b..239d156a38ea 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1002,6 +1002,7 @@ struct wait_page_queue {
-
- static int wake_page_function(wait_queue_entry_t *wait, unsigned mode, int sync, void *arg)
- {
-+	int ret;
- 	struct wait_page_key *key = arg;
- 	struct wait_page_queue *wait_page
- 		= container_of(wait, struct wait_page_queue, wait);
-@@ -1013,18 +1014,35 @@ static int wake_page_function(wait_queue_entry_t *wait, unsigned mode, int sync,
- 	if (wait_page->bit_nr != key->bit_nr)
- 		return 0;
-
-+	/* Stop walking if it's locked */
-+	if (wait->flags & WQ_FLAG_EXCLUSIVE) {
-+		if (test_and_set_bit(key->bit_nr, &key->page->flags))
-+			return -1;
-+	} else {
-+		if (test_bit(key->bit_nr, &key->page->flags))
-+			return -1;
-+	}
-+
- 	/*
--	 * Stop walking if it's locked.
--	 * Is this safe if put_and_wait_on_page_locked() is in use?
--	 * Yes: the waker must hold a reference to this page, and if PG_locked
--	 * has now already been set by another task, that task must also hold
--	 * a reference to the *same usage* of this page; so there is no need
--	 * to walk on to wake even the put_and_wait_on_page_locked() callers.
-+	 * Let the waiter know we have done the page flag
-+	 * handling for it (and the return value lets the
-+	 * wakeup logic count exclusive wakeup events).
- 	 */
--	if (test_bit(key->bit_nr, &key->page->flags))
--		return -1;
-+	ret = (wait->flags & WQ_FLAG_EXCLUSIVE) != 0;
-+	wait->flags |= WQ_FLAG_WOKEN;
-+	wake_up_state(wait->private, mode);
-
--	return autoremove_wake_function(wait, mode, sync, key);
-+	/*
-+	 * Ok, we have successfully done what we're waiting for,
-+	 * and we can unconditionally remove the wait entry.
-+	 *
-+	 * Note that this has to be the absolute last thing we do,
-+	 * since after list_del_init(&wait->entry) the wait entry
-+	 * might be de-allocated and the process might even have
-+	 * exited.
-+	 */
-+	list_del_init_careful(&wait->entry);
-+	return ret;
- }
-
- static void wake_up_page_bit(struct page *page, int bit_nr)
-@@ -1103,16 +1121,22 @@ enum behavior {
- 			 */
- };
-
-+static inline int trylock_page_bit_common(struct page *page, int bit_nr,
-+	enum behavior behavior)
-+{
-+	return behavior == EXCLUSIVE ?
-+		!test_and_set_bit(bit_nr, &page->flags) :
-+		!test_bit(bit_nr, &page->flags);
-+}
-+
- static inline int wait_on_page_bit_common(wait_queue_head_t *q,
- 	struct page *page, int bit_nr, int state, enum behavior behavior)
- {
- 	struct wait_page_queue wait_page;
- 	wait_queue_entry_t *wait = &wait_page.wait;
--	bool bit_is_set;
- 	bool thrashing = false;
- 	bool delayacct = false;
- 	unsigned long pflags;
--	int ret = 0;
-
- 	if (bit_nr == PG_locked &&
- 	    !PageUptodate(page) && PageWorkingset(page)) {
-@@ -1130,48 +1154,44 @@ static inline int wait_on_page_bit_common(wait_queue_head_t *q,
- 	wait_page.page = page;
- 	wait_page.bit_nr = bit_nr;
-
--	for (;;) {
--		spin_lock_irq(&q->lock);
-+	/*
-+	 * Add ourselves to the wait queue.
-+	 *
-+	 * NOTE! This is where we also check the page
-+	 * state synchronously the last time to see that
-+	 * somebody didn't just clear the bit. Do the
-+	 * SetPageWaiters() before that to let anybody
-+	 * we just miss know they need to wake us up.
-+	 */
-+	spin_lock_irq(&q->lock);
-+	SetPageWaiters(page);
-+	if (!trylock_page_bit_common(page, bit_nr, behavior))
-+		__add_wait_queue_entry_tail(q, wait);
-+	else
-+		wait->flags |= WQ_FLAG_WOKEN;
-+	spin_unlock_irq(&q->lock);
-
--		if (likely(list_empty(&wait->entry))) {
--			__add_wait_queue_entry_tail(q, wait);
--			SetPageWaiters(page);
--		}
-+	/*
-+	 * From now on, all the logic will be based on
-+	 * whether the wait entry is on the queue or not,
-+	 * and the page bit testing (and setting) will be
-+	 * done by the wake function, not us.
-+	 *
-+	 * We can drop our reference to the page.
-+	 */
-+	if (behavior == DROP)
-+		put_page(page);
-
-+	for (;;) {
- 		set_current_state(state);
-
--		spin_unlock_irq(&q->lock);
--
--		bit_is_set = test_bit(bit_nr, &page->flags);
--		if (behavior == DROP)
--			put_page(page);
--
--		if (likely(bit_is_set))
--			io_schedule();
--
--		if (behavior == EXCLUSIVE) {
--			if (!test_and_set_bit_lock(bit_nr, &page->flags))
--				break;
--		} else if (behavior == SHARED) {
--			if (!test_bit(bit_nr, &page->flags))
--				break;
--		}
--
--		if (signal_pending_state(state, current)) {
--			ret = -EINTR;
-+		if (signal_pending_state(state, current))
- 			break;
--		}
-
--		if (behavior == DROP) {
--			/*
--			 * We can no longer safely access page->flags:
--			 * even if CONFIG_MEMORY_HOTREMOVE is not enabled,
--			 * there is a risk of waiting forever on a page reused
--			 * for something that keeps it locked indefinitely.
--			 * But best check for -EINTR above before breaking.
--			 */
-+		if (wait->flags & WQ_FLAG_WOKEN)
- 			break;
--		}
-+
-+		io_schedule();
- 	}
-
- 	finish_wait(q, wait);
-@@ -1190,7 +1210,7 @@ static inline int wait_on_page_bit_common(wait_queue_head_t *q,
- 	 * bother with signals either.
- 	 */
-
--	return ret;
-+	return wait->flags & WQ_FLAG_WOKEN ? 0 : -EINTR;
- }
-
- void wait_on_page_bit(struct page *page, int bit_nr)
+On 9/27/20 4:17 PM, John David Anglin wrote:
+> With this patch collection, I haven't seen any stalls on my rp3440 and c=
+8000 running v5.8.x.  Further,
+> I haven't had any signing failures on the buildd machine.  The rp3440 (m=
+x3210) has also been successful in
+> building several packages that failed multiple time on the c8000 buildd.
+>
+> I think this is due to the three changes at the bottom from Linus.
+
+Weren't thos added already upstream (or variants of them) ?
+
+> diff --git a/arch/parisc/include/asm/barrier.h b/arch/parisc/include/asm=
+/barrier.h
+> index 640d46edf32e..c705decf2bed 100644
+> --- a/arch/parisc/include/asm/barrier.h
+> +++ b/arch/parisc/include/asm/barrier.h
+> @@ -2,11 +2,15 @@
+>  /* The synchronize caches instruction executes as a nop on systems in
+>     which all memory references are performed in order. */
+> -#define synchronize_caches() __asm__ __volatile__ ("sync" : : : "memory=
+")
+> +#define synchronize_caches() asm volatile("sync" \
+> +	ALTERNATIVE(ALT_COND_NO_SMP, INSN_NOP) \
+> +	: : : "memory")
+
+I wonder if this has any impact.
+If it's an UP system, won't this "sync" just be a "nop" anyway?
+Did you ran some performance tests, just to check?
+
+Would you mind to send separate patches for each logical change?
+
+Thanks for your great work!
+Helge
