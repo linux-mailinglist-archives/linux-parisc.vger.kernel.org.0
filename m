@@ -2,41 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13CAD27A9F9
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Sep 2020 10:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89C8D27B52A
+	for <lists+linux-parisc@lfdr.de>; Mon, 28 Sep 2020 21:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726607AbgI1IwH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Mon, 28 Sep 2020 04:52:07 -0400
-Received: from mx.tsjbaires.gov.ar ([200.73.158.130]:25278 "EHLO
-        webmail.tsjbaires.gov.ar" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726380AbgI1IwH (ORCPT
+        id S1726465AbgI1TVJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 28 Sep 2020 15:21:09 -0400
+Received: from saraswati.nitrkl.ac.in ([124.247.194.144]:46618 "EHLO
+        mailhost2.nitrkl.ac.in" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726442AbgI1TVI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 28 Sep 2020 04:52:07 -0400
-X-Greylist: delayed 857 seconds by postgrey-1.27 at vger.kernel.org; Mon, 28 Sep 2020 04:52:06 EDT
-Received: from svrborges.tsjbaires.gov.ar ([10.10.10.12]) by
- svrborges.tsjbaires.gov.ar ([10.10.10.12]) with mapi; Mon, 28 Sep 2020
- 05:33:08 -0300
-From:   Claudio Cohen <ccohen@tsjbaires.gov.ar>
-Date:   Mon, 28 Sep 2020 05:33:07 -0300
-Subject: 
-Thread-Index: AQHWlXH9rvQBvFi8UES+I6Vyo7KtZQ==
-Message-ID: <4B1437038E76064F98C3AAF27796110DF40B663292@svrborges.tsjbaires.gov.ar>
-Accept-Language: en-US, es-AR
-Content-Language: en-AU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US, es-AR
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: 8BIT
+        Mon, 28 Sep 2020 15:21:08 -0400
+X-Greylist: delayed 444 seconds by postgrey-1.27 at vger.kernel.org; Mon, 28 Sep 2020 15:21:08 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mailhost2.nitrkl.ac.in (Postfix) with ESMTP id 523251012FC;
+        Tue, 29 Sep 2020 00:43:35 +0530 (IST)
+Received: from mailhost2.nitrkl.ac.in ([127.0.0.1])
+        by localhost (mailhost2.nitrkl.ac.in [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id nbn4FdiGLHN8; Tue, 29 Sep 2020 00:43:35 +0530 (IST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mailhost2.nitrkl.ac.in (Postfix) with ESMTP id C8F29101301;
+        Tue, 29 Sep 2020 00:43:34 +0530 (IST)
+DKIM-Filter: OpenDKIM Filter v2.9.2 mailhost2.nitrkl.ac.in C8F29101301
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nitrkl.ac.in;
+        s=4391B05C-0340-11E3-8D52-6A4624F1C1DB; t=1601320414;
+        bh=TNdvMRHt6FIMnNmf3ABE9Lud7UduyilO8DjRYLarb4o=;
+        h=Date:From:Reply-To:Message-ID:Subject:MIME-Version:Content-Type:
+         Content-Transfer-Encoding;
+        b=EZ26AysNsZg/lIm3sd35pB/APd/NIOAvlq7BBVvxXra8o0H1vmQhv3+SIPuPad7LN
+         qzp9xwM35aWTLzgNgChl+S7tRYZjrNkhjfY7OD2An8QFtU/WgFWNmN3TlkdaupWjbT
+         xQKWPGWyyuyFJFDLuSCAyK6ChrsFeK3XS5MHFBlo=
+X-Virus-Scanned: amavisd-new at nitrkl.ac.in
+Received: from mailhost2.nitrkl.ac.in ([127.0.0.1])
+        by localhost (mailhost2.nitrkl.ac.in [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id zKPNyeZP-SFA; Tue, 29 Sep 2020 00:43:34 +0530 (IST)
+Received: from zmbox2.nitrkl.ac.in (zmbox2.nitrkl.ac.in [172.16.0.24])
+        by mailhost2.nitrkl.ac.in (Postfix) with ESMTP id A62C31012FC;
+        Tue, 29 Sep 2020 00:43:30 +0530 (IST)
+Date:   Tue, 29 Sep 2020 00:43:30 +0530 (IST)
+From:   Charles Dickson <220ce2059@nitrkl.ac.in>
+Reply-To: "Mr Charles Dickson " <charlesdickson094@gmail.com>
+Message-ID: <1595248787.5648083.1601320410556.JavaMail.zimbra@nitrkl.ac.in>
+Subject: ANTRAG AUF DARLEHEN
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [172.16.0.20]
+X-Mailer: Zimbra 8.6.0_GA_1229 (zclient/8.6.0_GA_1229)
+Thread-Topic: ANTRAG AUF DARLEHEN
+Thread-Index: gftWD5lcWPduqBuErLdIQkZPqOWzUg==
 To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
 
-Wir bieten Privat- und Geschäftskredite an. Ich bin ein zugelassener und zertifizierter Kreditgeber mit langjähriger Erfahrung in der Kreditvergabe. Wir vergeben Sicherheiten und nicht besicherte Kredite in Höhe von 10.000,00 € bis maximal 500.000.000,00 € mit einem festen Zinssatz von 3% eine jährliche Basis. Brauchen Sie einen Kredit? Mailen Sie uns an:  tinahook.loans@gmail.com
 
-Mailen Sie uns an:   tinahook.loans@gmail.com
-
-"Piense antes de imprimir. Ahorrar papel es cuidar nuestro ambiente" Ley 2.736
+Guten Tag, brauchen Sie einen Kredit, um ein Unternehmen zu gr=C3=BCnden od=
+er Rechnungen zu bezahlen? bitte kontaktieren Sie mich zur=C3=BCck =C3=BCbe=
+r: charlesdickson094@gmail.com f=C3=BCr weitere Informationen.
+Danke
