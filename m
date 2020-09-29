@@ -2,45 +2,60 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5175B27F058
-	for <lists+linux-parisc@lfdr.de>; Wed, 30 Sep 2020 19:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B6727F8A4
+	for <lists+linux-parisc@lfdr.de>; Thu,  1 Oct 2020 06:25:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731559AbgI3RYR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 30 Sep 2020 13:24:17 -0400
-Received: from [110.74.151.213] ([110.74.151.213]:21524 "EHLO
-        mail.bless.gov.my" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725872AbgI3RYP (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 30 Sep 2020 13:24:15 -0400
-Received: from User (unknown [172.20.84.1])
-        by mail.bless.gov.my (Postfix) with SMTP id D0DC968525AD;
-        Wed, 30 Sep 2020 18:45:53 +0800 (MYT)
-Reply-To: <iinfo446@gmail.com>
-From:   "Mrs. Susan Carter" <test@mail.bless.gov.my>
-Subject: Good day,    
-Date:   Wed, 30 Sep 2020 11:46:14 +0100
+        id S1725883AbgJAEZs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 1 Oct 2020 00:25:48 -0400
+Received: from ftender.ru ([178.218.214.211]:61995 "HELO ftender2.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with SMTP
+        id S1725823AbgJAEZs (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 1 Oct 2020 00:25:48 -0400
+X-Greylist: delayed 88740 seconds by postgrey-1.27 at vger.kernel.org; Thu, 01 Oct 2020 00:25:46 EDT
+dkim-signature: v=1; a=rsa-sha256; d=ftender2.ru; s=ke1;
+        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=m3pASy53GgfFwHppvIPHJghbzAHQviKN6bgk+M/PrtE=;
+        b=b5+YRB9tAjrda+WISL4WFZ2AXEfbVXVCNQfyMMk/8/BDLr0qib773OoQboPPuQ5H1KONXttCL2q0Byhah+NClTOGF8nmHdqACXa5W0duz0zLzivxq37JG8Ybc7T/t8vn/D1ACXRXRPRuHvkfrE2rFyyhcZpEeovSjghjBfnLCsE=
+Received: from User (Unknown [176.32.20.25])
+        by ftender2.ru
+        ; Tue, 29 Sep 2020 14:55:38 +0300
+Message-ID: <583EF32B-3419-4372-803C-E71C92C6B58A@ftender2.ru>
+Reply-To: <maviswanczyko@aol.com>
+From:   "L.  Wanczyk." <billing@ftender2.ru>
+Subject: DONATION .....                       211
+Date:   Tue, 29 Sep 2020 13:54:40 -0700
 MIME-Version: 1.0
 Content-Type: text/plain;
         charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
 X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20200930104553.D0DC968525AD@mail.bless.gov.my>
-To:     undisclosed-recipients:;
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Good day,
+Hello,
 
-My name are Mrs. Susan Carter an America but a United Kingdom Citizen, I???m 57 years old, widow, married to late Eng Martins Carter who is a British, who until his death worked with Dutch Filtration for Twenty-Six years before he died in the year 2015 after a brief illness that lasted only five days.
+I'm Mrs. Mavis Wanczyk, the mega winner of $758 Million in Mega Millions
+Jackpot, I am donating to 5 random individuals if you get this email then
+your email was selected after a spin ball. I have spread most of my wealth
+over a number of charities and organizations. I have voluntarily decided to
+donate the sum of $ 10 Million USD to you as one of the selected , to verify
+my
+winnings via YouTube page below.
 
-When my late husband was alive he deposited the sum of US$50 Million in bank USA through his Financial Lawyer in the United State of America and we all agreed as a couple to donate all of that to charity. Following my health (Lung Cancer), my Doctor told me that I may not live longer than required due to my health condition.
+WATCH ME HERE: https://www.youtube.com/watch?v=7kWnqvJM1mM
 
-Looking forward to seeing someone who can use the money for charitable work.
+THIS IS YOUR DONATION CODE: F207162
+Kindly send your direct telephone and fax number to enable me to reach you
 
-Best Regards
-Yours sincerely
-Mrs. Susan Carter
+Reply with the DONATION CODE to this email: maviswanczykoo@aol.com
+
+Hope to make you and your family happy.
+
+Regards,
+Mrs. Mavis L. Wanczyk.
+
