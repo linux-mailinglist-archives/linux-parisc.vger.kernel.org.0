@@ -2,36 +2,36 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B02E27B9D8
-	for <lists+linux-parisc@lfdr.de>; Tue, 29 Sep 2020 03:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5463C27B9AF
+	for <lists+linux-parisc@lfdr.de>; Tue, 29 Sep 2020 03:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727764AbgI2Bd3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 28 Sep 2020 21:33:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41822 "EHLO mail.kernel.org"
+        id S1727887AbgI2Bcn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 28 Sep 2020 21:32:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41806 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727763AbgI2BcH (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 28 Sep 2020 21:32:07 -0400
+        id S1727793AbgI2BcL (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 28 Sep 2020 21:32:11 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AEEDA22204;
-        Tue, 29 Sep 2020 01:31:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4CA6423444;
+        Tue, 29 Sep 2020 01:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601343119;
+        s=default; t=1601343127;
         bh=omDmb/EHkfaofnfyWtsh79Yx1RS9yvzCCe9Y5cUMIIs=;
         h=From:To:Cc:Subject:Date:From;
-        b=hr7N6wSzJ4VjjGCK8H0/jiAvFF32k0WzYLmQaqkqV4ahPMcpSb8zofFjtK0DTURcx
-         cjygfLNkeDr/GoNd+8tO4Ssry8XGK2L4aEB6n3nA7uVqWJSOdSfuK6m+i03ODQQe1e
-         COnVunG549U2FmOosOWguYzbfAdncAErjotg/6mI=
+        b=pqnoGJQ6tslYHVyNWVP4QznAqvnWcjPh7ayYC/KK8n2zN3x5MYaWFMDJAougLa1kA
+         SPHXzs1NuAe5n5RkWIBZWQ7GQENeO8Wqs4e9ejo58btHSZQjcp3eWtkRkPNNC2YzWK
+         mcizSDWd7rehIQf2UM/icd4kOgZazNYV03jLsZJc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Lucy Yan <lucyyan@google.com>, Moritz Fischer <mdf@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 1/5] net: dec: de2104x: Increase receive ring size for Tulip
-Date:   Mon, 28 Sep 2020 21:31:53 -0400
-Message-Id: <20200929013157.2407108-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 1/4] net: dec: de2104x: Increase receive ring size for Tulip
+Date:   Mon, 28 Sep 2020 21:32:02 -0400
+Message-Id: <20200929013205.2407201-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 X-stable: review
