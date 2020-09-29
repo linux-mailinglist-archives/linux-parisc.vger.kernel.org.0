@@ -2,54 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A06B327D550
-	for <lists+linux-parisc@lfdr.de>; Tue, 29 Sep 2020 20:01:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C6D027D595
+	for <lists+linux-parisc@lfdr.de>; Tue, 29 Sep 2020 20:14:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727861AbgI2SBB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 29 Sep 2020 14:01:01 -0400
-Received: from simcoe207srvr.owm.bell.net ([184.150.200.207]:56013 "EHLO
-        torfep01.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725320AbgI2SBA (ORCPT
+        id S1727657AbgI2SO2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 29 Sep 2020 14:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43594 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725320AbgI2SO2 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 29 Sep 2020 14:01:00 -0400
-Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
-          with ESMTP
-          id <20200929180059.JZWV6892.torfep01.bell.net@torspm01.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Tue, 29 Sep 2020 14:00:59 -0400
-Received: from [192.168.2.49] (really [70.53.61.197]) by torspm01.bell.net
-          with ESMTP
-          id <20200929180059.OENS29322.torspm01.bell.net@[192.168.2.49]>;
-          Tue, 29 Sep 2020 14:00:59 -0400
-Subject: Re: v5.8.x stability on parisc
-From:   John David Anglin <dave.anglin@bell.net>
-To:     Helge Deller <deller@gmx.de>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>
-References: <bd1c6298-db1a-79ab-279b-60daad6bed22@bell.net>
- <387e5574-a270-f3cc-d0f2-a26d0383b7e6@gmx.de>
- <60f8a51e-ac6e-d49c-e63e-d2b83cf4de22@bell.net>
-Message-ID: <8e6982fc-3d51-bb1e-f115-29e762a0c8c0@bell.net>
-Date:   Tue, 29 Sep 2020 14:00:59 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        Tue, 29 Sep 2020 14:14:28 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89FD7C061755
+        for <linux-parisc@vger.kernel.org>; Tue, 29 Sep 2020 11:14:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=L+eaolTBgRyx7aJRi5Va2pTB8K0imv46oZgInJWEIhE=; b=lMhBSM1jRgFJms0EtBUZw0oMZi
+        0SC6xwaTQ8nDpSfHcpdRbdFGJ9eaK32IK64LlULA5BfoN8dcZPxQdmN5UrVo2l8yTy27uW4CkQk9u
+        9rmgSkGMCgPJfdLKoArEawCyJ85TjPsZQSTr05SkXuWsW6iaZg+2YbfkNouOvqwnEcZbMeZjL/CrX
+        afuOnlcqm+om5I1thyrL3Rmf4Ku4VHRYDwNBHTL7w1eIPgS6aOu3frNxph71Mnu3MZFxI+I7jnAKb
+        qHc98A381R8a9O4VYraV7VGvzwROO1jVj8SNppBm/6dqCzBnlLOWNk9IQjidvNq0MS+aUS1vRICV+
+        ngaFTK2w==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kNK8x-00027T-4E; Tue, 29 Sep 2020 18:14:27 +0000
+Date:   Tue, 29 Sep 2020 19:14:27 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     linux-parisc@vger.kernel.org
+Subject: Re: Page tables on machines with >2GB RAM
+Message-ID: <20200929181427.GI20115@casper.infradead.org>
+References: <20200929153316.GG20115@casper.infradead.org>
+ <20200929170130.GA21889@casper.infradead.org>
+ <ec43d0b5-a40b-28d4-4a31-3c841cd89820@bell.net>
 MIME-Version: 1.0
-In-Reply-To: <60f8a51e-ac6e-d49c-e63e-d2b83cf4de22@bell.net>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=XvWExmN9 c=1 sm=1 tr=0 a=6x1y2OhCX1CAR/Lk3lU3cg==:117 a=6x1y2OhCX1CAR/Lk3lU3cg==:17 a=IkcTkHD0fZMA:10 a=reM5J-MqmosA:10 a=FBHGMhGWAAAA:8 a=opvMgGF1JOavQCFRZBYA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfI9uu/5Y1FWVvqdVGWvXom1LRRuI6zxUb02XAr/v/RueEzpgML1PWXx3kqejWVRoAbQp7o9IlPRPV7C3qyyv8sNaUXswJG1PdN8mLUVgCneTAtkK7/mY nvVnWpYqsLypm74NKfOIBaiEdOnfxM2wG8zntobRZiFboHLnHOG1G4UNUeap2H9wOLnw7+kxYWU8/g==
+In-Reply-To: <ec43d0b5-a40b-28d4-4a31-3c841cd89820@bell.net>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2020-09-27 5:24 p.m., John David Anglin wrote:
-> Thought so but nothing has been committed to v5.8.x that conflicts with the changes.  I also searched the git log
-> for similar commits but I didn't find anything.  So, I'm puzzled as to what happened to these changes.  This is the
-> main reason I threw out my patch list for discussion.
-A revised patch is in v5.9-rc7.
+On Tue, Sep 29, 2020 at 01:26:29PM -0400, John David Anglin wrote:
+> On 2020-09-29 1:01 p.m., Matthew Wilcox wrote:
+> > On Tue, Sep 29, 2020 at 04:33:16PM +0100, Matthew Wilcox wrote:
+> >> I think we can end up truncating a PMD or PGD entry (I get confused
+> >> easily about levels of the page tables; bear with me)
+> >>
+> >> /* NOTE: even on 64 bits, these entries are __u32 because we allocate
+> >>  * the pmd and pgd in ZONE_DMA (i.e. under 4GB) */
+> >> typedef struct { __u32 pgd; } pgd_t;
+> >> ...
+> >> typedef struct { __u32 pmd; } pmd_t;
+> >>
+> >> ...
+> >>
+> >>         pgd_t *pgd = (pgd_t *)__get_free_pages(GFP_KERNEL,
+> >>                                                PGD_ALLOC_ORDER);
+> >> ...
+> >>         return (pmd_t *)__get_free_pages(GFP_PGTABLE_KERNEL, PMD_ORDER);
+> >>
+> >> so if we have more than 2GB of RAM, we can allocate a page with the top
+> >> bit set, which we interpret to mean PAGE_PRESENT in the TLB miss handler
+> >> and mask it off, causing us to load the wrong page for the next level
+> >> of the page table walk.
+> >>
+> >> Have I missed something?
+> > Yes, yes I have.
+> >
+> > We store the PFN, not the physical address.  So we have 28 bits for
+> > storing the PFN and 4 bits for the PxD bits, supporting 28 + 12 = 40 bits
+> > (1TB) of physical address space.
+> The comment in pgalloc.h says 8TB?� I think improving the description as to how this works
+> would be welcome.
 
--- 
-John David Anglin  dave.anglin@bell.net
+It's talking about 8TB of virtual address space.  But I think it's wrong.
+On 64-bit,
 
+Each PTE defines a 4kB region of address space (ie one page).
+Each PMD is a 4kB allocation with 8-byte entries, so covers 512 * 4kB = 2MB
+Each PGD is an 8kB allocation with 4-byte entries, so covers 2048 * 2M = 4GB
+The top-level allocation is a 32kB allocation, but the first 8kB is used
+for the first PGD, so it covers 24kB / 4 bytes * 4GB = 24TB.
+
+I think the top level allocation was supposed to be an order-2 allocation,
+which would be an 8TB address space, but it's order-3.
+
+There's a lot of commentary which disagrees with the code.  For example,
+
+#define PMD_ORDER       1 /* Number of pages per pmd */
+
+That's just not true; an order-1 allocation is 2 pages, not 1.
