@@ -2,96 +2,123 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C6D027D595
-	for <lists+linux-parisc@lfdr.de>; Tue, 29 Sep 2020 20:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 347D027EC47
+	for <lists+linux-parisc@lfdr.de>; Wed, 30 Sep 2020 17:21:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727657AbgI2SO2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 29 Sep 2020 14:14:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43594 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725320AbgI2SO2 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 29 Sep 2020 14:14:28 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89FD7C061755
-        for <linux-parisc@vger.kernel.org>; Tue, 29 Sep 2020 11:14:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=L+eaolTBgRyx7aJRi5Va2pTB8K0imv46oZgInJWEIhE=; b=lMhBSM1jRgFJms0EtBUZw0oMZi
-        0SC6xwaTQ8nDpSfHcpdRbdFGJ9eaK32IK64LlULA5BfoN8dcZPxQdmN5UrVo2l8yTy27uW4CkQk9u
-        9rmgSkGMCgPJfdLKoArEawCyJ85TjPsZQSTr05SkXuWsW6iaZg+2YbfkNouOvqwnEcZbMeZjL/CrX
-        afuOnlcqm+om5I1thyrL3Rmf4Ku4VHRYDwNBHTL7w1eIPgS6aOu3frNxph71Mnu3MZFxI+I7jnAKb
-        qHc98A381R8a9O4VYraV7VGvzwROO1jVj8SNppBm/6dqCzBnlLOWNk9IQjidvNq0MS+aUS1vRICV+
-        ngaFTK2w==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kNK8x-00027T-4E; Tue, 29 Sep 2020 18:14:27 +0000
-Date:   Tue, 29 Sep 2020 19:14:27 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     John David Anglin <dave.anglin@bell.net>
-Cc:     linux-parisc@vger.kernel.org
-Subject: Re: Page tables on machines with >2GB RAM
-Message-ID: <20200929181427.GI20115@casper.infradead.org>
-References: <20200929153316.GG20115@casper.infradead.org>
- <20200929170130.GA21889@casper.infradead.org>
- <ec43d0b5-a40b-28d4-4a31-3c841cd89820@bell.net>
+        id S1730654AbgI3PVC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 30 Sep 2020 11:21:02 -0400
+Received: from mout.gmx.net ([212.227.17.20]:42495 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725385AbgI3PUs (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 30 Sep 2020 11:20:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1601479239;
+        bh=fltS7dm/xul5s+VvCN1nG8/xZMrv7p+KXxJRx6aLVqg=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=RDIYozhQi5dsZMemQ+QQZBcW3Lct3R/fIBGncQv9WJEMx0unypbFHxNsOMXoZ08FP
+         U23XEYApa4nP1h9VEDmWY10S+s8UvEqmUqNsXiRbtcaPGCUeLOBqlcFXzb6Bpk57OM
+         JlPdwc/8TBayYZMfTOIZxkSmfjhM+8/iK70/6Oo4=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.141.77]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MbAci-1kyubP1AYi-00bf8S; Wed, 30
+ Sep 2020 17:20:39 +0200
+Date:   Wed, 30 Sep 2020 17:20:36 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Add ioread64_hi_lo() and iowrite64_hi_lo()
+Message-ID: <20200930152036.GA27117@ls3530.fritz.box>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ec43d0b5-a40b-28d4-4a31-3c841cd89820@bell.net>
+X-Provags-ID: V03:K1:XOQ2xSo3/M03JIPTbkp6TAgi/h9MkPYuRXgW46psg53NjYdnBpG
+ lbKgtzlIkJI2lMZ3LUdInjY7yIUumvYWpP4JDI/WUd6JnW8GMQrStPr4fCeDle+0KmNOiqf
+ FYCgSwJIPSHeezZBjvKGDgj9i2V0CgC12VvjwZRLuqLYCO3R8kcSMq743++atMXxX42kZNe
+ iuZx/hhPg/Wr9GEneQe4A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:fPlCEiTYPo0=://xKvMpqnEKLnpSI0yHzih
+ I/krlkJE9NSEaQOu47iSN8D1RBM2vA8w+b0aPI1vRMpj1q7S3gvr/O7yYhSuP3pkFfcF2TELt
+ KrPXxO5pJooyYOi6nL68WsIF1mXNNywU8qO+M61xU/3GC1VqqI+M2iVM3xKrwMnQD80qoWP/M
+ jFSbk6BanFlqWmm8VFybFGDEcqaQ/DGmM27zVLVOQLfkwZpPSvlQge8sZ3OhOwn45hJkUu+0o
+ 0W3jjzRZbmmI64eTWOWOzuTtKf0L7jeExEVbB50pyGrGL29DqsGwCz8KkewGq/YjP7nznPVHH
+ +Cj6maLh9cRfHBsmKAzgZ2vfwEBKdzSCnm6/pV6VLIi820vY8/BgvreEgIp9MyhmBaNHewdng
+ MGAqmN2gE58aKa7v0Rk5VCEwWq4GEZ7QyYwSjZsfjzp5Aq3Df03JwtyPqcPL0MG6GcJC//uZ3
+ iS2715jJqZTtS9mpGiglq6nsBOJtR3ejs8nEY4+xSRBk+hE3kd14PRxnht6iBz//aAliH75kn
+ 7Qh/PrXf/1i1729LEJlMsbkV2X9SSCMGzxQYJfd/fon1EVj/vGbAI7b3RpmBopUdxyyLKNwPn
+ zxrLHKGyEUufBsb+tw2Zu1MFFCEFdke6MMCMZ2o1LgaVVmkgVsa1IYa430aSCnFW3wDRHHsTV
+ Tfv64qBezrZqcN+l1yQI0dGeW5dS5bTPOYJNgKat+LPI5fWjGLb7n8k7dtdxyzSD4pk/ZDDsB
+ nEB/c80XeHleTX0ztDbNGIYCr5MiJK0NiBaiLmVQVZQ9OjoRSYyHmzlz3fJusAXZH1jYvWIOc
+ +2UZjy7N9HYwIq1RX3jwvX1nfd5DHF+St6OO1lkdpsC4YPq7/9Mct+LoisvmB777GMi1aGhAv
+ FS7AZhLwUlKBmrlRx+OXYkCPW2d8suCBWa5lbrcomYsH+yozu5E0y+kvaL0KHQcTi8I/hIa6/
+ KG13jl+LWTGQmxGk4rhMZi8Kl+n6E7WlNeFxDPpOZiAuAExn9FNk0h4nrIgyglMeIjoMeEMAH
+ onbMKdJfdUXhr/074AxJbLnMUaxfAL7QlsueLjNlynb6bU/LZcCifH4jF1WeR9pYSxDjhBvJL
+ FUEoXAWOF451JZOGWDi5FqcHtDtiLNnwUaWv418bMKbcFofyYVyleOiJ2P1zbCRZSrKANbB7H
+ jTgsakT6CjgukJo/HLO5oQrJU3k1zr/05EudqHwtMLGjbRaVebxCytUbvw7PZHmuPtGg0NDwq
+ XfHZ/pWOO6FQoeyEv
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 01:26:29PM -0400, John David Anglin wrote:
-> On 2020-09-29 1:01 p.m., Matthew Wilcox wrote:
-> > On Tue, Sep 29, 2020 at 04:33:16PM +0100, Matthew Wilcox wrote:
-> >> I think we can end up truncating a PMD or PGD entry (I get confused
-> >> easily about levels of the page tables; bear with me)
-> >>
-> >> /* NOTE: even on 64 bits, these entries are __u32 because we allocate
-> >>  * the pmd and pgd in ZONE_DMA (i.e. under 4GB) */
-> >> typedef struct { __u32 pgd; } pgd_t;
-> >> ...
-> >> typedef struct { __u32 pmd; } pmd_t;
-> >>
-> >> ...
-> >>
-> >>         pgd_t *pgd = (pgd_t *)__get_free_pages(GFP_KERNEL,
-> >>                                                PGD_ALLOC_ORDER);
-> >> ...
-> >>         return (pmd_t *)__get_free_pages(GFP_PGTABLE_KERNEL, PMD_ORDER);
-> >>
-> >> so if we have more than 2GB of RAM, we can allocate a page with the top
-> >> bit set, which we interpret to mean PAGE_PRESENT in the TLB miss handler
-> >> and mask it off, causing us to load the wrong page for the next level
-> >> of the page table walk.
-> >>
-> >> Have I missed something?
-> > Yes, yes I have.
-> >
-> > We store the PFN, not the physical address.  So we have 28 bits for
-> > storing the PFN and 4 bits for the PxD bits, supporting 28 + 12 = 40 bits
-> > (1TB) of physical address space.
-> The comment in pgalloc.h says 8TB?  I think improving the description as to how this works
-> would be welcome.
+The kernel test robot reports missing functions. Add them.
 
-It's talking about 8TB of virtual address space.  But I think it's wrong.
-On 64-bit,
+hppa-linux-ld: drivers/firmware/arm_scmi/perf.o: in function `scmi_perf_fc=
+_ring_db':
+ (.text+0x610): undefined reference to `ioread64_hi_lo'
+ (.text+0x63c): undefined reference to `iowrite64_hi_lo'
 
-Each PTE defines a 4kB region of address space (ie one page).
-Each PMD is a 4kB allocation with 8-byte entries, so covers 512 * 4kB = 2MB
-Each PGD is an 8kB allocation with 4-byte entries, so covers 2048 * 2M = 4GB
-The top-level allocation is a 32kB allocation, but the first 8kB is used
-for the first PGD, so it covers 24kB / 4 bytes * 4GB = 24TB.
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-I think the top level allocation was supposed to be an order-2 allocation,
-which would be an 8TB address space, but it's order-3.
+diff --git a/arch/parisc/lib/iomap.c b/arch/parisc/lib/iomap.c
+index ce400417d54e..f03adb1999e7 100644
+=2D-- a/arch/parisc/lib/iomap.c
++++ b/arch/parisc/lib/iomap.c
+@@ -346,6 +346,16 @@ u64 ioread64be(const void __iomem *addr)
+ 	return *((u64 *)addr);
+ }
 
-There's a lot of commentary which disagrees with the code.  For example,
++u64 ioread64_hi_lo(const void __iomem *addr)
++{
++	u32 low, high;
++
++	high =3D ioread32(addr + sizeof(u32));
++	low =3D ioread32(addr);
++
++	return low + ((u64)high << 32);
++}
++
+ void iowrite8(u8 datum, void __iomem *addr)
+ {
+ 	if (unlikely(INDIRECT_ADDR(addr))) {
+@@ -409,6 +419,12 @@ void iowrite64be(u64 datum, void __iomem *addr)
+ 	}
+ }
 
-#define PMD_ORDER       1 /* Number of pages per pmd */
++void iowrite64_hi_lo(u64 val, void __iomem *addr)
++{
++	iowrite32(val >> 32, addr + sizeof(u32));
++	iowrite32(val, addr);
++}
++
+ /* Repeating interfaces */
 
-That's just not true; an order-1 allocation is 2 pages, not 1.
+ void ioread8_rep(const void __iomem *addr, void *dst, unsigned long count=
+)
+@@ -511,6 +527,7 @@ EXPORT_SYMBOL(ioread32);
+ EXPORT_SYMBOL(ioread32be);
+ EXPORT_SYMBOL(ioread64);
+ EXPORT_SYMBOL(ioread64be);
++EXPORT_SYMBOL(ioread64_hi_lo);
+ EXPORT_SYMBOL(iowrite8);
+ EXPORT_SYMBOL(iowrite16);
+ EXPORT_SYMBOL(iowrite16be);
+@@ -518,6 +535,7 @@ EXPORT_SYMBOL(iowrite32);
+ EXPORT_SYMBOL(iowrite32be);
+ EXPORT_SYMBOL(iowrite64);
+ EXPORT_SYMBOL(iowrite64be);
++EXPORT_SYMBOL(iowrite64_hi_lo);
+ EXPORT_SYMBOL(ioread8_rep);
+ EXPORT_SYMBOL(ioread16_rep);
+ EXPORT_SYMBOL(ioread32_rep);
