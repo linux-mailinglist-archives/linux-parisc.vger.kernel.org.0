@@ -2,35 +2,33 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C683282381
-	for <lists+linux-parisc@lfdr.de>; Sat,  3 Oct 2020 12:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8740282914
+	for <lists+linux-parisc@lfdr.de>; Sun,  4 Oct 2020 07:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725791AbgJCKFH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 3 Oct 2020 06:05:07 -0400
-Received: from mout.gmx.net ([212.227.15.19]:42185 "EHLO mout.gmx.net"
+        id S1725822AbgJDF3q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 4 Oct 2020 01:29:46 -0400
+Received: from mout.gmx.net ([212.227.15.18]:55553 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725601AbgJCKFG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 3 Oct 2020 06:05:06 -0400
+        id S1725821AbgJDF3p (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 4 Oct 2020 01:29:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1601719492;
-        bh=RizOq9otC8RQbuqihdOSBK2fMF8g7ji9r15wyyWGNaQ=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=XSCqFEo9wUlKdC8slXc+ajUtsM7AP6oT/FOiZeeMV76Tu9TSwEblrCSIp8oqZNu8l
-         9QAPPbQCEnLXozIsaooQeBmGOer+6RX9FAMLDeIwvKqXaJzmYiegFn147Q9KZE56jL
-         qmOA00dCLjkSYZt2drZ1G2yBQ1frKCgTI0I1dky4=
+        s=badeba3b8450; t=1601789374;
+        bh=aBFWh6BnZSGpnvPFKk7fL4mOtsl+hXD9eDo/xpL3VWw=;
+        h=X-UI-Sender-Class:Subject:To:References:Cc:From:Date:In-Reply-To;
+        b=OLRFv8JVoUnEp0w6MbMrDoHqpCZG3vMk6Dg0Kogy5pcrKTUWAMMXIDawZLZSWNXpE
+         AJpVXmN7TaJSwEqxDzSjY9hZViuiYQJ6Jgb9ti7daCvKzHIX+da8gYCkS6kSwi5u+/
+         kPXSLz8aKG3GnhH1HCBmlMI1n5wXcRJXh0bSKjdY=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.137.81]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MCKFk-1kGRDK26s6-009M7L; Sat, 03
- Oct 2020 12:04:52 +0200
-Subject: Re: [PATCH v10 1/7] parisc: start using signal-defs.h
-To:     Peter Collingbourne <pcc@google.com>
-Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Parisc List <linux-parisc@vger.kernel.org>
-References: <cover.1598072840.git.pcc@google.com>
- <efdbcb5fc45a2dbdf1e2363d68ab0f7b5a276980.1598072840.git.pcc@google.com>
- <c83eeeff-ae86-14e0-a8a4-bcf71e5acb5a@gmx.de>
- <CAMn1gO7-MQbdYaOFtW1Oc8mBmgPyuT=0CfuD50jNQ8ysMrp5OA@mail.gmail.com>
+Received: from [192.168.20.60] ([92.116.174.203]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MTzf6-1jz4041Tve-00R13v; Sun, 04
+ Oct 2020 07:29:34 +0200
+Subject: Re: Page tables on machines with >2GB RAM
+To:     Matthew Wilcox <willy@infradead.org>
+References: <20200929153316.GG20115@casper.infradead.org>
+ <20200929170130.GA21889@casper.infradead.org>
+ <ec43d0b5-a40b-28d4-4a31-3c841cd89820@bell.net>
+ <20200929181427.GI20115@casper.infradead.org>
+Cc:     linux-parisc <linux-parisc@vger.kernel.org>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -89,167 +87,122 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <a2836205-9f34-99c1-c113-7b54b8243a6d@gmx.de>
-Date:   Sat, 3 Oct 2020 12:04:50 +0200
+Message-ID: <954ff0a3-bdc6-9b1e-9603-f7e58456cd95@gmx.de>
+Date:   Sun, 4 Oct 2020 07:29:33 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <CAMn1gO7-MQbdYaOFtW1Oc8mBmgPyuT=0CfuD50jNQ8ysMrp5OA@mail.gmail.com>
+In-Reply-To: <20200929181427.GI20115@casper.infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:kzgLC3Ytt1Yy9DBYlbM7fkCADYOuE/NmRbRHuDpJnJxyk5SMq5Q
- D+NiIBtPWEJ4df8F4W2VhHiYS+ue2+Q6UdmQM0osD9Y0oobvFk2FGtmOq6Uw7TVOgRjh8L6
- NCnOSbFpqmboPGhHJ4CQrShMFihQ7QKs2KUQRhZqaikEhUn4SQyfMEYK0xpABjTc8OGsHRO
- XQFcfpQP+2Wt0ZQz5zV+A==
+X-Provags-ID: V03:K1:tsp+0Y0HxE+JgkQHwE4Ttd3fHwOazdn7+24UlXsKCYiPZqtgYlt
+ dBT4VFFkcyyG5q0Xyjjqz9d58w4bJY+wKARPajXWsWLjhY4JlhpG6o1byObKMcH+Q7NR1YU
+ CCWPwEGotU5hCcIHKSdtG/WZsSf5NLXHI1avsQ4WrbZwLdmCgg8JAB5F228WgrEmqW+0JeV
+ 863/wRHHXzgyu150sVwFg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:k4kJlo6mam4=:/wDnwzN0VZDvFu7mTXNY4O
- pxnR4XJswGjPbfJ1SnnTqIkMO+zQga1b5S4xstBNwTfvtmI924rZuw5h5kKx86D5GDySaKol+
- ws6AB3mKwJw3olfWf1KoUPcStBq/gp2XLuScJz7P1cNL/ftIkSFPmUvaw+zHKMk8hkUTev1XG
- ZJKF+Ba9OgQnYgUretzu0jrcMOQHC3ADqaaY1NynQeymWq6pA7S5o9nmY/jT/uVh65xO5O6HF
- NPgjw9MQ2DpYYWJQbXRr09AXtXD4kDA8L6VXfvtEgUPUnz/umhJ4Lhkb846CHTEFs0DjR2/SG
- kY06csLVPhy8uGvHImzq4pD7OTHD/bbTX2cvO2KEIVjpUrAjgBrzmO6d4c1xRNVCvOz75OdyY
- yxjbowZv5PJwfS3xlJX7zCo7H2kxrOqbTBEiELiEeSIHKTwYVTzci1Djno6kzubHaGELgC/yZ
- Cq7g0Gvrc+A2GrPO1VJT1NdKGKBWi6tZ41NOHSmmuG0oHvnyQXTpZL4nWLv0X/t+xCQICmx9q
- IAsGgVBpYuPA+rGMAgfjKbU/4bAim20388TJBH/HifTNDTKXxEf4Cl2CTgdlxXcCvYbjxIJdb
- dYeTQO7IgDa8TWgZDG7QknYjIom7SHAmhZ6++er/o4heTYaeV889m7xqEyKwaNTzj/xReLlCT
- dDiVVzV/U3TyDW8lP8JgQaCVSEYh4BCdNaOFzqE72pje+vCQ/m740K8mWMnnkxHy7YYM5hBEa
- NlL1J2quK4Ief3iMs7amYUgQ6D4i1wyd+uU7WSa3seGD4PLXXCY3813gwKKiwCFVOpERXSmac
- bf3/mWgn614F7PhR4XxRi0UWTjfeuMgrrrQIEYefS54c1dex0yz+P9jrm7ny9XDlKc5473IQI
- m++C0PVErjcgHzdya5pqCpvMqCSSfQpdhlN5uuxr64hSYLse9yeEHHgcDbt/ACqgNMkrd5b+K
- mXGXOIjy74S7z6o++AbPuuSC4MLSOjHlm90xjvtYw88NzDLeTa5awYkGxqNyePTX2Swa0HLsv
- 4idyrv6qsiJMu+8gbmYHjLKtyzltZnHUqk5yzlPKDGDWoQXowbkrvX2di0IGCZlogmy3JOo2/
- Zj9WdoLZopxF72sHaadniQfvkoVHWo9zH7Ip1nHVmg9WH2+V+0cqUKAaK/SColeyVmUbFrDR2
- he/95XTlh7lnbF8LkYtyednih+au6ifQNMtR1ar2Lb6ZQfq/5r7l09uVmFtq1IJDrU+qW4OfX
- PrTQNwiAstv4Qk0VT
+X-UI-Out-Filterresults: notjunk:1;V03:K0:18+wDnW/pz8=:anUZmNzzlCoO3o3UF/f//+
+ MwA1xDICn6CEJ0zf0kHtqdWGXbESaJ4L7d3/WpQITdcj9LOo4Bz83xjlskj+2stXUNyz+nKlJ
+ erfcCcEdxi60QQ10iMg/ZhkwwJ04WOtId+zo5hyHkVL5v47nbQYZGybSR4YKl4wrawZAeau9S
+ GZ0Lyd4lOXTC0lWBhNe7HmhbHG1AR5ANTMfh/Fxt6jEYfUipqXYYhyWbheZ6ihTFpeIGR9SzO
+ nHjhVZ+jdboWv93PEPer6lVI4hjDsuqLWZ9J3AQwsZkM7FnF5yyFbdEV7/2VPEHYz+Bhr+Nso
+ aeMUUYoHYqyUhFxFlGMUivpU/VaehBvoMEf5zhYgRA1H98uDJkTx2e2b6MQ+6nsLdzIiGSBOb
+ lurPydEO4WnuBlYPzgaQzmXC2892LxmjWwlxJ3BV0wkHvKL2ix5ebC7YU+1GpIQb+KWunasJZ
+ +21eTp16EgSufTK1necPPrtVGwKkv38ebl1IiDXs8Gs566Hz7LYAc5Q1KZm3twimYzgAql25H
+ 5IrI0nu2bejPQNjSJMy5d0wC8wwJc7EEw6VyaXnf97KRnO9eawz8cg+DnvS3DXOeVUxynmmOQ
+ thZR7oRdpsQ7wsOBqNmEjg4fyozR3AD4yBcdkdTZuMUepN7EkdjfVuAk9e0PeyRSHE3alGF4V
+ Em5Aj3uz/MDSZbtzh+APQdBfwwGMWQIRdWB7d4a6WGtPAf1CvS4H72ZgEUsPJvObWG8T6v0Gc
+ Sdyn9SGkORdnlsMTRYPtgBdl4/xW1ypXh+5VQTBRg8qA3V06XXYvU4SoxZrVTadbwYao3JhJK
+ AUOpWG6/yqYNxMARVRyzlxFlxqi+TiRkgmvIOhfLRoqnYr3FCfXSzouCjocTe8yMDAuN2Dj7w
+ 4BZCDyzFEfEUkAFVyOn5hIpH4slX8fdyZ92d8QUQy0IJEj0QR837E6c32kuEIIumSgArCo2ne
+ D58vVQhcJ2fOV8O0i+F6BJxav61XgX32xDLMUpIg2pTs8OFGZZX9/RpZ/8I1eZpEhraQgtIXx
+ H45jPmHrRzP38rSb0ekInHV9jQrXypHE5QPicK/fZJsvcWdVNC8XNzqdaAZ4/05rcLqf3Uja5
+ Jwxyg2q5q8xOoVAG8+jqgz07DVP7GzfgD3ZjVzSOg2Fi/Cmq6F1wEEpHeWSnomcDdjhv5LM90
+ IjT8o/csNppPuVPmv1/5Jd1CgyWdH4UAs8ktVHPA48g7dV1I5tBBIvtdFWrSYdOvOxcarZze2
+ BWVz1nDkiOOnph4Av
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/3/20 3:22 AM, Peter Collingbourne wrote:
-> On Sun, Aug 30, 2020 at 10:07 AM Helge Deller <deller@gmx.de> wrote:
->>
->> On 22.08.20 07:10, Peter Collingbourne wrote:
->>> We currently include signal-defs.h on all architectures except parisc.
->>> Make parisc fall in line. This will make maintenance easier once the
->>> flag bits are moved here.
->>
->> The patch is basically OK, but....
->>
->>> Signed-off-by: Peter Collingbourne <pcc@google.com>
->>> ---
->>> View this change in Gerrit: https://linux-review.googlesource.com/q/If=
-03a5135fb514fe96548fb74610e6c3586a04064
+On 9/29/20 8:14 PM, Matthew Wilcox wrote:
+> On Tue, Sep 29, 2020 at 01:26:29PM -0400, John David Anglin wrote:
+>> On 2020-09-29 1:01 p.m., Matthew Wilcox wrote:
+>>> On Tue, Sep 29, 2020 at 04:33:16PM +0100, Matthew Wilcox wrote:
+>>>> I think we can end up truncating a PMD or PGD entry (I get confused
+>>>> easily about levels of the page tables; bear with me)
+>>>>
+>>>> /* NOTE: even on 64 bits, these entries are __u32 because we allocate
+>>>>  * the pmd and pgd in ZONE_DMA (i.e. under 4GB) */
+>>>> typedef struct { __u32 pgd; } pgd_t;
+>>>> ...
+>>>> typedef struct { __u32 pmd; } pmd_t;
+>>>>
+>>>> ...
+>>>>
+>>>>         pgd_t *pgd =3D (pgd_t *)__get_free_pages(GFP_KERNEL,
+>>>>                                                PGD_ALLOC_ORDER);
+>>>> ...
+>>>>         return (pmd_t *)__get_free_pages(GFP_PGTABLE_KERNEL, PMD_ORDE=
+R);
+>>>>
+>>>> so if we have more than 2GB of RAM, we can allocate a page with the t=
+op
+>>>> bit set, which we interpret to mean PAGE_PRESENT in the TLB miss hand=
+ler
+>>>> and mask it off, causing us to load the wrong page for the next level
+>>>> of the page table walk.
+>>>>
+>>>> Have I missed something?
+>>> Yes, yes I have.
 >>>
->>>  arch/parisc/include/uapi/asm/signal.h  | 9 +--------
->>>  include/uapi/asm-generic/signal-defs.h | 6 ++++++
->>>  2 files changed, 7 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/arch/parisc/include/uapi/asm/signal.h b/arch/parisc/inclu=
-de/uapi/asm/signal.h
->>> index d38563a394f2..92a1c7ea44b4 100644
->>> --- a/arch/parisc/include/uapi/asm/signal.h
->>> +++ b/arch/parisc/include/uapi/asm/signal.h
->>> @@ -69,14 +69,7 @@
->>>  #define MINSIGSTKSZ  2048
->>>  #define SIGSTKSZ     8192
->>>
->>> -
->>> -#define SIG_BLOCK          0 /* for blocking signals */
->>> -#define SIG_UNBLOCK        1 /* for unblocking signals */
->>> -#define SIG_SETMASK        2 /* for setting the signal mask */
->>> -
->>> -#define SIG_DFL      ((__sighandler_t)0)     /* default signal handli=
-ng */
->>> -#define SIG_IGN      ((__sighandler_t)1)     /* ignore signal */
->>> -#define SIG_ERR      ((__sighandler_t)-1)    /* error return from sig=
-nal */
->>> +#include <asm/signal-defs.h>
->>>
->>>  # ifndef __ASSEMBLY__
->>>
->>> diff --git a/include/uapi/asm-generic/signal-defs.h b/include/uapi/asm=
--generic/signal-defs.h
->>> index e9304c95ceea..ecdf6312bfa5 100644
->>> --- a/include/uapi/asm-generic/signal-defs.h
->>> +++ b/include/uapi/asm-generic/signal-defs.h
->>> @@ -15,8 +15,14 @@
->>>  #endif
->>>
->>>  #ifndef __ASSEMBLY__
->>
->>> +#ifndef __hppa__
->>> +/*
->>> + * These have a special definition on parisc, see:
->>> + * arch/parisc/include/uapi/asm/signal.h
->>> + */
->>>  typedef void __signalfn_t(int);
->>>  typedef __signalfn_t __user *__sighandler_t;
->>
->> please drop this special-case/#ifdef for hppa/parisc.
->> Instead please drop the typedef in arch/parisc/include/uapi/asm/signal.=
-h,
->> same as you did for the other architectures.
->>
->> I've committed this patch to my tree, which will collide with yours:
->>  https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.gi=
-t/commit/?h=3Dfor-next
->> If you like I can drop mine, and you fix it up on your side.
->> Just let me know.
->>
->> Other than that you can add:
->> Acked-by: Helge Deller <deller@gmx.de>
->>
->> Thanks!
+>>> We store the PFN, not the physical address.  So we have 28 bits for
+>>> storing the PFN and 4 bits for the PxD bits, supporting 28 + 12 =3D 40=
+ bits
+>>> (1TB) of physical address space.
+>> The comment in pgalloc.h says 8TB?=C2=A0 I think improving the descript=
+ion as to how this works
+>> would be welcome.
 >
-> Thanks for the review and apologies for the delay in getting back to
-> you. I've picked up your patch from your for-next branch into my
-> series before this change, and removed the special case for hppa. I
-> also build tested my series on hppa which revealed a typo in the
-> #include directive which I fixed. The new patch looks like this and it
-> will be included in v11 which I will try to send out soon.
+> It's talking about 8TB of virtual address space.  But I think it's wrong=
+.
+> On 64-bit,
+>
+> Each PTE defines a 4kB region of address space (ie one page).
+> Each PMD is a 4kB allocation with 8-byte entries, so covers 512 * 4kB =
+=3D 2MB
 
-Thanks!
-Ok, I've now dropped my patch from my for-next series.
+No, PMD is 4kb allocation with 4-byte entries, so covers 1024 * 4kb =3D 4M=
+B
+We always us 4-byte entries, for 32- and 64-bit kernels.
+
+> Each PGD is an 8kB allocation with 4-byte entries, so covers 2048 * 2M =
+=3D 4GB
+
+No. each PGD is a 4kb allocation with 4-byte entries. so covers 1024 * 4MB=
+ =3D 4GB
+Still, my calculation ends up with 4GB, like yours.
+
+> The top-level allocation is a 32kB allocation, but the first 8kB is used
+> for the first PGD, so it covers 24kB / 4 bytes * 4GB =3D 24TB.
+
+size of PGD (swapper_pg_dir) is 8k, so we have 8k / 4 bytes * 4GB =3D 8 TB
+virtual address space.
+
+At boot we want to map (1 << KERNEL_INITIAL_ORDER) pages (=3D64MB on 64bit=
+ kernel)
+and for this pmd0 gets pre-allocated with 8k size, and pg0 with 132k to
+simplify the filling the initial page tables - but that's not relevant for
+the calculations above.
+
+> I think the top level allocation was supposed to be an order-2 allocatio=
+n,
+> which would be an 8TB address space, but it's order-3.
+>
+> There's a lot of commentary which disagrees with the code.  For example,
+>
+> #define PMD_ORDER       1 /* Number of pages per pmd */
+> That's just not true; an order-1 allocation is 2 pages, not 1.
+
+Yes, that should be fixed up.
 
 Helge
-
-
-> diff --git a/arch/parisc/include/uapi/asm/signal.h
-> b/arch/parisc/include/uapi/asm/signal.h
-> index f1fd4fa880d7..e67b1bfb82ba 100644
-> --- a/arch/parisc/include/uapi/asm/signal.h
-> +++ b/arch/parisc/include/uapi/asm/signal.h
-> @@ -69,14 +69,7 @@
->  #define MINSIGSTKSZ    2048
->  #define SIGSTKSZ       8192
->
-> -
-> -#define SIG_BLOCK          0   /* for blocking signals */
-> -#define SIG_UNBLOCK        1   /* for unblocking signals */
-> -#define SIG_SETMASK        2   /* for setting the signal mask */
-> -
-> -#define SIG_DFL        ((__sighandler_t)0)     /* default signal handli=
-ng */
-> -#define SIG_IGN        ((__sighandler_t)1)     /* ignore signal */
-> -#define SIG_ERR        ((__sighandler_t)-1)    /* error return from sig=
-nal */
-> +#include <asm-generic/signal-defs.h>
->
->  # ifndef __ASSEMBLY__
->
-> @@ -85,10 +78,6 @@
->  /* Avoid too many header ordering problems.  */
->  struct siginfo;
->
-> -/* Type of a signal handler.  */
-> -typedef void __signalfn_t(int);
-> -typedef __signalfn_t __user *__sighandler_t;
-> -
->  typedef struct sigaltstack {
->         void __user *ss_sp;
->         int ss_flags;
->
-> Peter
->
-
