@@ -2,112 +2,173 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A595282AA0
-	for <lists+linux-parisc@lfdr.de>; Sun,  4 Oct 2020 14:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7B362834A0
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Oct 2020 13:06:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725963AbgJDMW3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 4 Oct 2020 08:22:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53090 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725840AbgJDMW3 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 4 Oct 2020 08:22:29 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D14C0613CE
-        for <linux-parisc@vger.kernel.org>; Sun,  4 Oct 2020 05:22:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=GoHkfHG2p32qg+TA8oa5qpfjbpyI22ffUGWGGiJhz2k=; b=cYDWO5D96Qkvo9+N0nEpcJtiAd
-        zZQt3+NaD8YW+8I7P29rv5DxDH5kechbNtam22ffdHS3mZ0NN3Xc0PWdrN/Q1g8awKzE4CapTfBLN
-        avDRcP8Pe8wwAp4iPrHfFc0qAFP7ceSDPWuEqfOHmZNCAGVTxfQfVgTRorru3gWKjuqpqCmoTpb3F
-        f2PsVDnDKjMJOwhkxle5HyI4Xfzt/W/jmNYRrWZwVCVAOhETVCigJWXs2ko8fwUIJJVnfo1Y95uJi
-        pTJPYoPsHvZ1RlMvh7ThFEyjV5sXheiC4jo60elUnBKKQioBBXoGL+PExZ9t5oz76avPoTopba2yR
-        i0sE/ibA==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kP323-0002km-86; Sun, 04 Oct 2020 12:22:27 +0000
-Date:   Sun, 4 Oct 2020 13:22:27 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-parisc <linux-parisc@vger.kernel.org>
-Subject: Re: Page tables on machines with >2GB RAM
-Message-ID: <20201004122227.GH20115@casper.infradead.org>
-References: <20200929153316.GG20115@casper.infradead.org>
- <20200929170130.GA21889@casper.infradead.org>
- <ec43d0b5-a40b-28d4-4a31-3c841cd89820@bell.net>
- <20200929181427.GI20115@casper.infradead.org>
- <954ff0a3-bdc6-9b1e-9603-f7e58456cd95@gmx.de>
+        id S1725891AbgJELG6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 5 Oct 2020 07:06:58 -0400
+Received: from foss.arm.com ([217.140.110.172]:44228 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726017AbgJELG6 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 5 Oct 2020 07:06:58 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2000D106F;
+        Mon,  5 Oct 2020 04:06:57 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3D21B3F66B;
+        Mon,  5 Oct 2020 04:06:55 -0700 (PDT)
+Date:   Mon, 5 Oct 2020 12:06:52 +0100
+From:   Dave Martin <Dave.Martin@arm.com>
+To:     Peter Collingbourne <pcc@google.com>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Kostya Serebryany <kcc@google.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        David Spickett <david.spickett@linaro.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Evgenii Stepanov <eugenis@google.com>,
+        Richard Henderson <rth@twiddle.net>
+Subject: Re: [PATCH v10 2/7] arch: move SA_* definitions to generic headers
+Message-ID: <20201005110651.GR6642@arm.com>
+References: <cover.1598072840.git.pcc@google.com>
+ <f5b9b91e7401d82c899fb6d1bb7fb2158103e5f3.1598072840.git.pcc@google.com>
+ <20200908151223.GS6642@arm.com>
+ <CAMn1gO7uBVL64KPv947AKSoOv9F1ghXkyB+c2St6g-pQnVPHDQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <954ff0a3-bdc6-9b1e-9603-f7e58456cd95@gmx.de>
+In-Reply-To: <CAMn1gO7uBVL64KPv947AKSoOv9F1ghXkyB+c2St6g-pQnVPHDQ@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Oct 04, 2020 at 07:29:33AM +0200, Helge Deller wrote:
-> On 9/29/20 8:14 PM, Matthew Wilcox wrote:
-> > It's talking about 8TB of virtual address space.  But I think it's wrong.
-> > On 64-bit,
+On Fri, Oct 02, 2020 at 06:14:01PM -0700, Peter Collingbourne wrote:
+> On Tue, Sep 8, 2020 at 8:12 AM Dave Martin <Dave.Martin@arm.com> wrote:
 > >
-> > Each PTE defines a 4kB region of address space (ie one page).
-> > Each PMD is a 4kB allocation with 8-byte entries, so covers 512 * 4kB = 2MB
-> 
-> No, PMD is 4kb allocation with 4-byte entries, so covers 1024 * 4kb = 4MB
-> We always us 4-byte entries, for 32- and 64-bit kernels.
-
-#if CONFIG_PGTABLE_LEVELS == 3
-#define PGD_ORDER       1 /* Number of pages per pgd */
-#define PMD_ORDER       1 /* Number of pages per pmd */
-#define PGD_ALLOC_ORDER (2 + 1) /* first pgd contains pmd */
-...
-#if CONFIG_PGTABLE_LEVELS == 3
-...
-static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
-{
-        return (pmd_t *)__get_free_pages(GFP_PGTABLE_KERNEL, PMD_ORDER);
-}
-
-We're definitely doing an 8kB allocation.  If we should be allocating
-4kB, then PMD_ORDER should be 0.
-
-The 32-bit entries, even on 64-bit are a nice hack.  I think that just means
-we're over-allocating memory for the page tables.
-
-> > Each PGD is an 8kB allocation with 4-byte entries, so covers 2048 * 2M = 4GB
-> 
-> No. each PGD is a 4kb allocation with 4-byte entries. so covers 1024 * 4MB = 4GB
-> Still, my calculation ends up with 4GB, like yours.
-
-Again, I think there's an order vs count confusion here.
-
-> > The top-level allocation is a 32kB allocation, but the first 8kB is used
-> > for the first PGD, so it covers 24kB / 4 bytes * 4GB = 24TB.
-> 
-> size of PGD (swapper_pg_dir) is 8k, so we have 8k / 4 bytes * 4GB = 8 TB
-> virtual address space.
-> 
-> At boot we want to map (1 << KERNEL_INITIAL_ORDER) pages (=64MB on 64bit kernel)
-> and for this pmd0 gets pre-allocated with 8k size, and pg0 with 132k to
-> simplify the filling the initial page tables - but that's not relevant for
-> the calculations above.
-
-I was talking about pgd_alloc():
-
-        pgd_t *pgd = (pgd_t *)__get_free_pages(GFP_KERNEL,
-                                               PGD_ALLOC_ORDER);
-
-where we allocate 8 * 4kB pages
-
-> > I think the top level allocation was supposed to be an order-2 allocation,
-> > which would be an 8TB address space, but it's order-3.
+> > On Fri, Aug 21, 2020 at 10:10:12PM -0700, Peter Collingbourne wrote:
+> > > Most architectures with the exception of alpha, mips, parisc and
+> > > sparc use the same values for these flags. Move their definitions into
+> > > asm-generic/signal-defs.h and allow the architectures with non-standard
+> > > values to override them. Also, document the non-standard flag values
+> > > in order to make it easier to add new generic flags in the future.
+> > >
+> > > Signed-off-by: Peter Collingbourne <pcc@google.com>
 > >
-> > There's a lot of commentary which disagrees with the code.  For example,
+> > While this looks reasonable, I've just realised that you strip the "U"
+> > from some arches' definitions here.
 > >
-> > #define PMD_ORDER       1 /* Number of pages per pmd */
-> > That's just not true; an order-1 allocation is 2 pages, not 1.
+> > So, on powerpc and x86, this changes the type of flags other than
+> > SA_RESETHAND from unsigned int to int.
+> >
+> > While I can't see this breaking any sensible use of these flags, there's
+> > a chance that there is software relying on this distinction by
+> > accident.
 > 
-> Yes, that should be fixed up.
+> While it's true that it's technically possible that making these
+> signed could change semantics, I'm having trouble seeing a realistic
+> way in which software could be relying on this. Can you see one? I can
+> think of cases like if the code does something like left shifts one of
+> the flag bits into the sign bit (technically undefined behavior) and
+> then right shifts it back (in C this would need to all be done in a
+> single expression without storing to a variable; in C++ I suppose you
+> could use auto to preserve the signedness in a variable's type). For
+> example:
 > 
-> Helge
+> int x = (SA_NODEFER << 1) >> 1;
+> 
+> would give a different value to x if we made SA_NODEFER signed. But I
+> wouldn't really expect software to be doing this sort of thing even
+> accidentally, or much more than or'ing the flags together and
+> assigning them to a variable, or passing them as a parameter, or some
+> other operation which would fix the type.
+
+I couldn't come up with a very good, non-contrived example I admit.
+
+> I believe that the kernel's uapi guarantee applies at the binary
+> level, not at the source level. If that were not the case, I think we
+> would not be allowed to add any new declaration to an existing .h file
+> for fear of conflicting with a user program's identically spelled
+> declaration. And that seems more likely to me than software that would
+> do this sort of thing.
+
+The behaviour of source code making legitimate use of the kernel headers
+still shouldn't be changed without good reason, especially if the change
+could lead to subtle bugs that the compiler won't detect.
+
+However this doesn't mean that decrufting unintentional inconsistencies
+in the headers is a bad idea ... and see my response below.
+
+> > I wonder whether it's worth doing something like
+> >
+> >         #ifdef ARCH_WANT_STRICTLY_UNSIGNED_SA_FLAGS
+> >         #define __SA_FLAG_VAL(x) x ## U
+> >         #else
+> >         #define __SA_FLAG_VAL(x) x
+> >         #endif
+> >
+> >         #ifndef SA_NOCLDSTOP
+> >         #define SA_NOCLDSTOP __SA_FLAG_VAL(0x00000001)
+> >         #endif
+> >
+> >         /* ... */
+> 
+> If we do this I would mildly prefer to keep the existing #defines in
+> the arch-specific headers as if the arch had different flag values, as
+> this would leave the arch-specific legacy cruft in the arch-specific
+> headers where it belongs.
+> 
+> > Mind you, the historical situation also has issues, e.g. because
+> > sa_flags in struct sigaction is an int, assigning
+> >
+> >         struct sigaction sa;
+> >
+> >         sa.sa_flags = SA_RESETHAND;
+> >
+> > implies an overflow and so isn't portably safe (at least in theory).  I
+> > guess we are getting away with it today.  Preserving the situation by
+> > keeping the "U"s where appropriate would at least avoid making the
+> > situation worse.
+> 
+> I believe that the result of this assignment (involving an unsigned to
+> signed conversion) is implementation defined and not undefined (which
+> would be problematic). And in all the implementations that matter, as
+> well as the C++ standard starting with C++20, this is a no-op cast
+> assuming two's complement. I'm not sure what this has to do with
+> making the constants signed because, as you pointed out, SA_RESETHAND
+> would remain unsigned despite the absence of 'U' because its value
+> does not fit in an int.
+
+
+I generally agree with your analysis here, and yes, the de facto langue
+does define the behaviour for signed integer overflow in practice, even
+if the C standards demur on this issue.
+
+
+I actually got my argument a little backwards: the problem here is not
+that SA_RESETHAND unexpectedly becomes a (negative) int, but that the
+other values become ints: but those nonetheless remain positive because
+they aren't big enough to alias the sign bit.
+
+So the main way for things to go wrong seems to be if the values are
+shifted up, as you observe.  But (a) that is a strange thing to do, and
+(b) there is an obvious need for a cast if doing things like:
+
+#define ENCODE_SIGNAL(int sig, int flags) ((u64)(flags) << 8 | (sig))
+
+Code lacking the cast would already be wrong, since SA_RESETHAND etc.
+would simply get shifted off.
+
+
+I think it's worth drawing attention to the issue in the commit message,
+but if nobody else objects then I guess I am not too concerned about the
+change.
+
+Cheers
+---Dave
