@@ -2,104 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6D0628A323
-	for <lists+linux-parisc@lfdr.de>; Sun, 11 Oct 2020 01:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1122E28A328
+	for <lists+linux-parisc@lfdr.de>; Sun, 11 Oct 2020 01:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390491AbgJJW50 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 10 Oct 2020 18:57:26 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:46769 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730537AbgJJUcT (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 10 Oct 2020 16:32:19 -0400
-Received: from mail-qt1-f180.google.com ([209.85.160.180]) by
- mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MX00X-1kyhJq071V-00XMKB; Sat, 10 Oct 2020 22:31:31 +0200
-Received: by mail-qt1-f180.google.com with SMTP id h12so9264033qtu.1;
-        Sat, 10 Oct 2020 13:31:30 -0700 (PDT)
-X-Gm-Message-State: AOAM533eN2eySj5rRpvevKWxYmzN6dCTRGLbyc+GD48GX5lgS6NHkLOz
-        5n1jkDXwvyGsvaH501YfP/vZCesNPvRAcgcICF4=
-X-Google-Smtp-Source: ABdhPJzxmcGED0Ih/YBu2mHf0R3P6/nMSvbjeQBBLgW8fw7gYjKUZesdCzOPFtlYkIUUYLLkZBj1PG5Q6+okNjhwAiM=
-X-Received: by 2002:ac8:4808:: with SMTP id g8mr3749519qtq.18.1602361889612;
- Sat, 10 Oct 2020 13:31:29 -0700 (PDT)
+        id S2390504AbgJJW51 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 10 Oct 2020 18:57:27 -0400
+Received: from mout.gmx.net ([212.227.15.19]:48011 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730722AbgJJWBa (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 10 Oct 2020 18:01:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1602367287;
+        bh=zOQWhE2SfLflRUOJNnJIACK+GIcZgQjz8BvTaNfmIe0=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=R1SSMfNGg+jrreUeepYKRdaMrx4HpqqlJZvrnYd22uKGP5BZDzDWB/8jHTJkNgSAv
+         9sAEdpjKeyxp0q1BPjAwNH3EFSHICS3K77qMfbSjOzzU5DiBA3AAEJEF7lAVt8zXI8
+         6KbCC2epnRHphbpCzHbcfVjfVGVehi7wjrgAQKKc=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.183.219]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MFKKh-1kh0wl2dFB-00Fi2J; Sat, 10
+ Oct 2020 23:54:34 +0200
+Date:   Sat, 10 Oct 2020 23:54:31 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Add MAP_UNINITIALIZED define
+Message-ID: <20201010215431.GA30936@ls3530.fritz.box>
 MIME-Version: 1.0
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-2-arnd@arndb.de>
- <alpine.LNX.2.23.453.2010100820110.12@nippy.intranet>
-In-Reply-To: <alpine.LNX.2.23.453.2010100820110.12@nippy.intranet>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Sat, 10 Oct 2020 22:31:13 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3ZBHJag7MUDNL+hrZQLiJfc8JyZzOtAuarOVwo_GcmmA@mail.gmail.com>
-Message-ID: <CAK8P3a3ZBHJag7MUDNL+hrZQLiJfc8JyZzOtAuarOVwo_GcmmA@mail.gmail.com>
-Subject: Re: [PATCH 01/13] timekeeping: add CONFIG_LEGACY_TIMER_TICK
-To:     Finn Thain <fthain@telegraphics.com.au>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:bx+MU4rriWLgVvyWeRF64JfoyzOmlLz74UO8fNe+f7WeGaMedgw
- A2fua+Q6ChbYhr0tJ/sWLFiwuAr4PRD/R8ZJ2St8O8ySRYKgV1BXuWx6OKjJD6j8KZEqGBU
- QuH8zzQYnK/OjnsRUDmt8rWmqalpr/81DhoIikWERTEjUzBK8GcaAf7w3RSTV5Zpo8jwnTL
- 7syRLbsW6/Oin/66wt9eA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:R4fY0L2bOamhBARlhLQi47dnMwBGWgZudMSxmNlvgmMbh6dezPb
+ OdKj8jtsMqSFD0WIwKuBVe8J8Ng0p8Z+l/GvNBc9/NXbk9O3Q64900Gz3xTssHLfTnmUVds
+ UNo0QM5i0INbPs8Kl9RHVLWJNsAJ9+LVAbeoELu5wJWzSpelUIW0CtwE7B7eHxbphgj/IZH
+ I/tIFDSCFgHzaQdR66H3A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:nOXGlKZwRYw=:AC+ita+16+XxGmd2+XJ1BI
- 3idAHYIAH8vIGOvA/79i+6F888Rg8kHgRybXRYz8zNlUlQXNZooA1W6VcXezU+uLHTtHKjk32
- H0ehwPOS7rORqKj4Mx8m5D3I1NOJ1ksSIVE2akPSNPkrQBVbBNrG5IxmLCFYzJnzUZ04qDuq2
- MrYtl5RCDIwJjqIRRu1RCJ7V5iBuPWdei47LR3r+Hyc3RRDsaCz6+qjbfwtU7ci950eYC0fb3
- 2rGKKBQJ7djJYBOyltlnpf5keqxs85dKVLCE7LktJbLjh1F5XieXlHGAq9F/wtRGD7RJ4F468
- clcynRkHVtcVG79A935S+pziNDIyCMtjjpy0U4CXteyUUnzWyI/A1IPMEKLXyt0jG1fPaTibY
- Ee8FjDNuoHrV8rX9gTRlCGuP5cR8AWzX32nMdSF2Bb3+cUKaudRZGldnRA3BWkFXKDRfGKDxz
- jesceABs2cIY27lvm5mss3P9gvHaGbcvgkmRCo0Z4bTEevmrugNvbTMRmJteLqOdhRvs6UI2u
- oj9daWcyQuv3G/Sz/aN2LXpc2UcuI/XqvByoxMDxQaA6NTdePtIgz2JnjwLy1o2CSc8gM1nUb
- ygIsBiDmDjrW9AibqvfMz06Jumnf6WKJH0FzKDULoSSUaUTPGl/onUTqRizcVbUqySALejOVm
- mhGAnZGwv89ct/Bv2Ld83yC+uLQpKJiwMn1hCJL4oeD6qzs6MWqJsiP0+ftXzvC+ntQzCRas4
- 22/2TUCul/x/6D52jDxd/+33HbIyr0QE5cE9JSqYy0yFpluTY6dy9CbooZnPTsc72CN+ZWQ9i
- 3cKftU9gDMdreer2/rYwid0uaUbz+4/KxTL9nnF4mIloWRdSUC/UNtMe3SNJX6yq0en5GDYsy
- efncQnKJTIXTu278KV1LVpVcxdo7eWuuo7urhlM6vQPgQdl5NLNH7GdvszkDmYXCvvr8o7gn1
- USOQXDloNjAfsp/yd/6vejqZQfB752rr0lPMbz/TprlTPAYoMj4uL
+X-UI-Out-Filterresults: notjunk:1;V03:K0:bfjuKkzi8Y4=:esIENfFUs1UtoSPfHrfALI
+ 5udS1zRJeHCfO8GHM6yg1K7Uh3Yw1DKVVg6SD42m4XtSdbzya1K2nS/cVqPfiIbs8F9O8iAcw
+ OjMHjEoqfsiFlw+rWPajnxG5VCE2BOnsOdUALoHSaGrlMQTcaY2EcrDelaRnkwsHlwGgZA8o2
+ xKbEokO/Cd5MiyJDGTmHtSdYMp8vyIBo4Pe2ZAtd7vPj+vfWaa/Tuf1MTyIgKBc/YyOW56qDB
+ jtBOmqPz9ZHtj3+OwmbSoMC1WNlJ/Zfo+KtRVKedKBWcd9DVR5kOT4dzIReVBQzuALuLaXrnQ
+ F51oJ8jUHB+tYD5io6aNOPLyJtwjZmzVnkFi07nkiHeuXA4BHfITpTU+GEDENSALDN5rjIcJK
+ Zu/AwXcSICTMzbouRPwwexT+I7GDN5axVi9XQ2e7XbafuEb96r9XXytPZpD1RijtqQ+im7dtx
+ JmL5cfLUaAx+Im1kVduIiVAXZzxjvWAvJrJwUovHzlDEERdo/CLgBR+il1k5ShsWzWE+fhmCG
+ OGTYV4mYTTWl7CX6PVrcEFPk/6wAJlg3QIuSD4fxprZXZtByZmL7v65kxgR9JLnX25a8kpAYf
+ 9TW38/jL/vdY1UeWMJA38y3LvfQnG4fe1bko3BIBSONUNTitg83rFefbOslFNme5P2rSJaUJK
+ bmWk8Lo5BJLDsxFrSxSdrwTKlPVwizHa4GupgPJcx/Y5mDRvf1xInvNyftM7oekn/4Mdr40p5
+ lrMyNKgnE53e6KFxnZh0hHv+G3l++sWAVWtxskI3MBnaor5RouhXij8dD8eYuC9I6psMa7Ced
+ oHa7X0rAdJRqdRQbQK5PQIkC8Gv9xYk0YuS51cCF3S4vQt5alh2VZVuDueIO4hkcXT4MBXxns
+ g7f3n+3vbL3kbQjFRW+BUQW0Lwv7XPIUNDVWjN86yEtrBBrWlKQepnv5nHKKjwCitdJ8ygw0J
+ IpQHb8uawh0JKT6DREWoR0MSIdd4jVOPm+VbRQdhhF/4soq/RSdPHBYG/sI3bEntuX1OU1KiC
+ KQFHYGUatwjdxyeZdcikfYFdIMdQQjlxo4vmFONFssJkcpBuPo5STsN2D4apAH++VtU022E/D
+ /Xt+4E9QqQQ4Znw52Jq2gwB+s9xKHw+nuH5CkwT2NRYL5q853KNse99lShh8ax70Igsxn0OKP
+ /KelUnrs4gxT8FKnS/QbW69NqUhIEjvqrhQQ3FqYsOLlKjFegU2fBWJSTQqL1UZJnLGT6HoXF
+ MANYBmwLND+YYmXEs
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Oct 10, 2020 at 12:18 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> On Thu, 8 Oct 2020, Arnd Bergmann wrote:
->
-> It's good to see this code refactored in this way because, as well as
-> de-duplication, it reveals the logic that's common to the relevant
-> platforms and may shed some light on the need for that logic.
->
-> Yet it's not clear to me that the clockevents framework is able to replace
-> that logic on all of the affected hardware. I suppose it remains to be
-> seen.
+Define MAP_UNINITIALIZED and use same value as other architectures.
+Fixes build of debian foot package.
 
-I suspect that the change I did for one platform in patch 13/13 could be
-duplicated for all 16 platforms, adding lots of trivial clockevent drivers that
-only support periodic ticks, but any platform that can instead support
-oneshot timers should probably do that, or it won't provide any better
-behavior.
+Suggested-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-What do others think we should do here?
+diff --git a/arch/parisc/include/uapi/asm/mman.h b/arch/parisc/include/uap=
+i/asm/mman.h
+index 6fd8871e4081..d828b293b6de 100644
+=2D-- a/arch/parisc/include/uapi/asm/mman.h
++++ b/arch/parisc/include/uapi/asm/mman.h
+@@ -25,6 +25,8 @@
+ #define MAP_STACK	0x40000		/* give out an address that is best suited for=
+ process/thread stacks */
+ #define MAP_HUGETLB	0x80000		/* create a huge page mapping */
+ #define MAP_FIXED_NOREPLACE 0x100000	/* MAP_FIXED which doesn't unmap und=
+erlying mapping */
++#define MAP_UNINITIALIZED 0x4000000	/* For anonymous mmap, memory could b=
+e
++					 * uninitialized */
 
-> As a corollary, cutting edge ("non-legacy") code is often kept out of open
-> source projects by the owners of the intellectual property rights.
-
-I'm happy to change the name in any way if you have a suggestion
-that the clock event maintainers (Daniel and Thomas) like.
-
-      Arnd
+ #define MS_SYNC		1		/* synchronous memory sync */
+ #define MS_ASYNC	2		/* sync memory asynchronously */
+diff --git a/tools/arch/parisc/include/uapi/asm/mman.h b/tools/arch/parisc=
+/include/uapi/asm/mman.h
+index f9fd1325f5bd..c7af0f2292fc 100644
+=2D-- a/tools/arch/parisc/include/uapi/asm/mman.h
++++ b/tools/arch/parisc/include/uapi/asm/mman.h
+@@ -39,6 +39,5 @@
+ #define MADV_SOFT_OFFLINE 101
+ /* MAP_32BIT is undefined on parisc, fix it for perf */
+ #define MAP_32BIT	0
+-/* MAP_UNINITIALIZED is undefined on parisc, fix it for perf */
+-#define MAP_UNINITIALIZED	0
++#define MAP_UNINITIALIZED 0x4000000
+ #endif
