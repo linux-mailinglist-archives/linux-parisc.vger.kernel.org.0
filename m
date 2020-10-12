@@ -2,43 +2,41 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA26228C275
-	for <lists+linux-parisc@lfdr.de>; Mon, 12 Oct 2020 22:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 042E528C2D6
+	for <lists+linux-parisc@lfdr.de>; Mon, 12 Oct 2020 22:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730372AbgJLUdq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 12 Oct 2020 16:33:46 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:39966 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726560AbgJLUdq (ORCPT
+        id S1729346AbgJLUoj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 12 Oct 2020 16:44:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40560 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729162AbgJLUoj (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 12 Oct 2020 16:33:46 -0400
-Received: by mail-ot1-f65.google.com with SMTP id l4so17007507ota.7;
-        Mon, 12 Oct 2020 13:33:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WHj2EuQ6Y9UuZUdPKYmroHd7gs7p/Zz8/iUe6juJ+/s=;
-        b=RufnyPfugdIzVxebwW2aCIRp2lS3IqTfMK/PhCzVfqLqhwvmKUPPIdSjCVXQ4yGXzI
-         bzi0pGa6lwvYq2slguwxtxRRRYV3JQIU51k+IwiNP0FZuRIaFW+6DfK1giKLEBjuY/EQ
-         2fKO5xj0AI8QMTn9GQhcfSeFGwAz85EFf3tMQO5tg/3ccIffQxugJYIJm8rva/1FNBMC
-         dH1gFl2+m/g8N8qtvVODYAoNqEhgFw3GziuaQLHDjgLUQTHFkJcK+rjRgUxHwDIGKBZ1
-         HVPomob8dsyIehWk2HKRTQSPY4ZxWSjS/3Rg6k2GmmzQSwHQQ6EbKz6zaFH4GoCS99Lp
-         znPg==
-X-Gm-Message-State: AOAM532bv29BVlAHmrEt/JK8a295V3AR+xAXIxP+Pp29h8xayEXgRv++
-        82mjXxa6f4bZqbKH+3bIqh72wUHgASSdrUPM4PQ=
-X-Google-Smtp-Source: ABdhPJxRQUPv4QRU6bGXQ32mHjNH8DlCArC4gpcRZuNH1X3e73U3xKZSxcyGyJ5QbmACZ01+5UvtW70qVpcHzevNLb8=
-X-Received: by 2002:a05:6830:210a:: with SMTP id i10mr19468668otc.145.1602534825338;
- Mon, 12 Oct 2020 13:33:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-9-arnd@arndb.de>
- <CAMuHMdWtMZaJ8ETb4g+AfaLeSZ1vyi8-POEaRzmdwh3ha=jieA@mail.gmail.com> <CAK8P3a1nDZYYwtuniUGxmy=H8LHbOEGSU=Pmi2=LMrLw09x8+w@mail.gmail.com>
-In-Reply-To: <CAK8P3a1nDZYYwtuniUGxmy=H8LHbOEGSU=Pmi2=LMrLw09x8+w@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 12 Oct 2020 22:33:34 +0200
-Message-ID: <CAMuHMdXn=1Gsn6hS72BoJ0jZwTVv_nurV0zCdSpUKJ6T5BL=Rg@mail.gmail.com>
-Subject: Re: [PATCH 08/13] m68k: m68328: use legacy_timer_tick()
-To:     Arnd Bergmann <arnd@arndb.de>
+        Mon, 12 Oct 2020 16:44:39 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0312C0613D0;
+        Mon, 12 Oct 2020 13:44:38 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1602535477;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=2D9ftb4BNlPgU4fGOVcc9hqHah5NjLimpJgfMw28f+o=;
+        b=3/o7m4+JNTO8cP79WuCRiuRnkNMsIzvD57ZEvEm9wyGyPse3QVqeClMl/XBroA5Gw5sryY
+        yt1B4FPqa8dQZVnOskzF4aK2RvAdaPtSNuvrq2kiHKwjtrI2O56Doey5MrVWZ1PmMtFe51
+        nIgCRI/OA1S/wFNBCKjgyh2PPtOYor7ZlBPcXGGO9efhAqy/xfK5oMj09dFsWK+REE51vs
+        QtnliaSEueOg5DKUKyvIr/bYO3yvxWZ6lOX7iWnhT5LL+Vf3dHfFjZNNjjcYZWGXKeWwU4
+        VdlYT89JkZ+cBgIEAmwK1KJnZbO6NmNDuL/ib8buYfCUf/2RV6R9QHIynPbu9A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1602535477;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=2D9ftb4BNlPgU4fGOVcc9hqHah5NjLimpJgfMw28f+o=;
+        b=qK6+kw4fzMu2UlI7byqtGAmPcI78XzzYUsSPXcvpiK8RQ/WaolXUVuLHhBgI49kAgKr+DQ
+        n59ZXMNHRPEyWhCQ==
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Russell King <linux@armlinux.org.uk>,
         Tony Luck <tony.luck@intel.com>,
@@ -50,60 +48,67 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Sam Creasey <sammy@sammy.net>,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         John Stultz <john.stultz@linaro.org>,
         Stephen Boyd <sboyd@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-ia64\@vger.kernel.org" <linux-ia64@vger.kernel.org>,
         Parisc List <linux-parisc@vger.kernel.org>,
         linux-m68k <linux-m68k@lists.linux-m68k.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 11/13] timekeeping: remove xtime_update
+In-Reply-To: <CAK8P3a2hY+Vc3S32KKBJj7gUaUFQb4=rKsRJwCwhAbYP7CakzA@mail.gmail.com>
+References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-12-arnd@arndb.de> <CAMuHMdU7bn7rzG-0xzr4St1uArGoOhw6dy7HCkrHRvYqM38Wxg@mail.gmail.com> <CAK8P3a2hY+Vc3S32KKBJj7gUaUFQb4=rKsRJwCwhAbYP7CakzA@mail.gmail.com>
+Date:   Mon, 12 Oct 2020 22:44:36 +0200
+Message-ID: <87pn5np423.fsf@nanos.tec.linutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Arnd,
-
-On Mon, Oct 12, 2020 at 5:31 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> On Mon, Oct 12, 2020 at 3:15 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > Given this feature is SoC-specific, not platform-specific, perhaps
-> > it makes sense to move the selects to the M68{,EZ,VZ}328 symbols?
-> >
-> > Regardless:
-> > Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+On Mon, Oct 12 2020 at 15:37, Arnd Bergmann wrote:
+> On Mon, Oct 12, 2020 at 3:16 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>> On Thu, Oct 8, 2020 at 5:48 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>> The comment about xtime_update() in arch/ia64/kernel/time.c needs
+>> an update.
 >
-> Ok, folded in the change blow, using one less line. I couldn't figure
+> I think the correct action for ia64 would be to make it a
+> proper clockevent driver with oneshot support, and remove
+> the rest of this logic.
 
-Thanks, looks good.
+Correct action would be to remove all of arch/ia64 :)
 
-> out whether
-> it should just be part of the CONFIG_M68000 instead, which doesn't appear
+> I could try to rewrite the comment, but I tried not to touch that
+> part since I don't understand the logic behind it. Maybe the
+> ia64 maintainers can comment here why it even tries to skip
+> a timer tick. Is there a danger of ending up with the timer irq
+> permanently disabled if the timer_interrupt() function returns
+> with the itm register in the past, or is this simply about not having
+> too many interrupts in a row?
 
-It must definitely not be selected by CONFIG_M68000, as the plain MC68000
-is a CPU, not an SoC, and does not have the timer.
+There was a comment in the initial ia64 code:
 
-> to have any machine support by itself. The dragonball CPU configuration
-> looks really odd, because you have to build exactly one of M68{,EZ,VZ}328
-> into the kernel to get a successful compilation, while Kconfig allows
-> many other combinations.
+                * There is a race condition here: to be on the "safe"
+                * side, we process timer ticks until itm.next is
+                * ahead of the itc by at least half the timer
+                * interval.  This should give us enough time to set
+                * the new itm value without losing a timer tick.
 
-While CONFIG_M68000 could be used for a "pure" MC68000-based machine,
-I believe we don't support any yet.
-M68{,EZ,VZ}328 select M68000 as they are SoCs containing a 68000
-CPU core.
-Other m68k SoCs have a CPU32 core, which is a simplified 68020 CPU core
-(hmm, what happened to 68360 support? Oh, removed in 2016, so nothing
-selects CPU32 anymore).
+The ITM (Interval Timer Match) register is raising an interrupt when the
+ITM value matches the ITC (Interval Timer Counter) register. If the new
+counter is already past the match then the timer interrupt will happen
+once ITC wrapped around and reaches the match value again. Might take
+ages for a 64bit counter to do that. :)
 
-Gr{oetje,eeting}s,
+IIRC, PXA had the same problem and HPET definitely has it as well. Seems
+Intel patented the concept of broken timers, but at least they listened
+when they proposed to implement the TSC deadline timer on x86 in the
+exact same way.
 
-                        Geert
+See hpet_clkevt_set_next_event() for the gory details how to handle that
+correctly.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Thanks,
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+        tglx
