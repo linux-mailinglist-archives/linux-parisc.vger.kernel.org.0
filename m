@@ -2,113 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B22028B6D7
-	for <lists+linux-parisc@lfdr.de>; Mon, 12 Oct 2020 15:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E05A28B9AD
+	for <lists+linux-parisc@lfdr.de>; Mon, 12 Oct 2020 16:04:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731116AbgJLNiL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 12 Oct 2020 09:38:11 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:34045 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731063AbgJLNh3 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 12 Oct 2020 09:37:29 -0400
-Received: from mail-qt1-f180.google.com ([209.85.160.180]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MplHR-1k7UF80lKf-00qCkJ; Mon, 12 Oct 2020 15:37:27 +0200
-Received: by mail-qt1-f180.google.com with SMTP id t9so12754153qtp.9;
-        Mon, 12 Oct 2020 06:37:26 -0700 (PDT)
-X-Gm-Message-State: AOAM531KfO80OiUdKbULvlE7u+ajp17ruQsmKmwWidIxmbypU2fsJxSj
-        VRf+hhySJ1jrrndxCl4J4quYUeyoSLC6ZtioMwU=
-X-Google-Smtp-Source: ABdhPJw6Xw5QPFz9Hbm4r+y0vTuo5ru8d6HOL66whTmsLJNolGIOqnjXdgx88Su9kNbZVfsNfxwFqVNIjbZi+UQICLY=
-X-Received: by 2002:ac8:64a:: with SMTP id e10mr9800808qth.142.1602509845710;
- Mon, 12 Oct 2020 06:37:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-12-arnd@arndb.de>
- <CAMuHMdU7bn7rzG-0xzr4St1uArGoOhw6dy7HCkrHRvYqM38Wxg@mail.gmail.com>
-In-Reply-To: <CAMuHMdU7bn7rzG-0xzr4St1uArGoOhw6dy7HCkrHRvYqM38Wxg@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 12 Oct 2020 15:37:09 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2hY+Vc3S32KKBJj7gUaUFQb4=rKsRJwCwhAbYP7CakzA@mail.gmail.com>
-Message-ID: <CAK8P3a2hY+Vc3S32KKBJj7gUaUFQb4=rKsRJwCwhAbYP7CakzA@mail.gmail.com>
-Subject: Re: [PATCH 11/13] timekeeping: remove xtime_update
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Finn Thain <fthain@telegraphics.com.au>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        id S1726742AbgJLOCo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 12 Oct 2020 10:02:44 -0400
+Received: from foss.arm.com ([217.140.110.172]:46658 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388681AbgJLNhp (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 12 Oct 2020 09:37:45 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7B528D6E;
+        Mon, 12 Oct 2020 06:37:44 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 961343F66B;
+        Mon, 12 Oct 2020 06:37:42 -0700 (PDT)
+Date:   Mon, 12 Oct 2020 14:37:39 +0100
+From:   Dave Martin <Dave.Martin@arm.com>
+To:     Peter Collingbourne <pcc@google.com>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:BsBR49K4r9UqORnUI2CXH8prW1C1pgsCLtwNP9oJZoTdaQ5Mp61
- xb0TEXecnuEb6oz01w7+jTBY2d/0EavRHDItoBlHJIVfqcDpU4stdtGGZW5++LdQY83ej1t
- VpUFQGsDhFBz648k0OEzrPO7frTTuY3i/9ew8y/3T/xxk35vnSYHDYmj5qbLTuCaQa47RIo
- FrPmmcWbLHpeA1d6x9dJA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0Hfyhez933s=:Ra979ud5Mj/4+53raRBR1X
- Santde6uyHWKyZGpYcYs0Rh1/fGxyN7Qcd9H1PsB/ITC0PZGcH6faVz1Edm4WYONmv6S3QaGC
- x2cRhsOcqPdZNiOngQ/bMcHS4nWXcLjSEyywZQbaNXfrhYHCIgzshRTV8tFGqXQlx1aarJkLy
- xpl7PVFGH/gbyP2FEZykcVZoLubpwfiNNoHES7ZAIPgLUrMjGfRyxSo4gF6gtk6r+1CgW82iy
- GmjQ2Bi08cTm83IaS4ijdxUvilSQJrKlRSIA9hew5jIn/BgtoQ3c2RfPkyooXstZ06BX0peV/
- PvyyyeuA/qO9ohS//CbaYXUnLyKhsjSsokiOqdS7L3+u0vowzlR1E7pf3oLeuqu1WpcmM+Vwl
- XaAOI1SbrN00dzkJbrYvy6A2bLpXOxHAgcPj4yV4Ev4TsifkpyJQUNeu4hgoQtQCzbsfiy7Di
- hNEoxoU3TKp7FwmdtlDK5g7lBUCCo4lNMVwYloKptfk36zX2qUF/LxcI7scqtoiKvj+JOT7+n
- ZRXf23YDkGVlpRNSfE/GRvRwjfzXHTJka0NUTY3PCBpi73utda45FN8ODHZ+dKUFOxIwRxC95
- I1rmF1BIFXC9WriyIjO9DRtmvlikyfGOHfXmS9Kzm2VJDa0miiKaTUeCNex3+FBEt2GSMbf7h
- tm/8X7fS/49saP9SWbaETnxtJUG9FjSCeTmFqg0MVZ/5Dc6UcfLauZxsYshjps2lXsdV8yG59
- zs+4Mh8ObXjNw7wxJZzLXnE7i3pFO9m9Lyh5x5ocxaANIA49B4nlFp/4B5oLiTGwrSmAPBDOr
- +QA4bVe4PCZYri9gfrJTBCR23hrtEsWi+RWvLq+CZKwNSmY9o5fVVbzOIwj8gQ5TwxYK9SoDx
- p2XRAHyD+p55aCrB2H232gE5+5law6/U0QnEQoO8ptRKMKEeo4HzQpE6ng3Q74PKU36Tw5F+j
- AqS0kNUDHoWpyAM/nlFEMqKawd+3JVrN13s7TcVRu/3D1OyJ0JWWy
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Kostya Serebryany <kcc@google.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        David Spickett <david.spickett@linaro.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Evgenii Stepanov <eugenis@google.com>,
+        Richard Henderson <rth@twiddle.net>
+Subject: Re: [PATCH v10 4/7] signal: define the SA_UNSUPPORTED bit in sa_flags
+Message-ID: <20201012133738.GD32292@arm.com>
+References: <cover.1598072840.git.pcc@google.com>
+ <f37a8b86c53be4cc440a73be4123e0419deefe5f.1598072840.git.pcc@google.com>
+ <20200908151306.GU6642@arm.com>
+ <CAMn1gO6rNqb-_Rm=7zXaRdP-QvcO5JfnUSBqj3E1uYe2T+YAiw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMn1gO6rNqb-_Rm=7zXaRdP-QvcO5JfnUSBqj3E1uYe2T+YAiw@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Oct 12, 2020 at 3:16 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Thu, Oct 8, 2020 at 5:48 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > There are no more users of xtime_update aside from legacy_timer_tick(),
-> > so fold it into that function and remove the declaration.
+On Wed, Oct 07, 2020 at 07:21:25PM -0700, Peter Collingbourne wrote:
+> On Tue, Sep 8, 2020 at 8:13 AM Dave Martin <Dave.Martin@arm.com> wrote:
 > >
-> > update_process_times() is now only called inside of the kernel/time/
-> > code, so the declaration can be moved there.
+> > On Fri, Aug 21, 2020 at 10:10:14PM -0700, Peter Collingbourne wrote:
 > >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> Thanks for your patch!
->
-> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
->
-> The comment about xtime_update() in arch/ia64/kernel/time.c needs
-> an update.
+> > Nit: no statement of the chage being made (other than in the subject
+> > line).
+> 
+> Will fix.
+> 
+> > > This bit will never be supported in the uapi. The purpose of this flag
+> > > bit is to allow userspace to distinguish an old kernel that does not
+> > > clear unknown sa_flags bits from a kernel that supports every flag bit.
+> > >
+> > > In other words, if userspace finds that this bit remains set in
+> > > oldact.sa_flags, it means that the kernel cannot be trusted to have
+> > > cleared unknown flag bits from sa_flags, so no assumptions about flag
+> > > bit support can be made.
+> >
+> > This isn't quite right?  After a single sigaction() call, oact will
+> > contain the sa_flags for the previously registered handler.  So a
+> > second sigaction() call would be needed to find out the newly effective
+> > sa_flags.
+> 
+> You're right, this is unclear to say the least. In v11 I will reword like so:
+> 
+>     In other words, if userspace does something like:
+> 
+>       act.sa_flags |= SA_UNSUPPORTED;
+>       sigaction(SIGSEGV, &act, 0);
+>       sigaction(SIGSEGV, 0, &oldact);
+> 
+>     and finds that SA_UNSUPPORTED remains set in oldact.sa_flags, it means
+>     that the kernel cannot be trusted to have cleared unknown flag bits
+>     from sa_flags, so no assumptions about flag bit support can be made.
 
-I think the correct action for ia64 would be to make it a
-proper clockevent driver with oneshot support, and remove
-the rest of this logic.
+Seems reasonable.  We'd need to make sure we're clear about which flags
+this applies for, though.  The pre-existing flags can be assumed to be
+supported irrespective of whether SA_UNSUPPORTED remains set.
 
-I could try to rewrite the comment, but I tried not to touch that
-part since I don't understand the logic behind it. Maybe the
-ia64 maintainers can comment here why it even tries to skip
-a timer tick. Is there a danger of ending up with the timer irq
-permanently disabled if the timer_interrupt() function returns
-with the itm register in the past, or is this simply about not having
-too many interrupts in a row?
-
-> Does the comment about update_process_times() in
-> arch/openrisc/kernel/time.c needs an update, too?
-
-I think that one is still technically correct.
-
-       Arnd
+Cheers
+---Dave
