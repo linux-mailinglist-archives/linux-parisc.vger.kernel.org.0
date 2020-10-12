@@ -2,42 +2,36 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B168328B5D4
-	for <lists+linux-parisc@lfdr.de>; Mon, 12 Oct 2020 15:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B22028B6D7
+	for <lists+linux-parisc@lfdr.de>; Mon, 12 Oct 2020 15:38:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388814AbgJLNQK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 12 Oct 2020 09:16:10 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:34562 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388813AbgJLNQK (ORCPT
+        id S1731116AbgJLNiL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 12 Oct 2020 09:38:11 -0400
+Received: from mout.kundenserver.de ([212.227.126.131]:34045 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731063AbgJLNh3 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 12 Oct 2020 09:16:10 -0400
-Received: by mail-oi1-f193.google.com with SMTP id w204so3487215oiw.1;
-        Mon, 12 Oct 2020 06:16:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sSubvuvsRqa9Us4jIiX4BQlzCXkcEfFKaZCMlzTTvKk=;
-        b=j6tWp4Bdy7tcC/2fno9oBWheSYrIc09YUV9Q5qyVICuR8Se+dXOzNS66d+EcXiawip
-         z9rwPtcBkza4trcTwBGyttivmpgYOhar4NSAG7ONq6HykfphbWR5W4VrcBXJJXicMl5Q
-         2mKIhUIltYe7L+1eW7WFRZ47VQ/lmGIfDqhKqZ3D0jKWiYdmK4T/ChBYUm/vB8HWp3X9
-         rhuQS8CEQRJ9woE9WegmIdUubeseKVvQ/g0ZROO9jLcAKYHH4QmaUwcUcVWk+NK9szk0
-         EH+WXFVI7wwx44wGyrMoi+ahV9y/FE5wEfdDn93OC9twZrpqdAJXmnL8BM4aQzK2Wkzk
-         D1yQ==
-X-Gm-Message-State: AOAM531u6hG68dqTA4yx9mQVSPAqGKrsNQlMaerlN2UFoLyWlLP1TXu7
-        thzq1UUvrW3LJ1MxS3hE51jdmcThGZ5xaQgc8lc=
-X-Google-Smtp-Source: ABdhPJxQjws2mloxhrfVwndzh+qyK0VtTyyW1Ebe38OYBVK7LU+s7UXVE4pdXujubm9vT9JX1He1wqHhh6JroodbfYI=
-X-Received: by 2002:aca:4441:: with SMTP id r62mr10155966oia.153.1602508568842;
- Mon, 12 Oct 2020 06:16:08 -0700 (PDT)
+        Mon, 12 Oct 2020 09:37:29 -0400
+Received: from mail-qt1-f180.google.com ([209.85.160.180]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MplHR-1k7UF80lKf-00qCkJ; Mon, 12 Oct 2020 15:37:27 +0200
+Received: by mail-qt1-f180.google.com with SMTP id t9so12754153qtp.9;
+        Mon, 12 Oct 2020 06:37:26 -0700 (PDT)
+X-Gm-Message-State: AOAM531KfO80OiUdKbULvlE7u+ajp17ruQsmKmwWidIxmbypU2fsJxSj
+        VRf+hhySJ1jrrndxCl4J4quYUeyoSLC6ZtioMwU=
+X-Google-Smtp-Source: ABdhPJw6Xw5QPFz9Hbm4r+y0vTuo5ru8d6HOL66whTmsLJNolGIOqnjXdgx88Su9kNbZVfsNfxwFqVNIjbZi+UQICLY=
+X-Received: by 2002:ac8:64a:: with SMTP id e10mr9800808qth.142.1602509845710;
+ Mon, 12 Oct 2020 06:37:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-13-arnd@arndb.de>
-In-Reply-To: <20201008154651.1901126-13-arnd@arndb.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 12 Oct 2020 15:15:57 +0200
-Message-ID: <CAMuHMdWS5JoXho97oxcavE_OFdv+tnr+da1WV_D7sOE_YbxQxA@mail.gmail.com>
-Subject: Re: [PATCH 12/13] timekeeping: default GENERIC_CLOCKEVENTS to enabled
-To:     Arnd Bergmann <arnd@arndb.de>
+References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-12-arnd@arndb.de>
+ <CAMuHMdU7bn7rzG-0xzr4St1uArGoOhw6dy7HCkrHRvYqM38Wxg@mail.gmail.com>
+In-Reply-To: <CAMuHMdU7bn7rzG-0xzr4St1uArGoOhw6dy7HCkrHRvYqM38Wxg@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 12 Oct 2020 15:37:09 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2hY+Vc3S32KKBJj7gUaUFQb4=rKsRJwCwhAbYP7CakzA@mail.gmail.com>
+Message-ID: <CAK8P3a2hY+Vc3S32KKBJj7gUaUFQb4=rKsRJwCwhAbYP7CakzA@mail.gmail.com>
+Subject: Re: [PATCH 11/13] timekeeping: remove xtime_update
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Russell King <linux@armlinux.org.uk>,
         Tony Luck <tony.luck@intel.com>,
@@ -59,53 +53,62 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-m68k <linux-m68k@lists.linux-m68k.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:BsBR49K4r9UqORnUI2CXH8prW1C1pgsCLtwNP9oJZoTdaQ5Mp61
+ xb0TEXecnuEb6oz01w7+jTBY2d/0EavRHDItoBlHJIVfqcDpU4stdtGGZW5++LdQY83ej1t
+ VpUFQGsDhFBz648k0OEzrPO7frTTuY3i/9ew8y/3T/xxk35vnSYHDYmj5qbLTuCaQa47RIo
+ FrPmmcWbLHpeA1d6x9dJA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0Hfyhez933s=:Ra979ud5Mj/4+53raRBR1X
+ Santde6uyHWKyZGpYcYs0Rh1/fGxyN7Qcd9H1PsB/ITC0PZGcH6faVz1Edm4WYONmv6S3QaGC
+ x2cRhsOcqPdZNiOngQ/bMcHS4nWXcLjSEyywZQbaNXfrhYHCIgzshRTV8tFGqXQlx1aarJkLy
+ xpl7PVFGH/gbyP2FEZykcVZoLubpwfiNNoHES7ZAIPgLUrMjGfRyxSo4gF6gtk6r+1CgW82iy
+ GmjQ2Bi08cTm83IaS4ijdxUvilSQJrKlRSIA9hew5jIn/BgtoQ3c2RfPkyooXstZ06BX0peV/
+ PvyyyeuA/qO9ohS//CbaYXUnLyKhsjSsokiOqdS7L3+u0vowzlR1E7pf3oLeuqu1WpcmM+Vwl
+ XaAOI1SbrN00dzkJbrYvy6A2bLpXOxHAgcPj4yV4Ev4TsifkpyJQUNeu4hgoQtQCzbsfiy7Di
+ hNEoxoU3TKp7FwmdtlDK5g7lBUCCo4lNMVwYloKptfk36zX2qUF/LxcI7scqtoiKvj+JOT7+n
+ ZRXf23YDkGVlpRNSfE/GRvRwjfzXHTJka0NUTY3PCBpi73utda45FN8ODHZ+dKUFOxIwRxC95
+ I1rmF1BIFXC9WriyIjO9DRtmvlikyfGOHfXmS9Kzm2VJDa0miiKaTUeCNex3+FBEt2GSMbf7h
+ tm/8X7fS/49saP9SWbaETnxtJUG9FjSCeTmFqg0MVZ/5Dc6UcfLauZxsYshjps2lXsdV8yG59
+ zs+4Mh8ObXjNw7wxJZzLXnE7i3pFO9m9Lyh5x5ocxaANIA49B4nlFp/4B5oLiTGwrSmAPBDOr
+ +QA4bVe4PCZYri9gfrJTBCR23hrtEsWi+RWvLq+CZKwNSmY9o5fVVbzOIwj8gQ5TwxYK9SoDx
+ p2XRAHyD+p55aCrB2H232gE5+5law6/U0QnEQoO8ptRKMKEeo4HzQpE6ng3Q74PKU36Tw5F+j
+ AqS0kNUDHoWpyAM/nlFEMqKawd+3JVrN13s7TcVRu/3D1OyJ0JWWy
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 8, 2020 at 5:48 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> Almost all machines use GENERIC_CLOCKEVENTS, so it feels wrong to
-> require each one to select that symbol manually.
+On Mon, Oct 12, 2020 at 3:16 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Thu, Oct 8, 2020 at 5:48 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> > There are no more users of xtime_update aside from legacy_timer_tick(),
+> > so fold it into that function and remove the declaration.
+> >
+> > update_process_times() is now only called inside of the kernel/time/
+> > code, so the declaration can be moved there.
+> >
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 >
-> Instead, enable it whenever CONFIG_LEGACY_TIMER_TICK is disabled as
-> a simplification. It should be possible to select both
-> GENERIC_CLOCKEVENTS and LEGACY_TIMER_TICK from an architecture now
-> and decide at runtime between the two.
+> Thanks for your patch!
 >
-> For the clockevents arch-support.txt file, this means that additional
-> architectures are marked as TODO when they have at least one machine
-> that still uses LEGACY_TIMER_TICK, rather than being marked 'ok' when
-> at least one machine has been converted. This means that both m68k and
-> arm (for riscpc) revert to TODO.
+> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 >
-> At this point, we could just always enable CONFIG_GENERIC_CLOCKEVENTS
-> rather than leaving it off when not needed. I built an m68k
-> defconfig kernel (using gcc-10.1.0) and found that this would add
-> around 5.5KB in kernel image size:
->
->    text    data     bss     dec     hex filename
-> 3861936 1092236  196656 5150828  4e986c obj-m68k/vmlinux-no-clockevent
-> 3866201 1093832  196184 5156217  4ead79 obj-m68k/vmlinux-clockevent
->
-> On Arm (MACH_RPC), that difference appears to be twice as large,
-> around 11KB on top of an 6MB vmlinux.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> The comment about xtime_update() in arch/ia64/kernel/time.c needs
+> an update.
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+I think the correct action for ia64 would be to make it a
+proper clockevent driver with oneshot support, and remove
+the rest of this logic.
 
->  arch/m68k/Kconfig.cpu                                |  1 -
+I could try to rewrite the comment, but I tried not to touch that
+part since I don't understand the logic behind it. Maybe the
+ia64 maintainers can comment here why it even tries to skip
+a timer tick. Is there a danger of ending up with the timer irq
+permanently disabled if the timer_interrupt() function returns
+with the itm register in the past, or is this simply about not having
+too many interrupts in a row?
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Does the comment about update_process_times() in
+> arch/openrisc/kernel/time.c needs an update, too?
 
-Gr{oetje,eeting}s,
+I think that one is still technically correct.
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+       Arnd
