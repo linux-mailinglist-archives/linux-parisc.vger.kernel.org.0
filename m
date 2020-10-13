@@ -2,95 +2,69 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 214B728C814
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 Oct 2020 07:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D31528C9F0
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 Oct 2020 10:14:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731689AbgJMFCL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 13 Oct 2020 01:02:11 -0400
-Received: from bilbo.ozlabs.org ([203.11.71.1]:38001 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726400AbgJMFCL (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 13 Oct 2020 01:02:11 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4C9Ngx2HWGz9sS8;
-        Tue, 13 Oct 2020 16:02:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1602565328;
-        bh=L6loop21vjp8rM3LyPe8IKIyk5K9+q9nJ+nbAp08gnA=;
-        h=Date:From:To:Cc:Subject:From;
-        b=C0ZK5qjomT0G7jtEpSk+3PYHnIpvtFktxBMplW1dlYdQzkeuDUfVjbbd9P0mFOIEQ
-         3/vli67QZBaClg41adZbpuk3VI08MkEovVN1zqrOPa7Rd3qiep/XoTg6jEgJYKi/5o
-         qtfpFf3exkt6N8tLmKuH0gKo3Z5b3mbEe/ufc/yLglCiOEgYyH1E95HuCXBI0sHYcA
-         nyvgOzTyxWQPMidJt1xeP8SR487GzMrXSPffLGs6z5p3E5jj+56lmj0xz8KZhgRYBP
-         uZP4R2gAtADJeoQPdBjogzNbAIh/UjK2COdr2LQZn+6a8/VUf8Kf8NLWdzhNqa5emC
-         KL3jMaMIQOI5A==
-Date:   Tue, 13 Oct 2020 15:43:37 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Greg KH <greg@kroah.com>, Helge Deller <deller@gmx.de>,
-        Parisc List <linux-parisc@vger.kernel.org>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: linux-next: manual merge of the tty tree with the parisc-hd tree
-Message-ID: <20201013154337.080c84ce@canb.auug.org.au>
+        id S2391138AbgJMINJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Tue, 13 Oct 2020 04:13:09 -0400
+Received: from [178.252.167.140] ([178.252.167.140]:43877 "EHLO EXG16.DOE.ir"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2391391AbgJMINI (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 13 Oct 2020 04:13:08 -0400
+X-Greylist: delayed 905 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Oct 2020 04:13:05 EDT
+Received: from doe.ir (217.218.14.250) by EXG16.DOE.ir (172.20.1.44) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1261.35; Tue, 13 Oct
+ 2020 11:27:57 +0330
+Reply-To: <imfc@mail2washington.com>
+From:   "Mrs. Roonie Holbrook" <n.saffar@doe.ir>
+To:     <linux-parisc@vger.kernel.org>
+Subject: From Mrs. Roonie Holbrook !!
+Date:   Tue, 13 Oct 2020 00:57:35 -0700
+Message-ID: <20201013005734.132939086A544431@doe.ir>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/IKFm355XCfXFln==Z4dSxFL";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [217.218.14.250]
+X-ClientProxiedBy: EXG16.DOE.ir (172.20.1.44) To EXG16.DOE.ir (172.20.1.44)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---Sig_/IKFm355XCfXFln==Z4dSxFL
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Attention,
 
-Hi all,
+Nice day and Congratulations !!!.
 
-Today's linux-next merge of the tty tree got a conflict in:
+You are qualified for the IMFC Covid 19 grant of $750,000.00 
+dollars to support the people in your community. Now respond to 
+details to claim your money.
 
-  drivers/video/console/sticon.c
+You are directed to contact the below Office of Paymaster General 
+immediately through his contact details below:
 
-between commit:
+Mr. Williams Fox
+Email: claim.dept@mail2finance.com 
 
-  fbb75b71b131 ("parisc/sticon: Add user font support")
+This is to avoid mistake while transferring your overdue payment 
+to you, You have to forward to him below details of yours to 
+start processing your payment file and this ref: 
+UN/FM14/WB/Covid-19:
+ 
+Your Full Name:
+Your Contact Address:
+State:
+Country:
+Telephone and Fax Number:
+Occupation:
+Age:
+ 
+Kindly get back to Mr. Williams Fox  as soon as possible so that 
+he will direct you on what to do for the claims through our 
+Affiliated Bank.
+ 
 
-from the parisc-hd tree and commits:
+Best regards
 
-  d73568c4ccb0 ("vt: make vc_data pointers const in selection.h")
-  23f87274f0ad ("sticon: remove no-op sticon_set_origin()")
-
-from the tty tree.
-
-I fixed it up (there is some overlap and I more or less used the former
-version of the conflicting bits) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/IKFm355XCfXFln==Z4dSxFL
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl+FMHkACgkQAVBC80lX
-0Gy4zQgAlltIyGGczR2RKi5vbrs09GUfRGuZ3ZGtqC1Gx5BUTciTjTneUm2GTGcg
-RHcNxC/wPCNBiimh9NMLlX4flg/PyFi9QYQMYInGLVIfvvsZUMcxp5z98A4Am1rA
-Qt4lN3N2eHDa+Q09fxqrs4wldkfcik5ePwciv/qX/mzbCaRlu92GlJ1FPK71RIRe
-VURq4HrWGDI8cUuWpgI++oY+QMSqsZgecaGul60Mlsojg5TYFPXl1uJEtBAwLCuu
-V0ep+ewN4HYRqZWk3xryIKiHGr0SbqInjaTR3JQJtgeSAZauU9QhRvWX1Dy+LkYi
-7Vf58rZZLlePztQ2VDEGQe3wc2aQ/Q==
-=5ctp
------END PGP SIGNATURE-----
-
---Sig_/IKFm355XCfXFln==Z4dSxFL--
+Mrs. Roonie Holbrook
+IMFC Grant Claim Department
+Email: imfc@mail2washington.com
