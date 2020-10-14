@@ -2,69 +2,42 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D31528C9F0
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 Oct 2020 10:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52BB528ECF5
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Oct 2020 08:14:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391138AbgJMINJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Tue, 13 Oct 2020 04:13:09 -0400
-Received: from [178.252.167.140] ([178.252.167.140]:43877 "EHLO EXG16.DOE.ir"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2391391AbgJMINI (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 13 Oct 2020 04:13:08 -0400
-X-Greylist: delayed 905 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Oct 2020 04:13:05 EDT
-Received: from doe.ir (217.218.14.250) by EXG16.DOE.ir (172.20.1.44) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1261.35; Tue, 13 Oct
- 2020 11:27:57 +0330
-Reply-To: <imfc@mail2washington.com>
-From:   "Mrs. Roonie Holbrook" <n.saffar@doe.ir>
-To:     <linux-parisc@vger.kernel.org>
-Subject: From Mrs. Roonie Holbrook !!
-Date:   Tue, 13 Oct 2020 00:57:35 -0700
-Message-ID: <20201013005734.132939086A544431@doe.ir>
+        id S1727837AbgJOGOb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 15 Oct 2020 02:14:31 -0400
+Received: from mail.hanmingtech.com ([122.193.27.132]:46292 "EHLO
+        mail.hanmingtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725922AbgJOGOb (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 15 Oct 2020 02:14:31 -0400
+Received: from User (unknown [64.235.38.47])
+        by mail.hanmingtech.com (Postfix) with ESMTPA id 9600E4543D14;
+        Thu, 15 Oct 2020 03:26:03 +0800 (CST)
+Reply-To: <marcarmenguty@yandex.com>
+From:   "Mariacarmen Gutierrez" <fernrodyup12@gmx.es>
+Subject: PLEASE TAKE NOTE!
+Date:   Wed, 14 Oct 2020 12:26:06 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [217.218.14.250]
-X-ClientProxiedBy: EXG16.DOE.ir (172.20.1.44) To EXG16.DOE.ir (172.20.1.44)
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201014192603.9600E4543D14@mail.hanmingtech.com>
+To:     undisclosed-recipients:;
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Attention,
+Hello friend!
 
-Nice day and Congratulations !!!.
+I would like to contact you personally for an important proposal that could of interest to you.
+I send this email only to know if this email address is functional.
+I have something very important to discuss with you. Contact me for details by:  Email: fernrodyup1215@aol.com with your direct contacts.
 
-You are qualified for the IMFC Covid 19 grant of $750,000.00 
-dollars to support the people in your community. Now respond to 
-details to claim your money.
-
-You are directed to contact the below Office of Paymaster General 
-immediately through his contact details below:
-
-Mr. Williams Fox
-Email: claim.dept@mail2finance.com 
-
-This is to avoid mistake while transferring your overdue payment 
-to you, You have to forward to him below details of yours to 
-start processing your payment file and this ref: 
-UN/FM14/WB/Covid-19:
- 
-Your Full Name:
-Your Contact Address:
-State:
-Country:
-Telephone and Fax Number:
-Occupation:
-Age:
- 
-Kindly get back to Mr. Williams Fox  as soon as possible so that 
-he will direct you on what to do for the claims through our 
-Affiliated Bank.
- 
-
-Best regards
-
-Mrs. Roonie Holbrook
-IMFC Grant Claim Department
-Email: imfc@mail2washington.com
+Kind regards.
+Maria Carmen Gutierrez
