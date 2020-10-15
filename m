@@ -2,52 +2,53 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1505128F3EC
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Oct 2020 15:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC8428FB72
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Oct 2020 01:08:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730385AbgJONx7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 15 Oct 2020 09:53:59 -0400
-Received: from edge.kilargo.pl ([77.252.52.110]:24065 "EHLO edge.kilargo.pl"
+        id S1732501AbgJOXIe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 15 Oct 2020 19:08:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34786 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729735AbgJONx6 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 15 Oct 2020 09:53:58 -0400
-X-Greylist: delayed 601 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Oct 2020 09:53:22 EDT
-Received: from mail.kilargo.pl (77.252.52.107) by edge.kilargo.pl
- (77.252.52.109) with Microsoft SMTP Server (TLS) id 8.3.485.1; Thu, 15 Oct
- 2020 15:41:40 +0200
-Received: from User (185.248.12.71) by MAIL.kilargo.pl (172.22.0.36) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Oct 2020 14:54:55 +0200
-Reply-To: <kim.leang2011@yahoo.com>
-From:   Kim Leang <mechanik@kilargo.pl>
-Subject: Greeting! !!
-Date:   Thu, 15 Oct 2020 15:54:58 +0300
-MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <b8fd632900dc4ad4a113512e7781e06f@mail.kilargo.pl>
-To:     Undisclosed recipients:;
-X-Originating-IP: [185.248.12.71]
-X-ClientProxiedBy: mail.kilargo.pl (172.22.0.36) To MAIL.kilargo.pl
- (172.22.0.36)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A295AAB9B6B647163
+        id S1732395AbgJOXIe (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 15 Oct 2020 19:08:34 -0400
+Subject: Re: [GIT PULL] parisc architecture updates for kernel v5.10-rc1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602803313;
+        bh=WqQ0bB+ppe48oqRSyaUgLPUbMiAC3Z+q0QDdxMG8+CA=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=1djlJORgOVkKRGJ/P1n31pimVOxCL9aCZTQPWwAZzOBOQqcjfZbHcwA5d4rnH5e1z
+         bMApgcP8cdFG9GbDVizXQ3bL+GIF6YscSt+8RpjL7YJ8ZKwnMXUMzC98rCOhV67U/Y
+         bezJXlHt2Y1mc52CWvTOBHX+rA5pXonPkU+XotjA=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20201015072025.GA18655@ls3530.fritz.box>
+References: <20201015072025.GA18655@ls3530.fritz.box>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20201015072025.GA18655@ls3530.fritz.box>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.10-1
+X-PR-Tracked-Commit-Id: 7ff3f14ddc355bfbc94c766f43b90606b1f79e83
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 7286d2a37eb955c5eeec2b042844f1c1b3ff0fe1
+Message-Id: <160280331378.7173.14528913365089023034.pr-tracker-bot@kernel.org>
+Date:   Thu, 15 Oct 2020 23:08:33 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Greeting!
+The pull request you sent on Thu, 15 Oct 2020 09:20:25 +0200:
 
-I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.10-1
 
-I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/7286d2a37eb955c5eeec2b042844f1c1b3ff0fe1
 
-The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
+Thank you!
 
-Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
-
-Thanks and have a nice day,
-Mr. Kim Leang.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
