@@ -2,156 +2,145 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD68128E9C7
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Oct 2020 03:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6F9C28ED7D
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Oct 2020 09:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387762AbgJOBTC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 14 Oct 2020 21:19:02 -0400
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:51716 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387621AbgJOBTB (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 14 Oct 2020 21:19:01 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 902C22ACDE;
-        Wed, 14 Oct 2020 21:18:55 -0400 (EDT)
-Date:   Thu, 15 Oct 2020 12:18:57 +1100 (AEDT)
-From:   Finn Thain <fthain@telegraphics.com.au>
-To:     Arnd Bergmann <arnd@arndb.de>
-cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
-In-Reply-To: <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com>
-Message-ID: <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet>
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de> <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com>
+        id S1727157AbgJOHUi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 15 Oct 2020 03:20:38 -0400
+Received: from mout.gmx.net ([212.227.17.21]:35557 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727119AbgJOHUi (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 15 Oct 2020 03:20:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1602746429;
+        bh=TjiKD1ybPL6RrFzpezKiT7e3LIZK2s89ZT0rhem0VNI=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=DSY1VpbsHU4vzMPW3ATSdd0fv0LZ7TQzee9x+ofiRLWDpG83+k696JcAow8bzdmL7
+         OqKAPFgZxzSCOy0M6Aie4rqt6imromv+2S2YoInFfyJunI4ZIrm6z96Iegibc1XgOA
+         kzp8OzBGQE+yPBKiIW3j/hs8N7xuhuEOGUZ6AohY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.190.52]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MRTRN-1knVFI0pZF-00NOPG; Thu, 15
+ Oct 2020 09:20:29 +0200
+Date:   Thu, 15 Oct 2020 09:20:25 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture updates for kernel v5.10-rc1
+Message-ID: <20201015072025.GA18655@ls3530.fritz.box>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:X5dmF/O+HVchxB+VN4KvmQSqOdxwWeR5H5zn5Ta+pDuzx3I8oNS
+ sy3pWi/NiJ0My43vH3H9uSY3njPb0cQdgNDlFL+anDNkE5EoB5fex7ygsXmMdRag/6txy9v
+ h84XRhWe/B4mHeDUy7Yi3pSzf/cbscE8EU5EwmJKpSzQnal4IHTphjrMon2CMTyIGExiKXd
+ TzODdcWjtyaIc560B8Rww==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Xwih3ZKuynI=:R6YMSQHj9vjnZR5w8u434S
+ oDssbDnFocbgPl1JJrRVbQcvgEZxrDzItZbzoDNJMs94gY5f+/TlXthU1GNyOBQc8IgssLGJU
+ zjwx17ATIWotZ9EcN9fyIAJXG5Sl4ZH4NUCzpXaQbSZbRkbelmBa0X27lk4nmR6LPXF9a41AN
+ MoGCsS6RmkxqaQ2/NhugpLDQMawYRTz3zDSNWI46TI8UDf5nOZJtQ9kgMOf4c5DN3xtEuwGRI
+ pScPfMrUWuwd93glHwSJpx8r9fnGDxEJ6Cy4v+CXoQ/yEgZiLvG0WqhpnBYF7nDBp5GFFSGqF
+ CFg60rOYfFIt5jZS6KR6EDmTkI1uAj5kJuAst2A7zbTi+MmjsQ+iG+Tg7L6dPxpkO0geMd16G
+ yjCK1fMzYFqhtSu4p5p1B7qlpRrzzpfiOkcLovvfU9A0zlqCKq1dFIUCHAXq/qB4escibJj7Q
+ eCE1SzcSho9JME8YMQHm1Y8bYQgFrvH9U1cuooKxhIxf2X0JzO1dUuqAO9oinKUIbhqJOuaHU
+ qQJIWvtVZ3+RZXWBM1kE0vk3Otp3HffpqpB5MEAzXX1DsjyJWJ66xWaMZQx1Sva6jDsw34jMN
+ pRvQX98+42LWQCXXD1geQPfw5KBOLmOhTq3GGF8MnEOS874ZBwxcV/8P4EpfSTYvWe2Ue3AfJ
+ Hp1mIfm+viWBOp2HHEk54S0sgLboD+lGlXM1bMOmGTvutQYug1H1CXF7bk/woM7rFKBhOB/tD
+ 9b9cMLwMRcTAJcjvAqRvDAw/RFf+0tUNeoxIHBdkzMI/25xqe7llrsRhAEsIqnTAoTMRsQzPT
+ 5MdDbNi341O5wFIizxXzQVKLiFAdJn54Ogn1sP59IjPaC/Jop04RIMwaIumxg08TbnDbVpd1w
+ TkYZ/r7yRgZr12HYwBAA==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, 10 Oct 2020, Arnd Bergmann wrote:
+Hi Linus,
 
-> > Perhaps patch 13 does not belong in this series (?).
-> >
-> > All m68k platforms will need conversion before the TODO can be removed 
-> > from Documentation/features/time/clockevents/arch-support.txt.
-> 
-> Yes, correct. I marked this patch as RFC instead of PATCH, as I'm just 
-> trying to find out where it should be headed. I would hope the other 
-> patches can just get merged.
-> 
+please pull the fixes and updates for the parisc architecture for kernel 5.10-rc1 from:
 
-I wonder whether we can improve support for your proposed configuration 
-i.e. a system with no oneshot clockevent device.
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.10-1
 
-The 16 platforms you identified are not all in that category but I suspect 
-that there are others which are (though they don't appear in this series 
-because they already use GENERIC_CLOCKEVENTS).
+This patchset includes:
+* Added fw_cfg support for parisc on qemu
+* Added font support in sti text console driver for byte- and word-mode ROMs
+* Switch to more fine grained lws locks and improve spinlock handling
+* Add ioread64_hi_lo() and iowrite64_hi_lo() to avoid 0-day linking errors
+* Mark pointers volatile in __xchg8(), __xchg32() and __xchg64() to help compiler
+* Header file cleanups, mostly removal of unused HP-UX compat defines
+* Drop one bit from our O_NONBLOCK define to become now 000200000
+* Add MAP_UNINITIALIZED define to avoid userspace compile errors
+* Drop CONFIG_IDE from defconfigs
+* Speed up synchronize_caches() on UP machines
+* Rewrite tlb flush threshold calculation
+* Comment fixes and cleanups
 
-One useful optimization would be some way to elide oneshot clockevent 
-support (perhaps with the help of Link Time Optimization).
+Thanks,
+Helge
 
-> > On m68k, HZ is fixed at 100. Without addressing that, would there be 
-> > any benefit from adopting GENERIC_CLOCKEVENTS as per this RFC patch?
-> 
-> I don't think so, I mainly did it to see if there is a problem with 
-> mixing the two modes, and I couldn't find any. The behavior seems 
-> unchanged before and after my patch, the main difference being a few 
-> extra kilobytes in kernel .text for the generic clockevents code.
-> 
+----------------------------------------------------------------
+The following changes since commit 3e4fb4346c781068610d03c12b16c0cfb0fd24a3:
 
-I think that is a good reason to convert all m68k platforms at once and to 
-elide some of the dead code.
+  Merge tag 'spdx-5.10-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/spdx (2020-10-14 16:19:42 -0700)
 
-> > On Thu, 8 Oct 2020, Arnd Bergmann wrote:
-> >
-> > > Now that the infrastructure allows kernels to have both legacy timer 
-> > > ticks and clockevent drivers in the same image, start by moving one 
-> > > platform to generic clockevents.
-> > >
-> > > As qemu only supports the q800 platform among the classic m68k, use 
-> > > that as an example.
-> > >
-> >
-> > Correct VIA emulation is suprisingly difficult, so this kind of work 
-> > should be tested on real hardware.
-> >
-> > I say that because when I did the clocksource conversion for m68k I 
-> > ran into a bug in QEMU (since fixed) and also because I once worked on 
-> > some of the bugs in the emulated VIA device used in MAME/MESS.
-> 
-> Good point, though I would be surprised if anything went wrong with this 
-> patch on real hardware but not in emulation, as all the register-level 
-> interactions with the timer are the same.
-> 
+are available in the Git repository at:
 
-On the subject of register accesses, via1[ACR] is shared with ADB drivers, 
-so this patch probably has to protect those accesses with 
-local_irq_save/restore or local_irq_disable/enable. (I can't be sure of 
-the contexts in which .set_state_shutdown and .set_state_periodic methods 
-are called.)
+  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.10-1
 
-> Adding oneshot mode is a completely different matter though, that 
-> clearly needs to be tested on real hardware.
-> 
+for you to fetch changes up to 7ff3f14ddc355bfbc94c766f43b90606b1f79e83:
 
-Right, and many emulators trade-off timing accuracy for performance which 
-makes them unsuitable for testing invasive changes of that sort.
+  parisc/sticon: Add user font support (2020-10-15 08:12:59 +0200)
 
-> > > I also tried adding oneshot mode, which was successful but broke the 
-> > > clocksource. It's probably not hard to make it work properly, but 
-> > > this is where I've stopped.
-> > >
-> >
-> > I'm not so sure that one timer is able to support both a clocksource 
-> > driver and a clockevent driver. In some cases we may have to drop the 
-> > clocksource driver (i.e. fall back on the jiffies clocksource).
-> >
-> > Anyway, even on Macs with only one VIA chip we still have two timers. 
-> > So I think we should try to use Timer 1 as a freerunning clocksource 
-> > and Timer 2 as a oneshot clock event. This may result in better 
-> > accuracy and simpler code. This may require some experimentation 
-> > though.
-> 
-> Ah, good. This is partly what I had been hoping for, as my patch can be 
-> used as a starting point for that if you want to give it a go.
-> 
+----------------------------------------------------------------
+Christoph Hellwig (1):
+      parisc: disable CONFIG_IDE in defconfigs
 
-After looking at the chip documentation I don't think it's viable to use 
-the hardware timers in the way I proposed. A VIA register access requires 
-at least one full VIA clock cycle (about 1.3 us) which means register 
-accesses themselves cause timing delays. They also make clocksource reads 
-expensive.
+Helge Deller (11):
+      fw_cfg: Add support for parisc architecture
+      parisc: Add qemu fw_cfg interface
+      parisc: Avoid external interrupts when IPI finishes
+      parisc: Drop HP-UX specific fcntl and signal flags
+      parisc: Define O_NONBLOCK to become 000200000
+      parisc: Drop useless comments in uapi/asm/signal.h
+      parisc: Add ioread64_hi_lo() and iowrite64_hi_lo()
+      parisc: Install vmlinuz instead of zImage file
+      parisc: Add MAP_UNINITIALIZED define
+      parisc/sticon: Always register sticon console driver
+      parisc/sticon: Add user font support
 
-I think this rules out oneshot clockevent devices because if the system 
-offered such a device it would preferentially get used as a tick device.
+John David Anglin (6):
+      parisc: Add alternative patching to synchronize_caches define
+      parisc: Fix comments and enable interrupts later
+      parisc: Mark pointers volatile in __xchg8(), __xchg32() and __xchg64()
+      parisc: Switch to more fine grained lws locks
+      parisc: Rewrite tlb flush threshold calculation
+      parisc: Improve spinlock handling
 
-So I think your approach (periodic clockevent device driven by the 
-existing periodic tick interrupt) is best for this platform due to 
-simplicity (not much code) and performance (good accuracy, no additional 
-overhead).
-
-I suspect the same approach would work equally well on other platforms too 
-(even though they are probably be capable of oneshot clockevent devices).
-
->      Arnd
-> 
+ arch/parisc/Kconfig                         |   1 +
+ arch/parisc/configs/generic-32bit_defconfig |   6 +-
+ arch/parisc/configs/generic-64bit_defconfig |   6 +-
+ arch/parisc/include/asm/barrier.h           |   6 +-
+ arch/parisc/include/asm/cmpxchg.h           |  14 +-
+ arch/parisc/include/asm/futex.h             |   4 +-
+ arch/parisc/include/asm/socket.h            |   4 +-
+ arch/parisc/include/asm/spinlock.h          |  23 ++-
+ arch/parisc/include/uapi/asm/fcntl.h        |   7 +-
+ arch/parisc/include/uapi/asm/mman.h         |   1 +
+ arch/parisc/include/uapi/asm/signal.h       |   5 +-
+ arch/parisc/install.sh                      |   2 +-
+ arch/parisc/kernel/cache.c                  |  18 +-
+ arch/parisc/kernel/entry.S                  |  14 +-
+ arch/parisc/kernel/inventory.c              |  30 +++
+ arch/parisc/kernel/smp.c                    |   9 +-
+ arch/parisc/kernel/syscall.S                |  10 +-
+ arch/parisc/lib/bitops.c                    |   6 +-
+ arch/parisc/lib/iomap.c                     |  18 ++
+ drivers/firmware/Kconfig                    |   2 +-
+ drivers/firmware/qemu_fw_cfg.c              |   3 +
+ drivers/video/console/Kconfig               |   1 +
+ drivers/video/console/sticon.c              | 297 ++++++++++++++++------------
+ drivers/video/console/sticore.c             | 284 +++++++++++++-------------
+ drivers/video/fbdev/sticore.h               |  27 ++-
+ tools/arch/parisc/include/uapi/asm/mman.h   |   1 -
+ 26 files changed, 453 insertions(+), 346 deletions(-)
