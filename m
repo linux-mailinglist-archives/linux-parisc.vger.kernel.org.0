@@ -2,87 +2,170 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6306B29137B
-	for <lists+linux-parisc@lfdr.de>; Sat, 17 Oct 2020 20:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04E3229152B
+	for <lists+linux-parisc@lfdr.de>; Sun, 18 Oct 2020 02:55:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437989AbgJQSNS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 17 Oct 2020 14:13:18 -0400
-Received: from mout.gmx.net ([212.227.15.19]:44789 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437557AbgJQSNS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 17 Oct 2020 14:13:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1602958390;
-        bh=ndfEM6P7ktROJnB9dyrdzP1V5yAlaiJAQjdd2ef6qfg=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=ZpctIgvIcSsw56eArDpYIdt+95Vwm7tvm2q/P5idbkH53xR9qaYJCLA4YmlNrTsMt
-         dhK1f6bvP9I+kTZHw9W6CYgJwfqeW9NVebW5QLAyq/lI16FcsEZH7/RONVntClGvzn
-         jGmN7Pv/OX9BnhMf3/9/9sk42WulxLBa2CgRe0Mw=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.160.218]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MCbEf-1kbnBG3XFL-009hV2; Sat, 17
- Oct 2020 20:13:09 +0200
-Date:   Sat, 17 Oct 2020 20:13:06 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Improve error return codes when setting rtc time
-Message-ID: <20201017181306.GA12903@ls3530.fritz.box>
+        id S2440053AbgJRAzN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 17 Oct 2020 20:55:13 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:39744 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2440050AbgJRAzN (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 17 Oct 2020 20:55:13 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id C51E82A7EE;
+        Sat, 17 Oct 2020 20:55:06 -0400 (EDT)
+Date:   Sun, 18 Oct 2020 11:54:54 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Arnd Bergmann <arnd@arndb.de>
+cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Philip Blundell <philb@gnu.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Sam Creasey <sammy@sammy.net>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-ia64@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
+In-Reply-To: <CAK8P3a2ymv79j1edtJ983-VgjtxvT_6co7V0VRnHzcneW+0ZtA@mail.gmail.com>
+Message-ID: <alpine.LNX.2.23.453.2010180810010.6@nippy.intranet>
+References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de> <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com> <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet>
+ <CAK8P3a2ymv79j1edtJ983-VgjtxvT_6co7V0VRnHzcneW+0ZtA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:Jv62ecO/5ropSjHKAmD8iFDX0/8TvRMYQM5S4R4nkJxiGnObihA
- jKVox9+pSw0bfWPpmFqtW8NEmnFpNSOK7x1D1ks38omDt8m3r/6OA9F2NQySD1EZeqb5q5u
- rJqbC05m1w9JJdFdOYyQGIrhOsAnL6vxF+fPVjZdNcBMvAy2dEjhhFl0xOdXpJfOcR6OZbJ
- tgfiAZV3QPolRrJK/WNyA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:IrWDGQ4R+DU=:KhEoU+Ba1RkdjnNXwJZTnc
- IYvDnsd2cL+dUkUdwVu8Fuo1yo38x2JcseEU/HrYlLWAfkf02MwpKHV2vySWb+5uFE/LVx8Ny
- SAQGVZtDXJ2S0M4SbhjA5WBRlN4CzRtNcVJbF5zCGmsaJuYC9YaaNOtJ4Ju2QF5e+HzrSJ6H5
- LR/uySY9qvRa+Sm1qmIbGFKBSWiWfvtgG8GYs+ZcDa9ZScWOoW5pvUzeniYLEHKiinrd0pJGq
- yoULPzkyWHP3wJ30kZLY0+hKkkzpcSgaqaCNUbR0lx4jsSLmDt/DLfLhe/S7CG5n3XVsROx4N
- zHClEehTK90K9fwfER28qKwvrvTRySCMb7xtHota/zknZ731xnIRemmzexZtw+eqVhb74QA8r
- Qqx+/3tgAxND/SsFvkq0zvPHKrzRTQtzf6ywPY1s8Z4g3wc601FbWU7pDZXimf1/aGdDE/TKS
- NO0HpeSlFVO8lThkZdMT1XhnjM9Ja7ABlpr8korfwhT0I1MPMjC7aRcxYIyM9Q7d8X9jESGWf
- WYGIuZoHrf7N74IgmqzeV+yiOvfB1ktRq1hde1UUCBZZa5HU81VL8uohz3dZS98oR9DPnwwSL
- 2w03dXRBcew/oxRKljJll01PKzrMLZo5dIPn1EEsIos1G5YqrviyxQOAriy2fV8NEkpb2ivh+
- XdOOsF4TKpyjHd+i4lwF3Gkjo/w1lkIkt2nQSonn+QgLYi8nQxgXlwtQZ2gQIatgXRdEW53Cj
- BazFi+pJUhNniz6zvbnzZjcpbcggyzs3AlyP42xJVf2W99XFc+gso5VACdkcxI7tAceGOUB8z
- Q5Tk+sQOhn0dx1I0/eF8wLzme/YCgIPG6YYOPqazS/zTwiMaji6X1ge/uyi7E4vgBQgz0wUYx
- cZW+ZJH8330srEmh6Rfw==
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The HP 730 machine returned strange errors when I tried setting the rtc
-time.  Add some debug code to improve the possibility to trace errors
-and document that hppa probably has as Y2k38 problem.
+On Thu, 15 Oct 2020, Arnd Bergmann wrote:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+> On Thu, Oct 15, 2020 at 3:19 AM Finn Thain <fthain@telegraphics.com.au> wrote:
+> >
+> > On Sat, 10 Oct 2020, Arnd Bergmann wrote:
+> >
+> > > > Perhaps patch 13 does not belong in this series (?).
+> > > >
+> > > > All m68k platforms will need conversion before the TODO can be removed
+> > > > from Documentation/features/time/clockevents/arch-support.txt.
+> > >
+> > > Yes, correct. I marked this patch as RFC instead of PATCH, as I'm just
+> > > trying to find out where it should be headed. I would hope the other
+> > > patches can just get merged.
+> > >
+> >
+> > I wonder whether we can improve support for your proposed configuration
+> > i.e. a system with no oneshot clockevent device.
+> >
+> > The 16 platforms you identified are not all in that category but I suspect
+> > that there are others which are (though they don't appear in this series
+> > because they already use GENERIC_CLOCKEVENTS).
+> >
+> > One useful optimization would be some way to elide oneshot clockevent
+> > support (perhaps with the help of Link Time Optimization).
+> 
+> I think this already happens if one picks CONFIG_HZ_PERIODIC while
+> disabling HIGH_RES_TIMERS. In that case, CONFIG_TICK_ONESHOT
+> remains disabled.
+> 
 
-diff --git a/arch/parisc/kernel/time.c b/arch/parisc/kernel/time.c
-index 04508158815c..13d94f0f94a0 100644
-=2D-- a/arch/parisc/kernel/time.c
-+++ b/arch/parisc/kernel/time.c
-@@ -180,9 +180,16 @@ static int rtc_generic_get_time(struct device *dev, s=
-truct rtc_time *tm)
- static int rtc_generic_set_time(struct device *dev, struct rtc_time *tm)
- {
- 	time64_t secs =3D rtc_tm_to_time64(tm);
--
--	if (pdc_tod_set(secs, 0) < 0)
-+	int ret;
-+
-+	/* hppa has Y2K38 problem: pdc_tod_set() takes an u32 value! */
-+	ret =3D pdc_tod_set(secs, 0);
-+	if (ret !=3D 0) {
-+		pr_warn("pdc_tod_set(%lld) returned error %d\n", secs, ret);
-+		if (ret =3D=3D PDC_INVALID_ARG)
-+			return -EINVAL;
- 		return -EOPNOTSUPP;
-+	}
+That configuration still produces the same 5 KiB of bloat. I see that 
+kernel/time/Kconfig has this --
 
- 	return 0;
- }
+# Core internal switch. Selected by NO_HZ_COMMON / HIGH_RES_TIMERS. This is
+# only related to the tick functionality. Oneshot clockevent devices
+# are supported independent of this.
+config TICK_ONESHOT
+        bool
+
+But my question was really about both kinds of dead code (oneshot device 
+support and oneshot tick support). Anyway, after playing with the code for 
+a bit I don't see any easy way to reduce the growth in text size.
+
+> ...
+> > After looking at the chip documentation I don't think it's viable to 
+> > use the hardware timers in the way I proposed. A VIA register access 
+> > requires at least one full VIA clock cycle (about 1.3 us) which means 
+> > register accesses themselves cause timing delays. They also make 
+> > clocksource reads expensive.
+> >
+> > I think this rules out oneshot clockevent devices because if the 
+> > system offered such a device it would preferentially get used as a 
+> > tick device.
+> >
+> > So I think your approach (periodic clockevent device driven by the 
+> > existing periodic tick interrupt) is best for this platform due to 
+> > simplicity (not much code) and performance (good accuracy, no 
+> > additional overhead).
+> 
+> Yes, makes sense. I think the one remaining problem with the periodic 
+> mode in this driver is that it can drop timer ticks when interrupts are 
+> disabled for too long, while in oneshot mode there may be a way to know 
+> how much time has passed since the last tick as long as the counter does 
+> not overflow.
+
+Is there any benefit from adopting a oneshot tick (rather than periodic) 
+if no clocksource is consulted when calculating the next interval? (I'm 
+assuming NO_HZ is not in use, for reasons discussed below.)
+
+> I would agree that despite this oneshot mode is probably worse overall 
+> for timekeeping if the register accesses introduce systematic errors.
+> 
+
+It probably has to be tried. But consulting a VIA clocksource on every 
+tick would be expensive on this platform, so if that was the only way to 
+avoid cumulative errors, I'd probably just stick with the periodic tick.
+
+> ...
+> The arm/rpc timer seems to be roughly in the same category as most of 
+> the m68k ones or the i8253 counter on a PC. It's possible that some of 
+> them could use the same logic as drivers/clocksource/i8253.o as long as 
+> there is any hardware oneshot mode.
+> 
+
+There appear to be 15 platforms in that category. 4 have no clocksource 
+besides the jiffies clocksource, meaning there's no practical alternative 
+to using a periodic tick, like you did in your RFC patch:
+
+arch/m68k/apollo/config.c
+arch/m68k/q40/q40ints.c
+arch/m68k/sun3/sun3ints.c
+arch/m68k/sun3x/time.c
+
+The other 11 platforms in that category also have 'synthetic' clocksources 
+derived from a timer reload interrupt. In 3 cases, the clocksource read 
+method does not (or can not) check for a pending counter reload interrupt. 
+For these also, I see no practical alternative to the approach you've 
+taken in your RFC patch:
+
+arch/m68k/68000/timers.c
+arch/m68k/atari/time.c
+arch/m68k/coldfire/timers.c
+
+That leaves 8 platforms that have reliable clocksource devices which 
+should be able to provide an accurate reading even in the presence of a 
+dropped tick (due to drivers disabling interrupts for too long):
+
+arch/arm/mach-rpc/time.c
+arch/m68k/amiga/config.c
+arch/m68k/bvme6000/config.c
+arch/m68k/coldfire/sltimers.c
+arch/m68k/hp300/time.c
+arch/m68k/mac/via.c
+arch/m68k/mvme147/config.c
+arch/m68k/mvme16x/config.c
+
+But is there any reason to adopt a oneshot tick on any of these platforms, 
+if NO_HZ won't eliminate the timer interrupt that's needed to run a 
+'synthetic' clocksource?
