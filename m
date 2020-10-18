@@ -2,170 +2,111 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04E3229152B
-	for <lists+linux-parisc@lfdr.de>; Sun, 18 Oct 2020 02:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49701292052
+	for <lists+linux-parisc@lfdr.de>; Sun, 18 Oct 2020 23:50:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440053AbgJRAzN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 17 Oct 2020 20:55:13 -0400
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:39744 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2440050AbgJRAzN (ORCPT
+        id S1728607AbgJRVuP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 18 Oct 2020 17:50:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55738 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726249AbgJRVuO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 17 Oct 2020 20:55:13 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by kvm5.telegraphics.com.au (Postfix) with ESMTP id C51E82A7EE;
-        Sat, 17 Oct 2020 20:55:06 -0400 (EDT)
-Date:   Sun, 18 Oct 2020 11:54:54 +1100 (AEDT)
-From:   Finn Thain <fthain@telegraphics.com.au>
-To:     Arnd Bergmann <arnd@arndb.de>
-cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
-In-Reply-To: <CAK8P3a2ymv79j1edtJ983-VgjtxvT_6co7V0VRnHzcneW+0ZtA@mail.gmail.com>
-Message-ID: <alpine.LNX.2.23.453.2010180810010.6@nippy.intranet>
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de> <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com> <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet>
- <CAK8P3a2ymv79j1edtJ983-VgjtxvT_6co7V0VRnHzcneW+0ZtA@mail.gmail.com>
+        Sun, 18 Oct 2020 17:50:14 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 797D3C061755;
+        Sun, 18 Oct 2020 14:50:14 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id m65so4983425qte.11;
+        Sun, 18 Oct 2020 14:50:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LW7NtPMGJ2R8VOhKgzw6sjc10vh2YbY8kQEEkfju8fA=;
+        b=BT6sX70H+s8KhgIkqlKxOTyt7nLW9Zkkp/pWMqwoIwpRPwASphI99ISJJY/DrRq4YB
+         tuxxuQta89p2LltScao7kwUamcV10d6qq0/0GsMri9Y5uCbzF0DQIPVBZym6oh2w8IRp
+         jGv4FzahYM8UB3UvXODpIfq1ilK2uqq9Xd/9k1Vp0D25EYeZvsrsLMiSOVKbh0jHo8ly
+         ZwpyiDfjYzQI7omWM6lYTXWC4WxC4zXCwovEKbG2sVh0lXA3kgHlfvQ9kncK/jS7lzXB
+         WtZ4PQbPMGBo2Fvzsm14b4aTThFD0/Vsyl0CynTIq6qQwMl+W5yJA342KaaYBMt5xICG
+         NkkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LW7NtPMGJ2R8VOhKgzw6sjc10vh2YbY8kQEEkfju8fA=;
+        b=A54fIiuMEzcWU81kWizVMjWexILYSifLNSzkHPsvY2YrLg8OawjexicsjeQJnFnBDX
+         lFgMcBFXA82PdWXGIIPhsA9feRYqx1SsNLbcJ/ziaN4LYnD1cKUMCksOLHy3lFXz5KLL
+         mu9EmHYogFvkDCXUl8CHzXsYLO+k6XJR5vHxIizc57xHGVrJllBoAsjDznA1f3vEv4gq
+         7r/cDjJ56/USRGuhaG/HGaCbsUTFN5E6xSa5feLVxVzOgJvtHqkKZCTYXCcsqR5D9EDP
+         B2OZD0jdfFS8VVd8PckfIcCDEueSt7zf1C/eHHzfQ2kzEXzjmS452U49hb5WZ726v4sf
+         2NGA==
+X-Gm-Message-State: AOAM533U1Tx5J8OhD7nMqzqK4J++qB+CTP2+s6UHp1PSbvAYT+XXA4Gn
+        4VQzZkhSxbqT6YowujhmHWmAgdDYog4L64/VD5A=
+X-Google-Smtp-Source: ABdhPJw59Z9ZSI7YkUnrDX/NzYUwLZIQMERPV41io/elXdvNyA/Ph+eIMdFGNAEYy/TP8jUOuq9oIUb3paHWMlURueE=
+X-Received: by 2002:aed:2983:: with SMTP id o3mr12423656qtd.285.1603057812125;
+ Sun, 18 Oct 2020 14:50:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20200817091617.28119-1-allen.cryptic@gmail.com>
+In-Reply-To: <20200817091617.28119-1-allen.cryptic@gmail.com>
+From:   Richard Weinberger <richard.weinberger@gmail.com>
+Date:   Sun, 18 Oct 2020 23:50:00 +0200
+Message-ID: <CAFLxGvxsHD6zvTJSHeo2gaoRQfjUPZ6M=5BirOObHFjGqnzfew@mail.gmail.com>
+Subject: Re: [PATCH] arch: um: convert tasklets to use new tasklet_setup() API
+To:     Allen Pais <allen.cryptic@gmail.com>
+Cc:     Jeff Dike <jdike@addtoit.com>, Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        3chas3@gmail.com, Jens Axboe <axboe@kernel.dk>,
+        stefanr@s5r6.in-berlin.de, Dave Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Sebastian Reichel <sre@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Helge Deller <deller@gmx.de>, dmitry.torokhov@gmail.com,
+        jassisinghbrar@gmail.com, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        mporter@kernel.crashing.org, alex.bou9@gmail.com,
+        Mark Brown <broonie@kernel.org>, martyn@welchs.me.uk,
+        manohar.vanga@gmail.com, mitch@sfgoth.com,
+        "David S. Miller" <davem@davemloft.net>, kuba@kernel.org,
+        Kees Cook <keescook@chromium.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux1394-devel@lists.sourceforge.net,
+        intel-gfx@lists.freedesktop.org,
+        DRI mailing list <dri-devel@lists.freedesktop.org>,
+        linux-hyperv@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-ntb@googlegroups.com, linux-s390@vger.kernel.org,
+        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+        devel@driverdev.osuosl.org, Allen Pais <allen.lkml@gmail.com>,
+        Romain Perier <romain.perier@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, 15 Oct 2020, Arnd Bergmann wrote:
+On Mon, Aug 17, 2020 at 11:17 AM Allen Pais <allen.cryptic@gmail.com> wrote:
+>
+> From: Allen Pais <allen.lkml@gmail.com>
+>
+> In preparation for unconditionally passing the
+> struct tasklet_struct pointer to all tasklet
+> callbacks, switch to using the new tasklet_setup()
+> and from_tasklet() to pass the tasklet pointer explicitly.
+>
+> Signed-off-by: Romain Perier <romain.perier@gmail.com>
+> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+> ---
+>  arch/um/drivers/vector_kern.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
-> On Thu, Oct 15, 2020 at 3:19 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> >
-> > On Sat, 10 Oct 2020, Arnd Bergmann wrote:
-> >
-> > > > Perhaps patch 13 does not belong in this series (?).
-> > > >
-> > > > All m68k platforms will need conversion before the TODO can be removed
-> > > > from Documentation/features/time/clockevents/arch-support.txt.
-> > >
-> > > Yes, correct. I marked this patch as RFC instead of PATCH, as I'm just
-> > > trying to find out where it should be headed. I would hope the other
-> > > patches can just get merged.
-> > >
-> >
-> > I wonder whether we can improve support for your proposed configuration
-> > i.e. a system with no oneshot clockevent device.
-> >
-> > The 16 platforms you identified are not all in that category but I suspect
-> > that there are others which are (though they don't appear in this series
-> > because they already use GENERIC_CLOCKEVENTS).
-> >
-> > One useful optimization would be some way to elide oneshot clockevent
-> > support (perhaps with the help of Link Time Optimization).
-> 
-> I think this already happens if one picks CONFIG_HZ_PERIODIC while
-> disabling HIGH_RES_TIMERS. In that case, CONFIG_TICK_ONESHOT
-> remains disabled.
-> 
+Anton, can you please review this patch?
 
-That configuration still produces the same 5 KiB of bloat. I see that 
-kernel/time/Kconfig has this --
-
-# Core internal switch. Selected by NO_HZ_COMMON / HIGH_RES_TIMERS. This is
-# only related to the tick functionality. Oneshot clockevent devices
-# are supported independent of this.
-config TICK_ONESHOT
-        bool
-
-But my question was really about both kinds of dead code (oneshot device 
-support and oneshot tick support). Anyway, after playing with the code for 
-a bit I don't see any easy way to reduce the growth in text size.
-
-> ...
-> > After looking at the chip documentation I don't think it's viable to 
-> > use the hardware timers in the way I proposed. A VIA register access 
-> > requires at least one full VIA clock cycle (about 1.3 us) which means 
-> > register accesses themselves cause timing delays. They also make 
-> > clocksource reads expensive.
-> >
-> > I think this rules out oneshot clockevent devices because if the 
-> > system offered such a device it would preferentially get used as a 
-> > tick device.
-> >
-> > So I think your approach (periodic clockevent device driven by the 
-> > existing periodic tick interrupt) is best for this platform due to 
-> > simplicity (not much code) and performance (good accuracy, no 
-> > additional overhead).
-> 
-> Yes, makes sense. I think the one remaining problem with the periodic 
-> mode in this driver is that it can drop timer ticks when interrupts are 
-> disabled for too long, while in oneshot mode there may be a way to know 
-> how much time has passed since the last tick as long as the counter does 
-> not overflow.
-
-Is there any benefit from adopting a oneshot tick (rather than periodic) 
-if no clocksource is consulted when calculating the next interval? (I'm 
-assuming NO_HZ is not in use, for reasons discussed below.)
-
-> I would agree that despite this oneshot mode is probably worse overall 
-> for timekeeping if the register accesses introduce systematic errors.
-> 
-
-It probably has to be tried. But consulting a VIA clocksource on every 
-tick would be expensive on this platform, so if that was the only way to 
-avoid cumulative errors, I'd probably just stick with the periodic tick.
-
-> ...
-> The arm/rpc timer seems to be roughly in the same category as most of 
-> the m68k ones or the i8253 counter on a PC. It's possible that some of 
-> them could use the same logic as drivers/clocksource/i8253.o as long as 
-> there is any hardware oneshot mode.
-> 
-
-There appear to be 15 platforms in that category. 4 have no clocksource 
-besides the jiffies clocksource, meaning there's no practical alternative 
-to using a periodic tick, like you did in your RFC patch:
-
-arch/m68k/apollo/config.c
-arch/m68k/q40/q40ints.c
-arch/m68k/sun3/sun3ints.c
-arch/m68k/sun3x/time.c
-
-The other 11 platforms in that category also have 'synthetic' clocksources 
-derived from a timer reload interrupt. In 3 cases, the clocksource read 
-method does not (or can not) check for a pending counter reload interrupt. 
-For these also, I see no practical alternative to the approach you've 
-taken in your RFC patch:
-
-arch/m68k/68000/timers.c
-arch/m68k/atari/time.c
-arch/m68k/coldfire/timers.c
-
-That leaves 8 platforms that have reliable clocksource devices which 
-should be able to provide an accurate reading even in the presence of a 
-dropped tick (due to drivers disabling interrupts for too long):
-
-arch/arm/mach-rpc/time.c
-arch/m68k/amiga/config.c
-arch/m68k/bvme6000/config.c
-arch/m68k/coldfire/sltimers.c
-arch/m68k/hp300/time.c
-arch/m68k/mac/via.c
-arch/m68k/mvme147/config.c
-arch/m68k/mvme16x/config.c
-
-But is there any reason to adopt a oneshot tick on any of these platforms, 
-if NO_HZ won't eliminate the timer interrupt that's needed to run a 
-'synthetic' clocksource?
+-- 
+Thanks,
+//richard
