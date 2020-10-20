@@ -2,184 +2,113 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE4162929DA
-	for <lists+linux-parisc@lfdr.de>; Mon, 19 Oct 2020 16:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 301732934F7
+	for <lists+linux-parisc@lfdr.de>; Tue, 20 Oct 2020 08:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729606AbgJSO6B (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 19 Oct 2020 10:58:01 -0400
-Received: from mout.gmx.net ([212.227.15.15]:38459 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729594AbgJSO6B (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 19 Oct 2020 10:58:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1603119474;
-        bh=QS8WsNELMyK6RIybv3KtF3B1dm54ecJpsHcbqt+Mw0I=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=BTr7RXvDdcbwHXM27LaOa5vRDzk7Jio4vtSTr2T9Ma34iuEPvRUhVnOKWHlB6gONK
-         y8lz6kaKxdX6bwhEOtQ3qRchPyZIZ5r2NOz3+Puy7tDtLtll7sGhzCAlo8g5X6Ammz
-         EUeSmlzYCGAbg0adKfX9mHoj+GavVXssz9kZMe+Y=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.136.179]) by mail.gmx.com (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MORAa-1knrCu0H8g-00PvR7; Mon, 19
- Oct 2020 16:57:54 +0200
-Date:   Mon, 19 Oct 2020 16:57:50 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] hil/parisc: Disable HIL driver when it gets stuck
-Message-ID: <20201019145750.GA17788@ls3530.fritz.box>
+        id S2404269AbgJTGaF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 20 Oct 2020 02:30:05 -0400
+Received: from mx.fm.ukrtelecom.ua ([82.207.79.108]:50044 "EHLO
+        mx.fm.ukrtelecom.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404268AbgJTGaF (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 20 Oct 2020 02:30:05 -0400
+X-Greylist: delayed 1020 seconds by postgrey-1.27 at vger.kernel.org; Tue, 20 Oct 2020 02:30:03 EDT
+Received: from mail5.ukrpost.ua (mail5.ukrpost.ua [82.207.79.5])
+        by mx.fm.ukrtelecom.ua  with ESMTP id 09K6CsPS016915-09K6CsPU016915
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Tue, 20 Oct 2020 09:12:54 +0300
+Message-Id: <202010200612.09K6CsPS016915-09K6CsPU016915@mx.fm.ukrtelecom.ua>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ukrpost.ua;
+         s=ukrpost; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Subject:From:Reply-To:Sender:Message-ID:To:Cc:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=QG/BVf2RH20OUwlVf2lfkIeS8s/lODNMgfhorcX688I=; b=anv/JZBKvDZxq7ltRrEvVxU31M
+        tv3gmbymyrt6wl/qT/khR6VSWKfHwhgplOwKsBuvYpzEAtLbnxY7uTBluVqoNYRRhe25aoLyLGSy/
+        avCPrPLwwuYRExRfJKgWSUyyeh1gveOxkmuBSCwgwsIV0KZ6Y0GsLJr1AE2SS8WGqFrM=;
+Received: from [197.234.221.138] (helo=User)
+        by mail5.ukrpost.ua with esmtpa (Exim 4.92)
+        (envelope-from <msek2008@ukrpost.ua>)
+        id 1kUktB-00006A-P4; Tue, 20 Oct 2020 09:12:54 +0300
+Reply-To: <mrarmand.agbo@gmail.com>
+From:   "Mr Armand AGBO" <msek2008@ukrpost.ua>
+Subject: De Mr Armand AGBO(Demande de Partenariat / Partnership Request)
+Date:   Tue, 20 Oct 2020 07:12:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:bZLeCzN7yhoj656+ds66kFR2HzWJot/i0UggulM8asbwZnKD8Ob
- 2lv/1Rmwo2S49PMKMcy/KHp9e/kmzkSpw8tLiDGJ4Qz5dkzWjxZeFJN6Ys4ONaoI+7rmTXF
- tB1c42pXLf6eZDvcz4eK5cLJCyhgtpMXBAhRaxUeUK16I3wsauHB23pbNdK4FxopMPmpoMW
- oEEwxmZILRsH2QOY93rOw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kjRXG3SryFA=:+UeCf5jHySdi78GJIQdTko
- 8eiRO17lFh4voSaPXLi6pltRepkQl9GVm8X37dW8iTtqvHKmSNnpJyh7ZNpOY/zJmEC/gMkxB
- Yac+KE5K3CG1WGMeONA+vud7UHwd3xrvKDYTrw2qwGY0SR+kYfwzOHewSZuiSg7sRvcvd7moR
- R0CVDwgZv3BPqfrhaEZetTcV6m1thXb8pZx32AEJ1yCKJYjh0JzGvB6Omrb1/zk4MabfhNjAP
- gDZRv6H2X75uMXRQzqsJ89SnjcTEdOsB6oNoKZxPXSmA+8a58C9l6BbDHBzwzqYajr/HnKb1K
- DLJR22gfwn8HjPP7g6F3d2bGeUv4KikShvFBiuGvIjLrG7DuLrjv4fvA6dqpwDi9VKBYnT6Cc
- Pt/TZSjuSdxYCxfstClhhrF/COpTzkJc/5vsPKD0tEroMin2/lASCdLBVgiaqrnXVP2urIekh
- 5vlZD9h5FAQCu4B3sJDt3B+XkswR4gfqNGdhgxOnrOb5S5vF3DNxsWDcaPMcTzgym4ebLNHxV
- ImzALVuNDymOLP2GQwJGvpiZ2ps6mjLn0t1zSaO2EubBBomjl7ruTYBOibOXsdUpcP92WfwXk
- 6lfppXAmyRKcF7JHMqdwdJ5pWi8nkVeUA7oqrANdSwU7UG3HpLMs0350L547JesHXYZQOWmAU
- M14xIhCbU4llrtYpSnAceoJNE+vhWl8DpiQJ8CMMBK1nVTfAQQg1iAiJxrQJZvd4aWFYCFQ+E
- pgjL/XcuR4DIYexE06BGcW/UG7QaLCE5H9adqhZgfdI7AESNzUvI2qHJGX38jdWOAGDAzdlS2
- 6mvSqZyluZO9c1TCYlt6NT/GTABxfXFmcG6FQWq9k22kXVzi2niCAz4bKdI2eIFN0KSE87S+2
- 0vhijlv7AZJBhqyhxdFw==
+Content-Type: text/plain;
+        charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Antivirus: Avast (VPS 201019-10, 19/10/2020), Outbound message
+X-Antivirus-Status: Clean
+X-FEAS-DKIM: Invalid Public Key
+Authentication-Results: mx.fm.ukrtelecom.ua;
+        dkim=neutral (Could not retrieve key) header.i=@ukrpost.ua
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-When starting a HP machine with HIL driver but without an HIL keyboard
-or HIL mouse attached, it may happen that data written to the HIL loop
-gets stuck (e.g. because the transaction queue is full).  Usually one
-will then have to reboot the machine because all you see is and endless
-output of:
- Transaction add failed: transaction already queued?
+De Mr Armand AGBO
 
-In the higher layers hp_sdc_enqueue_transaction() is called to queued up
-a HIL packet. This function returns an error code, and this patch adds
-the necessary checks for this return code and disables the HIL driver if
-further packets can't be sent.
+Je suis Mr Armand AGBO de nationalit=D0=B9 b=D0=B9ninoise, gestionnaire de =
+compte dans une institution bancaire. Je vous prie de m'excuser pour cette =
+intrusion inattendue de ma part car c'est suite =D0=B0 une recherche via in=
+ternet que j'ai trouv=D0=B9 votre contact et apr=D0=B8s avoir parcouru votr=
+e profil, je suis convaincu que vous serez mieux plac=D0=B9 pour ex=D0=B9cu=
+ter cette transaction commerciale avec moi.
+En effet, ceci concerne l=E2=80=99un de nos clients qui est d=D0=B9c=D0=B9d=
+=D0=B9 depuis pr=D0=B8s de 5 ans et qui dispose un compte sans successeur n=
+i mandataire mentionn=D0=B9 dans les fichiers ni dans les archives. Je vien=
+s donc par ce message vous solliciter pour un partenariat comme suit : Ce c=
+ompte est actuellement inactif et est bloqu=D0=B9 mais c=E2=80=99est un com=
+pte physique li=D0=B9 =D0=B0 un compte en ligne. Je tiens =D0=B0 avoir votr=
+e accord de collaboration afin d=E2=80=99inscrire votre nom en tant que b=
+=D0=B9n=D0=B9ficiaire de succession au codicille et dernier testament de ce=
+ dernier dans nos fichiers et archives.
+Cette transaction est 100% sans risque seulement une confiance mutuelle car=
+ tous les documents juridiques qui seront utilis=D0=B9s pour traiter ce dos=
+sier seront trait=D0=B9s par moi, dans votre acceptation de coop=D0=B9rer a=
+vec moi sur cette affaire. 
+Veuillez me faire parvenir votre lettre d'acceptation pour me permettre de =
+commencer =D0=B0 vous procurer tous les documents juridiques pour la lib=D0=
+=B9ration de ses fonds. Voici mon adresse e-mail personnelle: mrarmand.agbo=
+@gmail.com
+Cordialement =E2=80=A6
+Mr AGBO A
+=2E........................................................................=
+=2E........................................................................=
 
-Tested on a HP 730 and a HP 715/64 machine.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
+By Mr Armand AGBO
+I am Mr Armand AGBO of Beninese nationality, account manager in a banking i=
+nstitution. I apologize for this unexpected intrusion on my part because it=
+ is following an internet search that I found your contact and after having=
+ browsed your profile, I am convinced that you will be in a better position=
+ to execute this transaction. commercial with me.
+Indeed, this concerns one of our clients who has been deceased for almost 5=
+ years and who has an account without a successor or representative mention=
+ed in the files or in the archives. So I come by this message to solicit yo=
+u for a partnership as follows: This account is currently inactive and is b=
+locked but it is a physical account linked to an online account. I would li=
+ke to have your collaboration agreement in order to register your name as b=
+eneficiary of the estate in the codicil and last will of the latter in our =
+files and archives.
+This transaction is 100% risk free only mutual trust as all legal documents=
+ that will be used to process this case will be handled by me, in your agre=
+ement to cooperate with me on this matter.
+Please send me your letter of acceptance to allow me to start getting all t=
+he legal documents for the release of its funds. Here is my personal email =
+address: mrarmand.agbo@gmail.com
+Cordially =E2=80=A6
+Mr AGBO A
 
-diff --git a/drivers/input/serio/hil_mlc.c b/drivers/input/serio/hil_mlc.c
-index 65f4e9d62a67..d36e89d6fc54 100644
-=2D-- a/drivers/input/serio/hil_mlc.c
-+++ b/drivers/input/serio/hil_mlc.c
-@@ -74,7 +74,7 @@ EXPORT_SYMBOL(hil_mlc_unregister);
- static LIST_HEAD(hil_mlcs);
- static DEFINE_RWLOCK(hil_mlcs_lock);
- static struct timer_list	hil_mlcs_kicker;
--static int			hil_mlcs_probe;
-+static int			hil_mlcs_probe, hil_mlc_stop;
+-- 
+L'absence de virus dans ce courrier =C3=A9lectronique a =C3=A9t=C3=A9 v=C3=
+=A9rifi=C3=A9e par le logiciel antivirus Avast.
+https://www.avast.com/antivirus
 
- static void hil_mlcs_process(unsigned long unused);
- static DECLARE_TASKLET_DISABLED_OLD(hil_mlcs_tasklet, hil_mlcs_process);
-@@ -702,9 +702,13 @@ static int hilse_donode(hil_mlc *mlc)
- 		if (!mlc->ostarted) {
- 			mlc->ostarted =3D 1;
- 			mlc->opacket =3D pack;
--			mlc->out(mlc);
-+			rc =3D mlc->out(mlc);
- 			nextidx =3D HILSEN_DOZE;
- 			write_unlock_irqrestore(&mlc->lock, flags);
-+			if (rc) {
-+				hil_mlc_stop =3D 1;
-+				return 1;
-+			}
- 			break;
- 		}
- 		mlc->ostarted =3D 0;
-@@ -715,8 +719,13 @@ static int hilse_donode(hil_mlc *mlc)
-
- 	case HILSE_CTS:
- 		write_lock_irqsave(&mlc->lock, flags);
--		nextidx =3D mlc->cts(mlc) ? node->bad : node->good;
-+		rc =3D mlc->cts(mlc);
-+		nextidx =3D rc ? node->bad : node->good;
- 		write_unlock_irqrestore(&mlc->lock, flags);
-+		if (rc) {
-+			hil_mlc_stop =3D 1;
-+			return 1;
-+		}
- 		break;
-
- 	default:
-@@ -780,6 +789,12 @@ static void hil_mlcs_process(unsigned long unused)
-
- static void hil_mlcs_timer(struct timer_list *unused)
- {
-+	if (hil_mlc_stop) {
-+		/* could not send packet - stop immediately. */
-+		pr_warn(PREFIX "HIL seems stuck - Disabling HIL MLC.\n");
-+		return;
-+	}
-+
- 	hil_mlcs_probe =3D 1;
- 	tasklet_schedule(&hil_mlcs_tasklet);
- 	/* Re-insert the periodic task. */
-diff --git a/drivers/input/serio/hp_sdc_mlc.c b/drivers/input/serio/hp_sdc=
-_mlc.c
-index 232d30c825bd..3e85e9039374 100644
-=2D-- a/drivers/input/serio/hp_sdc_mlc.c
-+++ b/drivers/input/serio/hp_sdc_mlc.c
-@@ -210,7 +210,7 @@ static int hp_sdc_mlc_cts(hil_mlc *mlc)
- 	priv->tseq[2] =3D 1;
- 	priv->tseq[3] =3D 0;
- 	priv->tseq[4] =3D 0;
--	__hp_sdc_enqueue_transaction(&priv->trans);
-+	return __hp_sdc_enqueue_transaction(&priv->trans);
-  busy:
- 	return 1;
-  done:
-@@ -219,7 +219,7 @@ static int hp_sdc_mlc_cts(hil_mlc *mlc)
- 	return 0;
- }
-
--static void hp_sdc_mlc_out(hil_mlc *mlc)
-+static int hp_sdc_mlc_out(hil_mlc *mlc)
- {
- 	struct hp_sdc_mlc_priv_s *priv;
-
-@@ -234,7 +234,7 @@ static void hp_sdc_mlc_out(hil_mlc *mlc)
-  do_data:
- 	if (priv->emtestmode) {
- 		up(&mlc->osem);
--		return;
-+		return 0;
- 	}
- 	/* Shouldn't be sending commands when loop may be busy */
- 	BUG_ON(down_trylock(&mlc->csem));
-@@ -296,7 +296,7 @@ static void hp_sdc_mlc_out(hil_mlc *mlc)
- 		BUG_ON(down_trylock(&mlc->csem));
- 	}
-  enqueue:
--	hp_sdc_enqueue_transaction(&priv->trans);
-+	return hp_sdc_enqueue_transaction(&priv->trans);
- }
-
- static int __init hp_sdc_mlc_init(void)
-diff --git a/include/linux/hil_mlc.h b/include/linux/hil_mlc.h
-index 774f7d3b8f6a..369221fd5518 100644
-=2D-- a/include/linux/hil_mlc.h
-+++ b/include/linux/hil_mlc.h
-@@ -103,7 +103,7 @@ struct hilse_node {
-
- /* Methods for back-end drivers, e.g. hp_sdc_mlc */
- typedef int	(hil_mlc_cts) (hil_mlc *mlc);
--typedef void	(hil_mlc_out) (hil_mlc *mlc);
-+typedef int	(hil_mlc_out) (hil_mlc *mlc);
- typedef int	(hil_mlc_in)  (hil_mlc *mlc, suseconds_t timeout);
-
- struct hil_mlc_devinfo {
