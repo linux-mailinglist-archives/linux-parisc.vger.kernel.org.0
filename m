@@ -2,119 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDB422953BA
-	for <lists+linux-parisc@lfdr.de>; Wed, 21 Oct 2020 22:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D08E22954DA
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 00:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2505676AbgJUU7s convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 21 Oct 2020 16:59:48 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:42557 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2505680AbgJUU7s (ORCPT
+        id S2502399AbgJUWcO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 21 Oct 2020 18:32:14 -0400
+Received: from bedivere.hansenpartnership.com ([96.44.175.130]:50890 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2437502AbgJUWcO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 21 Oct 2020 16:59:48 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-133-TE6JN5gZMAinUsbykq2bUQ-1; Wed, 21 Oct 2020 21:59:44 +0100
-X-MC-Unique: TE6JN5gZMAinUsbykq2bUQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Wed, 21 Oct 2020 21:59:43 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Wed, 21 Oct 2020 21:59:43 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Greg KH' <gregkh@linuxfoundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        "kernel-team@android.com" <kernel-team@android.com>
-CC:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Index: AQHWp8T3NDfnH4y9nkGWtfqJueR1KKmiiApA
-Date:   Wed, 21 Oct 2020 20:59:43 +0000
-Message-ID: <b416290b76684ac392e8c43d764645f8@AcuMS.aculab.com>
-References: <20200925045146.1283714-1-hch@lst.de>
- <20200925045146.1283714-3-hch@lst.de> <20201021161301.GA1196312@kroah.com>
-In-Reply-To: <20201021161301.GA1196312@kroah.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Wed, 21 Oct 2020 18:32:14 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id C45D31285C96;
+        Wed, 21 Oct 2020 15:32:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1603319533;
+        bh=hug4/xdZohFsTxNqDV/S4h3AT0KrSaZhXxC1kHlq7TQ=;
+        h=Subject:From:To:Date:In-Reply-To:References:From;
+        b=wmmYWHDiqD95Or1rW+6EmPWxdjzlipuGDdjX49pxYGxiCn0nXwO+TkGn8uTwi4mXN
+         YoYv8fznTOavT0/+zE7fJdyOVk+0Th02GQ3+cDjvs0DkWBrFYhnKTKXWtHapzxeTXk
+         9aKpy+3sE6bCFcgv6Kqpm3mXsUef0pcsmc7UUemk=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id mTehpra1xL3W; Wed, 21 Oct 2020 15:32:13 -0700 (PDT)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::c447])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id EE8211285C94;
+        Wed, 21 Oct 2020 15:32:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1603319533;
+        bh=hug4/xdZohFsTxNqDV/S4h3AT0KrSaZhXxC1kHlq7TQ=;
+        h=Subject:From:To:Date:In-Reply-To:References:From;
+        b=wmmYWHDiqD95Or1rW+6EmPWxdjzlipuGDdjX49pxYGxiCn0nXwO+TkGn8uTwi4mXN
+         YoYv8fznTOavT0/+zE7fJdyOVk+0Th02GQ3+cDjvs0DkWBrFYhnKTKXWtHapzxeTXk
+         9aKpy+3sE6bCFcgv6Kqpm3mXsUef0pcsmc7UUemk=
+Message-ID: <20c93fb33d69d328c2a192d94723d2a9459a9817.camel@HansenPartnership.com>
+Subject: Re: Kernel 5.8 and 5.9 fail to boot on C8000
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     John David Anglin <dave.anglin@bell.net>,
+        Helge Deller <deller@gmx.de>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Date:   Wed, 21 Oct 2020 15:32:11 -0700
+In-Reply-To: <35dc2238-cf23-15a5-b214-533133e6bd9c@bell.net>
+References: <e6e6dcfa-1a09-21d7-69e0-b9e3c0360eb6@gmx.de>
+         <37ee0636688c782a59e8b50eae5c41b96926e7ab.camel@HansenPartnership.com>
+         <bbdfecf6-b13f-561f-82f6-1f5e594e02b2@gmx.de>
+         <35dc2238-cf23-15a5-b214-533133e6bd9c@bell.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Greg KH
-> Sent: 21 October 2020 17:13
-> 
-> On Fri, Sep 25, 2020 at 06:51:39AM +0200, Christoph Hellwig wrote:
-> > From: David Laight <David.Laight@ACULAB.COM>
-> >
-> > This lets the compiler inline it into import_iovec() generating
-> > much better code.
-> >
-> > Signed-off-by: David Laight <david.laight@aculab.com>
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > ---
-> >  fs/read_write.c | 179 ------------------------------------------------
-> >  lib/iov_iter.c  | 176 +++++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 176 insertions(+), 179 deletions(-)
-> 
-> Strangely, this commit causes a regression in Linus's tree right now.
-> 
-> I can't really figure out what the regression is, only that this commit
-> triggers a "large Android system binary" from working properly.  There's
-> no kernel log messages anywhere, and I don't have any way to strace the
-> thing in the testing framework, so any hints that people can provide
-> would be most appreciated.
+On Wed, 2020-10-21 at 13:12 -0400, John David Anglin wrote:
+> On 2020-10-21 12:10 p.m., Helge Deller wrote:
+> > Any idea what I could test?
+> Try kernel a build with gcc-9 or earlier.  It appears there are
+> problem(s) with gcc-10.  I'm getting all kinds
+> of random issues building glibc.
+> https://buildd.debian.org/status/logs.php?pkg=glibc&ver=2.31-4&arch=hppa
 
-My original commit just moved the function source from one file to another.
-So it is odd that it makes any difference.
-I don't even know if it gets inlined by Christoph's actual patch.
-(I have another patch that depended on it that I need to resubmit.)
+This version of the kernel built with gcc-10 is working for me on my
+Mako system:
 
-Some of the other changes from Christoph's same patch set might
-make a difference though.
+   Linux version 5.9.0 (jejb@ion) (hppa64-linux-gnu-gcc (GCC) 10.2.0,
+   GNU ld (GNU Binutils for Debian) 2.35) #1 SMP Wed Oct 21 09:35:50
+   PDT 2020
 
-Might be worth forcing it to be not inlined - so it is no change.
-Or try adding a kernel log to import_iovec() or the associated
-copy failing.
+So if it is gcc-10 I'm not seeing the problem.
 
-	David
+James
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
 
