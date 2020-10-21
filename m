@@ -2,101 +2,119 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84DD82952FC
-	for <lists+linux-parisc@lfdr.de>; Wed, 21 Oct 2020 21:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDB422953BA
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 Oct 2020 22:59:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504785AbgJUTck (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 21 Oct 2020 15:32:40 -0400
-Received: from mx2.cyber.ee ([193.40.6.72]:56872 "EHLO mx2.cyber.ee"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2504781AbgJUTck (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 21 Oct 2020 15:32:40 -0400
-X-Greylist: delayed 556 seconds by postgrey-1.27 at vger.kernel.org; Wed, 21 Oct 2020 15:32:39 EDT
-Subject: Re: Kernel 5.8 and 5.9 fail to boot on C8000
-To:     Helge Deller <deller@gmx.de>
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org
-References: <e6e6dcfa-1a09-21d7-69e0-b9e3c0360eb6@gmx.de>
-From:   Meelis Roos <mroos@linux.ee>
-Message-ID: <f6cd5c30-8fa7-2b66-9ead-3fb42afd6c0b@linux.ee>
-Date:   Wed, 21 Oct 2020 22:23:31 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.3
+        id S2505676AbgJUU7s convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 21 Oct 2020 16:59:48 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:42557 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2505680AbgJUU7s (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 21 Oct 2020 16:59:48 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-133-TE6JN5gZMAinUsbykq2bUQ-1; Wed, 21 Oct 2020 21:59:44 +0100
+X-MC-Unique: TE6JN5gZMAinUsbykq2bUQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Wed, 21 Oct 2020 21:59:43 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Wed, 21 Oct 2020 21:59:43 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Greg KH' <gregkh@linuxfoundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        "kernel-team@android.com" <kernel-team@android.com>
+CC:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-aio@kvack.org" <linux-aio@kvack.org>,
+        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Index: AQHWp8T3NDfnH4y9nkGWtfqJueR1KKmiiApA
+Date:   Wed, 21 Oct 2020 20:59:43 +0000
+Message-ID: <b416290b76684ac392e8c43d764645f8@AcuMS.aculab.com>
+References: <20200925045146.1283714-1-hch@lst.de>
+ <20200925045146.1283714-3-hch@lst.de> <20201021161301.GA1196312@kroah.com>
+In-Reply-To: <20201021161301.GA1196312@kroah.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-In-Reply-To: <e6e6dcfa-1a09-21d7-69e0-b9e3c0360eb6@gmx.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-20.10.20 16:45 Helge Deller wrote:
-> Latest Linux kernels v5.8 and v5.9 fail to boot for me on the C8000
-> machines with this error:
->   mptspi: probe of 0000:40:01.0 failed with error -12
->   mptbase: ioc1: ERROR - Insufficient memory to add adapter!
->   mptspi: probe of 0000:40:01.1 failed with error -12
+From: Greg KH
+> Sent: 21 October 2020 17:13
 > 
-> The c8000 has a built-in Broadcom / LSI 53c1030 PCI-X Fusion-MPT Dual
-> Ultra320 SCSI controller.
+> On Fri, Sep 25, 2020 at 06:51:39AM +0200, Christoph Hellwig wrote:
+> > From: David Laight <David.Laight@ACULAB.COM>
+> >
+> > This lets the compiler inline it into import_iovec() generating
+> > much better code.
+> >
+> > Signed-off-by: David Laight <david.laight@aculab.com>
+> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > ---
+> >  fs/read_write.c | 179 ------------------------------------------------
+> >  lib/iov_iter.c  | 176 +++++++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 176 insertions(+), 179 deletions(-)
 > 
-> Do other people see this as well?
+> Strangely, this commit causes a regression in Linus's tree right now.
+> 
+> I can't really figure out what the regression is, only that this commit
+> triggers a "large Android system binary" from working properly.  There's
+> no kernel log messages anywhere, and I don't have any way to strace the
+> thing in the testing framework, so any hints that people can provide
+> would be most appreciated.
 
-Works for me on a rp2470 with this card but no disks attached (gcc-10.2 from Gentoo, this test machine has usually been stable):
+My original commit just moved the function source from one file to another.
+So it is odd that it makes any difference.
+I don't even know if it gets inlined by Christoph's actual patch.
+(I have another patch that depended on it that I need to resubmit.)
 
-lspci:
-00:00.0 Ethernet controller: Digital Equipment Corporation DECchip 21142/43 (rev 41)
-00:01.0 SCSI storage controller: Broadcom / LSI 53C896/897 (rev 07)
-00:01.1 SCSI storage controller: Broadcom / LSI 53C896/897 (rev 07)
-00:02.0 SCSI storage controller: Broadcom / LSI 53c875 (rev 37)
-00:02.1 SCSI storage controller: Broadcom / LSI 53c875 (rev 37)
-00:04.0 System peripheral: Hewlett-Packard Company Diva [GSP] Management Board (rev 01)
-00:04.1 Serial controller: Hewlett-Packard Company Diva Serial [GSP] Multiport UART (rev 03)
-10:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Mach64 GT-B [3D Rage II+ DVD] (rev 9a)
-20:00.0 SCSI storage controller: Broadcom / LSI 53c1010 66MHz  Ultra3 SCSI Adapter (rev 01)
-20:00.1 SCSI storage controller: Broadcom / LSI 53c1010 66MHz  Ultra3 SCSI Adapter (rev 01)
-30:00.0 SCSI storage controller: Adaptec AIC-7870P/7881U [AHA-2940U/UW/D/S76] (rev 01)
-30:02.0 SCSI storage controller: Broadcom / LSI 53c1030 PCI-X Fusion-MPT Dual Ultra320 SCSI (rev 08)
-30:02.1 SCSI storage controller: Broadcom / LSI 53c1030 PCI-X Fusion-MPT Dual Ultra320 SCSI (rev 08)
+Some of the other changes from Christoph's same patch set might
+make a difference though.
 
-dmesg:
-[    0.000000] Linux version 5.9.0 (mroos@rp2470) (hppa64-unknown-linux-gnu-gcc (Gentoo 10.2.0 p1) 10.2.0, GNU ld (Gentoo 2.33.1 p1) 2.33.1) #248 Mon Oct 12 19:01:45 EEST 2020
-...
-[    2.623778] pci 0000:30:02.0: [1000:0030] type 00 class 0x010000
-[    2.625453] pci 0000:30:02.0: reg 0x10: [io  0x30000-0x300ff]
-[    2.625712] pci 0000:30:02.0: reg 0x14: [mem 0x00000000-0x0001ffff 64bit]
-[    2.627793] pci 0000:30:02.0: reg 0x1c: [mem 0x00000000-0x0001ffff 64bit]
-[    2.630015] pci 0000:30:02.0: reg 0x30: [mem 0x00000000-0x000fffff pref]
-[    2.630532] pci 0000:30:02.0: supports D1 D2
-[    2.632633] pci 0000:30:02.1: [1000:0030] type 00 class 0x010000
-[    2.632909] pci 0000:30:02.1: reg 0x10: [io  0x30000-0x300ff]
-[    2.647585] pci 0000:30:02.1: reg 0x14: [mem 0x00000000-0x0001ffff 64bit]
-[    2.650580] pci 0000:30:02.1: reg 0x1c: [mem 0x00000000-0x0001ffff 64bit]
-[    2.650876] pci 0000:30:02.1: reg 0x30: [mem 0x00000000-0x000fffff pref]
-[    2.655192] pci 0000:30:02.1: supports D1 D2
-[    2.657716] pci 0000:30:02.0: can't claim BAR 0 [io  0x30000-0x300ff]: address conflict with 0000:30:00.0 [io  0x30000-0x300ff]
-[    2.659477] pci 0000:30:02.1: can't claim BAR 0 [io  0x30000-0x300ff]: address conflict with 0000:30:00.0 [io  0x30000-0x300ff]
-[    2.661856] pci 0000:30:02.0: BAR 6: assigned [mem 0xfffffffffb000000-0xfffffffffb0fffff pref]
-[    2.664079] pci 0000:30:02.1: BAR 6: assigned [mem 0xfffffffffb100000-0xfffffffffb1fffff pref]
-[    2.666330] pci 0000:30:02.0: BAR 1: assigned [mem 0xfffffffffb200000-0xfffffffffb21ffff 64bit]
-[    2.674350] pci 0000:30:02.0: BAR 3: assigned [mem 0xfffffffffb220000-0xfffffffffb23ffff 64bit]
-[    2.674679] pci 0000:30:02.1: BAR 1: assigned [mem 0xfffffffffb240000-0xfffffffffb25ffff 64bit]
-[    2.676975] pci 0000:30:02.1: BAR 3: assigned [mem 0xfffffffffb260000-0xfffffffffb27ffff 64bit]
-[    2.679263] pci 0000:30:00.0: BAR 6: assigned [mem 0xfffffffffb280000-0xfffffffffb28ffff pref]
-[    2.681484] pci 0000:30:00.0: BAR 1: assigned [mem 0xfffffffffb290000-0xfffffffffb290fff]
-[    2.683749] pci 0000:30:02.0: BAR 0: assigned [io  0x30100-0x301ff]
-[    2.829064] pci 0000:30:02.1: BAR 0: assigned [io  0x30200-0x302ff]
-...
-[   59.788086] Fusion MPT SPI Host driver 3.04.20
-[   59.788436] mptspi 0000:30:02.0: enabling device (0000 -> 0002)
-[   59.912240] mptspi 0000:30:02.0: enabling SERR and PARITY (0002 -> 0142)
-[   61.848400] scsi host7: ioc0: LSI53C1030 C0, FwRev=01032341h, Ports=1, MaxQ=255, IRQ=26
-[   62.541761] mptspi 0000:30:02.1: enabling device (0000 -> 0002)
-[   62.542024] mptspi 0000:30:02.1: enabling SERR and PARITY (0002 -> 0142)
-[   62.548157] mptbase: ioc1: Initiating bringup
-[   63.272365] ioc1: LSI53C1030 C0: Capabilities={Initiator,Target}
-[   64.020620] scsi host8: ioc1: LSI53C1030 C0, FwRev=01032341h, Ports=1, MaxQ=255, IRQ=27
+Might be worth forcing it to be not inlined - so it is no change.
+Or try adding a kernel log to import_iovec() or the associated
+copy failing.
 
--- 
-Meelis Roos <mroos@linux.ee>
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
