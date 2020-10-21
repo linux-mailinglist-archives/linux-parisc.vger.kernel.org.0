@@ -2,78 +2,56 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9577029507E
-	for <lists+linux-parisc@lfdr.de>; Wed, 21 Oct 2020 18:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2CA729515A
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 Oct 2020 19:12:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502881AbgJUQMY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 21 Oct 2020 12:12:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56946 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2502871AbgJUQMX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 21 Oct 2020 12:12:23 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 77C932087D;
-        Wed, 21 Oct 2020 16:12:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603296742;
-        bh=Skv4VHOsxkbjExqgUALTljS6pv/j0ztelpvS9+0CtRw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SY2cnni/yKiqNX2D+MolwtBJkJZ25el2hwQIqa11SFtDmBTq22ksfzgjhnYpbguzD
-         uBJI7QL3KluS3eIdXrPW4GsEYXfXh8wZGwW2M5LAz2S2HyPezXFwhGB9FXwsuwf6Qg
-         XKD6E/hfwsCovIhfz5qaKfu2Q5NHx6cNpzquq6Po=
-Date:   Wed, 21 Oct 2020 18:13:01 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Christoph Hellwig <hch@lst.de>, kernel-team@android.com
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        David Laight <David.Laight@aculab.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-aio@kvack.org, io-uring@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        netdev@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Message-ID: <20201021161301.GA1196312@kroah.com>
-References: <20200925045146.1283714-1-hch@lst.de>
- <20200925045146.1283714-3-hch@lst.de>
+        id S2503369AbgJURMY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 21 Oct 2020 13:12:24 -0400
+Received: from belmont80srvr.owm.bell.net ([184.150.200.80]:36869 "EHLO
+        mtlfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2438097AbgJURMY (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 21 Oct 2020 13:12:24 -0400
+Received: from bell.net mtlfep02 184.150.200.30 by mtlfep02.bell.net
+          with ESMTP
+          id <20201021171222.YVVG52743.mtlfep02.bell.net@mtlspm02.bell.net>
+          for <linux-parisc@vger.kernel.org>;
+          Wed, 21 Oct 2020 13:12:22 -0400
+Received: from [192.168.2.49] (really [76.66.134.232]) by mtlspm02.bell.net
+          with ESMTP
+          id <20201021171222.TMMU3672.mtlspm02.bell.net@[192.168.2.49]>;
+          Wed, 21 Oct 2020 13:12:22 -0400
+Subject: Re: Kernel 5.8 and 5.9 fail to boot on C8000
+To:     Helge Deller <deller@gmx.de>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+References: <e6e6dcfa-1a09-21d7-69e0-b9e3c0360eb6@gmx.de>
+ <37ee0636688c782a59e8b50eae5c41b96926e7ab.camel@HansenPartnership.com>
+ <bbdfecf6-b13f-561f-82f6-1f5e594e02b2@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+Message-ID: <35dc2238-cf23-15a5-b214-533133e6bd9c@bell.net>
+Date:   Wed, 21 Oct 2020 13:12:22 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200925045146.1283714-3-hch@lst.de>
+In-Reply-To: <bbdfecf6-b13f-561f-82f6-1f5e594e02b2@gmx.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-Analysis: v=2.3 cv=KoYzJleN c=1 sm=1 tr=0 a=lNGNHD24gN8CBUU6PHFJmA==:117 a=lNGNHD24gN8CBUU6PHFJmA==:17 a=IkcTkHD0fZMA:10 a=afefHYAZSVUA:10 a=xNf9USuDAAAA:8 a=FBHGMhGWAAAA:8 a=Bo27KyS8eOrg_s98D7QA:9 a=QEXdDO2ut3YA:10 a=Oo4RUI8smAYA:10 a=SEwjQc04WA-l_NiBhQ7s:22 a=9gvnlMMaQFpL9xblJ6ne:22
+X-CM-Envelope: MS4wfL3Nbl8iuL8WwztxnuPj5sQ3OrUR2fIjaJcFmalCNJtC4/M7DKfJF/raxDa3rr1NKjYtjC2MWASxZxx29tK/Yz18YFOoKynvyklt/X/65oRljY6gRBL0 Fm7pvYTxPVVHtckf/B3lVZbvfr5j8bfrgqzXmXvSvjUbLpwS6sqiHsoTSt8fNuH410UJ2RnVj9Jsaw==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Sep 25, 2020 at 06:51:39AM +0200, Christoph Hellwig wrote:
-> From: David Laight <David.Laight@ACULAB.COM>
-> 
-> This lets the compiler inline it into import_iovec() generating
-> much better code.
-> 
-> Signed-off-by: David Laight <david.laight@aculab.com>
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  fs/read_write.c | 179 ------------------------------------------------
->  lib/iov_iter.c  | 176 +++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 176 insertions(+), 179 deletions(-)
+On 2020-10-21 12:10 p.m., Helge Deller wrote:
+> Any idea what I could test?
+Try kernel a build with gcc-9 or earlier.  It appears there are problem(s) with gcc-10.  I'm getting all kinds
+of random issues building glibc.
+https://buildd.debian.org/status/logs.php?pkg=glibc&ver=2.31-4&arch=hppa
 
-Strangely, this commit causes a regression in Linus's tree right now.
+Dave
 
-I can't really figure out what the regression is, only that this commit
-triggers a "large Android system binary" from working properly.  There's
-no kernel log messages anywhere, and I don't have any way to strace the
-thing in the testing framework, so any hints that people can provide
-would be most appreciated.
+-- 
+John David Anglin  dave.anglin@bell.net
 
-thanks,
-
-greg k-h
