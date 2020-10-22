@@ -2,127 +2,155 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E7CA29610C
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 16:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65F2D2961C3
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 17:38:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2900976AbgJVOjs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 22 Oct 2020 10:39:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49228 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2900951AbgJVOjq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Oct 2020 10:39:46 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 276A224171;
-        Thu, 22 Oct 2020 14:39:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603377583;
-        bh=ma7f6ciQXaB7O32bDDp+GeQJ6WrSJ5EDDu1VyaA7rGo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PxugVsee9PWrXt/gXzudeuTvI47TjXebpNxq+V4HCmVCe1sKZHLosNqAbXuuvW+/i
-         F3Omc7qJjCGcZpsoZ0gvdBLvvwF6P71x/p/bcwNCyzTjDInFt6yyFfEubOEEK8j98S
-         eCVIVyZ2FmbbCU8ALan3OPjQJXwF2/c6hnwwd7rg=
-Date:   Thu, 22 Oct 2020 16:40:21 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     David Hildenbrand <david@redhat.com>,
-        David Laight <David.Laight@aculab.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Message-ID: <20201022144021.GA1969554@kroah.com>
-References: <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
- <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
- <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
- <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
- <20201022104805.GA1503673@kroah.com>
- <20201022121849.GA1664412@kroah.com>
- <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
- <20201022125759.GA1685526@kroah.com>
- <20201022135036.GA1787470@kroah.com>
- <CAK8P3a1B7OVdyzW0-97JwzZiwp0D0fnSfyete16QTvPp_1m07A@mail.gmail.com>
+        id S368676AbgJVPie (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 22 Oct 2020 11:38:34 -0400
+Received: from lb2-smtp-cloud9.xs4all.net ([194.109.24.26]:40297 "EHLO
+        lb2-smtp-cloud9.xs4all.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S368675AbgJVPie (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 22 Oct 2020 11:38:34 -0400
+Received: from cust-3a8def63 ([IPv6:fc0c:c1c9:903d:e9b4:326e:d2bd:718e:17cc])
+        by smtp-cloud9.xs4all.net with ESMTPSA
+        id VcfZkNebsjIEMVcfak8dMr; Thu, 22 Oct 2020 17:38:31 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s1;
+        t=1603381111; bh=FQiIaNbRE4OE28W8KC5cxWpBS8iuSvwr3TUzgg7Tgow=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From:
+         Subject;
+        b=Kw0NLlJFQjT0W8dMQsbYg70lXHnuBwjl6w5hx78H5q6in+VSBuPQNqGLF+DBtI4a7
+         mK+A9TpkLJX/r9XXNzqelqM9tS7pGFvrF+fgjl5UbXlNHEDEI7X6dlVlctjpWYRxsB
+         rRg7YpjmLzqz+v9oPxF2wOagiY6b7/abuukuM+43k9mXP4Jvp7s9/FSCoZw+HTXZDB
+         5QyA0qLjcznzMF0P5QyyvwDMmsXZqeuuJxFzAYx5aE8yOYIm8A063KeVTtFKFx2Oky
+         Hb/qGs+7J9PXr4QbUPk/rknjUNM9L0NPGVYgnl6fr9APdjQ6QsqjKkFBRUEDu9qAwM
+         n4rmeWqHWnTnQ==
+Date:   Thu, 22 Oct 2020 17:38:24 +0200
+From:   Jeroen Roovers <jer@xs4all.nl>
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: Re: [RFC PATCH] parisc: Define O_NONBLOCK to become 000200000
+Message-ID: <20201022173824.49b6b7f5@wim.jer>
+In-Reply-To: <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
+References: <20200829122017.GA3988@ls3530.fritz.box>
+        <20201020192101.772bedd5@wim.jer>
+        <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a1B7OVdyzW0-97JwzZiwp0D0fnSfyete16QTvPp_1m07A@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfPhPi1YDcns2rSbclwv5KYmKPce0s1FvhS0uzUN6Q1x3+J4b4OlvcDOHTiKy5zbrH2PvjQG5MPE9vNBFKpn6MaXrl7lRhp0nDFKDlp/EroKOhxRfaOuH
+ cZiJTRGuUQGVrbrT7YVzL+3lxuBSmhUHeukZjNvlCPK9eIZbsWwDGzqTJQmKCrJsVTQrb6eJX8FVBrKdEP4pGLiqhUTXxsW6MSdOVn4H/VoJ1NyizS7TcEob
+ 0+UQCFTK6z+5fkXUAAVr7su/DS8+rCvls0R+FRCJYNRFI1Lp0TkGt1+h55Se3/Zb
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 22, 2020 at 04:28:20PM +0200, Arnd Bergmann wrote:
-> On Thu, Oct 22, 2020 at 3:50 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > On Thu, Oct 22, 2020 at 02:57:59PM +0200, Greg KH wrote:
-> > > On Thu, Oct 22, 2020 at 02:42:24PM +0200, David Hildenbrand wrote:
-> 
-> > > >  struct iovec *iovec_from_user(const struct iovec __user *uvec,
-> > > > -               unsigned long nr_segs, unsigned long fast_segs,
-> > > > +               unsigned nr_segs, unsigned fast_segs,
-> > > >                 struct iovec *fast_iov, bool compat)
-> > > >  {
-> > > >         struct iovec *iov = fast_iov;
-> > > > @@ -1738,7 +1738,7 @@ ssize_t __import_iovec(int type, const struct
-> > > > iovec __user *uvec,
-> > > >                  struct iov_iter *i, bool compat)
-> > > >  {
-> > > >         ssize_t total_len = 0;
-> > > > -       unsigned long seg;
-> > > > +       unsigned seg;
-> > > >         struct iovec *iov;
-> > > >
-> > > >         iov = iovec_from_user(uvec, nr_segs, fast_segs, *iovp, compat);
-> > > >
-> > >
-> > > Ah, I tested the other way around, making everything "unsigned long"
-> > > instead.  Will go try this too, as other tests are still running...
+On Wed, 21 Oct 2020 08:07:15 +0200
+Helge Deller <deller@gmx.de> wrote:
+
+> On 10/20/20 7:21 PM, Jeroen Roovers wrote:
+> > On Sat, 29 Aug 2020 14:20:17 +0200
+> > Helge Deller <deller@gmx.de> wrote:
+> >  
+> >> HPUX has separate NDELAY & NONBLOCK values. In the past we wanted
+> >> to be able to run HP-UX binaries natively on parisc Linux which is
+> >> why we defined O_NONBLOCK to 000200004 to distinguish NDELAY &
+> >> NONBLOCK bits.
+> >> But with 2 bits set in this bitmask we often ran into compatibility
+> >> issues with other Linux applications which often only test one bit
+> >> (or even compare the values).
+> >>
+> >> To avoid such issues in the future, this patch changes O_NONBLOCK
+> >> to become 000200000. That way old programs will still be
+> >> functional, and for new programs we now have only one bit set.  
 > >
-> > Ok, no, this didn't work either.
+> > I am seeing a problem with this exact commit in userland, so I think
+> > that last sentence is incorrect:  
+> 
+> Thanks for testing and bisecting!!!
+> 
+> I'm fine with reverting the change, but we really need to
+> analyze what is broken (and why).
+> 
+> In general the kernel sources seem ok as it's important,
+> that code just check if bits are set, not if the value
+> is equal to something e.g.
+> good:  if (flags & O_NONBLOCK) { ... }
+> bad:   if (flags == O_NONBLOCK) { .... }
+> 
+> 
+> > The first sign (in the boot process) that something is wrong is that
+> > idmapd fails to start:
 > >
-> > Nick, I think I need some compiler help here.  Any ideas?
+> >  * Starting idmapd ...
+> >  * make sure DNOTIFY support is enabled ...
+> >  [ !! ]
+> >  * ERROR: rpc.idmapd failed to start
+> >  * ERROR: cannot start nfsclient as rpc.idmapd would not start  
 > 
-> I don't think the patch above would reliably clear the upper bits if they
-> contain garbage.
-> 
-> If the integer extension is the problem, the way I'd try it is to make the
-> function take an 'unsigned long' and then explictly mask the upper
-> bits with
-> 
->      seg = lower_32_bits(seg);
-> 
-> Can you attach the iov_iter.s files from the broken build, plus the
-> one with 'noinline' for comparison? Maybe something can be seen
-> in there.
+> Could you try an strace on it?
 
-I don't know how to extract the .s files easily from the AOSP build
-system, I'll look into that.  I'm also now testing by downgrading to an
-older version of clang (10 instead of 11), to see if that matters at all
-or not...
+[after editing the startup script to run `strace -f .. rpc.idmapd`:]
 
-thanks,
+https://rooversj.home.xs4all.nl/rpc.idmapd.strace
 
-greg k-h
+> idmapd is from glibc, so I'll look into it too.
+> 
+> > Then, elogind reports an error when I ssh in as regular user:
+> >
+> > [  297.825133][ T4273] elogind-daemon[4273]: Failed to register
+> > SIGHUP handler: Invalid argument
+> > [  297.825133][ T4273] elogind-daemon[4273]: Failed to register
+> > SIGHUP handler: Invalid argument [  298.040379][ T4273]
+> > elogind-daemon[4273]: Failed to fully start up daemon: Invalid
+> > argument [  298.040379][T4273] elogind-daemon[4273]: Failed to
+> > fully start up daemon: Invalid argument
+
+strace -f -o /tmp/elogind.strace /lib/elogind/elogind
+
+https://rooversj.home.xs4all.nl/elogind.strace
+
+> >
+> > Yet the unprivileged user succeeds in logging in over SSH. Following
+> > that, sudo fails:
+> >
+> > jeroen@karsten ~ $ sudo -i
+> > sudo: unable to allocate memory
+> >
+> > root can still login on the serial console and over SSH.  
+> 
+> At first thought I assume those issues are not related to the
+> O_NONBLOCK patch. Can you try strace on the sudo too ?
+
+strace -f -u jeroen sudo -i
+[...]
+pipe2(0x42f4712c, O_NONBLOCK|O_CLOEXEC) = -1 EINVAL (Invalid argument)
+openat(AT_FDCWD, 0xfadd9b50, O_RDONLY|O_CLOEXEC) = 3
+fstat64(3, 0xfadd9e88)                  = 0
+read(3, 0x42f47258, 4096)               = 2998
+read(3, "", 4096)                       = 0
+close(3)                                = 0
+openat(AT_FDCWD, 0x42f46bc0, O_RDONLY)  = -1 ENOENT (No such file or
+directory) openat(AT_FDCWD, 0x42f46f48, O_RDONLY)  = -1 ENOENT (No such
+file or directory) openat(AT_FDCWD, 0x42f46fc8, O_RDONLY)  = -1 ENOENT
+(No such file or directory) openat(AT_FDCWD, 0x42f46f78, O_RDONLY)  =
+-1 ENOENT (No such file or directory) ioctl(2, TCGETS, 0xfadd9c08)
+      = 0 write(2, 0xfadd7f46, 4sudo)                 = 4
+ioctl(2, TCGETS, 0xfadd9c08)            = 0
+write(2, 0xf8151e94, 2: )                 = 2
+ioctl(2, TCGETS, 0xfadd9c08)            = 0
+write(2, 0xfadd9608, 25unable to allocate memory)                = 25
+ioctl(2, TCGETS, 0xfadd9c08)            = 0
+write(2, 0x42e39934, 2
+)                 = 2
+exit_group(1)                           = ?
++++ exited with 1 +++
+
+https://rooversj.home.xs4all.nl/sudo-i.strace
+
+
+Regards,
+     jer
