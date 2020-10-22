@@ -2,164 +2,164 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D1E2965F9
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 22:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00D4E29664B
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 22:59:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2901088AbgJVU3e (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 22 Oct 2020 16:29:34 -0400
-Received: from mout.gmx.net ([212.227.17.22]:41053 "EHLO mout.gmx.net"
+        id S372080AbgJVU7h (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 22 Oct 2020 16:59:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47852 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2509979AbgJVU3e (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Oct 2020 16:29:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1603398563;
-        bh=04XCXtGt46VNCRXEcRKvSOCoTZyfMvNV/ZGERDTN+/Q=;
-        h=X-UI-Sender-Class:Subject:To:References:From:Date:In-Reply-To;
-        b=RfUCM9QEpAlNaZGgu9ZJb2zWAY/bmA5afM2wPiyjZnfajYS6V1erU8M0B9/qtKm7t
-         gINarm5j84QJ8H6LL84EiZd/dq0xEC/ttgYu1e77PAy0ajIj3dHuqSbO//nQZdkWam
-         g4NStcccc5xjBl3G58/GqQsoN/lEf+MyXJcV7Nj4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.134.214]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N0XD2-1kAc1m3kLU-00wUsw; Thu, 22
- Oct 2020 22:29:22 +0200
-Subject: Re: [RFC PATCH] parisc: Add wrapper syscalls to fix O_NONBLOCK flag
- usage
-To:     Meelis Roos <mroos@linux.ee>, Jeroen Roovers <jer@xs4all.nl>,
-        linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-References: <20200829122017.GA3988@ls3530.fritz.box>
- <20201020192101.772bedd5@wim.jer>
- <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
- <20201022173824.49b6b7f5@wim.jer>
- <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
- <20201022164007.GA10653@ls3530.fritz.box>
- <6f58641f-d4d3-ea28-3863-83a227aeff1a@linux.ee>
-From:   Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
- c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <b187505a-2ca1-c385-3b4e-16ae49f5c1ce@gmx.de>
-Date:   Thu, 22 Oct 2020 22:29:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S2897292AbgJVU7h (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 22 Oct 2020 16:59:37 -0400
+Received: from gmail.com (unknown [104.132.1.76])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D47120874;
+        Thu, 22 Oct 2020 20:59:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603400375;
+        bh=Xexx6LzGU5CEQ5pUb/Rnl3sbc1IKJSCv776XJ3IiUZY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=zdUyA37A1L47KHgoyE+FT2EuXbQ76eLgYxDhD0pRsQ/vZP9VSxvex63p/S7m2wh2S
+         LPo1qkQ3neXSHmpGEcAArmow8IRVH9ABGEBSoWdWkIGldhGddb2MyLlCZgza1+BxJr
+         XSVfJ1lZvRBFbHtiVn91WdB+7mhw78zhWJSY/86E=
+Date:   Thu, 22 Oct 2020 13:59:32 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Matthew Wilcox <willy@infradead.org>,
+        David Laight <David.Laight@aculab.com>,
+        Christoph Hellwig <hch@lst.de>,
+        David Hildenbrand <david@redhat.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        "kernel-team@android.com" <kernel-team@android.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-aio@kvack.org" <linux-aio@kvack.org>,
+        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Message-ID: <20201022205932.GB3613750@gmail.com>
+References: <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com>
+ <20201022090155.GA1483166@kroah.com>
+ <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
+ <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
+ <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
+ <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+ <20201022132342.GB8781@lst.de>
+ <8f1fff0c358b4b669d51cc80098dbba1@AcuMS.aculab.com>
+ <20201022164040.GV20115@casper.infradead.org>
+ <CAKwvOdnq-yYLcF_coo=jMV-RH-SkuNp_kMB+KCBF5cz3PwiB8g@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <6f58641f-d4d3-ea28-3863-83a227aeff1a@linux.ee>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Ou5E6j9lTkKMlZwgy86gbS5JagDCqTEGumPD8/Ts0eWxSu18ztK
- hyhxVxXTmS10nfGD9dXjZQiekAXHNlFIZehtlGXAECThlIqk+xrg2aIWmKnPpLTWmxpo5wc
- 97kHlAwacfOb5J0n1Yz8x4IDUPVH/RhB1PCfUlcgG1NghNchs4L2eU6oFcAWYCq4IcccJVV
- hZeFAv6SWzrdGZexQfCYg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:fIF2P+tNZ1E=:hgsifGbL95/SIJ/BNPGNPQ
- Lt/uL54vu1gKU191evruYV4J4YdRxrwHaSS/dBI5GiGK39HH79qAnqVzL2qV+wjsfDKFZZ29i
- Kie/yS7eJuo0pHzwx8xXwP9dKX2gNOLlthDfWvOo1P1ptup7S/YHc4Gf7W28FavBYyM04AGdN
- nCx+ygGc9dbD0U8g8JTlD07hAcqI2StSAoe5lcdiKLbze6eTef+v0AN35EkGUewSk6hioMmPY
- a7fsAuNkqHKgdSS9T0ZU+Iru7m004hBTFWHXo9TDcWhT9fZkABxrMXOq5KpI7QcK5g9YcNF8a
- XXi9+3CBIt69T7yan9nM3IrPfo5apJW1AoOoj2qQr+VVJeGglr72ns/vrTv2vZ9CNPHdZFgz9
- HZgkqbVADm3G2IfnyB+StJQzh6Ccso8LbQRdRq0nls9gMbYEsk173Z/vaUcMSm1mstOKLgcje
- AqE5dfW1HandUSEgzsPZxfZSYOpOdQXqvIxw8XiKbf5ghyr200f8Q7AmZXYf+95hxxVqg4Lv6
- HfGLH6/sG1VPq8FKM0LgihuuU1Xbf8371/W2/PFRKALoVnOKgZNhie3V+zZutDPayKfZpKcBT
- Fbb63Lxs9H+A6J9DVhYh2/iBdYjePQwiP3Vtl00ZJh2Ig+1id3nhXATzOAqmSyQ7N6XFjxR6C
- 7kIRDQYDs10tYOKdt+/xiZsCR3ZU5ugPEMMaPsk8284ALisVIHgcbnbiRww4XPbnrUicxqMnt
- hCg6djoHnd8uYvo3SG+TbwZ6oF2s7sd+BlMSe8uJax3/CL2qlujmpDO9j/SyYn8d8akje/6Em
- MuvFYNuYYwiJXwxb7wGvuTgCNiwTF+U8g/yxQbL55pjOywmQ/XV7DDuQSS0AwOf7UjIC1vy9d
- B7XipkXWOsjagO4CFfVg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKwvOdnq-yYLcF_coo=jMV-RH-SkuNp_kMB+KCBF5cz3PwiB8g@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/22/20 9:11 PM, Meelis Roos wrote:
->
-> 22.10.20 19:40 Helge Deller wrotw:
->> This patch adds wrapper functions for the relevant syscalls. The
->> wrappers masks out any old invalid O_NONBLOCK flags, reports in the
->> syslog if the old O_NONBLOCK value was used and then calls the target
->> syscall with the new O_NONBLOCK value.
->>
->> Fixes: 75ae04206a4d ("parisc: Define O_NONBLOCK to become 000200000")
->> Signed-off-by: Helge Deller <deller@gmx.de>
->
-> Works for me on RP2470 - boots up in full functionality and logs the rec=
-ompilation
-> warning about systemd-udevd and syslog-ng.
->
-> Tested-by: Meelis Roos <mroos@linux.ee>
+On Thu, Oct 22, 2020 at 10:00:44AM -0700, Nick Desaulniers wrote:
+> On Thu, Oct 22, 2020 at 9:40 AM Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Thu, Oct 22, 2020 at 04:35:17PM +0000, David Laight wrote:
+> > > Wait...
+> > > readv(2) defines:
+> > >       ssize_t readv(int fd, const struct iovec *iov, int iovcnt);
+> >
+> > It doesn't really matter what the manpage says.  What does the AOSP
+> > libc header say?
+> 
+> Same: https://android.googlesource.com/platform/bionic/+/refs/heads/master/libc/include/sys/uio.h#38
+> 
+> Theoretically someone could bypass libc to make a system call, right?
+> 
+> >
+> > > But the syscall is defined as:
+> > >
+> > > SYSCALL_DEFINE3(readv, unsigned long, fd, const struct iovec __user *, vec,
+> > >                 unsigned long, vlen)
+> > > {
+> > >         return do_readv(fd, vec, vlen, 0);
+> > > }
+> >
+> 
 
-Thank you Meelis & Jeroen for testing!
+FWIW, glibc makes the readv() syscall assuming that fd and vlen are 'int' as
+well.  So this problem isn't specific to Android's libc.
 
-The big question is:
-We have two options
-a) revert my original commit 75ae04206a4d ("parisc: Define O_NONBLOCK to b=
-ecome 000200000"), or
-b) apply and submit this new patch on top of it.
+From objdump -d /lib/x86_64-linux-gnu/libc.so.6:
 
-The benefit in b) is that we will get long term rid of the two-bit
-O_NONBLOCK define and thus will get more compatible to other Linux
-architectures. This comes with the downside of (at least for a few
-years) added overhead for those non-performance critical syscalls.
+	00000000000f4db0 <readv@@GLIBC_2.2.5>:
+	   f4db0:       64 8b 04 25 18 00 00    mov    %fs:0x18,%eax
+	   f4db7:       00
+	   f4db8:       85 c0                   test   %eax,%eax
+	   f4dba:       75 14                   jne    f4dd0 <readv@@GLIBC_2.2.5+0x20>
+	   f4dbc:       b8 13 00 00 00          mov    $0x13,%eax
+	   f4dc1:       0f 05                   syscall
+	   ...
 
-The benefit with a) is that we then step back again and stay compatible
-now. The downside is, that in the future we may run into other issues
-and need to keep special-handling in some other syscalls forever.
+There's some code for pthread cancellation, but no zeroing of the upper half of
+the fd and vlen arguments, which are in %edi and %edx respectively.  But the
+glibc function prototype uses 'int' for them, not 'unsigned long'
+'ssize_t readv(int fd, const struct iovec *iov, int iovcnt);'.
 
-I'm still for going with b), and I hope we got all corner cases ruled out.
-Opinions?
+So the high halves of the fd and iovcnt registers can contain garbage.  Or at
+least that's what gcc (9.3.0) and clang (9.0.1) assume; they both compile the
+following
 
-Helge
+void g(unsigned int x);
+
+void f(unsigned long x)
+{
+        g(x);
+}
+
+into f() making a tail call to g(), without zeroing the top half of %rdi.
+
+Also note the following program succeeds on Linux 5.9 on x86_64.  On kernels
+that have this bug, it should fail.  (I couldn't get it to actually fail, so it
+must depend on the compiler and/or the kernel config...)
+
+	#include <fcntl.h>
+	#include <stdio.h>
+	#include <sys/syscall.h>
+	#include <sys/uio.h>
+	#include <unistd.h>
+
+	int main()
+	{
+		int fd = open("/dev/zero", O_RDONLY);
+		char buf[1000];
+		struct iovec iov = { .iov_base = buf, .iov_len = sizeof(buf) };
+		long ret;
+
+		ret = syscall(__NR_readv, fd, &iov, 0x100000001);
+		if (ret < 0)
+			perror("readv failed");
+		else
+			printf("read %ld bytes\n", ret);
+	}
+
+I think the right fix is to change the readv() (and writev(), etc.) syscalls to
+take 'unsigned int' rather than 'unsigned long', as that is what the users are
+assuming...
+
+- Eric
