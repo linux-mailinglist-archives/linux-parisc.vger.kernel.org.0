@@ -2,139 +2,209 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28C882962BD
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 18:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0130B2962DE
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 18:40:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2901832AbgJVQfY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Thu, 22 Oct 2020 12:35:24 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:57331 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2901831AbgJVQfX (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Oct 2020 12:35:23 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-276-A1zb3avLNamAEPsIomTLEw-1; Thu, 22 Oct 2020 17:35:18 +0100
-X-MC-Unique: A1zb3avLNamAEPsIomTLEw-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Thu, 22 Oct 2020 17:35:17 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Thu, 22 Oct 2020 17:35:17 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Christoph Hellwig' <hch@lst.de>,
-        David Hildenbrand <david@redhat.com>
-CC:     Greg KH <gregkh@linuxfoundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Jens Axboe" <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Index: AQHWqE5GNDfnH4y9nkGWtfqJueR1KKmjTCJQgAAN4UiAAAD2IIAAQY5tgAAwVkA=
-Date:   Thu, 22 Oct 2020 16:35:17 +0000
-Message-ID: <8f1fff0c358b4b669d51cc80098dbba1@AcuMS.aculab.com>
-References: <20201021233914.GR3576660@ZenIV.linux.org.uk>
- <20201022082654.GA1477657@kroah.com>
- <80a2e5fa-718a-8433-1ab0-dd5b3e3b5416@redhat.com>
- <5d2ecb24db1e415b8ff88261435386ec@AcuMS.aculab.com>
- <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com>
- <20201022090155.GA1483166@kroah.com>
- <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
- <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
- <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
- <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
- <20201022132342.GB8781@lst.de>
-In-Reply-To: <20201022132342.GB8781@lst.de>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S2444575AbgJVQke (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 22 Oct 2020 12:40:34 -0400
+Received: from mout.gmx.net ([212.227.17.22]:51659 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2897418AbgJVQke (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 22 Oct 2020 12:40:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1603384810;
+        bh=VfqWNjbzfIucn48vaNQ714VtNlxCJdB+NtrusuLsn1A=;
+        h=X-UI-Sender-Class:Date:From:To:Subject:References:In-Reply-To;
+        b=G1Fa9FOxHvaryY9BxI6QAjNGfGLg+vD2U717ombRVmR0EbUbfHMcayUCK+lLqQSt2
+         qjDgGblADPyIKXbFSlvETxXsqtzfzSFrekc1GIHJyZPYcbUEeDyESaaA1Ho+uEk998
+         jbG0GPguXOxpCWo0iKTk9irA7OH+58GddEvmrp7o=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.134.214]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MplXp-1k3g8N2mT7-00qCSL; Thu, 22
+ Oct 2020 18:40:10 +0200
+Date:   Thu, 22 Oct 2020 18:40:07 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Jeroen Roovers <jer@xs4all.nl>, linux-parisc@vger.kernel.org,
+        Meelis Roos <mroos@linux.ee>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [RFC PATCH] parisc: Add wrapper syscalls to fix O_NONBLOCK flag usage
+Message-ID: <20201022164007.GA10653@ls3530.fritz.box>
+References: <20200829122017.GA3988@ls3530.fritz.box>
+ <20201020192101.772bedd5@wim.jer>
+ <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
+ <20201022173824.49b6b7f5@wim.jer>
+ <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
+X-Provags-ID: V03:K1:6vas5xcBHIDnpk26tvNZzCOen5WOnj5x8W5QCRvXZvL44ZdepD1
+ gGN6wNM50Tm0OPTgMNqwfRN5TwF8kadkcLvhVTOZfGNOLVP7wPmn/RiaMEEjNaws1NksaYS
+ 1LqG7eoX7v5lTK9yIzBj146Eu/RNfeJCR8MiBQJA1NR3iOERydSjVcSZSP8hT1OziEvZMXz
+ VYv7dHhgIk2g044ck3PjA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0Uyxu5bsmI8=:o2anHqQaHlNBDEGhCE3IPP
+ P455sY2kRaUiI7SXyxdahP55+UhlyGx+yTmzUpZZAP4boLn+3N3JGqu+yCUi/psE0Sb0/8FKk
+ Sxq8XfZ03KpH6iASGVfwhhvR4oCcG6RaggbETT0u0kEoEMtfaz/puhN6FGUqi8zmXDUWKVNG9
+ YIZd82xjUv3g7O8crkhr8msiQ5BOmtMuZxgiCy6W3+5KP4S60HxSiLeFFKpLRg++ILjjA3tQk
+ lmoWOgo38JkXM1UFwL2IswIJPYvVFZL5SypwjGVhonxDC5SdNmHKHEN7NeLPCpBKWyT3dfdPq
+ Uh/UHgQ3MbE7C+FH8SvXWQGJCNkXEw0HZAXfY8syQweivQoz53QdhIkmGpWA6IpXrVvOWx9pU
+ Kb8YbGON06HkjGRj51JitOEk9sTQDsUmOKu7sIucXeabCP3NV4wahhyt3n1FtlYoB6utpNxKf
+ 7EY/OGWI63tGxEIAwvEfwQQLv1vOO0vtCF5ngstky8Pz4aObjbZxH+82iCl1uU/YXc3Rd66Lk
+ QBDr1MxsVuP6hUAIp5DeJEeOxiPYGGDBEpGBppErn8s4yb0+lynoG1ltPJ/jhEnsVkmRGrZu/
+ pxy6VeVWuBZaEVKogqooVS4d6LFZtFvx5h9VPJB4C3oSEdvY65hFlw/melWSQlCfbnXg/Os8s
+ IoRIjDGdDIeMUWCIwOp65llTY/0ORQYN6EfVW1aLWTKXfItS0GliAgEjKCGuisw1KDakSeKpX
+ SwoqhO9II2B1tVW1QR60b1Dact00Q1v0lH6qPCk6il4rAWWKWQMVcsz7cUjP7hP1MqrFrmKaK
+ Ya6id8J8T5Vb/UU373fPkoERRfe0hTT/7GYgdtDCSkeH/z4nGw7Ti3xw/S4oXRXLwPtpGlGN9
+ wT2i9W/WkLaYcdKVkEWg==
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Christoph Hellwig
-> Sent: 22 October 2020 14:24
-> 
-> On Thu, Oct 22, 2020 at 11:36:40AM +0200, David Hildenbrand wrote:
-> > My thinking: if the compiler that calls import_iovec() has garbage in
-> > the upper 32 bit
-> >
-> > a) gcc will zero it out and not rely on it being zero.
-> > b) clang will not zero it out, assuming it is zero.
-> >
-> > But
-> >
-> > a) will zero it out when calling the !inlined variant
-> > b) clang will zero it out when calling the !inlined variant
-> >
-> > When inlining, b) strikes. We access garbage. That would mean that we
-> > have calling code that's not generated by clang/gcc IIUC.
-> 
-> Most callchains of import_iovec start with the assembly syscall wrappers.
+The commit 75ae04206a4d ("parisc: Define O_NONBLOCK to become
+000200000") changed the O_NONBLOCK constant to have only one bit set
+(like all other architectures). This change broke some existing
+userspace code (e.g.  udevadm, systemd-udevd, elogind) which called
+specific syscalls which do strict value checking on their flag
+parameter.
 
-Wait...
-readv(2) defines:
-	ssize_t readv(int fd, const struct iovec *iov, int iovcnt);
+This patch adds wrapper functions for the relevant syscalls. The
+wrappers masks out any old invalid O_NONBLOCK flags, reports in the
+syslog if the old O_NONBLOCK value was used and then calls the target
+syscall with the new O_NONBLOCK value.
 
-But the syscall is defined as:
+Fixes: 75ae04206a4d ("parisc: Define O_NONBLOCK to become 000200000")
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-SYSCALL_DEFINE3(readv, unsigned long, fd, const struct iovec __user *, vec,
-                unsigned long, vlen)
-{
-        return do_readv(fd, vec, vlen, 0);
-}
+diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_pari=
+sc.c
+index 5d458a44b09c..6dbb2315a80d 100644
+=2D-- a/arch/parisc/kernel/sys_parisc.c
++++ b/arch/parisc/kernel/sys_parisc.c
+@@ -6,7 +6,7 @@
+  *    Copyright (C) 1999-2003 Matthew Wilcox <willy at parisc-linux.org>
+  *    Copyright (C) 2000-2003 Paul Bame <bame at parisc-linux.org>
+  *    Copyright (C) 2001 Thomas Bogendoerfer <tsbogend at parisc-linux.or=
+g>
+- *    Copyright (C) 1999-2014 Helge Deller <deller@gmx.de>
++ *    Copyright (C) 1999-2020 Helge Deller <deller@gmx.de>
+  */
 
-I'm guessing that nothing actually masks the high bits that come
-from an application that is compiled with clang?
+ #include <linux/uaccess.h>
+@@ -23,6 +23,8 @@
+ #include <linux/utsname.h>
+ #include <linux/personality.h>
+ #include <linux/random.h>
++#include <linux/compat.h>
++#include <linux/version.h>
 
-The vlen is 'unsigned long' through the first few calls.
-So unless there is a non-inlined function than takes vlen
-as 'int' the high garbage bits from userspace are kept.
+ /* we construct an artificial offset for the mapping based on the physica=
+l
+  * address of the kernel mapping variable */
+@@ -373,3 +375,69 @@ long parisc_personality(unsigned long personality)
 
-Which makes it a bug in the kernel C syscall wrappers.
-They need to explicitly mask the high bits of 32bit
-arguments on arm64 but not x86-64.
-
-What does the ARM EABI say about register parameters?
-
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+ 	return err;
+ }
++
++/*
++ * Up to kernel v5.9 we defined O_NONBLOCK as 000200004,
++ * since then O_NONBLOCK is defined as 000200000.
++ *
++ * The following wrapper functions mask out the old
++ * O_NDELAY bit from calls which use O_NONBLOCK.
++ */
++
++#if ((LINUX_VERSION_CODE >> 16) & 0x0ff) > 5
++#warning "Remove O_NONBLOCK compatibility wrappers now?"
++#endif
++
++#define O_NONBLOCK_OLD		000200004
++#define O_NONBLOCK_MASK_OUT	(O_NONBLOCK_OLD & ~O_NONBLOCK)
++static int FIX_O_NONBLOCK(int flags)
++{
++	if (flags & O_NONBLOCK_MASK_OUT) {
++		struct task_struct *tsk =3D current;
++		pr_warn("%s(%d) uses old O_NONBLOCK value. "
++			"Please recompile the application.\n",
++			tsk->comm, tsk->pid);
++	}
++	return flags & ~O_NONBLOCK_MASK_OUT;
++}
++
++asmlinkage long parisc_timerfd_create(int clockid, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_timerfd_create(clockid, flags);
++}
++
++asmlinkage long parisc_signalfd4(int ufd, sigset_t __user *user_mask,
++	size_t sizemask, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_signalfd4(ufd, user_mask, sizemask, flags);
++}
++
++#ifdef CONFIG_COMPAT
++asmlinkage long parisc_compat_signalfd4(int ufd,
++	compat_sigset_t __user *user_mask,
++	compat_size_t sizemask, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return compat_sys_signalfd4(ufd, user_mask, sizemask, flags);
++}
++#endif
++
++asmlinkage long parisc_eventfd2(unsigned int count, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_eventfd2(count, flags);
++}
++
++asmlinkage long parisc_userfaultfd(int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_userfaultfd(flags);
++}
++
++asmlinkage long parisc_pipe2(int __user *fildes, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_pipe2(fildes, flags);
++}
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/=
+syscalls/syscall.tbl
+index def64d221cd4..20ad16e762a1 100644
+=2D-- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -344,16 +344,16 @@
+ 304	common	eventfd			sys_eventfd
+ 305	32	fallocate		parisc_fallocate
+ 305	64	fallocate		sys_fallocate
+-306	common	timerfd_create		sys_timerfd_create
++306	common	timerfd_create		parisc_timerfd_create
+ 307	32	timerfd_settime		sys_timerfd_settime32
+ 307	64	timerfd_settime		sys_timerfd_settime
+ 308	32	timerfd_gettime		sys_timerfd_gettime32
+ 308	64	timerfd_gettime		sys_timerfd_gettime
+-309	common	signalfd4		sys_signalfd4			compat_sys_signalfd4
+-310	common	eventfd2		sys_eventfd2
++309	common	signalfd4		parisc_signalfd4		parisc_compat_signalfd4
++310	common	eventfd2		parisc_eventfd2
+ 311	common	epoll_create1		sys_epoll_create1
+ 312	common	dup3			sys_dup3
+-313	common	pipe2			sys_pipe2
++313	common	pipe2			parisc_pipe2
+ 314	common	inotify_init1		sys_inotify_init1
+ 315	common	preadv	sys_preadv	compat_sys_preadv
+ 316	common	pwritev	sys_pwritev	compat_sys_pwritev
+@@ -387,7 +387,7 @@
+ 341	common	bpf			sys_bpf
+ 342	common	execveat		sys_execveat			compat_sys_execveat
+ 343	common	membarrier		sys_membarrier
+-344	common	userfaultfd		sys_userfaultfd
++344	common	userfaultfd		parisc_userfaultfd
+ 345	common	mlock2			sys_mlock2
+ 346	common	copy_file_range		sys_copy_file_range
+ 347	common	preadv2			sys_preadv2			compat_sys_preadv2
