@@ -2,238 +2,113 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E2AA29626D
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 18:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C56D296275
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 18:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2901480AbgJVQOX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 22 Oct 2020 12:14:23 -0400
-Received: from mout.gmx.net ([212.227.15.19]:41799 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2895863AbgJVQOX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Oct 2020 12:14:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1603383251;
-        bh=KSvdSeGT2QdTUpfV6bIhsvvud+Yl6AQ9E1mGR4DupKQ=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=C9mDv0lJagfvfLP2IePCwrsCT4cNubSfGSCzbfSHaM88MM6VLz2Z9gfPDa6+Af+R8
-         wNKuTViT+MvtmtIvUCjEjhjI07ZwSy4uthmdUSxcXe7/Qnje5P//btGF8wpyQS0fGC
-         yq6+q6mpdctC9kR/xdn5PqTSfJtSjfpb5xFDQvEg=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.134.214]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M42nS-1kVdEB2bEO-0007FA; Thu, 22
- Oct 2020 18:14:11 +0200
-Subject: Re: [RFC PATCH] parisc: Define O_NONBLOCK to become 000200000
-To:     Jeroen Roovers <jer@xs4all.nl>
-Cc:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-References: <20200829122017.GA3988@ls3530.fritz.box>
- <20201020192101.772bedd5@wim.jer>
- <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
- <20201022173824.49b6b7f5@wim.jer>
-From:   Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
- c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
-Date:   Thu, 22 Oct 2020 18:14:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S2896679AbgJVQPJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Thu, 22 Oct 2020 12:15:09 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:37332 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2901601AbgJVQPJ (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 22 Oct 2020 12:15:09 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-158-p8RgjWwGO4aFW5kpOv-aSA-1; Thu, 22 Oct 2020 17:15:06 +0100
+X-MC-Unique: p8RgjWwGO4aFW5kpOv-aSA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 22 Oct 2020 17:15:05 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Thu, 22 Oct 2020 17:15:05 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Greg KH' <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>
+CC:     David Hildenbrand <david@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "kernel-team@android.com" <kernel-team@android.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        David Howells <dhowells@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-aio@kvack.org" <linux-aio@kvack.org>,
+        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Index: AQHWqE5GNDfnH4y9nkGWtfqJueR1KKmjTCJQgAAN4UiAAAD2IIAAVswJgAAaEtA=
+Date:   Thu, 22 Oct 2020 16:15:05 +0000
+Message-ID: <80332728fbc3438f806aee74003e26c1@AcuMS.aculab.com>
+References: <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
+ <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
+ <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
+ <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+ <20201022104805.GA1503673@kroah.com> <20201022121849.GA1664412@kroah.com>
+ <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
+ <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
+ <CAK8P3a1B7OVdyzW0-97JwzZiwp0D0fnSfyete16QTvPp_1m07A@mail.gmail.com>
+ <20201022144021.GA1969554@kroah.com>
+In-Reply-To: <20201022144021.GA1969554@kroah.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-In-Reply-To: <20201022173824.49b6b7f5@wim.jer>
-Content-Type: text/plain; charset=utf-8
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZyGASxS8jBsXOCMwJqyxSUuTgfN7VQX+S+Lb/Wkh2Zb+P4Vmixx
- 4ofytKku7c8PiJtJTOVo3stUH6kfFX5eOxdnzwvFD1bkQcaoLP8PXR+oxOyNKaILULPUEz4
- YaZUp2kMckx/C6xLoWYMAYlOsRXHFchas8iWbwBqrVJrdmUqgEuJPAa1gEeW+de7rfBGcmL
- o74o7u1cOge7JM0qQjRsQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xqY0Ngt2+40=:LzXOznTgHqGTWFfSR0+9sQ
- u+delqVAs6akmf6lWszCTqg6mE70WV5Ru6gO19sraZLhnSbd8CBCWIo0ixmsZcXgNkvZcMzpQ
- z5A8TyufM3HJgAoiz3NBTCPxP+4kgHvwsMMQbnwLp094+qa4KlU+iXwWJHKXcJveyOKUemilh
- L0Pagyrg1mKciayuyn4VMTzaAJtW3FOxh0FW2eanjkuVn+5GuQquypkN+WzS1GT8c6cHu/NyK
- Ny3w2g1kfZKMgAsfzoV505Gfw7nPcJb6FEAqfCIX5H0e0hJ9bWiDcVdBK62CrTn0gjpTdv6eI
- ln6WGO8kdIcMHwF36azCdpn6TSVhUGSrB0Upqst26mC9DfkF6vIQ9g2k8guNcllY/fhWbs6CW
- FgsHLT37Xq8+wXzsBYF3qBH/tZ1Dx5N4wpjPw1w2BEy2SoGokVIPGW2YMp7fG6CEdqsmKF2kw
- LvXRzkx1Im5Lp5QdPtiGQx4i3GSyzEM19Vzc28ei3UCh9A3gDJ6rUQzYE+C/pUnWg70uXo2Qa
- V2tpg8NjwakmPSzPmmQsckGhbRl1XGSeFO4Bbp3rwgSdMPOu/Cmci633opp4WftnZe8VoVHrf
- VazG7RisKiiQQMfhPcL9Xmny+kQkZ7jEpdqwRzyuQzTBKCzE00OKEtQA6rhjmgWYxdidSTZ/D
- hGgnB2WwjtgNa0sDcDDd1KJbMpYdO+mB3yWT8W6k5tD9jqyOmNusfBBm6L9+ANc5AKv+EVOcY
- tC40Z5dE2iKwMWXaxuPRfS0sdzYf4OgUssp9e/alEZTjEEAjKl19z1qaKgpEXsMW6ZGLsaCnh
- 1RifCDB+6IvjasuaizLEi2BP7gy8m5Jk2+QKJnt4YKcG35UdpoU5pLt9n3HfIb5UqeFuwP5tl
- nfPBSKmCgzLQkmUF+B2w==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/22/20 5:38 PM, Jeroen Roovers wrote:
-> On Wed, 21 Oct 2020 08:07:15 +0200
-> Helge Deller <deller@gmx.de> wrote:
->
->> On 10/20/20 7:21 PM, Jeroen Roovers wrote:
->>> On Sat, 29 Aug 2020 14:20:17 +0200
->>> Helge Deller <deller@gmx.de> wrote:
->>>
->>>> HPUX has separate NDELAY & NONBLOCK values. In the past we wanted
->>>> to be able to run HP-UX binaries natively on parisc Linux which is
->>>> why we defined O_NONBLOCK to 000200004 to distinguish NDELAY &
->>>> NONBLOCK bits.
->>>> But with 2 bits set in this bitmask we often ran into compatibility
->>>> issues with other Linux applications which often only test one bit
->>>> (or even compare the values).
->>>>
->>>> To avoid such issues in the future, this patch changes O_NONBLOCK
->>>> to become 000200000. That way old programs will still be
->>>> functional, and for new programs we now have only one bit set.
->>>
->>> I am seeing a problem with this exact commit in userland, so I think
->>> that last sentence is incorrect:
->>
->> Thanks for testing and bisecting!!!
->>
->> I'm fine with reverting the change, but we really need to
->> analyze what is broken (and why).
->>
->> In general the kernel sources seem ok as it's important,
->> that code just check if bits are set, not if the value
->> is equal to something e.g.
->> good:  if (flags & O_NONBLOCK) { ... }
->> bad:   if (flags =3D=3D O_NONBLOCK) { .... }
->>
->>
->>> The first sign (in the boot process) that something is wrong is that
->>> idmapd fails to start:
->>>
->>>  * Starting idmapd ...
->>>  * make sure DNOTIFY support is enabled ...
->>>  [ !! ]
->>>  * ERROR: rpc.idmapd failed to start
->>>  * ERROR: cannot start nfsclient as rpc.idmapd would not start
->>
->> Could you try an strace on it?
->
-> [after editing the startup script to run `strace -f .. rpc.idmapd`:]
->
-> https://rooversj.home.xs4all.nl/rpc.idmapd.strace
->
->> idmapd is from glibc, so I'll look into it too.
->>
->>> Then, elogind reports an error when I ssh in as regular user:
->>>
->>> [  297.825133][ T4273] elogind-daemon[4273]: Failed to register
->>> SIGHUP handler: Invalid argument
->>> [  297.825133][ T4273] elogind-daemon[4273]: Failed to register
->>> SIGHUP handler: Invalid argument [  298.040379][ T4273]
->>> elogind-daemon[4273]: Failed to fully start up daemon: Invalid
->>> argument [  298.040379][T4273] elogind-daemon[4273]: Failed to
->>> fully start up daemon: Invalid argument
->
-> strace -f -o /tmp/elogind.strace /lib/elogind/elogind
->
-> https://rooversj.home.xs4all.nl/elogind.strace
->
->>>
->>> Yet the unprivileged user succeeds in logging in over SSH. Following
->>> that, sudo fails:
->>>
->>> jeroen@karsten ~ $ sudo -i
->>> sudo: unable to allocate memory
->>>
->>> root can still login on the serial console and over SSH.
->>
->> At first thought I assume those issues are not related to the
->> O_NONBLOCK patch. Can you try strace on the sudo too ?
->
-> strace -f -u jeroen sudo -i
-> [...]
-> pipe2(0x42f4712c, O_NONBLOCK|O_CLOEXEC) =3D -1 EINVAL (Invalid argument)
-> openat(AT_FDCWD, 0xfadd9b50, O_RDONLY|O_CLOEXEC) =3D 3
-> fstat64(3, 0xfadd9e88)                  =3D 0
-> read(3, 0x42f47258, 4096)               =3D 2998
-> read(3, "", 4096)                       =3D 0
-> close(3)                                =3D 0
-> openat(AT_FDCWD, 0x42f46bc0, O_RDONLY)  =3D -1 ENOENT (No such file or
-> directory) openat(AT_FDCWD, 0x42f46f48, O_RDONLY)  =3D -1 ENOENT (No suc=
-h
-> file or directory) openat(AT_FDCWD, 0x42f46fc8, O_RDONLY)  =3D -1 ENOENT
-> (No such file or directory) openat(AT_FDCWD, 0x42f46f78, O_RDONLY)  =3D
-> -1 ENOENT (No such file or directory) ioctl(2, TCGETS, 0xfadd9c08)
->       =3D 0 write(2, 0xfadd7f46, 4sudo)                 =3D 4
-> ioctl(2, TCGETS, 0xfadd9c08)            =3D 0
-> write(2, 0xf8151e94, 2: )                 =3D 2
-> ioctl(2, TCGETS, 0xfadd9c08)            =3D 0
-> write(2, 0xfadd9608, 25unable to allocate memory)                =3D 25
-> ioctl(2, TCGETS, 0xfadd9c08)            =3D 0
-> write(2, 0x42e39934, 2
-> )                 =3D 2
-> exit_group(1)                           =3D ?
-> +++ exited with 1 +++
->
-> https://rooversj.home.xs4all.nl/sudo-i.strace
+From: Greg KH
+> Sent: 22 October 2020 15:40
+> 
+> On Thu, Oct 22, 2020 at 04:28:20PM +0200, Arnd Bergmann wrote:
+...
+> > Can you attach the iov_iter.s files from the broken build, plus the
+> > one with 'noinline' for comparison? Maybe something can be seen
+> > in there.
+> 
+> I don't know how to extract the .s files easily from the AOSP build
+> system, I'll look into that.  I'm also now testing by downgrading to an
+> older version of clang (10 instead of 11), to see if that matters at all
+> or not...
 
-Thanks!
+Back from a day out - after it stopped raining.
+Trying to use up leave before the end of the year.
 
-I found the issue.
-The syscalls timerfd_create(), signalfd4(), eventfd2(), userfaultfd()
-and pipe2() have a fcntl flags parameter which is checked hard.
-They return EINVAL and as such the programs fail.
-I found systemd-udevd and udevadm failing because of this.
-sudo and elogind seem affected too.
-I'm sending a RFC patch in a few minutes.
+Can you use objdump on the kernel binary itself and cut out
+the single function?
 
-Helge
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
