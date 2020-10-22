@@ -2,152 +2,55 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AD2F2964F4
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 21:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 465EB296510
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Oct 2020 21:10:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S369858AbgJVTFG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 22 Oct 2020 15:05:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47986 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S369535AbgJVTFE (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Oct 2020 15:05:04 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD586C0613CE
-        for <linux-parisc@vger.kernel.org>; Thu, 22 Oct 2020 12:05:04 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id j5so1083288plk.7
-        for <linux-parisc@vger.kernel.org>; Thu, 22 Oct 2020 12:05:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Ob2vCJvO6llStuDKjUpnqeOT2ObygH+mOzcnW04eANY=;
-        b=KQqTFOK8RfeQlRsCMQ+rOlUOsaIw3aFT2tl0EvIIitPh93BRypnBq10dbZ1VQInVA9
-         YBqadNAg8WpA2s2M51/9SZIy6oP0pnbbWbfMb7wIWJV2snjJBMbyo5oSDcHw4N1zr7/S
-         VZLvINfglpSloiYKbOwAZRZgsEq5EwVd6j156C6w/ZUnsQNcPlNYKpHJP5uI2nd5y9vn
-         Eb462d8qlKbplpH5u1WCwEWQN9mxoYO0QRuuyd1KRKvAJJWpZKPK5rzGEmieFY4kQrsm
-         FHET+zmyltpbQH7fuqtpyH09Ge3zLiQZSD5eVuK163dQLFMNQGhprwY4hoqO0xWMFeFJ
-         fZNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ob2vCJvO6llStuDKjUpnqeOT2ObygH+mOzcnW04eANY=;
-        b=rhO/7v9Pv8Oyhej/EpHXbmTQuTb+n/ASZfnrdUcwcBkgAUyG1uuw4siAulN3I4HZx/
-         Qlwb3t/9QQpZGkbjhMwsILWjLKtwzYhCBfdJ6/WcPCKkuAf30xVhSc/fgwsd6gF/NT08
-         JWfFNBf3nTLxKTb53lh7gprHIMx+xzKtg7EP05ZMlWwsPDEzHB4Rh3vpBOUUY2Q83dvN
-         qVj51reC2NW5K2Z/9jRQlfaTQi1CxZK1HndOAsSBV0UCXRBJQkRci2MjYIrSNnCfhQn0
-         IsNuB98WTJfVWZwos8adqkXDSlCC5b1SJ3dlTS0YkWf5vaGWhCZrjdZ4qPn6aRYCL8n8
-         Prbg==
-X-Gm-Message-State: AOAM531g5kCO5bUscl9N1KAVoky9ovYlV+TRt4QC29+tWmKw88yAaSiM
-        uK3ozXxuhALJYYBZaoQ9zi3dg+LqjGir5iYgBURexA==
-X-Google-Smtp-Source: ABdhPJywMCKq0vfUuAKWQ9RLmH3NxEeoaMuMMn+wDHsffqxkAqXyKJ4o6MiCnyTmuBnnGxJWFn5poUUGRnshTJa4lRY=
-X-Received: by 2002:a17:902:c40b:b029:d3:def2:d90f with SMTP id
- k11-20020a170902c40bb02900d3def2d90fmr3608595plk.29.1603393503931; Thu, 22
- Oct 2020 12:05:03 -0700 (PDT)
+        id S369943AbgJVTKy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 22 Oct 2020 15:10:54 -0400
+Received: from mx2.cyber.ee ([193.40.6.72]:58313 "EHLO mx2.cyber.ee"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S369878AbgJVTKy (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 22 Oct 2020 15:10:54 -0400
+Subject: Re: [RFC PATCH] parisc: Add wrapper syscalls to fix O_NONBLOCK flag
+ usage
+To:     Helge Deller <deller@gmx.de>, Jeroen Roovers <jer@xs4all.nl>,
+        linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+References: <20200829122017.GA3988@ls3530.fritz.box>
+ <20201020192101.772bedd5@wim.jer>
+ <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
+ <20201022173824.49b6b7f5@wim.jer>
+ <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
+ <20201022164007.GA10653@ls3530.fritz.box>
+From:   Meelis Roos <mroos@linux.ee>
+Message-ID: <6f58641f-d4d3-ea28-3863-83a227aeff1a@linux.ee>
+Date:   Thu, 22 Oct 2020 22:11:01 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.3
 MIME-Version: 1.0
-References: <20201021233914.GR3576660@ZenIV.linux.org.uk> <20201022082654.GA1477657@kroah.com>
- <80a2e5fa-718a-8433-1ab0-dd5b3e3b5416@redhat.com> <5d2ecb24db1e415b8ff88261435386ec@AcuMS.aculab.com>
- <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com> <20201022090155.GA1483166@kroah.com>
- <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com> <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
- <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com> <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
- <20201022132342.GB8781@lst.de> <8f1fff0c358b4b669d51cc80098dbba1@AcuMS.aculab.com>
- <CAKwvOdnix6YGFhsmT_mY8ORNPTOsN3HwS33Dr0Ykn-pyJ6e-Bw@mail.gmail.com> <CAK8P3a3LjG+ZvmQrkb9zpgov8xBkQQWrkHBPgjfYSqBKGrwT4w@mail.gmail.com>
-In-Reply-To: <CAK8P3a3LjG+ZvmQrkb9zpgov8xBkQQWrkHBPgjfYSqBKGrwT4w@mail.gmail.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Thu, 22 Oct 2020 12:04:52 -0700
-Message-ID: <CAKwvOdnhONvrHLAuz_BrAuEpnF5mD9p0YPGJs=NZZ0EZNo7dFQ@mail.gmail.com>
-Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     David Laight <David.Laight@aculab.com>,
-        Christoph Hellwig <hch@lst.de>,
-        David Hildenbrand <david@redhat.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201022164007.GA10653@ls3530.fritz.box>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 22, 2020 at 11:13 AM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Thu, Oct 22, 2020 at 7:54 PM Nick Desaulniers
-> <ndesaulniers@google.com> wrote:
-> > On Thu, Oct 22, 2020 at 9:35 AM David Laight <David.Laight@aculab.com> wrote:
-> > >
-> > > Which makes it a bug in the kernel C syscall wrappers.
-> > > They need to explicitly mask the high bits of 32bit
-> > > arguments on arm64 but not x86-64.
-> >
-> > Why not x86-64? Wouldn't it be *any* LP64 ISA?
->
-> x86-64 is slightly special because most instructions on a 32-bit
-> argument clear the upper 32 bits, while on most architectures
-> the same instruction would leave the upper bits unchanged.
 
-Oh interesting, depends on the operations too on x86_64 IIUC?
+22.10.20 19:40 Helge Deller wrotw:
+> This patch adds wrapper functions for the relevant syscalls. The
+> wrappers masks out any old invalid O_NONBLOCK flags, reports in the
+> syslog if the old O_NONBLOCK value was used and then calls the target
+> syscall with the new O_NONBLOCK value.
+> 
+> Fixes: 75ae04206a4d ("parisc: Define O_NONBLOCK to become 000200000")
+> Signed-off-by: Helge Deller <deller@gmx.de>
 
->
-> > Attaching a patch that uses the proper width, but I'm pretty sure
-> > there's still a signedness issue .  Greg, would you mind running this
-> > through the wringer?
->
-> I would not expect this to change anything for the bug that Greg
-> is chasing, unless there is also a bug in clang.
->
-> In the version before the patch, we get a 64-bit argument from
-> user space, which may consist of the intended value in the lower
-> bits plus garbage in the upper bits. However, vlen only gets
-> passed down  into import_iovec() without any other operations
-> on it, and since import_iovec takes a 32-bit argument, this is
-> where it finally gets narrowed.
+Works for me on RP2470 - boots up in full functionality and logs the recompilation
+warning about systemd-udevd and syslog-ng.
 
-Passing an `unsigned long` as an `unsigned int` does no such
-narrowing: https://godbolt.org/z/TvfMxe (same vice-versa, just tail
-calls, no masking instructions).
-So if rw_copy_check_uvector() is inlined into import_iovec() (looking
-at the mainline@1028ae406999), then children calls of
-`rw_copy_check_uvector()` will be interpreting the `nr_segs` register
-unmodified, ie. garbage in the upper 32b.
-
->
-> After your patch, the SYSCALL_DEFINE3() does the narrowing
-> conversion with the same clearing of the upper bits.
->
-> If there is a problem somewhere leading up to import_iovec(),
-> it would have to in some code that expects to get a 32-bit
-> register argument but gets called with a register that has
-> garbage in the upper bits /without/ going through a correct
-> sanitizing function like SYSCALL_DEFINE3().
->
->       Arnd
-
-
+Tested-by: Meelis Roos <mroos@linux.ee>
 
 -- 
-Thanks,
-~Nick Desaulniers
+Meelis Roos
