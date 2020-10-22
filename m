@@ -2,141 +2,110 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A2B72966F4
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 00:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB8F029677C
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 01:04:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S368851AbgJVWHI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Thu, 22 Oct 2020 18:07:08 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:55540 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2895887AbgJVWHI (ORCPT
+        id S373138AbgJVXES (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 22 Oct 2020 19:04:18 -0400
+Received: from bedivere.hansenpartnership.com ([96.44.175.130]:47630 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S373136AbgJVXES (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Oct 2020 18:07:08 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-164-7-H9NMQeNwGwZfcU7aRApw-1; Thu, 22 Oct 2020 23:07:03 +0100
-X-MC-Unique: 7-H9NMQeNwGwZfcU7aRApw-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Thu, 22 Oct 2020 23:07:02 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Thu, 22 Oct 2020 23:07:02 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Al Viro' <viro@zeniv.linux.org.uk>,
-        Nick Desaulniers <ndesaulniers@google.com>
-CC:     Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>,
-        "David Hildenbrand" <david@redhat.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Index: AQHWqE5GNDfnH4y9nkGWtfqJueR1KKmjTCJQgAAN4UiAAAD2IIAAQY5tgAAwVkCAADSfg4AALKrQ
-Date:   Thu, 22 Oct 2020 22:07:02 +0000
-Message-ID: <f35a74d034054d7fa8ce8835afb1ca6c@AcuMS.aculab.com>
-References: <20201022090155.GA1483166@kroah.com>
- <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
- <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
- <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
- <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
- <20201022132342.GB8781@lst.de>
- <8f1fff0c358b4b669d51cc80098dbba1@AcuMS.aculab.com>
- <CAKwvOdnix6YGFhsmT_mY8ORNPTOsN3HwS33Dr0Ykn-pyJ6e-Bw@mail.gmail.com>
- <CAK8P3a3LjG+ZvmQrkb9zpgov8xBkQQWrkHBPgjfYSqBKGrwT4w@mail.gmail.com>
- <CAKwvOdnhONvrHLAuz_BrAuEpnF5mD9p0YPGJs=NZZ0EZNo7dFQ@mail.gmail.com>
- <20201022192458.GV3576660@ZenIV.linux.org.uk>
-In-Reply-To: <20201022192458.GV3576660@ZenIV.linux.org.uk>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Thu, 22 Oct 2020 19:04:18 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 21AE51281E42;
+        Thu, 22 Oct 2020 16:04:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1603407858;
+        bh=YF9ZLRJ5Wmd29VMCSDUBdN9scxQBSKiZF6i1sPMZ4cs=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=Rp43OBNeRff7l6xXQQprJM/m/WMbF15ErMCUULCrOGIpWCNqppgte+USb5NryvBJ5
+         War0Kohqc5idoDlXO+afQei1xfY//CINxzd3xmUM3zW/BrEbGtPgJCAUCtusJ41H2q
+         ZqwBd/RzMW6JiIiE1aUEqb3gsIRU2wNiUMyhtghs=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Q3sVWPD8CWVy; Thu, 22 Oct 2020 16:04:18 -0700 (PDT)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::c447])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 759B41281E39;
+        Thu, 22 Oct 2020 16:04:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1603407857;
+        bh=YF9ZLRJ5Wmd29VMCSDUBdN9scxQBSKiZF6i1sPMZ4cs=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=mBMQkLZBj9y05L4DkBJ+6L7KVSJNkpwwj8Zle4lznjtwYUJu+0MqDsmQnbVz9vlA3
+         IyiV2YPkSZ5LVBnyRQUiwij5DmcUrmGCVSXXsnKtc5qZmFrqYM2+08vIYtr35rd1oP
+         aTqAKkb2akyYD7It4zMkcKI4NAiK2FUCp5LlcFdM=
+Message-ID: <f1ff32ec2970f1ee808e2da946e6514e71694e71.camel@HansenPartnership.com>
+Subject: Re: [PATCH/RFC net] net: dec: tulip: de2104x: Add shutdown handler
+ to stop NIC
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Moritz Fischer <mdf@kernel.org>, netdev@vger.kernel.org
+Cc:     davem@davemloft.net, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lucyyan@google.com
+Date:   Thu, 22 Oct 2020 16:04:16 -0700
+In-Reply-To: <20201022220636.609956-1-mdf@kernel.org>
+References: <20201022220636.609956-1-mdf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Al Viro
-> Sent: 22 October 2020 20:25
+On Thu, 2020-10-22 at 15:06 -0700, Moritz Fischer wrote:
+> The driver does not implement a shutdown handler which leads to
+> issues
+> when using kexec in certain scenarios. The NIC keeps on fetching
+> descriptors which gets flagged by the IOMMU with errors like this:
 > 
-> On Thu, Oct 22, 2020 at 12:04:52PM -0700, Nick Desaulniers wrote:
+> DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+> DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+> DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+> DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+> DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
 > 
-> > Passing an `unsigned long` as an `unsigned int` does no such
-> > narrowing: https://godbolt.org/z/TvfMxe (same vice-versa, just tail
-> > calls, no masking instructions).
-> > So if rw_copy_check_uvector() is inlined into import_iovec() (looking
-> > at the mainline@1028ae406999), then children calls of
-> > `rw_copy_check_uvector()` will be interpreting the `nr_segs` register
-> > unmodified, ie. garbage in the upper 32b.
+> Signed-off-by: Moritz Fischer <mdf@kernel.org>
+> ---
 > 
-> FWIW,
+> Hi all,
 > 
-> void f(unsinged long v)
-> {
-> 	if (v != 1)
-> 		printf("failed\n");
-> }
+> I'm not sure if this is the proper way for a shutdown handler,
+> I've tried to look at a bunch of examples and couldn't find a
+> specific
+> solution, in my tests on hardware this works, though.
 > 
-> void g(unsigned int v)
-> {
-> 	f(v);
-> }
+> Open to suggestions.
 > 
-> void h(unsigned long v)
-> {
-> 	g(v);
-> }
+> Thanks,
+> Moritz
 > 
-> main()
-> {
-> 	h(0x100000001);
-> }
+> ---
+>  drivers/net/ethernet/dec/tulip/de2104x.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> must not produce any output on a host with 32bit int and 64bit long, regardless of
-> the inlining, having functions live in different compilation units, etc.
-> 
-> Depending upon the calling conventions, compiler might do truncation in caller or
-> in a callee, but it must be done _somewhere_.
+> diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c
+> b/drivers/net/ethernet/dec/tulip/de2104x.c
+> index f1a2da15dd0a..372c62c7e60f 100644
+> --- a/drivers/net/ethernet/dec/tulip/de2104x.c
+> +++ b/drivers/net/ethernet/dec/tulip/de2104x.c
+> @@ -2185,6 +2185,7 @@ static struct pci_driver de_driver = {
+>  	.id_table	= de_pci_tbl,
+>  	.probe		= de_init_one,
+>  	.remove		= de_remove_one,
+> +	.shutdown	= de_remove_one,
 
-Put g() in a separate compilation unit and use the 'wrong' type
-in the prototypes t() used to call g() and g() uses to call f().
+This doesn't look right: shutdown is supposed to turn off the device
+without disturbing the tree or causing any knock on effects (I think
+that rule is mostly because you don't want anything in userspace
+triggering since it's likely to be nearly dead).  Remove removes the
+device from the tree and cleans up everything.  I think the function
+you want that's closest to what shutdown needs is de_close().  That
+basically just turns off the chip and frees the interrupt ... you'll
+have to wrapper it to call it from the pci_driver, though.
 
-Then you might see where and masking does (or does not) happen.
+James
 
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
 
