@@ -2,104 +2,148 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB888296B93
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 10:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A91E296C08
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 11:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S460777AbgJWI6t (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 23 Oct 2020 04:58:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34676 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S460767AbgJWI6t (ORCPT
+        id S461419AbgJWJYs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 23 Oct 2020 05:24:48 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:36077 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S461413AbgJWJYs (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 23 Oct 2020 04:58:49 -0400
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EACDC0613CE
-        for <linux-parisc@vger.kernel.org>; Fri, 23 Oct 2020 01:58:49 -0700 (PDT)
-Received: (qmail 20986 invoked from network); 23 Oct 2020 08:54:44 -0000
-Received: from p548d4414.dip0.t-ipconnect.de ([::ffff:84.141.68.20]:49130 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.37dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <jer@xs4all.nl>; Fri, 23 Oct 2020 10:54:43 +0200
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     Jeroen Roovers <jer@xs4all.nl>, Meelis Roos <mroos@linux.ee>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org
-Subject: Re: [RFC PATCH] parisc: Add wrapper syscalls to fix O_NONBLOCK flag usage
-Date:   Fri, 23 Oct 2020 10:58:37 +0200
-Message-ID: <2572767.mvXUDI8C0e@eto.sf-tec.de>
-In-Reply-To: <15a0414d-9c6d-76ed-becc-f62635763da0@gmx.de>
-References: <20200829122017.GA3988@ls3530.fritz.box> <05c101c9-c790-68ec-40a6-d248452fe60d@gmx.de> <15a0414d-9c6d-76ed-becc-f62635763da0@gmx.de>
+        Fri, 23 Oct 2020 05:24:48 -0400
+Received: by mail-ot1-f65.google.com with SMTP id 32so735998otm.3;
+        Fri, 23 Oct 2020 02:24:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Zc+AeQKYu0eA1NCCr9Ea0RhGk/czUMV0vr6kVFJGHw0=;
+        b=svL8bMrhDiYdFU+nFRtfqmOTeNEsuLToWpA+nHPR5eeAcE7vAK9E0lqS+vuiZ6CrWN
+         PBQnXJ1Ri/xnY6yWeDoDwod69OLYqXUn4oD+B7/fozdJydzRwv+Zc/21rTv/pmxgvuJO
+         NE3sE3Qtew4RgCkawyh0mwvmHIqGwUTdmFJDMnPqYnFHHV/6dnTEr6Y3KyQuqk2bX9yG
+         x7al8CTEqWpgv4ghMJABLurkaPz1HG1CFbmeezoY5QzmFB6hvFaMkAAkxyDRHQFKcQx4
+         +dhlY7GLWB5uBcsb1GRz/M0rStunz4sVTfb26bvaifJyanZEaB6+kr43EcHMY3khCPx1
+         a1SQ==
+X-Gm-Message-State: AOAM533HcoD//sSkCHkQJXswjFpctjlDUp88eJeC1UFKkz9VVlgu3ZAT
+        sKqT5MxLYtDs9UKuhQRUhfo0eRav94ezvAFWrio=
+X-Google-Smtp-Source: ABdhPJxehtfOoAm+qzRUkw5mm184UYL/qN+HgKHa1e9IqAJmQlfvEJk1yo1vlYOgf9p2GgsKSFaJDrnAsY04iiRnVFk=
+X-Received: by 2002:a9d:3b76:: with SMTP id z109mr904469otb.250.1603445087314;
+ Fri, 23 Oct 2020 02:24:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart11642728.O9o76ZdvQC"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de>
+ <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com>
+ <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet> <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com>
+In-Reply-To: <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 23 Oct 2020 11:24:36 +0200
+Message-ID: <CAMuHMdUyGH=ORa4yHivMeJZaGQ3kEXi1kr9=P+u1y3QQnC+-4g@mail.gmail.com>
+Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Finn Thain <fthain@telegraphics.com.au>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Philip Blundell <philb@gnu.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Sam Creasey <sammy@sammy.net>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart11642728.O9o76ZdvQC
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Hi Arnd,
 
-Am Freitag, 23. Oktober 2020, 10:31:14 CEST schrieb Helge Deller:
-> On 10/23/20 10:18 AM, Helge Deller wrote:
-> > On 10/23/20 9:25 AM, Rolf Eike Beer wrote:
-> >>> +#define O_NONBLOCK_OLD		000200004
-> >>> +#define O_NONBLOCK_MASK_OUT	(O_NONBLOCK_OLD & ~O_NONBLOCK)
-> >>> +static int FIX_O_NONBLOCK(int flags)
-> >>> +{
-> >>> +	if (flags & O_NONBLOCK_MASK_OUT) {
-> >>> +		struct task_struct *tsk = current;
-> >>> +		pr_warn("%s(%d) uses old O_NONBLOCK value. "
-> >>> +			"Please recompile the application.\n",
-> >>> +			tsk->comm, tsk->pid);
-> >>> +	}
-> >>> +	return flags & ~O_NONBLOCK_MASK_OUT;
-> >>> +}
-> >> 
-> >> This will also trigger if I just pass 0x4 in flags, no? The check should
-> >> be
-> >> 
-> >> 	if ((flags & O_NONBLOCK_OLD) == O_NONBLOCK_OLD)
-> > 
-> > RIGHT!
-> > That's a very good point.
-> > I was thinking about what would happen if over time a new (unrelated)
-> > define gets created which then gets 0x4 as value. My code would then have
-> > wrongly modified it.
-> 
-> After some more thinking....
-> 
-> It's not that easy.
-> Let's assume there will be another new flag at some time with value 0x4.
-> Now, the caller sets this flag (0x4) and new O_NONBLOCK (000200000),
-> so you end up with 000200004 again, which then triggers your check:
->  	if ((flags & O_NONBLOCK_OLD) == O_NONBLOCK_OLD)
-> 
-> So, my check to test only the mask for 0x4 was basically better,
-> because it would prevent the usage of 0x4 as any new value.
-> In any way, it seems we need to avoid using 0x4 for a long time...
+On Fri, Oct 23, 2020 at 9:52 AM Arnd Bergmann <arnd@kernel.org> wrote:
+> On Sun, Oct 18, 2020 at 2:55 AM Finn Thain <fthain@telegraphics.com.au> wrote:
+> > On Thu, 15 Oct 2020, Arnd Bergmann wrote:
+> > > On Thu, Oct 15, 2020 at 3:19 AM Finn Thain <fthain@telegraphics.com.au> wrote:
+> > > > On Sat, 10 Oct 2020, Arnd Bergmann wrote:
+> >
+> > That configuration still produces the same 5 KiB of bloat. I see that
+> > kernel/time/Kconfig has this --
+> >
+> > # Core internal switch. Selected by NO_HZ_COMMON / HIGH_RES_TIMERS. This is
+> > # only related to the tick functionality. Oneshot clockevent devices
+> > # are supported independent of this.
+> > config TICK_ONESHOT
+> >         bool
+> >
+> > But my question was really about both kinds of dead code (oneshot device
+> > support and oneshot tick support). Anyway, after playing with the code for
+> > a bit I don't see any easy way to reduce the growth in text size.
+>
+> Did you look more deeply into where those 5KB are? Is this just
+> the code in kernel/time/{clockevents,tick-common}.c and the
+> added platform specific bits, or is there something more?
+> I suppose the sysfs interface and the clockevents_update_freq()
+> logic are not really needed on m68k, but it wouldn't make much
+> sense to split those out either.
+>
+> How does the 5KB bloat compare to the average bloat we get
+> from one release to the next? Geert has been collecting statistics
+> for this.
 
-Then maybe just add that as an explicit comment in the header so noone picks 
-it by accident, and add a comment pointing to these wrappers so they are more 
-likely to be kept in sync.
+It would be a fair share of the typical increase of ca. 30 KiB per
+kernel release. Still, it would be lost in the noise of the increase for
+v5.10-rc1:
 
-And for extra fun we can just scrap all this for 64 bit userspace as we don't 
-need the compat there ;)
+    add/remove: 1200/455 grow/shrink: 1419/821 up/down: 468970/-93714 (375256)
+    Function                                     old     new   delta
+    _printk_rb_static_infos                        -  180224 +180224
+    write_buf                                   8192   32768  +24576
+    _printk_rb_static_descs                        -   24576  +24576
+    HUF_decompress4X4_usingDTable_internal         -    5664   +5664
+    HUF_decompress4X2_usingDTable_internal         -    5006   +5006
+    __ext4_ioctl                                   -    4774   +4774
+    sock_ops_convert_ctx_access                 3840    8462   +4622
+    ZSTD_decompressSequences                       -    3100   +3100
 
-Eike
---nextPart11642728.O9o76ZdvQC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+> > > The arm/rpc timer seems to be roughly in the same category as most of
+> > > the m68k ones or the i8253 counter on a PC. It's possible that some of
+> > > them could use the same logic as drivers/clocksource/i8253.o as long as
+> > > there is any hardware oneshot mode.
+> >
+> > There appear to be 15 platforms in that category. 4 have no clocksource
+> > besides the jiffies clocksource, meaning there's no practical alternative
+> > to using a periodic tick, like you did in your RFC patch:
+> >
+> > arch/m68k/apollo/config.c
+> > arch/m68k/q40/q40ints.c
+> > arch/m68k/sun3/sun3ints.c
+> > arch/m68k/sun3x/time.c
+>
+> Do any of these have users? I'm fairly sure sun3x has never worked in mainline,
+> sun3 seems to still need the same few patches it did 20 years ago. I
+> couldn't find
+> much about Linux on Apollo or q40, the information on the web for either
+> of them seems to all be for linux-2.4 kernels.
 
------BEGIN PGP SIGNATURE-----
+They probably don't have any users.
+AFAIK, the only users are the usual triumvirate of amiga/atari/mac
+(and perhaps the fleet of VME boards in the Australian navy? ;)
 
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCX5KbPQAKCRBcpIk+abn8
-Tp1oAJ9AQtT0AxkZ632oUibyHnH7Er4htACfTkiVaKmmvekFYkaG9e7RLbwEbuE=
-=dKXR
------END PGP SIGNATURE-----
+Gr{oetje,eeting}s,
 
---nextPart11642728.O9o76ZdvQC--
-
+                        Geert
 
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
