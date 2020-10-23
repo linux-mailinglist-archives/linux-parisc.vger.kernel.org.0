@@ -2,38 +2,42 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0A50296B40
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 10:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB9AB296B46
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 10:35:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S375955AbgJWIcF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 23 Oct 2020 04:32:05 -0400
-Received: from mout.gmx.net ([212.227.17.20]:60499 "EHLO mout.gmx.net"
+        id S460678AbgJWIfz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 23 Oct 2020 04:35:55 -0400
+Received: from mout.gmx.net ([212.227.17.20]:40717 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S375948AbgJWIcE (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 23 Oct 2020 04:32:04 -0400
+        id S460677AbgJWIfy (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 23 Oct 2020 04:35:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1603441876;
-        bh=GJuIfHMWtzCCtbZZjYN6t/cTWMxaXYfbdjeorhWYxk4=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=MVSCTajnbecd9Kgcw28YMWm+esPGFloU1+n3qZszffOKHTWqtZyggquwwAR4Myzx9
-         xdrRL0Pa5LzwP0IaFwEIvNos0K5CV0/d4L2puL2fPl4rLjpFZ7JtBENpwOI50F28tl
-         X2e8ymDo2NMMmTFwQR6z403kN3QBBR6GCCA9LvDo=
+        s=badeba3b8450; t=1603442135;
+        bh=EuEX0O7o4p/DlaT2/JVcilKE+8LZqMJ3rF9d3ktfghw=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=TP4f0sjJuCk5vZGui9kSptS3wqnH81kIyxjpcSA6ibG5YE1R+FX8r4bGE3O1bPBel
+         CBIJkn6F2gqNiMtzNoScCrYcdwHOSZFlMhSdpbmcJhv6Lu8yy58cmFGvq4BmuxeWtC
+         reIA2VTbCeD5AhRcyvRbXitnXQ5ri6jmKhJeh3p4=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from [192.168.20.58] ([92.116.145.200]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7sHy-1kQuf80gxW-0055DZ; Fri, 23
- Oct 2020 10:31:16 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MmUHp-1k5ePn3cH3-00iUmd; Fri, 23
+ Oct 2020 10:35:34 +0200
 Subject: Re: [RFC PATCH] parisc: Add wrapper syscalls to fix O_NONBLOCK flag
  usage
-From:   Helge Deller <deller@gmx.de>
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        Jeroen Roovers <jer@xs4all.nl>, Meelis Roos <mroos@linux.ee>,
+To:     Jeroen Roovers <jer@xs4all.nl>
+Cc:     Meelis Roos <mroos@linux.ee>, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Cc:     linux-parisc@vger.kernel.org
 References: <20200829122017.GA3988@ls3530.fritz.box>
+ <20201020192101.772bedd5@wim.jer>
+ <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
+ <20201022173824.49b6b7f5@wim.jer>
  <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
- <20201022164007.GA10653@ls3530.fritz.box> <5650648.lOV4Wx5bFT@eto.sf-tec.de>
- <05c101c9-c790-68ec-40a6-d248452fe60d@gmx.de>
+ <20201022164007.GA10653@ls3530.fritz.box>
+ <6f58641f-d4d3-ea28-3863-83a227aeff1a@linux.ee>
+ <b187505a-2ca1-c385-3b4e-16ae49f5c1ce@gmx.de>
+ <20201023090232.3b56d308@wim.jer>
+From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
  HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
@@ -91,76 +95,120 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <15a0414d-9c6d-76ed-becc-f62635763da0@gmx.de>
-Date:   Fri, 23 Oct 2020 10:31:14 +0200
+Message-ID: <20d34af2-7c5b-b9af-b4b7-062e2689c092@gmx.de>
+Date:   Fri, 23 Oct 2020 10:35:34 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <05c101c9-c790-68ec-40a6-d248452fe60d@gmx.de>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <20201023090232.3b56d308@wim.jer>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6vaXWlBSS8rxNkexTlvXg5eh+DaeOKP97tSCkePjkab0t/hKhl/
- KI5JDMAyNELAM0SC6qENpxMQtZ4bVGDVn9Id2s5MNob7cxpq/imlo2c0DFkuyZyHEsLHHd9
- fCmQIKl0Mz1bepJ8cW+8a3T8YhLGxUtidQ5X6qkDg8z9hV4ytSh+ML3pXOMajGSV64uLm9p
- aTxpGtSGa2kZy3M/RsKwQ==
+X-Provags-ID: V03:K1:RFT7djxVcodLuwWGO3Tjh61Pb10rhU+Ftos9Dj3y3gtonOz0DkB
+ TKO6/Zq1g6fE+AbbguRJOTfLRxuY+mby/04iL1eUVVmV6DnLd54RJ2/rTDbMG9uMicHiMGf
+ AixPYWQqGMyFc7WKhGnvfL4XSOtTbw8OtJysvIUxQ7arBsE3lDq5vqiFVM1+z1kNNoTEvxq
+ SQgvE/1fzCvMWwKY7NWTA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SDpdIxZ4iDA=:54LZpglzfCVMzzyXNBpRIu
- Bapo9DrrTcpez91aLv4oiwAFZjZm6JuknsKxEMRb0HqYAb4s5JRFKaa4qJD+/iw1ffQeNhzyV
- EkDWDXO96Oe0lZJFo5Jc2KSvCKWzOV6iHKeZ7wMWIP7yJfu4FzKpl/YD18t4upNODGR14mO3w
- m+ngFccR1FD7mDDRfTvbHchve7EFF1juaxc9m+e6dHi6mSTMeL0P9dNZWiKRTaY31eJn/u5ej
- YI5e7MZk1OL0iUvsLQH8YwdwY7q1MF6XEYqSFeB1G9nmZKn3vKQ01iXOz4iNBSatSO4YXj0g1
- C/lsv/NQ5v9tdmIufjlgn6jPaucJBRHfuyZf6YkVDJ3aXpYbu3E4YRD8Le06WNIl1/qwu3VMM
- yLqJS9ZwlwoutRJ+aX0WlyV+a6E5HZ5HUSUc1cu6kw73uqWExb/sHPFx4dAw3xvzDaaBIwj9q
- 8U4l3PjWDe6K9H6qWmAa2pCS0snUXC4W9wzjyet1aX/SPID4ksQhTFGfP8skBJ1urFhzhPL6d
- JBqPXQYWCfYuTG1q5BbO1hncHwTxzcYo+JCDNWDC5KXt6bxRad9uLS6TBWoktY7FcRhJzo02B
- U4s8BD774UHzkG0Z4o0DeSpLPuvGQVwIYb0yhzN0yyjDRIs/ZEG2TbkfiyzEWsdJkp52HO0mz
- jGKGsJ51c0MfrNEhoPVH3tPjDtFk6wQ1gOWkissxnUM6geXeL4O/lxbU4dA6lmo/HD5x0fknW
- uCDIbPGVIHnJiJVj+cJjn5BZbY4hT6qtTPJ2Drx7P8u32PQGGhJKtOcajh7T5e5wyobnF3IzS
- FvRNmiKZYMwOw+Row/0/4Gg4x6HBF2UUaLmOrWizywkb2vXPZxw+VG35kMri3puskhLtyMqzz
- fGSetoRnk0p+sTsNe/mQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Ksp12P4hMrs=:7NmuLLhcw4rBDRGg8FNCV4
+ N+uF9GQAGUHFrKNtIWmTluR2fUsL45iq0/7ZDHGgaK+cU2z4RT9Q06jAhYoEdiOorWdC8RQtf
+ LmzpZ7gT+QRtTshNofqSTC8gRaoOE5BvRm3S9RweR+00I9MMIQMgih3IIw+e8ZZpxcGzDO5aa
+ n5JGHN0DBKVbYnI7t9UyJvqSHqqds391ypJVIggvsXiSQpbA281HbRb2uOvmYZnhdCsegGGC0
+ KHP6fheMzIvuQCWf+X5o5tdxlx4BKCHwqW+V2ISAmMpMxor6SLUwBpJt+NnBvl+UVxeNrO4qL
+ mLtZwwNAlHqnRFr7RFp0xL7FBRv9DsKiNTU1Wp1P1r3p3jdLmdDYz2afnziUVYy+kpsNhOIr+
+ LdwmQAvlUXc+kuO8zYnHLsw0tvWXjS3adVw+JWmmXbv2cvRDgnzwQSuWV9LeQsgXckrwtN6c0
+ mMjWRwljuqxPHCb3tVcN/k+SaYOk2732O6e0bp8zpl3W49I5jAySg2s0xV6FeWil0ZsB699Ug
+ jMsUy/2qFsK0MKlR+tx2gnclWhmHBDNNKbwynFGJ0Yu8x3+WmVs07xh3JP0+UcXY2W0xJDO4G
+ dmqJAGjYIF9bBHf1AxP0ECHBRGWufcp1eUTwl6zqqIOGDi9nEKCIoiXtqBFn/XnnQj3H/gcvW
+ sp+H4mk81tkI9OGT8uYrz2SlI8L4wjo5GBPFKWHcMtPuarl1DKrzQevWl9XtBJ6G+DejuhzRm
+ qy+dReaDpEBqbZLXJcUY3hU4coplQHWbsrJUQjHfBjjPXheLChJ4e3aMR4mHJaFCX2eGSC10W
+ X2Fv6EXwAt1rShI7xMlLYB/hKBvkwrzOo2ws/NsxNY0ezyr5T9lXcx3zLz1SlN6KRaTvKIFzV
+ Q2oWGi2f7IHFI3szWDOw==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/23/20 10:18 AM, Helge Deller wrote:
-> On 10/23/20 9:25 AM, Rolf Eike Beer wrote:
->>> +#define O_NONBLOCK_OLD		000200004
->>> +#define O_NONBLOCK_MASK_OUT	(O_NONBLOCK_OLD & ~O_NONBLOCK)
->>> +static int FIX_O_NONBLOCK(int flags)
->>> +{
->>> +	if (flags & O_NONBLOCK_MASK_OUT) {
->>> +		struct task_struct *tsk =3D current;
->>> +		pr_warn("%s(%d) uses old O_NONBLOCK value. "
->>> +			"Please recompile the application.\n",
->>> +			tsk->comm, tsk->pid);
->>> +	}
->>> +	return flags & ~O_NONBLOCK_MASK_OUT;
->>> +}
->>
->> This will also trigger if I just pass 0x4 in flags, no? The check shoul=
-d be
->>
->> 	if ((flags & O_NONBLOCK_OLD) =3D=3D O_NONBLOCK_OLD)
+On 10/23/20 9:02 AM, Jeroen Roovers wrote:
+> On Thu, 22 Oct 2020 22:29:18 +0200
+> Helge Deller <deller@gmx.de> wrote:
 >
-> RIGHT!
-> That's a very good point.
-> I was thinking about what would happen if over time a new (unrelated) de=
-fine
-> gets created which then gets 0x4 as value. My code would then have wrong=
-ly
-> modified it.
+>> On 10/22/20 9:11 PM, Meelis Roos wrote:
+>>>
+>>> 22.10.20 19:40 Helge Deller wrotw:
+>>>> This patch adds wrapper functions for the relevant syscalls. The
+>>>> wrappers masks out any old invalid O_NONBLOCK flags, reports in the
+>>>> syslog if the old O_NONBLOCK value was used and then calls the
+>>>> target syscall with the new O_NONBLOCK value.
+>>>>
+>>>> Fixes: 75ae04206a4d ("parisc: Define O_NONBLOCK to become
+>>>> 000200000") Signed-off-by: Helge Deller <deller@gmx.de>
+>>>
+>>> Works for me on RP2470 - boots up in full functionality and logs
+>>> the recompilation warning about systemd-udevd and syslog-ng.
+>>>
+>>> Tested-by: Meelis Roos <mroos@linux.ee>
+>>
+>> Thank you Meelis & Jeroen for testing!
+>>
+>> The big question is:
+>> We have two options
+>> a) revert my original commit 75ae04206a4d ("parisc: Define O_NONBLOCK
+>> to become 000200000"), or b) apply and submit this new patch on top
+>> of it.
+>>
+>> The benefit in b) is that we will get long term rid of the two-bit
+>> O_NONBLOCK define and thus will get more compatible to other Linux
+>> architectures. This comes with the downside of (at least for a few
+>> years) added overhead for those non-performance critical syscalls.
+>
+> The performance issue is resolved once the installed kernel
+> headers/libc have been updated accordingly. I think after that the
+> overhead should be minimal.
 
-After some more thinking....
+Yes, probably.
 
-It's not that easy.
-Let's assume there will be another new flag at some time with value 0x4.
-Now, the caller sets this flag (0x4) and new O_NONBLOCK (000200000),
-so you end up with 000200004 again, which then triggers your check:
- 	if ((flags & O_NONBLOCK_OLD) =3D=3D O_NONBLOCK_OLD)
+>> The benefit with a) is that we then step back again and stay
+>> compatible now. The downside is, that in the future we may run into
+>> other issues and need to keep special-handling in some other syscalls
+>> forever.
+>>
+>> I'm still for going with b), and I hope we got all corner cases ruled
 
-So, my check to test only the mask for 0x4 was basically better,
-because it would prevent the usage of 0x4 as any new value.
-In any way, it seems we need to avoid using 0x4 for a long time...
+I meant "proposing to go with option b)"....
+
+>> out. Opinions?
+>
+> I think the performance penalty isn't that great, but could be
+> improved, so I'd go for b) with a small change. The warning that it
+> issues seems redundant, because the immediate problem has already been
+> "solved", and because the proposed solution does not work:
+>
+> +{
+> +	if (flags & O_NONBLOCK_MASK_OUT) {
+> +		struct task_struct *tsk =3D current;
+> +		pr_warn("%s(%d) uses old O_NONBLOCK value. "
+> +			"Please recompile the application.\n",
+> +			tsk->comm, tsk->pid);
+> +	}
+> +	return flags & ~O_NONBLOCK_MASK_OUT;
+> +}
+> +
+>
+> The text assumes that the officially packaged kernel headers are in
+> sync with the kernel, which normally isn't the case as most
+> distributions seem to either pick an LTS kernel for their toolchain, or
+> keep the installed kernel in sync with the installed kernel headers,
+> but do not prevent running newer kernels and may even encourage doing
+> so. Simply recompiling the programs that use the old O_NONBLOCK value
+> does not solve the problem in most cases.
+
+True.
+
+> If you'd remove that if() { pr_warn } entirely, you'd probably be
+> rid of most of the performance penalty anyway.
+
+I think it makes sense to keep at least one warning.
+Rolf Eike proposed a pr_warn_once() which seems the best compromise
+as it keeps us at least informed which packages needs updating and
+how relevant it is to keep those wrappers....
 
 Helge
