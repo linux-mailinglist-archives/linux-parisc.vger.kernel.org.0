@@ -2,99 +2,130 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B123C296891
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 04:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5D61296A09
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 09:02:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S460236AbgJWCpY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 22 Oct 2020 22:45:24 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:46021 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S460237AbgJWCpY (ORCPT
+        id S375533AbgJWHCl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 23 Oct 2020 03:02:41 -0400
+Received: from lb3-smtp-cloud8.xs4all.net ([194.109.24.29]:55203 "EHLO
+        lb3-smtp-cloud8.xs4all.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S373768AbgJWHCk (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Oct 2020 22:45:24 -0400
-Received: by mail-pg1-f195.google.com with SMTP id 19so22279pge.12;
-        Thu, 22 Oct 2020 19:45:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=YixKmrm30sY9o+7/rbu6eu+lq+X0S/5/adkmWCbKRHI=;
-        b=Y3RN0Q3cx95CMxF7vlqgVH60PuXL3VMD6wNa0iKVg4Z3xE6eNug55U8tTrZ8M8NByz
-         H3eYN3zPH30lW39XdbKG23KL0z+ihmc20DIhoQaT21VrunWHtw6I/zhPU4eyziMZ/VBk
-         Tb73YeEiRhMHBjneliKiGKwYL0Exz8eb4uKcXq0rWlqUFzmcsuIhCysZzI3WCJj0i/2d
-         3lvBLT+E56/0Our9v9CtcIDXYRVLG1bDRqWxY9zVVokQ8cQZH5Qm7KUi3FZj5TtAxfJT
-         Cbmxh/Y1/so3ZKG5tnqgdGG0wearjAwMidZEhQY063wDOwOCEoHV7P8ODPSwzidXOSQu
-         ksUw==
-X-Gm-Message-State: AOAM5306V/Lt5ObTomo9ForiQdxQciATKwB0G1cRX4NyTaUjPPstf2EQ
-        63XnSMTJMzE8VdI/01eHlKwD7oM4xnc=
-X-Google-Smtp-Source: ABdhPJy6oS2urB+1IPOO2f/0Tn5I1UfEaUUP8R6liojrzTu/Y8L1gjA802kf6Yt808rtB6h9iZn2mA==
-X-Received: by 2002:a63:7d44:: with SMTP id m4mr293956pgn.223.1603421123595;
-        Thu, 22 Oct 2020 19:45:23 -0700 (PDT)
-Received: from localhost ([2601:647:5b00:1161:a4cc:eef9:fbc0:2781])
-        by smtp.gmail.com with ESMTPSA id g8sm8015pjb.5.2020.10.22.19.45.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2020 19:45:22 -0700 (PDT)
-From:   Moritz Fischer <mdf@kernel.org>
-To:     netdev@vger.kernel.org
-Cc:     davem@davemloft.net, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lucyyan@google.com,
-        moritzf@google.com, James.Bottomley@hansenpartnership.com,
-        Moritz Fischer <mdf@kernel.org>
-Subject: [PATCH/RFC net v2] net: dec: tulip: de2104x: Add shutdown handler to stop NIC
-Date:   Thu, 22 Oct 2020 19:45:20 -0700
-Message-Id: <20201023024520.626132-1-mdf@kernel.org>
-X-Mailer: git-send-email 2.28.0
+        Fri, 23 Oct 2020 03:02:40 -0400
+Received: from cust-3a8def63 ([IPv6:fc0c:c1c9:903d:e9b4:326e:d2bd:718e:17cc])
+        by smtp-cloud8.xs4all.net with ESMTPSA
+        id Vr5ukhP1WRk2zVr5vkM7Mq; Fri, 23 Oct 2020 09:02:38 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s1;
+        t=1603436558; bh=4G763JRxq5EP+5lfPE4sy2YYRra+keEC2ZpVryeMm4U=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From:
+         Subject;
+        b=kaTQsdOHZugBc/vEj/4GZfIAU6zR0iMF4D9GgrDAAYXwWGn9k1liW8MSAFnYfSG1E
+         tEQQd1YQs56FshqPvcw1kUGD9xtmS7/5jUHv5IXFkfFFtS7r+XeU2FAd6TTP0DJdAh
+         fNjejilCgB8OMHCfL7111WWfk4SQJm58GBPdirhoC7+gtEHC/sOqRHXenQKFOkSJfU
+         S6pX7u0fbZOlXxvDROSc3WX/B/TEcs7/IqG1yvi+F0qkuQI1q1MOKssCVTVfp8LZYc
+         RKUU2I9gKL4AJ4GNzPNuVPRHK4ZgIUxWX1qzh++rshg81aEsebqLFI6MiZVKsLOyx2
+         y2YCellQ7UqTA==
+Date:   Fri, 23 Oct 2020 09:02:32 +0200
+From:   Jeroen Roovers <jer@xs4all.nl>
+To:     Helge Deller <deller@gmx.de>
+Cc:     Meelis Roos <mroos@linux.ee>, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: Re: [RFC PATCH] parisc: Add wrapper syscalls to fix O_NONBLOCK flag
+ usage
+Message-ID: <20201023090232.3b56d308@wim.jer>
+In-Reply-To: <b187505a-2ca1-c385-3b4e-16ae49f5c1ce@gmx.de>
+References: <20200829122017.GA3988@ls3530.fritz.box>
+        <20201020192101.772bedd5@wim.jer>
+        <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
+        <20201022173824.49b6b7f5@wim.jer>
+        <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
+        <20201022164007.GA10653@ls3530.fritz.box>
+        <6f58641f-d4d3-ea28-3863-83a227aeff1a@linux.ee>
+        <b187505a-2ca1-c385-3b4e-16ae49f5c1ce@gmx.de>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfFp8KNXmyl1hFCGDNQCRuBgqnoxG4LqgQBoLUkSOp2nDtaDdqCOVnCP7IPwoBSs++4VKpE2W8oT4g8C/5xkVvaNJRWugy3fu74k14Jzzoo2Sm31t/NY/
+ 570D+JUr8e4wGpEM6nb2ct6ppyiCdEmnE8bPwII4QNsc/tjr/YvNVV+2Mk2f9xDWEs9PcDg9uFGARXiSsUr65Kx6UHRvCNYs3JOR5YsfgSL3f4V0lwNtprtA
+ bSyly6YgiQrfMqJM6HnsOnLIL+uwmVg73+rw/wcszWoUwFUZFlJRLJA9Wq6d6HB7/QKNQ3p2600dqMKc/LS4Og==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The driver does not implement a shutdown handler which leads to issues
-when using kexec in certain scenarios. The NIC keeps on fetching
-descriptors which gets flagged by the IOMMU with errors like this:
+On Thu, 22 Oct 2020 22:29:18 +0200
+Helge Deller <deller@gmx.de> wrote:
 
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+> On 10/22/20 9:11 PM, Meelis Roos wrote:
+> >
+> > 22.10.20 19:40 Helge Deller wrotw:  
+> >> This patch adds wrapper functions for the relevant syscalls. The
+> >> wrappers masks out any old invalid O_NONBLOCK flags, reports in the
+> >> syslog if the old O_NONBLOCK value was used and then calls the
+> >> target syscall with the new O_NONBLOCK value.
+> >>
+> >> Fixes: 75ae04206a4d ("parisc: Define O_NONBLOCK to become
+> >> 000200000") Signed-off-by: Helge Deller <deller@gmx.de>  
+> >
+> > Works for me on RP2470 - boots up in full functionality and logs
+> > the recompilation warning about systemd-udevd and syslog-ng.
+> >
+> > Tested-by: Meelis Roos <mroos@linux.ee>  
+> 
+> Thank you Meelis & Jeroen for testing!
+> 
+> The big question is:
+> We have two options
+> a) revert my original commit 75ae04206a4d ("parisc: Define O_NONBLOCK
+> to become 000200000"), or b) apply and submit this new patch on top
+> of it.
+> 
+> The benefit in b) is that we will get long term rid of the two-bit
+> O_NONBLOCK define and thus will get more compatible to other Linux
+> architectures. This comes with the downside of (at least for a few
+> years) added overhead for those non-performance critical syscalls.
 
-Signed-off-by: Moritz Fischer <mdf@kernel.org>
----
+The performance issue is resolved once the installed kernel
+headers/libc have been updated accordingly. I think after that the
+overhead should be minimal.
 
-Changes from v1:
-- Replace call to de_remove_one with de_shutdown() function
-  as suggested by James.
+> 
+> The benefit with a) is that we then step back again and stay
+> compatible now. The downside is, that in the future we may run into
+> other issues and need to keep special-handling in some other syscalls
+> forever.
+> 
+> I'm still for going with b), and I hope we got all corner cases ruled
+> out. Opinions?
 
----
- drivers/net/ethernet/dec/tulip/de2104x.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+I think the performance penalty isn't that great, but could be
+improved, so I'd go for b) with a small change. The warning that it
+issues seems redundant, because the immediate problem has already been
+"solved", and because the proposed solution does not work:
 
-diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
-index f1a2da15dd0a..6de0cd6cf4ca 100644
---- a/drivers/net/ethernet/dec/tulip/de2104x.c
-+++ b/drivers/net/ethernet/dec/tulip/de2104x.c
-@@ -2180,11 +2180,19 @@ static int de_resume (struct pci_dev *pdev)
- 
- #endif /* CONFIG_PM */
- 
-+static void de_shutdown(struct pci_dev *pdev)
 +{
-+	struct net_device *dev = pci_get_drvdata (pdev);
-+
-+	de_close(dev);
++	if (flags & O_NONBLOCK_MASK_OUT) {
++		struct task_struct *tsk = current;
++		pr_warn("%s(%d) uses old O_NONBLOCK value. "
++			"Please recompile the application.\n",
++			tsk->comm, tsk->pid);
++	}
++	return flags & ~O_NONBLOCK_MASK_OUT;
 +}
 +
- static struct pci_driver de_driver = {
- 	.name		= DRV_NAME,
- 	.id_table	= de_pci_tbl,
- 	.probe		= de_init_one,
- 	.remove		= de_remove_one,
-+	.shutdown	= de_shutdown,
- #ifdef CONFIG_PM
- 	.suspend	= de_suspend,
- 	.resume		= de_resume,
--- 
-2.28.0
 
+The text assumes that the officially packaged kernel headers are in
+sync with the kernel, which normally isn't the case as most
+distributions seem to either pick an LTS kernel for their toolchain, or
+keep the installed kernel in sync with the installed kernel headers,
+but do not prevent running newer kernels and may even encourage doing
+so. Simply recompiling the programs that use the old O_NONBLOCK value
+does not solve the problem in most cases.
+
+If you'd remove that if() { pr_warn } entirely, you'd probably be
+rid of most of the performance penalty anyway.
+
+
+Regards,
+     jer
