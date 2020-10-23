@@ -2,113 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D99E2967E1
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 02:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B123C296891
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 04:45:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S373730AbgJWAP2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 22 Oct 2020 20:15:28 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:38577 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S373727AbgJWAP1 (ORCPT
+        id S460236AbgJWCpY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 22 Oct 2020 22:45:24 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:46021 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S460237AbgJWCpY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Oct 2020 20:15:27 -0400
-Received: by mail-pg1-f194.google.com with SMTP id j7so2069256pgk.5;
-        Thu, 22 Oct 2020 17:15:26 -0700 (PDT)
+        Thu, 22 Oct 2020 22:45:24 -0400
+Received: by mail-pg1-f195.google.com with SMTP id 19so22279pge.12;
+        Thu, 22 Oct 2020 19:45:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nJuvv8IL2p3H3QZp8m2iSM8qkccByy2xhG+R9HNdsCs=;
-        b=SF8WLgxrdQ21PFMbugp4WbrMXswElufb2YP2VOo+IgsGfr4aAUYNI9ObI38l89vpTL
-         8tOpdyhv4XhF/0ObZMS3CiQIPAp80o0ix20uAnFTTVvjJqAmYMJkb2ZtNOu/uRXmLdBK
-         mfdGgj66sKsA5Z9/VSIaFXix+AcMxBxwcn0BKff5sGkKmSWKwl0FeTr2HhBRcOhGo+KA
-         CHx+U3oXf8D1nvjGusM0GM1Eylsa38p7AbyIacXjB21KG/u0Kye80wpOyVaA4wYI6dtL
-         qSjEPH6cbcD3N/KI2Fb2eY1mMkDkFtV7SUnVba+nsUnIc0VpPzxP9NEWbKFBx2/1XnzF
-         T5fA==
-X-Gm-Message-State: AOAM530U12Q45Wy0ArwbEvN4U8juJFQHjAqWx6i3ZFjaybksZz87pyWD
-        jFvxjH7lEOwGALZdbTelTh8=
-X-Google-Smtp-Source: ABdhPJzlSCn1Jx4Lbr89cvlqse38aVOniqNXgGBir7jh1wf05/RXLm/4UMRiic8qg0fAMCNa7xvFdg==
-X-Received: by 2002:a17:90a:7f93:: with SMTP id m19mr5102760pjl.67.1603412125534;
-        Thu, 22 Oct 2020 17:15:25 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YixKmrm30sY9o+7/rbu6eu+lq+X0S/5/adkmWCbKRHI=;
+        b=Y3RN0Q3cx95CMxF7vlqgVH60PuXL3VMD6wNa0iKVg4Z3xE6eNug55U8tTrZ8M8NByz
+         H3eYN3zPH30lW39XdbKG23KL0z+ihmc20DIhoQaT21VrunWHtw6I/zhPU4eyziMZ/VBk
+         Tb73YeEiRhMHBjneliKiGKwYL0Exz8eb4uKcXq0rWlqUFzmcsuIhCysZzI3WCJj0i/2d
+         3lvBLT+E56/0Our9v9CtcIDXYRVLG1bDRqWxY9zVVokQ8cQZH5Qm7KUi3FZj5TtAxfJT
+         Cbmxh/Y1/so3ZKG5tnqgdGG0wearjAwMidZEhQY063wDOwOCEoHV7P8ODPSwzidXOSQu
+         ksUw==
+X-Gm-Message-State: AOAM5306V/Lt5ObTomo9ForiQdxQciATKwB0G1cRX4NyTaUjPPstf2EQ
+        63XnSMTJMzE8VdI/01eHlKwD7oM4xnc=
+X-Google-Smtp-Source: ABdhPJy6oS2urB+1IPOO2f/0Tn5I1UfEaUUP8R6liojrzTu/Y8L1gjA802kf6Yt808rtB6h9iZn2mA==
+X-Received: by 2002:a63:7d44:: with SMTP id m4mr293956pgn.223.1603421123595;
+        Thu, 22 Oct 2020 19:45:23 -0700 (PDT)
 Received: from localhost ([2601:647:5b00:1161:a4cc:eef9:fbc0:2781])
-        by smtp.gmail.com with ESMTPSA id f21sm3503438pfn.173.2020.10.22.17.15.24
+        by smtp.gmail.com with ESMTPSA id g8sm8015pjb.5.2020.10.22.19.45.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2020 17:15:24 -0700 (PDT)
-Date:   Thu, 22 Oct 2020 17:15:23 -0700
+        Thu, 22 Oct 2020 19:45:22 -0700 (PDT)
 From:   Moritz Fischer <mdf@kernel.org>
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Moritz Fischer <mdf@kernel.org>, netdev@vger.kernel.org,
-        davem@davemloft.net, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lucyyan@google.com
-Subject: Re: [PATCH/RFC net] net: dec: tulip: de2104x: Add shutdown handler
- to stop NIC
-Message-ID: <20201023001523.GA620527@epycbox.lan>
-References: <20201022220636.609956-1-mdf@kernel.org>
- <f1ff32ec2970f1ee808e2da946e6514e71694e71.camel@HansenPartnership.com>
+To:     netdev@vger.kernel.org
+Cc:     davem@davemloft.net, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lucyyan@google.com,
+        moritzf@google.com, James.Bottomley@hansenpartnership.com,
+        Moritz Fischer <mdf@kernel.org>
+Subject: [PATCH/RFC net v2] net: dec: tulip: de2104x: Add shutdown handler to stop NIC
+Date:   Thu, 22 Oct 2020 19:45:20 -0700
+Message-Id: <20201023024520.626132-1-mdf@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f1ff32ec2970f1ee808e2da946e6514e71694e71.camel@HansenPartnership.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 22, 2020 at 04:04:16PM -0700, James Bottomley wrote:
-> On Thu, 2020-10-22 at 15:06 -0700, Moritz Fischer wrote:
-> > The driver does not implement a shutdown handler which leads to
-> > issues
-> > when using kexec in certain scenarios. The NIC keeps on fetching
-> > descriptors which gets flagged by the IOMMU with errors like this:
-> > 
-> > DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-> > DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-> > DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-> > DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-> > DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-> > 
-> > Signed-off-by: Moritz Fischer <mdf@kernel.org>
-> > ---
-> > 
-> > Hi all,
-> > 
-> > I'm not sure if this is the proper way for a shutdown handler,
-> > I've tried to look at a bunch of examples and couldn't find a
-> > specific
-> > solution, in my tests on hardware this works, though.
-> > 
-> > Open to suggestions.
-> > 
-> > Thanks,
-> > Moritz
-> > 
-> > ---
-> >  drivers/net/ethernet/dec/tulip/de2104x.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c
-> > b/drivers/net/ethernet/dec/tulip/de2104x.c
-> > index f1a2da15dd0a..372c62c7e60f 100644
-> > --- a/drivers/net/ethernet/dec/tulip/de2104x.c
-> > +++ b/drivers/net/ethernet/dec/tulip/de2104x.c
-> > @@ -2185,6 +2185,7 @@ static struct pci_driver de_driver = {
-> >  	.id_table	= de_pci_tbl,
-> >  	.probe		= de_init_one,
-> >  	.remove		= de_remove_one,
-> > +	.shutdown	= de_remove_one,
-> 
-> This doesn't look right: shutdown is supposed to turn off the device
-> without disturbing the tree or causing any knock on effects (I think
-> that rule is mostly because you don't want anything in userspace
-> triggering since it's likely to be nearly dead).  Remove removes the
-> device from the tree and cleans up everything.  I think the function
-> you want that's closest to what shutdown needs is de_close().  That
-> basically just turns off the chip and frees the interrupt ... you'll
-> have to wrapper it to call it from the pci_driver, though.
+The driver does not implement a shutdown handler which leads to issues
+when using kexec in certain scenarios. The NIC keeps on fetching
+descriptors which gets flagged by the IOMMU with errors like this:
 
-Thanks for the suggestion, I like that better. I'll send a v2 after
-testing.
-I think anything that hits on de_stop_hw() will keep the NIC from
-fetching further descriptors.
+DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
 
-Cheers,
-Moritz
+Signed-off-by: Moritz Fischer <mdf@kernel.org>
+---
+
+Changes from v1:
+- Replace call to de_remove_one with de_shutdown() function
+  as suggested by James.
+
+---
+ drivers/net/ethernet/dec/tulip/de2104x.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
+index f1a2da15dd0a..6de0cd6cf4ca 100644
+--- a/drivers/net/ethernet/dec/tulip/de2104x.c
++++ b/drivers/net/ethernet/dec/tulip/de2104x.c
+@@ -2180,11 +2180,19 @@ static int de_resume (struct pci_dev *pdev)
+ 
+ #endif /* CONFIG_PM */
+ 
++static void de_shutdown(struct pci_dev *pdev)
++{
++	struct net_device *dev = pci_get_drvdata (pdev);
++
++	de_close(dev);
++}
++
+ static struct pci_driver de_driver = {
+ 	.name		= DRV_NAME,
+ 	.id_table	= de_pci_tbl,
+ 	.probe		= de_init_one,
+ 	.remove		= de_remove_one,
++	.shutdown	= de_shutdown,
+ #ifdef CONFIG_PM
+ 	.suspend	= de_suspend,
+ 	.resume		= de_resume,
+-- 
+2.28.0
+
