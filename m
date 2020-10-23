@@ -2,28 +2,29 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B3C296B0E
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 10:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A50296B40
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 10:32:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S375765AbgJWITO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 23 Oct 2020 04:19:14 -0400
-Received: from mout.gmx.net ([212.227.17.22]:32783 "EHLO mout.gmx.net"
+        id S375955AbgJWIcF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 23 Oct 2020 04:32:05 -0400
+Received: from mout.gmx.net ([212.227.17.20]:60499 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S374875AbgJWITM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 23 Oct 2020 04:19:12 -0400
+        id S375948AbgJWIcE (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 23 Oct 2020 04:32:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1603441113;
-        bh=PsQesSUnI/MDJPhgHrMLrVVNXnRpDBchRU86QC0E2V8=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=W4bpGuSH6Jm0BJqXEIvxcG/ycdATxIRssjboyGJxTyUl2L0zG9yqwq9AwuPYXmzEO
-         pZ2hmCAr2Vzu8cWLBapvoWwhhMjPdS3uuh5EsvHTHQ279MldwbJC7Fij4PCOxjwcpm
-         N2iRIr+goWKkJ+i6W+vmvhDXgaCJ4e2Q2rFDVeUU=
+        s=badeba3b8450; t=1603441876;
+        bh=GJuIfHMWtzCCtbZZjYN6t/cTWMxaXYfbdjeorhWYxk4=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
+        b=MVSCTajnbecd9Kgcw28YMWm+esPGFloU1+n3qZszffOKHTWqtZyggquwwAR4Myzx9
+         xdrRL0Pa5LzwP0IaFwEIvNos0K5CV0/d4L2puL2fPl4rLjpFZ7JtBENpwOI50F28tl
+         X2e8ymDo2NMMmTFwQR6z403kN3QBBR6GCCA9LvDo=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.58] ([92.116.145.200]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MTAFb-1kzPlO2Q4V-00UZ0h; Fri, 23
- Oct 2020 10:18:33 +0200
+Received: from [192.168.20.58] ([92.116.145.200]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7sHy-1kQuf80gxW-0055DZ; Fri, 23
+ Oct 2020 10:31:16 +0200
 Subject: Re: [RFC PATCH] parisc: Add wrapper syscalls to fix O_NONBLOCK flag
  usage
+From:   Helge Deller <deller@gmx.de>
 To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
         Jeroen Roovers <jer@xs4all.nl>, Meelis Roos <mroos@linux.ee>,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
@@ -32,7 +33,7 @@ Cc:     linux-parisc@vger.kernel.org
 References: <20200829122017.GA3988@ls3530.fritz.box>
  <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
  <20201022164007.GA10653@ls3530.fritz.box> <5650648.lOV4Wx5bFT@eto.sf-tec.de>
-From:   Helge Deller <deller@gmx.de>
+ <05c101c9-c790-68ec-40a6-d248452fe60d@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
  HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
@@ -90,102 +91,76 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <05c101c9-c790-68ec-40a6-d248452fe60d@gmx.de>
-Date:   Fri, 23 Oct 2020 10:18:30 +0200
+Message-ID: <15a0414d-9c6d-76ed-becc-f62635763da0@gmx.de>
+Date:   Fri, 23 Oct 2020 10:31:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <5650648.lOV4Wx5bFT@eto.sf-tec.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="YnPS2dRoSxjgQmybV0haL1lJP84zZx5TI"
-X-Provags-ID: V03:K1:7P3NWmU8LP1mHS7W6OzeIbgoNd0fevEHVS1hVmlcVagPN16UvrQ
- 0wSdP+Btp6nS96Juz44fQYhQ5yL/sjuzOVIEoH0z/vyeRG7bHji2gIVZRFCPQXQw8ZxL8m3
- ZrNbmbAQzgdBaCKkZY/LHylZZ0yhuRsAU2OZPj90OJOzQMUn3xzt5sRMJtMcq2vtBfJKik3
- mvOQu/tYF8Ytb/V0zTArw==
+In-Reply-To: <05c101c9-c790-68ec-40a6-d248452fe60d@gmx.de>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6vaXWlBSS8rxNkexTlvXg5eh+DaeOKP97tSCkePjkab0t/hKhl/
+ KI5JDMAyNELAM0SC6qENpxMQtZ4bVGDVn9Id2s5MNob7cxpq/imlo2c0DFkuyZyHEsLHHd9
+ fCmQIKl0Mz1bepJ8cW+8a3T8YhLGxUtidQ5X6qkDg8z9hV4ytSh+ML3pXOMajGSV64uLm9p
+ aTxpGtSGa2kZy3M/RsKwQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3PiJOjyZ3Ic=:b3O6DIwt7dBQO8ZiXihl32
- yznR3m0nPgE8f8qroviYrUpXZ+vfQL0OJr15tkSogi5Mk9qFcXUJR0YyYS4GK3WDKHNlNksWq
- OcdNRzsgCKJefsw6KUEdWzOKWF+Zpk7A7QsDE+9S9dCj5GzWB2NN5A2OL2mpdF5gMFi/mLL/G
- Y2Vf16MYTZRrWD632ET/OzMBHMmFvPzxVuuoj31kY9qmf0sa5d8r0WieFRihsbL4WKADW9pMp
- F2LOKfuHtiJDStTfJuNpmwjGZq30MAuUFS2D9jjzJeO7/JJZruvCjiAL1V21cNvxsofwOHKYb
- GmhIkl56+T9sqDk4+yA73+96niRVHQ1avS3kDq/Y4iRAbHpLh6IgQLPZgQ5gzphZjRobBIQO4
- 9rj3SFp670WpnhW1yOgRZTs03mfSGLgi3pyTow/2npYbpzmv5/U7L6rlhn4IukV7czBCGIH1r
- IEvKoDRcqpZURXz5glkqSRexfEw+pYM0OWbwaAC1p4moNwOSs7tMmwiEindYIC2l7FkDLI28q
- VEEl5zqcG0HJiUAIc68EH3xRhPyQSgpape66XJCA7nUzhV0OkYzqRtBaV/tp8VUPWyAhI03rV
- oczBXGT5CvmpUA9UffKRAzq26c3C1dFGlZ3ELR5BIioRqClgNSCFRQjvMjoJzwNwKXSsMDLxV
- R/0JuuTU5pAgyd5R/gew37+aD80khBmj+bDHN+opWguGnVqPbiddBYhkeXhQoHxjk3Si3amnX
- KI+d/Ypth71sJGrGIuvrHnjZxdiZlLUeL0aOcuend7p4NSMQv+OFtYS4+FN/OuaYoQqrw22Se
- 93HrVMSsR8Aen8BHWrQtEmiRkzBBVjhWgpdnHfGoT6W1kntPldIPAxQtpGgjAdTs5po5kC2/i
- tKlp9BAX54jtJwVoifnA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SDpdIxZ4iDA=:54LZpglzfCVMzzyXNBpRIu
+ Bapo9DrrTcpez91aLv4oiwAFZjZm6JuknsKxEMRb0HqYAb4s5JRFKaa4qJD+/iw1ffQeNhzyV
+ EkDWDXO96Oe0lZJFo5Jc2KSvCKWzOV6iHKeZ7wMWIP7yJfu4FzKpl/YD18t4upNODGR14mO3w
+ m+ngFccR1FD7mDDRfTvbHchve7EFF1juaxc9m+e6dHi6mSTMeL0P9dNZWiKRTaY31eJn/u5ej
+ YI5e7MZk1OL0iUvsLQH8YwdwY7q1MF6XEYqSFeB1G9nmZKn3vKQ01iXOz4iNBSatSO4YXj0g1
+ C/lsv/NQ5v9tdmIufjlgn6jPaucJBRHfuyZf6YkVDJ3aXpYbu3E4YRD8Le06WNIl1/qwu3VMM
+ yLqJS9ZwlwoutRJ+aX0WlyV+a6E5HZ5HUSUc1cu6kw73uqWExb/sHPFx4dAw3xvzDaaBIwj9q
+ 8U4l3PjWDe6K9H6qWmAa2pCS0snUXC4W9wzjyet1aX/SPID4ksQhTFGfP8skBJ1urFhzhPL6d
+ JBqPXQYWCfYuTG1q5BbO1hncHwTxzcYo+JCDNWDC5KXt6bxRad9uLS6TBWoktY7FcRhJzo02B
+ U4s8BD774UHzkG0Z4o0DeSpLPuvGQVwIYb0yhzN0yyjDRIs/ZEG2TbkfiyzEWsdJkp52HO0mz
+ jGKGsJ51c0MfrNEhoPVH3tPjDtFk6wQ1gOWkissxnUM6geXeL4O/lxbU4dA6lmo/HD5x0fknW
+ uCDIbPGVIHnJiJVj+cJjn5BZbY4hT6qtTPJ2Drx7P8u32PQGGhJKtOcajh7T5e5wyobnF3IzS
+ FvRNmiKZYMwOw+Row/0/4Gg4x6HBF2UUaLmOrWizywkb2vXPZxw+VG35kMri3puskhLtyMqzz
+ fGSetoRnk0p+sTsNe/mQ==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---YnPS2dRoSxjgQmybV0haL1lJP84zZx5TI
-Content-Type: multipart/mixed; boundary="lRXU1Gmfy4dA9TA6ZgAIpZJF2IbACgqd4"
+On 10/23/20 10:18 AM, Helge Deller wrote:
+> On 10/23/20 9:25 AM, Rolf Eike Beer wrote:
+>>> +#define O_NONBLOCK_OLD		000200004
+>>> +#define O_NONBLOCK_MASK_OUT	(O_NONBLOCK_OLD & ~O_NONBLOCK)
+>>> +static int FIX_O_NONBLOCK(int flags)
+>>> +{
+>>> +	if (flags & O_NONBLOCK_MASK_OUT) {
+>>> +		struct task_struct *tsk =3D current;
+>>> +		pr_warn("%s(%d) uses old O_NONBLOCK value. "
+>>> +			"Please recompile the application.\n",
+>>> +			tsk->comm, tsk->pid);
+>>> +	}
+>>> +	return flags & ~O_NONBLOCK_MASK_OUT;
+>>> +}
+>>
+>> This will also trigger if I just pass 0x4 in flags, no? The check shoul=
+d be
+>>
+>> 	if ((flags & O_NONBLOCK_OLD) =3D=3D O_NONBLOCK_OLD)
+>
+> RIGHT!
+> That's a very good point.
+> I was thinking about what would happen if over time a new (unrelated) de=
+fine
+> gets created which then gets 0x4 as value. My code would then have wrong=
+ly
+> modified it.
 
---lRXU1Gmfy4dA9TA6ZgAIpZJF2IbACgqd4
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+After some more thinking....
 
-On 10/23/20 9:25 AM, Rolf Eike Beer wrote:
->> +#define O_NONBLOCK_OLD		000200004
->> +#define O_NONBLOCK_MASK_OUT	(O_NONBLOCK_OLD & ~O_NONBLOCK)
->> +static int FIX_O_NONBLOCK(int flags)
->> +{
->> +	if (flags & O_NONBLOCK_MASK_OUT) {
->> +		struct task_struct *tsk =3D current;
->> +		pr_warn("%s(%d) uses old O_NONBLOCK value. "
->> +			"Please recompile the application.\n",
->> +			tsk->comm, tsk->pid);
->> +	}
->> +	return flags & ~O_NONBLOCK_MASK_OUT;
->> +}
->=20
-> This will also trigger if I just pass 0x4 in flags, no? The check shoul=
-d be=20
->=20
-> 	if ((flags & O_NONBLOCK_OLD) =3D=3D O_NONBLOCK_OLD)
+It's not that easy.
+Let's assume there will be another new flag at some time with value 0x4.
+Now, the caller sets this flag (0x4) and new O_NONBLOCK (000200000),
+so you end up with 000200004 again, which then triggers your check:
+ 	if ((flags & O_NONBLOCK_OLD) =3D=3D O_NONBLOCK_OLD)
 
-RIGHT!
-That's a very good point.
-I was thinking about what would happen if over time a new (unrelated) def=
-ine
-gets created which then gets 0x4 as value. My code would then have wrongl=
-y=20
-modified it.
-I'll fix this.
-=20
-> because that would correctly reject a bare 0x4, at least I hope that th=
-is=20
-> would already happen with the strict checking you mentioned.
->=20
-> Would a pr_warn_once make sense? Otherwise your log may get flooded by =
-them if=20
-> e.g. sudo is the problem and my nagios comes every minute to check some=
-thing.
-
-I like the idea.
+So, my check to test only the mask for 0x4 was basically better,
+because it would prevent the usage of 0x4 as any new value.
+In any way, it seems we need to avoid using 0x4 for a long time...
 
 Helge
-
-
---lRXU1Gmfy4dA9TA6ZgAIpZJF2IbACgqd4--
-
---YnPS2dRoSxjgQmybV0haL1lJP84zZx5TI
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQS86RI+GtKfB8BJu973ErUQojoPXwUCX5KR1gAKCRD3ErUQojoP
-X/DUAP96xUfvkxNNjayt0RRh4eKWcroT4SsD3hgODWVsGw8QRQEAmZJgmav+WoM9
-Qq8aVvaICPP2FI6Sk4xn7XE1W+ZSOg0=
-=kOnf
------END PGP SIGNATURE-----
-
---YnPS2dRoSxjgQmybV0haL1lJP84zZx5TI--
