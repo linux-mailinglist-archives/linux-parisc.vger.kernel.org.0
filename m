@@ -2,152 +2,224 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A63232976B5
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 20:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53AC42976C2
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 20:19:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S460277AbgJWSPv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 23 Oct 2020 14:15:51 -0400
-Received: from mout.gmx.net ([212.227.17.20]:39637 "EHLO mout.gmx.net"
+        id S465252AbgJWSTD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 23 Oct 2020 14:19:03 -0400
+Received: from mout.gmx.net ([212.227.15.15]:58865 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S370900AbgJWSPu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 23 Oct 2020 14:15:50 -0400
+        id S460259AbgJWSTD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 23 Oct 2020 14:19:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1603476935;
-        bh=I2hHmlwr/A0rfVZBasfwfLmoGIllKV3KYmCScUTJ8Iw=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=cff9JzxzwP8af4NJsFifSGRqBoBzjzqFpst5uGTRSzCHYe0BHEW5xb/Xrb8V3IqPu
-         iqFrXMILg+XDm1OM1c5M9WxwTdmkd+eu1pM6I8CQS7znbVFMMpsLmfgQDcqFmI95BA
-         7SI7TntScG8mWpEXv+XOmZgp5dJcZBI+nXN9H3a0=
+        s=badeba3b8450; t=1603477132;
+        bh=trlhyNEc7Y4eITCg8+SIPYMEYO/JLfoelsqVZF4GrTo=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=ILEs4mQvx9576gTaTSGWzkY/gniyxW/O1sSk0sItOfXTW6ZFEumOZTBQPZoD2rSNh
+         3h6+rU2QjCdtZclUn0ilxi2Y/4GB0qXuULPKAVq38HEm0LrCNxM+kpanWZLcECdMAB
+         98MpRgr1d5ggRbmdt8tqavbp8aPT2iS16ojdXSqc=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.145.200]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MhU5b-1jriuC0seB-00eh4n; Fri, 23
- Oct 2020 20:15:35 +0200
-Subject: Re: [RFC PATCH] parisc: Add wrapper syscalls to fix O_NONBLOCK flag
- usage
-To:     Jeroen Roovers <jer@xs4all.nl>
-Cc:     Meelis Roos <mroos@linux.ee>, linux-parisc@vger.kernel.org,
+Received: from ls3530.fritz.box ([92.116.145.200]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MCKFk-1keJ7m1FGE-009Q0e; Fri, 23
+ Oct 2020 20:18:52 +0200
+Date:   Fri, 23 Oct 2020 20:18:47 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Helge Deller <deller@gmx.de>
+Cc:     Jeroen Roovers <jer@xs4all.nl>, linux-parisc@vger.kernel.org,
+        Meelis Roos <mroos@linux.ee>,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
+Subject: [RFC PATCH v3] parisc: Add wrapper syscalls to fix O_NONBLOCK flag
+ usage
+Message-ID: <20201023181847.GA6776@ls3530.fritz.box>
 References: <20200829122017.GA3988@ls3530.fritz.box>
  <20201020192101.772bedd5@wim.jer>
  <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
  <20201022173824.49b6b7f5@wim.jer>
  <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
  <20201022164007.GA10653@ls3530.fritz.box>
- <6f58641f-d4d3-ea28-3863-83a227aeff1a@linux.ee>
- <b187505a-2ca1-c385-3b4e-16ae49f5c1ce@gmx.de>
- <20201023090232.3b56d308@wim.jer>
- <20d34af2-7c5b-b9af-b4b7-062e2689c092@gmx.de>
- <20201023105312.5266bce7@wim.jer>
-From:   Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
- c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <3418756b-ca26-98c1-1bc1-a6cf2caef871@gmx.de>
-Date:   Fri, 23 Oct 2020 20:15:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20201023105312.5266bce7@wim.jer>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:umLMPpRs4Ar2IwYIg+/hAfZcU8JtYfm2HP/TVroLDsqL7MWYiv6
- gbhc521/F/1IEPyzC794Ecj1eb3BGDKDvXbKibSa6255TtGKX0ykaQie/RmHKXf3/fxUT6r
- kjKBvrNEw0ZtmaMhM1QTjLKLUPDlbCQdC5qh9TMQPBkgPFdjFCCG9f7CvbG+Rwz5xyKKDKE
- yVGbql9iHNXsu16kJ2z/w==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201022164007.GA10653@ls3530.fritz.box>
+X-Provags-ID: V03:K1:x8iZnN9k77FjhtIx4CuWF2TAGm796qasS3rHzQPCZN9dZX/am/h
+ /RL3CR9LW/H09RC3G4uitUKGAny/KVf3k+eZMHJGJKQn8MGWhfD5kXpGruVdRvAOIkR5FQt
+ 4suifdtLFbguY8HXuRwkXQd9oAE+Y/Aqc8+JuwXs4Q5bIkrO6GZX0Syn4vingYKv8yDlVQ1
+ oq27f6gzO2k37ugbi6+og==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:pIKHfwUp0PM=:hjccXp/YQSMxoXUucmrZBh
- +P8dAeEAyhZg0Yb8NV2TDe1ha6qKPMTGp0uLG/NaJfBEfqo4h7h7UqbU1txe3pjJjioNvgTtK
- VA/boc6T0hZ6EP6ocJGpWPfZSA/jZLu12G8W+JfrA9O6+mEEN3JQTf5Th+ywCs3+2MTXqpV3/
- l1kXWf47sp78XhNGRkWT9GyOpV6672QgEo+ullI3AaLDi/ccULtlXYYETzESlki9MUBO7UTex
- l00sAh6Cmaix8DbRzrX6mvBtIqWgcjw6uaxCBpNHM9mAi0/UZJy4SyetZr5hliwB55EGjEkIE
- gTZITNRBkMHLnPQUyD24O9TOUfFOp8aGW+D8XHC5c9OMC7rPqHx9xfg9De+xicOKErNYfKPFu
- bogVoApQ9QkrwHMiH/GiFmigP17+VNnzVvuaxeuLL8TILMkD0qG/xN/A+o8D01pWXyyiQorcH
- oX7EPd/lruq1PNUDqIN/nBMPpqqY2h+IoUj9ojhPGxZXRS/oUAiyx5WZbfHday6WclxCbh/jF
- oeVMU0UI04ANKsQhrGStPCJAEIAXo9o8KnzYEsBKKniAnENBAaY0uSWhdBZ82LPgWlmxcADge
- qRmywFZgT5t/6z1fUF+9nEVzTTq5jkoAtTxsaPWtKWLKqksunkU29t9yNWhTRIrwVqcQsYTtY
- k7rZLr9fW1hluN3bu2X8VgDQ2/iWPZl0uV5qjun38AHwEQcxvSEuhsQnNNqZ6+FZuC6Q3PEqZ
- RCpPcnBHL9HgdQhfuJlPd6Ka/xDF3QtoiJOaNK9PY7moQNWoRPiPD9Q3zN5PmNHv3yyQIcp+o
- bbE18H4pD+YsMQ80LQ8tpRzCTGPjDQX0jXjRz/Vvg8PP5fUuoyfm7iIFwoibpTz1zDemvcyw0
- sZ4sw1eUNBJvbwm9ExNw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:PJYuV2Au5KI=:YQIzkjYGjje1Sk/cWPyQaC
+ S4GARboPsw4nCMEviulYBFxvS/g9NaLMPB2VHTr/ekHucCZGY/VOQv4K90Pt05b6Hg6OKWxUY
+ 2RD3Aav448ZwCRrLyFaCLxbZwaYDvuXFe9TmlQwWEyJdOPs6izv9HVAXzDK7T12Vn3/JNGZ6F
+ eMM8REZl/GofaQXPK3BiprvE62Pz4sYo1vTvcCOsgA68rz/lUsea9Ya72b9qvLTwm6ACfDGc8
+ k1yBS4eChYlfaKPcg7ASryqxwY2qHGD225YtDF3Pb1n40cwwNGVk49nXUVSu+8rnAksHvZC6q
+ 3vb88t4P/uU+MT88hRq9ThjoTFQDy/07AyR+7iH34no25O1/lSclSm7PhkEQgPUHY3MrI1X8L
+ J38anjiAaEqek2jTqQqs+NUWbBBBJPUOXQICwwLgztTYCU+S3VvoXUtZIXJzJCInS53YxTEZN
+ qoysypqIrooyxq8CrlCL6HbkbOURdKeSZ9tgoeRE4VmUlwXTK3ILxedU4IYzcB3hefcrWEJ0w
+ 3gOBK7+4e8T7Hqn7KoweMxhJEBRu0s0Dvrt4mIqqKhTDn7Tyt3e1c2xJDtTGiC2b/j5pXn2Le
+ JPM5mhWgoWnwcx2HzYEvmU2zyHfCHVRrpU3GHCV83I/8dpbItCU8pxO+yIXE8BrW38RE6sgpj
+ uxxQYjc8EuZrQC28WZjVRYRAAFJ4sbiotqlRHnWcGb1PSDa4QxjuUhrwb0Vrm65cfol5et6R2
+ oSafQBddh2StBTivx+FbLt8iPzFez8NjC4/spL8wSKV5stEdTQLjzG8AG8Y5O2sps1AUVkhqs
+ BmTvNNRlQpFeYa+mDwSHQPDl1rvGqCq5XgVYuZuwiUo0lOa/chAYdyM+tzWCpF+0eRHk0ETk/
+ n17gPO4Swewygrn2LxOw==
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/23/20 10:53 AM, Jeroen Roovers wrote:
-> On Fri, 23 Oct 2020 10:35:34 +0200
-> Helge Deller <deller@gmx.de> wrote:
->
->> I think it makes sense to keep at least one warning.
->> Rolf Eike proposed a pr_warn_once() which seems the best compromise
->> as it keeps us at least informed which packages needs updating and
->> how relevant it is to keep those wrappers....
->
-> I agree that if we are to keep the warning, pr_warn_once is a better
-> choice.
->
-> In the rpc.idmapd strace I still see
->
-> 4635  inotify_init1(IN_NONBLOCK)        =3D -1 EINVAL (Invalid argument)
->
-> so maybe you want to wrap around inotify_init1 as well?
+The commit 75ae04206a4d ("parisc: Define O_NONBLOCK to become
+000200000") changed the O_NONBLOCK constant to have only one bit set
+(like all other architectures). This change broke some existing
+userspace code (e.g.  udevadm, systemd-udevd, elogind) which called
+specific syscalls which do strict value checking on their flag
+parameter.
 
-Done.
-Added in the new patch version.
+This patch adds wrapper functions for the relevant syscalls. The
+wrappers masks out any old invalid O_NONBLOCK flags, reports in the
+syslog if the old O_NONBLOCK value was used and then calls the target
+syscall with the new O_NONBLOCK value.
 
-Helge
+Fixes: 75ae04206a4d ("parisc: Define O_NONBLOCK to become 000200000")
+Signed-off-by: Helge Deller <deller@gmx.de>
+Tested-by: Meelis Roos <mroos@linux.ee>
+Tested-by: Jeroen Roovers <jer@xs4all.nl>
+
+=2D-
+v3: Added inotify_init1() syscall wrapper
+    Changed warning to pr_warn_once()
+
+diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_pari=
+sc.c
+index 5d458a44b09c..9549496f5523 100644
+=2D-- a/arch/parisc/kernel/sys_parisc.c
++++ b/arch/parisc/kernel/sys_parisc.c
+@@ -6,7 +6,7 @@
+  *    Copyright (C) 1999-2003 Matthew Wilcox <willy at parisc-linux.org>
+  *    Copyright (C) 2000-2003 Paul Bame <bame at parisc-linux.org>
+  *    Copyright (C) 2001 Thomas Bogendoerfer <tsbogend at parisc-linux.or=
+g>
+- *    Copyright (C) 1999-2014 Helge Deller <deller@gmx.de>
++ *    Copyright (C) 1999-2020 Helge Deller <deller@gmx.de>
+  */
+
+ #include <linux/uaccess.h>
+@@ -23,6 +23,7 @@
+ #include <linux/utsname.h>
+ #include <linux/personality.h>
+ #include <linux/random.h>
++#include <linux/compat.h>
+
+ /* we construct an artificial offset for the mapping based on the physica=
+l
+  * address of the kernel mapping variable */
+@@ -373,3 +374,73 @@ long parisc_personality(unsigned long personality)
+
+ 	return err;
+ }
++
++/*
++ * Up to kernel v5.9 we defined O_NONBLOCK as 000200004,
++ * since then O_NONBLOCK is defined as 000200000.
++ *
++ * The following wrapper functions mask out the old
++ * O_NDELAY bit from calls which use O_NONBLOCK.
++ *
++ * XXX: Remove those in year 2022 (or later)?
++ */
++
++#define O_NONBLOCK_OLD		000200004
++#define O_NONBLOCK_MASK_OUT	(O_NONBLOCK_OLD & ~O_NONBLOCK)
++
++static int FIX_O_NONBLOCK(int flags)
++{
++	if (flags & O_NONBLOCK_MASK_OUT) {
++		struct task_struct *tsk =3D current;
++		pr_warn_once("%s(%d) uses a deprecated O_NONBLOCK value.\n",
++			tsk->comm, tsk->pid);
++	}
++	return flags & ~O_NONBLOCK_MASK_OUT;
++}
++
++asmlinkage long parisc_timerfd_create(int clockid, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_timerfd_create(clockid, flags);
++}
++
++asmlinkage long parisc_signalfd4(int ufd, sigset_t __user *user_mask,
++	size_t sizemask, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_signalfd4(ufd, user_mask, sizemask, flags);
++}
++
++#ifdef CONFIG_COMPAT
++asmlinkage long parisc_compat_signalfd4(int ufd,
++	compat_sigset_t __user *user_mask,
++	compat_size_t sizemask, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return compat_sys_signalfd4(ufd, user_mask, sizemask, flags);
++}
++#endif
++
++asmlinkage long parisc_eventfd2(unsigned int count, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_eventfd2(count, flags);
++}
++
++asmlinkage long parisc_userfaultfd(int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_userfaultfd(flags);
++}
++
++asmlinkage long parisc_pipe2(int __user *fildes, int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_pipe2(fildes, flags);
++}
++
++asmlinkage long parisc_inotify_init1(int flags)
++{
++	flags =3D FIX_O_NONBLOCK(flags);
++	return sys_inotify_init1(flags);
++}
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/=
+syscalls/syscall.tbl
+index 38c63e5404bc..f375ea528e59 100644
+=2D-- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -344,17 +344,17 @@
+ 304	common	eventfd			sys_eventfd
+ 305	32	fallocate		parisc_fallocate
+ 305	64	fallocate		sys_fallocate
+-306	common	timerfd_create		sys_timerfd_create
++306	common	timerfd_create		parisc_timerfd_create
+ 307	32	timerfd_settime		sys_timerfd_settime32
+ 307	64	timerfd_settime		sys_timerfd_settime
+ 308	32	timerfd_gettime		sys_timerfd_gettime32
+ 308	64	timerfd_gettime		sys_timerfd_gettime
+-309	common	signalfd4		sys_signalfd4			compat_sys_signalfd4
+-310	common	eventfd2		sys_eventfd2
++309	common	signalfd4		parisc_signalfd4		parisc_compat_signalfd4
++310	common	eventfd2		parisc_eventfd2
+ 311	common	epoll_create1		sys_epoll_create1
+ 312	common	dup3			sys_dup3
+-313	common	pipe2			sys_pipe2
+-314	common	inotify_init1		sys_inotify_init1
++313	common	pipe2			parisc_pipe2
++314	common	inotify_init1		parisc_inotify_init1
+ 315	common	preadv	sys_preadv	compat_sys_preadv
+ 316	common	pwritev	sys_pwritev	compat_sys_pwritev
+ 317	common	rt_tgsigqueueinfo	sys_rt_tgsigqueueinfo		compat_sys_rt_tgsigqu=
+eueinfo
+@@ -387,7 +387,7 @@
+ 341	common	bpf			sys_bpf
+ 342	common	execveat		sys_execveat			compat_sys_execveat
+ 343	common	membarrier		sys_membarrier
+-344	common	userfaultfd		sys_userfaultfd
++344	common	userfaultfd		parisc_userfaultfd
+ 345	common	mlock2			sys_mlock2
+ 346	common	copy_file_range		sys_copy_file_range
+ 347	common	preadv2			sys_preadv2			compat_sys_preadv2
