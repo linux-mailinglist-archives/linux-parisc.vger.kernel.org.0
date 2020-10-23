@@ -2,148 +2,110 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A91E296C08
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 11:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B680B296F9F
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Oct 2020 14:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S461419AbgJWJYs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 23 Oct 2020 05:24:48 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:36077 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S461413AbgJWJYs (ORCPT
+        id S464016AbgJWMqn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Fri, 23 Oct 2020 08:46:43 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:27337 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S464017AbgJWMqm (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 23 Oct 2020 05:24:48 -0400
-Received: by mail-ot1-f65.google.com with SMTP id 32so735998otm.3;
-        Fri, 23 Oct 2020 02:24:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Zc+AeQKYu0eA1NCCr9Ea0RhGk/czUMV0vr6kVFJGHw0=;
-        b=svL8bMrhDiYdFU+nFRtfqmOTeNEsuLToWpA+nHPR5eeAcE7vAK9E0lqS+vuiZ6CrWN
-         PBQnXJ1Ri/xnY6yWeDoDwod69OLYqXUn4oD+B7/fozdJydzRwv+Zc/21rTv/pmxgvuJO
-         NE3sE3Qtew4RgCkawyh0mwvmHIqGwUTdmFJDMnPqYnFHHV/6dnTEr6Y3KyQuqk2bX9yG
-         x7al8CTEqWpgv4ghMJABLurkaPz1HG1CFbmeezoY5QzmFB6hvFaMkAAkxyDRHQFKcQx4
-         +dhlY7GLWB5uBcsb1GRz/M0rStunz4sVTfb26bvaifJyanZEaB6+kr43EcHMY3khCPx1
-         a1SQ==
-X-Gm-Message-State: AOAM533HcoD//sSkCHkQJXswjFpctjlDUp88eJeC1UFKkz9VVlgu3ZAT
-        sKqT5MxLYtDs9UKuhQRUhfo0eRav94ezvAFWrio=
-X-Google-Smtp-Source: ABdhPJxehtfOoAm+qzRUkw5mm184UYL/qN+HgKHa1e9IqAJmQlfvEJk1yo1vlYOgf9p2GgsKSFaJDrnAsY04iiRnVFk=
-X-Received: by 2002:a9d:3b76:: with SMTP id z109mr904469otb.250.1603445087314;
- Fri, 23 Oct 2020 02:24:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de>
- <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com>
- <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet> <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com>
-In-Reply-To: <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 23 Oct 2020 11:24:36 +0200
-Message-ID: <CAMuHMdUyGH=ORa4yHivMeJZaGQ3kEXi1kr9=P+u1y3QQnC+-4g@mail.gmail.com>
-Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Finn Thain <fthain@telegraphics.com.au>,
+        Fri, 23 Oct 2020 08:46:42 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-256-SaM_0Qo5N_as2A7LuQL-Wg-1; Fri, 23 Oct 2020 13:46:37 +0100
+X-MC-Unique: SaM_0Qo5N_as2A7LuQL-Wg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 23 Oct 2020 13:46:36 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Fri, 23 Oct 2020 13:46:36 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Greg KH' <gregkh@linuxfoundation.org>,
+        David Hildenbrand <david@redhat.com>
+CC:     Al Viro <viro@zeniv.linux.org.uk>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "kernel-team@android.com" <kernel-team@android.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-aio@kvack.org" <linux-aio@kvack.org>,
+        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Index: AQHWqE5GNDfnH4y9nkGWtfqJueR1KKmjTCJQgAAN4UiAAAD2IIAASOeCgAF+12A=
+Date:   Fri, 23 Oct 2020 12:46:36 +0000
+Message-ID: <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
+References: <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com>
+ <20201022090155.GA1483166@kroah.com>
+ <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
+ <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
+ <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
+ <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+ <20201022104805.GA1503673@kroah.com> <20201022121849.GA1664412@kroah.com>
+ <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
+ <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
+In-Reply-To: <20201022135036.GA1787470@kroah.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Arnd,
+From: Greg KH <gregkh@linuxfoundation.org>
+> Sent: 22 October 2020 14:51
 
-On Fri, Oct 23, 2020 at 9:52 AM Arnd Bergmann <arnd@kernel.org> wrote:
-> On Sun, Oct 18, 2020 at 2:55 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> > On Thu, 15 Oct 2020, Arnd Bergmann wrote:
-> > > On Thu, Oct 15, 2020 at 3:19 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> > > > On Sat, 10 Oct 2020, Arnd Bergmann wrote:
-> >
-> > That configuration still produces the same 5 KiB of bloat. I see that
-> > kernel/time/Kconfig has this --
-> >
-> > # Core internal switch. Selected by NO_HZ_COMMON / HIGH_RES_TIMERS. This is
-> > # only related to the tick functionality. Oneshot clockevent devices
-> > # are supported independent of this.
-> > config TICK_ONESHOT
-> >         bool
-> >
-> > But my question was really about both kinds of dead code (oneshot device
-> > support and oneshot tick support). Anyway, after playing with the code for
-> > a bit I don't see any easy way to reduce the growth in text size.
->
-> Did you look more deeply into where those 5KB are? Is this just
-> the code in kernel/time/{clockevents,tick-common}.c and the
-> added platform specific bits, or is there something more?
-> I suppose the sysfs interface and the clockevents_update_freq()
-> logic are not really needed on m68k, but it wouldn't make much
-> sense to split those out either.
->
-> How does the 5KB bloat compare to the average bloat we get
-> from one release to the next? Geert has been collecting statistics
-> for this.
+I've rammed the code into godbolt.
 
-It would be a fair share of the typical increase of ca. 30 KiB per
-kernel release. Still, it would be lost in the noise of the increase for
-v5.10-rc1:
+https://godbolt.org/z/9v5PPW
 
-    add/remove: 1200/455 grow/shrink: 1419/821 up/down: 468970/-93714 (375256)
-    Function                                     old     new   delta
-    _printk_rb_static_infos                        -  180224 +180224
-    write_buf                                   8192   32768  +24576
-    _printk_rb_static_descs                        -   24576  +24576
-    HUF_decompress4X4_usingDTable_internal         -    5664   +5664
-    HUF_decompress4X2_usingDTable_internal         -    5006   +5006
-    __ext4_ioctl                                   -    4774   +4774
-    sock_ops_convert_ctx_access                 3840    8462   +4622
-    ZSTD_decompressSequences                       -    3100   +3100
+Definitely a clang bug.
 
-> > > The arm/rpc timer seems to be roughly in the same category as most of
-> > > the m68k ones or the i8253 counter on a PC. It's possible that some of
-> > > them could use the same logic as drivers/clocksource/i8253.o as long as
-> > > there is any hardware oneshot mode.
-> >
-> > There appear to be 15 platforms in that category. 4 have no clocksource
-> > besides the jiffies clocksource, meaning there's no practical alternative
-> > to using a periodic tick, like you did in your RFC patch:
-> >
-> > arch/m68k/apollo/config.c
-> > arch/m68k/q40/q40ints.c
-> > arch/m68k/sun3/sun3ints.c
-> > arch/m68k/sun3x/time.c
->
-> Do any of these have users? I'm fairly sure sun3x has never worked in mainline,
-> sun3 seems to still need the same few patches it did 20 years ago. I
-> couldn't find
-> much about Linux on Apollo or q40, the information on the web for either
-> of them seems to all be for linux-2.4 kernels.
+Search for [wx]24 in the clang output.
+nr_segs comes in as w2 and the initial bound checks are done on w2.
+w24 is loaded from w2 - I don't believe this changes the high bits.
+There are no references to w24, just x24.
+So the kmalloc_array() is passed 'huge' and will fail.
+The iov_iter_init also gets the 64bit value.
 
-They probably don't have any users.
-AFAIK, the only users are the usual triumvirate of amiga/atari/mac
-(and perhaps the fleet of VME boards in the Australian navy? ;)
+Note that the gcc code has a sign-extend copy of w2.
 
-Gr{oetje,eeting}s,
+	David
 
-                        Geert
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
