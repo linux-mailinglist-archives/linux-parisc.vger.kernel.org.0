@@ -2,82 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C51F297CBE
-	for <lists+linux-parisc@lfdr.de>; Sat, 24 Oct 2020 16:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98C4B297DCE
+	for <lists+linux-parisc@lfdr.de>; Sat, 24 Oct 2020 19:37:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1760038AbgJXOLd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 24 Oct 2020 10:11:33 -0400
-Received: from belmont80srvr.owm.bell.net ([184.150.200.80]:58048 "EHLO
-        mtlfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1759926AbgJXOLd (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 24 Oct 2020 10:11:33 -0400
-Received: from bell.net mtlfep02 184.150.200.30 by mtlfep02.bell.net
-          with ESMTP
-          id <20201024141132.ZSUS52743.mtlfep02.bell.net@mtlspm02.bell.net>
-          for <linux-parisc@vger.kernel.org>;
-          Sat, 24 Oct 2020 10:11:32 -0400
-Received: from [192.168.2.49] (really [76.66.134.232]) by mtlspm02.bell.net
-          with ESMTP
-          id <20201024141132.TKGZ3672.mtlspm02.bell.net@[192.168.2.49]>;
-          Sat, 24 Oct 2020 10:11:32 -0400
-Subject: Re: [RFC PATCH v3] parisc: Add wrapper syscalls to fix O_NONBLOCK
- flag usage
-To:     Helge Deller <deller@gmx.de>, Jeroen Roovers <jer@xs4all.nl>
-Cc:     linux-parisc@vger.kernel.org, Meelis Roos <mroos@linux.ee>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <20200829122017.GA3988@ls3530.fritz.box>
- <20201020192101.772bedd5@wim.jer>
- <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
- <20201022173824.49b6b7f5@wim.jer>
- <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
- <20201022164007.GA10653@ls3530.fritz.box>
- <20201023181847.GA6776@ls3530.fritz.box> <20201024102218.72586ac5@wim.jer>
- <20201024102407.2d90b6b2@wim.jer>
- <03cd5a72-57c0-bdf6-f996-d0fd64a7d421@gmx.de>
-From:   John David Anglin <dave.anglin@bell.net>
-Message-ID: <4c75a1af-0941-ce87-9be5-f9a92832f3ff@bell.net>
-Date:   Sat, 24 Oct 2020 10:11:32 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
-MIME-Version: 1.0
-In-Reply-To: <03cd5a72-57c0-bdf6-f996-d0fd64a7d421@gmx.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=KoYzJleN c=1 sm=1 tr=0 a=lNGNHD24gN8CBUU6PHFJmA==:117 a=lNGNHD24gN8CBUU6PHFJmA==:17 a=IkcTkHD0fZMA:10 a=afefHYAZSVUA:10 a=FBHGMhGWAAAA:8 a=aatBHDJWo6voicVW7DMA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfIS46Nq88dMOpPFqTtdo2eJBVdR0/JWBzFJUwrEbGoNFkfrcIIekjDo0suJj3JhnQHcJDkbKTV0Zs6rcNQ850esbkTF1fc9iElJ8rwd7ofkVYY4fpip8 +aJ4IcvpmqCBMJsR94D7Ht7czGriSpbUFo2lm9J4WZBxg4KbI2+YN9pgkDh7BSiaTynjkRJLff0f4A==
+        id S1762619AbgJXRgq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 24 Oct 2020 13:36:46 -0400
+Received: from gate.crashing.org ([63.228.1.57]:45310 "EHLO gate.crashing.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1762594AbgJXRgo (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 24 Oct 2020 13:36:44 -0400
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 09OHTAUE029400;
+        Sat, 24 Oct 2020 12:29:10 -0500
+Received: (from segher@localhost)
+        by gate.crashing.org (8.14.1/8.14.1/Submit) id 09OHT4g2029397;
+        Sat, 24 Oct 2020 12:29:04 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date:   Sat, 24 Oct 2020 12:29:03 -0500
+From:   Segher Boessenkool <segher@kernel.crashing.org>
+To:     David Laight <David.Laight@aculab.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        David Hildenbrand <david@redhat.com>,
+        "linux-aio@kvack.org" <linux-aio@kvack.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "kernel-team@android.com" <kernel-team@android.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "'Greg KH'" <gregkh@linuxfoundation.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move rw_copy_check_uvector() into lib/iov_iter.c"
+Message-ID: <20201024172903.GK2672@gate.crashing.org>
+References: <20201022104805.GA1503673@kroah.com> <20201022121849.GA1664412@kroah.com> <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com> <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com> <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com> <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com> <20201023175857.GA3576660@ZenIV.linux.org.uk> <20201023182713.GG2672@gate.crashing.org> <e9a3136ead214186877804aabde74b38@AcuMS.aculab.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e9a3136ead214186877804aabde74b38@AcuMS.aculab.com>
+User-Agent: Mutt/1.4.2.3i
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2020-10-24 4:34 a.m., Helge Deller wrote:
-> On 10/24/20 10:24 AM, Jeroen Roovers wrote:
->> On Sat, 24 Oct 2020 10:22:18 +0200
->> Jeroen Roovers <jer@xs4all.nl> wrote:
->>
->>> On Fri, 23 Oct 2020 20:18:47 +0200
->>> Helge Deller <deller@gmx.de> wrote:
->>>
->>>> +static int FIX_O_NONBLOCK(int flags)
->>>> +{
->>>> +	if (flags & O_NONBLOCK_MASK_OUT) {
->>>> +		struct task_struct *tsk = current;
->>>> +		pr_warn_once("%s(%d) uses a deprecated O_NONBLOCK
->>>> value.\n",
->>>> +			tsk->comm, tsk->pid);
->>>> +	}
->>>> +	return flags & ~O_NONBLOCK_MASK_OUT;
->>>> +}
->>> Would it be interesting to additionally report the calling function in
->>> search for other syscalls that might not be covered yet?
->> Wait, that doesn't make sense, does it?
-> makes no sense :-)
-> The function is only called by syscalls where we know they are affected.
-I tend to think the warning is annoying.  We will have to keep compatibility with old binaries forever.
+On Fri, Oct 23, 2020 at 09:28:59PM +0000, David Laight wrote:
+> From: Segher Boessenkool
+> > Sent: 23 October 2020 19:27
+> > On Fri, Oct 23, 2020 at 06:58:57PM +0100, Al Viro wrote:
+> > > On Fri, Oct 23, 2020 at 03:09:30PM +0200, David Hildenbrand wrote:
+> > > On arm64 when callee expects a 32bit argument, the caller is *not* responsible
+> > > for clearing the upper half of 64bit register used to pass the value - it only
+> > > needs to store the actual value into the lower half.  The callee must consider
+> > > the contents of the upper half of that register as undefined.  See AAPCS64 (e.g.
+> > > https://github.com/ARM-software/abi-aa/blob/master/aapcs64/aapcs64.rst#parameter-passing-rules
+> > > ); AFAICS, the relevant bit is
+> > > 	"Unlike in the 32-bit AAPCS, named integral values must be narrowed by
+> > > the callee rather than the caller."
+> > 
+> > Or the formal rule:
+> > 
+> > C.9 	If the argument is an Integral or Pointer Type, the size of the
+> > 	argument is less than or equal to 8 bytes and the NGRN is less
+> > 	than 8, the argument is copied to the least significant bits in
+> > 	x[NGRN]. The NGRN is incremented by one. The argument has now
+> > 	been allocated.
+> 
+> So, in essence, if the value is in a 64bit register the calling
+> code is independent of the actual type of the formal parameter.
+> Clearly a value might need explicit widening.
 
-Dave
+No, this says that if you pass a 32-bit integer in a 64-bit register,
+then the top 32 bits of that register hold an undefined value.
 
--- 
-John David Anglin  dave.anglin@bell.net
+> I've found a copy of the 64 bit arm instruction set.
+> Unfortunately it is alpha sorted and repetitive so shows none
+> of the symmetry and makes things difficult to find.
 
+All of this is ABI, not ISA.  Look at the AAPCS64 pointed to above.
+
+> But, contrary to what someone suggested most register writes
+> (eg from arithmetic) seem to zero/extend the high bits.
+
+Everything that writes a "w" does, yes.  But that has nothing to do with
+the parameter passing rules, that is ABI.  It just means that very often
+a 32-bit integer will be passed zero-extended in a 64-bit register, but
+that is just luck (or not, it makes finding bugs harder ;-) )
+
+
+Segher
