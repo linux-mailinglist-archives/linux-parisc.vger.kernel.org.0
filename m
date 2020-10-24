@@ -2,67 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B416297BC0
-	for <lists+linux-parisc@lfdr.de>; Sat, 24 Oct 2020 11:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A071297BF1
+	for <lists+linux-parisc@lfdr.de>; Sat, 24 Oct 2020 12:43:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1758804AbgJXJ7w (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 24 Oct 2020 05:59:52 -0400
-Received: from lb3-smtp-cloud7.xs4all.net ([194.109.24.31]:35691 "EHLO
-        lb3-smtp-cloud7.xs4all.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1758792AbgJXJ7w (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 24 Oct 2020 05:59:52 -0400
-Received: from cust-3a8def63 ([IPv6:fc0c:c1c9:903d:e9b4:326e:d2bd:718e:17cc])
-        by smtp-cloud7.xs4all.net with ESMTPSA
-        id WGKyk57lk4n8PWGL0k7Lfr; Sat, 24 Oct 2020 11:59:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s1;
-        t=1603533590; bh=K9Wi8CzsfCzf3q7+eSZOrxktChMW1LR5/7m39g8qobM=;
-        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From:
-         Subject;
-        b=B2KFJLf4NGXg5aua3Y4ffpTmxA3L84sI6tZkLIbvQWi1Ovx/EM9/liO1FG7zQuUZ6
-         78yxhxbR0kITgbL3wvA1GQx49WXbTDfmCfb8oZo+PiBwWCcAJi7eSW6h9oEHglERFg
-         b3RQCiLnd2uFNvYoRkIAAgt4bMtc6LsDRjRX0cLc40+fe5pOYUMtH6+ChEwbw6ErZh
-         RbLi9O2F58Z4SGilKSwjt343SDA/lDx9KZ9Cu2SnH0yEncjFQNTMSrLPJ/193dkSly
-         BOfiYSX1pGMmdefS69S5OLWZNRU0okHvkeVe6yJrAq5kPcjzQxT0rkXhkbIBmbsJzv
-         xm4M3glpMnhXw==
-Date:   Sat, 24 Oct 2020 11:59:47 +0200
-From:   Jeroen Roovers <jer@xs4all.nl>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org, Meelis Roos <mroos@linux.ee>,
+        id S1761030AbgJXKnX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 24 Oct 2020 06:43:23 -0400
+Received: from mout.gmx.net ([212.227.17.22]:36525 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1759013AbgJXKnW (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 24 Oct 2020 06:43:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1603536195;
+        bh=olDr1e/tUfHAWnewCc3DfaWr+ZN0/eNiOa6CSfj+B8o=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=bPA1TuNBBK7pRDFAfWMnUemvWnoqU2eGR711oorUn/6nS4xe0gTnAppS+hNayCyI0
+         LGbi+ct9gSjGSfSGfQqzJ/GAFgpDOGg6UK4V4YbPPFryJURw13dsL6mfU4ZfVENQU3
+         WZ35ACS6+EjInwM5h0jeKIbBGf4pIFbapwyhLZ38=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.128.3]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1McH5Q-1jyJmJ1HUC-00cicw; Sat, 24
+ Oct 2020 12:43:15 +0200
+Date:   Sat, 24 Oct 2020 12:43:11 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: Re: [RFC PATCH v3] parisc: Add wrapper syscalls to fix O_NONBLOCK
- flag usage
-Message-ID: <20201024115947.600835af@wim.jer>
-In-Reply-To: <20201023181847.GA6776@ls3530.fritz.box>
-References: <20200829122017.GA3988@ls3530.fritz.box>
-        <20201020192101.772bedd5@wim.jer>
-        <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
-        <20201022173824.49b6b7f5@wim.jer>
-        <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
-        <20201022164007.GA10653@ls3530.fritz.box>
-        <20201023181847.GA6776@ls3530.fritz.box>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Subject: [PATCH] parisc: Drop loops_per_jiffy from per_cpu struct
+Message-ID: <20201024104311.GA28699@ls3530.fritz.box>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfBZ4MDYOlaX16DuftwYQ4OApOBfl4gv2K7YTTnpzV7nx6U6Y7Lm+Ww8kqYShUiOARk9dOPHhIl6TIIdbK03nfl/W2qT09xVHopt+uhZMIZr+n6koCOfL
- nL2xnShRkU5JiC1n0sWgrgZdHA0sqBggBHX+QUq7xG9DLeAwubIS3YPoLDXX3CSfdLK6IAy4QcX1K0ro76ZbYH8PbwUL9WcGFDg+OLztwiyzf0asEFfJbqDg
- AS+mBNFX6f6XtkpR/AS6GjD76k9ZXrbgjhROfBnuOZGCYO/X39rHb5xSbja1NLcjWeZhTRELw3FJHO8FX4QozA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:0eJTUY+paUxE/jHSw+rWzQ4jHtNB66srGYfgBsZyQjuoT9tsAsn
+ UWY0ungX68fjnKZX8zkrWZzApkhA20/Y2av2t96ANvLMdP8zk6h+7ZdjtJrzA0T39Yu4xpB
+ j8n1wzGxrwd30qx/dwL87lrkLqjxxy/SAt7ieD02grdR94nqKK0XmNQsHfK8DRpivnq8/X0
+ cWy7UYjmubcc1mbuVjvMQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:2J36iquQhkU=:ZYtPWwRZYzu8jiygL1VSdF
+ bG9IXAll9KQVZgAWUqmdQzGwMi06VWsIWELetyxf110MnvgPqfwbDemu9iX0WziFRj8LZ6o9A
+ Bys2kP0iMbkgRbYQVHBag2tnPXNEa8UQ0CZuz0CmN8TmEuibk/gV57o1CiHO3K2PFT6s8b2eI
+ ukv/m804UF7ckf97swDTMJUq9V4tEepx9n5i4R5c9XhGwL8RM8Bx1MHdfL0NEIYOjmNo9oDiQ
+ s61/AoYT2MOdEwIntZDcRLhAeBxIoa38XTy+6su4QY3aH5G093b7mJWuN7d5wqJfPrBibAO3E
+ HskzdLquBwCD++Vk7mXZOEe3hnZDAee+BvKElobR5dpXLhez6eNF4wGWoyzj8SFA3lOca7EwI
+ inE8GEyLtdn+eINb4kRX9ofG2i+mmHkY/n5wQwcmvUxggb7UNmamT/secEWY/veGx8nel/CoX
+ wM4QvBKssB7v0DDRCLTWGJp0gVwFlCotsVdZVP2QMngPFxyQeoQDMFjfn5xMRMLonAZ+h9pZm
+ qFiforAGkaGKKOcGGXl9lPizkMohZVKFjzSJBd8PLuE0CrEobsW0t/g5goJrKzMjXmqA2UBkn
+ diM1Qs7Wy9zn2EB+kMo/uZWXGh5o2P7A9I/sAWtuX72skcePQ9O8YTOQTcFaYnprI5GeS3q4O
+ w475fzTjeIBm33pM8LtYR+cgDtRBjQDVEb2gkpi0fuNs0VHTZYviIGRZfe4fl1E0zN5p+djHr
+ qpa4JW/kqMuElrHNnZuD78SPKu+VD2fDk2AAKybXYwQoE6oDexbHmbKyz7RY/ujaeuFOXHzb8
+ WbYqnmVaPCsWR13uLugT1ZdNMoPgiXy1WHWHCx+1obduluiwD+RGZMdV92aVGkNj1w6GJ2t7Y
+ ++bFuY0JX8ECLkhA1Qig==
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, 23 Oct 2020 20:18:47 +0200
-Helge Deller <deller@gmx.de> wrote:
+There is no need to keep a loops_per_jiffy value per cpu. Drop it.
 
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-> v3: Added inotify_init1() syscall wrapper
->     Changed warning to pr_warn_once()
+diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm=
+/processor.h
+index 6e2a8176b0dd..0f7e30547dab 100644
+=2D-- a/arch/parisc/include/asm/processor.h
++++ b/arch/parisc/include/asm/processor.h
+@@ -97,7 +96,6 @@ struct cpuinfo_parisc {
+ 	unsigned long cpu_loc;      /* CPU location from PAT firmware */
+ 	unsigned int state;
+ 	struct parisc_device *dev;
+-	unsigned long loops_per_jiffy;
+ };
 
-I do not know how pr_warn_once decides when "once" has already
-occurred, but with this patch I do not see any warnings at all.
+ extern struct system_cpuinfo_parisc boot_cpu_data;
+diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor=
+.c
+index 7f2d0c0ecc80..1b6129e7d776 100644
+=2D-- a/arch/parisc/kernel/processor.c
++++ b/arch/parisc/kernel/processor.c
+@@ -163,7 +163,6 @@ static int __init processor_probe(struct parisc_device=
+ *dev)
+ 	if (cpuid)
+ 		memset(p, 0, sizeof(struct cpuinfo_parisc));
 
+-	p->loops_per_jiffy =3D loops_per_jiffy;
+ 	p->dev =3D dev;		/* Save IODC data in case we need it */
+ 	p->hpa =3D dev->hpa.start;	/* save CPU hpa */
+ 	p->cpuid =3D cpuid;	/* save CPU id */
+@@ -434,8 +433,8 @@ show_cpuinfo (struct seq_file *m, void *v)
+ 		show_cache_info(m);
 
-Regards,
-     jer
+ 		seq_printf(m, "bogomips\t: %lu.%02lu\n",
+-			     cpuinfo->loops_per_jiffy / (500000 / HZ),
+-			     (cpuinfo->loops_per_jiffy / (5000 / HZ)) % 100);
++			     loops_per_jiffy / (500000 / HZ),
++			     loops_per_jiffy / (5000 / HZ) % 100);
+
+ 		seq_printf(m, "software id\t: %ld\n\n",
+ 				boot_cpu_data.pdc.model.sw_id);
