@@ -2,99 +2,82 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A071297BF1
-	for <lists+linux-parisc@lfdr.de>; Sat, 24 Oct 2020 12:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C51F297CBE
+	for <lists+linux-parisc@lfdr.de>; Sat, 24 Oct 2020 16:11:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1761030AbgJXKnX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 24 Oct 2020 06:43:23 -0400
-Received: from mout.gmx.net ([212.227.17.22]:36525 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1759013AbgJXKnW (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 24 Oct 2020 06:43:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1603536195;
-        bh=olDr1e/tUfHAWnewCc3DfaWr+ZN0/eNiOa6CSfj+B8o=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=bPA1TuNBBK7pRDFAfWMnUemvWnoqU2eGR711oorUn/6nS4xe0gTnAppS+hNayCyI0
-         LGbi+ct9gSjGSfSGfQqzJ/GAFgpDOGg6UK4V4YbPPFryJURw13dsL6mfU4ZfVENQU3
-         WZ35ACS6+EjInwM5h0jeKIbBGf4pIFbapwyhLZ38=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.128.3]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1McH5Q-1jyJmJ1HUC-00cicw; Sat, 24
- Oct 2020 12:43:15 +0200
-Date:   Sat, 24 Oct 2020 12:43:11 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Drop loops_per_jiffy from per_cpu struct
-Message-ID: <20201024104311.GA28699@ls3530.fritz.box>
+        id S1760038AbgJXOLd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 24 Oct 2020 10:11:33 -0400
+Received: from belmont80srvr.owm.bell.net ([184.150.200.80]:58048 "EHLO
+        mtlfep02.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1759926AbgJXOLd (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 24 Oct 2020 10:11:33 -0400
+Received: from bell.net mtlfep02 184.150.200.30 by mtlfep02.bell.net
+          with ESMTP
+          id <20201024141132.ZSUS52743.mtlfep02.bell.net@mtlspm02.bell.net>
+          for <linux-parisc@vger.kernel.org>;
+          Sat, 24 Oct 2020 10:11:32 -0400
+Received: from [192.168.2.49] (really [76.66.134.232]) by mtlspm02.bell.net
+          with ESMTP
+          id <20201024141132.TKGZ3672.mtlspm02.bell.net@[192.168.2.49]>;
+          Sat, 24 Oct 2020 10:11:32 -0400
+Subject: Re: [RFC PATCH v3] parisc: Add wrapper syscalls to fix O_NONBLOCK
+ flag usage
+To:     Helge Deller <deller@gmx.de>, Jeroen Roovers <jer@xs4all.nl>
+Cc:     linux-parisc@vger.kernel.org, Meelis Roos <mroos@linux.ee>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <20200829122017.GA3988@ls3530.fritz.box>
+ <20201020192101.772bedd5@wim.jer>
+ <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
+ <20201022173824.49b6b7f5@wim.jer>
+ <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
+ <20201022164007.GA10653@ls3530.fritz.box>
+ <20201023181847.GA6776@ls3530.fritz.box> <20201024102218.72586ac5@wim.jer>
+ <20201024102407.2d90b6b2@wim.jer>
+ <03cd5a72-57c0-bdf6-f996-d0fd64a7d421@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+Message-ID: <4c75a1af-0941-ce87-9be5-f9a92832f3ff@bell.net>
+Date:   Sat, 24 Oct 2020 10:11:32 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:0eJTUY+paUxE/jHSw+rWzQ4jHtNB66srGYfgBsZyQjuoT9tsAsn
- UWY0ungX68fjnKZX8zkrWZzApkhA20/Y2av2t96ANvLMdP8zk6h+7ZdjtJrzA0T39Yu4xpB
- j8n1wzGxrwd30qx/dwL87lrkLqjxxy/SAt7ieD02grdR94nqKK0XmNQsHfK8DRpivnq8/X0
- cWy7UYjmubcc1mbuVjvMQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:2J36iquQhkU=:ZYtPWwRZYzu8jiygL1VSdF
- bG9IXAll9KQVZgAWUqmdQzGwMi06VWsIWELetyxf110MnvgPqfwbDemu9iX0WziFRj8LZ6o9A
- Bys2kP0iMbkgRbYQVHBag2tnPXNEa8UQ0CZuz0CmN8TmEuibk/gV57o1CiHO3K2PFT6s8b2eI
- ukv/m804UF7ckf97swDTMJUq9V4tEepx9n5i4R5c9XhGwL8RM8Bx1MHdfL0NEIYOjmNo9oDiQ
- s61/AoYT2MOdEwIntZDcRLhAeBxIoa38XTy+6su4QY3aH5G093b7mJWuN7d5wqJfPrBibAO3E
- HskzdLquBwCD++Vk7mXZOEe3hnZDAee+BvKElobR5dpXLhez6eNF4wGWoyzj8SFA3lOca7EwI
- inE8GEyLtdn+eINb4kRX9ofG2i+mmHkY/n5wQwcmvUxggb7UNmamT/secEWY/veGx8nel/CoX
- wM4QvBKssB7v0DDRCLTWGJp0gVwFlCotsVdZVP2QMngPFxyQeoQDMFjfn5xMRMLonAZ+h9pZm
- qFiforAGkaGKKOcGGXl9lPizkMohZVKFjzSJBd8PLuE0CrEobsW0t/g5goJrKzMjXmqA2UBkn
- diM1Qs7Wy9zn2EB+kMo/uZWXGh5o2P7A9I/sAWtuX72skcePQ9O8YTOQTcFaYnprI5GeS3q4O
- w475fzTjeIBm33pM8LtYR+cgDtRBjQDVEb2gkpi0fuNs0VHTZYviIGRZfe4fl1E0zN5p+djHr
- qpa4JW/kqMuElrHNnZuD78SPKu+VD2fDk2AAKybXYwQoE6oDexbHmbKyz7RY/ujaeuFOXHzb8
- WbYqnmVaPCsWR13uLugT1ZdNMoPgiXy1WHWHCx+1obduluiwD+RGZMdV92aVGkNj1w6GJ2t7Y
- ++bFuY0JX8ECLkhA1Qig==
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <03cd5a72-57c0-bdf6-f996-d0fd64a7d421@gmx.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-Analysis: v=2.3 cv=KoYzJleN c=1 sm=1 tr=0 a=lNGNHD24gN8CBUU6PHFJmA==:117 a=lNGNHD24gN8CBUU6PHFJmA==:17 a=IkcTkHD0fZMA:10 a=afefHYAZSVUA:10 a=FBHGMhGWAAAA:8 a=aatBHDJWo6voicVW7DMA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+X-CM-Envelope: MS4wfIS46Nq88dMOpPFqTtdo2eJBVdR0/JWBzFJUwrEbGoNFkfrcIIekjDo0suJj3JhnQHcJDkbKTV0Zs6rcNQ850esbkTF1fc9iElJ8rwd7ofkVYY4fpip8 +aJ4IcvpmqCBMJsR94D7Ht7czGriSpbUFo2lm9J4WZBxg4KbI2+YN9pgkDh7BSiaTynjkRJLff0f4A==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-There is no need to keep a loops_per_jiffy value per cpu. Drop it.
+On 2020-10-24 4:34 a.m., Helge Deller wrote:
+> On 10/24/20 10:24 AM, Jeroen Roovers wrote:
+>> On Sat, 24 Oct 2020 10:22:18 +0200
+>> Jeroen Roovers <jer@xs4all.nl> wrote:
+>>
+>>> On Fri, 23 Oct 2020 20:18:47 +0200
+>>> Helge Deller <deller@gmx.de> wrote:
+>>>
+>>>> +static int FIX_O_NONBLOCK(int flags)
+>>>> +{
+>>>> +	if (flags & O_NONBLOCK_MASK_OUT) {
+>>>> +		struct task_struct *tsk = current;
+>>>> +		pr_warn_once("%s(%d) uses a deprecated O_NONBLOCK
+>>>> value.\n",
+>>>> +			tsk->comm, tsk->pid);
+>>>> +	}
+>>>> +	return flags & ~O_NONBLOCK_MASK_OUT;
+>>>> +}
+>>> Would it be interesting to additionally report the calling function in
+>>> search for other syscalls that might not be covered yet?
+>> Wait, that doesn't make sense, does it?
+> makes no sense :-)
+> The function is only called by syscalls where we know they are affected.
+I tend to think the warning is annoying.  We will have to keep compatibility with old binaries forever.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Dave
 
-diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm=
-/processor.h
-index 6e2a8176b0dd..0f7e30547dab 100644
-=2D-- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -97,7 +96,6 @@ struct cpuinfo_parisc {
- 	unsigned long cpu_loc;      /* CPU location from PAT firmware */
- 	unsigned int state;
- 	struct parisc_device *dev;
--	unsigned long loops_per_jiffy;
- };
+-- 
+John David Anglin  dave.anglin@bell.net
 
- extern struct system_cpuinfo_parisc boot_cpu_data;
-diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor=
-.c
-index 7f2d0c0ecc80..1b6129e7d776 100644
-=2D-- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -163,7 +163,6 @@ static int __init processor_probe(struct parisc_device=
- *dev)
- 	if (cpuid)
- 		memset(p, 0, sizeof(struct cpuinfo_parisc));
-
--	p->loops_per_jiffy =3D loops_per_jiffy;
- 	p->dev =3D dev;		/* Save IODC data in case we need it */
- 	p->hpa =3D dev->hpa.start;	/* save CPU hpa */
- 	p->cpuid =3D cpuid;	/* save CPU id */
-@@ -434,8 +433,8 @@ show_cpuinfo (struct seq_file *m, void *v)
- 		show_cache_info(m);
-
- 		seq_printf(m, "bogomips\t: %lu.%02lu\n",
--			     cpuinfo->loops_per_jiffy / (500000 / HZ),
--			     (cpuinfo->loops_per_jiffy / (5000 / HZ)) % 100);
-+			     loops_per_jiffy / (500000 / HZ),
-+			     loops_per_jiffy / (5000 / HZ) % 100);
-
- 		seq_printf(m, "software id\t: %ld\n\n",
- 				boot_cpu_data.pdc.model.sw_id);
