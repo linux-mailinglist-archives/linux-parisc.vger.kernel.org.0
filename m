@@ -2,316 +2,153 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B208298175
-	for <lists+linux-parisc@lfdr.de>; Sun, 25 Oct 2020 12:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0417F298181
+	for <lists+linux-parisc@lfdr.de>; Sun, 25 Oct 2020 12:48:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1415407AbgJYLYT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 25 Oct 2020 07:24:19 -0400
-Received: from mout.gmx.net ([212.227.17.22]:57901 "EHLO mout.gmx.net"
+        id S1415499AbgJYLs5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 25 Oct 2020 07:48:57 -0400
+Received: from mout.gmx.net ([212.227.15.15]:44337 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391537AbgJYLYQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 25 Oct 2020 07:24:16 -0400
+        id S1415495AbgJYLsz (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 25 Oct 2020 07:48:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1603625046;
-        bh=oaR3zFl0B529zYP84NX8tt1245woURbFvWoSyG5MzQo=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=OAU1tLKybp2T5D0oPtV5NGz8A17QbZF+lT2WQbvUZEyBu7HyEwLdzFgaYL/Krmqko
-         ZOTiSwYfAu3SBSaVsvM7XRFk+gWf/htN2RPeH78IWGGD95bV/I9XbESPnEJ5wbNcMj
-         005+NhTRgg5dtXHcToaNtqXFtLja/1oQLNma8VNc=
+        s=badeba3b8450; t=1603626521;
+        bh=r0fbtp9QjrdRg35G91Ves9wl7KPh0j12vWzwthlk++E=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=ZwaguAr/LeIcmLL0S1Z8VlFMENcQNFfz6jFgp0kwvsGKcrK0ophjPtIPDOrfinRGK
+         x/tkmNI3WX+X9twI37zXkkfjTJimhsxknkYVCPwt8fAY+r1WV5EvAc9ZuOG8BA0zoo
+         /6sxzqLTlZEEYsfZh1TzSFe5BmuK1XexeLO18Ppc=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.190.61]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MTzb8-1kxUea32Uk-00R2wA; Sun, 25
- Oct 2020 12:24:06 +0100
-Date:   Sun, 25 Oct 2020 12:24:03 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
+Received: from [192.168.20.60] ([92.116.190.61]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mof9P-1k3uTI3Cdl-00p8MY; Sun, 25
+ Oct 2020 12:48:41 +0100
+Subject: Re: [RFC PATCH v3] parisc: Add wrapper syscalls to fix O_NONBLOCK
+ flag usage
+To:     Jeroen Roovers <jer@xs4all.nl>
+Cc:     linux-parisc@vger.kernel.org, Meelis Roos <mroos@linux.ee>,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [RFC][PATCH v1] parisc: Switch to clockevent based timers
-Message-ID: <20201025112403.GA7034@ls3530.fritz.box>
+References: <20200829122017.GA3988@ls3530.fritz.box>
+ <20201020192101.772bedd5@wim.jer>
+ <fa0f48dd-ff18-07f9-1084-2c369225e0e7@gmx.de>
+ <20201022173824.49b6b7f5@wim.jer>
+ <5f21f5f7-aaa3-e760-b5a3-7477913026b7@gmx.de>
+ <20201022164007.GA10653@ls3530.fritz.box>
+ <20201023181847.GA6776@ls3530.fritz.box> <20201024115947.600835af@wim.jer>
+From:   Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+ c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
+Message-ID: <891e67df-329a-df78-732f-9931c091e972@gmx.de>
+Date:   Sun, 25 Oct 2020 12:48:40 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:+LQqXe39pVDGwFZrti647CWvqrYclJcOXVSC0aGADlDWw0l5/hB
- ifWrBSJnzDK507pMeGzbMjzLQz5bPdy5ELGf2ThD1nypHN2zZ0bwgjJDelRL+GRA+qypw00
- u0G1IUot5cOjwRW0Awo7zaJvo1opYR7+g8hlylURK4/RF5+aHwM2pljsI+LtUxba7CgS/zT
- UXvXsLJiWIpKub44+C/gA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cAAkRtECLGA=:GRnsjcwMHRUKm6EKaFQ484
- QqEWARFDsXZvrWDKMZ+/2fK4peZ5Q3zlw0WBtdvhwoAS42qAxJgTug/xQ0bnM9tfqvZQtY7Hn
- 1Ycj9U1GjRfQmJMTMsgLUXzxJKbuE+rsT+/6r2EE7Q54/XETfmcLxsoUgs2+WSwb/S3kzdwnw
- 9wH5zHv4RA5LGrFZBsEnVDopfmvFJ6kozmWseYJsUWQifrYT7uzhM40EpJbTsup0sXcevUwOV
- ftGb+zYTB2idHcmI8NNIj/XTa1eks7jjG4+QdKFyrVCbWoNqmbyJCJ4zsUBgdy4mxSTzE3xek
- Miee14oqbt7WhFUJKOHRrvgM2OTUCzaZrC5jvkZ7S54hGSNLhrFpfRnQQ1AXx7Ku32bVb68C2
- UlODUDryjqDtL7NVVUSqfjZR1oeqOXG9+UI6IGCoidwjxkxY31AYNpSPCuWGuuKjMmx6YYfFE
- h2/Bl9+3UodlC4nt8VW600/kGzy8MOqYRJxIsPaU5id/FDWHivQG2OeAkCxzuPIlzKFd8eOD7
- v2L6dwN13bk5sGIFO9GsEPqeRUjZS9g8CtbCnUq+q6u0MKx0+ytM/im5seLzAX3noZj4h3bmj
- TGm+U4Jhy7YfJ/GoH/qypIZpQCHNZ3R1833M/IlHskzjSgHdY1YDJScUfCTXvLmZFjZqr44lk
- xZT4oYIqDAPYndBWDyZKvWblhsRHJRFNz8QzS7CI9dqw6JhxSNsWpSuKZD9MkQ0VUQVqK+3ke
- oCCm8jMOXsF29V7CPPI7fJDGOQZvyFTcCu//bO7j+rdajc4FwrTxwFtK1mfvtOm8PJxgZYQd8
- 83arWZTWtE8r9zwNmmnyfOldWmkL+jyr524G0Vj0jNlzI//EGFoixHJVe26BfiBATtCB1lCPb
- OFW3odtInYkvdlfI5HFQ==
+In-Reply-To: <20201024115947.600835af@wim.jer>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:CDQT3EeJiA90ji3Gx6x8qGbmNfYY5nY1i/Ri0Q5ZNzASV39otcs
+ 91U0xbb87sfyFNCEhZZPLz1CNB7sHW2X5Cq3SRzME5IvbtWq3L8DrK2BDqK8bDghdwUclr1
+ Kzxy25Y1zqL1nAhNxGcv2ouQlY8Nx49e4aGBFrpT8fg9NwJcZD6bw9KA3c65VEfC2WhjE/k
+ qQsshz47hqygy0Bdn5IZA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:vn03XwUfgcg=:3sW7U3MIyKVsZAU7H9FfGc
+ zkXyuw09LjYat1Kv+LSrqu6qXjBOPsz6zryCTYDDqysnIos+QNzMbcAk88p0CfSS4EQUuQA5E
+ jPXxPuN4UO0/Ex++i6r4iZv8/l8e5kyKFHLlZLx2u0YDAourRlHLJDc/4iBzmhLFAF3+ESjLe
+ O1MkkIuQe0tG0E1Y2Oel6Vv2xf6M47kd6n5QueDReAlfzeikqyUp7WGtfWO8uC8dUFuFSggxu
+ boGruj9WALtG7azOr2hA4m2hKfOTGtQXeOiuk7VH42h4ZjgklhBHsHyWcatDwq3sWBUH4OcF5
+ Zbjj4zEVNt/VUqAD8A/fQREhNuIbB5OXH4upNw5vhaegm1pfYc4Xjy976nzQIwugLS7eWYJvd
+ tmo7FVh9FLZroVMqQ7jhEqP3++aeVIbW+XFnWdVk5/mV4oYclKxiJg4L30mInb8KAfvO6fIpq
+ Nb9vMgk/a7C/s/n7aYfAJdyfJle1qmO0yDEwqAQKOmTHQYwhmFceEbH9ABXSN4MPOJMJD22YR
+ A21LpaM/tof2xSrRTMN+FbexFVzFVFCjr35/qlmgA4AkWLau9RSzHdpazSBCPPl/RgwGWZsQa
+ 8WbT8ZsvgOFNXD25CI4PnoDVqXgv3pG/lo5a41nM5vjsOnsLH65UaS+LP6xnnWmw9RbOIB+7K
+ JTBy6UeoUaCyiDXdBQTqwn2QSeU0PGq1lkRmw5AlwohJ9dVvIwsHuBEBVeNhHwdaQUED0JKcC
+ 2Nn5BIzFslFNUxFeQcSn62w8SgU5uPrzHoNbdQ62y+f4os6uLn+zeg2ILogtPVcDTM6Fo2k2O
+ WZt+b/gsBraOtCTDGQGL42YAEBFRGsLfnYOmDDYs3wfhV0M5MapICpdS8eiGL6BlPCqCgq/lD
+ CX1byagK3hGMbh6XBjSw==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Switch from a periodic timer-based configuration to a clockevent based
-configuration. With this change we now have more fine grained hrtimers
-and it's possible to switch to a CONFIG_NO_HZ_IDLE system.
+On 10/24/20 11:59 AM, Jeroen Roovers wrote:
+> On Fri, 23 Oct 2020 20:18:47 +0200
+> Helge Deller <deller@gmx.de> wrote:
+>
+>
+>> v3: Added inotify_init1() syscall wrapper
+>>     Changed warning to pr_warn_once()
+>
+> I do not know how pr_warn_once decides when "once" has already
+> occurred
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+It's a static variable....
 
-diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm=
-/processor.h
-index 6e2a8176b0dd..186ba6bd1131 100644
-=2D-- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -82,7 +82,6 @@ struct system_cpuinfo_parisc {
+> , but with this patch I do not see any warnings at all.
 
- /* Per CPU data structure - ie varies per CPU.  */
- struct cpuinfo_parisc {
--	unsigned long it_value;     /* Interval Timer at last timer Intr */
- 	unsigned long irq_count;    /* number of IRQ's since boot */
- 	unsigned long cpuid;        /* aka slot_number or set to NO_PROC_ID */
- 	unsigned long hpa;          /* Host Physical address */
-diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
-index e76c86619949..50ec7b529922 100644
-=2D-- a/arch/parisc/kernel/irq.c
-+++ b/arch/parisc/kernel/irq.c
-@@ -562,17 +562,14 @@ void do_cpu_irq_mask(struct pt_regs *regs)
+Works for me:
+[   19.944173] systemd[1]: systemd 246-2 running in system mode. (+PAM +AU=
+DIT +SELINUX +IMA +APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT =
++GNUTLS +ACL +XZ +LZ4 +ZSTD -SECCOMP +BLKID +ELFUTILS +KMOD +IDN2 -IDN +PC=
+RE2 default-hierarchy=3Dhybrid)
+[   19.954344] systemd[1]: Detected architecture parisc.
+Welcome to Debian GNU/Linux bullseye/sid!
+[   20.254667] systemd[1]: Set hostname to <debian>.
+[   20.374343] systemd(1) uses a deprecated O_NONBLOCK value.
+....
 
- static void claim_cpu_irqs(void)
- {
--	unsigned long flags =3D IRQF_TIMER | IRQF_PERCPU | IRQF_IRQPOLL;
- 	int i;
-
- 	for (i =3D CPU_IRQ_BASE; i <=3D CPU_IRQ_MAX; i++) {
- 		irq_set_chip_and_handler(i, &cpu_interrupt_type,
- 					 handle_percpu_irq);
- 	}
--
--	irq_set_handler(TIMER_IRQ, handle_percpu_irq);
--	if (request_irq(TIMER_IRQ, timer_interrupt, flags, "timer", NULL))
--		pr_err("Failed to register timer interrupt\n");
-+	irq_set_percpu_devid(TIMER_IRQ);
-+	irq_set_handler(TIMER_IRQ, handle_percpu_devid_irq);
- #ifdef CONFIG_SMP
- 	irq_set_handler(IPI_IRQ, handle_percpu_irq);
- 	if (request_irq(IPI_IRQ, ipi_interrupt, IRQF_PERCPU, "IPI", NULL))
-diff --git a/arch/parisc/kernel/time.c b/arch/parisc/kernel/time.c
-index 04508158815c..60ae30cbc59e 100644
-=2D-- a/arch/parisc/kernel/time.c
-+++ b/arch/parisc/kernel/time.c
-@@ -22,6 +22,7 @@
- #include <linux/string.h>
- #include <linux/mm.h>
- #include <linux/interrupt.h>
-+#include <linux/clockchips.h>
- #include <linux/time.h>
- #include <linux/init.h>
- #include <linux/smp.h>
-@@ -40,82 +41,75 @@
-
- #include <linux/timex.h>
-
-+/*
-+ * The PA-RISC Interval Timer is a pair of registers; one is read-only an=
-d one
-+ * is write-only; both accessed through CR16.  The read-only register is =
-32 or
-+ * 64 bits wide, and increments by 1 every CPU clock tick.  The architect=
-ure
-+ * only guarantees us a rate between 0.5 and 2, but all implementations u=
-se a
-+ * rate of 1.  The write-only register is 32-bits wide.  When the lowest =
-32
-+ * bits of the read-only register compare equal to the write-only registe=
-r, it
-+ * raises a maskable external interrupt.  Each processor has an Interval =
-Timer
-+ * of its own and they are not synchronised.
-+ */
-+
-+#define cr16_hz	(100 * PAGE0->mem_10msec)	/* Hz */
- static unsigned long clocktick __ro_after_init;	/* timer cycles per tick =
-*/
-
-+static DEFINE_PER_CPU(struct clock_event_device, hppa_clk_events);
-+
- /*
-- * We keep time on PA-RISC Linux by using the Interval Timer which is
-- * a pair of registers; one is read-only and one is write-only; both
-- * accessed through CR16.  The read-only register is 32 or 64 bits wide,
-- * and increments by 1 every CPU clock tick.  The architecture only
-- * guarantees us a rate between 0.5 and 2, but all implementations use a
-- * rate of 1.  The write-only register is 32-bits wide.  When the lowest
-- * 32 bits of the read-only register compare equal to the write-only
-- * register, it raises a maskable external interrupt.  Each processor has
-- * an Interval Timer of its own and they are not synchronised.
-- *
-- * We want to generate an interrupt every 1/HZ seconds.  So we program
-- * CR16 to interrupt every @clocktick cycles.  The it_value in cpu_data
-- * is programmed with the intended time of the next tick.  We can be
-- * held off for an arbitrarily long period of time by interrupts being
-- * disabled, so we may miss one or more ticks.
-+ * Do not disable the timer irq. The clockevents get that frequently
-+ * programmed, that it's unlikely the timer will wrap and trigger again. =
-So
-+ * it's not worth to disable and reenable the hardware irqs, instead stor=
-e in a
-+ * static per-cpu variable if the irq is expected or not.
-  */
--irqreturn_t __irq_entry timer_interrupt(int irq, void *dev_id)
-+static DEFINE_PER_CPU(bool, cr16_clockevent_enabled);
-+
-+static void cr16_set_next(unsigned long delta, bool reenable_irq)
-+{
-+	mtctl(mfctl(16) + delta, 16);
-+
-+	if (reenable_irq)
-+		per_cpu(cr16_clockevent_enabled, smp_processor_id()) =3D true;
-+}
-+
-+static int cr16_clockevent_shutdown(struct clock_event_device *evt)
-+{
-+	per_cpu(cr16_clockevent_enabled, smp_processor_id()) =3D false;
-+	return 0;
-+}
-+
-+static int cr16_clockevent_set_periodic(struct clock_event_device *evt)
-+{
-+	cr16_set_next(clocktick, true);
-+	return 0;
-+}
-+
-+static int cr16_clockevent_set_next_event(unsigned long delta,
-+					struct clock_event_device *evt)
-+{
-+	cr16_set_next(delta, true);
-+	return 0;
-+}
-+
-+static irqreturn_t timer_interrupt(int irq, void *dev_id)
- {
--	unsigned long now;
--	unsigned long next_tick;
--	unsigned long ticks_elapsed =3D 0;
- 	unsigned int cpu =3D smp_processor_id();
--	struct cpuinfo_parisc *cpuinfo =3D &per_cpu(cpu_data, cpu);
--
--	/* gcc can optimize for "read-only" case with a local clocktick */
--	unsigned long cpt =3D clocktick;
--
--	profile_tick(CPU_PROFILING);
--
--	/* Initialize next_tick to the old expected tick time. */
--	next_tick =3D cpuinfo->it_value;
--
--	/* Calculate how many ticks have elapsed. */
--	now =3D mfctl(16);
--	do {
--		++ticks_elapsed;
--		next_tick +=3D cpt;
--	} while (next_tick - now > cpt);
--
--	/* Store (in CR16 cycles) up to when we are accounting right now. */
--	cpuinfo->it_value =3D next_tick;
--
--	/* Go do system house keeping. */
--	if (cpu =3D=3D 0)
--		xtime_update(ticks_elapsed);
--
--	update_process_times(user_mode(get_irq_regs()));
--
--	/* Skip clockticks on purpose if we know we would miss those.
--	 * The new CR16 must be "later" than current CR16 otherwise
--	 * itimer would not fire until CR16 wrapped - e.g 4 seconds
--	 * later on a 1Ghz processor. We'll account for the missed
--	 * ticks on the next timer interrupt.
--	 * We want IT to fire modulo clocktick even if we miss/skip some.
--	 * But those interrupts don't in fact get delivered that regularly.
--	 *
--	 * "next_tick - now" will always give the difference regardless
--	 * if one or the other wrapped. If "now" is "bigger" we'll end up
--	 * with a very large unsigned number.
--	 */
--	now =3D mfctl(16);
--	while (next_tick - now > cpt)
--		next_tick +=3D cpt;
--
--	/* Program the IT when to deliver the next interrupt.
--	 * Only bottom 32-bits of next_tick are writable in CR16!
--	 * Timer interrupt will be delivered at least a few hundred cycles
--	 * after the IT fires, so if we are too close (<=3D 8000 cycles) to the
--	 * next cycle, simply skip it.
--	 */
--	if (next_tick - now <=3D 8000)
--		next_tick +=3D cpt;
--	mtctl(next_tick, 16);
-+	struct clock_event_device *evt;
-+	bool handle_irq;
-+
-+	evt =3D &per_cpu(hppa_clk_events, cpu);
-+	handle_irq =3D per_cpu(cr16_clockevent_enabled, cpu);
-+
-+	if (clockevent_state_oneshot(evt))
-+		per_cpu(cr16_clockevent_enabled, smp_processor_id()) =3D false;
-+	else {
-+		if (handle_irq)
-+			cr16_set_next(clocktick, false);
-+	}
-+
-+	if (handle_irq)
-+		evt->event_handler(evt);
-
- 	return IRQ_HANDLED;
- }
-@@ -156,11 +150,29 @@ static struct clocksource clocksource_cr16 =3D {
- void __init start_cpu_itimer(void)
- {
- 	unsigned int cpu =3D smp_processor_id();
--	unsigned long next_tick =3D mfctl(16) + clocktick;
-
--	mtctl(next_tick, 16);		/* kick off Interval Timer (CR16) */
-+	struct clock_event_device *clk =3D this_cpu_ptr(&hppa_clk_events);
-+
-+	clk->name =3D "cr16";
-+	clk->features =3D CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT |
-+			CLOCK_EVT_FEAT_PERCPU;
-+	clk->set_state_shutdown =3D cr16_clockevent_shutdown;
-+	clk->set_state_periodic =3D cr16_clockevent_set_periodic;
-+	clk->set_state_oneshot =3D cr16_clockevent_shutdown;
-+	clk->set_state_oneshot_stopped =3D cr16_clockevent_shutdown;
-+	clk->set_next_event =3D cr16_clockevent_set_next_event;
-+	clk->cpumask =3D cpumask_of(cpu);
-+	clk->rating =3D 300;
-+	clk->irq =3D TIMER_IRQ;
-+	clockevents_config_and_register(clk, cr16_hz, 4000, 0xffffffff);
-+
-+	if (cpu =3D=3D 0) {
-+		int err =3D request_percpu_irq(TIMER_IRQ, timer_interrupt,
-+					 "timer", clk);
-+		BUG_ON(err);
-+	}
-
--	per_cpu(cpu_data, cpu).it_value =3D next_tick;
-+	enable_percpu_irq(clk->irq, IRQ_TYPE_NONE);
- }
-
- #if IS_ENABLED(CONFIG_RTC_DRV_GENERIC)
-@@ -231,13 +243,9 @@ static u64 notrace read_cr16_sched_clock(void)
-
- void __init time_init(void)
- {
--	unsigned long cr16_hz;
--
--	clocktick =3D (100 * PAGE0->mem_10msec) / HZ;
-+	clocktick =3D DIV_ROUND_CLOSEST(cr16_hz, HZ);
- 	start_cpu_itimer();	/* get CPU 0 started */
-
--	cr16_hz =3D 100 * PAGE0->mem_10msec;  /* Hz */
--
- 	/* register as sched_clock source */
- 	sched_clock_register(read_cr16_sched_clock, BITS_PER_LONG, cr16_hz);
- }
+Helge
