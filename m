@@ -2,86 +2,83 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5AD0299852
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Oct 2020 21:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 187C52999FF
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Oct 2020 23:55:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728572AbgJZU5t (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 26 Oct 2020 16:57:49 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:59018 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728557AbgJZU5s (ORCPT
+        id S2394914AbgJZWz1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 26 Oct 2020 18:55:27 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:34727 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394901AbgJZWz0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 26 Oct 2020 16:57:48 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09QKsTmn102446;
-        Mon, 26 Oct 2020 20:57:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=gNEIQOIVcRf/UxQtEMIApb6sRiQ4CW4rFIAipHvLmnA=;
- b=kLpEm4VAk5YCSraOYQRGv2tsONAb+CJVVrdP4aOYleng97336wlfA2c7Vaz1rT5N8BvN
- fp+mwepci/3GDpyzZvGpnfRyalRJxXWogaub51gFC43eCWPKSek/WDtxCt46Q0tbJrbu
- 4FZbtY0Fp1dzU1qn43A7L0lgzO+PW+p2/qKO7nBdD85TkvTpp84aLxhQDJnJuW/iW+KE
- 103y8CHyWe8FwZFGot6rdrD+eGtVJiNjC+IRraEnJNwuLFwKubJdsmYgpXFNy5lKRyaq
- JbJtS8u1jFHxJoiypSLeyBhpNOFmq++l9XHGoSJ3xeAviYv8JVqeP+TFDgFb8WP+dvYN 2g== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 34dgm3vd50-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 26 Oct 2020 20:57:40 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09QKtwYM140084;
-        Mon, 26 Oct 2020 20:57:39 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 34cx5wc9t4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 26 Oct 2020 20:57:39 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09QKvZds028632;
-        Mon, 26 Oct 2020 20:57:37 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 26 Oct 2020 13:57:34 -0700
-To:     Helge Deller <deller@gmx.de>
-Cc:     Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Subject: Re: [PATCH] scsi: mptfusion: Fix null pointer dereferences in
- mptscsih_remove()
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1v9ew903w.fsf@ca-mkp.ca.oracle.com>
-References: <20201022090005.GA9000@ls3530.fritz.box>
-Date:   Mon, 26 Oct 2020 16:57:31 -0400
-In-Reply-To: <20201022090005.GA9000@ls3530.fritz.box> (Helge Deller's message
-        of "Thu, 22 Oct 2020 11:00:05 +0200")
+        Mon, 26 Oct 2020 18:55:26 -0400
+Received: by mail-ed1-f67.google.com with SMTP id x1so11446830eds.1
+        for <linux-parisc@vger.kernel.org>; Mon, 26 Oct 2020 15:55:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kylehuey.com; s=google;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=J/+n1x0TPOHJCTfSVoXlG/q+OLrGnnNxrysZ0ZyIy+Y=;
+        b=JQw5fA5cqXZCTLCd2xkURV07bnYrA8gTT/8l9H7r6P+PgM37GQ7tblZcETghImepsU
+         AcI0oUILLNpw7+Lob5wOxm8oxXKZgdxlvk1iOdkoLk31eLVc1crb3sEhxCSb6bD2V31l
+         b7OGa6zHv0zDl28Z8OMcIxY0WvmVK7pWJSrW3Zs4sWifuxNiQ2iEW7pkdOAgHIEek3Fp
+         L3yESbOX+0gb8ueK46K6rtDj34b55Vtmz8U4fPoQ/Dv2vqBsFOJNMTpbG7mznOfR5TaL
+         kpOlREDICaBo0Xi3+x/a4pHYfGgO73EI5dQFmBZNKgKh2ry9/Y+FL54IAgbsbpnA0Xzm
+         BeOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=J/+n1x0TPOHJCTfSVoXlG/q+OLrGnnNxrysZ0ZyIy+Y=;
+        b=EmN2M9Wt8PGyvyWhHJwWJaEkjgB5IdTSh3XsBhhJLnKQ3MYUbkgWJeKid52hEJ0s1J
+         Kt+oKZwpdR9kdtU3auo/BKYyK15tSqAwfqdGdx2r5CTav9ZeFGAPuDaicGNHjJUjV6G6
+         vP7oKeCuevmgZ1wYzrOz4kRC2BYqH9faZR8jZZkK2aPuspRkWDfyY2HQrvpY5gZn2YsN
+         xTinFVgOqPmfZaY8Odq1UxoRL2nnOD8LZUbHdENonfG1gOTNJ8ZN2b1AJ5o2pnvEfp4N
+         v4ARWSz3G+rwNww1sGOLujdAb7PvtMucGg7rH2Z/C36UR/9gNuvKB4vyQKxc/zzMciTO
+         9dEg==
+X-Gm-Message-State: AOAM531DNRacGVoT2zWPrNjDYuJ6KvaSLeBfCvQd9D6N8YjuAFtcq36K
+        jyR8j0WGwO1ugFkpBohDjViymulfYJA+aeddqGRctQ==
+X-Google-Smtp-Source: ABdhPJyAci+5cM2zXs7C2dh5O8VDIKXSp+LVa6rVM/MPlgy6tZLvyXi43c6iWM9w5BW9l3CIsdr5O5Od75OK4rN9ByQ=
+X-Received: by 2002:aa7:d9ce:: with SMTP id v14mr12828586eds.203.1603752924617;
+ Mon, 26 Oct 2020 15:55:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 mlxlogscore=974
- suspectscore=1 bulkscore=0 malwarescore=0 spamscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010260136
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 bulkscore=0 spamscore=0 phishscore=0 mlxlogscore=999
- suspectscore=1 clxscore=1011 mlxscore=0 malwarescore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010260136
+From:   Kyle Huey <me@kylehuey.com>
+Date:   Mon, 26 Oct 2020 15:55:13 -0700
+Message-ID: <CAP045Aqrsb=CXHDHx4nS-pgg+MUDj14r-kN8_Jcbn-NAUziVag@mail.gmail.com>
+Subject: [REGRESSION] mm: process_vm_readv testcase no longer works after
+ compat_prcoess_vm_readv removed
+To:     open list <linux-kernel@vger.kernel.org>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     "Robert O'Callahan" <robert@ocallahan.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-scsi@vger.kernel.org,
+        "open list:FILESYSTEMS (VFS and infrastructure)" 
+        <linux-fsdevel@vger.kernel.org>, linux-aio@kvack.org,
+        io-uring@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, netdev@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+A test program from the rr[0] test suite, vm_readv_writev[1], no
+longer works on 5.10-rc1 when compiled as a 32 bit binary and executed
+on a 64 bit kernel. The first process_vm_readv call (on line 35) now
+fails with EFAULT. I have bisected this to
+c3973b401ef2b0b8005f8074a10e96e3ea093823.
 
-Helge,
+It should be fairly straightforward to extract the test case from our
+repository into a standalone program.
 
-> The mptscsih_remove() function triggers a kernel oops if the
-> Scsi_Host pointer (ioc->sh) is NULL, as can be seen in this syslog:
+- Kyle
 
-Applied to 5.10/scsi-fixes, thanks!
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+[0] https://rr-project.org/
+[1] https://github.com/mozilla/rr/blob/master/src/test/vm_readv_writev.c
