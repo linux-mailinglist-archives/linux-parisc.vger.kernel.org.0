@@ -2,127 +2,130 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F11C29BD26
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Oct 2020 17:42:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC51E29C7D7
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Oct 2020 19:53:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1811770AbgJ0QmA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 27 Oct 2020 12:42:00 -0400
-Received: from mail-pj1-f65.google.com ([209.85.216.65]:51663 "EHLO
-        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1811767AbgJ0Qlz (ORCPT
+        id S1829174AbgJ0SvH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 27 Oct 2020 14:51:07 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:37030 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439278AbgJ0SvD (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 27 Oct 2020 12:41:55 -0400
-Received: by mail-pj1-f65.google.com with SMTP id a17so1075010pju.1;
-        Tue, 27 Oct 2020 09:41:55 -0700 (PDT)
+        Tue, 27 Oct 2020 14:51:03 -0400
+Received: by mail-wr1-f65.google.com with SMTP id w1so3109816wrm.4
+        for <linux-parisc@vger.kernel.org>; Tue, 27 Oct 2020 11:51:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ebBfe6g+xIwA0Tw7T7ptAhswGHI+h9atRQ+wtk5eLJM=;
-        b=vFw9A52vUPt+Z6azESaiWaj6f6RnK6WmgcZfmCdqg30ygptQfXqoaWHeScuoNsMUcL
-         LFBrxcc3UK6ZrcRlK5yMWQydC4uSY8bXOQANfqwRP1eXlykw3jV58ZyR58sIXBm+HRfy
-         vYQZ8hSojiimEwm6a2/Jpl+5twHC88GdAmxu3wHGuRHWue5fVcJY1DPUHhnpeRigSGZc
-         VrPVUTeS6NGaTlPe7onOvCg10lX1FXx8QdW4QCJZ8DwsAcTcxh7dq+42zHm6DOHOPN6X
-         Fkze0CaGWSHSGRhOa+UQSIkAV+OUv4T06N/Yptxodpi2pNzEzDFOn+8yW6ly7Lth7XwK
-         QnvQ==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=xZvOPp8kVilTXiarx7tF8Az0EBe1RW6Y/QV8MotyV8s=;
+        b=E+QQVJ6LfsGiPw+sjgvs9YvBaCMf1GKIz7ybqinbvbTMr1KW7mqY4QeBxNzuBdpThA
+         5nblxw4cSCvxn53HUmGzrWW56wSRcZpEwRo8h3Il6vyoNnQIHYZG/9MPA2jqo8IOuzOL
+         8MTCtvJdUGydgE1zIBJMJEYdbTnFiHIdKO51I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ebBfe6g+xIwA0Tw7T7ptAhswGHI+h9atRQ+wtk5eLJM=;
-        b=Q8Kd+sN7HomaenbnTvvS5gUMFf3tlKOGVrAj40SqMC7e70n0cqQTfR2BUuiiHo0L69
-         lJ0U9/Ihse+Z4ivQZ4NPKRnkLPG8lj6d+cuZQkrPQzSsF+kQWujy1BBF3dWxJcn553o+
-         nKJQl9i0GhEC5et+Gc6aokZw2iJy/0EkkAjSu5vZFELyOur9yNnqTRRX8uO+HQ5PMXgQ
-         CDwZIFPmvdT9Gpn+V5QhL3fTvkTfZraqWNL64sJrA3+tpFdpFGZ6KWw0VxQUjo/au9Om
-         ILXf4yQ008zZG5ixEld+98QLLrkbRyh0FTH+5nEmhq61twoKkaU3GhB2r0n/BbStA3b+
-         NHXQ==
-X-Gm-Message-State: AOAM531wWCmECJyFETBJcDAeOI/1Rlj8kKPVmVXRdAWrhRvZcbCiY2FN
-        T1m7BAvWi5qL5Zerw0s4wQ==
-X-Google-Smtp-Source: ABdhPJxLkLvUsLuiUeeggrviMsdPesWsRrw2oB2fz/mRoiv9z7/Da38zY8teYsS2tEKx7sc/DwEgDg==
-X-Received: by 2002:a17:902:b488:b029:d4:dbdf:c6a5 with SMTP id y8-20020a170902b488b02900d4dbdfc6a5mr3312027plr.42.1603816915108;
-        Tue, 27 Oct 2020 09:41:55 -0700 (PDT)
-Received: from localhost.localdomain (n11212042025.netvigator.com. [112.120.42.25])
-        by smtp.gmail.com with ESMTPSA id gx20sm2459230pjb.1.2020.10.27.09.41.51
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=xZvOPp8kVilTXiarx7tF8Az0EBe1RW6Y/QV8MotyV8s=;
+        b=WNqCnj7DrMvbRsWtfFguPzMDqkQN1iZ0OWnKdR6Yg8dUI05jVlgQeZ6GEHtWBD1Vvv
+         GrcUPQPtJckCVHs8LjeEc8tlvQWv6yTwuQ8WrckHomevfCcedCJL+SL1OWdGHA5i0cn3
+         LIPeT969I/FAjuVcJIbbEkiu4h1OGRc0DlrJLy2aFklFsPEw3Xdc7xo1irZvuNzWA5re
+         KhNy8OLhacudVsipg9hhpXZ7E5zEAn8xon5E4WLqXbxPs7bUTlETWq0dSAua2m1W6B9k
+         LFvsyIchb5FvRAbq5OJSSW5WVye/iu7SNdElj/VtJ8KOWL9r/Lp4z3jwmByxxSmGHPH4
+         40RQ==
+X-Gm-Message-State: AOAM532Opob4/V+g7CHcSPI96VaahpKjHuNHmSbTIbxSweZ94ukFZ4gl
+        BcxMBz2BcOI46kjteRE7tOSlFg==
+X-Google-Smtp-Source: ABdhPJynFNg4Z7kz02rR4kjthPaTiI0vcEd436zZEQWyrQ9iXhwvzQ88EYNHIKOIDvTpL9kSzGn5Jg==
+X-Received: by 2002:adf:e446:: with SMTP id t6mr4255615wrm.46.1603824661583;
+        Tue, 27 Oct 2020 11:51:01 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id 24sm2884131wmg.8.2020.10.27.11.51.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2020 09:41:54 -0700 (PDT)
-From:   Peilin Ye <yepeilin.cs@gmail.com>
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Tue, 27 Oct 2020 11:51:00 -0700 (PDT)
+Date:   Tue, 27 Oct 2020 19:50:58 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Peilin Ye <yepeilin.cs@gmail.com>
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
         linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Peilin Ye <yepeilin.cs@gmail.com>
-Subject: [PATCH 5/5] parisc/sticore: Avoid hard-coding built-in font charcount
-Date:   Tue, 27 Oct 2020 12:41:02 -0400
-Message-Id: <c38042bbf5c9777c84900d56c09f3c156b32af48.1603788512.git.yepeilin.cs@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <a3b1b3cdc160fb9aef389c366f387fb27f0aef38.1603788512.git.yepeilin.cs@gmail.com>
-References: <cover.1603788511.git.yepeilin.cs@gmail.com> <cb5bb49a33ff54fef41e719ee9d301a6a73c5f9c.1603788512.git.yepeilin.cs@gmail.com> <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com> <6c28279a10dbe7a7e5ac3e3a8dd7c67f8d63a9f2.1603788512.git.yepeilin.cs@gmail.com> <a3b1b3cdc160fb9aef389c366f387fb27f0aef38.1603788512.git.yepeilin.cs@gmail.com>
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/5] Fonts: Make font size unsigned in font_desc
+Message-ID: <20201027185058.GM401619@phenom.ffwll.local>
+Mail-Followup-To: Peilin Ye <yepeilin.cs@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jiri Slaby <jirislaby@kernel.org>, linux-parisc@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1603788511.git.yepeilin.cs@gmail.com>
+ <cb5bb49a33ff54fef41e719ee9d301a6a73c5f9c.1603788512.git.yepeilin.cs@gmail.com>
+ <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
+X-Operating-System: Linux phenom 5.7.0-1-amd64 
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-sti_select_fbfont() and sti_cook_fonts() are hard-coding the number of
-characters of our built-in fonts as 256. Recently, we included that
-information in our kernel font descriptor `struct font_desc`, so use
-`fbfont->charcount` instead of hard-coded values.
+On Tue, Oct 27, 2020 at 12:33:05PM -0400, Peilin Ye wrote:
+> It is improper to define `width` and `height` as signed in `struct
+> font_desc`. Make them unsigned. Also, change the corresponding printk()
+> format identifiers from `%d` to `%u`, in sti_select_fbfont().
+> 
+> Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
 
-This patch depends on patch "Fonts: Add charcount field to font_desc".
+I'm not entirely sure of the motivation here ... height/width should never
+ever be even close to the limit here. Or have you seen integer math that
+could potentially go wrong if we go with unsigned instead of int?
+-Daniel
 
-Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
----
-$ # Build-tested (Ubuntu 20.04)
-$ sudo apt-get install binutils-hppa64-linux-gnu gcc-7-hppa64-linux-gnu
-$ cp arch/parisc/configs/generic-64bit_defconfig .config
-$ make -j`nproc` ARCH=parisc CROSS_COMPILE=hppa64-linux-gnu- all
+> ---
+> Build-tested.
+> 
+>  drivers/video/console/sticore.c | 2 +-
+>  include/linux/font.h            | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
+> index 6a26a364f9bd..d1bb5915082b 100644
+> --- a/drivers/video/console/sticore.c
+> +++ b/drivers/video/console/sticore.c
+> @@ -502,7 +502,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
+>  	if (!fbfont)
+>  		return NULL;
+>  
+> -	pr_info("STI selected %dx%d framebuffer font %s for sticon\n",
+> +	pr_info("STI selected %ux%u framebuffer font %s for sticon\n",
+>  			fbfont->width, fbfont->height, fbfont->name);
+>  			
+>  	bpc = ((fbfont->width+7)/8) * fbfont->height; 
+> diff --git a/include/linux/font.h b/include/linux/font.h
+> index b5b312c19e46..4f50d736ea72 100644
+> --- a/include/linux/font.h
+> +++ b/include/linux/font.h
+> @@ -16,7 +16,7 @@
+>  struct font_desc {
+>      int idx;
+>      const char *name;
+> -    int width, height;
+> +    unsigned int width, height;
+>      const void *data;
+>      int pref;
+>  };
+> -- 
+> 2.25.1
+> 
 
- drivers/video/console/sticore.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
-index d1bb5915082b..f869b723494f 100644
---- a/drivers/video/console/sticore.c
-+++ b/drivers/video/console/sticore.c
-@@ -506,7 +506,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
- 			fbfont->width, fbfont->height, fbfont->name);
- 			
- 	bpc = ((fbfont->width+7)/8) * fbfont->height; 
--	size = bpc * 256;
-+	size = bpc * fbfont->charcount;
- 	size += sizeof(struct sti_rom_font);
- 
- 	nf = kzalloc(size, STI_LOWMEM);
-@@ -514,7 +514,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
- 		return NULL;
- 
- 	nf->first_char = 0;
--	nf->last_char = 255;
-+	nf->last_char = fbfont->charcount - 1;
- 	nf->width = fbfont->width;
- 	nf->height = fbfont->height;
- 	nf->font_type = STI_FONT_HPROMAN8;
-@@ -525,7 +525,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
- 
- 	dest = nf;
- 	dest += sizeof(struct sti_rom_font);
--	memcpy(dest, fbfont->data, bpc*256);
-+	memcpy(dest, fbfont->data, bpc * fbfont->charcount);
- 
- 	cooked_font = kzalloc(sizeof(*cooked_font), GFP_KERNEL);
- 	if (!cooked_font) {
-@@ -660,7 +660,7 @@ static int sti_cook_fonts(struct sti_cooked_rom *cooked_rom,
- void sti_font_convert_bytemode(struct sti_struct *sti, struct sti_cooked_font *f)
- {
- 	unsigned char *n, *p, *q;
--	int size = f->raw->bytes_per_char * 256 + sizeof(struct sti_rom_font);
-+	int size = f->raw->bytes_per_char * (f->raw->last_char + 1) + sizeof(struct sti_rom_font);
- 	struct sti_rom_font *old_font;
- 
- 	if (sti->wordmode)
 -- 
-2.25.1
-
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
