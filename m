@@ -2,84 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5985329A11E
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Oct 2020 01:47:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 514FF29BC96
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Oct 2020 17:41:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409857AbgJ0Ae2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 26 Oct 2020 20:34:28 -0400
-Received: from zeniv.linux.org.uk ([195.92.253.2]:44164 "EHLO
-        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436545AbgJ0Acv (ORCPT
+        id S1810144AbgJ0QeH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 27 Oct 2020 12:34:07 -0400
+Received: from mail-pj1-f65.google.com ([209.85.216.65]:50270 "EHLO
+        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1810136AbgJ0QeE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 26 Oct 2020 20:32:51 -0400
-X-Greylist: delayed 1637 seconds by postgrey-1.27 at vger.kernel.org; Mon, 26 Oct 2020 20:32:46 EDT
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kXCUL-009VwG-7r; Tue, 27 Oct 2020 00:05:21 +0000
-Date:   Tue, 27 Oct 2020 00:05:21 +0000
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Kyle Huey <me@kylehuey.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Robert O'Callahan <robert@ocallahan.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-scsi@vger.kernel.org,
-        "open list:FILESYSTEMS (VFS and infrastructure)" 
-        <linux-fsdevel@vger.kernel.org>, linux-aio@kvack.org,
-        io-uring@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, netdev@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [REGRESSION] mm: process_vm_readv testcase no longer works after
- compat_prcoess_vm_readv removed
-Message-ID: <20201027000521.GD3576660@ZenIV.linux.org.uk>
-References: <CAP045Aqrsb=CXHDHx4nS-pgg+MUDj14r-kN8_Jcbn-NAUziVag@mail.gmail.com>
- <70d5569e-4ad6-988a-e047-5d12d298684c@kernel.dk>
+        Tue, 27 Oct 2020 12:34:04 -0400
+Received: by mail-pj1-f65.google.com with SMTP id p21so1066783pju.0;
+        Tue, 27 Oct 2020 09:34:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=In/51AAXPn5EUWnx/UEYdjmTkRcrDAtPtyplaFeQ5lU=;
+        b=qV2cOWA0GuqXDv+sBSouYZakOv5oFD4hgNf87hpEXF15Qq6sizcGpXNOD74WCXRcyv
+         sO/6Tj/7iiwM9RpQdAbqqnNzT2YptHVUx8aGi2nb/wOnMB2L6hTcG+fENUtGC704OQeB
+         OIvg9/sjXLRUzNEoS6cfGm0CB1cK6CwxiVYKkIeqQXO2O7pBxdEYIdTl09rtvVfPTYl6
+         DTWd8dOPZ2RAKadUbZ7lyRyJiFl+OilJWGQkEXvWKnG+EEIGEwVIDviHyTbWkf0bBPF3
+         C1qztcCFxeaUH9057nGg+r2mVwEQhOkgHxDdjZWQLSRvxcgn2sjn51v8dLGTej9Zl7rS
+         X/uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=In/51AAXPn5EUWnx/UEYdjmTkRcrDAtPtyplaFeQ5lU=;
+        b=rXm4Kzi4qigM5vAMX7JPZXfomnBaMxmfoiM6j3rAw7i/xN7bHOHPHbOk4ZzMhDRoqq
+         hmEF6sQ3XhZ3b1pVhQsmPbuvAtELn05xXGb/cUyBZvIADc73n2tvmpdhFghVWNSL9/dS
+         hzjoxFNjtzjJQKnyMwQkiknwD+7fVgbC3Gibb5p0+069OL/XvJS+90u3GRzi+qii/k5t
+         8EdObfYsileYEpu1q23fbE0I/JS4551xZQzUXzAfIsMbmGkzt2WWNE1sewppO4uHaGm/
+         uEUDEPV49bQUuR7l/K1OAAHtaEY2SL/KmYBCCPZ91m329wKuPNL+v9U1YoCiqKdI6qln
+         Ux7A==
+X-Gm-Message-State: AOAM532nB41HOusf7r2OeJTmqazxQUsiQVl6rbtojIJQrcEqMioQ/Rb2
+        2uOkjV0ZeTWx3ORM22QYEf7aQxHk6Pv6
+X-Google-Smtp-Source: ABdhPJyfbezIzRHApDWXipuccB2NB1//aO/tcW0Oq+NmOzFSnqmlIn40ZQ4T6DNDnbAh/dzCFxWw0Q==
+X-Received: by 2002:a17:90b:3501:: with SMTP id ls1mr880626pjb.26.1603816442913;
+        Tue, 27 Oct 2020 09:34:02 -0700 (PDT)
+Received: from localhost.localdomain (n11212042025.netvigator.com. [112.120.42.25])
+        by smtp.gmail.com with ESMTPSA id n16sm2854465pfo.150.2020.10.27.09.33.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2020 09:34:02 -0700 (PDT)
+From:   Peilin Ye <yepeilin.cs@gmail.com>
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Peilin Ye <yepeilin.cs@gmail.com>
+Subject: [PATCH 2/5] Fonts: Make font size unsigned in font_desc
+Date:   Tue, 27 Oct 2020 12:33:05 -0400
+Message-Id: <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cb5bb49a33ff54fef41e719ee9d301a6a73c5f9c.1603788512.git.yepeilin.cs@gmail.com>
+References: <cover.1603788511.git.yepeilin.cs@gmail.com> <cb5bb49a33ff54fef41e719ee9d301a6a73c5f9c.1603788512.git.yepeilin.cs@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <70d5569e-4ad6-988a-e047-5d12d298684c@kernel.dk>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Oct 26, 2020 at 05:56:11PM -0600, Jens Axboe wrote:
-> On 10/26/20 4:55 PM, Kyle Huey wrote:
-> > A test program from the rr[0] test suite, vm_readv_writev[1], no
-> > longer works on 5.10-rc1 when compiled as a 32 bit binary and executed
-> > on a 64 bit kernel. The first process_vm_readv call (on line 35) now
-> > fails with EFAULT. I have bisected this to
-> > c3973b401ef2b0b8005f8074a10e96e3ea093823.
-> > 
-> > It should be fairly straightforward to extract the test case from our
-> > repository into a standalone program.
-> 
-> Can you check with this applied?
-> 
-> diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
-> index fd12da80b6f2..05676722d9cd 100644
-> --- a/mm/process_vm_access.c
-> +++ b/mm/process_vm_access.c
-> @@ -273,7 +273,8 @@ static ssize_t process_vm_rw(pid_t pid,
->  		return rc;
->  	if (!iov_iter_count(&iter))
->  		goto free_iov_l;
-> -	iov_r = iovec_from_user(rvec, riovcnt, UIO_FASTIOV, iovstack_r, false);
-> +	iov_r = iovec_from_user(rvec, riovcnt, UIO_FASTIOV, iovstack_r,
-> +				in_compat_syscall());
+It is improper to define `width` and `height` as signed in `struct
+font_desc`. Make them unsigned. Also, change the corresponding printk()
+format identifiers from `%d` to `%u`, in sti_select_fbfont().
 
-_ouch_
+Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
+---
+Build-tested.
 
-There's a bug, all right, but I'm not sure that this is all there is to it.
-For now it's probably the right fix, but...  Consider the fun trying to
-use that from 32bit process to access the memory of 64bit one.  IOW, we
-might want to add an explicit flag for "force 64bit addresses/sizes
-in rvec".
+ drivers/video/console/sticore.c | 2 +-
+ include/linux/font.h            | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
+index 6a26a364f9bd..d1bb5915082b 100644
+--- a/drivers/video/console/sticore.c
++++ b/drivers/video/console/sticore.c
+@@ -502,7 +502,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
+ 	if (!fbfont)
+ 		return NULL;
+ 
+-	pr_info("STI selected %dx%d framebuffer font %s for sticon\n",
++	pr_info("STI selected %ux%u framebuffer font %s for sticon\n",
+ 			fbfont->width, fbfont->height, fbfont->name);
+ 			
+ 	bpc = ((fbfont->width+7)/8) * fbfont->height; 
+diff --git a/include/linux/font.h b/include/linux/font.h
+index b5b312c19e46..4f50d736ea72 100644
+--- a/include/linux/font.h
++++ b/include/linux/font.h
+@@ -16,7 +16,7 @@
+ struct font_desc {
+     int idx;
+     const char *name;
+-    int width, height;
++    unsigned int width, height;
+     const void *data;
+     int pref;
+ };
+-- 
+2.25.1
+
