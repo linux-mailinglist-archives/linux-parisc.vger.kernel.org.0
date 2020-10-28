@@ -2,135 +2,106 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C86A29D690
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Oct 2020 23:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBBC529D9D2
+	for <lists+linux-parisc@lfdr.de>; Thu, 29 Oct 2020 00:03:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731386AbgJ1WQM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 28 Oct 2020 18:16:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53082 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731266AbgJ1WPD (ORCPT
+        id S2390060AbgJ1XDB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 28 Oct 2020 19:03:01 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:46224 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731811AbgJ1XDB (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:15:03 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E33C0613D1
-        for <linux-parisc@vger.kernel.org>; Wed, 28 Oct 2020 15:15:02 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id f9so809225lfq.2
-        for <linux-parisc@vger.kernel.org>; Wed, 28 Oct 2020 15:15:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nMCdu9Rzb/ndcD48Tcjh9B2LFonFTQlfv9eH4WIE5/E=;
-        b=F0MCnNXxvfO8m+8X6ysd9pz9RNST9ee2OunsJBFhJ1jACU0VNPR7jRqTcr42Em1B/N
-         4RkfEXr/avMA+O9xcQ2WiJud6Px7h8GMje+np40dqlpRDSKXgimNhQtHUuAPltPhyb11
-         5fbAF7gudEUJdH7kFcywq06bqCQv1F5USJd8E=
+        Wed, 28 Oct 2020 19:03:01 -0400
+Received: by mail-pl1-f195.google.com with SMTP id p17so351766pli.13;
+        Wed, 28 Oct 2020 16:03:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=nMCdu9Rzb/ndcD48Tcjh9B2LFonFTQlfv9eH4WIE5/E=;
-        b=k1sA1gg3p1PbwToTQS1MOXEZzY4eGkNWdu9XejM6s3ubo7yKrtv1DX6ylBh/iF2jbv
-         1CChkosCaJtPH3HThDJwwuaNjmtuMS4veXX3EdsiT6mbmWPRJp2yyS3BV6DfsxC2mWM8
-         wkXChU0zP9v3xnVRsUuwBooLFdG0gWS+pJXHUdx7a9TdG1sD1BL5gDYzrTLEsRg8XuxF
-         1iQGTtEmr+HVze8suJyV4zS5/MyYueu8lZfg6ZczDWBWL2xDny1SBEmYm6UntzoEl0d+
-         9kyidhkUS8+QgDGTAsj0k2YB0XnyP2inmKl9tqiSM5kZrFk+Ke8q7t0j4dsjJ61RF8i9
-         WkdQ==
-X-Gm-Message-State: AOAM530rQKYyZPlA45rrDLrcE6Ruts+fCVYej2iOjTnZu0I1ZhlxsmVX
-        vVnEltwqawJHMieIo+j10LbMF526NQJq0eBm
-X-Google-Smtp-Source: ABdhPJyrBDGD6E9I6oqu06SgLOB/cJ7qVsKtWh9rtNK4o2kg9zioPQMWZFyxGdfWYjPLun8Im926hQ==
-X-Received: by 2002:adf:e685:: with SMTP id r5mr841525wrm.340.1603910429440;
-        Wed, 28 Oct 2020 11:40:29 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id f7sm597277wrx.64.2020.10.28.11.40.27
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=CNA7UvO0rC3OicpN5FLfXwig0Y0tAaVI6smQ5o7BPyY=;
+        b=oevzLVOKkBM5WNY8SpRE2a6oFmGTJfC+7iR9r+5iXJcSzAC9jJ+P6WGhEwZbxXvoWN
+         2eZXZFqjYzjpMrg1K37Lm0ciiUTi3jN473pnJ6IStCaoKL2YgOUut6rBkjOEIxhpob7o
+         C402cN+dmWeNzmdjNKy8v7S/jjsMSgVHX2iLxUST5n3d987IvbUOKZQ8kW8iWslXKwUL
+         SQq/TrYi+JisR6ccHir01rsnQJT3LacavDDNnyeaZWF24+cshjPNzuIvha9jeAmFP6LW
+         IG93cgeR/bOzG3O3r9fPX0dnNGMYQbm4CzxxJDd2aE4irebuBAKU6MeelrdDl3VBJCYp
+         w8GA==
+X-Gm-Message-State: AOAM533imzRdTB9Pyntj7jBk1Ya/Li6ba7rBt+p2HTNCwLZKqvtMorer
+        bz54eJlDlPz6uF6C2qYI3fR4SOUu2Ks=
+X-Google-Smtp-Source: ABdhPJzQI5DMqt/ij1UO69AkLiPauhiT4KID2J0Ph8ydetjDXOGy1vJYyhcj5KdzUHGF6RRU3q86vg==
+X-Received: by 2002:a17:902:d896:b029:d2:288e:bafc with SMTP id b22-20020a170902d896b02900d2288ebafcmr5063573plz.43.1603850351126;
+        Tue, 27 Oct 2020 18:59:11 -0700 (PDT)
+Received: from localhost ([2601:647:5b00:1161:a4cc:eef9:fbc0:2781])
+        by smtp.gmail.com with ESMTPSA id z13sm3213153pgc.44.2020.10.27.18.59.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 11:40:28 -0700 (PDT)
-Date:   Wed, 28 Oct 2020 19:40:26 +0100
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Peilin Ye <yepeilin.cs@gmail.com>
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] Fonts: Make font size unsigned in font_desc
-Message-ID: <20201028184026.GX401619@phenom.ffwll.local>
-Mail-Followup-To: Peilin Ye <yepeilin.cs@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jiri Slaby <jirislaby@kernel.org>, linux-parisc@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
- <20201028105647.1210161-1-yepeilin.cs@gmail.com>
+        Tue, 27 Oct 2020 18:59:10 -0700 (PDT)
+Date:   Tue, 27 Oct 2020 18:59:09 -0700
+From:   Moritz Fischer <mdf@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Moritz Fischer <mdf@kernel.org>, netdev@vger.kernel.org,
+        davem@davemloft.net, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lucyyan@google.com,
+        moritzf@google.com, James.Bottomley@hansenpartnership.com
+Subject: Re: [PATCH/RFC net-next v3] net: dec: tulip: de2104x: Add shutdown
+ handler to stop NIC
+Message-ID: <20201028015909.GA52884@epycbox.lan>
+References: <20201023202834.660091-1-mdf@kernel.org>
+ <20201027161606.477a445e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201028105647.1210161-1-yepeilin.cs@gmail.com>
-X-Operating-System: Linux phenom 5.7.0-1-amd64 
+In-Reply-To: <20201027161606.477a445e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Oct 28, 2020 at 06:56:47AM -0400, Peilin Ye wrote:
-> `width` and `height` are defined as unsigned in our UAPI font descriptor
-> `struct console_font`. Make them unsigned in our kernel font descriptor
-> `struct font_desc`, too.
-> 
-> Also, change the corresponding printk() format identifiers from `%d` to
-> `%u`, in sti_select_fbfont().
-> 
-> Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
+Hi Jakub,
 
-Pushed to drm-misc-next, thanks for the patch.
--Daniel
+On Tue, Oct 27, 2020 at 04:16:06PM -0700, Jakub Kicinski wrote:
+> On Fri, 23 Oct 2020 13:28:34 -0700 Moritz Fischer wrote:
+> > diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
+> > index d9f6c19940ef..ea7442cc8e75 100644
+> > --- a/drivers/net/ethernet/dec/tulip/de2104x.c
+> > +++ b/drivers/net/ethernet/dec/tulip/de2104x.c
+> > @@ -2175,11 +2175,19 @@ static int __maybe_unused de_resume(struct device *dev_d)
+> >  
+> >  static SIMPLE_DEV_PM_OPS(de_pm_ops, de_suspend, de_resume);
+> >  
+> > +static void de_shutdown(struct pci_dev *pdev)
+> > +{
+> > +	struct net_device *dev = pci_get_drvdata(pdev);
+> > +
+> > +	de_close(dev);
+> 
+> Apparently I get all the best ideas when I'm about to apply something..
 
-> ---
-> Change in v2:
->   - Mention `struct console_font` in the commit message. (Suggested by
->     Daniel Vetter <daniel@ffwll.ch>)
+Better now than after =)
+
+> I don't think you can just call de_close() like that, because 
+> (a) it may expect rtnl_lock() to be held, and (b) it may not be open.
+
+how about:
+
+rtnl_lock();
+if (netif_running(dev))
+	dev_close(dev);
+rtnl_unlock();
+
 > 
->  drivers/video/console/sticore.c | 2 +-
->  include/linux/font.h            | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+> Perhaps call unregister_netdev(dev) - that'll close the device.
+> Or rtnl_lock(); dev_close(dev); rtnl_unlock();
 > 
-> diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
-> index 6a26a364f9bd..d1bb5915082b 100644
-> --- a/drivers/video/console/sticore.c
-> +++ b/drivers/video/console/sticore.c
-> @@ -502,7 +502,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
->  	if (!fbfont)
->  		return NULL;
->  
-> -	pr_info("STI selected %dx%d framebuffer font %s for sticon\n",
-> +	pr_info("STI selected %ux%u framebuffer font %s for sticon\n",
->  			fbfont->width, fbfont->height, fbfont->name);
->  			
->  	bpc = ((fbfont->width+7)/8) * fbfont->height; 
-> diff --git a/include/linux/font.h b/include/linux/font.h
-> index b5b312c19e46..4f50d736ea72 100644
-> --- a/include/linux/font.h
-> +++ b/include/linux/font.h
-> @@ -16,7 +16,7 @@
->  struct font_desc {
->      int idx;
->      const char *name;
-> -    int width, height;
-> +    unsigned int width, height;
->      const void *data;
->      int pref;
->  };
-> -- 
-> 2.25.1
+> > +}
+> > +
+> >  static struct pci_driver de_driver = {
+> >  	.name		= DRV_NAME,
+> >  	.id_table	= de_pci_tbl,
+> >  	.probe		= de_init_one,
+> >  	.remove		= de_remove_one,
+> > +	.shutdown	= de_shutdown,
+> >  	.driver.pm	= &de_pm_ops,
+> >  };
+> >  
 > 
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Cheers,
+Moritz
