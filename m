@@ -2,108 +2,117 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B388729DC26
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Oct 2020 01:22:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E84D029DE56
+	for <lists+linux-parisc@lfdr.de>; Thu, 29 Oct 2020 01:53:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727315AbgJ2AV7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 28 Oct 2020 20:21:59 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:37030 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388934AbgJ1WiH (ORCPT
+        id S1731870AbgJ1WTV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 28 Oct 2020 18:19:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53766 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732289AbgJ1WS4 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:38:07 -0400
-Received: by mail-pl1-f196.google.com with SMTP id b12so350388plr.4;
-        Wed, 28 Oct 2020 15:38:06 -0700 (PDT)
+        Wed, 28 Oct 2020 18:18:56 -0400
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF3AC0613D2;
+        Wed, 28 Oct 2020 15:18:55 -0700 (PDT)
+Received: by mail-oi1-x243.google.com with SMTP id s21so1251852oij.0;
+        Wed, 28 Oct 2020 15:18:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=W33YKVE+vIQUjqJmcEzgED3JxXxgJJnTqejIz5dWMio=;
+        b=Hy4ATO4/8bpMwbG9MepKQdZG8/CTf1/4URUhZZcmbcdWvW8+gkJ6cAXoyIwHrFIPTG
+         ph2he7bXY8k2pSLmYEZgpOpWlep9MeKw4VWXCdPayFqCN/QzcXzph26cbhGIMNKVkPoX
+         XjTfYkGXonGwT3mBLeJG8PqiJNAErVxFMoJ9vz/9LsRmSAVvCxLTSrC/iR0NgA9MZ8QY
+         4p37kPfhvWgpLp2517tIc3KmbGgehxrWRETTxFwC31QI9ZMO4iskheUBicyPAK7kvHS6
+         tpKR71qatexkU73Utm71Opjb8YHXxeBdlTjUDuKoP/T0wFnOL0/KjJzJfPtNDR5C7HVg
+         bWRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CRi9FZ9Z+UnIZ2SkQnApmkHlHaSq8BXaJGt7reiNtuM=;
-        b=TG5yT+WNmWJEvrBaME0cAali7Hku7kGOgrlVD2UIV4eHHSl2OSao+adLYXf8POrxux
-         25vPZ6PW4+9fvxE5FAn3SHB7UzBEdf+scVooLnRl6aAqh4bJDjn7ZtEDxWERYzeBm9cX
-         dYb1vApYuPz8GaEjacJYwhOZd9kuUG6Juhx39r0r4CgDA7kP5AgXNCNRSk2ne21TPI+m
-         zUaq3kAEUVFBPGRY8ymqxKVgZma5LpE7cipy5qyTrUujzIM+E74otDIGIUWd4EBFz14L
-         k0C9r1TKFWb5ltZNMx0d7yhRo4gqN2i9B6VQbzYkGEcC9ZB8GeFM7e8W4diGlZurdvCP
-         ZWwQ==
-X-Gm-Message-State: AOAM533EusHMWbuvjyIdJ7TR5vSkACAZrJ9V+EC918EUkZv5Uq6eOYdZ
-        RRKBNQLHmbBUXnVokGR12elUrWOYp5s=
-X-Google-Smtp-Source: ABdhPJybJf5w2rTgj/vTCQIw0+jC/10ExJGouMFxqaRROOWNhnuuESZf1ZzFqZMOxvBnAnCm+RtQSg==
-X-Received: by 2002:a62:a10a:0:b029:154:fd62:ba90 with SMTP id b10-20020a62a10a0000b0290154fd62ba90mr22740pff.62.1603905696356;
-        Wed, 28 Oct 2020 10:21:36 -0700 (PDT)
-Received: from localhost ([2601:647:5b00:1161:a4cc:eef9:fbc0:2781])
-        by smtp.gmail.com with ESMTPSA id b6sm4775pjq.42.2020.10.28.10.21.35
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=W33YKVE+vIQUjqJmcEzgED3JxXxgJJnTqejIz5dWMio=;
+        b=nC077KWemVFKENLCo9JGk1JDtN8zUBQ6BQ0aaUFnB5TiYSB8PCx074f/C6gr7QgA4X
+         +B3bkmSURjoJioTXeiLDfBV1eaWw6umzpjWvdSvn87fgoPP4RGFtPUscBlOGiZcMWiV2
+         ayXUPzltb3Yd2mmVaUezB8h76/8ObJs/fRL7ncwG93FigSP64BAkgU5Y/q+GrHSq3KY4
+         RC+h10ycE50es9NbUTsp2L6J+88ZEAmlDpcLDxXXxzKoWxsL9jfm1FqJQShF8sVM+JqK
+         uV9SAm3R/1Yb0tFD3FTs3pOVxRcgsU9iPajIL0A6xMK4Tr1N9sCgTckjHHpX1eT0GRqT
+         qiNw==
+X-Gm-Message-State: AOAM5333N6nFIV9NOZAv3jNyLNyUPPr8jEWGuZPnQM8nhd+EJzOvsV58
+        h7vBZe+blIqr/S9hbHpddevAdb1M4r9Y
+X-Google-Smtp-Source: ABdhPJx7TI8kNqRv/CrbnxiDniRSurjnwwLGWS8CtOJHMecJHTWQceZLiEtKvb0qCu+u9Y22egpfOQ==
+X-Received: by 2002:a17:90b:20a:: with SMTP id fy10mr6294642pjb.20.1603882658040;
+        Wed, 28 Oct 2020 03:57:38 -0700 (PDT)
+Received: from localhost.localdomain (n11212042025.netvigator.com. [112.120.42.25])
+        by smtp.gmail.com with ESMTPSA id i24sm5377303pfd.15.2020.10.28.03.57.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 10:21:35 -0700 (PDT)
-From:   Moritz Fischer <mdf@kernel.org>
-To:     netdev@vger.kernel.org
-Cc:     davem@davemloft.net, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lucyyan@google.com,
-        moritzf@google.com, James.Bottomley@hansenpartnership.com,
-        kuba@kernel.org, Moritz Fischer <mdf@kernel.org>
-Subject: [PATCH net-next v4] net: dec: tulip: de2104x: Add shutdown handler to stop NIC
-Date:   Wed, 28 Oct 2020 10:21:25 -0700
-Message-Id: <20201028172125.496942-1-mdf@kernel.org>
-X-Mailer: git-send-email 2.29.1
+        Wed, 28 Oct 2020 03:57:37 -0700 (PDT)
+From:   Peilin Ye <yepeilin.cs@gmail.com>
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Peilin Ye <yepeilin.cs@gmail.com>
+Subject: [PATCH v2 2/5] Fonts: Make font size unsigned in font_desc
+Date:   Wed, 28 Oct 2020 06:56:47 -0400
+Message-Id: <20201028105647.1210161-1-yepeilin.cs@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
+References: <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The driver does not implement a shutdown handler which leads to issues
-when using kexec in certain scenarios. The NIC keeps on fetching
-descriptors which gets flagged by the IOMMU with errors like this:
+`width` and `height` are defined as unsigned in our UAPI font descriptor
+`struct console_font`. Make them unsigned in our kernel font descriptor
+`struct font_desc`, too.
 
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
-DMAR: DMAR:[DMA read] Request device [5e:00.0]fault addr fffff000
+Also, change the corresponding printk() format identifiers from `%d` to
+`%u`, in sti_select_fbfont().
 
-Signed-off-by: Moritz Fischer <mdf@kernel.org>
+Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
 ---
+Change in v2:
+  - Mention `struct console_font` in the commit message. (Suggested by
+    Daniel Vetter <daniel@ffwll.ch>)
 
-Changes from v3:
-- Added rtnl_lock()/unlock() as suggested by Jakub and use dev_close()
+ drivers/video/console/sticore.c | 2 +-
+ include/linux/font.h            | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Changes from v2:
-- Changed to net-next
-- Removed extra whitespace
-
-Changes from v1:
-- Replace call to de_remove_one with de_shutdown() function
-  as suggested by James.
-
----
- drivers/net/ethernet/dec/tulip/de2104x.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
-index d9f6c19940ef..c3cbe55205a7 100644
---- a/drivers/net/ethernet/dec/tulip/de2104x.c
-+++ b/drivers/net/ethernet/dec/tulip/de2104x.c
-@@ -2175,11 +2175,21 @@ static int __maybe_unused de_resume(struct device *dev_d)
+diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
+index 6a26a364f9bd..d1bb5915082b 100644
+--- a/drivers/video/console/sticore.c
++++ b/drivers/video/console/sticore.c
+@@ -502,7 +502,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
+ 	if (!fbfont)
+ 		return NULL;
  
- static SIMPLE_DEV_PM_OPS(de_pm_ops, de_suspend, de_resume);
- 
-+static void de_shutdown(struct pci_dev *pdev)
-+{
-+	struct net_device *dev = pci_get_drvdata(pdev);
-+
-+	rtnl_lock();
-+	dev_close(dev);
-+	rtnl_unlock();
-+}
-+
- static struct pci_driver de_driver = {
- 	.name		= DRV_NAME,
- 	.id_table	= de_pci_tbl,
- 	.probe		= de_init_one,
- 	.remove		= de_remove_one,
-+	.shutdown	= de_shutdown,
- 	.driver.pm	= &de_pm_ops,
+-	pr_info("STI selected %dx%d framebuffer font %s for sticon\n",
++	pr_info("STI selected %ux%u framebuffer font %s for sticon\n",
+ 			fbfont->width, fbfont->height, fbfont->name);
+ 			
+ 	bpc = ((fbfont->width+7)/8) * fbfont->height; 
+diff --git a/include/linux/font.h b/include/linux/font.h
+index b5b312c19e46..4f50d736ea72 100644
+--- a/include/linux/font.h
++++ b/include/linux/font.h
+@@ -16,7 +16,7 @@
+ struct font_desc {
+     int idx;
+     const char *name;
+-    int width, height;
++    unsigned int width, height;
+     const void *data;
+     int pref;
  };
- 
 -- 
-2.29.1
+2.25.1
 
