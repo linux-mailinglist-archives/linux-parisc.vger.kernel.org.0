@@ -2,107 +2,80 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ABC729DB01
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Oct 2020 00:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D50FD29DC4F
+	for <lists+linux-parisc@lfdr.de>; Thu, 29 Oct 2020 01:24:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726297AbgJ1XmV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 28 Oct 2020 19:42:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39422 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726137AbgJ1XmR (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 28 Oct 2020 19:42:17 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D654BC0613CF;
-        Wed, 28 Oct 2020 16:42:16 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id t20so637838qvv.8;
-        Wed, 28 Oct 2020 16:42:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Q2w0GJP+O24zlClsx6Zd9yJQfOlv+kG1yF/TN+Wun14=;
-        b=n5x+LUX2iOSa9A1Ozlkg4pr/k5hWJnKWLWekiVdEHyz16IbWcYLK5XhIxltZ7k4Wp3
-         vJ6VwZsa2HTmIvjsJbsOaDp8NwxAvELwDzeav6QYQqDfAy7YbNqfa3GrdkRWSfitq1bQ
-         JKnm1rC6ubNYvLGylAs8E9v3WRC8dQfrQcUBDi9+m5W2wNEc5WBTFBbZAw1SrNAyQiR0
-         985XTzcK7/EGV279NJLpxcy5w2l1x+MFZCueGBlsGvcDAZ3Q/of1Qk2NYPRKkEGnS7CG
-         EuOurqQcrXotkY7o+MOGAYUOJtgDlvHXMyCzwZbnwjp6S7+3kQYi7xhqWAynaSWXp0no
-         l2sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Q2w0GJP+O24zlClsx6Zd9yJQfOlv+kG1yF/TN+Wun14=;
-        b=ogftfustdUPHXLYZxJZdyViHiGa5uLoB7xGA9iYaXVmDA++Vtl3jkPHT7m3r8F/4rp
-         Gu5gKJio7nhmLxvb3ukVnjvKeZctFzkQ0Sr25IIRH4pVi2jCjkgMOTyfNLX66lPyBIQz
-         p+YNI2vh7iz8E2VC71kBQj2XXBAUzozSoh+bDEAo9ecEuoOIPCeXs8dyCUV+0DoTx6Q3
-         I3FziC6Ji9gKyOZz4w+ah4LX3a0aGWgCFRhBdRBOpHnbcC/3Eh8cybEXpwwcs5s2oHnv
-         3NuQ8qCCKPCz9k3t5/maL8cNJdQYA3zEYf6hwfF7ozy7S6GP1xo5KWrWnRLyWP9Cv8ko
-         L7Mw==
-X-Gm-Message-State: AOAM5325d3V1Ornz5cVyQs01M+u+zdgi0S+jy9utwYhCO050thf2q0/b
-        9BMn/KG+W9IuK0tXHUnnMymUSWTw8EPa
-X-Google-Smtp-Source: ABdhPJyKmvi+wrim6ggQx3fuKG0hwNY5mHGUXX+rZcx02E6mWjNckXz9MyfFa4GcSkcckzQuBqpKtw==
-X-Received: by 2002:a62:b515:0:b029:155:95e8:fbed with SMTP id y21-20020a62b5150000b029015595e8fbedmr6479066pfe.49.1603881064332;
-        Wed, 28 Oct 2020 03:31:04 -0700 (PDT)
-Received: from PWN (n11212042025.netvigator.com. [112.120.42.25])
-        by smtp.gmail.com with ESMTPSA id il17sm4149183pjb.39.2020.10.28.03.31.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 03:31:03 -0700 (PDT)
-Date:   Wed, 28 Oct 2020 06:30:50 -0400
-From:   Peilin Ye <yepeilin.cs@gmail.com>
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/5] Fonts: Make font size unsigned in font_desc
-Message-ID: <20201028103050.GA1209391@PWN>
-References: <cover.1603788511.git.yepeilin.cs@gmail.com>
- <cb5bb49a33ff54fef41e719ee9d301a6a73c5f9c.1603788512.git.yepeilin.cs@gmail.com>
- <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
- <20201027185058.GM401619@phenom.ffwll.local>
- <20201028054307.GA1205568@PWN>
- <20201028081844.GS401619@phenom.ffwll.local>
+        id S2388465AbgJ2AYF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 28 Oct 2020 20:24:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49588 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388430AbgJ1WhX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:37:23 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A423C247E7;
+        Wed, 28 Oct 2020 16:40:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603903240;
+        bh=RG/Dac088H5GVmB7A3wzm+xNBIFvyWXhedgYOBuwUuA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=mp0mi5V8yuRZfhOasGBS8qD3xtNqW+453ws5nwNnegndxP833WyBMnr5XW7bNcW3D
+         Qu5goUOs2xTMMCynd2KTpZzxHBdPm3/izAVJrGVEKEndCOGCjJwD0AypGBM2QNaWqT
+         7KKfpi26hxuJ7sW4Qmx+gd3mScUPM4+0zS6o+4I0=
+Date:   Wed, 28 Oct 2020 09:40:38 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Moritz Fischer <mdf@kernel.org>
+Cc:     netdev@vger.kernel.org, davem@davemloft.net,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lucyyan@google.com, moritzf@google.com,
+        James.Bottomley@hansenpartnership.com
+Subject: Re: [PATCH/RFC net-next v3] net: dec: tulip: de2104x: Add shutdown
+ handler to stop NIC
+Message-ID: <20201028094038.5bd6eccb@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20201028015909.GA52884@epycbox.lan>
+References: <20201023202834.660091-1-mdf@kernel.org>
+        <20201027161606.477a445e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <20201028015909.GA52884@epycbox.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201028081844.GS401619@phenom.ffwll.local>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Oct 28, 2020 at 09:18:44AM +0100, Daniel Vetter wrote:
-> On Wed, Oct 28, 2020 at 01:43:07AM -0400, Peilin Ye wrote:
-> > On Tue, Oct 27, 2020 at 07:50:58PM +0100, Daniel Vetter wrote:
-> > > On Tue, Oct 27, 2020 at 12:33:05PM -0400, Peilin Ye wrote:
-> > > > It is improper to define `width` and `height` as signed in `struct
-> > > > font_desc`. Make them unsigned. Also, change the corresponding printk()
-> > > > format identifiers from `%d` to `%u`, in sti_select_fbfont().
-> > > > 
-> > > > Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
-> > > 
-> > > I'm not entirely sure of the motivation here ... height/width should never
-> > > ever be even close to the limit here. Or have you seen integer math that
-> > > could potentially go wrong if we go with unsigned instead of int?
+On Tue, 27 Oct 2020 18:59:09 -0700 Moritz Fischer wrote:
+> Hi Jakub,
+> 
+> On Tue, Oct 27, 2020 at 04:16:06PM -0700, Jakub Kicinski wrote:
+> > On Fri, 23 Oct 2020 13:28:34 -0700 Moritz Fischer wrote:  
+> > > diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
+> > > index d9f6c19940ef..ea7442cc8e75 100644
+> > > --- a/drivers/net/ethernet/dec/tulip/de2104x.c
+> > > +++ b/drivers/net/ethernet/dec/tulip/de2104x.c
+> > > @@ -2175,11 +2175,19 @@ static int __maybe_unused de_resume(struct device *dev_d)
+> > >  
+> > >  static SIMPLE_DEV_PM_OPS(de_pm_ops, de_suspend, de_resume);
+> > >  
+> > > +static void de_shutdown(struct pci_dev *pdev)
+> > > +{
+> > > +	struct net_device *dev = pci_get_drvdata(pdev);
+> > > +
+> > > +	de_close(dev);  
 > > 
-> > Oh... No, I have not. I just thought we shouldn't represent a length
-> > using a signed value. Also, width and height in console_font are
-> > unsigned int - that shouldn't matter that much though.
+> > Apparently I get all the best ideas when I'm about to apply something..  
 > 
-> Oh this is actually a good reason, since that's the uapi structure. And so
-> using the exact same signedness should help a bit with accidental casting
-> bugs.
+> Better now than after =)
 > 
-> If you mention this in the commit message I think this is good to go.
+> > I don't think you can just call de_close() like that, because 
+> > (a) it may expect rtnl_lock() to be held, and (b) it may not be open.  
+> 
+> how about:
+> 
+> rtnl_lock();
+> if (netif_running(dev))
+> 	dev_close(dev);
+> rtnl_unlock();
 
-Ah, I see, v2 on the way. Please ignore [v2 3/5], that doesn't hunk with
-this patch in effect...
-
-One newbie question, should I mention in the commit message, if a patch
-depends on another patch in the series in order to hunk properly?
-
-Peilin
-
+That's fine as well, although dev_close() checks if the device is UP
+AFAICT.
