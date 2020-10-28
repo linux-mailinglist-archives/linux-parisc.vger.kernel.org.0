@@ -2,106 +2,121 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBBC529D9D2
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Oct 2020 00:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1590129DA07
+	for <lists+linux-parisc@lfdr.de>; Thu, 29 Oct 2020 00:10:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390060AbgJ1XDB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 28 Oct 2020 19:03:01 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:46224 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731811AbgJ1XDB (ORCPT
+        id S2387530AbgJ1XKl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 28 Oct 2020 19:10:41 -0400
+Received: from box.techtravels.org ([162.243.220.157]:37447 "EHLO
+        box.techtravels.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731936AbgJ1XJI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 28 Oct 2020 19:03:01 -0400
-Received: by mail-pl1-f195.google.com with SMTP id p17so351766pli.13;
-        Wed, 28 Oct 2020 16:03:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=CNA7UvO0rC3OicpN5FLfXwig0Y0tAaVI6smQ5o7BPyY=;
-        b=oevzLVOKkBM5WNY8SpRE2a6oFmGTJfC+7iR9r+5iXJcSzAC9jJ+P6WGhEwZbxXvoWN
-         2eZXZFqjYzjpMrg1K37Lm0ciiUTi3jN473pnJ6IStCaoKL2YgOUut6rBkjOEIxhpob7o
-         C402cN+dmWeNzmdjNKy8v7S/jjsMSgVHX2iLxUST5n3d987IvbUOKZQ8kW8iWslXKwUL
-         SQq/TrYi+JisR6ccHir01rsnQJT3LacavDDNnyeaZWF24+cshjPNzuIvha9jeAmFP6LW
-         IG93cgeR/bOzG3O3r9fPX0dnNGMYQbm4CzxxJDd2aE4irebuBAKU6MeelrdDl3VBJCYp
-         w8GA==
-X-Gm-Message-State: AOAM533imzRdTB9Pyntj7jBk1Ya/Li6ba7rBt+p2HTNCwLZKqvtMorer
-        bz54eJlDlPz6uF6C2qYI3fR4SOUu2Ks=
-X-Google-Smtp-Source: ABdhPJzQI5DMqt/ij1UO69AkLiPauhiT4KID2J0Ph8ydetjDXOGy1vJYyhcj5KdzUHGF6RRU3q86vg==
-X-Received: by 2002:a17:902:d896:b029:d2:288e:bafc with SMTP id b22-20020a170902d896b02900d2288ebafcmr5063573plz.43.1603850351126;
-        Tue, 27 Oct 2020 18:59:11 -0700 (PDT)
-Received: from localhost ([2601:647:5b00:1161:a4cc:eef9:fbc0:2781])
-        by smtp.gmail.com with ESMTPSA id z13sm3213153pgc.44.2020.10.27.18.59.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2020 18:59:10 -0700 (PDT)
-Date:   Tue, 27 Oct 2020 18:59:09 -0700
-From:   Moritz Fischer <mdf@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Moritz Fischer <mdf@kernel.org>, netdev@vger.kernel.org,
-        davem@davemloft.net, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lucyyan@google.com,
-        moritzf@google.com, James.Bottomley@hansenpartnership.com
-Subject: Re: [PATCH/RFC net-next v3] net: dec: tulip: de2104x: Add shutdown
- handler to stop NIC
-Message-ID: <20201028015909.GA52884@epycbox.lan>
-References: <20201023202834.660091-1-mdf@kernel.org>
- <20201027161606.477a445e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        Wed, 28 Oct 2020 19:09:08 -0400
+X-Greylist: delayed 4200 seconds by postgrey-1.27 at vger.kernel.org; Wed, 28 Oct 2020 19:09:08 EDT
+Received: from authenticated-user (box.techtravels.org [162.243.220.157])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+        (No client certificate requested)
+        by box.techtravels.org (Postfix) with ESMTPSA id 041D83F1F0;
+        Wed, 28 Oct 2020 08:29:57 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=techtravels.org;
+        s=mail; t=1603888198;
+        bh=r3JGfSbhqALVtSoYk64EyIXKoztH+vowZnL9ryhncAY=;
+        h=From:Subject:To:Cc:References:Date:In-Reply-To:From;
+        b=w1jmDGIPPAyCdMWNCkUavvulQbYL5Nn5xnWxcvdMXoNhaEwQHxzeeYl6OUivWMk15
+         GM6XxgRHt78jo+x/+y0bIL1kBdlg+HUoxZl77yAw788gLtawy2RuPdrOi+w0/PM4Jf
+         BFHOvojeT1VsUjw0GmFeiAO6moiXQvZUF2m/sTBB8hZdXxmejPkBDzDjG9VrVksch2
+         sd/5bJbVTjE9ciLM+IBLBJ4hI9bk0oOcACzVODYKZratzCG9WorNA4eiQUBiGTsSHh
+         Dtyb50HpvIn4eqdLTjG9HiaUI7MtofnbtiPvl1MZud21Az6OSDbfUWHlX1DrWTs/hh
+         mic9UebYfZ8pw==
+From:   Keith Monahan <keith@techtravels.org>
+Subject: Re: HPPA support for IGNITE-UX install discs
+To:     Helge Deller <deller@gmx.de>,
+        =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>,
+        Sven Schnelle <svens@stackframe.org>
+Cc:     Richard Henderson <rth@twiddle.net>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        qemu-discuss@nongnu.org
+References: <fad1bbcf-51c4-f381-87cf-23d5f9787df3@techtravels.org>
+ <69e13e3a-f236-871c-0491-bb8d53c74a18@amsat.org>
+ <d84eea18-3bd6-bda9-3e63-749a96e1ed94@gmx.de>
+ <daaf28c5-c0d6-87bd-3b60-2687913e7a12@techtravels.org>
+ <6ae9bf84-bf40-caf4-d22e-a8df4de26d3d@gmx.de>
+Message-ID: <c13cafb3-7a0f-2ebf-9a48-b203168376b4@techtravels.org>
+Date:   Wed, 28 Oct 2020 08:29:58 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201027161606.477a445e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <6ae9bf84-bf40-caf4-d22e-a8df4de26d3d@gmx.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Jakub,
+Helge,
 
-On Tue, Oct 27, 2020 at 04:16:06PM -0700, Jakub Kicinski wrote:
-> On Fri, 23 Oct 2020 13:28:34 -0700 Moritz Fischer wrote:
-> > diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
-> > index d9f6c19940ef..ea7442cc8e75 100644
-> > --- a/drivers/net/ethernet/dec/tulip/de2104x.c
-> > +++ b/drivers/net/ethernet/dec/tulip/de2104x.c
-> > @@ -2175,11 +2175,19 @@ static int __maybe_unused de_resume(struct device *dev_d)
-> >  
-> >  static SIMPLE_DEV_PM_OPS(de_pm_ops, de_suspend, de_resume);
-> >  
-> > +static void de_shutdown(struct pci_dev *pdev)
-> > +{
-> > +	struct net_device *dev = pci_get_drvdata(pdev);
-> > +
-> > +	de_close(dev);
-> 
-> Apparently I get all the best ideas when I'm about to apply something..
+Thanks for your reply!
 
-Better now than after =)
 
-> I don't think you can just call de_close() like that, because 
-> (a) it may expect rtnl_lock() to be held, and (b) it may not be open.
+On October 26, 2020 4:01:52 PM Helge Deller <deller@gmx.de> wrote:
 
-how about:
+> Somewhat late reply...
+>
+> On 9/22/20 2:28 AM, Keith Monahan wrote:
+>> Here's the ioscan from the actual hardware
+>>
+>> no_hostname:/> ioscan
+>> H/W Path    Class Description
+>> ===============================================
+>>             bc
+>> 8           bc                      Pseudo Bus Converter
+>> 8/0             ba                  PCI Bus Bridge
+>> 8/0/15.0              instrument PCI(103c1650)
+>
+> That seems to be a specific HP PCI card.
+> Maybe it's possible to pass-through it at some point in an emulation ?
 
-rtnl_lock();
-if (netif_running(dev))
-	dev_close(dev);
-rtnl_unlock();
+Not super concerned with emulating that hw there. That card is used to 
+connect the PCI bus (in turn, connected to GSC via DINO) to the logic 
+analyzer backplane.
 
-> 
-> Perhaps call unregister_netdev(dev) - that'll close the device.
-> Or rtnl_lock(); dev_close(dev); rtnl_unlock();
-> 
-> > +}
-> > +
-> >  static struct pci_driver de_driver = {
-> >  	.name		= DRV_NAME,
-> >  	.id_table	= de_pci_tbl,
-> >  	.probe		= de_init_one,
-> >  	.remove		= de_remove_one,
-> > +	.shutdown	= de_shutdown,
-> >  	.driver.pm	= &de_pm_ops,
-> >  };
-> >  
-> 
+>
+>> 8/16            ba                  Core I/O Adapter
+>> 8/16/0             ext_bus          Built-in Parallel Interface
+>> 8/16/1             audio            Built-in Audio
+>> 8/16/4             tty              Built-in RS-232C
+>> 8/16/5             ext_bus          Built-in SCSI
+>
+> ^ this one isn't implemented yet in qemu.
+> As I said in another mail, we currently emulate a PCI SCSI card instead.
+> Maybe emulating the original SCSI controller isn't hard, but I don't know
+> and I'm not a SCSI expert.
 
-Cheers,
-Moritz
+The NCR 53C710 SCSI that's present inside LASI was pretty common. One of 
+the uses includes the Commodore A4091, a SCSI controller sold for the 
+Amiga 4000. The A4091 is emulated on WinUAE, which is open source. To 
+make my story go full circle, looking at that source, located below, is 
+based on QEMU source!!
+
+https://github.com/tonioni/WinUAE/blob/master/qemuvga/lsi53c710.cpp
+
+which is based on
+
+qemu/hw/scsi/lsi53c895a.c
+
+I don't know the significance/complexity of the difference between 
+emulating a PCI card vs accessing things via LASI, which would sit on 
+the GSC bus. Wishful thinking is that once we get there, that we've got 
+existing (albeit different system emulation platform) working code that 
+emulates those chip functions.
+
+so then maybe there's still hope for this cause eventually! :)
+
+>
+> I think the SCSI controller is the biggest issue for now...
+> If that works, the installations should continue.
+>
+> Helge
+
+Thanks,
+Keith
+
