@@ -2,117 +2,271 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E84D029DE56
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Oct 2020 01:53:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A6C129DE57
+	for <lists+linux-parisc@lfdr.de>; Thu, 29 Oct 2020 01:53:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731870AbgJ1WTV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 28 Oct 2020 18:19:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53766 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732289AbgJ1WS4 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:18:56 -0400
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF3AC0613D2;
-        Wed, 28 Oct 2020 15:18:55 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id s21so1251852oij.0;
-        Wed, 28 Oct 2020 15:18:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=W33YKVE+vIQUjqJmcEzgED3JxXxgJJnTqejIz5dWMio=;
-        b=Hy4ATO4/8bpMwbG9MepKQdZG8/CTf1/4URUhZZcmbcdWvW8+gkJ6cAXoyIwHrFIPTG
-         ph2he7bXY8k2pSLmYEZgpOpWlep9MeKw4VWXCdPayFqCN/QzcXzph26cbhGIMNKVkPoX
-         XjTfYkGXonGwT3mBLeJG8PqiJNAErVxFMoJ9vz/9LsRmSAVvCxLTSrC/iR0NgA9MZ8QY
-         4p37kPfhvWgpLp2517tIc3KmbGgehxrWRETTxFwC31QI9ZMO4iskheUBicyPAK7kvHS6
-         tpKR71qatexkU73Utm71Opjb8YHXxeBdlTjUDuKoP/T0wFnOL0/KjJzJfPtNDR5C7HVg
-         bWRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=W33YKVE+vIQUjqJmcEzgED3JxXxgJJnTqejIz5dWMio=;
-        b=nC077KWemVFKENLCo9JGk1JDtN8zUBQ6BQ0aaUFnB5TiYSB8PCx074f/C6gr7QgA4X
-         +B3bkmSURjoJioTXeiLDfBV1eaWw6umzpjWvdSvn87fgoPP4RGFtPUscBlOGiZcMWiV2
-         ayXUPzltb3Yd2mmVaUezB8h76/8ObJs/fRL7ncwG93FigSP64BAkgU5Y/q+GrHSq3KY4
-         RC+h10ycE50es9NbUTsp2L6J+88ZEAmlDpcLDxXXxzKoWxsL9jfm1FqJQShF8sVM+JqK
-         uV9SAm3R/1Yb0tFD3FTs3pOVxRcgsU9iPajIL0A6xMK4Tr1N9sCgTckjHHpX1eT0GRqT
-         qiNw==
-X-Gm-Message-State: AOAM5333N6nFIV9NOZAv3jNyLNyUPPr8jEWGuZPnQM8nhd+EJzOvsV58
-        h7vBZe+blIqr/S9hbHpddevAdb1M4r9Y
-X-Google-Smtp-Source: ABdhPJx7TI8kNqRv/CrbnxiDniRSurjnwwLGWS8CtOJHMecJHTWQceZLiEtKvb0qCu+u9Y22egpfOQ==
-X-Received: by 2002:a17:90b:20a:: with SMTP id fy10mr6294642pjb.20.1603882658040;
-        Wed, 28 Oct 2020 03:57:38 -0700 (PDT)
-Received: from localhost.localdomain (n11212042025.netvigator.com. [112.120.42.25])
-        by smtp.gmail.com with ESMTPSA id i24sm5377303pfd.15.2020.10.28.03.57.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 03:57:37 -0700 (PDT)
-From:   Peilin Ye <yepeilin.cs@gmail.com>
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Peilin Ye <yepeilin.cs@gmail.com>
-Subject: [PATCH v2 2/5] Fonts: Make font size unsigned in font_desc
-Date:   Wed, 28 Oct 2020 06:56:47 -0400
-Message-Id: <20201028105647.1210161-1-yepeilin.cs@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
-References: <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
+        id S1731857AbgJ1WTU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 28 Oct 2020 18:19:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60502 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731732AbgJ1WRo (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:17:44 -0400
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A727C246DE;
+        Wed, 28 Oct 2020 11:56:14 +0000 (UTC)
+Received: from rostedt by gandalf.local.home with local (Exim 4.94)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1kXk3p-005ZIX-8X; Wed, 28 Oct 2020 07:56:13 -0400
+Message-ID: <20201028115613.140212174@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Wed, 28 Oct 2020 07:52:49 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guo Ren <guoren@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
+Subject: [PATCH 5/9] kprobes/ftrace: Add recursion protection to the ftrace callback
+References: <20201028115244.995788961@goodmis.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-`width` and `height` are defined as unsigned in our UAPI font descriptor
-`struct console_font`. Make them unsigned in our kernel font descriptor
-`struct font_desc`, too.
+From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
 
-Also, change the corresponding printk() format identifiers from `%d` to
-`%u`, in sti_select_fbfont().
+If a ftrace callback does not supply its own recursion protection and
+does not set the RECURSION_SAFE flag in its ftrace_ops, then ftrace will
+make a helper trampoline to do so before calling the callback instead of
+just calling the callback directly.
 
-Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
+The default for ftrace_ops is going to assume recursion protection unless
+otherwise specified.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Cc: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-csky@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 ---
-Change in v2:
-  - Mention `struct console_font` in the commit message. (Suggested by
-    Daniel Vetter <daniel@ffwll.ch>)
+ arch/csky/kernel/probes/ftrace.c     | 12 ++++++++++--
+ arch/parisc/kernel/ftrace.c          | 13 +++++++++++--
+ arch/powerpc/kernel/kprobes-ftrace.c | 11 ++++++++++-
+ arch/s390/kernel/ftrace.c            | 13 +++++++++++--
+ arch/x86/kernel/kprobes/ftrace.c     | 12 ++++++++++--
+ 5 files changed, 52 insertions(+), 9 deletions(-)
 
- drivers/video/console/sticore.c | 2 +-
- include/linux/font.h            | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
-index 6a26a364f9bd..d1bb5915082b 100644
---- a/drivers/video/console/sticore.c
-+++ b/drivers/video/console/sticore.c
-@@ -502,7 +502,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
- 	if (!fbfont)
- 		return NULL;
+diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probes/ftrace.c
+index 5264763d05be..5eb2604fdf71 100644
+--- a/arch/csky/kernel/probes/ftrace.c
++++ b/arch/csky/kernel/probes/ftrace.c
+@@ -13,16 +13,21 @@ int arch_check_ftrace_location(struct kprobe *p)
+ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 			   struct ftrace_ops *ops, struct pt_regs *regs)
+ {
++	int bit;
+ 	bool lr_saver = false;
+ 	struct kprobe *p;
+ 	struct kprobe_ctlblk *kcb;
  
--	pr_info("STI selected %dx%d framebuffer font %s for sticon\n",
-+	pr_info("STI selected %ux%u framebuffer font %s for sticon\n",
- 			fbfont->width, fbfont->height, fbfont->name);
- 			
- 	bpc = ((fbfont->width+7)/8) * fbfont->height; 
-diff --git a/include/linux/font.h b/include/linux/font.h
-index b5b312c19e46..4f50d736ea72 100644
---- a/include/linux/font.h
-+++ b/include/linux/font.h
-@@ -16,7 +16,7 @@
- struct font_desc {
-     int idx;
-     const char *name;
--    int width, height;
-+    unsigned int width, height;
-     const void *data;
-     int pref;
- };
+-	/* Preempt is disabled by ftrace */
++	bit = ftrace_test_recursion_trylock();
++	if (bit < 0)
++		return;
++
++	preempt_disable_notrace();
+ 	p = get_kprobe((kprobe_opcode_t *)ip);
+ 	if (!p) {
+ 		p = get_kprobe((kprobe_opcode_t *)(ip - MCOUNT_INSN_SIZE));
+ 		if (unlikely(!p) || kprobe_disabled(p))
+-			return;
++			goto out;
+ 		lr_saver = true;
+ 	}
+ 
+@@ -56,6 +61,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 		 */
+ 		__this_cpu_write(current_kprobe, NULL);
+ 	}
++out:
++	preempt_enable_notrace();
++	ftrace_test_recursion_unlock(bit);
+ }
+ NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+ 
+diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
+index 4bab21c71055..5f7742b225a5 100644
+--- a/arch/parisc/kernel/ftrace.c
++++ b/arch/parisc/kernel/ftrace.c
+@@ -208,13 +208,19 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ {
+ 	struct kprobe_ctlblk *kcb;
+ 	struct kprobe *p = get_kprobe((kprobe_opcode_t *)ip);
++	int bit;
+ 
+-	if (unlikely(!p) || kprobe_disabled(p))
++	bit = ftrace_test_recursion_trylock();
++	if (bit < 0)
+ 		return;
+ 
++	preempt_disable_notrace();
++	if (unlikely(!p) || kprobe_disabled(p))
++		goto out;
++
+ 	if (kprobe_running()) {
+ 		kprobes_inc_nmissed_count(p);
+-		return;
++		goto out;
+ 	}
+ 
+ 	__this_cpu_write(current_kprobe, p);
+@@ -235,6 +241,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 		}
+ 	}
+ 	__this_cpu_write(current_kprobe, NULL);
++out:
++	preempt_enable_notrace();
++	ftrace_test_recursion_unlock(bit);
+ }
+ NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+ 
+diff --git a/arch/powerpc/kernel/kprobes-ftrace.c b/arch/powerpc/kernel/kprobes-ftrace.c
+index 972cb28174b2..5df8d50c65ae 100644
+--- a/arch/powerpc/kernel/kprobes-ftrace.c
++++ b/arch/powerpc/kernel/kprobes-ftrace.c
+@@ -18,10 +18,16 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
+ {
+ 	struct kprobe *p;
+ 	struct kprobe_ctlblk *kcb;
++	int bit;
+ 
++	bit = ftrace_test_recursion_trylock();
++	if (bit < 0)
++		return;
++
++	preempt_disable_notrace();
+ 	p = get_kprobe((kprobe_opcode_t *)nip);
+ 	if (unlikely(!p) || kprobe_disabled(p))
+-		return;
++		goto out;
+ 
+ 	kcb = get_kprobe_ctlblk();
+ 	if (kprobe_running()) {
+@@ -52,6 +58,9 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
+ 		 */
+ 		__this_cpu_write(current_kprobe, NULL);
+ 	}
++out:
++	preempt_enable_notrace();
++	ftrace_test_recursion_unlock(bit);
+ }
+ NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+ 
+diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
+index b388e87a08bf..88466d7fb6b2 100644
+--- a/arch/s390/kernel/ftrace.c
++++ b/arch/s390/kernel/ftrace.c
+@@ -202,13 +202,19 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ {
+ 	struct kprobe_ctlblk *kcb;
+ 	struct kprobe *p = get_kprobe((kprobe_opcode_t *)ip);
++	int bit;
+ 
+-	if (unlikely(!p) || kprobe_disabled(p))
++	bit = ftrace_test_recursion_trylock();
++	if (bit < 0)
+ 		return;
+ 
++	preempt_disable_notrace();
++	if (unlikely(!p) || kprobe_disabled(p))
++		goto out;
++
+ 	if (kprobe_running()) {
+ 		kprobes_inc_nmissed_count(p);
+-		return;
++		goto out;
+ 	}
+ 
+ 	__this_cpu_write(current_kprobe, p);
+@@ -228,6 +234,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 		}
+ 	}
+ 	__this_cpu_write(current_kprobe, NULL);
++out:
++	preempt_enable_notrace();
++	ftrace_test_recursion_unlock(bit);
+ }
+ NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+ 
+diff --git a/arch/x86/kernel/kprobes/ftrace.c b/arch/x86/kernel/kprobes/ftrace.c
+index 681a4b36e9bb..a40a6cdfcca3 100644
+--- a/arch/x86/kernel/kprobes/ftrace.c
++++ b/arch/x86/kernel/kprobes/ftrace.c
+@@ -18,11 +18,16 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ {
+ 	struct kprobe *p;
+ 	struct kprobe_ctlblk *kcb;
++	int bit;
+ 
+-	/* Preempt is disabled by ftrace */
++	bit = ftrace_test_recursion_trylock();
++	if (bit < 0)
++		return;
++
++	preempt_disable_notrace();
+ 	p = get_kprobe((kprobe_opcode_t *)ip);
+ 	if (unlikely(!p) || kprobe_disabled(p))
+-		return;
++		goto out;
+ 
+ 	kcb = get_kprobe_ctlblk();
+ 	if (kprobe_running()) {
+@@ -52,6 +57,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 		 */
+ 		__this_cpu_write(current_kprobe, NULL);
+ 	}
++out:
++	preempt_enable_notrace();
++	ftrace_test_recursion_unlock(bit);
+ }
+ NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+ 
 -- 
-2.25.1
+2.28.0
+
 
