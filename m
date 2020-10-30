@@ -2,83 +2,252 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A3AB2A08C3
-	for <lists+linux-parisc@lfdr.de>; Fri, 30 Oct 2020 16:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 645302A0969
+	for <lists+linux-parisc@lfdr.de>; Fri, 30 Oct 2020 16:18:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726981AbgJ3PAg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 30 Oct 2020 11:00:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39486 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726955AbgJ3PAb (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 30 Oct 2020 11:00:31 -0400
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC85C0613B3
-        for <linux-parisc@vger.kernel.org>; Fri, 30 Oct 2020 07:59:36 -0700 (PDT)
-Received: by mail-lf1-x142.google.com with SMTP id b1so8213374lfp.11
-        for <linux-parisc@vger.kernel.org>; Fri, 30 Oct 2020 07:59:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
-        b=TjZDjTDUyG5IOPAjtKhDz6bJNm6DqwPh3GYjQnJOtk58Qe+VS+LrjG9D+UJTL89L5a
-         hPszd6YttBU2gVDN4Hgd0nVvKmUsgBGa0RfR9y4dU1VG6wqrOSeXXlqa/jT4b2a91QjD
-         sT+ma7QKBtdbME0ZKxl0kc6DEI2BSZsRxuMkNkQsvOWxO6URWAKkh65L3Tk879AJ4LqG
-         Bj9eXYFDUcjXqha9S32esb82rsLCjf9rEdFYrDoZfWxC18Um3HNxqbzetSufrWkdrmWB
-         Hgfuw2XlX0g8ZkLr3paRT5DvZbKL3ccSJq24BaLzNsiQWn1tArC4uUyPSHMQ3hVqPZo6
-         Sb9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
-        b=DhpWcL886Iuw7JUQ5OXqwr14YpFtdaOv8QSokqlvDaj21pF1QobipOqLZAlJTJnKjF
-         SRAGlAQONtfr4/aZacL/49rPiz/MwVAgdVg2h+jqxFyWgmUdFRp9OFJNUfQeTHKKy+WF
-         gpScggIWGT53a2Q85umvFdBDhFVY0V9puI9YYhb8h5nhS4ejBAIDihOtxwEshE8T/xH8
-         VeNN1LFBlVw/8TjL4fqchu7He25IyBnGr3w8mP7yYVaCaM89vpcoxioOByJjIKvXAFLL
-         qmgY0tkv8EKtMe0tCXz0CuWyeeDyymPWjy4HbrmTFxI/js6qtydpVuD4cnks21drxJZi
-         Z5KQ==
-X-Gm-Message-State: AOAM531IOUkAey6iLWl4JyHmRbXpU/b0LqpkDYx6rJj7ICk0Isahb4fD
-        vtBe/bfiIchvEAcS+aWaZXGgNXUiO08dtRKjtbz/jDyOCA==
-X-Google-Smtp-Source: ABdhPJz0XXuJnPS5g3+lbBiW+XXmkDUqYoNBDu76t3os6QvlPQSI6Onyl30CWs+Md1o+E0r28qs03HXLpOQosKz8YWo=
-X-Received: by 2002:a50:f307:: with SMTP id p7mr2761574edm.235.1604069974505;
- Fri, 30 Oct 2020 07:59:34 -0700 (PDT)
+        id S1726844AbgJ3PSS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 30 Oct 2020 11:18:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51668 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726792AbgJ3PSS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 30 Oct 2020 11:18:18 -0400
+Received: from localhost.localdomain (HSI-KBW-46-223-126-90.hsi.kabel-badenwuerttemberg.de [46.223.126.90])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 02B1C20791;
+        Fri, 30 Oct 2020 15:18:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604071096;
+        bh=taFQ/QYuCiye3DX/lZJhTO25JVRcc0x/wNovA78JpOY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ufDt2Ll03VhYHtQFU6xb+wDDadJlHrC4o7pklktL1H164iohO0RVUvApxcyYUf8eT
+         cT6OeHSv9QAgLUSnpRQk706eIF0HPDMkzDFLu+FuAH9hbSDGMubrZsL8T1rHK7HsoM
+         wMfwqnjL+QtSIffHV9go0c9qiksw2jE54yt7dmD4=
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Finn Thain <fthain@telegraphics.com.au>,
+        Philip Blundell <philb@gnu.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Sam Creasey <sammy@sammy.net>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-ia64@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH v2 00/15] timers: clean up ARCH_GETTIMEOFFSET, LEGACY_TIMER_TICK
+Date:   Fri, 30 Oct 2020 16:17:43 +0100
+Message-Id: <20201030151758.1241164-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Received: by 2002:a50:f14c:0:0:0:0:0 with HTTP; Fri, 30 Oct 2020 07:59:34
- -0700 (PDT)
-Reply-To: li.anable85@gmail.com
-From:   Liliane Abel <k.griest04@gmail.com>
-Date:   Fri, 30 Oct 2020 15:59:34 +0100
-Message-ID: <CABAZL7=b-NWks3DKb=fdDjnu_xt_-CcJCqf-F5s0yQCFVH73-A@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Dearest
+From: Arnd Bergmann <arnd@arndb.de>
 
-Greeting my dear, I am Liliane Abel by name, The only daughter of late
-Mr.Benson Abel. My father is one of the top Politician in our country
-and my mother is a farmers and cocoa merchant when they were both
-alive. After the death of my mother, long ago, my father was
-controlling their business until he was poisoned by his business
-associates which he suffered and died.
+This is a resend of the combined cleanups for CONFIG_ARCH_GETTIMEOFFSET,
+which gets removed, and CONFIG_LEGACY_TIMER_TICK, which replaces
+CONFIG_GENERIC_CLOCKEVENTS, with the reverse meaning.
 
-Before the death of my father, He told me about (two million five
-hundred thousand united states dollars) which he deposited in the bank
-in Lome-Togo, It was the money he intended to transfer overseas for
-investment before he was poisoned. He also instructed me that I should
-seek for foreign partners in any country of my choice who will assist
-me transfer this money in overseas account where the money will be
-wisely invested.
-I am seeking for your kind assistance in the following ways:  (1) to
-provide a safe bank account into where the money will be transferred
-for investment. (2) To serve as a guardian of this fund since I am a
-girl of 19 years old. (3) To make arrangement for me to come over to
-your country to further my education. This is my reason for writing to
-you. Please if you are willing to assist me I will offer you 25% of
-the total money. Reply if  you are interested
-Best regards.
-Liliane Abel.
+CONFIG_ARCH_GETTIMEOFFSET has been gradually phased out from all
+platforms, with only ARM EBSA110 recently. As this has no more
+known users, the first three patches remove EBSA110 along with
+one platform specific driver and the ARCH_GETTIMEOFFSET
+infrastructure.
+
+When I created the patch removing CONFIG_ARCH_GETTIMEOFFSET, I also
+had a look at CONFIG_GENERIC_CLOCKEVENTS, which is selected by most,
+but not all, platforms today, each of the ones that lack it doing the
+timer tick slightly differently.
+
+The cleanups here make the old platforms a bit more consistent, in
+multiple ways:
+
+- rather than selecting GENERIC_CLOCKEVENTS on modern
+  platforms, select LEGACY_TIMER_TICK on the old ones.
+
+- Hide some more of the internal implementation and only
+  provide a single common entry point for the timer tick,
+  which also makes the behavior more consistent.
+
+- Remove the m68k and arm specific infrastructure pieces
+  and call the common helper directly from each timer
+  interrupt function.
+
+I tested the series on m68k with the qemu q800 target platform, both
+with the legacy_timer_tick() implementation and after converting that
+to a periodic clockevent driver (not included in v2).
+
+Since the patches touch a lot of architecture specific code, I've created
+a branch in my asm-generic tree[1] and plan to send it for the v5.11 merge
+window. If any maintainer has conflicting changes or wants to build on
+top of my work, feel free to merge that into additional subsystem trees.
+
+	Arnd
+
+[1] git://git.kernel.org/pub/scm/linux/kernel/git/arnd/asm-generic.git \
+							asm-generic-timers
+
+Arnd Bergmann (15):
+  ARM: remove ebsa110 platform
+  net: remove am79c961a driver
+  timekeeping: remove arch_gettimeoffset
+  timekeeping: add CONFIG_LEGACY_TIMER_TICK
+  ia64: convert to legacy_timer_tick
+  ARM: rpc: use legacy_timer_tick
+  parisc: use legacy_timer_tick
+  m68k: coldfire: use legacy_timer_tick()
+  m68k: split heartbeat out of timer function
+  m68k: sun3/sun3c: use legacy_timer_tick
+  m68k: m68328: use legacy_timer_tick()
+  m68k: change remaining timers to legacy_timer_tick
+  m68k: remove timer_interrupt() function
+  timekeeping: remove xtime_update
+  timekeeping: default GENERIC_CLOCKEVENTS to enabled
+
+ .../time/clockevents/arch-support.txt         |   8 +-
+ .../time/modern-timekeeping/arch-support.txt  |  33 -
+ MAINTAINERS                                   |   8 -
+ arch/alpha/Kconfig                            |   1 -
+ arch/arc/Kconfig                              |   1 -
+ arch/arm/Kconfig                              |  37 +-
+ arch/arm/Kconfig.debug                        |   6 +-
+ arch/arm/Makefile                             |   8 -
+ arch/arm/configs/ebsa110_defconfig            |  74 --
+ arch/arm/include/asm/mach/time.h              |   2 -
+ arch/arm/kernel/Makefile                      |   6 +-
+ arch/arm/kernel/time.c                        |  14 -
+ arch/arm/mach-ebsa110/Makefile                |   8 -
+ arch/arm/mach-ebsa110/Makefile.boot           |   5 -
+ arch/arm/mach-ebsa110/core.c                  | 323 --------
+ arch/arm/mach-ebsa110/core.h                  |  38 -
+ .../mach-ebsa110/include/mach/entry-macro.S   |  33 -
+ arch/arm/mach-ebsa110/include/mach/hardware.h |  21 -
+ arch/arm/mach-ebsa110/include/mach/io.h       |  89 --
+ arch/arm/mach-ebsa110/include/mach/irqs.h     |  17 -
+ arch/arm/mach-ebsa110/include/mach/memory.h   |  22 -
+ .../mach-ebsa110/include/mach/uncompress.h    |  41 -
+ arch/arm/mach-ebsa110/io.c                    | 440 ----------
+ arch/arm/mach-ebsa110/leds.c                  |  71 --
+ arch/arm/mach-rpc/time.c                      |   2 +-
+ arch/arm64/Kconfig                            |   1 -
+ arch/arm64/Kconfig.platforms                  |   1 -
+ arch/c6x/Kconfig                              |   1 -
+ arch/csky/Kconfig                             |   1 -
+ arch/h8300/Kconfig                            |   1 -
+ arch/hexagon/Kconfig                          |   1 -
+ arch/ia64/Kconfig                             |   1 +
+ arch/ia64/kernel/time.c                       |  36 +-
+ arch/m68k/68000/timers.c                      |   7 +-
+ arch/m68k/Kconfig.cpu                         |  37 +-
+ arch/m68k/Kconfig.machine                     |  11 +
+ arch/m68k/amiga/config.c                      |  11 +-
+ arch/m68k/apollo/config.c                     |  11 +-
+ arch/m68k/atari/config.c                      |   2 +-
+ arch/m68k/atari/time.c                        |   9 +-
+ arch/m68k/bvme6000/config.c                   |   9 +-
+ arch/m68k/coldfire/Makefile                   |  32 +-
+ arch/m68k/coldfire/pit.c                      |   2 +-
+ arch/m68k/coldfire/sltimers.c                 |   8 +-
+ arch/m68k/coldfire/timers.c                   |   8 +-
+ arch/m68k/hp300/time.c                        |   8 +-
+ arch/m68k/hp300/time.h                        |   2 +-
+ arch/m68k/include/asm/machdep.h               |  12 +-
+ arch/m68k/kernel/setup_mm.c                   |   2 +-
+ arch/m68k/kernel/setup_no.c                   |   2 +-
+ arch/m68k/kernel/time.c                       |  18 +-
+ arch/m68k/mac/config.c                        |   6 +-
+ arch/m68k/mac/via.c                           |   8 +-
+ arch/m68k/mvme147/config.c                    |   9 +-
+ arch/m68k/mvme16x/config.c                    |   9 +-
+ arch/m68k/q40/config.c                        |   2 +-
+ arch/m68k/q40/q40ints.c                       |  10 +-
+ arch/m68k/sun3/config.c                       |   4 +-
+ arch/m68k/sun3/sun3ints.c                     |   3 +-
+ arch/m68k/sun3x/time.c                        |   5 +-
+ arch/m68k/sun3x/time.h                        |   2 +-
+ arch/microblaze/Kconfig                       |   1 -
+ arch/mips/Kconfig                             |   1 -
+ arch/nds32/Kconfig                            |   1 -
+ arch/nios2/Kconfig                            |   1 -
+ arch/openrisc/Kconfig                         |   1 -
+ arch/parisc/Kconfig                           |   2 +-
+ arch/parisc/kernel/time.c                     |   9 +-
+ arch/powerpc/Kconfig                          |   1 -
+ arch/riscv/Kconfig                            |   1 -
+ arch/s390/Kconfig                             |   1 -
+ arch/sh/Kconfig                               |   1 -
+ arch/sparc/Kconfig                            |   1 -
+ arch/um/Kconfig                               |   1 -
+ arch/x86/Kconfig                              |   1 -
+ arch/xtensa/Kconfig                           |   1 -
+ drivers/Makefile                              |   2 -
+ drivers/clocksource/Kconfig                   |   2 +-
+ drivers/net/ethernet/amd/Kconfig              |  10 +-
+ drivers/net/ethernet/amd/Makefile             |   1 -
+ drivers/net/ethernet/amd/am79c961a.c          | 763 ------------------
+ drivers/net/ethernet/amd/am79c961a.h          | 143 ----
+ drivers/watchdog/Kconfig                      |   2 +-
+ include/linux/time.h                          |  13 -
+ include/linux/timekeeping.h                   |   3 +-
+ kernel/time/Kconfig                           |  18 +-
+ kernel/time/Makefile                          |   1 +
+ kernel/time/clocksource.c                     |   8 -
+ kernel/time/tick-legacy.c                     |  37 +
+ kernel/time/timekeeping.c                     |  41 +-
+ kernel/time/timekeeping.h                     |   1 +
+ kernel/trace/Kconfig                          |   2 -
+ 92 files changed, 218 insertions(+), 2453 deletions(-)
+ delete mode 100644 Documentation/features/time/modern-timekeeping/arch-support.txt
+ delete mode 100644 arch/arm/configs/ebsa110_defconfig
+ delete mode 100644 arch/arm/mach-ebsa110/Makefile
+ delete mode 100644 arch/arm/mach-ebsa110/Makefile.boot
+ delete mode 100644 arch/arm/mach-ebsa110/core.c
+ delete mode 100644 arch/arm/mach-ebsa110/core.h
+ delete mode 100644 arch/arm/mach-ebsa110/include/mach/entry-macro.S
+ delete mode 100644 arch/arm/mach-ebsa110/include/mach/hardware.h
+ delete mode 100644 arch/arm/mach-ebsa110/include/mach/io.h
+ delete mode 100644 arch/arm/mach-ebsa110/include/mach/irqs.h
+ delete mode 100644 arch/arm/mach-ebsa110/include/mach/memory.h
+ delete mode 100644 arch/arm/mach-ebsa110/include/mach/uncompress.h
+ delete mode 100644 arch/arm/mach-ebsa110/io.c
+ delete mode 100644 arch/arm/mach-ebsa110/leds.c
+ delete mode 100644 drivers/net/ethernet/amd/am79c961a.c
+ delete mode 100644 drivers/net/ethernet/amd/am79c961a.h
+ create mode 100644 kernel/time/tick-legacy.c
+
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Greg Ungerer <gerg@linux-m68k.org>
+Cc: Finn Thain <fthain@telegraphics.com.au>
+Cc: Philip Blundell <philb@gnu.org>
+Cc: Joshua Thompson <funaho@jurai.org>
+Cc: Sam Creasey <sammy@sammy.net>
+Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: John Stultz <john.stultz@linaro.org>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: <linux-ia64@vger.kernel.org>
+Cc: Parisc List <linux-parisc@vger.kernel.org>
+Cc: linux-m68k <linux-m68k@lists.linux-m68k.org>
+Cc: Linux ARM <linux-arm-kernel@lists.infradead.org>
+
+
+-- 
+2.27.0
+
