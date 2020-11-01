@@ -2,89 +2,93 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 532F82A1D03
-	for <lists+linux-parisc@lfdr.de>; Sun,  1 Nov 2020 10:53:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C77762A1DC0
+	for <lists+linux-parisc@lfdr.de>; Sun,  1 Nov 2020 13:04:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726152AbgKAJxv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 1 Nov 2020 04:53:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41758 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726118AbgKAJxu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 1 Nov 2020 04:53:50 -0500
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0AF4C2224F;
-        Sun,  1 Nov 2020 09:53:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604224430;
-        bh=HyGP8CyzoSVv4MCtKqC0pz2ILBHefcA84mBlIyrXGQY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=OMq+e5xfRYGK+MPaFvjA5XQ1EtstRGebvmfrK3+vfb+arDfLov6n8hi7lEhvA8JZE
-         z40cxD0hw5blLj6L2UKYdnzi/5gtxIYmBfUclxCvOu7zyF6h6jCeq4xX2W5yTZ2wGD
-         slN22E9LD6wvSE4f/dRWU2vJNnSXKl/+kfGMYbls=
-Received: by mail-qt1-f178.google.com with SMTP id j62so7328369qtd.0;
-        Sun, 01 Nov 2020 01:53:50 -0800 (PST)
-X-Gm-Message-State: AOAM5317nET48x+nl/anPhsPgD35Tm3tPMqLzxGI6ic3QT5r6MSHLApG
-        jWxlmLOLWyDqbxrrQ/3ba6fY0+eY/+0LM11vFeY=
-X-Google-Smtp-Source: ABdhPJysxelGXEjcD+tK3eXvueDK0E9An/zQqCvczumw3UuNNLcEVvMETDYrwUeexoouBWqMdjrPCeGJVcKk4WzZomA=
-X-Received: by 2002:ac8:7955:: with SMTP id r21mr9418714qtt.204.1604224429108;
- Sun, 01 Nov 2020 01:53:49 -0800 (PST)
+        id S1726564AbgKAME1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Sun, 1 Nov 2020 07:04:27 -0500
+Received: from 162.187.176.175.netplus.co.in ([175.176.187.162]:46730 "EHLO
+        mail.cmcldhudhiana.in" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726563AbgKAME1 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 1 Nov 2020 07:04:27 -0500
+X-Greylist: delayed 9268 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Nov 2020 07:04:25 EST
+Received: from internet.lu (unknown [103.153.78.194])
+        by mail.cmcldhudhiana.in (Postfix) with ESMTPA id F1DDF1421B1A
+        for <linux-parisc@vger.kernel.org>; Sun,  1 Nov 2020 14:42:26 +0530 (IST)
+Reply-To: andreasmedicus@fnbccs.net
+From:   Mr Andreas Medicus <dsolito@internet.lu>
+To:     linux-parisc@vger.kernel.org
+Subject: From Mr Andreas Medicus 
+Date:   01 Nov 2020 01:12:37 -0800
+Message-ID: <20201101011237.7A311B7913B1716B@internet.lu>
 MIME-Version: 1.0
-References: <20201030151758.1241164-1-arnd@kernel.org> <alpine.LNX.2.23.453.2011011441010.32@nippy.intranet>
-In-Reply-To: <alpine.LNX.2.23.453.2011011441010.32@nippy.intranet>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Sun, 1 Nov 2020 10:53:33 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3Dg2UEN4MoVhHMUU=xd5x+uiue4nqZDeHBBK_CG6+LoA@mail.gmail.com>
-Message-ID: <CAK8P3a3Dg2UEN4MoVhHMUU=xd5x+uiue4nqZDeHBBK_CG6+LoA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/15] timers: clean up ARCH_GETTIMEOFFSET, LEGACY_TIMER_TICK
-To:     Finn Thain <fthain@telegraphics.com.au>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Nov 1, 2020 at 4:47 AM Finn Thain <fthain@telegraphics.com.au> wrote:
->
-> On Fri, 30 Oct 2020, Arnd Bergmann wrote:
->
-> > CONFIG_ARCH_GETTIMEOFFSET has been gradually phased out from all
-> > platforms, with only ARM EBSA110 recently. As this has no more known
-> > users, the first three patches remove EBSA110 along with one platform
-> > specific driver and the ARCH_GETTIMEOFFSET infrastructure.
-> >
->
-> The CONFIG_ARCH_GETTIMEOFFSET patches weren't part of v1. Is there some
-> kind of dependency here?
+GOOD DAY
 
-There is technically a dependency, though nobody would notice
-in practice: removing the ARM timer tick function in patch 6 would
-break the ebsa110 platform if we didn't first remove it in patch 1.
-Changing ebsa110 to use legacy_timer_tick in turn would introduce
-a conflict against the removal patch.
 
-Neither of those is particularly harmful as there are no users of
-the affected ebsa110 code, but keeping the two series together
-avoids getting complaints from the build bots.
+My name is  Mr Andreas Medicus, I really do not mean to waste
+your time.
+Considering the fact that this is a $5,500,000.00dollars. deal
+shear rate 50/50 % and i would like you to be honest with me.
 
-      Arnd
+I carefully contact you due to many Internet frauds nowadays.but
+i put my faith in God because all things in life is by risk but
+don't let me down now or after,  This is Mr. Plavia Shakunthala
+Lobo  and his family was involved in plan crash 22nd of May 2010
+in List of passengers on Air India Express flight that crash
+32.Plaviashakunthala  Lobo  33. Venishanikola Lobo 34.
+Vishalfloid Lobo (child) and all family died without any
+inheritance or next of kin so i want you to work together with me
+been an attorney so this is Mr. Plaviashakunthala Lobo account
+details:
+
+Bank name:      Orabank Benin
+Bank Address:    Cotonou Benin Republic
+Account name:    Plavia Shakunthala Lobo
+Account Number:  5820006534
+Account Balance: $5,500,000.00 dollars
+Date of deposit:  19th December, 2009
+Account officer:  Mrs Jessica Clement
+
+I was with  Mr.  Plaviashakunthala  Lobo as a legal witness when
+this money was deposited as fixed deposit in 2009. Since his
+demise, I have visited this bank three times. Contact the bank
+and ask for the confirmation of his involvement in the plane
+crash.check the website:
+http://www.thehindu.com/news/national/list-of-passengers-on-air-india-express-flight/article435569.ece
+
+Upon the receipt of your information,i will give you the Account
+password of the Account number above to Login to the Account for
+view of the said fund online to enable us to move
+move forward.
+
+Kindly send your information as soon as you receive this letter
+for us move forward.
+
+May the good Lord bless you and your family.
+Best Regards.
+
+Mr Andreas Medicus
+You can contact me with my private email:
+andreasmedicu@fnbccs.net
+
+
+
+“DISCLAIMER: This e-mel and any files transmitted with it are
+intended only for the use of the recipient(s) named above and may
+contain confidential information. You are hereby notified that
+the taking of any action in reliance upon, or any review,
+retransmission, dissemination, distribution, printing or copying
+of this message or any part thereof by anyone other than the
+recipient(s) is strictly prohibited. If you have received this
+message in error, you should delete it immediately and advise the
+sender by return e-mel. Opinions, conclusions and other
+information in this message that do not relate to the MBSP shall
+be understood as neither given nor endorsed by the MBSP.
