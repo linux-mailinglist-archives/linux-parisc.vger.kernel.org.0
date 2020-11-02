@@ -2,96 +2,112 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D7B52A29D8
-	for <lists+linux-parisc@lfdr.de>; Mon,  2 Nov 2020 12:48:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 572792A2C05
+	for <lists+linux-parisc@lfdr.de>; Mon,  2 Nov 2020 14:51:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728671AbgKBLsM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 2 Nov 2020 06:48:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51456 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728669AbgKBLpw (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 2 Nov 2020 06:45:52 -0500
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 757E8C061A4C
-        for <linux-parisc@vger.kernel.org>; Mon,  2 Nov 2020 03:45:46 -0800 (PST)
-Received: by mail-wr1-x441.google.com with SMTP id y12so14218371wrp.6
-        for <linux-parisc@vger.kernel.org>; Mon, 02 Nov 2020 03:45:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=t4/hDwsvOptYgItp/Hg6I8g87o5PfiaXnk0Gr30j7xY=;
-        b=IjD0gMxmeBMbl5Fxzs/adRvcFXbegxhnhe+EHvQBBVselVbzpYWyxza1xqm+HgVhMz
-         Res+pm/vli1k3kxnF1AwcnrKx7OT+cI9CfKhWsxTUI8PKndeBGAr8JL9xUquPHF8b2/A
-         ihGFlslj18W1noJW0ZGPuS0R+AvcIu2eTRYrnS4GN304H691qpO+Occf4Bvpv+hZ6nvv
-         OI6K46SbUH3b2krhX6/UArGwBHsDmduwsZNMEbOCF+5iMLqtBbO7zeqXVjsXwH9Fyrvk
-         SNAjxKcUsOfFcrUvl4x3jw52blAukAR4dRzDaD7swrOge33TIfD8pra6vrCxWayILnMm
-         aXAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=t4/hDwsvOptYgItp/Hg6I8g87o5PfiaXnk0Gr30j7xY=;
-        b=P0R83bzM4n0jkhKGZ9pV1ZjJ2dlMiouW4nOq5SXWZ7o7wva6z8iFhYnj4pPrgEGvxR
-         sOF7OsfoUGbuC9jANMYMgtKYEavS+X9oEoahR8kZuBqXKLDgwLqm+p86W8HcSEdV18ad
-         ZdnfKrG7vqhNCybak18qo3PeC7JvKl5eAscdUg9t64y3Ws7Jf7eEF7vH+UZT+cEDC461
-         ZkAs588jp99r2DNCFDZECTZIcWzpyY7ANEBlol49w882vIZeFtLbWBDjU+9KpX91I0Ub
-         O2NhTRPl8AGrEsSnlZDGuP1lsugf210LdQziZGy5C1ol4R+BnuAj6e5WXtcs8abcEqs1
-         H6mA==
-X-Gm-Message-State: AOAM530CTpj1eFdeA2mA4oijJUK/vBZrGTqQgAl8AkQEUqDdPAH1z3Fa
-        uW9miX7bn+8yXOVNTbQJvlrRoJL7KXXmsA==
-X-Google-Smtp-Source: ABdhPJyCgVL1JXYgDh/fD+3/EbFSvF9TbeAHn7Rmj+Ae+8dMfP4pXIDM8+T2FvgZ7NsyMssDD/cTGQ==
-X-Received: by 2002:adf:e40e:: with SMTP id g14mr18352866wrm.285.1604317545189;
-        Mon, 02 Nov 2020 03:45:45 -0800 (PST)
-Received: from dell.default ([91.110.221.242])
-        by smtp.gmail.com with ESMTPSA id g66sm15545352wmg.37.2020.11.02.03.45.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2020 03:45:44 -0800 (PST)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     davem@davemloft.net
-Cc:     Lee Jones <lee.jones@linaro.org>, Jakub Kicinski <kuba@kernel.org>,
-        netdev@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: [PATCH 21/30] net: ethernet: dec: tulip: tulip_core: 'last_irq' is only used when i386 or x86
-Date:   Mon,  2 Nov 2020 11:45:03 +0000
-Message-Id: <20201102114512.1062724-22-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201102114512.1062724-1-lee.jones@linaro.org>
-References: <20201102114512.1062724-1-lee.jones@linaro.org>
+        id S1725891AbgKBNvM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 2 Nov 2020 08:51:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47994 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725797AbgKBNvK (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 2 Nov 2020 08:51:10 -0500
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8C0442231B;
+        Mon,  2 Nov 2020 13:51:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604325067;
+        bh=9qIUbE3lwH4ZvgtTC9bbV3+9hXUEaYm6WiiqQ4WE/Co=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rpbg/1lEiVgNn9Ysvs/9LknHZYACC7zXQOCGCw264IRu8ax1gLK6WH9zSjr+uRe43
+         j5PkmmIzKYvzuR6uPdj0UxdnGNyDn2tiAsnr4m+Rc6wtDwZreVMVedmDOCqs8DpK24
+         uLH4O6s20Bi63bMTeguJmmwdpc+o+rm+otUlIokQ=
+Date:   Mon, 2 Nov 2020 14:52:02 +0100
+From:   'Greg KH' <gregkh@linuxfoundation.org>
+To:     David Laight <David.Laight@aculab.com>
+Cc:     'David Hildenbrand' <david@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "kernel-team@android.com" <kernel-team@android.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-aio@kvack.org" <linux-aio@kvack.org>,
+        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Message-ID: <20201102135202.GA1016272@kroah.com>
+References: <20201022121849.GA1664412@kroah.com>
+ <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
+ <20201022125759.GA1685526@kroah.com>
+ <20201022135036.GA1787470@kroah.com>
+ <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
+ <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
+ <999e2926-9a75-72fd-007a-1de0af341292@redhat.com>
+ <35d0ec90ef4f4a35a75b9df7d791f719@AcuMS.aculab.com>
+ <20201023144718.GA2525489@kroah.com>
+ <0ab5ac71f28d459db2f350c2e07b88ca@AcuMS.aculab.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ab5ac71f28d459db2f350c2e07b88ca@AcuMS.aculab.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Fixes the following W=1 kernel build warning(s):
+On Mon, Nov 02, 2020 at 09:06:38AM +0000, David Laight wrote:
+> From: 'Greg KH'
+> > Sent: 23 October 2020 15:47
+> > 
+> > On Fri, Oct 23, 2020 at 02:39:24PM +0000, David Laight wrote:
+> > > From: David Hildenbrand
+> > > > Sent: 23 October 2020 15:33
+> > > ...
+> > > > I just checked against upstream code generated by clang 10 and it
+> > > > properly discards the upper 32bit via a mov w23 w2.
+> > > >
+> > > > So at least clang 10 indeed properly assumes we could have garbage and
+> > > > masks it off.
+> > > >
+> > > > Maybe the issue is somewhere else, unrelated to nr_pages ... or clang 11
+> > > > behaves differently.
+> > >
+> > > We'll need the disassembly from a failing kernel image.
+> > > It isn't that big to hand annotate.
+> > 
+> > I've worked around the merge at the moment in the android tree, but it
+> > is still quite reproducable, and will try to get a .o file to
+> > disassemble on Monday or so...
+> 
+> Did this get properly resolved?
 
- drivers/net/ethernet/dec/tulip/tulip_core.c: In function ‘tulip_init_one’:
- drivers/net/ethernet/dec/tulip/tulip_core.c:1296:13: warning: variable ‘last_irq’ set but not used [-Wunused-but-set-variable]
+For some reason, 5.10-rc2 fixed all of this up.  I backed out all of the
+patches I had to revert to get 5.10-rc1 to work properly, and then did
+the merge and all is well.
 
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/net/ethernet/dec/tulip/tulip_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It must have been something to do with the compat changes in this same
+area that went in after 5.10-rc1, and something got reorganized in the
+files somehow.  I really do not know, and at the moment, don't have the
+time to track it down anymore.  So for now, I'd say it's all good, sorry
+for the noise.
 
-diff --git a/drivers/net/ethernet/dec/tulip/tulip_core.c b/drivers/net/ethernet/dec/tulip/tulip_core.c
-index e7b0d7de40fd6..94f615869827c 100644
---- a/drivers/net/ethernet/dec/tulip/tulip_core.c
-+++ b/drivers/net/ethernet/dec/tulip/tulip_core.c
-@@ -1293,7 +1293,7 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	static unsigned char last_phys_addr[ETH_ALEN] = {
- 		0x00, 'L', 'i', 'n', 'u', 'x'
- 	};
--	static int last_irq;
-+	static int __maybe_unused last_irq;
- 	int i, irq;
- 	unsigned short sum;
- 	unsigned char *ee_data;
--- 
-2.25.1
-
+greg k-h
