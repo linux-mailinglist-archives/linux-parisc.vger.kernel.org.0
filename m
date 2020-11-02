@@ -2,97 +2,188 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7EBC2A22C2
-	for <lists+linux-parisc@lfdr.de>; Mon,  2 Nov 2020 02:38:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26AB52A23F0
+	for <lists+linux-parisc@lfdr.de>; Mon,  2 Nov 2020 06:08:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727422AbgKBBis (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 1 Nov 2020 20:38:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42720 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727367AbgKBBis (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 1 Nov 2020 20:38:48 -0500
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE54AC0617A6;
-        Sun,  1 Nov 2020 17:38:47 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        id S1727963AbgKBFIO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 2 Nov 2020 00:08:14 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34488 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727960AbgKBFIN (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 2 Nov 2020 00:08:13 -0500
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4CPbD405F9z9sVM;
-        Mon,  2 Nov 2020 12:38:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1604281124;
-        bh=zK/ydDG40tBMu8RZeW7N9EO0OhY0hIJHkzDE5V8XJk4=;
-        h=Date:From:To:Cc:Subject:From;
-        b=ZGCoay7zve6YwRATxZF92iHtuTCCntvhejmxi8wI5BySQISRUn3feYWR8g6oL253l
-         FCshHNocAseo0veroz9EE0GfXBvBYAS/Vu1gUmpl1OJbkou0BU6ZBadr+/oIRLACY+
-         jaxt9mObNxIZq+65xX37soga+YBM5CT+1L31t+4WaVyEEryBQtIZZ19oCREQ5WGOQS
-         1d1DvJUM1G3/xyq9X0gSUJefvvgxKJCjvKMgD5oTjHhDM948d3onGQ/UQECbZCo6Ds
-         uiOO5iO69xX+3tR7pD23cFC4eX6bICatco1B97CRnghjJqVFqEUKb0SEtLoiuGvTCB
-         DsT4/GMfw5jRQ==
-Date:   Mon, 2 Nov 2020 12:38:41 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Helge Deller <deller@gmx.de>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the parisc-hd tree with the asm-generic
- tree
-Message-ID: <20201102123841.39eb4216@canb.auug.org.au>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/vsWjGt1DImMEyJlxtqWUcz0";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+        by mail.kernel.org (Postfix) with ESMTPSA id 7729A2236F;
+        Mon,  2 Nov 2020 05:08:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604293692;
+        bh=m/9zUCvIf3JTkdFrQkDdnBtKdFTIDYPsbNGs5wF8+Gg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=wmaKn66eyG7DdxBNp3woyjsNBbcKCNMT5BXtRYK5uHDybdf84Vuo33dVEj68pgCEa
+         a4GYjkFtiGG7+lHzFWRBZmNIE+RGiHVTydvzkACnyK3W7yvAhL7eLA1E8hnzYHHHD4
+         53bc4HdqfM1V58x4NrQrpJIjS1DP6An/VTbSrpXo=
+Date:   Mon, 2 Nov 2020 14:08:07 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guo Ren <guoren@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH 5/9] kprobes/ftrace: Add recursion protection to the
+ ftrace callback
+Message-Id: <20201102140807.05ca1c9e33a96b34d3fffd35@kernel.org>
+In-Reply-To: <20201029094001.0cfab7aa@gandalf.local.home>
+References: <20201028115244.995788961@goodmis.org>
+        <20201028115613.140212174@goodmis.org>
+        <20201029165803.5f6b401e5bccca4e57c70181@kernel.org>
+        <20201029094001.0cfab7aa@gandalf.local.home>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---Sig_/vsWjGt1DImMEyJlxtqWUcz0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Thu, 29 Oct 2020 09:40:01 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-Hi all,
+> On Thu, 29 Oct 2020 16:58:03 +0900
+> Masami Hiramatsu <mhiramat@kernel.org> wrote:
+> 
+> > Hi Steve,
+> > 
+> > On Wed, 28 Oct 2020 07:52:49 -0400
+> > Steven Rostedt <rostedt@goodmis.org> wrote:
+> > 
+> > > From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+> > > 
+> > > If a ftrace callback does not supply its own recursion protection and
+> > > does not set the RECURSION_SAFE flag in its ftrace_ops, then ftrace will
+> > > make a helper trampoline to do so before calling the callback instead of
+> > > just calling the callback directly.  
+> > 
+> > So in that case the handlers will be called without preempt disabled?
+> > 
+> > 
+> > > The default for ftrace_ops is going to assume recursion protection unless
+> > > otherwise specified.  
+> > 
+> > This seems to skip entier handler if ftrace finds recursion.
+> > I would like to increment the missed counter even in that case.
+> 
+> Note, this code does not change the functionality at this point, because
+> without having the FL_RECURSION flag set (which kprobes does not even in
+> this patch), it always gets called from the helper function that does this:
+> 
+> 	bit = trace_test_and_set_recursion(TRACE_LIST_START, TRACE_LIST_MAX);
+> 	if (bit < 0)
+> 		return;
+> 
+> 	preempt_disable_notrace();
+> 
+> 	op->func(ip, parent_ip, op, regs);
+> 
+> 	preempt_enable_notrace();
+> 	trace_clear_recursion(bit);
+> 
+> Where this function gets called by op->func().
+> 
+> In other words, you don't get that count anyway, and I don't think you want
+> it. Because it means you traced something that your callback calls.
 
-Today's linux-next merge of the parisc-hd tree got a conflict in:
+Got it. So nmissed count increment will be an improvement.
 
-  arch/parisc/kernel/time.c
+> 
+> That bit check is basically a nop, because the last patch in this series
+> will make the default that everything has recursion protection, but at this
+> patch the test does this:
+> 
+> 	/* A previous recursion check was made */
+> 	if ((val & TRACE_CONTEXT_MASK) > max)
+> 		return 0;
+> 
+> Which would always return true, because this function is called via the
+> helper that already did the trace_test_and_set_recursion() which, if it
+> made it this far, the val would always be greater than max.
 
-between commit:
+OK, let me check the last patch too.
 
-  686092e7daaa ("parisc: use legacy_timer_tick")
+> 
+> > 
+> > [...]
+> > e.g.
+> > 
+> > > diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probes/ftrace.c
+> > > index 5264763d05be..5eb2604fdf71 100644
+> > > --- a/arch/csky/kernel/probes/ftrace.c
+> > > +++ b/arch/csky/kernel/probes/ftrace.c
+> > > @@ -13,16 +13,21 @@ int arch_check_ftrace_location(struct kprobe *p)
+> > >  void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+> > >  			   struct ftrace_ops *ops, struct pt_regs *regs)
+> > >  {
+> > > +	int bit;
+> > >  	bool lr_saver = false;
+> > >  	struct kprobe *p;
+> > >  	struct kprobe_ctlblk *kcb;
+> > >  
+> > > -	/* Preempt is disabled by ftrace */
+> > > +	bit = ftrace_test_recursion_trylock();  
+> > 
+> > > +
+> > > +	preempt_disable_notrace();
+> > >  	p = get_kprobe((kprobe_opcode_t *)ip);
+> > >  	if (!p) {
+> > >  		p = get_kprobe((kprobe_opcode_t *)(ip - MCOUNT_INSN_SIZE));
+> > >  		if (unlikely(!p) || kprobe_disabled(p))
+> > > -			return;
+> > > +			goto out;
+> > >  		lr_saver = true;
+> > >  	}  
+> > 
+> > 	if (bit < 0) {
+> > 		kprobes_inc_nmissed_count(p);
+> > 		goto out;
+> > 	}
+> 
+> If anything called in get_kprobe() or kprobes_inc_nmissed_count() gets
+> traced here, you have zero recursion protection, and this will crash the
+> machine with a likely reboot (triple fault).
 
-from the asm-generic tree and commit:
+Oops, ok, those can be traced. 
 
-  3b7ab4a74a2d ("parisc: Switch to clockevent based timers")
+> 
+> Note, the recursion handles interrupts and wont stop them. bit < 0 only
+> happens if you recurse because this function called something that ends up
+> calling itself. Really, why would you care about missing a kprobe on the
+> same kprobe?
 
-from the parisc-hd tree.
+Usually, sw-breakpoint based kprobes will count that case. Moreover, kprobes
+shares one ftrace_ops among all kprobes. I guess in that case any kprobes
+in kprobes (e.g. recursive call inside kprobe pre_handlers) will be skipped
+by ftrace_test_recursion_trylock(), is that correct?
 
-I fixed it up (I effectively reverted the former commit) and can carry the
-fix as necessary. This is now fixed as far as linux-next is concerned,
-but any non trivial conflicts should be mentioned to your upstream
-maintainer when your tree is submitted for merging.  You may also want
-to consider cooperating with the maintainer of the conflicting tree to
-minimise any particularly complex conflicts.
+Thank you,
 
---=20
-Cheers,
-Stephen Rothwell
+> 
+> -- Steve
 
---Sig_/vsWjGt1DImMEyJlxtqWUcz0
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl+fYyEACgkQAVBC80lX
-0Gw0mAf/Q9jxVya+9wf5d0+CvtsHmaFBm9lXTg6leeRT9i7dmwL/P02XN/RwQdKb
-olvhmxI/YPIiaiZZoXnQAIBbamoOKE2IlwpoUMX5uKr8d2XGVSJ6iTpz1AsXOqwi
-A18bkLqUUhSuaK6XTSZPk9g9CWtOg90EQALBeNeG1F1r9fAF+iXI0+UT+H2Z2wOj
-d+OWKbXB+enWRUrznQs8X6UitP6Y+pWv0OKxaEmGFy4nsUh0I2yHPbcet7Or8GXN
-gkBKPbPKbt2s1A2Z54vLN2D7QCJt3N/9+vZjJDyDbiDAXMHKlpxDYV/jkbC7rpZW
-0qZotUvFDWaEepOJhrpla6ZHabWk2g==
-=3WyG
------END PGP SIGNATURE-----
-
---Sig_/vsWjGt1DImMEyJlxtqWUcz0--
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
