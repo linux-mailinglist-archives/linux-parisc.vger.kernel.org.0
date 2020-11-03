@@ -2,116 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 516B32A4909
-	for <lists+linux-parisc@lfdr.de>; Tue,  3 Nov 2020 16:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC4772A4AEE
+	for <lists+linux-parisc@lfdr.de>; Tue,  3 Nov 2020 17:14:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729595AbgKCOUs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 3 Nov 2020 09:20:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40284 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729232AbgKCNpP (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 3 Nov 2020 08:45:15 -0500
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021B0C0613D1;
-        Tue,  3 Nov 2020 05:45:15 -0800 (PST)
-Received: by mail-qt1-x842.google.com with SMTP id c5so11584864qtw.3;
-        Tue, 03 Nov 2020 05:45:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=do2IkGTsgJZMce9dLCi5y9V7vjNX63EvX8bAUDpEGLM=;
-        b=GZPVvErj4PHBMLqkcSjbNmjmJr4IFQAsCF6LbDLPnOqXfs7SLj1TTKqhDmNgH840z/
-         JMTtucvAwREP+cEU+Z5Iz9lcArpHDNTiECZewb/MjCmRhNpQ6PuqqdTsVjqPNl8xvRdo
-         sip44uxOeEAEVkGMyHAODxwQELEMs/kd6J09+5V1ZmN3zfpxAieTNiIx3evs2766AEOo
-         gEP+Z4M+G2wLoWKjcrT41XHAyl01UzldioGtYHEGV1haEI4YToOheJ1zn1dRAZHSXrbf
-         pKglRVS7f6vVvyFumFCM3MU4VHkFYyeDA7+teIbMSHjdZA03RLUMjsja8eSRa7PJSF9s
-         Z5Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=do2IkGTsgJZMce9dLCi5y9V7vjNX63EvX8bAUDpEGLM=;
-        b=QEv3j+gKk05w7Izq+8719nIBaPYK8YTtsuT/2pXuBxIOWoUenxhvrG6GwbiQftmxhg
-         rTrzUfII6DvcS+exru+2gaF9JaVN5WvhCZZgQyoagOZbjneL2YjuJCncP331ZMKVyoOn
-         H+fWrryZXUL3h31OQpVk+MLtoFYSFYtRxD/GGBawCOfU7fRDJbbBti7fc5ZDwLNS6/91
-         F8L7xC2u660EbLQV9J7gdMpSshc82OccXLmeCMoJBaSCmTX2ana+N3DlPGjFjn3ipS7R
-         jsbUOA5ybKmSu2BV2S+WlR53iR83FLdJY4aAZ1NEJIf16EpIF5rYQ/4eSmQwdpnyagjb
-         vmVg==
-X-Gm-Message-State: AOAM533gxYZ43bjDWzDxOHRvJYZ7697dyxJd4xij5/oxt/8YeC36w3gV
-        9L7dDbF/YXRia5DFbbEc7s0=
-X-Google-Smtp-Source: ABdhPJzhvqPfN56+Yli4koNRw2qkj9WiJNRq59eXTsSDpfjJx+9FOdsirhwbtC1KEzvqsKxYUpRyXg==
-X-Received: by 2002:a05:622a:8a:: with SMTP id o10mr19841485qtw.274.1604411113872;
-        Tue, 03 Nov 2020 05:45:13 -0800 (PST)
-Received: from zhuyifei1999-ThinkPad-T480.gw.illinois.edu ([2620:0:e00:400f::31])
-        by smtp.gmail.com with ESMTPSA id a206sm7356568qkb.64.2020.11.03.05.45.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2020 05:45:13 -0800 (PST)
-From:   YiFei Zhu <zhuyifei1999@gmail.com>
-To:     containers@lists.linux-foundation.org
-Cc:     YiFei Zhu <yifeifz2@illinois.edu>, linux-csky@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-kernel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        David Laight <David.Laight@aculab.com>,
-        Dimitrios Skarlatos <dskarlat@cs.cmu.edu>,
-        Giuseppe Scrivano <gscrivan@redhat.com>,
-        Hubertus Franke <frankeh@us.ibm.com>,
-        Jack Chen <jianyan2@illinois.edu>,
-        Jann Horn <jannh@google.com>,
-        Josep Torrellas <torrella@illinois.edu>,
+        id S1727812AbgKCQO1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 3 Nov 2020 11:14:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48350 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725993AbgKCQO1 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 3 Nov 2020 11:14:27 -0500
+Received: from rorschach.local.home (unknown [172.58.235.9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3326C223AB;
+        Tue,  3 Nov 2020 16:14:15 +0000 (UTC)
+Date:   Tue, 3 Nov 2020 11:14:10 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Jonathan Corbet <corbet@lwn.net>, Guo Ren <guoren@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
         Kees Cook <keescook@chromium.org>,
-        Tianyin Xu <tyxu@illinois.edu>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Tycho Andersen <tycho@tycho.pizza>,
-        Valentin Rothberg <vrothber@redhat.com>,
-        Will Drewry <wad@chromium.org>
-Subject: [PATCH seccomp 4/8] riscv: Enable seccomp architecture tracking
-Date:   Tue,  3 Nov 2020 07:43:00 -0600
-Message-Id: <c2a5b127d7b52557bca6526eeaa73c91fa989816.1604410035.git.yifeifz2@illinois.edu>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <cover.1604410035.git.yifeifz2@illinois.edu>
-References: <cover.1604410035.git.yifeifz2@illinois.edu>
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        linux-doc@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, live-patching@vger.kernel.org
+Subject: Re: [PATCH 11/11 v2.2] ftrace: Add recording of functions that
+ caused recursion
+Message-ID: <20201103111410.64feac6c@rorschach.local.home>
+In-Reply-To: <20201103141043.GO20201@alley>
+References: <20201030213142.096102821@goodmis.org>
+        <20201030214014.801706340@goodmis.org>
+        <20201102164147.GJ20201@alley>
+        <20201102123721.4fcce2cb@gandalf.local.home>
+        <20201102124606.72bd89c5@gandalf.local.home>
+        <20201102142254.7e148f8a@gandalf.local.home>
+        <20201103141043.GO20201@alley>
+X-Mailer: Claws Mail 3.17.4git76 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: YiFei Zhu <yifeifz2@illinois.edu>
+On Tue, 3 Nov 2020 15:10:43 +0100
+Petr Mladek <pmladek@suse.com> wrote:
 
-To enable seccomp constant action bitmaps, we need to have a static
-mapping to the audit architecture and system call table size. Add these
-for riscv.
+> BTW: What is actually the purpose of paranoid_test, please?
+> 
+> It prevents nested ftrace_record_recursion() calls on the same CPU
+> (recursion, nesting from IRQ, NMI context).
+> 
+> Parallel calls from different CPUs are still possible:
+> 
+> CPU0					CPU1
+> if (!atomic_read(&paranoid_test))	if (!atomic_read(&paranoid_test))
+>    // passes				  // passes
+>    atomic_inc(&paranoid_test);            atomic_inc(&paranoid_test);
+> 
+> 
+> I do not see how a nested call could cause crash while a parallel
+> one would be OK.
+> 
 
-Signed-off-by: YiFei Zhu <yifeifz2@illinois.edu>
----
- arch/riscv/include/asm/seccomp.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Yeah, I should make that per cpu, but was lazy. ;-)
 
-diff --git a/arch/riscv/include/asm/seccomp.h b/arch/riscv/include/asm/seccomp.h
-index bf7744ee3b3d..c7ee6a3507be 100644
---- a/arch/riscv/include/asm/seccomp.h
-+++ b/arch/riscv/include/asm/seccomp.h
-@@ -7,4 +7,14 @@
- 
- #include <asm-generic/seccomp.h>
- 
-+#ifdef CONFIG_64BIT
-+# define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_RISCV64
-+# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
-+# define SECCOMP_ARCH_NATIVE_NAME	"riscv64"
-+#else /* !CONFIG_64BIT */
-+# define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_RISCV32
-+# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
-+# define SECCOMP_ARCH_NATIVE_NAME	"riscv32"
-+#endif
-+
- #endif /* _ASM_SECCOMP_H */
--- 
-2.29.2
+It was added at the end.
 
+I'll update that to a per cpu, and local inc operations.
+
+-- Steve
