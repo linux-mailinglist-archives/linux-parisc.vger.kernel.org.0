@@ -2,156 +2,315 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4D852A920E
-	for <lists+linux-parisc@lfdr.de>; Fri,  6 Nov 2020 10:03:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 166EE2A9422
+	for <lists+linux-parisc@lfdr.de>; Fri,  6 Nov 2020 11:25:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726422AbgKFJDv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 6 Nov 2020 04:03:51 -0500
-Received: from mout.gmx.net ([212.227.17.20]:38513 "EHLO mout.gmx.net"
+        id S1726832AbgKFKZZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 6 Nov 2020 05:25:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58914 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726751AbgKFJDu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 6 Nov 2020 04:03:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1604653387;
-        bh=f6e3ggzvjWRn/1qJjVSQ/HRVEn7cT5tEPCtr6AdSQdE=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=kH7SUMxXalblBCont7ZI8izxZGLBrH0txc4aorW7jpicKGDTnSIx/jB7Rx26LBsn0
-         mkQhyJJ2aA6yRZc8psS3/IHX6bKIQ6+7NwjhR+HavjQZ4uxI9s00ZM1FwJGIm018/U
-         F8UbIC9bJQaDGK7fNsvqU6uR+2FM8L8BnymRIPuA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.154.21]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MsYux-1kM3MG1hTX-00u1k4; Fri, 06
- Nov 2020 10:03:07 +0100
-Subject: Re: [PATCH] parisc: ftrace: get_kprobe() must be called with preempt
- disabled
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-References: <20201103074244.GA5615@ls3530.fritz.box>
- <20201106111758.8b4d6d0197acec6ca4be9a2c@kernel.org>
- <20201105214346.2d142cfc@oasis.local.home>
-From:   Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
- c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <4859f6fe-4c96-a415-3193-e5ac888c6702@gmx.de>
-Date:   Fri, 6 Nov 2020 10:03:05 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <20201105214346.2d142cfc@oasis.local.home>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+UVHm3tg+rriaNEgPL8i0Ml5t7hRQSRs5XR4FOYukqYl3ucEKKc
- OgsFEJRpMvCZiY89yo2OMP4q1kuYat1vFggSDZvBUdMzqhGaf6srC/FUvocR/+Qa8IXymk3
- jbdyMVWW95Of/ag5MoQIGT+rgbrIlOgcwE36Hjh1CCe0tu7sW7JLeurcRZEqJAhrMAYRTxq
- 4OyRPLxCTDxFrgCLoF3zg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mnJD+HuXHwg=:fG2a9sUvpClBK05CtQW6J6
- gL5aXIlGBz2zV6AJNJ+DavapBFF1zDzgjBrvv+CET6Hwhxi3Fn0ooe1lqzSCTeST3lXW3IS0i
- vC82Aggw8pAYASowQ9tkUbofuRpxs1VpiReF77hiKcOOwCiVRduxjf0E0yCmkTO1rbdl0wWYc
- y5LARkhs4b3FtY+u9jI3VsmLKXe2nGmq+ZpZlqP5yqeZLhyqXhrjFeTzyiplXRHAOzF2VkQH9
- KeX43D6UDGlIj8Pkb8MJWBNLM6I7ssEN71jqr1sjHcZnL0kOYPp6M/u3J7EoxudMcFWiUSEqt
- fYA3NRdQpJ7J5elMfrL+/3Od3+sg9/vcCBnK7wmyQHaHu0HT96uA0RUTBzPliP11t54WBYDqx
- ROgNUy2MGEEX8qJ5NHiGJyReQcUEYSsHZH/sfVBeA/3axan9Idz8RCItYBUjyLGYdBypvyAUX
- d/9q+POOi3oxHnRI2ALjUTz3zp+skKXW7/1rrUyykoL5qcBA40/uZfqVajycpBdcA4kJvGvOa
- SFj5ft/QD/T9e2LAwYWHy0cgzagQob0iYIHkWQy4Fr+ajpcFR4ER522MsqKlJyjU3t5EtXgFC
- q4SUfJSwhDBAhbCoicRN1aF6qAErF7jOB9AzMS3EevvoxYD2BqgZeL4EqSOZyF7u9UAHExQRy
- P4Ucv0ddWvqEjiIkWlr1cjI9advoaXbSzYM9r6SgUKP8GvRtYt0wRA5N3Q26aHl8rLVCqpJw6
- 2JE29WdIQQ0Z3L2TMJeeBr37HzlfSOYQvQcpB2yOUhQW6OzXRTTQGP0jdcqiWszsr4sDbxwBm
- m4R3LfH8bCDNSn9HJgBPVLhweIKsnW9I1MeW7pKEpvtvm/xYLLupXQrBcO6jwTGaCJLWNG0Kk
- 8+HF5OF1PcjF7iWwB2Ww==
+        id S1725868AbgKFKZZ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 6 Nov 2020 05:25:25 -0500
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0E04920691;
+        Fri,  6 Nov 2020 10:25:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604658322;
+        bh=6YzS8ko75d9YTXXdkNZu4e61owx1w6yTEHh/zi9Ys+8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=qrj0z7G3y/lZrOk2fz41MdO04PyFbYhfjAhrg5AVQLxLizOCNVBjMsgKIy0bUw0Hi
+         hqqcf/Zb0mCmEIW8Ik8Ma2jhwN9eOnseMIUiq5Yvfw2pZ+LVsjQO+7jZiixAowTDoI
+         n4AsCexEDeWZTmwsOwUMKcG4RJmGkrAZ4+EUEE+o=
+Date:   Fri, 6 Nov 2020 19:25:13 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Petr Mladek <pmladek@suse.com>, Guo Ren <guoren@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH 05/11 v3] kprobes/ftrace: Add recursion protection to
+ the ftrace callback
+Message-Id: <20201106192513.80b330351c0cafd03134b0d1@kernel.org>
+In-Reply-To: <20201106023546.944907560@goodmis.org>
+References: <20201106023235.367190737@goodmis.org>
+        <20201106023546.944907560@goodmis.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 11/6/20 3:43 AM, Steven Rostedt wrote:
-> On Fri, 6 Nov 2020 11:17:58 +0900
-> Masami Hiramatsu <mhiramat@kernel.org> wrote:
->
->> On Tue, 3 Nov 2020 08:42:44 +0100
->> Helge Deller <deller@gmx.de> wrote:
->>
->>> As noticed by Masami Hiramatsu, get_kprobe() must be called with preem=
-pt
->>> disabled.
->>
->> Doesn't parisc ftrace implementation preempt off? Then it is required.
->>
->> Steve, can we expect that op->func() is called under preempt off always
->> on any arch or is it arch dependent?
->>
->
-> Currently all kprobe function callbacks are called with preempt
-> disabled, because it doesn't have the RECURSIVE_SAFE flag set. And for
-> callbacks without that set, it goes through a helper function that
-> disables preemption. My current patch set (which is not upstreamed yet)
-> is changing that, and I just posted a new patch series that does the
-> preempt disable before the get_kprobe() function for parsic and other
-> archs, to handle the new code.
+On Thu, 05 Nov 2020 21:32:40 -0500
+Steven Rostedt (VMware) <rostedt@goodmis.org> wrote:
 
-Seems good. Thanks!
+> From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+> 
+> If a ftrace callback does not supply its own recursion protection and
+> does not set the RECURSION_SAFE flag in its ftrace_ops, then ftrace will
+> make a helper trampoline to do so before calling the callback instead of
+> just calling the callback directly.
+> 
+> The default for ftrace_ops is going to change. It will expect that handlers
+> provide their own recursion protection, unless its ftrace_ops states
+> otherwise.
+> 
+> Link: https://lkml.kernel.org/r/20201028115613.140212174@goodmis.org
+> 
 
-> Thus, parsic is currently OK (without my new patch set, it's called
-> with preemption disabled).
+Looks good to me.
 
-Ok.
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 
-Helge
+Thank you!
+
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Guo Ren <guoren@kernel.org>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Heiko Carstens <hca@linux.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: x86@kernel.org
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+> Cc: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-csky@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+> ---
+> 
+> Changes since v2:
+> 
+>  - Move get_kprobe() into preempt disabled sections for various archs
+> 
+> 
+>  arch/csky/kernel/probes/ftrace.c     | 12 ++++++++++--
+>  arch/parisc/kernel/ftrace.c          | 16 +++++++++++++---
+>  arch/powerpc/kernel/kprobes-ftrace.c | 11 ++++++++++-
+>  arch/s390/kernel/ftrace.c            | 16 +++++++++++++---
+>  arch/x86/kernel/kprobes/ftrace.c     | 12 ++++++++++--
+>  5 files changed, 56 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probes/ftrace.c
+> index 5264763d05be..5eb2604fdf71 100644
+> --- a/arch/csky/kernel/probes/ftrace.c
+> +++ b/arch/csky/kernel/probes/ftrace.c
+> @@ -13,16 +13,21 @@ int arch_check_ftrace_location(struct kprobe *p)
+>  void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  			   struct ftrace_ops *ops, struct pt_regs *regs)
+>  {
+> +	int bit;
+>  	bool lr_saver = false;
+>  	struct kprobe *p;
+>  	struct kprobe_ctlblk *kcb;
+>  
+> -	/* Preempt is disabled by ftrace */
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+> +		return;
+> +
+> +	preempt_disable_notrace();
+>  	p = get_kprobe((kprobe_opcode_t *)ip);
+>  	if (!p) {
+>  		p = get_kprobe((kprobe_opcode_t *)(ip - MCOUNT_INSN_SIZE));
+>  		if (unlikely(!p) || kprobe_disabled(p))
+> -			return;
+> +			goto out;
+>  		lr_saver = true;
+>  	}
+>  
+> @@ -56,6 +61,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  		 */
+>  		__this_cpu_write(current_kprobe, NULL);
+>  	}
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
+> index 63e3ecb9da81..13d85042810a 100644
+> --- a/arch/parisc/kernel/ftrace.c
+> +++ b/arch/parisc/kernel/ftrace.c
+> @@ -207,14 +207,21 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  			   struct ftrace_ops *ops, struct pt_regs *regs)
+>  {
+>  	struct kprobe_ctlblk *kcb;
+> -	struct kprobe *p = get_kprobe((kprobe_opcode_t *)ip);
+> +	struct kprobe *p;
+> +	int bit;
+>  
+> -	if (unlikely(!p) || kprobe_disabled(p))
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+>  		return;
+>  
+> +	preempt_disable_notrace();
+> +	p = get_kprobe((kprobe_opcode_t *)ip);
+> +	if (unlikely(!p) || kprobe_disabled(p))
+> +		goto out;
+> +
+>  	if (kprobe_running()) {
+>  		kprobes_inc_nmissed_count(p);
+> -		return;
+> +		goto out;
+>  	}
+>  
+>  	__this_cpu_write(current_kprobe, p);
+> @@ -235,6 +242,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  		}
+>  	}
+>  	__this_cpu_write(current_kprobe, NULL);
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> diff --git a/arch/powerpc/kernel/kprobes-ftrace.c b/arch/powerpc/kernel/kprobes-ftrace.c
+> index 972cb28174b2..5df8d50c65ae 100644
+> --- a/arch/powerpc/kernel/kprobes-ftrace.c
+> +++ b/arch/powerpc/kernel/kprobes-ftrace.c
+> @@ -18,10 +18,16 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
+>  {
+>  	struct kprobe *p;
+>  	struct kprobe_ctlblk *kcb;
+> +	int bit;
+>  
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+> +		return;
+> +
+> +	preempt_disable_notrace();
+>  	p = get_kprobe((kprobe_opcode_t *)nip);
+>  	if (unlikely(!p) || kprobe_disabled(p))
+> -		return;
+> +		goto out;
+>  
+>  	kcb = get_kprobe_ctlblk();
+>  	if (kprobe_running()) {
+> @@ -52,6 +58,9 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
+>  		 */
+>  		__this_cpu_write(current_kprobe, NULL);
+>  	}
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
+> index b388e87a08bf..8f31c726537a 100644
+> --- a/arch/s390/kernel/ftrace.c
+> +++ b/arch/s390/kernel/ftrace.c
+> @@ -201,14 +201,21 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  		struct ftrace_ops *ops, struct pt_regs *regs)
+>  {
+>  	struct kprobe_ctlblk *kcb;
+> -	struct kprobe *p = get_kprobe((kprobe_opcode_t *)ip);
+> +	struct kprobe *p;
+> +	int bit;
+>  
+> -	if (unlikely(!p) || kprobe_disabled(p))
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+>  		return;
+>  
+> +	preempt_disable_notrace();
+> +	p = get_kprobe((kprobe_opcode_t *)ip);
+> +	if (unlikely(!p) || kprobe_disabled(p))
+> +		goto out;
+> +
+>  	if (kprobe_running()) {
+>  		kprobes_inc_nmissed_count(p);
+> -		return;
+> +		goto out;
+>  	}
+>  
+>  	__this_cpu_write(current_kprobe, p);
+> @@ -228,6 +235,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  		}
+>  	}
+>  	__this_cpu_write(current_kprobe, NULL);
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> diff --git a/arch/x86/kernel/kprobes/ftrace.c b/arch/x86/kernel/kprobes/ftrace.c
+> index 681a4b36e9bb..a40a6cdfcca3 100644
+> --- a/arch/x86/kernel/kprobes/ftrace.c
+> +++ b/arch/x86/kernel/kprobes/ftrace.c
+> @@ -18,11 +18,16 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  {
+>  	struct kprobe *p;
+>  	struct kprobe_ctlblk *kcb;
+> +	int bit;
+>  
+> -	/* Preempt is disabled by ftrace */
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+> +		return;
+> +
+> +	preempt_disable_notrace();
+>  	p = get_kprobe((kprobe_opcode_t *)ip);
+>  	if (unlikely(!p) || kprobe_disabled(p))
+> -		return;
+> +		goto out;
+>  
+>  	kcb = get_kprobe_ctlblk();
+>  	if (kprobe_running()) {
+> @@ -52,6 +57,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  		 */
+>  		__this_cpu_write(current_kprobe, NULL);
+>  	}
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> -- 
+> 2.28.0
+> 
+> 
+
+
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
