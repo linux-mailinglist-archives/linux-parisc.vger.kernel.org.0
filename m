@@ -2,64 +2,81 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CF8A2A8D17
-	for <lists+linux-parisc@lfdr.de>; Fri,  6 Nov 2020 03:43:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D1DF2A8D29
+	for <lists+linux-parisc@lfdr.de>; Fri,  6 Nov 2020 03:52:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725828AbgKFCnu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 5 Nov 2020 21:43:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42350 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725848AbgKFCnu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 5 Nov 2020 21:43:50 -0500
-Received: from oasis.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8BDF320782;
-        Fri,  6 Nov 2020 02:43:48 +0000 (UTC)
-Date:   Thu, 5 Nov 2020 21:43:46 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: Re: [PATCH] parisc: ftrace: get_kprobe() must be called with
- preempt disabled
-Message-ID: <20201105214346.2d142cfc@oasis.local.home>
-In-Reply-To: <20201106111758.8b4d6d0197acec6ca4be9a2c@kernel.org>
-References: <20201103074244.GA5615@ls3530.fritz.box>
-        <20201106111758.8b4d6d0197acec6ca4be9a2c@kernel.org>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1725875AbgKFCwJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 5 Nov 2020 21:52:09 -0500
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:47018 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725835AbgKFCwJ (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 5 Nov 2020 21:52:09 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 4D86F22C30;
+        Thu,  5 Nov 2020 21:52:02 -0500 (EST)
+Date:   Fri, 6 Nov 2020 13:52:01 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+cc:     Arnd Bergmann <arnd@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Philip Blundell <philb@gnu.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Sam Creasey <sammy@sammy.net>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
+In-Reply-To: <CAMuHMdUyGH=ORa4yHivMeJZaGQ3kEXi1kr9=P+u1y3QQnC+-4g@mail.gmail.com>
+Message-ID: <alpine.LNX.2.23.453.2011061343030.13@nippy.intranet>
+References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de> <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com> <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet>
+ <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com> <CAMuHMdUyGH=ORa4yHivMeJZaGQ3kEXi1kr9=P+u1y3QQnC+-4g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, 6 Nov 2020 11:17:58 +0900
-Masami Hiramatsu <mhiramat@kernel.org> wrote:
+On Fri, 23 Oct 2020, Geert Uytterhoeven wrote:
 
-> On Tue, 3 Nov 2020 08:42:44 +0100
-> Helge Deller <deller@gmx.de> wrote:
+> > > > The arm/rpc timer seems to be roughly in the same category as most 
+> > > > of the m68k ones or the i8253 counter on a PC. It's possible that 
+> > > > some of them could use the same logic as 
+> > > > drivers/clocksource/i8253.o as long as there is any hardware 
+> > > > oneshot mode.
+> > >
+> > > There appear to be 15 platforms in that category. 4 have no 
+> > > clocksource besides the jiffies clocksource, meaning there's no 
+> > > practical alternative to using a periodic tick, like you did in your 
+> > > RFC patch:
+> > >
+> > > arch/m68k/apollo/config.c
+> > > arch/m68k/q40/q40ints.c
+> > > arch/m68k/sun3/sun3ints.c
+> > > arch/m68k/sun3x/time.c
+> >
+> > Do any of these have users? I'm fairly sure sun3x has never worked in 
+> > mainline, sun3 seems to still need the same few patches it did 20 
+> > years ago. I couldn't find much about Linux on Apollo or q40, the 
+> > information on the web for either of them seems to all be for 
+> > linux-2.4 kernels.
 > 
-> > As noticed by Masami Hiramatsu, get_kprobe() must be called with preempt
-> > disabled.  
-> 
-> Doesn't parisc ftrace implementation preempt off? Then it is required.
-> 
-> Steve, can we expect that op->func() is called under preempt off always
-> on any arch or is it arch dependent?
-> 
+> They probably don't have any users.
 
-Currently all kprobe function callbacks are called with preempt
-disabled, because it doesn't have the RECURSIVE_SAFE flag set. And for
-callbacks without that set, it goes through a helper function that
-disables preemption. My current patch set (which is not upstreamed yet)
-is changing that, and I just posted a new patch series that does the
-preempt disable before the get_kprobe() function for parsic and other
-archs, to handle the new code.
+I have access to several Sun 3 machines but no time to work on that port, 
+unfortunately.
 
-Thus, parsic is currently OK (without my new patch set, it's called
-with preemption disabled).
-
--- Steve
+Are these 4 platforms (those with no clocksource besides the "jiffies" 
+clocksource) the only reason for CONFIG_TIME_LOW_RES on m68k?
