@@ -2,184 +2,130 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5FA62A9C92
-	for <lists+linux-parisc@lfdr.de>; Fri,  6 Nov 2020 19:41:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A31C72ABF5B
+	for <lists+linux-parisc@lfdr.de>; Mon,  9 Nov 2020 16:05:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728034AbgKFSlq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 6 Nov 2020 13:41:46 -0500
-Received: from mout.gmx.net ([212.227.17.22]:49775 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727765AbgKFSlp (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 6 Nov 2020 13:41:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1604688098;
-        bh=kkHkcwfLqvEV2bHYOHcMWNJ/zNeFuUzS88Et2USxHw0=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=QgjyiB78fOmXGiqRz2okhfXEmfM17D7jxTKnquQwNH9tuD3ddzvx5CIgayJtyqo33
-         0Q/j+jKwNFK9PO/nSBdEeUiila+nFB9cBVi2ElbkUg1Q65dD8AXbkkhMAe99PSHPaN
-         LeSV5CagzZxFx8SkkXiruDb7aXoTGXPS2LqA1/hY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.154.21]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MeCpb-1k0xBF0PsF-00bIGs; Fri, 06
- Nov 2020 19:41:38 +0100
-Date:   Fri, 6 Nov 2020 19:41:36 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Make user stack size configurable
-Message-ID: <20201106184136.GA12452@ls3530.fritz.box>
+        id S1731567AbgKIPEQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 9 Nov 2020 10:04:16 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:41044 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1731507AbgKIPEQ (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 9 Nov 2020 10:04:16 -0500
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0A9EXJ3S007393;
+        Mon, 9 Nov 2020 10:03:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=z5oC/8a+GTxhWeb+ZbLr8Xr4K+9R59YBdDdSSh5RKRM=;
+ b=XBIiWh0WE20556srxE4tLXEI6LHTLU0XOZ47YJ+y5FuzrW6vuf5w3TIr9w02PGtl0Vm2
+ DuyXTJVwYsCISKNILJK+M1iFuUbShIE99Jq3DvQ0X1oX8LTGL34og77coACb+wK/HnCR
+ AVRIlisnmRGpjCYnFi2E9U+kSrjh53XqIuAVfOxVS9IbINjiz9ouXPIQfH7yUyevg9fc
+ 0cuNK+RY6Rh+1w1zFDzDYDLhR8XfzoI7LW78lTBKqQts2p3iPmUCCyCpGOO1FeUilMD3
+ 8ctNR0S83H168re3lA8+p6vac/432WdtO2v2czqxzZ5czK9JDYTlY7G1LjWXEnXT8HFU zQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 34q5urdbxp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Nov 2020 10:03:25 -0500
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0A9EXd3B009077;
+        Mon, 9 Nov 2020 10:03:23 -0500
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 34q5urdbtv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Nov 2020 10:03:23 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A9F1mKL012969;
+        Mon, 9 Nov 2020 15:03:19 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma04ams.nl.ibm.com with ESMTP id 34p26phjpu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Nov 2020 15:03:18 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0A9F3Gqd55771522
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 9 Nov 2020 15:03:16 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8080BAE055;
+        Mon,  9 Nov 2020 15:03:16 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9050FAE051;
+        Mon,  9 Nov 2020 15:03:15 +0000 (GMT)
+Received: from osiris (unknown [9.171.58.192])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Mon,  9 Nov 2020 15:03:15 +0000 (GMT)
+Date:   Mon, 9 Nov 2020 16:03:14 +0100
+From:   Heiko Carstens <hca@linux.ibm.com>
+To:     YiFei Zhu <zhuyifei1999@gmail.com>
+Cc:     containers@lists.linux-foundation.org,
+        YiFei Zhu <yifeifz2@illinois.edu>, linux-csky@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-kernel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Laight <David.Laight@aculab.com>,
+        Dimitrios Skarlatos <dskarlat@cs.cmu.edu>,
+        Giuseppe Scrivano <gscrivan@redhat.com>,
+        Hubertus Franke <frankeh@us.ibm.com>,
+        Jack Chen <jianyan2@illinois.edu>,
+        Jann Horn <jannh@google.com>,
+        Josep Torrellas <torrella@illinois.edu>,
+        Kees Cook <keescook@chromium.org>,
+        Tianyin Xu <tyxu@illinois.edu>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Tycho Andersen <tycho@tycho.pizza>,
+        Valentin Rothberg <vrothber@redhat.com>,
+        Will Drewry <wad@chromium.org>
+Subject: Re: [PATCH seccomp 5/8] s390: Enable seccomp architecture tracking
+Message-ID: <20201109150314.GA16690@osiris>
+References: <cover.1604410035.git.yifeifz2@illinois.edu>
+ <0fbe0c14d598e18effad3b648ab4808f9cd95eba.1604410035.git.yifeifz2@illinois.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:Ckbq+vMhKVN590fZsJPmJCyt14c1kRkNjVTt2ME4B70KcZ1Oo51
- EYSC7gimP9rPb6YPbqVnUsBFPPToU7l92h3F66EyoeEG5jSLx/LatUGJmTyW4zDVT7ao6px
- 0VohicnjLoLe2x1LanxJEYTBSXcSMDKTNMfC/GDEkuEywn+4xEzbPhc/PR5/bmo1EK6s1ll
- E2uAyniNB87D6DBLYJjWw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:jeMT5KUX1sA=:ZmGJUE3ijRB2sNtuG6wj4V
- Ksapz4VrI/gQDCiTp8uGDLq00dxQv+Hvfhdbx1Q2cM5yISZeJdi+ZWMTinXclmlmCpXI1BbZH
- nxkbdO2fPJN74/eADXanPGQI5G274ZhuWiLq5ezM0FOJgIvZRsXuS/DYjFTegua9iTx4KQzMS
- laIwWUD6L+u6HxBXXvRHxVQSrzD67gQK7vnuRrNranA7Tx0Yqas/aYUSgn+ksfLrlIlgeldMg
- rE5Lnhp5Wa++SxM9eXsEGQQaR7ReBnZzuFhqS/tKzuYX7IbLYOirO3PpajNuLjIO7nekZyTb9
- Q298vUeurTUkow8k8ZhuJmxlohUbJK3iRNO7Va4T+mEkyQrVG2IQLHHYRMjOc7jQ6D/8qjyNs
- gNa3wHgH25NhEcJH+Si53d82i5xseIutmeubZvgT+QQ7Bwmg2vzLezKLk5bi19jf8tbXbaxP8
- En7G8Q/PfAwRWPL/9c8Ec8FGx6LgBRzp7+gTndtpCgCYt6uYkfmEVdGXC6zYoNdbaKe1Rp0h4
- x2fz+19BYdqjOxbJAHHTxMwX8A0uZ65QPtkmS20O7qYK8OfzXID7fhBzav37y2ibDHDzydYXp
- sGKo/MwK9Rngzl2HudR1M0Ocx6MXQVtZHErH6CTxhXgt2MGUCTtT3vUJH8ziB+62Q4VVac+y9
- P91nTJ2RzEqWcNvMH53RRZ3B/a8U1Jr1pW0BP7sVXu8yzBJ+4Ipqf0sPFOwucawnyd9pKIbNq
- yQVSQEes0cMDiW0GNN74oZX/VG9mfh1zypyg3JCPJ/zya2UdlDD35d0MDVCE5QQecMJHTcdSf
- 2qNlCqBxRckLCpruwwnA1b67frOJXIAQjk7S0JeF1ZUTU/SEdDzRrzTee2FpgyOFCba5+35CC
- hmiKFBuGDqXuFxd7P79A==
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <0fbe0c14d598e18effad3b648ab4808f9cd95eba.1604410035.git.yifeifz2@illinois.edu>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-09_02:2020-11-05,2020-11-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=859
+ bulkscore=0 malwarescore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 impostorscore=0 suspectscore=1 adultscore=0 mlxscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011090098
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On parisc we need to initialize the memory layout for the user stack at
-process start time to a fixed size, which up until now was limited to
-the size as given by CONFIG_MAX_STACK_SIZE_MB at compile time.
+On Tue, Nov 03, 2020 at 07:43:01AM -0600, YiFei Zhu wrote:
+> From: YiFei Zhu <yifeifz2@illinois.edu>
+> 
+> To enable seccomp constant action bitmaps, we need to have a static
+> mapping to the audit architecture and system call table size. Add these
+> for s390.
+> 
+> Signed-off-by: YiFei Zhu <yifeifz2@illinois.edu>
+> ---
+>  arch/s390/include/asm/seccomp.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/arch/s390/include/asm/seccomp.h b/arch/s390/include/asm/seccomp.h
+> index 795bbe0d7ca6..71d46f0ba97b 100644
+> --- a/arch/s390/include/asm/seccomp.h
+> +++ b/arch/s390/include/asm/seccomp.h
+> @@ -16,4 +16,13 @@
+>  
+>  #include <asm-generic/seccomp.h>
+>  
+> +#define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_S390X
+> +#define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
+> +#define SECCOMP_ARCH_NATIVE_NAME	"s390x"
+> +#ifdef CONFIG_COMPAT
+> +# define SECCOMP_ARCH_COMPAT		AUDIT_ARCH_S390
+> +# define SECCOMP_ARCH_COMPAT_NR		NR_syscalls
+> +# define SECCOMP_ARCH_COMPAT_NAME	"s390"
+> +#endif
+> +
 
-This hard limit was too small and showed problems when compiling
-ruby2.7, qmlcachegen and some Qt packages.
-
-This patch changes two things:
-a) It increases the default maximum stack size to 100MB.
-b) Users can modify the stack hard limit size with ulimit and then newly
-   forked processes will use the given stack size which can even be bigger
-   than the default 100MB.
-
-Reported-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm=
-/processor.h
-index 0f7e30547dab..a5702b05cc49 100644
-=2D-- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -45,15 +45,12 @@
- #define STACK_TOP	TASK_SIZE
- #define STACK_TOP_MAX	DEFAULT_TASK_SIZE
-
--/* Allow bigger stacks for 64-bit processes */
--#define STACK_SIZE_MAX	(USER_WIDE_MODE					\
--			 ? (1 << 30)	/* 1 GB */			\
--			 : (CONFIG_MAX_STACK_SIZE_MB*1024*1024))
--
- #endif
-
- #ifndef __ASSEMBLY__
-
-+unsigned long calc_max_stack_size(unsigned long stack_max);
-+
- /*
-  * Data detected about CPUs at boot time which is the same for all CPU's.
-  * HP boxes are SMP - ie identical processors.
-diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_pari=
-sc.c
-index 9549496f5523..5f12537318ab 100644
-=2D-- a/arch/parisc/kernel/sys_parisc.c
-+++ b/arch/parisc/kernel/sys_parisc.c
-@@ -53,6 +53,25 @@ static inline unsigned long COLOR_ALIGN(unsigned long a=
-ddr,
- 	return base + off;
- }
-
-+
-+#define STACK_SIZE_DEFAULT (USER_WIDE_MODE			\
-+			? (1 << 30)	/* 1 GB */		\
-+			: (CONFIG_STACK_MAX_DEFAULT_SIZE_MB*1024*1024))
-+
-+unsigned long calc_max_stack_size(unsigned long stack_max)
-+{
-+#ifdef CONFIG_COMPAT
-+	if (!USER_WIDE_MODE && (stack_max =3D=3D COMPAT_RLIM_INFINITY))
-+		stack_max =3D STACK_SIZE_DEFAULT;
-+	else
-+#endif
-+	if (stack_max =3D=3D RLIM_INFINITY)
-+		stack_max =3D STACK_SIZE_DEFAULT;
-+
-+	return stack_max;
-+}
-+
-+
- /*
-  * Top of mmap area (just below the process stack).
-  */
-@@ -69,8 +88,8 @@ static unsigned long mmap_upper_limit(struct rlimit *rli=
-m_stack)
- 	/* Limit stack size - see setup_arg_pages() in fs/exec.c */
- 	stack_base =3D rlim_stack ? rlim_stack->rlim_max
- 				: rlimit_max(RLIMIT_STACK);
--	if (stack_base > STACK_SIZE_MAX)
--		stack_base =3D STACK_SIZE_MAX;
-+
-+	stack_base =3D calc_max_stack_size(stack_base);
-
- 	/* Add space for stack randomization. */
- 	if (current->flags & PF_RANDOMIZE)
-diff --git a/fs/exec.c b/fs/exec.c
-index 547a2390baf5..a6f2c27f875b 100644
-=2D-- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -756,8 +756,8 @@ int setup_arg_pages(struct linux_binprm *bprm,
- #ifdef CONFIG_STACK_GROWSUP
- 	/* Limit stack size */
- 	stack_base =3D bprm->rlim_stack.rlim_max;
--	if (stack_base > STACK_SIZE_MAX)
--		stack_base =3D STACK_SIZE_MAX;
-+
-+	stack_base =3D calc_max_stack_size(stack_base);
-
- 	/* Add space for stack randomization. */
- 	stack_base +=3D (STACK_RND_MASK << PAGE_SHIFT);
-diff --git a/mm/Kconfig b/mm/Kconfig
-index d42423f884a7..4ec0f3dbfb11 100644
-=2D-- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -733,19 +733,17 @@ config ZSMALLOC_STAT
- config GENERIC_EARLY_IOREMAP
- 	bool
-
--config MAX_STACK_SIZE_MB
--	int "Maximum user stack size for 32-bit processes (MB)"
--	default 80
-+config STACK_MAX_DEFAULT_SIZE_MB
-+	int "Default maximum user stack size for 32-bit processes (MB)"
-+	default 100
- 	range 8 2048
- 	depends on STACK_GROWSUP && (!64BIT || COMPAT)
- 	help
- 	  This is the maximum stack size in Megabytes in the VM layout of 32-bit
- 	  user processes when the stack grows upwards (currently only on parisc
--	  arch). The stack will be located at the highest memory address minus
--	  the given value, unless the RLIMIT_STACK hard limit is changed to a
--	  smaller value in which case that is used.
-+	  arch) when the RLIMIT_STACK hard limit is unlimited.
-
--	  A sane initial value is 80 MB.
-+	  A sane initial value is 100 MB.
-
- config DEFERRED_STRUCT_PAGE_INIT
- 	bool "Defer initialisation of struct pages to kthreads"
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
