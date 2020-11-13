@@ -2,130 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 652C12B04CB
-	for <lists+linux-parisc@lfdr.de>; Thu, 12 Nov 2020 13:14:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4BA2B1D10
+	for <lists+linux-parisc@lfdr.de>; Fri, 13 Nov 2020 15:24:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727611AbgKLMO6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 12 Nov 2020 07:14:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38258 "EHLO
+        id S1726503AbgKMOYQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 13 Nov 2020 09:24:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727223AbgKLMO6 (ORCPT
+        with ESMTP id S1726439AbgKMOYP (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 12 Nov 2020 07:14:58 -0500
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B722C0613D1;
-        Thu, 12 Nov 2020 04:14:58 -0800 (PST)
-Received: by mail-pg1-x544.google.com with SMTP id f27so4039369pgl.1;
-        Thu, 12 Nov 2020 04:14:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Ji+otFl/WkNW1j02CrZ/ivgsssCDblUPej71NkGlu3o=;
-        b=VAmHGapXMocqcjRZS1SlTPSyIL91R0FKwosP3HJ0EzX8ZCW0Vapjr+mTSHwWi4H2Hx
-         nmYgcEsRbatUB9qIPOrObI7lrBsImUMUhbDgb2sSa8pBgzMK7qC4jlKXSgfdpv2p9Vvt
-         CaLjIjo84AOJyk4jquop1y0edQUm4GdzLOz+QckbMb2Gw8mK9E/HJ6bOzPJyjTlXeE6H
-         3yd7+KsSn8tw56tLESaCPsBWWOSTwuwfQljPyzY3QCpASQZzE423pBVzFQZNI/dpcprB
-         0XPgfxSNR8KWyrdssDM2HF03+n7wSmJDrGy8M/bPuXQLPPBIID8ctqRlOCMQJoXYrxP6
-         8hpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Ji+otFl/WkNW1j02CrZ/ivgsssCDblUPej71NkGlu3o=;
-        b=V5y0w1lIlF7FvblJTCAFcxSTF7lOGEoziWCna/BokjD+l8Kw7EjNoLQGbEB/9VQijz
-         Yw0XCjQ+CKYWCd82HK0qlLJ7f6woIlie27JhKiDlE7Q+hcl+0B7gSw4/u6yOGRDKGCsX
-         bu9hioYJs6muvsdjpw1kz4c+lPGoVm8gdCpOJUC8q22DvhEkW+mpryQZNHwvgE2FTCHq
-         huioRbktgt5J1eHRt4cCaSEYL9Skdpvl6DFC+Ms79fmybX/tg6LCvqhcqA/a9Uy8LDf2
-         ERSjdxNTF/MmNYSRFwjdr7TM2SikqiOheUI8GQag2Kq/3g2dBHl48fJ5/U90Ohj276it
-         UZHQ==
-X-Gm-Message-State: AOAM530JVG7gwYj6acpyaBcd+y/LciZWdlx7eABqjcVe8cOF2AmphHrf
-        MT4+4TcAZdilpNFheuRB22r8U56f3SMNa3g=
-X-Google-Smtp-Source: ABdhPJyxx19WWls1VMlKeNllLZ/re1JCrpPUArBW0x9CN4NVZKyR+t+YJw14Unb5U6Oq00zSvevmAg==
-X-Received: by 2002:a17:90a:4a0f:: with SMTP id e15mr8953328pjh.182.1605183297641;
-        Thu, 12 Nov 2020 04:14:57 -0800 (PST)
-Received: from localhost.localdomain ([221.124.243.27])
-        by smtp.gmail.com with ESMTPSA id d145sm6785736pfd.136.2020.11.12.04.14.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2020 04:14:57 -0800 (PST)
-From:   Peilin Ye <yepeilin.cs@gmail.com>
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Fri, 13 Nov 2020 09:24:15 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C017EC0613D1;
+        Fri, 13 Nov 2020 06:24:15 -0800 (PST)
+Message-Id: <20201113140207.499353218@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1605277454;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=PPLSKX/xmwMFedV4IKRF5BuAJaVvtEPUqA8f9IDGXCY=;
+        b=l6bH+B8+huzeAxpMYHuCQ+BdXfK4ENMqPIutQyozeuaag6I+Pmy6ws+WrwDbEagC3owhXI
+        e4kOg45yiOiOBMpnbUwvzjw1Tlx6yx4Ye3qjtp2kB3pq0AXDAY0An3a6gQMMuvB9iI5QfZ
+        6TZbWH8hO0g2VO+IUwYA8+zv2sktar1yVgv1Xh66xRbP5r7MCuWHWzeEHg1Yb8Gaiy1nqx
+        B7O33xFns3qON2zrMoRmKB6KwXQMe40ktnUKHoQlcuNns3+6hSrP50xwIMejS/s24v7nt2
+        +SpT+tCx3yonhfxcC3z29pyyJjzqseiDZ6UACrnYcf5sbVrhUdT9ZIS6cWp21w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1605277454;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=PPLSKX/xmwMFedV4IKRF5BuAJaVvtEPUqA8f9IDGXCY=;
+        b=AtBmIxr4B4x8cNg20chnLUnH8GQLpcWJEzBvaxV/w167Qbq0G7oSGl8oTsx7v+PGYUbpun
+        UEH3CJUGQMXh0FBQ==
+Date:   Fri, 13 Nov 2020 15:02:07 +0100
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Paul McKenney <paulmck@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Peilin Ye <yepeilin.cs@gmail.com>
-Subject: [PATCH v3 4/5] parisc/sticore: Avoid hard-coding built-in font charcount
-Date:   Thu, 12 Nov 2020 07:14:21 -0500
-Message-Id: <037186fb50cf3d17bb7bc9482357635b9df6076e.1605169912.git.yepeilin.cs@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1605169912.git.yepeilin.cs@gmail.com>
-References: <cover.1605169912.git.yepeilin.cs@gmail.com>
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
+        Marc Zyngier <maz@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+Subject: [patch 00/19] softirq: Cleanups and RT awareness
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-sti_select_fbfont() and sti_cook_fonts() are hard-coding the number of
-characters of our built-in fonts as 256. Recently, we included that
-information in our kernel font descriptor `struct font_desc`, so use
-`fbfont->charcount` instead of hard-coded values.
-
-Depends on patch "Fonts: Add charcount field to font_desc".
-
-Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
----
-v2: https://lore.kernel.org/lkml/c38042bbf5c9777c84900d56c09f3c156b32af48.1603788512.git.yepeilin.cs@gmail.com/
-
-Changes since v1:
-  - Slightly improved commit message.
-  - Rebased onto linux-next.
-
- drivers/video/console/sticore.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
-index d1bb5915082b..f869b723494f 100644
---- a/drivers/video/console/sticore.c
-+++ b/drivers/video/console/sticore.c
-@@ -506,7 +506,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
- 			fbfont->width, fbfont->height, fbfont->name);
- 			
- 	bpc = ((fbfont->width+7)/8) * fbfont->height; 
--	size = bpc * 256;
-+	size = bpc * fbfont->charcount;
- 	size += sizeof(struct sti_rom_font);
- 
- 	nf = kzalloc(size, STI_LOWMEM);
-@@ -514,7 +514,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
- 		return NULL;
- 
- 	nf->first_char = 0;
--	nf->last_char = 255;
-+	nf->last_char = fbfont->charcount - 1;
- 	nf->width = fbfont->width;
- 	nf->height = fbfont->height;
- 	nf->font_type = STI_FONT_HPROMAN8;
-@@ -525,7 +525,7 @@ sti_select_fbfont(struct sti_cooked_rom *cooked_rom, const char *fbfont_name)
- 
- 	dest = nf;
- 	dest += sizeof(struct sti_rom_font);
--	memcpy(dest, fbfont->data, bpc*256);
-+	memcpy(dest, fbfont->data, bpc * fbfont->charcount);
- 
- 	cooked_font = kzalloc(sizeof(*cooked_font), GFP_KERNEL);
- 	if (!cooked_font) {
-@@ -660,7 +660,7 @@ static int sti_cook_fonts(struct sti_cooked_rom *cooked_rom,
- void sti_font_convert_bytemode(struct sti_struct *sti, struct sti_cooked_font *f)
- {
- 	unsigned char *n, *p, *q;
--	int size = f->raw->bytes_per_char * 256 + sizeof(struct sti_rom_font);
-+	int size = f->raw->bytes_per_char * (f->raw->last_char + 1) + sizeof(struct sti_rom_font);
- 	struct sti_rom_font *old_font;
- 
- 	if (sti->wordmode)
--- 
-2.25.1
-
+UlQgcnVucyBzb2Z0aXJxIHByb2Nlc3NpbmcgYWx3YXlzIGluIHRocmVhZCBjb250ZXh0IGFuZCBp
+dCByZXF1aXJlcyB0aGF0CmJvdGggdGhlIHNvZnRpcnEgZXhlY3V0aW9uIGFuZCB0aGUgQkggZGlz
+YWJsZWQgc2VjdGlvbnMgYXJlIHByZWVtcHRpYmxlLgoKVGhpcyBpcyBhY2hpZXZlZCBieSBzZXJp
+YWxpemF0aW9uIHRocm91Z2ggcGVyIENQVSBsb2NhbCBsb2NrcyBhbmQKc3Vic3RpdHV0aW5nIGEg
+ZmV3IHBhcnRzIG9mIHRoZSBleGlzdGluZyBzb2Z0aXJxIHByb2Nlc3NpbmcgY29kZSB3aXRoCmhl
+bHBlciBmdW5jdGlvbnMuCgpUaGUgZm9sbG93aW5nIHNlcmllcyBoYXMgdHdvIHBhcnRzOgoKICAg
+IDEpIENsZWFudXAgaXJxX2NwdXN0YXRzIGFuZCBjb25zb2xpZGF0aW9uIG9mIHRoZSBwcmVlbXB0
+IGNvdW50IG1hemUKICAgICAgIHNvIHNvZnRpcnFfY291bnQoKSBhbmQgcmVsYXRlZCBwYXJ0cyBj
+YW4gYmUgc3Vic3RpdHV0ZWQgZm9yIFJUCgogICAgMikgVGhlIGFjdHVhbCBjb3JlIGltcGxlbWVu
+dGF0aW9uIGluY2x1ZGluZyB0aGUgcmVxdWlyZWQgZml4dXBzIGZvcgogICAgICAgTk9IWiwgUkNV
+IGFuZCB0YXNrbGV0cy4KClRoZSBzZXJpZXMgaXMgYWxzbyBhdmFpbGFibGUgZnJvbSBnaXQ6Cgog
+IGdpdDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC90Z2x4L2RldmVs
+LmdpdCBzb2Z0aXJxCgpUaGUgUlQgdmFyaWFudCBoYXMgc3VjZXNzZnVsbHkgYmVlbiB0ZXN0ZWQg
+aW4gdGhlIGN1cnJlbnQgNS4xMC1ydApwYXRjaGVzLiBGb3Igbm9uLVJUIGtlcm5lbHMgdGhlcmUg
+aXMgbm8gZnVuY3Rpb25hbCBjaGFuZ2UuCgpUaGFua3MsCgoJdGdseAotLS0KIGIvYXJjaC9hcm0v
+aW5jbHVkZS9hc20vaGFyZGlycS5oICAgIHwgICAxMSAKIGIvYXJjaC9hcm0vaW5jbHVkZS9hc20v
+aXJxLmggICAgICAgIHwgICAgMiAKIGIvYXJjaC9hcm02NC9pbmNsdWRlL2FzbS9oYXJkaXJxLmgg
+IHwgICAgNyAKIGIvYXJjaC9wYXJpc2MvaW5jbHVkZS9hc20vaGFyZGlycS5oIHwgICAgMSAKIGIv
+YXJjaC9zaC9pbmNsdWRlL2FzbS9oYXJkaXJxLmggICAgIHwgICAxNCAtCiBiL2FyY2gvc2gva2Vy
+bmVsL2lycS5jICAgICAgICAgICAgICB8ICAgIDIgCiBiL2FyY2gvc2gva2VybmVsL3RyYXBzLmMg
+ICAgICAgICAgICB8ICAgIDIgCiBiL2FyY2gvdW0vaW5jbHVkZS9hc20vaGFyZGlycS5oICAgICB8
+ICAgMTcgLQogYi9pbmNsdWRlL2FzbS1nZW5lcmljL2hhcmRpcnEuaCAgICAgfCAgICA2IAogYi9p
+bmNsdWRlL2xpbnV4L2JvdHRvbV9oYWxmLmggICAgICAgfCAgICA4IAogYi9pbmNsdWRlL2xpbnV4
+L2hhcmRpcnEuaCAgICAgICAgICAgfCAgICAxIAogYi9pbmNsdWRlL2xpbnV4L2ludGVycnVwdC5o
+ICAgICAgICAgfCAgIDEzIC0KIGIvaW5jbHVkZS9saW51eC9wcmVlbXB0LmggICAgICAgICAgIHwg
+ICAzNiArLS0KIGIvaW5jbHVkZS9saW51eC9yY3VwZGF0ZS5oICAgICAgICAgIHwgICAgMyAKIGIv
+aW5jbHVkZS9saW51eC9zY2hlZC5oICAgICAgICAgICAgIHwgICAgMyAKIGIva2VybmVsL3NvZnRp
+cnEuYyAgICAgICAgICAgICAgICAgIHwgIDQxMiArKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KystLS0tLS0KIGIva2VybmVsL3RpbWUvdGljay1zY2hlZC5jICAgICAgICAgIHwgICAgMiAKIGlu
+Y2x1ZGUvbGludXgvaXJxX2NwdXN0YXQuaCAgICAgICAgIHwgICAyOCAtLQogMTggZmlsZXMgY2hh
+bmdlZCwgNDA1IGluc2VydGlvbnMoKyksIDE2MyBkZWxldGlvbnMoLSkKCgoKCgoK
