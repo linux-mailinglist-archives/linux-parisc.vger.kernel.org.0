@@ -2,91 +2,56 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DCFA2B5590
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 Nov 2020 01:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7FAF2B5C0B
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 Nov 2020 10:44:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730639AbgKQALB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 16 Nov 2020 19:11:01 -0500
-Received: from anhedonia.sammy.net ([67.23.44.4]:54043 "EHLO sammy.net"
+        id S1727122AbgKQJnQ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Tue, 17 Nov 2020 04:43:16 -0500
+Received: from tigeramira.ro ([88.158.78.30]:29186 "EHLO mail.tigeramira.ro"
         rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S1726310AbgKQALA (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 16 Nov 2020 19:11:00 -0500
-X-Greylist: delayed 2620 seconds by postgrey-1.27 at vger.kernel.org; Mon, 16 Nov 2020 19:11:00 EST
-Received: from sammy by sammy.net with local (Exim 4.63)
-        (envelope-from <sammy@sammy.net>)
-        id 1kentn-00010k-IZ; Mon, 16 Nov 2020 18:27:03 -0500
-Date:   Mon, 16 Nov 2020 18:27:03 -0500
-From:   Sam Creasey <sammy@sammy.net>
-To:     Finn Thain <fthain@telegraphics.com.au>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
-Message-ID: <20201116232703.GV14088@anhedonia-3>
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de> <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com> <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet> <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com> <CAMuHMdUyGH=ORa4yHivMeJZaGQ3kEXi1kr9=P+u1y3QQnC+-4g@mail.gmail.com> <alpine.LNX.2.23.453.2011061343030.13@nippy.intranet>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LNX.2.23.453.2011061343030.13@nippy.intranet>
-User-Agent: Mutt/1.4.2.2i
+        id S1727683AbgKQJnQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 17 Nov 2020 04:43:16 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 1194FC3691F
+        for <linux-parisc@vger.kernel.org>; Sun, 15 Nov 2020 10:54:33 +0200 (EET)
+Received: from mail.tigeramira.ro ([127.0.0.1])
+        by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id CDXye5Sn7-YU for <linux-parisc@vger.kernel.org>;
+        Sun, 15 Nov 2020 10:54:28 +0200 (EET)
+Received: from mail.tigeramira.ro (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 6753AC24CC2
+        for <linux-parisc@vger.kernel.org>; Sun, 15 Nov 2020 03:22:57 +0200 (EET)
+Received: from [156.96.44.214] (unknown [192.168.12.254])
+        by mail.tigeramira.ro (Postfix) with ESMTP id D5A479989F1
+        for <linux-parisc@vger.kernel.org>; Fri, 13 Nov 2020 19:07:24 +0200 (EET)
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Corporate and Personal Loan::,
+To:     linux-parisc@vger.kernel.org
+From:   "Investment  Corporate" <financialcapability6@gmail.com>
+Date:   Fri, 13 Nov 2020 08:07:38 -0800
+Reply-To: hmurrah39@gmail.com
+Message-Id: <20201113170725.D5A479989F1@mail.tigeramira.ro>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Nov 06, 2020 at 01:52:01PM +1100, Finn Thain wrote:
-> On Fri, 23 Oct 2020, Geert Uytterhoeven wrote:
-> 
-> > > > > The arm/rpc timer seems to be roughly in the same category as most 
-> > > > > of the m68k ones or the i8253 counter on a PC. It's possible that 
-> > > > > some of them could use the same logic as 
-> > > > > drivers/clocksource/i8253.o as long as there is any hardware 
-> > > > > oneshot mode.
-> > > >
-> > > > There appear to be 15 platforms in that category. 4 have no 
-> > > > clocksource besides the jiffies clocksource, meaning there's no 
-> > > > practical alternative to using a periodic tick, like you did in your 
-> > > > RFC patch:
-> > > >
-> > > > arch/m68k/apollo/config.c
-> > > > arch/m68k/q40/q40ints.c
-> > > > arch/m68k/sun3/sun3ints.c
-> > > > arch/m68k/sun3x/time.c
-> > >
-> > > Do any of these have users? I'm fairly sure sun3x has never worked in 
-> > > mainline, sun3 seems to still need the same few patches it did 20 
-> > > years ago. I couldn't find much about Linux on Apollo or q40, the 
-> > > information on the web for either of them seems to all be for 
-> > > linux-2.4 kernels.
-> > 
-> > They probably don't have any users.
-> 
-> I have access to several Sun 3 machines but no time to work on that port, 
-> unfortunately.
-> 
-> Are these 4 platforms (those with no clocksource besides the "jiffies" 
-> clocksource) the only reason for CONFIG_TIME_LOW_RES on m68k?
+Hello linux-parisc@vger.kernel.org
 
-Sun3x was probably at least as close (if not closer) than Sun3 to
-working in mainline back in the day, but unfortunately I'm in the same
-place as Finn...  I've got the hardware, but time is harder to come
-by.
 
--- Sam
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+
+
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+
+
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
