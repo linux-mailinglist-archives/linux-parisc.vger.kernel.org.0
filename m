@@ -2,56 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C42E2B3FB1
-	for <lists+linux-parisc@lfdr.de>; Mon, 16 Nov 2020 10:26:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 440952B4064
+	for <lists+linux-parisc@lfdr.de>; Mon, 16 Nov 2020 11:02:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728290AbgKPJZf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Mon, 16 Nov 2020 04:25:35 -0500
-Received: from tigeramira.ro ([88.158.78.30]:38248 "EHLO mail.tigeramira.ro"
-        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S1728291AbgKPJZf (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 16 Nov 2020 04:25:35 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by mail.tigeramira.ro (Postfix) with ESMTP id 0E0DBA74AF8
-        for <linux-parisc@vger.kernel.org>; Sat, 14 Nov 2020 10:20:39 +0200 (EET)
-Received: from mail.tigeramira.ro ([127.0.0.1])
-        by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 77q9jw94r7RX for <linux-parisc@vger.kernel.org>;
-        Sat, 14 Nov 2020 10:20:29 +0200 (EET)
-Received: from mail.tigeramira.ro (localhost [127.0.0.1])
-        by mail.tigeramira.ro (Postfix) with ESMTP id 891FC9137A3
-        for <linux-parisc@vger.kernel.org>; Fri, 13 Nov 2020 13:28:56 +0200 (EET)
-Received: from [156.96.44.214] (unknown [192.168.12.254])
-        by mail.tigeramira.ro (Postfix) with ESMTP id B72B9D3FA4A
-        for <linux-parisc@vger.kernel.org>; Tue, 10 Nov 2020 17:09:08 +0200 (EET)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726889AbgKPKBT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 16 Nov 2020 05:01:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45080 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726860AbgKPKBT (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 16 Nov 2020 05:01:19 -0500
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3ACEC20855;
+        Mon, 16 Nov 2020 10:01:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605520878;
+        bh=g3NC2i2JvAfCqKV0nrXfTSrA5NvK35Rp2cqd8YX6o0U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oHkeaOnv8TVC169QG2VXk+ZX53nLbgndZd+eP9+6NTU6xY/qwM4TJBtCoLbbRGcUC
+         NvtxMRkXz0np8SvUXZpl3GoPWLAryqPZh6sUtubhjFE9lkQHrLX0f6gEJb2CIcBcTZ
+         oBNjtvaGR+txwYLf77DF5hNJQpZhUMI7wKdNoyaM=
+Date:   Mon, 16 Nov 2020 10:01:10 +0000
+From:   Will Deacon <will@kernel.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Paul McKenney <paulmck@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Marc Zyngier <maz@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
+        Valentin Schneider <valentin.schneider@arm.com>
+Subject: Re: [patch 06/19] arm64: irqstat: Get rid of duplicated declaration
+Message-ID: <20201116100110.GA29459@willie-the-truck>
+References: <20201113140207.499353218@linutronix.de>
+ <20201113141733.392015387@linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Corporate and Personal Loan/
-To:     linux-parisc@vger.kernel.org
-From:   "Investment  Corporate" <financialcapability6@gmail.com>
-Date:   Tue, 10 Nov 2020 06:09:37 -0800
-Reply-To: hmurrah39@gmail.com
-Message-Id: <20201110150909.B72B9D3FA4A@mail.tigeramira.ro>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201113141733.392015387@linutronix.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello linux-parisc@vger.kernel.org
+On Fri, Nov 13, 2020 at 03:02:13PM +0100, Thomas Gleixner wrote:
+> irq_cpustat_t is exactly the same as the asm-generic one. Define
+> ack_bad_irq so the generic header does not emit the generic version of it.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> ---
+>  arch/arm64/include/asm/hardirq.h |    7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 
+Acked-by: Will Deacon <will@kernel.org>
 
-We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
-
-
-We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
-
-
-Please get back to me if you are interested for more
-
-details.
-
-
-Yours faithfully,
-
-Hashim Murrah
+Will
