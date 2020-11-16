@@ -2,87 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 607F92B4E3B
-	for <lists+linux-parisc@lfdr.de>; Mon, 16 Nov 2020 18:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D476F2B4F0E
+	for <lists+linux-parisc@lfdr.de>; Mon, 16 Nov 2020 19:20:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387978AbgKPRnE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 16 Nov 2020 12:43:04 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42608 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387829AbgKPRmV (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 16 Nov 2020 12:42:21 -0500
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605548539;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=AFtB0Ip6R2EINkfby885/eXKxzn7nAYtOiaas7ShpD8=;
-        b=ucTY/LVv679/wmtLVFj1aWd9sEHqvK298xZYswCwYCPhN8K6/VsSRE7jSBhfryBTJ6Xaec
-        iWZ1KD8vwfG36MTBmhGHCbsUbS3UqdYPBCdHIrK4tFOGGv3o73NqScfF+IuVD7Lx5wNJ4E
-        ct+pvkYNxgjuYfF6W+3H6JhdZW9rLmVSMnAqbJjz3eaXA1ppi8L0brIci6nAcqGV/SzjpO
-        d55eUUUn6T/bNSl1Z/8Nge63sZYpmCqmJJI8znPpt3TuS881D+s7KtqNUyS/qzsi4xUqQ4
-        RlAO3412YsCCAu+hJz3yg2rDEig4KmlERzF8sx2R4lQkRAVmN9SJ/UqOp1+QOQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605548539;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=AFtB0Ip6R2EINkfby885/eXKxzn7nAYtOiaas7ShpD8=;
-        b=YP2D9OKyBiwGPh1cJ4lErNx/TU9tcJQ7nALdwz1XvcauQRzGOmay8UWLiYUNw+z1AHChep
-        2mQNtCDmrth6cPAA==
-To:     Peter Zijlstra <peterz@infradead.org>
+        id S1731705AbgKPSTP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 16 Nov 2020 13:19:15 -0500
+Received: from foss.arm.com ([217.140.110.172]:44874 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730997AbgKPSTO (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 16 Nov 2020 13:19:14 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 136FF31B;
+        Mon, 16 Nov 2020 10:19:14 -0800 (PST)
+Received: from e113632-lin (e113632-lin.cambridge.arm.com [10.1.194.46])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 681543F719;
+        Mon, 16 Nov 2020 10:19:11 -0800 (PST)
+References: <20201113140207.499353218@linutronix.de> <20201113141733.276505871@linutronix.de>
+User-agent: mu4e 0.9.17; emacs 26.3
+From:   Valentin Schneider <valentin.schneider@arm.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Frederic Weisbecker <frederic@kernel.org>,
         Paul McKenney <paulmck@kernel.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Arnd Bergmann <arnd@arndb.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Marc Zyngier <maz@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
         Jeff Dike <jdike@addtoit.com>,
         Richard Weinberger <richard@nod.at>,
         Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
-        Marc Zyngier <maz@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
+        linux-um@lists.infradead.org,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>
-Subject: Re: [patch 10/19] preempt: Cleanup the macro maze a bit
-In-Reply-To: <20201116121748.GD3121378@hirez.programming.kicks-ass.net>
-References: <20201113140207.499353218@linutronix.de> <20201113141733.864469886@linutronix.de> <20201116121748.GD3121378@hirez.programming.kicks-ass.net>
-Date:   Mon, 16 Nov 2020 18:42:19 +0100
-Message-ID: <871rgtyz9g.fsf@nanos.tec.linutronix.de>
+Subject: Re: [patch 05/19] ARM: irqstat: Get rid of duplicated declaration
+In-reply-to: <20201113141733.276505871@linutronix.de>
+Date:   Mon, 16 Nov 2020 18:19:04 +0000
+Message-ID: <jhjy2j1w4fb.mognet@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Nov 16 2020 at 13:17, Peter Zijlstra wrote:
-> On Fri, Nov 13, 2020 at 03:02:17PM +0100, Thomas Gleixner wrote:
+
+On 13/11/20 14:02, Thomas Gleixner wrote:
+> irq_cpustat_t is exactly the same as the asm-generic one. Define
+> ack_bad_irq so the generic header does not emit the generic version of it.
 >
->> -#define irq_count()	(preempt_count() & (HARDIRQ_MASK | SOFTIRQ_MASK \
->> -				 | NMI_MASK))
->> +#define irq_count()	(nmi_count() | hardirq_count() | softirq_count())
->
->
->> +#define in_task()		(!(in_nmi() | in_hardirq() | in_serving_softirq()))
->> -#define in_task()		(!(preempt_count() & \
->> -				   (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET)))
->
-> How horrible is the code-gen? Because preempt_count() is
-> raw_cpu_read_4() and at least some old compilers will refuse to CSE it
-> (consider the this_cpu_read_stable mess).
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Valentin Schneider <valentin.schneider@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
 
-I looked at gcc8 and 10 output and the compilers are smart enough to
-fold it for the !RT case. But yeah ...
-
-Thanks,
-
-        tglx
-
-
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
