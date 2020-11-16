@@ -2,48 +2,47 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D272B41BA
-	for <lists+linux-parisc@lfdr.de>; Mon, 16 Nov 2020 11:51:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41B722B4380
+	for <lists+linux-parisc@lfdr.de>; Mon, 16 Nov 2020 13:20:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728329AbgKPKvI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 16 Nov 2020 05:51:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47658 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727107AbgKPKvI (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 16 Nov 2020 05:51:08 -0500
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        id S1729976AbgKPMSQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 16 Nov 2020 07:18:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52386 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726754AbgKPMSP (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 16 Nov 2020 07:18:15 -0500
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B96C0613CF;
+        Mon, 16 Nov 2020 04:18:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=bQMq5TZF86IM/5Y94jT9C5QIrKLF+iu+uQmY1bh2ZzQ=; b=eSQGkQEayKHgS/hoe3uDgFONQ3
+        Yx3Ye2/ArnTKwvDcz2D218ytbiMgxdS0bbWfiBz8QeeRvkZQ0O4rztVu5HZf9xGCumpsHiwSFSD+H
+        paVr3v8GPt4dfe6X+b31/j3tAFcg4wCSf68QkPbhqsiU7bkECtPA6pZjYd6FmPEQAluQOcTeWqCF3
+        IAnSgq2PdxWz1exvOeZ/5ONexQjsFidRpjCZ5audNW0X4a20/jahfZugICLYZSMJUyUOIy9V9M7lq
+        NIaJzH2pTgxAXElk7Jx8JdPKBqXA7T6sLwZBMobBCleos4MCeD5Bwb+QzPe632b7nSMkNUcmPtavH
+        LQQ3Q2oA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kedSB-0005Ul-Eg; Mon, 16 Nov 2020 12:17:51 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 21234222B9;
-        Mon, 16 Nov 2020 10:51:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605523867;
-        bh=ai75Jt+48opuiQhCj0Z/RU0l3sgXV4X5LfLwk4hIntY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oV7bh+I73RgWxOpJi2SjopCruCq4nGy/GUj74D+N8VZoCmiScK0GxOTgmW5eN0TNE
-         EWiMwjwxD2JjrA2815r3Wxhsbs/Z1fV5+IzvoJPIGo3uVTRPoMEZ/1zoFJU0R3BfwZ
-         k1Me/U34wryIFXdhYISUdCoUU3mmUo+eZLhVRQLg=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94)
-        (envelope-from <maz@kernel.org>)
-        id 1kec6D-00AzEA-21; Mon, 16 Nov 2020 10:51:05 +0000
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 16 Nov 2020 10:51:00 +0000
-From:   Marc Zyngier <maz@kernel.org>
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E9FFA307062;
+        Mon, 16 Nov 2020 13:17:48 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id AE60220299B60; Mon, 16 Nov 2020 13:17:48 +0100 (CET)
+Date:   Mon, 16 Nov 2020 13:17:48 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
 To:     Thomas Gleixner <tglx@linutronix.de>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
         Frederic Weisbecker <frederic@kernel.org>,
         Paul McKenney <paulmck@kernel.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -52,55 +51,34 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Richard Weinberger <richard@nod.at>,
         Anton Ivanov <anton.ivanov@cambridgegreys.com>,
         linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
-        Valentin Schneider <valentin.schneider@arm.com>
-Subject: Re: [patch 06/19] arm64: irqstat: Get rid of duplicated declaration
-In-Reply-To: <20201113141733.392015387@linutronix.de>
+        Marc Zyngier <maz@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+Subject: Re: [patch 10/19] preempt: Cleanup the macro maze a bit
+Message-ID: <20201116121748.GD3121378@hirez.programming.kicks-ass.net>
 References: <20201113140207.499353218@linutronix.de>
- <20201113141733.392015387@linutronix.de>
-User-Agent: Roundcube Webmail/1.4.9
-Message-ID: <813afa3a895b0da8974fac72832a03b3@kernel.org>
-X-Sender: maz@kernel.org
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: tglx@linutronix.de, linux-kernel@vger.kernel.org, peterz@infradead.org, frederic@kernel.org, paulmck@kernel.org, bigeasy@linutronix.de, arnd@arndb.de, catalin.marinas@arm.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, James.Bottomley@hansenpartnership.com, deller@gmx.de, linux-parisc@vger.kernel.org, ysato@users.sourceforge.jp, dalias@libc.org, linux-sh@vger.kernel.org, jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com, linux-um@lists.infradead.org, linux@armlinux.org.uk, valentin.schneider@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+ <20201113141733.864469886@linutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201113141733.864469886@linutronix.de>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2020-11-13 14:02, Thomas Gleixner wrote:
-> irq_cpustat_t is exactly the same as the asm-generic one. Define
-> ack_bad_irq so the generic header does not emit the generic version of 
-> it.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> ---
->  arch/arm64/include/asm/hardirq.h |    7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> --- a/arch/arm64/include/asm/hardirq.h
-> +++ b/arch/arm64/include/asm/hardirq.h
-> @@ -13,11 +13,8 @@
->  #include <asm/kvm_arm.h>
->  #include <asm/sysreg.h>
-> 
-> -typedef struct {
-> -	unsigned int __softirq_pending;
-> -} ____cacheline_aligned irq_cpustat_t;
-> -
-> -#include <linux/irq_cpustat.h>	/* Standard mappings for irq_cpustat_t 
-> above */
-> +#define ack_bad_irq ack_bad_irq
-> +#include <asm-generic/hardirq.h>
-> 
->  #define __ARCH_IRQ_EXIT_IRQS_DISABLED	1
+On Fri, Nov 13, 2020 at 03:02:17PM +0100, Thomas Gleixner wrote:
 
-Acked-by: Marc Zyngier <maz@kernel.org>
+> -#define irq_count()	(preempt_count() & (HARDIRQ_MASK | SOFTIRQ_MASK \
+> -				 | NMI_MASK))
+> +#define irq_count()	(nmi_count() | hardirq_count() | softirq_count())
 
-         M.
--- 
-Jazz is not dead. It just smells funny...
+
+> +#define in_task()		(!(in_nmi() | in_hardirq() | in_serving_softirq()))
+> -#define in_task()		(!(preempt_count() & \
+> -				   (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET)))
+
+How horrible is the code-gen? Because preempt_count() is
+raw_cpu_read_4() and at least some old compilers will refuse to CSE it
+(consider the this_cpu_read_stable mess).
