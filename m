@@ -2,56 +2,122 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A27B62B62BB
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 Nov 2020 14:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D77262B70BE
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 Nov 2020 22:15:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732004AbgKQNbK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Tue, 17 Nov 2020 08:31:10 -0500
-Received: from tigeramira.ro ([88.158.78.30]:35936 "EHLO mail.tigeramira.ro"
-        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S1731988AbgKQNbI (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 Nov 2020 08:31:08 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by mail.tigeramira.ro (Postfix) with ESMTP id BCC62C79C2A
-        for <linux-parisc@vger.kernel.org>; Mon, 16 Nov 2020 08:14:00 +0200 (EET)
-Received: from mail.tigeramira.ro ([127.0.0.1])
-        by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id q9zAgDbzIPmp for <linux-parisc@vger.kernel.org>;
-        Mon, 16 Nov 2020 08:13:45 +0200 (EET)
-Received: from mail.tigeramira.ro (localhost [127.0.0.1])
-        by mail.tigeramira.ro (Postfix) with ESMTP id C5790979361
-        for <linux-parisc@vger.kernel.org>; Fri, 13 Nov 2020 17:52:09 +0200 (EET)
-Received: from [156.96.44.214] (unknown [192.168.12.254])
-        by mail.tigeramira.ro (Postfix) with ESMTP id 2D9D79140F5
-        for <linux-parisc@vger.kernel.org>; Fri, 13 Nov 2020 13:30:57 +0200 (EET)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1728042AbgKQVN3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 Nov 2020 16:13:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48304 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727994AbgKQVN0 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 17 Nov 2020 16:13:26 -0500
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B741AC061A47
+        for <linux-parisc@vger.kernel.org>; Tue, 17 Nov 2020 13:13:26 -0800 (PST)
+Received: by mail-pl1-x642.google.com with SMTP id j5so10954356plk.7
+        for <linux-parisc@vger.kernel.org>; Tue, 17 Nov 2020 13:13:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=cUL+9SvzrRzllFEAM5OhpKctCqgJfj/sR/XV7GWar0I=;
+        b=MWHmfYIY9ch9OvmV2riVcHnEmRpuPVUXqLW0gkD2sszZU8xssgw1NP5X1ShxEm8HJa
+         0hsVkK3fKE20KdO6VmXkfWW+cgXtGbCsjVnNFMstYf+pK2L5LTkbrAxCuUfBB/WpAjAt
+         75tDLdzwv7U0UzXqesHtuAuhick5Z8a/RrA2E=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=cUL+9SvzrRzllFEAM5OhpKctCqgJfj/sR/XV7GWar0I=;
+        b=JXFYVlajDXrrvjohu+Et+YXvEDJ8+EDs+jS+IWrk407hSpbo8akveuR+Wxfnoz8dur
+         figl6XcNBZKb67vTUBM0zCjN0BcGvcNHamWxhhZ2P/EMCsYxm4XrZdYveYlh7DKsMAr/
+         6IpK7LDzdOgY5v0liV65klxoOuqTFx/osRxG0kI+ZBfHAArof/iPWjbC15T+aOW8/f1A
+         jEDUkuWOVy6UYGb1MjVbxiNuFOsWLTBmdHXaNrZdL9O8iDLedMCiM0yhN5nY1pc0Fwg4
+         h5W9fTW1W+G0JA5gP5WAYOEsMI2UpeKQCNsrfk5u1j8GCDGd+LYuAwf6ESPDoh8Q43WI
+         hSqg==
+X-Gm-Message-State: AOAM531ZXrFTghtlGnjCZrOLlBQ65RU+sUmxcYiBqwK/tWKxPq7+LdpA
+        tlsVBOrr+mMoslzi9vqvPtSDMg==
+X-Google-Smtp-Source: ABdhPJylohww9dg1GYyIbVMq/Nw8ytFEu6RVmpEehQbjLtvam+DWoalMEAMP5jppFr2nQ0E9S6IUIA==
+X-Received: by 2002:a17:90b:80f:: with SMTP id bk15mr934491pjb.119.1605647606216;
+        Tue, 17 Nov 2020 13:13:26 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id d18sm19469582pgm.68.2020.11.17.13.13.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2020 13:13:25 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     containers@lists.linux-foundation.org,
+        YiFei Zhu <zhuyifei1999@gmail.com>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Josep Torrellas <torrella@illinois.edu>,
+        Jack Chen <jianyan2@illinois.edu>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        linux-riscv@lists.infradead.org,
+        David Laight <David.Laight@aculab.com>,
+        Dimitrios Skarlatos <dskarlat@cs.cmu.edu>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        linux-sh@vger.kernel.org, Hubertus Franke <frankeh@us.ibm.com>,
+        YiFei Zhu <yifeifz2@illinois.edu>,
+        Tianyin Xu <tyxu@illinois.edu>, linux-parisc@vger.kernel.org,
+        Andy Lutomirski <luto@amacapital.net>,
+        linux-csky@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
+        linux-xtensa@linux-xtensa.org, Jann Horn <jannh@google.com>,
+        Giuseppe Scrivano <gscrivan@redhat.com>,
+        linux-kernel@vger.kernel.org, Will Drewry <wad@chromium.org>,
+        linux-s390@vger.kernel.org,
+        Valentin Rothberg <vrothber@redhat.com>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH seccomp v2 0/8] seccomp: add bitmap cache support on remaining arches and report cache in procfs
+Date:   Tue, 17 Nov 2020 13:11:13 -0800
+Message-Id: <160564746555.1001899.9792418917631139658.b4-ty@chromium.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1605101222.git.yifeifz2@illinois.edu>
+References: <cover.1605101222.git.yifeifz2@illinois.edu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Corporate and Personal Loan::,
-To:     linux-parisc@vger.kernel.org
-From:   "Investment  Corporate" <financialcapability6@gmail.com>
-Date:   Fri, 13 Nov 2020 02:31:11 -0800
-Reply-To: hmurrah39@gmail.com
-Message-Id: <20201113113057.2D9D79140F5@mail.tigeramira.ro>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello linux-parisc@vger.kernel.org
+On Wed, 11 Nov 2020 07:33:46 -0600, YiFei Zhu wrote:
+> This patch series enables bitmap cache for the remaining arches with
+> SECCOMP_FILTER, other than MIPS.
+> 
+> I was unable to find any of the arches having subarch-specific NR_syscalls
+> macros, so generic NR_syscalls is used. SH's syscall_get_arch seems to
+> only have the 32-bit subarch implementation. I'm not sure if this is
+> expected.
+> 
+> [...]
 
+Applied to for-next/seccomp, thanks!
 
-We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+I made a small tweak to the last patch to add more details to the per-ARCH
+help text, and to drop the needless "depends on SECCOMP" (which "depends
+on SECCOMP_FILTER" was already present).
 
+I successfully build-tested on parisc, powerpc, riscv, s390, and
+sh. xtensa doesn't build using the existing Debian cross-compiler, and
+I can't make csky with clang work, but they look correct. *cross fingers*
 
-We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+[1/8] csky: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/ee7ce951028f
+[2/8] parisc: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/7f049cc068a3
+[3/8] powerpc: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/95f8ae2624a0
+[4/8] riscv: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/8f9f0f44a37b
+[5/8] s390: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/5897106c6902
+[6/8] sh: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/75186111c257
+[7/8] xtensa: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/4f408bc643aa
+[8/8] seccomp/cache: Report cache data through /proc/pid/seccomp_cache
+      https://git.kernel.org/kees/c/49a6968cc78f
 
+-- 
+Kees Cook
 
-Please get back to me if you are interested for more
-
-details.
-
-
-Yours faithfully,
-
-Hashim Murrah
