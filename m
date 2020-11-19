@@ -2,86 +2,69 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6995A2B8EA8
-	for <lists+linux-parisc@lfdr.de>; Thu, 19 Nov 2020 10:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC192B9280
+	for <lists+linux-parisc@lfdr.de>; Thu, 19 Nov 2020 13:25:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726657AbgKSJWp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 19 Nov 2020 04:22:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44732 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726575AbgKSJWp (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 19 Nov 2020 04:22:45 -0500
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EAF7C0613CF
-        for <linux-parisc@vger.kernel.org>; Thu, 19 Nov 2020 01:22:44 -0800 (PST)
-Received: (qmail 21243 invoked from network); 19 Nov 2020 09:21:15 -0000
-Received: from mail.sf-mail.de ([2a01:4f8:1c17:6fae:616d:6c69:616d:6c69]:57158 HELO webmail.sf-mail.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.37dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <alex_y_xu@yahoo.ca>; Thu, 19 Nov 2020 10:21:15 +0100
-MIME-Version: 1.0
-Date:   Thu, 19 Nov 2020 10:21:12 +0100
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     "Alex Xu (Hello71)" <alex_y_xu@yahoo.ca>
-Cc:     linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        id S1727232AbgKSMSG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 19 Nov 2020 07:18:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52664 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726567AbgKSMSF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 19 Nov 2020 07:18:05 -0500
+Received: from localhost (unknown [176.167.53.63])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0AD872224E;
+        Thu, 19 Nov 2020 12:18:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605788284;
+        bh=KHq+av0erckkSGo2Wxd/+KMT06c++ZpkBRbwRwRGlxM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hsHjAmCjhp908eOurJ4tCBHUDqDkIopOM//kRiZmD+8aHp6P18/7SBWo54oQXi5bA
+         QYwWvJV99mn0dfBZTrELgOz/3hI/7vQIv272qLfYEucWfeq/N/4aEnG4vQQGoFMn16
+         sE6sud7/uhKrdamVS26I1fPe8wsNZ7Fqu4bm0LqI=
+Date:   Thu, 19 Nov 2020 13:18:01 +0100
+From:   Frederic Weisbecker <frederic@kernel.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paul McKenney <paulmck@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
+        Marc Zyngier <maz@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
         linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, torvalds@linux-foundation.org
-Subject: Re: [RFC PATCH] treewide: remove bzip2 compression support
-In-Reply-To: <20201117223253.65920-1-alex_y_xu@yahoo.ca>
-References: <20201117223253.65920-1-alex_y_xu.ref@yahoo.ca>
- <20201117223253.65920-1-alex_y_xu@yahoo.ca>
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <a9a7fc22ea6fb6bdeb3274fe05a7f0d9@sf-tec.de>
-X-Sender: eike-kernel@sf-tec.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+Subject: Re: [patch 12/19] softirq: Add RT specific softirq accounting
+Message-ID: <20201119121801.GA20115@lothringen>
+References: <20201113140207.499353218@linutronix.de>
+ <20201113141734.096224353@linutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201113141734.096224353@linutronix.de>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Am 2020-11-17 23:32, schrieb Alex Xu (Hello71):
-> bzip2 is either slower or larger than every other supported algorithm,
-> according to benchmarks at [0]. It is far slower to decompress than any
-> other algorithm, and still larger than lzma, xz, and zstd.
-
+On Fri, Nov 13, 2020 at 03:02:19PM +0100, Thomas Gleixner wrote:
+> RT requires the softirq to be preemptible and uses a per CPU local lock to
+> protect BH disabled sections and softirq processing. Therefore RT cannot
+> use the preempt counter to keep track of BH disabled/serving.
 > 
-> diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
-> index abb9fc164657..b74d14caabe6 100644
-> --- a/Documentation/x86/boot.rst
-> +++ b/Documentation/x86/boot.rst
-> @@ -781,10 +781,10 @@ Protocol:	2.08+
->    The payload may be compressed. The format of both the compressed and
->    uncompressed data should be determined using the standard magic
->    numbers.  The currently supported compression formats are gzip
-> -  (magic numbers 1F 8B or 1F 9E), bzip2 (magic number 42 5A), LZMA
-> -  (magic number 5D 00), XZ (magic number FD 37), LZ4 (magic number
-> -  02 21) and ZSTD (magic number 28 B5). The uncompressed payload is
-> -  currently always ELF (magic number 7F 45 4C 46).
-> +  (magic numbers 1F 8B or 1F 9E), LZMA (magic number 5D 00), XZ (magic
-> +  number FD 37), LZ4 (magic number 02 21) and ZSTD (magic number 28
-> +  B5). The uncompressed payload is currently always ELF (magic number
-> +  7F 45 4C 46).
-> 
->  ============	==============
->  Field name:	payload_length
-> diff --git a/arch/arm/configs/aspeed_g4_defconfig
-> b/arch/arm/configs/aspeed_g4_defconfig
-> index 58d293b63581..f2f5dcd0e59c 100644
+> Add a RT only counter to task struct and adjust the relevant macros in
+> preempt.h.
 
-I would keep the magic number, and just tell that it is not supported by 
-newer kernels anymore if at all. It's just handy to be able to look into 
-the most recent documentation and see what the values are for. If you 
-look at an older image and don't find the magic number my first impulse 
-would not be to look at older versions of the documentation for things 
-that were removed.
+You may want to describe a bit the reason for this per task counter.
+It's not intuitive at this stage.
 
-Maybe something like:
-
-"Formerly supported was also bzip2 (magic number 42 5A)."
-
-Eike
+Thanks.
