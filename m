@@ -2,48 +2,86 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E1EA2B7737
-	for <lists+linux-parisc@lfdr.de>; Wed, 18 Nov 2020 08:51:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6995A2B8EA8
+	for <lists+linux-parisc@lfdr.de>; Thu, 19 Nov 2020 10:24:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726780AbgKRHui convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 18 Nov 2020 02:50:38 -0500
-Received: from sw73-70-41.adsl.seed.net.tw ([203.73.70.41]:41775 "EHLO
-        oa.trendtek.com.tw" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1726204AbgKRHui (ORCPT
+        id S1726657AbgKSJWp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 19 Nov 2020 04:22:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44732 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726575AbgKSJWp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 18 Nov 2020 02:50:38 -0500
-Received: from [156.96.44.214] ([156.96.44.214])
-        (authenticated bits=0)
-        by oa.trendtek.com.tw (8.13.8/8.13.1) with ESMTP id 0AI7o2St018712
-        for <linux-parisc@vger.kernel.org>; Wed, 18 Nov 2020 15:50:35 +0800
-Message-Id: <202011180750.0AI7o2St018712@oa.trendtek.com.tw>
-Content-Type: text/plain; charset="iso-8859-1"
+        Thu, 19 Nov 2020 04:22:45 -0500
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EAF7C0613CF
+        for <linux-parisc@vger.kernel.org>; Thu, 19 Nov 2020 01:22:44 -0800 (PST)
+Received: (qmail 21243 invoked from network); 19 Nov 2020 09:21:15 -0000
+Received: from mail.sf-mail.de ([2a01:4f8:1c17:6fae:616d:6c69:616d:6c69]:57158 HELO webmail.sf-mail.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.37dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <alex_y_xu@yahoo.ca>; Thu, 19 Nov 2020 10:21:15 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Corporate and Personal Loan *
-To:     linux-parisc@vger.kernel.org
-From:   "Investment  Corporate" <financialcapability6@gmail.com>
-Date:   Tue, 17 Nov 2020 23:50:26 -0800
-Reply-To: hmurrah39@gmail.com
+Date:   Thu, 19 Nov 2020 10:21:12 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     "Alex Xu (Hello71)" <alex_y_xu@yahoo.ca>
+Cc:     linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-mips@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, torvalds@linux-foundation.org
+Subject: Re: [RFC PATCH] treewide: remove bzip2 compression support
+In-Reply-To: <20201117223253.65920-1-alex_y_xu@yahoo.ca>
+References: <20201117223253.65920-1-alex_y_xu.ref@yahoo.ca>
+ <20201117223253.65920-1-alex_y_xu@yahoo.ca>
+User-Agent: Roundcube Webmail/1.4.8
+Message-ID: <a9a7fc22ea6fb6bdeb3274fe05a7f0d9@sf-tec.de>
+X-Sender: eike-kernel@sf-tec.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello linux-parisc@vger.kernel.org
+Am 2020-11-17 23:32, schrieb Alex Xu (Hello71):
+> bzip2 is either slower or larger than every other supported algorithm,
+> according to benchmarks at [0]. It is far slower to decompress than any
+> other algorithm, and still larger than lzma, xz, and zstd.
 
+> 
+> diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
+> index abb9fc164657..b74d14caabe6 100644
+> --- a/Documentation/x86/boot.rst
+> +++ b/Documentation/x86/boot.rst
+> @@ -781,10 +781,10 @@ Protocol:	2.08+
+>    The payload may be compressed. The format of both the compressed and
+>    uncompressed data should be determined using the standard magic
+>    numbers.  The currently supported compression formats are gzip
+> -  (magic numbers 1F 8B or 1F 9E), bzip2 (magic number 42 5A), LZMA
+> -  (magic number 5D 00), XZ (magic number FD 37), LZ4 (magic number
+> -  02 21) and ZSTD (magic number 28 B5). The uncompressed payload is
+> -  currently always ELF (magic number 7F 45 4C 46).
+> +  (magic numbers 1F 8B or 1F 9E), LZMA (magic number 5D 00), XZ (magic
+> +  number FD 37), LZ4 (magic number 02 21) and ZSTD (magic number 28
+> +  B5). The uncompressed payload is currently always ELF (magic number
+> +  7F 45 4C 46).
+> 
+>  ============	==============
+>  Field name:	payload_length
+> diff --git a/arch/arm/configs/aspeed_g4_defconfig
+> b/arch/arm/configs/aspeed_g4_defconfig
+> index 58d293b63581..f2f5dcd0e59c 100644
 
-We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+I would keep the magic number, and just tell that it is not supported by 
+newer kernels anymore if at all. It's just handy to be able to look into 
+the most recent documentation and see what the values are for. If you 
+look at an older image and don't find the magic number my first impulse 
+would not be to look at older versions of the documentation for things 
+that were removed.
 
+Maybe something like:
 
-We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+"Formerly supported was also bzip2 (magic number 42 5A)."
 
-
-Please get back to me if you are interested for more
-
-details.
-
-
-Yours faithfully,
-
-Hashim Murrah
+Eike
