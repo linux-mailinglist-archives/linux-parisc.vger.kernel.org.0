@@ -2,69 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC3432BFB07
-	for <lists+linux-parisc@lfdr.de>; Sun, 22 Nov 2020 22:53:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8264F2C0C1B
+	for <lists+linux-parisc@lfdr.de>; Mon, 23 Nov 2020 14:57:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726612AbgKVVuV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 22 Nov 2020 16:50:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33814 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726136AbgKVVuV (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 22 Nov 2020 16:50:21 -0500
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F498C0613CF;
-        Sun, 22 Nov 2020 13:50:21 -0800 (PST)
-Received: by mail-ed1-x543.google.com with SMTP id m16so15152807edr.3;
-        Sun, 22 Nov 2020 13:50:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:sender:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
-        b=PQo04hRA87G2gSrtOBCJYGVwNWTViDPVCWOuRRxnnH1pWDtO65RiatqdUIRvhsN65R
-         sJjUF6Sml5WjkvpNuDZ7gjGeZSakUDDK1fa8HCvtLhuBZHRvM/8gjYanZstvbY0awrBm
-         ZIenMlIbK/OoW27NIeZoe2IadZLabecgyrE8jajgM04yV88veYUqwwCNCJ0bvXDhV2un
-         wYAcuHer2U2qx/zU9mFxJjYUaqXZWxUl5K6f3d8hTlaPloUn1xPYtjEz1RxAyNubtqRA
-         FUIO+X+onwBxZziLvyAaELqHVssJmo05pqMHaZXiWBAxaBXg5YbgRP880pm0pPxtdikQ
-         iKYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:sender:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
-        b=SspiU9oome0e9KXI18TwJDwgEYkAYKJjy/zv9brV9x8RxCAe3EqMJHllzysv+aXc3B
-         0jEyB83+C0/vN104nC7PfaFvTtXuFzTwSnBIZKbCUOD4AIOb5IyGwRNtVd6DxnQTFQ3A
-         Ov9ZUK7Qd8ArA25Hovk0YCEkDyDDviTU0d5+gFUa/KphQ7fCutIKIuPsbafL52fVRzrB
-         Ex/c8tffDLGjxAKe5oANwakseKBV8D0UcPrWPt2lvEChgJodjuUIAS1bgamHc/RXq58a
-         MTpIRobI89kJOcG+9rogPk0gAhJqjVRUZhcE113zx5YNAOnGHEWRruXPksIpn2zOxNu5
-         9pdg==
-X-Gm-Message-State: AOAM5332fMsggSaQPv/s71bLFyU3YuBU3FajyMukIsPDE0GLZiB2OAg9
-        fqIxA8RSggjM1RC3SFaBSxx9Mg8sxY0=
-X-Google-Smtp-Source: ABdhPJwF3FJr+ZsZnx5n+psxN87dWXNPEfFn+rkkflLcw78K4OBAx486rmM2V2GFejocaoZv9CUyUg==
-X-Received: by 2002:aa7:dc53:: with SMTP id g19mr15120292edu.256.1606081819796;
-        Sun, 22 Nov 2020 13:50:19 -0800 (PST)
-Received: from [192.168.43.48] ([197.210.35.67])
-        by smtp.gmail.com with ESMTPSA id e17sm4016232edc.45.2020.11.22.13.50.14
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Sun, 22 Nov 2020 13:50:19 -0800 (PST)
-Message-ID: <5fbadd1b.1c69fb81.8dfc7.11cf@mx.google.com>
-Sender: Baniko Diallo <banidiallo23@gmail.com>
-From:   Adelina Zeuki <adelinazeuki@gmail.com>
-X-Google-Original-From: "Adelina Zeuki" <  adelinazeuki@gmail.comm >
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1732193AbgKWNol (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 23 Nov 2020 08:44:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35796 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730068AbgKWNol (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 23 Nov 2020 08:44:41 -0500
+Received: from localhost (unknown [176.167.152.233])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0B2AF206F1;
+        Mon, 23 Nov 2020 13:44:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606139080;
+        bh=P9zQbHB28E6VtYusUFpATLlB1aKLlAxQSqrq/mCm4FA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K+ehFd6USfbS/TljS1tg/RC+MNXIQxsXIXc+xVORBRpWK5OMZqRunsbCJWvMXQuor
+         KDFJIax5mc0aaPeN/c15BVFH2tuZnwaXqQ1i+BgXEeLu1OjJBSAHJ+u0CKbLSlD45Q
+         2GlZcY3RVfb4H4uRcAcxIKt0VrsnKIWLDUKKugBA=
+Date:   Mon, 23 Nov 2020 14:44:37 +0100
+From:   Frederic Weisbecker <frederic@kernel.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paul McKenney <paulmck@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
+        Marc Zyngier <maz@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+Subject: Re: [patch 14/19] softirq: Make softirq control and processing RT
+ aware
+Message-ID: <20201123134437.GA95787@lothringen>
+References: <20201113140207.499353218@linutronix.de>
+ <20201113141734.324061522@linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Hello !!
-To:     Recipients <adelinazeuki@gmail.comm>
-Date:   Sun, 22 Nov 2020 21:50:08 +0000
-Reply-To: adelinazeuki@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201113141734.324061522@linutronix.de>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi dear,
+On Fri, Nov 13, 2020 at 03:02:21PM +0100, Thomas Gleixner wrote:
+> +void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
+> +{
+> +	bool preempt_on = preemptible();
+> +	unsigned long flags;
+> +	u32 pending;
+> +	int curcnt;
+> +
+> +	WARN_ON_ONCE(in_irq());
+> +	lockdep_assert_irqs_enabled();
+> +
+> +	local_irq_save(flags);
+> +	curcnt = this_cpu_read(softirq_ctrl.cnt);
+> +
+> +	/*
+> +	 * If this is not reenabling soft interrupts, no point in trying to
+> +	 * run pending ones.
+> +	 */
+> +	if (curcnt != cnt)
+> +		goto out;
+> +
+> +	pending = local_softirq_pending();
+> +	if (!pending || ksoftirqd_running(pending))
+> +		goto out;
+> +
+> +	/*
+> +	 * If this was called from non preemptible context, wake up the
+> +	 * softirq daemon.
+> +	 */
+> +	if (!preempt_on) {
+> +		wakeup_softirqd();
+> +		goto out;
+> +	}
+> +
+> +	/*
+> +	 * Adjust softirq count to SOFTIRQ_OFFSET which makes
+> +	 * in_serving_softirq() become true.
+> +	 */
+> +	cnt = SOFTIRQ_OFFSET;
+> +	__local_bh_enable(cnt, false);
 
-Can i talk with you ?
+But then you enter __do_softirq() with softirq_count() == SOFTIRQ_OFFSET.
+__do_softirq() calls softirq_handle_begin() which then sets it back to SOFTIRQ_DISABLE_OFFSET...
+
+> +	__do_softirq();
+> +
+> +out:
+> +	__local_bh_enable(cnt, preempt_on);
+
+You escape from there with a correct preempt_count() but still the softirq executes
+under SOFTIRQ_DISABLE_OFFSET and not SOFTIRQ_OFFSET, making in_serving_softirq() false.
+
+> +	local_irq_restore(flags);
+> +}
+> +EXPORT_SYMBOL(__local_bh_enable_ip);
+
+Thanks.
