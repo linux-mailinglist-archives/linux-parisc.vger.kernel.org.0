@@ -2,115 +2,68 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8264F2C0C1B
-	for <lists+linux-parisc@lfdr.de>; Mon, 23 Nov 2020 14:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFAA52C1478
+	for <lists+linux-parisc@lfdr.de>; Mon, 23 Nov 2020 20:29:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732193AbgKWNol (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 23 Nov 2020 08:44:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35796 "EHLO mail.kernel.org"
+        id S1730093AbgKWTZH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 23 Nov 2020 14:25:07 -0500
+Received: from s063a.063.pfr.ru ([95.167.247.90]:25668 "EHLO s063a.063.pfr.ru"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730068AbgKWNol (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 23 Nov 2020 08:44:41 -0500
-Received: from localhost (unknown [176.167.152.233])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0B2AF206F1;
-        Mon, 23 Nov 2020 13:44:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606139080;
-        bh=P9zQbHB28E6VtYusUFpATLlB1aKLlAxQSqrq/mCm4FA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=K+ehFd6USfbS/TljS1tg/RC+MNXIQxsXIXc+xVORBRpWK5OMZqRunsbCJWvMXQuor
-         KDFJIax5mc0aaPeN/c15BVFH2tuZnwaXqQ1i+BgXEeLu1OjJBSAHJ+u0CKbLSlD45Q
-         2GlZcY3RVfb4H4uRcAcxIKt0VrsnKIWLDUKKugBA=
-Date:   Mon, 23 Nov 2020 14:44:37 +0100
-From:   Frederic Weisbecker <frederic@kernel.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
-        Marc Zyngier <maz@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>
-Subject: Re: [patch 14/19] softirq: Make softirq control and processing RT
- aware
-Message-ID: <20201123134437.GA95787@lothringen>
-References: <20201113140207.499353218@linutronix.de>
- <20201113141734.324061522@linutronix.de>
+        id S1729265AbgKWTZH (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 23 Nov 2020 14:25:07 -0500
+X-Greylist: delayed 1121 seconds by postgrey-1.27 at vger.kernel.org; Mon, 23 Nov 2020 14:25:04 EST
+Received: from User ([219.147.112.150])
+          by s063a.063.pfr.ru (Lotus Domino Release 8.5.3FP6)
+          with ESMTP id 2020112322015975-471 ;
+          Mon, 23 Nov 2020 22:01:59 +0300 
+Reply-To: <mr_kofiann1@yahoo.co.jp>
+From:   "Mr. Jawad Wadi" <zakaz03@063.pfr.ru>
+Date:   Mon, 23 Nov 2020 20:01:56 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201113141734.324061522@linutronix.de>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-MIMETrack: Itemize by SMTP Server on s063a/063/PFR/RU(Release 8.5.3FP6|November 21, 2013) at
+ 23.11.2020 22:02:01,
+        Serialize by Router on s063a/063/PFR/RU(Release 8.5.3FP6|November 21, 2013) at
+ 23.11.2020 22:25:01,
+        Serialize complete at 23.11.2020 22:25:01
+Subject: =?KOI8-R?B?W/Pw4e1dWU9VUiBSRVNQT05EIFBMRUFTRQ==?=
+Message-ID: <OF0BCEAEC8.989C4BD2-ON43258629.00688E2D@063.pfr.ru>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+        charset="Windows-1251"
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Nov 13, 2020 at 03:02:21PM +0100, Thomas Gleixner wrote:
-> +void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
-> +{
-> +	bool preempt_on = preemptible();
-> +	unsigned long flags;
-> +	u32 pending;
-> +	int curcnt;
-> +
-> +	WARN_ON_ONCE(in_irq());
-> +	lockdep_assert_irqs_enabled();
-> +
-> +	local_irq_save(flags);
-> +	curcnt = this_cpu_read(softirq_ctrl.cnt);
-> +
-> +	/*
-> +	 * If this is not reenabling soft interrupts, no point in trying to
-> +	 * run pending ones.
-> +	 */
-> +	if (curcnt != cnt)
-> +		goto out;
-> +
-> +	pending = local_softirq_pending();
-> +	if (!pending || ksoftirqd_running(pending))
-> +		goto out;
-> +
-> +	/*
-> +	 * If this was called from non preemptible context, wake up the
-> +	 * softirq daemon.
-> +	 */
-> +	if (!preempt_on) {
-> +		wakeup_softirqd();
-> +		goto out;
-> +	}
-> +
-> +	/*
-> +	 * Adjust softirq count to SOFTIRQ_OFFSET which makes
-> +	 * in_serving_softirq() become true.
-> +	 */
-> +	cnt = SOFTIRQ_OFFSET;
-> +	__local_bh_enable(cnt, false);
+This Message From Mr. Jawad Wadi. I and my colleague seek for your assistance to transfer a sum of US$130.8M (One Hundred and Thirty-Million, Eight Hundred Thousand United State Dollars) to your account, for our possible investment abroad.
+This is Inheritance Payment. Late American deceased (an Engineer) is the owner of this fund, deceased was into Real Estate, Gold Exporting and he was a Subcontractor to many Government contracts.
 
-But then you enter __do_softirq() with softirq_count() == SOFTIRQ_OFFSET.
-__do_softirq() calls softirq_handle_begin() which then sets it back to SOFTIRQ_DISABLE_OFFSET...
+This Deceased has paid to the Government of Ghana all tax and expense that covered the release of above funds to his surviving next of kin without question.
 
-> +	__do_softirq();
-> +
-> +out:
-> +	__local_bh_enable(cnt, preempt_on);
+Below is your rule to play for this transaction:-
+You will stand as the deceased survived next of kin (Relative/Business Associate) to enable the Ministry of finance released above said funds to your favor without question.
+The Deceased has instructed the Ministry of finance before he died, to release inheritance payment to his appointed next of kin who will identify him or she with documents listed below being his surviving next of kin to avoid wrong payment.
 
-You escape from there with a correct preempt_count() but still the softirq executes
-under SOFTIRQ_DISABLE_OFFSET and not SOFTIRQ_OFFSET, making in_serving_softirq() false.
+1) DECEASED FULL NAME
+2) DECEASED COPY OF PASSPORT.
+3) DECEASED COMPANY'S NAME AND ADDRESS..
+4) DECEASED BANKING INFORMATION.
+5) DECEASED DEATH CERTIFICATE.
 
-> +	local_irq_restore(flags);
-> +}
-> +EXPORT_SYMBOL(__local_bh_enable_ip);
+The Ministry of finance has given me (Deceased account officer) ten working days to invite decease next of kin for their payment.
 
-Thanks.
+Once you indicate your interest to work with me, I will give you deceased documents listed above, which the Ministry of finance shall request for your proper identification to release this inheritance fund to you as the deceased survived next of kin without question.
+
+If you are interested to carried out this inheritance claim with me, kindly contact me by email with your full name and telephone number, so I will give you more details..
+
+We shall discuss on percentage upon your response. Please if your mail bounces back, then send me your email by SMS with my number +233-2655-25861, then I will email you back.
+
+Regards,
+
+Rtd. Jawad A. Wadi, (Deceased Account Officer).
+Address: Accra - Ghana
+West Africa.
