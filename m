@@ -2,40 +2,30 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 219812C147D
-	for <lists+linux-parisc@lfdr.de>; Mon, 23 Nov 2020 20:29:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 315A42C14E3
+	for <lists+linux-parisc@lfdr.de>; Mon, 23 Nov 2020 20:58:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730556AbgKWT1h (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 23 Nov 2020 14:27:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35756 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729298AbgKWT1g (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 23 Nov 2020 14:27:36 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CF84C0613CF;
-        Mon, 23 Nov 2020 11:27:35 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606159653;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=TzRAC5hW73yiYJuiiYIIWX/K2NAu8mPi3fpeAy0/13s=;
-        b=amCizpPWCFj6Axs+WdkxrRqFE+lU8MuDMXmyWE6f8enVCKpgwNtqwDVcmdJFd8To1THP5I
-        EzayCNumDArKzAPuWfYxA8AzxbKkWnU26RRP2fqY/WRSLjTj9OkHWSzcainSwG2heil0Ek
-        1wrNa5d/6+7V0/urWfCYgSTKKmlnFM0Xhew7CTkNLX39HOqsiQZVpD2Spxsw+m9Y5qrLoB
-        QxWUrRjM3NirPxmQlaE1ZioKOT2Yhdt6Jw1rfKgCo2UnTLYPfP8Z/RFuuvudXFtFnyX0C+
-        UHJN0lQ7ZMRmKXUWIhT2vfPGXX8rClGXStum2m8IpQKGtpcKtzTMsnbaxl4j9w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606159653;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=TzRAC5hW73yiYJuiiYIIWX/K2NAu8mPi3fpeAy0/13s=;
-        b=GlcMAjj3axUF6EiWKEBvm1FLqPceaYkWlJcdxg0JzCO+wykp3jClUsOR7LKLoHMig1dNEL
-        rht1GQwk0LnvlTDQ==
-To:     Frederic Weisbecker <frederic@kernel.org>
+        id S1729940AbgKWT4H (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 23 Nov 2020 14:56:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60516 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728463AbgKWT4H (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 23 Nov 2020 14:56:07 -0500
+Received: from localhost (unknown [176.167.152.233])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BB2A820719;
+        Mon, 23 Nov 2020 19:56:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606161366;
+        bh=Qwaj9EAymCre5AbE0cGCpg6mZxagxOd5HkfAdkFeVQY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yGMvf60SkCukxVh/qyFIa0RYi5BJnw924x8Ubx2WyW8UGZJJ+OYFmcESBDlzaKidk
+         RcRPvUJbQRswpwMC7U7GFJor5K7CuKznFoqHCBHY6xg7Rwf2+a0SgyIbTS6x0Nj4sO
+         6YNI9+CpdAy2uYz66KC8EeOTR7UA91ehnUKQnFwM=
+Date:   Mon, 23 Nov 2020 20:56:03 +0100
+From:   Frederic Weisbecker <frederic@kernel.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Paul McKenney <paulmck@kernel.org>,
@@ -54,34 +44,42 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>
-Subject: Re: [patch 14/19] softirq: Make softirq control and processing RT aware
-In-Reply-To: <20201123134437.GA95787@lothringen>
-References: <20201113140207.499353218@linutronix.de> <20201113141734.324061522@linutronix.de> <20201123134437.GA95787@lothringen>
-Date:   Mon, 23 Nov 2020 20:27:33 +0100
-Message-ID: <87r1ojnaai.fsf@nanos.tec.linutronix.de>
+Subject: Re: [patch 14/19] softirq: Make softirq control and processing RT
+ aware
+Message-ID: <20201123195603.GA1751@lothringen>
+References: <20201113140207.499353218@linutronix.de>
+ <20201113141734.324061522@linutronix.de>
+ <20201123134437.GA95787@lothringen>
+ <87r1ojnaai.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87r1ojnaai.fsf@nanos.tec.linutronix.de>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Nov 23 2020 at 14:44, Frederic Weisbecker wrote:
-> On Fri, Nov 13, 2020 at 03:02:21PM +0100, Thomas Gleixner wrote:
->> +	/*
->> +	 * Adjust softirq count to SOFTIRQ_OFFSET which makes
->> +	 * in_serving_softirq() become true.
->> +	 */
->> +	cnt = SOFTIRQ_OFFSET;
->> +	__local_bh_enable(cnt, false);
->
-> But then you enter __do_softirq() with softirq_count() == SOFTIRQ_OFFSET.
-> __do_softirq() calls softirq_handle_begin() which then sets it back to
-> SOFTIRQ_DISABLE_OFFSET...
+On Mon, Nov 23, 2020 at 08:27:33PM +0100, Thomas Gleixner wrote:
+> On Mon, Nov 23 2020 at 14:44, Frederic Weisbecker wrote:
+> > On Fri, Nov 13, 2020 at 03:02:21PM +0100, Thomas Gleixner wrote:
+> >> +	/*
+> >> +	 * Adjust softirq count to SOFTIRQ_OFFSET which makes
+> >> +	 * in_serving_softirq() become true.
+> >> +	 */
+> >> +	cnt = SOFTIRQ_OFFSET;
+> >> +	__local_bh_enable(cnt, false);
+> >
+> > But then you enter __do_softirq() with softirq_count() == SOFTIRQ_OFFSET.
+> > __do_softirq() calls softirq_handle_begin() which then sets it back to
+> > SOFTIRQ_DISABLE_OFFSET...
+> 
+> The RT variant of it added in this very same patch
+> > +static inline void softirq_handle_begin(void) { }
+> > +static inline void softirq_handle_end(void) { }
 
-The RT variant of it added in this very same patch
-> +static inline void softirq_handle_begin(void) { }
-> +static inline void softirq_handle_end(void) { }
+Oh missed that indeed, sorry!
 
-Thanks,
-
-        tglx
+> 
+> Thanks,
+> 
+>         tglx
