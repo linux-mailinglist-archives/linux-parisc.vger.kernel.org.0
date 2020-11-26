@@ -2,69 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C32C32C489E
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Nov 2020 20:42:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D0C62C5474
+	for <lists+linux-parisc@lfdr.de>; Thu, 26 Nov 2020 14:08:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728099AbgKYTmR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 25 Nov 2020 14:42:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60756 "EHLO
+        id S2389790AbgKZNGH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 26 Nov 2020 08:06:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727251AbgKYTmR (ORCPT
+        with ESMTP id S2389799AbgKZNGG (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 25 Nov 2020 14:42:17 -0500
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2056C0613D4;
-        Wed, 25 Nov 2020 11:42:16 -0800 (PST)
-Received: by mail-wr1-x434.google.com with SMTP id m6so3061649wrg.7;
-        Wed, 25 Nov 2020 11:42:16 -0800 (PST)
+        Thu, 26 Nov 2020 08:06:06 -0500
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38781C0617A7
+        for <linux-parisc@vger.kernel.org>; Thu, 26 Nov 2020 05:06:04 -0800 (PST)
+Received: by mail-lj1-x244.google.com with SMTP id i17so2287682ljd.3
+        for <linux-parisc@vger.kernel.org>; Thu, 26 Nov 2020 05:06:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
-        b=s+uQLYUaIEZUUWJjEL+QjpGIWjAti+9drZg7GxHx1eklts/uLfTDnCO2dRfs/GOxlq
-         IZnMS39OZ6SQIu0hvhe+XLxVOpeurLAvg5/9K2TzaUMzQMB8ZtF8yOxb5nmJRfkCeSmO
-         WXdeDTzBMsnXg1oEGl0GgN5DEcFJg8muJqzpoUypexNSUIu4MALr0A2z0L8beecyvxYC
-         Klb417xXFOO1pEOuh61VAxZXvCXHSqXWphdvz5JRIPu9uABVMGAh9wwg8uiQI+9bY123
-         f6cQ60jfhMOCpheTMCs6OWNPODMnaoPMXhmKoJBPSAUKwCtkGQWa4ITYDotZMQGwUfTz
-         yR2w==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+YZf4/VZqM+Z9lbh8Toi6q5/Zm7QXw+MN5AWWv9ll1M=;
+        b=uppblSurxa3P9JcajMHBOPQWGc29jSYIYmUhm+agj0vBg/LmXAvgQiSzQa0SHBemln
+         JEbwpdsi2TaZXWqPVBbKMKOtiXH0B9pXxVRbRb/Ii0SGBw2r9axKkgCY7cwCFOPXi0k8
+         aaHfL69InCFbVxqGhoZ6CVAzr/RI9mB5NYctuHOdRbWj/1t1YgInBqNlhDxqwW23KGK/
+         I3aEWUsOsUBmeVs/fiixGx1POtf3bMGgku2hXknPP+m1i+qXwr6j2Hjj95ieHoIP3V/I
+         j9cfNnKML2guNcRb2O92AKgGTDhQkzbcYqZ9cmmTkcHAzPZqb4b+sSb9Wji6Lxh0CvGZ
+         brcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
-        b=FYdVN1DwEqoLLC/GJYSzbSOP5E3W+7kadNxqfAJKFSUorgvdRsxtheQgcjRlM2Jmy8
-         DPNqlUu7yeViiAXHyZAeJbyO7rxcMUt3WpPsD9l3b8ZVSaP2O8i78bhT5nrRT8DgrCPM
-         Gird+N/+/O2FH9SnE5LT2t3yPRl+PdwMCxau5rKrpOHP37FJbgzbOt2u6FmUbmKPNO8U
-         qqXny1lZV7Faa5cv9dfKYq5wJFFTl+/2xFfTX9JQK4m5Zw7diBng4TaE1CaRzTGFF38N
-         wbsf5KpuIJvSZbM0ZdS4MQ1/jrYA3p0kWWD0SXgmzB8Ppnc5nqv1VrZcF0m8llVvWtsr
-         OhPA==
-X-Gm-Message-State: AOAM533W5vS3IOf17EIvpOr/J3BX7sJWKP6YCOjDR5LW4ALrJ5lFFkbf
-        E/EilkLaR3I16Uf970be1SI=
-X-Google-Smtp-Source: ABdhPJxAR7RAKBEBoPQWTJsu5gcOAm8J0fk7kA/p63H8J0lWv+SHteaswDgaORNVGIm4kQvnUds+YQ==
-X-Received: by 2002:a05:6000:347:: with SMTP id e7mr5843971wre.35.1606333335628;
-        Wed, 25 Nov 2020 11:42:15 -0800 (PST)
-Received: from [192.168.1.152] ([102.64.149.89])
-        by smtp.gmail.com with ESMTPSA id u129sm5090970wme.9.2020.11.25.11.42.08
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Wed, 25 Nov 2020 11:42:14 -0800 (PST)
-Message-ID: <5fbeb396.1c69fb81.a9b8d.bcc7@mx.google.com>
-From:   "Dailborh R." <ritundailb333@gmail.com>
-X-Google-Original-From: Dailborh R.
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+YZf4/VZqM+Z9lbh8Toi6q5/Zm7QXw+MN5AWWv9ll1M=;
+        b=T2fGSinGIMxa/6sWpgDqscgOVSeGyuXKkXVVpd4Kuzag2u9SUPsfmecHvLh1+1cUhN
+         ZwdU7ImQzsFBINcpRhY3zin5LeaGHcDPQkdgMGaVdO+2sSGKMgvjjrLiykaIW/47N3HB
+         goIaCWvgCEVOHP+mJrWayNBz4GrK/KZVStblDO2E1Jc3MWRJD0MiWfcUiKVXLEuXzsGv
+         PNXXnEMC8XSnvJ5nuZO5Z8qY+JZlW8/SzCdWWsqlTBCXTp35609s1Gqbh8X1KbrT2+oR
+         sGSC66o9T/6VRXfdJEbgwBnLkUilOCK5+EaZYdqWeVp0/LR09Ay4eTcPxfFU9/qinq8/
+         Gqdg==
+X-Gm-Message-State: AOAM5309TrTP3QoHo1pZN9xGjfHQEFHgyCb8SZFcXxmZ8yyyjRVwoTrD
+        H0mbC2hIzAjsQdGsIAv+CKcFBw==
+X-Google-Smtp-Source: ABdhPJzjW6rxKvOmhpsBZnFOvyZwT4zrQYqYBz7gfWPJ3rPoqzHjg5M7x3Oqru2CO9bTxqbyqEks1w==
+X-Received: by 2002:a2e:731a:: with SMTP id o26mr1164563ljc.98.1606395962373;
+        Thu, 26 Nov 2020 05:06:02 -0800 (PST)
+Received: from localhost (c-9b28e555.07-21-73746f28.bbcust.telenor.se. [85.229.40.155])
+        by smtp.gmail.com with ESMTPSA id c5sm310077lfg.84.2020.11.26.05.06.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Nov 2020 05:06:01 -0800 (PST)
+From:   Anders Roxell <anders.roxell@linaro.org>
+To:     James.Bottomley@HansenPartnership.com, deller@gmx.de
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH] parisc: pci-dma: fix warning unused-function
+Date:   Thu, 26 Nov 2020 14:06:00 +0100
+Message-Id: <20201126130600.2290331-1-anders.roxell@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Please reply to me
-To:     Recipients <Dailborh@vger.kernel.org>
-Date:   Wed, 25 Nov 2020 19:41:59 +0000
-Reply-To: dailrrob.83@gmail.com
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-I'm Dailborh R. from US. I picked interest in you and I would like to know
-more about you and establish relationship with you. i will wait for
-your response. thank you.
+When building tinyconfig on parisc the following warnign shows up:
+
+/tmp/arch/parisc/kernel/pci-dma.c:338:12: warning: 'proc_pcxl_dma_show' defined but not used [-Wunused-function]
+ static int proc_pcxl_dma_show(struct seq_file *m, void *v)
+            ^~~~~~~~~~~~~~~~~~
+
+Mark the function as __maybe_unused to fix the warning.
+
+Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+---
+ arch/parisc/kernel/pci-dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
+index 36610a5c029f..36a57aa38e87 100644
+--- a/arch/parisc/kernel/pci-dma.c
++++ b/arch/parisc/kernel/pci-dma.c
+@@ -335,7 +335,7 @@ pcxl_free_range(unsigned long vaddr, size_t size)
+ 	dump_resmap();
+ }
+ 
+-static int proc_pcxl_dma_show(struct seq_file *m, void *v)
++static int __maybe_unused proc_pcxl_dma_show(struct seq_file *m, void *v)
+ {
+ #if 0
+ 	u_long i = 0;
+-- 
+2.29.2
 
