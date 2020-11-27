@@ -2,87 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF6962C6C72
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 Nov 2020 21:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8E752C6CFB
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 Nov 2020 22:47:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730938AbgK0UM4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 Nov 2020 15:12:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58680 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731497AbgK0UMS (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 Nov 2020 15:12:18 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 803E3C0613D1;
-        Fri, 27 Nov 2020 11:12:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:References:Cc:To:From:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=4JovlIohpzI+qwWZKvcpd23jikqjpizs8G1o7wuvprc=; b=eVZaVWlwSlNEPqlsoJWlfWR4iQ
-        wcA9+AMlnBhSHcVa8o14Bca5/tSGBuYi1tX4/0I8RdDsvvKXpZh2V7VfovVlk6f+mMKWWj9hTXjq4
-        8lBRgf+KBWZm4Gn9z5KUpcG3L70sc4mez1dLxcnwAOh5GS0aiW+3xgSycYwqMIZ6a/GAE1bU06XyU
-        ogWGRSmjmUcjxodcoueyGu0/5GduHnoLgq+wFzCxr4Li/TPAz7KOMsElEDQpdfo2xjX9tPl4Ps6CO
-        24LjjPdPwcxZBYxuyTlUAAR+P4QiTXlGENKfzHwWCe6sAt3ObVb/7EjJFCi9Vto2GR1a882WdMTYv
-        5NwI1fvg==;
-Received: from [2601:1c0:6280:3f0::cc1f]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kijAF-0002fj-Ip; Fri, 27 Nov 2020 19:12:16 +0000
-Subject: Re: linux-next: Tree for Nov 27 (parisc: signal flags)
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S1731681AbgK0Vpu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 27 Nov 2020 16:45:50 -0500
+Received: from bilbo.ozlabs.org ([203.11.71.1]:48849 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732380AbgK0VpF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 27 Nov 2020 16:45:05 -0500
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4CjSnV5F0qz9s0b;
+        Sat, 28 Nov 2020 08:44:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1606513455;
+        bh=ub5PZnR5+XaV7QtxRqzhr61Zeo2CaES2yY+8j2LiOBo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=VyJTWwTQs6JyWRW7wCopRXFaKqEqIeXynFXJyza6Ft0CgHRrEbzonwAeSwjfD35CU
+         YFEbFd6pqOvHPArAMQ/DgSY3KflMm7EPAgUbdZEoADNwZU9hD5TjeWh5S0AkIZCSDb
+         xbFr3QkVmT2wDfSP2IMqo4MNiQtjJ9q4N8wiAfXSX5J4aZ1EdsZNlrIvrBor7fl86T
+         8AUzVocijT6MxtJR2OLPAAYUboQXYlvVXots2bZre7XLE7cshXvWaRMsCUxpRqIjvf
+         qbwxgj9cOyTsBSR9rUlCPvk2g3mo5XeTVjLxRhgD4lA5/2ju9V1KvCXPgB/BOIrysR
+         CTFsbznxgOkYQ==
+Date:   Sat, 28 Nov 2020 08:44:13 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Peter Collingbourne <pcc@google.com>,
         Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
         "Eric W. Biederman" <ebiederm@xmission.com>
-References: <20201127200457.1ffb6aaf@canb.auug.org.au>
- <155a20fd-09c4-df35-9cc6-8526a89c2933@infradead.org>
-Message-ID: <377a18ac-ca0d-75ba-7a50-0876dabfc1ed@infradead.org>
-Date:   Fri, 27 Nov 2020 11:12:10 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
-MIME-Version: 1.0
+Subject: Re: linux-next: Tree for Nov 27 (parisc: signal flags)
+Message-ID: <20201128084414.3daa87d2@canb.auug.org.au>
 In-Reply-To: <155a20fd-09c4-df35-9cc6-8526a89c2933@infradead.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20201127200457.1ffb6aaf@canb.auug.org.au>
+        <155a20fd-09c4-df35-9cc6-8526a89c2933@infradead.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/wQycoIya6A4=Fb8SpZ=hKS4";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-[adding Eric]
+--Sig_/wQycoIya6A4=Fb8SpZ=hKS4
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On 11/27/20 10:43 AM, Randy Dunlap wrote:
+Hi all,
+
+On Fri, 27 Nov 2020 10:43:07 -0800 Randy Dunlap <rdunlap@infradead.org> wro=
+te:
+>
 > On 11/27/20 1:04 AM, Stephen Rothwell wrote:
->> Hi all,
->>
->> Changes since 20201126:
->>
-> 
+> > Hi all,
+> >=20
+> > Changes since 20201126:
+> >  =20
+>=20
 > on parisc, _SA_SIGGFAULT is undefined and causing build errors.
-> 
+>=20
 > commit 23acdc76f1798b090bb9dcc90671cd29d929834e
 > Author: Peter Collingbourne <pcc@google.com>
 > Date:   Thu Nov 12 18:53:34 2020 -0800
-> 
+>=20
 >     signal: clear non-uapi flag bits when passing/returning sa_flags
-> 
-> 
-> 
+>=20
+>=20
+>=20
 > _SA_SIGGFAULT is not used or defined anywhere else in the
 > kernel source tree.
 
 
-Here is the build error (although it should be obvious):
+_SA_SIGGFAULT was removed by commit
 
-../kernel/signal.c: In function 'do_sigaction':
-../arch/parisc/include/asm/signal.h:24:30: error: '_SA_SIGGFAULT' undeclared (first use in this function)
-   24 | #define __ARCH_UAPI_SA_FLAGS _SA_SIGGFAULT
-      |                              ^~~~~~~~~~~~~
+  41f5a81c07cd ("parisc: Drop HP-UX specific fcntl and signal flags")
 
+which was added to Linus' tree in v5.10-rc1.
 
+--=20
+Cheers,
+Stephen Rothwell
 
--- 
-~Randy
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
+--Sig_/wQycoIya6A4=Fb8SpZ=hKS4
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/Bcy4ACgkQAVBC80lX
+0GxIdQf+Jf2y/pnPzPbXSLELtuT+08SDoBstIe5ZBx9ZNjJe9928V543Pp8dT4ff
+zdglHKyu/Jx1A4PGzK1pEJUgpk50B0SGg3wMrnSW0SA3PdAjeSiurfzblGhS8DJH
+RioYdjqZrOwbNAAwX2nOwFSKDZclRkcgUuYyWBWz7bpKxbHKQYMLQEh3pNAQUSKt
+Fxfrfs/7XweCZYWV+wuBPeyyQ0bit69A9c/xVvTlPDNvj98ttFK7wYEimXYYj+Li
+rt1rQCQmZdwvr6LjtkZcA//vo++4D1selopI1E5+eQe9UeaNOg4kXXtRlFrTsht3
+yPIisKYL7+TeH78VwIVi0dOhIJgtGg==
+=Qxxn
+-----END PGP SIGNATURE-----
+
+--Sig_/wQycoIya6A4=Fb8SpZ=hKS4--
