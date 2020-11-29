@@ -2,104 +2,50 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E752C6CFB
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 Nov 2020 22:47:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9D002C78DA
+	for <lists+linux-parisc@lfdr.de>; Sun, 29 Nov 2020 12:40:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731681AbgK0Vpu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 Nov 2020 16:45:50 -0500
-Received: from bilbo.ozlabs.org ([203.11.71.1]:48849 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732380AbgK0VpF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 Nov 2020 16:45:05 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4CjSnV5F0qz9s0b;
-        Sat, 28 Nov 2020 08:44:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1606513455;
-        bh=ub5PZnR5+XaV7QtxRqzhr61Zeo2CaES2yY+8j2LiOBo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VyJTWwTQs6JyWRW7wCopRXFaKqEqIeXynFXJyza6Ft0CgHRrEbzonwAeSwjfD35CU
-         YFEbFd6pqOvHPArAMQ/DgSY3KflMm7EPAgUbdZEoADNwZU9hD5TjeWh5S0AkIZCSDb
-         xbFr3QkVmT2wDfSP2IMqo4MNiQtjJ9q4N8wiAfXSX5J4aZ1EdsZNlrIvrBor7fl86T
-         8AUzVocijT6MxtJR2OLPAAYUboQXYlvVXots2bZre7XLE7cshXvWaRMsCUxpRqIjvf
-         qbwxgj9cOyTsBSR9rUlCPvk2g3mo5XeTVjLxRhgD4lA5/2ju9V1KvCXPgB/BOIrysR
-         CTFsbznxgOkYQ==
-Date:   Sat, 28 Nov 2020 08:44:13 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Peter Collingbourne <pcc@google.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        "Eric W. Biederman" <ebiederm@xmission.com>
-Subject: Re: linux-next: Tree for Nov 27 (parisc: signal flags)
-Message-ID: <20201128084414.3daa87d2@canb.auug.org.au>
-In-Reply-To: <155a20fd-09c4-df35-9cc6-8526a89c2933@infradead.org>
-References: <20201127200457.1ffb6aaf@canb.auug.org.au>
-        <155a20fd-09c4-df35-9cc6-8526a89c2933@infradead.org>
+        id S1725984AbgK2Lju convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Sun, 29 Nov 2020 06:39:50 -0500
+Received: from 103-200-210-82.ip4.readyserver.sg ([103.200.210.82]:52169 "EHLO
+        e-server.org" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725852AbgK2Ljt (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 29 Nov 2020 06:39:49 -0500
+X-Greylist: delayed 604 seconds by postgrey-1.27 at vger.kernel.org; Sun, 29 Nov 2020 06:39:47 EST
+Received: from [188.206.72.114] (account disnams@e-server.org HELO User)
+  by e-server.org (CommuniGate Pro SMTP 6.1.9 _community_)
+  with ESMTPA id 108950; Sun, 29 Nov 2020 03:28:40 -0800
+Reply-To: <alghafrij13@gmail.com>
+From:   "MR JABER AL-GHAFR" <mrhanialmuhanna@gmx.com>
+Subject: Re.Investment
+Date:   Sun, 29 Nov 2020 12:28:39 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/wQycoIya6A4=Fb8SpZ=hKS4";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 8BIT
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+X-Antivirus: AVG (VPS 201128-4, 28/11/2020), Outbound message
+X-Antivirus-Status: Clean
+Message-ID: <auto-000000108950@e-server.org>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---Sig_/wQycoIya6A4=Fb8SpZ=hKS4
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Good Day
+I am JABER AL-GHAFRI, Pleasant greetings to you as i seek your indulgence to introduce to you the desire of my principal’s wish, to make huge financial investment in your home country on areas of oil and gas, real estate, tourism and hotel, manufacturing and production company, agriculture, fishing, Mining & Trading of natural resources such as crude oil, coal, graphite, coke, refinery, energy, hospital etc.
 
-Hi all,
+He needs a capable, trustworthy and understanding business partner, who can confidently handle and manage his investment funds with utmost care of secrecy without traces or link to him as he is politically exposed at the moment in his country. He has a huge available financial portfolio.
 
-On Fri, 27 Nov 2020 10:43:07 -0800 Randy Dunlap <rdunlap@infradead.org> wro=
-te:
->
-> On 11/27/20 1:04 AM, Stephen Rothwell wrote:
-> > Hi all,
-> >=20
-> > Changes since 20201126:
-> >  =20
->=20
-> on parisc, _SA_SIGGFAULT is undefined and causing build errors.
->=20
-> commit 23acdc76f1798b090bb9dcc90671cd29d929834e
-> Author: Peter Collingbourne <pcc@google.com>
-> Date:   Thu Nov 12 18:53:34 2020 -0800
->=20
->     signal: clear non-uapi flag bits when passing/returning sa_flags
->=20
->=20
->=20
-> _SA_SIGGFAULT is not used or defined anywhere else in the
-> kernel source tree.
+Please, I will provide more details about the transaction if you are sure you can handle classified information and also let me know your entitlement for the solicited role
+I shall be expecting your quick reply.email  alghafrij13@gmail.com
+Best Regards,
+JABER AL-GHAFR
 
+-- 
+This email has been checked for viruses by AVG.
+https://www.avg.com
 
-_SA_SIGGFAULT was removed by commit
-
-  41f5a81c07cd ("parisc: Drop HP-UX specific fcntl and signal flags")
-
-which was added to Linus' tree in v5.10-rc1.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/wQycoIya6A4=Fb8SpZ=hKS4
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/Bcy4ACgkQAVBC80lX
-0GxIdQf+Jf2y/pnPzPbXSLELtuT+08SDoBstIe5ZBx9ZNjJe9928V543Pp8dT4ff
-zdglHKyu/Jx1A4PGzK1pEJUgpk50B0SGg3wMrnSW0SA3PdAjeSiurfzblGhS8DJH
-RioYdjqZrOwbNAAwX2nOwFSKDZclRkcgUuYyWBWz7bpKxbHKQYMLQEh3pNAQUSKt
-Fxfrfs/7XweCZYWV+wuBPeyyQ0bit69A9c/xVvTlPDNvj98ttFK7wYEimXYYj+Li
-rt1rQCQmZdwvr6LjtkZcA//vo++4D1selopI1E5+eQe9UeaNOg4kXXtRlFrTsht3
-yPIisKYL7+TeH78VwIVi0dOhIJgtGg==
-=Qxxn
------END PGP SIGNATURE-----
-
---Sig_/wQycoIya6A4=Fb8SpZ=hKS4--
