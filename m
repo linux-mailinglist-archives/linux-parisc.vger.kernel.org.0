@@ -2,106 +2,131 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E65322C8DBF
-	for <lists+linux-parisc@lfdr.de>; Mon, 30 Nov 2020 20:14:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B059C2C8DCD
+	for <lists+linux-parisc@lfdr.de>; Mon, 30 Nov 2020 20:16:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728840AbgK3TMd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 30 Nov 2020 14:12:33 -0500
-Received: from asavdk3.altibox.net ([109.247.116.14]:39988 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725897AbgK3TMd (ORCPT
+        id S1729387AbgK3TQF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 30 Nov 2020 14:16:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35968 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729309AbgK3TQD (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 30 Nov 2020 14:12:33 -0500
-Received: from ravnborg.org (unknown [188.228.123.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id D0E7B2001F;
-        Mon, 30 Nov 2020 20:11:34 +0100 (CET)
-Date:   Mon, 30 Nov 2020 20:11:33 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Cc:     linux@armlinux.org.uk, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
-        tony@atomide.com, mripard@kernel.org, wens@csie.org,
-        jernej.skrabec@siol.net, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, lee.jones@linaro.org, emil.l.velikov@gmail.com,
-        daniel.thompson@linaro.org, krzk@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Arnd Bergmann <arnd@arndb.de>,
-        Olof Johansson <olof@lixom.net>
-Subject: Re: [PATCH 0/5] drop unused BACKLIGHT_GENERIC option
-Message-ID: <20201130191133.GA1565464@ravnborg.org>
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
+        Mon, 30 Nov 2020 14:16:03 -0500
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526DDC0613CF;
+        Mon, 30 Nov 2020 11:15:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=zRLl4Am2z3lS3pjFxRX/3zaKTLkSV2hTwMHlu/ANf0A=; b=U4UCi+AXhzH1Cbt6at7DQfFp27
+        oxiFqMlh7v6xKc0WCk/fOm5So5N7FanCTA9jWPvEHaNRC4zlBj+zErjUgYefVcXbKfp46CZes0wVg
+        WI6xsyO4E76/qm5k6Sa+hHnFmf4WJ7PJszcVFURVWgKwS/MKlkKmUSCuAomabBLEeOi3VXLzo/fvj
+        Ixm/9OrtkuNWJ/cCnJeIKwu2aRdH5BBBxfR+4ieTJYYKVNa2TpzxuFRUjWap8ui50v3SzJylpouvC
+        GGOwui558Ec1FXC9FM4bvcqXFZ+d8E9OpwbD+SPw4PHB8zQ4qm/Uj7XSpnwuDVvUvuIiqR6W+Ukeq
+        DHXLZTXw==;
+Received: from [2601:1c0:6280:3f0::cc1f]
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kjodr-00022b-Tj; Mon, 30 Nov 2020 19:15:20 +0000
+Subject: Re: [PATCH] signal/parics: Remove parsic specific definition of
+ __ARCH_UAPI_SA_FLAGS
+To:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Peter Collingbourne <pcc@google.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>
+References: <20201127200457.1ffb6aaf@canb.auug.org.au>
+ <155a20fd-09c4-df35-9cc6-8526a89c2933@infradead.org>
+ <20201128084414.3daa87d2@canb.auug.org.au>
+ <87pn3unbtv.fsf@x220.int.ebiederm.org>
+ <87blfen46a.fsf_-_@x220.int.ebiederm.org>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <5117dfaf-637d-34c2-048c-dd8dbbd15625@infradead.org>
+Date:   Mon, 30 Nov 2020 11:15:14 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=Ibmpp1ia c=1 sm=1 tr=0
-        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8 a=RN8nFXG3PNPgSL11oioA:9
-        a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22
+In-Reply-To: <87blfen46a.fsf_-_@x220.int.ebiederm.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Nov 30, 2020 at 03:21:32PM +0000, Andrey Zhizhikin wrote:
-> Since the removal of generic_bl driver from the source tree in commit
-> 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> unused") BACKLIGHT_GENERIC config option became obsolete as well and
-> therefore subject to clean-up from all configuration files.
+On 11/30/20 9:30 AM, Eric W. Biederman wrote:
 > 
-> This series introduces patches to address this removal, separated by
-> architectures in the kernel tree.
+> Randy Dunlap wrote:
+>> On 11/27/20 10:43 AM, Randy Dunlap wrote:
+>>
+>>> on parisc, _SA_SIGGFAULT is undefined and causing build errors.
+>>>
+>>> commit 23acdc76f1798b090bb9dcc90671cd29d929834e
+>>> Author: Peter Collingbourne <pcc@google.com>
+>>> Date:   Thu Nov 12 18:53:34 2020 -0800
+>>>
+>>>     signal: clear non-uapi flag bits when passing/returning sa_flags
+>>>
+>>>
+>>>
+>>> _SA_SIGGFAULT is not used or defined anywhere else in the
+>>> kernel source tree.
+>>
+>>
+>> Here is the build error (although it should be obvious):
+>>
+>> ../kernel/signal.c: In function 'do_sigaction':
+>> ../arch/parisc/include/asm/signal.h:24:30: error: '_SA_SIGGFAULT' undeclared (first use in this function)
+>>    24 | #define __ARCH_UAPI_SA_FLAGS _SA_SIGGFAULT
+>>       |                              ^~~~~~~~~~~~~
 > 
-> Andrey Zhizhikin (5):
->   ARM: configs: drop unused BACKLIGHT_GENERIC option
->   arm64: defconfig: drop unused BACKLIGHT_GENERIC option
->   MIPS: configs: drop unused BACKLIGHT_GENERIC option
->   parisc: configs: drop unused BACKLIGHT_GENERIC option
->   powerpc/configs: drop unused BACKLIGHT_GENERIC option
+> Stephen Rothwell pointed out:
+>> _SA_SIGGFAULT was removed by commit
+>>
+>>   41f5a81c07cd ("parisc: Drop HP-UX specific fcntl and signal flags")
+>>
+>> which was added to Linus' tree in v5.10-rc1.
+> 
+> Solve this by removing the the parisc specific definition of
+> __ARCH_UAPI_SA_FLAGS that was just added.
+> 
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Fixes: 23acdc76f179 ("signal: clear non-uapi flag bits when passing/returning sa_flags")
+> Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
 
-For defconfigs I expect arch maintainers to do a make xxxdefconfig / make
-savedefconfig / cp defconfig ... run now and then - this will remove
-all such symbols.
+Thanks, Eric.
 
-If the patches goes in like they are submitted then:
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
 
+
+BTW, there are 2 typos for "parisc" in the Subject: line...
+
+
+> ---
+>  arch/parisc/include/asm/signal.h | 2 --
+>  1 file changed, 2 deletions(-)
 > 
->  arch/arm/configs/at91_dt_defconfig          | 1 -
->  arch/arm/configs/cm_x300_defconfig          | 1 -
->  arch/arm/configs/colibri_pxa300_defconfig   | 1 -
->  arch/arm/configs/jornada720_defconfig       | 1 -
->  arch/arm/configs/magician_defconfig         | 1 -
->  arch/arm/configs/mini2440_defconfig         | 1 -
->  arch/arm/configs/omap2plus_defconfig        | 1 -
->  arch/arm/configs/pxa3xx_defconfig           | 1 -
->  arch/arm/configs/qcom_defconfig             | 1 -
->  arch/arm/configs/sama5_defconfig            | 1 -
->  arch/arm/configs/sunxi_defconfig            | 1 -
->  arch/arm/configs/tegra_defconfig            | 1 -
->  arch/arm/configs/u8500_defconfig            | 1 -
->  arch/arm64/configs/defconfig                | 1 -
->  arch/mips/configs/gcw0_defconfig            | 1 -
->  arch/mips/configs/gpr_defconfig             | 1 -
->  arch/mips/configs/lemote2f_defconfig        | 1 -
->  arch/mips/configs/loongson3_defconfig       | 1 -
->  arch/mips/configs/mtx1_defconfig            | 1 -
->  arch/mips/configs/rs90_defconfig            | 1 -
->  arch/parisc/configs/generic-64bit_defconfig | 1 -
->  arch/powerpc/configs/powernv_defconfig      | 1 -
->  22 files changed, 22 deletions(-)
+> I am applying this trivial fix to my signal-for-v5.11 branch.  Catalin
+> you shouldn't need to do anything unless someone tests your tree on
+> parisc.
 > 
+> diff --git a/arch/parisc/include/asm/signal.h b/arch/parisc/include/asm/signal.h
+> index 30dd1e43ef88..715c96ba2ec8 100644
+> --- a/arch/parisc/include/asm/signal.h
+> +++ b/arch/parisc/include/asm/signal.h
+> @@ -21,8 +21,6 @@ typedef struct {
+>  	unsigned long sig[_NSIG_WORDS];
+>  } sigset_t;
+>  
+> -#define __ARCH_UAPI_SA_FLAGS	_SA_SIGGFAULT
+> -
+>  #include <asm/sigcontext.h>
+>  
+>  #endif /* !__ASSEMBLY */
 > 
-> base-commit: b65054597872ce3aefbc6a666385eabdf9e288da
-> prerequisite-patch-id: bfd382cf1dc021d20204f10ea9403319c1c32b12
-> prerequisite-patch-id: 5397c0c8648bb3e0b830207ea867138c11c6e644
-> prerequisite-patch-id: a3c284dff5fe6d02828918a886db6a8ed3197e20
-> -- 
-> 2.17.1
+
+
+-- 
+~Randy
