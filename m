@@ -2,161 +2,204 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 010FC2C8E5E
-	for <lists+linux-parisc@lfdr.de>; Mon, 30 Nov 2020 20:49:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 912822C8E6E
+	for <lists+linux-parisc@lfdr.de>; Mon, 30 Nov 2020 20:51:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727805AbgK3Trt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 30 Nov 2020 14:47:49 -0500
-Received: from out01.mta.xmission.com ([166.70.13.231]:58954 "EHLO
-        out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726769AbgK3Trs (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 30 Nov 2020 14:47:48 -0500
-Received: from in01.mta.xmission.com ([166.70.13.51])
-        by out01.mta.xmission.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1kjp8a-004x2k-Rs; Mon, 30 Nov 2020 12:47:04 -0700
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
-        by in01.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1kjp8W-0003R8-An; Mon, 30 Nov 2020 12:47:04 -0700
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Peter Collingbourne <pcc@google.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>
-References: <20201127200457.1ffb6aaf@canb.auug.org.au>
-        <155a20fd-09c4-df35-9cc6-8526a89c2933@infradead.org>
-        <20201128084414.3daa87d2@canb.auug.org.au>
-        <87pn3unbtv.fsf@x220.int.ebiederm.org>
-        <87blfen46a.fsf_-_@x220.int.ebiederm.org>
-        <5117dfaf-637d-34c2-048c-dd8dbbd15625@infradead.org>
-Date:   Mon, 30 Nov 2020 13:46:31 -0600
-In-Reply-To: <5117dfaf-637d-34c2-048c-dd8dbbd15625@infradead.org> (Randy
-        Dunlap's message of "Mon, 30 Nov 2020 11:15:14 -0800")
-Message-ID: <87im9miq5k.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1726769AbgK3TvQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 30 Nov 2020 14:51:16 -0500
+Received: from mail-eopbgr70111.outbound.protection.outlook.com ([40.107.7.111]:26082
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2388237AbgK3TvQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 30 Nov 2020 14:51:16 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZzOXaVPMflNWn/6PqjkV6hHVRg+BTjyVAXU6Tx33TQwvUmfiwGqtoRYKA1AFPVJW0tyCTiJe5UYbDfjyqLuyPbFJ/gUh0rdBJaokCulZ36HJH4KCO2hDfMI8SnDZtAvEzWHm+apqJxuAUeZRg7FSx+tDZ3CjO7ZXzLl1JLg2TO2UAI3w4yzZDt0P3Ow+Bm/C7kyzqmuuVfOrpgbFSV/TFOaDJ9+43Vu6O5BeMR1pQoqT4szTCC/W2FddZflhFWcsX5uwgmxRkaJk73THp7dpQGEy0TlTYbFYKY8okIMytnjOiwmrpEQIW1Vyw32Vm6fh87A6XFZqJMab16TfXjbQXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+Rfx4T3Rcm8aYEBJpww5cMhrOGEcA3q+9v7m0vKO3qk=;
+ b=Q4I+8NiN5yNjLj0i6OUFqOhKHcmCH9/YqhP22Rebo2B3SwaUjtOi9CsUiyk6xYgH02cpmEivAhsfRUUOv/vpnPgZOIRgVazkN6YoEfOFVA2Xv5exX0m6bVHB6KxnnZsPb6dN7nfCKCuWoG31sRRexyzWyNczHsD4WNBFK7wo6J+lfJIA793YQl66uyQ4BuYR98fbP1Iwc8MMWq/3Kw/83s2LrRERvVOJzBUcqCo/FLvMa21PPxUc+3cLtmVPLkrzjHkEQKrKwNQY7otjb3V7DdzWGx3cfXjwd0++KK0dn9yHLfmAcQcKiP43FYe4g5z6vb8pxaqF+rzZnRErhBex+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
+ header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+Rfx4T3Rcm8aYEBJpww5cMhrOGEcA3q+9v7m0vKO3qk=;
+ b=UCY697iWB+EZykxCpZiGh6M/RExYkOEs/ILXXm41jay2+KN/xDe9BgeEdPyHzyeReiGT18ZVADipLFZr0p3gqBeojGhKiOoqnh4tTEo13oR4FmVu5UNbPwy5Sxo+0dpw8zlP1HQ9s9lbwGylW5elT7eLyactvVxDDgjsRosfZlw=
+Received: from AM6PR06MB4691.eurprd06.prod.outlook.com (2603:10a6:20b:37::25)
+ by AM6PR0602MB3384.eurprd06.prod.outlook.com (2603:10a6:209:a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3611.23; Mon, 30 Nov
+ 2020 19:50:25 +0000
+Received: from AM6PR06MB4691.eurprd06.prod.outlook.com
+ ([fe80::b073:9747:410c:12c6]) by AM6PR06MB4691.eurprd06.prod.outlook.com
+ ([fe80::b073:9747:410c:12c6%6]) with mapi id 15.20.3611.025; Mon, 30 Nov 2020
+ 19:50:25 +0000
+From:   ZHIZHIKIN Andrey <andrey.zhizhikin@leica-geosystems.com>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+CC:     "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
+        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "ludovic.desroches@microchip.com" <ludovic.desroches@microchip.com>,
+        "tony@atomide.com" <tony@atomide.com>,
+        "mripard@kernel.org" <mripard@kernel.org>,
+        "wens@csie.org" <wens@csie.org>,
+        "jernej.skrabec@siol.net" <jernej.skrabec@siol.net>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
+        "James.Bottomley@HansenPartnership.com" 
+        <James.Bottomley@HansenPartnership.com>,
+        "deller@gmx.de" <deller@gmx.de>,
+        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+        "paulus@samba.org" <paulus@samba.org>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "sam@ravnborg.org" <sam@ravnborg.org>,
+        "emil.l.velikov@gmail.com" <emil.l.velikov@gmail.com>,
+        "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>
+Subject: RE: [PATCH 1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
+Thread-Topic: [PATCH 1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
+Thread-Index: AQHWx0nyrvG/8Bze9k2IWWGibqXRnanhE2IA
+Date:   Mon, 30 Nov 2020 19:50:25 +0000
+Message-ID: <AM6PR06MB4691EC52BA41B86AB16EE14FA6F50@AM6PR06MB4691.eurprd06.prod.outlook.com>
+References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
+ <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
+ <20201130185227.GA29434@kozik-lap>
+In-Reply-To: <20201130185227.GA29434@kozik-lap>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none
+ header.from=leica-geosystems.com;
+x-originating-ip: [146.185.2.7]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 3897de71-be4b-410b-351b-08d895692e83
+x-ms-traffictypediagnostic: AM6PR0602MB3384:
+x-microsoft-antispam-prvs: <AM6PR0602MB338422CE16DA64CECD5E3D3AA6F50@AM6PR0602MB3384.eurprd06.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: GeI5ZSgfJUX54gDT9jBKqjvY/GfDC4HgJLK/vNIlQk1U0NnwDcvfje25gr3aSG9YV7TTNFEnYGefduSkYgAImTe1acptfcDjgPUM2GV5zQ4+b91jEL6lyjkx/FXEt/JEwOel3hzh9c5+lB49t0D4D9M21YSR9VYgzr9JoevtINsg1amU5BG8Saom8UZkuq3FnO0EuZi7HEx1FfDCxmtiEIDolTy2ZP53H0pk4dTYyXJsNX9tLwQ6pZZyeqs6Xi4fsTK2XW2vuTfc4j+geTL+HzmHsORNziIPVSsFaRb0xCZLZ5Kfu1/aKJyegNAxLu9uiLHfIMA3kKNVpfEWr2/cOHMFzEuCQsO2wwquTnHMEYUqXXquEm5hzjnu3Q+aFMZ1
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR06MB4691.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(366004)(39850400004)(376002)(396003)(136003)(55016002)(9686003)(33656002)(71200400001)(4326008)(316002)(83380400001)(6916009)(6506007)(7416002)(26005)(2906002)(53546011)(7406005)(7696005)(86362001)(45080400002)(8676002)(52536014)(66476007)(76116006)(478600001)(66446008)(66556008)(64756008)(186003)(66946007)(8936002)(54906003)(5660300002)(41533002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: =?utf-8?B?NlpTK3ZNZ01sNUk5NkxuTFNYTHBGeE1LZjBUVHdidnhUUk5YLzhZVWNVNUZn?=
+ =?utf-8?B?SGhJVWNwM0JIQVNaZ0l1dkZOR21DSEhIbGRVWTJiRWRnajVxelNCRkx6VjE3?=
+ =?utf-8?B?M0tKRzZPYkhMaG5LL2RYTFlXZ3h3YTZuQ2x1eFFPenRMQjROcERhQk5YQW9I?=
+ =?utf-8?B?SmdNYkV5dEw3UnJaaTBLVkZTT3BCL085YVE4T3BxalFZVktUUTdSK0cwR0FE?=
+ =?utf-8?B?WkhlZG0yT0U2dmprZGk3VzRXelZEWmZSUHg5empTZ2wycFY0NXNlcVB5Rkl4?=
+ =?utf-8?B?RnUxTVc0YXhuWWgrdXp2cGpLMFNUbytCWmxFbDZCTXd2M1BiTjM2czBNS1pM?=
+ =?utf-8?B?d2FucXhzV2s2OS91dlU0RnZjeC9OdlhWWnhvU0x0MVZpbTJUcERZYkVYdmt2?=
+ =?utf-8?B?dGNwWlFtc3N1R3VMT0xxNzJnUDAvNzVmd1JyMVN0QlNhYjhQYkpEdldCWUpO?=
+ =?utf-8?B?RUk4NkxDNWNDT0x2cDZRT3ZFVUwyTHZSeDc4NktlbkxKT2ZHYkhGOGF5ZU5R?=
+ =?utf-8?B?a05NRWpseTZTNUF5MGxudjNsb3dFYStDUEQ2MXlOL3BQcU1SL1ZGN1pFbGVK?=
+ =?utf-8?B?WXBwYTYyczMzV09rNjBJcmlVMXhpN0lhNmlmbEp1R1BkZzFNalBSbzI3QnVJ?=
+ =?utf-8?B?ZUdZcFU4aWg4aTBpZFJBQjlFeEI2ZWVrejRjZkREaUNKRW5KaXIrUk9qRTFx?=
+ =?utf-8?B?dVQ5bHN1NUFkWGcyOVlrQTN4ejRsSFNNejdzaVpTWFFmUjMyeVdrMUtuOGlI?=
+ =?utf-8?B?NnhkOVErcVBKWk9CZ0NmZWl5TmxoeEluQ3dlcHI3cmtqMDQrdWJ1UjZ3VFhX?=
+ =?utf-8?B?V21IeE1pTDRoR2NSM0FPMktTOFZra1V4aFNGNWtMWTcvUmNySnZpeThHY1VK?=
+ =?utf-8?B?NEh3SGp1bUY0R2R0Qk9HbnMwR1cwTXJKQWpPYUo1eFlqRnpVZEtvOUJzNFBQ?=
+ =?utf-8?B?SjRudVp6dVhLc2RucGtySHB1clRXZjlhbUVMeFErNW5SMGllWTlZN3RTMktX?=
+ =?utf-8?B?NHVZdFViK1ZBclBTWXl5K21QQ2VxUTNUL0Vlc0dXT3htNnhmRjdHbW9Sd1Js?=
+ =?utf-8?B?TlphNWhteTNMMDVqdC9hRXZZSTFSUGdkVUdLQ1NpNDJVNllsdDJsNmc5VGho?=
+ =?utf-8?B?MHE1VDdITUtRTW9XUUkveHVnazhQQUcwd3RjMy8ybHVFdmdZUjNmbzRMWC9V?=
+ =?utf-8?B?VVNaOVR0dkV3NWJiSUxZOEE1dVovQ3BBN3dTdVR1NWRTcldreWVid21WSGZN?=
+ =?utf-8?B?ZUZhM2ZWaVVPSS80OVY2blRWcDBoRWhEMTdxaVU5V2R3NHMyd0Z3cUVWZ1Bp?=
+ =?utf-8?Q?zoBA1YPYmgw90=3D?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1kjp8W-0003R8-An;;;mid=<87im9miq5k.fsf@x220.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX18Eseo5lOU4qoZhbdcbNJPIFA/SGzsDf18=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa07.xmission.com
-X-Spam-Level: *
-X-Spam-Status: No, score=1.0 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
-        XMGappySubj_01,XMSubLong autolearn=disabled version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4976]
-        *  0.7 XMSubLong Long Subject
-        *  0.5 XMGappySubj_01 Very gappy subject
-        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-        *      [sa07 1397; Body=1 Fuz1=1 Fuz2=1]
-        *  0.0 T_TooManySym_01 4+ unique symbols in subject
-X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: *;Randy Dunlap <rdunlap@infradead.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 4132 ms - load_scoreonly_sql: 0.04 (0.0%),
-        signal_user_changed: 8 (0.2%), b_tie_ro: 7 (0.2%), parse: 0.85 (0.0%),
-        extract_message_metadata: 15 (0.4%), get_uri_detail_list: 1.77 (0.0%),
-        tests_pri_-1000: 14 (0.3%), tests_pri_-950: 1.24 (0.0%),
-        tests_pri_-900: 1.04 (0.0%), tests_pri_-90: 145 (3.5%), check_bayes:
-        143 (3.5%), b_tokenize: 8 (0.2%), b_tok_get_all: 8 (0.2%),
-        b_comp_prob: 3.1 (0.1%), b_tok_touch_all: 121 (2.9%), b_finish: 0.76
-        (0.0%), tests_pri_0: 223 (5.4%), check_dkim_signature: 0.53 (0.0%),
-        check_dkim_adsp: 2.6 (0.1%), poll_dns_idle: 3691 (89.3%),
-        tests_pri_10: 2.0 (0.0%), tests_pri_500: 3718 (90.0%), rewrite_mail:
-        0.00 (0.0%)
-Subject: Re: [PATCH] signal/parics: Remove parsic specific definition of __ARCH_UAPI_SA_FLAGS
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR06MB4691.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3897de71-be4b-410b-351b-08d895692e83
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Nov 2020 19:50:25.5861
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: m7fa2zRY2zdPNPOsPfKjgGmoQAd0ge1pO8+1QpKOZbhV12LVYLF6D7POLEkdFcFcMdOOlMtTCfrKRz17Db5KibbHgmrFAagW5tR+1ErDuMcTcF7HQSme/fa76g1+WWgY
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR0602MB3384
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Randy Dunlap <rdunlap@infradead.org> writes:
-
-> On 11/30/20 9:30 AM, Eric W. Biederman wrote:
->> 
->> Randy Dunlap wrote:
->>> On 11/27/20 10:43 AM, Randy Dunlap wrote:
->>>
->>>> on parisc, _SA_SIGGFAULT is undefined and causing build errors.
->>>>
->>>> commit 23acdc76f1798b090bb9dcc90671cd29d929834e
->>>> Author: Peter Collingbourne <pcc@google.com>
->>>> Date:   Thu Nov 12 18:53:34 2020 -0800
->>>>
->>>>     signal: clear non-uapi flag bits when passing/returning sa_flags
->>>>
->>>>
->>>>
->>>> _SA_SIGGFAULT is not used or defined anywhere else in the
->>>> kernel source tree.
->>>
->>>
->>> Here is the build error (although it should be obvious):
->>>
->>> ../kernel/signal.c: In function 'do_sigaction':
->>> ../arch/parisc/include/asm/signal.h:24:30: error: '_SA_SIGGFAULT' undeclared (first use in this function)
->>>    24 | #define __ARCH_UAPI_SA_FLAGS _SA_SIGGFAULT
->>>       |                              ^~~~~~~~~~~~~
->> 
->> Stephen Rothwell pointed out:
->>> _SA_SIGGFAULT was removed by commit
->>>
->>>   41f5a81c07cd ("parisc: Drop HP-UX specific fcntl and signal flags")
->>>
->>> which was added to Linus' tree in v5.10-rc1.
->> 
->> Solve this by removing the the parisc specific definition of
->> __ARCH_UAPI_SA_FLAGS that was just added.
->> 
->> Reported-by: Randy Dunlap <rdunlap@infradead.org>
->> Fixes: 23acdc76f179 ("signal: clear non-uapi flag bits when passing/returning sa_flags")
->> Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
->
-> Thanks, Eric.
->
-> Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
->
->
-> BTW, there are 2 typos for "parisc" in the Subject: line...
-
-Oops.  Fixed now.  Thank you for testing.
-
-Eric
-
->
->
->> ---
->>  arch/parisc/include/asm/signal.h | 2 --
->>  1 file changed, 2 deletions(-)
->> 
->> I am applying this trivial fix to my signal-for-v5.11 branch.  Catalin
->> you shouldn't need to do anything unless someone tests your tree on
->> parisc.
->> 
->> diff --git a/arch/parisc/include/asm/signal.h b/arch/parisc/include/asm/signal.h
->> index 30dd1e43ef88..715c96ba2ec8 100644
->> --- a/arch/parisc/include/asm/signal.h
->> +++ b/arch/parisc/include/asm/signal.h
->> @@ -21,8 +21,6 @@ typedef struct {
->>  	unsigned long sig[_NSIG_WORDS];
->>  } sigset_t;
->>  
->> -#define __ARCH_UAPI_SA_FLAGS	_SA_SIGGFAULT
->> -
->>  #include <asm/sigcontext.h>
->>  
->>  #endif /* !__ASSEMBLY */
->> 
+SGVsbG8gS3J6eXN6dG9mLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206
+IEtyenlzenRvZiBLb3psb3dza2kgPGtyemtAa2VybmVsLm9yZz4NCj4gU2VudDogTW9uZGF5LCBO
+b3ZlbWJlciAzMCwgMjAyMCA3OjUyIFBNDQo+IFRvOiBaSElaSElLSU4gQW5kcmV5IDxhbmRyZXku
+emhpemhpa2luQGxlaWNhLWdlb3N5c3RlbXMuY29tPg0KPiBDYzogbGludXhAYXJtbGludXgub3Jn
+LnVrOyBuaWNvbGFzLmZlcnJlQG1pY3JvY2hpcC5jb207DQo+IGFsZXhhbmRyZS5iZWxsb25pQGJv
+b3RsaW4uY29tOyBsdWRvdmljLmRlc3JvY2hlc0BtaWNyb2NoaXAuY29tOw0KPiB0b255QGF0b21p
+ZGUuY29tOyBtcmlwYXJkQGtlcm5lbC5vcmc7IHdlbnNAY3NpZS5vcmc7DQo+IGplcm5lai5za3Jh
+YmVjQHNpb2wubmV0OyB0aGllcnJ5LnJlZGluZ0BnbWFpbC5jb207IGpvbmF0aGFuaEBudmlkaWEu
+Y29tOw0KPiBjYXRhbGluLm1hcmluYXNAYXJtLmNvbTsgd2lsbEBrZXJuZWwub3JnOyB0c2JvZ2Vu
+ZEBhbHBoYS5mcmFua2VuLmRlOw0KPiBKYW1lcy5Cb3R0b21sZXlASGFuc2VuUGFydG5lcnNoaXAu
+Y29tOyBkZWxsZXJAZ214LmRlOw0KPiBtcGVAZWxsZXJtYW4uaWQuYXU7IGJlbmhAa2VybmVsLmNy
+YXNoaW5nLm9yZzsgcGF1bHVzQHNhbWJhLm9yZzsNCj4gbGVlLmpvbmVzQGxpbmFyby5vcmc7IHNh
+bUByYXZuYm9yZy5vcmc7IGVtaWwubC52ZWxpa292QGdtYWlsLmNvbTsNCj4gZGFuaWVsLnRob21w
+c29uQGxpbmFyby5vcmc7IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGlu
+dXgtDQo+IGtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LW9tYXBAdmdlci5rZXJuZWwub3Jn
+OyBsaW51eC0NCj4gdGVncmFAdmdlci5rZXJuZWwub3JnOyBsaW51eC1taXBzQHZnZXIua2VybmVs
+Lm9yZzsgbGludXgtDQo+IHBhcmlzY0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4cHBjLWRldkBsaXN0
+cy5vemxhYnMub3JnOyBBcm5kIEJlcmdtYW5uDQo+IDxhcm5kQGFybmRiLmRlPjsgT2xvZiBKb2hh
+bnNzb24gPG9sb2ZAbGl4b20ubmV0Pg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEvNV0gQVJNOiBj
+b25maWdzOiBkcm9wIHVudXNlZCBCQUNLTElHSFRfR0VORVJJQw0KPiBvcHRpb24NCj4gDQo+IFRo
+aXMgZW1haWwgaXMgbm90IGZyb20gSGV4YWdvbuKAmXMgT2ZmaWNlIDM2NSBpbnN0YW5jZS4gUGxl
+YXNlIGJlIGNhcmVmdWwgd2hpbGUNCj4gY2xpY2tpbmcgbGlua3MsIG9wZW5pbmcgYXR0YWNobWVu
+dHMsIG9yIHJlcGx5aW5nIHRvIHRoaXMgZW1haWwuDQo+IA0KPiANCj4gT24gTW9uLCBOb3YgMzAs
+IDIwMjAgYXQgMDM6MjE6MzNQTSArMDAwMCwgQW5kcmV5IFpoaXpoaWtpbiB3cm90ZToNCj4gPiBD
+b21taXQgN2VjZGVhNGEwMjI2ICgiYmFja2xpZ2h0OiBnZW5lcmljX2JsOiBSZW1vdmUgdGhpcyBk
+cml2ZXIgYXMgaXQNCj4gPiBpcw0KPiA+IHVudXNlZCIpIHJlbW92ZWQgZ2VlbnJpY19ibCBkcml2
+ZXIgZnJvbSB0aGUgdHJlZSwgdG9nZXRoZXIgd2l0aA0KPiA+IGNvcnJlc3BvbmRpbmcgY29uZmln
+IG9wdGlvbi4NCj4gPg0KPiA+IFJlbW92ZSBCQUNLTElHSFRfR0VORVJJQyBjb25maWcgaXRlbSBm
+cm9tIGFsbCBBUk0gY29uZmlndXJhdGlvbnMuDQo+ID4NCj4gPiBGaXhlczogN2VjZGVhNGEwMjI2
+ICgiYmFja2xpZ2h0OiBnZW5lcmljX2JsOiBSZW1vdmUgdGhpcyBkcml2ZXIgYXMgaXQNCj4gPiBp
+cyB1bnVzZWQiKQ0KPiA+IENjOiBTYW0gUmF2bmJvcmcgPHNhbUByYXZuYm9yZy5vcmc+DQo+ID4g
+U2lnbmVkLW9mZi1ieTogQW5kcmV5IFpoaXpoaWtpbg0KPiA+IDxhbmRyZXkuemhpemhpa2luQGxl
+aWNhLWdlb3N5c3RlbXMuY29tPg0KPiA+IC0tLQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL2F0OTFf
+ZHRfZGVmY29uZmlnICAgICAgICB8IDEgLQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL2NtX3gzMDBf
+ZGVmY29uZmlnICAgICAgICB8IDEgLQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL2NvbGlicmlfcHhh
+MzAwX2RlZmNvbmZpZyB8IDEgLQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL2pvcm5hZGE3MjBfZGVm
+Y29uZmlnICAgICB8IDEgLQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL21hZ2ljaWFuX2RlZmNvbmZp
+ZyAgICAgICB8IDEgLQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL21pbmkyNDQwX2RlZmNvbmZpZyAg
+ICAgICB8IDEgLQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL29tYXAycGx1c19kZWZjb25maWcgICAg
+ICB8IDEgLQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL3B4YTN4eF9kZWZjb25maWcgICAgICAgICB8
+IDEgLQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL3Fjb21fZGVmY29uZmlnICAgICAgICAgICB8IDEg
+LQ0KPiA+ICBhcmNoL2FybS9jb25maWdzL3NhbWE1X2RlZmNvbmZpZyAgICAgICAgICB8IDEgLQ0K
+PiA+ICBhcmNoL2FybS9jb25maWdzL3N1bnhpX2RlZmNvbmZpZyAgICAgICAgICB8IDEgLQ0KPiA+
+ICBhcmNoL2FybS9jb25maWdzL3RlZ3JhX2RlZmNvbmZpZyAgICAgICAgICB8IDEgLQ0KPiA+ICBh
+cmNoL2FybS9jb25maWdzL3U4NTAwX2RlZmNvbmZpZyAgICAgICAgICB8IDEgLQ0KPiA+ICAxMyBm
+aWxlcyBjaGFuZ2VkLCAxMyBkZWxldGlvbnMoLSkNCj4gDQo+IFlvdSBuZWVkIHRvIHNlbmQgaXQg
+dG8gYXJtLXNvYyBtYWludGFpbmVycywgb3RoZXJ3aXNlIG5vIG9uZSBtaWdodCBmZWVsDQo+IHJl
+c3BvbnNpYmxlIGVub3VnaCB0byBwaWNrIGl0IHVwLg0KDQpHb29kIHBvaW50LCB0aGFua3MgYSBs
+b3QhDQoNCkkgd2FzIG5vdCBhd2FyZSBvZiB0aGUgZmFjdCB0aGF0IHRoZXJlIGlzIGEgc2VwYXJh
+dGUgTUwgdGhhdCBzaG91bGQgcmVjZWl2ZSBwYXRjaGVzIHRhcmdldGVkIEFSTSBTT0NzLiBDYW4g
+eW91IChvciBhbnlvbmUgZWxzZSkgcGxlYXNlIHNoYXJlIGl0LCBzbyBJIGNhbiByZS1zZW5kIGl0
+IHRoZXJlIGFzIHdlbGw/DQoNCj4gUmV2aWV3ZWQtYnk6IEtyenlzenRvZiBLb3psb3dza2kgPGty
+emtAa2VybmVsLm9yZz4NCj4gDQo+ICtDQyBBcm5kIGFuZCBPbG9mLA0KPiANCj4gRGVhciBBcm5k
+IGFuZCBPbG9mLA0KPiANCj4gTWF5YmUgaXQgaXMgd29ydGggdG8gYWRkIGFybS1zb2MgZW50cnkg
+dG8gdGhlIE1BSU5UQUlORVJTIGZpbGU/DQo+IE90aGVyd2lzZSBob3cgb25lIGNvdWxkIGdldCB5
+b3VyIGVtYWlsIGFkZHJlc3M/IE5vdCBtZW50aW9uaW5nIHRoZQ0KPiBzZWNyZXQtc29jIGFkZHJl
+c3MuIDopDQoNCiJzY3JpcHRzL2dldF9tYWludGFpbmVyLnBsIC0tbm8tZ2l0LWZhbGxiYWNrIC0t
+bm8tbXVsdGlsaW5lIC0tbm8tcm9sZXN0YXRzIC0tbm8tbiAtLXNlcGFyYXRvciAsICIgYWNyb3Nz
+IGVudGlyZSBzZXJpZXMgZ2F2ZSBvbmx5IHRoZSBsaXN0IG9mIGFkZHJlc3NlcyB0aGF0IEkndmUg
+aW5jbHVkZWQgaW4gdGhlIHNlcmllcyBpdHNlbGYuIElmIEkgd291bGQgYmUgZ2l2ZW4gYSBhcm0t
+c29jIG1haWxpbmcgbGlzdCBhcyBvdXRwdXQgb2YgdGhlIHNjcmlwdCAtIEkgd291bGQndmUgaW5j
+bHVkZWQgaXQgYXMgd2VsbC4NCg0KPiANCj4gQmVzdCByZWdhcmRzLA0KPiBLcnp5c3p0b2YNCg0K
+UmVnYXJkcywNCkFuZHJleQ0K
