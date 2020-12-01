@@ -2,88 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBE902C9438
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Dec 2020 01:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 042332C9EB8
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Dec 2020 11:08:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389141AbgLAArx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 30 Nov 2020 19:47:53 -0500
-Received: from ozlabs.org ([203.11.71.1]:38913 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389163AbgLAArx (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 30 Nov 2020 19:47:53 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4ClNj03z8kz9sT6;
-        Tue,  1 Dec 2020 11:47:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1606783630;
-        bh=e10QAc16NaqVN44J1Hr1vgfh7E2SKLFwF1tipzVH8TM=;
-        h=From:To:Subject:In-Reply-To:References:Date:From;
-        b=B7L/JpGsTjzwc1HcKznrIXmRcrxBRIrym7aN8qydKWJFeslXKQQ3S+88dDsBJ3atA
-         ICgQ4xVzl8mS04fa+JitQnIARV+Ch/K5dsJLTcG7CVgL3Fkr+k207+1HkMCbQhJINU
-         VBD4lUo+c3jz+s1yTU151EDkTrnyvsE1RFNs0t5ZmMG99AaYXTeI5CICrmcZ2H6dUl
-         Vvg1ej1Q60nEv0wb6xXsNKSIOd5YbXq/ODo1l/1d14DNsnPPuO2V7pIAsWo4KrPhf6
-         BFI8ddBD7AtJX9OL7JU1IR3erwJiDVWixj6BQJu5e1Q6dF+8vTlAYnp92VgcVQd9LV
-         hM8pxbdtxcAfw==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
-        linux@armlinux.org.uk, nicolas.ferre@microchip.com,
+        id S1729654AbgLAKFw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 1 Dec 2020 05:05:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60812 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726489AbgLAKFv (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 1 Dec 2020 05:05:51 -0500
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 207DCC0613D3
+        for <linux-parisc@vger.kernel.org>; Tue,  1 Dec 2020 02:05:11 -0800 (PST)
+Received: by mail-wm1-x343.google.com with SMTP id k10so1922770wmi.3
+        for <linux-parisc@vger.kernel.org>; Tue, 01 Dec 2020 02:05:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=14bf6bn+oj8PMyR0sJXDa7vt6hfR/TzFTELJbHUC7s0=;
+        b=FjLGvvbX1fS+Lzs7Jouwk4Xu5zby+fhb4SU9TD2AE3FCHm8BPNZ/4cQd8SjrL4teyO
+         pIrlUihpdldsh6VzuqjFbQapRtHM/oN3isKB/EtTzfLNwGUKynKjH85fbuEntqzz9l/M
+         zF/SRCOBE4zD/aC/w5Xthj9RhPGPgnmrL1Rz6FLJ5TDvxvdmNo6KDHxdQhrfzeBvtEDD
+         7j2t4XSgW0acxS83X/ur3/Z7Yiq1aV+ISZfBRWfznhvkhv84rEvGPp6dBSgEpeJDwi6p
+         32U1wPJILW50xkF1pYoC8QGnRQPruXD1wlIYhAik+Nvz7XfPhgPfeX4tn2phCkRisXbC
+         h/dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=14bf6bn+oj8PMyR0sJXDa7vt6hfR/TzFTELJbHUC7s0=;
+        b=mQbUnlVBr0F4V6PsY1H/XjI3+kQP99CX8Di8CQaFVCk+al1IHfSK3ZGPPt4deQooTn
+         uroC15PXyAC9op1+5N4r5uCu7VFhoP55jf6JJbjkbkFPOPA4PeyTA++sJWhNMeULtq07
+         QhR3zV0SBIgi/rBieJnrXwOUXZPiW0g5TAiKvUeBOWK68LNtwnDmcWug0ks612/TDcO0
+         cmbVKUcveJhcUis1FMTW2aXuNebnsdUytHy82vd2zPkKAVErro4cAfXL8/SyVFE0qw17
+         1uCvHX1kruE2p7w4gyGL1XluEn4lTjfTDt/JAEZ7DRJBSpvDuxL7c+URgEpgZMbKYZfa
+         y51Q==
+X-Gm-Message-State: AOAM533H954P7ixe4+P38cpN3HRbZ0GXkwWJpLkB/Nltv9BfKaT+Ryez
+        9ZPqERQlo2D5FjAb0hJyLK1RWg==
+X-Google-Smtp-Source: ABdhPJxZXrE0bS930s4kHxmTujcKxrLUp8mkRl/hRPu1hEArkUtvSLrw9l0edI4pIsEcorzqGoW98g==
+X-Received: by 2002:a05:600c:255:: with SMTP id 21mr1914111wmj.69.1606817109823;
+        Tue, 01 Dec 2020 02:05:09 -0800 (PST)
+Received: from holly.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id p11sm2348078wrj.14.2020.12.01.02.05.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Dec 2020 02:05:07 -0800 (PST)
+Date:   Tue, 1 Dec 2020 10:05:05 +0000
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
+Cc:     linux@armlinux.org.uk, nicolas.ferre@microchip.com,
         alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
         tony@atomide.com, mripard@kernel.org, wens@csie.org,
         jernej.skrabec@siol.net, thierry.reding@gmail.com,
         jonathanh@nvidia.com, catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
-        lee.jones@linaro.org, sam@ravnborg.org, emil.l.velikov@gmail.com,
-        daniel.thompson@linaro.org, krzk@kernel.org,
+        tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+        paulus@samba.org, lee.jones@linaro.org, sam@ravnborg.org,
+        emil.l.velikov@gmail.com, krzk@kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 5/5] powerpc/configs: drop unused BACKLIGHT_GENERIC option
-In-Reply-To: <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com> <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
-Date:   Tue, 01 Dec 2020 11:46:55 +1100
-Message-ID: <87tut6wdxc.fsf@mpe.ellerman.id.au>
+Subject: Re: [PATCH 0/5] drop unused BACKLIGHT_GENERIC option
+Message-ID: <20201201100505.xsocmjf6tmxu4uon@holly.lan>
+References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com> writes:
-> Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> unused") removed geenric_bl driver from the tree, together with
-> corresponding config option.
->
-> Remove BACKLIGHT_GENERIC config item from generic-64bit_defconfig.
-                                            ^
-                                            powernv_defconfig
+On Mon, Nov 30, 2020 at 03:21:32PM +0000, Andrey Zhizhikin wrote:
+> Since the removal of generic_bl driver from the source tree in commit
+> 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
+> unused") BACKLIGHT_GENERIC config option became obsolete as well and
+> therefore subject to clean-up from all configuration files.
+> 
+> This series introduces patches to address this removal, separated by
+> architectures in the kernel tree.
+> 
+> Andrey Zhizhikin (5):
+>   ARM: configs: drop unused BACKLIGHT_GENERIC option
+>   arm64: defconfig: drop unused BACKLIGHT_GENERIC option
+>   MIPS: configs: drop unused BACKLIGHT_GENERIC option
+>   parisc: configs: drop unused BACKLIGHT_GENERIC option
+>   powerpc/configs: drop unused BACKLIGHT_GENERIC option
 
-> Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-> ---
->  arch/powerpc/configs/powernv_defconfig | 1 -
->  1 file changed, 1 deletion(-)
+Whole series:
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
-cheers
-
-> diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
-> index cf30fc24413b..60a30fffeda0 100644
-> --- a/arch/powerpc/configs/powernv_defconfig
-> +++ b/arch/powerpc/configs/powernv_defconfig
-> @@ -208,7 +208,6 @@ CONFIG_FB_MATROX_G=y
->  CONFIG_FB_RADEON=m
->  CONFIG_FB_IBM_GXT4500=m
->  CONFIG_LCD_PLATFORM=m
-> -CONFIG_BACKLIGHT_GENERIC=m
->  # CONFIG_VGA_CONSOLE is not set
->  CONFIG_LOGO=y
->  CONFIG_HID_A4TECH=m
-> -- 
-> 2.17.1
+Daniel.
