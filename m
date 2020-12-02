@@ -2,145 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D572CB024
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Dec 2020 23:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29DCE2CB618
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Dec 2020 09:02:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727077AbgLAWce (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 1 Dec 2020 17:32:34 -0500
-Received: from mail-eopbgr60097.outbound.protection.outlook.com ([40.107.6.97]:16646
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726688AbgLAWcd (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 1 Dec 2020 17:32:33 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SBUrrbk7VnWffW4/z8HHc56QJ6hcKEoQGFzbLXNZdsSPeteC6ZgdTk6WXIY1WrgPi/aKmvh0Zqu/lTKrQCl6EL6g1pWc9xsYkCi4xZr5qhetnaL0bEFykSWbtTVDpShlTcZKxuXHo51eD8Gr6OrghWOCWvdZjH7nSspt7D9pe8H2fGj23NO/bgnXWCSuVr/3kGP3nokXjoVi7b6NAPDLEtd4tQdaakdYY92q94NMxtwQJg2QAf5dRCXjddhJxlUJQPFDfegflW2fvbRHX3LZFKq2jirWstzlG38fiIstWEAiaCrc5W9zmjMqeqP3oM85MHS3EEfl4ot19SUmlFnhBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D6jNaCDbQ2iCNvKDA8zVKbBQLowkiZO4HZctSGu660w=;
- b=MFGSY4vP9qFqLazE0L5yy1QsQTTkC9xDUCcaoZsm9ycGHudFKH5NiS7DqHUVyI6TCTFYZQtszcVyVLQegPPgKGNNgxKm3lofeDzIwHsRqBTk7aBWDKz5VIOu9mHn1cUV3D1t8+oHeu/42jXSe4DhXlzSzDYlJzaJ6QMVGlTR0hEXOoZJNUODmpy+w48j58CRYdfU5zO7KsRbmUMbQMU595CEbJQojRPY0fSMeoUOs9bjfDXH1mL4k8JXM2gz+f7KnxFTIVf/MwGB3nebSgQdOizeTG8afRCsxPaLoQDtKCconDwkjMBrOiZKMGNLzgAX0t3BAk2AhpeaeHY7/tyJFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
- header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D6jNaCDbQ2iCNvKDA8zVKbBQLowkiZO4HZctSGu660w=;
- b=RKedLQs9SmXyQHw6gsHTTgAaGEPxPWci4fdo0zdwBL/B3B+PSJldLas5IH6eJ/F8fpHeMm8VumAp536dKB4Zm+0h8hkp2hBkbBj6LCYYfttbLsYdIkZ15jbjlsIHQ9/jLmt79FQhPFicOgkCbS5uHjJMFjhPJWhTc91rokqfPkg=
-Authentication-Results: armlinux.org.uk; dkim=none (message not signed)
- header.d=none;armlinux.org.uk; dmarc=none action=none
- header.from=leica-geosystems.com;
-Received: from DB6PR0602MB2886.eurprd06.prod.outlook.com (2603:10a6:4:9b::11)
- by DB8PR06MB6236.eurprd06.prod.outlook.com (2603:10a6:10:10a::26) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3611.25; Tue, 1 Dec
- 2020 22:31:06 +0000
-Received: from DB6PR0602MB2886.eurprd06.prod.outlook.com
- ([fe80::49c3:4b5b:289c:d62c]) by DB6PR0602MB2886.eurprd06.prod.outlook.com
- ([fe80::49c3:4b5b:289c:d62c%12]) with mapi id 15.20.3611.025; Tue, 1 Dec 2020
- 22:31:06 +0000
-From:   Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-To:     linux@armlinux.org.uk, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
-        tony@atomide.com, mripard@kernel.org, wens@csie.org,
-        jernej.skrabec@siol.net, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, lee.jones@linaro.org, sam@ravnborg.org,
-        emil.l.velikov@gmail.com, daniel.thompson@linaro.org,
-        krzk@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        soc@kernel.org
-Subject: [PATCH v2 5/5] powerpc/configs: drop unused BACKLIGHT_GENERIC option
-Date:   Tue,  1 Dec 2020 22:29:22 +0000
-Message-Id: <20201201222922.3183-6-andrey.zhizhikin@leica-geosystems.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201201222922.3183-1-andrey.zhizhikin@leica-geosystems.com>
-References: <20201201222922.3183-1-andrey.zhizhikin@leica-geosystems.com>
-Content-Type: text/plain
-X-Originating-IP: [193.8.40.112]
-X-ClientProxiedBy: ZR0P278CA0080.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:22::13) To DB6PR0602MB2886.eurprd06.prod.outlook.com
- (2603:10a6:4:9b::11)
+        id S1726532AbgLBICI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 2 Dec 2020 03:02:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39124 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726493AbgLBICH (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 2 Dec 2020 03:02:07 -0500
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E4EC0613CF
+        for <linux-parisc@vger.kernel.org>; Wed,  2 Dec 2020 00:01:27 -0800 (PST)
+Received: by mail-ed1-x544.google.com with SMTP id v22so2323991edt.9
+        for <linux-parisc@vger.kernel.org>; Wed, 02 Dec 2020 00:01:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hPAfLN0W+r0v8UbD8c5WdNj6VpYJo5AjbqSpHz/Yo4Y=;
+        b=AlHATBEx3clTaQ07Iit5BYMPWT0L8k+pA79madja45+u4T03OkEW7KPTDo40sJotuc
+         S+7fp0pN8VFCzy33jPEK0FxBYo/4oWm1U8oFuvrJd61TniQ8CaVhrFjd1vYQXIAQeJbn
+         ZPSHEPzUIEtoeh+VOEGUmTicBD3pkjLI/uV4MBEw4CKA/56bnJng57Yau6DQo7AyIe8a
+         DEESONnPV1Vcah5FxVV5jt+0CaZ+vD/0yxXo5xb8ChraAmXafw9UOwLVDNMbKboPIWNU
+         NtxJMCHMT7QgUE3YQhAajlQ25XzMoAmOgT5FuZ8QhPAUhnIH3BTSYswfALz3CzURF2Ea
+         1lcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hPAfLN0W+r0v8UbD8c5WdNj6VpYJo5AjbqSpHz/Yo4Y=;
+        b=K4Wzb20KInVJcOiHhfKRGvz2iDl1N+t0V+2+pTe0JMBlIR/h0pquX2prT3JIqpCDYu
+         ViajXuPww0tY0Hd3IxlkqVYxa4ARhFst0bzzGwZ+J0EMBrWCY2ERIyp/3nnYxECKQ/Se
+         NYAHk8Ch7iLhP3O+j3/OrokBb7o/BVtEWVwZuo7vnhxtj7rCT4ky4Ysc/rWcK3islKLH
+         VZGSVblykFC7QQlf+Bwgs4huwNw+TPWO6YL6MkkAicB7LlyxHsdqbBmOPfdZ9yiTpTFS
+         wwl2mouw/PAYdb/UTAbeyTrF8iEPj1dBFxiG+QxKyxbL5/cmnkxZCI4zIUqmugd5wrAJ
+         GXwg==
+X-Gm-Message-State: AOAM531AJFoYdW7zPIOq2K/uGDmtCJnksHNfdMEZdyiVCQi5bgTEsC7A
+        byvokt2TSNPxUkEDjsA+1NFyHZP76er+rdXrXx9xyQ==
+X-Google-Smtp-Source: ABdhPJwmnqGA4Nhuu2ieSdkMpSjQim81cIIxXYyOfz4b13FL06C2JA3X3EOzsuxEedP5mRNnvF0PkTQDJWtRfmeTebQ=
+X-Received: by 2002:aa7:d341:: with SMTP id m1mr1407227edr.230.1606896086079;
+ Wed, 02 Dec 2020 00:01:26 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.112) by ZR0P278CA0080.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:22::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17 via Frontend Transport; Tue, 1 Dec 2020 22:31:04 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 26943727-d419-41aa-f39d-08d89648caf9
-X-MS-TrafficTypeDiagnostic: DB8PR06MB6236:
-X-Microsoft-Antispam-PRVS: <DB8PR06MB6236DFBDD0F0762D6DC719B1A6F40@DB8PR06MB6236.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1284;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gxLw28SdW9jTITcpro/GTMTeG/u40sqv+iGbwQX2ZS/Yy8qlRjRYC/G95hc/FgSboQzFmdgneKNFoz0Y3sMRhuAIcjxkLvSH2bsdBppvAw1P+KoXbXuFrVWVg9y0ZuXXBOCnDAnJxakyb0TCSnI9EkO+Np4P0nZ/rMdcIHff5x/8U+U0Rg0kCOOIkbFOxzlFQH0YvddY7VxT/txnIZgr/hy/k39wOgqe49nY8CyVF9KJxnnDJ0n58jEqAyGp3rezSptdnMAmPmL6oCW0datJryRG1ZAD2nfw700eN1FFqyqRCGQBvoExSGJwFjgAUvjdo3cCaiTJKmprqtVxBv2g4HHnITZFPxl9wN3sciIhi/Cnp9aftF48xhtlu5epc8B/YDCxxaPAQ14MdCS2MWw/YQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB6PR0602MB2886.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(136003)(366004)(39860400002)(396003)(376002)(66476007)(6666004)(66556008)(86362001)(66946007)(26005)(1076003)(186003)(36756003)(8676002)(16526019)(83380400001)(2906002)(6512007)(478600001)(8936002)(7406005)(316002)(7416002)(2616005)(52116002)(921005)(956004)(44832011)(5660300002)(6486002)(6506007)(41533002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?gIgy2COpXhjB0e80DwgmeEnGFiwx8Lied7vzGV/UaDaZHgTQf+7VDA02Kj6Z?=
- =?us-ascii?Q?pZAgxtXqQhHqfKW5C84H2bHNtVH4ErBeYjatLuVUKPeGyL7wSQM3tMuz//9B?=
- =?us-ascii?Q?IQpdysOla7ipcwDESRi7rI5FnNth3RtjCnEekFO8H2aCAwEhnQJ16O01Bn8X?=
- =?us-ascii?Q?MjUKtbZqLRKP7LQCDpAapGeP+cIVkXKB/l3kup3tf4UFDNn3rTVNsfOBXYQy?=
- =?us-ascii?Q?FM79rhLMJwgT0bWy2IR3UUgH327XtZA5X/LV9gjGAn9OtT63qd5dwd0Kn1u8?=
- =?us-ascii?Q?OUN/6wuJ0uWJQqopxNpo6mg93RebFGpVzQGcERZikplvDzLd42UCBOUDz/qT?=
- =?us-ascii?Q?T6QJLSnoAWwbbC40Hd+8H1rQAyiLX4nY9HUeIAjEo+5aRzVgy4+BEs7DMkMM?=
- =?us-ascii?Q?zIrK8QvWtTd4f1fCKeTzal66K4LoOfcvy2knuaEj43AF5mQ+rb2UHuI5bthN?=
- =?us-ascii?Q?7P7n708r/eV0dG+FehAtmWjClXKLqQwCS0sTQPdYkyqONsqKfdvdE/dWPlzU?=
- =?us-ascii?Q?d4YO9aXnS7PrpGZL7FWlfrj5MLkflGytY3V/FOGC8X8mKy7g2WmEfpjMieXj?=
- =?us-ascii?Q?PCoC+t+VQ5kDAczd+J1wXRCO8mxu92rR3km+UYYgjflkXqRsr+MkjqdcqFcs?=
- =?us-ascii?Q?KocmjJfoLtxrZDnQ6feihtPzRfp2JV6v+1uAV5ZDspS2js8z/dd5NBDJvhMH?=
- =?us-ascii?Q?jCFDD+xXmtvhlxImEtk41ec375PGIIF/5yvJVQtV91GM1vjHOlq+cjrfnri+?=
- =?us-ascii?Q?glUSbUATUvtJxnokbMGwg+2QuAPGdLOpCI4c0JAxeKVPdvMZWGZsxBX+ghrc?=
- =?us-ascii?Q?Z+olWtLmQMJccaKjMQ9WBs+VmrdnXlfrPHkN+CYfCEOHiubkVOzMlD48wFCW?=
- =?us-ascii?Q?beuAc019eaC5QQDTvy+M/y8HqL1Lyva1XHmNam3yITzJ+aa4y+xVpTEKjHDS?=
- =?us-ascii?Q?Qbpoj8P9rZ6sqc/lrz7FzlLmyPskc6n+TAH2uoo/GVRSe+hHZ0fLxLlXo9Es?=
- =?us-ascii?Q?tzc/?=
-X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26943727-d419-41aa-f39d-08d89648caf9
-X-MS-Exchange-CrossTenant-AuthSource: DB6PR0602MB2886.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2020 22:31:06.2214
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8hvTi5gQyn5MnIOmFFcnxQipq1vPxjZbziVQb9o+Mc4BHmpB/WyX04O1nzkMNT5MaDnHMQ4tbi+Fgba5LJ42Vgpmc4gjsNBC1pHSELMuwzY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR06MB6236
+References: <20201126130606.2290438-1-anders.roxell@linaro.org>
+ <8affd609-f037-8b21-853a-8b87299db044@gmx.de> <CADYN=9+pSK2SHY4ncFaseT9qz6BoTCUxi0e3poTDao4v=S_84g@mail.gmail.com>
+In-Reply-To: <CADYN=9+pSK2SHY4ncFaseT9qz6BoTCUxi0e3poTDao4v=S_84g@mail.gmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 2 Dec 2020 13:31:14 +0530
+Message-ID: <CA+G9fYtNgeOgymsVwj423eXOFP1B=mS4KKvy+1Bu3tUapXyxDA@mail.gmail.com>
+Subject: Re: [PATCH] parisc: signal: remove _SA_SIGGFAULT
+To:     Anders Roxell <anders.roxell@linaro.org>
+Cc:     Helge Deller <deller@gmx.de>,
+        James.Bottomley@hansenpartnership.com,
+        linux-parisc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-unused") removed geenric_bl driver from the tree, together with
-corresponding config option.
+Anders,
 
-Remove BACKLIGHT_GENERIC config item from generic-64bit_defconfig.
+On Fri, 27 Nov 2020 at 04:10, Anders Roxell <anders.roxell@linaro.org> wrote:
+>
+> On Thu, 26 Nov 2020 at 15:46, Helge Deller <deller@gmx.de> wrote:
+> >
+> > On 11/26/20 2:06 PM, Anders Roxell wrote:
+> > > When building tinyconfig on parisc the following error shows up:
+> > >
+> > > /tmp/kernel/signal.c: In function 'do_sigaction':
+> > > /tmp/arch/parisc/include/asm/signal.h:24:30: error: '_SA_SIGGFAULT' undeclared (first use in this function); did you mean 'SIL_FAULT'?
+> > >  #define __ARCH_UAPI_SA_FLAGS _SA_SIGGFAULT
+> > >                               ^~~~~~~~~~~~~
+> > >
+> > > The changes in the two individual patches listed in 'Fixes' below are
+> > > OK.  Remove the _SA_SIGGFAULT define since PH-UX isn't going to be
+> > > supported according to commit 41f5a81c07cd ("parisc: Drop HP-UX specific
+> > > fcntl and signal flags").
+> > >
+> > > Fixes: 23acdc76f179 ("signal: clear non-uapi flag bits when passing/returning sa_flags")
+> > > Fixes: 41f5a81c07cd ("parisc: Drop HP-UX specific fcntl and signal flags")
+> > > Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
 
-Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/configs/powernv_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+Thanks for your patch the builds are successful now.
 
-diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
-index cf30fc24413b..60a30fffeda0 100644
---- a/arch/powerpc/configs/powernv_defconfig
-+++ b/arch/powerpc/configs/powernv_defconfig
-@@ -208,7 +208,6 @@ CONFIG_FB_MATROX_G=y
- CONFIG_FB_RADEON=m
- CONFIG_FB_IBM_GXT4500=m
- CONFIG_LCD_PLATFORM=m
--CONFIG_BACKLIGHT_GENERIC=m
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_LOGO=y
- CONFIG_HID_A4TECH=m
--- 
-2.17.1
+Fixes (compared to build next-20201130)
+------------------------------------------------------------------------
 
+parisc:
+  build:
+    * gcc-10-allnoconfig
+    * gcc-10-defconfig
+    * gcc-10-tinyconfig
+    * gcc-8-allnoconfig
+    * gcc-8-defconfig
+    * gcc-8-tinyconfig
+    * gcc-9-allnoconfig
+    * gcc-9-defconfig
+    * gcc-9-tinyconfig
+
+- Naresh
