@@ -2,104 +2,61 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29DCE2CB618
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Dec 2020 09:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 183152CD19D
+	for <lists+linux-parisc@lfdr.de>; Thu,  3 Dec 2020 09:47:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726532AbgLBICI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 2 Dec 2020 03:02:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39124 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726493AbgLBICH (ORCPT
+        id S1728872AbgLCIp6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 3 Dec 2020 03:45:58 -0500
+Received: from mail.boldwhite24.com ([80.211.42.67]:47694 "EHLO
+        mail.boldwhite24.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728805AbgLCIp5 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 2 Dec 2020 03:02:07 -0500
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E4EC0613CF
-        for <linux-parisc@vger.kernel.org>; Wed,  2 Dec 2020 00:01:27 -0800 (PST)
-Received: by mail-ed1-x544.google.com with SMTP id v22so2323991edt.9
-        for <linux-parisc@vger.kernel.org>; Wed, 02 Dec 2020 00:01:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hPAfLN0W+r0v8UbD8c5WdNj6VpYJo5AjbqSpHz/Yo4Y=;
-        b=AlHATBEx3clTaQ07Iit5BYMPWT0L8k+pA79madja45+u4T03OkEW7KPTDo40sJotuc
-         S+7fp0pN8VFCzy33jPEK0FxBYo/4oWm1U8oFuvrJd61TniQ8CaVhrFjd1vYQXIAQeJbn
-         ZPSHEPzUIEtoeh+VOEGUmTicBD3pkjLI/uV4MBEw4CKA/56bnJng57Yau6DQo7AyIe8a
-         DEESONnPV1Vcah5FxVV5jt+0CaZ+vD/0yxXo5xb8ChraAmXafw9UOwLVDNMbKboPIWNU
-         NtxJMCHMT7QgUE3YQhAajlQ25XzMoAmOgT5FuZ8QhPAUhnIH3BTSYswfALz3CzURF2Ea
-         1lcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hPAfLN0W+r0v8UbD8c5WdNj6VpYJo5AjbqSpHz/Yo4Y=;
-        b=K4Wzb20KInVJcOiHhfKRGvz2iDl1N+t0V+2+pTe0JMBlIR/h0pquX2prT3JIqpCDYu
-         ViajXuPww0tY0Hd3IxlkqVYxa4ARhFst0bzzGwZ+J0EMBrWCY2ERIyp/3nnYxECKQ/Se
-         NYAHk8Ch7iLhP3O+j3/OrokBb7o/BVtEWVwZuo7vnhxtj7rCT4ky4Ysc/rWcK3islKLH
-         VZGSVblykFC7QQlf+Bwgs4huwNw+TPWO6YL6MkkAicB7LlyxHsdqbBmOPfdZ9yiTpTFS
-         wwl2mouw/PAYdb/UTAbeyTrF8iEPj1dBFxiG+QxKyxbL5/cmnkxZCI4zIUqmugd5wrAJ
-         GXwg==
-X-Gm-Message-State: AOAM531AJFoYdW7zPIOq2K/uGDmtCJnksHNfdMEZdyiVCQi5bgTEsC7A
-        byvokt2TSNPxUkEDjsA+1NFyHZP76er+rdXrXx9xyQ==
-X-Google-Smtp-Source: ABdhPJwmnqGA4Nhuu2ieSdkMpSjQim81cIIxXYyOfz4b13FL06C2JA3X3EOzsuxEedP5mRNnvF0PkTQDJWtRfmeTebQ=
-X-Received: by 2002:aa7:d341:: with SMTP id m1mr1407227edr.230.1606896086079;
- Wed, 02 Dec 2020 00:01:26 -0800 (PST)
+        Thu, 3 Dec 2020 03:45:57 -0500
+Received: by mail.boldwhite24.com (Postfix, from userid 1001)
+        id 7A039A2BAA; Thu,  3 Dec 2020 08:45:14 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=boldwhite24.com;
+        s=mail; t=1606985115;
+        bh=hS3ibs4caZkahrzgcMN2TAJo2B2H5Muwb2NidDYlIzQ=;
+        h=Date:From:To:Subject:From;
+        b=kU9IFnP5ugbwSR2WkpxdCzVNX8AW2TIBbBYWxp3Q6LrfwGLqyjaoq+Yz9dkQuSyCX
+         plcQqChpwqlESnMEo+pFppCwV7FUBPTx05EmwO9XtgFeGGuFgCqn+3y0+rcpQl3yre
+         tdvxNKx6NJAR5rQgvYKSx8Wdq6OXO1FcstJXhmQ+lXXe/53o6al+c5K2ikrXjqIPAW
+         9slGhxYywGyz9TZV9aDkAvMOP+aIis9TopuVF980/e/lLJ4vnEpR+baaofn8d+xpvb
+         ZZm644FKP7fgRiXSfpL7zwZrcgLAW1F+0eGzlSkd+lmKpXpmxjUXtVsEhvsWEgiVJH
+         LmHKLVUmwcfyw==
+Received: by mail.boldwhite24.com for <linux-parisc@vger.kernel.org>; Thu,  3 Dec 2020 08:45:13 GMT
+Message-ID: <20201203074501-0.1.2m.amfp.0.335no6rg83@boldwhite24.com>
+Date:   Thu,  3 Dec 2020 08:45:13 GMT
+From:   =?UTF-8?Q? "Diego_S=C3=A1nchez" ?= <diego.sanchez@boldwhite24.com>
+To:     <linux-parisc@vger.kernel.org>
+Subject: Disinfection
+X-Mailer: mail.boldwhite24.com
 MIME-Version: 1.0
-References: <20201126130606.2290438-1-anders.roxell@linaro.org>
- <8affd609-f037-8b21-853a-8b87299db044@gmx.de> <CADYN=9+pSK2SHY4ncFaseT9qz6BoTCUxi0e3poTDao4v=S_84g@mail.gmail.com>
-In-Reply-To: <CADYN=9+pSK2SHY4ncFaseT9qz6BoTCUxi0e3poTDao4v=S_84g@mail.gmail.com>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 2 Dec 2020 13:31:14 +0530
-Message-ID: <CA+G9fYtNgeOgymsVwj423eXOFP1B=mS4KKvy+1Bu3tUapXyxDA@mail.gmail.com>
-Subject: Re: [PATCH] parisc: signal: remove _SA_SIGGFAULT
-To:     Anders Roxell <anders.roxell@linaro.org>
-Cc:     Helge Deller <deller@gmx.de>,
-        James.Bottomley@hansenpartnership.com,
-        linux-parisc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Anders,
+Good morning,
 
-On Fri, 27 Nov 2020 at 04:10, Anders Roxell <anders.roxell@linaro.org> wrote:
->
-> On Thu, 26 Nov 2020 at 15:46, Helge Deller <deller@gmx.de> wrote:
-> >
-> > On 11/26/20 2:06 PM, Anders Roxell wrote:
-> > > When building tinyconfig on parisc the following error shows up:
-> > >
-> > > /tmp/kernel/signal.c: In function 'do_sigaction':
-> > > /tmp/arch/parisc/include/asm/signal.h:24:30: error: '_SA_SIGGFAULT' undeclared (first use in this function); did you mean 'SIL_FAULT'?
-> > >  #define __ARCH_UAPI_SA_FLAGS _SA_SIGGFAULT
-> > >                               ^~~~~~~~~~~~~
-> > >
-> > > The changes in the two individual patches listed in 'Fixes' below are
-> > > OK.  Remove the _SA_SIGGFAULT define since PH-UX isn't going to be
-> > > supported according to commit 41f5a81c07cd ("parisc: Drop HP-UX specific
-> > > fcntl and signal flags").
-> > >
-> > > Fixes: 23acdc76f179 ("signal: clear non-uapi flag bits when passing/returning sa_flags")
-> > > Fixes: 41f5a81c07cd ("parisc: Drop HP-UX specific fcntl and signal flags")
-> > > Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+looking for companies interested in raising additional capital by diversi=
+fying their offer in soaps, liquids and gels for hand disinfection and co=
+smetics for body and hair care.
 
-Thanks for your patch the builds are successful now.
+The distribution of innovative products corresponding to the current pref=
+erences of customers in the field of hygiene and preventive healthcare al=
+lows our partners to gain new markets and achieve better economic results=
+=2E
 
-Fixes (compared to build next-20201130)
-------------------------------------------------------------------------
+In addition to products with bactericidal action, our range includes show=
+er gels, shampoos and hair conditioners, as well as efficient, concentrat=
+ed detergents.
 
-parisc:
-  build:
-    * gcc-10-allnoconfig
-    * gcc-10-defconfig
-    * gcc-10-tinyconfig
-    * gcc-8-allnoconfig
-    * gcc-8-defconfig
-    * gcc-8-tinyconfig
-    * gcc-9-allnoconfig
-    * gcc-9-defconfig
-    * gcc-9-tinyconfig
+The versatility (suitable for all skin types) combined with an affordable=
+ price means that customers make an informed choice of a product among ot=
+hers available on the market.
 
-- Naresh
+Are you interested in cooperation?
+
+Diego S=C3=A1nchez
