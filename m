@@ -2,76 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE952CEDC0
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Dec 2020 13:11:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A4102CEE50
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Dec 2020 13:45:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730135AbgLDMLA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 4 Dec 2020 07:11:00 -0500
-Received: from elvis.franken.de ([193.175.24.41]:48129 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730122AbgLDMK7 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 4 Dec 2020 07:10:59 -0500
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1kl9ud-0005Nb-00; Fri, 04 Dec 2020 13:10:11 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id 596D6C02CF; Fri,  4 Dec 2020 13:06:32 +0100 (CET)
-Date:   Fri, 4 Dec 2020 13:06:32 +0100
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Cc:     linux@armlinux.org.uk, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
-        tony@atomide.com, mripard@kernel.org, wens@csie.org,
-        jernej.skrabec@siol.net, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, catalin.marinas@arm.com, will@kernel.org,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        lee.jones@linaro.org, sam@ravnborg.org, emil.l.velikov@gmail.com,
-        daniel.thompson@linaro.org, krzk@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, soc@kernel.org
-Subject: Re: [PATCH v2 3/5] MIPS: configs: drop unused BACKLIGHT_GENERIC
- option
-Message-ID: <20201204120632.GA10011@alpha.franken.de>
-References: <20201201222922.3183-1-andrey.zhizhikin@leica-geosystems.com>
- <20201201222922.3183-4-andrey.zhizhikin@leica-geosystems.com>
+        id S2388176AbgLDMor (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 4 Dec 2020 07:44:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49314 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388146AbgLDMor (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 4 Dec 2020 07:44:47 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0536CC0613D1;
+        Fri,  4 Dec 2020 04:44:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=AjuAPGM7G2kMm64bUja2RitkEu1uv3g7PuJ6UiGCjec=; b=OS2MyK0IhBUnWYTsQkbN6XDe+a
+        0RzYNlc12iI9h+rXilNNpWO0YuA0DMEXsNw5zXxeuMb5hODEavmO3BLe/dC0zNpt9L7IMIfHz0Tyl
+        rWmUHxvmiShEPwvMnxZ3XMKlNBSJ+kCEQsmkPNb7+lisRzXeBaOR2fHJXykN5paMkmKKc9AxMSC6W
+        /9lZVSSqDxcq6ArODbGnmHKB7KdbJmX7KDQjdxig0V4JuXy4U1z7RuD24XhjgVGFfi/7IY4W1CwXy
+        HGdY8vXvgnKkeI4XlZ+DMGG9+Vv71fRwMJJFuQs3IOSQI33bDaMpChMBRl3RPRkDXoKE3ROVoi7pg
+        uYuZGdIA==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1klARO-000262-Tg; Fri, 04 Dec 2020 12:44:02 +0000
+Date:   Fri, 4 Dec 2020 12:44:02 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        linux-nvdimm@lists.01.org
+Subject: Re: PATCH] fs/dax: fix compile problem on parisc and mips
+Message-ID: <20201204124402.GN11935@casper.infradead.org>
+References: <fb91b40d258414b0fdce2c380752e48daa6a70d6.camel@HansenPartnership.com>
+ <20201204034843.GM11935@casper.infradead.org>
+ <0f0ac7be-0108-0648-a4db-2f37db1c8114@gmx.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201201222922.3183-4-andrey.zhizhikin@leica-geosystems.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <0f0ac7be-0108-0648-a4db-2f37db1c8114@gmx.de>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Dec 01, 2020 at 10:29:20PM +0000, Andrey Zhizhikin wrote:
-> Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> unused") removed geenric_bl driver from the tree, together with
-> corresponding config option.
+On Fri, Dec 04, 2020 at 08:57:37AM +0100, Helge Deller wrote:
+> On 12/4/20 4:48 AM, Matthew Wilcox wrote:
+> > On Thu, Dec 03, 2020 at 04:33:10PM -0800, James Bottomley wrote:
+> >> These platforms define PMD_ORDER in asm/pgtable.h
+> >
+> > I think that's the real problem, though.
+> >
+> > #define PGD_ORDER       1 /* Number of pages per pgd */
+> > #define PMD_ORDER       1 /* Number of pages per pmd */
+> > #define PGD_ALLOC_ORDER (2 + 1) /* first pgd contains pmd */
+> > #else
+> > #define PGD_ORDER       1 /* Number of pages per pgd */
+> > #define PGD_ALLOC_ORDER (PGD_ORDER + 1)
+> >
+> > That should clearly be PMD_ALLOC_ORDER, not PMD_ORDER.  Or even
+> > PAGES_PER_PMD like the comment calls it, because I really think
+> > that doing an order-3 (8 pages) allocation for the PGD is wrong.
 > 
-> Remove BACKLIGHT_GENERIC config item from all MIPS configurations.
-> 
-> Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-> Acked-by: Sam Ravnborg <sam@ravnborg.org>
-> ---
->  arch/mips/configs/gcw0_defconfig      | 1 -
->  arch/mips/configs/gpr_defconfig       | 1 -
->  arch/mips/configs/lemote2f_defconfig  | 1 -
->  arch/mips/configs/loongson3_defconfig | 1 -
->  arch/mips/configs/mtx1_defconfig      | 1 -
->  arch/mips/configs/rs90_defconfig      | 1 -
->  6 files changed, 6 deletions(-)
+> We need a spinlock to protect parallel accesses to the PGD,
+> search for pgd_spinlock().
+> This spinlock is stored behind the memory used for the PGD, which
+> is why we allocate more memory (and waste 3 pages).
 
-applied to mips-next.
+There are better places to store it than that!  For example, storing it
+in the struct page, like many architectures do for split ptlocks.
+You'll have to skip the _pt_pad_1 so it doesn't get confused with
+being a compound_head, but soemthing like this:
 
-Thomas.
+		struct {	/* PA-RISC PGD */
+			unsigned long _pa_pad_1;	/* compound_head */
+#if ALLOC_SPLIT_PA_PTLOCKS
+			spinlock_t *pa_ptl;
+#else
+			spinlock_t pa_ptl;
+#endif
+		};
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+inside struct page (linux/mm_types.h) should do the trick.  You'll
+still need to allocate them separately if various debugging options
+are enabled (see the ALLOC_SPLIT_PTLOCKS for details), but usually
+this will save you a lot of memory.
+
+You could also fill in pt_mm like x86 does for its pgds, and then use
+mm->page_table_lock to protect whatever the PGD lock currently protects.
+Maybe page_table_lock is sometimes held when calling ptep_set_wrprotect()
+and sometimes isn't; then this wouldn't work.
+
+Also, could you fix the comments?  They don't match the code:
+
+ #define PGD_ORDER      1 /* Number of pages per pgd */
+
+should be
+
+ #define PGD_ALLOC_ORDER      1 /* 2 pages (8KiB) per pgd */
+
