@@ -2,107 +2,60 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 332912CEECD
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Dec 2020 14:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3F672CEF79
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Dec 2020 15:12:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726312AbgLDNey (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 4 Dec 2020 08:34:54 -0500
-Received: from simcoe209srvr.owm.bell.net ([184.150.200.209]:40029 "EHLO
-        torfep08.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728781AbgLDNey (ORCPT
+        id S1727975AbgLDOMk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 4 Dec 2020 09:12:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34736 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727660AbgLDOMk (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 4 Dec 2020 08:34:54 -0500
-X-Greylist: delayed 325 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 08:34:53 EST
-Received: from bell.net torfep01 184.150.200.158 by torfep01.bell.net
-          with ESMTP
-          id <20201204132847.RSVT6892.torfep01.bell.net@torspm01.bell.net>;
-          Fri, 4 Dec 2020 08:28:47 -0500
-Received: from [192.168.2.49] (really [67.70.16.145]) by torspm01.bell.net
-          with ESMTP
-          id <20201204132847.HJEQ29322.torspm01.bell.net@[192.168.2.49]>;
-          Fri, 4 Dec 2020 08:28:47 -0500
-Subject: Re: PATCH] fs/dax: fix compile problem on parisc and mips
-To:     Matthew Wilcox <willy@infradead.org>, Helge Deller <deller@gmx.de>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Fri, 4 Dec 2020 09:12:40 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B69C0613D1;
+        Fri,  4 Dec 2020 06:12:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=LGx56xgp9qjEXeA8lKWYnMftFHX6kuyyVNYMLfZB01A=; b=Zyyuhxpi2UUOsDhs4KncGUQE2N
+        LnQKR4+15yLvhkybkc+5Sy0zpnZywGJ+FS7LMzvJ7ah3/bgHJfsa1IkT+nrFZ9UuZI21GNk/exMuW
+        J55Bo60H5JzJR0gGdNtULhgHHCyLAUS4s+hKKFnuy55oqNtEqrsz4rcXea8a97Ifr1p9UYZ0LR9aD
+        r4W/xYq6lr0GYfwQO4cGvhkfcvIHOmNRNKc0uT1RpYUmKae4V8gx8Nptbtd8C6It64yVFEpKmFGpt
+        USNH8o5F/JfTANyjhUe/UdCkRY+2YMNUi/cyzLnfpFZXQvXqeGYuaLhA+EKK2OT6Py/f5Qj2w4iot
+        asllIRyg==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1klBoR-0008Kl-NL; Fri, 04 Dec 2020 14:11:56 +0000
+Date:   Fri, 4 Dec 2020 14:11:55 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     John David Anglin <dave.anglin@bell.net>
+Cc:     Helge Deller <deller@gmx.de>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
         Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
         Parisc List <linux-parisc@vger.kernel.org>,
         "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
         linux-nvdimm@lists.01.org
+Subject: Re: PATCH] fs/dax: fix compile problem on parisc and mips
+Message-ID: <20201204141155.GO11935@casper.infradead.org>
 References: <fb91b40d258414b0fdce2c380752e48daa6a70d6.camel@HansenPartnership.com>
  <20201204034843.GM11935@casper.infradead.org>
  <0f0ac7be-0108-0648-a4db-2f37db1c8114@gmx.de>
  <20201204124402.GN11935@casper.infradead.org>
-From:   John David Anglin <dave.anglin@bell.net>
-Message-ID: <3648e8d5-be75-ea2e-ddbc-5117fcd50a2b@bell.net>
-Date:   Fri, 4 Dec 2020 08:28:47 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+ <3648e8d5-be75-ea2e-ddbc-5117fcd50a2b@bell.net>
 MIME-Version: 1.0
-In-Reply-To: <20201204124402.GN11935@casper.infradead.org>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-Analysis: v=2.3 cv=ZryT1OzG c=1 sm=1 tr=0 a=ch4VMz8uGZlcRCFa+4Q1bQ==:117 a=ch4VMz8uGZlcRCFa+4Q1bQ==:17 a=IkcTkHD0fZMA:10 a=zTNgK-yGK50A:10 a=FBHGMhGWAAAA:8 a=ybeIS4x6i_o_-C6kCnkA:9 a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-X-CM-Envelope: MS4wfKtNUfRu/DXyTZPn7Pfd4YNoPaiTiBDkNP5Ayf+Vk7AF/O6TOTxeU/Kkq3dDtqHlLw5SfwdBEGtzfi1ydnG/NlGna3I0WQGkBu/HR1Z1quyVYE9sP7uO HQSDprhtoujUIHlBE3sVHIYiDcd8Vh5sQq8RAzLu9Tv1lOC53OeT5jXvEjSQL5s5CY01vITkQu/jsf1uc8aIIuPDbHAAg+kZla+Egk9JWOtBgkh2vuAkz7Vu
+In-Reply-To: <3648e8d5-be75-ea2e-ddbc-5117fcd50a2b@bell.net>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2020-12-04 7:44 a.m., Matthew Wilcox wrote:
-> You'll
-> still need to allocate them separately if various debugging options
-> are enabled (see the ALLOC_SPLIT_PTLOCKS for details), but usually
-> this will save you a lot of memory.
-We need all we can get:
-(.mlocate): page allocation failure: order:5, mode:0x40cc0(GFP_KERNEL|__GFP_COMP), nodemask=(null),cpuset=/,mems_allowed=0
-CPU: 2 PID: 28271 Comm: (.mlocate) Not tainted 5.9.11+ #1
-Hardware name: 9000/800/rp3440
-Backtrace:
- [<000000004018d050>] show_stack+0x50/0x70
- [<0000000040826354>] dump_stack+0xbc/0x130
- [<000000004033dc14>] warn_alloc+0x144/0x1e0
- [<000000004033e930>] __alloc_pages_slowpath.constprop.0+0xc80/0xcf8
- [<000000004033ec48>] __alloc_pages_nodemask+0x2a0/0x2f0
- [<0000000040351a2c>] cache_alloc_refill+0x6b4/0xe50
- [<000000004035416c>] __kmalloc+0x5e4/0x740
- [<00000000040ddbe8>] nfsd_reply_cache_init+0x1d0/0x360 [nfsd]
- [<00000000040d1118>] nfsd_init_net+0xb0/0x1c0 [nfsd]
- [<00000000406a5860>] ops_init+0x68/0x178
- [<00000000406a5b24>] setup_net+0x1b4/0x348
- [<00000000406a6e20>] copy_net_ns+0x1f0/0x450
- [<00000000401e6578>] create_new_namespaces+0x1b0/0x418
- [<00000000401e72ac>] unshare_nsproxy_namespaces+0x8c/0xf0
- [<00000000401b6acc>] ksys_unshare+0x1bc/0x440
- [<00000000401b6d70>] sys_unshare+0x20/0x38
- [<0000000040188018>] syscall_exit+0x0/0x14
+On Fri, Dec 04, 2020 at 08:28:47AM -0500, John David Anglin wrote:
+> (.mlocate): page allocation failure: order:5, mode:0x40cc0(GFP_KERNEL|__GFP_COMP), nodemask=(null),cpuset=/,mems_allowed=0
+> �[<000000004035416c>] __kmalloc+0x5e4/0x740
+> �[<00000000040ddbe8>] nfsd_reply_cache_init+0x1d0/0x360 [nfsd]
 
-Mem-Info:
-active_anon:1209957 inactive_anon:438171 isolated_anon:0
- active_file:38971 inactive_file:21741 isolated_file:0
- unevictable:4662 dirty:144 writeback:0
- slab_reclaimable:45748 slab_unreclaimable:51548
- mapped:34940 shmem:1471859 pagetables:5429 bounce:0
- free:213676 free_pcp:317 free_cma:0
-Node 0 active_anon:4839828kB inactive_anon:1753200kB active_file:155884kB inactive_file:86964kB unevictable:18648kB isolated(anon):0kB
-isolated(file):0kB mapped:139760kB dirty:576kB writeback:0kB shmem:5887436kB writeback_tmp:0kB kernel_stack:6032kB all_unreclaimable? no
-Normal free:853948kB min:11448kB low:19636kB high:27824kB reserved_highatomic:0KB active_anon:4839828kB inactive_anon:1753544kB
-active_file:155884kB inactive_file:86964kB unevictable:18648kB writepending:576kB present:8386560kB managed:8211756kB mlocked:18648kB
-pagetables:21716kB bounce:0kB free_pcp:1168kB local_pcp:352kB free_cma:0kB
-lowmem_reserve[]: 0 0
-Normal: 58860*4kB (UME) 48155*8kB (UME) 11414*16kB (UME) 1291*32kB (UME) 134*64kB (UME) 0*128kB 0*256kB 0*512kB 0*1024kB 0*2048kB 0*4096kB =
-853192kB
-1607717 total pagecache pages
-73822 pages in swap cache
-Swap cache stats: add 21252454, delete 21178083, find 5702723/6815498
-Free swap  = 33742652kB
-Total swap = 49758652kB
-2096640 pages RAM
-0 pages HighMem/MovableOnly
-43701 pages reserved
-
-Cheers,
-Dave
-
--- 
-John David Anglin  dave.anglin@bell.net
-
+Oof, order 5.  Fortunately, that one was already fixed by commit
+8c38b705b4f4ca4e7f9cc116141bc38391917c30.
