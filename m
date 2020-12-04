@@ -2,107 +2,140 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E02F92CE1E0
-	for <lists+linux-parisc@lfdr.de>; Thu,  3 Dec 2020 23:38:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C32B62CE47E
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Dec 2020 01:35:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728100AbgLCWh1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 3 Dec 2020 17:37:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59500 "EHLO
+        id S1728147AbgLDAdw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 3 Dec 2020 19:33:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727664AbgLCWh1 (ORCPT
+        with ESMTP id S1726478AbgLDAdv (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 3 Dec 2020 17:37:27 -0500
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1166C061A51;
-        Thu,  3 Dec 2020 14:36:46 -0800 (PST)
-Received: from lwn.net (localhost [127.0.0.1])
+        Thu, 3 Dec 2020 19:33:51 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA34AC061A51;
+        Thu,  3 Dec 2020 16:33:11 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 71BAD1280B16;
+        Thu,  3 Dec 2020 16:33:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1607041991;
+        bh=hJcWfWJUTBo7/PTPqGVoNCucwByYpr0pl4ltez5onkk=;
+        h=Message-ID:Subject:From:To:Date:From;
+        b=CSFgW4d1X70kdF2brsNqqLXcUxS4rkPpXl0fG35lGg8Er8RLuGkNR7f53VpM6STF+
+         CaBI3xpSYkQpwyvzfojTpkdXl5UFu01ZmFqPYjvYenKuZHPHXr/6MojFZYz/jZ2Wqj
+         tu6JMqZUf8Ir49z9n0V+JKoQTR3PB/fQ7Xgk7sK4=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Ea-2EOobf9qW; Thu,  3 Dec 2020 16:33:11 -0800 (PST)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id A638F2204;
-        Thu,  3 Dec 2020 22:36:43 +0000 (UTC)
-Date:   Thu, 3 Dec 2020 15:36:42 -0700
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Kees Cook <keescook@chromium.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Rich Felker <dalias@libc.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        openrisc@lists.librecores.org, x86@kernel.org
-Subject: Re: [PATCH 0/6] Add documentation for Documentation/features at the
- built docs
-Message-ID: <20201203153642.594afd85@lwn.net>
-In-Reply-To: <cover.1606748711.git.mchehab+huawei@kernel.org>
-References: <cover.1606748711.git.mchehab+huawei@kernel.org>
-Organization: LWN.net
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 090011280AF1;
+        Thu,  3 Dec 2020 16:33:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1607041991;
+        bh=hJcWfWJUTBo7/PTPqGVoNCucwByYpr0pl4ltez5onkk=;
+        h=Message-ID:Subject:From:To:Date:From;
+        b=CSFgW4d1X70kdF2brsNqqLXcUxS4rkPpXl0fG35lGg8Er8RLuGkNR7f53VpM6STF+
+         CaBI3xpSYkQpwyvzfojTpkdXl5UFu01ZmFqPYjvYenKuZHPHXr/6MojFZYz/jZ2Wqj
+         tu6JMqZUf8Ir49z9n0V+JKoQTR3PB/fQ7Xgk7sK4=
+Message-ID: <fb91b40d258414b0fdce2c380752e48daa6a70d6.camel@HansenPartnership.com>
+Subject: PATCH] fs/dax: fix compile problem on parisc and mips
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>
+Cc:     Matthew Wilcox <willy@infradead.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        linux-nvdimm@lists.01.org
+Date:   Thu, 03 Dec 2020 16:33:10 -0800
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, 30 Nov 2020 16:36:29 +0100
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+These platforms define PMD_ORDER in asm/pgtable.h
 
-> This series got already submitted last year:
-> 
->    https://lore.kernel.org/lkml/cover.1561222784.git.mchehab+samsung@kernel.org/
-> 
-> Yet, on that time, there were too many other patches related to ReST
-> conversion floating around. So, at the end, I guess this one got missed.
-> 
-> So, I did a rebase on the top of upstream, and added a few new changes.
+This means that as soon as dax.c included asm/pgtable.h in commit
+11cf9d863dcb ("fs/dax: Deposit pagetable even when installing zero
+page") we clash with PMD_ORDER introduced by cfc93c6c6c96 ("dax:
+Convert dax_insert_pfn_mkwrite to XArray") and we get this problem:
 
-OK, I've gone ahead and applied these; it gains me a new trivial conflict
-with x86, but so be it...
+/home/jejb/git/linux-build/fs/dax.c:53: warning: "PMD_ORDER" redefined
+   53 | #define PMD_ORDER (PMD_SHIFT - PAGE_SHIFT)
+      |
+In file included from /home/jejb/git/linux-build/include/linux/pgtable.h:6,
+                 from /home/jejb/git/linux-build/include/linux/mm.h:33,
+                 from /home/jejb/git/linux-build/include/linux/bvec.h:14,
+                 from /home/jejb/git/linux-build/include/linux/blk_types.h:10,
+                 from /home/jejb/git/linux-build/include/linux/genhd.h:19,
+                 from /home/jejb/git/linux-build/include/linux/blkdev.h:8,
+                 from /home/jejb/git/linux-build/fs/dax.c:10:
+/home/jejb/git/linux-build/arch/parisc/include/asm/pgtable.h:124: note: this is the location of the previous definition
+  124 | #define PMD_ORDER 1 /* Number of pages per pmd */
+      |
+make[2]: *** Deleting file 'fs/dax.o'
 
-That said, I think that the RST table formatting could be *way* improved.
-The current tables are all white space and hard to make sense of.  What if
-we condensed the information?  Just looking at the first entry in
-Documentation/admin-guide/features.html, perhaps it could look like:
+Fix by renaming dax's PMD_ORDER to DAX_PMD_ORDER
 
-    FEATURE	KCONFIG/DESCRIPTION		STATUS
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+---
+ fs/dax.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-    cBPF-JIT	HAVE_CBPF_JIT			TODO: alpha, arc, arm...
-    						ok: mips, powerpc, ...
-		arch supports cBPF JIT
-		optimizations
+diff --git a/fs/dax.c b/fs/dax.c
+index 5b47834f2e1b..4d3b0db5c321 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -50,7 +50,7 @@ static inline unsigned int pe_order(enum page_entry_size pe_size)
+ #define PG_PMD_NR	(PMD_SIZE >> PAGE_SHIFT)
+ 
+ /* The order of a PMD entry */
+-#define PMD_ORDER	(PMD_SHIFT - PAGE_SHIFT)
++#define DAX_PMD_ORDER	(PMD_SHIFT - PAGE_SHIFT)
+ 
+ static wait_queue_head_t wait_table[DAX_WAIT_TABLE_ENTRIES];
+ 
+@@ -98,7 +98,7 @@ static bool dax_is_locked(void *entry)
+ static unsigned int dax_entry_order(void *entry)
+ {
+ 	if (xa_to_value(entry) & DAX_PMD)
+-		return PMD_ORDER;
++		return DAX_PMD_ORDER;
+ 	return 0;
+ }
+ 
+@@ -1471,7 +1471,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct address_space *mapping = vma->vm_file->f_mapping;
+-	XA_STATE_ORDER(xas, &mapping->i_pages, vmf->pgoff, PMD_ORDER);
++	XA_STATE_ORDER(xas, &mapping->i_pages, vmf->pgoff, DAX_PMD_ORDER);
+ 	unsigned long pmd_addr = vmf->address & PMD_MASK;
+ 	bool write = vmf->flags & FAULT_FLAG_WRITE;
+ 	bool sync;
+@@ -1530,7 +1530,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
+ 	 * entry is already in the array, for instance), it will return
+ 	 * VM_FAULT_FALLBACK.
+ 	 */
+-	entry = grab_mapping_entry(&xas, mapping, PMD_ORDER);
++	entry = grab_mapping_entry(&xas, mapping, DAX_PMD_ORDER);
+ 	if (xa_is_internal(entry)) {
+ 		result = xa_to_internal(entry);
+ 		goto fallback;
+@@ -1696,7 +1696,7 @@ dax_insert_pfn_mkwrite(struct vm_fault *vmf, pfn_t pfn, unsigned int order)
+ 	if (order == 0)
+ 		ret = vmf_insert_mixed_mkwrite(vmf->vma, vmf->address, pfn);
+ #ifdef CONFIG_FS_DAX_PMD
+-	else if (order == PMD_ORDER)
++	else if (order == DAX_PMD_ORDER)
+ 		ret = vmf_insert_pfn_pmd(vmf, pfn, FAULT_FLAG_WRITE);
+ #endif
+ 	else
+-- 
+2.29.2
 
-The result would be far more compact and easy to read, IMO.  I may get
-around to giving this a try if (hint :) nobody else gets there first.
 
-Thanks,
-
-jon
