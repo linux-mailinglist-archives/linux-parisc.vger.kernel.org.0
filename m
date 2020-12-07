@@ -2,185 +2,139 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 858572D0875
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Dec 2020 01:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F20712D13D6
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Dec 2020 15:36:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728356AbgLGABz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 6 Dec 2020 19:01:55 -0500
-Received: from mail-eopbgr80082.outbound.protection.outlook.com ([40.107.8.82]:2436
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728683AbgLGABz (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 6 Dec 2020 19:01:55 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nOvIjDhdwhos+KrW6RN5/H7q5RIcrfnc6HbqzF9WPKur+TFvlmqzureFjc8rm29PcfRv+DhhtGkTH6BFtGw/vHixNwhkKPwTTDFFjKsiaa2n9k1RwB+Yvhu+hRmewOdTYzbRabnD7mtDxcZ7xucFL2/LRflVTMdXyfo4b/wIg0BdmDlLkf7yb3vyUZuD1GXTAt28ShV0Rh1eDKIcvAOfw9s4vTDmIMYlHRvwTogVOdym/rvNjDbgAt9O0PF70T7MwaGfv71CFJenebyXFXaDTycuKRYHq6QjXf51jIJ1ReWIY0BkIqOuK1rBSp6jo4uYPaGs7NvWiYyyzZhm9geFng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fe24wXWPqHk0gw/XLrY/J/yPJk51KrqORMkqeYQ007o=;
- b=RV5qf4Hu9c//I3bOXZIIIf8LFeKzJzBy6Y15sTco+kQR3C9pn4CP92jTp96WWmyO/xCOcfftnqlpQ92Ta7WROulhwy/vvN7CLVxVs6rLB7zS8KN+FGpe6uTTwUlTVXprSpRwS+Uk2SsOSiz4nZOQ3p3PuR5K4IISuA7uFcP89bU1yLmL6cLB2j971x9jE1u3DH1YDw8H14jDDukkcKwI4I+rZEn+UHzDRLCrbmBRh8cQqB5C8so56blINNjab0d64kT0xnYrmO7lru+xt44KPetAOAqQ2V3d/IRidOsYkMLB/DdZIW0K7NFZiQbq4VDQS2kKb80HWxhdON4XiZe/uA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fe24wXWPqHk0gw/XLrY/J/yPJk51KrqORMkqeYQ007o=;
- b=Ir/iHm7FnOZw84CghTRSeTXbUfaaSQhpZEnNhG9rJ1xzMkNxA8AQpyeNemdG/9N+ErdmxzYQlQzbrLwlFMZpJIRHlupctQ8mKCugOSIsSareTyUm5X1tNT8Q/WmA6DvEXayluqcEf4x2pGTq2r0vprhlvFl/WOeAob4LTk6OwQc=
-Authentication-Results: davemloft.net; dkim=none (message not signed)
- header.d=none;davemloft.net; dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR04MB5696.eurprd04.prod.outlook.com (2603:10a6:803:e7::13)
- by VE1PR04MB6637.eurprd04.prod.outlook.com (2603:10a6:803:126::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Mon, 7 Dec
- 2020 00:00:07 +0000
-Received: from VI1PR04MB5696.eurprd04.prod.outlook.com
- ([fe80::2dd6:8dc:2da7:ad84]) by VI1PR04MB5696.eurprd04.prod.outlook.com
- ([fe80::2dd6:8dc:2da7:ad84%5]) with mapi id 15.20.3632.021; Mon, 7 Dec 2020
- 00:00:07 +0000
-From:   Vladimir Oltean <vladimir.oltean@nxp.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jiri Benc <jbenc@redhat.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Eric Dumazet <edumazet@google.com>,
-        George McCollister <george.mccollister@gmail.com>,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [RFC PATCH net-next 09/13] parisc/led: hold the netdev lists lock when retrieving device statistics
-Date:   Mon,  7 Dec 2020 01:59:15 +0200
-Message-Id: <20201206235919.393158-10-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201206235919.393158-1-vladimir.oltean@nxp.com>
-References: <20201206235919.393158-1-vladimir.oltean@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [188.25.2.120]
-X-ClientProxiedBy: VI1PR08CA0156.eurprd08.prod.outlook.com
- (2603:10a6:800:d5::34) To VI1PR04MB5696.eurprd04.prod.outlook.com
- (2603:10a6:803:e7::13)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (188.25.2.120) by VI1PR08CA0156.eurprd08.prod.outlook.com (2603:10a6:800:d5::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.21 via Frontend Transport; Mon, 7 Dec 2020 00:00:06 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 53d4cb5a-ce4c-46de-a2a3-08d89a430e4f
-X-MS-TrafficTypeDiagnostic: VE1PR04MB6637:
-X-Microsoft-Antispam-PRVS: <VE1PR04MB66375AC9942B8F5B66053299E0CE0@VE1PR04MB6637.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rtt/qMdGZCFILcwJsmIiKLqtvBzTWNpg+Nz0zjiFQ7rokKF4MB0AUVFQl5jXEgYGk9C1qXGnlM5X0y6VlEQC+mAsVR6IUm4We1Q9REIjbd3WIYMmEXXdA2AsVPCYliVt07j1UMv015xWXdxuypvnRX3hxb1wH5by4xwLku9QolAsd2EVRj4vGLZTo5iz6iI0XiCfQQRFTz1eJpVsD6lIDdCBkUPGECuPXNcEMSTFG6e9EC2K5o7v8Z6XgEcTJMX9dy/iqjbys272aWEdVs7akA9TdkDxSBDCDW92O8IE/1/KKSktt2fn8Zw+h1J/WPaBxIuebBKrE0R+VdrOqPkgkuSXXsF1/HM6El2WgRG+zqB8X0X/svbK2+7P2hDnV7PI
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5696.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(366004)(136003)(39860400002)(376002)(6506007)(52116002)(5660300002)(66946007)(66556008)(26005)(8676002)(2906002)(8936002)(1076003)(316002)(110136005)(54906003)(478600001)(44832011)(7416002)(6512007)(186003)(6486002)(16526019)(6666004)(36756003)(956004)(4326008)(86362001)(66476007)(69590400008)(2616005)(83380400001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?FLYYK/RLLRUG5KYpD+BGnSSlwJ2/JpoTPBdkIfStuc2Jx7mfvyAW1dUG4H8W?=
- =?us-ascii?Q?JT/+fEI6SQ5mM/IQnEdaDCEWoQPkGt3kqYdhSdZ1jqtKyXAjgkC+HrEt5tWa?=
- =?us-ascii?Q?1xMGra+OZDonKWakZCprF2eOPNRCP96HT6eGEMMTG7vnX+8SPhkmUTLjgIjd?=
- =?us-ascii?Q?b/PqJjcUBLdvPNaQRs+8L57Y2nMg891rOjUOfaCp3oV9P5mvs2X1FkTORepn?=
- =?us-ascii?Q?CQqf31QmWr7XXPbYMl2xmL6EHsTRb87YTtz4snDiJFHpM3sgslwOmZMHX9U7?=
- =?us-ascii?Q?MBj79cvLKASBr6Cs6GwOKErnoPnJxbEwOz+yLeXUuDo+l3F6NFNThGnMY/MF?=
- =?us-ascii?Q?XvP4RxLdKXe45/mfAx3gZu6061HsqzDy8J+udyNqf/AK4DP4AaFl/9Z1uSfG?=
- =?us-ascii?Q?vYlwt3Y68bRyPCd0QfnfYnI13QRW/n/zFs5ZrAggax6BysZyYG5ng/TaYJmM?=
- =?us-ascii?Q?KU5mTyesRPiqeuB+BJ9hI2OfphpiDfX/cCHyNS8ZwJk713IZAE5HH6jpnDHQ?=
- =?us-ascii?Q?AiIlgFlgUolp722h0mNTqC9k6pbkg4PxvkZSG/W/EgK5lCGmOPzh7OCA2V5X?=
- =?us-ascii?Q?Rtmg+nbGkRzcmm9auacPZ0kC/6vewiJJri+rwNNzJIA1MECUKT4Qn0hnGUYA?=
- =?us-ascii?Q?qFpgZTlr5FLYae8vycN95m7qKQSDkYQJsl7DpSjB8l2CNqXKoXu1aYCW5BF8?=
- =?us-ascii?Q?q2+JOpgrkoyGTOy0j3ASZWu5pU6aZgJbUmDJccLtBMrav1Sam8a/6dSsTwpL?=
- =?us-ascii?Q?4XHPkhR0ZEqhuXm97G/79MLuxTJ9mNrFZQUDKt2qlzpdW2G+IEIcQzRgYc/k?=
- =?us-ascii?Q?uzu7jyoqubumk0TT0smLM7YbLpBfEFZYX4b4bw7K3wOjjbDeUwUhry4LELYW?=
- =?us-ascii?Q?O8axAOpEAWYLb8sP4WrQXC95XiMomp1Oy0BTeoIKM+ZWe0IGMk8w+g7pjPRN?=
- =?us-ascii?Q?+ZY2Nirzq77SxZhqAfZpQJ3nt9OtwJQati6NHjr8hd+NGWUOyxlh14ENadbo?=
- =?us-ascii?Q?kCHb?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53d4cb5a-ce4c-46de-a2a3-08d89a430e4f
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5696.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Dec 2020 00:00:07.0249
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yCstBQQSP/uznnkkNen5Mavy8Zio/1Wg+Cup/c66jkHpz5AmDS3fhgiMRlrB8ORMyDaRv1bVumsxq+oGC7huww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6637
+        id S1726007AbgLGOfb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 7 Dec 2020 09:35:31 -0500
+Received: from mout.kundenserver.de ([212.227.126.133]:35657 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725772AbgLGOfa (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 7 Dec 2020 09:35:30 -0500
+Received: from orion.localdomain ([95.114.88.149]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MVaQW-1kcPeP1c3Q-00RY6g; Mon, 07 Dec 2020 15:31:53 +0100
+From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        benh@kernel.crashing.org, paulus@samba.org, jdike@addtoit.com,
+        richard@nod.at, anton.ivanov@cambridgegreys.com,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+        hpa@zytor.com, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-um@lists.infradead.org
+Subject: [PATCH] arch: fix 'unexpected IRQ trap at vector' warnings
+Date:   Mon,  7 Dec 2020 15:31:46 +0100
+Message-Id: <20201207143146.30021-1-info@metux.net>
+X-Mailer: git-send-email 2.11.0
+X-Provags-ID: V03:K1:rMUe2CBEB0YZF4A68VUWmrIH1yNW//gd0c/pQGPWmyMpSA2bX4y
+ jHgyHm8GpTs/tCj3iuuCtSypFZR3KU5WIP1wANT4VjPkCyeXDkgjAcw/iCjkQVNTvoUv6E4
+ JrZlmcRHyCZI3p4cK57xGz5GXFXaLX/TWpGK+yDTovpnj/nUwC/S6xpXVH7lHGsSjlB2fSc
+ SxqVYzYq0T9qMthuTjxCA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:J8L0KEQhX2Y=:qF988fCH6y7JnTbLOsOL9Y
+ cDHv4VjCCTnVaS8fRofG82d8RSJyg0hCUZBXe04Vff61i58PpeCe1a25NSCXgSdLDg6l4AElV
+ YnH2BwYLnVCECxT3Z51+SB6AdnfLW9f86zmwUvYDCybaHP87pVrr74FESw5Qn/tQmsFf0c5Ef
+ LuxsO6sry9KpPkeE12sB+AEme9yWHuLzKSmAhyhg2M32AWym+GrEeFvppP4FQUcWAhSqEiD4D
+ sy7cIo41rIkQVIC1ru4tMi8Qrj+q0078gkhR/bm8epdOJvuEf4TGOFfQJRIfOe87AmVL44MXd
+ nzz10f+JCxzpaxI1ZI9FwyaheQN/VGZQlSmyt/CaUCo1PpklvPfaem7nNluAY90S0NcSjU2hF
+ 2x20AgR7e+j2SDxweyivFQa8+fsD3N6cn/YS3jWKoJbaz9UeBSeFqysSyIs7G
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-In the effort of making .ndo_get_stats64 be able to sleep, we need to
-ensure the callers of dev_get_stats do not use atomic context.
+All archs, except Alpha, print out the irq number in hex, but the message
+looks like it was a decimal number, which is quite confusing. Fixing this
+by adding "0x" prefix.
 
-The LED driver for HP-PARISC workstations uses a workqueue to
-periodically check for updates in network interface statistics, and
-flicker when those have changed (i.e. there has been activity on the
-line). Ignoring the fact that this driver is completely duplicating
-drivers/leds/trigger/ledtrig-netdev.c, there is an even bigger problem.
-Now, the dev_get_stats call can sleep, and iterating through the list of
-network interfaces still needs to ensure the integrity of list of
-network interfaces. So that leaves us only one locking option given the
-current design of the network stack, and that is the netns mutex.
-
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 ---
- drivers/parisc/led.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ arch/arm/include/asm/hw_irq.h      | 2 +-
+ arch/parisc/include/asm/hardirq.h  | 2 +-
+ arch/powerpc/include/asm/hardirq.h | 2 +-
+ arch/s390/include/asm/hardirq.h    | 2 +-
+ arch/um/include/asm/hardirq.h      | 2 +-
+ arch/x86/kernel/irq.c              | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/parisc/led.c b/drivers/parisc/led.c
-index b7005aaa782b..1289dd3ea6e4 100644
---- a/drivers/parisc/led.c
-+++ b/drivers/parisc/led.c
-@@ -38,7 +38,6 @@
- #include <linux/ctype.h>
- #include <linux/blkdev.h>
- #include <linux/workqueue.h>
--#include <linux/rcupdate.h>
- #include <asm/io.h>
- #include <asm/processor.h>
- #include <asm/hardware.h>
-@@ -356,24 +355,28 @@ static __inline__ int led_get_net_activity(void)
+diff --git a/arch/arm/include/asm/hw_irq.h b/arch/arm/include/asm/hw_irq.h
+index cecc13214ef1..2749f19271d9 100644
+--- a/arch/arm/include/asm/hw_irq.h
++++ b/arch/arm/include/asm/hw_irq.h
+@@ -9,7 +9,7 @@ static inline void ack_bad_irq(int irq)
+ {
+ 	extern unsigned long irq_err_count;
+ 	irq_err_count++;
+-	pr_crit("unexpected IRQ trap at vector %02x\n", irq);
++	pr_crit("unexpected IRQ trap at vector 0x%02x\n", irq);
+ }
  
- 	rx_total = tx_total = 0;
+ #define ARCH_IRQ_INIT_FLAGS	(IRQ_NOREQUEST | IRQ_NOPROBE)
+diff --git a/arch/parisc/include/asm/hardirq.h b/arch/parisc/include/asm/hardirq.h
+index 7f7039516e53..c3348af88d3f 100644
+--- a/arch/parisc/include/asm/hardirq.h
++++ b/arch/parisc/include/asm/hardirq.h
+@@ -35,6 +35,6 @@ DECLARE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
+ #define __IRQ_STAT(cpu, member) (irq_stat[cpu].member)
+ #define inc_irq_stat(member)	this_cpu_inc(irq_stat.member)
+ #define __inc_irq_stat(member)	__this_cpu_inc(irq_stat.member)
+-#define ack_bad_irq(irq) WARN(1, "unexpected IRQ trap at vector %02x\n", irq)
++#define ack_bad_irq(irq) WARN(1, "unexpected IRQ trap at vector 0x%02x\n", irq)
  
--	/* we are running as a workqueue task, so we can use an RCU lookup */
--	rcu_read_lock();
--	for_each_netdev_rcu(&init_net, dev) {
-+	/* we are running as a workqueue task, so we can sleep */
-+	mutex_lock(&init_net->netdev_lists_lock);
-+
-+	for_each_netdev(&init_net, dev) {
-+		struct in_device *in_dev = in_dev_get(dev);
- 		const struct rtnl_link_stats64 *stats;
- 		struct rtnl_link_stats64 temp;
--		struct in_device *in_dev = __in_dev_get_rcu(dev);
+ #endif /* _PARISC_HARDIRQ_H */
+diff --git a/arch/powerpc/include/asm/hardirq.h b/arch/powerpc/include/asm/hardirq.h
+index f133b5930ae1..ec8cf3cf6e49 100644
+--- a/arch/powerpc/include/asm/hardirq.h
++++ b/arch/powerpc/include/asm/hardirq.h
+@@ -29,7 +29,7 @@ DECLARE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
  
--		if (!in_dev || !in_dev->ifa_list)
-+		if (!in_dev || !in_dev->ifa_list ||
-+		    ipv4_is_loopback(in_dev->ifa_list->ifa_local)) {
-+			in_dev_put(in_dev);
- 			continue;
-+		}
+ static inline void ack_bad_irq(unsigned int irq)
+ {
+-	printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
++	printk(KERN_CRIT "unexpected IRQ trap at vector 0x%02x\n", irq);
+ }
  
--		if (ipv4_is_loopback(in_dev->ifa_list->ifa_local))
--			continue;
-+		in_dev_put(in_dev);
+ extern u64 arch_irq_stat_cpu(unsigned int cpu);
+diff --git a/arch/s390/include/asm/hardirq.h b/arch/s390/include/asm/hardirq.h
+index dfbc3c6c0674..aaaec5cdd4fe 100644
+--- a/arch/s390/include/asm/hardirq.h
++++ b/arch/s390/include/asm/hardirq.h
+@@ -23,7 +23,7 @@
  
- 		stats = dev_get_stats(dev, &temp);
- 		rx_total += stats->rx_packets;
- 		tx_total += stats->tx_packets;
- 	}
--	rcu_read_unlock();
-+
-+	mutex_unlock(&init_net->netdev_lists_lock);
+ static inline void ack_bad_irq(unsigned int irq)
+ {
+-	printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
++	printk(KERN_CRIT "unexpected IRQ trap at vector 0x%02x\n", irq);
+ }
  
- 	retval = 0;
+ #endif /* __ASM_HARDIRQ_H */
+diff --git a/arch/um/include/asm/hardirq.h b/arch/um/include/asm/hardirq.h
+index b426796d26fd..2a2e6eae034b 100644
+--- a/arch/um/include/asm/hardirq.h
++++ b/arch/um/include/asm/hardirq.h
+@@ -15,7 +15,7 @@ typedef struct {
+ #ifndef ack_bad_irq
+ static inline void ack_bad_irq(unsigned int irq)
+ {
+-	printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
++	printk(KERN_CRIT "unexpected IRQ trap at vector 0x%02x\n", irq);
+ }
+ #endif
  
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index c5dd50369e2f..957c716f2df7 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -37,7 +37,7 @@ atomic_t irq_err_count;
+ void ack_bad_irq(unsigned int irq)
+ {
+ 	if (printk_ratelimit())
+-		pr_err("unexpected IRQ trap at vector %02x\n", irq);
++		pr_err("unexpected IRQ trap at vector 0x%02x\n", irq);
+ 
+ 	/*
+ 	 * Currently unexpected vectors happen only on SMP and APIC.
 -- 
-2.25.1
+2.11.0
 
