@@ -2,119 +2,163 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 146392D4091
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Dec 2020 12:02:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F592D671C
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Dec 2020 20:43:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730374AbgLILB7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 9 Dec 2020 06:01:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60848 "EHLO
+        id S2393479AbgLJTnC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 10 Dec 2020 14:43:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730267AbgLILBx (ORCPT
+        with ESMTP id S2393443AbgLJTm7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 9 Dec 2020 06:01:53 -0500
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF3CAC061793;
-        Wed,  9 Dec 2020 03:01:12 -0800 (PST)
-Received: by mail-pg1-x543.google.com with SMTP id f17so960985pge.6;
-        Wed, 09 Dec 2020 03:01:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MKsZH2+iAwgUh8UDFh2dZripOeDuPzMh57usXeoy0CY=;
-        b=PtobN+qkKZTUIm3Z46jtCxqfPZ5qOx/6dvovA1iYTJVDHmFO+a2rhs1758yYTQ+k4H
-         o+5J6j5AcNAMVeVpAp7vrMoSmL9KXngG20Ofzoa8DD8mtK+wyf/NJjewzF9hQAzLYLtI
-         6jblrmw8z2XCD01SDZV2iVGyQGwZjOwtsWcq617+ls42mGL8ToyUg5SD6LFXYUW2U6h3
-         U9LjeXul43ThJ2AMcEjBnViTOaJBQvRRg4jzV9bisZIWbW2Uza4DWd52hGGr6Rd9fNfk
-         jQhCZKyX4NjyrFTdnLHHi2jtUoUgnyNgsrm+7bZIwv6MRpisKQreDrwtfpcx3O+Un+PG
-         /rnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MKsZH2+iAwgUh8UDFh2dZripOeDuPzMh57usXeoy0CY=;
-        b=tiShoyIbXXM14gt+VqGDTvbTN0ybOMGh/KnUHQdnkqgapcrDzZNnNCnbx9hbXFg1uz
-         fNw5jSwSQzJNuvcyV4+RZM8nDvkOW8L0LVVVFb8opthLrCcew5upV5HnaoAKyWpQvjhq
-         HHk0AbMMNwUs8WPo5tEMofNwnJy8hKqHPRz8YULKGKsCP+AyT9JB8ZvxLm0PauZMykbI
-         PV/53LJaz3w2WjRtg34ofjxQXSUNRmUKEhix5vk4ddAy1c1iMpFEeVUvXXz3E3jAmMTC
-         +LVmfwnZD3wQ3J+hFjNNsCilX4x3xnHhg1FCQeLIRUFp9udAnkxBIvAIRwUdFpCJ+D9W
-         Aw8A==
-X-Gm-Message-State: AOAM532JbjzXP99PqudCrnGvLYAzjrRNB5R3u7EC23/9KatbdXM/jAo6
-        YjKSXwdNU4D82oO0dYIw62br/Q3XOEsP88KbTNU=
-X-Google-Smtp-Source: ABdhPJwjF1FoXl7fnHNaReES/WUirms9U5/ouIHB3iXXpgcsDfMHSybf0Zo8utSHuKkU9Lhpmt1u/VwzL8L8+w3d1qc=
-X-Received: by 2002:a63:b1e:: with SMTP id 30mr1440855pgl.203.1607511672453;
- Wed, 09 Dec 2020 03:01:12 -0800 (PST)
+        Thu, 10 Dec 2020 14:42:59 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 235BAC0613D6;
+        Thu, 10 Dec 2020 11:42:19 -0800 (PST)
+Message-Id: <20201210194042.703779349@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1607629337;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:  references:references;
+        bh=xNUoZoBVroF7IJy3X8hhV7V+S/ANMxwK+r48iZvHH7k=;
+        b=SuZCyt4zlNSkg7Jh6xjd5t+bljnkIDhiuE1rhn/qKeMG+ite6vJEiEbNofXy6Jc8tYg+0b
+        IECvv2LjnWcGzCS6R2c2tg4sgQpGcjXByKLBZPL7Xs4OwNUUaKF820w3Ic1JKPFWbxYaV/
+        zQxlwp4rnzD+WzTiaw91J+4L7iQQ+SR32KSqZT854CLAJKIIUHqBcwUh01vq4gYJysHS9U
+        2YuIdbPutXAYf6qxYXI8k/N2s6EcL8OojQbYBV3yqFeMwoY5o0cLfzqE9P8/gw+P+igDVq
+        lKj3W3wk7xu1ziy9h34ybqOITt3G9Oy0XdV3S2Ut5Fvm8NWwxziMLNP2XRk3vg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1607629337;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:  references:references;
+        bh=xNUoZoBVroF7IJy3X8hhV7V+S/ANMxwK+r48iZvHH7k=;
+        b=VHoSRskFC2dXgfT8CV99ZHE5BpRPUfLU6nfE7o3PMPrsIEKWqDmtgbLpWFRMlRZjjTeINe
+        qsFjW8cMZ9WikxCw==
+Date:   Thu, 10 Dec 2020 20:25:38 +0100
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Marc Zyngier <maz@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        afzal mohammed <afzal.mohd.ma@gmail.com>,
+        linux-parisc@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Wambui Karuga <wambui.karugax@gmail.com>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        Jon Mason <jdmason@kudzu.us>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Allen Hubbe <allenbh@gmail.com>, linux-ntb@googlegroups.com,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-pci@vger.kernel.org,
+        Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
+        Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        xen-devel@lists.xenproject.org
+Subject: [patch 02/30] genirq: Move status flag checks to core
+References: <20201210192536.118432146@linutronix.de>
 MIME-Version: 1.0
-References: <4d535d35-6c8c-2bd8-812b-2b53194ce0ec@gmail.com> <CAHp75VfBtRS=BA83Q4U9hJ14bO4wW_o44CKs=DBOtWnzqTXO3w@mail.gmail.com>
-In-Reply-To: <CAHp75VfBtRS=BA83Q4U9hJ14bO4wW_o44CKs=DBOtWnzqTXO3w@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 9 Dec 2020 13:02:01 +0200
-Message-ID: <CAHp75VezKrQAVf4ceJnHq5R8niwMqCme5N5dW0deyVYP3GjO8A@mail.gmail.com>
-Subject: Re: [PATCH] PCI: Remove pci_try_set_mwi
-To:     Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Jonathan Corbet <corbet@lwn.net>, Jens Axboe <axboe@kernel.dk>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Ion Badulescu <ionut@badula.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Lino Sanfilippo <LinoSanfilippo@gmx.de>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Adam Radford <aradford@gmail.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Peter Chen <Peter.Chen@nxp.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ide@vger.kernel.org, dmaengine <dmaengine@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        linux-parisc@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        SCSI development list <linux-scsi@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux USB Mailing List <linux-usb@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-transfer-encoding: 8-bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Dec 9, 2020 at 12:59 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Wed, Dec 9, 2020 at 10:35 AM Heiner Kallweit <hkallweit1@gmail.com> wrote:
+These checks are used by modules and prevent the removal of the export of
+irq_to_desc(). Move the accessor into the core.
 
-...
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+---
+ include/linux/irqdesc.h |   17 +++++------------
+ kernel/irq/manage.c     |   17 +++++++++++++++++
+ 2 files changed, 22 insertions(+), 12 deletions(-)
 
-> > -int pci_try_set_mwi(struct pci_dev *dev)
-> > -{
->
-> > -#ifdef PCI_DISABLE_MWI
-> > -       return 0;
-> > -#else
-> > -       return pci_set_mwi(dev);
-> > -#endif
->
-> This seems still valid case for PowerPC and SH.
+--- a/include/linux/irqdesc.h
++++ b/include/linux/irqdesc.h
+@@ -223,28 +223,21 @@ irq_set_chip_handler_name_locked(struct
+ 	data->chip = chip;
+ }
+ 
++bool irq_check_status_bit(unsigned int irq, unsigned int bitmask);
++
+ static inline bool irq_balancing_disabled(unsigned int irq)
+ {
+-	struct irq_desc *desc;
+-
+-	desc = irq_to_desc(irq);
+-	return desc->status_use_accessors & IRQ_NO_BALANCING_MASK;
++	return irq_check_status_bit(irq, IRQ_NO_BALANCING_MASK);
+ }
+ 
+ static inline bool irq_is_percpu(unsigned int irq)
+ {
+-	struct irq_desc *desc;
+-
+-	desc = irq_to_desc(irq);
+-	return desc->status_use_accessors & IRQ_PER_CPU;
++	return irq_check_status_bit(irq, IRQ_PER_CPU);
+ }
+ 
+ static inline bool irq_is_percpu_devid(unsigned int irq)
+ {
+-	struct irq_desc *desc;
+-
+-	desc = irq_to_desc(irq);
+-	return desc->status_use_accessors & IRQ_PER_CPU_DEVID;
++	return irq_check_status_bit(irq, IRQ_PER_CPU_DEVID);
+ }
+ 
+ static inline void
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -2769,3 +2769,23 @@ bool irq_has_action(unsigned int irq)
+ 	return res;
+ }
+ EXPORT_SYMBOL_GPL(irq_has_action);
++
++/**
++ * irq_check_status_bit - Check whether bits in the irq descriptor status are set
++ * @irq:	The linux irq number
++ * @bitmask:	The bitmask to evaluate
++ *
++ * Returns: True if one of the bits in @bitmask is set
++ */
++bool irq_check_status_bit(unsigned int irq, unsigned int bitmask)
++{
++	struct irq_desc *desc;
++	bool res = false;
++
++	rcu_read_lock();
++	desc = irq_to_desc(irq);
++	if (desc)
++		res = !!(desc->status_use_accessors & bitmask);
++	rcu_read_unlock();
++	return res;
++}
 
-I see that pci_set_mwi() also has the ifdeffery (I thought it's only
-here), so it's fine.
-
-> > -}
-> > -EXPORT_SYMBOL(pci_try_set_mwi);
-
--- 
-With Best Regards,
-Andy Shevchenko
