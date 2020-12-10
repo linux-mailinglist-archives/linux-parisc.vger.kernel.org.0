@@ -2,44 +2,43 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E94F2D6837
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Dec 2020 21:12:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47F872D6829
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Dec 2020 21:10:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404461AbgLJUJl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 10 Dec 2020 15:09:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53204 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404279AbgLJTnF (ORCPT
+        id S2393530AbgLJTnT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 10 Dec 2020 14:43:19 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56826 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404286AbgLJTnN (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 10 Dec 2020 14:43:05 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7F7C0617A7;
-        Thu, 10 Dec 2020 11:42:24 -0800 (PST)
-Message-Id: <20201210194043.268774449@linutronix.de>
+        Thu, 10 Dec 2020 14:43:13 -0500
+Message-Id: <20201210194043.769108348@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607629343;
+        s=2020; t=1607629349;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=KtzFp0nR+dJW1v891+1wc4D+KUTADWJVxpq6j1ykdfo=;
-        b=BwWrBYP0c3Z0lFh3V6qC90H7c5G9PHEfLbQKd0hztOiqwJ4kBCiNk+VDHIcCk1P/HxJJE+
-        zt6CbhOUy0zFcpFdRmOFsyfb9chR0Qx1RUaHNJMzGPe4/YSaExFvgbHq6rbAS7kLyxP5tj
-        50aob2dpVHhgmHdoE9LrAgft46kAteQH0u20dVmWOXNd76SQCmuGq0ygZQrP10YFFulxyu
-        /qBwgM/QVkALrmRL+BjjJvZRX8irP6Tqn07c/GO5qIfUgWd74BWRs6KIHsrquTbtL84IH6
-        +M3rrImgxsn11U5KirO7h0p+JsOWwXjhPDlffX4TftaAXSN1Xiplo1xF1UMXlQ==
+        bh=RkpDEDsz36bMGIvl/YLs0noKGbsbwyBTWfWGyYCIvwI=;
+        b=FjXt0gBZbmoGEhW+JUNun0TgRlpWk5UHUbF8b/SYgA73R5qt2FK9Tl9JCUAhz1x+5ISxmb
+        8V7v08WHaUsVznntzV+P4bCrHHh6loow5ZaaQC5qCuEudPhwVHK22AOQesI0Ecsqkh8veP
+        Qwn4/oD2Zv3hZttfcTXroXZBKsSviSPS/hfZ0fieRb3ZsJsiILx4Kdfz9zR7w+K2srUSyp
+        sVcjXZizv2IhQYS+ESc7LfjgqYgvOCII1d3ugOhi6vPvk7jAG3wwmOOag6qx9YOR3B1IuO
+        KQi2Ohrd/6vH+kL/8yvl1XW4GpaahKbPHYgPc32mGshR05m6gXPFbQzdssR1DQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607629343;
+        s=2020e; t=1607629349;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=KtzFp0nR+dJW1v891+1wc4D+KUTADWJVxpq6j1ykdfo=;
-        b=YlMcwWy3vQ5LbjypUKpYuIGaMi15XbC955aXBdrVoJspoFoOrPcJRpjqt+rHhF7aRCDnxi
-        VzPUfEGKZfuiRjBQ==
-Date:   Thu, 10 Dec 2020 20:25:43 +0100
+        bh=RkpDEDsz36bMGIvl/YLs0noKGbsbwyBTWfWGyYCIvwI=;
+        b=tNp+xNMz1hLFIiRaZEJhoV6X6hTrUYtKO/6Uex9oEhysEt44+COqeNeDA5dBz+L1+ts6Sq
+        70KNBmuAKx0cHoAw==
+Date:   Thu, 10 Dec 2020 20:25:48 +0100
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     LKML <linux-kernel@vger.kernel.org>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
         Marc Zyngier <maz@kernel.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
         afzal mohammed <afzal.mohd.ma@gmail.com>,
@@ -48,8 +47,6 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
         Jani Nikula <jani.nikula@linux.intel.com>,
         Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
@@ -81,7 +78,7 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
         xen-devel@lists.xenproject.org
-Subject: [patch 07/30] genirq: Make kstat_irqs() static
+Subject: [patch 12/30] s390/irq: Use irq_desc_kstat_cpu() in show_msi_interrupt()
 References: <20201210192536.118432146@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -90,60 +87,25 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-No more users outside the core code.
+The irq descriptor is already there, no need to look it up again.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org
 ---
- include/linux/kernel_stat.h |    1 -
- kernel/irq/irqdesc.c        |   19 ++++++-------------
- 2 files changed, 6 insertions(+), 14 deletions(-)
+ arch/s390/kernel/irq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/kernel_stat.h
-+++ b/include/linux/kernel_stat.h
-@@ -67,7 +67,6 @@ static inline unsigned int kstat_softirq
- /*
-  * Number of interrupts per specific IRQ source, since bootup
-  */
--extern unsigned int kstat_irqs(unsigned int irq);
- extern unsigned int kstat_irqs_usr(unsigned int irq);
+--- a/arch/s390/kernel/irq.c
++++ b/arch/s390/kernel/irq.c
+@@ -124,7 +124,7 @@ static void show_msi_interrupt(struct se
+ 	raw_spin_lock_irqsave(&desc->lock, flags);
+ 	seq_printf(p, "%3d: ", irq);
+ 	for_each_online_cpu(cpu)
+-		seq_printf(p, "%10u ", kstat_irqs_cpu(irq, cpu));
++		seq_printf(p, "%10u ", irq_desc_kstat_irq(desc, cpu));
  
- /*
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -924,15 +924,7 @@ static bool irq_is_nmi(struct irq_desc *
- 	return desc->istate & IRQS_NMI;
- }
- 
--/**
-- * kstat_irqs - Get the statistics for an interrupt
-- * @irq:	The interrupt number
-- *
-- * Returns the sum of interrupt counts on all cpus since boot for
-- * @irq. The caller must ensure that the interrupt is not removed
-- * concurrently.
-- */
--unsigned int kstat_irqs(unsigned int irq)
-+static unsigned int kstat_irqs(unsigned int irq)
- {
- 	struct irq_desc *desc = irq_to_desc(irq);
- 	unsigned int sum = 0;
-@@ -951,13 +943,14 @@ unsigned int kstat_irqs(unsigned int irq
- }
- 
- /**
-- * kstat_irqs_usr - Get the statistics for an interrupt
-+ * kstat_irqs_usr - Get the statistics for an interrupt from thread context
-  * @irq:	The interrupt number
-  *
-  * Returns the sum of interrupt counts on all cpus since boot for @irq.
-- * Contrary to kstat_irqs() this can be called from any context.
-- * It uses rcu since a concurrent removal of an interrupt descriptor is
-- * observing an rcu grace period before delayed_free_desc()/irq_kobj_release().
-+ *
-+ * It uses rcu to protect the access since a concurrent removal of an
-+ * interrupt descriptor is observing an rcu grace period before
-+ * delayed_free_desc()/irq_kobj_release().
-  */
- unsigned int kstat_irqs_usr(unsigned int irq)
- {
+ 	if (desc->irq_data.chip)
+ 		seq_printf(p, " %8s", desc->irq_data.chip->name);
 
