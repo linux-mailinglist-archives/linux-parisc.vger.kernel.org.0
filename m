@@ -2,22 +2,22 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D81E2D849D
-	for <lists+linux-parisc@lfdr.de>; Sat, 12 Dec 2020 06:12:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 945832D8639
+	for <lists+linux-parisc@lfdr.de>; Sat, 12 Dec 2020 12:37:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727131AbgLLFLj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 12 Dec 2020 00:11:39 -0500
-Received: from vps-ad94741f.vps.ovh.ca ([51.79.157.202]:54945 "EHLO visi.com"
+        id S1726740AbgLLLhW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 12 Dec 2020 06:37:22 -0500
+Received: from vps-ad94741f.vps.ovh.ca ([51.79.157.202]:50108 "EHLO visi.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727079AbgLLFL3 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 12 Dec 2020 00:11:29 -0500
-Received: from [31.161.189.205] (account juliangath@visi.com HELO User)
+        id S1726633AbgLLLhW (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 12 Dec 2020 06:37:22 -0500
+Received: from [5.62.58.235] (account juliangath@visi.com HELO User)
   by visi.com (CommuniGate Pro SMTP 6.1.9 _community_)
-  with ESMTPA id 655513; Sat, 12 Dec 2020 03:58:28 -0800
+  with ESMTPA id 730069; Sat, 12 Dec 2020 10:24:41 -0800
 Reply-To: <abadrmohamedsaleh@gmail.com>
 From:   "MR ALHOUSHANI" <qadeerkk85@gmail.com>
 Subject: ASAP
-Date:   Sat, 12 Dec 2020 06:10:16 +0100
+Date:   Sat, 12 Dec 2020 12:36:29 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
         charset="Windows-1251"
@@ -28,7 +28,7 @@ X-Mailer: Microsoft Outlook Express 6.00.2800.1081
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
 X-Antivirus: AVG (VPS 201211-2, 11/12/2020), Outbound message
 X-Antivirus-Status: Clean
-Message-ID: <auto-000000655513@visi.com>
+Message-ID: <auto-000000730069@visi.com>
 To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
