@@ -2,87 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21E822DA753
-	for <lists+linux-parisc@lfdr.de>; Tue, 15 Dec 2020 06:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51BEB2DAEF1
+	for <lists+linux-parisc@lfdr.de>; Tue, 15 Dec 2020 15:28:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725763AbgLOFGe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 15 Dec 2020 00:06:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40270 "EHLO
+        id S1728934AbgLOO1u (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 15 Dec 2020 09:27:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725272AbgLOFGe (ORCPT
+        with ESMTP id S1728648AbgLOOZ2 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 15 Dec 2020 00:06:34 -0500
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1105C061793;
-        Mon, 14 Dec 2020 21:05:50 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Cw5n7326kz9sPB;
-        Tue, 15 Dec 2020 16:05:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1608008748;
-        bh=lU0lxYJKnpTfsUAv3vLnufL4b9WTdsEp0NDPe4aR6LA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LfA7ZWzqsHOX3GsOVOIX6hOscizxunu0vC1qOcr5CIwgnGDLB9mDRgmUfIRSETkcp
-         85TlTed5wD5acjotBsJJ4n0wOSth/u1YkvXsGdwNpfwPp/ysfJssAc+P+NBJ33COwD
-         S8hM0bi6YkubxPJX8kLI6ttdvmxQ4q1u4QXDqpyBxJYHWXELKFMKwQi51Okginf9ky
-         iIkpfbHweSC9OndGWOpNSrHdN8EcpqKtMRCNDBgPQsLrW7Zt8yd6fcPFckbJ3rj2PE
-         XW7MGCwnRBlYzSWw92L8ziGWX9D2xddyAOmWx2nPnigG5MCf5GPB184JVFr9jX4f0M
-         n/DDuDrejuOFg==
-Date:   Tue, 15 Dec 2020 16:05:44 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: Re: linux-next: manual merge of the parisc-hd tree with the
- asm-generic tree
-Message-ID: <20201215160544.2f02b8f5@canb.auug.org.au>
-In-Reply-To: <0f001a81-b1d3-4df4-28db-b193812a1a42@gmx.de>
-References: <20201102123841.39eb4216@canb.auug.org.au>
-        <20201215064847.3676d9bf@canb.auug.org.au>
-        <0f001a81-b1d3-4df4-28db-b193812a1a42@gmx.de>
+        Tue, 15 Dec 2020 09:25:28 -0500
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5DCBC06179C
+        for <linux-parisc@vger.kernel.org>; Tue, 15 Dec 2020 06:24:47 -0800 (PST)
+Received: by mail-ed1-x542.google.com with SMTP id b2so21236122edm.3
+        for <linux-parisc@vger.kernel.org>; Tue, 15 Dec 2020 06:24:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fLpk+0c6FuyfGY/ZPM8JLqZ7uOu3TenhRTPoyAvYEGM=;
+        b=bABxRUzF+8ZxeFd1UT+nifMCe3/bsD9P1eGnnGbiecDth0Z+o1KFOGVsOSoJ/piXIE
+         XuPG61GuEQqe6Aj6eaw2SVpZksUBg/Lwlnn6cj3T3k4/vYkSc4lQ9aS0MaleRSWwJxzZ
+         YN1WSdUWqWQ9ZF1GQZr3iWhRwlLS8GC/VMBnStAjmbf6tVtHOVzlEXIG5fbMs3KNOeWx
+         Bhe27fsPeeGf3azCz14n3Ffgo6h9BzitvM30sWW/KDyLWI25oguqYTE/tAmntQSV8I9H
+         c86KYGKniC3UIEXndhgW+GbHFhdYDLiWcrNDYijoLsQnGwSDgskTvdztQpUm7lF4HjJu
+         unZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fLpk+0c6FuyfGY/ZPM8JLqZ7uOu3TenhRTPoyAvYEGM=;
+        b=K+iA6k15ZvDiJEOYsx8pJPWks9R23wLNMg24DRy5u3yRB3wvPl+g0IbnBcfUbUfJ29
+         QjARNps5HXJFBjtjPCvDotzqwhk1wbOVEHIBrdTArvLLLO2UsNVcDfb8H+GWlhhx8F/W
+         gaXRmvHsh0dNu83l6EUVkJBA+q6Wc2Q+PMPxrq+lcshwtKFTz82ERR+ui6TfM94x0sIN
+         lvYHN59T+Tp6+VnlyTQBlZ3n4xuRv+shb+hVkXahmhx9Bh6+7OEr6bcVmaVCwDowyOm1
+         bCHRbL+ySlYy5Remqa4jdPVD0bGwnwrz6pcv3OLO55szN9pOtuYrd915EEelhowEZ6NH
+         swCA==
+X-Gm-Message-State: AOAM533wq2nUS0qKAB/MSGZrTMA/2jETA3aa5YDlpFzZi12PhlIj/wWX
+        py+sVxzszC56oN3b9lLiSZYBV9m7Pz9/UIQ1hm2wWA==
+X-Google-Smtp-Source: ABdhPJzHxKob1ssLVm6vrZLfegboHmbPniBwBbz7OSz4o9b90xXM3Bo0HfSHJ1jAtKSRAuumlFWY6EGplsEYfGteu/g=
+X-Received: by 2002:a05:6402:229b:: with SMTP id cw27mr29522993edb.23.1608042286116;
+ Tue, 15 Dec 2020 06:24:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Y8PSu=jN=tpqUXGeV9S3C2l";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+References: <20201126130606.2290438-1-anders.roxell@linaro.org>
+ <8affd609-f037-8b21-853a-8b87299db044@gmx.de> <CADYN=9+pSK2SHY4ncFaseT9qz6BoTCUxi0e3poTDao4v=S_84g@mail.gmail.com>
+ <CA+G9fYtNgeOgymsVwj423eXOFP1B=mS4KKvy+1Bu3tUapXyxDA@mail.gmail.com>
+In-Reply-To: <CA+G9fYtNgeOgymsVwj423eXOFP1B=mS4KKvy+1Bu3tUapXyxDA@mail.gmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 15 Dec 2020 19:54:32 +0530
+Message-ID: <CA+G9fYtgKFUsiY2x8Ue-cnO2Jr1+teQZ_3TbKC+eD9c6OpkPGg@mail.gmail.com>
+Subject: Re: [PATCH] parisc: signal: remove _SA_SIGGFAULT
+To:     Anders Roxell <anders.roxell@linaro.org>
+Cc:     Helge Deller <deller@gmx.de>,
+        James.Bottomley@hansenpartnership.com,
+        linux-parisc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---Sig_/Y8PSu=jN=tpqUXGeV9S3C2l
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Anders,
 
-Hi Helge,
-
-On Tue, 15 Dec 2020 05:45:49 +0100 Helge Deller <deller@gmx.de> wrote:
+On Wed, 2 Dec 2020 at 13:31, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
 >
-> I dropped the patch from the parisc-hd tree for now -=20
-> it needs more work and will not be part of the next merge window.
+> Anders,
+>
+> On Fri, 27 Nov 2020 at 04:10, Anders Roxell <anders.roxell@linaro.org> wrote:
+> >
+> > On Thu, 26 Nov 2020 at 15:46, Helge Deller <deller@gmx.de> wrote:
+> > >
+> > > On 11/26/20 2:06 PM, Anders Roxell wrote:
+> > > > When building tinyconfig on parisc the following error shows up:
+> > > >
+> > > > /tmp/kernel/signal.c: In function 'do_sigaction':
+> > > > /tmp/arch/parisc/include/asm/signal.h:24:30: error: '_SA_SIGGFAULT' undeclared (first use in this function); did you mean 'SIL_FAULT'?
+> > > >  #define __ARCH_UAPI_SA_FLAGS _SA_SIGGFAULT
+> > > >                               ^~~~~~~~~~~~~
 
-Thanks for letting me know.
+I see these build failures on Linux mainline.
 
---=20
-Cheers,
-Stephen Rothwell
+ref:
+https://gitlab.com/Linaro/lkft/mirrors/torvalds/linux-mainline/-/jobs/911416687
 
---Sig_/Y8PSu=jN=tpqUXGeV9S3C2l
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Steps to reproduce:
+-----------------------------
+# TuxMake is a command line tool and Python library that provides
+# portable and repeatable Linux kernel builds across a variety of
+# architectures, toolchains, kernel configurations, and make targets.
+#
+# TuxMake supports the concept of runtimes.
+# See https://docs.tuxmake.org/runtimes/, for that to work it requires
+# that you install podman or docker on your system.
+#
+# To install tuxmake on your system globally:
+# sudo pip3 install -U tuxmake
+#
+# See https://docs.tuxmake.org/ for complete documentation.
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/YRCgACgkQAVBC80lX
-0Gw6Dwf8DS4EZQnlT9kpTx9BABkNskolmN9q98bThb9Oc5zpb2HNarrVJ5vugy+4
-KF3Z1wHiFdBKrR+I8E7Zyzm99yZvY8UZWs4I3RafusScOPjz9o2E7DqiIVbxccR8
-pNkFbCG1iP1WfWLUaiog81bVBdeoP1k1Jca8QJiWNteXlcWUxBj3ZBYYaFDcDpTU
-Rz5eI3r/tHDbrsAIABaO3dugHjBvNhLmFIabekWZDkLyv2BpnHiL2EhHsfENrK/w
-4TInddiYSophQfL9GkqC1fvff5x3xah6+3bFWALkaS75AsucGNZoN/hHTfUYGaLj
-wYTj92FW9z8yjYmyNCLKnCxzz7oaFQ==
-=jv+t
------END PGP SIGNATURE-----
+tuxmake --runtime docker --target-arch parisc --toolchain gcc-9
+--kconfig defconfig
 
---Sig_/Y8PSu=jN=tpqUXGeV9S3C2l--
+
+- Naresh
