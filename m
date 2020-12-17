@@ -2,56 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F29EA2DC7A5
-	for <lists+linux-parisc@lfdr.de>; Wed, 16 Dec 2020 21:17:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 027CE2DD59B
+	for <lists+linux-parisc@lfdr.de>; Thu, 17 Dec 2020 18:00:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728804AbgLPURT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 16 Dec 2020 15:17:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37076 "EHLO mail.kernel.org"
+        id S1728647AbgLQQ7h (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 17 Dec 2020 11:59:37 -0500
+Received: from mout.gmx.net ([212.227.15.19]:33029 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727431AbgLPURR (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 16 Dec 2020 15:17:17 -0500
-Subject: Re: [GIT PULL] parisc architecture updates for kernel v5.11-rc1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608149797;
-        bh=trVwk2vMQwm4VXGLnsXuN4anCVVvLstBtKZMcPE5fLY=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=YXsJeCnXTx0tZT1IFyEDqk9YgomVdJIwm4j7/qfZ/K2L5x+jv1RwYUB9ogE1nceWo
-         zZb+CYnTP+xxRy0a3f24sGVCE5LDC5Om2HOJ0HIoSmLoe66cHFvXSvERIYYAdLnoHZ
-         4ORZstUZjAFFHxAjVq0MqzpSMXp4BVONCp7B53wY224mmXdbq8wD2ZOWi6YDTVrlS8
-         Z1jSFUGqEc+sNwNCHVKnGVfWBwJlwCCFUNmj0ctC0Z/xLvwjyUr98NHLzZqAZAcx9F
-         EzrY8IJ0KuCj3077UuyRYv5f04fcrJjjbTcPeyOMYu+0ckkO3yDtxAIUABGSxKSUOy
-         h3gaW7WlIcopg==
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20201216192235.GA27343@ls3530.fritz.box>
-References: <20201216192235.GA27343@ls3530.fritz.box>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20201216192235.GA27343@ls3530.fritz.box>
-X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.11-1
-X-PR-Tracked-Commit-Id: 39b1e779b6e2d4ca7967b49b26f1e4358f20c90c
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 5ee863bec794f30bdf7fdf57ce0d9f579b0d1aa3
-Message-Id: <160814979733.31129.5599484646624875831.pr-tracker-bot@kernel.org>
-Date:   Wed, 16 Dec 2020 20:16:37 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        id S1727303AbgLQQ7h (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 17 Dec 2020 11:59:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1608224278;
+        bh=lp/OpSrrDxgWlKY7AkhcOL/VLOVOWqmZLaSVabGFVC4=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=ZgXI4G27VV/XAZ519YKVt+zEn+0F32r/Epw+C4diAsSXFLunct97AKV2lK1vSJG/a
+         WL4BmywaQ8IHPCihnO0B/liJeezGypjJOPABLnodDHjIBFhqVmGzemneQlxJpXffXL
+         mVAPqXLM4lItK+jMEupWPK4deAyjsKs6/FIOgUkY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.140.151]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MJmGZ-1kVvqR2aNt-00KCe5; Thu, 17
+ Dec 2020 17:57:58 +0100
+Date:   Thu, 17 Dec 2020 17:57:54 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Drop out of get_whan() if task is running again
+Message-ID: <20201217165754.GA5561@ls3530.fritz.box>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:8z14mVQBZRnXCrQT5oxraRgtdkFDlDKt5w/QuSonCKWRG6nJafb
+ tSUmr7ZHaBFIhBXMLV1N2hor94ljfUvBIZ/iB/WpjpCpIS/+seJ8dmui8RgAqTRi/K+BlNM
+ uZ7cngvBVq+JG121H177K1mcCN5OdZ/0i26NMdVH6jDW/UdkXBQ6hREsXajXylpGhoJXqSu
+ mbVi2XtBQRcWxrSwjyY3Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:kfiTae8UHpw=:ZgjKMFYPXX2rLZzlHXgpwq
+ OpRVxClDk/EI0tTIao9NPI+Z6dXllsG2B4ubFhjwlczUfOp/Yshr/HO/GysFFnrrOusPpG+yf
+ 3kGwRWo4GMby3LYP+IN/GjtUDcne4Y0XaDUkTcsjXL7DQdae1nCRPqvsnxH2phf8g/sNTKD3h
+ NgtzPQRmoll0RnZraxO3tD6Xz2iMRNfyJYsDpLUsjK+JAhd1MJwAKYhED65FkQDWBd3L6APhF
+ 5XLBwq4jnpuAfNlefCJ8p8S3YBNxXdeAPczLFSHn1LCgSjiuQB4xELO8tyS17mV+GVkBg5r/O
+ kTGTlKN/7zQxTy1i5axNe7zf7vdPgFcuV+p3IVp5lVO6Pdk56QlGLiPzxHqAgpuL0uaLzsqWw
+ dxx7Fi3D8yKTjkUONN6tK8nfiIEDZ1Zka4bsYwmfT8dehte1GMRRAgXpYQIGmJ2LQ+fWVb9Ur
+ X3MmTWHU8NrDtb88qbKUU/oMHqghH1pPLJby7Q2O/C2yytuXEWBCAUez+sTg2IAx4tYyKnqRN
+ 9kjY1VvzYDJjn3XCGRtBunK0kQN6MBSjXnkgvtKqz+KgfSPa6vEBJiS72RoKUobZu5om/hZeH
+ f2/PhndvfW9s1PDOGK99jTl/a1eFUQRxqzDzvbAFcQMgvHfJalmiXglj3cWZ1493upE4bZjpJ
+ q7iEvxonF1rworCUBS2c61y2Kdq2qcPSVc3uj8BEnqld9HhI2tQNZM4QppgtLLiilS+6HSI+v
+ jIkNSWQejqlAgov0EnZTNw40hk5OvVkmyunK0AjFXpLgc1hXNoCDhamzKnk2uM/nO0Ymw4zlL
+ um6Px1gaB7GLKRYhVe2EKB0toBYMVDpxk652A66vF8ZJ2YSP7uMXpIw1jp+bVYeMMnXCQKFkY
+ dbkY3aEu+R51SdBrMbmQ==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Wed, 16 Dec 2020 20:22:35 +0100:
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.11-1
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/5ee863bec794f30bdf7fdf57ce0d9f579b0d1aa3
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
+index a92a23d6acd9..fda1c1a6a444 100644
+--- a/arch/parisc/kernel/process.c
++++ b/arch/parisc/kernel/process.c
+@@ -260,6 +260,8 @@ get_wchan(struct task_struct *p)
+ 	do {
+ 		if (unwind_once(&info) < 0)
+ 			return 0;
++		if (p->state == TASK_RUNNING)
++                        return 0;
+ 		ip = info.ip;
+ 		if (!in_sched_functions(ip))
+ 			return ip;
