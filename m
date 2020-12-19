@@ -2,96 +2,80 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68E7A2DEBA2
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Dec 2020 23:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0396D2DEE95
+	for <lists+linux-parisc@lfdr.de>; Sat, 19 Dec 2020 12:47:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725915AbgLRWdO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 18 Dec 2020 17:33:14 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:37089 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725836AbgLRWdO (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 18 Dec 2020 17:33:14 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1kqOIU-000s3X-8m; Fri, 18 Dec 2020 23:32:26 +0100
-Received: from p5b13a238.dip0.t-ipconnect.de ([91.19.162.56] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1kqOIU-0041lK-0s; Fri, 18 Dec 2020 23:32:26 +0100
-Subject: Re: [PATCH v2 05/15] ia64: convert to legacy_timer_tick
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Finn Thain <fthain@telegraphics.com.au>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Anatoly Pugachev <matorola@gmail.com>
-References: <20201030151758.1241164-1-arnd@kernel.org>
- <20201030151758.1241164-6-arnd@kernel.org>
- <59efce0e-a28d-9424-82ca-fb7f3a1b9c29@physik.fu-berlin.de>
- <CAK8P3a0s5Wt=9sZXAV1JzebZFXVy4qn3KNvygEfPeH3eVMyO_w@mail.gmail.com>
- <ccc941a9-9b7f-2a37-664e-c01d60c200da@physik.fu-berlin.de>
-Message-ID: <7df57999-40dc-507a-acba-605a4057c83e@physik.fu-berlin.de>
-Date:   Fri, 18 Dec 2020 23:32:24 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        id S1726520AbgLSLrO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 19 Dec 2020 06:47:14 -0500
+Received: from mout.gmx.net ([212.227.15.18]:47737 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726456AbgLSLrN (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 19 Dec 2020 06:47:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1608378342;
+        bh=ZHOowcGJEh5XXq0EUSMNz5aqD7FxVtH4whK4BlR4Ync=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=LKy8xvS4NFHZvdqnWcQgDdF2fPd9bxeS/kaNM+oaGKjni+8hA993I8eNz6Htj2iD/
+         BhdvsoOq+stcqJUtrZ2A2dwH70NdR0YWrnLlB4ZBJ6Xsq/F+LQdtU2zOwg2u8a9553
+         M6JLjfOZdnmRmH5/OrCsS//Td4copFJstmlj3LKw=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.150.61]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MOiDd-1kRW5R16Q3-00QEyQ; Sat, 19
+ Dec 2020 12:45:42 +0100
+Date:   Sat, 19 Dec 2020 12:45:40 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc: Use the generic devmem_is_allowed()
+Message-ID: <20201219114540.GA11316@ls3530.fritz.box>
 MIME-Version: 1.0
-In-Reply-To: <ccc941a9-9b7f-2a37-664e-c01d60c200da@physik.fu-berlin.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.162.56
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:hX9JTA0v6+J/6gM/UqrkI4mCWJqwmsZVHYkxWNQ9xraE1wz7oDx
+ 8bO95VPczy0IYTcqZNrjd+w6XWG2djnRSuhiijWgd31+ngSpTjkVSzjBUMAJqvvXMu3IrbE
+ UCGkKMsO77bLQR2puOZqHnbsXSbZjYWJlCElyL8TMKokyrwLsVZiI/pthJwoYQN1+QK4YwB
+ Bcv/QDTalPfgN5wxsXEgA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:76tSwVDDtaU=:WMoIg2I7GP9cD3K7qU/epg
+ vjLVPVRpvvF8jXoGHJG29RkHgGiX/xP1EGFaQBQOcOChUziF1r271o1+7FahzjthQ1R+Xd5jv
+ eXzyNTmGupuLIb54dHXTqk3oYQar5Dhu9QFZIYTKMtPPq1uMsdnEktjlUq5/KRnMe3p3xnlxz
+ H1yZc0YR+8hvTq+a+Q9oM/9z/aZN0RDi9ROJeW4YNhc07puOmatclGvobdcsuOrtRh1UwDE6S
+ 8tpaEgwl72zvmApFWye63KTM9lSjiA/frsZ71lhezryHwbDpJRMsJnLTNncScPeIv38PywLvG
+ KR6R2jZVEP9Pay1p5DiluNPlf/2JmRG6faUU5KZ4Z5yk/LsIfAqhEAu6DcmNuGO+mS6J/6yhZ
+ DKN/qVNpLd/LyvYgKbGK3J8lLvdWj79dbCsROZrW+OwH7KHlEysgZI06599Sl7kHu0C7mDULE
+ vUuqu5hIN+fkjT5SYmp6zonWWMlNB/cDvuVF3kv4vbSoCTNry8LwnRWHEVZG2eUz5cQKX4VY4
+ dWUVUesTmwM+Mmh8Mw0ZmkVKe5bm+qwKSLu54ak5osvM2zQ6I62YDv12g0fmYrli56VXRmW+O
+ HzoSfq4dEaez4lJdafpkQKgrXyU/CBtTlXzO/MsP17bmO116VvdRzLBWePI5AjvWPo2Q7xJRT
+ /diUpSBrRrM0q6DPwUnvSgIOd1z3ptn17GyB9jqicfGSmGdkt51iZ236jfCeeLAAEnGT+GCoG
+ m83ILZm+HzF9kqF6VIhW3Uz9jQitGdvnAxorUiACp8bUdjIFuB725sOFI+S29b3lBRkwr9UIT
+ h3CrSYb/uAccCrJCQCCM8DuZBztSeEVNzzh9ImKSneUwNeortlIN02HLZfE6uqli14QOFCEtn
+ Loxp9wcOo1o6eJOW07Yw==
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Arnd!
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-On 12/18/20 11:13 PM, John Paul Adrian Glaubitz wrote:
->> I've attached a patch for a partial revert of my original change, this
->> should still work with the final cleanup on top, but restore the loop
->> plus the local_irq_enable()/local_irq_disable() that I dropped from
->> the original code. Does this make a difference?
-> 
-> I'll give it a try and report back.
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 78b17621ee4a..880a89835f39 100644
+=2D-- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -35,6 +35,7 @@ config PARISC
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_CPU_DEVICES
+ 	select GENERIC_STRNCPY_FROM_USER
++	select GENERIC_LIB_DEVMEM_IS_ALLOWED
+ 	select SYSCTL_ARCH_UNALIGN_ALLOW
+ 	select SYSCTL_EXCEPTION_TRACE
+ 	select HAVE_MOD_ARCH_SPECIFIC
+diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+index 45e20d38dc59..8a11b8cf4719 100644
+=2D-- a/arch/parisc/include/asm/io.h
++++ b/arch/parisc/include/asm/io.h
+@@ -321,4 +321,6 @@ extern void iowrite64be(u64 val, void __iomem *addr);
+  */
+ #define xlate_dev_kmem_ptr(p)	p
 
-Yes. That solves the timer issues. Now there is unfortunately still a
-second, unrelated regression with the hpsa driver that was introduced
-by one of the ia64 patches in the mm tree from Andrew which makes the
-hpsa driver not load at all.
-
-Haven't figured out yet what the problem is.
-
-Adrian
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
++extern int devmem_is_allowed(unsigned long pfn);
++
+ #endif
