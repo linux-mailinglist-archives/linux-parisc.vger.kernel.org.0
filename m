@@ -2,80 +2,83 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0396D2DEE95
-	for <lists+linux-parisc@lfdr.de>; Sat, 19 Dec 2020 12:47:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB4652DF91D
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Dec 2020 07:05:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726520AbgLSLrO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 19 Dec 2020 06:47:14 -0500
-Received: from mout.gmx.net ([212.227.15.18]:47737 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726456AbgLSLrN (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 19 Dec 2020 06:47:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1608378342;
-        bh=ZHOowcGJEh5XXq0EUSMNz5aqD7FxVtH4whK4BlR4Ync=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=LKy8xvS4NFHZvdqnWcQgDdF2fPd9bxeS/kaNM+oaGKjni+8hA993I8eNz6Htj2iD/
-         BhdvsoOq+stcqJUtrZ2A2dwH70NdR0YWrnLlB4ZBJ6Xsq/F+LQdtU2zOwg2u8a9553
-         M6JLjfOZdnmRmH5/OrCsS//Td4copFJstmlj3LKw=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.150.61]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MOiDd-1kRW5R16Q3-00QEyQ; Sat, 19
- Dec 2020 12:45:42 +0100
-Date:   Sat, 19 Dec 2020 12:45:40 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Subject: [PATCH] parisc: Use the generic devmem_is_allowed()
-Message-ID: <20201219114540.GA11316@ls3530.fritz.box>
+        id S1728166AbgLUGFE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 21 Dec 2020 01:05:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49706 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727063AbgLUGFE (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 21 Dec 2020 01:05:04 -0500
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2423EC0613D3
+        for <linux-parisc@vger.kernel.org>; Sun, 20 Dec 2020 22:04:24 -0800 (PST)
+Received: by mail-ot1-x344.google.com with SMTP id j20so7936695otq.5
+        for <linux-parisc@vger.kernel.org>; Sun, 20 Dec 2020 22:04:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=jArWfA3zV/7lnxiWgfjF6a4O9O1fNpc7xFr6lEcByt4=;
+        b=Wyw5di4HrZsxF5UM4EosA/Scbt9eSVfkgza5jdx3MMoZZsikVuwO20/WUPi0OoesJ0
+         pY8/wFtSy+itwmlhqtG1ZJdWSqFe+qPyhGWKw286pSwmcW6yUdlhWYVUdQfOZKg6bQg1
+         pTuBjMlzMR9KeKLD8+CG6Pk86bUmywwplmNcgi787Er9c2lkFHvyyh9I5ZJmSPygKwff
+         vXc+KQYF0WFa+ylLheaOM7Pd9AwCEIaw2EA4NhAPJiX1LaXhEp+376PVtuyB2AgJ8xmB
+         i5IMaU0pg9ALqZgjeWzaWIpCyldVaHFGL8mtwQfb/uwMAdvnA/LjbUpZE+rKJ9tmADV8
+         vfZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=jArWfA3zV/7lnxiWgfjF6a4O9O1fNpc7xFr6lEcByt4=;
+        b=TZVWkgajwK4ioSrorNE5LVisSUJ8YitFJ4dhvLWgX4g4IUaEcjIF7zZ61ZyarRDEJW
+         piYw6Z9rTZrJaXlLl9PAwnYChZiUC6q1whMyMv5/G81uyOf6H5DqwAqVLEyvWivBW80X
+         v0eaTNVwTL8gNKTExD8OLQm1PdLzumRgJKwPgJYNUyYiQA3uPkdxwlEvIcFP9Vbvekf/
+         Jd0vJdU6Cy3RmO1NJ6h4GYZv5eoQsXE7MfV6RftOQOdixUDgoJJ4UZINvpT2ebYKTQvx
+         m23YvewOkOvFLddF4v9KmYgcUfERnemQRmZp7vER1GiGPDH3fSxxqX4031sQKsdMyM8W
+         t8eg==
+X-Gm-Message-State: AOAM532iG/07/77EjkPO9Gjtw1ww6hZOTq8n1adf/w1rSmBr1azDmwcT
+        JzkmNmcXBmRueDNpxqnYQ/EEoCHhtmHEFAyPURc6h3+3gEc=
+X-Google-Smtp-Source: ABdhPJzCyqqbJ0fLENrLdD2inMt+L/aVmUnwh3pjMnEOpHZnq9ItloQaMpUl9jO+FZaixqXQwoYl5EGJnq99Ir3WZS8=
+X-Received: by 2002:a05:6830:3106:: with SMTP id b6mr9764275ots.36.1608503575173;
+ Sun, 20 Dec 2020 14:32:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:hX9JTA0v6+J/6gM/UqrkI4mCWJqwmsZVHYkxWNQ9xraE1wz7oDx
- 8bO95VPczy0IYTcqZNrjd+w6XWG2djnRSuhiijWgd31+ngSpTjkVSzjBUMAJqvvXMu3IrbE
- UCGkKMsO77bLQR2puOZqHnbsXSbZjYWJlCElyL8TMKokyrwLsVZiI/pthJwoYQN1+QK4YwB
- Bcv/QDTalPfgN5wxsXEgA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:76tSwVDDtaU=:WMoIg2I7GP9cD3K7qU/epg
- vjLVPVRpvvF8jXoGHJG29RkHgGiX/xP1EGFaQBQOcOChUziF1r271o1+7FahzjthQ1R+Xd5jv
- eXzyNTmGupuLIb54dHXTqk3oYQar5Dhu9QFZIYTKMtPPq1uMsdnEktjlUq5/KRnMe3p3xnlxz
- H1yZc0YR+8hvTq+a+Q9oM/9z/aZN0RDi9ROJeW4YNhc07puOmatclGvobdcsuOrtRh1UwDE6S
- 8tpaEgwl72zvmApFWye63KTM9lSjiA/frsZ71lhezryHwbDpJRMsJnLTNncScPeIv38PywLvG
- KR6R2jZVEP9Pay1p5DiluNPlf/2JmRG6faUU5KZ4Z5yk/LsIfAqhEAu6DcmNuGO+mS6J/6yhZ
- DKN/qVNpLd/LyvYgKbGK3J8lLvdWj79dbCsROZrW+OwH7KHlEysgZI06599Sl7kHu0C7mDULE
- vUuqu5hIN+fkjT5SYmp6zonWWMlNB/cDvuVF3kv4vbSoCTNry8LwnRWHEVZG2eUz5cQKX4VY4
- dWUVUesTmwM+Mmh8Mw0ZmkVKe5bm+qwKSLu54ak5osvM2zQ6I62YDv12g0fmYrli56VXRmW+O
- HzoSfq4dEaez4lJdafpkQKgrXyU/CBtTlXzO/MsP17bmO116VvdRzLBWePI5AjvWPo2Q7xJRT
- /diUpSBrRrM0q6DPwUnvSgIOd1z3ptn17GyB9jqicfGSmGdkt51iZ236jfCeeLAAEnGT+GCoG
- m83ILZm+HzF9kqF6VIhW3Uz9jQitGdvnAxorUiACp8bUdjIFuB725sOFI+S29b3lBRkwr9UIT
- h3CrSYb/uAccCrJCQCCM8DuZBztSeEVNzzh9ImKSneUwNeortlIN02HLZfE6uqli14QOFCEtn
- Loxp9wcOo1o6eJOW07Yw==
-Content-Transfer-Encoding: quoted-printable
+Reply-To: afringawa@gmail.com
+Sender: hassan.ahmed8@gmail.com
+Received: by 2002:a05:6830:1412:0:0:0:0 with HTTP; Sun, 20 Dec 2020 14:32:54
+ -0800 (PST)
+From:   Afrin Gawa <afringawa6@gmail.com>
+Date:   Sun, 20 Dec 2020 22:32:54 +0000
+X-Google-Sender-Auth: IcUQMzcn2-FM9CYxufzulwQDJtc
+Message-ID: <CAD8nQ4_UsDk+UPrDgNqez-sJDvXJ-qzPd5g+_8zvMMzhqYGa7Q@mail.gmail.com>
+Subject: Please respond urgently
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Greetings,
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 78b17621ee4a..880a89835f39 100644
-=2D-- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -35,6 +35,7 @@ config PARISC
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_CPU_DEVICES
- 	select GENERIC_STRNCPY_FROM_USER
-+	select GENERIC_LIB_DEVMEM_IS_ALLOWED
- 	select SYSCTL_ARCH_UNALIGN_ALLOW
- 	select SYSCTL_EXCEPTION_TRACE
- 	select HAVE_MOD_ARCH_SPECIFIC
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index 45e20d38dc59..8a11b8cf4719 100644
-=2D-- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -321,4 +321,6 @@ extern void iowrite64be(u64 val, void __iomem *addr);
-  */
- #define xlate_dev_kmem_ptr(p)	p
+I know that this mail will come to you as a surprise as we have never
+met before, but need not to worry as I am contacting you independently
+of my investigation and no one is informed of this communication. I
+need your urgent assistance in transferring the sum of $11,300,000.00
+USD immediately to your private account.The money has been here in our
+Bank lying dormant for years now without anybody coming for the claim
+of it.
 
-+extern int devmem_is_allowed(unsigned long pfn);
-+
- #endif
+I want to release the money to you as the relative to our deceased
+customer (the account owner) who died along with his supposed NEXT OF
+KIN since 16th October 2005. The Banking laws here does not allow such
+money to stay more than 16 years, because the money will be recalled
+to the Bank treasury account as an unclaimed fund.
+
+By indicating your interest I will send you the full details on how
+the business will be executed.
+
+Please respond urgently and delete if you are not interested.
+
+Best Regards,
+Mr. Afrin Gawa
