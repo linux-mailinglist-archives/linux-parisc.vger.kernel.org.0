@@ -2,71 +2,101 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B10932E34AF
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Dec 2020 08:25:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2E542E72CA
+	for <lists+linux-parisc@lfdr.de>; Tue, 29 Dec 2020 18:47:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726282AbgL1HYr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 28 Dec 2020 02:24:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52538 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726253AbgL1HYr (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 28 Dec 2020 02:24:47 -0500
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65121C061796
-        for <linux-parisc@vger.kernel.org>; Sun, 27 Dec 2020 23:24:07 -0800 (PST)
-Received: by mail-io1-xd35.google.com with SMTP id d9so8636609iob.6
-        for <linux-parisc@vger.kernel.org>; Sun, 27 Dec 2020 23:24:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=kq2jyHJDfxqOxuShgwYNcAto0qAucvJCi8yLZBnTurg=;
-        b=fOMCIgJQHNx20kYFTdQKQu7/5C0dr9uLNbBYAB32XkU5BLjFNANYkxJV1n2Ebt1rP3
-         4vlg3aA75qJVNEWySieOl12N/QM5QZAdoGW86/sAguX0cdPFZjrHWzOkO84Q+2eY0Cv/
-         SahXDS2J+RytZ5BUzscAVUJqvzmO48U8QbgI5mi62kN49+QKcgq07R87wBs78VLH8ijf
-         9a7+p62jYL+gc/eYVUwMNbh5DN3hfJzmyfnw/LirJyhve1FURqD7RGDY3ApLTS/MLBQA
-         mdiQCkPF9Wgfz38qy1MxQ2/Oc/+UaXbdZ2XuQvrqxbp7MDFxRWjsWVBgs2lO+mMzi/Wc
-         AeqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=kq2jyHJDfxqOxuShgwYNcAto0qAucvJCi8yLZBnTurg=;
-        b=R4BwXmP+4nX1ENbb+CgzTYSYz9ChKavceB9oSbCZPIBwWRmY01JFsIprs8t4Es15go
-         /gjwfhP+jEsjkC5yBWpYl2uPik1ZAVT23xqhefGox9uidD+6R6klI9aD+b3Z4FisgdHV
-         p8cXvqvw3PFTvdQo93lZ0QA+L6Cx+u4gd/C5EPGi12xJJ1fZ1hyk5pjMzTokAcf12BA5
-         idNh3g6yFWo5vqQNXM3kWtyX0J0obZRyOL/pE7iK7OiIk9HCAnXELL5kA4Zi8Dg9Ti+W
-         zwa2R0gCm+47gVolEP1KhvqH1SqImM+juX2rHfMik1UAkJD8Ru8eyFVyp/u2k/AqmLRT
-         AKXw==
-X-Gm-Message-State: AOAM531+4+niLs0TgkrY+YqCMNWT1c5Q9jfqAWS/j/blefLBxalZSE4/
-        lfPtpWBhgAclxE5maoGQU5j011SC9R9giaIkRGk=
-X-Google-Smtp-Source: ABdhPJzMBCTQSNEtLib8fKYQFbXGFNQE8o8pBn3X0WJf7LUximTHdLrgFQWueWejQHR/F7NHBIJhyiVzVAKJHyGhouA=
-X-Received: by 2002:a05:6602:2e81:: with SMTP id m1mr35115598iow.131.1609140246551;
- Sun, 27 Dec 2020 23:24:06 -0800 (PST)
+        id S1726156AbgL2RrR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 29 Dec 2020 12:47:17 -0500
+Received: from mout.gmx.net ([212.227.17.21]:36889 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726138AbgL2RrQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 29 Dec 2020 12:47:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1609263933;
+        bh=SMvJUYLsYaFE8UbAU1ywRHM9rHku6Ga8cqoeePCgLjM=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=ZV44uno3w8ibDGH2iYnugootpt73yt88Ox2UYvmyX6GkBZvx7P8SVcg6E4drtYSlv
+         rx9BfSdk3WjNk/ROb1ipDisoEX8ntzZOZHaBMYp6ps8/i5dm2lzVCE43k9yptWsYaL
+         tNyMR+ngznzzc/gFlr8Ri/HXLaTbI3ti470ESy3E=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.173.132]) by mail.gmx.com (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MvsJ5-1k3r6A0Etz-00sv7N; Tue, 29
+ Dec 2020 18:45:33 +0100
+Date:   Tue, 29 Dec 2020 18:45:29 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     Kalesh Singh <kaleshsingh@google.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] mm: fix extend calculation for move_page_tables()
+Message-ID: <20201229174517.GA31435@ls3530.fritz.box>
 MIME-Version: 1.0
-Received: by 2002:a6b:490a:0:0:0:0:0 with HTTP; Sun, 27 Dec 2020 23:24:05
- -0800 (PST)
-Reply-To: hs8qfc11@gmail.com
-From:   "Dr. Dagbo Igho" <dagboigho@gmail.com>
-Date:   Mon, 28 Dec 2020 08:24:05 +0100
-Message-ID: <CANqtXm49kMMhvXKCdkF0MHCG1fnwV5iAGA51AWbDrOh-rCkZkA@mail.gmail.com>
-Subject: Good Morning,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:mX03h7atanc4UE4P/M1gmVe202c5lrlo9ssG8IpDsB5+CVDMyIG
+ c2NqXlNwXc9BlCpMHkAhLiV52+p0C0zgcOHSQQbTx0drbZ6fiX3sByhLo38FCwuBeSNL0ai
+ keFJPWjFYtMeuZy88aQefYbHAnV62x0rHUUawDKqu3BnFiOPxcoWKr4E3sqp2T+LAlZg6wx
+ xy9Lboba7zIjEiOhsou8g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8IX/T319RtI=:pQnNCcbTgjkLClJwM4dyJV
+ SxGpKWI/noO2/mtTZViOUS7B1auLdMU9gfpFcn8RW+CSV37h1pSra/c3jB+MeStuPHlndfHjp
+ klE59jbxhQLwKPBNq/movySFs9rBjL7VCOSH3KHHgTCkpFX0JtQXeSoOiKei1U4Xt9JNtSgxl
+ IxGodip1WKmsG/jGBdHtP69bfg10wW9QtVIl0hI4u4iZMiTe+5vJpNT8sIiGadVu4fF88Pt6V
+ ZDDwVZXzFFVyTkaFjpsZs80FLc04XGnb8gm8sXviA+yvK+p/MpyuFJy0znxReOfBZDetjNSAJ
+ ovtOZ6uzlKaMl2hPoVgwY3ejYMjpXT8XECfaQqz4FtHa1vTqv8KGsxnUkDPaCIAnPrIr8qXKG
+ wlqCGWSB1ME/zuJVLRTKKb+4wws2maXojJsSaPs1/u/IYZ/1SXzUqONuFN5hLpVvIUjmpOI/j
+ 1vcyC9zAc+8O16v5u7wsdAjxWk7EiIr45ix7DYRqLQ2FCje2lpVTrVj9qHuFQ7GZCQ7OqQ0Og
+ 6ZxfKrox7YRBx0GjvOfF/zxCT3Y0ZjUK76hDR/61VrAfpRGKtJtck5HzvdpHSEwAJmUCyeiE1
+ P15S5xnPSpH7E55dJF9QwhZL2B4Hwr6NhM72QNjtx6bo/4qZ/0JA7SLc0wSIIVm7C1OvCSfzI
+ NMMdPNxraC1NFzYzeNVVJqBX7lSNXpc0NVDpEJw9dZ0pLPUINnpN9LZIJCzuNi1cyxIZI/KPg
+ wWnBuhEqXlTMFj0XkAV99XIJyBOCYwFtdOrgD5YbrTJrffDbbzEKxYeX4gJ4qeDEERnjZKMoP
+ cZqvWDiaOjHN/CBSmALLyg5sPZE3D3WrnWp49FkDS2eNqgUy35bHLZx/WswKZHnLirOnBn++1
+ LkPZcPCy2c6MK3aZmfmw==
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
--- 
-I'm Dr. Dagbo Igho, did you Receive the (FUND), that was paid to you?
-please, do not hesitate to Let me know with your full name:.. for
-immediate verification notice,
+On parisc the kernel fails to start the init process because in
+shift_arg_pages() in fs/exec.c, move_page_tables() is called to e.g.
+move pages from start addr 0xffeff000 to the new start addr 0xf9ccb000
+with a length of 0x1000 bytes, but move_page_tables() instead returns
+that it apparently moved 0x57000 bytes. Since the number of bytes is
+different than the number of bytes which should have been moved,
+shift_arg_pages() aborts with -ENOMEM.
 
-Thanks,
-Dr. Dagbo Igho
-Foreign Remittance Director
+Debugging shows that commit c49dd34018026 ("mm: speedup mremap on
+1GB or larger regions") is the culprit.
+In this commit, the extent calculation was tried to be optimized, but
+got it wrong for this case.
+The patch below reverts to the previous way to calculate the extent and
+thus fixes the boot problem.
 
-Sincerely Yours, Respectfully,
+Fixes: c49dd34018026 ("mm: speedup mremap on 1GB or larger regions")
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 
-Mr Bill T Winters,
-Group Chief Executive Officer & Executive Director,
+=2D--
+
+diff --git a/mm/mremap.c b/mm/mremap.c
+index c5590afe7165..f554320281cc 100644
+=2D-- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -358,7 +358,9 @@ static unsigned long get_extent(enum pgt_entry entry, =
+unsigned long old_addr,
+
+ 	next =3D (old_addr + size) & mask;
+ 	/* even if next overflowed, extent below will be ok */
+-	extent =3D (next > old_end) ? old_end - old_addr : next - old_addr;
++	extent =3D next - old_addr;
++	if (extent > old_end - old_addr)
++		extent =3D old_end - old_addr;
+ 	next =3D (new_addr + size) & mask;
+ 	if (extent > next - new_addr)
+ 		extent =3D next - new_addr;
