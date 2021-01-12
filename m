@@ -2,101 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA9942F0FD2
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 Jan 2021 11:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE1632F329C
+	for <lists+linux-parisc@lfdr.de>; Tue, 12 Jan 2021 15:07:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728915AbhAKKPV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 11 Jan 2021 05:15:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39346 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725843AbhAKKPU (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 11 Jan 2021 05:15:20 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 513DEC061786;
-        Mon, 11 Jan 2021 02:14:40 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1610360078;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=vdITQROn2Urg2SWnxxpWECg8/2piMq1rysKQi+Js6AM=;
-        b=UnYkeRyOrRU1KtT5e+L+fQ3h1X+pI6IQmvvPVQCyBzb6fOAslMZh9kmf6riX6Uc0jR5HAW
-        kLM9jzvLqGc+Imjy/0I2rAsMH2VpuQIdJ98CwfEhcoTYCCXiQ/XwFpRt6Jep7zrPxwT0va
-        Xwof1xtTH5Z/PeoiWTuI7XI6GZ2R5aGzpohXNnayNbUAXzj5+Rf7t2lNRSQCuUkrunBvvh
-        E6YQGrr8aPBg88a1jm3tkQeNaO9yiXQdYW2cQM+bbmj0FEDrh39+sh5VynpFZhESsKImAx
-        DwV8ajINKrlorxI1UlTNWgwAXJMXRe809J7/lTBl2XxW6BUf7G/4P1Qx4lUTcA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1610360078;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=vdITQROn2Urg2SWnxxpWECg8/2piMq1rysKQi+Js6AM=;
-        b=X4gUVuzYQlznnJ4rBpJlj0pVo1A0rJo22Rpjt8+XaTFqV54Id4MU7M5oqDy1KDl8a6a4jG
-        +hpoSFj00cPTvyCg==
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        dri-devel@lists.freedesktop.org,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Saeed Mahameed <saeedm@nvidia.com>, netdev@vger.kernel.org,
-        Will Deacon <will@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-s390@vger.kernel.org,
-        afzal mohammed <afzal.mohd.ma@gmail.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        xen-devel@lists.xenproject.org, Leon Romanovsky <leon@kernel.org>,
-        linux-rdma@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        linux-pci@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Wambui Karuga <wambui.karugax@gmail.com>,
-        Allen Hubbe <allenbh@gmail.com>,
-        Juergen Gross <jgross@suse.com>,
-        David Airlie <airlied@linux.ie>, linux-gpio@vger.kernel.org,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        linux-parisc@vger.kernel.org,
-        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
-        Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-        Tariq Toukan <tariqt@nvidia.com>, Jon Mason <jdmason@kudzu.us>,
-        linux-ntb@googlegroups.com, intel-gfx@lists.freedesktop.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [patch 02/30] genirq: Move status flag checks to core
-In-Reply-To: <20201227192049.GA195845@roeck-us.net>
-References: <20201210192536.118432146@linutronix.de> <20201210194042.703779349@linutronix.de> <20201227192049.GA195845@roeck-us.net>
-Date:   Mon, 11 Jan 2021 11:14:38 +0100
-Message-ID: <87im837pbl.fsf@nanos.tec.linutronix.de>
+        id S2387752AbhALOFw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 12 Jan 2021 09:05:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48934 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730158AbhALOFv (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 12 Jan 2021 09:05:51 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A42AE22CE3;
+        Tue, 12 Jan 2021 14:05:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610460310;
+        bh=YIZSFd4ngdBu3d+V+tCrhUDlUF7epBaWbFsCZCkzGJs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=S+ljzYYL3QMPhhApX5VwhFNyceVrA27EHM0FStNvwzUR1cQ7GFOIPOcEYTO0fdDaA
+         Kj7O7lmy0yWuWK+AZisJL2LrmlkoM/j63MxdM7S787vyvaT4LD71jTgKDStmGrzxuQ
+         L0/NqqEzqp6wU8ndgl0gsmTuxMJL2Vz98cUyPebone1iHGoyH3HLXEv/yY8kVzE9/C
+         3JxXpkug6tFhHh2/KJ9Ii5coAgelm+gr542ObqppAE3GEOphOgXDNiAJFxaofg4s3u
+         N68pjfATVrUXDVMPlwIcydiug5iK5JLd2AIK2alwIqlmLf7Si7Qy4TLd2kqk9nbCgG
+         c2IYKYoLXP3bw==
+Date:   Tue, 12 Jan 2021 14:05:00 +0000
+From:   Will Deacon <will@kernel.org>
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     linux-kernel@vger.kernel.org, catalin.marinas@arm.com,
+        msalter@redhat.com, jacquiot.aurelien@gmail.com,
+        ysato@users.sourceforge.jp, geert@linux-m68k.org,
+        tsbogend@alpha.franken.de, ley.foon.tan@intel.com,
+        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+        shorne@gmail.com, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
+        dalias@libc.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+        sstabellini@kernel.org, chris@zankel.net, jcmvbkbc@gmail.com,
+        christian@brauner.io, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2] arch: consolidate pm_power_off callback
+Message-ID: <20210112140459.GC9277@willie-the-truck>
+References: <20201227140129.19932-1-info@metux.net>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201227140129.19932-1-info@metux.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Dec 27 2020 at 11:20, Guenter Roeck wrote:
-> On Thu, Dec 10, 2020 at 08:25:38PM +0100, Thomas Gleixner wrote:
-> Yes, but that means that irq_check_status_bit() may be called from modules,
-> but it is not exported, resulting in build errors such as the following.
->
-> arm64:allmodconfig:
->
-> ERROR: modpost: "irq_check_status_bit" [drivers/perf/arm_spe_pmu.ko] undefined!
+On Sun, Dec 27, 2020 at 03:01:28PM +0100, Enrico Weigelt, metux IT consult wrote:
+> Move the pm_power_off callback into one global place and also add an
+> function for conditionally calling it (when not NULL), in order to remove
+> code duplication in all individual archs.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 
-Duh. Yes, that lacks an export obviously.
+[...]
 
-Thanks,
+> diff --git a/kernel/reboot.c b/kernel/reboot.c
+> index eb1b15850761..ec4cd66dd1ae 100644
+> --- a/kernel/reboot.c
+> +++ b/kernel/reboot.c
+> @@ -53,6 +53,16 @@ int reboot_force;
+>  void (*pm_power_off_prepare)(void);
+>  EXPORT_SYMBOL_GPL(pm_power_off_prepare);
+>  
+> +void (*pm_power_off)(void);
+> +EXPORT_SYMBOL_GPL(pm_power_off);
+> +
+> +void do_power_off(void)
+> +{
+> +	if (pm_power_off)
+> +		pm_power_off();
+> +}
+> +EXPORT_SYMBOL_GPL(do_power_off);
 
-        tglx
+Could this just live as a static inline in pm.h to avoid having to export
+the extra symbol?
+
+Will
