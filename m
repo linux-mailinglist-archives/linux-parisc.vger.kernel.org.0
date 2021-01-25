@@ -2,30 +2,38 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C07CB3035AF
-	for <lists+linux-parisc@lfdr.de>; Tue, 26 Jan 2021 06:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E49B30482A
+	for <lists+linux-parisc@lfdr.de>; Tue, 26 Jan 2021 20:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729354AbhAZFuX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 26 Jan 2021 00:50:23 -0500
-Received: from mout.gmx.net ([212.227.15.19]:38925 "EHLO mout.gmx.net"
+        id S1728554AbhAZFuL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 26 Jan 2021 00:50:11 -0500
+Received: from mout.gmx.net ([212.227.15.18]:60493 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730373AbhAYT3o (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Jan 2021 14:29:44 -0500
+        id S1731872AbhAYT1f (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 25 Jan 2021 14:27:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1611602850;
-        bh=F8zD3Fsy7SeBrsfRr+TzL4jP+tXaP7W1JQVw7TEI5Tg=;
-        h=X-UI-Sender-Class:Subject:To:References:From:Date:In-Reply-To;
-        b=UyKgn1KpZxShqptfnVGFkOhwiExRjoDf2QHupx1rqnCq+iGsQiRIF0/rullJiUZTf
-         I4WdvebZL6P9Rgd4RnWuAKbQY63Jfkm3CkYyjfn9HtEQuDUrrUsXVO+nfWyi4rk42F
-         ghAEfJc1ZULyXpZX3Ib9jXVP7eIMPp2jy6K0DVOo=
+        s=badeba3b8450; t=1611602707;
+        bh=WD7kwxIaNHhYLM92UP8GGTogzM00eiSS8vNSCVZIrLk=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=Cu3A2hQQImTUPYaf+CNiZ5iGeHRwDtp332CJBOAdBtsuzS8ZEYMcSm8+zDYoTxUIj
+         /PIkv9uikK5YALvOCh5MEs/ek531/IFwVU3js7++EWbzCgJ6TtFOW2MpSj1+5p/Mgm
+         PjSuVKy1P/KPRuhzVLfU+WUMEhrVixAcDFWZp55k=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from [192.168.20.60] ([92.116.169.109]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MIdeR-1lFxt10IOT-00Eg1Y; Mon, 25
- Jan 2021 20:27:30 +0100
-Subject: Re: Signal timing problems in python testsuite
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MDywo-1lBrGB2ocu-00A2DZ; Mon, 25
+ Jan 2021 20:25:07 +0100
+Subject: Re: hppa64-linux-ld: mm/hugetlb.o(.text+0x50dc): cannot reach printk
+To:     John David Anglin <dave.anglin@bell.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
         linux-parisc@vger.kernel.org
-References: <5448233.DvuYhMxLoT@daneel.sf-tec.de>
+Cc:     kbuild-all@lists.01.org, LKML <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        kernel test robot <lkp@intel.com>
+References: <202101162230.XswE8zOX-lkp@intel.com>
+ <CAKwvOd=rrTLc510cEA84BC_zzYVQ0ifPEMhRRtU-cyYPs_E4eA@mail.gmail.com>
+ <bed0d008-c5c0-011e-6f1e-fb248f97c009@bell.net>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -84,98 +92,489 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <38479b0d-011d-bf53-c95e-4dfbbd824670@gmx.de>
-Date:   Mon, 25 Jan 2021 20:27:29 +0100
+Message-ID: <88735d3b-1b56-bc8a-2183-1f9549626002@gmx.de>
+Date:   Mon, 25 Jan 2021 20:25:05 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <5448233.DvuYhMxLoT@daneel.sf-tec.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="uGEIEjYK4Hs76rFNuymf8zamwsxOw0ios"
-X-Provags-ID: V03:K1:InOTsaenMhpmZ467e416eqz30W211SoyvySxrqQnpeAHDXiUvSg
- fw6H37GGgyFSFVzE+VKHlRGAhiaYVl1sQr8RDMIJigCg/rS1D9js4Hw7nzNGzi2l1+R07oQ
- e/LXE8C3A5lfsMtmPVstNxkpzIRMNxxNZEvaHdlz2RV4CnW+TTRfW2MO1V/1A4yepoFzNYt
- J0qstjWJLwkZhWY/M6Imw==
+In-Reply-To: <bed0d008-c5c0-011e-6f1e-fb248f97c009@bell.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Wr8997aFBZJboRPDdoph52A6OgE4eJFRMnihQaX6lWJ2lS+BRgw
+ s8jG9hfaRKKlAtTSDEWoLr2Jlq9bVDKUrhf7/4gzT+LT3vHK3i/N8JU0N5qnOhXOp7MvOde
+ /8NTlXj8BWlVxYcgVpzQMZv2jV78HET8T3qPntvtUjIhIFiqQoRPvG2VAXDxXmrQscPAv1I
+ Bo+60V4JwWZQE1v02nZug==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:w8vvxiWPYZA=:1Chw2D32t6QDddZQ4r/I3j
- 6FNDCPtyo/bQmWOr+iHJEWUyolhZ3FR7SAWYY0FL4+kkf4wE/S1YOqw3/U6oPo0OK1kqYvwGw
- HhFUcnFUsZyhicYdHJeWhW+lnwcpYZ6sdSCk1iRM6vyAE4Bp8Wi1M2Ftfp3wtirpJxl3zZ2Km
- YBDptyQCAvPnw6MsPt9NKYgdWyQsFKOH5mWeRkqtcxoZgWn1SO9GYptopobh5rZG3Zr9ZIA9F
- awgPTOYgN14J0Ic25PzqovA69fvgaa5/RKiQeQscfkQKJ51I0uczyzBSX+Pa94YhbLGZZhjpL
- 5K+ljjkl5YiWGxKqy+qvJb34AyLrJWc9OzRp7ZFwnalGG/Wrc0Ait4hCwuGptBS0Jw9UKYhNp
- 2EtIFfNZCX4S5nUJCv+L/Ew726wSimRC8OQgDfRzHiLPKsh1QHapfR7J7H43OK4lt5JcPgW60
- J/XoLTw88wiEvhvsAtlGIfXOhO9nI1io7EBPM2XhJ4WnNiCHVpiuikrpNOs1W2jjqSJRNEuod
- ZObtickH7p1VxDLo5zpHaR+V0u54q6YY2II6bc2ybMA5VPUdyax4Sbkslp11iF5AXoW+Nv0nc
- wxwFunm1mrX5IhUo1ZmI4XKZVwxS21TLP6LsfbJPoRCm0dj5nJORqW3yWcJ6KZgLlU2e/LEJy
- Q2ZShPMQEvkYqWJDGoRL/sKhN1S/ELbsF+atuKuFx0M5j9ZYsQNvlZXhLQL11KtFtghFHuDaG
- SHGH27lQxF7Uvu/9Dx0mmA66UIzsf0uePZRqFBsFGxi8DTPxfioIYOAMx3u1hZyKJN8cyqR7H
- IUulWes2Abk69OXsQ2pgib9alwFQuvbhh4EL9/z0RI5NlqwHIU7NQf0V6kBnPc/42hOaRXpsc
- gEofxGCgbL4X34ivFosw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:IC8/PXqzOUc=:RZ4cgUlLb4EBcFmDvMeI+0
+ 8YI541v7gmxuKYgpVwhACunodJz+jrbifomHeLRJxTWrehF3vdg29d2n/TTDt79sMC6ZGe/49
+ 56p8a3wUFGyyDPyweN89gwmL0BH+yB1PJrzTNzA4LCp0n/Wuf1Ta4ISe5CJgZd2rHKQFmDiux
+ D+UcjoErW2tW9dUWt+1H5DOsNb3baIhhzPRXh6A/yz/LD+XLohs2/GQlCpnmykCI1sPUeCqIH
+ hOzFpWiwph0s4+coMAnYABJGknY7xjnHxjyGNvhZ5pzULvL0lqKRgACoKnaiKObSrou4SUFWc
+ UHFn5x30ZwTmmnoD3RfWN6pDqkPEl7PXr5dvR+Oo3IcLmBIzWiTWkdGdBfsioTIAb6Jc0ILJD
+ s078dfSbjk0q7e+zEVCBJ1qSXPbPehu6CO1uiW96mF4PXZNGy1qhBTMEVKb/hXX+WgqElW433
+ Upp2aPPPekPxNKNPqYD4xeSZGIBYGR4arZ964ACTPfsP5y1SKl6ReRSA5htFuJRDmlFa+KZDg
+ Qf9/KApguAL1ogd+XONZ34vIHsQWs+Ki3xJBGMJhFovb1WQyCnMIkBr5QDn43TSLFa+IuXIyK
+ u3ke1A0T/kYEUVuwvJY/I3D+5g6ZSuoJlR4Qn+6P6zz8eAYTf7LNNNwlisRpb5ZOZTKMLAKOR
+ EImWi1aE1cpOG+Gc77UK+fLnuq4dS65r9CzaVwbvNNy7eTiK04qRuD/K83S+d0zODEZPS6RcJ
+ tQkhuHkGvfTkJXs7sS2lalZlLKeRlX5qkX+dYMW5kkBqp3RPTyk3/If9+4tm6rBoSXowpWXj/
+ cSShpBxvng4zXjJJkwriRTjQ4VdYsS2JZnZAHXs4EPuRIMbosqwh7bn2K5iUNzC0AquQV8bQH
+ 2ppDxOlcW5zuTl7XxHHA==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---uGEIEjYK4Hs76rFNuymf8zamwsxOw0ios
-Content-Type: multipart/mixed; boundary="CFQtLzYj7LTTLx1LCz8ceBAPYIbYhET30"
+On 1/25/21 7:34 PM, John David Anglin wrote:
+> For calls, this issue can be avoided with -mlong-calls option.=C2=A0 Wit=
+hout this, 64-bit calls are limited to
+> a 22-bit pc-relative offset (8 MB).=C2=A0 This does make branches somewh=
+at less efficient.=C2=A0 At the moment,
+> the 64-bit linker does not support adding branch extending stubs.
+>
+> Thunks are currently limited to a 17-bit pc-relative offset.
 
---CFQtLzYj7LTTLx1LCz8ceBAPYIbYhET30
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+When using huge pages, I've tried to set up a lds layout in which
+all init functions are in one page which can be deleted afterwards.
+I assume that's why they can't be reached.
 
-On 1/23/21 4:39 PM, Rolf Eike Beer wrote:
-> The Python testsuite in all versions of Python3 I remember fails the ei=
-ntr=20
-> tests with output like this:
->=20
-> FAIL: test_poll (__main__.SelectEINTRTest)
-> ----------------------------------------------------------------------
-> Traceback (most recent call last):
->   File "/usr/lib/python3.9/test/eintrdata/eintr_tester.py", line 451, i=
-n=20
-> test_poll
->     self.assertGreaterEqual(dt, self.sleep_time)
-> AssertionError: 0.19999999995343387 not greater than or equal to 0.2
-
-There have been some changes in the generic timekeeping functions.
-I see timing issues on a few of my machines too, e.g. in the xor
-time measurement functions as reported at lkml.
-Sadly I don't have time right now to look deeper into this.
+I'll look into the issue if I can reproduce it.
+Will keep you updated.
 
 Helge
 
-=20
-> There are 2 more failing tests with likewise output. This happens on my=
- 4-core=20
-> C8000. I have attached the testcase, when running it with "python3=20
-> test_eintr.py" I also get that results.
->=20
-> I suspect this could be some cross-cpu clock scew, but of course it can=
- be=20
-> something entirely different. Could someone have a look what is up ther=
-e?=20
-> Kernel is currently 5.10.4, but this has been there for a while.
->=20
-> Eike
->=20
+> Regards,
+> Dave
+>
+> On 2021-01-25 12:54 p.m., Nick Desaulniers wrote:
+>> I suspect that adding some more sections here makes the distance
+>> between other sections too large to encode?  IIRC, arm (32b) linker
+>> can emit "range extending thunks" to help jump large distances.  Not
+>> sure what to make of this report; I wouldn't have expected this GCC
+>> randconfig to generate code in any of the sections that were added to
+>> the linkerscript in
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3Deff8728fe69880d3f7983bec3fb6cea4c306261f.
+>>
+>> On Sat, Jan 16, 2021 at 6:37 AM kernel test robot <lkp@intel.com> wrote=
+:
+>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux=
+.git master
+>>> head:   1d94330a437a573cfdf848f6743b1ed169242c8a
+>>> commit: eff8728fe69880d3f7983bec3fb6cea4c306261f vmlinux.lds.h: Add PG=
+O and AutoFDO input sections
+>>> date:   5 months ago
+>>> config: parisc-randconfig-r032-20210116 (attached as .config)
+>>> compiler: hppa64-linux-gcc (GCC) 9.3.0
+>>> reproduce (this is a W=3D1 build):
+>>>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/=
+sbin/make.cross -O ~/bin/make.cross
+>>>         chmod +x ~/bin/make.cross
+>>>         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin=
+ux.git/commit/?id=3Deff8728fe69880d3f7983bec3fb6cea4c306261f
+>>>         git remote add linus https://git.kernel.org/pub/scm/linux/kern=
+el/git/torvalds/linux.git
+>>>         git fetch --no-tags linus master
+>>>         git checkout eff8728fe69880d3f7983bec3fb6cea4c306261f
+>>>         # save the attached .config to linux build tree
+>>>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-9.3.0 make.c=
+ross ARCH=3Dparisc
+>>>
+>>> If you fix the issue, kindly add following tag as appropriate
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>>
+>>> All errors (new ones prefixed by >>):
+>>>
+>>>    hppa64-linux-ld: mm/page_alloc.o(.ref.text+0x110): cannot reach unk=
+nown
+>>>    hppa64-linux-ld: mm/memblock.o(.text+0x27c): cannot reach __warn_pr=
+intk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0xc4): cannot reach pr=
+intk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x140): cannot reach p=
+rintk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x1e0): cannot reach m=
+emmove
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x314): cannot reach m=
+emmove
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x428): cannot reach m=
+emmove
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x5d4): cannot reach _=
+_warn_printk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0xb20): cannot reach p=
+rintk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0xce8): cannot reach p=
+rintk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0xd30): cannot reach p=
+rintk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0xd4c): cannot reach m=
+emcpy
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x1130): cannot reach =
+printk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x11e0): cannot reach =
+printk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x16d8): cannot reach =
+printk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x1788): cannot reach =
+printk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x1e04): cannot reach =
+printk
+>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0x1e2c): cannot reach =
+printk
+>>>    hppa64-linux-ld: mm/memblock.o(.init.text+0x24): cannot reach strst=
+r
+>>>    hppa64-linux-ld: mm/memblock.o(.init.text+0x100): cannot reach __wa=
+rn_printk
+>>>    hppa64-linux-ld: mm/memblock.o(.init.text+0x118): cannot reach dump=
+_stack
+>>>    hppa64-linux-ld: mm/memblock.o(.init.text+0x220): cannot reach prin=
+tk
+>>>    hppa64-linux-ld: mm/memblock.o(.init.text+0x48c): cannot reach prin=
+tk
+>>>    hppa64-linux-ld: mm/memblock.o(.init.text+0x55c): cannot reach prin=
+tk
+>>>    hppa64-linux-ld: mm/memblock.o(.init.text+0x62c): cannot reach prin=
+tk
+>>>    hppa64-linux-ld: mm/memblock.o(.init.text+0x720): cannot reach prin=
+tk
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4cc): cannot reach _raw_spin_=
+lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x580): cannot reach _raw_spin_=
+unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x690): cannot reach _raw_spin_=
+unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x768): cannot reach _raw_spin_=
+unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7c8): cannot reach _raw_spin_=
+lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x938): cannot reach _raw_spin_=
+lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x980): cannot reach _raw_spin_=
+unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xaf8): cannot reach sprintf
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xb60): cannot reach sprintf
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xbd0): cannot reach sprintf
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xc38): cannot reach sprintf
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xcd8): cannot reach _raw_spin_=
+lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xcf0): cannot reach _raw_spin_=
+unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xd7c): cannot reach __next_nod=
+e_in
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xdb4): cannot reach __next_nod=
+e_in
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xeb8): cannot reach _raw_spin_=
+unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xec8): cannot reach _raw_spin_=
+lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0xf58): cannot reach sprintf
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x1638): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x16d8): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x1764): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x17d0): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x1974): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x1990): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x19b4): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x19d4): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x1d88): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x1db0): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2588): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2658): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x26a8): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x26e4): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x27b0): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2964): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2984): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x29bc): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2a00): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2a40): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2b38): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2b58): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2c14): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2c8c): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2ccc): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2df4): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2ed8): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2f38): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2f60): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2f84): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x2fc8): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x3018): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x3044): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x3218): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x3308): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x340c): cannot reach __xchg64
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x3580): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x35b0): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x3604): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x3aa0): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x3b00): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x3efc): cannot reach down_writ=
+e
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4484): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x46ac): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4814): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x485c): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x48cc): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4a1c): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4a88): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4b14): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4c0c): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4cc0): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4d18): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4dd4): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x4ed4): cannot reach __muldi3
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x5008): cannot reach sprintf
+>>>>> hppa64-linux-ld: mm/hugetlb.o(.text+0x50dc): cannot reach printk
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x51bc): cannot reach __muldi3
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x5348): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x535c): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x53d8): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x53ec): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x565c): cannot reach down_read
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x5890): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x58d4): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x59f4): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x5b94): cannot reach _raw_spin=
+_lock_irqsave
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x5bf4): cannot reach _raw_spin=
+_unlock_irqrestore
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x5c14): cannot reach _raw_spin=
+_lock_irqsave
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x5c34): cannot reach _raw_spin=
+_unlock_irqrestore
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x5f58): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x5fdc): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x613c): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x6248): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x643c): cannot reach down_writ=
+e
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x64c0): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x6690): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x66c0): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x69a0): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x69c0): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x69d0): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x6a00): cannot reach ___rateli=
+mit
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x6a28): cannot reach printk
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x6a80): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x6bf4): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x6d98): cannot reach mutex_unl=
+ock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x6de0): cannot reach down_read
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x6df4): cannot reach mutex_loc=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x705c): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7344): cannot reach down_read
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x74ac): cannot reach mutex_loc=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x74e0): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7708): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x77b0): cannot reach mutex_unl=
+ock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7830): cannot reach mutex_unl=
+ock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x794c): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7978): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7998): cannot reach mutex_unl=
+ock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7b14): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7bfc): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7ce4): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7e84): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x7f0c): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8068): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8084): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x80b4): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8240): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8314): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8518): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x85e0): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8624): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x87a8): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8868): cannot reach down_writ=
+e
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x889c): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x88ec): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8d40): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8d60): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8d9c): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8db8): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8e78): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8ea0): cannot reach __muldi3
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8ec0): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x8fd0): cannot reach __warn_pr=
+intk
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x9074): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x90a4): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x90d4): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x92ec): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x9334): cannot reach __cmpxchg=
+_u32
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x93dc): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x9454): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x9558): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x969c): cannot reach _raw_spin=
+_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.text+0x96ac): cannot reach _raw_spin=
+_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x248): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x26c): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x36c): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x3d0): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x3ec): cannot reach sscan=
+f
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x568): cannot reach snpri=
+ntf
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x728): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x744): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x8d4): cannot reach _raw_=
+spin_lock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0x900): cannot reach _raw_=
+spin_unlock
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xa40): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xa70): cannot reach kobje=
+ct_create_and_add
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xb64): cannot reach kobje=
+ct_create_and_add
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xb9c): cannot reach kobje=
+ct_put
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xbb4): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xc84): cannot reach __mul=
+di3
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xde8): cannot reach mempa=
+rse
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xec0): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xef0): cannot reach unkno=
+wn
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xf94): cannot reach mempa=
+rse
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xfcc): cannot reach print=
+k
+>>>    hppa64-linux-ld: mm/hugetlb.o(.init.text+0xfe4): cannot reach unkno=
+wn
+>>>    hppa64-linux-ld: mm/slab.o(.text+0x490): cannot reach __udivdi3
+>>>    hppa64-linux-ld: mm/slab.o(.text+0x4ac): cannot reach __umoddi3
+>>>
+>>> ---
+>>> 0-DAY CI Kernel Test Service, Intel Corporation
+>>> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+>>
+>>
+>
+>
 
-
-
---CFQtLzYj7LTTLx1LCz8ceBAPYIbYhET30--
-
---uGEIEjYK4Hs76rFNuymf8zamwsxOw0ios
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQS86RI+GtKfB8BJu973ErUQojoPXwUCYA8boQAKCRD3ErUQojoP
-X4sbAP9SRrgDyB48cZDSULVV/EzJv1qNNgRUBcSQqgLEm6HU6gD/SPZphPhqVwQI
-NwShKSlyijaiXTqZOPkLoBg3osI0VA8=
-=h1jG
------END PGP SIGNATURE-----
-
---uGEIEjYK4Hs76rFNuymf8zamwsxOw0ios--
