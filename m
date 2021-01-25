@@ -2,26 +2,26 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF62302E17
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Jan 2021 22:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3946303079
+	for <lists+linux-parisc@lfdr.de>; Tue, 26 Jan 2021 00:49:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733029AbhAYVkT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Jan 2021 16:40:19 -0500
-Received: from mout.gmx.net ([212.227.15.19]:42299 "EHLO mout.gmx.net"
+        id S1732689AbhAYXsM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Jan 2021 18:48:12 -0500
+Received: from mout.gmx.net ([212.227.15.15]:59823 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733031AbhAYVjc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Jan 2021 16:39:32 -0500
+        id S1732451AbhAYVPI (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 25 Jan 2021 16:15:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1611610663;
-        bh=RDYY9el5f+nsgQ6gFiy8PMqsEn4/zhbkeCpd0ZbQhCY=;
+        s=badeba3b8450; t=1611609201;
+        bh=YmrMR/zvFtGtxCins1ZNaL9v7i/6QMj5p0AveSDEjSo=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=ZO9XCngGlkNJbXkECUsdz7FVc620gL0w2xoVjgYHEGGJ1AqwNPYDgMTO9vkHOT4Vx
-         KV6TwmCp1HoPU7RZfaOvX+LXZyvs76f2IGdrDPJCXlPnzscZp9n1UVxmL3UKisFbcP
-         jGer6OekjFdM19HrTxTJZJmuaxbYYil5mz6PXgTg=
+        b=DcTLSs4jr754jxWeha+CkGpmmaB3L2b2iyzBV2KeusqmJCs7YbBbi+71AS5tGFVYP
+         t2uooZ4slSCZ7NO9aC21P3V/uiDgByMp4sakkqntezx+Y2H5kN2wkyUbgBTBKGSPlD
+         4nRYDeV6e4/DHZ8NnEPZgosoZsNuLMDsptG6mQeY=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.169.109]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MsYqv-1ls7e01qzz-00tycj; Mon, 25
- Jan 2021 22:37:43 +0100
+Received: from [192.168.20.60] ([92.116.169.109]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MTzay-1lU20g3Mbi-00QzEN; Mon, 25
+ Jan 2021 22:13:20 +0100
 Subject: Re: hppa64-linux-ld: mm/hugetlb.o(.text+0x50dc): cannot reach printk
 To:     John David Anglin <dave.anglin@bell.net>
 Cc:     Nick Desaulniers <ndesaulniers@google.com>,
@@ -38,8 +38,6 @@ References: <202101162230.XswE8zOX-lkp@intel.com>
  <20210125204720.GA28462@ls3530.fritz.box>
  <4bdf35de-f804-4e9d-cde9-cc6785840a60@gmx.de>
  <627d4b69-79cf-371b-9aa7-d87f26e4f088@bell.net>
- <3564bcea-5781-123f-564e-53289967e9e4@gmx.de>
- <428d571c-1f68-7a59-3232-9bb362b51a5b@bell.net>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -98,66 +96,54 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <2d1df226-275a-26f5-2f32-d2c3e591dbc6@gmx.de>
-Date:   Mon, 25 Jan 2021 22:37:42 +0100
+Message-ID: <3564bcea-5781-123f-564e-53289967e9e4@gmx.de>
+Date:   Mon, 25 Jan 2021 22:13:20 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <428d571c-1f68-7a59-3232-9bb362b51a5b@bell.net>
+In-Reply-To: <627d4b69-79cf-371b-9aa7-d87f26e4f088@bell.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:62Ia8N38ga24tRZ0nWDpz1mwa0Kg2oqSfk+x0IiTrqTCdhRDf9G
- YdOMwLAYHdCUpJc37w6f1aCZY9CAhUoGZz+eSKBlUnoaQRrL4w559u+cR18hn0cAeUMI3zj
- Wn56V83PqNQXWIvp8luYEc1uZopq5f2M6aDL3ag/7ZAsVYalmCrNQURKyvCVgTNAs6BmzSM
- 4HSqOU265IXh0/PQlF6xA==
+X-Provags-ID: V03:K1:IxHCpa5S7pBCYGF8qqlqrgXEC6ubXdowF4YvGmhCx75ID9TComm
+ ZpI+mbiyxrI8wBt92cQI3Fef/eqiFKas2H/inDfBikcfIsUS5xWsNDkjQbEV1tIxa7k6tZn
+ gSEVK1H8Pc+EoAX3ae0phFAs1rckhxGB3Zs1BnicA8lA7Hw0uclJMk2X2Dju4xpM9c9HAjO
+ dVReEl0ST4t63iV+M1tyw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:oHs7iHILS7Q=:s2WxnUovYcreJR0Qgiu5TD
- K64AGqbzbYwy1YkY1muDN3FR+UHNHMaBuC09eQGezSN3FBesSE11tbSYegS50XZBft7OlVCAg
- GMes+mZmhGzwOLQfBUcmz2+/mRtAGAZ8xP0fVpWh4pssPPMWPnxRz9ZR8GP4gQVy5985FijVv
- gmo76VEt8AoBZshfNIi8JcaXeB1ELJAOFgx+YGbc2/anDdVZaVNZb/aXIeRW7v6aZtG7rx3YE
- +N//qEnYXjOaglCVLNJpdtQ+ns4obei4vHKuLklgYgsofvX39Jq9Dx2EUjje77G+M0arbbU8x
- viJ3fyIEW5/MbjRGkXufJvxBiCorPVknW4+XbVRbM4XyB5ujS6VQz0VJRI9Bs9M3BlThSkKAh
- NxYT/d81AAvjOiOMQdxdEHRv4fx6zvlqD/k6Qz7o+w7fVRrzcNjjYJsbo7Dp0dAwPr9yrZQgA
- 5BsUNWB5N7zVWRt3a1NCtQnqA8kPRboMBth1jFbjutMmmPDokEIdS9Jv+qAqkqNF+Uz/u0oTq
- C0fz7GO+mtXuCYYKJWth2Bi3xgPRe1Yt9EsQYWfRkyU5NWFpAvTqRlo0ZqQzP6ehJMuXN3L2P
- J0hp4o3FhKu4e+c5stF1dC5GMj+YkBt0TtZSopyjhFEkgMv8V4+EYiDOMZ0wI9HlC3SR5dLWj
- pFe3+LmjpMbgBMgQxqJITHcPyoF2ppWuTLTMbvr8/gANaXkUygjoZcaWfVYgs1yhRG6y6FrrT
- apYdSCTpDCzEJUlEMkLtxTJXZ7A3vIvI8oQcfryDNtkAeHJVM43rFRg4aQbqe/yZFx4cLS1w/
- bFgU7Qn3fWU8CnowDDa68iImOVjAWXnhvzpYtJn1D0QUNRFYImTl0aAR0O/MiGCQX4ixDg0fY
- WjukJxxnrpjzjWAcwv7Q==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:v6nQxD47wH8=:eCa6irpXpfCeml/qnWVvor
+ nEqGbUmWCIpCEIRdfNhINQQ96heSu4t5sMvy3pvQ2ilFhLyDOhD1vlpEN7+mMVKGgTEC4nBP8
+ UkHkclqcX7gB804TgNfdHOA3JsJsP2AZ5sh6vlvj15RwA95xZlPoRRZI1xfJxillcngH//Cbf
+ sqHlpVd9iNVnt4Ael6vA8iJrEu1mJ+5bZJQIOaIfOLkfrBpxQIGilHLnvbYayNMuc9PzVtqQe
+ 7WyiMQwtz4aYTxY/rdoHregvofrF8UaeKegRn3+Nsbpf/Br8N1ihPf5teU07d6UBU8Hk5whEl
+ thmVCVCqPWAGu8BuX1hxfGYCJ0SbAZ/0gcGlmNpvLN5cO2xv0x0nuV0YO1TpdM7/Eu+Pce48q
+ 2nFkwtnPpNscPM+KcilK2+YlTv3QB/D4JwXyCZwapowhExBuHK7eJZacxy4tXNM6VtZLD9Oll
+ QfPo1e53ie3XPUHGbBFxaZQ+ZekaCJ5Yf6KrGVB8fJ+Xnudd1cjLvP5Ym0MHGd7v8z3YTcP1K
+ 5E05u5gOKDBW/JWPXxw5CrwzKtb2PFJJh+K+kQRFHgar6humXwntGroVTlBd+oAa2O3/zRgHI
+ q4COQ6HP03dfCgvWZiFIk5yAcgDzM7MF5uJejaJwAsoL2oHv2STxUsA4IA5MM21XVLWhlO7GO
+ Ykyz9o+NMOe8JRafsTvW3JHre111twZ8X09JB+WojDmOL1e+Onlm/euxZgGHsvNTCYCwPMAl8
+ dbUDWhlNXsk82bEVZ8nsPaB009bpV9eNn5AfiSYqDrUZZt+LeM8JMWMIqaAZ3acbM7n44GNuJ
+ yEEQank19L6xa/k0zailxgUEWIMe7/ZAo2wWsrJmx8YFCocq8QEGfSCE3SIKgZnBcjH7K90v3
+ gBlHyIgUEBWtLptgX4Zg==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 1/25/21 10:17 PM, John David Anglin wrote:
-> On 2021-01-25 4:13 p.m., Helge Deller wrote:
->> On 1/25/21 10:08 PM, John David Anglin wrote:
->>> I would suggest the following for this hunk:
->>>
->>> +=C2=A0=C2=A0=C2=A0 ldil=C2=A0=C2=A0=C2=A0 L%intr_restore, %r2
->>> +=C2=A0=C2=A0=C2=A0 BL=C2=A0=C2=A0=C2=A0 preempt_schedule_irq
->>> +=C2=A0=C2=A0=C2=A0 ldo=C2=A0=C2=A0=C2=A0=C2=A0 R%intr_restore(%r2), %=
-r2
->>>
->>> =C2=A0=C2=A0=C2=A0 ldil=C2=A0=C2=A0=C2=A0 L%intr_restore, %r1
->>> =C2=A0=C2=A0=C2=A0 b,l=C2=A0=C2=A0=C2=A0 preempt_schedule_irq,%r2
->>> =C2=A0=C2=A0=C2=A0 ldo=C2=A0=C2=A0=C2=A0=C2=A0 R%intr_restore(%r1), %r=
-2
->>>
->>> On PA 2.0 hardware that gives a 22-bit call.
->> "BL" is already using "b,l", see #define in arch/parisc/include/asm/ass=
-embly.h
->>
->> The 22-bit weren't sufficient, that's why I changed it too.
-> Okay but "b,l" only provides a 22-bit branch with %r2 as link register.=
-=C2=A0
+On 1/25/21 10:08 PM, John David Anglin wrote:
+> I would suggest the following for this hunk:
+>
+> +=C2=A0=C2=A0=C2=A0 ldil=C2=A0=C2=A0=C2=A0 L%intr_restore, %r2
+> +=C2=A0=C2=A0=C2=A0 BL=C2=A0=C2=A0=C2=A0 preempt_schedule_irq
+> +=C2=A0=C2=A0=C2=A0 ldo=C2=A0=C2=A0=C2=A0=C2=A0 R%intr_restore(%r2), %r2
+>
+> =C2=A0=C2=A0=C2=A0 ldil=C2=A0=C2=A0=C2=A0 L%intr_restore, %r1
+> =C2=A0=C2=A0=C2=A0 b,l=C2=A0=C2=A0=C2=A0 preempt_schedule_irq,%r2
+> =C2=A0=C2=A0=C2=A0 ldo=C2=A0=C2=A0=C2=A0=C2=A0 R%intr_restore(%r1), %r2
+>
+> On PA 2.0 hardware that gives a 22-bit call.
 
-Argh. Yes. Didn't know.
-We have BL,%r25 in the same file.
+"BL" is already using "b,l", see #define in arch/parisc/include/asm/assemb=
+ly.h
 
-> You also need to use %r1 in the ldil and ldo instructions.
-
-Ok, will fix.
+The 22-bit weren't sufficient, that's why I changed it too.
 
 Helge
