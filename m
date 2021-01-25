@@ -2,40 +2,42 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09931302D28
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Jan 2021 22:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF365302D3C
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Jan 2021 22:08:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732421AbhAYVB7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Jan 2021 16:01:59 -0500
-Received: from mout.gmx.net ([212.227.15.15]:42891 "EHLO mout.gmx.net"
+        id S1731500AbhAYVHp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Jan 2021 16:07:45 -0500
+Received: from mout.gmx.net ([212.227.15.18]:60333 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732419AbhAYVBr (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Jan 2021 16:01:47 -0500
+        id S1731970AbhAYVHQ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 25 Jan 2021 16:07:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1611608393;
-        bh=GS2SqmZoo1tKDzhaBtPEacjl0sbq+XTvYs0KINWX7Kw=;
-        h=X-UI-Sender-Class:Subject:Cc:References:From:Date:In-Reply-To;
-        b=dM9APaUBhidvSRDQmgtqbMYfpzy0MdEBpu3a6PlA9fsfrDkb73PDvXdTSflZ3U+BR
-         1L+knf1bvKO9PphXwjzhZpuwQdE3xj3xBw8Iqekzfq9UAW6tKSsqSh0qTplMQeyHZu
-         QAu1xbCv0JumOEtbEOLiSE9W1t5p0K7O6K/TSq+8=
+        s=badeba3b8450; t=1611608724;
+        bh=sjbOI4xhiYHyjdiqU5WxTIUZ/iRYGETEMKRxSMMCVIc=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=a6pfJYP7AY2SxcPFkNSMXlu15gkQwVxhmWcniHfNRI6sirqaIS3LvL/qaR001n75f
+         CR6DGASnoH06IkzdfP/WFpzZtclsLHu6UQSA82w3q4d04wQHdx2zdKuooNgFn9r0wy
+         7DnYFOaGcPcoi/SrB33H420Ds6lqgXrpxSU0OqCU=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.169.109]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MBDnI-1l94eV02TW-00Cm3I; Mon, 25
- Jan 2021 21:59:53 +0100
+Received: from [192.168.20.60] ([92.116.169.109]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MHoN2-1lFe2k2be2-00EyJI; Mon, 25
+ Jan 2021 22:05:24 +0100
 Subject: Re: hppa64-linux-ld: mm/hugetlb.o(.text+0x50dc): cannot reach printk
+To:     Nick Desaulniers <ndesaulniers@google.com>
 Cc:     John David Anglin <dave.anglin@bell.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         linux-parisc@vger.kernel.org, kbuild-all@lists.01.org,
         LKML <linux-kernel@vger.kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
         Kees Cook <keescook@chromium.org>,
-        kernel test robot <lkp@intel.com>
+        kernel test robot <lkp@intel.com>,
+        Masahiro Yamada <masahiroy@kernel.org>
 References: <202101162230.XswE8zOX-lkp@intel.com>
  <CAKwvOd=rrTLc510cEA84BC_zzYVQ0ifPEMhRRtU-cyYPs_E4eA@mail.gmail.com>
  <bed0d008-c5c0-011e-6f1e-fb248f97c009@bell.net>
  <88735d3b-1b56-bc8a-2183-1f9549626002@gmx.de>
  <20210125204720.GA28462@ls3530.fritz.box>
+ <CAKwvOd=RHb5yQj5kKuvt9BnywNUmRtivPu_qebLG8XXDyr8cCA@mail.gmail.com>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  mQINBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -94,152 +96,121 @@ Autocrypt: addr=deller@gmx.de; keydata=
  XzCscCr+pggvqX7kI33AQsxo1DT19sNYLU5dJ5Qxz1+zdNkB9kK9CcTVFXMYehKueBkk5MaU
  ou0ZH9LCDjtnOKxPuUWstxTXWzsinSpLDIpkP//4fN6asmPo2cSXMXE0iA5WsWAXcK8uZ4jD
  c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <4bdf35de-f804-4e9d-cde9-cc6785840a60@gmx.de>
-Date:   Mon, 25 Jan 2021 21:59:52 +0100
+Message-ID: <ec7d8302-1040-2161-efaa-4b148caabe3e@gmx.de>
+Date:   Mon, 25 Jan 2021 22:05:23 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20210125204720.GA28462@ls3530.fritz.box>
+In-Reply-To: <CAKwvOd=RHb5yQj5kKuvt9BnywNUmRtivPu_qebLG8XXDyr8cCA@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:98Ex2RBc7xDCHg8rBbMZOgBxGuGEdHQD097HPRackJ4tGJZIFsY
- hcP/A49XqweDR9i2FJ0tJOZaK5tXCQPK8icsJHdo/zVUIOIqubtYwHJrG6TcH548RwxCe1x
- Gmnl/j50ObNxRedb0Fwi1n+IRpJ2p1Zw+YUqXUWPuZlThOyJBwS632Zxffvkprx4vrPA7P6
- qgWk4xEXKQm+1YQFEA89A==
+X-Provags-ID: V03:K1:h4DQNExUFuQJNVweSm8X9dy/oQ+Y1VCGfZTuvsia+zvdf/FMdaz
+ yti7yET9jkqXi3LNisHCxEA5bjiWI1uP0vtZwxwRAx394qO8n1SrdcUBZhyl2YUu2i5T8DR
+ vW14FU3leE/9l5PzFSMNcTssZfGbxcHHAprFCSMfcifiU6Qfn1/W3vG0tfWGksZcuaimfpg
+ CftVp57VOCHkh3+b0U2Cw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:EGWYKlnlBCs=:u9R9Lm8BVPh5W9krE4Ac4Z
- fZ2iUPhylL+hIE3dxYE+fh2tyt7EJQJ6vXTmVdouu4+1DJNTEp6GrDDhYUorMaY4XycVB2dBV
- 4JIHr7xQcQXJgu5IDVcci58Oe/yQ/4df7Xbczmqqz/FJPwnp7peJcY6dpgN+upg0m5uU6wLPo
- u6Tavxb3azoQzfQxaRCqgJ9/E2uKZ44HdcYJ77/Wpd0njNnYEt1YM5z0/fU5NsbyG6WGuGmDz
- QupDBqPP0wB6EImWDFKDjIBUaGZWpgw7eOoTqa0TvqavSKGqf3/IsWZj/D0TQca66E6JqI7fe
- I9K835zT/RUq1aQp0WNk3m2FXqrujVsk/xXnn1PPvqjy0sQSuaAOv6JXsDpo+722rZsMIhsPm
- eRfjxYAuOmYot6ZSvHwWj7IWYP2O4MXsMmfW8B1JpEWGdcwPwFqNPR1/mZ/wX2I5IG2AOXuKM
- Q2Tc6hY4IZvzwMgEF45A3jiT6KxFXx+Me8kquacpKU0/I49Tn9jAam3V5x7EbtXCRutKJkySm
- V9XKqRvnCSJo7suKwavOvp8013ugvLq50zLWs81LcewpFtAvCWbGmiGn9zmEhv6Qm4dSxGnds
- dYhYrcut9gu3j/DdYM1WvNDb95K/cdE5EHOxwm0pZSlthFq7rVgAJYYbH4o1bgfkeGw/uzKE3
- J+hfkwRNH90YBb/04IRf99KdVzXLY7Ozz/EMrhnXNSwyGx8a7XajlnSjw0rGzr9AjjC8dpCun
- JKhL8M99BLY1WYrm/PVBH4yVPTdXyK07ivqEt7cTfWXumNjRwRSDIn94XtQDq0EbZf991FlY1
- fTVADz9jM+TpKaJ5TENR4s6zmknijlZSIk1hNiuNA37I9/g5suW7zGss9gKobdvLCX3vWUyyX
- XY4N9yMQJ16xB3kchJ1Q==
-To:     unlisted-recipients:; (no To-header on input)
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MuCR39nhkI0=:NLPlA9VLBfTR4DJZBzoBmm
+ 8RAkkMxGYrdWaACAGHM2PG5b4tJemRX0wI+GY9oQ1U0UdGwESl91nHayxNnUh8ZbGzqqqKi7f
+ uQdsua3gJ/IR8ZgoYcrzb37Ci6yBmSDe6PSjdfS5r7Sf7ZQcEXVfB8zmaVZU8j8T2kGmf8Yym
+ Ra2z9/DmbHhlEOgLiCTpJpt7zw2KFJdruGt40oavvd78c8XXrRGMk9Yl0DoEamiNLNRPAR4ph
+ PvrYmVynmwbxcHCqPp3ee0XQqFKixC58947/mS4v+aT8nACOSuGiuEFKtOTS/RmaCsCTsFb5n
+ 05j0BhrI+Gal+6wlBXdqGXwOXE7mUwG2SJY/PV34d1zsDHhvjRJqqCk65yrZxBHrByxDZwZK3
+ dBp0j3V7Wg/s5B+eAykmhgeH4Ve+fx6iDRwddC919Y2P+Gom+IhWZtZje56JNj5mHA9h7DGqt
+ UTU/v62rWTOCmompUdXgI1lPKMW4Aij/fnAKMjAgrjUxTOD0ISrk07MQP0lBSMOGQ96bMI3At
+ /MhNOg8vYAB756mdqjapoHmhzJkEVrllCruuBtguh4vRUAcdpIkLqXDXdseJld2d12wfeI+E+
+ n+crnaCptcaRU+joTyjPEQS59VT/N7LbnRFTmEhmIbTMZ3Ec9SCXTbcUP7LdkNDnkWPRdQU9e
+ NLUFqS/L/9ClLDyC2G3YiCyS5ykOmzT0i8td4HxMd50yvNbHw8mbCMr35Kv5uOFh3EIYGlyI3
+ VY8wBL8XN2H6SvrRjaIMvujtd3JDmKu0IseftfM1h2JbHUx09YJJgGtkaISQ6iqjRDBZb0xKO
+ 1hwxZpBMOGgD0RGjJtj/BI52fKLHT34kZfAbaFr+O8v9yj6Nx/tR2Qrg/3e7dTvpZt+PPD44M
+ jnV2zqW1TlC1Gibo9P0Q==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 1/25/21 9:47 PM, Helge Deller wrote:
->>>> On Sat, Jan 16, 2021 at 6:37 AM kernel test robot <lkp@intel.com> wro=
-te:
->>>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin=
-ux.git master
->>>>> head:   1d94330a437a573cfdf848f6743b1ed169242c8a
->>>>> commit: eff8728fe69880d3f7983bec3fb6cea4c306261f vmlinux.lds.h: Add =
-PGO and AutoFDO input sections
->>>>> date:   5 months ago
->>>>> config: parisc-randconfig-r032-20210116 (attached as .config)
->>>>> compiler: hppa64-linux-gcc (GCC) 9.3.0
->>>>> reproduce (this is a W=3D1 build):
->>>>>         wget https://raw.githubusercontent.com/intel/lkp-tests/maste=
-r/sbin/make.cross -O ~/bin/make.cross
->>>>>         chmod +x ~/bin/make.cross
->>>>>         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/l=
-inux.git/commit/?id=3Deff8728fe69880d3f7983bec3fb6cea4c306261f
->>>>>         git remote add linus https://git.kernel.org/pub/scm/linux/ke=
-rnel/git/torvalds/linux.git
->>>>>         git fetch --no-tags linus master
->>>>>         git checkout eff8728fe69880d3f7983bec3fb6cea4c306261f
->>>>>         # save the attached .config to linux build tree
->>>>>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-9.3.0 make=
-.cross ARCH=3Dparisc
->>>>>
->>>>> If you fix the issue, kindly add following tag as appropriate
->>>>> Reported-by: kernel test robot <lkp@intel.com>
->>>>>
->>>>> All errors (new ones prefixed by >>):
->>>>>
->>>>>    hppa64-linux-ld: mm/page_alloc.o(.ref.text+0x110): cannot reach u=
-nknown
->>>>>    hppa64-linux-ld: mm/memblock.o(.text+0x27c): cannot reach __warn_=
-printk
->>>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0xc4): cannot reach =
-printk
-> ....
+On 1/25/21 9:58 PM, Nick Desaulniers wrote:
+> On Mon, Jan 25, 2021 at 12:47 PM Helge Deller <deller@gmx.de> wrote:
+>>
+>>>>> On Sat, Jan 16, 2021 at 6:37 AM kernel test robot <lkp@intel.com> wr=
+ote:
+>>>>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/li=
+nux.git master
+>>>>>> head:   1d94330a437a573cfdf848f6743b1ed169242c8a
+>>>>>> commit: eff8728fe69880d3f7983bec3fb6cea4c306261f vmlinux.lds.h: Add=
+ PGO and AutoFDO input sections
+>>>>>> date:   5 months ago
+>>>>>> config: parisc-randconfig-r032-20210116 (attached as .config)
+>>>>>> compiler: hppa64-linux-gcc (GCC) 9.3.0
+>>>>>> reproduce (this is a W=3D1 build):
+>>>>>>         wget https://raw.githubusercontent.com/intel/lkp-tests/mast=
+er/sbin/make.cross -O ~/bin/make.cross
+>>>>>>         chmod +x ~/bin/make.cross
+>>>>>>         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/=
+linux.git/commit/?id=3Deff8728fe69880d3f7983bec3fb6cea4c306261f
+>>>>>>         git remote add linus https://git.kernel.org/pub/scm/linux/k=
+ernel/git/torvalds/linux.git
+>>>>>>         git fetch --no-tags linus master
+>>>>>>         git checkout eff8728fe69880d3f7983bec3fb6cea4c306261f
+>>>>>>         # save the attached .config to linux build tree
+>>>>>>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-9.3.0 mak=
+e.cross ARCH=3Dparisc
+>>>>>>
+>>>>>> If you fix the issue, kindly add following tag as appropriate
+>>>>>> Reported-by: kernel test robot <lkp@intel.com>
+>>>>>>
+>>>>>> All errors (new ones prefixed by >>):
+>>>>>>
+>>>>>>    hppa64-linux-ld: mm/page_alloc.o(.ref.text+0x110): cannot reach =
+unknown
+>>>>>>    hppa64-linux-ld: mm/memblock.o(.text+0x27c): cannot reach __warn=
+_printk
+>>>>>>    hppa64-linux-ld: mm/memblock.o(.meminit.text+0xc4): cannot reach=
+ printk
+>> ....
+>>
+>> The problem with this .config is, that both CONFIG_MODULES and
+>> CONFIG_MLONGCALLS are set to "n".
+>> The Kconfig autodetection needs fixing to enable CONFIG_MLONGCALLS in
+>> this case.
+>>
+>>
+>> This patch fixes it for me:
+>>
+>> [PATCH] Require -mlong-calls gcc option for !CONFIG_MODULES
+>>
+>> When building a kernel without module support, the CONFIG_MLONGCALL
+>> option needs to be enabled. This patch fixes the autodetection in the
+>> Kconfig script and uses a far call to preempt_schedule_irq() in
+>> intr_do_preempt().
+>>
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>>
+>> ---
+>>
+>> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+>> index 78b17621ee4a..278462186ac4 100644
+>> --- a/arch/parisc/Kconfig
+>> +++ b/arch/parisc/Kconfig
+>> @@ -202,9 +202,8 @@ config PREFETCH
+>>         depends on PA8X00 || PA7200
+>>
+>>  config MLONGCALLS
+>> -       bool "Enable the -mlong-calls compiler option for big kernels"
+>> -       default y if !MODULES || UBSAN || FTRACE
+>> -       default n
+>> +       def_bool y if !MODULES || UBSAN || FTRACE
+>> +       bool "Enable the -mlong-calls compiler option for big kernels" =
+if MODULES && !UBSAN && !FTRACE
 >
-> The problem with this .config is, that both CONFIG_MODULES and
-> CONFIG_MLONGCALLS are set to "n".
-> The Kconfig autodetection needs fixing to enable CONFIG_MLONGCALLS in
-> this case.
->
->
-> This patch fixes it for me:
->
-> [PATCH] Require -mlong-calls gcc option for !CONFIG_MODULES
->
-> When building a kernel without module support, the CONFIG_MLONGCALL
-> option needs to be enabled. This patch fixes the autodetection in the
-> Kconfig script and uses a far call to preempt_schedule_irq() in
-> intr_do_preempt().
->
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Reported-by: kernel test robot <lkp@intel.com>
+> ^ this looks like the same constraints specified twice?  Am I
+> understanding that correctly? (I don't understand why this isn't
+> specified _once_).
 
-There's a small bug in the code below:
-	BL	preempt_schedule_irq
-needs to be
-	BL	preempt_schedule_irq, %r0
+The logic is:
+- if (!MODULES || UBSAN || FTRACE) then don't ask and always set to Y,
+- otherwise show menu entry but leave default as N.
 
-I'll do some more testing and will push the final version
-through the parisc tree.
+If this can be done in one line I'm happy to correct it.
 
 Helge
-
-
-> ---
->
-> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-> index 78b17621ee4a..278462186ac4 100644
-> --- a/arch/parisc/Kconfig
-> +++ b/arch/parisc/Kconfig
-> @@ -202,9 +202,8 @@ config PREFETCH
->  	depends on PA8X00 || PA7200
->
->  config MLONGCALLS
-> -	bool "Enable the -mlong-calls compiler option for big kernels"
-> -	default y if !MODULES || UBSAN || FTRACE
-> -	default n
-> +	def_bool y if !MODULES || UBSAN || FTRACE
-> +	bool "Enable the -mlong-calls compiler option for big kernels" if MODU=
-LES && !UBSAN && !FTRACE
->  	depends on PA8X00
->  	help
->  	  If you configure the kernel to include many drivers built-in instead
-> diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-> index beba9816cc6c..6320f6a8397c 100644
-> --- a/arch/parisc/kernel/entry.S
-> +++ b/arch/parisc/kernel/entry.S
-> @@ -997,10 +997,19 @@ intr_do_preempt:
->  	bb,<,n	%r20, 31 - PSW_SM_I, intr_restore
->  	nop
->
-> -	BL	preempt_schedule_irq, %r2
-> -	nop
-> +	/* ssm PSW_SM_I done later in intr_restore */
-> +#ifdef CONFIG_MLONGCALLS
-> +	ldil    L%intr_restore, %r2
-> +	load32	preempt_schedule_irq, %r1
-> +	bv	%r0(%r1)
-> +	ldo     R%intr_restore(%r2), %r2
-> +#else
-> +	ldil    L%intr_restore, %r2
-> +	BL	preempt_schedule_irq
-> +	ldo     R%intr_restore(%r2), %r2
-> +#endif
-> +
->
-> -	b,n	intr_restore		/* ssm PSW_SM_I done by intr_restore */
->  #endif /* CONFIG_PREEMPTION */
->
->  	/*
->
->
-
