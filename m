@@ -2,86 +2,199 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEBCC307143
-	for <lists+linux-parisc@lfdr.de>; Thu, 28 Jan 2021 09:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 330B630719F
+	for <lists+linux-parisc@lfdr.de>; Thu, 28 Jan 2021 09:39:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231876AbhA1ISQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 28 Jan 2021 03:18:16 -0500
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:44346 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231511AbhA1ISB (ORCPT
+        id S231666AbhA1IhM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 28 Jan 2021 03:37:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52060 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229785AbhA1Igx (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 28 Jan 2021 03:18:01 -0500
-Received: by mail-oi1-f181.google.com with SMTP id n7so5156687oic.11;
-        Thu, 28 Jan 2021 00:17:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TL3tp80ch5Ojmt15uhmuDBGqfvQ8YwjAwOvbZ3H5gho=;
-        b=tY3YuKIqmRaJkzI6nyvtPbLy7yOjbbcQeeta0rppuamco2UVGIKwuoYnzU/mS2cuCa
-         Ibamgeb2O5+vQdjjnN696vcSzs8mC7ZXmKlofm53bFYUcaL1+aOq7YvQO+PguzMUch8W
-         yvlkCIm8ATu4GO/qmCHI7dAF1AENN008sW7eJNY1mjmigcole/y8mHbOzYE8wWoLWFDg
-         coeLdrhY2B7iJaFDSxQPGjmmaRf1xGOsuRO+JkmqZG1/0V0Ee0d8bqapmcXHL6awaUYO
-         eicZlAtaA/2pKlzF/fwB6oAt1G507kOpCrW0M1r6L3raHHiTTwFHDTKGo/Z7CYJouJXo
-         PkCQ==
-X-Gm-Message-State: AOAM530ZiPFrc2eXuKfnEVWqVmWGMlkhvzMgONMyEbJTJpybRxE6DULP
-        qnDHyS/Yd+Cepqo4PYhqh8wV12Oi65jHiCdObok=
-X-Google-Smtp-Source: ABdhPJyaplo6/NZAAIS02LBbY6W1dLxYDZ/X0XB3GuIXLfaRgiB9Cco71R6713OCRdUcK2cT17+0m9PEdnGKkCz70nI=
-X-Received: by 2002:aca:1219:: with SMTP id 25mr5943005ois.54.1611821840178;
- Thu, 28 Jan 2021 00:17:20 -0800 (PST)
+        Thu, 28 Jan 2021 03:36:53 -0500
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD687C061574
+        for <linux-parisc@vger.kernel.org>; Thu, 28 Jan 2021 00:36:12 -0800 (PST)
+Received: (qmail 27175 invoked from network); 28 Jan 2021 08:35:51 -0000
+Received: from p548d426b.dip0.t-ipconnect.de ([::ffff:84.141.66.107]:55290 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.37dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <dave.anglin@bell.net>; Thu, 28 Jan 2021 09:35:51 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>
+Cc:     Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH] parisc: Optimize per-pagetable spinlocks (v11)
+Date:   Thu, 28 Jan 2021 09:36:01 +0100
+Message-ID: <2053670.irdbgypaU6@eto.sf-tec.de>
+In-Reply-To: <20210127211851.GA32689@ls3530.fritz.box>
+References: <c696f95d-a5ba-1f73-fbe9-a5d3f25e79c0@bell.net> <4f76001d-f050-286f-4b6f-790554583eea@bell.net> <20210127211851.GA32689@ls3530.fritz.box>
 MIME-Version: 1.0
-References: <20210128005110.2613902-1-masahiroy@kernel.org> <20210128005110.2613902-13-masahiroy@kernel.org>
-In-Reply-To: <20210128005110.2613902-13-masahiroy@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 28 Jan 2021 09:17:09 +0100
-Message-ID: <CAMuHMdV_AHcnGoVToHLXa95JEd4wcL3eTqYfk6=7Ou0W8VJR5w@mail.gmail.com>
-Subject: Re: [PATCH 12/27] m68k: syscalls: switch to generic syscalltbl.sh
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linux-Arch <linux-arch@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="nextPart12697130.uLZWGnKmhe"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Yamada-san,
+--nextPart12697130.uLZWGnKmhe
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jan 28, 2021 at 1:54 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> As of v5.11-rc1, 12 architectures duplicate similar shell scripts in
-> order to generate syscall table headers. My goal is to unify them into
-> the single scripts/syscalltbl.sh.
->
-> This commit converts m68k to use scripts/syscalltbl.sh.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Am Mittwoch, 27. Januar 2021, 22:18:51 CET schrieb Helge Deller:
+> On parisc a spinlock is stored in the next page behind the pgd which
+> protects against parallel accesses to the pgd. That's why one additional
+> page (PGD_ALLOC_ORDER) is allocated for the pgd.
+> 
+> Matthew Wilcox suggested that we instead should use a pointer in the
+> struct page table for this spinlock and noted, that the comments for the
+> PGD_ORDER and PMD_ORDER defines were wrong.
+> 
+> Both suggestions are addressed in this patch. The pgd spinlock
+> (parisc_pgd_lock) is stored in the struct page table. In
+> switch_mm_irqs_off() the physical address of this lock is loaded into
+> cr28 (tr4) and the pgd into cr25, so that the fault handlers can
+> directly access the lock.
+> 
+> The currently implemened Hybrid L2/L3 page table scheme (where the pmd
+> is adjacent to the pgd) is dropped now too.
+> 
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Fixes: b37d1c1898b2 ("parisc: Use per-pagetable spinlock")
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Signed-off-by: John David Anglin <dave.anglin@bell.net>
+> 
+> diff --git a/arch/parisc/include/asm/mmu_context.h
+> b/arch/parisc/include/asm/mmu_context.h index 46f8c22c5977..3e02b1f75e54
+> 100644
+> --- a/arch/parisc/include/asm/mmu_context.h
+> +++ b/arch/parisc/include/asm/mmu_context.h
+> @@ -5,6 +5,7 @@
+>  #include <linux/mm.h>
+>  #include <linux/sched.h>
+>  #include <linux/atomic.h>
+> +#include <linux/spinlock.h>
+>  #include <asm-generic/mm_hooks.h>
+> 
+>  /* on PA-RISC, we actually have enough contexts to justify an allocator
+> @@ -50,6 +51,14 @@ static inline void switch_mm_irqs_off(struct mm_struct
+> *prev, struct mm_struct *next, struct task_struct *tsk)
+>  {
+>  	if (prev != next) {
+> +#ifdef CONFIG_SMP
+> +		/* phys address of tlb lock in cr28 (tr4) for TLB faults 
+*/
+> +		struct page *page;
+> +
+> +		page = virt_to_page((unsigned long) next->pgd);
 
-Thanks a lot!
+This is one of the few cases you have a space after the cast.
 
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Another one is in pgd_alloc():
 
-Gr{oetje,eeting}s,
+>+       page = virt_to_page((unsigned long) pgd);
 
-                        Geert
+> diff --git a/arch/parisc/include/asm/pgalloc.h
+> b/arch/parisc/include/asm/pgalloc.h index a6482b2ce0ea..9c1a54543c87 100644
+> --- a/arch/parisc/include/asm/pgalloc.h
+> +++ b/arch/parisc/include/asm/pgalloc.h
+> @@ -68,43 +66,27 @@ static inline void pud_populate(struct mm_struct *mm,
+> pud_t *pud, pmd_t *pmd) (__u32)(__pa((unsigned long)pmd) >>
+> PxD_VALUE_SHIFT)));
+>  }
+> 
+> -static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long
+> address) 
+> +static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned
+> long addr)
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Does that change add benefit?
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> {
+> -	return (pmd_t *)__get_free_pages(GFP_PGTABLE_KERNEL, PMD_ORDER);
+> +	pmd_t *pmd;
+> +
+> +	pmd = (pmd_t *)__get_free_pages(GFP_PGTABLE_KERNEL, PMD_ORDER);
+> +	if (pmd)
+
+Maybe annotate that as likely() as it was in pgd_alloc() before?
+
+> +		memset ((void *)pmd, 0, PAGE_SIZE << PMD_ORDER);
+> +	return pmd;
+>  }
+
+> diff --git a/arch/parisc/include/asm/pgtable.h
+> b/arch/parisc/include/asm/pgtable.h index 75cf84070fc9..c08c7b37e5f4 100644
+> --- a/arch/parisc/include/asm/pgtable.h
+> +++ b/arch/parisc/include/asm/pgtable.h
+> @@ -94,10 +96,12 @@ static inline void purge_tlb_entries(struct mm_struct
+> *mm, unsigned long addr) #define set_pte_at(mm, addr, ptep, pteval)		
+	\
+>  	do {							
+\
+>  		unsigned long flags;				
+\
+> -		spin_lock_irqsave(pgd_spinlock((mm)->pgd), flags);\
+> +		spinlock_t *pgd_lock;				
+\
+> +		pgd_lock = pgd_spinlock((mm)->pgd);		\
+
+These should just fit into a single line.
+
+> +		spin_lock_irqsave(pgd_lock, flags);		\
+>  		set_pte(ptep, pteval);				
+\
+>  		purge_tlb_entries(mm, addr);			
+\
+> -		spin_unlock_irqrestore(pgd_spinlock((mm)->pgd), flags);\
+> +		spin_unlock_irqrestore(pgd_lock, flags);	\
+>  	} while (0)
+> 
+>  #endif /* !__ASSEMBLY__ */
+
+> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+> index 3ec633b11b54..4f3f180b0b20 100644
+> --- a/arch/parisc/mm/init.c
+> +++ b/arch/parisc/mm/init.c
+> @@ -681,6 +681,24 @@ static void __init parisc_bootmem_free(void)
+>  	free_area_init(max_zone_pfn);
+>  }
+> 
+> +static void __init parisc_init_pgd_lock(void)
+> +{
+> +	struct page *page;
+> +
+> +	page = virt_to_page((unsigned long) &swapper_pg_dir);
+
+Another space.
+
+> +	page->parisc_pgd_lock = &pa_swapper_pg_lock;
+> +}
+> +
+> +#ifdef CONFIG_SMP
+> +spinlock_t *pgd_spinlock(pgd_t *pgd)
+> +{
+> +	struct page *page;
+> +
+> +	page = virt_to_page((unsigned long) pgd);
+> +	return page->parisc_pgd_lock;
+> +}
+> +#endif
+
+This is very simple, and I suspect it being called rather often. Wouldn't it 
+make sense to make it inline?
+
+Eike
+--nextPart12697130.uLZWGnKmhe
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYBJ3cQAKCRBcpIk+abn8
+TqpOAJ0WoJnpQzqNe35QDHLOkxrxMcZ71ACbB9V4Ht5mkp4JW8WabgoMklI1y/Y=
+=4bvG
+-----END PGP SIGNATURE-----
+
+--nextPart12697130.uLZWGnKmhe--
+
+
+
