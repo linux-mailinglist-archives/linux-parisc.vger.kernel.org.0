@@ -2,51 +2,56 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D03316635
-	for <lists+linux-parisc@lfdr.de>; Wed, 10 Feb 2021 13:13:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7264E316970
+	for <lists+linux-parisc@lfdr.de>; Wed, 10 Feb 2021 15:52:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231508AbhBJMMU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 10 Feb 2021 07:12:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39202 "EHLO
+        id S231596AbhBJOwV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 10 Feb 2021 09:52:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231635AbhBJMKM (ORCPT
+        with ESMTP id S229888AbhBJOwS (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 10 Feb 2021 07:10:12 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3340C0611BE
-        for <linux-parisc@vger.kernel.org>; Wed, 10 Feb 2021 04:04:39 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id t142so1622178wmt.1
-        for <linux-parisc@vger.kernel.org>; Wed, 10 Feb 2021 04:04:39 -0800 (PST)
+        Wed, 10 Feb 2021 09:52:18 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FEEDC06174A;
+        Wed, 10 Feb 2021 06:51:36 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id m1so2069215wml.2;
+        Wed, 10 Feb 2021 06:51:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=7YlFkcwEzuK8xj1bqWFb4J+pbM9jNy7GJX0y3deB8As=;
-        b=syPwiZlFCfO6MHc40aH33LzcMM6KfDmzRv+D2pLSH5QhqhfJeAI8pcSdpGXIuefrhT
-         QANrLqzWqVKdKDRMI9LkGu7/nHBiH+rC1ieNTWfFHSmkspO5VBaxfKVXb2X2Squ8dPwc
-         gqbcZAWKlW0ioCr6UjiF2eRNBO1Q7kMUruhv0=
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=zjhXKo3lnsUCaAO03EAAKy7XedvCevX8vo7EKjAoj3Q=;
+        b=jJ8LF025NOB5tTRRmh45iSwVNW9BiH2jesDquvAlwBgGfOycUUj9SneIWmt0+ZsKNg
+         G4jfNkdmBdVwNrf6KziMjZyDhDfsh0VTabiZ88CqjMSEyWAAB9KcF0LqWF574ojQJWfB
+         uEcBjTGL5J1sN7VltBi5masq/ykxXWJ71FekRuG1mMOVHDXcYAaB69OZ0pm/EZyGUojM
+         E8ghijNjy9n51CKDhciWDBttcc7mGU9VLnekLrNRsHhHEJw6eo3kNbDjNnFbJryP9S1m
+         HqCjtV55tT0SgA+5jTrOqavLEvYCCRxhlE/v9SL/9kkxp+24Qjc3js9+kLYBwSORR2i+
+         /jyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=7YlFkcwEzuK8xj1bqWFb4J+pbM9jNy7GJX0y3deB8As=;
-        b=WpGaYeSzGNz2S7hvqgjpu16TxDIeGdxWbXkLsSEuhl2DbDSzFbHJOL5qF8vG99b80l
-         UnnSoLyZGSKrGNFi6lWxs9O0bkbCYbL6yKxpSkHyU9It/y47vlB1TQhgxxNWNwcyLLua
-         irSn11RnApVYW8/Sc37eJNymmdECec+fQviEKzlf20KcHsaZSSamXVVaf7vFIDMbXS0j
-         2qbQxMZwAgriMiKfoXo1YsL4AtDeuTSIIXyx/WPzJtj8Ss/zy1MNlhT1fahOGvST/yhC
-         etZeKzcuJJ+UPyYghMuOEN2KoCaiwVc0UuaRA6mwWbxwWWnJEQBxVnxp7b8YF/SMFevg
-         z6Cg==
-X-Gm-Message-State: AOAM533xWgUvskLkYxK7DrE3EqRIUXJj47KF6DI3TGhiX4e2Y7iYVVz+
-        cHsLuZT88A1Zs8blCqZJYIC4KpPXJNyBY37J
-X-Google-Smtp-Source: ABdhPJzWH8Tw+178GsaKwHlgz0XiwPg9erze0gT5N1I/sfwQGjRhxr9XRlOCiSD9NdzdTDxtpCscUA==
-X-Received: by 2002:a1c:f70c:: with SMTP id v12mr2614677wmh.77.1612958678358;
-        Wed, 10 Feb 2021 04:04:38 -0800 (PST)
-Received: from antares.lan (c.3.c.9.d.d.c.e.0.a.6.8.a.9.e.c.f.f.6.2.a.5.a.7.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:7a5a:26ff:ce9a:86a0:ecdd:9c3c])
-        by smtp.gmail.com with ESMTPSA id j7sm2837854wrp.72.2021.02.10.04.04.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Feb 2021 04:04:38 -0800 (PST)
-From:   Lorenz Bauer <lmb@cloudflare.com>
-To:     Richard Henderson <rth@twiddle.net>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=zjhXKo3lnsUCaAO03EAAKy7XedvCevX8vo7EKjAoj3Q=;
+        b=N0NSqR7UJcDgyWO/9pfk5rjy2qj1WSru0YnBPESxmPdaloVurwSjVrzHn/driXgDQM
+         X8PTlMUwGV+XNd5qs0dXNxnTsJb5M30fE0w1ArsgkhiUCZyzeLEKkWGsNvSNAeZDsDnX
+         ilsW5+XVTDaY3mNDCphDp2uNFHELY4tVL2cXhPNbbLhOnEWaB+BRJQcbq3KNieNy//VO
+         8JjWI6bEwRS/C7W1WLSfxk9xnAtS4qYzAK3/pvxkpZYWoqoGbDSbwTsGVMnr/77IJIis
+         sjUfvH2B6MKjv03KQhYOiSCqc7V+f63nn4HtGvWg4cBZ8VZngZoV4983t1EGrM7v8cd9
+         R7gA==
+X-Gm-Message-State: AOAM531BYnuYLAHIBaTrzjxGkPbQjsCpPNQkflsWWmmPHZW69fhi1GwZ
+        2VZSz06yZmbgh2SjqBfr8yxc40ffyFE=
+X-Google-Smtp-Source: ABdhPJzD1UwIOcK8QlbA/opY/7S8Oipu5m0gukv+y2QgFJwbqk6JJMIT/ifLddt6Wbwu5S+4rtPxqA==
+X-Received: by 2002:a1c:67c3:: with SMTP id b186mr3336454wmc.24.1612968695135;
+        Wed, 10 Feb 2021 06:51:35 -0800 (PST)
+Received: from [192.168.1.101] ([37.170.168.78])
+        by smtp.gmail.com with ESMTPSA id v15sm4054700wra.61.2021.02.10.06.51.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Feb 2021 06:51:34 -0800 (PST)
+Subject: Re: [PATCH bpf 1/4] net: add SO_NETNS_COOKIE socket option
+To:     Lorenz Bauer <lmb@cloudflare.com>,
+        Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
@@ -58,181 +63,78 @@ To:     Richard Henderson <rth@twiddle.net>,
         Daniel Borkmann <daniel@iogearbox.net>,
         Andrii Nakryiko <andrii@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>
-Cc:     kernel-team@cloudflare.com, Lorenz Bauer <lmb@cloudflare.com>,
-        linux-api@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Subject: [PATCH bpf 1/4] net: add SO_NETNS_COOKIE socket option
-Date:   Wed, 10 Feb 2021 12:04:22 +0000
-Message-Id: <20210210120425.53438-2-lmb@cloudflare.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210210120425.53438-1-lmb@cloudflare.com>
+Cc:     kernel-team@cloudflare.com, linux-api@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        netdev@vger.kernel.org, bpf@vger.kernel.org
 References: <20210210120425.53438-1-lmb@cloudflare.com>
+ <20210210120425.53438-2-lmb@cloudflare.com>
+From:   Eric Dumazet <eric.dumazet@gmail.com>
+Message-ID: <a922e31d-efce-35c3-c584-cf1bdcf93c5d@gmail.com>
+Date:   Wed, 10 Feb 2021 15:51:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210210120425.53438-2-lmb@cloudflare.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-We need to distinguish which network namespace a socket belongs to.
-BPF has the useful bpf_get_netns_cookie helper for this, but accessing
-it from user space isn't possible. Add a read-only socket option that
-returns the netns cookie, similar to SO_COOKIE. If network namespaces
-are disabled, SO_NETNS_COOKIE returns the cookie of init_net.
 
-The BPF helpers change slightly: instead of returning 0 when network
-namespaces are disabled we return the init_net cookie as for the
-socket option.
 
-Cc: linux-api@vger.kernel.org
-Signed-off-by: Lorenz Bauer <lmb@cloudflare.com>
----
- arch/alpha/include/uapi/asm/socket.h  |  2 ++
- arch/mips/include/uapi/asm/socket.h   |  2 ++
- arch/parisc/include/uapi/asm/socket.h |  2 ++
- arch/sparc/include/uapi/asm/socket.h  |  2 ++
- include/linux/sock_diag.h             | 20 ++++++++++++++++++++
- include/uapi/asm-generic/socket.h     |  2 ++
- net/core/filter.c                     |  9 ++++-----
- net/core/sock.c                       |  7 +++++++
- 8 files changed, 41 insertions(+), 5 deletions(-)
+On 2/10/21 1:04 PM, Lorenz Bauer wrote:
+> We need to distinguish which network namespace a socket belongs to.
+> BPF has the useful bpf_get_netns_cookie helper for this, but accessing
+> it from user space isn't possible. Add a read-only socket option that
+> returns the netns cookie, similar to SO_COOKIE. If network namespaces
+> are disabled, SO_NETNS_COOKIE returns the cookie of init_net.
+> 
+> The BPF helpers change slightly: instead of returning 0 when network
+> namespaces are disabled we return the init_net cookie as for the
+> socket option.
+> 
+> Cc: linux-api@vger.kernel.org
+> Signed-off-by: Lorenz Bauer <lmb@cloudflare.com>
+> ---
 
-diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
-index 57420356ce4c..6b3daba60987 100644
---- a/arch/alpha/include/uapi/asm/socket.h
-+++ b/arch/alpha/include/uapi/asm/socket.h
-@@ -127,6 +127,8 @@
- #define SO_PREFER_BUSY_POLL	69
- #define SO_BUSY_POLL_BUDGET	70
- 
-+#define SO_NETNS_COOKIE		71
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
-index 2d949969313b..cdf404a831b2 100644
---- a/arch/mips/include/uapi/asm/socket.h
-+++ b/arch/mips/include/uapi/asm/socket.h
-@@ -138,6 +138,8 @@
- #define SO_PREFER_BUSY_POLL	69
- #define SO_BUSY_POLL_BUDGET	70
- 
-+#define SO_NETNS_COOKIE		71
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
-index f60904329bbc..5b5351cdcb33 100644
---- a/arch/parisc/include/uapi/asm/socket.h
-+++ b/arch/parisc/include/uapi/asm/socket.h
-@@ -119,6 +119,8 @@
- #define SO_PREFER_BUSY_POLL	0x4043
- #define SO_BUSY_POLL_BUDGET	0x4044
- 
-+#define SO_NETNS_COOKIE		0x4045
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
-index 848a22fbac20..ff79db753dce 100644
---- a/arch/sparc/include/uapi/asm/socket.h
-+++ b/arch/sparc/include/uapi/asm/socket.h
-@@ -120,6 +120,8 @@
- #define SO_PREFER_BUSY_POLL	 0x0048
- #define SO_BUSY_POLL_BUDGET	 0x0049
- 
-+#define SO_NETNS_COOKIE		 0x004a
-+
- #if !defined(__KERNEL__)
- 
- 
-diff --git a/include/linux/sock_diag.h b/include/linux/sock_diag.h
-index 0b9ecd8cf979..6e88436097b1 100644
---- a/include/linux/sock_diag.h
-+++ b/include/linux/sock_diag.h
-@@ -38,6 +38,26 @@ static inline u64 sock_gen_cookie(struct sock *sk)
- 	return cookie;
- }
- 
-+static inline u64 __sock_gen_netns_cookie(struct sock *sk)
-+{
-+#ifdef CONFIG_NET_NS
-+	return __net_gen_cookie(sk->sk_net.net);
-+#else
-+	return __net_gen_cookie(&init_net);
-+#endif
-+}
-+
-+static inline u64 sock_gen_netns_cookie(struct sock *sk)
-+{
-+	u64 cookie;
-+
-+	preempt_disable();
-+	cookie = __sock_gen_netns_cookie(sk);
-+	preempt_enable();
-+
-+	return cookie;
-+}
-+
- int sock_diag_check_cookie(struct sock *sk, const __u32 *cookie);
- void sock_diag_save_cookie(struct sock *sk, __u32 *cookie);
- 
-diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
-index 4dcd13d097a9..d588c244ec2f 100644
---- a/include/uapi/asm-generic/socket.h
-+++ b/include/uapi/asm-generic/socket.h
-@@ -122,6 +122,8 @@
- #define SO_PREFER_BUSY_POLL	69
- #define SO_BUSY_POLL_BUDGET	70
- 
-+#define SO_NETNS_COOKIE		71
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
-diff --git a/net/core/filter.c b/net/core/filter.c
-index e15d4741719a..51f47b6913f1 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4645,11 +4645,10 @@ static const struct bpf_func_proto bpf_get_socket_cookie_sock_ops_proto = {
- 
- static u64 __bpf_get_netns_cookie(struct sock *sk)
- {
--#ifdef CONFIG_NET_NS
--	return __net_gen_cookie(sk ? sk->sk_net.net : &init_net);
--#else
--	return 0;
--#endif
-+	if (sk)
-+		return __sock_gen_netns_cookie(sk);
-+
-+	return __net_gen_cookie(&init_net);
- }
- 
- BPF_CALL_1(bpf_get_netns_cookie_sock, struct sock *, ctx)
-diff --git a/net/core/sock.c b/net/core/sock.c
-index bbcd4b97eddd..2db201c210ca 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1606,6 +1606,13 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
- 		v.val = sk->sk_bound_dev_if;
- 		break;
- 
-+	case SO_NETNS_COOKIE:
-+		lv = sizeof(u64);
-+		if (len < lv)
-+			return -EINVAL;
-+		v.val64 = sock_gen_netns_cookie(sk);
-+		break;
-+
- 	default:
- 		/* We implement the SO_SNDLOWAT etc to not be settable
- 		 * (1003.1g 7).
--- 
-2.27.0
+...
+
+>  
+> +static inline u64 __sock_gen_netns_cookie(struct sock *sk)
+> +{
+> +#ifdef CONFIG_NET_NS
+> +	return __net_gen_cookie(sk->sk_net.net);
+> +#else
+> +	return __net_gen_cookie(&init_net);
+> +#endif
+> +}
+> +
+> +static inline u64 sock_gen_netns_cookie(struct sock *sk)
+> +{
+> +	u64 cookie;
+> +
+> +	preempt_disable();
+> +	cookie = __sock_gen_netns_cookie(sk);
+> +	preempt_enable();
+> +
+> +	return cookie;
+> +}
+> +
+> 
+
+I suggest we make net->net_cookie a mere u64 initialized in setup_net(),
+instead of having to preempt_disable() around reading it.
+
+(Here and in your patch 2/4)
+
+Your patches would be much simpler.
+
+Cleanup patch :
+
+https://patchwork.kernel.org/project/netdevbpf/patch/20210210144144.24284-1-eric.dumazet@gmail.com/
+
 
