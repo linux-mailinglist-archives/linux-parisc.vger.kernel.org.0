@@ -2,44 +2,60 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 563FD31F7F5
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Feb 2021 12:12:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1BED31FD23
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Feb 2021 17:34:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbhBSLMG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Feb 2021 06:12:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:56623 "EHLO
+        id S229889AbhBSQdc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Feb 2021 11:33:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48381 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229524AbhBSLMA (ORCPT
+        by vger.kernel.org with ESMTP id S229874AbhBSQdc (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Feb 2021 06:12:00 -0500
+        Fri, 19 Feb 2021 11:33:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1613733033;
+        s=mimecast20190719; t=1613752323;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5AVjhEI1tw86vUOw/9aIZh6BTcpMrggeQLiNZ3oUAgQ=;
-        b=a+d7sN7mW6WqroKoZumdIyKvS8LHYltAa39fCRahl0PDzAUHhKeNCbBogMPUUtRDRsmrSA
-        xqDReBCjrZnNyBW8Lhe/yz/V1/M0AsAT/GVft01F1GYtzcPyEXMQcwet12lAO+7HOloSLQ
-        Z6YWo2Dfvy8BOTM0KUh8QLpgB8Y0sRc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-476--rl0D7HYOzaShKF10--1KQ-1; Fri, 19 Feb 2021 06:10:31 -0500
-X-MC-Unique: -rl0D7HYOzaShKF10--1KQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BDCBD835E2C;
-        Fri, 19 Feb 2021 11:10:27 +0000 (UTC)
-Received: from [10.36.113.117] (ovpn-113-117.ams2.redhat.com [10.36.113.117])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CEB7310027A5;
-        Fri, 19 Feb 2021 11:10:05 +0000 (UTC)
-Subject: Re: [PATCH RFC] mm/madvise: introduce MADV_POPULATE to
- prefault/prealloc memory
-To:     Michal Hocko <mhocko@suse.com>
+        bh=I6g+cpj7RA6mdZS10/1lUQilWu28S5qGVK36wellnP0=;
+        b=aIvFD6uFtGsLv00oxJOyxmQyMk5CfOusMeF2OXIey48J0L7fmaU9tJg61ERZiRFB2fRP2n
+        5fYNZ0weDFgGX5zNze3m00XpbUuvv+ZGqHDeIHYd4/RMx92/Cn6VOxfHkwr9ryidL8Fa9M
+        TLpp1L/3xiM5qorLi4dtXQHyltF6D/w=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-589-oDAwGYl2MjessxzUlGD-1Q-1; Fri, 19 Feb 2021 11:32:01 -0500
+X-MC-Unique: oDAwGYl2MjessxzUlGD-1Q-1
+Received: by mail-qt1-f198.google.com with SMTP id o20so3604284qtx.22
+        for <linux-parisc@vger.kernel.org>; Fri, 19 Feb 2021 08:32:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=I6g+cpj7RA6mdZS10/1lUQilWu28S5qGVK36wellnP0=;
+        b=cc/xG0nBQNlZRPrvga6suVIgUuIzRYGhU0orqg9U6VV26cBF8sDihyaosMnt6p5UNk
+         7j5pIZ6ReNN4fip7k24fxT4jYqLK1J180HhumVQ9eC1vEynbNzHj/eCsuG36ccY8/6wR
+         I2yHqNYdBvOXG7FIatWaBfSSx40tUFf5Ouob4Pw2em1SczN1aAM5oxHGcqlR7FdDHOBV
+         11PVuwqfYuv4d4LZBCIsewzCJvPMsuVH+aApL6RroflA6RG1xJO8FNyRRhjFbUC+hpgq
+         mWexLw1NLC4tWWduo4KyV0LbFH1vFhNTtd2LuROt2FoLMJ6/QuYOjl/6Ezez5SHPFkht
+         kqgQ==
+X-Gm-Message-State: AOAM532EgH0RA/hKpHpghjPH4YyeaagsDhQuCvkEjrUFvrFNnQHzxHps
+        t6qE8FC3xuByGRaifC4UiSBwp/HjKt8abR3Ic5dRxTFZMSybKDetN36yiQvTMjCJJxiENWVqY00
+        1V+219qjPh2qW93kqvOyJaWjj
+X-Received: by 2002:ac8:6915:: with SMTP id e21mr9609841qtr.120.1613752320505;
+        Fri, 19 Feb 2021 08:32:00 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJz17h/UmznBda/FviRgsPcspG9PJA/b7HVNIyT7PEs084wTMUu4JpVtb4dM6Qne2OeAqIpMYg==
+X-Received: by 2002:ac8:6915:: with SMTP id e21mr9609806qtr.120.1613752320172;
+        Fri, 19 Feb 2021 08:32:00 -0800 (PST)
+Received: from xz-x1 (bras-vprn-toroon474qw-lp130-25-174-95-95-253.dsl.bell.ca. [174.95.95.253])
+        by smtp.gmail.com with ESMTPSA id c126sm6542670qkg.16.2021.02.19.08.31.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Feb 2021 08:31:59 -0800 (PST)
+Date:   Fri, 19 Feb 2021 11:31:57 -0500
+From:   Peter Xu <peterx@redhat.com>
+To:     David Hildenbrand <david@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
+        Arnd Bergmann <arnd@arndb.de>, Michal Hocko <mhocko@suse.com>,
         Oscar Salvador <osalvador@suse.de>,
         Matthew Wilcox <willy@infradead.org>,
         Andrea Arcangeli <aarcange@redhat.com>,
@@ -60,106 +76,173 @@ Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH RFC] mm/madvise: introduce MADV_POPULATE to
+ prefault/prealloc memory
+Message-ID: <20210219163157.GF6669@xz-x1>
 References: <20210217154844.12392-1-david@redhat.com>
- <YC+UaTVUn0o4Zynz@dhcp22.suse.cz>
- <6e5a5bde-cedb-9d0a-f8c1-22406085b6b9@redhat.com>
- <YC+bKSQdepXhqo0T@dhcp22.suse.cz>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <472f3bf1-595e-54e7-3022-0562cb6b3eb2@redhat.com>
-Date:   Fri, 19 Feb 2021 12:10:04 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+ <20210218225904.GB6669@xz-x1>
+ <b24996a6-7652-f88c-301e-28417637fd02@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <YC+bKSQdepXhqo0T@dhcp22.suse.cz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b24996a6-7652-f88c-301e-28417637fd02@redhat.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 19.02.21 12:04, Michal Hocko wrote:
-> On Fri 19-02-21 11:43:48, David Hildenbrand wrote:
->> On 19.02.21 11:35, Michal Hocko wrote:
->>> On Wed 17-02-21 16:48:44, David Hildenbrand wrote:
->>> [...]
->>>
->>> I only got  to the implementation now.
->>>
->>>> +static long madvise_populate(struct vm_area_struct *vma,
->>>> +			     struct vm_area_struct **prev,
->>>> +			     unsigned long start, unsigned long end)
->>>> +{
->>>> +	struct mm_struct *mm = vma->vm_mm;
->>>> +	unsigned long tmp_end;
->>>> +	int locked = 1;
->>>> +	long pages;
->>>> +
->>>> +	*prev = vma;
->>>> +
->>>> +	while (start < end) {
->>>> +		/*
->>>> +		 * We might have temporarily dropped the lock. For example,
->>>> +		 * our VMA might have been split.
->>>> +		 */
->>>> +		if (!vma || start >= vma->vm_end) {
->>>> +			vma = find_vma(mm, start);
->>>> +			if (!vma)
->>>> +				return -ENOMEM;
->>>> +		}
->>>
->>> Why do you need to find a vma when you already have one. do_madvise will
->>> give you your vma already. I do understand that you want to finish the
->>> vma for some errors but that shouldn't require handling vmas. You should
->>> be in the shope of one here unless I miss anything.
->>
->> See below, we might temporary drop the lock while not having processed all
->> pages
->>
->>>
->>>> +
->>>> +		/* Bail out on incompatible VMA types. */
->>>> +		if (vma->vm_flags & (VM_IO | VM_PFNMAP) ||
->>>> +		    !vma_is_accessible(vma)) {
->>>> +			return -EINVAL;
->>>> +		}
->>>> +
->>>> +		/*
->>>> +		 * Populate pages and take care of VM_LOCKED: simulate user
->>>> +		 * space access.
->>>> +		 *
->>>> +		 * For private, writable mappings, trigger a write fault to
->>>> +		 * break COW (i.e., shared zeropage). For other mappings (i.e.,
->>>> +		 * read-only, shared), trigger a read fault.
->>>> +		 */
->>>> +		tmp_end = min_t(unsigned long, end, vma->vm_end);
->>>> +		pages = populate_vma_page_range(vma, start, tmp_end, &locked);
->>>> +		if (!locked) {
->>>> +			mmap_read_lock(mm);
->>>> +			*prev = NULL;
->>>> +			vma = NULL;
->>
->> ^ here
->>
->> so, the VMA might have been replaced/split/... in the meantime.
->>
->> So to make forward progress, I have to lookup again. (similar. but different
->> to madvise_dontneed_free()).
+On Fri, Feb 19, 2021 at 09:20:16AM +0100, David Hildenbrand wrote:
+> On 18.02.21 23:59, Peter Xu wrote:
+> > Hi, David,
+> > 
+> > On Wed, Feb 17, 2021 at 04:48:44PM +0100, David Hildenbrand wrote:
+> > > When we manage sparse memory mappings dynamically in user space - also
+> > > sometimes involving MADV_NORESERVE - we want to dynamically populate/
+> > > discard memory inside such a sparse memory region. Example users are
+> > > hypervisors (especially implementing memory ballooning or similar
+> > > technologies like virtio-mem) and memory allocators. In addition, we want
+> > > to fail in a nice way if populating does not succeed because we are out of
+> > > backend memory (which can happen easily with file-based mappings,
+> > > especially tmpfs and hugetlbfs).
+> > 
+> > Could you explain a bit more on how do you plan to use this new interface for
+> > the virtio-balloon scenario?
 > 
-> Right. Missed that.
+> Sure, that will bring up an interesting point to discuss
+> (MADV_POPULATE_WRITE).
+> 
+> I'm planning on using it in virtio-mem: whenever the guests requests the
+> hypervisor (via a virtio-mem device) to make specific blocks available
+> ("plug"), I want to have a configurable option ("populate=on" /
+> "prealloc="on") to perform safety checks ("prealloc") and populate page
+> tables.
 
-It would look more natural if we'd just be processing the whole range - 
-but then it would not fit into the generic infrastructure and would 
-result in even more code.
+As you mentioned in the commit message, the original goal for MADV_POPULATE
+should be for performance's sake, which I can understand.  But for safety
+check, I'm curious whether we'd have better way to do that besides populating
+the whole memory.
 
-I decided to go with "process the passed range and treat the given VMA 
-as an initial VMA that is invalidated as soon as we drop the lock".
+E.g., can we simply ask the kernel "how much memory this process can still
+allocate", then get a number out of it?  I'm not sure whether it can be done
+already by either cgroup or any other facilities, or maybe it's still missing.
+But I'd raise this question up, since these two requirements seem to be two
+standalone issues to solve at least to me.  It could be an overkill to populate
+all the memory just for a sanity check.
 
+> 
+> This becomes especially relevant for private/shared hugetlbfs and shared
+> files/shmem where we have a limited pool size (e.g., huge pages, tmpfs size,
+> filesystem size). But it will also come in handy when just preallocating
+> (esp. zeroing) anonymous memory.
+> 
+> For virito-balloon it is not applicable because it really only supports
+> anonymous memory and we cannot fail requests to deflate ...
+> 
+> --- Example ---
+> 
+> Example: Assume the guests requests to make 128 MB available and we're using
+> hugetlbfs. Assume we're out of huge pages in the hypervisor - we want to
+> fail the request - I want to do some kind of preallocation.
+> 
+> So I could do fallocate() on anything that's MAP_SHARED, but not on anything
+> that's MAP_PRIVATE. hugetlbfs via memfd() cannot be preallocated without
+> going via SIGBUS handlers.
+> 
+> --- QEMU memory configurations ---
+> 
+> I see the following combinations relevant in QEMU that I want to support
+> with virito-mem:
+> 
+> 1) MAP_PRIVATE anonymous memory
+> 2) MAP_PRIVATE on hugetlbfs (esp. via memfd)
+> 3) MAP_SHARED on hugetlbfs (esp. via memfd)
+> 4) MAP_SHARED on shmem (file / memfd)
+> 5) MAP_SHARED on some sparse file.
+> 
+> Other MAP_PRIVATE mappings barely make any sense to me - "read the file and
+> write to page cache" is not really applicable to VM RAM (not to mention
+> doing fallocate(PUNCH_HOLE) that invalidates the private copies of all other
+> mappings on that file).
+> 
+> --- Ways to populate/preallocate ---
+> 
+> I see the following ways to populate/preallocate:
+> 
+> a) MADV_POPULATE: write fault on writable MAP_PRIVATE, read fault on
+>    MAP_SHARED
+> b) Writing to MAP_PRIVATE | MAP_SHARED from user space.
+> c) (below) MADV_POPULATE_WRITE: write fault on writable MAP_PRIVATE |
+>    MAP_SHARED
+> 
+> Especially, 2) is kind of weird as implemented in QEMU
+> (util/oslib-posix.c:do_touch_pages):
+> 
+> "Read & write back the same value, so we don't corrupt existing user/app
+> data ... TODO: get a better solution from kernel so we don't need to write
+> at all so we don't cause wear on the storage backing the region..."
 
--- 
+It's interesting to know about commit 1e356fc14be ("mem-prealloc: reduce large
+guest start-up and migration time.", 2017-03-14).  It seems for speeding up VM
+boot, but what I can't understand is why it would cause the delay of hugetlb
+accounting - I thought we'd fail even earlier at either fallocate() on the
+hugetlb file (when we use /dev/hugepages) or on mmap() of the memfd which
+contains the huge pages.  See hugetlb_reserve_pages() and its callers.  Or did
+I miss something?
+
+I think there's a special case if QEMU fork() with a MAP_PRIVATE hugetlbfs
+mapping, that could cause the memory accouting to be delayed until COW happens.
+However that's definitely not the case for QEMU since QEMU won't work at all as
+late as that point.
+
+IOW, for hugetlbfs I don't know why we need to populate the pages at all if we
+simply want to know "whether we do still have enough space"..  And IIUC 2)
+above is the major issue you'd like to solve too.
+
+> 
+> So if we have zero, we write zero. We'll COW pages, triggering a write fault
+> - and that's the only good thing about it. For example, similar to
+> MADV_POPULATE, nothing stops KSM from merging anonymous pages again. So for
+> anonymous memory the actual write is not helpful at all. Similarly for
+> hugetlbfs, the actual write is not necessary - but there is no other way to
+> really achieve the goal.
+> 
+> --- How MADV_POPULATE is useful ---
+> 
+> With virito-mem, our VM will usually write to memory before it reads it.
+> 
+> With 1) and 2) it does exactly what I want: trigger COW / allocate memory
+> and trigger a write fault. The only issue with 1) is that KSM might come
+> around and undo our work - but that could only be avoided by writing random
+> numbers to all pages from user space. Or we could simply rather disable KSM
+> in that setup ...
+> 
+> --- How MADV_POPULATE is not perfect ---
+> 
+> KSM can merge anonymous pages again. Just like the current QEMU
+> implementation. The only way around that is writing random numbers to the
+> pages or mlocking all memory. No big news.
+> 
+> Nothing stops reclaim/swap code from depopulating when using files. Again,
+> no big new - we have to mlock.
+> 
+> --- HOW MADV_POPULATE_WRITE might be useful ---
+> 
+> With 3) 4) 5) MADV_POPULATE does partially what I want: preallocate memory
+> and populate page tables. But as it's a read fault, I think we'll have
+> another minor fault on access. Not perfect, but better than failing with
+> SIGBUS. One way around that would be having an additional
+> MADV_POPULATE_WRITE, to use in cases where it makes sense (I think at least
+> 3) and 4), most probably not on actual files like 5) ).
+
+Right, it seems when populating memories we'll read-fault on file-backed.
+However that'll be another performance issue to think about.  So I'd hope we
+can start with the current virtio-mem issue on memory accounting, then we can
+discuss them separately.
+
+Btw, thanks for the long write-up, it definitely helps me to understand what
+you wanted to achieve.
+
 Thanks,
 
-David / dhildenb
+-- 
+Peter Xu
 
