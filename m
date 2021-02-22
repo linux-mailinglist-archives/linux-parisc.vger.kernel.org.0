@@ -2,158 +2,123 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B8D6321B81
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 Feb 2021 16:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DCC7321D07
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Feb 2021 17:33:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231642AbhBVPdB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 22 Feb 2021 10:33:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:38136 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231309AbhBVPcg (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 22 Feb 2021 10:32:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1614007867;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        id S231797AbhBVQay (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 22 Feb 2021 11:30:54 -0500
+Received: from mx2.suse.de ([195.135.220.15]:35586 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231939AbhBVQ3O (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 22 Feb 2021 11:29:14 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1614011306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=ibOntcfVMPryl4chcvMDuXiG7DIYwm8AcKE8thK3PgA=;
-        b=cIvH5qanO4rs6m/6gvQ6zSJNZAb/ITTzkE2KVXTu+vdCoj15WJMWhdqwZQusgeKKinX67A
-        1mlJBIEzZF+8htSzWYzXDZOtSFaTgro9Go/D79gpe6ZYkQ+LPHFD3TaEaX3rXDuWWQEQ+W
-        jSXZa0GCdaVQFGngCyjszSurGMqr8k8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-73-_pzbSEXUPpu-KGQl-y-UQQ-1; Mon, 22 Feb 2021 10:31:02 -0500
-X-MC-Unique: _pzbSEXUPpu-KGQl-y-UQQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EB5D0801965;
-        Mon, 22 Feb 2021 15:30:57 +0000 (UTC)
-Received: from [10.36.115.16] (ovpn-115-16.ams2.redhat.com [10.36.115.16])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0F3CC5C1BD;
-        Mon, 22 Feb 2021 15:30:48 +0000 (UTC)
-To:     Michal Hocko <mhocko@suse.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Oscar Salvador <osalvador@suse.de>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Minchan Kim <minchan@kernel.org>, Jann Horn <jannh@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Hugh Dickins <hughd@google.com>,
-        Rik van Riel <riel@surriel.com>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org
-References: <20210217154844.12392-1-david@redhat.com>
- <640738b5-a47e-448b-586d-a1fb80131891@redhat.com>
- <YDOqA9nQHiuIrKBu@dhcp22.suse.cz>
- <73f73cf2-1b4e-bfa9-9a4c-3192d7b7a5ec@redhat.com>
- <YDOvRv8sCVcgF6yC@dhcp22.suse.cz>
- <3b5cd68d-c4ac-c6be-8824-34c541d5377b@redhat.com>
- <YDO5d+pbPBsjv13T@dhcp22.suse.cz>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Subject: Re: [PATCH RFC] mm/madvise: introduce MADV_POPULATE to
- prefault/prealloc memory
-Message-ID: <7d7d2213-92a4-0419-20ad-bba7071a279c@redhat.com>
-Date:   Mon, 22 Feb 2021 16:30:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        bh=qMET2jrpSddtpWkJHAuUT+RtXvTsMyez7xuO3kxxUks=;
+        b=g2tsk2ags9OnzyMG3nQzuioxmg3cMeKBT4P+2JdqFcMV1bUJcdtvzwLrq1pyQE54RMqU7D
+        /fgy5Koo1D4bieg9KuKjudfVzG5mfQKlQq7oNTTKfHV05jlKW8ljNeZVOZcCwjUVN3u3yz
+        W/sEfP6ZS00E7tF/MojxcH+wX/bFgzU=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id B4575AFE6;
+        Mon, 22 Feb 2021 16:28:26 +0000 (UTC)
+Date:   Mon, 22 Feb 2021 17:28:26 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     Helge Deller <deller@gmx.de>
+Cc:     John Ogness <john.ogness@linutronix.de>,
+        Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: Re: [PATCH printk-rework 08/14] printk: add syslog_lock
+Message-ID: <YDPbqhi6wVwGa5rF@alley>
+References: <20210218081817.28849-1-john.ogness@linutronix.de>
+ <20210218081817.28849-9-john.ogness@linutronix.de>
+ <YC+9gc/IR8PzeIFf@alley>
+ <875z2o15ha.fsf@jogness.linutronix.de>
+ <8735xs10hi.fsf@jogness.linutronix.de>
+ <db43de06-3183-7401-30f2-0e9302cc48e0@gmx.de>
 MIME-Version: 1.0
-In-Reply-To: <YDO5d+pbPBsjv13T@dhcp22.suse.cz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db43de06-3183-7401-30f2-0e9302cc48e0@gmx.de>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 22.02.21 15:02, Michal Hocko wrote:
-> On Mon 22-02-21 14:22:37, David Hildenbrand wrote:
->>>> Exactly. But for hugetlbfs/shmem ("!RAM-backed files") this is not what we
->>>> want.
->>>
->>> OK, then I must have misread your requirements. Maybe I just got lost in
->>> all the combinations you have listed.
->>
->> Another special case could be dax/pmem I think. You might want to fault it
->> in readable/writable but not perform an actual read/write unless really
->> required.
->>
->> QEMU phrases this as "don't cause wear on the storage backing".
+On Sun 2021-02-21 22:39:42, Helge Deller wrote:
+> On 2/19/21 5:33 PM, John Ogness wrote:
+> > Added CC: linux-parisc@vger.kernel.org
+> > 
+> > On 2021-02-19, John Ogness <john.ogness@linutronix.de> wrote:
+> > > > > diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+> > > > > index 20c21a25143d..401df370832b 100644
+> > > > > --- a/kernel/printk/printk.c
+> > > > > +++ b/kernel/printk/printk.c
+> > > > > +/* Return a consistent copy of @syslog_seq. */
+> > > > > +static u64 read_syslog_seq_irq(void)
+> > > > > +{
+> > > > > +	u64 seq;
+> > > > > +
+> > > > > +	raw_spin_lock_irq(&syslog_lock);
+> > > > > +	seq = syslog_seq;
+> > > > > +	raw_spin_unlock_irq(&syslog_lock);
+> > > > 
+> > > > Is there any particular reason to disable interrupts here?
+> > > > 
+> > > > It would make sense only when the lock could be taken in IRQ
+> > > > context. Then we would need to always disable interrupts when
+> > > > the lock is taken. And if it is taken in IRQ context, we would
+> > > > need to safe flags.
+> > > 
+> > > All other instances of locking @syslog_lock are done with interrupts
+> > > disabled. And we have:
+> > > 
+> > > register_console()
+> > >    logbuf_lock_irqsave()
+> > >      raw_spin_lock(&syslog_lock)
+> > > 
+> > > I suppose I need to go through all the console drivers to see if any
+> > > register in interrupt context. If not, that logbuf_lock_irqsave()
+> > > should be replaced with logbuf_lock_irq(). And then locking
+> > > @syslog_lock will not need to disable interrupts.
+> > 
+> > I found a possible call chain in interrupt context. From arch/parisc
+> > there is the interrupt handler:
+> > 
+> > handle_interruption(code=1) /* High-priority machine check (HPMC) */
+> >    pdc_console_restart()
+> >      pdc_console_init_force()
+> >        register_console()
+> > 
+> > All other register_console() calls in the kernel are either during init
+> > (within __init sections and probe functions) or are clearly not in
+> > interrupt context (using mutex, kzalloc, spin_lock_irq, etc).
+> > 
+> > I am not familiar with parisc, but I am assuming handle_interruption()
+> > is always called with interrupts disabled (unless the HPMC interrupt is
+> > somehow an exception).
 > 
-> Sorry for being dense here but I still do not follow. If you do not want
-> to read then what do you want to populate from? Only map if it is in the
+> Yes, handle_interruption() is the irq handler, running with irqs off.
+> HPMC is the crash handler - it's called when the kernel will stop
+> anyway. pdc_console is a very basic firmware console which prints
+> the last messages before the machine halts on fatal errors.
+> So, this code it's not the typical use case....
 
-In the context of VMs it's usually rather a mean to preallocate backend 
-storage - which would also happen on read access. See below on case 4).
+Thanks for information.
 
-> page cache?
+Is this code supposed to work only during early boot or anytime,
+please?
 
-Let's try to untangle my thoughts regarding VMs. We could have as 
-backend storage for our VM:
+Note that it is not safe because register_console() takes
+console_lock() which is a sleeping lock.
 
-1) Anonymous memory
-2) hugetlbfs (private/shared)
-3) tmpfs/shmem (private/shared)
-4) Ordinary files (shared)
-5) DAX/PMEM (shared)
+That said, we are going to rework the console handling a lot. We are
+trying to remove as many locks from the printk path as possible.
+I guess that the list of consoles will be synchronized using
+rcu at the end. But it is still a long way to go.
 
-Excluding special cases (hypervisor upgrades with 2) and 3) ), we expect 
-to have pre-existing content in files only in 4) and 5). 4) and 5) might 
-be used as NVDIMM backend for a guest, or as DIMM backend.
-
-The first access of our VM to memory could be
-a) Write: the usual case when exposed as RAM/DIMM to out guest.
-b) Read: possible case when exposed as an NVDIMM to our guest (we don't
-    know). But eventually, we might write to (parts of) NVDIMMs later.
-
-We "preallocate"/"populate" memory of our VM so that
-- We know we have sufficient backend storage (esp. hugetlbfs, shmem,
-   files) - so we don't randomly crash the VM. My most important use
-   case.
-- We avoid page faults (including page zeroing!) at runtime. Especially
-   relevant for RT workloads.
-
-With 1), 2), and 3) we want to have pages faulted in writable - we 
-expect that our guest will write to that memory. MADV_POPULATE would do 
-that only for 1), and MAP_PRIVATE of 2). For the shared parts, we would 
-want MADV_POPULATE_WRITE semantics.
-
-With 5), we already had complaints that preallcoation in QEMU takes a 
-long time - because we end up actually reading/writing slow PMEM 
-(libvirt now disables preallcoation for that reason, which makes sense). 
-However, MADV_POPULATE_WRITE would help to prefault without actually 
-reading/writing pmem - if we want to avoid any minor faults.
-
-With 4), I think we primarily prealloc/prefault to make sure we have 
-sufficient backend storage. fallocate() might do a better job just for 
-the allocation. But if there is sufficient RAM it might make sense to 
-prefault all guest RAM at least readable - then we only have a minor 
-fault when the VM writes to it and might avoid having to go to disk. 
-Prefaulting everything writable means that we *have to* write back all 
-guest RAM even if the guest never accessed it. So I think there are 
-cases where MADV_POPULATE_READ (current MADV_POPULATE) semantics could 
-make sense.
-
-
--- 
-Thanks,
-
-David / dhildenb
-
+Best Regards,
+Petr
