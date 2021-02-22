@@ -2,61 +2,81 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58642320E22
-	for <lists+linux-parisc@lfdr.de>; Sun, 21 Feb 2021 23:03:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57E7932177B
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Feb 2021 13:49:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230526AbhBUWDO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 21 Feb 2021 17:03:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49008 "EHLO mail.kernel.org"
+        id S231538AbhBVMtF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 22 Feb 2021 07:49:05 -0500
+Received: from mx2.suse.de ([195.135.220.15]:39944 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230462AbhBUWDL (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 21 Feb 2021 17:03:11 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id A233164EE9;
-        Sun, 21 Feb 2021 22:01:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613944918;
-        bh=sdMS44GPptRHo2XnNcbqyfg8NDuKHPgbC8eFbDV6ED4=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=QQCnfE6VP88Ji646J3V3q0nzagttNhOWqCTHOtqM/xXCcuW0AEaPCu8uJ1a8eOfOD
-         QpT0cS8PgWuQg0u2HPqgX5uINrnDoeT/UIJ3knh/9FoolwqOYdUZEKj8U/XjoZd5fd
-         /bEp/8+SBQed6Lio1nMkkMjLvfYMsgx5hbe4f1mNAPayzDNovsW4A9Wlvet/KtAJQB
-         70Xz8pHPJgx0A6LhYXU29RHMhTXjzf+WR9afwc/yu2i9pO0RwNT2vPm4lnlhxzsUs2
-         iwz9+UIHl7fF54ZPEedbh8tGYLE3b1GQKXsOdsIv7iyC8P65nVr9AdX48uHbmdTZZv
-         uEvD/OOdwvhDQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 9BD5960191;
-        Sun, 21 Feb 2021 22:01:58 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture updates for kernel v5.12-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YDKQpwGHc7IDsDcp@ls3530.fritz.box>
-References: <YDKQpwGHc7IDsDcp@ls3530.fritz.box>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <YDKQpwGHc7IDsDcp@ls3530.fritz.box>
-X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.12-1
-X-PR-Tracked-Commit-Id: 2347961b11d4079deace3c81dceed460c08a8fc1
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 08179b47e1fdf288e5d59f90e5ce31513bb019c3
-Message-Id: <161394491863.8676.18180667482029690629.pr-tracker-bot@kernel.org>
-Date:   Sun, 21 Feb 2021 22:01:58 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
+        id S231629AbhBVMrY (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 22 Feb 2021 07:47:24 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1613997998; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=pSoQkwih8ksFFRXBnQ2uGYGVyAUL6YhMR0u+WuJWwqg=;
+        b=XqMjnMB7820VC1A4vgfme9m2Hi31qX2p6kBGzOO6c/eIdI+pfkp1/RDkL+7WgOIBXaVB6M
+        HOScBSKlqCkR9P1qVM1CvzxtuNwVi1OLvpl4xp6M9Y4rZW9Hntb22y0lB+L15WhsWbIx28
+        j7Yi6MpOwdivG/IyiOW/jl6Vfd2KeY4=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id D0C5AAD2B;
+        Mon, 22 Feb 2021 12:46:37 +0000 (UTC)
+Date:   Mon, 22 Feb 2021 13:46:35 +0100
+From:   Michal Hocko <mhocko@suse.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Oscar Salvador <osalvador@suse.de>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Minchan Kim <minchan@kernel.org>, Jann Horn <jannh@google.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Hugh Dickins <hughd@google.com>,
+        Rik van Riel <riel@surriel.com>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH RFC] mm/madvise: introduce MADV_POPULATE to
+ prefault/prealloc memory
+Message-ID: <YDOnq9Nliopj9kQL@dhcp22.suse.cz>
+References: <20210217154844.12392-1-david@redhat.com>
+ <20210218225904.GB6669@xz-x1>
+ <b24996a6-7652-f88c-301e-28417637fd02@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b24996a6-7652-f88c-301e-28417637fd02@redhat.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Sun, 21 Feb 2021 17:56:07 +0100:
+I am slowly catching up with this thread.
 
-> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.12-1
+On Fri 19-02-21 09:20:16, David Hildenbrand wrote:
+[...]
+> So if we have zero, we write zero. We'll COW pages, triggering a write fault
+> - and that's the only good thing about it. For example, similar to
+> MADV_POPULATE, nothing stops KSM from merging anonymous pages again. So for
+> anonymous memory the actual write is not helpful at all. Similarly for
+> hugetlbfs, the actual write is not necessary - but there is no other way to
+> really achieve the goal.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/08179b47e1fdf288e5d59f90e5ce31513bb019c3
-
-Thank you!
-
+I really do not see why you care about KSM so much. Isn't KSM an
+explicit opt-in with a fine grained interface to control which memory to
+KSM or not?
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Michal Hocko
+SUSE Labs
