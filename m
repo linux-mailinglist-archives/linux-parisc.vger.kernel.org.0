@@ -2,164 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D4FF322CB9
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Feb 2021 15:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBEEA323E69
+	for <lists+linux-parisc@lfdr.de>; Wed, 24 Feb 2021 14:37:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232954AbhBWOsO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 Feb 2021 09:48:14 -0500
-Received: from mout.gmx.net ([212.227.15.19]:59339 "EHLO mout.gmx.net"
+        id S233025AbhBXNfs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 24 Feb 2021 08:35:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50210 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232553AbhBWOsN (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 Feb 2021 09:48:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1614091564;
-        bh=zxnMH3kQfAmn6A4bjMLcgvD+U/7mgtPr2Oy8ZiauVZY=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=fKeTJewAXSZdAnfaN3nHEwGToZZj3hyq1FR3iVyYt4kJebVx9iahOsvMK9aBu7dkV
-         tH44oQxUuInADJwqrEx6JFSfM0lelTJYI5ngRaTYjqZ2A7po4fqjYREgrRsoiNhtVv
-         9IY0e5KY/SNLCNChvr+bPnawj9I8VmFZpnGn5A8E=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.131.29]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MEm2D-1l3rhX16br-00GKpC; Tue, 23
- Feb 2021 15:46:04 +0100
-Subject: Re: [PATCH printk-rework 08/14] printk: add syslog_lock
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     John Ogness <john.ogness@linutronix.de>,
-        Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <20210218081817.28849-1-john.ogness@linutronix.de>
- <20210218081817.28849-9-john.ogness@linutronix.de> <YC+9gc/IR8PzeIFf@alley>
- <875z2o15ha.fsf@jogness.linutronix.de> <8735xs10hi.fsf@jogness.linutronix.de>
- <db43de06-3183-7401-30f2-0e9302cc48e0@gmx.de> <YDPbqhi6wVwGa5rF@alley>
- <b8ddd9e3-896f-cd9a-a340-0a7e139fee2e@gmx.de> <YDUP5J+AJwYjx5P4@alley>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <101aee06-2f7a-0c3a-44a1-449cba7ad7c1@gmx.de>
-Date:   Tue, 23 Feb 2021 15:45:52 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        id S235420AbhBXMzq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 24 Feb 2021 07:55:46 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C8B1564F36;
+        Wed, 24 Feb 2021 12:51:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614171108;
+        bh=0yegYpsZG9GaKTZcXqT7YupMuvs+SaXzGC220Pjnm1s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=JBncq2l3ZBWmOvxGKJCu7YRbWPsffcQjkgCjFPJLF3KtfCxbBKAWFSC3ZT7LGEDeh
+         OAUsF8uHmms8XW0ZF/P6ua/hS7yQBYfE6a9okhFBkLQlMCiJbp+oaBExENEVON+rmC
+         Kdke7Jum1pbig3Fwk6MS77O/7ZU366Mw0CAaLeH9WoXhwvSRUP4TRADRrGUum6rZb+
+         3Ue41wpK/Ws/qtLzdRqexZk7UNVSjBV0TRKNYAJO/3HFepNs+dPc8S7aZv034cyODZ
+         tN9mCkugwWBUM7XXU3YlUmA/oQZndjXgBXvdGWSm3kcHark9uHdz0E6MtdH23z5d4M
+         +yzb8HPTaEFJA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     John David Anglin <dave.anglin@bell.net>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
+        linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.11 61/67] parisc: Bump 64-bit IRQ stack size to 64 KB
+Date:   Wed, 24 Feb 2021 07:50:19 -0500
+Message-Id: <20210224125026.481804-61-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20210224125026.481804-1-sashal@kernel.org>
+References: <20210224125026.481804-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <YDUP5J+AJwYjx5P4@alley>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ki7LJbzXBWBcf8Jf6eWnuFKb/BOChLAp7DyI3df7shFJ3vN11fw
- wap/wJgYDPUBkygvFvEv71n8TbbItjgcrcaNl2O9IiHS6Lasno+/KPv5aUxWaFZQ+BL48nu
- J6h1oEflriWd7UZ9W+X1+CEgZtenghoF1xGzWi9Ophnisi9LOiVYO9f8qjThNVL0QPEiz8l
- LHdIvLK3AMxg5kIgIZ6Hw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0JSW2m71b0I=:Ei0yOA7ciLnsyVR9bU5kEG
- uc6+9BWNOMV8Drc6QKJVfTfR3THpAdCH1L090hgkXn868Xi42PGd+9sB1GMSD5FV/SitnI6Hy
- /ImVrfGe09BQZtI7A9eoXLFjwWDWZayRD0c4rQTIhrBa0tWUJg2WRJTQCTl0nUJ3W6EteXNX4
- hBdBvj4WoxZ20/upkBjsB83sBIX+pBVh3sPfgdmxjtCuMLiGp6hI+WpxAIV4OmvHtrba4D0Ik
- 1latMmCHUY68WO5/TmAUpvxh06CsgHpKBNgkOF5UXvJ2Wtxaf1MCadzxWC3/dJs3p6fGWnnDw
- dUy1r/bOK6pEfTf2dl0wJVR9d6YDflyZW1USRZEAYA1cuW5umf0LGKanT3igNM0axfo6TiK2O
- RdCThuFh4peR/EzLns5I8qyAmM5SaC6ikDCQg5AE58gjkxh6H1zPKX2y0wWrRVWopwOt5aCpl
- QviEVx7O9ZOE8MuWf7JfFTu46pod7DQqT//DTjtWkMC9OVVxGO+5OHNYyZGkXicuunROyUhg9
- jsq9UTrAQYEbV/qt69b+6Fn3dEAwSIGN1EN9ktfqSmXVHHBPjKA0RKLIMYyzaruduZP7ve8W+
- bG/QHGjThcYto/xHrnebGiWSiwdK2nS5vkcp1zosWEduk88AHs/Qfz52TnSg6siDdDZYjYW4H
- UuG+DfQMj3uPDwczhfP+jO+PJnVtbvhtKvVZWykRA3/1BV5zLBkm/GXn7aApNiIlT888X85hZ
- onSBT57twHGPj7O+xF+vY124jsROuXISn7PVjm07BYVFPr0KXIQnO7Z02gRDYNnqvjXlF8Sv/
- VnFmXoBGq4mcqGxpIYVnmrgVmcE120ujFyxBtckE31guHyGSWmKlZWmhMl1oxER5yU1XEbUEw
- IKhyN4Ossuw4GMbHVl0w==
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2/23/21 3:23 PM, Petr Mladek wrote:
-> On Tue 2021-02-23 13:22:22, Helge Deller wrote:
->> On 2/22/21 5:28 PM, Petr Mladek wrote:
->>> On Sun 2021-02-21 22:39:42, Helge Deller wrote:
->>>> On 2/19/21 5:33 PM, John Ogness wrote:
->>>>> Added CC: linux-parisc@vger.kernel.org
->>>>>
->>>>> On 2021-02-19, John Ogness <john.ogness@linutronix.de> wrote:
->>>>>>>> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
->>>>>>>> index 20c21a25143d..401df370832b 100644
->>>>>>>> --- a/kernel/printk/printk.c
->>>>>>>> +++ b/kernel/printk/printk.c
->>>>>>>> +/* Return a consistent copy of @syslog_seq. */
->>>>>>>> +static u64 read_syslog_seq_irq(void)
->>>>>>>> +{
->>>>>>>> +	u64 seq;
->>>>>>>> +
->>>>>>>> +	raw_spin_lock_irq(&syslog_lock);
->>>>>>>> +	seq =3D syslog_seq;
->>>>>>>> +	raw_spin_unlock_irq(&syslog_lock);
->>>>>>>
->>>>>>> Is there any particular reason to disable interrupts here?
->>>>>>>
->>>>> I found a possible call chain in interrupt context. From arch/parisc
->>>>> there is the interrupt handler:
->>>>>
->>>> Yes, handle_interruption() is the irq handler, running with irqs off.
->>>> HPMC is the crash handler - it's called when the kernel will stop
->>>> anyway. pdc_console is a very basic firmware console which prints
->>>> the last messages before the machine halts on fatal errors.
->>>> So, this code it's not the typical use case....
->>>
->>> Thanks for information.
->>>
->>> Is this code supposed to work only during early boot or anytime,
->>> please?
->>
->> No.
->> It's only called when the kernel completely crashes, when all
->> spinlocks should get busted and so on.
->> It's the emergency way to get some info out at least.
->
-> OK.
->
->>> Note that it is not safe because register_console() takes
->>> console_lock() which is a sleeping lock.
->>
->> As I said, in that stage the plan is to bust all spinlocks.
->
-> Just to be sure. Note that that register_console() does not bust
-> console_lock in panic.
+From: John David Anglin <dave.anglin@bell.net>
 
-Ok.
+[ Upstream commit 31680c1d1595a59e17c14ec036b192a95f8e5f4a ]
 
-> bust_spinlocks() just increments oops_in_progress counter. It has
-> effect only when the caller checks this variable and use trylock
-> when it is set. For example, see serial8250_console_write():
->
-> void serial8250_console_write(struct uart_8250_port *up, const char *s,
-> 			      unsigned int count)
-> {
-> 	int locked =3D 1;
->
-> 	if (oops_in_progress)
-> 		locked =3D spin_trylock_irqsave(&port->lock, flags);
-> 	else
-> 		spin_lock_irqsave(&port->lock, flags);
->
->
-> 	...
->
->
-> 	if (locked)
-> 		spin_unlock_irqrestore(&port->lock, flags);
-> }
->
-> register_console() does not check oops_in_progress at the moment
-> and might get blocked on console_sem.
->
-> We could add the checks for oops_in_progress into register_console().
-> But I am not sure if it is worth it.
+Bump 64-bit IRQ stack size to 64 KB.
 
-It's not worth it just because of parisc.
-I haven't seen any such crash in years, so the current implementation
-is probably untested and outdated.
+I had a kernel IRQ stack overflow on the mx3210 debian buildd machine.  This patch increases the
+64-bit IRQ stack size to 64 KB.  The 64-bit stack size needs to be larger than the 32-bit stack
+size since registers are twice as big.
 
-> It seems that you used this code for ages. The risk of the deadlock
-> is small. It likely works most of the time. The upcoming printk rework
-> should allow a cleaner solution.
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/parisc/kernel/irq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Yes, it would be great if you can include such a "hard-panic/crash-dump-ca=
-se"
-in the rework.
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index 49cd6d2caefb7..1dfb439b06928 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -373,7 +373,11 @@ static inline int eirr_to_irq(unsigned long eirr)
+ /*
+  * IRQ STACK - used for irq handler
+  */
++#ifdef CONFIG_64BIT
++#define IRQ_STACK_SIZE      (4096 << 4) /* 64k irq stack size */
++#else
+ #define IRQ_STACK_SIZE      (4096 << 3) /* 32k irq stack size */
++#endif
+ 
+ union irq_stack_union {
+ 	unsigned long stack[IRQ_STACK_SIZE/sizeof(unsigned long)];
+-- 
+2.27.0
 
-Helge
