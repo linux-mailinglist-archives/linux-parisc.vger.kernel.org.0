@@ -2,79 +2,271 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BFD2323E78
-	for <lists+linux-parisc@lfdr.de>; Wed, 24 Feb 2021 14:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA80B324171
+	for <lists+linux-parisc@lfdr.de>; Wed, 24 Feb 2021 17:06:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235649AbhBXNiM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 24 Feb 2021 08:38:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59334 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236096AbhBXNNu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 24 Feb 2021 08:13:50 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B733E64FA9;
-        Wed, 24 Feb 2021 12:55:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614171335;
-        bh=1YK8oSAN7rQInznGmAOuKCx15FokfzKFU8CdTji2RAI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MeMPw3d9QF5XWitKWWo5yCjcGhE5t7C76nLOTnHUCLUI6JbIo7gTcAIQAvj1+4Oc7
-         mqR9VTR/am6rcP8EbLbzZcx6rSFwwJ+sX+x9D+mBaFMHm+eQjVIVPXgG98tfp4QceH
-         XT3EQ7yMQEkKknnwqYVRFYDZTFQYk0p7QpEqql2l7B26SAJ0q/BAWIw4rLzkfXeoHw
-         my+m4UQkdDbQm0DJ8kxippo3xKa0vnriGycN+GhViMk+l9OWlcT+WHtM5yQ1ZGXOTK
-         Zb7vQIySf3pkZofc3Goj8+cfLYvjCjrclhIVXFXnve28jzcVMjGkhAb2Hnc+TvZupe
-         9g6olbGOjStcA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 16/16] parisc: Bump 64-bit IRQ stack size to 64 KB
-Date:   Wed, 24 Feb 2021 07:55:13 -0500
-Message-Id: <20210224125514.483935-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210224125514.483935-1-sashal@kernel.org>
-References: <20210224125514.483935-1-sashal@kernel.org>
+        id S236220AbhBXP4W (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 24 Feb 2021 10:56:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:59197 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237085AbhBXO7q (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 24 Feb 2021 09:59:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1614178698;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=77y8KZZrNTwo63nn5qHyxGYirPq1cuhKIEHQUSd2RYw=;
+        b=VOf/USWon58NBoHEUqhxhMjlsIHP6OPtGYIFmMCNCVHlDniPu6ojV5xMQXdLaYlLobS5rJ
+        A3uqQr1NpAeEl4IK3oWuQG9Yfy3zxp0x7UMIt7+1plMJZvzrXEJ3lQCNq41ZqrJrZs3+JN
+        uxaM1NwtG5NbBPqHZ7OIkZi5G2fnIj8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-199-0GzLx0AuNVKmMtS0-nTNKA-1; Wed, 24 Feb 2021 09:57:14 -0500
+X-MC-Unique: 0GzLx0AuNVKmMtS0-nTNKA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0F77F942518;
+        Wed, 24 Feb 2021 14:26:04 +0000 (UTC)
+Received: from [10.36.114.83] (ovpn-114-83.ams2.redhat.com [10.36.114.83])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 984C2646DC;
+        Wed, 24 Feb 2021 14:25:51 +0000 (UTC)
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>, Michal Hocko <mhocko@suse.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Minchan Kim <minchan@kernel.org>, Jann Horn <jannh@google.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Hugh Dickins <hughd@google.com>,
+        Rik van Riel <riel@surriel.com>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org
+References: <20210217154844.12392-1-david@redhat.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Subject: Re: [PATCH RFC] mm/madvise: introduce MADV_POPULATE to
+ prefault/prealloc memory
+Message-ID: <4bb9071b-e6c1-a732-0ed6-46aff0eaa70c@redhat.com>
+Date:   Wed, 24 Feb 2021 15:25:50 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <20210217154844.12392-1-david@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: John David Anglin <dave.anglin@bell.net>
+> +		tmp_end = min_t(unsigned long, end, vma->vm_end);
+> +		pages = populate_vma_page_range(vma, start, tmp_end, &locked);
+> +		if (!locked) {
+> +			mmap_read_lock(mm);
+> +			*prev = NULL;
+> +			vma = NULL;
 
-[ Upstream commit 31680c1d1595a59e17c14ec036b192a95f8e5f4a ]
+^ locked = 1; is missing here.
 
-Bump 64-bit IRQ stack size to 64 KB.
 
-I had a kernel IRQ stack overflow on the mx3210 debian buildd machine.  This patch increases the
-64-bit IRQ stack size to 64 KB.  The 64-bit stack size needs to be larger than the 32-bit stack
-size since registers are twice as big.
+--- Simple benchmark ---
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/kernel/irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+I implemented MADV_POPULATE_READ and MADV_POPULATE_WRITE and performed 
+some simple measurements to simulate memory preallocation with empty files:
 
-diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
-index 0ca254085a662..c152c30c2d06d 100644
---- a/arch/parisc/kernel/irq.c
-+++ b/arch/parisc/kernel/irq.c
-@@ -380,7 +380,11 @@ static inline int eirr_to_irq(unsigned long eirr)
- /*
-  * IRQ STACK - used for irq handler
-  */
-+#ifdef CONFIG_64BIT
-+#define IRQ_STACK_SIZE      (4096 << 4) /* 64k irq stack size */
-+#else
- #define IRQ_STACK_SIZE      (4096 << 3) /* 32k irq stack size */
-+#endif
- 
- union irq_stack_union {
- 	unsigned long stack[IRQ_STACK_SIZE/sizeof(unsigned long)];
+1) mmap a 2 MiB/128 MiB/4 GiB region (anonymous, memfd, memfd hugetlb)
+2) Discard all memory using fallocate/madvise
+3) Prefault memory using different approaches and measure the time this
+    takes.
+
+I repeat 2)+3) 10 times and compute the average. I only use a single thread.
+
+Read: Read from each page a byte.
+Write: Write one byte of each page (0).
+Read/Write: Read one byte and write the value back for each page
+POPULATE: MADV_POPULATE (this patch)
+POPULATE_READ: MADV_POPULATE_READ
+POPULATE_WRITE: MADV_POPULATE_WRITE
+
+--- Benchmark results ---
+
+Measuring 10 iterations each:
+==================================================
+2 MiB MAP_PRIVATE:
+**************************************************
+Anonymous      : Read           :     0.159 ms
+Anonymous      : Write          :     0.244 ms
+Anonymous      : Read+Write     :     0.383 ms
+Anonymous      : POPULATE       :     0.167 ms
+Anonymous      : POPULATE_READ  :     0.064 ms
+Anonymous      : POPULATE_WRITE :     0.165 ms
+Memfd 4 KiB    : Read           :     0.401 ms
+Memfd 4 KiB    : Write          :     0.056 ms
+Memfd 4 KiB    : Read+Write     :     0.075 ms
+Memfd 4 KiB    : POPULATE       :     0.057 ms
+Memfd 4 KiB    : POPULATE_READ  :     0.337 ms
+Memfd 4 KiB    : POPULATE_WRITE :     0.056 ms
+Memfd 2 MiB    : Read           :     0.041 ms
+Memfd 2 MiB    : Write          :     0.030 ms
+Memfd 2 MiB    : Read+Write     :     0.031 ms
+Memfd 2 MiB    : POPULATE       :     0.031 ms
+Memfd 2 MiB    : POPULATE_READ  :     0.031 ms
+Memfd 2 MiB    : POPULATE_WRITE :     0.031 ms
+**************************************************
+2 MiB MAP_SHARED:
+**************************************************
+Anonymous      : Read           :     0.071 ms
+Anonymous      : Write          :     0.181 ms
+Anonymous      : Read+Write     :     0.081 ms
+Anonymous      : POPULATE       :     0.069 ms
+Anonymous      : POPULATE_READ  :     0.069 ms
+Anonymous      : POPULATE_WRITE :     0.115 ms
+Memfd 4 KiB    : Read           :     0.401 ms
+Memfd 4 KiB    : Write          :     0.351 ms
+Memfd 4 KiB    : Read+Write     :     0.414 ms
+Memfd 4 KiB    : POPULATE       :     0.338 ms
+Memfd 4 KiB    : POPULATE_READ  :     0.339 ms
+Memfd 4 KiB    : POPULATE_WRITE :     0.279 ms
+Memfd 2 MiB    : Read           :     0.031 ms
+Memfd 2 MiB    : Write          :     0.031 ms
+Memfd 2 MiB    : Read+Write     :     0.031 ms
+Memfd 2 MiB    : POPULATE       :     0.031 ms
+Memfd 2 MiB    : POPULATE_READ  :     0.031 ms
+Memfd 2 MiB    : POPULATE_WRITE :     0.031 ms
+**************************************************
+128 MiB MAP_PRIVATE:
+**************************************************
+Anonymous      : Read           :     7.517 ms
+Anonymous      : Write          :    22.503 ms
+Anonymous      : Read+Write     :    33.186 ms
+Anonymous      : POPULATE       :    18.381 ms
+Anonymous      : POPULATE_READ  :     3.952 ms
+Anonymous      : POPULATE_WRITE :    18.354 ms
+Memfd 4 KiB    : Read           :    34.300 ms
+Memfd 4 KiB    : Write          :     4.659 ms
+Memfd 4 KiB    : Read+Write     :     6.531 ms
+Memfd 4 KiB    : POPULATE       :     5.219 ms
+Memfd 4 KiB    : POPULATE_READ  :    29.744 ms
+Memfd 4 KiB    : POPULATE_WRITE :     5.244 ms
+Memfd 2 MiB    : Read           :    10.228 ms
+Memfd 2 MiB    : Write          :    10.130 ms
+Memfd 2 MiB    : Read+Write     :    10.190 ms
+Memfd 2 MiB    : POPULATE       :    10.007 ms
+Memfd 2 MiB    : POPULATE_READ  :    10.008 ms
+Memfd 2 MiB    : POPULATE_WRITE :    10.010 ms
+**************************************************
+128 MiB MAP_SHARED:
+**************************************************
+Anonymous      : Read           :     7.295 ms
+Anonymous      : Write          :    15.234 ms
+Anonymous      : Read+Write     :     7.460 ms
+Anonymous      : POPULATE       :     5.196 ms
+Anonymous      : POPULATE_READ  :     5.190 ms
+Anonymous      : POPULATE_WRITE :     8.245 ms
+Memfd 4 KiB    : Read           :    34.412 ms
+Memfd 4 KiB    : Write          :    30.586 ms
+Memfd 4 KiB    : Read+Write     :    35.157 ms
+Memfd 4 KiB    : POPULATE       :    29.643 ms
+Memfd 4 KiB    : POPULATE_READ  :    29.691 ms
+Memfd 4 KiB    : POPULATE_WRITE :    25.790 ms
+Memfd 2 MiB    : Read           :    10.210 ms
+Memfd 2 MiB    : Write          :    10.074 ms
+Memfd 2 MiB    : Read+Write     :    10.068 ms
+Memfd 2 MiB    : POPULATE       :    10.034 ms
+Memfd 2 MiB    : POPULATE_READ  :    10.037 ms
+Memfd 2 MiB    : POPULATE_WRITE :    10.031 ms
+**************************************************
+4096 MiB MAP_PRIVATE:
+**************************************************
+Anonymous      : Read           :   240.947 ms
+Anonymous      : Write          :   712.941 ms
+Anonymous      : Read+Write     :  1027.636 ms
+Anonymous      : POPULATE       :   571.816 ms
+Anonymous      : POPULATE_READ  :   120.215 ms
+Anonymous      : POPULATE_WRITE :   570.750 ms
+Memfd 4 KiB    : Read           :  1054.739 ms
+Memfd 4 KiB    : Write          :   145.534 ms
+Memfd 4 KiB    : Read+Write     :   202.275 ms
+Memfd 4 KiB    : POPULATE       :   162.597 ms
+Memfd 4 KiB    : POPULATE_READ  :   914.747 ms
+Memfd 4 KiB    : POPULATE_WRITE :   161.281 ms
+Memfd 2 MiB    : Read           :   351.818 ms
+Memfd 2 MiB    : Write          :   352.357 ms
+Memfd 2 MiB    : Read+Write     :   352.762 ms
+Memfd 2 MiB    : POPULATE       :   351.471 ms
+Memfd 2 MiB    : POPULATE_READ  :   351.553 ms
+Memfd 2 MiB    : POPULATE_WRITE :   351.931 ms
+**************************************************
+4096 MiB MAP_SHARED:
+**************************************************
+Anonymous      : Read           :   229.338 ms
+Anonymous      : Write          :   478.964 ms
+Anonymous      : Read+Write     :   234.546 ms
+Anonymous      : POPULATE       :   161.635 ms
+Anonymous      : POPULATE_READ  :   160.943 ms
+Anonymous      : POPULATE_WRITE :   252.686 ms
+Memfd 4 KiB    : Read           :  1052.828 ms
+Memfd 4 KiB    : Write          :   929.237 ms
+Memfd 4 KiB    : Read+Write     :  1074.494 ms
+Memfd 4 KiB    : POPULATE       :   915.663 ms
+Memfd 4 KiB    : POPULATE_READ  :   915.001 ms
+Memfd 4 KiB    : POPULATE_WRITE :   787.388 ms
+Memfd 2 MiB    : Read           :   353.580 ms
+Memfd 2 MiB    : Write          :   353.197 ms
+Memfd 2 MiB    : Read+Write     :   353.172 ms
+Memfd 2 MiB    : POPULATE       :   353.686 ms
+Memfd 2 MiB    : POPULATE_READ  :   353.465 ms
+Memfd 2 MiB    : POPULATE_WRITE :   352.776 ms
+**************************************************
+
+
+--- Discussion ---
+
+1) With huge pages, the performance benefit is negligible with the sizes 
+I tried, because there are little actual page faults. Most time is spent 
+zeroing huge pages I guess. It will take quite a lot of memory to pay off.
+
+2) In all 4k cases, the POPULATE_READ/POPULATE_WRITE variants are faster 
+than manually reading or writing from user space.
+
+
+What sticks out a bit is:
+
+3) For MAP_SHARED on anonymous memory, it is fastest to first read and 
+then write memory. It's slightly faster than POPULATE_WRITE and quite a 
+lot faster than a simple write - what?!. It's even faster than 
+POPULATE_WRITE - what?! I assume with the read access we prepare a fresh 
+zero page and with the write access we only have to change PTE access 
+rights. But why is this faster than writing directly?
+
+4) POPULATE_WRITE with MAP_SHARED "Memfd 4 KiB" is faster than 
+POPULATE_READ - it's the fastest way to preallocate that memory. 
+Similarly, ordinary writes are faster than ordinary reads.
+
+
+I did not try with actual files, files that already have a content, or 
+with multiple thread yet. Also, I did not try on a subset of a mmap yet 
+- for simplicity I populate the whole mapping.
+
 -- 
-2.27.0
+Thanks,
+
+David / dhildenb
 
