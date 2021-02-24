@@ -2,70 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89805324764
-	for <lists+linux-parisc@lfdr.de>; Thu, 25 Feb 2021 00:12:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2EC32478D
+	for <lists+linux-parisc@lfdr.de>; Thu, 25 Feb 2021 00:33:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235612AbhBXXMf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 24 Feb 2021 18:12:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54818 "EHLO
+        id S233706AbhBXXdC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 24 Feb 2021 18:33:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234728AbhBXXMe (ORCPT
+        with ESMTP id S232412AbhBXXdB (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 24 Feb 2021 18:12:34 -0500
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B054C061574;
-        Wed, 24 Feb 2021 15:11:54 -0800 (PST)
-Received: by mail-ot1-x32f.google.com with SMTP id d9so3869259ote.12;
-        Wed, 24 Feb 2021 15:11:54 -0800 (PST)
+        Wed, 24 Feb 2021 18:33:01 -0500
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36847C061574
+        for <linux-parisc@vger.kernel.org>; Wed, 24 Feb 2021 15:32:21 -0800 (PST)
+Received: by mail-pg1-x533.google.com with SMTP id o10so2559467pgg.4
+        for <linux-parisc@vger.kernel.org>; Wed, 24 Feb 2021 15:32:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=EGCpl6JCFdhTjBwlRYB+TBuuzz1bXs8uoX9BzO9G/m8=;
-        b=F1ssa3J1gJdqXQw/5G5pyX3NbGNl5UqYfS9vzyDOgq35DlKPuuZeDq2hltQwrtQ5wS
-         cq7+QtEaOZwT1rKWG/rPJBflIZGQu+lgg3rQUQpcOTHEoTJPmzeTPsvD/w3AkLn/R4pB
-         l4akOkR0fhPZt6L+pHvhGDHxtSYFxUkfxV46LTs9ZL2Z+tM0gQikyh1I+atBR4D6vNaR
-         f2PqMAcaa3Z6YdiAFa7h9NKl53ZLZnWutwqe7P/t6ChFS9tX5+OUET5iFVMGiMyOVb+i
-         +fWjXXI6MStw9Oc7jP8pegLQPEfUBd5uPlIKK4TYXA4ksOo9t8QQs4F1wjJqRdqHZPzl
-         Sw5Q==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=g5Gy0p/FQq9jX447dEvvCmbDqR5vUzjHm6T2Y74f/1I=;
+        b=QFkVgQNTiu+/N75DJ6Z59aF8QOPIoxiX6qncyFFy4xTBds6g3WqzTlBjfdpPLRXISu
+         iL89TgGf1xUQeRrY/5A2kdhWaGsYPaq3X7FaK8prs4/0BZ6aNr2Jqg1gfyp705qAqTRL
+         OPlGqFU6exNaqMHv4QmNzz20egGMt7rHAhEPc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=EGCpl6JCFdhTjBwlRYB+TBuuzz1bXs8uoX9BzO9G/m8=;
-        b=R6HwJ12/MMwdWaPF+d/+0DSpXwlWOQU6KvbxDr26shtLU1DtqUX5LRenIZXopNt5oq
-         p66xlLw7uvdiqCrHBzWlMSLawNzNvn538C79VqU4USOmE2t7I0zA/VdpdeDxaHh483C+
-         KmfQA2Dh48/OSo9taGXFb1JYAB9asnqUv//HNr9ewmuagrztHMYtzFG5PzGvfPBZ7oqZ
-         DCudJC+qLJgqL68DCCCJeqIM1Jjcc+I7EPGw/+nNsq7oLdyJ9qaAmOoMl2iycdlkjfX2
-         0Q/Hv+BPe2UK7gAmkAiLcxZx32UTuEsd+Xpl+8OHEhSXnHRJYbFrW5vB00FcIVAuVoEG
-         UGQA==
-X-Gm-Message-State: AOAM5336z/ZnbzQAvX65fi3nQoY8Uqu+A1Be16NKXKAtIfv5SmF0h8AB
-        hSajV0V+EG2L2oxFBtjLCl8=
-X-Google-Smtp-Source: ABdhPJyZwRrXioEBN2DZ7eXTrPJ7B8RfHPgaghnqxaDol8B02fjKSVNo7SdPpeXriRgsPrGz64HKDw==
-X-Received: by 2002:a05:6830:1557:: with SMTP id l23mr26635317otp.181.1614208313933;
-        Wed, 24 Feb 2021 15:11:53 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id p12sm707867oon.12.2021.02.24.15.11.52
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 24 Feb 2021 15:11:53 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 24 Feb 2021 15:11:51 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=g5Gy0p/FQq9jX447dEvvCmbDqR5vUzjHm6T2Y74f/1I=;
+        b=fIw6Uu4w61X/JQdiySRjf3TT63ChkeZv0Tj5/pp29wLRSKu0tUEzw8DnJGSkdprnlL
+         VP8h5PX+ufUJYW+3G+PNYo4mHFkquckqlsDz2UTd0uKNDCjMPle3zv3PeLfA6hCQQT56
+         xV3mhjjy0HRGcCbBvaPH6DqeYvike4a4B3qtmoa8KruTld8WlvWSxGnzdeDn6F0Oy5gJ
+         Ro0iAnZj4l9Le+ZOiqV162GHUKN5kVmpBTd9sQyOsrdn0WFEqEMGTXD36quKWXkhmAeL
+         ElYMUd3T1QA1cQTmFftmPuBR7wlbZ9kbkz828Xy6CGtuwnHu3CNgKJCRez0fxgjMGA8v
+         tQAA==
+X-Gm-Message-State: AOAM530fh9fhmxJ/8COHTQh+OOun3anwkvT7oubJuS65xnqwC8NIghEM
+        odVDDZA4H0uQeHcwOvfgmkHP/A==
+X-Google-Smtp-Source: ABdhPJyEOHGWDGnSX+oJgmdx37VbyypUjZW+35RnUDRvzjr6jKfJ4VQJNyRorCN9sLTIUKVtbYHrFg==
+X-Received: by 2002:a63:e42:: with SMTP id 2mr335730pgo.100.1614209540694;
+        Wed, 24 Feb 2021 15:32:20 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id o18sm3956468pjq.44.2021.02.24.15.32.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Feb 2021 15:32:20 -0800 (PST)
+Date:   Wed, 24 Feb 2021 15:32:19 -0800
+From:   Kees Cook <keescook@chromium.org>
 To:     Sami Tolvanen <samitolvanen@google.com>
 Cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
+        Guenter Roeck <linux@roeck-us.net>,
         "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Kees Cook <keescook@chromium.org>,
         linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] parisc: select
  FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY
-Message-ID: <20210224231151.GA222480@roeck-us.net>
+Message-ID: <202102241508.A10EB51C8@keescook>
 References: <20210224225706.2726050-1-samitolvanen@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20210224225706.2726050-1-samitolvanen@google.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
@@ -79,9 +74,13 @@ On Wed, Feb 24, 2021 at 02:57:06PM -0800, Sami Tolvanen wrote:
 > Fixes: 3b15cdc15956 ("tracing: move function tracer options to Kconfig")
 > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Guenter
+Cross-build tested for defconfig, allmodconfig, allyesconfig:
+
+Tested-by: Kees Cook <keescook@chromium.org>
+
+-Kees
 
 > ---
 >  arch/parisc/Kconfig | 1 +
@@ -104,3 +103,6 @@ Guenter
 > -- 
 > 2.30.0.617.g56c4b15f3c-goog
 > 
+
+-- 
+Kees Cook
