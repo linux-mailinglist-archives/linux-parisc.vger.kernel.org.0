@@ -2,38 +2,38 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 713C8323E76
-	for <lists+linux-parisc@lfdr.de>; Wed, 24 Feb 2021 14:43:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BFD2323E78
+	for <lists+linux-parisc@lfdr.de>; Wed, 24 Feb 2021 14:43:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234107AbhBXNhe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 24 Feb 2021 08:37:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58712 "EHLO mail.kernel.org"
+        id S235649AbhBXNiM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 24 Feb 2021 08:38:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59334 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234150AbhBXNIx (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 24 Feb 2021 08:08:53 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5E43964F14;
-        Wed, 24 Feb 2021 12:55:04 +0000 (UTC)
+        id S236096AbhBXNNu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 24 Feb 2021 08:13:50 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B733E64FA9;
+        Wed, 24 Feb 2021 12:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614171305;
+        s=k20201202; t=1614171335;
         bh=1YK8oSAN7rQInznGmAOuKCx15FokfzKFU8CdTji2RAI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fReEpa4kIta+8XZk2FBo645tG9yRa7B7bRdjU28Y0y54efYR+VDhc2HLHpGwWbTQS
-         D0y3QZpLNTmkEUaHcyOPJCZOlXnclKQ/oo2C12CXQC6DzqYZcpyHayNZRUbh/enP46
-         mKBRBZ6ww5Vu03gJoX8V5ziedWJd2RXahTfBsXBv6jUGpfY4q2sM64Aml3Faqxoq5o
-         XxFjOFFhqg7zgzgLT022liGrvDEtnsWkyDehT6QbTLWnYq1VrkHY1ekSoO18PwB/I7
-         8JpVhSsm/C6S6Y944ZvbWdn6koH24ryPoSFN2/eqkWKvlJeqzZAv7t0H3/y2uoO1Fm
-         xj8SRYEV5/8KQ==
+        b=MeMPw3d9QF5XWitKWWo5yCjcGhE5t7C76nLOTnHUCLUI6JbIo7gTcAIQAvj1+4Oc7
+         mqR9VTR/am6rcP8EbLbzZcx6rSFwwJ+sX+x9D+mBaFMHm+eQjVIVPXgG98tfp4QceH
+         XT3EQ7yMQEkKknnwqYVRFYDZTFQYk0p7QpEqql2l7B26SAJ0q/BAWIw4rLzkfXeoHw
+         my+m4UQkdDbQm0DJ8kxippo3xKa0vnriGycN+GhViMk+l9OWlcT+WHtM5yQ1ZGXOTK
+         Zb7vQIySf3pkZofc3Goj8+cfLYvjCjrclhIVXFXnve28jzcVMjGkhAb2Hnc+TvZupe
+         9g6olbGOjStcA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     John David Anglin <dave.anglin@bell.net>,
         Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 23/26] parisc: Bump 64-bit IRQ stack size to 64 KB
-Date:   Wed, 24 Feb 2021 07:54:31 -0500
-Message-Id: <20210224125435.483539-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 16/16] parisc: Bump 64-bit IRQ stack size to 64 KB
+Date:   Wed, 24 Feb 2021 07:55:13 -0500
+Message-Id: <20210224125514.483935-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210224125435.483539-1-sashal@kernel.org>
-References: <20210224125435.483539-1-sashal@kernel.org>
+In-Reply-To: <20210224125514.483935-1-sashal@kernel.org>
+References: <20210224125514.483935-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
