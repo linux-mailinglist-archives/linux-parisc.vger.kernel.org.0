@@ -2,279 +2,80 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C9F0324C2C
-	for <lists+linux-parisc@lfdr.de>; Thu, 25 Feb 2021 09:43:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3CDB325895
+	for <lists+linux-parisc@lfdr.de>; Thu, 25 Feb 2021 22:24:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235970AbhBYIm5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 25 Feb 2021 03:42:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:21038 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235966AbhBYIm4 (ORCPT
+        id S234102AbhBYVYa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 25 Feb 2021 16:24:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58132 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234030AbhBYVY3 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 25 Feb 2021 03:42:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1614242489;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fqVSsomUJyTIz0gYNIicWiu4aghYekNv2Fcx+hAQcqI=;
-        b=T/FSs6fsgWB7zg1Z1FqW7cO1Xgn003odA4qxCdaLaanCk0z7B/l/Nw7S4zSayOlhxvdrFD
-        XZ1/liRqA4z56Phi8EVIKohBU78dSNu/mhbsMg9pMRWuw8kl6QvGgViCf2ssYpCdGyy1Ey
-        7gdnSlkH6ROavcWJs9MSjPIb5rW8JAQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-598-PdpzTNHiPv2rFA2I1NLbbQ-1; Thu, 25 Feb 2021 03:41:24 -0500
-X-MC-Unique: PdpzTNHiPv2rFA2I1NLbbQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 007DA100CCC3;
-        Thu, 25 Feb 2021 08:41:19 +0000 (UTC)
-Received: from [10.36.114.58] (ovpn-114-58.ams2.redhat.com [10.36.114.58])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1F11318A9E;
-        Thu, 25 Feb 2021 08:41:07 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Michal Hocko <mhocko@suse.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Minchan Kim <minchan@kernel.org>, Jann Horn <jannh@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Hugh Dickins <hughd@google.com>,
-        Rik van Riel <riel@surriel.com>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thu, 25 Feb 2021 16:24:29 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 787DDC061756
+        for <linux-parisc@vger.kernel.org>; Thu, 25 Feb 2021 13:23:48 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id b15so4311684pjb.0
+        for <linux-parisc@vger.kernel.org>; Thu, 25 Feb 2021 13:23:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=zl7BGuEjRmRiIwCyoaPfFxWDxWG1s1pkq54saj9Pb+Q=;
+        b=ZvNpz1SLjAkZXy8QFcEi+pMYA09UJhW69MDf1cOmpIxOH3XnIdEDjr2XcCN1KRj7q4
+         0+8oqrrbbznjDHZAbrrfsI5TxEfwK+gmT/c5obSSzCBCfWUW98aAX+cY21BFv56e3XQb
+         6tWKVweUE0lw6nSI5oUA4Pt4KQU6PZ1AgL3hI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=zl7BGuEjRmRiIwCyoaPfFxWDxWG1s1pkq54saj9Pb+Q=;
+        b=hA8jDoI7yJy4LrQbxbGpUjI0QLtxFcXRliiLPZl/ZfI4mnC7FRudPsT7qhPbiOj5dq
+         Tfd+JwhmlXhRSkO/Cl2SUYONu3Pqiwej3MzVSmrxuo53yH1Wxt/gICYkxWZ0x6WDeVCq
+         aX3b82EcUccJh4lNI6BMHf5rG3ZhSFIYHdl8nFhGkMbzCF5lCxodSetzXQ3RBBD9+wwC
+         DOQQ2Nmh9Rca56wVvgKKAaogvnIe0EH2ow6+DtoAJerpftHVq13mCZi5RbtLZnjvmAoT
+         YAq90Q1uBE5xOl9Vpo9+J4XmmsWwtbGXeRcWlMiBwEevomQA/xl58FRVTpnI5Y+mpfoI
+         Oivg==
+X-Gm-Message-State: AOAM533f7p1CKoPJX6Le6CG3pYhAOME7MtGvULYDUXFJb0zL0+dRSKTt
+        uYMLTZAfRJN04UWyqg/lf/oQ5Q==
+X-Google-Smtp-Source: ABdhPJzl9SAZt3si9WtKf9YFkozO0evA7KE3UpvwhBd7Ug15yhD53/Z0pLqAt16pwyHfzB0nuyw8nw==
+X-Received: by 2002:a17:902:9a46:b029:e2:f97b:47da with SMTP id x6-20020a1709029a46b02900e2f97b47damr4422664plv.77.1614288228089;
+        Thu, 25 Feb 2021 13:23:48 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id z16sm6550218pgj.51.2021.02.25.13.23.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Feb 2021 13:23:47 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     Helge Deller <deller@gmx.de>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org
-References: <20210217154844.12392-1-david@redhat.com>
- <4bb9071b-e6c1-a732-0ed6-46aff0eaa70c@redhat.com>
-Organization: Red Hat GmbH
-Subject: Re: [PATCH RFC] mm/madvise: introduce MADV_POPULATE to
- prefault/prealloc memory
-Message-ID: <e78dfe59-3552-91f1-e234-5f37d2600eb6@redhat.com>
-Date:   Thu, 25 Feb 2021 09:41:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Guenter Roeck <linux@roeck-us.net>,
+        Sami Tolvanen <samitolvanen@google.com>
+Cc:     Kees Cook <keescook@chromium.org>, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+Subject: Re: [PATCH v2] parisc: select FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY
+Date:   Thu, 25 Feb 2021 13:23:40 -0800
+Message-Id: <161428814140.2305182.15838957882450280547.b4-ty@chromium.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210224225706.2726050-1-samitolvanen@google.com>
+References: <20210224225706.2726050-1-samitolvanen@google.com>
 MIME-Version: 1.0
-In-Reply-To: <4bb9071b-e6c1-a732-0ed6-46aff0eaa70c@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 24.02.21 15:25, David Hildenbrand wrote:
->> +		tmp_end = min_t(unsigned long, end, vma->vm_end);
->> +		pages = populate_vma_page_range(vma, start, tmp_end, &locked);
->> +		if (!locked) {
->> +			mmap_read_lock(mm);
->> +			*prev = NULL;
->> +			vma = NULL;
-> 
-> ^ locked = 1; is missing here.
-> 
-> 
-> --- Simple benchmark ---
-> 
-> I implemented MADV_POPULATE_READ and MADV_POPULATE_WRITE and performed
-> some simple measurements to simulate memory preallocation with empty files:
-> 
-> 1) mmap a 2 MiB/128 MiB/4 GiB region (anonymous, memfd, memfd hugetlb)
-> 2) Discard all memory using fallocate/madvise
-> 3) Prefault memory using different approaches and measure the time this
->      takes.
-> 
-> I repeat 2)+3) 10 times and compute the average. I only use a single thread.
-> 
-> Read: Read from each page a byte.
-> Write: Write one byte of each page (0).
-> Read/Write: Read one byte and write the value back for each page
-> POPULATE: MADV_POPULATE (this patch)
-> POPULATE_READ: MADV_POPULATE_READ
-> POPULATE_WRITE: MADV_POPULATE_WRITE
-> 
-> --- Benchmark results ---
-> 
-> Measuring 10 iterations each:
-> ==================================================
-> 2 MiB MAP_PRIVATE:
-> **************************************************
-> Anonymous      : Read           :     0.159 ms
-> Anonymous      : Write          :     0.244 ms
-> Anonymous      : Read+Write     :     0.383 ms
-> Anonymous      : POPULATE       :     0.167 ms
-> Anonymous      : POPULATE_READ  :     0.064 ms
-> Anonymous      : POPULATE_WRITE :     0.165 ms
-> Memfd 4 KiB    : Read           :     0.401 ms
-> Memfd 4 KiB    : Write          :     0.056 ms
-> Memfd 4 KiB    : Read+Write     :     0.075 ms
-> Memfd 4 KiB    : POPULATE       :     0.057 ms
-> Memfd 4 KiB    : POPULATE_READ  :     0.337 ms
-> Memfd 4 KiB    : POPULATE_WRITE :     0.056 ms
-> Memfd 2 MiB    : Read           :     0.041 ms
-> Memfd 2 MiB    : Write          :     0.030 ms
-> Memfd 2 MiB    : Read+Write     :     0.031 ms
-> Memfd 2 MiB    : POPULATE       :     0.031 ms
-> Memfd 2 MiB    : POPULATE_READ  :     0.031 ms
-> Memfd 2 MiB    : POPULATE_WRITE :     0.031 ms
-> **************************************************
-> 2 MiB MAP_SHARED:
-> **************************************************
-> Anonymous      : Read           :     0.071 ms
-> Anonymous      : Write          :     0.181 ms
-> Anonymous      : Read+Write     :     0.081 ms
-> Anonymous      : POPULATE       :     0.069 ms
-> Anonymous      : POPULATE_READ  :     0.069 ms
-> Anonymous      : POPULATE_WRITE :     0.115 ms
-> Memfd 4 KiB    : Read           :     0.401 ms
-> Memfd 4 KiB    : Write          :     0.351 ms
-> Memfd 4 KiB    : Read+Write     :     0.414 ms
-> Memfd 4 KiB    : POPULATE       :     0.338 ms
-> Memfd 4 KiB    : POPULATE_READ  :     0.339 ms
-> Memfd 4 KiB    : POPULATE_WRITE :     0.279 ms
-> Memfd 2 MiB    : Read           :     0.031 ms
-> Memfd 2 MiB    : Write          :     0.031 ms
-> Memfd 2 MiB    : Read+Write     :     0.031 ms
-> Memfd 2 MiB    : POPULATE       :     0.031 ms
-> Memfd 2 MiB    : POPULATE_READ  :     0.031 ms
-> Memfd 2 MiB    : POPULATE_WRITE :     0.031 ms
-> **************************************************
-> 128 MiB MAP_PRIVATE:
-> **************************************************
-> Anonymous      : Read           :     7.517 ms
-> Anonymous      : Write          :    22.503 ms
-> Anonymous      : Read+Write     :    33.186 ms
-> Anonymous      : POPULATE       :    18.381 ms
-> Anonymous      : POPULATE_READ  :     3.952 ms
-> Anonymous      : POPULATE_WRITE :    18.354 ms
-> Memfd 4 KiB    : Read           :    34.300 ms
-> Memfd 4 KiB    : Write          :     4.659 ms
-> Memfd 4 KiB    : Read+Write     :     6.531 ms
-> Memfd 4 KiB    : POPULATE       :     5.219 ms
-> Memfd 4 KiB    : POPULATE_READ  :    29.744 ms
-> Memfd 4 KiB    : POPULATE_WRITE :     5.244 ms
-> Memfd 2 MiB    : Read           :    10.228 ms
-> Memfd 2 MiB    : Write          :    10.130 ms
-> Memfd 2 MiB    : Read+Write     :    10.190 ms
-> Memfd 2 MiB    : POPULATE       :    10.007 ms
-> Memfd 2 MiB    : POPULATE_READ  :    10.008 ms
-> Memfd 2 MiB    : POPULATE_WRITE :    10.010 ms
-> **************************************************
-> 128 MiB MAP_SHARED:
-> **************************************************
-> Anonymous      : Read           :     7.295 ms
-> Anonymous      : Write          :    15.234 ms
-> Anonymous      : Read+Write     :     7.460 ms
-> Anonymous      : POPULATE       :     5.196 ms
-> Anonymous      : POPULATE_READ  :     5.190 ms
-> Anonymous      : POPULATE_WRITE :     8.245 ms
-> Memfd 4 KiB    : Read           :    34.412 ms
-> Memfd 4 KiB    : Write          :    30.586 ms
-> Memfd 4 KiB    : Read+Write     :    35.157 ms
-> Memfd 4 KiB    : POPULATE       :    29.643 ms
-> Memfd 4 KiB    : POPULATE_READ  :    29.691 ms
-> Memfd 4 KiB    : POPULATE_WRITE :    25.790 ms
-> Memfd 2 MiB    : Read           :    10.210 ms
-> Memfd 2 MiB    : Write          :    10.074 ms
-> Memfd 2 MiB    : Read+Write     :    10.068 ms
-> Memfd 2 MiB    : POPULATE       :    10.034 ms
-> Memfd 2 MiB    : POPULATE_READ  :    10.037 ms
-> Memfd 2 MiB    : POPULATE_WRITE :    10.031 ms
-> **************************************************
-> 4096 MiB MAP_PRIVATE:
-> **************************************************
-> Anonymous      : Read           :   240.947 ms
-> Anonymous      : Write          :   712.941 ms
-> Anonymous      : Read+Write     :  1027.636 ms
-> Anonymous      : POPULATE       :   571.816 ms
-> Anonymous      : POPULATE_READ  :   120.215 ms
-> Anonymous      : POPULATE_WRITE :   570.750 ms
-> Memfd 4 KiB    : Read           :  1054.739 ms
-> Memfd 4 KiB    : Write          :   145.534 ms
-> Memfd 4 KiB    : Read+Write     :   202.275 ms
-> Memfd 4 KiB    : POPULATE       :   162.597 ms
-> Memfd 4 KiB    : POPULATE_READ  :   914.747 ms
-> Memfd 4 KiB    : POPULATE_WRITE :   161.281 ms
-> Memfd 2 MiB    : Read           :   351.818 ms
-> Memfd 2 MiB    : Write          :   352.357 ms
-> Memfd 2 MiB    : Read+Write     :   352.762 ms
-> Memfd 2 MiB    : POPULATE       :   351.471 ms
-> Memfd 2 MiB    : POPULATE_READ  :   351.553 ms
-> Memfd 2 MiB    : POPULATE_WRITE :   351.931 ms
-> **************************************************
-> 4096 MiB MAP_SHARED:
-> **************************************************
-> Anonymous      : Read           :   229.338 ms
-> Anonymous      : Write          :   478.964 ms
-> Anonymous      : Read+Write     :   234.546 ms
-> Anonymous      : POPULATE       :   161.635 ms
-> Anonymous      : POPULATE_READ  :   160.943 ms
-> Anonymous      : POPULATE_WRITE :   252.686 ms
-> Memfd 4 KiB    : Read           :  1052.828 ms
-> Memfd 4 KiB    : Write          :   929.237 ms
-> Memfd 4 KiB    : Read+Write     :  1074.494 ms
-> Memfd 4 KiB    : POPULATE       :   915.663 ms
-> Memfd 4 KiB    : POPULATE_READ  :   915.001 ms
-> Memfd 4 KiB    : POPULATE_WRITE :   787.388 ms
-> Memfd 2 MiB    : Read           :   353.580 ms
-> Memfd 2 MiB    : Write          :   353.197 ms
-> Memfd 2 MiB    : Read+Write     :   353.172 ms
-> Memfd 2 MiB    : POPULATE       :   353.686 ms
-> Memfd 2 MiB    : POPULATE_READ  :   353.465 ms
-> Memfd 2 MiB    : POPULATE_WRITE :   352.776 ms
-> **************************************************
-> 
-> 
-> --- Discussion ---
-> 
-> 1) With huge pages, the performance benefit is negligible with the sizes
-> I tried, because there are little actual page faults. Most time is spent
-> zeroing huge pages I guess. It will take quite a lot of memory to pay off.
-> 
-> 2) In all 4k cases, the POPULATE_READ/POPULATE_WRITE variants are faster
-> than manually reading or writing from user space.
-> 
-> 
-> What sticks out a bit is:
-> 
-> 3) For MAP_SHARED on anonymous memory, it is fastest to first read and
-> then write memory. It's slightly faster than POPULATE_WRITE and quite a
-> lot faster than a simple write - what?!. It's even faster than
-> POPULATE_WRITE - what?! I assume with the read access we prepare a fresh
-> zero page and with the write access we only have to change PTE access
-> rights. But why is this faster than writing directly?
+On Wed, 24 Feb 2021 14:57:06 -0800, Sami Tolvanen wrote:
+> parisc uses -fpatchable-function-entry with dynamic ftrace, which means we
+> don't need recordmcount. Select FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY
+> to tell that to the build system.
 
-Okay, MADV_DONTNEED does not seem to really work on MAP_SHARED of 
-anonymous memory. If I use a fresh mmap for each and every iteration the 
-numbers make more sense:
+Applied to kspp/clang-lto, thanks!
 
-**************************************************
-4096 MiB MAP_SHARED:
-**************************************************
-Anonymous      : Read           :  1054.154 ms
-Anonymous      : Write          :   924.572 ms
-Anonymous      : Read+Write     :  1075.215 ms
-Anonymous      : POPULATE       :   911.386 ms
-Anonymous      : POPULATE_READ  :   909.392 ms
-Anonymous      : POPULATE_WRITE :   793.143 ms
-
+[1/1] parisc: select FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY
+      https://git.kernel.org/kees/c/3d1dc719bca9
 
 -- 
-Thanks,
-
-David / dhildenb
+Kees Cook
 
