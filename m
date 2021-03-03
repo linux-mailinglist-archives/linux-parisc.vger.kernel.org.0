@@ -2,117 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36A2A32B4FF
-	for <lists+linux-parisc@lfdr.de>; Wed,  3 Mar 2021 06:56:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 980B732C5CB
+	for <lists+linux-parisc@lfdr.de>; Thu,  4 Mar 2021 02:00:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237324AbhCCFsf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 3 Mar 2021 00:48:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46720 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350878AbhCBUhD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 2 Mar 2021 15:37:03 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ACC7164F21;
-        Tue,  2 Mar 2021 20:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614717373;
-        bh=uZjEZpIetpV+hFdhoSnIL5zsoadYNrSIn5ew9suqCwI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=AvLC87MaFvnJJDMhXcu0HWBmEd+/EjSjuP7/iApEZOtvzgkYh5Ht+NkWw1ntLbVyk
-         5OHTfW793+crp8lXIeVsIuBb1fod6FO7QEAE/7O/+NXMtObx87O4DCQ2ZH+uvqDeMF
-         K8y5I02VMJpIU75YTlWE25/QEtKIXKQp7agShLTOjCygu9boEpUCJ+eeCUbtKozUfm
-         IRVa7dlArx0xpa/7LSi2mmuL727JLdjxJN3K7wj3RtBgtgDVQHD1jtwACDKiYOP3cf
-         MI+YaSyJL8dOQkRdguYsgoKyBc6B7bOYD85DAYCwb3Fw4dJQ6pIouNRDIE4sI1EabU
-         2RNNC+Q7O4VOQ==
-Received: by mail-ot1-f47.google.com with SMTP id h10so10683376otm.1;
-        Tue, 02 Mar 2021 12:36:13 -0800 (PST)
-X-Gm-Message-State: AOAM532Mabag59bNpUCSYYY7k3uqaHxi7ZHAWfwiSV2onQvWlx+l1cBM
-        wLjznI5ZEcAnVunFU7hd//ewjYoNlIRiF6nX4zc=
-X-Google-Smtp-Source: ABdhPJy5LqwmQdNUTI4GHNVDze0j03fJULS/7XS7Zx7Hn47gzXxK/MeQKRSPDbvcFEEnUcJcg/H/Zhv1RizwMDzcFog=
-X-Received: by 2002:a9d:7f11:: with SMTP id j17mr20154541otq.251.1614717372783;
- Tue, 02 Mar 2021 12:36:12 -0800 (PST)
+        id S1344993AbhCDAYX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 3 Mar 2021 19:24:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37802 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1582438AbhCCKVw (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 3 Mar 2021 05:21:52 -0500
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4775C08ECB3
+        for <linux-parisc@vger.kernel.org>; Wed,  3 Mar 2021 01:58:28 -0800 (PST)
+Received: by mail-pj1-x102c.google.com with SMTP id b15so3837894pjb.0
+        for <linux-parisc@vger.kernel.org>; Wed, 03 Mar 2021 01:58:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=cNGljFPZRpYFKEu48myr7eYFUT4vLWZX348426Ewac8=;
+        b=Ay5qukP/UY2EQYrS0X5/nZjwE9kIIyW/IAV9UG6sN7yvZBf7aE53Puo9tIs9ho29X8
+         n0BNYawW3ISNA+qh6mCe1FsYyYTiO+2wWjZ+SL9bKH8NYl3CRhOKUEqmATZ/DeKL6xXS
+         9qwEMHPN2iMrDzhb1YgNVQAxCENV9gz8ocvaEWR+7cu4oDth/RVgIuy4Gqz9HlHmuWus
+         aXc4k59rGcB3KzDVUZAwLP/ADXrBIkc/GNwuSEF28Aufhcfn7+A6cvymrTUX1ezxoOzi
+         488/4okZAtQldrc7sINLcXO/AwpOJHOuhrkgkZbH9hKjnCLChFmimGxcaC6Xa4zmL2cI
+         tZJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=cNGljFPZRpYFKEu48myr7eYFUT4vLWZX348426Ewac8=;
+        b=kIylhjSU67gQ7dVXQw1Aa8hvChnbOZKo9amUB+gPAusdbJ2o7RaLsAAtE5HcUG8JZB
+         FIlq6V27IG7Kpdrc7w4dQbkAenZL1JKM3obmvKxiel5LkzQAWhUfFsJBBJj+JbGnTNu3
+         ixzSWrrsYuJ0Ki9Obzt+3xnTgKGJPPhXVp/jWmpg3i4pKglpQr0c9EmSFo51Sr7yxPmm
+         m2XwDXCIwh0ILTARwg6vqPZq0EJB1xfS5MQs5l/6Ew/YXezTj2QF58DwaUWcJnjCQtEC
+         MbPyo4xw7WHk4S6JzCCmo8U2/vufBiPbRwVxaGJSuOD8WmDxKj5CK1oF1xbC6lLy8XyE
+         0jUw==
+X-Gm-Message-State: AOAM5320R5ErHYffbKmBjwyIBLOx0akubbaCEOPrr5I22If8X59UeUd6
+        BzKv4rjrF1JhYTdg6Y2Cp3ti6r2KpSeosTHUifk=
+X-Google-Smtp-Source: ABdhPJzJBlv6YQN+Ju0OWRrOAUCOQNwBRIufyRietgc9WK0kLyp//dpZe+noWtq0qwQil+gh8PvCk1fb3BV8XNzjTTU=
+X-Received: by 2002:a17:90a:4589:: with SMTP id v9mr8601901pjg.113.1614765508279;
+ Wed, 03 Mar 2021 01:58:28 -0800 (PST)
 MIME-Version: 1.0
-References: <202103021826.7KKJWxQ2-lkp@intel.com> <CAKwvOdnCq7S68chEwSjFBPv5vsKDuzumOX19peOFDCSBCUm0jg@mail.gmail.com>
- <2e40a84f-15c6-2764-dcfd-9f5aa368b400@gmx.de> <CAKwvOdkXUAfYv415U9aE+ycLKT1rzujrBFfFHmvX47V5xHz1sA@mail.gmail.com>
- <fc099004-dbb4-b9b3-b377-ad459219c7c5@gmx.de> <YD6f2WqmYdJiNyQX@ls3530>
-In-Reply-To: <YD6f2WqmYdJiNyQX@ls3530>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Tue, 2 Mar 2021 21:35:56 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3H2c5-LE_TPkW4s8sHteKSM8FYtVUMCv9qCc20tVrniw@mail.gmail.com>
-Message-ID: <CAK8P3a3H2c5-LE_TPkW4s8sHteKSM8FYtVUMCv9qCc20tVrniw@mail.gmail.com>
-Subject: Re: hppa64-linux-ld: kernel/sched/core.o(.init.text+0x90): cannot
- reach printk
-To:     Helge Deller <deller@gmx.de>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        kbuild-all@lists.01.org, LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        kernel test robot <lkp@intel.com>,
-        John David Anglin <dave.anglin@bell.net>
+Received: by 2002:a05:6a10:6d0c:0:0:0:0 with HTTP; Wed, 3 Mar 2021 01:58:27
+ -0800 (PST)
+Reply-To: georgemike7031@gmail.com
+From:   george mike <crepinak.vainqueur@gmail.com>
+Date:   Wed, 3 Mar 2021 10:58:27 +0100
+Message-ID: <CAHwNn8KzwQY7OU7xQ_VT3YcA660qN6HqM9pbAUhRMm5mP_CVxQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Mar 2, 2021 at 9:28 PM Helge Deller <deller@gmx.de> wrote:
-> * Helge Deller <deller@gmx.de>:
-> > On 3/2/21 7:07 PM, Nick Desaulniers wrote:
-> > > + Arnd
-> > >
-> > > On Tue, Mar 2, 2021 at 10:03 AM Helge Deller <deller@gmx.de> wrote:
-> > > >
-> > > >
-> From: Helge Deller <deller@gmx.de>
-> Date: Tue, 2 Mar 2021 21:07:07 +0100
-> Subject: [PATCH] parisc: Enable -mlong-calls gcc option with
->  CONFIG_COMPILE_TEST
->
-> The kernel test robot reported multiple linkage problems like this:
->
->     hppa64-linux-ld: init/main.o(.init.text+0x56c): cannot reach printk
->     init/main.o: in function `unknown_bootoption':
->     (.init.text+0x56c): relocation truncated to fit: R_PARISC_PCREL22F against
->         symbol `printk' defined in .text.unlikely section in kernel/printk/printk.o
->
-> There are two ways to solve it:
-> a) Enable the -mlong-call compiler option (CONFIG_MLONGCALLS),
-> b) Add long branch stub support in 64-bit linker.
->
-> While b) is the long-term solution, this patch works around the issue by
-> automatically enabling the CONFIG_MLONGCALLS option when
-> CONFIG_COMPILE_TEST is set, which indicates that a non-production kernel
-> (e.g. 0-day kernel) is built.
->
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Fixes: 00e35f2b0e8a ("parisc: Enable -mlong-calls gcc option by default when !CONFIG_MODULES")
-> Cc: stable@vger.kernel.org # v5.6+
->
-> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-> index 4e53ac46e857..afc3b8d03572 100644
-> --- a/arch/parisc/Kconfig
-> +++ b/arch/parisc/Kconfig
-> @@ -203,9 +203,12 @@ config PREFETCH
->         def_bool y
->         depends on PA8X00 || PA7200
->
-> +config PARISC_HUGE_KERNEL
-> +       def_bool y if !MODULES || UBSAN || FTRACE || COMPILE_TEST
-> +
->  config MLONGCALLS
-> -       def_bool y if !MODULES || UBSAN || FTRACE
-> -       bool "Enable the -mlong-calls compiler option for big kernels" if MODULES && !UBSAN && !FTRACE
-> +       def_bool y if PARISC_HUGE_KERNEL
-> +       bool "Enable the -mlong-calls compiler option for big kernels" if !PARISC_HUGE_KERNEL
->         depends on PA8X00
->         help
->           If you configure the kernel to include many drivers built-in instead
+Hallo
 
+Ich hei=C3=9Fe George Mike. Ich bin von Beruf Rechtsanwalt. Ich m=C3=B6chte=
+ dir anbieten
+engster Verwandter meines Klienten. Sie erben die Gesamtsumme (8,5
+Millionen US-Dollar).
+Dollar, die mein Kunde vor seinem Tod auf der Bank gelassen hat.
 
-Looks good to me, we should probably do something similar on arm with
-CONFIG_{ARM,ARM64}_MODULE_PLTS, though that only affects loadable
-modules, as the linker would insert its own trampolines during the final
-link when branch relocations are out of range.
+Mein Klient ist ein Staatsangeh=C3=B6riger Ihres Landes, der mit seiner
+Frau bei einem Autounfall ums Leben gekommen ist
+und einziger Sohn. Ich habe Anspruch auf 50% des Gesamtfonds, w=C3=A4hrend
+50% davon berechtigt sind
+Sein f=C3=BCr dich.
+F=C3=BCr weitere Informationen wenden Sie sich bitte an meine private
+E-Mail-Adresse: georgemike7031@gmail.com
 
-      Arnd
+Vielen Dank im Voraus,
+Herr George Mike,
