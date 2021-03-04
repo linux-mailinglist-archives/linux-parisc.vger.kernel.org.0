@@ -2,90 +2,60 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55C6F32CA71
-	for <lists+linux-parisc@lfdr.de>; Thu,  4 Mar 2021 03:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C4632CD77
+	for <lists+linux-parisc@lfdr.de>; Thu,  4 Mar 2021 08:21:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbhCDCZU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 3 Mar 2021 21:25:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47510 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbhCDCY6 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 3 Mar 2021 21:24:58 -0500
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96EA1C061574;
-        Wed,  3 Mar 2021 18:24:18 -0800 (PST)
-Received: by mail-pg1-x542.google.com with SMTP id a4so17850989pgc.11;
-        Wed, 03 Mar 2021 18:24:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=uG0v75x7x/65LuUOs5/L5fUxuUODG3V+57vO+zTLZ8o=;
-        b=sMQZ+zysGqbPcuIyrh5lKr7zFPD1hhJHew5ECFlsRAQAUPnHk0rMMZa9WQNezWlveW
-         AiRmSRH5l2eAEBUK++OipmgdAr92JMfBeo6EdxrkMUgpJ2isNmWW8AipahZyrbIXuYMJ
-         fRS9j1HSgDzzBTX3IPfqw/gu6KriAnvV3ZEScN09fXJKRHONQj3r7JgCgYtqgayo/dST
-         xqvy5E8+TdnYaBgZDnQ2+R3iDjpUhpbUW2Tt6rOquvSJOaL/M58tRUoMEmGWBeqn+SLx
-         bYNoWE1Z2TcI87Hp8pYgsLKLr2am8THsZVf4MhbvSMJ/Auho0EF2O6VopFzm4xucf9/x
-         uT9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=uG0v75x7x/65LuUOs5/L5fUxuUODG3V+57vO+zTLZ8o=;
-        b=ft8eNAuCqKsmGZRHH4LQg5foXPZDmK3TF5KT2o3r76kzamqpO7qswYd77PYThwHBqY
-         bmXFp9ACnifO5TTXvqFnwuuA0bvTifs8m4ok31L6veDDZc46E0FrB74FWFUeWDebtVBT
-         1qsFvQbVGqRa767vy9767yE3KspxS+ArZJFJ/6E3d2rJ0wbXWQqYRuCfYOtDiuC6xO/C
-         X3Wno7X/3myjbuY4mjzGpAWb0umP1A1qxKygaqgaecMrvQRnuLXNA8v2sIpEWIFgbJX5
-         xRdHayipjlnXIueFuAje3kATEfa94OW498i5Iil82UlMpas6ojcfqvCQE0asUgk8CTra
-         B+EA==
-X-Gm-Message-State: AOAM530UcQLEQPCb3K91fasvGd69GYXTQRHccvlITXGJZmLIN3GbKDQs
-        RiOC+Q2HspJ8GGYj+rZoYso=
-X-Google-Smtp-Source: ABdhPJz9U4fPGGTcrk/7KnFoTfUdxn+c03dvqRKjSREYCh3K2Tm+drLBPh3uaWWYrWiPJj1u86XHZg==
-X-Received: by 2002:a63:1a03:: with SMTP id a3mr1717191pga.45.1614824658027;
-        Wed, 03 Mar 2021 18:24:18 -0800 (PST)
-Received: from localhost.localdomain ([178.236.46.205])
-        by smtp.gmail.com with ESMTPSA id k3sm5682542pgq.21.2021.03.03.18.24.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Mar 2021 18:24:17 -0800 (PST)
-From:   menglong8.dong@gmail.com
-X-Google-Original-From: zhang.yunkai@zte.com.cn
-To:     oleg@redhat.com
-Cc:     James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zhang Yunkai <zhang.yunkai@zte.com.cn>
-Subject: [PATCH] arch/parisc/kernel: remove duplicate include in ptrace
-Date:   Wed,  3 Mar 2021 18:24:10 -0800
-Message-Id: <20210304022410.186848-1-zhang.yunkai@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        id S236183AbhCDHVB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 4 Mar 2021 02:21:01 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:4541 "EHLO mail.JVPinto.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236164AbhCDHUo (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 4 Mar 2021 02:20:44 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Wed, 3 Mar 2021 23:18:53 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Wed, 3 Mar 2021
+ 23:18:38 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Re:reply
+Date:   Thu, 4 Mar 2021 07:18:52 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <d74200991bc34511a10fbe63c80607f6@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Zhang Yunkai <zhang.yunkai@zte.com.cn>
+Hello,
 
-'linux/compat.h' included in 'arch/parisc/kernel/ptrace.c' is duplicated.
-It is also included in the 24th line.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Signed-off-by: Zhang Yunkai <zhang.yunkai@zte.com.cn>
----
- arch/parisc/kernel/ptrace.c | 1 -
- 1 file changed, 1 deletion(-)
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
-index 2127974982df..918faa95740c 100644
---- a/arch/parisc/kernel/ptrace.c
-+++ b/arch/parisc/kernel/ptrace.c
-@@ -567,7 +567,6 @@ static const struct user_regset_view user_parisc_native_view = {
- };
- 
- #ifdef CONFIG_64BIT
--#include <linux/compat.h>
- 
- static int gpr32_get(struct task_struct *target,
- 		     const struct user_regset *regset,
--- 
-2.25.1
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
+Regards,
+Ms. Reem.
