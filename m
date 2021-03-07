@@ -2,95 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0930932FCC7
-	for <lists+linux-parisc@lfdr.de>; Sat,  6 Mar 2021 20:30:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC3D53304A5
+	for <lists+linux-parisc@lfdr.de>; Sun,  7 Mar 2021 21:44:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231463AbhCFTaB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 6 Mar 2021 14:30:01 -0500
-Received: from mout.gmx.net ([212.227.15.18]:50547 "EHLO mout.gmx.net"
+        id S231908AbhCGUnR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 7 Mar 2021 15:43:17 -0500
+Received: from mout.gmx.net ([212.227.15.19]:60215 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231440AbhCFT3n (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 6 Mar 2021 14:29:43 -0500
+        id S232951AbhCGUnB (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 7 Mar 2021 15:43:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1615058965;
-        bh=nVW5W5QEQtfYbQWml0kYGVV/4QWg40c3mHIc4HsSoL0=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=W/mLGq6besJTk53Du84rUjtGJBA3Ybms9+Jo1fsLyLtyht4Yyi+2RatMZcAcfEXvF
-         W3iUrTO8+Ng7ZOqM0bKztwv3SLCvs8oBWAzif4EdGAE0gOtmkd1GRkae1/qDpJPqoL
-         2cv5El6BcSYa6mu1bnRVqyjBcM/RXB4EhROF0IKY=
+        s=badeba3b8450; t=1615149762;
+        bh=gGrRmv3X1rwP7xJKEMKnOrcfUi2uXofg0iyVikfdkL4=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=Xho5klNPvBx72PZQ9fLwHp0pClJc5rZMwwgB7a/Wa0GkWSIXhdgGuaICfinW16/2o
+         kFLhCm2zpPrw3yOd3GMdG47mTdgLiAhPiv7dHvl6iZFGg78Xmg/S1tIBzlzTEw6w4G
+         S8GY32uwIf22dtTRuo8ZQ2aIYn2TlEzUDOhUOmjs=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.153.24]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MryXH-1m5jHM2mbF-00nzWB; Sat, 06
- Mar 2021 20:29:25 +0100
-Subject: Re: [PATCH] arch/parisc/kernel: remove duplicate include in ptrace
-To:     menglong8.dong@gmail.com, oleg@redhat.com
-Cc:     James.Bottomley@HansenPartnership.com,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zhang Yunkai <zhang.yunkai@zte.com.cn>
-References: <20210304022410.186848-1-zhang.yunkai@zte.com.cn>
+Received: from ls3530 ([92.116.159.1]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNswE-1l82vp46QK-00OFQZ; Sun, 07
+ Mar 2021 21:42:42 +0100
+Date:   Sun, 7 Mar 2021 21:42:20 +0100
 From:   Helge Deller <deller@gmx.de>
-Message-ID: <fb46ea24-3c5e-f992-4f33-eb00c06c8369@gmx.de>
-Date:   Sat, 6 Mar 2021 20:29:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Cc:     Zhang Yunkai <zhang.yunkai@zte.com.cn>, menglong8.dong@gmail.com
+Subject: [GIT PULL] parisc architecture fixes for kernel v5.12-rc333
+Message-ID: <YEU6nUd2P8ud4fGU@ls3530>
 MIME-Version: 1.0
-In-Reply-To: <20210304022410.186848-1-zhang.yunkai@zte.com.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:YKWoOGci7b09B19Q7X27W19H8+QYMHLMiiH5QcOnnIalWdrWv8Y
- D55lDbR33SODtOOAIyHhTwwHB2ir9FfK7b0ohN5AMWaFCplpyd6v1AkvhFGYoiCSliPjTcg
- 7rPLaTHgTzo1IihJlSdEb6BEJhdswjPAA55kp6pxU9aJUZ+vUK/GslffpFMkS3kYa549m7x
- aNdDAHsCoJuVUvQi63bUA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:SzPQW6ZZE7DPFdnqrmiYeqFkUlpb8N32mOapve3vE66zHKf0hiA
+ jqdO1/e+qQ9Elr4Cb7HrV3l1oH+u9ucfeE0HA+/48OCj7/7XARDwrq1CUfevMBuCNeh6PWJ
+ gDi5FWJO6hlgx3qX8hbD9KWKMZtP8gbJ8+GhS+v3/HK7alDGRABQlIq94xRNUWQSXPBjXes
+ khyqhxgd1mdrBG/Al5Rgg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7iMxN3hlQWM=:0xy0BJINoHvtlPTU7eA8Kz
- hj/JtKr4HPitjnvAkQ/bdQQCLwRgD+3NB8zDPCJPppiddht45ihxE4nuNV2nwuuwUL+pWl7yB
- sBhoxYxlU7TeIKHhbAHxNVsT7ppxyovLHmAO8O30FFtOmL49LtLrdrL0Nc2Ve1+T23sE97k43
- JD6TMg9lHGhn11M1lt7lh070nkMEciJCnJNL1U9PNiBm0bncr41peGocTA64uuIqUFW0B/Nxb
- Y+7zUFTa1y4iwSHWDI3tocBPs5mOKYq3/SDLSftCIYh70H9Lsv9GO5IlKe8Cf9Urm67jrNEAM
- OcifZTLCGm46wmZsXgKrNpgtzK/oTcZ7NewhF3HB+u4pecr2nKT5gjrCrYFOc1GbeGWLAljzY
- r5nE/m20n5f3DaPCvMKAQT31VkeKEQL5vEe6Iy9d7fsL/K5WUfoX4ShKUcLLcPbcGCBJYeixa
- 1NwHrFq+P3Yi78hcfI1oR0lugk/zEns1mrvyLlMMc7TMrvUtbWG4BNna96EkiWdOo5MRcDrV2
- sMkQ4WKplxBPv9rX4x8fWHH7YaRBP53pxksecKSivtUMeQEsj3WUC8avjf/LInBLhXDLxXjPr
- Oo4jGpSuxZD4SUNh6c95czDWuBXJRRpNIWzTnj2RqkR3OrJm3K848cV+H6s7PwYUEn7xUPQ+G
- 3zDBlt/hzaOuBIQxAsTe8sIIglz/PSUaPLnzTvR9fOn5g/YrT56vmRz7F81+RnVmlZf6dIyBv
- CgmjzSqOtthJCgxnrFB5QBZMgy3ZCF0N/zKNCZwHWdse9Ma0lEZJbCQJ2IRZwz0iQxDRLvp81
- deylq6ZwBzQ/LNwpj48XqosrTJno94nB0twHhAgCGyz4tczzGwGqSmxHWYfcNBO3kjhbfkecX
- 9N+m7icK6ddWmCyNeQCw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:LI9wK22I83s=:u4wwniUjS0/WYU++FqJNBT
+ W8GUWiaBe6YONkZKM/0Fs3/815WoSW6gYF7XrQia2jKM3ANIJ7whBR7XGYFSV+LQqD+deQ5WQ
+ qi/yh2K0jTDTETGqdj1C/j/BZfot7uxb8DtogpeXjehxboKd6MtRWTEQpvHDIuvFJOMODjnf/
+ ClC7A0Sxu7LBe8jqbxly4ME84DYaBFcCBRFaj58YwUs4/rt4vXsAyS/eaUI57v5YGtV7UgjWl
+ PLL2l204JyFtXy2cA3ULsG9G1eqL+XHP0aPkUqwbq1xSaCg0DfaWYvokrhUhDvc2/YqloHNtG
+ i7p4sYcCpsilZxFwmVl7fJ++rdOOPc2SG8VyNrN32onsa/uj0PpqH4Ky53T+XNsqQvCI4BGuI
+ 31Ch5YVsR4ENSzVRta+Ck+AH/2fbW9i4ZRGHW9WeGXBJkF8jcxgXCBkkriEi4Be3dG3EMFAH3
+ 4BuiLtZrL8miwiMkB9hu7hmToSAvu6Uct55cbecm1t3uWWIX8DOEsk+HwsnCE67uJwE9nS/Nt
+ W3lsccw+ybAQw2hpsoGKw7pSZ8SFFMcR35dBQzop/sMezjXIY9sEv/d3hoKMxqXTjvpbJ248r
+ 7zEGPwAb1r+TqWvQAA9hRxRRQrwA+4INqgGPUTo82umPJtqHWBK10WWGPtpATKBnkExrKfJIb
+ 4mU/Nbu0lcG8fmNWFBcck+LqpUO1FmMda00Uol6BkAo0fRGJ+GMFrNp8dE8MGm5b612Dvt8Sh
+ /fXOkRmbjGe+pMJenE6zTns8IZZpnGB7GiebuEqdGf+2TtDgvkAMUuLjWs1hBPgX7i97TYBJ0
+ ptTbkkqrjFGzHIv4PaUmQLDygQ5pyWwaDOCjMwqQdmfQTr/eGZUkjK0qU+PbbX1LDunMZ9w3/
+ +khx9U5KhiB78y7nVOOA==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 3/4/21 3:24 AM, menglong8.dong@gmail.com wrote:
-> From: Zhang Yunkai <zhang.yunkai@zte.com.cn>
->
-> 'linux/compat.h' included in 'arch/parisc/kernel/ptrace.c' is duplicated=
-.
-> It is also included in the 24th line.
->
-> Signed-off-by: Zhang Yunkai <zhang.yunkai@zte.com.cn>
+Hi Linus,
+
+please pull two small parisc architecture fixes for kernel 5.12-rc3 from:
+
+  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.12-2
+
+Fix a linking failure reported by the kernel test robot and remove a duplicate include.
 
 Thanks,
-applied to the parisc-next tree.
-
 Helge
 
-> ---
->   arch/parisc/kernel/ptrace.c | 1 -
->   1 file changed, 1 deletion(-)
->
-> diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
-> index 2127974982df..918faa95740c 100644
-> --- a/arch/parisc/kernel/ptrace.c
-> +++ b/arch/parisc/kernel/ptrace.c
-> @@ -567,7 +567,6 @@ static const struct user_regset_view user_parisc_nat=
-ive_view =3D {
->   };
->
->   #ifdef CONFIG_64BIT
-> -#include <linux/compat.h>
->
->   static int gpr32_get(struct task_struct *target,
->   		     const struct user_regset *regset,
->
+----------------------------------------------------------------
+Helge Deller (1):
+      parisc: Enable -mlong-calls gcc option with CONFIG_COMPILE_TEST
 
+Zhang Yunkai (1):
+      arch/parisc/kernel: remove duplicate include in ptrace
+
+ arch/parisc/Kconfig         | 7 +++++--
+ arch/parisc/kernel/ptrace.c | 2 --
+ 2 files changed, 5 insertions(+), 4 deletions(-)
