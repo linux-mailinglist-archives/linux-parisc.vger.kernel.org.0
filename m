@@ -2,85 +2,81 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E65B331CC0
-	for <lists+linux-parisc@lfdr.de>; Tue,  9 Mar 2021 03:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 380AB331D99
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Mar 2021 04:33:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229520AbhCICKb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 8 Mar 2021 21:10:31 -0500
-Received: from conssluserg-05.nifty.com ([210.131.2.90]:37560 "EHLO
-        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbhCICKO (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 8 Mar 2021 21:10:14 -0500
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id 12929xXU031160;
-        Tue, 9 Mar 2021 11:10:00 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 12929xXU031160
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1615255800;
-        bh=J6mranKrb/KUfdNP0Xm6tx3boC5mot03U1MWvDPRabs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=m/uEiFIrciR12HK33IINJM03LQASX1E1d3COnGCLBd96k1ecAQ7Jz80U7izVxpH2K
-         mW9czkkQjni5exYZMCXuXChy8emLpGxhyturKHIegAKlEnXgPzux87JpXG0o98plzr
-         9oKUfKN34WDYUYFSldu+wJlDawayenTu1Etu6y6gCX/j4/iX6eczyCtbsrhGSX3Tg5
-         7IUCYRNp36qEZq2GGXwiekkRu9zb+QnfwAVcbwqJohgqXCSwiaIpdA/A1riwNWKlTG
-         RVlpcS5gWQjqSvxj9C9rlTWUNoNLPPnkKJo+ShXV5k1IC/4X6iqpjnObZSxsnbzp8s
-         MdfZLr8+I7O1Q==
-X-Nifty-SrcIP: [209.85.210.180]
-Received: by mail-pf1-f180.google.com with SMTP id q20so8385639pfu.8;
-        Mon, 08 Mar 2021 18:10:00 -0800 (PST)
-X-Gm-Message-State: AOAM533YJPPcf7yBkU8qzd4Ghxrui1UYipZ5JU9UNc7R88TkqoFRzzYS
-        l5PQ9uTLi0juiWNrc3ZI5q09cRj/H0DYpRb9lUs=
-X-Google-Smtp-Source: ABdhPJx21ZsW6dVxfbXwYlXV8NLpgAitKxWA9t8bKn7T2UyNg7RrwfjPU92vM3RqXIe2XIvZWqvR+F6nwu5V8nQmnws=
-X-Received: by 2002:a63:dd49:: with SMTP id g9mr23702063pgj.175.1615255799431;
- Mon, 08 Mar 2021 18:09:59 -0800 (PST)
+        id S229697AbhCIDce (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 8 Mar 2021 22:32:34 -0500
+Received: from foss.arm.com ([217.140.110.172]:46402 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229379AbhCIDc2 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 8 Mar 2021 22:32:28 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D5F731B;
+        Mon,  8 Mar 2021 19:32:27 -0800 (PST)
+Received: from [192.168.0.130] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 33EE63F71B;
+        Mon,  8 Mar 2021 19:32:22 -0800 (PST)
+Subject: Re: [PATCH 0/6] mm: some config cleanups
+To:     linux-mm@kvack.org
+Cc:     x86@kernel.org, linux-ia64@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <1615185706-24342-1-git-send-email-anshuman.khandual@arm.com>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <af8d16b3-aff7-6f17-a777-2ce4a264227d@arm.com>
+Date:   Tue, 9 Mar 2021 09:02:58 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210301145823.359770-1-masahiroy@kernel.org> <41623bcf-4cc5-b41e-4968-039035311ae9@gmx.de>
-In-Reply-To: <41623bcf-4cc5-b41e-4968-039035311ae9@gmx.de>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Tue, 9 Mar 2021 11:09:22 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAT2oX-po9AfjBY7HGvrmjCzJQem6VrRx31p=-82XaFqOQ@mail.gmail.com>
-Message-ID: <CAK7LNAT2oX-po9AfjBY7HGvrmjCzJQem6VrRx31p=-82XaFqOQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] parisc: syscalls: switch to generic syscalltbl.sh
-To:     Helge Deller <deller@gmx.de>
-Cc:     "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        John David Anglin <dave.anglin@bell.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        YiFei Zhu <yifeifz2@illinois.edu>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1615185706-24342-1-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Mar 9, 2021 at 5:49 AM Helge Deller <deller@gmx.de> wrote:
->
-> On 3/1/21 3:58 PM, Masahiro Yamada wrote:
-> > Many architectures duplicate similar shell scripts.
-> >
-> > This commit converts parisc to use scripts/syscalltbl.sh. This also
-> > unifies syscall_table_64.h and syscall_table_c32.h.
-> >
-> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
->
-> For both patches:
-> Acked-by: Helge Deller <deller@gmx.de>
->
-> Masahiro, will you push it upstream, or should I take it through the parisc tree?
+On 3/8/21 12:11 PM, Anshuman Khandual wrote:
+> This series contains config cleanup patches which reduces code duplication
+> across platforms and also improves maintainability. There is no functional
+> change intended with this series. This has been boot tested on arm64 but
+> only build tested on some other platforms.
+> 
+> This applies on 5.12-rc2
+> 
+> Cc: x86@kernel.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> 
+> Anshuman Khandual (6):
+>   mm: Generalize ARCH_HAS_CACHE_LINE_SIZE
+>   mm: Generalize SYS_SUPPORTS_HUGETLBFS (rename as ARCH_SUPPORTS_HUGETLBFS)
+>   mm: Generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]
+>   mm: Drop redundant ARCH_ENABLE_[HUGEPAGE|THP]_MIGRATION
+>   mm: Drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK
+>   mm: Drop redundant HAVE_ARCH_TRANSPARENT_HUGEPAGE
 
+Seems like there was a problem during the email because some patches
+might not have hit the mailing list. Although git send-email never
+really reported any problem. Not sure what happened here.
 
-Please apply it to the parisc tree.
-Thanks.
+https://patchwork.kernel.org/project/linux-mm/list/?series=443619
+https://lore.kernel.org/linux-mm/1615185706-24342-1-git-send-email-anshuman.khandual@arm.com/
 
+Will probably resend the series.
 
-
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+- Anshuman
