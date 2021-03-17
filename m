@@ -2,88 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E969333EE74
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Mar 2021 11:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A117D33EEC3
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Mar 2021 11:50:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230034AbhCQKkO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 Mar 2021 06:40:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33726 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230176AbhCQKjo (ORCPT
+        id S230484AbhCQKuX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 17 Mar 2021 06:50:23 -0400
+Received: from lb1-smtp-cloud9.xs4all.net ([194.109.24.22]:43761 "EHLO
+        lb1-smtp-cloud9.xs4all.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230433AbhCQKtz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 Mar 2021 06:39:44 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C8D9C06174A;
-        Wed, 17 Mar 2021 03:39:37 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id t5so1113046qvs.5;
-        Wed, 17 Mar 2021 03:39:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pbr728L3UVVod70isECM7otuPY2J5V9A5LN2QDpnXyg=;
-        b=QTwLRmNOcDdaK6G+/t8KDhrvH0q8oaLjVv/SCvSZ7vt16XtjAXliPAK/Jba4wSaQBC
-         0TZCjsHx2Q5pwZZHwLpvgNdC+/RTKIEp39TEyCHrt+8a7hK612kZR+VrtOmDDO93edBT
-         sf+FBjd56THRqL7D+vyXZsBDiNAgzVabuPmRrK8uS/DUPSUk9hPDWHfumtEKOBQHuMLm
-         vCH9Q8RCiKt8OGHTkahhg7CYb6PUt7k7jGn9wAGUdLIRyB4Bgm7/E/swm+0lKGcyi6Hd
-         7KK5MZGJn4Rm6pzysNk4oMiX03A4y7tYjcGDE2HV5LjSAbBj6yZ8Rm+zs91tZ+ZxK2uq
-         mmLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pbr728L3UVVod70isECM7otuPY2J5V9A5LN2QDpnXyg=;
-        b=mjp8Nn+cwXJSnASmu05AIbJl9N313UXwvHP9ct89w98sjBVZr3qxdjsFD2yQdZ9m1f
-         4SZFW4rbDCwQHEsAjrndx+mNbZNyspYtihbRE5Ym3PCLbHqwbHDzeTS9G51CyC0eg2Si
-         eFZDdYeUAJlBynEENE0Yhuod6Uj7I5oU2PnwydCwzIemqEOygmNZhOJuc2H3yaGxGZi2
-         o542DLlOiXvVhP+SWEAHYV2UGPgFDX1JNH/09OgCfyDpGqOoEsZOqwjQsPlOcxJqiueR
-         yRSfFPu/a1rsDZywyfgHsw6+RjoagDFRI/NufCOViHS5lUr0IyLMOQPbXvp/QwTxrBkj
-         Q9Fg==
-X-Gm-Message-State: AOAM533d9MGwDZA0XfY24KYGUCdafohW8Ue/j3zUwAhetg/UOZVo5jlz
-        FHNky9KVRjimbLpGQCPAZc0=
-X-Google-Smtp-Source: ABdhPJxXPoMcOlm/JYlvLB3kFtqrR9m1baplchfpKpV3XGj3CXQP42SxuqQTSiKqh+3Uvnc0Cl0V4w==
-X-Received: by 2002:a0c:9a04:: with SMTP id p4mr4702308qvd.38.1615977576425;
-        Wed, 17 Mar 2021 03:39:36 -0700 (PDT)
-Received: from localhost.localdomain ([37.19.198.48])
-        by smtp.gmail.com with ESMTPSA id i6sm16877988qkk.31.2021.03.17.03.39.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Mar 2021 03:39:35 -0700 (PDT)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        unixbhaskar@gmail.com, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     rdunlap@infradead.org
-Subject: [PATCH] parisc: math-emu: Fix a typo in the file float.h
-Date:   Wed, 17 Mar 2021 16:09:17 +0530
-Message-Id: <20210317103917.3869933-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        Wed, 17 Mar 2021 06:49:55 -0400
+X-Greylist: delayed 426 seconds by postgrey-1.27 at vger.kernel.org; Wed, 17 Mar 2021 06:49:55 EDT
+Received: from cust-3a8def63 ([IPv6:fc0c:c1c9:903d:e9b4:326e:d2bd:718e:17cc])
+        by smtp-cloud9.xs4all.net with ESMTPSA
+        id MTdQlABuVGEYcMTdRlNA8I; Wed, 17 Mar 2021 11:42:47 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s2;
+        t=1615977767; bh=wRN/sAzpgNLiAXrQ4jtqD6y/vMrDu8E+D0w/yGNeGt8=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From:
+         Subject;
+        b=j8/Do3ggVxTyvLGjFXZmhNn7SxZj4dtr5KI6gg7UtAI5UWHFY5Yni8tQ/EY1dcP2e
+         ts6Sw2OD6aKnYu7Pdrs1+pg9WSbYrF6bbbMIbBO5C2E3YnlVoLb3DQPrWa9aXS7wjv
+         wLL5l/9Rh8CyQmLX2XYtQh8/mC3E4LgTEBSr+1P3QRYtgMSQtdw2V5KvevAJ/ROo3J
+         mxm2MU/FfMri+2UtF6xlWP3xU2n9CrhDPo7Mk1fE9gAOY/i8JdnsFabV9iSQak26/s
+         8nm81V8Beo36YfUnBgrnSV4Raw/V3u8Sy3x7hoToxg6EenPB0Nqt9Rle4LGxO2qp2U
+         C9qF/9PBDZJBg==
+Date:   Wed, 17 Mar 2021 11:42:35 +0100
+From:   Jeroen Roovers <jer@xs4all.nl>
+To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Cc:     James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rdunlap@infradead.org
+Subject: Re: [PATCH] parisc: math-emu: Few spelling fixes in the file fpu.h
+Message-ID: <20210317114235.033dc0ef@del.jer>
+In-Reply-To: <20210317103251.3526940-1-unixbhaskar@gmail.com>
+References: <20210317103251.3526940-1-unixbhaskar@gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfN0yrNPvjFE3tBN6Tm5UhhDrjwOGiWf8N3qfO7gdo6ftzNoN56hjcqdrPKl71MXdxW7QC2A9q6RHNXpSVpvJOVgZmv3q4oviMhLBQmztl9oCXiXomoK7
+ QUCB68u90DmJfFBn0mTN7Ayms9m1JmINzCvZInencJ4qjAxk39CVxXVJJiQkm3TUDVXEHmev1WTMZxageaEB0pTO4MPGR7LwlIcRH8GlInrWU+uybgCLYgAJ
+ EPsUSMEDKOyQydd64ojTti2CvIH0/K1+xj4Mnu7yyJSm4DzW3uPrR4mwgNFTRoSvHw68rrJeaemYDDvc//AaHqJARjx2cHqnG1UBKicZoZVuYdm4LaxB9a7D
+ zyfcbTTZDI2DlYjfYDctdoDLLqxpMw==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Wed, 17 Mar 2021 16:02:51 +0530
+Bhaskar Chowdhury <unixbhaskar@gmail.com> wrote:
 
-s/synopis/synopsis/
+> s/synopis/synopsis/
+> s/differeniate/differentiate/
+> s/differeniation/differentiation/
+> 
+> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+> ---
+>  arch/parisc/math-emu/fpu.h | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/parisc/math-emu/fpu.h b/arch/parisc/math-emu/fpu.h
+> index 853c19c03828..1f313bc38beb 100644
+> --- a/arch/parisc/math-emu/fpu.h
+> +++ b/arch/parisc/math-emu/fpu.h
+> @@ -12,7 +12,7 @@
+>   *      @(#)	pa/fp/fpu.h		$Revision: 1.1 $
+>   *
+>   *  Purpose:
+> - *      <<please update with a synopis of the functionality provided
+> by this file>>
+> + *      <<please update with a synopsis of the functionality
+> provided by this file>> *
+>   *
+>   * END_DESC
+> @@ -50,9 +50,9 @@
+>  #define EMULATION_VERSION 4
+> 
+>  /*
+> - * The only was to differeniate between TIMEX and ROLEX (or PCX-S
+> and PCX-T)
+> + * The only was to differentiate between TIMEX and ROLEX (or PCX-S
+> and PCX-T)
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
----
- arch/parisc/math-emu/float.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Might as well fix "only [change] was to" here.
 
-diff --git a/arch/parisc/math-emu/float.h b/arch/parisc/math-emu/float.h
-index 531bbda5e31f..77b1b5bf1a65 100644
---- a/arch/parisc/math-emu/float.h
-+++ b/arch/parisc/math-emu/float.h
-@@ -12,7 +12,7 @@
-  *      @(#)	pa/spmath/float.h		$Revision: 1.1 $
-  *
-  *  Purpose:
-- *      <<please update with a synopis of the functionality provided by this file>>
-+ *      <<please update with a synopsis of the functionality provided by this file>>
-  *
-  *  BE header:  no
-  *
---
-2.30.2
+>   * is thorough the potential type field from the PDC_MODEL call.  The
+> - * following flags are used at assist this differeniation.
+> + * following flags are used at assist this differentiation.
+>   */
+> 
+>  #define ROLEX_POTENTIAL_KEY_FLAGS	PDC_MODEL_CPU_KEY_WORD_TO_IO
+> --
+> 2.30.2
+> 
 
+
+Kind regards,
+     jer
