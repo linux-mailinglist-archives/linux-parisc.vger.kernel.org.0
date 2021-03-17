@@ -2,96 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7128333F22A
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Mar 2021 15:04:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CE6333F69F
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Mar 2021 18:22:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231644AbhCQOEE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 Mar 2021 10:04:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49460 "EHLO
+        id S231697AbhCQRVw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 17 Mar 2021 13:21:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231750AbhCQODe (ORCPT
+        with ESMTP id S231938AbhCQRVn (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 Mar 2021 10:03:34 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5743BC06174A;
-        Wed, 17 Mar 2021 07:03:34 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id h82so40555446ybc.13;
-        Wed, 17 Mar 2021 07:03:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6OaFjyFWgg4m3b9LuLpqb/rP6tn5J4G93CnXJEjgfLQ=;
-        b=i2DpCpQM7JeSSiS/pjMxgtMmRWaqyEUnqOkpir3k6hjfU9Oor7nDorySG4w47CoCGd
-         HaiLgTyqU0kC8zA/M2kZQM1sH1E1LbWud/WbA8om7HWvSV+BUakqiOwPUeTLcoqCLPGf
-         JedwFXQpUMM2xc1N014Ahaw2YTMoAf2cj3FsgDsCKv3ZOzvpAcW8c+eMj3EENF375f8x
-         11rayPkdrSyY5YcS7+D3f2mNmy0iI8qzZ8PRIa+NRFehp669D1SyF0qYVVKeD+gzVYK8
-         LIsktzMZcnA20N+P0QIhTw/wSHTpN81axxWdN3YKq6VrI5qwWqPf0cj92aOsspj4iCYa
-         aQLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6OaFjyFWgg4m3b9LuLpqb/rP6tn5J4G93CnXJEjgfLQ=;
-        b=bEUxvKmIPKCyxJ/STwqn0nT8JeKSy63asIyOyju2QZvTR+yvanfV/cFC9wNYb3hz0V
-         t/b+nT7Ag8aJ/pAjonS87XhLsRUaeihZt+QkC9CSQ0f+vg8oLMEF0ZkOtGqRgov63kqr
-         2OamdQbpY0cB+Fyux7SIb8iJg1AKVHfz6UVz0dB0iqLBpVL+eRP00fgHZEycmW1Pf4/z
-         3+Y16vvjfux3pRzjxFHlBsphjI3k572SXs52haRBXruQ1T/FbMtGYgDXXr/Io5hWifOo
-         Uk6wZYkPiDJnssYbxrGThiHGIksmZwDpMIVplGAZVCTTmGYZsojlkNlTio8NVCUd/RFf
-         MY3g==
-X-Gm-Message-State: AOAM531HNTbVWb29pXxB62HSRRm7MvH3l56ACL8LHNBOrIAFh963uPdb
-        soVcscHLQEjJqILnH9lyHOFq6c/gT9HjilUki5i/1OJ6iZHnmg==
-X-Google-Smtp-Source: ABdhPJxYwg2QBX1owqFPtrq2F/9pLRU/hzhKTzIOR3dpydN55snYMjquLkj00WQN+8aJP9sdN02xLmqhMTlZQxWC8Dc=
-X-Received: by 2002:a25:dad4:: with SMTP id n203mr4746316ybf.233.1615989813490;
- Wed, 17 Mar 2021 07:03:33 -0700 (PDT)
+        Wed, 17 Mar 2021 13:21:43 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9485C06174A;
+        Wed, 17 Mar 2021 10:21:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
+        Reply-To:Cc:Content-ID:Content-Description;
+        bh=bXtH3POBG9ts1jOXokUaPXgQERIp/+u738KvYgy6+H4=; b=l4ILtQkJ3cZoo8mL5nPYoN81Dt
+        htomJrreX64A6nziTEBmi4IciEQdSOvKoJ+/DKBqbpJw/PPHxx//HOp4s7QUtMu/MnQA+M0VeKXvm
+        mbKEt4jrE2IowOhv6RUyRGtDaqHbpYlVO+Z+BgNIGiuc3NX9hvVm9MBg26LcRoWRWQx77kwZFb2Q7
+        yLg+B9CZJhsgBAd7ut7vXjkUphx1DOWbQTTj9ICN5Z1VzJZbTinfe0QeLu8W2oUP8A+dvMJjj/Ifx
+        iT8IWNWDPqMcChTUPnf1lr/bcl6i5E6aHuQYep+Dqg1GfKPsfPbD1Y2iGLV3ooAbuihOBB5jN93kz
+        0/cUcCEw==;
+Received: from [2601:1c0:6280:3f0::9757]
+        by merlin.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lMZrY-001fNC-DP; Wed, 17 Mar 2021 17:21:40 +0000
+Subject: Re: [PATCH] parisc: math-emu: Fix a typo in the file float.h
+To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210317103917.3869933-1-unixbhaskar@gmail.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <ec8744a7-66dc-b687-5471-7da4411084c8@infradead.org>
+Date:   Wed, 17 Mar 2021 10:21:37 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu> <20210317015210.33641-1-wangkefeng.wang@huawei.com>
-In-Reply-To: <20210317015210.33641-1-wangkefeng.wang@huawei.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Wed, 17 Mar 2021 17:03:22 +0300
-Message-ID: <CADxRZqwFokuZrhA6GFr=whM3s7BqZpzo8yq=TW6YEr=eeEUH0A@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Guo Ren <guoren@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        Sparc kernel list <sparclinux@vger.kernel.org>,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210317103917.3869933-1-unixbhaskar@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Mar 17, 2021 at 4:51 AM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
->
-> mem_init_print_info() is called in mem_init() on each architecture,
-> and pass NULL argument, so using void argument and move it into mm_init().
->
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
-> v2:
-> - Cleanup 'str' line suggested by Christophe and ACK
+On 3/17/21 3:39 AM, Bhaskar Chowdhury wrote:
+> 
+> s/synopis/synopsis/
+> 
+> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 
-applied patch (5.12.0-rc3-00020-g1df27313f50a-dirty) over linus.git
-and tested boot on a sparc64 virtual machine (ldom) - boots.
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+
+> ---
+>  arch/parisc/math-emu/float.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/parisc/math-emu/float.h b/arch/parisc/math-emu/float.h
+> index 531bbda5e31f..77b1b5bf1a65 100644
+> --- a/arch/parisc/math-emu/float.h
+> +++ b/arch/parisc/math-emu/float.h
+> @@ -12,7 +12,7 @@
+>   *      @(#)	pa/spmath/float.h		$Revision: 1.1 $
+>   *
+>   *  Purpose:
+> - *      <<please update with a synopis of the functionality provided by this file>>
+> + *      <<please update with a synopsis of the functionality provided by this file>>
+>   *
+>   *  BE header:  no
+>   *
+> --
+
+
+-- 
+~Randy
+
