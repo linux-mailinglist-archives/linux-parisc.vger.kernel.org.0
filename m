@@ -2,141 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1E2933E96D
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Mar 2021 06:59:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09CB733EE59
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Mar 2021 11:33:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230134AbhCQF6b (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 Mar 2021 01:58:31 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:13637 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbhCQF6K (ORCPT
+        id S229800AbhCQKdN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 17 Mar 2021 06:33:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60538 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229880AbhCQKdK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 Mar 2021 01:58:10 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F0fXm6M3nz17M4p;
-        Wed, 17 Mar 2021 13:56:08 +0800 (CST)
-Received: from [10.174.177.244] (10.174.177.244) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.498.0; Wed, 17 Mar 2021 13:57:58 +0800
-Subject: Re: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-CC:     <linux-ia64@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Dave Hansen" <dave.hansen@linux.intel.com>, <linux-mm@kvack.org>,
-        Guo Ren <guoren@kernel.org>, <sparclinux@vger.kernel.org>,
-        <linux-riscv@lists.infradead.org>, Jonas Bonn <jonas@southpole.se>,
-        <linux-s390@vger.kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        <linux-hexagon@vger.kernel.org>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        "Russell King" <linux@armlinux.org.uk>,
-        <linux-csky@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        <linux-snps-arc@lists.infradead.org>,
-        <linux-xtensa@linux-xtensa.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        <linux-um@lists.infradead.org>, <linux-m68k@lists.linux-m68k.org>,
-        <openrisc@lists.librecores.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Richard Henderson <rth@twiddle.net>,
-        <linux-parisc@vger.kernel.org>, <linux-mips@vger.kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        <linux-alpha@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>
-References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu>
- <20210317015210.33641-1-wangkefeng.wang@huawei.com>
- <3f6959d6-1f37-8baf-a12e-3fbda6a17c7d@csgroup.eu>
-From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-Message-ID: <fef8ca3b-97ae-5c19-69ea-bb1dfe88cf9c@huawei.com>
-Date:   Wed, 17 Mar 2021 13:57:57 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Wed, 17 Mar 2021 06:33:10 -0400
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67633C06174A;
+        Wed, 17 Mar 2021 03:33:10 -0700 (PDT)
+Received: by mail-qv1-xf34.google.com with SMTP id t5so1106756qvs.5;
+        Wed, 17 Mar 2021 03:33:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/w+sq21Krp5a5Y52tCgJU8vrXEY1dtiPgGcnnoxCWfY=;
+        b=of22MyFZ8+xWcSuACVvmzK8JH09kar7ZmKB+cMFrvplhkL0cpZyislA0c33uJcslbE
+         lNalDO11cHwf1ALeueclI1lI4PpeZW9sKjVVQPGzfgBdHocRD3dUvqvLqfRtWm6ijk6L
+         gxSOqZie/YtqxM4w49cRK2BhBkfuePNrsGANRbuwaK7wjKu+ctrhrdvOVUYJ1xY6+80e
+         m6ZZ5vpMM8FcHinPtRND96vYKUUMh5PutGJc6fPzdwUf/gJgHe39FgGlQFoeAQVgN5Ct
+         RJWHavmamckUEjcremsWGqDTYdTKWVdBLHolV0V3QnTxC7VqCh6uldisIA7ceH4p4V8v
+         A5HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/w+sq21Krp5a5Y52tCgJU8vrXEY1dtiPgGcnnoxCWfY=;
+        b=p7HFWMbQme/HboAEXamxqLvhgZtHhFiUA9HnwKqOKImgJR0H2ESHi3kHpVvnBtNH9z
+         5u+aqAVar0oOmBmndSXG9SV7Wpf2zSVlZx70ZfJgYEQQW6RGASA0WRh92+RpiyPQLTi0
+         gXvuibYArZ4uoFDQ9PnNSvPyh60fQNajYC/8Sc5/a6RMYEeC2+mst4UAYLAntlurjywN
+         wDyupJimFpFO0g3BpAxqpXLrh7fYscyp7xUzXBvGRV0QZbzTx3+jU6uotwVF7j0z5LhP
+         DIuiuVlVwUBzHt2vYd4hZHiVHzTuGLgtZ8mzeg+Y/MHrscPaP0qIFa3zxh0cNu2px3mt
+         m/gA==
+X-Gm-Message-State: AOAM531t0pN6K8O7cRLmegpCC5uRw049yRVM0An6x4IzAkO1QxuJ5Dbg
+        hs0kHDWnpxJApTApFFQVvso=
+X-Google-Smtp-Source: ABdhPJyDGzVE/NLJPWDPv6z3M2i+mEBFnDX7bV7ER8vOfO2P0/oIMOgmkLC+eLnraUR1987Dax5Y1g==
+X-Received: by 2002:a0c:eb87:: with SMTP id x7mr4427358qvo.14.1615977189622;
+        Wed, 17 Mar 2021 03:33:09 -0700 (PDT)
+Received: from localhost.localdomain ([37.19.198.48])
+        by smtp.gmail.com with ESMTPSA id o76sm17341532qke.79.2021.03.17.03.33.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Mar 2021 03:33:09 -0700 (PDT)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        unixbhaskar@gmail.com, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org
+Subject: [PATCH] parisc: math-emu: Few spelling fixes in the file fpu.h
+Date:   Wed, 17 Mar 2021 16:02:51 +0530
+Message-Id: <20210317103251.3526940-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <3f6959d6-1f37-8baf-a12e-3fbda6a17c7d@csgroup.eu>
-Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [10.174.177.244]
-X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
 
-On 2021/3/17 13:48, Christophe Leroy wrote:
->
->
-> Le 17/03/2021 à 02:52, Kefeng Wang a écrit :
->> mem_init_print_info() is called in mem_init() on each architecture,
->> and pass NULL argument, so using void argument and move it into 
->> mm_init().
->>
->> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->> v2:
->> - Cleanup 'str' line suggested by Christophe and ACK
->>
->>   arch/alpha/mm/init.c             |  1 -
->>   arch/arc/mm/init.c               |  1 -
->>   arch/arm/mm/init.c               |  2 --
->>   arch/arm64/mm/init.c             |  2 --
->>   arch/csky/mm/init.c              |  1 -
->>   arch/h8300/mm/init.c             |  2 --
->>   arch/hexagon/mm/init.c           |  1 -
->>   arch/ia64/mm/init.c              |  1 -
->>   arch/m68k/mm/init.c              |  1 -
->>   arch/microblaze/mm/init.c        |  1 -
->>   arch/mips/loongson64/numa.c      |  1 -
->>   arch/mips/mm/init.c              |  1 -
->>   arch/mips/sgi-ip27/ip27-memory.c |  1 -
->>   arch/nds32/mm/init.c             |  1 -
->>   arch/nios2/mm/init.c             |  1 -
->>   arch/openrisc/mm/init.c          |  2 --
->>   arch/parisc/mm/init.c            |  2 --
->>   arch/powerpc/mm/mem.c            |  1 -
->>   arch/riscv/mm/init.c             |  1 -
->>   arch/s390/mm/init.c              |  2 --
->>   arch/sh/mm/init.c                |  1 -
->>   arch/sparc/mm/init_32.c          |  2 --
->>   arch/sparc/mm/init_64.c          |  1 -
->>   arch/um/kernel/mem.c             |  1 -
->>   arch/x86/mm/init_32.c            |  2 --
->>   arch/x86/mm/init_64.c            |  2 --
->>   arch/xtensa/mm/init.c            |  1 -
->>   include/linux/mm.h               |  2 +-
->>   init/main.c                      |  1 +
->>   mm/page_alloc.c                  | 10 +++++-----
->>   30 files changed, 7 insertions(+), 42 deletions(-)
->>
->
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 89314651dd62..c2e0b3495c5a 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -2373,7 +2373,7 @@ extern unsigned long free_reserved_area(void 
->> *start, void *end,
->>                       int poison, const char *s);
->>     extern void adjust_managed_page_count(struct page *page, long 
->> count);
->> -extern void mem_init_print_info(const char *str);
->> +extern void mem_init_print_info(void);
->
-> Sorry I didn't see that in previous patch.
->
-> 'extern' keyword is pointless for function prototypes and is 
-> deprecated, you should remove it.
->
-> That said,
->
-> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr> # focussed on 
-> powerpc
-Thanks, let's wait for more feedback from other architectures, if 
-necessary,  will send a new one.
->
->>     extern void reserve_bootmem_region(phys_addr_t start, phys_addr_t 
->> end);
-> .
->
+s/synopis/synopsis/
+s/differeniate/differentiate/
+s/differeniation/differentiation/
+
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ arch/parisc/math-emu/fpu.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/parisc/math-emu/fpu.h b/arch/parisc/math-emu/fpu.h
+index 853c19c03828..1f313bc38beb 100644
+--- a/arch/parisc/math-emu/fpu.h
++++ b/arch/parisc/math-emu/fpu.h
+@@ -12,7 +12,7 @@
+  *      @(#)	pa/fp/fpu.h		$Revision: 1.1 $
+  *
+  *  Purpose:
+- *      <<please update with a synopis of the functionality provided by this file>>
++ *      <<please update with a synopsis of the functionality provided by this file>>
+  *
+  *
+  * END_DESC
+@@ -50,9 +50,9 @@
+ #define EMULATION_VERSION 4
+
+ /*
+- * The only was to differeniate between TIMEX and ROLEX (or PCX-S and PCX-T)
++ * The only was to differentiate between TIMEX and ROLEX (or PCX-S and PCX-T)
+  * is thorough the potential type field from the PDC_MODEL call.  The
+- * following flags are used at assist this differeniation.
++ * following flags are used at assist this differentiation.
+  */
+
+ #define ROLEX_POTENTIAL_KEY_FLAGS	PDC_MODEL_CPU_KEY_WORD_TO_IO
+--
+2.30.2
+
