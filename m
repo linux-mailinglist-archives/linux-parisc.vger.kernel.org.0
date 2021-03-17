@@ -2,149 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 257AA33EECC
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Mar 2021 11:51:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E014D33EF03
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Mar 2021 12:01:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230439AbhCQKu4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 Mar 2021 06:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36120 "EHLO
+        id S230038AbhCQLBG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 17 Mar 2021 07:01:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231181AbhCQKug (ORCPT
+        with ESMTP id S229644AbhCQLAj (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 Mar 2021 06:50:36 -0400
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DF29C06174A;
-        Wed, 17 Mar 2021 03:50:36 -0700 (PDT)
-Received: by mail-qv1-xf32.google.com with SMTP id x16so1136981qvk.3;
-        Wed, 17 Mar 2021 03:50:36 -0700 (PDT)
+        Wed, 17 Mar 2021 07:00:39 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC79AC06174A;
+        Wed, 17 Mar 2021 04:00:38 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id n24so8197465qkh.9;
+        Wed, 17 Mar 2021 04:00:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=gG7QPejNR60jx5sjfgi487H6qTjwVUl8kxmz90W0B1o=;
-        b=G90dIH6y3T2sKTOADCltJmnjP50n0VaBhmskm8UQsQ/4XAqoqvP4vUXRYRAfdGH5Vt
-         U3ob9eHClEFDxG0yx6rdHiAyp/kUSyKqydLVbHArInlSvrxAaK4oc/ZIDjqxeqaWP7/K
-         GaQdJtEqg/bHyu02KAWSGPwi1BsmmCdErfS/gxYza4bXKnJwRCMWFsVcHtwbvJCRzZ+c
-         elwTM5lU/OxVwti0Scq9yx4i25Mqc9wZ04aRGsILcf5AUbLT1wTqAyQ5+hH8vT2L8iWX
-         yo5JHWZY0XxleeK1ENnuFEwneGsGH89Zw/lPRfclRT1faBJCPgGcd9SwEmSukx39iYgT
-         z+cw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CL8LK+9sf9UcMIdrX481SKnFK4jHWm4XPPjXsThij54=;
+        b=DS9KB43EiCaeiWvuDu1EZX4QGVDY5X+Ep4KERxt1F8SfmimaeNnUt450NK7hCMr4pr
+         Df1MT4gTor4/thwY0LlZahg4G2HDVgSYhXHNdEf6DUN1+x7AQ7WanEJRylaTps7fnxGc
+         UiWjIdzbktMaV28JlC9u4/0oNZ0pZCBNv3FBLlUIO+g5FamXuaf3gw3kxBMjN1btvXm5
+         +yTul9naPY9J9gWyP//vuI9HA/Qp22ng6JmkZFwpEb1PPgW9iCzTSabgX1tfYt2pVxRP
+         xyAxbl+2PGLgfVa1GxY2G0nHx8Izf7cBUW3adcBctOjvHUaeaH6ukveWRHIgLnKmVc7v
+         pFGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=gG7QPejNR60jx5sjfgi487H6qTjwVUl8kxmz90W0B1o=;
-        b=SQe4goEI93aQPd/+XhGZmFG/eUWyHgSYPIaeh+boDAYjKyfAzx30FIANRAMqxB80rL
-         ScRQjKT5tYWHPDl2BJ6Q+lVDYzCl9Kjf4827aqxJBgbswgN8eR/Mv1rEkUIwsA4AOA3k
-         hchyMTm4aDPsNKV9j9jybrDh+r0fkyAfA7bydaaQnFpUP519b+bnMgEc1q6MmP+p9ghr
-         Bh6ud20SHxWe8Y+SKLADTFGq+G1P1yIBOCQ/yty/zlBi5ydlV8eeEPOMyc5++3nB4y3+
-         VetK+9F+WKRBEUhYzJLyDj0ejulnEMXxrbZhfc60mFI9oVku1ubFddASMBMtbqZ8Bdpm
-         V99w==
-X-Gm-Message-State: AOAM533Iyys3IprNsms7eKVwgo57ogALNmXUfW1QmRudDBQOsR8+tqZM
-        Oi3R4Ut1RDsG5ksQ07ryTns=
-X-Google-Smtp-Source: ABdhPJyJ8T2NLOsONSMzRgJMbaDTNc5Q+MVijzx6+YTzaIEIaDnPIkAuYVsWMDXNlfNLSDR6yuEe0A==
-X-Received: by 2002:ad4:4dc6:: with SMTP id cw6mr4767509qvb.31.1615978235616;
-        Wed, 17 Mar 2021 03:50:35 -0700 (PDT)
-Received: from ArchLinux ([37.19.198.48])
-        by smtp.gmail.com with ESMTPSA id c5sm17603184qkg.105.2021.03.17.03.50.31
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CL8LK+9sf9UcMIdrX481SKnFK4jHWm4XPPjXsThij54=;
+        b=URNTYuNGnBtNlhwg8r2MtHsz0gUtjeyJuQfoJOkm5vDhSJW3z5gd+1NzroijNELnaL
+         HuQx693P5UleiJDokqx8Vq6wOCCU+YaJ7pRO6QuDOzCfHNZlZ7d9I43nwRe+4jxNVY/m
+         vp7qVZunCCS3XzzUjwxlXcmQaxyrc431SDG4tXPpzgSl0sUBM/irlIk4vtdaI2vQE7Di
+         P7fnKsIrV8w3dcaP+4Vn3ELo42O8G6a0qYfVYVqIyht/A7oBklTto34VnPVmYzi+8XuK
+         5BVVLfiXHovdRH3pBXaQtzd3npMFJ5fWnSjtwhtZi1gglOUvLexTMVxImRd5Rl5xH/hC
+         VHIw==
+X-Gm-Message-State: AOAM533NKtMzpQNNA9Az+ocApoi34WD7+bYLf5j3e8uZCoJtCVRMrpZK
+        0SgyuCS47ZjwCpRvPBK0PuU=
+X-Google-Smtp-Source: ABdhPJzC1Xy0icDNRzssN2SsoCMW6zhwYTmXoZUJk1ZZTYCuLGnMzV3HTKK4WKdKO9IXzWBmkET5YQ==
+X-Received: by 2002:a37:9c13:: with SMTP id f19mr4134282qke.31.1615978838126;
+        Wed, 17 Mar 2021 04:00:38 -0700 (PDT)
+Received: from localhost.localdomain ([37.19.198.48])
+        by smtp.gmail.com with ESMTPSA id j2sm16512891qkk.96.2021.03.17.04.00.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Mar 2021 03:50:34 -0700 (PDT)
-Date:   Wed, 17 Mar 2021 16:20:18 +0530
+        Wed, 17 Mar 2021 04:00:37 -0700 (PDT)
 From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     Jeroen Roovers <jer@xs4all.nl>
-Cc:     James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rdunlap@infradead.org
-Subject: Re: [PATCH] parisc: math-emu: Few spelling fixes in the file fpu.h
-Message-ID: <YFHe6lv09xKD6IzQ@ArchLinux>
-Mail-Followup-To: Bhaskar Chowdhury <unixbhaskar@gmail.com>,
-        Jeroen Roovers <jer@xs4all.nl>,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rdunlap@infradead.org
-References: <20210317103251.3526940-1-unixbhaskar@gmail.com>
- <20210317114235.033dc0ef@del.jer>
+To:     James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        unixbhaskar@gmail.com, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org
+Subject: [PATCH V2] parisc: math-emu: Few spelling fixes in the file fpu.h
+Date:   Wed, 17 Mar 2021 16:30:14 +0530
+Message-Id: <20210317110014.387321-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Xd6p6z+C7AI6lGga"
-Content-Disposition: inline
-In-Reply-To: <20210317114235.033dc0ef@del.jer>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+s/synopis/synopsis/
+s/differeniate/differentiate/
+s/differeniation/differentiation/
 
---Xd6p6z+C7AI6lGga
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+  Changes from V1:
+  As pointed out by jer, the sentence construction change inducted.
 
-On 11:42 Wed 17 Mar 2021, Jeroen Roovers wrote:
->On Wed, 17 Mar 2021 16:02:51 +0530
->Bhaskar Chowdhury <unixbhaskar@gmail.com> wrote:
->
->> s/synopis/synopsis/
->> s/differeniate/differentiate/
->> s/differeniation/differentiation/
->>
->> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
->> ---
->>  arch/parisc/math-emu/fpu.h | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/parisc/math-emu/fpu.h b/arch/parisc/math-emu/fpu.h
->> index 853c19c03828..1f313bc38beb 100644
->> --- a/arch/parisc/math-emu/fpu.h
->> +++ b/arch/parisc/math-emu/fpu.h
->> @@ -12,7 +12,7 @@
->>   *      @(#)	pa/fp/fpu.h		$Revision: 1.1 $
->>   *
->>   *  Purpose:
->> - *      <<please update with a synopis of the functionality provided
->> by this file>>
->> + *      <<please update with a synopsis of the functionality
->> provided by this file>> *
->>   *
->>   * END_DESC
->> @@ -50,9 +50,9 @@
->>  #define EMULATION_VERSION 4
->>
->>  /*
->> - * The only was to differeniate between TIMEX and ROLEX (or PCX-S
->> and PCX-T)
->> + * The only was to differentiate between TIMEX and ROLEX (or PCX-S
->> and PCX-T)
->
->Might as well fix "only [change] was to" here.
->
-Certain. Thanks for the heads up! ....V2 on the way...
+ arch/parisc/math-emu/fpu.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
->>   * is thorough the potential type field from the PDC_MODEL call.  The
->> - * following flags are used at assist this differeniation.
->> + * following flags are used at assist this differentiation.
->>   */
->>
->>  #define ROLEX_POTENTIAL_KEY_FLAGS	PDC_MODEL_CPU_KEY_WORD_TO_IO
->> --
->> 2.30.2
->>
->
->
->Kind regards,
->     jer
+diff --git a/arch/parisc/math-emu/fpu.h b/arch/parisc/math-emu/fpu.h
+index 853c19c03828..b83da3d5b6d5 100644
+--- a/arch/parisc/math-emu/fpu.h
++++ b/arch/parisc/math-emu/fpu.h
+@@ -12,7 +12,7 @@
+  *      @(#)	pa/fp/fpu.h		$Revision: 1.1 $
+  *
+  *  Purpose:
+- *      <<please update with a synopis of the functionality provided by this file>>
++ *      <<please update with a synopsis of the functionality provided by this file>>
+  *
+  *
+  * END_DESC
+@@ -50,9 +50,9 @@
+ #define EMULATION_VERSION 4
 
---Xd6p6z+C7AI6lGga
-Content-Type: application/pgp-signature; name="signature.asc"
+ /*
+- * The only was to differeniate between TIMEX and ROLEX (or PCX-S and PCX-T)
++ * The only change was to differentiate between TIMEX and ROLEX (or PCX-S and PCX-T)
+  * is thorough the potential type field from the PDC_MODEL call.  The
+- * following flags are used at assist this differeniation.
++ * following flags are used at assist this differentiation.
+  */
 
------BEGIN PGP SIGNATURE-----
+ #define ROLEX_POTENTIAL_KEY_FLAGS	PDC_MODEL_CPU_KEY_WORD_TO_IO
+--
+2.30.2
 
-iQEzBAABCAAdFiEEnwF+nWawchZUPOuwsjqdtxFLKRUFAmBR3uYACgkQsjqdtxFL
-KRUKOggAjhjIWEg1/IrkEdT0+9TxQ85oGcpwQfLJd2mrEL5ehR8PPNaR+TQ4g/ZZ
-eYktVHq3kdhTUCagZ3gBSLlCPKAkG4V1pVT9jzkMPo8KlLQFRcQcmFxWvFOKM63w
-whQ2cNbcYGDirMKGntZCh79hbecx0Egw/2kAfv9i61/0gHN0qPPp+QkM/66Q1sz4
-sQkkDADuUNfXUAXh9OBFq2AIFg/oYfuqA/BbVmLKvL/wN1vGt3hGwSTNV86jPDuu
-umJ6wLcfftv1stLMMvAE0qfKn6VLVY2D5EShqfj+Q0iD8JcldFSUf2lkgP6JwFl+
-KQ1PTqMLuekZKBn7qnjHbGwEvJ6kIQ==
-=OqRj
------END PGP SIGNATURE-----
-
---Xd6p6z+C7AI6lGga--
