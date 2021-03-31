@@ -2,62 +2,47 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6FD134F638
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 Mar 2021 03:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39EF734F9D0
+	for <lists+linux-parisc@lfdr.de>; Wed, 31 Mar 2021 09:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230160AbhCaB3X (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 Mar 2021 21:29:23 -0400
-Received: from mail-m17637.qiye.163.com ([59.111.176.37]:21094 "EHLO
-        mail-m17637.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230145AbhCaB3S (ORCPT
+        id S234091AbhCaHaJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 31 Mar 2021 03:30:09 -0400
+Received: from bizcloud-power.sawafuji.co.jp ([128.199.220.203]:46712 "EHLO
+        mta0.sawafuji.co.jp" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233996AbhCaH3x (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 Mar 2021 21:29:18 -0400
-Received: from wanjb-virtual-machine.localdomain (unknown [36.152.145.182])
-        by mail-m17637.qiye.163.com (Hmail) with ESMTPA id E94BC9801DF;
-        Wed, 31 Mar 2021 09:29:15 +0800 (CST)
-From:   Wan Jiabing <wanjiabing@vivo.com>
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Wan Jiabing <wanjiabing@vivo.com>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     kael_w@yeah.net
-Subject: [PATCH] arch: parisc: Remove duplicate struct task_struct declaration
-Date:   Wed, 31 Mar 2021 09:28:50 +0800
-Message-Id: <20210331012857.2799385-1-wanjiabing@vivo.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 31 Mar 2021 03:29:53 -0400
+X-Greylist: delayed 642 seconds by postgrey-1.27 at vger.kernel.org; Wed, 31 Mar 2021 03:29:52 EDT
+From:   Albert Bourla <info@universalautomation.com.pk>
+To:     linux-parisc@vger.kernel.org
+Subject: Bidding invitation
+Date:   31 Mar 2021 09:09:19 +0200
+Message-ID: <20210331090919.98FA21E432F69700@universalautomation.com.pk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
-        oVCBIfWUFZTx1IGRgYQxlKTx9KVkpNSkxKTk9KTk1JSkJVEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
-        FZT0tIVUpKS0hKTFVLWQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Pwg6Sgw5UT8XQzZKLBFNCTIX
-        KzhPCRhVSlVKTUpMSk5PSk5NTklOVTMWGhIXVQwaFRESGhkSFRw7DRINFFUYFBZFWVdZEgtZQVlI
-        TVVKTklVSk9OVUpDSVlXWQgBWUFKTUtINwY+
-X-HM-Tid: 0a7885e62653d992kuwse94bc9801df
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-struct task_struct is declared twice. One has been declared
-at 154th line. Remove the duplicate.
+Good Day Sir/Ms,
 
-Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
----
- arch/parisc/include/asm/processor.h | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm/processor.h
-index 11ece0d07374..b5fbcd2c1780 100644
---- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -272,7 +272,6 @@ on downward growing arches, it looks like this:
- 	regs->gr[23] = 0;				\
- } while(0)
+We are please to invite you or your company to quote the 
+following item listed below:
  
--struct task_struct;
- struct mm_struct;
- 
- /* Free all resources held by a thread. */
--- 
-2.25.1
+Product/Model No: A702TH FYNE PRESSURE REGULATOR
+Model Number: A702TH
+Qty. 30 units
 
+
+Compulsory,Kindly send your quotation to: 
+quotation@pfizerbvsupply.com 
+for immediate approval.
+
+Kind Regards,
+Albert Bourla
+PFIZER B.V Supply Chain Manager
+Tel: +31(0)208080 880
+ADDRESS: Rivium Westlaan 142, 2909 LD
+Capelle aan den IJssel, Netherlands
