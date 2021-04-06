@@ -2,131 +2,112 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98CFA355049
-	for <lists+linux-parisc@lfdr.de>; Tue,  6 Apr 2021 11:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DECAF355086
+	for <lists+linux-parisc@lfdr.de>; Tue,  6 Apr 2021 12:09:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232709AbhDFJo2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 6 Apr 2021 05:44:28 -0400
-Received: from mout.gmx.net ([212.227.15.18]:53393 "EHLO mout.gmx.net"
+        id S232259AbhDFKJm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 6 Apr 2021 06:09:42 -0400
+Received: from mout.gmx.net ([212.227.15.15]:42401 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237649AbhDFJoS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 6 Apr 2021 05:44:18 -0400
+        id S233604AbhDFKJm (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 6 Apr 2021 06:09:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1617702242;
-        bh=2bD/fm4nw5EI9PLgefWYslB+Hj9bP6U0G2PbneEtwZ4=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=alCnt92833zZr/5MKhm9zvTUnsNMh9k2NUtiu0dW4qc84L+petMRJPXN9hNIBMDIg
-         abh4jySlbfJluvxxRx48xup6zQNKfJ/Pm97lqIWA43QS0CAzYrIOm43SN3saWVRdyv
-         V4bwpfFqRlsyIHX4bLmad9Vf5FQt9E0UMaGTxmMA=
+        s=badeba3b8450; t=1617703768;
+        bh=8BFgwwQsCdpZB3KEkBauG0JI1pthdfTr1AMrrHOMCU4=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=Pb/LIDXHOkmFGq19jLe5HlMh4Rp+H7shmdi4SwxwRYrv5TonK6vhDB1Uj3EPKCbIY
+         Ik+bI3d5MmYAM8/eQCQ6nOCRx3BqVkCvNN/Q76Hj2XsKubHBnRz2n9OtxBEmIp66UE
+         12ZBv8o9uiLfNZQQyVHk8/+rlXQb2jl+aVFfVp50=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.164.142]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MGhyS-1lPqd61euA-00Dl30; Tue, 06
- Apr 2021 11:44:02 +0200
-Date:   Tue, 6 Apr 2021 11:43:27 +0200
+Received: from [192.168.20.60] ([92.116.164.142]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MMGN2-1lBdni2wQY-00JLiy; Tue, 06
+ Apr 2021 12:09:28 +0200
+Subject: Re: [PATCH] parisc: avoid a warning on u8 cast for cmpxchg on u8
+ pointers
+To:     Gao Xiang <xiang@kernel.org>, linux-parisc@vger.kernel.org
+Cc:     Liam Beguin <liambeguin@gmail.com>, linux-kernel@vger.kernel.org,
+        Gao Xiang <hsiangkao@redhat.com>
+References: <20210406045929.30331-1-xiang@kernel.org>
 From:   Helge Deller <deller@gmx.de>
-To:     kernel test robot <lkp@intel.com>, linux-parisc@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org
-Subject: Re: ERROR: modpost: "sba_list" [drivers/char/agp/parisc-agp.ko]
- undefined!
-Message-ID: <YGwtP0tXVzOj/cqc@ls3530>
-References: <202104061234.XBEOEjdn-lkp@intel.com>
+Message-ID: <ee2016b1-926e-93b1-ba92-d5f4975f06c9@gmx.de>
+Date:   Tue, 6 Apr 2021 12:08:55 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202104061234.XBEOEjdn-lkp@intel.com>
-X-Provags-ID: V03:K1:N3yHJoBPUwLeSupAMWWGFSRSLweiGX76L0OD0XfzblqBRt+ux/K
- YHv5XgdAovEVX3tSP5e8v7NbdoApTnFO39rLhqIGJTWBKfcIJVKZM1FSy1ot3HxIEDXdFtr
- 1/r970WmC3oKNu/s+rglHjVVBC9FbU6Hi6/wVacwXdl0lqzJ3SWOkaiDcfQOFQ65/4sopUz
- rWZOfTQZCulpxrEti59bQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cuuxcN0Qhxo=:B28GtO1LJ86oP8QInpdOyl
- Ys1ovieAlJjtTEJpwKwZtsfTdbodcbH0wwcb7Q8eyiUJp6CEP0R7LTYgjU+FIYxwdntS7NaKP
- M0qAccN0UgB4o1+Nn0G+8OaJb2UnCSV/9Rozb+M+9Pu9Nzx9Yrb5kAaSfYDSMzTWAWqVmd0ka
- 6+7Ntr7XklGJGTplSyz6ypvw1pRv9088oUBCoPZyl8WLrwEwpxVjTBd84+s1FBK4Ylse+IDNa
- aI2KcXmhzIjWz6eZ8pazFRdw3iwR5f3kj92z06fBOuh8ue/yQGxnU9Ok5/ypHw7R6refTsrdB
- wPBfvACbDT2u/VGXcAJ7NDs5Z5W7ubM0V9ZUmRfWL9iDGM+P11J+6Nx0RuBceQRbKstvBzGKE
- oBGYYGPCnI7Q0EXZuYUABRLZacMcceyvSySi0Ew6WpVwIfbrTEYhNwNj0wncEgDHD267mw+fJ
- StAl/+K8S8sny7+Ey6q9cHeC1FC7k2pc4uj2KNzktx5FRqkV1+jZe94pROUxpisUW8GwmPViY
- gqhf271HeHjqnbVSl5JV2vj9U9PmKfXSmPv1maULk5tE2rBU+xisUu3to3Z9tibu8q8hXlPUW
- ZUNwzBYLgIC+K+J2fJP3sc8HZ1GJaqYVw+V/L8gJu+0p89H9otFaO8KHMVccupEtMAM1bWNQu
- /67THbiN5PkEYbO9MTX7LKmxX7c9ruK8VbYkt8Zz9cXd1Xnjw1KmxQBYcQqZFErJ6KwsBPs06
- fXPd72kidbWNQO+j60tsAg/IfQsSWcjLEAl+kbvA11trYmlHtuFUW+igMF5kVhfKerUYrFs2J
- rHU4wUBun1kOy10pXb29uBkEx6zkJhWFIqHK1DO/+JB76519CKQnS9gKf2HfIdoePpufb5JQJ
- Ecy0mvs25Etz/MvBhhVg3rWxEGbeqG+FjveQAvfwhoMeIsG8CPbyLxcsVDuhodvAO37ItYEqN
- ebPWKFWQQaUbJqvwEOkeUyJORnyDU3Pb4/Jr6By7XNntXrVFj9BXOPufPlbBmBNzYIMJeRAgA
- a+gGSx1qIPlq86glyfeXlpZanyuWrHdXqL81BY+tbouBCb33Yq8ESCjMepy+fvbYyjAKUahD8
- WLHRBGNOVwZr0FIh/tRMhYMl0yrbv4jkFneC4XCbNrcgwbpat8kQKwlEgXk57jOxB69TAOi9B
- Gc0KS8EOZK6q62F3BNVhaOoaGQJiv4boPyUp8tzGYHA+0D7FzEEv77UHA5SxQOY7UtO+w=
+In-Reply-To: <20210406045929.30331-1-xiang@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:IMq8tYVDnfb+yXN9zYAV2GpvJp5AfJb1AhkxL3SLvTL2UXobw24
+ SpowhBscXc5LnCcamG0aBWy9F8LWm8uD2losKI0lhiPHMevQowWdy9UUrcof0Hn11yUGSU2
+ QMPCoIwuSWRijTqCtyyd9hGHC3kw2lMLvEYmmBMzQxntoWW1kal0ZxidlpsUXVALPrmmaPO
+ id4xE9WGQVeNfJscJWyZg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:BX+CrpIVLRo=:zjNdnI96rrhSeSK3OIhLvY
+ we5WvufCqUS/e6KD3GTuD1JNDG8s+7DnSDvy7PTyzwcoyVxaGPcFvsl050hXxV3k0hSqT8gGL
+ NAJ3iP/L/+8meSIut3LNiWAEWDN9uWrB4BMen6LSpYfDFyOGOcQxcRxu7sHb42612rpFZmiT5
+ MpO3HeA8mgTKemzS/CZFFRe9B3/Q6NK9Peo46RrENYvUaYAX+VPzhwgHF3VQBDlvMSCObDvZd
+ BSMipQAWPX+FNbA4Wfzp1ImFW1k5+7jhkrrM/EYDH2ttJxA8z0xFkmQVkIyqx+zeUB15jSzbp
+ 2mgos34G+egHKyivFlQGGbZWM5wlQuNhYOiEivjLbG9oMBZAe8yFX6CjEu/GFs0G3epaQhkYM
+ DGndoNQpEs5RYaeIpEEUa/NYS8wOKZxfjLEwlFOZurSvR5r+E2z7VnMbgIL17L4HQ7uXbTOpy
+ TvSiBYt6is0eQfiqAIb2uu6mCE/oLCINM9XAiurj+1zQ6DZJoZLVt5GwWbi0rQQny6t1Y+9lD
+ 6l65rNMHAXGiwZXd0L0aLsDLSA9B9TCLYuCqur5D5c1hDg9LYnPs+J89JGzFYfJTHIGLxgHwX
+ KlBb0A3swwsx7jdZCJXGf4shq7dVLobfAqUnl4xrUlzjz2yzGOzKo5X5sQQFKVawDn92qiI1O
+ ftO+r7Gd1hNpzAqLXADGBxshk9AJlV5Cxkw9/eSYJUNIPdjjcZK/Y6I4QII3naiRwDoXdCeBk
+ R27EEHOAUkN2H3rusvABkYBC83+fr7fsdm+dhZx38wwzqyXIkiox7pJ/ebShzmidFHtkGHTHv
+ gFya6uq2t7OsmXXzIP6NWWtvruLIaXAu07HrEagHcMQ4KkunYHe9O/ZTLUAZ5eOpbpmKO6OXe
+ lnkUtv19/WXWLoT/p20sXJqYSlj1mQ3DqblvrME4sPf6B0V6/fzJkTNISWrrtgFAm67s9QMCq
+ KbJgQ+n57R9GuSDnGivNsuwVWC8oRNm69B62p+GBbzNbZanAXDJ0bYYXkrAl3BuyHOac1nixv
+ 885puCHz7N/+abjTBeDCQ8aDe/U5/aUUnotN9ROojviU2Gm8Mc9TsGkRaAebPO2rsog8z1fUG
+ 9T+aw/UVK+XG6QTICQcwKcZz8sCgRbe+lXwZxFtCqlYowymS7UNb4MrREq59JZ7BA55lBvoql
+ 0i6hyxOVZI/07eMcT4910J62a9Jp/Mu+G0+uOHnhfdUSlg4XNBL+6ucJZfRjND0sgAhC4=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-* kernel test robot <lkp@intel.com>:
-> Hi Helge,
+On 4/6/21 6:59 AM, Gao Xiang wrote:
+> From: Gao Xiang <hsiangkao@redhat.com>
 >
-> First bad commit (maybe !=3D root cause):
+> commit b344d6a83d01 ("parisc: add support for cmpxchg on u8 pointers")
+> can generate a sparse warningi ("cast truncates bits from constant
+> value"), which has been reported several times [1] [2] [3].
 >
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.g=
-it master
-> head:   0a50438c84363bd37fe18fe432888ae9a074dcab
-> commit: 00e35f2b0e8acb88d4e1aa96ff0490e3bfe46580 parisc: Enable -mlong-c=
-alls gcc option by default when !CONFIG_MODULES
-> date:   10 weeks ago
-> config: parisc-randconfig-r035-20210406 (attached as .config)
-> compiler: hppa64-linux-gcc (GCC) 9.3.0
-> reproduce (this is a W=3D1 build):
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sb=
-in/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux=
-.git/commit/?id=3D00e35f2b0e8acb88d4e1aa96ff0490e3bfe46580
->         git remote add linus https://git.kernel.org/pub/scm/linux/kernel=
-/git/torvalds/linux.git
->         git fetch --no-tags linus master
->         git checkout 00e35f2b0e8acb88d4e1aa96ff0490e3bfe46580
->         # save the attached .config to linux build tree
->         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-9.3.0 make.cro=
-ss ARCH=3Dparisc
+> The original code worked as expected, but anyway, let silence such
+> sparse warning as what others did [4].
 >
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
->
-> All errors (new ones prefixed by >>, old ones prefixed by <<):
->
-> >> ERROR: modpost: "sba_list" [drivers/char/agp/parisc-agp.ko] undefined=
-!
+> [1] https://lore.kernel.org/r/202104061220.nRMBwCXw-lkp@intel.com
+> [2] https://lore.kernel.org/r/202012291914.T5Agcn99-lkp@intel.com
+> [3] https://lore.kernel.org/r/202008210829.KVwn7Xeh%25lkp@intel.com
+> [4] https://lore.kernel.org/r/20210315131512.133720-2-jacopo+renesas@jmo=
+ndi.org
+> Cc: Liam Beguin <liambeguin@gmail.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Signed-off-by: Gao Xiang <hsiangkao@redhat.com>
 
-The following patch should fix it.
-I'll apply it to the parisc for-next git tree.
+applied to the parisc for-next git tree.
+(I fixed up the typo above too)
 
 Thanks!
 Helge
 
--
-
-From: Helge Deller <deller@gmx.de>
-Date: Tue, 6 Apr 2021 11:32:52 +0200
-Subject: [PATCH] parisc: parisc-agp requires SBA IOMMU driver
-
-Add a dependency to the SBA IOMMU driver to avoid:
-ERROR: modpost: "sba_list" [drivers/char/agp/parisc-agp.ko] undefined!
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/drivers/char/agp/Kconfig b/drivers/char/agp/Kconfig
-index a086dd34f932..4f501e4842ab 100644
-=2D-- a/drivers/char/agp/Kconfig
-+++ b/drivers/char/agp/Kconfig
-@@ -125,7 +125,7 @@ config AGP_HP_ZX1
-
- config AGP_PARISC
- 	tristate "HP Quicksilver AGP support"
--	depends on AGP && PARISC && 64BIT
-+	depends on AGP && PARISC && 64BIT && IOMMU_SBA
- 	help
- 	  This option gives you AGP GART support for the HP Quicksilver
- 	  AGP bus adapter on HP PA-RISC machines (Ok, just on the C8000
-
+> ---
+>   arch/parisc/include/asm/cmpxchg.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/parisc/include/asm/cmpxchg.h b/arch/parisc/include/asm=
+/cmpxchg.h
+> index cf5ee9b0b393..84ee232278a6 100644
+> --- a/arch/parisc/include/asm/cmpxchg.h
+> +++ b/arch/parisc/include/asm/cmpxchg.h
+> @@ -72,7 +72,7 @@ __cmpxchg(volatile void *ptr, unsigned long old, unsig=
+ned long new_, int size)
+>   #endif
+>   	case 4: return __cmpxchg_u32((unsigned int *)ptr,
+>   				     (unsigned int)old, (unsigned int)new_);
+> -	case 1: return __cmpxchg_u8((u8 *)ptr, (u8)old, (u8)new_);
+> +	case 1: return __cmpxchg_u8((u8 *)ptr, old & 0xff, new_ & 0xff);
+>   	}
+>   	__cmpxchg_called_with_bad_pointer();
+>   	return old;
+>
 
