@@ -2,96 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E07BC350199
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 Mar 2021 15:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6EB3354BFB
+	for <lists+linux-parisc@lfdr.de>; Tue,  6 Apr 2021 07:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235994AbhCaNmF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 31 Mar 2021 09:42:05 -0400
-Received: from mout.gmx.net ([212.227.17.22]:59547 "EHLO mout.gmx.net"
+        id S230508AbhDFE7m (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 6 Apr 2021 00:59:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56816 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235869AbhCaNli (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 31 Mar 2021 09:41:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1617198081;
-        bh=Fh27QhdX5NWG2/OE6D5afhTJn3PYHzOQVdDQRQt/Xg8=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=T0knC0VUWeqoWclDb1lGYcDEaARK9Fd6H8/rt3dj71+NY8ikASJWgj49L5Xxbd6ve
-         OWWx6ClfxB1e2gJ2Y/MxCQhd/TrY6cedJU3W/sUdjqKgOwH9dUHXFnMeI7m/7N7fyS
-         uf0LOg87niPRF0ZrREQY4G/QRzI3h4W9/iWqueo8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.138.106]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MgvvJ-1m6g9N3T13-00hQKy; Wed, 31
- Mar 2021 15:41:21 +0200
-Subject: Re: [PATCH] arch: parisc: Remove duplicate struct task_struct
- declaration
-To:     Wan Jiabing <wanjiabing@vivo.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     kael_w@yeah.net
-References: <20210331012857.2799385-1-wanjiabing@vivo.com>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <06101862-156f-8613-1176-751e0eeacc26@gmx.de>
-Date:   Wed, 31 Mar 2021 15:40:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S229704AbhDFE7m (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 6 Apr 2021 00:59:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6714361222;
+        Tue,  6 Apr 2021 04:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617685174;
+        bh=tIomgEeIuH8P7ze0EpjBfN/KC3eWyiZsxls9MV18GGA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=QzWorqWMOHmMsSEBLrfFvgLArOfX2Ekm1OfbI7eT+hQDLXp+/NUlfq9OOrqg5arG7
+         CsqsYBpT5RT0YER+DPmVgJOtjhFlOcGrAAQxrJhEoGHutyjzkTyOXNQEWV+hqM6xvP
+         1MlTLEb/SM3VcUSvY5NmPb1ZNbRZBvutSi1eJZzWSzYORgyXInl0B2F9/CJq0ZrhhO
+         Oewu+cSikyq4TH1ccc9oSRnlrMDh7yA+DC5gKkUY7j28zojOL7UivehwjX+hI6ielV
+         VQ/p977dqnGomY7HvP2LlWMEhvNllTQfD9UKZFLyrwE7T1uWM2MpKV8bcpq40RA3q3
+         mL4Piw5bH9A6A==
+From:   Gao Xiang <xiang@kernel.org>
+To:     linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>
+Cc:     Liam Beguin <liambeguin@gmail.com>, linux-kernel@vger.kernel.org,
+        Gao Xiang <hsiangkao@redhat.com>
+Subject: [PATCH] parisc: avoid a warning on u8 cast for cmpxchg on u8 pointers
+Date:   Tue,  6 Apr 2021 12:59:29 +0800
+Message-Id: <20210406045929.30331-1-xiang@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20210331012857.2799385-1-wanjiabing@vivo.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:JaeMRC1lE4KVlHYh7kPARfo9RIePTjJGIKg9Z2UN3vLyBXOUCjj
- GY9rfksQqdFtd+9r0b8rFwdtVtw/NsfqXxbcpLLQjfvzSqg5mnJCj8DDghfXpHKRAoL44Te
- /CxtVN1pjjbVKgU5tuR/1Wx6YWxGbJDgM7zqDhT+I/+ZVamASKVW3EwVkoqHa6iyYH/ZgrI
- KNN7pHZBKsYcJ6J3NgS7A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:q0vu69HpM1c=:bHAWXqtLCjBdP7TfpuPzJ/
- 2y1jG0B1r/zHW60OamhIX5sO0Ud3c3Yn09V1FGaHeLi18zEnue1cUZYxQwslUwG9XjfZeLD1n
- XqDsAAkNUGx+QqFQb0dnxts9AP1MQ7jltDybdP42CBcyr6ekadvhJTcLY5rled34ERXsDyEFf
- JwbLrtZp9tKRYKbZE3fIwtgWYZEm/89nOfDp9557ufiDFiVQqxYCQVKxrV3AN1mnLHge4Dm6J
- aIEqmzqpzSLaZu4C4/x3dnUvx62Fd1Ajz42jVjfSzHJm/4oeXq/Ou+cTc3m2dD0o1U5hLb5MB
- oHIzp4k515Ickbw+yX7R88+MeXiM9gx17mh3WzFHndILTGuRO4hxoHOrLysGn+rdWZbR748rE
- SqN4/XhVKa6aU5Wp2p6PNvUpGgUIPNe+RxzVYSjggpddUhXpLZICgJZ6oiHqeEr7CYaFVotJn
- OsMykGWdZtySlteJ6WQcyPEesd4S6Uqbn2gUEcrbzDNvGZJ43j3wKrhh2Ya0GlkQjHO/53Jl3
- ASvjQoNTj5liaDj8iHej+UzzA+MOv93LFAup2ATZ+Ty1gM5aHaYLi/ox38VA48eavYegV8Y6a
- 2j6FrgeLyU6DxQspHfwB/StFFBerSkYRpY0RsJFh9BJLteOT3Ukye+4JX8VYW/nQwakBAozC4
- p6kXpCXePwKq2qaWPDMwEzbdGHPQxfxkqsPpys3YOiLRLx7/4Su3wdB2LxpodgTJoih1pRIue
- lcmpI/xRklbJYTvPsVVUtXH6KiNUsDNkBO7s3oueflfllo4IvQCOfRydNCcP7WLUhczCsv3gs
- a8jyIj0alLW9Yy7HopIv5tLXHwmXE6vBF3hA0wxUyJIM8mX02L26YioyNO79sG7LPDGFFtvFI
- 6C71L47m1nIHgRW3bVT4wKZ8o5QT5ClWpvJXsDLZuaK4Q0PP4+BNDMvcdkmDRbMGu+s+ZasDy
- 3fCzcucrvkNrlkc7+ikkPwVjPLbOlzbpUombBft8ZUm647IBjtBaFeTB75767/yt7+vRooYwn
- j5JKnH63uqMeqJDjdZkFcGxV0tPP8lNRsqwckDAwPdnQ49jSeOk2cKByyhh++tXS+yax9AoKl
- 381jVxo9a/Bvp/IU8FsWg8ilBHRYh1nS02+oAa+64azKut6ji2MGPe7EXJ1oyTZ3/ggzO5m8Y
- Q3iLJf59JSUPNIa8QAWiQP1yTQ3Mx52seAEfBQVpcDCUZQrXsq2rv6HUVjGcZFVNK0I9c=
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 3/31/21 3:28 AM, Wan Jiabing wrote:
-> struct task_struct is declared twice. One has been declared
-> at 154th line. Remove the duplicate.
->
-> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+From: Gao Xiang <hsiangkao@redhat.com>
 
-Thanks, applied to parisc tree.
+commit b344d6a83d01 ("parisc: add support for cmpxchg on u8 pointers")
+can generate a sparse warningi ("cast truncates bits from constant
+value"), which has been reported several times [1] [2] [3].
 
-Helge
+The original code worked as expected, but anyway, let silence such
+sparse warning as what others did [4].
 
-> ---
->   arch/parisc/include/asm/processor.h | 1 -
->   1 file changed, 1 deletion(-)
->
-> diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/a=
-sm/processor.h
-> index 11ece0d07374..b5fbcd2c1780 100644
-> --- a/arch/parisc/include/asm/processor.h
-> +++ b/arch/parisc/include/asm/processor.h
-> @@ -272,7 +272,6 @@ on downward growing arches, it looks like this:
->   	regs->gr[23] =3D 0;				\
->   } while(0)
->
-> -struct task_struct;
->   struct mm_struct;
->
->   /* Free all resources held by a thread. */
->
+[1] https://lore.kernel.org/r/202104061220.nRMBwCXw-lkp@intel.com
+[2] https://lore.kernel.org/r/202012291914.T5Agcn99-lkp@intel.com
+[3] https://lore.kernel.org/r/202008210829.KVwn7Xeh%25lkp@intel.com
+[4] https://lore.kernel.org/r/20210315131512.133720-2-jacopo+renesas@jmondi.org
+Cc: Liam Beguin <liambeguin@gmail.com>
+Cc: Helge Deller <deller@gmx.de>
+Signed-off-by: Gao Xiang <hsiangkao@redhat.com>
+---
+ arch/parisc/include/asm/cmpxchg.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/parisc/include/asm/cmpxchg.h b/arch/parisc/include/asm/cmpxchg.h
+index cf5ee9b0b393..84ee232278a6 100644
+--- a/arch/parisc/include/asm/cmpxchg.h
++++ b/arch/parisc/include/asm/cmpxchg.h
+@@ -72,7 +72,7 @@ __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new_, int size)
+ #endif
+ 	case 4: return __cmpxchg_u32((unsigned int *)ptr,
+ 				     (unsigned int)old, (unsigned int)new_);
+-	case 1: return __cmpxchg_u8((u8 *)ptr, (u8)old, (u8)new_);
++	case 1: return __cmpxchg_u8((u8 *)ptr, old & 0xff, new_ & 0xff);
+ 	}
+ 	__cmpxchg_called_with_bad_pointer();
+ 	return old;
+-- 
+2.20.1
 
