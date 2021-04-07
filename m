@@ -2,213 +2,290 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1DA33569B5
-	for <lists+linux-parisc@lfdr.de>; Wed,  7 Apr 2021 12:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D07F3356B14
+	for <lists+linux-parisc@lfdr.de>; Wed,  7 Apr 2021 13:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244866AbhDGKbr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 7 Apr 2021 06:31:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57054 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234193AbhDGKbr (ORCPT
+        id S235224AbhDGLY1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 7 Apr 2021 07:24:27 -0400
+Received: from conssluserg-06.nifty.com ([210.131.2.91]:22054 "EHLO
+        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343506AbhDGLYU (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 7 Apr 2021 06:31:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1617791497;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nJSxvPf+2fQxpcou71SA/t4hQw4etrSkU0eumEfbqCc=;
-        b=NI6ODgu1MmOPKY8PDp/Bgak3yGjHnqcRNLZUHeluhPts6r0VEd/2K5JIz4qPs1nqwpuuEE
-        nt+ojN18KMpaVGaRHNJACqUiRuADurvoRfRk/lL0mVbJ2KY/xxTe14UBmwFveS304Pgx3w
-        au3YkvCqPBFixnLmKCEbtwih7Wabf4I=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-521-SMXER1lrNQy7RmmVKzJMWQ-1; Wed, 07 Apr 2021 06:31:35 -0400
-X-MC-Unique: SMXER1lrNQy7RmmVKzJMWQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2D4221006C82;
-        Wed,  7 Apr 2021 10:31:30 +0000 (UTC)
-Received: from [10.36.114.68] (ovpn-114-68.ams2.redhat.com [10.36.114.68])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 624C871284;
-        Wed,  7 Apr 2021 10:31:13 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     Jann Horn <jannh@google.com>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Michal Hocko <mhocko@suse.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Minchan Kim <minchan@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Hugh Dickins <hughd@google.com>,
-        Rik van Riel <riel@surriel.com>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Peter Xu <peterx@redhat.com>,
-        Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>
-References: <20210317110644.25343-1-david@redhat.com>
- <20210317110644.25343-3-david@redhat.com>
- <CAG48ez0BQ3Vd3nDLEvyiSU0XALgUQ=c-fAwcFVScUkgo_9qVuQ@mail.gmail.com>
- <2bab28c7-08c0-7ff0-c70e-9bf94da05ce1@redhat.com>
- <CAG48ez20rLRNPZj6hLHQ_PLT8H60kTac-uXRiLByD70Q7+qsdQ@mail.gmail.com>
- <26227fc6-3e7b-4e69-f69d-4dc2a67ecfe8@redhat.com>
- <54165ffe-dbf7-377a-a710-d15be4701f20@redhat.com>
-Organization: Red Hat GmbH
-Subject: Re: [PATCH v1 2/5] mm/madvise: introduce MADV_POPULATE_(READ|WRITE)
- to prefault/prealloc memory
-Message-ID: <5f49b60c-957d-8cb4-de7a-7c855dc72942@redhat.com>
-Date:   Wed, 7 Apr 2021 12:31:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        Wed, 7 Apr 2021 07:24:20 -0400
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id 137BNkMm013375;
+        Wed, 7 Apr 2021 20:23:46 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 137BNkMm013375
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1617794626;
+        bh=xRsVc5VOBPahsGiZ0g8g+/BIjtOSuDMTESYsE15eLiU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=SJAtKXW7b1M1zP74XO57uXecda87Y4e/PVxEJqeYl8/fxmmfyjB2w8eEewOSR9JLu
+         EmiJEKvyWbbmKB1rksXUG5PyvWhL8b3MykcZpA1OJ+AnhjeFsKestxNY0VjG4PAK9J
+         BOiUWG23/d43QUSnyzzjGxT89msxMxB6gYgUAm/jaVBgqdaBc0LxCLOaKntLTCzJpN
+         GbiamSUlMXDUVvptqXlIY3d2UvIFXDA4zeRQmI/j8qmaUjZP2eBmbFwRWdfObbK4KB
+         /+qatmUj90qvRtPj44S+jFQupWITYdST8+QX1+uEPlHKZHmuOelvY6w41Htv0HoSDR
+         3W0CeLPYk+17A==
+X-Nifty-SrcIP: [209.85.214.169]
+Received: by mail-pl1-f169.google.com with SMTP id z12so5102442plb.9;
+        Wed, 07 Apr 2021 04:23:46 -0700 (PDT)
+X-Gm-Message-State: AOAM531VBasu25l/OKt7nN+DvSWjPWoq/Iz0LPNG8KhucWgoUWS8pupQ
+        c3I9y/qxMz/JkX5MjHeQ5xoXVwvAl2BqRsRJFVY=
+X-Google-Smtp-Source: ABdhPJwfvlXM97/EOlS4tPq2ADHj5VuR1RjangeNyKBFR+o9ytzLscVAQqAaEeHWwJmEVBXLLFxZBIwLzQJOfrSmDKw=
+X-Received: by 2002:a17:902:be10:b029:e9:78a0:dd33 with SMTP id
+ r16-20020a170902be10b02900e978a0dd33mr356753pls.1.1617794625511; Wed, 07 Apr
+ 2021 04:23:45 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <54165ffe-dbf7-377a-a710-d15be4701f20@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+References: <20210407053419.449796-1-gregkh@linuxfoundation.org> <20210407053419.449796-16-gregkh@linuxfoundation.org>
+In-Reply-To: <20210407053419.449796-16-gregkh@linuxfoundation.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Wed, 7 Apr 2021 20:23:08 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATkQfwqr9-G5KwGmWDeG81Wn0eb3ZVxopJjxCq18S28=Q@mail.gmail.com>
+Message-ID: <CAK7LNATkQfwqr9-G5KwGmWDeG81Wn0eb3ZVxopJjxCq18S28=Q@mail.gmail.com>
+Subject: Re: [PATCH 15/20] kbuild: parisc: use common install script
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Michal Marek <michal.lkml@markovi.net>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 30.03.21 18:31, David Hildenbrand wrote:
-> On 30.03.21 18:30, David Hildenbrand wrote:
->> On 30.03.21 18:21, Jann Horn wrote:
->>> On Tue, Mar 30, 2021 at 5:01 PM David Hildenbrand <david@redhat.com> wrote:
->>>>>> +long faultin_vma_page_range(struct vm_area_struct *vma, unsigned long start,
->>>>>> +                           unsigned long end, bool write, int *locked)
->>>>>> +{
->>>>>> +       struct mm_struct *mm = vma->vm_mm;
->>>>>> +       unsigned long nr_pages = (end - start) / PAGE_SIZE;
->>>>>> +       int gup_flags;
->>>>>> +
->>>>>> +       VM_BUG_ON(!PAGE_ALIGNED(start));
->>>>>> +       VM_BUG_ON(!PAGE_ALIGNED(end));
->>>>>> +       VM_BUG_ON_VMA(start < vma->vm_start, vma);
->>>>>> +       VM_BUG_ON_VMA(end > vma->vm_end, vma);
->>>>>> +       mmap_assert_locked(mm);
->>>>>> +
->>>>>> +       /*
->>>>>> +        * FOLL_HWPOISON: Return -EHWPOISON instead of -EFAULT when we hit
->>>>>> +        *                a poisoned page.
->>>>>> +        * FOLL_POPULATE: Always populate memory with VM_LOCKONFAULT.
->>>>>> +        * !FOLL_FORCE: Require proper access permissions.
->>>>>> +        */
->>>>>> +       gup_flags = FOLL_TOUCH | FOLL_POPULATE | FOLL_MLOCK | FOLL_HWPOISON;
->>>>>> +       if (write)
->>>>>> +               gup_flags |= FOLL_WRITE;
->>>>>> +
->>>>>> +       /*
->>>>>> +        * See check_vma_flags(): Will return -EFAULT on incompatible mappings
->>>>>> +        * or with insufficient permissions.
->>>>>> +        */
->>>>>> +       return __get_user_pages(mm, start, nr_pages, gup_flags,
->>>>>> +                               NULL, NULL, locked);
->>>>>
->>>>> You mentioned in the commit message that you don't want to actually
->>>>> dirty all the file pages and force writeback; but doesn't
->>>>> POPULATE_WRITE still do exactly that? In follow_page_pte(), if
->>>>> FOLL_TOUCH and FOLL_WRITE are set, we mark the page as dirty:
->>>>
->>>> Well, I mention that POPULATE_READ explicitly doesn't do that. I
->>>> primarily set it because populate_vma_page_range() also sets it.
->>>>
->>>> Is it safe to *not* set it? IOW, fault something writable into a page
->>>> table (where the CPU could dirty it without additional page faults)
->>>> without marking it accessed? For me, this made logically sense. Thus I
->>>> also understood why populate_vma_page_range() set it.
->>>
->>> FOLL_TOUCH doesn't have anything to do with installing the PTE - it
->>> essentially means "the caller of get_user_pages wants to read/write
->>> the contents of the returned page, so please do the same things you
->>> would do if userspace was accessing the page". So in particular, if
->>> you look up a page via get_user_pages() with FOLL_WRITE|FOLL_TOUCH,
->>> that tells the MM subsystem "I will be writing into this page directly
->>> from the kernel, bypassing the userspace page tables, so please mark
->>> it as dirty now so that it will be properly written back later". Part
->>> of that is that it marks the page as recently used, which has an
->>> effect on LRU pageout behavior, I think - as far as I understand, that
->>> is why populate_vma_page_range() uses FOLL_TOUCH.
->>>
->>> If you look at __get_user_pages(), you can see that it is split up
->>> into two major parts: faultin_page() for creating PTEs, and
->>> follow_page_mask() for grabbing pages from PTEs. faultin_page()
->>> ignores FOLL_TOUCH completely; only follow_page_mask() uses it.
->>>
->>> In a way I guess maybe you do want the "mark as recently accessed"
->>> part that FOLL_TOUCH would give you without FOLL_WRITE? But I think
->>> you very much don't want the dirtying that FOLL_TOUCH|FOLL_WRITE leads
->>> to. Maybe the ideal approach would be to add a new FOLL flag to say "I
->>> only want to mark as recently used, I don't want to dirty". Or maybe
->>> it's enough to just leave out the FOLL_TOUCH entirely, I don't know.
->>
->> Any thoughts why populate_vma_page_range() does it?
-> 
-> Sorry, I missed the explanation above - thanks!
-
-Looking into the details, adjusting the FOLL_TOUCH logic won't make too 
-much of a difference for MADV_POPULATE_WRITE I guess. AFAIKs, the 
-biggest impact of FOLL_TOUCH is actually with FOLL_FORCE - which we are 
-not using, but populate_vma_page_range() is.
+On Wed, Apr 7, 2021 at 2:34 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> The common scripts/install.sh script will now work for parisc, all that
+> is needed is to add the compressed image type to it.  So add that file
+> type check, and then we can remove the two different copies of the
+> parisc install.sh script that were only different by one line and have
+> the arch call the common install script.
+>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: linux-parisc@vger.kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  arch/parisc/Makefile        |  4 +--
+>  arch/parisc/boot/Makefile   |  2 +-
+>  arch/parisc/boot/install.sh | 65 ------------------------------------
+>  arch/parisc/install.sh      | 66 -------------------------------------
+>  scripts/install.sh          |  1 +
+>  5 files changed, 4 insertions(+), 134 deletions(-)
+>  delete mode 100644 arch/parisc/boot/install.sh
+>  delete mode 100644 arch/parisc/install.sh
+>
+> diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
+> index 7d9f71aa829a..296d8ab8e2aa 100644
+> --- a/arch/parisc/Makefile
+> +++ b/arch/parisc/Makefile
+> @@ -164,10 +164,10 @@ vmlinuz: vmlinux
+>  endif
+>
+>  install:
+> -       $(CONFIG_SHELL) $(srctree)/arch/parisc/install.sh \
+> +       $(CONFIG_SHELL) $(srctree)/scripts/install.sh \
+>                         $(KERNELRELEASE) vmlinux System.map "$(INSTALL_PATH)"
+>  zinstall:
+> -       $(CONFIG_SHELL) $(srctree)/arch/parisc/install.sh \
+> +       $(CONFIG_SHELL) $(srctree)/scripts/install.sh \
+>                         $(KERNELRELEASE) vmlinuz System.map "$(INSTALL_PATH)"
+>
+>  CLEAN_FILES    += lifimage
+> diff --git a/arch/parisc/boot/Makefile b/arch/parisc/boot/Makefile
+> index 61f44142cfe1..ad2611929aee 100644
+> --- a/arch/parisc/boot/Makefile
+> +++ b/arch/parisc/boot/Makefile
+> @@ -17,5 +17,5 @@ $(obj)/compressed/vmlinux: FORCE
+>         $(Q)$(MAKE) $(build)=$(obj)/compressed $@
+>
+>  install: $(CONFIGURE) $(obj)/bzImage
+> -       sh -x  $(srctree)/$(obj)/install.sh $(KERNELRELEASE) $(obj)/bzImage \
+> +       sh -x  $(srctree)/scripts/install.sh $(KERNELRELEASE) $(obj)/bzImage \
+>               System.map "$(INSTALL_PATH)"
 
 
-If a page was not faulted in yet, 
-faultin_page(FOLL_WRITE)->handle_mm_fault(FAULT_FLAG_WRITE) will already 
-mark the PTE/PMD/... dirty and accessed. One example is 
-handle_pte_fault(). We will mark the page accessed again via FOLL_TOUCH, 
-which doesn't seem to be strictly required.
+
+As far as I understood, there is no way to invoke this 'install' target
+in arch/parisc/boot/Makefile since everything is done
+by arch/parisc/Makefile.
 
 
-If the page was already faulted in, we have three cases:
 
-1. Page faulted in writable. The page should already be dirty (otherwise 
-we would be in trouble I guess). We will mark it accessed.
-
-2. Page faulted in readable. handle_mm_fault() will fault it in writable 
-and set the page dirty.
-
-3. Page faulted in readable and we have FOLL_FORCE. We mark the page 
-dirty and accessed.
+Can we remove this 'install' rule entirely?
 
 
-So doing a MADV_POPULATE_WRITE, whereby we prefault page tables 
-writable, doesn't seem to fly without marking the pages dirty. That's 
-one reason why I included MADV_POPULATE_READ.
 
-We could
 
-a) Drop FOLL_TOUCH. We are not marking the page accessed, which would 
-mean it gets evicted rather earlier than later.
 
-b) Introduce FOLL_ACCESSED which won't do the dirtying. But then, the 
-pages are already dirty as explained above, so there isn't a real 
-observable change.
 
-c) Keep it as is: Mark the page accessed and dirty. As it's already 
-dirty, that does not seem to be a real issue.
 
-Am I missing something obvious? Thanks!
 
--- 
-Thanks,
 
-David / dhildenb
 
+> diff --git a/arch/parisc/boot/install.sh b/arch/parisc/boot/install.sh
+> deleted file mode 100644
+> index 8f7c365fad83..000000000000
+> --- a/arch/parisc/boot/install.sh
+> +++ /dev/null
+> @@ -1,65 +0,0 @@
+> -#!/bin/sh
+> -#
+> -# arch/parisc/install.sh, derived from arch/i386/boot/install.sh
+> -#
+> -# This file is subject to the terms and conditions of the GNU General Public
+> -# License.  See the file "COPYING" in the main directory of this archive
+> -# for more details.
+> -#
+> -# Copyright (C) 1995 by Linus Torvalds
+> -#
+> -# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
+> -#
+> -# "make install" script for i386 architecture
+> -#
+> -# Arguments:
+> -#   $1 - kernel version
+> -#   $2 - kernel image file
+> -#   $3 - kernel map file
+> -#   $4 - default install path (blank if root directory)
+> -#
+> -
+> -verify () {
+> -       if [ ! -f "$1" ]; then
+> -               echo ""                                                   1>&2
+> -               echo " *** Missing file: $1"                              1>&2
+> -               echo ' *** You need to run "make" before "make install".' 1>&2
+> -               echo ""                                                   1>&2
+> -               exit 1
+> -       fi
+> -}
+> -
+> -# Make sure the files actually exist
+> -
+> -verify "$2"
+> -verify "$3"
+> -
+> -# User may have a custom install script
+> -
+> -if [ -n "${INSTALLKERNEL}" ]; then
+> -  if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
+> -  if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
+> -fi
+> -
+> -# Default install
+> -
+> -if [ "$(basename $2)" = "zImage" ]; then
+> -# Compressed install
+> -  echo "Installing compressed kernel"
+> -  base=vmlinuz
+> -else
+> -# Normal install
+> -  echo "Installing normal kernel"
+> -  base=vmlinux
+> -fi
+> -
+> -if [ -f $4/$base-$1 ]; then
+> -  mv $4/$base-$1 $4/$base-$1.old
+> -fi
+> -cat $2 > $4/$base-$1
+> -
+> -# Install system map file
+> -if [ -f $4/System.map-$1 ]; then
+> -  mv $4/System.map-$1 $4/System.map-$1.old
+> -fi
+> -cp $3 $4/System.map-$1
+> diff --git a/arch/parisc/install.sh b/arch/parisc/install.sh
+> deleted file mode 100644
+> index 056d588befdd..000000000000
+> --- a/arch/parisc/install.sh
+> +++ /dev/null
+> @@ -1,66 +0,0 @@
+> -#!/bin/sh
+> -#
+> -# arch/parisc/install.sh, derived from arch/i386/boot/install.sh
+> -#
+> -# This file is subject to the terms and conditions of the GNU General Public
+> -# License.  See the file "COPYING" in the main directory of this archive
+> -# for more details.
+> -#
+> -# Copyright (C) 1995 by Linus Torvalds
+> -#
+> -# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
+> -#
+> -# "make install" script for i386 architecture
+> -#
+> -# Arguments:
+> -#   $1 - kernel version
+> -#   $2 - kernel image file
+> -#   $3 - kernel map file
+> -#   $4 - default install path (blank if root directory)
+> -#
+> -
+> -verify () {
+> -       if [ ! -f "$1" ]; then
+> -               echo ""                                                   1>&2
+> -               echo " *** Missing file: $1"                              1>&2
+> -               echo ' *** You need to run "make" before "make install".' 1>&2
+> -               echo ""                                                   1>&2
+> -               exit 1
+> -       fi
+> -}
+> -
+> -# Make sure the files actually exist
+> -
+> -verify "$2"
+> -verify "$3"
+> -
+> -# User may have a custom install script
+> -
+> -if [ -n "${INSTALLKERNEL}" ]; then
+> -  if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
+> -  if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
+> -fi
+> -
+> -# Default install
+> -
+> -if [ "$(basename $2)" = "vmlinuz" ]; then
+> -# Compressed install
+> -  echo "Installing compressed kernel"
+> -  base=vmlinuz
+> -else
+> -# Normal install
+> -  echo "Installing normal kernel"
+> -  base=vmlinux
+> -fi
+> -
+> -if [ -f $4/$base-$1 ]; then
+> -  mv $4/$base-$1 $4/$base-$1.old
+> -fi
+> -cat $2 > $4/$base-$1
+> -
+> -# Install system map file
+> -if [ -f $4/System.map-$1 ]; then
+> -  mv $4/System.map-$1 $4/System.map-$1.old
+> -fi
+> -cp $3 $4/System.map-$1
+> -
+> diff --git a/scripts/install.sh b/scripts/install.sh
+> index 407ffa65062c..e0ffb95737d4 100644
+> --- a/scripts/install.sh
+> +++ b/scripts/install.sh
+> @@ -53,6 +53,7 @@ base=$(basename "$2")
+>  if [ "$base" = "bzImage" ] ||
+>     [ "$base" = "Image.gz" ] ||
+>     [ "$base" = "vmlinux.gz" ] ||
+> +   [ "$base" = "vmlinuz" ] ||
+>     [ "$base" = "zImage" ] ; then
+>         # Compressed install
+>         echo "Installing compressed kernel"
+> --
+> 2.31.1
+>
+
+
+--
+Best Regards
+Masahiro Yamada
