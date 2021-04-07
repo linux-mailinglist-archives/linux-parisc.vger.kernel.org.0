@@ -2,247 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD31C356329
-	for <lists+linux-parisc@lfdr.de>; Wed,  7 Apr 2021 07:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224113567B9
+	for <lists+linux-parisc@lfdr.de>; Wed,  7 Apr 2021 11:10:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348741AbhDGFfG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 7 Apr 2021 01:35:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38444 "EHLO mail.kernel.org"
+        id S1346321AbhDGJKN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 7 Apr 2021 05:10:13 -0400
+Received: from mout.gmx.net ([212.227.17.22]:51413 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348735AbhDGFfF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 7 Apr 2021 01:35:05 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CA765613C0;
-        Wed,  7 Apr 2021 05:34:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1617773696;
-        bh=uMP12yNGVObvgWoR/JQ2SMvn/xmE14YMI6OCZDUEt6c=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k+kNCQEr8yxoXksUAGeIg0cHAcz58x0yHwYpeE215KR+xLyQrlubB5SdoZhBEI4wF
-         pujGtCniuFqLvEs6MGZs79LcD/bn8rDgleSYIcWsnbIut0GzxUucX2m8P3a5Zbzn7N
-         tdoHchZFpyC0OEcJG5c+wrTUGJO85+aqpkOJwEwk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>
-Cc:     linux-kbuild@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH 15/20] kbuild: parisc: use common install script
-Date:   Wed,  7 Apr 2021 07:34:14 +0200
-Message-Id: <20210407053419.449796-16-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210407053419.449796-1-gregkh@linuxfoundation.org>
-References: <20210407053419.449796-1-gregkh@linuxfoundation.org>
+        id S1349965AbhDGJKM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 7 Apr 2021 05:10:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1617786591;
+        bh=odbMq1QkA2+jkrNnf2C3WSIOA2ISmQMSizqtiktlTBU=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=QQhapKYluwjps+VHKiPHnQ9NYCqq4hBNW/lMQIE9FDzjpBQoxPGCLzmxrvXY0inYi
+         B/xL7MSwBTWH19kOV0c29g8h+cyZWrdd9o8pKBQFMSfqARgbCFy72TlG+OECC2T2sO
+         pz0QnRl13hSLOyVutbHPEcWvcROcksplEjP6UvCA=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530 ([92.116.167.102]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQvD5-1lFx1B4Akh-00Nxca; Wed, 07
+ Apr 2021 11:09:47 +0200
+Date:   Wed, 7 Apr 2021 11:09:09 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Cc:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+        Gao Xiang <hsiangkao@redhat.com>,
+        Wan Jiabing <wanjiabing@vivo.com>
+Subject: [GIT PULL] parisc architecture fixes for kernel v5.12-rc7
+Message-ID: <YG12tezhGsQ5R/lG@ls3530>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:MlnCGZyT1GWzXv3G1cJVLTYtm35jYDanEuyl8ALG52fIEfLz0CY
+ 9wjubHfR8rl8/sVaULwceZE9UgjYygwiJIH9vncy+PfPHpFtY9D9xprRmmvG8se6292sA6b
+ 8hZzXEOfC+YbhPV5HQ2lURKw8dw1rqWlx9BZhFwtk+yQeD/rduvRI/dvGvsoyLC0QEzRMtt
+ 5Cr5KW8YcbhlJSJvcwBBA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:nLkqkVBVmGY=:wJeN/XRNkomy0NWKVwc13a
+ nxytWDYGPyFqP2Kq8keaTPU1Sens/v1nhRhXpPDy2eN5fuD6yKBGiBJs1gzCpHFETZ4QZKqFW
+ 0es6B7ZL3AVsMCT8p8/qi3QTJEx+FPoAYT82dKWsuh6aKB4/A9PYyghQ04UrAm3XidqWZhxPr
+ Mns8THQpcNO05tFXvwDaKoDJpKD48QKDhWEOOanwLineoYA/rzN5xso3mFH59i9MIXbC+5z6X
+ /J3Y5l4R/HWb97zsuYiP86ImT6Ptex2htpcHQShNfus2yCv+e988uD74w4YDUi9YQHZl/5Wmm
+ ki+JAvjtez617SFWw6A+Y7ll/EOcEysBUuS/4hUP5wMoEX1QUmFXAp2NrZBC4ZPp781QHWOwx
+ Ozu6fwWVNPZnoIn+lM9CnfDgDmjyTOB7vWQlu0EDo6BjMbpBIC/57Oc7q995U88woTfE63oUG
+ fDMy7O08TyzWazMhtO0eYMylN2uIQnQE8bYr2zZk28TCt/TKtQhT+q1Bl9sCtdFjcD4nCm1/+
+ lcCYjcFYBNjczs1xSLcuqK3qJ8CAfLgTKtSQlKuU+ql2hGD1GPRyVAIdt9nU1ofGg+gV/sVlh
+ Nxdg96xM36kkDy4BzjGZMMMjCL/t6eTnNvhqDW+pFeaEOxMhfzBkC2TilejjJX8eouxld1dCO
+ RRvKE0nTvUVivTgqFGy5qmiyObziOWbL8+UYltqc+P11Sa5EHTu+zLtUtkiNvLVojj0zrKhVT
+ OGRZ3qFJUKnXicRUuOPv6qrcrwSDzyZC4gii6hIRfFdVrOvnj8eI+K7tL1b51qPtENdEq3Vv2
+ cj1GC9QJJdOwz6uLs/BLCaVz9AyoyVRoU40beJJisHGYf369pBVeFWzDZnau+o2Y0jRQp2kz5
+ Hz4aHAnvc0fdufoJZYH0bBZYGJwBDk+KPS5qsHvDRbJ/FVbOdDQrJfdvKNd8dt9qO9NY0N5CA
+ a5SkL1v20IYnXHPzEcD3swncNk2eDOZIy1p2HhQen64mKSG1HxVWxj6gsaA6elyPtbfts0L4o
+ RpkTMioL/5FKbjj5RiK1C0n9Tb17UCAOfaRlrL7kz0Kr61KJzZ1e2iBYtTGNcYtMbPPV1h7Gh
+ /O/l4iUNH0+Efbk0kv4TYgmTmmLzqZESMtxREQHKhV0lmaOn8FVulN08u8eqhMSYQo0UD54yf
+ XsJBHRvVZzKJZx3f9TulRNtnHHDCmwGDJYw4xcjZmvZk4QfwVR3cF5KRM+iwPFz5thH18=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The common scripts/install.sh script will now work for parisc, all that
-is needed is to add the compressed image type to it.  So add that file
-type check, and then we can remove the two different copies of the
-parisc install.sh script that were only different by one line and have
-the arch call the common install script.
+Hi Linus,
 
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/parisc/Makefile        |  4 +--
- arch/parisc/boot/Makefile   |  2 +-
- arch/parisc/boot/install.sh | 65 ------------------------------------
- arch/parisc/install.sh      | 66 -------------------------------------
- scripts/install.sh          |  1 +
- 5 files changed, 4 insertions(+), 134 deletions(-)
- delete mode 100644 arch/parisc/boot/install.sh
- delete mode 100644 arch/parisc/install.sh
+please pull four small parisc architecture fixes for kernel 5.12-rc7 from:
 
-diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
-index 7d9f71aa829a..296d8ab8e2aa 100644
---- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -164,10 +164,10 @@ vmlinuz: vmlinux
- endif
- 
- install:
--	$(CONFIG_SHELL) $(srctree)/arch/parisc/install.sh \
-+	$(CONFIG_SHELL) $(srctree)/scripts/install.sh \
- 			$(KERNELRELEASE) vmlinux System.map "$(INSTALL_PATH)"
- zinstall:
--	$(CONFIG_SHELL) $(srctree)/arch/parisc/install.sh \
-+	$(CONFIG_SHELL) $(srctree)/scripts/install.sh \
- 			$(KERNELRELEASE) vmlinuz System.map "$(INSTALL_PATH)"
- 
- CLEAN_FILES	+= lifimage
-diff --git a/arch/parisc/boot/Makefile b/arch/parisc/boot/Makefile
-index 61f44142cfe1..ad2611929aee 100644
---- a/arch/parisc/boot/Makefile
-+++ b/arch/parisc/boot/Makefile
-@@ -17,5 +17,5 @@ $(obj)/compressed/vmlinux: FORCE
- 	$(Q)$(MAKE) $(build)=$(obj)/compressed $@
- 
- install: $(CONFIGURE) $(obj)/bzImage
--	sh -x  $(srctree)/$(obj)/install.sh $(KERNELRELEASE) $(obj)/bzImage \
-+	sh -x  $(srctree)/scripts/install.sh $(KERNELRELEASE) $(obj)/bzImage \
- 	      System.map "$(INSTALL_PATH)"
-diff --git a/arch/parisc/boot/install.sh b/arch/parisc/boot/install.sh
-deleted file mode 100644
-index 8f7c365fad83..000000000000
---- a/arch/parisc/boot/install.sh
-+++ /dev/null
-@@ -1,65 +0,0 @@
--#!/bin/sh
--#
--# arch/parisc/install.sh, derived from arch/i386/boot/install.sh
--#
--# This file is subject to the terms and conditions of the GNU General Public
--# License.  See the file "COPYING" in the main directory of this archive
--# for more details.
--#
--# Copyright (C) 1995 by Linus Torvalds
--#
--# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
--#
--# "make install" script for i386 architecture
--#
--# Arguments:
--#   $1 - kernel version
--#   $2 - kernel image file
--#   $3 - kernel map file
--#   $4 - default install path (blank if root directory)
--#
--
--verify () {
--	if [ ! -f "$1" ]; then
--		echo ""                                                   1>&2
--		echo " *** Missing file: $1"                              1>&2
--		echo ' *** You need to run "make" before "make install".' 1>&2
--		echo ""                                                   1>&2
--		exit 1
--	fi
--}
--
--# Make sure the files actually exist
--
--verify "$2"
--verify "$3"
--
--# User may have a custom install script
--
--if [ -n "${INSTALLKERNEL}" ]; then
--  if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
--  if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
--fi
--
--# Default install
--
--if [ "$(basename $2)" = "zImage" ]; then
--# Compressed install
--  echo "Installing compressed kernel"
--  base=vmlinuz
--else
--# Normal install
--  echo "Installing normal kernel"
--  base=vmlinux
--fi
--
--if [ -f $4/$base-$1 ]; then
--  mv $4/$base-$1 $4/$base-$1.old
--fi
--cat $2 > $4/$base-$1
--
--# Install system map file
--if [ -f $4/System.map-$1 ]; then
--  mv $4/System.map-$1 $4/System.map-$1.old
--fi
--cp $3 $4/System.map-$1
-diff --git a/arch/parisc/install.sh b/arch/parisc/install.sh
-deleted file mode 100644
-index 056d588befdd..000000000000
---- a/arch/parisc/install.sh
-+++ /dev/null
-@@ -1,66 +0,0 @@
--#!/bin/sh
--#
--# arch/parisc/install.sh, derived from arch/i386/boot/install.sh
--#
--# This file is subject to the terms and conditions of the GNU General Public
--# License.  See the file "COPYING" in the main directory of this archive
--# for more details.
--#
--# Copyright (C) 1995 by Linus Torvalds
--#
--# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
--#
--# "make install" script for i386 architecture
--#
--# Arguments:
--#   $1 - kernel version
--#   $2 - kernel image file
--#   $3 - kernel map file
--#   $4 - default install path (blank if root directory)
--#
--
--verify () {
--	if [ ! -f "$1" ]; then
--		echo ""                                                   1>&2
--		echo " *** Missing file: $1"                              1>&2
--		echo ' *** You need to run "make" before "make install".' 1>&2
--		echo ""                                                   1>&2
--		exit 1
--	fi
--}
--
--# Make sure the files actually exist
--
--verify "$2"
--verify "$3"
--
--# User may have a custom install script
--
--if [ -n "${INSTALLKERNEL}" ]; then
--  if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
--  if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
--fi
--
--# Default install
--
--if [ "$(basename $2)" = "vmlinuz" ]; then
--# Compressed install
--  echo "Installing compressed kernel"
--  base=vmlinuz
--else
--# Normal install
--  echo "Installing normal kernel"
--  base=vmlinux
--fi
--
--if [ -f $4/$base-$1 ]; then
--  mv $4/$base-$1 $4/$base-$1.old
--fi
--cat $2 > $4/$base-$1
--
--# Install system map file
--if [ -f $4/System.map-$1 ]; then
--  mv $4/System.map-$1 $4/System.map-$1.old
--fi
--cp $3 $4/System.map-$1
--
-diff --git a/scripts/install.sh b/scripts/install.sh
-index 407ffa65062c..e0ffb95737d4 100644
---- a/scripts/install.sh
-+++ b/scripts/install.sh
-@@ -53,6 +53,7 @@ base=$(basename "$2")
- if [ "$base" = "bzImage" ] ||
-    [ "$base" = "Image.gz" ] ||
-    [ "$base" = "vmlinux.gz" ] ||
-+   [ "$base" = "vmlinuz" ] ||
-    [ "$base" = "zImage" ] ; then
- 	# Compressed install
- 	echo "Installing compressed kernel"
--- 
-2.31.1
+  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.12-3
 
+One link error fix found by the kernel test robot, one sparse warning fix,
+remove a duplicate declaration and some spelling fixes.
+
+Thanks,
+Helge
+
+----------------------------------------------------------------
+Bhaskar Chowdhury (1):
+      parisc: math-emu: Few spelling fixes in the file fpu.h
+
+Gao Xiang (1):
+      parisc: avoid a warning on u8 cast for cmpxchg on u8 pointers
+
+Helge Deller (1):
+      parisc: parisc-agp requires SBA IOMMU driver
+
+Wan Jiabing (1):
+      parisc: Remove duplicate struct task_struct declaration
+
+ arch/parisc/include/asm/cmpxchg.h   |  2 +-
+ arch/parisc/include/asm/processor.h |  1 -
+ arch/parisc/math-emu/fpu.h          | 32 +++-----------------------------
+ drivers/char/agp/Kconfig            |  2 +-
+ 4 files changed, 5 insertions(+), 32 deletions(-)
