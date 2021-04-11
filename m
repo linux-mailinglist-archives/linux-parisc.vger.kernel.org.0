@@ -2,177 +2,174 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E67235A8DD
-	for <lists+linux-parisc@lfdr.de>; Sat, 10 Apr 2021 00:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 487D935B582
+	for <lists+linux-parisc@lfdr.de>; Sun, 11 Apr 2021 15:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235118AbhDIWkq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 9 Apr 2021 18:40:46 -0400
-Received: from elvis.franken.de ([193.175.24.41]:37276 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234960AbhDIWko (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 9 Apr 2021 18:40:44 -0400
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1lUznc-00038n-02; Sat, 10 Apr 2021 00:40:24 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id EDAA4C24FC; Sat, 10 Apr 2021 00:39:11 +0200 (CEST)
-Date:   Sat, 10 Apr 2021 00:39:11 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Alexander Lobakin <alobakin@pm.me>, Wei Liu <wei.liu@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Corey Minyard <cminyard@mvista.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        "Jason J. Herne" <jjherne@linux.ibm.com>,
-        Joerg Roedel <jroedel@suse.de>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Joe Perches <joe@perches.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Scott Branden <scott.branden@broadcom.com>,
-        Olof Johansson <olof@lixom.net>,
-        Mihai Carabas <mihai.carabas@oracle.com>,
-        Wang Wenhu <wenhu.wang@vivo.com>,
-        Marek Czerski <ma.czerski@gmail.com>,
-        Hongbo Yao <yaohongbo@huawei.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Alexander Egorenkov <egorenar@linux.ibm.com>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-hyperv@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-clk@vger.kernel.org, linux-edac@vger.kernel.org,
-        coresight@lists.linaro.org, linux-leds@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-staging@lists.linux.dev, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-arch@vger.kernel.org,
-        kexec@lists.infradead.org, rcu@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        id S235857AbhDKN5W (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 11 Apr 2021 09:57:22 -0400
+Received: from conuserg-07.nifty.com ([210.131.2.74]:29173 "EHLO
+        conuserg-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235338AbhDKN5V (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 11 Apr 2021 09:57:21 -0400
+Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
+        by conuserg-07.nifty.com with ESMTP id 13BDtZpj024906;
+        Sun, 11 Apr 2021 22:55:36 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com 13BDtZpj024906
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1618149336;
+        bh=vS8e0SLZkCBy0RmRBkXW9rD3CCXXaiE+fv8+9wtNFcQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=T4auvfUkLCtH1xfy+3/BrGcOzcfBKdffBrAXk4ktteZcBCINybIlbpHd9u+FXgcif
+         RO7XzBcc9p98FwTRNy8JybHK2F1kD5uOTKziM8txSjy2xhfOkbGIf/yytdOE+0jpI8
+         KviylrePITI/U3uMXnTZgwZjolQgFonocj7FYZytyy/PjeAFIk4d+ZnlqNcz82TC5w
+         YlRMzOSoLaSCC1uOkHx7R065zcm6947UcUG2em5S3RDI+7PnZJcADDKJj5uN27osZQ
+         9HFOIw4qnFiaxSzmdf0tITxyKAxAA/2oJKzo5VUOhdMB6iiBQ1EhXsj3PC5YdEkMlh
+         RRIP4+C1tEq2Q==
+X-Nifty-SrcIP: [133.32.232.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Corey Minyard <minyard@acm.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        James Morse <james.morse@arm.com>,
-        Robert Richter <rric@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Pavel Machek <pavel@ucw.cz>, Alex Elder <elder@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Jens Frederich <jfrederich@gmail.com>,
-        Daniel Drake <dsd@laptop.org>,
-        Jon Nettleton <jon.nettleton@gmail.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Iurii Zaikin <yzaikin@google.com>,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v2 1/1] kernel.h: Split out panic and oops helpers
-Message-ID: <20210409223911.GA21445@alpha.franken.de>
-References: <20210409100250.25922-1-andriy.shevchenko@linux.intel.com>
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        uclinux-h8-devel@lists.sourceforge.jp
+Subject: [PATCH] kbuild: use ?= to assign CROSS_COMPILE by arch-Makefile
+Date:   Sun, 11 Apr 2021 22:55:32 +0900
+Message-Id: <20210411135532.219797-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210409100250.25922-1-andriy.shevchenko@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Apr 09, 2021 at 01:02:50PM +0300, Andy Shevchenko wrote:
-> kernel.h is being used as a dump for all kinds of stuff for a long time.
-> Here is the attempt to start cleaning it up by splitting out panic and
-> oops helpers.
-> 
-> There are several purposes of doing this:
-> - dropping dependency in bug.h
-> - dropping a loop by moving out panic_notifier.h
-> - unload kernel.h from something which has its own domain
-> 
-> At the same time convert users tree-wide to use new headers, although
-> for the time being include new header back to kernel.h to avoid twisted
-> indirected includes for existing users.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-> Acked-by: Corey Minyard <cminyard@mvista.com>
-> Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> Acked-by: Kees Cook <keescook@chromium.org>
-> Acked-by: Wei Liu <wei.liu@kernel.org>
-> Acked-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> v2:
->  - fixed all errors with allmodconfig on x86_64 (Andrew)
->  - checked with allyesconfig on x86_64
->  - additionally grepped source code for panic notifier list usage
->    and converted all users
->  - elaborated commit message (Luis)
->  - collected given tags (incl. Andrew's SoB, see below)
-> 
-> I added Andrew's SoB since part of the fixes I took from him. Andrew,
-> feel free to amend or tell me how you want me to do.
-> 
->  arch/mips/kernel/relocate.c                   |  1 +
->  arch/mips/sgi-ip22/ip22-reset.c               |  1 +
->  arch/mips/sgi-ip32/ip32-reset.c               |  1 +
+Use ?= operator to let arch/*/Makefile to assign CROSS_COMPILE only
+when CROSS_COMPILE is undefined.
 
-Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+This allows arch-Makefiles to drop the ifeq ($(CROSS_COMPILE),)
+conditional.
 
+This slightly changes the behavior; the arch-Makefile previously
+overrode CROSS_COMPILE when CROSS_COMPILE has already been made empty
+via an environment variable as in 'export CROSS_COMPILE='.
+
+With this commit, arch-Makefle will respect the user's environment
+set-up, which seems to be a more correct behavior.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ arch/arc/Makefile    | 4 +---
+ arch/h8300/Makefile  | 4 +---
+ arch/m68k/Makefile   | 4 +---
+ arch/mips/Makefile   | 4 +---
+ arch/parisc/Makefile | 6 ++----
+ arch/sh/Makefile     | 4 +---
+ 6 files changed, 7 insertions(+), 19 deletions(-)
+
+diff --git a/arch/arc/Makefile b/arch/arc/Makefile
+index 4392c9c189c4..bd5a9daa3461 100644
+--- a/arch/arc/Makefile
++++ b/arch/arc/Makefile
+@@ -5,9 +5,7 @@
+ 
+ KBUILD_DEFCONFIG := haps_hs_smp_defconfig
+ 
+-ifeq ($(CROSS_COMPILE),)
+-CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux-)
+-endif
++CROSS_COMPILE ?= $(call cc-cross-prefix, arc-linux- arceb-linux-)
+ 
+ cflags-y	+= -fno-common -pipe -fno-builtin -mmedium-calls -D__linux__
+ 
+diff --git a/arch/h8300/Makefile b/arch/h8300/Makefile
+index ba0f26cfad61..d6e466dbfc00 100644
+--- a/arch/h8300/Makefile
++++ b/arch/h8300/Makefile
+@@ -26,9 +26,7 @@ KBUILD_LDFLAGS += $(ldflags-y)
+ 
+ CHECKFLAGS += -msize-long
+ 
+-ifeq ($(CROSS_COMPILE),)
+-CROSS_COMPILE := $(call cc-cross-prefix, h8300-unknown-linux- h8300-linux-)
+-endif
++CROSS_COMPILE ?= $(call cc-cross-prefix, h8300-unknown-linux- h8300-linux-)
+ 
+ core-y	+= arch/$(ARCH)/kernel/ arch/$(ARCH)/mm/
+ core-y	+= arch/$(ARCH)/boot/dts/
+diff --git a/arch/m68k/Makefile b/arch/m68k/Makefile
+index ea14f2046fb4..79208ad7a355 100644
+--- a/arch/m68k/Makefile
++++ b/arch/m68k/Makefile
+@@ -17,10 +17,8 @@
+ KBUILD_DEFCONFIG := multi_defconfig
+ 
+ ifneq ($(SUBARCH),$(ARCH))
+-	ifeq ($(CROSS_COMPILE),)
+-		CROSS_COMPILE := $(call cc-cross-prefix, \
++	CROSS_COMPILE ?= $(call cc-cross-prefix, \
+ 			m68k-linux-gnu- m68k-linux- m68k-unknown-linux-gnu-)
+-	endif
+ endif
+ 
+ #
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index e71d587af49c..75e4e46532a4 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -51,9 +51,7 @@ UTS_MACHINE		:= mips64
+ endif
+ 
+ ifneq ($(SUBARCH),$(ARCH))
+-  ifeq ($(CROSS_COMPILE),)
+-    CROSS_COMPILE := $(call cc-cross-prefix, $(tool-archpref)-linux-  $(tool-archpref)-linux-gnu-  $(tool-archpref)-unknown-linux-gnu-)
+-  endif
++  CROSS_COMPILE ?= $(call cc-cross-prefix, $(tool-archpref)-linux-  $(tool-archpref)-linux-gnu-  $(tool-archpref)-unknown-linux-gnu-)
+ endif
+ 
+ ifdef CONFIG_FUNCTION_GRAPH_TRACER
+diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
+index 7d9f71aa829a..62272cb3513c 100644
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -42,12 +42,10 @@ endif
+ export LD_BFD
+ 
+ ifneq ($(SUBARCH),$(UTS_MACHINE))
+-	ifeq ($(CROSS_COMPILE),)
+-		CC_SUFFIXES = linux linux-gnu unknown-linux-gnu
+-		CROSS_COMPILE := $(call cc-cross-prefix, \
++	CC_SUFFIXES = linux linux-gnu unknown-linux-gnu
++	CROSS_COMPILE ?= $(call cc-cross-prefix, \
+ 			$(foreach a,$(CC_ARCHES), \
+ 			$(foreach s,$(CC_SUFFIXES),$(a)-$(s)-)))
+-	endif
+ endif
+ 
+ ifdef CONFIG_DYNAMIC_FTRACE
+diff --git a/arch/sh/Makefile b/arch/sh/Makefile
+index 3bcbf52fb30e..0e8277be362e 100644
+--- a/arch/sh/Makefile
++++ b/arch/sh/Makefile
+@@ -10,9 +10,7 @@
+ # for more details.
+ #
+ ifneq ($(SUBARCH),$(ARCH))
+-  ifeq ($(CROSS_COMPILE),)
+-    CROSS_COMPILE := $(call cc-cross-prefix, sh-linux- sh-linux-gnu- sh-unknown-linux-gnu-)
+-  endif
++  CROSS_COMPILE ?= $(call cc-cross-prefix, sh-linux- sh-linux-gnu- sh-unknown-linux-gnu-)
+ endif
+ 
+ KBUILD_DEFCONFIG	:= shx3_defconfig
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+2.27.0
+
