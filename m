@@ -2,523 +2,367 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAC00364569
-	for <lists+linux-parisc@lfdr.de>; Mon, 19 Apr 2021 15:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EAEE368B0D
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Apr 2021 04:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240921AbhDSN4I (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 19 Apr 2021 09:56:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:44834 "EHLO
+        id S240162AbhDWCfE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 22 Apr 2021 22:35:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48560 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S240709AbhDSNz5 (ORCPT
+        by vger.kernel.org with ESMTP id S240107AbhDWCfD (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 19 Apr 2021 09:55:57 -0400
+        Thu, 22 Apr 2021 22:35:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1618840526;
+        s=mimecast20190719; t=1619145266;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=dLd2jFmyAv8PWEgrP1PmR2Fwcs+q67L/hXPeC7/MiWQ=;
-        b=CVDumdgRw8rONOtmRclkHifsq7C/CTVGxUAT1FhH/7V9Q67vpwcNNywl5nuv+WXN1QsVCS
-        Zs0vJA5/y9+3oITu1yjhLZSps71vS6Rr5OmR1UOQ+O/VW1qxoIqTFtfJ1LkdGYeQ+xu+in
-        hHJeIMxln/QH3smsv4ufBqmr2dKMPg0=
+        bh=ZQNY+2dK0F2J25PQHKOH4E0JeQgPhZv8sqXjSjM4ajs=;
+        b=iPxRYj4zeTjavxcBVvkNSs8i8zgfO0e6LVzkhrGvbjGrDB2/RLqnKJhZ8SGpQVtT8nCLs/
+        iRTBBUpNwkXyRRujDvvkNtpv2DH57O+T/Ix9fdrnxPh1TkonyXdRj9rA+HIU+AXyID2mot
+        J/af6zzcqIB3x/W0yvowykyAEPTdKPo=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-4-tP1Ks2nWNOC1QdZyqBSzCQ-1; Mon, 19 Apr 2021 09:55:24 -0400
-X-MC-Unique: tP1Ks2nWNOC1QdZyqBSzCQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+ us-mta-505-3icZjueBOtWDe9XSTnYHtg-1; Thu, 22 Apr 2021 22:34:23 -0400
+X-MC-Unique: 3icZjueBOtWDe9XSTnYHtg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7CC981074645;
-        Mon, 19 Apr 2021 13:55:21 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-115-67.ams2.redhat.com [10.36.115.67])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 656FE10013D7;
-        Mon, 19 Apr 2021 13:55:13 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Michal Hocko <mhocko@suse.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Minchan Kim <minchan@kernel.org>, Jann Horn <jannh@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Hugh Dickins <hughd@google.com>,
-        Rik van Riel <riel@surriel.com>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Peter Xu <peterx@redhat.com>,
-        Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        Shuah Khan <shuah@kernel.org>, linux-alpha@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Linux API <linux-api@vger.kernel.org>
-Subject: [PATCH v2 5/5] selftests/vm: add test for MADV_POPULATE_(READ|WRITE)
-Date:   Mon, 19 Apr 2021 15:54:43 +0200
-Message-Id: <20210419135443.12822-6-david@redhat.com>
-In-Reply-To: <20210419135443.12822-1-david@redhat.com>
-References: <20210419135443.12822-1-david@redhat.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A7C4E1922036;
+        Fri, 23 Apr 2021 02:34:20 +0000 (UTC)
+Received: from madcap2.tricolour.ca (unknown [10.10.110.24])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 26D305C3E6;
+        Fri, 23 Apr 2021 02:34:10 +0000 (UTC)
+Date:   Thu, 22 Apr 2021 22:34:08 -0400
+From:   Richard Guy Briggs <rgb@redhat.com>
+To:     Christian Brauner <christian.brauner@ubuntu.com>
+Cc:     linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-parisc@vger.kernel.org, x86@kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-fsdevel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
+        Linux-Audit Mailing List <linux-audit@redhat.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+        Eric Paris <eparis@parisplace.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/2] audit: add support for the openat2 syscall
+Message-ID: <20210423023408.GB2174828@madcap2.tricolour.ca>
+References: <cover.1616031035.git.rgb@redhat.com>
+ <49510cacfb5fbbaa312a4a389f3a6619675007ab.1616031035.git.rgb@redhat.com>
+ <20210318104843.uiga6tmmhn5wfhbs@wittgenstein>
+ <20210318120801.GK3141668@madcap2.tricolour.ca>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210318120801.GK3141668@madcap2.tricolour.ca>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Let's add a simple test for MADV_POPULATE_READ and MADV_POPULATE_WRITE,
-verifying some error handling, that population works, and that softdirty
-tracking works as expected. For now, limit the test to private anonymous
-memory.
+On 2021-03-18 08:08, Richard Guy Briggs wrote:
+> On 2021-03-18 11:48, Christian Brauner wrote:
+> > [+Cc Aleksa, the author of openat2()]
+> 
+> Ah!  Thanks for pulling in Aleksa.  I thought I caught everyone...
+> 
+> > and a comment below. :)
+> 
+> Same...
+> 
+> > On Wed, Mar 17, 2021 at 09:47:17PM -0400, Richard Guy Briggs wrote:
+> > > The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
+> > > ("open: introduce openat2(2) syscall")
+> > > 
+> > > Add the openat2(2) syscall to the audit syscall classifier.
+> > > 
+> > > See the github issue
+> > > https://github.com/linux-audit/audit-kernel/issues/67
+> > > 
+> > > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+> > > ---
+> > >  arch/alpha/kernel/audit.c          | 2 ++
+> > >  arch/ia64/kernel/audit.c           | 2 ++
+> > >  arch/parisc/kernel/audit.c         | 2 ++
+> > >  arch/parisc/kernel/compat_audit.c  | 2 ++
+> > >  arch/powerpc/kernel/audit.c        | 2 ++
+> > >  arch/powerpc/kernel/compat_audit.c | 2 ++
+> > >  arch/s390/kernel/audit.c           | 2 ++
+> > >  arch/s390/kernel/compat_audit.c    | 2 ++
+> > >  arch/sparc/kernel/audit.c          | 2 ++
+> > >  arch/sparc/kernel/compat_audit.c   | 2 ++
+> > >  arch/x86/ia32/audit.c              | 2 ++
+> > >  arch/x86/kernel/audit_64.c         | 2 ++
+> > >  kernel/auditsc.c                   | 3 +++
+> > >  lib/audit.c                        | 4 ++++
+> > >  lib/compat_audit.c                 | 4 ++++
+> > >  15 files changed, 35 insertions(+)
+> > > 
+> > > diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
+> > > index 96a9d18ff4c4..06a911b685d1 100644
+> > > --- a/arch/alpha/kernel/audit.c
+> > > +++ b/arch/alpha/kernel/audit.c
+> > > @@ -42,6 +42,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > >  		return 3;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 0;
+> > >  	}
+> > > diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
+> > > index 5192ca899fe6..5eaa888c8fd3 100644
+> > > --- a/arch/ia64/kernel/audit.c
+> > > +++ b/arch/ia64/kernel/audit.c
+> > > @@ -43,6 +43,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > >  		return 3;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 0;
+> > >  	}
+> > > diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
+> > > index 9eb47b2225d2..fc721a7727ba 100644
+> > > --- a/arch/parisc/kernel/audit.c
+> > > +++ b/arch/parisc/kernel/audit.c
+> > > @@ -52,6 +52,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > >  		return 3;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 0;
+> > >  	}
+> > > diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
+> > > index 20c39c9d86a9..fc6d35918c44 100644
+> > > --- a/arch/parisc/kernel/compat_audit.c
+> > > +++ b/arch/parisc/kernel/compat_audit.c
+> > > @@ -35,6 +35,8 @@ int parisc32_classify_syscall(unsigned syscall)
+> > >  		return 3;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 1;
+> > >  	}
+> > > diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
+> > > index a2dddd7f3d09..8f32700b0baa 100644
+> > > --- a/arch/powerpc/kernel/audit.c
+> > > +++ b/arch/powerpc/kernel/audit.c
+> > > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > >  		return 4;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 0;
+> > >  	}
+> > > diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
+> > > index 55c6ccda0a85..ebe45534b1c9 100644
+> > > --- a/arch/powerpc/kernel/compat_audit.c
+> > > +++ b/arch/powerpc/kernel/compat_audit.c
+> > > @@ -38,6 +38,8 @@ int ppc32_classify_syscall(unsigned syscall)
+> > >  		return 4;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 1;
+> > >  	}
+> > > diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
+> > > index d395c6c9944c..d964cb94cfaf 100644
+> > > --- a/arch/s390/kernel/audit.c
+> > > +++ b/arch/s390/kernel/audit.c
+> > > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > >  		return 4;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 0;
+> > >  	}
+> > > diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
+> > > index 444fb1f66944..f7b32933ce0e 100644
+> > > --- a/arch/s390/kernel/compat_audit.c
+> > > +++ b/arch/s390/kernel/compat_audit.c
+> > > @@ -39,6 +39,8 @@ int s390_classify_syscall(unsigned syscall)
+> > >  		return 4;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 1;
+> > >  	}
+> > > diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
+> > > index a6e91bf34d48..b6dcca9c6520 100644
+> > > --- a/arch/sparc/kernel/audit.c
+> > > +++ b/arch/sparc/kernel/audit.c
+> > > @@ -55,6 +55,8 @@ int audit_classify_syscall(int abi, unsigned int syscall)
+> > >  		return 4;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 0;
+> > >  	}
+> > > diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
+> > > index 10eeb4f15b20..d2652a1083ad 100644
+> > > --- a/arch/sparc/kernel/compat_audit.c
+> > > +++ b/arch/sparc/kernel/compat_audit.c
+> > > @@ -39,6 +39,8 @@ int sparc32_classify_syscall(unsigned int syscall)
+> > >  		return 4;
+> > >  	case __NR_execve:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 1;
+> > >  	}
+> > > diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
+> > > index 6efe6cb3768a..57a02ade5503 100644
+> > > --- a/arch/x86/ia32/audit.c
+> > > +++ b/arch/x86/ia32/audit.c
+> > > @@ -39,6 +39,8 @@ int ia32_classify_syscall(unsigned syscall)
+> > >  	case __NR_execve:
+> > >  	case __NR_execveat:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 1;
+> > >  	}
+> > > diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
+> > > index 83d9cad4e68b..39de1e021258 100644
+> > > --- a/arch/x86/kernel/audit_64.c
+> > > +++ b/arch/x86/kernel/audit_64.c
+> > > @@ -53,6 +53,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > >  	case __NR_execve:
+> > >  	case __NR_execveat:
+> > >  		return 5;
+> > > +	case __NR_openat2:
+> > > +		return 6;
+> > >  	default:
+> > >  		return 0;
+> > >  	}
+> > > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> > > index 8bb9ac84d2fb..f5616e70d129 100644
+> > > --- a/kernel/auditsc.c
+> > > +++ b/kernel/auditsc.c
+> > > @@ -76,6 +76,7 @@
+> > >  #include <linux/fsnotify_backend.h>
+> > >  #include <uapi/linux/limits.h>
+> > >  #include <uapi/linux/netfilter/nf_tables.h>
+> > > +#include <uapi/linux/openat2.h>
+> > >  
+> > >  #include "audit.h"
+> > >  
+> > > @@ -195,6 +196,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+> > >  		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+> > >  	case 5: /* execve */
+> > >  		return mask & AUDIT_PERM_EXEC;
+> > > +	case 6: /* openat2 */
+> > > +		return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
+> > 
+> > That looks a bit dodgy. Maybe sm like the below would be a bit better?
+> 
+> Ah, ok, fair enough, since original flags use a u32 and this was picked
+> as u64 for alignment.  It was just occurring to me last night that I
+> might have the dubious honour of being the first usage of 0%llo format
+> specifier in the kernel...  ;-)
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Richard Henderson <rth@twiddle.net>
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rolf Eike Beer <eike-kernel@sf-tec.de>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linux-xtensa@linux-xtensa.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: Linux API <linux-api@vger.kernel.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- tools/testing/selftests/vm/.gitignore      |   1 +
- tools/testing/selftests/vm/Makefile        |   1 +
- tools/testing/selftests/vm/madv_populate.c | 342 +++++++++++++++++++++
- tools/testing/selftests/vm/run_vmtests.sh  |  16 +
- 4 files changed, 360 insertions(+)
- create mode 100644 tools/testing/selftests/vm/madv_populate.c
+> > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> > index 47fb48f42c93..531e882a5096 100644
+> > --- a/kernel/auditsc.c
+> > +++ b/kernel/auditsc.c
+> > @@ -159,6 +159,7 @@ static const struct audit_nfcfgop_tab audit_nfcfgs[] = {
+> > 
+> >  static int audit_match_perm(struct audit_context *ctx, int mask)
+> >  {
+> > +       struct open_how *openat2;
+> >         unsigned n;
+> >         if (unlikely(!ctx))
+> >                 return 0;
+> > @@ -195,6 +196,12 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+> >                 return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+> >         case 5: /* execve */
+> >                 return mask & AUDIT_PERM_EXEC;
+> > +       case 6: /* openat2 */
+> > +               openat2 = ctx->argv[2];
+> > +               if (upper_32_bits(openat2->flags))
+> > +                       pr_warn("Some sensible warning about unknown flags");
+> > +
+> > +               return mask & ACC_MODE(lower_32_bits(openat2->flags));
+> >         default:
+> >                 return 0;
+> >         }
+> > 
+> > (Ideally we'd probably notice at build-time that we've got flags
+> > exceeding 32bits. Could probably easily been done by exposing an all
+> > flags macro somewhere and then we can place a BUILD_BUG_ON() or sm into
+> > such places.)
 
-diff --git a/tools/testing/selftests/vm/.gitignore b/tools/testing/selftests/vm/.gitignore
-index b4fc0148360e..c9a5dd1adf7d 100644
---- a/tools/testing/selftests/vm/.gitignore
-+++ b/tools/testing/selftests/vm/.gitignore
-@@ -24,3 +24,4 @@ hmm-tests
- local_config.*
- protection_keys_32
- protection_keys_64
-+madv_populate
-diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
-index 8b0cd421ebd3..04b6650c1924 100644
---- a/tools/testing/selftests/vm/Makefile
-+++ b/tools/testing/selftests/vm/Makefile
-@@ -42,6 +42,7 @@ TEST_GEN_FILES += on-fault-limit
- TEST_GEN_FILES += thuge-gen
- TEST_GEN_FILES += transhuge-stress
- TEST_GEN_FILES += userfaultfd
-+TEST_GEN_FILES += madv_populate
- 
- ifeq ($(MACHINE),x86_64)
- CAN_BUILD_I386 := $(shell ./../x86/check_cc.sh $(CC) ../x86/trivial_32bit_program.c -m32)
-diff --git a/tools/testing/selftests/vm/madv_populate.c b/tools/testing/selftests/vm/madv_populate.c
-new file mode 100644
-index 000000000000..b959e4ebdad4
---- /dev/null
-+++ b/tools/testing/selftests/vm/madv_populate.c
-@@ -0,0 +1,342 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
-+ *
-+ * Copyright 2021, Red Hat, Inc.
-+ *
-+ * Author(s): David Hildenbrand <david@redhat.com>
-+ */
-+#define _GNU_SOURCE
-+#include <stdlib.h>
-+#include <string.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <unistd.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <sys/mman.h>
-+
-+#include "../kselftest.h"
-+
-+#if defined(MADV_POPULATE_READ) && defined(MADV_POPULATE_WRITE)
-+
-+/*
-+ * For now, we're using 2 MiB of private anonymous memory for all tests.
-+ */
-+#define SIZE (2 * 1024 * 1024)
-+
-+static size_t pagesize;
-+
-+static uint64_t pagemap_get_entry(int fd, char *start)
-+{
-+	const unsigned long pfn = (unsigned long)start / pagesize;
-+	uint64_t entry;
-+	int ret;
-+
-+	ret = pread(fd, &entry, sizeof(entry), pfn * sizeof(entry));
-+	if (ret != sizeof(entry))
-+		ksft_exit_fail_msg("reading pagemap failed\n");
-+	return entry;
-+}
-+
-+static bool pagemap_is_populated(int fd, char *start)
-+{
-+	uint64_t entry = pagemap_get_entry(fd, start);
-+
-+	/* Present or swapped. */
-+	return entry & 0xc000000000000000ull;
-+}
-+
-+static bool pagemap_is_softdirty(int fd, char *start)
-+{
-+	uint64_t entry = pagemap_get_entry(fd, start);
-+
-+	return entry & 0x0080000000000000ull;
-+}
-+
-+static void sense_support(void)
-+{
-+	char *addr;
-+	int ret;
-+
-+	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (!addr)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	ret = madvise(addr, pagesize, MADV_POPULATE_READ);
-+	if (ret)
-+		ksft_exit_skip("MADV_POPULATE_READ is not available\n");
-+
-+	ret = madvise(addr, pagesize, MADV_POPULATE_WRITE);
-+	if (ret)
-+		ksft_exit_skip("MADV_POPULATE_WRITE is not available\n");
-+
-+	munmap(addr, pagesize);
-+}
-+
-+static void test_prot_read(void)
-+{
-+	char *addr;
-+	int ret;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	addr = mmap(0, SIZE, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (addr == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
-+	ksft_test_result(!ret, "MADV_POPULATE_READ with PROT_READ\n");
-+
-+	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
-+	ksft_test_result(ret == -1 && errno == EINVAL,
-+			 "MADV_POPULATE_WRITE with PROT_READ\n");
-+
-+	munmap(addr, SIZE);
-+}
-+
-+static void test_prot_write(void)
-+{
-+	char *addr;
-+	int ret;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	addr = mmap(0, SIZE, PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (addr == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
-+	ksft_test_result(ret == -1 && errno == EINVAL,
-+			 "MADV_POPULATE_READ with PROT_WRITE\n");
-+
-+	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
-+	ksft_test_result(!ret, "MADV_POPULATE_WRITE with PROT_WRITE\n");
-+
-+	munmap(addr, SIZE);
-+}
-+
-+static void test_holes(void)
-+{
-+	char *addr;
-+	int ret;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	addr = mmap(0, SIZE, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (addr == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap failed\n");
-+	ret = munmap(addr + pagesize, pagesize);
-+	if (ret)
-+		ksft_exit_fail_msg("munmap failed\n");
-+
-+	/* Hole in the middle */
-+	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
-+	ksft_test_result(ret == -1 && errno == ENOMEM,
-+			 "MADV_POPULATE_READ with holes in the middle\n");
-+	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
-+	ksft_test_result(ret == -1 && errno == ENOMEM,
-+			 "MADV_POPULATE_WRITE with holes in the middle\n");
-+
-+	/* Hole at end */
-+	ret = madvise(addr, 2 * pagesize, MADV_POPULATE_READ);
-+	ksft_test_result(ret == -1 && errno == ENOMEM,
-+			 "MADV_POPULATE_READ with holes at the end\n");
-+	ret = madvise(addr, 2 * pagesize, MADV_POPULATE_WRITE);
-+	ksft_test_result(ret == -1 && errno == ENOMEM,
-+			 "MADV_POPULATE_WRITE with holes at the end\n");
-+
-+	/* Hole at beginning */
-+	ret = madvise(addr + pagesize, pagesize, MADV_POPULATE_READ);
-+	ksft_test_result(ret == -1 && errno == ENOMEM,
-+			 "MADV_POPULATE_READ with holes at the beginning\n");
-+	ret = madvise(addr + pagesize, pagesize, MADV_POPULATE_WRITE);
-+	ksft_test_result(ret == -1 && errno == ENOMEM,
-+			 "MADV_POPULATE_WRITE with holes at the beginning\n");
-+
-+	munmap(addr, SIZE);
-+}
-+
-+static bool range_is_populated(char *start, ssize_t size)
-+{
-+	int fd = open("/proc/self/pagemap", O_RDONLY);
-+	bool ret = true;
-+
-+	if (fd < 0)
-+		ksft_exit_fail_msg("opening pagemap failed\n");
-+	for (; size > 0 && ret; size -= pagesize, start += pagesize)
-+		if (!pagemap_is_populated(fd, start))
-+			ret = false;
-+	close(fd);
-+	return ret;
-+}
-+
-+static bool range_is_not_populated(char *start, ssize_t size)
-+{
-+	int fd = open("/proc/self/pagemap", O_RDONLY);
-+	bool ret = true;
-+
-+	if (fd < 0)
-+		ksft_exit_fail_msg("opening pagemap failed\n");
-+	for (; size > 0 && ret; size -= pagesize, start += pagesize)
-+		if (pagemap_is_populated(fd, start))
-+			ret = false;
-+	close(fd);
-+	return ret;
-+}
-+
-+static void test_populate_read(void)
-+{
-+	char *addr;
-+	int ret;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	addr = mmap(0, SIZE, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (addr == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap failed\n");
-+	ksft_test_result(range_is_not_populated(addr, SIZE),
-+			 "range initially not populated\n");
-+
-+	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
-+	ksft_test_result(!ret, "MADV_POPULATE_READ\n");
-+	ksft_test_result(range_is_populated(addr, SIZE),
-+			 "range is populated\n");
-+
-+	munmap(addr, SIZE);
-+}
-+
-+static void test_populate_write(void)
-+{
-+	char *addr;
-+	int ret;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	addr = mmap(0, SIZE, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (addr == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap failed\n");
-+	ksft_test_result(range_is_not_populated(addr, SIZE),
-+			 "range initially not populated\n");
-+
-+	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
-+	ksft_test_result(!ret, "MADV_POPULATE_WRITE\n");
-+	ksft_test_result(range_is_populated(addr, SIZE),
-+			 "range is populated\n");
-+
-+	munmap(addr, SIZE);
-+}
-+
-+static bool range_is_softdirty(char *start, ssize_t size)
-+{
-+	int fd = open("/proc/self/pagemap", O_RDONLY);
-+	bool ret = true;
-+
-+	if (fd < 0)
-+		ksft_exit_fail_msg("opening pagemap failed\n");
-+	for (; size > 0 && ret; size -= pagesize, start += pagesize)
-+		if (!pagemap_is_softdirty(fd, start))
-+			ret = false;
-+	close(fd);
-+	return ret;
-+}
-+
-+static bool range_is_not_softdirty(char *start, ssize_t size)
-+{
-+	int fd = open("/proc/self/pagemap", O_RDONLY);
-+	bool ret = true;
-+
-+	if (fd < 0)
-+		ksft_exit_fail_msg("opening pagemap failed\n");
-+	for (; size > 0 && ret; size -= pagesize, start += pagesize)
-+		if (pagemap_is_softdirty(fd, start))
-+			ret = false;
-+	close(fd);
-+	return ret;
-+}
-+
-+static void clear_softdirty(void)
-+{
-+	int fd = open("/proc/self/clear_refs", O_WRONLY);
-+	const char *ctrl = "4";
-+	int ret;
-+
-+	if (fd < 0)
-+		ksft_exit_fail_msg("opening clear_refs failed\n");
-+	ret = write(fd, ctrl, strlen(ctrl));
-+	if (ret != strlen(ctrl))
-+		ksft_exit_fail_msg("writing clear_refs failed\n");
-+	close(fd);
-+}
-+
-+static void test_softdirty(void)
-+{
-+	char *addr;
-+	int ret;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	addr = mmap(0, SIZE, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (addr == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	/* Clear any softdirty bits. */
-+	clear_softdirty();
-+	ksft_test_result(range_is_not_softdirty(addr, SIZE),
-+			 "range is not softdirty\n");
-+
-+	/* Populating READ should set softdirty. */
-+	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
-+	ksft_test_result(!ret, "MADV_POPULATE_READ\n");
-+	ksft_test_result(range_is_not_softdirty(addr, SIZE),
-+			 "range is not softdirty\n");
-+
-+	/* Populating WRITE should set softdirty. */
-+	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
-+	ksft_test_result(!ret, "MADV_POPULATE_WRITE\n");
-+	ksft_test_result(range_is_softdirty(addr, SIZE),
-+			 "range is softdirty\n");
-+
-+	munmap(addr, SIZE);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	int err;
-+
-+	pagesize = getpagesize();
-+
-+	ksft_print_header();
-+	ksft_set_plan(21);
-+
-+	sense_support();
-+	test_prot_read();
-+	test_prot_write();
-+	test_holes();
-+	test_populate_read();
-+	test_populate_write();
-+	test_softdirty();
-+
-+	err = ksft_get_fail_cnt();
-+	if (err)
-+		ksft_exit_fail_msg("%d out of %d tests failed\n",
-+				   err, ksft_test_num());
-+	return ksft_exit_pass();
-+}
-+
-+#else /* defined(MADV_POPULATE_READ) && defined(MADV_POPULATE_WRITE) */
-+
-+#warning "missing MADV_POPULATE_READ or MADV_POPULATE_WRITE definition"
-+
-+int main(int argc, char **argv)
-+{
-+	ksft_print_header();
-+	ksft_exit_skip("MADV_POPULATE_READ or MADV_POPULATE_WRITE not defined\n");
-+}
-+
-+#endif /* defined(MADV_POPULATE_READ) && defined(MADV_POPULATE_WRITE) */
-diff --git a/tools/testing/selftests/vm/run_vmtests.sh b/tools/testing/selftests/vm/run_vmtests.sh
-index e953f3cd9664..955782d138ab 100755
---- a/tools/testing/selftests/vm/run_vmtests.sh
-+++ b/tools/testing/selftests/vm/run_vmtests.sh
-@@ -346,4 +346,20 @@ else
- 	exitcode=1
- fi
- 
-+echo "--------------------------------------------------------"
-+echo "running MADV_POPULATE_READ and MADV_POPULATE_WRITE tests"
-+echo "--------------------------------------------------------"
-+./madv_populate
-+ret_val=$?
-+
-+if [ $ret_val -eq 0 ]; then
-+	echo "[PASS]"
-+elif [ $ret_val -eq $ksft_skip ]; then
-+	echo "[SKIP]"
-+	exitcode=$ksft_skip
-+else
-+	echo "[FAIL]"
-+	exitcode=1
-+fi
-+
- exit $exitcode
--- 
-2.30.2
+open_how arguments are translated to open_flags which is limited to 32 bits.
+
+This code is shared with the other open functions that are limited to 32 bits
+in open_flags.  openat2 was created to avoid the limitations of openat, so at
+some point it isn't unreasonable that flags exceed 32 bits, but open_flags
+would have to be modified at that point to accommodate.
+
+This value is handed in from userspace, and could be handed in without being
+defined in the kernel, so those values need to be properly checked regardless
+of the flags defined in the kernel.
+
+The openat2 syscall claims to check all flags but no check is done on the top
+32 bits.
+
+build_open_flags() assigns how->flags to an int, effectively dropping the top
+32 bits, before being checked against ~VALID_OPEN_FLAGS.  This happens after
+audit mode filtering, but has the same result.
+
+Audit mode filtering using ACC_MODE() already masks out all but the lowest two
+bits with O_ACCMODE, so there is no danger of overflowing a u32.
+
+tomoyo_check_open_permission() assigns ACC_MODE() to u8 without a check.
+
+All FMODE_* flags are clamped at u32.
+
+6 bits remain at top and 4 bits just above O_ACCMODE, so there is no immediate
+danger of overflow and if any additional mode bits are needed they are
+available.
+000377777703 used
+037777777777 available
+10 bits remaining
+
+So, I don't think a check at this point in the code is useful, but do agree
+that there should be some changes and checks added in sys_openat2 and
+build_open_flags().
+
+
+Also noticed: It looks like fddb5d430ad9f left in VALID_UPGRADE_FLAGS for
+how->upgrade_mask that was removed.  This may be used at a later date, but at
+this point is dead code.
+
+> > Christian
+> 
+> - RGB
+
+- RGB
+
+--
+Richard Guy Briggs <rgb@redhat.com>
+Sr. S/W Engineer, Kernel Security, Base Operating Systems
+Remote, Ottawa, Red Hat Canada
+IRC: rgb, SunRaycer
+Voice: +1.647.777.2635, Internal: (81) 32635
 
