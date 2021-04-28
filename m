@@ -2,353 +2,272 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3139368E1F
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Apr 2021 09:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1311C36DC3F
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Apr 2021 17:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241192AbhDWHtP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 23 Apr 2021 03:49:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50972 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229456AbhDWHtO (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 23 Apr 2021 03:49:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 57E79611C2;
-        Fri, 23 Apr 2021 07:48:34 +0000 (UTC)
-Date:   Fri, 23 Apr 2021 09:48:31 +0200
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     Richard Guy Briggs <rgb@redhat.com>
-Cc:     linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-parisc@vger.kernel.org, x86@kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
-        Linux-Audit Mailing List <linux-audit@redhat.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
-        Eric Paris <eparis@parisplace.org>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/2] audit: add support for the openat2 syscall
-Message-ID: <20210423074831.lc4jqqtyuun2fnws@wittgenstein>
-References: <cover.1616031035.git.rgb@redhat.com>
- <49510cacfb5fbbaa312a4a389f3a6619675007ab.1616031035.git.rgb@redhat.com>
- <20210318104843.uiga6tmmhn5wfhbs@wittgenstein>
- <20210318120801.GK3141668@madcap2.tricolour.ca>
- <20210423023408.GB2174828@madcap2.tricolour.ca>
+        id S241085AbhD1PqA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 28 Apr 2021 11:46:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50338 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241496AbhD1Poo (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 28 Apr 2021 11:44:44 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B61C0612AC;
+        Wed, 28 Apr 2021 08:39:52 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id q2so12049059pfk.9;
+        Wed, 28 Apr 2021 08:39:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=fdQ6mtwPVeGREgtHEwqkJNzQ1V/fit6k42a1rYIg3q0=;
+        b=mzniNHUfc1nOG+ti98K/mrPtMSoZvgnfG4tlaMCp370Ft7CUpb3mEyJE75JOLEKeJe
+         mHe/buO7oXHo8KcEjEvyi5zaOVM+FxC6GyZ3kOjrF65L/c4zGGHCzkhqpLKio8orJHIB
+         PjB9Mq5pJItF6CVIB81gMrv1MsiEIYEgzBpxP/zY+U8FT+uNXPa7srXoaaUS3h8EWSAI
+         cmqPhNIHOtoXTt8WpI9YOwfaW+RZBMqwQFsQ9HY/+bQkq7ODhKXzS7zM4AfhF9ji3unI
+         JAY4cHY1PfTr3eTIYunc4t2iSXJ8zPgicQ2SdKoAX+VQXQTUXu6PFNh0M0TRVypQoxlD
+         J3aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=fdQ6mtwPVeGREgtHEwqkJNzQ1V/fit6k42a1rYIg3q0=;
+        b=AnUZ4CAF37EA2ir9wZHRXYn4zcDp4K0pj0blV4ESUDn815fyR3G5/WmkQEfbSGOrjB
+         AkMEoPChh5I91fUZ7ZbLZ/dnRq2eM2+lqU6/Rfbb9peK+ZbMQiWJPDw+Ou3a/y5uRuv1
+         +o/3Ch+L7BboIni27RiUn0+LX+K6QwQsMb2e0Rpsr+tniUZLa5HLgzlfhs/eXfGTen+J
+         AWBMKHlkLFyl4dKKBn6bITZ1YYejtOPM2nUeIbuYzSbwPGxoQrWBHPbEy1fi1FF0cFX5
+         IReX55WyykAUm81Kzjr7Kq5+0V4aMIIATtqm7U6fzIStvHKCUKs56Pm0DgEmfXSUF2o5
+         xaIA==
+X-Gm-Message-State: AOAM530ulsOX6jkJJRzgTCksXHg0YKNyfwHDCX/oQ6AvtkNSjgoobj4n
+        Yb0rXHDzk+wJ9bjiVeyfKA2vESqIGFaKtH4f
+X-Google-Smtp-Source: ABdhPJx61oOlYsuRsg8P/Ar5DdJxDI1EUSr1yeJRLgiKPcDSNmL2JgVqK/1DfjS4gEwHgu4TB1hk5w==
+X-Received: by 2002:a62:528e:0:b029:1f5:c5ee:a487 with SMTP id g136-20020a62528e0000b02901f5c5eea487mr28007099pfb.7.1619624391158;
+        Wed, 28 Apr 2021 08:39:51 -0700 (PDT)
+Received: from localhost ([157.45.42.123])
+        by smtp.gmail.com with ESMTPSA id a27sm129483pfl.64.2021.04.28.08.39.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 28 Apr 2021 08:39:50 -0700 (PDT)
+Date:   Wed, 28 Apr 2021 21:09:42 +0530
+From:   Shubhankar Kuranagatti <shubhankarvk@gmail.com>
+To:     James.Bottomley@HansenPartnership.com
+Cc:     deller@gmx.de, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, sanjanasrinidhi1810@gmail.com
+Subject: [PATCH] drivers: parisc: ccio-dma.c: Added tab insead of spaces
+Message-ID: <20210428153942.uyips5a3osoz3nju@kewl-virtual-machine>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210423023408.GB2174828@madcap2.tricolour.ca>
+User-Agent: NeoMutt/20171215
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Apr 22, 2021 at 10:34:08PM -0400, Richard Guy Briggs wrote:
-> On 2021-03-18 08:08, Richard Guy Briggs wrote:
-> > On 2021-03-18 11:48, Christian Brauner wrote:
-> > > [+Cc Aleksa, the author of openat2()]
-> > 
-> > Ah!  Thanks for pulling in Aleksa.  I thought I caught everyone...
-> > 
-> > > and a comment below. :)
-> > 
-> > Same...
-> > 
-> > > On Wed, Mar 17, 2021 at 09:47:17PM -0400, Richard Guy Briggs wrote:
-> > > > The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
-> > > > ("open: introduce openat2(2) syscall")
-> > > > 
-> > > > Add the openat2(2) syscall to the audit syscall classifier.
-> > > > 
-> > > > See the github issue
-> > > > https://github.com/linux-audit/audit-kernel/issues/67
-> > > > 
-> > > > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-> > > > ---
-> > > >  arch/alpha/kernel/audit.c          | 2 ++
-> > > >  arch/ia64/kernel/audit.c           | 2 ++
-> > > >  arch/parisc/kernel/audit.c         | 2 ++
-> > > >  arch/parisc/kernel/compat_audit.c  | 2 ++
-> > > >  arch/powerpc/kernel/audit.c        | 2 ++
-> > > >  arch/powerpc/kernel/compat_audit.c | 2 ++
-> > > >  arch/s390/kernel/audit.c           | 2 ++
-> > > >  arch/s390/kernel/compat_audit.c    | 2 ++
-> > > >  arch/sparc/kernel/audit.c          | 2 ++
-> > > >  arch/sparc/kernel/compat_audit.c   | 2 ++
-> > > >  arch/x86/ia32/audit.c              | 2 ++
-> > > >  arch/x86/kernel/audit_64.c         | 2 ++
-> > > >  kernel/auditsc.c                   | 3 +++
-> > > >  lib/audit.c                        | 4 ++++
-> > > >  lib/compat_audit.c                 | 4 ++++
-> > > >  15 files changed, 35 insertions(+)
-> > > > 
-> > > > diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
-> > > > index 96a9d18ff4c4..06a911b685d1 100644
-> > > > --- a/arch/alpha/kernel/audit.c
-> > > > +++ b/arch/alpha/kernel/audit.c
-> > > > @@ -42,6 +42,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 3;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
-> > > > index 5192ca899fe6..5eaa888c8fd3 100644
-> > > > --- a/arch/ia64/kernel/audit.c
-> > > > +++ b/arch/ia64/kernel/audit.c
-> > > > @@ -43,6 +43,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 3;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
-> > > > index 9eb47b2225d2..fc721a7727ba 100644
-> > > > --- a/arch/parisc/kernel/audit.c
-> > > > +++ b/arch/parisc/kernel/audit.c
-> > > > @@ -52,6 +52,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 3;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
-> > > > index 20c39c9d86a9..fc6d35918c44 100644
-> > > > --- a/arch/parisc/kernel/compat_audit.c
-> > > > +++ b/arch/parisc/kernel/compat_audit.c
-> > > > @@ -35,6 +35,8 @@ int parisc32_classify_syscall(unsigned syscall)
-> > > >  		return 3;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
-> > > > index a2dddd7f3d09..8f32700b0baa 100644
-> > > > --- a/arch/powerpc/kernel/audit.c
-> > > > +++ b/arch/powerpc/kernel/audit.c
-> > > > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
-> > > > index 55c6ccda0a85..ebe45534b1c9 100644
-> > > > --- a/arch/powerpc/kernel/compat_audit.c
-> > > > +++ b/arch/powerpc/kernel/compat_audit.c
-> > > > @@ -38,6 +38,8 @@ int ppc32_classify_syscall(unsigned syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
-> > > > index d395c6c9944c..d964cb94cfaf 100644
-> > > > --- a/arch/s390/kernel/audit.c
-> > > > +++ b/arch/s390/kernel/audit.c
-> > > > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
-> > > > index 444fb1f66944..f7b32933ce0e 100644
-> > > > --- a/arch/s390/kernel/compat_audit.c
-> > > > +++ b/arch/s390/kernel/compat_audit.c
-> > > > @@ -39,6 +39,8 @@ int s390_classify_syscall(unsigned syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
-> > > > index a6e91bf34d48..b6dcca9c6520 100644
-> > > > --- a/arch/sparc/kernel/audit.c
-> > > > +++ b/arch/sparc/kernel/audit.c
-> > > > @@ -55,6 +55,8 @@ int audit_classify_syscall(int abi, unsigned int syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
-> > > > index 10eeb4f15b20..d2652a1083ad 100644
-> > > > --- a/arch/sparc/kernel/compat_audit.c
-> > > > +++ b/arch/sparc/kernel/compat_audit.c
-> > > > @@ -39,6 +39,8 @@ int sparc32_classify_syscall(unsigned int syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
-> > > > index 6efe6cb3768a..57a02ade5503 100644
-> > > > --- a/arch/x86/ia32/audit.c
-> > > > +++ b/arch/x86/ia32/audit.c
-> > > > @@ -39,6 +39,8 @@ int ia32_classify_syscall(unsigned syscall)
-> > > >  	case __NR_execve:
-> > > >  	case __NR_execveat:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
-> > > > index 83d9cad4e68b..39de1e021258 100644
-> > > > --- a/arch/x86/kernel/audit_64.c
-> > > > +++ b/arch/x86/kernel/audit_64.c
-> > > > @@ -53,6 +53,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  	case __NR_execve:
-> > > >  	case __NR_execveat:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-> > > > index 8bb9ac84d2fb..f5616e70d129 100644
-> > > > --- a/kernel/auditsc.c
-> > > > +++ b/kernel/auditsc.c
-> > > > @@ -76,6 +76,7 @@
-> > > >  #include <linux/fsnotify_backend.h>
-> > > >  #include <uapi/linux/limits.h>
-> > > >  #include <uapi/linux/netfilter/nf_tables.h>
-> > > > +#include <uapi/linux/openat2.h>
-> > > >  
-> > > >  #include "audit.h"
-> > > >  
-> > > > @@ -195,6 +196,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
-> > > >  		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
-> > > >  	case 5: /* execve */
-> > > >  		return mask & AUDIT_PERM_EXEC;
-> > > > +	case 6: /* openat2 */
-> > > > +		return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
-> > > 
-> > > That looks a bit dodgy. Maybe sm like the below would be a bit better?
-> > 
-> > Ah, ok, fair enough, since original flags use a u32 and this was picked
-> > as u64 for alignment.  It was just occurring to me last night that I
-> > might have the dubious honour of being the first usage of 0%llo format
-> > specifier in the kernel...  ;-)
-> 
-> > > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-> > > index 47fb48f42c93..531e882a5096 100644
-> > > --- a/kernel/auditsc.c
-> > > +++ b/kernel/auditsc.c
-> > > @@ -159,6 +159,7 @@ static const struct audit_nfcfgop_tab audit_nfcfgs[] = {
-> > > 
-> > >  static int audit_match_perm(struct audit_context *ctx, int mask)
-> > >  {
-> > > +       struct open_how *openat2;
-> > >         unsigned n;
-> > >         if (unlikely(!ctx))
-> > >                 return 0;
-> > > @@ -195,6 +196,12 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
-> > >                 return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
-> > >         case 5: /* execve */
-> > >                 return mask & AUDIT_PERM_EXEC;
-> > > +       case 6: /* openat2 */
-> > > +               openat2 = ctx->argv[2];
-> > > +               if (upper_32_bits(openat2->flags))
-> > > +                       pr_warn("Some sensible warning about unknown flags");
-> > > +
-> > > +               return mask & ACC_MODE(lower_32_bits(openat2->flags));
-> > >         default:
-> > >                 return 0;
-> > >         }
-> > > 
-> > > (Ideally we'd probably notice at build-time that we've got flags
-> > > exceeding 32bits. Could probably easily been done by exposing an all
-> > > flags macro somewhere and then we can place a BUILD_BUG_ON() or sm into
-> > > such places.)
-> 
-> open_how arguments are translated to open_flags which is limited to 32 bits.
-> 
-> This code is shared with the other open functions that are limited to 32 bits
-> in open_flags.  openat2 was created to avoid the limitations of openat, so at
-> some point it isn't unreasonable that flags exceed 32 bits, but open_flags
-> would have to be modified at that point to accommodate.
-> 
-> This value is handed in from userspace, and could be handed in without being
-> defined in the kernel, so those values need to be properly checked regardless
-> of the flags defined in the kernel.
-> 
-> The openat2 syscall claims to check all flags but no check is done on the top
-> 32 bits.
+Single space has been removed.
+It has been replaced with tabs.
+This is done to maintain code uniformity.
 
-Hm, I think this is an oversight because of the different semantics for
-openat() and openat2(). We should check that no upper 32 bits are set
-for openat2(). That's the intended semantics. For old openat()
-we can't error on unknown flags because it has traditionally ignored
-unknown flags.
+Signed-off-by: Shubhankar Kuranagatti <shubhankarvk@gmail.com>
+---
+ drivers/parisc/ccio-dma.c | 88 +++++++++++++++++++--------------------
+ 1 file changed, 44 insertions(+), 44 deletions(-)
 
-> 
-> build_open_flags() assigns how->flags to an int, effectively dropping the top
-> 32 bits, before being checked against ~VALID_OPEN_FLAGS.  This happens after
-> audit mode filtering, but has the same result.
+diff --git a/drivers/parisc/ccio-dma.c b/drivers/parisc/ccio-dma.c
+index b5f9ee81a46c..9b777357e8cb 100644
+--- a/drivers/parisc/ccio-dma.c
++++ b/drivers/parisc/ccio-dma.c
+@@ -111,29 +111,29 @@
+ #define CMD_TLB_PURGE        33         /* IO_COMMAND to Purge I/O TLB entry */
+ 
+ struct ioa_registers {
+-        /* Runway Supervisory Set */
+-        int32_t    unused1[12];
+-        uint32_t   io_command;             /* Offset 12 */
+-        uint32_t   io_status;              /* Offset 13 */
+-        uint32_t   io_control;             /* Offset 14 */
+-        int32_t    unused2[1];
+-
+-        /* Runway Auxiliary Register Set */
+-        uint32_t   io_err_resp;            /* Offset  0 */
+-        uint32_t   io_err_info;            /* Offset  1 */
+-        uint32_t   io_err_req;             /* Offset  2 */
+-        uint32_t   io_err_resp_hi;         /* Offset  3 */
+-        uint32_t   io_tlb_entry_m;         /* Offset  4 */
+-        uint32_t   io_tlb_entry_l;         /* Offset  5 */
+-        uint32_t   unused3[1];
+-        uint32_t   io_pdir_base;           /* Offset  7 */
+-        uint32_t   io_io_low_hv;           /* Offset  8 */
+-        uint32_t   io_io_high_hv;          /* Offset  9 */
+-        uint32_t   unused4[1];
+-        uint32_t   io_chain_id_mask;       /* Offset 11 */
+-        uint32_t   unused5[2];
+-        uint32_t   io_io_low;              /* Offset 14 */
+-        uint32_t   io_io_high;             /* Offset 15 */
++	/* Runway Supervisory Set */
++	int32_t    unused1[12];
++	uint32_t   io_command;             /* Offset 12 */
++	uint32_t   io_status;              /* Offset 13 */
++	uint32_t   io_control;             /* Offset 14 */
++	int32_t    unused2[1];
++
++	/* Runway Auxiliary Register Set */
++	uint32_t   io_err_resp;            /* Offset  0 */
++	uint32_t   io_err_info;            /* Offset  1 */
++	uint32_t   io_err_req;             /* Offset  2 */
++	uint32_t   io_err_resp_hi;         /* Offset  3 */
++	uint32_t   io_tlb_entry_m;         /* Offset  4 */
++	uint32_t   io_tlb_entry_l;         /* Offset  5 */
++	uint32_t   unused3[1];
++	uint32_t   io_pdir_base;           /* Offset  7 */
++	uint32_t   io_io_low_hv;           /* Offset  8 */
++	uint32_t   io_io_high_hv;          /* Offset  9 */
++	uint32_t   unused4[1];
++	uint32_t   io_chain_id_mask;       /* Offset 11 */
++	uint32_t   unused5[2];
++	uint32_t   io_io_low;              /* Offset 14 */
++	uint32_t   io_io_high;             /* Offset 15 */
+ };
+ 
+ /*
+@@ -198,7 +198,7 @@ struct ioa_registers {
+ ** In order for a Runway address to reside within GSC+ extended address space:
+ **	Runway Address [0:7]    must identically compare to 8'b11111111
+ **	Runway Address [8:11]   must be equal to IO_IO_LOW(_HV)[16:19]
+-** 	Runway Address [12:23]  must be greater than or equal to
++**	Runway Address [12:23]  must be greater than or equal to
+ **	           IO_IO_LOW(_HV)[20:31] and less than IO_IO_HIGH(_HV)[20:31].
+ **	Runway Address [24:39]  is not used in the comparison.
+ **
+@@ -226,10 +226,10 @@ struct ioc {
+ 	struct ioa_registers __iomem *ioc_regs;  /* I/O MMU base address */
+ 	u8  *res_map;	                /* resource map, bit == pdir entry */
+ 	u64 *pdir_base;	                /* physical base address */
+-	u32 pdir_size; 			/* bytes, function of IOV Space size */
+-	u32 res_hint;	                /* next available IOVP - 
++	u32 pdir_size;			/* bytes, function of IOV Space size */
++	u32 res_hint;			/* next available IOVP -
+ 					   circular search */
+-	u32 res_size;		    	/* size of resource map in bytes */
++	u32 res_size;			/* size of resource map in bytes */
+ 	spinlock_t res_lock;
+ 
+ #ifdef CCIO_COLLECT_STATS
+@@ -249,7 +249,7 @@ struct ioc {
+ 	unsigned short cujo20_bug;
+ 
+ 	/* STUFF We don't need in performance path */
+-	u32 chainid_shift; 		/* specify bit location of chain_id */
++	u32 chainid_shift;		/* specify bit location of chain_id */
+ 	struct ioc *next;		/* Linked list of discovered iocs */
+ 	const char *name;		/* device name from firmware */
+ 	unsigned int hw_path;           /* the hardware path this ioc is associatd with */
+@@ -293,7 +293,7 @@ static int ioc_count;
+ ** cause the kernel to panic anyhow.
+ */
+ #define CCIO_SEARCH_LOOP(ioc, res_idx, mask, size)  \
+-       for(; res_ptr < res_end; ++res_ptr) { \
++	for (; res_ptr < res_end; ++res_ptr) { \
+ 		int ret;\
+ 		unsigned int idx;\
+ 		idx = (unsigned int)((unsigned long)res_ptr - (unsigned long)ioc->res_map); \
+@@ -303,15 +303,15 @@ static int ioc_count;
+ 			res_idx = idx;\
+ 			ioc->res_hint = res_idx + (size >> 3); \
+ 			goto resource_found; \
+-		} \
++		  \
+ 	}
+ 
+ #define CCIO_FIND_FREE_MAPPING(ioa, res_idx, mask, size) \
+        u##size *res_ptr = (u##size *)&((ioc)->res_map[ioa->res_hint & ~((size >> 3) - 1)]); \
+        u##size *res_end = (u##size *)&(ioc)->res_map[ioa->res_size]; \
+-       CCIO_SEARCH_LOOP(ioc, res_idx, mask, size); \
+-       res_ptr = (u##size *)&(ioc)->res_map[0]; \
+-       CCIO_SEARCH_LOOP(ioa, res_idx, mask, size);
++	CCIO_SEARCH_LOOP(ioc, res_idx, mask, size); \
++	res_ptr = (u##size *)&(ioc)->res_map[0]; \
++	CCIO_SEARCH_LOOP(ioa, res_idx, mask, size);
+ 
+ /*
+ ** Find available bit in this ioa's resource map.
+@@ -348,9 +348,9 @@ ccio_alloc_range(struct ioc *ioc, struct device *dev, size_t size)
+ 	
+ 	BUG_ON(pages_needed == 0);
+ 	BUG_ON((pages_needed * IOVP_SIZE) > DMA_CHUNK_SIZE);
+-     
+-	DBG_RES("%s() size: %d pages_needed %d\n", 
+-		__func__, size, pages_needed);
++
++	DBG_RES("%s() size: %d pages_needed %d\n",
++			__func__, size, pages_needed);
+ 
+ 	/*
+ 	** "seek and ye shall find"...praying never hurts either...
+@@ -416,7 +416,7 @@ ccio_alloc_range(struct ioc *ioc, struct device *dev, size_t size)
+ #define CCIO_FREE_MAPPINGS(ioc, res_idx, mask, size) \
+         u##size *res_ptr = (u##size *)&((ioc)->res_map[res_idx]); \
+         BUG_ON((*res_ptr & mask) != mask); \
+-        *res_ptr &= ~(mask);
++	*res_ptr &= ~(mask);
+ 
+ /**
+  * ccio_free_range - Free pages from the ioc's resource map.
+@@ -845,7 +845,7 @@ static void *
+ ccio_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle, gfp_t flag,
+ 		unsigned long attrs)
+ {
+-      void *ret;
++	void *ret;
+ #if 0
+ /* GRANT Need to establish hierarchy for non-PCI devs as well
+ ** and then provide matching gsc_map_xxx() functions for them as well.
+@@ -856,7 +856,7 @@ ccio_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle, gfp_t flag,
+ 		return 0;
+ 	}
+ #endif
+-        ret = (void *) __get_free_pages(flag, get_order(size));
++	ret = (void *) __get_free_pages(flag, get_order(size));
+ 
+ 	if (ret) {
+ 		memset(ret, 0, size);
+@@ -1022,8 +1022,8 @@ static const struct dma_map_ops ccio_ops = {
+ 	.free =			ccio_free,
+ 	.map_page =		ccio_map_page,
+ 	.unmap_page =		ccio_unmap_page,
+-	.map_sg = 		ccio_map_sg,
+-	.unmap_sg = 		ccio_unmap_sg,
++	.map_sg =		ccio_map_sg,
++	.unmap_sg =		ccio_unmap_sg,
+ 	.get_sgtable =		dma_common_get_sgtable,
+ 	.alloc_pages =		dma_common_alloc_pages,
+ 	.free_pages =		dma_common_free_pages,
+@@ -1080,7 +1080,7 @@ static int ccio_proc_info(struct seq_file *m, void *p)
+ 		max = ioc->usingle_pages - ioc->usg_pages;
+ 		seq_printf(m, "pci_unmap_single: %8ld calls  %8ld pages (avg %d/1000)\n",
+ 			   min, max, (int)((max * 1000)/min));
+- 
++
+ 		seq_printf(m, "pci_map_sg()    : %8ld calls  %8ld pages (avg %d/1000)\n",
+ 			   ioc->msg_calls, ioc->msg_pages,
+ 			   (int)((ioc->msg_pages * 1000)/ioc->msg_calls));
+@@ -1169,7 +1169,7 @@ void __init ccio_cujo20_fixup(struct parisc_device *cujo, u32 iovp)
+ 	idx = PDIR_INDEX(iovp) >> 3;
+ 
+ 	while (idx < ioc->res_size) {
+- 		res_ptr[idx] |= 0xff;
++		res_ptr[idx] |= 0xff;
+ 		idx += PDIR_INDEX(CUJO_20_STEP) >> 3;
+ 	}
+ }
+@@ -1297,7 +1297,7 @@ ccio_ioc_init(struct ioc *ioc)
+ 	DBG_INIT(" base %p\n", ioc->pdir_base);
+ 
+ 	/* resource map size dictated by pdir_size */
+- 	ioc->res_size = (ioc->pdir_size / sizeof(u64)) >> 3;
++	ioc->res_size = (ioc->pdir_size / sizeof(u64)) >> 3;
+ 	DBG_INIT("%s() res_size 0x%x\n", __func__, ioc->res_size);
+ 	
+ 	ioc->res_map = (u8 *)__get_free_pages(GFP_KERNEL, 
+-- 
+2.17.1
 
-Right. That's at bug we should return an error to userspace. We do for
-any unkown values that fall within the lower 32 bit range so it's silly
-to ignore unknown values in the upper 32 bit range.
-
-> 
-> Audit mode filtering using ACC_MODE() already masks out all but the lowest two
-> bits with O_ACCMODE, so there is no danger of overflowing a u32.
-> 
-> tomoyo_check_open_permission() assigns ACC_MODE() to u8 without a check.
-> 
-> All FMODE_* flags are clamped at u32.
-> 
-> 6 bits remain at top and 4 bits just above O_ACCMODE, so there is no immediate
-> danger of overflow and if any additional mode bits are needed they are
-> available.
-> 000377777703 used
-> 037777777777 available
-> 10 bits remaining
-> 
-> So, I don't think a check at this point in the code is useful, but do agree
-
-Maybe but note that a defensive posture here might be a good thing
-instead of tripping over the issue later.
-
-> that there should be some changes and checks added in sys_openat2 and
-> build_open_flags().
-> 
-> 
-> Also noticed: It looks like fddb5d430ad9f left in VALID_UPGRADE_FLAGS for
-> how->upgrade_mask that was removed.  This may be used at a later date, but at
-> this point is dead code.
-
-I'll take a look now.
-
-Christian
