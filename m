@@ -2,33 +2,33 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B65D836DFAF
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Apr 2021 21:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C9BC36E11C
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Apr 2021 23:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230161AbhD1Tiq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 28 Apr 2021 15:38:46 -0400
-Received: from mga02.intel.com ([134.134.136.20]:56068 "EHLO mga02.intel.com"
+        id S229939AbhD1VqD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 28 Apr 2021 17:46:03 -0400
+Received: from mga18.intel.com ([134.134.136.126]:7898 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229474AbhD1Tiq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 28 Apr 2021 15:38:46 -0400
-IronPort-SDR: Q9j52QZl1m/Fnzc0FzDH/gYTH7t2VAaNL6ZOA+akFbai7N6VinVo2vciYih1lrulpHr7YGZNSN
- pjKsEPUbNoyA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9968"; a="183976125"
+        id S229890AbhD1VqC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 28 Apr 2021 17:46:02 -0400
+IronPort-SDR: fjHB3TyROw4HGnr00dcl0ryvNJaWrCLUD5WnAV5oRX1RgDTO35ST+BPkHH+GhWRqoChL7Eyr2K
+ +fasdDMg7Qjg==
+X-IronPort-AV: E=McAfee;i="6200,9189,9968"; a="184341084"
 X-IronPort-AV: E=Sophos;i="5.82,258,1613462400"; 
-   d="gz'50?scan'50,208,50";a="183976125"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2021 12:38:00 -0700
-IronPort-SDR: 0ClzPqMtyjvvODloY3U2OmyhFYMoQNh8VpqPHWBhHcK2iSm09rvPHXHiTBsdpxdVlIbM4Amm7n
- 5Phz1qEVnVwQ==
+   d="gz'50?scan'50,208,50";a="184341084"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2021 14:45:16 -0700
+IronPort-SDR: 1TRGMPi3JpMBnXFOXKkgV07rJccDUMm7ljdkrvR6i/BN+ARbTOEGxDmdx2y+co9kQtuA+gpS9N
+ e0KSQEHTlXVA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,258,1613462400"; 
-   d="gz'50?scan'50,208,50";a="387843752"
+   d="gz'50?scan'50,208,50";a="455256712"
 Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 28 Apr 2021 12:37:58 -0700
+  by FMSMGA003.fm.intel.com with ESMTP; 28 Apr 2021 14:45:14 -0700
 Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1lbq0T-0007Gy-C3; Wed, 28 Apr 2021 19:37:57 +0000
-Date:   Thu, 29 Apr 2021 03:37:03 +0800
+        id 1lbrzd-0007JI-D8; Wed, 28 Apr 2021 21:45:13 +0000
+Date:   Thu, 29 Apr 2021 05:44:38 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Shubhankar Kuranagatti <shubhankarvk@gmail.com>,
         James.Bottomley@HansenPartnership.com
@@ -36,10 +36,10 @@ Cc:     kbuild-all@lists.01.org, deller@gmx.de,
         linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
         sanjanasrinidhi1810@gmail.com
 Subject: Re: [PATCH] drivers: parisc: ccio-dma.c: Added tab insead of spaces
-Message-ID: <202104290323.a4L4WTQF-lkp@intel.com>
+Message-ID: <202104290520.dBG08UEB-lkp@intel.com>
 References: <20210428153942.uyips5a3osoz3nju@kewl-virtual-machine>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="n8g4imXOkfNTN/H1"
+Content-Type: multipart/mixed; boundary="VbJkn9YxBvnuCH5J"
 Content-Disposition: inline
 In-Reply-To: <20210428153942.uyips5a3osoz3nju@kewl-virtual-machine>
 User-Agent: Mutt/1.10.1 (2018-07-13)
@@ -48,16 +48,16 @@ List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
 
---n8g4imXOkfNTN/H1
+--VbJkn9YxBvnuCH5J
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi Shubhankar,
 
-Thank you for the patch! Perhaps something to improve:
+Thank you for the patch! Yet something to improve:
 
-[auto build test WARNING on hp-parisc/for-next]
-[also build test WARNING on v5.12 next-20210428]
+[auto build test ERROR on hp-parisc/for-next]
+[also build test ERROR on v5.12 next-20210428]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
 https://git-scm.com/docs/git-format-patch]
@@ -79,10 +79,10 @@ reproduce (this is a W=1 build):
 If you fix the issue, kindly add following tag as appropriate
 Reported-by: kernel test robot <lkp@intel.com>
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
    drivers/parisc/ccio-dma.c: In function 'ccio_alloc_range':
-   drivers/parisc/ccio-dma.c:378:4: error: 'else' without a previous 'if'
+>> drivers/parisc/ccio-dma.c:378:4: error: 'else' without a previous 'if'
      378 |  } else if (pages_needed <= 16) {
          |    ^~~~
    drivers/parisc/ccio-dma.c:380:4: error: 'else' without a previous 'if'
@@ -91,64 +91,64 @@ All warnings (new ones prefixed by >>):
    drivers/parisc/ccio-dma.c:386:4: error: 'else' without a previous 'if'
      386 |  } else {
          |    ^~~~
-   drivers/parisc/ccio-dma.c:431:1: error: invalid storage class for function 'ccio_free_range'
+>> drivers/parisc/ccio-dma.c:431:1: error: invalid storage class for function 'ccio_free_range'
      431 | ccio_free_range(struct ioc *ioc, dma_addr_t iova, unsigned long pages_mapped)
          | ^~~~~~~~~~~~~~~
->> drivers/parisc/ccio-dma.c:430:1: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   drivers/parisc/ccio-dma.c:430:1: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
      430 | static void
          | ^~~~~~
    drivers/parisc/ccio-dma.c:555:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
      555 | static void CCIO_INLINE
          | ^~~~~~
-   drivers/parisc/ccio-dma.c:556:1: error: invalid storage class for function 'ccio_io_pdir_entry'
+>> drivers/parisc/ccio-dma.c:556:1: error: invalid storage class for function 'ccio_io_pdir_entry'
      556 | ccio_io_pdir_entry(u64 *pdir_ptr, space_t sid, unsigned long vba,
          | ^~~~~~~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:627:1: error: invalid storage class for function 'ccio_clear_io_tlb'
+>> drivers/parisc/ccio-dma.c:627:1: error: invalid storage class for function 'ccio_clear_io_tlb'
      627 | ccio_clear_io_tlb(struct ioc *ioc, dma_addr_t iovp, size_t byte_cnt)
          | ^~~~~~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:660:1: error: invalid storage class for function 'ccio_mark_invalid'
+>> drivers/parisc/ccio-dma.c:660:1: error: invalid storage class for function 'ccio_mark_invalid'
      660 | ccio_mark_invalid(struct ioc *ioc, dma_addr_t iova, size_t byte_cnt)
          | ^~~~~~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:702:1: error: invalid storage class for function 'ccio_dma_supported'
+>> drivers/parisc/ccio-dma.c:702:1: error: invalid storage class for function 'ccio_dma_supported'
      702 | ccio_dma_supported(struct device *dev, u64 mask)
          | ^~~~~~~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:724:1: error: invalid storage class for function 'ccio_map_single'
+>> drivers/parisc/ccio-dma.c:724:1: error: invalid storage class for function 'ccio_map_single'
      724 | ccio_map_single(struct device *dev, void *addr, size_t size,
          | ^~~~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:786:1: error: invalid storage class for function 'ccio_map_page'
+>> drivers/parisc/ccio-dma.c:786:1: error: invalid storage class for function 'ccio_map_page'
      786 | ccio_map_page(struct device *dev, struct page *page, unsigned long offset,
          | ^~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:803:1: error: invalid storage class for function 'ccio_unmap_page'
+>> drivers/parisc/ccio-dma.c:803:1: error: invalid storage class for function 'ccio_unmap_page'
      803 | ccio_unmap_page(struct device *dev, dma_addr_t iova, size_t size,
          | ^~~~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:845:1: error: invalid storage class for function 'ccio_alloc'
+>> drivers/parisc/ccio-dma.c:845:1: error: invalid storage class for function 'ccio_alloc'
      845 | ccio_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle, gfp_t flag,
          | ^~~~~~~~~~
-   drivers/parisc/ccio-dma.c:879:1: error: invalid storage class for function 'ccio_free'
+>> drivers/parisc/ccio-dma.c:879:1: error: invalid storage class for function 'ccio_free'
      879 | ccio_free(struct device *dev, size_t size, void *cpu_addr,
          | ^~~~~~~~~
    In file included from drivers/parisc/iommu-helpers.h:2,
                     from drivers/parisc/ccio-dma.c:896:
-   include/linux/prefetch.h:55:20: error: invalid storage class for function 'prefetch_range'
+>> include/linux/prefetch.h:55:20: error: invalid storage class for function 'prefetch_range'
       55 | static inline void prefetch_range(void *addr, size_t len)
          |                    ^~~~~~~~~~~~~~
-   include/linux/prefetch.h:66:20: error: invalid storage class for function 'prefetch_page_address'
+>> include/linux/prefetch.h:66:20: error: invalid storage class for function 'prefetch_page_address'
       66 | static inline void prefetch_page_address(struct page *page)
          |                    ^~~~~~~~~~~~~~~~~~~~~
    In file included from drivers/parisc/ccio-dma.c:896:
-   drivers/parisc/iommu-helpers.h:15:1: error: invalid storage class for function 'iommu_fill_pdir'
+>> drivers/parisc/iommu-helpers.h:15:1: error: invalid storage class for function 'iommu_fill_pdir'
       15 | iommu_fill_pdir(struct ioc *ioc, struct scatterlist *startsg, int nents,
          | ^~~~~~~~~~~~~~~
-   drivers/parisc/iommu-helpers.h:101:1: error: invalid storage class for function 'iommu_coalesce_chunks'
+>> drivers/parisc/iommu-helpers.h:101:1: error: invalid storage class for function 'iommu_coalesce_chunks'
      101 | iommu_coalesce_chunks(struct ioc *ioc, struct device *dev,
          | ^~~~~~~~~~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:908:1: error: invalid storage class for function 'ccio_map_sg'
+>> drivers/parisc/ccio-dma.c:908:1: error: invalid storage class for function 'ccio_map_sg'
      908 | ccio_map_sg(struct device *dev, struct scatterlist *sglist, int nents,
          | ^~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:987:1: error: invalid storage class for function 'ccio_unmap_sg'
+>> drivers/parisc/ccio-dma.c:987:1: error: invalid storage class for function 'ccio_unmap_sg'
      987 | ccio_unmap_sg(struct device *dev, struct scatterlist *sglist, int nents,
          | ^~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:1020:19: error: initializer element is not constant
+>> drivers/parisc/ccio-dma.c:1020:19: error: initializer element is not constant
     1020 |  .dma_supported = ccio_dma_supported,
          |                   ^~~~~~~~~~~~~~~~~~
    drivers/parisc/ccio-dma.c:1020:19: note: (near initialization for 'ccio_ops.dma_supported')
@@ -176,10 +176,10 @@ All warnings (new ones prefixed by >>):
     1026 |  .unmap_sg =  ccio_unmap_sg,
          |               ^~~~~~~~~~~~~
    drivers/parisc/ccio-dma.c:1026:15: note: (near initialization for 'ccio_ops.unmap_sg')
-   drivers/parisc/ccio-dma.c:1033:12: error: invalid storage class for function 'ccio_proc_info'
+>> drivers/parisc/ccio-dma.c:1033:12: error: invalid storage class for function 'ccio_proc_info'
     1033 | static int ccio_proc_info(struct seq_file *m, void *p)
          |            ^~~~~~~~~~~~~~
-   drivers/parisc/ccio-dma.c:1099:12: error: invalid storage class for function 'ccio_proc_bitmap_info'
+>> drivers/parisc/ccio-dma.c:1099:12: error: invalid storage class for function 'ccio_proc_bitmap_info'
     1099 | static int ccio_proc_bitmap_info(struct seq_file *m, void *p)
          |            ^~~~~~~~~~~~~~~~~~~~~
    drivers/parisc/ccio-dma.c:1122:21: error: invalid storage class for function 'ccio_find_ioc'
@@ -195,49 +195,287 @@ All warnings (new ones prefixed by >>):
    drivers/parisc/ccio-dma.c:1217:11: note: each undeclared identifier is reported only once for each function it appears in
    drivers/parisc/ccio-dma.c:1229:1: error: invalid storage class for function 'ccio_ioc_init'
     1229 | ccio_ioc_init(struct ioc *ioc)
+         | ^~~~~~~~~~~~~
+   drivers/parisc/ccio-dma.c:1350:1: error: invalid storage class for function 'ccio_init_resource'
+    1350 | ccio_init_resource(struct resource *res, char *name, void __iomem *ioaddr)
+         | ^~~~~~~~~~~~~~~~~~
+   drivers/parisc/ccio-dma.c:1382:20: error: invalid storage class for function 'ccio_init_resources'
+    1382 | static void __init ccio_init_resources(struct ioc *ioc)
+         |                    ^~~~~~~~~~~~~~~~~~~
+   drivers/parisc/ccio-dma.c:1393:12: error: invalid storage class for function 'new_ioc_area'
+    1393 | static int new_ioc_area(struct resource *res, unsigned long size,
+         |            ^~~~~~~~~~~~
+   drivers/parisc/ccio-dma.c:1412:12: error: invalid storage class for function 'expand_ioc_area'
+    1412 | static int expand_ioc_area(struct resource *res, unsigned long size,
+         |            ^~~~~~~~~~~~~~~
+   drivers/parisc/ccio-dma.c:1516:19: error: invalid storage class for function 'ccio_probe'
+    1516 | static int __init ccio_probe(struct parisc_device *dev)
+         |                   ^~~~~~~~~~
+   drivers/parisc/ccio-dma.c:1517: confused by earlier errors, bailing out
 
 
-vim +430 drivers/parisc/ccio-dma.c
+vim +378 drivers/parisc/ccio-dma.c
 
-^1da177e4c3f41 Linus Torvalds  2005-04-16  415  
-^1da177e4c3f41 Linus Torvalds  2005-04-16  416  #define CCIO_FREE_MAPPINGS(ioc, res_idx, mask, size) \
-^1da177e4c3f41 Linus Torvalds  2005-04-16  417          u##size *res_ptr = (u##size *)&((ioc)->res_map[res_idx]); \
-^1da177e4c3f41 Linus Torvalds  2005-04-16  418          BUG_ON((*res_ptr & mask) != mask); \
-^1da177e4c3f41 Linus Torvalds  2005-04-16  419  	*res_ptr &= ~(mask);
-^1da177e4c3f41 Linus Torvalds  2005-04-16  420  
-^1da177e4c3f41 Linus Torvalds  2005-04-16  421  /**
-^1da177e4c3f41 Linus Torvalds  2005-04-16  422   * ccio_free_range - Free pages from the ioc's resource map.
-^1da177e4c3f41 Linus Torvalds  2005-04-16  423   * @ioc: The I/O Controller.
-^1da177e4c3f41 Linus Torvalds  2005-04-16  424   * @iova: The I/O Virtual Address.
-^1da177e4c3f41 Linus Torvalds  2005-04-16  425   * @pages_mapped: The requested number of pages to be freed from the
-^1da177e4c3f41 Linus Torvalds  2005-04-16  426   * I/O Pdir.
-^1da177e4c3f41 Linus Torvalds  2005-04-16  427   *
-^1da177e4c3f41 Linus Torvalds  2005-04-16  428   * This function frees the resouces allocated for the iova.
-^1da177e4c3f41 Linus Torvalds  2005-04-16  429   */
-^1da177e4c3f41 Linus Torvalds  2005-04-16 @430  static void
-^1da177e4c3f41 Linus Torvalds  2005-04-16  431  ccio_free_range(struct ioc *ioc, dma_addr_t iova, unsigned long pages_mapped)
-^1da177e4c3f41 Linus Torvalds  2005-04-16  432  {
-^1da177e4c3f41 Linus Torvalds  2005-04-16  433  	unsigned long iovp = CCIO_IOVP(iova);
-^1da177e4c3f41 Linus Torvalds  2005-04-16  434  	unsigned int res_idx = PDIR_INDEX(iovp) >> 3;
-^1da177e4c3f41 Linus Torvalds  2005-04-16  435  
-^1da177e4c3f41 Linus Torvalds  2005-04-16  436  	BUG_ON(pages_mapped == 0);
-^1da177e4c3f41 Linus Torvalds  2005-04-16  437  	BUG_ON((pages_mapped * IOVP_SIZE) > DMA_CHUNK_SIZE);
-^1da177e4c3f41 Linus Torvalds  2005-04-16  438  	BUG_ON(pages_mapped > BITS_PER_LONG);
-^1da177e4c3f41 Linus Torvalds  2005-04-16  439  
-^1da177e4c3f41 Linus Torvalds  2005-04-16  440  	DBG_RES("%s():  res_idx: %d pages_mapped %d\n", 
-a8043ecb17bd2e Harvey Harrison 2008-05-14  441  		__func__, res_idx, pages_mapped);
-^1da177e4c3f41 Linus Torvalds  2005-04-16  442  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  329  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  330  /**
+^1da177e4c3f41 Linus Torvalds      2005-04-16  331   * ccio_alloc_range - Allocate pages in the ioc's resource map.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  332   * @ioc: The I/O Controller.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  333   * @pages_needed: The requested number of pages to be mapped into the
+^1da177e4c3f41 Linus Torvalds      2005-04-16  334   * I/O Pdir...
+^1da177e4c3f41 Linus Torvalds      2005-04-16  335   *
+^1da177e4c3f41 Linus Torvalds      2005-04-16  336   * This function searches the resource map of the ioc to locate a range
+^1da177e4c3f41 Linus Torvalds      2005-04-16  337   * of available pages for the requested size.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  338   */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  339  static int
+7c8cda625acd9b FUJITA Tomonori     2008-03-04  340  ccio_alloc_range(struct ioc *ioc, struct device *dev, size_t size)
+^1da177e4c3f41 Linus Torvalds      2005-04-16  341  {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  342  	unsigned int pages_needed = size >> IOVP_SHIFT;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  343  	unsigned int res_idx;
+466634488e8096 FUJITA Tomonori     2008-03-04  344  	unsigned long boundary_size;
+1e22166c40a99f Kyle McMartin       2008-07-28  345  #ifdef CCIO_COLLECT_STATS
+^1da177e4c3f41 Linus Torvalds      2005-04-16  346  	unsigned long cr_start = mfctl(16);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  347  #endif
+^1da177e4c3f41 Linus Torvalds      2005-04-16  348  	
+^1da177e4c3f41 Linus Torvalds      2005-04-16  349  	BUG_ON(pages_needed == 0);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  350  	BUG_ON((pages_needed * IOVP_SIZE) > DMA_CHUNK_SIZE);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  351  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  352  	DBG_RES("%s() size: %d pages_needed %d\n",
+a8043ecb17bd2e Harvey Harrison     2008-05-14  353  			__func__, size, pages_needed);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  354  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  355  	/*
+^1da177e4c3f41 Linus Torvalds      2005-04-16  356  	** "seek and ye shall find"...praying never hurts either...
+^1da177e4c3f41 Linus Torvalds      2005-04-16  357  	** ggg sacrifices another 710 to the computer gods.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  358  	*/
+^1da177e4c3f41 Linus Torvalds      2005-04-16  359  
+1e9d90dbed120e Nicolin Chen        2020-09-01  360  	boundary_size = dma_get_seg_boundary_nr_pages(dev, IOVP_SHIFT);
+466634488e8096 FUJITA Tomonori     2008-03-04  361  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  362  	if (pages_needed <= 8) {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  363  		/*
+^1da177e4c3f41 Linus Torvalds      2005-04-16  364  		 * LAN traffic will not thrash the TLB IFF the same NIC
+4f63ba17086673 Joe Perches         2008-02-03  365  		 * uses 8 adjacent pages to map separate payload data.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  366  		 * ie the same byte in the resource bit map.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  367  		 */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  368  #if 0
+^1da177e4c3f41 Linus Torvalds      2005-04-16  369  		/* FIXME: bit search should shift it's way through
+^1da177e4c3f41 Linus Torvalds      2005-04-16  370  		 * an unsigned long - not byte at a time. As it is now,
+^1da177e4c3f41 Linus Torvalds      2005-04-16  371  		 * we effectively allocate this byte to this mapping.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  372  		 */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  373  		unsigned long mask = ~(~0UL >> pages_needed);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  374  		CCIO_FIND_FREE_MAPPING(ioc, res_idx, mask, 8);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  375  #else
+^1da177e4c3f41 Linus Torvalds      2005-04-16  376  		CCIO_FIND_FREE_MAPPING(ioc, res_idx, 0xff, 8);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  377  #endif
+^1da177e4c3f41 Linus Torvalds      2005-04-16 @378  	} else if (pages_needed <= 16) {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  379  		CCIO_FIND_FREE_MAPPING(ioc, res_idx, 0xffff, 16);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  380  	} else if (pages_needed <= 32) {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  381  		CCIO_FIND_FREE_MAPPING(ioc, res_idx, ~(unsigned int)0, 32);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  382  #ifdef __LP64__
+^1da177e4c3f41 Linus Torvalds      2005-04-16  383  	} else if (pages_needed <= 64) {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  384  		CCIO_FIND_FREE_MAPPING(ioc, res_idx, ~0UL, 64);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  385  #endif
+^1da177e4c3f41 Linus Torvalds      2005-04-16  386  	} else {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  387  		panic("%s: %s() Too many pages to map. pages_needed: %u\n",
+a8043ecb17bd2e Harvey Harrison     2008-05-14  388  		       __FILE__,  __func__, pages_needed);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  389  	}
+^1da177e4c3f41 Linus Torvalds      2005-04-16  390  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  391  	panic("%s: %s() I/O MMU is out of mapping resources.\n", __FILE__,
+a8043ecb17bd2e Harvey Harrison     2008-05-14  392  	      __func__);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  393  	
+^1da177e4c3f41 Linus Torvalds      2005-04-16  394  resource_found:
+^1da177e4c3f41 Linus Torvalds      2005-04-16  395  	
+^1da177e4c3f41 Linus Torvalds      2005-04-16  396  	DBG_RES("%s() res_idx %d res_hint: %d\n",
+a8043ecb17bd2e Harvey Harrison     2008-05-14  397  		__func__, res_idx, ioc->res_hint);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  398  
+1e22166c40a99f Kyle McMartin       2008-07-28  399  #ifdef CCIO_COLLECT_STATS
+^1da177e4c3f41 Linus Torvalds      2005-04-16  400  	{
+^1da177e4c3f41 Linus Torvalds      2005-04-16  401  		unsigned long cr_end = mfctl(16);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  402  		unsigned long tmp = cr_end - cr_start;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  403  		/* check for roll over */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  404  		cr_start = (cr_end < cr_start) ?  -(tmp) : (tmp);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  405  	}
+^1da177e4c3f41 Linus Torvalds      2005-04-16  406  	ioc->avg_search[ioc->avg_idx++] = cr_start;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  407  	ioc->avg_idx &= CCIO_SEARCH_SAMPLE - 1;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  408  	ioc->used_pages += pages_needed;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  409  #endif
+^1da177e4c3f41 Linus Torvalds      2005-04-16  410  	/* 
+^1da177e4c3f41 Linus Torvalds      2005-04-16  411  	** return the bit address.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  412  	*/
+^1da177e4c3f41 Linus Torvalds      2005-04-16  413  	return res_idx << 3;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  414  }
+^1da177e4c3f41 Linus Torvalds      2005-04-16  415  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  416  #define CCIO_FREE_MAPPINGS(ioc, res_idx, mask, size) \
+^1da177e4c3f41 Linus Torvalds      2005-04-16  417          u##size *res_ptr = (u##size *)&((ioc)->res_map[res_idx]); \
+^1da177e4c3f41 Linus Torvalds      2005-04-16  418          BUG_ON((*res_ptr & mask) != mask); \
+^1da177e4c3f41 Linus Torvalds      2005-04-16  419  	*res_ptr &= ~(mask);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  420  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  421  /**
+^1da177e4c3f41 Linus Torvalds      2005-04-16  422   * ccio_free_range - Free pages from the ioc's resource map.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  423   * @ioc: The I/O Controller.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  424   * @iova: The I/O Virtual Address.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  425   * @pages_mapped: The requested number of pages to be freed from the
+^1da177e4c3f41 Linus Torvalds      2005-04-16  426   * I/O Pdir.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  427   *
+^1da177e4c3f41 Linus Torvalds      2005-04-16  428   * This function frees the resouces allocated for the iova.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  429   */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  430  static void
+^1da177e4c3f41 Linus Torvalds      2005-04-16 @431  ccio_free_range(struct ioc *ioc, dma_addr_t iova, unsigned long pages_mapped)
+^1da177e4c3f41 Linus Torvalds      2005-04-16  432  {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  433  	unsigned long iovp = CCIO_IOVP(iova);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  434  	unsigned int res_idx = PDIR_INDEX(iovp) >> 3;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  435  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  436  	BUG_ON(pages_mapped == 0);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  437  	BUG_ON((pages_mapped * IOVP_SIZE) > DMA_CHUNK_SIZE);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  438  	BUG_ON(pages_mapped > BITS_PER_LONG);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  439  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  440  	DBG_RES("%s():  res_idx: %d pages_mapped %d\n", 
+a8043ecb17bd2e Harvey Harrison     2008-05-14  441  		__func__, res_idx, pages_mapped);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  442  
+1e22166c40a99f Kyle McMartin       2008-07-28  443  #ifdef CCIO_COLLECT_STATS
+^1da177e4c3f41 Linus Torvalds      2005-04-16  444  	ioc->used_pages -= pages_mapped;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  445  #endif
+^1da177e4c3f41 Linus Torvalds      2005-04-16  446  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  447  	if(pages_mapped <= 8) {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  448  #if 0
+^1da177e4c3f41 Linus Torvalds      2005-04-16  449  		/* see matching comments in alloc_range */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  450  		unsigned long mask = ~(~0UL >> pages_mapped);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  451  		CCIO_FREE_MAPPINGS(ioc, res_idx, mask, 8);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  452  #else
+c18b4608958ff4 Alexander Beregalov 2009-03-19  453  		CCIO_FREE_MAPPINGS(ioc, res_idx, 0xffUL, 8);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  454  #endif
+^1da177e4c3f41 Linus Torvalds      2005-04-16  455  	} else if(pages_mapped <= 16) {
+c18b4608958ff4 Alexander Beregalov 2009-03-19  456  		CCIO_FREE_MAPPINGS(ioc, res_idx, 0xffffUL, 16);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  457  	} else if(pages_mapped <= 32) {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  458  		CCIO_FREE_MAPPINGS(ioc, res_idx, ~(unsigned int)0, 32);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  459  #ifdef __LP64__
+^1da177e4c3f41 Linus Torvalds      2005-04-16  460  	} else if(pages_mapped <= 64) {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  461  		CCIO_FREE_MAPPINGS(ioc, res_idx, ~0UL, 64);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  462  #endif
+^1da177e4c3f41 Linus Torvalds      2005-04-16  463  	} else {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  464  		panic("%s:%s() Too many pages to unmap.\n", __FILE__,
+a8043ecb17bd2e Harvey Harrison     2008-05-14  465  		      __func__);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  466  	}
+^1da177e4c3f41 Linus Torvalds      2005-04-16  467  }
+^1da177e4c3f41 Linus Torvalds      2005-04-16  468  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  469  /****************************************************************
+^1da177e4c3f41 Linus Torvalds      2005-04-16  470  **
+^1da177e4c3f41 Linus Torvalds      2005-04-16  471  **          CCIO dma_ops support routines
+^1da177e4c3f41 Linus Torvalds      2005-04-16  472  **
+^1da177e4c3f41 Linus Torvalds      2005-04-16  473  *****************************************************************/
+^1da177e4c3f41 Linus Torvalds      2005-04-16  474  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  475  typedef unsigned long space_t;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  476  #define KERNEL_SPACE 0
+^1da177e4c3f41 Linus Torvalds      2005-04-16  477  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  478  /*
+^1da177e4c3f41 Linus Torvalds      2005-04-16  479  ** DMA "Page Type" and Hints 
+^1da177e4c3f41 Linus Torvalds      2005-04-16  480  ** o if SAFE_DMA isn't set, mapping is for FAST_DMA. SAFE_DMA should be
+^1da177e4c3f41 Linus Torvalds      2005-04-16  481  **   set for subcacheline DMA transfers since we don't want to damage the
+^1da177e4c3f41 Linus Torvalds      2005-04-16  482  **   other part of a cacheline.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  483  ** o SAFE_DMA must be set for "memory" allocated via pci_alloc_consistent().
+^1da177e4c3f41 Linus Torvalds      2005-04-16  484  **   This bit tells U2 to do R/M/W for partial cachelines. "Streaming"
+^1da177e4c3f41 Linus Torvalds      2005-04-16  485  **   data can avoid this if the mapping covers full cache lines.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  486  ** o STOP_MOST is needed for atomicity across cachelines.
+0779bf2d2ecc4d Matt LaPlante       2006-11-30  487  **   Apparently only "some EISA devices" need this.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  488  **   Using CONFIG_ISA is hack. Only the IOA with EISA under it needs
+^1da177e4c3f41 Linus Torvalds      2005-04-16  489  **   to use this hint iff the EISA devices needs this feature.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  490  **   According to the U2 ERS, STOP_MOST enabled pages hurt performance.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  491  ** o PREFETCH should *not* be set for cases like Multiple PCI devices
+^1da177e4c3f41 Linus Torvalds      2005-04-16  492  **   behind GSCtoPCI (dino) bus converter. Only one cacheline per GSC
+^1da177e4c3f41 Linus Torvalds      2005-04-16  493  **   device can be fetched and multiply DMA streams will thrash the
+^1da177e4c3f41 Linus Torvalds      2005-04-16  494  **   prefetch buffer and burn memory bandwidth. See 6.7.3 "Prefetch Rules
+^1da177e4c3f41 Linus Torvalds      2005-04-16  495  **   and Invalidation of Prefetch Entries".
+^1da177e4c3f41 Linus Torvalds      2005-04-16  496  **
+^1da177e4c3f41 Linus Torvalds      2005-04-16  497  ** FIXME: the default hints need to be per GSC device - not global.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  498  ** 
+^1da177e4c3f41 Linus Torvalds      2005-04-16  499  ** HP-UX dorks: linux device driver programming model is totally different
+^1da177e4c3f41 Linus Torvalds      2005-04-16  500  **    than HP-UX's. HP-UX always sets HINT_PREFETCH since it's drivers
+^1da177e4c3f41 Linus Torvalds      2005-04-16  501  **    do special things to work on non-coherent platforms...linux has to
+^1da177e4c3f41 Linus Torvalds      2005-04-16  502  **    be much more careful with this.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  503  */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  504  #define IOPDIR_VALID    0x01UL
+^1da177e4c3f41 Linus Torvalds      2005-04-16  505  #define HINT_SAFE_DMA   0x02UL	/* used for pci_alloc_consistent() pages */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  506  #ifdef CONFIG_EISA
+^1da177e4c3f41 Linus Torvalds      2005-04-16  507  #define HINT_STOP_MOST  0x04UL	/* LSL support */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  508  #else
+^1da177e4c3f41 Linus Torvalds      2005-04-16  509  #define HINT_STOP_MOST  0x00UL	/* only needed for "some EISA devices" */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  510  #endif
+^1da177e4c3f41 Linus Torvalds      2005-04-16  511  #define HINT_UDPATE_ENB 0x08UL  /* not used/supported by U2 */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  512  #define HINT_PREFETCH   0x10UL	/* for outbound pages which are not SAFE */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  513  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  514  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  515  /*
+^1da177e4c3f41 Linus Torvalds      2005-04-16  516  ** Use direction (ie PCI_DMA_TODEVICE) to pick hint.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  517  ** ccio_alloc_consistent() depends on this to get SAFE_DMA
+^1da177e4c3f41 Linus Torvalds      2005-04-16  518  ** when it passes in BIDIRECTIONAL flag.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  519  */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  520  static u32 hint_lookup[] = {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  521  	[PCI_DMA_BIDIRECTIONAL]	= HINT_STOP_MOST | HINT_SAFE_DMA | IOPDIR_VALID,
+^1da177e4c3f41 Linus Torvalds      2005-04-16  522  	[PCI_DMA_TODEVICE]	= HINT_STOP_MOST | HINT_PREFETCH | IOPDIR_VALID,
+^1da177e4c3f41 Linus Torvalds      2005-04-16  523  	[PCI_DMA_FROMDEVICE]	= HINT_STOP_MOST | IOPDIR_VALID,
+^1da177e4c3f41 Linus Torvalds      2005-04-16  524  };
+^1da177e4c3f41 Linus Torvalds      2005-04-16  525  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  526  /**
+^1da177e4c3f41 Linus Torvalds      2005-04-16  527   * ccio_io_pdir_entry - Initialize an I/O Pdir.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  528   * @pdir_ptr: A pointer into I/O Pdir.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  529   * @sid: The Space Identifier.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  530   * @vba: The virtual address.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  531   * @hints: The DMA Hint.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  532   *
+^1da177e4c3f41 Linus Torvalds      2005-04-16  533   * Given a virtual address (vba, arg2) and space id, (sid, arg1),
+^1da177e4c3f41 Linus Torvalds      2005-04-16  534   * load the I/O PDIR entry pointed to by pdir_ptr (arg0). Each IO Pdir
+^1da177e4c3f41 Linus Torvalds      2005-04-16  535   * entry consists of 8 bytes as shown below (MSB == bit 0):
+^1da177e4c3f41 Linus Torvalds      2005-04-16  536   *
+^1da177e4c3f41 Linus Torvalds      2005-04-16  537   *
+^1da177e4c3f41 Linus Torvalds      2005-04-16  538   * WORD 0:
+^1da177e4c3f41 Linus Torvalds      2005-04-16  539   * +------+----------------+-----------------------------------------------+
+^1da177e4c3f41 Linus Torvalds      2005-04-16  540   * | Phys | Virtual Index  |               Phys                            |
+^1da177e4c3f41 Linus Torvalds      2005-04-16  541   * | 0:3  |     0:11       |               4:19                            |
+^1da177e4c3f41 Linus Torvalds      2005-04-16  542   * |4 bits|   12 bits      |              16 bits                          |
+^1da177e4c3f41 Linus Torvalds      2005-04-16  543   * +------+----------------+-----------------------------------------------+
+^1da177e4c3f41 Linus Torvalds      2005-04-16  544   * WORD 1:
+^1da177e4c3f41 Linus Torvalds      2005-04-16  545   * +-----------------------+-----------------------------------------------+
+^1da177e4c3f41 Linus Torvalds      2005-04-16  546   * |      Phys    |  Rsvd  | Prefetch |Update |Rsvd  |Lock  |Safe  |Valid  |
+^1da177e4c3f41 Linus Torvalds      2005-04-16  547   * |     20:39    |        | Enable   |Enable |      |Enable|DMA   |       |
+^1da177e4c3f41 Linus Torvalds      2005-04-16  548   * |    20 bits   | 5 bits | 1 bit    |1 bit  |2 bits|1 bit |1 bit |1 bit  |
+^1da177e4c3f41 Linus Torvalds      2005-04-16  549   * +-----------------------+-----------------------------------------------+
+^1da177e4c3f41 Linus Torvalds      2005-04-16  550   *
+^1da177e4c3f41 Linus Torvalds      2005-04-16  551   * The virtual index field is filled with the results of the LCI
+^1da177e4c3f41 Linus Torvalds      2005-04-16  552   * (Load Coherence Index) instruction.  The 8 bits used for the virtual
+^1da177e4c3f41 Linus Torvalds      2005-04-16  553   * index are bits 12:19 of the value returned by LCI.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  554   */ 
+df8e5bc6b7b61c Adrian Bunk         2008-12-02  555  static void CCIO_INLINE
+^1da177e4c3f41 Linus Torvalds      2005-04-16 @556  ccio_io_pdir_entry(u64 *pdir_ptr, space_t sid, unsigned long vba,
+^1da177e4c3f41 Linus Torvalds      2005-04-16  557  		   unsigned long hints)
+^1da177e4c3f41 Linus Torvalds      2005-04-16  558  {
+^1da177e4c3f41 Linus Torvalds      2005-04-16  559  	register unsigned long pa;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  560  	register unsigned long ci; /* coherent index */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  561  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  562  	/* We currently only support kernel addresses */
+^1da177e4c3f41 Linus Torvalds      2005-04-16  563  	BUG_ON(sid != KERNEL_SPACE);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  564  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  565  	/*
+^1da177e4c3f41 Linus Torvalds      2005-04-16  566  	** WORD 1 - low order word
+^1da177e4c3f41 Linus Torvalds      2005-04-16  567  	** "hints" parm includes the VALID bit!
+^1da177e4c3f41 Linus Torvalds      2005-04-16  568  	** "dep" clobbers the physical address offset bits as well.
+^1da177e4c3f41 Linus Torvalds      2005-04-16  569  	*/
+116d753308cf03 John David Anglin   2019-06-02  570  	pa = lpa(vba);
+^1da177e4c3f41 Linus Torvalds      2005-04-16  571  	asm volatile("depw  %1,31,12,%0" : "+r" (pa) : "r" (hints));
+^1da177e4c3f41 Linus Torvalds      2005-04-16  572  	((u32 *)pdir_ptr)[1] = (u32) pa;
+^1da177e4c3f41 Linus Torvalds      2005-04-16  573  
+^1da177e4c3f41 Linus Torvalds      2005-04-16  574  	/*
+^1da177e4c3f41 Linus Torvalds      2005-04-16  575  	** WORD 0 - high order word
+^1da177e4c3f41 Linus Torvalds      2005-04-16  576  	*/
+^1da177e4c3f41 Linus Torvalds      2005-04-16  577  
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---n8g4imXOkfNTN/H1
+--VbJkn9YxBvnuCH5J
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICNOviWAAAy5jb25maWcAlDzbcts2sO/9Ck760s40rSw7vswZP4AgKOGINwOgJPuFo8hK
+H4sICL7KiWAAAy5jb25maWcAlDzbcts2sO/9Ck760s40rSw7vswZP4AgKOGINwOgJPuFo8hK
 oqljeyS5bf7+7II3kATonD6kEXYBLBZ7XzC//vKrR95OL983p/128/T0w/u6e94dNqfdo/dl
 /7T7Hy9IvSRVHgu4+hOQo/3z239/vW4O++PW+/Tn2fTPibfYHZ53Tx59ef6y//oGk/cvz7/8
 +gtNk5DPCkqLJROSp0mh2Frdfvj2+rr5+ITrfPy63Xq/zSj93bv58/zPyQdjDpcFAG5/1EOz
@@ -580,4 +818,4 @@ VuEym7H5F4BbQORMlBsBEEpJOnShoEttME+fzZiMcIK6FPdCPF2dT3lEireTOTLpnu7kbFwE
 offJBPkC2+R4AhJyAgMe/+Aeu4YmR/A2E5ybbCBJ0hfHxe2QosXV1xlYZePNG+DlDjgKWJgh
 +BWAd4CABqBwHAjg6ouzC4W3CsDYHgKZzwAA9IzxBnArAQA=
 
---n8g4imXOkfNTN/H1--
+--VbJkn9YxBvnuCH5J--
