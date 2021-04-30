@@ -2,62 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04E4736E84C
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Apr 2021 12:01:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CE1536FF9B
+	for <lists+linux-parisc@lfdr.de>; Fri, 30 Apr 2021 19:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239890AbhD2KBq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 29 Apr 2021 06:01:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37474 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237774AbhD2KBp (ORCPT
+        id S231377AbhD3Rf7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 30 Apr 2021 13:35:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:32604 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231136AbhD3Rf4 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 29 Apr 2021 06:01:45 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E8DBC06138C
-        for <linux-parisc@vger.kernel.org>; Thu, 29 Apr 2021 03:00:52 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id t4so15682987ejo.0
-        for <linux-parisc@vger.kernel.org>; Thu, 29 Apr 2021 03:00:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=qRFMPvqokQAyE/MeZvmo/UUcc5k4CVEN0zE9oU6Ew6c=;
-        b=Dwa/dShlwzqzE0hl4RhUrEOLYg6ifVYZLwr3L70BlUMPKNPB4InGjfnbGt8AvRlU4N
-         4XyjPOFmv6xvych5FGPprpc1BSpd/qRn+QIWd1/nNNbqBI2j7Q+CcJa/dyPETGAx8CRY
-         9gbC716WH0II/gX2eOeqqRig8H85EdsOQnvhp5emKVQ4nPu7WXXj4cOhCb3/lCTt3kmF
-         NU9jxRWic4xS3cb5xpCqlC58xMzedTPcHdpphohiKjjYC1NcinyYIfohVFHSkeoqMK9D
-         ebKjhWn2KBepSkfR/FFj3Tu2jdqDVS/Xi8lODDmlGdVUeiUCh8SH2f0AkBoSt51cFjp0
-         PraQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=qRFMPvqokQAyE/MeZvmo/UUcc5k4CVEN0zE9oU6Ew6c=;
-        b=U/v9pJ4RldtcRtgyOMeTIT1RQQ+sFSUX64jrsuA2nmvE0y26SULgudzpVfzMT31Nff
-         pBKhBWgECdBy//xpbgm/Xrg2GVYQ/AH+LodrjSGbhNOZ0ML4CtvTJ3w0jLg6JEBRZsg1
-         LPiwjFISqy0PRQaV8MS/qchR3cqti51bLd6T/Q5Zb1/spm3QewbE3MyV/cr5qyiXaYEo
-         REUBshyipAoWlM5wWDGUs3YdaWVTg32wljpZtAosONOU+IWKCJrdmsQoBzCsv9ISwxXp
-         i62TMPRw9qezrvMyEEH3WAlK5JPXsepPgUuFYMHtazfmwj4079q/ss1pcbFU9crRDLuL
-         V/Ow==
-X-Gm-Message-State: AOAM531Jk1aucs55lUey54s1QpKXCujOKYFcVIn168LHKmUE6meudlje
-        OKzDH6dq0DRxr8QYxUT4vhwgEybzEQOmiPBDwk4=
-X-Google-Smtp-Source: ABdhPJyOyXIP50ktA+pK1ypNf5JlFKyMHXpwAdrcHPkDIrBcogOwICvzn7TzDv6O5UsAbmI4jDdrxW3KzY+F2pmUMUc=
-X-Received: by 2002:a17:906:b251:: with SMTP id ce17mr6977520ejb.149.1619690450946;
- Thu, 29 Apr 2021 03:00:50 -0700 (PDT)
+        Fri, 30 Apr 2021 13:35:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1619804106;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=rnOgPKZjZy0onTXRBA27q6w7KxyfRvenQEgxZ63aGEE=;
+        b=XW17/+AfvIuzCi9uOULSUtahbK/PgM/okwoi4ese/oOpWoeMBVbR/SXMwuqh1lz40KHQZl
+        3lBPTsElILLIh3hO63eTewmeQMZmxeLxpXBZxEmFm69fzsV41bsde8smMLJYN1Vtt05/l9
+        UCr++07fvjzeZKqD2ZcYmiBjbmxjydQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-470-6zgAS2f6Nnmac7MOH3zjHQ-1; Fri, 30 Apr 2021 13:35:00 -0400
+X-MC-Unique: 6zgAS2f6Nnmac7MOH3zjHQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1F69F501ED;
+        Fri, 30 Apr 2021 17:34:58 +0000 (UTC)
+Received: from madcap2.tricolour.ca (unknown [10.3.128.45])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 79AB136DE;
+        Fri, 30 Apr 2021 17:34:48 +0000 (UTC)
+From:   Richard Guy Briggs <rgb@redhat.com>
+To:     Linux-Audit Mailing List <linux-audit@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-fsdevel@vger.kernel.org
+Cc:     Paul Moore <paul@paul-moore.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Steve Grubb <sgrubb@redhat.com>,
+        Richard Guy Briggs <rgb@redhat.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Eric Paris <eparis@redhat.com>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        Aleksa Sarai <cyphar@cyphar.com>
+Subject: [PATCH v2 0/3] audit: add support for openat2
+Date:   Fri, 30 Apr 2021 13:29:34 -0400
+Message-Id: <cover.1619729297.git.rgb@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:ab4:a128:0:0:0:0:0 with HTTP; Thu, 29 Apr 2021 03:00:50
- -0700 (PDT)
-Reply-To: michellegoodman035@gmail.com
-From:   Shayma <shaymamarwan03@gmail.com>
-Date:   Thu, 29 Apr 2021 11:00:50 +0100
-Message-ID: <CANMGuei+mnqGOSUYwBK=b88uJPevn2sFR8oM=yeCFU-cpH4RSw@mail.gmail.com>
-Subject: Holla
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hallo Schatz, ich bin Michelle, bitte, ich brauche deine Dringlichkeit
-Antworte mir, ich muss dir etwas sagen
-Vielen Dank
-Michelle
+The openat2(2) syscall was added in v5.6.  Add support for openat2 to the
+audit syscall classifier and for recording openat2 parameters that cannot
+be captured in the syscall parameters of the SYSCALL record.
+
+Supporting userspace code can be found in
+https://github.com/rgbriggs/audit-userspace/tree/ghau-openat2
+
+Supporting test case can be found in
+https://github.com/linux-audit/audit-testsuite/pull/103
+
+Richard Guy Briggs (3):
+  audit: replace magic audit syscall class numbers with macros
+  audit: add support for the openat2 syscall
+  audit: add OPENAT2 record to list how
+
+ arch/alpha/kernel/audit.c          | 10 ++++++----
+ arch/ia64/kernel/audit.c           | 10 ++++++----
+ arch/parisc/kernel/audit.c         | 10 ++++++----
+ arch/parisc/kernel/compat_audit.c  | 11 +++++++----
+ arch/powerpc/kernel/audit.c        | 12 +++++++-----
+ arch/powerpc/kernel/compat_audit.c | 13 ++++++++-----
+ arch/s390/kernel/audit.c           | 12 +++++++-----
+ arch/s390/kernel/compat_audit.c    | 13 ++++++++-----
+ arch/sparc/kernel/audit.c          | 12 +++++++-----
+ arch/sparc/kernel/compat_audit.c   | 13 ++++++++-----
+ arch/x86/ia32/audit.c              | 13 ++++++++-----
+ arch/x86/kernel/audit_64.c         | 10 ++++++----
+ fs/open.c                          |  2 ++
+ include/linux/audit.h              | 11 +++++++++++
+ include/linux/auditscm.h           | 24 +++++++++++++++++++++++
+ include/uapi/linux/audit.h         |  1 +
+ kernel/audit.h                     |  2 ++
+ kernel/auditsc.c                   | 31 ++++++++++++++++++++++++------
+ lib/audit.c                        | 14 +++++++++-----
+ lib/compat_audit.c                 | 15 ++++++++++-----
+ 20 files changed, 168 insertions(+), 71 deletions(-)
+ create mode 100644 include/linux/auditscm.h
+
+-- 
+2.27.0
+
