@@ -2,312 +2,151 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B25CE37023B
-	for <lists+linux-parisc@lfdr.de>; Fri, 30 Apr 2021 22:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6AAD370837
+	for <lists+linux-parisc@lfdr.de>; Sat,  1 May 2021 19:26:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235901AbhD3Uhi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 30 Apr 2021 16:37:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:56963 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235936AbhD3Uhb (ORCPT
+        id S232047AbhEAR1G (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 1 May 2021 13:27:06 -0400
+Received: from conuserg-08.nifty.com ([210.131.2.75]:47042 "EHLO
+        conuserg-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231732AbhEAR1F (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 30 Apr 2021 16:37:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1619815002;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=88ObglMi23PFhsx5xuK+j7sB27VL+IqmOJ432hGAy4o=;
-        b=KHrNhRLCG46Q1cWZyEVupXf8Pi9Z1teiRdTjHJ7xf2vgdP+cByYVdgbB08mykdAzyjwlzG
-        9/aSQ3O2Qk+4C0/ZNv5Ye2UdvN7Jygi7iTluLiJIhzTodtjFjNZy3rei5nEpPHIVoRKIct
-        hdLGB6s8YZvvir425EfZiQkPtEqUZJk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-369-LbToS9TlOeqCAV1sGlyDkA-1; Fri, 30 Apr 2021 16:36:38 -0400
-X-MC-Unique: LbToS9TlOeqCAV1sGlyDkA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 96090107ACE3;
-        Fri, 30 Apr 2021 20:36:36 +0000 (UTC)
-Received: from madcap2.tricolour.ca (unknown [10.3.128.45])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id DE0F93807;
-        Fri, 30 Apr 2021 20:36:32 +0000 (UTC)
-From:   Richard Guy Briggs <rgb@redhat.com>
-To:     Linux-Audit Mailing List <linux-audit@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org
-Cc:     Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Steve Grubb <sgrubb@redhat.com>,
-        Richard Guy Briggs <rgb@redhat.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Eric Paris <eparis@redhat.com>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Arnd Bergmann <arnd@kernel.org>
-Subject: [PATCH v3 2/3] audit: add support for the openat2 syscall
-Date:   Fri, 30 Apr 2021 16:35:22 -0400
-Message-Id: <29e7068e8121aee22bdd9f4c9a6d08a1762b20e9.1619811762.git.rgb@redhat.com>
-In-Reply-To: <cover.1619811762.git.rgb@redhat.com>
-References: <cover.1619811762.git.rgb@redhat.com>
+        Sat, 1 May 2021 13:27:05 -0400
+Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
+        by conuserg-08.nifty.com with ESMTP id 141HOcsb024068;
+        Sun, 2 May 2021 02:24:39 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 141HOcsb024068
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1619889880;
+        bh=DKpAtplaQKg143e+7vSq9Fg8LaAV0UcKHDXnRDpAwB8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=rVe0kBlYfm5mf5koQK5x+ddei74+pKW5XvZOKTZeHAioqHrhu/gxXy4Wza0fypF4B
+         6A1jxXt017YrDWOVESl/9VuszooqpsI28jl6gV7TRLeGYGPsGLcQOgqE0Tq4OiXesC
+         L9sAqcSXi1L4D7sKx2RKh5qDREK2YFAIpJFLZDXWG836PKolgRSHLsP6nlFAlwV605
+         6um1B5NFGu24WHxuldifXj9iM5UOKPI9FNtnLn4H2XrPWaOI+XL2Bf4mUXHrtWBALg
+         w3csdIFGgvhJNmVMLs3YCk07ePvz8SG5G3Axq4pMvmomGu3dVX6N6g5EappzZG97xm
+         NZQtfKTdIhfYA==
+X-Nifty-SrcIP: [133.32.232.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Chris Zankel <chris@zankel.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org
+Subject: [PATCH 2/2] arch: use cross_compiling to check whether it is a cross build or not
+Date:   Sun,  2 May 2021 02:24:36 +0900
+Message-Id: <20210501172437.156926-2-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20210501172437.156926-1-masahiroy@kernel.org>
+References: <20210501172437.156926-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
-("open: introduce openat2(2) syscall")
+'cross_compiling' is defined by the top Makefile and available for
+arch Makefiles to check whether it is a cross build or not. A good
+thing is the variable name 'cross_compiling' is self-documenting.
 
-Add the openat2(2) syscall to the audit syscall classifier.
+This is a simple replacement for m68k, mips, sh, for which $(ARCH)
+and $(SRCARCH) always match.
 
-See the github issue
-https://github.com/linux-audit/audit-kernel/issues/67
+No functional change is intended for xtensa, either.
 
-Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+This is rather a fix for parisc because arch/parisc/Makefile defines
+UTS_MATCHINE depending on CONFIG_64BIT, therefore cc-cross-prefix
+is not working in Kconfig time.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- arch/alpha/kernel/audit.c          | 2 ++
- arch/ia64/kernel/audit.c           | 2 ++
- arch/parisc/kernel/audit.c         | 2 ++
- arch/parisc/kernel/compat_audit.c  | 2 ++
- arch/powerpc/kernel/audit.c        | 2 ++
- arch/powerpc/kernel/compat_audit.c | 2 ++
- arch/s390/kernel/audit.c           | 2 ++
- arch/s390/kernel/compat_audit.c    | 2 ++
- arch/sparc/kernel/audit.c          | 2 ++
- arch/sparc/kernel/compat_audit.c   | 2 ++
- arch/x86/ia32/audit.c              | 2 ++
- arch/x86/kernel/audit_64.c         | 2 ++
- include/linux/auditscm.h           | 1 +
- kernel/auditsc.c                   | 3 +++
- lib/audit.c                        | 4 ++++
- lib/compat_audit.c                 | 4 ++++
- 16 files changed, 36 insertions(+)
 
-diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
-index 81cbd804e375..3ab04709784a 100644
---- a/arch/alpha/kernel/audit.c
-+++ b/arch/alpha/kernel/audit.c
-@@ -42,6 +42,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_OPENAT;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
-index dba6a74c9ab3..ec61f20ca61f 100644
---- a/arch/ia64/kernel/audit.c
-+++ b/arch/ia64/kernel/audit.c
-@@ -43,6 +43,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_OPENAT;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
-index 14244e83db75..f420b5552140 100644
---- a/arch/parisc/kernel/audit.c
-+++ b/arch/parisc/kernel/audit.c
-@@ -52,6 +52,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_OPENAT;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
-index 0c181bb39f34..02cfd9d1ebeb 100644
---- a/arch/parisc/kernel/compat_audit.c
-+++ b/arch/parisc/kernel/compat_audit.c
-@@ -36,6 +36,8 @@ int parisc32_classify_syscall(unsigned syscall)
- 		return AUDITSC_OPENAT;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
-index 6eb18ef77dff..1bcfca5fdf67 100644
---- a/arch/powerpc/kernel/audit.c
-+++ b/arch/powerpc/kernel/audit.c
-@@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
-index f250777f6365..1fa0c902be8a 100644
---- a/arch/powerpc/kernel/compat_audit.c
-+++ b/arch/powerpc/kernel/compat_audit.c
-@@ -39,6 +39,8 @@ int ppc32_classify_syscall(unsigned syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
-index 7e331e1831d4..02051a596b87 100644
---- a/arch/s390/kernel/audit.c
-+++ b/arch/s390/kernel/audit.c
-@@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
-index b2a2ed5d605a..320b5e7d96f0 100644
---- a/arch/s390/kernel/compat_audit.c
-+++ b/arch/s390/kernel/compat_audit.c
-@@ -40,6 +40,8 @@ int s390_classify_syscall(unsigned syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
-index 50fab35bdaba..b092274eca79 100644
---- a/arch/sparc/kernel/audit.c
-+++ b/arch/sparc/kernel/audit.c
-@@ -55,6 +55,8 @@ int audit_classify_syscall(int abi, unsigned int syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
-index fdf0d70b569b..b0a7d0112b96 100644
---- a/arch/sparc/kernel/compat_audit.c
-+++ b/arch/sparc/kernel/compat_audit.c
-@@ -40,6 +40,8 @@ int sparc32_classify_syscall(unsigned int syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
-index d3dc8b57df81..8f6bf3a46a3a 100644
---- a/arch/x86/ia32/audit.c
-+++ b/arch/x86/ia32/audit.c
-@@ -40,6 +40,8 @@ int ia32_classify_syscall(unsigned syscall)
- 	case __NR_execve:
- 	case __NR_execveat:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
-index 2a6cc9c9c881..44c3601cfdc4 100644
---- a/arch/x86/kernel/audit_64.c
-+++ b/arch/x86/kernel/audit_64.c
-@@ -53,6 +53,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 	case __NR_execve:
- 	case __NR_execveat:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/include/linux/auditscm.h b/include/linux/auditscm.h
-index 1c4f0ead5931..0893c373e12b 100644
---- a/include/linux/auditscm.h
-+++ b/include/linux/auditscm.h
-@@ -16,6 +16,7 @@ enum auditsc_class_t {
- 	AUDITSC_OPENAT,
- 	AUDITSC_SOCKETCALL,
- 	AUDITSC_EXECVE,
-+	AUDITSC_OPENAT2,
+ arch/m68k/Makefile   | 2 +-
+ arch/mips/Makefile   | 2 +-
+ arch/parisc/Makefile | 2 +-
+ arch/sh/Makefile     | 2 +-
+ arch/xtensa/Makefile | 6 +-----
+ 5 files changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/arch/m68k/Makefile b/arch/m68k/Makefile
+index ea14f2046fb4..82620f14124d 100644
+--- a/arch/m68k/Makefile
++++ b/arch/m68k/Makefile
+@@ -16,7 +16,7 @@
  
- 	AUDITSC_NVALS /* count */
- };
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index 8807afa6e237..27c747e0d5ab 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -76,6 +76,7 @@
- #include <linux/fsnotify_backend.h>
- #include <uapi/linux/limits.h>
- #include <uapi/linux/netfilter/nf_tables.h>
-+#include <uapi/linux/openat2.h>
+ KBUILD_DEFCONFIG := multi_defconfig
  
- #include "audit.h"
+-ifneq ($(SUBARCH),$(ARCH))
++ifdef cross_compiling
+ 	ifeq ($(CROSS_COMPILE),)
+ 		CROSS_COMPILE := $(call cc-cross-prefix, \
+ 			m68k-linux-gnu- m68k-linux- m68k-unknown-linux-gnu-)
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index e71d587af49c..258234c35a09 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -50,7 +50,7 @@ tool-archpref		= $(64bit-tool-archpref)
+ UTS_MACHINE		:= mips64
+ endif
  
-@@ -195,6 +196,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
- 		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
- 	case AUDITSC_EXECVE:
- 		return mask & AUDIT_PERM_EXEC;
-+	case AUDITSC_OPENAT2:
-+		return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
- 	default:
- 		return 0;
- 	}
-diff --git a/lib/audit.c b/lib/audit.c
-index 3ec1a94d8d64..738bda22dd39 100644
---- a/lib/audit.c
-+++ b/lib/audit.c
-@@ -60,6 +60,10 @@ int audit_classify_syscall(int abi, unsigned syscall)
- #endif
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+#ifdef __NR_openat2
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
-+#endif
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/lib/compat_audit.c b/lib/compat_audit.c
-index 63125ad2edc0..7ed9461b52b7 100644
---- a/lib/compat_audit.c
-+++ b/lib/compat_audit.c
-@@ -46,6 +46,10 @@ int audit_classify_compat_syscall(int abi, unsigned syscall)
- #endif
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+#ifdef __NR_openat2
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
-+#endif
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
+-ifneq ($(SUBARCH),$(ARCH))
++ifdef cross_compiling
+   ifeq ($(CROSS_COMPILE),)
+     CROSS_COMPILE := $(call cc-cross-prefix, $(tool-archpref)-linux-  $(tool-archpref)-linux-gnu-  $(tool-archpref)-unknown-linux-gnu-)
+   endif
+diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
+index 7d9f71aa829a..aed8ea29268b 100644
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -41,7 +41,7 @@ endif
+ 
+ export LD_BFD
+ 
+-ifneq ($(SUBARCH),$(UTS_MACHINE))
++ifdef cross_compiling
+ 	ifeq ($(CROSS_COMPILE),)
+ 		CC_SUFFIXES = linux linux-gnu unknown-linux-gnu
+ 		CROSS_COMPILE := $(call cc-cross-prefix, \
+diff --git a/arch/sh/Makefile b/arch/sh/Makefile
+index 3bcbf52fb30e..44bcb80e791a 100644
+--- a/arch/sh/Makefile
++++ b/arch/sh/Makefile
+@@ -9,7 +9,7 @@
+ # License.  See the file "COPYING" in the main directory of this archive
+ # for more details.
+ #
+-ifneq ($(SUBARCH),$(ARCH))
++ifdef cross_compiling
+   ifeq ($(CROSS_COMPILE),)
+     CROSS_COMPILE := $(call cc-cross-prefix, sh-linux- sh-linux-gnu- sh-unknown-linux-gnu-)
+   endif
+diff --git a/arch/xtensa/Makefile b/arch/xtensa/Makefile
+index ba9fee75e675..e9c8f064c44d 100644
+--- a/arch/xtensa/Makefile
++++ b/arch/xtensa/Makefile
+@@ -19,12 +19,8 @@ variant-y := $(patsubst "%",%,$(CONFIG_XTENSA_VARIANT_NAME))
+ VARIANT = $(variant-y)
+ export VARIANT
+ 
+-# Test for cross compiling
+-
+ ifneq ($(VARIANT),)
+-  COMPILE_ARCH = $(shell uname -m)
+-
+-  ifneq ($(COMPILE_ARCH), xtensa)
++  ifdef cross_compiling
+     ifndef CROSS_COMPILE
+       CROSS_COMPILE = xtensa_$(VARIANT)-
+     endif
 -- 
 2.27.0
 
