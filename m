@@ -2,151 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6AAD370837
-	for <lists+linux-parisc@lfdr.de>; Sat,  1 May 2021 19:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F72371574
+	for <lists+linux-parisc@lfdr.de>; Mon,  3 May 2021 14:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232047AbhEAR1G (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 1 May 2021 13:27:06 -0400
-Received: from conuserg-08.nifty.com ([210.131.2.75]:47042 "EHLO
-        conuserg-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231732AbhEAR1F (ORCPT
+        id S233836AbhECMyu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 3 May 2021 08:54:50 -0400
+Received: from mail-ua1-f43.google.com ([209.85.222.43]:46794 "EHLO
+        mail-ua1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230246AbhECMyt (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 1 May 2021 13:27:05 -0400
-Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
-        by conuserg-08.nifty.com with ESMTP id 141HOcsb024068;
-        Sun, 2 May 2021 02:24:39 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 141HOcsb024068
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1619889880;
-        bh=DKpAtplaQKg143e+7vSq9Fg8LaAV0UcKHDXnRDpAwB8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rVe0kBlYfm5mf5koQK5x+ddei74+pKW5XvZOKTZeHAioqHrhu/gxXy4Wza0fypF4B
-         6A1jxXt017YrDWOVESl/9VuszooqpsI28jl6gV7TRLeGYGPsGLcQOgqE0Tq4OiXesC
-         L9sAqcSXi1L4D7sKx2RKh5qDREK2YFAIpJFLZDXWG836PKolgRSHLsP6nlFAlwV605
-         6um1B5NFGu24WHxuldifXj9iM5UOKPI9FNtnLn4H2XrPWaOI+XL2Bf4mUXHrtWBALg
-         w3csdIFGgvhJNmVMLs3YCk07ePvz8SG5G3Axq4pMvmomGu3dVX6N6g5EappzZG97xm
-         NZQtfKTdIhfYA==
-X-Nifty-SrcIP: [133.32.232.101]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Chris Zankel <chris@zankel.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Mon, 3 May 2021 08:54:49 -0400
+Received: by mail-ua1-f43.google.com with SMTP id d30so283171uae.13;
+        Mon, 03 May 2021 05:53:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6sRTDx/pvT9oKMRoUjacP8gFXuJ+4JRD0jTuVOJOzkc=;
+        b=SkpUYlGCA04B6Ljct1NGDG3Py2gDKkl1BJqlsrdAS+t7rVOuLntIeubOPYEUSsvA/C
+         NlVVsKIPh0qbnaj49cIdr3ZNoiZHZtRhwVfwgwmrFITcDh/hgxE3q6+zzmm/9ooZqjSZ
+         2b2b/9219cesIp9W6nmEzmj0DegvSSVBlx1LXclJWBVv1SjuXZ73DV/bD7MMkyCygHHR
+         p4eFExKNBeArHiDZwFVXdOo4Pval7vrTymI5HBlmh71yygjZc3Fxh4gxK35Y+JI1oVft
+         LwO8uwYyHITRwFTUd8WUlokBpfiLsKY5R2YpoBfjre+sjq/Vn6e6jR07ueSUZjlx8MOo
+         aMKQ==
+X-Gm-Message-State: AOAM532k/Qw2rwU0QzBxMmYsr7/2L0FV+qxcC258+0RGPFaJfceQeb/k
+        Bs/H+8mozP89t4Vgo1/oS7bCyLjthdKSvmeiTyk=
+X-Google-Smtp-Source: ABdhPJyY6HmMK+W9rt69v5I2kwTL7IQIj/ouQs0jw6zSbbR1oc5JQ0kbR20w16rDCmSsQz7HN14LdrNs2RquXDAeA5o=
+X-Received: by 2002:ab0:5f8d:: with SMTP id b13mr14381698uaj.4.1620046435558;
+ Mon, 03 May 2021 05:53:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210501172437.156926-1-masahiroy@kernel.org> <20210501172437.156926-2-masahiroy@kernel.org>
+In-Reply-To: <20210501172437.156926-2-masahiroy@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 3 May 2021 14:53:44 +0200
+Message-ID: <CAMuHMdUsXpvUeF4vUWTmAk-ADivHXoVYo-YOw7hB2OGT7qxqLw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] arch: use cross_compiling to check whether it is a
+ cross build or not
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-kbuild <linux-kbuild@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Chris Zankel <chris@zankel.net>,
         Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Max Filippov <jcmvbkbc@gmail.com>,
         Rich Felker <dalias@libc.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org
-Subject: [PATCH 2/2] arch: use cross_compiling to check whether it is a cross build or not
-Date:   Sun,  2 May 2021 02:24:36 +0900
-Message-Id: <20210501172437.156926-2-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210501172437.156926-1-masahiroy@kernel.org>
-References: <20210501172437.156926-1-masahiroy@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-'cross_compiling' is defined by the top Makefile and available for
-arch Makefiles to check whether it is a cross build or not. A good
-thing is the variable name 'cross_compiling' is self-documenting.
+Hi Yamada-san,
 
-This is a simple replacement for m68k, mips, sh, for which $(ARCH)
-and $(SRCARCH) always match.
+On Sat, May 1, 2021 at 7:26 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> 'cross_compiling' is defined by the top Makefile and available for
+> arch Makefiles to check whether it is a cross build or not. A good
+> thing is the variable name 'cross_compiling' is self-documenting.
+>
+> This is a simple replacement for m68k, mips, sh, for which $(ARCH)
+> and $(SRCARCH) always match.
+>
+> No functional change is intended for xtensa, either.
+>
+> This is rather a fix for parisc because arch/parisc/Makefile defines
+> UTS_MATCHINE depending on CONFIG_64BIT, therefore cc-cross-prefix
+> is not working in Kconfig time.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-No functional change is intended for xtensa, either.
+>  arch/m68k/Makefile   | 2 +-
 
-This is rather a fix for parisc because arch/parisc/Makefile defines
-UTS_MATCHINE depending on CONFIG_64BIT, therefore cc-cross-prefix
-is not working in Kconfig time.
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+Gr{oetje,eeting}s,
 
- arch/m68k/Makefile   | 2 +-
- arch/mips/Makefile   | 2 +-
- arch/parisc/Makefile | 2 +-
- arch/sh/Makefile     | 2 +-
- arch/xtensa/Makefile | 6 +-----
- 5 files changed, 5 insertions(+), 9 deletions(-)
+                        Geert
 
-diff --git a/arch/m68k/Makefile b/arch/m68k/Makefile
-index ea14f2046fb4..82620f14124d 100644
---- a/arch/m68k/Makefile
-+++ b/arch/m68k/Makefile
-@@ -16,7 +16,7 @@
- 
- KBUILD_DEFCONFIG := multi_defconfig
- 
--ifneq ($(SUBARCH),$(ARCH))
-+ifdef cross_compiling
- 	ifeq ($(CROSS_COMPILE),)
- 		CROSS_COMPILE := $(call cc-cross-prefix, \
- 			m68k-linux-gnu- m68k-linux- m68k-unknown-linux-gnu-)
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index e71d587af49c..258234c35a09 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -50,7 +50,7 @@ tool-archpref		= $(64bit-tool-archpref)
- UTS_MACHINE		:= mips64
- endif
- 
--ifneq ($(SUBARCH),$(ARCH))
-+ifdef cross_compiling
-   ifeq ($(CROSS_COMPILE),)
-     CROSS_COMPILE := $(call cc-cross-prefix, $(tool-archpref)-linux-  $(tool-archpref)-linux-gnu-  $(tool-archpref)-unknown-linux-gnu-)
-   endif
-diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
-index 7d9f71aa829a..aed8ea29268b 100644
---- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -41,7 +41,7 @@ endif
- 
- export LD_BFD
- 
--ifneq ($(SUBARCH),$(UTS_MACHINE))
-+ifdef cross_compiling
- 	ifeq ($(CROSS_COMPILE),)
- 		CC_SUFFIXES = linux linux-gnu unknown-linux-gnu
- 		CROSS_COMPILE := $(call cc-cross-prefix, \
-diff --git a/arch/sh/Makefile b/arch/sh/Makefile
-index 3bcbf52fb30e..44bcb80e791a 100644
---- a/arch/sh/Makefile
-+++ b/arch/sh/Makefile
-@@ -9,7 +9,7 @@
- # License.  See the file "COPYING" in the main directory of this archive
- # for more details.
- #
--ifneq ($(SUBARCH),$(ARCH))
-+ifdef cross_compiling
-   ifeq ($(CROSS_COMPILE),)
-     CROSS_COMPILE := $(call cc-cross-prefix, sh-linux- sh-linux-gnu- sh-unknown-linux-gnu-)
-   endif
-diff --git a/arch/xtensa/Makefile b/arch/xtensa/Makefile
-index ba9fee75e675..e9c8f064c44d 100644
---- a/arch/xtensa/Makefile
-+++ b/arch/xtensa/Makefile
-@@ -19,12 +19,8 @@ variant-y := $(patsubst "%",%,$(CONFIG_XTENSA_VARIANT_NAME))
- VARIANT = $(variant-y)
- export VARIANT
- 
--# Test for cross compiling
--
- ifneq ($(VARIANT),)
--  COMPILE_ARCH = $(shell uname -m)
--
--  ifneq ($(COMPILE_ARCH), xtensa)
-+  ifdef cross_compiling
-     ifndef CROSS_COMPILE
-       CROSS_COMPILE = xtensa_$(VARIANT)-
-     endif
 -- 
-2.27.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
