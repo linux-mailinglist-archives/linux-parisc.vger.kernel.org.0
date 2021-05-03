@@ -2,94 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D6B3721CE
-	for <lists+linux-parisc@lfdr.de>; Mon,  3 May 2021 22:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E42EE372208
+	for <lists+linux-parisc@lfdr.de>; Mon,  3 May 2021 22:51:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbhECUrW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 3 May 2021 16:47:22 -0400
-Received: from mout.gmx.net ([212.227.15.19]:37389 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229596AbhECUrV (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 3 May 2021 16:47:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1620074778;
-        bh=T08OXliPRYO+Cz8TMMdWHTcGdT2Pxw6qW6PdI0815MI=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=L7VY5PqSLR90L3QKLwVwOPxMfGB0Z2TAKN2w9n5LJT+DEi/P4RSDd0tXaE93u3Jv/
-         7cJzxIaO22awex6iyUqEB7jbpv//hcnjU0ENPeuC/xZR7g/1rjc79g3PIJxghlky9d
-         YzdHtTmYjkbHEf/+NjHcSExGNG6I1uXtA5YGGyqU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.187.2]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYvY2-1lza3u1F56-00UudO; Mon, 03
- May 2021 22:46:18 +0200
-Date:   Mon, 3 May 2021 22:45:33 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        id S229645AbhECUwg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 3 May 2021 16:52:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51222 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229590AbhECUwf (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 3 May 2021 16:52:35 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03B59C061573
+        for <linux-parisc@vger.kernel.org>; Mon,  3 May 2021 13:51:41 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id p12so8533606ljg.1
+        for <linux-parisc@vger.kernel.org>; Mon, 03 May 2021 13:51:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QchQiqdMcNQVx97JOdVceYXer6ralkj9boXVuf2A0Nk=;
+        b=DK1cvrYbhmCC9VBuZOKNbrdhPICJFNpQqZImiSGX0uUltQVSk1Sqxy1EbIQCAOkGYb
+         0gkx1cKXd3YGCcU+GByfe5ZxjsbXfBiymh+8FqFONeC8DzLh/3u5/DXWuSuCOupaIzfi
+         y+8fIZE15AH8dZ4EbLbXkL7SctvDm0WwtOhqk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QchQiqdMcNQVx97JOdVceYXer6ralkj9boXVuf2A0Nk=;
+        b=mp+3ARi5TgwoW2dx2bj00Rtfz0qChygKxo9hxVkspp6MQ88V/GDClM7V5aG1d1M02H
+         dO2iS483KyVkGW/Jx/vpfcw30dZLIk56ykHML6pyKRZgfc+Oqr1asrQ/awb96aA+VWV2
+         hHZtCAwQcQYnG0b7oy7ZWWx6lv5AA0RTJscRw4+eukTwnVuYYSTrAwlLgfi8Uav7GmUA
+         tyWtt3qc5f5iIPiOWpS9AxbwWRRKzGVafGc6yzTZ4iogobVA7peoWEUf6A8mmu0qUcdb
+         HVyJ0E6LryRLNCU1biUcujbKAI2sS9xm4rViUQYuQHANsekzMPHwbGwp+8SfaVIh34TI
+         TDmg==
+X-Gm-Message-State: AOAM532Z0QAITum5T1OjEoJg5MjWgK3FvGv909bZf9xGopDO3GTW2UTv
+        oC0kzlnUC5H0lfU7NtcvPPJuHhQHqGAt27HMso0=
+X-Google-Smtp-Source: ABdhPJwat7IEYYEhR2N8S+YJGUYY6U1gUjCzPErydk1cMmHgKmMqhAXReI3bs8j5apyUg7SPNuUupQ==
+X-Received: by 2002:a2e:2a42:: with SMTP id q63mr3743608ljq.225.1620075099300;
+        Mon, 03 May 2021 13:51:39 -0700 (PDT)
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com. [209.85.167.48])
+        by smtp.gmail.com with ESMTPSA id k8sm63204lfo.123.2021.05.03.13.51.38
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 May 2021 13:51:38 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2so10058785lft.4
+        for <linux-parisc@vger.kernel.org>; Mon, 03 May 2021 13:51:38 -0700 (PDT)
+X-Received: by 2002:a05:6512:a90:: with SMTP id m16mr13913971lfu.201.1620075098436;
+ Mon, 03 May 2021 13:51:38 -0700 (PDT)
+MIME-Version: 1.0
+References: <YJBg7V02gxIRPrDx@ls3530>
+In-Reply-To: <YJBg7V02gxIRPrDx@ls3530>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 3 May 2021 13:51:22 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgx8Y8zNCfYNxnYNwaTg5mHcqkJhHjk=eKLCGfgXKp=EQ@mail.gmail.com>
+Message-ID: <CAHk-=wgx8Y8zNCfYNxnYNwaTg5mHcqkJhHjk=eKLCGfgXKp=EQ@mail.gmail.com>
+Subject: Re: [GIT PULL] parisc architecture updates for kernel v5.13-rc1
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture updates for kernel v5.13-rc1
-Message-ID: <YJBg7V02gxIRPrDx@ls3530>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:WUtIV0npfJjVDVDaeOXz6htvPbC4d7F4HH1TgTBpagfSHEAdkFx
- GxmR42l2/A1rlfROqwmN9wDO6Vod651dPdZPgl5hdnqbIAY7+kMyYj5CE/8GKOqOsogeu9a
- qRNS+dDU/hv9RwH/l1BKYrCGNoXr2+asaADPfhhtbRQ2/32Y7Yf2m7zf67tC46JTwE8g77J
- nBni5SlhamR48knjO8LhQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7QjwhshCmIc=:9Vz48RX8x/4fDkOPuvdBYw
- 2f7rTNPqwfWSNprjAj1eQyf97r0ZADyrshkcRBDDivHlboQT6fdCTkY3Tx2Y25RjGInmJilc6
- 6azbDRQd70cHAlP1fuSNJxIV4qi0oLkqKvReaTuRGu2+8FxWKL3sA58ZIHsjCwTkpyh76JsT3
- ImrSHvr9/lcMmFY7aA+1xJScmjdpQCqKAMKLq2320YKZX02uMNcdqaAwmCUoiks3JvQ7BXywJ
- GOr1EvlwgM8GwT1efWjxc8xB+ayWpOKxBxKgYdfXPvqC/rJ2QzKwb3Ju25OJ8sygOukyimlsc
- McFDkVN673wv/rWNaLPn+y2B8/7g/k+1T1zQNVSyRUXPvCvNTJlR7jkJv+yK7vhljN6Zb/If9
- 1TVkWEt3JWNj0KF7ck2eEyaT74e3P1p5Vcvo04a4Vv93ZP5j3N+wG4ziv1WDzl4thrHFETpvu
- gTEJn6g5quCnrRWcfXD535Ep5MWyI6cHtVa7Zfva6NHyonBuJ4s6r+EAvQd9BhXyBi1zWywXc
- F2DdzqZHnKdQrtHVD5ai8V8MK93TpgF+oSRVt3sSC+BoNoaYw92d0o5iLL5ojE0INZXqNmU6L
- ewN/X0a0Pf3GMbOqYauv/ssdKDa+i7oSpb7bDy5ovWR2tFotUbRoGa5VnA8P5InzxWLJIWDvo
- O27hWSWwwuIevivq9MtBPzpz+8qOmnZE7AsU7wVPbX91kljf5Z29ZPqNsDRO6bQL9IneJkLBO
- GFRmXiPQ4pa1qk1TSQ33GOyaI2hI3JaEpcdRAMNrTqahEdMAZnhOERv+ZMO79AzJvLIK/2jgJ
- 7K3LCyeKBCKUaTAkzRwMtCJhkdMHK4uWoWFVb1dgW1cBYM9xmGOAJTcCS29MbSKToJHkVMFSE
- cw4U2fopVe6t/9YAEeP1qrLpuaeTqcmy2tef76/RH2jTDHrLPqygXmtd8sTfJLCA1pCAVWmBQ
- Dx8GgC+uFNdfnpX+tVGQpkJdxvdpXWlbHbfF08FQmrLb2RNFC0EQRLD5XYwzbUDs6zKbKswAe
- QaDEjb4Q1rHUhQt8MuRWGv/WNaZ2k9gKEi+ue3twLnsgUcJwTxyZAFTO+Mtr7ezsmPMHywt4D
- DckMhlz/Kc2YWQSkjk497vrtgjUMNxzT4MpBuUxim0Dn9ShSZz70MFLmnRpDjJqoifSpWR22d
- 6/l7ANOsEe04sTfoAizASYlhTQXoO0dbXWpz36eGB+oeEKgVSQfklxJIgrrUOXYrVHDMU=
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+On Mon, May 3, 2021 at 1:46 PM Helge Deller <deller@gmx.de> wrote:
+>
+> please pull the parisc architecture updates for kernel 5.13-rc1 from:
+>
+>   http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.13/parisc
 
-please pull the parisc architecture updates for kernel 5.13-rc1 from:
+Ooh, and with a fancy signed tag. Thanks, looking good,
 
-  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.13/parisc
-
-Thanks,
-Helge
-
-----------------------------------------------------------------
-parisc architecture updates for kernel 5.13:
-
-- switch to generic syscall header scripts
-
-- minor typo fix in setup.c
-
-----------------------------------------------------------------
-Helge Deller (1):
-      parisc: Fix typo in setup.c
-
-Masahiro Yamada (2):
-      parisc: syscalls: switch to generic syscalltbl.sh
-      parisc: syscalls: switch to generic syscallhdr.sh
-
- arch/parisc/include/asm/Kbuild            |  1 -
- arch/parisc/kernel/setup.c                |  2 +-
- arch/parisc/kernel/syscall.S              | 16 ++++++--------
- arch/parisc/kernel/syscalls/Makefile      | 30 ++++++++------------------
- arch/parisc/kernel/syscalls/syscallhdr.sh | 36 -------------------------------
- arch/parisc/kernel/syscalls/syscalltbl.sh | 36 -------------------------------
- 6 files changed, 17 insertions(+), 104 deletions(-)
- delete mode 100644 arch/parisc/kernel/syscalls/syscallhdr.sh
- delete mode 100644 arch/parisc/kernel/syscalls/syscalltbl.sh
+          Linus
