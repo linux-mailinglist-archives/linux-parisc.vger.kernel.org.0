@@ -2,104 +2,61 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26CBD372831
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 May 2021 11:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00D65372D82
+	for <lists+linux-parisc@lfdr.de>; Tue,  4 May 2021 18:03:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbhEDJrA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 4 May 2021 05:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
+        id S231446AbhEDQEV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 4 May 2021 12:04:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229953AbhEDJrA (ORCPT
+        with ESMTP id S231582AbhEDQEU (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 4 May 2021 05:47:00 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67112C061574;
-        Tue,  4 May 2021 02:46:04 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id e7so9652923edu.10;
-        Tue, 04 May 2021 02:46:04 -0700 (PDT)
+        Tue, 4 May 2021 12:04:20 -0400
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E040C061761
+        for <linux-parisc@vger.kernel.org>; Tue,  4 May 2021 09:03:23 -0700 (PDT)
+Received: by mail-qk1-x731.google.com with SMTP id o27so9030597qkj.9
+        for <linux-parisc@vger.kernel.org>; Tue, 04 May 2021 09:03:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FMMoB0knpTuesmL7S80gUZGP0uEA+wOrx5OG5Ck4KtQ=;
-        b=scnrBqC8w7CnFcQ5v3N0jKjMhFpIsia5XbpW2lEbIwi9mDBavP7Qr1J/E5dbLPwGGi
-         kfxu44i6CBIUFoJmRGqPshBv9v9r95jElB52yp+1cfiKLnhwlzLLBvJ24shBXg1NIf4I
-         TW09zi2ApCi7K0O8RmTHqDzya6qCTJBn9OBhagrT5amzbHwhXeTtHylqRPQlXujIQ5m7
-         d7POAwGN1dXtD187vi4ncI1maUhyl/odexxCfUhec2AoIuVpeXNTAfA4gIk5BvFakFcx
-         K989Jnpv0H72ayBFIwrONvUd3iG98IGx2L0MC4CUYyRTmUHvtvr5lFP+sLNjYy67+/go
-         hsgA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=dIOWH66Cx8mA3aM3owLmeDsaR0Qvv/BPBihgQluVabY=;
+        b=N7vhy+wKmsKSwvOsGp63AkANedpUsRceEU0hcwGYEm+Rlqua8SiysvqAj37yA360Zw
+         0x99rV1akaN0PMjN6//2pbDApPCCsA4Ybm/yRzQAyLAvU0R5lBuEHlZiu+7SiPtYiCt8
+         Y7nzK0L53gSF4hVggXz5/SCYIG2PMz4P5bXgds9QKw+grhr8qvbBbz9b3bBUqn177vtF
+         +iy9MF6xB1mkUuMHMGqN/Hf4h6Tgc3R2gzzd4GK6l5oavVJ6dBythqhcB69HuFxPjtTr
+         hSFGbZZMDZLqjWZ0UMVo54DEwaq1zEVaVpMPCc5+SHn7kJbaJb6foTQiI/2EpV9zH/HK
+         g4Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FMMoB0knpTuesmL7S80gUZGP0uEA+wOrx5OG5Ck4KtQ=;
-        b=rdIz5J9eIHIXcNf2Yv207HhwLM1MNO/fjZdiZEopc+zsRSqL9CM8x5v1Yd5uz2eU3E
-         wVrzoBIGnEAGOj2qUy2mXjF/1W6TL8dptNxdmBXTKfYM9m0390aatd1PlMsibcuCCGPv
-         NDXnSr9Q3lxW8jmHOfZFc4kW5iUqtxE7xdC5ADXCX+WiM3egnKZcKH7rzKHfl9dB3UVV
-         Uh3EV35IJxur18JSRLyRAZEorI1P4zkhX+dL/85Tgssk0AiLXulgz61aClK/BHrEijNG
-         ml/dEjHuPqD2vapNsP77YHoVdGsZ97AqiUg8r0tQ7IaSybT8BHqOMz1FvtmmI1gNsk9A
-         xRIg==
-X-Gm-Message-State: AOAM531I09aLv9obgceBE7pXaQ8Rg33KSXJKAEo2OS5WTjc+uKfDa6zp
-        D0+E1pxLXhBU2KA8G/fftlilMSSa4fXYfKE+Yzg/5wrQ
-X-Google-Smtp-Source: ABdhPJytIlqBg1GSjAvtrTGNIBv6aKqTmnMnu2e5kZW0EfBKg8Xh0c84yVVu4/JqV9YTkecrWRL3P/XHYROlWQerQAk=
-X-Received: by 2002:a05:6402:34c5:: with SMTP id w5mr3386137edc.237.1620121563132;
- Tue, 04 May 2021 02:46:03 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=dIOWH66Cx8mA3aM3owLmeDsaR0Qvv/BPBihgQluVabY=;
+        b=rgyOb7FnyFub0vi5DUwnT+r0Ql9znaf70xI4RmDt/wIqJzh86dvskry62zgyNtbvlw
+         iacxqviSpg8JREAlOmniwzr4RgMwkaB8zpxDPrIDwzF1QcJ3HAw1wUihUCp5uTy2XT5w
+         ttER5yWUm5IvcJnbcd/OElGVH2r3poBkjF5EOuEtXCtkSTLtdM425XSPbT+lC/71W5J+
+         Cf1SMRs8L9BxFVna94fLsqxOew6zdsURmvA0CHmCtJcveGxSTCf1RPokaHK9I/wi8FME
+         8r59XdpK07AIabhy6fJ/lw32YbWH1ryrdof1AsFccjIaBW9OrWY4IxHswQGlvbmWBZuP
+         kDbA==
+X-Gm-Message-State: AOAM533jTD3P4bo/tX73o5IxDKioeSsT9DLURlkadEi1EdFGHPjujIwy
+        +yWRICrgvwgZvvZOaVmaDVUCjKV9WIy5+EGPCWQ=
+X-Google-Smtp-Source: ABdhPJy0pkoUVEHMKEGqgdkkbMYnYgxded+T2uBOh8seUtO4OAcintWC8vDCG0lBGpu9mDldabxnGDCC5nUkpB7Ct50=
+X-Received: by 2002:a37:a051:: with SMTP id j78mr8870098qke.216.1620144202637;
+ Tue, 04 May 2021 09:03:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210501172437.156926-1-masahiroy@kernel.org> <20210501172437.156926-2-masahiroy@kernel.org>
-In-Reply-To: <20210501172437.156926-2-masahiroy@kernel.org>
-From:   Max Filippov <jcmvbkbc@gmail.com>
-Date:   Tue, 4 May 2021 02:45:51 -0700
-Message-ID: <CAMo8BfJgNgNKRi9XsPUFKPzH0GvtFcRxx75+swXaofcMN7kg8Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] arch: use cross_compiling to check whether it is a
- cross build or not
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild <linux-kbuild@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Chris Zankel <chris@zankel.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>
+Received: by 2002:a0c:ec52:0:0:0:0:0 with HTTP; Tue, 4 May 2021 09:03:22 -0700 (PDT)
+Reply-To: michellegoodman035@gmail.com
+From:   Shayma <shaymamarwan02@gmail.com>
+Date:   Tue, 4 May 2021 17:03:22 +0100
+Message-ID: <CAPmjDRM=pYf__2SYFaHuySnAv7vbiJ55-2kHRma9HP+U6Vskig@mail.gmail.com>
+Subject: Hallo
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, May 1, 2021 at 10:25 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> 'cross_compiling' is defined by the top Makefile and available for
-> arch Makefiles to check whether it is a cross build or not. A good
-> thing is the variable name 'cross_compiling' is self-documenting.
->
-> This is a simple replacement for m68k, mips, sh, for which $(ARCH)
-> and $(SRCARCH) always match.
->
-> No functional change is intended for xtensa, either.
->
-> This is rather a fix for parisc because arch/parisc/Makefile defines
-> UTS_MATCHINE depending on CONFIG_64BIT, therefore cc-cross-prefix
-> is not working in Kconfig time.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->
->  arch/m68k/Makefile   | 2 +-
->  arch/mips/Makefile   | 2 +-
->  arch/parisc/Makefile | 2 +-
->  arch/sh/Makefile     | 2 +-
->  arch/xtensa/Makefile | 6 +-----
->  5 files changed, 5 insertions(+), 9 deletions(-)
-
-Acked-by: Max Filippov <jcmvbkbc@gmail.com> # xtensa
-
--- 
-Thanks.
--- Max
+Hallo liebe Hoffnung, hast du bitte meine Nachricht erhalten?
+Ich brauche eine sofortige Antwort
+Danke
+Michelle
