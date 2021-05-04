@@ -2,61 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE2C137220A
-	for <lists+linux-parisc@lfdr.de>; Mon,  3 May 2021 22:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26CBD372831
+	for <lists+linux-parisc@lfdr.de>; Tue,  4 May 2021 11:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229472AbhECUxG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 3 May 2021 16:53:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59108 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229570AbhECUxG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 3 May 2021 16:53:06 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 664D161283;
-        Mon,  3 May 2021 20:52:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620075132;
-        bh=LHVbHuzGWuuufDzISjgxEBRWIIWoIkWOY9wW4wVLoGA=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=EM8xgZ2dMo+mZ6JzrI1M8+bzGI6X4DWOqM65V/Cl2SPAo1BY6xgbF9Fchfbx+4mUL
-         Zp/Dqv8bc8LMIFmTEIQCj5XFLnws+aiSPeUvmiFL9stL9ux/QwDSYpPE8D+yap4oLP
-         V7IJqlMGpSsqUOllDXOO1BllN9NQ1w/GJtN5mlS2R//QFYzUQC8y+pvZVB4d/+VgaW
-         ArxjkHOPNGxfVXNUzmcFpdNIiCQvZui/RB5CqSaOJaiXX0dy2bgCGSvf8lij9YnDvU
-         XO9PcjI673zsOCmDYgr1LfHwS/8ko3PXM/z2pTmy9vAmh1IUQdzbaoGYFoFG8j+WyN
-         zmNVWKlh9HICg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 502D960987;
-        Mon,  3 May 2021 20:52:12 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture updates for kernel v5.13-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YJBg7V02gxIRPrDx@ls3530>
-References: <YJBg7V02gxIRPrDx@ls3530>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <YJBg7V02gxIRPrDx@ls3530>
-X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.13/parisc
-X-PR-Tracked-Commit-Id: 127f1c09c5c84800761cf650b4c4f0a312f569ef
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 5e321ded302da4d8c5d5dd953423d9b748ab3775
-Message-Id: <162007513228.8589.15875537284291034351.pr-tracker-bot@kernel.org>
-Date:   Mon, 03 May 2021 20:52:12 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
+        id S230046AbhEDJrA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 4 May 2021 05:47:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229953AbhEDJrA (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 4 May 2021 05:47:00 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67112C061574;
+        Tue,  4 May 2021 02:46:04 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id e7so9652923edu.10;
+        Tue, 04 May 2021 02:46:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FMMoB0knpTuesmL7S80gUZGP0uEA+wOrx5OG5Ck4KtQ=;
+        b=scnrBqC8w7CnFcQ5v3N0jKjMhFpIsia5XbpW2lEbIwi9mDBavP7Qr1J/E5dbLPwGGi
+         kfxu44i6CBIUFoJmRGqPshBv9v9r95jElB52yp+1cfiKLnhwlzLLBvJ24shBXg1NIf4I
+         TW09zi2ApCi7K0O8RmTHqDzya6qCTJBn9OBhagrT5amzbHwhXeTtHylqRPQlXujIQ5m7
+         d7POAwGN1dXtD187vi4ncI1maUhyl/odexxCfUhec2AoIuVpeXNTAfA4gIk5BvFakFcx
+         K989Jnpv0H72ayBFIwrONvUd3iG98IGx2L0MC4CUYyRTmUHvtvr5lFP+sLNjYy67+/go
+         hsgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FMMoB0knpTuesmL7S80gUZGP0uEA+wOrx5OG5Ck4KtQ=;
+        b=rdIz5J9eIHIXcNf2Yv207HhwLM1MNO/fjZdiZEopc+zsRSqL9CM8x5v1Yd5uz2eU3E
+         wVrzoBIGnEAGOj2qUy2mXjF/1W6TL8dptNxdmBXTKfYM9m0390aatd1PlMsibcuCCGPv
+         NDXnSr9Q3lxW8jmHOfZFc4kW5iUqtxE7xdC5ADXCX+WiM3egnKZcKH7rzKHfl9dB3UVV
+         Uh3EV35IJxur18JSRLyRAZEorI1P4zkhX+dL/85Tgssk0AiLXulgz61aClK/BHrEijNG
+         ml/dEjHuPqD2vapNsP77YHoVdGsZ97AqiUg8r0tQ7IaSybT8BHqOMz1FvtmmI1gNsk9A
+         xRIg==
+X-Gm-Message-State: AOAM531I09aLv9obgceBE7pXaQ8Rg33KSXJKAEo2OS5WTjc+uKfDa6zp
+        D0+E1pxLXhBU2KA8G/fftlilMSSa4fXYfKE+Yzg/5wrQ
+X-Google-Smtp-Source: ABdhPJytIlqBg1GSjAvtrTGNIBv6aKqTmnMnu2e5kZW0EfBKg8Xh0c84yVVu4/JqV9YTkecrWRL3P/XHYROlWQerQAk=
+X-Received: by 2002:a05:6402:34c5:: with SMTP id w5mr3386137edc.237.1620121563132;
+ Tue, 04 May 2021 02:46:03 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210501172437.156926-1-masahiroy@kernel.org> <20210501172437.156926-2-masahiroy@kernel.org>
+In-Reply-To: <20210501172437.156926-2-masahiroy@kernel.org>
+From:   Max Filippov <jcmvbkbc@gmail.com>
+Date:   Tue, 4 May 2021 02:45:51 -0700
+Message-ID: <CAMo8BfJgNgNKRi9XsPUFKPzH0GvtFcRxx75+swXaofcMN7kg8Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] arch: use cross_compiling to check whether it is a
+ cross build or not
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-kbuild <linux-kbuild@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Chris Zankel <chris@zankel.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org,
+        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Mon, 3 May 2021 22:45:33 +0200:
+On Sat, May 1, 2021 at 10:25 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> 'cross_compiling' is defined by the top Makefile and available for
+> arch Makefiles to check whether it is a cross build or not. A good
+> thing is the variable name 'cross_compiling' is self-documenting.
+>
+> This is a simple replacement for m68k, mips, sh, for which $(ARCH)
+> and $(SRCARCH) always match.
+>
+> No functional change is intended for xtensa, either.
+>
+> This is rather a fix for parisc because arch/parisc/Makefile defines
+> UTS_MATCHINE depending on CONFIG_64BIT, therefore cc-cross-prefix
+> is not working in Kconfig time.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+>  arch/m68k/Makefile   | 2 +-
+>  arch/mips/Makefile   | 2 +-
+>  arch/parisc/Makefile | 2 +-
+>  arch/sh/Makefile     | 2 +-
+>  arch/xtensa/Makefile | 6 +-----
+>  5 files changed, 5 insertions(+), 9 deletions(-)
 
-> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.13/parisc
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/5e321ded302da4d8c5d5dd953423d9b748ab3775
-
-Thank you!
+Acked-by: Max Filippov <jcmvbkbc@gmail.com> # xtensa
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Thanks.
+-- Max
