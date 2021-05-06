@@ -2,75 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C77353730E2
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 May 2021 21:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05F2937534C
+	for <lists+linux-parisc@lfdr.de>; Thu,  6 May 2021 13:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232537AbhEDTgZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 4 May 2021 15:36:25 -0400
-Received: from mout.gmx.net ([212.227.17.22]:38531 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232153AbhEDTgX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 4 May 2021 15:36:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1620156912;
-        bh=MhF99iUbOVHs7xfjC0V5C02iXA7xw2GgNnWLAdTqJL0=;
-        h=X-UI-Sender-Class:To:From:Subject:Date;
-        b=eIsDoKp4ZyQ4bxwTr/yGBocpZxgn4++CQz23AnXiB6MDWGDUQA1ANQ/3eZGxHHp8P
-         XtVxzMLkMoJ8leITuyG+l4Gyc1JixYWCCdZlAoKZibIDJaesFNIEyV02O9BkXnU1sc
-         SsN82Bt6EoSqWLDVRj/GHW7wk2AkK3HvwkqesyhM=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.151.6]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MxDkm-1lKAaO2LN2-00xa3Q; Tue, 04
- May 2021 21:35:12 +0200
-To:     linux-parisc <linux-parisc@vger.kernel.org>,
-        gentoo-hppa@lists.gentoo.org,
-        HPPA porters <debian-hppa@lists.debian.org>
-From:   Helge Deller <deller@gmx.de>
-Subject: Donation of a HP PARISC machine?
-Message-ID: <dc034df5-04f8-a9a2-80a9-297545355753@gmx.de>
-Date:   Tue, 4 May 2021 21:34:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S231807AbhEFL5R (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 6 May 2021 07:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40974 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231830AbhEFL5Q (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 6 May 2021 07:57:16 -0400
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A097C0613ED
+        for <linux-parisc@vger.kernel.org>; Thu,  6 May 2021 04:56:17 -0700 (PDT)
+Received: by mail-ot1-x336.google.com with SMTP id c36-20020a05683034a4b02902a5b84b1d12so4613320otu.8
+        for <linux-parisc@vger.kernel.org>; Thu, 06 May 2021 04:56:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=6QseWDJD7yxOU5rG3+na4aQGSjg/EdTCgN17vCsxG6Y=;
+        b=mlbBVVOHOhncgw4lopPiGHy6NNG+4vZNsw5TbuB+kL97hTTKGxe5M48hp1hvmqSvnF
+         TSbCiiwh7InDzzaKZVtA3pjlysz37bVZGSCyJ5xA5NXZELSzieFVupzlCzENCfXyLVJ8
+         lQ9ClTaR8Gyxc8SmKu694ilUnDrjFcHKBD5EfnDMKjtMldRlGlU6ijU33bbZRQ7i5eML
+         dvNfjxZc8a2KIIzUY8fEf70ryxOfYQn5p1meuFhSQI+sR7voUjNDnM0cjo9fXGauaAkY
+         tdgwC8B68IfrCM00egmCeciw+m5i3CcQKpiCdhAAe24DXvHylSzVuunNLT65gIvMce3o
+         mJsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=6QseWDJD7yxOU5rG3+na4aQGSjg/EdTCgN17vCsxG6Y=;
+        b=CRB0GyAQASMP9GFjjfX4R6qi/L7a3A9LRyt8nBPW+YTogpNSSnxGa0Hz4zX8FII51V
+         B8n38n8sB6bMsXzkV0geBzil9mWjo76Kk76VsoQAn2oS5tH7oUveJk1ahZAPX2MdPs6v
+         VCTNfnFA+wZcElnpHox/0CwEYS7hdVLRfa3VckYzBqRyHp+Wx1nZrsznnUiAuZ2pE3lb
+         dOEYMqctLNzmFzsgeC66NNnWIMKhZ9VMz+xkbekyYdF9rwQ//75UpFdYQOLB6ARQ7+c9
+         9XCxPmMkCwUg4YOua8BjAKOUEljpJc6TnlnS0gCufNc30MdEtk+1S91NXEhQ7k/U1bdQ
+         w7Vw==
+X-Gm-Message-State: AOAM530l2vMSSXtqdIzZojt1uiUh2m3CAxJybSHBtM1uIcP7oSTKeRGK
+        hvWFvp8z+LzzU491uMrScZYp7A==
+X-Google-Smtp-Source: ABdhPJw9TnD7fJ5mwyTc0krHc+cYRAlG0zHj8GY6A4eINag7hGLuvphIDB2gNYjb4J55cRecfnyT/g==
+X-Received: by 2002:a9d:6242:: with SMTP id i2mr3187364otk.273.1620302176492;
+        Thu, 06 May 2021 04:56:16 -0700 (PDT)
+Received: from [192.168.101.238] ([172.58.96.242])
+        by smtp.gmail.com with ESMTPSA id q2sm14055ool.3.2021.05.06.04.56.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 May 2021 04:56:15 -0700 (PDT)
+Subject: Re: [PATCH 2/2] arch: use cross_compiling to check whether it is a
+ cross build or not
+To:     Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kbuild@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>, Chris Zankel <chris@zankel.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org
+References: <20210501172437.156926-1-masahiroy@kernel.org>
+ <20210501172437.156926-2-masahiroy@kernel.org>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <664383ae-8ab2-da1d-601d-365d507f47db@landley.net>
+Date:   Thu, 6 May 2021 07:11:51 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20210501172437.156926-2-masahiroy@kernel.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:IbyZl7DwB5do5th3RmXisNIgpS4Gh35OcowTCYbUprrcNxUfCMQ
- iv2NRYGar7wEeoe2pExKJWr8QYH0y8AVV0832PTnHsYVjGj1jNnu4ecmbqdG6+lqs9KXg73
- fo4CwPaPVcFbUHZD375RYLgAVxP2nFJX+uIt/JpMwPoUx+AI0Qo+7z45Sji6RnJrpLYIlft
- +iZnKGB5F6JszItajiXzg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:QVGctdbTAX8=:XfJayBt/CEzkeryVoDGU4+
- GFEE+rW0g0bG+y0Fm066uZTxdtWgr71URjRpvvvtklee+dxXHqufjGaAHCwLQtwEf7DbmMn10
- 0vZ//q+IG9LrKeDY6wAwSR98A5LrcqYZNMbAui64CFVXW56xPrK7BrRVJENkoKCWq5rsh34a0
- Hve7cCOgOchVT3+tTRK8jj22lX6smDEgB7OhOLfVMNnbSEku972TntCtl5lU2l4A4kgdfhHFw
- N7F3/gbCR8bKDEH9yisZpOHWctf32fUlJZzZq4iMTn4f/KMWFKKx+9Co1Xcu0ItFZfyTd0qQw
- kfuHO81nlqGJOWmJj2h32YSwYpDfxfequ89LVn0mw8Hs0wTCRBRYHjKnxQK5SEwUbzk56rydC
- /icxo4d/3At0mX73SKsdwNikagnNtBZBCEnVoHLvdDSIwPqa21L9lrOR78goB+jJH979v3Vg4
- K2wdkSeakjlqFObgQzyVqipbLqTS1J4PfuWFcoyYiJLg6qpj2J1TQ+u8Zbsu+ZHWM53yW0xoy
- zLaqpDkenHLUZiID/mJ57ZYr7CqxHFpEsC8jHPKqavxPI7xJ4WsjS368a34uLIXRqOW+SP94y
- re22PRdYG9fLHPrUq58A3ZQpcyJGUiLseGTa3xEILN9AEtZmQQ/HWZarV6hzjwp2FugJg8C8e
- ISRkbSuK2X0r3v8hRCNJ/uqR4qrSItKOGizK67Ib/wGjpqV0q1Kh9nC0yY5DqlJVFN4bsk+EH
- j8I/Ixkms78mY2gNS4auLOx8mvoI/NEKxYIhi9RJw5anzvEgf51Fm8kkYBJmo5yVhx7qmQS4X
- q1jbs6GSSTIib48IizJaIysYMPYkUjOYB1X4tdJrGFZYLQCWAUHrwHjQSiG08bEcV4jhbo0Os
- mYS91YO0oHVq2N8cZDA1wCtuzQ1XwRG5grtdA0LGvyEv2WjYjuTXUeRmMvWDtkuv3MF6FICSg
- Rqm8WFllr6adNmNuwoI5HFyM7PtxZHoEEHsyz5GcYop9P6jaQ5emGmnTJJUmCD3SVK73C5IQ0
- a/Le7mxMK6EF5swYTMXNDJIHXmdYFIkp5UjSP1MAXjLw+yvWvAlY8YQ14wmnbM2KrRYMGSVLu
- mWhNdnw6Mh8XFQwrUyZQ4tCrZz7tFsSY9H6CsyhLbYuAVffLqL8ekHuNN1Sz/flpMTwCs8dAg
- qAxl6YIyRoAPOZQTPCz0GpKJ8iL2KEdhYVibdfKwmzUD5Q7n3smDqzewGUaJOaKogDRLM=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Dear PARISC Linux fans,
+On 5/1/21 12:24 PM, Masahiro Yamada wrote:
+> 'cross_compiling' is defined by the top Makefile and available for
+> arch Makefiles to check whether it is a cross build or not. A good
+> thing is the variable name 'cross_compiling' is self-documenting.
+> 
+> This is a simple replacement for m68k, mips, sh, for which $(ARCH)
+> and $(SRCARCH) always match.
+> 
+> No functional change is intended for xtensa, either.
+> 
+> This is rather a fix for parisc because arch/parisc/Makefile defines
+> UTS_MATCHINE depending on CONFIG_64BIT, therefore cc-cross-prefix
+> is not working in Kconfig time.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-Sadly the power supply unit of our main PARISC machine (http://a500.parisc-linux.org) died.
-It hosted old mailing lists, the parisc FTP website and was building debian packages.
+Tried the patch in my sh build, the result built and booted.
 
-It was an old HP A500-44 machine (rp24xx) which was sponsored by HP around year 2000
-to the PA-RISC Linux project, and hosted since 2014 at OSUOSL in the US.
+Tested-by: Rob Landley <rob@landley.net>
 
-If you own a PA-RISC server in the US which you would like to offer for free to the parisc project,
-now is the time to stand up and get your name mentioned on the PA-RISC sponsor list!
-
-Helge
+Rob
