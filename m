@@ -2,102 +2,82 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F2937534C
-	for <lists+linux-parisc@lfdr.de>; Thu,  6 May 2021 13:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EC89376CB7
+	for <lists+linux-parisc@lfdr.de>; Sat,  8 May 2021 00:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231807AbhEFL5R (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 6 May 2021 07:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40974 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231830AbhEFL5Q (ORCPT
+        id S230096AbhEGW1k (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 7 May 2021 18:27:40 -0400
+Received: from bosmailout01.eigbox.net ([66.96.190.1]:36027 "EHLO
+        bosmailout01.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229470AbhEGW1h (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 6 May 2021 07:57:16 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A097C0613ED
-        for <linux-parisc@vger.kernel.org>; Thu,  6 May 2021 04:56:17 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id c36-20020a05683034a4b02902a5b84b1d12so4613320otu.8
-        for <linux-parisc@vger.kernel.org>; Thu, 06 May 2021 04:56:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=6QseWDJD7yxOU5rG3+na4aQGSjg/EdTCgN17vCsxG6Y=;
-        b=mlbBVVOHOhncgw4lopPiGHy6NNG+4vZNsw5TbuB+kL97hTTKGxe5M48hp1hvmqSvnF
-         TSbCiiwh7InDzzaKZVtA3pjlysz37bVZGSCyJ5xA5NXZELSzieFVupzlCzENCfXyLVJ8
-         lQ9ClTaR8Gyxc8SmKu694ilUnDrjFcHKBD5EfnDMKjtMldRlGlU6ijU33bbZRQ7i5eML
-         dvNfjxZc8a2KIIzUY8fEf70ryxOfYQn5p1meuFhSQI+sR7voUjNDnM0cjo9fXGauaAkY
-         tdgwC8B68IfrCM00egmCeciw+m5i3CcQKpiCdhAAe24DXvHylSzVuunNLT65gIvMce3o
-         mJsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=6QseWDJD7yxOU5rG3+na4aQGSjg/EdTCgN17vCsxG6Y=;
-        b=CRB0GyAQASMP9GFjjfX4R6qi/L7a3A9LRyt8nBPW+YTogpNSSnxGa0Hz4zX8FII51V
-         B8n38n8sB6bMsXzkV0geBzil9mWjo76Kk76VsoQAn2oS5tH7oUveJk1ahZAPX2MdPs6v
-         VCTNfnFA+wZcElnpHox/0CwEYS7hdVLRfa3VckYzBqRyHp+Wx1nZrsznnUiAuZ2pE3lb
-         dOEYMqctLNzmFzsgeC66NNnWIMKhZ9VMz+xkbekyYdF9rwQ//75UpFdYQOLB6ARQ7+c9
-         9XCxPmMkCwUg4YOua8BjAKOUEljpJc6TnlnS0gCufNc30MdEtk+1S91NXEhQ7k/U1bdQ
-         w7Vw==
-X-Gm-Message-State: AOAM530l2vMSSXtqdIzZojt1uiUh2m3CAxJybSHBtM1uIcP7oSTKeRGK
-        hvWFvp8z+LzzU491uMrScZYp7A==
-X-Google-Smtp-Source: ABdhPJw9TnD7fJ5mwyTc0krHc+cYRAlG0zHj8GY6A4eINag7hGLuvphIDB2gNYjb4J55cRecfnyT/g==
-X-Received: by 2002:a9d:6242:: with SMTP id i2mr3187364otk.273.1620302176492;
-        Thu, 06 May 2021 04:56:16 -0700 (PDT)
-Received: from [192.168.101.238] ([172.58.96.242])
-        by smtp.gmail.com with ESMTPSA id q2sm14055ool.3.2021.05.06.04.56.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 May 2021 04:56:15 -0700 (PDT)
-Subject: Re: [PATCH 2/2] arch: use cross_compiling to check whether it is a
- cross build or not
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        linux-kbuild@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>, Chris Zankel <chris@zankel.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org
-References: <20210501172437.156926-1-masahiroy@kernel.org>
- <20210501172437.156926-2-masahiroy@kernel.org>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <664383ae-8ab2-da1d-601d-365d507f47db@landley.net>
-Date:   Thu, 6 May 2021 07:11:51 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        Fri, 7 May 2021 18:27:37 -0400
+X-Greylist: delayed 1929 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 May 2021 18:27:30 EDT
+Received: from bosmailscan09.eigbox.net ([10.20.15.9])
+        by bosmailout01.eigbox.net with esmtp (Exim)
+        id 1lf8QO-00068o-JJ; Fri, 07 May 2021 17:54:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=godsofu4.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=aM9bUFGSTpfnep8zAVAJMnojqhcwpuHDFPgQnPqW4M4=; b=bjgKomV6NO5Eg5D3qsCBps1llx
+        tj4k2teSfIdfo/duBtOSoC/FW1+C1nXiYJbrvf2JDobx8fDCsgnxHFoPWOCb5eI+OJOIgvnnfKlpl
+        ZqidIuDnjEPTMao1vFwrg6M9FUKU/cz6TT5/KN4ccsk+aQli3Wgs3G1cQz5vdbC1Y2SXULFY8Mu2t
+        1PShwmiDRn71EPzgUHUVu0GG39z6uSTEuRgOXhiNl9ekuZ5QXUAEykoocvC5/DkORRmERAA91o1HY
+        Sl76pPWw9UBVGbuFbfdVPfVcFxJM5xZDrmgt6uCf9J+dn/n7LFOSOxBaL9svxxYdhOkJwdz4uh075
+        2gI+xJSw==;
+Received: from [10.115.3.32] (helo=bosimpout12)
+        by bosmailscan09.eigbox.net with esmtp (Exim)
+        id 1lf8QO-0003aD-AI; Fri, 07 May 2021 17:54:20 -0400
+Received: from boswebmail06.eigbox.net ([10.20.16.6])
+        by bosimpout12 with 
+        id 1xuH2500407qujN01xuLVi; Fri, 07 May 2021 17:54:20 -0400
+X-EN-SP-DIR: OUT
+X-EN-SP-SQ: 1
+Received: from [127.0.0.1] (helo=homestead)
+        by boswebmail06.eigbox.net with esmtp (Exim)
+        id 1lf8QL-0006fx-UG; Fri, 07 May 2021 17:54:17 -0400
+Received: from [197.239.81.229]
+ by emailmg.homestead.com
+ with HTTP (HTTP/1.1 POST); Fri, 07 May 2021 17:54:17 -0400
 MIME-Version: 1.0
-In-Reply-To: <20210501172437.156926-2-masahiroy@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Date:   Fri, 07 May 2021 21:54:17 +0000
+From:   Mrs Suzara Maling Wan <fast65@godsofu4.com>
+To:     undisclosed-recipients:;
+Subject: URGENT REPLY NEEDED
+Reply-To: suzara2017malingwan@gmail.com
+Mail-Reply-To: suzara2017malingwan@gmail.com
+Message-ID: <36acfe805efde59f3f399df1324ce6b9@godsofu4.com>
+X-Sender: fast65@godsofu4.com
+User-Agent: Roundcube Webmail/1.3.14
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+X-EN-AuthUser: fast65@godsofu4.com
+Sender:  Mrs Suzara Maling Wan <fast65@godsofu4.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/1/21 12:24 PM, Masahiro Yamada wrote:
-> 'cross_compiling' is defined by the top Makefile and available for
-> arch Makefiles to check whether it is a cross build or not. A good
-> thing is the variable name 'cross_compiling' is self-documenting.
-> 
-> This is a simple replacement for m68k, mips, sh, for which $(ARCH)
-> and $(SRCARCH) always match.
-> 
-> No functional change is intended for xtensa, either.
-> 
-> This is rather a fix for parisc because arch/parisc/Makefile defines
-> UTS_MATCHINE depending on CONFIG_64BIT, therefore cc-cross-prefix
-> is not working in Kconfig time.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-Tried the patch in my sh build, the result built and booted.
 
-Tested-by: Rob Landley <rob@landley.net>
+My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
+of the Philippine presently base in West Africa B/F, dealing with
+exportation of Gold, I was diagnose of blood Causal decease, and my
+doctor have announce to me that I have few days to leave due to the
+condition of my sickness.
 
-Rob
+I have a desire to build an orphanage home in your country of which i
+cannot execute the project myself due to my present health condition,
+I am willing to hand over the project under your care for you to help
+me fulfill my dreams and desire of building an orphanage home in your
+country.
+
+Reply in you are will to help so that I can direct you to my bank for
+the urgent transfer of the fund/money require for the project to your
+account as I have already made the fund/money available.
+
+With kind regards
+Mrs Suzara Maling Wan
