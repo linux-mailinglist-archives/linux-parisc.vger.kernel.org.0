@@ -2,82 +2,280 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EC89376CB7
-	for <lists+linux-parisc@lfdr.de>; Sat,  8 May 2021 00:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DAB8376C14
+	for <lists+linux-parisc@lfdr.de>; Sat,  8 May 2021 00:09:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230096AbhEGW1k (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 7 May 2021 18:27:40 -0400
-Received: from bosmailout01.eigbox.net ([66.96.190.1]:36027 "EHLO
-        bosmailout01.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhEGW1h (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 7 May 2021 18:27:37 -0400
-X-Greylist: delayed 1929 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 May 2021 18:27:30 EDT
-Received: from bosmailscan09.eigbox.net ([10.20.15.9])
-        by bosmailout01.eigbox.net with esmtp (Exim)
-        id 1lf8QO-00068o-JJ; Fri, 07 May 2021 17:54:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=godsofu4.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=aM9bUFGSTpfnep8zAVAJMnojqhcwpuHDFPgQnPqW4M4=; b=bjgKomV6NO5Eg5D3qsCBps1llx
-        tj4k2teSfIdfo/duBtOSoC/FW1+C1nXiYJbrvf2JDobx8fDCsgnxHFoPWOCb5eI+OJOIgvnnfKlpl
-        ZqidIuDnjEPTMao1vFwrg6M9FUKU/cz6TT5/KN4ccsk+aQli3Wgs3G1cQz5vdbC1Y2SXULFY8Mu2t
-        1PShwmiDRn71EPzgUHUVu0GG39z6uSTEuRgOXhiNl9ekuZ5QXUAEykoocvC5/DkORRmERAA91o1HY
-        Sl76pPWw9UBVGbuFbfdVPfVcFxJM5xZDrmgt6uCf9J+dn/n7LFOSOxBaL9svxxYdhOkJwdz4uh075
-        2gI+xJSw==;
-Received: from [10.115.3.32] (helo=bosimpout12)
-        by bosmailscan09.eigbox.net with esmtp (Exim)
-        id 1lf8QO-0003aD-AI; Fri, 07 May 2021 17:54:20 -0400
-Received: from boswebmail06.eigbox.net ([10.20.16.6])
-        by bosimpout12 with 
-        id 1xuH2500407qujN01xuLVi; Fri, 07 May 2021 17:54:20 -0400
-X-EN-SP-DIR: OUT
-X-EN-SP-SQ: 1
-Received: from [127.0.0.1] (helo=homestead)
-        by boswebmail06.eigbox.net with esmtp (Exim)
-        id 1lf8QL-0006fx-UG; Fri, 07 May 2021 17:54:17 -0400
-Received: from [197.239.81.229]
- by emailmg.homestead.com
- with HTTP (HTTP/1.1 POST); Fri, 07 May 2021 17:54:17 -0400
+        id S229849AbhEGWKo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 7 May 2021 18:10:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56822 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229470AbhEGWKm (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 7 May 2021 18:10:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 08DB161104;
+        Fri,  7 May 2021 22:09:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620425382;
+        bh=0/t1S5fGbGa5Ohrr5MIwcnVJfgCXnEXWaorzQUZBvzM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=qP/oS8/amoNC6rjsM7c9SkGPGKTxo3zTyqAMtUbYHdnwaMJo9n8Q5fKD+a9TMhvbl
+         SjOKOSjJXs4MXghFPquDemoajl8OsYCJDyBx/8qcU2isjm6PjXKK9BpM8u4uBeupHg
+         G9SzkhGeTFqDkkLMj6qxPZrJRveNql/8n5jT85d2ymK89WbtsXsqEPwnbQd/RFAfT1
+         7j7Q0LpqrsLwKJKiBopVuV0jyG0QfxUuQ8YuVu1ZUtXQjymSli1GFqBygzAy1yy44R
+         6MDxawd+CGQUsLg9KFntoNvUj/P7uC0fYeQACT9paj6kbpr/goR/NsRv8eKgLRg3FX
+         n4rsp7dLy/KmQ==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-arch@vger.kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org
+Subject: [RFC 01/12] asm-generic: use asm-generic/unaligned.h for most architectures
+Date:   Sat,  8 May 2021 00:07:46 +0200
+Message-Id: <20210507220813.365382-2-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210507220813.365382-1-arnd@kernel.org>
+References: <20210507220813.365382-1-arnd@kernel.org>
 MIME-Version: 1.0
-Date:   Fri, 07 May 2021 21:54:17 +0000
-From:   Mrs Suzara Maling Wan <fast65@godsofu4.com>
-To:     undisclosed-recipients:;
-Subject: URGENT REPLY NEEDED
-Reply-To: suzara2017malingwan@gmail.com
-Mail-Reply-To: suzara2017malingwan@gmail.com
-Message-ID: <36acfe805efde59f3f399df1324ce6b9@godsofu4.com>
-X-Sender: fast65@godsofu4.com
-User-Agent: Roundcube Webmail/1.3.14
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-EN-AuthUser: fast65@godsofu4.com
-Sender:  Mrs Suzara Maling Wan <fast65@godsofu4.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+From: Arnd Bergmann <arnd@arndb.de>
 
+There are several architectures that just duplicate the contents
+of asm-generic/unaligned.h, so change those over to use the
+file directly, to make future modifications easier.
 
-My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
-of the Philippine presently base in West Africa B/F, dealing with
-exportation of Gold, I was diagnose of blood Causal decease, and my
-doctor have announce to me that I have few days to leave due to the
-condition of my sickness.
+The exceptions are:
 
-I have a desire to build an orphanage home in your country of which i
-cannot execute the project myself due to my present health condition,
-I am willing to hand over the project under your care for you to help
-me fulfill my dreams and desire of building an orphanage home in your
-country.
+- arm32 sets HAVE_EFFICIENT_UNALIGNED_ACCESS, but wants the
+  unaligned-struct version
 
-Reply in you are will to help so that I can direct you to my bank for
-the urgent transfer of the fund/money require for the project to your
-account as I have already made the fund/money available.
+- ppc64le disables HAVE_EFFICIENT_UNALIGNED_ACCESS but includes
+  the access-ok version
 
-With kind regards
-Mrs Suzara Maling Wan
+- m68k (non-dragonball) also uses the access-ok version without
+  setting HAVE_EFFICIENT_UNALIGNED_ACCESS.
+
+- sh4a has a custom inline asm version
+
+- openrisc is the only one using the memmove version that
+  generally leads to worse code.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/alpha/include/asm/unaligned.h      | 12 ----------
+ arch/ia64/include/asm/unaligned.h       | 12 ----------
+ arch/m68k/include/asm/unaligned.h       |  9 +-------
+ arch/microblaze/include/asm/unaligned.h | 27 -----------------------
+ arch/parisc/include/asm/unaligned.h     |  6 +----
+ arch/sparc/include/asm/unaligned.h      | 11 ----------
+ arch/x86/include/asm/unaligned.h        | 15 -------------
+ arch/xtensa/include/asm/unaligned.h     | 29 -------------------------
+ 8 files changed, 2 insertions(+), 119 deletions(-)
+ delete mode 100644 arch/alpha/include/asm/unaligned.h
+ delete mode 100644 arch/ia64/include/asm/unaligned.h
+ delete mode 100644 arch/microblaze/include/asm/unaligned.h
+ delete mode 100644 arch/sparc/include/asm/unaligned.h
+ delete mode 100644 arch/x86/include/asm/unaligned.h
+ delete mode 100644 arch/xtensa/include/asm/unaligned.h
+
+diff --git a/arch/alpha/include/asm/unaligned.h b/arch/alpha/include/asm/unaligned.h
+deleted file mode 100644
+index 863c807b66f8..000000000000
+--- a/arch/alpha/include/asm/unaligned.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_ALPHA_UNALIGNED_H
+-#define _ASM_ALPHA_UNALIGNED_H
+-
+-#include <linux/unaligned/le_struct.h>
+-#include <linux/unaligned/be_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-
+-#define get_unaligned __get_unaligned_le
+-#define put_unaligned __put_unaligned_le
+-
+-#endif /* _ASM_ALPHA_UNALIGNED_H */
+diff --git a/arch/ia64/include/asm/unaligned.h b/arch/ia64/include/asm/unaligned.h
+deleted file mode 100644
+index 328942e3cbce..000000000000
+--- a/arch/ia64/include/asm/unaligned.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_IA64_UNALIGNED_H
+-#define _ASM_IA64_UNALIGNED_H
+-
+-#include <linux/unaligned/le_struct.h>
+-#include <linux/unaligned/be_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-
+-#define get_unaligned	__get_unaligned_le
+-#define put_unaligned	__put_unaligned_le
+-
+-#endif /* _ASM_IA64_UNALIGNED_H */
+diff --git a/arch/m68k/include/asm/unaligned.h b/arch/m68k/include/asm/unaligned.h
+index 98c8930d3d35..84e437337344 100644
+--- a/arch/m68k/include/asm/unaligned.h
++++ b/arch/m68k/include/asm/unaligned.h
+@@ -2,15 +2,8 @@
+ #ifndef _ASM_M68K_UNALIGNED_H
+ #define _ASM_M68K_UNALIGNED_H
+ 
+-
+ #ifdef CONFIG_CPU_HAS_NO_UNALIGNED
+-#include <linux/unaligned/be_struct.h>
+-#include <linux/unaligned/le_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-
+-#define get_unaligned	__get_unaligned_be
+-#define put_unaligned	__put_unaligned_be
+-
++#include <asm-generic/unaligned.h>
+ #else
+ /*
+  * The m68k can do unaligned accesses itself.
+diff --git a/arch/microblaze/include/asm/unaligned.h b/arch/microblaze/include/asm/unaligned.h
+deleted file mode 100644
+index 448299beab69..000000000000
+--- a/arch/microblaze/include/asm/unaligned.h
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * Copyright (C) 2008 Michal Simek <monstr@monstr.eu>
+- * Copyright (C) 2006 Atmark Techno, Inc.
+- */
+-
+-#ifndef _ASM_MICROBLAZE_UNALIGNED_H
+-#define _ASM_MICROBLAZE_UNALIGNED_H
+-
+-# ifdef __KERNEL__
+-
+-#  ifdef __MICROBLAZEEL__
+-#   include <linux/unaligned/le_struct.h>
+-#   include <linux/unaligned/be_byteshift.h>
+-#   define get_unaligned	__get_unaligned_le
+-#   define put_unaligned	__put_unaligned_le
+-#  else
+-#   include <linux/unaligned/be_struct.h>
+-#   include <linux/unaligned/le_byteshift.h>
+-#   define get_unaligned	__get_unaligned_be
+-#   define put_unaligned	__put_unaligned_be
+-#  endif
+-
+-# include <linux/unaligned/generic.h>
+-
+-# endif	/* __KERNEL__ */
+-#endif /* _ASM_MICROBLAZE_UNALIGNED_H */
+diff --git a/arch/parisc/include/asm/unaligned.h b/arch/parisc/include/asm/unaligned.h
+index e9029c7c2a69..3bda16773ba6 100644
+--- a/arch/parisc/include/asm/unaligned.h
++++ b/arch/parisc/include/asm/unaligned.h
+@@ -2,11 +2,7 @@
+ #ifndef _ASM_PARISC_UNALIGNED_H
+ #define _ASM_PARISC_UNALIGNED_H
+ 
+-#include <linux/unaligned/be_struct.h>
+-#include <linux/unaligned/le_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-#define get_unaligned	__get_unaligned_be
+-#define put_unaligned	__put_unaligned_be
++#include <asm-generic/unaligned.h>
+ 
+ #ifdef __KERNEL__
+ struct pt_regs;
+diff --git a/arch/sparc/include/asm/unaligned.h b/arch/sparc/include/asm/unaligned.h
+deleted file mode 100644
+index 7971d89d2f54..000000000000
+--- a/arch/sparc/include/asm/unaligned.h
++++ /dev/null
+@@ -1,11 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_SPARC_UNALIGNED_H
+-#define _ASM_SPARC_UNALIGNED_H
+-
+-#include <linux/unaligned/be_struct.h>
+-#include <linux/unaligned/le_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-#define get_unaligned	__get_unaligned_be
+-#define put_unaligned	__put_unaligned_be
+-
+-#endif /* _ASM_SPARC_UNALIGNED_H */
+diff --git a/arch/x86/include/asm/unaligned.h b/arch/x86/include/asm/unaligned.h
+deleted file mode 100644
+index 9c754a7447aa..000000000000
+--- a/arch/x86/include/asm/unaligned.h
++++ /dev/null
+@@ -1,15 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_X86_UNALIGNED_H
+-#define _ASM_X86_UNALIGNED_H
+-
+-/*
+- * The x86 can do unaligned accesses itself.
+- */
+-
+-#include <linux/unaligned/access_ok.h>
+-#include <linux/unaligned/generic.h>
+-
+-#define get_unaligned __get_unaligned_le
+-#define put_unaligned __put_unaligned_le
+-
+-#endif /* _ASM_X86_UNALIGNED_H */
+diff --git a/arch/xtensa/include/asm/unaligned.h b/arch/xtensa/include/asm/unaligned.h
+deleted file mode 100644
+index 8e7ed046bfed..000000000000
+--- a/arch/xtensa/include/asm/unaligned.h
++++ /dev/null
+@@ -1,29 +0,0 @@
+-/*
+- * Xtensa doesn't handle unaligned accesses efficiently.
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2001 - 2005 Tensilica Inc.
+- */
+-#ifndef _ASM_XTENSA_UNALIGNED_H
+-#define _ASM_XTENSA_UNALIGNED_H
+-
+-#include <asm/byteorder.h>
+-
+-#ifdef __LITTLE_ENDIAN
+-# include <linux/unaligned/le_struct.h>
+-# include <linux/unaligned/be_byteshift.h>
+-# include <linux/unaligned/generic.h>
+-# define get_unaligned	__get_unaligned_le
+-# define put_unaligned	__put_unaligned_le
+-#else
+-# include <linux/unaligned/be_struct.h>
+-# include <linux/unaligned/le_byteshift.h>
+-# include <linux/unaligned/generic.h>
+-# define get_unaligned	__get_unaligned_be
+-# define put_unaligned	__put_unaligned_be
+-#endif
+-
+-#endif	/* _ASM_XTENSA_UNALIGNED_H */
+-- 
+2.29.2
+
