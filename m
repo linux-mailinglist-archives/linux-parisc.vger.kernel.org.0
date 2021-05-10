@@ -2,94 +2,117 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9238376D22
-	for <lists+linux-parisc@lfdr.de>; Sat,  8 May 2021 01:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A424537810C
+	for <lists+linux-parisc@lfdr.de>; Mon, 10 May 2021 12:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbhEGXEE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 7 May 2021 19:04:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57092 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhEGXED (ORCPT
+        id S230449AbhEJKRg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 10 May 2021 06:17:36 -0400
+Received: from mail-vs1-f52.google.com ([209.85.217.52]:35626 "EHLO
+        mail-vs1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230393AbhEJKR3 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 7 May 2021 19:04:03 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E82E2C061761;
-        Fri,  7 May 2021 16:03:02 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620428579;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=JXeejtHvaU6r57y+H/6chLv35n+4kHh0i98g2fKiDNw=;
-        b=NMCn50OEXmZMXO1y0zSZPZZ4MNARh9iWOxZdHWrMJG33LMs1FpmwE/uPVIpUMWelm8CmI0
-        odd57jzBXu4UHu9iRz6T/mlp/B0UlYj9VCyjBQ9tJOvmQHzRdrlmAoMz4sJOPPnb2sURMj
-        ytNVSqB23rMh5LNA4NZTD9Sq4G/xKGkhkDsGRFRdZEA9MzYWqgECm4NCP841J/ucBornf2
-        fZebDTGty+qll147dzlRwlOtAZFCpV/TkO9lbNJK2llbmH/BOVvdkJsXjlFv1QU/bLxfb5
-        WDSQVv7+TQQVxk+5jZKTB7oEiShDGDeHxy+4gIRkBCgXy73KTAipr+yXCbsDQA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620428579;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=JXeejtHvaU6r57y+H/6chLv35n+4kHh0i98g2fKiDNw=;
-        b=UBHeGQNGG8YqoYmzhKFeRKHRDdsveMvcVQsyLASezu+G4x4bhChlxv8y71fdr/GYNTLdlB
-        mKTyuWFloMRIPiDA==
-To:     Arnd Bergmann <arnd@kernel.org>, linux-arch@vger.kernel.org
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Mon, 10 May 2021 06:17:29 -0400
+Received: by mail-vs1-f52.google.com with SMTP id j13so8124988vsf.2;
+        Mon, 10 May 2021 03:16:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sVvVN78+/ymEH+RZL6HvoVCZVksTZw7UVoQH006DAA8=;
+        b=uiiBmkHlh6s5t0Q6ekUiP2RK7fY7IrsyQ4X30oiYA8nOMTOpVbsOvsK7rvWIFRp5nB
+         Iyz9R163vNvnPCJjmJnKmSm9EVCKvRl3B8XAu/IQq0hbrCjB938R2BQfS2eqOpwdotGZ
+         9pFwtE0SkDsLD9aCYyjTNEeofBctawz9Do4erZDD9m6RaGkVyXC24qrPpqEUloTKapnG
+         6uYgPdJG0ouqCMdUKazKPGQj0VRN81LNyPxfW1MDE2XhFnh97MuO/gmBH6LojXMha+eq
+         K00aTjCBMcVu5XyNmqHszmx9GMMcQg4BSKMLVtzRWmxVcIZGbF9YWM1CgN4dKUh3KZ7S
+         ao/A==
+X-Gm-Message-State: AOAM531JjyLLwBGwA+OJvXqPpY+9fUftJOP2AN9bNMe6nZntmYtHtYJa
+        9mls5DQUw1KnpELouF1hp176F5u0ZHy/VKgocUs=
+X-Google-Smtp-Source: ABdhPJwCjZFq7knTQzQamMPg7B/M6YwpWZB1FCmai2ATFOyJJM+uqtP/4aHsoLXiIPOmyugP+gy2CWFKz8LbQiDSA/c=
+X-Received: by 2002:a67:8745:: with SMTP id j66mr19115560vsd.18.1620641784321;
+ Mon, 10 May 2021 03:16:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210507220813.365382-1-arnd@kernel.org> <20210507220813.365382-2-arnd@kernel.org>
+In-Reply-To: <20210507220813.365382-2-arnd@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 10 May 2021 12:16:13 +0200
+Message-ID: <CAMuHMdV1=mJzbr1cLwo-zUnThh9J8BmdW870dJCvp_Kft8kM2w@mail.gmail.com>
+Subject: Re: [RFC 01/12] asm-generic: use asm-generic/unaligned.h for most architectures
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Linux-Arch <linux-arch@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Vineet Gupta <vgupta@synopsys.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
         Michal Simek <monstr@monstr.eu>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
         "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org
-Subject: Re: [RFC 01/12] asm-generic: use asm-generic/unaligned.h for most architectures
-In-Reply-To: <20210507220813.365382-2-arnd@kernel.org>
-References: <20210507220813.365382-1-arnd@kernel.org> <20210507220813.365382-2-arnd@kernel.org>
-Date:   Sat, 08 May 2021 01:02:59 +0200
-Message-ID: <87czu2m9jw.ffs@nanos.tec.linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, May 08 2021 at 00:07, Arnd Bergmann wrote:
-> diff --git a/arch/x86/include/asm/unaligned.h b/arch/x86/include/asm/unaligned.h
-> deleted file mode 100644
-> index 9c754a7447aa..000000000000
-> --- a/arch/x86/include/asm/unaligned.h
-> +++ /dev/null
-> @@ -1,15 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 */
-> -#ifndef _ASM_X86_UNALIGNED_H
-> -#define _ASM_X86_UNALIGNED_H
-> -
-> -/*
-> - * The x86 can do unaligned accesses itself.
-> - */
-> -
-> -#include <linux/unaligned/access_ok.h>
-> -#include <linux/unaligned/generic.h>
-> -
-> -#define get_unaligned __get_unaligned_le
-> -#define put_unaligned __put_unaligned_le
-> -
-> -#endif /* _ASM_X86_UNALIGNED_H */
+Hi Arnd,
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+On Sat, May 8, 2021 at 12:09 AM Arnd Bergmann <arnd@kernel.org> wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> There are several architectures that just duplicate the contents
+> of asm-generic/unaligned.h, so change those over to use the
+> file directly, to make future modifications easier.
+>
+> The exceptions are:
+>
+> - arm32 sets HAVE_EFFICIENT_UNALIGNED_ACCESS, but wants the
+>   unaligned-struct version
+>
+> - ppc64le disables HAVE_EFFICIENT_UNALIGNED_ACCESS but includes
+>   the access-ok version
+>
+> - m68k (non-dragonball) also uses the access-ok version without
+>   setting HAVE_EFFICIENT_UNALIGNED_ACCESS.
 
-Thanks for cleaning that up!
+This not only applies to dragonball, which has the CPU32 core, but also
+to plain 68000, and any SoCs including the 68EC000 core.
 
-       tglx
+It also applies to early Coldfire, but AFAIK Linux doesn't support these
+(see dfe1d26d4a90287e ("m68knommu: Allow ColdFire CPUs to use unaligned
+ accesses")).
+
+ > - sh4a has a custom inline asm version
+>
+> - openrisc is the only one using the memmove version that
+>   generally leads to worse code.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+>  arch/m68k/include/asm/unaligned.h       |  9 +-------
+
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
