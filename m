@@ -2,237 +2,143 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1219D38C23E
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 May 2021 10:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7095D38F60B
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 May 2021 01:04:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233942AbhEUIu2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 21 May 2021 04:50:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:41509 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233897AbhEUIu1 (ORCPT
+        id S229550AbhEXXFt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 24 May 2021 19:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36268 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229568AbhEXXFt (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 21 May 2021 04:50:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1621586944;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Ss3oq71TJpZynR4jRUU0R8ghR5Bhj/98WSz+6h5ZWWw=;
-        b=hdEAG1ZUglmz9WLA1mTx9/R/biXUQSfU04hHNIu8Gm+GXw1WjJwbGYBsLZ6kp8q9jHfHcS
-        tQor3uaX9bKQlmi3bVzU0Q+/ePDAACx3iDuGkFKgQ5YvjdPe8HZFyMmF2PA+KbgMOxuvYl
-        2UjwHaQ8nVwfrOTA4OKxUsSjsw0PMhc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-105-R42r_oLcMjSh55lpryRjyg-1; Fri, 21 May 2021 04:49:01 -0400
-X-MC-Unique: R42r_oLcMjSh55lpryRjyg-1
-Received: by mail-wm1-f71.google.com with SMTP id g206-20020a1c39d70000b029016ac627fbe9so2575871wma.9
-        for <linux-parisc@vger.kernel.org>; Fri, 21 May 2021 01:49:01 -0700 (PDT)
+        Mon, 24 May 2021 19:05:49 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4608BC06138D
+        for <linux-parisc@vger.kernel.org>; Mon, 24 May 2021 16:04:20 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id s22so44037580ejv.12
+        for <linux-parisc@vger.kernel.org>; Mon, 24 May 2021 16:04:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uHnwU/8zVxK9/bfw4gLk9ClQH8SbH6WwTZFdoRwbAtE=;
+        b=QQB024vhpmn4hq25e6Gkh0zhdrnh3KHdtxH6hg6RDKH7CnpR3mYJd6drz35kPPn+vq
+         h6264Me+UgyGvlpwu30FVPeTMz+AEc12Q0M+XUT2JohzSMatCOapVMLXEXEiejzFf7ti
+         ktfb2nZNhIlo275VOb2O2BOnbc3ySbclEou9yYwi6+PYR4gUlNFMkKIpexQj+R7biYK9
+         xXDP+mzIofYbIEFKZVe3ZXLMSxK2QP8MWFHo5cfoJS3ZJay5Rqyq5UdBp1+zLKULS08J
+         lwUq6hGqLZp80Ar+2xFbnq6NvtyQI7K0uQTTZPi/naCAAye6mC44N7eH6EQPj41saYzr
+         cNUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:references:from:organization:subject
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=Ss3oq71TJpZynR4jRUU0R8ghR5Bhj/98WSz+6h5ZWWw=;
-        b=JREzXgvhb+WxbljDxchJsiOvcst16kdqFAVZiLxIAUZPA3R6hRScNsGbEixGxJZGX5
-         bgstmevL/n5xWyO+WY6dtLtdY/2utZmE7PDKx8J9h03M0T+rvhD/a4KePOPLQsqm1VTE
-         g7gQFflm+qQrQkxx7zV3P+bfCWYivBVlNK4MlqiQZr0s90g9jxeqa+38bi7CC09GVPev
-         UJQn+NuPb/ytrBQ0KZ3U1+ZwDMCzxdr8U0WXMvpntNwFixQj3bI9P/MFEdmvVJPCdlTB
-         egwoMq53OjJoIOQdnAvpLwkjDI6c8YzfItKI4/yOagrUIpBdfaNg6NiDLUsuNtBBX1u0
-         yvNQ==
-X-Gm-Message-State: AOAM533iBVZXR+o6OzdhFjRUdoBw6fOPERVZzvlcTEHA2/uYhK07STE5
-        JM6uV0UcyfhbiTfFqLLKoBGlrcDBpyX025wY9a6NZHkCiIYNu6Ojt8794aUBcfuE4aOtCip0Nnp
-        xHcO5JEen7NXrdu+chwm5R4r5
-X-Received: by 2002:a05:600c:3592:: with SMTP id p18mr7606418wmq.44.1621586940349;
-        Fri, 21 May 2021 01:49:00 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwEzS6ZR08kC/nab/1F9qSPZO8CRDhLDB8U6o4FhSCqgEsVRhOFUu1qq4q3oGPk3STOmbHF0Q==
-X-Received: by 2002:a05:600c:3592:: with SMTP id p18mr7606385wmq.44.1621586939966;
-        Fri, 21 May 2021 01:48:59 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c6502.dip0.t-ipconnect.de. [91.12.101.2])
-        by smtp.gmail.com with ESMTPSA id x4sm11507774wmj.17.2021.05.21.01.48.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 May 2021 01:48:59 -0700 (PDT)
-To:     Michal Hocko <mhocko@suse.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Oscar Salvador <osalvador@suse.de>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Minchan Kim <minchan@kernel.org>, Jann Horn <jannh@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Hugh Dickins <hughd@google.com>,
-        Rik van Riel <riel@surriel.com>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Peter Xu <peterx@redhat.com>,
-        Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, Linux API <linux-api@vger.kernel.org>
-References: <20210511081534.3507-1-david@redhat.com>
- <20210511081534.3507-3-david@redhat.com> <YKOR/8LzEaOgCvio@dhcp22.suse.cz>
- <bb0e2ebb-e66d-176c-b20a-fbadd95cde98@redhat.com>
- <YKOiV9VkEdYFM9nB@dhcp22.suse.cz>
- <b2fa988d-9625-7c0e-ce83-158af0058e38@redhat.com>
- <YKZnsnqgEMx6Xl6X@dhcp22.suse.cz>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH resend v2 2/5] mm/madvise: introduce
- MADV_POPULATE_(READ|WRITE) to prefault page tables
-Message-ID: <2e41144c-27f4-f341-d855-f966dabc2c21@redhat.com>
-Date:   Fri, 21 May 2021 10:48:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uHnwU/8zVxK9/bfw4gLk9ClQH8SbH6WwTZFdoRwbAtE=;
+        b=YMwcWCdUsW5T7xNRiZt42YGcyNxHwyJRaytFEcqv95xMX+p2P5n8FJb2aBMakR7m7A
+         qreeZs4lW96TXNTgD2NxMqLY1NSYaiYOOkQeQkhhOd2yZ4vIczS85xz6ht1ff3669zFY
+         ymVevUr6EYZZIMpAwdAf8oELtnUTtMV+EQas8J8mYrGpHJKkD3E0UmkLjHdO1rFid9Mt
+         ijTQ6TvowGponX0R8m04VhgMVsJOLZW5WRqouBJQg/LGFaU1xfKhSjVSkrvely4ZWsXF
+         54xkhc2w+z+TpW0gL3YUMitzcLybv8nyfs5+kpiqBQ5VsDeJNVa1iODkHYk/8K+kvIV1
+         YnSQ==
+X-Gm-Message-State: AOAM531fo6kUs4zt0pgWNH94MyKqz1IOECygLGWdzjVxMjgP+x6ItVrk
+        GC66lf+PrDAkzuyAldlFXfnE64rzwcT+424cTtK5
+X-Google-Smtp-Source: ABdhPJzHdwSaxqdMgKRFDcoSWE+vBddUp/NzMoTBPda3nQNAVt0QAUQEdTUit8AXk9QB29Wy0DPtdDjKh5nmDnbZhoc=
+X-Received: by 2002:a17:907:10d8:: with SMTP id rv24mr25356059ejb.542.1621897458726;
+ Mon, 24 May 2021 16:04:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YKZnsnqgEMx6Xl6X@dhcp22.suse.cz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <cover.1621363275.git.rgb@redhat.com> <f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com>
+ <20210520075842.vnbwbw6yffkybk6z@wittgenstein>
+In-Reply-To: <20210520075842.vnbwbw6yffkybk6z@wittgenstein>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Mon, 24 May 2021 19:04:07 -0400
+Message-ID: <CAHC9VhTyAFou=_Xu7ZSZSY+19Yii=hQ1NW1LPisk49Ot9wg7rg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] audit: add support for the openat2 syscall
+To:     Christian Brauner <christian.brauner@ubuntu.com>
+Cc:     Richard Guy Briggs <rgb@redhat.com>,
+        Linux-Audit Mailing List <linux-audit@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-fsdevel@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
+        Steve Grubb <sgrubb@redhat.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Eric Paris <eparis@redhat.com>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-> [...]
->> Anyhow, please suggest a way to handle it via a single flag in the kernel --
->> which would be some kind of heuristic as we know from MAP_POPULATE. Having
->> an alternative at hand would make it easier to discuss this topic further. I
->> certainly *don't* want MAP_POPULATE semantics when it comes to
->> MADV_POPULATE, especially when it comes to shared mappings. Not useful in
->> QEMU now and in the future.
-> 
-> OK, this point is still not entirely clear to me. Elsewhere you are
-> saying that QEMU cannot use MAP_POPULATE because it ignores errors
-> and also it doesn't support sparse mappings because they apply to the
-> whole mmap. These are all clear but it is less clear to me why the same
-> semantic is not applicable for QEMU when used through madvise interface
-> which can handle both of those.
+On Thu, May 20, 2021 at 3:58 AM Christian Brauner
+<christian.brauner@ubuntu.com> wrote:
+> On Wed, May 19, 2021 at 04:00:21PM -0400, Richard Guy Briggs wrote:
+> > The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
+> > ("open: introduce openat2(2) syscall")
+> >
+> > Add the openat2(2) syscall to the audit syscall classifier.
+> >
+> > Link: https://github.com/linux-audit/audit-kernel/issues/67
+> > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+> > Link: https://lore.kernel.org/r/f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com
+> > ---
+> >  arch/alpha/kernel/audit.c           | 2 ++
+> >  arch/ia64/kernel/audit.c            | 2 ++
+> >  arch/parisc/kernel/audit.c          | 2 ++
+> >  arch/parisc/kernel/compat_audit.c   | 2 ++
+> >  arch/powerpc/kernel/audit.c         | 2 ++
+> >  arch/powerpc/kernel/compat_audit.c  | 2 ++
+> >  arch/s390/kernel/audit.c            | 2 ++
+> >  arch/s390/kernel/compat_audit.c     | 2 ++
+> >  arch/sparc/kernel/audit.c           | 2 ++
+> >  arch/sparc/kernel/compat_audit.c    | 2 ++
+> >  arch/x86/ia32/audit.c               | 2 ++
+> >  arch/x86/kernel/audit_64.c          | 2 ++
+> >  include/linux/auditsc_classmacros.h | 1 +
+> >  kernel/auditsc.c                    | 3 +++
+> >  lib/audit.c                         | 4 ++++
+> >  lib/compat_audit.c                  | 4 ++++
+> >  16 files changed, 36 insertions(+)
 
-It's a combination of things:
+...
 
-a) MAP_POPULATE never was an option simply because of deferred
-    "prealloc=on" handling in QEMU, happening way after we created the
-    memmap. Further it doesn't report if there was an error, which is
-    another reason why it's basically useless for QEMU use cases.
-b) QEMU uses manual read-write prefaulting for "preallocation", for
-    example, to avoid SIGBUS on hugetlbfs or shmem at runtime. There are
-    cases where we absolutely want to avoid crashing the VM later just
-    because of a user error. MAP_POPULATE does *not* do what we want for
-    shared mappings, because it triggers a read fault.
-c) QEMU uses the same mechanism for prefaulting in RT environments,
-    where we want to avoid any kind of pagefault, using mlock() etc.
-d) MAP_POPULATE does not apply to sparse memory mappings that I'll be
-    using more heavily in QEMU, also for the purpose of preallocation
-    with virtio-mem.
+> > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> > index d775ea16505b..3f59ab209dfd 100644
+> > --- a/kernel/auditsc.c
+> > +++ b/kernel/auditsc.c
+> > @@ -76,6 +76,7 @@
+> >  #include <linux/fsnotify_backend.h>
+> >  #include <uapi/linux/limits.h>
+> >  #include <uapi/linux/netfilter/nf_tables.h>
+> > +#include <uapi/linux/openat2.h>
+> >
+> >  #include "audit.h"
+> >
+> > @@ -196,6 +197,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+> >               return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+> >       case AUDITSC_EXECVE:
+> >               return mask & AUDIT_PERM_EXEC;
+> > +     case AUDITSC_OPENAT2:
+> > +             return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
+>
+> That's a lot of dereferncing, casting and masking all at once. Maybe a
+> small static inline helper would be good for the sake of legibility? Sm
+> like:
+>
+> static inline u32 audit_openat2_acc(struct open_how *how, int mask)
+> {
+>         u32 flags = how->flags;
+>         return mask & ACC_MODE(flags);
+> }
+>
+> but not sure. Just seems more legible to me.
+> Otherwise.
 
-See the current QEMU code along with a comment in
-
-https://github.com/qemu/qemu/blob/972e848b53970d12cb2ca64687ef8ff797fb6236/util/oslib-posix.c#L496
-
-it's especially bad for PMEM ("wear on the storage backing"), which is 
-why we have to trust on users not to trigger preallocation/prefaulting 
-on PMEM, otherwise (as already expressed via bug reports) we waste a lot 
-of time when backing VMs on PMEM or forwarding NVDIMMs, unnecessarily 
-read/writing (slow) DAX.
-
-> Do I get it right that you really want to emulate the full fledged write
-> fault to a) limit another write fault when the content is actually
-> modified and b) prevent from potential errors during the write fault
-> (e.g. mkwrite failing on the fs data)?
-
-Yes, for the use case of "preallocation" in QEMU. See the QEMU link.
-
-But again, the thing that makes it more complicated is that I can come 
-up with some use cases that want to handle "shared mappings of ordinary 
-files" a little better. Or the usefaultfd-wp example I gave, where 
-prefaulting via MADV_POPULATE_READ can roughly half the population time.
-
->> We could make MADV_POPULATE act depending on the readability/writability of
->> a mapping. Use MADV_POPULATE_WRITE on writable mappings, use
->> MADV_POPULATE_READ on readable mappings. Certainly not perfect for use cases
->> where you have writable mappings that are mostly read only (as in the
->> example with fake-NVDIMMs I gave ...), but if it makes people happy, fine
->> with me. I mostly care about MADV_POPULATE_WRITE.
-> 
-> Yes, this is where my thinking was going as well. Essentially define
-> MADV_POPULATE as "Populate the mapping with the memory based on the
-> mapping access." This looks like a straightforward semantic to me and it
-> doesn't really require any deep knowledge of internals.
-> 
-> Now, I was trying to compare which of those would be more tricky to
-> understand and use and TBH I am not really convinced any of the two is
-> much better. Separate READ/WRITE modes are explicit which can be good
-> but it will require quite an advanced knowledge of the #PF behavior.
-> On the other hand MADV_POPULATE would require some tricks like mmap,
-> madvise and mprotect(to change to writable) when the data is really
-> written to. I am not sure how much of a deal this would be for QEMU for
-> example.
-
-IIRC, at the time we enable background snapshotting, the VM is running 
-and we cannot temporarily mprotect(PROT_READ) without making the guest 
-crash. But again, uffd-wp handling is somewhat a special case because 
-the implementation in the kernel is really suboptimal.
-
-The reason I chose MADV_POPULATE_READ + MADV_POPULATE_WRITE is because 
-it really mimics what user space currently does to get the job done.
-
-I guess the important part to document is that "be careful when using 
-MADV_POPULATE_READ because it might just populate the shared zeropage" 
-and "be careful with MADV_POPULATE_WRITE because it will do the same as 
-when writing to every page: dirty the pages such that they will have to 
-be written back when backed by actual files".
-
-
-The current MAN page entry for MADV_POPULATE_READ reads:
-
-"
-Populate (prefault) page tables readable for the whole range without 
-actually reading. Depending on the underlying mapping, map the shared 
-zeropage, preallocate memory or read the underlying file. Do not 
-generate SIGBUS when populating fails, return an error instead.
-
-If  MADV_POPULATE_READ succeeds, all page tables have been populated 
-(prefaulted) readable once. If MADV_POPULATE_READ fails, some page 
-tables might have been populated.
-
-MADV_POPULATE_READ cannot be applied to mappings without read 
-permissions  and  special mappings marked with the kernel-internal 
-VM_PFNMAP and VM_IO.
-
-Note that with MADV_POPULATE_READ, the process can still be killed at 
-any moment when the system runs out of memory.
-"
-
-
-> 
-> So, all that being said, I am not really sure. I am not really happy
-> about READ/WRITE split but if a simpler interface is going to be a bad
-> fit for existing usecases then I believe a proper way to go is the
-> document the more complex interface thoroughly.
-
-I think with the split we are better off long term without requiring 
-workarounds (mprotect()) to make some use cases work in the long term.
-
-But again, if there is a good justification why a single MADV_POPULATE 
-make sense, I'm happy to change it. Again, for me, the most important 
-thing long-term is MADV_POPULATE_WRITE because that's really what QEMU 
-mainly uses right now for preallocation. But I can see use cases for 
-MADV_POPULATE_READ as well.
-
-Thanks for your input!
+I'm on the fence about this.  I understand Christian's concern, but I
+have a bit of hatred towards single caller functions like this.  Since
+this function isn't really high-touch, and I don't expect that to
+change in the near future, let's leave the casting mess as-is.
 
 -- 
-Thanks,
-
-David / dhildenb
-
+paul moore
+www.paul-moore.com
