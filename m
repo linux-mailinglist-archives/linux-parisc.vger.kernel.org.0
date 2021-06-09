@@ -2,70 +2,38 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 380DD3A155E
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Jun 2021 15:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A3C3A19B0
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Jun 2021 17:33:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233452AbhFINWU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 9 Jun 2021 09:22:20 -0400
-Received: from flippie-beckerswealth-sa.xyz ([62.173.147.2]:52506 "EHLO
-        host.flippie-beckerswealth-sa.xyz" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232973AbhFINWU (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 9 Jun 2021 09:22:20 -0400
-X-Greylist: delayed 2619 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Jun 2021 09:22:20 EDT
-Received: from flippie-beckerswealth-sa.xyz (ec2-3-131-99-163.us-east-2.compute.amazonaws.com [3.131.99.163])
-        by host.flippie-beckerswealth-sa.xyz (Postfix) with ESMTPA id AC489309A7E7
-        for <linux-parisc@vger.kernel.org>; Wed,  9 Jun 2021 15:10:28 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz AC489309A7E7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240630;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=gpho4a57IrXh1y/sKODQpE94bhVUiyItLfj84oR+o+Qqx9ZW5ZFy3eO+PzS/cjq7K
-         1LMRE68hcWxe6ZxsVhWkc4dqDVRVgkvH+wDkkL+RBpohZDcr2IiolZQ8j3a+ns1fgw
-         Ci8uGkOZLfeGH5cQfvIkaiKA+CBxbDHTRRXn9moc=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz AC489309A7E7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240630;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=gpho4a57IrXh1y/sKODQpE94bhVUiyItLfj84oR+o+Qqx9ZW5ZFy3eO+PzS/cjq7K
-         1LMRE68hcWxe6ZxsVhWkc4dqDVRVgkvH+wDkkL+RBpohZDcr2IiolZQ8j3a+ns1fgw
-         Ci8uGkOZLfeGH5cQfvIkaiKA+CBxbDHTRRXn9moc=
-Reply-To: jmasuku40@flippiebeckerwealthservices.com
-From:   Jotham Masuku <jmasuku40@flippie-beckerswealth-sa.xyz>
-To:     linux-parisc@vger.kernel.org
-Subject: Proposal
-Date:   09 Jun 2021 12:10:28 +0000
-Message-ID: <20210609121028.660B0F98E6B948F5@flippie-beckerswealth-sa.xyz>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        id S236723AbhFIPe7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 9 Jun 2021 11:34:59 -0400
+Received: from mx2.cyber.ee ([45.144.6.23]:50313 "EHLO mx2.cyber.ee"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233384AbhFIPe5 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 9 Jun 2021 11:34:57 -0400
+Subject: Re: linux-parisc compile failure in current git
+To:     Helge Deller <deller@gmx.de>
+References: <892b6ab7-862c-1c0a-2996-0f8408e5043d@linux.ee>
+ <1ebff319-ad1d-0b83-d0b8-e3c88a8f3e48@gmx.de>
+Cc:     linux-parisc@vger.kernel.org
+From:   Meelis Roos <mroos@linux.ee>
+Message-ID: <eaaaaa72-d79e-27a2-9bdb-2e44c047e0ba@linux.ee>
+Date:   Wed, 9 Jun 2021 18:31:04 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+MIME-Version: 1.0
+In-Reply-To: <1ebff319-ad1d-0b83-d0b8-e3c88a8f3e48@gmx.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello there,
+09.06.21 14:04 Helge Deller wrote:
+> Does it still happens?
 
-I hope this message finds you in good spirits especially during=20
-this challenging time of coronavirus pandemic. I hope you and=20
-your family are well and keeping safe. Anyway, I am Jotham=20
-Masuku, a broker working with Flippiebecker Wealth. I got your=20
-contact (along with few other contacts) through an online=20
-business directory and I thought I should contact you to see if=20
-you are interested in this opportunity. I am contacting you=20
-because one of my high profile clients is interested in investing=20
-abroad and has asked me to look for individuals and companies=20
-with interesting business ideas and projects that he can invest=20
-in. He wants to invest a substantial amount of asset abroad.
+Yes, it does still happen with v5.13-rc5-36-g368094df48e6
 
-Please kindly respond back to this email if you are interested in=20
-this opportunity. Once I receive your response, I will give you=20
-more details and we can plan a strategy that will be beneficial=20
-to all parties.
-
-Best regards
-
-J Masuku
-Flippiebecker Wealth
+-- 
+Meelis Roos <mroos@linux.ee>
