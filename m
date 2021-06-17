@@ -2,103 +2,207 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DBE03AA889
-	for <lists+linux-parisc@lfdr.de>; Thu, 17 Jun 2021 03:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 805DE3AA8C4
+	for <lists+linux-parisc@lfdr.de>; Thu, 17 Jun 2021 03:48:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231912AbhFQBZt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 16 Jun 2021 21:25:49 -0400
-Received: from bilbo.ozlabs.org ([203.11.71.1]:43453 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230239AbhFQBZs (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 16 Jun 2021 21:25:48 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4G547t2Dcmz9sRK;
-        Thu, 17 Jun 2021 11:23:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1623893019;
-        bh=Lcb2dMbhechCmOAsVMjFJF1Q5m5ZN1yIgPu4v2lWEzQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FFuIqQ0d1IO7+8c2R7C3UaIAbs4XmgHZMW3/k0A6cst4tmWTj9zRbGKt0endBnJfv
-         i+gOLWVxcLe5F6nNFxQsnf4C0RpOSfPvPfYqM31AayDVqzt5E+lsZ5mqz9xsfoqJUw
-         64tp+I+skZgMSfoaB9sXjrumzoqZ1RCW5gWRnXTD9+uNlsbta/JxUtXin7p0//9y6T
-         ZliYQGiLHKP2r5dduauCHB1vQet6wt7Ln2L3PcD/WDuhbXqtivyPnecha9VHZW/wnm
-         MtULaIvomxoZSUmYwSsDNBnfB4p6wi9JywyqsN8SvtDFUrD/MNK/27rsIp+PY6kJ8i
-         tNGPZO4W/Facw==
-Date:   Thu, 17 Jun 2021 11:23:37 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        kernel test robot <lkp@intel.com>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, kbuild-all@lists.01.org
-Subject: Re: +
- mm-rename-pud_page_vaddr-to-pud_pgtable-and-make-it-return-pmd_t.patch
- added to -mm tree
-Message-ID: <20210617112337.465c2607@canb.auug.org.au>
-In-Reply-To: <20210616160904.cf834ee8c9e7a26008aa833e@linux-foundation.org>
-References: <20210615233808.hzjGO1gF2%akpm@linux-foundation.org>
-        <202106162159.MurvDMy6-lkp@intel.com>
-        <87zgvpnbl7.fsf@linux.ibm.com>
-        <20210616160904.cf834ee8c9e7a26008aa833e@linux-foundation.org>
+        id S232218AbhFQBuz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 16 Jun 2021 21:50:55 -0400
+Received: from conssluserg-03.nifty.com ([210.131.2.82]:42424 "EHLO
+        conssluserg-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232211AbhFQBuy (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 16 Jun 2021 21:50:54 -0400
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182]) (authenticated)
+        by conssluserg-03.nifty.com with ESMTP id 15H1mVE0008979;
+        Thu, 17 Jun 2021 10:48:31 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 15H1mVE0008979
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1623894512;
+        bh=zTKiASp84iI2TEThlgNhK02xs63oG3qRksk+2dZv5WI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=J3S0fh0TShrVdZRj98A94DuZvhwS+xeEq9laFGxelZozhVQLOWH+hnC4bTFUrhAXq
+         t2br1u8awFlj1efXWZsoZ3K8zGT/jrmpSaHvBfGpsCRUTk1Lc+QIW+m1P6UDk/5V3Z
+         5BhjVsvKs5STkQ+xbMaaF46V2Mz3D7UoRh2iOeuxRPgMMrqLEmUBCgobc7DJ/pUb68
+         ceYmMLAnjEQ6LlxGNaV8qf6rOJjOjn2iapgltOEmi0VIwV5svo1b/0L9eXk/GsVway
+         IjmUiCTsI6v8hjp1KWiChcRi0w2mXen/cMZa1Qwbh+PkwGaEBGYjPpp/a8cXch59SB
+         SXoST7HANrvPA==
+X-Nifty-SrcIP: [209.85.215.182]
+Received: by mail-pg1-f182.google.com with SMTP id g22so3626735pgk.1;
+        Wed, 16 Jun 2021 18:48:31 -0700 (PDT)
+X-Gm-Message-State: AOAM532qZSKN9LFKunXDsUQPB/ZQkoQPnq6dsF7rBwVNsw9ZaP6cyhDg
+        eC0vs9+Sv72ZBK8pvnvbzuneOzD3Wyv+L57+1cY=
+X-Google-Smtp-Source: ABdhPJznevqLCd9tdnsC5ZEPkZ9HCVbq/7Tgq1jV/Vzu2I2iijtQS79wWNSU63FwDDZwgezjAwTddXQ2RmUllNl51GY=
+X-Received: by 2002:a63:36c1:: with SMTP id d184mr2581388pga.47.1623894511019;
+ Wed, 16 Jun 2021 18:48:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/a/+9AWFMGRAeBWcsE/82QFB";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+References: <892b6ab7-862c-1c0a-2996-0f8408e5043d@linux.ee>
+ <89515325-fc21-31da-d238-6f7a9abbf9a0@gmx.de> <CAK7LNATuzry1MUj-VruOVUwU_nH2xJd_2SxD_s_Z1QBb3PVnQw@mail.gmail.com>
+ <5dfd81eb-c8ca-b7f5-e80e-8632767c022d@gmx.de>
+In-Reply-To: <5dfd81eb-c8ca-b7f5-e80e-8632767c022d@gmx.de>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Thu, 17 Jun 2021 10:47:54 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATO_30uHzAe-Vsy+hgu=wwEN_aPGET4Ys78rc3=nSuJsg@mail.gmail.com>
+Message-ID: <CAK7LNATO_30uHzAe-Vsy+hgu=wwEN_aPGET4Ys78rc3=nSuJsg@mail.gmail.com>
+Subject: Re: linux-parisc compile failure in current git
+To:     Helge Deller <deller@gmx.de>
+Cc:     Parisc List <linux-parisc@vger.kernel.org>,
+        Meelis Roos <mroos@linux.ee>,
+        Linux Kernel Development <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---Sig_/a/+9AWFMGRAeBWcsE/82QFB
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi Andrew,
-
-On Wed, 16 Jun 2021 16:09:04 -0700 Andrew Morton <akpm@linux-foundation.org=
-> wrote:
+On Thu, Jun 10, 2021 at 4:04 PM Helge Deller <deller@gmx.de> wrote:
 >
-> On Wed, 16 Jun 2021 19:41:32 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux=
-.ibm.com> wrote:
->=20
-> > We may want to fixup pgd_page_vaddr correctly later. pgd_page_vaddr() g=
-ets
-> > cast to different pointer types based on architecture. But for now this
-> > should work? This ensure we keep the pgd_page_vaddr() same as before.  =
-=20
->=20
-> I'll drop
->=20
-> mm-rename-pud_page_vaddr-to-pud_pgtable-and-make-it-return-pmd_t.patch
-> mm-rename-p4d_page_vaddr-to-p4d_pgtable-and-make-it-return-pud_t.patch   =
-      =20
->=20
-> for now.
+> Hi Masahiro,
+>
+> On 6/10/21 4:03 AM, Masahiro Yamada wrote:
+> > On Thu, Jun 10, 2021 at 7:50 AM Helge Deller <deller@gmx.de> wrote:
+> >>
+> >> On 6/1/21 12:21 PM, Meelis Roos wrote:
+> >>> Upstream Linux git fails to compile on gentoo hppa -  .config below.
+> >>> I have 2 gcc-s as always:
+> >>> $ gcc-config -l
+> >>>    [1] hppa2.0-unknown-linux-gnu-9.3.0
+> >>>    [2] hppa2.0-unknown-linux-gnu-10.2.0 *
+> >>>
+> >>>    [3] hppa64-unknown-linux-gnu-10.2.0 *
+> >>
+> >>
+> >> I see the same issue too, but only when compiling natively on a parisc machine.
+> >> Cross-compiling on a x86 box works nicely.
+> >>
+> >> First I thought it's a problem with setting the "cross_compiling" flag in ./Makefile.
+> >> But that's not sufficient.
+> >>
+> >> On a x86 machine (which builds fine) I get
+> >> SRCARCH=parisc SUBARCH=x86 UTS_MACHINE=parisc
+> >> The arch/parisc/kernel/asm-offsets.c file gets preprocessed via:
+> >> hppa64-linux-gnu-gcc
+> >>
+> >> On a native 32bit parisc machine I have:
+> >> SRCARCH=parisc SUBARCH=parisc UTS_MACHINE=parisc
+> >> Here the arch/parisc/kernel/asm-offsets.c file gets preprocessed via:
+> >> gcc
+> >> Instead here the native hppa64-linux-gnu-gcc (cross compiler) should have been used too, since
+> >> we build a 64-bit hppa kernel (CONFIG_64BIT is set).
+> >> Note, on hppa we don't have an "-m64" compiler flag as on x86.
+> >
+> > I see.
+> > hppa is not a bi-arch compiler, in other words,
+> > http- and hppa64- are separate compilers.
+>
+> Yes.
+>
+> >> Mashahiro, do you maybe have an idea what gets wrong here, or which
+> >> patch has changed the behaviour how the asm-offsets.c file gets preprocessed?
+> >
+> > Presumably, commit 23243c1ace9fb4eae2f75e0fe0ece8e3219fb4f3
+> >
+> > Prior to that commit, arch/parisc/Makefile was like this:
+> >
+> > ifneq ($(SUBARCH),$(UTS_MACHINE))
+> >          ifeq ($(CROSS_COMPILE),)
+> >                      ...
+> >
+> > Now I understand why arch/parisc/Makefile was written this way.
+> >
+> > Reverting the change in arch/parisc/Makefile will restore the original behavior.
+>
+> Sadly, reverting this change (23243c1ace9fb4eae2f75e0fe0ece8e3219fb4f3) does not
+> restore the original behavior.
+>
+> > But, please keep in mind that there is an issue remaining.
+> >
+> > Please see this code:
+> >
+> > ifdef CONFIG_64BIT
+> > UTS_MACHINE := parisc64
+> > CHECKFLAGS += -D__LP64__=1
+> > CC_ARCHES = hppa64
+> > LD_BFD := elf64-hppa-linux
+> > else # 32-bit
+> > CC_ARCHES = hppa hppa2.0 hppa1.1
+> > LD_BFD := elf32-hppa-linux
+> > endif
+> >
+> >
+> > UTS_MACHINE is determined by CONFIG_64BIT.
+> >
+> > CONFIG_64BIT is defined only after Kconfig is finished.
+> > When you are trying to configure the .config,
+> > CONFIG_64BIT is not defined yet.
+> > So UTS_MACHINE is always 'parisc'.
+>
+> Yes.
+> See above, but it worked when I had SUBARCH=x86 (when running my laptop).
+>
+>
+> > As you know, Kconfig files now have a bunch of 'cc-option' syntax
+> > to check the compiler capability in Kconfig time.
+> > Hence, you need to provide a proper compiler in Kconfig time too.
+> >
+> > When you build a 64-bit parisc kernel on a 32-bit parisc machine,
+>
+> Please note, that we don't have a 64-bit parisc userspace yet (just kernel).
+> This means, that all builds on parisc machines are 32bit and do a
+> cross-compilation to a parisc64 kernel if requested in the .config.
+>
+> > Kconfig is passed with CC=gcc since SUBARCH==UTS_MACHINE==parisc.
+> > After Kconfig, CROSS_COMPILE=hppa64-* is set,
+> > and the kernel is built by CC=hppa64-*-gcc.
+>
+> Right. That is the old behaviour. Based on the CONFIG_64BIT option
+> the hppa64 compiler is choosen for CROSS_COMPILE.
+>
+> > So, Kconfig evaluated a compiletely different compiler. This is pointless.
+>
+> Yes, probably.
+>
+>
+> > There are some options
+> >
+> > [option 1]
+> >    revert the parisc bit of 23243c1ace9fb4eae2f75e0fe0ece8e3219fb4f3
+> >    This will restore the functionality you may want, but
+> >    as I said above, Kconfig is doing pointless things.
+>
+> as mentioned above: Doesn't solve the issue.
+>
+> > [option 2]
+> >     Stop using cc-cross-prefix, and pass CROSS_COMPILE explicitly.
+> >     This is what many architectures including arm, arm64 do.
+> >     You need to explicitly pass CROSS_COMPILE=aarch64-linux-gnu- etc.
+> >     if you are cross-compiling arm64.
+>
+> Might be an option, but it's not as handy as simply choosing CONFIG_64BIT
+> and then things are done automatically.
+>
+> > [option 3]
+> >     Introduce ARCH=parisc64.
+> >
+> >     When you are building 64-bit kernel, you can pass ARCH=parisc64
+> >      A patch attached.  (but not tested much)
+>
+> Tried it, but doesn't work.
+> asm-offsets.c is still preprocessed with 32bit compiler (gcc, not hppa20-gcc).
+>
+> Thanks for your help so far!
+> If you like I'm happy to give you an account on a hppa64 machine to reproduce yourself.
+> I'll now try to bisect where it goes wrong. There must be something else before commit 23243c1ace9fb4eae2f75e0fe0ece8e3219fb4f3.
+>
+> Helge
 
-Dropped form linux-next today (along with my fix from yesterday).
 
---=20
-Cheers,
-Stephen Rothwell
+Sorry for my late reply.
 
---Sig_/a/+9AWFMGRAeBWcsE/82QFB
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Did git-bisect find something?
 
------BEGIN PGP SIGNATURE-----
+If necessary, I will be happy to try it on the hppa64 machine.
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmDKpBkACgkQAVBC80lX
-0GzE6Qf9F9328LVgfB4V5Iv/4uPQk5jfyblmoxIn6ZJqV0uqu+dplGIY4vT0wwV5
-K1aQ3HB1ESIFEAiSXffgkj3zETi5BkR8O32X08gwXq7yYbHEWZ+pQvJfSFzU6g9g
-j6xql8TjMtYUFuvNT5QWrz38nRKB5IGvAA9YDxYsJPX6RKlCjWyIkF9Iooscg5s3
-2lTSr2KZ8hUXF++sM1VXUCtksGbcZsdsugOGYpi1VBwvIT+Jc/WUSO3pp5Hrb02y
-gDFtYDryQiN/XIdjYCDqLWjhQ7cnjTZJY0q9j5pUjFvQdgrgmT/5n63BxxegqQ65
-vUoFVdDhDmKUeJ1s8LTXpvIliUuZWg==
-=zFs2
------END PGP SIGNATURE-----
 
---Sig_/a/+9AWFMGRAeBWcsE/82QFB--
+
+-- 
+Best Regards
+Masahiro Yamada
