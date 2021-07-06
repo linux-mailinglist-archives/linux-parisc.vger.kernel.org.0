@@ -2,179 +2,135 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E1103BD068
-	for <lists+linux-parisc@lfdr.de>; Tue,  6 Jul 2021 13:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 621ED3BD67D
+	for <lists+linux-parisc@lfdr.de>; Tue,  6 Jul 2021 14:34:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234905AbhGFLdr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 6 Jul 2021 07:33:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42404 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235665AbhGFLaS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 6 Jul 2021 07:30:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 55E1561DD0;
-        Tue,  6 Jul 2021 11:21:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625570494;
-        bh=KSZ7rKJwOjkrmzpOVQugWhLbgtTy/OWflm3K4vutGBM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IGyYjOHa9T1sxZg0uDONOeJNZ9NzpFMxzwydXbLrZCy4NbYUCuRCJU8PiR25MvnZf
-         mCHcf82hs6FulTY2VIliTPaQixmO16bvxtC1hQIVHoXipjcCrGpTQLbQmF2uPggj5m
-         ofl9u8xFwHlCy1AY7MeFoPVvwDUA/ub6Wq5BSXmA0exrsSjF08Hg1gMMBPJNJ9tORx
-         6DvoMnGmZJGikJ6OguNMslDFiQ5lzDfxzB2hJ1I88Lzs7kVNhMtwZvymjrVVN53sci
-         AoVNCRMdn9RPOME9h2YiQ871rd6SjpPETaMC+ok6CoI/tDvKQIum24Ltp+E8VoAhiT
-         yFgdvZur0or4w==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Martynas Pumputis <m@lambda.lt>, Lorenz Bauer <lmb@cloudflare.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>, linux-alpha@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        netdev@vger.kernel.org, bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 139/160] net: retrieve netns cookie via getsocketopt
-Date:   Tue,  6 Jul 2021 07:18:05 -0400
-Message-Id: <20210706111827.2060499-139-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210706111827.2060499-1-sashal@kernel.org>
-References: <20210706111827.2060499-1-sashal@kernel.org>
+        id S234164AbhGFMeB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 6 Jul 2021 08:34:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52398 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243274AbhGFMDZ (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 6 Jul 2021 08:03:25 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250ABC0613AC;
+        Tue,  6 Jul 2021 04:42:37 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id j11so27557227edq.6;
+        Tue, 06 Jul 2021 04:42:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=CDGtQ2yb8IShQ7cIRYFiJmp1Uu5BANeA/6Jg/xILJy0=;
+        b=TwRJy6+J3urIn/EOHkX70XQHrPpIXFIOoiquz6eJSwyU/SQIQ4dADKORnRQAYcVLDd
+         bGmCH+O3vZ/zwAN03+xnrlCOWn/T/Pz6KfPYlHzOgGXWb72eEAEAjVLMxY3sV52LOQiu
+         4sMepvP8f2M/NuGTEEUpcS9djTSXyNUocbOOHuCxDZ/swc4Yj2krBjOK18+xBOWwYw7y
+         O/LcWjnu0kdZ4pmyv7jFfFo0qSdeTOdmtP2CciCXwcdnQ5FYkYueWY1vZLSQqxLbXVdx
+         xHWyXJmiVDLrlTvE9QGQSNArUJUGdY04ySHX3mfxNurDFI1sFLhNw1IKyh/ZzycJEC6f
+         piBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=CDGtQ2yb8IShQ7cIRYFiJmp1Uu5BANeA/6Jg/xILJy0=;
+        b=cSIW3JOIioAioIfgYKQyQqSazD73CO2PhkvK0JpGSXcRxwlVCIhPlMy2RNwRC1MezP
+         BZ6h7/kkDgQ3vWimxPSP4mzUaGDt3EzWppD0JS17YAmF+WeMh8uX+T8RGBLrP1yn9PRd
+         7eiSxAMicNAC7ITetPISq3ES+JtI8d2MqrQXZ9OrUMbvPlFwZGfhN0arPSs6IUkqCOcX
+         7/5i+a2zAxbp3eKkAsq1+S0YeP3DdunBCJ7tBY5HrLzTvvsMNevnmiKoKYvViPuTMssR
+         3sCbpDUd/WDNCgYKdsmah+f8KbMhn4fyLfNLhWiuKnOWvf1HIIgc7XRx6t2Flm9df9IF
+         dO8A==
+X-Gm-Message-State: AOAM531si/HgMyvSBgLiARPQKINfzHpo1CAX05lwHmmBW914p2HvS2Mz
+        xYqcLlPqWc3xfYVAzVqH/8c=
+X-Google-Smtp-Source: ABdhPJwOR9RYbuFI1V8zYqZEcawlLdGKboqfR9DJ6TrIpurxtzPOHwaABH2lGpOOBvACTZh8ZOEU1A==
+X-Received: by 2002:a05:6402:1c06:: with SMTP id ck6mr22330893edb.287.1625571755735;
+        Tue, 06 Jul 2021 04:42:35 -0700 (PDT)
+Received: from [192.168.2.202] (pd9e5a48a.dip0.t-ipconnect.de. [217.229.164.138])
+        by smtp.gmail.com with ESMTPSA id eb9sm5646083ejc.32.2021.07.06.04.42.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Jul 2021 04:42:35 -0700 (PDT)
+Subject: Re: [PATCH] bus: Make remove callback return void
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        Johannes Thumshirn <morbidrsa@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-sunxi@lists.linux.dev, linux-cxl@vger.kernel.org,
+        nvdimm@lists.linux.dev, dmaengine@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
+        industrypack-devel@lists.sourceforge.net,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
+        greybus-dev@lists.linaro.org, target-devel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
+        xen-devel@lists.xenproject.org
+References: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Message-ID: <07c08230-6c71-2a73-c89f-05b9b5de78ab@gmail.com>
+Date:   Tue, 6 Jul 2021 13:42:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Martynas Pumputis <m@lambda.lt>
+On 7/6/21 11:50 AM, Uwe Kleine-König wrote:
+> The driver core ignores the return value of this callback because there
+> is only little it can do when a device disappears.
+> 
+> This is the final bit of a long lasting cleanup quest where several
+> buses were converted to also return void from their remove callback.
+> Additionally some resource leaks were fixed that were caused by drivers
+> returning an error code in the expectation that the driver won't go
+> away.
+> 
+> With struct bus_type::remove returning void it's prevented that newly
+> implemented buses return an ignored error code and so don't anticipate
+> wrong expectations for driver authors.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit e8b9eab99232c4e62ada9d7976c80fd5e8118289 ]
+>   drivers/platform/surface/aggregator/bus.c | 4 +---
 
-It's getting more common to run nested container environments for
-testing cloud software. One of such examples is Kind [1] which runs a
-Kubernetes cluster in Docker containers on a single host. Each container
-acts as a Kubernetes node, and thus can run any Pod (aka container)
-inside the former. This approach simplifies testing a lot, as it
-eliminates complicated VM setups.
-
-Unfortunately, such a setup breaks some functionality when cgroupv2 BPF
-programs are used for load-balancing. The load-balancer BPF program
-needs to detect whether a request originates from the host netns or a
-container netns in order to allow some access, e.g. to a service via a
-loopback IP address. Typically, the programs detect this by comparing
-netns cookies with the one of the init ns via a call to
-bpf_get_netns_cookie(NULL). However, in nested environments the latter
-cannot be used given the Kubernetes node's netns is outside the init ns.
-To fix this, we need to pass the Kubernetes node netns cookie to the
-program in a different way: by extending getsockopt() with a
-SO_NETNS_COOKIE option, the orchestrator which runs in the Kubernetes
-node netns can retrieve the cookie and pass it to the program instead.
-
-Thus, this is following up on Eric's commit 3d368ab87cf6 ("net:
-initialize net->net_cookie at netns setup") to allow retrieval via
-SO_NETNS_COOKIE.  This is also in line in how we retrieve socket cookie
-via SO_COOKIE.
-
-  [1] https://kind.sigs.k8s.io/
-
-Signed-off-by: Lorenz Bauer <lmb@cloudflare.com>
-Signed-off-by: Martynas Pumputis <m@lambda.lt>
-Cc: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/alpha/include/uapi/asm/socket.h  | 2 ++
- arch/mips/include/uapi/asm/socket.h   | 2 ++
- arch/parisc/include/uapi/asm/socket.h | 2 ++
- arch/sparc/include/uapi/asm/socket.h  | 2 ++
- include/uapi/asm-generic/socket.h     | 2 ++
- net/core/sock.c                       | 7 +++++++
- 6 files changed, 17 insertions(+)
-
-diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
-index 57420356ce4c..6b3daba60987 100644
---- a/arch/alpha/include/uapi/asm/socket.h
-+++ b/arch/alpha/include/uapi/asm/socket.h
-@@ -127,6 +127,8 @@
- #define SO_PREFER_BUSY_POLL	69
- #define SO_BUSY_POLL_BUDGET	70
- 
-+#define SO_NETNS_COOKIE		71
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
-index 2d949969313b..cdf404a831b2 100644
---- a/arch/mips/include/uapi/asm/socket.h
-+++ b/arch/mips/include/uapi/asm/socket.h
-@@ -138,6 +138,8 @@
- #define SO_PREFER_BUSY_POLL	69
- #define SO_BUSY_POLL_BUDGET	70
- 
-+#define SO_NETNS_COOKIE		71
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
-index f60904329bbc..5b5351cdcb33 100644
---- a/arch/parisc/include/uapi/asm/socket.h
-+++ b/arch/parisc/include/uapi/asm/socket.h
-@@ -119,6 +119,8 @@
- #define SO_PREFER_BUSY_POLL	0x4043
- #define SO_BUSY_POLL_BUDGET	0x4044
- 
-+#define SO_NETNS_COOKIE		0x4045
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
-index 848a22fbac20..92675dc380fa 100644
---- a/arch/sparc/include/uapi/asm/socket.h
-+++ b/arch/sparc/include/uapi/asm/socket.h
-@@ -120,6 +120,8 @@
- #define SO_PREFER_BUSY_POLL	 0x0048
- #define SO_BUSY_POLL_BUDGET	 0x0049
- 
-+#define SO_NETNS_COOKIE          0x0050
-+
- #if !defined(__KERNEL__)
- 
- 
-diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
-index 4dcd13d097a9..d588c244ec2f 100644
---- a/include/uapi/asm-generic/socket.h
-+++ b/include/uapi/asm-generic/socket.h
-@@ -122,6 +122,8 @@
- #define SO_PREFER_BUSY_POLL	69
- #define SO_BUSY_POLL_BUDGET	70
- 
-+#define SO_NETNS_COOKIE		71
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
-diff --git a/net/core/sock.c b/net/core/sock.c
-index a266760cd65e..60750f9ae32d 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1622,6 +1622,13 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
- 		v.val = sk->sk_bound_dev_if;
- 		break;
- 
-+	case SO_NETNS_COOKIE:
-+		lv = sizeof(u64);
-+		if (len != lv)
-+			return -EINVAL;
-+		v.val64 = sock_net(sk)->net_cookie;
-+		break;
-+
- 	default:
- 		/* We implement the SO_SNDLOWAT etc to not be settable
- 		 * (1003.1g 7).
--- 
-2.30.2
-
+Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
