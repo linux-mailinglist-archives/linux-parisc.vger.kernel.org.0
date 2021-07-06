@@ -2,191 +2,69 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C6B33BDE8D
-	for <lists+linux-parisc@lfdr.de>; Tue,  6 Jul 2021 22:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 015B93BDEA9
+	for <lists+linux-parisc@lfdr.de>; Tue,  6 Jul 2021 22:59:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230197AbhGFUqH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 6 Jul 2021 16:46:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59338 "EHLO
+        id S230160AbhGFVCU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 6 Jul 2021 17:02:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230164AbhGFUqF (ORCPT
+        with ESMTP id S229781AbhGFVCT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 6 Jul 2021 16:46:05 -0400
-Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com [IPv6:2607:f8b0:4864:20::c2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A430CC0613E5
-        for <linux-parisc@vger.kernel.org>; Tue,  6 Jul 2021 13:43:25 -0700 (PDT)
-Received: by mail-oo1-xc2c.google.com with SMTP id e1-20020a0568200601b029024ea261f0ccso5320920oow.2
-        for <linux-parisc@vger.kernel.org>; Tue, 06 Jul 2021 13:43:25 -0700 (PDT)
+        Tue, 6 Jul 2021 17:02:19 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8824AC061574;
+        Tue,  6 Jul 2021 13:59:40 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id i94so529329wri.4;
+        Tue, 06 Jul 2021 13:59:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=pxMY07o9eA6SvMdwqfO/Cy/RP18zRy8WHvKUzTEaaNE=;
-        b=cMEULcwqLZ1Wut54PhoGe8eWn9DWOkTBGefRRfl5OdVDl+rs626G5wMaH28cgDjzcy
-         C3SrxS4IBWN9GT87WmK8g47N1LXQplCWDOfx8int0/GS3k/x/nkilLmTHNlFEJRG7MNd
-         XBIkEEXZ1pU0eRvjS1TRSvA1B76ydqAA34SpYmKB2ihzHjiFB86o3rkOkpvBUwbSv3hH
-         SAJ7sWW3535WnApBT/aqgm8mqOlZd3rAIlZ18pf5XSKHOT2S+byWJIp1xZIbcvBH0etl
-         zsjB18jSpkL6JUn2+voD9bKAbUaWuj/V1AbjBFUkZHMHiCqgtvfqmj4sQqDjclnu51kM
-         rRng==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=3h/6CdNDLiatwRf8U9GgK4AELHJbmk24hBENxY/7j7E=;
+        b=UH36vNJusLOCUOUwMAuunT0VngPTD7q/CvY7dPiGEu4wV671ahgXwVcsuR3AVeIgwW
+         O5ZY/h8IP0esQUob5EjhGQDkiDAe0xMCC5h7xvwSEgQdRfXc/gy4BtcGWVDHdQrUi0w3
+         nH5S94v7jjNpKY2zQuvzrcfVfJ6lCQzhcIm/5z1g6Uj+Sb1q/CQkHJYVI7V3qvDnitew
+         DuWXo2veftgK0nXtYi68G+DQh6ZLDcJSciobgEAj9cLQ5gJr0ZNpoop4QASVCQTlWLBp
+         wpl0ybs0GxdMJJLLPPbElGscDhPGC/LIxcVY5YIeSyPOExOuD2XRjJjxmsuQPRG4n/DU
+         1goQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=pxMY07o9eA6SvMdwqfO/Cy/RP18zRy8WHvKUzTEaaNE=;
-        b=USYo+ygh0+5e2uZRjXkOPOAeqz0sKHyNcL7p9MsAE3rfoIzUBGMp2CwbzBCu4kriPd
-         a4tKSXNsQ0dTT1Ej6JxtMQIkSdAwX8N9gp8pblZZ4szJj/KQBApj6hUtf8rj1TgUbjiV
-         YNFVpgVDoUnYAQbV/GFP8bsdvvGMSOXj+z7ISC+4hd37f0ZTjN2qErrO5U4aj5UIGatt
-         WJAblSTjbHsLnAbsa8hBLYubljfTsNgkYXMgwGflKt8kdYJAnIsSi82Eqshi7PdlmFla
-         f5w7Hxbw7o0V1sMTfXSfc7K6PtBscLiaw6Xualr0c4azCglaFWERrWdizosMt3UExkZ3
-         EQ/w==
-X-Gm-Message-State: AOAM531qDX5QRxKGGngaKQD6iXxDAEqONvSepm5MdX+oeXpRJI0HljI/
-        JY12JosS9wzIa7OXuj9Zw8Q3/w==
-X-Google-Smtp-Source: ABdhPJxDvDPv3ADYsyyhWPVlnzb7CaqMGlOMdSkFiej4dUoXbTCedb2luVlDDH/zGyqw6KpVymfMhg==
-X-Received: by 2002:a4a:d6cc:: with SMTP id j12mr2894172oot.0.1625604204373;
-        Tue, 06 Jul 2021 13:43:24 -0700 (PDT)
-Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id x130sm1332892oix.22.2021.07.06.13.43.22
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=3h/6CdNDLiatwRf8U9GgK4AELHJbmk24hBENxY/7j7E=;
+        b=hH0HtnaZsks6uMXwaWdnSG9ul/kOXQmX6KHVM62BW4U9LrWDv8P+et18UxO+Zebj2j
+         U/HFk9aPCCa85f0xVkS/MOKjKjnfIEa20RPWizjEqBDPqi95LvyW/jiy7nTTyygIhLgv
+         uVxTVDRVyz3vSd+CynXxTvlg74EaTVMgiyWguN9O7ChLl2mRBSUuWs3JdTkeDMYmGuOI
+         1djmgTQMGfSvOyYpy0t9YzV+Lt2MHpRQ8oKQrHebTPfP3RG6Szhuu1pyKeKBFMTJvbtF
+         t30er1jyMEkZMUAShpf4ZiYRG5l1d0rDD1v2EtRVdA6GId1Urn8+Kdzq0FcKJcIaHe+o
+         GPCg==
+X-Gm-Message-State: AOAM531GoEmIdOwR9xI5ETtizq5XnrDDbxHXoohg5dXbrYEtJfSC+Om5
+        kX4Joi1hfnfDblmAwbKD5/s=
+X-Google-Smtp-Source: ABdhPJyd0hCpYCFEGL2lgKo/Ar2zGNSYdm0NWjrV/EQfjjtLmHlBp45grUwOhTOWAoKQ5OOuAVRo/Q==
+X-Received: by 2002:adf:e605:: with SMTP id p5mr24541624wrm.396.1625605179250;
+        Tue, 06 Jul 2021 13:59:39 -0700 (PDT)
+Received: from masalkhi.fritz.box (dslb-178-005-073-162.178.005.pools.vodafone-ip.de. [178.5.73.162])
+        by smtp.gmail.com with ESMTPSA id o17sm3944676wmh.19.2021.07.06.13.59.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jul 2021 13:43:23 -0700 (PDT)
-Date:   Tue, 6 Jul 2021 15:43:21 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Uwe Kleine-K?nig <u.kleine-koenig@pengutronix.de>
-Cc:     nvdimm@lists.linux.dev, linux-hyperv@vger.kernel.org,
-        kvm@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-fpga@vger.kernel.org, linux-pci@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-cxl@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux1394-devel@lists.sourceforge.net, linux-scsi@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-acpi@vger.kernel.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-input@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, greybus-dev@lists.linaro.org,
-        virtualization@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-spi@vger.kernel.org, kernel@pengutronix.de,
-        dmaengine@vger.kernel.org, linux-ntb@googlegroups.com,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
-Message-ID: <YOTAaQ7AnkCvRQaS@yoga>
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
- <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
- <YOSb1+yeVeLxiSRc@yoga>
- <20210706184323.fudcbsiu4i34dojs@pengutronix.de>
+        Tue, 06 Jul 2021 13:59:38 -0700 (PDT)
+From:   Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
+To:     arnd@arndb.de
+Cc:     hch@infradead.org, axboe@kernel.dk, bernie@develer.com,
+        linux-parisc@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dan.carpenter@oracle.com
+Subject: Re: div_u64/do_div stack size usage, was Re: [v3] block: Removed a warning while compiling with a cross compiler for parisc
+Date:   Tue,  6 Jul 2021 22:59:27 +0200
+Message-Id: <20210706205927.4407-1-abd.masalkhi@gmail.com>
+X-Mailer: git-send-email 2.29.0.rc1.dirty
+In-Reply-To: <CAK8P3a2mAQOnTxBhVzVA8q8O-uVrdidCN5h5-T2dc0=Wet2uPQ@mail.gmail.com>
+References: <CAK8P3a2mAQOnTxBhVzVA8q8O-uVrdidCN5h5-T2dc0=Wet2uPQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210706184323.fudcbsiu4i34dojs@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue 06 Jul 13:43 CDT 2021, Uwe Kleine-K?nig wrote:
+I have compiled the kernel with a cross compiler hppa-linux-gnu- (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0 and the conficuration was the default, Build for generic-32bit "generic-32bit_defconfig"
 
-> Hello Bjorn,
-> 
-> On Tue, Jul 06, 2021 at 01:08:18PM -0500, Bjorn Andersson wrote:
-> > On Tue 06 Jul 10:48 CDT 2021, Uwe Kleine-K?nig wrote:
-> > > diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-> > > index c1404d3dae2c..7f6fac618ab2 100644
-> > > --- a/drivers/rpmsg/rpmsg_core.c
-> > > +++ b/drivers/rpmsg/rpmsg_core.c
-> > > @@ -530,7 +530,7 @@ static int rpmsg_dev_probe(struct device *dev)
-> > >  	return err;
-> > >  }
-> > >  
-> > > -static int rpmsg_dev_remove(struct device *dev)
-> > > +static void rpmsg_dev_remove(struct device *dev)
-> > >  {
-> > >  	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
-> > >  	struct rpmsg_driver *rpdrv = to_rpmsg_driver(rpdev->dev.driver);
-> > > @@ -546,8 +546,6 @@ static int rpmsg_dev_remove(struct device *dev)
-> > >  
-> > >  	if (rpdev->ept)
-> > >  		rpmsg_destroy_ept(rpdev->ept);
-> > > -
-> > > -	return err;
-> > 
-> > This leaves err assigned but never used, but I don't mind following up
-> > with a patch cleaning that up after this has landed.
-> 
-> Ah, good catch. If I send out a v3 I will fold the following into this
-> patch:
-> 
-> diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-> index 7f6fac618ab2..9151836190ce 100644
-> --- a/drivers/rpmsg/rpmsg_core.c
-> +++ b/drivers/rpmsg/rpmsg_core.c
-> @@ -534,10 +534,9 @@ static void rpmsg_dev_remove(struct device *dev)
->  {
->  	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
->  	struct rpmsg_driver *rpdrv = to_rpmsg_driver(rpdev->dev.driver);
-> -	int err = 0;
->  
->  	if (rpdev->ops->announce_destroy)
-> -		err = rpdev->ops->announce_destroy(rpdev);
-> +		rpdev->ops->announce_destroy(rpdev);
->  
->  	if (rpdrv->remove)
->  		rpdrv->remove(rpdev);
-> 
-
-Sounds good, feel free to keep my ack on this.
-
-> Maybe .announce_destroy() should then be changed to return void, too?
-> Something like:
-> 
-
-Yes, I saw this opportunity as well. But that will fan out further, so
-let's postpone that until your series has landed and we can follow up
-with such changes through the remoteproc tree.
-
-> diff --git a/drivers/rpmsg/rpmsg_internal.h b/drivers/rpmsg/rpmsg_internal.h
-> index a76c344253bf..d5204756714c 100644
-> --- a/drivers/rpmsg/rpmsg_internal.h
-> +++ b/drivers/rpmsg/rpmsg_internal.h
-> @@ -40,7 +40,7 @@ struct rpmsg_device_ops {
->  					    struct rpmsg_channel_info chinfo);
->  
->  	int (*announce_create)(struct rpmsg_device *ept);
-> -	int (*announce_destroy)(struct rpmsg_device *ept);
-> +	void (*announce_destroy)(struct rpmsg_device *ept);
->  };
->  
->  /**
-> diff --git a/drivers/rpmsg/virtio_rpmsg_bus.c b/drivers/rpmsg/virtio_rpmsg_bus.c
-> index 8e49a3bacfc7..4e05994634f8 100644
-> --- a/drivers/rpmsg/virtio_rpmsg_bus.c
-> +++ b/drivers/rpmsg/virtio_rpmsg_bus.c
-> @@ -340,7 +340,7 @@ static int virtio_rpmsg_announce_create(struct rpmsg_device *rpdev)
->  	return err;
->  }
->  
-> -static int virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
-> +static void virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
->  {
->  	struct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);
->  	struct virtproc_info *vrp = vch->vrp;
-> @@ -360,8 +360,6 @@ static int virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
->  		if (err)
->  			dev_err(dev, "failed to announce service %d\n", err);
->  	}
-> -
-> -	return err;
->  }
->  
->  static const struct rpmsg_device_ops virtio_rpmsg_ops = {
-> 
-> though it's not obvious for me that the last hunk is sensible. (OTOH the
-> return code is ignored anyhow as rpmsg_dev_remove() is the only caller.
-> 
-
-I need to backtrack a little bit more to figure out why we ended up with
-this...
-
-Thanks,
-Bjorn
+Abd-Arhman
