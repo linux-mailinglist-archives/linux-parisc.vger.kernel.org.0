@@ -2,214 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8BB3BDD9C
-	for <lists+linux-parisc@lfdr.de>; Tue,  6 Jul 2021 20:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD8563BDE03
+	for <lists+linux-parisc@lfdr.de>; Tue,  6 Jul 2021 21:24:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231545AbhGFSyG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 6 Jul 2021 14:54:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34440 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231546AbhGFSyD (ORCPT
+        id S230197AbhGFT1R (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 6 Jul 2021 15:27:17 -0400
+Received: from mout.kundenserver.de ([212.227.17.24]:60153 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230195AbhGFT1Q (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 6 Jul 2021 14:54:03 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44057C061574
-        for <linux-parisc@vger.kernel.org>; Tue,  6 Jul 2021 11:51:24 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id 21so20346175pfp.3
-        for <linux-parisc@vger.kernel.org>; Tue, 06 Jul 2021 11:51:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=CUB/wg8JoGmq3NIMuzXfvTu1/LaQA3sJa9mgD0RKZNM=;
-        b=NCdUcCEYBEoF+OVX9fy25TDeiKDiyu7MS8rvWeBmnwWDnPpc5+QhpNeuAg5+M01lgv
-         DRH8QNEoIXVvsAW/9oBoS2NReA9bsV6Hj2cFB9jLLFtRzn+HzyElennnBW9tDomDrZF/
-         XkbSLC4duPiBx+pb77e5uH0fYLMkjK217pwgB1wYqGKrM1h34OqVCa5M9I67oCpiuU+f
-         pbgZ3PKaRiScHxRehdZaD+636T/YBbbzOrYq9ouzPlMVA0x6yucHaPT19ze0f0ZjxqqZ
-         KMetsaE3O5ReiI2mpGtW6/n68aQ7RKzzGVSyyRz/qTwzg+JiHPzeut5+sQawTaXHwNB/
-         HKBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=CUB/wg8JoGmq3NIMuzXfvTu1/LaQA3sJa9mgD0RKZNM=;
-        b=Zn0TOeGpvxu9AJRPbh6LraD1Wg4/I8Xy0tNgiCE43zt6/tBPDb/Ui1uvFwAbrMXwic
-         iSwaVSTrHC6oZfKh6YWkgkOUttskhB1QSY0x9W4iYQ7ay9W8XqEvhStF7RDinCKs9QQx
-         vU0jT/PdrSfvPfB6k1FbaHUIaGZwE69FG5Pzz2BDpE5eANfIunWcqLWiJ+NoACPgpLSY
-         jVXY5iu4VvhXYGmY6y3ZqYWKwJp43GJBJyREbCBHUnIA1uV33XQx3xb3ge24aeAQkpOM
-         LI8Xl3Q52sJvBDl9dg4Isels7pWKUlJL7n941eIXfjud3fuPCJpgCZ+EdN2AN9Me5Fk4
-         428g==
-X-Gm-Message-State: AOAM530+lf/h56mfp4lC65AJhb7lwqTWGuyTXH4T5qMPGQu9i46q+FOA
-        oUgcPDKec/A1xjZjI2e7p14Lw98WFuYZE9cWG1VmsQ==
-X-Google-Smtp-Source: ABdhPJyL0D13WbWlA6qnw/Xmlwa19pDI+XNQ21Npie/wgUkDgmHM1zT9YORdF5DHiOOYSSe1zuHfWr+DfQo+lHkX354=
-X-Received: by 2002:a63:4c3:: with SMTP id 186mr12014592pge.240.1625597483385;
- Tue, 06 Jul 2021 11:51:23 -0700 (PDT)
+        Tue, 6 Jul 2021 15:27:16 -0400
+Received: from mail-wr1-f49.google.com ([209.85.221.49]) by
+ mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MQ5nK-1lnfo124Ho-00M3LV; Tue, 06 Jul 2021 19:35:21 +0200
+Received: by mail-wr1-f49.google.com with SMTP id i94so27029273wri.4;
+        Tue, 06 Jul 2021 10:35:21 -0700 (PDT)
+X-Gm-Message-State: AOAM533ss/yHIZt/vz+SRPk9Dk5YCs2sewg3+3MKFgUhleIl8PDtZP0F
+        TlhrT4jCoIgFLijE/9icVGK04CTM/GlOrPr9jQ0=
+X-Google-Smtp-Source: ABdhPJxihhB6pAlSqg5TCWb1uOqDtAR681g/7nJAg+M4cbpSiCJILLocGjrsG1M7XBi00jNJbolYnKwzxwMuWr6BZPM=
+X-Received: by 2002:a5d:6485:: with SMTP id o5mr23976504wri.286.1625592921101;
+ Tue, 06 Jul 2021 10:35:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de> <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 6 Jul 2021 11:51:12 -0700
-Message-ID: <CAPcyv4gxjV7Xj8AN6aCkSLSi=yT6GdcAyigK6Au3mZQ1idBxJg@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel@pengutronix.de, Cornelia Huck <cohuck@redhat.com>,
+References: <YORh3XGNiRKzjDbS@infradead.org> <20210706153054.145461-1-abd.masalkhi@gmail.com>
+ <YOSMct1YHs++E1vt@infradead.org>
+In-Reply-To: <YOSMct1YHs++E1vt@infradead.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 6 Jul 2021 19:35:05 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2mAQOnTxBhVzVA8q8O-uVrdidCN5h5-T2dc0=Wet2uPQ@mail.gmail.com>
+Message-ID: <CAK8P3a2mAQOnTxBhVzVA8q8O-uVrdidCN5h5-T2dc0=Wet2uPQ@mail.gmail.com>
+Subject: Re: div_u64/do_div stack size usage, was Re: [v3] block: Removed a
+ warning while compiling with a cross compiler for parisc
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Bernardo Innocenti <bernie@develer.com>,
+        "torvalds@linux-foundation.org Abd-Alrhman Masalkhi" 
+        <abd.masalkhi@gmail.com>, Jens Axboe <axboe@kernel.dk>,
+        linux-block <linux-block@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Geoff Levand <geoff@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
-        Moritz Fischer <mdf@kernel.org>,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
-        Jens Taprogge <jens.taprogge@taprogge.org>,
-        Johannes Thumshirn <morbidrsa@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Alex Dubov <oakad@yahoo.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Alexandre Bounine <alex.bou9@gmail.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Thorsten Scherer <t.scherer@eckelmann.de>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Michael Buesch <m@bues.ch>,
-        Sven Van Asbroeck <TheSven73@gmail.com>,
-        Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Kirti Wankhede <kwankhede@nvidia.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Martyn Welch <martyn@welchs.me.uk>,
-        Manohar Vanga <manohar.vanga@gmail.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Marc Zyngier <maz@kernel.org>,
-        Tyrel Datwyler <tyreld@linux.ibm.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Qinglang Miao <miaoqinglang@huawei.com>,
-        Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Joey Pabalan <jpabalanb@gmail.com>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Frank Li <lznuaa@gmail.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        Bodo Stroesser <bostroesser@gmail.com>,
-        Hannes Reinecke <hare@suse.de>,
-        David Woodhouse <dwmw@amazon.co.uk>,
-        SeongJae Park <sjpark@amazon.de>,
-        Julien Grall <jgrall@amazon.com>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, linux-cxl@vger.kernel.org,
-        nvdimm@lists.linux.dev, dmaengine@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
-        greybus-dev@lists.linaro.org, target-devel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        xen-devel@lists.xenproject.org,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Johannes Thumshirn <jth@kernel.org>
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Parisc List <linux-parisc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:t6riS402GfG5/lDaaFu72j+ZZl/prBu5e4jk9mBJ9ICY2T2/Wjj
+ r27vWivFr8SLRbiImKrfNj7d95huCn+cUewC9t7gZp5D6uPBko++ZtxV+lumoHybiU1ham5
+ FtTXsOhg6GIlB7yn8KW1P4eF3hEUU9v3UtWhHGhCGDKKr5J1lZKu2RBOR8b5w42vJr3D4dz
+ kkJg8FC6DKIVdtkAgOpYQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8CUTNqg4JMs=:U6Dyr3Gs6w4LhWoWb4cjNT
+ 1Fxe825DEDSEHL69tbVt08365ceqwdibPFqNhetQWeModsKuSLrcFuejru69DGrEMqFcsn+5V
+ 8GdZp+hwkKfPNOy/DGWoI+e5HuDlBaFMv0X6sOXioY+NjNOsZU1EbSoQzFumzpo7qch0w+z9s
+ Gz150o82xIBoZ8rucsbw6my7sgdbzBjw2s5l9Ip39BwkVm6Bk9FV4+u42tUFO6jwJCehQqICB
+ XiUq4g5+OdTv16hWlYxyVDbNSf2BTbxdkmRDxV60458sk5OTW+Fxkth0X1muBknfIkG0oVold
+ HMOtCQHGd/etTAeOiCJPsxBeqXhsN3YyfMzR7wg/bWatVpzWuVEUDXYv6AvrHC5Jfvq3Ry2X7
+ DtnZcXc4SWYWAApTuITKIrjXc+HvQUEvEEdVC4WThbQuYFxkcqq0vG4dZAo2y3QlW6nRjxLdy
+ 30EwIkztQholYsO205H5gScPlsYeWLDXs3yxJ/7YgacgYymt2yj+8xx+HXAzgBojIKQE62Uxj
+ Fs8G/m5kmTyODi9KX6zXmvayapKGyFSegxCQ/vda50LAxUML0V/ebZGi2K3zKZoTL3F/6wgca
+ bdwvOORsMEl8eP8VsEheo9TzSxXzQj4py9y5wUVI/isvy+pQb1zVqRkiwVz2bX0x1P+Q6KFUD
+ aee+KW5QzgUZ5pZCBuc4wVNyaS8vUm1hHxjtyKAmzsMvz8p8RB4fiaSfO55riUvEDgsaCMmP5
+ nGYZgUcd7xMsy+7h3yfkYEr5HHglyykYn6N/qwbvewoMhVc1xkjjsFqDfz4iosb48AXNnjEuH
+ obcyQKanfVj0yvLOOGRyfylTJDRkRNTpcjH6SPq3bFueHwZ2cnr68Abmm4CayuWFlXjE3dY5U
+ +JOF0tcirT0q2Hdh5fWwGcmcPDnftgNzJBpCbgV1jTsXmoAF+R2bXBv1f2/5iY1DoL2xWde8o
+ HjKF5NV5pcSF/LteBicR9BXSg3jqnaA9x+xe/z1+UuliYXdhsJyWf
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Jul 6, 2021 at 8:51 AM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
+On Tue, Jul 6, 2021 at 7:03 PM Christoph Hellwig <hch@infradead.org> wrote:
 >
-> The driver core ignores the return value of this callback because there
-> is only little it can do when a device disappears.
+> On Tue, Jul 06, 2021 at 05:30:54PM +0200, Abd-Alrhman Masalkhi wrote:
+> > Thank you for your comment, the div_u64 function is called 5 times
+> > inside diskstats_show function, so I have made a test case; I have
+> > replaced one call with a constant number then I have compiled the
+> > kernel, the result was instead of emitting "the frame size of 1656
+> > bytes is larger than 1280 bytes" warning, it has emitted "the frame
+> > size of 1328 bytes is larger than 1280 bytes" warning, so I came to the
+> > conclusion that each call to div_u64 will add 328 bytes to the stack
+> > frame of diskstats_show function, since it is an inlined function. so I
+> > thought it might be the solution that to preventing div_u64 to be
+> > inlined in diskstats_show function.
 >
-> This is the final bit of a long lasting cleanup quest where several
-> buses were converted to also return void from their remove callback.
-> Additionally some resource leaks were fixed that were caused by drivers
-> returning an error code in the expectation that the driver won't go
-> away.
->
-> With struct bus_type::remove returning void it's prevented that newly
-> implemented buses return an ignored error code and so don't anticipate
-> wrong expectations for driver authors.
->
+> Adding a bunch of relevant parties to the CC list - any idea how we
+> can make the generic do_div / div_u64 not use up such gigantic amounts
+> of stack?
 
->  drivers/cxl/core.c                        | 3 +--
->  drivers/dax/bus.c                         | 4 +---
->  drivers/nvdimm/bus.c                      | 3 +--
+I've seen variations of this problem many times, though usually not
+involving do_div().
 
-For CXL, DAX, and NVDIMM
+My guess is that this is happening here because of a combination of
+things, most of the time it doesn't get nearly as bad:
 
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+- parisc has larger stack frames than others
+- ilog2() as used in __div64_const32() is somewhat unreliable, it may
+  end up determining that its input is a __builtin_constant_p(), but then
+  still produce code for the non-constant case when the caller is
+  only partially inlined
+- Some compiler options make the problem worse by increasing the
+  pressure on the register allocator.
+- Some compiler targets don't deal well with register pressure and
+  use more stack slots than they really should.
+
+If you have the .config file that triggers this and the exact compiler
+version, I can have a closer look to narrow down which of these
+are part of the problem for that particular file.
+
+One thing we did on ARM OABI (which does not deal well with
+64-bit math) was to turn off the inline version of __arch_xprod_64
+and instead use an extern function for do_div().
+
+       Arnd
