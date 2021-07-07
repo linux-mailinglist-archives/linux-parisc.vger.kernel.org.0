@@ -2,157 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C61473BDF0A
-	for <lists+linux-parisc@lfdr.de>; Tue,  6 Jul 2021 23:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A43193BE437
+	for <lists+linux-parisc@lfdr.de>; Wed,  7 Jul 2021 10:17:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230089AbhGFVkc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 6 Jul 2021 17:40:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43092 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229894AbhGFVka (ORCPT
+        id S230526AbhGGIUC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 7 Jul 2021 04:20:02 -0400
+Received: from mout.kundenserver.de ([212.227.126.130]:59819 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230516AbhGGIUB (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 6 Jul 2021 17:40:30 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DE21C061574;
-        Tue,  6 Jul 2021 14:37:51 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id h1-20020a17090a3d01b0290172d33bb8bcso2390238pjc.0;
-        Tue, 06 Jul 2021 14:37:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Ocbz7plpl2GsaeWZtT2xSwu/ECmgcGgX+U0mFWoVx8o=;
-        b=fjV4+ka8h0vH05QQfb5mosysrP9nHimBGyZMIaa5AG6oYKlZIJ9fBu1u8zdUGxqK0V
-         Um+d4Woup62vh1nDeTEMfYQu/z07c7tU/WMAtzd8zyjZ+D++/9qAcGD3Qi5HWfAEidnP
-         LVIhoqq3BcdDCaWawKEqjjS8yu6I4JR+nAEzkK0jeMXN28vBiyhs3oL9vVM3I/zG4bRq
-         0ch+fVpWTwIZJdpOA5MGN4Hsas/DzY0s55S8/73rafQT0BQHzaPtbSSjdX9FgBPH3Kng
-         zdOUu0zymj0lCUC9mcaI5h90C5jAW9R9slEqBMssceloFyAtObCoJPafpr9GaUMLPWWg
-         1jSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Ocbz7plpl2GsaeWZtT2xSwu/ECmgcGgX+U0mFWoVx8o=;
-        b=WK3yTWnvM5htSk/VSimnCQqje/FGFNelVEcwioYL2R7o83YW8eHgkZ6evNB3mBqPc0
-         b3GB1gLkWojJs9XG4BTClxxWXSVq9Gv09epEhdKJWYrb06H3nFuUuHgoZMgPD+WJybRF
-         3gZPab5P9vzwNlIIVEEo5Jl90VKSVHHxvBhjU3Pay3BEhOy6ShtVlTPAKjzUw+5LPvM3
-         g6Hpy3G6QibGd3AnFNfSCRKBRvetF31DDjQDeo8pnbGgCNJEzMmdhIwT1ify8AXwqciQ
-         XYOzvzRvY9jKXvHDc86y1R7eC14/aeggf/uWlHU2/VXBeEU0HO0uKcxPPx3BI1CBvsUI
-         0OtQ==
-X-Gm-Message-State: AOAM531T2RTDL3ySJyrUH9BdixZdoksL8kUK7Ivl7hx7XCT9buaF/thj
-        cTEAlptetL3RDzHa5EJYnN0=
-X-Google-Smtp-Source: ABdhPJyn2Hi8kaCYu+WokB25snaMIG+9Q6KwjeQoMDQJIrAIZd3JeXm641055Ca25Y6q1bD80UK2hA==
-X-Received: by 2002:a17:90a:3009:: with SMTP id g9mr2332932pjb.82.1625607470831;
-        Tue, 06 Jul 2021 14:37:50 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id h14sm14343197pgv.47.2021.07.06.14.37.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jul 2021 14:37:49 -0700 (PDT)
-Date:   Wed, 7 Jul 2021 06:37:39 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, linux-cxl@vger.kernel.org,
-        nvdimm@lists.linux.dev, dmaengine@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
-        greybus-dev@lists.linaro.org, target-devel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
-Message-ID: <YOTMp88HfFiy6+RM@shinobu>
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
- <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+        Wed, 7 Jul 2021 04:20:01 -0400
+Received: from mail-wr1-f49.google.com ([209.85.221.49]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MK5BG-1ll2Kc0ulC-00LUfL; Wed, 07 Jul 2021 10:17:20 +0200
+Received: by mail-wr1-f49.google.com with SMTP id d2so2073150wrn.0;
+        Wed, 07 Jul 2021 01:17:20 -0700 (PDT)
+X-Gm-Message-State: AOAM533Mw9h6hSTfpOB+NF5ZrF2qHhfh4nRiUnF06ltMe7U+WDlpW5c2
+        Vyj43nY2EGNcq+oD5ceecf7W8gfuZ/lgDhGXeV0=
+X-Google-Smtp-Source: ABdhPJw7Q9biNKuYw5LzzABEnymQHmOJOcA3+Y6lhnseoEQOvXLqHFB80q3Ei/XLODgiV261tfZT4qREh8gSCMmDldE=
+X-Received: by 2002:a5d:6485:: with SMTP id o5mr27386161wri.286.1625645839748;
+ Wed, 07 Jul 2021 01:17:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="VOubNWsj2sFIOkFX"
-Content-Disposition: inline
-In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+References: <CAK8P3a2mAQOnTxBhVzVA8q8O-uVrdidCN5h5-T2dc0=Wet2uPQ@mail.gmail.com>
+ <20210706205927.4407-1-abd.masalkhi@gmail.com>
+In-Reply-To: <20210706205927.4407-1-abd.masalkhi@gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 7 Jul 2021 10:17:04 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a23=tcWx8iWNAKXcT9TRgPrZbEVVy9a_ad29hSde_jkKg@mail.gmail.com>
+Message-ID: <CAK8P3a23=tcWx8iWNAKXcT9TRgPrZbEVVy9a_ad29hSde_jkKg@mail.gmail.com>
+Subject: Re: div_u64/do_div stack size usage, was Re: [v3] block: Removed a
+ warning while compiling with a cross compiler for parisc
+To:     Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        Jens Axboe <axboe@kernel.dk>, bernie@develer.com,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-block <linux-block@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:RCQaZuFTGyqYxV+lx9Z+/6VgkMm1qpKjfKfkLzmlW9nQnvwHSA1
+ nHITFP7pB1GK+k06/KcorEmSS2nVoevzv4ANostrSYrpgnhTHAINpElZXVasD5uQN+ncJyu
+ I2UhJu4olVV79TUlXRqk49gPVBpiANrabpYmPKj+QjdD8h4vXhx5x1FyrBh5qXPCO5rqbR6
+ XK0lLWJ259X5//UEy57yw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7ctsQDTFDkY=:WdxQ7xsX0VjhbeupjHEDQr
+ MtazFpB2jNMcaMgJAP7vkUqIUMrAt2wl5SSBfbGbmJEZtFbY3/7Xe9i/rIcFXeipE6CDqQyLw
+ qdh/2CKGIY1H8Ke2LplEkhsLUCGOnIGQqsuiH3DOlNW6kh8eIHhr7EuhHIUw4ruWJTc85+ZX3
+ Qs5Okow8sQyrgqmtAbhmQTfJTV0AEEzNcvgo/ZD1CQoMin/rs1AoiXMJkovjZ1ekpW//32oN/
+ kf+ivVW1nVozC4oYOt8TVSSc+0GpDg9PZDDTs1283sxNetb1BaaBr9vOwi43oC9XJQ1M9UVH3
+ 9F+fhZjBQcOaWzNm3QxNcow3svs7AkqZ1hqCx8vJyLv9oGjZsSCfKRDG7dwEN/3mpvptCQMGT
+ It5DLKyCObPdCjQAJjR8ug1ll6zWanEiCLDlmjXLiDz7TEE80xStO4ZoqW2NAqgPIx4U5X4Pc
+ bbhm5C/dc87KUS1dZ9khMNjqCOcPfA+hoooV9jxWUhCOpmSxSPu66I8awDAoD4k28J8VEpA1V
+ IoK4hp1RFtJA37oftfna5wNbCNWPhIzdsleU2AZcMW+wzPW3ZfOnpGr1vtcOgbrGMyb1FwNK/
+ Px4OFurDL981PEy6AmeWWfL7dHgIdId+hcomIQG5TN9M2dD+qowbbxmk8MTdKmQOL/7J/U1Mm
+ dmM8dxE/0rCvfHEtduucKxYVLbogCA1gpheHE+WCjtuYAc07W1HNLcdBXDig2N4X5Gobfe+S0
+ shtonuD4JedMUTtiAOi4xxCqtNna5gJB20BF4OL71KX4uUpBLK2cM9Z7y1OFNrI/4/WbUsebD
+ jZcH4sppCHg+LluajPQGnkBVQDsF6jxUjNVKiRuSiuHeh8XQLwXcykybx6WG8ZEwPmvANOG+u
+ 9tedVR82cGfNN74vJiXyQG/mareGpI3OY5/sLM1PKzI0InCvUHHrxmgSTyF6QdmL1/GbFHieZ
+ 8jroiZ3u371oD+z2CoemrseUE+mtQVOoRXuef1ZL8aUQaBvOAfnq4
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Tue, Jul 6, 2021 at 10:59 PM Abd-Alrhman Masalkhi
+<abd.masalkhi@gmail.com> wrote:
+>
+> I have compiled the kernel with a cross compiler hppa-linux-gnu- (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0 and the conficuration was the default, Build for generic-32bit "generic-32bit_defconfig"
 
---VOubNWsj2sFIOkFX
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ok, thanks. I have reproduced this now with gcc-9.4.0 from
+https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/.
 
-On Tue, Jul 06, 2021 at 05:48:03PM +0200, Uwe Kleine-K=C3=B6nig wrote:
-> The driver core ignores the return value of this callback because there
-> is only little it can do when a device disappears.
->=20
-> This is the final bit of a long lasting cleanup quest where several
-> buses were converted to also return void from their remove callback.
-> Additionally some resource leaks were fixed that were caused by drivers
-> returning an error code in the expectation that the driver won't go
-> away.
->=20
-> With struct bus_type::remove returning void it's prevented that newly
-> implemented buses return an ignored error code and so don't anticipate
-> wrong expectations for driver authors.
->=20
-> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk> (For ARM, Am=
-ba and related parts)
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Chen-Yu Tsai <wens@csie.org> (for drivers/bus/sunxi-rsb.c)
-> Acked-by: Pali Roh=C3=A1r <pali@kernel.org>
-> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> (for drivers/media)
-> Acked-by: Hans de Goede <hdegoede@redhat.com> (For drivers/platform)
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Acked-By: Vinod Koul <vkoul@kernel.org>
-> Acked-by: Juergen Gross <jgross@suse.com> (For Xen)
-> Acked-by: Lee Jones <lee.jones@linaro.org> (For drivers/mfd)
-> Acked-by: Johannes Thumshirn <jth@kernel.org> (For drivers/mcb)
-> Acked-by: Johan Hovold <johan@kernel.org>
-> Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org> (For drive=
-rs/slimbus)
-> Acked-by: Kirti Wankhede <kwankhede@nvidia.com> (For drivers/vfio)
-> Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com> (For ulpi and=
- typec)
-> Acked-by: Samuel Iglesias Gons=C3=A1lvez <siglesias@igalia.com> (For ipac=
-k)
-> Reviewed-by: Tom Rix <trix@redhat.com> (For fpga)
-> Acked-by: Geoff Levand <geoff@infradead.org> (For ps3)
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> ---
+I have also tried it with the other gcc versions and shown that it
+happens with every older compiler as well, but it does not happen
+with gcc-10 or gcc-11, which bring the frame size down to 164 or
+172 bytes respectively. gcc-10 also fixes similar warnings for
+net/ipv4/tcp_input.c, net/sunrpc/stats.c and lib/xxhash.c that
+fly under the radar with the default warning level.
 
->  drivers/base/isa.c                        | 4 +---
+My first thought was this was a result of -finline-functions getting
+enabled by default in gcc-10, but enabling it on gcc-9 did not
+help here. It's likely that the gcc behavior was fixed in the process
+of enabling the more aggressive inliner by default though.
 
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+I also tried building genhd.o for every architecture that has
+gcc-9.4 support and did not find the problem anywhere except
+on parisc.
 
---VOubNWsj2sFIOkFX
-Content-Type: application/pgp-signature; name="signature.asc"
+Using CONFIG_CC_OPTIMIZE_FOR_SIZE did solve the
+problem for me (frame size down to 164 bytes), but I could not
+pinpoint a specific -f option that fixes it for -O2. Maybe we can
+simply change the defconfig here? 32-bit parisc systems are
+probably memory limited enough that building a -Os kernel
+is a good idea anyway. 64-bit parisc already builds with -Os
+but does not see the warning with -O2 either.
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmDkzSMACgkQhvpINdm7
-VJLVFhAAyxEk2xOSRC1xhJSnjLQvNeb+KeTAJr+uaSAwwExERXcbGlIryhqCZSij
-fZRzkvgPIscNAegWidvmuhZlhkFJPwvPArfhB/pFIDvQ1xX0kCPH3T51Lncu35Tf
-vgluc4JhAW9+1UzoKZsv8RK4uY2ETRMBBeYs7epjqK2RhCvzG8rDMD+Dy49nxrYX
-eNdmcR+7EcK8RjLmb/YEfNXxcXdDW0KlU5ATAh+PKuAPKbOKpoKfKuYsOYS7VrGJ
-MAk5lC5J/bqbBWM4eqm+g5NbskWMr1N5WC60R7K3isMCoaEpnKNhSD3kvYIFe2Tf
-mWyIE2c7D+UWhzbp+Kq4+DHzBN4ajLBy0oMd28HrGOQmD+/chjjc1zTOK9uNBvKz
-xBRbxQl7OrAnKhUqcrgVpVL30EvTNajZIOZdwtGXhQCWW+MX747JE+H291VLg3gz
-a0p6IJ8TS+gOgGGvmNjVg6yHYuKv6XDbDfI7tc0dRJUOoVqfbkIHSvAQQzn0LIFn
-k/Ln4D8LDFj8X3fHbfz200+nzo9gwA5ZXhWXzvTKXhSEyBoc3+i+Ihn3bgYf6rI8
-j8LozqWaWpNxaLMBrLuy06ldAuzhnQ7wPw1JuGXDAY1vdMYVVRp1XcbjBSqybXMA
-weoaxx4Lwh05XikzxZpXDQBx5N+5V3sYRuqGrYs7H1ZUm0rT0I0=
-=yTaM
------END PGP SIGNATURE-----
-
---VOubNWsj2sFIOkFX--
+    Arnd
