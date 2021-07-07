@@ -2,74 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA8A03BEAB7
-	for <lists+linux-parisc@lfdr.de>; Wed,  7 Jul 2021 17:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0160A3BEDAC
+	for <lists+linux-parisc@lfdr.de>; Wed,  7 Jul 2021 20:04:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232269AbhGGPeb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 7 Jul 2021 11:34:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54542 "EHLO
+        id S230166AbhGGSHS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 7 Jul 2021 14:07:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232211AbhGGPeb (ORCPT
+        with ESMTP id S229956AbhGGSHR (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 7 Jul 2021 11:34:31 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC7DFC061574;
-        Wed,  7 Jul 2021 08:31:50 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id w13so2125610wmc.3;
-        Wed, 07 Jul 2021 08:31:50 -0700 (PDT)
+        Wed, 7 Jul 2021 14:07:17 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08C62C061574
+        for <linux-parisc@vger.kernel.org>; Wed,  7 Jul 2021 11:04:37 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id nd37so4719942ejc.3
+        for <linux-parisc@vger.kernel.org>; Wed, 07 Jul 2021 11:04:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=BQn9a4zjHHkcyd8nWBIk09uRnMx2xEYAXpXVNFTpdbA=;
-        b=FywxYZ0w7PhbZPy1z43/Z/FLPkbHVBVsZu/4+U+T+ZpeEOaC5cJnIIczucsqHHX+dV
-         jTu8LDX7kJdN5fiqEId9ExAklTEFb1GUGKifRGmvaP2vwhfp7yM1Snv8dqU2fAzEsp9m
-         t3mNgD2ksPAVYw0aT6Oc1gLHoukmAhBf4vui5DBFMd0ujxN2+yNEYERUKMJaC+i3rSO0
-         q4X7wbJel6JA1YSkeSzSHAOLjI5fHhIYEL+xfmrQ5XvlcRyQ60TWZ5TLNcYt5LAFkxac
-         IYAqzbk2fsCz/15pW/eaIhAobTpAqj10f2iJ8C085iyou6Gn3Of5yRu2l/eHbnbh+DAv
-         Z0JQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=vTnCri32CxtsnER2vknrWkoVpMPZSQ5UY2+CeCLKXeg=;
+        b=prp/gPwhjFmxsjAAKppu6DlyHNIKN/3F5X/UWloNdzLA/O9Ds5jfBvZBAw1dRxfTGW
+         Kja0DucbZd6wRqMwAWAQjUP622TOPVxeG2Pm9IlYmAX4NGV61XPqGBX8ddCK8b3bmEWk
+         lIU0yaOX4STq3m8S0ABjCWILJAJZiB+0O2KSb7g69IkUQMa6a+slnkzmeWMiQCPOyMci
+         u7VRzM7i5OZOfT+WJZxPukSZLpPPDgxa8ytj8nbdEFaQkOUQ300SMFWZSuA1CQVajhGU
+         fZ3mjz/O3xXfPx+hMhgRuvKfd00z6J1M5lKq/AY+OCZUusfb95KUhEY6cHfdvoB1ug6p
+         oE2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=BQn9a4zjHHkcyd8nWBIk09uRnMx2xEYAXpXVNFTpdbA=;
-        b=HtULEtMGLJ9tFaqgvcxzUDGn1FNvpB0jpu6lv2ZhqDlBuFhvFB4OW+bo6h+Xy+8Uwh
-         /YbvQ3k8+qs6FitLFDAQ3wW+QtidRStcYNx0l4EThUhcUQggN1234jYTxMH7Tnjl4xa3
-         UwO1ow1uzjY0L6LH1LMA1X5o+5L8NAj/P0Ii4N8C9nvZ5bpk6dx/S9MK2HHcD0bGwI4k
-         tT1ZzsUvyrHeAsYcnGRik74oIptYcXJ2qR6Ws+tOS1+ugo3d/5+4vo7OLb5Sddl1DlNN
-         ZaDqoqBb351w8M248Mx6GNEIhKB/lGcgHlKJKM2LZTW+dCAeqCKYM5h4TgVeua9UjoXE
-         8/7w==
-X-Gm-Message-State: AOAM5329eeKz8Xd8e0sp+cXIMvDqikANoGEnSbUYeZJ9GJHQiTN6arWr
-        lj/ju+cS2DSodItnIOLoLkA=
-X-Google-Smtp-Source: ABdhPJw1Vcl8Qu3j3vcqh7x0hGEs+y8bp1eskE1vLjJ0m2ypT/PAEsFSOOECDxtDNjAMNRedjrZTbA==
-X-Received: by 2002:a05:600c:206:: with SMTP id 6mr185653wmi.139.1625671909447;
-        Wed, 07 Jul 2021 08:31:49 -0700 (PDT)
-Received: from masalkhi.fritz.box (dslb-178-005-073-162.178.005.pools.vodafone-ip.de. [178.5.73.162])
-        by smtp.gmail.com with ESMTPSA id o3sm20847579wrw.56.2021.07.07.08.31.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jul 2021 08:31:48 -0700 (PDT)
-From:   Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
-To:     arnd@arndb.de
-Cc:     hch@infradead.org, deller@gmx.de, dave.anglin@bell.net,
-        axboe@kernel.dk, bernie@develer.com, linux-parisc@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dan.carpenter@oracle.com
-Subject: Re: div_u64/do_div stack size usage, was Re: [v3] block: Removed a warning while compiling with a cross compiler for parisc
-Date:   Wed,  7 Jul 2021 17:30:53 +0200
-Message-Id: <20210707153053.62237-1-abd.masalkhi@gmail.com>
-X-Mailer: git-send-email 2.29.0.rc1.dirty
-In-Reply-To: <CAK8P3a23=tcWx8iWNAKXcT9TRgPrZbEVVy9a_ad29hSde_jkKg@mail.gmail.com>
-References: <CAK8P3a23=tcWx8iWNAKXcT9TRgPrZbEVVy9a_ad29hSde_jkKg@mail.gmail.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=vTnCri32CxtsnER2vknrWkoVpMPZSQ5UY2+CeCLKXeg=;
+        b=UfZGTAR74RvgzwGDU2FC8WW/DCIRqwLWnO/yqTJw+UprJi3ApvwRSEFYvSs6qTkGrP
+         QgqmYVecIVzfoCCvhg9llIlOS/A4XJLDSu9EnTdVRKwm+pUJQCmA9HMOnfwUHP0n7RP2
+         tQrEiAJ9aoM+FHDzrX0E4OOfe7zyPJaaKK2DHe8ARMJ05GB/alxmNe7lYP6w37x9p2A0
+         ogG/2iAdR9a8MT0vlLZqlxwi+zKno9LDdyKOxVeaBJfBzxzVRr6xs1JAQy/OtD2RuAUL
+         9WKsimIoddl7/fJO+Za5XOULBsCYx1Te/eHqcWymVTtKeNNn4dAKBRv734DbqVizMSOK
+         E5wQ==
+X-Gm-Message-State: AOAM530FIPjjH2MJ+yo4Tyfl+lDmGexKiR9Gq0GAXQzb0PctgHPkpDda
+        As83N0g5HkP+SEkknHFAbgUCFGtuolVsrm1KwEw=
+X-Google-Smtp-Source: ABdhPJz62Tv1yK7F7CiacbqKvA229d4Vp79Ft5cxpZxO6wAuLPHYJoDplNSRA4HWq5zeWaCEWbJyL3arq8lwWmBAzu8=
+X-Received: by 2002:a17:906:a2da:: with SMTP id by26mr9721412ejb.232.1625681075371;
+ Wed, 07 Jul 2021 11:04:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ab4:ad90:0:0:0:0:0 with HTTP; Wed, 7 Jul 2021 11:04:34 -0700 (PDT)
+Reply-To: sroomf70@gmail.com
+From:   "Prof. Dr Diane" <ais90909090@gmail.com>
+Date:   Wed, 7 Jul 2021 11:04:34 -0700
+Message-ID: <CACAcoAc-MFFZp4-UhLLiSdtf_o9Xf8k-bwLayZbMN4Fynb8gAg@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Sorry for late respond, I was at work. The problem was solved for me too,
-after setting the CONFIG_CC_OPTIMIZE_FOR_SIZE, and I have went through the
-gcc 9.4 manual to look for the -f option for -O2, it seems that all -f option
-that we would not specify is already excluded with -Os. changing defconfig, it
-seems for me a good idea.
+-- 
+I'm Prof. Dr Diane, we notify you through our official mail but no
+respond from you before sending you with this private email hope you
+Received the Fund that was paid to your account? do not hesitate to
+keep us notice as soon as possible to enable us make the balance
+transfer into your nominated account. awaiting your urgent
+notification.
 
-Abd-Alrhman
+Best regards
+Prof. Dr Diane
