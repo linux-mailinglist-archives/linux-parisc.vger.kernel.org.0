@@ -2,217 +2,143 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8365C3BF524
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 07:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B2333BF79A
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 11:29:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229679AbhGHFlh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 8 Jul 2021 01:41:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43946 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229579AbhGHFlg (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 8 Jul 2021 01:41:36 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6462FC061574
-        for <linux-parisc@vger.kernel.org>; Wed,  7 Jul 2021 22:38:55 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1m1MkA-0006EE-1O; Thu, 08 Jul 2021 07:38:38 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1m1Mk9-00030H-1D; Thu, 08 Jul 2021 07:38:37 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1m1Mk8-0007Hx-U3; Thu, 08 Jul 2021 07:38:36 +0200
-Date:   Thu, 8 Jul 2021 07:38:13 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Sven Van Asbroeck <thesven73@gmail.com>
-Cc:     nvdimm@lists.linux.dev, Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
-        Jens Taprogge <jens.taprogge@taprogge.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Jaroslav Kysela <perex@perex.cz>, linux-fpga@vger.kernel.org,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        xen-devel@lists.xenproject.org,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Julien Grall <jgrall@amazon.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alex Elder <elder@kernel.org>, linux-parisc@vger.kernel.org,
-        Geoff Levand <geoff@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        id S231466AbhGHJcj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 8 Jul 2021 05:32:39 -0400
+Received: from mout.gmx.net ([212.227.17.21]:54109 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231272AbhGHJci (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 8 Jul 2021 05:32:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1625736584;
+        bh=8kHVJRXooFfRe+q2fG2IcWE5oAzcpJoXFZwcURMNHHE=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=iAtVF+UXERbGpY0Gg/aWy5E5rPcg973k2Idl2OG5ZwBEx2+9Uv09LMHo0HQ1nqflP
+         xFyie7CKbD47NpiJAG7aBnVft0e0Q6NSf4XHlhGAbZQLlfbJ/GWyeSN6OArZepbX4E
+         7Adx/f4NQ0v3QDuBwfVjgIkUeN2jYDrMoy2xPl+o=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.175.26]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mw9UK-1l9JhE2dgC-00s72h; Thu, 08
+ Jul 2021 11:29:44 +0200
+Subject: Re: div_u64/do_div stack size usage, was Re: [v3] block: Removed a
+ warning while compiling with a cross compiler for parisc
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Bernardo Innocenti <bernie@develer.com>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-block <linux-block@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Thorsten Scherer <t.scherer@eckelmann.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Jon Mason <jdmason@kudzu.us>, linux-ntb@googlegroups.com,
-        Wu Hao <hao.wu@intel.com>, David Woodhouse <dwmw@amazon.co.uk>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Manohar Vanga <manohar.vanga@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        virtualization@lists.linux-foundation.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        target-devel@vger.kernel.org,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Ira Weiny <ira.weiny@intel.com>, Helge Deller <deller@gmx.de>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        industrypack-devel@lists.sourceforge.net,
-        linux-mips@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
-        linux-media <linux-media@vger.kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Johan Hovold <johan@kernel.org>, greybus-dev@lists.linaro.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Johannes Thumshirn <morbidrsa@gmail.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Joey Pabalan <jpabalanb@gmail.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
-        Bodo Stroesser <bostroesser@gmail.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Tyrel Datwyler <tyreld@linux.ibm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>,
-        SeongJae Park <sjpark@amazon.de>, linux-hyperv@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, Frank Li <lznuaa@gmail.com>,
-        netdev <netdev@vger.kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        linux-staging@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-input@vger.kernel.org,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Allen Hubbe <allenbh@gmail.com>, Alex Dubov <oakad@yahoo.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Moritz Fischer <mdf@kernel.org>, linux-cxl@vger.kernel.org,
-        Michael Buesch <m@bues.ch>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Martyn Welch <martyn@welchs.me.uk>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-mmc@vger.kernel.org, linux-sunxi@lists.linux.dev,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "David S. Miller" <davem@davemloft.net>, kvm@vger.kernel.org,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-remoteproc@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kirti Wankhede <kwankhede@nvidia.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        linux-i3c@lists.infradead.org,
-        linux1394-devel@lists.sourceforge.net,
-        Lee Jones <lee.jones@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        Michael Jamet <michael.jamet@intel.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Hannes Reinecke <hare@suse.de>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org,
-        Takashi Iwai <tiwai@suse.com>,
-        Alexandre Bounine <alex.bou9@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Marc Zyngier <maz@kernel.org>, dmaengine@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Maximilian Luz <luzmaximilian@gmail.com>
-Subject: Re: [PATCH v2 0/4] bus: Make remove callback return void
-Message-ID: <20210708053813.pem2ufjuwkacptv3@pengutronix.de>
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
- <CAGngYiWm4u27o-yy5L5tokMB5G1RUR5uYmKf2oXah2P3J=hK2A@mail.gmail.com>
+        Dan Carpenter <dan.carpenter@oracle.com>
+References: <CAK8P3a2mAQOnTxBhVzVA8q8O-uVrdidCN5h5-T2dc0=Wet2uPQ@mail.gmail.com>
+ <20210706205927.4407-1-abd.masalkhi@gmail.com>
+ <CAK8P3a23=tcWx8iWNAKXcT9TRgPrZbEVVy9a_ad29hSde_jkKg@mail.gmail.com>
+ <YOWt2swxONAvhesH@ls3530>
+ <CAK8P3a1EFuqgZGdpWzib3RxFf6TXCy_CUTZx2ekd0wTbdNdoxg@mail.gmail.com>
+From:   Helge Deller <deller@gmx.de>
+Message-ID: <bece0f60-b19e-5601-3bd9-c899c3d4cd93@gmx.de>
+Date:   Thu, 8 Jul 2021 11:29:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bpxpm3lcta7ifhrg"
-Content-Disposition: inline
-In-Reply-To: <CAGngYiWm4u27o-yy5L5tokMB5G1RUR5uYmKf2oXah2P3J=hK2A@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-parisc@vger.kernel.org
+In-Reply-To: <CAK8P3a1EFuqgZGdpWzib3RxFf6TXCy_CUTZx2ekd0wTbdNdoxg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Jv53KzQXouaw43xDUVZe3MwZlNLqqXC3spNXZNGSBaTRtIYIU/P
+ aS/Lb+E3LGgU+Avl4W21Fq34cyiQeTn3d2a24zRfGT0g0zV+qvkSikgXd1U9fUpee3eWFHI
+ EwVzQ7cbt96fURKSXfMr+mbb1HAgQhAGfHs0icOC1/I9ilZAsmrzVlL5AYh1NOdQM6gDVmG
+ dwlXQvwAs/vHorNPSQ74A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Q2RolDHnw2A=:QtIXFuu5fYsg56jwXJP6W1
+ Vdu9WQHtNVmXh0pAvLM3sXdzeupJN4hA+tzmydiDGeCTW6hoNrLLKAEAHWC6tuAYG0dOtXD+m
+ 6x//VMcheR3f2886octSE/+wXuFB0gQZtQjVYk3OEDN/yLALu35Fu8H3WinLqUYdR88dUKefT
+ YBp1qG6/O863t8hQfbcIzi8g650EZ+YAr1TudF7urfRxKvEASREco4UTIvm5CttmUBqsTdFGN
+ i/Ux4KaQW22W40ihoDE+2WQ7NU8/0lciPOm+E0Ul6fcSg2w623Mz1G7HmRIsAnhmWYPuxBOkM
+ G1M4FvntXaLw3kuCi3Ta4hjGm9bRRnw1Rcyv8ZQ+fkDee+1Gal+AWPaa6uOOWQcqUgVfR3UaS
+ b8XCPs1nW9vvNHo4l14JcJ7AAxe7oS7+mi0lVcl0wv8D9yFIl7F9e8uIjYn+szUtW4gM8N3yp
+ Zg5JyMktMf2f4KyxXMnKL3zsaw4Jf28JHUdxfe0bnBtdybrb5QxuRyxbhndSItWh2nf+Zf8qh
+ c2OlQUG4/XyPKy9KhfsJi94eYoK7x27cOfg27MvWSCh1f2WCJ8uQEvLUUfXxk9FgISwybF3TW
+ iRQU1cj4MfN5BBN/rbrMHtmeGI7wXL/6TfnpKGs+ynJd6uYJiXeBLb+j6gs6lzl5FXPVHSCHQ
+ aRBgjRavq8LIgznn1AMkBgFw2L7b8KWKK9VkLbiyFxh0qsKDV7cu5i6Mi3DPy/GTBh0OsTunb
+ lN9y2dYsPGkNgfocoe+VjXCAXm1X5qUEZC407PhuKW46CXrdjDNwdbLsRMCt9J7ewcKXKB7ym
+ ZtYJ8uKQAIw4X8m43TDS8yGxC59nXGIiwFBYpAZnZ9V6vbpQ6QAjYkWw4XHTAESCdG/OumXSN
+ ibwU5IalHr+lflYuRh3PS3kheSsT+RfMh/+/5dSxQqSiu6XSpTqMvCCGbxZ+f7viePFr2Z5F4
+ Ve3bwo81D8QkWyS3C0OeV/iEov7NqfnsQtgKHvPvy04xGIJYLJnKe2g24w7O5nq2EeOgf6vvb
+ xAyby6vU2q9R7gcWDRBSpy9dpRZJ09K6ObpUWIfY30w60v5Yx9SN1tfVjqgcV/X6/tn1Vs9zI
+ ds5Yv7cuL6cEQ+D9h42eaojziVlOGsc4iof
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On 7/7/21 10:39 PM, Arnd Bergmann wrote:
+> On Wed, Jul 7, 2021 at 3:36 PM Helge Deller <deller@gmx.de> wrote:
+>> * Arnd Bergmann <arnd@arndb.de>:
+>>> My first thought was this was a result of -finline-functions getting
+>>> enabled by default in gcc-10, but enabling it on gcc-9 did not
+>>> help here. It's likely that the gcc behavior was fixed in the process
+>>> of enabling the more aggressive inliner by default though.
+>>>
+>>> I also tried building genhd.o for every architecture that has
+>>> gcc-9.4 support and did not find the problem anywhere except
+>>> on parisc.
+>>>
+>>> Using CONFIG_CC_OPTIMIZE_FOR_SIZE did solve the
+>>> problem for me (frame size down to 164 bytes), but I could not
+>>> pinpoint a specific -f option that fixes it for -O2. Maybe we can
+>>> simply change the defconfig here? 32-bit parisc systems are
+>>> probably memory limited enough that building a -Os kernel
+>>> is a good idea anyway. 64-bit parisc already builds with -Os
+>>> but does not see the warning with -O2 either.
+>>
+>> I agree that the simplest solution is to increase the default value for
+>> parisc here.
+>> On parisc we have a 32k stack (either 1x32k or 2x16k when using IRQ
+>> stacks). I increased the default value to 1280 in 2017, but as can be
+>> seen here this isn't sufficient. Either way, we have an active runtime
+>> check for stack overflows which has never triggered yet, so let's just
+>> remove the compiler warning by increasing the value to 2048. Patch is
+>> below.
+>>
+>> [PATCH] parisc: Increase gcc stack frame check to 2048 for 32- and 64-b=
+it
+>>
+>> parisc uses much bigger frames than other architectures, so increase th=
+e
+>> stack frame check value to 2048 to avoid compiler warnings.
+>
+> I think setting it to 2048 is rather excessive,
 
---bpxpm3lcta7ifhrg
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Since parisc needs roughly twice the frame (and stack) size as x86,
+2048 seemed logical since that's the double of what's used on x86.
+Of course we can reduce it, e.g. to 1536.
 
-On Wed, Jul 07, 2021 at 10:08:53PM -0400, Sven Van Asbroeck wrote:
-> On Tue, Jul 6, 2021 at 11:50 AM Uwe Kleine-K=F6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
-> >
-> >  drivers/staging/fieldbus/anybuss/host.c   | 4 +---
->=20
-> Awesome !
->=20
-> Acked-by: Sven Van Asbroeck <TheSven73@gmail.com>
+> and it would make you miss other real bugs. What I suggested was to
+> change the defconfig to use CONFIG_CC_OPTIMIZE_FOR_SIZE instead.
 
-I note that as an Ack for patch 4 only, as the others don't touch this
-file.
+But then you still will see those warnings in case you choose to not
+optize for size.
 
-Best regards
-Uwe
+> The reasoning for the 1280 byte limit on parisc is that it needs a few e=
+xtra
+> bytes for its larger stack frames, and 1024 for the other 32-bit archite=
+ctures
+> is only there because anything smaller warns for a handful of functions
+> that are fine-tuned to need slightly less than that, when the call chain
+> is predictable and using less would impact performance.
+>
+> I actually think we should reduce the warning limit for 64-bit architect=
+ures
+> to 1280 bytes as well, but that triggers a couple of warnings that still
+> need to be resolved first. In almost all cases, a kernel function needin=
+g
+> more than 512 bytes is an indication of either a bug in the kernel, or
+> (rarely) in the compiler.
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+or bad coding, e.g. huge local variables ot too much nesting of local func=
+tions.
 
---bpxpm3lcta7ifhrg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDmjzsACgkQwfwUeK3K
-7Alp5wf+LJkpxzkaW2ldAtFhGuqT1XfOqbe9d5vNgqvqupJS1Q+aeie0kH0038ba
-uN3KDJ2V2DAmMf6OIKUFucVxBpCC92myb63zIHRJs5kGzTu41BRp3yt/I650Xzdr
-+MB/xdEr/XFy2f9gDr/QdCojwh44TXqKzZPG6a7r6uQu8/AAUOdVEcfK6o01hN8W
-szxNTR1qtdQMHj9Ji8fo0wADdSPEez1kGe+HEOJVWBZnhdyCqS0jh774r7GsLjqY
-l8S7HhKPoY6/CCbEHKfYA15GUvexTA14O2tn6vuQPtiTTdDoh/Nl0wj0z5/WbWjX
-HF/tKnNb3l18s65PbEmxEKa2XonjFQ==
-=+Y+1
------END PGP SIGNATURE-----
-
---bpxpm3lcta7ifhrg--
+Helge
