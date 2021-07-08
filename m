@@ -2,47 +2,85 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66BD43C1466
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 15:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D812D3C1550
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 16:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231795AbhGHNk6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 8 Jul 2021 09:40:58 -0400
-Received: from mx-n04.wc2.phx1.stabletransit.com ([207.246.242.250]:60072 "HELO
-        mx-n04.wc2.phx1.stabletransit.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with SMTP id S231747AbhGHNk6 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 8 Jul 2021 09:40:58 -0400
-X-Greylist: delayed 346 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Jul 2021 09:40:58 EDT
-Received: by mx-n04.wc2.phx1.stabletransit.com (Postfix, from userid 114)
-        id 2A8A1182971; Thu,  8 Jul 2021 08:32:31 -0500 (CDT)
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
-        mx-n04.wc2.phx1.stabletransit.com
-X-Spam-Level: **
-X-Spam-Status: No, score=2.6 required=6.0 tests=BAYES_50,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SUBJ_ALL_CAPS,
-        T_FILL_THIS_FORM_SHORT,UNPARSEABLE_RELAY autolearn=no
-        autolearn_force=no version=3.4.2
-X-Spam-Virus: No
-Received: from php-v027.wc2.phx1.stabletransit.com (unknown [10.40.206.156])
-        by mx-n04.wc2.phx1.stabletransit.com (Postfix) with ESMTP id 8838918295D
-        for <linux-parisc@vger.kernel.org>; Thu,  8 Jul 2021 08:32:30 -0500 (CDT)
-Received: from digilu (uid 2914979)
-        (envelope-from mabeljohnson@citromail.hu)
-        id 2017e
-        by php-v027.wc2.phx1.stabletransit.com (DragonFly Mail Agent v0.11);
-        Thu, 08 Jul 2021 08:32:30 -0500
-To:     linux-parisc@vger.kernel.org
-Subject: WORK OF GOD.
-X-PHP-Originating-Script: 2914979:class.engine.php(12) : runtime-created function
-Date:   Thu, 8 Jul 2021 08:32:30 -0500
-From:   MARY JOHNSON <mabeljohnson@citromail.hu>
-Reply-To: mj224294@gmail.com
-Message-ID: <240dec649f0f70590552a1f06abd100d@jackieleestudio.com>
+        id S231933AbhGHOnJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 8 Jul 2021 10:43:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42962 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229738AbhGHOnJ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 8 Jul 2021 10:43:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 36E2161626;
+        Thu,  8 Jul 2021 14:40:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1625755227;
+        bh=MAsG3qSXfa86mRK76E2s86ws4T9P2wCUYmiHN8otjks=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qvATOC6gyo8yYJJC/n4YlM9JT0Gv5Ts61H3FTKx00SElcUROyVpDAIkKCtwtXcAX/
+         jyWGuT6u9PM139Bbe51z69jfJCi2kRM257QjUTUMu4TdfUNvQHr763zVSLZ/bdfA3W
+         KNtA5YvaUj447Xg8+Id01Gf7hDdytOsFQMI8M+D8=
+Date:   Thu, 8 Jul 2021 16:40:24 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Carlos Bilbao <bilbao@vt.edu>
+Cc:     alexander.deucher@amd.com, davem@davemloft.net,
+        mchehab+huawei@kernel.org, kuba@kernel.org,
+        James.Bottomley@hansenpartnership.com, netdev@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers: Follow the indentation coding standard on
+ printks
+Message-ID: <YOcOWDqlONm69zwo@kroah.com>
+References: <2784471.e9J7NaK4W3@iron-maiden>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2784471.e9J7NaK4W3@iron-maiden>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-I am Mrs. Mary Johnson,78years,an aging widow suffering from cancer, I am on admission at a hospital.I would like to willfully entrust the rest of my monetary assets to you, Kindly reply back with your full Name, cellphone, address, to enable me to send you a letter of authorization to contact my bank first inland bank nigeria plc so that they can transfer my funds to your account for the purpose of helping the poor as indicated on my WILL.
+On Thu, Jul 08, 2021 at 09:10:01AM -0400, Carlos Bilbao wrote:
+> Fix indentation of printks that start at the beginning of the line. Change this 
+> for the right number of space characters, or tabs if the file uses them. 
+> 
+> Signed-off-by: Carlos Bilbao <bilbao@vt.edu>
+> ---
+>  drivers/atm/eni.c                      | 2 +-
+>  drivers/atm/iphase.c                   | 2 +-
+>  drivers/atm/suni.c                     | 4 ++--
+>  drivers/atm/zatm.c                     | 8 ++++----
+>  drivers/net/ethernet/dec/tulip/de4x5.c | 2 +-
+>  drivers/net/sb1000.c                   | 4 ++--
+>  drivers/parisc/iosapic.c               | 4 ++--
+>  drivers/parisc/sba_iommu.c             | 2 +-
+>  8 files changed, 14 insertions(+), 14 deletions(-)
 
+Hi,
+
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
+
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- Your patch did many different things all at once, making it difficult
+  to review.  All Linux kernel patches need to only do one thing at a
+  time.  If you need to do multiple things (such as clean up all coding
+  style issues in a file/driver), do it in a sequence of patches, each
+  one doing only one thing.  This will make it easier to review the
+  patches to ensure that they are correct, and to help alleviate any
+  merge issues that larger patches can cause.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
