@@ -2,84 +2,87 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D56BD3C1594
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 17:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A9133C15B1
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 17:08:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231708AbhGHPET convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Thu, 8 Jul 2021 11:04:19 -0400
-Received: from mta-tor-003.bell.net ([209.71.212.30]:20950 "EHLO
-        cmx-torrgo001.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229738AbhGHPES (ORCPT
+        id S231978AbhGHPLc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 8 Jul 2021 11:11:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58160 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232031AbhGHPLb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 8 Jul 2021 11:04:18 -0400
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [67.71.147.238]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 60C8868801068702
-X-CM-Envelope: MS4xfGyTTt95LmJz41oxT9430AOjrGfolv8+y88Ts31Mm1ggFI+mKrxElxz4+y5RQmpxz6amPnn8VN9U+OACfxSyJA11/YdDx+KK4jSqRhUqbx1UGos0AWgI
- 8WuoRSwDv2b0aY9sdjDriuUkxDDigFnp7TX/mvFx5Ck+7MwqN7OFCDNepW4VxNP9k2iOToxk4OyZJVqYUE8O9RoFg0s9eXmwLFE6mk/wK85sw1N8DECRyOnq
- K85h4eNkNBZfwPuWnfx6kj26vGAExfyLrfKGlm/yaL7T5HNE4bJePQm/9lkW3bwNyldShbPvVWTd4O31UbaF5eTGjrncYTuY2ynnvGm1BXv/Tv4iRlrUTDVz
- q3vT0X+qNKAQJeYciqGeE7C8p+8QQtJopAHGgJFZdXFG4cMz9UEMHnvI8YP+1ntQf1dyxdDaiya+t/KlAK9An467xvbL2jvY/0owXRE1L81d97L7sZe+DbB/
- DuBciMBVICGUkgJSjeFf0v+/GAto7CjcyzMPyztbL9UX2z8HyVc7z8MKpLLA34LlNZz635kniYrCYOKC
-X-CM-Analysis: v=2.4 cv=Udwy9IeN c=1 sm=1 tr=0 ts=60e7134c
- a=/cPhanApxV8nRKTAyWrE3w==:117 a=/cPhanApxV8nRKTAyWrE3w==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=GfkpTtF8mnDkJo9QkI0A:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (67.71.147.238) by cmx-torrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 60C8868801068702; Thu, 8 Jul 2021 11:01:32 -0400
-To:     Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>
-Cc:     Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        Bernardo Innocenti <bernie@develer.com>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-References: <CAK8P3a2mAQOnTxBhVzVA8q8O-uVrdidCN5h5-T2dc0=Wet2uPQ@mail.gmail.com>
- <20210706205927.4407-1-abd.masalkhi@gmail.com>
- <CAK8P3a23=tcWx8iWNAKXcT9TRgPrZbEVVy9a_ad29hSde_jkKg@mail.gmail.com>
- <YOWt2swxONAvhesH@ls3530>
- <CAK8P3a1EFuqgZGdpWzib3RxFf6TXCy_CUTZx2ekd0wTbdNdoxg@mail.gmail.com>
- <bece0f60-b19e-5601-3bd9-c899c3d4cd93@gmx.de>
- <CAK8P3a0x4gba+syLqjBDG0634FNDNRTvDm4dQ9p_fmgSXBUiig@mail.gmail.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Subject: Re: div_u64/do_div stack size usage, was Re: [v3] block: Removed a
- warning while compiling with a cross compiler for parisc
-Message-ID: <3453ec06-fc62-81e4-33e9-88afd51f50f9@bell.net>
-Date:   Thu, 8 Jul 2021 11:01:32 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Thu, 8 Jul 2021 11:11:31 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CBADC06175F
+        for <linux-parisc@vger.kernel.org>; Thu,  8 Jul 2021 08:08:49 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id y9so5038481qtx.9
+        for <linux-parisc@vger.kernel.org>; Thu, 08 Jul 2021 08:08:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vt-edu.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:organization:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=A2lQ1y/orDMQNUEXLTETNoGW6ipZLA49f+lo4DxkQTA=;
+        b=IG0/w+IMGrUw6Vr3pXUAy4w51HrdpzH+dp5MCiPrbr0zOwkBHS+AsMmD8SQuMFUjYU
+         Hs1tTHwUVegLVDNMlVXG3PpxTjcV+yVbUxf4ktyIbU0gGzLcu1JtnBZt2qYB7C5Vk5u/
+         YFoIbAM2ypS++mIC+o6Bp2h6nLQn6JB4T66U9kx0UnPXf7GDxEYyFVs7veg4NhozdKKQ
+         Fk8o39aXquvFqA38yBPaiG2tLtRDh5znGierjZj+1Mc4nK+ayQ0yH/kSN4pMJrrZTSG+
+         GjCbIvX04r3lQUknRz+S0JdN3v36N0oKWEbssE9UCyWXFxQ4X30dzif77erBefXraMBn
+         JaGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:organization
+         :in-reply-to:references:mime-version:content-transfer-encoding;
+        bh=A2lQ1y/orDMQNUEXLTETNoGW6ipZLA49f+lo4DxkQTA=;
+        b=srZ3ZC60lyPX5sYu1vWu/Kc+PyL9q7UJq7vpIEernB0cA0lYOhrmPx9HN6SlajJ8GW
+         0gfG2DfeXNoF2x4c2rDJlhsqIFeHa9+BLIqQrFRy3YOlmQpY1f7EUYm3MwQoKsxiGMF0
+         WNO9MCB6C3zOvNVy8TAr3IkJA6NFbXzIYR3f/wKSRxAXhKTfKfman0QVwYS51WCtGfgI
+         cVueLssPj27BMsNUeD0B5udRSuPoyCmfNX/5XorC10VO8+pTmxuV0ztvFla7IQhti/qa
+         lJ3VvLchcW31laVwndaeqvpWbEroXbfhHD96qj2o8xN+DYJyABmmenCAhsDFRx+rKoa+
+         J2Yg==
+X-Gm-Message-State: AOAM531oh0VAhvxZByn1dswOFHTzLOxHC39DomAAnDB+DA9ViXm/cqAH
+        Hpzo1um1ncOKbRH9RlhgdJrW6A==
+X-Google-Smtp-Source: ABdhPJykAIb6xl/0NUHtNKq/lDZDnYHUiHAevTI568j20etsPdR21J/3F20fBzYO5JQ8Nidjfn05/g==
+X-Received: by 2002:ac8:5c83:: with SMTP id r3mr28469432qta.78.1625756928553;
+        Thu, 08 Jul 2021 08:08:48 -0700 (PDT)
+Received: from iron-maiden.localnet ([50.225.136.98])
+        by smtp.gmail.com with ESMTPSA id t30sm1106247qkm.11.2021.07.08.08.08.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jul 2021 08:08:48 -0700 (PDT)
+From:   Carlos Bilbao <bilbao@vt.edu>
+To:     gregkh@linuxfoundation.org
+Cc:     andrew@lunn.ch, alexander.deucher@amd.com, davem@davemloft.net,
+        mchehab+huawei@kernel.org, kuba@kernel.org,
+        James.Bottomley@hansenpartnership.com, netdev@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers: Follow the indentation coding standard on printks
+Date:   Thu, 08 Jul 2021 11:08:47 -0400
+Message-ID: <7263255.EvYhyI6sBW@iron-maiden>
+Organization: Virginia Tech
+In-Reply-To: <YOcRfBtS/UJ81CFq@lunn.ch>
+References: <2784471.e9J7NaK4W3@iron-maiden> <YOcRfBtS/UJ81CFq@lunn.ch>
 MIME-Version: 1.0
-In-Reply-To: <CAK8P3a0x4gba+syLqjBDG0634FNDNRTvDm4dQ9p_fmgSXBUiig@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Content-Language: en-US
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2021-07-08 7:37 a.m., Arnd Bergmann wrote:
->>> I think setting it to 2048 is rather excessive,
->> Since parisc needs roughly twice the frame (and stack) size as x86,
->> 2048 seemed logical since that's the double of what's used on x86.
->> Of course we can reduce it, e.g. to 1536.
-> But it doesn't use twice as much for large functions at all. The stack
-> frame for a small function is much larger, so you need a larger kernel
-> stack to allow for deely nested call chains, but the frame for single
-> function with large variables is only a bit larger as most of it is used up
-> by those variables.
-Correct.  In the 32-bit target, the stack alignment is 64 bytes.  This is the main reason functions
-with small stacks use more stack than on x86.  There's also the frame marker that needs to be
-reserved.  In the 64-bit target, the stack alignment is 16 bytes.  However, the minimum allocation
-is quite large because of frame marker, 8 call registers and the argument pointer slots.  If a function
-uses a significant number of local variables, there shouldn't be much difference in stack size.
+Hello,
 
-Dave
+> - Your patch did many different things all at once, making it difficult
+>  to review.  All Linux kernel patches need to only do one thing at a
+>  time.  If you need to do multiple things (such as clean up all coding
 
--- 
-John David Anglin  dave.anglin@bell.net
+Greg, I am going to divide the patch in three parts, for atm/, net/ and parisc/.
+
+> 
+> Why not use DPRINTK(), defined at the start of suni.c?
+> 
+>     Andrew
+
+Thanks for the idea Andrew, I will make a new version of the net/ patch.
+
+thanks,
+Carlos. 
 
 
