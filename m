@@ -2,87 +2,227 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3E293C1909
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 20:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ECC43C1B04
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 23:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbhGHSPr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 8 Jul 2021 14:15:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43236 "EHLO
+        id S231310AbhGHVfQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 8 Jul 2021 17:35:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbhGHSPr (ORCPT
+        with ESMTP id S230442AbhGHVfO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 8 Jul 2021 14:15:47 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD758C06175F
-        for <linux-parisc@vger.kernel.org>; Thu,  8 Jul 2021 11:13:04 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id g8so5516312qth.10
-        for <linux-parisc@vger.kernel.org>; Thu, 08 Jul 2021 11:13:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vt-edu.20150623.gappssmtp.com; s=20150623;
-        h=content-transfer-encoding:mime-version:subject:from:in-reply-to:cc
-         :date:message-id:references:to;
-        bh=nz61/2ipllgpvLpgCGgX7r1d8pgsxg1IoMqza7C5vTI=;
-        b=CcXG3sVPOSKXoFF+gaKVYgWrb8DR1EijPlJrLmlONIiTDa4P2vT11TLlDFjg69+uPt
-         QHsex7kF/9kXGYrMJyOh/ab2f13XBz/jktm0MTRyl4eBUQiYh1UWGZXRDWEIN6YN7Up8
-         SRsVYZPe3EvshEITV376tINcoQP64hpMURWixn3JcJdLQbRyAhSdTTGYZKt7lO3GX1IQ
-         ux6X4oh/b8cl2YnLV6xgqpm/h5xJXm66Z9TqYoiqMfDHNaRDJ2IFs37Q7EUwVL6HRIpO
-         S1Jg/KOIkgiNy5RZO2uOu1sitvNnHg3/b7d4pa5Pels9Gu76hSw+nd/mDHOMDb+JzuFM
-         5TAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:mime-version:subject
-         :from:in-reply-to:cc:date:message-id:references:to;
-        bh=nz61/2ipllgpvLpgCGgX7r1d8pgsxg1IoMqza7C5vTI=;
-        b=HM8JcyAAG373AsoeLKy8KXclvDhlAxqt5mXXUeVdQ8MFClhFxLLXToUri9V6IWmJkp
-         PH9MZfiipnzT7AdUdjv8p1obmnujE+JiC5sudJ7BRCbSn7rzSiiC4gJCzzyIgqisB4LC
-         aimyLWIjaQjsIXV4UPkfhl9caWbIWQ9SS/0t3vYVuba7AmLrVTd+D/PUi6KMCRhh1igm
-         9+QUQ72VMMfi58DFFnmJKaNJdUrg1rxS5oTqQc9KtF2dY2zzHm4altYex73VEzWWBWRP
-         jbb6Gd6revO3vE7TFNbVkNu3Q/ySkDyNZshiSnfN9eLlIZvUsczXqNiyfIANrUW/SFBa
-         XFiA==
-X-Gm-Message-State: AOAM532ohRKoPyxllJP0Nx9ZCKgcm8NLxwK4bkd4z6kFSAar5oL29ZI2
-        AZYcgrBE66cL8I4NiFlWxabZCw==
-X-Google-Smtp-Source: ABdhPJxsKhx6k4o/ZjQtYmK/8qame8teaN4j1+lWv0q+KTN5pW0nVqWR8OgdwYOLslpoaE3pEYXJcg==
-X-Received: by 2002:ac8:4b69:: with SMTP id g9mr23819103qts.123.1625767983994;
-        Thu, 08 Jul 2021 11:13:03 -0700 (PDT)
-Received: from smtpclient.apple ([50.225.136.98])
-        by smtp.gmail.com with ESMTPSA id l6sm1330221qkk.117.2021.07.08.11.13.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jul 2021 11:13:03 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH net-next v2] drivers: parisc: Remove unnecessary #if blocks
-From:   bilbao@vt.edu
-In-Reply-To: <YOc+EWQQUMJDZRCE@lunn.ch>
-Cc:     James.Bottomley@hansenpartnership.com,
-        Joe Perches <joe@perches.com>, deller@gmx.de,
+        Thu, 8 Jul 2021 17:35:14 -0400
+X-Greylist: delayed 400 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 08 Jul 2021 14:32:31 PDT
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53046C061574
+        for <linux-parisc@vger.kernel.org>; Thu,  8 Jul 2021 14:32:31 -0700 (PDT)
+Received: (qmail 4076 invoked from network); 8 Jul 2021 21:22:53 -0000
+Received: from p548d4fed.dip0.t-ipconnect.de ([::ffff:84.141.79.237]:37098 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <gregkh@linuxfoundation.org>; Thu, 08 Jul 2021 23:22:53 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     gregkh@linuxfoundation.org, Carlos Bilbao <bilbao@vt.edu>
+Cc:     alexander.deucher@amd.com, davem@davemloft.net,
+        mchehab+huawei@kernel.org, kuba@kernel.org,
+        James.Bottomley@hansenpartnership.com, netdev@vger.kernel.org,
         linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 8 Jul 2021 14:13:02 -0400
-Message-Id: <695234B5-445C-43F8-A438-29D644A56291@vt.edu>
-References: <YOc+EWQQUMJDZRCE@lunn.ch>
-To:     Andrew Lunn <andrew@lunn.ch>
-X-Mailer: iPhone Mail (18F72)
+Subject: Re: [PATCH] drivers: Follow the indentation coding standard on printks
+Date:   Thu, 08 Jul 2021 23:25:37 +0200
+Message-ID: <2148456.iZASKD2KPV@daneel.sf-tec.de>
+In-Reply-To: <2784471.e9J7NaK4W3@iron-maiden>
+References: <2784471.e9J7NaK4W3@iron-maiden>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart1863788.PYKUYFuaPT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello Andrew, following your suggestions I will just abandon this and resubm=
-it next week with proper Subjects, etc.=20
+--nextPart1863788.PYKUYFuaPT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-> On Jul 8, 2021, at 2:04 PM, Andrew Lunn <andrew@lunn.ch> wrote:
->=20
-> =EF=BB=BFOn Thu, Jul 08, 2021 at 01:40:54PM -0400, Carlos Bilbao wrote:
->> Remove undefined #ifdefs and #if 0 from these two files.
->=20
-> Hi Carlos
->=20
-> This is not a network driver, so putting net-next in the subject is
-> not useful.
->=20
-> Also, at the moment, we are in the merge window. It is unlikely that
-> any maintainer will accept your patches until the merge window closes,
-> which should be this weekend. You can whoever still send patches, but
-> please mark them RFC, and send them just to the appropriate list, not
-> the maintainer.
->=20
->      Andrew
+Am Donnerstag, 8. Juli 2021, 15:10:01 CEST schrieb Carlos Bilbao:
+> Fix indentation of printks that start at the beginning of the line. Change
+> this for the right number of space characters, or tabs if the file uses
+> them.
+
+> diff --git a/drivers/atm/iphase.c b/drivers/atm/iphase.c
+> index bc8e8d9f176b..65bb700cd5af 100644
+> --- a/drivers/atm/iphase.c
+> +++ b/drivers/atm/iphase.c
+> @@ -1246,7 +1246,7 @@ static void rx_intr(struct atm_dev *dev)
+>                 ((iadev->rx_pkt_cnt - iadev->rx_tmp_cnt) == 0)) {
+>          for (i = 1; i <= iadev->num_rx_desc; i++)
+>                 free_desc(dev, i);
+> -printk("Test logic RUN!!!!\n");
+> +        printk("Test logic RUN!!!!\n");
+>          writew(
+> ~(RX_FREEQ_EMPT|RX_EXCP_RCVD),iadev->reass_reg+REASS_MASK_REG);
+> iadev->rxing = 1;
+>       }
+
+This looks like leftover debug code and probably should just be deleted.
+
+> diff --git a/drivers/atm/suni.c b/drivers/atm/suni.c
+> index 21e5acc766b8..149605cdb859 100644
+> --- a/drivers/atm/suni.c
+> +++ b/drivers/atm/suni.c
+> @@ -328,8 +328,8 @@ static int suni_start(struct atm_dev *dev)
+>  		timer_setup(&poll_timer, suni_hz, 0);
+>  		poll_timer.expires = jiffies+HZ;
+>  #if 0
+> -printk(KERN_DEBUG "[u] p=0x%lx,n=0x%lx\n",(unsigned long)
+> poll_timer.list.prev, -    (unsigned long) poll_timer.list.next);
+> +	printk(KERN_DEBUG "[u] p=0x%lx,n=0x%lx\n",(unsigned long)
+> poll_timer.list.prev, +	    (unsigned long) poll_timer.list.next);
+>  #endif
+>  		add_timer(&poll_timer);
+>  	}
+
+This should be converted to pr_debug() and the #if 0 can be removed. Or the 
+whole thing should likely just be removed, this looks like dead debug code.
+
+> diff --git a/drivers/atm/zatm.c b/drivers/atm/zatm.c
+> index cf5fffcf98a1..4fb89ed47311 100644
+> --- a/drivers/atm/zatm.c
+> +++ b/drivers/atm/zatm.c
+> @@ -380,7 +380,7 @@ static void poll_rx(struct atm_dev *dev,int mbx)
+>  			pos = zatm_dev->mbx_start[mbx];
+>  		cells = here[0] & uPD98401_AAL5_SIZE;
+>  #if 0
+> -printk("RX IND: 0x%x, 0x%x, 0x%x, 0x%x\n",here[0],here[1],here[2],here[3]);
+> +		printk("RX IND: 0x%x, 0x%x, 0x%x,
+> 0x%x\n",here[0],here[1],here[2],here[3]);
+> {
+>  unsigned long *x;
+>  		printk("POOL: 0x%08x, 0x%08x\n",zpeekl(zatm_dev,
+
+This is lacking a loglevel, as well as the following prints. It should be 
+converted to pr_debug(). The indentation of the following lines should be 
+fixed, too.
+
+> @@ -403,14 +403,14 @@ EVENT("error code 0x%x/0x%x\n",(here[3] &
+> uPD98401_AAL5_ES) >> skb = ((struct rx_buffer_head *)
+> bus_to_virt(here[2]))->skb;
+>  		__net_timestamp(skb);
+>  #if 0
+> -printk("[-3..0] 0x%08lx 0x%08lx 0x%08lx 0x%08lx\n",((unsigned *)
+> skb->data)[-3],
+> +		printk("[-3..0] 0x%08lx 0x%08lx 0x%08lx
+> 0x%08lx\n",((unsigned *) skb->data)[-3],
+> ((unsigned *) skb->data)[-2],((unsigned *) skb->data)[-1],
+>    ((unsigned *) skb->data)[0]);
+>  #endif
+
+These as well. But this doesn't make sense, the format string says %lx, but 
+the casts are to unsigned, so I suspect this would spit warnings if enabled.
+
+>  		EVENT("skb 0x%lx, here 0x%lx\n",(unsigned long) skb,
+>  		    (unsigned long) here);
+>  #if 0
+> -printk("dummy: 0x%08lx, 0x%08lx\n",dummy[0],dummy[1]);
+> +		printk("dummy: 0x%08lx, 0x%08lx\n",dummy[0],dummy[1]);
+>  #endif
+>  		size = error ? 0 : ntohs(((__be16 *) skb->data)[cells*
+>  		    ATM_CELL_PAYLOAD/sizeof(u16)-3]);
+
+Same here.
+
+> @@ -664,7 +664,7 @@ static int do_tx(struct sk_buff *skb)
+>  		EVENT("dsc (0x%lx)\n",(unsigned long) dsc,0);
+>  	}
+>  	else {
+> -printk("NONONONOO!!!!\n");
+> +		printk("NONONONOO!!!!\n");
+>  		dsc = NULL;
+>  #if 0
+>  		u32 *put;
+
+And this should give something more useful, at least showing the driver name 
+or something like that.
+
+> diff --git a/drivers/net/ethernet/dec/tulip/de4x5.c
+> b/drivers/net/ethernet/dec/tulip/de4x5.c index b125d7faefdf..155cfe8800cd
+> 100644
+> --- a/drivers/net/ethernet/dec/tulip/de4x5.c
+> +++ b/drivers/net/ethernet/dec/tulip/de4x5.c
+> @@ -3169,7 +3169,7 @@ dc2114x_autoconf(struct net_device *dev)
+> 
+>      default:
+>  	lp->tcount++;
+> -printk("Huh?: media:%02x\n", lp->media);
+> +	printk("Huh?: media:%02x\n", lp->media);
+>  	lp->media = INIT;
+>  	break;
+>      }
+
+That should be netdev_something, like netdev_dbg() or netdev_warn().
+
+> diff --git a/drivers/net/sb1000.c b/drivers/net/sb1000.c
+> index e88af978f63c..54a7c7613434 100644
+> --- a/drivers/net/sb1000.c
+> +++ b/drivers/net/sb1000.c
+
+Here as well.
+
+> --- a/drivers/parisc/iosapic.c
+> +++ b/drivers/parisc/iosapic.c
+> @@ -633,7 +633,7 @@ static void iosapic_unmask_irq(struct irq_data *d)
+>  	printk("\n");
+>  }
+> 
+> -printk("iosapic_enable_irq(): sel ");
+> +	printk("iosapic_enable_irq(): sel ");
+>  {
+>  	struct iosapic_info *isp = vi->iosapic;
+> 
+> @@ -642,7 +642,7 @@ printk("iosapic_enable_irq(): sel ");
+>  		printk(" %x", d1);
+>  	}
+>  }
+> -printk("\n");
+> +	printk("\n");
+>  #endif
+> 
+>  	/*
+
+This is also debug code. It is basically unchanged since it has been imported 
+into git. So it may be time to remove the whole block. Helge?
+
+> diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
+> index dce4cdf786cd..c3381facdfc5 100644
+> --- a/drivers/parisc/sba_iommu.c
+> +++ b/drivers/parisc/sba_iommu.c
+> @@ -1550,7 +1550,7 @@ static void sba_hw_init(struct sba_device *sba_dev)
+> 
+> 
+>  #if 0
+> -printk("sba_hw_init(): mem_boot 0x%x 0x%x 0x%x 0x%x\n",
+> PAGE0->mem_boot.hpa, 
+> +	printk("sba_hw_init(): mem_boot 0x%x 0x%x 0x%x
+> 0x%x\n", PAGE0->mem_boot.hpa, PAGE0->mem_boot.spa, PAGE0->mem_boot.pad,
+> PAGE0->mem_boot.cl_class);
+> 
+>  	/*
+
+This is equally old. It should be either also removed, also this seems at 
+least worth as documentation. Maybe just switch it to pr_debug() or 
+dev_debug() while fixing the indentation.
+
+Eike
+--nextPart1863788.PYKUYFuaPT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYOdtUQAKCRBcpIk+abn8
+TjvKAJ9KW9u+by7dUbwpWaarnO5vdJOoeQCgn2MPuAeWlpS6renjtPDd6xD15P8=
+=xCeP
+-----END PGP SIGNATURE-----
+
+--nextPart1863788.PYKUYFuaPT--
+
+
+
