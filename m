@@ -2,237 +2,236 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77A453BFA65
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 14:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A0F53C13E5
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jul 2021 15:10:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231642AbhGHMoZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 8 Jul 2021 08:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53044 "EHLO
+        id S231822AbhGHNMs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 8 Jul 2021 09:12:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231376AbhGHMoW (ORCPT
+        with ESMTP id S231438AbhGHNMp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 8 Jul 2021 08:44:22 -0400
-Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B10AC0613DC
-        for <linux-parisc@vger.kernel.org>; Thu,  8 Jul 2021 05:41:40 -0700 (PDT)
-Received: by mail-vs1-xe31.google.com with SMTP id e9so2004534vsk.13
-        for <linux-parisc@vger.kernel.org>; Thu, 08 Jul 2021 05:41:40 -0700 (PDT)
+        Thu, 8 Jul 2021 09:12:45 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266D9C06175F
+        for <linux-parisc@vger.kernel.org>; Thu,  8 Jul 2021 06:10:03 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id e14so5526742qkl.9
+        for <linux-parisc@vger.kernel.org>; Thu, 08 Jul 2021 06:10:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=hP9H7HVTE7TFrRNTl1vyqWVVeZcuqXBCZg0bGqclL/A=;
-        b=VetX2Cfr8bdRNaZiWLEm04u6bqZW3l6DI4CAN74JIY7k4z1gUX2WPAhVDnzm350lf2
-         zN9Z12JQmbzlk/BWNUXvjVAbpB66ZXuvK3SPb444QQ5diXQOytBY51L2/oTaoUD9VeXU
-         uFurAnxdtCpnicZBLB0yD9ojUwv6W/qtm1PvBS9AFUFJNPr3tKxeC4wQWDvFkNeWRoRf
-         7SjXn45LyDiaoeLgbbyRwVPp/zZWqO3qYud0+Xn/514eUefuiFS0gjROioJ7tCP2C/ZN
-         ZUSLS7lmtDXFsaxdqMahs7f08oqXmzo9A5DfBGmAWg3PByPV9/9CFdzFbNZ8GtPMsFJE
-         z42g==
+        d=vt-edu.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:organization:mime-version
+         :content-transfer-encoding;
+        bh=0gWa5OAetARENJ/C2A+ypYSxjA1n75Wtbf8cIeVt5lw=;
+        b=rVpqeS3ADm4epyS1551pFg7IVyjQMyOeHU0pqBt9vhTHyoEjam9cabNZiCh81qZbYr
+         6i8HPNamfdtZN4vthwnXgk7a3MYgo8JrRFbvh9Nw+MHz4nuDMZVNZmxE28WAnDVLCCSS
+         ESpUD0dm+ZQ5Zt2GolDEbwGoVJvwxv6jD2UwrEIIEzXyUYuQe+AkaGkCTOqa/E+EjRlp
+         DJIEB0RhcW5JdBN/rilZvvakEEzRwl4rV4lejFp1g74/PGf65kpO7lb4aU0rhw/dJ2Yo
+         llVDDf9Yo3RdtQYHsTkjCS/vsLWm1KjjTTpgUPnA2fuRtmFgqeRyQ91LksLHI2sUv+CK
+         C5uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=hP9H7HVTE7TFrRNTl1vyqWVVeZcuqXBCZg0bGqclL/A=;
-        b=J3g44lvERpxDmZSmWIpVZqZnd48FuHXsgeCS+BtLNd+kzNE2ZLNNFACQw7oLVaUnEt
-         VoinsX7rZUMmpPzl0HXzbEisDBT4zScIFQ1uQmaq+wuIPBeMj2e+NOPFSm6N5yRPM9VI
-         xgJ8RFYTtJYRJOSTjT3lK+0FzWCzf6cU+BRBYZ77GsEgoQ2c67a55dsLyorO/7i7uApI
-         09sGh9DV4kJcB0TctB9QT3M1h0qZkHtFrjcDwz+w4bQ4anqJC60mv+k4aVBzUQD7FbRV
-         Vh0KTDpvEBOQbq+Rbi/l7hxaMXqKQy0+wEzvJ7tvcMjRvqrfbPqrD7WE9lWuWSWYOo5G
-         NlWQ==
-X-Gm-Message-State: AOAM530UI9gAPQ6QvDjMERs+AG3j0xlc6uBeTEormygZVbPPduTjSbGW
-        R5vmptdFvFNm7lghqQ1OxpQ4Ds/PmKKByOQA9rr2IQ==
-X-Google-Smtp-Source: ABdhPJywz4fR2V+V+6/E9OWxEVi9/b58VFa4IZ2LlJTPpT0B9SRAdSG9PM7u1rPMHG2ZlSabjmUDzfVjnsqdUEe3bFI=
-X-Received: by 2002:a67:8783:: with SMTP id j125mr27888650vsd.42.1625748098931;
- Thu, 08 Jul 2021 05:41:38 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:organization
+         :mime-version:content-transfer-encoding;
+        bh=0gWa5OAetARENJ/C2A+ypYSxjA1n75Wtbf8cIeVt5lw=;
+        b=g4YiXpJXqnHggcl3e5eZczpferXv+/bCos+bsZ/edCKMyZ0xKztG5aca8ipUWZlt00
+         tXZTrKKjn6DTQ/OpcHz6T4QsUEggmjPji04ph8LvBqhK8WHbu3CHYoOvTlbv2aPVmMN6
+         1xkZ9J8keQClvpzO0LDLiObbx29XTBnr8QPB14QUQt/TpPJBT9RFcM4F66/yCOXorv8k
+         vrLeXHdt1Vi8YgX1gej5d+wUbD8co9OAs5KqXZ/Ubt8+U0fGFvWIDi9uVVfoejujJM0J
+         Vh1LfyYUVs1CLT5+zk8kc7RFLWlKbJQ+irggIYBZHA9LXl9Djub2UyFosvZesY/dC6mc
+         +XUQ==
+X-Gm-Message-State: AOAM533D0Xni1/1ZslebrN1VG8r9PixqemFxVIEB+hTA/zSGOjaSj0i2
+        dyyKhotBdTvuNl7q6PTB5iXn9g==
+X-Google-Smtp-Source: ABdhPJxwni2+Rg+Xd/d8J/l4eMGB7XpS0gH0BWTx9TyALUC9kwCBwF6z1zM95wWWL9QVmLb17JemgA==
+X-Received: by 2002:a05:620a:1998:: with SMTP id bm24mr18790901qkb.422.1625749802194;
+        Thu, 08 Jul 2021 06:10:02 -0700 (PDT)
+Received: from iron-maiden.localnet ([50.225.136.98])
+        by smtp.gmail.com with ESMTPSA id o126sm951685qka.74.2021.07.08.06.10.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jul 2021 06:10:01 -0700 (PDT)
+From:   Carlos Bilbao <bilbao@vt.edu>
+To:     gregkh@linuxfoundation.org
+Cc:     alexander.deucher@amd.com, davem@davemloft.net,
+        mchehab+huawei@kernel.org, kuba@kernel.org,
+        James.Bottomley@hansenpartnership.com, netdev@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drivers: Follow the indentation coding standard on printks
+Date:   Thu, 08 Jul 2021 09:10:01 -0400
+Message-ID: <2784471.e9J7NaK4W3@iron-maiden>
+Organization: Virginia Tech
 MIME-Version: 1.0
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de> <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 8 Jul 2021 14:41:02 +0200
-Message-ID: <CAPDyKFo0zuooWAkuR=BcsvcJ2pmSrcEoBhuC8+ne18GQphyPHA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Geoff Levand <geoff@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
-        Moritz Fischer <mdf@kernel.org>,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
-        Jens Taprogge <jens.taprogge@taprogge.org>,
-        Johannes Thumshirn <morbidrsa@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Alex Dubov <oakad@yahoo.com>, Lee Jones <lee.jones@linaro.org>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Alexandre Bounine <alex.bou9@gmail.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Thorsten Scherer <t.scherer@eckelmann.de>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Michael Buesch <m@bues.ch>,
-        Sven Van Asbroeck <TheSven73@gmail.com>,
-        Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Kirti Wankhede <kwankhede@nvidia.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Martyn Welch <martyn@welchs.me.uk>,
-        Manohar Vanga <manohar.vanga@gmail.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Marc Zyngier <maz@kernel.org>,
-        Tyrel Datwyler <tyreld@linux.ibm.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Qinglang Miao <miaoqinglang@huawei.com>,
-        Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Joey Pabalan <jpabalanb@gmail.com>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Frank Li <lznuaa@gmail.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        Bodo Stroesser <bostroesser@gmail.com>,
-        Hannes Reinecke <hare@suse.de>,
-        David Woodhouse <dwmw@amazon.co.uk>,
-        SeongJae Park <sjpark@amazon.de>,
-        Julien Grall <jgrall@amazon.com>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, linux-cxl@vger.kernel.org,
-        nvdimm@lists.linux.dev, dmaengine@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
-        greybus-dev@lists.linaro.org, target-devel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        xen-devel@lists.xenproject.org,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Johannes Thumshirn <jth@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, 6 Jul 2021 at 17:53, Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
->
-> The driver core ignores the return value of this callback because there
-> is only little it can do when a device disappears.
->
-> This is the final bit of a long lasting cleanup quest where several
-> buses were converted to also return void from their remove callback.
-> Additionally some resource leaks were fixed that were caused by drivers
-> returning an error code in the expectation that the driver won't go
-> away.
->
-> With struct bus_type::remove returning void it's prevented that newly
-> implemented buses return an ignored error code and so don't anticipate
-> wrong expectations for driver authors.
->
-> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk> (For ARM, Am=
-ba and related parts)
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Chen-Yu Tsai <wens@csie.org> (for drivers/bus/sunxi-rsb.c)
-> Acked-by: Pali Roh=C3=A1r <pali@kernel.org>
-> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> (for drivers/media)
-> Acked-by: Hans de Goede <hdegoede@redhat.com> (For drivers/platform)
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Acked-By: Vinod Koul <vkoul@kernel.org>
-> Acked-by: Juergen Gross <jgross@suse.com> (For Xen)
-> Acked-by: Lee Jones <lee.jones@linaro.org> (For drivers/mfd)
-> Acked-by: Johannes Thumshirn <jth@kernel.org> (For drivers/mcb)
-> Acked-by: Johan Hovold <johan@kernel.org>
-> Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org> (For drive=
-rs/slimbus)
-> Acked-by: Kirti Wankhede <kwankhede@nvidia.com> (For drivers/vfio)
-> Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com> (For ulpi and=
- typec)
-> Acked-by: Samuel Iglesias Gons=C3=A1lvez <siglesias@igalia.com> (For ipac=
-k)
-> Reviewed-by: Tom Rix <trix@redhat.com> (For fpga)
-> Acked-by: Geoff Levand <geoff@infradead.org> (For ps3)
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Fix indentation of printks that start at the beginning of the line. Change this 
+for the right number of space characters, or tabs if the file uses them. 
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # For MMC
+Signed-off-by: Carlos Bilbao <bilbao@vt.edu>
+---
+ drivers/atm/eni.c                      | 2 +-
+ drivers/atm/iphase.c                   | 2 +-
+ drivers/atm/suni.c                     | 4 ++--
+ drivers/atm/zatm.c                     | 8 ++++----
+ drivers/net/ethernet/dec/tulip/de4x5.c | 2 +-
+ drivers/net/sb1000.c                   | 4 ++--
+ drivers/parisc/iosapic.c               | 4 ++--
+ drivers/parisc/sba_iommu.c             | 2 +-
+ 8 files changed, 14 insertions(+), 14 deletions(-)
 
-[...]
+diff --git a/drivers/atm/eni.c b/drivers/atm/eni.c
+index 422753d52244..6d10fd62ba7e 100644
+--- a/drivers/atm/eni.c
++++ b/drivers/atm/eni.c
+@@ -1456,7 +1456,7 @@ static int start_tx(struct atm_dev *dev)
+ 
+ static void foo(void)
+ {
+-printk(KERN_INFO
++  printk(KERN_INFO
+   "tx_complete=%d,dma_complete=%d,queued=%d,requeued=%d,sub=%d,\n"
+   "backlogged=%d,rx_enqueued=%d,rx_dequeued=%d,putting=%d,pushed=%d\n",
+   tx_complete,dma_complete,queued,requeued,submitted,backlogged,
+diff --git a/drivers/atm/iphase.c b/drivers/atm/iphase.c
+index bc8e8d9f176b..65bb700cd5af 100644
+--- a/drivers/atm/iphase.c
++++ b/drivers/atm/iphase.c
+@@ -1246,7 +1246,7 @@ static void rx_intr(struct atm_dev *dev)
+                ((iadev->rx_pkt_cnt - iadev->rx_tmp_cnt) == 0)) {
+         for (i = 1; i <= iadev->num_rx_desc; i++)
+                free_desc(dev, i);
+-printk("Test logic RUN!!!!\n");
++        printk("Test logic RUN!!!!\n");
+         writew( ~(RX_FREEQ_EMPT|RX_EXCP_RCVD),iadev->reass_reg+REASS_MASK_REG);
+         iadev->rxing = 1;
+      }
+diff --git a/drivers/atm/suni.c b/drivers/atm/suni.c
+index 21e5acc766b8..149605cdb859 100644
+--- a/drivers/atm/suni.c
++++ b/drivers/atm/suni.c
+@@ -328,8 +328,8 @@ static int suni_start(struct atm_dev *dev)
+ 		timer_setup(&poll_timer, suni_hz, 0);
+ 		poll_timer.expires = jiffies+HZ;
+ #if 0
+-printk(KERN_DEBUG "[u] p=0x%lx,n=0x%lx\n",(unsigned long) poll_timer.list.prev,
+-    (unsigned long) poll_timer.list.next);
++	printk(KERN_DEBUG "[u] p=0x%lx,n=0x%lx\n",(unsigned long) poll_timer.list.prev,
++	    (unsigned long) poll_timer.list.next);
+ #endif
+ 		add_timer(&poll_timer);
+ 	}
+diff --git a/drivers/atm/zatm.c b/drivers/atm/zatm.c
+index cf5fffcf98a1..4fb89ed47311 100644
+--- a/drivers/atm/zatm.c
++++ b/drivers/atm/zatm.c
+@@ -380,7 +380,7 @@ static void poll_rx(struct atm_dev *dev,int mbx)
+ 			pos = zatm_dev->mbx_start[mbx];
+ 		cells = here[0] & uPD98401_AAL5_SIZE;
+ #if 0
+-printk("RX IND: 0x%x, 0x%x, 0x%x, 0x%x\n",here[0],here[1],here[2],here[3]);
++		printk("RX IND: 0x%x, 0x%x, 0x%x, 0x%x\n",here[0],here[1],here[2],here[3]);
+ {
+ unsigned long *x;
+ 		printk("POOL: 0x%08x, 0x%08x\n",zpeekl(zatm_dev,
+@@ -403,14 +403,14 @@ EVENT("error code 0x%x/0x%x\n",(here[3] & uPD98401_AAL5_ES) >>
+ 		skb = ((struct rx_buffer_head *) bus_to_virt(here[2]))->skb;
+ 		__net_timestamp(skb);
+ #if 0
+-printk("[-3..0] 0x%08lx 0x%08lx 0x%08lx 0x%08lx\n",((unsigned *) skb->data)[-3],
++		printk("[-3..0] 0x%08lx 0x%08lx 0x%08lx 0x%08lx\n",((unsigned *) skb->data)[-3],
+   ((unsigned *) skb->data)[-2],((unsigned *) skb->data)[-1],
+   ((unsigned *) skb->data)[0]);
+ #endif
+ 		EVENT("skb 0x%lx, here 0x%lx\n",(unsigned long) skb,
+ 		    (unsigned long) here);
+ #if 0
+-printk("dummy: 0x%08lx, 0x%08lx\n",dummy[0],dummy[1]);
++		printk("dummy: 0x%08lx, 0x%08lx\n",dummy[0],dummy[1]);
+ #endif
+ 		size = error ? 0 : ntohs(((__be16 *) skb->data)[cells*
+ 		    ATM_CELL_PAYLOAD/sizeof(u16)-3]);
+@@ -664,7 +664,7 @@ static int do_tx(struct sk_buff *skb)
+ 		EVENT("dsc (0x%lx)\n",(unsigned long) dsc,0);
+ 	}
+ 	else {
+-printk("NONONONOO!!!!\n");
++		printk("NONONONOO!!!!\n");
+ 		dsc = NULL;
+ #if 0
+ 		u32 *put;
+diff --git a/drivers/net/ethernet/dec/tulip/de4x5.c b/drivers/net/ethernet/dec/tulip/de4x5.c
+index b125d7faefdf..155cfe8800cd 100644
+--- a/drivers/net/ethernet/dec/tulip/de4x5.c
++++ b/drivers/net/ethernet/dec/tulip/de4x5.c
+@@ -3169,7 +3169,7 @@ dc2114x_autoconf(struct net_device *dev)
+ 
+     default:
+ 	lp->tcount++;
+-printk("Huh?: media:%02x\n", lp->media);
++	printk("Huh?: media:%02x\n", lp->media);
+ 	lp->media = INIT;
+ 	break;
+     }
+diff --git a/drivers/net/sb1000.c b/drivers/net/sb1000.c
+index e88af978f63c..54a7c7613434 100644
+--- a/drivers/net/sb1000.c
++++ b/drivers/net/sb1000.c
+@@ -760,7 +760,7 @@ sb1000_rx(struct net_device *dev)
+ 
+ 	insw(ioaddr, (unsigned short*) st, 1);
+ #ifdef XXXDEBUG
+-printk("cm0: received: %02x %02x\n", st[0], st[1]);
++	printk("cm0: received: %02x %02x\n", st[0], st[1]);
+ #endif /* XXXDEBUG */
+ 	lp->rx_frames++;
+ 
+@@ -805,7 +805,7 @@ printk("cm0: received: %02x %02x\n", st[0], st[1]);
+ 		/* get data length */
+ 		insw(ioaddr, buffer, NewDatagramHeaderSize / 2);
+ #ifdef XXXDEBUG
+-printk("cm0: IP identification: %02x%02x  fragment offset: %02x%02x\n", buffer[30], buffer[31], buffer[32], buffer[33]);
++		printk("cm0: IP identification: %02x%02x  fragment offset: %02x%02x\n", buffer[30], buffer[31], buffer[32], buffer[33]);
+ #endif /* XXXDEBUG */
+ 		if (buffer[0] != NewDatagramHeaderSkip) {
+ 			if (sb1000_debug > 1)
+diff --git a/drivers/parisc/iosapic.c b/drivers/parisc/iosapic.c
+index 8a3b0c3a1e92..5d27c23e6429 100644
+--- a/drivers/parisc/iosapic.c
++++ b/drivers/parisc/iosapic.c
+@@ -633,7 +633,7 @@ static void iosapic_unmask_irq(struct irq_data *d)
+ 	printk("\n");
+ }
+ 
+-printk("iosapic_enable_irq(): sel ");
++	printk("iosapic_enable_irq(): sel ");
+ {
+ 	struct iosapic_info *isp = vi->iosapic;
+ 
+@@ -642,7 +642,7 @@ printk("iosapic_enable_irq(): sel ");
+ 		printk(" %x", d1);
+ 	}
+ }
+-printk("\n");
++	printk("\n");
+ #endif
+ 
+ 	/*
+diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
+index dce4cdf786cd..c3381facdfc5 100644
+--- a/drivers/parisc/sba_iommu.c
++++ b/drivers/parisc/sba_iommu.c
+@@ -1550,7 +1550,7 @@ static void sba_hw_init(struct sba_device *sba_dev)
+ 
+ 
+ #if 0
+-printk("sba_hw_init(): mem_boot 0x%x 0x%x 0x%x 0x%x\n", PAGE0->mem_boot.hpa,
++	printk("sba_hw_init(): mem_boot 0x%x 0x%x 0x%x 0x%x\n", PAGE0->mem_boot.hpa,
+ 	PAGE0->mem_boot.spa, PAGE0->mem_boot.pad, PAGE0->mem_boot.cl_class);
+ 
+ 	/*
+-- 
+2.25.1
 
-Kind regards
-Uffe
+
+
