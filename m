@@ -2,179 +2,106 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A7633D5496
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Jul 2021 09:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DCEB3D55F7
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Jul 2021 10:56:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232210AbhGZHH1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 26 Jul 2021 03:07:27 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187]:15999 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231621AbhGZHH0 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 26 Jul 2021 03:07:26 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4GYBlG4DtVzZsyD;
-        Mon, 26 Jul 2021 15:44:26 +0800 (CST)
-Received: from dggema764-chm.china.huawei.com (10.1.198.206) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Mon, 26 Jul 2021 15:47:52 +0800
-Received: from DESKTOP-8RFUVS3.china.huawei.com (10.174.185.179) by
- dggema764-chm.china.huawei.com (10.1.198.206) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 26 Jul 2021 15:47:51 +0800
-From:   Zenghui Yu <yuzenghui@huawei.com>
-To:     <akpm@linux-foundation.org>, <dmitry.torokhov@gmail.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-mips@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
-        <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux@armlinux.org.uk>, <tsbogend@alpha.franken.de>,
-        <James.Bottomley@HansenPartnership.com>, <deller@gmx.de>,
-        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-        <hpa@zytor.com>, <wanghaibin.wang@huawei.com>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH] configs: Remove the obsolete CONFIG_INPUT_POLLDEV
-Date:   Mon, 26 Jul 2021 15:47:41 +0800
-Message-ID: <20210726074741.1062-1-yuzenghui@huawei.com>
-X-Mailer: git-send-email 2.23.0.windows.1
+        id S232329AbhGZIPl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 26 Jul 2021 04:15:41 -0400
+Received: from mout.gmx.net ([212.227.15.19]:52713 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232041AbhGZIPj (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 26 Jul 2021 04:15:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1627289727;
+        bh=WkWs2yjbuB7rMLWgvsxBc4/Z976NwWWIEDiSOgTN55I=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=E7jOP/dwH1+3UHoNaSbTx2XDQRxAN5F8L7jEpZmRIgESVf9ne0KM7xfW0ObhH8vkT
+         ABXz8dsUiPiO1dwu3MUYUkMNesxVe0Yk5ji3YVzpNZGn/BfZ3uPtXbOes3Ed2hx1cN
+         YAlh6MXWhHfFt0OlfJQAeFIRfElfQswmhjdssuBY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.59] ([92.116.128.43]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MHG8g-1lugpy469A-00DFk8; Mon, 26
+ Jul 2021 10:55:27 +0200
+Subject: Re: [PATCH v3 9/9] asm-generic: reverse
+ GENERIC_{STRNCPY_FROM,STRNLEN}_USER symbols
+To:     Arnd Bergmann <arnd@kernel.org>, linux-arch@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Brian Cain <bcain@codeaurora.org>,
+        Chris Zankel <chris@zankel.net>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Christoph Hellwig <hch@lst.de>, Guo Ren <guoren@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Richard Weinberger <richard@nod.at>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        uclinux-h8-devel@lists.sourceforge.jp
+References: <20210722124814.778059-1-arnd@kernel.org>
+ <20210722124814.778059-10-arnd@kernel.org>
+From:   Helge Deller <deller@gmx.de>
+Message-ID: <b89d9932-7498-edd2-0369-227ce17bcba6@gmx.de>
+Date:   Mon, 26 Jul 2021 10:55:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.185.179]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggema764-chm.china.huawei.com (10.1.198.206)
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210722124814.778059-10-arnd@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:kdIeDnlaRuH2T6rYGVMcZI1y8GGtOS/nCSrzGPNZ3OUQY5MU47B
+ 5CBoPs+/Yybus1lp3BFr1TFHG7JdG2o5Hk/+MOXzTPoZvzj/YZ/cz0YWZjRIVcPlnwe88YM
+ WDlT2nlwI7uszkXCcyqKqCixlXZhA3YZdT580q2WrQJMaYRDbQNCq2HCRZf0EsBm4LR75i3
+ BHhYUoKB70JevsBXEfP+w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:t7OOfsjhfdM=:cPmtJv3NWFJm9d/RuoNb+/
+ Ou4Bbj6nA8Q23PNuEt+UCFyyraXkWNdlDMwrkBg6/uFHrFY5gewiHslDKOPvwvPZ4QoBcNuDT
+ 8bh8p1CqRqBNHsASvkEW+aJWm7j9TC8kTFOu4TqiRXvTqGCDIZxCBbYk3f4lF/KmzuVlpr0Du
+ E6C7Nzp0ITty3fkhOUAZ7wUXr3fIAjaxGFOEos4Wax/D/96hS2a6wrxxpOtPW0jHf8YZSnTSW
+ +ywaHc1qBSckC2nArgXnml3LmH/tsv8FS8c8fz5NB7haNTuVB2mlV0T1Vj4jUSZlFG40Gwuh+
+ Qrs/0c1D57oh8kEVO16Yxgp9ls6PVKeBRbaiSNH6omxp9zKHT1mUSR523x7yUMgOqnIwFCvQm
+ Me+mKB5Jup/it+POvsUV+NExWuf1EU1Q6I3aIWzXucxBkrfZ8sNKgj9/ZrGi4s5deIMCkm4jD
+ WaWwGwylSRBIWBpcPDH0v0u+AcyK6mHWrvLsuJgLfVQZ5MtFihjQ7IUGh9k2b0pB61aSNX6Ja
+ aUKIE1tfVrDqxg6QPCBlKIYbOglFx3Of70KtfGF8Y17PfXUSYPqmIeU6f6rsvThB99NrFTtHg
+ UuNp7rNTATgACIDJvcPung6RI/RTVo7xMb5KnslJrTw9tyOlK9c2QiI4u0GzBTGGhI8sB+xEQ
+ jccA0NGTg7ONUDj1qS8/RGqjPZqiAucjd60cgrD9OBfKsNeFwDYDDjlfg22beeNTYtcRRGsU/
+ cwWoNxvInEN7Q5ES0wOBjYvb7zo04AJRFD5+mjf/YJhtmoSZpHSjHRKmLuE8O3jTocx33DzoS
+ l3W3ypaoWe9H/E/AKrwcePngCJNADVH5MLl1qd1trF5lrhH1mRqrIzmYoSrFiehrBph0pN1BH
+ etTVyfghR0rL7vavgTnKsreSpMyl3W3flVYYrL1VFrOZOaFlu4o/STXYiDOLTuais8R4uHZ9m
+ rx7BDIdUVUu2cfGdCxzn72+/DIL+wTIkX3hYLkdhLbb0ILsnNCRr3C7E2s1DdY1NyblFsxj3/
+ LgqPcJqCPQLSSnri/QeHDporOJ+A2BTzG1/uoMuWJameE3z/JlSz+68zDXDri1c2g98Ia8/zM
+ mym0OeKhYLafNgyhfcmFszob94nhnmC8BqG
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This CONFIG option was removed in commit 278b13ce3a89 ("Input: remove
-input_polled_dev implementation") so there's no point to keep it in
-defconfigs any longer.
+On 7/22/21 2:48 PM, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Most architectures do not need a custom implementation, and in most
+> cases the generic implementation is preferred, so change the polariy
+> on these Kconfig symbols to require architectures to select them when
+> they provide their own version.
+>
+> The new name is CONFIG_ARCH_HAS_{STRNCPY_FROM,STRNLEN}_USER.
+>
+> The remaining architectures at the moment are: ia64, mips, parisc,
+> s390, um and xtensa. We should probably convert these as well, but
+> I was not sure how far to take this series.
 
-Get rid of the leftover for all arches.
+Acked-by: Helge Deller <deller@gmx.de> # parisc
 
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
----
- arch/arm/configs/dove_defconfig             | 1 -
- arch/arm/configs/pxa_defconfig              | 1 -
- arch/mips/configs/lemote2f_defconfig        | 1 -
- arch/mips/configs/pic32mzda_defconfig       | 1 -
- arch/mips/configs/rt305x_defconfig          | 1 -
- arch/mips/configs/xway_defconfig            | 1 -
- arch/parisc/configs/generic-32bit_defconfig | 1 -
- arch/x86/configs/i386_defconfig             | 1 -
- arch/x86/configs/x86_64_defconfig           | 1 -
- 9 files changed, 9 deletions(-)
-
-diff --git a/arch/arm/configs/dove_defconfig b/arch/arm/configs/dove_defconfig
-index b935162a8bba..33074fdab2ea 100644
---- a/arch/arm/configs/dove_defconfig
-+++ b/arch/arm/configs/dove_defconfig
-@@ -56,7 +56,6 @@ CONFIG_ATA=y
- CONFIG_SATA_MV=y
- CONFIG_NETDEVICES=y
- CONFIG_MV643XX_ETH=y
--CONFIG_INPUT_POLLDEV=y
- # CONFIG_INPUT_MOUSEDEV is not set
- CONFIG_INPUT_EVDEV=y
- # CONFIG_KEYBOARD_ATKBD is not set
-diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
-index 363f1b1b08e3..58f4834289e6 100644
---- a/arch/arm/configs/pxa_defconfig
-+++ b/arch/arm/configs/pxa_defconfig
-@@ -284,7 +284,6 @@ CONFIG_RT2800USB=m
- CONFIG_MWIFIEX=m
- CONFIG_MWIFIEX_SDIO=m
- CONFIG_INPUT_FF_MEMLESS=m
--CONFIG_INPUT_POLLDEV=y
- CONFIG_INPUT_MATRIXKMAP=y
- CONFIG_INPUT_MOUSEDEV=m
- CONFIG_INPUT_MOUSEDEV_SCREEN_X=640
-diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
-index aaf9d5e0aa2c..791894c4d8fb 100644
---- a/arch/mips/configs/lemote2f_defconfig
-+++ b/arch/mips/configs/lemote2f_defconfig
-@@ -116,7 +116,6 @@ CONFIG_8139TOO=y
- CONFIG_R8169=y
- CONFIG_USB_USBNET=m
- CONFIG_USB_NET_CDC_EEM=m
--CONFIG_INPUT_POLLDEV=m
- CONFIG_INPUT_EVDEV=y
- # CONFIG_MOUSE_PS2_ALPS is not set
- # CONFIG_MOUSE_PS2_LOGIPS2PP is not set
-diff --git a/arch/mips/configs/pic32mzda_defconfig b/arch/mips/configs/pic32mzda_defconfig
-index 63fe2da1b37f..fd567247adc7 100644
---- a/arch/mips/configs/pic32mzda_defconfig
-+++ b/arch/mips/configs/pic32mzda_defconfig
-@@ -34,7 +34,6 @@ CONFIG_SCSI_CONSTANTS=y
- CONFIG_SCSI_SCAN_ASYNC=y
- # CONFIG_SCSI_LOWLEVEL is not set
- CONFIG_INPUT_LEDS=m
--CONFIG_INPUT_POLLDEV=y
- CONFIG_INPUT_MOUSEDEV=m
- CONFIG_INPUT_EVDEV=y
- CONFIG_INPUT_EVBUG=m
-diff --git a/arch/mips/configs/rt305x_defconfig b/arch/mips/configs/rt305x_defconfig
-index fec5851c164b..eb359db15dba 100644
---- a/arch/mips/configs/rt305x_defconfig
-+++ b/arch/mips/configs/rt305x_defconfig
-@@ -90,7 +90,6 @@ CONFIG_PPPOE=m
- CONFIG_PPP_ASYNC=m
- CONFIG_ISDN=y
- CONFIG_INPUT=m
--CONFIG_INPUT_POLLDEV=m
- # CONFIG_KEYBOARD_ATKBD is not set
- # CONFIG_INPUT_MOUSE is not set
- CONFIG_INPUT_MISC=y
-diff --git a/arch/mips/configs/xway_defconfig b/arch/mips/configs/xway_defconfig
-index 9abbc0debc2a..eeb689f715cb 100644
---- a/arch/mips/configs/xway_defconfig
-+++ b/arch/mips/configs/xway_defconfig
-@@ -96,7 +96,6 @@ CONFIG_PPPOE=m
- CONFIG_PPP_ASYNC=m
- CONFIG_ISDN=y
- CONFIG_INPUT=m
--CONFIG_INPUT_POLLDEV=m
- # CONFIG_KEYBOARD_ATKBD is not set
- # CONFIG_INPUT_MOUSE is not set
- CONFIG_INPUT_MISC=y
-diff --git a/arch/parisc/configs/generic-32bit_defconfig b/arch/parisc/configs/generic-32bit_defconfig
-index 7611d48c599e..dd14e3131325 100644
---- a/arch/parisc/configs/generic-32bit_defconfig
-+++ b/arch/parisc/configs/generic-32bit_defconfig
-@@ -111,7 +111,6 @@ CONFIG_PPP_BSDCOMP=m
- CONFIG_PPP_DEFLATE=m
- CONFIG_PPPOE=m
- # CONFIG_WLAN is not set
--CONFIG_INPUT_POLLDEV=y
- CONFIG_KEYBOARD_HIL_OLD=m
- CONFIG_KEYBOARD_HIL=m
- CONFIG_MOUSE_SERIAL=y
-diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
-index 9c9c4a888b1d..e81885384f60 100644
---- a/arch/x86/configs/i386_defconfig
-+++ b/arch/x86/configs/i386_defconfig
-@@ -156,7 +156,6 @@ CONFIG_FORCEDETH=y
- CONFIG_8139TOO=y
- # CONFIG_8139TOO_PIO is not set
- CONFIG_R8169=y
--CONFIG_INPUT_POLLDEV=y
- CONFIG_INPUT_EVDEV=y
- CONFIG_INPUT_JOYSTICK=y
- CONFIG_INPUT_TABLET=y
-diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
-index b60bd2d86034..e8a7a0af2bda 100644
---- a/arch/x86/configs/x86_64_defconfig
-+++ b/arch/x86/configs/x86_64_defconfig
-@@ -148,7 +148,6 @@ CONFIG_SKY2=y
- CONFIG_FORCEDETH=y
- CONFIG_8139TOO=y
- CONFIG_R8169=y
--CONFIG_INPUT_POLLDEV=y
- CONFIG_INPUT_EVDEV=y
- CONFIG_INPUT_JOYSTICK=y
- CONFIG_INPUT_TABLET=y
--- 
-2.19.1
-
+Thanks!
+Helge
