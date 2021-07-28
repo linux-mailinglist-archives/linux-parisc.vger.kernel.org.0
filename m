@@ -2,113 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9373A3D7F61
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jul 2021 22:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBCEF3D8907
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Jul 2021 09:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231339AbhG0Umg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 27 Jul 2021 16:42:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50666 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230425AbhG0Umg (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 27 Jul 2021 16:42:36 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D6DC060FA0;
-        Tue, 27 Jul 2021 20:42:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627418555;
-        bh=d4JjFlDfF7N2eBt3m9sdZRk+eRhA4ZhBMt2Pq1TZ0cw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZKlOgZHSGjAmEnyaCwMuVKafYPWKeXil2Iiwo9tfWrDpXPrP+nIx5u3FkbHHx9hE7
-         f/+uSzSaAFLY8z0zPS4rMNMGD3DTUb7OLkYFi3ipPjtLYS72UjSrIEZWHsniKmxxZK
-         Le59cWQyoKcdNBRC2NnQPaYKcr4Sl5SxpzzeT6TBVgHinsKuWcX4k1BjDbOE4supyn
-         HiZ19DR0bU/awUHcX41Rjheo1w+obLAaQrJ8Rjja+UBSy51OODPf7/DV6wZKbPG4vd
-         wTF3Um9UkJV8uDOE8zSUVipLRKY8TGL5cXoV09GMyL2Tz2E7xssC3kDmiC7uClw3Me
-         O9bSVwy2lubCA==
-Received: by mail-wm1-f48.google.com with SMTP id m38-20020a05600c3b26b02902161fccabf1so2791363wms.2;
-        Tue, 27 Jul 2021 13:42:35 -0700 (PDT)
-X-Gm-Message-State: AOAM532e/tUB7+Yevh5XKbWHbmLJ44fqx2jx8R5yJ6m8/z1ANBb4cKI8
-        EgRq50X0XEK5e2xk7awNte+MLSMqp1CiNR3aWK8=
-X-Google-Smtp-Source: ABdhPJzIeHa1hycZO5ufjXaaYbpY3YdQw4oHXjfZp2KwEfMcEIfJ5hSLrfTaLF7iY7hnR3dqnN2Y1Sv0AKkyrN9dOFM=
-X-Received: by 2002:a7b:c2fa:: with SMTP id e26mr6005968wmk.84.1627418543998;
- Tue, 27 Jul 2021 13:42:23 -0700 (PDT)
+        id S233324AbhG1Hnm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 28 Jul 2021 03:43:42 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:12323 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232691AbhG1Hnm (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 28 Jul 2021 03:43:42 -0400
+Received: from dggeme766-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4GZQWz266wz8036;
+        Wed, 28 Jul 2021 15:38:55 +0800 (CST)
+Received: from huawei.com (10.175.104.82) by dggeme766-chm.china.huawei.com
+ (10.3.19.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 28
+ Jul 2021 15:43:38 +0800
+From:   Wang Hai <wanghai38@huawei.com>
+To:     <davem@davemloft.net>, <kuba@kernel.org>,
+        <christophe.jaillet@wanadoo.fr>, <gustavoars@kernel.org>,
+        <tanghui20@huawei.com>
+CC:     <netdev@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] tulip: windbond-840: Fix missing pci_disable_device() in probe and remove
+Date:   Wed, 28 Jul 2021 15:43:13 +0800
+Message-ID: <20210728074313.272055-1-wanghai38@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20210727144859.4150043-1-arnd@kernel.org> <YQAfa6iObAwwIpzb@infradead.org>
- <20210727131017.f151a81fc69db8f45f81a2b3@linux-foundation.org>
-In-Reply-To: <20210727131017.f151a81fc69db8f45f81a2b3@linux-foundation.org>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Tue, 27 Jul 2021 22:42:07 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2S4Oct4+a8u=ottrW1b+iRf-tRSJb0DvaLNR3CZARmTQ@mail.gmail.com>
-Message-ID: <CAK8P3a2S4Oct4+a8u=ottrW1b+iRf-tRSJb0DvaLNR3CZARmTQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/6] compat: remove compat_alloc_user_space
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Feng Tang <feng.tang@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.104.82]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggeme766-chm.china.huawei.com (10.3.19.112)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Jul 27, 2021 at 10:11 PM Andrew Morton
-<akpm@linux-foundation.org> wrote:
->
-> On Tue, 27 Jul 2021 15:59:55 +0100 Christoph Hellwig <hch@infradead.org> wrote:
->
-> > On Tue, Jul 27, 2021 at 04:48:53PM +0200, Arnd Bergmann wrote:
-> > > Since these patches are now all that remains, it would be nice to
-> > > merge it all through Andrew's Linux-mm tree, which is already based
-> > > on top of linux-next.
-> >
-> > Is it?
->
-> the -mm tree is structured as
->
-> <90% of stuff>
-> linux-next.patch
-> <the other 10% of stuff>
->
-> So things like Arnd's series which have a dependency on linux-next
-> material get added to the "other 10%" and are merged behind the
-> linux-next material and all is good.
->
-> If possible I'll queue things ahead of linux-next.patch.  Those few
-> things which have dependencies on linux-next material get sent to Linus
-> after the required linux-next material is merged into mainline.
+Replace pci_enable_device() with pcim_enable_device(),
+pci_disable_device() and pci_release_regions() will be
+called in release automatically.
 
-The first five patches in my series should apply cleanly on mainline
-kernels and make sense by themselves, the last patch is the one that
-depends on this series as well as another series in the netdev tree,
-so that has to go behind linux-next.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+---
+ drivers/net/ethernet/dec/tulip/winbond-840.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-I suppose I could also merge the first five through my asm-generic tree
-and send you the last one if you prefer, but then again two of the patches
-are actually memory management stuff.
+diff --git a/drivers/net/ethernet/dec/tulip/winbond-840.c b/drivers/net/ethernet/dec/tulip/winbond-840.c
+index f6ff1f76eacb..1876f15dd827 100644
+--- a/drivers/net/ethernet/dec/tulip/winbond-840.c
++++ b/drivers/net/ethernet/dec/tulip/winbond-840.c
+@@ -357,7 +357,7 @@ static int w840_probe1(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	int i, option = find_cnt < MAX_UNITS ? options[find_cnt] : 0;
+ 	void __iomem *ioaddr;
+ 
+-	i = pci_enable_device(pdev);
++	i = pcim_enable_device(pdev);
+ 	if (i) return i;
+ 
+ 	pci_set_master(pdev);
+@@ -379,7 +379,7 @@ static int w840_probe1(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	ioaddr = pci_iomap(pdev, TULIP_BAR, netdev_res_size);
+ 	if (!ioaddr)
+-		goto err_out_free_res;
++		goto err_out_netdev;
+ 
+ 	for (i = 0; i < 3; i++)
+ 		((__le16 *)dev->dev_addr)[i] = cpu_to_le16(eeprom_read(ioaddr, i));
+@@ -458,8 +458,6 @@ static int w840_probe1(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ err_out_cleardev:
+ 	pci_iounmap(pdev, ioaddr);
+-err_out_free_res:
+-	pci_release_regions(pdev);
+ err_out_netdev:
+ 	free_netdev (dev);
+ 	return -ENODEV;
+@@ -1526,7 +1524,6 @@ static void w840_remove1(struct pci_dev *pdev)
+ 	if (dev) {
+ 		struct netdev_private *np = netdev_priv(dev);
+ 		unregister_netdev(dev);
+-		pci_release_regions(pdev);
+ 		pci_iounmap(pdev, np->base_addr);
+ 		free_netdev(dev);
+ 	}
+-- 
+2.17.1
 
-         Arnd
