@@ -2,102 +2,169 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D0003DACB6
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Jul 2021 22:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B5B73DB66A
+	for <lists+linux-parisc@lfdr.de>; Fri, 30 Jul 2021 11:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233128AbhG2UQH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 29 Jul 2021 16:16:07 -0400
-Received: from ale.deltatee.com ([204.191.154.188]:59098 "EHLO
-        ale.deltatee.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbhG2UP5 (ORCPT
+        id S238222AbhG3Jvw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 30 Jul 2021 05:51:52 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:21702 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S238223AbhG3Jvv (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 29 Jul 2021 16:15:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=deltatee.com; s=20200525; h=Subject:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Cc:To:From:content-disposition;
-        bh=X/PGh6GTfJ6ZdtihVioh5gR+sLDdDHokoaBTKsSS/Sc=; b=Cl0pwajPUF0MbvvK+bH3m8G15c
-        iHGMTRHjC70auqPKPrfU/+fnjiDq8xpUMiFyYl3bcXjcpeMj0bAqbgfhD+GY9+ktWOOjLziknbBpV
-        eOrDDhbu2P6PbvlVWSvYgPEnlp2BricnQaa43UTkbJu+XUYXR7je7h3vqOKBtF35iiPZChQvy2Y6T
-        SQk28+qNruG/mX+ypm5KCA5pmv+A8RtK+979e9bCfNDpbieX0+q4/AvvQXFkzgOrHSbjqtMqcmzC3
-        ChuWTdKg/GFTa5IPAkYTKqDInd6tjgcT2Sy8uBUU77cbYGKw3nkXhBa/lC9mrNgps7kOEZnUPfeL7
-        SViD+cFQ==;
-Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
-        by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <gunthorp@deltatee.com>)
-        id 1m9CRZ-0008VM-Dl; Thu, 29 Jul 2021 14:15:50 -0600
-Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
-        (envelope-from <gunthorp@deltatee.com>)
-        id 1m9CRW-0001UQ-LZ; Thu, 29 Jul 2021 14:15:46 -0600
-From:   Logan Gunthorpe <logang@deltatee.com>
-To:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Stephen Bates <sbates@raithlin.com>,
-        Martin Oliveira <martin.oliveira@eideticom.com>,
-        Logan Gunthorpe <logang@deltatee.com>
-Date:   Thu, 29 Jul 2021 14:15:39 -0600
-Message-Id: <20210729201539.5602-22-logang@deltatee.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210729201539.5602-1-logang@deltatee.com>
-References: <20210729201539.5602-1-logang@deltatee.com>
+        Fri, 30 Jul 2021 05:51:51 -0400
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 16U9Wma0032673;
+        Fri, 30 Jul 2021 05:49:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=RYVrVB0Cv2/R3lfmKnDGtLWGBHS277MIQR61B43z3uM=;
+ b=dGwRHMW+dV44draTp+TTntVOVZQoJjo0X1i/5LdgoAcqjM8JLU7lkDxlZoaKCMUKaNvy
+ M+ZjKdhpw34/vrKYLtUjIcBj6RIwv6+gThIzOeXw63W5RhwZ8jEpeJ8lUJRSg2zz7PKT
+ zOASTY1gTLrCWIjcz6bYSEGewtcDHLwf8Fzcaot81sFOXT7yz2HvFqBZo3EV+0ejZ807
+ GKQxJOKRmMFhInRW8OmWGMh92ydIzQl4xBQTCE6PhqZ4pcTf9HFmQHnHKz/7RK4PlcBW
+ De6pJGr9HrSc0qCw+yczs0r3u8j6/ghV1t4+xXF8c6L5aVgh19eC+7GvSO/OXLM2ZsPF Kw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3a4e9j1cme-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jul 2021 05:49:24 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16U9WmsP032691;
+        Fri, 30 Jul 2021 05:49:23 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3a4e9j1ckr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jul 2021 05:49:23 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+        by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16U9lRKT013772;
+        Fri, 30 Jul 2021 09:49:21 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+        by ppma06fra.de.ibm.com with ESMTP id 3a235kjwrx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jul 2021 09:49:21 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 16U9kYNh23789872
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 30 Jul 2021 09:46:34 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id ABB9742052;
+        Fri, 30 Jul 2021 09:49:17 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 77B664203F;
+        Fri, 30 Jul 2021 09:49:16 +0000 (GMT)
+Received: from osiris (unknown [9.145.161.212])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Fri, 30 Jul 2021 09:49:16 +0000 (GMT)
+Date:   Fri, 30 Jul 2021 11:49:15 +0200
+From:   Heiko Carstens <hca@linux.ibm.com>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Feng Tang <feng.tang@intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 0/6] compat: remove compat_alloc_user_space
+Message-ID: <YQPLG20V3dmOfq3a@osiris>
+References: <20210727144859.4150043-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 172.16.1.31
-X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org, hch@lst.de, m.szyprowski@samsung.com, robin.murphy@arm.com, sbates@raithlin.com, martin.oliveira@eideticom.com, logang@deltatee.com
-X-SA-Exim-Mail-From: gunthorp@deltatee.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        MYRULES_NO_TEXT autolearn=no autolearn_force=no version=3.4.2
-Subject: [PATCH v3 21/21] dma-mapping: Disallow .map_sg operations from returning zero on error
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210727144859.4150043-1-arnd@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: zR7p1uPVJVzE85QHjW8aYnuNusoUj_ko
+X-Proofpoint-GUID: cr8jFOyeRsqaNkR-GlUmXQX1PdWeweCa
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-07-30_05:2021-07-29,2021-07-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=697 impostorscore=0 suspectscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2107300057
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Now that all the .map_sg operations have been converted to returning
-proper error codes, drop the code to handle a zero return value,
-add a warning if a zero is returned.
+On Tue, Jul 27, 2021 at 04:48:53PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Going through compat_alloc_user_space() to convert indirect system call
+> arguments tends to add complexity compared to handling the native and
+> compat logic in the same code.
+> 
+> Out of the other remaining callers, the linux-media series went into
+> v5.14, and the network ioctl handling is now fixed in net-next, so
+> these are the last remaining users, and I now include the final
+> patch to remove the definitions as well.
+> 
+> Since these patches are now all that remains, it would be nice to
+> merge it all through Andrew's Linux-mm tree, which is already based
+> on top of linux-next.
+...
+> 
+> Arnd Bergmann (6):
+>   kexec: move locking into do_kexec_load
+>   kexec: avoid compat_alloc_user_space
+>   mm: simplify compat_sys_move_pages
+>   mm: simplify compat numa syscalls
+>   compat: remove some compat entry points
+>   arch: remove compat_alloc_user_space
 
-Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
----
- kernel/dma/mapping.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Our CI reports this with linux-next and running strace selftest in
+compat mode:
 
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 9f0bb56eb9aa..cbcbdc877458 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -196,8 +196,8 @@ static int __dma_map_sg_attrs(struct device *dev, struct scatterlist *sg,
- 
- 	if (ents > 0)
- 		debug_dma_map_sg(dev, sg, nents, ents, dir);
--	else if (WARN_ON_ONCE(ents != -EINVAL && ents != -ENOMEM &&
--			      ents != -EIO && ents != 0))
-+	else if (WARN_ON_ONCE((ents != -EINVAL && ents != -ENOMEM &&
-+			       ents != -EIO) || ents == 0))
- 		return -EIO;
- 
- 	return ents;
-@@ -262,9 +262,7 @@ int dma_map_sgtable(struct device *dev, struct sg_table *sgt,
- 	int nents;
- 
- 	nents = __dma_map_sg_attrs(dev, sgt->sgl, sgt->orig_nents, dir, attrs);
--	if (nents == 0)
--		return -EIO;
--	else if (nents < 0)
-+	if (nents < 0)
- 		return nents;
- 
- 	sgt->nents = nents;
--- 
-2.20.1
+Unable to handle kernel pointer dereference in virtual kernel address space
+Failing address: 0000038003e7c000 TEID: 0000038003e7c803
+Fault in home space mode while using kernel ASCE.
+AS:00000001fb388007 R3:000000008021c007 S:0000000082142000 P:0000000000000400 
+Oops: 0011 ilc:3 [#1] SMP 
+CPU: 0 PID: 1017495 Comm: get_mempolicy Tainted: G           OE     5.14.0-20210730.rc3.git0.4ccc9e2db7ac.300.fc34.s390x+next #1
+Hardware name: IBM 2827 H66 708 (LPAR)
+Krnl PSW : 0704e00180000000 00000001f9f11000 (compat_put_bitmap+0x48/0xd0)
+           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
+Krnl GPRS: 0000000000810000 0000000000000000 000000007d9df1c0 0000038003e7c008
+           0000000000000004 000000007d9df1c4 0000038003e7be40 0000000000010000
+           0000000000008000 0000000000000000 0000000000000390 00000000000001c8
+           000000020d6ea000 000002aa00401a48 00000001fa0a85fa 0000038003e7bd50
+Krnl Code: 00000001f9f10ff4: a7bb0001            aghi    %r11,1
+           00000001f9f10ff8: 41303008            la      %r3,8(%r3)
+          #00000001f9f10ffc: 41502004            la      %r5,4(%r2)
+          >00000001f9f11000: e3103ff8ff04        lg      %r1,-8(%r3)
+           00000001f9f11006: 5010f0a4            st      %r1,164(%r15)
+           00000001f9f1100a: a50e0081            llilh   %r0,129
+           00000001f9f1100e: c8402000f0a4        mvcos   0(%r2),164(%r15),%r4
+           00000001f9f11014: 1799                xr      %r9,%r9
+Call Trace:
+ [<00000001f9f11000>] compat_put_bitmap+0x48/0xd0 
+ [<00000001fa0a85fa>] kernel_get_mempolicy+0x102/0x178 
+ [<00000001fa0a86b0>] __s390_sys_get_mempolicy+0x40/0x50 
+ [<00000001fa92be30>] __do_syscall+0x1c0/0x1e8 
+ [<00000001fa939148>] system_call+0x78/0xa0 
+Last Breaking-Event-Address:
+ [<0000038003e7bc00>] 0x38003e7bc00
+Kernel panic - not syncing: Fatal exception: panic_on_oops
 
+Note: I did not try to bisect this, since it looks to me like this
+patch series causes the problem. Also, please don't get confused with
+the kernel version name. The date encoded is the build date, not the
+linux-next version.
+linux-next commit 4ccc9e2db7ac ("Add linux-next specific files for
+20210729") was used to build the kernel (s390 defconfig).
