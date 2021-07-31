@@ -2,153 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 345253DC429
-	for <lists+linux-parisc@lfdr.de>; Sat, 31 Jul 2021 08:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B6C03DC437
+	for <lists+linux-parisc@lfdr.de>; Sat, 31 Jul 2021 09:01:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232267AbhGaGwJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 31 Jul 2021 02:52:09 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:55454 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232079AbhGaGwJ (ORCPT
+        id S229703AbhGaHBM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 31 Jul 2021 03:01:12 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:52347 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229758AbhGaHBM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 31 Jul 2021 02:52:09 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 16V6XQmG085951;
-        Sat, 31 Jul 2021 02:50:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=AykrfsFgkMAYLNg2w36lRGIX3leux4UCoOOR3djqTLk=;
- b=hfejmFW+fXsOsLjD+mu8ZUTBnuS4CofZfnheKQKaT8a2RLuIIciO8wwpdydUxCYZzqls
- YavwCO3kmcbYvdwtIYcHCK4z/HQ+JEMl27G6d0fQtKPQ19/I8LfIPC4tqRtknJAZijrA
- EtZov9BGRDi1hH8vhvca0WInmSLH840nS0EuvlDPSn9pAPdeJr8o6eJRK+cdfU6JVfQ8
- QjAPDcmiTyhI5FB9XJ+2Pv5G2sbhuG3VOtmyVEbQbO8iaDci110hYw94PoZGVctBsyvJ
- haC/x/MvVLXh5ldbSUHSC+JOMCOyj6GkIFI14qhLTYhpjpd6+iIm+gfUhzF9t0pbvGT1 ag== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3a4w54n690-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 31 Jul 2021 02:50:11 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16V6kaAg127005;
-        Sat, 31 Jul 2021 02:50:10 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3a4w54n687-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 31 Jul 2021 02:50:10 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16V6h3V6005513;
-        Sat, 31 Jul 2021 06:50:07 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by ppma04ams.nl.ibm.com with ESMTP id 3a4x58r77c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 31 Jul 2021 06:50:07 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 16V6o4AF27656602
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 31 Jul 2021 06:50:04 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D728211C04A;
-        Sat, 31 Jul 2021 06:50:03 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5F35A11C050;
-        Sat, 31 Jul 2021 06:50:01 +0000 (GMT)
-Received: from osiris (unknown [9.145.16.160])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Sat, 31 Jul 2021 06:50:01 +0000 (GMT)
-Date:   Sat, 31 Jul 2021 08:50:00 +0200
-From:   Heiko Carstens <hca@linux.ibm.com>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ley Foon Tan <ley.foon.tan@intel.com>, x86@kernel.org,
-        linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-riscv@lists.infradead.org, YiFei Zhu <yifeifz2@illinois.edu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Michal Simek <monstr@monstr.eu>, Helge Deller <deller@gmx.de>,
-        linux-sh@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Guo Ren <guoren@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Richard Weinberger <richard@nod.at>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Jeff Dike <jdike@addtoit.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-hexagon@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        linux-s390@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-um@lists.infradead.org,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Brian Cain <bcain@codeaurora.org>, linux-csky@vger.kernel.org,
-        Stafford Horne <shorne@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Chris Zankel <chris@zankel.net>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        linux-snps-arc@lists.infradead.org,
-        Jonas Bonn <jonas@southpole.se>, linux-parisc@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, Vincent Chen <deanbo422@gmail.com>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        linuxppc-dev@lists.ozlabs.org, openrisc@lists.librecores.org
-Subject: Re: [PATCH 2/3] trace: refactor TRACE_IRQFLAGS_SUPPORT in Kconfig
-Message-ID: <YQTymISw2nXxDSGu@osiris>
-References: <20210731052233.4703-1-masahiroy@kernel.org>
- <20210731052233.4703-2-masahiroy@kernel.org>
+        Sat, 31 Jul 2021 03:01:12 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1m9izX-000qvn-AQ; Sat, 31 Jul 2021 09:01:03 +0200
+Received: from p5b13a050.dip0.t-ipconnect.de ([91.19.160.80] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1m9izX-003QxC-3s; Sat, 31 Jul 2021 09:01:03 +0200
+Subject: Re: Donation of a HP PARISC machine?
+To:     Helge Deller <deller@gmx.de>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        gentoo-hppa@lists.gentoo.org,
+        HPPA porters <debian-hppa@lists.debian.org>
+References: <dc034df5-04f8-a9a2-80a9-297545355753@gmx.de>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <0c4a3c32-de72-6856-bcc0-b412a52ec84e@physik.fu-berlin.de>
+Date:   Sat, 31 Jul 2021 09:01:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210731052233.4703-2-masahiroy@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: b8JyszSZHwxzYkonaS857HhsIawmofS_
-X-Proofpoint-GUID: vxXdXbz5r_bOe1aK5v2-uA7MeMo7WGZw
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-07-30_11:2021-07-30,2021-07-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- adultscore=0 mlxlogscore=567 suspectscore=0 impostorscore=0
- lowpriorityscore=0 priorityscore=1501 spamscore=0 malwarescore=0
- clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2107310029
+In-Reply-To: <dc034df5-04f8-a9a2-80a9-297545355753@gmx.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.160.80
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Jul 31, 2021 at 02:22:32PM +0900, Masahiro Yamada wrote:
-> Make architectures select TRACE_IRQFLAGS_SUPPORT instead of
-> having many defines.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-...
->  arch/s390/Kconfig             | 1 +
->  arch/s390/Kconfig.debug       | 3 ---
+Hi Helge!
 
-For s390:
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+On 5/4/21 9:34 PM, Helge Deller wrote:
+> If you own a PA-RISC server in the US which you would like to offer for free to the parisc project,
+> now is the time to stand up and get your name mentioned on the PA-RISC sponsor list!
+
+There was a guy on Hackernews yesterday that has a PA-RISC machine that he is planning to decomission
+soon. I already recommended him to offer the machine to Debian [1].
+
+Adrian
+
+> [1] https://news.ycombinator.com/item?id=28009558
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
