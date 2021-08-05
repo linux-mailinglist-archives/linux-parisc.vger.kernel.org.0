@@ -2,155 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AF9D3E111B
-	for <lists+linux-parisc@lfdr.de>; Thu,  5 Aug 2021 11:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EDFB3E1233
+	for <lists+linux-parisc@lfdr.de>; Thu,  5 Aug 2021 12:09:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239955AbhHEJR7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 5 Aug 2021 05:17:59 -0400
-Received: from elvis.franken.de ([193.175.24.41]:46948 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238328AbhHEJRy (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 5 Aug 2021 05:17:54 -0400
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1mBZV8-0005ti-04; Thu, 05 Aug 2021 11:17:18 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id 92188C052F; Thu,  5 Aug 2021 11:16:03 +0200 (CEST)
-Date:   Thu, 5 Aug 2021 11:16:03 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Brian Cain <bcain@codeaurora.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        John Crispin <john@phrozen.org>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-csky@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org
-Subject: Re: [PATCH 1/3] arch: Export machine_restart() instances so they can
- be called from modules
-Message-ID: <20210805091603.GE5979@alpha.franken.de>
-References: <20210805075032.723037-1-lee.jones@linaro.org>
- <20210805075032.723037-2-lee.jones@linaro.org>
+        id S240225AbhHEKKC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 5 Aug 2021 06:10:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38824 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240008AbhHEKKC (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 5 Aug 2021 06:10:02 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DCA1C0613D5
+        for <linux-parisc@vger.kernel.org>; Thu,  5 Aug 2021 03:09:48 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id d6so7543240edt.7
+        for <linux-parisc@vger.kernel.org>; Thu, 05 Aug 2021 03:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
+        b=pZQoWa1Y2a/TOvVgtc2aL1q+UNTxeXzgcRbLfWP5BjwM9+d6LB6nYjJTeCsoLu86JY
+         59UGkrZLrY5eJozo8Qqomp+tGiDNDuF55zQ6wRY0PWOikKjU5xCOzrseeqMGUUMKKsBh
+         fp/JBQ0DoVW+XqGFqG8yELXBoI0BygJkZnMVaEKYf4FJ41ziPG7Xhtfe79lWccUfb2If
+         mmzclWH1oOLnHWUPybIwkVxfINtGhuUDjsJ0qgY5DWCrG+mz1XhL9WosC1xcw+3sn7Br
+         dLgJcV82tCFdKpAA3YF7i4kopfCTmXqQYjvOyp6WyxAVrhsnbO6++STpnA0G8q24EEi7
+         5BKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
+        b=lmJfZz4ShSo3Ns93VoNspDacWbrcYGHnnigtBJoJHZylv1ajSFqPXekXSNlKKZR1wz
+         YZ/HQKmJw2d6W54ilVsyfFv270x8INxhGXLTOgf8EKqP/ggB0Az1KclDur0wDlc2R8/P
+         JX29GIbfO9YwYmildBmV9/LaAsiwzfMJBsz5vR38joKCAGNGcD6cJvZv5lrBZ5dBb2DG
+         OBVflvO21VMVBUCE4fFt/25VFJ66C9T1VQlJcSP4EREtG4k22Ya0JiDgfIRQeJZv1QXF
+         gBompofPzgJYLamfPxroPMQT2GX9vJFLDz06ViXt3nIcPK77rhdYPt/7YAUV4lC+Ve5n
+         plHg==
+X-Gm-Message-State: AOAM533JU8QgqcgToDQNUW1MnebzZiLEGgcIQSaAFbfBmwwIlLpaWzDw
+        hQtag42Hdob5mHk8ZHAD872chD+vpXExeBvAgUc=
+X-Google-Smtp-Source: ABdhPJwFoOZg/lERasTt1cjR8tCLUN4Ge+hMsK8F/7QG0dQYcxPz6aQJWaPCCKpk7Lqs3kOQ8UompI+ccuLzIQDt4dU=
+X-Received: by 2002:a05:6402:60e:: with SMTP id n14mr5484811edv.142.1628158186866;
+ Thu, 05 Aug 2021 03:09:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210805075032.723037-2-lee.jones@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a05:6408:258c:b029:e3:fe5c:5c2d with HTTP; Thu, 5 Aug 2021
+ 03:09:46 -0700 (PDT)
+Reply-To: theresabangurah3333@yahoo.com
+From:   Theresa Bangurah <mariamabah77879@gmail.com>
+Date:   Thu, 5 Aug 2021 11:09:46 +0100
+Message-ID: <CAAi==jpyD=+eCTNYpc7yD=t0iYTgLbYVHpJHBdGinDZs048h-w@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Aug 05, 2021 at 08:50:30AM +0100, Lee Jones wrote:
-> A recent attempt to convert the Power Reset Restart driver to tristate
-> failed because of the following compile error (reported once merged by
-> Stephen Rothwell via Linux Next):
-> 
->   ERROR: "machine_restart" [drivers/power/reset/restart-poweroff.ko] undefined!
-> 
-> This error occurs since some of the machine_restart() instances are
-> not currently exported for use in modules.  This patch aims to rectify
-> that.
-> 
-> Cc: Vineet Gupta <vgupta@synopsys.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Guo Ren <guoren@kernel.org>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Brian Cain <bcain@codeaurora.org>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Michal Simek <monstr@monstr.eu>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: John Crispin <john@phrozen.org>
-> Cc: Ley Foon Tan <ley.foon.tan@intel.com>
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: David S. Miller <davem@davemloft.net>
-> Cc: Jeff Dike <jdike@addtoit.com>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Chris Zankel <chris@zankel.net>
-> Cc: Max Filippov <jcmvbkbc@gmail.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-csky@vger.kernel.org
-> Cc: uclinux-h8-devel@lists.sourceforge.jp
-> Cc: linux-hexagon@vger.kernel.org
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: openrisc@lists.librecores.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> Cc: linux-xtensa@linux-xtensa.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> ---
-> 
-> The 2 patches this change supports have the required Acks already.
-> 
-> NB: If it's safe to omit some of these, let me know and I'll revise the patch.
-> 
->  [...]
->  arch/mips/kernel/reset.c           | 1 +
->  arch/mips/lantiq/falcon/reset.c    | 1 +
->  arch/mips/sgi-ip27/ip27-reset.c    | 1 +
-
-Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+My name is Mrs.Theresa Bangurah,i am American citizen i have something
+important to tell you.Reply me immediately you get this message.God
+bless you.
