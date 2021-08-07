@@ -2,109 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1593E2F6E
-	for <lists+linux-parisc@lfdr.de>; Fri,  6 Aug 2021 20:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE6993E343E
+	for <lists+linux-parisc@lfdr.de>; Sat,  7 Aug 2021 11:12:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243352AbhHFSqf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 6 Aug 2021 14:46:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60014 "EHLO
+        id S231665AbhHGJMV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 7 Aug 2021 05:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231889AbhHFSqf (ORCPT
+        with ESMTP id S229765AbhHGJMU (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 6 Aug 2021 14:46:35 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C1AC0613CF;
-        Fri,  6 Aug 2021 11:46:18 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id t7-20020a17090a5d87b029017807007f23so20864357pji.5;
-        Fri, 06 Aug 2021 11:46:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=lq+ZJabFR/aEqAVLWWQwRS+Bk30mmVgINsLo2QOd63g=;
-        b=oPU85Ks4t/BD97TfUEBxq2w8KeO5d4b1Nvchn+Yv7kB9wyq/mf6St5MBYsxebm3xyK
-         2TryVrMzKvdFR8lsNpJJvPTGVD4xpl+ayOSVdJa9rxZqEG8whTlQ9VyP8dlNEQrJJob9
-         L1GJYfPOIitMNMopL09Z+xctxoFgA0e1jTOj55Hexm/8/2DIwLeTuQql2G/TkU9C3erd
-         aqjtHdqEda9mrydWw7Nl7tQlscqzQhgaTkh3FsV8iPW0Y607/KxDgxiwjF79JrWcFsfS
-         nD/+RPX0BYNASPKwyYxj4WgS75i+bpNHRnG/mqXLAaY3TvvGXIOmp2cf1T5bSsVeRVnR
-         2OKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=lq+ZJabFR/aEqAVLWWQwRS+Bk30mmVgINsLo2QOd63g=;
-        b=DucPVjjs0ZsvWYowKi+0i2xiOpQfbZ6htuepHQYDtVV/xB/HOyWy+ZEUwaJBaj0E7T
-         kqI8tS6Q/8ExE6mn69Knt+K0ZVfSFAjwkpHwH3RCwazvCphLC6UIVLj+Mb0gxQfjJMc7
-         PmVoomIqHbYgxr/nGguyYDSLiflnRYfNcAbWrOdEZ7yUia+cTZyrKDKV7EB4UI9EabHj
-         EUmf89xO0vXQB3iHCUXddkfov+Ym17e/RvZ9yiKdA4x7Z6jqPldTi+qhfyL7s4VbR1up
-         J7yhgnB3TSS1Wm+k6fA5IWB6rZ0Aj0oA+K8hpr9UOPW9avLdg7XdL/BzYCAmh7/t4D/E
-         RwbA==
-X-Gm-Message-State: AOAM530kZahHgGV18PkCCoCHNrird3Zmbke3lYJzSsa6g40sQ1CheERm
-        D2mu3sep3fbmrkoIGFsOfyI=
-X-Google-Smtp-Source: ABdhPJzzMFSdpyMOk7GztnyuZ8fgTAmGVjar/iMG55IOe92tbJufWKgnV6AdQl2ufQFq5C/G1yNdUw==
-X-Received: by 2002:a62:8f86:0:b029:32e:33d7:998b with SMTP id n128-20020a628f860000b029032e33d7998bmr12215091pfd.64.1628275577437;
-        Fri, 06 Aug 2021 11:46:17 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:8873:2b2a:719c:18c7])
-        by smtp.gmail.com with ESMTPSA id jz24sm10017062pjb.9.2021.08.06.11.46.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Aug 2021 11:46:16 -0700 (PDT)
-Date:   Fri, 6 Aug 2021 11:46:13 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Corey Minyard <minyard@acm.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Sat, 7 Aug 2021 05:12:20 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD33BC0613CF
+        for <linux-parisc@vger.kernel.org>; Sat,  7 Aug 2021 02:12:03 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mCIMv-00079k-AT; Sat, 07 Aug 2021 11:11:49 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mCIMp-0007S4-8u; Sat, 07 Aug 2021 11:11:43 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mCIMp-00079k-7J; Sat, 07 Aug 2021 11:11:43 +0200
+Date:   Sat, 7 Aug 2021 11:11:35 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Corey Minyard <minyard@acm.org>
+Cc:     kernel@pengutronix.de, alsa-devel@alsa-project.org,
+        linux-parisc@vger.kernel.org,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-parisc@vger.kernel.org,
+        Helge Deller <deller@gmx.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-scsi@vger.kernel.org, Takashi Iwai <tiwai@suse.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        netdev@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-input@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
         openipmi-developer@lists.sourceforge.net,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
-        alsa-devel@alsa-project.org, kernel@pengutronix.de
+        Jaroslav Kysela <perex@perex.cz>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
 Subject: Re: [PATCH] parisc: Make struct parisc_driver::remove() return void
-Message-ID: <YQ2DdZG2tQuzM22U@google.com>
+Message-ID: <20210807091135.xgenctifq3wgn3ro@pengutronix.de>
 References: <20210806093938.1950990-1-u.kleine-koenig@pengutronix.de>
+ <20210806174927.GJ3406@minyard.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="45vk6qaqgnzlimcx"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210806093938.1950990-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20210806174927.GJ3406@minyard.net>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-parisc@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Aug 06, 2021 at 11:39:38AM +0200, Uwe Kleine-König wrote:
-> The caller of this function (parisc_driver_remove() in
-> arch/parisc/kernel/drivers.c) ignores the return value, so better don't
-> return any value at all to not wake wrong expectations in driver authors.
-> 
-> The only function that could return a non-zero value before was
-> ipmi_parisc_remove() which returns the return value of
-> ipmi_si_remove_by_dev(). Make this function return void, too, as for all
-> other callers the value is ignored, too.
-> 
-> Also fold in a small checkpatch fix for:
-> 
-> WARNING: Unnecessary space before function pointer arguments
-> +	void (*remove) (struct parisc_device *dev);
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
 
-...
+--45vk6qaqgnzlimcx
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->  drivers/input/keyboard/hilkbd.c          | 4 +---
->  drivers/input/serio/gscps2.c             | 3 +--
+Hello,
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+On Fri, Aug 06, 2021 at 12:49:27PM -0500, Corey Minyard wrote:
+> On Fri, Aug 06, 2021 at 11:39:38AM +0200, Uwe Kleine-K=F6nig wrote:
+> > -int ipmi_si_remove_by_dev(struct device *dev)
+> > +void ipmi_si_remove_by_dev(struct device *dev)
+>=20
+> This function is also used by ipmi_si_platform.c, so you can't change
+> this.
 
-Thanks.
+Did you see that I adapted ipmi_si_platform.c below? That is an instance
+of "Make [ipmi_si_remove_by_dev] return void, too, as for all other
+callers the value is ignored, too." (In ipmi_si_platform.c the return
+value is used in a struct platform_driver::remove function. The value
+returned there is ignored, see commit
+e5e1c209788138f33ca6558bf9f572f6904f486d.)
 
--- 
-Dmitry
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--45vk6qaqgnzlimcx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEOTkQACgkQwfwUeK3K
+7Alj/wf+K39kaQNGHDkIhb/MnReZtTqJ7A4TTKfWOCggUIlF0kf2wXSKnlTK2HPV
+BPYqMYRAi5ZeO6n1X4beQCN8FSCnnD+s52mCB1nRELRizA8xhnIdK0uD8tqGR43c
+iRUEonO4k6ZppBtRgK5uABKENDAaDRQvylQZ9PAzunPbORpMEJJ9U9uaL7fUDtSz
+wwjGdfUTeuKFdZN8Ac+OfR7pgHkixcvH9/ECq/VzrsclVCB5DMtP9hckr0LPn5u1
+9mtgbkWMsFcj+FfkPo8KZgKoPA+NuTmhK6X17hUR5m7eNrPDt05uVH+MiBmmsY+s
+p6siiJxoVX8l60PKy7apKloWP9Ku8w==
+=Hx8e
+-----END PGP SIGNATURE-----
+
+--45vk6qaqgnzlimcx--
