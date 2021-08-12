@@ -2,91 +2,221 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 731EB3EAA7C
-	for <lists+linux-parisc@lfdr.de>; Thu, 12 Aug 2021 20:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47FA03EAB2C
+	for <lists+linux-parisc@lfdr.de>; Thu, 12 Aug 2021 21:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233232AbhHLS6R (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 12 Aug 2021 14:58:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57336 "EHLO mail.kernel.org"
+        id S235355AbhHLTn6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 12 Aug 2021 15:43:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42030 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229950AbhHLS6R (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 12 Aug 2021 14:58:17 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 362056103A;
-        Thu, 12 Aug 2021 18:57:50 +0000 (UTC)
+        id S233823AbhHLTn6 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 12 Aug 2021 15:43:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3303D60F57;
+        Thu, 12 Aug 2021 19:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628794671;
-        bh=9lyFwGGuyLf5GdDUz/aKvERlOFF1uWuGiPBbUIAEKfE=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=VwLU2IBE7pm2CpqhWrWcs09zHfDgGQQ+XwYJ0x4NJ+OYptETg8cUHpeJuXviSEb8m
-         hZwv3aN1LfVIwHZVS+UQ7mB1srMgVxwRZcSfRTFv67A2WL07AvZbrPj/Jz8MICDjiz
-         tSsLyZBkRPIi4PEfw72QWFlCzfTyNhyHc6hoJdLtBX/ALr48Ij7oskYZxfFb8gVUAz
-         MdoO56PMOMA1qSMNTQQWl/YJOfRCSFiinLi5nd/tFripDrfTPOSzz5IN+8rkyBTJL5
-         ClZ1UH9RZQQUjhvz/MyHpPFG2IOOryYDriDcsJsaN4YgRfyjgsTyLvyz3NzaOYphUa
-         cYgcKsD4gQWUw==
-Subject: Re: [PATCH -next] trap: Cleanup trap_init()
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
-        linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
-        linux-mm@kvack.org
-Cc:     Vineet Gupta <vgupta@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        s=k20201202; t=1628797412;
+        bh=mycw/N87DcjoHhRJ24PqFxiKdFx6FKqzLp6B9V1Bci0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=U12QjMP3CnJpA4KXSSptXiM7d4U5MWdCrpeOte+jO3bwyMUv8NPwvxLUgFBkLPzJG
+         0+V8IWPqotJnu14+YIThfkvpHQAUd8VQQT75qa7ba7XsebzxEAnPz0qWtfUFG26Bp/
+         q5JQjRUPXRmxnk0Tg5uqJxW2nMU4F0seSzZa9wJepceDj4orZlm9IUhtLrdN964cZS
+         nWBQm7819X7a6zF4A6FMBvJIdwsl0M8HnoT7m+ZeqOgExq1wq+NyL7UFbBdXdQbAHF
+         2RxCZLDi/pGlG0ECy/gcR0mz6EpSMbgaPlm/7h16BZ8WCKqXkDjRsUh6LRlcxGRkKE
+         adLdtJCQmOiuw==
+Date:   Thu, 12 Aug 2021 14:43:30 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <palmerdabbelt@google.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20210812123602.76356-1-wangkefeng.wang@huawei.com>
-From:   Vineet Gupta <vgupta@kernel.org>
-Message-ID: <b49eed44-0837-906c-8779-4fffb5609653@kernel.org>
-Date:   Thu, 12 Aug 2021 11:57:49 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v4 09/15] pci: Consolidate pci_iomap* and pci_iomap*wc
+Message-ID: <20210812194330.GA2500473@bjorn-Precision-5520>
 MIME-Version: 1.0
-In-Reply-To: <20210812123602.76356-1-wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210805005218.2912076-10-sathyanarayanan.kuppuswamy@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 8/12/21 5:36 AM, Kefeng Wang wrote:
-> There are some empty trap_init() in different ARCHs, introduce
-> a new weak trap_init() function to cleanup them.
->
-> Cc: Vineet Gupta<vgupta@kernel.org>
-> Cc: Russell King<linux@armlinux.org.uk>
-> Cc: Yoshinori Sato<ysato@users.sourceforge.jp>
-> Cc: Ley Foon Tan<ley.foon.tan@intel.com>
-> Cc: Jonas Bonn<jonas@southpole.se>
-> Cc: Stefan Kristiansson<stefan.kristiansson@saunalahti.fi>
-> Cc: Stafford Horne<shorne@gmail.com>
-> Cc: James E.J. Bottomley<James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller<deller@gmx.de>
-> Cc: Michael Ellerman<mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt<benh@kernel.crashing.org>
-> Cc: Paul Mackerras<paulus@samba.org>
-> Cc: Paul Walmsley<palmerdabbelt@google.com>
-> Cc: Jeff Dike<jdike@addtoit.com>
-> Cc: Richard Weinberger<richard@nod.at>
-> Cc: Anton Ivanov<anton.ivanov@cambridgegreys.com>
-> Cc: Andrew Morton<akpm@linux-foundation.org>
-> Signed-off-by: Kefeng Wang<wangkefeng.wang@huawei.com>
-> ---
->   arch/arc/kernel/traps.c      | 5 -----
+Is there a branch with all of this applied?  I was going to apply this
+to help take a look at it, but it doesn't apply to v5.14-rc1.  I know
+you listed some prereqs in the cover letter, but it's a fair amount of
+work to sort all that out.
 
-Acked-by: Vineet Gupta <vgupt@kernel.org>  #arch/arc
+On Wed, Aug 04, 2021 at 05:52:12PM -0700, Kuppuswamy Sathyanarayanan wrote:
+> From: Andi Kleen <ak@linux.intel.com>
+
+If I were applying these, I would silently update the subject lines to
+match previous commits.  Since these will probably be merged via a
+different tree, you can update if there's a v5:
+
+  PCI: Consolidate pci_iomap_range(), pci_iomap_wc_range()
+
+Also applies to 11/15 and 12/15.
+
+> pci_iomap* and pci_iomap*wc are currently duplicated code, except
+> that the _wc variant does not support IO ports. Replace them
+> with a common helper and a callback for the mapping. I used
+> wrappers for the maps because some architectures implement ioremap
+> and friends with macros.
+
+Maybe spell some of this out:
+
+  pci_iomap_range() and pci_iomap_wc_range() are currently duplicated
+  code, ...  Implement them using a common helper,
+  pci_iomap_range_map(), ...
+
+Using "pci_iomap*" obscures the name and doesn't save any space.
+
+Why is it safe to make pci_iomap_wc_range() support IO ports when it
+didn't before?  That might be desirable, but I think it *is* a
+functional change here.
+
+IIUC, pci_iomap_wc_range() on an IO port range previously returned
+NULL, and after this patch it will work the same as pci_iomap_range(),
+i.e., it will return the result of __pci_ioport_map().
+
+> This will allow to add more variants without excessive code
+> duplications. This patch should have no behavior change.
+> 
+> Signed-off-by: Andi Kleen <ak@linux.intel.com>
+> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> ---
+>  lib/pci_iomap.c | 81 +++++++++++++++++++++++++++----------------------
+>  1 file changed, 44 insertions(+), 37 deletions(-)
+> 
+> diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
+> index 2d3eb1cb73b8..6251c3f651c6 100644
+> --- a/lib/pci_iomap.c
+> +++ b/lib/pci_iomap.c
+> @@ -10,6 +10,46 @@
+>  #include <linux/export.h>
+>  
+>  #ifdef CONFIG_PCI
+> +
+> +/*
+> + * Callback wrappers because some architectures define ioremap et.al.
+> + * as macros.
+> + */
+> +static void __iomem *map_ioremap(phys_addr_t addr, size_t size)
+> +{
+> +	return ioremap(addr, size);
+> +}
+> +
+> +static void __iomem *map_ioremap_wc(phys_addr_t addr, size_t size)
+> +{
+> +	return ioremap_wc(addr, size);
+> +}
+> +
+> +static void __iomem *pci_iomap_range_map(struct pci_dev *dev,
+> +					 int bar,
+> +					 unsigned long offset,
+> +					 unsigned long maxlen,
+> +					 void __iomem *(*mapm)(phys_addr_t,
+> +							       size_t))
+> +{
+> +	resource_size_t start = pci_resource_start(dev, bar);
+> +	resource_size_t len = pci_resource_len(dev, bar);
+> +	unsigned long flags = pci_resource_flags(dev, bar);
+> +
+> +	if (len <= offset || !start)
+> +		return NULL;
+> +	len -= offset;
+> +	start += offset;
+> +	if (maxlen && len > maxlen)
+> +		len = maxlen;
+> +	if (flags & IORESOURCE_IO)
+> +		return __pci_ioport_map(dev, start, len);
+> +	if (flags & IORESOURCE_MEM)
+> +		return mapm(start, len);
+> +	/* What? */
+> +	return NULL;
+> +}
+> +
+>  /**
+>   * pci_iomap_range - create a virtual mapping cookie for a PCI BAR
+>   * @dev: PCI device that owns the BAR
+> @@ -30,22 +70,8 @@ void __iomem *pci_iomap_range(struct pci_dev *dev,
+>  			      unsigned long offset,
+>  			      unsigned long maxlen)
+>  {
+> -	resource_size_t start = pci_resource_start(dev, bar);
+> -	resource_size_t len = pci_resource_len(dev, bar);
+> -	unsigned long flags = pci_resource_flags(dev, bar);
+> -
+> -	if (len <= offset || !start)
+> -		return NULL;
+> -	len -= offset;
+> -	start += offset;
+> -	if (maxlen && len > maxlen)
+> -		len = maxlen;
+> -	if (flags & IORESOURCE_IO)
+> -		return __pci_ioport_map(dev, start, len);
+> -	if (flags & IORESOURCE_MEM)
+> -		return ioremap(start, len);
+> -	/* What? */
+> -	return NULL;
+> +	return pci_iomap_range_map(dev, bar, offset, maxlen,
+> +				   map_ioremap);
+>  }
+>  EXPORT_SYMBOL(pci_iomap_range);
+>  
+> @@ -70,27 +96,8 @@ void __iomem *pci_iomap_wc_range(struct pci_dev *dev,
+>  				 unsigned long offset,
+>  				 unsigned long maxlen)
+>  {
+> -	resource_size_t start = pci_resource_start(dev, bar);
+> -	resource_size_t len = pci_resource_len(dev, bar);
+> -	unsigned long flags = pci_resource_flags(dev, bar);
+> -
+> -
+> -	if (flags & IORESOURCE_IO)
+> -		return NULL;
+> -
+> -	if (len <= offset || !start)
+> -		return NULL;
+> -
+> -	len -= offset;
+> -	start += offset;
+> -	if (maxlen && len > maxlen)
+> -		len = maxlen;
+> -
+> -	if (flags & IORESOURCE_MEM)
+> -		return ioremap_wc(start, len);
+> -
+> -	/* What? */
+> -	return NULL;
+> +	return pci_iomap_range_map(dev, bar, offset, maxlen,
+> +				   map_ioremap_wc);
+>  }
+>  EXPORT_SYMBOL_GPL(pci_iomap_wc_range);
+>  
+> -- 
+> 2.25.1
+> 
