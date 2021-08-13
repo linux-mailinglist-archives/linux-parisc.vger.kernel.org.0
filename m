@@ -2,140 +2,105 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFE43EAD25
-	for <lists+linux-parisc@lfdr.de>; Fri, 13 Aug 2021 00:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5D093EAE93
+	for <lists+linux-parisc@lfdr.de>; Fri, 13 Aug 2021 04:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238266AbhHLWaN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 12 Aug 2021 18:30:13 -0400
-Received: from mga14.intel.com ([192.55.52.115]:42422 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231392AbhHLWaM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 12 Aug 2021 18:30:12 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10074"; a="215191292"
-X-IronPort-AV: E=Sophos;i="5.84,317,1620716400"; 
-   d="scan'208";a="215191292"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2021 15:29:46 -0700
-X-IronPort-AV: E=Sophos;i="5.84,317,1620716400"; 
-   d="scan'208";a="517642404"
-Received: from smachee-mobl.amr.corp.intel.com (HELO skuppusw-mobl5.amr.corp.intel.com) ([10.213.169.15])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2021 15:29:45 -0700
-Subject: Re: [PATCH v4 09/15] pci: Consolidate pci_iomap* and pci_iomap*wc
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@HansenPartnership.com>,
+        id S237916AbhHMC2r (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 12 Aug 2021 22:28:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42496 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238165AbhHMC2p (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 12 Aug 2021 22:28:45 -0400
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCCEFC061756;
+        Thu, 12 Aug 2021 19:28:18 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gm6st5f1Mz9t23;
+        Fri, 13 Aug 2021 12:28:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1628821695;
+        bh=jlHWtsgYmZ30B2WJN0Jw5XD8BZs0Z7qm5rWOQviWRxQ=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=iQqdFqNsp0RRZI3qzmEc8DvXwIl+xP6sqn6MkAu1yNyVEEqSByPkt7fyHM+X9Mkc1
+         H5RsYWUWRX8EIeuJJ4pqVwfnttonPEDoUI6iLblU3xQm7I/dYs830ptXGtqFnm8msw
+         bQaEGG6Y/DzH1CN1Mvvb00KGwJKu//Dz61HaxwsLpsn/iRop+KxRmApjk7hRSxfG8F
+         cG79DxTOVkrHCCl0Z+JjvfFI1Us2ePvxaJcd/q1n8XQPkD29Snt/5eadLOKqEw4s5I
+         wyuWWaQ6HM0csDFNLWQbGqs6kWuET5VesHnFV3cwA2hGTS/6dU1L+U6SqYdZgv1Mhm
+         jRnaImnD2vgxw==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
+        linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-mm@kvack.org
+Cc:     Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Vineet Gupta <vgupta@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        virtualization@lists.linux-foundation.org
-References: <20210812194330.GA2500473@bjorn-Precision-5520>
-From:   "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Message-ID: <fbce6e80-07e3-8b95-dff6-1ade6be58b29@linux.intel.com>
-Date:   Thu, 12 Aug 2021 15:29:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.11.0
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <palmerdabbelt@google.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH -next] trap: Cleanup trap_init()
+In-Reply-To: <20210812123602.76356-1-wangkefeng.wang@huawei.com>
+References: <20210812123602.76356-1-wangkefeng.wang@huawei.com>
+Date:   Fri, 13 Aug 2021 12:27:58 +1000
+Message-ID: <87czqim635.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20210812194330.GA2500473@bjorn-Precision-5520>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Kefeng Wang <wangkefeng.wang@huawei.com> writes:
+> There are some empty trap_init() in different ARCHs, introduce
+> a new weak trap_init() function to cleanup them.
+>
+> Cc: Vineet Gupta <vgupta@kernel.org>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Ley Foon Tan <ley.foon.tan@intel.com>
+> Cc: Jonas Bonn <jonas@southpole.se>
+> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+> Cc: Stafford Horne <shorne@gmail.com>
+> Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Paul Walmsley <palmerdabbelt@google.com>
+> Cc: Jeff Dike <jdike@addtoit.com>
+> Cc: Richard Weinberger <richard@nod.at>
+> Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>  arch/arc/kernel/traps.c      | 5 -----
+>  arch/arm/kernel/traps.c      | 5 -----
+>  arch/h8300/kernel/traps.c    | 4 ----
+>  arch/hexagon/kernel/traps.c  | 4 ----
+>  arch/nds32/kernel/traps.c    | 5 -----
+>  arch/nios2/kernel/traps.c    | 5 -----
+>  arch/openrisc/kernel/traps.c | 5 -----
+>  arch/parisc/kernel/traps.c   | 4 ----
+>  arch/powerpc/kernel/traps.c  | 5 -----
 
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-On 8/12/21 12:43 PM, Bjorn Helgaas wrote:
-> Is there a branch with all of this applied?  I was going to apply this
-
-Its is maintained in following tree.
-
-https://github.com/intel/tdx/commit/93fd5b655172ba9e3350487995102a8b2c41de27
-
-> to help take a look at it, but it doesn't apply to v5.14-rc1.  I know
-
-This patch can be applied independently. I have just applied it on top
-of v5.14-rc5, and it seems to apply clean. Can you try -rc5?
-
-> you listed some prereqs in the cover letter, but it's a fair amount of
-> work to sort all that out.
-> 
-> On Wed, Aug 04, 2021 at 05:52:12PM -0700, Kuppuswamy Sathyanarayanan wrote:
->> From: Andi Kleen <ak@linux.intel.com>
-> 
-> If I were applying these, I would silently update the subject lines to
-> match previous commits.  Since these will probably be merged via a
-> different tree, you can update if there's a v5:
-> 
->    PCI: Consolidate pci_iomap_range(), pci_iomap_wc_range()
-
-Yes. I will fix this in next version.
-
-> 
-> Also applies to 11/15 and 12/15.
-
-Will do the same.
-
-> 
->> pci_iomap* and pci_iomap*wc are currently duplicated code, except
->> that the _wc variant does not support IO ports. Replace them
->> with a common helper and a callback for the mapping. I used
->> wrappers for the maps because some architectures implement ioremap
->> and friends with macros.
-> 
-> Maybe spell some of this out:
-> 
->    pci_iomap_range() and pci_iomap_wc_range() are currently duplicated
->    code, ...  Implement them using a common helper,
->    pci_iomap_range_map(), ...
-> 
-> Using "pci_iomap*" obscures the name and doesn't save any space.
-> 
-> Why is it safe to make pci_iomap_wc_range() support IO ports when it
-> didn't before?  That might be desirable, but I think it *is* a
-> functional change here.
-
-Agree. Commit log had to be updated. I will include these details
-in next submission.
-
-> 
-> IIUC, pci_iomap_wc_range() on an IO port range previously returned
-> NULL, and after this patch it will work the same as pci_iomap_range(),
-> i.e., it will return the result of __pci_ioport_map().
-> 
->> This will allow to add more variants without excessive code
->> duplications. This patch should have no behavior change.
->>
->> Signed-off-by: Andi Kleen <ak@linux.intel.com>
->> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->> ---
->>   lib/pci_iomap.c | 81 +++++++++++++++++++++++++++----------------------
->>   1 file changed, 44 insertions(+), 37 deletions(-)
->>
-
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+cheers
