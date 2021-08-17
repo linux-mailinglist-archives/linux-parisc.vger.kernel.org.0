@@ -2,82 +2,95 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5727E3EB257
-	for <lists+linux-parisc@lfdr.de>; Fri, 13 Aug 2021 10:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F0AB3EEF87
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 Aug 2021 17:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239762AbhHMIMW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 13 Aug 2021 04:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35062 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239668AbhHMIMV (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 13 Aug 2021 04:12:21 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C161C061756;
-        Fri, 13 Aug 2021 01:11:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=J5iMSjwPMvkOFpq0TMlTZtl3sxje2OPtaEgmn6rI3kw=; b=tLoy64zP56BA6COvXf26VAiBG9
-        oKjbIjnNL8arRxo50od3oQ9WiLXRnnIQhwWpPCi11t8FmIOTy5frodVYORATqo1cnyknkdAttACMh
-        IuMWI23bPAIcxV2I4FQ55yZj75VZCoja9nk9jCbJl2kLpcbtCS6bW+/E3OtXurRenuXwnHahWGhHg
-        VmR8RasuVRLggxW1RHCjYBVYq+of6asU83tj5SwmMaoQZlZNE/hmhjV94fEjEqMYdxvBoRzvKKJgC
-        EoAexDTExue7OUZO7UKAGrfL514yBqR5kWkuh5KUCOhD+Khwegyzwh0IZDHIBx/Bt0akrVQgr2x1g
-        9A5BlXNA==;
-Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mESEG-00FTaW-Kf; Fri, 13 Aug 2021 08:07:59 +0000
-Date:   Fri, 13 Aug 2021 09:07:48 +0100
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        id S240412AbhHQPxP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 Aug 2021 11:53:15 -0400
+Received: from mout.gmx.net ([212.227.15.18]:46987 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240271AbhHQPtC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 17 Aug 2021 11:49:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1629215282;
+        bh=9NtNBAzbovJ6oChii23fCVCShJxs0EWaS5IHENt5Bu4=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=kHgb5Wh2YOeKAf335CGvtrAAKPA8I6y+e6qFMQ+Huf/cWKpaxn2Q6cXD1aU9UwAc8
+         6KBKEetyCvQoEGG+sOMV9jSiOw+iJEO/5AgilniF/aC8vBahDqjj40ICPWgZoybMqU
+         m+V2oc4S1shCb6eK0V9AMr9lpXmVLmXen6xHvce4=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost.localdomain ([79.150.72.99]) by mail.gmx.net
+ (mrgmx005 [212.227.17.184]) with ESMTPSA (Nemesis) id
+ 1N8XPn-1nAkpE32bB-014UpR; Tue, 17 Aug 2021 17:48:01 +0200
+From:   Len Baker <len.baker@gmx.com>
+To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v4 12/15] pci: Mark MSI data shared
-Message-ID: <YRYoVBIXZ/910eaq@infradead.org>
-References: <20210805005218.2912076-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20210805005218.2912076-13-sathyanarayanan.kuppuswamy@linux.intel.com>
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Len Baker <len.baker@gmx.com>, linux-parisc@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH] input/gscps2: Prefer strscpy over strlcpy
+Date:   Tue, 17 Aug 2021 17:47:28 +0200
+Message-Id: <20210817154728.3964-1-len.baker@gmx.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210805005218.2912076-13-sathyanarayanan.kuppuswamy@linux.intel.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:SqWuKpv+L/u02yV3UejNX5E2A0SVXdG4VgTJSZ6Xq4Qvjvx2kSj
+ uC1K1cVTzi3fvESTvFQmJfFustHJKSOFmpUmJKRMPMvbh+2XBDVrSarX74zy3rvtvEKyvEm
+ +g2pW7jQnElStruQRJubmg3ol3J5pcvspB1xbdaER2Em8Qqmas1YhfyI26QoHrcAz0jyD/Q
+ tgFk6h5lKGCvouaDJ9PtQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:p7+Z05u49Ok=:enr38GetFC858aqm9GCWB9
+ le7W32OtXsbQjhJLgMCE9HgqrKEo5xPe1/fHDz4rP6YP4WwZKnBBUKU6duabG1kf+0BNaymKQ
+ 6uDKWvtyRiErbDKEh9Ko4zVAEbzVM99lAnEXHjX49R1enIAYALbkCU/vlXwAzgLjDNv6Hq+ef
+ iApbHMa4ArmKPsVyE6r3W8vKdXaNtbzSZ4BukpKDzLAGVDFUFtcfAi+KUkTfu0/kGUECrHNvK
+ UoWi5F45iYCApfnK+MZnUyxBHsIi9jIXcPmiN25AcpAeTNlcLIlBeorp87yK1abDpSEdqYTnY
+ qAWM8wZmwEtNUlVJQaWZZh6D8qEsNBsPzzGShzWpcdv3d6149XEdje7cTyA3zmqmkYY3w5NSN
+ rhCp5ywh1TVO1Rqur60WiYKOWdfjlJag5UPlqBT1GH7MlqTzTPeDLmUzfoKQMtfIRmHr+sZ8N
+ r+aijTQJHwEFZSKA5ae6jeOU3V6LaISHXliKB956xcnnWK/SPFEvqZ+SxCadFO0zDvAsYzSCb
+ jQWS7bCsTdHgpnGS/mKuHg0YITQ0akNtE7bZXGvnJwQcjVzQQ0QAa4Q7LjpDOOrfvX9CTSMVf
+ zI+rMUgojvcn2bYReekrt6TQ+kQ1gxoY4LJ/U11e6SXXgjh486trddBhj9F7YllHiLbufyj7C
+ aWRREh9jgAJZj6jiyBmJHDpspjWamrf4umlk5/OeyZU96N4MIAiWDmMEdA3sseZyJX5fJ9IF9
+ qJ+AXJpkm7ZGduLm3q+oDgTctJf77HctShYHImEu4yr4wHOV7A83n3eYvt3+/leDtCuG56RoF
+ +wYnL5ZnOJPXfZmtkFxR22OEqnc7XYORxsDUaa3QLVzCkbEfdbji1XfL1Wi155uZTDE+NOlQG
+ ukFHWI86UhMnMvUbYyCUMPpvFnQ3AxME9MRVhccXsk2pYi9v8XDvdXr0pixKDIba/PBmZOOfM
+ vXxa+ZrMtzAOuR8tZKrHRyzoPEu8I6VkIaL3g91kaAPDBxDa8GzaTD3sPJqemZGKT8vYIiTEP
+ joe4z06MvHl3Ni1lGXFOwOKYVb+E+k6PQKt2nUR4PMZy3pLBtjj60B3glk0T0Exb94i/71vgK
+ k1Whs3GErnCyY+0+Kr93GZFsQDoH4N9zdq5jVEliMJKceDMzO5M2NEEiA==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Aug 04, 2021 at 05:52:15PM -0700, Kuppuswamy Sathyanarayanan wrote:
->  
-> -	return ioremap(phys_addr, nr_entries * PCI_MSIX_ENTRY_SIZE);
-> +	return ioremap_shared(phys_addr, nr_entries * PCI_MSIX_ENTRY_SIZE);
+strlcpy() reads the entire source buffer first. This read may exceed the
+destination size limit. This is both inefficient and can lead to linear
+read overflows if a source string is not NUL-terminated. The safe
+replacement is strscpy().
 
-Please add a comment here.  I also find the amount of ioremap_* variants
-rather frustrating.  Maybe it it is time for a ioremap_flags which
-replaces the too-lowlevel pgprot_t of the ioremap_prot provided by some
-architectures with a more highlevel flags arguments that could also
-provide an accessible to the hypervisor flag.
+This is a previous step in the path to remove the strlcpy() function
+entirely from the kernel [1].
+
+[1] https://github.com/KSPP/linux/issues/89
+
+Signed-off-by: Len Baker <len.baker@gmx.com>
+=2D--
+ drivers/input/serio/gscps2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/input/serio/gscps2.c b/drivers/input/serio/gscps2.c
+index 2f9775de3c5b..cae74d0edb09 100644
+=2D-- a/drivers/input/serio/gscps2.c
++++ b/drivers/input/serio/gscps2.c
+@@ -357,7 +357,7 @@ static int __init gscps2_probe(struct parisc_device *d=
+ev)
+
+ 	snprintf(serio->name, sizeof(serio->name), "gsc-ps2-%s",
+ 		 (ps2port->id =3D=3D GSC_ID_KEYBOARD) ? "keyboard" : "mouse");
+-	strlcpy(serio->phys, dev_name(&dev->dev), sizeof(serio->phys));
++	strscpy(serio->phys, dev_name(&dev->dev), sizeof(serio->phys));
+ 	serio->id.type		=3D SERIO_8042;
+ 	serio->write		=3D gscps2_write;
+ 	serio->open		=3D gscps2_open;
+=2D-
+2.25.1
+
