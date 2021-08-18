@@ -2,95 +2,116 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F0AB3EEF87
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 Aug 2021 17:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5145E3EF86F
+	for <lists+linux-parisc@lfdr.de>; Wed, 18 Aug 2021 05:18:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240412AbhHQPxP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 Aug 2021 11:53:15 -0400
-Received: from mout.gmx.net ([212.227.15.18]:46987 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240271AbhHQPtC (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 Aug 2021 11:49:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1629215282;
-        bh=9NtNBAzbovJ6oChii23fCVCShJxs0EWaS5IHENt5Bu4=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=kHgb5Wh2YOeKAf335CGvtrAAKPA8I6y+e6qFMQ+Huf/cWKpaxn2Q6cXD1aU9UwAc8
-         6KBKEetyCvQoEGG+sOMV9jSiOw+iJEO/5AgilniF/aC8vBahDqjj40ICPWgZoybMqU
-         m+V2oc4S1shCb6eK0V9AMr9lpXmVLmXen6xHvce4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([79.150.72.99]) by mail.gmx.net
- (mrgmx005 [212.227.17.184]) with ESMTPSA (Nemesis) id
- 1N8XPn-1nAkpE32bB-014UpR; Tue, 17 Aug 2021 17:48:01 +0200
-From:   Len Baker <len.baker@gmx.com>
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Len Baker <len.baker@gmx.com>, linux-parisc@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>,
+        id S235464AbhHRDSr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 Aug 2021 23:18:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34256 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234435AbhHRDSq (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 17 Aug 2021 23:18:46 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772C3C061764
+        for <linux-parisc@vger.kernel.org>; Tue, 17 Aug 2021 20:18:12 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id x4so790576pgh.1
+        for <linux-parisc@vger.kernel.org>; Tue, 17 Aug 2021 20:18:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=j5+GyHW/4S3DPa6ifrE4AkuMeTrhrVLTRLEjOxHyD2Q=;
+        b=jvz7/vMzC87FldKmkHelmV6pkdk0P1wtKugQDFaobnoogyZyd9WTlD+2gY3JoPs3a4
+         uNgNQ5EYnBU09ao/wHlDQhOnOvFmC6o0zsSadfSlcMQo1CzXJaGWWkVwTRrOZ72SKLBh
+         STpOMnZlEgMrj5TqH6O0zTJQp5fRZmJGUaQqQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=j5+GyHW/4S3DPa6ifrE4AkuMeTrhrVLTRLEjOxHyD2Q=;
+        b=XUCwYZJfVoNTL+pVc1H9ftTg/fAaJaxETTlDmErIWY2uDEeJ9eOCZI4enrDW8A+mLo
+         3AKUADVIjfmXIvHl4VqThDmp1cwKDWg02JKR93i2z9YSW7p69vNIHSkbqrOPET+dMJHN
+         cZ689neIUIWQiBFbecAvzO7Ki+pR2JqL7xoAqrVxBu+QtAAEtg38+6aP6DDX9kZxLkB3
+         SWlpwbfgXik1pbpHydJpcPMOi32wXHV/XS0Go1OYWC91k+bXB7GguWPRZCaKwLsHh2dJ
+         Y5Q9GFpI/jAvlL7ntie6lrrdN730111JDJbiW5dv7i5+JmEskcB0nnWDJWh4lsOAaUQp
+         FXpQ==
+X-Gm-Message-State: AOAM5330YRBItJQhua/2v86824EQ0MAfjEN2AaV49mrMcYaLk7CpGi4e
+        cweWwXumxz3IdOSaBJjhLPmCJA==
+X-Google-Smtp-Source: ABdhPJxHgAcD+t24XepH6prWsbYT0xI/k6k9nDSdr1WcHPOqrmKg34/1qtWr4o5hweEMC438oWNP3g==
+X-Received: by 2002:a65:6a09:: with SMTP id m9mr6595093pgu.269.1629256691973;
+        Tue, 17 Aug 2021 20:18:11 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id n15sm3984352pff.149.2021.08.17.20.18.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Aug 2021 20:18:11 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     Kees Cook <keescook@chromium.org>, Helge Deller <deller@gmx.de>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hardening@vger.kernel.org
-Subject: [PATCH] input/gscps2: Prefer strscpy over strlcpy
-Date:   Tue, 17 Aug 2021 17:47:28 +0200
-Message-Id: <20210817154728.3964-1-len.baker@gmx.com>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH] parisc: math-emu: Avoid "fmt" macro collision
+Date:   Tue, 17 Aug 2021 20:18:09 -0700
+Message-Id: <20210818031809.735689-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:SqWuKpv+L/u02yV3UejNX5E2A0SVXdG4VgTJSZ6Xq4Qvjvx2kSj
- uC1K1cVTzi3fvESTvFQmJfFustHJKSOFmpUmJKRMPMvbh+2XBDVrSarX74zy3rvtvEKyvEm
- +g2pW7jQnElStruQRJubmg3ol3J5pcvspB1xbdaER2Em8Qqmas1YhfyI26QoHrcAz0jyD/Q
- tgFk6h5lKGCvouaDJ9PtQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:p7+Z05u49Ok=:enr38GetFC858aqm9GCWB9
- le7W32OtXsbQjhJLgMCE9HgqrKEo5xPe1/fHDz4rP6YP4WwZKnBBUKU6duabG1kf+0BNaymKQ
- 6uDKWvtyRiErbDKEh9Ko4zVAEbzVM99lAnEXHjX49R1enIAYALbkCU/vlXwAzgLjDNv6Hq+ef
- iApbHMa4ArmKPsVyE6r3W8vKdXaNtbzSZ4BukpKDzLAGVDFUFtcfAi+KUkTfu0/kGUECrHNvK
- UoWi5F45iYCApfnK+MZnUyxBHsIi9jIXcPmiN25AcpAeTNlcLIlBeorp87yK1abDpSEdqYTnY
- qAWM8wZmwEtNUlVJQaWZZh6D8qEsNBsPzzGShzWpcdv3d6149XEdje7cTyA3zmqmkYY3w5NSN
- rhCp5ywh1TVO1Rqur60WiYKOWdfjlJag5UPlqBT1GH7MlqTzTPeDLmUzfoKQMtfIRmHr+sZ8N
- r+aijTQJHwEFZSKA5ae6jeOU3V6LaISHXliKB956xcnnWK/SPFEvqZ+SxCadFO0zDvAsYzSCb
- jQWS7bCsTdHgpnGS/mKuHg0YITQ0akNtE7bZXGvnJwQcjVzQQ0QAa4Q7LjpDOOrfvX9CTSMVf
- zI+rMUgojvcn2bYReekrt6TQ+kQ1gxoY4LJ/U11e6SXXgjh486trddBhj9F7YllHiLbufyj7C
- aWRREh9jgAJZj6jiyBmJHDpspjWamrf4umlk5/OeyZU96N4MIAiWDmMEdA3sseZyJX5fJ9IF9
- qJ+AXJpkm7ZGduLm3q+oDgTctJf77HctShYHImEu4yr4wHOV7A83n3eYvt3+/leDtCuG56RoF
- +wYnL5ZnOJPXfZmtkFxR22OEqnc7XYORxsDUaa3QLVzCkbEfdbji1XfL1Wi155uZTDE+NOlQG
- ukFHWI86UhMnMvUbYyCUMPpvFnQ3AxME9MRVhccXsk2pYi9v8XDvdXr0pixKDIba/PBmZOOfM
- vXxa+ZrMtzAOuR8tZKrHRyzoPEu8I6VkIaL3g91kaAPDBxDa8GzaTD3sPJqemZGKT8vYIiTEP
- joe4z06MvHl3Ni1lGXFOwOKYVb+E+k6PQKt2nUR4PMZy3pLBtjj60B3glk0T0Exb94i/71vgK
- k1Whs3GErnCyY+0+Kr93GZFsQDoH4N9zdq5jVEliMJKceDMzO5M2NEEiA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2357; h=from:subject; bh=BAykg0i7p0/8eJzpRw9Ux1XnGwbtnouiM7jianmwKDc=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhHHvwNns9GPVFId5XpY/rjNKgrEk3HM9CwndqYGZ7 iLquAeSJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYRx78AAKCRCJcvTf3G3AJq44D/ 0Rww7PARe1v7Xrgq0fvsUfOXkQFNiuN9/WGA/RNTsk7WD8KC5I6eMlNvPOB3pKqFkiHbjneOi4jxp6 3ISKQJZgvNBDN7w+S1EEA3/NUHPdx7JTNXPubGlGknV7ylACCjzmoWHEP6LkDV+WGX0Del8/uGkgsb 8glYxbiKMGmM90igS0t8WXnYA8Z1f1T3943k7gNMm0DysLq+8SjNquGNlRCvMSvkbLjrjA6oCB3RTz i3Ki9kTg67GPto1gQFrLigc0mJkYmHQ93fOU9x3THcxoEVd8tATIWW4GLTiJaahlWnPrVqADOlf2B1 w/SQJmuIDYd1B4+V2RBQFnT1T1WJWM0pvgIN+9P9QeB8atEaCt69h74iMqpZJvGKEpMOL3evxp3qIr 64WWCoFh9VIH8yJvUrc2fsZlK8DcpubB52SM5m30/5SredsM8am0AzHv409+4ZyQnmr9ivec/VpD2g ZcM2Uht7+Znwbv3VdqH7PTgr8y6lfBZPcda4tiQ/KxJlUDAvLq7qGlLqF1B1Pr6Hd/6rbRUN39t3Ko BColCL/X+f5hvu04ZbIUic5OPjBu7ZXEvqoIE6za///Fz93Gigi1aMkCENMpm6PRnJ2iDO8zAkywF8 YobNhFKAqeftYClqJvOMkakeyVc4X7NmvOQ3WC1jVB1LHj7mgVIf6Ri1mMLA==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-strlcpy() reads the entire source buffer first. This read may exceed the
-destination size limit. This is both inefficient and can lead to linear
-read overflows if a source string is not NUL-terminated. The safe
-replacement is strscpy().
+The printk "fmt" macro was colliding. Rename like the others with a
+"bits" suffix. Fixes a build failure:
 
-This is a previous step in the path to remove the strlcpy() function
-entirely from the kernel [1].
+arch/parisc/math-emu/decode_exc.c: In function 'decode_fpu':
+arch/parisc/math-emu/decode_exc.c:49:14: error: expected identifier before numeric constant
+   49 | #define fmt  11 /* bits 19 & 20 */
+      |              ^~
+./include/linux/printk.h:379:6: note: in expansion of macro 'fmt'
+  379 |     .fmt = __builtin_constant_p(_fmt) ? (_fmt) : NULL, \
+      |      ^~~
+./include/linux/printk.h:417:3: note: in expansion of macro '__printk_index_emit'
+  417 |   __printk_index_emit(_fmt, NULL, NULL);   \
+      |   ^~~~~~~~~~~~~~~~~~~
+./include/linux/printk.h:446:26: note: in expansion of macro 'printk_index_wrap'
+  446 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+      |                          ^~~~~~~~~~~~~~~~~
+arch/parisc/math-emu/decode_exc.c:339:3: note: in expansion of macro 'printk'
+  339 |   printk("%s(%d) Unknown FPU exception 0x%x\n", __FILE__,
+      |   ^~~~~~
 
-[1] https://github.com/KSPP/linux/issues/89
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ arch/parisc/math-emu/decode_exc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Signed-off-by: Len Baker <len.baker@gmx.com>
-=2D--
- drivers/input/serio/gscps2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/input/serio/gscps2.c b/drivers/input/serio/gscps2.c
-index 2f9775de3c5b..cae74d0edb09 100644
-=2D-- a/drivers/input/serio/gscps2.c
-+++ b/drivers/input/serio/gscps2.c
-@@ -357,7 +357,7 @@ static int __init gscps2_probe(struct parisc_device *d=
-ev)
-
- 	snprintf(serio->name, sizeof(serio->name), "gsc-ps2-%s",
- 		 (ps2port->id =3D=3D GSC_ID_KEYBOARD) ? "keyboard" : "mouse");
--	strlcpy(serio->phys, dev_name(&dev->dev), sizeof(serio->phys));
-+	strscpy(serio->phys, dev_name(&dev->dev), sizeof(serio->phys));
- 	serio->id.type		=3D SERIO_8042;
- 	serio->write		=3D gscps2_write;
- 	serio->open		=3D gscps2_open;
-=2D-
-2.25.1
+diff --git a/arch/parisc/math-emu/decode_exc.c b/arch/parisc/math-emu/decode_exc.c
+index cd8ffc6ceadf..494ca41df05d 100644
+--- a/arch/parisc/math-emu/decode_exc.c
++++ b/arch/parisc/math-emu/decode_exc.c
+@@ -46,7 +46,7 @@
+ #define SIGNALCODE(signal, code) ((signal) << 24 | (code))
+ #define copropbit	1<<31-2	/* bit position 2 */
+ #define opclass		9	/* bits 21 & 22 */
+-#define fmt		11	/* bits 19 & 20 */
++#define fmtbits		11	/* bits 19 & 20 */
+ #define df		13	/* bits 17 & 18 */
+ #define twobits		3	/* mask low-order 2 bits */
+ #define fivebits	31	/* mask low-order 5 bits */
+@@ -57,7 +57,7 @@
+ #define Excp_instr(index) Instructionfield(Fpu_register[index])
+ #define Clear_excp_register(index) Allexception(Fpu_register[index]) = 0
+ #define Excp_format() \
+-    (current_ir >> ((current_ir>>opclass & twobits)==1 ? df : fmt) & twobits)
++	(current_ir >> ((current_ir>>opclass & twobits) == 1 ? df : fmtbits) & twobits)
+ 
+ /* Miscellaneous definitions */
+ #define Fpu_sgl(index) Fpu_register[index*2]
+-- 
+2.30.2
 
