@@ -2,79 +2,198 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD29E3F52E9
-	for <lists+linux-parisc@lfdr.de>; Mon, 23 Aug 2021 23:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1433B3F53E1
+	for <lists+linux-parisc@lfdr.de>; Tue, 24 Aug 2021 01:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232819AbhHWVi7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 23 Aug 2021 17:38:59 -0400
-Received: from out07.smtpout.orange.fr ([193.252.22.91]:31343 "EHLO
-        out.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232797AbhHWVi6 (ORCPT
+        id S233373AbhHWX46 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 23 Aug 2021 19:56:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:40459 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233330AbhHWX45 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 23 Aug 2021 17:38:58 -0400
-Received: from pop-os.home ([90.126.253.178])
-        by mwinf5d73 with ME
-        id l9Wh250043riaq2039WhxJ; Mon, 23 Aug 2021 23:30:43 +0200
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 23 Aug 2021 23:30:43 +0200
-X-ME-IP: 90.126.253.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        sudipm.mukherjee@gmail.com, sumit.semwal@linaro.org,
-        christian.koenig@amd.com
-Cc:     linux-parisc@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] parisc/parport_gsc: switch from 'pci_' to 'dma_' API
-Date:   Mon, 23 Aug 2021 23:30:39 +0200
-Message-Id: <93b21629db55629ec3d384e8184c4a9dd0270c11.1629754126.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.30.2
+        Mon, 23 Aug 2021 19:56:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1629762973;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RF+d9qpVprIgoIZ0mXGZUwRPD3HGuqO+bXOLg0En698=;
+        b=TjrQUVXiJRnZm5zdmiMSgNJM8Mz4QUaHHG/Z62UymjbI9HNCRXB352A6+ylM01kehZPLga
+        fgigsL7HPBFhN0gZspn969usecXH5HSrik36Km+PHQI4BB3usiez5X4n5XiC6jSG50ncdU
+        IiWUJTngOLA0p4IKybgaISdO8LX6qxw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-107-jONXR6hTN9mCZ4PgWXFt_g-1; Mon, 23 Aug 2021 19:56:11 -0400
+X-MC-Unique: jONXR6hTN9mCZ4PgWXFt_g-1
+Received: by mail-ej1-f70.google.com with SMTP id yz13-20020a170906dc4d00b005c61ad936f0so1536034ejb.12
+        for <linux-parisc@vger.kernel.org>; Mon, 23 Aug 2021 16:56:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RF+d9qpVprIgoIZ0mXGZUwRPD3HGuqO+bXOLg0En698=;
+        b=PgkX50SRC3JaPEdZbmQzUXH2VkIbwhXaQZr4nyXB59Dj4l4uLIClklF748QXJF/0O0
+         /rZwZxvMp/7kEG1XsO/A12aiND/rvztM95z6+MmSOV6hbeUAvUSsBsjeKZrzuB2CWawj
+         jztbGQV8Yd6X+7cjUzuiwjtBkJkSnxEo9DazdMSJOJ0MDkdmC5dfZTXUAWcgTCjohf67
+         SMhPkqrYrR7958JPMJUumcBV7+vu24+FmOfcw0s04DVVjzAoz0+osdUW0rgaYRDxUwHJ
+         Pgs/143FTZFIVURsJdpHwMpWTa2OJXQBRADCnCPrN7ZSvmzFdz0GFzqmvqJ1EcC88Gk0
+         gq8A==
+X-Gm-Message-State: AOAM530az5zuZibhN5nnnAZvofjCvOE1+Ms5yMO0UyCfovHaKLlmLljM
+        DAjqkh25/on07p/QUorBaKH/m0+gw+oo9fEYlpEvxZ01Bqm/6u0BpyuCKZnLQZfo+jIBWjt3BSn
+        gnX40YLPaIJlUeX8Imt20owKO
+X-Received: by 2002:a17:907:2cf1:: with SMTP id hz17mr32841054ejc.438.1629762970791;
+        Mon, 23 Aug 2021 16:56:10 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxlg8FJcUqFiderk/GNwJI39sbQlYErPR6APlNK/zjSzsj+DjKP0nKP8p+wjD6AR325FzPuGA==
+X-Received: by 2002:a17:907:2cf1:: with SMTP id hz17mr32841039ejc.438.1629762970610;
+        Mon, 23 Aug 2021 16:56:10 -0700 (PDT)
+Received: from redhat.com ([2.55.137.225])
+        by smtp.gmail.com with ESMTPSA id m17sm4928372ejr.27.2021.08.23.16.56.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Aug 2021 16:56:09 -0700 (PDT)
+Date:   Mon, 23 Aug 2021 19:56:03 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
+Message-ID: <20210823195409-mutt-send-email-mst@kernel.org>
+References: <20210805005218.2912076-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20210805005218.2912076-12-sathyanarayanan.kuppuswamy@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210805005218.2912076-12-sathyanarayanan.kuppuswamy@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+On Wed, Aug 04, 2021 at 05:52:14PM -0700, Kuppuswamy Sathyanarayanan wrote:
+> From: Andi Kleen <ak@linux.intel.com>
+> 
+> Add a new variant of pci_iomap for mapping all PCI resources
+> of a devices as shared memory with a hypervisor in a confidential
+> guest.
+> 
+> Signed-off-by: Andi Kleen <ak@linux.intel.com>
+> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-The patch has been generated with the coccinelle script below.
+I'm a bit puzzled by this part. So why should the guest *not* map
+pci memory as shared? And if the answer is never (as it seems to be)
+then why not just make regular pci_iomap DTRT?
 
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
+Thanks!
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
-
-This has *NOT* been compile tested because I don't have the needed
-configuration.
-ssdfs
----
- drivers/parport/parport_gsc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/parport/parport_gsc.c b/drivers/parport/parport_gsc.c
-index 1e43b3f399a8..db912fa6b6df 100644
---- a/drivers/parport/parport_gsc.c
-+++ b/drivers/parport/parport_gsc.c
-@@ -390,9 +390,8 @@ static int __exit parport_remove_chip(struct parisc_device *dev)
- 		if (p->irq != PARPORT_IRQ_NONE)
- 			free_irq(p->irq, p);
- 		if (priv->dma_buf)
--			pci_free_consistent(priv->dev, PAGE_SIZE,
--					    priv->dma_buf,
--					    priv->dma_handle);
-+			dma_free_coherent(&priv->dev->dev, PAGE_SIZE,
-+					  priv->dma_buf, priv->dma_handle);
- 		kfree (p->private_data);
- 		parport_put_port(p);
- 		kfree (ops); /* hope no-one cached it */
--- 
-2.30.2
+> ---
+>  include/asm-generic/pci_iomap.h |  6 +++++
+>  lib/pci_iomap.c                 | 46 +++++++++++++++++++++++++++++++++
+>  2 files changed, 52 insertions(+)
+> 
+> diff --git a/include/asm-generic/pci_iomap.h b/include/asm-generic/pci_iomap.h
+> index d4f16dcc2ed7..0178ddd7ad88 100644
+> --- a/include/asm-generic/pci_iomap.h
+> +++ b/include/asm-generic/pci_iomap.h
+> @@ -18,6 +18,12 @@ extern void __iomem *pci_iomap_range(struct pci_dev *dev, int bar,
+>  extern void __iomem *pci_iomap_wc_range(struct pci_dev *dev, int bar,
+>  					unsigned long offset,
+>  					unsigned long maxlen);
+> +extern void __iomem *pci_iomap_shared(struct pci_dev *dev, int bar,
+> +				      unsigned long max);
+> +extern void __iomem *pci_iomap_shared_range(struct pci_dev *dev, int bar,
+> +					    unsigned long offset,
+> +					    unsigned long maxlen);
+> +
+>  /* Create a virtual mapping cookie for a port on a given PCI device.
+>   * Do not call this directly, it exists to make it easier for architectures
+>   * to override */
+> diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
+> index 6251c3f651c6..b04e8689eab3 100644
+> --- a/lib/pci_iomap.c
+> +++ b/lib/pci_iomap.c
+> @@ -25,6 +25,11 @@ static void __iomem *map_ioremap_wc(phys_addr_t addr, size_t size)
+>  	return ioremap_wc(addr, size);
+>  }
+>  
+> +static void __iomem *map_ioremap_shared(phys_addr_t addr, size_t size)
+> +{
+> +	return ioremap_shared(addr, size);
+> +}
+> +
+>  static void __iomem *pci_iomap_range_map(struct pci_dev *dev,
+>  					 int bar,
+>  					 unsigned long offset,
+> @@ -101,6 +106,47 @@ void __iomem *pci_iomap_wc_range(struct pci_dev *dev,
+>  }
+>  EXPORT_SYMBOL_GPL(pci_iomap_wc_range);
+>  
+> +/**
+> + * pci_iomap_shared_range - create a virtual shared mapping cookie for a
+> + *                          PCI BAR
+> + * @dev: PCI device that owns the BAR
+> + * @bar: BAR number
+> + * @offset: map memory at the given offset in BAR
+> + * @maxlen: max length of the memory to map
+> + *
+> + * Remap a pci device's resources shared in a confidential guest.
+> + * For more details see pci_iomap_range's documentation.
+> + *
+> + * @maxlen specifies the maximum length to map. To get access to
+> + * the complete BAR from offset to the end, pass %0 here.
+> + */
+> +void __iomem *pci_iomap_shared_range(struct pci_dev *dev, int bar,
+> +				     unsigned long offset, unsigned long maxlen)
+> +{
+> +	return pci_iomap_range_map(dev, bar, offset, maxlen,
+> +				   map_ioremap_shared);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_iomap_shared_range);
+> +
+> +/**
+> + * pci_iomap_shared - create a virtual shared mapping cookie for a PCI BAR
+> + * @dev: PCI device that owns the BAR
+> + * @bar: BAR number
+> + * @maxlen: length of the memory to map
+> + *
+> + * See pci_iomap for details. This function creates a shared mapping
+> + * with the host for confidential hosts.
+> + *
+> + * @maxlen specifies the maximum length to map. To get access to the
+> + * complete BAR without checking for its length first, pass %0 here.
+> + */
+> +void __iomem *pci_iomap_shared(struct pci_dev *dev, int bar,
+> +			       unsigned long maxlen)
+> +{
+> +	return pci_iomap_shared_range(dev, bar, 0, maxlen);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_iomap_shared);
+> +
+>  /**
+>   * pci_iomap - create a virtual mapping cookie for a PCI BAR
+>   * @dev: PCI device that owns the BAR
+> -- 
+> 2.25.1
 
