@@ -2,91 +2,150 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DD833F5C07
-	for <lists+linux-parisc@lfdr.de>; Tue, 24 Aug 2021 12:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2C1C3F61FE
+	for <lists+linux-parisc@lfdr.de>; Tue, 24 Aug 2021 17:49:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236287AbhHXKZm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 24 Aug 2021 06:25:42 -0400
-Received: from foss.arm.com ([217.140.110.172]:33562 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236139AbhHXKZl (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 24 Aug 2021 06:25:41 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AF647101E;
-        Tue, 24 Aug 2021 03:24:57 -0700 (PDT)
-Received: from [10.57.15.112] (unknown [10.57.15.112])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F1DC63F66F;
-        Tue, 24 Aug 2021 03:24:55 -0700 (PDT)
-Subject: Re: [PATCH] parisc/parport_gsc: switch from 'pci_' to 'dma_' API
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        sudipm.mukherjee@gmail.com, sumit.semwal@linaro.org,
-        christian.koenig@amd.com
-Cc:     linux-parisc@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <93b21629db55629ec3d384e8184c4a9dd0270c11.1629754126.git.christophe.jaillet@wanadoo.fr>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <1a6f5b12-7cf2-cdb8-7a60-20c2d2ee38f3@arm.com>
-Date:   Tue, 24 Aug 2021 11:24:54 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S238304AbhHXPt4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 24 Aug 2021 11:49:56 -0400
+Received: from conuserg-07.nifty.com ([210.131.2.74]:45911 "EHLO
+        conuserg-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238287AbhHXPt4 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 24 Aug 2021 11:49:56 -0400
+Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
+        by conuserg-07.nifty.com with ESMTP id 17OFmRk4007583;
+        Wed, 25 Aug 2021 00:48:28 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com 17OFmRk4007583
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1629820108;
+        bh=Ja3N+HjtjaIU5nLg+1JURr3ykjAZgyE44nlGlYY37IQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gSXgU1uTCXcYG5tXWcfbjdJK9IpY2xDyCKYTmb9bG5yR3DMJddaJ8AcLwJdIa4PBK
+         fshqAme+OGa1Sq0NE7F9oPEFaBORwgyuQo5DqbMl8qU6uAiX56rCBM2BwK8BW1eZWY
+         I8NIFYS1nCzTybZA2XrQK9mH0XsATCrVTdvQJ3zIA2RyrkthM6FKomrsQWOBdzf/ZT
+         QrcFFSPzZHYRduiX4V/AZ2ie/hjnAbQrVgTkpOGj6OQfcY0w2fkNBXBsf3G0DzFEVf
+         wanSDLoj8y/JXUep4adWgoujPmwpXL1Ddq1KLGHCROpeLQzuseVZPg7blDAH3wAjYl
+         Xsgwa5/Uj6ubA==
+X-Nifty-SrcIP: [133.32.232.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] parisc: remove unused arch/parisc/boot/install.sh and its phony target
+Date:   Wed, 25 Aug 2021 00:48:20 +0900
+Message-Id: <20210824154820.293290-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <93b21629db55629ec3d384e8184c4a9dd0270c11.1629754126.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2021-08-23 22:30, Christophe JAILLET wrote:
-> The wrappers in include/linux/pci-dma-compat.h should go away.
-> 
-> The patch has been generated with the coccinelle script below.
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_free_consistent(e1, e2, e3, e4)
-> +    dma_free_coherent(&e1->dev, e2, e3, e4)
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> If needed, see post from Christoph Hellwig on the kernel-janitors ML:
->     https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
-> 
-> This has *NOT* been compile tested because I don't have the needed
-> configuration.
-> ssdfs
-> ---
->   drivers/parport/parport_gsc.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/parport/parport_gsc.c b/drivers/parport/parport_gsc.c
-> index 1e43b3f399a8..db912fa6b6df 100644
-> --- a/drivers/parport/parport_gsc.c
-> +++ b/drivers/parport/parport_gsc.c
-> @@ -390,9 +390,8 @@ static int __exit parport_remove_chip(struct parisc_device *dev)
->   		if (p->irq != PARPORT_IRQ_NONE)
->   			free_irq(p->irq, p);
->   		if (priv->dma_buf)
-> -			pci_free_consistent(priv->dev, PAGE_SIZE,
-> -					    priv->dma_buf,
-> -					    priv->dma_handle);
-> +			dma_free_coherent(&priv->dev->dev, PAGE_SIZE,
-> +					  priv->dma_buf, priv->dma_handle);
+Parisc has two similar installation scripts:
 
-Hmm, seeing a free on its own made me wonder where the corresponding 
-alloc was, but on closer inspection it seems there isn't one. AFAICS 
-priv->dma_buf is only ever assigned with NULL (and priv->dev doesn't 
-seem to be assigned at all), so this could likely just be removed. In 
-fact it looks like all the references to DMA in this driver are just 
-copy-paste from parport_pc and unused.
+  arch/parisc/install.sh
+  arch/parisc/boot/install.sh
 
-Robin.
+The latter is never used because 'make ARCH=parisc install' always
+invokes the 'install' target in arch/parisc/Makefile.
 
->   		kfree (p->private_data);
->   		parport_put_port(p);
->   		kfree (ops); /* hope no-one cached it */
-> 
+The target in arch/parisc/boot/Makefile is not used either.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+Changes in v2:
+  - Remove arch/parisc/boot/install.sh
+
+ arch/parisc/boot/Makefile   |  4 ---
+ arch/parisc/boot/install.sh | 65 -------------------------------------
+ 2 files changed, 69 deletions(-)
+ delete mode 100644 arch/parisc/boot/install.sh
+
+diff --git a/arch/parisc/boot/Makefile b/arch/parisc/boot/Makefile
+index 61f44142cfe1..b873ee4720ca 100644
+--- a/arch/parisc/boot/Makefile
++++ b/arch/parisc/boot/Makefile
+@@ -15,7 +15,3 @@ $(obj)/bzImage: $(obj)/compressed/vmlinux FORCE
+ 
+ $(obj)/compressed/vmlinux: FORCE
+ 	$(Q)$(MAKE) $(build)=$(obj)/compressed $@
+-
+-install: $(CONFIGURE) $(obj)/bzImage
+-	sh -x  $(srctree)/$(obj)/install.sh $(KERNELRELEASE) $(obj)/bzImage \
+-	      System.map "$(INSTALL_PATH)"
+diff --git a/arch/parisc/boot/install.sh b/arch/parisc/boot/install.sh
+deleted file mode 100644
+index 8f7c365fad83..000000000000
+--- a/arch/parisc/boot/install.sh
++++ /dev/null
+@@ -1,65 +0,0 @@
+-#!/bin/sh
+-#
+-# arch/parisc/install.sh, derived from arch/i386/boot/install.sh
+-#
+-# This file is subject to the terms and conditions of the GNU General Public
+-# License.  See the file "COPYING" in the main directory of this archive
+-# for more details.
+-#
+-# Copyright (C) 1995 by Linus Torvalds
+-#
+-# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
+-#
+-# "make install" script for i386 architecture
+-#
+-# Arguments:
+-#   $1 - kernel version
+-#   $2 - kernel image file
+-#   $3 - kernel map file
+-#   $4 - default install path (blank if root directory)
+-#
+-
+-verify () {
+-	if [ ! -f "$1" ]; then
+-		echo ""                                                   1>&2
+-		echo " *** Missing file: $1"                              1>&2
+-		echo ' *** You need to run "make" before "make install".' 1>&2
+-		echo ""                                                   1>&2
+-		exit 1
+-	fi
+-}
+-
+-# Make sure the files actually exist
+-
+-verify "$2"
+-verify "$3"
+-
+-# User may have a custom install script
+-
+-if [ -n "${INSTALLKERNEL}" ]; then
+-  if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
+-  if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
+-fi
+-
+-# Default install
+-
+-if [ "$(basename $2)" = "zImage" ]; then
+-# Compressed install
+-  echo "Installing compressed kernel"
+-  base=vmlinuz
+-else
+-# Normal install
+-  echo "Installing normal kernel"
+-  base=vmlinux
+-fi
+-
+-if [ -f $4/$base-$1 ]; then
+-  mv $4/$base-$1 $4/$base-$1.old
+-fi
+-cat $2 > $4/$base-$1
+-
+-# Install system map file
+-if [ -f $4/System.map-$1 ]; then
+-  mv $4/System.map-$1 $4/System.map-$1.old
+-fi
+-cp $3 $4/System.map-$1
+-- 
+2.30.2
+
