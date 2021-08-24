@@ -2,150 +2,118 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2C1C3F61FE
-	for <lists+linux-parisc@lfdr.de>; Tue, 24 Aug 2021 17:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C7263F652B
+	for <lists+linux-parisc@lfdr.de>; Tue, 24 Aug 2021 19:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238304AbhHXPt4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 24 Aug 2021 11:49:56 -0400
-Received: from conuserg-07.nifty.com ([210.131.2.74]:45911 "EHLO
-        conuserg-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238287AbhHXPt4 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 24 Aug 2021 11:49:56 -0400
-Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
-        by conuserg-07.nifty.com with ESMTP id 17OFmRk4007583;
-        Wed, 25 Aug 2021 00:48:28 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com 17OFmRk4007583
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1629820108;
-        bh=Ja3N+HjtjaIU5nLg+1JURr3ykjAZgyE44nlGlYY37IQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=gSXgU1uTCXcYG5tXWcfbjdJK9IpY2xDyCKYTmb9bG5yR3DMJddaJ8AcLwJdIa4PBK
-         fshqAme+OGa1Sq0NE7F9oPEFaBORwgyuQo5DqbMl8qU6uAiX56rCBM2BwK8BW1eZWY
-         I8NIFYS1nCzTybZA2XrQK9mH0XsATCrVTdvQJ3zIA2RyrkthM6FKomrsQWOBdzf/ZT
-         QrcFFSPzZHYRduiX4V/AZ2ie/hjnAbQrVgTkpOGj6OQfcY0w2fkNBXBsf3G0DzFEVf
-         wanSDLoj8y/JXUep4adWgoujPmwpXL1Ddq1KLGHCROpeLQzuseVZPg7blDAH3wAjYl
-         Xsgwa5/Uj6ubA==
-X-Nifty-SrcIP: [133.32.232.101]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] parisc: remove unused arch/parisc/boot/install.sh and its phony target
-Date:   Wed, 25 Aug 2021 00:48:20 +0900
-Message-Id: <20210824154820.293290-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S233793AbhHXRKg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 24 Aug 2021 13:10:36 -0400
+Received: from mga12.intel.com ([192.55.52.136]:34909 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238870AbhHXRIw (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 24 Aug 2021 13:08:52 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10086"; a="196931983"
+X-IronPort-AV: E=Sophos;i="5.84,347,1620716400"; 
+   d="scan'208";a="196931983"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2021 10:04:29 -0700
+X-IronPort-AV: E=Sophos;i="5.84,347,1620716400"; 
+   d="scan'208";a="526698792"
+Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.209.119.65]) ([10.209.119.65])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2021 10:04:27 -0700
+Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
+To:     Christoph Hellwig <hch@infradead.org>,
+        "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        virtualization@lists.linux-foundation.org
+References: <20210805005218.2912076-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20210805005218.2912076-12-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20210823195409-mutt-send-email-mst@kernel.org>
+ <26a3cce5-ddf7-cbe6-a41e-58a2aea48f78@linux.intel.com>
+ <YSSay4zGjLaNMOh1@infradead.org>
+From:   Andi Kleen <ak@linux.intel.com>
+Message-ID: <2747d96f-5063-7c63-5a47-16ea299fa195@linux.intel.com>
+Date:   Tue, 24 Aug 2021 10:04:26 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <YSSay4zGjLaNMOh1@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Parisc has two similar installation scripts:
 
-  arch/parisc/install.sh
-  arch/parisc/boot/install.sh
+On 8/24/2021 12:07 AM, Christoph Hellwig wrote:
+> On Mon, Aug 23, 2021 at 05:30:54PM -0700, Kuppuswamy, Sathyanarayanan wrote:
+>>
+>> On 8/23/21 4:56 PM, Michael S. Tsirkin wrote:
+>>>> Add a new variant of pci_iomap for mapping all PCI resources
+>>>> of a devices as shared memory with a hypervisor in a confidential
+>>>> guest.
+>>>>
+>>>> Signed-off-by: Andi Kleen<ak@linux.intel.com>
+>>>> Signed-off-by: Kuppuswamy Sathyanarayanan<sathyanarayanan.kuppuswamy@linux.intel.com>
+>>> I'm a bit puzzled by this part. So why should the guest*not*  map
+>>> pci memory as shared? And if the answer is never (as it seems to be)
+>>> then why not just make regular pci_iomap DTRT?
+>> It is in the context of confidential guest (where VMM is un-trusted). So
+>> we don't want to make all PCI resource as shared. It should be allowed
+>> only for hardened drivers/devices.
+> Well, assuming the host can do any damage when mapped shared that also
+> means not mapping it shared will completely break the drivers.
 
-The latter is never used because 'make ARCH=parisc install' always
-invokes the 'install' target in arch/parisc/Makefile.
+There are several cases:
 
-The target in arch/parisc/boot/Makefile is not used either.
+- We have driver filtering active to protect you against attacks from 
+the host against unhardened drivers.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+In this case the drivers not working is the intended behavior.
 
-Changes in v2:
-  - Remove arch/parisc/boot/install.sh
+- There is an command allow list override for some new driver, but the 
+driver is hardened and shared
 
- arch/parisc/boot/Makefile   |  4 ---
- arch/parisc/boot/install.sh | 65 -------------------------------------
- 2 files changed, 69 deletions(-)
- delete mode 100644 arch/parisc/boot/install.sh
+The other drivers will still not work, but that's also the intended behavior
 
-diff --git a/arch/parisc/boot/Makefile b/arch/parisc/boot/Makefile
-index 61f44142cfe1..b873ee4720ca 100644
---- a/arch/parisc/boot/Makefile
-+++ b/arch/parisc/boot/Makefile
-@@ -15,7 +15,3 @@ $(obj)/bzImage: $(obj)/compressed/vmlinux FORCE
- 
- $(obj)/compressed/vmlinux: FORCE
- 	$(Q)$(MAKE) $(build)=$(obj)/compressed $@
--
--install: $(CONFIGURE) $(obj)/bzImage
--	sh -x  $(srctree)/$(obj)/install.sh $(KERNELRELEASE) $(obj)/bzImage \
--	      System.map "$(INSTALL_PATH)"
-diff --git a/arch/parisc/boot/install.sh b/arch/parisc/boot/install.sh
-deleted file mode 100644
-index 8f7c365fad83..000000000000
---- a/arch/parisc/boot/install.sh
-+++ /dev/null
-@@ -1,65 +0,0 @@
--#!/bin/sh
--#
--# arch/parisc/install.sh, derived from arch/i386/boot/install.sh
--#
--# This file is subject to the terms and conditions of the GNU General Public
--# License.  See the file "COPYING" in the main directory of this archive
--# for more details.
--#
--# Copyright (C) 1995 by Linus Torvalds
--#
--# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
--#
--# "make install" script for i386 architecture
--#
--# Arguments:
--#   $1 - kernel version
--#   $2 - kernel image file
--#   $3 - kernel map file
--#   $4 - default install path (blank if root directory)
--#
--
--verify () {
--	if [ ! -f "$1" ]; then
--		echo ""                                                   1>&2
--		echo " *** Missing file: $1"                              1>&2
--		echo ' *** You need to run "make" before "make install".' 1>&2
--		echo ""                                                   1>&2
--		exit 1
--	fi
--}
--
--# Make sure the files actually exist
--
--verify "$2"
--verify "$3"
--
--# User may have a custom install script
--
--if [ -n "${INSTALLKERNEL}" ]; then
--  if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
--  if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
--fi
--
--# Default install
--
--if [ "$(basename $2)" = "zImage" ]; then
--# Compressed install
--  echo "Installing compressed kernel"
--  base=vmlinuz
--else
--# Normal install
--  echo "Installing normal kernel"
--  base=vmlinux
--fi
--
--if [ -f $4/$base-$1 ]; then
--  mv $4/$base-$1 $4/$base-$1.old
--fi
--cat $2 > $4/$base-$1
--
--# Install system map file
--if [ -f $4/System.map-$1 ]; then
--  mv $4/System.map-$1 $4/System.map-$1.old
--fi
--cp $3 $4/System.map-$1
--- 
-2.30.2
+- Driver filtering is disabled or the allow list override is used to 
+enable some non hardened/enabled driver
+
+There is a command line option to override the ioremap sharing default, 
+it will allow all drivers to do ioremap. We would really prefer to make 
+it more finegrained, but it's not possible in this case. Other drivers 
+are likely attackable.
+
+- Driver filtering is disabled (allowing attacks on the drivers) and the 
+command line option for forced sharing is set.
+
+All drivers initialize and can talk to the host through MMIO. Lots of 
+unhardened drivers are likely attackable.
+
+-Andi
 
