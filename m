@@ -2,153 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EA753F5B3C
-	for <lists+linux-parisc@lfdr.de>; Tue, 24 Aug 2021 11:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD833F5C07
+	for <lists+linux-parisc@lfdr.de>; Tue, 24 Aug 2021 12:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235803AbhHXJsB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 24 Aug 2021 05:48:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:47820 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235804AbhHXJsA (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 24 Aug 2021 05:48:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1629798436;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=byOliS/hAlH982j95uoj9FjiMsaJUQkzdYQOZKOZeFM=;
-        b=GyOAz9jf2T1UnEG3MwFWXZbG4cqAZWL8bGDUXRlnYfPkjpeEVbPigzkSMM2d//4thpMyQg
-        NnhUea0DzMqf0ihISG+CYF6DNU0hK0qjg6USWP2WaIOtZdwSEIU8ProSU+Tis0R69fDt3C
-        ioI6te41lB3WNLMXuO+4SBE+wYPhJm8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-433-PoHA5w1sPXKsm1R9zeoPxQ-1; Tue, 24 Aug 2021 05:47:14 -0400
-X-MC-Unique: PoHA5w1sPXKsm1R9zeoPxQ-1
-Received: by mail-ej1-f72.google.com with SMTP id gb24-20020a170907961800b005c158d37301so5833361ejc.17
-        for <linux-parisc@vger.kernel.org>; Tue, 24 Aug 2021 02:47:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=byOliS/hAlH982j95uoj9FjiMsaJUQkzdYQOZKOZeFM=;
-        b=E3q+knFGiBl0KKVqpa1Ua1x4bGKvIf2myOShwvjsGg71BqAtKwXMt9Gt7ttNhIhc0K
-         1U7kD/v2Y0CZSEK1huiR3qtxzveEvRsSkAuusIzTt1CsQXXpADOl92iy7FROK5rGKn07
-         RLh/L7pwrVSUFrozJM21+u3RXyeKlVzQHiv8RzQOsYYp9mh1dUSPaN/XVhE1l3Xj2lWX
-         tP/EeiCpDAvTuw2hSMD4R4usnQDWNdzm8BFi7XNlDuYk4uNny/BuMnz9F8ASiLJmaBN9
-         Gcv7T70ZHUK3DxlnZRIIIALq/7Waep6CpZC1UiA8ELXapX9bXMGZeLeZXhGGSAmaSE6N
-         9LBw==
-X-Gm-Message-State: AOAM533t/aHCkE04lvnWRyUkzlA49r62vu8DiAC+OwQE2NM7pUxgTaBX
-        fa2QevacoZq0zDJ7IDM3ahFGTlbsdcKS2L4XcW4cspmfv2QCwMmoq82xQWOEkZ03cVFvlauDw9Z
-        RFMVAizMdCeFlRozyisqSApo4
-X-Received: by 2002:a17:906:3542:: with SMTP id s2mr40413087eja.379.1629798433295;
-        Tue, 24 Aug 2021 02:47:13 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyUO88Sc9irEBtMZmBbVQ8WcILdFFNEosAjyt1865+nkRLAobkOu3Zuf3KEOK5TLE4bRYLW2A==
-X-Received: by 2002:a17:906:3542:: with SMTP id s2mr40413054eja.379.1629798433111;
-        Tue, 24 Aug 2021 02:47:13 -0700 (PDT)
-Received: from redhat.com ([2.55.137.225])
-        by smtp.gmail.com with ESMTPSA id b18sm2800522ejl.90.2021.08.24.02.47.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 02:47:12 -0700 (PDT)
-Date:   Tue, 24 Aug 2021 05:47:03 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Andi Kleen <ak@linux.intel.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
-Message-ID: <20210824053830-mutt-send-email-mst@kernel.org>
-References: <20210805005218.2912076-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20210805005218.2912076-12-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20210823195409-mutt-send-email-mst@kernel.org>
- <26a3cce5-ddf7-cbe6-a41e-58a2aea48f78@linux.intel.com>
- <CAPcyv4iJVQKJ3bVwZhD08c8GNEP0jW2gx=H504NXcYK5o2t01A@mail.gmail.com>
- <d992b5af-8d57-6aa6-bd49-8e2b8d832b19@linux.intel.com>
+        id S236287AbhHXKZm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 24 Aug 2021 06:25:42 -0400
+Received: from foss.arm.com ([217.140.110.172]:33562 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236139AbhHXKZl (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 24 Aug 2021 06:25:41 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AF647101E;
+        Tue, 24 Aug 2021 03:24:57 -0700 (PDT)
+Received: from [10.57.15.112] (unknown [10.57.15.112])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F1DC63F66F;
+        Tue, 24 Aug 2021 03:24:55 -0700 (PDT)
+Subject: Re: [PATCH] parisc/parport_gsc: switch from 'pci_' to 'dma_' API
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        sudipm.mukherjee@gmail.com, sumit.semwal@linaro.org,
+        christian.koenig@amd.com
+Cc:     linux-parisc@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <93b21629db55629ec3d384e8184c4a9dd0270c11.1629754126.git.christophe.jaillet@wanadoo.fr>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <1a6f5b12-7cf2-cdb8-7a60-20c2d2ee38f3@arm.com>
+Date:   Tue, 24 Aug 2021 11:24:54 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d992b5af-8d57-6aa6-bd49-8e2b8d832b19@linux.intel.com>
+In-Reply-To: <93b21629db55629ec3d384e8184c4a9dd0270c11.1629754126.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 23, 2021 at 07:14:18PM -0700, Andi Kleen wrote:
+On 2021-08-23 22:30, Christophe JAILLET wrote:
+> The wrappers in include/linux/pci-dma-compat.h should go away.
 > 
-> On 8/23/2021 6:04 PM, Dan Williams wrote:
-> > On Mon, Aug 23, 2021 at 5:31 PM Kuppuswamy, Sathyanarayanan
-> > <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
-> > > 
-> > > 
-> > > On 8/23/21 4:56 PM, Michael S. Tsirkin wrote:
-> > > > > Add a new variant of pci_iomap for mapping all PCI resources
-> > > > > of a devices as shared memory with a hypervisor in a confidential
-> > > > > guest.
-> > > > > 
-> > > > > Signed-off-by: Andi Kleen<ak@linux.intel.com>
-> > > > > Signed-off-by: Kuppuswamy Sathyanarayanan<sathyanarayanan.kuppuswamy@linux.intel.com>
-> > > > I'm a bit puzzled by this part. So why should the guest*not*  map
-> > > > pci memory as shared? And if the answer is never (as it seems to be)
-> > > > then why not just make regular pci_iomap DTRT?
-> > > It is in the context of confidential guest (where VMM is un-trusted). So
-> > > we don't want to make all PCI resource as shared. It should be allowed
-> > > only for hardened drivers/devices.
-> > That's confusing, isn't device authorization what keeps unaudited
-> > drivers from loading against untrusted devices? I'm feeling like
-> > Michael that this should be a detail that drivers need not care about
-> > explicitly, in which case it does not need to be exported because the
-> > detail can be buried in lower levels.
+> The patch has been generated with the coccinelle script below.
 > 
-> We originally made it default (similar to AMD), but it during code audit we
-> found a lot of drivers who do ioremap early outside the probe function.
-> Since it would be difficult to change them all we made it opt-in, which
-> ensures that only drivers that have been enabled can talk with the host at
-> all and can't be attacked. That made the problem of hardening all these
-> drivers a lot more practical.
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_free_consistent(e1, e2, e3, e4)
+> +    dma_free_coherent(&e1->dev, e2, e3, e4)
 > 
-> Currently we only really need virtio and MSI-X shared, so for changing two
-> places in the tree you avoid a lot of headache elsewhere.
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+>     https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
 > 
-> Note there is still a command line option to override if you want to allow
-> and load other drivers.
+> This has *NOT* been compile tested because I don't have the needed
+> configuration.
+> ssdfs
+> ---
+>   drivers/parport/parport_gsc.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> -Andi
+> diff --git a/drivers/parport/parport_gsc.c b/drivers/parport/parport_gsc.c
+> index 1e43b3f399a8..db912fa6b6df 100644
+> --- a/drivers/parport/parport_gsc.c
+> +++ b/drivers/parport/parport_gsc.c
+> @@ -390,9 +390,8 @@ static int __exit parport_remove_chip(struct parisc_device *dev)
+>   		if (p->irq != PARPORT_IRQ_NONE)
+>   			free_irq(p->irq, p);
+>   		if (priv->dma_buf)
+> -			pci_free_consistent(priv->dev, PAGE_SIZE,
+> -					    priv->dma_buf,
+> -					    priv->dma_handle);
+> +			dma_free_coherent(&priv->dev->dev, PAGE_SIZE,
+> +					  priv->dma_buf, priv->dma_handle);
 
-I see. Hmm. It's a bit of a random thing to do it at the map time
-though. E.g. DMA is all handled transparently behind the DMA API.
-Hardening is much more than just replacing map with map_shared
-and I suspect what you will end up with is basically
-vendors replacing map with map shared to make things work
-for their users and washing their hands.
+Hmm, seeing a free on its own made me wonder where the corresponding 
+alloc was, but on closer inspection it seems there isn't one. AFAICS 
+priv->dma_buf is only ever assigned with NULL (and priv->dev doesn't 
+seem to be assigned at all), so this could likely just be removed. In 
+fact it looks like all the references to DMA in this driver are just 
+copy-paste from parport_pc and unused.
 
-I would say an explicit flag in the driver that says "hardened"
-and refusing to init a non hardened one would be better.
+Robin.
 
--- 
-MST
-
+>   		kfree (p->private_data);
+>   		parport_put_port(p);
+>   		kfree (ops); /* hope no-one cached it */
+> 
