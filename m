@@ -2,96 +2,85 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B5F83F77C7
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Aug 2021 16:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E9823F8A1B
+	for <lists+linux-parisc@lfdr.de>; Thu, 26 Aug 2021 16:31:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240477AbhHYOxX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 25 Aug 2021 10:53:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54138 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240395AbhHYOxW (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 25 Aug 2021 10:53:22 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 36A4E610CD;
-        Wed, 25 Aug 2021 14:52:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629903156;
-        bh=JavDwpgii8kF2lXyvHOwR8IF/SUWfOr82rbSiTe1nco=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=etlal+X6PK/iyyE+nCKJqe8xvh6sOY35Jz8lqksr6gEQVCToh4OokpBhqzSLN+EQd
-         CbpLIssWEQtnZPMe70kfBxZJeme2Vw5EfXhChn/2RVE74/XOQ0ogJdDJbJSxQ6B6tW
-         NpWtwQV/bKLoQqX4+aw+rClsxeZQuTcMptgtwqLJE9cPhKmxBAMOvE9u1TAbpbyusm
-         2r/bieajK+y11XHoHy7rRrWGS+kpuVvgAm5FMOgzMz/YOJ/ryEgttZaNO+A2gFqSgV
-         gSDOXXqDHEGwZCzB6XgcGfNipfy8ECvl8ldyO/Fs4RX/PiHXnplmt9Ddb5SbfOzVkW
-         H7gyI/GMyzCTg==
-Date:   Wed, 25 Aug 2021 09:52:35 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Andi Kleen <ak@linux.intel.com>
-Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org,
-        Rajat Jain <rajatja@google.com>
-Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
-Message-ID: <20210825145235.GA3565590@bjorn-Precision-5520>
+        id S232559AbhHZOb7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 26 Aug 2021 10:31:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60620 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231458AbhHZOb6 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 26 Aug 2021 10:31:58 -0400
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94287C061757
+        for <linux-parisc@vger.kernel.org>; Thu, 26 Aug 2021 07:31:10 -0700 (PDT)
+Received: (qmail 7755 invoked from network); 26 Aug 2021 14:30:33 -0000
+Received: from mail.sf-mail.de ([2a01:4f8:1c17:6fae:616d:6c69:616d:6c69]:43188 HELO webmail.sf-mail.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Thu, 26 Aug 2021 16:30:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bb8c6f96-2597-bb80-bd08-7958405e1bf5@linux.intel.com>
+Date:   Thu, 26 Aug 2021 16:30:33 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-parisc <linux-parisc@vger.kernel.org>
+Subject: Re: Cycle offset is larger than allowed by the 'jiffies' clock's
+ max_cycles value
+In-Reply-To: <2191464.ElGaqSPkdT@daneel.sf-tec.de>
+References: <11708426.O9o76ZdvQC@eto.sf-tec.de>
+ <2573804.mvXUDI8C0e@daneel.sf-tec.de>
+ <dc93df38-d2c4-362e-0e22-b8885509c2ea@gmx.de>
+ <2191464.ElGaqSPkdT@daneel.sf-tec.de>
+User-Agent: Roundcube Webmail/1.4.11
+Message-ID: <edac32ae14afeaf416e002f1f366534a@sf-tec.de>
+X-Sender: eike-kernel@sf-tec.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Aug 24, 2021 at 01:50:00PM -0700, Andi Kleen wrote:
+Am 2021-03-14 13:08, schrieb Rolf Eike Beer:
+> Am Sonntag, 14. März 2021, 12:16:11 CET schrieben Sie:
+>> On 3/14/21 10:47 AM, Rolf Eike Beer wrote:
+>> > Am Mittwoch, 3. März 2021, 15:29:42 CET schrieb Helge Deller:
+>> >> On 3/1/21 7:44 PM, Rolf Eike Beer wrote:
+>> >>> Am Montag, 1. März 2021, 17:49:42 CET schrieb Rolf Eike Beer:
+>> >>>> Am Montag, 1. März 2021, 17:25:18 CET schrieb Rolf Eike Beer:
+>> >>>>> After upgrade to 5.11 get this multiple times per second on my C8000:
+>> >>>>>
+>> >>>>> [   36.998702] WARNING: timekeeping: Cycle offset (29) is larger than
+>> >>>>> allowed by the 'jiffies' clock's max_cycles value (10): time overflow
+>> >>>>> danger [   36.998705]          timekeeping: Your kernel is sick, but
+>> >>>>> tries
+>> >>>>> to cope by capping time updates
+>> >>
+>> >> I know I have seen this at least once with a 32-bit kernel in qemu as
+>> >> well....
+>> >>
+>> >>>> Not 5.11, but 5.10.11. 5.10.4 is fine. It could be a bad upgrade
+>> >>>> attempt,
+>> >>>> I'll retry once I have built a proper 5.11 kernel.
+>> >>>
+>> >>> Ok, it's there also in 5.11.2:
+>> >> You don't see it in 5.11, but in 5.11.2.
+>> >> Sadly none of the changes between those versions seem related
+>> >> to this problem.
+>> >>
+>> >> Do you still see this?
+>> >> I'd like to get it anaylzed/fixed.
+>> >
+>> > Me too. What do you need?
+>> 
+>> I actually don't know.
+>> First of all it would be great if we could reproduce it.
+>> Right now I don't see this issue any longer, so I have nowhere to 
+>> start
+>> from.
 > 
-> On 8/24/2021 1:31 PM, Bjorn Helgaas wrote:
-> > On Tue, Aug 24, 2021 at 01:14:02PM -0700, Andi Kleen wrote:
-> > > On 8/24/2021 11:55 AM, Bjorn Helgaas wrote:
-> > > > [+cc Rajat; I still don't know what "shared memory with a hypervisor
-> > > > in a confidential guest" means,
-> > > A confidential guest is a guest which uses memory encryption to isolate
-> > > itself from the host. It doesn't trust the host. But it still needs to
-> > > communicate with the host for IO, so it has some special memory areas that
-> > > are explicitly marked shared. These are used to do IO with the host. All
-> > > their usage needs to be carefully hardened to avoid any security attacks on
-> > > the guest, that's why we want to limit this interaction only to a small set
-> > > of hardened drivers. For MMIO, the set is currently only virtio and MSI-X.
-> > Good material for the commit log next time around.  Thanks!
-> 
-> This is all in the patch intro too, which should make it into the merge
-> commits.
+> I get it every time if I boot that kernel.
 
-It's good if the cover letter makes into the merge commit log.
-
-It's probably just because my git foo is lacking, but merge commit
-logs don't seem as discoverable as the actual patch commit logs.  Five
-years from now, if I want to learn about pci_iomap_shared() history, I
-would "git log -p lib/pci_iomap.c" and search for it.  But I don't
-think I would see the merge commit then.
-
-Bjorn
+I still see it in 5.13.12, so I'm in the bad situation now that I don't 
+have a working kernel on that machine anymore and need to think about 
+how to restore it. While the latter is exactly my problem I would still 
+love to see the kernel problem solved.
