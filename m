@@ -2,73 +2,110 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCEAC3F9276
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 Aug 2021 04:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BB5C3F9703
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 Aug 2021 11:30:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244089AbhH0Cnk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 26 Aug 2021 22:43:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57752 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244055AbhH0Cnj (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 26 Aug 2021 22:43:39 -0400
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD87AC061796
-        for <linux-parisc@vger.kernel.org>; Thu, 26 Aug 2021 19:42:51 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id v2so7579500oie.6
-        for <linux-parisc@vger.kernel.org>; Thu, 26 Aug 2021 19:42:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=L16basOqEiOzLTkZH+t3zY5i95O9fedNzsOwpInpw/4ZRCIa+HeD/2CxHpaiLN4xkB
-         EIiuVQ6uT/riLY726gd92BelAteEVej/sIoRpjJjMBix97pnTW/hDSERzHbyOVnqC0pg
-         KmnOZ518P8Yr0GCGOxdgRyLxeNe4HRe6d8MU13c0vzAp6qMXiQDG26arfNcrsbddvUbC
-         fsOV+/YT+7+2+Z4FGZSjxV3z3TC3Ch/CuuUWjR5k+Z5zmJj1JgmcSWRjsJ5yQejZJkxY
-         Z/i4UTigeSvz03lUgskwozqRGSa3iCYdmgemkQ0cBVFJQcXOHhRcG2M1chjo47XazyPm
-         u/2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=o7O4V3uV0+pLW09Fud7SOGkrWtUjrIWngjTkAN+XE5cRdsOWR7bt/THxT/yyd54uMj
-         HVOVWh/IFeibpAMbxdqerxQeJiAxUdJ1ZRY58mjmBY4IUIhY9ezb1iT0mYxjkcaYav8c
-         Pr43ZUqD6tMWm42TFJ0k6zfCK7j04xR2odgid13epvM92VnWL3RxE5oGwYBI1wYM+HDn
-         TOIuLvqIWGhuLJWOoJ+QoD2OZ50E1n+PxhndRs90m24hVlTQgXfPXx9Eh5AzWE8HnDoZ
-         pWThgUPe8pgaC3ovbwK0OVd1xZAORCbJPZ7NraKMasZv0dskclQO2T6UjQgxeqjHxL/k
-         /DTQ==
-X-Gm-Message-State: AOAM532yLw1nOgm0jETFVlxOCAZZhqV08hq3pFqH8EMzGP0m/ghhyBF/
-        vkD0h2sqCQMK09sr5gVWZl7jsDrp+om3rZ8ROxY=
-X-Google-Smtp-Source: ABdhPJw1wy/4mhbGOTwjhRivl/cp0DdOlGymYxsZANyL7QdJvGqwfU3MY+lTcg5CqX45IobC1i7h3Z8KWyWzjLM8VN4=
-X-Received: by 2002:aca:ab93:: with SMTP id u141mr4848049oie.151.1630032171270;
- Thu, 26 Aug 2021 19:42:51 -0700 (PDT)
+        id S244768AbhH0Ja6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 27 Aug 2021 05:30:58 -0400
+Received: from mout.gmx.net ([212.227.17.20]:53485 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244668AbhH0Jap (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 27 Aug 2021 05:30:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1630056586;
+        bh=LqTyT87+0e6RUnBr2YRqilZ5WZkM0FGfXzBRJc9wq9c=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=OWk+GHoB0TG+aWJjTddL2kYdBvbf9YPfU+Ow/xcFsrc2x558WcnCkP74Kx/MbNVm7
+         DJlSk8P5WhoFM0gfU6pIf86HQQwXt3E73K/xQa3hEs8kr8FrlT0FALpkQv7DNYiRCe
+         3WEV90K9ThrUwiMffWKT1gTa3pJ5ey3jnWEaThes=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530 ([92.116.133.192]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MPXhK-1mg9Xc20Yc-00MeFe; Fri, 27
+ Aug 2021 11:29:46 +0200
+Date:   Fri, 27 Aug 2021 11:28:14 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] Fix prctl(PR_GET_NAME) to not leak random trailing bytes
+Message-ID: <YSiwLuE17BwRlI/d@ls3530>
 MIME-Version: 1.0
-Received: by 2002:ac9:320d:0:0:0:0:0 with HTTP; Thu, 26 Aug 2021 19:42:50
- -0700 (PDT)
-From:   john williams <jw44018@gmail.com>
-Date:   Thu, 26 Aug 2021 14:42:50 -1200
-Message-ID: <CAALucP-4Prk2-Fz4QqbkAZfqO5+3=DMQbNk8v-Apu+VHuQdx3Q@mail.gmail.com>
-Subject: CONFIRM YOUR DETAILS TO ENABLE US START,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:wnZzoBHhBThI+lg6ZoIrqspFEQq545CfQnIQUngduGkrbBFjB0n
+ 2knJ3X8+cgozHnRu9KiS6kwzkneEHbpht1MlCUF465bDVgIN1aXGtR+rx6WbRjY76DWDGmH
+ T9cV40j+SNFdOdkX6D1i3rfiXt/NfCje/AMB6P4XpAGsLhVMpYdKrca03r3hFtvEXYtS0Gn
+ OiObU+jP/1H2wsmZyiB9Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:9OdC9BD450Y=:Gjql85bK/7dBvf5UVqY2Hr
+ zZnZ5x8XXlW1tmiOe0uQn8iMsU3OWeqZBcSs51t45AORzzYiQEckTYromCYmHE8NDreEoEG/C
+ WOv3LtPrDt2R3SSNz+Xx14iSCQe57ZhO/7//wmV/o3XKYCFZ3NuJi1mX43K/EfIvhE7s8AlXE
+ fJFO4AKBy5h8jzbe08ZMlW5SAO9xoNMOc3pVN7rFi2e7izWiyGK74uHsiNgRqnOY8D8baU8EN
+ PSnpvdWO3qvz8nPAPWVrcTdYYsE+TyC6gsQOcybgF6gNH3NTA7scmz9MDUXhJY5BRdgMp4c57
+ RgKmjZ27VjlRceeZXfUjKJktU2L8ozLj120AuVKID5f/rAmuZ2aNlyYmilOueuJUivAZdlv+t
+ Wsris3NUt5OHWGL+VtsdnSNjTBEvF9n9yP1/zNr9h9K19h+L+d8hddtca3/uJ0WoRRwXpeXPA
+ Ks/mPaCaiNi2qXgunOZYD62lW1pdyeP5Ltj+YlzdVyKerT1IADziQfd3ipsaR4LZeHMdkCT2G
+ A15+T+Sp75maO3y2XeEtb/2Bkp8K84ebgdkK0Y2htdHgEZcsevUyvjj7AH+jRmxXbTc8d/d8A
+ pVzmWsXMjKZDH6rWCP5kfmKz9HhfcScggW/GjNT9uTyX4Pj88wRLiivva2XwTDtvmFf0U+RqB
+ t7xL2VKKjXRxRcAj0wKL0BKVjAlIzMEHcdWcXfKOZTbc7dypLIMp/NU+hUpigph06JmLNTNmc
+ FjtpmFMRg9x4NK9pRm8k/+dnvM4XWwFB99cFc/OFbw6hT+gZTSjHKgjldV5lWIJwc3WhmfpHh
+ R3ZClMy0+u8D8PWSRQFDnloRrB8Uvf8eU6sTx/1BvzRP44DeB6+GndB5tGfsUKcbrgD0Khprc
+ jX0mY8Y3IRN29Fyb8EpS9zBJhqy19oQ+36CfVlgwZcZNsqxAuU1nKAQ4rYBmyI1Kghi7mTX6/
+ luwfR73BFAAjmM7Bngwjw8x0lnN4nY2/2XuhRZ/2/niBKtd+wMLA51PRuVgo0GHwstP89HkC/
+ JkPSCs09BKGgxZB/Oingr0gfx4VkllISIR8qp4hryL5/DE++R+YpPojlFTjNwsfA3mL70Qbb+
+ gtBfG6tGDzuDFvdLqAyxuPl2gDXu136bv+o
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Dear Beneficiary,
+The prctl(PR_GET_NAME) and prctl(PR_SET_NAME) syscalls are used to set and
+retrieve the process name. Those kernel functions are currently implemented to
+always copy the full array of 16-bytes back and forth between kernel and
+userspace instead of just copying the relevant bytes of the string.
 
-Following your pending fund for years and the delay you imposed in
-receiving it,We have called back your fund to this office as directed
-by the Finance Office and we will be paying you directly through the
-BANK OF AMERICA.(BOA) NEW YORK BRANCH AND ALL YOU NEED NOW IS TO
-RE-CONFIRM YOUR BANKING DETAILS FOR THE TRANSFER IMMEDIATELY WITHOUT
-ANY FURTHER DELAY.
+This patch changes the prctl(PR_GET_NAME) to only copy back the null-terminated
+string (with max. up to 16 chars including the trailing zero) to userspace and
+thus avoids copying and leaking random trailing chars behind the process name.
 
-NOTE THAT WE WILL PAY ALL THE EXPENSES INVOLVED FOR YOU TO RECEIVE
-THIS FUND AND ALL WE NEED FROM YOU IS YOUR CO-OPERATION.
+Background:
+The newest glibc testsuite includes a test which is implemented similiar to
+this:
+   prctl(PR_SET_NAME, "thread name", 0, 0, 0);
+   char buffer[16] = { 0, };
+   prctl(PR_GET_NAME, buffer, 0, 0, 0);
+   char expected[16] = "thread name";
+   fail if memcmp(buffer, expected, 16) != 0;
 
-Send your full details with Banking details to enable us commence the
-transfer process immediately through the BOA BANK IN NEW YORK,USA OR
-DO YOU WANT TO RECEIVE THIS FUND VIA ATM CARD ????????.
+The compiler may put the "thread name" string given in the PR_SET_NAME call
+somewhere into memory and it's not guaranteed that trailing (up to a total of
+16) chars behind that string has zeroes.
+As such on the parisc architecture I've seen that the buffer[] array gets
+filled on return of prctl(PR_GET_NAME) with such additional random bytes, e.g.:
+       "thread name\000@\032i\000"
+       74 68 72 65 61 64 20 6E 61 6D 65 00 40 1A 69 00
 
-John O.Williams.
+Unfortunatly the glibc testuite tests the full memory block of 16 bytes
+and fails because it expects zeroed characters behind the process name.
+
+In addition to fix the glibc testsuite, I suggest to fix the kernel function of
+prctl(PR_GET_NAME) to just return the null-terminated process name.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
+
+diff --git a/kernel/sys.c b/kernel/sys.c
+index ef1a78f5d71c..af71412760be 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2367,7 +2367,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 		break;
+ 	case PR_GET_NAME:
+ 		get_task_comm(comm, me);
+-		if (copy_to_user((char __user *)arg2, comm, sizeof(comm)))
++		if (copy_to_user((char __user *)arg2, comm, strlen(comm) + 1))
+ 			return -EFAULT;
+ 		break;
+ 	case PR_GET_ENDIAN:
