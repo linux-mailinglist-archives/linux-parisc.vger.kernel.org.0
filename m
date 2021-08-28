@@ -2,172 +2,103 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC4123F98F0
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 Aug 2021 14:19:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58F4F3FA6DB
+	for <lists+linux-parisc@lfdr.de>; Sat, 28 Aug 2021 19:13:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231271AbhH0MUp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 Aug 2021 08:20:45 -0400
-Received: from mout.gmx.net ([212.227.15.19]:50529 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231260AbhH0MUp (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 Aug 2021 08:20:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1630066788;
-        bh=36rePuGIII6ztQM9yWdUbhmy2VQkb0KeoNAL0pJ37b0=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=JwRluKIHYFr0zjobhsWonJNTVestxBc/4S6wKsTXI47UtXSMv5/Mx8AhE63nPa7mo
-         8ReJ/0SwRYC4IJ4oKR1TQBUTjk3B3Y4SFQHzgGe1Pon/neVDkC1HTAe32BJh173UuK
-         kPQ2AwZqNDGDRIhjsMlniyAyAh/7SiazZmSWr1+0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.133.192]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mwwdl-1nDBbE3hwx-00yUCz; Fri, 27
- Aug 2021 14:19:47 +0200
-Subject: Re: [PATCH] Fix prctl(PR_GET_NAME) to not leak random trailing bytes
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org
-Cc:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-References: <YSiwLuE17BwRlI/d@ls3530>
- <aa0006e7-58b8-ab05-0599-5609e900ba4d@rasmusvillemoes.dk>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <97a0ddcf-243d-f312-8291-01d6595260bf@gmx.de>
-Date:   Fri, 27 Aug 2021 14:18:17 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S229610AbhH1Q5b (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 28 Aug 2021 12:57:31 -0400
+Received: from mta-mtl-001.bell.net ([209.71.208.11]:16336 "EHLO
+        cmx-mtlrgo001.bell.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229518AbhH1Q5b (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 28 Aug 2021 12:57:31 -0400
+X-Greylist: delayed 329 seconds by postgrey-1.27 at vger.kernel.org; Sat, 28 Aug 2021 12:57:30 EDT
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.52.221.220]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 60C89382040090F5
+X-CM-Envelope: MS4xfCQEaZ8Gg7t5VWFL5uOECepon7jeQOWNd11QLQcFrS0GlP1EQw04HBoU1FG7weQmX3m9As/07E21Q8L9UFJ47imGAO6MDPNIYzvxhIfNNY27O0wF68e8
+ 5STTAl+ve2jsY7XZOub1y8DLcGOGsi53t6lWTHwUYW1aUZcMRXYZHbO+u5QrnQe8AkFH86FY3ZaxBBcpkcKMTPDA4NE+BswfsPsPW24GnluTjhlj0DgLfYk2
+ IeGAJkpE1Om3j/971DG+5XQY0e02ir5sUDdU21n9iTHEu7dquG45hvtrTqR3oJmR
+X-CM-Analysis: v=2.4 cv=Z6GPoFdA c=1 sm=1 tr=0 ts=612a697d
+ a=YO5NLpPX/y/Fbmk87HoZTg==:117 a=YO5NLpPX/y/Fbmk87HoZTg==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=JzE_yj-0rGZXMqE1_KYA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (70.52.221.220) by cmx-mtlrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 60C89382040090F5; Sat, 28 Aug 2021 12:51:09 -0400
+Subject: Re: Cycle offset is larger than allowed by the 'jiffies' clock's
+ max_cycles value
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+References: <11708426.O9o76ZdvQC@eto.sf-tec.de>
+ <2573804.mvXUDI8C0e@daneel.sf-tec.de>
+ <dc93df38-d2c4-362e-0e22-b8885509c2ea@gmx.de>
+ <2191464.ElGaqSPkdT@daneel.sf-tec.de>
+ <edac32ae14afeaf416e002f1f366534a@sf-tec.de>
+From:   John David Anglin <dave.anglin@bell.net>
+Message-ID: <b80db465-f53b-f251-1bf8-98dc24da86ce@bell.net>
+Date:   Sat, 28 Aug 2021 12:51:09 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <aa0006e7-58b8-ab05-0599-5609e900ba4d@rasmusvillemoes.dk>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+In-Reply-To: <edac32ae14afeaf416e002f1f366534a@sf-tec.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rVJo3HcM7U7Ar9BboNsiZtxEgxj18axgs3PoVacPYthMOxstrht
- eSN+qCHmJIEtOL252H61YZKhNOPwrLapKtfF1IhTg8/RsVnA8bWh/ebM44iYNu6QPxPO9Tk
- kw379skaDlpeYPQzb5TYSyGmK8X+FWY8U5fY4aJd/pHsH92fSPz9h3PEdhtd6X8Vn4rddHw
- lgTbiQLGz1XPxXnlMYLxg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:uivJSkOGzUk=:MdFc2qvlIt3cUfQzFM+2ZE
- O6SQuelsNnP92ae72cc1ObjydJrJ4Xq5lVq7A1nTcOnaSjTNbchzvKiS2Iq+uDOv4wOeGwGn9
- Hjejb66j59EZTSpi5QCBmyaAOryu1f7+VRV6vX/Tc3Ht0RxfRu3ICrEjLTmKO8EBfm7Lottls
- gUmY5eNWaS5YXkAbk5YxkANn1gpsQQFNfn7DPTPxGW6EHRubi3OrcTeqnp/gWn6YWr/mFOmYo
- stHqqKLpGv7oamPldmOmAV9jfmGvffwmUr5yCKpWDF9nD6AW6vzTxYTqpKhoRArV4nw7WzQAh
- jgWd1vjge6ywy/1rTyFWMZyugAWQyGIwRLQul23sN9Exf123lDKAY18iWLKJoji/7hlpB/t62
- zogyLGjG7grpCqwoXC+YZqilAPADdCHiFys9YV5F2diAe68FJh0gBmtTT562IUu5/3vsGQ85W
- sPl4uyk1Dbly4iB6LrSpLCga6opVeOQY5IrHjBKBXVtvEPwXVwyxCGju+sFhfwMtcxdnZIC6r
- aqJzCpIcvS0ZPy/kfrsmRbvTWXX/1tm4FZOmUi6W16Ii0BfM9hYjGK5cYJ7RR3DGoDTk933yi
- enpOTgz3maizoQMoRmVjJn0RUWPvFZvTSBI5nfq8dxH4KGNYts787KHRcOL+W++/7thg1rAEg
- GCVMXpGhUlZVkpYN1r3eUYjYRRSkmAOKzCxmaZw9L2i6RKq1agklVgLtNR9Ao9Y+L/vcIxmUD
- TyLd0mX2PWYm38bSGLBhYWPmmsHuGrrme0vFa4yUYY43B1b0Tba9Gbt6yY9O1wZ9hq9fxQefb
- gsNQMBgeCQuVRQUebN2qs/QR1jvpc0rcsTuBkyJRiONpbTO3GlJsnGcfRt2shcMJ6RUlj9s/i
- hxcC/fNdKOzZg5QEeIjcIyV0MCxG/wXYOV2X8xUJU4vAlYzyYsStMob/2+QSFpv8CWT7G6Ntf
- 9XKLTtxUfiqcs2PkhrKynlKlkO70Ymvil5ZfvnK9Sn/+A2y+dhQqRjqtD6AVzDjWUUK1y9GKW
- w6Ahn8Ixh3r5QO3HVFCH1DWFmKzBFwoFO0gGTxFlWHvHgklLUKLuZUcMfIMOlgP3gdDDHIeIu
- hfUHW7T+HQLeyEuDH6yrx/l1RLQOef5ke4C
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 8/27/21 12:31 PM, Rasmus Villemoes wrote:
-> On 27/08/2021 11.28, Helge Deller wrote:
->> The prctl(PR_GET_NAME) and prctl(PR_SET_NAME) syscalls are used to set =
-and
->> retrieve the process name. Those kernel functions are currently impleme=
-nted to
->> always copy the full array of 16-bytes back and forth between kernel an=
-d
->> userspace instead of just copying the relevant bytes of the string.
+On 2021-08-26 10:30 a.m., Rolf Eike Beer wrote:
+> Am 2021-03-14 13:08, schrieb Rolf Eike Beer:
+>> Am Sonntag, 14. März 2021, 12:16:11 CET schrieben Sie:
+>>> On 3/14/21 10:47 AM, Rolf Eike Beer wrote:
+>>> > Am Mittwoch, 3. März 2021, 15:29:42 CET schrieb Helge Deller:
+>>> >> On 3/1/21 7:44 PM, Rolf Eike Beer wrote:
+>>> >>> Am Montag, 1. März 2021, 17:49:42 CET schrieb Rolf Eike Beer:
+>>> >>>> Am Montag, 1. März 2021, 17:25:18 CET schrieb Rolf Eike Beer:
+>>> >>>>> After upgrade to 5.11 get this multiple times per second on my C8000:
+>>> >>>>>
+>>> >>>>> [   36.998702] WARNING: timekeeping: Cycle offset (29) is larger than
+>>> >>>>> allowed by the 'jiffies' clock's max_cycles value (10): time overflow
+>>> >>>>> danger [   36.998705]          timekeeping: Your kernel is sick, but
+>>> >>>>> tries
+>>> >>>>> to cope by capping time updates
+>>> >>
+>>> >> I know I have seen this at least once with a 32-bit kernel in qemu as
+>>> >> well....
+>>> >>
+>>> >>>> Not 5.11, but 5.10.11. 5.10.4 is fine. It could be a bad upgrade
+>>> >>>> attempt,
+>>> >>>> I'll retry once I have built a proper 5.11 kernel.
+>>> >>>
+>>> >>> Ok, it's there also in 5.11.2:
+>>> >> You don't see it in 5.11, but in 5.11.2.
+>>> >> Sadly none of the changes between those versions seem related
+>>> >> to this problem.
+>>> >>
+>>> >> Do you still see this?
+>>> >> I'd like to get it anaylzed/fixed.
+>>> >
+>>> > Me too. What do you need?
+>>>
+>>> I actually don't know.
+>>> First of all it would be great if we could reproduce it.
+>>> Right now I don't see this issue any longer, so I have nowhere to start
+>>> from.
 >>
->> This patch changes the prctl(PR_GET_NAME) to only copy back the null-te=
-rminated
->> string (with max. up to 16 chars including the trailing zero) to usersp=
-ace and
->> thus avoids copying and leaking random trailing chars behind the proces=
-s name.
->>
->> Background:
->> The newest glibc testsuite includes a test which is implemented similia=
-r to
->> this:
->>     prctl(PR_SET_NAME, "thread name", 0, 0, 0);
->>     char buffer[16] =3D { 0, };
->>     prctl(PR_GET_NAME, buffer, 0, 0, 0);
->>     char expected[16] =3D "thread name";
->>     fail if memcmp(buffer, expected, 16) !=3D 0;
->>
->> The compiler may put the "thread name" string given in the PR_SET_NAME =
-call
->> somewhere into memory and it's not guaranteed that trailing (up to a to=
-tal of
->> 16) chars behind that string has zeroes.
->> As such on the parisc architecture I've seen that the buffer[] array ge=
-ts
->> filled on return of prctl(PR_GET_NAME) with such additional random byte=
-s, e.g.:
->>         "thread name\000@\032i\000"
->>         74 68 72 65 61 64 20 6E 61 6D 65 00 40 1A 69 00
->>
->> Unfortunatly the glibc testuite tests the full memory block of 16 bytes
->> and fails because it expects zeroed characters behind the process name.
->>
->> In addition to fix the glibc testsuite, I suggest to fix the kernel fun=
-ction of
->> prctl(PR_GET_NAME) to just return the null-terminated process name.
->>
->> Signed-off-by: Helge Deller <deller@gmx.de>
->> Cc: stable@vger.kernel.org
->>
->> diff --git a/kernel/sys.c b/kernel/sys.c
->> index ef1a78f5d71c..af71412760be 100644
->> --- a/kernel/sys.c
->> +++ b/kernel/sys.c
->> @@ -2367,7 +2367,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long=
-, arg2, unsigned long, arg3,
->>   		break;
->>   	case PR_GET_NAME:
->>   		get_task_comm(comm, me);
->> -		if (copy_to_user((char __user *)arg2, comm, sizeof(comm)))
->> +		if (copy_to_user((char __user *)arg2, comm, strlen(comm) + 1))
->>   			return -EFAULT;
->>   		break;
+>> I get it every time if I boot that kernel.
 >
-> I don't understand. get_task_comm() is
->
-> extern char *__get_task_comm(char *to, size_t len, struct task_struct *t=
-sk);
-> #define get_task_comm(buf, tsk) ({                      \
->          BUILD_BUG_ON(sizeof(buf) !=3D TASK_COMM_LEN);     \
->          __get_task_comm(buf, sizeof(buf), tsk);         \
-> })
->
-> and __get_task_comm() is
->
-> char *__get_task_comm(char *buf, size_t buf_size, struct task_struct *ts=
-k)
-> {
->          task_lock(tsk);
->          strncpy(buf, tsk->comm, buf_size);
->          task_unlock(tsk);
->          return buf;
-> }
->
-> so the strncpy should ensure that the caller's buffer after the string's
-> terminator gets zero-filled. I can see that parisc has its own
-> strncpy(), but I can't read that asm, so I can't see if it actually does
-> that mandated-by-C-standard zero-filling.
+> I still see it in 5.13.12, so I'm in the bad situation now that I don't have a working kernel on that machine anymore and need to think about
+> how to restore it. While the latter is exactly my problem I would still love to see the kernel problem solved.
+I don't see this either.  So, it probably has to do with your config.
 
-Oh, the parisc strncpy() asm does NOT zero-fill the target address !!
-That's the bug.
-I thought strncpy would just copy up to given number of chars.
+Since it fails consistently on your system, you could use git bisect to find the change which introduced problem.
 
-> It would surprise me if it
-> didn't (I'd expect lots of other breakage), but OTOH it is the only way
-> I can explain what you've seen.
+Dave
 
-Interestingly the kernel runs quite well and we don't see any bigger break=
-age.
-Anyway, the function needs fixing.
+-- 
+John David Anglin  dave.anglin@bell.net
 
-Please ignore this patch and thanks for pointing to the real bug.
-
-Helge
