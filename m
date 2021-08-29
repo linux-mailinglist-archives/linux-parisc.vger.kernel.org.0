@@ -2,453 +2,149 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D2E93FA759
-	for <lists+linux-parisc@lfdr.de>; Sat, 28 Aug 2021 21:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 997C43FAC92
+	for <lists+linux-parisc@lfdr.de>; Sun, 29 Aug 2021 17:28:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230452AbhH1TiH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 28 Aug 2021 15:38:07 -0400
-Received: from mout.gmx.net ([212.227.17.21]:51295 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230253AbhH1TiG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 28 Aug 2021 15:38:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1630179427;
-        bh=9W+L+zUXd/A98qjTuxdlNEMXw8/UgzhSLNYmMEnKGPc=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=RUJWE6P4geAA/TcBI3QGrucLme0Gdafk3dmI3y+DKdKj9+pJUBj7UHJYwUf9R9xkw
-         U9c7jivOI/S8t2dmqrTo2SwqBuIvTsYqmeJA+Wh4u+Xnh5sO/Mp+3NAhw0cwJR2qWk
-         lERByaaeTon1SUj73DcTgGhpGYGazLm9e8tzdF0Q=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.145.58]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MHoNC-1mGEuj1oxi-00EwoK; Sat, 28
- Aug 2021 21:37:07 +0200
-Date:   Sat, 28 Aug 2021 21:35:35 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Helge Deller <deller@gmx.de>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S235593AbhH2P2p (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 29 Aug 2021 11:28:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:27493 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235577AbhH2P2o (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 29 Aug 2021 11:28:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1630250870;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/S0QZCFqA24VJgqlctj6OrB5o3BOYhqGUcLEBNlCi1I=;
+        b=ElJiKy7/0Xuj6MbzzV2p2HwXbyFVWUCXAn6WJaDYPxPkC9S/JPbel2Yb1R/wc9ghqHXv0G
+        HT/0f5AT88AaKySBnLKjYUmpU4RmXHmGlDjeWvjCYZBwTrDxNHuEMAo0/ZoUo74L8M/7ZR
+        Nu5+17ZdsawMxR+QCmP7inaOSol9b50=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-105-bOOwvad_PTKlBE7jDtqYyg-1; Sun, 29 Aug 2021 11:27:49 -0400
+X-MC-Unique: bOOwvad_PTKlBE7jDtqYyg-1
+Received: by mail-wm1-f72.google.com with SMTP id b207-20020a1c80d8000000b002ea321114f7so3140717wmd.7
+        for <linux-parisc@vger.kernel.org>; Sun, 29 Aug 2021 08:27:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=/S0QZCFqA24VJgqlctj6OrB5o3BOYhqGUcLEBNlCi1I=;
+        b=Tn8q1FvPE/zbTvDVctv2LgQKI4+ByrM2vrRwapa1BY31PwNfVulJo71DM8JMWjmiQG
+         gQaa8vapXouCx65jO7RLwQJm1KkCk8tkTTlEjIqP2LhhM0dUXztDBaxPVrBoaNv0ifiS
+         jPcwS6IuZRODP9UNwo6LJYq8BoOKUpW+eGam30NOj1RVqo1g9MJ/pPCj75o+onHf/ZFS
+         +musT4M2LSFqKXARIYr/qK7yc7TjsgFPfGP6rPnYvVrnuXRv/bYdFAGIFG+1tFHxO7pD
+         LirOomN1yoqqMQ9uSkG0qAILxyyTEeiB+vWey1CTHx3LrFuZwnh8On6fh4y8iBE2Yvly
+         skHg==
+X-Gm-Message-State: AOAM532nvjpgv1RQblyoCs9u7RnkQa7Vil635zuFVM0RYucs94TWMfee
+        SipBnq3ihJa+J0yAMWtVLp1598+/imvwdj9LS+hno+ENs1FdR/v5iHKAOj4VFBhrwdMSQMqKVIW
+        rtFhTfEbKG8Pnpeu6z576If0O
+X-Received: by 2002:a5d:6cc9:: with SMTP id c9mr9292557wrc.158.1630250868449;
+        Sun, 29 Aug 2021 08:27:48 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwFpypfJ90QjoywS7jnahpw22uN0JXnwctorbzewr/oyY6u13VvTyKXFX7etQ/daiEVk+VHUA==
+X-Received: by 2002:a5d:6cc9:: with SMTP id c9mr9292527wrc.158.1630250868242;
+        Sun, 29 Aug 2021 08:27:48 -0700 (PDT)
+Received: from redhat.com ([2.55.137.4])
+        by smtp.gmail.com with ESMTPSA id s1sm6762197wrs.53.2021.08.29.08.27.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Aug 2021 08:27:47 -0700 (PDT)
+Date:   Sun, 29 Aug 2021 11:27:42 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Andi Kleen <ak@linux.intel.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        X86 ML <x86@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: Re: [PATCH] Fix prctl(PR_GET_NAME) to not leak random trailing bytes
-Message-ID: <YSqQB9OhTuASD3ya@ls3530>
-References: <YSiwLuE17BwRlI/d@ls3530>
- <aa0006e7-58b8-ab05-0599-5609e900ba4d@rasmusvillemoes.dk>
- <97a0ddcf-243d-f312-8291-01d6595260bf@gmx.de>
- <CAHk-=wjhKNB_1a6wjjPh2PvMrtjVs=DgGY5uM2jq3WBBaYMyGQ@mail.gmail.com>
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
+Message-ID: <20210829112105-mutt-send-email-mst@kernel.org>
+References: <20210805005218.2912076-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20210805005218.2912076-12-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20210823195409-mutt-send-email-mst@kernel.org>
+ <26a3cce5-ddf7-cbe6-a41e-58a2aea48f78@linux.intel.com>
+ <CAPcyv4iJVQKJ3bVwZhD08c8GNEP0jW2gx=H504NXcYK5o2t01A@mail.gmail.com>
+ <d992b5af-8d57-6aa6-bd49-8e2b8d832b19@linux.intel.com>
+ <20210824053830-mutt-send-email-mst@kernel.org>
+ <d21a2a2d-4670-ba85-ce9a-fc8ea80ef1be@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wjhKNB_1a6wjjPh2PvMrtjVs=DgGY5uM2jq3WBBaYMyGQ@mail.gmail.com>
-X-Provags-ID: V03:K1:2hGIvINzgWRiayn3IwnN/EkVTqrIOQvGiq5m8zH2Fw7wJ7vNUBu
- xVm0gYeaHKr+l1LUp+TzC2GXQICuT+HTGPvcdbjaB0bf/LsmLPlPVCTsLVXA8iSi5DqiM5u
- wVAR7t88sUC32KCokhzwcP2l9e/tkMnZXfVXVkAcnw4XxKFuCCxdpXrSsoihMsiBZ1Y09LX
- ESMUyVJKRmfUM1+Zddn2A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Zq4zzJ5Gnog=:7XrZUczu8h8/CX52qpHGtM
- tBpAuZg98A36XSmyAAjsNO4xQ8THezARacYy4OEu0QTixb5FrO3k8aouWqYV3PcZa4nGHTUiD
- MJjvdpm/glQrxrA/oIHF4+mpnl2NEctbgyav+HqZpyMpwP/4tWmlY34e5fUyy6Di9HHChQ3mF
- bCUaGUkrIdLdfhMpW4uDjNQ68TZ+LR1eLhAG9j2JtL+nYv4eXEhCvpviixIoISL65n7U9yeZK
- 2M1bGMix1txm8HKNgU+BHMGMq42qq1RsQluRnyADNAuBfOhFIPhUM1ENN6nF+X9L04vbB1E2p
- RU7y1cFYEixnVd4M8B377S0Ha141MwTwJopR2ldQs6V0gFQY4SAhnFhAOIrkD/wBhWZtY933U
- FSvgt1rF6Sc8EGxHm+uWQMxHW0YtozyLFvt+n3rGZRpsm03CB4DMsls0JPgRPBFDMrp0wduuy
- 7/EymfidBDpb/+KVe7NAyOgn2Ke/7MIoCbyyUrWET9715bHUf4hf8QLxZzUGNIb9gWBeSVabK
- GP9rLr0bHZdNRr3jhG4taenGul6ek3VhVUEiMaibxkwiUqHJm5/b/ZPYK573sTGS5mORHGQuT
- 9cbk0PAwqoXYV7XSbJh28iHHhY7BZjxPgZMxK4WuLy+oudhRHclFy++jzf2c9R+x0kLT3UcAQ
- fCKBd7Yz+fjeYQyA3UTG6Ums73hIT+wc219E1vAFnUGl25eLtRxP6srBaECXT0/duXZURhJGJ
- CnxE1FACsV2qXrH+iT7yty7wLATbJAlUcnxkS7suW1UeUh6KLUkC2ly5ipZAFwV62W1GDx93W
- x+EpuA6GAXW6eG0NSrZ66qJpXyT1DOcXKg4WiQ8h58blbHR9OkhCladTMzUS6mIPP8CuyQMJy
- hLOOCihY9cy1ryofQ1uvwXbq90khgP+FCZ2MLOTHrxSS63ykpq357Jwjl1imCX7EsxdX9S9Q1
- b342PvQ5kw2MxLiJToDj42n5A/TomIBBIvKzabhNvWZ0RCZ7RJ1mGx6I/eZnkNV3jN0bS0MNs
- 8IgBatJoY7+rZkdRZ/rOB54Uv+fwbfg/d5M7GQrJd7dAeU7PFXrYTE3GFWZm/zzAqCOFO5Sqg
- 7Xl0MyVpFfqaN24Nr2y3n+5Dt4D2bYxA7IM
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <d21a2a2d-4670-ba85-ce9a-fc8ea80ef1be@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-* Linus Torvalds <torvalds@linux-foundation.org>:
-> On Fri, Aug 27, 2021 at 5:19 AM Helge Deller <deller@gmx.de> wrote:
-> >
-> > Oh, the parisc strncpy() asm does NOT zero-fill the target address !!
-> > That's the bug.
-> > I thought strncpy would just copy up to given number of chars.
->
-> Yeah, strncpy() is a horrible horrible function.
->
-> It doesn't copy any NUL character at all if the source length was
-> longer than the 'n', so it doesn't necessarily result in a
-> NUL-terminated string.
->
-> And it fills the target with NUL characters at the end, which is
-> usually horribly inefficient and means that you should never ever use
-> it with big destination buffers. So it can be a surprisingly bad
-> function to use for the - not all that unusual situation - where you
-> have lots of space in the destination buffer, and use the 'n' version
-> of strcpy() just to be safe for odd situations. It will zero-fill all
-> that space, usually for no good reason.
->
-> Very different from the other 'n' functions like snprintf() and
-> friends that people use for that same "destination buffer safety"
-> reason.
->
-> So it's almost never the right thing to use, even if it's the most
-> traditional, most common and - by name - most obvious "copy string of
-> at most length 'n'" function.
->
-> It so happens that "comm[]" is probably one of *very* few situations
-> in the kernel where we really do want to use strncpy(), and where we
-> don't just NUL-terminate, but NUL-fill the buffer.
->
-> Of course, that "comm[]" behavior is unusual these days, but I think
-> it was a lot more usual back in the early 70's, when that whole
-> "small, fixed-size string buffer" model was much much more common than
-> it is today.
->
-> It is, after all, the exact same reason why the C language linker
-> rules for identifiers were historically "only the first 7 letters are
-> necessarily significant". Because "use a fixed 8-byte buffer for a
-> string" made sense at the time in ways it doesn't necessarily make all
-> that much sense today.
->
-> So that odd and nasty behavior of strncpy() makes a lot more sense in
-> the historical context - it's just that that context is 50 years ago.
->
-> While mentioning all the oddities of 'strncpy()', it's also worth
-> noting that despite the similarities in the name,
-> "strncpy_from_user()" does *not* fill the end of the destination
-> buffer with NUL characters, and does *not* act like strncpy(). The
-> user string copy function obviously also has a very very different
-> return value, which hopefully makes it more obvious that it's a very
-> different beast.
->
-> Most of the time, if you actually want to copy a string, and have a
-> limited destination buffer, you should use 'strscpy()'. Of the
-> "limited size string" routines, it's pretty much the only sane one,
-> and it guarantees - as long as the target size is non-zero - that the
-> target is NUL-terminated without doing the NUL filling.
->
-> (The BSD 'strlcpy()' is horribly broken because the return value
-> semantics means that it will have to find the terminating NUL of the
-> *source* string, even if the source string is horribly long, or
-> untrusted and unterminated).
+On Tue, Aug 24, 2021 at 10:20:44AM -0700, Andi Kleen wrote:
+> 
+> > I see. Hmm. It's a bit of a random thing to do it at the map time
+> > though. E.g. DMA is all handled transparently behind the DMA API.
+> > Hardening is much more than just replacing map with map_shared
+> > and I suspect what you will end up with is basically
+> > vendors replacing map with map shared to make things work
+> > for their users and washing their hands.
+> 
+> That concept exists too. There is a separate allow list for the drivers. So
+> just adding shared to a driver is not enough, until it's also added to the
+> allowlist
+> 
+> Users can of course chose to disable the allowlist, but they need to
+> understand the security implications.
 
-Thanks for the explanations!
+Right. So given that, why do we need to tweak a random API like the map?
+If you just make all maps be shared then the user is in control.
+Seems sensible to me.
 
+> 
+> > 
+> > I would say an explicit flag in the driver that says "hardened"
+> > and refusing to init a non hardened one would be better.
+> 
+> 
+> We have that too (that's the device filtering)
+> 
+> But the problem is that device filtering just stops the probe functions, not
+> the initcalls, and lot of legacy drivers do MMIO interactions before going
+> into probe. In some cases it's unavoidable because of the device doesn't
+> have a separate enumeration mechanism it needs some kind of probing to even
+> check for its existence And since we don't want to change all of them it's
+> far safer to make the ioremap opt-in.
+> 
+> 
+> -Andi
 
-> > Interestingly the kernel runs quite well and we don't see any bigger b=
-reakage.
->
-> Yeah, almost nothing actually cares about the odd NUL filling that -
-> as you - few people realize is even part of strncpy().
->
-> > Anyway, the function needs fixing.
->
-> I'd suggest you just use the default one in lib/string.c and not
-> override it with __HAVE_ARCH_STRNCPY.
+Let's be frank, even without encryption disabling most drivers -
+especially weird ones that poke at hardware before probe -
+is far safer than keeping them, but one loses a bunch of features.
+IOW all this hardening is nice but which security/feature tradeoff
+to take it a policy decision, not something kernel should do
+imho.
 
-Yes, that's probably the best idea.
+-- 
+MST
 
-Would you be willing to apply the attached patch for v5.14 ?
-
-It reverts the original commit in which I introduced the
-assembly str*() functions and adjusts the SPDX header tag.
-It has been in my for-next tree since yesterday.
-
-Thanks,
-Helge
-
-=2D-
-
-From: Helge Deller <deller@gmx.de>
-Date: Fri, 27 Aug 2021 20:42:57 +0200
-Subject: [PATCH] Revert "parisc: Add assembly implementations for memset,
- strlen, strcpy, strncpy and strcat"
-
-This reverts commit 83af58f8068ea3f7b3c537c37a30887bfa585069.
-
-It turns out that at least the assembly implementation for strncpy() was
-buggy.  Revert the whole commit and return back to the default coding.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v5.4+
-
-diff --git a/arch/parisc/include/asm/string.h b/arch/parisc/include/asm/st=
-ring.h
-index 4a0c9dbd62fd..f6e1132f4e35 100644
-=2D-- a/arch/parisc/include/asm/string.h
-+++ b/arch/parisc/include/asm/string.h
-@@ -8,19 +8,4 @@ extern void * memset(void *, int, size_t);
- #define __HAVE_ARCH_MEMCPY
- void * memcpy(void * dest,const void *src,size_t count);
-
--#define __HAVE_ARCH_STRLEN
--extern size_t strlen(const char *s);
--
--#define __HAVE_ARCH_STRCPY
--extern char *strcpy(char *dest, const char *src);
--
--#define __HAVE_ARCH_STRNCPY
--extern char *strncpy(char *dest, const char *src, size_t count);
--
--#define __HAVE_ARCH_STRCAT
--extern char *strcat(char *dest, const char *src);
--
--#define __HAVE_ARCH_MEMSET
--extern void *memset(void *, int, size_t);
--
- #endif
-diff --git a/arch/parisc/kernel/parisc_ksyms.c b/arch/parisc/kernel/parisc=
-_ksyms.c
-index 8ed409ecec93..e8a6a751dfd8 100644
-=2D-- a/arch/parisc/kernel/parisc_ksyms.c
-+++ b/arch/parisc/kernel/parisc_ksyms.c
-@@ -17,10 +17,6 @@
-
- #include <linux/string.h>
- EXPORT_SYMBOL(memset);
--EXPORT_SYMBOL(strlen);
--EXPORT_SYMBOL(strcpy);
--EXPORT_SYMBOL(strncpy);
--EXPORT_SYMBOL(strcat);
-
- #include <linux/atomic.h>
- EXPORT_SYMBOL(__xchg8);
-diff --git a/arch/parisc/lib/Makefile b/arch/parisc/lib/Makefile
-index 2d7a9974dbae..7b197667faf6 100644
-=2D-- a/arch/parisc/lib/Makefile
-+++ b/arch/parisc/lib/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for parisc-specific library files
- #
-
--lib-y	:=3D lusercopy.o bitops.o checksum.o io.o memcpy.o \
--	   ucmpdi2.o delay.o string.o
-+lib-y	:=3D lusercopy.o bitops.o checksum.o io.o memset.o memcpy.o \
-+	   ucmpdi2.o delay.o
-
- obj-y	:=3D iomap.o
-diff --git a/arch/parisc/lib/memset.c b/arch/parisc/lib/memset.c
-new file mode 100644
-index 000000000000..133e4809859a
-=2D-- /dev/null
-+++ b/arch/parisc/lib/memset.c
-@@ -0,0 +1,72 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#include <linux/types.h>
-+#include <asm/string.h>
-+
-+#define OPSIZ (BITS_PER_LONG/8)
-+typedef unsigned long op_t;
-+
-+void *
-+memset (void *dstpp, int sc, size_t len)
-+{
-+  unsigned int c =3D sc;
-+  long int dstp =3D (long int) dstpp;
-+
-+  if (len >=3D 8)
-+    {
-+      size_t xlen;
-+      op_t cccc;
-+
-+      cccc =3D (unsigned char) c;
-+      cccc |=3D cccc << 8;
-+      cccc |=3D cccc << 16;
-+      if (OPSIZ > 4)
-+	/* Do the shift in two steps to avoid warning if long has 32 bits.  */
-+	cccc |=3D (cccc << 16) << 16;
-+
-+      /* There are at least some bytes to set.
-+	 No need to test for LEN =3D=3D 0 in this alignment loop.  */
-+      while (dstp % OPSIZ !=3D 0)
-+	{
-+	  ((unsigned char *) dstp)[0] =3D c;
-+	  dstp +=3D 1;
-+	  len -=3D 1;
-+	}
-+
-+      /* Write 8 `op_t' per iteration until less than 8 `op_t' remain.  *=
-/
-+      xlen =3D len / (OPSIZ * 8);
-+      while (xlen > 0)
-+	{
-+	  ((op_t *) dstp)[0] =3D cccc;
-+	  ((op_t *) dstp)[1] =3D cccc;
-+	  ((op_t *) dstp)[2] =3D cccc;
-+	  ((op_t *) dstp)[3] =3D cccc;
-+	  ((op_t *) dstp)[4] =3D cccc;
-+	  ((op_t *) dstp)[5] =3D cccc;
-+	  ((op_t *) dstp)[6] =3D cccc;
-+	  ((op_t *) dstp)[7] =3D cccc;
-+	  dstp +=3D 8 * OPSIZ;
-+	  xlen -=3D 1;
-+	}
-+      len %=3D OPSIZ * 8;
-+
-+      /* Write 1 `op_t' per iteration until less than OPSIZ bytes remain.=
-  */
-+      xlen =3D len / OPSIZ;
-+      while (xlen > 0)
-+	{
-+	  ((op_t *) dstp)[0] =3D cccc;
-+	  dstp +=3D OPSIZ;
-+	  xlen -=3D 1;
-+	}
-+      len %=3D OPSIZ;
-+    }
-+
-+  /* Write the last few bytes.  */
-+  while (len > 0)
-+    {
-+      ((unsigned char *) dstp)[0] =3D c;
-+      dstp +=3D 1;
-+      len -=3D 1;
-+    }
-+
-+  return dstpp;
-+}
-diff --git a/arch/parisc/lib/string.S b/arch/parisc/lib/string.S
-deleted file mode 100644
-index 4a64264427a6..000000000000
-=2D-- a/arch/parisc/lib/string.S
-+++ /dev/null
-@@ -1,136 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- *    PA-RISC assembly string functions
-- *
-- *    Copyright (C) 2019 Helge Deller <deller@gmx.de>
-- */
--
--#include <asm/assembly.h>
--#include <linux/linkage.h>
--
--	.section .text.hot
--	.level PA_ASM_LEVEL
--
--	t0 =3D r20
--	t1 =3D r21
--	t2 =3D r22
--
--ENTRY_CFI(strlen, frame=3D0,no_calls)
--	or,COND(<>) arg0,r0,ret0
--	b,l,n	.Lstrlen_null_ptr,r0
--	depwi	0,31,2,ret0
--	cmpb,COND(<>) arg0,ret0,.Lstrlen_not_aligned
--	ldw,ma	4(ret0),t0
--	cmpib,tr 0,r0,.Lstrlen_loop
--	uxor,nbz r0,t0,r0
--.Lstrlen_not_aligned:
--	uaddcm	arg0,ret0,t1
--	shladd	t1,3,r0,t1
--	mtsar	t1
--	depwi	-1,%sar,32,t0
--	uxor,nbz r0,t0,r0
--.Lstrlen_loop:
--	b,l,n	.Lstrlen_end_loop,r0
--	ldw,ma	4(ret0),t0
--	cmpib,tr 0,r0,.Lstrlen_loop
--	uxor,nbz r0,t0,r0
--.Lstrlen_end_loop:
--	extrw,u,<> t0,7,8,r0
--	addib,tr,n -3,ret0,.Lstrlen_out
--	extrw,u,<> t0,15,8,r0
--	addib,tr,n -2,ret0,.Lstrlen_out
--	extrw,u,<> t0,23,8,r0
--	addi	-1,ret0,ret0
--.Lstrlen_out:
--	bv r0(rp)
--	uaddcm ret0,arg0,ret0
--.Lstrlen_null_ptr:
--	bv,n r0(rp)
--ENDPROC_CFI(strlen)
--
--
--ENTRY_CFI(strcpy, frame=3D0,no_calls)
--	ldb	0(arg1),t0
--	stb	t0,0(arg0)
--	ldo	0(arg0),ret0
--	ldo	1(arg1),t1
--	cmpb,=3D	r0,t0,2f
--	ldo	1(arg0),t2
--1:	ldb	0(t1),arg1
--	stb	arg1,0(t2)
--	ldo	1(t1),t1
--	cmpb,<> r0,arg1,1b
--	ldo	1(t2),t2
--2:	bv,n	r0(rp)
--ENDPROC_CFI(strcpy)
--
--
--ENTRY_CFI(strncpy, frame=3D0,no_calls)
--	ldb	0(arg1),t0
--	stb	t0,0(arg0)
--	ldo	1(arg1),t1
--	ldo	0(arg0),ret0
--	cmpb,=3D	r0,t0,2f
--	ldo	1(arg0),arg1
--1:	ldo	-1(arg2),arg2
--	cmpb,COND(=3D),n r0,arg2,2f
--	ldb	0(t1),arg0
--	stb	arg0,0(arg1)
--	ldo	1(t1),t1
--	cmpb,<> r0,arg0,1b
--	ldo	1(arg1),arg1
--2:	bv,n	r0(rp)
--ENDPROC_CFI(strncpy)
--
--
--ENTRY_CFI(strcat, frame=3D0,no_calls)
--	ldb	0(arg0),t0
--	cmpb,=3D	t0,r0,2f
--	ldo	0(arg0),ret0
--	ldo	1(arg0),arg0
--1:	ldb	0(arg0),t1
--	cmpb,<>,n r0,t1,1b
--	ldo	1(arg0),arg0
--2:	ldb	0(arg1),t2
--	stb	t2,0(arg0)
--	ldo	1(arg0),arg0
--	ldb	0(arg1),t0
--	cmpb,<>	r0,t0,2b
--	ldo	1(arg1),arg1
--	bv,n	r0(rp)
--ENDPROC_CFI(strcat)
--
--
--ENTRY_CFI(memset, frame=3D0,no_calls)
--	copy	arg0,ret0
--	cmpb,COND(=3D) r0,arg0,4f
--	copy	arg0,t2
--	cmpb,COND(=3D) r0,arg2,4f
--	ldo	-1(arg2),arg3
--	subi	-1,arg3,t0
--	subi	0,t0,t1
--	cmpiclr,COND(>=3D) 0,t1,arg2
--	ldo	-1(t1),arg2
--	extru arg2,31,2,arg0
--2:	stb	arg1,0(t2)
--	ldo	1(t2),t2
--	addib,>=3D -1,arg0,2b
--	ldo	-1(arg3),arg3
--	cmpiclr,COND(<=3D) 4,arg2,r0
--	b,l,n	4f,r0
--#ifdef CONFIG_64BIT
--	depd,*	r0,63,2,arg2
--#else
--	depw	r0,31,2,arg2
--#endif
--	ldo	1(t2),t2
--3:	stb	arg1,-1(t2)
--	stb	arg1,0(t2)
--	stb	arg1,1(t2)
--	stb	arg1,2(t2)
--	addib,COND(>) -4,arg2,3b
--	ldo	4(t2),t2
--4:	bv,n	r0(rp)
--ENDPROC_CFI(memset)
--
--	.end
