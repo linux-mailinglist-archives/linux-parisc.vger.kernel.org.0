@@ -2,181 +2,170 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DBF83FB354
-	for <lists+linux-parisc@lfdr.de>; Mon, 30 Aug 2021 11:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C953B3FBDC2
+	for <lists+linux-parisc@lfdr.de>; Mon, 30 Aug 2021 23:00:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236237AbhH3Jn2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 30 Aug 2021 05:43:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48753 "EHLO
+        id S236738AbhH3VAz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 30 Aug 2021 17:00:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:36691 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236155AbhH3Jn0 (ORCPT
+        by vger.kernel.org with ESMTP id S235412AbhH3VAx (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 30 Aug 2021 05:43:26 -0400
+        Mon, 30 Aug 2021 17:00:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1630316552;
+        s=mimecast20190719; t=1630357199;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=v6GpxVuNO75lRLYXPNvlemkGYv1U0FEo2sfLXlH03bo=;
-        b=Oqevcop3+MXASRrL5lgNEyoDww3DAloUvxzBg0Ho2cisztoKnmkaUqRZ7d1guq6+gBxAwS
-        7mV3T4Y6AiHq4G/fbODrbcY3XeOkTznIb4z9DHJUi7I/CRBmc9Jk/9zM5jZlI8ezTih244
-        CgOpsTyXu6K0j2Jxr6dQCiPnJA4d+BE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-553-0IeoUDqxNVS73KDRI93tng-1; Mon, 30 Aug 2021 05:42:29 -0400
-X-MC-Unique: 0IeoUDqxNVS73KDRI93tng-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BFA0A93920;
-        Mon, 30 Aug 2021 09:42:28 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9EBA760CA0;
-        Mon, 30 Aug 2021 09:42:28 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 17U9gSQJ022895;
-        Mon, 30 Aug 2021 05:42:28 -0400
-Received: from localhost (mpatocka@localhost)
-        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 17U9gRPq022891;
-        Mon, 30 Aug 2021 05:42:28 -0400
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date:   Mon, 30 Aug 2021 05:42:27 -0400 (EDT)
-From:   Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To:     Helge Deller <deller@gmx.de>
-cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-Subject: [PATCH v2] parisc: fix crash with signals and alloca
-In-Reply-To: <e890c401-a745-ad07-cfa5-bef61d3d8e46@gmx.de>
-Message-ID: <alpine.LRH.2.02.2108300510300.17144@file01.intranet.prod.int.rdu2.redhat.com>
-References: <alpine.LRH.2.02.2108291530440.5661@file01.intranet.prod.int.rdu2.redhat.com> <e890c401-a745-ad07-cfa5-bef61d3d8e46@gmx.de>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+        bh=ZDgZoaGxuF8+VxsBt8mWUj6L6RMapnQD42kDmE3TNZQ=;
+        b=GH03Om/445Kfh0spCpfgBXGkgopeKaJKIqsbbIqGNoDmAlnZTvAthA2tI2dz9Aq5cuTnHb
+        S/4bNzDF2aRH+g5BXDAau4HDRE6CwBE5H4ZiUVX0kxknRtFixsmYk2gTkESXfR+1kQusEc
+        NugrIp20O33foRVdV+QJ3G9RR3jW/9o=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-588-cBJxxlowOy6q3pqz03DM7A-1; Mon, 30 Aug 2021 16:59:57 -0400
+X-MC-Unique: cBJxxlowOy6q3pqz03DM7A-1
+Received: by mail-wm1-f69.google.com with SMTP id u1-20020a05600c210100b002e74fc5af71so5168734wml.1
+        for <linux-parisc@vger.kernel.org>; Mon, 30 Aug 2021 13:59:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=ZDgZoaGxuF8+VxsBt8mWUj6L6RMapnQD42kDmE3TNZQ=;
+        b=dr/YSoJhU0qBRNf21QDysWEAiZEItKJa77POStEvJ+Mq+laS6t/PFsSOM5JW95m+Gp
+         RvxnOjqSFTQTRUJiwGHytK4LGhXf7g9xT++BugiQ8ZcKfdtSCRdjLjZeTIA0nBen+01r
+         zYl4+teM7ID+5KzJSjyggmPY3JZRwQkY0w10jKPTH9WAerBxCvR8k0/rBGLA00Nez2Go
+         4yle0TGbxXLMRSdzcpHrEXGqtApfcHJqC/HNyAh6e6xxg6h7P4m+wO805jv8maPmKOXr
+         vvFJWt3MJKH3sfYCKBpHvMgipD7fA4yI2+ZfVLeHI+bEU1yQxM76gL5jz5zPVghCBuxs
+         Rc4w==
+X-Gm-Message-State: AOAM533N6JNyNGRDvnivIwnI5t+mryvdwpIN56qDq8ScWYR7WHBo1aWi
+        EN07u8sTL81JF6Iu44cr2PpDcu1677k1HHCvv/bJWYCv728oZXKi+VDWUZIZrP5wx+HP0+Bl0NB
+        9TampaqVLPlLu0yHo87jhUuUL
+X-Received: by 2002:a1c:7f48:: with SMTP id a69mr887135wmd.166.1630357196524;
+        Mon, 30 Aug 2021 13:59:56 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxjS6eag15Cf7xmVDHk/qvmWoQLzIdnk7dLXkY7XjvOHcTw6SiXs3ksmYcUzh73pyrAtLIGDA==
+X-Received: by 2002:a1c:7f48:: with SMTP id a69mr887093wmd.166.1630357196296;
+        Mon, 30 Aug 2021 13:59:56 -0700 (PDT)
+Received: from redhat.com ([2.55.138.60])
+        by smtp.gmail.com with ESMTPSA id z9sm12277068wre.11.2021.08.30.13.59.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Aug 2021 13:59:55 -0700 (PDT)
+Date:   Mon, 30 Aug 2021 16:59:50 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Andi Kleen <ak@linux.intel.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
+Message-ID: <20210830163723-mutt-send-email-mst@kernel.org>
+References: <20210823195409-mutt-send-email-mst@kernel.org>
+ <26a3cce5-ddf7-cbe6-a41e-58a2aea48f78@linux.intel.com>
+ <CAPcyv4iJVQKJ3bVwZhD08c8GNEP0jW2gx=H504NXcYK5o2t01A@mail.gmail.com>
+ <d992b5af-8d57-6aa6-bd49-8e2b8d832b19@linux.intel.com>
+ <20210824053830-mutt-send-email-mst@kernel.org>
+ <d21a2a2d-4670-ba85-ce9a-fc8ea80ef1be@linux.intel.com>
+ <20210829112105-mutt-send-email-mst@kernel.org>
+ <09b340dd-c8a8-689c-4dad-4fe0e36d39ae@linux.intel.com>
+ <20210829181635-mutt-send-email-mst@kernel.org>
+ <3a88a255-a528-b00a-912b-e71198d5f58f@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3a88a255-a528-b00a-912b-e71198d5f58f@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Sun, Aug 29, 2021 at 10:11:46PM -0700, Andi Kleen wrote:
+> 
+> On 8/29/2021 3:26 PM, Michael S. Tsirkin wrote:
+> > On Sun, Aug 29, 2021 at 09:17:53AM -0700, Andi Kleen wrote:
+> > > Also I changing this single call really that bad? It's not that we changing
+> > > anything drastic here, just give the low level subsystem a better hint about
+> > > the intention. If you don't like the function name, could make it an
+> > > argument instead?
+> > My point however is that the API should say that the
+> > driver has been audited,
+> 
+> We have that status in the struct device. If you want to tie the ioremap to
+> that we could define a ioremap_device() with a device argument and decide
+> based on that.
 
+But it's not the device that is audited. And it's not the device
+that might be secure or insecure. It's the driver.
 
-On Sun, 29 Aug 2021, Helge Deller wrote:
+> Or we can add _audited to the name. ioremap_shared_audited?
 
-> > Index: linux-5.12/arch/parisc/kernel/signal.c
-> > ===================================================================
-> > --- linux-5.12.orig/arch/parisc/kernel/signal.c	2021-08-29
-> > 19:06:33.000000000 +0200
-> > +++ linux-5.12/arch/parisc/kernel/signal.c	2021-08-29 21:17:55.000000000
-> > +0200
-> > @@ -246,6 +246,11 @@ setup_rt_frame(struct ksignal *ksig, sig
+But it's not the mapping that has to be done in handled special way.
+It's any data we get from device, not all of it coming from IO, e.g.
+there's DMA and interrupts that all have to be validated.
+Wouldn't you say that what is really wanted is just not running
+unaudited drivers in the first place?
+
+> 
+> > not that the mapping has been
+> > done in some special way. For example the mapping can be
+> > in some kind of wrapper, not directly in the driver.
+> > However you want the driver validated, not the wrapper.
 > > 
-> >   #ifdef CONFIG_64BIT
-> > 
-> > +	if (is_compat_task()) {
-> > +		/* The gcc alloca implementation leaves garbage in the upper
-> > 32 bits of sp.*/
-> > +		frame = (struct rt_sigframe __user *)(unsigned
-> > long)ptr_to_compat(frame);
-> > +	}
-> > +
+> > Here's an idea:
 > 
 > 
-> Very good catch!!!!
-> I'm just wondering if we miss to clip the sp somewhere earlier in the
-> kernel call chain (e.g. in the irq/entry handlers), or if the clipping
-> should be done somewhere else, e.g. some lines above here...
+> I don't think magic differences of API behavior based on some define are a
+> good idea.  That's easy to miss.
+
+Well ... my point is that actually there is no difference in API
+behaviour. the map is the same map, exactly same data goes to device. If
+anything any non-shared map is special in that encrypted data goes to
+device.
+
 > 
-> Helge
+> That's a "COME FROM" in API design.
+> 
+> Also it wouldn't handle the case that a driver has both private and shared
+> ioremaps, e.g. for BIOS structures.
 
-You are right - we should clip earlier. I've realized that my patch wasn't 
-correct - when we go down this path:
-	get_sigframe -> sas_ss_flags -> on_sig_stack -> __on_sig_stack
-we already need clipped sp, so that __on_sig_stack can properly determine 
-if we are on the signal stack or not.
+Hmm. Interesting.  It's bios maps that are unusual and need to be private though ...
 
-Here I'm sending a second version of the patch that clips the sp earlier:
+> And we've been avoiding that drivers can self declare auditing, we've been
+> trying to have a separate centralized list so that it's easier to enforce
+> and avoids any cut'n'paste mistakes.
+> 
+> -Andi
 
+Now I'm confused. What is proposed here seems to be basically that,
+drivers need to declare auditing by replacing ioremap with
+ioremap_shared.
 
-
-
-
-From: Mikulas Patocka <mpatocka@redhat.com>
-
-I was debugging some crashes on parisc and I found out that there is a
-crash possibility if a function using alloca is interrupted by a signal.
-The reason for the crash is that the gcc alloca implementation leaves
-garbage in the upper 32 bits of the sp register. This normally doesn't
-matter (the upper bits are ignored because the PSW W-bit is clear),
-however the signal delivery routine in the kernel uses full 64 bits of sp
-and it fails with -EFAULT if the upper 32 bits are not zero.
-
-I created this program that demonstrates the problem:
-
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
-#include <alloca.h>
-
-static __attribute__((noinline,noclone)) void aa(int *size)
-{
-	void * volatile p = alloca(-*size);
-	while (1) ;
-}
-
-static void handler(int sig)
-{
-	write(1, "signal delivered\n", 17);
-	_exit(0);
-}
-
-int main(void)
-{
-	int size = -0x100;
-	signal(SIGALRM, handler);
-	alarm(1);
-	aa(&size);
-}
-
-If you compile it with optimizations, it will crash.
-The "aa" function has this disassembly:
-
-000106a0 <aa>:
-   106a0:       08 03 02 41     copy r3,r1
-   106a4:       08 1e 02 43     copy sp,r3
-   106a8:       6f c1 00 80     stw,ma r1,40(sp)
-   106ac:       37 dc 3f c1     ldo -20(sp),ret0
-   106b0:       0c 7c 12 90     stw ret0,8(r3)
-   106b4:       0f 40 10 9c     ldw 0(r26),ret0		; ret0 = 0x00000000FFFFFF00
-   106b8:       97 9c 00 7e     subi 3f,ret0,ret0	; ret0 = 0xFFFFFFFF0000013F
-   106bc:       d7 80 1c 1a     depwi 0,31,6,ret0	; ret0 = 0xFFFFFFFF00000100
-   106c0:       0b 9e 0a 1e     add,l sp,ret0,sp	;   sp = 0xFFFFFFFFxxxxxxxx
-   106c4:       e8 1f 1f f7     b,l,n 106c4 <aa+0x24>,r0
-
-This patch fixes the bug by truncating the "usp" variable to 32 bits.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-
----
- arch/parisc/kernel/signal.c |    6 ++++++
- 1 file changed, 6 insertions(+)
-
-Index: linux-5.12/arch/parisc/kernel/signal.c
-===================================================================
---- linux-5.12.orig/arch/parisc/kernel/signal.c	2021-08-29 19:06:33.000000000 +0200
-+++ linux-5.12/arch/parisc/kernel/signal.c	2021-08-30 11:21:12.000000000 +0200
-@@ -237,6 +237,12 @@ setup_rt_frame(struct ksignal *ksig, sig
- #endif
- 	
- 	usp = (regs->gr[30] & ~(0x01UL));
-+#ifdef CONFIG_64BIT
-+	if (is_compat_task()) {
-+		/* The gcc alloca implementation leaves garbage in the upper 32 bits of sp */
-+		usp = (compat_uint_t)usp;
-+	}
-+#endif
- 	/*FIXME: frame_size parameter is unused, remove it. */
- 	frame = get_sigframe(&ksig->ka, usp, sizeof(*frame));
- 
+-- 
+MST
 
