@@ -2,115 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 986BF3FB0B8
-	for <lists+linux-parisc@lfdr.de>; Mon, 30 Aug 2021 07:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B76213FB0DD
+	for <lists+linux-parisc@lfdr.de>; Mon, 30 Aug 2021 07:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbhH3FMn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 30 Aug 2021 01:12:43 -0400
-Received: from mga14.intel.com ([192.55.52.115]:7792 "EHLO mga14.intel.com"
+        id S231733AbhH3FrE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 30 Aug 2021 01:47:04 -0400
+Received: from ozlabs.org ([203.11.71.1]:55985 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230191AbhH3FMm (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 30 Aug 2021 01:12:42 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10091"; a="217926786"
-X-IronPort-AV: E=Sophos;i="5.84,362,1620716400"; 
-   d="scan'208";a="217926786"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2021 22:11:48 -0700
-X-IronPort-AV: E=Sophos;i="5.84,362,1620716400"; 
-   d="scan'208";a="497257549"
-Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.212.238.58]) ([10.212.238.58])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2021 22:11:47 -0700
-Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        X86 ML <x86@kernel.org>,
+        id S229936AbhH3FrD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 30 Aug 2021 01:47:03 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4GyfSZ4MrFz9sWS;
+        Mon, 30 Aug 2021 15:46:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1630302368;
+        bh=eh3cO90c1KedAIJjSl6KhOs8itt4bFhDPyslsaki+bg=;
+        h=Date:From:To:Cc:Subject:From;
+        b=QnM00rPpxqrsnMXbwtoHmHkDteIgeugumsc/XoT3jOIHVJ2mMcFfl2APcwhta8Ov0
+         C077J3yxmbQIl6nZUHFqYJ6o/gVwzA+L5ETTvIQacv2rY0cSHxGdsoupRKJmdCdWWz
+         65WAyNR9tajJWXaXAhSC1Yp8eF3am4Y2UlFDaEW6NfUN9731OieVTXzU76enl7xBqK
+         +ublSzQbXKL+PGS4DEQuWXRfSz0WhXxh1HuJORKUEnQmAhOMbBevrG0h9DMqdhmJSX
+         azeNByre4P7oyKZ8vJKffAU8kFA1GCzJpbzMaYmLA3kLMfSwV3ekfpwPyXZH/ChCbw
+         8CYKskaHKTZrA==
+Date:   Mon, 30 Aug 2021 15:46:05 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Greg KH <greg@kroah.com>, Helge Deller <deller@gmx.de>,
+        Parisc List <linux-parisc@vger.kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, Jiri Slaby <jslaby@suse.cz>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org
-References: <20210805005218.2912076-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20210805005218.2912076-12-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20210823195409-mutt-send-email-mst@kernel.org>
- <26a3cce5-ddf7-cbe6-a41e-58a2aea48f78@linux.intel.com>
- <CAPcyv4iJVQKJ3bVwZhD08c8GNEP0jW2gx=H504NXcYK5o2t01A@mail.gmail.com>
- <d992b5af-8d57-6aa6-bd49-8e2b8d832b19@linux.intel.com>
- <20210824053830-mutt-send-email-mst@kernel.org>
- <d21a2a2d-4670-ba85-ce9a-fc8ea80ef1be@linux.intel.com>
- <20210829112105-mutt-send-email-mst@kernel.org>
- <09b340dd-c8a8-689c-4dad-4fe0e36d39ae@linux.intel.com>
- <20210829181635-mutt-send-email-mst@kernel.org>
-From:   Andi Kleen <ak@linux.intel.com>
-Message-ID: <3a88a255-a528-b00a-912b-e71198d5f58f@linux.intel.com>
-Date:   Sun, 29 Aug 2021 22:11:46 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the tty tree with the parisc-hd tree
+Message-ID: <20210830154605.2abe717e@canb.auug.org.au>
 MIME-Version: 1.0
-In-Reply-To: <20210829181635-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: multipart/signed; boundary="Sig_/uVUbwi0.12Pg.+NH6XSljQ2";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+--Sig_/uVUbwi0.12Pg.+NH6XSljQ2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On 8/29/2021 3:26 PM, Michael S. Tsirkin wrote:
-> On Sun, Aug 29, 2021 at 09:17:53AM -0700, Andi Kleen wrote:
->> Also I changing this single call really that bad? It's not that we changing
->> anything drastic here, just give the low level subsystem a better hint about
->> the intention. If you don't like the function name, could make it an
->> argument instead?
-> My point however is that the API should say that the
-> driver has been audited,
+Hi all,
 
-We have that status in the struct device. If you want to tie the ioremap 
-to that we could define a ioremap_device() with a device argument and 
-decide based on that.
+Today's linux-next merge of the tty tree got a conflict in:
 
-Or we can add _audited to the name. ioremap_shared_audited?
+  arch/parisc/kernel/pdc_cons.c
 
-> not that the mapping has been
-> done in some special way. For example the mapping can be
-> in some kind of wrapper, not directly in the driver.
-> However you want the driver validated, not the wrapper.
->
-> Here's an idea:
+between commit:
 
+  9613b0cb3eb4 ("tty: pdc_cons, free tty_driver upon failure")
 
-I don't think magic differences of API behavior based on some define are 
-a good idea.  That's easy to miss.
+from the parisc-hd tree and commits:
 
-That's a "COME FROM" in API design.
+  0524513afe45 ("tty: don't store semi-state into tty drivers")
+  72fdb403008c ("tty: pdc_cons, free tty_driver upon failure")
 
-Also it wouldn't handle the case that a driver has both private and 
-shared ioremaps, e.g. for BIOS structures.
+from the tty tree.
 
-And we've been avoiding that drivers can self declare auditing, we've 
-been trying to have a separate centralized list so that it's easier to 
-enforce and avoids any cut'n'paste mistakes.
+I fixed it up (I just used the latter version) and can carry the fix as
+necessary. This is now fixed as far as linux-next is concerned, but any
+non trivial conflicts should be mentioned to your upstream maintainer
+when your tree is submitted for merging.  You may also want to consider
+cooperating with the maintainer of the conflicting tree to minimise any
+particularly complex conflicts.
 
--Andi
+--=20
+Cheers,
+Stephen Rothwell
 
+--Sig_/uVUbwi0.12Pg.+NH6XSljQ2
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmEscJ0ACgkQAVBC80lX
+0Gz2wwf9EzoZZLXgVZXEOqIIY8e8do1BSIZz7CIxD2/674rEK/Tq3du0wpe3X3a4
+PJgW4uAso7V+6vxCYHXx6BdzM7gqYly1Grh2oxW3i0KeTqs08uxst3qZjYCfIduu
+2GorYxFuYVOcZpIxSOEoLaMYGkvxRE7V5QitRgaqO8SYguFYzVT6taVuJrC1CICU
+7aVndMGhlHU5ejSRcdWE8n6hKnXqRIpp8mOkjfJHQv2FCAtoRYd1fi6RadWMcWC3
+J/l9S6EMn/3xzHPkJunJN20Mc1jWpIFmCS0AY9mW4r7JoTJ3YsGwApi36ejZ0Dgf
+1taA8ciufj106PfavfhbuGKzmhhd3A==
+=VduB
+-----END PGP SIGNATURE-----
+
+--Sig_/uVUbwi0.12Pg.+NH6XSljQ2--
