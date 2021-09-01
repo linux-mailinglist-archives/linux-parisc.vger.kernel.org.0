@@ -2,61 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA1873FF52B
-	for <lists+linux-parisc@lfdr.de>; Thu,  2 Sep 2021 22:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C7603FFA33
+	for <lists+linux-parisc@lfdr.de>; Fri,  3 Sep 2021 08:15:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343703AbhIBU4a (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 2 Sep 2021 16:56:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35304 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245324AbhIBU43 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 2 Sep 2021 16:56:29 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id D46726109E;
-        Thu,  2 Sep 2021 20:55:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630616130;
-        bh=aTFedgOw8MTX7QfrksRz9iKRq1Ip8bf6ti8F3t3he3Y=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=r+oxrJjqBnv6PXEubx993TZaEkf9Jp/AyUA3g0dAKRoy1HxctFyQjmTTs+L8iJPTq
-         ALJiIZphtGcxbLYXaOPpqOcby77AUMFJgkdmQ+ss0dmKN6zh/Vzm2zMQraplhxWNSS
-         BUlGUuScgNGONd+hmXwLAQcdgbAd8reBfawXPZhYdgMqyguxKPBSlTojyW8nlLoO0b
-         vrFE6UeyU5N54R93e8+K1Aj1qdxKCJ0fY7kpW0NGdxM1csH374LH2Ox7HJhV7N3o0a
-         bs6PsXGLzaHfzbVl46DMlgmnHMafs9uHQWZU6fjNNt3ZUP2Mqb4ojxqau4JqTC7mT7
-         tHQBuw1YjEMbw==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id CF0D460A0C;
-        Thu,  2 Sep 2021 20:55:30 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture updates for kernel v5.15-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YTEOIq86QHceYCO9@ls3530>
-References: <YTEOIq86QHceYCO9@ls3530>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <YTEOIq86QHceYCO9@ls3530>
-X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc
-X-PR-Tracked-Commit-Id: 6f1fce595b78b775d7fb585c15c2dc3a6994f96e
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: a2d616b935a0df24bc9375785b19bf30d7fc9c6a
-Message-Id: <163061613084.4397.16763023463770407145.pr-tracker-bot@kernel.org>
-Date:   Thu, 02 Sep 2021 20:55:30 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
+        id S230128AbhICGQo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 3 Sep 2021 02:16:44 -0400
+Received: from mail.repatriados.gov.py ([168.90.176.63]:6026 "EHLO
+        mail.repatriados.gov.py" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344408AbhICGQn (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 3 Sep 2021 02:16:43 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.repatriados.gov.py (Postfix) with ESMTP id 08C3E65EEB;
+        Wed,  1 Sep 2021 02:20:32 -0400 (-04)
+Received: from mail.repatriados.gov.py ([127.0.0.1])
+        by localhost (mail.repatriados.gov.py [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id whIErzLFuNVt; Wed,  1 Sep 2021 02:20:29 -0400 (-04)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.repatriados.gov.py (Postfix) with ESMTP id 89E83610F6;
+        Tue, 31 Aug 2021 23:27:17 -0400 (-04)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.repatriados.gov.py 89E83610F6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=repatriados.gov.py;
+        s=66AB3A4C-4957-11E8-AF15-073A956E488A; t=1630466839;
+        bh=re+Bi7IjhFEavKutGVOnSLzHkgr9hnVuewhYSbG4AUw=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=CzDWutA7LBPbjaFFF/iwI3yZuZ2ZK8mul7h9ttoCP9ioDnqDLBIUvCm+Yls51aCFM
+         B2WEKUNJyfoCGDJo1M8Ipbby3QO4cWOoTzpkwBetTs3NsKedBL/WKIGgwrY6z7nsl2
+         Ic6SmM5hZp4g31z3fFP07us24TDNAzHtNtoLy4a/bt184CO+Kf6FBSzHBwZBypeKXl
+         BtKyPAND4y92QUrt/lcWo94OsVOoRM+2pkTmTS/JdvO8zQg21C64dn5cXuecVssMiE
+         i4HmsKaOrEvUTvbjvbfxN2De1xp19PIgzqZSCCdy2PbeQ2WnM4BFNCXx5joPWa0YxO
+         qM7aCVkDZ+Hpw==
+X-Virus-Scanned: amavisd-new at repatriados.gov.py
+Received: from mail.repatriados.gov.py ([127.0.0.1])
+        by localhost (mail.repatriados.gov.py [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 48JWPTu4t7FK; Tue, 31 Aug 2021 23:27:17 -0400 (-04)
+Received: from cris-PC.www.huaweimobilewifi.com (unknown [105.4.4.195])
+        by mail.repatriados.gov.py (Postfix) with ESMTPSA id EB83061A58;
+        Tue, 31 Aug 2021 21:39:47 -0400 (-04)
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Euro?=
+To:     Recipients <mdominguez@repatriados.gov.py>
+From:   ''Charles jackon'' <mdominguez@repatriados.gov.py>
+Date:   Wed, 01 Sep 2021 03:40:21 +0200
+Reply-To: charlesjacksonjr001@gmail.com
+Message-Id: <20210901013948.EB83061A58@mail.repatriados.gov.py>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Thu, 2 Sep 2021 19:47:14 +0200:
+Hallo
 
-> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc
+Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Ameri=
+ka, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen =
+US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der H=
+ilfsgelder f=FCr das Corona-Virus.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/a2d616b935a0df24bc9375785b19bf30d7fc9c6a
+Dies ist Ihr Spendencode: [CJ530342019]
 
-Thank you!
+www.youtube.com/watch?v=3DBSr8myiLPMQ
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+
+Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
+
+charlesjacksonjr001@gmail.com
+
+Ich hoffe, dass Sie und Ihre Familie dies durchkommen
+
+
+Herr Charles Jackson
