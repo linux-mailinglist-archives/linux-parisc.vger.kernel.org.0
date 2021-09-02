@@ -2,96 +2,128 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE10E3FF4CC
-	for <lists+linux-parisc@lfdr.de>; Thu,  2 Sep 2021 22:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0AD33FF50D
+	for <lists+linux-parisc@lfdr.de>; Thu,  2 Sep 2021 22:42:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345618AbhIBUVB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 2 Sep 2021 16:21:01 -0400
-Received: from mout.gmx.net ([212.227.15.19]:39417 "EHLO mout.gmx.net"
+        id S232057AbhIBUnB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 2 Sep 2021 16:43:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59152 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231321AbhIBUVA (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 2 Sep 2021 16:21:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1630613993;
-        bh=qRPsUq9hx09wEGufPwgQk/cwW0TimNF0thgYfsEZIVE=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=Q1L5cx1g0e8EmvQLOdiPPzH7mlqrAflgS5gARUBWOnQbXnDTZxf8FflEN0X5Hb+gE
-         i8xuqbdPqowlZCEf7olNqbT802X13eC2pvuBBMAis62KmhQvMLGSKI9gRcLi+rufYl
-         xNK8vcPtGh3Mibo0/Kbs2mvFmJ3bAZ7UIChTcuj8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.158.38]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MeU0k-1mwKOz31RE-00aSUV; Thu, 02
- Sep 2021 22:19:53 +0200
-Date:   Thu, 2 Sep 2021 22:19:49 +0200
-From:   Helge Deller <deller@gmx.de>
+        id S232045AbhIBUnB (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 2 Sep 2021 16:43:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7A86360FDA
+        for <linux-parisc@vger.kernel.org>; Thu,  2 Sep 2021 20:42:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630615322;
+        bh=xgEywScCxG9d/MNnGUKlxPg3X6w8mPiyS2kTlSbH1yw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=N1gI8fwZvI7yKYYphoDhGwPtDtdnobWaJ7k1avUFAggsDhM21OhpsxiXwH1FI8WxP
+         nretNaT2ZT037gyziA5DaEFnDzbsDwXsEp/DO9vVXhs9/YNomcI5VpTKb5bXubXuQi
+         yMJd524CF7J8QijM1XcaYxZPeSrMRgmlmJMURrBvEUorM0JxpDzCeZdlwzKNY8+pJj
+         Aw4FmwyzOf4RaYxtPwHt6eoIxPBbc111mFq8hdfvKO7ZhRA1/SDaqI7ehfaeOqbpc2
+         4eXYwq62NOujUM9kgYZcB/1+Lme1vCt6Z59Pxguv76BQvZo7EMAUmP2kflTVpfw4Ak
+         JBRlwrpXVpZeA==
+Received: by mail-wm1-f44.google.com with SMTP id e26so2147762wmk.2
+        for <linux-parisc@vger.kernel.org>; Thu, 02 Sep 2021 13:42:02 -0700 (PDT)
+X-Gm-Message-State: AOAM532bdinlEiTcpFxEBjAMrtR2inGV0ijTvERU5KphBUPqsL9vcdCT
+        PmzwIHFGYPHF2ZJOt8t6LYhPp6Jqn9AvrD0z3Pw=
+X-Google-Smtp-Source: ABdhPJwTS0TLkP+iCs+VRFgVj+M5rWypGPan1PwEFRLzSIQfcdsYUdeIcKrL+EtQwnIX0LWPluQW+zU66ZBaXveZBFU=
+X-Received: by 2002:a7b:c933:: with SMTP id h19mr4976070wml.120.1630615321057;
+ Thu, 02 Sep 2021 13:42:01 -0700 (PDT)
+MIME-Version: 1.0
+References: <YS6VGsZ7fZtZeu/i@ls3530> <YTDaZAMvAipdvkaB@ls3530>
+ <CAK8P3a0zwnEUK_ztPRBx0H9VGBoPVY-+aASFV97zSKrL=diXUA@mail.gmail.com> <51d6b8cb-a64f-0cf7-1545-4c2fee89799e@gmx.de>
+In-Reply-To: <51d6b8cb-a64f-0cf7-1545-4c2fee89799e@gmx.de>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Thu, 2 Sep 2021 22:41:44 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3oJo496dXpAWHQKG=Sdr+RSfScYbWKyGrk8HNfH5G1CQ@mail.gmail.com>
+Message-ID: <CAK8P3a3oJo496dXpAWHQKG=Sdr+RSfScYbWKyGrk8HNfH5G1CQ@mail.gmail.com>
+Subject: Re: [PATCH v2] parisc: Fix boot with kernel v5.14
 To:     Helge Deller <deller@gmx.de>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
+Cc:     Parisc List <linux-parisc@vger.kernel.org>,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: Re: [PATCH v2] parisc: Fix boot with kernel v5.14
-Message-ID: <YTEx5e52HCTgXaJE@ls3530>
-References: <YS6VGsZ7fZtZeu/i@ls3530>
- <YTDaZAMvAipdvkaB@ls3530>
- <CAK8P3a0zwnEUK_ztPRBx0H9VGBoPVY-+aASFV97zSKrL=diXUA@mail.gmail.com>
- <51d6b8cb-a64f-0cf7-1545-4c2fee89799e@gmx.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51d6b8cb-a64f-0cf7-1545-4c2fee89799e@gmx.de>
-X-Provags-ID: V03:K1:7K8k5hNjOCQfPfhAI27aqMAkiCKxOfd3Kq2Cu+KjjneQm54I0GK
- oa4ewkki+uTPVj+44Mj9VFla6290pPVS+s+z65T4TLAIbuiPHiXvNRQ9ghZhr/50/KS6ylT
- Oh41x+yhKFqtYsbu62sa9zPL62FY1iLcIyMPwbYBqF4iXt5Q7uVEHXFQykYj2qUV3OZhsoc
- 52TgS8gY9NLy4HRqFMuJw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:rRhYehsrStA=:0RLG6kCMeQ2YlRxrgtbVjC
- uEOlB0LYv0O9TErqNMzuKAtkFfZSRn//Tp3/pR4f6bnzObhmeYxVImmofGDb4RYnGm5/aDFba
- PW9Vt9t7aED4cZfFuA4lgzGdWXvROPv25xgAlkU15mxtB5xkcxLEgQsh60833NM5w8CKXRONp
- igX5RbcmQo9fcgRKes7cvPLQFfc4Der3b6v3ps0RETyLYZHMIfMiOBMoO8guane92nNnFlDgM
- BUT/VgZ43pGOOpYgaA8rKfPrpP8YeOtlhQEVP/gadRJp8W032gY8Nqd8mOnh4HJDXON4y0lkx
- 7D6yD+omh1r6ukxerwnQ4Cb9Q6YcJvvu5NU6hcYijHqcMLoW6KtfZUemEtgDqouhZ/VkqK9Qa
- z06xMXMiI2JUFjl5N2/CXGNExF/LCisbpQ9SrjD6Z6Ks70heEfOb74nBauwE/ld7tuBR6ItVM
- MeUaUdaRGtv+HM9SxcZquHYOdwlVmAXUnQMaG0BRf6uvTHlmEsaKuOnHMZ8ZzkrGEFPlJJDgH
- qjfvkFIa+5WVqRY8x0jkp2tcxYAL0hCm4dygA5KJcpT6PxwMbYQwZZACZFHvRuEOlnV6TalLz
- /z3kw1BgZO6Cg3mPem2Fmvtxdkjt1xR85/Z/wg6wyXcm9EV9AdydDSQMn7uPr/hnt3VB44uum
- vbt+xxnfpG8dLn/Rn5bCbGhOHOuq4o6R5FXb+qtOS9Uk97cA0UqhcmA8IxhsEiooX8JkgDxYs
- 5ca1OgpJL79FFVTAGRN6vjM703fdFULlAVzN0GwkJmrw43jrZbX5kiQBiHmZMkXg5BXih2Bza
- GLmbdFxsRfms3tNExMUcwNfIaYM3VtG1QTvHJVl0NwohlrJc7rQWvtTS93DUVxMLU9zLdwniB
- 2Mm2Ra8Zl+Xsos1IkHA7wLzXDdo4QkLoAOk1TuQMjAnGfOR9A1+H7GhpX72bE0wox3rAyyWYd
- /Bs1mpDyDLvZhgEYr+a6Wu4pZk4otzCVOetHbkYo+8aIc77xpYP/CtKS37H1HakoflGcWB6U5
- s71BoFu6c8XDd/JuN4ZwpokCou/CYxXV4+3dNsDejND/EqOZj2aB9puP3xUwlFWT9Rpa9XsDk
- vSYTpB/ZcZthkPknym/x9Wr8s9UC+VmRv+9
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-> > The problem on parisc seems to be that at least
-> > one variable is generated by the linker in a way that is incompatible
-> > with the psABI but declared as a regular __u32.
+On Thu, Sep 2, 2021 at 9:48 PM Helge Deller <deller@gmx.de> wrote:
+> On 9/2/21 8:35 PM, Arnd Bergmann wrote:
+> > On Thu, Sep 2, 2021 at 2:06 PM Helge Deller <deller@gmx.de> wrote:
+> >>
+> >> Kernel v5.14 has various changes to optimize unaligned memory accesses,
+> >> e.g. commit 0652035a5794 ("asm-generic: unaligned: remove byteshift helpers").
+> >>
+> >> Those changes break the bootloader and other places in kernel for parisc
+> >> which needs byte-wise accesses to unaligned memory.
+> >>
+> >> Here is an updated patch/hack which fixes those boot problems by adding
+> >> a compiler optimization barrier. More info and background can be found in BZ:
+> >> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102162
+> >>
+> >> Signed-off-by: Helge Deller <deller@gmx.de>
+> >
+> > Right, this should fix it, but I tend to agree with what Andrew Pinski
+> > said: the existing version is actually correct and allows valid
+> > optimizations on static variables as long as those are correctly
+> > annotated in C.
+> Let's look at generic kernel code, e.g. in fs/btrfs/inode.c.
+> You will find many similiar cases all around the kernel.
+> ------------
+> struct dir_entry {
+>          u64 ino;
+>          u64 offset;
+>          unsigned type;
+>          int name_len;
+> };
 >
-> I'm happy to change it if it's just this one variable.
+> static int btrfs_filldir(void *addr, int entries, struct dir_context *ctx)
+> {
+>          while (entries--) {
+>                  struct dir_entry *entry = addr;
+>                  char *name = (char *)(entry + 1);
+>
+>                  ctx->pos = get_unaligned(&entry->offset);
+>                  if (!dir_emit(ctx, name, get_unaligned(&entry->name_len),
+>                                           get_unaligned(&entry->ino),
+>                                           get_unaligned(&entry->type)))
+>                          return 1;
+>                  addr += sizeof(struct dir_entry) +
+>                          get_unaligned(&entry->name_len);
+>                  ctx->pos++;
+>          }
+>          return 0;
+> }
+> -----------
+> According to Andrew Pinski's statement, the compiler will assume here that all of
+> those get_unaligned() calls will access naturally aligned memory and I'm pretty
+> sure the compiler will generate native 4/8 byte accesses on all platforms.
+> Most likely you will not notice on most platforms because it will get fixed by
+> exception handlers or natively in hardware.
+> But anyway, it's not what the developers intended by adding get_unaligned().
 
-Currently only applying this patch seems to fix the boot issue.
-Maybe it's just luck that compressed kernel files are correctly aligned.
+No, this case is completely different: 'entry' points to dynamically allocated
+memory that gets passed in via a void pointer, so gcc has no knowledge of
+the alignment of the underlying storage, and it will do the access according to
+the __packed constrains in the get_unaligned() helper. When you look at the
+assembler output for this function on a 5.14 parisc kernel, I'm sure you will
+see the correct byte accesses, just like the trivial example I posted
+in bugzilla.
 
-Anyway, Arnd, please just wait and do not consider applying my previous pa=
-tch.
+The reason that the "output_len" access breaks is that gcc explicitly optimizes
+the bytewise access  into word accesses because it assumes that global variables
+are correctly declared, and that they are aligned according to the requirements
+of the ABI.
+This may be surprising and even unfortunate, but I can see why they did
+this optimization, and that it helps in other cases as well.
 
-Helge
+> I see no chance to change all those places in the kernel.
 
-diff --git a/arch/parisc/boot/compressed/misc.c b/arch/parisc/boot/compres=
-sed/misc.c
-index 2d395998f524..a9949ab9b283 100644
-=2D-- a/arch/parisc/boot/compressed/misc.c
-+++ b/arch/parisc/boot/compressed/misc.c
-@@ -26,7 +26,7 @@
- extern char input_data[];
- extern int input_len;
- /* output_len is inserted by the linker possibly at an unaligned address =
-*/
--extern __le32 output_len __aligned(1);
-+extern char output_len;
- extern char _text, _end;
- extern char _bss, _ebss;
- extern char _startcode_end;
+No, that would mean changing all get_unaligned() accesses to pointer
+dereferences on types that are declared as __packed themselves.
+The get_unaligned()/put_unaligned() helpers generally do what they
+are designed for, it just breaks when you have misaligned global
+variables that are created by a linker script.
+
+     Arnd
