@@ -2,64 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9826E4000A2
-	for <lists+linux-parisc@lfdr.de>; Fri,  3 Sep 2021 15:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9958E40053D
+	for <lists+linux-parisc@lfdr.de>; Fri,  3 Sep 2021 20:46:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235767AbhICNjQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 3 Sep 2021 09:39:16 -0400
-Received: from mta-tor-003.bell.net ([209.71.212.30]:40398 "EHLO
-        cmx-torrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S235169AbhICNjN (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 3 Sep 2021 09:39:13 -0400
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.52.221.220]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 60C8802C0442E023
-X-CM-Envelope: MS4xfF9zhDcKXPUHo5BDmFfPJ9JoiiPHi6ZBECoiiiQJkQF8ExbTv0ZNVX7xRlkzuB3ASgWV9fP6OnWMBwYdtWr58MD/8F2MiubcaCAorskko2paP5xAcY7u
- +wHej8lxh6KBLXTauY52bF7okndmmrU/vkIvr6z/VWYQLYQXd5qT/QswYBNxeGHGIVsyu5aXcU6qyboZMjWXGG5LFcfuwfXlhJfq6jRJrtuBnyeh2iP+4XPQ
- djTpdkphW0A1NcTc29/PZdJyPBU0WUvekTUlLrlL48QIb20mTdNJoK9pDhYWVickgvIZf+O9nJdF5v9Qd3gNQjLyjRTy5H9L9uSCp/IhZkE=
-X-CM-Analysis: v=2.4 cv=Zd5+iuZA c=1 sm=1 tr=0 ts=61322543
- a=YO5NLpPX/y/Fbmk87HoZTg==:117 a=YO5NLpPX/y/Fbmk87HoZTg==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=eIZ7jACLm3UFZmMTUCUA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (70.52.221.220) by cmx-torrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 60C8802C0442E023; Fri, 3 Sep 2021 09:38:11 -0400
-Subject: Re: [PATCH] parisc: Drop __arch_swab16(), arch_swab24(),
- _arch_swab32() and __arch_swab64() functions
-To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <YTHWzLrVpZV/dk8n@ls3530>
- <bbd93244-9071-3dd9-bdb3-d3f5b1809358@bell.net>
- <2cfa60ad-8846-62a0-0d69-488cf2f4ab7d@gmx.de>
-From:   John David Anglin <dave.anglin@bell.net>
-Message-ID: <80afaab0-c49f-ff14-5126-6f9af4008ea1@bell.net>
-Date:   Fri, 3 Sep 2021 09:38:12 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <2cfa60ad-8846-62a0-0d69-488cf2f4ab7d@gmx.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+        id S1350493AbhICSqt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 3 Sep 2021 14:46:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39154 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1350464AbhICSqq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 3 Sep 2021 14:46:46 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id A3EC1610A1;
+        Fri,  3 Sep 2021 18:45:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630694746;
+        bh=Gs4WEuNC4+xUni9wbtdsAfl2zZJAm8XkeXR/2f+iNNA=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=jMn5Mn5CDZxDYZYQtffKJ0JEoZIDLu+oxgIe4JTaMGUhEcLMWwuClDC4mDih06VB0
+         H9MgLbcSAh1oJOojNjTEsWqkKl9gnL4EYa8y+xOpg7/hY9LUtyB4jwGPP8OZftqHSo
+         H2ZxdqD8/HYVL0HwBoY3ztVmhRpiYz5U+hHkO0rm/0so+N0dmZMy0+QBnr2YRebpnx
+         pjb84u7J54mfAQlgSKY4WXCLamrePIPp/jhhBFhmW3BUC/q9ZjiTeM+uQTIzBxpdEy
+         b109aAaaEErpFsCKeSyL96teirEpF/RGKXPFdJu5eL999ulu8o+9TZnNos7hqL8MQE
+         /RgDFufhxvpmA==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 9EE7260A2F;
+        Fri,  3 Sep 2021 18:45:46 +0000 (UTC)
+Subject: Re: [GIT PULL] additional parisc architecture updates for kernel
+ v5.15-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <YTIRjOdjUHGgG1eQ@ls3530>
+References: <YTIRjOdjUHGgG1eQ@ls3530>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <YTIRjOdjUHGgG1eQ@ls3530>
+X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc-2
+X-PR-Tracked-Commit-Id: c42813b71a06a2ff4a155aa87ac609feeab76cf3
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 11d5576880aed34b8aa4e8049afdab92793b071f
+Message-Id: <163069474664.21432.5236279924010228515.pr-tracker-bot@kernel.org>
+Date:   Fri, 03 Sep 2021 18:45:46 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2021-09-03 9:12 a.m., Helge Deller wrote:
-> On 9/3/21 2:41 PM, John David Anglin wrote:
->> Hi Helge,
->>
->> I don't believe the compiler can implement __arch_swab64() as efficiently as the inline assembly
->> code.  The compiler doesn't know about the permh or hsh instructions.
->
-> Yes, it does.
-You are correct.  bswaphi2, bswapsi2 and bswapdi2 patterns are implemented in pa.md.
+The pull request you sent on Fri, 3 Sep 2021 14:14:04 +0200:
 
-Dave
+> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc-2
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/11d5576880aed34b8aa4e8049afdab92793b071f
+
+Thank you!
 
 -- 
-John David Anglin  dave.anglin@bell.net
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
