@@ -2,169 +2,116 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE0CC400D4B
-	for <lists+linux-parisc@lfdr.de>; Sun,  5 Sep 2021 00:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAD8B401187
+	for <lists+linux-parisc@lfdr.de>; Sun,  5 Sep 2021 22:33:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235273AbhIDWFB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 4 Sep 2021 18:05:01 -0400
-Received: from mout.gmx.net ([212.227.15.15]:44429 "EHLO mout.gmx.net"
+        id S230230AbhIEUe4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 5 Sep 2021 16:34:56 -0400
+Received: from mout.gmx.net ([212.227.17.22]:60603 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235233AbhIDWFB (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 4 Sep 2021 18:05:01 -0400
+        id S230217AbhIEUez (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 5 Sep 2021 16:34:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1630793030;
-        bh=CB54RDKnkf701WjPNX5oWT7t6ZDuaztyYDbfruo+ku0=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=Y025S/u5oNMimPblIpmNNrzp+0S1C/s3ccm9BEDkdRwo+N1wVPJdkeUNn7sva3aMc
-         CwcgT7Y9lGgEwuYNmSAZ5BdPySCXCRl9XCPGbVTWssDfMBbxfV7bY9QG58d6bN8biS
-         tFt4YWw8lFbSF/mehGqv/PipdZ2I3Xbnke4L0Pm8=
+        s=badeba3b8450; t=1630874024;
+        bh=ItNwfd5QrlJvqaqq0YfVWS2FcHJQ8dkUltawpxzlB+g=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=MHWTu7USjHPHKwFCQLPjhCq27humXYBDYCsZLi/BAxqd79bZYvSJ4SCUOQm0RQu5S
+         qcGsd9/LHT94Zah7ExwtVZ8ap5MUx9yeEKXYaeh+XLHkFCeJF/Dz4wWPdWmU3pIN65
+         GlIE8vZFhYKGmYzDVdSWJy/UQCeVNoRP8ujE0wZ0=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([80.187.121.82]) by mail.gmx.net
- (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MkYXs-1mpbfX3zJu-00m37o; Sun, 05 Sep 2021 00:03:50 +0200
+Received: from [192.168.147.61] ([80.187.121.82]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MhlKy-1mrvs80abA-00dpz7; Sun, 05
+ Sep 2021 22:33:44 +0200
+Subject: Re: Virtualizing HP PA-RISC unix station other than B160L
+To:     Richard Henderson <richard.henderson@linaro.org>,
+        thierry.briot@gmail.com
+Cc:     "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+References: <00d401d7a230$56842630$038c7290$@gmail.com>
+ <CAFXwXrmt-u9iO_xY3y=ite1rPsvdm77w_s3Fw1G5C=fag0KP1w@mail.gmail.com>
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Arnd Bergmann <arnd@kernel.org>
-Subject: [PATCH] parisc: Drop strnlen_useric() in favour of generic version
-Date:   Sun,  5 Sep 2021 00:02:13 +0200
-Message-Id: <20210904220213.34504-1-deller@gmx.de>
-X-Mailer: git-send-email 2.31.1
+Message-ID: <2db9d592-8115-1206-68e4-71a9fd25b45d@gmx.de>
+Date:   Sun, 5 Sep 2021 22:32:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <CAFXwXrmt-u9iO_xY3y=ite1rPsvdm77w_s3Fw1G5C=fag0KP1w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:IDWdLKM0j2tG8N7CE73wSbUBSsqNuCliRXwGraWJjfkcIxI1OX3
- A4LOh4UGXGsXijQuId0ttDtj2rF3pqbL/GcCXYOasl91jQF3GcowFEx5yx343cti2LHPajz
- 4C+hVeOAuulOH4mA2tNYLhpFGbUUGN8K0FVYatAbIolavICtn64Nr9WZg5Ht4+FwF2LrmLN
- /+Y7fSkejAQDRXVgN0AYQ==
+X-Provags-ID: V03:K1:pYfO96URKeBbPpUYB4U2dTQTdCxkV6Ni/0S4zTh0eWFEv6HswXT
+ W2GqWk4F3X0aYTUowcbYfEoEdFJ6DiMUyZujqFCgqF1n6PHNWkMUWEwONo3ExBW/64vfJCT
+ ihFqrlPBBP+THejc50k9YdipSVcYy9IH86zgT3xMscQVa2mSXx8+WhlCiBzQrTjZj4z0WB+
+ opAxH8NFnd09Ba6DcvNWA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Blk7mGBVHsE=:I6k0/o9ljc6kzzBuQGQVeU
- AvTVumSYqKST82CLFViprvoyyICNH33EblTvSzHcQGA3RW+R4ALJxCa5EbC6ZpfDE3+bZuepg
- AVMWRYzHcog7+P065DAGoIPvNjpo5KSuNi6rxBzfCoflZrAOS/mYVZ1WqAo2LFsAbzzIskvNj
- 8Qzgak1H7/Q7FGG6sH30rhcd4P10TMSfldh0zWFJSwD74QH8Voy85fw0l7+TtU5sP2nIp0Jpy
- 0dtuys67/pIDA0w76cKiTLgt2DLVKfvcmQUJ9/cH1KuZgftVvwZR9ShMKEjRkIEV9aWz+tEws
- TaQVjzqf005bTWFyAT3a2Q1hfw169bgJFaW1KgseUlWnSYkUqQXvQL0VtLGI8hY4kNHgG9V9F
- YaeBhMdvwlswHPnRKZJwBelULwcw5uiCbb7reMERF+nXqJSYYGKZT3r2vzXcAsemqWg1dAo9S
- IoYVuUSQ/DpELDABDswrXnq8MAB6ZFv+tye5yWEYTwNIyzE1eo7xBuoKkxjT+wjCGrpKwoJ19
- QaDL1iZWCs1EVmM+maV4dgaEE+ldOZd10sA93u5oncqFexfm5WHD6EcSGcCwMpVCzPLJ/SW5+
- nUZMXUyoI9cKY6qbPE3tqjTCJI59pJq8aaox1e3ymLlCmIcTRkkUwTvW8dPerYoyN+D0Ryx6n
- WV3UeGSB4OwPtji1c5FOQ2Hiq/Sx+bNBRQHQd3t71BQyGlst6NXqlw98RFPwIG+ApkxI+Q9US
- 2d2EKxC/5/TZ6dhfU1a02pEq0pMMU3W7IuXUW+IsG4sET+GhEMIbvKoqlqMk5mU5nV0axsCSa
- ifR946S1BzIygr9PMt2FSM+SAVo3I3rhoF//p+WVxJDwueUiLcOIUcf6K3craJLCpCDjjv3vN
- NGIsWYBIltgILCgTmbVF+sFxViETy1Q30a0Sxy1tZr60B1TIr77Z8PBMZVEXB8meSGu+bYoi8
- AJyII+jZnb8qzrZxIJTDGn2ZyTlQrzppcaN0R91zjDnonJuqdmFwIiNfRPBWkt82tzpJQGJ7O
- SFeGZDfdyzUhJJG3iZXBAOKdCfuJSo7WkMe6IKhvhbH3wNp4qNmoDQ3xdAf7hUfr/EAMjTcME
- fZHTxXsw7bb0CSNHcdQfmZPclfer1HFOlgm
+X-UI-Out-Filterresults: notjunk:1;V03:K0:INaeD/xMXV0=:3PAWAjyoMP5Qnw5uLJCxfb
+ kFK0RB8ywG/EvA4oDiAGmoDw7uxWVGgqC4+0kJR50mq7ldHcsQnC/RZRwSd1Mlr/8/SokBx71
+ fDK6b45PxCBPIwYg/j6VBy83Pgl8Uybsu62pnTiNn0W5xFfG62qXqkE7alCvuSdlkiSjA/VYp
+ hh7Hb0+x2YcpAKe1pk0R1t77YI4LvGKCU6fE1mApsChPGeI0O+4K7eswH7URYajSaP8JHJBeu
+ IGGnt80rMHW0b+w7VRJXsb+YmsctHvRGd9dY/VABWdE22jdnaqpLoAoAxDldKB9ZBc+8TbzMq
+ ePyD/AbDa1jhAzUnOmuIFMj5YH8sjKSLlN8HNZb4xFLRBSP5limuUuvRyAcsfAPQaq7GS6H8T
+ rDH+ixWbDwbzNNXnIe41B9CxdSs4JUo6Wgf9kyO8A0fS13B7lAwtzvTBkmj6rozeTXo9jnfrS
+ sN7IuWyPYwa6jKwXo5l0apE/puMEGjm6ygGQMH2GWz1OlAIzFTA/8v7SdKW5tNBTd74g44FiI
+ E9WI9Upq9Z+t5/ue7FcD4grl4weGdP/FU4hSWhQjoNXBkh/uJkFj6khEojZmTjStGlfDmkeuO
+ ZlBNX5wlRWimrU5Xnr3Mmw6J2VYBIJdxD8j05ngiARMjTwaUXZc81Zx9oGbauJ4rayIPt6JQQ
+ FQ+HCkUmYo7ZS7GqQP3OrLDVoWrhMCrx8mYz+PHltAgMv0AKREzkvPnWJI4Gb/ZHtJIVkgOVJ
+ WteIIKT/NPIgb4FzZkdoyNi91cs5i+xylLGW5ep9tUWnMuAx5ck3w8GxjZMhUlb6vXzkUT0jy
+ WnTdt2YyGM1ITnTcFwQdMNDZMsHtH+cWwJB94zII9tM6OgjOH8Cb81YMSHaaKkKICaQoPlaLf
+ oZot/00KtURJv8ruqV8UEPDdK3B6fm/QILhnTn46Y5pT2KMQMU3KZavH1rL2imsAPGZ1tvAg7
+ LVNw9qkp8YqLTV4PtUyzrytS+z78Ndz2x7PoMFC978TnH/HwFfFy3JIBaq++y6NjVe3WpmPeF
+ kbcsbhZpjc4raKBsKk+vqEFJULyzy7JJQDd4nZBtTb8qGYdUUBO66qti/7X1SQRCLcHyEWLnN
+ M1IqediSZVS4ZixqC/JfhMkX5FqkWAui0Y66wL4JC3KbzgBcyykrPnzyQ==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-As suggested by Arnd Bergmann, drop the parisc version of
-strnlen_useric() and switch to the generic version.
+Hi Thierry,
 
-user_addr_max() was wrong too, fix it by using TASK_SIZE.
+On 9/5/21 3:24 PM, Richard Henderson wrote:
+> On Sun, 5 Sep 2021, 10:30 , <thierry.briot@gmail.com <mailto:thierry.bri=
+ot@gmail.com>> wrote:
+> For my company (Nexter Systems, France), I am using qemu-system-hppa
+> for virtualizing HP PA-RISC workstations. That works well. You have
+> made a very good job !
 
-Cc: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- arch/parisc/Kconfig               |  1 -
- arch/parisc/include/asm/uaccess.h |  5 ++---
- arch/parisc/kernel/parisc_ksyms.c |  1 -
- arch/parisc/lib/lusercopy.S       | 34 -------------------------------
- 4 files changed, 2 insertions(+), 39 deletions(-)
+Thanks.
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 95d4bbf4e455..3ae71994399c 100644
-=2D-- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -10,7 +10,6 @@ config PARISC
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_STRICT_KERNEL_RWX
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
--	select ARCH_HAS_STRNLEN_USER
- 	select ARCH_NO_SG_CHAIN
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
-diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm/u=
-access.h
-index ed2cd4fb479b..2442ed2929ae 100644
-=2D-- a/arch/parisc/include/asm/uaccess.h
-+++ b/arch/parisc/include/asm/uaccess.h
-@@ -201,13 +201,12 @@ struct exception_table_entry {
+> But my machines are other than B160L (for example B180L), and I have
+> to completely reinstall HP-UX on each emulated machine.
+> If I do an iso system disk image of my B180L, this iso isn't bootable
+> on qemu-system-hppa.
+>
+> Thus, my questions are :
+>
+> * Is it planned to emulate other HP unix workstations than B160L (for
+> example B180L) ?
 
- extern long strncpy_from_user(char *, const char __user *, long);
- extern unsigned lclear_user(void __user *, unsigned long);
--extern long lstrnlen_user(const char __user *, long);
-+extern __must_check long strnlen_user(const char __user *src, long n);
- /*
-  * Complex access routines -- macros
-  */
--#define user_addr_max() (~0UL)
-+#define user_addr_max() (uaccess_kernel() ? ~0UL : TASK_SIZE)
+Maybe at some point a 64-bit capable system, e.g. C3000, and maybe
+an older 32-bit system, e.g. 715/64.
+For the 64bit system additions to the emulated firmware and additional
+64-bit qemu support is necessary,
+and for the 715/64 we need an additional NCR710 SCSI driver.
+Both are lots of work.
 
--#define strnlen_user lstrnlen_user
- #define clear_user lclear_user
- #define __clear_user lclear_user
+The B180L is exactly the same as the B160L, with just a faster CPU:
+https://www.openpa.net/systems/hp-visualize_b132l_b160l_b180l.html
 
-diff --git a/arch/parisc/kernel/parisc_ksyms.c b/arch/parisc/kernel/parisc=
-_ksyms.c
-index e8a6a751dfd8..00297e8e1c88 100644
-=2D-- a/arch/parisc/kernel/parisc_ksyms.c
-+++ b/arch/parisc/kernel/parisc_ksyms.c
-@@ -32,7 +32,6 @@ EXPORT_SYMBOL(__xchg64);
+> * Or, what changes should I make to my iso image to do it usable ? If
+> I replace the /boot filesystem of the B180L image with the B160L one,
+> I get a kernel panic at boot time.
 
- #include <linux/uaccess.h>
- EXPORT_SYMBOL(lclear_user);
--EXPORT_SYMBOL(lstrnlen_user);
+I don't know HP-UX so well. I could imagine that your physical machines
+have different SCSI controller cards which are used by HP-UX, and which
+aren't emulated in qemu yet. That's maybe why qemu can't boot your already
+installed images.
+If you post the output I maybe can give more info.
 
- #ifndef CONFIG_64BIT
- /* Needed so insmod can set dp value */
-diff --git a/arch/parisc/lib/lusercopy.S b/arch/parisc/lib/lusercopy.S
-index 36d6a8638ead..0aad5ce89f4d 100644
-=2D-- a/arch/parisc/lib/lusercopy.S
-+++ b/arch/parisc/lib/lusercopy.S
-@@ -67,40 +67,6 @@ $lclu_done:
- ENDPROC_CFI(lclear_user)
+> Helge is the one that did all the hw support, I just did the CPU.
+> There are no real plans to do another machine. I'm not familiar with
+> the specs between the HP machines to know how much work that would
+> be.
 
+There is a very good overview of the various HP machines at openPA:
+https://www.openpa.net/systems/
 
--	/*
--	 * long lstrnlen_user(char *s, long n)
--	 *
--	 * Returns 0 if exception before zero byte or reaching N,
--	 *         N+1 if N would be exceeded,
--	 *         else strlen + 1 (i.e. includes zero byte).
--	 */
--
--ENTRY_CFI(lstrnlen_user)
--	comib,=3D     0,%r25,$lslen_nzero
--	copy	    %r26,%r24
--	get_sr
--1:      ldbs,ma     1(%sr1,%r26),%r1
--$lslen_loop:
--	comib,=3D,n   0,%r1,$lslen_done
--	addib,<>    -1,%r25,$lslen_loop
--2:      ldbs,ma     1(%sr1,%r26),%r1
--$lslen_done:
--	bv          %r0(%r2)
--	sub	    %r26,%r24,%r28
--
--$lslen_nzero:
--	b           $lslen_done
--	ldo         1(%r26),%r26 /* special case for N =3D=3D 0 */
--
--3:      b	    $lslen_done
--	copy        %r24,%r26    /* reset r26 so 0 is returned on fault */
--
--	ASM_EXCEPTIONTABLE_ENTRY(1b,3b)
--	ASM_EXCEPTIONTABLE_ENTRY(2b,3b)
--
--ENDPROC_CFI(lstrnlen_user)
--
--
- /*
-  * unsigned long pa_memcpy(void *dstp, const void *srcp, unsigned long le=
-n)
-  *
-=2D-
-2.31.1
-
+Helge
