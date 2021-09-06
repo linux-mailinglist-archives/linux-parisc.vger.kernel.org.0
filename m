@@ -2,386 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30DFD4020BB
-	for <lists+linux-parisc@lfdr.de>; Mon,  6 Sep 2021 22:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E22540212B
+	for <lists+linux-parisc@lfdr.de>; Mon,  6 Sep 2021 23:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231344AbhIFUl1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 6 Sep 2021 16:41:27 -0400
-Received: from mout.gmx.net ([212.227.17.22]:57449 "EHLO mout.gmx.net"
+        id S234543AbhIFVug (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 6 Sep 2021 17:50:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48774 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229717AbhIFUl0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 6 Sep 2021 16:41:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1630960702;
-        bh=WevteChaVTuIJ4vpbr4/S6Dy5gJM391zvvJnoNTQzeQ=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=jgFg06yM+iwybYFpbzzkJmZm/SCTiZitHSZTAJ9C5NX2kLKqYS0y0KP2FTserSuxh
-         Eqwm30wHapagCvLCe+sfLUcjybTUJKUWLlL4N6xw1YMdd7tlspbfrymTlU7+4q3gkF
-         PE/NY5aL+n60GN8BN0jWsYWdG0hg52z5OmxZ4RNo=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.85.61] ([80.187.112.14]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MKbkC-1mfxez3TOW-00KvzB; Mon, 06
- Sep 2021 22:38:22 +0200
-Subject: Re: [PATCH v2] ftrace: Cleanup ftrace_dyn_arch_init()
-To:     Weizhao Ouyang <o451686892@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org
-References: <20210906111626.1259867-1-o451686892@gmail.com>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <a25be752-bb65-652e-977f-312ee0b95c15@gmx.de>
-Date:   Mon, 6 Sep 2021 22:36:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S229766AbhIFVug (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 6 Sep 2021 17:50:36 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 178BD6108D
+        for <linux-parisc@vger.kernel.org>; Mon,  6 Sep 2021 21:49:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630964971;
+        bh=Lz7NcJIc9aGLkOiqBJwrAERgX3klGvGAHelFVTGXkVY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=lconPiEpils1U2pHlI5W3LYbOOj+58lS3BbHkkNSgpnp8C/oG4ssXivSG/EUp9cdj
+         jqpbotjjR+7Gn6Ni62dkTwBT77vhw2vLqZGzKnWPOffdha3FEARBk3c8lCy2iyIRmg
+         mu8OL926phqBtV7NgGNHB0UdJ/GSmjjPGhp5dPuprCrrsjLMDer0EdqNpHC2MZfFt1
+         GyDrbu85XYqk/O9o/FF3pFgW+Sv+Y86tOnNoe5qcfhVQ3y029+OcBNhF5ccmv21Hod
+         eq1seRXMdkBGzKI48RLYaKnLXEZLzTFl2tVYkKVlppzsiUPQVXsB/5tbtkr9swCyq0
+         ri4/SPODTXeNA==
+Received: by mail-wr1-f53.google.com with SMTP id t18so786019wrb.0
+        for <linux-parisc@vger.kernel.org>; Mon, 06 Sep 2021 14:49:31 -0700 (PDT)
+X-Gm-Message-State: AOAM531y1wkSYOM9OkFp3LqsaSZp5BdYtU2ls3DzaarcE1WycfqlZGjK
+        UJl8aOsog7jSC8d65mTTuesYxIIIfQ6y37EStJg=
+X-Google-Smtp-Source: ABdhPJy6If8XNrN3LgBzPrbiANZrWCrZy9bAJzsTf4YjANLl1Y3+ww4VNypmXmLbt3WhyQYbH8Uo++wbtWWM4OP84O8=
+X-Received: by 2002:adf:914e:: with SMTP id j72mr15371229wrj.428.1630964969762;
+ Mon, 06 Sep 2021 14:49:29 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210906111626.1259867-1-o451686892@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:r/JUrRhbvOicWGkiqogKRwFTRO8+bXkMsWJ6ArSDb2+yOaZh1Qh
- itUnWpVNjQZtukajCgk+9dVWp5QWeY6EC68jABYr/Z/mmoBCskHSc68TkP8OFkozE08Ymto
- RScyaWcZfFu0YeONVmfOsW0W+36044q2gtcmtnZfjB+47DPw/jElcyHxTaAN3Y7IHNV5r/H
- jvyIgy8IibjSGnMiYxXsQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:tG48Hcn4Z5Q=:ehG9Ni/7f3QY9e3/tDaV67
- Go/9izpDYuXjcteZfs+fw1YiYrhfZqvdhxTbPflNNETE0HdftRFgBe/CmV1CDBN5BiG25pDEG
- 6un5Br95HIDvWvYqizxRIlseCi9E7A+jxIEc1dbkBLTKodGaWReVFzxBvn/5NRgdx4KnG/9df
- ucNdKFNKAX4j0cSUBZ6haHrP0B2AYmLT532uicLt18v1TEEIqJVpQab+XNiRy64g6rDdkRHLF
- aJIoXqZqxjC3+RQeQGY46xXIX+hGQFiF2xxMAfSR4Lzkz4K62aep6JYQ/f+pfOz4H8rF639YH
- PKgC59vyttAZGVwimTOGC9niyGHMt9eXRPgE6qGTMoYCcy4mZWQuZJGefPkg9NUJZDav1pqOd
- ZbfXhPYq8Es6bs+VONsPb/f5pHatLB4N81z5s5931+T3fQcX04KLknCYABzXJMXAFca1a/W/4
- 67fdVs0SjW/6m3CrQVfi4xtNXP8QNJc3Ar8sqKQEbl6CJZzYke1YQ/IOAlfXLCGH8nmPgtgNU
- t3em/d8Kjb35YHIB0PjfM7cbZw6+qNdL/sNn+lo15+rG/GHPi6LUWNZUEtZlMYNtzIg3zsYMC
- 6Xtf20IhJzPfAX+mpJuinHgQmjMg09oXSHfLLnRrW7cnWAFPKYV/8zCcFAeVvW/5Xd8FJtNYj
- Vk8KjlesicI96F+gJoVPyQAUfujUbzGjGzcYAb4mnPMVSnnjnDI2L6fqlqjNMMjrMYGKOXiiV
- FOF36zyo2Ye9CUAtgUIntYMFUzTYEMA1+dNWkp8D2ToEon7wYnylwQiwa3eX4VBNPgtgbKLTl
- SnPU+iCyrbYSep4qhUdqeqI3O7jvFcPUThaElNxhL7oh64JNICcc0oCnJ69I+DTsmdMuCDwAB
- Z4qWUzHaETcq5zJPgtCKjptx9/07i1enT+zaXoFenEP/ien6VfMOu818AJVG7zgPCAChvvhO/
- 3B7OkK469cs9rUvkqUjzWgdjs42P6wWz8HKmOG4h7fA+dUruy2tipPUOLvzSyWMTmrHl5yG1S
- Vz4p4FrS45Wlm0zmdLqj3BlCIo4KZXsI5jJ3aFUoi1GkRY1W4IkespQ7JpG/CToEyVNoNNBxX
- 8ju98M7ZjSeuEU554usU2/WnmGPp2u1TmeW6vjq1Qo+ZBY9J3/8cNFhLw==
+References: <YS6VGsZ7fZtZeu/i@ls3530> <YTDaZAMvAipdvkaB@ls3530>
+ <CAK8P3a0zwnEUK_ztPRBx0H9VGBoPVY-+aASFV97zSKrL=diXUA@mail.gmail.com>
+ <51d6b8cb-a64f-0cf7-1545-4c2fee89799e@gmx.de> <CAK8P3a3oJo496dXpAWHQKG=Sdr+RSfScYbWKyGrk8HNfH5G1CQ@mail.gmail.com>
+ <41e38a49-5a11-4f93-6771-b67d8184a673@gmx.de> <CAK8P3a0Tzi8L3+7YypPMukjDM+D8a_dxK1q7fOK357LATsouoA@mail.gmail.com>
+ <97c68f9c-b646-042d-a865-1be9b28ed24e@gmx.de>
+In-Reply-To: <97c68f9c-b646-042d-a865-1be9b28ed24e@gmx.de>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Mon, 6 Sep 2021 23:49:13 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1PKttBDpSEwRzoke070tMRq_MCZRCi-C+97=htZ784cw@mail.gmail.com>
+Message-ID: <CAK8P3a1PKttBDpSEwRzoke070tMRq_MCZRCi-C+97=htZ784cw@mail.gmail.com>
+Subject: Re: [PATCH v2] parisc: Fix boot with kernel v5.14
+To:     Helge Deller <deller@gmx.de>
+Cc:     Parisc List <linux-parisc@vger.kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 9/6/21 1:16 PM, Weizhao Ouyang wrote:
-> Most of ARCHs use empty ftrace_dyn_arch_init(), introduce a weak common
-> ftrace_dyn_arch_init() to cleanup them.
+On Mon, Sep 6, 2021 at 10:15 PM Helge Deller <deller@gmx.de> wrote:
+> On 9/6/21 12:54 PM, Arnd Bergmann wrote:
+> > Ideally however you would
+> > change the linker script to insert a
+> >
+> >      . = ALIGN(4);
+> >
+> > before the output to make the variable properly aligned according to
+> > the ABI. See 'git log arch/arm/kernel/vmlinux.lds.S' for a long history
+> > of alignment changes we did there.
 >
-> Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
-> Acked-by: Heiko Carstens <hca@linux.ibm.com> (s390)
+> This here is a special case and it's not just parisc.
+> This happens when the linux kernel gets compressed, and at the end of
+> the compressed file bzip/gzip/lz4 and such gets added the size of the
+> compressed file.
+> See in generic Makefile scripts/Makefile.lib, line 392ff.
+> During make then this happens (for lz4 compression):
+>   { cat arch/parisc/boot/compressed/vmlinux.bin | lz4c -l -c1 stdin stdout; printf \\350\\044\\232\\000; } > arch/parisc/boot/compressed/vmlinux.bin.lz4
+> which is then later added as binary input to the linker to generate final file.
 
-Acked-by: Helge Deller <deller@gmx.de> # parisc
+Ok, I see. It looks like x86 rewrote this part in 02a884c0fe7e ("x86, boot:
+determine compressed code offset at compile time") to parse the size
+at compile time, but recreating this on parisc and the other architectures
+that have the vmlinux.scr linker script would be a lot of work for little
+benefit.
 
-Thanks,
-Helge
-
-
-> ---
->
-> Changes in v2:
-> -- correct CONFIG_DYNAMIC_FTRACE on PowerPC
-> -- add Acked-by tag
->
-> ---
->   arch/arm/kernel/ftrace.c          | 5 -----
->   arch/arm64/kernel/ftrace.c        | 5 -----
->   arch/csky/kernel/ftrace.c         | 5 -----
->   arch/ia64/kernel/ftrace.c         | 6 ------
->   arch/microblaze/kernel/ftrace.c   | 5 -----
->   arch/mips/include/asm/ftrace.h    | 2 ++
->   arch/nds32/kernel/ftrace.c        | 5 -----
->   arch/parisc/kernel/ftrace.c       | 5 -----
->   arch/powerpc/include/asm/ftrace.h | 4 ++++
->   arch/riscv/kernel/ftrace.c        | 5 -----
->   arch/s390/kernel/ftrace.c         | 5 -----
->   arch/sh/kernel/ftrace.c           | 5 -----
->   arch/sparc/kernel/ftrace.c        | 5 -----
->   arch/x86/kernel/ftrace.c          | 5 -----
->   include/linux/ftrace.h            | 1 -
->   kernel/trace/ftrace.c             | 5 +++++
->   16 files changed, 11 insertions(+), 62 deletions(-)
->
-> diff --git a/arch/arm/kernel/ftrace.c b/arch/arm/kernel/ftrace.c
-> index 3c83b5d29697..a006585e1c09 100644
-> --- a/arch/arm/kernel/ftrace.c
-> +++ b/arch/arm/kernel/ftrace.c
-> @@ -193,11 +193,6 @@ int ftrace_make_nop(struct module *mod,
->
->   	return ret;
->   }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->   #endif /* CONFIG_DYNAMIC_FTRACE */
->
->   #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> diff --git a/arch/arm64/kernel/ftrace.c b/arch/arm64/kernel/ftrace.c
-> index 7f467bd9db7a..fc62dfe73f93 100644
-> --- a/arch/arm64/kernel/ftrace.c
-> +++ b/arch/arm64/kernel/ftrace.c
-> @@ -236,11 +236,6 @@ void arch_ftrace_update_code(int command)
->   	command |=3D FTRACE_MAY_SLEEP;
->   	ftrace_modify_all_code(command);
->   }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->   #endif /* CONFIG_DYNAMIC_FTRACE */
->
->   #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> diff --git a/arch/csky/kernel/ftrace.c b/arch/csky/kernel/ftrace.c
-> index b4a7ec1517ff..50bfcf129078 100644
-> --- a/arch/csky/kernel/ftrace.c
-> +++ b/arch/csky/kernel/ftrace.c
-> @@ -133,11 +133,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->   				(unsigned long)func, true, true);
->   	return ret;
->   }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->   #endif /* CONFIG_DYNAMIC_FTRACE */
->
->   #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-> diff --git a/arch/ia64/kernel/ftrace.c b/arch/ia64/kernel/ftrace.c
-> index b2ab2d58fb30..d6360fd404ab 100644
-> --- a/arch/ia64/kernel/ftrace.c
-> +++ b/arch/ia64/kernel/ftrace.c
-> @@ -194,9 +194,3 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->   	flush_icache_range(addr, addr + 16);
->   	return 0;
->   }
-> -
-> -/* run from kstop_machine */
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> diff --git a/arch/microblaze/kernel/ftrace.c b/arch/microblaze/kernel/ft=
-race.c
-> index 224eea40e1ee..188749d62709 100644
-> --- a/arch/microblaze/kernel/ftrace.c
-> +++ b/arch/microblaze/kernel/ftrace.c
-> @@ -163,11 +163,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsign=
-ed long addr)
->   	return ret;
->   }
->
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> -
->   int ftrace_update_ftrace_func(ftrace_func_t func)
->   {
->   	unsigned long ip =3D (unsigned long)(&ftrace_call);
-> diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftra=
-ce.h
-> index b463f2aa5a61..ed013e767390 100644
-> --- a/arch/mips/include/asm/ftrace.h
-> +++ b/arch/mips/include/asm/ftrace.h
-> @@ -76,6 +76,8 @@ do {						\
->
->
->   #ifdef CONFIG_DYNAMIC_FTRACE
-> +int __init ftrace_dyn_arch_init(void);
-> +
->   static inline unsigned long ftrace_call_adjust(unsigned long addr)
->   {
->   	return addr;
-> diff --git a/arch/nds32/kernel/ftrace.c b/arch/nds32/kernel/ftrace.c
-> index 0e23e3a8df6b..f0ef4842d191 100644
-> --- a/arch/nds32/kernel/ftrace.c
-> +++ b/arch/nds32/kernel/ftrace.c
-> @@ -84,11 +84,6 @@ void _ftrace_caller(unsigned long parent_ip)
->   	/* restore all state needed by the compiler epilogue */
->   }
->
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> -
->   static unsigned long gen_sethi_insn(unsigned long addr)
->   {
->   	unsigned long opcode =3D 0x46000000;
-> diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
-> index 0a1e75af5382..01581f715737 100644
-> --- a/arch/parisc/kernel/ftrace.c
-> +++ b/arch/parisc/kernel/ftrace.c
-> @@ -94,11 +94,6 @@ int ftrace_disable_ftrace_graph_caller(void)
->   #endif
->
->   #ifdef CONFIG_DYNAMIC_FTRACE
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->   int ftrace_update_ftrace_func(ftrace_func_t func)
->   {
->   	return 0;
-> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/as=
-m/ftrace.h
-> index debe8c4f7062..d59f67c0225f 100644
-> --- a/arch/powerpc/include/asm/ftrace.h
-> +++ b/arch/powerpc/include/asm/ftrace.h
-> @@ -61,6 +61,10 @@ struct dyn_arch_ftrace {
->   };
->   #endif /* __ASSEMBLY__ */
->
-> +#ifdef CONFIG_DYNAMIC_FTRACE
-> +int __init ftrace_dyn_arch_init(void);
-> +#endif /* CONFIG_DYNAMIC_FTRACE */
-> +
->   #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
->   #define ARCH_SUPPORTS_FTRACE_OPS 1
->   #endif
-> diff --git a/arch/riscv/kernel/ftrace.c b/arch/riscv/kernel/ftrace.c
-> index 7f1e5203de88..4716f4cdc038 100644
-> --- a/arch/riscv/kernel/ftrace.c
-> +++ b/arch/riscv/kernel/ftrace.c
-> @@ -154,11 +154,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->
->   	return ret;
->   }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->   #endif
->
->   #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-> diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
-> index 0a464d328467..3fd80397ff52 100644
-> --- a/arch/s390/kernel/ftrace.c
-> +++ b/arch/s390/kernel/ftrace.c
-> @@ -262,11 +262,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->   	return 0;
->   }
->
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> -
->   void arch_ftrace_update_code(int command)
->   {
->   	if (ftrace_shared_hotpatch_trampoline(NULL))
-> diff --git a/arch/sh/kernel/ftrace.c b/arch/sh/kernel/ftrace.c
-> index 295c43315bbe..930001bb8c6a 100644
-> --- a/arch/sh/kernel/ftrace.c
-> +++ b/arch/sh/kernel/ftrace.c
-> @@ -252,11 +252,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsign=
-ed long addr)
->
->   	return ftrace_modify_code(rec->ip, old, new);
->   }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->   #endif /* CONFIG_DYNAMIC_FTRACE */
->
->   #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> diff --git a/arch/sparc/kernel/ftrace.c b/arch/sparc/kernel/ftrace.c
-> index 684b84ce397f..eaead3da8e03 100644
-> --- a/arch/sparc/kernel/ftrace.c
-> +++ b/arch/sparc/kernel/ftrace.c
-> @@ -82,11 +82,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->   	new =3D ftrace_call_replace(ip, (unsigned long)func);
->   	return ftrace_modify_code(ip, old, new);
->   }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->   #endif
->
->   #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-> index 1b3ce3b4a2a2..23d221a9a3cd 100644
-> --- a/arch/x86/kernel/ftrace.c
-> +++ b/arch/x86/kernel/ftrace.c
-> @@ -252,11 +252,6 @@ void arch_ftrace_update_code(int command)
->   	ftrace_modify_all_code(command);
->   }
->
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> -
->   /* Currently only x86_64 supports dynamic trampolines */
->   #ifdef CONFIG_X86_64
->
-> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
-> index 832e65f06754..f1eca123d89d 100644
-> --- a/include/linux/ftrace.h
-> +++ b/include/linux/ftrace.h
-> @@ -573,7 +573,6 @@ ftrace_set_early_filter(struct ftrace_ops *ops, char=
- *buf, int enable);
->
->   /* defined in arch */
->   extern int ftrace_ip_converted(unsigned long ip);
-> -extern int ftrace_dyn_arch_init(void);
->   extern void ftrace_replace_code(int enable);
->   extern int ftrace_update_ftrace_func(ftrace_func_t func);
->   extern void ftrace_caller(void);
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index 7efbc8aaf7f6..4c090323198d 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -6846,6 +6846,11 @@ void __init ftrace_free_init_mem(void)
->   	ftrace_free_mem(NULL, start, end);
->   }
->
-> +int __init __weak ftrace_dyn_arch_init(void)
-> +{
-> +	return 0;
-> +}
-> +
->   void __init ftrace_init(void)
->   {
->   	extern unsigned long __start_mcount_loc[];
->
-
+       Arnd
