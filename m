@@ -2,129 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B09F9404055
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 22:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06B8B404083
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 23:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237766AbhIHUya (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 8 Sep 2021 16:54:30 -0400
-Received: from mout.gmx.net ([212.227.15.18]:39899 "EHLO mout.gmx.net"
+        id S236012AbhIHV1o (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 8 Sep 2021 17:27:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33816 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235437AbhIHUy2 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 8 Sep 2021 16:54:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1631134383;
-        bh=gGyssjxabohIjDxtvSkR6S2G+R/GgD+Ug3BlWj57mTc=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=dKSxVQGr07tIiKKuYkeXWuzl2m58yq5rK/mQgVxPpQdZSlMAj8Fz9oDyFBc4vWEFM
-         knRlLZiz322q2yvQF1WWQ3AFQ5eGw4VO8kZ2EaXi6lXaGXhD//5oV5NK+kSg5zvRSR
-         FX1cY78/HoHb9/tdqjdZHpCy9ZRvSTbvcof4ZiU4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.85.61] ([80.187.121.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mulm5-1nFLhs0hff-00rm9Y; Wed, 08
- Sep 2021 22:53:03 +0200
-Subject: Re: [PATCH] parisc: Move pci_dev_is_behind_card_dino to where it is
- used
-To:     Guenter Roeck <linux@roeck-us.net>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210908153041.643069-1-linux@roeck-us.net>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <8392d93e-73d8-0a9e-15e2-db139086fdf0@gmx.de>
-Date:   Wed, 8 Sep 2021 22:51:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S231956AbhIHV1o (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 8 Sep 2021 17:27:44 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8E23361176
+        for <linux-parisc@vger.kernel.org>; Wed,  8 Sep 2021 21:26:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631136395;
+        bh=5kHzakZgAJhqL+egJwzO+nyw2sWo9zF1serJlxnk4sQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=BgtkV/s8pC2mFs6IjjE1Yi80QoHJkKpf3WyEi7wtZqCChw0v2SWO1ZWcv78g4UmKV
+         XZeFfGQuQahgF6oszRweqslFBV598V7cO6wkTLfiHu6uyNOaFGHiD8Z6VmRr8wkgUD
+         4ntSVck0yZhecjwZ5meCec9igpCL98/a3iMcqogcShJ5sTZsOppv+2KRALUZ7BeO5m
+         hRS80eX3n+FiavChR9C3K3OX7P/Tfhpfwx56s47xJ9Sf5BET64U7kzj8HZfu+NzrFM
+         JxZS8kFJd6Bk58Tep/9vHxZjJqwdWBAapuBfEyzPdFxQCixpGth9F/mzSYu35NtfWi
+         Q7QFx0xqEw0vA==
+Received: by mail-wr1-f50.google.com with SMTP id n5so5252949wro.12
+        for <linux-parisc@vger.kernel.org>; Wed, 08 Sep 2021 14:26:35 -0700 (PDT)
+X-Gm-Message-State: AOAM531ejBnexVhMQiUpvdYEVkEqsfyBX0RKZ7K2Phxpmtza3Os3Nitw
+        xyJd1GYvK2qbHtlMXQRbs0CAEKhQuhxCPemtckY=
+X-Google-Smtp-Source: ABdhPJzXDIkRjYVPw7dTB7lo74lvOtLt3meNyc6cO+s4U6o+FDPSsBwmgb9KdY5vVjHHB3ycWHrE1wysDVCW1sUHVKE=
+X-Received: by 2002:a5d:4b50:: with SMTP id w16mr343967wrs.71.1631136394175;
+ Wed, 08 Sep 2021 14:26:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210908153041.643069-1-linux@roeck-us.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:nRdMm2osOOu780aITU30zP7UhFvqrvZ4Jxcf6m9DZMSQ+ySiG4R
- 2DG0uW6rccx/EyMiAz/ykE/kNd133z2Hkg3g26znlPbgzOVJMrSS3VkP+g97uTa3yaQ60zF
- hKVaMdNbRlZVQErBVp4wGGzNWogTS2cLt4fKBnIJ32MOO+OyXnl3wSjOvLNdogUqpX9XDJQ
- 7Emd7jkM+XEydhYTyeI6Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:sxTCNEFc818=:rm7ecPnH9AuqDOoYbOHT8a
- MIKB2Hc0oEnZiDF3Fztn6/xGkaV+DwcDylgtiQBs8FzsjKioNogDJyd6xGcgTYzH/pyo9FENz
- bx8YjeQBxRXvzKj0f44Za8bXeC7vD8abFfsWQuJdU++2aiGTRvLOfLduG6wkRRgcbtRSIZpEt
- CoGrfHGmC7XSZ4MgCM300deuvnl0Ae/PzrAzsn83Y2J53t15mhZBX+9ur++GoAvh1YrNUzWXR
- c99xyvHnTxgClndLsmeb/x/RTzXcRpoh0nT4Phrt2Uq+dbeRT3M3H/7Xxg0HcQCU731OWHDhM
- GcjBJs57nz/+7vVE5zXultcSwX1jzN5uHaVRliOWq8jGHYxAGrRPYMS415vzXpHfWjtg7PDlL
- xu8i53ifid7QGKbHFezCsA0uOyvOTbmam5kM4Mg2yQ3aczfBRXL4IXQ8TZf1gGWsLbyG92K3q
- BuIvWCh8vNCbgExD02zDT1P3mziRYTo63EJ8XhKOOeE82CibBFOCqgdKywm3QE61bXKKit3bL
- yz8hjYEXzlXLm6bH7TGC1KqGN48sQKlHSf4WyQFdG+ofr7bhtovNc8tr59EvzrYjug7pc6+EJ
- +uYqjlcexttmnbOxAtJxBmL1VTbQCCsHUCXZU+uCNpSxYJ5txmosqgGElH7HSS/a4+6Z6WEfN
- 6PW7dtLT+jDg1tYFkchLM52mOhbjZS+oMLcce798Nd55HvPESLkfrEHqJKvsPZ+1b7b0yxn9r
- yOY0dRjbF7rkrShJxFyfCJGrMgdxRyciKYyzzPYwB30XBA+tk8mks26j51kg6w7T1zVLQZ+tK
- qv5Dea2eEcj/LA5LgNDezxMPOw/fy5LkxcOzP2U37XJTL6BK4gYA7JI00yGT0adE8q84pG+ad
- ByXc7lEm0hXys/qCyUdQkYT/nzriFF5O/PZE44e6fW0YpfEoX5uNudyWBma5zFyGLVkNE2Nl/
- nOiLMUC7Wlezg0qkv9bWWOG85K0+XBMGiZNbezpLkuSg1VQ0fZdDdnkSp/5BMJxnkZMMYIHAT
- DaodUmv6V2ZLRp27VIo9mVQdZopWwr+XSQFIQ55a8pmcgOBPNlvwI9vYyBodDdvgql1bpNLiB
- oj9vBOm/Jy3cik=
+References: <20210908204405.127665-1-deller@gmx.de>
+In-Reply-To: <20210908204405.127665-1-deller@gmx.de>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Wed, 8 Sep 2021 23:26:18 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1-ajAFtO5zE396DBPUzssdas5o+adsEDtAK58X1ZAU7w@mail.gmail.com>
+Message-ID: <CAK8P3a1-ajAFtO5zE396DBPUzssdas5o+adsEDtAK58X1ZAU7w@mail.gmail.com>
+Subject: Re: [PATCH 1/4] parisc: Drop strnlen_user() in favour of generic version
+To:     Helge Deller <deller@gmx.de>
+Cc:     Parisc List <linux-parisc@vger.kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Christoph Hellwig <hch@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 9/8/21 5:30 PM, Guenter Roeck wrote:
-> parisc build test images fail to compile with the following error.
+On Wed, Sep 8, 2021 at 10:44 PM Helge Deller <deller@gmx.de> wrote:
 >
-> drivers/parisc/dino.c:160:12: error:
-> 	'pci_dev_is_behind_card_dino' defined but not used
->
-> Move the function just ahead of its only caller to avoid the error.
->
-> Fixes: 5fa1659105fa ("parisc: Disable HP HSC-PCI Cards to prevent kernel=
- crash")
-> Cc: Helge Deller <deller@gmx.de>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> As suggested by Arnd Bergmann, drop the parisc version of
+> strnlen_user() and switch to the generic version.
 
-applied to the parisc tree.
+The strnlen_user() removal looks good,
 
-Thanks!
-Helge
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
+> user_addr_max() was wrong too, fix it by using TASK_SIZE.
 
-> ---
->   drivers/parisc/dino.c | 18 +++++++++---------
->   1 file changed, 9 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/parisc/dino.c b/drivers/parisc/dino.c
-> index 889d7ce282eb..952a92504df6 100644
-> --- a/drivers/parisc/dino.c
-> +++ b/drivers/parisc/dino.c
-> @@ -156,15 +156,6 @@ static inline struct dino_device *DINO_DEV(struct p=
-ci_hba_data *hba)
->   	return container_of(hba, struct dino_device, hba);
->   }
->
-> -/* Check if PCI device is behind a Card-mode Dino. */
-> -static int pci_dev_is_behind_card_dino(struct pci_dev *dev)
-> -{
-> -	struct dino_device *dino_dev;
-> -
-> -	dino_dev =3D DINO_DEV(parisc_walk_tree(dev->bus->bridge));
-> -	return is_card_dino(&dino_dev->hba.dev->id);
-> -}
-> -
->   /*
->    * Dino Configuration Space Accessor Functions
->    */
-> @@ -447,6 +438,15 @@ static void quirk_cirrus_cardbus(struct pci_dev *de=
-v)
->   DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_CIRRUS, PCI_DEVICE_ID_CIRRUS_68=
-32, quirk_cirrus_cardbus );
->
->   #ifdef CONFIG_TULIP
-> +/* Check if PCI device is behind a Card-mode Dino. */
-> +static int pci_dev_is_behind_card_dino(struct pci_dev *dev)
-> +{
-> +	struct dino_device *dino_dev;
-> +
-> +	dino_dev =3D DINO_DEV(parisc_walk_tree(dev->bus->bridge));
-> +	return is_card_dino(&dino_dev->hba.dev->id);
-> +}
-> +
->   static void pci_fixup_tulip(struct pci_dev *dev)
->   {
->   	if (!pci_dev_is_behind_card_dino(dev))
->
+Not sure about this part though:
 
+>  /*
+>   * Complex access routines -- macros
+>   */
+> -#define user_addr_max() (~0UL)
+> +#define user_addr_max() (uaccess_kernel() ? ~0UL : TASK_SIZE)
+
+We are getting very close to completely removing set_fs()/get_fs(),
+uaccess_kernel() and some related bits from the kernel, so I think
+it would be better to the other way here and finish off removing
+CONFIG_SET_FS from parisc.
+
+I think this will also simplify your asm/uaccess.h a lot, in particular
+since it has separate address spaces for __get_user() and
+__get_kernel_nofault(), and without set_fs() you can leave out
+the runtime conditional to switch between them.
+
+       Arnd
