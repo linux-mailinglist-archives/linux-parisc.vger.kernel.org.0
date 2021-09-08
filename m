@@ -2,110 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 779C540408B
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 23:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ADA84040A0
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 23:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234048AbhIHVdS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 8 Sep 2021 17:33:18 -0400
-Received: from mout.gmx.net ([212.227.15.18]:52137 "EHLO mout.gmx.net"
+        id S233502AbhIHVoX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 8 Sep 2021 17:44:23 -0400
+Received: from mout.gmx.net ([212.227.17.21]:36297 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229885AbhIHVdS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 8 Sep 2021 17:33:18 -0400
+        id S235213AbhIHVoX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 8 Sep 2021 17:44:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1631136725;
-        bh=Iv84LDyIFfYQGXvfwrBLaSmbfkdtZf+k1v67gqDJiJ4=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=cGvS8SJBCMMH1p4OyYWfIE5uQKurZNMuC6QS+C34xfWQYpKdt7jq6wZkCjd0gV6b2
-         yOkoZEak36Dkjh+W2yX1KI+dVzNa7HDaW/8yQX/KL4O7Bmrcb0Hf9AY0rgMyobLcBX
-         9cnRYWhztOjMYvd3hpefahnz8Grkoe2y3PO16dpg=
+        s=badeba3b8450; t=1631137355;
+        bh=t2WU7PBOv60/Lx+3gcU0Nt3bk/htlhFavDBCMiNy7uM=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=M9k2NSnnhVL3q408/S6beRIk+HlF3/gHWeLMsC2/TXmVag9gOTkj9DERYRkOTkl9t
+         Qd8elIiT90G9eCFsdSWt2sbx/6KM6KPZIjj0mw8+i0vw0ctDT41LMi4eWM0Q6sAci+
+         scBBEyGVF5/cNQD8pW8dHFN5YGeqiFg+WFklg2N8=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([80.187.121.129]) by mail.gmx.net
- (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MeCpR-1mynEh33Ad-00bLWh; Wed, 08 Sep 2021 23:32:04 +0200
+Received: from [192.168.85.61] ([80.187.121.129]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MPGVx-1mZz1S0UvN-00PbYo; Wed, 08
+ Sep 2021 23:42:35 +0200
+Subject: Re: [PATCH 1/4] parisc: Drop strnlen_user() in favour of generic
+ version
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Parisc List <linux-parisc@vger.kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Christoph Hellwig <hch@infradead.org>
+References: <20210908204405.127665-1-deller@gmx.de>
+ <CAK8P3a1-ajAFtO5zE396DBPUzssdas5o+adsEDtAK58X1ZAU7w@mail.gmail.com>
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Mark sched_clock unstable only if clocks are not syncronized
-Date:   Wed,  8 Sep 2021 23:30:27 +0200
-Message-Id: <20210908213027.177112-1-deller@gmx.de>
-X-Mailer: git-send-email 2.31.1
+Message-ID: <97d4c69c-59ff-8e28-0cfe-50908b999729@gmx.de>
+Date:   Wed, 8 Sep 2021 23:40:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <CAK8P3a1-ajAFtO5zE396DBPUzssdas5o+adsEDtAK58X1ZAU7w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OJvkyt4dTrFywe+zck4jNtz/sw0+koiGxGZwtYswwDjaFSDibv+
- +fA3dBJcd4lBZczVt80ghZstJLVCxGRWjRaL5g2XAT6qKEJBR7aAhwZXrkXgex+tNtChZ7r
- hw0fx86ICnsmJAmtQ9WLUW+1HddrB44HUs9Wh2Ien7YDX9gOpweXTJxsFM7gtgGFYoHmEzq
- S5ggitXvh3Y2dAHK+OW9A==
+X-Provags-ID: V03:K1:Kc2CGoZAMliIGoR3EMxQ0aQcGUkJodLuiIoi/iE2aADcglLVRX+
+ UcT+v04fxn8GFV5pL3x9iULvLMp1IXaUmjN4JyHnEJ9t46aZK0vXmd3RNR1p6NfJH7pBTgJ
+ FJmreRsFHAgYR/UOsGirOfjpi/khR7gyErHZkQVzOSNAVl07LA7rKHiov9EkFX7XQoRvj50
+ tbx3JmypfaDqOUDZL4VZg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:VWJKw619fjQ=:mzhjcKZUN2ROY1HavQg4EB
- TJb2vHysJ1k1GTrryWhhq8LNrB2Xu3/6wJjhvPwxIKM2I/oAOO/z4LJ+xMccCTCmHhnYkRbrJ
- yYMtt8G5BvXO+2QHptTRfZFKOwNMvz+19mSWeqm1x+Zu8DBgkkHxx9HPo9F8wIMctTRsd1ZTh
- 9V/PhGBOU6114cp9ni06zGSdHD5NJHDTfeBLetzOw1Q2qIzqMmD8KTaZjveFmQ6r0GzN1LKhq
- XVrDrzRvn81RGGDrGELevHEEVO80v006PyX03I5aiiWGmxOVagzdPkDDto0WI2wdS9OHQps2T
- 31SQIp0a8PXDbqk0BkJ2/S3wVI0XHoxQDJsFqO4xOHWOq2cw5GhLZ5895uAMiMPWBSu+U7hDS
- fdqvyf109dBVWgoZYgirczeDN7JbG9gQiULBDK+hCq1JqascGAtyeBliyd/jhqy+2ZeWMj8eu
- h5mJ+4FvnUa0Yw99xKEP16C8ylLQreKci/iWDa0iJhU5M+gTDZ5gXErrBJQAtcC8q7Bkni6Kc
- Ul52+rC1TeoyOG6Dx723AJTKFJ2GFfyVAPqaIKp8IyPyWKSo5v02tiCFGaUGnh3dXOR16pNT+
- BMAXseQbRRjMmR557iocDZ5QbGS70KNwR+6STjSztAOPSbiGVPh9RH8jnZ2Wb1W7vLMtb8LVj
- tctZ/j8VtVJDXDrpHIGAMSO2mgSxLUA+jobi4/s9gPP4Z5GDXTzjKxLln5iPwKaIkb+xH4eyT
- K2I7oFp4YdqigpkB/CASC8OxX94Ev6zkZ79ZDlHIiZAKlTrkdv+eTM+5r7U8aAVnrswCxAro5
- paNGNK65uUvQ0EsnzzPl6zlRypqkkYJ79g/Cofp7tiSCq9YCsLyKkKK7WpIRcU7kg2FgssLhs
- m2lYd4+5xdFEeni4F9fPVoS+zG6eNgAid5pW5L8gUTjY7WRY4fBzs3RUovwcV4+/CNm9gTX6c
- EE0FLrL8WEFqOs1jh53sNDp0Xl+BXoDZ80Q7kFnrz6oIrNVpab6240wPViSeh24E13BxpppPU
- I8GxqNqVEC8rAk25RZOT309TMogeI5Dw4SpKluO/22Xhix2OLKZjzmFFQ4S2jYsRNKf+oAJcl
- Zh6ucxrV6+WqzU=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:aeLUQqu7zTw=:8uqeiNi+51q6nEXuf9S34z
+ /ygAlMN4OGJORCoeEu2KGNKBrJ3ztkf5fp93vc2ocC4W1ETki1OwTeovAqcavhU2vin1zlAcM
+ HcZwpbp4f86/wkqbMnff8uwvYFOwBBZz2XBgoGIDo18ZZ3GA+SfgltmCKr90tom396W2DbrNI
+ hMJFcV4Xu+0cjidhKcpJV1dmpVqytN+rtIfyFRvOrVc14WQiq0UQXpsQN+rNbjwfFVKgZN/dK
+ 8Gxg0j4C88/p05zcH7d9yD/Vgbdf11uQNqK7N7/mBABC5U5A+asAb08sTgdb5sU+zh6dpf5IP
+ PgG2ILStQjZZ7dBJYLvML+4xaTDDW14dgx6AWESKzvnnaA3hLudd08Dtdo/tiR1TKYj6RaKf9
+ 3bYgA0Z07YevBiH3peC2WqlzpPhZ3+6gprekB12cTATSrSLdoEv3MNytV9v7c2K6VopRaTSeT
+ 3ai1kPqZIe0DLYOn2Jh9OC9wn61S51Rn0b0g+hxoZi2za7VplJZM21OFDOTSGDoKkOb3+g3Pk
+ CzX7EL5sZt0g14Wwr0yfwEUxAdmSoz0jc7rN1T3yvp49E6jijbw87L7PSz0BUvl5B+qr/RBxR
+ sy5benxOw1mM7EKKiZVzBIWzOPyX6bYE48n+jNNjbsTcsRHKPEVktJm0AvjIOtn9wi0IbB3XE
+ bO+dxm3S3DCiuZGp+oRuGwiCGiWTpzr+4fXPLXNo1vC2HaiG12cmUFIn97aGOMowI/DtCQCsk
+ hGGSRNgYTkXrhkfa7sOzc0ev+f+D54J4yzC3MdJjOJ9YPBazg0IKki/tiJouVFroFLBwEvfmz
+ zn3lsM+tpuDYYCkynrgq0VHISV5say829BRPQfa3SvhB5F0NnA96ovvmi519hSSblWBGsket7
+ /dnvHZYhd/9ynxBSPlXDDgrME1WtaGQkKhAHwGRMS5QE+MoAiJPwiadeffgdlb5LqYC46jOU0
+ 2Bg+kdehyAX1sIpS9hzuT6gcGWSK7ufkJFEgOYT2OfKgTGuqPpggzQUw9dA3cE1+IQmZAjZWh
+ 4ZVidZq3N/E01r6Q+uMEu6x9ooI2H5ajl4TwYwQASRjRcIfrDCv/SjMZ9txuZU71qdoe8RxAY
+ tsC63z4ivlq+8A=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-We check at runtime if the cr16 clocks are stable across CPUs. Only mark
-the sched_clock unstable by calling clear_sched_clock_stable() if we
-know that we run on a system which isn't syncronized across CPUs.
+On 9/8/21 11:26 PM, Arnd Bergmann wrote:
+> On Wed, Sep 8, 2021 at 10:44 PM Helge Deller <deller@gmx.de> wrote:
+>>
+>> As suggested by Arnd Bergmann, drop the parisc version of
+>> strnlen_user() and switch to the generic version.
+>
+> The strnlen_user() removal looks good,
+>
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- arch/parisc/kernel/setup.c | 2 --
- arch/parisc/kernel/time.c  | 7 +++----
- 2 files changed, 3 insertions(+), 6 deletions(-)
+Good.
 
-diff --git a/arch/parisc/kernel/setup.c b/arch/parisc/kernel/setup.c
-index 3fb86ee507dd..cceb09855e03 100644
-=2D-- a/arch/parisc/kernel/setup.c
-+++ b/arch/parisc/kernel/setup.c
-@@ -150,8 +150,6 @@ void __init setup_arch(char **cmdline_p)
- #ifdef CONFIG_PA11
- 	dma_ops_init();
- #endif
--
--	clear_sched_clock_stable();
- }
+>> user_addr_max() was wrong too, fix it by using TASK_SIZE.
+>
+> Not sure about this part though:
+>
+>>   /*
+>>    * Complex access routines -- macros
+>>    */
+>> -#define user_addr_max() (~0UL)
+>> +#define user_addr_max() (uaccess_kernel() ? ~0UL : TASK_SIZE)
 
- /*
-diff --git a/arch/parisc/kernel/time.c b/arch/parisc/kernel/time.c
-index 08e4d480abe1..9fb1e794831b 100644
-=2D-- a/arch/parisc/kernel/time.c
-+++ b/arch/parisc/kernel/time.c
-@@ -265,6 +265,9 @@ static int __init init_cr16_clocksource(void)
- 			    (cpu0_loc =3D=3D per_cpu(cpu_data, cpu).cpu_loc))
- 				continue;
+I noticed that our user_addr_max() was actually wrong.
+It's used in the generic strnlen_user() so fixing it seemed appropriate.
 
-+			/* mark sched_clock unstable */
-+			clear_sched_clock_stable();
-+
- 			clocksource_cr16.name =3D "cr16_unstable";
- 			clocksource_cr16.flags =3D CLOCK_SOURCE_UNSTABLE;
- 			clocksource_cr16.rating =3D 0;
-@@ -272,10 +275,6 @@ static int __init init_cr16_clocksource(void)
- 		}
- 	}
+> We are getting very close to completely removing set_fs()/get_fs(),
+> uaccess_kernel() and some related bits from the kernel, so I think
+> it would be better to the other way here and finish off removing
+> CONFIG_SET_FS from parisc.
+>
+> I think this will also simplify your asm/uaccess.h a lot, in particular
+> since it has separate address spaces for __get_user() and
+> __get_kernel_nofault(), and without set_fs() you can leave out
+> the runtime conditional to switch between them.
 
--	/* XXX: We may want to mark sched_clock stable here if cr16 clocks are
--	 *	in sync:
--	 *	(clocksource_cr16.flags =3D=3D CLOCK_SOURCE_IS_CONTINUOUS) */
--
- 	/* register at clocksource framework */
- 	clocksource_register_hz(&clocksource_cr16,
- 		100 * PAGE0->mem_10msec);
-=2D-
-2.31.1
+That's a good idea and should probably be done.
+Do you have some pointers where to start, e.g. initial commits from other =
+arches ?
 
+Helge
