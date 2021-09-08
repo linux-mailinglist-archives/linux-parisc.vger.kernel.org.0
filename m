@@ -2,125 +2,87 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82DC9403EE5
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 20:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1143404018
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 22:12:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349183AbhIHSPD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 8 Sep 2021 14:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54876 "EHLO
+        id S1350785AbhIHUNn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 8 Sep 2021 16:13:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349202AbhIHSPC (ORCPT
+        with ESMTP id S1350729AbhIHUNn (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 8 Sep 2021 14:15:02 -0400
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11681C06175F;
-        Wed,  8 Sep 2021 11:13:54 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id 6so4190854oiy.8;
-        Wed, 08 Sep 2021 11:13:54 -0700 (PDT)
+        Wed, 8 Sep 2021 16:13:43 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2204C061575
+        for <linux-parisc@vger.kernel.org>; Wed,  8 Sep 2021 13:12:34 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id z1so4897759ioh.7
+        for <linux-parisc@vger.kernel.org>; Wed, 08 Sep 2021 13:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=wsmP6J8DZZnWADy+5dtS5HLS6CANu/6Oi+vux+shT7c=;
-        b=KnoRzCnTfLlpKXPbScowwr+IvLNjDN3+GvyC5RWSsjna4CFXQ7Q8MZZW5CeKmizPw7
-         EOWkB7Brj/+p2P6sepk/5BR3Deqfim0gRGKE/whSxTuyVP1VZrfL1hZc3UZ5JgH3u1w3
-         tAHQvh/J3rp182PxfdQLpcW80gQdOOtWz2umrT7gUzh0utIVtK1aMYtK3dF5dpHAF1XC
-         cbP7Z799XpRDkCnlnFjRz2JT9I1dDBH4LiZqBxcO6ADUWeiofv96T5HhJmcsqG5PpjWh
-         AAdMMMGmqGblQtXdiUnZu8hnchi/+BjLOG8xeaQAS690uJghTZdSRVul2azxFLsyaAE9
-         DLmQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=8Nqjg7oFcxlWhjhwShib4ugkHr1gmXJzfRt96q0EMUs=;
+        b=AfRxPDu8TM2D2aghZAZ3qwsITrxblKAaXrx9hTrCD7BdD5ymhPOROo8TtG/2FCRcCQ
+         CTvdX2sxR2SEillMhiz0Rn3dx6dMszZFvD9hHFtz5sFRJO6i6gGlxCVvfUhmIDErCL44
+         K85VfipZ74W3uRmvhIKXDjmXmSEVMMQSLqAvnskCiKRi+3meaS/QHo0ABFETKvgso1iS
+         NYxjevaDm+PjS1prerGk+zxQsAxCV+sQ9ADd1fjVZpG0FezrIvXw4NbrT/RLJDSKybw0
+         sRkNXihcv/AwWZjgG0ehbTxP613JSf0jRT6b23JITYQWvQrxIakafamQfaDB5hEAZGJA
+         EFDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to;
-        bh=wsmP6J8DZZnWADy+5dtS5HLS6CANu/6Oi+vux+shT7c=;
-        b=xLvvGi6lNwzCyrzGFP3wK2AIMgS8OMCS0ZZMopNFvtEdabC6/mAFPZ8h7hPInAu5Aw
-         p3iXD/JfHDlgwCgF2Y/e/BxOmIv0qvlyyhG7auR6nz9qPVF0WRNkcnkZlNUSy6pLrwNu
-         AbEAVOnlp3j6uS6eAj7UvQC/2WaigFstu8S9efrRmRhFJQdwpgfsBtaGDEmKyKWIuM9/
-         lmBZDT4ZZjIDPa5+EO2a4Vgm41rLWpTUhLqKbZAvEd8BNV9tasAqFr36vhcxlU9jZFCa
-         gT6q/vEZnw4Af7LUQo5juqKs9DRyvqgqyg5duo/bT5X8qtPo9Ihdb9gsjc1CqEI+RzLW
-         1L6A==
-X-Gm-Message-State: AOAM532nP05hRstgrF160i5SGZOnUmqlLS3aZvxKlEIq9rywYjPdBTR7
-        QZZo+v+boaEB2NL6JQhBW4E=
-X-Google-Smtp-Source: ABdhPJwjooSA30lQLF4upBlQxdLzBeKZ0F4iImvgwV0fJRM2P8DX9ou9kF1zOZm0oElASAYj4sFgXA==
-X-Received: by 2002:aca:2216:: with SMTP id b22mr3316630oic.163.1631124833369;
-        Wed, 08 Sep 2021 11:13:53 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id i19sm599763ooe.44.2021.09.08.11.13.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Sep 2021 11:13:52 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 8 Sep 2021 11:13:51 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Helge Deller <deller@gmx.de>
-Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hannes Reinecke <hare@suse.com>, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH] scsi: ncr53c8xx: Remove unused
- retrieve_from_waiting_list() function
-Message-ID: <20210908181351.GA1209328@roeck-us.net>
-References: <YTfS/LH5vCN6afDW@ls3530>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=8Nqjg7oFcxlWhjhwShib4ugkHr1gmXJzfRt96q0EMUs=;
+        b=i7i8pLzvxH0jRh2wdQHar48G9+hQg03YQgMJztrMID9op5mS4p0G7KYg0CFRKZ5ky9
+         d3Nrju5aBO9Jyl1OfgYeScvGnajsq33JELqfQpWtSm2ix3POtWydrhou4sbgXVNvMgHr
+         85/Bc1nEXi+QNUkH05IhUTIAGBq6b8bd3mKjSfUEMdK6L7rPrMUO7f3QbTYDdwkTAYIF
+         bXSz3Y887ulCnFYPCHUN+RPgRnyWEKw4VrxRjB9e5Bxa0IYblGcBuncNas6KiXdV+xjg
+         Vby3qT3lMehLNk5PbTmZpYkNywv3B+AOVtANv5k9xmOg3xrM9O+lsXZ9sjg1EKRURFHy
+         r8aA==
+X-Gm-Message-State: AOAM530VQcqfZ5/ImVSkowCCGxGADAyS2TjMGbfnRoBW3eq+4lnHVTJi
+        foBAHKL/28zSEbX2uEh+04/RMgyt2aIHNZBqPI8=
+X-Google-Smtp-Source: ABdhPJzJA1HgecpVyLOM2OWZBmiUV/ZFCcQCguuzk7aw8Swjhh3zCH8Z67oH2r7b9G437wffy2aVK2DJ8egiiQ+VEbA=
+X-Received: by 2002:a05:6638:2509:: with SMTP id v9mr93873jat.95.1631131954098;
+ Wed, 08 Sep 2021 13:12:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YTfS/LH5vCN6afDW@ls3530>
+Received: by 2002:ac0:bf48:0:0:0:0:0 with HTTP; Wed, 8 Sep 2021 13:12:33 -0700 (PDT)
+Reply-To: FrancespatrickConnolly505@gmail.com
+From:   Patrick France <infomayorgeneral@gmail.com>
+Date:   Wed, 8 Sep 2021 13:12:33 -0700
+Message-ID: <CAGYH4z-sfL7x7-1inB-yyFt3Ha4xyzFZm7VrVFgXhu0sqc5nuQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Sep 07, 2021 at 11:00:44PM +0200, Helge Deller wrote:
-> Drop retrieve_from_waiting_list() to avoid this warning:
-> drivers/scsi/ncr53c8xx.c:8000:26: warning: ‘retrieve_from_waiting_list’ defined but not used [-Wunused-function]
-> 
-> Fixes: 1c22e327545c ("scsi: ncr53c8xx: Remove unused code")
-> Signed-off-by: Helge Deller <deller@gmx.de>
+--=20
+Unsere Namen sind Frances und Patrick Connolly aus der Grafschaft Armagh in
+Nordirland. Wir haben gerade 115 Millionen Euro aus der
+EuroMillions-Lotterie-Jackpot-Lotterie-Ziehung gewonnen. Wir vergeben daher
+Grant-Spenden in H=C3=B6he von jeweils 1,5 Millionen Euro an (15) gl=C3=BCc=
+kliche
+internationale Empf=C3=A4nger weltweit, um Gott unsere Wertsch=C3=A4tzung z=
+u zeigen.
+Sie haben diese Nachricht erhalten, weil Sie als eine der (15) gl=C3=BCckli=
+chen
+ausgew=C3=A4hlten Personen aufgef=C3=BChrt wurden. F=C3=BCllen Sie das unte=
+nstehende
+Formular aus und melden Sie sich bei uns.
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+ganze Namen :
+Heimatadresse:
+Telefonnummer :
+Land :
+Zustand :
+Berufe:
 
-> 
-> diff --git a/drivers/scsi/ncr53c8xx.c b/drivers/scsi/ncr53c8xx.c
-> index 7a4f5d4dd670..2b8c6fa5e775 100644
-> --- a/drivers/scsi/ncr53c8xx.c
-> +++ b/drivers/scsi/ncr53c8xx.c
-> @@ -1939,11 +1939,8 @@ static	void	ncr_start_next_ccb (struct ncb *np, struct lcb * lp, int maxn);
->  static	void	ncr_put_start_queue(struct ncb *np, struct ccb *cp);
-> 
->  static void insert_into_waiting_list(struct ncb *np, struct scsi_cmnd *cmd);
-> -static struct scsi_cmnd *retrieve_from_waiting_list(int to_remove, struct ncb *np, struct scsi_cmnd *cmd);
->  static void process_waiting_list(struct ncb *np, int sts);
-> 
-> -#define remove_from_waiting_list(np, cmd) \
-> -		retrieve_from_waiting_list(1, (np), (cmd))
->  #define requeue_waiting_list(np) process_waiting_list((np), DID_OK)
->  #define reset_waiting_list(np) process_waiting_list((np), DID_RESET)
-> 
-> @@ -7997,26 +7994,6 @@ static void insert_into_waiting_list(struct ncb *np, struct scsi_cmnd *cmd)
->  	}
->  }
-> 
-> -static struct scsi_cmnd *retrieve_from_waiting_list(int to_remove, struct ncb *np, struct scsi_cmnd *cmd)
-> -{
-> -	struct scsi_cmnd **pcmd = &np->waiting_list;
-> -
-> -	while (*pcmd) {
-> -		if (cmd == *pcmd) {
-> -			if (to_remove) {
-> -				*pcmd = (struct scsi_cmnd *) cmd->next_wcmd;
-> -				cmd->next_wcmd = NULL;
-> -			}
-> -#ifdef DEBUG_WAITING_LIST
-> -	printk("%s: cmd %lx retrieved from waiting list\n", ncr_name(np), (u_long) cmd);
-> -#endif
-> -			return cmd;
-> -		}
-> -		pcmd = (struct scsi_cmnd **) &(*pcmd)->next_wcmd;
-> -	}
-> -	return NULL;
-> -}
-> -
->  static void process_waiting_list(struct ncb *np, int sts)
->  {
->  	struct scsi_cmnd *waiting_list, *wcmd;
+f=C3=BCr Anspr=C3=BCche Jetzt.
+
+Bitte besuchen Sie den Link f=C3=BCr weitere Details zum Gewinn;
+https://www.bbc.com/news/uk-northern-ireland-46756469
+
+Gl=C3=BCckwunsch an Sie.
+Frances & Patrick Connolly.
