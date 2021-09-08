@@ -2,118 +2,125 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5574403C87
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 17:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82DC9403EE5
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 20:13:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230090AbhIHPb6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 8 Sep 2021 11:31:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45824 "EHLO
+        id S1349183AbhIHSPD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 8 Sep 2021 14:15:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbhIHPb6 (ORCPT
+        with ESMTP id S1349202AbhIHSPC (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 8 Sep 2021 11:31:58 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B79C061575;
-        Wed,  8 Sep 2021 08:30:50 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id p2so3592661oif.1;
-        Wed, 08 Sep 2021 08:30:50 -0700 (PDT)
+        Wed, 8 Sep 2021 14:15:02 -0400
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11681C06175F;
+        Wed,  8 Sep 2021 11:13:54 -0700 (PDT)
+Received: by mail-oi1-x232.google.com with SMTP id 6so4190854oiy.8;
+        Wed, 08 Sep 2021 11:13:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=S1I527MSfurdr1d2ztxDApsIAM7u0kpadwEyPZU2lRM=;
-        b=DTInn5MCElDUDr75tHRRKQy1CbTrsMnaL3SZYIrevfNJZ4VKZWfRyQe567VEQidnqf
-         dI4aBQvSNTwibrC4NyF0X2K7xKJNaQ/R8I7LlV/WAKI5B6juzy8+MhLk8IcBqIuPdZVV
-         6wc0m7jWQ20qSZKxRdBikEDLw4cu1KHh/Kk+oss/d0yC5cmLRJyt38RrZrlbeEXwK6Ww
-         GAo1wnxOgcUBtPX179ElFIXS4MU2XngiIETmrMVzzuIkS7ICwiEqKZflqcDNAWmD5Dh9
-         tQnDD2IV/FtvWIS2OLto8rP2+4yIOW19ic5PNAERiwtikoPRrq/gueqRM4qERpubAHkM
-         drxw==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=wsmP6J8DZZnWADy+5dtS5HLS6CANu/6Oi+vux+shT7c=;
+        b=KnoRzCnTfLlpKXPbScowwr+IvLNjDN3+GvyC5RWSsjna4CFXQ7Q8MZZW5CeKmizPw7
+         EOWkB7Brj/+p2P6sepk/5BR3Deqfim0gRGKE/whSxTuyVP1VZrfL1hZc3UZ5JgH3u1w3
+         tAHQvh/J3rp182PxfdQLpcW80gQdOOtWz2umrT7gUzh0utIVtK1aMYtK3dF5dpHAF1XC
+         cbP7Z799XpRDkCnlnFjRz2JT9I1dDBH4LiZqBxcO6ADUWeiofv96T5HhJmcsqG5PpjWh
+         AAdMMMGmqGblQtXdiUnZu8hnchi/+BjLOG8xeaQAS690uJghTZdSRVul2azxFLsyaAE9
+         DLmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=S1I527MSfurdr1d2ztxDApsIAM7u0kpadwEyPZU2lRM=;
-        b=XoUHtmo2gacyIIIoMBtsMcJLu97MotXEZbhOUEdwrbIpt+e4BP39Tc/mSBaEHtHCPu
-         LZHpbuJ21VNUfMdgmCh69U1R7yG3cnqdFn1KrPNzkxESFE5eavBiTMBZa7vJrgQKLxD/
-         Lg98qL5Rw9o1dky8l1qtnn8Vf/HmQxLZfYog2xKrMhcnhvey3s3XJEPDIlL4ChY1rT/M
-         jwDAdx3Ev7PW/X+uJ2bTB/YKsrgGTMSqerpng9UjOVgy7Og4Ofcgoyn14BprA5+PiJhg
-         Cq01kaDeGYPt4rr0ZB06kUqUFj7OfPYfiYwzGiUdd7epWxiOtPaxkLtPBAhVL1Gz0XO1
-         u6DQ==
-X-Gm-Message-State: AOAM532TEY8F4bDwXaLYe+ElqzWcvX71Je/H+YcG8QqdEXbd9kMsWJQt
-        wwP47WFu0MmE49jj53MEQlU=
-X-Google-Smtp-Source: ABdhPJyipXJsjt2BhcEmx4BzU7EenAWT8g3uCxzkfYpI/c42Dauo1ByIXUy69d/eTjY90J80u000WA==
-X-Received: by 2002:a05:6808:222a:: with SMTP id bd42mr2875847oib.87.1631115049364;
-        Wed, 08 Sep 2021 08:30:49 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to;
+        bh=wsmP6J8DZZnWADy+5dtS5HLS6CANu/6Oi+vux+shT7c=;
+        b=xLvvGi6lNwzCyrzGFP3wK2AIMgS8OMCS0ZZMopNFvtEdabC6/mAFPZ8h7hPInAu5Aw
+         p3iXD/JfHDlgwCgF2Y/e/BxOmIv0qvlyyhG7auR6nz9qPVF0WRNkcnkZlNUSy6pLrwNu
+         AbEAVOnlp3j6uS6eAj7UvQC/2WaigFstu8S9efrRmRhFJQdwpgfsBtaGDEmKyKWIuM9/
+         lmBZDT4ZZjIDPa5+EO2a4Vgm41rLWpTUhLqKbZAvEd8BNV9tasAqFr36vhcxlU9jZFCa
+         gT6q/vEZnw4Af7LUQo5juqKs9DRyvqgqyg5duo/bT5X8qtPo9Ihdb9gsjc1CqEI+RzLW
+         1L6A==
+X-Gm-Message-State: AOAM532nP05hRstgrF160i5SGZOnUmqlLS3aZvxKlEIq9rywYjPdBTR7
+        QZZo+v+boaEB2NL6JQhBW4E=
+X-Google-Smtp-Source: ABdhPJwjooSA30lQLF4upBlQxdLzBeKZ0F4iImvgwV0fJRM2P8DX9ou9kF1zOZm0oElASAYj4sFgXA==
+X-Received: by 2002:aca:2216:: with SMTP id b22mr3316630oic.163.1631124833369;
+        Wed, 08 Sep 2021 11:13:53 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l13sm507884otp.29.2021.09.08.08.30.48
+        by smtp.gmail.com with ESMTPSA id i19sm599763ooe.44.2021.09.08.11.13.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Sep 2021 08:30:48 -0700 (PDT)
+        Wed, 08 Sep 2021 11:13:52 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 8 Sep 2021 11:13:51 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
-To:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Helge Deller <deller@gmx.de>
-Subject: [PATCH] parisc: Move pci_dev_is_behind_card_dino to where it is used
-Date:   Wed,  8 Sep 2021 08:30:41 -0700
-Message-Id: <20210908153041.643069-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.33.0
+To:     Helge Deller <deller@gmx.de>
+Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hannes Reinecke <hare@suse.com>, linux-parisc@vger.kernel.org
+Subject: Re: [PATCH] scsi: ncr53c8xx: Remove unused
+ retrieve_from_waiting_list() function
+Message-ID: <20210908181351.GA1209328@roeck-us.net>
+References: <YTfS/LH5vCN6afDW@ls3530>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <YTfS/LH5vCN6afDW@ls3530>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-parisc build test images fail to compile with the following error.
+On Tue, Sep 07, 2021 at 11:00:44PM +0200, Helge Deller wrote:
+> Drop retrieve_from_waiting_list() to avoid this warning:
+> drivers/scsi/ncr53c8xx.c:8000:26: warning: ‘retrieve_from_waiting_list’ defined but not used [-Wunused-function]
+> 
+> Fixes: 1c22e327545c ("scsi: ncr53c8xx: Remove unused code")
+> Signed-off-by: Helge Deller <deller@gmx.de>
 
-drivers/parisc/dino.c:160:12: error:
-	'pci_dev_is_behind_card_dino' defined but not used
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Move the function just ahead of its only caller to avoid the error.
-
-Fixes: 5fa1659105fa ("parisc: Disable HP HSC-PCI Cards to prevent kernel crash")
-Cc: Helge Deller <deller@gmx.de>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
- drivers/parisc/dino.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/parisc/dino.c b/drivers/parisc/dino.c
-index 889d7ce282eb..952a92504df6 100644
---- a/drivers/parisc/dino.c
-+++ b/drivers/parisc/dino.c
-@@ -156,15 +156,6 @@ static inline struct dino_device *DINO_DEV(struct pci_hba_data *hba)
- 	return container_of(hba, struct dino_device, hba);
- }
- 
--/* Check if PCI device is behind a Card-mode Dino. */
--static int pci_dev_is_behind_card_dino(struct pci_dev *dev)
--{
--	struct dino_device *dino_dev;
--
--	dino_dev = DINO_DEV(parisc_walk_tree(dev->bus->bridge));
--	return is_card_dino(&dino_dev->hba.dev->id);
--}
--
- /*
-  * Dino Configuration Space Accessor Functions
-  */
-@@ -447,6 +438,15 @@ static void quirk_cirrus_cardbus(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_CIRRUS, PCI_DEVICE_ID_CIRRUS_6832, quirk_cirrus_cardbus );
- 
- #ifdef CONFIG_TULIP
-+/* Check if PCI device is behind a Card-mode Dino. */
-+static int pci_dev_is_behind_card_dino(struct pci_dev *dev)
-+{
-+	struct dino_device *dino_dev;
-+
-+	dino_dev = DINO_DEV(parisc_walk_tree(dev->bus->bridge));
-+	return is_card_dino(&dino_dev->hba.dev->id);
-+}
-+
- static void pci_fixup_tulip(struct pci_dev *dev)
- {
- 	if (!pci_dev_is_behind_card_dino(dev))
--- 
-2.33.0
-
+> 
+> diff --git a/drivers/scsi/ncr53c8xx.c b/drivers/scsi/ncr53c8xx.c
+> index 7a4f5d4dd670..2b8c6fa5e775 100644
+> --- a/drivers/scsi/ncr53c8xx.c
+> +++ b/drivers/scsi/ncr53c8xx.c
+> @@ -1939,11 +1939,8 @@ static	void	ncr_start_next_ccb (struct ncb *np, struct lcb * lp, int maxn);
+>  static	void	ncr_put_start_queue(struct ncb *np, struct ccb *cp);
+> 
+>  static void insert_into_waiting_list(struct ncb *np, struct scsi_cmnd *cmd);
+> -static struct scsi_cmnd *retrieve_from_waiting_list(int to_remove, struct ncb *np, struct scsi_cmnd *cmd);
+>  static void process_waiting_list(struct ncb *np, int sts);
+> 
+> -#define remove_from_waiting_list(np, cmd) \
+> -		retrieve_from_waiting_list(1, (np), (cmd))
+>  #define requeue_waiting_list(np) process_waiting_list((np), DID_OK)
+>  #define reset_waiting_list(np) process_waiting_list((np), DID_RESET)
+> 
+> @@ -7997,26 +7994,6 @@ static void insert_into_waiting_list(struct ncb *np, struct scsi_cmnd *cmd)
+>  	}
+>  }
+> 
+> -static struct scsi_cmnd *retrieve_from_waiting_list(int to_remove, struct ncb *np, struct scsi_cmnd *cmd)
+> -{
+> -	struct scsi_cmnd **pcmd = &np->waiting_list;
+> -
+> -	while (*pcmd) {
+> -		if (cmd == *pcmd) {
+> -			if (to_remove) {
+> -				*pcmd = (struct scsi_cmnd *) cmd->next_wcmd;
+> -				cmd->next_wcmd = NULL;
+> -			}
+> -#ifdef DEBUG_WAITING_LIST
+> -	printk("%s: cmd %lx retrieved from waiting list\n", ncr_name(np), (u_long) cmd);
+> -#endif
+> -			return cmd;
+> -		}
+> -		pcmd = (struct scsi_cmnd **) &(*pcmd)->next_wcmd;
+> -	}
+> -	return NULL;
+> -}
+> -
+>  static void process_waiting_list(struct ncb *np, int sts)
+>  {
+>  	struct scsi_cmnd *waiting_list, *wcmd;
