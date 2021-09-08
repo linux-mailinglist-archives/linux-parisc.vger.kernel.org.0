@@ -2,108 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ADA84040A0
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 23:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D85B54040DC
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 Sep 2021 00:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233502AbhIHVoX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 8 Sep 2021 17:44:23 -0400
-Received: from mout.gmx.net ([212.227.17.21]:36297 "EHLO mout.gmx.net"
+        id S235936AbhIHWJk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 8 Sep 2021 18:09:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40806 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235213AbhIHVoX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 8 Sep 2021 17:44:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1631137355;
-        bh=t2WU7PBOv60/Lx+3gcU0Nt3bk/htlhFavDBCMiNy7uM=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=M9k2NSnnhVL3q408/S6beRIk+HlF3/gHWeLMsC2/TXmVag9gOTkj9DERYRkOTkl9t
-         Qd8elIiT90G9eCFsdSWt2sbx/6KM6KPZIjj0mw8+i0vw0ctDT41LMi4eWM0Q6sAci+
-         scBBEyGVF5/cNQD8pW8dHFN5YGeqiFg+WFklg2N8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.85.61] ([80.187.121.129]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MPGVx-1mZz1S0UvN-00PbYo; Wed, 08
- Sep 2021 23:42:35 +0200
-Subject: Re: [PATCH 1/4] parisc: Drop strnlen_user() in favour of generic
- version
-To:     Arnd Bergmann <arnd@kernel.org>
+        id S235838AbhIHWJk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 8 Sep 2021 18:09:40 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DA1886115B
+        for <linux-parisc@vger.kernel.org>; Wed,  8 Sep 2021 22:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631138911;
+        bh=Ur8btnqRAMRzrm0xB26mqSI0B9W7RiYL27K4hpP3jQI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=qZi99r5xquM3qg0kg7JIxqZPchPSvNz48AueI0i0meEdRC1wVVgE7ZAVayuC4Ba+c
+         FF4Z6R4HS/R2sLIhvk+j4NktXLmBHOttAKQ5t27OgzHNI5n7CdYfgJcPbubGXzLqP5
+         TaqvCoI+75jSBHEaR/cvBf8azEQXPO6AKvDLBAADztgyoNvrugTPRU96oE9H3GN79p
+         x+XxVt6sxi63iOpyv1SYctEz/UHnUHzq9i5uLO4CUuU9vlij5VIbs/BpmNpLDoWntx
+         GPWEPbqlGGNpOBie4EC2rmsOivmwVtM6Kuc3cgZJ5wh9l+Png/OKC3yxVNNbPdD2m9
+         DQwWzQTFwMzLA==
+Received: by mail-wr1-f49.google.com with SMTP id v10so5440192wrd.4
+        for <linux-parisc@vger.kernel.org>; Wed, 08 Sep 2021 15:08:31 -0700 (PDT)
+X-Gm-Message-State: AOAM531o0sjt3R8UWtRZuhju1VehbDKh1vzrk93yt0FlvXht2oOAteL0
+        oBj+ePR+ttrmGYM1ncuYPstTyF55tvMILweGAGY=
+X-Google-Smtp-Source: ABdhPJyTfREu9NmFRODRHBgE+cAAA0ekpehUk2ToxkDUgeWKL5179zKU9kVMPiSP4i5IVri2K7GzMe9U9O0BHTQ1OJA=
+X-Received: by 2002:adf:914e:: with SMTP id j72mr487749wrj.428.1631138910486;
+ Wed, 08 Sep 2021 15:08:30 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210908204405.127665-1-deller@gmx.de> <CAK8P3a1-ajAFtO5zE396DBPUzssdas5o+adsEDtAK58X1ZAU7w@mail.gmail.com>
+ <97d4c69c-59ff-8e28-0cfe-50908b999729@gmx.de>
+In-Reply-To: <97d4c69c-59ff-8e28-0cfe-50908b999729@gmx.de>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Thu, 9 Sep 2021 00:08:14 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0wkfWsz7a91Qf--+BDDWKmYyBC4wkBEnbehWu1vGXEZQ@mail.gmail.com>
+Message-ID: <CAK8P3a0wkfWsz7a91Qf--+BDDWKmYyBC4wkBEnbehWu1vGXEZQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] parisc: Drop strnlen_user() in favour of generic version
+To:     Helge Deller <deller@gmx.de>
 Cc:     Parisc List <linux-parisc@vger.kernel.org>,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
         Christoph Hellwig <hch@infradead.org>
-References: <20210908204405.127665-1-deller@gmx.de>
- <CAK8P3a1-ajAFtO5zE396DBPUzssdas5o+adsEDtAK58X1ZAU7w@mail.gmail.com>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <97d4c69c-59ff-8e28-0cfe-50908b999729@gmx.de>
-Date:   Wed, 8 Sep 2021 23:40:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <CAK8P3a1-ajAFtO5zE396DBPUzssdas5o+adsEDtAK58X1ZAU7w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Kc2CGoZAMliIGoR3EMxQ0aQcGUkJodLuiIoi/iE2aADcglLVRX+
- UcT+v04fxn8GFV5pL3x9iULvLMp1IXaUmjN4JyHnEJ9t46aZK0vXmd3RNR1p6NfJH7pBTgJ
- FJmreRsFHAgYR/UOsGirOfjpi/khR7gyErHZkQVzOSNAVl07LA7rKHiov9EkFX7XQoRvj50
- tbx3JmypfaDqOUDZL4VZg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:aeLUQqu7zTw=:8uqeiNi+51q6nEXuf9S34z
- /ygAlMN4OGJORCoeEu2KGNKBrJ3ztkf5fp93vc2ocC4W1ETki1OwTeovAqcavhU2vin1zlAcM
- HcZwpbp4f86/wkqbMnff8uwvYFOwBBZz2XBgoGIDo18ZZ3GA+SfgltmCKr90tom396W2DbrNI
- hMJFcV4Xu+0cjidhKcpJV1dmpVqytN+rtIfyFRvOrVc14WQiq0UQXpsQN+rNbjwfFVKgZN/dK
- 8Gxg0j4C88/p05zcH7d9yD/Vgbdf11uQNqK7N7/mBABC5U5A+asAb08sTgdb5sU+zh6dpf5IP
- PgG2ILStQjZZ7dBJYLvML+4xaTDDW14dgx6AWESKzvnnaA3hLudd08Dtdo/tiR1TKYj6RaKf9
- 3bYgA0Z07YevBiH3peC2WqlzpPhZ3+6gprekB12cTATSrSLdoEv3MNytV9v7c2K6VopRaTSeT
- 3ai1kPqZIe0DLYOn2Jh9OC9wn61S51Rn0b0g+hxoZi2za7VplJZM21OFDOTSGDoKkOb3+g3Pk
- CzX7EL5sZt0g14Wwr0yfwEUxAdmSoz0jc7rN1T3yvp49E6jijbw87L7PSz0BUvl5B+qr/RBxR
- sy5benxOw1mM7EKKiZVzBIWzOPyX6bYE48n+jNNjbsTcsRHKPEVktJm0AvjIOtn9wi0IbB3XE
- bO+dxm3S3DCiuZGp+oRuGwiCGiWTpzr+4fXPLXNo1vC2HaiG12cmUFIn97aGOMowI/DtCQCsk
- hGGSRNgYTkXrhkfa7sOzc0ev+f+D54J4yzC3MdJjOJ9YPBazg0IKki/tiJouVFroFLBwEvfmz
- zn3lsM+tpuDYYCkynrgq0VHISV5say829BRPQfa3SvhB5F0NnA96ovvmi519hSSblWBGsket7
- /dnvHZYhd/9ynxBSPlXDDgrME1WtaGQkKhAHwGRMS5QE+MoAiJPwiadeffgdlb5LqYC46jOU0
- 2Bg+kdehyAX1sIpS9hzuT6gcGWSK7ufkJFEgOYT2OfKgTGuqPpggzQUw9dA3cE1+IQmZAjZWh
- 4ZVidZq3N/E01r6Q+uMEu6x9ooI2H5ajl4TwYwQASRjRcIfrDCv/SjMZ9txuZU71qdoe8RxAY
- tsC63z4ivlq+8A=
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 9/8/21 11:26 PM, Arnd Bergmann wrote:
-> On Wed, Sep 8, 2021 at 10:44 PM Helge Deller <deller@gmx.de> wrote:
->>
->> As suggested by Arnd Bergmann, drop the parisc version of
->> strnlen_user() and switch to the generic version.
+On Wed, Sep 8, 2021 at 11:40 PM Helge Deller <deller@gmx.de> wrote:
+> On 9/8/21 11:26 PM, Arnd Bergmann wrote:
+> >>   /*
+> >>    * Complex access routines -- macros
+> >>    */
+> >> -#define user_addr_max() (~0UL)
+> >> +#define user_addr_max() (uaccess_kernel() ? ~0UL : TASK_SIZE)
 >
-> The strnlen_user() removal looks good,
+> I noticed that our user_addr_max() was actually wrong.
+> It's used in the generic strnlen_user() so fixing it seemed appropriate.
+
+The user_addr_max() definition should match what you do in access_ok()
+for USER_DS though, which is a nop on architectures that have split user
+address space, so I think the ~0UL was correct here.
+
+No matter what the arguments are, there is no danger of spilling over
+into kernel space, which is what the user_addr_max() check is trying
+to prevent on other architectures.
+
+> > We are getting very close to completely removing set_fs()/get_fs(),
+> > uaccess_kernel() and some related bits from the kernel, so I think
+> > it would be better to the other way here and finish off removing
+> > CONFIG_SET_FS from parisc.
+> >
+> > I think this will also simplify your asm/uaccess.h a lot, in particular
+> > since it has separate address spaces for __get_user() and
+> > __get_kernel_nofault(), and without set_fs() you can leave out
+> > the runtime conditional to switch between them.
 >
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> That's a good idea and should probably be done.
+> Do you have some pointers where to start, e.g. initial commits from other arches ?
 
-Good.
+Russell just merged my series for arch/arm in linux-5.15, you
+can look at that but it's probably easier for parisc.
 
->> user_addr_max() was wrong too, fix it by using TASK_SIZE.
->
-> Not sure about this part though:
->
->>   /*
->>    * Complex access routines -- macros
->>    */
->> -#define user_addr_max() (~0UL)
->> +#define user_addr_max() (uaccess_kernel() ? ~0UL : TASK_SIZE)
+I think the only part you need to add is __get_kernel_nofault()
+and __put_kernel_nofault(). You can see in mm/maccess.c
+what the difference between the two versions in there is.
 
-I noticed that our user_addr_max() was actually wrong.
-It's used in the generic strnlen_user() so fixing it seemed appropriate.
+Once you have those, you define HAVE_GET_KERNEL_NOFAULT
+and then remove CONFIG_SET_FS, set_fs(), get_fs(), load_sr2(),
+thread_info->addr_limit, KERNEL_DS, and USER_DS.
 
-> We are getting very close to completely removing set_fs()/get_fs(),
-> uaccess_kernel() and some related bits from the kernel, so I think
-> it would be better to the other way here and finish off removing
-> CONFIG_SET_FS from parisc.
->
-> I think this will also simplify your asm/uaccess.h a lot, in particular
-> since it has separate address spaces for __get_user() and
-> __get_kernel_nofault(), and without set_fs() you can leave out
-> the runtime conditional to switch between them.
-
-That's a good idea and should probably be done.
-Do you have some pointers where to start, e.g. initial commits from other =
-arches ?
-
-Helge
+        Arnd
