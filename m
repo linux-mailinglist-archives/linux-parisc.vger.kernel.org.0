@@ -2,115 +2,129 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4955440404E
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 22:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B09F9404055
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 22:53:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235450AbhIHUuw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 8 Sep 2021 16:50:52 -0400
-Received: from mout.gmx.net ([212.227.15.19]:48303 "EHLO mout.gmx.net"
+        id S237766AbhIHUya (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 8 Sep 2021 16:54:30 -0400
+Received: from mout.gmx.net ([212.227.15.18]:39899 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235437AbhIHUuw (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 8 Sep 2021 16:50:52 -0400
+        id S235437AbhIHUy2 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 8 Sep 2021 16:54:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1631134179;
-        bh=U+ZSvVRGB3AOmVtCt9rABCabZjmlLkOO+Z2vlRCcckM=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=C5axlmJdV1/GQg6Ez7YhC/Oj31DBMOt30YD3+/2GAuLZLFUAz0+GsUNuHs6EizzhM
-         Y/ZyGnvhbz8iv4t+cqUc4aR1cI98fNITnF+0s1qlFb0UjEFYrzSoy8st2Ak1WGMU9b
-         dKC8sB5OKDl5szI39KFsQrM1/U/CY5QvvaROBTZs=
+        s=badeba3b8450; t=1631134383;
+        bh=gGyssjxabohIjDxtvSkR6S2G+R/GgD+Ug3BlWj57mTc=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=dKSxVQGr07tIiKKuYkeXWuzl2m58yq5rK/mQgVxPpQdZSlMAj8Fz9oDyFBc4vWEFM
+         knRlLZiz322q2yvQF1WWQ3AFQ5eGw4VO8kZ2EaXi6lXaGXhD//5oV5NK+kSg5zvRSR
+         FX1cY78/HoHb9/tdqjdZHpCy9ZRvSTbvcof4ZiU4=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([80.187.121.129]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M9Wuk-1mKnGI3YAu-005VUd; Wed, 08
- Sep 2021 22:49:39 +0200
-Date:   Wed, 8 Sep 2021 22:48:00 +0200
+Received: from [192.168.85.61] ([80.187.121.129]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mulm5-1nFLhs0hff-00rm9Y; Wed, 08
+ Sep 2021 22:53:03 +0200
+Subject: Re: [PATCH] parisc: Move pci_dev_is_behind_card_dino to where it is
+ used
+To:     Guenter Roeck <linux@roeck-us.net>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210908153041.643069-1-linux@roeck-us.net>
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Add missing FORCE prerequisite in Makefile
-Message-ID: <YTkhgGcj0cJ8ax+j@ls3530>
+Message-ID: <8392d93e-73d8-0a9e-15e2-db139086fdf0@gmx.de>
+Date:   Wed, 8 Sep 2021 22:51:27 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:ZWLNTVEHHQEMjQdOTI0dj9hTDK1CTVHO/ZVn05DD9x1n8nWrRPK
- PzSX5ygS4TGU3yf7iMbbWEmkCjk3PkwpoJnSEiKt2wPkowFJrqWymg8s7encsFrPwRfa3hF
- WMCGNkvnsHJc35qp573ECW2mLiILn0+hdpC9Ez4ijj3jk+6CFLTVQF9S6axFWBXacZIw7i1
- XnN+/4gSy1OUiDeKLfExg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3pCYVL/AlaA=:0Y7mLZFeRcAXJ7+/qWXNTw
- g039aM8Q/CPy2voWl14gtg2wWqeAjVrTsIMG8NMCPWAPmhwu8fuP8uv9bR2OP9aXe2KzMLGKA
- B8uKqgeSEULLy+/l1HubZlffK2Xr8ySmK26298XSzOZK171C+lQKiA4VWjcQfH1nj/Ioc0CgX
- kKR42zonYXQ/0OECkQNDe88jyuQcshoLxU6ZpFJBby+guBu1XAhUvz4TXdVGYXHF3dd4jKklL
- yFelEGnIWLV5nUWwrH2B9Z7Owx9hdQX/AbjUSYbMTDSC06d1RUua5T9oXU1RpeORLku5n/9N6
- MwcMatFKc/euRcJzxJGMKlSQB5K3AS/UG43Rw/n5hUtsjyIvEv601uJfb2bwZOsWRmxRsojQl
- 8d4YCqhytdSRIaExvRmWNsgFARrB27o8626g388eYLZMMZt3LnOly2yBVXgovJL3br8+za3sQ
- KsY9u7ueRSGZVQrUwf0UFPE65GdK2PyKZJyUQ5O2I2NZ06j16RWwUtdn7dzh1UFAoZjMfafsV
- aAFmKCbH+KSzOzZvR4qiKX29JR3kowIogqh45ltoYH9EaQxWSYEyK5aCoUaxePbrrXcpS8lqe
- S5uJMUGjC3KGlnFD4sHmzavcxJRiWCWj9jJTJu7791FAooNgPrJPH88lgJhBlg+A/UJ1p7GQe
- TOFEYjY/4aDNizjiAraR76bf/Iq2pHGNLmvqRa35HAMUoTVIfofpLaIg4bWcTnQ/qWOOkoN2o
- YMl70G8kt3gPHmWHUyjVGZ428jqzsz05GUlwGKwWl5vcuK1Kz3kYS6xfz28lVOHrLpoTC8iq6
- lgx/I6vXT43KxGycWdDF18hkHnZYehhWyL+arLzFjzn8Y5d9SBYk51FJsWPMZnIeDIbIKL7My
- JIpxOBvRCCZxbRAcsEMPLixDvJtMp115SPkOg+aNxzGDGcP+HuFmvzZhNMOzSpL0ph5p0drtX
- fQ4CQl9KPpzI69OAqcCEOaTkuWQp3y93VuqlHY4fhx+dGL3mC6sX6I+w8fCAgouS+sexZXdHt
- rdrKCjKalhUWll3s0KXDNRIE7zT529u78wwiEV1l2D+I5YQnftdQBSiJVFDtzaTbBSeUqlLiD
- 0ic6dxXfhThtoI=
+In-Reply-To: <20210908153041.643069-1-linux@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:nRdMm2osOOu780aITU30zP7UhFvqrvZ4Jxcf6m9DZMSQ+ySiG4R
+ 2DG0uW6rccx/EyMiAz/ykE/kNd133z2Hkg3g26znlPbgzOVJMrSS3VkP+g97uTa3yaQ60zF
+ hKVaMdNbRlZVQErBVp4wGGzNWogTS2cLt4fKBnIJ32MOO+OyXnl3wSjOvLNdogUqpX9XDJQ
+ 7Emd7jkM+XEydhYTyeI6Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:sxTCNEFc818=:rm7ecPnH9AuqDOoYbOHT8a
+ MIKB2Hc0oEnZiDF3Fztn6/xGkaV+DwcDylgtiQBs8FzsjKioNogDJyd6xGcgTYzH/pyo9FENz
+ bx8YjeQBxRXvzKj0f44Za8bXeC7vD8abFfsWQuJdU++2aiGTRvLOfLduG6wkRRgcbtRSIZpEt
+ CoGrfHGmC7XSZ4MgCM300deuvnl0Ae/PzrAzsn83Y2J53t15mhZBX+9ur++GoAvh1YrNUzWXR
+ c99xyvHnTxgClndLsmeb/x/RTzXcRpoh0nT4Phrt2Uq+dbeRT3M3H/7Xxg0HcQCU731OWHDhM
+ GcjBJs57nz/+7vVE5zXultcSwX1jzN5uHaVRliOWq8jGHYxAGrRPYMS415vzXpHfWjtg7PDlL
+ xu8i53ifid7QGKbHFezCsA0uOyvOTbmam5kM4Mg2yQ3aczfBRXL4IXQ8TZf1gGWsLbyG92K3q
+ BuIvWCh8vNCbgExD02zDT1P3mziRYTo63EJ8XhKOOeE82CibBFOCqgdKywm3QE61bXKKit3bL
+ yz8hjYEXzlXLm6bH7TGC1KqGN48sQKlHSf4WyQFdG+ofr7bhtovNc8tr59EvzrYjug7pc6+EJ
+ +uYqjlcexttmnbOxAtJxBmL1VTbQCCsHUCXZU+uCNpSxYJ5txmosqgGElH7HSS/a4+6Z6WEfN
+ 6PW7dtLT+jDg1tYFkchLM52mOhbjZS+oMLcce798Nd55HvPESLkfrEHqJKvsPZ+1b7b0yxn9r
+ yOY0dRjbF7rkrShJxFyfCJGrMgdxRyciKYyzzPYwB30XBA+tk8mks26j51kg6w7T1zVLQZ+tK
+ qv5Dea2eEcj/LA5LgNDezxMPOw/fy5LkxcOzP2U37XJTL6BK4gYA7JI00yGT0adE8q84pG+ad
+ ByXc7lEm0hXys/qCyUdQkYT/nzriFF5O/PZE44e6fW0YpfEoX5uNudyWBma5zFyGLVkNE2Nl/
+ nOiLMUC7Wlezg0qkv9bWWOG85K0+XBMGiZNbezpLkuSg1VQ0fZdDdnkSp/5BMJxnkZMMYIHAT
+ DaodUmv6V2ZLRp27VIo9mVQdZopWwr+XSQFIQ55a8pmcgOBPNlvwI9vYyBodDdvgql1bpNLiB
+ oj9vBOm/Jy3cik=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+On 9/8/21 5:30 PM, Guenter Roeck wrote:
+> parisc build test images fail to compile with the following error.
+>
+> drivers/parisc/dino.c:160:12: error:
+> 	'pci_dev_is_behind_card_dino' defined but not used
+>
+> Move the function just ahead of its only caller to avoid the error.
+>
+> Fixes: 5fa1659105fa ("parisc: Disable HP HSC-PCI Cards to prevent kernel=
+ crash")
+> Cc: Helge Deller <deller@gmx.de>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-diff --git a/arch/parisc/boot/compressed/Makefile b/arch/parisc/boot/compr=
-essed/Makefile
-index dff453687530..9fe54878167d 100644
-=2D-- a/arch/parisc/boot/compressed/Makefile
-+++ b/arch/parisc/boot/compressed/Makefile
-@@ -26,7 +26,7 @@ endif
- OBJECTS +=3D $(obj)/head.o $(obj)/real2.o $(obj)/firmware.o $(obj)/misc.o=
- $(obj)/piggy.o
+applied to the parisc tree.
 
- LDFLAGS_vmlinux :=3D -X -e startup --as-needed -T
--$(obj)/vmlinux: $(obj)/vmlinux.lds $(OBJECTS) $(LIBGCC)
-+$(obj)/vmlinux: $(obj)/vmlinux.lds $(OBJECTS) $(LIBGCC) FORCE
- 	$(call if_changed,ld)
+Thanks!
+Helge
 
- sed-sizes :=3D -e 's/^\([0-9a-fA-F]*\) . \(__bss_start\|_end\|parisc_kern=
-el_start\)$$/\#define SZ\2 0x\1/p'
-@@ -34,7 +34,7 @@ sed-sizes :=3D -e 's/^\([0-9a-fA-F]*\) . \(__bss_start\|=
-_end\|parisc_kernel_start\
- quiet_cmd_sizes =3D GEN $@
-       cmd_sizes =3D $(NM) $< | sed -n $(sed-sizes) > $@
 
--$(obj)/sizes.h: vmlinux
-+$(obj)/sizes.h: vmlinux FORCE
- 	$(call if_changed,sizes)
+> ---
+>   drivers/parisc/dino.c | 18 +++++++++---------
+>   1 file changed, 9 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/parisc/dino.c b/drivers/parisc/dino.c
+> index 889d7ce282eb..952a92504df6 100644
+> --- a/drivers/parisc/dino.c
+> +++ b/drivers/parisc/dino.c
+> @@ -156,15 +156,6 @@ static inline struct dino_device *DINO_DEV(struct p=
+ci_hba_data *hba)
+>   	return container_of(hba, struct dino_device, hba);
+>   }
+>
+> -/* Check if PCI device is behind a Card-mode Dino. */
+> -static int pci_dev_is_behind_card_dino(struct pci_dev *dev)
+> -{
+> -	struct dino_device *dino_dev;
+> -
+> -	dino_dev =3D DINO_DEV(parisc_walk_tree(dev->bus->bridge));
+> -	return is_card_dino(&dino_dev->hba.dev->id);
+> -}
+> -
+>   /*
+>    * Dino Configuration Space Accessor Functions
+>    */
+> @@ -447,6 +438,15 @@ static void quirk_cirrus_cardbus(struct pci_dev *de=
+v)
+>   DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_CIRRUS, PCI_DEVICE_ID_CIRRUS_68=
+32, quirk_cirrus_cardbus );
+>
+>   #ifdef CONFIG_TULIP
+> +/* Check if PCI device is behind a Card-mode Dino. */
+> +static int pci_dev_is_behind_card_dino(struct pci_dev *dev)
+> +{
+> +	struct dino_device *dino_dev;
+> +
+> +	dino_dev =3D DINO_DEV(parisc_walk_tree(dev->bus->bridge));
+> +	return is_card_dino(&dino_dev->hba.dev->id);
+> +}
+> +
+>   static void pci_fixup_tulip(struct pci_dev *dev)
+>   {
+>   	if (!pci_dev_is_behind_card_dino(dev))
+>
 
- AFLAGS_head.o +=3D -I$(objtree)/$(obj) -DBOOTLOADER
-@@ -70,19 +70,19 @@ suffix-$(CONFIG_KERNEL_LZMA)  :=3D lzma
- suffix-$(CONFIG_KERNEL_LZO)  :=3D lzo
- suffix-$(CONFIG_KERNEL_XZ)  :=3D xz
-
--$(obj)/vmlinux.bin.gz: $(vmlinux.bin.all-y)
-+$(obj)/vmlinux.bin.gz: $(vmlinux.bin.all-y) FORCE
- 	$(call if_changed,gzip)
--$(obj)/vmlinux.bin.bz2: $(vmlinux.bin.all-y)
-+$(obj)/vmlinux.bin.bz2: $(vmlinux.bin.all-y) FORCE
- 	$(call if_changed,bzip2)
--$(obj)/vmlinux.bin.lz4: $(vmlinux.bin.all-y)
-+$(obj)/vmlinux.bin.lz4: $(vmlinux.bin.all-y) FORCE
- 	$(call if_changed,lz4)
--$(obj)/vmlinux.bin.lzma: $(vmlinux.bin.all-y)
-+$(obj)/vmlinux.bin.lzma: $(vmlinux.bin.all-y) FORCE
- 	$(call if_changed,lzma)
--$(obj)/vmlinux.bin.lzo: $(vmlinux.bin.all-y)
-+$(obj)/vmlinux.bin.lzo: $(vmlinux.bin.all-y) FORCE
- 	$(call if_changed,lzo)
--$(obj)/vmlinux.bin.xz: $(vmlinux.bin.all-y)
-+$(obj)/vmlinux.bin.xz: $(vmlinux.bin.all-y) FORCE
- 	$(call if_changed,xzkern)
-
- LDFLAGS_piggy.o :=3D -r --format binary --oformat $(LD_BFD) -T
--$(obj)/piggy.o: $(obj)/vmlinux.scr $(obj)/vmlinux.bin.$(suffix-y)
-+$(obj)/piggy.o: $(obj)/vmlinux.scr $(obj)/vmlinux.bin.$(suffix-y) FORCE
- 	$(call if_changed,ld)
