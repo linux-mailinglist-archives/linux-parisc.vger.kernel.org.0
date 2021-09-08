@@ -2,118 +2,213 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B7AA40300F
-	for <lists+linux-parisc@lfdr.de>; Tue,  7 Sep 2021 23:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBF5540331B
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Sep 2021 05:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346455AbhIGVDk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 7 Sep 2021 17:03:40 -0400
-Received: from mout.gmx.net ([212.227.17.21]:52233 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1346428AbhIGVDj (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 7 Sep 2021 17:03:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1631048542;
-        bh=/X+1a+rT4ZwFQFh3WRVQzSRpQLReMSBTBZgfHqg5CD4=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=LkL3LTCu2l+Z1aUt8J1q2tQjA8s61PPMFka918W0g4daGupXVXO9j0dwA5GINN5Se
-         WhBOAPkyr9AOcV2Kd1aKyaAxh/Pz+l/8nfb+UAtILJNL4/zwiewMktLP7lLfyXzaRc
-         gQIe2o+QJSTR00ILtonXCE7DT17JpSXCM4htLIzA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([80.187.121.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M8hVB-1mJ1GZ0Thp-004o2U; Tue, 07
- Sep 2021 23:02:22 +0200
-Date:   Tue, 7 Sep 2021 23:00:44 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Hannes Reinecke <hare@suse.com>, linux-parisc@vger.kernel.org
-Subject: [PATCH] scsi: ncr53c8xx: Remove unused retrieve_from_waiting_list()
- function
-Message-ID: <YTfS/LH5vCN6afDW@ls3530>
+        id S1347598AbhIHDxx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 Sep 2021 23:53:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56218 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232366AbhIHDxu (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 7 Sep 2021 23:53:50 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E49EC061575;
+        Tue,  7 Sep 2021 20:52:43 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id v123so872604pfb.11;
+        Tue, 07 Sep 2021 20:52:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=WSt+UMhq7R7h5hSLb95oV8jytbQKlUJH1lEwRLVcxwc=;
+        b=GLJfR0NMco+oS1HHyphViWc/H8Wf/bLjCDcmbtta6hyb801Md0ubjqPMWp6WdPvWq/
+         /NuGfVD1j9+XuSUMOGQz/eTCVbohXJ+Qkv9I2QMqTdEHfklDHNcvxpVFOWfbJPymvNFD
+         btC1KFw4ADbCa7XAeGte2pPkaEU5kZ7GcfmYZBMz4nJuY9zvGtKXL5+PeF7cVlAHFI2G
+         +TP44OHlZU2UYl/1A7zxdCsPyN+6gq/V8DFaKk1ZAfOPXKPdX2/k8aXmhsfoLio/obd/
+         fRBEBNg4S22eyDDVR3hvYvwYI6y0QYJteRexx8hn81tf7J0GoryM+zimw3uyq3VlSa06
+         cc0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=WSt+UMhq7R7h5hSLb95oV8jytbQKlUJH1lEwRLVcxwc=;
+        b=i+oW9IX37D+6Xk755PRVI+GqYDyVCobXsZn77xRd3s1QbU4zfeKNEp4BHWs6IVjca8
+         gL5fhNxplc3QGFaGCJBq95dsXqIaOQvczGpE8Xvn5Ti59BB7aOnhAZHYAta7M9siW0R0
+         3WZeJsXpt5GWGQt8oQQEQM8DAlNFkw10jg9+JYZ05zevEq9nhTksVOJhgVfcDt9Q0udY
+         kXQUgIZIYkTwYhKCpzUQKm6QvbvBRImuGvMwB72+elYbpSk/3n8ZdrqU3eBVuIT0uqv7
+         KC8ocZFF/xL9o1T2rX9B1WzHFAl4ReSqH/ZxYiREdxnLhPbR1hj/GXr61OABZzesXERA
+         HVcw==
+X-Gm-Message-State: AOAM533z4DNdfmhxrZUsZs6pTlsM8sHrNQJDM3iC0pkrVt8nAk0IfX3a
+        K7KIc8psogrrBJzpGfxhmRo=
+X-Google-Smtp-Source: ABdhPJzsF7/ZmS0a3POWsiDv6cT4l+YoAuvMs8kxVeVkGFJVzJ1fBZkDxrQQPMspQMKZVPXO7C92+Q==
+X-Received: by 2002:a63:30d:: with SMTP id 13mr1668901pgd.289.1631073162944;
+        Tue, 07 Sep 2021 20:52:42 -0700 (PDT)
+Received: from [192.168.30.11] ([173.248.225.217])
+        by smtp.gmail.com with ESMTPSA id p4sm647725pgc.15.2021.09.07.20.52.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Sep 2021 20:52:42 -0700 (PDT)
+Subject: Re: [PATCH v3] ftrace: Cleanup ftrace_dyn_arch_init()
+To:     LEROY Christophe <christophe.leroy@csgroup.eu>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>
+Cc:     Rich Felker <dalias@libc.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Will Deacon <will@kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Helge Deller <deller@gmx.de>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        Nick Hu <nickhu@andestech.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "David S. Miller" <davem@davemloft.net>
+References: <20210907100524.1454928-1-o451686892@gmail.com>
+ <MRZP264MB298824D80E6C0ADCB5EA1D9AEDD39@MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM>
+From:   Weizhao Ouyang <o451686892@gmail.com>
+Message-ID: <f33570e2-a67d-b0cf-f127-040ccd9e5da9@gmail.com>
+Date:   Wed, 8 Sep 2021 11:52:33 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
+In-Reply-To: <MRZP264MB298824D80E6C0ADCB5EA1D9AEDD39@MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hn8PmxDZvIGVE7ig3UrwMaY1h/3OCof3sEOOh6kCfuTvKSNjNF7
- 9jYXCRcfonsIzkTt35wfD75Y84oBLtasooYgEhDUiZhMqcvfIBGTj/mfNEieLvJL24DDoo7
- I3BZ5JOSFUepFjFhAWKWtVmsMEWgEG78qUMGvaahMDDxEsPyh3SzNSJLjq8qC6742aG+yI/
- K2Bh6Bl6mf/EGAjuYaHBg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:WGkKda83z3w=:SyYALqs9idC6IRkvEfFlX7
- ycC8UtJfJA7ZC8WBmt7KUVd/bIzfAWL0czTOfMe2kuqQJV3ZiVZB7AJk9PkrpGdsMNx8frs/B
- MilwUWxXLFmQqWEsKiHGMM3y2FoWkqjCwVEHHYdsGk8dAArAIPCOESZ8/RqGlr3Krp0uzOG6l
- tnXpgPLXTQ1EPo/beD3AW4qeBkd3jGvXO7CwN34LHebo2kgJozZH7MvlkUVYdjtbHJXIrlAqj
- PSQWox5YYwmOT61Qec/Dv45t09Llm9ZZoZMjbvodfFMRXcGPjkchXrhnwWL79lpxX/N3H+db3
- bHp2q/iBKk8s6qVUWGRug22lNuGAH/72fFdQFv7vqkirG0JDCv13XtArt9UC5Xp/kZ1KNWmA+
- kg38lJL6TuhNKBUNpliBVOxxg5fcSGNtFZqQAGLK1pbWgbAR+L9MVpCN28DoqaMXLPiq5+Pr9
- WAnX7/VOHlp3z641JeY3pQKsak5WvDic0ASW4GaaiAucpR9XDrD7NvFhG1M+jShpKj15QFiAf
- 89n+uzVIAei/Y62KhHXv2VKi4b/p6uH7+1yz41I87Dy5QruWnJsZGpNbu7Se2T4tXf90vmLIB
- US9XTq70wozoZmjvnsA4ZrI8oMbCwtmkbht10wll3Z6iHUamwfz3zwwrc+DaiPAqRV+Ya4YC1
- V4vdw50ER7qHQVWlbyBtqDw9k706F1INL5+XtU0URnQMApt6/3Ocy7BIhfCOyaNAGXfWw5uG7
- +J/4t0dvOE6gI55W5zJlKAM2u/W+rLFjaZIpPSL7JDSKmKAwINgxCkMZEM0ThvCjA7B6ewJXJ
- KU1SFnOMmwhFBBjZnqMm5JbES5aDb4N53XRxsYPQOgjg3kK3go40S7NcNRMfpE8sJcFMKhnP1
- p9CZAG5AdC7j5CZ/Bf1YpHED2gXL4v33+jNtD47TfOS4mzzaEc0ZQ+MLo6fg9sUoXktHD+4su
- +Rj23YTGIcAlDvsODk573zX8Vow4J0rsnwxbS3mep5HXzZv5xCSD87Wv6UM2Avom8DdprfKT8
- CMxt3kmGLJPLWqmeXO4DoOV0dWgSdfMi8gQRElkLXJr8i9gF6zM3q/tNeLGsvO7++Sajn+Rd2
- TIAWLUKZYjdXBXVdiTfyRFLcolQMjJ/Jn9yXtD9Jxx9sCWDWKd/Klr0fA==
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Drop retrieve_from_waiting_list() to avoid this warning:
-drivers/scsi/ncr53c8xx.c:8000:26: warning: =E2=80=98retrieve_from_waiting_=
-list=E2=80=99 defined but not used [-Wunused-function]
+Thanks for reply.
 
-Fixes: 1c22e327545c ("scsi: ncr53c8xx: Remove unused code")
-Signed-off-by: Helge Deller <deller@gmx.de>
+On 2021/9/7 23:55, LEROY Christophe wrote:
+>
+>> -----Message d'origine-----
+>> De : Linuxppc-dev <linuxppc-dev-
+>> bounces+christophe.leroy=csgroup.eu@lists.ozlabs.org> De la part de Weizhao
+>> Ouyang
+>>
+>> Most of ARCHs use empty ftrace_dyn_arch_init(), introduce a weak common
+>> ftrace_dyn_arch_init() to cleanup them.
+>>
+>> Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
+>> Acked-by: Heiko Carstens <hca@linux.ibm.com> (s390)
+>> Acked-by: Helge Deller <deller@gmx.de> (parisc)
+>>
+>> ---
+>> Changes in v3:
+>> -- fix unrecognized opcode on PowerPC
+>>
+>> Changes in v2:
+>> -- correct CONFIG_DYNAMIC_FTRACE on PowerPC
+>> -- add Acked-by tag
+>>
+>> ---
+>>  arch/arm/kernel/ftrace.c          | 5 -----
+>>  arch/arm64/kernel/ftrace.c        | 5 -----
+>>  arch/csky/kernel/ftrace.c         | 5 -----
+>>  arch/ia64/kernel/ftrace.c         | 6 ------
+>>  arch/microblaze/kernel/ftrace.c   | 5 -----
+>>  arch/mips/include/asm/ftrace.h    | 2 ++
+>>  arch/nds32/kernel/ftrace.c        | 5 -----
+>>  arch/parisc/kernel/ftrace.c       | 5 -----
+>>  arch/powerpc/include/asm/ftrace.h | 4 ++++
+>>  arch/riscv/kernel/ftrace.c        | 5 -----
+>>  arch/s390/kernel/ftrace.c         | 5 -----
+>>  arch/sh/kernel/ftrace.c           | 5 -----
+>>  arch/sparc/kernel/ftrace.c        | 5 -----
+>>  arch/x86/kernel/ftrace.c          | 5 -----
+>>  include/linux/ftrace.h            | 1 -
+>>  kernel/trace/ftrace.c             | 5 +++++
+>>  16 files changed, 11 insertions(+), 62 deletions(-)
+>>
+>> diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+>> index b463f2aa5a61..ed013e767390 100644
+>> --- a/arch/mips/include/asm/ftrace.h
+>> +++ b/arch/mips/include/asm/ftrace.h
+>> @@ -76,6 +76,8 @@ do {                                                \
+>>
+>>
+>>  #ifdef CONFIG_DYNAMIC_FTRACE
+>> +int __init ftrace_dyn_arch_init(void);
+>> +
+> Why ?
+>
+>
+>>  static inline unsigned long ftrace_call_adjust(unsigned long addr)
+>>  {
+>>       return addr;
+>> diff --git a/arch/powerpc/include/asm/ftrace.h
+>> b/arch/powerpc/include/asm/ftrace.h
+>> index debe8c4f7062..b05c43f13a4d 100644
+>> --- a/arch/powerpc/include/asm/ftrace.h
+>> +++ b/arch/powerpc/include/asm/ftrace.h
+>> @@ -126,6 +126,10 @@ static inline void this_cpu_enable_ftrace(void) { }
+>>  static inline void this_cpu_set_ftrace_enabled(u8 ftrace_enabled) { }
+>>  static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
+>>  #endif /* CONFIG_PPC64 */
+>> +
+>> +#ifdef CONFIG_DYNAMIC_FTRACE
+>> +int __init ftrace_dyn_arch_init(void);
+>> +#endif /* CONFIG_DYNAMIC_FTRACE */
+> Why ?
+>
+>>  #endif /* !__ASSEMBLY__ */
+>>
+>>  #endif /* _ASM_POWERPC_FTRACE */
+>> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+>> index 832e65f06754..f1eca123d89d 100644
+>> --- a/include/linux/ftrace.h
+>> +++ b/include/linux/ftrace.h
+>> @@ -573,7 +573,6 @@ ftrace_set_early_filter(struct ftrace_ops *ops, char
+>> *buf, int enable);
+>>
+>>  /* defined in arch */
+>>  extern int ftrace_ip_converted(unsigned long ip);
+>> -extern int ftrace_dyn_arch_init(void);
+> Why removing that ?
+>
+> Have you tried to build kernel/trace/ftrace.o with C=2 ? It will likely tell you that the function is not declared and that it should be static
 
-diff --git a/drivers/scsi/ncr53c8xx.c b/drivers/scsi/ncr53c8xx.c
-index 7a4f5d4dd670..2b8c6fa5e775 100644
-=2D-- a/drivers/scsi/ncr53c8xx.c
-+++ b/drivers/scsi/ncr53c8xx.c
-@@ -1939,11 +1939,8 @@ static	void	ncr_start_next_ccb (struct ncb *np, str=
-uct lcb * lp, int maxn);
- static	void	ncr_put_start_queue(struct ncb *np, struct ccb *cp);
+Yes I missed this check. Under the situation, the function should be static.
 
- static void insert_into_waiting_list(struct ncb *np, struct scsi_cmnd *cm=
-d);
--static struct scsi_cmnd *retrieve_from_waiting_list(int to_remove, struct=
- ncb *np, struct scsi_cmnd *cmd);
- static void process_waiting_list(struct ncb *np, int sts);
+> We could eventually consider that in the past, this generic declaration was unrelevant because the definitions where in the arch specific sections.
+> Now that you are implementing a generic weak version of this function, it would make sense to have a generic declaration as well.
+>
+> I really don't see the point in duplicating the declaration of the function in the arch specific headers.
 
--#define remove_from_waiting_list(np, cmd) \
--		retrieve_from_waiting_list(1, (np), (cmd))
- #define requeue_waiting_list(np) process_waiting_list((np), DID_OK)
- #define reset_waiting_list(np) process_waiting_list((np), DID_RESET)
+I use declaration in arch specific headers in tend to clarify the arch has implement ftrace_dyn_arch_init().
+Anyway, it maybe pointless, a generic declaration is enough. Will update it later.
 
-@@ -7997,26 +7994,6 @@ static void insert_into_waiting_list(struct ncb *np=
-, struct scsi_cmnd *cmd)
- 	}
- }
-
--static struct scsi_cmnd *retrieve_from_waiting_list(int to_remove, struct=
- ncb *np, struct scsi_cmnd *cmd)
--{
--	struct scsi_cmnd **pcmd =3D &np->waiting_list;
--
--	while (*pcmd) {
--		if (cmd =3D=3D *pcmd) {
--			if (to_remove) {
--				*pcmd =3D (struct scsi_cmnd *) cmd->next_wcmd;
--				cmd->next_wcmd =3D NULL;
--			}
--#ifdef DEBUG_WAITING_LIST
--	printk("%s: cmd %lx retrieved from waiting list\n", ncr_name(np), (u_lon=
-g) cmd);
--#endif
--			return cmd;
--		}
--		pcmd =3D (struct scsi_cmnd **) &(*pcmd)->next_wcmd;
--	}
--	return NULL;
--}
--
- static void process_waiting_list(struct ncb *np, int sts)
- {
- 	struct scsi_cmnd *waiting_list, *wcmd;
+>>  extern void ftrace_replace_code(int enable);
+>>  extern int ftrace_update_ftrace_func(ftrace_func_t func);
+>>  extern void ftrace_caller(void);
+> Christophe
+>
+> CS Group - Document Interne
