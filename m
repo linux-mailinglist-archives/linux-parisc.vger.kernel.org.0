@@ -2,336 +2,412 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4A83404775
-	for <lists+linux-parisc@lfdr.de>; Thu,  9 Sep 2021 11:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59C1C4048A5
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 Sep 2021 12:41:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232262AbhIIJEa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 9 Sep 2021 05:04:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56318 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232129AbhIIJE3 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 9 Sep 2021 05:04:29 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C66DC061575;
-        Thu,  9 Sep 2021 02:03:20 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id gp20-20020a17090adf1400b00196b761920aso921569pjb.3;
-        Thu, 09 Sep 2021 02:03:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oxrt0Di1Z5ok1Wnf6tUzyGoie6Gm8VDj4Nc/fyIhFs0=;
-        b=ow8B+4vt1F9pLfHYV9Ij+hl6+gQr9b6FrcTZp87zzgq1QFzurdhRot3GR615SQjlCw
-         Zh4RokFDllDi62GMhO7kFspujGar5GxlzpGSBRNRsZfQbQVIAbEOyPCqPhV1TBKXPJ+s
-         u9zasRNTyWq8lIbx1jH8+5ssE7WtjYRbI0SxC0XjXbWBG7dNmL5jDpm04aYaqCtEHPMd
-         oLMLrY6dxdb9aYvbcIz452wViyDA59FwyRhJgVKZpONOjEDjVsaSYv3vx/vOrl7m0wyK
-         ghHlPZ1M7WyydtleY3pZPxr+zKPmwqTqIBcA98XBRxv6yxV4tWBWRIp7oAV3uoS7xKav
-         JWeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oxrt0Di1Z5ok1Wnf6tUzyGoie6Gm8VDj4Nc/fyIhFs0=;
-        b=gPM7WU2V9NTeKB1yNGagZhcS+0MdQ5+TyeV4jc15C4ERrG7nowPzMNuGYeFiRDn36g
-         YdXpixH13B5TmiokfykBTfjNCwOID//1Ip4ejMySv8dFpaYWuDkTvMEY6R3WLNUZZAuk
-         1vpdgGiFukGKNGLyUnfR6+TtZ/EF3Tvrw7ysZgRp8BBlW0uVnfYUGw+DSy9ZtHKUXYZA
-         e9k7+TzLrGk6pB/jEP/yHBs6mMfPUfagf+jHZZ9vgBivHLETuhE3Jc25qyAalKk3ieUt
-         DCMYt8X0LuUUyZD3385UyXfGbkIShzpgXwIuYiUtN2CDIklhaJnBr1pGEqkWqnU9UXV3
-         td2g==
-X-Gm-Message-State: AOAM533yZ3Gsiygf1F1ueN5Llc/wqMt+O84WWptKD7INTFxKfxXRA0kS
-        VeLl9tihlS3yrdJvw049NUo=
-X-Google-Smtp-Source: ABdhPJxHu9zJJ9FJUWJZJWQdpknTVzTkm8TBNRuaQJzThvN9YUYI4ouL8lSFHZOTHz+j9wwl1nI78w==
-X-Received: by 2002:a17:902:d486:b0:135:9335:795b with SMTP id c6-20020a170902d48600b001359335795bmr1692439plg.73.1631178199865;
-        Thu, 09 Sep 2021 02:03:19 -0700 (PDT)
-Received: from ownia.. ([173.248.225.217])
-        by smtp.gmail.com with ESMTPSA id q126sm1600085pfc.156.2021.09.09.02.03.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Sep 2021 02:03:19 -0700 (PDT)
-From:   Weizhao Ouyang <o451686892@gmail.com>
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, Weizhao Ouyang <o451686892@gmail.com>
-Subject: [PATCH v4] ftrace: Cleanup ftrace_dyn_arch_init()
-Date:   Thu,  9 Sep 2021 17:02:16 +0800
-Message-Id: <20210909090216.1955240-1-o451686892@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        id S233891AbhIIKmX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 9 Sep 2021 06:42:23 -0400
+Received: from mout.gmx.net ([212.227.15.19]:41791 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233716AbhIIKmW (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 9 Sep 2021 06:42:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1631184064;
+        bh=Bl46ucmEKwKCqBLOJ+TY+sosetkwd4QIh7xIwIGr7YI=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=f11GkzLPeQpGZ5ueVi50BADLCM3nI0k+OxfNp9CxoXDndACuSOdiYw6HD2JTrqNPR
+         tx9Qz4J050xWDpvi+xqK0bJua/W2tgp7zFsDLkrZfOq3ibhJ1dYxSTGlXD//APf6Wv
+         BZ/EgVOU7hrt49Ir/Sl5DxjOdwAIkwhtU4nqe1t0=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost.localdomain ([80.187.121.129]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1Msq6M-1nCgBc247M-00t9Sq; Thu, 09 Sep 2021 12:41:04 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Arnd Bergmann <arnd@kernel.org>
+Subject: [PATCH] parisc: Implement __get/put_kernel_nofault()
+Date:   Thu,  9 Sep 2021 12:39:26 +0200
+Message-Id: <20210909103926.305625-1-deller@gmx.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:s3q62T7hXv9WcsuQySEjZQKF/+m3MUqOEhfJpyDlE8DTQR/RBcG
+ MalRpyOCU0yJi+L3OKtLixYM4ugT32eBeznOUcg+1oZTVXYHdQSEHwthKjuwawzCNchH0oj
+ pyvdjykOjKGG/RYgBonrWTcoEsTcYXe0P7VRuRE1F0KEMCGa5sfq4+Rle0rgulmv+8YXHLh
+ 8FX4ibT3Ia7XTlnpdCyXw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:AWO7KgHNyXg=:lNDBs3Ty+TGBuZDgChbDTL
+ arL5sLQ6z1RGi6IEslTauvpYiQo/ly8QkatWolmSi6l7yjpMpSChwoIoZtV96CMYCNVdMl34g
+ 2TTKAyeXC11XKZGhONVcGkf2Pj8wYCCj8nR34hPqeto8rPn3qkSVs8rHCIMjXDuoM2ieEU1xd
+ uTq5Ks8O/yDf7luzXlx+hamOf8eAGPim9KSDCISwTt5JZQTgQUWDU5IJRhNw3ZKtnF9Hjq3bT
+ fH9dD37VNygmN+Tnf1kyXteh25SCks0qlAy+I2LcczRbUHHG2U0qXKtHOFX963yzgQgedUBfm
+ 1x+5NCHxoJ6iWmVcH9YjFSgnPDHp2EfR/n0z/XKLmiHY5Cf9q5Tg8kJQW0OeDCJzy77IKa2JF
+ f50NeXh9iSb69ttbT94EeZaaoarIDpVk07YZ1kgP9s6jkpcEZqiV9ZS0JlCmeyBOz0LWfzIXP
+ tR/nKJDUBy1VJXc0pqVwAXojMCV/pktx9S4cr9RIR/GaLPxSUw3Kcn5k9IFiOb/1gHpJzK7b3
+ UREn8XhxcJwUpCJx6cjGDOHstE2M45WuvdTAD7u+7LZbupy42KcuenGqbffk+h1aldV3lPLCm
+ CrHInY2hZHoNEUNdCJUW8OvT7YML43V4AGgLR9yUt3xxiebwADOfI/qrfqyvcgNsOK71Yun3p
+ Recd9D5umZEZA+bdIrJtMaTFQZ3HifZqvKxCzhl5UR8WLxXnEKG21myNlLiHR61za5+syOjsj
+ S7wOEC9hPyPssVS6Nj7cnZ4u4lwFp/oYFZEK7PcGx08fyyr0Tl5VVE+KxMerDoNrixJNEwJ5y
+ ipw0vtNSw/Skm0c6YkQZieuuD//QXvxuwHHUiTvOyW3YCAaWOvGCdBx8y9lSZ1zHcmMnUhEwU
+ hOruqrzOp20bG3T1yxt+l/fnq95qtjSartJewtKuOrtWy4WdfZxDobCfX4t2428FvN8NF2slO
+ PH7T3RRHoUlP9hf3UteaJqed3AHaR1cW9oeLhpoAtdsutmBorZn2rXjVBTWRVBXfB+hik/Dby
+ hS/5N82jTGIJfZMpFnumulRbA5sjIIGGacsc+yAayWOJZ/M5awGqQO5jpJPhMu/0OyihF3lFw
+ H5PZ4t+vDM/zkA=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Most of ARCHs use empty ftrace_dyn_arch_init(), introduce a weak common
-ftrace_dyn_arch_init() to cleanup them.
+Remove CONFIG_SET_FS from parisc, so we need to add
+__get_kernel_nofault() and __put_kernel_nofault(), define
+HAVE_GET_KERNEL_NOFAULT and remove set_fs(), get_fs(), load_sr2(),
+thread_info->addr_limit, KERNEL_DS and USER_DS.
 
-Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com> (s390)
-Acked-by: Helge Deller <deller@gmx.de> (parisc)
+The nice side-effect of this patch is that we now can directly access
+userspace via sr3 without the need to use a temporary sr2 which is
+either copied from sr3 or set to zero (for kernel space).
 
----
-Changes in v4:
--- revert the generic declaration
+Signed-off-by: Helge Deller <deller@gmx.de>
+Suggested-by: Arnd Bergmann <arnd@kernel.org>
+=2D--
+ arch/parisc/Kconfig                   |   1 -
+ arch/parisc/include/asm/processor.h   |   4 -
+ arch/parisc/include/asm/thread_info.h |   2 -
+ arch/parisc/include/asm/uaccess.h     | 122 +++++++++++++-------------
+ arch/parisc/kernel/asm-offsets.c      |   1 -
+ arch/parisc/lib/lusercopy.S           |  18 +---
+ 6 files changed, 62 insertions(+), 86 deletions(-)
 
-Changes in v3:
--- fix unrecognized opcode on PowerPC
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 3ae71994399c..b5bc346d464a 100644
+=2D-- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -64,7 +64,6 @@ config PARISC
+ 	select HAVE_KPROBES_ON_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS
+ 	select HAVE_SOFTIRQ_ON_OWN_STACK if IRQSTACKS
+-	select SET_FS
 
-Changes in v2:
--- correct CONFIG_DYNAMIC_FTRACE on PowerPC
--- add Acked-by tag
+ 	help
+ 	  The PA-RISC microprocessor is designed by Hewlett-Packard and used
+diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm=
+/processor.h
+index b5fbcd2c1780..eeb7da064289 100644
+=2D-- a/arch/parisc/include/asm/processor.h
++++ b/arch/parisc/include/asm/processor.h
+@@ -101,10 +101,6 @@ DECLARE_PER_CPU(struct cpuinfo_parisc, cpu_data);
 
----
- arch/arm/kernel/ftrace.c        | 5 -----
- arch/arm64/kernel/ftrace.c      | 5 -----
- arch/csky/kernel/ftrace.c       | 5 -----
- arch/ia64/kernel/ftrace.c       | 6 ------
- arch/microblaze/kernel/ftrace.c | 5 -----
- arch/nds32/kernel/ftrace.c      | 5 -----
- arch/parisc/kernel/ftrace.c     | 5 -----
- arch/riscv/kernel/ftrace.c      | 5 -----
- arch/s390/kernel/ftrace.c       | 5 -----
- arch/sh/kernel/ftrace.c         | 5 -----
- arch/sparc/kernel/ftrace.c      | 5 -----
- arch/x86/kernel/ftrace.c        | 5 -----
- kernel/trace/ftrace.c           | 5 +++++
- 13 files changed, 5 insertions(+), 61 deletions(-)
+ #define CPU_HVERSION ((boot_cpu_data.hversion >> 4) & 0x0FFF)
 
-diff --git a/arch/arm/kernel/ftrace.c b/arch/arm/kernel/ftrace.c
-index 3c83b5d29697..a006585e1c09 100644
---- a/arch/arm/kernel/ftrace.c
-+++ b/arch/arm/kernel/ftrace.c
-@@ -193,11 +193,6 @@ int ftrace_make_nop(struct module *mod,
- 
- 	return ret;
- }
+-typedef struct {
+-	int seg;
+-} mm_segment_t;
 -
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
- #endif /* CONFIG_DYNAMIC_FTRACE */
- 
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-diff --git a/arch/arm64/kernel/ftrace.c b/arch/arm64/kernel/ftrace.c
-index 7f467bd9db7a..fc62dfe73f93 100644
---- a/arch/arm64/kernel/ftrace.c
-+++ b/arch/arm64/kernel/ftrace.c
-@@ -236,11 +236,6 @@ void arch_ftrace_update_code(int command)
- 	command |= FTRACE_MAY_SLEEP;
- 	ftrace_modify_all_code(command);
+ #define ARCH_MIN_TASKALIGN	8
+
+ struct thread_struct {
+diff --git a/arch/parisc/include/asm/thread_info.h b/arch/parisc/include/a=
+sm/thread_info.h
+index 0bd38a972cea..00ad50fef769 100644
+=2D-- a/arch/parisc/include/asm/thread_info.h
++++ b/arch/parisc/include/asm/thread_info.h
+@@ -11,7 +11,6 @@
+ struct thread_info {
+ 	struct task_struct *task;	/* main task structure */
+ 	unsigned long flags;		/* thread_info flags (see TIF_*) */
+-	mm_segment_t addr_limit;	/* user-level address space limit */
+ 	__u32 cpu;			/* current CPU */
+ 	int preempt_count;		/* 0=3Dpremptable, <0=3DBUG; will also serve as bh-c=
+ounter */
+ };
+@@ -21,7 +20,6 @@ struct thread_info {
+ 	.task		=3D &tsk,			\
+ 	.flags		=3D 0,			\
+ 	.cpu		=3D 0,			\
+-	.addr_limit	=3D KERNEL_DS,		\
+ 	.preempt_count	=3D INIT_PREEMPT_COUNT,	\
  }
+
+diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm/u=
+access.h
+index a4368731f2b4..8b965f961eda 100644
+=2D-- a/arch/parisc/include/asm/uaccess.h
++++ b/arch/parisc/include/asm/uaccess.h
+@@ -11,14 +11,6 @@
+ #include <linux/bug.h>
+ #include <linux/string.h>
+
+-#define KERNEL_DS	((mm_segment_t){0})
+-#define USER_DS 	((mm_segment_t){1})
 -
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
- #endif /* CONFIG_DYNAMIC_FTRACE */
- 
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-diff --git a/arch/csky/kernel/ftrace.c b/arch/csky/kernel/ftrace.c
-index b4a7ec1517ff..50bfcf129078 100644
---- a/arch/csky/kernel/ftrace.c
-+++ b/arch/csky/kernel/ftrace.c
-@@ -133,11 +133,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 				(unsigned long)func, true, true);
- 	return ret;
- }
+-#define uaccess_kernel() (get_fs().seg =3D=3D KERNEL_DS.seg)
 -
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
- #endif /* CONFIG_DYNAMIC_FTRACE */
- 
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-diff --git a/arch/ia64/kernel/ftrace.c b/arch/ia64/kernel/ftrace.c
-index b2ab2d58fb30..d6360fd404ab 100644
---- a/arch/ia64/kernel/ftrace.c
-+++ b/arch/ia64/kernel/ftrace.c
-@@ -194,9 +194,3 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 	flush_icache_range(addr, addr + 16);
- 	return 0;
- }
+-#define get_fs()	(current_thread_info()->addr_limit)
+-#define set_fs(x)	(current_thread_info()->addr_limit =3D (x))
 -
--/* run from kstop_machine */
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
-diff --git a/arch/microblaze/kernel/ftrace.c b/arch/microblaze/kernel/ftrace.c
-index 224eea40e1ee..188749d62709 100644
---- a/arch/microblaze/kernel/ftrace.c
-+++ b/arch/microblaze/kernel/ftrace.c
-@@ -163,11 +163,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 	return ret;
- }
- 
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
--
- int ftrace_update_ftrace_func(ftrace_func_t func)
- {
- 	unsigned long ip = (unsigned long)(&ftrace_call);
-diff --git a/arch/nds32/kernel/ftrace.c b/arch/nds32/kernel/ftrace.c
-index 0e23e3a8df6b..f0ef4842d191 100644
---- a/arch/nds32/kernel/ftrace.c
-+++ b/arch/nds32/kernel/ftrace.c
-@@ -84,11 +84,6 @@ void _ftrace_caller(unsigned long parent_ip)
- 	/* restore all state needed by the compiler epilogue */
- }
- 
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
--
- static unsigned long gen_sethi_insn(unsigned long addr)
- {
- 	unsigned long opcode = 0x46000000;
-diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
-index 0a1e75af5382..01581f715737 100644
---- a/arch/parisc/kernel/ftrace.c
-+++ b/arch/parisc/kernel/ftrace.c
-@@ -94,11 +94,6 @@ int ftrace_disable_ftrace_graph_caller(void)
+ /*
+  * Note that since kernel addresses are in a separate address space on
+  * parisc, we don't need to do anything for access_ok().
+@@ -33,11 +25,11 @@
+ #define get_user __get_user
+
+ #if !defined(CONFIG_64BIT)
+-#define LDD_USER(val, ptr)	__get_user_asm64(val, ptr)
+-#define STD_USER(x, ptr)	__put_user_asm64(x, ptr)
++#define LDD_USER(sr, val, ptr)	__get_user_asm64(sr, val, ptr)
++#define STD_USER(sr, x, ptr)	__put_user_asm64(sr, x, ptr)
+ #else
+-#define LDD_USER(val, ptr)	__get_user_asm(val, "ldd", ptr)
+-#define STD_USER(x, ptr)	__put_user_asm("std", x, ptr)
++#define LDD_USER(sr, val, ptr)	__get_user_asm(sr, val, "ldd", ptr)
++#define STD_USER(sr, x, ptr)	__put_user_asm(sr, "std", x, ptr)
  #endif
- 
- #ifdef CONFIG_DYNAMIC_FTRACE
+
+ /*
+@@ -67,28 +59,15 @@ struct exception_table_entry {
+ #define ASM_EXCEPTIONTABLE_ENTRY_EFAULT( fault_addr, except_addr )\
+ 	ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr + 1)
+
+-/*
+- * load_sr2() preloads the space register %%sr2 - based on the value of
+- * get_fs() - with either a value of 0 to access kernel space (KERNEL_DS =
+which
+- * is 0), or with the current value of %%sr3 to access user space (USER_D=
+S)
+- * memory. The following __get_user_asm() and __put_user_asm() functions =
+have
+- * %%sr2 hard-coded to access the requested memory.
+- */
+-#define load_sr2() \
+-	__asm__(" or,=3D  %0,%%r0,%%r0\n\t"	\
+-		" mfsp %%sr3,%0\n\t"		\
+-		" mtsp %0,%%sr2\n\t"		\
+-		: : "r"(get_fs()) : )
 -
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
- int ftrace_update_ftrace_func(ftrace_func_t func)
- {
- 	return 0;
-diff --git a/arch/riscv/kernel/ftrace.c b/arch/riscv/kernel/ftrace.c
-index 7f1e5203de88..4716f4cdc038 100644
---- a/arch/riscv/kernel/ftrace.c
-+++ b/arch/riscv/kernel/ftrace.c
-@@ -154,11 +154,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 
- 	return ret;
+-#define __get_user_internal(val, ptr)			\
++#define __get_user_internal(sr, val, ptr)		\
+ ({							\
+ 	register long __gu_err __asm__ ("r8") =3D 0;	\
+ 							\
+ 	switch (sizeof(*(ptr))) {			\
+-	case 1: __get_user_asm(val, "ldb", ptr); break;	\
+-	case 2: __get_user_asm(val, "ldh", ptr); break; \
+-	case 4: __get_user_asm(val, "ldw", ptr); break; \
+-	case 8: LDD_USER(val, ptr); break;		\
++	case 1: __get_user_asm(sr, val, "ldb", ptr); break; \
++	case 2: __get_user_asm(sr, val, "ldh", ptr); break; \
++	case 4: __get_user_asm(sr, val, "ldw", ptr); break; \
++	case 8: LDD_USER(sr, val, ptr); break;		\
+ 	default: BUILD_BUG();				\
+ 	}						\
+ 							\
+@@ -97,15 +76,14 @@ struct exception_table_entry {
+
+ #define __get_user(val, ptr)				\
+ ({							\
+-	load_sr2();					\
+-	__get_user_internal(val, ptr);			\
++	__get_user_internal("%%sr3,", val, ptr);	\
+ })
+
+-#define __get_user_asm(val, ldx, ptr)			\
++#define __get_user_asm(sr, val, ldx, ptr)		\
+ {							\
+ 	register long __gu_val;				\
+ 							\
+-	__asm__("1: " ldx " 0(%%sr2,%2),%0\n"		\
++	__asm__("1: " ldx " 0(" sr "%2),%0\n"		\
+ 		"9:\n"					\
+ 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
+ 		: "=3Dr"(__gu_val), "=3Dr"(__gu_err)        \
+@@ -114,9 +92,22 @@ struct exception_table_entry {
+ 	(val) =3D (__force __typeof__(*(ptr))) __gu_val;	\
  }
--
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
- #endif
- 
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
-index 0a464d328467..3fd80397ff52 100644
---- a/arch/s390/kernel/ftrace.c
-+++ b/arch/s390/kernel/ftrace.c
-@@ -262,11 +262,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 	return 0;
- }
- 
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
--
- void arch_ftrace_update_code(int command)
- {
- 	if (ftrace_shared_hotpatch_trampoline(NULL))
-diff --git a/arch/sh/kernel/ftrace.c b/arch/sh/kernel/ftrace.c
-index 295c43315bbe..930001bb8c6a 100644
---- a/arch/sh/kernel/ftrace.c
-+++ b/arch/sh/kernel/ftrace.c
-@@ -252,11 +252,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 
- 	return ftrace_modify_code(rec->ip, old, new);
- }
--
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
- #endif /* CONFIG_DYNAMIC_FTRACE */
- 
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-diff --git a/arch/sparc/kernel/ftrace.c b/arch/sparc/kernel/ftrace.c
-index 684b84ce397f..eaead3da8e03 100644
---- a/arch/sparc/kernel/ftrace.c
-+++ b/arch/sparc/kernel/ftrace.c
-@@ -82,11 +82,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 	new = ftrace_call_replace(ip, (unsigned long)func);
- 	return ftrace_modify_code(ip, old, new);
- }
--
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
- #endif
- 
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-index 1b3ce3b4a2a2..23d221a9a3cd 100644
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -252,11 +252,6 @@ void arch_ftrace_update_code(int command)
- 	ftrace_modify_all_code(command);
- }
- 
--int __init ftrace_dyn_arch_init(void)
--{
--	return 0;
--}
--
- /* Currently only x86_64 supports dynamic trampolines */
- #ifdef CONFIG_X86_64
- 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 7efbc8aaf7f6..4c090323198d 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6846,6 +6846,11 @@ void __init ftrace_free_init_mem(void)
- 	ftrace_free_mem(NULL, start, end);
- }
- 
-+int __init __weak ftrace_dyn_arch_init(void)
-+{
-+	return 0;
+
++#define HAVE_GET_KERNEL_NOFAULT
++#define __get_kernel_nofault(dst, src, type, err_label)	\
++{							\
++	type __z;					\
++	long __err;					\
++	__err =3D __get_user_internal("", __z, (type *)(src)); \
++	if (unlikely(__err))				\
++		goto err_label;				\
++	else						\
++		*(type *)(dst) =3D __z;			\
 +}
 +
- void __init ftrace_init(void)
- {
- 	extern unsigned long __start_mcount_loc[];
--- 
-2.30.2
++
+ #if !defined(CONFIG_64BIT)
+
+-#define __get_user_asm64(val, ptr)			\
++#define __get_user_asm64(sr, val, ptr)			\
+ {							\
+ 	union {						\
+ 		unsigned long long	l;		\
+@@ -124,8 +115,8 @@ struct exception_table_entry {
+ 	} __gu_tmp;					\
+ 							\
+ 	__asm__("   copy %%r0,%R0\n"			\
+-		"1: ldw 0(%%sr2,%2),%0\n"		\
+-		"2: ldw 4(%%sr2,%2),%R0\n"		\
++		"1: ldw 0(" sr "%2),%0\n"		\
++		"2: ldw 4(" sr "%2),%R0\n"		\
+ 		"9:\n"					\
+ 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
+ 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)	\
+@@ -138,16 +129,16 @@ struct exception_table_entry {
+ #endif /* !defined(CONFIG_64BIT) */
+
+
+-#define __put_user_internal(x, ptr)				\
++#define __put_user_internal(sr, x, ptr)				\
+ ({								\
+ 	register long __pu_err __asm__ ("r8") =3D 0;      	\
+         __typeof__(*(ptr)) __x =3D (__typeof__(*(ptr)))(x);	\
+ 								\
+ 	switch (sizeof(*(ptr))) {				\
+-	case 1: __put_user_asm("stb", __x, ptr); break;		\
+-	case 2: __put_user_asm("sth", __x, ptr); break;		\
+-	case 4: __put_user_asm("stw", __x, ptr); break;		\
+-	case 8: STD_USER(__x, ptr); break;			\
++	case 1: __put_user_asm(sr, "stb", __x, ptr); break;	\
++	case 2: __put_user_asm(sr, "sth", __x, ptr); break;	\
++	case 4: __put_user_asm(sr, "stw", __x, ptr); break;	\
++	case 8: STD_USER(sr, __x, ptr); break;			\
+ 	default: BUILD_BUG();					\
+ 	}							\
+ 								\
+@@ -156,10 +147,20 @@ struct exception_table_entry {
+
+ #define __put_user(x, ptr)					\
+ ({								\
+-	load_sr2();						\
+-	__put_user_internal(x, ptr);				\
++	__put_user_internal("%%sr3,", x, ptr);			\
+ })
+
++#define __put_kernel_nofault(dst, src, type, err_label)		\
++{								\
++	type __z =3D *(type *)(src);				\
++	long __err;						\
++	__err =3D __put_user_internal("", __z, (type *)(dst));	\
++	if (unlikely(__err))					\
++		goto err_label;					\
++}
++
++
++
+
+ /*
+  * The "__put_user/kernel_asm()" macros tell gcc they read from memory
+@@ -170,26 +171,26 @@ struct exception_table_entry {
+  * r8 is already listed as err.
+  */
+
+-#define __put_user_asm(stx, x, ptr)                         \
+-	__asm__ __volatile__ (                              \
+-		"1: " stx " %2,0(%%sr2,%1)\n"		    \
+-		"9:\n"					    \
+-		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	    \
+-		: "=3Dr"(__pu_err)                            \
++#define __put_user_asm(sr, stx, x, ptr)				\
++	__asm__ __volatile__ (					\
++		"1: " stx " %2,0(" sr "%1)\n"			\
++		"9:\n"						\
++		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
++		: "=3Dr"(__pu_err)				\
+ 		: "r"(ptr), "r"(x), "0"(__pu_err))
+
+
+ #if !defined(CONFIG_64BIT)
+
+-#define __put_user_asm64(__val, ptr) do {	    	    \
+-	__asm__ __volatile__ (				    \
+-		"1: stw %2,0(%%sr2,%1)\n"		    \
+-		"2: stw %R2,4(%%sr2,%1)\n"		    \
+-		"9:\n"					    \
+-		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	    \
+-		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)	    \
+-		: "=3Dr"(__pu_err)                            \
+-		: "r"(ptr), "r"(__val), "0"(__pu_err));	    \
++#define __put_user_asm64(sr, __val, ptr) do {			\
++	__asm__ __volatile__ (					\
++		"1: stw %2,0(" sr "%1)\n"			\
++		"2: stw %R2,4(" sr "%1)\n"			\
++		"9:\n"						\
++		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
++		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)		\
++		: "=3Dr"(__pu_err)				\
++		: "r"(ptr), "r"(__val), "0"(__pu_err));		\
+ } while (0)
+
+ #endif /* !defined(CONFIG_64BIT) */
+@@ -200,12 +201,11 @@ struct exception_table_entry {
+  */
+
+ extern long strncpy_from_user(char *, const char __user *, long);
+-extern unsigned lclear_user(void __user *, unsigned long);
++extern __must_check unsigned lclear_user(void __user *, unsigned long);
+ extern __must_check long strnlen_user(const char __user *src, long n);
+ /*
+  * Complex access routines -- macros
+  */
+-#define user_addr_max() (~0UL)
+
+ #define clear_user lclear_user
+ #define __clear_user lclear_user
+diff --git a/arch/parisc/kernel/asm-offsets.c b/arch/parisc/kernel/asm-off=
+sets.c
+index 33113ba24054..22924a3f1728 100644
+=2D-- a/arch/parisc/kernel/asm-offsets.c
++++ b/arch/parisc/kernel/asm-offsets.c
+@@ -230,7 +230,6 @@ int main(void)
+ 	DEFINE(TI_TASK, offsetof(struct thread_info, task));
+ 	DEFINE(TI_FLAGS, offsetof(struct thread_info, flags));
+ 	DEFINE(TI_CPU, offsetof(struct thread_info, cpu));
+-	DEFINE(TI_SEGMENT, offsetof(struct thread_info, addr_limit));
+ 	DEFINE(TI_PRE_COUNT, offsetof(struct thread_info, preempt_count));
+ 	DEFINE(THREAD_SZ, sizeof(struct thread_info));
+ 	/* THREAD_SZ_ALGN includes space for a stack frame. */
+diff --git a/arch/parisc/lib/lusercopy.S b/arch/parisc/lib/lusercopy.S
+index 0aad5ce89f4d..b428d29e45fb 100644
+=2D-- a/arch/parisc/lib/lusercopy.S
++++ b/arch/parisc/lib/lusercopy.S
+@@ -27,21 +27,6 @@
+ #include <asm/errno.h>
+ #include <linux/linkage.h>
+
+-	/*
+-	 * get_sr gets the appropriate space value into
+-	 * sr1 for kernel/user space access, depending
+-	 * on the flag stored in the task structure.
+-	 */
+-
+-	.macro  get_sr
+-	mfctl       %cr30,%r1
+-	ldw         TI_SEGMENT(%r1),%r22
+-	mfsp        %sr3,%r1
+-	or,<>       %r22,%r0,%r0
+-	copy        %r0,%r1
+-	mtsp        %r1,%sr1
+-	.endm
+-
+ 	/*
+ 	 * unsigned long lclear_user(void *to, unsigned long n)
+ 	 *
+@@ -51,10 +36,9 @@
+
+ ENTRY_CFI(lclear_user)
+ 	comib,=3D,n   0,%r25,$lclu_done
+-	get_sr
+ $lclu_loop:
+ 	addib,<>    -1,%r25,$lclu_loop
+-1:      stbs,ma     %r0,1(%sr1,%r26)
++1:	stbs,ma     %r0,1(%sr3,%r26)
+
+ $lclu_done:
+ 	bv          %r0(%r2)
+=2D-
+2.31.1
 
