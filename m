@@ -2,118 +2,167 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 578794068F8
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Sep 2021 11:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93AC5406958
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Sep 2021 11:54:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232045AbhIJJUU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 10 Sep 2021 05:20:20 -0400
-Received: from mout.gmx.net ([212.227.17.20]:57581 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231962AbhIJJUU (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 10 Sep 2021 05:20:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1631265539;
-        bh=KC8PBZPAKY6mB63juMjuHGYQPgWXdI2KoK1vz5ZL8GY=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=k/f9tf4dEGLDXmYZEDG5Eg9TkuZKybZN3No7+eLtHiU+njly9UE/sb25THAWQED9m
-         aNLLI/EYiLexYaBsPoyg/p3RCYc5SfLWaR4bdmD/o0hBnAuWcIJAN3nnqNQp8GlIKf
-         0CHDPfy2Gm9w1IeTBcIcksNM3ChRu7THOhYRwByY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([80.187.121.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N7zBb-1n1aAD2zT9-014zMH; Fri, 10
- Sep 2021 11:18:58 +0200
-Date:   Fri, 10 Sep 2021 11:17:20 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture fixes for kernel v5.15-rc1
-Message-ID: <YTsioP7hPOP47cfn@ls3530>
+        id S232108AbhIJJzx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 10 Sep 2021 05:55:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:55557 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232158AbhIJJzw (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 10 Sep 2021 05:55:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1631267680;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=G3LlEYSRHK/bW1nfGLOGdZcifmv3HCR8Ukwhz+/9614=;
+        b=Y9J9Hcm1WqKlbeONO7eUcq9slaF6zwb9l70vgljYKxCKH4z+7SKwa+Z9stNlUh0VxZeJdE
+        nGfFaRJIzKOx0iAWCJy4LvODlB5pZ/RXry4bezHpEO6AHVVAWjGRL8jav/x/5ZaC0ZlnYr
+        QK1DCGqL+bAibkp0P6Q78ou2McEDuAA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-473-SXLVTc5UMCyzlw0kQNVxxA-1; Fri, 10 Sep 2021 05:54:37 -0400
+X-MC-Unique: SXLVTc5UMCyzlw0kQNVxxA-1
+Received: by mail-wm1-f72.google.com with SMTP id k5-20020a7bc3050000b02901e081f69d80so578109wmj.8
+        for <linux-parisc@vger.kernel.org>; Fri, 10 Sep 2021 02:54:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=G3LlEYSRHK/bW1nfGLOGdZcifmv3HCR8Ukwhz+/9614=;
+        b=Oxsqq3g6vEe+Tqb4XKyiEGD9D4OYyhkeN523nAByFnNNLhYKgTUsdPLf8HAJUAWh24
+         f9uPN5ySzVFta8boECpD/I9IXRLtaSBaw6ZYRwSQNefrPd+ouxW+KdNlk6Nmgp5tucKQ
+         6Y1sivM7e6Rql2mn+KsA7st1LAbvGOYHLpAE6HPrkUMkg380bLFkdECRpS3X6wngNMBs
+         sNT73oeUV21nWU+91I5WODaZhLFDF+o5jrR0YhU/8J2j1jByvBoZ4w8bidjt+qd+eUrn
+         66qzYHT54HWOhRXQ35fdsfPpNHHxJehkgY4lTC+d/Q0TWvq/VDhjdOcPK9fg2ZkWLXcI
+         n5Sg==
+X-Gm-Message-State: AOAM532Li5dE613rFYh4/e0pFlSGSf4jM0J+lrQMIIqSXXfMqrRbqRQe
+        7pmOCY8ubTlrzMfItsPKEFvgkaki48s1zd1nKM9wEJ7xODabCbMjeywbHjnx6jAjPJLTLl6P5M/
+        oTC2NE3JECQTp7d3IrgijKfj5
+X-Received: by 2002:adf:eb81:: with SMTP id t1mr8840986wrn.245.1631267676747;
+        Fri, 10 Sep 2021 02:54:36 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzO0Y/+7P/8niNtl+CoPrjCVE7HuwDhOVv5eL0lpW28+D5kEKFv5EWjYMYsYF1r6EhbMvRO7w==
+X-Received: by 2002:adf:eb81:: with SMTP id t1mr8840971wrn.245.1631267676591;
+        Fri, 10 Sep 2021 02:54:36 -0700 (PDT)
+Received: from redhat.com ([2.55.145.189])
+        by smtp.gmail.com with ESMTPSA id o7sm3686409wmc.46.2021.09.10.02.54.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Sep 2021 02:54:34 -0700 (PDT)
+Date:   Fri, 10 Sep 2021 05:54:28 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Andi Kleen <ak@linux.intel.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
+Message-ID: <20210910054044-mutt-send-email-mst@kernel.org>
+References: <CAPcyv4iJVQKJ3bVwZhD08c8GNEP0jW2gx=H504NXcYK5o2t01A@mail.gmail.com>
+ <d992b5af-8d57-6aa6-bd49-8e2b8d832b19@linux.intel.com>
+ <20210824053830-mutt-send-email-mst@kernel.org>
+ <d21a2a2d-4670-ba85-ce9a-fc8ea80ef1be@linux.intel.com>
+ <20210829112105-mutt-send-email-mst@kernel.org>
+ <09b340dd-c8a8-689c-4dad-4fe0e36d39ae@linux.intel.com>
+ <20210829181635-mutt-send-email-mst@kernel.org>
+ <3a88a255-a528-b00a-912b-e71198d5f58f@linux.intel.com>
+ <20210830163723-mutt-send-email-mst@kernel.org>
+ <69fc30f4-e3e2-add7-ec13-4db3b9cc0cbd@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:TV4ueebJTrFNQK8+ByJZcVLoLf9VVT2Ywu1cwYD5e2aV2nHJi+y
- pEvKsMZDKBZcWJQePbSy0kbpK+NFz1G+EbLViWBS9tewN1aZ+/6cX0sewU25yF7RJxxMDCv
- NEa1D+F9c58ieO2JnaJrlTgtWZZIMNYituQoopQ/o2XD8MEj40icoOwRTclTi4gITfPTgyG
- /NC/1fXrJszp1GtHBsnUQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:vJHlsmIwOe4=:qiHUuAHOec1E/4mEPDArmW
- N4Rwu+9k0ICXc+4nlN2J+eCdzr7anXtRmC11dEa38jSwztKzqs9QsIiHwMJV6UmvgCJAUNwde
- 7x2lJG0ioBaHeQT8qJJP7mzGCgsdETT+fCZau9kdTQpcYedesSNGwc/7bwcHDXJp2eEKsAgZl
- 6tsrIDPWfxDm5tBWweXm1HCRRcxqFxnJkxTB7wI63WNelSWdOU76oaos0sPT57GZ/agCMCRB0
- pJ7A3qlm9K8DErPFgO0+MOp2hxfAL45JmnbY/KEjXmGG7qXq53vpbqm9WFnx5XDN/nnrLBP/m
- VkDVzKtOgNF9Nxsva730rAhawTxQsyAPDF8AeJxhPbdMk8xP/nAsL6+qUzullMDOBP8Ve7a/I
- MNsFKpuhSrmmg5T8NLUciaFJEz9Ze7B6+qMTYlua8qA17qV2zdphSQuRZkJi9xnpKeUS7CP8o
- PQH9UvG4z7TPU9GFdfRBE0h07hR1sLtkjmsgzPWdqhzAWqT7b97MvmwRqxsyXZI+2yHGtXrx9
- Qsp6rDfVe5O2j4qaSGNL2BSu1jbfBox7QAag1v552VKc0ZyzkHano6iCtNkn7BZO7o6gVdhVI
- ykl4HaXm1KO4+2iWJwUP5+LaIbZKVIOFDLLoefXjS+GX2ZtTbvAJl+l7x8Ew2ezujXabfvZmi
- +x8OBWyw/E/dFf+xpWlWHebRpeELRIRp9BubdR3lDxRLmcXWWePF2TyntYtPzcLePDp2vfshP
- yhvvdXbiQ8HI/NsCco7sf0a8YXZiGfW5/OL7HvWYQCqkzaNddyu2Tfh2Z62iQpmeozX1NrNgh
- ZmVyVUgoj9hohT+TDlyG/O+5MZqrzUTRrkbnhnrKLSUqCtbiAVOW0fmOnwJ9t0SGAS6hExvsC
- lgOYRcFME22/d9I+4asa+q9kiZWRnIcYAxGu8PIFFbxgfFiXtINp+aUJmMIU3Ow7iWstt9eBv
- jruCZhz7eAhZVhF2Skeh5B1VFvauOI6ZAJXFK6Q0eyYGxZS6TsrK6tcmhdvKlobuaXvNF1Xkt
- ZUghzZkxdgT47Qig+rv25GF870/uNegqhr3xhrLuFY0HVv8kS4K8wii6V7I6l7vRMlesXITZJ
- DRMkfI31RCc6J8=
+In-Reply-To: <69fc30f4-e3e2-add7-ec13-4db3b9cc0cbd@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+On Mon, Aug 30, 2021 at 05:23:17PM -0700, Andi Kleen wrote:
+> 
+> On 8/30/2021 1:59 PM, Michael S. Tsirkin wrote:
+> > 
+> > > Or we can add _audited to the name. ioremap_shared_audited?
+> > But it's not the mapping that has to be done in handled special way.
+> > It's any data we get from device, not all of it coming from IO, e.g.
+> > there's DMA and interrupts that all have to be validated.
+> > Wouldn't you say that what is really wanted is just not running
+> > unaudited drivers in the first place?
+> 
+> 
+> Yes.
 
-please pull some more parisc architecture fixes for kernel 5.15-rc1 from:
+Then ... let's do just that?
 
-  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc-3
+> 
+> > 
+> > > And we've been avoiding that drivers can self declare auditing, we've been
+> > > trying to have a separate centralized list so that it's easier to enforce
+> > > and avoids any cut'n'paste mistakes.
+> > > 
+> > > -Andi
+> > Now I'm confused. What is proposed here seems to be basically that,
+> > drivers need to declare auditing by replacing ioremap with
+> > ioremap_shared.
+> 
+> Auditing is declared on the device model level using a central allow list.
 
-Fixes:
-* Build warning fixes in Makefile and Dino PCI driver
-* Fix when sched_clock is marked unstable
-* Drop strnlen_user() in favour of generic version
-* Prevent kernel to write outside userspace signal stack
-* Remove CONFIG_SET_FS incl. KERNEL_DS and USER_DS from parisc and switch to
-  __get/put_kernel_nofault()
+Can we not have an init call allow list instead of, or in addition to, a
+device allow list?
 
-Thanks,
-Helge
+> But this cannot do anything to initcalls that run before probe,
 
-------------
-The following changes since commit a3fa7a101dcff93791d1b1bdb3affcad1410c8c1:
+Can't we extend module_init so init calls are validated against the
+allow list?
 
-  Merge branches 'akpm' and 'akpm-hotfixes' (patches from Andrew) (2021-09-08 18:52:05 -0700)
+> that's why
+> an extra level of defense of ioremap opt-in is useful.
 
-are available in the Git repository at:
+OK even assuming this, why is pci_iomap opt-in useful?
+That never happens before probe - there's simply no pci_device then.
 
-  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.15-3
+> But it's not the
+> primary mechanism to declare a driver audited, that's the allow list. The
+> ioremap is just another mechanism to avoid having to touch a lot of legacy
+> drivers.
+> 
+> If we agree on that then the original proposed semantics of "ioremap_shared"
+> may be acceptable?
+> 
+> -Andi
+> 
 
-for you to fetch changes up to 671028728083e856e9919221b109e3b2cd2ccc49:
+It looks suspiciously like drivers self-declaring auditing to me which
+we both seem to agree is undesirable. What exactly is the difference?
 
-  parisc: Implement __get/put_kernel_nofault() (2021-09-09 22:53:09 +0200)
+Or are you just trying to disable anything that runs before probe?
+In that case I don't see a reason to touch pci drivers though.
+These should be fine with just the device model list.
 
-----------------------------------------------------------------
-Guenter Roeck (1):
-      parisc: Move pci_dev_is_behind_card_dino to where it is used
+-- 
+MST
 
-Helge Deller (7):
-      parisc: Add missing FORCE prerequisite in Makefile
-      parisc: Drop strnlen_user() in favour of generic version
-      parisc: Drop useless debug info and comments from signal.c
-      parisc: Check user signal stack trampoline is inside TASK_SIZE
-      parisc: Reduce sigreturn trampoline to 3 instructions
-      parisc: Mark sched_clock unstable only if clocks are not syncronized
-      parisc: Implement __get/put_kernel_nofault()
-
- arch/parisc/Kconfig                   |   2 -
- arch/parisc/boot/compressed/Makefile  |  18 ++---
- arch/parisc/include/asm/processor.h   |   4 --
- arch/parisc/include/asm/rt_sigframe.h |   2 +-
- arch/parisc/include/asm/thread_info.h |   2 -
- arch/parisc/include/asm/uaccess.h     | 125 +++++++++++++++++-----------------
- arch/parisc/kernel/asm-offsets.c      |   1 -
- arch/parisc/kernel/parisc_ksyms.c     |   1 -
- arch/parisc/kernel/setup.c            |   2 -
- arch/parisc/kernel/signal.c           |  45 +++++-------
- arch/parisc/kernel/signal32.h         |   2 +-
- arch/parisc/kernel/time.c             |   7 +-
- arch/parisc/lib/lusercopy.S           |  52 +-------------
- drivers/parisc/dino.c                 |  18 ++---
- 14 files changed, 102 insertions(+), 179 deletions(-)
