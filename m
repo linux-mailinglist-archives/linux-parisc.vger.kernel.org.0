@@ -2,158 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D3C9406FBC
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Sep 2021 18:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84C1E40718B
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Sep 2021 20:57:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbhIJQgA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 10 Sep 2021 12:36:00 -0400
-Received: from mga18.intel.com ([134.134.136.126]:41169 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229448AbhIJQf7 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 10 Sep 2021 12:35:59 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10103"; a="208226577"
-X-IronPort-AV: E=Sophos;i="5.85,283,1624345200"; 
-   d="scan'208";a="208226577"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2021 09:34:47 -0700
-X-IronPort-AV: E=Sophos;i="5.85,283,1624345200"; 
-   d="scan'208";a="581420171"
-Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.212.255.212]) ([10.212.255.212])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2021 09:34:46 -0700
-Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org
-References: <CAPcyv4iJVQKJ3bVwZhD08c8GNEP0jW2gx=H504NXcYK5o2t01A@mail.gmail.com>
- <d992b5af-8d57-6aa6-bd49-8e2b8d832b19@linux.intel.com>
- <20210824053830-mutt-send-email-mst@kernel.org>
- <d21a2a2d-4670-ba85-ce9a-fc8ea80ef1be@linux.intel.com>
- <20210829112105-mutt-send-email-mst@kernel.org>
- <09b340dd-c8a8-689c-4dad-4fe0e36d39ae@linux.intel.com>
- <20210829181635-mutt-send-email-mst@kernel.org>
- <3a88a255-a528-b00a-912b-e71198d5f58f@linux.intel.com>
- <20210830163723-mutt-send-email-mst@kernel.org>
- <69fc30f4-e3e2-add7-ec13-4db3b9cc0cbd@linux.intel.com>
- <20210910054044-mutt-send-email-mst@kernel.org>
-From:   Andi Kleen <ak@linux.intel.com>
-Message-ID: <f672dc1c-5280-7bbc-7a56-7c7aab31725c@linux.intel.com>
-Date:   Fri, 10 Sep 2021 09:34:45 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S232346AbhIJS6q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 10 Sep 2021 14:58:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33386 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232258AbhIJS6p (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 10 Sep 2021 14:58:45 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31EBCC061756
+        for <linux-parisc@vger.kernel.org>; Fri, 10 Sep 2021 11:57:34 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id m4so4754262ljq.8
+        for <linux-parisc@vger.kernel.org>; Fri, 10 Sep 2021 11:57:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uMGNAkC/DgKf7R/w+ERTmA5mo3/aqraem+n/oPfXFWA=;
+        b=ZSvwI2pluf+Zin+xbGVAOxBOhkk5OQab8xKewsNK9kh8eWiVXopLuwsVHSIWjdKPmA
+         o8XE8hQbxhnMLjunt9ht89yWeV0B/wkIf/lZU1fsz/TEphmQx5BoJkg3ZQKAKTKMCY+F
+         bArBzRrZMlopLf/qya1e9KE34Kpr5sKGZch4g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uMGNAkC/DgKf7R/w+ERTmA5mo3/aqraem+n/oPfXFWA=;
+        b=LBCDShbNaAd4Q9WnbrFHKG5UzN+t7ngyZLhexSbOOFlnPvj2a+UdN+1S7DRXXLvKdN
+         ZFQeTt4QuiMEmFIr7RofgAU0VK5+WGB+j7QZBCaCglrA5KnSvfe8GeXASriV2AMLvAvp
+         z9YAmlbBNKTYR1WYknKE193BP9inTUzcvcWVw1ATImdCKYMBi70UIhmGZYWnHIv28lCU
+         qOJq7Xjd/1VVezU+nhrcxLxRloEj4dbGD9Nsn2pzYEqoUEoI4xO+It5u37qbA9onH3uw
+         JdJQlMds970nqEJfi+cgiG6wvi+c/F3XA7OY3L0LjCHaETXcKzOiAOjVp4RqdzUqYIad
+         9lcg==
+X-Gm-Message-State: AOAM533lCnWDX/I7wNA8U8ATB1uXDTY/xZ7deSBaC3CQjyjyhmbhqEJN
+        4Me704X8RaO2uyJfocPiFByT4z7pDKvYF92HgMc=
+X-Google-Smtp-Source: ABdhPJzlbP5f/3NJfX6kojJvTppRRURvaEFmkqKcs51caqlTYHWl4rozQafvcLcv9AbK03BGKGxpCw==
+X-Received: by 2002:a05:651c:2109:: with SMTP id a9mr5579935ljq.174.1631300252018;
+        Fri, 10 Sep 2021 11:57:32 -0700 (PDT)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
+        by smtp.gmail.com with ESMTPSA id 28sm635062lfq.158.2021.09.10.11.57.31
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Sep 2021 11:57:31 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id n2so6083310lfk.0
+        for <linux-parisc@vger.kernel.org>; Fri, 10 Sep 2021 11:57:31 -0700 (PDT)
+X-Received: by 2002:a05:6512:3da5:: with SMTP id k37mr5052881lfv.655.1631300251179;
+ Fri, 10 Sep 2021 11:57:31 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210910054044-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <YTsioP7hPOP47cfn@ls3530>
+In-Reply-To: <YTsioP7hPOP47cfn@ls3530>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 10 Sep 2021 11:57:15 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjtcSUFiXn4E22SrQBVE0giWZ=m4owA6MmS74C9jW1=dQ@mail.gmail.com>
+Message-ID: <CAHk-=wjtcSUFiXn4E22SrQBVE0giWZ=m4owA6MmS74C9jW1=dQ@mail.gmail.com>
+Subject: Re: [GIT PULL] parisc architecture fixes for kernel v5.15-rc1
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-
->>>> And we've been avoiding that drivers can self declare auditing, we've been
->>>> trying to have a separate centralized list so that it's easier to enforce
->>>> and avoids any cut'n'paste mistakes.
->>>>
->>>> -Andi
->>> Now I'm confused. What is proposed here seems to be basically that,
->>> drivers need to declare auditing by replacing ioremap with
->>> ioremap_shared.
->> Auditing is declared on the device model level using a central allow list.
-> Can we not have an init call allow list instead of, or in addition to, a
-> device allow list?
-
-
-That would be quite complicated and intrusive. In fact I'm not even sure 
-how to do maintain something like this. There are a lot of needed 
-initcalls, they would all need to be marked. How can we distinguish 
-them? It would be a giant auditing project. And of course how would you 
-prevent it from bitrotting?
-
-
-Basically it would be hundreds of changes all over the tree, just to 
-avoid two changes in virtio and MSI. Approach of just stopping the 
-initcalls from doing bad things is much less intrusive.
-
+On Fri, Sep 10, 2021 at 2:19 AM Helge Deller <deller@gmx.de> wrote:
 >
->> But this cannot do anything to initcalls that run before probe,
-> Can't we extend module_init so init calls are validated against the
-> allow list?
-
-See above.
-
-
-Also the problem isn't really with modules (we rely on udev not loading 
-them), but with builtin initcalls
-
-
+> please pull some more parisc architecture fixes for kernel 5.15-rc1 from:
 >
->> that's why
->> an extra level of defense of ioremap opt-in is useful.
-> OK even assuming this, why is pci_iomap opt-in useful?
-> That never happens before probe - there's simply no pci_device then.
+>   http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc-3
 
+Well that doesn't work at all.
 
-Hmm, yes that's true. I guess we can make it default to opt-in for 
-pci_iomap.
+The *branch* name that you have a few lines lower down in the actual
+pull request part ('parisc-5.15-3') does work, but I didn't get the
+tag. I suspect you used the branch name because you couldn't get the
+wrong tag name to work, and didn't look at why it didn't work.
 
-It only really matters for device less ioremaps.
+Because looking closer using 'git ls-remote', it's because your tag
+name was bogus. You actually named it 'for-5.13/parisc-3'.
 
->
-> It looks suspiciously like drivers self-declaring auditing to me which
-> we both seem to agree is undesirable. What exactly is the difference?
+I fixed it up and edited the wrong name after-the-fact, but please be
+more careful.
 
+> * Remove CONFIG_SET_FS incl. KERNEL_DS and USER_DS from parisc and
+>   switch to __get/put_kernel_nofault()
 
-Just allow listing the ioremaps is not self declaration because the 
-device will still not initialize due to the central device filter. If 
-you want to use it that has to be changed.
+Lovely. Several architectures to go (alpha, arc, csky, h8300, hexagon,
+ia64, m68k, microblaze, nds32, nios2, openrisc, sh, sparc, um, and
+xtensa) but it's slowly shrinking..
 
-It's just an additional safety net to contain code running before probe.
-
-
->
-> Or are you just trying to disable anything that runs before probe?
-
-
-Well anything that could do dangerous host interactions (like processing 
-ioremap data) A lot of things are harmless and can be allowed, or 
-already blocked elsewhere (e.g. we have a IO port filter). This just 
-handles the ioremap/MMIO case.
-
-> In that case I don't see a reason to touch pci drivers though.
-> These should be fine with just the device model list.
-
-
-That won't stop initcalls.
-
-
--Andi
-
-
->
+             Linus
