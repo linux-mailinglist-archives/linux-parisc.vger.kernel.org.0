@@ -2,96 +2,61 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C1E40718B
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Sep 2021 20:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05F3E4071D0
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Sep 2021 21:26:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232346AbhIJS6q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 10 Sep 2021 14:58:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33386 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232258AbhIJS6p (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 10 Sep 2021 14:58:45 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31EBCC061756
-        for <linux-parisc@vger.kernel.org>; Fri, 10 Sep 2021 11:57:34 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id m4so4754262ljq.8
-        for <linux-parisc@vger.kernel.org>; Fri, 10 Sep 2021 11:57:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uMGNAkC/DgKf7R/w+ERTmA5mo3/aqraem+n/oPfXFWA=;
-        b=ZSvwI2pluf+Zin+xbGVAOxBOhkk5OQab8xKewsNK9kh8eWiVXopLuwsVHSIWjdKPmA
-         o8XE8hQbxhnMLjunt9ht89yWeV0B/wkIf/lZU1fsz/TEphmQx5BoJkg3ZQKAKTKMCY+F
-         bArBzRrZMlopLf/qya1e9KE34Kpr5sKGZch4g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uMGNAkC/DgKf7R/w+ERTmA5mo3/aqraem+n/oPfXFWA=;
-        b=LBCDShbNaAd4Q9WnbrFHKG5UzN+t7ngyZLhexSbOOFlnPvj2a+UdN+1S7DRXXLvKdN
-         ZFQeTt4QuiMEmFIr7RofgAU0VK5+WGB+j7QZBCaCglrA5KnSvfe8GeXASriV2AMLvAvp
-         z9YAmlbBNKTYR1WYknKE193BP9inTUzcvcWVw1ATImdCKYMBi70UIhmGZYWnHIv28lCU
-         qOJq7Xjd/1VVezU+nhrcxLxRloEj4dbGD9Nsn2pzYEqoUEoI4xO+It5u37qbA9onH3uw
-         JdJQlMds970nqEJfi+cgiG6wvi+c/F3XA7OY3L0LjCHaETXcKzOiAOjVp4RqdzUqYIad
-         9lcg==
-X-Gm-Message-State: AOAM533lCnWDX/I7wNA8U8ATB1uXDTY/xZ7deSBaC3CQjyjyhmbhqEJN
-        4Me704X8RaO2uyJfocPiFByT4z7pDKvYF92HgMc=
-X-Google-Smtp-Source: ABdhPJzlbP5f/3NJfX6kojJvTppRRURvaEFmkqKcs51caqlTYHWl4rozQafvcLcv9AbK03BGKGxpCw==
-X-Received: by 2002:a05:651c:2109:: with SMTP id a9mr5579935ljq.174.1631300252018;
-        Fri, 10 Sep 2021 11:57:32 -0700 (PDT)
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
-        by smtp.gmail.com with ESMTPSA id 28sm635062lfq.158.2021.09.10.11.57.31
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Sep 2021 11:57:31 -0700 (PDT)
-Received: by mail-lf1-f53.google.com with SMTP id n2so6083310lfk.0
-        for <linux-parisc@vger.kernel.org>; Fri, 10 Sep 2021 11:57:31 -0700 (PDT)
-X-Received: by 2002:a05:6512:3da5:: with SMTP id k37mr5052881lfv.655.1631300251179;
- Fri, 10 Sep 2021 11:57:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <YTsioP7hPOP47cfn@ls3530>
-In-Reply-To: <YTsioP7hPOP47cfn@ls3530>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 10 Sep 2021 11:57:15 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjtcSUFiXn4E22SrQBVE0giWZ=m4owA6MmS74C9jW1=dQ@mail.gmail.com>
-Message-ID: <CAHk-=wjtcSUFiXn4E22SrQBVE0giWZ=m4owA6MmS74C9jW1=dQ@mail.gmail.com>
+        id S232693AbhIJT1M (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 10 Sep 2021 15:27:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36014 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232223AbhIJT1K (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 10 Sep 2021 15:27:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 5D8EF611CE;
+        Fri, 10 Sep 2021 19:25:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631301958;
+        bh=EATeyJm8qfF3SE8iCM5kjfV79HUSox1zh5REqNXJj7I=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=ZW4O/7SLLZWCHq9H6V1w+GhLxI0mF0wqGPsbdlsiOWMvibqvRifc+tDCDmYa14YUS
+         vgccVeSYEz1I9ji7RNAVFiTd6e4vA3gI4OyEr7skt4uAfamZ7a5YD8EjEhwbqXGRmu
+         1V8DSx3PIRCGz1zFLosJ9owGVM6/kG/tLcoFHJGRukHLe4C9bhwVFCuIXebrE2eB/w
+         2qOYPHhOIQY/4oFQvxF9Y9YuPCsjQqcjT5NQMWEUbh9heWFocwOfYv1QYCbljaE7rd
+         6ysvzXl4WCJYlva4oSz1Rl0Fsn5zLUNsRrZs1/6sdNdrthvOac2yYwO7X8BBUht5lC
+         WYV8lzKJeGpQg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 4EF27609F8;
+        Fri, 10 Sep 2021 19:25:58 +0000 (UTC)
 Subject: Re: [GIT PULL] parisc architecture fixes for kernel v5.15-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <YTsioP7hPOP47cfn@ls3530>
+References: <YTsioP7hPOP47cfn@ls3530>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <YTsioP7hPOP47cfn@ls3530>
+X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc-3
+X-PR-Tracked-Commit-Id: 671028728083e856e9919221b109e3b2cd2ccc49
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 23ef827c1bacc6c2b8314ff5bf571d4db57059b0
+Message-Id: <163130195826.21375.9642517909511292941.pr-tracker-bot@kernel.org>
+Date:   Fri, 10 Sep 2021 19:25:58 +0000
 To:     Helge Deller <deller@gmx.de>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-parisc@vger.kernel.org,
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Sep 10, 2021 at 2:19 AM Helge Deller <deller@gmx.de> wrote:
->
-> please pull some more parisc architecture fixes for kernel 5.15-rc1 from:
->
->   http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc-3
+The pull request you sent on Fri, 10 Sep 2021 11:17:20 +0200:
 
-Well that doesn't work at all.
+> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc-3
 
-The *branch* name that you have a few lines lower down in the actual
-pull request part ('parisc-5.15-3') does work, but I didn't get the
-tag. I suspect you used the branch name because you couldn't get the
-wrong tag name to work, and didn't look at why it didn't work.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/23ef827c1bacc6c2b8314ff5bf571d4db57059b0
 
-Because looking closer using 'git ls-remote', it's because your tag
-name was bogus. You actually named it 'for-5.13/parisc-3'.
+Thank you!
 
-I fixed it up and edited the wrong name after-the-fact, but please be
-more careful.
-
-> * Remove CONFIG_SET_FS incl. KERNEL_DS and USER_DS from parisc and
->   switch to __get/put_kernel_nofault()
-
-Lovely. Several architectures to go (alpha, arc, csky, h8300, hexagon,
-ia64, m68k, microblaze, nds32, nios2, openrisc, sh, sparc, um, and
-xtensa) but it's slowly shrinking..
-
-             Linus
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
