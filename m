@@ -2,125 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C89FA40AA74
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 Sep 2021 11:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79EC440BE81
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Sep 2021 05:52:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231184AbhINJPl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 14 Sep 2021 05:15:41 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28]:34550 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229624AbhINJPg (ORCPT
+        id S236203AbhIODxu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 14 Sep 2021 23:53:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55534 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236143AbhIODxu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 14 Sep 2021 05:15:36 -0400
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id CCD36220D4;
-        Tue, 14 Sep 2021 09:14:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1631610858; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=395yGS0ex2VEogWBSAu+RwdEzwssPbbJ8k+scfecEoE=;
-        b=SlwUZn918D+t+/O/s9bdpcv0HtFMw5Jo8MiakKPq5598ISRcR+jMTDBRwQqWzVlBi2ta7e
-        9mQzdV58bHvrNxLYtTPQ3OnJgThis3VKJU+xtW1v4X6huteBRPR90fT8gzYiOUo2tsk/AA
-        bitz/ZkosGG6Gz06R6oPjvVPnczqW10=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1631610858;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=395yGS0ex2VEogWBSAu+RwdEzwssPbbJ8k+scfecEoE=;
-        b=EZfV9JNECZa3I9IKkNFmY1Kbt8x5/44vofy57cayI+AguE8164rxgqfBhC6CfUeTvWX9m/
-        jrWtOfsa3oCGALBg==
-Received: from localhost.localdomain (unknown [10.100.201.122])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 1431CA3B8E;
-        Tue, 14 Sep 2021 09:14:18 +0000 (UTC)
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiri Slaby <jslaby@suse.cz>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org
-Subject: [PATCH 12/16] tty: arch/, stop using tty_flip_buffer_push
-Date:   Tue, 14 Sep 2021 11:14:11 +0200
-Message-Id: <20210914091415.17918-5-jslaby@suse.cz>
+        Tue, 14 Sep 2021 23:53:50 -0400
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40C53C061574;
+        Tue, 14 Sep 2021 20:52:32 -0700 (PDT)
+Received: by mail-ot1-x332.google.com with SMTP id o16-20020a9d2210000000b0051b1e56c98fso1736657ota.8;
+        Tue, 14 Sep 2021 20:52:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EWlyAfIJ6LK6KpxwIys48q3PWxQlxyDohB67wcgCd/M=;
+        b=nUrn/Lw/ozglO0/A9wBQBB3xPkoAzmKdrQprI3+VccXyvcgJsFFh6Bxae1HWUezXd4
+         AQmb9ebsH9GIgQE1wl9KXWoc7PiSvaIXe9WbY/IYmDO2508scavL+H0oJX9G/cISxyrs
+         l7dPZq/Rzp/uC/iEYMQydnJlrkX84nLnxe5tih2wDXRTX+TvBe2oCSsAxdYX1HhGNItO
+         ZbYGuPbTSYb0At2GGZVSlG9XTXaXKO2wfMUzpjKvNqfo/sD0H9uxRzfXaUWlNF9avXLB
+         uvmw7xVrRzDHurwjcA9UUGVm8zBBI/SskOAh6S7tIPd1LrwGhQjamQId6BvHpdzk92Fe
+         Aq/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=EWlyAfIJ6LK6KpxwIys48q3PWxQlxyDohB67wcgCd/M=;
+        b=LjwCgFED5njp+u/j+TJYe7dYhwrrI687AyWsiQmkAQvI+Y4BSxaFr84MGmD6CQ2CqI
+         wA20udHUY16ZX8D6Pk7+cNi3xgZksyaWXVhEL9ZKU8JaaXvpQpqcOimkEkUfPeP1tk+N
+         vHstZUJLJJGc9UK/KlP/bHiEtcjGKRaOmdKaMSCwFB54EhM9bZBhsKSiWEa0pT0FVwrY
+         FyTZfZhp2gc7+xd0fI+efpBCOd0uN7PylgIn2PyhvM+DAajFX/CFvdg5IpqlbSYf7oB8
+         OZTdw4g9dZlfQhhwV1OSYBa15msZM+VHjVQw17ofnycRGvd+CLWlkrCb1dCmhSBb8m27
+         KQQg==
+X-Gm-Message-State: AOAM530k0XA2LhbRRUKFy6kZXelNdGlSkbXM+McVf0nPUm8o0Y3sLy/3
+        e2iUTyoyoXOfScRZf/JyJFJExQ+RbtM=
+X-Google-Smtp-Source: ABdhPJzoMC19sXj6sgU0ESAUjmLqYY7d90Vdr5m68MaI4eRv2IeMsJvMNWYhojvqU0D2qXE51sqMMQ==
+X-Received: by 2002:a05:6830:1f0a:: with SMTP id u10mr17832026otg.53.1631677951631;
+        Tue, 14 Sep 2021 20:52:31 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id x1sm3017780otu.8.2021.09.14.20.52.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Sep 2021 20:52:30 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-alpha@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-sparse@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH v2 0/4] Introduce and use absolute_pointer macro
+Date:   Tue, 14 Sep 2021 20:52:23 -0700
+Message-Id: <20210915035227.630204-1-linux@roeck-us.net>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210914091415.17918-1-jslaby@suse.cz>
-References: <20210914091134.17426-1-jslaby@suse.cz>
- <20210914091415.17918-1-jslaby@suse.cz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Since commit a9c3f68f3cd8d (tty: Fix low_latency BUG) in 2014,
-tty_flip_buffer_push() is only a wrapper to tty_schedule_flip(). We are
-going to remove the former, so call the latter directly in arch/.
+Kernel test builds currently fail for several architectures with error
+messages such as the following.
 
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Jeff Dike <jdike@addtoit.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-parisc@vger.kernel.org
-Cc: linux-um@lists.infradead.org
-Cc: linux-xtensa@linux-xtensa.org
----
- arch/parisc/kernel/pdc_cons.c       | 2 +-
- arch/um/drivers/chan_kern.c         | 2 +-
- arch/xtensa/platforms/iss/console.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+drivers/net/ethernet/i825xx/82596.c: In function 'i82596_probe':
+./arch/m68k/include/asm/string.h:72:25: error:
+	'__builtin_memcpy' reading 6 bytes from a region of size 0
+		[-Werror=stringop-overread]
 
-diff --git a/arch/parisc/kernel/pdc_cons.c b/arch/parisc/kernel/pdc_cons.c
-index 2661cdd256ae..221af0ab3382 100644
---- a/arch/parisc/kernel/pdc_cons.c
-+++ b/arch/parisc/kernel/pdc_cons.c
-@@ -128,7 +128,7 @@ static void pdc_console_poll(struct timer_list *unused)
- 	}
- 
- 	if (count)
--		tty_flip_buffer_push(&tty_port);
-+		tty_schedule_flip(&tty_port);
- 
- 	if (pdc_cons.flags & CON_ENABLED)
- 		mod_timer(&pdc_console_timer, jiffies + PDC_CONS_POLL_DELAY);
-diff --git a/arch/um/drivers/chan_kern.c b/arch/um/drivers/chan_kern.c
-index 62997055c454..62164db99f99 100644
---- a/arch/um/drivers/chan_kern.c
-+++ b/arch/um/drivers/chan_kern.c
-@@ -566,5 +566,5 @@ void chan_interrupt(struct line *line, int irq)
- 			return;
- 	}
-  out:
--	tty_flip_buffer_push(port);
-+	tty_schedule_flip(port);
- }
-diff --git a/arch/xtensa/platforms/iss/console.c b/arch/xtensa/platforms/iss/console.c
-index 81d7c7e8f7e9..8d8580d1ef56 100644
---- a/arch/xtensa/platforms/iss/console.c
-+++ b/arch/xtensa/platforms/iss/console.c
-@@ -84,7 +84,7 @@ static void rs_poll(struct timer_list *unused)
- 	}
- 
- 	if (i)
--		tty_flip_buffer_push(port);
-+		tty_schedule_flip(port);
- 	if (rd)
- 		mod_timer(&serial_timer, jiffies + SERIAL_TIMER_VALUE);
- 	spin_unlock(&timer_lock);
--- 
-2.33.0
+Such warnings may be reported by gcc 11.x for string and memory operations
+on fixed addresses if gcc's builtin functions are used for those
+operations.
 
+This patch series introduces absolute_pointer() to fix the problem.
+absolute_pointer() disassociates a pointer from its originating symbol
+type and context, and thus prevents gcc from making assumptions about
+pointers passed to memory operations.
+
+v2: Drop parisc patch (the problem will be solved differently)
+    alpha: Move setup.h out of uapi
+    Define COMMAND_LINE for alpha as absolute_pointer instead of using
+    absolute_pointer on the define.
+
+----------------------------------------------------------------
+Guenter Roeck (4):
+      compiler.h: Introduce absolute_pointer macro
+      net: i825xx: Use absolute_pointer for memcpy from fixed memory location
+      alpha: Move setup.h out of uapi
+      alpha: Use absolute_pointer to define COMMAND_LINE
+
+ arch/alpha/include/asm/setup.h      | 43 +++++++++++++++++++++++++++++++++++++
+ arch/alpha/include/uapi/asm/setup.h | 42 +++---------------------------------
+ drivers/net/ethernet/i825xx/82596.c |  2 +-
+ include/linux/compiler.h            |  2 ++
+ 4 files changed, 49 insertions(+), 40 deletions(-)
+ create mode 100644 arch/alpha/include/asm/setup.h
