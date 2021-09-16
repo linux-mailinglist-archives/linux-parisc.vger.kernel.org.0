@@ -2,91 +2,147 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D885340DDF8
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Sep 2021 17:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE75A40E972
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Sep 2021 20:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239013AbhIPPbc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 16 Sep 2021 11:31:32 -0400
-Received: from mout.gmx.net ([212.227.15.15]:40777 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238967AbhIPPbc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 16 Sep 2021 11:31:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1631806192;
-        bh=9S4rziGDk/XnX1ilrM487cBPhExkLOTdPPxWzVzXfhc=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=VeLi6F1wKxncsX5OZsTz0GaS3jU+uPGqSYPbUTocatNOI+BbM5NeQ0lrsWZuGT0hv
-         Lomh3YlCAZLNsKjkDCzjPAjAdDJZXAPn/n4apfjFDKOEL+mb/5OUPYgFUF66a9vHhS
-         MrY67HYeaKFiB70f8SET8PbV2QbftSulQzthyIHQ=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.154.218]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MnakR-1n9ozK31qX-00jdGQ; Thu, 16
- Sep 2021 17:29:51 +0200
-Date:   Thu, 16 Sep 2021 17:29:46 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Cc:     Guenter Roeck <linux@roeck-us.net>
-Subject: [GIT PULL] parisc architecture warning fix for kernel v5.15-rc2
-Message-ID: <YUNi6hTcS8nUrrpF@ls3530>
+        id S240489AbhIPRyu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 16 Sep 2021 13:54:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37784 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1357111AbhIPRvZ (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 16 Sep 2021 13:51:25 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C6D8C09B11A
+        for <linux-parisc@vger.kernel.org>; Thu, 16 Sep 2021 09:25:58 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id b15so2279943lfe.7
+        for <linux-parisc@vger.kernel.org>; Thu, 16 Sep 2021 09:25:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+MrqPwjGprB21xOrKUeLYED8somKhoDI07GyEYlbbo4=;
+        b=giK/CoBDhVKoZODX7QaMWenK7M0Ef7/VMrMC+JpDOGq7hzKKMIt4+9kYx+W6zhvGu1
+         ySoWjCQyGMBQPbPsmJ+MdLSpu5kCyHc8//rajgrLTwILPMxsnm4mLr03RxEorH1wc86u
+         czJJF+ua9fGukgNanz1FEl1kMG76Vh0A/SWxI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+MrqPwjGprB21xOrKUeLYED8somKhoDI07GyEYlbbo4=;
+        b=lYtScSMi3Qtp9SXT8SgojfP1kz84YPNYRsRitqgLdIJcOrWFF8D3DIl4061K2jL7lm
+         cH6xZrKKJYoVumsvNfF0yP62Vx7xFKYMdVaWLD6Att6S5nIMCqaJqRT9sCmLw0F9Zr23
+         8HPy5fTlvcb5oj+ErLBtvrqvEZI4tNNZFBBxFG23vDX0gP9egv4cAThM/Ty8pcwXSBCU
+         CYpKOGwtSnEDzS9tXx+u5oTNLXXf/F8QihU3XVWdfcAFdinTkyt2+ACnLAk/4npkqdsr
+         U/qdSEKYUkk/959MCMlUOFoz5eTOWSVxRmzwCIfnEQ262Y7eazU/Rt7ezT+fFoJgG4R+
+         dTQA==
+X-Gm-Message-State: AOAM53300AU8KcEZzLY8sEwaOFeuRsq2/qxPua7yTYQ5xcYrtxQPiGwn
+        bmsJ722bzv4/MF/+DitequDMDVfc+LyJSQ3d
+X-Google-Smtp-Source: ABdhPJyyLhgBTJaJzDaONjUnlyjzen+TUCISiBL2dzB1iRU6sJCpCutqIlk7oKA6a3hMgGQAytkZzA==
+X-Received: by 2002:a2e:8583:: with SMTP id b3mr5860318lji.389.1631809555999;
+        Thu, 16 Sep 2021 09:25:55 -0700 (PDT)
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
+        by smtp.gmail.com with ESMTPSA id x15sm299629lfn.108.2021.09.16.09.25.54
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Sep 2021 09:25:55 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id b15so2279672lfe.7
+        for <linux-parisc@vger.kernel.org>; Thu, 16 Sep 2021 09:25:54 -0700 (PDT)
+X-Received: by 2002:a2e:8185:: with SMTP id e5mr5452535ljg.31.1631809554490;
+ Thu, 16 Sep 2021 09:25:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:320d/I+FgMCCu5pnyCi58+GJ49VX+EP+MegT1c1/k/t1giePYLe
- 0E1iwiDOY9MCoTfZPXRDNNSLXdBbcJL4EfN1ku2KCLa/Z9sekCcPa0yahYsI5re9GPco4iK
- IthxUjYdKLkgHEbXTk8ofiwt07LEZW0nZkTZK7bJIQTpaWfB/xy48njeLTpW00R0EzHsXF0
- ZnOyz7bqtiGJva98R85hQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Vxg8q6NxpDE=:ryXUBfHW0Y6bcDm2pQAfPs
- jKm+OPBrjlx3ddAhCg8egp+E67jKovPpHcUtV0sQHITOliKbzOBjHtvHXG67kcG80rMIVQBJR
- PWZo7ISVKvAsoQtjo6CVmG+56Nh2xnOHyNc8SWOgx9bGf1O673Ei5si8Nm8yJbjatqd0lKMJL
- b1ic0Sjzopb9cP2SVtjFx5772gBze9nLREodnJDtSrfS/DLx92SnIXXyyqVfO4FRt/FtYMLSA
- RCbRdXXwA321DliSd3Cq6gL+ishZjhAFW4FznUPGjERYhKjJs3aGzCrGQ0y3NH4xLvbj854w4
- DBHZvWK1Xg4LC7MRup0IhxAO3btLiljjDqhCYl/SEqr+c6KhQvCQZHNLWClSoTQ5h/3T0C/jW
- QQB+jaHowBRfH0WfVAILXpzBKK+cm72IcG9/CICqiHWgrUstLpBm6MVWeqn2iwX99JLMTYl/e
- 0vHZ0p6r3xeZ+OPXcWOh5BapNkPWxrpfC0IUmON/aM5v4gmAXDHfbpcziIXh9RCt8wjXdbZ29
- 7g23fQPm61z2MoM7Mqw6negT0VtVDhfbpP0xxfcgdOTsRwz6UuJoZ+S4+SUm/8w0SlIp1I2gz
- dCicheNBTvTTlw56Uh6rw2dr/u/f0L8CnHyIN5ZvcDZJil6rTb+XthJ2s+genRcCnd3Cb0Z41
- ZZvk0sef+h44VTCmKOTO45W5ZmumGEP2hlsY/m8q6+d1wPpLzCTwdOl2sDsQiHHMaDfuVT+EZ
- jEYDFz+kImSEZFZJo1TSdsxCS+faC/q+98LaBk1lMGeOc9wlFs5evboWjJjS/OoZH2zElBifJ
- YKyBolXxE9e23hY5djCva1xYQsEgCcjQal70KatRGkFk1yEzLdXEvrEKYTb6gnLLXYIdfO6N7
- iSx5G4dl2HMAeAbumFO4TYFxjuvrW2o6Ui41d2iJDTJ/XzDF3Ic0UKkgzaGlmMX3jQ+wz7Laf
- DVjv6xl8iXbHtgh77FwPb9Pa/N4hRUs8vEr1rrx3XiUC6hgPUu/LeDDAruDOBLqhIq6FsHHyn
- P0gpnMVBxqUfX9GrtyzaSjTaO8AKSCLxEsoMGPk7I+O+Jf3bXrYiyBeX9aXsj4ttXr3oAt2GZ
- N2PMuCevvgg3fM=
+References: <20210915035227.630204-1-linux@roeck-us.net> <CAHk-=whSkMh9mc7+OSBZZvpoEEJmS6qY7kX3qixEXTLKGc=wgw@mail.gmail.com>
+ <CAHk-=wjynK7SSgTOvW7tfpFZZ0pzo67BsOsqtVHYtvju8F_bng@mail.gmail.com> <5497691.DvuYhMxLoT@alarsen.net>
+In-Reply-To: <5497691.DvuYhMxLoT@alarsen.net>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 16 Sep 2021 09:25:38 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wh84ks6FN2fBWrGZNKNhOmTZL-r5xZG7gYZ==jESG2GgA@mail.gmail.com>
+Message-ID: <CAHk-=wh84ks6FN2fBWrGZNKNhOmTZL-r5xZG7gYZ==jESG2GgA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] Introduce and use absolute_pointer macro
+To:     Anders Larsen <al@alarsen.net>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-parisc@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+        Sparse Mailing-list <linux-sparse@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+On Thu, Sep 16, 2021 at 12:02 AM Anders Larsen <al@alarsen.net> wrote:
+>
+> On Wednesday, 2021-09-15 23:19 Linus Torvalds wrote:
+> >
+> > But hey, maybe it just works so well for the very specialized user base ...
+>
+> it's actually the latter (although I guess the user base is shrinking)
 
-please pull one parisc architecture warning fix for kernel 5.15-rc2 from:
+Hey, so if it's actively used, maybe you can answer a question or two
+that I have just because I looked at the code..
 
-  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.15/parisc-4
+In particular, the inode number calculation is odd. Is there a reason
+for the "-1"? Because iboth the link case and the direct inode case
+have it, but t's a _different_ "-1":
 
-One patch which fixes a build warning when using the PAGE0 pointer.
+For the "inode_entry", it does
 
-Thanks,
-Helge
+                ino = blknum * QNX4_INODES_PER_BLOCK + ix - 1;
 
-------------
-The following changes since commit ff1ffd71d5f0612cf194f5705c671d6b64bf5f91:
+but it's worth noting that "ix" is zero-based (index within the
+block), so this kind of oddly removes one from a zero-based thing, and
+the 'ino' for the very first entry ends up being -1.
 
-  Merge tag 'hyperv-fixes-signed-20210915' of git://git.kernel.org/pub/scm/linux/kernel/git/hyperv/linux (2021-09-15 17:18:56 -0700)
+Of course, it's possible that the first entry is always empty, but it
+does seem a bit odd.
 
-are available in the Git repository at:
+For the "link_info" case, it does
 
-  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git parisc-5.15-4
+            ino = ( le32_to_cpu(de->link.dl_inode_blk) - 1 ) *
+                    QNX4_INODES_PER_BLOCK +
+                    de->link.dl_inode_ndx;
 
-for you to fetch changes up to 90cc7bed1ed19f869ae7221a6b41887fe762a6a3:
+so now it takes the _block_ index, and does that "-1" on it, and then
+multiplies it by the "entries per block" number, and adds the index.
 
-  parisc: Use absolute_pointer() to define PAGE0 (2021-09-16 08:35:42 +0200)
+So now if both are zero, the inode number is -8, not -1.
 
-----------------------------------------------------------------
-Helge Deller (1):
-      parisc: Use absolute_pointer() to define PAGE0
+But all of this matches what the *lookup* code does. It's very odd, though.
 
- arch/parisc/include/asm/page.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+But to make it stranger, then in "qnx4_iget()", the calculations all
+makes sense. There it just does "take the inode number, and look up
+block and index into the block using it".
+
+Very strange and confusing. Because it means that iget() seems to look
+up a *different* inode entry than "lookup" and "readdir" actually look
+at.
+
+I must be missing something. I obviously didn't touch any of this
+logic, I was just doing the "make the type system clearer for the
+compiler".
+
+Also, I have to say, since I was looking at compiler output, the
+calculations in readdir() are made much worse by the fact that the
+dir->pos is a "loff_t". That's signed. And then you use "%" to get the
+index within a block. Using '%' instead of bitops is fairly
+equivalent, but only for
+
+ (a) unsigned types
+
+ (b) when the divisor is a compile-time power-of-2
+
+In the qnx4 case, (b) is true, but (a) is not.
+
+Not a big deal. But usually, I tell people to avoid '% ENTRIES',
+because it really has very different behavior from '& MASK' for signed
+numbers.
+
+                  Linus
