@@ -2,65 +2,59 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B4314108CE
-	for <lists+linux-parisc@lfdr.de>; Sun, 19 Sep 2021 00:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BBDF410C19
+	for <lists+linux-parisc@lfdr.de>; Sun, 19 Sep 2021 17:13:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238312AbhIRWQm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 18 Sep 2021 18:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60582 "EHLO
+        id S233150AbhISPPN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 19 Sep 2021 11:15:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236828AbhIRWQl (ORCPT
+        with ESMTP id S230503AbhISPPM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 18 Sep 2021 18:16:41 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 305F1C061574
-        for <linux-parisc@vger.kernel.org>; Sat, 18 Sep 2021 15:15:17 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id z24so22729557lfu.13
-        for <linux-parisc@vger.kernel.org>; Sat, 18 Sep 2021 15:15:17 -0700 (PDT)
+        Sun, 19 Sep 2021 11:15:12 -0400
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48442C061574;
+        Sun, 19 Sep 2021 08:13:47 -0700 (PDT)
+Received: by mail-io1-xd34.google.com with SMTP id q3so18667722iot.3;
+        Sun, 19 Sep 2021 08:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
+        d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hhzplMeBODusyr1H2stA0puUgPSaTtOBgK77tHO282k=;
-        b=JTYIBPqLj92nNTxPKVgSXgrpmcBI0kIM1GLPs6qJei5SauEXmL4YjUER2rr88W6PSq
-         1DyThW7PUpCkaPaRUzGHd63izjL4GOav/VKQujZg/VmlgUEkUA00v11NnnZZ74r1NHxh
-         4wDTaM/CdGI1g53lKb6vt1ECENxdljnyVleYE=
+         :cc:content-transfer-encoding;
+        bh=vbpoc8nlnfHxnI+l9mWkkIGQVWPI3MGONh3p7LPE7MI=;
+        b=VM30cLMK8vCJPnDOrNVJVLKgaM108XQCUD2FUTn/7VOT0R6gTL8DYA/S/xiXNWm3y1
+         AayprkuIsnStSNKMVtZw9+Rz5oK+ArUk7DLq906so7hRzOsWC3/sVc+Y/QqCm7iMprv0
+         U8iDp/brT1ry6/RqaBObVVPa+OTrlnZw899bln5L0UtucSwwW92pgbh7X8PHCkukvBsU
+         Quk23h8w4lJ1Qf+KMkotX488eh7zOcdVmMAns5HQucqLfUTR4GVZTRA7nVMXWqRUo/Z+
+         urYeOW/Bh4ymu4grYu4TS/06TjUcAi4d6pUyQGoYzPKqLYLROPr7FwkTthR//Myx8lT1
+         4/IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hhzplMeBODusyr1H2stA0puUgPSaTtOBgK77tHO282k=;
-        b=hJG5pLRwS2nDE/5Z3pibj+7DTrPgrZi0yV5PPaeBr9bunQOZjftGOoXTuFmr+poHty
-         qeZz+txMlxQVnRMB3n6iRbrGWK/u60f73XTBK0i6//XRO07Usvvkbktiz2DA76HcSprQ
-         buyH7l2TqJzYF5knhDOUV0CfYm8LJ9QmmLeiKzNJyZnpvvAN6MXDUREIiOSJjhg8nz6G
-         5xOWcp5X3shezkTuofjdsY0tD9aDZsUwnqbK1p4ftjeP+6sEi06VgZ8nQhtN75dPe+yG
-         vsF9vz8uQE4EH3ZCJb4L/6r2RFgbHJ6tCq7/xWgRH4KqhxN3c0Ve22BWFKDGwcXRjt2C
-         TwfA==
-X-Gm-Message-State: AOAM532fMmuRMb8KOLnWxlj2EF/lo/AkeFQF+GnwBcCfLIhYp45QTMf+
-        8Krdy/2GI3gn/vV1pvhFz3w+x7Qha7SLnWje9XA=
-X-Google-Smtp-Source: ABdhPJzMjxWJ+8DQcl+9ghkzzS3SjFcBtPsXNfnqB0k6hKKL6dIH/miwb7YUvzz/wZIsRi908r033A==
-X-Received: by 2002:a2e:9ad9:: with SMTP id p25mr16447979ljj.439.1632003315183;
-        Sat, 18 Sep 2021 15:15:15 -0700 (PDT)
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com. [209.85.167.51])
-        by smtp.gmail.com with ESMTPSA id k26sm866205lfj.69.2021.09.18.15.15.15
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Sep 2021 15:15:15 -0700 (PDT)
-Received: by mail-lf1-f51.google.com with SMTP id i4so49329805lfv.4
-        for <linux-parisc@vger.kernel.org>; Sat, 18 Sep 2021 15:15:15 -0700 (PDT)
-X-Received: by 2002:a05:6512:3d29:: with SMTP id d41mr2659681lfv.474.1632002968346;
- Sat, 18 Sep 2021 15:09:28 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=vbpoc8nlnfHxnI+l9mWkkIGQVWPI3MGONh3p7LPE7MI=;
+        b=FWgagt+/1A20KZv2EdGNadKtNtPKK7t7Z2fFfLSXvtJO+8QGnKXWacgWUo9G8k+g3e
+         9c9BgvXYRXXc6pyWU53xP4fbSQC2ZYsI8AND9Ep0l9Jpudra7pdqAf5YEl/8tHjReBz9
+         0ubJXlioUse9poRE72vRvH1GfVGSQxWhO/dCFmFPKLMZGDefySvM/aGWnOrCPJGqHB+I
+         FKwocoKLrTtf66PZEEgpjPcn4MqhJz+r77nnhzEXrV7stUWYY/nt4QU9eYFxhKGoMjEk
+         JPt/sDEMnoTs93H+xqJWBlHNbOZ+iAFyl0AGg+iLD0U3aDmHNvY/v3b3X2vYXPkJynjM
+         0s7g==
+X-Gm-Message-State: AOAM533irDzpGMy6vzC+HSJqKiAv9JffFh/DiMxnd95xKrAxNzHtMzjp
+        4L22Wna7JfsvWVabVKavVToK+47fHsIaRWGlG7w=
+X-Google-Smtp-Source: ABdhPJxguGzRMzwC4iYM/5nKX7PT6FRrg4dZ2/gqzY3RezIzCOEE0tCc8v4TTygFXyyDdCl+gaGST3J79azJLga7LOM=
+X-Received: by 2002:a05:6602:180e:: with SMTP id t14mr602481ioh.204.1632064426701;
+ Sun, 19 Sep 2021 08:13:46 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAHk-=whY5mLggPSr2U00mqgUbRJYnYSxtNZm4FnEtQrHftYr8Q@mail.gmail.com>
- <202109182026.18IKQLng003683@valdese.nms.ulrich-teichert.org>
-In-Reply-To: <202109182026.18IKQLng003683@valdese.nms.ulrich-teichert.org>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sat, 18 Sep 2021 15:09:12 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh-=tMO9iCA4v+WgPSd+Gbowe5kptwo+okahihnO2fAOA@mail.gmail.com>
-Message-ID: <CAHk-=wh-=tMO9iCA4v+WgPSd+Gbowe5kptwo+okahihnO2fAOA@mail.gmail.com>
+ <202109182026.18IKQLng003683@valdese.nms.ulrich-teichert.org> <CAHk-=wh-=tMO9iCA4v+WgPSd+Gbowe5kptwo+okahihnO2fAOA@mail.gmail.com>
+In-Reply-To: <CAHk-=wh-=tMO9iCA4v+WgPSd+Gbowe5kptwo+okahihnO2fAOA@mail.gmail.com>
+From:   Dave Taht <dave.taht@gmail.com>
+Date:   Sun, 19 Sep 2021 08:13:32 -0700
+Message-ID: <CAA93jw6gK9_PMa_BtabkqyZLT4Vb+x4gsADT7vU+75bucnvrAQ@mail.gmail.com>
 Subject: Re: [PATCH v2 0/4] Introduce and use absolute_pointer macro
-To:     Ulrich Teichert <krypton@ulrich-teichert.org>
-Cc:     Michael Cree <mcree@orcon.net.nz>,
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Ulrich Teichert <krypton@ulrich-teichert.org>,
+        Michael Cree <mcree@orcon.net.nz>,
         Guenter Roeck <linux@roeck-us.net>,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -75,40 +69,43 @@ Cc:     Michael Cree <mcree@orcon.net.nz>,
         linux-parisc@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
         Sparse Mailing-list <linux-sparse@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Sep 18, 2021 at 1:26 PM Ulrich Teichert
-<krypton@ulrich-teichert.org> wrote:
+On Sun, Sep 19, 2021 at 8:01 AM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> I was just tinkering with it to get it compiled without warning,
-> I certainly didn't get the big picture :-/
+>
+> Oh well. I have an odd love-hate relationship with alpha.
+>
+> I think it's one of the worst architectures ever designed (memory
+> ordering is completely broken, and the lack of byte operations in the
+> original specs were a big reason for the initial problems and eventual
+> failure).
+>
+> But at the same time, I really did enjoy it back in the day, and it
+> _was_ the first port I did, and the first truly integrated kernel
+> architecture (the original Linux m68k port that preceded it was a
+> "hack up and replace" job rather than "integrate")
 
-Ok, you shamed me into some tinkering too, and I fixed a couple of
-issues with the alpha build.
+As a side note, I loved the Alpha, too. Compared to the VMS port
+I was too often working on in the 90s, having Linux run on it was
+a joy, and for years I used my remaining older alpha boxes as
+firewalls, trusting in the oddity of the architecture to resist
+various and sundry attacks.
 
-The whole "pci_iounmap()" mess is not something I solved (you were
-cc'd on the email I sent out about that), but I did test a few
-different Jensen configurations and fixed a couple of uglies.
+I retired the last one well over a decade back.
 
-So at least _some_ Jensen configurations build cleanly once more, and
-I re-enabled JENSEN as a valid machine target.
+RIP.
 
-But if it doesn't boot, it's all fairly moot. And those things are a
-pain to debug, and if the last booting kernel was years and years ago,
-I don't think it realistically will necessarily ever be fixed.
+>
+>            Linus
 
-Oh well. I have an odd love-hate relationship with alpha.
 
-I think it's one of the worst architectures ever designed (memory
-ordering is completely broken, and the lack of byte operations in the
-original specs were a big reason for the initial problems and eventual
-failure).
 
-But at the same time, I really did enjoy it back in the day, and it
-_was_ the first port I did, and the first truly integrated kernel
-architecture (the original Linux m68k port that preceded it was a
-"hack up and replace" job rather than "integrate")
+--=20
+Fixing Starlink's Latencies: https://www.youtube.com/watch?v=3Dc9gLo6Xrwgw
 
-           Linus
+Dave T=C3=A4ht CEO, TekLibre, LLC
