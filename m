@@ -2,148 +2,118 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC948412179
-	for <lists+linux-parisc@lfdr.de>; Mon, 20 Sep 2021 20:05:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BAE3412A7E
+	for <lists+linux-parisc@lfdr.de>; Tue, 21 Sep 2021 03:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356126AbhITSGB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 20 Sep 2021 14:06:01 -0400
-Received: from mout.gmx.net ([212.227.15.19]:54279 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1357240AbhITSDn (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 20 Sep 2021 14:03:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1632160919;
-        bh=qs0DArqAPOvJVRu48rowJhF8MgdjMaPpAg6EqgXnKTY=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=HfeksWb8LsK1BsT0Rl64NbuI6PRBJqR+5afGmXMVOpT9MQ1sGhbd4aj4wKnqg/u0/
-         WrfhZhz7yfGSieU/yXeb42bdH/pP+Foq5+xtvqElrDnj/AmkUWvZ7qETaZTC3if+Vg
-         lCzK14K/5EENOL21FIyHBP400DgQNiVDIJ3AgrjY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.139.149]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M9FnZ-1mYijQ0r9L-006KF7; Mon, 20
- Sep 2021 20:01:59 +0200
-Subject: Re: [PATCH] agp: define proper stubs for empty helpers
-To:     Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     dri-devel@lists.freedesktop.org, Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-References: <20210920121728.94045-1-arnd@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <964b57bd-d9ea-2df7-72f8-4fe0a24e365c@gmx.de>
-Date:   Mon, 20 Sep 2021 20:01:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S233007AbhIUBms (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 20 Sep 2021 21:42:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59100 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231855AbhIUBio (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 20 Sep 2021 21:38:44 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C582C128ED7
+        for <linux-parisc@vger.kernel.org>; Mon, 20 Sep 2021 12:46:14 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id m3so69733786lfu.2
+        for <linux-parisc@vger.kernel.org>; Mon, 20 Sep 2021 12:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=z/4d6QJeGZCj2JNd8r06qB/o4KuGi6QEUdTRkNveq3w=;
+        b=Q3LhEPOHc010gdfUc6e/0+OwWkLDILQAryxm4+BRnojSGhKUZx3i2JKpwpPFiraRMu
+         E/I72DGNYfViGt4X8Hw5CpE7Nktij+mVRH+dEpKmPPQIoMBi3/lKCUfxw61t1pARyUwe
+         w3uR28CSEpRp+LIB6b1M9E+jNUiv+vNeaFNjM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=z/4d6QJeGZCj2JNd8r06qB/o4KuGi6QEUdTRkNveq3w=;
+        b=cOk23QdNu6eT3df6RUSsOJVC8v/0PZBB/WEu36u+xmbsx6sD5iym4+PyrKt7pqgBRr
+         bTwS8G2qMWklnof7HiOghMZ1A5KATW7l//1EsyLaLcEwcvqx6Xddxx31nPckvvNzmGr6
+         /MHp3J0Tzz4xrNfC68s+8Pr9Z8RR0QX+a5aKO8YVyZtgL847gMQbyhh0tCd7hUKEOVQI
+         9ej/rwYFRYTqe4p5SYmCYG8OJmdoUhJYqEdn/+s1KpqnjegpLmHPyXOnZwFnS2K8IPwp
+         VCyltl3t7gnkun+nyRfCM7Mit4NWR2a6GxjV6R7rBm2WP4j8BZfNh1BBMrm3S6f/mWFs
+         bT8A==
+X-Gm-Message-State: AOAM533K0h/e1hrYjjCV0APK0Cp2oNK+Id7KuTluyliEW6OkLF+S0dsi
+        QKJdGfQZ/TQe5LcCwwR+lQVrXjm97kbpphI8
+X-Google-Smtp-Source: ABdhPJxNw31nDUEvNGPh8gRNixg65HyZtv23cvZcwU05Oe2/uC5T9pCh/rfA+SI3pdZubvqbLlBzWQ==
+X-Received: by 2002:a2e:9d01:: with SMTP id t1mr12517426lji.34.1632167171916;
+        Mon, 20 Sep 2021 12:46:11 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id t13sm1337052lff.279.2021.09.20.12.46.09
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Sep 2021 12:46:09 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id z24so46154594lfu.13
+        for <linux-parisc@vger.kernel.org>; Mon, 20 Sep 2021 12:46:09 -0700 (PDT)
+X-Received: by 2002:a2e:3309:: with SMTP id d9mr12166105ljc.249.1632167169161;
+ Mon, 20 Sep 2021 12:46:09 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210920121728.94045-1-arnd@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ielC16M4jNM8r9XDB90QignHCy/6YlUha15mhFWovRcMy9O1zzb
- 8QypFMtAxF5MzAHK++H1MBI81Sa75wLy/setk5x13DasmVS0AKNKY6GfUyCrzNgdbtkCKTc
- kwWR86U72xfpyB6Hrky0K/RNzjOCDlpPupfFbZssjNmoecQixWFYM7O/WLC1GhFaR6lMazX
- yBDHtqk4g/mtZryfF0OBQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:C/wqI77xvAo=:HRjvLc6nN+tv6C/BrmKRSq
- WKcOglc7y5AqtARLrn1+leF9neQNkKr82co/040Gxm7EJ+yY13wgWDcHM+ltiUt6FxyBZ9d5k
- 1bwC0RiNnFLO3gEM4KXxkyl8qK0jX4PAeuysc0Hnh+wrIJvBeAN45i4J8tguZxMTYVp6BTA95
- xXAfx5a28vu9RZlTaN7V1RPjnVwRxsOVSUA1IBORZprdzG4zoegm8ZHIFL/kV+s+T1Bpd81cH
- EVfVEyM2p5HFn6ozGuaV/xi7QlFhdFtDHCsvAPeYdRu/vDFjLyXsUXVRTf40igCLBe/sCuF0I
- 4dzjsZ/xCGzQ2vqidVfuKnOqUmdO6cx3TcKHiXMHyZpbHgzmHlxde0nH2nRRxHuvDSDdqOkXG
- QETmwXxWNyc6vJJE5fe6vA7bPIV7Hvw8xkqtZDG8z7jHxsuAsi88u3RRl9/Ia0crUKPBDiB8F
- z13T5dDSmqJcSTU3gUzmPoNxJD83aRFGY+CbrFxrDSexaNijgHO4vympYNcO3SfmeAi2QF9VN
- MPiFrqCqLcx/6JF59MRnLlyM/MmX5WjIwtJNazFd8JFcnKvqEmMemQX9OdzVTh85d62mKRxx8
- LXmQOSl2PJyciYWePTbhHhDSRUpyVo/pcL10CsBPaZX3Ux+qgMEfAKTXKhFTTXalsDbImF2TV
- zQJfbjEy3qdXrNtasPETDkJmPo2FeuBXtV5v8osPkxZo7Ew+Xyo2NpHRH7Wh9+ChnT9xiMcQC
- e0IuZ5Ktpgz1Y2nmng13PrGWD7VgOBPzLnYPikjlAxgrp/r5E4OAU20frGFDyWal0RYppWlWk
- BczjLrqVR9i+2f64AKfli9cYRTpvBDhzXssdxzqzO3QQEc+Fvdmo8qRQTkBWutfqRL2PF2QE/
- A+y/5JftYjrOUQ+nJNqmLunrtUpUbygu7fxX+sC4PfE/+LYDEzTfm/rVjbf2lqRrtzQPOaTd1
- 1/wVfzKDreknGXRA5+Sfjykp1RGHZ3JhqOZpuYBdHzVhKiMcwtTrHCIw3smrupIOF88E2wMbn
- SdlleS7Lfiw9A+j4ou7ClrVwGe5QYtPpZQ1Jyu87gSVLfdM0Cs+A6o1Tw06Eia4zbUX4l4kyz
- ULO/TkD8wCoZS0=
+References: <CAHk-=wh-=tMO9iCA4v+WgPSd+Gbowe5kptwo+okahihnO2fAOA@mail.gmail.com>
+ <202109201825.18KIPsV4026066@valdese.nms.ulrich-teichert.org>
+ <CAHk-=wibRWoy4-ZkSVXUoGsUw5wKovPvRhS7r6VM+_GeBYZw1A@mail.gmail.com> <CAEdQ38HeUPDyiZhhriHqdA+Qeyrb3M=FoKWKgs0dZaEjbcpVUQ@mail.gmail.com>
+In-Reply-To: <CAEdQ38HeUPDyiZhhriHqdA+Qeyrb3M=FoKWKgs0dZaEjbcpVUQ@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 20 Sep 2021 12:45:52 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wj1JWZ3sCrGz16nxEj7=0O+srMg6Ah3iPTDXSPKEws_SA@mail.gmail.com>
+Message-ID: <CAHk-=wj1JWZ3sCrGz16nxEj7=0O+srMg6Ah3iPTDXSPKEws_SA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] Introduce and use absolute_pointer macro
+To:     Matt Turner <mattst88@gmail.com>
+Cc:     Ulrich Teichert <krypton@ulrich-teichert.org>,
+        Michael Cree <mcree@orcon.net.nz>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Sparse Mailing-list <linux-sparse@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 9/20/21 2:17 PM, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On Mon, Sep 20, 2021 at 11:59 AM Matt Turner <mattst88@gmail.com> wrote:
 >
-> The empty unmap_page_from_agp() macro causes a warning when
-> building with 'make W=3D1' on a couple of architectures:
->
-> drivers/char/agp/generic.c: In function 'agp_generic_destroy_page':
-> drivers/char/agp/generic.c:1265:28: error: suggest braces around empty b=
-ody in an 'if' statement [-Werror=3Dempty-body]
->   1265 |   unmap_page_from_agp(page);
->
-> Change the definitions to a 'do { } while (0)' construct to
-> make these more reliable.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> In the decade plus I've been around Linux on alpha I've don't actually
+> recall hearing of anyone using Linux on a Jensen system before :)
 
-Acked-by: Helge Deller <deller@gmx.de> # parisc
+Looking around, I'm pretty sure the system I did all my initial work
+on was a Jensen.
 
-Thanks,
-Helge
+This is from the linux-.1.1.83 patch:
 
-> ---
->   arch/parisc/include/asm/agp.h  | 4 ++--
->   arch/powerpc/include/asm/agp.h | 4 ++--
->   arch/sparc/include/asm/agp.h   | 6 +++---
->   3 files changed, 7 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/parisc/include/asm/agp.h b/arch/parisc/include/asm/agp=
-.h
-> index cb04470e63d0..14ae54cfd368 100644
-> --- a/arch/parisc/include/asm/agp.h
-> +++ b/arch/parisc/include/asm/agp.h
-> @@ -8,8 +8,8 @@
->    *
->    */
->
-> -#define map_page_into_agp(page)		/* nothing */
-> -#define unmap_page_from_agp(page)	/* nothing */
-> +#define map_page_into_agp(page)		do { } while (0)
-> +#define unmap_page_from_agp(page)	do { } while (0)
->   #define flush_agp_cache()		mb()
->
->   /* GATT allocation. Returns/accepts GATT kernel virtual address. */
-> diff --git a/arch/powerpc/include/asm/agp.h b/arch/powerpc/include/asm/a=
-gp.h
-> index b29b1186f819..6b6485c988dd 100644
-> --- a/arch/powerpc/include/asm/agp.h
-> +++ b/arch/powerpc/include/asm/agp.h
-> @@ -5,8 +5,8 @@
->
->   #include <asm/io.h>
->
-> -#define map_page_into_agp(page)
-> -#define unmap_page_from_agp(page)
-> +#define map_page_into_agp(page) do {} while (0)
-> +#define unmap_page_from_agp(page) do {} while (0)
->   #define flush_agp_cache() mb()
->
->   /* GATT allocation. Returns/accepts GATT kernel virtual address. */
-> diff --git a/arch/sparc/include/asm/agp.h b/arch/sparc/include/asm/agp.h
-> index efe0d6a12e5a..2d0ff84cee3f 100644
-> --- a/arch/sparc/include/asm/agp.h
-> +++ b/arch/sparc/include/asm/agp.h
-> @@ -4,9 +4,9 @@
->
->   /* dummy for now */
->
-> -#define map_page_into_agp(page)
-> -#define unmap_page_from_agp(page)
-> -#define flush_agp_cache() mb()
-> +#define map_page_into_agp(page)		do { } while (0)
-> +#define unmap_page_from_agp(page)	do { } while (0)
-> +#define flush_agp_cache()		mb()
->
->   /* GATT allocation. Returns/accepts GATT kernel virtual address. */
->   #define alloc_gatt_pages(order)		\
->
+- * I don't have any good documentation on the EISA hardware interrupt
+- * stuff: I don't know the mapping between the interrupt vector and the
+- * EISA interrupt number.
+- *
+- * It *seems* to be 0x8X0 for EISA interrupt X, and 0x9X0 for the
+- * local motherboard interrupts..
++ * The vector is 0x8X0 for EISA interrupt X, and 0x9X0 for the local
++ * motherboard interrupts.. This is for the Jensen.
 
+So yup, my initial bringup machine was that DECpc AXP 150, aka "Jensen".
+
+The IO subsystem on that thing was absolutely horrendous. Largely
+because of the lack of byte/word accesses, so doing any PCI accesses
+had to be encoded on the address bus. Nasty nasty nasty.
+
+The original design with only 32-bit and 64-bit memory accesses really
+was horribly horribly wrong, and all the arguments for it were
+garbage. Even outside of IO issues, it blew up code size enormously,
+but the IO side became truly horrendous.
+
+Oh well. Water under the bridge.
+
+I did have another alpha at some point - going from the original
+150HMz EV4 to a 275MHz EV45. I forget what system that was.
+
+               Linus
