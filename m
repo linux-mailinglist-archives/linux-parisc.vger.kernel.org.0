@@ -2,110 +2,114 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBDF410C19
-	for <lists+linux-parisc@lfdr.de>; Sun, 19 Sep 2021 17:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E294E411422
+	for <lists+linux-parisc@lfdr.de>; Mon, 20 Sep 2021 14:17:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233150AbhISPPN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 19 Sep 2021 11:15:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54120 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230503AbhISPPM (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 19 Sep 2021 11:15:12 -0400
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48442C061574;
-        Sun, 19 Sep 2021 08:13:47 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id q3so18667722iot.3;
-        Sun, 19 Sep 2021 08:13:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=vbpoc8nlnfHxnI+l9mWkkIGQVWPI3MGONh3p7LPE7MI=;
-        b=VM30cLMK8vCJPnDOrNVJVLKgaM108XQCUD2FUTn/7VOT0R6gTL8DYA/S/xiXNWm3y1
-         AayprkuIsnStSNKMVtZw9+Rz5oK+ArUk7DLq906so7hRzOsWC3/sVc+Y/QqCm7iMprv0
-         U8iDp/brT1ry6/RqaBObVVPa+OTrlnZw899bln5L0UtucSwwW92pgbh7X8PHCkukvBsU
-         Quk23h8w4lJ1Qf+KMkotX488eh7zOcdVmMAns5HQucqLfUTR4GVZTRA7nVMXWqRUo/Z+
-         urYeOW/Bh4ymu4grYu4TS/06TjUcAi4d6pUyQGoYzPKqLYLROPr7FwkTthR//Myx8lT1
-         4/IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=vbpoc8nlnfHxnI+l9mWkkIGQVWPI3MGONh3p7LPE7MI=;
-        b=FWgagt+/1A20KZv2EdGNadKtNtPKK7t7Z2fFfLSXvtJO+8QGnKXWacgWUo9G8k+g3e
-         9c9BgvXYRXXc6pyWU53xP4fbSQC2ZYsI8AND9Ep0l9Jpudra7pdqAf5YEl/8tHjReBz9
-         0ubJXlioUse9poRE72vRvH1GfVGSQxWhO/dCFmFPKLMZGDefySvM/aGWnOrCPJGqHB+I
-         FKwocoKLrTtf66PZEEgpjPcn4MqhJz+r77nnhzEXrV7stUWYY/nt4QU9eYFxhKGoMjEk
-         JPt/sDEMnoTs93H+xqJWBlHNbOZ+iAFyl0AGg+iLD0U3aDmHNvY/v3b3X2vYXPkJynjM
-         0s7g==
-X-Gm-Message-State: AOAM533irDzpGMy6vzC+HSJqKiAv9JffFh/DiMxnd95xKrAxNzHtMzjp
-        4L22Wna7JfsvWVabVKavVToK+47fHsIaRWGlG7w=
-X-Google-Smtp-Source: ABdhPJxguGzRMzwC4iYM/5nKX7PT6FRrg4dZ2/gqzY3RezIzCOEE0tCc8v4TTygFXyyDdCl+gaGST3J79azJLga7LOM=
-X-Received: by 2002:a05:6602:180e:: with SMTP id t14mr602481ioh.204.1632064426701;
- Sun, 19 Sep 2021 08:13:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAHk-=whY5mLggPSr2U00mqgUbRJYnYSxtNZm4FnEtQrHftYr8Q@mail.gmail.com>
- <202109182026.18IKQLng003683@valdese.nms.ulrich-teichert.org> <CAHk-=wh-=tMO9iCA4v+WgPSd+Gbowe5kptwo+okahihnO2fAOA@mail.gmail.com>
-In-Reply-To: <CAHk-=wh-=tMO9iCA4v+WgPSd+Gbowe5kptwo+okahihnO2fAOA@mail.gmail.com>
-From:   Dave Taht <dave.taht@gmail.com>
-Date:   Sun, 19 Sep 2021 08:13:32 -0700
-Message-ID: <CAA93jw6gK9_PMa_BtabkqyZLT4Vb+x4gsADT7vU+75bucnvrAQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] Introduce and use absolute_pointer macro
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Ulrich Teichert <krypton@ulrich-teichert.org>,
-        Michael Cree <mcree@orcon.net.nz>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        id S237620AbhITMS7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 20 Sep 2021 08:18:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46902 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233446AbhITMS7 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 20 Sep 2021 08:18:59 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6D66860EB2;
+        Mon, 20 Sep 2021 12:17:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632140252;
+        bh=KgTqk1gSTq17sQT/2tIQgwIKULSbIMoi53KBq2fW1bw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=S0yyYRkmJHq1+qDL8ZMbCZT0fIEQ/79B++xY98bOEQ05Ux3e22PN4f1rO2iIwFMzG
+         Y/cLzh4fqW/UcPRWCQTFIvrCuunbeBdGRzy6ZDkUm6LP7wChwjTVNIJ3lMMwYEmUnt
+         pLIyxSqmbr77LMoBcYD0cIhqvAs6CY/1DD7B6c/aSIsrxqzeNtiWXEakMpAVtRVgPB
+         tQlKRY945gh/WYlSO0voQFNWapSWM6cPRskOVU4nyXhqK4OA/fWUCYfA/lbcyaaXeO
+         G9HVPDd+5xbB59TOUdI0nUAnt5RZrVuFyv672T3dIybnrXF8N0cix53CRyqAjyY8Tc
+         E9iyAT2kq5grg==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-fbdev@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
-        Sparse Mailing-list <linux-sparse@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     dri-devel@lists.freedesktop.org, Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
+Subject: [PATCH] agp: define proper stubs for empty helpers
+Date:   Mon, 20 Sep 2021 14:17:19 +0200
+Message-Id: <20210920121728.94045-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Sep 19, 2021 at 8:01 AM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
->
-> Oh well. I have an odd love-hate relationship with alpha.
->
-> I think it's one of the worst architectures ever designed (memory
-> ordering is completely broken, and the lack of byte operations in the
-> original specs were a big reason for the initial problems and eventual
-> failure).
->
-> But at the same time, I really did enjoy it back in the day, and it
-> _was_ the first port I did, and the first truly integrated kernel
-> architecture (the original Linux m68k port that preceded it was a
-> "hack up and replace" job rather than "integrate")
+From: Arnd Bergmann <arnd@arndb.de>
 
-As a side note, I loved the Alpha, too. Compared to the VMS port
-I was too often working on in the 90s, having Linux run on it was
-a joy, and for years I used my remaining older alpha boxes as
-firewalls, trusting in the oddity of the architecture to resist
-various and sundry attacks.
+The empty unmap_page_from_agp() macro causes a warning when
+building with 'make W=1' on a couple of architectures:
 
-I retired the last one well over a decade back.
+drivers/char/agp/generic.c: In function 'agp_generic_destroy_page':
+drivers/char/agp/generic.c:1265:28: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
+ 1265 |   unmap_page_from_agp(page);
 
-RIP.
+Change the definitions to a 'do { } while (0)' construct to
+make these more reliable.
 
->
->            Linus
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/parisc/include/asm/agp.h  | 4 ++--
+ arch/powerpc/include/asm/agp.h | 4 ++--
+ arch/sparc/include/asm/agp.h   | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
+diff --git a/arch/parisc/include/asm/agp.h b/arch/parisc/include/asm/agp.h
+index cb04470e63d0..14ae54cfd368 100644
+--- a/arch/parisc/include/asm/agp.h
++++ b/arch/parisc/include/asm/agp.h
+@@ -8,8 +8,8 @@
+  *
+  */
+ 
+-#define map_page_into_agp(page)		/* nothing */
+-#define unmap_page_from_agp(page)	/* nothing */
++#define map_page_into_agp(page)		do { } while (0)
++#define unmap_page_from_agp(page)	do { } while (0)
+ #define flush_agp_cache()		mb()
+ 
+ /* GATT allocation. Returns/accepts GATT kernel virtual address. */
+diff --git a/arch/powerpc/include/asm/agp.h b/arch/powerpc/include/asm/agp.h
+index b29b1186f819..6b6485c988dd 100644
+--- a/arch/powerpc/include/asm/agp.h
++++ b/arch/powerpc/include/asm/agp.h
+@@ -5,8 +5,8 @@
+ 
+ #include <asm/io.h>
+ 
+-#define map_page_into_agp(page)
+-#define unmap_page_from_agp(page)
++#define map_page_into_agp(page) do {} while (0)
++#define unmap_page_from_agp(page) do {} while (0)
+ #define flush_agp_cache() mb()
+ 
+ /* GATT allocation. Returns/accepts GATT kernel virtual address. */
+diff --git a/arch/sparc/include/asm/agp.h b/arch/sparc/include/asm/agp.h
+index efe0d6a12e5a..2d0ff84cee3f 100644
+--- a/arch/sparc/include/asm/agp.h
++++ b/arch/sparc/include/asm/agp.h
+@@ -4,9 +4,9 @@
+ 
+ /* dummy for now */
+ 
+-#define map_page_into_agp(page)
+-#define unmap_page_from_agp(page)
+-#define flush_agp_cache() mb()
++#define map_page_into_agp(page)		do { } while (0)
++#define unmap_page_from_agp(page)	do { } while (0)
++#define flush_agp_cache()		mb()
+ 
+ /* GATT allocation. Returns/accepts GATT kernel virtual address. */
+ #define alloc_gatt_pages(order)		\
+-- 
+2.29.2
 
-
---=20
-Fixing Starlink's Latencies: https://www.youtube.com/watch?v=3Dc9gLo6Xrwgw
-
-Dave T=C3=A4ht CEO, TekLibre, LLC
