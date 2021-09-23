@@ -2,72 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEDAD4151F7
-	for <lists+linux-parisc@lfdr.de>; Wed, 22 Sep 2021 22:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51320415687
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 Sep 2021 05:40:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237852AbhIVU4u (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 22 Sep 2021 16:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34008 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237859AbhIVU4n (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 22 Sep 2021 16:56:43 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10450C06178A
-        for <linux-parisc@vger.kernel.org>; Wed, 22 Sep 2021 13:55:07 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id x27so17278340lfu.5
-        for <linux-parisc@vger.kernel.org>; Wed, 22 Sep 2021 13:55:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=fr8lNb1tzuroNDnbJJtYWeXOCGZbssrkZvaRy8HVdYCeSSxS96vSwd3R2+r1vg3M6/
-         ex66FoD7Oi9BZ+eroN2ctcLno3UxJhL89X1t6yEsFayGc2q4Pz0zZQBaUGqcHr3s/S1+
-         lgIwwHuJ4O8SDnA5oR3zC/CFwa9fWO84703n6I2aQyNKP1VzeqgyNRTdZaVTG81gy6Vx
-         t6u58+esbUQxWBZY5IFD1w784RDrV2U7d72/V+RQAoF8LyHU+KHsqwJTuZK+RI9xoYHQ
-         hU/k+XKo5P60J+yjbN5r0LQMnBzU5qvJitpMdoh7dt6f9DChJ/lZbweVN/xESakomSrI
-         Tc/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=yTp+6W73yYpxRc3LLH5uHdkZ1ZNxAxCgVY/5XBk/1UKTTi1G49L5GCAWsknq0CfCdn
-         rKJFxUdR3A19cSW8qLHm+7NnuXIN9afucXbcbqnwM8gu1aPj5R4RE5L52bG9itRNaB6R
-         DjNom7eWAaD5o3Xlx2Rk/0UTzbKYaT4MZj1tpuQOvbs/4UdwLbyaBAaov4y4hMlF9pfI
-         nZA0f+ZiuD9lBXsYFRozeYBlqSkbeeT2GBrKFmbAZlH2ouSHzksQvpZcpgo1/jtDwlfB
-         4RIiQKE2NKgAjsITVGC2qzY4NBa0qryvYff0UXVOjbyd1H2wuKdDBgNuS3qe1KRgUSjH
-         +oqg==
-X-Gm-Message-State: AOAM530fNfXM2xrH0JSPgAyo8rokNj/vu0jnb2iKyL15I2gWYMxWO7rr
-        DHlIpKY5c/w/rnGXidTkvoe6h0wuDGyn3ha8TTzR31edd9g=
-X-Google-Smtp-Source: ABdhPJwYYn7ZwazUxB30/XTxKCOf4dlZaC6TfP1ljKsU4ZNb40cpLRsdAvw7sAb51nYQkeG7S6W5vU7Cgq+lC3FYxgE=
-X-Received: by 2002:a05:651c:1546:: with SMTP id y6mr1383813ljp.53.1632344095088;
- Wed, 22 Sep 2021 13:54:55 -0700 (PDT)
+        id S239643AbhIWDl6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 22 Sep 2021 23:41:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42104 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239065AbhIWDky (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 22 Sep 2021 23:40:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B279D6124A;
+        Thu, 23 Sep 2021 03:39:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632368360;
+        bh=aZ7QOpDethf1OwakF5XFCsnRdydSbHiJYLJiGSG0lgE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=K93AEYa0qf6klCg7+rwPjx9ADoq3f2O8YsHG9sQG2rO8f7Dtg7a4jfLsrPuVI+Hay
+         gw/sFNoU6qYRT/Ei+TwFqM+37j2JcfDcM8xKLqKLj9MgS2lfNWxXgt0aXaX08vNWfy
+         gPOGQKqNsERDMCfeFdOmMKzbWb+ob0wkoFXV0nQV2DlyZ6WVFanEf3z7SGPX5y1CRD
+         H9Cc6LI9ukQ8k+pGCSviUdJ8eVuRFw1qwVCC2681/+7hbhDQwNOqosnsHfZgbBRI41
+         BZxUddMFBc4Y+b2TWjBYWTxTUJliCVRcQ3bJ0gZuG2P7j1sCbk9ipWsJ7olcRfXibz
+         Q6aWSHkI764Hg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>, Guenter Roeck <linux@roeck-us.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        James.Bottomley@HansenPartnership.com, dave.anglin@bell.net,
+        linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 15/19] parisc: Use absolute_pointer() to define PAGE0
+Date:   Wed, 22 Sep 2021 23:38:49 -0400
+Message-Id: <20210923033853.1421193-15-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210923033853.1421193-1-sashal@kernel.org>
+References: <20210923033853.1421193-1-sashal@kernel.org>
 MIME-Version: 1.0
-Sender: ratcliffijames58@gmail.com
-Received: by 2002:a05:6504:5067:0:0:0:0 with HTTP; Wed, 22 Sep 2021 13:54:54
- -0700 (PDT)
-From:   Aisha Al-Qaddafi <aisha.gdaffi24@gmail.com>
-Date:   Wed, 22 Sep 2021 21:54:54 +0100
-X-Google-Sender-Auth: B3PIuwFz7UcaHNCffYC8akvbLEk
-Message-ID: <CAKVTYWSPSMf085dB7FkhkLr9XtoZHkjbvunoMard5qsSPn4ZOg@mail.gmail.com>
-Subject: My Dear Friend
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Assalamu alaikum,
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological,
-Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
-single Mother and a Widow with three Children. I have investment funds
-worth Twenty Seven Million Five Hundred Thousand United State Dollar
-($27.500.000.00 ) and i need a trusted  investment Manager/Partner
-because of my current refugee status, however, I am interested in you
-for investment project assistance in your country. If you are willing
-to handle this project on my behalf kindly reply urgently to enable me
-to provide you more information about the investment
-funds.
-Best Regards
+From: Helge Deller <deller@gmx.de>
+
+[ Upstream commit 90cc7bed1ed19f869ae7221a6b41887fe762a6a3 ]
+
+Use absolute_pointer() wrapper for PAGE0 to avoid this compiler warning:
+
+  arch/parisc/kernel/setup.c: In function 'start_parisc':
+  error: '__builtin_memcmp_eq' specified bound 8 exceeds source size 0
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Co-Developed-by: Guenter Roeck <linux@roeck-us.net>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/parisc/include/asm/page.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/parisc/include/asm/page.h b/arch/parisc/include/asm/page.h
+index 93caf17ac5e2..9ebf3b0413d5 100644
+--- a/arch/parisc/include/asm/page.h
++++ b/arch/parisc/include/asm/page.h
+@@ -181,7 +181,7 @@ extern int npmem_ranges;
+ #include <asm-generic/getorder.h>
+ #include <asm/pdc.h>
+ 
+-#define PAGE0   ((struct zeropage *)__PAGE_OFFSET)
++#define PAGE0   ((struct zeropage *)absolute_pointer(__PAGE_OFFSET))
+ 
+ /* DEFINITION OF THE ZERO-PAGE (PAG0) */
+ /* based on work by Jason Eckhardt (jason@equator.com) */
+-- 
+2.30.2
+
