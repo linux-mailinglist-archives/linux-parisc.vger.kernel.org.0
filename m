@@ -2,27 +2,27 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51320415687
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 Sep 2021 05:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C17424156B5
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 Sep 2021 05:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239643AbhIWDl6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 22 Sep 2021 23:41:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42104 "EHLO mail.kernel.org"
+        id S239885AbhIWDnC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 22 Sep 2021 23:43:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41226 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239065AbhIWDky (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 22 Sep 2021 23:40:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B279D6124A;
-        Thu, 23 Sep 2021 03:39:19 +0000 (UTC)
+        id S239544AbhIWDlb (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 22 Sep 2021 23:41:31 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1BB2F61268;
+        Thu, 23 Sep 2021 03:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632368360;
-        bh=aZ7QOpDethf1OwakF5XFCsnRdydSbHiJYLJiGSG0lgE=;
+        s=k20201202; t=1632368390;
+        bh=DLAdkWUqA/ayAanHCdiOA3nqV+CZxYuijdB8dphiLdI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K93AEYa0qf6klCg7+rwPjx9ADoq3f2O8YsHG9sQG2rO8f7Dtg7a4jfLsrPuVI+Hay
-         gw/sFNoU6qYRT/Ei+TwFqM+37j2JcfDcM8xKLqKLj9MgS2lfNWxXgt0aXaX08vNWfy
-         gPOGQKqNsERDMCfeFdOmMKzbWb+ob0wkoFXV0nQV2DlyZ6WVFanEf3z7SGPX5y1CRD
-         H9Cc6LI9ukQ8k+pGCSviUdJ8eVuRFw1qwVCC2681/+7hbhDQwNOqosnsHfZgbBRI41
-         BZxUddMFBc4Y+b2TWjBYWTxTUJliCVRcQ3bJ0gZuG2P7j1sCbk9ipWsJ7olcRfXibz
-         Q6aWSHkI764Hg==
+        b=hkO54/fcmlFeaS45u15xvDK1Si4BkIpejm1vQ3zMMJ92ADov6ljsU9ef7Aib5F3Q0
+         bBsd5KpmQrSWU+SYMZ2ybkP1XGGL61a0e7NroaitM5dv4UhEQOfJVKX3ZlMA20Rc/Y
+         oMhaXRX4c36CYVTrkgkOSSi8pMFRx44lbBg53d/OIQeiicvW0Kt0+JGJgteGW/GB+V
+         z2fOkQ8K/7DzclEH4Rz5uYSlIcd3VB+0sujjlqiGIo9scNk9lGnTPg2uOIUZTAMkjp
+         2kEGAPgHSHryLnHarm8FXI1pktszII5ljF6JhfDN7fHdfFM6lx/i7JmXC2XUWuUav0
+         s03pQBljqwGOw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Guenter Roeck <linux@roeck-us.net>,
@@ -30,12 +30,12 @@ Cc:     Helge Deller <deller@gmx.de>, Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com, dave.anglin@bell.net,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 15/19] parisc: Use absolute_pointer() to define PAGE0
-Date:   Wed, 22 Sep 2021 23:38:49 -0400
-Message-Id: <20210923033853.1421193-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 11/15] parisc: Use absolute_pointer() to define PAGE0
+Date:   Wed, 22 Sep 2021 23:39:25 -0400
+Message-Id: <20210923033929.1421446-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210923033853.1421193-1-sashal@kernel.org>
-References: <20210923033853.1421193-1-sashal@kernel.org>
+In-Reply-To: <20210923033929.1421446-1-sashal@kernel.org>
+References: <20210923033929.1421446-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -62,10 +62,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/parisc/include/asm/page.h b/arch/parisc/include/asm/page.h
-index 93caf17ac5e2..9ebf3b0413d5 100644
+index af00fe9bf846..c631a8fd856a 100644
 --- a/arch/parisc/include/asm/page.h
 +++ b/arch/parisc/include/asm/page.h
-@@ -181,7 +181,7 @@ extern int npmem_ranges;
+@@ -179,7 +179,7 @@ extern int npmem_ranges;
  #include <asm-generic/getorder.h>
  #include <asm/pdc.h>
  
