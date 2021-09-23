@@ -2,27 +2,27 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 958BE4156FC
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 Sep 2021 05:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E0AC41571B
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 Sep 2021 05:45:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239258AbhIWDpX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 22 Sep 2021 23:45:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42110 "EHLO mail.kernel.org"
+        id S239526AbhIWDqX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 22 Sep 2021 23:46:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41756 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239172AbhIWDnf (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 22 Sep 2021 23:43:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4D07661283;
-        Thu, 23 Sep 2021 03:40:43 +0000 (UTC)
+        id S239481AbhIWDoO (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 22 Sep 2021 23:44:14 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E916961152;
+        Thu, 23 Sep 2021 03:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632368444;
+        s=k20201202; t=1632368466;
         bh=xv9DuXWs5WL1PmyNHaQZJwzBB+tS7goqT7N4UKTv3vE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uJxybAPvlpncNhMD1TMS/8Dbf4ofaRGB8+Bi/cnU2iAuUGV3zaAj54T0rHACgbVfK
-         5eb4yZ2kLzKky+TWPTrY4p6Bnfr9JOeXCWafxJq3UJoTVBlVsyJRXlLWCAMgT1fJUh
-         FbdwutAasuwdSftsh7p8SneRH+fTDkhFhu8GWLnKXn6DdJRft0gOVF7iuxGGEaEGYg
-         volulsqJ76+mb6VfYUzsTdpDkNCprDR9QfCqL932lucZ2sUl8RmVG6rv8GM0xfL62D
-         x3ID2bcaFipbrV7ErBiB7Rlbb9Vn0KnCoNxmNKn60dzCdQQ+lFJueIYVOkvaO5jTBw
-         q6AWebeh8JUbw==
+        b=e6gWrqMHJp15Dbs0ZtBEY5nW+xsGFf3CJM5Ym8/1x6/3zNd/rizA+N8W/nC+o7Q1c
+         TosJUPVLNz89k6Jr8PNWiCwTjuspIiveAlknbjT0AaS//Gj6+lzemoHsCy/od5stJ9
+         qQpn18ndORxlkhmfZPGeUNGRv6T26PIqebHedEJoSDsrHg0c935GorWf6U3PAm1mc2
+         xtg6Zr2ke9qyx+C/Ifr/Z0vmmHCLASSx4FMz49PGIvIqXH2ac6jmWj+6/XBs4FrMKg
+         4ZICUtG/YCYYQUOc9NioEPWrAOI/lxYGcU/p3nbEvjmfJiTqasPhsN5a3ikXGCmb4z
+         K1PDVvJFbLSOg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Guenter Roeck <linux@roeck-us.net>,
@@ -30,12 +30,12 @@ Cc:     Helge Deller <deller@gmx.de>, Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com, dave.anglin@bell.net,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 07/11] parisc: Use absolute_pointer() to define PAGE0
-Date:   Wed, 22 Sep 2021 23:40:23 -0400
-Message-Id: <20210923034028.1421876-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 06/10] parisc: Use absolute_pointer() to define PAGE0
+Date:   Wed, 22 Sep 2021 23:40:49 -0400
+Message-Id: <20210923034055.1422059-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210923034028.1421876-1-sashal@kernel.org>
-References: <20210923034028.1421876-1-sashal@kernel.org>
+In-Reply-To: <20210923034055.1422059-1-sashal@kernel.org>
+References: <20210923034055.1422059-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
