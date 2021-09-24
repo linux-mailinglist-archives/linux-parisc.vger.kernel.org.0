@@ -2,78 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E0AC41571B
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 Sep 2021 05:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B321417DDF
+	for <lists+linux-parisc@lfdr.de>; Sat, 25 Sep 2021 00:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239526AbhIWDqX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 22 Sep 2021 23:46:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41756 "EHLO mail.kernel.org"
+        id S1345354AbhIXWpT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 24 Sep 2021 18:45:19 -0400
+Received: from mga03.intel.com ([134.134.136.65]:22795 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239481AbhIWDoO (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 22 Sep 2021 23:44:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E916961152;
-        Thu, 23 Sep 2021 03:41:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632368466;
-        bh=xv9DuXWs5WL1PmyNHaQZJwzBB+tS7goqT7N4UKTv3vE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e6gWrqMHJp15Dbs0ZtBEY5nW+xsGFf3CJM5Ym8/1x6/3zNd/rizA+N8W/nC+o7Q1c
-         TosJUPVLNz89k6Jr8PNWiCwTjuspIiveAlknbjT0AaS//Gj6+lzemoHsCy/od5stJ9
-         qQpn18ndORxlkhmfZPGeUNGRv6T26PIqebHedEJoSDsrHg0c935GorWf6U3PAm1mc2
-         xtg6Zr2ke9qyx+C/Ifr/Z0vmmHCLASSx4FMz49PGIvIqXH2ac6jmWj+6/XBs4FrMKg
-         4ZICUtG/YCYYQUOc9NioEPWrAOI/lxYGcU/p3nbEvjmfJiTqasPhsN5a3ikXGCmb4z
-         K1PDVvJFbLSOg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Guenter Roeck <linux@roeck-us.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, dave.anglin@bell.net,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 06/10] parisc: Use absolute_pointer() to define PAGE0
-Date:   Wed, 22 Sep 2021 23:40:49 -0400
-Message-Id: <20210923034055.1422059-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210923034055.1422059-1-sashal@kernel.org>
-References: <20210923034055.1422059-1-sashal@kernel.org>
+        id S1345228AbhIXWpR (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 24 Sep 2021 18:45:17 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10117"; a="224233866"
+X-IronPort-AV: E=Sophos;i="5.85,321,1624345200"; 
+   d="scan'208";a="224233866"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2021 15:43:43 -0700
+X-IronPort-AV: E=Sophos;i="5.85,321,1624345200"; 
+   d="scan'208";a="704339730"
+Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.251.20.113]) ([10.251.20.113])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2021 15:43:41 -0700
+Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        virtualization@lists.linux-foundation.org
+References: <20210824053830-mutt-send-email-mst@kernel.org>
+ <d21a2a2d-4670-ba85-ce9a-fc8ea80ef1be@linux.intel.com>
+ <20210829112105-mutt-send-email-mst@kernel.org>
+ <09b340dd-c8a8-689c-4dad-4fe0e36d39ae@linux.intel.com>
+ <20210829181635-mutt-send-email-mst@kernel.org>
+ <3a88a255-a528-b00a-912b-e71198d5f58f@linux.intel.com>
+ <20210830163723-mutt-send-email-mst@kernel.org>
+ <69fc30f4-e3e2-add7-ec13-4db3b9cc0cbd@linux.intel.com>
+ <20210910054044-mutt-send-email-mst@kernel.org>
+ <f672dc1c-5280-7bbc-7a56-7c7aab31725c@linux.intel.com>
+ <20210911195006-mutt-send-email-mst@kernel.org>
+From:   Andi Kleen <ak@linux.intel.com>
+Message-ID: <ad1e41d1-3f4e-8982-16ea-18a3b2c04019@linux.intel.com>
+Date:   Fri, 24 Sep 2021 15:43:40 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210911195006-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 90cc7bed1ed19f869ae7221a6b41887fe762a6a3 ]
+>> Hmm, yes that's true. I guess we can make it default to opt-in for
+>> pci_iomap.
+>>
+>> It only really matters for device less ioremaps.
+> OK. And same thing for other things with device, such as
+> devm_platform_ioremap_resource.
+> If we agree on all that, this will basically remove virtio
+> changes from the picture ;)
 
-Use absolute_pointer() wrapper for PAGE0 to avoid this compiler warning:
+Hi we revisited this now. One problem with removing the ioremap opt-in 
+is that it's still possible for drivers to get at devices without going 
+through probe. For example they can walk the PCI device list. Some 
+drivers do that for various reasons. So if we remove the opt-in we would 
+need to audit and possibly fix all that, which would be potentially a 
+lot of churn. That's why I think it's better to keep the opt-in.
 
-  arch/parisc/kernel/setup.c: In function 'start_parisc':
-  error: '__builtin_memcmp_eq' specified bound 8 exceeds source size 0
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Co-Developed-by: Guenter Roeck <linux@roeck-us.net>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/include/asm/page.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-Andi
 
-diff --git a/arch/parisc/include/asm/page.h b/arch/parisc/include/asm/page.h
-index 80e742a1c162..088888fcf8df 100644
---- a/arch/parisc/include/asm/page.h
-+++ b/arch/parisc/include/asm/page.h
-@@ -174,7 +174,7 @@ extern int npmem_ranges;
- #include <asm-generic/getorder.h>
- #include <asm/pdc.h>
- 
--#define PAGE0   ((struct zeropage *)__PAGE_OFFSET)
-+#define PAGE0   ((struct zeropage *)absolute_pointer(__PAGE_OFFSET))
- 
- /* DEFINITION OF THE ZERO-PAGE (PAG0) */
- /* based on work by Jason Eckhardt (jason@equator.com) */
--- 
-2.30.2
 
