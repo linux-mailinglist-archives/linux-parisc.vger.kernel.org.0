@@ -2,98 +2,176 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B321417DDF
-	for <lists+linux-parisc@lfdr.de>; Sat, 25 Sep 2021 00:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AFA9418205
+	for <lists+linux-parisc@lfdr.de>; Sat, 25 Sep 2021 14:46:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345354AbhIXWpT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 Sep 2021 18:45:19 -0400
-Received: from mga03.intel.com ([134.134.136.65]:22795 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345228AbhIXWpR (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 Sep 2021 18:45:17 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10117"; a="224233866"
-X-IronPort-AV: E=Sophos;i="5.85,321,1624345200"; 
-   d="scan'208";a="224233866"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2021 15:43:43 -0700
-X-IronPort-AV: E=Sophos;i="5.85,321,1624345200"; 
-   d="scan'208";a="704339730"
-Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.251.20.113]) ([10.251.20.113])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2021 15:43:41 -0700
-Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org
-References: <20210824053830-mutt-send-email-mst@kernel.org>
- <d21a2a2d-4670-ba85-ce9a-fc8ea80ef1be@linux.intel.com>
- <20210829112105-mutt-send-email-mst@kernel.org>
- <09b340dd-c8a8-689c-4dad-4fe0e36d39ae@linux.intel.com>
- <20210829181635-mutt-send-email-mst@kernel.org>
- <3a88a255-a528-b00a-912b-e71198d5f58f@linux.intel.com>
- <20210830163723-mutt-send-email-mst@kernel.org>
- <69fc30f4-e3e2-add7-ec13-4db3b9cc0cbd@linux.intel.com>
- <20210910054044-mutt-send-email-mst@kernel.org>
- <f672dc1c-5280-7bbc-7a56-7c7aab31725c@linux.intel.com>
- <20210911195006-mutt-send-email-mst@kernel.org>
-From:   Andi Kleen <ak@linux.intel.com>
-Message-ID: <ad1e41d1-3f4e-8982-16ea-18a3b2c04019@linux.intel.com>
-Date:   Fri, 24 Sep 2021 15:43:40 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S245110AbhIYMsU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 25 Sep 2021 08:48:20 -0400
+Received: from mx22.baidu.com ([220.181.50.185]:40300 "EHLO baidu.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S244971AbhIYMsT (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 25 Sep 2021 08:48:19 -0400
+Received: from BC-Mail-Ex07.internal.baidu.com (unknown [172.31.51.47])
+        by Forcepoint Email with ESMTPS id 35F7190114D56D35C58B;
+        Sat, 25 Sep 2021 20:46:43 +0800 (CST)
+Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
+ BC-Mail-EX07.internal.baidu.com (172.31.51.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2242.12; Sat, 25 Sep 2021 20:46:43 +0800
+Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.14; Sat, 25 Sep 2021 20:46:42 +0800
+From:   Cai Huoqing <caihuoqing@baidu.com>
+To:     <caihuoqing@baidu.com>
+CC:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "Helge Deller" <deller@gmx.de>, <linux-parisc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] parisc: Fix function names in print messages and coments
+Date:   Sat, 25 Sep 2021 20:46:36 +0800
+Message-ID: <20210925124637.303-1-caihuoqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20210911195006-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain
+X-Originating-IP: [172.31.63.8]
+X-ClientProxiedBy: BC-Mail-EX02.internal.baidu.com (172.31.51.42) To
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Use dma_xxx_xxx() instead of pci_xxx_xxx(),
+because the pci function wrappers are not called here.
 
->> Hmm, yes that's true. I guess we can make it default to opt-in for
->> pci_iomap.
->>
->> It only really matters for device less ioremaps.
-> OK. And same thing for other things with device, such as
-> devm_platform_ioremap_resource.
-> If we agree on all that, this will basically remove virtio
-> changes from the picture ;)
+Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+---
+ drivers/parisc/ccio-dma.c  | 22 +++++++++++-----------
+ drivers/parisc/sba_iommu.c |  8 ++++----
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-Hi we revisited this now. One problem with removing the ioremap opt-in 
-is that it's still possible for drivers to get at devices without going 
-through probe. For example they can walk the PCI device list. Some 
-drivers do that for various reasons. So if we remove the opt-in we would 
-need to audit and possibly fix all that, which would be potentially a 
-lot of churn. That's why I think it's better to keep the opt-in.
-
-
--Andi
-
+diff --git a/drivers/parisc/ccio-dma.c b/drivers/parisc/ccio-dma.c
+index 059566f54429..c212db3351dd 100644
+--- a/drivers/parisc/ccio-dma.c
++++ b/drivers/parisc/ccio-dma.c
+@@ -480,7 +480,7 @@ typedef unsigned long space_t;
+ ** o if SAFE_DMA isn't set, mapping is for FAST_DMA. SAFE_DMA should be
+ **   set for subcacheline DMA transfers since we don't want to damage the
+ **   other part of a cacheline.
+-** o SAFE_DMA must be set for "memory" allocated via pci_alloc_consistent().
++** o SAFE_DMA must be set for "memory" allocated via dma_alloc_coherent().
+ **   This bit tells U2 to do R/M/W for partial cachelines. "Streaming"
+ **   data can avoid this if the mapping covers full cache lines.
+ ** o STOP_MOST is needed for atomicity across cachelines.
+@@ -502,7 +502,7 @@ typedef unsigned long space_t;
+ **    be much more careful with this.
+ */
+ #define IOPDIR_VALID    0x01UL
+-#define HINT_SAFE_DMA   0x02UL	/* used for pci_alloc_consistent() pages */
++#define HINT_SAFE_DMA   0x02UL	/* used for dma_alloc_coherent() pages */
+ #ifdef CONFIG_EISA
+ #define HINT_STOP_MOST  0x04UL	/* LSL support */
+ #else
+@@ -718,7 +718,7 @@ ccio_dma_supported(struct device *dev, u64 mask)
+  * @size: The length of the DMA region.
+  * @direction: The direction of the DMA transaction (to/from device).
+  *
+- * This function implements the pci_map_single function.
++ * This function implements the dma_map_single function.
+  */
+ static dma_addr_t 
+ ccio_map_single(struct device *dev, void *addr, size_t size,
+@@ -839,7 +839,7 @@ ccio_unmap_page(struct device *dev, dma_addr_t iova, size_t size,
+  * @size: The length of the DMA region.
+  * @dma_handle: The DMA address handed back to the device (not the cpu).
+  *
+- * This function implements the pci_alloc_consistent function.
++ * This function implements the dma_alloc_coherent function.
+  */
+ static void * 
+ ccio_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle, gfp_t flag,
+@@ -873,7 +873,7 @@ ccio_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle, gfp_t flag,
+  * @cpu_addr: The cpu address returned from the ccio_alloc_consistent.
+  * @dma_handle: The device address returned from the ccio_alloc_consistent.
+  *
+- * This function implements the pci_free_consistent function.
++ * This function implements the dma_free_coherent function.
+  */
+ static void 
+ ccio_free(struct device *dev, size_t size, void *cpu_addr,
+@@ -902,7 +902,7 @@ ccio_free(struct device *dev, size_t size, void *cpu_addr,
+  * @nents: The number of entries in the scatter/gather list.
+  * @direction: The direction of the DMA transaction (to/from device).
+  *
+- * This function implements the pci_map_sg function.
++ * This function implements the dma_map_sg function.
+  */
+ static int
+ ccio_map_sg(struct device *dev, struct scatterlist *sglist, int nents, 
+@@ -981,7 +981,7 @@ ccio_map_sg(struct device *dev, struct scatterlist *sglist, int nents,
+  * @nents: The number of entries in the scatter/gather list.
+  * @direction: The direction of the DMA transaction (to/from device).
+  *
+- * This function implements the pci_unmap_sg function.
++ * This function implements the dma_unmap_sg function.
+  */
+ static void 
+ ccio_unmap_sg(struct device *dev, struct scatterlist *sglist, int nents, 
+@@ -1071,21 +1071,21 @@ static int ccio_proc_info(struct seq_file *m, void *p)
+ 		seq_printf(m, "  Bitmap search : %ld/%ld/%ld (min/avg/max CPU Cycles)\n",
+ 			   min, avg, max);
+ 
+-		seq_printf(m, "pci_map_single(): %8ld calls  %8ld pages (avg %d/1000)\n",
++		seq_printf(m, "dma_map_single(): %8ld calls  %8ld pages (avg %d/1000)\n",
+ 			   ioc->msingle_calls, ioc->msingle_pages,
+ 			   (int)((ioc->msingle_pages * 1000)/ioc->msingle_calls));
+ 
+ 		/* KLUGE - unmap_sg calls unmap_page for each mapped page */
+ 		min = ioc->usingle_calls - ioc->usg_calls;
+ 		max = ioc->usingle_pages - ioc->usg_pages;
+-		seq_printf(m, "pci_unmap_single: %8ld calls  %8ld pages (avg %d/1000)\n",
++		seq_printf(m, "dma_unmap_single: %8ld calls  %8ld pages (avg %d/1000)\n",
+ 			   min, max, (int)((max * 1000)/min));
+ 
+-		seq_printf(m, "pci_map_sg()    : %8ld calls  %8ld pages (avg %d/1000)\n",
++		seq_printf(m, "dma_map_sg()    : %8ld calls  %8ld pages (avg %d/1000)\n",
+ 			   ioc->msg_calls, ioc->msg_pages,
+ 			   (int)((ioc->msg_pages * 1000)/ioc->msg_calls));
+ 
+-		seq_printf(m, "pci_unmap_sg()  : %8ld calls  %8ld pages (avg %d/1000)\n\n\n",
++		seq_printf(m, "dma_unmap_sg()  : %8ld calls  %8ld pages (avg %d/1000)\n\n\n",
+ 			   ioc->usg_calls, ioc->usg_pages,
+ 			   (int)((ioc->usg_pages * 1000)/ioc->usg_calls));
+ #endif	/* CCIO_COLLECT_STATS */
+diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
+index e60690d38d67..c7d6d45a0c4b 100644
+--- a/drivers/parisc/sba_iommu.c
++++ b/drivers/parisc/sba_iommu.c
+@@ -1821,21 +1821,21 @@ static int sba_proc_info(struct seq_file *m, void *p)
+ 	seq_printf(m, "  Bitmap search : %ld/%ld/%ld (min/avg/max CPU Cycles)\n",
+ 		   min, avg, max);
+ 
+-	seq_printf(m, "pci_map_single(): %12ld calls  %12ld pages (avg %d/1000)\n",
++	seq_printf(m, "dma_map_single(): %12ld calls  %12ld pages (avg %d/1000)\n",
+ 		   ioc->msingle_calls, ioc->msingle_pages,
+ 		   (int)((ioc->msingle_pages * 1000)/ioc->msingle_calls));
+ 
+ 	/* KLUGE - unmap_sg calls unmap_single for each mapped page */
+ 	min = ioc->usingle_calls;
+ 	max = ioc->usingle_pages - ioc->usg_pages;
+-	seq_printf(m, "pci_unmap_single: %12ld calls  %12ld pages (avg %d/1000)\n",
++	seq_printf(m, "dma_unmap_single: %12ld calls  %12ld pages (avg %d/1000)\n",
+ 		   min, max, (int)((max * 1000)/min));
+ 
+-	seq_printf(m, "pci_map_sg()    : %12ld calls  %12ld pages (avg %d/1000)\n",
++	seq_printf(m, "dma_map_sg()    : %12ld calls  %12ld pages (avg %d/1000)\n",
+ 		   ioc->msg_calls, ioc->msg_pages,
+ 		   (int)((ioc->msg_pages * 1000)/ioc->msg_calls));
+ 
+-	seq_printf(m, "pci_unmap_sg()  : %12ld calls  %12ld pages (avg %d/1000)\n",
++	seq_printf(m, "dma_unmap_sg()  : %12ld calls  %12ld pages (avg %d/1000)\n",
+ 		   ioc->usg_calls, ioc->usg_pages,
+ 		   (int)((ioc->usg_pages * 1000)/ioc->usg_calls));
+ #endif
+-- 
+2.25.1
 
