@@ -2,60 +2,142 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E5444184A8
-	for <lists+linux-parisc@lfdr.de>; Sat, 25 Sep 2021 23:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19A9B419149
+	for <lists+linux-parisc@lfdr.de>; Mon, 27 Sep 2021 11:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230014AbhIYV21 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 25 Sep 2021 17:28:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52522 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbhIYV21 (ORCPT
+        id S233609AbhI0JJc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Sep 2021 05:09:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:33407 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233591AbhI0JJb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 25 Sep 2021 17:28:27 -0400
-Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F252AC061570
-        for <linux-parisc@vger.kernel.org>; Sat, 25 Sep 2021 14:26:51 -0700 (PDT)
-Received: by mail-ua1-x930.google.com with SMTP id j19so3520338uag.13
-        for <linux-parisc@vger.kernel.org>; Sat, 25 Sep 2021 14:26:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=hgT4oAwZMFFUQ1NzxnMVr2NDnKHzggnz3wBCr/9NkaQ=;
-        b=q0muMKyEPuYyhk48k7bR5OZUTr3wfFw+T40Fruw//sGUBFAbTxFlXqzyrwNpgberv5
-         Egd5/OPh5FhBiCWuecc2s3qgBcGjKhYclnlJhSMGCFMurhIjtX89O8DpV8A97l8avIvC
-         7rE2R2Mk2PyMGzXOjdfyFGoS6tIa76l9b2noK2GsN46c11+ByRtZWZOttuEh5uCpdpdw
-         OkHklJaaW/ZYgiDSvpIGls69SL3uThFFDAMLR5d30xaq08Fs4wV/rSlwa7S/+LoDn4G4
-         sCxy76BUfuAdb8dBaCaHTv+qkStoUpAO08KquE4mkH2gMjuWFN9ceMgQFy45/PM0bsRP
-         8rRg==
+        Mon, 27 Sep 2021 05:09:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1632733673;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=KVP7Xe4ufaNCXcd20wpSSrMBsG9usYiBh4tpjUVxTUI=;
+        b=A87jVk+oepUAxtpitt31u+xGVoIIAZhHvRG1ytMIxJ+Evgb5oKfi/FAAY/t0EhtGY2B8lu
+        GsmusM22kaoZRJikJg9TYi0PoN98zEYTRM/R/2H1BcIJJCkx8JRF3r39x/pYwXMPCOrKZ5
+        1Co2wrNmMfgPWkUPO8PgrqhlcK68OmY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-511-DaxyFozDNBG7v1uTkEHJ6w-1; Mon, 27 Sep 2021 05:07:52 -0400
+X-MC-Unique: DaxyFozDNBG7v1uTkEHJ6w-1
+Received: by mail-wr1-f70.google.com with SMTP id k2-20020adfc702000000b0016006b2da9bso13740758wrg.1
+        for <linux-parisc@vger.kernel.org>; Mon, 27 Sep 2021 02:07:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=hgT4oAwZMFFUQ1NzxnMVr2NDnKHzggnz3wBCr/9NkaQ=;
-        b=e1i/gS6zLhPEJ8cG0LCLEv3dbf92ZnUWu/TzVW/W+R84GKTEK7BRZbWIuMW4XBthyR
-         8grbyk07AsNh2FfS5jSW86q+EwWzCcnmBwFMw4bt8RpDysbzV4zyTCNad5jyefN/ADNh
-         /p8gEFHOjGe1OWg9DOuD44KBT4D45v/T2vgXE4etHpNb04BsVbEeRkjhHSALtQJT7FUV
-         2e7J+CelTyMlezsdSKtiga/WxVnAZlhldK1F5UYx7hR6zD8tgcTCJcqVwXfehVgchcAy
-         QDoGaHgYuWcgvrl6Sdj13WYzHeuh5yDPPzxpciv6I+yqkJ6DFUzIQ/4No9xZbF576Tme
-         /cyg==
-X-Gm-Message-State: AOAM533pWPOwn87V/A09wetdJ8hDZrsRoyopf0W15SCVYxwVLoN1XB5r
-        td69OdULIxNMXz8O6mV2YlJrYpT5CaNVQ1ZFjTw=
-X-Google-Smtp-Source: ABdhPJxNELOZ7dUHGFByQjnPg1sxDXaNtoNEc3HaI8o6eC/7/yvxIdDDgdnevOjkYn/EqT4KceEi9MUDkHDrmCnc9FU=
-X-Received: by 2002:ab0:789:: with SMTP id c9mr8164316uaf.38.1632605211167;
- Sat, 25 Sep 2021 14:26:51 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=KVP7Xe4ufaNCXcd20wpSSrMBsG9usYiBh4tpjUVxTUI=;
+        b=f95Dtygpbji+LpSWv1FBhYWVd/FN8Lw+i+vWrMgsEKE9CwVgvmmkKqLUR1NmAsnUp6
+         /6MBBJo7x4/AuEwJCGaT1abgqUGHzY1GSuAwP32tA4valt1yqSZZ0Rh5+96G/S+kZ7Gk
+         9sdw+5Hrd7g9InN6YsQs6mDCEu/QnzT3LekkmEE/eUQg6lMMkrHVRFUST5MVTGYDDg7y
+         tlVlWnhEyvYV+BvVUqf9Mo8PsT1o/VTFlq3dBfLwQA9R6iBMEX7bgl43f94djSMBlmk3
+         7hnVowqavSH8n9lkGdUHq778lNkTKvlbZoHRF8mvNo9FzjURoSKaCMqQox35eMYWHxle
+         +nMg==
+X-Gm-Message-State: AOAM533BokoAE7dypBOCdNUNTNfZaNb/j2nbO6V8SqeLCGznR9BMDYSE
+        yKQ/1o09NoNU5EcHhlRM0l0zkLxHzl3WEoNU1gDfAkRyyTb7H9Vsum92sozFx/tJO7C6DOZwI/x
+        LZfFDo2zpqJORYTusSmxRgJzL
+X-Received: by 2002:a5d:608e:: with SMTP id w14mr26547272wrt.18.1632733670882;
+        Mon, 27 Sep 2021 02:07:50 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwC5dYp72FkeZBf/nNTyOGuT0oOk/w7Q1ed5WCCglQAPy4Z5zq+YWXxX5Bel6h9RljJshmxpg==
+X-Received: by 2002:a5d:608e:: with SMTP id w14mr26547249wrt.18.1632733670649;
+        Mon, 27 Sep 2021 02:07:50 -0700 (PDT)
+Received: from redhat.com ([2.55.16.138])
+        by smtp.gmail.com with ESMTPSA id i203sm20492120wma.7.2021.09.27.02.07.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Sep 2021 02:07:49 -0700 (PDT)
+Date:   Mon, 27 Sep 2021 05:07:42 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Andi Kleen <ak@linux.intel.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
+Message-ID: <20210927044738-mutt-send-email-mst@kernel.org>
+References: <20210829112105-mutt-send-email-mst@kernel.org>
+ <09b340dd-c8a8-689c-4dad-4fe0e36d39ae@linux.intel.com>
+ <20210829181635-mutt-send-email-mst@kernel.org>
+ <3a88a255-a528-b00a-912b-e71198d5f58f@linux.intel.com>
+ <20210830163723-mutt-send-email-mst@kernel.org>
+ <69fc30f4-e3e2-add7-ec13-4db3b9cc0cbd@linux.intel.com>
+ <20210910054044-mutt-send-email-mst@kernel.org>
+ <f672dc1c-5280-7bbc-7a56-7c7aab31725c@linux.intel.com>
+ <20210911195006-mutt-send-email-mst@kernel.org>
+ <ad1e41d1-3f4e-8982-16ea-18a3b2c04019@linux.intel.com>
 MIME-Version: 1.0
-Sender: sakponouedwige1@gmail.com
-Received: by 2002:a67:cc1b:0:0:0:0:0 with HTTP; Sat, 25 Sep 2021 14:26:50
- -0700 (PDT)
-From:   Kayla Manthey <sgtkayla2001@gmail.com>
-Date:   Sat, 25 Sep 2021 21:26:50 +0000
-X-Google-Sender-Auth: rAaenNtxYpQy9iHGPh9fKCqvQnc
-Message-ID: <CAPhVR5XhQGW2Dq4tgyDB2sbczdYmE4bTGrxnJA=NmYEzA3UXkA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad1e41d1-3f4e-8982-16ea-18a3b2c04019@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Please,I would like to know if you received my previous message, thanks.
+On Fri, Sep 24, 2021 at 03:43:40PM -0700, Andi Kleen wrote:
+> 
+> > > Hmm, yes that's true. I guess we can make it default to opt-in for
+> > > pci_iomap.
+> > > 
+> > > It only really matters for device less ioremaps.
+> > OK. And same thing for other things with device, such as
+> > devm_platform_ioremap_resource.
+> > If we agree on all that, this will basically remove virtio
+> > changes from the picture ;)
+> 
+> Hi we revisited this now. One problem with removing the ioremap opt-in is
+> that it's still possible for drivers to get at devices without going through
+> probe. For example they can walk the PCI device list. Some drivers do that
+> for various reasons. So if we remove the opt-in we would need to audit and
+> possibly fix all that, which would be potentially a lot of churn. That's why
+> I think it's better to keep the opt-in.
+> 
+> 
+> -Andi
+> 
+
+I've been thinking about why this still feels wrong to me.
+
+Here's what I came up with: at some point someone will want one of these
+modules (poking at devices in the initcall) in the encrypted
+environment, and will change ioremap to ioremap_shared.
+At that point the allowlist will be broken again, and
+by that time it will be set in stone and too late to fix.
+
+Isn't the problem that what is actually audited is modules,
+but you are trying to add devices to allow list?
+So why not have modules/initcalls in the allowlist then?
+For built-in modules, we already have initcall_blacklisted, right?
+This could be an extension ... no?
+
+-- 
+MST
+
