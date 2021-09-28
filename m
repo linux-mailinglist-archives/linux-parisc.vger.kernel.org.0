@@ -2,142 +2,209 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19A9B419149
-	for <lists+linux-parisc@lfdr.de>; Mon, 27 Sep 2021 11:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8147D41AA1A
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Sep 2021 09:52:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233609AbhI0JJc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Sep 2021 05:09:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:33407 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233591AbhI0JJb (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Sep 2021 05:09:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1632733673;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=KVP7Xe4ufaNCXcd20wpSSrMBsG9usYiBh4tpjUVxTUI=;
-        b=A87jVk+oepUAxtpitt31u+xGVoIIAZhHvRG1ytMIxJ+Evgb5oKfi/FAAY/t0EhtGY2B8lu
-        GsmusM22kaoZRJikJg9TYi0PoN98zEYTRM/R/2H1BcIJJCkx8JRF3r39x/pYwXMPCOrKZ5
-        1Co2wrNmMfgPWkUPO8PgrqhlcK68OmY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-511-DaxyFozDNBG7v1uTkEHJ6w-1; Mon, 27 Sep 2021 05:07:52 -0400
-X-MC-Unique: DaxyFozDNBG7v1uTkEHJ6w-1
-Received: by mail-wr1-f70.google.com with SMTP id k2-20020adfc702000000b0016006b2da9bso13740758wrg.1
-        for <linux-parisc@vger.kernel.org>; Mon, 27 Sep 2021 02:07:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=KVP7Xe4ufaNCXcd20wpSSrMBsG9usYiBh4tpjUVxTUI=;
-        b=f95Dtygpbji+LpSWv1FBhYWVd/FN8Lw+i+vWrMgsEKE9CwVgvmmkKqLUR1NmAsnUp6
-         /6MBBJo7x4/AuEwJCGaT1abgqUGHzY1GSuAwP32tA4valt1yqSZZ0Rh5+96G/S+kZ7Gk
-         9sdw+5Hrd7g9InN6YsQs6mDCEu/QnzT3LekkmEE/eUQg6lMMkrHVRFUST5MVTGYDDg7y
-         tlVlWnhEyvYV+BvVUqf9Mo8PsT1o/VTFlq3dBfLwQA9R6iBMEX7bgl43f94djSMBlmk3
-         7hnVowqavSH8n9lkGdUHq778lNkTKvlbZoHRF8mvNo9FzjURoSKaCMqQox35eMYWHxle
-         +nMg==
-X-Gm-Message-State: AOAM533BokoAE7dypBOCdNUNTNfZaNb/j2nbO6V8SqeLCGznR9BMDYSE
-        yKQ/1o09NoNU5EcHhlRM0l0zkLxHzl3WEoNU1gDfAkRyyTb7H9Vsum92sozFx/tJO7C6DOZwI/x
-        LZfFDo2zpqJORYTusSmxRgJzL
-X-Received: by 2002:a5d:608e:: with SMTP id w14mr26547272wrt.18.1632733670882;
-        Mon, 27 Sep 2021 02:07:50 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwC5dYp72FkeZBf/nNTyOGuT0oOk/w7Q1ed5WCCglQAPy4Z5zq+YWXxX5Bel6h9RljJshmxpg==
-X-Received: by 2002:a5d:608e:: with SMTP id w14mr26547249wrt.18.1632733670649;
-        Mon, 27 Sep 2021 02:07:50 -0700 (PDT)
-Received: from redhat.com ([2.55.16.138])
-        by smtp.gmail.com with ESMTPSA id i203sm20492120wma.7.2021.09.27.02.07.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Sep 2021 02:07:49 -0700 (PDT)
-Date:   Mon, 27 Sep 2021 05:07:42 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Andi Kleen <ak@linux.intel.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        id S239369AbhI1HyK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 Sep 2021 03:54:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35528 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239287AbhI1HyJ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 28 Sep 2021 03:54:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5137D61130;
+        Tue, 28 Sep 2021 07:52:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632815550;
+        bh=lFsTmsn7BYcrty0qzd1AqSPHwOiCHDnCX/Te4vlwM7A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WJNbYy6q2dLmrox1V9lvJ3yNXIMuZp8b7wEDV18kZkrcMMEkz4ZdaL6+wMd/EJuzu
+         rCVh5UO5rDIvSMr3BDOE/uQnc8i5D1Q9+JeiaFU/tIjaphu0W1GPoetd8AQBZjw1L8
+         0shNSrZjCEMwmQ4lAz7eX9+gzn2cfrRChhTiVafD5FTWjnzkJLmdRGCJJAUrXGYmRR
+         xWRUINz2rJ3DofuTl/d+o5LYqevL22s3N3ljhF9382UP92IH2f538r4skWsFBqOxEO
+         tqwBVxxgOpwAZI8EZexXd4qGch5isT0eB+UmUDVvwm1yAlEkEW4xjjT4KCRUn+5IP0
+         tEuej0ZCMgWjA==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
-Message-ID: <20210927044738-mutt-send-email-mst@kernel.org>
-References: <20210829112105-mutt-send-email-mst@kernel.org>
- <09b340dd-c8a8-689c-4dad-4fe0e36d39ae@linux.intel.com>
- <20210829181635-mutt-send-email-mst@kernel.org>
- <3a88a255-a528-b00a-912b-e71198d5f58f@linux.intel.com>
- <20210830163723-mutt-send-email-mst@kernel.org>
- <69fc30f4-e3e2-add7-ec13-4db3b9cc0cbd@linux.intel.com>
- <20210910054044-mutt-send-email-mst@kernel.org>
- <f672dc1c-5280-7bbc-7a56-7c7aab31725c@linux.intel.com>
- <20210911195006-mutt-send-email-mst@kernel.org>
- <ad1e41d1-3f4e-8982-16ea-18a3b2c04019@linux.intel.com>
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: [PATCH 1/2] firmware: include drivers/firmware/Kconfig unconditionally
+Date:   Tue, 28 Sep 2021 09:50:26 +0200
+Message-Id: <20210928075216.4193128-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad1e41d1-3f4e-8982-16ea-18a3b2c04019@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Sep 24, 2021 at 03:43:40PM -0700, Andi Kleen wrote:
-> 
-> > > Hmm, yes that's true. I guess we can make it default to opt-in for
-> > > pci_iomap.
-> > > 
-> > > It only really matters for device less ioremaps.
-> > OK. And same thing for other things with device, such as
-> > devm_platform_ioremap_resource.
-> > If we agree on all that, this will basically remove virtio
-> > changes from the picture ;)
-> 
-> Hi we revisited this now. One problem with removing the ioremap opt-in is
-> that it's still possible for drivers to get at devices without going through
-> probe. For example they can walk the PCI device list. Some drivers do that
-> for various reasons. So if we remove the opt-in we would need to audit and
-> possibly fix all that, which would be potentially a lot of churn. That's why
-> I think it's better to keep the opt-in.
-> 
-> 
-> -Andi
-> 
+From: Arnd Bergmann <arnd@arndb.de>
 
-I've been thinking about why this still feels wrong to me.
+Compile-testing drivers that require access to a firmware layer
+fails when that firmware symbol is unavailable. This happened
+twice this week:
 
-Here's what I came up with: at some point someone will want one of these
-modules (poking at devices in the initcall) in the encrypted
-environment, and will change ioremap to ioremap_shared.
-At that point the allowlist will be broken again, and
-by that time it will be set in stone and too late to fix.
+ - My proposed to change to rework the QCOM_SCM firmware symbol
+   broke on ppc64 and others.
 
-Isn't the problem that what is actually audited is modules,
-but you are trying to add devices to allow list?
-So why not have modules/initcalls in the allowlist then?
-For built-in modules, we already have initcall_blacklisted, right?
-This could be an extension ... no?
+ - The cs_dsp firmware patch added device specific firmware loader
+   into drivers/firmware, which broke on the same set of
+   architectures.
 
+We should probably do the same thing for other subsystems as well,
+but fix this one first as this is a dependency for other patches
+getting merged.
+
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: Simon Trimmer <simont@opensource.cirrus.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+Not sure how we'd want to merge this patch, if two other things
+need it. I'd prefer to merge it along with the QCOM_SCM change
+through the soc tree, but that leaves the cirrus firmware broken
+unless we also merge it the same way (rather than through ASoC
+as it is now).
+
+Alternatively, we can try to find a different home for the Cirrus
+firmware to decouple the two problems. I'd argue that it's actually
+misplaced here, as drivers/firmware is meant for kernel code that
+interfaces with system firmware, not for device drivers to load
+their own firmware blobs from user space.
+---
+ arch/arm/Kconfig    | 2 --
+ arch/arm64/Kconfig  | 2 --
+ arch/ia64/Kconfig   | 2 --
+ arch/mips/Kconfig   | 2 --
+ arch/parisc/Kconfig | 2 --
+ arch/riscv/Kconfig  | 2 --
+ arch/x86/Kconfig    | 2 --
+ drivers/Kconfig     | 2 ++
+ 8 files changed, 2 insertions(+), 14 deletions(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index ad96f3dd7e83..194d10bbff9e 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1993,8 +1993,6 @@ config ARCH_HIBERNATION_POSSIBLE
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ if CRYPTO
+ source "arch/arm/crypto/Kconfig"
+ endif
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index ebb49585a63f..8749517482ae 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1931,8 +1931,6 @@ source "drivers/cpufreq/Kconfig"
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "drivers/acpi/Kconfig"
+ 
+ source "arch/arm64/kvm/Kconfig"
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 045792cde481..1e33666fa679 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -388,8 +388,6 @@ config CRASH_DUMP
+ 	  help
+ 	    Generate crash dump after being started by kexec.
+ 
+-source "drivers/firmware/Kconfig"
+-
+ endmenu
+ 
+ menu "Power management and ACPI options"
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 771ca53af06d..6b8f591c5054 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -3316,8 +3316,6 @@ source "drivers/cpuidle/Kconfig"
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "arch/mips/kvm/Kconfig"
+ 
+ source "arch/mips/vdso/Kconfig"
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 4742b6f169b7..27a8b49af11f 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -384,6 +384,4 @@ config KEXEC_FILE
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "drivers/parisc/Kconfig"
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 301a54233c7e..6a6fa9e976d5 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -561,5 +561,3 @@ menu "Power management options"
+ source "kernel/power/Kconfig"
+ 
+ endmenu
+-
+-source "drivers/firmware/Kconfig"
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index e5ba8afd29a0..5dcec5f13a82 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2834,8 +2834,6 @@ config HAVE_ATOMIC_IOMAP
+ 	def_bool y
+ 	depends on X86_32
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "arch/x86/kvm/Kconfig"
+ 
+ source "arch/x86/Kconfig.assembler"
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 30d2db37cc87..0d399ddaa185 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -17,6 +17,8 @@ source "drivers/bus/Kconfig"
+ 
+ source "drivers/connector/Kconfig"
+ 
++source "drivers/firmware/Kconfig"
++
+ source "drivers/gnss/Kconfig"
+ 
+ source "drivers/mtd/Kconfig"
 -- 
-MST
+2.29.2
 
