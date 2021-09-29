@@ -2,61 +2,38 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D23B41B008
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Sep 2021 15:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C843741C291
+	for <lists+linux-parisc@lfdr.de>; Wed, 29 Sep 2021 12:18:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240755AbhI1Nbc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 Sep 2021 09:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240794AbhI1Nbb (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 Sep 2021 09:31:31 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F93C061765
-        for <linux-parisc@vger.kernel.org>; Tue, 28 Sep 2021 06:29:52 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id k13so8022613ilo.7
-        for <linux-parisc@vger.kernel.org>; Tue, 28 Sep 2021 06:29:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=KV5AEITggXzrcUqW0Pn0JDUCXvtzQQd7nfX6VcyNvh0=;
-        b=gsEil9aJ5ZOw0ASchzCW/AY/NlZwbg7FdvHHAbffANcuyVgNVj8F3r/I3y/OyqwIbk
-         QkY/gO8vfPAMQp75rG6vgEG7NkfLO4ZNSWbXrGEOjX3dKqow4MOof9p7GrAO13Ckl/VP
-         f8/C6WiPIW+rxE9R7UiZnONtD/dro2yaem2kM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=KV5AEITggXzrcUqW0Pn0JDUCXvtzQQd7nfX6VcyNvh0=;
-        b=ABx0/Mi7S56tboqIgi1ii2C+uwr3gXbhDRTz3/1eoxc6rAZoi/+nlg7RisTQieBdLt
-         rIfhiZ4mYC5L7RfMJkyAW/ixTl08+4MbFEl1G9vigcQHBcUKMO6v2m9XsQaBW7Uz9bjw
-         NLZeaZ5m60n+W8KsMfoUPBxDc8JocFbVpDBorTGob4L0rul/C50gaIfPT7kz+NIZWn0u
-         Gly+q5WgLrf9axMjOBZ24KaeKfN64OkjoLCGXSVwJ5+mwxFjQxOzPU5WyckqMX7UlaVQ
-         J92yxhJpIUxI17/8oL4guBPpTNUWVeI6gSvqrFR42Tfm9cpTq2xiXXVYI8GHPjSJN10R
-         uAZw==
-X-Gm-Message-State: AOAM530tLXUBjv9jPDngDNdThgBxluzXu/U1xfjvLBiJKJsePeKkZ/NV
-        wUd4dWyO9vW3IUbfgoKUo5JmtA==
-X-Google-Smtp-Source: ABdhPJz3qmL3tZ3U3XkVDcDl9dtP+yn06EspPEdsou0GIPYBieCdKEZlaSYFieS9Yrw1uFrX87cOuw==
-X-Received: by 2002:a92:c744:: with SMTP id y4mr4108077ilp.288.1632835791399;
-        Tue, 28 Sep 2021 06:29:51 -0700 (PDT)
-Received: from [172.22.22.4] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
-        by smtp.googlemail.com with ESMTPSA id m13sm11831997ilh.45.2021.09.28.06.29.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Sep 2021 06:29:50 -0700 (PDT)
-Subject: Re: [PATCH 2/2] [v2] qcom_scm: hide Kconfig symbol
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
+        id S245502AbhI2KTZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 29 Sep 2021 06:19:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49948 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245508AbhI2KTK (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 29 Sep 2021 06:19:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 596CC613CD;
+        Wed, 29 Sep 2021 10:17:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632910650;
+        bh=ApwjsuHkRLKIvYsUtPvCU+3a2n55yhVlsEyPpAqiq0Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=c7UIdY1ptOrLLATvIT6DQbSfUmSx4SW/6eQVuBkuabAAD6uJYv4KiaePlAqUnYzIO
+         GWvJvq0km3JiPj6oi8WIpC7VAhVnopNtYfFQ5TfCQmqWH/jYFXW5/5nc9UXGqjZfMb
+         s4b9oUKpC2NR2W8UPrHHup6LTDl/yvXmNXhJnb4D4YqHdXiDvgoKL1VAUTAE/OzaT/
+         h7v+R1Nu8NrQgzctHkX8920rEm0HTH/b5a/VWhWRUhVBHJLYHe88ZnR+UOy/kHxHQm
+         KJlpI5M79mfgpL7cLLj6EGaYGvFx8zdBTlGWVrlYSSCCzBuvmaOxsoj8MrcBrikKei
+         DEg8ELCDAzEng==
+Date:   Wed, 29 Sep 2021 11:17:21 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Charles Keepax <ckeepax@opensource.cirrus.com>,
         Simon Trimmer <simont@opensource.cirrus.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
@@ -72,101 +49,70 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Joerg Roedel <joro@8bytes.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Alex Elder <elder@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, iommu@lists.linux-foundation.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-gpio@vger.kernel.org
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 1/2] firmware: include drivers/firmware/Kconfig
+ unconditionally
+Message-ID: <20210929101721.GC21057@willie-the-truck>
 References: <20210928075216.4193128-1-arnd@kernel.org>
- <20210928075216.4193128-2-arnd@kernel.org>
-From:   Alex Elder <elder@ieee.org>
-Message-ID: <19bbc40d-3f13-7e9d-72c0-5d206b016bb7@ieee.org>
-Date:   Tue, 28 Sep 2021 08:29:48 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210928075216.4193128-2-arnd@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210928075216.4193128-1-arnd@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 9/28/21 2:50 AM, Arnd Bergmann wrote:
+On Tue, Sep 28, 2021 at 09:50:26AM +0200, Arnd Bergmann wrote:
 > From: Arnd Bergmann <arnd@arndb.de>
 > 
-> Now that SCM can be a loadable module, we have to add another
-> dependency to avoid link failures when ipa or adreno-gpu are
-> built-in:
+> Compile-testing drivers that require access to a firmware layer
+> fails when that firmware symbol is unavailable. This happened
+> twice this week:
 > 
-> aarch64-linux-ld: drivers/net/ipa/ipa_main.o: in function `ipa_probe':
-> ipa_main.c:(.text+0xfc4): undefined reference to `qcom_scm_is_available'
+>  - My proposed to change to rework the QCOM_SCM firmware symbol
+>    broke on ppc64 and others.
 > 
-> ld.lld: error: undefined symbol: qcom_scm_is_available
->>>> referenced by adreno_gpu.c
->>>>                gpu/drm/msm/adreno/adreno_gpu.o:(adreno_zap_shader_load) in archive drivers/built-in.a
+>  - The cs_dsp firmware patch added device specific firmware loader
+>    into drivers/firmware, which broke on the same set of
+>    architectures.
 > 
-> This can happen when CONFIG_ARCH_QCOM is disabled and we don't select
-> QCOM_MDT_LOADER, but some other module selects QCOM_SCM. Ideally we'd
-> use a similar dependency here to what we have for QCOM_RPROC_COMMON,
-> but that causes dependency loops from other things selecting QCOM_SCM.
+> We should probably do the same thing for other subsystems as well,
+> but fix this one first as this is a dependency for other patches
+> getting merged.
 > 
-> This appears to be an endless problem, so try something different this
-> time:
-> 
->   - CONFIG_QCOM_SCM becomes a hidden symbol that nothing 'depends on'
->     but that is simply selected by all of its users
-> 
->   - All the stubs in include/linux/qcom_scm.h can go away
-> 
->   - arm-smccc.h needs to provide a stub for __arm_smccc_smc() to
->     allow compile-testing QCOM_SCM on all architectures.
-> 
->   - To avoid a circular dependency chain involving RESET_CONTROLLER
->     and PINCTRL_SUNXI, drop the 'select RESET_CONTROLLER' statement.
->     According to my testing this still builds fine, and the QCOM
->     platform selects this symbol already.
-> 
-> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Liam Girdwood <lgirdwood@gmail.com>
+> Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
+> Cc: Simon Trimmer <simont@opensource.cirrus.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
-> Changes in v2:
->    - drop the 'select RESET_CONTROLLER' line, rather than adding
->      more of the same
-> ---
->   drivers/firmware/Kconfig                |  5 +-
->   drivers/gpu/drm/msm/Kconfig             |  4 +-
->   drivers/iommu/Kconfig                   |  2 +-
->   drivers/media/platform/Kconfig          |  2 +-
->   drivers/mmc/host/Kconfig                |  2 +-
->   drivers/net/ipa/Kconfig                 |  1 +
-
-For drivers/net/ipa/Kconfig, looks good to me.
-Nice simplification.
-
-Acked-by: Alex Elder <elder@linaro.org>
-
->   drivers/net/wireless/ath/ath10k/Kconfig |  2 +-
->   drivers/pinctrl/qcom/Kconfig            |  3 +-
->   include/linux/arm-smccc.h               | 10 ++++
->   include/linux/qcom_scm.h                | 71 -------------------------
->   10 files changed, 20 insertions(+), 82 deletions(-)
+> Not sure how we'd want to merge this patch, if two other things
+> need it. I'd prefer to merge it along with the QCOM_SCM change
+> through the soc tree, but that leaves the cirrus firmware broken
+> unless we also merge it the same way (rather than through ASoC
+> as it is now).
 > 
+> Alternatively, we can try to find a different home for the Cirrus
+> firmware to decouple the two problems. I'd argue that it's actually
+> misplaced here, as drivers/firmware is meant for kernel code that
+> interfaces with system firmware, not for device drivers to load
+> their own firmware blobs from user space.
+> ---
+>  arch/arm/Kconfig    | 2 --
+>  arch/arm64/Kconfig  | 2 --
+>  arch/ia64/Kconfig   | 2 --
+>  arch/mips/Kconfig   | 2 --
+>  arch/parisc/Kconfig | 2 --
+>  arch/riscv/Kconfig  | 2 --
+>  arch/x86/Kconfig    | 2 --
+>  drivers/Kconfig     | 2 ++
+>  8 files changed, 2 insertions(+), 14 deletions(-)
 
-. . .
+For arm64:
+
+Acked-by: Will Deacon <will@kernel.org>
+
+Will
