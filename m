@@ -2,151 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42DD541DF3F
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Sep 2021 18:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 976FF41E074
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 Sep 2021 20:00:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352200AbhI3QmM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 30 Sep 2021 12:42:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39206 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351765AbhI3QmI (ORCPT
+        id S1352949AbhI3SBr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 30 Sep 2021 14:01:47 -0400
+Received: from smtp.duncanthrax.net ([178.63.180.169]:44264 "EHLO
+        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352948AbhI3SBq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 30 Sep 2021 12:42:08 -0400
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 166E8C06176C
-        for <linux-parisc@vger.kernel.org>; Thu, 30 Sep 2021 09:40:26 -0700 (PDT)
-Received: by mail-vs1-xe43.google.com with SMTP id x1so8085053vsp.12
-        for <linux-parisc@vger.kernel.org>; Thu, 30 Sep 2021 09:40:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
-        b=klL1UpLzD7wQhT+u4Gn3f98ZGPXdICD/gL8aAAN3e+d2ures71JEqMSnQmwTk2Wgi/
-         WbiQz8V3Pd9DQnsXUXVmKMZTYSeJoI4aTZi3A3rC2I87tBGp6VzNWBHFGYupGX9dcC8J
-         ct2Z0RY+GAagSAGNV9wYqTgtAvu+9PiewwPIWRaqjwm/gFpSgZmVUgbq3SkcynleIpCD
-         u98CTx+bDvOYjxGAiym43LtwMxcfKO+QE9Rm5HJY6vNmINq79x2j9GM/HszD8nrib3Hk
-         P3Q8ESrESAbxxKnC7KMyUcaPs0A1zKoaDMaObd6P0VQIJ8jJrV10hlpQA3OhybL7pEug
-         kRhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
-        b=k/kBGhd8cN6GDTJEjb8IAe+Tg71v/1FpgB9hnvGqKuwQXRUS0gVII/jEW3TkrHLFSR
-         O87XaiqPsmrt6vk+l4GVfpwfepmO1XjRYYdqC0tWhNiAHSONN+Pv0KV3u++pH34vMMPx
-         BuMO3ZAGpEriUP9hsUoxE7AgN9Z9oMv5NOJfopPDBvIByiTkI7yMUbuSp1X3D1aO3z+h
-         IGxOhmb689vv+5eOObKSAb+uLyvD9HqioNyVzafF9Nx6vyyzURwulJfF2Wvn8R+wQtDS
-         h1KtPma62QZyfPSGv4pzDD4mLq5RRuQoylLw4gw/hsnMtfvHKulZzagLa2jnP9hNpuqc
-         o8UQ==
-X-Gm-Message-State: AOAM530QQ89CBc1HiabETdgTLonK+yjOSTY2wyLl2Hakealw92ghNvNp
-        whfyBrs2JWIcK2jAszYV2lSxXXHSnp/iWCfbTrU=
-X-Google-Smtp-Source: ABdhPJyxr33xWZ+IWjzPH6BWLVx+LS1XFdQsH+Wd5qTKdzTcC5YzVlOcqQyIsNFnPLybj9m0QYGO//SHZ5Mm0RLXYfg=
-X-Received: by 2002:a05:6102:192:: with SMTP id r18mr303425vsq.0.1633020025172;
- Thu, 30 Sep 2021 09:40:25 -0700 (PDT)
+        Thu, 30 Sep 2021 14:01:46 -0400
+X-Greylist: delayed 2034 seconds by postgrey-1.27 at vger.kernel.org; Thu, 30 Sep 2021 14:01:46 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=duncanthrax.net; s=dkim; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=eRakFi0RguLdNgG/jWLQErbrW3srOwzhtHjHK5GRrsE=; b=Az3bIdG0fZD75cDNWLcpXavMY1
+        +VN+XBechNKH8y8tH5APJPSdCFRgea3AREU0OR6eiDwVTHeYHXIqhklS+9YWFG/k0LGwDlwGk9ukG
+        aedIXo9cutjidwsP7/7Ic4abliUv2ygqdCal7cNGO743KHZ+/CHER1w5MfcOZAyt4dxU=;
+Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org)
+        by smtp.duncanthrax.net with esmtpa (Exim 4.93)
+        (envelope-from <svens@stackframe.org>)
+        id 1mVzot-0003hw-PU; Thu, 30 Sep 2021 19:26:08 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc/unwind: use copy_from_kernel_nofault()
+Date:   Thu, 30 Sep 2021 19:26:03 +0200
+Message-Id: <20210930172603.5763-1-svens@stackframe.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Received: by 2002:a59:ab2e:0:b0:22d:7f44:603a with HTTP; Thu, 30 Sep 2021
- 09:40:24 -0700 (PDT)
-Reply-To: irenezakari24@gmail.com
-From:   Irene zakari <irenezakari88@gmail.com>
-Date:   Thu, 30 Sep 2021 09:40:24 -0700
-Message-ID: <CAFT8PFFGaFTfLE3SCRKPmvOGX18=YvW0WYHX7S8c7zgtYtFeaQ@mail.gmail.com>
-Subject: PLEASE I NEED YOUR HELP
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello   ..
+I have no idea why get_user() is used there, but we're unwinding the
+kernel stack, so we should use copy_from_kernel_nofault().
 
-How do you do over there? I hope you are doing well?
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+---
+ arch/parisc/kernel/unwind.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-My name is Irene. (24 years), i am single, from Gambia, the only child
-of late Eng. Bernard Bakary Zakaria. the Director of Bajam Enterprise
-(Building Construction Company in The Gambia) also the CEO of Bernard
-Import and Export (GAMBIA).
+diff --git a/arch/parisc/kernel/unwind.c b/arch/parisc/kernel/unwind.c
+index 87ae476d1c4f..889d5889203a 100644
+--- a/arch/parisc/kernel/unwind.c
++++ b/arch/parisc/kernel/unwind.c
+@@ -302,7 +302,8 @@ static void unwind_frame_regs(struct unwind_frame_info *info)
+ 				break;
+ 			}
+ 
+-			if (get_user(tmp, (unsigned long *)(info->prev_sp - RP_OFFSET))) 
++			if (copy_from_kernel_nofault(&tmp,
++			    (void *)info->prev_sp - RP_OFFSET, sizeof(tmp)))
+ 				break;
+ 			info->prev_ip = tmp;
+ 			sp = info->prev_sp;
+-- 
+2.33.0
 
-As a matter of fact my mother died when i was barely 4 years old
-according to my late father and because of the type of love he had for
-my mother made him to remain UN-married till he left the ghost..
-
-So after the death of my father as a result of assassinate, his brother (My
-Uncle) who is the purchasing and marketing sale manager of my late
-fathers company named (Mr. James Tokunbo Oriade Zakaria) wanted to
-convert all the properties and resources of my late father into his
-which i quarreled with him and it made him to lay his anger on me to
-the extent of hiring an assassins to kill me but to God be the glory i
-succeeded by making a way to Burkina faso for my dear life.
-Honestly i do live a fearful life even here in Burkina faso because of
-those Assassins coming after me .
-
-I would want to live and study in your country for my better future.
-because my father same blood brother wanted to force me into undecided
-marriage, just for me to leave my father home and went and live with
-another man I never know as he want to occupied all my father home
-and maybe to sold it as my father no longer alive, I'm the only child
-daughter my father born, '' but he don't know that i am not
-interesting in any of my father properties or early marriage for now,
-because i still have future to think about and to focus on my studies
-first as i was doing my first year in the University before the death
-of my father.
-
-Actually what I want to discuss with you is about my personal issue
-concern funds my late father deposited in a bank outside my country,
-worth $4.5 million united state dollars. i need your assistance to
-receive and invest this funds in your country.
-
-Please help me, I am sincere to you and I want to be member of your
-family as well if you wouldn't mind to accept me and lead me to better
-future in your country.
-
-All the documents the bank issue to my father during time of deposit
-is with me now.
-I already notify the bank on phone about the death of my father and
-they are surprise for the news and accept that my father is their good
-customer.
-I will be happy if this money can be invested in any business of your
-choice and it will be under your control till i finished my education,
-also I'm assuring you good relationship and I am ready to discuss the
-amount of money to give you from this money for your help.
-
-Therefore, I shall give you the bank contact and other necessary
-information in my next email if you will only promise me that you will
-not/never betray and disclosed this matter to anybody, because, this
-money is the only hope i have for survival on earth since I have lost
-my parents.
-
-Moreover I have the FUND PLACEMENT CERTIFICATE and the DEATH
-CERTIFICATE here with me, but before I give you further information, i
-will like to know your full data
-
-1. Full Name: ........................
-2. Address: ..................
-3. Nationality: ........... Sex................
-4. Age:........... Date of Birth:................
-5. Occupation:...................
-.....
-6. Phone: ........... Fax:.........................
-7. State of Origin: .......Country:..............
-8. Occupation:...................
-................
-9. Marital status........... E-mail address's: ............
-10. Scan copy of your ID card or Driving License/Photo:............
-DECLARATION:
-
-so that i will be fully sure that i am not trusting the wrong person.
-and it will also give me the mind to send you the bank contact for you
-to communicate with them for more verification about this money. and
-to know you more better.
-
-Meanwhile, you can reach me through my pastor,his name is Pastor Paul
-any time you call, tell him that you want to speak with me because
-right now i am living in the church here in Burkina faso and i don't
-want to stay here any longer,
-send for me to speak with you his phone number is this(+226 75213646)
-
-I will stop here and i will be waiting for your reply and feel free
-ask any thing you want to know about me.
-Please help me, I would be highly appreciated
-Have nice day.
-From Irene
