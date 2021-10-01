@@ -2,103 +2,72 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10C6841EAF5
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Oct 2021 12:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0374C41EC3A
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Oct 2021 13:35:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352642AbhJAKcf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Oct 2021 06:32:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54274 "EHLO
+        id S1354021AbhJALhA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 Oct 2021 07:37:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352687AbhJAKce (ORCPT
+        with ESMTP id S1354027AbhJALg7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Oct 2021 06:32:34 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1435C061775
-        for <linux-parisc@vger.kernel.org>; Fri,  1 Oct 2021 03:30:50 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id x7so31976951edd.6
-        for <linux-parisc@vger.kernel.org>; Fri, 01 Oct 2021 03:30:50 -0700 (PDT)
+        Fri, 1 Oct 2021 07:36:59 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE2AC0613E3
+        for <linux-parisc@vger.kernel.org>; Fri,  1 Oct 2021 04:35:12 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id i19so34275071lfu.0
+        for <linux-parisc@vger.kernel.org>; Fri, 01 Oct 2021 04:35:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=QEE5+eR1PTRsf7Cn1O7pyaGGfFF+vSbOIpx5p0aBTl0=;
-        b=CqEmUk3io5LxKbnJnIofkJShoydE3T5j+Eo8LRewYlm/6BpATFlKewrzPHkKd6+JJy
-         ivPXQ6VtD1CSEikPoNgq5bMThRKdbVo0o0zC9d737DLdx6KXDqZx+czpwNN3ybSeRLgI
-         iWeIye89fSKYWIdF0d4d3aGh9Jy/MTg3GOWWsykMePgoGkCMQ89mBBT+f1pSMuw0d8oA
-         DcZ3xzRW+EqSDHSHWSaG328KbfsRX4XvSJF1H/9Kf7NhXq0sykWUGsATko43FvqUSeC4
-         v1+mZZd3mCwj8EAVpetgYHCPPeWHjpUxVZfvLC1muBQGDEhSvE3ad5qpBTdEQZEQFZFp
-         3irA==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
+        b=kb6MbLUy++O6PNHhKSFPx9v4fFtwpvxJeNblR4kji6+6qq2Lucl0Bos7Wr8pcLX+hO
+         tRyb9xiWVR8p706SNC+HizJNgSL5UH7etOYT4KJNUPAxZsx19kSXdlPSkzuaY1jTWaLY
+         4tzz18G2my1E8FkqDzcvEfU/fmLr7epbivZsMIbMD2QsJgHn219yKjZHacudF+1Otelk
+         Ps1x6eI3Y+KniUoXNyOSthjl8bPizc7o0PNNLM7mCUJWrsXs698IFJfmckZW2ZuwAS6o
+         Sx6QKffvmRb5RhKFnE364qOhRDY4B39bqiG8gRsgkqiSO/SRZOJpzUOpTrf/l9gFCHVc
+         XGiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=QEE5+eR1PTRsf7Cn1O7pyaGGfFF+vSbOIpx5p0aBTl0=;
-        b=JMhh7dquia9/MVT7o+NPkfXOCogoMuNPJQbXbz6WtCT/LnxpQK0qGz2iCZAcUjTQMV
-         f1TwAvCBqlkko90nBfKHlqnB1+qrb38xVv6W8QPsYd432XxoU6+cSjVGZMJPV3aWMFDN
-         5xtiT5nvbqp/0KNnRcHIsmIhNPI6zZxgh75dLJz6moAGE6KMQydxV4WrUR6Mdy+nr3UA
-         KJGGDj55EgQZkNctiWcE+oqlzqLEmoQeI4GdFaUPtgT2o3ytPC6+nHxOsQGAhBOpyLlS
-         wx+cLYiRHW4euQ+gVvoIG/pe1ELkBDZXFajwqwHuJ1HJ74JqIY9NS30iBZcvFcENM0NW
-         aS7w==
-X-Gm-Message-State: AOAM530Dq1fWPvocqkFRXzD1DSF1WiM8q954jeMODxg9aWNQS25HBmeO
-        0C9GH97zlthuKIMpNQi+hXrY7SXHvqF1S4L37i2LLQ==
-X-Google-Smtp-Source: ABdhPJxOwe2DdMM4rV12tDoZFekSO5C3xyP/cXPE2zkP/P0J8YDu1zphyQs6RNWhfjff8e6CFoPBoxKq+N+rhnN4Nko=
-X-Received: by 2002:a50:bf07:: with SMTP id f7mr13553425edk.288.1633084247906;
- Fri, 01 Oct 2021 03:30:47 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
+        b=61fqRkN5XtoBWDoOXwQLePGW5UuBw9B1b3SQGxT3CaeQ63Zqyv2CQ3iftt+eR2oTQc
+         HWwia8swDYDYivTLhT9bfkoOcMkKsSyb6HOmRI4FD0Ih2/q1HEvxXcTAqh+R0EosDEiD
+         rGl23ryapGssbWfH0vKAbKteLo/SrcMak9wXd9f7LBQEtOrJnREHM63MJxYHPbbcpPWq
+         Hx9Bj8zjVrt44J9qiuJuLiLrRfnD151WL39eQzT3MilL3wwWTVuDQsEuL2eO4fxlsPO6
+         gTEpSoBUJ/RIZG/9GrbEHVGcadcRgnjotvJ7jRtgeXP4XBcS5HIx/u/4s3Tid6iIOlkc
+         2grg==
+X-Gm-Message-State: AOAM532pL/cdHJx4D3rapwS/xPEk0+cJsqBwZmyqa/X5wOrO0EgslMas
+        ZwSvuNXQAThimtZweG3RAEvXAHU+vPiuj5FGpad5lEbId5v4/g==
+X-Google-Smtp-Source: ABdhPJxO5JZDMou4ZeNj31LReXKwuJbss5Bcqb0SVbR3DI9xevoj0I1eyLAyk/Sg0BjFpvAB7vI/ZitZ52WunSuQcUw=
+X-Received: by 2002:a17:906:3882:: with SMTP id q2mr5834865ejd.396.1633088100599;
+ Fri, 01 Oct 2021 04:35:00 -0700 (PDT)
 MIME-Version: 1.0
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 1 Oct 2021 16:00:36 +0530
-Message-ID: <CA+G9fYtsteSfwTQKV8o6VtBQDoz-+nwOf0s0X8BCkQHgAc6sdw@mail.gmail.com>
-Subject: parisc/unwind: call callback with toplevel address
-To:     open list <linux-kernel@vger.kernel.org>,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        linux-parisc@vger.kernel.org
-Cc:     Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>,
-        James.Bottomley@hansenpartnership.com,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        lkft-triage@lists.linaro.org
+Received: by 2002:a17:906:724a:0:0:0:0 with HTTP; Fri, 1 Oct 2021 04:34:58
+ -0700 (PDT)
+Reply-To: joymat52@gmail.com
+From:   Joyce Thomas <tjoyc1234@gmail.com>
+Date:   Fri, 1 Oct 2021 04:34:58 -0700
+Message-ID: <CAF-RpUjEy3ZrsPpj7r5ZFKjGM=JQyOMzOcWwONVKJZrBckwU0Q@mail.gmail.com>
+Subject: ATTN:
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Following build errors noticed while building Linux next 20211001
-with gcc-11 for parisc architecture.
-
-arch/parisc/kernel/stacktrace.c: In function 'dump_trace':
-arch/parisc/kernel/stacktrace.c:20:13: error: 'regs' undeclared (first
-use in this function)
-   20 |         if (regs)
-      |             ^~~~
-arch/parisc/kernel/stacktrace.c:20:13: note: each undeclared
-identifier is reported only once for each function it appears in
-arch/parisc/kernel/stacktrace.c:21:22: error: implicit declaration of
-function 'fn' [-Werror=implicit-function-declaration]
-   21 |                 if (!fn(cookie, regs->iaoq[0]))
-      |                      ^~
-arch/parisc/kernel/stacktrace.c:21:25: error: 'cookie' undeclared
-(first use in this function)
-   21 |                 if (!fn(cookie, regs->iaoq[0]))
-      |                         ^~~~~~
-cc1: some warnings being treated as errors
-make[3]: *** [scripts/Makefile.build:288:
-arch/parisc/kernel/stacktrace.o] Error 1
-
-Build config:
-https://builds.tuxbuild.com/1ytbtyEg5SDSQgS2Oj9RsCM4ZmS/config
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-meta data:
------------
-    git_repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
-    git_sha: a25006a77348ba06c7bc96520d331cd9dd370715
-    git_short_log: a25006a77348 (\"Add linux-next specific files for 20211001\")
-    kconfig:  defconfig
-    kernel_version: 5.15.0-rc3
-    target_arch: parisc
-    toolchain: gcc-11
-
-steps to reproduce:
-https://builds.tuxbuild.com/1ytbtyEg5SDSQgS2Oj9RsCM4ZmS/tuxmake_reproducer.sh
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Hello Dear
+My Name is Mr. Joyce Thomas. Contact me for more information on the
+transfer of ($7.9 million dollars) left by my late client from your
+Country. I want to present you as a business partner and next of kin
+of the fund. I will give you the details of this transaction, as soon
+as I hear from you. I need the information below:
+Full Name:
+Address:
+Occupation:
+Age:
+Personal Email:
+Personal Telephone:
+Best Regards,
+Mr.Joyce  Thomas
