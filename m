@@ -2,124 +2,84 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1EB741F593
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Oct 2021 21:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBC6F41FB43
+	for <lists+linux-parisc@lfdr.de>; Sat,  2 Oct 2021 13:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352957AbhJATOq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Oct 2021 15:14:46 -0400
-Received: from mout.gmx.net ([212.227.15.19]:48913 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229753AbhJATOp (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Oct 2021 15:14:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1633115573;
-        bh=1/tD9+i6K79wJvk6mIUgFY5BXkVQQ7kg9CSnpwZJmy4=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=FXt3MCG81EhlBPWLYL2tltIxPJPCK3WXrbF7cNtj9+pInkpHo7bejF1wwI4pO2hbA
-         nkB4wZ4ilE4jLfGuSg50D+eudNNMCKAdjLMOwHXg97C5YngEhLKDMubfxBM10vLOtA
-         nmaw2eZQM1qODJco+oJNV7lgCYXffC2ASxM0UJ7s=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.147.253]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MtOKi-1moalu3HJ8-00uoGT; Fri, 01
- Oct 2021 21:12:52 +0200
-Message-ID: <2ef5185a-9a0f-5ee0-23fc-37e0b1dd1099@gmx.de>
-Date:   Fri, 1 Oct 2021 21:12:43 +0200
+        id S232929AbhJBMA2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 2 Oct 2021 08:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59710 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232912AbhJBMA2 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 2 Oct 2021 08:00:28 -0400
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 904A6C0613F0
+        for <linux-parisc@vger.kernel.org>; Sat,  2 Oct 2021 04:58:42 -0700 (PDT)
+Received: by mail-il1-x12b.google.com with SMTP id h20so13284323ilj.13
+        for <linux-parisc@vger.kernel.org>; Sat, 02 Oct 2021 04:58:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=QQ8yjdkr3AyTXc1Qd+y5KVQEFJYRzYvpitUt1iUKrzhECN3YOj+oNCW6D9KW/fS04w
+         EdezrgoRMuFIuc9iEqAiRLnI677qcPgh8qEOEdOx+NUZ5MgnqpdmiQE5Rrf9NzlSz7JR
+         jfKmYCbeXC/qnzJGMMzArVeDE2eSpZBlopyklXaKzhrq/VqT743SFYECgl9Td9JQFMJB
+         T1TPujHh2zRQu3k+lFcLGPAIhStmdiJVFGEY8XaS0XXLEJxnuf01ZSBvvVOzqBK5yGO7
+         5+Pv2F9hzigZK+wObaAr77GL/yWUwIDdN6YfVR/r0TQhFtO2oTMcESSxlWkyExKYvcJ2
+         +6jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=qGQ5KKlLRSg11VIb0ZOPPDhHRxQxuJAWuVC5g8rIrbp5dUDkjYv7/+F0dq403funKp
+         GY5vEJnnDxSmUoAYgp55If00s3RtUK5hyRA8M+KLd5PP1/ounkmpG/4P17ExSzhIfEOw
+         OQx3SnMZHga5CkO0Kg4tDo80A0bzdrCWfgUGJNCa2nVYolCT3QQ/MbAtBxC4jcQdgC/4
+         rNLAiUOpA70tMBQYa5Hwm2B02FS+sNO5m+dmAd0jtof6F4DYFOB1OJNUAOZ9ThiOiAiG
+         DeU2zmPldiEXe0/EWzPXb0fzv6H+ZbMUsnv5Gk4/TdAqqhPB6mOqhoAactJdYLEB+xSy
+         eeGg==
+X-Gm-Message-State: AOAM533dEPJiZbDV/ZrNchHaOIK7JdBY3TudzDqZ1QU2/Om0rVBCsh7g
+        Ly6VLnG3AVMQ11D7C93Cb2bMEL3n9nWzKzepmW0=
+X-Google-Smtp-Source: ABdhPJy3OnHCtjWZX2ubyTK+F3JmYyLW1HCLzfAV/gPzoxmWHQJWsZ0bEtoZVkAJJjYKH+3bhFtXs85/D02G5BtuO5U=
+X-Received: by 2002:a92:ca06:: with SMTP id j6mr2317156ils.42.1633175922045;
+ Sat, 02 Oct 2021 04:58:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: parisc/unwind: call callback with toplevel address
-Content-Language: en-US
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        linux-parisc@vger.kernel.org
-Cc:     Sven Schnelle <svens@stackframe.org>,
-        James.Bottomley@hansenpartnership.com,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        lkft-triage@lists.linaro.org
-References: <CA+G9fYtsteSfwTQKV8o6VtBQDoz-+nwOf0s0X8BCkQHgAc6sdw@mail.gmail.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <CA+G9fYtsteSfwTQKV8o6VtBQDoz-+nwOf0s0X8BCkQHgAc6sdw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 04:58:41 -0700 (PDT)
+Reply-To: unitednnation0@gmail.com
+From:   "U.n" <wadebaye33@gmail.com>
+Date:   Fri, 1 Oct 2021 23:58:41 -1200
+Message-ID: <CACE0T5WBFyHbiOiVMH8UtgPm6J8Pk05_Uk=Co2EttH7w+J1NKA@mail.gmail.com>
+Subject: Attention
+To:     unitednnation0@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:m4bcQkSWj0lpLhyoxxSrxte4MHqoI3/QJ8CtZN1qb4ts3rsZxhw
- fSGMRLTYdCWL/xEY+sp2T6P1Fy9VKcJ1M9E5trpBZXTEaWzn+LE74awyOEqrbnYml/bFMw6
- BgIbLbMb/hNGs3lIA37JktxozVnDqFzjRj4qrWc0Jpyd7Km4I86pzCF+PFZz8TJIuqmvqMT
- DG7j4d/ShOWhMe5BF7Z5w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:vZJTgfu7RVY=:iI7xQry8ZZODMpie1mGAC4
- XL3Bh8CR9G5vNYd/8UlHHsw8W6HRUD3kL5Bl4JceR8KoNmCT8HoObzOH0+Wq7uGFRd4cdxVK1
- NfAlKQzhYJcLSc+fWzF5t3POV3MyWPwVDxKq2pVt8bDrOvQb+oupFBsghKxRa/3KhF5koknLG
- mi+/IKyU41UJA6tS6Cfsq1U5qHO0Zlwv0duPPBbO+QV3YIz98JDiHNYX6Gpt+Tl4VwknSjCc/
- 6ISLNbqBWQtGXAw5M3SWzGIT9h2vhGcOaNNLnY2fmLRxmj3b97Z41nDdTQ6Vq1c8Aj50QDh39
- Uyf+9dVvmxA5pHGg9dVBJ/EXrhZ9aNd9tCMEDSptYUsnlURejf3DIMFnyN2ayYr/oxuWbC5Xw
- l9mspghsO5qio2S6anPQS0UFnhQn6Dei68Hrspc1qLKnQ5kkAmyw6QFwwuGRoLU7sAuOJRAwx
- Iu3rBmF6+g22JC6G4e6O0fWpwLhg4lrqUb2M6yHzyncDAUOTVrHFMTQ+BJUiMNNoGt9IrHqqR
- g7TgVk+Fy/q1qvmYWd7LBKZbMSLDiuDcvvqevsgq62PrckyhUBDUWbm/k3tihQhGbewl7W9c2
- 8ObKLAUYsZD8oDJ8bzeNrUzALphLu3RpJznoVojhdjLrmyas/Zif7Nhi2FgtRfqrlsBcbLUe2
- x39eAZ1jKkiiD9qjV51+RxImlV/C/nNUr2zktAbd5EjJWCl5GCnrGoUuRiteyfkxAoXzL+Lvy
- qW6V9IyOCyjG7FhOxF8qmLMi43GXUSu0ZAV69Bi8nwww1KfVK5ISAId7PaExnjmjuIZ2QVHVw
- jCkh8wd6Ej0++tXJFYaEX6OTbxXUGRVivQtz3sq4NxkkN1SlLCab46akRBIb49iEynZPu55nw
- G0aenmRMOEeoQ8dvJo7+n4PRgxmHiDC8mREkdo6wUohm097qaMj3BnvvF37ogCUIZSwlpLTyX
- rzZgzB6btgLu85pG4OGe1FpxIFVKJ4AXRqJsGMgqNSOWZWe6+hXzR1pez9AHXfA4Hc7WrV8gL
- EXoZ5L1idGmGJHfFLQgJWq91SdOqpPXpl71uDuUed3zMexa7O9u64fGApUvYHNeMpJ2HIGtiu
- pNbm87LxSy6cmY=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/1/21 12:30, Naresh Kamboju wrote:
-> Following build errors noticed while building Linux next 20211001
-> with gcc-11 for parisc architecture.
->
-> arch/parisc/kernel/stacktrace.c: In function 'dump_trace':
-> arch/parisc/kernel/stacktrace.c:20:13: error: 'regs' undeclared (first
-> use in this function)
->    20 |         if (regs)
->       |             ^~~~
-> arch/parisc/kernel/stacktrace.c:20:13: note: each undeclared
-> identifier is reported only once for each function it appears in
-> arch/parisc/kernel/stacktrace.c:21:22: error: implicit declaration of
-> function 'fn' [-Werror=3Dimplicit-function-declaration]
->    21 |                 if (!fn(cookie, regs->iaoq[0]))
->       |                      ^~
-> arch/parisc/kernel/stacktrace.c:21:25: error: 'cookie' undeclared
-> (first use in this function)
->    21 |                 if (!fn(cookie, regs->iaoq[0]))
->       |                         ^~~~~~
-> cc1: some warnings being treated as errors
-> make[3]: *** [scripts/Makefile.build:288:
-> arch/parisc/kernel/stacktrace.o] Error 1
->
-> Build config:
-> https://builds.tuxbuild.com/1ytbtyEg5SDSQgS2Oj9RsCM4ZmS/config
->
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+--=20
 
-I've dropped that patch.
 
-Thanks!
-Helge
+Attention Sir/Madam
+This is the United Nation (UN). We the United Nations (UN) Globally
+has approved (US$2.500,000)( two Million Five hundred thousand
+dollars) compensation as part of our responsibilities for humanitarian
+Aid for fighting against CoronaVirus and you are among the lucky ones.
+
+
+This compensation is for the most affected countries, communities and
+families across the global. Your funds were deposited with Bank in USA
+to transfer your funds to you via Internet Banking. You have to send
+your full details as state below:with this email Address
+  ( unitednnation0@gmail.com )
+Your full names:
+Address:
+Telephone:
+Occupation:
 
 
 
-> meta data:
-> -----------
->     git_repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
->     git_sha: a25006a77348ba06c7bc96520d331cd9dd370715
->     git_short_log: a25006a77348 (\"Add linux-next specific files for 202=
-11001\")
->     kconfig:  defconfig
->     kernel_version: 5.15.0-rc3
->     target_arch: parisc
->     toolchain: gcc-11
->
-> steps to reproduce:
-> https://builds.tuxbuild.com/1ytbtyEg5SDSQgS2Oj9RsCM4ZmS/tuxmake_reproduc=
-er.sh
->
-> --
-> Linaro LKFT
-> https://lkft.linaro.org
->
-
+Yours Sincerely
+Mr. Ant=C3=B3nio Guterres
+United Nations (UN).
