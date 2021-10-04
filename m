@@ -2,84 +2,83 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBC6F41FB43
-	for <lists+linux-parisc@lfdr.de>; Sat,  2 Oct 2021 13:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C097421A4B
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Oct 2021 00:50:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232929AbhJBMA2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 2 Oct 2021 08:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59710 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232912AbhJBMA2 (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 2 Oct 2021 08:00:28 -0400
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 904A6C0613F0
-        for <linux-parisc@vger.kernel.org>; Sat,  2 Oct 2021 04:58:42 -0700 (PDT)
-Received: by mail-il1-x12b.google.com with SMTP id h20so13284323ilj.13
-        for <linux-parisc@vger.kernel.org>; Sat, 02 Oct 2021 04:58:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=QQ8yjdkr3AyTXc1Qd+y5KVQEFJYRzYvpitUt1iUKrzhECN3YOj+oNCW6D9KW/fS04w
-         EdezrgoRMuFIuc9iEqAiRLnI677qcPgh8qEOEdOx+NUZ5MgnqpdmiQE5Rrf9NzlSz7JR
-         jfKmYCbeXC/qnzJGMMzArVeDE2eSpZBlopyklXaKzhrq/VqT743SFYECgl9Td9JQFMJB
-         T1TPujHh2zRQu3k+lFcLGPAIhStmdiJVFGEY8XaS0XXLEJxnuf01ZSBvvVOzqBK5yGO7
-         5+Pv2F9hzigZK+wObaAr77GL/yWUwIDdN6YfVR/r0TQhFtO2oTMcESSxlWkyExKYvcJ2
-         +6jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=qGQ5KKlLRSg11VIb0ZOPPDhHRxQxuJAWuVC5g8rIrbp5dUDkjYv7/+F0dq403funKp
-         GY5vEJnnDxSmUoAYgp55If00s3RtUK5hyRA8M+KLd5PP1/ounkmpG/4P17ExSzhIfEOw
-         OQx3SnMZHga5CkO0Kg4tDo80A0bzdrCWfgUGJNCa2nVYolCT3QQ/MbAtBxC4jcQdgC/4
-         rNLAiUOpA70tMBQYa5Hwm2B02FS+sNO5m+dmAd0jtof6F4DYFOB1OJNUAOZ9ThiOiAiG
-         DeU2zmPldiEXe0/EWzPXb0fzv6H+ZbMUsnv5Gk4/TdAqqhPB6mOqhoAactJdYLEB+xSy
-         eeGg==
-X-Gm-Message-State: AOAM533dEPJiZbDV/ZrNchHaOIK7JdBY3TudzDqZ1QU2/Om0rVBCsh7g
-        Ly6VLnG3AVMQ11D7C93Cb2bMEL3n9nWzKzepmW0=
-X-Google-Smtp-Source: ABdhPJy3OnHCtjWZX2ubyTK+F3JmYyLW1HCLzfAV/gPzoxmWHQJWsZ0bEtoZVkAJJjYKH+3bhFtXs85/D02G5BtuO5U=
-X-Received: by 2002:a92:ca06:: with SMTP id j6mr2317156ils.42.1633175922045;
- Sat, 02 Oct 2021 04:58:42 -0700 (PDT)
+        id S236902AbhJDWvu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 4 Oct 2021 18:51:50 -0400
+Received: from mout.gmx.net ([212.227.15.18]:58485 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233501AbhJDWvt (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 4 Oct 2021 18:51:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1633387798;
+        bh=dGNccr1yjvRidYSXXhFJbz4gHTfWT+FVCZ5xqFFW23k=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=LEPjsqlhGDY0MdP0Itx45Ktp6niXPuZZCUHHVLZh/403ALijt1YQhfbMCaJORyLDO
+         VSbtITIYayo5knTFUIPvq78Fb+q2IC0RGT6cTngQfX/jmh7/qKiEQ94MJL+r13YQCr
+         bama55ukvGfnGvzoSF6gPUizzLHH5FTgFXEoxNeo=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530 ([92.116.151.97]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MLR1V-1mFAqk3QSh-00IVxc; Tue, 05
+ Oct 2021 00:49:57 +0200
+Date:   Tue, 5 Oct 2021 00:49:48 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Fix ptrace check on syscall return
+Message-ID: <YVuFDDWlPnzOKSsB@ls3530>
 MIME-Version: 1.0
-Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 04:58:41 -0700 (PDT)
-Reply-To: unitednnation0@gmail.com
-From:   "U.n" <wadebaye33@gmail.com>
-Date:   Fri, 1 Oct 2021 23:58:41 -1200
-Message-ID: <CACE0T5WBFyHbiOiVMH8UtgPm6J8Pk05_Uk=Co2EttH7w+J1NKA@mail.gmail.com>
-Subject: Attention
-To:     unitednnation0@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:9JLzNYGQWPeuqT+n7ZCc3Lzomcn6+HW7fXFGmkxcXlKMTWm5pg4
+ fhEUyFkJuPlcPeWsE6TbSutr29I99A9PHwH0sRp8sTt8oTCZId5KEyteDJ3MkWr6Aty71jV
+ 9naHy6uoRa43PIlHn1AtzIQx/eFujg/Ze3e/EhPWhDs52uzDRKRlv0pIWQCbc6dNS724hf9
+ QY1DkpbtoCflwbst9/lZQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Mzx0RODuKoU=:TRlJimfZncn74lTlRelCb6
+ coYP70aqfVH140id/v7JJHET51dEhGlRfEq3YfC5lb5M95+OFv5jBhTrdq6aybjQCOng6UKd0
+ KkeWS5hTDM5gNZ/3VppV7QmMs+MBOzHw9zCZ9zY6VcLMxCdxvqz5cDolp0fsRLlPycX+jYsZj
+ YvlUykB3Vj+qDpirYlosxGYfYE5PGb3ElWlTOzB8mKrRACebzR464hGtpzn3qaPBa0NxEoGaU
+ 5PRnwem3rflz2WnQnoU/m+H0OHfDC2a+f6lzy15Ng9ep6DYAVX0/emwIzhxhtqSrkmDC5jLt7
+ dSYgV3qKHuDeei7CFvIVTn3zNXvc4RKtLEmg/4hIcxFlmDj4TgORFhceVDFuTWCZV24pVvzhg
+ x2Nuj8ch1JLtlxJsgK+IXkFnlRaOQdimC2itzPitxBgdr6Q+fzySjCd2hUxLOVV5LebIcMSUe
+ owxCXEaSFqFi9K3ZTDzbVTOYg4J9UIdCJ5yw+evd1jGt87CU4jIsx/RvPsi+LlVUOXqlxVayj
+ vusXOf4KNJ6y+WtBHtRiq6xVPvBAOjBKkkdJkKHn/SG7WXj2cDOKXu5FM7bbyMgljC/pAYZmu
+ Tndhtfu7DP6LczzJJwFFyy+gDrQC4YOSJPj5uAJtYPZ/fy6KpzFWEIrb4av4NdcejQX9gj2f5
+ lnHXXFbUocxeDy3+xErFk0KzSs84ZPU7uysyE28ISwNwZf9vlOhgG6JYlZcmOMnWrBaJsiaAq
+ TY/DO3fBBboTAv9F1Y2FMEeRHeh6vyrmV5zH2obycn4dkriYSCcq6QptUA0LK4P1Ea8oh6ZE2
+ SAf4dANcZ0QZPjN4MRMrM26MAM2pSLUZk1xELWS1LrGaFCb1UfnYL4g1TFsiOH+37hKo7Z65x
+ d5u+ltrXPoGL8xfyvjg7a3l7vWnD1HZTjkZWR7J8hYLK2grRUlMmpFIXEnKQk4htKuOtDP9xH
+ z1Q086aeL/W7xKk3ebxboUF58H4CI95FDYTvpFRD68c9iTlvdnS3727XssLwNg5EnDSUeKGSa
+ koDhNrTpbRgs+7aA8xFdsWYrXalVlc9M7pkxVeW1Y3JasJMNwXFWRM/GCFXl1OoMnQ==
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---=20
+**untested**
 
+The TIF_XXX flags are stored in the flags field in the thread_info
+struct (TI_FLAGS), not in the flags field of the task_struct structure
+(TASK_FLAGS).
 
-Attention Sir/Madam
-This is the United Nation (UN). We the United Nations (UN) Globally
-has approved (US$2.500,000)( two Million Five hundred thousand
-dollars) compensation as part of our responsibilities for humanitarian
-Aid for fighting against CoronaVirus and you are among the lucky ones.
+It seems this bug has been in the kernel for 12 years (since v2.6.32).
 
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: ecd3d4bc06e48 ("parisc: stop using task->ptrace for {single,block}s=
+tep flags")
 
-This compensation is for the most affected countries, communities and
-families across the global. Your funds were deposited with Bank in USA
-to transfer your funds to you via Internet Banking. You have to send
-your full details as state below:with this email Address
-  ( unitednnation0@gmail.com )
-Your full names:
-Address:
-Telephone:
-Occupation:
+diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+index f75d7d7efd25..c312aef175df 100644
+=2D-- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -1834,7 +1834,7 @@ syscall_restore:
+ 	LDREG	TI_TASK-THREAD_SZ_ALGN-FRAME_SIZE(%r30),%r1
 
-
-
-Yours Sincerely
-Mr. Ant=C3=B3nio Guterres
-United Nations (UN).
+ 	/* Are we being ptraced? */
+-	ldw	TASK_FLAGS(%r1),%r19
++	LDREG	TI_FLAGS-THREAD_SZ_ALGN-FRAME_SIZE(%r30),%r19
+ 	ldi	_TIF_SYSCALL_TRACE_MASK,%r2
+ 	and,COND(=3D)	%r19,%r2,%r0
+ 	b,n	syscall_restore_rfi
