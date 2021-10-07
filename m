@@ -2,114 +2,73 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D65E64239C3
-	for <lists+linux-parisc@lfdr.de>; Wed,  6 Oct 2021 10:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E64C424FBC
+	for <lists+linux-parisc@lfdr.de>; Thu,  7 Oct 2021 11:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237411AbhJFIcZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 6 Oct 2021 04:32:25 -0400
-Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:7242 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237670AbhJFIcY (ORCPT
+        id S232659AbhJGJLd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 7 Oct 2021 05:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38024 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231661AbhJGJLd (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 6 Oct 2021 04:32:24 -0400
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1966TObt019907;
-        Wed, 6 Oct 2021 03:29:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=PODMain02222019;
- bh=VYqS9ly4HxjYNM8Rb95ALzINC4C51eNq0bBG/A9hunw=;
- b=o0LXPBg9O/lVVWpIotmtJzmIjT495DOgkYZo/xT0o0i+AqnVpPm5nRqb8f3PGAj/azpd
- h0JZ2ctVu9fICGPR9SG2SJjA6HtyX4QQ5POth+QmzSNU/aFWEa/yo2lqqnQLbr2jrMD+
- 4QQr6ELWHy6H0pnSSwQUSyHy9zkLeI9Rg6QinhB+SAW1Xtwp6Fhtw/y+lw2zJCwtkIcx
- 08ZcykFEw6P4IvGY7ZAsHMXqN43Q+ZitP8gEI4RihERP7P4lgxtl2jhqNZdRnWoCdBqe
- yjj/gzmuX3FFtBmBtG0nVFurJXrDAPkHnj/TDTPyJxd9kyQuYnZR38ZzUz/v04lA1dgm YQ== 
-Received: from ediex02.ad.cirrus.com ([87.246.76.36])
-        by mx0b-001ae601.pphosted.com with ESMTP id 3bgrreh1qv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 06 Oct 2021 03:29:27 -0500
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.12; Wed, 6 Oct
- 2021 09:29:25 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.2242.12 via Frontend
- Transport; Wed, 6 Oct 2021 09:29:25 +0100
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 47AB6B13;
-        Wed,  6 Oct 2021 08:29:25 +0000 (UTC)
-Date:   Wed, 6 Oct 2021 08:29:25 +0000
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Arnd Bergmann <arnd@kernel.org>
-CC:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Simon Trimmer <simont@opensource.cirrus.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-        <linux-mips@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
-        <linux-riscv@lists.infradead.org>
-Subject: Re: [PATCH 1/2] firmware: include drivers/firmware/Kconfig
- unconditionally
-Message-ID: <20211006082925.GK9223@ediswmail.ad.cirrus.com>
-References: <20210928075216.4193128-1-arnd@kernel.org>
+        Thu, 7 Oct 2021 05:11:33 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C31DC061746
+        for <linux-parisc@vger.kernel.org>; Thu,  7 Oct 2021 02:09:40 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id i65so1842017pfe.12
+        for <linux-parisc@vger.kernel.org>; Thu, 07 Oct 2021 02:09:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=G47iEv8ijur513m3oXt2DjERXpYquuSHXkprQwsGHU4=;
+        b=f/pxUHw3Rrqjw6tIHywyA+Of7Qopx7DnnxZg6DmK5bjhWUqDcRJZ6PKX9OH0Me6Dic
+         76Y5loQU3fdSpZ4XfdNDZXnZkS75fCYa6AfVrAqiaHciLMtuiwJF3QsTkKl4vtOeL4vE
+         KCjK2aHMBymBOtl5P49IFDbfR9spzxpGSzdHx4W3rioM43dIOVTBhgtggArhM2b3weIM
+         j8w5DOoQ9MdjcJMOek/c5ein0JDhIBM4FLpQ7IfNNFeSqoLEssETUdW3fTcYGdrUrEzt
+         anJfJvmUCNgpSJm/YadM4ohY2da6IhtKM6+76AdVd/6xBT9IigVjyD2IxsBmilEJOevv
+         icrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=G47iEv8ijur513m3oXt2DjERXpYquuSHXkprQwsGHU4=;
+        b=JRDjgqL7vOw3Md6Kqxo6fkcE9iik4RAOsMGeVJ1NSrDkiD+JFLqw4vE9OGgGZnsl7B
+         F2C7hfkJwAP2k13tLBcnLKNwPtVfo/ZwqZSEWz+XLhI/2hSRDFVFhFtPNYZtMjSbgF0p
+         GBsL+OppAe93B8eSGx/wPGU+xGq2cpUw6Q7p9EOxCptR83alH6MexX7kKB9dFzD0ggzt
+         oY6ZCe/NcegrnFPAGDGf80L71VKDxwpiMRM5R7bsQY06rbCZ8Dn28InshkG5U5e7GTey
+         5dguVMfhsIJ3q9EiMred8aqEeyPYgi6sfYXt0YkMFqxLJV7wZnmRpyeu0yB7RmdbF0gU
+         WSBQ==
+X-Gm-Message-State: AOAM532LKKcXU2tgcJjdVB7t0YMKkC9S+m7i4iEndsOyg7vcfunz3afu
+        6PUNBRH5JHKEQIQKzqa0Qr59PzyNyYvLM2I3hxMM1wx2iL0=
+X-Google-Smtp-Source: ABdhPJzJli11+Th4UI66979vZb/EKrLPvFPnb9ALfpqlhCD1J6pZGzwt8xIPqlr3RG+5GdTnDlReVouJv0r/eiH/4ZQ=
+X-Received: by 2002:a63:5911:: with SMTP id n17mr2458657pgb.177.1633597779371;
+ Thu, 07 Oct 2021 02:09:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20210928075216.4193128-1-arnd@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-ORIG-GUID: cBaf488JNMuKplb9_5hsQVXi838DWVHi
-X-Proofpoint-GUID: cBaf488JNMuKplb9_5hsQVXi838DWVHi
-X-Proofpoint-Spam-Reason: safe
+References: <CA+G9fYtsteSfwTQKV8o6VtBQDoz-+nwOf0s0X8BCkQHgAc6sdw@mail.gmail.com>
+ <2ef5185a-9a0f-5ee0-23fc-37e0b1dd1099@gmx.de>
+In-Reply-To: <2ef5185a-9a0f-5ee0-23fc-37e0b1dd1099@gmx.de>
+From:   cp <carlojpisani@gmail.com>
+Date:   Thu, 7 Oct 2021 11:09:43 +0200
+Message-ID: <CA+QBN9DGZN=-Rfj3nc9TXd+OSRm9ipNC78HBsGWWo=qm+SB3zA@mail.gmail.com>
+Subject: ATI Rage XL
+To:     linux-parisc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Sep 28, 2021 at 09:50:26AM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Compile-testing drivers that require access to a firmware layer
-> fails when that firmware symbol is unavailable. This happened
-> twice this week:
-> 
->  - My proposed to change to rework the QCOM_SCM firmware symbol
->    broke on ppc64 and others.
-> 
->  - The cs_dsp firmware patch added device specific firmware loader
->    into drivers/firmware, which broke on the same set of
->    architectures.
-> 
-> We should probably do the same thing for other subsystems as well,
-> but fix this one first as this is a dependency for other patches
-> getting merged.
-> 
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Liam Girdwood <lgirdwood@gmail.com>
-> Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
-> Cc: Simon Trimmer <simont@opensource.cirrus.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
+hi
+in the PA wiki (1) the ATI Rage XL (mach64) is reported to have
+worked. In combination with the fbdev X-server from XFree86/X.org
 
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+I think the news was related to kernel 2.6 or something very old.
 
-Thanks,
-Charles
+Can anyone confirm it's still working with kernel 5.*?
+
+I don't happen to have a card to test myself. Not yet.
+
+C.
+
+
+
+(1) https://parisc.wiki.kernel.org/index.php/Graphics_howto
