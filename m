@@ -2,131 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B580426D6D
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Oct 2021 17:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A460142728E
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Oct 2021 22:49:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242910AbhJHPYe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 8 Oct 2021 11:24:34 -0400
-Received: from foss.arm.com ([217.140.110.172]:58598 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242780AbhJHPYd (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 8 Oct 2021 11:24:33 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF3811063;
-        Fri,  8 Oct 2021 08:22:37 -0700 (PDT)
-Received: from e113632-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B44F3F66F;
-        Fri,  8 Oct 2021 08:22:29 -0700 (PDT)
-From:   Valentin Schneider <valentin.schneider@arm.com>
-To:     Barry Song <21cnbao@gmail.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Aubrey Li <aubrey.li@linux.intel.com>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86 <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        YiFei Zhu <yifeifz2@illinois.edu>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Sergei Trofimovich <slyfox@gentoo.org>,
-        David Hildenbrand <david@redhat.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Chris Down <chris@chrisdown.name>,
-        Vipin Sharma <vipinsh@google.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Hugh Dickins <hughd@google.com>,
-        Michal Hocko <mhocko@kernel.org>
-Subject: Re: [PATCH 2/2] sched: Centralize SCHED_{SMT, MC, CLUSTER} definitions
-In-Reply-To: <CAGsJ_4wqtcOdsFDzR98PFbjxRyTqzf7P3p3erup84SXESYonYw@mail.gmail.com>
-References: <20211008115347.425234-1-valentin.schneider@arm.com> <20211008115347.425234-3-valentin.schneider@arm.com> <CAGsJ_4wqtcOdsFDzR98PFbjxRyTqzf7P3p3erup84SXESYonYw@mail.gmail.com>
-Date:   Fri, 08 Oct 2021 16:22:27 +0100
-Message-ID: <87bl3zlex8.mognet@arm.com>
+        id S231587AbhJHUuh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 8 Oct 2021 16:50:37 -0400
+Received: from smtp.duncanthrax.net ([178.63.180.169]:43316 "EHLO
+        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242932AbhJHUuf (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 8 Oct 2021 16:50:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=duncanthrax.net; s=dkim; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=P7Bvr1zlbgyb93MKOvaQD17uSFFaJUlcy8b4NHuOSgU=; b=a+HilSSxAuuq6lCWKtx05iMTze
+        +XBrGGs6Yxq2hvBHuhsMQrSPRelKvBqT0Ri4vChSzhOjm9SgSfEFWUAKSX4bf3BkscuDoKPPYRT5J
+        lHYRziiXwgCLyP2Oxr5MTHbC4GynnZgwIgr0ckO9HsMVphGDeGbtO6Rx2NOVBCv+6Tu0=;
+Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org)
+        by smtp.duncanthrax.net with esmtpa (Exim 4.93)
+        (envelope-from <svens@stackframe.org>)
+        id 1mYwnF-0006vO-Qg; Fri, 08 Oct 2021 22:48:38 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     deller@gmx.de
+Cc:     linux-parisc@vger.kernel.org
+Subject: [PATCH 0/4] parisc: fixes for CONFIG_PREEMPT
+Date:   Fri,  8 Oct 2021 22:48:22 +0200
+Message-Id: <20211008204825.6229-1-svens@stackframe.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 09/10/21 01:37, Barry Song wrote:
-> On Sat, Oct 9, 2021 at 12:54 AM Valentin Schneider
-> <valentin.schneider@arm.com> wrote:
->>
->> Barry recently introduced a new CONFIG_SCHED_CLUSTER, and discussions
->> around that highlighted that every architecture redefines its own help text
->> and dependencies for CONFIG_SCHED_SMT and CONFIG_SCHED_MC.
->>
->> Move the definition of those to scheduler's Kconfig to centralize help text
->> and generic dependencies (i.e. SMP). Make them depend on a matching
->> ARCH_SUPPORTS_SCHED_* which the architectures can select with the relevant
->> architecture-specific dependency.
->>
->> s390 uses its own topology table (set_sched_topology()) and doesn't seem to
->> cope without SCHED_MC or SCHED_SMT, so those remain untogglable.
->>
->
-> Hi Valentin,
-> Thanks!
-> I believe this is a cleaner way for Kconfig itself. But I am not quite sure this
-> is always beneficial of all platforms. It would be perfect if the patch has no
-> side effects and doesn't change the existing behaviour. But it has side effects
-> by changing the default N to Y on a couple of platforms.
->
+Out of curiosity i enabled CONFIG_PREEMPT on my c8000. The kernel didn't
+even compile. After fixing compilation i noticed a lot of segmentation
+faults - usually a few processes crashed already at boot, with sshd the
+most notable one. Most of the time the processes where crashing with a
+DTLB or ITLB miss.
 
-So x86 has it default yes, and a lot of others (e.g. arm64) have it default
-no.
+With these fixes, i was able to compile a linux kernel on the c8000
+with preemption enabled without crashes.
 
-IMO you don't gain much by disabling them. SCHED_MC and SCHED_CLUSTER only
-control the presence of a sched_domain_topology_level - if it's useless it
-gets degenerated at domain build time. Some valid reasons for not using
-them is if the architecture defines its own topology table (e.g. powerpc
-has CACHE and MC levels which are not gated behind any CONFIG).
+Sven Schnelle (4):
+  parisc: disable preemption during local tlb flush
+  parisc: fix preempt_count() check in entry.S
+  parisc: disable preemption in send_IPI_allbutself()
+  parisc: fix warning in flush_tlb_all
 
-SCHED_SMT has an impact on code generated in sched/core.c, but that is also
-gated by a static key.
+ arch/parisc/kernel/cache.c | 3 +++
+ arch/parisc/kernel/entry.S | 5 +++--
+ arch/parisc/kernel/smp.c   | 3 ++-
+ arch/parisc/mm/init.c      | 4 ++--
+ 4 files changed, 10 insertions(+), 5 deletions(-)
 
-So I'd say having them default yes is sensible. I'd even say we should
-change the "If unsure say N here." to "Y".
+-- 
+2.33.0
+
