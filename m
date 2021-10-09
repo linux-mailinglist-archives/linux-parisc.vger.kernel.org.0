@@ -2,262 +2,239 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 279DE427863
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 Oct 2021 11:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D7DA427892
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 Oct 2021 11:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231329AbhJIJ0K (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 9 Oct 2021 05:26:10 -0400
-Received: from mx3.molgen.mpg.de ([141.14.17.11]:60653 "EHLO mx1.molgen.mpg.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231219AbhJIJ0J (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 9 Oct 2021 05:26:09 -0400
-Received: from [192.168.0.2] (ip5f5aef39.dynamic.kabel-deutschland.de [95.90.239.57])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: pmenzel)
-        by mx.molgen.mpg.de (Postfix) with ESMTPSA id ECA9861E5FE00;
-        Sat,  9 Oct 2021 11:24:09 +0200 (CEST)
-Subject: Re: [PATCH 1/2] firmware: include drivers/firmware/Kconfig
- unconditionally
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Simon Trimmer <simont@opensource.cirrus.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        id S231853AbhJIJzk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 9 Oct 2021 05:55:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:51908 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232351AbhJIJzk (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 9 Oct 2021 05:55:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1633773223;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=TC+ficJjTyhwmBtLURsKztDpUSSEvDlSazI7HDdGRfI=;
+        b=U2n8+Vl5kdt+lvMjdR5yYihA62CM8vwyO0Pdi9O75Dm60hILNJVXTYJ5SYNf7Y3foxZ5TJ
+        cG1KoQBKCJtzBpqTBrnh7hrLbsRUkLYkeHelSWS2+oYdcdIog1YqgPa8PpMwHVO9AA8vc4
+        KHJjjwrVbMo4TBsk1LMReJJJr2EQzNo=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-456-gq0MjNfWOaaEB-3hJmJfIQ-1; Sat, 09 Oct 2021 05:53:42 -0400
+X-MC-Unique: gq0MjNfWOaaEB-3hJmJfIQ-1
+Received: by mail-ed1-f71.google.com with SMTP id r11-20020aa7cfcb000000b003d4fbd652b9so9371492edy.14
+        for <linux-parisc@vger.kernel.org>; Sat, 09 Oct 2021 02:53:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=TC+ficJjTyhwmBtLURsKztDpUSSEvDlSazI7HDdGRfI=;
+        b=bhwJwofbB/ci6sQyTA6kMnN7l7ThuQahBJbi0/7DR5f5VNkOb+9ZrIyNv+NfInbvtv
+         5SccKjkGiPKVaJUGAym7QbYf9gQVZ8XHyPJNa3veiJE0J7/OWQGurPjrhnDyswZo5nsT
+         9k+l+3IzWcKRww0GWX4TpJAwyc4GrogrSjhZgn7UmP8wZEVMmVYXvTmo3QXCnrE4ce5A
+         3Jl2Gjf2sZAHy7cCzDdGWv8M0lFaGN/SXgN3TuHz19s9zo9cYYKSP19JWx9SZLZma0eb
+         aKbKNqAl7c4Py6vsgTt1resL6L5IFCvOykDyrXYwF4wpBQ2qKNLI6DgGHEvBQ5QWPKRA
+         4HMw==
+X-Gm-Message-State: AOAM533XEZU1YmM5WI1abVNuG4tuj7JZAitYCfx7JqBPj39Q3T4U1dF0
+        JuXxDliZu6l4SnXu7WzuxHc4rWqAoixHEbF8JqSYIr3lq0AALRMD6BQXnb0nOjuRBjdh8tec7Xn
+        664v0qu6NyOhu0R+Mnv40SeK7
+X-Received: by 2002:a17:906:2bc7:: with SMTP id n7mr10404159ejg.238.1633773220396;
+        Sat, 09 Oct 2021 02:53:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxePZTE9MitFRdc70X+sthkRGYJjDyzEeDJjYhWOTmTvwwLiK4AL4UvsV8FtvbX7jf0fHnSpA==
+X-Received: by 2002:a17:906:2bc7:: with SMTP id n7mr10404118ejg.238.1633773220163;
+        Sat, 09 Oct 2021 02:53:40 -0700 (PDT)
+Received: from redhat.com ([2.55.132.170])
+        by smtp.gmail.com with ESMTPSA id rv25sm776493ejb.21.2021.10.09.02.53.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Oct 2021 02:53:39 -0700 (PDT)
+Date:   Sat, 9 Oct 2021 05:53:32 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org
-References: <20210928075216.4193128-1-arnd@kernel.org>
-From:   Paul Menzel <pmenzel@molgen.mpg.de>
-Message-ID: <9dedf9bb-5377-9f2c-cbb1-2a57b40493da@molgen.mpg.de>
-Date:   Sat, 9 Oct 2021 11:24:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v5 12/16] PCI: Add pci_iomap_host_shared(),
+ pci_iomap_host_shared_range()
+Message-ID: <20211009053103-mutt-send-email-mst@kernel.org>
+References: <20211009003711.1390019-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20211009003711.1390019-13-sathyanarayanan.kuppuswamy@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210928075216.4193128-1-arnd@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211009003711.1390019-13-sathyanarayanan.kuppuswamy@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-[Cc: +linuxppc-dev@lists.ozlabs.org]
+On Fri, Oct 08, 2021 at 05:37:07PM -0700, Kuppuswamy Sathyanarayanan wrote:
+> From: Andi Kleen <ak@linux.intel.com>
+> 
+> For Confidential VM guests like TDX, the host is untrusted and hence
+> the devices emulated by the host or any data coming from the host
+> cannot be trusted. So the drivers that interact with the outside world
+> have to be hardened by sharing memory with host on need basis
+> with proper hardening fixes.
+> 
+> For the PCI driver case, to share the memory with the host add
+> pci_iomap_host_shared() and pci_iomap_host_shared_range() APIs.
+> 
+> Signed-off-by: Andi Kleen <ak@linux.intel.com>
+> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-Dear Arnd,
+So I proposed to make all pci mappings shared, eliminating the need
+to patch drivers.
 
+To which Andi replied
+	One problem with removing the ioremap opt-in is that
+	it's still possible for drivers to get at devices without going through probe.
 
-Am 28.09.21 um 09:50 schrieb Arnd Bergmann:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Compile-testing drivers that require access to a firmware layer
-> fails when that firmware symbol is unavailable. This happened
-> twice this week:
-> 
->   - My proposed to change to rework the QCOM_SCM firmware symbol
->     broke on ppc64 and others.
-> 
->   - The cs_dsp firmware patch added device specific firmware loader
->     into drivers/firmware, which broke on the same set of
->     architectures.
-> 
-> We should probably do the same thing for other subsystems as well,
-> but fix this one first as this is a dependency for other patches
-> getting merged.
-> 
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Liam Girdwood <lgirdwood@gmail.com>
-> Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
-> Cc: Simon Trimmer <simont@opensource.cirrus.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+To which Greg replied:
+https://lore.kernel.org/all/YVXBNJ431YIWwZdQ@kroah.com/
+	If there are in-kernel PCI drivers that do not do this, they need to be
+	fixed today.
+
+Can you guys resolve the differences here?
+
+And once they are resolved, mention this in the commit log so
+I don't get to re-read the series just to find out nothing
+changed in this respect?
+
+I frankly do not believe we are anywhere near being able to harden
+an arbitrary kernel config against attack.
+How about creating a defconfig that makes sense for TDX then?
+Anyone deviating from that better know what they are doing,
+this API tweaking is just putting policy into the kernel  ...
+
 > ---
-> Not sure how we'd want to merge this patch, if two other things
-> need it. I'd prefer to merge it along with the QCOM_SCM change
-> through the soc tree, but that leaves the cirrus firmware broken
-> unless we also merge it the same way (rather than through ASoC
-> as it is now).
+>  Changes since v4:
+>  * Replaced "_shared" with "_host_shared" in pci_iomap* APIs
+>  * Fixed commit log as per review comments.
 > 
-> Alternatively, we can try to find a different home for the Cirrus
-> firmware to decouple the two problems. I'd argue that it's actually
-> misplaced here, as drivers/firmware is meant for kernel code that
-> interfaces with system firmware, not for device drivers to load
-> their own firmware blobs from user space.
-> ---
->   arch/arm/Kconfig    | 2 --
->   arch/arm64/Kconfig  | 2 --
->   arch/ia64/Kconfig   | 2 --
->   arch/mips/Kconfig   | 2 --
->   arch/parisc/Kconfig | 2 --
->   arch/riscv/Kconfig  | 2 --
->   arch/x86/Kconfig    | 2 --
->   drivers/Kconfig     | 2 ++
->   8 files changed, 2 insertions(+), 14 deletions(-)
+>  include/asm-generic/pci_iomap.h |  6 +++++
+>  lib/pci_iomap.c                 | 47 +++++++++++++++++++++++++++++++++
+>  2 files changed, 53 insertions(+)
 > 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index ad96f3dd7e83..194d10bbff9e 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -1993,8 +1993,6 @@ config ARCH_HIBERNATION_POSSIBLE
->   
->   endmenu
->   
-> -source "drivers/firmware/Kconfig"
-> -
->   if CRYPTO
->   source "arch/arm/crypto/Kconfig"
->   endif
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index ebb49585a63f..8749517482ae 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1931,8 +1931,6 @@ source "drivers/cpufreq/Kconfig"
->   
->   endmenu
->   
-> -source "drivers/firmware/Kconfig"
-> -
->   source "drivers/acpi/Kconfig"
->   
->   source "arch/arm64/kvm/Kconfig"
-> diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-> index 045792cde481..1e33666fa679 100644
-> --- a/arch/ia64/Kconfig
-> +++ b/arch/ia64/Kconfig
-> @@ -388,8 +388,6 @@ config CRASH_DUMP
->   	  help
->   	    Generate crash dump after being started by kexec.
->   
-> -source "drivers/firmware/Kconfig"
-> -
->   endmenu
->   
->   menu "Power management and ACPI options"
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 771ca53af06d..6b8f591c5054 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -3316,8 +3316,6 @@ source "drivers/cpuidle/Kconfig"
->   
->   endmenu
->   
-> -source "drivers/firmware/Kconfig"
-> -
->   source "arch/mips/kvm/Kconfig"
->   
->   source "arch/mips/vdso/Kconfig"
-> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-> index 4742b6f169b7..27a8b49af11f 100644
-> --- a/arch/parisc/Kconfig
-> +++ b/arch/parisc/Kconfig
-> @@ -384,6 +384,4 @@ config KEXEC_FILE
->   
->   endmenu
->   
-> -source "drivers/firmware/Kconfig"
-> -
->   source "drivers/parisc/Kconfig"
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 301a54233c7e..6a6fa9e976d5 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -561,5 +561,3 @@ menu "Power management options"
->   source "kernel/power/Kconfig"
->   
->   endmenu
-> -
-> -source "drivers/firmware/Kconfig"
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index e5ba8afd29a0..5dcec5f13a82 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -2834,8 +2834,6 @@ config HAVE_ATOMIC_IOMAP
->   	def_bool y
->   	depends on X86_32
->   
-> -source "drivers/firmware/Kconfig"
-> -
->   source "arch/x86/kvm/Kconfig"
->   
->   source "arch/x86/Kconfig.assembler"
-> diff --git a/drivers/Kconfig b/drivers/Kconfig
-> index 30d2db37cc87..0d399ddaa185 100644
-> --- a/drivers/Kconfig
-> +++ b/drivers/Kconfig
-> @@ -17,6 +17,8 @@ source "drivers/bus/Kconfig"
->   
->   source "drivers/connector/Kconfig"
->   
-> +source "drivers/firmware/Kconfig"
+> diff --git a/include/asm-generic/pci_iomap.h b/include/asm-generic/pci_iomap.h
+> index df636c6d8e6c..a4a83c8ab3cf 100644
+> --- a/include/asm-generic/pci_iomap.h
+> +++ b/include/asm-generic/pci_iomap.h
+> @@ -18,6 +18,12 @@ extern void __iomem *pci_iomap_range(struct pci_dev *dev, int bar,
+>  extern void __iomem *pci_iomap_wc_range(struct pci_dev *dev, int bar,
+>  					unsigned long offset,
+>  					unsigned long maxlen);
+> +extern void __iomem *pci_iomap_host_shared(struct pci_dev *dev, int bar,
+> +					   unsigned long max);
+> +extern void __iomem *pci_iomap_host_shared_range(struct pci_dev *dev, int bar,
+> +						 unsigned long offset,
+> +						 unsigned long maxlen);
 > +
->   source "drivers/gnss/Kconfig"
->   
->   source "drivers/mtd/Kconfig"
-> 
+>  /* Create a virtual mapping cookie for a port on a given PCI device.
+>   * Do not call this directly, it exists to make it easier for architectures
+>   * to override */
+> diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
+> index 57bd92f599ee..2816dc8715da 100644
+> --- a/lib/pci_iomap.c
+> +++ b/lib/pci_iomap.c
+> @@ -25,6 +25,11 @@ static void __iomem *map_ioremap_wc(phys_addr_t addr, size_t size)
+>  	return ioremap_wc(addr, size);
+>  }
+>  
+> +static void __iomem *map_ioremap_host_shared(phys_addr_t addr, size_t size)
+> +{
+> +	return ioremap_host_shared(addr, size);
+> +}
+> +
+>  static void __iomem *pci_iomap_range_map(struct pci_dev *dev,
+>  					 int bar,
+>  					 unsigned long offset,
+> @@ -106,6 +111,48 @@ void __iomem *pci_iomap_wc_range(struct pci_dev *dev,
+>  }
+>  EXPORT_SYMBOL_GPL(pci_iomap_wc_range);
+>  
+> +/**
+> + * pci_iomap_host_shared_range - create a virtual shared mapping cookie
+> + *				 for a PCI BAR
+> + * @dev: PCI device that owns the BAR
+> + * @bar: BAR number
+> + * @offset: map memory at the given offset in BAR
+> + * @maxlen: max length of the memory to map
+> + *
+> + * Remap a pci device's resources shared in a confidential guest.
+> + * For more details see pci_iomap_range's documentation.
 
-With this change, I have the new entries below in my .config:
+So how does a driver author know when to use this function, and when to
+use the regular pci_iomap_range?  Drivers have no idea whether they are
+used in a confidential guest, and which ranges are shared, it's a TDX
+thing ...
 
-```
-$ diff -u .config.old .config
---- .config.old 2021-10-07 11:38:39.544000000 +0200
-+++ .config     2021-10-09 10:02:03.156000000 +0200
-@@ -1992,6 +1992,25 @@
+This documentation should really address it.
 
-  CONFIG_CONNECTOR=y
-  CONFIG_PROC_EVENTS=y
-+
-+#
-+# Firmware Drivers
-+#
-+
-+#
-+# ARM System Control and Management Interface Protocol
-+#
-+# end of ARM System Control and Management Interface Protocol
-+
-+# CONFIG_FIRMWARE_MEMMAP is not set
-+# CONFIG_GOOGLE_FIRMWARE is not set
-+
-+#
-+# Tegra firmware driver
-+#
-+# end of Tegra firmware driver
-+# end of Firmware Drivers
-+
-  # CONFIG_GNSS is not set
-  CONFIG_MTD=m
-  # CONFIG_MTD_TESTS is not set
-```
+> + *
+> + * @maxlen specifies the maximum length to map. To get access to
+> + * the complete BAR from offset to the end, pass %0 here.
+> + */
+> +void __iomem *pci_iomap_host_shared_range(struct pci_dev *dev, int bar,
+> +					  unsigned long offset,
+> +					  unsigned long maxlen)
+> +{
+> +	return pci_iomap_range_map(dev, bar, offset, maxlen,
+> +				   map_ioremap_host_shared, true);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_iomap_host_shared_range);
+> +
+> +/**
+> + * pci_iomap_host_shared - create a virtual shared mapping cookie for a PCI BAR
+> + * @dev: PCI device that owns the BAR
+> + * @bar: BAR number
+> + * @maxlen: length of the memory to map
+> + *
+> + * See pci_iomap for details. This function creates a shared mapping
+> + * with the host for confidential hosts.
+> + *
+> + * @maxlen specifies the maximum length to map. To get access to the
+> + * complete BAR without checking for its length first, pass %0 here.
+> + */
+> +void __iomem *pci_iomap_host_shared(struct pci_dev *dev, int bar,
+> +			       unsigned long maxlen)
+> +{
+> +	return pci_iomap_host_shared_range(dev, bar, 0, maxlen);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_iomap_host_shared);
+> +
+>  /**
+>   * pci_iomap - create a virtual mapping cookie for a PCI BAR
+>   * @dev: PCI device that owns the BAR
+> -- 
+> 2.25.1
 
-No idea if the entries could be hidden for platforms not supporting them.
-
-         ARM System Control and Management Interface Protocol  ----
-     [ ] Add firmware-provided memory map to sysfs
-     [ ] Google Firmware Drivers  ----
-         Tegra firmware driver  ----
-
-
-Kind regards,
-
-Paul
