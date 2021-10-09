@@ -2,98 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1079427CA9
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 Oct 2021 20:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48AB8427D61
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 Oct 2021 22:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbhJIS0u (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 9 Oct 2021 14:26:50 -0400
-Received: from smtp.duncanthrax.net ([178.63.180.169]:45736 "EHLO
-        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbhJIS0u (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 9 Oct 2021 14:26:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=duncanthrax.net; s=dkim; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=OxTKNI8XCny7h9we6L6NOBdFK3V44SBGlYijzCauxE0=; b=WiCG3AxMUJmj96uyRX5K0TzljV
-        J4On68huU1EI01vehv4OFTwIuPsxEXy4Kx7bOBqtgFMPy2U1pTIpXkPNSHdGCGFCbtoMnTlFIulcL
-        yV0Nrb9jM9aLvi8aoCkYVqz8kYdqdJ6l6T208kGS+YictW79bI9/JkbrbIT4pQT+tWxQ=;
-Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org)
-        by smtp.duncanthrax.net with esmtpa (Exim 4.93)
-        (envelope-from <svens@stackframe.org>)
-        id 1mZH1f-0001dj-3V; Sat, 09 Oct 2021 20:24:51 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH v2 5/5] parisc: fix warning in flush_tlb_all
-Date:   Sat,  9 Oct 2021 20:24:39 +0200
-Message-Id: <20211009182439.30016-6-svens@stackframe.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211009182439.30016-1-svens@stackframe.org>
-References: <20211009182439.30016-1-svens@stackframe.org>
+        id S230052AbhJIUki (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 9 Oct 2021 16:40:38 -0400
+Received: from mout.gmx.net ([212.227.17.21]:38477 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229806AbhJIUki (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 9 Oct 2021 16:40:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1633811918;
+        bh=2fBI2AxTjTZk/gTKtsHiC8jXdsYfYKqwuIwowY11te0=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=VvLUzaBpVPi8XQOyuBhptlk4tSxk+V36/I6Re1rXivKO4u8C2pPuVKYxyQNzBMr+r
+         2MxY5/29snMc22tTp+idjUpGk7EPAMAWPznrpNbp04/h3NFz7+zrTbDSDHLlk3dtre
+         wtHSx0AdSvt71aYm4mzve5gVjwOI077cPFU8ZVW8=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.158.18]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mof57-1n5pah1DhZ-00p6J3; Sat, 09
+ Oct 2021 22:38:38 +0200
+Message-ID: <dd823436-2558-a7f6-f440-571c65b776b5@gmx.de>
+Date:   Sat, 9 Oct 2021 22:38:27 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.0
+Subject: Re: [PATCH v2 0/5] parisc: fixes for CONFIG_PREEMPT
+Content-Language: en-US
+To:     Sven Schnelle <svens@stackframe.org>
+Cc:     linux-parisc@vger.kernel.org
+References: <20211009182439.30016-1-svens@stackframe.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20211009182439.30016-1-svens@stackframe.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:2XVCsM6X73gO+AEqLZG95hcm+WvmWEaQeYT9gFwP/LnSXjp7krR
+ aLlPEXfcFobbrpfezGfzBvRPFiH/sENTwNM7n7eBfsL+wh/dcRBwZ96UzRlSAh6uDP9e0tf
+ 5MiPu8QZICAy9KBq7Livay8+w3NjXBmNVVcej2Y/6TXsXUU4+nG/oBiR5upIIxZHDVc0P8v
+ GGZu2scrS+x2yoZ3CbMoA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:F7L/EbVOPxo=:jcoYCVQ/oK31ZvGVNXhctF
+ /vj4W22zQOFVIfIL53gBkqkcqe9PUboOW+b9yfSRNMaoRCx0YLSgFGKtde0yF1oUbEiKKAerk
+ oBTRQyKp4q1FHY2Mtc8Qzxodtw+5mh8gMsxuMTlS63EudIWD+EXQeAVMpeHr/EFuA85C5L/jh
+ qE1kdMVVOy+VrsTMKa9tXbw0Qzir6d/PKehU9BK+T4GHMzq2fcYo2QLz9HB0abMTkhFKwh3/4
+ fQXAoHOkymdXG32Z7vv6CYad2t4EENoxv7xFgUZCq4hd/1SkUl1LatAjq0zJFTveXLeMXJweg
+ GbAvsh9vHLNlW4fLyUlsyqZEuc5oyNZ9edSmYo6NUkAvHRfK+n/WO1OZxQUgHE2lpohz7MCIf
+ v0y8JFZqHHN94b2aZ+TMHuQVYYcKBb5gQuu/n7Q7BKtaJA8uc4jxfFkC8M2qtkzTh5QJKBU3K
+ +QFzPUh/gLJyRccvOJsXhTtw6NfXCuUixAaoAXIkH+ME8OM9V5rTmt3IWikGHbmXzGcCi5Dar
+ FJG7my3Qn3ddhA5wASgUW7dCj/5xXvnBZqio671ujE6Cb2zlWGcwSOuIvVODDctoCCtaahNgg
+ 1n8fWK7c79KiZs1u3ve4lYC+hfV1UXghSr6UkjylEljbCdcWDmCNZF1JZtAi3iao3tMtpoY+z
+ 0xezDLDvJNbZFRlMCNt0+4UBRkWAErfgZ/0zQsbB8QqqwKlSkHCuuN7ut5ACNJoEwrS6eH4Zn
+ oJvps1hw1b9seekvVsIHnG6/2EkaUK4f/bJwof7+XskUy0fxtstm6ay+za3brfunaEgRYs5Vb
+ F3DkVkpK+hfMSJn71YDHtbM3IrbOoNMtJZtJcsnPG06vhG8WB914PTJAOBYeSPaPIVVpTBg0f
+ ndNOgfmyjwTD57MhVOmoVQjk5KPZ6wNy9eEeOvD4YH6di4g4SFu0Mow8SOKWoleN8uFo8Angz
+ WaF3yIHwhAAP005Ynw0XhiJo3HuyW5OKzIzPwFjeMarWfNvTyD0C/kV7rv5OmIxQUHQG7R+n1
+ TEHYcuJF4ZpSJAw3pA35WH2Wru3u1nR/KoIEOfHXU9KTueKMq7I0jLSkO56KKFvkii5eCmPRb
+ 0nKpDPLO7z3Mp8=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-I've got the following splat after enabling preemption:
+On 10/9/21 20:24, Sven Schnelle wrote:
+> Out of curiosity i enabled CONFIG_PREEMPT on my c8000. The kernel didn't
+> even compile. After fixing compilation i noticed a lot of segmentation
+> faults - usually a few processes crashed already at boot, with sshd the
+> most notable one. Most of the time the processes where crashing with a
+> DTLB or ITLB miss.
+>
+> With these fixes, i was able to compile a linux kernel on the c8000
+> with preemption enabled without crashes.
 
-[    3.724721] BUG: using __this_cpu_add() in preemptible [00000000] code: swapper/0/1
-[    3.734630] caller is __this_cpu_preempt_check+0x38/0x50
-[    3.740635] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.15.0-rc4-64bit+ #324
-[    3.744605] Hardware name: 9000/785/C8000
-[    3.744605] Backtrace:
-[    3.744605]  [<00000000401d9d58>] show_stack+0x74/0xb0
-[    3.744605]  [<0000000040c27bd4>] dump_stack_lvl+0x10c/0x188
-[    3.744605]  [<0000000040c27c84>] dump_stack+0x34/0x48
-[    3.744605]  [<0000000040c33438>] check_preemption_disabled+0x178/0x1b0
-[    3.744605]  [<0000000040c334f8>] __this_cpu_preempt_check+0x38/0x50
-[    3.744605]  [<00000000401d632c>] flush_tlb_all+0x58/0x2e0
-[    3.744605]  [<00000000401075c0>] 0x401075c0
-[    3.744605]  [<000000004010b8fc>] 0x4010b8fc
-[    3.744605]  [<00000000401080fc>] 0x401080fc
-[    3.744605]  [<00000000401d5224>] do_one_initcall+0x128/0x378
-[    3.744605]  [<0000000040102de8>] 0x40102de8
-[    3.744605]  [<0000000040c33864>] kernel_init+0x60/0x3a8
-[    3.744605]  [<00000000401d1020>] ret_from_kernel_thread+0x20/0x28
-[    3.744605]
+Thank you Sven.
+I've merged this series into my for-next-v5.15 branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/lo=
+g/?h=3Dfor-next-v5.15
 
-Fix this by moving the __inc_irq_stat() into the locked section.
+Helge
 
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
----
- arch/parisc/mm/init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index 3f7d6d5b56ac..65f50f072a87 100644
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -842,9 +842,9 @@ void flush_tlb_all(void)
- {
- 	int do_recycle;
- 
--	__inc_irq_stat(irq_tlb_count);
- 	do_recycle = 0;
- 	spin_lock(&sid_lock);
-+	__inc_irq_stat(irq_tlb_count);
- 	if (dirty_space_ids > RECYCLE_THRESHOLD) {
- 	    BUG_ON(recycle_inuse);  /* FIXME: Use a semaphore/wait queue here */
- 	    get_dirty_sids(&recycle_ndirty,recycle_dirty_array);
-@@ -863,8 +863,8 @@ void flush_tlb_all(void)
- #else
- void flush_tlb_all(void)
- {
--	__inc_irq_stat(irq_tlb_count);
- 	spin_lock(&sid_lock);
-+	__inc_irq_stat(irq_tlb_count);
- 	flush_tlb_all_local(NULL);
- 	recycle_sids();
- 	spin_unlock(&sid_lock);
--- 
-2.33.0
+
+> Changes in v2:
+> - also fix flush_cache_range(), also extend the preemption-disabled
+>   region to the end of the function, as there's also a tlb flush in
+>   the last for loop
+> - add patch to deduplicate code a bit
+>
+> Sven Schnelle (5):
+>   parisc: disable preemption during local tlb flush
+>   parisc: deduplicate code in flush_cache_mm() and flush_cache_range()
+>   parisc: fix preempt_count() check in entry.S
+>   parisc: disable preemption in send_IPI_allbutself()
+>   parisc: fix warning in flush_tlb_all
+>
+>  arch/parisc/kernel/cache.c | 87 ++++++++++++++++----------------------
+>  arch/parisc/kernel/entry.S |  4 +-
+>  arch/parisc/kernel/smp.c   |  4 +-
+>  arch/parisc/mm/init.c      |  4 +-
+>  4 files changed, 43 insertions(+), 56 deletions(-)
+>
 
