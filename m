@@ -2,123 +2,112 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 411E4427959
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 Oct 2021 13:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F738427A22
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 Oct 2021 14:30:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbhJILGZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 9 Oct 2021 07:06:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:28973 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232752AbhJILGY (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 9 Oct 2021 07:06:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1633777466;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=lJ/2iCuZIJi8M6YSq3TSpepZV4prmg5N+D8TG37hfos=;
-        b=AaxYMxWO/BxUn2MZXFoc35vCI1KV/4CUz8y8p85dSztjOa0jHIixCxO6RGnznkOiLHXPN7
-        MG0m5wU+2AxYtXxgK0xS3+g6vwV6+CPFP/huMjMwvP1CzbKNNwHiI33KTu9lMzum0tsYdu
-        aJUfkc2diMHEqi6grWIVPcouKMuHSR0=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-201-Gq92DmsHPRywLYBUX_WhNg-1; Sat, 09 Oct 2021 07:04:22 -0400
-X-MC-Unique: Gq92DmsHPRywLYBUX_WhNg-1
-Received: by mail-ed1-f69.google.com with SMTP id u17-20020a50d511000000b003daa3828c13so11485522edi.12
-        for <linux-parisc@vger.kernel.org>; Sat, 09 Oct 2021 04:04:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=lJ/2iCuZIJi8M6YSq3TSpepZV4prmg5N+D8TG37hfos=;
-        b=0TZNqqc6dBpEYRdnsnmj8w0WQcPB7JveK5A7DGwdSpCoI/Z9naGqBTf9Ubh9YGX2F4
-         2ju7nckyLmqyLNhuuWatpMOYkL2/X+Vgj/qPBjI1laqOJErYTDKxhO9OjpkLVjK5zu/L
-         qqYyVS/xMSmAUGZaSSDWD2CUNcTHSNSk2sKTGVPvnfslRD3fzDM84ZZukMx54H+rSVuY
-         Uw26Qy+rNsj/L19DBt6TDSmfzB+PA5/ec5X/u3knECMexjqaae3GGDFCgk0wmMFB+21t
-         7tTE7H/Wo+YERGsjClTA73B+1icuLl+lvrkcWcjtLizbMWCIxJnOLyzd/BaVKtAMbndw
-         BGaQ==
-X-Gm-Message-State: AOAM533aHZMgkPvkyqIRc3Zo6pd9Oa1pdxzezrnAqgrkw19sTrkabzYx
-        8S7MVrkIkErCmLTOvp0c0LmrJJXXHNG5ZGU34I9GZHw6liiQSBggEr0hxd2uMBgONltTP1HbNoE
-        1ASJtP8BlMrWwrqDtDznw0dAQ
-X-Received: by 2002:a17:906:585a:: with SMTP id h26mr10966029ejs.31.1633777461691;
-        Sat, 09 Oct 2021 04:04:21 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwobA8ZxtLfM+i96qTUZJc2D6zqI9p4pA768qS/bvwYQXY5otl6Kxnqg/w4gwu0W8PjfTgg/g==
-X-Received: by 2002:a17:906:585a:: with SMTP id h26mr10965985ejs.31.1633777461334;
-        Sat, 09 Oct 2021 04:04:21 -0700 (PDT)
-Received: from redhat.com ([2.55.132.170])
-        by smtp.gmail.com with ESMTPSA id n22sm831106eja.120.2021.10.09.04.04.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Oct 2021 04:04:20 -0700 (PDT)
-Date:   Sat, 9 Oct 2021 07:04:10 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v5 16/16] x86/tdx: Add cmdline option to force use of
- ioremap_host_shared
-Message-ID: <20211009070132-mutt-send-email-mst@kernel.org>
-References: <20211009003711.1390019-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20211009003711.1390019-17-sathyanarayanan.kuppuswamy@linux.intel.com>
+        id S233139AbhJIMcd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 9 Oct 2021 08:32:33 -0400
+Received: from mout.gmx.net ([212.227.17.22]:60879 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232408AbhJIMcc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 9 Oct 2021 08:32:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1633782633;
+        bh=6VFufxtd9L01l3CLRw0XQKOJK3f6+D2TltAzaC+zmFI=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=Sn1kfMRuvt4DtyQEVnyu5u1XsWHvzvmMh2kk6N8eOrZt1Brwr2NKJjPGtkiXlIJa/
+         FqemwOg41xvElnBRfL2gafzCac+oaI0Q+8WYtaF+rtxF1gIcNxhVGS/2kp/kKqSiQG
+         tGZwSPqpzo1466r8HmW1UcGxSmGYPXB63cQC4Ch8=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.158.18]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MK3Rm-1mLUtb1eNa-00LSeA; Sat, 09
+ Oct 2021 14:30:33 +0200
+Message-ID: <5c0536ef-87fa-a153-7e36-20010512cbaf@gmx.de>
+Date:   Sat, 9 Oct 2021 14:30:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211009003711.1390019-17-sathyanarayanan.kuppuswamy@linux.intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.0
+Subject: Re: [PATCH 1/4] parisc: disable preemption during local tlb flush
+Content-Language: en-US
+To:     Sven Schnelle <svens@stackframe.org>
+Cc:     linux-parisc@vger.kernel.org
+References: <20211008204825.6229-1-svens@stackframe.org>
+ <20211008204825.6229-2-svens@stackframe.org>
+ <87tuhrjj2z.fsf@x1.stackframe.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <87tuhrjj2z.fsf@x1.stackframe.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:77QidteoklJcw4x1q1q78Dn1L/T0BLzCV0GEeqPejts7wfJlv6f
+ DdJbqJrOKwYb9N/n3QRhM9n5v3DbqI3/4cVLfFxA9GWHpNNjzHK+DE97EewiwXmTExddbEB
+ j0QLXjLCogxtnEj78bA+WgJE6zVDVrBUcTDFOBovZ1ZVSXvoZFTOuTGfzsTyM/qAo3ilhuh
+ WSB8vpG54VE2dncvDtKRA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:uam8CZT6RxY=:fF6fJBOrFmwgMykzGf/eam
+ 081+Hc60E8au7mv/Cr3SpsX/QW5QvNx1xG4MTLcZnV2rI/RblD1BzdI7wHPZIYeDfImFYhclp
+ avAbLzKwqMHB5kiX3VIJathG1aVDFxYm2dL9chJzYQybbTEyoe8CFlT/6zuwIjZ/vO59WjLDG
+ lqLMAWsW86a78LOTfixuywJD/KlR3dPkwoIGZ9ME32pCsQsC99Xpq4AEy/rAiDN0WbdQJM8Zr
+ BSZhGG4WGnkCn7lXA4c+2eIIICq8bL9U+IwQmO0E9RQZJKv/cuC2XxojVdq7fMhJ4QGP+1esA
+ sx0mC7mkAimD+129O/60J4Lb+MIdiOn2Ff+TXovZIkfUt9UtFQHVYUphIz1ORaClpIN3gEBWa
+ N7iE3MgAIqQGXZvGmgcRIZfnhqTjPpzHIeWSWg7bV0VwsL+Oiz8Ex9MdoPaU7ec0lR1F3Sstl
+ yXpD8SUU5kZYOx5WN+sjL7YRJu7g622InuKqnQk52tr/KDJUSPQu+2uQCpjB/828qnsCPI2lX
+ H/sVTIpsyEIoa357mZ0/akvl8S48tTt8nlKhoT/isesNFuBNrrU2NpsLIcThZ2Vnn4tdalQR4
+ 86VU5U7OYGWmCOh1p8L6eeJxC48FTrOF/tqocbwrKL9C3fy9NJWL3V5X5UqwoMTRahvhI53zw
+ K2Bx+j1RKHq+sUK+DwVGWZwykzUtnq6DtRVZefK+hGh8F3WJqMhQY2m1T/L8n8lx1YJcdUbtX
+ HdzPl5qS3ol9b8BLrYTJTHf0f/MJ/WyAJuvvYAjZKk5rSWtDrIp+K/cdWPMNfBVO0b5cZ67Lt
+ HaF9s59+lBMMNfmrlaaou7UDPuoI3tvPoIGd4A74FmcYE0HjbVrLIoFdcQ/ab3N6uvzfoucnV
+ 9Y68ANUNkMr6NPKR5eVMjbhKN5/GhnR07FiFfxTEwP4DGmlbsLS75uHaaeixY7/QFxdxqhmU3
+ sjfHlNd3uEUKw3DqDgAQjfT6eGJTFlxbbHOgi9Q7gRwxnuLH5OTsiwrWEBa4KFqaug+1gmphL
+ sAvcBWYTRibAwO2NaS9gBZjLmHBtxgoxKQBU56LnlkZOdRA1T9XxA0xhVqIpVGWw4CPWssu9M
+ JcodFPT0kPLJN8=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Oct 08, 2021 at 05:37:11PM -0700, Kuppuswamy Sathyanarayanan wrote:
-> +	ioremap_force_shared= [X86_64, CCG]
-> +			Force the kernel to use shared memory mappings which do
-> +			not use ioremap_host_shared/pcimap_host_shared to opt-in
-> +			to shared mappings with the host. This feature is mainly
-> +			used by a confidential guest when enabling new drivers
-> +			without proper shared memory related changes. Please note
-> +			that this option might also allow other non explicitly
-> +			enabled drivers to interact with the host in confidential
-> +			guest, which could cause other security risks. This option
-> +			will also cause BIOS data structures to be shared with the
-> +			host, which might open security holes.
-> +
->  	io7=		[HW] IO7 for Marvel-based Alpha systems
->  			See comment before marvel_specify_io7 in
->  			arch/alpha/kernel/core_marvel.c.
+On 10/8/21 23:35, Sven Schnelle wrote:
+> Sven Schnelle <svens@stackframe.org> writes:
+>
+>> flush_cache_mm() fetches %sr3 via mtsp(3). If it matches mm->context,
+>> it flushes caches and the TLB. However, the TLB is cpu-local, so if the
+>> code gets preempted shortly after the mtsp(), and later resumed on anot=
+her
+>> CPU, the wrong TLB is flushed.
+>>
+>> Signed-off-by: Sven Schnelle <svens@stackframe.org>
+>> ---
+>>  arch/parisc/kernel/cache.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+>> index 39e02227e231..90656c49bc07 100644
+>> --- a/arch/parisc/kernel/cache.c
+>> +++ b/arch/parisc/kernel/cache.c
+>> @@ -558,6 +558,7 @@ void flush_cache_mm(struct mm_struct *mm)
+>>  		return;
+>>  	}
+>>
+>> +	preempt_disable();
+>>  	if (mm->context =3D=3D mfsp(3)) {
+>>  		for (vma =3D mm->mmap; vma; vma =3D vma->vm_next) {
+>>  			flush_user_dcache_range_asm(vma->vm_start, vma->vm_end);
+>> @@ -565,8 +566,10 @@ void flush_cache_mm(struct mm_struct *mm)
+>>  				flush_user_icache_range_asm(vma->vm_start, vma->vm_end);
+>>  			flush_tlb_range(vma, vma->vm_start, vma->vm_end);
+>>  		}
+>> +		preempt_enable();
+>>  		return;
+>>  	}
+>> +	preempt_enable();
+>>
+>>  	pgd =3D mm->pgd;
+>>  	for (vma =3D mm->mmap; vma; vma =3D vma->vm_next) {
+>
+> I noticed that flush_cache_range() has the same problem. Helge, let me
+> know whether i should send a v2 with an additional patch, or a single
+> follow up patch. Both functions also look very similar, so i think
+> best would be to combine the code of these two functions.
 
-The connection is quite unfortunate IMHO.
-Can't there be an option
-that unbreaks drivers *without* opening up security holes by
-making BIOS shared?
+I'm fine with either option.
 
--- 
-MST
-
+Thanks for your patches!
+Helge
