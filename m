@@ -2,35 +2,35 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B1FE427DBA
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 Oct 2021 23:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 011A5427DBB
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 Oct 2021 23:39:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231138AbhJIVlE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 9 Oct 2021 17:41:04 -0400
-Received: from smtp.duncanthrax.net ([178.63.180.169]:54508 "EHLO
+        id S230052AbhJIVlF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 9 Oct 2021 17:41:05 -0400
+Received: from smtp.duncanthrax.net ([178.63.180.169]:54514 "EHLO
         smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230052AbhJIVlD (ORCPT
+        with ESMTP id S231142AbhJIVlE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 9 Oct 2021 17:41:03 -0400
+        Sat, 9 Oct 2021 17:41:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=duncanthrax.net; s=dkim; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
         Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=cghcDNqh+OBdFVkBqeznLeGMAmxNwho3s8sgLzWKEIo=; b=DnM68hBY9MhsR9OYwpstsKRSws
-        RyxcFzdS+Gp3Dw7/y+SpiPNuHETIWybh4pfQ3FSWEImgirnfHNgyD1qFICSflQDiOpLza0KO1tYtA
-        +QkdKlhe7nH6XyC9nr+KjNc3O7JbcnMF2g0NrEbDmyAccqSm+u1RLxZvsei3HjAsnlLg=;
+        bh=v5qywlGP8imEgoTPFHJs7SMlPeCbmNE9R5yK5jmJlxY=; b=s2wMtVpSiSp8837BHorl8+o5rn
+        P+fqD7exFHi4MQZi+0sXqot0e/lifzwxsga3f2dTH7MA2i86GTHCYm/m8NJfYh0D8zVxLLLJ3h7aC
+        LQQrKZ1BYxKxtZ2uiQr8FJ66Ba0zsmMcqThL4Ft8hV0HAnQtUpTANJtQmwWxvYxGNGpQ=;
 Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org)
         by smtp.duncanthrax.net with esmtpa (Exim 4.93)
         (envelope-from <svens@stackframe.org>)
-        id 1mZK3b-0003R2-Tf; Sat, 09 Oct 2021 23:39:04 +0200
+        id 1mZK3d-0003R2-Tg; Sat, 09 Oct 2021 23:39:06 +0200
 From:   Sven Schnelle <svens@stackframe.org>
 To:     Helge Deller <deller@gmx.de>
 Cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH 1/2] parisc/firmware: add functions to retrieve TOC data
-Date:   Sat,  9 Oct 2021 23:38:55 +0200
-Message-Id: <20211009213856.3326-2-svens@stackframe.org>
+Subject: [PATCH 2/2] parisc: add support for TOC (transfer of control)
+Date:   Sat,  9 Oct 2021 23:38:56 +0200
+Message-Id: <20211009213856.3326-3-svens@stackframe.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211009213856.3326-1-svens@stackframe.org>
 References: <20211009213856.3326-1-svens@stackframe.org>
@@ -40,105 +40,308 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add functions to retrieve TOC data from firmware both
-for 1.1 and 2.0 PDC.
+Almost all PA-RISC machines have either a button that
+is labeled with 'TOC' or a BMC function to trigger a TOC.
+TOC is a non-maskable interrupt that is sent to the processor.
+This can be used for diagnostic purposes like obtaining a
+stack trace/register dump or to enter KDB/KGDB.
+
+As an example, on my c8000, TOC can be used with:
+
+CONFIG_KGDB=y
+CONFIG_KGDB_KDB=y
+
+and the 'kgdboc=ttyS0,115200' appended to the command line.
+
+Press ^( on serial console, which will enter the BMC command line,
+and enter 'TOC s':
+
+root@(none):/# (
+cli>TOC s
+Sending TOC/INIT.
+<Cpu3> 2800035d03e00000  0000000040c21ac8  CC_ERR_CHECK_TOC
+<Cpu0> 2800035d00e00000  0000000040c21ad0  CC_ERR_CHECK_TOC
+<Cpu2> 2800035d02e00000  0000000040c21ac8  CC_ERR_CHECK_TOC
+<Cpu1> 2800035d01e00000  0000000040c21ad0  CC_ERR_CHECK_TOC
+<Cpu3> 37000f7303e00000  2000000000000000  CC_ERR_CPU_CHECK_SUMMARY
+<Cpu0> 37000f7300e00000  2000000000000000  CC_ERR_CPU_CHECK_SUMMARY
+<Cpu2> 37000f7302e00000  2000000000000000  CC_ERR_CPU_CHECK_SUMMARY
+<Cpu1> 37000f7301e00000  2000000000000000  CC_ERR_CPU_CHECK_SUMMARY
+<Cpu3> 4300100803e00000  c0000000001d26cc  CC_MC_BR_TO_OS_TOC
+<Cpu0> 4300100800e00000  c0000000001d26cc  CC_MC_BR_TO_OS_TOC
+<Cpu2> 4300100802e00000  c0000000001d26cc  CC_MC_BR_TO_OS_TOC
+<Cpu1> 4300100801e00000  c0000000001d26cc  CC_MC_BR_TO_OS_TOC
+
+Entering kdb (current=0x00000000411cef80, pid 0) on processor 0 due to NonMaskable Interrupt @ 0x40c21ad0
+[0]kdb>
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- arch/parisc/include/asm/pdc.h      |  2 ++
- arch/parisc/include/uapi/asm/pdc.h | 22 ++++++++++++++++++++
- arch/parisc/kernel/firmware.c      | 32 ++++++++++++++++++++++++++++++
- 3 files changed, 56 insertions(+)
+ arch/parisc/include/asm/processor.h |  4 ++
+ arch/parisc/include/uapi/asm/pdc.h  |  6 ++-
+ arch/parisc/kernel/entry.S          | 69 +++++++++++++++++++++++++
+ arch/parisc/kernel/processor.c      | 21 ++++++++
+ arch/parisc/kernel/traps.c          | 79 +++++++++++++++++++++++++++++
+ 5 files changed, 177 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/include/asm/pdc.h b/arch/parisc/include/asm/pdc.h
-index b388d8176588..18b957a8630d 100644
---- a/arch/parisc/include/asm/pdc.h
-+++ b/arch/parisc/include/asm/pdc.h
-@@ -51,6 +51,8 @@ int pdc_spaceid_bits(unsigned long *space_bits);
- int pdc_btlb_info(struct pdc_btlb_info *btlb);
- int pdc_mem_map_hpa(struct pdc_memory_map *r_addr, struct pdc_module_path *mod_path);
- #endif /* !CONFIG_PA20 */
-+int pdc_pim_toc11(struct pdc_toc_pim_11 *ret);
-+int pdc_pim_toc20(struct pdc_toc_pim_20 *ret);
- int pdc_lan_station_id(char *lan_addr, unsigned long net_hpa);
+diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm/processor.h
+index eeb7da064289..1e9a4c986921 100644
+--- a/arch/parisc/include/asm/processor.h
++++ b/arch/parisc/include/asm/processor.h
+@@ -294,6 +294,10 @@ extern int _parisc_requires_coherency;
  
- int pdc_stable_read(unsigned long staddr, void *memaddr, unsigned long count);
+ extern int running_on_qemu;
+ 
++extern void toc_handler(void);
++extern unsigned int toc_handler_size;
++extern unsigned int toc_handler_csum;
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif /* __ASM_PARISC_PROCESSOR_H */
 diff --git a/arch/parisc/include/uapi/asm/pdc.h b/arch/parisc/include/uapi/asm/pdc.h
-index 15211723ebf5..ad51df8ba952 100644
+index ad51df8ba952..acc633c15722 100644
 --- a/arch/parisc/include/uapi/asm/pdc.h
 +++ b/arch/parisc/include/uapi/asm/pdc.h
-@@ -689,6 +689,28 @@ struct pdc_hpmc_pim_20 { /* PDC_PIM */
- 	unsigned long long fr[32];
+@@ -398,8 +398,10 @@ struct zeropage {
+ 	/* int	(*vec_rendz)(void); */
+ 	unsigned int vec_rendz;
+ 	int	vec_pow_fail_flen;
+-	int	vec_pad[10];		
+-	
++	int	vec_pad0[3];
++	unsigned int vec_toc_hi;
++	int	vec_pad1[6];
++
+ 	/* [0x040] reserved processor dependent */
+ 	int	pad0[112];
+ 
+diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+index 9f939afe6b88..f486f3b51075 100644
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -28,6 +28,7 @@
+ 
+ #include <linux/linkage.h>
+ #include <linux/pgtable.h>
++#include <linux/threads.h>
+ 
+ #ifdef CONFIG_64BIT
+ 	.level 2.0w
+@@ -2414,3 +2415,71 @@ ENTRY_CFI(set_register)
+ 	copy    %r1,%r31
+ ENDPROC_CFI(set_register)
+ 
++	.import toc_intr,code
++	ENTRY_CFI(toc_handler)
++	/*
++	 * synchronize CPUs and obtain offset
++	 * for stack setup.
++	 */
++	load32		PA(toc_lock),%r1
++0:	ldcw,co		0(%r1),%r2
++	cmpib,=		0,%r2,0b
++	nop
++	addi		1,%r2,%r4
++	stw		%r4,0(%r1)
++	addi		-1,%r2,%r4
++
++	load32	PA(toc_stack),sp
++	/*
++	 * deposit CPU number into stack address,
++	 * so every CPU will have its own stack.
++	 */
++	depw	%r4,18,2,%sp
++
++	/* setup pt_regs on stack and save the
++	 * floating point registers. PIM_TOC doesn't
++	 * save fp registers, so we're doing it here.
++	 */
++	copy	%sp,%arg0
++	ldo	PT_SZ_ALGN(%sp), %sp
++
++	/* clear pt_regs */
++	copy	%arg0,%r1
++0:	cmpb,<<,n %r1,%sp,0b
++	stw,ma	%r0,4(%r1)
++
++	ldo	PT_FR0(%arg0),%r25
++	save_fp	%r25
++
++	/* go virtual */
++	load32	PA(swapper_pg_dir),%r4
++	mtctl	%r4,%cr24
++	mtctl	%r4,%cr25
++
++	/* Clear sr4-sr7 */
++	mtsp	%r0, %sr4
++	mtsp	%r0, %sr5
++	mtsp	%r0, %sr6
++	mtsp	%r0, %sr7
++
++	tovirt_r1 %sp
++	tovirt_r1 %arg0
++	virt_map
++
++	loadgp
++#ifdef CONFIG_64BIT
++	ldo	-16(%sp),%r29
++#endif
++	b,l	toc_intr,%r2
++	nop
++0:	b	0b
++ENDPROC_CFI(toc_handler)
++
++SYM_DATA(toc_handler_csum, .long 0)
++SYM_DATA(toc_handler_size, .long . - toc_handler)
++SYM_DATA(toc_lock, .long 1)
++
++	__PAGE_ALIGNED_BSS
++	.align 16384*NR_CPUS
++toc_stack:
++	.block 16384*NR_CPUS
+diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor.c
+index 1b6129e7d776..582caf99d952 100644
+--- a/arch/parisc/kernel/processor.c
++++ b/arch/parisc/kernel/processor.c
+@@ -28,6 +28,7 @@
+ #include <asm/pdcpat.h>
+ #include <asm/irq.h>		/* for struct irq_region */
+ #include <asm/parisc-device.h>
++#include <asm/sections.h>
+ 
+ struct system_cpuinfo_parisc boot_cpu_data __ro_after_init;
+ EXPORT_SYMBOL(boot_cpu_data);
+@@ -453,6 +454,25 @@ static struct parisc_driver cpu_driver __refdata = {
+ 	.probe		= processor_probe
  };
  
-+struct pdc_toc_pim_11 {
-+	unsigned int gr[32];
-+	unsigned int cr[32];
-+	unsigned int sr[8];
-+	unsigned int iasq_back;
-+	unsigned int iaoq_back;
-+	unsigned int check_type;
-+	unsigned int hversion;
-+	unsigned int cpu_state;
-+};
-+
-+struct pdc_toc_pim_20 {
-+	unsigned long long gr[32];
-+	unsigned long long cr[32];
-+	unsigned long long sr[8];
-+	unsigned long long iasq_back;
-+	unsigned long long iaoq_back;
-+	unsigned int check_type;
-+	unsigned int hversion;
-+	unsigned int cpu_state;
-+};
-+
- #endif /* !defined(__ASSEMBLY__) */
- 
- #endif /* _UAPI_PARISC_PDC_H */
-diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware.c
-index 7034227dbdf3..9179b4409b63 100644
---- a/arch/parisc/kernel/firmware.c
-+++ b/arch/parisc/kernel/firmware.c
-@@ -1061,6 +1061,38 @@ int pdc_mem_pdt_read_entries(struct pdc_mem_read_pdt *pret,
- 	return retval;
- }
- 
-+/**
-+ * pdc_pim_toc11 - Fetch TOC PIM 1.1 data from firmware.
-+ * @ret: pointer to return buffer
-+ */
-+int pdc_pim_toc11(struct pdc_toc_pim_11 *ret)
++static __init void setup_toc(void)
 +{
-+	int retval;
-+	unsigned long flags;
++	unsigned int csum = 0;
++	unsigned long toc_code = (unsigned long)dereference_function_descriptor(toc_handler);
++	int i;
 +
-+	spin_lock_irqsave(&pdc_lock, flags);
-+	retval = mem_pdc_call(PDC_PIM, PDC_PIM_TOC, __pa(pdc_result),
-+			      __pa(ret), sizeof(struct pdc_toc_pim_11));
-+	spin_unlock_irqrestore(&pdc_lock, flags);
-+	return retval;
-+}
++	PAGE0->vec_toc = __pa(toc_code) & 0xffffffff;
++#ifdef CONFIG_64BIT
++	PAGE0->vec_toc_hi = __pa(toc_code) >> 32;
++#else
++	PAGE0->vec_toc_hi = 0;
++#endif
++	PAGE0->vec_toclen = toc_handler_size;
 +
-+/**
-+ * pdc_pim_toc20 - Fetch TOC PIM 2.0 data from firmware.
-+ * @ret: pointer to return buffer
-+ */
-+int pdc_pim_toc20(struct pdc_toc_pim_20 *ret)
-+{
-+	int retval;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&pdc_lock, flags);
-+	retval = mem_pdc_call(PDC_PIM, PDC_PIM_TOC, __pa(pdc_result),
-+			      __pa(ret), sizeof(struct pdc_toc_pim_20));
-+	spin_unlock_irqrestore(&pdc_lock, flags);
-+	return retval;
++	for (i = 0; i < toc_handler_size/4; i++)
++		csum += ((u32 *)toc_code)[i];
++	toc_handler_csum = -csum;
 +}
 +
  /**
-  * pdc_tod_set - Set the Time-Of-Day clock.
-  * @sec: The number of seconds since epoch.
+  * processor_init - Processor initialization procedure.
+  *
+@@ -460,5 +480,6 @@ static struct parisc_driver cpu_driver __refdata = {
+  */
+ void __init processor_init(void)
+ {
++	setup_toc();
+ 	register_parisc_driver(&cpu_driver);
+ }
+diff --git a/arch/parisc/kernel/traps.c b/arch/parisc/kernel/traps.c
+index 747c328fb886..e847d37eda3a 100644
+--- a/arch/parisc/kernel/traps.c
++++ b/arch/parisc/kernel/traps.c
+@@ -30,6 +30,8 @@
+ #include <linux/ratelimit.h>
+ #include <linux/uaccess.h>
+ #include <linux/kdebug.h>
++#include <linux/kdb.h>
++#include <linux/reboot.h>
+ 
+ #include <asm/assembly.h>
+ #include <asm/io.h>
+@@ -472,6 +474,83 @@ void parisc_terminate(char *msg, struct pt_regs *regs, int code, unsigned long o
+ 	panic(msg);
+ }
+ 
++static void toc20_to_pt_regs(struct pt_regs *regs, struct pdc_toc_pim_20 *toc)
++{
++	int i;
++
++	regs->gr[0] = (unsigned long)toc->cr[22];
++
++	for (i = 1; i < 32; i++)
++		regs->gr[i] = (unsigned long)toc->gr[i];
++
++	for (i = 0; i < 8; i++)
++		regs->sr[i] = (unsigned long)toc->sr[i];
++
++	regs->iasq[0] = (unsigned long)toc->cr[17];
++	regs->iasq[1] = (unsigned long)toc->iasq_back;
++	regs->iaoq[0] = (unsigned long)toc->cr[18];
++	regs->iaoq[1] = (unsigned long)toc->iaoq_back;
++
++	regs->sar = (unsigned long)toc->cr[11];
++	regs->iir = (unsigned long)toc->cr[19];
++	regs->isr = (unsigned long)toc->cr[20];
++	regs->ior = (unsigned long)toc->cr[21];
++}
++
++static void toc11_to_pt_regs(struct pt_regs *regs, struct pdc_toc_pim_11 *toc)
++{
++	int i;
++
++	regs->gr[0] = toc->cr[22];
++
++	for (i = 1; i < 32; i++)
++		regs->gr[i] = toc->gr[i];
++
++	for (i = 0; i < 8; i++)
++		regs->sr[i] = toc->sr[i];
++
++	regs->iasq[0] = toc->cr[17];
++	regs->iasq[1] = toc->iasq_back;
++	regs->iaoq[0] = toc->cr[18];
++	regs->iaoq[1] = toc->iaoq_back;
++
++	regs->sar  = toc->cr[11];
++	regs->iir  = toc->cr[19];
++	regs->isr  = toc->cr[20];
++	regs->ior  = toc->cr[21];
++}
++
++void notrace toc_intr(struct pt_regs *regs)
++{
++	struct pdc_toc_pim_20 pim_data20;
++	struct pdc_toc_pim_11 pim_data11;
++
++	nmi_enter();
++
++	if (boot_cpu_data.cpu_type >= pcxu) {
++		if (pdc_pim_toc20(&pim_data20))
++			panic("Failed to get PIM data");
++		toc20_to_pt_regs(regs, &pim_data20);
++	} else {
++		if (pdc_pim_toc11(&pim_data11))
++			panic("Failed to get PIM data");
++		toc11_to_pt_regs(regs, &pim_data11);
++	}
++
++#ifdef CONFIG_KGDB
++	if (atomic_read(&kgdb_active) != -1)
++		kgdb_nmicallback(raw_smp_processor_id(), regs);
++	kgdb_handle_exception(KDB_REASON_SYSTEM_NMI, SIGTRAP, 0, regs);
++#endif
++	show_regs(regs);
++
++	/* give other CPUs time to show their backtrace */
++	mdelay(2000);
++	machine_restart("TOC");
++
++	nmi_exit();
++}
++
+ void notrace handle_interruption(int code, struct pt_regs *regs)
+ {
+ 	unsigned long fault_address = 0;
 -- 
 2.33.0
 
