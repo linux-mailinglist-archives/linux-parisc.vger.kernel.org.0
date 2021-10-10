@@ -2,85 +2,187 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B879642836A
-	for <lists+linux-parisc@lfdr.de>; Sun, 10 Oct 2021 21:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F52428404
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 Oct 2021 00:11:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbhJJTik (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 10 Oct 2021 15:38:40 -0400
-Received: from smtp.duncanthrax.net ([178.63.180.169]:57656 "EHLO
-        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229679AbhJJTii (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 10 Oct 2021 15:38:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=duncanthrax.net; s=dkim; h=Content-Type:MIME-Version:Message-ID:In-Reply-To
-        :Date:References:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding
-        :Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=nKhJ75hPW7iRg32drssui+vu/rx3h2vtgUEU5eKwq+g=; b=mXQmeFxJbPiJnaonaZHVTKaWXN
-        ux/1D3zCxXNgYd4IeWR7BGBU4hBtyzl7GMBLbZhNl8I2ICwQtmlEfc185HsClIrbGacBDq69McDyP
-        J6pptIb8YVmpff1R3nkzVcnX/mYLYv/wT/6g342Inxfq/WBer2luvoE4We4i0vHcuJcE=;
-Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org.stackframe.org)
-        by smtp.duncanthrax.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <svens@stackframe.org>)
-        id 1mZecf-0006YS-U3; Sun, 10 Oct 2021 21:36:38 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org
-Subject: Re: [PATCH 2/2] parisc: add support for TOC (transfer of control)
-References: <20211010183815.5780-1-svens@stackframe.org>
-        <20211010183815.5780-3-svens@stackframe.org>
-        <57e64e6d-88a6-7789-efa5-7e3bdbeae8df@gmx.de>
-Date:   Sun, 10 Oct 2021 21:36:37 +0200
-In-Reply-To: <57e64e6d-88a6-7789-efa5-7e3bdbeae8df@gmx.de> (Helge Deller's
-        message of "Sun, 10 Oct 2021 21:31:00 +0200")
-Message-ID: <87lf30hdtm.fsf@x1.stackframe.org>
+        id S233186AbhJJWNZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 10 Oct 2021 18:13:25 -0400
+Received: from mga11.intel.com ([192.55.52.93]:49214 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231343AbhJJWNY (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 10 Oct 2021 18:13:24 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10133"; a="224178252"
+X-IronPort-AV: E=Sophos;i="5.85,363,1624345200"; 
+   d="scan'208";a="224178252"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2021 15:11:25 -0700
+X-IronPort-AV: E=Sophos;i="5.85,363,1624345200"; 
+   d="scan'208";a="459743239"
+Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.209.83.75]) ([10.209.83.75])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2021 15:11:24 -0700
+Message-ID: <0e6664ac-cbb2-96ff-0106-9301735c0836@linux.intel.com>
+Date:   Sun, 10 Oct 2021 15:11:23 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v5 12/16] PCI: Add pci_iomap_host_shared(),
+ pci_iomap_host_shared_range()
+Content-Language: en-US
+To:     Dan Williams <dan.j.williams@intel.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        virtualization@lists.linux-foundation.org,
+        "Reshetova, Elena" <elena.reshetova@intel.com>
+References: <20211009003711.1390019-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20211009003711.1390019-13-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20211009053103-mutt-send-email-mst@kernel.org>
+ <CAPcyv4hDhjRXYCX_aiOboLF0eaTo6VySbZDa5NQu2ed9Ty2Ekw@mail.gmail.com>
+From:   Andi Kleen <ak@linux.intel.com>
+In-Reply-To: <CAPcyv4hDhjRXYCX_aiOboLF0eaTo6VySbZDa5NQu2ed9Ty2Ekw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Helge,
 
-Helge Deller <deller@gmx.de> writes:
+On 10/9/2021 1:39 PM, Dan Williams wrote:
+> On Sat, Oct 9, 2021 at 2:53 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+>> On Fri, Oct 08, 2021 at 05:37:07PM -0700, Kuppuswamy Sathyanarayanan wrote:
+>>> From: Andi Kleen <ak@linux.intel.com>
+>>>
+>>> For Confidential VM guests like TDX, the host is untrusted and hence
+>>> the devices emulated by the host or any data coming from the host
+>>> cannot be trusted. So the drivers that interact with the outside world
+>>> have to be hardened by sharing memory with host on need basis
+>>> with proper hardening fixes.
+>>>
+>>> For the PCI driver case, to share the memory with the host add
+>>> pci_iomap_host_shared() and pci_iomap_host_shared_range() APIs.
+>>>
+>>> Signed-off-by: Andi Kleen <ak@linux.intel.com>
+>>> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>> So I proposed to make all pci mappings shared, eliminating the need
+>> to patch drivers.
+>>
+>> To which Andi replied
+>>          One problem with removing the ioremap opt-in is that
+>>          it's still possible for drivers to get at devices without going through probe.
+>>
+>> To which Greg replied:
+>> https://lore.kernel.org/all/YVXBNJ431YIWwZdQ@kroah.com/
+>>          If there are in-kernel PCI drivers that do not do this, they need to be
+>>          fixed today.
+>>
+>> Can you guys resolve the differences here?
+> I agree with you and Greg here. If a driver is accessing hardware
+> resources outside of the bind lifetime of one of the devices it
+> supports, and in a way that neither modrobe-policy nor
+> device-authorization -policy infrastructure can block, that sounds
+> like a bug report.
 
-> On 10/10/21 20:38, Sven Schnelle wrote:
->> +void notrace toc_intr(struct pt_regs *regs)
->> +{
->> +	struct pdc_toc_pim_20 pim_data20;
->> +	struct pdc_toc_pim_11 pim_data11;
->> +
->> +	nmi_enter();
->> +
->> +	if (boot_cpu_data.cpu_type >= pcxu) {
->
-> I wonder if this is correct.
-> If we boot a 32bit-kernel on a 64-bit (pcxu) machine, then
-> I think the code below for pdc_pim_toc11() should be executed.
-> So, maybe we need a #ifdef CONFIG_64BIT above...
->
->
->> +		if (pdc_pim_toc20(&pim_data20))
->> +			panic("Failed to get PIM data");
->> +		toc20_to_pt_regs(regs, &pim_data20);
->> +	} else {
->
-> ... with an #else here
->
->> +		if (pdc_pim_toc11(&pim_data11))
->> +			panic("Failed to get PIM data");
->> +		toc11_to_pt_regs(regs, &pim_data11);
->> +	}
->
-> and #endif here. ??
+The 5.15 tree has something like ~2.4k IO accesses (including MMIO and 
+others) in init functions that also register drivers (thanks Elena for 
+the number)
 
-Hmm, that's what i understood from the HPMC PIM code,
-transfer_pim_to_trap_frame(). If it's running a 32 Bit OS, than PDC
-returns a wide frame on a 64 bit capable CPU? But maybe i have to read
-the documentation/code again.
+Some are probably old drivers that could be fixed, but it's quite a few 
+legitimate cases. For example for platform or ISA drivers that's the 
+only way they can be implemented because they often have no other 
+enumeration mechanism. For PCI drivers it's rarer, but also still can 
+happen. One example that comes to mind here is the x86 Intel uncore 
+drivers, which support a mix of MSR, ioremap and PCI config space 
+accesses all from the same driver. This particular example can (and 
+should be) fixed in other ways, but similar things also happen in other 
+drivers, and they're not all broken. Even for the broken ones they're 
+usually for some crufty old devices that has very few users, so it's 
+likely untestable in practice.
 
-Regards
-Sven
+My point is just that the ecosystem of devices that Linux supports is 
+messy enough that there are legitimate exceptions from the "First IO 
+only in probe call only" rule.
+
+And we can't just fix them all. Even if we could it would be hard to 
+maintain.
+
+Using a "firewall model" hooking into a few strategic points like we're 
+proposing here is much saner for everyone.
+
+Now we can argue about the details. Right now what we're proposing has 
+some redundancies: it has both a device model filter and low level 
+filter for ioremap (this patch and some others). The low level filter is 
+for catching issues that don't clearly fit into the 
+"enumeration<->probe" model. You could call that redundant, but I would 
+call it defense in depth or better safe than sorry. In theory it would 
+be enough to have the low level opt-in only, but that would have the 
+drawback that is something gets enumerated after all you would have all 
+kind of weird device driver failures and in some cases even killed 
+guests. So I think it makes sense to have
+
+
+> Fix those drivers instead of sprinkling
+> ioremap_shared in select places and with unclear rules about when a
+> driver is allowed to do "shared" mappings.
+
+Only add it when the driver has been audited and hardened.
+
+But I agree we need on a documented process for this. I will work on 
+some documentation for a proposal. But essentially I think it should be 
+some variant of what Elena has outlined in her talk at Security Summit.
+
+https://static.sched.com/hosted_files/lssna2021/b6/LSS-HardeningLinuxGuestForCCC.pdf
+
+That is using extra auditing/scrutiny at review time, supported with 
+some static code analysis that points to the interaction points, and 
+code needs to be fuzzed explicitly.
+
+However short term it's only three virtio drivers, so this is not a 
+urgent problem.
+
+> Let the new
+> device-authorization mechanism (with policy in userspace)
+
+
+Default policy in user space just seems to be a bad idea here. Who 
+should know if a driver is hardened other than the kernel? Maintaining 
+the list somewhere else just doesn't make sense to me.
+
+Also there is the more practical problem that some devices are needed 
+for booting. For example in TDX we can't print something to the console 
+with this mechanism, so you would never get any output before the 
+initrd. Just seems like a nightmare for debugging anything. There really 
+needs to be an authorization mechanism that works reasonably early.
+
+I can see a point of having user space overrides though, but we need to 
+have a sane kernel default that works early.
+
+-Andi
