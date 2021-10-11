@@ -2,123 +2,138 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFFDB428C82
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 Oct 2021 14:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E03D44292D0
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 Oct 2021 17:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236339AbhJKMG1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 11 Oct 2021 08:06:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:40421 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234320AbhJKMG0 (ORCPT
+        id S233277AbhJKPHZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 11 Oct 2021 11:07:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53102 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231356AbhJKPHZ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 11 Oct 2021 08:06:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1633953865;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=6/UQYl/XVfz1u8aL1mV3gDk9yEhwnmg9oxdpI3UoFb8=;
-        b=KvXHy3fh1FPYpujiGXPgtA1C79NPw5HgdNUuh7vu9WhSMbi81dBjH79lX2JzSMxlqHUmbF
-        zj5THRZfUhysKGTBvngQV29JrpN0/5a5RbwhvHnirJelsa0QTfpbLqk0N2Qb/UADggulbt
-        Iib4q6Qnv6OootSKKbpNLQCiMYnEz1A=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-19-6HdcrOHRPg--jgacZuFDpg-1; Mon, 11 Oct 2021 08:04:24 -0400
-X-MC-Unique: 6HdcrOHRPg--jgacZuFDpg-1
-Received: by mail-ed1-f71.google.com with SMTP id g28-20020a50d0dc000000b003dae69dfe3aso15659837edf.7
-        for <linux-parisc@vger.kernel.org>; Mon, 11 Oct 2021 05:04:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=6/UQYl/XVfz1u8aL1mV3gDk9yEhwnmg9oxdpI3UoFb8=;
-        b=4CW4QDo7mQsfdsA1lbA7AHOA4LLrKvNab6PavQLyQ+7WBJHH3qJFHJbTGUPjRisR+L
-         THF4B31YtqjR4QyZZYJIKPfL3Z4Bw9hSz9i0lQVILpHv2CNf8Tb/I8d/SBnxVyaDdb5+
-         z+hMOPGAgQ5T3kb4fS1fmsV7nc/6wH6HSWB6U0aGdqLb+tybD0DFebhPBZkwHO43k9ke
-         nz1W7f5ATmqqdxlYD7+1KX0CQI0udAMwYzkRStIaemeXTo+zKNGfKiNyribNizMm9Dfj
-         70z72P1tZ7maPBDJLoN5PZi2id05peBt+nAo+ghuWQuzYIn3E87YFbsS1B5efoMxammJ
-         01iw==
-X-Gm-Message-State: AOAM530Z8NtHf0ceaUtAvu9PFGLCWtTIzO2BPW5uHeWNQZSn73VarQxU
-        Rl9POwlLAAqWiHuo9cGNcHp4NHCZYKsYGT3rlwjbxo8L/rn3hu+ctuSm4/9EeKpD7y8FY8r33NJ
-        wjj2LSwqo+V3O/MI5+w5ntkr1
-X-Received: by 2002:a17:906:6bce:: with SMTP id t14mr5105167ejs.546.1633953863649;
-        Mon, 11 Oct 2021 05:04:23 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyVo7pMtVffuQEXqsF/L2jnPTyIClLeLABvDqmnuGdNXl4W+vIVe08L9GSGn7GemWiCV8sawQ==
-X-Received: by 2002:a17:906:6bce:: with SMTP id t14mr5105145ejs.546.1633953863516;
-        Mon, 11 Oct 2021 05:04:23 -0700 (PDT)
-Received: from redhat.com ([2.55.159.57])
-        by smtp.gmail.com with ESMTPSA id j22sm3412840ejt.11.2021.10.11.05.04.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Oct 2021 05:04:22 -0700 (PDT)
-Date:   Mon, 11 Oct 2021 08:04:16 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Andi Kleen <ak@linux.intel.com>
-Cc:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v5 16/16] x86/tdx: Add cmdline option to force use of
- ioremap_host_shared
-Message-ID: <20211011075945-mutt-send-email-mst@kernel.org>
-References: <20211009003711.1390019-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20211009003711.1390019-17-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20211009070132-mutt-send-email-mst@kernel.org>
- <8c906de6-5efa-b87a-c800-6f07b98339d0@linux.intel.com>
+        Mon, 11 Oct 2021 11:07:25 -0400
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D04C061745
+        for <linux-parisc@vger.kernel.org>; Mon, 11 Oct 2021 08:05:24 -0700 (PDT)
+Received: (qmail 17745 invoked from network); 11 Oct 2021 15:05:20 -0000
+Received: from p200300cf07110c00f032864a1b601834.dip0.t-ipconnect.de ([2003:cf:711:c00:f032:864a:1b60:1834]:36562 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <deller@gmx.de>; Mon, 11 Oct 2021 17:05:20 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     Helge Deller <deller@gmx.de>, Sven Schnelle <svens@stackframe.org>
+Cc:     linux-parisc@vger.kernel.org
+Subject: Re: [PATCH 1/2] parisc/firmware: add functions to retrieve TOC data
+Date:   Mon, 11 Oct 2021 17:05:13 +0200
+Message-ID: <11844080.O9o76ZdvQC@daneel.sf-tec.de>
+In-Reply-To: <20211010183815.5780-2-svens@stackframe.org>
+References: <20211010183815.5780-1-svens@stackframe.org> <20211010183815.5780-2-svens@stackframe.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8c906de6-5efa-b87a-c800-6f07b98339d0@linux.intel.com>
+Content-Type: multipart/signed; boundary="nextPart5505320.DvuYhMxLoT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Oct 10, 2021 at 07:39:55PM -0700, Andi Kleen wrote:
-> 
-> > The connection is quite unfortunate IMHO.
-> > Can't there be an option
-> > that unbreaks drivers *without* opening up security holes by
-> > making BIOS shared?
-> 
-> That would require new low level APIs that distinguish both cases, and a
-> tree sweep.
-> 
-> 
-> -Andi
+--nextPart5505320.DvuYhMxLoT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Presumably bios code is in arch/x86 and drivers/acpi, right?
-Up to 200 calls the majority of which is likely private ...
+> --- a/arch/parisc/include/uapi/asm/pdc.h
+> +++ b/arch/parisc/include/uapi/asm/pdc.h
+> @@ -689,6 +689,28 @@ struct pdc_hpmc_pim_20 { /* PDC_PIM */
+>  	unsigned long long fr[32];
+>  };
+> 
+> +struct pdc_toc_pim_11 {
+> +	unsigned int gr[32];
+> +	unsigned int cr[32];
+> +	unsigned int sr[8];
+> +	unsigned int iasq_back;
+> +	unsigned int iaoq_back;
+> +	unsigned int check_type;
+> +	unsigned int hversion;
+> +	unsigned int cpu_state;
+> +};
+> +
+> +struct pdc_toc_pim_20 {
+> +	unsigned long long gr[32];
+> +	unsigned long long cr[32];
+> +	unsigned long long sr[8];
+> +	unsigned long long iasq_back;
+> +	unsigned long long iaoq_back;
+> +	unsigned int check_type;
+> +	unsigned int hversion;
+> +	unsigned int cpu_state;
+> +};
+> +
+>  #endif /* !defined(__ASSEMBLY__) */
 
-I don't have better ideas but the current setup will just
-result in people making their guests vulnerable whenever they
-want to allow device pass-through.
+Since these are defined by the hardware and have a well defined size I suggest 
+using u32 and u64 to cover this.
 
--- 
-MST
+> diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware.c
+> index 7034227dbdf3..9179b4409b63 100644
+> --- a/arch/parisc/kernel/firmware.c
+> +++ b/arch/parisc/kernel/firmware.c
+> @@ -1061,6 +1061,38 @@ int pdc_mem_pdt_read_entries(struct pdc_mem_read_pdt
+> *pret, return retval;
+>  }
+> 
+> +/**
+> + * pdc_pim_toc11 - Fetch TOC PIM 1.1 data from firmware.
+> + * @ret: pointer to return buffer
+> + */
+> +int pdc_pim_toc11(struct pdc_toc_pim_11 *ret)
+> +{
+> +	int retval;
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&pdc_lock, flags);
+> +	retval = mem_pdc_call(PDC_PIM, PDC_PIM_TOC, __pa(pdc_result),
+> +			      __pa(ret), sizeof(struct 
+pdc_toc_pim_11));
+sizeof(*ret)
+
+> +	spin_unlock_irqrestore(&pdc_lock, flags);
+> +	return retval;
+> +}
+> +
+> +/**
+> + * pdc_pim_toc20 - Fetch TOC PIM 2.0 data from firmware.
+> + * @ret: pointer to return buffer
+> + */
+> +int pdc_pim_toc20(struct pdc_toc_pim_20 *ret)
+> +{
+> +	int retval;
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&pdc_lock, flags);
+> +	retval = mem_pdc_call(PDC_PIM, PDC_PIM_TOC, __pa(pdc_result),
+> +			      __pa(ret), sizeof(struct 
+pdc_toc_pim_20));
+sizeof(*ret)
+
+> +	spin_unlock_irqrestore(&pdc_lock, flags);
+> +	return retval;
+> +}
+> +
+>  /**
+>   * pdc_tod_set - Set the Time-Of-Day clock.
+>   * @sec: The number of seconds since epoch.
+
+
+--nextPart5505320.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYWRSqQAKCRBcpIk+abn8
+TsRPAJ4wea/M/MkVjcZ+FjwOHR42X8gZnwCeOZwvTrUhR1YyLRI0TYLcjtt63yI=
+=LKJv
+-----END PGP SIGNATURE-----
+
+--nextPart5505320.DvuYhMxLoT--
+
+
 
