@@ -2,54 +2,54 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B60AA428B2E
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 Oct 2021 12:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D944A428B8F
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 Oct 2021 12:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236061AbhJKKy4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 11 Oct 2021 06:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50578 "EHLO
+        id S236201AbhJKK6e (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 11 Oct 2021 06:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236062AbhJKKyU (ORCPT
+        with ESMTP id S236081AbhJKK6V (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 11 Oct 2021 06:54:20 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CA8FC061770
-        for <linux-parisc@vger.kernel.org>; Mon, 11 Oct 2021 03:52:20 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id g10so65350564edj.1
-        for <linux-parisc@vger.kernel.org>; Mon, 11 Oct 2021 03:52:20 -0700 (PDT)
+        Mon, 11 Oct 2021 06:58:21 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CD85C061787
+        for <linux-parisc@vger.kernel.org>; Mon, 11 Oct 2021 03:56:13 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id v17so54749438wrv.9
+        for <linux-parisc@vger.kernel.org>; Mon, 11 Oct 2021 03:56:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:reply-to:from:date:message-id:subject:to;
         bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=AOwGJPRzreY174rbkYBENqDohFuS97wCy60jVSdUYNPvEhybdL2c3BcOeGHfafS8qn
-         uli8WfEZJzoNSATFu7DBFWZM5wABtXSV1fVUNkqBG+wI3EdLjqFjRGvGLPDsXQD4j8ti
-         JdKJOvfhiPWLhIdXxcZs7yEtyw7uhQsNkQbVb/JxSGMRe/N7DhEqEKRxFVAhJqYVr6ip
-         luxhwneuxQj/LqEVquYWqA1ElmxbF28So8sZzLv8Aq0heCWPmvwVFbMZiqnZY0gUleVY
-         srMWfgZ4YU41fQPU+nXlKo2suPYWVFr3mwjljaEytb5oh4cOqW2uYqGIU/2pgk6wVBCS
-         OkkA==
+        b=km/+rwE10MGCG3K0BNjxD+A2l394aMlSCDFqBEiDyrs45mObKwVEkOccUp5BPFftJU
+         5cB06txNzUPVxcrxQnkqMq9zaxAqQeR9eoa3+7DqnAg3rX7wMze/dloERdrhczopiGET
+         PvxtLks7kWCMKTs5Q8Mmq12LwUKUT5cPH1x1mszpEwl0kuXWAYNTl0kX4+cL3oWAj8+a
+         6an2wLimFEmscCT9jtQf7FGYav0q/UTa6GRCeFihab7mYp8KZTVzyAi9ONxHllw1wfay
+         OSS3CoE7RnQ2PFKTnc/5Yya8gHnSshWvMzermo1msudbBS7MTk09iY8fA6ci8A/KmFSk
+         +E4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
         bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=jZjcpL2xgQKfPLIHkcxn/HjxLb3mXBTipD6SNPgINyqyaeEokc0UykX+T1+/HZ4xlK
-         llE8f6ZBx0Z5ytwnHXu5JSJJiNTGoAje0cHtCd1MrblntetN+XkJfCqKOyT0UoyZAZKF
-         u6akYChS8Nga3RDetYO1nXX/ACwsdSz5FCRJY+cw99Tb05SqQ5b88Ff7yKuvT1ncSTwB
-         DOFg+Gx9ImefcCkIk3oxT9EwNCMwk7ErFGMpYIxeivdna3/uHejogPSjBOCtEfM1Lc2C
-         hFzj7yVx+5ovQmyB8tBzafnR+sNCjOMf8h/XoF+2liOW9m9zd2iN72C2yyv3uZMZtu7i
-         +5kA==
-X-Gm-Message-State: AOAM530jXFgqB1Kv5gaaIKAMVsxjp4ZFAsMya9wE2NUYGyJUGTeAgMHc
-        jaitxFlwWeq9fH4zgs8zWaKjEhKYy03zGqjnAjbQrSrSzW1Paw==
-X-Google-Smtp-Source: ABdhPJyfJGEDNJnYy+rVU5F2kp5CR0JNqric22BUxuwjRQiA96y3Nmwroy+PAkdet7/Z+lAMJSMDUb21JjG1eJ5mxBo=
-X-Received: by 2002:adf:a550:: with SMTP id j16mr24209932wrb.180.1633949528442;
- Mon, 11 Oct 2021 03:52:08 -0700 (PDT)
+        b=jUMZMBnb4irgH4BmvD/Dz93361YGpsONbZiEC26C0SBI93uQsBZaqDCIUROQanSyux
+         zFMgrgPZz7NKnuRT7BmtoedV+08Ux+FO+tiJfBd+bvf3v/GrG+5OWcYevjoWFtd4ndfH
+         sz7Ab5SoC9m+gfPNbR8qOJ0XbK8Ae8UKBtJ4gCwqTLjFCw7SdYlQVQmpfSugpmV8mu9s
+         ZHyAyAPIuO0TxHWdL73pUq7uxG2bUSx8/WE1Aubm7Rm6B3Y5tsUan4E2ua3eN6cFCIXJ
+         TgMXIBnWfW5v6PwCFXtqdOcC2iTppiICfXKQKPrSJtgCwsVoSg7cBUxiV30h8bnAMQ9o
+         yMLA==
+X-Gm-Message-State: AOAM531K04tsIKMpGJhxgbSmT/nN3Injt5/EcK20Alc29L0mtgvLGV+3
+        ZHdRZ06n7zrB44PziYDCGNKfj5Onf+gYl5fN1tVvR51EdA1k2A==
+X-Google-Smtp-Source: ABdhPJxWYMUVxuj7Tly9azrkWxEMXzTPZAklmoVIH4V2ykknMMiBN9imOFz2zTqxux/zk/7pzvFSRlX+C6mfjc7ADy4=
+X-Received: by 2002:adf:8b9a:: with SMTP id o26mr24377548wra.109.1633949760323;
+ Mon, 11 Oct 2021 03:56:00 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:adf:dd8c:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:52:07
+Received: by 2002:adf:dd8c:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:55:59
  -0700 (PDT)
 Reply-To: ramcharan9910@outlook.com
 From:   "Cr.David Ramcharan" <convy0101@gmail.com>
-Date:   Mon, 11 Oct 2021 03:52:07 -0700
-Message-ID: <CADDRs97R=WZOwhBkw75zF4TtQ=idFbd5TWX3jbTc8zsFJ+4qNw@mail.gmail.com>
+Date:   Mon, 11 Oct 2021 03:55:59 -0700
+Message-ID: <CADDRs95718H=K3tUjphEHH_C96xYhoJw7jeCMpt_FfZZjhEXrA@mail.gmail.com>
 Subject: Thank You
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
