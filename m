@@ -2,116 +2,206 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 579F642AF6C
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 Oct 2021 00:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BCBA42B157
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Oct 2021 02:56:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235622AbhJLWCR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 12 Oct 2021 18:02:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50850 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232272AbhJLWCP (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 12 Oct 2021 18:02:15 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99BC3C061745
-        for <linux-parisc@vger.kernel.org>; Tue, 12 Oct 2021 15:00:13 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id w6so659173pfd.11
-        for <linux-parisc@vger.kernel.org>; Tue, 12 Oct 2021 15:00:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BtMAj68aUuTTSGbrDQhTvggvj29pIYu2zJBH77+GR9M=;
-        b=l4aQQdqM1qp9TtohjZx2PZM0wFCEL6l/kvo8NN9KzJyymhBkkyJgSo+9JA65w2tJEC
-         9LMd/PZYWtD639cxF6qZMwd7jZd9819/ZvHD/DyB/7wSK2/pajxSegKWAuJyX3EvYN36
-         Hvgx10j1dFhPR07T/GBgmSYWFBkdDDI7TrgeSvfoF3jbQGYARg2lN3Mrzq8mhpCVohvp
-         ZGTcRKSDYPs1LYZ9Cvfeg4KhU92J4uRVYVOhbj7jW97OCTyGTD9dTqfQJOsiIMNnWVv0
-         /ozc6W/ADlxkkOe6vMPoo0ylJl6JzbiIVBISrC3VjWn2vlC4L7iJWKamuM1v2Iw/lFzH
-         VREA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BtMAj68aUuTTSGbrDQhTvggvj29pIYu2zJBH77+GR9M=;
-        b=sxJ4RdROlHc+RRmXR1WlDmBCr7VeY/iKRgeiKEb/USl46MTGdeIOsuljUBohXGiW3w
-         eEeGrZxvHVSOgVbDOVegIaknUUdkO7q3yrsS4MWplvABDaEhymcoprfff/f+gmI6sSeO
-         uoxerMe7ZUKP9hrCArzsWA/xg4Xerq+Tafw/IfpaevNBccg3l1i9/1hYWTXK8LSX/lB9
-         kvamvMtwCqAd+lgm26oy1FLt7tu46SMPZrCCDByfRFnLX8jjV3v35NzVedrIjxX7EfYZ
-         CZ/AgOV9G5BDTPQrhMatYLEMdxhnI9gVXMZC2EKYKjCFzobEzoPV6oTcZ5GQEqYEg5k3
-         7+5w==
-X-Gm-Message-State: AOAM5323PX0RG0C2LsRzae3V4VsTkT+HeVzlZf+8YJtvEDfjVCHN9299
-        jkQeafwDdL0pyT+FmqW3pisKrwOuMDE1AyaXWTsKXg==
-X-Google-Smtp-Source: ABdhPJy/e3jBUJgWufF7ultP6rKqv7OOHb6VQ8mNAhGHcU3yrYfDGGAVb/xjngRbf2MGZ68jBqzuzUn25eWS2pvZ40Y=
-X-Received: by 2002:a63:1262:: with SMTP id 34mr24624590pgs.356.1634076012990;
- Tue, 12 Oct 2021 15:00:12 -0700 (PDT)
+        id S236647AbhJMA5t (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 12 Oct 2021 20:57:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41106 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236543AbhJMA5d (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 12 Oct 2021 20:57:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3391160F21;
+        Wed, 13 Oct 2021 00:55:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634086531;
+        bh=qob3YSuRTRWNBYe/OSS+OKzkEfCDeLdA7hbMed4XBzY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=pZyABUlFLPb7fXfRsra+fXsnHbDR4hhOFi+YccDD8ZOIloSIWweQGi8kviWVNTG2G
+         zRSkbGMyNGYFahhHpnwm9zaOuOdXU7ep+rRPg+gSomsIYnWL9zkIoSfwfKt7NEgnMP
+         aJEW7tYys8BjWx9Y3hcrAJ/83sz7v0XHhOLGhhdCHOnOGfTuWyyXswWEqfcyowsLMi
+         FdMR0nz5H+kihNhGPBws/pIclH7J935IBdG9CCG/y9vHpNkq2v+zA/rHe+S0+/NDnr
+         I+3slmNREKQx62XheiXYTcOPgz0kD8MoXe75erSmDtlW4unyAD4Txb6HCLmcDzfhzW
+         PYoMxINB8Cg7w==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Will Deacon <will@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, tsbogend@alpha.franken.de,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, x86@kernel.org, geert+renesas@glider.be,
+        linus.walleij@linaro.org, rmk+kernel@armlinux.org.uk,
+        akpm@linux-foundation.org, anshuman.khandual@arm.com,
+        rppt@kernel.org, ardb@kernel.org, u.kleine-koenig@pengutronix.de,
+        lukas.bulwahn@gmail.com, mark.rutland@arm.com,
+        wangkefeng.wang@huawei.com, slyfox@gentoo.org, axboe@kernel.dk,
+        rientjes@google.com, dan.j.williams@intel.com,
+        gregkh@linuxfoundation.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.14 17/17] firmware: include drivers/firmware/Kconfig unconditionally
+Date:   Tue, 12 Oct 2021 20:54:41 -0400
+Message-Id: <20211013005441.699846-17-sashal@kernel.org>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211013005441.699846-1-sashal@kernel.org>
+References: <20211013005441.699846-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <20211009003711.1390019-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20211009003711.1390019-13-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20211009053103-mutt-send-email-mst@kernel.org> <CAPcyv4hDhjRXYCX_aiOboLF0eaTo6VySbZDa5NQu2ed9Ty2Ekw@mail.gmail.com>
- <0e6664ac-cbb2-96ff-0106-9301735c0836@linux.intel.com> <CAPcyv4g0v0YHZ-okxf4wwVCYxHotxdKwsJpZGkoT+fhvvAJEFg@mail.gmail.com>
- <9302f1c2-b3f8-2c9e-52c5-d5a4a2987409@linux.intel.com> <CAPcyv4hG0HcbUO8Mb=ccDp5Bz3RJNkAJwKwNzRkQ1gCMpp_OMQ@mail.gmail.com>
- <bca75b04-f084-5bda-c071-249fd91aaa1e@linux.intel.com>
-In-Reply-To: <bca75b04-f084-5bda-c071-249fd91aaa1e@linux.intel.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 12 Oct 2021 15:00:01 -0700
-Message-ID: <CAPcyv4gZfG-Bm+_jGRjSHd8K+jO2M2NgXisqacanxGZgZKFaJA@mail.gmail.com>
-Subject: Re: [PATCH v5 12/16] PCI: Add pci_iomap_host_shared(), pci_iomap_host_shared_range()
-To:     Andi Kleen <ak@linux.intel.com>
-Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org,
-        "Reshetova, Elena" <elena.reshetova@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Oct 12, 2021 at 2:28 PM Andi Kleen <ak@linux.intel.com> wrote:
-[..]
-> >> But how do you debug the kernel then? Making early undebuggable seems
-> >> just bad policy to me.
-> > I am not proposing making the early undebuggable.
->
->
-> That's the implication of moving the policy into initrd.
->
->
-> If only initrd can authorize then it won't be possible to authorize
-> before initrd, thus the early console won't work.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Again, the proposal is that the allow-list is limited to just enough
-devices to startup and debug the initramfs and no more. Everything
-else can be dynamic, and this allows for a powerful custom override
-interface without needing to debate additional ABI like command line
-overrides, and minimizes future changes to this kernel-internal
-allow-list.
+[ Upstream commit 951cd3a0866d29cb9c01ebc1d9c17590e598226e ]
+
+Compile-testing drivers that require access to a firmware layer
+fails when that firmware symbol is unavailable. This happened
+twice this week:
+
+ - My proposed to change to rework the QCOM_SCM firmware symbol
+   broke on ppc64 and others.
+
+ - The cs_dsp firmware patch added device specific firmware loader
+   into drivers/firmware, which broke on the same set of
+   architectures.
+
+We should probably do the same thing for other subsystems as well,
+but fix this one first as this is a dependency for other patches
+getting merged.
+
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Acked-by: Will Deacon <will@kernel.org>
+Acked-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: Simon Trimmer <simont@opensource.cirrus.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/Kconfig    | 2 --
+ arch/arm64/Kconfig  | 2 --
+ arch/ia64/Kconfig   | 2 --
+ arch/mips/Kconfig   | 2 --
+ arch/parisc/Kconfig | 2 --
+ arch/riscv/Kconfig  | 2 --
+ arch/x86/Kconfig    | 2 --
+ drivers/Kconfig     | 2 ++
+ 8 files changed, 2 insertions(+), 14 deletions(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 2fb7012c3246..1c6e03a350ca 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1994,8 +1994,6 @@ config ARCH_HIBERNATION_POSSIBLE
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ if CRYPTO
+ source "arch/arm/crypto/Kconfig"
+ endif
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 62c3c1d2190f..01c682b8b8c7 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1935,8 +1935,6 @@ source "drivers/cpufreq/Kconfig"
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "drivers/acpi/Kconfig"
+ 
+ source "arch/arm64/kvm/Kconfig"
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 4993c7ac7ff6..3f867225efc2 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -386,8 +386,6 @@ config CRASH_DUMP
+ 	  help
+ 	    Generate crash dump after being started by kexec.
+ 
+-source "drivers/firmware/Kconfig"
+-
+ endmenu
+ 
+ menu "Power management and ACPI options"
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 6dfb27d531dd..a193b1440f88 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -3343,8 +3343,6 @@ source "drivers/cpuidle/Kconfig"
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "arch/mips/kvm/Kconfig"
+ 
+ source "arch/mips/vdso/Kconfig"
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 4f8c1fbf8f2f..f1c0ebd9d959 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -385,6 +385,4 @@ config KEXEC_FILE
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "drivers/parisc/Kconfig"
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 4f7b70ae7c31..b70e921af40d 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -558,5 +558,3 @@ menu "Power management options"
+ source "kernel/power/Kconfig"
+ 
+ endmenu
+-
+-source "drivers/firmware/Kconfig"
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 88fb922c23a0..ab3153ccecb9 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2854,8 +2854,6 @@ config HAVE_ATOMIC_IOMAP
+ 	def_bool y
+ 	depends on X86_32
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "arch/x86/kvm/Kconfig"
+ 
+ source "arch/x86/Kconfig.assembler"
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 8bad63417a50..1f96367b4d98 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -17,6 +17,8 @@ source "drivers/bus/Kconfig"
+ 
+ source "drivers/connector/Kconfig"
+ 
++source "drivers/firmware/Kconfig"
++
+ source "drivers/gnss/Kconfig"
+ 
+ source "drivers/mtd/Kconfig"
+-- 
+2.33.0
+
