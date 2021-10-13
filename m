@@ -2,50 +2,50 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD1D242B881
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 Oct 2021 09:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25BA142B8C7
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Oct 2021 09:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238308AbhJMHLX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 13 Oct 2021 03:11:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60538 "EHLO
+        id S238435AbhJMHSr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 13 Oct 2021 03:18:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238307AbhJMHLU (ORCPT
+        with ESMTP id S238454AbhJMHSl (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 13 Oct 2021 03:11:20 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBABCC061714
-        for <linux-parisc@vger.kernel.org>; Wed, 13 Oct 2021 00:09:17 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id lk8-20020a17090b33c800b001a0a284fcc2so3707616pjb.2
-        for <linux-parisc@vger.kernel.org>; Wed, 13 Oct 2021 00:09:17 -0700 (PDT)
+        Wed, 13 Oct 2021 03:18:41 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EEAAC061765
+        for <linux-parisc@vger.kernel.org>; Wed, 13 Oct 2021 00:16:34 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id v20so1183115plo.7
+        for <linux-parisc@vger.kernel.org>; Wed, 13 Oct 2021 00:16:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=9B8532Yqv4ro9UPpSECsrKFDalIVcpozoR3xlP35mOo=;
-        b=mOSmWjnWgLyjFNwZ0JklI8sCKMnMMWbDMjBEiqgViAMnDbbLoqtyhfRZSXhu78BZva
-         fZi0/vUzbbm9hey6oND+v9LEaQMLMU+ZNQpseYV/sBelGJ8lZ6Uni5v40eDIb3NjnOvq
-         Fz3mNpV5Hm0WMOjWDkkg0bltm0biFBS/mCHk4=
+        bh=Qi2kcK7gbHZUycBDWjYwOBh1qqhZS2gpMfLgpt9Uq+g=;
+        b=DBeVwPHI8FJhK4IF5VHgTTJLctjt6LXWmLThZ2yFnKb+4pyEOAe0Ui9MkqyggUzG0q
+         28MfwGk11htf2S4E1fmmF13OlhLumeXU3HW0grwDrGEkj60K3HN3BkQgDptITaIdv9Uy
+         kua2TuyZ53AjYkbvnu6ABjlxXEF9G7ygD+r9s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=9B8532Yqv4ro9UPpSECsrKFDalIVcpozoR3xlP35mOo=;
-        b=wYN1LtLG+1Zjd5G9fcYKA89Au54Ybsoojwi0HoJyrnGBu3rVO1AisFN43pTQRjpK5k
-         eyze/ueruoxd/KcYsyVtfldIKQ0nITTbSGFGINQ3Nl++J3K2Y15ncuBIYnZdFFp26PdY
-         UHBsnuiUQNkKzBa3kTKKQCiRUmCkutNe53H+CPXhgQc/EMVPfjWBoigF1w+JDPHJQFkd
-         WTV3Ro7AA5suezWCHnS8SAp0DZkToz4+CinRTe8WWmNL7cNlDcySK3QG+z14rU21PaFx
-         fjU+18doI6CxRDQGRtwyu8oItENCyEYbmdMz5V6O1kz0LUdxBKKaL4iKXYi8EJkW34LX
-         /Tew==
-X-Gm-Message-State: AOAM530vR6CvEoA0Xr4udXKwrHv/ihK9NLgI0E9GaqtkWUtlE+bJhHc8
-        yfyGhD01PLN3SwQBMjMGK1yjpg==
-X-Google-Smtp-Source: ABdhPJwNfT+PN9/6KcLorXFjdNFizJJQ4LNC6e+5MQ9vFZUDGTpFiM1qVaKprUL29bSaC2DkxYGXsw==
-X-Received: by 2002:a17:90a:6542:: with SMTP id f2mr8159904pjs.159.1634108957279;
-        Wed, 13 Oct 2021 00:09:17 -0700 (PDT)
+        bh=Qi2kcK7gbHZUycBDWjYwOBh1qqhZS2gpMfLgpt9Uq+g=;
+        b=1zDlXQogTdR+NzMtWTwPceaJy0zDYlhkoVfVpowGxjtnWDae4GdHiCGCPO55IkWscw
+         /Eg1nQtkNnh/qI1YguNkqm4FwnSyQKsX1XcyUAos8Udd3nItA+dmlXXwZJu2t6ldNud1
+         IaMlEC8bS1Bld+HBprSl15+O7x5yUsPKTm6iAYgvdxqIkiZoga9UZif2MrBU1CW+eayx
+         F8O0eNF+vbQuVN5d0lyVb9QgW/+hvbSu9T/s1oImKZwWHza3tmSaqWBw4/PybAzgFvsM
+         LuC104fim/h61d09KxYcKYHcfSldkAxZF72/XFtuZRZSJiou3B4KW8qc+q1Gv9chv67e
+         xgTA==
+X-Gm-Message-State: AOAM532TVVW0V8qBEIqpIPbRB7+txwCRENOEWkjDBxoTa9mcda/t4j5Q
+        A+Y4byFnEyC/3JI1rRN01r8Ttw==
+X-Google-Smtp-Source: ABdhPJyAOXrKW60jwbhdhdic11/bHUj22V/uWz/NG4QXRJ4qpgyk4BVyCru7dvuvTxCLWVGzDuPokg==
+X-Received: by 2002:a17:90a:8807:: with SMTP id s7mr11433275pjn.226.1634109393567;
+        Wed, 13 Oct 2021 00:16:33 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id p2sm4697310pja.51.2021.10.13.00.09.16
+        by smtp.gmail.com with ESMTPSA id q14sm4820727pjm.17.2021.10.13.00.16.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Oct 2021 00:09:16 -0700 (PDT)
-Date:   Wed, 13 Oct 2021 00:09:16 -0700
+        Wed, 13 Oct 2021 00:16:33 -0700 (PDT)
+Date:   Wed, 13 Oct 2021 00:16:32 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -58,56 +58,128 @@ Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
         linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v1 09/10] lkdtm: Fix lkdtm_EXEC_RODATA()
-Message-ID: <202110130008.EC5E957D4A@keescook>
+Subject: Re: [PATCH v1 10/10] lkdtm: Fix execute_[user]_location()
+Message-ID: <202110130012.4608FFD38E@keescook>
 References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
- <7da92e59e148bd23564d63bdd8bcfaba0ba6d1f1.1633964380.git.christophe.leroy@csgroup.eu>
+ <c551f3f4b803d1a4a184b0fa94475d405ba436d8.1633964380.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7da92e59e148bd23564d63bdd8bcfaba0ba6d1f1.1633964380.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <c551f3f4b803d1a4a184b0fa94475d405ba436d8.1633964380.git.christophe.leroy@csgroup.eu>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Oct 11, 2021 at 05:25:36PM +0200, Christophe Leroy wrote:
-> Behind a location, lkdtm_EXEC_RODATA() executes a real function,
-> not a copy of do_nothing().
+On Mon, Oct 11, 2021 at 05:25:37PM +0200, Christophe Leroy wrote:
+> execute_location() and execute_user_location() intent
+> to copy do_nothing() text and execute it at a new location.
+> However, at the time being it doesn't copy do_nothing() function
+> but do_nothing() function descriptor which still points to the
+> original text. So at the end it still executes do_nothing() at
+> its original location allthough using a copied function descriptor.
 > 
-> So do it directly instead of using execute_location().
-
-I don't understand this. Why does the next patch not fix this?
-
--Kees
-
+> So, fix that by really copying do_nothing() text and build a new
+> function descriptor by copying do_nothing() function descriptor and
+> updating the target address with the new location.
 > 
-> And fix displayed addresses by dereferencing the function descriptors.
+> Also fix the displayed addresses by dereferencing do_nothing()
+> function descriptor.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  drivers/misc/lkdtm/perms.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+>  drivers/misc/lkdtm/perms.c | 45 +++++++++++++++++++++++++++++++-------
+>  1 file changed, 37 insertions(+), 8 deletions(-)
 > 
 > diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-> index 442d60ed25ef..da16564e1ecd 100644
+> index da16564e1ecd..1d03cd44c21d 100644
 > --- a/drivers/misc/lkdtm/perms.c
 > +++ b/drivers/misc/lkdtm/perms.c
-> @@ -153,7 +153,14 @@ void lkdtm_EXEC_VMALLOC(void)
->  
->  void lkdtm_EXEC_RODATA(void)
->  {
-> -	execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
-> +	pr_info("attempting ok execution at %px\n",
-> +		dereference_symbol_descriptor(do_nothing));
-> +	do_nothing();
-> +
-> +	pr_info("attempting bad execution at %px\n",
-> +		dereference_symbol_descriptor(lkdtm_rodata_do_nothing));
-> +	lkdtm_rodata_do_nothing();
-> +	pr_err("FAIL: func returned\n");
+> @@ -44,19 +44,42 @@ static noinline void do_overwritten(void)
+>  	return;
 >  }
 >  
->  void lkdtm_EXEC_USERSPACE(void)
+> +static void *setup_function_descriptor(funct_descr_t *fdesc, void *dst)
+> +{
+> +	int err;
+> +
+> +	if (!__is_defined(HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR))
+> +		return dst;
+> +
+> +	err = copy_from_kernel_nofault(fdesc, do_nothing, sizeof(*fdesc));
+> +	if (err < 0)
+> +		return ERR_PTR(err);
+> +
+> +	fdesc->addr = (unsigned long)dst;
+> +	barrier();
+> +
+> +	return fdesc;
+> +}
+> +
+>  static noinline void execute_location(void *dst, bool write)
+>  {
+> -	void (*func)(void) = dst;
+> +	void (*func)(void);
+> +	funct_descr_t fdesc;
+> +	void *do_nothing_text = dereference_symbol_descriptor(do_nothing);
+>  
+> -	pr_info("attempting ok execution at %px\n", do_nothing);
+> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
+>  	do_nothing();
+>  
+>  	if (write == CODE_WRITE) {
+> -		memcpy(dst, do_nothing, EXEC_SIZE);
+> +		memcpy(dst, do_nothing_text, EXEC_SIZE);
+>  		flush_icache_range((unsigned long)dst,
+>  				   (unsigned long)dst + EXEC_SIZE);
+>  	}
+> -	pr_info("attempting bad execution at %px\n", func);
+> +	func = setup_function_descriptor(&fdesc, dst);
+> +	if (IS_ERR(func))
+> +		return;
+
+I think this error case should complain with some details. :) Maybe:
+
+	pr_err("FAIL: could not build function descriptor for %px\n", dst);
+
+> +
+> +	pr_info("attempting bad execution at %px\n", dst);
+
+And then leave this pr_info() as it was, before the
+setup_function_descriptor() call.
+
+>  	func();
+>  	pr_err("FAIL: func returned\n");
+>  }
+> @@ -66,16 +89,22 @@ static void execute_user_location(void *dst)
+>  	int copied;
+>  
+>  	/* Intentionally crossing kernel/user memory boundary. */
+> -	void (*func)(void) = dst;
+> +	void (*func)(void);
+> +	funct_descr_t fdesc;
+> +	void *do_nothing_text = dereference_symbol_descriptor(do_nothing);
+>  
+> -	pr_info("attempting ok execution at %px\n", do_nothing);
+> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
+>  	do_nothing();
+>  
+> -	copied = access_process_vm(current, (unsigned long)dst, do_nothing,
+> +	copied = access_process_vm(current, (unsigned long)dst, do_nothing_text,
+>  				   EXEC_SIZE, FOLL_WRITE);
+>  	if (copied < EXEC_SIZE)
+>  		return;
+> -	pr_info("attempting bad execution at %px\n", func);
+> +	func = setup_function_descriptor(&fdesc, dst);
+> +	if (IS_ERR(func))
+> +		return;
+> +
+> +	pr_info("attempting bad execution at %px\n", dst);
+
+Same here.
+
+>  	func();
+>  	pr_err("FAIL: func returned\n");
+>  }
 > -- 
 > 2.31.1
 > 
