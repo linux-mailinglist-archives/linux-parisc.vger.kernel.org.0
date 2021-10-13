@@ -2,114 +2,211 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8823342B3BE
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 Oct 2021 05:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF3B942B63D
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Oct 2021 07:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237322AbhJMDkV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 12 Oct 2021 23:40:21 -0400
-Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:34338 "EHLO
-        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233169AbhJMDkV (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 12 Oct 2021 23:40:21 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R291e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=yun.wang@linux.alibaba.com;NM=1;PH=DS;RN=31;SR=0;TI=SMTPD_---0Ure8ZJc_1634096291;
-Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com fp:SMTPD_---0Ure8ZJc_1634096291)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 13 Oct 2021 11:38:12 +0800
-Subject: [RESEND PATCH v2 2/2] ftrace: do CPU checking after preemption
- disabled
-From:   =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-To:     Guo Ren <guoren@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Jisheng Zhang <jszhang@kernel.org>, linux-csky@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        live-patching@vger.kernel.org
-References: <b1d7fe43-ce84-0ed7-32f7-ea1d12d0b716@linux.alibaba.com>
-Message-ID: <83177827-53c3-408d-00a8-d5b4c43fbd05@linux.alibaba.com>
-Date:   Wed, 13 Oct 2021 11:38:11 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+        id S229750AbhJMGBG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 13 Oct 2021 02:01:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49064 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229665AbhJMGBF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 13 Oct 2021 02:01:05 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D2F5760C4A;
+        Wed, 13 Oct 2021 05:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1634104743;
+        bh=/qus41ilY6w21Ca2R+0Q6xIAZtlILxDno5T19N3Hbh0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SpDIVM2VGBPZsKjcC97qrSMhyUjATK0iwjm1dmQcPw52HWoSMTiTYciSLUQ/Ss92d
+         h/EQyXwbDzuXxR5uHYtTdFICsob4rzONLe6Tgq0VLdp50etPD0ZuBDSRx3eRhtpxfH
+         FWtL2YaYFXH1YFJzanaKq6d4doBz3WR0T9JnQV5I=
+Date:   Wed, 13 Oct 2021 07:58:58 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Will Deacon <will@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, tsbogend@alpha.franken.de,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, x86@kernel.org, linus.walleij@linaro.org,
+        geert+renesas@glider.be, rmk+kernel@armlinux.org.uk,
+        akpm@linux-foundation.org, anshuman.khandual@arm.com,
+        mark.rutland@arm.com, ardb@kernel.org,
+        u.kleine-koenig@pengutronix.de, rppt@kernel.org,
+        lukas.bulwahn@gmail.com, wangkefeng.wang@huawei.com,
+        slyfox@gentoo.org, axboe@kernel.dk, ben.widawsky@intel.com,
+        dan.j.williams@intel.com, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 5.10 11/11] firmware: include
+ drivers/firmware/Kconfig unconditionally
+Message-ID: <YWZ1om+pLmV3atTd@kroah.com>
+References: <20211013005532.700190-1-sashal@kernel.org>
+ <20211013005532.700190-11-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <b1d7fe43-ce84-0ed7-32f7-ea1d12d0b716@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211013005532.700190-11-sashal@kernel.org>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-With CONFIG_DEBUG_PREEMPT we observed reports like:
+On Tue, Oct 12, 2021 at 08:55:31PM -0400, Sasha Levin wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> [ Upstream commit 951cd3a0866d29cb9c01ebc1d9c17590e598226e ]
+> 
+> Compile-testing drivers that require access to a firmware layer
+> fails when that firmware symbol is unavailable. This happened
+> twice this week:
+> 
+>  - My proposed to change to rework the QCOM_SCM firmware symbol
+>    broke on ppc64 and others.
+> 
+>  - The cs_dsp firmware patch added device specific firmware loader
+>    into drivers/firmware, which broke on the same set of
+>    architectures.
+> 
+> We should probably do the same thing for other subsystems as well,
+> but fix this one first as this is a dependency for other patches
+> getting merged.
+> 
+> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> Acked-by: Will Deacon <will@kernel.org>
+> Acked-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Liam Girdwood <lgirdwood@gmail.com>
+> Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
+> Cc: Simon Trimmer <simont@opensource.cirrus.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Reviewed-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/arm/Kconfig    | 2 --
+>  arch/arm64/Kconfig  | 2 --
+>  arch/ia64/Kconfig   | 2 --
+>  arch/mips/Kconfig   | 2 --
+>  arch/parisc/Kconfig | 2 --
+>  arch/riscv/Kconfig  | 2 --
+>  arch/x86/Kconfig    | 2 --
+>  drivers/Kconfig     | 2 ++
+>  8 files changed, 2 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 002e0cf025f5..d4c6b95b24d7 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -2043,8 +2043,6 @@ config ARCH_HIBERNATION_POSSIBLE
+>  
+>  endmenu
+>  
+> -source "drivers/firmware/Kconfig"
+> -
+>  if CRYPTO
+>  source "arch/arm/crypto/Kconfig"
+>  endif
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 5e5cf3af6351..f4809760a806 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1933,8 +1933,6 @@ source "drivers/cpufreq/Kconfig"
+>  
+>  endmenu
+>  
+> -source "drivers/firmware/Kconfig"
+> -
+>  source "drivers/acpi/Kconfig"
+>  
+>  source "arch/arm64/kvm/Kconfig"
+> diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+> index 39b25a5a591b..e8014d2e36c0 100644
+> --- a/arch/ia64/Kconfig
+> +++ b/arch/ia64/Kconfig
+> @@ -426,8 +426,6 @@ config CRASH_DUMP
+>  	  help
+>  	    Generate crash dump after being started by kexec.
+>  
+> -source "drivers/firmware/Kconfig"
+> -
+>  endmenu
+>  
+>  menu "Power management and ACPI options"
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 1a63f592034e..3bd3a01a2a2b 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -3328,8 +3328,6 @@ source "drivers/cpuidle/Kconfig"
+>  
+>  endmenu
+>  
+> -source "drivers/firmware/Kconfig"
+> -
+>  source "arch/mips/kvm/Kconfig"
+>  
+>  source "arch/mips/vdso/Kconfig"
+> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+> index 14f3252f2da0..ad13477fb40c 100644
+> --- a/arch/parisc/Kconfig
+> +++ b/arch/parisc/Kconfig
+> @@ -378,6 +378,4 @@ config KEXEC_FILE
+>  
+>  endmenu
+>  
+> -source "drivers/firmware/Kconfig"
+> -
+>  source "drivers/parisc/Kconfig"
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index f7abd118d23d..fcb8e5da148e 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -428,5 +428,3 @@ menu "Power management options"
+>  source "kernel/power/Kconfig"
+>  
+>  endmenu
+> -
+> -source "drivers/firmware/Kconfig"
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index f3c8a8110f60..499f3cc1e62f 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -2899,8 +2899,6 @@ config HAVE_ATOMIC_IOMAP
+>  	def_bool y
+>  	depends on X86_32
+>  
+> -source "drivers/firmware/Kconfig"
+> -
+>  source "arch/x86/kvm/Kconfig"
+>  
+>  source "arch/x86/Kconfig.assembler"
+> diff --git a/drivers/Kconfig b/drivers/Kconfig
+> index dcecc9f6e33f..493ac7ffd8d0 100644
+> --- a/drivers/Kconfig
+> +++ b/drivers/Kconfig
+> @@ -16,6 +16,8 @@ source "drivers/bus/Kconfig"
+>  
+>  source "drivers/connector/Kconfig"
+>  
+> +source "drivers/firmware/Kconfig"
+> +
+>  source "drivers/gnss/Kconfig"
+>  
+>  source "drivers/mtd/Kconfig"
+> -- 
+> 2.33.0
+> 
 
-  BUG: using smp_processor_id() in preemptible
-  caller is perf_ftrace_function_call+0x6f/0x2e0
-  CPU: 1 PID: 680 Comm: a.out Not tainted
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x8d/0xcf
-   check_preemption_disabled+0x104/0x110
-   ? optimize_nops.isra.7+0x230/0x230
-   ? text_poke_bp_batch+0x9f/0x310
-   perf_ftrace_function_call+0x6f/0x2e0
-   ...
-   __text_poke+0x5/0x620
-   text_poke_bp_batch+0x9f/0x310
+This isn't for stable kernels, it should be dropped from all of your
+AUTOSEL queues.
 
-This telling us the CPU could be changed after task is preempted, and
-the checking on CPU before preemption will be invalid.
+thanks,
 
-Since now ftrace_test_recursion_trylock() will help to disable the
-preemption, this patch just do the checking after trylock() to address
-the issue.
-
-CC: Steven Rostedt <rostedt@goodmis.org>
-Reported-by: Abaci <abaci@linux.alibaba.com>
-Signed-off-by: Michael Wang <yun.wang@linux.alibaba.com>
----
- kernel/trace/trace_event_perf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/trace/trace_event_perf.c b/kernel/trace/trace_event_perf.c
-index 6aed10e..fba8cb7 100644
---- a/kernel/trace/trace_event_perf.c
-+++ b/kernel/trace/trace_event_perf.c
-@@ -441,13 +441,13 @@ void perf_trace_buf_update(void *record, u16 type)
- 	if (!rcu_is_watching())
- 		return;
-
--	if ((unsigned long)ops->private != smp_processor_id())
--		return;
--
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
-
-+	if ((unsigned long)ops->private != smp_processor_id())
-+		goto out;
-+
- 	event = container_of(ops, struct perf_event, ftrace_ops);
-
- 	/*
--- 
-1.8.3.1
-
+greg k-h
