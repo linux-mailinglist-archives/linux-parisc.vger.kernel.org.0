@@ -2,113 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C11142BAEB
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 Oct 2021 10:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45B4142BEC4
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Oct 2021 13:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238394AbhJMIyX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 13 Oct 2021 04:54:23 -0400
-Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:60032 "EHLO
-        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232692AbhJMIyX (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 13 Oct 2021 04:54:23 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R961e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04407;MF=yun.wang@linux.alibaba.com;NM=1;PH=DS;RN=31;SR=0;TI=SMTPD_---0UrfYRTJ_1634115133;
-Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com fp:SMTPD_---0UrfYRTJ_1634115133)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 13 Oct 2021 16:52:15 +0800
-Subject: [PATCH v3 2/2] ftrace: do CPU checking after preemption disabled
-From:   =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-To:     Guo Ren <guoren@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Jisheng Zhang <jszhang@kernel.org>, linux-csky@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        live-patching@vger.kernel.org
-References: <609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com>
-Message-ID: <a450a935-17d0-63df-87fd-c27a409ea5de@linux.alibaba.com>
-Date:   Wed, 13 Oct 2021 16:52:13 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+        id S229604AbhJMLSu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 13 Oct 2021 07:18:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39994 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229490AbhJMLSu (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 13 Oct 2021 07:18:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7452F61027;
+        Wed, 13 Oct 2021 11:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634123807;
+        bh=DVdgBtdPRXpir9rR8KgPam2ARjHEMD012OTknqLNbjw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rnXG8Z9k/uF0L6NF73nRzeQsFcHjBgaZOzOdJneY7E0pQbUpG5/pnT1PjUOeK4Xqe
+         yfl+INzevN80njuoRYY13XKkX807gQwP6dEhYtOB2a85bAmR9Eiab3pZJ++4GQokL2
+         +OaiITlSFd+p/mVgYV+BlzcXaJ9uMM6wrd63aBe+FD8tTzrfwt0DpzNiTnBnP/tUZN
+         T1ON3PoIJUX+aNA5WG7qSbER2LOllGHlaTUuIqXGk3Sv94IR9eKKM5JDO82rq3NAVz
+         L0PHWRf2/bnDp5h022hCMvk6DzRrbswTMPbSrIRkSBhBY7xgrh9+REuFqGRTUTExBS
+         Vk/0EWOQe4pmQ==
+Date:   Wed, 13 Oct 2021 12:16:44 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Will Deacon <will@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, tsbogend@alpha.franken.de,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, x86@kernel.org, geert+renesas@glider.be,
+        linus.walleij@linaro.org, rmk+kernel@armlinux.org.uk,
+        akpm@linux-foundation.org, anshuman.khandual@arm.com,
+        rppt@kernel.org, ardb@kernel.org, u.kleine-koenig@pengutronix.de,
+        lukas.bulwahn@gmail.com, mark.rutland@arm.com,
+        wangkefeng.wang@huawei.com, slyfox@gentoo.org, axboe@kernel.dk,
+        rientjes@google.com, dan.j.williams@intel.com,
+        gregkh@linuxfoundation.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 5.14 17/17] firmware: include
+ drivers/firmware/Kconfig unconditionally
+Message-ID: <YWbAHCYS/IsGyeEw@sirena.org.uk>
+References: <20211013005441.699846-1-sashal@kernel.org>
+ <20211013005441.699846-17-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Hzj7Ij7mixgewbmh"
+Content-Disposition: inline
+In-Reply-To: <20211013005441.699846-17-sashal@kernel.org>
+X-Cookie: Where do you think you're going today?
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-With CONFIG_DEBUG_PREEMPT we observed reports like:
 
-  BUG: using smp_processor_id() in preemptible
-  caller is perf_ftrace_function_call+0x6f/0x2e0
-  CPU: 1 PID: 680 Comm: a.out Not tainted
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x8d/0xcf
-   check_preemption_disabled+0x104/0x110
-   ? optimize_nops.isra.7+0x230/0x230
-   ? text_poke_bp_batch+0x9f/0x310
-   perf_ftrace_function_call+0x6f/0x2e0
-   ...
-   __text_poke+0x5/0x620
-   text_poke_bp_batch+0x9f/0x310
+--Hzj7Ij7mixgewbmh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This telling us the CPU could be changed after task is preempted, and
-the checking on CPU before preemption will be invalid.
+On Tue, Oct 12, 2021 at 08:54:41PM -0400, Sasha Levin wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> [ Upstream commit 951cd3a0866d29cb9c01ebc1d9c17590e598226e ]
+>=20
+> Compile-testing drivers that require access to a firmware layer
+> fails when that firmware symbol is unavailable. This happened
+> twice this week:
 
-Since now ftrace_test_recursion_trylock() will help to disable the
-preemption, this patch just do the checking after trylock() to address
-the issue.
+This seems *way* too invasive a change for stable.  It exposes code to
+building on entire new architectures.
 
-CC: Steven Rostedt <rostedt@goodmis.org>
-Reported-by: Abaci <abaci@linux.alibaba.com>
-Signed-off-by: Michael Wang <yun.wang@linux.alibaba.com>
----
- kernel/trace/trace_event_perf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+--Hzj7Ij7mixgewbmh
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/kernel/trace/trace_event_perf.c b/kernel/trace/trace_event_perf.c
-index 6aed10e..fba8cb7 100644
---- a/kernel/trace/trace_event_perf.c
-+++ b/kernel/trace/trace_event_perf.c
-@@ -441,13 +441,13 @@ void perf_trace_buf_update(void *record, u16 type)
- 	if (!rcu_is_watching())
- 		return;
+-----BEGIN PGP SIGNATURE-----
 
--	if ((unsigned long)ops->private != smp_processor_id())
--		return;
--
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFmwBsACgkQJNaLcl1U
+h9AFjgf9HNz1iDlvraGZuINQkg4b76glybMJpIJI9Q9/fCTbm75p34EctvP3YnrO
+TCUYnuynKAfFn6bLAoHN4AO5JLYPELiK1jd3olKo4QbWgHL449nF7NwkBR/bjHNZ
+jwefNQMINnMo7bhrsdhmvYjoC9GuSHPSrHkHLKZRBsiCdc1SopabE67oBmTQ06+4
+6JOnbKmjExje2UT0JyJwgp59/YVbDOd06QLxA6gLuCPRmCTgYGqXS3/V1e89VwH1
+tK4vtT5ICEUVeBinsBUb2MMEAY41vB410JxWhNL9HFVg30fvQw/YDW7mQSdvCL0G
+Gf+lxOl5vhEl0xrMPE8gIqtfQ4Kyyw==
+=dgIM
+-----END PGP SIGNATURE-----
 
-+	if ((unsigned long)ops->private != smp_processor_id())
-+		goto out;
-+
- 	event = container_of(ops, struct perf_event, ftrace_ops);
-
- 	/*
--- 
-1.8.3.1
-
+--Hzj7Ij7mixgewbmh--
