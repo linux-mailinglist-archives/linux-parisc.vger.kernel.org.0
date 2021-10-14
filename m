@@ -2,79 +2,131 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 428C542E22D
-	for <lists+linux-parisc@lfdr.de>; Thu, 14 Oct 2021 21:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03BCF42E230
+	for <lists+linux-parisc@lfdr.de>; Thu, 14 Oct 2021 21:49:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233462AbhJNTv2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 14 Oct 2021 15:51:28 -0400
-Received: from smtp.duncanthrax.net ([178.63.180.169]:52102 "EHLO
+        id S229763AbhJNTv3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 14 Oct 2021 15:51:29 -0400
+Received: from smtp.duncanthrax.net ([178.63.180.169]:52106 "EHLO
         smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229763AbhJNTv1 (ORCPT
+        with ESMTP id S233126AbhJNTv2 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 14 Oct 2021 15:51:27 -0400
+        Thu, 14 Oct 2021 15:51:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=duncanthrax.net; s=dkim; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=M/vfC0dn/2pM18vTPb/xN1H2UHCibvUqmnRPXcFllJU=; b=M+2Of+lJ1ZOkx3wSjIZczZY7K/
-        K3W3AKHiMHtIyvS0r+jzgFrLdliqWuphC++NzIgVW21d5X6WaVUBJKLzLLUClsCcUyTZktRhLBOBJ
-        RJeHKoW67mSQyOeMlOADsJqkdUMby4cebV/f4PckHVP+uB2lJyCqqiQ6TOHFwaJOjOj0=;
+        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ZH5hqZy0UFuuVQr0yub7p3oN4aIAumkh9QmT0QMFtzM=; b=cC3Aj9jqEawu75wy3T+dI/z6f1
+        yWLvtBMyyNLruSrF3jFAsLdIu9WViWmbLBwNKwHx83eSTsF0aqQiVbYyQyCT5fZbcOW2EjmBbBZzm
+        CKUTV424kJuoSUNjDplAL33NjU/pJvnUBHFs4weUv4D7bnhKR/9NE7tVwZBLywtyIT1c=;
 Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org)
         by smtp.duncanthrax.net with esmtpa (Exim 4.93)
         (envelope-from <svens@stackframe.org>)
-        id 1mb6jA-0006Sn-Bz; Thu, 14 Oct 2021 21:49:20 +0200
+        id 1mb6jB-0006Sn-AR; Thu, 14 Oct 2021 21:49:21 +0200
 From:   Sven Schnelle <svens@stackframe.org>
 To:     Helge Deller <deller@gmx.de>
 Cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH v3 0/4] add TOC support
-Date:   Thu, 14 Oct 2021 21:49:12 +0200
-Message-Id: <20211014194916.13901-1-svens@stackframe.org>
+Subject: [PATCH v3 1/4] parisc: move virt_map macro to assembly.h
+Date:   Thu, 14 Oct 2021 21:49:13 +0200
+Message-Id: <20211014194916.13901-2-svens@stackframe.org>
 X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211014194916.13901-1-svens@stackframe.org>
+References: <20211014194916.13901-1-svens@stackframe.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This adds support for the TOC switches found on most PA-RISC
-machines. I tested this on my c8000 and a HP 16702A, which is
-basically a B160L with some logic analyzer hardware.
+This macro will also be used by the TOC code, so move it
+into asm/assembly.h to avoid duplication.
 
-Changes in v3:
-- add config option
-- move toc code to its own c & .S file
-- use early_initcall for setup
-- split out struct declarations
-- use sizeof(*ret) instead of sizeof(struct x)
-- move virt_map to assembly.h so it can be used from other files
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+---
+ arch/parisc/include/asm/assembly.h | 25 +++++++++++++++++++++++++
+ arch/parisc/kernel/entry.S         | 24 ------------------------
+ 2 files changed, 25 insertions(+), 24 deletions(-)
 
-Changes in v2:
-- fix stack allocation
-- align toc_lock on 16 byte boundary
-- move toc_lock declaration to processor.c
-
-Sven Schnelle (4):
-  parisc: move virt_map macro to assembly.h
-  parisc: add PIM TOC data structures
-  parisc/firmware: add functions to retrieve TOC data
-  parisc: add support for TOC (transfer of control)
-
- arch/parisc/Kconfig                 |  14 ++++
- arch/parisc/include/asm/assembly.h  |  25 +++++++
- arch/parisc/include/asm/pdc.h       |   2 +
- arch/parisc/include/asm/processor.h |   4 +
- arch/parisc/include/uapi/asm/pdc.h  |  28 ++++++-
- arch/parisc/kernel/Makefile         |   1 +
- arch/parisc/kernel/entry.S          |  24 ------
- arch/parisc/kernel/firmware.c       |  32 ++++++++
- arch/parisc/kernel/toc.c            | 111 ++++++++++++++++++++++++++++
- arch/parisc/kernel/toc_asm.S        |  88 ++++++++++++++++++++++
- 10 files changed, 303 insertions(+), 26 deletions(-)
- create mode 100644 arch/parisc/kernel/toc.c
- create mode 100644 arch/parisc/kernel/toc_asm.S
-
+diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/assembly.h
+index a39250cb7dfc..d1d16d7b3607 100644
+--- a/arch/parisc/include/asm/assembly.h
++++ b/arch/parisc/include/asm/assembly.h
+@@ -71,6 +71,7 @@
+ #include <asm/types.h>
+ 
+ #include <asm/asmregs.h>
++#include <asm/psw.h>
+ 
+ 	sp	=	30
+ 	gp	=	27
+@@ -497,6 +498,30 @@
+ 	nop	/* 7 */
+ 	.endm
+ 
++	/* Switch to virtual mapping, trashing only %r1 */
++	.macro  virt_map
++	/* pcxt_ssm_bug */
++	rsm	PSW_SM_I, %r0		/* barrier for "Relied upon Translation */
++	mtsp	%r0, %sr4
++	mtsp	%r0, %sr5
++	mtsp	%r0, %sr6
++	tovirt_r1 %r29
++	load32	KERNEL_PSW, %r1
++
++	rsm     PSW_SM_QUIET,%r0	/* second "heavy weight" ctl op */
++	mtctl	%r0, %cr17		/* Clear IIASQ tail */
++	mtctl	%r0, %cr17		/* Clear IIASQ head */
++	mtctl	%r1, %ipsw
++	load32	4f, %r1
++	mtctl	%r1, %cr18		/* Set IIAOQ tail */
++	ldo	4(%r1), %r1
++	mtctl	%r1, %cr18		/* Set IIAOQ head */
++	rfir
++	nop
++4:
++	.endm
++
++
+ 	/*
+ 	 * ASM_EXCEPTIONTABLE_ENTRY
+ 	 *
+diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+index 9f939afe6b88..91e0540e5213 100644
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -51,30 +51,6 @@
+ 	extrd,u \spc,(64 - (SPACEID_SHIFT)),32,\prot
+ 	.endm
+ #endif
+-
+-	/* Switch to virtual mapping, trashing only %r1 */
+-	.macro  virt_map
+-	/* pcxt_ssm_bug */
+-	rsm	PSW_SM_I, %r0	/* barrier for "Relied upon Translation */
+-	mtsp	%r0, %sr4
+-	mtsp	%r0, %sr5
+-	mtsp	%r0, %sr6
+-	tovirt_r1 %r29
+-	load32	KERNEL_PSW, %r1
+-
+-	rsm     PSW_SM_QUIET,%r0	/* second "heavy weight" ctl op */
+-	mtctl	%r0, %cr17	/* Clear IIASQ tail */
+-	mtctl	%r0, %cr17	/* Clear IIASQ head */
+-	mtctl	%r1, %ipsw
+-	load32	4f, %r1
+-	mtctl	%r1, %cr18	/* Set IIAOQ tail */
+-	ldo	4(%r1), %r1
+-	mtctl	%r1, %cr18	/* Set IIAOQ head */
+-	rfir
+-	nop
+-4:
+-	.endm
+-
+ 	/*
+ 	 * The "get_stack" macros are responsible for determining the
+ 	 * kernel stack value.
 -- 
 2.33.0
 
