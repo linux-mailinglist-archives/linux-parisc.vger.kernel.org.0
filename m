@@ -2,98 +2,83 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9100842D068
-	for <lists+linux-parisc@lfdr.de>; Thu, 14 Oct 2021 04:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 904E242D1CD
+	for <lists+linux-parisc@lfdr.de>; Thu, 14 Oct 2021 07:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229912AbhJNCaj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 13 Oct 2021 22:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45534 "EHLO
+        id S229519AbhJNFIM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 14 Oct 2021 01:08:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229892AbhJNCaj (ORCPT
+        with ESMTP id S229457AbhJNFIM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 13 Oct 2021 22:30:39 -0400
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32853C061570;
-        Wed, 13 Oct 2021 19:28:35 -0700 (PDT)
-Received: by mail-ot1-x32d.google.com with SMTP id x33-20020a9d37a4000000b0054733a85462so6291406otb.10;
-        Wed, 13 Oct 2021 19:28:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=BW30mP0T507/r7GxjN7b4u9+pvmHE2rU/MT6A6TfTO0=;
-        b=omwbM+xa4r/OANttEoNCeyk1Xk1m9etesKzNwuFuNGeTpZ+tCmMdcbGbgsm6Wzabm0
-         /8svdEMHZXKDE7fuJrBLgobi0bioKLtfgNaT/+tP/SvQstV9+7SXGLnzPyuXCZTeY4J1
-         /DrfCf5DM41GMR4znAgOQpPH/VwOWeU3Acs8smjp5e3lVOFljGfZFO9KaR5W+WL7oJGD
-         MXAd4Jwn271gpOJECTgi5q/N2EjbU25h4eJ/pFq9g2SIKNjpnXPjAm/tfpj1kW8BZ4X6
-         wSJ5hx7IIIvh2a4xBORYdKxGSXow8/8F3h25SYwq1nk3WjqSZFpSRdjijw/m5+AtcXhr
-         QSrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=BW30mP0T507/r7GxjN7b4u9+pvmHE2rU/MT6A6TfTO0=;
-        b=3eUshSNRe9//ZZrS4uDG3tdJ6yA7n2nMuMxrJD87CtVTNduXe+RDpV41/TQjVvL14l
-         ZPl1hG6+GpejGHHsZL6Zx8DtfaBnu47xRMC6tQLlMtqfsgkHq7IFksb77JhE4ndgBKZv
-         GtcNLghKBi8lpbgpeWzz3N9of8WtBJNiM2n2HTmf7JVWSlBAyuYsSkZOBrnw5nAsyTxf
-         RNKScUEKmWABQiaA12vjbzyWYxDXpyN+5//mxLGDT+uFvsVe+11X+QRIrCy0R2IZIJgH
-         rTchsrYfttNYca85ToyNwCO1yIaMKmyvzN28j+ivd9QjgkPE3Zz1Xi30VLixqjJzku2f
-         5sGw==
-X-Gm-Message-State: AOAM532WCdXSUPv/roxDEcWCwc6bfysCv/PCumXUMI78JlD7UQVdEeOJ
-        eDePRy4uici5jkoYRY5F5gw=
-X-Google-Smtp-Source: ABdhPJyARNYEqrNKywLryIxdUcPJ2nIadPcUVNTDhWN7eAdkl19f0nV9/YXZdXBu00uAFLQ0WwG3XQ==
-X-Received: by 2002:a9d:6f93:: with SMTP id h19mr208637otq.14.1634178514591;
-        Wed, 13 Oct 2021 19:28:34 -0700 (PDT)
-Received: from ?IPV6:2600:1700:dfe0:49f0:c875:f7ef:73a9:7098? ([2600:1700:dfe0:49f0:c875:f7ef:73a9:7098])
-        by smtp.gmail.com with ESMTPSA id a1sm302846oti.30.2021.10.13.19.28.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Oct 2021 19:28:34 -0700 (PDT)
-Message-ID: <eeb489ad-b88e-7ca3-57d8-7ec24db6a8d7@gmail.com>
-Date:   Wed, 13 Oct 2021 19:28:33 -0700
+        Thu, 14 Oct 2021 01:08:12 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C09CC061570;
+        Wed, 13 Oct 2021 22:06:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=Rr5zZ6rN525EfM/CGmlkNwg2FaH9Hx3btifOz7Ng8DU=; b=GHCy1KWtBfu5MaFJDZ+uSLIaZV
+        xoYBtQnqNIRvx9Dt5uWY3NRZpv1Re8mir3hNRvA/RmdWtrOfSgM/DGjro3Ob+K4zWWflcTXwwiGu8
+        Pcisq0IuwJAEt1qhygm989YnkH+FNEpYdfiPRcmoZLDmwC65KpPGGcKxMogTn7h8ZOHtDma+742+n
+        U13ampz8d7roFL/rkOxlnKT0/3RhXOyan6P+WhF0vPp/77r2KOaE7AYrAqv8B9ckO9CAWAidUBRX4
+        NtWHWWmynP61aI4ZoNwjizQA5LMQ7rI5ivQppyp4Ndw67fdshFglLkdkTaKUbITLRiyG08J5PAsmx
+        gW4X9SJQ==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1maswR-001b4E-KS; Thu, 14 Oct 2021 05:06:07 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     netdev@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-um@lists.infradead.org,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-parisc@vger.kernel.org
+Subject: [PATCH net-next] net: tulip: winbond-840: fix build for UML
+Date:   Wed, 13 Oct 2021 22:06:06 -0700
+Message-Id: <20211014050606.7288-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH net-next 7/7] ethernet: replace netdev->dev_addr 16bit
- writes
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc:     netdev@vger.kernel.org, klassert@kernel.org, kda@linux-powerpc.org,
-        GR-Linux-NIC-Dev@marvell.com, romieu@fr.zoreil.com,
-        venza@brownhat.org, linux-parisc@vger.kernel.org
-References: <20211013204435.322561-1-kuba@kernel.org>
- <20211013204435.322561-8-kuba@kernel.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20211013204435.322561-8-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On i386, when builtin (not a loadable module), the winbond-840 driver
+inspects boot_cpu_data to see what CPU family it is running on, and
+then acts on that data. The "family" struct member (x86) does not exist
+when running on UML, so prevent that test and do the default action.
 
+Prevents this build error on UML + i386:
 
-On 10/13/2021 1:44 PM, Jakub Kicinski wrote:
-> Commit 406f42fa0d3c ("net-next: When a bond have a massive amount
-> of VLANs...") introduced a rbtree for faster Ethernet address look
-> up. To maintain netdev->dev_addr in this tree we need to make all
-> the writes to it got through appropriate helpers.
-> 
-> This patch takes care of drivers which cast netdev->dev_addr to
-> a 16bit type, often with an explicit byte order.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: klassert@kernel.org
-> CC: kda@linux-powerpc.org
-> CC: GR-Linux-NIC-Dev@marvell.com
-> CC: f.fainelli@gmail.com
-> CC: romieu@fr.zoreil.com
-> CC: venza@brownhat.org
-> CC: linux-parisc@vger.kernel.org
-> ---
+../drivers/net/ethernet/dec/tulip/winbond-840.c: In function ‘init_registers’:
+../drivers/net/ethernet/dec/tulip/winbond-840.c:882:19: error: ‘struct cpuinfo_um’ has no member named ‘x86’
+  if (boot_cpu_data.x86 <= 4) {
 
->   drivers/net/ethernet/rdc/r6040.c             | 12 ++++++------
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+Fixes: 68f5d3f3b654 ("um: add PCI over virtio emulation driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-um@lists.infradead.org
+Cc: Jeff Dike <jdike@addtoit.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-parisc@vger.kernel.org
+---
+ drivers/net/ethernet/dec/tulip/winbond-840.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- linux-next-20211013.orig/drivers/net/ethernet/dec/tulip/winbond-840.c
++++ linux-next-20211013/drivers/net/ethernet/dec/tulip/winbond-840.c
+@@ -877,7 +877,7 @@ static void init_registers(struct net_de
+ 		8000	16 longwords		0200 2 longwords	2000 32 longwords
+ 		C000	32  longwords		0400 4 longwords */
+ 
+-#if defined (__i386__) && !defined(MODULE)
++#if defined (__i386__) && !defined(MODULE) && !defined(CONFIG_UML)
+ 	/* When not a module we can work around broken '486 PCI boards. */
+ 	if (boot_cpu_data.x86 <= 4) {
+ 		i |= 0x4800;
