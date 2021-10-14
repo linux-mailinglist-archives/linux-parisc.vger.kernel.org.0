@@ -2,55 +2,55 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE36642D5F6
-	for <lists+linux-parisc@lfdr.de>; Thu, 14 Oct 2021 11:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85B5D42D892
+	for <lists+linux-parisc@lfdr.de>; Thu, 14 Oct 2021 13:50:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230063AbhJNJ2g (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 14 Oct 2021 05:28:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:51564 "EHLO
+        id S231286AbhJNLwM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 14 Oct 2021 07:52:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:28271 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229691AbhJNJ2f (ORCPT
+        by vger.kernel.org with ESMTP id S231293AbhJNLwK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 14 Oct 2021 05:28:35 -0400
+        Thu, 14 Oct 2021 07:52:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634203590;
+        s=mimecast20190719; t=1634212205;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=MFy26Kc6cpLu18LAs5Mx0Nrg8iL3DuTgZC2Ev14vjlo=;
-        b=X2mCdv8b1K88eBKlnWLq69ctpJUgvxcadvamxM/mn99+T+jMO3aioYuoqC+npqMg6NSXb9
-        DjbnOYauRoO0F+uJ1Fd4TTsFKj80Qh9YoDcsBGmIU0Z53054RrYn3NRQVR6ZKRRpPpdlZw
-        t/YBQ7/WS+kpUFDtv2YGdeKj9M2YW4E=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-598-f06rZogVP5K8zOoXR9vc3A-1; Thu, 14 Oct 2021 05:26:29 -0400
-X-MC-Unique: f06rZogVP5K8zOoXR9vc3A-1
-Received: by mail-ed1-f70.google.com with SMTP id v2-20020a50f082000000b003db24e28d59so4660612edl.5
-        for <linux-parisc@vger.kernel.org>; Thu, 14 Oct 2021 02:26:29 -0700 (PDT)
+        bh=BjIpv+udz4Ba/qOEMRyyxOUnaMX1at+9okP/sD2YABQ=;
+        b=RJbGGIXmx737jWGuoaQ8BkDITholNunoKfz2idBH8Ex9dwETzD6evS4D1CIE7V9DHUciz4
+        tIIp3EVImjL3SuQUCsQxqGKnmw7Bo0J8UBrdr5DKdcGaLtonDs3pki71SV7Dk0V/XrKKVS
+        hRNVJHH+BKAKBG8xync17sEcCJQHEn8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-111-A6iUMXyYMxOWAJ4Gy8vjug-1; Thu, 14 Oct 2021 07:50:04 -0400
+X-MC-Unique: A6iUMXyYMxOWAJ4Gy8vjug-1
+Received: by mail-wr1-f69.google.com with SMTP id k2-20020adfc702000000b0016006b2da9bso4363539wrg.1
+        for <linux-parisc@vger.kernel.org>; Thu, 14 Oct 2021 04:50:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=MFy26Kc6cpLu18LAs5Mx0Nrg8iL3DuTgZC2Ev14vjlo=;
-        b=e1wlgRVdosShUyjlBJ6eqY0YWYuDKXIJZqHv8I6x3seZK9h9raNN8ZFNx9tZ2OUqmS
-         /KqMQRMyHANzu2X4Vr5HF7S0HigdIwgsyQN38v3JBmeqmVECEznU7N7ZWFqXy0uUdUP2
-         9WTXBKEsMjtimxVLCv9aMFgIGnJ+a2LPqMFye3dgoB8sHubfItYa/78cGu0iVzobJlu2
-         Uq4MLRrWAi1CYL4gHp6AWoipfqYzhP8Md2hS7Ct/4RSrQQo0rRno23M3xSQrAOgDT81W
-         jxv5LVVKEu6sczNMO1hqpWa/4RARAFaHfYk0bXMq7vCUGnm98xO4P8FcSRBClU+NN7fL
-         tpcw==
-X-Gm-Message-State: AOAM530eoWqNRI1r6EHbNp7+f7yHm9RGk0GOyNT8n43I6doxivEGYfGo
-        uvDvtVC83VkQlDZVdqsveUwrLpSr5GxS5rF0lJfeWcWSoU6CKZHa7qH9TkDMu2UvEQ4/6iFE97q
-        zuC4rVJ1xEjtcs0gRVVIOQ/7U
-X-Received: by 2002:a05:6402:3488:: with SMTP id v8mr6898724edc.106.1634203588046;
-        Thu, 14 Oct 2021 02:26:28 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwzUMhY55dY1Ed2tUolHVxn0GGtah89ijl+mJABjkbp/N7HKf5Fl2EAkvFydJiTJ/Wm+2qndQ==
-X-Received: by 2002:a05:6402:3488:: with SMTP id v8mr6898699edc.106.1634203587836;
-        Thu, 14 Oct 2021 02:26:27 -0700 (PDT)
+        bh=BjIpv+udz4Ba/qOEMRyyxOUnaMX1at+9okP/sD2YABQ=;
+        b=vroQ+UtpitDXlClYTOOr3b8TiySMYdCDLgyhXYRYPTOm1m3suh0pMUGR9IVtQsuFQy
+         u+NVrV7lWTC3L/ldLru6T8EJf4GTUos0mbYNlipWTXHaZJBA07ae1REau3QoUDgvqlLp
+         vpPd5ZLNzoW/3WJCKgX0EoPkigVlP7xnFU+t46T0+0QJQdNKZEbSd8wqgonpACv56fzD
+         yVoqwC5Y8C6sFNZawoZRyp/zzYi8YZlynyCsCD5+H5z+pNT93XEh074WmcMrcFRMy8Fw
+         1LJ0KMlDR737pzNRvGgUE1QK4E4iF6bG3tywcm/Y9YoeFMMADST4JoQR80/ZCcZxOIPq
+         jSXA==
+X-Gm-Message-State: AOAM5310mTo/fQYx1fw+ZQyTotozLSJi2EFAWWRMkJEB+rG6HjoTLqIT
+        BsUR5pz2qb0JCxr2Scv4jGUypVVdQo7hIR3I01w4UTdu4sfLRZI8OOkcK+Py37KrY1C43TbQpvR
+        wK900pXXlXdrseNo/CE/baiCg
+X-Received: by 2002:adf:959a:: with SMTP id p26mr5903582wrp.342.1634212203031;
+        Thu, 14 Oct 2021 04:50:03 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz9qOw3WbNBTRd79UJzGLK0rcHBsHFX2nKa+bjejslC1TbPETWCFjebXvTyHUX4CLIfPAkTIA==
+X-Received: by 2002:adf:959a:: with SMTP id p26mr5903550wrp.342.1634212202845;
+        Thu, 14 Oct 2021 04:50:02 -0700 (PDT)
 Received: from redhat.com ([2.55.16.227])
-        by smtp.gmail.com with ESMTPSA id f19sm1749252edj.77.2021.10.14.02.26.22
+        by smtp.gmail.com with ESMTPSA id o1sm2171853wru.91.2021.10.14.04.49.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Oct 2021 02:26:27 -0700 (PDT)
-Date:   Thu, 14 Oct 2021 05:26:20 -0400
+        Thu, 14 Oct 2021 04:50:02 -0700 (PDT)
+Date:   Thu, 14 Oct 2021 07:49:55 -0400
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     "Reshetova, Elena" <elena.reshetova@intel.com>
 Cc:     Andi Kleen <ak@linux.intel.com>,
@@ -92,7 +92,7 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         <virtualization@lists.linux-foundation.org>
 Subject: Re: [PATCH v5 12/16] PCI: Add pci_iomap_host_shared(),
  pci_iomap_host_shared_range()
-Message-ID: <20211014052605-mutt-send-email-mst@kernel.org>
+Message-ID: <20211014065626-mutt-send-email-mst@kernel.org>
 References: <20211009003711.1390019-1-sathyanarayanan.kuppuswamy@linux.intel.com>
  <20211009003711.1390019-13-sathyanarayanan.kuppuswamy@linux.intel.com>
  <20211009053103-mutt-send-email-mst@kernel.org>
@@ -163,7 +163,7 @@ On Thu, Oct 14, 2021 at 07:27:42AM +0000, Reshetova, Elena wrote:
 > 
 > So, the results can be further filtered if you want a specified arch. 
 
-So what is it just for x86? Could you tell?
+Even better would be a typical distro build.
 
 -- 
 MST
