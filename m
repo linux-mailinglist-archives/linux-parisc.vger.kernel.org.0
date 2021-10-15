@@ -2,121 +2,231 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1969042EAE9
-	for <lists+linux-parisc@lfdr.de>; Fri, 15 Oct 2021 10:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8CF42ED4F
+	for <lists+linux-parisc@lfdr.de>; Fri, 15 Oct 2021 11:12:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236492AbhJOIFr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 15 Oct 2021 04:05:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50392 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236544AbhJOIEP (ORCPT
+        id S236271AbhJOJOk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 15 Oct 2021 05:14:40 -0400
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:39680 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231447AbhJOJOj (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 15 Oct 2021 04:04:15 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3E7AC061570;
-        Fri, 15 Oct 2021 01:02:06 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id pf6-20020a17090b1d8600b0019fa884ab85so8779431pjb.5;
-        Fri, 15 Oct 2021 01:02:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:subject:to:cc:references:in-reply-to:mime-version
-         :message-id:content-transfer-encoding;
-        bh=LcM+UHlFK6Pfd+gEtHbJF09UeSP+pe47XQ11Z5avvEg=;
-        b=ZyQ7hsmusqR3lpIB+4jVL1CZJhbUN3wIXVwfcqZRTh7YjNgeRMolohGOMUDgZa5JFk
-         5hu4f8+DyFDYQvHUKeaH4iwxqLbjXa6B5jwA0ZS3Q2cK/rTHNtvPRV7STwIhBJ4q0/dS
-         gjTxe5u1++xCa1cryzKvYmDjPaNzP4pUAih2/vPPogCIkQd3KvJlMoEVBZJdkkyxFpK1
-         m9nlpZVULb3/vrI/ROKVbpfaBzpfcdMEQZCksz+V4o1oVt/iua2ZAVLU7FbsXVVsCRS4
-         wtE8V9dIYvn1mj3SwuRsaw8BSYmZJkXtfz0K4JkS/ZlBu5QRVlMHaHMbH8oAoCBhwJZb
-         9fsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
-         :mime-version:message-id:content-transfer-encoding;
-        bh=LcM+UHlFK6Pfd+gEtHbJF09UeSP+pe47XQ11Z5avvEg=;
-        b=qAvc3WmWoimO6S2kwa8UD1aKRFVrvlGHfxyMoYOaofyHmbb6/0jKogRGPjLxoJnbvg
-         d11XKhXl4kn/OUoyBwNUI03+dLcip++bLexPJj13gFmbwa8eCAR6nEYnRJ/ORLANcxyr
-         DmaUjn1yHuq9SI3sf2gfkYgaQvZxZIK8oHQ6RKncwhzzpkRNDguSwU1LMQppz7fVuZEy
-         OM8DhNGgJzw/1bWrbWU2VBMHrxsowCI/zWnkFoHHrO6MYpPu++gW2j75bB4D5Uj2YOKl
-         fzpWWmWaEFKSKZT4uW/6LItoX8bnj7AqN0Qvimig9dqMmlc/Lof6i698nw9HOJf4YJLU
-         1jXQ==
-X-Gm-Message-State: AOAM531xNJrdY99IwU86aJmclm4XQT6a06nzNSlqOUISUWscaoPUaxDi
-        FPsmc3WkpcdexoqhCOT1hPU=
-X-Google-Smtp-Source: ABdhPJzj9O7pqlmGSv6dHaxotuTUhJBqQGbDk2OY1xR8CUwFnQB2mcPNJnY0o5eFmCaqPtRJZKn3BQ==
-X-Received: by 2002:a17:90b:1bd2:: with SMTP id oa18mr3158237pjb.164.1634284926242;
-        Fri, 15 Oct 2021 01:02:06 -0700 (PDT)
-Received: from localhost (14-203-144-177.static.tpgi.com.au. [14.203.144.177])
-        by smtp.gmail.com with ESMTPSA id m7sm4142769pgn.32.2021.10.15.01.02.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Oct 2021 01:02:05 -0700 (PDT)
-Date:   Fri, 15 Oct 2021 18:02:00 +1000
-From:   Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 06/13] asm-generic: Use HAVE_FUNCTION_DESCRIPTORS to
- define associated stubs
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Fri, 15 Oct 2021 05:14:39 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=yun.wang@linux.alibaba.com;NM=1;PH=DS;RN=31;SR=0;TI=SMTPD_---0Us6AJpi_1634289146;
+Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com fp:SMTPD_---0Us6AJpi_1634289146)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 15 Oct 2021 17:12:28 +0800
+Subject: Re: [PATCH v3 1/2] ftrace: disable preemption between
+ ftrace_test_recursion_trylock/unlock()
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Guo Ren <guoren@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Kees Cook <keescook@chromium.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>
-Cc:     linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
-        <4fda65cda906e56aa87806b658e0828c64792403.1634190022.git.christophe.leroy@csgroup.eu>
-        <1634278340.5yp7xtm7um.astroid@bobo.none>
-        <7523a005-ea69-7c4c-64ad-bc2537921975@csgroup.eu>
-In-Reply-To: <7523a005-ea69-7c4c-64ad-bc2537921975@csgroup.eu>
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Jisheng Zhang <jszhang@kernel.org>, linux-csky@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        live-patching@vger.kernel.org
+References: <609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com>
+ <7e4738b5-21d4-c4d0-3136-a096bbb5cd2c@linux.alibaba.com>
+ <YWhJP41cNwDphYsv@alley>
+ <5e907ed3-806b-b0e5-518d-d2f3b265377f@linux.alibaba.com>
+ <YWktujP6DcMnRIXT@alley>
+From:   =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
+Message-ID: <3c87e825-e907-cba0-e95f-28878356fc71@linux.alibaba.com>
+Date:   Fri, 15 Oct 2021 17:12:26 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-Message-Id: <1634284464.kd8scm0ckz.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <YWktujP6DcMnRIXT@alley>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Excerpts from Christophe Leroy's message of October 15, 2021 4:24 pm:
->=20
->=20
-> Le 15/10/2021 =C3=A0 08:16, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Excerpts from Christophe Leroy's message of October 14, 2021 3:49 pm:
->>> Replace HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR by
->>> HAVE_FUNCTION_DESCRIPTORS and use it instead of
->>> 'dereference_function_descriptor' macro to know
->>> whether an arch has function descriptors.
+
+
+On 2021/10/15 下午3:28, Petr Mladek wrote:
+> On Fri 2021-10-15 11:13:08, 王贇 wrote:
+>>
+>>
+>> On 2021/10/14 下午11:14, Petr Mladek wrote:
+>> [snip]
+>>>> -	return trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TRACE_FTRACE_MAX);
+>>>> +	int bit;
+>>>> +
+>>>> +	bit = trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TRACE_FTRACE_MAX);
+>>>> +	/*
+>>>> +	 * The zero bit indicate we are nested
+>>>> +	 * in another trylock(), which means the
+>>>> +	 * preemption already disabled.
+>>>> +	 */
+>>>> +	if (bit > 0)
+>>>> +		preempt_disable_notrace();
 >>>
->>> To limit churn in one of the following patches, use
->>> an #ifdef/#else construct with empty first part
->>> instead of an #ifndef in asm-generic/sections.h
->>=20
->> Is it worth putting this into Kconfig if you're going to
->> change it? In any case
->=20
-> That was what I wanted to do in the begining but how can I do that in=20
-> Kconfig ?
->=20
-> #ifdef __powerpc64__
-> #if defined(_CALL_ELF) && _CALL_ELF =3D=3D 2
-> #define PPC64_ELF_ABI_v2
-> #else
-> #define PPC64_ELF_ABI_v1
-> #endif
-> #endif /* __powerpc64__ */
->=20
-> #ifdef PPC64_ELF_ABI_v1
-> #define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
+>>> Is this safe? The preemption is disabled only when
+>>> trace_test_and_set_recursion() was called by ftrace_test_recursion_trylock().
+>>>
+>>> We must either always disable the preemtion when bit >= 0.
+>>> Or we have to disable the preemtion already in
+>>> trace_test_and_set_recursion().
+>>
+>> Internal calling of trace_test_and_set_recursion() will disable preemption
+>> on succeed, it should be safe.
+> 
+> trace_test_and_set_recursion() does _not_ disable preemtion!
+> It works only because all callers disable the preemption.
 
-We have ELFv2 ABI / function descriptors iff big-endian so you could=20
-just select based on that.
+Yup.
 
-I have a patch that makes the ABI version configurable which cleans
-some of this up a bit, but that can be rebased on your series if we
-ever merge it. Maybe just add BUILD_BUG_ONs in the above ifdef block
-to ensure CONFIG_HAVE_FUNCTION_DESCRIPTORS was set the right way, so
-I don't forget.
+> 
+> It means that the comment is wrong. It is not guarantted that the
+> preemption will be disabled. It works only by chance.
+> 
+> 
+>> We can also consider move the logical into trace_test_and_set_recursion()
+>> and trace_clear_recursion(), but I'm not very sure about that... ftrace
+>> internally already make sure preemption disabled
+> 
+> How? Because it calls trace_test_and_set_recursion() via the trylock() API?
 
-Thanks,
-Nick
+I mean currently all the direct caller of trace_test_and_set_recursion()
+have disabled the preemption as you mentioned above, but yes if anyone later
+write some kernel code to call trace_test_and_set_recursion() without
+disabling preemption after, then promise broken.
+
+> 
+> 
+>> , what uncovered is those users who call API trylock/unlock, isn't
+>> it?
+> 
+> And this is exactly the problem. trace_test_and_set_recursion() is in
+> a public header. Anyone could use it. And if anyone uses it in the
+> future without the trylock() and does not disable the preemtion
+> explicitely then we are lost again.
+> 
+> And it is even more dangerous. The original code disabled the
+> preemtion on various layers. As a result, the preemtion was disabled
+> several times for sure. It means that the deeper layers were
+> always on the safe side.
+> 
+> With this patch, if the first trace_test_and_set_recursion() caller
+> does not disable preemtion then trylock() will not disable it either
+> and the entire code is procceed with preemtion enabled.
+
+Yes, what confusing me at first is that I think people who call
+trace_test_and_set_recursion() without trylock() can only be a
+ftrace hacker, not a user, but in case if anyone can use it without
+respect to preemption stuff, then I think the logical should be inside
+trace_test_and_set_recursion() rather than trylock().
+
+> 
+> 
+>>> Finally, the comment confused me a lot. The difference between nesting and
+>>> recursion is far from clear. And the code is tricky liky like hell :-)
+>>> I propose to add some comments, see below for a proposal.
+>> The comments do confusing, I'll make it something like:
+>>
+>> The zero bit indicate trace recursion happened, whatever
+>> the recursively call was made by ftrace handler or ftrace
+>> itself, the preemption already disabled.
+> 
+> I am sorry but it is still confusing. We need to find a better way
+> how to clearly explain the difference between the safe and
+> unsafe recursion.
+> 
+> My understanding is that the recursion is:
+> 
+>   + "unsafe" when the trace code recursively enters the same trace point.
+> 
+>   + "safe" when ftrace_test_recursion_trylock() is called recursivelly
+>     while still processing the same trace entry.
+
+Maybe take some example would be easier to understand...
+
+Currently there are two way of using ftrace_test_recursion_trylock(),
+one with TRACE_FTRACE_XXX we mark as A, one with TRACE_LIST_XXX we mark
+as B, then:
+
+A followed by B on same context got bit > 0
+B followed by A on any context got bit 0
+A followed by A on same context got bit > 0
+A followed by A followed by A on same context got bit -1
+B followed by B on same context got bit > 0
+B followed by B followed by B on same context got bit -1
+
+If we get rid of the TRACE_TRANSITION_BIT which allowed recursion for
+onetime, then it would be:
+
+A followed by B on same context got bit > 0
+B followed by A on any context got bit 0
+A followed by A on same context got bit -1
+B followed by B on same context got bit -1
+
+So as long as no continuously AAA it's safe?
+
+> 
+>>>> +
+>>>> +	return bit;
+>>>>  }
+>>>>  /**
+>>>> @@ -222,9 +233,13 @@ static __always_inline int ftrace_test_recursion_trylock(unsigned long ip,
+>>>>   * @bit: The return of a successful ftrace_test_recursion_trylock()
+>>>>   *
+>>>>   * This is used at the end of a ftrace callback.
+>>>> + *
+>>>> + * Preemption will be enabled (if it was previously enabled).
+>>>>   */
+>>>>  static __always_inline void ftrace_test_recursion_unlock(int bit)
+>>>>  {
+>>>> +	if (bit)
+>>>
+>>> This is not symetric with trylock(). It should be:
+>>>
+>>> 	if (bit > 0)
+>>>
+>>> Anyway, trace_clear_recursion() quiently ignores bit != 0
+>>
+>> Yes, bit == 0 should not happen in here.
+> 
+> Yes, it "should" not happen. My point is that we could make the API
+> more safe. We could do the right thing when
+> ftrace_test_recursion_unlock() is called with negative @bit.
+> Ideally, we should also warn about the mis-use.
+
+Agree with a WARN here on bit 0.
+
+> 
+> 
+> Anyway, let's wait for Steven. It seems that he found another problem
+> with the API that should be solved first. The fix will probably
+> also help to better understand the "safe" vs "unsafe" recursion.
+
+Cool~
+
+Regards,
+Michael Wang
+
+> 
+> Best Regards,
+> Petr
+> 
