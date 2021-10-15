@@ -2,83 +2,106 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2273542FB95
-	for <lists+linux-parisc@lfdr.de>; Fri, 15 Oct 2021 21:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C2CE42FC82
+	for <lists+linux-parisc@lfdr.de>; Fri, 15 Oct 2021 21:50:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238216AbhJOTDC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 15 Oct 2021 15:03:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59264 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242270AbhJOTDB (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 15 Oct 2021 15:03:01 -0400
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DCAA061041;
-        Fri, 15 Oct 2021 19:00:51 +0000 (UTC)
-Date:   Fri, 15 Oct 2021 15:00:50 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Jisheng Zhang <jszhang@kernel.org>, linux-csky@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, live-patching@vger.kernel.org,
-        =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>,
-        Guo Ren <guoren@kernel.org>
-Subject: Re: [PATCH] tracing: Have all levels of checks prevent recursion
-Message-ID: <20211015150050.3310b3bf@gandalf.local.home>
-In-Reply-To: <20211015182459.GL174703@worktop.programming.kicks-ass.net>
-References: <20211015110035.14813389@gandalf.local.home>
-        <20211015161702.GF174703@worktop.programming.kicks-ass.net>
-        <20211015133504.6c0a9fcc@gandalf.local.home>
-        <20211015135806.72d1af23@gandalf.local.home>
-        <20211015180429.GK174703@worktop.programming.kicks-ass.net>
-        <20211015142033.72605b47@gandalf.local.home>
-        <20211015182459.GL174703@worktop.programming.kicks-ass.net>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S242845AbhJOTvu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 15 Oct 2021 15:51:50 -0400
+Received: from smtp.duncanthrax.net ([178.63.180.169]:36466 "EHLO
+        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242841AbhJOTvt (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 15 Oct 2021 15:51:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=duncanthrax.net; s=dkim; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=y/q7uiNTQc+unZmUPnnId/iro1yE0QL8Q9EUIAaWfZ4=; b=ZbU75B9a803sePSWoJj2bH1CoO
+        d7Nc5zXr6Ec2tW9S/6N2nf3PSh8nCDmZ+eI6BHERfs8w+gOa3SgUuAAtok0OJcvmm8MT1p+Eny4vy
+        KNDz13/faFSgF0+otfGtDLtp8zx7XJVFNHA/W0I7IX86Vmse+ep9n8wG5tEf1INtkONk=;
+Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org)
+        by smtp.duncanthrax.net with esmtpa (Exim 4.93)
+        (envelope-from <svens@stackframe.org>)
+        id 1mbTD3-00035c-Kt; Fri, 15 Oct 2021 21:49:41 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc/kgdb: add kgdb_roundup() to make kgdb work with idle polling
+Date:   Fri, 15 Oct 2021 21:49:23 +0200
+Message-Id: <20211015194923.23058-1-svens@stackframe.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, 15 Oct 2021 20:24:59 +0200
-Peter Zijlstra <peterz@infradead.org> wrote:
+With idle polling, IPIs are not sent when a CPU idle, but queued
+and run later from do_idle(). The default kgdb_call_nmi_hook()
+implementation gets the pointer to struct pt_regs from get_irq_reqs(),
+which doesn't work in that case because it was not called from the
+IPI interrupt handler. Fix it by defining our own kgdb_roundup()
+function which sents an IPI_ENTER_KGDB. When that IPI is received
+on the target CPU kgdb_nmicallback() is called.
 
-> > @@ -206,11 +206,7 @@ DEFINE_OUTPUT_COPY(__output_copy_user, arch_perf_out_copy_user)
-> >  static inline int get_recursion_context(int *recursion)
-> >  {
-> >  	unsigned int pc = preempt_count();  
-> 
-> Although I think we can do without that ^ line as well :-)
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+---
+ arch/parisc/kernel/smp.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-Ah, I could have sworn I deleted it. Oh well, will make a proper patch set.
+diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
+index b282c1ce00c8..171925285f3e 100644
+--- a/arch/parisc/kernel/smp.c
++++ b/arch/parisc/kernel/smp.c
+@@ -29,6 +29,7 @@
+ #include <linux/bitops.h>
+ #include <linux/ftrace.h>
+ #include <linux/cpu.h>
++#include <linux/kgdb.h>
+ 
+ #include <linux/atomic.h>
+ #include <asm/current.h>
+@@ -69,7 +70,10 @@ enum ipi_message_type {
+ 	IPI_CALL_FUNC,
+ 	IPI_CPU_START,
+ 	IPI_CPU_STOP,
+-	IPI_CPU_TEST
++	IPI_CPU_TEST,
++#ifdef CONFIG_KGDB
++	IPI_ENTER_KGDB,
++#endif
+ };
+ 
+ 
+@@ -167,7 +171,12 @@ ipi_interrupt(int irq, void *dev_id)
+ 			case IPI_CPU_TEST:
+ 				smp_debug(100, KERN_DEBUG "CPU%d is alive!\n", this_cpu);
+ 				break;
+-
++#ifdef CONFIG_KGDB
++			case IPI_ENTER_KGDB:
++				smp_debug(100, KERN_DEBUG "CPU%d ENTER_KGDB\n", this_cpu);
++				kgdb_nmicallback(raw_smp_processor_id(), get_irq_regs());
++				break;
++#endif
+ 			default:
+ 				printk(KERN_CRIT "Unknown IPI num on CPU%d: %lu\n",
+ 					this_cpu, which);
+@@ -228,6 +237,12 @@ send_IPI_allbutself(enum ipi_message_type op)
+ 	preempt_enable();
+ }
+ 
++#ifdef CONFIG_KGDB
++void kgdb_roundup_cpus(void)
++{
++	send_IPI_allbutself(IPI_ENTER_KGDB);
++}
++#endif
+ 
+ inline void 
+ smp_send_stop(void)	{ send_IPI_allbutself(IPI_CPU_STOP); }
+-- 
+2.33.0
 
-Thanks!
-
--- Steve
-
-
-> 
-> > -	unsigned char rctx = 0;
