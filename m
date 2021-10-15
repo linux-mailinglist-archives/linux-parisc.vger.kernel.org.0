@@ -2,120 +2,137 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E537942EFF6
-	for <lists+linux-parisc@lfdr.de>; Fri, 15 Oct 2021 13:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8392E42F1B0
+	for <lists+linux-parisc@lfdr.de>; Fri, 15 Oct 2021 15:06:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238552AbhJOLy5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 15 Oct 2021 07:54:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47150 "EHLO
+        id S235705AbhJONJB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 15 Oct 2021 09:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235134AbhJOLy5 (ORCPT
+        with ESMTP id S235689AbhJONJB (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 15 Oct 2021 07:54:57 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F2CDC061570;
-        Fri, 15 Oct 2021 04:52:50 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id d13-20020a17090ad3cd00b0019e746f7bd4so9176087pjw.0;
-        Fri, 15 Oct 2021 04:52:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:subject:to:cc:references:in-reply-to:mime-version
-         :message-id:content-transfer-encoding;
-        bh=JxOm4PejsflLixA5I77T/u/EeNwxcWFLBvedgG7X3g0=;
-        b=RnbWBgff8R8VzvKZ7Ek8H2JjAGpnn0fYqUT20UYWFA1Evqdl9wbX2+SrmYs0VyUeof
-         My+8NauijiAKQ1ELcOViTyu+YwKGpuVjGnDI/Y+s8zKBoD4CkdLl+3utOKqPrAi2ZvJa
-         xco3Sdw7p4I0EprZLeBSKrXfq9dwLjRsRYR9egfDkYeulFpk8Eox9oQj1DskkBEoPdde
-         DzFRCrsOV/c4XR1D5jF506cVi3Ja28oWzgZ8FGVSYlbrurACLwhG2aYSmIHMafvGUv1w
-         KuiavOiwdgS7s9dl0tePyrXU6nuWqLUPQQGiQ0kpUPmXAeNoCjcP3qLfZBdChw5Qws0Q
-         81Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
-         :mime-version:message-id:content-transfer-encoding;
-        bh=JxOm4PejsflLixA5I77T/u/EeNwxcWFLBvedgG7X3g0=;
-        b=yOfqNFYwAF4u+ZB0NfUQpu4M8jg8ammd9u4R6UD9Vsu/wgAF8GDURZKkJMFQTgzsK5
-         FbNQZWks5QX7gsI65Jv3oSVZkljwvlFvFM24vyq7mFIwIZOxEbznsd6TrRbAc0OEBKrw
-         g/aeTx/gjCXkDE7TjMfGObvtjevZMVogjjJJJLJr0yMnSo4GqaUa14idKEeomff8JHOX
-         c4+czh6auR10tq1nsU9LkoHDOmmN/dNAo5m5PHFEIsFtjYlyfaeZz2o4zdx9v8qKS5gi
-         HJh2xNrVvRzXw5Ajz8FSJRfimGeHWt+i+y2bnfCweHzVbZ+OEiMct+wFZIVJ9eGCJNpj
-         0cmA==
-X-Gm-Message-State: AOAM530gvlp34n7dXBz/UxZCazYEzwMo321HNwXnA5zmuHPYCo0QboN+
-        dg+8E6fYq/fSPJIUwkXUuC0=
-X-Google-Smtp-Source: ABdhPJziSb3RPlkgHBIcLy/GsNYHt7p9eqtN/IAdFB/eXr3Vs5LS6nSBulwrip6mVfmFdqJELfYQfQ==
-X-Received: by 2002:a17:902:a40a:b0:13e:6de3:76d2 with SMTP id p10-20020a170902a40a00b0013e6de376d2mr10599880plq.71.1634298770474;
-        Fri, 15 Oct 2021 04:52:50 -0700 (PDT)
-Received: from localhost (14-203-144-177.static.tpgi.com.au. [14.203.144.177])
-        by smtp.gmail.com with ESMTPSA id d138sm4955442pfd.74.2021.10.15.04.52.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Oct 2021 04:52:50 -0700 (PDT)
-Date:   Fri, 15 Oct 2021 21:52:44 +1000
-From:   Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 06/13] asm-generic: Use HAVE_FUNCTION_DESCRIPTORS to
- define associated stubs
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Fri, 15 Oct 2021 09:09:01 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E09EC061570;
+        Fri, 15 Oct 2021 06:06:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=GcG/LD4wXLRkh+mkTSYxktAgp6NtEFjg5wt7NUrIBQ8=; b=uayJR1a282ytfFfr7pGkZzKhEI
+        IluB/YpfG7Onwx7r1QjKfC1tsftLKfxav3VC38k67GpIyk/1ybeAGQUxvDR+zHqr8EKJVPlRZBA9/
+        /wpTA2a/mIgs+KwDypwHUlt5exYlO5YauSTxiForL6Zk2ddG+l9BfoSzKxtnDQxKPvn5PwybVyKMr
+        2sXVB6PGJ0CaomGm5OmpmwcYJjrxCbBh03Lz6TD+0UpZALAbk0Ks+Tm2EO0gwNMexvTrd+iVHfAOl
+        L1EzBGZvN5/X+htNwR68fjDLwpfpBBFno+c1d7bIoN6mV3eoharT65WSKmRRs2o1NAkDG7hXrV1hK
+        6PnwqnJg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mbMtI-0091pf-5y; Fri, 15 Oct 2021 13:05:05 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 1918F300577;
+        Fri, 15 Oct 2021 15:04:50 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id C9DB5212B43C0; Fri, 15 Oct 2021 15:04:50 +0200 (CEST)
+Date:   Fri, 15 Oct 2021 15:04:50 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Valentin Schneider <valentin.schneider@arm.com>
+Cc:     Barry Song <21cnbao@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        LAK <linux-arm-kernel@lists.infradead.org>,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, Aubrey Li <aubrey.li@linux.intel.com>,
+        Barry Song <song.bao.hua@hisilicon.com>,
+        Tim Chen <tim.c.chen@linux.intel.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Kees Cook <keescook@chromium.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>
-Cc:     linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
-        <4fda65cda906e56aa87806b658e0828c64792403.1634190022.git.christophe.leroy@csgroup.eu>
-        <1634278340.5yp7xtm7um.astroid@bobo.none>
-        <7523a005-ea69-7c4c-64ad-bc2537921975@csgroup.eu>
-        <1634284464.kd8scm0ckz.astroid@bobo.none>
-In-Reply-To: <1634284464.kd8scm0ckz.astroid@bobo.none>
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86 <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        YiFei Zhu <yifeifz2@illinois.edu>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Sergei Trofimovich <slyfox@gentoo.org>,
+        David Hildenbrand <david@redhat.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Chris Down <chris@chrisdown.name>,
+        Vipin Sharma <vipinsh@google.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Hugh Dickins <hughd@google.com>,
+        Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH 2/2] sched: Centralize SCHED_{SMT, MC, CLUSTER}
+ definitions
+Message-ID: <YWl8cogsS2Lah1mk@hirez.programming.kicks-ass.net>
+References: <20211008115347.425234-1-valentin.schneider@arm.com>
+ <20211008115347.425234-3-valentin.schneider@arm.com>
+ <CAGsJ_4wqtcOdsFDzR98PFbjxRyTqzf7P3p3erup84SXESYonYw@mail.gmail.com>
+ <87bl3zlex8.mognet@arm.com>
 MIME-Version: 1.0
-Message-Id: <1634298613.bp91trt1cz.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87bl3zlex8.mognet@arm.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Excerpts from Nicholas Piggin's message of October 15, 2021 6:02 pm:
-> Excerpts from Christophe Leroy's message of October 15, 2021 4:24 pm:
->>=20
->>=20
->> Le 15/10/2021 =C3=A0 08:16, Nicholas Piggin a =C3=A9crit=C2=A0:
->>> Excerpts from Christophe Leroy's message of October 14, 2021 3:49 pm:
->>>> Replace HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR by
->>>> HAVE_FUNCTION_DESCRIPTORS and use it instead of
->>>> 'dereference_function_descriptor' macro to know
->>>> whether an arch has function descriptors.
->>>>
->>>> To limit churn in one of the following patches, use
->>>> an #ifdef/#else construct with empty first part
->>>> instead of an #ifndef in asm-generic/sections.h
->>>=20
->>> Is it worth putting this into Kconfig if you're going to
->>> change it? In any case
->>=20
->> That was what I wanted to do in the begining but how can I do that in=20
->> Kconfig ?
->>=20
->> #ifdef __powerpc64__
->> #if defined(_CALL_ELF) && _CALL_ELF =3D=3D 2
->> #define PPC64_ELF_ABI_v2
->> #else
->> #define PPC64_ELF_ABI_v1
->> #endif
->> #endif /* __powerpc64__ */
->>=20
->> #ifdef PPC64_ELF_ABI_v1
->> #define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
->=20
-> We have ELFv2 ABI / function descriptors iff big-endian so you could=20
-> just select based on that.
+On Fri, Oct 08, 2021 at 04:22:27PM +0100, Valentin Schneider wrote:
 
-Of course that should read ELFv1. To be clearer: BE is ELFv1 ABI and
-LE is ELFv2 ABI.
+> So x86 has it default yes, and a lot of others (e.g. arm64) have it default
+> no.
+> 
+> IMO you don't gain much by disabling them. SCHED_MC and SCHED_CLUSTER only
+> control the presence of a sched_domain_topology_level - if it's useless it
+> gets degenerated at domain build time. Some valid reasons for not using
+> them is if the architecture defines its own topology table (e.g. powerpc
+> has CACHE and MC levels which are not gated behind any CONFIG).
+> 
+> SCHED_SMT has an impact on code generated in sched/core.c, but that is also
+> gated by a static key.
+> 
+> So I'd say having them default yes is sensible. I'd even say we should
+> change the "If unsure say N here." to "Y".
 
-Thanks,
-Nick
+Right, so I tend to agree (and also that we should fix that Kconfig help
+text). But it would be very nice to have feedback from the affected arch
+maintainers.
+
