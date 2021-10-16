@@ -2,188 +2,105 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8655D43009C
-	for <lists+linux-parisc@lfdr.de>; Sat, 16 Oct 2021 08:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 332384303D2
+	for <lists+linux-parisc@lfdr.de>; Sat, 16 Oct 2021 18:49:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239935AbhJPGoU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 16 Oct 2021 02:44:20 -0400
-Received: from pegase2.c-s.fr ([93.17.235.10]:50517 "EHLO pegase2.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233802AbhJPGoU (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 16 Oct 2021 02:44:20 -0400
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4HWYTZ2jPNz9sSL;
-        Sat, 16 Oct 2021 08:42:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id K3NXrTGrnHQ3; Sat, 16 Oct 2021 08:42:10 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4HWYTZ1gXQz9sSH;
-        Sat, 16 Oct 2021 08:42:10 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 1E83F8B765;
-        Sat, 16 Oct 2021 08:42:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id 09O0ACPW_BH4; Sat, 16 Oct 2021 08:42:10 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.36])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id D7EA88B763;
-        Sat, 16 Oct 2021 08:42:08 +0200 (CEST)
-Subject: Re: [PATCH v2 12/13] lkdtm: Fix execute_[user]_location()
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org
-References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
- <cbee30c66890994e116a8eae8094fa8c5336f90a.1634190022.git.christophe.leroy@csgroup.eu>
- <202110151428.187B1CF@keescook>
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <9b4c39d4-1322-89af-585c-679a574576a2@csgroup.eu>
-Date:   Sat, 16 Oct 2021 08:42:08 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S241330AbhJPQvw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 16 Oct 2021 12:51:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38948 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241351AbhJPQvw (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 16 Oct 2021 12:51:52 -0400
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C925BC061570
+        for <linux-parisc@vger.kernel.org>; Sat, 16 Oct 2021 09:49:43 -0700 (PDT)
+Received: (qmail 19284 invoked from network); 16 Oct 2021 16:49:40 -0000
+Received: from p200300cf0748140059f6c3d7a8675c0c.dip0.t-ipconnect.de ([2003:cf:748:1400:59f6:c3d7:a867:5c0c]:45312 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <deller@gmx.de>; Sat, 16 Oct 2021 18:49:40 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     Helge Deller <deller@gmx.de>, Sven Schnelle <svens@stackframe.org>
+Cc:     linux-parisc@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] parisc: add support for TOC (transfer of control)
+Date:   Sat, 16 Oct 2021 18:49:34 +0200
+Message-ID: <2081016.irdbgypaU6@daneel.sf-tec.de>
+In-Reply-To: <20211014194916.13901-5-svens@stackframe.org>
+References: <20211014194916.13901-1-svens@stackframe.org> <20211014194916.13901-5-svens@stackframe.org>
 MIME-Version: 1.0
-In-Reply-To: <202110151428.187B1CF@keescook>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart12873580.uLZWGnKmhe"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+--nextPart12873580.uLZWGnKmhe
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+
+Sven Schnelle wrote:
+
+> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+> index 27a8b49af11f..97a889eaffe1 100644
+> --- a/arch/parisc/Kconfig
+> +++ b/arch/parisc/Kconfig
+> @@ -288,6 +288,20 @@ config SMP
+> 
+>  	  If you don't know what to do here, say N.
+> 
+> +config TOC
+> +	bool "Support TOC switch"
+> +	default y if 64BIT || !SMP
+> +	help
+> +	  Most PA-RISC machines have either a switch at the back of the 
+machine
+> +	  or a command in BMC to trigger a TOC interrupt. If you say Y here 
+a
+> +	  handler will be installed which will either show a backtrace on 
+all
+> +	  CPUs, or enter a possible configured debugger like kgdb/kdb.
+> +
+> +	  Note that with this option enabled, the kernel will use an 
+additional
+> 16KB +	  per possible CPU as a special stack for the TOC handler.
+> +
+> +	  If you don't want to debug the Kernel, so N.
+
+so -> say?
+
+> +void notrace __noreturn __cold toc_intr(struct pt_regs *regs)
+> +{
+> +	struct pdc_toc_pim_20 pim_data20;
+> +	struct pdc_toc_pim_11 pim_data11;
+> +
+> +	nmi_enter();
+> +
+> +	if (boot_cpu_data.cpu_type >= pcxu) {
+> +		if (pdc_pim_toc20(&pim_data20))
+> +			panic("Failed to get PIM data");
+> +		toc20_to_pt_regs(regs, &pim_data20);
+> +	} else {
+> +		if (pdc_pim_toc11(&pim_data11))
+> +			panic("Failed to get PIM data");
+> +		toc11_to_pt_regs(regs, &pim_data11);
+> +	}
+
+As I said elsewhere because I had missed v3: move the variables in the if 
+branches.
+
+Eike
+--nextPart12873580.uLZWGnKmhe
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYWsCngAKCRBcpIk+abn8
+TmoKAKCIlbDP2YCy3T2fidpy5gE5e3zNRwCeIqWNKjRA0fQ0Aj6/UI4mpwOtZzY=
+=M2y5
+-----END PGP SIGNATURE-----
+
+--nextPart12873580.uLZWGnKmhe--
 
 
-Le 15/10/2021 à 23:31, Kees Cook a écrit :
-> On Thu, Oct 14, 2021 at 07:50:01AM +0200, Christophe Leroy wrote:
->> execute_location() and execute_user_location() intent
->> to copy do_nothing() text and execute it at a new location.
->> However, at the time being it doesn't copy do_nothing() function
->> but do_nothing() function descriptor which still points to the
->> original text. So at the end it still executes do_nothing() at
->> its original location allthough using a copied function descriptor.
->>
->> So, fix that by really copying do_nothing() text and build a new
->> function descriptor by copying do_nothing() function descriptor and
->> updating the target address with the new location.
->>
->> Also fix the displayed addresses by dereferencing do_nothing()
->> function descriptor.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   drivers/misc/lkdtm/perms.c     | 25 +++++++++++++++++++++----
->>   include/asm-generic/sections.h |  5 +++++
->>   2 files changed, 26 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
->> index 5266dc28df6e..96b3ebfcb8ed 100644
->> --- a/drivers/misc/lkdtm/perms.c
->> +++ b/drivers/misc/lkdtm/perms.c
->> @@ -44,19 +44,32 @@ static noinline void do_overwritten(void)
->>   	return;
->>   }
->>   
->> +static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
->> +{
->> +	memcpy(fdesc, do_nothing, sizeof(*fdesc));
->> +	fdesc->addr = (unsigned long)dst;
->> +	barrier();
->> +
->> +	return fdesc;
->> +}
-> 
-> How about collapsing the "have_function_descriptors()" check into
-> setup_function_descriptor()?
-> 
-> static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
-> {
-> 	if (__is_defined(HAVE_FUNCTION_DESCRIPTORS)) {
-> 		memcpy(fdesc, do_nothing, sizeof(*fdesc));
-> 		fdesc->addr = (unsigned long)dst;
-> 		barrier();
-> 		return fdesc;
-> 	} else {
-> 		return dst;
-> 	}
-> }
 
-Ok
-
-> 
->> +
->>   static noinline void execute_location(void *dst, bool write)
->>   {
->>   	void (*func)(void) = dst;
->> +	func_desc_t fdesc;
->> +	void *do_nothing_text = dereference_function_descriptor(do_nothing);
->>   
->> -	pr_info("attempting ok execution at %px\n", do_nothing);
->> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
->>   	do_nothing();
->>   
->>   	if (write == CODE_WRITE) {
->> -		memcpy(dst, do_nothing, EXEC_SIZE);
->> +		memcpy(dst, do_nothing_text, EXEC_SIZE);
->>   		flush_icache_range((unsigned long)dst,
->>   				   (unsigned long)dst + EXEC_SIZE);
->>   	}
->>   	pr_info("attempting bad execution at %px\n", func);
->> +	if (have_function_descriptors())
->> +		func = setup_function_descriptor(&fdesc, dst);
->>   	func();
->>   	pr_err("FAIL: func returned\n");
->>   }
->> @@ -67,15 +80,19 @@ static void execute_user_location(void *dst)
->>   
->>   	/* Intentionally crossing kernel/user memory boundary. */
->>   	void (*func)(void) = dst;
->> +	func_desc_t fdesc;
->> +	void *do_nothing_text = dereference_function_descriptor(do_nothing);
->>   
->> -	pr_info("attempting ok execution at %px\n", do_nothing);
->> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
->>   	do_nothing();
->>   
->> -	copied = access_process_vm(current, (unsigned long)dst, do_nothing,
->> +	copied = access_process_vm(current, (unsigned long)dst, do_nothing_text,
->>   				   EXEC_SIZE, FOLL_WRITE);
->>   	if (copied < EXEC_SIZE)
->>   		return;
->>   	pr_info("attempting bad execution at %px\n", func);
->> +	if (have_function_descriptors())
->> +		func = setup_function_descriptor(&fdesc, dst);
->>   	func();
->>   	pr_err("FAIL: func returned\n");
->>   }
-> 
-> 
->> diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
->> index 76163883c6ff..d225318538bd 100644
->> --- a/include/asm-generic/sections.h
->> +++ b/include/asm-generic/sections.h
->> @@ -70,6 +70,11 @@ typedef struct {
->>   } func_desc_t;
->>   #endif
->>   
->> +static inline bool have_function_descriptors(void)
->> +{
->> +	return __is_defined(HAVE_FUNCTION_DESCRIPTORS);
->> +}
->> +
->>   /* random extra sections (if any).  Override
->>    * in asm/sections.h */
->>   #ifndef arch_is_kernel_text
-> 
-> This hunk seems like it should live in a separate patch.
-> 
-
-Ok I move it in a previous patch.
