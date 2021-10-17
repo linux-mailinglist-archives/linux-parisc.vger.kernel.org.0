@@ -2,126 +2,122 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC8B24303D8
-	for <lists+linux-parisc@lfdr.de>; Sat, 16 Oct 2021 18:57:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF98430716
+	for <lists+linux-parisc@lfdr.de>; Sun, 17 Oct 2021 09:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243304AbhJPQ7c (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 16 Oct 2021 12:59:32 -0400
-Received: from mout.gmx.net ([212.227.17.20]:40177 "EHLO mout.gmx.net"
+        id S241371AbhJQHwY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 17 Oct 2021 03:52:24 -0400
+Received: from pegase2.c-s.fr ([93.17.235.10]:60437 "EHLO pegase2.c-s.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243146AbhJPQ7a (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 16 Oct 2021 12:59:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1634403412;
-        bh=beWsah0wQ+JCwwGz36wA6K8zwDBEKxgFdmTwwu2F4Xg=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=jyP3LHJ+TNyHrc7tcfKooW5yDv6iqN8J7bbTZaZCjIb+36KXv8K7PViH3TeH7WeEt
-         nSYvA1q4Io8ovXKt7vHlN5HW+XQ15z84vLOtWCUDKdFr0uT+yGdE97BmzzhhB1Xiqe
-         c9I17MaM/niM9TnWPghkn+F570+ZI/g57R0q6U8M=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.160.170]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mq2nK-1n6EGE0aLC-00n8lg; Sat, 16
- Oct 2021 18:56:52 +0200
-Message-ID: <312371f5-e2e4-8044-9898-5be8258927ac@gmx.de>
-Date:   Sat, 16 Oct 2021 18:56:35 +0200
+        id S233966AbhJQHwY (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 17 Oct 2021 03:52:24 -0400
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+        by localhost (Postfix) with ESMTP id 4HXBxd0Dp6z9sSg;
+        Sun, 17 Oct 2021 09:50:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id qE16lVPGMQXg; Sun, 17 Oct 2021 09:50:12 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase2.c-s.fr (Postfix) with ESMTP id 4HXBxb1HWmz9sSf;
+        Sun, 17 Oct 2021 09:50:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 1361A8B76C;
+        Sun, 17 Oct 2021 09:50:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id y2-boJOlu1zA; Sun, 17 Oct 2021 09:50:11 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.38])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id E55898B763;
+        Sun, 17 Oct 2021 09:50:09 +0200 (CEST)
+Subject: Re: [PATCH v2 11/13] lkdtm: Fix lkdtm_EXEC_RODATA()
+From:   Christophe Leroy <christophe.leroy@csgroup.eu>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org
+References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
+ <44946ed0340013a52f8acdee7d6d0781f145cd6b.1634190022.git.christophe.leroy@csgroup.eu>
+ <202110151432.D8203C19@keescook>
+ <61a3d2c4-4997-c221-3eef-d74aef5ba584@csgroup.eu>
+Message-ID: <87927aa3-6414-adaa-44f7-b3bf1f664317@csgroup.eu>
+Date:   Sun, 17 Oct 2021 09:50:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: [PATCH v3 4/4] parisc: add support for TOC (transfer of control)
-Content-Language: en-US
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        Sven Schnelle <svens@stackframe.org>
-Cc:     linux-parisc@vger.kernel.org
-References: <20211014194916.13901-1-svens@stackframe.org>
- <20211014194916.13901-5-svens@stackframe.org>
- <2081016.irdbgypaU6@daneel.sf-tec.de>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <2081016.irdbgypaU6@daneel.sf-tec.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8RtUdtwIVbDc4GTB4FTNjIbn7XtUx8M8zjCWi88oMBV/hoj72xa
- rBZ2LAmGszxTWTcPzWoNdqM23yvOswD1S8ALz5PmkahsDTbrVjhSAW0rRs1uRP3qoZwljrN
- IBGqf16ysN6IPzrsVvKUIWNHxFmJRiFiHsd2lWSPSqDvtN7jeQsbML05FfblJoZiRhC8xMT
- m8EXAphWEb9iaNjarqZWA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:yh4qTWO/low=:dpkfH+HLoa8XThfh6NVfmy
- 2/I3ObYcfrsMiN+aAHOygTk3ljEgyIcEHG40RIecPEal+qSdRFqhjQduows35qGTfxurEAZ56
- b/vwJdv7wcqHyhuumRdewUHQNAb/aigP7n45DxVC6GbzMFMOlHmuTUFR/wVL6oz9lSOf0ygsv
- 9qVsMeylRnFm4tmHbpoAhYnXA8/m2PkRGK2gswQSpX5D2BegUepvoQkniSVCxI3c/rT3pBSfg
- YP+hDtgP0tzQ9/waD3SFUMF2xsodvrXFWCBGx5tDCICtwUapqbcpEFOhv/C0paZtlIOVWcNbD
- DcODq9vXHiVPYOhjvOhkflsL0m0h3Bv3c8lLdjycT3GtYyEcOUA9cuZyhW83gcgbASOEADXMY
- pZs+bGM7f/pbaYYCsBFeH/UnhgD4LMEIiiVm3ZnRx0/FPimpBKUOHszVnt9fQAzUPOZPYNTSp
- Aex7oHXUJTZgguRiB8DKtZYICXgMfev8+QvbH4ri2R5Kklpcp2o2rRPDC2vQcUsfAYRacVzmG
- EW4PXShPlpy8PsBLyJyJsnlt6yFSm14KTm+y7kQPY1X/TOihy7DQ9iziQVOF78rOpQOsu+l5I
- Jrup/+WMP3QDGpVNiFSbcOqmpDmRDbLK0p01Q2VYsfEqlzSQJsM3CCMkDg/ZJscCcf7ojDFdC
- JI+QEL+jesrjZmKl7BPx37wjjpqnGxehfPGGdFns/bHM55VuTvQxI1wc0j9U9YgQJx9JCNTnT
- h+nSr3TE4RznKPH2htxH59PlEjJjrujm1oICP3mrR4lqtVSn4+eI5wxT+U7/IOq9zaOAJtxf6
- Os29cuU61l6fAV9Mmn5vRaHKkQU5srFQiDWM3nHpN0TCFWSUTtRk4dR1SP9i1RS92l7xTCWH1
- jiKb9aojp13njuRcu76k0VaNHO6phgA6b87+WRbkofaFgu4mTOTW6re0DKf6FsFAUevd5WeEa
- 43X4Q5TTxzEj5ri5d/snbUJWjxDu6ytbMUn43rA41fZcZ6fhOEGGnI44eiUMifgABuww2ulgM
- T5ZhZA+E69yVWZnfiNkbOSebnZodiXf+qftty1ZVC81y9m6PZDhQdoQJibPRI3R3GvcQt9sAH
- URP5hkhFmWIZr0=
+In-Reply-To: <61a3d2c4-4997-c221-3eef-d74aef5ba584@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr-FR
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/16/21 18:49, Rolf Eike Beer wrote:
-> Sven Schnelle wrote:
->
->> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
->> index 27a8b49af11f..97a889eaffe1 100644
->> --- a/arch/parisc/Kconfig
->> +++ b/arch/parisc/Kconfig
->> @@ -288,6 +288,20 @@ config SMP
+
+
+Le 16/10/2021 à 08:41, Christophe Leroy a écrit :
+> 
+> 
+> Le 15/10/2021 à 23:32, Kees Cook a écrit :
+>> On Thu, Oct 14, 2021 at 07:50:00AM +0200, Christophe Leroy wrote:
+>>> Behind its location, lkdtm_EXEC_RODATA() executes
+>>> lkdtm_rodata_do_nothing() which is a real function,
+>>> not a copy of do_nothing().
+>>>
+>>> So executes it directly instead of using execute_location().
+>>>
+>>> This is necessary because following patch will fix execute_location()
+>>> to use a copy of the function descriptor of do_nothing() and
+>>> function descriptor of lkdtm_rodata_do_nothing() might be different.
+>>>
+>>> And fix displayed addresses by dereferencing the function descriptors.
+>>>
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 >>
->>  	  If you don't know what to do here, say N.
+>> I still don't understand this -- it doesn't look needed at all given the
+>> changes in patch 12. (i.e. everything is using
+>> dereference_function_descriptor() now)
+> 
+> dereference_function_descriptor() only deals with the function address, 
+> not the function TOC.
+> 
+> do_nothing() is a function. It has a function descriptor with a given 
+> address (address of .do_nothing) and a given TOC, say TOC1.
+> 
+> lkdtm_rodata_do_nothing() is another function. It has its own function 
+> descriptor with a given address (address of .lkdtm_rodata_do_nothing) 
+> and a given TOC, say TOC2.
+> 
+> If we use execute_location(), it will copy do_nothing() function 
+> descriptor and change the function address to the address of 
+> lkdtm_rodata_do_nothing(). So it will call lkdtm_rodata_do_nothing() 
+> with TOC1 instead of calling it with TOC2.
+> 
 >>
->> +config TOC
->> +	bool "Support TOC switch"
->> +	default y if 64BIT || !SMP
->> +	help
->> +	  Most PA-RISC machines have either a switch at the back of the
-> machine
->> +	  or a command in BMC to trigger a TOC interrupt. If you say Y here
-> a
->> +	  handler will be installed which will either show a backtrace on
-> all
->> +	  CPUs, or enter a possible configured debugger like kgdb/kdb.
->> +
->> +	  Note that with this option enabled, the kernel will use an
-> additional
->> 16KB +	  per possible CPU as a special stack for the TOC handler.
->> +
->> +	  If you don't want to debug the Kernel, so N.
->
-> so -> say?
+>> Can't this patch be dropped?
+> 
+> It is likely that the TOC will be the same for both functions, and 
+> anyway those functions are so simple that they don't use the TOC at all, 
+> so yes it would likely work without this patch but from my point of view 
+> it is incorrect to call one function with the TOC from the descriptor of 
+> another function.
+> 
+> If you thing we can take the risk, then I'm happy to drop the patch and 
+> replace it by
+> 
+>      execute_location(dereference_function_descriptor(lkdtm_rodata_do_nothing), CODE_AS_IS)
+> 
 
-Yes, I fixed that before I applied to my tree.
+Once we have patch 12 EXEC_RODATA works well on powerpc without this 
+patch so I will drop this patch for now and will propose something else 
+as a follow-up to my series.
 
->> +void notrace __noreturn __cold toc_intr(struct pt_regs *regs)
->> +{
->> +	struct pdc_toc_pim_20 pim_data20;
->> +	struct pdc_toc_pim_11 pim_data11;
->> +
->> +	nmi_enter();
->> +
->> +	if (boot_cpu_data.cpu_type >=3D pcxu) {
->> +		if (pdc_pim_toc20(&pim_data20))
->> +			panic("Failed to get PIM data");
->> +		toc20_to_pt_regs(regs, &pim_data20);
->> +	} else {
->> +		if (pdc_pim_toc11(&pim_data11))
->> +			panic("Failed to get PIM data");
->> +		toc11_to_pt_regs(regs, &pim_data11);
->> +	}
->
-> As I said elsewhere because I had missed v3: move the variables in the i=
-f
-> branches.
-
-It won't change anything, the compiler is clever enough to optimize it.
-Another option would be to completely move the pdc_pim_toc* functions
-into the toc*_to_pt_regs functions, maybe then renaming them to
-get_tocXX_pt_regs(regs);
-
-Helge
+Christophe
