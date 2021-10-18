@@ -2,194 +2,95 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AEAA430D4D
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Oct 2021 03:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 354B1430E50
+	for <lists+linux-parisc@lfdr.de>; Mon, 18 Oct 2021 05:38:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344923AbhJRBMf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 17 Oct 2021 21:12:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35054 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344912AbhJRBMe (ORCPT
+        id S231482AbhJRDkj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 17 Oct 2021 23:40:39 -0400
+Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:40907 "EHLO
+        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229583AbhJRDkj (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 17 Oct 2021 21:12:34 -0400
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634519422;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=2renu8ZE8ozzoUn8doITIHK/p2oy+zqiubPlxkzvjKI=;
-        b=NeYfFMecTWNziQtQWeHQRI+pSG8mlPx6rXnTY+tqAmJzCsEnkfJdfxBPRvyYIRvcAU8kWP
-        JXOl8vAwoKGZixe/fWcIkEVur6LcilfP2x0Ax+WPMpFO3NFr9bARL3HGLg5zIGHjKA1y9c
-        q3rYu+QwEgDYmExjuGiOFYCLkBA4EzIpDVo6HZbDQqKEnzRgAYO7b3zRFgn8jpP+A800Jj
-        2UmK35n0lwcDd6gSXItNrWDs8YtI0n7t5587yj/LuVrrNu61iqhJw5dBbpEd3Rf2pdoDV6
-        Jc98JYhX0b1wja0EWFZO/gKnYKM45illilYEq4oiOkJMu8T1dEdMpLcTGJ5lLQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634519422;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=2renu8ZE8ozzoUn8doITIHK/p2oy+zqiubPlxkzvjKI=;
-        b=yTgU4qMQsJ0Prrb5VgmZPnJugZRYb/9AQNBOmEJMAHu2NeRNJyDX9XIv0KSMJ7cnVvjbMs
-        5ijmDWqMRiGSdHAA==
-To:     Andi Kleen <ak@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Arjan van de Ven <arjan@linux.intel.com>,
-        "Schlobohm, Bruce" <bruce.schlobohm@intel.com>,
-        "Kovatch, Kathleen" <kathleen.kovatch@intel.com>
-Cc:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Sun, 17 Oct 2021 23:40:39 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=yun.wang@linux.alibaba.com;NM=1;PH=DS;RN=31;SR=0;TI=SMTPD_---0UsUkvOd_1634528302;
+Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com fp:SMTPD_---0UsUkvOd_1634528302)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 18 Oct 2021 11:38:23 +0800
+To:     Guo Ren <guoren@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter H Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org,
-        "Reshetova, Elena" <elena.reshetova@intel.com>
-Subject: Re: [PATCH v5 12/16] PCI: Add pci_iomap_host_shared(),
- pci_iomap_host_shared_range()
-In-Reply-To: <875ytv2lu8.ffs@tglx>
-References: <875ytv2lu8.ffs@tglx>
-Date:   Mon, 18 Oct 2021 03:10:21 +0200
-Message-ID: <871r4j2l4y.ffs@tglx>
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Jisheng Zhang <jszhang@kernel.org>, linux-csky@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        live-patching@vger.kernel.org
+From:   =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
+Subject: [PATCH v4 0/2] fix & prevent the missing preemption disabling
+Message-ID: <32a36348-69ee-6464-390c-3a8d6e9d2b53@linux.alibaba.com>
+Date:   Mon, 18 Oct 2021 11:38:21 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Oct 18 2021 at 02:55, Thomas Gleixner wrote:
-> On Sun, Oct 10 2021 at 15:11, Andi Kleen wrote:
->> The 5.15 tree has something like ~2.4k IO accesses (including MMIO and 
->> others) in init functions that also register drivers (thanks Elena for 
->> the number)
->
-> These numbers are completely useless simply because they are based on
-> nonsensical criteria. See:
->
->   https://lore.kernel.org/r/87r1cj2uad.ffs@tglx
->
->> My point is just that the ecosystem of devices that Linux supports is 
->> messy enough that there are legitimate exceptions from the "First IO 
->> only in probe call only" rule.
->
-> Your point is based on your outright refusal to actualy do a proper
-> analysis and your outright refusal to help fixing the real problems.
->
-> All you have provided so far is handwaving based on a completely useless
-> analysis.
->
-> Sure, your goal is to get this TDX problem solved, but it's not going to
-> be solved by:
->
->   1) Providing a nonsensical analysis
->
->   2) Using #1 as an argument to hack some half baken interfaces into the
->      kernel which allow you to tick off your checkbox and then leave the
->      resulting mess for others to clean up.
->  
-> Try again when you have factual data to back up your claims and factual
-> arguments which prove that the problem can't be fixed otherwise.
->
-> I might be repeating myself, but kernel development works this way:
->
->   1) Hack your private POC - Yay!
->
->   2) Sit down and think hard about the problems you identified in step
->      #1. Do a thorough analysis.
->   
->   3) Come up with a sensible integration plan.
->
->   4) Do the necessary grump work of cleanups all over the place
->
->   5) Add sensible infrastructure which is understandable for the bulk
->      of kernel/driver developers
->
->   6) Let your feature fall in place
->
-> and not in the way you are insisting on:
->
->   1) Hack your private POC - Yay!
->
->   2) Define that this is the only way to do it and try to shove it down
->      the throat of everyone.
->
->   3) Getting told that this is not the way it works
->
->   4) Insist on it forever and blame the grumpy maintainers who are just
->      not understanding the great value of your approach.
->
->   5) Go back to #2
->
-> You should know that already, but I have no problem to give that lecture
-> to you over and over again. I probably should create a form letter.
->
-> And no, you can bitch about me as much as you want. These are not my
-> personal rules and personal pet pieves. These are rules Linus cares
-> about very much and aside of that they just reflect common sense.
->
->   The kernel is a common good and not the dump ground for your personal
->   brain waste.
->
->   The kernel does not serve Intel. Quite the contrary Intel depends on
->   the kernel to work nicely with it's hardware. Ergo, Intel should have
->   a vested interest to serve the kernel and take responsibility for it
->   as a whole. And so should you as an Intel employee.
->
-> Just dumping your next half baken workaround does not cut it especially
-> not when it is not backed up by sensible arguments.
->
-> Please try again, but not before you have something substantial to back
-> up your claims.
+The testing show that perf_ftrace_function_call() are using smp_processor_id()
+with preemption enabled, all the checking on CPU could be wrong after preemption.
 
-That said, I can't resist the urge to say a few words to the responsible
-senior and management people at Intel in this context:
+As Peter point out, the section between ftrace_test_recursion_trylock/unlock()
+pair require the preemption to be disabled as 'Documentation/trace/ftrace-uses.rst'
+explained, but currently the work is done outside of the helpers.
 
-I surely know that a lot of Intel people claim that their lack of
-progress is _only_ because Thomas is hard to work with and Thomas wants
-unreasonable changes to their code, which I could perceive as an abuse of
-myself for the purpose of self-deception. TBH, I don't give a damn.
+And since the internal using of trace_test_and_set_recursion()
+and trace_clear_recursion() also require preemption to be disabled, we
+can just merge the logical together.
 
-Let me ask a few questions instead:
+Patch 1/2 will make sure preemption disabled when recursion lock succeed,
+patch 2/2 will do smp_processor_id() checking after trylock() to address the
+issue.
 
-  - Is it unreasonable to expect that argumentations are based on facts
-    and proper analysis?
+v1: https://lore.kernel.org/all/8c7de46d-9869-aa5e-2bb9-5dbc2eda395e@linux.alibaba.com/
+v2: https://lore.kernel.org/all/b1d7fe43-ce84-0ed7-32f7-ea1d12d0b716@linux.alibaba.com/
+v3: https://lore.kernel.org/all/609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com/
 
-  - Is it unreasonable to expect a proper integration of a new feature?
+Michael Wang (2):
+  ftrace: disable preemption when recursion locked
+  ftrace: do CPU checking after preemption disabled
 
-  - Does it take unreasonable effort to do a proper design?
+ arch/csky/kernel/probes/ftrace.c     |  2 --
+ arch/parisc/kernel/ftrace.c          |  2 --
+ arch/powerpc/kernel/kprobes-ftrace.c |  2 --
+ arch/riscv/kernel/probes/ftrace.c    |  2 --
+ arch/x86/kernel/kprobes/ftrace.c     |  2 --
+ include/linux/trace_recursion.h      | 20 +++++++++++++++++++-
+ kernel/livepatch/patch.c             | 13 +++++++------
+ kernel/trace/ftrace.c                | 15 +++++----------
+ kernel/trace/trace_event_perf.c      |  6 +++---
+ kernel/trace/trace_functions.c       |  5 -----
+ 10 files changed, 34 insertions(+), 35 deletions(-)
 
-  - Is it unreasonable to ask that he necessary cleanups are done
-    upfront?
+-- 
+1.8.3.1
 
-If anyone of the responsible people at Intel thinks so, then they should
-speak up now and tell me in public and into my face what's so
-unreasonable about that.
-
-Thanks,
-
-	Thomas
