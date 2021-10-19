@@ -2,123 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68A8E432E75
-	for <lists+linux-parisc@lfdr.de>; Tue, 19 Oct 2021 08:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA62A4332A7
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 Oct 2021 11:39:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234125AbhJSGnm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 19 Oct 2021 02:43:42 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29]:36636 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229695AbhJSGnl (ORCPT
+        id S235127AbhJSJlh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 19 Oct 2021 05:41:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54236 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235140AbhJSJlZ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 19 Oct 2021 02:43:41 -0400
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id AA04B1FD8D;
-        Tue, 19 Oct 2021 06:41:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1634625687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=yiCf/K6bKrAWm+H5GwYg06T7whuQxu5z+Eyutq5ePEE=;
-        b=teDjFL9lr91NMRNc6Iv52QSxJj4QGuwwqDT3OOPMzK0CBm/3l5zawNGoKRXzDeN51cXEJP
-        MSlwF/JcwJeOLxY3hgNh8mmlyB20AXu0yYaXblNFINe8pkmoTcCpXT4iQCyA+bOZUlhR5W
-        yl7nzpiJ+YDINXRghZ+OA0t106VXXYU=
-Received: from suse.cz (unknown [10.100.216.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 0F30AA3B81;
-        Tue, 19 Oct 2021 06:41:26 +0000 (UTC)
-Date:   Tue, 19 Oct 2021 08:41:23 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Jisheng Zhang <jszhang@kernel.org>, linux-csky@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, live-patching@vger.kernel.org,
-        =?utf-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>,
-        Guo Ren <guoren@kernel.org>
-Subject: Re: [PATCH] tracing: Have all levels of checks prevent recursion
-Message-ID: <YW5ok3CfNoRMfVQ5@alley>
-References: <20211015110035.14813389@gandalf.local.home>
- <YW1KKCFallDG+E01@alley>
- <20211018220203.064a42ed@gandalf.local.home>
+        Tue, 19 Oct 2021 05:41:25 -0400
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50DD9C061775
+        for <linux-parisc@vger.kernel.org>; Tue, 19 Oct 2021 02:39:02 -0700 (PDT)
+Received: by mail-qk1-x72d.google.com with SMTP id n66so3031365qkn.0
+        for <linux-parisc@vger.kernel.org>; Tue, 19 Oct 2021 02:39:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
+        b=TOvN/3L74NxJ8jkZLAwc1HWcAigE5PqgL50bgmFqgfF5N3Ni/F/hFF6HKKLKTN31yN
+         HevaAXYbPfypt8hhKvSPyehT5ALdXqczNk+5xUwtC+i5sgHXh2uIQwAecZjfCaWU8ix6
+         IP3iNNDeKzM9Rarn67S7Y6Q5meavaw7Mpk+sez5Jm9gTXVkS2K7rH0HxN0wGBD1vTEZW
+         SlZ7Ohjm5TDffwxVe9psHKkZrw9F8ewS3UJdvRp48BugnVC9N6o6tGt7kOuD9dBL9WOI
+         l1dbXlU20FuuDCR1G9eGV6dpPzPq/obtSd+vSUmjw4dvgQ3M4KndmuUgzevCd5/KLP2j
+         AvJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
+        b=VJXLZo92RyRSGFp1uJ1DJJaQe7gGe4Ds6gBz1pCXMXGC1xdWvYFxuYbJwsAclsyObX
+         Oj7NS3dko/ab9OqNZfFCbZf8s4UsIiNbzL0J/ahPLYzAxDVsKXMjOHqA8lrrbp+YdE1U
+         0MpBahO68CpPfSrH/5grbWgRprZYguUiPdAPjgasaikSMg1Lk25a+hsVetKKgNPr0ZxS
+         crMlEWmM5YiL/mMVniBSlTPUDO5qUKitKAe9khor5DwSPRJe1DPPs99n1SA0tPTMlppu
+         ulobWInb6XKWjNU0594t/3fVxDxSzg4mbKlunzEk5SAcGx2qblZZ000aybhFC8/BPx+D
+         ZDew==
+X-Gm-Message-State: AOAM533JlPEcR5kFxw67wRKWqMdAGfFePEc+A3IzgSFsFMObS9uaweIK
+        p/FCgVfT/XMWk9WtBjdf4B3ZGxmZHq05+NfgDSK1CwPCsis=
+X-Google-Smtp-Source: ABdhPJzMH7/Viv+gmOFi/wRxRbcc549EbhNxq1WBmFuuCl5Y1sIaNw3hPc5P9A8SHm6QnP1HNGNAvecvirmJS/oiL6w=
+X-Received: by 2002:a02:6f5d:: with SMTP id b29mr3319085jae.113.1634636331013;
+ Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211018220203.064a42ed@gandalf.local.home>
+Received: by 2002:a92:c7c6:0:0:0:0:0 with HTTP; Tue, 19 Oct 2021 02:38:50
+ -0700 (PDT)
+Reply-To: megaritalouisdrayfu199@yahoo.com
+From:   "Mrs. Margarita Louis-Dreyfus." <anniewei112@gmail.com>
+Date:   Mon, 18 Oct 2021 21:38:50 -1200
+Message-ID: <CAGT4pMkzKn8mfeY05OAG04CCAxodKEVDUk46D=O7cfK8+n1=tA@mail.gmail.com>
+Subject: Charitable funds to help the less privilege!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon 2021-10-18 22:02:03, Steven Rostedt wrote:
-> On Mon, 18 Oct 2021 12:19:20 +0200
-> Petr Mladek <pmladek@suse.com> wrote:
-> 
-> > > -
-> > >  	bit = trace_get_context_bit() + start;
-> > >  	if (unlikely(val & (1 << bit))) {
-> > >  		/*
-> > >  		 * It could be that preempt_count has not been updated during
-> > >  		 * a switch between contexts. Allow for a single recursion.
-> > >  		 */
-> > > -		bit = TRACE_TRANSITION_BIT;
-> > > +		bit = TRACE_CTX_TRANSITION + start;  
-> >
-> 
-> [..]
-> 
-> > Could we please update the comment? I mean to say if it is a race
-> > or if we trace a function that should not get traced.
-> 
-> What do you think of this change?
-> 
-> diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
-> index 1d8cce02c3fb..24f284eb55a7 100644
-> --- a/include/linux/trace_recursion.h
-> +++ b/include/linux/trace_recursion.h
-> @@ -168,8 +168,12 @@ static __always_inline int trace_test_and_set_recursion(unsigned long ip, unsign
->  	bit = trace_get_context_bit() + start;
->  	if (unlikely(val & (1 << bit))) {
->  		/*
-> -		 * It could be that preempt_count has not been updated during
-> -		 * a switch between contexts. Allow for a single recursion.
-> +		 * If an interrupt occurs during a trace, and another trace
-> +		 * happens in that interrupt but before the preempt_count is
-> +		 * updated to reflect the new interrupt context, then this
-> +		 * will think a recursion occurred, and the event will be dropped.
-> +		 * Let a single instance happen via the TRANSITION_BIT to
-> +		 * not drop those events.
->  		 */
->  		bit = TRACE_TRANSITION_BIT;
->  		if (val & (1 << bit)) {
-> 
-> 
+--=20
+Hello,
 
-Looks good to me. Thanks for the update.
+I am sorry to encroach into your privacy in this manner, my name
+Margarita Louis-Dreyfus , I find it pleasurable to offer you my
+partnership in business, i only pray at this time that your email
+address is still valid. I want to solicit your attention to receive
+money on my behalf for humanitarian project to help the less
+priviledge.
 
-Feel free to postpone this change. I do not want to complicate
-upstreaming the fix for stable. I am sorry if I already
-complicated it.
+The purpose of my contacting you is because my status would not permit
+me to do this alone. Given my current state of health, I have decided
+to donate Ninety -Eight Million United State Dollars to establish a
+foundation with your help to reach out to the less privilege, orphans,
+sick and homeless people in your country who will receive their
+blessings as i promised my God before i leave this earth.
 
-Best Regards,
-Petr
+I got your contact through my personal search, you were revealed as
+being quite astute in private entrepreneurship, and i have no doubt
+that you can handle this huge financial transaction. Please contact my
+executor for more information:
+
+Mr. Ford Spencer(Attorney at Law).
+For: Mrs. Margarita Louis-Dreyfus
+LEGAL DEPARTMENT LAWSON & ASSOCIATES
+(JUSTICE, FAIRPLAY & EQUITY)
+Email: fordspencer828@yahoo.com, fordspencereqs828@gmail.com
+Office: +1-970-414-1400
++1-702-714-3422
+Mobile: +1 916 269 2733
+Fax: +1-970-414-1433
+=C2=AE Property of Steven C Spence PA.
+
+Your earliest response to this letter will be appreciated.
+
+Kind Regards,
+
+Mrs. Margarita Louis-Dreyfus.
