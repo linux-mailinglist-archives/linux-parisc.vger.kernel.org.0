@@ -2,35 +2,35 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B324433EB7
-	for <lists+linux-parisc@lfdr.de>; Tue, 19 Oct 2021 20:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A73E5433EB8
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 Oct 2021 20:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232130AbhJSSuT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 19 Oct 2021 14:50:19 -0400
-Received: from outbound5e.eu.mailhop.org ([52.28.168.19]:46249 "EHLO
-        outbound5e.eu.mailhop.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230059AbhJSSuS (ORCPT
+        id S232633AbhJSSuW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 19 Oct 2021 14:50:22 -0400
+Received: from outbound5b.eu.mailhop.org ([3.125.66.160]:32529 "EHLO
+        outbound5b.eu.mailhop.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230059AbhJSSuV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 19 Oct 2021 14:50:18 -0400
-X-Greylist: delayed 963 seconds by postgrey-1.27 at vger.kernel.org; Tue, 19 Oct 2021 14:50:18 EDT
-ARC-Seal: i=1; a=rsa-sha256; t=1634668322; cv=none;
+        Tue, 19 Oct 2021 14:50:21 -0400
+X-Greylist: delayed 901 seconds by postgrey-1.27 at vger.kernel.org; Tue, 19 Oct 2021 14:50:21 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1634668323; cv=none;
         d=outbound.mailhop.org; s=arc-outbound20181012;
-        b=h2fqpFjf5ljb2P+lwztZmUcJfHhXMwQnwCf36+tiO25PRfRJy5IZ57Acb23aVqlhnQp/zk4EG9XOs
-         2qtWF2WyYzxGi69x8C1MN7wBxyrAhgf5M4NDAm9Ry0BmiETtrgpCmTPq6b6XFKNE6B87vwqLtAyEBF
-         sIfUrISj7P8YmyEm/Tg74kdtjXZlbupEAMZyWImC/ihdg44ZhM5jlA/yWzv1fLc4ByfbWG87yDepzZ
-         fNk+No2CSI41SmoZo3iwDhI6Lw60QcfPjXkzjiGivq8qI+3pMADKQdofJswl7RmeHxg4y2gl9YUoUU
-         dV+zY/yevAlbcIKAtmDzNS2dONSypgQ==
+        b=ue3O4VzICoNyoEjm3A6r+WqwUJwGrGemWNHmm52qyaK6iBFKJA3KIoYiwdmxbdEojtxGPDiroS91i
+         aDjib24M+WkdwOVNo16ARS3Tetus5Nwgm4u6tGXPflzgyuGa8VlVrqIjsuGvZpajtV1ZP2UTq3LDQv
+         ioQOc0Eu13Ab7mV9ANA6ba3j4MAieqCceQ9+JPpgbTg+l7U2L8kwQj+6dEWpBMPxsJ5Me3paPWZgAb
+         LFciMKyVm3EnLKZupZ2FwvUtVHvX3hD7HqJva0CWubydckyfaivvYkcdbV6etb+5S3v9x88+cg6ajx
+         0NQ/NcLJR7xPaC+YOynOOlHe6ghYLaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
         d=outbound.mailhop.org; s=arc-outbound20181012;
         h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
          subject:cc:to:from:dkim-signature:dkim-signature:from;
-        bh=PO0k1xL+/efGnR085NfRMjW1YmQC15DyM+IWS7rTASQ=;
-        b=c+9VcmhLgeVpHZ8iRS/oBO3lCRFaYRUnHRC+fll2uzzM1siqIsdfLuiF6cpuuJZlt+1bNicAni/Nb
-         fvqqDvJR70tEz8xK+hRnKLuAVO0VilvWtlFGElMobbDmp8bFc46AREDaZBXnYpvUu5cS6ip1dRLYGA
-         oowpRAxNBF4WUglimf5hv8g9QKRTFcHiZ8cyw/BHsXGWk/oAVMv8aryg23Y32+nPe9pobG1jE39Gm/
-         /gxbLAtxrWlfNFHVmyijx3N0yweCHmjbw9yoD6yNhv4vtJ7Mv7i0Bjv69BfNFHe9FNvSfu4xUVVzYq
-         9tpEx/pQd9lWukxJByYeoOcHzbGCeGQ==
-ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
+        bh=SxWaIFxqU+QGiEZVh4PPqqGfnSxL+ZmvCOXjeo2LSfE=;
+        b=ZAL2Aqix5hjNpzoWQHW9RzwFUmrAC7v9wkJzCtLx3iUoO1drWe2lpGMf90kI7qUam4z6fsDxlSAu1
+         vE7YNRx3TWPhFwJiY7VcPvqts0s+c7FseCWRnRual7MZL+bG/ibwrDKMt9pxhWkAARoyKuyvMXHsXu
+         v8dpdXCgdHLzt3WGfQ9b0NtyPYTbXCYuz68MW6nJ/YEo+GTP03C2/XJYziKEJoTo0Hih50gL/DD0nr
+         j22a45w6wSMXsg/zxWBCJaZM19GF10OuGRF6E4e1/IhkShG4AGwIDBIAgAkxtPa/dlJsgR3TFmg1/0
+         CVykJGCrl4IjSwEoeQNnm7+07VZDPag==
+ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
         spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=91.207.61.48;
         dmarc=none header.from=stackframe.org;
         arc=none header.oldest-pass=0;
@@ -38,39 +38,39 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=stackframe.org; s=duo-1634547266507-560c42ae;
         h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
          subject:cc:to:from:from;
-        bh=PO0k1xL+/efGnR085NfRMjW1YmQC15DyM+IWS7rTASQ=;
-        b=WfHtW7Du0oGe++n+6T9e/ipVzEhYzcZr3agAzfeGFS+yM9KQtU7K6VMh5FmafWkVqV2DDdIfyUvqT
-         t/Qq38itu6T4aVVAG7kHr+vuOQAQPYpC51YDb8G+kHHc08AcSVHy5I/FonZqq+9Ctv5/Fd6nUYIpip
-         5WLQYsJ5dTOTdx9g=
+        bh=SxWaIFxqU+QGiEZVh4PPqqGfnSxL+ZmvCOXjeo2LSfE=;
+        b=sbpK519dulPy1blmoAWWpdWqMHaH9jCnWRBQymkrne0fp5MKrcl2J37IghI/X8PXWKeOQDCIR6+16
+         uMFqDZU16g/nz3QlhuX80VBC1ZrVO9oETVhXIuqkU19f5lCD6Y/8jsYqF+nIPBYUY1FviHA3bpbPSv
+         IpewCpP/hQgbXQl0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=outbound.mailhop.org; s=dkim-high;
         h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
          subject:cc:to:from:from;
-        bh=PO0k1xL+/efGnR085NfRMjW1YmQC15DyM+IWS7rTASQ=;
-        b=iFfmtuhs6f0OJD3kRQUJmbvj/pZgggWkNqRcI/98R6rc4IycFLt8xv+iZ5c3HA4EfAeUsUtMDFohH
-         vwHa+ch/9CPi9E7Aho/XRhl9uvua6V5c4QzLtBRCv6uqJD7cSN4ojFZKY59i175AQlj7wdY+MP0mZr
-         o2jC0GHHdwll64nRuj0guRBOKLi1Fto0vNmnb966OrqikySesfDH0NlAgoAjJWSBAaFHVw1ChUfAAV
-         xqcR8QNQmFlnsANQ6POMUEJ3LN+n1c9/Yh3odYq4d4F41TtRpgc/QSAtsW3MhvEN16DO9IM1J2RCAl
-         Kq2lQkoNGEbZD3rKaxhpqlIrkcnuRuQ==
+        bh=SxWaIFxqU+QGiEZVh4PPqqGfnSxL+ZmvCOXjeo2LSfE=;
+        b=OeDLkUQYozgSRWZJzfbFocyn3YwJ9ZYQGhcej5Zins4Aw3HIKwEuyMH1xsxfFxQ6QgxCfmG/FlI9K
+         XeDc+PsUbrFdukWvFmYYxkBFicQ1IAz2ysiOkYz+NOd3nLB5sH0buJczMnjpLF2991aZuIKYDFBVWu
+         zirEQyABLfR7ND7pwkMqL4HUYYS5fyGzBqzQwkATrNDxJlYpzmjJMmVIOj63PukeKq2QZrqul87KZz
+         Tb8Hkd8bX1hmIc23Y4MEbZoyDU0y/AcIHs9vHbY0CnmdLex1f8L6W8LXjggDln+vphezZ757eJC1sE
+         tij0TEYfWalH2RJbf33WrYuGubFzvEQ==
 X-Originating-IP: 91.207.61.48
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: d8ebb49c-310a-11ec-a070-973b52397bcb
+X-MHO-User: d980fabe-310a-11ec-a40e-d17a12b91375
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (propper.duncanthrax.net [91.207.61.48])
-        by outbound2.eu.mailhop.org (Halon) with ESMTPSA
-        id d8ebb49c-310a-11ec-a070-973b52397bcb;
-        Tue, 19 Oct 2021 18:32:00 +0000 (UTC)
+        by outbound3.eu.mailhop.org (Halon) with ESMTPSA
+        id d980fabe-310a-11ec-a40e-d17a12b91375;
+        Tue, 19 Oct 2021 18:32:01 +0000 (UTC)
 Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org)
         by mail.duncanthrax.net with esmtpa (Exim 4.93)
         (envelope-from <svens@stackframe.org>)
-        id 1mctu3-00Bhg0-Gc; Tue, 19 Oct 2021 21:31:59 +0300
+        id 1mctu4-00Bhg0-7n; Tue, 19 Oct 2021 21:32:00 +0300
 From:   Sven Schnelle <svens@stackframe.org>
 To:     Helge Deller <deller@gmx.de>
 Cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH 1/3] parisc: don't use dereference_function_descriptor() in trace stub
-Date:   Tue, 19 Oct 2021 20:31:50 +0200
-Message-Id: <20211019183152.26191-2-svens@stackframe.org>
+Subject: [PATCH 2/3] parisc/ftrace: use static key to enable function graph
+Date:   Tue, 19 Oct 2021 20:31:51 +0200
+Message-Id: <20211019183152.26191-3-svens@stackframe.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211019183152.26191-1-svens@stackframe.org>
 References: <20211019183152.26191-1-svens@stackframe.org>
@@ -80,45 +80,51 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-dereference_function_descriptor() calls get_kernel_nofault(),
-which itself might call into tracing. This leads to a deadlock.
-
-Instead of reverting back to casts to compare whether there's
-a trace function set, just always call the appropriate trace function.
-With dynamic ftrace this function shouldn't be called at all
-when ftrace is disabled. It adds a function call for the non-dynamic
-case, but people concerned about the costs of ftrace should use
-dynamic ftrace anyways.
+Instead of comparing function descriptors add a static branch
+so the condition gets patched during runtime.
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- arch/parisc/kernel/ftrace.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/parisc/kernel/ftrace.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
-index 0a1e75af5382..f5f467ebf94c 100644
+index f5f467ebf94c..7a2de664242a 100644
 --- a/arch/parisc/kernel/ftrace.c
 +++ b/arch/parisc/kernel/ftrace.c
-@@ -58,10 +58,7 @@ void notrace __hot ftrace_function_trampoline(unsigned long parent,
- #endif
- 	extern struct ftrace_ops *function_trace_op;
+@@ -23,6 +23,7 @@
  
--	if (function_trace_op->flags & FTRACE_OPS_FL_ENABLED &&
--	    ftrace_trace_function != ftrace_stub)
--		ftrace_trace_function(self_addr, parent,
--				function_trace_op, fregs);
-+	ftrace_trace_function(self_addr, parent, function_trace_op, fregs);
+ #define __hot __section(".text.hot")
+ 
++static DEFINE_STATIC_KEY_FALSE(ftrace_graph_enabled);
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ /*
+  * Hook the return address and push it in the stack of return addrs
+@@ -61,9 +62,7 @@ void notrace __hot ftrace_function_trampoline(unsigned long parent,
+ 	ftrace_trace_function(self_addr, parent, function_trace_op, fregs);
  
  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
- 	if (dereference_function_descriptor(ftrace_graph_return) !=
-@@ -101,6 +98,7 @@ int __init ftrace_dyn_arch_init(void)
- }
- int ftrace_update_ftrace_func(ftrace_func_t func)
+-	if (dereference_function_descriptor(ftrace_graph_return) !=
+-	    dereference_function_descriptor(ftrace_stub) ||
+-	    ftrace_graph_entry != ftrace_graph_entry_stub) {
++	if (static_branch_unlikely(&ftrace_graph_enabled)) {
+ 		unsigned long *parent_rp;
+ 
+ 		/* calculate pointer to %rp in stack */
+@@ -81,11 +80,13 @@ void notrace __hot ftrace_function_trampoline(unsigned long parent,
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ int ftrace_enable_ftrace_graph_caller(void)
  {
-+	ftrace_trace_function = func;
++	static_key_enable(&ftrace_graph_enabled.key);
  	return 0;
  }
  
+ int ftrace_disable_ftrace_graph_caller(void)
+ {
++	static_key_disable(&ftrace_graph_enabled.key);
+ 	return 0;
+ }
+ #endif
 -- 
 2.33.0
 
