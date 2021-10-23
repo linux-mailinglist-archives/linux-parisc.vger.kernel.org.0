@@ -2,102 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A65438148
-	for <lists+linux-parisc@lfdr.de>; Sat, 23 Oct 2021 03:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB8A43837D
+	for <lists+linux-parisc@lfdr.de>; Sat, 23 Oct 2021 13:45:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230086AbhJWBjw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 22 Oct 2021 21:39:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:57705 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229507AbhJWBjv (ORCPT
+        id S230359AbhJWLrk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 23 Oct 2021 07:47:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51764 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229778AbhJWLrk (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 22 Oct 2021 21:39:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634953052;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VMIfEUdyS7S9YycGnN8abTq0K/b0QBW0FaCGofvAkWQ=;
-        b=ZkN/nHkIrqMM+ElIdY6KUQiT0OnlXWNbcZ4cMI9uD+x6ED/J4o9uLIFELT9/l2EX9h1lZb
-        jgVFKf/UY1X9XuVxVTfSelwkZkVROFZ1WyG61aqrZq5MbNcftOKT1iFXCTw+NqK3thQ+4q
-        yKdkO23B9wqMBaF39mw9fDgU2+pNHS8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-140-dGKLLbnsONGXIqdLVyqF3w-1; Fri, 22 Oct 2021 21:37:31 -0400
-X-MC-Unique: dGKLLbnsONGXIqdLVyqF3w-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 89FC5362F8;
-        Sat, 23 Oct 2021 01:37:27 +0000 (UTC)
-Received: from llong.remote.csb (unknown [10.22.16.242])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4E1F817CEE;
-        Sat, 23 Oct 2021 01:37:23 +0000 (UTC)
-Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Sat, 23 Oct 2021 07:47:40 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945FAC061764;
+        Sat, 23 Oct 2021 04:45:20 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id d3so5345678wrh.8;
+        Sat, 23 Oct 2021 04:45:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8NbVhy/18KdPyyuiO5A3kcqrXSmZbFqQmCBwS7YiJMI=;
+        b=jyBw11KT5wfH8KJ3LtWt0wpRZR5B1weSusDqeMUhL5GR7zWCsFyMhqH1C2lrfEaUNa
+         AWkWO1trhxA6/WbqIKchLudTL5jtDDOaTDaIgdCM0ZXtHBPZYx8ERPMGqbdam1Zw5VpL
+         INrPIYoBq5S6gKLciK+acbNbYlAwB8HnKJtpdBEcZDgP5zakCGHPsmzkQIa+Y/NO/CyJ
+         qMi/84HlJwuwN0SmpH10WI280WBk4Vq1tI/1kG7o5zQlkjcC7jT4Mm2HJKqlMhRbMiCE
+         C4UOkprijN8iZvS2WHI4eoGFASTtSpQ/8TI+XxMf3BynU6zjbrH+VDly2h1r9Q66I8hi
+         p1+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8NbVhy/18KdPyyuiO5A3kcqrXSmZbFqQmCBwS7YiJMI=;
+        b=qNIXsUpf1ZlDoC1T5x9KuNj8A1BPKZcV1KrmOxDp5vqPsB6K8CMikeo3Ky+LfjN8mt
+         clcy/oO728QUeE8zqp00eW4r9PoiX7buMB02WikCT0gB2/FALTUlBa3mScq2X9MP2pcO
+         db6isRsGHWmEFtNAsl0NFDLDd0h66xZ7yWby2t1Z4bcVGCQWk6qDegf3fNuItXvJvkZh
+         /roXCeG3CQjRrJxp+pFfTgO87ke9OT9/eMXVRHurxpUTx1rHEPf/7Zb7iKHoMW/xHY0H
+         f7uR+zNy9KXF5WbqA/0cyTvyAaGSuVCWonIykYDgLwrRgDRrkkcEONRQ6p3z995gXvtq
+         7Leg==
+X-Gm-Message-State: AOAM5334j7tBbh2HL4blYMEO8rZa3ojvDkATxwcKVQWKQ9fEG2/1G6uH
+        F8P7UbOljwFIHA==
+X-Google-Smtp-Source: ABdhPJwu99HGkqbc5xQqT1RXKDkmPFr5MlmJVc2BR0UfWAO7GRDA1X4Rl7Wxknm/AAOGh7Goz9hNmg==
+X-Received: by 2002:a5d:508a:: with SMTP id a10mr7473269wrt.126.1634989519243;
+        Sat, 23 Oct 2021 04:45:19 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id s18sm8257265wrb.95.2021.10.23.04.45.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Oct 2021 04:45:18 -0700 (PDT)
+From:   Colin King <colin.i.king@googlemail.com>
+X-Google-Original-From: Colin King <colin.king@canonical.com>
+To:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
-References: <20211022120058.1031690-1-arnd@kernel.org>
-From:   Waiman Long <longman@redhat.com>
-Message-ID: <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
-Date:   Fri, 22 Oct 2021 21:37:22 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Colin Ian King <colin.i.king@gmail.com>,
+        linux-parisc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] parisc: Fix spelling mistake "Plase" -> "Please"
+Date:   Sat, 23 Oct 2021 12:45:18 +0100
+Message-Id: <20211023114518.18600-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-In-Reply-To: <20211022120058.1031690-1-arnd@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/22/21 7:59 AM, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> parisc, ia64 and powerpc32 are the only remaining architectures that
-> provide custom arch_{spin,read,write}_lock_flags() functions, which are
-> meant to re-enable interrupts while waiting for a spinlock.
->
-> However, none of these can actually run into this codepath, because
-> it is only called on architectures without CONFIG_GENERIC_LOCKBREAK,
-> or when CONFIG_DEBUG_LOCK_ALLOC is set without CONFIG_LOCKDEP, and none
-> of those combinations are possible on the three architectures.
->
-> Going back in the git history, it appears that arch/mn10300 may have
-> been able to run into this code path, but there is a good chance that
-> it never worked. On the architectures that still exist, it was
-> already impossible to hit back in 2008 after the introduction of
-> CONFIG_GENERIC_LOCKBREAK, and possibly earlier.
->
-> As this is all dead code, just remove it and the helper functions built
-> around it. For arch/ia64, the inline asm could be cleaned up, but
-> it seems safer to leave it untouched.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-Does that mean we can also remove the GENERIC_LOCKBREAK config option 
-from the Kconfig files as well?
+There is a spelling mistake in a pr_warning message. Fix it.
 
-Cheers,
-Longman
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ arch/parisc/kernel/sys_parisc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
+index d11834377676..2b34294517a1 100644
+--- a/arch/parisc/kernel/sys_parisc.c
++++ b/arch/parisc/kernel/sys_parisc.c
+@@ -413,7 +413,7 @@ static int FIX_O_NONBLOCK(int flags)
+ 			!test_thread_flag(TIF_NONBLOCK_WARNING)) {
+ 		set_thread_flag(TIF_NONBLOCK_WARNING);
+ 		pr_warn("%s(%d) uses a deprecated O_NONBLOCK value."
+-			" Plase recompile with newer glibc.\n",
++			" Please recompile with newer glibc.\n",
+ 			current->comm, current->pid);
+ 	}
+ 	return flags & ~O_NONBLOCK_MASK_OUT;
+-- 
+2.32.0
 
