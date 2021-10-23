@@ -2,92 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BB8A43837D
-	for <lists+linux-parisc@lfdr.de>; Sat, 23 Oct 2021 13:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B3F843843E
+	for <lists+linux-parisc@lfdr.de>; Sat, 23 Oct 2021 18:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230359AbhJWLrk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 23 Oct 2021 07:47:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51764 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbhJWLrk (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 23 Oct 2021 07:47:40 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945FAC061764;
-        Sat, 23 Oct 2021 04:45:20 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id d3so5345678wrh.8;
-        Sat, 23 Oct 2021 04:45:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8NbVhy/18KdPyyuiO5A3kcqrXSmZbFqQmCBwS7YiJMI=;
-        b=jyBw11KT5wfH8KJ3LtWt0wpRZR5B1weSusDqeMUhL5GR7zWCsFyMhqH1C2lrfEaUNa
-         AWkWO1trhxA6/WbqIKchLudTL5jtDDOaTDaIgdCM0ZXtHBPZYx8ERPMGqbdam1Zw5VpL
-         INrPIYoBq5S6gKLciK+acbNbYlAwB8HnKJtpdBEcZDgP5zakCGHPsmzkQIa+Y/NO/CyJ
-         qMi/84HlJwuwN0SmpH10WI280WBk4Vq1tI/1kG7o5zQlkjcC7jT4Mm2HJKqlMhRbMiCE
-         C4UOkprijN8iZvS2WHI4eoGFASTtSpQ/8TI+XxMf3BynU6zjbrH+VDly2h1r9Q66I8hi
-         p1+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8NbVhy/18KdPyyuiO5A3kcqrXSmZbFqQmCBwS7YiJMI=;
-        b=qNIXsUpf1ZlDoC1T5x9KuNj8A1BPKZcV1KrmOxDp5vqPsB6K8CMikeo3Ky+LfjN8mt
-         clcy/oO728QUeE8zqp00eW4r9PoiX7buMB02WikCT0gB2/FALTUlBa3mScq2X9MP2pcO
-         db6isRsGHWmEFtNAsl0NFDLDd0h66xZ7yWby2t1Z4bcVGCQWk6qDegf3fNuItXvJvkZh
-         /roXCeG3CQjRrJxp+pFfTgO87ke9OT9/eMXVRHurxpUTx1rHEPf/7Zb7iKHoMW/xHY0H
-         f7uR+zNy9KXF5WbqA/0cyTvyAaGSuVCWonIykYDgLwrRgDRrkkcEONRQ6p3z995gXvtq
-         7Leg==
-X-Gm-Message-State: AOAM5334j7tBbh2HL4blYMEO8rZa3ojvDkATxwcKVQWKQ9fEG2/1G6uH
-        F8P7UbOljwFIHA==
-X-Google-Smtp-Source: ABdhPJwu99HGkqbc5xQqT1RXKDkmPFr5MlmJVc2BR0UfWAO7GRDA1X4Rl7Wxknm/AAOGh7Goz9hNmg==
-X-Received: by 2002:a5d:508a:: with SMTP id a10mr7473269wrt.126.1634989519243;
-        Sat, 23 Oct 2021 04:45:19 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id s18sm8257265wrb.95.2021.10.23.04.45.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Oct 2021 04:45:18 -0700 (PDT)
-From:   Colin King <colin.i.king@googlemail.com>
-X-Google-Original-From: Colin King <colin.king@canonical.com>
-To:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        linux-parisc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] parisc: Fix spelling mistake "Plase" -> "Please"
-Date:   Sat, 23 Oct 2021 12:45:18 +0100
-Message-Id: <20211023114518.18600-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.32.0
+        id S230104AbhJWQHf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 23 Oct 2021 12:07:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60218 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229901AbhJWQHe (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 23 Oct 2021 12:07:34 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 51A1E6109E;
+        Sat, 23 Oct 2021 16:05:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635005115;
+        bh=a0FullCysk1UJY/SuwNW+JkwKz1DX5zFsZR7u65jCCk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=YcA0X7ZJT9KPq++0vy4Zc9YPjW55ngCXT3XYqy0oc0V32YWSyFzKjWH46Wfk6JUB6
+         PCIDwfEBeDkcsFDGtdhqthdSSccuQ4eBo6P/LqmrXl9bChhrw5voAlYoYh7iNIzAji
+         I/i5bgtEUMvO3AEqG3qlH4MZ1DNT15pXqUIREZ0Yj9fWIMtdEKWa5Dl0hx2Av4mXBx
+         aZYfYYaL5Ja4lDViVX9MnZlv3E1cOX3kebEmYI6h4HSEkK5Cu3dI3EbNPUElSQ0S/m
+         arVBv2qit0AEO2JDL2ItsVAj0xcsKg0bg0oX/nPHGUknfGsiTy2YfqGtAARZUCZBYT
+         WlW6qCwcUiNFA==
+Received: by mail-wm1-f43.google.com with SMTP id 193-20020a1c01ca000000b00327775075f7so7440134wmb.5;
+        Sat, 23 Oct 2021 09:05:15 -0700 (PDT)
+X-Gm-Message-State: AOAM53104sgHT455SKw/nCLQ+2DmR7UQH8Q0rOPpZBlfJr0HxHgiM5nl
+        PG6STbi3Srwj7X7BDwhMJA7ar3RAApKwyU2XHuc=
+X-Google-Smtp-Source: ABdhPJzw9bHMXdBR8sTpnXzuM1z62QqWWvXCArLgXmJmvR/CFzjvKRNvYnRPFIYed1aqogH5ms1MCPnMvzTwp0uq874=
+X-Received: by 2002:a05:600c:4f42:: with SMTP id m2mr36618604wmq.82.1635005113773;
+ Sat, 23 Oct 2021 09:05:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20211022120058.1031690-1-arnd@kernel.org> <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+In-Reply-To: <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Sat, 23 Oct 2021 18:04:57 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
+Message-ID: <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
+Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
+To:     Waiman Long <longman@redhat.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        Openrisc <openrisc@lists.librecores.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Colin Ian King <colin.i.king@gmail.com>
+On Sat, Oct 23, 2021 at 3:37 AM Waiman Long <longman@redhat.com> wrote:
+>> On 10/22/21 7:59 AM, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > As this is all dead code, just remove it and the helper functions built
+> > around it. For arch/ia64, the inline asm could be cleaned up, but
+> > it seems safer to leave it untouched.
+> >
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Does that mean we can also remove the GENERIC_LOCKBREAK config option
+> from the Kconfig files as well?
 
-There is a spelling mistake in a pr_warning message. Fix it.
+ I couldn't figure this out.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- arch/parisc/kernel/sys_parisc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+What I see is that the only architectures setting GENERIC_LOCKBREAK are
+nds32, parisc, powerpc, s390, sh and sparc64, while the only architectures
+implementing arch_spin_is_contended() are arm32, csky and ia64.
 
-diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
-index d11834377676..2b34294517a1 100644
---- a/arch/parisc/kernel/sys_parisc.c
-+++ b/arch/parisc/kernel/sys_parisc.c
-@@ -413,7 +413,7 @@ static int FIX_O_NONBLOCK(int flags)
- 			!test_thread_flag(TIF_NONBLOCK_WARNING)) {
- 		set_thread_flag(TIF_NONBLOCK_WARNING);
- 		pr_warn("%s(%d) uses a deprecated O_NONBLOCK value."
--			" Plase recompile with newer glibc.\n",
-+			" Please recompile with newer glibc.\n",
- 			current->comm, current->pid);
- 	}
- 	return flags & ~O_NONBLOCK_MASK_OUT;
--- 
-2.32.0
+The part I don't understand is whether the option actually does anything
+useful any more after commit d89c70356acf ("locking/core: Remove break_lock
+field when CONFIG_GENERIC_LOCKBREAK=y").
 
+      Arnd
