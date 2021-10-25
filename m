@@ -2,46 +2,40 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 551CE439AB1
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 17:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58490439E76
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 20:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232685AbhJYPrH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Oct 2021 11:47:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59672 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232679AbhJYPrG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Oct 2021 11:47:06 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3B50461002;
-        Mon, 25 Oct 2021 15:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635176684;
-        bh=t/cG3NYZufoQXI80MvoVKxbOhh2gfbNI54UCGBT3C9s=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=gxmadbL12O9CP1CNjr+LPFEaW4SzKdMH7wBlnUxy2TzbQ9gtUNV7DEu1WSahSAdvL
-         u/BXtC5jblBxPTnpfFqJLIzEtCppyKyls5mNlnSUYhZum9GY/TH9dg/+vSn7xHICbC
-         GLEZE6+WCHun6enc8dfKsjr2kBQWjDquNQv9BmuqxtjICcILdqOVO5TSfQnsQr7pUo
-         9mokyel9t8DVcl3p+kpJ5J3zE1W6ObHH5vLJl7Mp+ES8XFxHce3uPgJ/Mf77S+X4Hm
-         jYNewKS1aqWHMc6o18eqCgLn8SvSOXBCAmZWVHf49oAPQY46Q6rUNL5PhVtyNchEfn
-         6muiFFPGVzArQ==
-Received: by mail-wm1-f49.google.com with SMTP id z11-20020a1c7e0b000000b0030db7b70b6bso13618944wmc.1;
-        Mon, 25 Oct 2021 08:44:44 -0700 (PDT)
-X-Gm-Message-State: AOAM530Cn/8lzBrbj2Km/5FXTNqESozWc4szJDAsB9a9uzUki1tusjUC
-        Sz1FiNP9ty7KA5mK/2nKPd8l9wNTrklcDOj8fZQ=
-X-Google-Smtp-Source: ABdhPJwVwah/t3YoUqrQSaMsXvLvLT7cunG21zPbQEpZN6hLw+z/xKNabDoDNkoQgi86rA+/qLopU3mOKvl8de4bOgo=
-X-Received: by 2002:a7b:ce93:: with SMTP id q19mr7749701wmj.98.1635176682689;
- Mon, 25 Oct 2021 08:44:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20211022120058.1031690-1-arnd@kernel.org> <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
- <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
- <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net> <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
- <2413f412-a390-bbc0-e848-e2a77d1f0ab3@redhat.com>
-In-Reply-To: <2413f412-a390-bbc0-e848-e2a77d1f0ab3@redhat.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Mon, 25 Oct 2021 17:44:26 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3JEBF-dEg0iVThMMRNK3CDxY+mRtTeStMusycnethO_g@mail.gmail.com>
-Message-ID: <CAK8P3a3JEBF-dEg0iVThMMRNK3CDxY+mRtTeStMusycnethO_g@mail.gmail.com>
+        id S233187AbhJYS2G (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Oct 2021 14:28:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:23364 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230431AbhJYS2G (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 25 Oct 2021 14:28:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1635186343;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=WmLX7TLtZ9IDJ1JQ+2m7C+nUTKDcem4HGFPTzsvzRlk=;
+        b=GYU6diwvCR+Vxojf7pIQFcdjSnOPP0dxxrfRokloHQQ49xdmHv2oUWjUCRgDwl/TCBlCKI
+        1ZGMVL2pceh1rFUGA8Yo2Usbd+NCMJXm30/sN6E2/VoD5otJHAe84jWsJsyBbAI4ZDgi4x
+        NbUX9F4goP26o4iNIIotoPtjymlBIko=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-80-pXULrgXMNu2BFbQqJnWKPA-1; Mon, 25 Oct 2021 14:25:40 -0400
+X-MC-Unique: pXULrgXMNu2BFbQqJnWKPA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3722410B3959;
+        Mon, 25 Oct 2021 18:25:37 +0000 (UTC)
+Received: from llong.remote.csb (unknown [10.22.18.111])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 28C21100763D;
+        Mon, 25 Oct 2021 18:25:33 +0000 (UTC)
 Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
-To:     Waiman Long <longman@redhat.com>
+To:     Arnd Bergmann <arnd@kernel.org>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
@@ -64,25 +58,45 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Parisc List <linux-parisc@vger.kernel.org>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
         linux-s390 <linux-s390@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20211022120058.1031690-1-arnd@kernel.org>
+ <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+ <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
+ <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
+ <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
+ <2413f412-a390-bbc0-e848-e2a77d1f0ab3@redhat.com>
+ <CAK8P3a3JEBF-dEg0iVThMMRNK3CDxY+mRtTeStMusycnethO_g@mail.gmail.com>
+From:   Waiman Long <longman@redhat.com>
+Message-ID: <d7af2422-3264-b9bb-b515-da4351743448@redhat.com>
+Date:   Mon, 25 Oct 2021 14:25:32 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <CAK8P3a3JEBF-dEg0iVThMMRNK3CDxY+mRtTeStMusycnethO_g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Oct 25, 2021 at 5:28 PM Waiman Long <longman@redhat.com> wrote:
-> On 10/25/21 9:06 AM, Arnd Bergmann wrote:
-> >
-> > On s390, we pick between the cmpxchg() based directed-yield when
-> > running on virtualized CPUs, and a normal qspinlock when running on a
-> > dedicated CPU.
->
-> I am not aware that s390 is using qspinlocks at all as I don't see
-> ARCH_USE_QUEUED_SPINLOCKS being set anywhere under arch/s390. I only see
-> that it uses a cmpxchg based spinlock.
+On 10/25/21 11:44 AM, Arnd Bergmann wrote:
+> On Mon, Oct 25, 2021 at 5:28 PM Waiman Long <longman@redhat.com> wrote:
+>> On 10/25/21 9:06 AM, Arnd Bergmann wrote:
+>>> On s390, we pick between the cmpxchg() based directed-yield when
+>>> running on virtualized CPUs, and a normal qspinlock when running on a
+>>> dedicated CPU.
+>> I am not aware that s390 is using qspinlocks at all as I don't see
+>> ARCH_USE_QUEUED_SPINLOCKS being set anywhere under arch/s390. I only see
+>> that it uses a cmpxchg based spinlock.
+> Sorry, I should not have said "normal" here. See arch/s390/lib/spinlock.c
+> for their custom queued spinlocks as implemented in arch_spin_lock_queued().
+> I don't know if that code actually does the same thing as the generic qspinlock,
+> but it seems at least similar.
 
-Sorry, I should not have said "normal" here. See arch/s390/lib/spinlock.c
-for their custom queued spinlocks as implemented in arch_spin_lock_queued().
-I don't know if that code actually does the same thing as the generic qspinlock,
-but it seems at least similar.
+Yes, you are right. Their queued lock code looks like a custom version 
+of the pvqspinlock code.
 
-       Arnd
+Cheers,
+Longman
+
