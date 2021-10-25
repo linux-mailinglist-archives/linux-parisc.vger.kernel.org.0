@@ -2,98 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3533438564
-	for <lists+linux-parisc@lfdr.de>; Sat, 23 Oct 2021 22:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D41E6438CE0
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 02:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230476AbhJWUyQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 23 Oct 2021 16:54:16 -0400
-Received: from mout.gmx.net ([212.227.15.19]:55775 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230159AbhJWUyN (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 23 Oct 2021 16:54:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1635022307;
-        bh=TuXi+3xGQPup3cVO6potgB4Q4tS+Wp3uV8XhZ3JjkSc=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=OFL7yB+cs5lImL53Qo3IrbavcWvhKn0siIL/V/ZHa0mVtRebATgtDqutB976kI2Sa
-         dwGdqqDOvCt4OC703Qi1Cc3gh8EEZ2cYQYl+nLyg8wF5C7fIsJQ0EEep30GD/NNspA
-         LfQkOmWENYp6yENUJfVa7l2dLqqT+N3yNy4Y+SJ8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.178.51]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNKm0-1mL3tZ27kg-00OlKF; Sat, 23
- Oct 2021 22:51:47 +0200
-Message-ID: <819be457-e595-27ff-a8db-1326ecfe3579@gmx.de>
-Date:   Sat, 23 Oct 2021 22:51:26 +0200
+        id S230129AbhJYA4j (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 24 Oct 2021 20:56:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53566 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229554AbhJYA4j (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 24 Oct 2021 20:56:39 -0400
+Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB3BCC061745
+        for <linux-parisc@vger.kernel.org>; Sun, 24 Oct 2021 17:54:17 -0700 (PDT)
+Received: by mail-il1-x12f.google.com with SMTP id w10so10981548ilc.13
+        for <linux-parisc@vger.kernel.org>; Sun, 24 Oct 2021 17:54:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=vvC9ByVJGlgvAhABkby6MG4yPbU617Js94fp2P4ooak=;
+        b=QTZk77epNAaRzAcMXdmJhZHD+7QbOOvtDIB+vYl3tIA9kEkxyigYmkVS9ZjUC52o16
+         yd8h4Z0LXDncMHYMeQjczGQmPFV3YMWoXnGi8SLua84aTxGoUTIRRYMFv2Cwj2ST/p+C
+         tCDLOOe3EHd1eidJjmp8hBm39Cv7HLwKNhfmmvbn1AN9ykwt715cdKIhk8POAVTznHU8
+         4h4EWyqYUrUzdHCBK7O+0hgTRJ5X6qEGi2nGQpPS1hLV7DPxrsRyByML4GiqWrOAIMqr
+         OfCgU4530Zrh6QX+tQIZPxNmH3prNRYNQejoGDLPh034cnKOC853l5PXynkivYwCMkG3
+         1k3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=vvC9ByVJGlgvAhABkby6MG4yPbU617Js94fp2P4ooak=;
+        b=a0Y0a1SJuLLWZVOqQkvygXHIcA3OlPE2EN5v2r8ojGDC9i68usaVFRnCYgbEGKuPam
+         /P2hmH8imGlu5Jgpww7GaKgPoazjcMcf9pdcV33hSjX2JiBvDcMgmvk0hszRrzT5PEGX
+         +R2Wij7kKdq2YXhadkgzb03Ga/BhO/nGyJSe8YkYf+nmQ+Dn7uwELK7gUVbZ6Pwq2JcN
+         DkhUwQgzIscLtIFYiwUMCYyPrapw/pTNeuZXr3Bsefs64cynADCo08wGmAmqKeDmLzQm
+         JOa/waqNnd8fATksYPvddztaZyeR14Q1jmiLGnZj5dWD+PK2xJwThy0DvnQ2iw/LXyE4
+         06WA==
+X-Gm-Message-State: AOAM530WL5jv7ulx2303JRQy0cR+DJdUmEqIPGgtCTY3GrHElFpXuynO
+        wP2fvvWK3Y9kiP4gaxg5eSeLhVFb3Cme3DMwYUw=
+X-Google-Smtp-Source: ABdhPJz0CD8Q8xfOpotSZ8afin4GQBrOE6rTfZc3eroMjaUgReImVqtcCLZ+pu4IdtcMHrve0eKfWkemPnoGIR1u3zI=
+X-Received: by 2002:a05:6e02:1569:: with SMTP id k9mr8232733ilu.317.1635123256935;
+ Sun, 24 Oct 2021 17:54:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH][next] parisc: Fix spelling mistake "Plase" -> "Please"
-Content-Language: en-US
-To:     Colin King <colin.i.king@googlemail.com>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        linux-parisc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20211023114518.18600-1-colin.king@canonical.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20211023114518.18600-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=UTF-8
+Sender: nmesomakalu01@gmail.com
+Received: by 2002:a05:6e02:b2c:0:0:0:0 with HTTP; Sun, 24 Oct 2021 17:54:16
+ -0700 (PDT)
+From:   Jackie Fowler <jackiefowler597@gmail.com>
+Date:   Mon, 25 Oct 2021 00:54:16 +0000
+X-Google-Sender-Auth: j5ZUdjE3TxxH-pqDq2f_pP30fzg
+Message-ID: <CAHMQAuMVqH3reSYRTYxgtEjtJPOXgip2p3p+wuW_XzE_t2=TtA@mail.gmail.com>
+Subject: Good Day My beloved
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gc7KjTZXwQMC5sCnauJRh+d/0jcdSD1ydMXgAlnH6MgnSEv8gF8
- sfpsgQJmtz3sHYFqs32IM4L6APH/UqI1A/gAl3Tbpy2Byb6hEo6QSOOnzrCZ3GAMBNrEVax
- pjm9eF4/ZcfB0U8rj9UPREGR97B6Z6RGgfmqmDSdcIy00A3fHY9i0byKAvXwM8dKkOVfxku
- h/2Qxx/aIs9JE9kYA/bMA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:A5xPzONqOVs=:IOJNmLdjedWWp4W4qEZY6Q
- EMBqIZLsaJAVPoYCpx3i4xFV4XP3V/FJC3qlERsI0O6iMNkI9xtV6cd3vT9WDdsipSqKV1BoI
- HINHVwVA7yO3Yl8dSpIgfMEaxOQjQLC0y15M9ysVJytHOEQa1lP7MXTEQRJbCsvKoSuO9RiDz
- BC2rwumQ+hC4Pmrg/d6aKA3IHsft/245rDiewCDgUXX/nFnP/xeKb3gLQ7fk4RsBaHBwEqk34
- A2y7sFPuBTyQ/VcyRuuPr2273K0o53iZxAYWctQhDdUuEd/k4e6px3+19A2ZvDu7vOFoJjNwZ
- jLMg8Og1Jy2tKZ7zGqG8fFFpItfYA1MawcjTUH/mjIXeTU3yS0Yi5GO0zL1TojYzY/PNmFT5U
- +ZATcnGiEgVML9/pOTSK/weYGV3fyLuwSKCTAtwJqH8wFgqDGyVGCer3wDORtl3WfmKxzLiuD
- usSWkXpLWNql4xnXkcy8OBfKMbpGf99hR9YAAy4t8zk83jMJaI1hR+nNdAscipd+GlIEPh0fM
- iHyBcTP9sXiUmm7LE56XL75VDED7YkR5WsBV7JaGjjpZvCm0+Sfz10gg3olBKbmNiAMu0iugp
- 5lGcaZc/sNd+biVStWmktKUCeAq65lPZ0yXXde1UTeD5z2q087CeUmMa75xJzEDTH0RkjCjgt
- /MKkpqTBbv2LMZ2ZIEnNqZJdq2TWU+odRwd2kHIENYTr6qCobjLtUoc0DAb1T+XAzgheQaurJ
- Ph5LoFWbTxwut9XTunAq1LVdRpqGQPCPVQQ9qoFgDLmHC8mt/V1mZlPG9p9F6HqMm3CeNZARA
- FZs6OtpDUW9aRsKi5l5NgZzkOhfUsfTytmMBXBGyLPc3uysng6cIM2J1nufokVFHRfiNLgr2k
- moQyLEkzZCdQkTeIpcvUAB1mXEd1fKoJWta3xE/duxZAJgx3c1E3L5wj97X6krigWZCN531Op
- ec/pxdGckHvqW6K67dtp9fhRpGKg5Aa+aV5x5MK76Hh/efxf4g+rda4ibmrreJY9R0Cq4nJSi
- 7wE5WpY6whneOvKzr/TKR2CpMRbq3S9fAWXD8E/fgn2pA9aNbeWFHewGPNCuiNmZICioF++4N
- UapwdZvYBgMG3s=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/23/21 13:45, Colin King wrote:
-> From: Colin Ian King <colin.i.king@gmail.com>
->
-> There is a spelling mistake in a pr_warning message. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Gooday my beloved,
 
-Thanks!
-I've fixed it in the original patch.
+ I sent this mail praying it will get to you in a good condition of
+health, since I myself are in a very critical health condition in
+which I sleep every night without knowing if I may be alive to see the
+next day. I bring peace and love to you. It is by the grace of God, I
+had no choice than to do what is lawful and right in the sight of God
+for eternal life and in the sight of man, for witness of God=E2=80=99s merc=
+y
+and glory upon my life. I am Mrs.Jackie.Fowler.a widow and citizen of
+Canada. I am suffering from a long time brain tumor, It has defiled
+all forms of medical treatment, and right now I have about a few
+months to leave, according to medical experts.
 
-Helge
+ The situation has gotten complicated recently with my inability to
+hear proper, am communicating with you with the help of the chief
+nurse herein the hospital, from all indication my conditions is really
+deteriorating and it is quite obvious that, according to my doctors
+they have advised me that I may not live too long, Because this
+illness has gotten to a very bad stage. I plead that you will not
+expose or betray this trust and confidence that I am about to repose
+on you for the mutual benefit of the orphans and the less privilege. I
+have some funds I inherited from my late husband, the sum of ($
+12,500,000.00 Dollars).Having known my condition, I decided to donate
+this fund to you believing that you will utilize it the way i am going
+to instruct herein.
 
-> ---
->  arch/parisc/kernel/sys_parisc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_pa=
-risc.c
-> index d11834377676..2b34294517a1 100644
-> --- a/arch/parisc/kernel/sys_parisc.c
-> +++ b/arch/parisc/kernel/sys_parisc.c
-> @@ -413,7 +413,7 @@ static int FIX_O_NONBLOCK(int flags)
->  			!test_thread_flag(TIF_NONBLOCK_WARNING)) {
->  		set_thread_flag(TIF_NONBLOCK_WARNING);
->  		pr_warn("%s(%d) uses a deprecated O_NONBLOCK value."
-> -			" Plase recompile with newer glibc.\n",
-> +			" Please recompile with newer glibc.\n",
->  			current->comm, current->pid);
->  	}
->  	return flags & ~O_NONBLOCK_MASK_OUT;
->
+ I need you to assist me and reclaim this money and use it for Charity
+works, for orphanages and gives justice and help to the poor, needy
+and widows says The Lord." Jeremiah 22:15-16.=E2=80=9C and also build schoo=
+ls
+for less privilege that will be named after my late husband if
+possible and to promote the word of God and the effort that the house
+of God is maintained. I do not want a situation where this money will
+be used in an ungodly manner. That's why I'm taking this decision. I'm
+not afraid of death, so I know where I'm going.
 
+ I accept this decision because I do not have any child who will
+inherit this money after I die. Please I want your sincerely and
+urgent answer to know if you will be able to execute this project for
+the glory of God, and I will give you more information on how the fund
+will be transferred to your bank account. May the grace, peace, love
+and the truth in the Word of God be with you and all those that you
+love and care for.
+I'm waiting for your immediate reply.
+May God Bless you,
+Respectfully.
+Mrs.Jackie.Fowler
