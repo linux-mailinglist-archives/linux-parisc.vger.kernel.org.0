@@ -2,468 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3205A439352
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 12:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB6934395A2
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 14:08:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232613AbhJYKIy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Oct 2021 06:08:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35784 "EHLO
+        id S231699AbhJYMLC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Oct 2021 08:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232545AbhJYKIx (ORCPT
+        with ESMTP id S232830AbhJYMLC (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Oct 2021 06:08:53 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7060DC061745;
-        Mon, 25 Oct 2021 03:06:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=TtyK3av3pkaiMykavTGaDM6XNPkfaMC/Qw98VdDm88M=; b=FuGGoJzIaLi6akAmQ/RTmY/IG2
-        u5cuzhlm4yc7GEKNrXVs1+RpY7lLVKm9qaVIS9/yKlpebNVXnxirMEy7IX7cb/eIjf7Dnb0N5TAH3
-        roREYhqSFrvuXWHrQnv1cqfjhnoRz5o36XBKC7i7Aszky1D31K2tvaIcTtrVCn5xWdQ54mVVj9C6K
-        riaxVaL2edmcxptXF0R3lZtmyjN8YKLOkYvAsnRqCnanzCXB5LrD7lcKDpEZhbEfzk+s24OeME/4+
-        HtMeQuhPX+wXBWpJ2g1w3itWeIXuBLDDEJIOSZgbIQ9oSFJdRb2SuMJj1k1I7v04V14480lmenZ2M
-        3ELxGSBw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mewro-00C7gG-9c; Mon, 25 Oct 2021 10:06:08 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 6D8BC3001BF;
-        Mon, 25 Oct 2021 12:06:07 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 522FA2007E060; Mon, 25 Oct 2021 12:06:07 +0200 (CEST)
-Date:   Mon, 25 Oct 2021 12:06:07 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Waiman Long <longman@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        Openrisc <openrisc@lists.librecores.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>
-Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
-Message-ID: <YXaBj4YTMrZLOPD/@hirez.programming.kicks-ass.net>
-References: <20211022120058.1031690-1-arnd@kernel.org>
- <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
- <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
- <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
+        Mon, 25 Oct 2021 08:11:02 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9F44C061745
+        for <linux-parisc@vger.kernel.org>; Mon, 25 Oct 2021 05:08:39 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id y7so10543519pfg.8
+        for <linux-parisc@vger.kernel.org>; Mon, 25 Oct 2021 05:08:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=60LUac9TbUAUeihKiMhbVBI8yC6QLbGShqutIFMCmP0=;
+        b=EHN7QEkaP6algAUHLgboVzmyUvL+Nw1o+J+uhG7qiE1MSHWoGrMfuC4hUImpbyfn7W
+         Ez7IVPo3DiBZc0UcmSu953mL6KuL7RqTLLzA5Z/sfOEROFZnZ3LRFAjwKeRXN3n0Poj1
+         GFyWn2XhJz8j/CWtJpTJEczMK7IRL6RTnC/SGd4KwOtmcdaYL3rNeVEtH6IkecWREGkT
+         bYGzgXpTP6Jyj/klc7dA91ZPjdy9oHjZoXPwSvbSkkDhUHPlxAxx4yU8pRUYNMdk3LbZ
+         J9aFWdNVVX+uwjfNg4fBrGZ2qXoWmUKYTh+QNLbWrFhfeJNEHoaPFbKbw8pW8Ld0Sptv
+         O3cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=60LUac9TbUAUeihKiMhbVBI8yC6QLbGShqutIFMCmP0=;
+        b=J9UfxOzrQc/pM5NAdMlqXgQOUTA6I6bR0VoEe7fYvYEGTnA3fDR3ykaZPl90B9vJ6/
+         zfIvUTpP2HfDeN7Y27aO/Ps6JOirY/Jgrxv4Sfe0e8Hnqr3dElehwGX6nM82SjKmhYOA
+         6VyofSTpCXZMbyut6h5Bd+wYjdRSFFErp09hk+7qcU342Gy0Pe1JUwZZW2jZ9TOo0otl
+         FsQKR6tuf86Sziy+Olyhgvixu0XrAwNR3pGB9+JBAwmArthi5rDkW3NxHaL772w+eFZ6
+         RaEk+mCCfFRcGLXOvQ5vlDeJU1kigXp9OUUNgSzGMzUAqKZ0VSYp8B9eziTaALrc7fgs
+         tlFQ==
+X-Gm-Message-State: AOAM533B4qb+KunpE7I/br4+CnKoxYGlR47dSKVga6cvXTalH6kD+kS4
+        G2TgNOlHBCyZ39giB+CKxNZrAiq+vcCrcg2OkRNEK6Y5NaA=
+X-Google-Smtp-Source: ABdhPJxQnUv5U9DPUS58N/Qig4cIbYMFqDbkLvyDzwgzWBCIV9UBZd3vqm1DFoE5KM5Gv+Qve9tv9Ms8NwL3SCDtKg0=
+X-Received: by 2002:a62:27c7:0:b0:44d:b86:54f2 with SMTP id
+ n190-20020a6227c7000000b0044d0b8654f2mr17955354pfn.68.1635163719116; Mon, 25
+ Oct 2021 05:08:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
+References: <CA+G9fYtsteSfwTQKV8o6VtBQDoz-+nwOf0s0X8BCkQHgAc6sdw@mail.gmail.com>
+ <2ef5185a-9a0f-5ee0-23fc-37e0b1dd1099@gmx.de> <CA+QBN9DGZN=-Rfj3nc9TXd+OSRm9ipNC78HBsGWWo=qm+SB3zA@mail.gmail.com>
+In-Reply-To: <CA+QBN9DGZN=-Rfj3nc9TXd+OSRm9ipNC78HBsGWWo=qm+SB3zA@mail.gmail.com>
+From:   cp <carlojpisani@gmail.com>
+Date:   Mon, 25 Oct 2021 14:08:38 +0200
+Message-ID: <CA+QBN9CAQfBf6WuLRKRCVm_OOzN5VRNP2a4A1GNfnBFBUkC4+A@mail.gmail.com>
+Subject: Re: ATI Rage XL
+To:     linux-parisc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Oct 25, 2021 at 11:57:28AM +0200, Peter Zijlstra wrote:
-> On Sat, Oct 23, 2021 at 06:04:57PM +0200, Arnd Bergmann wrote:
-> > On Sat, Oct 23, 2021 at 3:37 AM Waiman Long <longman@redhat.com> wrote:
-> > >> On 10/22/21 7:59 AM, Arnd Bergmann wrote:
-> > > > From: Arnd Bergmann <arnd@arndb.de>
-> > > >
-> > > > As this is all dead code, just remove it and the helper functions built
-> > > > around it. For arch/ia64, the inline asm could be cleaned up, but
-> > > > it seems safer to leave it untouched.
-> > > >
-> > > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > >
-> > > Does that mean we can also remove the GENERIC_LOCKBREAK config option
-> > > from the Kconfig files as well?
-> > 
-> >  I couldn't figure this out.
-> > 
-> > What I see is that the only architectures setting GENERIC_LOCKBREAK are
-> > nds32, parisc, powerpc, s390, sh and sparc64, while the only architectures
-> > implementing arch_spin_is_contended() are arm32, csky and ia64.
-> > 
-> > The part I don't understand is whether the option actually does anything
-> > useful any more after commit d89c70356acf ("locking/core: Remove break_lock
-> > field when CONFIG_GENERIC_LOCKBREAK=y").
-> 
-> Urgh, what a mess.. AFAICT there's still code in
-> kernel/locking/spinlock.c that relies on it. Specifically when
-> GENERIC_LOCKBREAK=y we seem to create _lock*() variants that are
-> basically TaS locks which drop preempt/irq disable while spinning.
-> 
-> Anybody having this on and not having native TaS locks is in for a rude
-> surprise I suppose... sparc64 being the obvious candidate there :/
+anyone?
 
-Something like the *totally*untested* patch below would rip it all out.
+any news about the mach64 support with kernel 5.* ?
+cheers
 
----
- arch/ia64/Kconfig                |  3 --
- arch/nds32/Kconfig               |  4 --
- arch/parisc/Kconfig              |  5 ---
- arch/powerpc/Kconfig             |  5 ---
- arch/s390/Kconfig                |  3 --
- arch/sh/Kconfig                  |  4 --
- arch/sparc/Kconfig               |  6 ---
- include/linux/rwlock_api_smp.h   |  4 +-
- include/linux/spinlock_api_smp.h |  4 +-
- kernel/Kconfig.locks             | 26 ++++++------
- kernel/locking/spinlock.c        | 90 ----------------------------------------
- 11 files changed, 17 insertions(+), 137 deletions(-)
-
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 1e33666fa679..5ec3abba3c81 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -81,9 +81,6 @@ config MMU
- config STACKTRACE_SUPPORT
- 	def_bool y
- 
--config GENERIC_LOCKBREAK
--	def_bool n
--
- config GENERIC_CALIBRATE_DELAY
- 	bool
- 	default y
-diff --git a/arch/nds32/Kconfig b/arch/nds32/Kconfig
-index aea26e739543..699008dbd6c2 100644
---- a/arch/nds32/Kconfig
-+++ b/arch/nds32/Kconfig
-@@ -59,10 +59,6 @@ config GENERIC_CSUM
- config GENERIC_HWEIGHT
- 	def_bool y
- 
--config GENERIC_LOCKBREAK
--	def_bool y
--	depends on PREEMPTION
--
- config STACKTRACE_SUPPORT
- 	def_bool y
- 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 27a8b49af11f..afe70bcdde2c 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -86,11 +86,6 @@ config ARCH_DEFCONFIG
- 	default "arch/parisc/configs/generic-32bit_defconfig" if !64BIT
- 	default "arch/parisc/configs/generic-64bit_defconfig" if 64BIT
- 
--config GENERIC_LOCKBREAK
--	bool
--	default y
--	depends on SMP && PREEMPTION
--
- config ARCH_HAS_ILOG2_U32
- 	bool
- 	default n
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index ba5b66189358..e782c9ea3f81 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -98,11 +98,6 @@ config LOCKDEP_SUPPORT
- 	bool
- 	default y
- 
--config GENERIC_LOCKBREAK
--	bool
--	default y
--	depends on SMP && PREEMPTION
--
- config GENERIC_HWEIGHT
- 	bool
- 	default y
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index b86de61b8caa..e4ff05f5393b 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -26,9 +26,6 @@ config GENERIC_BUG
- config GENERIC_BUG_RELATIVE_POINTERS
- 	def_bool y
- 
--config GENERIC_LOCKBREAK
--	def_bool y if PREEMPTION
--
- config PGSTE
- 	def_bool y if KVM
- 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 6904f4bdbf00..26f1cf2c69a3 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -86,10 +86,6 @@ config GENERIC_HWEIGHT
- config GENERIC_CALIBRATE_DELAY
- 	bool
- 
--config GENERIC_LOCKBREAK
--	def_bool y
--	depends on SMP && PREEMPTION
--
- config ARCH_SUSPEND_POSSIBLE
- 	def_bool n
- 
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index b120ed947f50..e77e7254eaa0 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -246,12 +246,6 @@ config US3_MC
- 
- 	  If in doubt, say Y, as this information can be very useful.
- 
--# Global things across all Sun machines.
--config GENERIC_LOCKBREAK
--	bool
--	default y
--	depends on SPARC64 && SMP && PREEMPTION
--
- config NUMA
- 	bool "NUMA support"
- 	depends on SPARC64 && SMP
-diff --git a/include/linux/rwlock_api_smp.h b/include/linux/rwlock_api_smp.h
-index abfb53ab11be..a281d81ef8ee 100644
---- a/include/linux/rwlock_api_smp.h
-+++ b/include/linux/rwlock_api_smp.h
-@@ -141,7 +141,7 @@ static inline int __raw_write_trylock(rwlock_t *lock)
-  * even on CONFIG_PREEMPT, because lockdep assumes that interrupts are
-  * not re-enabled during lock-acquire (which the preempt-spin-ops do):
-  */
--#if !defined(CONFIG_GENERIC_LOCKBREAK) || defined(CONFIG_DEBUG_LOCK_ALLOC)
-+#if defined(CONFIG_DEBUG_LOCK_ALLOC)
- 
- static inline void __raw_read_lock(rwlock_t *lock)
- {
-@@ -211,7 +211,7 @@ static inline void __raw_write_lock(rwlock_t *lock)
- 	LOCK_CONTENDED(lock, do_raw_write_trylock, do_raw_write_lock);
- }
- 
--#endif /* !CONFIG_GENERIC_LOCKBREAK || CONFIG_DEBUG_LOCK_ALLOC */
-+#endif /* CONFIG_DEBUG_LOCK_ALLOC */
- 
- static inline void __raw_write_unlock(rwlock_t *lock)
- {
-diff --git a/include/linux/spinlock_api_smp.h b/include/linux/spinlock_api_smp.h
-index 6b8e1a0b137b..fb437243eb2e 100644
---- a/include/linux/spinlock_api_smp.h
-+++ b/include/linux/spinlock_api_smp.h
-@@ -99,7 +99,7 @@ static inline int __raw_spin_trylock(raw_spinlock_t *lock)
-  * even on CONFIG_PREEMPTION, because lockdep assumes that interrupts are
-  * not re-enabled during lock-acquire (which the preempt-spin-ops do):
-  */
--#if !defined(CONFIG_GENERIC_LOCKBREAK) || defined(CONFIG_DEBUG_LOCK_ALLOC)
-+#if defined(CONFIG_DEBUG_LOCK_ALLOC)
- 
- static inline unsigned long __raw_spin_lock_irqsave(raw_spinlock_t *lock)
- {
-@@ -143,7 +143,7 @@ static inline void __raw_spin_lock(raw_spinlock_t *lock)
- 	LOCK_CONTENDED(lock, do_raw_spin_trylock, do_raw_spin_lock);
- }
- 
--#endif /* !CONFIG_GENERIC_LOCKBREAK || CONFIG_DEBUG_LOCK_ALLOC */
-+#endif /* CONFIG_DEBUG_LOCK_ALLOC */
- 
- static inline void __raw_spin_unlock(raw_spinlock_t *lock)
- {
-diff --git a/kernel/Kconfig.locks b/kernel/Kconfig.locks
-index 4198f0273ecd..8e0b501189e8 100644
---- a/kernel/Kconfig.locks
-+++ b/kernel/Kconfig.locks
-@@ -93,7 +93,7 @@ config UNINLINE_SPIN_UNLOCK
- 
- #
- # lock_* functions are inlined when:
--#   - DEBUG_SPINLOCK=n and GENERIC_LOCKBREAK=n and ARCH_INLINE_*LOCK=y
-+#   - DEBUG_SPINLOCK=n and ARCH_INLINE_*LOCK=y
- #
- # trylock_* functions are inlined when:
- #   - DEBUG_SPINLOCK=n and ARCH_INLINE_*LOCK=y
-@@ -119,19 +119,19 @@ config INLINE_SPIN_TRYLOCK_BH
- 
- config INLINE_SPIN_LOCK
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_SPIN_LOCK
-+	depends on ARCH_INLINE_SPIN_LOCK
- 
- config INLINE_SPIN_LOCK_BH
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_SPIN_LOCK_BH
-+	depends on ARCH_INLINE_SPIN_LOCK_BH
- 
- config INLINE_SPIN_LOCK_IRQ
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_SPIN_LOCK_IRQ
-+	depends on ARCH_INLINE_SPIN_LOCK_IRQ
- 
- config INLINE_SPIN_LOCK_IRQSAVE
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_SPIN_LOCK_IRQSAVE
-+	depends on ARCH_INLINE_SPIN_LOCK_IRQSAVE
- 
- config INLINE_SPIN_UNLOCK_BH
- 	def_bool y
-@@ -152,19 +152,19 @@ config INLINE_READ_TRYLOCK
- 
- config INLINE_READ_LOCK
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_READ_LOCK
-+	depends on ARCH_INLINE_READ_LOCK
- 
- config INLINE_READ_LOCK_BH
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_READ_LOCK_BH
-+	depends on ARCH_INLINE_READ_LOCK_BH
- 
- config INLINE_READ_LOCK_IRQ
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_READ_LOCK_IRQ
-+	depends on ARCH_INLINE_READ_LOCK_IRQ
- 
- config INLINE_READ_LOCK_IRQSAVE
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_READ_LOCK_IRQSAVE
-+	depends on ARCH_INLINE_READ_LOCK_IRQSAVE
- 
- config INLINE_READ_UNLOCK
- 	def_bool y
-@@ -189,19 +189,19 @@ config INLINE_WRITE_TRYLOCK
- 
- config INLINE_WRITE_LOCK
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_WRITE_LOCK
-+	depends on ARCH_INLINE_WRITE_LOCK
- 
- config INLINE_WRITE_LOCK_BH
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_WRITE_LOCK_BH
-+	depends on ARCH_INLINE_WRITE_LOCK_BH
- 
- config INLINE_WRITE_LOCK_IRQ
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_WRITE_LOCK_IRQ
-+	depends on ARCH_INLINE_WRITE_LOCK_IRQ
- 
- config INLINE_WRITE_LOCK_IRQSAVE
- 	def_bool y
--	depends on !GENERIC_LOCKBREAK && ARCH_INLINE_WRITE_LOCK_IRQSAVE
-+	depends on ARCH_INLINE_WRITE_LOCK_IRQSAVE
- 
- config INLINE_WRITE_UNLOCK
- 	def_bool y
-diff --git a/kernel/locking/spinlock.c b/kernel/locking/spinlock.c
-index c5830cfa379a..d94ee95585fc 100644
---- a/kernel/locking/spinlock.c
-+++ b/kernel/locking/spinlock.c
-@@ -29,19 +29,6 @@ EXPORT_PER_CPU_SYMBOL(__mmiowb_state);
- #endif
- #endif
- 
--/*
-- * If lockdep is enabled then we use the non-preemption spin-ops
-- * even on CONFIG_PREEMPT, because lockdep assumes that interrupts are
-- * not re-enabled during lock-acquire (which the preempt-spin-ops do):
-- */
--#if !defined(CONFIG_GENERIC_LOCKBREAK) || defined(CONFIG_DEBUG_LOCK_ALLOC)
--/*
-- * The __lock_function inlines are taken from
-- * spinlock : include/linux/spinlock_api_smp.h
-- * rwlock   : include/linux/rwlock_api_smp.h
-- */
--#else
--
- /*
-  * Some architectures can relax in favour of the CPU owning the lock.
-  */
-@@ -55,83 +42,6 @@ EXPORT_PER_CPU_SYMBOL(__mmiowb_state);
- # define arch_spin_relax(l)	cpu_relax()
- #endif
- 
--/*
-- * We build the __lock_function inlines here. They are too large for
-- * inlining all over the place, but here is only one user per function
-- * which embeds them into the calling _lock_function below.
-- *
-- * This could be a long-held lock. We both prepare to spin for a long
-- * time (making _this_ CPU preemptible if possible), and we also signal
-- * towards that other CPU that it should break the lock ASAP.
-- */
--#define BUILD_LOCK_OPS(op, locktype)					\
--void __lockfunc __raw_##op##_lock(locktype##_t *lock)			\
--{									\
--	for (;;) {							\
--		preempt_disable();					\
--		if (likely(do_raw_##op##_trylock(lock)))		\
--			break;						\
--		preempt_enable();					\
--									\
--		arch_##op##_relax(&lock->raw_lock);			\
--	}								\
--}									\
--									\
--unsigned long __lockfunc __raw_##op##_lock_irqsave(locktype##_t *lock)	\
--{									\
--	unsigned long flags;						\
--									\
--	for (;;) {							\
--		preempt_disable();					\
--		local_irq_save(flags);					\
--		if (likely(do_raw_##op##_trylock(lock)))		\
--			break;						\
--		local_irq_restore(flags);				\
--		preempt_enable();					\
--									\
--		arch_##op##_relax(&lock->raw_lock);			\
--	}								\
--									\
--	return flags;							\
--}									\
--									\
--void __lockfunc __raw_##op##_lock_irq(locktype##_t *lock)		\
--{									\
--	_raw_##op##_lock_irqsave(lock);					\
--}									\
--									\
--void __lockfunc __raw_##op##_lock_bh(locktype##_t *lock)		\
--{									\
--	unsigned long flags;						\
--									\
--	/*							*/	\
--	/* Careful: we must exclude softirqs too, hence the	*/	\
--	/* irq-disabling. We use the generic preemption-aware	*/	\
--	/* function:						*/	\
--	/**/								\
--	flags = _raw_##op##_lock_irqsave(lock);				\
--	local_bh_disable();						\
--	local_irq_restore(flags);					\
--}									\
--
--/*
-- * Build preemption-friendly versions of the following
-- * lock-spinning functions:
-- *
-- *         __[spin|read|write]_lock()
-- *         __[spin|read|write]_lock_irq()
-- *         __[spin|read|write]_lock_irqsave()
-- *         __[spin|read|write]_lock_bh()
-- */
--BUILD_LOCK_OPS(spin, raw_spinlock);
--
--#ifndef CONFIG_PREEMPT_RT
--BUILD_LOCK_OPS(read, rwlock);
--BUILD_LOCK_OPS(write, rwlock);
--#endif
--
--#endif
--
- #ifndef CONFIG_INLINE_SPIN_TRYLOCK
- int __lockfunc _raw_spin_trylock(raw_spinlock_t *lock)
- {
+> hi
+> in the PA wiki (1) the ATI Rage XL (mach64) is reported to have
+> worked. In combination with the fbdev X-server from XFree86/X.org
+>
+> I think the news was related to kernel 2.6 or something very old.
+>
+> Can anyone confirm it's still working with kernel 5.*?
+>
+> I don't happen to have a card to test myself. Not yet.
+> (1) https://parisc.wiki.kernel.org/index.php/Graphics_howto
