@@ -2,109 +2,118 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D41E6438CE0
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 02:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE056438E10
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 06:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230129AbhJYA4j (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 24 Oct 2021 20:56:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53566 "EHLO
+        id S232145AbhJYEXB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Oct 2021 00:23:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbhJYA4j (ORCPT
+        with ESMTP id S229678AbhJYEXA (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 24 Oct 2021 20:56:39 -0400
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB3BCC061745
-        for <linux-parisc@vger.kernel.org>; Sun, 24 Oct 2021 17:54:17 -0700 (PDT)
-Received: by mail-il1-x12f.google.com with SMTP id w10so10981548ilc.13
-        for <linux-parisc@vger.kernel.org>; Sun, 24 Oct 2021 17:54:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=vvC9ByVJGlgvAhABkby6MG4yPbU617Js94fp2P4ooak=;
-        b=QTZk77epNAaRzAcMXdmJhZHD+7QbOOvtDIB+vYl3tIA9kEkxyigYmkVS9ZjUC52o16
-         yd8h4Z0LXDncMHYMeQjczGQmPFV3YMWoXnGi8SLua84aTxGoUTIRRYMFv2Cwj2ST/p+C
-         tCDLOOe3EHd1eidJjmp8hBm39Cv7HLwKNhfmmvbn1AN9ykwt715cdKIhk8POAVTznHU8
-         4h4EWyqYUrUzdHCBK7O+0hgTRJ5X6qEGi2nGQpPS1hLV7DPxrsRyByML4GiqWrOAIMqr
-         OfCgU4530Zrh6QX+tQIZPxNmH3prNRYNQejoGDLPh034cnKOC853l5PXynkivYwCMkG3
-         1k3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=vvC9ByVJGlgvAhABkby6MG4yPbU617Js94fp2P4ooak=;
-        b=a0Y0a1SJuLLWZVOqQkvygXHIcA3OlPE2EN5v2r8ojGDC9i68usaVFRnCYgbEGKuPam
-         /P2hmH8imGlu5Jgpww7GaKgPoazjcMcf9pdcV33hSjX2JiBvDcMgmvk0hszRrzT5PEGX
-         +R2Wij7kKdq2YXhadkgzb03Ga/BhO/nGyJSe8YkYf+nmQ+Dn7uwELK7gUVbZ6Pwq2JcN
-         DkhUwQgzIscLtIFYiwUMCYyPrapw/pTNeuZXr3Bsefs64cynADCo08wGmAmqKeDmLzQm
-         JOa/waqNnd8fATksYPvddztaZyeR14Q1jmiLGnZj5dWD+PK2xJwThy0DvnQ2iw/LXyE4
-         06WA==
-X-Gm-Message-State: AOAM530WL5jv7ulx2303JRQy0cR+DJdUmEqIPGgtCTY3GrHElFpXuynO
-        wP2fvvWK3Y9kiP4gaxg5eSeLhVFb3Cme3DMwYUw=
-X-Google-Smtp-Source: ABdhPJz0CD8Q8xfOpotSZ8afin4GQBrOE6rTfZc3eroMjaUgReImVqtcCLZ+pu4IdtcMHrve0eKfWkemPnoGIR1u3zI=
-X-Received: by 2002:a05:6e02:1569:: with SMTP id k9mr8232733ilu.317.1635123256935;
- Sun, 24 Oct 2021 17:54:16 -0700 (PDT)
+        Mon, 25 Oct 2021 00:23:00 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F27ACC061745;
+        Sun, 24 Oct 2021 21:20:38 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hd1w40BBxz4xbr;
+        Mon, 25 Oct 2021 15:20:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1635135637;
+        bh=S3HjBwvAVmieJ+oCfj9Rn9VsmQauFDmjC9cGFpwHILM=;
+        h=Date:From:To:Cc:Subject:From;
+        b=A/txUgTmPr8QYPiPTbORjFTnHSjbLiuojbkAOhzTqoSidtzP9+WBxQOj7cRbQ5f5u
+         GJfiEAk2LGpuAGE4r7Nl8yF/pURw6mXge8X7uuh46hCP+k9y/y3PRdAanZj4RIZk7g
+         P1Au5RVgA9AwBvBewZmj6WUaRsvQVnP2vCSsu7eB+RE1Pd9XM4rLjkpmw34tKbT41l
+         lTNtvI0RRR845nUvXvLmqEEc7S1+DbBf6H4fNLJGu/SQCpDEP7cGOea8tA64NkKQVK
+         ImvFHYNReOT1IJerrikbPkC+dVuS2kB0a//KFgwKESdpa3/tOgs3ID4gkkFshWa5UW
+         noV2HI2bcMiZA==
+Date:   Mon, 25 Oct 2021 15:20:34 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Steven Rostedt <rostedt@goodmis.org>, Helge Deller <deller@gmx.de>,
+        Parisc List <linux-parisc@vger.kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Sven Schnelle <svens@stackframe.org>,
+        Weizhao Ouyang <o451686892@gmail.com>
+Subject: linux-next: manual merge of the ftrace tree with the parisc-hd tree
+Message-ID: <20211025152034.69923d51@canb.auug.org.au>
 MIME-Version: 1.0
-Sender: nmesomakalu01@gmail.com
-Received: by 2002:a05:6e02:b2c:0:0:0:0 with HTTP; Sun, 24 Oct 2021 17:54:16
- -0700 (PDT)
-From:   Jackie Fowler <jackiefowler597@gmail.com>
-Date:   Mon, 25 Oct 2021 00:54:16 +0000
-X-Google-Sender-Auth: j5ZUdjE3TxxH-pqDq2f_pP30fzg
-Message-ID: <CAHMQAuMVqH3reSYRTYxgtEjtJPOXgip2p3p+wuW_XzE_t2=TtA@mail.gmail.com>
-Subject: Good Day My beloved
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; boundary="Sig_/AcWt2FJ9ZWEiRfvKA4EFfND";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Gooday my beloved,
+--Sig_/AcWt2FJ9ZWEiRfvKA4EFfND
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
- I sent this mail praying it will get to you in a good condition of
-health, since I myself are in a very critical health condition in
-which I sleep every night without knowing if I may be alive to see the
-next day. I bring peace and love to you. It is by the grace of God, I
-had no choice than to do what is lawful and right in the sight of God
-for eternal life and in the sight of man, for witness of God=E2=80=99s merc=
-y
-and glory upon my life. I am Mrs.Jackie.Fowler.a widow and citizen of
-Canada. I am suffering from a long time brain tumor, It has defiled
-all forms of medical treatment, and right now I have about a few
-months to leave, according to medical experts.
+Hi all,
 
- The situation has gotten complicated recently with my inability to
-hear proper, am communicating with you with the help of the chief
-nurse herein the hospital, from all indication my conditions is really
-deteriorating and it is quite obvious that, according to my doctors
-they have advised me that I may not live too long, Because this
-illness has gotten to a very bad stage. I plead that you will not
-expose or betray this trust and confidence that I am about to repose
-on you for the mutual benefit of the orphans and the less privilege. I
-have some funds I inherited from my late husband, the sum of ($
-12,500,000.00 Dollars).Having known my condition, I decided to donate
-this fund to you believing that you will utilize it the way i am going
-to instruct herein.
+Today's linux-next merge of the ftrace tree got a conflict in:
 
- I need you to assist me and reclaim this money and use it for Charity
-works, for orphanages and gives justice and help to the poor, needy
-and widows says The Lord." Jeremiah 22:15-16.=E2=80=9C and also build schoo=
-ls
-for less privilege that will be named after my late husband if
-possible and to promote the word of God and the effort that the house
-of God is maintained. I do not want a situation where this money will
-be used in an ungodly manner. That's why I'm taking this decision. I'm
-not afraid of death, so I know where I'm going.
+  arch/parisc/kernel/ftrace.c
 
- I accept this decision because I do not have any child who will
-inherit this money after I die. Please I want your sincerely and
-urgent answer to know if you will be able to execute this project for
-the glory of God, and I will give you more information on how the fund
-will be transferred to your bank account. May the grace, peace, love
-and the truth in the Word of God be with you and all those that you
-love and care for.
-I'm waiting for your immediate reply.
-May God Bless you,
-Respectfully.
-Mrs.Jackie.Fowler
+between commit:
+
+  e1e134bf1eb6 ("parisc/ftrace: set function trace function")
+
+from the parisc-hd tree and commit:
+
+  6644c654ea70 ("ftrace: Cleanup ftrace_dyn_arch_init()")
+
+from the ftrace tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc arch/parisc/kernel/ftrace.c
+index 8b9b8ce95d8d,01581f715737..000000000000
+--- a/arch/parisc/kernel/ftrace.c
++++ b/arch/parisc/kernel/ftrace.c
+@@@ -92,15 -94,8 +92,9 @@@ int ftrace_disable_ftrace_graph_caller(
+  #endif
+ =20
+  #ifdef CONFIG_DYNAMIC_FTRACE
+-=20
+- int __init ftrace_dyn_arch_init(void)
+- {
+- 	return 0;
+- }
+-=20
+  int ftrace_update_ftrace_func(ftrace_func_t func)
+  {
+ +	ftrace_func =3D func;
+  	return 0;
+  }
+ =20
+
+--Sig_/AcWt2FJ9ZWEiRfvKA4EFfND
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmF2MJIACgkQAVBC80lX
+0Gxw9Qf7Bn8kAYGDCWW+viYnYQd8pKRwMuYEMYbztRBsJbDRwZaGlI3kT0c8wckT
+BUhrASduFkU0DMj6+9Q3HyEUmkSSPZJV/Qevz9P5IKOFFEVYtPv1wPArC4oOUxtq
+nCV7J8YKDWhtMkq72vtnGnHKfnumBqV1IdMpNc5rkKnJY3/bK8mEwoNYAMmOSAem
+YhYk3H8+AoI7I/zIYVG0Di1BHsCOZIN6ca6Wh8m1ggsjbCSX/5POiAZalRNHrJsf
+cpQh0VlqqZUPIqjQpNlcgMsmOMmptdWer4iFrlR+HkDSbr6QDFsUa7u4d8Pto9T2
+bKFTTJMICDP48pGWu8BNhSfe946I8A==
+=p1um
+-----END PGP SIGNATURE-----
+
+--Sig_/AcWt2FJ9ZWEiRfvKA4EFfND--
