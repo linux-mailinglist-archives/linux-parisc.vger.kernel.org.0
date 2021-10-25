@@ -2,44 +2,43 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04ECE439728
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 15:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DFA24398D5
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 16:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233448AbhJYNJF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Oct 2021 09:09:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33808 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233340AbhJYNJF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Oct 2021 09:09:05 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C838C60F92;
-        Mon, 25 Oct 2021 13:06:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635167202;
-        bh=ZCuob8BZrhlG+EmJNscDR7p2oOKkE8Oq9/x5u4oFHEA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=FuPaO5h+P7m9O6f7jRX/FomhBE8wpXrQg46b5X/6nDR7a9FqlQoUCB6YkaGCFB4Qg
-         9D0CqlTmvZwvwJoh4muObhBZmgmwMAb2I+SYudFaX7JYcTkGlmq+i4fWkanSJLgR8Z
-         jUwIOx7GR2kLD0UUChm2UfR21umaKf01WuYBFZMWUzBgwv2B8JfwjcwD++K4i0EwgG
-         +f5C0c0QSkTihCtJyXq/srIkiZfs/y50C2PSJPY/WZFtQxrY5DR7iJM/RE3f8JwOga
-         SlBTGoq31CwHhSi2fX8vx7KhB0B/6wLW7b15SLXQodFLa9nbkIa2Np6fw+sWezH3z8
-         EHLEv5gY54ilQ==
-Received: by mail-wm1-f53.google.com with SMTP id b133-20020a1c808b000000b0032ca4d18aebso9291702wmd.2;
-        Mon, 25 Oct 2021 06:06:42 -0700 (PDT)
-X-Gm-Message-State: AOAM530JJJXzVpVQci/B5m5pceKZ3rEt3msx00ppM2V6g5vnHHJnQvEz
-        F/k1JcQRh3dDsnxVnTS+lRgrxQK2Taol7sqXJI4=
-X-Google-Smtp-Source: ABdhPJzvjBncUZE2QFv7r8anYBis3Hwxw5+smqgbcmZGe49Rh+5b7Sf365AJDO4MLIyZVs8sWDAX066taTW3DQLxG28=
-X-Received: by 2002:a05:600c:1548:: with SMTP id f8mr19963769wmg.35.1635167201284;
- Mon, 25 Oct 2021 06:06:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20211022120058.1031690-1-arnd@kernel.org> <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
- <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com> <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
-In-Reply-To: <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Mon, 25 Oct 2021 15:06:24 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
-Message-ID: <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
-Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
-To:     Peter Zijlstra <peterz@infradead.org>
+        id S232947AbhJYOnW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Oct 2021 10:43:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42920 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232866AbhJYOnW (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 25 Oct 2021 10:43:22 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82314C061745;
+        Mon, 25 Oct 2021 07:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=I97oc9kS0hxonuSgC18bwLyEuuHyR5BjA3g3cz+StFk=; b=fFKP9rs4D2Npzo47cjKm17xnDL
+        mnZs+FfL6mBbrPRwuacU8oISILWxsnNi7ZuMz61CuSJ1QMPl2TQreluUzhkqRRUI4lBbEZXeaBO1s
+        ZXMdk9jHBpFCtwxGqrYPvonpw/OV3jLOkrbqXgilnq7SCHNPEsrwy1fXol7lzJe2UqoHGQO447vOu
+        QKLAo22Qs5t9oHPVsqjpMqrhsIEiimGViYptsdGGD98azVSz512YvOHfRB/OU7Vyn1E/bXZmZy5gf
+        4k6cm+wWoq9NTCPkDo7Ma1V4LZuHP2S5ly8dVZqHdFX+ziR3TjYBNCJOOiY8z6Bt0rs6ou4GLgxIt
+        c0F3H/XQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mf12c-00GBQq-5S; Mon, 25 Oct 2021 14:34:33 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8B8163002AE;
+        Mon, 25 Oct 2021 16:33:32 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 6DE4F20C6C153; Mon, 25 Oct 2021 16:33:32 +0200 (CEST)
+Date:   Mon, 25 Oct 2021 16:33:32 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Arnd Bergmann <arnd@kernel.org>
 Cc:     Waiman Long <longman@redhat.com>, Ingo Molnar <mingo@redhat.com>,
         Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
         Boqun Feng <boqun.feng@gmail.com>,
@@ -61,53 +60,65 @@ Cc:     Waiman Long <longman@redhat.com>, Ingo Molnar <mingo@redhat.com>,
         Parisc List <linux-parisc@vger.kernel.org>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
         linux-s390 <linux-s390@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
+Message-ID: <YXbAPIm47WwpYYup@hirez.programming.kicks-ass.net>
+References: <20211022120058.1031690-1-arnd@kernel.org>
+ <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+ <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
+ <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
+ <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Oct 25, 2021 at 11:57 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> On Sat, Oct 23, 2021 at 06:04:57PM +0200, Arnd Bergmann wrote:
-> > On Sat, Oct 23, 2021 at 3:37 AM Waiman Long <longman@redhat.com> wrote:
-> > >> On 10/22/21 7:59 AM, Arnd Bergmann wrote:
-> > > > From: Arnd Bergmann <arnd@arndb.de>
+On Mon, Oct 25, 2021 at 03:06:24PM +0200, Arnd Bergmann wrote:
+> On Mon, Oct 25, 2021 at 11:57 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> > On Sat, Oct 23, 2021 at 06:04:57PM +0200, Arnd Bergmann wrote:
+> > > On Sat, Oct 23, 2021 at 3:37 AM Waiman Long <longman@redhat.com> wrote:
+> > > >> On 10/22/21 7:59 AM, Arnd Bergmann wrote:
+> > > > > From: Arnd Bergmann <arnd@arndb.de>
+> > > > >
+> > > > > As this is all dead code, just remove it and the helper functions built
+> > > > > around it. For arch/ia64, the inline asm could be cleaned up, but
+> > > > > it seems safer to leave it untouched.
+> > > > >
+> > > > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > > > >
-> > > > As this is all dead code, just remove it and the helper functions built
-> > > > around it. For arch/ia64, the inline asm could be cleaned up, but
-> > > > it seems safer to leave it untouched.
-> > > >
-> > > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > > > Does that mean we can also remove the GENERIC_LOCKBREAK config option
+> > > > from the Kconfig files as well?
 > > >
-> > > Does that mean we can also remove the GENERIC_LOCKBREAK config option
-> > > from the Kconfig files as well?
+> > >  I couldn't figure this out.
+> > >
+> > > What I see is that the only architectures setting GENERIC_LOCKBREAK are
+> > > nds32, parisc, powerpc, s390, sh and sparc64, while the only architectures
+> > > implementing arch_spin_is_contended() are arm32, csky and ia64.
+> > >
+> > > The part I don't understand is whether the option actually does anything
+> > > useful any more after commit d89c70356acf ("locking/core: Remove break_lock
+> > > field when CONFIG_GENERIC_LOCKBREAK=y").
 > >
-> >  I couldn't figure this out.
+> > Urgh, what a mess.. AFAICT there's still code in
+> > kernel/locking/spinlock.c that relies on it. Specifically when
+> > GENERIC_LOCKBREAK=y we seem to create _lock*() variants that are
+> > basically TaS locks which drop preempt/irq disable while spinning.
 > >
-> > What I see is that the only architectures setting GENERIC_LOCKBREAK are
-> > nds32, parisc, powerpc, s390, sh and sparc64, while the only architectures
-> > implementing arch_spin_is_contended() are arm32, csky and ia64.
-> >
-> > The part I don't understand is whether the option actually does anything
-> > useful any more after commit d89c70356acf ("locking/core: Remove break_lock
-> > field when CONFIG_GENERIC_LOCKBREAK=y").
->
-> Urgh, what a mess.. AFAICT there's still code in
-> kernel/locking/spinlock.c that relies on it. Specifically when
-> GENERIC_LOCKBREAK=y we seem to create _lock*() variants that are
-> basically TaS locks which drop preempt/irq disable while spinning.
->
-> Anybody having this on and not having native TaS locks is in for a rude
-> surprise I suppose... sparc64 being the obvious candidate there :/
+> > Anybody having this on and not having native TaS locks is in for a rude
+> > surprise I suppose... sparc64 being the obvious candidate there :/
+> 
+> Is this a problem on s390 and powerpc, those two being the ones
+> that matter in practice?
+> 
+> On s390, we pick between the cmpxchg() based directed-yield when
+> running on virtualized CPUs, and a normal qspinlock when running on a
+> dedicated CPU.
+> 
+> On PowerPC, we pick at compile-time between either the qspinlock
+> (default-enabled on Book3S-64, i.e. all server chips) or a ll/sc based
+> spinlock plus vm_yield() (default on embedded and 32-bit mac).
 
-Is this a problem on s390 and powerpc, those two being the ones
-that matter in practice?
-
-On s390, we pick between the cmpxchg() based directed-yield when
-running on virtualized CPUs, and a normal qspinlock when running on a
-dedicated CPU.
-
-On PowerPC, we pick at compile-time between either the qspinlock
-(default-enabled on Book3S-64, i.e. all server chips) or a ll/sc based
-spinlock plus vm_yield() (default on embedded and 32-bit mac).
-
-       Arnd
+Urgh, yeah, so this crud undermines the whole point of having a fair
+lock. I'm thinking s390 and Power want to have this fixed.
