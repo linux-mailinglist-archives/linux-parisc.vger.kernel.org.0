@@ -2,74 +2,112 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB6934395A2
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 14:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04ECE439728
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 15:06:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231699AbhJYMLC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Oct 2021 08:11:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35640 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232830AbhJYMLC (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Oct 2021 08:11:02 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9F44C061745
-        for <linux-parisc@vger.kernel.org>; Mon, 25 Oct 2021 05:08:39 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id y7so10543519pfg.8
-        for <linux-parisc@vger.kernel.org>; Mon, 25 Oct 2021 05:08:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=60LUac9TbUAUeihKiMhbVBI8yC6QLbGShqutIFMCmP0=;
-        b=EHN7QEkaP6algAUHLgboVzmyUvL+Nw1o+J+uhG7qiE1MSHWoGrMfuC4hUImpbyfn7W
-         Ez7IVPo3DiBZc0UcmSu953mL6KuL7RqTLLzA5Z/sfOEROFZnZ3LRFAjwKeRXN3n0Poj1
-         GFyWn2XhJz8j/CWtJpTJEczMK7IRL6RTnC/SGd4KwOtmcdaYL3rNeVEtH6IkecWREGkT
-         bYGzgXpTP6Jyj/klc7dA91ZPjdy9oHjZoXPwSvbSkkDhUHPlxAxx4yU8pRUYNMdk3LbZ
-         J9aFWdNVVX+uwjfNg4fBrGZ2qXoWmUKYTh+QNLbWrFhfeJNEHoaPFbKbw8pW8Ld0Sptv
-         O3cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=60LUac9TbUAUeihKiMhbVBI8yC6QLbGShqutIFMCmP0=;
-        b=J9UfxOzrQc/pM5NAdMlqXgQOUTA6I6bR0VoEe7fYvYEGTnA3fDR3ykaZPl90B9vJ6/
-         zfIvUTpP2HfDeN7Y27aO/Ps6JOirY/Jgrxv4Sfe0e8Hnqr3dElehwGX6nM82SjKmhYOA
-         6VyofSTpCXZMbyut6h5Bd+wYjdRSFFErp09hk+7qcU342Gy0Pe1JUwZZW2jZ9TOo0otl
-         FsQKR6tuf86Sziy+Olyhgvixu0XrAwNR3pGB9+JBAwmArthi5rDkW3NxHaL772w+eFZ6
-         RaEk+mCCfFRcGLXOvQ5vlDeJU1kigXp9OUUNgSzGMzUAqKZ0VSYp8B9eziTaALrc7fgs
-         tlFQ==
-X-Gm-Message-State: AOAM533B4qb+KunpE7I/br4+CnKoxYGlR47dSKVga6cvXTalH6kD+kS4
-        G2TgNOlHBCyZ39giB+CKxNZrAiq+vcCrcg2OkRNEK6Y5NaA=
-X-Google-Smtp-Source: ABdhPJxQnUv5U9DPUS58N/Qig4cIbYMFqDbkLvyDzwgzWBCIV9UBZd3vqm1DFoE5KM5Gv+Qve9tv9Ms8NwL3SCDtKg0=
-X-Received: by 2002:a62:27c7:0:b0:44d:b86:54f2 with SMTP id
- n190-20020a6227c7000000b0044d0b8654f2mr17955354pfn.68.1635163719116; Mon, 25
- Oct 2021 05:08:39 -0700 (PDT)
+        id S233448AbhJYNJF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Oct 2021 09:09:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33808 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233340AbhJYNJF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 25 Oct 2021 09:09:05 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C838C60F92;
+        Mon, 25 Oct 2021 13:06:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635167202;
+        bh=ZCuob8BZrhlG+EmJNscDR7p2oOKkE8Oq9/x5u4oFHEA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=FuPaO5h+P7m9O6f7jRX/FomhBE8wpXrQg46b5X/6nDR7a9FqlQoUCB6YkaGCFB4Qg
+         9D0CqlTmvZwvwJoh4muObhBZmgmwMAb2I+SYudFaX7JYcTkGlmq+i4fWkanSJLgR8Z
+         jUwIOx7GR2kLD0UUChm2UfR21umaKf01WuYBFZMWUzBgwv2B8JfwjcwD++K4i0EwgG
+         +f5C0c0QSkTihCtJyXq/srIkiZfs/y50C2PSJPY/WZFtQxrY5DR7iJM/RE3f8JwOga
+         SlBTGoq31CwHhSi2fX8vx7KhB0B/6wLW7b15SLXQodFLa9nbkIa2Np6fw+sWezH3z8
+         EHLEv5gY54ilQ==
+Received: by mail-wm1-f53.google.com with SMTP id b133-20020a1c808b000000b0032ca4d18aebso9291702wmd.2;
+        Mon, 25 Oct 2021 06:06:42 -0700 (PDT)
+X-Gm-Message-State: AOAM530JJJXzVpVQci/B5m5pceKZ3rEt3msx00ppM2V6g5vnHHJnQvEz
+        F/k1JcQRh3dDsnxVnTS+lRgrxQK2Taol7sqXJI4=
+X-Google-Smtp-Source: ABdhPJzvjBncUZE2QFv7r8anYBis3Hwxw5+smqgbcmZGe49Rh+5b7Sf365AJDO4MLIyZVs8sWDAX066taTW3DQLxG28=
+X-Received: by 2002:a05:600c:1548:: with SMTP id f8mr19963769wmg.35.1635167201284;
+ Mon, 25 Oct 2021 06:06:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <CA+G9fYtsteSfwTQKV8o6VtBQDoz-+nwOf0s0X8BCkQHgAc6sdw@mail.gmail.com>
- <2ef5185a-9a0f-5ee0-23fc-37e0b1dd1099@gmx.de> <CA+QBN9DGZN=-Rfj3nc9TXd+OSRm9ipNC78HBsGWWo=qm+SB3zA@mail.gmail.com>
-In-Reply-To: <CA+QBN9DGZN=-Rfj3nc9TXd+OSRm9ipNC78HBsGWWo=qm+SB3zA@mail.gmail.com>
-From:   cp <carlojpisani@gmail.com>
-Date:   Mon, 25 Oct 2021 14:08:38 +0200
-Message-ID: <CA+QBN9CAQfBf6WuLRKRCVm_OOzN5VRNP2a4A1GNfnBFBUkC4+A@mail.gmail.com>
-Subject: Re: ATI Rage XL
-To:     linux-parisc@vger.kernel.org
+References: <20211022120058.1031690-1-arnd@kernel.org> <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+ <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com> <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
+In-Reply-To: <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Mon, 25 Oct 2021 15:06:24 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
+Message-ID: <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
+Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Waiman Long <longman@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        Openrisc <openrisc@lists.librecores.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-anyone?
+On Mon, Oct 25, 2021 at 11:57 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> On Sat, Oct 23, 2021 at 06:04:57PM +0200, Arnd Bergmann wrote:
+> > On Sat, Oct 23, 2021 at 3:37 AM Waiman Long <longman@redhat.com> wrote:
+> > >> On 10/22/21 7:59 AM, Arnd Bergmann wrote:
+> > > > From: Arnd Bergmann <arnd@arndb.de>
+> > > >
+> > > > As this is all dead code, just remove it and the helper functions built
+> > > > around it. For arch/ia64, the inline asm could be cleaned up, but
+> > > > it seems safer to leave it untouched.
+> > > >
+> > > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > >
+> > > Does that mean we can also remove the GENERIC_LOCKBREAK config option
+> > > from the Kconfig files as well?
+> >
+> >  I couldn't figure this out.
+> >
+> > What I see is that the only architectures setting GENERIC_LOCKBREAK are
+> > nds32, parisc, powerpc, s390, sh and sparc64, while the only architectures
+> > implementing arch_spin_is_contended() are arm32, csky and ia64.
+> >
+> > The part I don't understand is whether the option actually does anything
+> > useful any more after commit d89c70356acf ("locking/core: Remove break_lock
+> > field when CONFIG_GENERIC_LOCKBREAK=y").
+>
+> Urgh, what a mess.. AFAICT there's still code in
+> kernel/locking/spinlock.c that relies on it. Specifically when
+> GENERIC_LOCKBREAK=y we seem to create _lock*() variants that are
+> basically TaS locks which drop preempt/irq disable while spinning.
+>
+> Anybody having this on and not having native TaS locks is in for a rude
+> surprise I suppose... sparc64 being the obvious candidate there :/
 
-any news about the mach64 support with kernel 5.* ?
-cheers
+Is this a problem on s390 and powerpc, those two being the ones
+that matter in practice?
 
-> hi
-> in the PA wiki (1) the ATI Rage XL (mach64) is reported to have
-> worked. In combination with the fbdev X-server from XFree86/X.org
->
-> I think the news was related to kernel 2.6 or something very old.
->
-> Can anyone confirm it's still working with kernel 5.*?
->
-> I don't happen to have a card to test myself. Not yet.
-> (1) https://parisc.wiki.kernel.org/index.php/Graphics_howto
+On s390, we pick between the cmpxchg() based directed-yield when
+running on virtualized CPUs, and a normal qspinlock when running on a
+dedicated CPU.
+
+On PowerPC, we pick at compile-time between either the qspinlock
+(default-enabled on Book3S-64, i.e. all server chips) or a ll/sc based
+spinlock plus vm_yield() (default on embedded and 32-bit mac).
+
+       Arnd
