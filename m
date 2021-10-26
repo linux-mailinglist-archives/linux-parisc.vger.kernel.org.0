@@ -2,101 +2,100 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58490439E76
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Oct 2021 20:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC82343AA18
+	for <lists+linux-parisc@lfdr.de>; Tue, 26 Oct 2021 04:11:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233187AbhJYS2G (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Oct 2021 14:28:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:23364 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230431AbhJYS2G (ORCPT
+        id S232932AbhJZCNf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Oct 2021 22:13:35 -0400
+Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:42134 "EHLO
+        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230216AbhJZCNe (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Oct 2021 14:28:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635186343;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WmLX7TLtZ9IDJ1JQ+2m7C+nUTKDcem4HGFPTzsvzRlk=;
-        b=GYU6diwvCR+Vxojf7pIQFcdjSnOPP0dxxrfRokloHQQ49xdmHv2oUWjUCRgDwl/TCBlCKI
-        1ZGMVL2pceh1rFUGA8Yo2Usbd+NCMJXm30/sN6E2/VoD5otJHAe84jWsJsyBbAI4ZDgi4x
-        NbUX9F4goP26o4iNIIotoPtjymlBIko=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-80-pXULrgXMNu2BFbQqJnWKPA-1; Mon, 25 Oct 2021 14:25:40 -0400
-X-MC-Unique: pXULrgXMNu2BFbQqJnWKPA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3722410B3959;
-        Mon, 25 Oct 2021 18:25:37 +0000 (UTC)
-Received: from llong.remote.csb (unknown [10.22.18.111])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 28C21100763D;
-        Mon, 25 Oct 2021 18:25:33 +0000 (UTC)
-Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Mon, 25 Oct 2021 22:13:34 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=yun.wang@linux.alibaba.com;NM=1;PH=DS;RN=31;SR=0;TI=SMTPD_---0UtjMs7q_1635214264;
+Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com fp:SMTPD_---0UtjMs7q_1635214264)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 26 Oct 2021 10:11:06 +0800
+Subject: Re: [PATCH v4 0/2] fix & prevent the missing preemption disabling
+From:   =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
+To:     Guo Ren <guoren@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        Openrisc <openrisc@lists.librecores.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>
-References: <20211022120058.1031690-1-arnd@kernel.org>
- <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
- <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
- <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
- <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
- <2413f412-a390-bbc0-e848-e2a77d1f0ab3@redhat.com>
- <CAK8P3a3JEBF-dEg0iVThMMRNK3CDxY+mRtTeStMusycnethO_g@mail.gmail.com>
-From:   Waiman Long <longman@redhat.com>
-Message-ID: <d7af2422-3264-b9bb-b515-da4351743448@redhat.com>
-Date:   Mon, 25 Oct 2021 14:25:32 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Jisheng Zhang <jszhang@kernel.org>, linux-csky@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        live-patching@vger.kernel.org
+References: <32a36348-69ee-6464-390c-3a8d6e9d2b53@linux.alibaba.com>
+Message-ID: <71c21f78-9c44-fdb2-f8e2-d8544b3421bd@linux.alibaba.com>
+Date:   Tue, 26 Oct 2021 10:09:12 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <CAK8P3a3JEBF-dEg0iVThMMRNK3CDxY+mRtTeStMusycnethO_g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <32a36348-69ee-6464-390c-3a8d6e9d2b53@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/25/21 11:44 AM, Arnd Bergmann wrote:
-> On Mon, Oct 25, 2021 at 5:28 PM Waiman Long <longman@redhat.com> wrote:
->> On 10/25/21 9:06 AM, Arnd Bergmann wrote:
->>> On s390, we pick between the cmpxchg() based directed-yield when
->>> running on virtualized CPUs, and a normal qspinlock when running on a
->>> dedicated CPU.
->> I am not aware that s390 is using qspinlocks at all as I don't see
->> ARCH_USE_QUEUED_SPINLOCKS being set anywhere under arch/s390. I only see
->> that it uses a cmpxchg based spinlock.
-> Sorry, I should not have said "normal" here. See arch/s390/lib/spinlock.c
-> for their custom queued spinlocks as implemented in arch_spin_lock_queued().
-> I don't know if that code actually does the same thing as the generic qspinlock,
-> but it seems at least similar.
+Just a ping, to see if there are any more comments :-P
 
-Yes, you are right. Their queued lock code looks like a custom version 
-of the pvqspinlock code.
+Regards,
+Michael Wang
 
-Cheers,
-Longman
-
+On 2021/10/18 上午11:38, 王贇 wrote:
+> The testing show that perf_ftrace_function_call() are using smp_processor_id()
+> with preemption enabled, all the checking on CPU could be wrong after preemption.
+> 
+> As Peter point out, the section between ftrace_test_recursion_trylock/unlock()
+> pair require the preemption to be disabled as 'Documentation/trace/ftrace-uses.rst'
+> explained, but currently the work is done outside of the helpers.
+> 
+> And since the internal using of trace_test_and_set_recursion()
+> and trace_clear_recursion() also require preemption to be disabled, we
+> can just merge the logical together.
+> 
+> Patch 1/2 will make sure preemption disabled when recursion lock succeed,
+> patch 2/2 will do smp_processor_id() checking after trylock() to address the
+> issue.
+> 
+> v1: https://lore.kernel.org/all/8c7de46d-9869-aa5e-2bb9-5dbc2eda395e@linux.alibaba.com/
+> v2: https://lore.kernel.org/all/b1d7fe43-ce84-0ed7-32f7-ea1d12d0b716@linux.alibaba.com/
+> v3: https://lore.kernel.org/all/609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com/
+> 
+> Michael Wang (2):
+>   ftrace: disable preemption when recursion locked
+>   ftrace: do CPU checking after preemption disabled
+> 
+>  arch/csky/kernel/probes/ftrace.c     |  2 --
+>  arch/parisc/kernel/ftrace.c          |  2 --
+>  arch/powerpc/kernel/kprobes-ftrace.c |  2 --
+>  arch/riscv/kernel/probes/ftrace.c    |  2 --
+>  arch/x86/kernel/kprobes/ftrace.c     |  2 --
+>  include/linux/trace_recursion.h      | 20 +++++++++++++++++++-
+>  kernel/livepatch/patch.c             | 13 +++++++------
+>  kernel/trace/ftrace.c                | 15 +++++----------
+>  kernel/trace/trace_event_perf.c      |  6 +++---
+>  kernel/trace/trace_functions.c       |  5 -----
+>  10 files changed, 34 insertions(+), 35 deletions(-)
+> 
