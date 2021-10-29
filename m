@@ -2,64 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40EA643FBBE
-	for <lists+linux-parisc@lfdr.de>; Fri, 29 Oct 2021 13:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD914440107
+	for <lists+linux-parisc@lfdr.de>; Fri, 29 Oct 2021 19:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229793AbhJ2Lv2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Fri, 29 Oct 2021 07:51:28 -0400
-Received: from mx2.hcg.gr ([84.205.254.49]:42092 "EHLO mx2.hcg.gr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229556AbhJ2Lv2 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 29 Oct 2021 07:51:28 -0400
-X-AuditID: ac138d0e-8cad570000000931-3f-617bdfa947fb
-Received: from newmail.hcg.gr (Unknown_Domain [172.18.2.10])
-        (using TLS with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by mx2.hcg.gr (Symantec Messaging Gateway) with SMTP id 64.F4.02353.9AFDB716; Fri, 29 Oct 2021 14:48:57 +0300 (EEST)
-Received: from localhost (localhost [127.0.0.1])
-        by newmail.hcg.gr (Postfix) with ESMTP id 4D6FD3806A9D68;
-        Fri, 29 Oct 2021 14:48:57 +0300 (EEST)
-Received: from newmail.hcg.gr ([127.0.0.1])
-        by localhost (newmail.hcg.gr [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id r6tOUu7p3W1u; Fri, 29 Oct 2021 14:48:57 +0300 (EEST)
-Received: from localhost (localhost [127.0.0.1])
-        by newmail.hcg.gr (Postfix) with ESMTP id E6FE53806A9D55;
-        Fri, 29 Oct 2021 14:48:56 +0300 (EEST)
-X-Virus-Scanned: amavisd-new at newmail.hcg.gr
-Received: from newmail.hcg.gr ([127.0.0.1])
-        by localhost (newmail.hcg.gr [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id V6ASAXdwPXPD; Fri, 29 Oct 2021 14:48:56 +0300 (EEST)
-Received: from [192.168.43.217] (unknown [197.211.61.16])
-        by newmail.hcg.gr (Postfix) with ESMTPSA id 352393806A9D65;
-        Fri, 29 Oct 2021 14:48:51 +0300 (EEST)
-Content-Type: text/plain; charset="utf-8"
+        id S229772AbhJ2RQs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 29 Oct 2021 13:16:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54946 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229732AbhJ2RQr (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 29 Oct 2021 13:16:47 -0400
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D884C061570
+        for <linux-parisc@vger.kernel.org>; Fri, 29 Oct 2021 10:14:19 -0700 (PDT)
+Received: by mail-io1-xd36.google.com with SMTP id r194so13384180iod.7
+        for <linux-parisc@vger.kernel.org>; Fri, 29 Oct 2021 10:14:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=fYUucmJ/657CPCMDxHEmYGK4bYLnnSqGHbO8/2L2U7M=;
+        b=KxjFRk4YBCg9X3GkLV6Z9gYcc8aob3NIvKi64iO3Xmi+RoOwOXWU3T8L5JO4Qg/ldq
+         tTaCath7OAWYNtcLLsAjQc5mV3sktuQuO8MBp4n+aFKw/3yrngatLtUu01T09lbL4Tic
+         wPCUdHc8Y4DGINUryxIboBi2aNWAgpB8x6M0ZkoPEeQpk++ik7OenzPVREyF5ERuK+dA
+         VMrGUXdRpHyL2OWiHMEvXrAGzSdbuyWL/A8GuPYN3UTfzH7aSS3NUir2M2UMzVfjFw7K
+         uwh9Pu+Uvo4dDdeRnCRKEZoZIqVv6TxdrXXyEENw5LyM3IlwmW6aCTLiSfS02NR1hPA4
+         UlWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=fYUucmJ/657CPCMDxHEmYGK4bYLnnSqGHbO8/2L2U7M=;
+        b=RBI9PpNina7PxfT2SHWooytwbaIt/KN1OA2PQY/2A3JguK7XRMXJqDYka7XrMGCb5T
+         SUtttyZNhWh09WwYOM9gqf10KZJikQ3RM4U+783ZTjz/2/7jwedAez7pwg76GGFAk552
+         ZA1rx4mHfc7ntswuSbBqveLgihVqO+0shGQAiedNXjGk2V5pYCHMomwtMT1L1tdufk+0
+         Gu6GtE1GcttuKYbFtvcuipVU3dn5PehC+5dgWsWRgOFXl5uXMqw1pOYIwpg3mNvGK4cB
+         6qUvuejLfbdIdfFvEOfr/oJzCVhThidey2suHvtzW9VeRGYy+FcAtRSLDGxiWAL731xY
+         DfOg==
+X-Gm-Message-State: AOAM533jUof3JivfN0oSJRcZjO5cCQLl2H7gKAq6yFOsMfCVZsEsQBxD
+        xE21RrJZTc7b1UtAgOWehHcHN7+U6PJuZs0L1oc=
+X-Google-Smtp-Source: ABdhPJzwGD/6ZsvuMpmZcRL4MA0zH7Wr1B1urRA/JrfEtQnLANRxFqPj5qFwA5K1BVYV34RbHBOzS08mJvBODUcr8no=
+X-Received: by 2002:a05:6638:2484:: with SMTP id x4mr8436549jat.115.1635527658414;
+ Fri, 29 Oct 2021 10:14:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Illuminati-Beamter
-To:     Recipients <Illuminati@newmail.hcg.gr>
-From:   Illuminati@newmail.hcg.gr
-Date:   Fri, 29 Oct 2021 19:48:46 +0800
-Reply-To: illuminatiofficial466@gmail.com
-Message-Id: <20211029114852.352393806A9D65@newmail.hcg.gr>
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Re0gTcRz3d3feXaPVNbV+KGmMHrRIs0J+1ggjzB9E7wcVRY66prTSthmr
-        Qdl66owMDfUqmYtGqZS9LJdlrqm0tJelab71zGrSMI3ej8PC/vs8v58/viypeE0Fs4m7jLx+
-        l0anpGVUsYKQzbzUbtbMetKgRANfeml0sdZKosPFHSSq+3CcQkUVBxnU11hNoPKSP/RC33N/
-        9OjGLRo5PCKDynynKNTleUoga3kzjWpLMgnUYt+HTjjbAfrsddPIUl9PogtVgj86UvydjgnE
-        dxotBM7quUrgx+IPBpdVtdK4TGhlcHdGLY3tT6oonFnvANhpzydxYdo9Bn+8Foq709wMzvK1
-        ASwIDwic+aob4Hc5ncwKbqNMvY3XJe7h9REL4mUJN7LvUcl1lKm5bWoq8JLpYBQLublw6GMV
-        SAcyVsEVENDX10EPk9MAunOd5DApBdDxtH3Ecb2qoYf74fCO69xIKueb5y+xAdj+y8akA5Yl
-        uenwijNCKsi5cfBhXg8lYZKbAR0F78nhyFQ4lG6U5AAuBBY25ABJDuRU0JJmkmSaC4PWzwKQ
-        MMVNgc/qbZQUUfw5Xl2+SIJybh4UmzSZQCGMrAr/rQr/rQojqzZAFQLZTtPs8ISt2nCt/hqQ
-        /h9wYsxtIHqHwl2AYIELQJZUBsq92WaNQr5Ns3cfr0/aok/R8QYXCGEp5QS5TWWKV3BajZHf
-        wfPJvP6fS7CjglOJ6KR5aS90eaXjY+Y27wTMwvJIszbGvDjxU26w2pO8mowPMdiaoiffHOeu
-        DGgcbdgUYy39VvjFcd0pvLt1tqNn2eSGqPygvKhK0eLyzucvXz9YkXK/5UXuyu6uX7Xr7Jtj
-        42eysaH9cRsLjq+rnh/5dgCf0UXsx9snZqjebi+OW0BZzjdPSJnVz4tlS3/afMcGz9UUyVea
-        gwZTv75eI/qtisu9iPsHktbPeaTu9bYWLFehw37sJAQbvIf8tOZQ8fQeeV2ju0l8s9nYMqjO
-        9zd+qola4tnQt2po99Houyejx740WEs6i9ps6orKA2dNlxPsGT4yNiwbLe4NWTvxatA0JWVI
-        0ESqSL1B8xvc9cKKbgMAAA==
+Received: by 2002:a05:6e02:1a8f:0:0:0:0 with HTTP; Fri, 29 Oct 2021 10:14:17
+ -0700 (PDT)
+Reply-To: cj262515@gmail.com
+From:   Charles Dickson <cd9276441@gmail.com>
+Date:   Fri, 29 Oct 2021 13:14:17 -0400
+Message-ID: <CAFFdFF8pzG3UHsB_8g+pV_4zTLSZNyAuu9CMkKTsp9p7Kp+TLA@mail.gmail.com>
+Subject: Spende
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hallo!!! Willst du ein Mitglied der großen Illuminaten sein und anfangen, monatlich 50.000.000 € zu erhalten und unter anderen beliebt zu sein und Reichtümer und Ruhm zu haben, ist dies die einzige Chance, zu den Illuminaten zu gehören 52 Mitglieder in die Illuminati zu bringen, ich habe 32 bekommen, also suchen wir 20, also versuche, unter den zwanzig Leuten zu sein, die reich und berühmt sind, WhatsApp Via; +4917629575254, oder Email Via: illuminatiofficial466@gmail.com  , damit wir mit dem Beitrittsprozess beginnen können!!!
+IHR E-MAIL-KONTO WURDE F=C3=9CR EINE SPENDE VON $3.500.000,00 F=C3=9CR
+WOHLT=C3=84TIGKEIT AUSGEW=C3=84HLT
