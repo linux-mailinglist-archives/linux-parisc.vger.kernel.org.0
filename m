@@ -2,143 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CC5A43F37A
-	for <lists+linux-parisc@lfdr.de>; Fri, 29 Oct 2021 01:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40EA643FBBE
+	for <lists+linux-parisc@lfdr.de>; Fri, 29 Oct 2021 13:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231533AbhJ1Xat (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 28 Oct 2021 19:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41956 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbhJ1Xap (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 28 Oct 2021 19:30:45 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 850AFC061745;
-        Thu, 28 Oct 2021 16:28:17 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id c28so16877445lfv.13;
-        Thu, 28 Oct 2021 16:28:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=g1ASowQL1SYh3xyvjjnrsnFWzhxhuZ1FkP7TdHa31mE=;
-        b=or9I8eXmdc6hOUu3ilMz+ymgHlGQQmwFfcjANI787MFy3461r29Qlx4Drko3A82jiZ
-         /Dxbh+rXJkVd+vSmZQz7ByF21FNMWE7Msuh2tmQH7FzEaAaJykw/79BGIIrJtKwboRDm
-         04V8OvO+c+XCXlI7f4QRPE7cqx6GZulezk5I+0MnmugoyzWrW9wGp3T/sQ+0YL50opsM
-         PEj+17btedXyPtu3l7DUltlj+rCIDD63O2gZoZwfDEKUeboD39P9kLuxM5uqsYcKe9n/
-         MuNWRD7sUlbhLEou6B/xsQNLsenMP/929SI9uvSZZXHuqFx/YvhRAZPMrz7X4+YxCerI
-         /TgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=g1ASowQL1SYh3xyvjjnrsnFWzhxhuZ1FkP7TdHa31mE=;
-        b=cOkqdGeNEuZcAHnpdUXk1+5EmFZRDGpC5tRffGYu/vF24A+jKJL7M9mnRkN7nhE4Y/
-         LlIOgzW7RGRIJLf6h/kSoUNlwyZ7r+bA3TrLtwBqHtuMzlXD/f4ggUxwqYZRPJpIHsIb
-         HuGEwaz/RCE2Gy2MXOoZ2zktFpQ5HhPFbSh1cbImIdWP/A+HLdqoy5buIrsEyfkUkJKZ
-         2tHzxnOJ/HcMzTARcchnIxOCgLkWturaRU9Za11tsOnWz0gkufF/9iFPnwYjiT0RUJa0
-         aZJ8hVZGX/ODzwg7U52cNmRwEUG18a+RScItWUvS/hh1vxdhHaTsYpYo/cRUMnMWPcmr
-         YeFg==
-X-Gm-Message-State: AOAM533VU1mbUz4A00epD7HQENnplQUD31uOpugw3cw/JurTbdWCBjVV
-        F8WtTJ0H/i4piMeiXBS1RTNW4VX7J48=
-X-Google-Smtp-Source: ABdhPJwV2hV4le461ll7P/MiVtzPzva4GF7PaVejAVvhmYPc9uewsxLl7FIVcxk+rSnnrtvlDg/jfg==
-X-Received: by 2002:a19:760a:: with SMTP id c10mr6627861lff.302.1635463695803;
-        Thu, 28 Oct 2021 16:28:15 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-44-18.dynamic.spd-mgts.ru. [46.138.44.18])
-        by smtp.googlemail.com with ESMTPSA id bn3sm414682ljb.7.2021.10.28.16.28.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Oct 2021 16:28:15 -0700 (PDT)
-Subject: Re: [PATCH v2 03/45] notifier: Add
- atomic/blocking_notifier_has_unique_priority()
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-4-digetx@gmail.com>
- <YXqCz/utp2DFJJ45@smile.fi.intel.com>
- <c5fb7590-03a7-0eea-4040-07472a5c9710@gmail.com>
-Message-ID: <8a9c4a9a-ea0d-4bc9-cf57-9bd99b211d47@gmail.com>
-Date:   Fri, 29 Oct 2021 02:28:13 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S229793AbhJ2Lv2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Fri, 29 Oct 2021 07:51:28 -0400
+Received: from mx2.hcg.gr ([84.205.254.49]:42092 "EHLO mx2.hcg.gr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229556AbhJ2Lv2 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 29 Oct 2021 07:51:28 -0400
+X-AuditID: ac138d0e-8cad570000000931-3f-617bdfa947fb
+Received: from newmail.hcg.gr (Unknown_Domain [172.18.2.10])
+        (using TLS with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by mx2.hcg.gr (Symantec Messaging Gateway) with SMTP id 64.F4.02353.9AFDB716; Fri, 29 Oct 2021 14:48:57 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+        by newmail.hcg.gr (Postfix) with ESMTP id 4D6FD3806A9D68;
+        Fri, 29 Oct 2021 14:48:57 +0300 (EEST)
+Received: from newmail.hcg.gr ([127.0.0.1])
+        by localhost (newmail.hcg.gr [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id r6tOUu7p3W1u; Fri, 29 Oct 2021 14:48:57 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+        by newmail.hcg.gr (Postfix) with ESMTP id E6FE53806A9D55;
+        Fri, 29 Oct 2021 14:48:56 +0300 (EEST)
+X-Virus-Scanned: amavisd-new at newmail.hcg.gr
+Received: from newmail.hcg.gr ([127.0.0.1])
+        by localhost (newmail.hcg.gr [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id V6ASAXdwPXPD; Fri, 29 Oct 2021 14:48:56 +0300 (EEST)
+Received: from [192.168.43.217] (unknown [197.211.61.16])
+        by newmail.hcg.gr (Postfix) with ESMTPSA id 352393806A9D65;
+        Fri, 29 Oct 2021 14:48:51 +0300 (EEST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <c5fb7590-03a7-0eea-4040-07472a5c9710@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Illuminati-Beamter
+To:     Recipients <Illuminati@newmail.hcg.gr>
+From:   Illuminati@newmail.hcg.gr
+Date:   Fri, 29 Oct 2021 19:48:46 +0800
+Reply-To: illuminatiofficial466@gmail.com
+Message-Id: <20211029114852.352393806A9D65@newmail.hcg.gr>
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Re0gTcRz3d3feXaPVNbV+KGmMHrRIs0J+1ggjzB9E7wcVRY66prTSthmr
+        Qdl66owMDfUqmYtGqZS9LJdlrqm0tJelab71zGrSMI3ej8PC/vs8v58/viypeE0Fs4m7jLx+
+        l0anpGVUsYKQzbzUbtbMetKgRANfeml0sdZKosPFHSSq+3CcQkUVBxnU11hNoPKSP/RC33N/
+        9OjGLRo5PCKDynynKNTleUoga3kzjWpLMgnUYt+HTjjbAfrsddPIUl9PogtVgj86UvydjgnE
+        dxotBM7quUrgx+IPBpdVtdK4TGhlcHdGLY3tT6oonFnvANhpzydxYdo9Bn+8Foq709wMzvK1
+        ASwIDwic+aob4Hc5ncwKbqNMvY3XJe7h9REL4mUJN7LvUcl1lKm5bWoq8JLpYBQLublw6GMV
+        SAcyVsEVENDX10EPk9MAunOd5DApBdDxtH3Ecb2qoYf74fCO69xIKueb5y+xAdj+y8akA5Yl
+        uenwijNCKsi5cfBhXg8lYZKbAR0F78nhyFQ4lG6U5AAuBBY25ABJDuRU0JJmkmSaC4PWzwKQ
+        MMVNgc/qbZQUUfw5Xl2+SIJybh4UmzSZQCGMrAr/rQr/rQojqzZAFQLZTtPs8ISt2nCt/hqQ
+        /h9wYsxtIHqHwl2AYIELQJZUBsq92WaNQr5Ns3cfr0/aok/R8QYXCGEp5QS5TWWKV3BajZHf
+        wfPJvP6fS7CjglOJ6KR5aS90eaXjY+Y27wTMwvJIszbGvDjxU26w2pO8mowPMdiaoiffHOeu
+        DGgcbdgUYy39VvjFcd0pvLt1tqNn2eSGqPygvKhK0eLyzucvXz9YkXK/5UXuyu6uX7Xr7Jtj
+        42eysaH9cRsLjq+rnh/5dgCf0UXsx9snZqjebi+OW0BZzjdPSJnVz4tlS3/afMcGz9UUyVea
+        gwZTv75eI/qtisu9iPsHktbPeaTu9bYWLFehw37sJAQbvIf8tOZQ8fQeeV2ju0l8s9nYMqjO
+        9zd+qola4tnQt2po99Houyejx740WEs6i9ps6orKA2dNlxPsGT4yNiwbLe4NWTvxatA0JWVI
+        0ESqSL1B8xvc9cKKbgMAAA==
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-29.10.2021 00:32, Dmitry Osipenko пишет:
->>> +	/*
->>> +	 * This code gets used during boot-up, when task switching is
->>> +	 * not yet working and interrupts must remain disabled.  At
->> One space is enough.
-> This comment is replicated multiple times over this source file. You can
-> find it before each down_write(). I borrowed the text as-is, for
-> consistency.
-
-Actually, it should be down_read() here since there are no writes. I'll
-correct it in v3.
+Hallo!!! Willst du ein Mitglied der großen Illuminaten sein und anfangen, monatlich 50.000.000 € zu erhalten und unter anderen beliebt zu sein und Reichtümer und Ruhm zu haben, ist dies die einzige Chance, zu den Illuminaten zu gehören 52 Mitglieder in die Illuminati zu bringen, ich habe 32 bekommen, also suchen wir 20, also versuche, unter den zwanzig Leuten zu sein, die reich und berühmt sind, WhatsApp Via; +4917629575254, oder Email Via: illuminatiofficial466@gmail.com  , damit wir mit dem Beitrittsprozess beginnen können!!!
