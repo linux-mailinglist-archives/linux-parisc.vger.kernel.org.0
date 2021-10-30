@@ -2,103 +2,54 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4878D440B4C
-	for <lists+linux-parisc@lfdr.de>; Sat, 30 Oct 2021 20:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C29C440B5E
+	for <lists+linux-parisc@lfdr.de>; Sat, 30 Oct 2021 20:55:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbhJ3Sjl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 30 Oct 2021 14:39:41 -0400
-Received: from mout.gmx.net ([212.227.17.21]:55161 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229474AbhJ3Sjl (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 30 Oct 2021 14:39:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1635619020;
-        bh=wiYpOvpuZekWIhIUwDTxtt1QLcrdcdDO39b0AOLyb40=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=cNsFYMSj4129pr6FwmFHnjqWUIJDA80Lzq4QM8nYR5Y+W+jpdGpft5TZ1yfJ+nEgT
-         IHtv16wr5Nudcyfyayia9WxiHGrPwbza3jJP3aapu+U+EV5ehyRPLQPjKj5zYDna13
-         1brBbIb+MsCvF5DtEL6YzZB1vXrDgmKh45/gEYwk=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.175.185]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MEFvp-1mWksz2bAr-00AHHJ; Sat, 30
- Oct 2021 20:37:00 +0200
-Message-ID: <0bbb74dc-d39a-c8ef-d0d2-5fefb55822b3@gmx.de>
-Date:   Sat, 30 Oct 2021 20:36:36 +0200
+        id S230443AbhJ3S6I (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 30 Oct 2021 14:58:08 -0400
+Received: from mta-tor-003.bell.net ([209.71.212.30]:12354 "EHLO
+        cmx-torrgo001.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229694AbhJ3S6H (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 30 Oct 2021 14:58:07 -0400
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 60C8868809CE7662
+X-CM-Envelope: MS4xfOYfvJjJ2YI7gTgWnWD5SS4sjyVUot93+dh9uB+V9Vfj9uNqFFn1NmB0JAdNQEDU22DAF/lFDWmuLWHBgDCgWC9HSanDxqn16fn1LXgHD0oMY/9+uElv
+ SdcSqstdjwyVcciTSFFhYOTHFa1dV2Wu92Stlj9QzxKYtXD/jP+pPHdcH5psTFubY25P0uxfrMfWcM2qDyKbNujyWEfCSruG/tPF/NDs2NAHsqReOySs7f49
+ uNfb51MRhp27YV464gPxWz+LiRvMhsvQk731su1Kmgo=
+X-CM-Analysis: v=2.4 cv=Udwy9IeN c=1 sm=1 tr=0 ts=617d9527
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=RzyzHI6AHNeEmNw67-8A:9 a=QEXdDO2ut3YA:10
+ a=ATlVsGG5QSsA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-torrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 60C8868809CE7662; Sat, 30 Oct 2021 14:55:35 -0400
+Message-ID: <417d4b9c-1520-c80b-0c86-fa8fb11ed57f@bell.net>
+Date:   Sat, 30 Oct 2021 14:55:34 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH 1/2] parisc: decompressor: remove repeated depenency of
- misc.o
 Content-Language: en-US
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        linux-parisc@vger.kernel.org, patches@arm.linux.org.uk
-Cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-kernel@vger.kernel.org
-References: <20211030175721.1716841-1-masahiroy@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20211030175721.1716841-1-masahiroy@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:h2jBWOfutNxR4xyaYVhn1P+97SrP961UzTBJ/INTIw+7jLp9sFy
- ImHKxuhBdd12qsNyArtwkGWWKWrxiwjb1e64D+9Gjwn1M0ArG25DrwTje9riHX/Vy4YLbmn
- zp3a80QwQqaHkNdidSGTe/kesICjWs7OF5eJV//O7BXcdcEZPqEoEVaVnkQUMRtaZvThxe2
- jfHkV+cW30m13i3q43CdQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:nCnxTn9kPJg=:qct6dAKr8l2aj6OtbjUcX9
- Nq7ncoBLR7e5W1SJhPLMlolyDPJfEpeSAdj30eSWJNRrEg/KY6ERbZPm83vWElxRZO/YrnA48
- n8ZJQZI1T9gOAOSmJBmUdYHJ+svAX2HlTm98fcOd86RP8WR+7EnnaqGQTwvpbFPxcq1rmn9Bq
- 3OsfHSGz5nny+7Emm0qo5oa/OD37HudG6cDwlNqCHNN1gRYHRCr7Ji+9i+dSDP9E+o2KIOBaM
- JXJt9v5XUsngM0kflW+maK3yyMVfHvmoHx86CWMatdfQjI2EXZSRBfOcyFmHTBZEd0NhwnCJS
- keF1RO5tmXJoTeR1BdA9nH0Bw4OC/8+y1hC2gYvEUY6Am8ywwMDdHN2C/tWlG7h77cHv3SI0s
- Ox9rFZQiJzDprKgtYS5dfFcj+XMKD7UgPLBjy2M3Mmeiy+eATKCMNYs8lb7oONuxfO6hY57Fz
- gXr/K6bUpkXKAyUCn9w4MR+il+g5GerNaCoKRNZVz0wtez/Yyi2Oozc/Z52DeWmAvGNbwlBSM
- OgLrQoZ1A49ebfU5ijQ6t5Zyqw4LfZ8Ivyu74zy8EEBH5gEmgDvTbjJpLXEXW8CJa+i1SWKve
- HQ5c4l0fFlUxcvIBRwfe9gLkYSuPQndrHtSvKqapbAxe2BZfah/qcG+FiZEPqsZR/kYcok4IZ
- aV4IU4pmcfg5VpYgcBgDV6rWpIyWYbdUTC1yeRbutk4/83aXWIUWX3uGWSorkP+LUUmKn5j9+
- n0GtW9F2MLlWdT8pbCPyCIpaBU6GYIR0ACJuTNYJKRwCkh6ZDWh2fMe5bHaQS/Y/h+rXSwCsN
- 2dwR0jgc5v8hx8S4Mw1sv0QQn3eHW6TxLJgvsGLyKu/TSOK0bQqe2DTBOADBLyRhSwD+/lsqT
- 9zLnT8J5M5V4t2LXF/I/BF8vqrTz/FnxdMV5GJhq/PlS/kNWGfyk56RwgjWfAg+l0YsUGreai
- XvPGXyFHFuodXgroGE4+3plpewcr1xWSFpaytWCnzamK1kqj5Msnj8ls7lZkG0fZhxrWKvw01
- mxUBPHoPWRUJpsHnWsrR7qfH76rs9RRTgEiRZnpAtR0Te4CAhUmI9r1oujRslUgENj6YxiIFX
- SAwacg8hA8jZHU=
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-parisc <linux-parisc@vger.kernel.org>
+From:   John David Anglin <dave.anglin@bell.net>
+Subject: Email
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/30/21 19:57, Masahiro Yamada wrote:
-> The same dependency
->
->     $(obj)/misc.o: $(obj)/sizes.h
->
-> ... appears twice, at line 29 and line 55 in this Makefile.
->
-> Remove the second one.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Hi Helge,
 
-I've appplied both patches.
-Thanks!
+As far as I can tell, email to you from me is completely blocked by gmx.de.  This occurs for
+two different ISPs.
 
-Helge
+Regards,
+Dave
 
-> ---
->
->  arch/parisc/boot/compressed/Makefile | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/arch/parisc/boot/compressed/Makefile b/arch/parisc/boot/com=
-pressed/Makefile
-> index 9fe54878167d..f7ed79e23c2c 100644
-> --- a/arch/parisc/boot/compressed/Makefile
-> +++ b/arch/parisc/boot/compressed/Makefile
-> @@ -52,8 +52,6 @@ $(obj)/real2.o: $(obj)/real2.S
->  $(obj)/real2.S: $(srctree)/arch/$(SRCARCH)/kernel/real2.S
->  	$(call cmd,shipped)
->
-> -$(obj)/misc.o: $(obj)/sizes.h
-> -
->  CPPFLAGS_vmlinux.lds +=3D -I$(objtree)/$(obj) -DBOOTLOADER
->  $(obj)/vmlinux.lds: $(obj)/sizes.h
->
->
-
+-- 
+John David Anglin  dave.anglin@bell.net
