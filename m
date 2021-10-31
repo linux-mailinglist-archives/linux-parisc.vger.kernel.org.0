@@ -2,98 +2,103 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7A1A4410F7
-	for <lists+linux-parisc@lfdr.de>; Sun, 31 Oct 2021 22:14:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22B784410F9
+	for <lists+linux-parisc@lfdr.de>; Sun, 31 Oct 2021 22:22:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230025AbhJaVRZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 31 Oct 2021 17:17:25 -0400
-Received: from mout.gmx.net ([212.227.15.15]:52671 "EHLO mout.gmx.net"
+        id S230041AbhJaVZ1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 31 Oct 2021 17:25:27 -0400
+Received: from mout.gmx.net ([212.227.17.21]:51527 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229982AbhJaVRZ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 31 Oct 2021 17:17:25 -0400
+        id S229982AbhJaVZ1 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 31 Oct 2021 17:25:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1635714885;
-        bh=HfSY97Ok1t5Tnbb6uML+oUkmXtCZHHa+FraGyCsV5Oo=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=LOqcmNiWk5d/p6Z2pLDHxFVJh/cHHcIrTJrfCe/nfkMliWzaMTiWJ6WsZJfNe2V+l
-         6TV+ovvWkbXLcGfr1Nx09djac42w2yomuWTATl5SMHusrhL/RAcn+A1vFf9E9iVF7q
-         g8bm7CJHHfXs/Zvc6l8I64VSMgwY2cWN5yFPax8Y=
+        s=badeba3b8450; t=1635715373;
+        bh=6Y4V2K6GJm2c7mSIB+WiWdqjqFX+Qn3jNAX1KMO8Y0Y=;
+        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+        b=PKFd73+GA8bMiU3pqyNgynJsvPNTUgCTRaByFpjJR6BcBEwWZiS62MN68U3h4ntY7
+         GSTSqpMkuDSuPa8Kf7/F60KpIUh8UbbBiSqAKlrpzwBFAGahQMYUjUIvCdTrAUGGJB
+         be1Ho9XXzUYOwUb4RF1LJm3sxot+goWZ3tZayX2U=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.174.201]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MQv8n-1mJRkw31MN-00NvVH; Sun, 31
- Oct 2021 22:14:45 +0100
-Date:   Sun, 31 Oct 2021 22:14:19 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Cc:     Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH] parisc: Fix code/instruction patching on PA1.x machines
-Message-ID: <YX8HK7ZZZhjRQzcr@ls3530>
+Received: from [192.168.20.60] ([92.116.174.201]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MbRjt-1nE9493xiD-00bwdc; Sun, 31
+ Oct 2021 22:22:52 +0100
+Message-ID: <0a068f90-84bb-dbe1-b8b3-6fd7709b814a@gmx.de>
+Date:   Sun, 31 Oct 2021 22:22:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:UVxpwENy1KXY3az2ykTi9H4f5FcAhY9+Tnbjyv8zy91OUrUy5gT
- nByxExzDNrfEjvy8rTi9dtxXYUOMUVbod00H69ynq5yoWZMxQPPmHKhKphPlfv9ETVRyjhp
- 9AHkeyjXbksF/cqAc9vCc64+EmWqgzL67rcyKRQNZV6eCSNRWjQfV8IqqW6YRUvWUTd425t
- uTXK1E+y4kI7wVLsShgoQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/BhteET13Jk=:gqPLmCkH+PSn96Z4GceHnm
- zynbjdgB5R5sIndCqD4sgzeRXHry9nIQ6EqlFOP1tKb4hfA9Xx6nLRoNCjRhSVwCyFvKLG3FW
- EYrYec61i07glp3CK1yohEg4XOCmnBxHe5NpA+twrtweDdMbSdzIU7s43MYLArzA4NZRBnRJe
- qLQOsR+yQkG/N4jXb0Euj9sCBPGcoEKw/PLDx/M6OgPGjdiDPatsKUZr3tGGrieyBOqTE0jRi
- PN9jIJKAC79zRVIozvxr3XdI4BoESAaOke88Gwgjt2M1J7W+4RtfUoroHa5gMUNqnWZxqCV4M
- TEpa9KOjB5bTAxpk0a4HX6iNuGkpwCUHK5tP9vR8dyRGvAOFXOJe2I11LYZxaRZMWPfcIUBW7
- oE8/7f5xjbDn2Eq5NGbMNO6UxVS8rTtoJqiu3+uAWp8Sq9oxTkXHBr7SRj9O2LmqTbMpBuo7/
- 6WqD2P9MdV2yr36XVZ4gvSL5Z9PziAL3J0NHPxiqK2TFs3Lxg0smWWWS8/Qbo4b7tOC8cQIgC
- WnWquocbtTWCTTyri6H0XqAXzbYoV8FZSEcX6pdr7KEskKWBece9hIjNQtv/uiZimci+C53Eo
- oS9G8CO4TpE83+J24CbCHsFvIQD+LQpWaMy9I6e+rvd2LflRYPlsCN5a71KSQDCiAD6UoA0Z2
- 39F32UhwVim+/SXyO4lNS40YaIZS64Llkyw3J8bWFeIP7WItMCYnuaCnTA+ilYT7V9d8E4C69
- fRCkE/VXXswqOCJBvdZHdLoyE7ZSX6eFfv5zqDEHWN665lDx/gSBVpGn3MdWja1rVUGKCjktC
- tg82l1NU7At9/uKJcgRGlSggxblDIp/TPdfPhoiO0aPLghAEeAuVUc/MbnQwXAjTySrbwpZAo
- JfBJ7eypowCjRS+BmPn00dflO1OPLzzHqRe2Vhsy0zIEQU4R7MuDj4rUnEFN/MO9WcEXRMsd6
- JShohoYkTcmc8B7ZM/sxWMglIRH6tIWS/YTyRW74+L0gSnlAqvpRWxn8Gfbi6I2P9bqxfYZRr
- 4FByxd3yv+iDpKi1/ApQGuCQZ98sJblkpKtKMjDFvBgeYIKMjoMhDsexx3PAxZrZLex6xNMbO
- nTX6/yOWtSrAVg=
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: fixmap problem on PA11 hardware
+Content-Language: en-US
+To:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+References: <3b8410fd-f688-862f-3c3c-7ccf5d523075@gmx.de>
+ <a10ff403-3869-9eb1-8213-b51e6ca8d219@bell.net>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <a10ff403-3869-9eb1-8213-b51e6ca8d219@bell.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zCKF2/Egbw7BbJkBMEIH8mG8VN+TLbHMg6dVaywB/efVyTJ2LXl
+ VaWrb/Q2KYbnCcebTte6Y+V3f+yFnE8miLwNyU6TsboSRidPj96MOroMRarvyOdAv6zAtb3
+ B2jzoEVGZNEusx/aV3/hGWMQEZK86ySRBLvBfjg5T90grMLvAliT1v0PbuyWXSvPdQlob3r
+ vP6vhjcP3Q/26DtEuvE9w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:TCkbQFIbFRM=:Gxh5UeDpYFNAA721yJYs2T
+ zFKlC1gQ3mUSWGxj1G1XVqF4F+4RqK34DbPLwuGF5UeaN+1P3TiW/4G7oTguBg7+eVfF+DW65
+ K4Shx1HFzhxWFWzHwFNlXxPNGAhJPzACCvAHQK8j5r2XkNY8Gj2rS4fPbugs7L13SbCLUhTgT
+ Yb+2S2A8yFesxA5DRpv3XiJxwstarU9LQLPkf1ozWd1TGkgX0Xd+kg8GuOpHvlwwwMSKjBM/Z
+ 6T8NKRbWSWwiNlmqhv0e598TCVW4BdAxp7nGemqGvZ5kVg+KOBkmdnLcBpQc1TLr+k6wzJoYw
+ XHznFq0NyRCgt+vB0UtbYLW6fy5UaIOfGuNEP40N0oo8AqCNPLH8x/T4fM6IGNFszroYObsIZ
+ Y6rHiNrs9u0K9RtvQb4SPj9XLBZ34FdsikX8sy7ztbXGNiypAFEvT+dvxcyVgyAXuEiGfs86z
+ bahpe6y7xMOkWD61kaRNxeibXkKY9HZgRPFV7+43MdiG2trDX81JYPSb1AnfjM4dTuLPG+g1T
+ gkMo53ZLlkCvsbeap+/SMkvQb9M/Mkg+hhSNnFa3HVRlYDEY/7qS9xC6UVoujl6GD8G8MeiJd
+ hRiZaoPSJGH8oJezq9yjB8sCxn3qq+1dhXScmsXVOlSwqPzjdIQzfvhd0WV9DcwjOLYW9YdCE
+ NCU6DNWAGoeNoh8bdq/tkgucU24tjak0l2VnBJtfkvFEP+A1IqhsYJd4cgoLRadulEOMbzniy
+ p7pBnyfxCjkwrnGo1oJSss8YL5UEbPvq3or9T2v1ufmYMGvX2FkvuJYT+qyBpqlaCfEAJipGz
+ UkXllba+2XpIwFuDx+4Tp+1oZEsmljqyTtDCyFK0n4kbHg0elBdjxhHVqGnea04VIm1alec4h
+ KRCwDJeTYmgJGBhH4PWGa82bo1ruteH8ygSneClUook5frxqyL9brrYOueuSpHHe15UX6anhu
+ atnJPptctdHtuOSyoj0hLBOwh7rkp+wWpmI9pLC7rNXjT+CfZ8kPDutk3YWyZYj2nm3kU7IHH
+ kzzWB2B7bQiknFSq+1z3DNfjR10PgIRSrzT4MJ6kY2T9DEZXjk66/Z36YcDod6ETL0Erix/CZ
+ BCi0NbBdYcCjHw=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On PA1.x machines it's not sufficient to just flush the data and
-instruction caches when we have written new instruction codes into the
-parallel mapped memory segment, but we really need to invalidate (purge)
-the cache too. Otherwise the processor will still execute the old
-instructions which are still in the data/instruction cache.
+On 10/27/21 22:14, John David Anglin wrote:
+> On 2021-10-27 3:09 p.m., Helge Deller wrote:
+>> In the archives I found this old thread, which might be related:
+>> https://www.spinics.net/lists/linux-parisc/msg09391.html
+> These seems unlikely as both 7100LC and 7300LC are PA-RISC 1.1 processor=
+s (1.1c vs. 1.1e).=C2=A0 Big difference
+> seems to be cache.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 4e87ace902cf ("parisc: add support for patching multiple words")
-Cc: stable@vger.kernel.org # v5.3+
+Yes, there were at least two problems.
+I just sent two patches to the list which fix the crashes.
+But FTRACE still doesn't work on PA1.x machines as expected,
+while the same code seems to work on PA2.x machines (running the same 32bi=
+t kernel).
 
-diff --git a/arch/parisc/kernel/patch.c b/arch/parisc/kernel/patch.c
-index 80a0ab372802..8cbb7e1d5a2b 100644
-=2D-- a/arch/parisc/kernel/patch.c
-+++ b/arch/parisc/kernel/patch.c
-@@ -81,7 +81,7 @@ void __kprobes __patch_text_multiple(void *addr, u32 *in=
-sn, unsigned int len)
- 			 * We're crossing a page boundary, so
- 			 * need to remap
- 			 */
--			flush_kernel_vmap_range((void *)fixmap,
-+			invalidate_kernel_vmap_range((void *)fixmap,
- 						(p-fixmap) * sizeof(*p));
- 			if (mapped)
- 				patch_unmap(FIX_TEXT_POKE0, &flags);
-@@ -90,9 +90,10 @@ void __kprobes __patch_text_multiple(void *addr, u32 *i=
-nsn, unsigned int len)
- 		}
- 	}
+The PA7100LC reports (machine: 715/64):
+Kprobe smoke test: started
+Kprobe smoke test: kretprobe handler not called
+Kprobe smoke test: kretprobe handler not called
+Kprobe smoke test: kretprobe handler2 not called
+Kprobe smoke test: BUG: 3 error(s) running handlers
 
--	flush_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
-+	invalidate_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
- 	if (mapped)
- 		patch_unmap(FIX_TEXT_POKE0, &flags);
-+	invalidate_kernel_vmap_range((void *)start, end - start);
- 	flush_icache_range(start, end);
- }
+On the PA7300LC (machine B160L):
+Kprobe smoke test: started
+Kprobe smoke test: kprobe pre_handler not called
+Kprobe smoke test: kprobe post_handler not called
+Kprobe smoke test: kprobe pre_handler not called
+Kprobe smoke test: kprobe post_handler not called
+Kprobe smoke test: kprobe pre_handler2 not called
+Kprobe smoke test: kprobe post_handler2 not called
+Kprobe smoke test: kretprobe handler not called
+Kprobe smoke test: kretprobe handler not called
+Kprobe smoke test: kretprobe handler2 not called
+Kprobe smoke test: BUG: 9 error(s) running handlers
 
+On the PA8x00 (machine C3000):
+Kprobe smoke test: started
+Kprobe smoke test: passed successfully
+
+Helge
