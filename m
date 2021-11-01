@@ -2,82 +2,110 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 910F24414E2
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Nov 2021 09:06:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29F494415AE
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Nov 2021 09:54:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231821AbhKAIIt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 1 Nov 2021 04:08:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54078 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231723AbhKAIIi (ORCPT
+        id S231420AbhKAI5P (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 1 Nov 2021 04:57:15 -0400
+Received: from outbound5h.eu.mailhop.org ([18.156.94.234]:55032 "EHLO
+        outbound5h.eu.mailhop.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231371AbhKAI5O (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 1 Nov 2021 04:08:38 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2E06C061226
-        for <linux-parisc@vger.kernel.org>; Mon,  1 Nov 2021 01:06:01 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id u5so28086636ljo.8
-        for <linux-parisc@vger.kernel.org>; Mon, 01 Nov 2021 01:06:01 -0700 (PDT)
+        Mon, 1 Nov 2021 04:57:14 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1635756880; cv=none;
+        d=outbound.mailhop.org; s=arc-outbound20181012;
+        b=kp6ZBK++MU+pBdxCkLe/TDY/y/WsyoqG9tdcfTlclKCZPcUR5tKoxzvpsmH3RVIMXkIfViGD5HnnE
+         rJoPdlao2iOiMyMIj9TN8YpaDKUUWqd4qsbtIWljstF9NsESEgXjBVKFS9yCpLljBv5Kgjgi2e80es
+         VbPJoKzSZfYeCHZoEBMK01+BwDhpP+bJJeig3itj4OSjp0gIqTb0vkPy5ncZ+HIwE8t3378JXKaExV
+         RejUM88XmEIj5DNbCdphW5zUmhlzkkECmGdEP37ZPXuGL1TwgnH9HREhvhV8ghp3hUMlOzL8cRd9s4
+         aDgEGh8Hb+a8pB3b0RxvE/XFqbSs0Tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=outbound.mailhop.org; s=arc-outbound20181012;
+        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
+         to:from:dkim-signature:dkim-signature:from;
+        bh=U/T3aMOfisAvCp+Jrrv8IHsVMGPDCr1S7PcDgSgM39I=;
+        b=tGDEfMN0yyvphA8sCPt0/3YdPD7idv9ZSBWj9wWAmN/PMN5nQBd0VXuB6z7dMg1z/WHPaKRyR61wr
+         ELTD+JnjPXFtBuLzV8nDPZNEBn57/Gu8CTSY4jnkdyHsg69E48ultIKM2T6EIkryOrQDJicuIQzsun
+         FGmh8Ma6jVXWDX1XDbaSiGANHoxg4GHF+ngfqN93YWEX2a2BWn3dP0wGcBxUgVbS+k0KkGJ30NDVr6
+         BinX8/qI1CVp2i1Yu3OKBhRTRA7Yg2M+VRcxagFeG47Hp1NJ9ewjzLn9LCCraPwEw8JFcHth2l2dzX
+         EEfooypjPEAb4DrbQDy66CNg8WhMPmA==
+ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
+        spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=91.207.61.48;
+        dmarc=none header.from=stackframe.org;
+        arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=J/sLAHxRh6EjJh2rcjPDJLzA40VXjb4DP54UXQAr8IU=;
-        b=SFtDbE+6IDkHc1ulMYz3kIam1g8jrqMGveAFEIhzD57obcB2AAsvwDS7G9U5mllj4v
-         CXcMkcBLXp8av6pKrkxlnlH5OKDvvoptJUs33+ZsvH08EiMe99qcW7O6zHQLvSZrgd0O
-         vCM1DFFUxXbOTgTBZUHaqMWAsLsVkwQHIKx7yYArIjJiU9Id6qnVa2AaPiZRD+AlKd5h
-         AdNSKNBm0Kf1bwocLQT9cET1yolKLuAIwOilZUtmrnQSP+fGgJWS3nO8E8Mb56sNH1Bp
-         AO0nfdr8sSYDIc/xE0EXH23DxgT/1mFqpNrA+Y0Xex+/Q8MVRWz+jzSmqE3rPOpMkPfs
-         t3vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=J/sLAHxRh6EjJh2rcjPDJLzA40VXjb4DP54UXQAr8IU=;
-        b=Cxpn8DKe4JpCjeGF6DavDxqYYIUMx8XHEfUu9BaPlEzfTmAknI6WM3+NJbZubNHVWg
-         GAB8EF6dxU9EL+2lJGrColsA1Wba+TRdYFAVk0ypbDa+Uzb6E1TyUCHNUwUw7GhnpO4j
-         uGbe5LgLIJhItvnpO+g/kaLbtA3z3CevuK58ss3bT+9oWU4DCr7k260ev8i0QQmiFGM+
-         EoPS5M0UzrsqANpnkMgIHzZoXHpHbdJ21OLZsoAfhP1JYpb8PdkxiWKIBCam7RgPHmMi
-         9nJihH8X7+t7xIg8t3KzCoAx+6BoVwqdxiyGjfRBnhOW0H2NRrt9VvRC4uBSpEYQal7f
-         HZlA==
-X-Gm-Message-State: AOAM530kwkYZ8l97xcZDag6+/WZv4EBN0cmme/Q1pg3jiVlvgRsdM6fv
-        wLsqtHSmbNg8zQAVUAT1vN95viZIsR5l/VDtg2w/YE6/7gg=
-X-Google-Smtp-Source: ABdhPJxUF1tFmQzyAoIKyVPAG7R9FZL/KscgZLvfipr9TchgvjoT54aDh6EPcy8Ml6w3HwOZZMYj/oDtLWKn7uRbNdI=
-X-Received: by 2002:a05:651c:548:: with SMTP id q8mr6002668ljp.220.1635753949864;
- Mon, 01 Nov 2021 01:05:49 -0700 (PDT)
+        d=stackframe.org; s=duo-1634547266507-560c42ae;
+        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
+         to:from:from;
+        bh=U/T3aMOfisAvCp+Jrrv8IHsVMGPDCr1S7PcDgSgM39I=;
+        b=jQxRhkypWDINtYqQriPAbDixpNmKm1jyQ1nohPw+7/fsyXlLtfSRyPAToyKj4WGhXzGVLx2OG5H9/
+         WwjDSCbxa7pbcN2vRhlvXIpXhWyimmtH3Ak49+9sErVydyUQ45H9PeVh/ADEi5nY2CbO+P0LIBQ4eq
+         Vpncd/lQKwlpatp0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=outbound.mailhop.org; s=dkim-high;
+        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
+         to:from:from;
+        bh=U/T3aMOfisAvCp+Jrrv8IHsVMGPDCr1S7PcDgSgM39I=;
+        b=P9VaAvkLh5+XCyblcg8hABgvTRxKChxuB/Si0oXHQMrCGKq28hgHvn2WryIzOl8j/567YRvGcKwRm
+         yw9RSaRs3hOhHtQtNMeyZIloXBFzEjf4+UT9dEE8w21z38an64BawA//wUYChEX89X0+phJvkJLucH
+         9U3S8pYSoop1ASPQZ0k34sI1f9AtBnX5+llJO3kbp7ZIBj7+kvDSINbFbd7H3GZWzk76uRAleIdE0H
+         h1O9Fe+xdeJHsij2nbPKOAGDms34RFnX2tcmGOvz4gW8wnCmxzYPquSXo7BfonrrAzh5MyOIYRBNKa
+         /00TDrJ5dWWcMOcoGykJ/yjNNlWf1TQ==
+X-Originating-IP: 91.207.61.48
+X-MHO-RoutePath: dG9ta2lzdG5lcm51
+X-MHO-User: 553ce03f-3af1-11ec-a070-973b52397bcb
+X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Mail-Handler: DuoCircle Outbound SMTP
+Received: from mail.duncanthrax.net (propper.duncanthrax.net [91.207.61.48])
+        by outbound2.eu.mailhop.org (Halon) with ESMTPSA
+        id 553ce03f-3af1-11ec-a070-973b52397bcb;
+        Mon, 01 Nov 2021 08:54:35 +0000 (UTC)
+Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org.stackframe.org)
+        by mail.duncanthrax.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <svens@stackframe.org>)
+        id 1mhT5M-00DIPs-M3; Mon, 01 Nov 2021 10:54:32 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH/RFT] fbdev driver for HP Visualize FX cards
+References: <20211031195347.13754-1-svens@stackframe.org>
+        <cd0f90d9-7dba-af33-f88b-289fc6f80b51@suse.de>
+Date:   Mon, 01 Nov 2021 09:54:30 +0100
+In-Reply-To: <cd0f90d9-7dba-af33-f88b-289fc6f80b51@suse.de> (Thomas
+        Zimmermann's message of "Mon, 1 Nov 2021 08:07:41 +0100")
+Message-ID: <87r1c0s1bt.fsf@x1.stackframe.org>
 MIME-Version: 1.0
-Received: by 2002:a05:6512:304b:0:0:0:0 with HTTP; Mon, 1 Nov 2021 01:05:49
- -0700 (PDT)
-Reply-To: aisha.7d@yahoo.com
-From:   Aisha AG <rbx17058@gmail.com>
-Date:   Mon, 1 Nov 2021 00:05:49 -0800
-Message-ID: <CA+KbyydWeN4vHtdJCa8_Ot01GFV1JVo19c-A3KMMDn_Yj4rckg@mail.gmail.com>
-Subject: Hello Dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
--- 
+Hi Thomas,
 
-Hello Dear,
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological
-Daughter of Former President of Libya Col.Muammar Al-Qaddafi.
-Am a Widow and a single Mother with three Children.
+> Am 31.10.21 um 20:53 schrieb Sven Schnelle:
+>> Hi List(s),
+>> i wrote a fbdev driver for the HP Visualize FX cards used some of
+>> the
+>> PA-RISC workstations. It utilizes some of the 2D acceleration features
+>> present in the card.
+>> [..]
+>
+> Thanks for all the work you put into this. We welcome drivers even for
+> older hardware, but not for fbdev. DRM is all the rage now and has
+> been for a while. I'd like to ask you to convert the driver to DRM and
+> resubmit to <dri-devel@lists.freedesktop.org>.
+>
+> I while ago, I made conversion helpers for this. You can look at [1]
+> for a trivial DRM drivers that wraps existing fbdev drivers for use
+> with DRM. Once you have that, it turns into a refactoring job.
 
-I have investment funds worth Twenty Seven Million Five Hundred
-Thousand United State Dollar $27.500.000.00, and i need a trusted
-investment Manager/Partner because of my current refugee status,
-however, I am interested in you for investment project assistance in
-your country,may be from there,we can build business relationship
-in the nearest future.
+Thanks, i wasn't aware as i normally don't do any graphics related
+development. I take a look at dri and port the driver, which is
+hopefully not too hard.
 
-I am willing to negotiate an investment/business profit sharing ratio
-with you based on the future investment earning profits.
-
-If you are willing to handle this project on my behalf kindly reply
-urgently to enable me to provide you more information about the
-investment funds.
-Best Regards
-Mrs Aisha Al-Qaddafi.
+Sven
