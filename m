@@ -2,188 +2,254 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71231441D94
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Nov 2021 16:54:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0270B441DBC
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Nov 2021 17:10:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231611AbhKAP4p (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 1 Nov 2021 11:56:45 -0400
-Received: from mout.gmx.net ([212.227.17.20]:50887 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230517AbhKAP4o (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 1 Nov 2021 11:56:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1635782043;
-        bh=o8O/vojK2NIE9mJpyWbXMCjMOgFZFpA8dCaHEaWp19Y=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=R2ZUQSH4s4kOitA0WBg07eDPzOZxXmHf03ADrFi8sbtNMuaYekntqhZiVjBRhe76c
-         B3RN3Qti49fWACOwlEHfB43QjsbJ3KmYmrTr2X2hh473HRpq1FbghpHt4IDFz4XuMc
-         QKOAR3NCSJbI8FdVcIp+gP8UV3cjifSMeYNH/ZUs=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.177.231]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M9Fnj-1mnucW1bZH-006RYN; Mon, 01
- Nov 2021 16:54:03 +0100
-Date:   Mon, 1 Nov 2021 16:53:37 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-Subject: [GIT PULL] parisc architecture fixes for kernel v5.16-rc1
-Message-ID: <YYANgdNcYx8KQJUJ@ls3530>
+        id S232473AbhKAQMy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 1 Nov 2021 12:12:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51180 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230517AbhKAQMx (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 1 Nov 2021 12:12:53 -0400
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F8D3C061714
+        for <linux-parisc@vger.kernel.org>; Mon,  1 Nov 2021 09:10:20 -0700 (PDT)
+Received: (qmail 26742 invoked from network); 1 Nov 2021 16:10:17 -0000
+Received: from p200300cf070a020010bf80fffe6f49ef.dip0.t-ipconnect.de ([2003:cf:70a:200:10bf:80ff:fe6f:49ef]:43404 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Mon, 01 Nov 2021 17:10:17 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-parisc@vger.kernel.org, Sven Schnelle <svens@stackframe.org>
+Cc:     Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] video: fbdev: add HP Visualize FX driver
+Date:   Mon, 01 Nov 2021 17:10:09 +0100
+Message-ID: <2799287.e9J7NaK4W3@eto.sf-tec.de>
+In-Reply-To: <20211031204952.25678-2-svens@stackframe.org>
+References: <20211031204952.25678-1-svens@stackframe.org> <20211031204952.25678-2-svens@stackframe.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:2ltR8udwH8z6wmjI/1pbZ6eF0wKRadBEyt7a1xQe9YBxMxnxC0L
- Bg5sDEtjtCO590ZOnTDRbrHxmKtrZruoIDObViKVHJziaW88Js5V3xWV3TQi7P2sM4e0Dor
- 8UpeRazAcU+J0S/IL66rVpJkc3C4FekavIRW4PGb6bMAh4HUao16R0ZbQHkhsxqnkCqCpvL
- 10/ZVlkAyoObPcpnpKyxw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:II99DMCnopc=:0VdOqCAukw1/2I8UnDp3vq
- 5fhjF7EKS3OLpATPctxcSlGjZXn6vwmJDQRPUYNtQLOOIdb6YvGjHssHHvYe95VeuDEqAKGVN
- BIg0ysf78wcrQg4SJlwDgPyBxCXm7KzQp+cVrgq7WqzP5xkEIBQ86Cz3y0axyajI/JtMMjqRC
- RmIDn+Rc7HB066oIolLcNsHh+w7zOK7/mON1vIW2pxXjBiNZEYi7Ra/itsMNxVBlO9dW7xSUo
- M2dXKOMDv8RalyDxHHLUVLD5Z6lxrRGjvcKMo4W1AYLY2YzYGAXQu1y5D27UQS16etl/b6y7Z
- 2ltWfGda2JZwsYfcPM6H/6H58OinURfzIP410CvRFDUdskmazcp3CV6eSjOjc/VX5v4vViy/Q
- 7GckScYnWS21cgBHmNce/5w+zq8Hfx4iPNQjGXiIRNOrPzD7ERk1uVpJOq3xD0GBW+QWpcnd7
- VMhEtNAg1IXfnxiAmDXnM/B3CczukX3UBt4mXVmmWuoBL8jyGZpwhCaAdVt3KA4p/VC9EekLC
- QHpIyt6dvwiEdXVuAZvtx0GbVZxDJaFMd45dzryF1UZR8YztqLTSOmEP0WHMVt+65Qjx4Iu4K
- BGTSCTxG/BVYHZaQW3rWxPBKz0Cdgf8Ah0KT21piwOml3WkIn6VTxDM1SC4tyI4A6StoVv+KJ
- pkTAfMF+1DaEfK5kdCVIvBLPjC7duEv8qJmv3z5Iq+8Ivot4aRfRmy1C3bR86IUA4uZu24PS6
- L2feL6z53QcDrrWHfHc00khtOEEo3wfyGEkTb6MhTXDzahD+jOyZp1V3S78M/L6iBi24cAPOr
- oPinv2BZvJpfJaI1XK9Xj8gFRfJM/Js3WGF5xT20lptNc9gPi5/QLK8rca10sbg9CrfMKYY4i
- TnIS1UXEHSGv8b/wx/Q4IDcRp52RblTYQgzSBWecCKJXUj4ymwZxTEl+/qZCRrx98Tzh4OOb5
- +eFAYO4DuIROs/p5I2arzDB+PEU1hL2g7g/kgvvWoYdaU8TqlWzBR2I0sprpWIDJPdkldv6Zn
- /HKkSvM0jQkafXYhXUgf43Pf+QrpJcvR7q2ZJ/pABTaDWedr+D6nb5a3eBkt5hD9KSKOny7C3
- uUrkHMyWeTUicA=
+Content-Type: multipart/signed; boundary="nextPart3136760.aeNJFYEL58"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The following changes since commit 3a4347d82efdfcc5465b3ed37616426989182915:
+--nextPart3136760.aeNJFYEL58
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-  Merge tag 'clk-fixes-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux (2021-10-30 09:55:46 -0700)
+Am Sonntag, 31. Oktober 2021, 21:49:52 CET schrieb Sven Schnelle:
+> This adds a framebuffer driver for HP's visualize series of
+> cards. The aim is to support all FX2 - FX10 types but currently only
+> FX5 is tested as i don't have any other card.
+> 
+> Currently no mmap of video memory is supported as i haven't figured
+> out how to access VRAM directly.
 
-are available in the Git repository at:
+Besides the DRM things here are a few more things I spotted.
 
-  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-1
+> +struct visfx_par {
 
-for you to fetch changes up to 6e866a462867b60841202e900f10936a0478608c:
+What is "par"? Maybe a little more descriptive name would help, _param or 
+something?
 
-  parisc: Fix set_fixmap() on PA1.x CPUs (2021-11-01 12:00:22 +0100)
+> +	u32 pseudo_palette[256];
+> +	unsigned long debug_reg;
+> +	void __iomem *reg_base;
+> +	unsigned long reg_size;
+> +	int open_count;
+> +};
 
-----------------------------------------------------------------
-parisc architecture updates for kernel v5.16-rc1
+I would move the more often used members to the top, that should make accesses 
+of the often used members slightly more efficient as there is no offset 
+needed.
 
-Lots of new features and fixes:
-* Added TOC (table of content) support, which is a debugging feature which is
-  either initiated by pressing the TOC button or via command in the BMC. If
-  pressed the Linux built-in KDB/KGDB will be called (Sven Schnelle)
-* Fix CONFIG_PREEMPT (Sven)
-* Fix unwinder on 64-bit kernels (Sven)
-* Various kgdb fixes (Sven)
-* Added KFENCE support (me)
-* Switch to ARCH_STACKWALK implementation (me)
-* Fix ptrace check on syscall return (me)
-* Fix kernel crash with fixmaps on PA1.x machines (me)
-* Move thread_info into task struct, aka CONFIG_THREAD_INFO_IN_TASK (me)
-* Updated defconfigs
-* Smaller cleanups, including Makefile cleanups (Masahiro Yamada),
-  use kthread_run() macro (Cai Huoqing), use swap() macro (Yihao Han).
+> +static ssize_t visfx_sysfs_show_reg(struct device *dev,
+> +				    struct device_attribute *attr,
+> +				    char *buf)
+> +{
+> +	struct fb_info *info = pci_get_drvdata(container_of(dev, struct 
+pci_dev,
+> dev)); +	struct visfx_par *par = info->par;
+> +
+> +	return sprintf(buf, "%08x\n", visfx_readl(info, par->debug_reg));
+> +}
+> +
+> +static ssize_t visfx_sysfs_store_reg(struct device *dev,
+> +				     struct device_attribute 
+*attr,
+> +				     const char *buf, size_t 
+count)
+> +{
+> +	struct fb_info *info = pci_get_drvdata(container_of(dev, struct 
+pci_dev,
+> dev)); +	struct visfx_par *par = info->par;
+> +	unsigned long data;
+> +	char *p;
+> +
+> +	p = strchr(buf, '=');
+> +	if (p)
+> +		*p = '\0';
 
-----------------------------------------------------------------
-Cai Huoqing (1):
-      parisc: Make use of the helper macro kthread_run()
+No -EINVAL without '='?
 
-Helge Deller (17):
-      parisc: make parisc_acctyp() available outside of faults.c
-      parisc: Switch to ARCH_STACKWALK implementation
-      parisc: Add KFENCE support
-      parisc: Define FRAME_ALIGN and PRIV_USER/PRIV_KERNEL in assembly.h
-      parisc: Allocate task struct with stack frame alignment
-      parisc: Use FRAME_SIZE and FRAME_ALIGN from assembly.h
-      parisc: Use PRIV_USER instead of 3 in entry.S
-      task_stack: Fix end_of_stack() for architectures with upwards-growing stack
-      parisc: Fix ptrace check on syscall return
-      parisc: Move thread_info into task struct
-      parisc: Use PRIV_USER in syscall.S
-      parisc: Use PRIV_USER and PRIV_KERNEL in ptrace.h
-      parisc: Drop ifdef __KERNEL__ from non-uapi kernel headers
-      parisc: enhance warning regarding usage of O_NONBLOCK
-      parisc: Remove unused constants from asm-offsets.c
-      parisc: Update defconfigs
-      parisc: Fix set_fixmap() on PA1.x CPUs
+> +	if (kstrtoul(buf, 16, &par->debug_reg))
+> +		return -EINVAL;
+> +
+> +	if (par->debug_reg > par->reg_size)
+> +		return -EINVAL;
+> +
+> +	if (p) {
+> +		if (kstrtoul(p+1, 16, &data))
 
-Masahiro Yamada (2):
-      parisc: decompressor: remove repeated depenency of misc.o
-      parisc: decompressor: clean up Makefile
+Spaces around +
 
-Sven Schnelle (15):
-      parisc/unwind: use copy_from_kernel_nofault()
-      parisc: disable preemption during local tlb flush
-      parisc: deduplicate code in flush_cache_mm() and flush_cache_range()
-      parisc: fix preempt_count() check in entry.S
-      parisc: disable preemption in send_IPI_allbutself()
-      parisc: fix warning in flush_tlb_all
-      parisc/unwind: fix unwinder when CONFIG_64BIT is enabled
-      parisc: move virt_map macro to assembly.h
-      parisc: add PIM TOC data structures
-      parisc/firmware: add functions to retrieve TOC data
-      parisc: add support for TOC (transfer of control)
-      parisc/kgdb: add kgdb_roundup() to make kgdb work with idle polling
-      parisc: mark xchg functions notrace
-      parisc/ftrace: set function trace function
-      parisc/ftrace: use static key to enable/disable function graph tracer
+> +			return -EINVAL;
+> +		visfx_writel(info, par->debug_reg, data);
+> +	}
+> +	return count;
+> +}
+> +
+> +static DEVICE_ATTR(reg, 0600, visfx_sysfs_show_reg, visfx_sysfs_store_reg);
 
-Yihao Han (1):
-      parisc: Use swap() to swap values in setup_bootmem()
+Sysfs API is public API, so it needs to be documented and such. Also I bet 
+there are helpers to do this better. But I think this should be debugfs 
+attributes, not sysfs ones.
 
- .../core/thread-info-in-task/arch-support.txt      |   2 +-
- arch/parisc/Kconfig                                |  22 +++-
- arch/parisc/boot/compressed/Makefile               |   9 +-
- arch/parisc/configs/generic-32bit_defconfig        |   9 +-
- arch/parisc/configs/generic-64bit_defconfig        |  21 ++--
- arch/parisc/include/asm/assembly.h                 |  32 ++++++
- arch/parisc/include/asm/bitops.h                   |  10 --
- arch/parisc/include/asm/current.h                  |  19 ++++
- arch/parisc/include/asm/futex.h                    |   3 -
- arch/parisc/include/asm/ide.h                      |   4 -
- arch/parisc/include/asm/kfence.h                   |  44 ++++++++
- arch/parisc/include/asm/mckinley.h                 |   2 -
- arch/parisc/include/asm/pdc.h                      |   2 +
- arch/parisc/include/asm/processor.h                |  11 +-
- arch/parisc/include/asm/ptrace.h                   |   6 +-
- arch/parisc/include/asm/runway.h                   |   2 -
- arch/parisc/include/asm/smp.h                      |  19 +++-
- arch/parisc/include/asm/thread_info.h              |  12 +--
- arch/parisc/include/asm/traps.h                    |   1 +
- arch/parisc/include/asm/unaligned.h                |   2 -
- arch/parisc/include/uapi/asm/pdc.h                 |  28 +++++-
- arch/parisc/kernel/Makefile                        |   1 +
- arch/parisc/kernel/asm-offsets.c                   |  34 ++-----
- arch/parisc/kernel/cache.c                         |  87 +++++++---------
- arch/parisc/kernel/entry.S                         |  90 ++++++-----------
- arch/parisc/kernel/firmware.c                      |  32 ++++++
- arch/parisc/kernel/ftrace.c                        |  21 ++--
- arch/parisc/kernel/head.S                          |  40 ++++----
- arch/parisc/kernel/irq.c                           |   6 +-
- arch/parisc/kernel/pdt.c                           |   4 +-
- arch/parisc/kernel/process.c                       |   4 +-
- arch/parisc/kernel/smp.c                           |  25 ++++-
- arch/parisc/kernel/stacktrace.c                    |  30 +++---
- arch/parisc/kernel/sys_parisc.c                    |  10 +-
- arch/parisc/kernel/syscall.S                       |  26 ++---
- arch/parisc/kernel/toc.c                           | 111 +++++++++++++++++++++
- arch/parisc/kernel/toc_asm.S                       |  88 ++++++++++++++++
- arch/parisc/kernel/traps.c                         |   7 +-
- arch/parisc/kernel/unwind.c                        |  34 ++++---
- arch/parisc/lib/bitops.c                           |  12 +--
- arch/parisc/mm/fault.c                             |   2 +-
- arch/parisc/mm/fixmap.c                            |   5 +-
- arch/parisc/mm/init.c                              |  10 +-
- include/linux/sched/task_stack.h                   |   4 +
- 44 files changed, 622 insertions(+), 321 deletions(-)
- create mode 100644 arch/parisc/include/asm/current.h
- create mode 100644 arch/parisc/include/asm/kfence.h
- create mode 100644 arch/parisc/kernel/toc.c
- create mode 100644 arch/parisc/kernel/toc_asm.S
+> +static void visfx_imageblit_mono(struct fb_info *info, const char *data,
+> int dx, int dy, +				 int width, int 
+height, int fg_color, int bg_color)
+> +{
+> +	int _width, x, y;
+
+Having variables named width and _width is just asking for future trouble 
+IMHO. Maybe just call the local one "w" or something.
+
+> +	u32 tmp;
+
+You can move that into a more local scope to make it more obvious it doesn't 
+carry and state between loop iterations.
+
+> +	visfx_set_bmove_color(info, fg_color, bg_color);
+> +	visfx_writel(info, VISFX_VRAM_WRITE_MODE, 
+VISFX_VRAM_WRITE_MODE_COLOR);
+> +	visfx_writel(info, VISFX_VRAM_MASK, 0xffffffff);
+> +
+> +	for (x = 0, _width = width; _width > 0; _width -= 32, x += 4) {
+> +		visfx_set_vram_addr(info, dx + x * 8, dy);
+> +		if (_width >= 32) {
+> +			for (y = 0; y < height; y++) {
+> +				memcpy(&tmp, &data[y * (width / 8) 
++ x], 4);
+> +				visfx_write_vram(info, 
+VISFX_VRAM_WRITE_DATA_INCRY, tmp);
+> +			}
+> +		} else {
+> +			visfx_writel(info, VISFX_VRAM_MASK, 
+GENMASK(31, 31 - _width + 1));
+> +			for (y = 0; y < height; y++) {
+> +				tmp = 0;
+> +				memcpy(&tmp, &data[y * (width / 8) 
++ x], ((_width-1)/8)+1);
+> +				visfx_write_vram(info, 
+VISFX_VRAM_WRITE_DATA_INCRY, tmp);
+> +			}
+> +		}
+> +	}
+> +}
+> +
+> +static void visfx_setup_unknown(struct fb_info *info)
+> +{
+> +	visfx_writel(info, 0xb08044, 0x1b);
+> +	visfx_writel(info, 0xb08048, 0x1b);
+> +	visfx_writel(info, 0x920860, 0xe4);
+> +	visfx_writel(info, 0xa00818, 0);
+> +	visfx_writel(info, 0xa00404, 0);
+> +	visfx_writel(info, 0x921110, 0);
+> +	visfx_writel(info, 0x9211d8, 0);
+> +	visfx_writel(info, 0xa0086c, 0);
+> +	visfx_writel(info, 0x921114, 0);
+> +	visfx_writel(info, 0xac1050, 0);
+> +	visfx_writel(info, 0xa00858, 0xb0);
+
+A little comment about these numbers would be good, even if it is just 
+"recorded from HP-UX driver, no idea what it does".
+
+> +static int visfx_check_var(struct fb_var_screeninfo *var, struct fb_info
+> *info) +{
+> +	if (var->pixclock > VISFX_SYNC_PLL_BASE ||
+> +	    var->left_margin > 512 ||
+> +	    var->right_margin > 512 ||
+> +	    var->hsync_len > 512 ||
+> +	    var->lower_margin > 256 ||
+> +	    var->upper_margin > 256 ||
+> +	    var->vsync_len > 256 ||
+> +		var->xres > 2048 ||
+> +		var->yres > 2048)
+> +		return -EINVAL;
+
+Something went wrong with the indentation here.
+
+> +static int visfx_release(struct fb_info *info, int user)
+> +{
+> +	struct visfx_par *par = info->par;
+> +
+> +	if (user)
+> +		par->open_count--;
+
+Check for underflow, just out of paranoia?
+
+> +static int visfx_probe(struct pci_dev *pdev,
+> +		       const struct pci_device_id *ent)
+> +{
+> +	struct visfx_par *par;
+> +	struct fb_info *info;
+> +	int ret;
+> +
+> +	info = framebuffer_alloc(sizeof(struct visfx_par), &pdev->dev);
+
+sizeof(*par)
+
+> +	if (!info)
+> +		return -ENOMEM;
+> +
+> +	par = info->par;
+> +
+> +	ret = pci_enable_device(pdev);
+
+If you don't have a really good reason to do so you should used 
+pcim_enable_device(), which will do half of the following error cleanups and 
+the remove handling for you.
+
+> +static int __init visfx_init(void)
+> +{
+> +	return pci_register_driver(&visfx_driver);
+> +}
+> +module_init(visfx_init);
+> +
+> +static void __exit visfx_exit(void)
+> +{
+> +	pci_unregister_driver(&visfx_driver);
+> +}
+> +module_exit(visfx_exit);
+
+module_pci_driver(&visfx_driver);
+
+Greetings,
+
+Eike
+--nextPart3136760.aeNJFYEL58
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYYARYQAKCRBcpIk+abn8
+TtXpAJ9BMYf5HJmpVqPej6JyXjRui3EBGACbBpzTjXBB4oaNd9UM2lgwsEFc6Gs=
+=dQaR
+-----END PGP SIGNATURE-----
+
+--nextPart3136760.aeNJFYEL58--
+
+
+
