@@ -2,75 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33887441A65
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Nov 2021 12:02:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D660D441BB5
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Nov 2021 14:28:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232223AbhKALEu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 1 Nov 2021 07:04:50 -0400
-Received: from mout.gmx.net ([212.227.17.20]:48419 "EHLO mout.gmx.net"
+        id S231964AbhKANbL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 1 Nov 2021 09:31:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53992 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232191AbhKALEt (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 1 Nov 2021 07:04:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1635764533;
-        bh=6BnVRDqnhVQAfvZaew0wzOzHXs7hYC/8rBJZUhkNBxQ=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=JMalodGx+ps/3rCvm0TGbk9jOBWER9uKf/jwvokRAaTfVWW9F9Qp1UokywLZPKctj
-         Rh3PWwXE7VQ8cPDTVL107nqpB/P8d+BBp3nGNNrnGxGiwVfSqoXQPd6bLNMwzV21RV
-         IInw6iXH/486jmhclf3JCF8phyPDTHO1po0en2P0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.177.231]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MWici-1mATcL0iFc-00X0h4; Mon, 01
- Nov 2021 12:02:13 +0100
-Message-ID: <38022e9f-4b1b-2fac-2098-acf45f2f59c0@gmx.de>
-Date:   Mon, 1 Nov 2021 12:01:48 +0100
+        id S230417AbhKANbG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 1 Nov 2021 09:31:06 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A1A3160551;
+        Mon,  1 Nov 2021 13:28:22 +0000 (UTC)
+Date:   Mon, 1 Nov 2021 13:28:19 +0000
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+        Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 11/45] arm64: Use do_kernel_power_off()
+Message-ID: <YX/rc872EIlC+QGE@arm.com>
+References: <20211027211715.12671-1-digetx@gmail.com>
+ <20211027211715.12671-12-digetx@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: linux-next: Signed-off-by missing for commit in the parisc-hd
- tree
-Content-Language: en-US
-To:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Parisc List <linux-parisc@vger.kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20211101214403.47d36f6c@canb.auug.org.au>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20211101214403.47d36f6c@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:fq1Hn7mjIU603CMi1AFS6ksT5GSU++YfUXwRQ2hTgdThLOp+VJT
- qUMK04lde6yEbh+beiFq7KJBq/HognEm7iYrlz4FuOQFdbmTl5o2lCv2hj0hXOky2oFLI8t
- BJ4hbPQRGgTca+Eqfbzt1vHGc2p+zUOkadEx/+pE4PvFHW9XUGJQvKNGMnEnJkt8FMoSV0t
- rP+7wPSY3uva9cYqsC8OQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:COJ7QdyaPIM=:QVaX88KqLcS1jDTX+AiYtX
- +9bZ0diNFx/Wj+lmPOFCaVaBmtXdyfUC+S2BllwT1YcjsFJLFgbzWazHpE46Z0JseMQj02onS
- P06U625oBOGPiHJsm8IEhEB5yeYtFnwfipS54kVOorc+gy77bEExXqO4Fm7tg4okNxwNWDZ8B
- dQ52qgvv8XZtgi4VHSRSpYFpcgSI6XLtfQtB5UAQUF8JEn2VI1OQGaUvyT13pg16UjESOeRUf
- OzojmpkGs+g732OE4xbT1O9bXXvMFqXeamD+wXVo1kW4CfXAObFT+O6CbWrcfY3Ql7f2g6Yfj
- XkWdxJpEwn+irVgukNgoRl5hh9qadde/K4kR0/FUOBLxCbKIuOOcGziFE3jGs4jbLSwPZ23Rk
- Qr+lZ4nCrkfXvs4AZPIlH2YrmEhbE3QJennHUY8/tDzxYTceUaRUbzw3hVjfwo+rGSEoSpYcx
- ifFqZaZXwCOv/bJr6EDya+IhjzWGcJXdaoIrMPVjYZMY7koVCkbXd/Fxaizuewgd7WSVSqlNW
- QoD+0qwICEKUDr2otOxlJIpXyKltSKdK48NAwee7uCvYXz0YeV22Bfq7m2W17QI8ZXvXSxIpH
- Sfl0xqubW6Arw2jhT5ZyIlQDEN9Og9zAUd9tHb7B7SIw8I7fEvhraR9pgvbWjsMQbLLBn9pJh
- o4aKb0Ki7ucMl2gYSWsL0WvHZw3DjKNENEmHtjxyWmaReCxcYdSHMQGvQhXFPBsF3mLkyp1JR
- xvmbwPpVRk2smso79haadU+DNYy8lzpBQmuj+qYpE8T8qVHmwkrX04s/gP9b8uK76iKA0Jt8O
- RlBG8sdpPIMeft78Ir4RSLo8YBxLJwMmDXuCDQyYc+coV4mNHHZUFgT3dV/8jC8qbQTENEtTN
- 20vzb61CrsTq5pfTTtgR6Yfj9nY9dfNx51drmFzBEPflmv7CVu5w8GH54NWqbm9hYF6SMLfnj
- sw75ud8HuIhVeI0DGfwslNumF+SVZklfeLvfNM7LJqpD3YT91sqf/KLsm1r/06GpTyaqQXYXD
- rLdBobHvDx0L0EKjtMV6B5g4u7e3WoyKQHuM+D6Zbe54bFqUsQebS6Y5VAaqiJPBbCbkrbyue
- W9fO0sR2651qfY=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211027211715.12671-12-digetx@gmail.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 11/1/21 11:44, Stephen Rothwell wrote:
-> Commit
->   cad7eadf2afb ("parisc: Use swap() to swap values in setup_bootmem()")
-> is missing a Signed-off-by from its committer.
+On Thu, Oct 28, 2021 at 12:16:41AM +0300, Dmitry Osipenko wrote:
+> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
+> that invokes chained power-off handlers. It also invokes legacy
+> pm_power_off() for now, which will be removed once all drivers will
+> be converted to the new power-off API.
+> 
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 
-Thanks, fixed now.
-
-Helge
-
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
