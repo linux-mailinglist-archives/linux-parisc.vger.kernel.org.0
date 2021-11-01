@@ -2,83 +2,156 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5499E44118D
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Nov 2021 01:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27DCC4411F7
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Nov 2021 02:57:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230125AbhKAAJW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 31 Oct 2021 20:09:22 -0400
-Received: from mta-tor-004.bell.net ([209.71.212.31]:48440 "EHLO
-        cmx-torrgo001.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230121AbhKAAJV (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 31 Oct 2021 20:09:21 -0400
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [67.71.8.137]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 60C8868809F1C4C1
-X-CM-Envelope: MS4xfANO9cyDTdhgaY49mNNFHhhTx+7f/+/4J/OhJ+Ndexr1JrfHGKGQm8LctEuwbZHNsrlcEHYGq517k70XkbZ9+9FehvaNbRw+GxZEfaW380PZ8oAI3w62
- nfsVW68yhkJJcUOd52YtpHPepzUgyPxwPVQTq5UTirXZzOs3DENRaocTt8DxTMb2oRJI/wymnmJG65wDKaX4Wdus2hFT4YS4P7+m3MOA3d5g7U1MT8aGstAI
- 5R4fGlovaremTtzHq79SzoxwlwtFZmLwfMxehmn8jSOyMxHtWrp6ihXkKvO9b8Hw
-X-CM-Analysis: v=2.4 cv=Udwy9IeN c=1 sm=1 tr=0 ts=617f2f97
- a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=5lqBLR4tE87TEXlRbFAA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (67.71.8.137) by cmx-torrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 60C8868809F1C4C1; Sun, 31 Oct 2021 20:06:47 -0400
-Message-ID: <93de32e2-9922-99cf-17ce-95409d6c0813@bell.net>
-Date:   Sun, 31 Oct 2021 20:06:48 -0400
+        id S230400AbhKACAG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 31 Oct 2021 22:00:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38910 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230234AbhKACAF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 31 Oct 2021 22:00:05 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 96C77610E5;
+        Mon,  1 Nov 2021 01:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635731852;
+        bh=fuaUan8WpsO3AU0Pd876OqdiQB5S59Rz/RFmfxHCqFo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=WTZ2r/aqsZBJ/SEMp/W5aRRvu0wWWG+qZmM8hZPwjrObwwMpW1TgXwf1zWnw0Qa9i
+         Zv/YGYWGYxl7myNvWxfw0CIgJUc9b2/XePq2AH0H37XLuqx44GHHVjgkb3ys6UwuYH
+         QFUJSlyCI2x3AldpppHi6cKlbUrpf5epTIwYkQ0LyIddZNVrNNmKUj9pq1nkh3vhav
+         ePFznWLS5KXHwuBhRZexeraVkFwzXRLP/38HX/OFwy/5mrR8Hs9LdC9PbwjoOwqbNV
+         ADgrJu7beLvyyJTcpsvn3lAsea5miSCymSsM2dL/H4uMyDHc1oqmdVcUWCHL7cYIF+
+         w+SQ6/88DMfNA==
+Received: by mail-yb1-f173.google.com with SMTP id q74so34927729ybq.11;
+        Sun, 31 Oct 2021 18:57:32 -0700 (PDT)
+X-Gm-Message-State: AOAM532NZZipZ4PmQd8aebdgMaPN+5gcICkzFLd/y8dVP59BicYUBfRR
+        GiO3PJt2T6KiHFhFuW8wOniKZgqQn/AFtYLfgjc=
+X-Google-Smtp-Source: ABdhPJwLzr48xvkbPUYNSwW4wG4jcRHULAsaxHDgvLOaeOhiDi1MY+7mZCeP1WaifSe+QfUYgjKQrdu4XIYT2pTMgvI=
+X-Received: by 2002:ab0:6883:: with SMTP id t3mr16913634uar.66.1635731841194;
+ Sun, 31 Oct 2021 18:57:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: fixmap problem on PA11 hardware
-Content-Language: en-US
-From:   John David Anglin <dave.anglin@bell.net>
-To:     Helge Deller <deller@gmx.de>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-Cc:     deller@kernel.org
-References: <3b8410fd-f688-862f-3c3c-7ccf5d523075@gmx.de>
- <a10ff403-3869-9eb1-8213-b51e6ca8d219@bell.net>
- <0a068f90-84bb-dbe1-b8b3-6fd7709b814a@gmx.de>
- <dba5227c-0616-f51e-b716-9569304804bd@bell.net>
- <c25d8ffb-be2b-fb56-f0c9-11323d256a15@gmx.de>
- <86ce35e1-7ef0-1f5c-5cbe-a498a280be29@bell.net>
- <5650aab0-5cfd-a114-6a69-e8dc86123b93@bell.net>
-In-Reply-To: <5650aab0-5cfd-a114-6a69-e8dc86123b93@bell.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20211027211715.12671-1-digetx@gmail.com> <20211027211715.12671-13-digetx@gmail.com>
+In-Reply-To: <20211027211715.12671-13-digetx@gmail.com>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Mon, 1 Nov 2021 09:57:10 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTT+EsLt+pnYyTw_B0C8isho=E4tfOWROe9h-GZpYjET=w@mail.gmail.com>
+Message-ID: <CAJF2gTT+EsLt+pnYyTw_B0C8isho=E4tfOWROe9h-GZpYjET=w@mail.gmail.com>
+Subject: Re: [PATCH v2 12/45] csky: Use do_kernel_power_off()
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-omap@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2021-10-31 8:01 p.m., John David Anglin wrote:
-> On 2021-10-31 7:56 p.m., John David Anglin wrote:
->> n 2021-10-31 7:07 p.m., Helge Deller wrote:
->>> On 10/31/21 23:47, John David Anglin wrote:
->>>> My sense is the invalidate patch isn't correct.  The main difference between pdc and fdc is that
->>>> it is optional whether pdc writes the cache line back to memory when it's dirty at priority 0.
->>> That's true, nevertheless I've seen different behaviour on real hardware.
->>>
->>> It might be, that:
->>>
->>> -    flush_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
->>> +    invalidate_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
->>> (here the flush might be sufficient)
->>>       if (mapped)
->>>           patch_unmap(FIX_TEXT_POKE0, &flags);
->>> +    invalidate_kernel_vmap_range((void *)start, end - start);
->>> (but here the pdc is necessary to actually drop data from I-cache)
->>>       flush_icache_range(start, end);
->>>
->>> I can test tomorrow...
->> Maybe sync is needed before releasing lock.  pdc/fdc are weakly ordered.
-> Forget that.  There already is a sync.
-Could it be we incorrectly change the flush/purge operations to nops?
-89:     ALTERNATIVE(88b, 89b, ALT_COND_NO_DCACHE, INSN_NOP)
+Only for this patch, Acked-by: Guo Ren <guoren@kernel.org>
 
-Dave
+On Thu, Oct 28, 2021 at 5:18 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+>
+> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
+> that invokes chained power-off handlers. It also invokes legacy
+> pm_power_off() for now, which will be removed once all drivers will
+> be converted to the new power-off API.
+>
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> ---
+>  arch/csky/kernel/power.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/csky/kernel/power.c b/arch/csky/kernel/power.c
+> index 923ee4e381b8..86ee202906f8 100644
+> --- a/arch/csky/kernel/power.c
+> +++ b/arch/csky/kernel/power.c
+> @@ -9,16 +9,14 @@ EXPORT_SYMBOL(pm_power_off);
+>  void machine_power_off(void)
+>  {
+>         local_irq_disable();
+> -       if (pm_power_off)
+> -               pm_power_off();
+> +       do_kernel_power_off();
+>         asm volatile ("bkpt");
+>  }
+>
+>  void machine_halt(void)
+>  {
+>         local_irq_disable();
+> -       if (pm_power_off)
+> -               pm_power_off();
+> +       do_kernel_power_off();
+>         asm volatile ("bkpt");
+>  }
+>
+> --
+> 2.33.1
+>
+
 
 -- 
-John David Anglin  dave.anglin@bell.net
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
