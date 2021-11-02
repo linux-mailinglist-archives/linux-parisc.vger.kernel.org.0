@@ -2,62 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 642534424E8
-	for <lists+linux-parisc@lfdr.de>; Tue,  2 Nov 2021 01:51:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9EFB4437C8
+	for <lists+linux-parisc@lfdr.de>; Tue,  2 Nov 2021 22:25:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231981AbhKBAxl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 1 Nov 2021 20:53:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48926 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232021AbhKBAxj (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 1 Nov 2021 20:53:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 7A3C56102A;
-        Tue,  2 Nov 2021 00:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635814265;
-        bh=WPXOR3JQCQXts5v0DWb3OvH8hoj7qVJ5n7mt5NzreAc=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=pgMF+Ki5Dy+Mridharg0wzHOFNRaNTf6scXPSkwUSnxgqRfAlhaVCepzmdNJaTu6x
-         kpRsPgc591+c5dTWU1hq7dcMQrvsvvbZsExRL+8AebHnMPrZALcjD7Ah3fwUjwv+TL
-         O/zNbqJsOvAmtJ5QOBof0I4/q1vcZQ1WCWOuSYCGTZxD0yvi+VjIFjVV8VDtAg4uHy
-         ddDDOigXv2buZ/ZIgZbyYyULFvIT0VjAJJpj05mpdxu+w7QqFpZeuoXN4WFgbnVdhd
-         ps28a8DPzDiyK1flDSwvUBp28kr5EWb9L2DTcr6+ye3o6moQo9spTvOI+yLxEITpgZ
-         aOC0Yr9cHZNIw==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 739E260A0F;
-        Tue,  2 Nov 2021 00:51:05 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fixes for kernel v5.16-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YYANgdNcYx8KQJUJ@ls3530>
-References: <YYANgdNcYx8KQJUJ@ls3530>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <YYANgdNcYx8KQJUJ@ls3530>
-X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-1
-X-PR-Tracked-Commit-Id: 6e866a462867b60841202e900f10936a0478608c
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 552ebfe022ec67aca4ff2bda0722ed0e28fc90d5
-Message-Id: <163581426546.14115.14600256839310753977.pr-tracker-bot@kernel.org>
-Date:   Tue, 02 Nov 2021 00:51:05 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
+        id S230357AbhKBV16 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 2 Nov 2021 17:27:58 -0400
+Received: from mta-mtl-002.bell.net ([209.71.208.12]:37902 "EHLO
+        cmx-mtlrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229981AbhKBV16 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 2 Nov 2021 17:27:58 -0400
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 60C894590AB7ED88
+X-CM-Envelope: MS4xfGfxoyHZ3vTgn82eVeS3QH91xUePO/LFhGEObWYVMn1cUHFp+tYU7EM44LBtZLcwAAdU516kTVuF+c+4EPiH5ZNrPjliaZld841TQKEd4xpe/TlIwUB5
+ qlha7+b2aeGnPiaBgKLWvj3XcxPawvEa6W4l9+ysIkT74Iknm6vhR+vIdZt4eBs4srjflM3YrPQNXGYtkw4ynVEE9W77QTjjBDKWK+IYOKBvBY4NmdtFkDV3
+ JbX24JzkZhIKEzOybRtEtmx9HAvLeDUsVmZeUeLm2BNBXa0ewQGUhlC69jVtCln1
+X-CM-Analysis: v=2.4 cv=ENdlb3VC c=1 sm=1 tr=0 ts=6181acbc
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=r1wZR9csh2ktS47WyV8A:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 60C894590AB7ED88; Tue, 2 Nov 2021 17:25:16 -0400
+Message-ID: <d76b861a-2e78-d698-3c28-23268c2efef0@bell.net>
+Date:   Tue, 2 Nov 2021 17:25:17 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: fixmap problem on PA11 hardware
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     deller@kernel.org
+References: <3b8410fd-f688-862f-3c3c-7ccf5d523075@gmx.de>
+ <a10ff403-3869-9eb1-8213-b51e6ca8d219@bell.net>
+ <0a068f90-84bb-dbe1-b8b3-6fd7709b814a@gmx.de>
+ <dba5227c-0616-f51e-b716-9569304804bd@bell.net>
+ <c25d8ffb-be2b-fb56-f0c9-11323d256a15@gmx.de>
+ <86ce35e1-7ef0-1f5c-5cbe-a498a280be29@bell.net>
+ <5650aab0-5cfd-a114-6a69-e8dc86123b93@bell.net>
+ <93de32e2-9922-99cf-17ce-95409d6c0813@bell.net>
+ <0cdbabc1-4aa1-1908-51a3-a195ea9a37f5@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <0cdbabc1-4aa1-1908-51a3-a195ea9a37f5@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Mon, 1 Nov 2021 16:53:37 +0100:
+On 2021-11-01 2:09 p.m., Helge Deller wrote:
+> On 11/1/21 01:06, John David Anglin wrote:
+>> On 2021-10-31 8:01 p.m., John David Anglin wrote:
+>>> On 2021-10-31 7:56 p.m., John David Anglin wrote:
+>>>> n 2021-10-31 7:07 p.m., Helge Deller wrote:
+>>>>> On 10/31/21 23:47, John David Anglin wrote:
+>>>>>> My sense is the invalidate patch isn't correct.  The main difference between pdc and fdc is that
+>>>>>> it is optional whether pdc writes the cache line back to memory when it's dirty at priority 0.
+>>>>> That's true, nevertheless I've seen different behaviour on real hardware.
+>>>>>
+>>>>> It might be, that:
+>>>>>
+>>>>> -    flush_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
+>>>>> +    invalidate_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
+>>>>> (here the flush might be sufficient)
+>>>>>        if (mapped)
+>>>>>            patch_unmap(FIX_TEXT_POKE0, &flags);
+>>>>> +    invalidate_kernel_vmap_range((void *)start, end - start);
+>>>>> (but here the pdc is necessary to actually drop data from I-cache)
+>>>>>        flush_icache_range(start, end);
+>>>>>
+>>>>> I can test tomorrow...
+>>>> Maybe sync is needed before releasing lock.  pdc/fdc are weakly ordered.
+>>> Forget that.  There already is a sync.
+>> Could it be we incorrectly change the flush/purge operations to nops?
+>> 89:     ALTERNATIVE(88b, 89b, ALT_COND_NO_DCACHE, INSN_NOP)
+> No, can't be.
+> The alternative patching hasn't run yet when the kprobe testcases run.
+I was concerned about the flush vs. purge write back behavior, not the kprobe problem.
 
-> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-1
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/552ebfe022ec67aca4ff2bda0722ed0e28fc90d5
-
-Thank you!
+Dave
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+John David Anglin  dave.anglin@bell.net
+
