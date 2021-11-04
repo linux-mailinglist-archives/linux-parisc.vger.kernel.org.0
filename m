@@ -2,106 +2,175 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7F294457C9
-	for <lists+linux-parisc@lfdr.de>; Thu,  4 Nov 2021 18:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7A1C44591D
+	for <lists+linux-parisc@lfdr.de>; Thu,  4 Nov 2021 18:57:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231837AbhKDRDC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 4 Nov 2021 13:03:02 -0400
-Received: from mout.gmx.net ([212.227.15.15]:58061 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231616AbhKDRDB (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 4 Nov 2021 13:03:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1636045200;
-        bh=tKM5PQHWpgP8pl+4MrNWopKIsPwcNVs6I6DSoiDoe9k=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=St92rN/1vmF0PImyF9jhO8otSLDq/KYZ4DS93VcktW8Ta6oVLeAcY1H7gbSSpchTd
-         KVPbHhzdrDKxQDkkESqmX0pmB9Px35J/KQcP/ybFiWRhKoYwfyCTWJNM3LpaWYehvi
-         CiYjI4mrUaLCVkviQly55M8BXtNXWgwjr/HFwHb4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.157.73]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MXGvM-1nFE9J3jSQ-00Yh2F; Thu, 04
- Nov 2021 17:59:59 +0100
-Date:   Thu, 4 Nov 2021 17:59:32 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [GIT PULL] more parisc architecture fixes for kernel v5.16-rc1
-Message-ID: <YYQRdM6er3Hty3qP@ls3530>
+        id S234013AbhKDSAU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 4 Nov 2021 14:00:20 -0400
+Received: from mta-tor-002.bell.net ([209.71.212.29]:53628 "EHLO
+        cmx-torrgo001.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233913AbhKDSAT (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 4 Nov 2021 14:00:19 -0400
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 60C886880A65C025
+X-CM-Envelope: MS4xfG90f36aBqkVEwThfUDb7QcUZanxwQuOokiKUlR0KA2B3N+Z9dD93FFsyQZF/ZvQ2KPUAoS3WMWVCwBB3CLXrymuecZR9s3rqNLt0Aggnn7qN9O1hm+b
+ csoT53gZG4uXPw64etgUJTPxQJk65pVpmzuJKzGUOpvOB4re40uKxD6dYsoEXj80lBS8ekzJsPVHlk00h2KCoRw9FfQqSiIK+pQ98RtdbwLyzGkKERi53OTv
+ 7zoL7KQS+EOtERj0d0KnjUV4BJ/4Zu+9eY9OUdYatiDNsy/sDGaSbDtHj4pFsMRMO2H62IRxQOVflbCFbIr34TA+YOFTLesrP6LWIWT/m7N5OEgme0spNiEw
+ wm5vCY6N
+X-CM-Analysis: v=2.4 cv=Udwy9IeN c=1 sm=1 tr=0 ts=61841f0f
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=nuaP51dSbY9Pe_BCDNMA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-torrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 60C886880A65C025; Thu, 4 Nov 2021 13:57:35 -0400
+Message-ID: <a3568fd4-79be-798e-3078-60b187ddaea7@bell.net>
+Date:   Thu, 4 Nov 2021 13:57:36 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:O5pkn/ut4pPxRa9lTa22n8YkW5f1SRoRSO++aunw3b+DAnP2Pje
- QvVbjsjmLU3yIUgSXXblO5sK5vzrW7LdvZi/HsVwUvxXPjCWFMtZx1zO+EAbpYTME0D/ZqH
- ITZNN4Wnhq6dvG+8VQD2S6cS1LaLAD8XnrAtcUAH+euorCUU56vQmJi20AZLzyLaPQy/lpL
- b0qrKahA5gShkKxdtgc0g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:I6aRUJgK+ZY=:TZyU60TjWsqJDq4oJoaKPg
- LIBP3IzGoQ38gmXsOcDre1vqxslyW/zqopl7EK+EMoQ/I4cz06733hcGBglBleatG08wXOhcG
- q/7uGIJU/sbNcQmxypONF8wGU8Td4ZXu0OgpTOWczw1vBl2tZAlPVPonA8w4JVGbl1fujknX+
- UT+P0+/kxv23RJE7KWE5uMNypFA0G4XIHat3gAVRgRWNv0HtgrOSVLqMmifwyBplvAUtpDRXY
- egIRsUPzg82PfuLvgRLmKBnBF4JQjWiUnWR+zTPmOAZ1cQaPUbCZqlnoAe+jijRAS7sMs6tsV
- n4q9V7SzEeFqeHVRxwWBuuybquwGbGQnSV4/a4qGCe86l5P8X+q6SozymPi2xQ0XOCZbCZCQ8
- iDABsqT1eK+OJaokPb8foJoUxIL6VjzHQqJJpMMhVHz9HyD3zzpdqn6OSMuCHVMKFbR2aPSl1
- 0JbXTzEvt8YOpIMYvJSGXipRdRZFBlk6skgMEemmseCC0kpjg422raWacYxKiMUQmMzuXDMgN
- 4esTLYPVHj41t07nHjPQnNZgzfOZhqgeS2Z9jXgoCvZvOTkj7ozt0bjh/abZdiwEzaKiRcjRQ
- V15Adj4i88Wu+rVD2Ozg0lRuwPkx+1UXAWHSoALvgkFaC5BhiAWe1ALNqu3BFHffgdBbwRx/T
- EK7C+5t1l2xCgQX5f+y2tbbLYfvW+j/Dtej4dOxt10fd0pueRRAFCAsoWiBihyj3w+CGZPM8l
- DMG8uXtvPNC8pDAyiuiwPNjvZQiD/qA0svnySSUQ6aTrjsKUrteOltOO+jAhS+wEgAiP8SWyd
- CMKerRdY4tvubgXvsCU/sy2ea/Q/1JxKQuXaWtnI0om13ieyrOKSoRgXGfNVnwSWaxWN1uYxV
- m38XeE1VWPPKv+ufIDU+Cj3aF9izC2KmHoiZxI3Dwdrbwc2sZwXmT7o23b8jMhJ+crpYnf1oZ
- CmdsVGNmT8HJAT4L9qL4nmUdAMajXnHMli3NKXxKIQORQz3h4Y8L6R1S5v47ObfZoORvHIV+m
- SIgsmrYF2tyGlcUlg2MgAQBaqlt4esjiW2pzQEKprDI5QzfnynMaUPjj/D08Kiqtv+HYB20It
- G4YaKSbSS3vD9g=
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH] parisc: Fix code/instruction patching on PA1.x machines
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     Sven Schnelle <svens@stackframe.org>
+References: <YX8HK7ZZZhjRQzcr@ls3530>
+ <91b3d125-18ae-e10f-3000-1b17a43a156f@bell.net>
+ <cf2c5fa8-5b98-50b7-00ef-0e86df918e8e@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <cf2c5fa8-5b98-50b7-00ef-0e86df918e8e@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The following changes since commit 7ddb58cb0ecae8e8b6181d736a87667cc9ab8389:
+On 2021-11-03 5:08 p.m., Helge Deller wrote:
+> Hi Dave,
+> 
+> On 11/3/21 21:12, John David Anglin wrote:
+>> I think the real problem is that neither flush_kernel_vmap_range() or
+>> invalidate_kernel_vmap_range() flush the icache.  They only operate
+>> on the data cache. flush_icache_range will flush both caches.
+> Yes.
+> But we write the new instructions to a congruently memory are (same
+> physical memory like the kernel code), then flush/invalidate the
+> D-Cache, and finally flush the I-cache of kernel code memory.
+> See last function call of __patch_text_multiple().
+> 
+> So, logically I think it should work (and it does on PA2.x).
 
-  Merge tag 'clk-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux (2021-11-03 21:18:44 -0700)
+I still believe it is incorrect to use invalidate_kernel_vmap_range() to flush the writes in
+__patch_text_multiple() to memory.  Both the PA 1.1 and 2.0 architecture documents state that
+it is implementation dependent whether pdc writes back dirty lines to memory at priority 0.
+If the writes are not flushed to memory, the patch won't install.
 
-are available in the Git repository at:
+> 
+> Or do you mean to flush the I-Cache of both mappings?
 
-  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-2
+I reviewed the flush operations in __patch_text_multiple().  I believe the current code is more or
+less correct, but not optimal.  I believe the final call to flush_icache_range() is unnecessary.  We
+can also eliminate one range flush in the calls to make sure we don't have any aliases in the cache.
+See change attached below.
 
-for you to fetch changes up to 2a2e8202c7a16a85a881ad2b6e32ccbebdc01dda:
+The big problem with __patch_text_multiple() is can only patch code that the patch code doesn't depend
+on.  This line in __patch_text_multiple() will cause a TLB fault on the first execution after a new
+patch_map is setup. We do alternative patching to the TLB handler when ALT_COND_NO_SMP is true.  For
+example,
 
-  parisc: move CPU field back into thread_info (2021-11-04 11:21:47 +0100)
+         .macro          ptl_lock        spc,ptp,pte,tmp,tmp1,fault
+#ifdef CONFIG_TLB_PTLOCK
+98:     cmpib,COND(=),n 0,\spc,2f
+         get_ptl         \tmp
+1:      LDCW            0(\tmp),\tmp1
+         cmpib,COND(=)   0,\tmp1,1b
+         nop
+         LDREG           0(\ptp),\pte
+         bb,<,n          \pte,_PAGE_PRESENT_BIT,3f
+         b               \fault
+         stw             \spc,0(\tmp)
+99:     ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+#endif
+2:      LDREG           0(\ptp),\pte
+         bb,>=,n         \pte,_PAGE_PRESENT_BIT,\fault
+3:
+         .endm
 
-----------------------------------------------------------------
-Second round of parisc architecture fixes and updates for kernel v5.16-rc1
+If the region being patched spans a page boundary, we will get a TLB fault with partially patched TLB
+code.  I suspect something like this is the real issue with the fixmap code.
 
-One build error fix and two optimizations:
+Maybe this could be avoided by patching in a "b,n 99f" instruction at 98b.  That would avoid patching
+in multiple nop instructions.
 
-- Fix build error by moving the CPU field back into thread_info struct
-  (Ard Biesheuvel)
+Dave
 
-- Do not enable IRQs unconditionally at start of interrupt handler if
-  they were disabled before (Sven Schnelle)
+> 
+> Helge
+> 
+> 
+>>
+>> Dave
+>>
+>> On 2021-10-31 5:14 p.m., Helge Deller wrote:
+>>> On PA1.x machines it's not sufficient to just flush the data and
+>>> instruction caches when we have written new instruction codes into the
+>>> parallel mapped memory segment, but we really need to invalidate (purge)
+>>> the cache too. Otherwise the processor will still execute the old
+>>> instructions which are still in the data/instruction cache.
+>>>
+>>> Signed-off-by: Helge Deller <deller@gmx.de>
+>>> Fixes: 4e87ace902cf ("parisc: add support for patching multiple words")
+>>> Cc: stable@vger.kernel.org # v5.3+
+>>>
+>>> diff --git a/arch/parisc/kernel/patch.c b/arch/parisc/kernel/patch.c
+>>> index 80a0ab372802..8cbb7e1d5a2b 100644
+>>> --- a/arch/parisc/kernel/patch.c
+>>> +++ b/arch/parisc/kernel/patch.c
+>>> @@ -81,7 +81,7 @@ void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int len)
+>>>                 * We're crossing a page boundary, so
+>>>                 * need to remap
+>>>                 */
+>>> -            flush_kernel_vmap_range((void *)fixmap,
+>>> +            invalidate_kernel_vmap_range((void *)fixmap,
+>>>                            (p-fixmap) * sizeof(*p));
+>>>                if (mapped)
+>>>                    patch_unmap(FIX_TEXT_POKE0, &flags);
+>>> @@ -90,9 +90,10 @@ void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int len)
+>>>            }
+>>>        }
+>>>
+>>> -    flush_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
+>>> +    invalidate_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
+>>>        if (mapped)
+>>>            patch_unmap(FIX_TEXT_POKE0, &flags);
+>>> +    invalidate_kernel_vmap_range((void *)start, end - start);
+>>>        flush_icache_range(start, end);
+> 
 
-- Keep interrupts enabled during cmpxchg and futex operations (Dave Anglin)
+---
+diff --git a/arch/parisc/kernel/patch.c b/arch/parisc/kernel/patch.c
+index 80a0ab372802..799795bc4210 100644
+--- a/arch/parisc/kernel/patch.c
++++ b/arch/parisc/kernel/patch.c
+@@ -67,8 +67,8 @@ void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int len)
+  	int mapped;
 
-----------------------------------------------------------------
-Ard Biesheuvel (1):
-      parisc: move CPU field back into thread_info
+  	/* Make sure we don't have any aliases in cache */
+-	flush_kernel_vmap_range(addr, len);
+  	flush_icache_range(start, end);
++	flush_tlb_kernel_range(start, end);
 
-Dave Anglin (1):
-      parisc: Don't disable interrupts in cmpxchg and futex operations
+  	p = fixmap = patch_map(addr, FIX_TEXT_POKE0, &flags, &mapped);
 
-Sven Schnelle (1):
-      parisc: don't enable irqs unconditionally in handle_interruption()
+@@ -93,7 +93,6 @@ void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int len)
+  	flush_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
+  	if (mapped)
+  		patch_unmap(FIX_TEXT_POKE0, &flags);
+-	flush_icache_range(start, end);
+  }
 
- arch/parisc/include/asm/futex.h       | 24 +++++++++++-------------
- arch/parisc/include/asm/smp.h         | 19 ++-----------------
- arch/parisc/include/asm/thread_info.h |  3 +++
- arch/parisc/kernel/asm-offsets.c      |  5 -----
- arch/parisc/kernel/smp.c              |  2 --
- arch/parisc/kernel/syscall.S          | 10 ----------
- arch/parisc/kernel/traps.c            |  2 +-
- 7 files changed, 17 insertions(+), 48 deletions(-)
+  void __kprobes __patch_text(void *addr, u32 insn)
