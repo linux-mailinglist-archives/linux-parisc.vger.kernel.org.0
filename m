@@ -2,64 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7717445A03
-	for <lists+linux-parisc@lfdr.de>; Thu,  4 Nov 2021 19:51:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1D69445A80
+	for <lists+linux-parisc@lfdr.de>; Thu,  4 Nov 2021 20:19:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233802AbhKDSxk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 4 Nov 2021 14:53:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42400 "EHLO mail.kernel.org"
+        id S229850AbhKDTWL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 4 Nov 2021 15:22:11 -0400
+Received: from mout.gmx.net ([212.227.17.22]:44499 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233780AbhKDSxh (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 4 Nov 2021 14:53:37 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 9208761157;
-        Thu,  4 Nov 2021 18:50:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636051859;
-        bh=fYnzrn7DSEvFXngRVMxlv66qP7uMzg7fMqLu4A789OE=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=ThxGVhnPYZgr2tLR1ZKUdNtdVsIbqSosWsWrvY1mRqZTCL5XBt0DGDqRDo5YtEyz5
-         EiaQw3yUb6IH1a3aS6x1SAkMa/zI6EAB35VvqD7DwjW0URU8NGsEKOZKPkBB9CelbT
-         z2TMRUnbENQ0ZfR4gKHOTCXH5anUWRPbxyRmzBBTRXiSlyRJInJaa9as4YnhCTEoxu
-         SXQCo7jXbOylsiWF+AIiSjwTvy56yil5RlLWMyM/Hwb13gZ6tY2mzWyxKqa9gmy70j
-         RXNVczFLTPf18zOqR8DqYd502MK5TJYFsbV9STSpgE2XhLvCn4yplRoctHxPoWJnlM
-         3h9eA1pSoM50A==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 82822609B8;
-        Thu,  4 Nov 2021 18:50:59 +0000 (UTC)
-Subject: Re: [GIT PULL] more parisc architecture fixes for kernel v5.16-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YYQRdM6er3Hty3qP@ls3530>
-References: <YYQRdM6er3Hty3qP@ls3530>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <YYQRdM6er3Hty3qP@ls3530>
-X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-2
-X-PR-Tracked-Commit-Id: 2a2e8202c7a16a85a881ad2b6e32ccbebdc01dda
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c1e2e0350ce37f633b5ce3ce1cdf4428513fc2a2
-Message-Id: <163605185947.14812.12554900570950614137.pr-tracker-bot@kernel.org>
-Date:   Thu, 04 Nov 2021 18:50:59 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        id S229804AbhKDTWL (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 4 Nov 2021 15:22:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1636053567;
+        bh=6+12gLU11vJTuAaix2qZxhywmuQn/HQGcbKT57YD24k=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=QSkyTozlxeAGFl8DcTXAMJpFV0wwE9RUFsEpjIQykzu2EjzAvEscwVGJhT7cGTmKe
+         APDMvMRbfPU5ven3boGXeLvX+sPjfR9VZlpkd3lk7qak/3BVh/ILS2ErIoNaF+Zq+e
+         HerHDz+NBlsDV8cTF+8vYeCr0+XXxsFjQlWZF4mM=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530 ([92.116.157.73]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M9Fnj-1mmp8C1VyR-006Qqa; Thu, 04
+ Nov 2021 20:19:27 +0100
+Date:   Thu, 4 Nov 2021 20:19:00 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Fix backtrace to always include init funtion names
+Message-ID: <YYQyJMe5nM8Y5cum@ls3530>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:gw7QldgX3czYh0/Uh1aWm91t14Sx6bL+u8IeL5yAghylWEOScHH
+ NC1NWIsea37hudB7xXYPV6AIPC2kEyoHXhQ1WB0kE/SdIG/pLqQ1550/CU6nsS2XrsBlcfU
+ FI13BlxXJLZXahxVO1rYnLNGHK15UGADUwHPfPFoy1zp4nJz3Nk0PkgJi2Q/yDMNlQfyfkm
+ mA3/NWYsYYJZ83e8zjHCA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:NPSXyw7M1LM=:9GJIX6ua6fKV4bk0OtfRaq
+ P0K6n9ke2ayR+SbutNE3IVajxF42XJ2pl81ba6GUCAw3L7bIsbDr++VFY9NfoV9jDr5zpuDSi
+ l+P9mpFdhBjHlyZdFvsATm+CzK13JsfbEmNfpY+gKn8ImOfkRVjS60WsUM9QFBgECucWFsKUQ
+ 8ILmPdUF3uqphw4s07UazQrMLr8LhD7lf02J+oAjyH6zz0qWqhmEl1EuF5O+H4VKWJboxym4f
+ rypd1Q5LdWaPMou9JULu2DWrBXGIRYOKBhDMbYyy2BXq2Myk7E6W3PDtdtLqi31cXULKkt6QL
+ JTPWZ9W34CwPSoZw2rgbe7SMkvNeVoo0ibg6NJk1sWTo+HEeNaErwqgyb1NRVlqssyzCQrJ8D
+ kPOYsqrA8nJeu42bGvEV3e3hv8coRKU0LEnnDlfgmdCHzcdkMy+g9pDiRLKx6ajsrTfxZpmww
+ AOYlqX4VRtEzOlv1hl4SMWx3dDeujxbHNTYrxro5U1rBDWVXta1fITj08IsbVYUYNupfHSP63
+ Dt2ZDDgxtUr90NQZOgFKabKK1z/hy56uocVlmn+gDSQFSqA3kKyWDgnB7TMFpWifkWnTjiZzq
+ IUhLtBZoNrsq2sYXcqeh1aA6cfQuKpAYG0PZfg/2owFpB1Pi/35FPzQPu33GUQ5b8iP0AKstw
+ kT8+AB18kclLSK9tVzO329maqZXyuMOiOkKV9Ja4a3v3lXynNafeek0VJ3hUcsfkozSz+PqEC
+ vMF/oNIr83J/a/GFn5YhhWkmNmheA3TAtRsWzeXJ5seM54eXhQcViaY9XKuFTy+ufC3NYZ0FP
+ kxDB24U0FcQFUNDFjtl1d8xfMKiiiutD2hKUIrvgmvFvQNyjlO7axR5cE4nnkViQjmatih+24
+ gjNaPKxJ8dgSqj2mmNvW07wwwEG9ch9/4EAm7OYI9RoU4ButVgfIVymIKSENRJ5NzZjNpQqPa
+ jwA8MtyREWHQtxYFXP3CgtpK8FQkxhF/FSdKcYIq5GuxlSitY2LAZ3PoYBH/bjcpvQoslnmCW
+ 6CoJKV5VJY+eFRDJZy7JOtF0KKpWYKs/SVXUAKCvUEzgli/i5JNZ+9EEcpyAmjWkmINUaz9qx
+ YWDCjo69UZJL5g=
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Thu, 4 Nov 2021 17:59:32 +0100:
+I noticed that sometimes at kernel startup the backtraces did not
+included the function names of init functions. Their address were not
+resolved to function names and instead only the address was printed.
 
-> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-2
+Debugging shows that the culprit is is_ksym_addr() which is called
+by the backtrace functions to check if an address belongs to a function in
+the kernel. The problem occurs only for CONFIG_KALLSYMS_ALL=3Dy.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c1e2e0350ce37f633b5ce3ce1cdf4428513fc2a2
+When looking at is_ksym_addr() one can see that for CONFIG_KALLSYMS_ALL=3D=
+y
+the function only tries to resolve the address via is_kernel() function,
+which checks like this:
+	if (addr >=3D _stext && addr <=3D _end)
+                return 1;
+On parisc the init functions are locted before _stext, so this check fails=
+.
+Other platforms seem to have all functions (including init functions)
+behind _stext.
 
-Thank you!
+The following patch moves the _stext symbol at the beginning of the
+kernel and thus includes the init section. This fixes the check and does
+not seem to have any negative side effects on where the kernel mapping
+happens in the map_pages() function in arch/parisc/mm/init.c.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/arch/parisc/kernel/vmlinux.lds.S b/arch/parisc/kernel/vmlinux=
+.lds.S
+index 2769eb991f58..3d208afd15bc 100644
+=2D-- a/arch/parisc/kernel/vmlinux.lds.S
++++ b/arch/parisc/kernel/vmlinux.lds.S
+@@ -57,6 +57,8 @@ SECTIONS
+ {
+ 	. =3D KERNEL_BINARY_TEXT_START;
+
++	_stext =3D .;	/* start of kernel text, includes init code & data */
++
+ 	__init_begin =3D .;
+ 	HEAD_TEXT_SECTION
+ 	MLONGCALL_DISCARD(INIT_TEXT_SECTION(8))
+@@ -80,7 +82,6 @@ SECTIONS
+ 	/* freed after init ends here */
+
+ 	_text =3D .;		/* Text and read-only data */
+-	_stext =3D .;
+ 	MLONGCALL_KEEP(INIT_TEXT_SECTION(8))
+ 	.text ALIGN(PAGE_SIZE) : {
+ 		TEXT_TEXT
