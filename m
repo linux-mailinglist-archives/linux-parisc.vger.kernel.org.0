@@ -2,116 +2,100 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F436444DA2
-	for <lists+linux-parisc@lfdr.de>; Thu,  4 Nov 2021 04:15:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC2A444DE3
+	for <lists+linux-parisc@lfdr.de>; Thu,  4 Nov 2021 05:18:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229738AbhKDDSf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 3 Nov 2021 23:18:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
+        id S229871AbhKDEVL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 4 Nov 2021 00:21:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229603AbhKDDSf (ORCPT
+        with ESMTP id S229477AbhKDEVL (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 3 Nov 2021 23:18:35 -0400
-Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECB5CC061714;
-        Wed,  3 Nov 2021 20:15:57 -0700 (PDT)
-Received: by mail-oo1-xc2d.google.com with SMTP id c185-20020a4a4fc2000000b002bce4df242cso1484769oob.10;
-        Wed, 03 Nov 2021 20:15:57 -0700 (PDT)
+        Thu, 4 Nov 2021 00:21:11 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86BAC061714
+        for <linux-parisc@vger.kernel.org>; Wed,  3 Nov 2021 21:18:33 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id g3so7361602ljm.8
+        for <linux-parisc@vger.kernel.org>; Wed, 03 Nov 2021 21:18:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=IQiSfMABY2BmcOaT3K2js31u9lHbxR0SNOCD5CqZ2pM=;
-        b=eMS3ZJT3B2T0nGYYNjaqmEZbIn/PIYHNIe/YZkN6tbNtC3izSuaTTm4bZk4qyx1jAM
-         JUfVXmSpMNVJZonYCIqXBv1VtNl9lZIXq8MhqT1qCmbMqqXO8cQpn58aDzU0pzsm177L
-         mfLdb8T0zUA8rdhRJO9rdRQSS04ft4Wcs/sSz25atXye3dgvvNwNDMWD8BLA3GRp2iPv
-         Iq0gOznJ5gEe/OZr0o5hRMTc9+wLKUQ2epG66Osgmfu7LoiQKwfNzKYUvehXUNbABpN4
-         x25nsZ5Ohg+4RNXDUmpCSK2hqzJ7qJuOqrBHbmgZo73sRzUptF9vffeOFG35Hl+N/nj8
-         MKeg==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=90++hVL9ksldtHiu9rwvekCenPGcU9OqcBPl5dZt7as=;
+        b=eZot60q+nad9YtjcjnPXRTfV8JNqaKl5KHVlr0uAk1mmT49CsV8ecATGG4ZidkpmM3
+         pa6z25Z1oCnrk3nMzjXbxoC6MSI3hxq6rq6vXZX1TiB9ntHffkcWMIIXqioPW7EEvwDN
+         GxmqSVVJ+hoCX1gCLfow5fGKoChJGcH2sP4PE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mime-version:content-disposition;
-        bh=IQiSfMABY2BmcOaT3K2js31u9lHbxR0SNOCD5CqZ2pM=;
-        b=CtCxQGjsKwxZPUYN9H+Xk7uaMepitppn7PIME4Fv+6fBRHpe8UreLDETzFvScXZ5FT
-         GV3ZAj1FnSJPmn89lCFfD5zT00pGrGxdr0qkmrCLaDNRrkYY2Rh4ZHjBcpV2UU8B5sem
-         Bjgn6LZzBJrUa68bASS7BOmQ6Rj4A9ntRZ5Q2KicipRUgX8nwQC7rDK3XaFjln4M//B7
-         ZyukmVxiUFQ83p8Rk7iRq2eFbTr8SpKsaWCWLyOnbqe7rk4h5z1Brzd2lRoVn9/FJIMc
-         iJIcwe37aXaE25ecrzS/k4POs23RdZyZywrAdxIdlgbncXyJ1l2z/uc8ONLx26d9iOtR
-         wnpQ==
-X-Gm-Message-State: AOAM533N3TRzyTWu1cv+AukkDp2PPAWYi9GpciMyA8kd5hqmCBcwUphX
-        7k++LtFrFOhwVRf2L5HWxWkTmXC6rdQ=
-X-Google-Smtp-Source: ABdhPJzEDock9bIQGDZrobXq/mOMFZaARJzpRfCc1YTVQx9Ori4hhqkDQ0hPIKSFYGxFk+ZVCqd9sw==
-X-Received: by 2002:a4a:6f59:: with SMTP id i25mr1795614oof.78.1635995756901;
-        Wed, 03 Nov 2021 20:15:56 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h7sm1075291otn.11.2021.11.03.20.15.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Nov 2021 20:15:56 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 3 Nov 2021 20:15:54 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=90++hVL9ksldtHiu9rwvekCenPGcU9OqcBPl5dZt7as=;
+        b=2hIK5mMhrtLaZdr9JBng8wyckkSbBqBvFavNYEh1Ulr3/WlrHfdp+oo4haDu5iE4tM
+         tcCkaA9xHLgzOybK9ze9LjpUk+kZsN+2mJtbqqjvsT2PEb0IxdJbge5CJww6uiXtQnAX
+         D2YA+fzvaNyD85Vjzkj6YTrJAkgiRvWm18GcYN8WhrmdYYTiRAZwmd7YG049rHF37Uqt
+         3+wzCmJibinEfGxixzrE7s4B9IppW7pR4pDNe1CC25JkuucaQiVo2sWuC+xsOoCFuUUa
+         OSOtJ3hkrkU5TEFG7ixPOoejc3R3PwrP43r7YyNdQvtnKkj9vsJiv8xEo2YUsT2xSOon
+         fvPA==
+X-Gm-Message-State: AOAM5302Pi/IVu0sSVmjukNxWPModolLmk2SxujDwazHQ4QJtAehcVmf
+        l9tg3gOstRSlqiFggojHT6Q8z3vGCGECWkoX
+X-Google-Smtp-Source: ABdhPJxHz3VaNdKyJ93S8HrNLiFa+hR00OoSVGwVpeKvJJt/HtNKscfsLj67uhfESxaxZfhVgwMr7A==
+X-Received: by 2002:a05:651c:4c8:: with SMTP id e8mr51439502lji.173.1635999511681;
+        Wed, 03 Nov 2021 21:18:31 -0700 (PDT)
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com. [209.85.167.45])
+        by smtp.gmail.com with ESMTPSA id q6sm347173lfg.188.2021.11.03.21.18.30
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Nov 2021 21:18:30 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id u11so9470915lfs.1
+        for <linux-parisc@vger.kernel.org>; Wed, 03 Nov 2021 21:18:30 -0700 (PDT)
+X-Received: by 2002:a19:ad0c:: with SMTP id t12mr45032464lfc.173.1635999510361;
+ Wed, 03 Nov 2021 21:18:30 -0700 (PDT)
+MIME-Version: 1.0
+References: <20211104031554.GA34798@roeck-us.net>
+In-Reply-To: <20211104031554.GA34798@roeck-us.net>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 3 Nov 2021 21:18:14 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjvWORtC5vwgavJxpBtV3-q9GGidezS_2NjtUFvqg7H5Q@mail.gmail.com>
+Message-ID: <CAHk-=wjvWORtC5vwgavJxpBtV3-q9GGidezS_2NjtUFvqg7H5Q@mail.gmail.com>
+Subject: Re: parisc build failures in mainline kernel
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Ard Biesheuvel <ardb@kernel.org>, Helge Deller <deller@gmx.de>,
-        linux-parisc@vger.kernel.org
-Subject: parisc build failures in mainline kernel
-Message-ID: <20211104031554.GA34798@roeck-us.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+        linux-parisc <linux-parisc@vger.kernel.org>
+Content-Type: multipart/mixed; boundary="000000000000ab27e005cfeed125"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi,
+--000000000000ab27e005cfeed125
+Content-Type: text/plain; charset="UTF-8"
 
-the mainline kernel fails to build almost all 'parisc' images.
+On Wed, Nov 3, 2021 at 8:15 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> the mainline kernel fails to build almost all 'parisc' images.
 
-The first build error is
+All with CONFIG_SMP?
 
-In file included from <command-line>:
-include/linux/sched.h: In function 'task_cpu':
-include/linux/sched.h:2129:45: error: 'const struct thread_info' has no member named 'cpu'
- 2129 |         return READ_ONCE(task_thread_info(p)->cpu);
-      |                                             ^~
+Does this silly patch fix it?
 
-with many follow-up errors.
+                 Linus
 
-bisect points to commit (merge) 01463374c50e ("Merge tag
-'cpu-to-thread_info-v5.16-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux" as the culprit,
-and reverting that merge does indeed fix the problem.
+--000000000000ab27e005cfeed125
+Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
+Content-Disposition: attachment; filename="patch.diff"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kvkfue9u0>
+X-Attachment-Id: f_kvkfue9u0
 
-Guenter
-
----
-bisect log:
-
-# bad: [79ef0c00142519bc34e1341447f3797436cc48bf] Merge tag 'trace-v5.16' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace
-# good: [8bb7eca972ad531c9b149c0a51ab43a417385813] Linux 5.15
-git bisect start '79ef0c001425' '8bb7eca972ad'
-# good: [8cb1ae19bfae92def42c985417cd6e894ddaa047] Merge tag 'x86-fpu-2021-11-01' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
-git bisect good 8cb1ae19bfae92def42c985417cd6e894ddaa047
-# bad: [73d21a3579818aa0e39de207474a39ca35c7d8cb] Merge tag 'media/v5.16-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media
-git bisect bad 73d21a3579818aa0e39de207474a39ca35c7d8cb
-# good: [c2c88a07d679839ddf236db55b258aaedff819ad] media: Add ADV7610 support for adv7604 driver.
-git bisect good c2c88a07d679839ddf236db55b258aaedff819ad
-# good: [46f876322820c189ab525cfcba2519a17dbc0a6f] Merge tag 'arm64-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux
-git bisect good 46f876322820c189ab525cfcba2519a17dbc0a6f
-# bad: [2dc26d98cfdf756e390013fafaba959b052b0867] Merge tag 'overflow-v5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
-git bisect bad 2dc26d98cfdf756e390013fafaba959b052b0867
-# good: [03feb7c55c470158ece9afb317c395cd65bd14ac] Merge tag 'm68k-for-v5.16-tag1' of git://git.kernel.org/pub/scm/linux/kernel/git/geert/linux-m68k
-git bisect good 03feb7c55c470158ece9afb317c395cd65bd14ac
-# good: [caf283d040f53bc4fd81ce3d2a1a364b069cfd7d] xfrm: Use memset_after() to clear padding
-git bisect good caf283d040f53bc4fd81ce3d2a1a364b069cfd7d
-# bad: [01463374c50e4fe75abec927fa231f8f5d701852] Merge tag 'cpu-to-thread_info-v5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
-git bisect bad 01463374c50e4fe75abec927fa231f8f5d701852
-# good: [227d735d889e0403f1659df6e2dece7633f380bc] powerpc: add CPU field to struct thread_info
-git bisect good 227d735d889e0403f1659df6e2dece7633f380bc
-# good: [336868afbaae2d153fc20268a21747c31e5071b8] powerpc: smp: remove hack to obtain offset of task_struct::cpu
-git bisect good 336868afbaae2d153fc20268a21747c31e5071b8
-# good: [d9f2a53f64a6fcae994457e64a7124d2a3efd323] Merge tag 'pr-move-task-cpu-to-ti' of git://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git
-git bisect good d9f2a53f64a6fcae994457e64a7124d2a3efd323
-# first bad commit: [01463374c50e4fe75abec927fa231f8f5d701852] Merge tag 'cpu-to-thread_info-v5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
+IGFyY2gvcGFyaXNjL2luY2x1ZGUvYXNtL3RocmVhZF9pbmZvLmggfCAzICsrKwogMSBmaWxlIGNo
+YW5nZWQsIDMgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2FyY2gvcGFyaXNjL2luY2x1ZGUv
+YXNtL3RocmVhZF9pbmZvLmggYi9hcmNoL3BhcmlzYy9pbmNsdWRlL2FzbS90aHJlYWRfaW5mby5o
+CmluZGV4IDc1NjU3YzJjNTRlMS4uMWE1ODc5NWY3ODVjIDEwMDY0NAotLS0gYS9hcmNoL3Bhcmlz
+Yy9pbmNsdWRlL2FzbS90aHJlYWRfaW5mby5oCisrKyBiL2FyY2gvcGFyaXNjL2luY2x1ZGUvYXNt
+L3RocmVhZF9pbmZvLmgKQEAgLTksNiArOSw5IEBACiBzdHJ1Y3QgdGhyZWFkX2luZm8gewogCXVu
+c2lnbmVkIGxvbmcgZmxhZ3M7CQkvKiB0aHJlYWRfaW5mbyBmbGFncyAoc2VlIFRJRl8qKSAqLwog
+CWludCBwcmVlbXB0X2NvdW50OwkJLyogMD1wcmVtcHRhYmxlLCA8MD1CVUc7IHdpbGwgYWxzbyBz
+ZXJ2ZSBhcyBiaC1jb3VudGVyICovCisjaWZkZWYgQ09ORklHX1NNUAorCXVuc2lnbmVkIGludCBj
+cHU7CisjZW5kaWYKIH07CiAKICNkZWZpbmUgSU5JVF9USFJFQURfSU5GTyh0c2spCQkJXAo=
+--000000000000ab27e005cfeed125--
