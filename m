@@ -2,147 +2,116 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ABD0444A18
-	for <lists+linux-parisc@lfdr.de>; Wed,  3 Nov 2021 22:09:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F436444DA2
+	for <lists+linux-parisc@lfdr.de>; Thu,  4 Nov 2021 04:15:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231147AbhKCVL5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 3 Nov 2021 17:11:57 -0400
-Received: from mout.gmx.net ([212.227.17.20]:52791 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230070AbhKCVL4 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 3 Nov 2021 17:11:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1635973752;
-        bh=CLzeTBuB1nuHrtEqg0NI0aWjn3DsA1x4O1YQUctxYpI=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=B0+mowzf0/wLemSFLOpAlbp6XNaoeXrCBoOYd/dYgL5keAYWI1OKOEaw+2baYh6+Y
-         DkLYuvhGB4QoU93jWqJYtGcvTTA3WZpEFr2dsiwU26nneD3iP2g1q2KliznGG2isCD
-         LG5ui9hiwyRgEJmN16/Br9T4r9treuXAUH9zMBTg=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.181.103]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MG9g4-1myoxo1Kvc-00GaEs; Wed, 03
- Nov 2021 22:09:12 +0100
-Message-ID: <cf2c5fa8-5b98-50b7-00ef-0e86df918e8e@gmx.de>
-Date:   Wed, 3 Nov 2021 22:08:46 +0100
+        id S229738AbhKDDSf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 3 Nov 2021 23:18:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229603AbhKDDSf (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 3 Nov 2021 23:18:35 -0400
+Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECB5CC061714;
+        Wed,  3 Nov 2021 20:15:57 -0700 (PDT)
+Received: by mail-oo1-xc2d.google.com with SMTP id c185-20020a4a4fc2000000b002bce4df242cso1484769oob.10;
+        Wed, 03 Nov 2021 20:15:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=IQiSfMABY2BmcOaT3K2js31u9lHbxR0SNOCD5CqZ2pM=;
+        b=eMS3ZJT3B2T0nGYYNjaqmEZbIn/PIYHNIe/YZkN6tbNtC3izSuaTTm4bZk4qyx1jAM
+         JUfVXmSpMNVJZonYCIqXBv1VtNl9lZIXq8MhqT1qCmbMqqXO8cQpn58aDzU0pzsm177L
+         mfLdb8T0zUA8rdhRJO9rdRQSS04ft4Wcs/sSz25atXye3dgvvNwNDMWD8BLA3GRp2iPv
+         Iq0gOznJ5gEe/OZr0o5hRMTc9+wLKUQ2epG66Osgmfu7LoiQKwfNzKYUvehXUNbABpN4
+         x25nsZ5Ohg+4RNXDUmpCSK2hqzJ7qJuOqrBHbmgZo73sRzUptF9vffeOFG35Hl+N/nj8
+         MKeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mime-version:content-disposition;
+        bh=IQiSfMABY2BmcOaT3K2js31u9lHbxR0SNOCD5CqZ2pM=;
+        b=CtCxQGjsKwxZPUYN9H+Xk7uaMepitppn7PIME4Fv+6fBRHpe8UreLDETzFvScXZ5FT
+         GV3ZAj1FnSJPmn89lCFfD5zT00pGrGxdr0qkmrCLaDNRrkYY2Rh4ZHjBcpV2UU8B5sem
+         Bjgn6LZzBJrUa68bASS7BOmQ6Rj4A9ntRZ5Q2KicipRUgX8nwQC7rDK3XaFjln4M//B7
+         ZyukmVxiUFQ83p8Rk7iRq2eFbTr8SpKsaWCWLyOnbqe7rk4h5z1Brzd2lRoVn9/FJIMc
+         iJIcwe37aXaE25ecrzS/k4POs23RdZyZywrAdxIdlgbncXyJ1l2z/uc8ONLx26d9iOtR
+         wnpQ==
+X-Gm-Message-State: AOAM533N3TRzyTWu1cv+AukkDp2PPAWYi9GpciMyA8kd5hqmCBcwUphX
+        7k++LtFrFOhwVRf2L5HWxWkTmXC6rdQ=
+X-Google-Smtp-Source: ABdhPJzEDock9bIQGDZrobXq/mOMFZaARJzpRfCc1YTVQx9Ori4hhqkDQ0hPIKSFYGxFk+ZVCqd9sw==
+X-Received: by 2002:a4a:6f59:: with SMTP id i25mr1795614oof.78.1635995756901;
+        Wed, 03 Nov 2021 20:15:56 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id h7sm1075291otn.11.2021.11.03.20.15.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Nov 2021 20:15:56 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 3 Nov 2021 20:15:54 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Helge Deller <deller@gmx.de>,
+        linux-parisc@vger.kernel.org
+Subject: parisc build failures in mainline kernel
+Message-ID: <20211104031554.GA34798@roeck-us.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] parisc: Fix code/instruction patching on PA1.x machines
-Content-Language: en-US
-To:     John David Anglin <dave.anglin@bell.net>,
-        linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Sven Schnelle <svens@stackframe.org>
-References: <YX8HK7ZZZhjRQzcr@ls3530>
- <91b3d125-18ae-e10f-3000-1b17a43a156f@bell.net>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <91b3d125-18ae-e10f-3000-1b17a43a156f@bell.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:f9QhPMbhrTTOuXzc+14HQ4rJRhtdQ52wNOQTlBZsikoMhTaDGvK
- eVTJ3+i9smoZFUt1FB6MvwHPPV6pbkxNxbFebA3ncJR8uIMKdicJiJA/yGgMIFYffBh82yE
- 3GF47deJu2c5jfWPjlqsY4+9eLcQdojqxxI2QnvBkldiZubYumTgH4D/upJpJqtGtNbOGIR
- 0Mie8qjzSoI1F7E3bjazQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gMT6f6YEwAQ=:w5z4Gc/qeRx46u956yl9Wj
- fNfPn9+bxXXuH8+YeO989R07Bl6kQhwosjuzO5nbTdhRFdjqGzkkxj4CigF8aXJJXtWWHZQQp
- CIeornlQq7bMMQiw/kPpVsLR8Otu7T20w3zq1PHsd/djnR6b21b+0u7IkePWYTsSwh7FQN/Zg
- 6ySWf8aC6pGoq12JvCnHlzI6KWoCgiId0vuMSz8YSrG4t937eFeTosNuwN1mbHsIOgbF34k/n
- DzPqUrRCqBLBkJsa2xdFGUrXdtTEuqKvUP0p4ZA8WQykd5ILLWwl5/hYwAk52HGsHNAdbwQl3
- 5O5Z4LjuI080r9rnZvQhipWWjUcAtx671+hLRLIT8YN3vHGB/yVLw9kbSonUKxpRe8xaJzBP4
- QrNTh6a8jjUARRgBe5kUY0kOIVnpJaRsPfnwdGBeibM4bYQEAGYRJG1r2jUK0aIQzbyUk/J3x
- SDbkVrxaD5roLA1Sq1/HoFR+keeXG3DRn2a5yldTMjuBkRqEoxckKhpgy7FH9UMU8r/oeQNL5
- XBIwoKAKx+nF+m2QLFqo2rUW+Be42Tu3HQLr6cx9y19xSUt2ckDJSXS2BPNGYKoMu+wJPOLu+
- NieZtvW8/B3LdBOqJTkBj0jcK17UDGTzC9okWQl+tDUguw6EJJOebcWbN/WuR3wiRMcpZNbY4
- TDilmrd4iIrXxqkwFtta+eJIzgymZcQ0O5IwUrmH7T4E/JfkKV6GWtdOJxMsU+HXS6sbqhIw/
- Qi+X38nkHqOi5p37IySEiPpFOSGuSyARo/XBkQMUuGi2xKv0N5VIqUhHf/uyWTMUTJ9U16WIv
- QkIP53We/HeShR3KYkLjBQPih3YDpM5E6JmobrCHZgEiNbmQXhRoDEyIYokq5u1+9kt/JnHC4
- 6LQwj8qDEuS4IP/fw7varwB4DdADsM/uPECw5uIAuNZ6hcB23g2Q9DDa9sBbhAv7u9JFaXJ9J
- EFHkv13yL9gYeVQCpPeiTfYj7L0ikUxpYQUzneyfsGaf7lYVGvbD/xfsenD6Ag3J7tt+u+yiU
- 7pN9Eyh/pX8gXnG0Ug3oefH/cnhedW2dop1WkAhDk7lJB5q3a73ZazPhjH8YI4GBO/59sLBgQ
- ppKHESqyE1yg3k=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Dave,
+Hi,
 
-On 11/3/21 21:12, John David Anglin wrote:
-> I think the real problem is that neither flush_kernel_vmap_range() or
-> invalidate_kernel_vmap_range() flush the icache.  They only operate
-> on the data cache. flush_icache_range will flush both caches.
-Yes.
-But we write the new instructions to a congruently memory are (same
-physical memory like the kernel code), then flush/invalidate the
-D-Cache, and finally flush the I-cache of kernel code memory.
-See last function call of __patch_text_multiple().
+the mainline kernel fails to build almost all 'parisc' images.
 
-So, logically I think it should work (and it does on PA2.x).
+The first build error is
 
-Or do you mean to flush the I-Cache of both mappings?
+In file included from <command-line>:
+include/linux/sched.h: In function 'task_cpu':
+include/linux/sched.h:2129:45: error: 'const struct thread_info' has no member named 'cpu'
+ 2129 |         return READ_ONCE(task_thread_info(p)->cpu);
+      |                                             ^~
 
-Helge
+with many follow-up errors.
 
+bisect points to commit (merge) 01463374c50e ("Merge tag
+'cpu-to-thread_info-v5.16-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux" as the culprit,
+and reverting that merge does indeed fix the problem.
 
->
-> Dave
->
-> On 2021-10-31 5:14 p.m., Helge Deller wrote:
->> On PA1.x machines it's not sufficient to just flush the data and
->> instruction caches when we have written new instruction codes into the
->> parallel mapped memory segment, but we really need to invalidate (purge=
-)
->> the cache too. Otherwise the processor will still execute the old
->> instructions which are still in the data/instruction cache.
->>
->> Signed-off-by: Helge Deller <deller@gmx.de>
->> Fixes: 4e87ace902cf ("parisc: add support for patching multiple words")
->> Cc: stable@vger.kernel.org # v5.3+
->>
->> diff --git a/arch/parisc/kernel/patch.c b/arch/parisc/kernel/patch.c
->> index 80a0ab372802..8cbb7e1d5a2b 100644
->> --- a/arch/parisc/kernel/patch.c
->> +++ b/arch/parisc/kernel/patch.c
->> @@ -81,7 +81,7 @@ void __kprobes __patch_text_multiple(void *addr, u32 =
-*insn, unsigned int len)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 * We're crossing a page boundary, so
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 * need to remap
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 */
->> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flu=
-sh_kernel_vmap_range((void *)fixmap,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 inv=
-alidate_kernel_vmap_range((void *)fixmap,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 (p-fixmap) * sizeof(*p));
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 if (mapped)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 patch_unmap(FIX_TEXT_POKE0, &flags);
->> @@ -90,9 +90,10 @@ void __kprobes __patch_text_multiple(void *addr, u32=
- *insn, unsigned int len)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>
->> -=C2=A0=C2=A0=C2=A0 flush_kernel_vmap_range((void *)fixmap, (p-fixmap) =
-* sizeof(*p));
->> +=C2=A0=C2=A0=C2=A0 invalidate_kernel_vmap_range((void *)fixmap, (p-fix=
-map) * sizeof(*p));
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (mapped)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 patch_unmap(FIX_=
-TEXT_POKE0, &flags);
->> +=C2=A0=C2=A0=C2=A0 invalidate_kernel_vmap_range((void *)start, end - s=
-tart);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flush_icache_range(start, end);
+Guenter
 
-^^  HERE
+---
+bisect log:
 
-
->> =C2=A0 }
->>
->
->
-
+# bad: [79ef0c00142519bc34e1341447f3797436cc48bf] Merge tag 'trace-v5.16' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace
+# good: [8bb7eca972ad531c9b149c0a51ab43a417385813] Linux 5.15
+git bisect start '79ef0c001425' '8bb7eca972ad'
+# good: [8cb1ae19bfae92def42c985417cd6e894ddaa047] Merge tag 'x86-fpu-2021-11-01' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+git bisect good 8cb1ae19bfae92def42c985417cd6e894ddaa047
+# bad: [73d21a3579818aa0e39de207474a39ca35c7d8cb] Merge tag 'media/v5.16-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media
+git bisect bad 73d21a3579818aa0e39de207474a39ca35c7d8cb
+# good: [c2c88a07d679839ddf236db55b258aaedff819ad] media: Add ADV7610 support for adv7604 driver.
+git bisect good c2c88a07d679839ddf236db55b258aaedff819ad
+# good: [46f876322820c189ab525cfcba2519a17dbc0a6f] Merge tag 'arm64-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux
+git bisect good 46f876322820c189ab525cfcba2519a17dbc0a6f
+# bad: [2dc26d98cfdf756e390013fafaba959b052b0867] Merge tag 'overflow-v5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
+git bisect bad 2dc26d98cfdf756e390013fafaba959b052b0867
+# good: [03feb7c55c470158ece9afb317c395cd65bd14ac] Merge tag 'm68k-for-v5.16-tag1' of git://git.kernel.org/pub/scm/linux/kernel/git/geert/linux-m68k
+git bisect good 03feb7c55c470158ece9afb317c395cd65bd14ac
+# good: [caf283d040f53bc4fd81ce3d2a1a364b069cfd7d] xfrm: Use memset_after() to clear padding
+git bisect good caf283d040f53bc4fd81ce3d2a1a364b069cfd7d
+# bad: [01463374c50e4fe75abec927fa231f8f5d701852] Merge tag 'cpu-to-thread_info-v5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
+git bisect bad 01463374c50e4fe75abec927fa231f8f5d701852
+# good: [227d735d889e0403f1659df6e2dece7633f380bc] powerpc: add CPU field to struct thread_info
+git bisect good 227d735d889e0403f1659df6e2dece7633f380bc
+# good: [336868afbaae2d153fc20268a21747c31e5071b8] powerpc: smp: remove hack to obtain offset of task_struct::cpu
+git bisect good 336868afbaae2d153fc20268a21747c31e5071b8
+# good: [d9f2a53f64a6fcae994457e64a7124d2a3efd323] Merge tag 'pr-move-task-cpu-to-ti' of git://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git
+git bisect good d9f2a53f64a6fcae994457e64a7124d2a3efd323
+# first bad commit: [01463374c50e4fe75abec927fa231f8f5d701852] Merge tag 'cpu-to-thread_info-v5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
