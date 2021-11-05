@@ -2,102 +2,187 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BA76446957
-	for <lists+linux-parisc@lfdr.de>; Fri,  5 Nov 2021 20:55:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F42446ACE
+	for <lists+linux-parisc@lfdr.de>; Fri,  5 Nov 2021 23:11:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232644AbhKET55 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 5 Nov 2021 15:57:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44970 "EHLO
+        id S233962AbhKEWOf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 5 Nov 2021 18:14:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231967AbhKET54 (ORCPT
+        with ESMTP id S233953AbhKEWOe (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 5 Nov 2021 15:57:56 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0DAFC061714
-        for <linux-parisc@vger.kernel.org>; Fri,  5 Nov 2021 12:55:16 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id l3so7857853pfu.13
-        for <linux-parisc@vger.kernel.org>; Fri, 05 Nov 2021 12:55:16 -0700 (PDT)
+        Fri, 5 Nov 2021 18:14:34 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6488AC061205
+        for <linux-parisc@vger.kernel.org>; Fri,  5 Nov 2021 15:11:54 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id n11-20020a17090a2bcb00b001a1e7a0a6a6so4331011pje.0
+        for <linux-parisc@vger.kernel.org>; Fri, 05 Nov 2021 15:11:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=google.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=9BE6s8fqPo7si+9hU4rA5Zx86f+DZzTQse4zPUGhzI0=;
-        b=K2JJlQhfcPmTgqNvZMN022hVqYO6eH/8AxgqtQORXguKa8NM7Wo9wB2mxAZqdkfBJP
-         ppNT5YQE5mZot/jPo/6TlUfDTaT2X/TQF4QITNnD9iyLfm2WK1BHpKNEffle0LCGh2b4
-         sndnUuP6PC/3WEqL8sKDAROrX/WuH+koIv7G8=
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=aRWHdkO4dgpMyzRiXJIktqcg8FedigSvLDnV+7jJnn4=;
+        b=Nsce8GFJmQXR6UHyWFvn08hSzEM7iGBG5ByWUwahEd+E5Oi5y5F5s5kXfuHSA3O8jH
+         0g5rwgrhkqsbTuBAi4kvic7gFjNdoyFwoUSX8NEPZug00B5rwPZd4+X7iOkq2V2UNQCg
+         4rqo5zho64yPY0krZNwheBUWot15iJ+bFG7h7eXJT9vcCF4cqaJPv0sLz4uV4zywUa65
+         hJJubI8n/+Mp1bb8fun+E7+Q8ZtJ3oj/5S/LLu87HovDhA3dnSnFuml2XJUQYnS/WCAX
+         wdSAo7BO/xFKbTMNu3iGHg1PZXJCss3+1AStP69KCnVFVKOBZDFqHgHpzOsOp/1t0hjM
+         cQkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9BE6s8fqPo7si+9hU4rA5Zx86f+DZzTQse4zPUGhzI0=;
-        b=2YWDaFJSvo8OiYaJIfzYQAUNpLEZM029Oj6A9a6Dvldv7O/BUhK2fk0ceWqkJPiubD
-         WPnHhkahvbPeyMZ468tTDdI2uwoGIQp+AQdLTAL9/mVSUVHSV6sUsX6MTncszQercuqj
-         +b1jPEkhNP3zrlt5MnR6JMYItPyL8NBLQIvIPSXPBho5XN6rEZ2WAQgXQpj4//zf9wDW
-         AWKKqx8nOwPmqYCIjKhrbR7TXkgGV8EnLOchpdJh23jTyLURojInpqMdLhbn9byaA4Lr
-         dalIAm+EVe5zTlQMURjIn+wPcBhVvtlww77e7AiMkYHhbKa94Fe3yshlVkrjaRih0x8t
-         QTvQ==
-X-Gm-Message-State: AOAM532vCy8l2j1CPUuNLpZx1B3So19m9IdDSZ/Vx0+Gpt8B2u5ENe53
-        OQHNuNs2ABVLK6oTB0QcY3sXLWeDZTEc9A==
-X-Google-Smtp-Source: ABdhPJz6C1Esv0poMTWA9OAwWm7CjuefshOeHGRbguhnJfCUTwK+nbqOyx93dmWbZ6c/B8FKQ1fObg==
-X-Received: by 2002:a62:ee10:0:b0:49f:9994:354e with SMTP id e16-20020a62ee10000000b0049f9994354emr7956301pfi.21.1636142116413;
-        Fri, 05 Nov 2021 12:55:16 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id d13sm8252555pfu.196.2021.11.05.12.55.16
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=aRWHdkO4dgpMyzRiXJIktqcg8FedigSvLDnV+7jJnn4=;
+        b=FfhT5dZaRaTQ7JGL6Iilt6u5T2BwI/wiXFpAJvN3BcwYJcSWiKxq7btqiaZdMpGlVC
+         lutUcFNyd2wp026rRZEF0aJXIy5lAuCCZMSMVCVHr/GjcFyknSXQrFF9TxVfhSDa4X8O
+         WR63wMczktb/qJCk+GfgXzAk1Vpo3n3eHFTa1lRqA0pUuyhNh8G+/S/L1XZ9NIYH92B5
+         pQjlquwPIUe/V5i/zp5F89wlatZNKSVKb8cCbTjbuVNeLTK+A8rvZJBa28C/OT8dcP+3
+         UK9RMKf96UUOJbPAZpBzA3IENc/5spIfSnj/2k7ps3NLblRGiB07swphJ8qP/Q8TbmuX
+         zFLA==
+X-Gm-Message-State: AOAM533lrm065NdTngzH3gCRLgpNx0LG91zRzKcnbP8HOw/MZzGkGxn0
+        7vzSo1Zm1fh+D2/kn9lRNjG55A==
+X-Google-Smtp-Source: ABdhPJyVKs/T2QwL39fgWmZUlOvRz4SLMTN3hO5qCDkrTrsDVvK6eCTxiKcLCJLtAK4yipcbA0ThcQ==
+X-Received: by 2002:a17:90a:134f:: with SMTP id y15mr33461963pjf.158.1636150313440;
+        Fri, 05 Nov 2021 15:11:53 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id p15sm4391051pjh.1.2021.11.05.15.11.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Nov 2021 12:55:16 -0700 (PDT)
-Date:   Fri, 5 Nov 2021 12:55:15 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Fri, 05 Nov 2021 15:11:52 -0700 (PDT)
+Date:   Fri, 5 Nov 2021 22:11:48 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-Subject: Re: parisc build failures in mainline kernel
-Message-ID: <202111051254.1AAE34273@keescook>
-References: <20211104031554.GA34798@roeck-us.net>
- <CAHk-=wjvWORtC5vwgavJxpBtV3-q9GGidezS_2NjtUFvqg7H5Q@mail.gmail.com>
- <77dc70f4-879a-eb5c-2dd6-682b4c7cfd03@roeck-us.net>
- <CAHk-=wjZo3yj46FwVi0BNKfy5fZ4-UeWkeQ6nhcAbbnKS7K=dQ@mail.gmail.com>
- <202111051242.86E9DBF@keescook>
- <CAMj1kXGhHGD047BzXC3m9afW+9x_UBj1jgDdC+i2GLqHbrj-Fg@mail.gmail.com>
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v5 03/16] x86/tdx: Exclude Shared bit from physical_mask
+Message-ID: <YYWsJFP31vpCAVFg@google.com>
+References: <20211009003711.1390019-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20211009003711.1390019-4-sathyanarayanan.kuppuswamy@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXGhHGD047BzXC3m9afW+9x_UBj1jgDdC+i2GLqHbrj-Fg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211009003711.1390019-4-sathyanarayanan.kuppuswamy@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Nov 05, 2021 at 08:43:52PM +0100, Ard Biesheuvel wrote:
-> On Fri, 5 Nov 2021 at 20:43, Kees Cook <keescook@chromium.org> wrote:
-> >
-> > On Wed, Nov 03, 2021 at 09:45:47PM -0700, Linus Torvalds wrote:
-> > > On Wed, Nov 3, 2021 at 9:30 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > >
-> > > > Unfortunately not. With that patch it complains about task_struct.
-> > >
-> > > Gaah. You'll need something like this too
-> > >
-> > > -       DEFINE(TASK_CPU, offsetof(struct task_struct, cpu));
-> > > +       DEFINE(TASK_CPU, offsetof(struct task_struct, thread_info.cpu));
-> > >
-> > > in arch/parisc/kernel/asm-offsets.c.
-> > >
-> > > And really, it should probably be renamed as TASK_TI_CPU, but then you
-> > > have to rename all the uses too.
-> > >
-> > > There might be other details like that lurking.
-> >
-> > I'll check this out too if Ard doesn't beat me to it. Thanks for the
-> > investigation and sorry for the breakage!
-> >
+On Fri, Oct 08, 2021, Kuppuswamy Sathyanarayanan wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2a2e8202c7a16a85a881ad2b6e32ccbebdc01dda
+> Just like MKTME, TDX reassigns bits of the physical address for
+> metadata.  MKTME used several bits for an encryption KeyID. TDX
+> uses a single bit in guests to communicate whether a physical page
+> should be protected by TDX as private memory (bit set to 0) or
+> unprotected and shared with the VMM (bit set to 1).
+> 
+> Add a helper, tdx_shared_mask() to generate the mask.  The processor
+> enumerates its physical address width to include the shared bit, which
+> means it gets included in __PHYSICAL_MASK by default.
 
-Heh. Ard did, in fact, beat me to it. Thank you! :)
+This is incorrect.  The shared bit _may_ be a legal PA bit, but AIUI it's not a
+hard requirement.
 
--Kees
+> Remove the shared mask from 'physical_mask' since any bits in
+> tdx_shared_mask() are not used for physical addresses in page table
+> entries.
 
--- 
-Kees Cook
+...
+
+> @@ -94,6 +100,9 @@ static void tdx_get_info(void)
+>  
+>  	td_info.gpa_width = out.rcx & GENMASK(5, 0);
+>  	td_info.attributes = out.rdx;
+> +
+> +	/* Exclude Shared bit from the __PHYSICAL_MASK */
+> +	physical_mask &= ~tdx_shared_mask();
+
+This is insufficient, though it's not really the fault of this patch, the specs
+themselves botch this whole thing.
+
+The TDX Module spec explicitly states that GPAs above GPAW are considered reserved.
+
+    10.11.1. GPAW-Relate EPT Violations
+    GPA bits higher than the SHARED bit are considered reserved and must be 0.
+    Address translation with any of the reserved bits set to 1 cause a #PF with
+    PFEC (Page Fault Error Code) RSVD bit set.
+
+But this is contradicted by the architectural extensions spec, which states that
+a GPA that satisfies MAXPA >= GPA > GPAW "can" cause an EPT violation, not #PF.
+Note, this section also appears to have a bug, as it states that GPA bit 47 is
+both the SHARED bit and reserved.  I assume that blurb is intended to clarify
+that bit 47 _would_ be reserved if it weren't the SHARED bit, but because it's
+the shared bit it's ok to access.
+
+    1.4.2
+    Guest Physical Address Translation
+    If the CPU's maximum physical-address width (MAXPA) is 52 and the guest physical
+    address width is configured to be 48, accesses with GPA bits 51:48 not all being
+    0 can cause an EPT-violation, where such EPT-violations are not mutated to #VE,
+    even if the “EPT-violations #VE” execution control is 1.
+
+    If the CPU's physical-address width (MAXPA) is less than 48 and the SHARED bit
+    is configured to be in bit position 47, GPA bit 47 would be reserved, and GPA
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                    
+    bits 46:MAXPA would be reserved. On such CPUs, setting bits 51:48 or bits
+    46:MAXPA in any paging structure can cause a reserved bit page fault on access.
+
+The Module spec also calls out that the effective GPA is not to be confused with
+MAXPA, which combined with the above blurb about MAXPA < GPAW, suggests that MAXPA
+is enumerated separately by design so that the guest doesn't incorrectly think
+46:MAXPA are usable.  But that is problematic for the case where MAXPA > GPAW.
+
+    The effective GPA width (in bits) for this TD (do not confuse with MAXPA).
+    SHARED bit is at GPA bit GPAW-1.
+
+I can't find the exact reference, but the TDX module always passes through host's
+MAXPHYADDR.  As it pertains to this patch, just doing
+
+	physical_mask &= ~tdx_shared_mask()
+
+means that a guest running with GPAW=0 and MAXPHYADDR>48 will have a discontiguous
+physical_mask, and could access "reserved" memory.  If the VMM defines legal memory
+with bits [MAXPHYADDR:48]!=0, explosions may ensue.  That's arguably a VMM bug, but
+given that the VMM is untrusted I think the guest should be paranoid when handling
+the SHARED bit.  I also don't know that the kernel will play nice with a discontiguous
+mask.
+
+Specs aside, unless Intel makes a hardware change to treat GPAW as guest.MAXPHYADDR,
+or the TDX Module emulates on EPT violations to inject #PF(RSVD) when appropriate,
+this mess isn't going to be truly fixed from the guest perspective.
+
+So, IMO all bits >= GPAW should be cleared, and the kernel should warn and/or
+refuse to boot if the host has defined legal memory in that range.
+
+FWIW, from a VMM perspective, I'm pretty sure the only sane approach is to force
+GPAW=1, a.k.a. SHARED bit == 51, if host.MAXPHYADDR>=49.  But on the guest side,
+I think we should be paranoid.
