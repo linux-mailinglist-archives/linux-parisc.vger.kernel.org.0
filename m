@@ -2,37 +2,35 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3C7F44A37C
-	for <lists+linux-parisc@lfdr.de>; Tue,  9 Nov 2021 02:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E8044A2AC
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Nov 2021 02:17:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241826AbhKIB1W (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 8 Nov 2021 20:27:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40982 "EHLO mail.kernel.org"
+        id S239667AbhKIBUM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 8 Nov 2021 20:20:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44340 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243379AbhKIBPr (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 8 Nov 2021 20:15:47 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A29376134F;
-        Tue,  9 Nov 2021 01:06:39 +0000 (UTC)
+        id S242160AbhKIBRD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 8 Nov 2021 20:17:03 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0CFA9619EE;
+        Tue,  9 Nov 2021 01:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636420000;
-        bh=0dlSy1l9ZmvEzgN8+wRVkVgBw3bcQQaIJQTdKQHEHqA=;
+        s=k20201202; t=1636420005;
+        bh=BxmmrVIRePr4MucsBozMFpB1XoznpnJ8Nc9ewJH28Nc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DshPujdwV5gLIspYBqvTmjFYuBO/ymQvNGXhCtYjj/U85vIfUU8OwFmdqxrN6h7g9
-         e6H8/PF6N641rWjHNCrenQF7+aXuF4zsMKRkr+yiMUr6WMP4aNZGH9pRjAF2olqmK0
-         LkBg1o96CAtD75ZiqAiynuvkHRRzZVvfMvHUYL/9NqwI/ipKAMYdVjI7V7Hgaa9yk0
-         2UdRV7nn09vXLGYN4ZGMz2qDKBhpZV5yVROzfztbjDbsp9JEDuyqFisnv+WZV16W9N
-         HPQjTPv4nlm+Agcg6C57s+yxZngqKFoVdiuFm89OW0BIKvfARbTN+tOqGutz0CiUFM
-         N20sCxt1Qxgvg==
+        b=eUsyV0RhWXoP/2glEqa+ZP6p19xB6JAvy1UjOZn6/j5zNDjH5MqxS6ZYEChZmAjOi
+         8uedLg1VMSg89rvLAl5gUs09mZGczJH0F8fFf5756EpKhxB/h8BL61+8C1iWlUN7mi
+         XjAsV8uCkUK+RQWPSFr15LJQTHAmN+4/4DPVyrTdhkk0La7eoLrwDpcLc+WVBqxc68
+         ikQNT6X386RSqvmTm+lXasJDAa4PYKRVtzoqXlxM2cUj4w9z0wwSfzw2HkZDq/avee
+         gDRpdowHGXWBYjKRfwWaHZD6q6JPjG727vLpqIQiF+4z8X67+dcuCVySbCnWRJX77J
+         vrN4H/9xejtPg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, wangkefeng.wang@huawei.com,
-        rmk+kernel@armlinux.org.uk, hanyihao@vivo.com, david@redhat.com,
-        willy@infradead.org, linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 44/47] parisc: fix warning in flush_tlb_all
-Date:   Mon,  8 Nov 2021 12:50:28 -0500
-Message-Id: <20211108175031.1190422-44-sashal@kernel.org>
+        James.Bottomley@HansenPartnership.com, linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 46/47] parisc/unwind: fix unwinder when CONFIG_64BIT is enabled
+Date:   Mon,  8 Nov 2021 12:50:30 -0500
+Message-Id: <20211108175031.1190422-46-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211108175031.1190422-1-sashal@kernel.org>
 References: <20211108175031.1190422-1-sashal@kernel.org>
@@ -46,64 +44,97 @@ X-Mailing-List: linux-parisc@vger.kernel.org
 
 From: Sven Schnelle <svens@stackframe.org>
 
-[ Upstream commit 1030d681319b43869e0d5b568b9d0226652d1a6f ]
+[ Upstream commit 8e0ba125c2bf1030af3267058019ba86da96863f ]
 
-I've got the following splat after enabling preemption:
-
-[    3.724721] BUG: using __this_cpu_add() in preemptible [00000000] code: swapper/0/1
-[    3.734630] caller is __this_cpu_preempt_check+0x38/0x50
-[    3.740635] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.15.0-rc4-64bit+ #324
-[    3.744605] Hardware name: 9000/785/C8000
-[    3.744605] Backtrace:
-[    3.744605]  [<00000000401d9d58>] show_stack+0x74/0xb0
-[    3.744605]  [<0000000040c27bd4>] dump_stack_lvl+0x10c/0x188
-[    3.744605]  [<0000000040c27c84>] dump_stack+0x34/0x48
-[    3.744605]  [<0000000040c33438>] check_preemption_disabled+0x178/0x1b0
-[    3.744605]  [<0000000040c334f8>] __this_cpu_preempt_check+0x38/0x50
-[    3.744605]  [<00000000401d632c>] flush_tlb_all+0x58/0x2e0
-[    3.744605]  [<00000000401075c0>] 0x401075c0
-[    3.744605]  [<000000004010b8fc>] 0x4010b8fc
-[    3.744605]  [<00000000401080fc>] 0x401080fc
-[    3.744605]  [<00000000401d5224>] do_one_initcall+0x128/0x378
-[    3.744605]  [<0000000040102de8>] 0x40102de8
-[    3.744605]  [<0000000040c33864>] kernel_init+0x60/0x3a8
-[    3.744605]  [<00000000401d1020>] ret_from_kernel_thread+0x20/0x28
-[    3.744605]
-
-Fix this by moving the __inc_irq_stat() into the locked section.
+With 64 bit kernels unwind_special() is not working because
+it compares the pc to the address of the function descriptor.
+Add a helper function that compares pc with the dereferenced
+address. This fixes all of the backtraces on my c8000. Without
+this changes, a lot of backtraces are missing in kdb or the
+show-all-tasks command from /proc/sysrq-trigger.
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/mm/init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/parisc/kernel/unwind.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index 10a52664e29f0..038fcb6c76dc1 100644
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -895,9 +895,9 @@ void flush_tlb_all(void)
- {
- 	int do_recycle;
+diff --git a/arch/parisc/kernel/unwind.c b/arch/parisc/kernel/unwind.c
+index 2d14f17838d23..fa52c939e8a3b 100644
+--- a/arch/parisc/kernel/unwind.c
++++ b/arch/parisc/kernel/unwind.c
+@@ -21,6 +21,8 @@
+ #include <asm/ptrace.h>
  
--	__inc_irq_stat(irq_tlb_count);
- 	do_recycle = 0;
- 	spin_lock(&sid_lock);
-+	__inc_irq_stat(irq_tlb_count);
- 	if (dirty_space_ids > RECYCLE_THRESHOLD) {
- 	    BUG_ON(recycle_inuse);  /* FIXME: Use a semaphore/wait queue here */
- 	    get_dirty_sids(&recycle_ndirty,recycle_dirty_array);
-@@ -916,8 +916,8 @@ void flush_tlb_all(void)
- #else
- void flush_tlb_all(void)
+ #include <asm/unwind.h>
++#include <asm/switch_to.h>
++#include <asm/sections.h>
+ 
+ /* #define DEBUG 1 */
+ #ifdef DEBUG
+@@ -203,6 +205,11 @@ int __init unwind_init(void)
+ 	return 0;
+ }
+ 
++static bool pc_is_kernel_fn(unsigned long pc, void *fn)
++{
++	return (unsigned long)dereference_kernel_function_descriptor(fn) == pc;
++}
++
+ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int frame_size)
  {
--	__inc_irq_stat(irq_tlb_count);
- 	spin_lock(&sid_lock);
-+	__inc_irq_stat(irq_tlb_count);
- 	flush_tlb_all_local(NULL);
- 	recycle_sids();
- 	spin_unlock(&sid_lock);
+ 	/*
+@@ -221,7 +228,7 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
+ 	extern void * const _call_on_stack;
+ #endif /* CONFIG_IRQSTACKS */
+ 
+-	if (pc == (unsigned long) &handle_interruption) {
++	if (pc_is_kernel_fn(pc, handle_interruption)) {
+ 		struct pt_regs *regs = (struct pt_regs *)(info->sp - frame_size - PT_SZ_ALGN);
+ 		dbg("Unwinding through handle_interruption()\n");
+ 		info->prev_sp = regs->gr[30];
+@@ -229,13 +236,13 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
+ 		return 1;
+ 	}
+ 
+-	if (pc == (unsigned long) &ret_from_kernel_thread ||
+-	    pc == (unsigned long) &syscall_exit) {
++	if (pc_is_kernel_fn(pc, ret_from_kernel_thread) ||
++	    pc_is_kernel_fn(pc, syscall_exit)) {
+ 		info->prev_sp = info->prev_ip = 0;
+ 		return 1;
+ 	}
+ 
+-	if (pc == (unsigned long) &intr_return) {
++	if (pc_is_kernel_fn(pc, intr_return)) {
+ 		struct pt_regs *regs;
+ 
+ 		dbg("Found intr_return()\n");
+@@ -246,20 +253,20 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
+ 		return 1;
+ 	}
+ 
+-	if (pc == (unsigned long) &_switch_to_ret) {
++	if (pc_is_kernel_fn(pc, _switch_to) ||
++	    pc_is_kernel_fn(pc, _switch_to_ret)) {
+ 		info->prev_sp = info->sp - CALLEE_SAVE_FRAME_SIZE;
+ 		info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
+ 		return 1;
+ 	}
+ 
+ #ifdef CONFIG_IRQSTACKS
+-	if (pc == (unsigned long) &_call_on_stack) {
++	if (pc_is_kernel_fn(pc, _call_on_stack)) {
+ 		info->prev_sp = *(unsigned long *)(info->sp - FRAME_SIZE - REG_SZ);
+ 		info->prev_ip = *(unsigned long *)(info->sp - FRAME_SIZE - RP_OFFSET);
+ 		return 1;
+ 	}
+ #endif
+-
+ 	return 0;
+ }
+ 
 -- 
 2.33.0
 
