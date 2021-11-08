@@ -2,129 +2,159 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D81E447B59
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Nov 2021 08:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6A0B447BFA
+	for <lists+linux-parisc@lfdr.de>; Mon,  8 Nov 2021 09:37:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236545AbhKHHuR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 8 Nov 2021 02:50:17 -0500
-Received: from mail-qk1-f170.google.com ([209.85.222.170]:46929 "EHLO
-        mail-qk1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235081AbhKHHuQ (ORCPT
+        id S238048AbhKHIjr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 8 Nov 2021 03:39:47 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:57924 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235223AbhKHIjq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 8 Nov 2021 02:50:16 -0500
-Received: by mail-qk1-f170.google.com with SMTP id bl12so14637691qkb.13;
-        Sun, 07 Nov 2021 23:47:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=niQCVpji9nu8a8Mfie3ofua8MkF1HzpLuS22ys5pvwg=;
-        b=QxhKC3BH6UKmsf+en5LDsE2LBeZaA/X8MZ852CifiBk7lxKwvvQ8DvQzVCJxpn5NLP
-         sUafxXkCujdPkXdjCp08V3qdDG7N1+RyuQ4yRaYSXr9VC8emQREANOjzOZyjMa/6MyZ1
-         ebyXOdDFecNFXOnOI9KCznfXjls9NSdbdlYPIqzXgQKeYmXawyeNbqPk+wpw/iM3p8Qz
-         GYnZJI/gOifPb+tn1N/ez25v3Z+EZKbOTcnsyGCUaB1vQAwldUQHRYwqwJ4JsbCGpA52
-         q/cZpzUYpazcuYCAjvlNWmBhpUmXw2FumJQh7RMmwOl9AidSO6dCrA3Tw6e+d4XChmpJ
-         S2qQ==
-X-Gm-Message-State: AOAM533Ndj5HCg9s4l2OPPgz513/MnYueo8JLiwpRssuUn55AVtH5Ycg
-        pSYGW71BTe5t90Ouy0Kgyqyh+38S0qx3Jg==
-X-Google-Smtp-Source: ABdhPJwQvMewvRjNbN/c0TXq4JonZhcv8d7XAj6/kChLjlMOwqYn6iZDfJo4XDnr1yHj+M1GgRMQ2Q==
-X-Received: by 2002:a05:620a:752:: with SMTP id i18mr6713068qki.453.1636357651412;
-        Sun, 07 Nov 2021 23:47:31 -0800 (PST)
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com. [209.85.219.41])
-        by smtp.gmail.com with ESMTPSA id s13sm5045006qtw.33.2021.11.07.23.47.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Nov 2021 23:47:31 -0800 (PST)
-Received: by mail-qv1-f41.google.com with SMTP id gh1so11375219qvb.8;
-        Sun, 07 Nov 2021 23:47:31 -0800 (PST)
-X-Received: by 2002:a05:6102:3a07:: with SMTP id b7mr71214037vsu.35.1636357641114;
- Sun, 07 Nov 2021 23:47:21 -0800 (PST)
+        Mon, 8 Nov 2021 03:39:46 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id F14361FD6D;
+        Mon,  8 Nov 2021 08:37:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1636360621; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=m47UAY2ZcyR+FhtsO4aVyPTcYB/9rHV9T+gQ8c/5pAk=;
+        b=Minh2m7rxvc2DMoW2LH2qYO5gOW8gSGAozwRYB+8B9kXCTsrC0Miapuo/aA5erTLxKXKSh
+        2mU2pl2sVD3/3MkJ8Zo0noDflkpKrie3hsR/SUR3pmgOWP/1/iFmO0dn7D3eLzKL4aqMPQ
+        WDZU10opHeLjOri0PsD/mR75lJbI5r8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1636360621;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=m47UAY2ZcyR+FhtsO4aVyPTcYB/9rHV9T+gQ8c/5pAk=;
+        b=zxMYzuYR8k8tv1u7IyuPNqP9W/yVx0pwwR0sgi6Y7WDU2lNWog4FyUqLChzcaH3SiHZHxH
+        y3UM/b2PNn/DDRCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C559A139CF;
+        Mon,  8 Nov 2021 08:37:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id VSr1Lq3hiGGzXAAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Mon, 08 Nov 2021 08:37:01 +0000
+Message-ID: <312d6427-67ff-67c5-b662-23127bb76d12@suse.de>
+Date:   Mon, 8 Nov 2021 09:37:01 +0100
 MIME-Version: 1.0
-References: <20211108004524.29465-1-digetx@gmail.com> <20211108004524.29465-22-digetx@gmail.com>
-In-Reply-To: <20211108004524.29465-22-digetx@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 8 Nov 2021 08:47:10 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXpW0389_uJR2xg+HCstXanutPxrcRdvgu8kxH1J9T++w@mail.gmail.com>
-Message-ID: <CAMuHMdXpW0389_uJR2xg+HCstXanutPxrcRdvgu8kxH1J9T++w@mail.gmail.com>
-Subject: Re: [PATCH v3 21/25] m68k: Switch to new sys-off handler API
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH/RFT] fbdev driver for HP Visualize FX cards
+Content-Language: en-US
+To:     Sven Schnelle <svens@stackframe.org>
+Cc:     linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Helge Deller <deller@gmx.de>
+References: <20211031195347.13754-1-svens@stackframe.org>
+ <cd0f90d9-7dba-af33-f88b-289fc6f80b51@suse.de>
+ <87r1c0s1bt.fsf@x1.stackframe.org>
+ <e21cdf83-2178-7c59-2585-a6012f861f68@suse.de>
+ <87o86x80am.fsf@x1.stackframe.org>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <87o86x80am.fsf@x1.stackframe.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------Ua3NsWBcmIn5JzZRJKhoK9GM"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Nov 8, 2021 at 1:48 AM Dmitry Osipenko <digetx@gmail.com> wrote:
-> Kernel now supports chained power-off handlers. Use
-> register_power_off_handler() that registers power-off handlers and
-> do_kernel_power_off() that invokes chained power-off handlers. Legacy
-> pm_power_off() will be removed once all drivers will be converted to
-> the new power-off API.
->
-> Normally arch code should adopt only the do_kernel_power_off() at first,
-> but m68k is a special case because it uses pm_power_off() "inside out",
-> i.e. pm_power_off() invokes machine_power_off() [in fact it does nothing],
-> while it's machine_power_off() that should invoke the pm_power_off(), and
-> thus, we can't convert platforms to the new API separately. There are only
-> two platforms changed here, so it's not a big deal.
->
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------Ua3NsWBcmIn5JzZRJKhoK9GM
+Content-Type: multipart/mixed; boundary="------------ECTrUU3oVoAPEqx5K8r4DiqJ";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Sven Schnelle <svens@stackframe.org>
+Cc: linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel <dri-devel@lists.freedesktop.org>, Helge Deller <deller@gmx.de>
+Message-ID: <312d6427-67ff-67c5-b662-23127bb76d12@suse.de>
+Subject: Re: [PATCH/RFT] fbdev driver for HP Visualize FX cards
+References: <20211031195347.13754-1-svens@stackframe.org>
+ <cd0f90d9-7dba-af33-f88b-289fc6f80b51@suse.de>
+ <87r1c0s1bt.fsf@x1.stackframe.org>
+ <e21cdf83-2178-7c59-2585-a6012f861f68@suse.de>
+ <87o86x80am.fsf@x1.stackframe.org>
+In-Reply-To: <87o86x80am.fsf@x1.stackframe.org>
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+--------------ECTrUU3oVoAPEqx5K8r4DiqJ
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Gr{oetje,eeting}s,
+SGkNCg0KQW0gMDYuMTEuMjEgdW0gMjI6MDIgc2NocmllYiBTdmVuIFNjaG5lbGxlOg0KPiBU
+aG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5Ac3VzZS5kZT4gd3JpdGVzOg0KPiANCj4+
+IEhpDQo+Pg0KPj4gQW0gMDEuMTEuMjEgdW0gMDk6NTQgc2NocmllYiBTdmVuIFNjaG5lbGxl
+Og0KPj4+IEhpIFRob21hcywNCj4+PiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5A
+c3VzZS5kZT4gd3JpdGVzOg0KPj4+IFRoYW5rcywgaSB3YXNuJ3QgYXdhcmUgYXMgaSBub3Jt
+YWxseSBkb24ndCBkbyBhbnkgZ3JhcGhpY3MgcmVsYXRlZA0KPj4+IGRldmVsb3BtZW50LiBJ
+IHRha2UgYSBsb29rIGF0IGRyaSBhbmQgcG9ydCB0aGUgZHJpdmVyLCB3aGljaCBpcw0KPj4+
+IGhvcGVmdWxseSBub3QgdG9vIGhhcmQuDQo+Pg0KPj4gU291bmRzIGdvb2QuDQo+Pg0KPj4g
+VGhlIG9uZSBiaWcgZGlmZmVyZW5jZSB3aGVuIGNvbnZlcnRpbmcgaXMgdGhhdCBEUk0gcmVh
+bGx5IHdhbnRzDQo+PiBkcml2ZXJzIHRvIHN1cHBvcnQgMzItYml0IFhSR0IgY29sb3JzLiBJ
+dCdzIG5vdCBhIERSTSBsaW1pdGF0aW9uIHBlcg0KPj4gc2UsIGJ1dCBhIHJlcXVpcmVtZW50
+IG9mIHRvZGF5J3MgdXNlcnNwYWNlIHByb2dyYW1zLiBBRkFJQ1MgeW91ciBmYmRldg0KPj4g
+ZHJpdmVyIHVzZXMgYSAyNTYtY29sb3IgcGFsZXR0ZSBmb3JtYXQuIFNvIHRoZSBEUk0gZHJp
+dmVyIHdvdWxkIGhhdmUNCj4+IHRvIGNvbnZlcnQNCj4+IFhSR0I4ODg4IHRvIDgtYml0IFJH
+QjMzMiBhbmQgaW5zdGFsbCBhIGNvcnJlc3BvbmRpbmcgcGFsZXR0ZS4gRG9uJ3QNCj4+IHdv
+cnJ5LCBpdCdzIGVhc3kuIFRha2UgYSBsb29rIGF0IHRoZSBjaXJydXMgZHJpdmVyIGZvciBh
+IHNpbXBsZSBEUk0NCj4+IGRyaXZlci4gWzFdDQo+IA0KPiBJIGhhdmUgY29udmVydGVkIHRo
+ZSBkcml2ZXIsIA0KDQpDb29sIQ0KDQo+IGJ1dCBhbSB1c2luZyBGT1JNQVRfQzggYmVjYXVz
+ZSBpIGhhdmVuJ3QNCj4gZmlndXJlZCBvdXQgeWV0IGhvdyB0byBzd2l0Y2ggdGhlIGNhcmQg
+dG8gWFJHQjg4ODguIFRoYXQncyBzdGlsbCBvbiB0aGUNCj4gVE9ETyBsaXN0Lg0KDQpEb24n
+dCB3b3JyeS4gQXMgSSBvdXRsaW5lZCAsIHlvdSBjYW4gc3RpbGwgY29udmVydCBhbnkgaW1h
+Z2UgZnJvbSANClhSR0I4ODggdG8gUkdCMzMyIGFuZCBkaXNwbGF5IHRoaXMgaW5zdGVhZC4N
+Cg0KPiANCj4gT25lIHF1ZXN0aW9uIGFib3V0IGh3IGJsaXR0aW5nOiB3aXRoIHRoZSBvbGQg
+ZmJkZXYgZnJhbWV3b3JrIG9uZSBjb3VsZA0KPiByZXBsYWNlIHRoZSBmYl9pbWFnZWJsaXQg
+ZnVuY3Rpb24uIEZvciBub3JtYWwgY29uc29sZSB0ZXh0LCB0aGlzDQo+IGZ1bmN0aW9uIGdl
+dHMgY2FsbGVkIHdpdGggYSBtb25vY2hyb21lIGJpdG1hcCwgYW5kIGFuIGZnL2JnIGNvbG9y
+IHZhbHVlLg0KPiBUaGlzIG1ha2VzIGl0IGVhc3kgdG8gdXNlIEhXIGFjY2VsZXJhdGVkIGJs
+aXR0aW5nIGZvciB0ZXh0LiBJbiB0aGUNCj4gZ3B1L2RybSBkcml2ZXJzIGkgdGhpbmsgaSBm
+b3VuZCBvbmx5IG9uZSBkcml2ZXIgKG5vdXZlYXUpIGRvaW5nIHRoaXMgYW5kDQo+IHRoYXQg
+d2FzIHZpYSB0aGUgZHJtIGZiZGV2IGxheWVyLg0KPiANCj4gSXMgdGhhdCBzdGlsbCB0aGUg
+d2F5IHRvIGdvLCBvciBpcyB0aGVyZSBhIGJldHRlciB3YXkgdG8gZG8gSFcgYWNjZWxlcmF0
+ZWQNCj4gdGV4dCBibGl0dGluZz8NCg0KU2ltcGx5IGNhbGwgZHJtX2ZiZGV2X2dlbmVyaWNf
+c2V0dXAoKSBhZnRlciByZWdpc3RlcmluZyB0aGUgZGV2aWNlLiBUaGlzIA0Kc2hvdWxkIGdp
+dmUgeW91IGEgY29uc29sZS4NCg0KRG9uJ3QgYm90aGVyIGFib3V0IEhXLWFjY2VsZXJhdGVk
+IGJsaXR0aW5nLiBGcm9tIHdoYXQgSSd2ZSBoZWFyZCwgaXQgDQpiYXJlbHkgbWFrZXMgYSBk
+aWZmZXJlbmNlIG5vd2FkYXlzLiBBbmQgb3VyIGdlbmVyaWMgaGVscGVycyBoYXZlIHBsZW50
+eSANCm9mIGZlYXR1cmVzLiBOb3QgdXNpbmcgdGhlbSB0byBnZXQgYSBzbWFsbCBiZW5lZml0
+IGZyb20gSFcgYmxpdHRpbmcgDQppc24ndCB3b3J0aCBpdC4NCg0KQmVzdCByZWdhcmRzDQpU
+aG9tYXMNCg0KPiANCj4gVGhhbmtzDQo+IFN2ZW4NCj4gDQoNCi0tIA0KVGhvbWFzIFppbW1l
+cm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRp
+b25zIEdlcm1hbnkgR21iSA0KTWF4ZmVsZHN0ci4gNSwgOTA0MDkgTsO8cm5iZXJnLCBHZXJt
+YW55DQooSFJCIDM2ODA5LCBBRyBOw7xybmJlcmcpDQpHZXNjaMOkZnRzZsO8aHJlcjogSXZv
+IFRvdGV2DQo=
 
-                        Geert
+--------------ECTrUU3oVoAPEqx5K8r4DiqJ--
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+--------------Ua3NsWBcmIn5JzZRJKhoK9GM
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmGI4a0FAwAAAAAACgkQlh/E3EQov+As
+UA//YRuNTmiRQXom7SSQzZ3yOLLxko9XIy1O/rHT3EkobAlu7juFnpc05SFas3IOGhQQo2oVJ6OT
+DC9Fe1wdDyO8913hroZ34kqw60VnWY8ifcfp58EMJaJ+OVb+7t9mU3/8l+HHy79YtFN6hglJ/pJj
+43ETrryJZDJPVoOJX2tKvVHEI83DS4NHKZBEHjMiS8/O8V5+UnzZhRdwC1KR9+4QkXD8i6YEzTku
+hCDWjrHF+k4ZPgP85AYgzxV7VrTsMg1AHjTESU+LrY/aE9HH7azFznLLU3hmMrsiUIui7c8On+Tf
+OzAWpdFntmEe2CDkp6HjgWPibZB6kcyw20CkQq/TK5VoY5ZooAeCvrluHz0Em9k/o/9W44jfFViX
+msd+quuitzCRWOgP4GykiqqwIbaUEVAvy8vgU6vCN2y5drHV80FKP2FYMhf7L/8J7GuAOMTe9v5g
+hkYxp+Lxye01CpQCooiiBbDXUjp9mQkCsOOrL0SC+ElJks3qSSQM5NHd8En/CoWibwaZxbwIHN2P
+PuA283K/XVhm7cH4YXgv2o4zPLFe2bpaJwvmBlM3BCJ6flY/qQaK31Q4LfGqTX8Bqs/c94Ew8xDB
+1PwAH67fvIZ7PB5OH3UMrrCRPdGsJOWk2SE+6dNgOPHuHcWqIamAeY9mWR0czhEGu7Lp4Jk/4DoY
+oGs=
+=bT6n
+-----END PGP SIGNATURE-----
+
+--------------Ua3NsWBcmIn5JzZRJKhoK9GM--
