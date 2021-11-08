@@ -2,137 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68BF2449E6F
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Nov 2021 22:48:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3C7F44A37C
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Nov 2021 02:25:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240602AbhKHVvF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 8 Nov 2021 16:51:05 -0500
-Received: from mta-mtl-004.bell.net ([209.71.208.14]:59888 "EHLO
-        cmx-mtlrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S240591AbhKHVvE (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 8 Nov 2021 16:51:04 -0500
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [67.71.8.137]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 60C894590B4B7718
-X-CM-Envelope: MS4xfDHKotfRS2n1Ex9bLXrd+iVL8okI498G+O3umGOsOnSVQ1Ila60uVEcUqIDfqyI4th+wZl6Euxa3aMpY1ByHOcfJW+TwUt9MtSXFdOCaww47h89uKB2x
- 3unlPvMuRSK7zNxE7KODn20C1VaBq1bmYFRuww260BkMITOFNsPjs4bkP4JxISWHmEjFFd7VrDbQmLAiGUYDXumsGCaejNZJEW+03wNcyELJItqV8KZEB+jg
- UWHL7K9Qo7FPim80w2hIGV8vDQGyU4f9mP1d+f8z1ttIwL+fk7Oobk73yoJ7TLlNnfG+Sy/iQc3z/uEc7K2TiVY1r9AwAo0StSjqEYiGjW8=
-X-CM-Analysis: v=2.4 cv=ENdlb3VC c=1 sm=1 tr=0 ts=61899b20
- a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=Ig3HJIhBWjIyQfak5WcA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 60C894590B4B7718; Mon, 8 Nov 2021 16:48:16 -0500
-Message-ID: <d659e011-274b-33de-96f4-4ccb6f81296c@bell.net>
-Date:   Mon, 8 Nov 2021 16:48:16 -0500
+        id S241826AbhKIB1W (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 8 Nov 2021 20:27:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40982 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243379AbhKIBPr (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 8 Nov 2021 20:15:47 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A29376134F;
+        Tue,  9 Nov 2021 01:06:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1636420000;
+        bh=0dlSy1l9ZmvEzgN8+wRVkVgBw3bcQQaIJQTdKQHEHqA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=DshPujdwV5gLIspYBqvTmjFYuBO/ymQvNGXhCtYjj/U85vIfUU8OwFmdqxrN6h7g9
+         e6H8/PF6N641rWjHNCrenQF7+aXuF4zsMKRkr+yiMUr6WMP4aNZGH9pRjAF2olqmK0
+         LkBg1o96CAtD75ZiqAiynuvkHRRzZVvfMvHUYL/9NqwI/ipKAMYdVjI7V7Hgaa9yk0
+         2UdRV7nn09vXLGYN4ZGMz2qDKBhpZV5yVROzfztbjDbsp9JEDuyqFisnv+WZV16W9N
+         HPQjTPv4nlm+Agcg6C57s+yxZngqKFoVdiuFm89OW0BIKvfARbTN+tOqGutz0CiUFM
+         N20sCxt1Qxgvg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>,
+        Sasha Levin <sashal@kernel.org>,
+        James.Bottomley@HansenPartnership.com, wangkefeng.wang@huawei.com,
+        rmk+kernel@armlinux.org.uk, hanyihao@vivo.com, david@redhat.com,
+        willy@infradead.org, linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 44/47] parisc: fix warning in flush_tlb_all
+Date:   Mon,  8 Nov 2021 12:50:28 -0500
+Message-Id: <20211108175031.1190422-44-sashal@kernel.org>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211108175031.1190422-1-sashal@kernel.org>
+References: <20211108175031.1190422-1-sashal@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Content-Language: en-US
-To:     linux-parisc <linux-parisc@vger.kernel.org>
-Cc:     Helge Deller <deller@gmx.de>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>
-From:   John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH/RFC] parisc: Flush kernel data mapping in set_pte_at() when
- installing pte for user page
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-For years, there have been random segmentation faults in userspace on SMP PA-RISC machines.  It
-occurred to me that this might be a problem in set_pte_at().  MIPS and some other architectures
-do cache flushes when installing PTEs with the present bit set.
+From: Sven Schnelle <svens@stackframe.org>
 
-Here I have adapted the code in update_mmu_cache() to flush the kernel mapping when the kernel
-flush is deferred, or when the kernel mapping may alias with the user mapping.  This simplifies
-calls to update_mmu_cache().
+[ Upstream commit 1030d681319b43869e0d5b568b9d0226652d1a6f ]
 
-I also changed the barrier in set_pte() from a compiler barrier to a full memory barrier.  I know
-this change is not sufficient to fix the problem.  It might not be needed.
+I've got the following splat after enabling preemption:
 
-I have had a few days of operation with 5.14.16 to 5.15.1 and haven't seen any random segmentation
-faults on rp3440 or c8000 so far.
+[    3.724721] BUG: using __this_cpu_add() in preemptible [00000000] code: swapper/0/1
+[    3.734630] caller is __this_cpu_preempt_check+0x38/0x50
+[    3.740635] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.15.0-rc4-64bit+ #324
+[    3.744605] Hardware name: 9000/785/C8000
+[    3.744605] Backtrace:
+[    3.744605]  [<00000000401d9d58>] show_stack+0x74/0xb0
+[    3.744605]  [<0000000040c27bd4>] dump_stack_lvl+0x10c/0x188
+[    3.744605]  [<0000000040c27c84>] dump_stack+0x34/0x48
+[    3.744605]  [<0000000040c33438>] check_preemption_disabled+0x178/0x1b0
+[    3.744605]  [<0000000040c334f8>] __this_cpu_preempt_check+0x38/0x50
+[    3.744605]  [<00000000401d632c>] flush_tlb_all+0x58/0x2e0
+[    3.744605]  [<00000000401075c0>] 0x401075c0
+[    3.744605]  [<000000004010b8fc>] 0x4010b8fc
+[    3.744605]  [<00000000401080fc>] 0x401080fc
+[    3.744605]  [<00000000401d5224>] do_one_initcall+0x128/0x378
+[    3.744605]  [<0000000040102de8>] 0x40102de8
+[    3.744605]  [<0000000040c33864>] kernel_init+0x60/0x3a8
+[    3.744605]  [<00000000401d1020>] ret_from_kernel_thread+0x20/0x28
+[    3.744605]
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Fix this by moving the __inc_irq_stat() into the locked section.
+
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ arch/parisc/mm/init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
-index 43937af127b1..9ea9872212cb 100644
---- a/arch/parisc/include/asm/pgtable.h
-+++ b/arch/parisc/include/asm/pgtable.h
-@@ -65,6 +65,8 @@ extern int pa_serialize_tlb_flushes;
-   * are slow on SMP machines since the purge must be broadcast to all CPUs.
-   */
+diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+index 10a52664e29f0..038fcb6c76dc1 100644
+--- a/arch/parisc/mm/init.c
++++ b/arch/parisc/mm/init.c
+@@ -895,9 +895,9 @@ void flush_tlb_all(void)
+ {
+ 	int do_recycle;
+ 
+-	__inc_irq_stat(irq_tlb_count);
+ 	do_recycle = 0;
+ 	spin_lock(&sid_lock);
++	__inc_irq_stat(irq_tlb_count);
+ 	if (dirty_space_ids > RECYCLE_THRESHOLD) {
+ 	    BUG_ON(recycle_inuse);  /* FIXME: Use a semaphore/wait queue here */
+ 	    get_dirty_sids(&recycle_ndirty,recycle_dirty_array);
+@@ -916,8 +916,8 @@ void flush_tlb_all(void)
+ #else
+ void flush_tlb_all(void)
+ {
+-	__inc_irq_stat(irq_tlb_count);
+ 	spin_lock(&sid_lock);
++	__inc_irq_stat(irq_tlb_count);
+ 	flush_tlb_all_local(NULL);
+ 	recycle_sids();
+ 	spin_unlock(&sid_lock);
+-- 
+2.33.0
 
-+extern void __update_cache(pte_t pte);
-+
-  static inline void purge_tlb_entries(struct mm_struct *mm, unsigned long addr)
-  {
-  	unsigned long flags;
-@@ -80,16 +82,19 @@ static inline void purge_tlb_entries(struct mm_struct *mm, unsigned long addr)
-   * within a page table are directly modified.  Thus, the following
-   * hook is made available.
-   */
--#define set_pte(pteptr, pteval)			\
--	do {					\
--		*(pteptr) = (pteval);		\
--		barrier();			\
-+#define set_pte(pteptr, pteval)				\
-+	do {						\
-+		*(pteptr) = (pteval);			\
-+		mb();					\
-  	} while(0)
-
--#define set_pte_at(mm, addr, pteptr, pteval)	\
--	do {					\
--		*(pteptr) = (pteval);		\
--		purge_tlb_entries(mm, addr);	\
-+#define set_pte_at(mm, addr, pteptr, pteval)		\
-+	do {						\
-+		if (pte_present(pteval) &&		\
-+		    pte_user(pteval))			\
-+			__update_cache(pteval);		\
-+		*(pteptr) = (pteval);			\
-+		purge_tlb_entries(mm, addr);		\
-  	} while (0)
-
-  #endif /* !__ASSEMBLY__ */
-@@ -303,6 +308,7 @@ extern unsigned long *empty_zero_page;
-
-  #define pte_none(x)     (pte_val(x) == 0)
-  #define pte_present(x)	(pte_val(x) & _PAGE_PRESENT)
-+#define pte_user(x)	(pte_val(x) & _PAGE_USER)
-  #define pte_clear(mm, addr, xp)  set_pte_at(mm, addr, xp, __pte(0))
-
-  #define pmd_flag(x)	(pmd_val(x) & PxD_FLAG_MASK)
-@@ -410,7 +416,7 @@ extern void paging_init (void);
-
-  #define PG_dcache_dirty         PG_arch_1
-
--extern void update_mmu_cache(struct vm_area_struct *, unsigned long, pte_t *);
-+#define update_mmu_cache(vms,addr,ptep) __update_cache(*ptep)
-
-  /* Encode and de-code a swap entry */
-
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 86a1a63563fd..c9f09d2a4461 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -83,9 +83,9 @@ EXPORT_SYMBOL(flush_cache_all_local);
-  #define pfn_va(pfn)	__va(PFN_PHYS(pfn))
-
-  void
--update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep)
-+__update_cache(pte_t pte)
-  {
--	unsigned long pfn = pte_pfn(*ptep);
-+	unsigned long pfn = pte_pfn(pte);
-  	struct page *page;
-
-  	/* We don't have pte special.  As a result, we can be called with
