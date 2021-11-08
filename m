@@ -2,123 +2,137 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD38C449DDE
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Nov 2021 22:19:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68BF2449E6F
+	for <lists+linux-parisc@lfdr.de>; Mon,  8 Nov 2021 22:48:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239989AbhKHVWY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 8 Nov 2021 16:22:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49682 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239990AbhKHVVk (ORCPT
+        id S240602AbhKHVvF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 8 Nov 2021 16:51:05 -0500
+Received: from mta-mtl-004.bell.net ([209.71.208.14]:59888 "EHLO
+        cmx-mtlrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S240591AbhKHVvE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 8 Nov 2021 16:21:40 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F44C061570;
-        Mon,  8 Nov 2021 13:18:55 -0800 (PST)
-Received: from zn.tnic (p200300ec2f3311007827e440708b1099.dip0.t-ipconnect.de [IPv6:2003:ec:2f33:1100:7827:e440:708b:1099])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E3BE71EC051F;
-        Mon,  8 Nov 2021 22:18:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1636406333;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=AU7V4fSHGUK4yNvIX3QFWGgL2mpvsQwlJrzk1EYTZE4=;
-        b=HI4wHVqdPFUaTmLfTawRP0YuILjCSvy0XvR7UY6GhjpkLZ7Jcpensq3GPz/wKuSVQPh/ah
-        JjfisFcmsOLL77YybjTfUcF4SOtfsMptjoCY2iNpL/QAVX8IlmhT4tll2zqUciAF4fFC2q
-        GhOxoJIWWV9UKbtfg9ziQ2wDV7UERPU=
-Date:   Mon, 8 Nov 2021 22:18:47 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ayush Sawal <ayush.sawal@chelsio.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rohit Maheshwari <rohitm@chelsio.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        intel-gvt-dev@lists.freedesktop.org,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-edac@vger.kernel.org,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        linux-hyperv@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-leds <linux-leds@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        scsi <linux-scsi@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-staging@lists.linux.dev,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>, netdev <netdev@vger.kernel.org>,
-        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
-        sparclinux <sparclinux@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v0 42/42] notifier: Return an error when callback is
- already registered
-Message-ID: <YYmUN69Y7z9xITas@zn.tnic>
-References: <20211108101157.15189-1-bp@alien8.de>
- <20211108101157.15189-43-bp@alien8.de>
- <CAMuHMdWH+txiSP_d7Jc4f_bU8Lf9iWpT4E3o5o7BJr-YdA6-VA@mail.gmail.com>
- <YYkyUEqcsOwQMb1S@zn.tnic>
- <CAMuHMdXiBEQyEXJagSfpH44hxVA2t0sDH7B7YubLGHrb2MJLLA@mail.gmail.com>
- <YYlJQYLiIrhjwOmT@zn.tnic>
- <CAMuHMdXHikGrmUzuq0WG5JRHUUE=5zsaVCTF+e4TiHpM5tc5kA@mail.gmail.com>
- <YYlOmd0AeA8DSluD@zn.tnic>
- <20211108205926.GA1678880@rowland.harvard.edu>
+        Mon, 8 Nov 2021 16:51:04 -0500
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 60C894590B4B7718
+X-CM-Envelope: MS4xfDHKotfRS2n1Ex9bLXrd+iVL8okI498G+O3umGOsOnSVQ1Ila60uVEcUqIDfqyI4th+wZl6Euxa3aMpY1ByHOcfJW+TwUt9MtSXFdOCaww47h89uKB2x
+ 3unlPvMuRSK7zNxE7KODn20C1VaBq1bmYFRuww260BkMITOFNsPjs4bkP4JxISWHmEjFFd7VrDbQmLAiGUYDXumsGCaejNZJEW+03wNcyELJItqV8KZEB+jg
+ UWHL7K9Qo7FPim80w2hIGV8vDQGyU4f9mP1d+f8z1ttIwL+fk7Oobk73yoJ7TLlNnfG+Sy/iQc3z/uEc7K2TiVY1r9AwAo0StSjqEYiGjW8=
+X-CM-Analysis: v=2.4 cv=ENdlb3VC c=1 sm=1 tr=0 ts=61899b20
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=Ig3HJIhBWjIyQfak5WcA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 60C894590B4B7718; Mon, 8 Nov 2021 16:48:16 -0500
+Message-ID: <d659e011-274b-33de-96f4-4ccb6f81296c@bell.net>
+Date:   Mon, 8 Nov 2021 16:48:16 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211108205926.GA1678880@rowland.harvard.edu>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Content-Language: en-US
+To:     linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     Helge Deller <deller@gmx.de>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>
+From:   John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH/RFC] parisc: Flush kernel data mapping in set_pte_at() when
+ installing pte for user page
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Nov 08, 2021 at 03:59:26PM -0500, Alan Stern wrote:
-> Is there really any reason for returning an error code?  For example, is 
-> it anticipated that at some point in the future these registration calls 
-> might fail?
-> 
-> Currently, the only reason for failing...
+For years, there have been random segmentation faults in userspace on SMP PA-RISC machines.  It
+occurred to me that this might be a problem in set_pte_at().  MIPS and some other architectures
+do cache flushes when installing PTEs with the present bit set.
 
-Right, I believe with not making it return void we're leaving the door
-open for some, *hypothetical* future return values if we decide we need
-to return them too, at some point.
+Here I have adapted the code in update_mmu_cache() to flush the kernel mapping when the kernel
+flush is deferred, or when the kernel mapping may alias with the user mapping.  This simplifies
+calls to update_mmu_cache().
 
-Yes, I can't think of another fact to state besides that the callback
-was already registered or return success but who knows what we wanna do
-in the future...
+I also changed the barrier in set_pte() from a compiler barrier to a full memory barrier.  I know
+this change is not sufficient to fix the problem.  It might not be needed.
 
-And so if we change them all to void now, I think it'll be a lot more
-churn to switch back to returning a non-void value and having the
-callers who choose to handle that value, do so again.
+I have had a few days of operation with 5.14.16 to 5.15.1 and haven't seen any random segmentation
+faults on rp3440 or c8000 so far.
 
-So, long story short, keeping the retval - albeit not very useful right
-now - is probably easier.
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+---
 
-I hope I'm making some sense here.
+diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+index 43937af127b1..9ea9872212cb 100644
+--- a/arch/parisc/include/asm/pgtable.h
++++ b/arch/parisc/include/asm/pgtable.h
+@@ -65,6 +65,8 @@ extern int pa_serialize_tlb_flushes;
+   * are slow on SMP machines since the purge must be broadcast to all CPUs.
+   */
 
--- 
-Regards/Gruss,
-    Boris.
++extern void __update_cache(pte_t pte);
++
+  static inline void purge_tlb_entries(struct mm_struct *mm, unsigned long addr)
+  {
+  	unsigned long flags;
+@@ -80,16 +82,19 @@ static inline void purge_tlb_entries(struct mm_struct *mm, unsigned long addr)
+   * within a page table are directly modified.  Thus, the following
+   * hook is made available.
+   */
+-#define set_pte(pteptr, pteval)			\
+-	do {					\
+-		*(pteptr) = (pteval);		\
+-		barrier();			\
++#define set_pte(pteptr, pteval)				\
++	do {						\
++		*(pteptr) = (pteval);			\
++		mb();					\
+  	} while(0)
 
-https://people.kernel.org/tglx/notes-about-netiquette
+-#define set_pte_at(mm, addr, pteptr, pteval)	\
+-	do {					\
+-		*(pteptr) = (pteval);		\
+-		purge_tlb_entries(mm, addr);	\
++#define set_pte_at(mm, addr, pteptr, pteval)		\
++	do {						\
++		if (pte_present(pteval) &&		\
++		    pte_user(pteval))			\
++			__update_cache(pteval);		\
++		*(pteptr) = (pteval);			\
++		purge_tlb_entries(mm, addr);		\
+  	} while (0)
+
+  #endif /* !__ASSEMBLY__ */
+@@ -303,6 +308,7 @@ extern unsigned long *empty_zero_page;
+
+  #define pte_none(x)     (pte_val(x) == 0)
+  #define pte_present(x)	(pte_val(x) & _PAGE_PRESENT)
++#define pte_user(x)	(pte_val(x) & _PAGE_USER)
+  #define pte_clear(mm, addr, xp)  set_pte_at(mm, addr, xp, __pte(0))
+
+  #define pmd_flag(x)	(pmd_val(x) & PxD_FLAG_MASK)
+@@ -410,7 +416,7 @@ extern void paging_init (void);
+
+  #define PG_dcache_dirty         PG_arch_1
+
+-extern void update_mmu_cache(struct vm_area_struct *, unsigned long, pte_t *);
++#define update_mmu_cache(vms,addr,ptep) __update_cache(*ptep)
+
+  /* Encode and de-code a swap entry */
+
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index 86a1a63563fd..c9f09d2a4461 100644
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -83,9 +83,9 @@ EXPORT_SYMBOL(flush_cache_all_local);
+  #define pfn_va(pfn)	__va(PFN_PHYS(pfn))
+
+  void
+-update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep)
++__update_cache(pte_t pte)
+  {
+-	unsigned long pfn = pte_pfn(*ptep);
++	unsigned long pfn = pte_pfn(pte);
+  	struct page *page;
+
+  	/* We don't have pte special.  As a result, we can be called with
