@@ -2,118 +2,128 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C88D944A3D9
-	for <lists+linux-parisc@lfdr.de>; Tue,  9 Nov 2021 02:29:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 818D144A681
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Nov 2021 06:58:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243837AbhKIBbI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 8 Nov 2021 20:31:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58562 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243223AbhKIB1A (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 8 Nov 2021 20:27:00 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0DF3061A88;
-        Tue,  9 Nov 2021 01:10:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636420219;
-        bh=apf7TYrkHRTSmQxheXA6LGWGkZTFg0co63K6qKThD10=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sBWcVMwhjzTo7CIP1R7tOebvwP/EHyXvhbGNwq+n8OHIl0HSG+5BknT71wlU4E5QY
-         vKr2179IvCrV59nXuX/zP+gAHhvS47OC+ghYMdxp4JIRjZCyYM4jbGkyNENINK05uz
-         f71up0BFyQFEUwjiU6AV/AF9K2v0snKIsLd77P2NHsPh21o8WefGe7LVX8PGP3BG7w
-         Ji93cb6enmopSiRPP21EnNhnEUXf3xAh4Q09YAN1509jog0Rm6hntDMKOgbR6imCur
-         L1HMBGfliRmVce3EShgbFQyLGP25CrjTLihgEnyI8jVMvetFr+MxxBNc3LDEVD7z2Q
-         92pv6ezrunNVw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>,
-        Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, peterz@infradead.org,
-        ardb@kernel.org, valentin.schneider@arm.com,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 30/30] parisc/kgdb: add kgdb_roundup() to make kgdb work with idle polling
-Date:   Mon,  8 Nov 2021 20:09:18 -0500
-Message-Id: <20211109010918.1192063-30-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211109010918.1192063-1-sashal@kernel.org>
-References: <20211109010918.1192063-1-sashal@kernel.org>
+        id S240696AbhKIGBl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 9 Nov 2021 01:01:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53564 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240251AbhKIGBl (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 9 Nov 2021 01:01:41 -0500
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBBBAC061764
+        for <linux-parisc@vger.kernel.org>; Mon,  8 Nov 2021 21:58:55 -0800 (PST)
+Received: by mail-ed1-x544.google.com with SMTP id m14so71545187edd.0
+        for <linux-parisc@vger.kernel.org>; Mon, 08 Nov 2021 21:58:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=b4rYg5SOz5rOM5p5ctP9uplrloJl2DRm6ET8X/kYdOk=;
+        b=Rhs2CmZI4jL6PjfOt8vrQZAIH+R81vFKJ69/fExHjJomtY01KdcoNZwXwtPFS8ztaZ
+         mFlD7wcZrsrtOKfJaYRMbFrDlpsXNE1ssVuJUFTZLVnzIUhdgaIIr/dPNJ551RvT6jI7
+         PD2YxLmXUBXGpNlTBp5jxofRnSDTLOpiTRFrH+FUMAhgNbV52mgBAzdprvDot0U4AaxV
+         RRfPRisKbuLowMdkP8tnKhLCE7AGvXlHg7ws/LG3zCZapL46UYEtCnktMY1pWjpTPw/N
+         MnWN/UirubANB9wWgKniWb11pEFscNUacm7fX9Ti0nX5+NPr/qjg1iBM3MiPwGNNZmeK
+         0MQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=b4rYg5SOz5rOM5p5ctP9uplrloJl2DRm6ET8X/kYdOk=;
+        b=VC5cCfcUl5RBqXkdnG3qslj5tya9wLJYY36U7Rk1aRZWdQQm7Tv5h38BBEZz8K52tG
+         wQXELBfCqVsYisbnNKil2gP+J5/qp939d9tP3FDbLX4F6cVKH3qhOliX7jOA2tpqm0Jy
+         bFL/0ESGFkpOY6moRClUI6AKNL2IdkRaA9mFEHIpZaew4DU2iluE3vs+D93/yNOFJfgn
+         jScS9tlpJ5Y8OAvmXa7ARjcg81sZTzeCZ09Juo66Z0MFkiAvo+W4vgSKzvAEYqzYnDN6
+         xDUPHDhEDzg7U6hUEankFw6IVr+R7uiCFsxrMSqjHxLS+vN5i6rEyZRlb3uwuW6bU0rH
+         Jvow==
+X-Gm-Message-State: AOAM533UpGtBQLla4TstVM8qGVzNLMblz6hliQmO9795DxUgwqjHQhW9
+        EShryOM+YFAHF9lpfEyfLoogQA5JS5OrrMxS1HA=
+X-Google-Smtp-Source: ABdhPJyzXhLsE0qGMVgVUqN4a4VQOCYzRKSsXtWQs1ZPX8xHrsSSyuzid1p9HUMDY+FSERyQ5JeWNYAiygW++F2Kfqc=
+X-Received: by 2002:a05:6402:1744:: with SMTP id v4mr6666457edx.366.1636437534382;
+ Mon, 08 Nov 2021 21:58:54 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a17:906:9c81:0:0:0:0 with HTTP; Mon, 8 Nov 2021 21:58:54
+ -0800 (PST)
+Reply-To: msbelinaya892@gmail.com
+From:   msbelinaya <shayelyhaver25@gmail.com>
+Date:   Tue, 9 Nov 2021 05:58:54 +0000
+Message-ID: <CAP8Ny26sq6Ys3BwdPe0E=Zaro9U-xjYUGBPTPaF_9cXjMpLF_A@mail.gmail.com>
+Subject: =?UTF-8?Q?T=C3=BCrkei?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Sven Schnelle <svens@stackframe.org>
+Ich biete meine Freundschaft an und glaube, dass Sie mich mit gutem
+Herzen akzeptieren werden. Ich wurde gedr=C3=A4ngt, Sie zu kontaktieren und
+zu sehen, wie wir einander am besten unterst=C3=BCtzen k=C3=B6nnen. Ich bin=
+ Frau
+Kodjovi Hegbor aus der T=C3=BCrkei und arbeite als Divisionsleiterin f=C3=
+=BCr
+Operationen bei der StandardBNP bank limited Turkey . Ich glaube, es
+ist der Wille Gottes, dass ich Ihnen jetzt begegnen werde. Ich habe
+ein wichtiges gesch=C3=A4ftliches Gespr=C3=A4ch, das ich mit Ihnen teilen
+m=C3=B6chte, von dem ich glaube, dass es Sie interessiert, da es mit Ihrem
+Nachnamen in Verbindung steht und Sie davon profitieren werden.
 
-[ Upstream commit 66e29fcda1824f0427966fbee2bd2c85bf362c82 ]
+ Im Jahr 2006 hat ein B=C3=BCrger Ihres Landes bei meiner Bank ein
+Nicht-Residentenkonto f=C3=BCr 36 Monate des Kalenders im Wert von
+=C2=A38.400.000,00 eingerichtet. Das Ablaufdatum f=C3=BCr diesen Depotvertr=
+ag
+war der 16. Januar 2009. Leider starb er w=C3=A4hrend einer Gesch=C3=A4ftsr=
+eise
+bei einem t=C3=B6dlichen Erdbeben am 12. Mai 2008 in Sichuan, China, bei
+dem mindestens 68.000 Menschen ums Leben kamen.
 
-With idle polling, IPIs are not sent when a CPU idle, but queued
-and run later from do_idle(). The default kgdb_call_nmi_hook()
-implementation gets the pointer to struct pt_regs from get_irq_reqs(),
-which doesn't work in that case because it was not called from the
-IPI interrupt handler. Fix it by defining our own kgdb_roundup()
-function which sents an IPI_ENTER_KGDB. When that IPI is received
-on the target CPU kgdb_nmicallback() is called.
+Das Management meiner Bank hat noch nichts von seinem Tod erfahren,
+ich wusste davon, weil er mein Freund war und ich sein Kontof=C3=BChrer
+war, als das Konto vor meiner Bef=C3=B6rderung er=C3=B6ffnet wurde. Jedoch =
+Herr
+ erw=C3=A4hnte bei der Kontoer=C3=B6ffnung keine n=C3=A4chsten Verwandten/E=
+rben, und
+er war nicht verheiratet und hatte keine Kinder. Letzte Woche hat
+meine Bankdirektion mich gebeten, Anweisungen zu geben, was mit seinen
+Geldern zu tun ist, wenn der Vertrag verl=C3=A4ngert werden soll.
 
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/kernel/smp.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+Ich wei=C3=9F, dass dies passieren wird, und deshalb habe ich nach einem
+Mittel gesucht, um mit der Situation umzugehen, denn wenn meine
+Bankdirektoren wissen, dass sie tot sind und keinen Erben haben,
+werden sie das Geld f=C3=BCr ihren pers=C3=B6nlichen Gebrauch nehmen, also =
+Ich
+m=C3=B6chte nicht, dass so etwas passiert. Als ich Ihren Nachnamen sah, war
+ich gl=C3=BCcklich und suche jetzt Ihre Mitarbeit, um Sie als Next of
+Kin/Erbe des Kontos zu pr=C3=A4sentieren, da Sie den gleichen Nachnamen wie
+er haben und meine Bankzentrale das Konto freigeben wird f=C3=BCr dich. Es
+besteht kein Risiko; die Transaktion wird im Rahmen einer legitimen
+Vereinbarung ausgef=C3=BChrt, die Sie vor Rechtsverletzungen sch=C3=BCtzt.
 
-diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
-index 52e85973a283c..5a2c4771e9d1f 100644
---- a/arch/parisc/kernel/smp.c
-+++ b/arch/parisc/kernel/smp.c
-@@ -32,6 +32,7 @@
- #include <linux/bitops.h>
- #include <linux/ftrace.h>
- #include <linux/cpu.h>
-+#include <linux/kgdb.h>
- 
- #include <linux/atomic.h>
- #include <asm/current.h>
-@@ -74,7 +75,10 @@ enum ipi_message_type {
- 	IPI_CALL_FUNC,
- 	IPI_CPU_START,
- 	IPI_CPU_STOP,
--	IPI_CPU_TEST
-+	IPI_CPU_TEST,
-+#ifdef CONFIG_KGDB
-+	IPI_ENTER_KGDB,
-+#endif
- };
- 
- 
-@@ -170,7 +174,12 @@ ipi_interrupt(int irq, void *dev_id)
- 			case IPI_CPU_TEST:
- 				smp_debug(100, KERN_DEBUG "CPU%d is alive!\n", this_cpu);
- 				break;
--
-+#ifdef CONFIG_KGDB
-+			case IPI_ENTER_KGDB:
-+				smp_debug(100, KERN_DEBUG "CPU%d ENTER_KGDB\n", this_cpu);
-+				kgdb_nmicallback(raw_smp_processor_id(), get_irq_regs());
-+				break;
-+#endif
- 			default:
- 				printk(KERN_CRIT "Unknown IPI num on CPU%d: %lu\n",
- 					this_cpu, which);
-@@ -226,6 +235,12 @@ send_IPI_allbutself(enum ipi_message_type op)
- 	}
- }
- 
-+#ifdef CONFIG_KGDB
-+void kgdb_roundup_cpus(void)
-+{
-+	send_IPI_allbutself(IPI_ENTER_KGDB);
-+}
-+#endif
- 
- inline void 
- smp_send_stop(void)	{ send_IPI_allbutself(IPI_CPU_STOP); }
--- 
-2.33.0
+Es ist besser, dass wir das Geld beanspruchen, als es den
+Bankdirektoren zu erlauben, es zu nehmen, sie sind bereits reich. Ich
+bin kein gieriger Mensch, daher schlage ich vor, dass wir das Geld zu
+gleichen Teilen teilen, 50/50% auf beide Parteien. Mein Anteil wird
+mir helfen, mein eigenes Unternehmen zu gr=C3=BCnden und den Erl=C3=B6s f=
+=C3=BCr
+wohlt=C3=A4tige Zwecke zu verwenden, was mein Traum war.
 
+Teilen Sie mir Ihre Meinung zu meinem Vorschlag mit, bitte, ich
+brauche wirklich Ihre Hilfe bei dieser Transaktion. Ich habe Sie
+ausgew=C3=A4hlt, um mir zu helfen, nicht durch mein eigenes Tun, mein
+Lieber, sondern bei Gott wollte ich, dass Sie wissen, dass ich mir
+Zeit zum Beten genommen habe =C3=BCber diese Mitteilung, bevor ich Sie
+jemals kontaktiert habe, teilen Sie mir Ihre Meinung dazu mit und
+behandeln Sie diese Informationen bitte als STRENG GEHEIM. Nach Erhalt
+Ihrer Antwort, ausschlie=C3=9Flich =C3=BCber meine pers=C3=B6nliche E-Mail-=
+Adresse,
+msbelinaya892@gmail.com
+gibt Ihnen Details zur Transaktion. Und eine Kopie der
+Einlagenbescheinigung des Fonds sowie die Gr=C3=BCndungsurkunde der
+Gesellschaft, die den Fonds erstellt hat.
+Gott segne, in Erwartung Ihrer dringenden Antwort
+Mit freundlichen Gr=C3=BC=C3=9Fen
+Frau Kodjovi Hegbor
+msbelinaya892@gmail.com
