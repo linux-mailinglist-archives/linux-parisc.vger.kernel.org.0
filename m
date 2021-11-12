@@ -2,60 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C57F44DE95
-	for <lists+linux-parisc@lfdr.de>; Fri, 12 Nov 2021 00:39:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF1344E2C4
+	for <lists+linux-parisc@lfdr.de>; Fri, 12 Nov 2021 09:04:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234437AbhKKXmj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 11 Nov 2021 18:42:39 -0500
-Received: from mta-mtl-001.bell.net ([209.71.208.11]:62646 "EHLO
-        cmx-mtlrgo001.bell.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234434AbhKKXmh (ORCPT
+        id S231173AbhKLIHe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 12 Nov 2021 03:07:34 -0500
+Received: from outbound5a.eu.mailhop.org ([3.124.88.253]:36015 "EHLO
+        outbound5a.eu.mailhop.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230464AbhKLIHd (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 11 Nov 2021 18:42:37 -0500
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [67.71.8.137]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 60C893820B9E40A1
-X-CM-Envelope: MS4xfHbf9xiMKmHK3kqlj5CIQ7USxlTB8aeZtRX9kopUIIpYkjuVRgkmE8c0LWDV+XhXui5sMgE8o1VROrO0YMeTUlPhD7k8tyKLWUwPodtOSC8c5BoGAZxK
- YKTgU2lDaKGGJxa4KBowqpagtp3RBOTOnCl8YT6WaH6yEN5580zX0eAFKRaHPaA73oZt8hjIcLlYzubIH0Mwq4cBgNIE7l6E0xW1d7fqOUUQ4LDnQjnPpRdL
- pkK13R/Gy/UOc45SoVvCOvVan3WR/DLeXuuYzmWjtQ7k8tEstf0lOtdAqS2N0qFU9CTNKSsH0nr2qoGweOkJEQ==
-X-CM-Analysis: v=2.4 cv=Z6GPoFdA c=1 sm=1 tr=0 ts=618da9be
- a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=5N-a68n6PQ5rIc9CELgA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 60C893820B9E40A1; Thu, 11 Nov 2021 18:39:42 -0500
-Message-ID: <0ffcf87d-1ca0-fa4d-46dc-1f5e3d727821@bell.net>
-Date:   Thu, 11 Nov 2021 18:39:43 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] parisc/entry: fix trace test in syscall exit path
-Content-Language: en-US
-From:   John David Anglin <dave.anglin@bell.net>
-To:     Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>
+        Fri, 12 Nov 2021 03:07:33 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1636701519; cv=none;
+        d=outbound.mailhop.org; s=arc-outbound20181012;
+        b=GiY6L02WuC7slOLqjwjklBYFNyabxpZXHPlctFv5u8qaW8OA94ZmSZQhL+7F7VWcW+8t9146zoQvO
+         XMDotxIXzLA6tsXeGKQmI78spNDwU6oIPuF6e8hj9ORb5W/lqX6wFuwWyVU26KNh0mA/Df1b7FbPQB
+         RfaW3YAKwZWfosvZM2R5FsUIXKni6pSPX4q2n7sXn2099UIjksi5PdIWZmQe/AWmVidmQ64EnZwKEY
+         CjYiKtwsz+gxougpxGXI8vtgmKQGgc6QCXzEZ4E6zRzJ7GI87e4MRwYQaWHUfhjHwtoLNsOjrDRlkZ
+         /EXCedczmghDhAnb4D/sp2Y3lUNYh5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=outbound.mailhop.org; s=arc-outbound20181012;
+        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
+         to:from:dkim-signature:dkim-signature:from;
+        bh=LReuj4dKfoo/2kPSCOZny2GgnVGaO0qQ7SHQbQPCPtA=;
+        b=tbkuh1omP81wb/V13Ubke7YBHdepgbiToQFUcRtb38y+RTq5PJ8BSw63/HMD2y6uLBOt40r41Z4p4
+         O0SndiOMYLZ1BDhdN6f2L7hicg40DiG+i/vvfYRDDF4+suLJJ3Tvti63owzwbvmKxCuw3fa2t+2Nrq
+         Q3Lsv1ppc825bKfPiuJ0KXSCJwWkpN68uvXQ503F+pN7lK7QxP4JpLCNRRz83BmgYJcpDVhTqG3Yko
+         f0rp1mOsAVLQzpc87xEqehzBGo8ouHPM+Yw00qbZrcsxg/N2ekq1o6SRPM6VXZZqeAIamS0WAFIiCI
+         xRTlnHDL0b2v+RCqFnpm/vfbMs3Ja9w==
+ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
+        spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=91.207.61.48;
+        dmarc=none header.from=stackframe.org;
+        arc=none header.oldest-pass=0;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=stackframe.org; s=duo-1634547266507-560c42ae;
+        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
+         to:from:from;
+        bh=LReuj4dKfoo/2kPSCOZny2GgnVGaO0qQ7SHQbQPCPtA=;
+        b=fVk8X8zOYAJlklMxK1z9l8umB5rQWCZupQqXK7zREAHckfYctHVpxvAMAr6iu9aENf33Jvciqoshm
+         OT2ao/mmkyMhbQOcXhHEfNAjL47J5u6T2ztW+TOar2zhCpSyYFoz1aEYOs3Ncf6XprpTZeGveGQvca
+         /kAncnrvBLDHbTgc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=outbound.mailhop.org; s=dkim-high;
+        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
+         to:from:from;
+        bh=LReuj4dKfoo/2kPSCOZny2GgnVGaO0qQ7SHQbQPCPtA=;
+        b=ks7JMcPyTSVKffNH49JMEYB3RCVPyzM+9E7SglNhgb+C0wYj9TPrfQ2gQ0OWNa0JJ3o1AQ2M2hO5u
+         EeI/h8xOj7V+R+SRxlnM+TI5DoU6j4Yxp8j5ye4jXKcSPuxKwHGPhTdJblLhdQ2tSBdhlBdAacu+4B
+         M4AiyqYEWzakxwUgof0pbUpLBc6fulvkvdPqOrQ7HXTCyMf0XiByeIEW3t75Tl9tLDZ40sAeRDTs9D
+         xYCwIa1uqHiaDlH+GqGmt7Fbm91q6CVR1+i52W+Y31Vp0hzBMzIQgVczLsZh0UZ5MOQXsPI+I8CsQQ
+         ak/clOFofakK0Ff7Z58WGzTIjSNIa+g==
+X-Originating-IP: 91.207.61.48
+X-MHO-RoutePath: dG9ta2lzdG5lcm51
+X-MHO-User: c093d026-4388-11ec-8c22-95b64d6800c5
+X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Mail-Handler: DuoCircle Outbound SMTP
+Received: from mail.duncanthrax.net (propper.duncanthrax.net [91.207.61.48])
+        by outbound3.eu.mailhop.org (Halon) with ESMTPSA
+        id c093d026-4388-11ec-8c22-95b64d6800c5;
+        Fri, 12 Nov 2021 07:18:37 +0000 (UTC)
+Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org.stackframe.org)
+        by mail.duncanthrax.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <svens@stackframe.org>)
+        id 1mlQpY-00ETQM-6o; Fri, 12 Nov 2021 09:18:36 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     Helge Deller <deller@gmx.de>
 Cc:     linux-parisc@vger.kernel.org
+Subject: Re: [PATCH] parisc/entry: fix trace test in syscall exit path
 References: <20211111220429.797-1-svens@stackframe.org>
- <c2377426-5d45-91dd-46f2-74ead855a07d@bell.net>
-In-Reply-To: <c2377426-5d45-91dd-46f2-74ead855a07d@bell.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Date:   Fri, 12 Nov 2021 08:18:35 +0100
+In-Reply-To: <20211111220429.797-1-svens@stackframe.org> (Sven Schnelle's
+        message of "Thu, 11 Nov 2021 23:04:29 +0100")
+Message-ID: <87tughalkk.fsf@x1.stackframe.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2021-11-11 6:24 p.m., John David Anglin wrote:
->>       /* Are we being ptraced? */
->>       LDREG    TASK_TI_FLAGS(%r1),%r19
->> -    ldi    _TIF_SYSCALL_TRACE_MASK,%r2
->> +    ldi    _TIF_SINGLESTEP|_TIF_BLOCKSTEP,%r2
-> This change seems applied to the old code and not 8779e05ba8aa. 
-Forget this.  TASK_TI_FLAGS was introduced in "parisc: Move thread_info into task struct".
+Sven Schnelle <svens@stackframe.org> writes:
 
-Dave
+> commit 8779e05ba8aa ("parisc: Fix ptrace check on syscall return")
+> fixed testing of TI_FLAGS. This uncovered a bug in the test mask.
+> syscall_restore_rfi is only used when the kernel needs to exit to
+> usespace with single stepping via recovery counter enabled. The test
+> however used _TIF_SYSCALL_TRACE_MASK, which includes a lot of bits
+> that shouldn't be tested here.
+>
+> Fix this by using TIF_SINGLESTEP and TIF_BLOCKSTEP directly and
+> remove those bits from TIF_SYSCALL_TRACE_MASK.
 
--- 
-John David Anglin  dave.anglin@bell.net
-
+I think we need to have TIF_SINGLESTEP and TIF_BLOCKSTEP in
+TIF_SYSCALL_TRACE_MASK otherwise do_syscall_trace_exit() isn't
+called when leaving to userspace. I'll read the code a bit more
+during the weekend and prepare a v2.
