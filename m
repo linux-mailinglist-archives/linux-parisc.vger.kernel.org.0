@@ -2,65 +2,68 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF0E044F02B
-	for <lists+linux-parisc@lfdr.de>; Sat, 13 Nov 2021 01:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0494C44F3BD
+	for <lists+linux-parisc@lfdr.de>; Sat, 13 Nov 2021 15:31:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232332AbhKMAIk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 12 Nov 2021 19:08:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231320AbhKMAIi (ORCPT
+        id S235743AbhKMOeh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 13 Nov 2021 09:34:37 -0500
+Received: from mta-mtl-004.bell.net ([209.71.208.14]:40298 "EHLO
+        cmx-mtlrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230001AbhKMOeg (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 12 Nov 2021 19:08:38 -0500
-Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3714C061767
-        for <linux-parisc@vger.kernel.org>; Fri, 12 Nov 2021 16:05:46 -0800 (PST)
-Received: by mail-ua1-x92b.google.com with SMTP id n6so5642119uak.1
-        for <linux-parisc@vger.kernel.org>; Fri, 12 Nov 2021 16:05:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ANhoqFIvutey4Kjwwv4uowGEBiP8Sw6NlRI3E6SZ9JM=;
-        b=dl/GbkbGSQ63yIlHhrMmRw9tg+1ItBAfEkkobb4d7An/638abFYJOBPdTOlhdt2tFP
-         9yGkHC/DPNgZeqImUvS041e0mP7ZkIFFv8PTmEiETiFmeSmyJZ+7nJdpu8Jxoy5eGej9
-         K9NlWxuqS/4Xak/6AyrZzoAhpscLf6ATuNL20jkro5VUzFM2cU3Nh6QDNHq7SNhRbAL/
-         kLx0T7imCscMamMjJo+7I7mkHl9eowQCvz3sRNbMXdYe6jT8dUTre52IVNqSJdMWQ32s
-         NWth8J5hWpE44FV9+gHErqz72DgJjVFukvN/eGdbZsr+32QmU0OcLNp4E3fWOFF107eW
-         vn8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ANhoqFIvutey4Kjwwv4uowGEBiP8Sw6NlRI3E6SZ9JM=;
-        b=ZiulWX7VnXiKVTTlg/VLjMuG4q5/Pmz+utyhOz4i1JsoNEGiAarl6jvvKax/9eaf1G
-         sPTzONrZUL+MYAmI1gBEkgWaF65tCrFJeRIvyzaaj5c0i8anAMfKZOOtYsr+/oKqRYXo
-         XscOlh2c4fGVLlkETmBi3Pgn0+4OGNYT0WB9DJ+py0ZSrQTYxBAOUWOli4a3WMFdxkKj
-         I6bOMmtqa6/ZC5oUSqJdrs0Vq7grcL8P+iiGBd1Vx2oaETMF6zdd1ePPVG3l4zzI4P01
-         kyQ1bchlLOMJHma3gQVZKdu8FQdkdiw5GgZRxRVcb8mN4GQJF6UJKtcoTeE5b8+TD/1b
-         yQCg==
-X-Gm-Message-State: AOAM530HQR/+vGfsUheChmCx9RpZVLoJDeZ+tmUSOKYmLw5/uIo3gKNM
-        TDxE6q9VJyU9VtIONOcivbINYOT2JD3H0hM6heg=
-X-Google-Smtp-Source: ABdhPJyDSUgHgEY+uAYoLyDEJAM2DPLjHbWFBuWjWRuu1rtdhzVdb/1nmOB2JE+84g5JCuWbloGf5XJTXJR1Rxu/8m0=
-X-Received: by 2002:a67:e14d:: with SMTP id o13mr15669079vsl.29.1636761945768;
- Fri, 12 Nov 2021 16:05:45 -0800 (PST)
+        Sat, 13 Nov 2021 09:34:36 -0500
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 60C894590BB63A2B
+X-CM-Envelope: MS4xfMAipfIWkSgasVn25+nAA+HirTNvKv4ZoimePRX11+t0A6BbUvRHx1Y2EhozpL3lUCe5xyJrDF2d+4kqLn47WO6epZwHzeDHnT2f2Cn8hOERQI/nkJ89
+ Dcn65tehm2psYB0FBzm0wNDWJl3UylqkKfpKWOVV1DP+4YMuNK0/QESc2Ivfe5hbQ/HeCAjptmOK0Qh/Ji0iY487uHL2a39v3C/JRbP9WuVpnzXRmtTarlnb
+ lwszmcvT1TsMer4nTNybXhKRyBsfLzYI9bEEKvI1W6LeFB7d3I59xTkMOz7HxserEY/gHfNJKBpJhY9o2GszhA==
+X-CM-Analysis: v=2.4 cv=ENdlb3VC c=1 sm=1 tr=0 ts=618fcc47
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=ZysoHL1CAAAA:8 a=FBHGMhGWAAAA:8 a=lhdqfN3uo5NII3neZsYA:9
+ a=QEXdDO2ut3YA:10 a=5AXFdVBGJ8Jq6-3WnMNo:22 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 60C894590BB63A2B; Sat, 13 Nov 2021 09:31:35 -0500
+Message-ID: <4e646a27-e5ae-ad8b-a2d6-d3a849688da9@bell.net>
+Date:   Sat, 13 Nov 2021 09:31:36 -0500
 MIME-Version: 1.0
-Received: by 2002:a59:938c:0:b0:23d:39a6:4776 with HTTP; Fri, 12 Nov 2021
- 16:05:45 -0800 (PST)
-Reply-To: mrs.chantal166@gmail.com
-From:   Mrs chantal <misschantal10012@gmail.com>
-Date:   Sat, 13 Nov 2021 01:05:45 +0100
-Message-ID: <CAJC4FwVkeT9Pd4rvhXv8Vopquhb9bd8UUQq_Z9GTs+EUvEiY4A@mail.gmail.com>
-Subject: Dear Beneficiary
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] parisc/entry: fix trace test in syscall exit path
+Content-Language: en-US
+To:     Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org
+References: <20211111220429.797-1-svens@stackframe.org>
+ <87tughalkk.fsf@x1.stackframe.org>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <87tughalkk.fsf@x1.stackframe.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Dear Friend
-You have been compensated with the sum of 4.3 million dollars in this
-united nation the payment will be issue into atm visa card and send to
-you from the santander bank we need your address and your whatsapp
-number
-Fill the followings with your details;1. Your Name:2. Country:
-3. Age and Sex:4. Occupation:5. Id Card Identification
+On 2021-11-12 2:18 a.m., Sven Schnelle wrote:
+> Sven Schnelle <svens@stackframe.org> writes:
+>
+>> commit 8779e05ba8aa ("parisc: Fix ptrace check on syscall return")
+>> fixed testing of TI_FLAGS. This uncovered a bug in the test mask.
+>> syscall_restore_rfi is only used when the kernel needs to exit to
+>> usespace with single stepping via recovery counter enabled. The test
+>> however used _TIF_SYSCALL_TRACE_MASK, which includes a lot of bits
+>> that shouldn't be tested here.
+>>
+>> Fix this by using TIF_SINGLESTEP and TIF_BLOCKSTEP directly and
+>> remove those bits from TIF_SYSCALL_TRACE_MASK.
+> I think we need to have TIF_SINGLESTEP and TIF_BLOCKSTEP in
+> TIF_SYSCALL_TRACE_MASK otherwise do_syscall_trace_exit() isn't
+> called when leaving to userspace. I'll read the code a bit more
+> during the weekend and prepare a v2.
+Signal delivery is broken in 5.16.x.  This causes a number of glibc and ada test regressions.
+
+-- 
+John David Anglin  dave.anglin@bell.net
+
