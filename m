@@ -2,116 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD06A44F8EB
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 Nov 2021 17:09:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBBF044FA03
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Nov 2021 19:58:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230314AbhKNQMn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 14 Nov 2021 11:12:43 -0500
-Received: from outbound5e.eu.mailhop.org ([52.28.168.19]:16273 "EHLO
-        outbound5e.eu.mailhop.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229725AbhKNQMi (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 14 Nov 2021 11:12:38 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1636906113; cv=none;
-        d=outbound.mailhop.org; s=arc-outbound20181012;
-        b=ZsGzM8hFVU+u99OLxclH3SZOye+bHN2uZsEg+GSo9bBZTYI9wkNTEs+HfJBeMEAefDhDM5c1qhdoA
-         mnyuk8F9dZHqAmgV2egLUYesf5oCjgcCgKLc8xHF4HmFh19oxyinAXgDBp9+m3TcIno2ETBXzWb+Xz
-         dr1ruLSJpj5D0GuW9no+6/kEmYhEw/jVG4rXItvlu56OSyFw4/ryMpGtfMpYnaxvVsHoN7bkc5BxxM
-         os6HU1BARnArL6B6tiowa/qZhjZOaz2JPn3PeXnDg6eNIA/fTKTkCd5/2CpjSEz8qFtqaGubps+6PF
-         C9XjYinDjvHiny0PwkaVJDk6q1eaUiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=outbound.mailhop.org; s=arc-outbound20181012;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-         dkim-signature:dkim-signature:from;
-        bh=eWAMjGDEcY7knDe+8FxWdgWrfdVZ5CDAHl+JU7Z95Xk=;
-        b=Rl1c8KHvCUWue1VEcLmFkD7ga2JryvTFzQYBEM1+m2Ky0JN8WD6rjmjkc0Fr1tspTCoSRh7l6car6
-         IqZoGJYSyyee57x/PjceuCqxPU1kpRKN5+tpRezcH1u9T6h9BHkDDRFjFtPOKpYFOpUXOusxvQdJlV
-         MiM4qaEni2Sr5R69vy2imIiOrG6uip5zXPqry9rPWVRzMNr56YU7UTfrxboGwd+dYm9sG0Uoxs6vzG
-         v8Dvg9En+tt60o56dD5IzqDBhOxjcCoLxEKLdGQ7ODBsRHEXI4Gfj3JYUh4LCYd/NticmrJzq+JW5r
-         KE3pGYzSlM6C/Zru8v6ghz8M8p5kVEw==
-ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
-        spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=91.207.61.48;
-        dmarc=none header.from=stackframe.org;
-        arc=none header.oldest-pass=0;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=stackframe.org; s=duo-1634547266507-560c42ae;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-         from;
-        bh=eWAMjGDEcY7knDe+8FxWdgWrfdVZ5CDAHl+JU7Z95Xk=;
-        b=WucSc1gdmkT5OYwEh0GdvRKilmkD3or13n8T0hrHW68qWjF0PEV+yprDJdVvWijEmg/FP5cVPOh4u
-         yZMOSIFkYQXNxFmATvxEgIQkcp1GMz6DJ/NDI6B98HCMvW3oOD6/rKPFGZQnKEoUZ49bMGnFeBEgwH
-         FuSOXXJ9tDURDaJw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=outbound.mailhop.org; s=dkim-high;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-         from;
-        bh=eWAMjGDEcY7knDe+8FxWdgWrfdVZ5CDAHl+JU7Z95Xk=;
-        b=AHgZaIZfwf6uaqcmEs1owi5t5/NldpYLoHYwMT0SrAXoZkFPtHbmadrm7UT0glUoNRWZFxbfh+w2K
-         HsQBYmu5KuGSIwHpMIVVCTiHjV6bqFRmhIqg7yd6l1i3JZFJY3sd0iyZzCVeNkZVPZMR1LlozO3p+T
-         kF5B4G+g2TzWyDwDgtvescPRGCVOZSMQ6G8huXT+ul6pbNGk1vBAQd1DfbtWgsxU1lyRP4yCXSJygn
-         /Jzw1MV9Jmxec8OT8aVSmmAVKd0Ck8pgGYLasoue3JdSKHnm2Uyfef9r+8EvD+s476eU2/t0KGKSCf
-         TSgkKcjxbfVjX78bVvYYB57oFPnow7Q==
-X-Originating-IP: 91.207.61.48
-X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: 1beede59-4565-11ec-a072-973b52397bcb
-X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
-X-Mail-Handler: DuoCircle Outbound SMTP
-Received: from mail.duncanthrax.net (propper.duncanthrax.net [91.207.61.48])
-        by outbound2.eu.mailhop.org (Halon) with ESMTPSA
-        id 1beede59-4565-11ec-a072-973b52397bcb;
-        Sun, 14 Nov 2021 16:08:30 +0000 (UTC)
-Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org)
-        by mail.duncanthrax.net with esmtpa (Exim 4.93)
-        (envelope-from <svens@stackframe.org>)
-        id 1mmI3R-00EhrF-Sb; Sun, 14 Nov 2021 18:08:30 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH] parisc/sticon: fix reverse colors
-Date:   Sun, 14 Nov 2021 17:08:17 +0100
-Message-Id: <20211114160817.6088-1-svens@stackframe.org>
-X-Mailer: git-send-email 2.33.1
+        id S236075AbhKNTBL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 14 Nov 2021 14:01:11 -0500
+Received: from mout.gmx.net ([212.227.17.20]:39001 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234564AbhKNTBL (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sun, 14 Nov 2021 14:01:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1636916286;
+        bh=mT2oOSXYfgyZ/6gj+loHbZRTxrt0+Zx33oDXnFskF0k=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=KD5sqWZL5LR4djHl6++joWAopF/Q6PEIpB7g2NXsecnNna3GefYdrBvQWX4zZOZ2Y
+         8d69KIU+q/OQts8wMhiUW4i9t+Cp6SlYBNvd1eKNkPlflYe97WnuCqV2mWor+YdHpl
+         2TliWkaoBraCV5K/nbnIS7ovsTcTfKIHDajSwv7Q=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530 ([92.116.191.59]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MhD6g-1m9PNU0vuU-00eNfI; Sun, 14
+ Nov 2021 19:58:06 +0100
+Date:   Sun, 14 Nov 2021 19:57:32 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>
+Subject: [GIT PULL] few more parisc architecture fixes for kernel v5.16-rc1
+Message-ID: <YZFcHM+23JDGpXTE@ls3530>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:ek5S+BSPO3iUnM6d3px+IvhDXfDfEHfihx4bunPycUHLQRnrXKe
+ VYsDLUEqhGWnfwIjNaOkz5MxIEYdWNipz+7McRvU64bB0frZuXdWUdP3+TBkPnG1YZ6BTT4
+ 23FYXMLmR2XtHw69rMIGV4FNWwPc+sqjGr/KkTTvRxdIq2iFJPsMi3tFvViPBlVsc3WEuiu
+ +CCFAwf8IybfmQiEt84wQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7X4/k2bmU5s=:xwJKQObmabn4x/GC5tReM8
+ 6msLafOEI28NAuRLQf19pnVLqgvMRxOnzF2YxSe7z82/SACEVw83xO+aNLFN+Vvbp2x8Mjh+8
+ 3ldzHtlbe44/gHRnXyIUyaDvYhAziGjA4WzFKhbThsHwmGyFKofROZxOU8paoyg8syfGLCgHh
+ prsua/O00VPtgo4RF5r5Wt6S3llrJMhptab7DZpvtbE588nPjqnRAQR4fciShJmfaLs8aM6we
+ K1jIKyrYce95tecaiCbsTjcencS/EyoyfpvsXcp+beZlx8GZAahk2B/SxwJ56ni4hpixwrIoK
+ PBnL3hRw/hxl5/XK7BAwWB6MVAU3K2xjkQbJyB0rdaoxRoXF2mTjVCwvwgtVa34nOQCKPYol+
+ TvQ25Y5WpnP8yyzUZkcsx2WA+rSM/hGRPPu+fs28hbL3tKb6kCOCxKWe5rqlNq3wFj44xGNqW
+ 6bY4vmvizYZZ6E16kJTSs5d1kOGJHjt8lU2R3FKXF0Am3lJAqwKDlBMDKciiJm0Od/lDvveW5
+ 0P00BBBcOuJLIy39tIDSuNBTGoykTFbJEtV424GxtfH5sjL6pG8DrFl88OlTEWhIWeOP7tv67
+ r+ArCd+WaucDlEW2dks+s6q/K0BHDuI5a9gOHeG5+yK8XfZCn3J4nISBrxwKRdn9LFHBGom3G
+ KJLFwjVaGud8HX/2d/Px+jjXe0i/XrKO/Cg2lVCDp6mMCVwhZtzkGLAgjhjCUPipY9tKv1NGj
+ oPG/FZbJusqR1YDiktu8DI0Fi5RO2dlvVRiEHrPhWsUL1EhAdVzyte0XVgn8C+6eQQBIYhavl
+ s+ZagkaqZc5ud/l3pK+Nt/ER6iDjm38J9ObGUuRQ1ghQIOLXlChZnzvt4O0rV0kV+CoLKYQLn
+ 3RvjkCqsjdATyNdjA6Sbz1+tPXL9LixYpMH3GUJEjZCj8CiF2wXmYY5pFF5Tqr9XBrC6rdmnx
+ HkeyNyi1UhuKsbGUkPX8tQHjtICqVbsL+GucmdaqGWOvYL83qUhMm9lRBKMw7qNJZ7lOKOYud
+ WoPRqyUvGIsx5ZGC6O1AeZXHaNJiCdhLS3uF3OUX1t/1vSDnacABT78dtp7uklglvedore93A
+ UrCwxRDygjqQY8=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-sticon_build_attr() checked the reverse argument and flipped
-background and foreground color, but returned the non-reverse
-value afterwards. Fix this and also add two local variables
-for foreground and background color to make the code easier
-to read.
+The following changes since commit c8103c2718eb99aab954187ca5be14f3d994c9be:
 
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
----
- drivers/video/console/sticon.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+  Merge tag '5.16-rc-part2-smb3-client-fixes' of git://git.samba.org/sfrench/cifs-2.6 (2021-11-13 12:24:19 -0800)
 
-diff --git a/drivers/video/console/sticon.c b/drivers/video/console/sticon.c
-index 1b451165311c..40496e9e9b43 100644
---- a/drivers/video/console/sticon.c
-+++ b/drivers/video/console/sticon.c
-@@ -332,13 +332,13 @@ static u8 sticon_build_attr(struct vc_data *conp, u8 color,
- 			    bool blink, bool underline, bool reverse,
- 			    bool italic)
- {
--    u8 attr = ((color & 0x70) >> 1) | ((color & 7));
-+	u8 fg = color & 7;
-+	u8 bg = (color & 0x70) >> 4;
- 
--    if (reverse) {
--	color = ((color >> 3) & 0x7) | ((color & 0x7) << 3);
--    }
--
--    return attr;
-+	if (reverse)
-+		return (fg << 3) | bg;
-+	else
-+		return (bg << 3) | fg;
- }
- 
- static void sticon_invert_region(struct vc_data *conp, u16 *p, int count)
--- 
-2.33.1
+are available in the Git repository at:
 
+  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-3
+
+for you to fetch changes up to 3ec18fc7831e7d79e2d536dd1f3bc0d3ba425e8a:
+
+  parisc/entry: fix trace test in syscall exit path (2021-11-13 22:10:56 +0100)
+
+----------------------------------------------------------------
+parisc architecture build-, trace-, backtrace- and page table fixes
+
+Fix a build error in stracktrace.c, fix resolving of addresses to
+function names in backtraces, fix single-stepping in assembly code
+and flush userspace pte's when using set_pte_at().
+
+----------------------------------------------------------------
+Helge Deller (2):
+      parisc: Fix backtrace to always include init funtion names
+      parisc: Fix implicit declaration of function '__kernel_text_address'
+
+John David Anglin (1):
+      parisc: Flush kernel data mapping in set_pte_at() when installing pte for user page
+
+Sven Schnelle (1):
+      parisc/entry: fix trace test in syscall exit path
+
+ arch/parisc/include/asm/pgtable.h | 10 ++++++++--
+ arch/parisc/kernel/cache.c        |  4 ++--
+ arch/parisc/kernel/entry.S        |  2 +-
+ arch/parisc/kernel/stacktrace.c   |  1 +
+ arch/parisc/kernel/vmlinux.lds.S  |  3 ++-
+ 5 files changed, 14 insertions(+), 6 deletions(-)
