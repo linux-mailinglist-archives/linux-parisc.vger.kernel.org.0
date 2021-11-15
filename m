@@ -2,229 +2,290 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 131DB4509F9
-	for <lists+linux-parisc@lfdr.de>; Mon, 15 Nov 2021 17:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15F3D4517D9
+	for <lists+linux-parisc@lfdr.de>; Mon, 15 Nov 2021 23:47:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231862AbhKOQtc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 15 Nov 2021 11:49:32 -0500
-Received: from mout.gmx.net ([212.227.17.21]:59235 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231845AbhKOQtX (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 15 Nov 2021 11:49:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1636994693;
-        bh=7X7opVIFUZ9gt0W6u/76B1ZJuHVq3lm9XgLe9rJcqwk=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=ZNp1vsR/IplK0McopUH6C9jjdWtYM8pRYTQT99IpfdIkJP6hIuJ3Bav6Jp/Fsql+W
-         pLeR4/Z2W5PlvaQlcoPw4WL++4hpx8bykreafnukKnhlmV8BRQXi+yt9oC9xkdHG47
-         Egny6rJ6PkZPUuAGgL1D6QlCFuBICxSP/3OxGkDo=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.172.2]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MulmF-1mUiZj3MMl-00rlU4; Mon, 15
- Nov 2021 17:44:52 +0100
-Message-ID: <fcdead1c-2e26-b8ca-9914-4b3718d8f6d4@gmx.de>
-Date:   Mon, 15 Nov 2021 17:44:46 +0100
+        id S234011AbhKOWrI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 15 Nov 2021 17:47:08 -0500
+Received: from mta-tor-001.bell.net ([209.71.212.28]:26976 "EHLO
+        cmx-torrgo002.bell.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349824AbhKOW21 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 15 Nov 2021 17:28:27 -0500
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 60C8802C0B4649A6
+X-CM-Envelope: MS4xfBULVjOl4cpiNaLGFRdqk1LgbKKxPXGHqXE7MSAUOHLNsAYrCMdFNN5+bZWuZ1KtXlGi2LyKFzN7oD5cVJebZUjRXaMurZBmI++ZHUTQoDMxWtO8XbZ+
+ b8peX+hcgUkgxrgcPkv2hnjBcoTQ5j4bXgX2sRQiO9AMM+tUULEw2gShL9CK/8L8TBoZ7oxX/j0HHYFz3x/aLK9bFfPtrfvniNb7JCVQgqo/LmuQrz2M9SIJ
+ GNmuX6xTiTY72nIgv0a9QxfkvL3jQFb+MoyX1aWXsLnp7HfvN1KtTqdmb3W2/cHJG9of5IGqFxfF7zDkes1q0xp04jzJOXIihnl+i2NYSqk=
+X-CM-Analysis: v=2.4 cv=Zd5+iuZA c=1 sm=1 tr=0 ts=6192de51
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=N9WcvLJbCjeZKmjANRwA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-torrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 60C8802C0B4649A6; Mon, 15 Nov 2021 17:25:21 -0500
+Message-ID: <689b8410-5384-f77d-0724-eddbb4452368@bell.net>
+Date:   Mon, 15 Nov 2021 17:25:21 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: Build regressions/improvements in v5.16-rc1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH 4/4] parisc: Reduce sigreturn trampoline to 3 instructions
 Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     Nick Terrell <terrelln@fb.com>, Rob Clark <robdclark@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Anton Altaparmakov <anton@tuxera.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Joey Gouly <joey.gouly@arm.com>,
-        Stan Skowronek <stan@corellium.com>,
-        Hector Martin <marcan@marcan.st>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        =?UTF-8?Q?Andr=c3=a9_Almeida?= <andrealmeid@collabora.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        linux-ntfs-dev@lists.sourceforge.net,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>
-References: <20211115155105.3797527-1-geert@linux-m68k.org>
- <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5BKtXEDuts0Z1GbTQQwbacSZ6Qy1U07fZEMQSQLpuPBBQDGFGvS
- jgmRgNw/0/YxGtzSDq/AyZLFtskYKCywXQ3lO2wtd3EGePe4Ixvqqh7DUZZeoRxCsQMl6GA
- by16J3GCpzXn/Msq8wegCjeZkFLZeq3tCjI3WXTxmaGR5bFXZPJKjDTbupJilCqt5Bs35DE
- Rw+BaHR8OgV3ewoQytQig==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:b77E2Nv2HWU=:1iEuQwORGxqm+Wxgophchs
- kJUQQ6hBkiYPbKA0OD9YByp1bHssWrVkeWRGKN5pykYEH3l7dN0ijgUMSWJcN0GfQUbeMrT1b
- YaGdtm1k4/pCbjVfG0S149Z9y49SItZL4ZWtdlVE+CRAqawiC7KOmFHtqeN0Y3JmBhRIOjqfA
- uwpF6echOB0lej0vS99fwoOz3DbzQCS0D+iIZnjK/55BLHi1EdS59b+xe3FYn1MbOzW1sOTXh
- U2NPD4g+VaVZuUlI+pmHPQ4wNk3aQQ/0v2vADxHoqHF8G6ISUZLs6qLqK4AmJFA1E1A4aLtz/
- 7huNRwSazAtuaLdZpRe6Qeys5FuaWNHQLsONPwXczWfhlS5ZxxU4znt96t19rKNnOB44icruu
- FpfCnxAIbKLuFgiiE4TBO4D3tcK6iDuh4gsXT/0L9E/QB26kjEtSHA3QP7ACtzqYu1Bdzxu0+
- neK0u+MJdKV7sSNcTbjG+E0D8+rAJZz5NjcCzEg57aRJ+O5YgbDkAoaLXcR3+ihlZml9NHl8I
- nyqs3iFoo+U5FZS6xEAjtRTd3kjOJpcutf95kWK5s5mTRo34ItK4k/Ad0JVdO0Qk94Gly7dd3
- EPRvkD3IvjVdIAoJ1rGqrCJLxNWP9OskTwtxtnvl4HqpjswTECMXMjjUHePuirpU/wbanGDjZ
- gLkqWwbit6L+/MF8j/WgH0uEf54Q4Ym1PEHqdoCmTAevhGPZZD49/diYSKX8c4baXWRjKyRYu
- jCjMhrQJFRiCXP70cHBPZPB5ov1LUhDv5uzdeyGBDdFbsha0M6M8zmtIj9jngXvAp7jjclHY2
- Q4keWlRsrozLDEB86NArf/fA+BNKh5UekNeLQ1k9csmoAntQei+GfSJl/SL76lPfgp0jAHfUg
- TvygG2oE3WZk43TGud0mvrvuC5RIjSTvIVbkSX5eI/GUxeqOuV5DaO80y8DDA1+oswXNTMVJ9
- VPSs3miXxGYDwZ+8z0E8DZ8Q1eG6CZDbs4b5ClRtuiPMJX76ARaXEeTlPpAffiH/ptsUKt03s
- zF15t5hKeMRpsZJ9fldqE2/ud15ANfqT6CXGMZfxXhHhIa0Hc9jQPkvTp1cVZRTJtChK318IW
- JWFtnZlRQXGilk=
+To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>
+References: <20210908204405.127665-1-deller@gmx.de>
+ <20210908204405.127665-4-deller@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <20210908204405.127665-4-deller@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 11/15/21 17:12, Geert Uytterhoeven wrote:
-> On Mon, Nov 15, 2021 at 4:54 PM Geert Uytterhoeven <geert@linux-m68k.org=
-> wrote:
->> Below is the list of build error/warning regressions/improvements in
->> v5.16-rc1[1] compared to v5.15[2].
->>
->> Summarized:
->>   - build errors: +20/-13
->>   - build warnings: +3/-28
->>
->> Happy fixing! ;-)
->>
->> Thanks to the linux-next team for providing the build service.
->>
->> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/fa55b7dcdc43c=
-1aa1ba12bca9d2dd4318c2a0dbf/ (all 90 configs)
->> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/8bb7eca972ad5=
-31c9b149c0a51ab43a417385813/ (all 90 configs)
->>
->>
->> *** ERRORS ***
->>
->> 20 error regressions:
->>   + /kisskb/src/arch/parisc/include/asm/jump_label.h: error: expected '=
-:' before '__stringify':  =3D> 33:4, 18:4
->>   + /kisskb/src/arch/parisc/include/asm/jump_label.h: error: label 'l_y=
-es' defined but not used [-Werror=3Dunused-label]:  =3D> 38:1, 23:1
->
->     due to static_branch_likely() in crypto/api.c
->
-> parisc-allmodconfig
+This change breaks signal delivery and causes various glibc tests to fail.
 
-fixed now in the parisc for-next git tree.
+commit 3e4a1aff2a97cb4fd7f0268e4b69e8c9d3641277:
+dave@atlas:~/gnu/glibc/objdir$ env GCONV_PATH=/home/dave/gnu/glibc/objdir/iconvdata LOCPATH=/home/dave/gnu/glibc/objdir/localedata LC_ALL=C 
+/home/dave/gnu/glibc/objdir/elf/ld.so.1 --library-path 
+/home/dave/gnu/glibc/objdir:/home/dave/gnu/glibc/objdir/math:/home/dave/gnu/glibc/objdir/elf:/home/dave/gnu/glibc/objdir/dlfcn:/home/dave/gnu/glibc/objdir/nss:/home/dave/gnu/glibc/objdir/nis:/home/dave/gnu/glibc/objdir/rt:/home/dave/gnu/glibc/objdir/resolv:/home/dave/gnu/glibc/objdir/mathvec:/home/dave/gnu/glibc/objdir/support:/home/dave/gnu/glibc/objdir/crypt:/home/dave/gnu/glibc/objdir/nptl 
+/home/dave/gnu/glibc/objdir/nptl/tst-cancelx4
+got size 4512
+in-time cancel test of 'read' successful
+in-time cancel test of 'readv' successful
+in-time cancel test of 'select' successful
+in-time cancel test of 'pselect' successful
+in-time cancel test of 'poll' successful
+in-time cancel test of 'ppoll' successful
+in-time cancel test of 'write' successful
+in-time cancel test of 'writev' successful
+in-time cancel test of 'sleep' successful
+in-time cancel test of 'usleep' successful
+in-time cancel test of 'nanosleep' successful
+in-time cancel test of 'wait' successful
+in-time cancel test of 'waitid' successful
+in-time cancel test of 'waitpid' successful
+in-time cancel test of 'sigpause' successful
+in-time cancel test of 'sigsuspend' successful
+in-time cancel test of 'sigwait' successful
+in-time cancel test of 'sigwaitinfo' successful
+in-time cancel test of 'sigtimedwait' successful
+in-time cancel test of 'pause' successful
+in-time cancel test of 'accept' successful
+got size 4512
+in-time cancel test of 'send' successful
+in-time cancel test of 'recv' successful
+in-time cancel test of 'recvfrom' successful
+in-time cancel test of 'recvmsg' successful
+in-time cancel test of 'msgrcv' successful
+early cancel test of 'read' successful
+early cancel test of 'readv' successful
+early cancel test of 'select' successful
+early cancel test of 'pselect' successful
+early cancel test of 'poll' successful
+early cancel test of 'ppoll' successful
+early cancel test of 'write' successful
+early cancel test of 'writev' successful
+early cancel test of 'sleep' successful
+early cancel test of 'usleep' successful
+early cancel test of 'nanosleep' successful
+early cancel test of 'wait' successful
+early cancel test of 'waitid' successful
+early cancel test of 'waitpid' successful
+early cancel test of 'sigpause' successful
+early cancel test of 'sigsuspend' successful
+early cancel test of 'sigwait' successful
+early cancel test of 'sigwaitinfo' successful
+early cancel test of 'sigtimedwait' successful
+early cancel test of 'pause' successful
+early cancel test of 'accept' successful
+got size 4512
+early cancel test of 'send' successful
+early cancel test of 'recv' successful
+early cancel test of 'recvfrom' successful
+early cancel test of 'recvmsg' successful
+early cancel test of 'preadv' successful
+early cancel test of 'preadv2' successful
+early cancel test of 'pwritev' successful
+early cancel test of 'pwritev2' successful
+early cancel test of 'open' successful
+early cancel test of 'close' successful
+early cancel test of 'pread' successful
+early cancel test of 'pwrite' successful
+early cancel test of 'fsync' successful
+early cancel test of 'fdatasync' successful
+early cancel test of 'msync' successful
+got size 4512
+early cancel test of 'sendto' successful
+early cancel test of 'sendmsg' successful
+early cancel test of 'creat' successful
+early cancel test of 'connect' successful
+early cancel test of 'tcdrain' successful
+early cancel test of 'msgrcv' successful
+early cancel test of 'msgsnd' successful
+dave@atlas:~/gnu/glibc/objdir$ echo $?
+0
 
+commit e4f2006f1287e7ea17660490569cff323772dac4:
+dave@atlas:~/gnu/glibc/objdir$ env GCONV_PATH=/home/dave/gnu/glibc/objdir/iconvdata LOCPATH=/home/dave/gnu/glibc/objdir/localedata LC_ALL=C 
+/home/dave/gnu/glibc/objdir/elf/ld.so.1 --library-path 
+/home/dave/gnu/glibc/objdir:/home/dave/gnu/glibc/objdir/math:/home/dave/gnu/glibc/objdir/elf:/home/dave/gnu/glibc/objdir/dlfcn:/home/dave/gnu/glibc/objdir/nss:/home/dave/gnu/glibc/objdir/nis:/home/dave/gnu/glibc/objdir/rt:/home/dave/gnu/glibc/objdir/resolv:/home/dave/gnu/glibc/objdir/mathvec:/home/dave/gnu/glibc/objdir/support:/home/dave/gnu/glibc/objdir/crypt:/home/dave/gnu/glibc/objdir/nptl 
+/home/dave/gnu/glibc/objdir/nptl/tst-cancelx4
+got size 4512
+cleanup handler not called for 'read'
+cleanup handler not called for 'readv'
+cleanup handler not called for 'select'
+cleanup handler not called for 'pselect'
+cleanup handler not called for 'poll'
+cleanup handler not called for 'ppoll'
+cleanup handler not called for 'write'
+cleanup handler not called for 'writev'
+cleanup handler not called for 'sleep'
+cleanup handler not called for 'usleep'
+cleanup handler not called for 'nanosleep'
+cleanup handler not called for 'wait'
+cleanup handler not called for 'waitid'
+cleanup handler not called for 'waitpid'
+cleanup handler not called for 'sigpause'
+cleanup handler not called for 'sigsuspend'
+cleanup handler not called for 'sigwait'
+cleanup handler not called for 'sigwaitinfo'
+cleanup handler not called for 'sigtimedwait'
+cleanup handler not called for 'pause'
+cleanup handler not called for 'accept'
+got size 4512
+cleanup handler not called for 'send'
+cleanup handler not called for 'recv'
+cleanup handler not called for 'recvfrom'
+cleanup handler not called for 'recvmsg'
+cleanup handler not called for 'msgrcv'
+early cancel test of 'read' successful
+early cancel test of 'readv' successful
+early cancel test of 'select' successful
+early cancel test of 'pselect' successful
+early cancel test of 'poll' successful
+early cancel test of 'ppoll' successful
+early cancel test of 'write' successful
+early cancel test of 'writev' successful
+early cancel test of 'sleep' successful
+early cancel test of 'usleep' successful
+early cancel test of 'nanosleep' successful
+early cancel test of 'wait' successful
+early cancel test of 'waitid' successful
+early cancel test of 'waitpid' successful
+early cancel test of 'sigpause' successful
+early cancel test of 'sigsuspend' successful
+early cancel test of 'sigwait' successful
+early cancel test of 'sigwaitinfo' successful
+early cancel test of 'sigtimedwait' successful
+early cancel test of 'pause' successful
+early cancel test of 'accept' successful
+got size 4512
+early cancel test of 'send' successful
+early cancel test of 'recv' successful
+early cancel test of 'recvfrom' successful
+early cancel test of 'recvmsg' successful
+early cancel test of 'preadv' successful
+early cancel test of 'preadv2' successful
+early cancel test of 'pwritev' successful
+early cancel test of 'pwritev2' successful
+early cancel test of 'open' successful
+early cancel test of 'close' successful
+early cancel test of 'pread' successful
+early cancel test of 'pwrite' successful
+early cancel test of 'fsync' successful
+early cancel test of 'fdatasync' successful
+early cancel test of 'msync' successful
+got size 4512
+early cancel test of 'sendto' successful
+early cancel test of 'sendmsg' successful
+early cancel test of 'creat' successful
+early cancel test of 'connect' successful
+early cancel test of 'tcdrain' successful
+early cancel test of 'msgrcv' successful
+early cancel test of 'msgsnd' successful
+dave@atlas:~/gnu/glibc/objdir$ echo $?
+1
 
->>   + /kisskb/src/drivers/gpu/drm/msm/msm_drv.h: error: "COND" redefined =
-[-Werror]:  =3D> 531
->>   + /kisskb/src/lib/zstd/compress/zstd_double_fast.c: error: the frame =
-size of 3252 bytes is larger than 1536 bytes [-Werror=3Dframe-larger-than=
-=3D]:  =3D> 47:1
->>   + /kisskb/src/lib/zstd/compress/zstd_double_fast.c: error: the frame =
-size of 3360 bytes is larger than 1536 bytes [-Werror=3Dframe-larger-than=
-=3D]:  =3D> 499:1
->>   + /kisskb/src/lib/zstd/compress/zstd_double_fast.c: error: the frame =
-size of 5344 bytes is larger than 1536 bytes [-Werror=3Dframe-larger-than=
-=3D]:  =3D> 334:1
->>   + /kisskb/src/lib/zstd/compress/zstd_double_fast.c: error: the frame =
-size of 5380 bytes is larger than 1536 bytes [-Werror=3Dframe-larger-than=
-=3D]:  =3D> 354:1
->>   + /kisskb/src/lib/zstd/compress/zstd_fast.c: error: the frame size of=
- 1824 bytes is larger than 1536 bytes [-Werror=3Dframe-larger-than=3D]:  =
-=3D> 372:1
->>   + /kisskb/src/lib/zstd/compress/zstd_fast.c: error: the frame size of=
- 2224 bytes is larger than 1536 bytes [-Werror=3Dframe-larger-than=3D]:  =
-=3D> 204:1
->>   + /kisskb/src/lib/zstd/compress/zstd_fast.c: error: the frame size of=
- 3800 bytes is larger than 1536 bytes [-Werror=3Dframe-larger-than=3D]:  =
-=3D> 476:1
->
-> parisc-allmodconfig
+Dave
 
-parisc needs much bigger frame sizes, so I'm not astonished here.
-During the v5.15 cycl I increased it to 1536 (from 1280), so I'm simply te=
-mpted to
-increase it this time to 4096, unless someone has a better idea....
-
->>   + /kisskb/src/fs/ntfs/aops.c: error: the frame size of 2240 bytes is =
-larger than 2048 bytes [-Werror=3Dframe-larger-than=3D]:  =3D> 1311:1
->>   + /kisskb/src/fs/ntfs/aops.c: error: the frame size of 2304 bytes is =
-larger than 2048 bytes [-Werror=3Dframe-larger-than=3D]:  =3D> 1311:1
->>   + /kisskb/src/fs/ntfs/aops.c: error: the frame size of 2320 bytes is =
-larger than 2048 bytes [-Werror=3Dframe-larger-than=3D]:  =3D> 1311:1
+On 2021-09-08 4:44 p.m., Helge Deller wrote:
+> We can move the INSN_LDI_R20 instruction into the branch delay slot.
 >
-> powerpc-allmodconfig
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> ---
+>   arch/parisc/include/asm/rt_sigframe.h |  2 +-
+>   arch/parisc/kernel/signal.c           | 13 ++++++-------
+>   arch/parisc/kernel/signal32.h         |  2 +-
+>   3 files changed, 8 insertions(+), 9 deletions(-)
 >
->>   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compi=
-letime_assert_366' declared with attribute error: FIELD_PREP: value too la=
-rge for the field:  =3D> 335:38
+> diff --git a/arch/parisc/include/asm/rt_sigframe.h b/arch/parisc/include/asm/rt_sigframe.h
+> index 2b3010ade00e..4b9e3d707571 100644
+> --- a/arch/parisc/include/asm/rt_sigframe.h
+> +++ b/arch/parisc/include/asm/rt_sigframe.h
+> @@ -2,7 +2,7 @@
+>   #ifndef _ASM_PARISC_RT_SIGFRAME_H
+>   #define _ASM_PARISC_RT_SIGFRAME_H
 >
->     in drivers/pinctrl/pinctrl-apple-gpio.c
+> -#define SIGRETURN_TRAMP 4
+> +#define SIGRETURN_TRAMP 3
+>   #define SIGRESTARTBLOCK_TRAMP 5
+>   #define TRAMP_SIZE (SIGRETURN_TRAMP + SIGRESTARTBLOCK_TRAMP)
 >
-> arm64-allmodconfig (gcc8)
+> diff --git a/arch/parisc/kernel/signal.c b/arch/parisc/kernel/signal.c
+> index 46b1050640b8..bbfe23c40c01 100644
+> --- a/arch/parisc/kernel/signal.c
+> +++ b/arch/parisc/kernel/signal.c
+> @@ -288,22 +288,21 @@ setup_rt_frame(struct ksignal *ksig, sigset_t *set, struct pt_regs *regs,
+>   	   already in userspace. The first words of tramp are used to
+>   	   save the previous sigrestartblock trampoline that might be
+>   	   on the stack. We start the sigreturn trampoline at
+> -	   SIGRESTARTBLOCK_TRAMP+X. */
+> +	   SIGRESTARTBLOCK_TRAMP. */
+>   	err |= __put_user(in_syscall ? INSN_LDI_R25_1 : INSN_LDI_R25_0,
+>   			&frame->tramp[SIGRESTARTBLOCK_TRAMP+0]);
+> -	err |= __put_user(INSN_LDI_R20,
+> -			&frame->tramp[SIGRESTARTBLOCK_TRAMP+1]);
+>   	err |= __put_user(INSN_BLE_SR2_R0,
+> +			&frame->tramp[SIGRESTARTBLOCK_TRAMP+1]);
+> +	err |= __put_user(INSN_LDI_R20,
+>   			&frame->tramp[SIGRESTARTBLOCK_TRAMP+2]);
+> -	err |= __put_user(INSN_NOP, &frame->tramp[SIGRESTARTBLOCK_TRAMP+3]);
 >
->>   + /kisskb/src/include/linux/fortify-string.h: error: call to '__read_=
-overflow' declared with attribute error: detected read beyond size of obje=
-ct (1st parameter):  =3D> 263:25, 277:17
+> -	start = (unsigned long) &frame->tramp[0];
+> -	end = (unsigned long) &frame->tramp[TRAMP_SIZE];
+> +	start = (unsigned long) &frame->tramp[SIGRESTARTBLOCK_TRAMP+0];
+> +	end = (unsigned long) &frame->tramp[SIGRESTARTBLOCK_TRAMP+3];
+>   	flush_user_dcache_range_asm(start, end);
+>   	flush_user_icache_range_asm(start, end);
 >
->     in lib/test_kasan.c
+>   	/* TRAMP Words 0-4, Length 5 = SIGRESTARTBLOCK_TRAMP
+> -	 * TRAMP Words 5-9, Length 4 = SIGRETURN_TRAMP
+> +	 * TRAMP Words 5-7, Length 3 = SIGRETURN_TRAMP
+>   	 * So the SIGRETURN_TRAMP is at the end of SIGRESTARTBLOCK_TRAMP
+>   	 */
+>   	rp = (unsigned long) &frame->tramp[SIGRESTARTBLOCK_TRAMP];
+> diff --git a/arch/parisc/kernel/signal32.h b/arch/parisc/kernel/signal32.h
+> index f166250f2d06..a5bdbb5678b7 100644
+> --- a/arch/parisc/kernel/signal32.h
+> +++ b/arch/parisc/kernel/signal32.h
+> @@ -36,7 +36,7 @@ struct compat_regfile {
+>           compat_int_t rf_sar;
+>   };
 >
-> s390-all{mod,yes}config
-> arm64-allmodconfig (gcc11)
->
->>   + error: modpost: "mips_cm_is64" [drivers/pci/controller/pcie-mt7621.=
-ko] undefined!:  =3D> N/A
->>   + error: modpost: "mips_cm_lock_other" [drivers/pci/controller/pcie-m=
-t7621.ko] undefined!:  =3D> N/A
->>   + error: modpost: "mips_cm_unlock_other" [drivers/pci/controller/pcie=
--mt7621.ko] undefined!:  =3D> N/A
->>   + error: modpost: "mips_cpc_base" [drivers/pci/controller/pcie-mt7621=
-.ko] undefined!:  =3D> N/A
->>   + error: modpost: "mips_gcr_base" [drivers/pci/controller/pcie-mt7621=
-.ko] undefined!:  =3D> N/A
->
-> mips-allmodconfig
->
->> 3 warning regressions:
->>   + <stdin>: warning: #warning syscall futex_waitv not implemented [-Wc=
-pp]:  =3D> 1559:2
->
-> powerpc, m68k, mips, s390, parisc (and probably more)
-
-Will someone update all of them at once?
-
-
-
-
-Helge
-
-
->>   + arch/m68k/configs/multi_defconfig: warning: symbol value 'm' invali=
-d for MCTP:  =3D> 322
->>   + arch/m68k/configs/sun3_defconfig: warning: symbol value 'm' invalid=
- for MCTP:  =3D> 295
->
-> Yeah, that happens when symbols are changed from tristate to bool...
-> Will be fixed in 5.17-rc1, with the next defconfig refresh.
->
-> Gr{oetje,eeting}s,
->
->                         Geert
->
+> -#define COMPAT_SIGRETURN_TRAMP 4
+> +#define COMPAT_SIGRETURN_TRAMP 3
+>   #define COMPAT_SIGRESTARTBLOCK_TRAMP 5
+>   #define COMPAT_TRAMP_SIZE (COMPAT_SIGRETURN_TRAMP + \
+>   				COMPAT_SIGRESTARTBLOCK_TRAMP)
 > --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m=
-68k.org
+> 2.31.1
 >
-> In personal conversations with technical people, I call myself a hacker.=
- But
-> when I'm talking to journalists I just say "programmer" or something lik=
-e that.
->                                 -- Linus Torvalds
->
+
+
+-- 
+John David Anglin  dave.anglin@bell.net
 
