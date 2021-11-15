@@ -2,62 +2,162 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E8F44FB5C
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 Nov 2021 20:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 789DF45097B
+	for <lists+linux-parisc@lfdr.de>; Mon, 15 Nov 2021 17:20:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234781AbhKNT70 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 14 Nov 2021 14:59:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54168 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231469AbhKNT70 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 14 Nov 2021 14:59:26 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 76F0960EE4;
-        Sun, 14 Nov 2021 19:56:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636919783;
-        bh=iSaxqWGrpbBDnhDlWwcm0yMAT/hKpBkVMJ4X1ZupjHk=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=UBsKFZ1QZGu1jwXV++twRVcH3naCJ3KjTtXoJq/6ctuXhfSlTqKkhsyyA75Cmg8Fl
-         1ciCjob8S0JJi/+bXg5FZRmgXv4ZN4jmSlL4et357BV2Hka1Oj82spqjOTn48ueYRm
-         WDn4pGiSAwLB+9kT4CV3h4YsvaY/HgY5xLf39YpJrPxzMHQthKOLmkkJVYQ6qgyBq0
-         MWDB8e2iXSVvz/pOCilhui2UOl7YHwKU1sMaU24MSASmAX31GOMUp4JfxBvipihNBU
-         JC1Hk3stbQgTFxInmHkQXuvPL5T7AYKDKvddPYU6OqXHg9woOoPF9J1cP6+VoXy/51
-         sjiaAYNDhdAwg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 6A8A6609D7;
-        Sun, 14 Nov 2021 19:56:23 +0000 (UTC)
-Subject: Re: [GIT PULL] few more parisc architecture fixes for kernel v5.16-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YZFcHM+23JDGpXTE@ls3530>
-References: <YZFcHM+23JDGpXTE@ls3530>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <YZFcHM+23JDGpXTE@ls3530>
-X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-3
-X-PR-Tracked-Commit-Id: 3ec18fc7831e7d79e2d536dd1f3bc0d3ba425e8a
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c3b68c27f58a07130382f3fa6320c3652ad76f15
-Message-Id: <163691978342.22669.4510866585488919513.pr-tracker-bot@kernel.org>
-Date:   Sun, 14 Nov 2021 19:56:23 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
+        id S234526AbhKOQXU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 15 Nov 2021 11:23:20 -0500
+Received: from mail-ua1-f49.google.com ([209.85.222.49]:37822 "EHLO
+        mail-ua1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236711AbhKOQWn (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 15 Nov 2021 11:22:43 -0500
+Received: by mail-ua1-f49.google.com with SMTP id o1so3163658uap.4;
+        Mon, 15 Nov 2021 08:19:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=efm7nTUMt8rzsLA3IdyOYKyQXeHPPTB88YQ7l3tEZPU=;
+        b=j1ePCDZz9pjRoBSjFPBK36Zkij+CB1qkYiXTY2Q3Wp4RBzYIuPpueipNAr4BDIT5Ge
+         3SycT+nqt7zu8Fk7R5Gsrzw3syS3NENcAds96Vs2uthWNWG1lUnYXFYPMLVOriSKm7ca
+         /m9xHDv/Y8S9zaBhSZIN9F7jjCjVmUd2HX20FhAeUcHNY6K4x23cQ0Fy2U+wZn7rlyrv
+         RGgEOs+EcSJ3vxim8f+x87mPJ6aOU1OpyknXNv4zcV+W618oqCRqL3Lj3sVGTbPLyZ0L
+         PIAxEBQTYGtMEFARIzBxLlYvhfg7JQBmYsnHjf7ZB2xN3/ljNIgblRXnJoM85m7VyW7V
+         e6/Q==
+X-Gm-Message-State: AOAM533Z+HIGAeIaX6iMf1CQvBtK2FuYsmKT2NsJnLTwyy62NRaCvM/D
+        9JZqAwRUF2yE+MgaldzM9xMECe64xCuRWQ==
+X-Google-Smtp-Source: ABdhPJylBZXFwAq5a1NpYaCzYAYvfTy5mBiEIMoNMxzm+3uw7hyEvmc0grXVvV36HYTiF4V1kFvcrw==
+X-Received: by 2002:ab0:3d13:: with SMTP id f19mr80563uax.30.1636993184203;
+        Mon, 15 Nov 2021 08:19:44 -0800 (PST)
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com. [209.85.221.182])
+        by smtp.gmail.com with ESMTPSA id s10sm8696109vkf.9.2021.11.15.08.19.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Nov 2021 08:19:44 -0800 (PST)
+Received: by mail-vk1-f182.google.com with SMTP id j1so2079248vkr.1;
+        Mon, 15 Nov 2021 08:19:44 -0800 (PST)
+X-Received: by 2002:a1f:f24f:: with SMTP id q76mr60850690vkh.11.1636992782095;
+ Mon, 15 Nov 2021 08:13:02 -0800 (PST)
+MIME-Version: 1.0
+References: <20211115155105.3797527-1-geert@linux-m68k.org>
+In-Reply-To: <20211115155105.3797527-1-geert@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 15 Nov 2021 17:12:50 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
+Message-ID: <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.16-rc1
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Nick Terrell <terrelln@fb.com>, Rob Clark <robdclark@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Anton Altaparmakov <anton@tuxera.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Stan Skowronek <stan@corellium.com>,
+        Hector Martin <marcan@marcan.st>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@collabora.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        linux-ntfs-dev@lists.sourceforge.net,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Sun, 14 Nov 2021 19:57:32 +0100:
+On Mon, Nov 15, 2021 at 4:54 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> Below is the list of build error/warning regressions/improvements in
+> v5.16-rc1[1] compared to v5.15[2].
+>
+> Summarized:
+>   - build errors: +20/-13
+>   - build warnings: +3/-28
+>
+> Happy fixing! ;-)
+>
+> Thanks to the linux-next team for providing the build service.
+>
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf/ (all 90 configs)
+> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/8bb7eca972ad531c9b149c0a51ab43a417385813/ (all 90 configs)
+>
+>
+> *** ERRORS ***
+>
+> 20 error regressions:
+>   + /kisskb/src/arch/parisc/include/asm/jump_label.h: error: expected ':' before '__stringify':  => 33:4, 18:4
+>   + /kisskb/src/arch/parisc/include/asm/jump_label.h: error: label 'l_yes' defined but not used [-Werror=unused-label]:  => 38:1, 23:1
 
-> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-3
+    due to static_branch_likely() in crypto/api.c
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c3b68c27f58a07130382f3fa6320c3652ad76f15
+parisc-allmodconfig
 
-Thank you!
+>   + /kisskb/src/drivers/gpu/drm/msm/msm_drv.h: error: "COND" redefined [-Werror]:  => 531
+>   + /kisskb/src/lib/zstd/compress/zstd_double_fast.c: error: the frame size of 3252 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 47:1
+>   + /kisskb/src/lib/zstd/compress/zstd_double_fast.c: error: the frame size of 3360 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 499:1
+>   + /kisskb/src/lib/zstd/compress/zstd_double_fast.c: error: the frame size of 5344 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 334:1
+>   + /kisskb/src/lib/zstd/compress/zstd_double_fast.c: error: the frame size of 5380 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 354:1
+>   + /kisskb/src/lib/zstd/compress/zstd_fast.c: error: the frame size of 1824 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 372:1
+>   + /kisskb/src/lib/zstd/compress/zstd_fast.c: error: the frame size of 2224 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 204:1
+>   + /kisskb/src/lib/zstd/compress/zstd_fast.c: error: the frame size of 3800 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 476:1
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+parisc-allmodconfig
+
+>   + /kisskb/src/fs/ntfs/aops.c: error: the frame size of 2240 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 1311:1
+>   + /kisskb/src/fs/ntfs/aops.c: error: the frame size of 2304 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 1311:1
+>   + /kisskb/src/fs/ntfs/aops.c: error: the frame size of 2320 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 1311:1
+
+powerpc-allmodconfig
+
+>   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_366' declared with attribute error: FIELD_PREP: value too large for the field:  => 335:38
+
+    in drivers/pinctrl/pinctrl-apple-gpio.c
+
+arm64-allmodconfig (gcc8)
+
+>   + /kisskb/src/include/linux/fortify-string.h: error: call to '__read_overflow' declared with attribute error: detected read beyond size of object (1st parameter):  => 263:25, 277:17
+
+    in lib/test_kasan.c
+
+s390-all{mod,yes}config
+arm64-allmodconfig (gcc11)
+
+>   + error: modpost: "mips_cm_is64" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
+>   + error: modpost: "mips_cm_lock_other" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
+>   + error: modpost: "mips_cm_unlock_other" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
+>   + error: modpost: "mips_cpc_base" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
+>   + error: modpost: "mips_gcr_base" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
+
+mips-allmodconfig
+
+> 3 warning regressions:
+>   + <stdin>: warning: #warning syscall futex_waitv not implemented [-Wcpp]:  => 1559:2
+
+powerpc, m68k, mips, s390, parisc (and probably more)
+
+>   + arch/m68k/configs/multi_defconfig: warning: symbol value 'm' invalid for MCTP:  => 322
+>   + arch/m68k/configs/sun3_defconfig: warning: symbol value 'm' invalid for MCTP:  => 295
+
+Yeah, that happens when symbols are changed from tristate to bool...
+Will be fixed in 5.17-rc1, with the next defconfig refresh.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
