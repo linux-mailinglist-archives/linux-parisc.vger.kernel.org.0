@@ -2,119 +2,120 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C95454222
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Nov 2021 08:52:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BADFF4542AD
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Nov 2021 09:30:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234265AbhKQHzI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 Nov 2021 02:55:08 -0500
-Received: from mout.kundenserver.de ([212.227.17.24]:58779 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231827AbhKQHzH (ORCPT
+        id S234547AbhKQIdq convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 17 Nov 2021 03:33:46 -0500
+Received: from mail-qt1-f169.google.com ([209.85.160.169]:34729 "EHLO
+        mail-qt1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229944AbhKQIdp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 Nov 2021 02:55:07 -0500
-Received: from mail-wr1-f48.google.com ([209.85.221.48]) by
- mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MYNW8-1n9oxW1yV8-00VPkY; Wed, 17 Nov 2021 08:52:08 +0100
-Received: by mail-wr1-f48.google.com with SMTP id b12so2842829wrh.4;
-        Tue, 16 Nov 2021 23:52:08 -0800 (PST)
-X-Gm-Message-State: AOAM533hqx0xaEglkXOUTHf4G8VOJF/v4cv1KY6Y9zj9ANVjKxATSVPs
-        6lu4zKCbANlFH5hkKq6DZaqllUCVKYJTqTo968o=
-X-Google-Smtp-Source: ABdhPJxSEhmOEG2At2Qpv9ehXJ2gMv9z+ztXEndPhKnCn0xjFqNoJBfrRBZgU9Q5Vu+jTIatGNY4B54vHi0fnKoOTHQ=
-X-Received: by 2002:adf:d1c2:: with SMTP id b2mr17725726wrd.369.1637135528065;
- Tue, 16 Nov 2021 23:52:08 -0800 (PST)
+        Wed, 17 Nov 2021 03:33:45 -0500
+Received: by mail-qt1-f169.google.com with SMTP id o17so1924109qtk.1;
+        Wed, 17 Nov 2021 00:30:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=pLki4VXVNEgH7BpAr7thCy6liKqtc8dZxgXibG/LDtU=;
+        b=IUpfMS2Qsw+4vmn7I+udpusUuBdphjjcAJKehe7ijbqvhkYnwm6cTNdca+Cm0+0ma0
+         xHD7AGKnQOaEiCs6xqSWURkkNCEsyjFfW5BS+qXXbqRwqmicLNGkp26r99JMfFSCO/3k
+         0bWFazjujRDAHYFZe81Zf9uHbmyFG8cifydbv07Sd9hppAYW34M6QwmE5KICuNyBOc1b
+         uaRJUYDVmVWNYnHKQUaNc9sX2Jn2J5I6VMJVbOUUi0zfxBoozVHwbFXJ/iQhxxdP0nJI
+         UUZ2M0IUONMJ7yEaDyGm9GjG4M1JgiuAegMgBQl0bzAe7JH80skTE+4MB5PXQv0AtrMH
+         PE+w==
+X-Gm-Message-State: AOAM533Gmfbt9PLCNrSukClwWshSIsB1Zv0j1Rff2FGOwSGUU7Ob7m8A
+        uDSnap65Q1tmO3hQD/OtlyUl2r4Dhpxyxg==
+X-Google-Smtp-Source: ABdhPJwoFVUouk9QlvygqIYHdaUI5uPa2eT+UDuhCZpvADfGS5ohUE9j9fFTF1CGKB45SU6JCVVhbA==
+X-Received: by 2002:a05:622a:178c:: with SMTP id s12mr14701908qtk.156.1637137846345;
+        Wed, 17 Nov 2021 00:30:46 -0800 (PST)
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
+        by smtp.gmail.com with ESMTPSA id j20sm5550905qtj.43.2021.11.17.00.30.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Nov 2021 00:30:46 -0800 (PST)
+Received: by mail-yb1-f170.google.com with SMTP id n2so746118yba.2;
+        Wed, 17 Nov 2021 00:30:46 -0800 (PST)
+X-Received: by 2002:a9f:2431:: with SMTP id 46mr20823663uaq.114.1637137464301;
+ Wed, 17 Nov 2021 00:24:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20211117033738.28734-1-starmiku1207184332@gmail.com>
-In-Reply-To: <20211117033738.28734-1-starmiku1207184332@gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 17 Nov 2021 08:51:52 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2b9F5E8EEK4cBWpmK7X463GSYj3VBPqOz_jEu_Mad-Nw@mail.gmail.com>
-Message-ID: <CAK8P3a2b9F5E8EEK4cBWpmK7X463GSYj3VBPqOz_jEu_Mad-Nw@mail.gmail.com>
-Subject: Re: [PATCH] net: ethernet: dec: tulip: de4x5: fix possible array
- overflows in type3_infoblock()
-To:     Teng Qi <starmiku1207184332@gmail.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, tanghui20@huawei.com,
-        Networking <netdev@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
+References: <20211115155105.3797527-1-geert@linux-m68k.org>
+ <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
+ <fcdead1c-2e26-b8ca-9914-4b3718d8f6d4@gmx.de> <480CE37B-FE60-44EE-B9D2-59A88FDFE809@fb.com>
+ <78b2d093-e06c-ba04-9890-69f948bfb937@infradead.org> <B57193D6-1FD4-45D3-8045-8D2DE691E24E@fb.com>
+In-Reply-To: <B57193D6-1FD4-45D3-8045-8D2DE691E24E@fb.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 17 Nov 2021 09:24:12 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWgGz5FSidaGpp8YRRSnJfwdP4-wOkXdVx+mydXnMAXHQ@mail.gmail.com>
+Message-ID: <CAMuHMdWgGz5FSidaGpp8YRRSnJfwdP4-wOkXdVx+mydXnMAXHQ@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.16-rc1
+To:     Nick Terrell <terrelln@fb.com>
+Cc:     Randy Dunlap <rdunlap@infradead.org>, Helge Deller <deller@gmx.de>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jia-Ju Bai <baijiaju1990@gmail.com>, islituo@gmail.com,
-        TOTE Robot <oslab@tsinghua.edu.cn>
+        Rob Clark <robdclark@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Anton Altaparmakov <anton@tuxera.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Stan Skowronek <stan@corellium.com>,
+        Hector Martin <marcan@marcan.st>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@collabora.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        "linux-ntfs-dev@lists.sourceforge.net" 
+        <linux-ntfs-dev@lists.sourceforge.net>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:YXUj9swxAphR+zDeXhTD9rV5F6HGsA4IsTy59gxAxCk0p08c27b
- XwO3qwnxaKo0LMFpcGzjKchFfgBHa57AhDA1B8QP+XUfBZobFW/qaaub88c4sFE2E3rqNcP
- fDxlTC/8GJ6lkjrJCKGRl5n43aDBDUxPDhciXxrP6h/Jha2OzHkcRbQT04zl8I0vIxlrQ6A
- USvKTfneT6KeOawXC86SA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:QkVpiIC31Xc=:ugunMVEF6b9KNzn0Pm1yCU
- wBdRfpX+8fSG3A9uP4xy9JTf1AORcqKXzFkQTPtZjL6MM7ullY4KYVBDtbWCedaAT9Vttru9G
- U2Sq48bL80HpFdJ1rZjTxAVfs/8pCEO56mohRj9/w2E+ew2kJ22Ry/fKbC9ywFTqMH6Qy2J9p
- XuRCA79nLVO3At2P7QxRthUQY6UkjzAqh89124++q/wfOwkpAU0FXvUtvbRDXXFlW93sy7llP
- LXZecPv+XZBKDsUu6xgXmhWD5lMhsRutbaVWTY6l7Jq/hO7uRPpCVKd2qiYqEk3zsJ7Tf8HF2
- k7jWTKcWVfv8HEGMa20CQRiy1zopYzyDrXlFXUa9/l9X0xSbQuTDOQkfWEpL46aWZ+q2kft2h
- kXvCsFXLE/52EiTOBb2odgsM1WHyUjfD5UoMPl2H5sbsjTPJF0ZeCA++P7NL59U8WI5MftCz2
- XOwKE1rBJHsThlY+W3iF+sPI8bUZpFTthBhQzK7Zza7b2F6xf10LrXtqQZvnH6ID/5dwnRXYz
- GI57vOgQ9kdIbyvVNHHptlHrJQL/29zvLU/EJo8DsBqpS/hVPzcf1QbWrATlX6f1xc7afDRYE
- 7H0IDI/BWv+ooxkAk0U7E5W4QAfHF4VLebdl00V6YaGFpZHKw7veuvLMKNLn07LNNwk8D+RsJ
- JUDrq/rmauEEyoEyFxYVxH0JmHDal9Ti85RGPSdgNH1c4TMZ9K9vLLuCIDVJbzovuqnFA9NqN
- f6hkBzdzZkZlFBWaVWibNSq2OOp2I35QW8xirwzge/2Ie+nV2rjrIxHPMGUCzsnMqiiN/e7z3
- IE1/o5WY52aszLkFj7xxgHOLnPLx2eyzc0tc+0sWg0ejMmJlo4=
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Nov 17, 2021 at 4:37 AM Teng Qi <starmiku1207184332@gmail.com> wrote:
+Hi Nick,
+
+On Wed, Nov 17, 2021 at 3:20 AM Nick Terrell <terrelln@fb.com> wrote:
+> > On Nov 16, 2021, at 6:05 PM, Randy Dunlap <rdunlap@infradead.org> wrote:
+> > On 11/16/21 5:59 PM, Nick Terrell wrote:
+> >> I’ll send the PR to Linus tomorrow. I’ve been informed that it
+> >> isn't strictly necessary to send the patches to the mailing list
+> >> for bug fixes, but its already done, so I’ll wait and see if there
+> >> is any feedback.
+> >
+> > IMO several (or many more) people would disagree with that.
+> >
+> > "strictly?"  OK, it's probably possible that almost any patch
+> > could be merged without being on a mailing list, but it's not
+> > desirable (except in the case of "security" patches).
 >
-> The definition of macro MOTO_SROM_BUG is:
->   #define MOTO_SROM_BUG    (lp->active == 8 && (get_unaligned_le32(
->   dev->dev_addr) & 0x00ffffff) == 0x3e0008)
->
-> and the if statement
->   if (MOTO_SROM_BUG) lp->active = 0;
->
-> using this macro indicates lp->active could be 8. If lp->active is 8 and
-> the second comparison of this macro is false. lp->active will remain 8 in:
->   lp->phy[lp->active].gep = (*p ? p : NULL); p += (2 * (*p) + 1);
->   lp->phy[lp->active].rst = (*p ? p : NULL); p += (2 * (*p) + 1);
->   lp->phy[lp->active].mc  = get_unaligned_le16(p); p += 2;
->   lp->phy[lp->active].ana = get_unaligned_le16(p); p += 2;
->   lp->phy[lp->active].fdx = get_unaligned_le16(p); p += 2;
->   lp->phy[lp->active].ttm = get_unaligned_le16(p); p += 2;
->   lp->phy[lp->active].mci = *p;
+> Good to know! Thanks for the advice, I wasn’t really sure what
+> the best practice is for sending patches to your own tree, as I
+> didn't see anything about it in the maintainer guide.
 
-This is a very nice analysis of the problem!
+All patches must be sent to public mailing lists for review.
+You might get away with not doing that for a simple and trivial fix,
+but be prepared to end up on people's "special" lists if you did get
+it wrong.
 
-> However, the length of array lp->phy is 8, so array overflows can occur.
-> To fix these possible array overflows, we first check lp->active and then
-> set it to 0 if it is equal to DE4X5_MAX_PHY (i.e., 8).
->
-> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-> Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>
+We are Legion. We do not forgive. We do not forget ;-)
 
-> diff --git a/drivers/net/ethernet/dec/tulip/de4x5.c b/drivers/net/ethernet/dec/tulip/de4x5.c
-> index 13121c4dcfe6..18132deac2bf 100644
-> --- a/drivers/net/ethernet/dec/tulip/de4x5.c
-> +++ b/drivers/net/ethernet/dec/tulip/de4x5.c
-> @@ -4708,7 +4708,8 @@ type3_infoblock(struct net_device *dev, u_char count, u_char *p)
->      if (lp->state == INITIALISED) {
->          lp->ibn = 3;
->          lp->active = *p++;
-> -       if (MOTO_SROM_BUG) lp->active = 0;
-> +       /* The DE4X5_MAX_PHY is length of lp->phy, and its value is 8 */
-> +       if (MOTO_SROM_BUG || lp->active == DE4X5_MAX_PHY) lp->active = 0;
+Gr{oetje,eeting}s,
 
-I don't think this is a good fix, since this is technically the same as leaving
-out the 'if (MOTO_SROM_BUG)' check and just checking for lp->active==8.
+                        Geert
 
-I would suggest leaving the existing logic in place (as I have no idea where
-that came from), but adding a more defensive range check like:
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-       if (WARN_ON(lp->active >= ARRAY_SIZE(lp->phy))
-                   return -EINVAL;
-
-Note also that this driver is already very old and orphaned, if your bot has a
-lot more findings like this one, it may be best to prioritize fixing
-drivers that
-are actively used and maintained.
-
-      Arnd
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
