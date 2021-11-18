@@ -2,52 +2,88 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A9E9455393
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Nov 2021 04:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB03345546E
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Nov 2021 06:46:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242831AbhKREBt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 Nov 2021 23:01:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59874 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241854AbhKREBt (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 Nov 2021 23:01:49 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A70B161269;
-        Thu, 18 Nov 2021 03:58:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637207930;
-        bh=PeT3h6587hPciMpeoH24VLeE8g8L+2AhtHuJfh0VoSQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=glxqKAO60AsBcU9Ql2Lz3V1VGHtLIGhC7EQvsIucAWa0Xk4xhqlfZLq5PLm0VU3y8
-         pEKEY+8o4lQKVSb+GFYwDGIpmSL25imFkmNZfQ3vysl39yTq4r/8Wkb54YRtagW4eW
-         RV5M1nBegUE+5jNGtqY5wThxk43UakNRZGLCmrfPEC8Ir3GJx2OeG+HEGWVcJixeVW
-         8hTWmfNlxPkMGGC+s9dX2l4+o39M9zQJoSlEojvPLoMLOZ79MY4mQYcfeiRW58qpni
-         QRWBmcn1vk4sEOpmPUY7R/GhnnCz5qkXvECgb71aaXTmqt6fNxnQYM8RLvdDor1psj
-         6s+5IM+oPhOlA==
-Date:   Wed, 17 Nov 2021 19:58:48 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     zhangyue <zhangyue1@kylinos.cn>
-Cc:     davem@davemloft.net, jesse.brandeburg@intel.com,
-        gregkh@linuxfoundation.org, ecree@solarflare.com,
-        netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
+        id S243178AbhKRFtw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 18 Nov 2021 00:49:52 -0500
+Received: from mailgw.kylinos.cn ([123.150.8.42]:62355 "EHLO nksmu.kylinos.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S243168AbhKRFtj (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 18 Nov 2021 00:49:39 -0500
+X-UUID: c0750d918e584a1287ab6027b429c240-20211118
+X-UUID: c0750d918e584a1287ab6027b429c240-20211118
+X-User: zhangyue1@kylinos.cn
+Received: from localhost.localdomain [(172.17.127.2)] by nksmu.kylinos.cn
+        (envelope-from <zhangyue1@kylinos.cn>)
+        (Generic MTA)
+        with ESMTP id 1705651318; Thu, 18 Nov 2021 13:55:16 +0800
+From:   zhangyue <zhangyue1@kylinos.cn>
+To:     davem@davemloft.net, jesse.brandeburg@intel.com,
+        gregkh@linuxfoundation.org, ecree@solarflare.com
+Cc:     netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: tulip: de4x5: fix the problem that the array
- 'lp->phy[8]' may be out of bound
-Message-ID: <20211117195848.6bb56a84@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20211113212921.356392-1-zhangyue1@kylinos.cn>
-References: <20211113212921.356392-1-zhangyue1@kylinos.cn>
+Subject: [PATCH v2] net: tulip: de4x5: fix the problem that the array 'lp->phy[8]' may be out of bound
+Date:   Thu, 18 Nov 2021 13:46:32 +0800
+Message-Id: <20211118054632.357006-1-zhangyue1@kylinos.cn>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, 14 Nov 2021 05:29:21 +0800 zhangyue wrote:
-> In line 5001, if all id in the array 'lp->phy[8]' is not 0, when the
-> 'for' end, the 'k' is 8.
-> 
-> At this time, the array 'lp->phy[8]' may be out of bound.
-> 
-> Signed-off-by: zhangyue <zhangyue1@kylinos.cn>
+In line 5001, if all id in the array 'lp->phy[8]' is not 0, when the
+'for' end, the 'k' is 8.
 
-Please fix the date on your system and repost.
+At this time, the array 'lp->phy[8]' may be out of bound.
+
+Signed-off-by: zhangyue <zhangyue1@kylinos.cn>
+---
+ drivers/net/ethernet/dec/tulip/de4x5.c | 30 +++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/ethernet/dec/tulip/de4x5.c b/drivers/net/ethernet/dec/tulip/de4x5.c
+index c813e6f2b371..a80252973171 100644
+--- a/drivers/net/ethernet/dec/tulip/de4x5.c
++++ b/drivers/net/ethernet/dec/tulip/de4x5.c
+@@ -4999,19 +4999,23 @@ mii_get_phy(struct net_device *dev)
+ 	}
+ 	if ((j == limit) && (i < DE4X5_MAX_MII)) {
+ 	    for (k=0; k < DE4X5_MAX_PHY && lp->phy[k].id; k++);
+-	    lp->phy[k].addr = i;
+-	    lp->phy[k].id = id;
+-	    lp->phy[k].spd.reg = GENERIC_REG;      /* ANLPA register         */
+-	    lp->phy[k].spd.mask = GENERIC_MASK;    /* 100Mb/s technologies   */
+-	    lp->phy[k].spd.value = GENERIC_VALUE;  /* TX & T4, H/F Duplex    */
+-	    lp->mii_cnt++;
+-	    lp->active++;
+-	    printk("%s: Using generic MII device control. If the board doesn't operate,\nplease mail the following dump to the author:\n", dev->name);
+-	    j = de4x5_debug;
+-	    de4x5_debug |= DEBUG_MII;
+-	    de4x5_dbg_mii(dev, k);
+-	    de4x5_debug = j;
+-	    printk("\n");
++	    if (k < DE4X5_MAX_PHY) {
++		lp->phy[k].addr = i;
++		lp->phy[k].id = id;
++		lp->phy[k].spd.reg = GENERIC_REG;      /* ANLPA register         */
++		lp->phy[k].spd.mask = GENERIC_MASK;    /* 100Mb/s technologies   */
++		lp->phy[k].spd.value = GENERIC_VALUE;  /* TX & T4, H/F Duplex    */
++		lp->mii_cnt++;
++		lp->active++;
++		printk("%s: Using generic MII device control. If the board doesn't operate,\nplease mail the following dump to the author:\n", dev->name);
++		j = de4x5_debug;
++		de4x5_debug |= DEBUG_MII;
++		de4x5_dbg_mii(dev, k);
++		de4x5_debug = j;
++		printk("\n");
++	    } else {
++		goto purgatory;
++	    }
+ 	}
+     }
+   purgatory:
+-- 
+2.30.0
+
