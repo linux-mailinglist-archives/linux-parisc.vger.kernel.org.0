@@ -2,91 +2,114 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03A2A455510
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Nov 2021 08:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED88455615
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Nov 2021 08:51:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242809AbhKRHJJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 18 Nov 2021 02:09:09 -0500
-Received: from mout.kundenserver.de ([212.227.126.135]:55191 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231443AbhKRHJJ (ORCPT
+        id S244032AbhKRHyD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 18 Nov 2021 02:54:03 -0500
+Received: from mail-vk1-f173.google.com ([209.85.221.173]:43645 "EHLO
+        mail-vk1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244122AbhKRHxc (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 18 Nov 2021 02:09:09 -0500
-Received: from mail-wr1-f42.google.com ([209.85.221.42]) by
- mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1N4yuK-1mdT6h3uTM-010tBj; Thu, 18 Nov 2021 08:06:07 +0100
-Received: by mail-wr1-f42.google.com with SMTP id n29so9489190wra.11;
-        Wed, 17 Nov 2021 23:06:07 -0800 (PST)
-X-Gm-Message-State: AOAM532AifYI4jU7rKXgSwn0NR2idR9NCx0bdWV5YC500+jsbJSBrP45
-        KIU5ko9R8zrmv9FaPEphb+weHkM3zT0dQ3xr0cQ=
-X-Google-Smtp-Source: ABdhPJw/0fDUXwFJX8w8eAQlT4yGLHAFhPQpcpmd+gcXpzvGBgl+xm5e+ThehwL1RJZLZwQm3zC8zp6otu+O5W1WRlw=
-X-Received: by 2002:adf:efc6:: with SMTP id i6mr28866965wrp.428.1637219167491;
- Wed, 17 Nov 2021 23:06:07 -0800 (PST)
+        Thu, 18 Nov 2021 02:53:32 -0500
+Received: by mail-vk1-f173.google.com with SMTP id f7so3257294vkf.10;
+        Wed, 17 Nov 2021 23:50:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5fvf9IHoTjOVlxPhBDqizDh4T7hHOnvCceGRp3XgLv0=;
+        b=neFbh92ag5xutXWkcBwCEVUKJr0T1lHo+wASbx/Ou1629oZ4oZu0ZV0uR9QW7HucST
+         zT0DleC2B4xzjLKXTF173Le69chTaaLPzeaXO3t//nS8l+cE7MUiyMJHoDvMkqdNmI8S
+         kNLYyZV30evu6CCv490OGBdqfwQE3o6/FcsjwkL7WkLjx2A3W3Hnv0EaYOMKZ6HgDs+t
+         p6sB4FVStLWKQTCjyz63oTWwODHQz3DOqZauW9qdim4JVzvLZPTzu+Aviy7U2rltzODY
+         9aDvzfadkKcaqAgNip/Jls5JMm0ypzVbzBWfayi0sMCZiJreIOehWt94Ckd0dLIIz3kY
+         3uAw==
+X-Gm-Message-State: AOAM530UVw34fISCF7N8QaRy3lMBvAms9jfFG7QGz6gaDVnA++oMngEx
+        G+fFahP/XL/TlefvLby1GiHhMZ9evn9g5w==
+X-Google-Smtp-Source: ABdhPJxJuLpIvOR4MbFNwSH60xeMJ9wDAykt6IhVe92btZ8D3Up3/zYSy30cxImJ9OlfEexes4SlsA==
+X-Received: by 2002:a05:6122:1796:: with SMTP id o22mr100975924vkf.23.1637221832634;
+        Wed, 17 Nov 2021 23:50:32 -0800 (PST)
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com. [209.85.222.41])
+        by smtp.gmail.com with ESMTPSA id v8sm1200574vkc.52.2021.11.17.23.50.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Nov 2021 23:50:32 -0800 (PST)
+Received: by mail-ua1-f41.google.com with SMTP id l24so11806061uak.2;
+        Wed, 17 Nov 2021 23:50:31 -0800 (PST)
+X-Received: by 2002:a9f:248b:: with SMTP id 11mr33653990uar.14.1637221831518;
+ Wed, 17 Nov 2021 23:50:31 -0800 (PST)
 MIME-Version: 1.0
-References: <20211118070118.63756-1-starmiku1207184332@gmail.com>
-In-Reply-To: <20211118070118.63756-1-starmiku1207184332@gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 18 Nov 2021 08:05:51 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3HsvNe2Rkpx9DqDRLpxCFrOi8hx5iAhJziwOQcKj-Ltw@mail.gmail.com>
-Message-ID: <CAK8P3a3HsvNe2Rkpx9DqDRLpxCFrOi8hx5iAhJziwOQcKj-Ltw@mail.gmail.com>
-Subject: Re: [PATCH v2] net: ethernet: dec: tulip: de4x5: fix possible array
- overflows in type3_infoblock()
-To:     Teng Qi <starmiku1207184332@gmail.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, tanghui20@huawei.com,
-        Arnd Bergmann <arnd@arndb.de>,
-        Networking <netdev@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
+References: <20211117201459.1194876-1-nickrterrell@gmail.com> <20211117201459.1194876-2-nickrterrell@gmail.com>
+In-Reply-To: <20211117201459.1194876-2-nickrterrell@gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 18 Nov 2021 08:50:20 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWts1kh8koe7y9CLqRX3DoF_Lnm9o7M=TULJhJDPGKnkw@mail.gmail.com>
+Message-ID: <CAMuHMdWts1kh8koe7y9CLqRX3DoF_Lnm9o7M=TULJhJDPGKnkw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] lib: zstd: Fix unused variable warning
+To:     Nick Terrell <nickrterrell@gmail.com>
+Cc:     Nick Terrell <terrelln@fb.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jia-Ju Bai <baijiaju1990@gmail.com>, islituo@gmail.com,
-        TOTE Robot <oslab@tsinghua.edu.cn>
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        kernel test robot <lkp@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:cHhTKein5BxNHNld9DHUgvqbA2RjfkZ2Rzb8QXQBJedQ3dzYSRI
- qqfq1Ns+6OyK8u0F1116DxTfp8yPEJ+wrrfRpKhP4KYWG6BRtMnFBvWJZ/yXKIYi0aAAO3s
- RCkrjPOn0f2UuqJceg59et5N5P3nNlu4455DcA7Q3hj+tD8aoqF0DVzo71+Yh6cRrARmIyb
- xrNAXfYoSzMPk+38H8MsA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Vf3rweY/7RQ=:8PV5wjclh63/C+0w63McGX
- acq8lktPaw/PdZPxCbl80SdRsj4Dl3NKoAel5S+SqchUV19eODsLsxDeGNxuk7FeEq4SxyrHZ
- apwwTxJTMvyrAy/502BEfPDLaFkIZHDFSOrcKEuqXM2s7biOd21q34T8oq7S/1m+ZlLEsX3q/
- flqHbPnXTd2AbEg6mfELxf5zzdGkhvubLPQkSd/HiM0h4ldRo5pmUpZmPcsr4hMFKPt+ZwGHo
- N5NPMymQV2wG1Pa57YHIYuDYOZvmtAqa6+Ex0G212+A6t7YKbdVosmRvtrAUT3jo61FFHkFyA
- 6yeYUWJkCWPVod3lTkrd8sW/6LZamiTSia3L5Ti2P072CQRX/zHis5Ll1ALQWos8Wg8oNHdx3
- w/YXpM6aW3rZF+PGM9B3bZ/UwPLHysjRPGDeHATB50kACEJc2LAOJpAcRZVhrrG3I+KIx5LOy
- 0zFnpL21x5CZO8YdSd4kjJ1+jdKeT7F6TB85VbRMhowEEOn7BLfykr4AIDMuTcv+nM0kPiww3
- FzppwZPRIMUcqQKCPGjow7bCDhYcdWwZ2gj40OYhVM7OSj0MC7zZNOIIT+f7LbG4s4FzxDSEg
- H5EyAZXnHhOXwoIep9/nex6j+U/yhksdSHGB7OjsnYOxaEhzJk8gOqEluX1thj/wd6a/YK2h1
- WNatC0rmAnMFgEJzXUg4dX783MF7gZxDXtSRi8RVJsluGTqCju1IpsGbxU/C0vlHqUjGKRASV
- YNNnre6ax8YNPQFR17A5HFFZNvGBvbIQXBIoWBpneK01e4tfUtQWJGfkfuw8HxND8aiKeUgFp
- JO3uECfbcnitQt8zahrEApVr0A3PF31SVnKTw4HvfjAh1so4P8=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Nov 18, 2021 at 8:01 AM Teng Qi <starmiku1207184332@gmail.com> wrote:
->
-> The definition of macro MOTO_SROM_BUG is:
->   #define MOTO_SROM_BUG    (lp->active == 8 && (get_unaligned_le32(
->   dev->dev_addr) & 0x00ffffff) == 0x3e0008)
->
-> and the if statement
->   if (MOTO_SROM_BUG) lp->active = 0;
->
-> using this macro indicates lp->active could be 8. If lp->active is 8 and
-> the second comparison of this macro is false. lp->active will remain 8 in:
->   lp->phy[lp->active].gep = (*p ? p : NULL); p += (2 * (*p) + 1);
->   lp->phy[lp->active].rst = (*p ? p : NULL); p += (2 * (*p) + 1);
->   lp->phy[lp->active].mc  = get_unaligned_le16(p); p += 2;
->   lp->phy[lp->active].ana = get_unaligned_le16(p); p += 2;
->   lp->phy[lp->active].fdx = get_unaligned_le16(p); p += 2;
->   lp->phy[lp->active].ttm = get_unaligned_le16(p); p += 2;
->   lp->phy[lp->active].mci = *p;
->
-> However, the length of array lp->phy is 8, so array overflows can occur.
-> To fix these possible array overflows, we first check lp->active and then
-> return -EINVAL if it is greater or equal to ARRAY_SIZE(lp->phy) (i.e. 8).
->
-> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-> Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>
+Hi Nick,
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+On Wed, Nov 17, 2021 at 9:08 PM Nick Terrell <nickrterrell@gmail.com> wrote:
+> The variable `litLengthSum` is only used by an `assert()`, so when
+> asserts are disabled the compiler doesn't see any usage and warns.
+>
+> This issue is already fixed upstream by PR #2838 [0]. It was reported
+> by the Kernel test robot in [1].
+>
+> Another approach would be to change zstd's disabled `assert()`
+> definition to use the argument in a disabled branch, instead of
+> ignoring the argument. I've avoided this approach because there are
+> some small changes necessary to get zstd to build, and I would
+> want to thoroughly re-test for performance, since that is slightly
+> changing the code in every function in zstd. It seems like a
+> trivial change, but some functions are pretty sensitive to small
+> changes. However, I think it is a valid approach that I would
+> like to see upstream take, so I've opened Issue #2868 to attempt
+> this upstream.
+>
+> [0] https://github.com/facebook/zstd/pull/2838
+> [1] https://lore.kernel.org/linux-mm/202111120312.833wII4i-lkp@intel.com/T/
+> [2] https://github.com/facebook/zstd/issues/2868
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Nick Terrell <terrelln@fb.com>
+
+Thanks for your patch!
+
+> --- a/lib/zstd/compress/zstd_compress_superblock.c
+> +++ b/lib/zstd/compress/zstd_compress_superblock.c
+> @@ -411,6 +411,8 @@ static size_t ZSTD_seqDecompressedSize(seqStore_t const* seqStore, const seqDef*
+>      const seqDef* sp = sstart;
+>      size_t matchLengthSum = 0;
+>      size_t litLengthSum = 0;
+> +    /* Only used by assert(), suppress unused variable warnings in production. */
+> +    (void)litLengthSum;
+
+The Linux way-to do this is to add __maybe_unused.
+But perhaps you don't want to introduce that in the upstream codebase.
+
+>      while (send-sp > 0) {
+>          ZSTD_sequenceLength const seqLen = ZSTD_getSequenceLength(seqStore, sp);
+>          litLengthSum += seqLen.litLength;
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
