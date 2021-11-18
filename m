@@ -2,118 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E2E9455507
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Nov 2021 08:01:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03A2A455510
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Nov 2021 08:06:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243514AbhKRHEY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 18 Nov 2021 02:04:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54856 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238258AbhKRHEX (ORCPT
+        id S242809AbhKRHJJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 18 Nov 2021 02:09:09 -0500
+Received: from mout.kundenserver.de ([212.227.126.135]:55191 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231443AbhKRHJJ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 18 Nov 2021 02:04:23 -0500
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F9D3C061570;
-        Wed, 17 Nov 2021 23:01:23 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id j5-20020a17090a318500b001a6c749e697so6045784pjb.1;
-        Wed, 17 Nov 2021 23:01:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oM4jK15lu4pb/vtYZCteppAAAeGITk9zIwzzPns4s2M=;
-        b=Yg4QTkpHOhKs4fBF2mv/OAGj3o2BQ2/riUOjUg40zxhb7sUkdERxwISdHtipQbWltY
-         hcO2BpQ4CGAHHtHXdMu8suVuJt7s/9ZkLInUnNoxDvJNjEtuZDztyrDVFj2+6mRKQZcz
-         ToITmBWvAdFjDxN2QpXJhpsY+Nsx+NsRa5yALHimrc4QqRfO2dKUlkB8A2iAvS1qXE3R
-         xPFNgk4cNFv41sL+bJTN0JyicURtbbtuCb33UuJ1AlcxlyvhfnjUrSMXbO1/xTHUioZv
-         /4IhZEWhvMw8TxN5566UiaSQHnX/u5bQfyX5GldGpfkU+NNLFU6qinpInbXoq0YzWt5z
-         RkJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oM4jK15lu4pb/vtYZCteppAAAeGITk9zIwzzPns4s2M=;
-        b=DzBP934ABJhOBonk4z6PGuDaHZNAGAM2MZn7q6+ya5/0uqEM8KUamrY3pO4QDWKnls
-         tebT2ZVOkkv45seJ5Et6hwwVzsu7tzurYUmRj3LbQX9xII8fQtrWPfkzODZe5nctlngI
-         1lNcGcLxkZPHWKIl6I7qWbGE+/g+zpK+zpl5uCc5lhuMQP7J4dISb6qFHBqeGVU47sck
-         cXkWFzTSk55EQPqbl62kQFgDjN5mTl4B8/o0AJ2U5TwucIQ+2+hinheNuN2G8iUh/yLN
-         3BVzZamdS4t7ArMlZ6coE89KPiTBXCHaDxxJRW+5k3tB971w4bf75WQoI9Qm7whEd46P
-         TYyA==
-X-Gm-Message-State: AOAM530wGu49HGGgSvgCij6nl0rNaJ74pG+aGE4nlaMV8duOfz5lpNRY
-        2gM0q/g0UWMAm77cAOewgtU=
-X-Google-Smtp-Source: ABdhPJwWsJla+gLDtPWKcLO66tAPghK3N7UvA75f2P8LyQNKxURsj+zxVkMieuZSK3ta2TE6Rd8/gA==
-X-Received: by 2002:a17:90a:1b26:: with SMTP id q35mr7580985pjq.212.1637218882909;
-        Wed, 17 Nov 2021 23:01:22 -0800 (PST)
-Received: from localhost ([219.142.138.170])
-        by smtp.gmail.com with ESMTPSA id u23sm1775337pfl.105.2021.11.17.23.01.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Nov 2021 23:01:22 -0800 (PST)
-From:   Teng Qi <starmiku1207184332@gmail.com>
-To:     davem@davemloft.net, kuba@kernel.org, tanghui20@huawei.com,
-        arnd@arndb.de
-Cc:     netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
-        islituo@gmail.com, Teng Qi <starmiku1207184332@gmail.com>,
-        TOTE Robot <oslab@tsinghua.edu.cn>
-Subject: [PATCH v2] net: ethernet: dec: tulip: de4x5: fix possible array overflows in type3_infoblock()
-Date:   Thu, 18 Nov 2021 15:01:18 +0800
-Message-Id: <20211118070118.63756-1-starmiku1207184332@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 18 Nov 2021 02:09:09 -0500
+Received: from mail-wr1-f42.google.com ([209.85.221.42]) by
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1N4yuK-1mdT6h3uTM-010tBj; Thu, 18 Nov 2021 08:06:07 +0100
+Received: by mail-wr1-f42.google.com with SMTP id n29so9489190wra.11;
+        Wed, 17 Nov 2021 23:06:07 -0800 (PST)
+X-Gm-Message-State: AOAM532AifYI4jU7rKXgSwn0NR2idR9NCx0bdWV5YC500+jsbJSBrP45
+        KIU5ko9R8zrmv9FaPEphb+weHkM3zT0dQ3xr0cQ=
+X-Google-Smtp-Source: ABdhPJw/0fDUXwFJX8w8eAQlT4yGLHAFhPQpcpmd+gcXpzvGBgl+xm5e+ThehwL1RJZLZwQm3zC8zp6otu+O5W1WRlw=
+X-Received: by 2002:adf:efc6:: with SMTP id i6mr28866965wrp.428.1637219167491;
+ Wed, 17 Nov 2021 23:06:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211118070118.63756-1-starmiku1207184332@gmail.com>
+In-Reply-To: <20211118070118.63756-1-starmiku1207184332@gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 18 Nov 2021 08:05:51 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3HsvNe2Rkpx9DqDRLpxCFrOi8hx5iAhJziwOQcKj-Ltw@mail.gmail.com>
+Message-ID: <CAK8P3a3HsvNe2Rkpx9DqDRLpxCFrOi8hx5iAhJziwOQcKj-Ltw@mail.gmail.com>
+Subject: Re: [PATCH v2] net: ethernet: dec: tulip: de4x5: fix possible array
+ overflows in type3_infoblock()
+To:     Teng Qi <starmiku1207184332@gmail.com>
+Cc:     David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, tanghui20@huawei.com,
+        Arnd Bergmann <arnd@arndb.de>,
+        Networking <netdev@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Jia-Ju Bai <baijiaju1990@gmail.com>, islituo@gmail.com,
+        TOTE Robot <oslab@tsinghua.edu.cn>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:cHhTKein5BxNHNld9DHUgvqbA2RjfkZ2Rzb8QXQBJedQ3dzYSRI
+ qqfq1Ns+6OyK8u0F1116DxTfp8yPEJ+wrrfRpKhP4KYWG6BRtMnFBvWJZ/yXKIYi0aAAO3s
+ RCkrjPOn0f2UuqJceg59et5N5P3nNlu4455DcA7Q3hj+tD8aoqF0DVzo71+Yh6cRrARmIyb
+ xrNAXfYoSzMPk+38H8MsA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Vf3rweY/7RQ=:8PV5wjclh63/C+0w63McGX
+ acq8lktPaw/PdZPxCbl80SdRsj4Dl3NKoAel5S+SqchUV19eODsLsxDeGNxuk7FeEq4SxyrHZ
+ apwwTxJTMvyrAy/502BEfPDLaFkIZHDFSOrcKEuqXM2s7biOd21q34T8oq7S/1m+ZlLEsX3q/
+ flqHbPnXTd2AbEg6mfELxf5zzdGkhvubLPQkSd/HiM0h4ldRo5pmUpZmPcsr4hMFKPt+ZwGHo
+ N5NPMymQV2wG1Pa57YHIYuDYOZvmtAqa6+Ex0G212+A6t7YKbdVosmRvtrAUT3jo61FFHkFyA
+ 6yeYUWJkCWPVod3lTkrd8sW/6LZamiTSia3L5Ti2P072CQRX/zHis5Ll1ALQWos8Wg8oNHdx3
+ w/YXpM6aW3rZF+PGM9B3bZ/UwPLHysjRPGDeHATB50kACEJc2LAOJpAcRZVhrrG3I+KIx5LOy
+ 0zFnpL21x5CZO8YdSd4kjJ1+jdKeT7F6TB85VbRMhowEEOn7BLfykr4AIDMuTcv+nM0kPiww3
+ FzppwZPRIMUcqQKCPGjow7bCDhYcdWwZ2gj40OYhVM7OSj0MC7zZNOIIT+f7LbG4s4FzxDSEg
+ H5EyAZXnHhOXwoIep9/nex6j+U/yhksdSHGB7OjsnYOxaEhzJk8gOqEluX1thj/wd6a/YK2h1
+ WNatC0rmAnMFgEJzXUg4dX783MF7gZxDXtSRi8RVJsluGTqCju1IpsGbxU/C0vlHqUjGKRASV
+ YNNnre6ax8YNPQFR17A5HFFZNvGBvbIQXBIoWBpneK01e4tfUtQWJGfkfuw8HxND8aiKeUgFp
+ JO3uECfbcnitQt8zahrEApVr0A3PF31SVnKTw4HvfjAh1so4P8=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The definition of macro MOTO_SROM_BUG is:
-  #define MOTO_SROM_BUG    (lp->active == 8 && (get_unaligned_le32(
-  dev->dev_addr) & 0x00ffffff) == 0x3e0008)
+On Thu, Nov 18, 2021 at 8:01 AM Teng Qi <starmiku1207184332@gmail.com> wrote:
+>
+> The definition of macro MOTO_SROM_BUG is:
+>   #define MOTO_SROM_BUG    (lp->active == 8 && (get_unaligned_le32(
+>   dev->dev_addr) & 0x00ffffff) == 0x3e0008)
+>
+> and the if statement
+>   if (MOTO_SROM_BUG) lp->active = 0;
+>
+> using this macro indicates lp->active could be 8. If lp->active is 8 and
+> the second comparison of this macro is false. lp->active will remain 8 in:
+>   lp->phy[lp->active].gep = (*p ? p : NULL); p += (2 * (*p) + 1);
+>   lp->phy[lp->active].rst = (*p ? p : NULL); p += (2 * (*p) + 1);
+>   lp->phy[lp->active].mc  = get_unaligned_le16(p); p += 2;
+>   lp->phy[lp->active].ana = get_unaligned_le16(p); p += 2;
+>   lp->phy[lp->active].fdx = get_unaligned_le16(p); p += 2;
+>   lp->phy[lp->active].ttm = get_unaligned_le16(p); p += 2;
+>   lp->phy[lp->active].mci = *p;
+>
+> However, the length of array lp->phy is 8, so array overflows can occur.
+> To fix these possible array overflows, we first check lp->active and then
+> return -EINVAL if it is greater or equal to ARRAY_SIZE(lp->phy) (i.e. 8).
+>
+> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+> Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>
 
-and the if statement
-  if (MOTO_SROM_BUG) lp->active = 0;
-
-using this macro indicates lp->active could be 8. If lp->active is 8 and
-the second comparison of this macro is false. lp->active will remain 8 in:
-  lp->phy[lp->active].gep = (*p ? p : NULL); p += (2 * (*p) + 1);
-  lp->phy[lp->active].rst = (*p ? p : NULL); p += (2 * (*p) + 1);
-  lp->phy[lp->active].mc  = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].ana = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].fdx = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].ttm = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].mci = *p;
-
-However, the length of array lp->phy is 8, so array overflows can occur.
-To fix these possible array overflows, we first check lp->active and then
-return -EINVAL if it is greater or equal to ARRAY_SIZE(lp->phy) (i.e. 8).
-
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>
----
-v2:
-* Check lp->active in separate if statement within macro WARN_ON() and 
-return -EINVAL if it is greater or equal to ARRAY_SIZE(lp->phy). Instead
-of checking lp->active and MOTO_SROM_BUG together in the same if
-statement.
-  Thank Arnd Bergmann for helpful and friendly suggestion.
----
- drivers/net/ethernet/dec/tulip/de4x5.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/ethernet/dec/tulip/de4x5.c b/drivers/net/ethernet/dec/tulip/de4x5.c
-index 13121c4dcfe6..828b9642fd68 100644
---- a/drivers/net/ethernet/dec/tulip/de4x5.c
-+++ b/drivers/net/ethernet/dec/tulip/de4x5.c
-@@ -4709,6 +4709,10 @@ type3_infoblock(struct net_device *dev, u_char count, u_char *p)
-         lp->ibn = 3;
-         lp->active = *p++;
- 	if (MOTO_SROM_BUG) lp->active = 0;
-+	/* if (MOTO_SROM_BUG) statement indicates lp->active could
-+	 * be 8 (i.e. the size of array lp->phy) */
-+	if (WARN_ON(lp->active >= ARRAY_SIZE(lp->phy)))
-+		return -EINVAL;
- 	lp->phy[lp->active].gep = (*p ? p : NULL); p += (2 * (*p) + 1);
- 	lp->phy[lp->active].rst = (*p ? p : NULL); p += (2 * (*p) + 1);
- 	lp->phy[lp->active].mc  = get_unaligned_le16(p); p += 2;
--- 
-2.25.1
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
