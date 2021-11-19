@@ -2,105 +2,59 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0920F457896
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Nov 2021 23:21:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E15C94578CB
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Nov 2021 23:29:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235435AbhKSWY0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Nov 2021 17:24:26 -0500
-Received: from mout.gmx.net ([212.227.15.19]:59559 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234568AbhKSWY0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Nov 2021 17:24:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1637360478;
-        bh=3MDgLBbI8SD25h3sLgwLmW3+C96q0mb9hzc1fMTcOn4=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=hcQ8JTBFEtnxhQupNovspUxPLqp9Za9hPAfDrWu/NzVbDJrGhs7G7QoL40NX5qUdD
-         HOQEkywBsDGzhiD6ApbEATf7oau79ANXXXwa8BfifbDlMguCpvwAcekVHYDJJqQvHM
-         Nso/4287TOuClh06o8a221zHlXSM2tWDW8RS1So8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.164.19]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N7i8O-1mbjcC1YEE-014i0i; Fri, 19
- Nov 2021 23:21:18 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH 4/4] parisc: Convert PTE lookup to use extru_safe() macro
-Date:   Fri, 19 Nov 2021 23:20:42 +0100
-Message-Id: <20211119222042.361671-4-deller@gmx.de>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211119222042.361671-1-deller@gmx.de>
-References: <20211119222042.361671-1-deller@gmx.de>
+        id S231799AbhKSWcS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Nov 2021 17:32:18 -0500
+Received: from mta-tor-002.bell.net ([209.71.212.29]:39504 "EHLO
+        cmx-torrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230392AbhKSWcR (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 19 Nov 2021 17:32:17 -0500
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 61976487000BFB62
+X-CM-Envelope: MS4xfNMfBse6HPxRsw7wJyiS7be17ptV+WdKiu8PrNz4lZWkeKKBeSJR6aC15MeOF47Ln8Nm+cdxuTXdoTNo/LPUFgY0O4hkbT9nodcgurZXw+LqUQ5ocPZz
+ IPZqM1qpp8xvpLcWouCCH9OSGL3s3SSNpZNih66JxweZPfZMURoYp7IVWLHMwIDPqO54N2F64bqYfCt1jj2xBrVNjpKm+rQfEmNQ/2Qe/T+AdIyvdMeGhGjz
+ n/CbxVnUDpVWNU+x5zu/NMFlF7+QzDhINLJIgBEVSDJKES9Y9yDkpwuAcbvnAwpmQ8LXKnnKRFkv92LNoPh3Jtv90osOjMV3kv7qAWwpCS+oFpWg6GV5FayB
+ 7AdUCI+/p3BTkngK+g/XKpjIdmolgg==
+X-CM-Analysis: v=2.4 cv=W7Vb6Tak c=1 sm=1 tr=0 ts=6198253a
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=jaAiz0gFaRuETUzI4n8A:9 a=QEXdDO2ut3YA:10
+ a=ATlVsGG5QSsA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-torrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 61976487000BFB62; Fri, 19 Nov 2021 17:29:14 -0500
+Message-ID: <093e8bd8-73ab-b33f-8488-00080e3a040c@bell.net>
+Date:   Fri, 19 Nov 2021 17:29:15 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/khI+MA3cGIyWemPFF04iNx4p1cOgfBmfNH3HTqzvdi01vySrwn
- BGAhHL4dQksFPlgjVMCcOuPBlUiP1dP8fvSVSYpE0CEEubXnLCAQLwocHnQ0De3ptr6ss+Y
- tqIHT5EMANcfgOe7ix/4K9AUxJhhGqvnGTwFgklI7nDflziE8h6n7p8ktb+ZvleSkj/d8LO
- UABvVggh2kHwn2S9fXiQQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ULdo3TFUNuo=:+YN43kYujT62H7mlZsVDPx
- dlPcFWK2khmvn9HqdNz3dZR8e41/H5xHW8dUMyqyKEktT1RReJRTNP3oypv7PK6mmbnXL4I/X
- CWsHS9iS+LDNE6Eui6vNMV1UjwQrebPtSKFDpTbh4qOF7P3GfNjdI3hRPKNgc/z+OztNoefSb
- ZnsZCFAHuf/h6T517mAaYcsIxKm+9oZ4uo9T1b7ogvlbt+voGXWfvXk63BWbRiF1Hv2gLR0WT
- o3VHR+8SYF78TUtblj28JOJV96ECiDXslVpp8Ll77etxv2rrj09nDbwdEowGPsHSo7PWEvzWr
- V8IvQtrwLT6pZDmw1JVWnB+uSTwegyDStCbYgcvgU5W6xxyb8y8cXed5Cga5v8F2WSv+xBMJE
- +s66gQoO5jJJbk2AvDdWRpCakIL6fvWb7GWn5egWjpvJjwPXHWpI2Uixwq79NAhYXNUr4hpqP
- kz2M1g1POOmyboJJa9z1jTcYjmP7bUFMRuT1bQ3zQQD6/lkiISbVhm9xeYzEUynbghOuY6YJD
- kJH61mpHV4JVCPDMl3DqDi+7hxx67A8ZrEF/tu4cjemRGurvCpifApaZy4yYqs2ZTPfwWQsq0
- jrjE21GN046bGqiDk0Bxq1RmQiPhMJgexetyyiG2Dy9oInf57NXbZqJdYDvrulb4cGByf9UvG
- DXd85OctqYA1UruqbH4CFUUYqin2S5Cm/V2+9uwNybxDgxRkvRJ3FYcc9ZwFQEFUr++/+zAfO
- Jc91rxQnEIGVYzWStXkaHRoI9dgNP71jLDtu0byRxbDmeFtf2Cae8E0ckJK56JbK8YpUzbXBj
- ldVaz/xa8nhtFUVRK7li155U0Hs40XfhV9oCzc0QdF9cMPQYOPfp2aLpixQHxWGjKumcuBN8r
- LE/D15cfP4RHHvZC8mHnMUV86G08dFZFML7LNBrEvf1x0KvE1Rs+kLg+osvTMEKUEYcUsQi8V
- An2dsravQCYFRXu25h2JAqj9DDC6YttYJRf3ImrLiKnd0+4vAYTkUReMbus31NlZuC2M+jJSM
- Fo2X6pf+B7J7Ijcjwgj3AXa33fOye1L/fNrLeGHt3K597irgPHUiXNsLr5M7aGW7vqDWineiw
- hQPiT4/qjw6PO0=
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.1
+Subject: Re: [PATCH 1/4] parisc: Increase FRAME_WARN to 4096 bytes on parisc
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Sven Schnelle <svens@stackframe.org>,
+        kernel test robot <lkp@intel.com>
+References: <20211119222042.361671-1-deller@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <20211119222042.361671-1-deller@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Convert the PTE lookup functions to use the safer extru_safe macro.
+On 2021-11-19 5:20 p.m., Helge Deller wrote:
+> PA-RISC uses a much bigger frame size for functions than other
+> architectures. So increase it to 2048 for 32- and 64-bit kernels.
+The title says 4096.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- arch/parisc/kernel/entry.S | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+Dave
 
-diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-index 88c188a965d8..6e9cdb269862 100644
-=2D-- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -366,17 +366,9 @@
- 	 */
- 	.macro		L2_ptep	pmd,pte,index,va,fault
- #if CONFIG_PGTABLE_LEVELS =3D=3D 3
--	extru		\va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
-+	extru_safe	\va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
- #else
--# if defined(CONFIG_64BIT)
--	extrd,u		\va,63-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
--  #else
--  # if PAGE_SIZE > 4096
--	extru		\va,31-ASM_PGDIR_SHIFT,32-ASM_PGDIR_SHIFT,\index
--  # else
--	extru		\va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
--  # endif
--# endif
-+	extru_safe	\va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
- #endif
- 	dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
- #if CONFIG_PGTABLE_LEVELS < 3
-@@ -386,7 +378,7 @@
- 	bb,>=3D,n		\pmd,_PxD_PRESENT_BIT,\fault
- 	dep		%r0,31,PxD_FLAG_SHIFT,\pmd /* clear flags */
- 	SHLREG		\pmd,PxD_VALUE_SHIFT,\pmd
--	extru		\va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
-+	extru_safe	\va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
- 	dep		%r0,31,PAGE_SHIFT,\pmd  /* clear offset */
- 	shladd		\index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
- 	.endm
-=2D-
-2.31.1
+-- 
+John David Anglin  dave.anglin@bell.net
 
