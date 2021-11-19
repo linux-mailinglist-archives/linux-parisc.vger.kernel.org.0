@@ -2,98 +2,101 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75FAE457897
+	by mail.lfdr.de (Postfix) with ESMTP id BF628457898
 	for <lists+linux-parisc@lfdr.de>; Fri, 19 Nov 2021 23:21:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234568AbhKSWY1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        id S235417AbhKSWY1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
         Fri, 19 Nov 2021 17:24:27 -0500
-Received: from mout.gmx.net ([212.227.15.18]:38375 "EHLO mout.gmx.net"
+Received: from mout.gmx.net ([212.227.15.18]:51763 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235417AbhKSWY0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        id S235428AbhKSWY0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
         Fri, 19 Nov 2021 17:24:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
         s=badeba3b8450; t=1637360478;
-        bh=78Otr5FCWbI0v6xHgo/FU6liYj1r3nl3GwYib82mtbw=;
+        bh=z4vCpjE4uf7m8UTDC8XDUV/zO0UaFbGiapgwKYsaC+g=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=aMmuGfRnQdOX8wg7sv2zZUbF+ir08xgNdaNjGXWGw6Fg+To7jdfX7JiKBuHIayg94
-         yvJ6tqqcj+dOfun/beNq+1d3Fht3+TS1Q7JvS2UI84QLmfl86IyBsQfGUuhIo9bXgH
-         c86Qj64QuVR64XmiSfwaPwmdlSm/vLP+cj9phw7U=
+        b=cRcpT2VwFTp3Feqj0UfTlSNrKaWaqc/HHRKSU0sOJMkdJG7ofmrbqei/LovFV/nSY
+         1NihN/7GPOEo0dg2GpfDYMndRarRAYacBQ72DZkyNComtZy3QJ0+psH3RZFN4aawIX
+         oAi4B9IfEEKG33pjuRkYX2Tqfc4Nx1bJTz6e0tA4=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from ls3530.fritz.box ([92.116.164.19]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MD9X9-1mxEgJ0Avh-0099cF; Fri, 19
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MGhuK-1mt7wS0ql0-00DqJA; Fri, 19
  Nov 2021 23:21:18 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
 Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
         Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH 2/4] parisc: Provide an extru_safe() macro to extract unsigned bits
-Date:   Fri, 19 Nov 2021 23:20:40 +0100
-Message-Id: <20211119222042.361671-2-deller@gmx.de>
+Subject: [PATCH 3/4] parisc: Fix extraction of hash lock bits in syscall.S
+Date:   Fri, 19 Nov 2021 23:20:41 +0100
+Message-Id: <20211119222042.361671-3-deller@gmx.de>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211119222042.361671-1-deller@gmx.de>
 References: <20211119222042.361671-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jEPfaIQdJ/5gYVi8IDSiHto1522m4bxIOiDUTIbj24AlDGA4KI2
- r1cFA32WDCEBYYysTJ02ERYi8y3uWK9vH+xsnRZ6FRLyky4PhMAreXpfRFcCa9ZjUjg7vGB
- SiuvkdtdRqVp/L1EJM2dfNEmfyZP/tAVnYmQwz5zZFnnxe6Y2HqRHdYPS2kxFuoBPkjRy9o
- 6oBDsU04UGhl6JBlFkyQw==
+X-Provags-ID: V03:K1:sQ1aQHh/oGf1gn2Vb4Qew5TJU7tRlb9w+o94BROmQpTqeSujowD
+ ZhhgtOoqN4uxJ0HD+vKJ+MGt1t/JPJJQjF3y9HJIws/TD2gbY1O7uByuRHwSbmaynx0cNeC
+ +4hK5b2VsV6ONPYhEYn8S6PPQlxDMSoSIZIoE+PnH+aqavrCViFLEWQg4Nb7ldK1JudZnoC
+ 3koWTd4V7f3vT8IotsDow==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Bq7Xp4rK55M=:6undbuksX2bE35hy0heSVS
- 6soTNyx829C7+Rf//QKP9UVqPeGK3WIc9i5G/GyhUIck1c1rCxeNUCwJLhWYpbRMsDXChnLPl
- RgQs5OLWXH+RJYS4qMknTDbMzPHL99i81tkl8JwTb1CxbCEf/I5HGL1GUk1q+EqhiGhnX8Roi
- jtlEJnIgFfaI1xHoC0LJu98ZfXG6sbTw5QeqmPJBhBYU49dfi1DUVBf+5UL1OW1fk4A0NWD3M
- 8BW+XKxILoETwlUJnF20NgiEtzhXSjU+k5q6FgkR2a/sx/lKl+Ml0ETRpbYjddZ2fFP9ZAH7h
- iv+cWDqp5JxP+bQ4v8g42em7XUfkrx6ZELEh77Ru8KEcV9rx6blGp1SV/jaHIjXddcw1ac9Bq
- v2sMmxdm6rjX0Fkn66sfHtUX2U+2Yq+0hdyIslfZLaB/TuMrZ03abodBxoP9D3kqoywwk7hlL
- 0cRhHrfQcAzmN6UdujNkND0TlpQ2mgryuwlN8GR87q9p0MSpS885fv6uJ/U/UgRdczsdImP1z
- M6quS+QkC+n7+4xSfOtUtsLr/VFgUwRXyq0zwW3ECOU8eIO4NbXAesmTzlSByeuZEr91yuC5L
- E8BCPuPHwSQ6kRs8tLO7Tmr+zc2qCsA+IY79luX+B12rUQQ8xkQK5m0Nv5ZibiexJEZTzCj8v
- CZ8VKPEmZlEqksbWDkafnubf93DabtG2IZu3KscdCWZbKqcZ2ZlNk/FJaiOLjhR5iGIJ6NPce
- EGOVcvi2IG+P0xLu//oK5CHwYbz3XoCedvE/NEg0qyUkCWPHfhL/HYa7ZJ6L5UfR8V7VdSATM
- StcezpVWMiWPW/6x0WBo1Qp6ZcQIjMM2laQvbeQnKFdZSH3TUln/G8/HYDAqQzx0+jPqswt4a
- SRMCESIEb1iiw4CilvJz1T5UJd8ckHSSV2F52/oonFdUE5TQ2PHZ0RinBUVcBus5ftOds2/5F
- RNlbI5GV4CxKvFZTrM04XNBei52Gg+3vU+bySHgqe7k0ELDjENNgFGaHNQzkGG/ZlVNy7p5L7
- eOMrPgFgeJnALgEKtgWgmhXC2IuekZXlI2yRlmL4bHjyvTx1+8NJK2iweQRhVZz39o3l93bVJ
- 2PXmGGflNODZlk=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1GQ3Vfk6Qiw=:oA0rhGozVjnt6cV0UNEbpN
+ OvXJbfgbQREf/Zj6u3gcgIjdvGV15pSRHT0mo4az/Vuv/kiUgIdyRP/kg2wOnkHTUfLadVr/K
+ tzzAcu/72EjopKosF6KZZNvGM/nrdV/ej3dIHrNIpfx1iv8cyh1yPVtDW+20iv4HtYO/Dddum
+ 2XgLa0S1T/ZnpbP5VRxvfO4FOASUpnw8M7R+jyjsYmMnunbJeobkT0gfZSHjsQxbh8/vwRtAJ
+ 8M6D1pgNMhABvKZXh1nwfs9ccYpIh6f4Zmrb7YkLUeViZg+8q45r7YwRgUDhJaYkYDA6xcyN3
+ 217KClbwFQi/lgqoYtultt/PWliV2VlOddZZ7CAtjJoP8l2LgKRgNidKZgpDOoC+uSHBUsbDB
+ vbFyn2UT4axFQUy3/xGSIBjY9lty0uRoH7InN0K8toPflX8abhBSBW98p027r2mNHVSURanGe
+ UliaM5YbJ914u3CaZMchEVFXP8RYskrAIKBI6MUJQinXC0vJy2oUBePWeJTm1kRQzj0NicLRP
+ ADq+vxVFlism7huWlLo8xkUjsyvLl7J2grscqWh00yZZLWFuWBgyRAcCf9uOlHg5C4JnehB4r
+ KzGzpceHt4MOpW8gFzWfxegKM1UUttBrQdUBiube5yW41T1qIUu7qzbKtjbZEGhPPpkf0HqYX
+ un0MdqMgCq+mOLusgyNSlh9DVesZ4S22+Sqy1GLok5nM0ryI+fosIQdpJbPHNIXfNIbOqoncd
+ 2qbq2pJbDonEACA0D2x26M7aTT1yMZEE7MEx0N50F0tPM+USfXSxfBsKWcNOrmV0nABaaaCCS
+ oVvl7J6YRAhC0yO+ecSCvBuutqwQ0mJBPZ19SzV9x0lA6/DH5IVOYYjbPlEyFUsg9NT8LRwi9
+ KBrPWI6RdvHFAfZhIOTcTQTmAQ59hlgM/EGclfXcTGfIMa4wYOh0MpFEE0YH3GAjW8kaAMwTi
+ 5ZVMfTFAWnMKor8bEP8xVl1GF4D97DuMens7ooR7HwIJAzGlosKlXOgkS+C6EIRczSengIdXq
+ btI8c83BmIJOcEjd4W6aUplb9PqfZOT2lAMfO+d0CGgcM+AxMvhP+J3eMWealFiYfaTpPgKU6
+ KcKwD1XrZAOMvA=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The extru instruction leaves the most significant 32 bits of the
-target register in an undefined state on PA 2.0 systems.
-Provide a macro to safely use extru on 32- and 64-bit machines.
+From: John David Anglin <dave.anglin@bell.net>
 
-Suggested-by: John David Anglin <dave.anglin@bell.net>
+The extru instruction leaves the most significant 32 bits of the target
+register in an undefined state on PA 2.0 systems. If any of these bits
+are nonzero, this will break the calculation of the lock pointer.
+
+Fix by using extrd,u instruction via extru_safe macro on 64-bit kernels.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- arch/parisc/include/asm/assembly.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/parisc/kernel/syscall.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/=
-assembly.h
-index 39e7985086f9..6d13ae236fcb 100644
-=2D-- a/arch/parisc/include/asm/assembly.h
-+++ b/arch/parisc/include/asm/assembly.h
-@@ -147,6 +147,17 @@
- 	extrd,u \r, 63-(\sa), 64-(\sa), \t
- 	.endm
+diff --git a/arch/parisc/kernel/syscall.S b/arch/parisc/kernel/syscall.S
+index 4fb3b6a993bf..d2497b339d13 100644
+=2D-- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -566,7 +566,7 @@ lws_compare_and_swap:
+ 	ldo	R%lws_lock_start(%r20), %r28
 
-+	/* Extract unsigned for 32- and 64-bit
-+	 * The extru instruction leaves the most significant 32 bits of the
-+	 * target register in an undefined state on PA 2.0 systems. */
-+	.macro extru_safe r, p, len, t
-+#ifdef CONFIG_64BIT
-+	extrd,u	\r, 32+(\p), \len, \t
-+#else
-+	extru	\r, \p, \len, \t
-+#endif
-+	.endm
-+
- 	/* load 32-bit 'value' into 'reg' compensating for the ldil
- 	 * sign-extension when running in wide mode.
- 	 * WARNING!! neither 'value' nor 'reg' can be expressions
+ 	/* Extract eight bits from r26 and hash lock (Bits 3-11) */
+-	extru  %r26, 28, 8, %r20
++	extru_safe  %r26, 28, 8, %r20
+
+ 	/* Find lock to use, the hash is either one of 0 to
+ 	   15, multiplied by 16 (keep it 16-byte aligned)
+@@ -751,7 +751,7 @@ cas2_lock_start:
+ 	ldo	R%lws_lock_start(%r20), %r28
+
+ 	/* Extract eight bits from r26 and hash lock (Bits 3-11) */
+-	extru  %r26, 28, 8, %r20
++	extru_safe  %r26, 28, 8, %r20
+
+ 	/* Find lock to use, the hash is either one of 0 to
+ 	   15, multiplied by 16 (keep it 16-byte aligned)
 =2D-
 2.31.1
 
