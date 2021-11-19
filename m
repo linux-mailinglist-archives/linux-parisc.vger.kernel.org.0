@@ -2,127 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 641D1457317
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Nov 2021 17:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46BF34577B8
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Nov 2021 21:27:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235528AbhKSQiY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Nov 2021 11:38:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236527AbhKSQiX (ORCPT
+        id S234531AbhKSUaw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Nov 2021 15:30:52 -0500
+Received: from mta-mtl-004.bell.net ([209.71.208.14]:10368 "EHLO
+        cmx-mtlrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229879AbhKSUaw (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Nov 2021 11:38:23 -0500
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26316C06174A
-        for <linux-parisc@vger.kernel.org>; Fri, 19 Nov 2021 08:35:22 -0800 (PST)
-Received: by mail-io1-xd32.google.com with SMTP id f9so13361516ioo.11
-        for <linux-parisc@vger.kernel.org>; Fri, 19 Nov 2021 08:35:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=eibhgHyEnDty6prD7kw2qZTGk1uH223Sz/QXKL+fHLw=;
-        b=h18qjdjgZVtDCMKIUSu6LP90Lt7cpkU5YxRECLslM9CPkJXI2TWj+m41EzFjnji9Zy
-         V8i4YvkKgRpQpvFC/P4e4wYdqbWtEfEfnACu/zRRmuBwfWbFYrihtYFMnWPIJOrN71p+
-         vypj6AMAxHZSQXscqMnZFE+HfDWFF4wCCDU8VwYmOo3RJ+PHCwI20OtWugWssSH/tvQ7
-         b4hkwWdKtZ8lwzPC2U+ONc7p77EpX7ZB/f6sb4rdy64A5IiZHmW4Wa02nuYPzaX0lMqC
-         QebBMa+OG88t5Ivttx7X3dNBZ93/ZIGGr3pIM1GeOFTOYrlBlciJALig0HRICL0r4BLJ
-         ySiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=eibhgHyEnDty6prD7kw2qZTGk1uH223Sz/QXKL+fHLw=;
-        b=jIW8VasKk392mSz+s2qieL/ILLkyK8v8hIRFcI1c4iT/B+KugEtkDqaumiXwwEdBnF
-         kH1JnjysyJTJviNrjTQYREL7tZBVPiqEgJwHufeaNAi8Ccs55hW0HdZVp/OSS8GId2BK
-         1jgNJFFrst8qFtThm1ZfmBIq6dkSi/eAtwVL+c1cu5jdArPx/0jjuWwp5LYbwqIt0PEd
-         HPdL/W/ZYIiMTtWNjjnftkeoOq484vuIlRuju5A8xTIwVXsQBXsGAYgiJEA9/2Aapmx8
-         AOd/4LNcBwZaInK9MI9UYzXxoDrC2PnLU4DtWSZRYiZbkSY3PYy3n1yHGhDQEW+EHzG2
-         cYpw==
-X-Gm-Message-State: AOAM530WlVylpXOOpxnNYCK+YLbp5v5Ie9pP81r9vPuP4rTCHe/EEhBr
-        KCMy/1/nhtKM70kLRs+iAi/JdpkJ6v1YRGOApn0=
-X-Google-Smtp-Source: ABdhPJxBYsP8Nz8KIrHNkvtpvVlmIww6yp59QcGzqtchpS6S02iyKyT0Ku18Zgpzijp2FLh/p2LDZ0uEeVf3cQFdOP4=
-X-Received: by 2002:a6b:d904:: with SMTP id r4mr6366769ioc.52.1637339721470;
- Fri, 19 Nov 2021 08:35:21 -0800 (PST)
+        Fri, 19 Nov 2021 15:30:52 -0500
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6197756C000AC1B1
+X-CM-Envelope: MS4xfImwhiIVUmSr6lg4Mw47mV65NZVExqOY1r1PztgBOBHCKCROqw19J+5GFtEBH9qwxXuAlNqo4A5ruPzb4xKb5X+vTMZ1RWtDYjQkaXFMyL2hBePm2VrX
+ cK6VHtetkh7m1d5w2/HCp/YBPQiTbPnbSLdjjPNVSonO2FcA/DFrylRdjRs6249nJ7X8IH9GB358TT6C7AemqbIZFFCZkJ7u13egHRY6t2vq4TWIcTbGk3vO
+ 5OaM91Irp0i2Cbsb1FFY7ut1b7ER4AcHExmrHqamtF7NEy5kaZY3T35W0IS/cG8FYxacq0WJ5xT3E7jtK3+GDTryz9MalIjp+tS/Pflvjio=
+X-CM-Analysis: v=2.4 cv=WtFIjfTv c=1 sm=1 tr=0 ts=619808c2
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=znblFtJjrKCuOqAew1MA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 6197756C000AC1B1; Fri, 19 Nov 2021 15:27:46 -0500
+Message-ID: <8125f9ae-e0ff-e3d7-f9d0-7315131fbda8@bell.net>
+Date:   Fri, 19 Nov 2021 15:27:46 -0500
 MIME-Version: 1.0
-Received: by 2002:a05:6622:2749:0:0:0:0 with HTTP; Fri, 19 Nov 2021 08:35:21
- -0800 (PST)
-Reply-To: msbelinaya892@gmail.com
-From:   msbelinaya <deligiozelenadeligioz@gmail.com>
-Date:   Fri, 19 Nov 2021 16:35:21 +0000
-Message-ID: <CAHeiC3QwDRDzRAa2=Zr1oEMz5WsCGG=aM7hd=bY20FTbnd3nnQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.1
+Subject: Re: [PATCH] parisc: Fix extraction of hash lock bits in syscall.S
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-parisc <linux-parisc@vger.kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <df51e873-4576-d4c2-7d86-b607cbb714b4@bell.net>
+ <YZfJLEmjAUdY+4OO@ls3530>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <YZfJLEmjAUdY+4OO@ls3530>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Ich biete meine Freundschaft an und glaube, dass Sie mich mit gutem
-Herzen akzeptieren werden. Ich wurde gedr=C3=A4ngt, Sie zu kontaktieren und
-zu sehen, wie wir einander am besten unterst=C3=BCtzen k=C3=B6nnen. Ich bin=
- Frau
-Kodjovi Hegbor aus der T=C3=BCrkei und arbeite als Divisionsleiterin f=C3=
-=BCr
-Operationen bei der StandardBNP bank limited Turkey . Ich glaube, es
-ist der Wille Gottes, dass ich Ihnen jetzt begegnen werde. Ich habe
-ein wichtiges gesch=C3=A4ftliches Gespr=C3=A4ch, das ich mit Ihnen teilen
-m=C3=B6chte, von dem ich glaube, dass es Sie interessiert, da es mit Ihrem
-Nachnamen in Verbindung steht und Sie davon profitieren werden.
+On 2021-11-19 10:56 a.m., Helge Deller wrote:
+> * John David Anglin<dave.anglin@bell.net>:
+>> The extru instruction leaves the most significant 32 bits of the target register in an undefined
+>> state on PA 2.0 systems.  If any of these bits are nonzero, this will break the calculation of the
+>> lock pointer.
+>>
+>> Fix by using extrd,u instruction on 64-bit kernels.
+> I wonder if we shouldn't introduce an extru_safe() macro.
+> The name doesn't matter, but that way we can get rid of the ifdefs and
+> use it in other places as well, e.g. as seen below.
+> Thoughs?
+Seems like a good idea.
 
- Im Jahr 2006 hat ein B=C3=BCrger Ihres Landes ein Nicht-Residentenkonto
-f=C3=BCr 36 Monate des Kalenders im Wert von =C2=A38.400.000,00 bei meiner =
-Bank
-eingerichtet. Das Ablaufdatum f=C3=BCr diesen Einlagenvertrag war der 16.
-Januar 2009. Leider starb er w=C3=A4hrend einer Gesch=C3=A4ftsreise bei ein=
-em
-t=C3=B6dlichen Erdbeben am 12. Mai 2008 in Sichuan, China, bei dem
-mindestens 68.000 Menschen ums Leben kamen.
+Only question is this hunk
 
-Das Management meiner Bank hat noch nichts von seinem Tod erfahren,
-ich wusste davon, weil er mein Freund war und ich sein Kontof=C3=BChrer
-war, als das Konto vor meiner Bef=C3=B6rderung er=C3=B6ffnet wurde. Jedoch =
-Herr
- erw=C3=A4hnte bei der Kontoer=C3=B6ffnung keine n=C3=A4chsten Verwandten/E=
-rben, und
-er war nicht verheiratet und hatte keine Kinder. Letzte Woche hat
-meine Bankdirektion mich gebeten, Anweisungen zu geben, was mit seinen
-Geldern zu tun ist, wenn der Vertrag verl=C3=A4ngert werden soll.
+@@ -366,17 +366,9 @@
+       */
+      .macro        L2_ptep    pmd,pte,index,va,fault
+  #if CONFIG_PGTABLE_LEVELS == 3
+-    extru        \va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
++    extru_safe    \va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
+  #else
+-# if defined(CONFIG_64BIT)
+-    extrd,u        \va,63-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
+-  #else
+-  # if PAGE_SIZE > 4096
+-    extru        \va,31-ASM_PGDIR_SHIFT,32-ASM_PGDIR_SHIFT,\index
+-  # else
+-    extru        \va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
+-  # endif
+-# endif
++    extru_safe    \va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
+  #endif
+      dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
+  #if CONFIG_PGTABLE_LEVELS < 3
 
-Ich wei=C3=9F, dass dies passieren wird, und deshalb habe ich nach einem
-Mittel gesucht, um mit der Situation umzugehen, denn wenn meine
-Bankdirektoren wissen, dass sie tot sind und keinen Erben haben,
-werden sie das Geld f=C3=BCr ihren pers=C3=B6nlichen Gebrauch nehmen, also =
-Ich
-m=C3=B6chte nicht, dass so etwas passiert. Das war, als ich Ihren Nachnamen
-sah, ich war gl=C3=BCcklich und suche jetzt Ihre Mitarbeit, um Sie als Next
-of Kin/Erbe des Kontos zu pr=C3=A4sentieren, da Sie den gleichen Nachnamen
-wie er haben und meine Bankzentrale das Konto freigeben wird f=C3=BCr dich.
-Es besteht kein Risiko; die Transaktion wird im Rahmen einer legitimen
-Vereinbarung ausgef=C3=BChrt, die Sie vor Rechtsverletzungen sch=C3=BCtzt.
+where we lose the PAGE_SIZE > 4096 shift.
 
-Es ist besser, dass wir das Geld beanspruchen, als es den
-Bankdirektoren zu erlauben, es zu nehmen, sie sind bereits reich. Ich
-bin kein gieriger Mensch, daher schlage ich vor, dass wir das Geld zu
-gleichen Teilen teilen, 50/50% auf beide Parteien. Mein Anteil wird
-mir helfen, mein eigenes Unternehmen zu gr=C3=BCnden und den Erl=C3=B6s f=
-=C3=BCr
-wohlt=C3=A4tige Zwecke zu verwenden, was mein Traum war.
+Dave
 
-Teilen Sie mir Ihre Meinung zu meinem Vorschlag mit, bitte ich brauche
-wirklich Ihre Hilfe bei dieser Transaktion. Ich habe Sie ausgew=C3=A4hlt,
-um mir zu helfen, nicht durch mein eigenes Tun, meine Liebe, sondern
-durch Gott wollte ich, dass Sie wissen, dass ich mir Zeit zum Beten
-genommen habe =C3=BCber diese Mitteilung, bevor ich Sie jemals kontaktiert
-habe, teilen Sie mir Ihre Meinung dazu mit und behandeln Sie diese
-Informationen bitte als STRENG GEHEIM. Nach Erhalt Ihrer Antwort,
-ausschlie=C3=9Flich =C3=BCber meine pers=C3=B6nliche E-Mail-Adresse,
-msbelinaya892@gmail.com
-gibt Ihnen Details zur Transaktion. Und eine Kopie der
-Einlagenbescheinigung des Fonds sowie die Gr=C3=BCndungsurkunde der
-Gesellschaft, die den Fonds erstellt hat.
-Gott segne, in Erwartung Ihrer dringenden Antwort
-Mit freundlichen Gr=C3=BC=C3=9Fen
-Frau Kodjovi Hegbor
-msbelinaya892@gmail.com
+-- 
+John David Anglin  dave.anglin@bell.net
+
