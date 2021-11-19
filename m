@@ -2,90 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF0CE457899
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Nov 2021 23:21:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75FAE457897
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Nov 2021 23:21:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235436AbhKSWYa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Nov 2021 17:24:30 -0500
-Received: from mout.gmx.net ([212.227.15.19]:60291 "EHLO mout.gmx.net"
+        id S234568AbhKSWY1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Nov 2021 17:24:27 -0500
+Received: from mout.gmx.net ([212.227.15.18]:38375 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235428AbhKSWY3 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Nov 2021 17:24:29 -0500
+        id S235417AbhKSWY0 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 19 Nov 2021 17:24:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
         s=badeba3b8450; t=1637360478;
-        bh=llAtR64OETgb0vamulGtcDWWg5v/pvXovRyFNUkwX9o=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=Zhj95S4vfLgj/+ORjUTinRaFfdd2nOKc9Ya5uQymFlxsgPlSDgMpi7qv3gUKA5cf1
-         6ugM1r7b5QNSjkwWW9lMnoRKFRMR7aVcfI4cGi2ipcoJs3JzGOsZqmFb0JEITu8dsp
-         vskR27nMlumWZ//4UWNsjFNIc4w8qc3iRwyu1vRg=
+        bh=78Otr5FCWbI0v6xHgo/FU6liYj1r3nl3GwYib82mtbw=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=aMmuGfRnQdOX8wg7sv2zZUbF+ir08xgNdaNjGXWGw6Fg+To7jdfX7JiKBuHIayg94
+         yvJ6tqqcj+dOfun/beNq+1d3Fht3+TS1Q7JvS2UI84QLmfl86IyBsQfGUuhIo9bXgH
+         c86Qj64QuVR64XmiSfwaPwmdlSm/vLP+cj9phw7U=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from ls3530.fritz.box ([92.116.164.19]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbAcs-1mCwh33WwK-00bdkU; Fri, 19
- Nov 2021 23:21:17 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MD9X9-1mxEgJ0Avh-0099cF; Fri, 19
+ Nov 2021 23:21:18 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
 Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH 1/4] parisc: Increase FRAME_WARN to 4096 bytes on parisc
-Date:   Fri, 19 Nov 2021 23:20:39 +0100
-Message-Id: <20211119222042.361671-1-deller@gmx.de>
+        Sven Schnelle <svens@stackframe.org>
+Subject: [PATCH 2/4] parisc: Provide an extru_safe() macro to extract unsigned bits
+Date:   Fri, 19 Nov 2021 23:20:40 +0100
+Message-Id: <20211119222042.361671-2-deller@gmx.de>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20211119222042.361671-1-deller@gmx.de>
+References: <20211119222042.361671-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mw5bWapNjToicdK7khij0D7EIGLYU5bHnIhM38X/8L5w1c6j6Xf
- 5M5B3wNLfF4c+JR8QRYS0wcbkwKQCvDW+70Q/OSs2g2dr+9a2JtIXRDyqTijuW40J8p4QrF
- L+j3GSC/XzpIoRY1o3kPp+R+i3WS+ACbnrGRCz/9HvfVusNzSqk7bOjotfNouEZcyfeKSxx
- qy1qLnfI0jzpzNz8mNQ/w==
+X-Provags-ID: V03:K1:jEPfaIQdJ/5gYVi8IDSiHto1522m4bxIOiDUTIbj24AlDGA4KI2
+ r1cFA32WDCEBYYysTJ02ERYi8y3uWK9vH+xsnRZ6FRLyky4PhMAreXpfRFcCa9ZjUjg7vGB
+ SiuvkdtdRqVp/L1EJM2dfNEmfyZP/tAVnYmQwz5zZFnnxe6Y2HqRHdYPS2kxFuoBPkjRy9o
+ 6oBDsU04UGhl6JBlFkyQw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:8aiID7a2Tlg=:EOw7QFAAGx5DzD/y2GXfyp
- 4V6pvggUHNRPCvOeOZWHvAS55Z5mt5dirNebSzcRImYlWOVsnlYNbJFyX00qG2CENNTYDCIj+
- dOpAdrNUA9+jTpjc0lqI1pU6EuV2v/Gb9onqsK4Rvf1Ops/t+KnzYG6sPPz+96CayQwhS0RpG
- tAylwNGJ2vEbW/kxWOyX9qMRgEMwuOCKnyI2gsRD7wWQCOfobc1IdVk8ldRMOWD2f3cxtx0gh
- 1wr/oBj1nhL0pgB9/Nga5iLiUdPRz6QeuYmLO2T/wpeyV2oa7zpv/Olvf1x/ZLCUaRzOsHJpU
- 4ocUmUZYfELn/4/SH6wfPCluS5bDw8vxPoXda3hJ5FL8gZNNh3WwpDI8X29XRhB4mvHJQ8DmZ
- tdwkMA7HWz5jg/PvgtpSjLwwVLAVcbLI6kMkp0DrDAtUlbzDk5wVmQX4LP7ZK9yT9QJ+eJnRe
- 7rlLFyE537kyD3Hdj9RgV/jXyM51wm62Exj5rPxieRJsuq5W7+QdBnJ5X9Gxc6weBZIkPOMiX
- E3ZC/mnZA6drLXcGt252fQ9WoXr4DiBkahWAM7D4NvGwgSD0XfiXAOrr6ghf4NyYdQ+EOOZZE
- SGRdAwEBUbVx9c9T5yy/x/dvFuUbOazOxtVIApq5U0RXqjZcXIkkQ6vu5Lc+9/v6zhHSfeD+5
- pNNVtdu3+e8uU6vMGeKHS7HtCESyfkQFTV7PCTUCWH3cfUXziFypO/lbZ2Ja2vNiZGqtw2YXC
- r8moUAjzJtZznvj9kYI8zOQQ6ANcAvPO1cQolvuHdJI+M+Q/BJo/OozER/k8ppzo1EkW+iBcr
- 6pQxlZQoExcDtbYHIQUy0XYMMzySyaYnCtGBxkyB8okLzp2f2SPvGPAlw4/dMSZQw3snbeknJ
- pod93jX17F0SrxgvRPqOkMR/AInOD08eFGD3xZ4yFTm1VQ2KthAXBRuMK1yNesmH6BrtKE9Hk
- 0fidz+8UeY8pIW6x2nWKKh742HIo89BwgiviPWrKpFveA79STvS4I3KeP7PskuKoA+bp1P55P
- 7TJUpTOiSSD35itX77DlJgBIHwKChqkVbjo25doWAV9TMGPsQgsbXrLIlEy+CfAtex0S12uXU
- cuMCj5YgcjHle0=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Bq7Xp4rK55M=:6undbuksX2bE35hy0heSVS
+ 6soTNyx829C7+Rf//QKP9UVqPeGK3WIc9i5G/GyhUIck1c1rCxeNUCwJLhWYpbRMsDXChnLPl
+ RgQs5OLWXH+RJYS4qMknTDbMzPHL99i81tkl8JwTb1CxbCEf/I5HGL1GUk1q+EqhiGhnX8Roi
+ jtlEJnIgFfaI1xHoC0LJu98ZfXG6sbTw5QeqmPJBhBYU49dfi1DUVBf+5UL1OW1fk4A0NWD3M
+ 8BW+XKxILoETwlUJnF20NgiEtzhXSjU+k5q6FgkR2a/sx/lKl+Ml0ETRpbYjddZ2fFP9ZAH7h
+ iv+cWDqp5JxP+bQ4v8g42em7XUfkrx6ZELEh77Ru8KEcV9rx6blGp1SV/jaHIjXddcw1ac9Bq
+ v2sMmxdm6rjX0Fkn66sfHtUX2U+2Yq+0hdyIslfZLaB/TuMrZ03abodBxoP9D3kqoywwk7hlL
+ 0cRhHrfQcAzmN6UdujNkND0TlpQ2mgryuwlN8GR87q9p0MSpS885fv6uJ/U/UgRdczsdImP1z
+ M6quS+QkC+n7+4xSfOtUtsLr/VFgUwRXyq0zwW3ECOU8eIO4NbXAesmTzlSByeuZEr91yuC5L
+ E8BCPuPHwSQ6kRs8tLO7Tmr+zc2qCsA+IY79luX+B12rUQQ8xkQK5m0Nv5ZibiexJEZTzCj8v
+ CZ8VKPEmZlEqksbWDkafnubf93DabtG2IZu3KscdCWZbKqcZ2ZlNk/FJaiOLjhR5iGIJ6NPce
+ EGOVcvi2IG+P0xLu//oK5CHwYbz3XoCedvE/NEg0qyUkCWPHfhL/HYa7ZJ6L5UfR8V7VdSATM
+ StcezpVWMiWPW/6x0WBo1Qp6ZcQIjMM2laQvbeQnKFdZSH3TUln/G8/HYDAqQzx0+jPqswt4a
+ SRMCESIEb1iiw4CilvJz1T5UJd8ckHSSV2F52/oonFdUE5TQ2PHZ0RinBUVcBus5ftOds2/5F
+ RNlbI5GV4CxKvFZTrM04XNBei52Gg+3vU+bySHgqe7k0ELDjENNgFGaHNQzkGG/ZlVNy7p5L7
+ eOMrPgFgeJnALgEKtgWgmhXC2IuekZXlI2yRlmL4bHjyvTx1+8NJK2iweQRhVZz39o3l93bVJ
+ 2PXmGGflNODZlk=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-PA-RISC uses a much bigger frame size for functions than other
-architectures. So increase it to 2048 for 32- and 64-bit kernels.
-This fixes e.g. a warning in lib/xxhash.c.
+The extru instruction leaves the most significant 32 bits of the
+target register in an undefined state on PA 2.0 systems.
+Provide a macro to safely use extru on 32- and 64-bit machines.
 
-Reported-by: kernel test robot <lkp@intel.com>
+Suggested-by: John David Anglin <dave.anglin@bell.net>
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- lib/Kconfig.debug | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/parisc/include/asm/assembly.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 9ef7ce18b4f5..5c12bde10996 100644
-=2D-- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -346,8 +346,9 @@ config FRAME_WARN
- 	int "Warn for stack frames larger than"
- 	range 0 8192
- 	default 2048 if GCC_PLUGIN_LATENT_ENTROPY
--	default 1536 if (!64BIT && (PARISC || XTENSA))
--	default 1024 if (!64BIT && !PARISC)
-+	default 2048 if PARISC
-+	default 1536 if (!64BIT && XTENSA)
-+	default 1024 if !64BIT
- 	default 2048 if 64BIT
- 	help
- 	  Tell gcc to warn at build time for stack frames larger than this.
+diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/=
+assembly.h
+index 39e7985086f9..6d13ae236fcb 100644
+=2D-- a/arch/parisc/include/asm/assembly.h
++++ b/arch/parisc/include/asm/assembly.h
+@@ -147,6 +147,17 @@
+ 	extrd,u \r, 63-(\sa), 64-(\sa), \t
+ 	.endm
+
++	/* Extract unsigned for 32- and 64-bit
++	 * The extru instruction leaves the most significant 32 bits of the
++	 * target register in an undefined state on PA 2.0 systems. */
++	.macro extru_safe r, p, len, t
++#ifdef CONFIG_64BIT
++	extrd,u	\r, 32+(\p), \len, \t
++#else
++	extru	\r, \p, \len, \t
++#endif
++	.endm
++
+ 	/* load 32-bit 'value' into 'reg' compensating for the ldil
+ 	 * sign-extension when running in wide mode.
+ 	 * WARNING!! neither 'value' nor 'reg' can be expressions
 =2D-
 2.31.1
 
