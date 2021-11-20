@@ -2,77 +2,69 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF96D45790D
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Nov 2021 23:47:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 464C6457E83
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 Nov 2021 13:55:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234549AbhKSWuR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Nov 2021 17:50:17 -0500
-Received: from mout.gmx.net ([212.227.15.19]:48909 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231313AbhKSWuR (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Nov 2021 17:50:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1637362022;
-        bh=tE9wlTHC9y2sFeyCyCen3hjuq2uZCJ5nNpbGwJ0EMMw=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=UAc/rf3JrPeJZrGAZGxcaoSoZjGDFMscycXBKS84sBg71gDXdGTJtubDMBZx+KGgP
-         bRVpKoj+TJ4ykAsBNHZUO/irKyQJ3HvBUAx6PByjZlspEqBIZi2+c506x6rbOvouZq
-         hcZCJpDi1RKauHN/1ZkJHT9WoeN4OdxoY4jFPpk8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.164.19]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mof5H-1mHajH1jfV-00p7sD; Fri, 19
- Nov 2021 23:47:02 +0100
-Message-ID: <d06de3f9-ddc8-43f4-01c8-b1a75961cde4@gmx.de>
-Date:   Fri, 19 Nov 2021 23:46:27 +0100
+        id S237383AbhKTM64 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 20 Nov 2021 07:58:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47466 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237314AbhKTM64 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 20 Nov 2021 07:58:56 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F33F6C061748
+        for <linux-parisc@vger.kernel.org>; Sat, 20 Nov 2021 04:55:52 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id l25so38178007eda.11
+        for <linux-parisc@vger.kernel.org>; Sat, 20 Nov 2021 04:55:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
+        b=BOHHdABOPzsyTcrWFEakNTnkWQWnGl0UxOZzYZzPW7sad7M9b4loIfpNYLLH6z8/rs
+         941+IhBTDCekmTUW6DwpePjFqsususGUArmGzASjNFPtqnZ/P2JgjrTNVs2zFAcsr9L/
+         3nZaftantlUUbTfl3eZGbQ+PL8xsuDykbW3CLHI9IXwlFRlMmyjSTIV6qu6k6odoM51y
+         29Rwnj0BidrSAc+wIkd6UsjRcRMxqDVokznAovZvZsMT5VSZNjB0eF901iY67ktG14wW
+         5UhN503SCmhgB9zQdHcQ0D9WudAmmKkKOkEf8/fPRRU8peEcUitAE93rn1i1EnFBFNvd
+         AMUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
+        b=c7AhkHlvfsDs5e2o2I6nEHbn1xuT8wWq4wGmulZsC4vNnIU633INO0pSz24vUCgDrw
+         mz5I/YZhfLIEdUZFdJHN2o0plD1DSzCvIAJphXvDyZhY+iYaYWiWV6ZMLrB4tBqvS167
+         t74oggValvabFEdIsoP0bEtf2T6JtEVrPoJI8b1g4FO73uvBN3QGlfJ8vq8pcxp9QObQ
+         DXtIDQZrrG+iyzI+LWtzwbCTnkNCt4jb/3x7O1ZPZ3+BTXgOiTYsbrYdmyiSsHR34v1+
+         DtET3FtG1ZEgxRjQN9WKt8rMXn1KLeWsW6Zakcd3KfARwpmGwOho0pjdd8Y2zsvDNuFe
+         bAqA==
+X-Gm-Message-State: AOAM533FbV4MmoAa0YcvJcznPZh7rArBY+a14qMABVQXj0s9UP6qZbEl
+        f8D3iY6iUjX4VkG4W3BNDAQumLUvx6DxtDrX8TQ=
+X-Google-Smtp-Source: ABdhPJwlpf9mVqdZcfTKv5HgDbGgiS6etLJuvYbLan7721lL6WGkz3F6B+wtoe1Pfsx65mbztbT4M9NVmR+Bgaui8xc=
+X-Received: by 2002:a17:906:7304:: with SMTP id di4mr18813111ejc.179.1637412951373;
+ Sat, 20 Nov 2021 04:55:51 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 1/4] parisc: Increase FRAME_WARN to 4096 bytes on parisc
-Content-Language: en-US
-To:     John David Anglin <dave.anglin@bell.net>,
-        linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Sven Schnelle <svens@stackframe.org>,
-        kernel test robot <lkp@intel.com>
-References: <20211119222042.361671-1-deller@gmx.de>
- <093e8bd8-73ab-b33f-8488-00080e3a040c@bell.net>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <093e8bd8-73ab-b33f-8488-00080e3a040c@bell.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:bqI4KR7H/PISHyWyIbo9UURqsuec5PdI9A96NgUKYE3cvRr17+J
- pUBcSdUFxxuZcUNF1YBDyYexG9zCJOGrMvvh/rz66T+HzeB38fUlH+fyxLIZx++4r/tk8gq
- uE4xPVTHVDLrVe+QjS+gLhr8QLVGDa1toSaFq0hGoZfZaXKPTdoi4in5NH2A8hjsoCogZ5e
- V72Fh9xby+jZ7xI2KBXvQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qCGF0wlDfeY=:H4v9eHpwdwTRBq11bWd5p5
- Mq+4mZbJCFpxsFx9zNn1kCaoTDqbTFvAABQ5eod6oJHF2xXgnkXamGgbxmeBkyGN3a38syE2B
- 5mmJV9M+Cs1FP+bObf6RYi+O02YnQn0XKdoIpVJSkRgl5BBnxGtVrkXu5gtgFC4x02O8ZC6GZ
- SqqgQEKZJKMCPi1qa/CjTyoPBIU982OE71XP0Jp4Wik9H4+FJzRpvh7u9oTLEE0du8l6ho7/X
- OMssVPiVla3flBKkwvJt65zm4pgB+gEvq7BAEGT2HjNBaLQIFZ/b3JqzysNCLKemXBDMifxPp
- sYC7iaNmV5DsZn/+XWcpAPldXqDu4OYxgcRys4+dCZ/X02TDaUTKlKWChaqcmqJUVfkT9I9G8
- bk3SWwCquOwZE6F9lpujokLhqeQuf96DvhvnrgzdAg16i3mG5M/bhqPxkhEXUX3TQ2azqUKIB
- LlSsp0vzuyC68sTtkB8P+qGwHr00TORvfG1atfjOXZDpRp38+pHGv6wBPuQH7398SgAp/ohKg
- o7YDs6fzcsKc9J44H6eg5GgdyL19oQGFEoksv9BI3HZ/wKrWxqG5mzc6Y0Jiubsz9iyXBjACI
- x2u7XwpEHb4odSYrzy1HauB+WOkWSZobxMdzvT6UtDNb64pMrSyK7gQZYWSqEaCj1TplSB9WE
- Fira33h0Ao2PEwDrMfI3VXPNm+19mX+SVmRJej/oJY/folTDNvd1gSPG3TkTDDQbjsyIMXynI
- arn3ilUeYexebh12A4aKAzZBkwPIJRhDobMPy77TBDP+mFSAkb2EeAnlhlixVUsTdy7yabIdG
- aT4q24j90AuGdUiXAdBonJNwjKqMPQ4Bjua+irEfuiRyN2+UHEA0KEibf6J/BUmvpN2+zptX4
- rjc0JG+7NEUHTKvNezFVSaa6UL3JKyJjqWBOGBxDBoDoQoMI2Wcfd5YL2skd1hl1/Lohp+nbw
- A7gCfpe2IHfbE4fjm38BM928QgGMgpS5jBs5OyZbeMRS4+eH51z1AuxNgrISA5Bpf4dhBq18c
- gzEQYmCykMESjvwNAZOaILNiU9i4zxdY7YpxLCvHkKTWv1neKQmWNBtgV6hprgkz2pqBvySCp
- Zz/vfZ8EjbmN94=
+Received: by 2002:a54:388a:0:0:0:0:0 with HTTP; Sat, 20 Nov 2021 04:55:50
+ -0800 (PST)
+Reply-To: mitchellvivian01@gmail.com
+From:   Mitchell Vivian <amadoudiakite0600@gmail.com>
+Date:   Sat, 20 Nov 2021 12:55:50 +0000
+Message-ID: <CA+SNdqWYRh31otPQCkWUDOMKG-Jc2S3nhF5jSNpNbY0=UoJ=9Q@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 11/19/21 23:29, John David Anglin wrote:
-> On 2021-11-19 5:20 p.m., Helge Deller wrote:
->> PA-RISC uses a much bigger frame size for functions than other
->> architectures. So increase it to 2048 for 32- and 64-bit kernels.
-> The title says 4096.
+Hello
 
-Thanks!
-Will fix.
+My name is Miss Vivian Mitchell. I want to donate my fund $ 4.5
+million USD to you on a charity name to help the poor People.
 
-Helge
+As soon as I read from you I will give you more details on how to
+achieve this goal and get this fund transferred into your bank
+account.
+
+Thanks have a nice day,
+Miss.vivian
