@@ -2,166 +2,88 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E1D145F49F
-	for <lists+linux-parisc@lfdr.de>; Fri, 26 Nov 2021 19:27:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9BBD45F69D
+	for <lists+linux-parisc@lfdr.de>; Fri, 26 Nov 2021 22:41:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243384AbhKZSaM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 26 Nov 2021 13:30:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59136 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243255AbhKZS2E (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 26 Nov 2021 13:28:04 -0500
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E59C061370;
-        Fri, 26 Nov 2021 10:02:45 -0800 (PST)
-Received: by mail-lj1-x233.google.com with SMTP id z8so20239314ljz.9;
-        Fri, 26 Nov 2021 10:02:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Ghk8UhoJL9jY8/O2iNT2jlf6L/Wn8kxWwQZa55OiZz4=;
-        b=ZtU3y8ZBLbgg4lFcoxmy2KRv9A+Ii+W7F/YNfA4hr5aGa2A8h1XOOQ+3ZkaoAuRI8r
-         vp3WDQpWqaUbrqJl5k89WHPfQrEQ/Ltq03M1Jmy8OPuRkuVfHuw43GDACIGadH395ZCu
-         hF1Tkx6Ym4O70rPhvu86hz5l/K9yL/cfenkaUfwTVHJ2tIac4a6CVsjFFcBSCjPbyEN2
-         gfILQUaZObJE5x+CtC3RAwLsx67a+c6/n129TlnphmsaDSRSL+mpCIUkrNZHM2IDnaAh
-         eZuToqizQ4ETYDJrMJcfU5n8RucoyvMFRHyF/5zQGpSCtU8DU2FKn4QQ8sg+eWOVU7gM
-         usKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Ghk8UhoJL9jY8/O2iNT2jlf6L/Wn8kxWwQZa55OiZz4=;
-        b=XVU0gy66yBzRLE9uA11EzRrcJS1joz/A9yii55L0bp7zQ4+0u7UVIZCSMDfBs5PjJe
-         rwFJZESF2syQ+78fA+qCXIUSofkm5Czy96Ejsie46HS31JuDieAViRrhj9FcAJgvVcXz
-         FnuftP5/Ws65+g7zcu+AMx5sW3F935IdX0fknRZVx0LQr0GXBUyCOKBmE9Nols9Jd63o
-         SsLJvHiQuWl++tgFLFyO031oKS4Fh/pTNz9FL6zFvahorVoGLWmGvyR4eYIAp8Q0Rm0l
-         DzRi3jgmJ9Wp420f5rJaGlDIBtAJ8OFORmLK9edsnioCCk2t2F67RWlXy3dsQXsrDD+D
-         669A==
-X-Gm-Message-State: AOAM530+5s9H5qB0hyglFrJUcTlZrcNPOTHd0RLGLlL4lZWaoCd+DEtg
-        c7vZnDn5hk7rzX8GOg8Bg6c=
-X-Google-Smtp-Source: ABdhPJwe+PZD5fugCmFfxz+jK98d8FG+5T7bYBVi5cf4oriJg0nQW1ZXKn9ET9XQ9fmBMy14JpwgMg==
-X-Received: by 2002:a2e:97c5:: with SMTP id m5mr33717502ljj.503.1637949763992;
-        Fri, 26 Nov 2021 10:02:43 -0800 (PST)
-Received: from localhost.localdomain (94-29-48-99.dynamic.spd-mgts.ru. [94.29.48.99])
-        by smtp.gmail.com with ESMTPSA id i32sm553831lfv.295.2021.11.26.10.02.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Nov 2021 10:02:43 -0800 (PST)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
-        "K . C . Kuen-Chern Lin" <kclin@andestech.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: [PATCH v4 25/25] reboot: Remove pm_power_off_prepare()
-Date:   Fri, 26 Nov 2021 21:01:01 +0300
-Message-Id: <20211126180101.27818-26-digetx@gmail.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211126180101.27818-1-digetx@gmail.com>
-References: <20211126180101.27818-1-digetx@gmail.com>
+        id S241851AbhKZVpM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 26 Nov 2021 16:45:12 -0500
+Received: from mout.gmx.net ([212.227.15.15]:60915 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243142AbhKZVnL (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 26 Nov 2021 16:43:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1637962790;
+        bh=zofstjjuY5bb5SU+8cjlvVWMzAKuIE7KGOJYUUd2mfA=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=k1NBd2dHGxSpsj0F6EUusTd75gojS9t01NzJk2HmNMEwSLcnoDjzZdceIpgDRA2Dz
+         Avaw0QLzHfd7VLSVVsGu7dEHOiCyvUPLUA2RcSSGfW4Jg4yJ9GX/S0mDSPlYmn7c/9
+         1u6zm2T/yQsdUYzaBXOGjQV79FvVv4lnfoCy8W14=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.133.198]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MdefD-1mHOGF0361-00ZjG6; Fri, 26
+ Nov 2021 22:39:50 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>
+Subject: [PATCH] parisc: Set correct KBUILD_IMAGE value for self-extracting kernel
+Date:   Fri, 26 Nov 2021 22:39:45 +0100
+Message-Id: <20211126213945.286053-1-deller@gmx.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:nszDtH/nBGZYCnMLmKFQa3BQTWYkX4x9oN0WmMKqVbhZLynnFjZ
+ ahChjYOiJzi/lXZ1nC15VItjn3mUb9ILAqievNFZIWWPezL+6VJNlQmADYkZA8ojHPewT4g
+ 5Km/eooBaTUX+3IGFI2wQsRCmJJiGkH8FX++cQ2NS5TVPnombtJHBPgAwAv6CsMr5NhdBzl
+ +Taf1zQrhaL0IVNmqOgSg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8McaBZ9y6Q4=:PX69VIgUEbljE3KtnQaqHl
+ 2cbC8CctRmYlFFeJJSrf0O9PpF4ZR0J6DVjiZXS+TqtPvmdq0gdcGBOcC/0PiUKK/MRTZ61Lg
+ UtN47nXPjzRQhe/k8pUV10JKvfckecIHcmV6VULZ4FjS/yEf3n9KPzmcAguafZjbj6PgDpdqJ
+ A2U9gDUn3RLzIjzGx7gNBMvdEdbL8XbV+bVe36rgV5NTHU9gvidDLvQkE9JUvgdzTAVMEgzbN
+ rHYugv8GgD42GmdI6PphD41LRYLzU4BhFHgBUZw6+dl5PQmYHf4TmBRZIL9Dr9MLqTDV+2lmK
+ uCuHWy6NjWfDsj58znU8Kyurc85pL/fV/ZwAZ9YRkhbtCukBF/39l69kSOhwaUQHuxbsoh6Lw
+ dqqxgNvdYxZf86ueZIy4JQZmwxAIoDsosT3lSwIjZVZ4HFcLIXs74iSnjTheOnjyySpOXXJ6d
+ A5TdHK7jSZd8W5Td9oFPOncZIrJolvNYQ0+XZAMbPaiLKOHlOQqNRHcvgJtTdBqvxoy2aXyvh
+ 1ttR7HYhwkfwNKDj+ePJS3qOZ4g/5PYgNCqHfYbY3nXq5zr7Ly0Cv+6Wt/Y0CihqrKreMt6RA
+ LlSIAEV4Cj0KlHtixKhPr4ZvuVILGARUd/Di8X7E7+AHg9bngHZzQNPhQUfsVsSMz8CAmnD64
+ yLbadY8wwS69kr1p1kQ3hTRGBlZYZTXA5sc00RRrvF4U43QEiFAa4+HJSyw9ULffaJw5TqavN
+ qYZKKeLWRCNZX0Xvt4uD7DkmeXI4nEMud2QLxaWJlnfP2TmCETyt9mIdB2KV4gO4bq8ceA+t4
+ Q2ITFLZpfPu7Ls6VNsTHvYf6jpcblnGleYRjDQezzL2N+ug4XZkKbbAJ+7zzG+ytFXtzqxqeF
+ 9C6nCNzVcmE6phvhXU2o56XB6FVHTBAsoOHgxnRi9UL1mL+S1IUi4LV/JvbuhT5+sZ2YCGP7t
+ PTB3ZKkdavrQxn/QYDsPysaQX0Zm2C+Ss8bmsOsAbCtdp2QL/82F9fnsXm5J+M9J/AvVsU4Tp
+ tmYUOZKbR7nxOZ6sH2TbODyeD9lhHb6I4nVZks56P6/5+Oe1Jq7htj18i+JRStW0NLoFGVzvc
+ uCbS9W4QkGL5+s=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-All pm_power_off_prepare() users were converted to sys-off handler API.
-Remove the obsolete callback.
+Default KBUILD_IMAGE to $(boot)/bzImage if a self-extracting
+(CONFIG_PARISC_SELF_EXTRACT=3Dy) kernel will be built.
+This fixes the bindeb-pkg make target.
 
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- include/linux/pm.h |  1 -
- kernel/reboot.c    | 11 -----------
- 2 files changed, 12 deletions(-)
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/Makefile | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 1d8209c09686..d9bf1426f81e 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -20,7 +20,6 @@
-  * Callbacks for platform drivers to implement.
-  */
- extern void (*pm_power_off)(void);
--extern void (*pm_power_off_prepare)(void);
- 
- struct device; /* we have a circular dep with device.h */
- #ifdef CONFIG_VT_CONSOLE_SLEEP
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index 4884204f9a31..a832bb660040 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -48,13 +48,6 @@ int reboot_cpu;
- enum reboot_type reboot_type = BOOT_ACPI;
- int reboot_force;
- 
--/*
-- * If set, this is used for preparing the system to power off.
-- */
--
--void (*pm_power_off_prepare)(void);
--EXPORT_SYMBOL_GPL(pm_power_off_prepare);
--
- /**
-  *	emergency_restart - reboot the system
-  *
-@@ -807,10 +800,6 @@ void do_kernel_power_off(void)
- 
- static void do_kernel_power_off_prepare(void)
- {
--	/* legacy pm_power_off_prepare() is unchained and has highest priority */
--	if (pm_power_off_prepare)
--		return pm_power_off_prepare();
--
- 	blocking_notifier_call_chain(&power_off_handler_list, POWEROFF_PREPARE,
- 				     NULL);
- }
--- 
-2.33.1
+diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
+index 8db4af4879d0..0b34f58d6fab 100644
+=2D-- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -15,7 +15,10 @@
+ # Mike Shaver, Helge Deller and Martin K. Petersen
+ #
+
+-KBUILD_IMAGE :=3D vmlinuz
++ifdef CONFIG_PARISC_SELF_EXTRACT
++boot :=3D arch/parisc/boot
++KBUILD_IMAGE :=3D $(boot)/bzImage
++endif
+
+ NM		=3D sh $(srctree)/arch/parisc/nm
+ CHECKFLAGS	+=3D -D__hppa__=3D1
+=2D-
+2.31.1
 
