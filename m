@@ -2,102 +2,130 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2435045F115
-	for <lists+linux-parisc@lfdr.de>; Fri, 26 Nov 2021 16:52:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F19145F31C
+	for <lists+linux-parisc@lfdr.de>; Fri, 26 Nov 2021 18:42:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350759AbhKZPzP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 26 Nov 2021 10:55:15 -0500
-Received: from mout.gmx.net ([212.227.17.21]:37587 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1378304AbhKZPvY (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 26 Nov 2021 10:51:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1637941678;
-        bh=1F+85ST5X+Wl10SqBhKPZC0uz2QWcQZBBL1+GoTcjRs=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=NVxrTcoIwPeC4B8rYFmdIzy6sKB+vjk6G5o14nDZx6s6tHpRN1FrUXb4xwlqH5Xnz
-         XT51KjN3c6Y7Mok3ct1VKo8IjXNhFevXf+RXCZxLLM+tFp2TW9MINhcnFARy2XW1ks
-         FeBm3S1360OvAWva+uiDmVuuWCJBf9R5i8In+3Gg=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.133.198]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MpUUm-1mGXTe1O5k-00pulR; Fri, 26
- Nov 2021 16:47:58 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH] parisc/agp: Annotate parisc agp init functions with __init
-Date:   Fri, 26 Nov 2021 16:47:54 +0100
-Message-Id: <20211126154754.263487-1-deller@gmx.de>
-X-Mailer: git-send-email 2.31.1
+        id S236158AbhKZRpS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 26 Nov 2021 12:45:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48476 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230169AbhKZRnS (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 26 Nov 2021 12:43:18 -0500
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF859C0619D6
+        for <linux-parisc@vger.kernel.org>; Fri, 26 Nov 2021 09:19:41 -0800 (PST)
+Received: by mail-oi1-x22e.google.com with SMTP id u74so19979989oie.8
+        for <linux-parisc@vger.kernel.org>; Fri, 26 Nov 2021 09:19:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=F8mAaNfSp1B2qpckgrUmaGov90eY6709B/lnYmhCEIU=;
+        b=d8nxJgDB+LiMg/GYfWersZ7Xpsym56fYczcNUf9K5oiMHpO1bjq1g2xGFIEtdJbtmg
+         9Red1onfS4XtvvodeTaIfHpn6K/ittUquDvvoSXe6C2a810MAr6QV95N+LzqkCuTGD7b
+         ocedwEEMMdpFkjgHnZasBwXl6Rj2KzfwZrJz9U/chQtxCE5m7c/9KnhiutzW5/nIwQFL
+         ZV2dEFthRdKDiRBEVG8w2r4H51d+VFYcpWJKCcW/vsNEcMUfQ4q73WUz1AbAM0VYgrJN
+         KU0ofwCx4lfphiXc77gG9rH9uYREf1VfZZsL+TYa4OLoG+5hN/Tg32s1dlkObsX8JDeM
+         mo+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=F8mAaNfSp1B2qpckgrUmaGov90eY6709B/lnYmhCEIU=;
+        b=GFx32+7wNDZ/XTBayDmkayHhP73LN4Y4/RFNDNSs3AWfDiSZwLl0WgGwLdnTtIVned
+         gt5hZPgAe3fX7fjrlFlX2PXzmtBF+U63Ar4nEKYE119ONSGwtly/bL7KA1Hk9BnGYO00
+         AJd1yKoXv4oMuID/ZNLS+zhFnDiTf53f6oPqGC2r/mP9LVOFyjKzZfB3hZgCUVRzNXBF
+         qGTPRz0b0sSBuPGr/eDMFwjQ7H6gV84FCvgr6vfOVU+XEYr7KMHE8TSXOxwQqPBYE4k7
+         NJMkp4usq9qGLkHSzRx917JVikQuJyKGauBQnBEvzzP8tubfYLLD5ZIQYadUX1kSN+8R
+         CNWw==
+X-Gm-Message-State: AOAM530/zFoGM+JHf1eCBgSWy2XaGJG42TSozPtlZRSvLjYVtSYi5bbX
+        XTzlPO/o/4cPUoudfmlnQVl/wFXBMOjssBbYwsA=
+X-Google-Smtp-Source: ABdhPJyhbcucHvZ4xrbPmB9dwER54UYNgO1/3zo/VMRX/DmZGzQfUu8aPOdypfMyV4fhku/N/+1hFsVWEmv9JEWEEaM=
+X-Received: by 2002:aca:b10a:: with SMTP id a10mr25022525oif.74.1637947181051;
+ Fri, 26 Nov 2021 09:19:41 -0800 (PST)
 MIME-Version: 1.0
+Received: by 2002:a9d:65cd:0:0:0:0:0 with HTTP; Fri, 26 Nov 2021 09:19:40
+ -0800 (PST)
+Reply-To: msbelinaya892@gmail.com
+From:   msbelinaya <philipsteler0@gmail.com>
+Date:   Fri, 26 Nov 2021 17:19:40 +0000
+Message-ID: <CAKCDfUgUXXe4BTfhft9iQFsMJbPM_PmHdinL0a84SEM5ex5F+A@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lIAMW6Ta2Tykv0hadPQ2X2ru8ThtUQQaRITGrWIjtZg9mMBRALw
- H7Z/9xy0w4UlfGbJxy8TPnH3Zl1uSt4jVdVybljFA/XhJ+zE1BHMvRR3laaV4NyAe7U5quf
- mKopmoMymwHnepPFa+4JzHGH4Fa9l7YUNrvEJgnA+7CF2wpN8kCfNfS1WbZON+HoPOTD2rH
- CrF+Qgt6QidTtTb1daUbg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:m9eLKWx96Ck=:jyWUH4KgbdeGd+ZIPcfqku
- VcGmzI8UOcyukZPGicuszB8aMfnPDG7lKxM+xw+1KzuoFe4v/8A54Bppl1ycb++JKY68T5KMT
- EaZ8IjJJM/R1R6ltXjnI4SV3rlT1eXhUxfcy0M3Ls3J8E7r6q+iJAwVTw4DXJQsto3dUNrWMC
- J/azSQow/5Qf2ZGAorXjsZxQcEPnxpPMOqfW6c1X8i2a1ifIgkpILXrbzx+NljyCc8o8BDh52
- o0rwJ0u5oWdyERn5SQZiHc/qfqK0mYwbRLhQ8b0y7+qKo/DT532Gs0KqAolWcGKXaCqezwr/f
- xW/zr8op/tkP8tgMXDNNxEacSyiUmv5KskExyJKc8+jGAfTgUjNTVN6+AWRc8i5o8BU93aeJ8
- N/T7Q8SAEysEalYZyBufiTpfPye17Cl4rLUm9eADTyfyZogvkki8OLJWSWsJqI+bRxuonxx9H
- vv0jSWS4m4c3wLPmfYBJv5KT0Y30xzHuAzxry+ZwEZw7R5NbYWhERFVISQi7GDQZQe6TeZ4Ob
- tDIG2bpJ1TjFtCaBe9zeRQowJWsmPU7SNkp4yj87pYPklUCuTheeDER176L21bOjJcK8ML40o
- 0nvviiMYoZZ+EQvIkwLg0zfKaYqw17KcCiyKTAGIkc53JJXNMHzc81n0c2nm/EncEYfTkiQpJ
- qwjjd0sFuNt3R3hWLRYLNjfkm8Xlh9RKM9or+w4QUFuvfOr63F2+Z/qCMcHyd5GaPfqUAdcug
- L1LI4DSfzMGLkaPJBYVXoI06BQbKypisu+yjFsxhlbqxtDJwypuWtjFE2FJdP/84fCsnHBrJQ
- aY2YSxGyYd0N+qD8qNwGApHKQDY+chEzzCGs9H8eTQ5D/9H0oaakJLzSSuHKTPohgkwi+RSZh
- TDSdEBJz5FNiVuy7+4klaW3adaB50gcDG2uDNvj9fIkOPSXnCor9lHByrjbNkh1vJHlTwyGeF
- 9qS/505QreZxgGztfX5LgkTJvQmCU3QfZcHWkpOJE987BgYhoTF+I7UHOkEPHXqzwDzNnMDvw
- KL++aSaIS0KJu38l+nRGlL+7EHlm8gUq9D4di2Dxx/n+Wz4Fw16DmZMtkRGWq3oHmVTUjImFo
- Vw5eRjynL2d/GY=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: kernel test robot <lkp@intel.com>
-=2D--
- drivers/char/agp/parisc-agp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Ich biete meine Freundschaft an und glaube, dass Sie mich mit einem
+guten Herzen annehmen werden. Ich wurde gedr=C3=A4ngt, Sie zu kontaktieren
+und zu sehen, wie wir uns am besten unterst=C3=BCtzen k=C3=B6nnen. Ich bin =
+Frau
+Kodjovi Hegbor aus der T=C3=BCrkei und arbeite als Operations Division
+Manager bei der StandardBNP bank limited Turkey. Ich glaube, es ist
+Gottes Wille, dass ich Sie jetzt treffen werde. Ich habe ein wichtiges
+gesch=C3=A4ftliches Gespr=C3=A4ch, das ich mit Ihnen teilen m=C3=B6chte, vo=
+n dem ich
+glaube, dass es Sie interessiert, da es mit Ihrem Nachnamen
+zusammenh=C3=A4ngt und Sie davon profitieren wird.
 
-diff --git a/drivers/char/agp/parisc-agp.c b/drivers/char/agp/parisc-agp.c
-index ed3c4c42fc23..d68d05d5d383 100644
-=2D-- a/drivers/char/agp/parisc-agp.c
-+++ b/drivers/char/agp/parisc-agp.c
-@@ -281,7 +281,7 @@ agp_ioc_init(void __iomem *ioc_regs)
-         return 0;
- }
+ Im Jahr 2006 er=C3=B6ffnete ein B=C3=BCrger Ihres Landes bei meiner Bank e=
+in
+36-monatiges Nicht-Residentenkonto im Wert von =C2=A3 8.400.000,00. Das
+Ablaufdatum f=C3=BCr diese Hinterlegungsvereinbarung war der 16. Januar
+2009. Leider starb er am 12. Mai 2008 in Sichuan, China, bei einem
+t=C3=B6dlichen Erdbeben, bei dem auf einer Gesch=C3=A4ftsreise mindestens 6=
+8.000
+Menschen ums Leben kamen.
 
--static int
-+static int __init
- lba_find_capability(int cap)
- {
- 	struct _parisc_agp_info *info =3D &parisc_agp_info;
-@@ -366,7 +366,7 @@ parisc_agp_setup(void __iomem *ioc_hpa, void __iomem *=
-lba_hpa)
- 	return error;
- }
+Die Gesch=C3=A4ftsleitung meiner Bank hat noch nichts von seinem Tod
+geh=C3=B6rt, ich wusste davon, weil er mein Freund war und ich sein
+Kontoverwalter war, als das Konto vor meiner Bef=C3=B6rderung er=C3=B6ffnet
+wurde. Aber Herr
+bei der Kontoer=C3=B6ffnung keine n=C3=A4chsten Verwandten/Erben erw=C3=A4h=
+nt hat und
+er nicht verheiratet war oder keine Kinder hatte. Letzte Woche bat
+mich meine Bankdirektion, Anweisungen zu geben, was mit seinem Geld zu
+tun sei, wenn der Vertrag verl=C3=A4ngert werden sollte.
 
--static int
-+static int __init
- find_quicksilver(struct device *dev, void *data)
- {
- 	struct parisc_device **lba =3D data;
-@@ -378,7 +378,7 @@ find_quicksilver(struct device *dev, void *data)
- 	return 0;
- }
+Ich wei=C3=9F, dass dies passieren wird, und deshalb habe ich nach einem
+Mittel gesucht, um mit der Situation umzugehen, denn wenn meine
+Bankdirektoren wissen, dass sie tot sind und keinen Erben haben,
+nehmen sie das Geld f=C3=BCr ihren pers=C3=B6nlichen Gebrauch, also tue ich=
+ es
+nicht Ich m=C3=B6chte nicht, dass so etwas passiert. Da habe ich deinen
+Nachnamen gesehen, habe mich gefreut und suche nun deine Mitarbeit, um
+dich als n=C3=A4chsten Verwandten/Erben des Kontos zu pr=C3=A4sentieren, da=
+ du
+den gleichen Nachnamen wie er hast und meine Bankzentrale das Konto
+freigeben wird f=C3=BCr dich. Es besteht kein Risiko; die Transaktion
+erfolgt im Rahmen einer legitimen Vereinbarung, die Sie vor
+Rechtsverletzungen sch=C3=BCtzt.
 
--static int
-+static int __init
- parisc_agp_init(void)
- {
- 	extern struct sba_device *sba_list;
-=2D-
-2.31.1
+Es ist besser f=C3=BCr uns, das Geld zu beanspruchen, als es den
+Bankdirektoren zu =C3=BCberlassen, sie sind bereits reich. Ich bin kein
+gieriger Mensch, also schlage ich vor, dass wir das Geld gleichm=C3=A4=C3=
+=9Fig
+aufteilen, 50/50% auf beide Parteien. Mein Anteil wird mir helfen,
+mein eigenes Unternehmen zu gr=C3=BCnden und den Erl=C3=B6s f=C3=BCr wohlt=
+=C3=A4tige
+Zwecke zu verwenden, was mein Traum war.
 
+Bitte teilen Sie mir Ihre Meinung zu meinem Vorschlag mit, ich brauche
+wirklich Ihre Hilfe bei dieser Transaktion. Ich habe dich auserw=C3=A4hlt,
+mir zu helfen, nicht durch mein eigenes Tun, meine Liebe, sondern bei
+Gott, ich wollte, dass du wei=C3=9Ft, dass ich mir die Zeit genommen habe,
+f=C3=BCr diese Nachricht zu beten, bevor ich dich jemals kontaktiert habe,
+um deine Meinung mitzuteilen und bitte zu behandeln diese
+Informationen als STRENG GEHEIM. Nach Erhalt Ihrer Antwort
+ausschlie=C3=9Flich =C3=BCber meine pers=C3=B6nliche E-Mail-Adresse
+msbelinaya892@gmail.com
+gibt Ihnen Details zur Transaktion. Und eine Kopie der
+Einlagenbescheinigung des Fonds und der Gr=C3=BCndungsurkunde der
+Gesellschaft, die den Fonds gegr=C3=BCndet hat.
+Gott segne in Erwartung Ihrer dringenden Antwort
+Mit freundlichen Gr=C3=BC=C3=9Fen
+Frau Kodjovi Hegbor
+msbelinaya892@gmail.com
