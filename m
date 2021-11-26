@@ -2,42 +2,40 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E73B45E614
-	for <lists+linux-parisc@lfdr.de>; Fri, 26 Nov 2021 04:01:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A4B745E626
+	for <lists+linux-parisc@lfdr.de>; Fri, 26 Nov 2021 04:01:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245046AbhKZCt4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 25 Nov 2021 21:49:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50960 "EHLO mail.kernel.org"
+        id S1359626AbhKZCtu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 25 Nov 2021 21:49:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50770 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1359044AbhKZCpq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 25 Nov 2021 21:45:46 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BDFB161163;
-        Fri, 26 Nov 2021 02:36:33 +0000 (UTC)
+        id S1357796AbhKZCqM (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 25 Nov 2021 21:46:12 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6FC476136F;
+        Fri, 26 Nov 2021 02:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637894194;
-        bh=sREuQYDPJAcan/qAtpq4AHrNTlLTy3LtWzVoyEKR9vA=;
+        s=k20201202; t=1637894216;
+        bh=FrYRzC9RMzsN9T8M4PFLTdVZC58KrKh8sovKEllXWac=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BdVqBiaOidoDoh/tQCz5KIYIGMvTwn2njacLKEqGg0pVrC7AreubmHbn5DpxNg5NB
-         AYLXOBMEpMLXgNoQ85Mx+yqWb3uqIz0d0td0l1qXLsyzkemLQ8doCiDL0yHToKT+QQ
-         bs+Z/C7O075fqEXlLTjASLyWy0wd0Yl1XCJQCEwqGhKHsfc5o40O8FSgdedYogA6cJ
-         8VkenDPfVcrlH9cJyie5cpUtokO5Ev8+SQU0bvHrodZiD93g0o6REnOcVxRoEyC9PA
-         m0z4SA5t6uPjnU5NU/OQpY1nG/XdmtfKMLOWq0OgDt1pVPNootB+qbD5o0AtWcfo/X
-         qRs5HbhCchffw==
+        b=S6GWaA256qwxoNNJDln0My5YBAK7XCQ0a8FqclFnr6DXoXr1gaz1SGALxKCLBSl4y
+         7RMOhcX0Ah1kVFBxWmhoeI2de1nWEYSlNbPUqejpWRFani+qs9+HJyqrjn4Dkr1kPO
+         0hdDS13/IRy51ezChAbHRcmT43DNuPnJHkmMIAYEBcRzV+3JBMwZ5F9LUOVCpMp1oG
+         R/m+206gQciYcrGQYbl0hJ+GRQBLMnIgVDUKGewlGpfUiA0vtWDTK9vvkutFK6zRf3
+         SpPGdT56/UEcYC+gjbz4vhCr4809mTkskGEeN/OfEQyflWRLlhvBdO0GJA1pd4+7jk
+         9qF/GmVIGOp9Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Teng Qi <starmiku1207184332@gmail.com>,
-        TOTE Robot <oslab@tsinghua.edu.cn>,
-        Arnd Bergmann <arnd@arndb.de>,
+Cc:     zhangyue <zhangyue1@kylinos.cn>,
         "David S . Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, kuba@kernel.org,
-        tanghui20@huawei.com, zhangyue1@kylinos.cn, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 11/12] net: ethernet: dec: tulip: de4x5: fix possible array overflows in type3_infoblock()
-Date:   Thu, 25 Nov 2021 21:36:07 -0500
-Message-Id: <20211126023611.443098-11-sashal@kernel.org>
+        arnd@arndb.de, tanghui20@huawei.com, starmiku1207184332@gmail.com,
+        netdev@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 7/8] net: tulip: de4x5: fix the problem that the array 'lp->phy[8]' may be out of bound
+Date:   Thu, 25 Nov 2021 21:36:39 -0500
+Message-Id: <20211126023640.443271-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211126023611.443098-1-sashal@kernel.org>
-References: <20211126023611.443098-1-sashal@kernel.org>
+In-Reply-To: <20211126023640.443271-1-sashal@kernel.org>
+References: <20211126023640.443271-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -46,55 +44,63 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Teng Qi <starmiku1207184332@gmail.com>
+From: zhangyue <zhangyue1@kylinos.cn>
 
-[ Upstream commit 0fa68da72c3be09e06dd833258ee89c33374195f ]
+[ Upstream commit 61217be886b5f7402843677e4be7e7e83de9cb41 ]
 
-The definition of macro MOTO_SROM_BUG is:
-  #define MOTO_SROM_BUG    (lp->active == 8 && (get_unaligned_le32(
-  dev->dev_addr) & 0x00ffffff) == 0x3e0008)
+In line 5001, if all id in the array 'lp->phy[8]' is not 0, when the
+'for' end, the 'k' is 8.
 
-and the if statement
-  if (MOTO_SROM_BUG) lp->active = 0;
+At this time, the array 'lp->phy[8]' may be out of bound.
 
-using this macro indicates lp->active could be 8. If lp->active is 8 and
-the second comparison of this macro is false. lp->active will remain 8 in:
-  lp->phy[lp->active].gep = (*p ? p : NULL); p += (2 * (*p) + 1);
-  lp->phy[lp->active].rst = (*p ? p : NULL); p += (2 * (*p) + 1);
-  lp->phy[lp->active].mc  = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].ana = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].fdx = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].ttm = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].mci = *p;
-
-However, the length of array lp->phy is 8, so array overflows can occur.
-To fix these possible array overflows, we first check lp->active and then
-return -EINVAL if it is greater or equal to ARRAY_SIZE(lp->phy) (i.e. 8).
-
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: zhangyue <zhangyue1@kylinos.cn>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/dec/tulip/de4x5.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/dec/tulip/de4x5.c | 30 +++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/ethernet/dec/tulip/de4x5.c b/drivers/net/ethernet/dec/tulip/de4x5.c
-index 84cf7b4582f3e..09a65f8f62038 100644
+index 005c79b5b3f01..b39e8315e4e27 100644
 --- a/drivers/net/ethernet/dec/tulip/de4x5.c
 +++ b/drivers/net/ethernet/dec/tulip/de4x5.c
-@@ -4703,6 +4703,10 @@ type3_infoblock(struct net_device *dev, u_char count, u_char *p)
-         lp->ibn = 3;
-         lp->active = *p++;
- 	if (MOTO_SROM_BUG) lp->active = 0;
-+	/* if (MOTO_SROM_BUG) statement indicates lp->active could
-+	 * be 8 (i.e. the size of array lp->phy) */
-+	if (WARN_ON(lp->active >= ARRAY_SIZE(lp->phy)))
-+		return -EINVAL;
- 	lp->phy[lp->active].gep = (*p ? p : NULL); p += (2 * (*p) + 1);
- 	lp->phy[lp->active].rst = (*p ? p : NULL); p += (2 * (*p) + 1);
- 	lp->phy[lp->active].mc  = get_unaligned_le16(p); p += 2;
+@@ -4995,19 +4995,23 @@ mii_get_phy(struct net_device *dev)
+ 	}
+ 	if ((j == limit) && (i < DE4X5_MAX_MII)) {
+ 	    for (k=0; k < DE4X5_MAX_PHY && lp->phy[k].id; k++);
+-	    lp->phy[k].addr = i;
+-	    lp->phy[k].id = id;
+-	    lp->phy[k].spd.reg = GENERIC_REG;      /* ANLPA register         */
+-	    lp->phy[k].spd.mask = GENERIC_MASK;    /* 100Mb/s technologies   */
+-	    lp->phy[k].spd.value = GENERIC_VALUE;  /* TX & T4, H/F Duplex    */
+-	    lp->mii_cnt++;
+-	    lp->active++;
+-	    printk("%s: Using generic MII device control. If the board doesn't operate,\nplease mail the following dump to the author:\n", dev->name);
+-	    j = de4x5_debug;
+-	    de4x5_debug |= DEBUG_MII;
+-	    de4x5_dbg_mii(dev, k);
+-	    de4x5_debug = j;
+-	    printk("\n");
++	    if (k < DE4X5_MAX_PHY) {
++		lp->phy[k].addr = i;
++		lp->phy[k].id = id;
++		lp->phy[k].spd.reg = GENERIC_REG;      /* ANLPA register         */
++		lp->phy[k].spd.mask = GENERIC_MASK;    /* 100Mb/s technologies   */
++		lp->phy[k].spd.value = GENERIC_VALUE;  /* TX & T4, H/F Duplex    */
++		lp->mii_cnt++;
++		lp->active++;
++		printk("%s: Using generic MII device control. If the board doesn't operate,\nplease mail the following dump to the author:\n", dev->name);
++		j = de4x5_debug;
++		de4x5_debug |= DEBUG_MII;
++		de4x5_dbg_mii(dev, k);
++		de4x5_debug = j;
++		printk("\n");
++	    } else {
++		goto purgatory;
++	    }
+ 	}
+     }
+   purgatory:
 -- 
 2.33.0
 
