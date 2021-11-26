@@ -2,99 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6688C45E62D
-	for <lists+linux-parisc@lfdr.de>; Fri, 26 Nov 2021 04:01:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2435045F115
+	for <lists+linux-parisc@lfdr.de>; Fri, 26 Nov 2021 16:52:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359637AbhKZCtw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 25 Nov 2021 21:49:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51546 "EHLO mail.kernel.org"
+        id S1350759AbhKZPzP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 26 Nov 2021 10:55:15 -0500
+Received: from mout.gmx.net ([212.227.17.21]:37587 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1358612AbhKZCrZ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 25 Nov 2021 21:47:25 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EC13361371;
-        Fri, 26 Nov 2021 02:37:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637894238;
-        bh=RBX6W4w3jScpLmp10EJSozwbbpPAsKTdowIUKbcjGiA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UgpebikjVKnC+nvgReVfdWgriluJ/BOQ2JRrE81e6LCvgWY+xUVLtnTCwErot5ClC
-         tZAKD1wLHggkI0/+gul5bAJiNAedVvCQc980VrS6ETUtjFtnrusslqxMrzN88ZeXME
-         oNAfTTc98gSQS2I7Q8jFm+bnMokvSb2RMJXM6w0Gkw4LXxMJT405rxZWcgg92V1MC9
-         4GG4ktG8nhEBSWzPUss1mDO+fMD2US07YVSIHSed914k0mrCX3NhCNEyRcmjTJ+5Qe
-         SNYJKQZVEhs27JFvWD4WNjPe+H4CyAMIrW0NBhXpsB5JQZlWVMf8NY38axzipiSlnn
-         8Hd+AAPYZIBCQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Teng Qi <starmiku1207184332@gmail.com>,
-        TOTE Robot <oslab@tsinghua.edu.cn>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>, kuba@kernel.org,
-        tanghui20@huawei.com, zhangyue1@kylinos.cn, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 6/6] net: ethernet: dec: tulip: de4x5: fix possible array overflows in type3_infoblock()
-Date:   Thu, 25 Nov 2021 21:37:01 -0500
-Message-Id: <20211126023701.443472-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211126023701.443472-1-sashal@kernel.org>
-References: <20211126023701.443472-1-sashal@kernel.org>
+        id S1378304AbhKZPvY (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 26 Nov 2021 10:51:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1637941678;
+        bh=1F+85ST5X+Wl10SqBhKPZC0uz2QWcQZBBL1+GoTcjRs=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=NVxrTcoIwPeC4B8rYFmdIzy6sKB+vjk6G5o14nDZx6s6tHpRN1FrUXb4xwlqH5Xnz
+         XT51KjN3c6Y7Mok3ct1VKo8IjXNhFevXf+RXCZxLLM+tFp2TW9MINhcnFARy2XW1ks
+         FeBm3S1360OvAWva+uiDmVuuWCJBf9R5i8In+3Gg=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.133.198]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MpUUm-1mGXTe1O5k-00pulR; Fri, 26
+ Nov 2021 16:47:58 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH] parisc/agp: Annotate parisc agp init functions with __init
+Date:   Fri, 26 Nov 2021 16:47:54 +0100
+Message-Id: <20211126154754.263487-1-deller@gmx.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lIAMW6Ta2Tykv0hadPQ2X2ru8ThtUQQaRITGrWIjtZg9mMBRALw
+ H7Z/9xy0w4UlfGbJxy8TPnH3Zl1uSt4jVdVybljFA/XhJ+zE1BHMvRR3laaV4NyAe7U5quf
+ mKopmoMymwHnepPFa+4JzHGH4Fa9l7YUNrvEJgnA+7CF2wpN8kCfNfS1WbZON+HoPOTD2rH
+ CrF+Qgt6QidTtTb1daUbg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:m9eLKWx96Ck=:jyWUH4KgbdeGd+ZIPcfqku
+ VcGmzI8UOcyukZPGicuszB8aMfnPDG7lKxM+xw+1KzuoFe4v/8A54Bppl1ycb++JKY68T5KMT
+ EaZ8IjJJM/R1R6ltXjnI4SV3rlT1eXhUxfcy0M3Ls3J8E7r6q+iJAwVTw4DXJQsto3dUNrWMC
+ J/azSQow/5Qf2ZGAorXjsZxQcEPnxpPMOqfW6c1X8i2a1ifIgkpILXrbzx+NljyCc8o8BDh52
+ o0rwJ0u5oWdyERn5SQZiHc/qfqK0mYwbRLhQ8b0y7+qKo/DT532Gs0KqAolWcGKXaCqezwr/f
+ xW/zr8op/tkP8tgMXDNNxEacSyiUmv5KskExyJKc8+jGAfTgUjNTVN6+AWRc8i5o8BU93aeJ8
+ N/T7Q8SAEysEalYZyBufiTpfPye17Cl4rLUm9eADTyfyZogvkki8OLJWSWsJqI+bRxuonxx9H
+ vv0jSWS4m4c3wLPmfYBJv5KT0Y30xzHuAzxry+ZwEZw7R5NbYWhERFVISQi7GDQZQe6TeZ4Ob
+ tDIG2bpJ1TjFtCaBe9zeRQowJWsmPU7SNkp4yj87pYPklUCuTheeDER176L21bOjJcK8ML40o
+ 0nvviiMYoZZ+EQvIkwLg0zfKaYqw17KcCiyKTAGIkc53JJXNMHzc81n0c2nm/EncEYfTkiQpJ
+ qwjjd0sFuNt3R3hWLRYLNjfkm8Xlh9RKM9or+w4QUFuvfOr63F2+Z/qCMcHyd5GaPfqUAdcug
+ L1LI4DSfzMGLkaPJBYVXoI06BQbKypisu+yjFsxhlbqxtDJwypuWtjFE2FJdP/84fCsnHBrJQ
+ aY2YSxGyYd0N+qD8qNwGApHKQDY+chEzzCGs9H8eTQ5D/9H0oaakJLzSSuHKTPohgkwi+RSZh
+ TDSdEBJz5FNiVuy7+4klaW3adaB50gcDG2uDNvj9fIkOPSXnCor9lHByrjbNkh1vJHlTwyGeF
+ 9qS/505QreZxgGztfX5LgkTJvQmCU3QfZcHWkpOJE987BgYhoTF+I7UHOkEPHXqzwDzNnMDvw
+ KL++aSaIS0KJu38l+nRGlL+7EHlm8gUq9D4di2Dxx/n+Wz4Fw16DmZMtkRGWq3oHmVTUjImFo
+ Vw5eRjynL2d/GY=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Teng Qi <starmiku1207184332@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: kernel test robot <lkp@intel.com>
+=2D--
+ drivers/char/agp/parisc-agp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-[ Upstream commit 0fa68da72c3be09e06dd833258ee89c33374195f ]
+diff --git a/drivers/char/agp/parisc-agp.c b/drivers/char/agp/parisc-agp.c
+index ed3c4c42fc23..d68d05d5d383 100644
+=2D-- a/drivers/char/agp/parisc-agp.c
++++ b/drivers/char/agp/parisc-agp.c
+@@ -281,7 +281,7 @@ agp_ioc_init(void __iomem *ioc_regs)
+         return 0;
+ }
 
-The definition of macro MOTO_SROM_BUG is:
-  #define MOTO_SROM_BUG    (lp->active == 8 && (get_unaligned_le32(
-  dev->dev_addr) & 0x00ffffff) == 0x3e0008)
+-static int
++static int __init
+ lba_find_capability(int cap)
+ {
+ 	struct _parisc_agp_info *info =3D &parisc_agp_info;
+@@ -366,7 +366,7 @@ parisc_agp_setup(void __iomem *ioc_hpa, void __iomem *=
+lba_hpa)
+ 	return error;
+ }
 
-and the if statement
-  if (MOTO_SROM_BUG) lp->active = 0;
+-static int
++static int __init
+ find_quicksilver(struct device *dev, void *data)
+ {
+ 	struct parisc_device **lba =3D data;
+@@ -378,7 +378,7 @@ find_quicksilver(struct device *dev, void *data)
+ 	return 0;
+ }
 
-using this macro indicates lp->active could be 8. If lp->active is 8 and
-the second comparison of this macro is false. lp->active will remain 8 in:
-  lp->phy[lp->active].gep = (*p ? p : NULL); p += (2 * (*p) + 1);
-  lp->phy[lp->active].rst = (*p ? p : NULL); p += (2 * (*p) + 1);
-  lp->phy[lp->active].mc  = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].ana = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].fdx = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].ttm = get_unaligned_le16(p); p += 2;
-  lp->phy[lp->active].mci = *p;
-
-However, the length of array lp->phy is 8, so array overflows can occur.
-To fix these possible array overflows, we first check lp->active and then
-return -EINVAL if it is greater or equal to ARRAY_SIZE(lp->phy) (i.e. 8).
-
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/dec/tulip/de4x5.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/ethernet/dec/tulip/de4x5.c b/drivers/net/ethernet/dec/tulip/de4x5.c
-index 7c4150a83a082..ffc9c7947b93f 100644
---- a/drivers/net/ethernet/dec/tulip/de4x5.c
-+++ b/drivers/net/ethernet/dec/tulip/de4x5.c
-@@ -4701,6 +4701,10 @@ type3_infoblock(struct net_device *dev, u_char count, u_char *p)
-         lp->ibn = 3;
-         lp->active = *p++;
- 	if (MOTO_SROM_BUG) lp->active = 0;
-+	/* if (MOTO_SROM_BUG) statement indicates lp->active could
-+	 * be 8 (i.e. the size of array lp->phy) */
-+	if (WARN_ON(lp->active >= ARRAY_SIZE(lp->phy)))
-+		return -EINVAL;
- 	lp->phy[lp->active].gep = (*p ? p : NULL); p += (2 * (*p) + 1);
- 	lp->phy[lp->active].rst = (*p ? p : NULL); p += (2 * (*p) + 1);
- 	lp->phy[lp->active].mc  = get_unaligned_le16(p); p += 2;
--- 
-2.33.0
+-static int
++static int __init
+ parisc_agp_init(void)
+ {
+ 	extern struct sba_device *sba_list;
+=2D-
+2.31.1
 
