@@ -2,79 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41FBA45FBB6
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 03:12:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C06545FC9E
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 06:00:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348693AbhK0CPu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 26 Nov 2021 21:15:50 -0500
-Received: from mail.daesangagung.co.id ([117.54.218.101]:44800 "EHLO
-        mail.daesangagung.co.id" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241891AbhK0CNq (ORCPT
+        id S229506AbhK0FDS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 Nov 2021 00:03:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55292 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231744AbhK0FBR (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 26 Nov 2021 21:13:46 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by mail.daesangagung.co.id (Postfix) with ESMTP id B11F180BC8355;
-        Fri, 26 Nov 2021 00:25:04 +0700 (WIB)
-Received: from mail.daesangagung.co.id ([127.0.0.1])
-        by localhost (mail.daesangagung.co.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id KP-98jJa8OIL; Fri, 26 Nov 2021 00:25:04 +0700 (WIB)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.daesangagung.co.id (Postfix) with ESMTP id 9CAE7809F6432;
-        Thu, 25 Nov 2021 20:16:56 +0700 (WIB)
-X-Virus-Scanned: amavisd-new at daesangagung.co.id
-Received: from mail.daesangagung.co.id ([127.0.0.1])
-        by localhost (mail.daesangagung.co.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id wLAkd3Q9MCXI; Thu, 25 Nov 2021 20:16:56 +0700 (WIB)
-Received: from User (_gateway [10.0.22.111])
-        by mail.daesangagung.co.id (Postfix) with SMTP id 335C4809F6434;
-        Thu, 25 Nov 2021 11:25:13 +0700 (WIB)
-Reply-To: <sarb_bnk086@meta.ua>
-From:   "Hsbc Bank London" <info@daesangagung.co.id>
-Subject: Your Approved Payment !
-Date:   Wed, 24 Nov 2021 20:25:30 -0800
+        Sat, 27 Nov 2021 00:01:17 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40247C061574
+        for <linux-parisc@vger.kernel.org>; Fri, 26 Nov 2021 20:58:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=JpoOMJMYMW9tcxE94X859etox3VfwYCZQ0qurO9ustY=; b=OZhmPpKbgrBkifLt3TmctHJAkT
+        MYxfgYb4vh0t6xBSidvR1uRJ/aHJfKctwweU/JE3b7Njoiq1ELqJASzSgk7ySc8tqFsQOtzUv0LBR
+        ktkGOrXxWvkSJz/dUzUhmV87VZNz45IQascPNqOQxz+ZCgopKBlsZI2UtH6LVWhBUdMQ/BVi6J+Is
+        Gq9oAmSb2AdjANfBingZIfp0OdZsEsVUI8uyA08pimu5OqxgXP3STwnTJMVeAttyAo2WswyFDimZr
+        Vc3txUIU1Gi4cYnF2PF4zDwxTmKMGokKGi3NG6igPkFdjsz+IlIyHpni4MqkJY2Y+xFCtWSq6e91h
+        JVVOG+1w==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mqpmg-00CwhV-AM; Sat, 27 Nov 2021 04:57:58 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     dri-devel@lists.freedesktop.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Kyle McMartin <kyle@mcmartin.ca>,
+        David Airlie <airlied@linux.ie>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: [PATCH] agp: parisc-agp: fix section mismatch warning
+Date:   Fri, 26 Nov 2021 20:57:57 -0800
+Message-Id: <20211127045757.27908-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20211125042513.335C4809F6434@mail.daesangagung.co.id>
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-THE WORLDS LOCAL BANK
-International Banking
-FOREIGN EXCHANGE UNIT
+Fix section mismatch warning in parisc-agp:
 
-RE: MANDATORY RELEASE ORDER OF YOUR OVERDUE FUND
+WARNING: modpost: drivers/char/agp/parisc-agp.o(.text+0x7a0): Section mismatch in reference from the function init_module() to the function .init.text:parisc_agp_setup.isra.0()
+The function init_module() references
+the function __init parisc_agp_setup.isra.0().
+This is often because init_module lacks a __init 
+annotation or the annotation of parisc_agp_setup.isra.0 is wrong.
 
-Dear Valued Beneficiary:
+Fixes: 08a6436816f7 ("[PARISC] Add support for Quicksilver AGPGART")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Kyle McMartin <kyle@mcmartin.ca>
+Cc: David Airlie <airlied@linux.ie>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+---
+ drivers/char/agp/parisc-agp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We are pleased to inform you that we have finally concluded arrangement towards your refund/lottery pay out which has been delayed for a Long Period of time because of your Cooperation and Dealings with Wrong Officials and importers of banks as your fund returned back to us on the 4th of Jan 2021 when we confirmed the rate of delays and questionable activities that has been related by the previous administrative banks alongside with others that collaborated in delaying the release of your fund after all charges and payments demanded were paid.
-
-Recently, the Ministry of Finance of United Kingdom, Bank of England, HSBC Bank Plc UK and United Kingdom Inland Revenue Services held a meeting on how this fund will be released to the beneficiaries to their designated bank accounts in their country without further delay since we are in the first half of the economic year 2021 and it is now overdue to be released as the said funds belongs to them.
-
-We apologize for the delay of the payment and all the inconveniences that this might have caused you during this period of time. However we have instructed all the banks in the globe which we previously asked to help us pay out this fund to the general public to STOP the process of the release of the fund due to their incompetence and negligence of duty towards the release of this fund. After our findings, some were arrested and charged for theft according to Section 1 of the Theft Act 1978, as amended by the Theft (Amendment) Act 1996 law of the United Kingdom.
-
-The Bank of England Governor (Mr Andrew Bailey) has given serious warning and Instructions and ordered the Inland Revenue Services Department of England to quickly release all on hold funds which are in their escrow account to the sole beneficiaries which you are among those who will receive their Inheritance funds.
-
-Please contact ONLY the Executive member of the Monetary Policy Committee of South African Reserve Bank (Dr Rashad Cassim) on his email: sarb_bnk086@meta.ua to advise you on how to procure the certificate of claim as the law of South Africa demands that without it there will not be any payment whether pending loan amount, lottery fund, inheritance funds or whatsoever fund locally or internationally perhaps you have not yet received it.
-
-Provide below details to Dr Rashad Cassim for his clarification:
-
-Full Name....... Tel.................
-
-Address......... Amount..............
-
-City............ Country.............
-
-Copies of documents pertaining to the fund.
-
-Best Regards,
-Mr.James Emmett.
-Chief Executive Officer, HSBC Bank plc.
-United Kingdom
+--- linux-next-20211126.orig/drivers/char/agp/parisc-agp.c
++++ linux-next-20211126/drivers/char/agp/parisc-agp.c
+@@ -378,7 +378,7 @@ find_quicksilver(struct device *dev, voi
+ 	return 0;
+ }
+ 
+-static int
++static int __init
+ parisc_agp_init(void)
+ {
+ 	extern struct sba_device *sba_list;
