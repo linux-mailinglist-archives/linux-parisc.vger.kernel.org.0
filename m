@@ -2,67 +2,106 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 256B945FE33
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 11:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E21C645FE36
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 12:00:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233454AbhK0LBq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        id S230044AbhK0LDr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 Nov 2021 06:03:47 -0500
+Received: from mout.gmx.net ([212.227.17.20]:35659 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233248AbhK0LBq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
         Sat, 27 Nov 2021 06:01:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47574 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235472AbhK0K7q (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 27 Nov 2021 05:59:46 -0500
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 705C9C061757
-        for <linux-parisc@vger.kernel.org>; Sat, 27 Nov 2021 02:56:31 -0800 (PST)
-Received: (qmail 5898 invoked from network); 27 Nov 2021 10:56:40 -0000
-Received: from p200300cf072ea900047574fffec7eb88.dip0.t-ipconnect.de ([2003:cf:72e:a900:475:74ff:fec7:eb88]:34126 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <dri-devel@lists.freedesktop.org>; Sat, 27 Nov 2021 11:56:40 +0100
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     dri-devel@lists.freedesktop.org,
-        Randy Dunlap <rdunlap@infradead.org>
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Kyle McMartin <kyle@mcmartin.ca>,
-        David Airlie <airlied@linux.ie>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH] agp: parisc-agp: fix section mismatch warning
-Date:   Sat, 27 Nov 2021 11:56:08 +0100
-Message-ID: <2606759.mvXUDI8C0e@eto.sf-tec.de>
-In-Reply-To: <20211127045757.27908-1-rdunlap@infradead.org>
-References: <20211127045757.27908-1-rdunlap@infradead.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1638010705;
+        bh=sWXyLZHF1FuKKSGyu0QX2Bvsjy7Aa81ICOcQipfD62g=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=Dg+s0cIW+cBp277lcubXmtc6u8jQMnsn6BM7z62ZL1InleG+iwu8tZJZA08KH2eom
+         76swBzDRMmJtNya7azsLBc5/piTSvHJl2x4PvhUQjBulqDPUq2vDs+4E8PKzA2Sw2V
+         UnWUCdwFaQuF4v5IluTC16D8gS5j77XnzqWLHAsM=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.151.211]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1McY8T-1mLQTt44uD-00cyxO; Sat, 27
+ Nov 2021 11:58:25 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>
+Subject: [PATCH] parisc: Do not export __lshrdi3 on 64-bit with gcc >= 11
+Date:   Sat, 27 Nov 2021 11:58:18 +0100
+Message-Id: <20211127105818.299902-1-deller@gmx.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart11872250.O9o76ZdvQC"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:L5CXnDoTiGZook4rlgJc5bGuGtIdF64ki3jCtimHTEdLXXiYxwA
+ Rp04WxtzPI/wVjnMHPk8RdFhR9LQCwP7pqDU5HTMVixb7DqEZCbW//gTLGKw52AVrAx+NXO
+ f4RFhFX6Z1V84slrlaSVJ6h9uAe6nv/TkXUbjYL1X/mjXFBww3+0cBgjx7b6elA+eVddbMx
+ 4DsfSkmIuUY8XYThqFljw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VURbKvuUDnI=:YPlmw/SIU8XWfdwqXI59Yi
+ iufGT6junY+ua4ixrPWtn5ebfE0dbm0ciFW2IdanG1AS/S8Bn1bKmiNkou685MF+ulbLgW9OO
+ 1TLkU9jV2rVlgzDEhNka0vvpAuVkpEI9KYmyxrj2lS6T9IPFVcP+rK1MesWgVjG9nrW6t+5lI
+ /ATV02oc9Mek9BZ7wFfHTtXmUsz4rT+863AD3qg3ijppcDNy9v5SnOB5ujGd09O5p4N67MRMw
+ CNueUDOKC/vjeOjv1v9B7LzRKFj1ygxXaSV+4VPMglEVRvw5H20idihab8cW6JqhAzA/jODtU
+ EFL/yUs+KV1QAvFfNIQZfODpXjMzdPLhNpcLObPGsShdQE+bWLi10dl4m0ig2cKwvlSRIbEwn
+ dVUEGKkfq9XREqOuWkS+xZHyo/iJTZMh/YoLstsMtfIqWXucVpo5KY4/Ybte7zK7q/ah1++gs
+ Ut9pCjZ9I1wNpHC4GS/vgFCRQdTt3jM1TBXI10QqxuikNPWl6mcefEg9etf4QuiFb/pbq+1in
+ O7pMObadtfSDFDZXYh2FFncFnbaipiXhiYAz5pBQwBB987ALmcTmEgUM4E6+JvGfhYWqXPDyi
+ GjeYfIMB6UtywArW69PpUrBVUKZDStCCnPKiJrIbQQy7h5r3CE3kmz8cWlBm++Ts/Bb74uoqO
+ OWACcLRlcc12vnHjMZtFpeO+iO9iQZymAuctPZuFJQtj93WWoa/GUQmjau+sVjwyOC3XZat2q
+ Y8Ima9p9XoXXEPdqIwzYJpjTKj9jr9H2TUlxF+Lro/M0dctsANulN2Raq/PBOn6fzjGsK8u06
+ KiqbQK7NELRSCZgbKd5uHHc/ZJQ8tkcTg84XJf0zarxION9fTcpitQ7TTqWtiDjlzkwTErbzn
+ lNqujR+6bVlExxPqN2wVKYCNsy3/oTzGzQpya1K3Z+SlLCwPwJAEG/jEI/3Wtcza2XToOYk1s
+ hM3NZfHBpoDyICL1prPc7IgzA6gP5NyTw5iOm0bvg+0i+uC0xGUO4odIJQn/+oEi2NMSfKbc/
+ Trnog1W20SsixjXOXueNeXH66+OpVSeSVlzaXz0cCBJbdXkHGH29jhNmwlq9RKorz3rBQHsT7
+ l1/h8rwzK7LjOE=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart11872250.O9o76ZdvQC
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+It seems the __lshrdi3 symbol was dropped from libgcc.a from gcc-11 for
+64-bit executables.
 
-Am Samstag, 27. November 2021, 05:57:57 CET schrieb Randy Dunlap:
-> Fix section mismatch warning in parisc-agp:
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/kernel/parisc_ksyms.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Too late ;)
+diff --git a/arch/parisc/kernel/parisc_ksyms.c b/arch/parisc/kernel/parisc=
+_ksyms.c
+index 00297e8e1c88..f26c51370255 100644
+=2D-- a/arch/parisc/kernel/parisc_ksyms.c
++++ b/arch/parisc/kernel/parisc_ksyms.c
+@@ -14,6 +14,7 @@
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/syscalls.h>
++#include <linux/compiler.h>
 
-https://lore.kernel.org/linux-parisc/20211126154754.263487-1-deller@gmx.de/
+ #include <linux/string.h>
+ EXPORT_SYMBOL(memset);
+@@ -94,16 +95,19 @@ EXPORT_SYMBOL($$divI_15);
 
---nextPart11872250.O9o76ZdvQC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+ extern void __ashrdi3(void);
+ extern void __ashldi3(void);
+-extern void __lshrdi3(void);
+ extern void __muldi3(void);
+ extern void __ucmpdi2(void);
 
------BEGIN PGP SIGNATURE-----
+ EXPORT_SYMBOL(__ashrdi3);
+ EXPORT_SYMBOL(__ashldi3);
+-EXPORT_SYMBOL(__lshrdi3);
+ EXPORT_SYMBOL(__muldi3);
+ EXPORT_SYMBOL(__ucmpdi2);
 
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYaIOyAAKCRBcpIk+abn8
-Tvi7AKClZxKBcLo3VyWARYzLALhDJxyLawCcCedq1ebV0hyjSRfwACH3OmSKeO4=
-=75tg
------END PGP SIGNATURE-----
++#if !(defined(CONFIG_64BIT) && (GCC_VERSION >=3D 110000))
++extern void __lshrdi3(void);
++EXPORT_SYMBOL(__lshrdi3);
++#endif
++
+ asmlinkage void * __canonicalize_funcptr_for_compare(void *);
+ EXPORT_SYMBOL(__canonicalize_funcptr_for_compare);
 
---nextPart11872250.O9o76ZdvQC--
-
-
+=2D-
+2.31.1
 
