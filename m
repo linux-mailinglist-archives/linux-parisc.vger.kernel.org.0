@@ -2,112 +2,66 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8BD145FE9C
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 13:38:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E62D46003A
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 17:34:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231430AbhK0Mlv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 27 Nov 2021 07:41:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:44494 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1350108AbhK0Mjv (ORCPT
+        id S1346831AbhK0Qh4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 Nov 2021 11:37:56 -0500
+Received: from mta-mtl-001.bell.net ([209.71.208.11]:46574 "EHLO
+        cmx-mtlrgo001.bell.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234435AbhK0Qfz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 27 Nov 2021 07:39:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1638016596;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-        bh=zqIa1j5A0d/EtUnFJ/VqrjiyNF8lkC24a0+Y8rFhsf4=;
-        b=Glcpq7IHj+UH8UmWJ5N5L24nKSrbEiIdmeOifZJiIQeKetIOuaHHq6MVnSHovX/AxOytqP
-        ETEQ7EE5A4s5bk3sGMYnhQqWuRv7hCQhwSo2c1kYGXQhhGXYbgveqy8jR+C1Tv25G2Yr43
-        0Q3NYhmROhx0nfViBR4pwn2WMjCdC5Y=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-495-Cx-C8ahHNb-t1rnV_7fVYw-1; Sat, 27 Nov 2021 07:36:31 -0500
-X-MC-Unique: Cx-C8ahHNb-t1rnV_7fVYw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C9DCB1853026;
-        Sat, 27 Nov 2021 12:36:29 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9AA141803D;
-        Sat, 27 Nov 2021 12:36:29 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 1ARCaTZl011572;
-        Sat, 27 Nov 2021 07:36:29 -0500
-Received: from localhost (mpatocka@localhost)
-        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 1ARCaSP7011568;
-        Sat, 27 Nov 2021 07:36:28 -0500
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date:   Sat, 27 Nov 2021 07:36:28 -0500 (EST)
-From:   Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        John David Anglin <dave.anglin@bell.net>
-cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH] parisc: fix compilation failure due to missing __lshrdi3
-Message-ID: <alpine.LRH.2.02.2111270717490.10680@file01.intranet.prod.int.rdu2.redhat.com>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+        Sat, 27 Nov 2021 11:35:55 -0500
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6197730200C3EDD5
+X-CM-Envelope: MS4xfG6xF7rZsfbPoKMOC0ywNaBV79ER3AGp4JttddbQAuCOo8+EY4OX9ZcmzrdyBG2QbNJb09rwED7JOK9wCH3m9aluKeU0RA+7Ch422QalKwzVFtD5daTj
+ zMirqkqxr0HmP4iTR8qjAKyuo5HHyvSwCAx5B+s/J8x9FCSg4kz1XwQpcMkNZP4MSRabTPdpUgURNu4z8BpS5jnXbKLGfOcyY/zlcpvWwHlg5IKIb4GMf4M8
+ 2JgUx6HvXYs9d/2dXNxKsq+R9zXW1mHt1RQHxdpsOE/vvUxVLlLptMwYkOWg2inqNhoFzlzZdNreJHmwXcJ0sCiTVMLlEM7aj7KqQkEIRw1FS9wUyxHdHtj1
+ 0MpISgh3
+X-CM-Analysis: v=2.4 cv=eZxew5IH c=1 sm=1 tr=0 ts=61a25da7
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=VPUhKpuZaOU0Yvd6DKgA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 6197730200C3EDD5; Sat, 27 Nov 2021 11:32:39 -0500
+Message-ID: <0ed4c18f-79fb-fc95-5baf-ae9a1f99625b@bell.net>
+Date:   Sat, 27 Nov 2021 11:32:39 -0500
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [PATCH] parisc: Do not export __lshrdi3 on 64-bit with gcc >= 11
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Sven Schnelle <svens@stackframe.org>
+References: <20211127105818.299902-1-deller@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <20211127105818.299902-1-deller@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi
+On 2021-11-27 5:58 a.m., Helge Deller wrote:
+> It seems the __lshrdi3 symbol was dropped from libgcc.a from gcc-11 for
+> 64-bit executables.
+This is gcc bug.  There's a typo in libgcc/config/pa/t-dimode:
 
-I get this error when compiling a 64-bit kernel on a current Debian-ports 
-system.
+# Extra DImode libgcc2 functions to build.
+lib2difuncs = _muldi3 _negdi2 _lshrdi _ashldi3 _ashrdi3 _cmpdi2 _ucmpdi2
 
-  CC [M]  drivers/hid/hid-generic.o
-  LD [M]  drivers/hid/hid.o
-  GEN     .version
-  CHK     include/generated/compile.h
-  LD      vmlinux.o
-  MODPOST vmlinux.symvers
-  MODINFO modules.builtin.modinfo
-  GEN     modules.builtin
-  LD      .tmp_vmlinux.kallsyms1
-hppa64-linux-gnu-ld: arch/parisc/kernel/parisc_ksyms.o:(___ksymtab+__lshrdi3+0x0): undefined reference to `__lshrdi3'
-make: *** [Makefile:1161: vmlinux] Chyba 1
+Will fix.
 
-This patch fixes it.
+__lshrdi3 isn't needed anymore for 64-bit binaries with gcc-11 and later.  Not sure for other shifts
+but it should be possible to handle them in pa.md.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
+Dave
 
----
- arch/parisc/kernel/parisc_ksyms.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-Index: linux-5.16-rc2/arch/parisc/kernel/parisc_ksyms.c
-===================================================================
---- linux-5.16-rc2.orig/arch/parisc/kernel/parisc_ksyms.c	2021-11-26 17:55:20.000000000 +0100
-+++ linux-5.16-rc2/arch/parisc/kernel/parisc_ksyms.c	2021-11-26 19:18:31.000000000 +0100
-@@ -92,17 +92,20 @@ EXPORT_SYMBOL($$divI_12);
- EXPORT_SYMBOL($$divI_14);
- EXPORT_SYMBOL($$divI_15);
- 
-+#ifndef CONFIG_64BIT
- extern void __ashrdi3(void);
- extern void __ashldi3(void);
- extern void __lshrdi3(void);
--extern void __muldi3(void);
- extern void __ucmpdi2(void);
- 
- EXPORT_SYMBOL(__ashrdi3);
- EXPORT_SYMBOL(__ashldi3);
- EXPORT_SYMBOL(__lshrdi3);
--EXPORT_SYMBOL(__muldi3);
- EXPORT_SYMBOL(__ucmpdi2);
-+#endif
-+
-+extern void __muldi3(void);
-+EXPORT_SYMBOL(__muldi3);
- 
- asmlinkage void * __canonicalize_funcptr_for_compare(void *);
- EXPORT_SYMBOL(__canonicalize_funcptr_for_compare);
+-- 
+John David Anglin  dave.anglin@bell.net
 
