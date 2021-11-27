@@ -2,91 +2,112 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 323F245FE3C
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 12:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8BD145FE9C
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 13:38:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235663AbhK0LUP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 27 Nov 2021 06:20:15 -0500
-Received: from mout.gmx.net ([212.227.17.20]:47335 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238731AbhK0LSP (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 27 Nov 2021 06:18:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1638011655;
-        bh=Nlv+YwyrFp5/js3l2+n5LajMQJNLn1j+N2+/9mUdcKg=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=B+Wmu2KOVvuxMvZhcBdM+q6ZTJlHVmjOBGRGFJFw2Fk6pxWVIerlTNd292tpfrml9
-         cpwCIzwYso/O3Ru0TajwAqIWrxuI6IHy5pSIhdTZ0/sksQimeqaxdvyNT7cAY4qHOc
-         T/Wm3o2uNl16pyeXkA1zeZuI6CZFga/BrqeVwh7Y=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.151.211]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MFKGP-1mp1rS0ycL-00Fnwd; Sat, 27
- Nov 2021 12:14:15 +0100
-Message-ID: <ccc69a65-e0af-1c0d-282a-77f74e2cb918@gmx.de>
-Date:   Sat, 27 Nov 2021 12:14:10 +0100
+        id S231430AbhK0Mlv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 Nov 2021 07:41:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:44494 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1350108AbhK0Mjv (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 27 Nov 2021 07:39:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1638016596;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+        bh=zqIa1j5A0d/EtUnFJ/VqrjiyNF8lkC24a0+Y8rFhsf4=;
+        b=Glcpq7IHj+UH8UmWJ5N5L24nKSrbEiIdmeOifZJiIQeKetIOuaHHq6MVnSHovX/AxOytqP
+        ETEQ7EE5A4s5bk3sGMYnhQqWuRv7hCQhwSo2c1kYGXQhhGXYbgveqy8jR+C1Tv25G2Yr43
+        0Q3NYhmROhx0nfViBR4pwn2WMjCdC5Y=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-495-Cx-C8ahHNb-t1rnV_7fVYw-1; Sat, 27 Nov 2021 07:36:31 -0500
+X-MC-Unique: Cx-C8ahHNb-t1rnV_7fVYw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C9DCB1853026;
+        Sat, 27 Nov 2021 12:36:29 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9AA141803D;
+        Sat, 27 Nov 2021 12:36:29 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 1ARCaTZl011572;
+        Sat, 27 Nov 2021 07:36:29 -0500
+Received: from localhost (mpatocka@localhost)
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 1ARCaSP7011568;
+        Sat, 27 Nov 2021 07:36:28 -0500
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date:   Sat, 27 Nov 2021 07:36:28 -0500 (EST)
+From:   Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>
+cc:     linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc: fix compilation failure due to missing __lshrdi3
+Message-ID: <alpine.LRH.2.02.2111270717490.10680@file01.intranet.prod.int.rdu2.redhat.com>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] agp: parisc-agp: fix section mismatch warning
-Content-Language: en-US
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        dri-devel@lists.freedesktop.org,
-        Randy Dunlap <rdunlap@infradead.org>
-Cc:     kernel test robot <lkp@intel.com>,
-        Kyle McMartin <kyle@mcmartin.ca>,
-        David Airlie <airlied@linux.ie>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org
-References: <20211127045757.27908-1-rdunlap@infradead.org>
- <2606759.mvXUDI8C0e@eto.sf-tec.de>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <2606759.mvXUDI8C0e@eto.sf-tec.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:s/S3hVajaXU3IFbl/RCCQTkAOGE9EEE7socUcPTMvRQQ4v/GUMR
- 3fQe+2FN/Hv4bcXs1X9tfeHopkPSNOFiEBN+5r7758JijR77xsCVO4iRPZZq1iNV2mWvt96
- B6mH8ednX6CVse3PtltSCsxCUHocbwpK7FevL5p5iUKbu4PR6Q1g+9APs9T70OiO2Mh7cBl
- 9R3/zewuQ+sgpG8WW7ViA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:4Z51+uuOfRk=:fhuN+hjtwu4XQKtmBTMGz/
- Xh35qNKnGPx29F2EDbizDb42NGQko5zizMGaVNu/c4HHxFJBzYBNMyakyQNdVPgA3pHtvNugJ
- fB0rLQrHclH3qUi/a2x0QEvQ7aPh1sqYmM6+hiPsngfFeLbvbJBZrNgcJQzUz8GKBKmELCJvz
- C3J6M9X93izlPdZfNzw/bb1RHVuKPMBpibN+OG+HVLiDi1sl/IUlWSTP2mSQG/39oaMDODOo4
- L0XR6RhwykV0S3urEQKGNqdUxmWfWVvSnOrT2VYBz1tJ3N2AeRNKxSZhlOCXs+WlGfn/368LX
- h4Lp4ZpHRTrxARBl1QiHMdIciokmBH3EI46a9jz8SdizxQkqqubHys5uFVoc6c3C2dDu+RNB1
- prtwv/nJYJsdxQQnP6xm24yWu9psRW9K6QKKf8p9L9HQapHCc3xinuo2dZttAiyd82EaV4PN8
- eYnoCx04OBxGLaMYv/bhZIC3D1r+mlFrN2hyFJfZ9LrM66f4tGtTF6aRgtMAEIQVMP0LAxZp5
- ekYPoH2JPByB/8u39UhWHlsYBaAiKJhfk9FNQVSQNLf6C0s5Jqyfjx6PbJqVNSZm48/hnNkuE
- i0LDCKiqKCcOnqzGtu0nr5BduFrJll1DaVZUyBU6gDSJafyPO50WdLSAMD36F8tG/Y2i2BmPN
- ysbFM+vi3qg24L2d+H8947B+LJv/oisMgCb2PiNbHOX7yjr431QBlBbovyWMaCf4/eTs8daSK
- waNug3jMwWuNZAtvmsSB7B8MeVeyMTOj8cOQeDfZPbQt0vKkSxBMbdvEvkdphk32KlrauzRP2
- WY1dxrJDu6FglkHncJCPvToLYnGgY8z5mCZV/3YNifkRNGBxhC1briyoL4OILSOJzTbCASI3r
- JqaJlQoqoadDqrMZ+/sDeTYmSAatDGFwp0zgja3uGNt75X6qsyHst2c5ShbbqzmTIria9LqE5
- Qiv8oXboqUfHKpb0BGQt0zq/fx2/SHkuk/nfXw1kjEig4enrbR3g56qNoWmVi+eXt9qFZNrLy
- rW/iP1rv3C45SKOcGLgLso46SKbyDdqnDbO70IeTyLJgs1nHdZBA+8vzfxgpEa274C1sm4P5r
- jh3UkgUGpK+O0k=
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 11/27/21 11:56, Rolf Eike Beer wrote:
-> Am Samstag, 27. November 2021, 05:57:57 CET schrieb Randy Dunlap:
->> Fix section mismatch warning in parisc-agp:
+Hi
 
-Thanks Randy!
+I get this error when compiling a 64-bit kernel on a current Debian-ports 
+system.
 
-> Too late ;)
->
-> https://lore.kernel.org/linux-parisc/20211126154754.263487-1-deller@gmx.=
-de/
+  CC [M]  drivers/hid/hid-generic.o
+  LD [M]  drivers/hid/hid.o
+  GEN     .version
+  CHK     include/generated/compile.h
+  LD      vmlinux.o
+  MODPOST vmlinux.symvers
+  MODINFO modules.builtin.modinfo
+  GEN     modules.builtin
+  LD      .tmp_vmlinux.kallsyms1
+hppa64-linux-gnu-ld: arch/parisc/kernel/parisc_ksyms.o:(___ksymtab+__lshrdi3+0x0): undefined reference to `__lshrdi3'
+make: *** [Makefile:1161: vmlinux] Chyba 1
 
-Being late doesn't matter!
-I'm really happy about all patches which are sent in for parisc and in the=
- past
-often I applied the late-sent-in patches instead of mine, simply because t=
-he
-commit message was much better than mine.
+This patch fixes it.
 
-So, patches are always welcome.
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 
-Helge
+---
+ arch/parisc/kernel/parisc_ksyms.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+Index: linux-5.16-rc2/arch/parisc/kernel/parisc_ksyms.c
+===================================================================
+--- linux-5.16-rc2.orig/arch/parisc/kernel/parisc_ksyms.c	2021-11-26 17:55:20.000000000 +0100
++++ linux-5.16-rc2/arch/parisc/kernel/parisc_ksyms.c	2021-11-26 19:18:31.000000000 +0100
+@@ -92,17 +92,20 @@ EXPORT_SYMBOL($$divI_12);
+ EXPORT_SYMBOL($$divI_14);
+ EXPORT_SYMBOL($$divI_15);
+ 
++#ifndef CONFIG_64BIT
+ extern void __ashrdi3(void);
+ extern void __ashldi3(void);
+ extern void __lshrdi3(void);
+-extern void __muldi3(void);
+ extern void __ucmpdi2(void);
+ 
+ EXPORT_SYMBOL(__ashrdi3);
+ EXPORT_SYMBOL(__ashldi3);
+ EXPORT_SYMBOL(__lshrdi3);
+-EXPORT_SYMBOL(__muldi3);
+ EXPORT_SYMBOL(__ucmpdi2);
++#endif
++
++extern void __muldi3(void);
++EXPORT_SYMBOL(__muldi3);
+ 
+ asmlinkage void * __canonicalize_funcptr_for_compare(void *);
+ EXPORT_SYMBOL(__canonicalize_funcptr_for_compare);
+
