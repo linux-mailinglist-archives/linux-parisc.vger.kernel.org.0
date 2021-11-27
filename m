@@ -2,106 +2,135 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E21C645FE36
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 12:00:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B45E45FE37
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 12:05:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230044AbhK0LDr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 27 Nov 2021 06:03:47 -0500
-Received: from mout.gmx.net ([212.227.17.20]:35659 "EHLO mout.gmx.net"
+        id S234604AbhK0LIj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 Nov 2021 06:08:39 -0500
+Received: from mout.gmx.net ([212.227.17.20]:52187 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233248AbhK0LBq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 27 Nov 2021 06:01:46 -0500
+        id S234723AbhK0LGj (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 27 Nov 2021 06:06:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1638010705;
-        bh=sWXyLZHF1FuKKSGyu0QX2Bvsjy7Aa81ICOcQipfD62g=;
+        s=badeba3b8450; t=1638010997;
+        bh=CrvJSO8EFDtQHDgcsfGaFyUhzcHEKef2VDi6ukksPfQ=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=Dg+s0cIW+cBp277lcubXmtc6u8jQMnsn6BM7z62ZL1InleG+iwu8tZJZA08KH2eom
-         76swBzDRMmJtNya7azsLBc5/piTSvHJl2x4PvhUQjBulqDPUq2vDs+4E8PKzA2Sw2V
-         UnWUCdwFaQuF4v5IluTC16D8gS5j77XnzqWLHAsM=
+        b=iLNkllGzNkyNhT8NP5MjcBpHsrz1gg6TUAHrA20szpn7/EqHPOEREDZujB/7Nw6Zj
+         k2ESKGUWI/HEAvOWlgsyo+0ZSIJ2N6hBi7lb8m2AJR6cprr6lC/M1X9oN/s8aAy7dB
+         e7hhLJYO8Yud1586inVivdy0ksBq/79pqwGt9p8o=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from ls3530.fritz.box ([92.116.151.211]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1McY8T-1mLQTt44uD-00cyxO; Sat, 27
- Nov 2021 11:58:25 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MXGvG-1n6yYV2ajO-00Yi1s; Sat, 27
+ Nov 2021 12:03:17 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
 Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
         Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH] parisc: Do not export __lshrdi3 on 64-bit with gcc >= 11
-Date:   Sat, 27 Nov 2021 11:58:18 +0100
-Message-Id: <20211127105818.299902-1-deller@gmx.de>
+Subject: [PATCH] parisc: Enable sata sil, audit and usb support on 64-bit defconfig
+Date:   Sat, 27 Nov 2021 12:03:13 +0100
+Message-Id: <20211127110313.300276-1-deller@gmx.de>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:L5CXnDoTiGZook4rlgJc5bGuGtIdF64ki3jCtimHTEdLXXiYxwA
- Rp04WxtzPI/wVjnMHPk8RdFhR9LQCwP7pqDU5HTMVixb7DqEZCbW//gTLGKw52AVrAx+NXO
- f4RFhFX6Z1V84slrlaSVJ6h9uAe6nv/TkXUbjYL1X/mjXFBww3+0cBgjx7b6elA+eVddbMx
- 4DsfSkmIuUY8XYThqFljw==
+X-Provags-ID: V03:K1:vwqZqgN2SPaRvyCqGvkeI6maNSRMpelzRjuvYbZPjgWrXuE5Fqg
+ 9RPWIO/oqBTUUNuKujXy2CbWpgc2y7620UIzA8aXmVgaBkZvT8ntu435XmPX5Sj66byfyld
+ 6o+S4uLqXvqUGfTbOvL4j2/8K7OO25r69mnJ3TMDSqTydmBrFdkibktHilaILMfVe3EvWMm
+ pLUBTg5Td9NTxTRxNWxQg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:VURbKvuUDnI=:YPlmw/SIU8XWfdwqXI59Yi
- iufGT6junY+ua4ixrPWtn5ebfE0dbm0ciFW2IdanG1AS/S8Bn1bKmiNkou685MF+ulbLgW9OO
- 1TLkU9jV2rVlgzDEhNka0vvpAuVkpEI9KYmyxrj2lS6T9IPFVcP+rK1MesWgVjG9nrW6t+5lI
- /ATV02oc9Mek9BZ7wFfHTtXmUsz4rT+863AD3qg3ijppcDNy9v5SnOB5ujGd09O5p4N67MRMw
- CNueUDOKC/vjeOjv1v9B7LzRKFj1ygxXaSV+4VPMglEVRvw5H20idihab8cW6JqhAzA/jODtU
- EFL/yUs+KV1QAvFfNIQZfODpXjMzdPLhNpcLObPGsShdQE+bWLi10dl4m0ig2cKwvlSRIbEwn
- dVUEGKkfq9XREqOuWkS+xZHyo/iJTZMh/YoLstsMtfIqWXucVpo5KY4/Ybte7zK7q/ah1++gs
- Ut9pCjZ9I1wNpHC4GS/vgFCRQdTt3jM1TBXI10QqxuikNPWl6mcefEg9etf4QuiFb/pbq+1in
- O7pMObadtfSDFDZXYh2FFncFnbaipiXhiYAz5pBQwBB987ALmcTmEgUM4E6+JvGfhYWqXPDyi
- GjeYfIMB6UtywArW69PpUrBVUKZDStCCnPKiJrIbQQy7h5r3CE3kmz8cWlBm++Ts/Bb74uoqO
- OWACcLRlcc12vnHjMZtFpeO+iO9iQZymAuctPZuFJQtj93WWoa/GUQmjau+sVjwyOC3XZat2q
- Y8Ima9p9XoXXEPdqIwzYJpjTKj9jr9H2TUlxF+Lro/M0dctsANulN2Raq/PBOn6fzjGsK8u06
- KiqbQK7NELRSCZgbKd5uHHc/ZJQ8tkcTg84XJf0zarxION9fTcpitQ7TTqWtiDjlzkwTErbzn
- lNqujR+6bVlExxPqN2wVKYCNsy3/oTzGzQpya1K3Z+SlLCwPwJAEG/jEI/3Wtcza2XToOYk1s
- hM3NZfHBpoDyICL1prPc7IgzA6gP5NyTw5iOm0bvg+0i+uC0xGUO4odIJQn/+oEi2NMSfKbc/
- Trnog1W20SsixjXOXueNeXH66+OpVSeSVlzaXz0cCBJbdXkHGH29jhNmwlq9RKorz3rBQHsT7
- l1/h8rwzK7LjOE=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:t0cnQMZb6Sw=:0LJ2/FkQLO6CfbYZIBMdzl
+ 8ly6AhafBYG2WA95VKEj7evDvbE2DLH0ZwyQr0CeYgHAAoQ+vB8Xpt3y43ln6eDFl8bitC3kn
+ Egk5x8bHxQPXjhTAEuGwQXta7xAVnUPOJYdIfK3ZOQoMrebC+Z1d+wCbaT0zU4EqKS3JaF3an
+ RG2XrGaM9sM1X5weshjHdL/r4c2w1ZvEuVxa/FY1mTt+1QxIX6tnMydJDtTu5I43h5COqs3zB
+ jKC6eL234fOiFi9M/iHsBsSGY68dPEk/ql+9CiIeViTi/5bQYUZtmNd5A5JAo4satX/IdZjjz
+ 2WSWasLPnXuIm2yqAfiaiiMDDtY27fvrBdOlBx6HQU4uCMbgfZ1Zyy2fnbFX1xQ9sHSIoO8Ha
+ 4WNcK74QRThI2VwzTEuddKA/XBO46w+t9v9FR/TTT9VO+Ip3tJFZ5j+RONyySf5uE7XC1Ub5s
+ +VTYNaDXi257e7jnyqf48BuKuaIS3iIwCs78vPBh/5y9uqJazuMitULtqyf3PR/rGte16793a
+ 2cnRDHQ0ByMTkrziNUR+PtfGYE1/HGJBGwvk23re5cGzKrOI+pI7QwlC01rTnRl5L9yjgD5lB
+ vtjfoZzfcfKCRnV6abu2LErG/Xod1eNdkEyrfeFVd4CkqlnCBSrGI6OJB+NMNI8om4hyn5tQL
+ POJ8b4Pt8ba8Z4h4jqxuReDrxMoYObKa9Ul+rpVbmK8PE+5LISLQenvqFTdObExGjRcMH26E7
+ 90n9M5vTMRotE+CisxrtF+FlUzTv671ccoxDwspXoXpsNuHBN5Nuu+Q6s9HYcQTGDO5rSTkED
+ 2ytQdF0B72tq0NCUIH627gtD2t61XFD4RmkNkoQvx6iWv1IcYqKpZYptJP2j5hnotSMiaCBGR
+ lvotP1ZscWmRKYvzcODhRM7fPYm9mruInqALpIrDkFpYXWcLn6ZEPRtUaGeXBV67HDX9oY9aj
+ YDEWh4KSQc9+yFxZf+BMjrovgJRw5lNylLO9/BCFPLtRNrpTNqc90PIXoR7lGF8KHgQds6CGn
+ Nc3NSugx3E4+L3R9c2yaqDWW9S/CbE0v1eAwBCy5UBQhI98VvFqWfA39q4OAbj2oV/ozbUHtr
+ s/bc+IwkAnSgeU=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-It seems the __lshrdi3 symbol was dropped from libgcc.a from gcc-11 for
-64-bit executables.
+Add some more config options which reflect what's needed to easily boot
+our 64-bit debian buildds.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- arch/parisc/kernel/parisc_ksyms.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/parisc/configs/generic-64bit_defconfig | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/parisc/kernel/parisc_ksyms.c b/arch/parisc/kernel/parisc=
-_ksyms.c
-index 00297e8e1c88..f26c51370255 100644
-=2D-- a/arch/parisc/kernel/parisc_ksyms.c
-+++ b/arch/parisc/kernel/parisc_ksyms.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/syscalls.h>
-+#include <linux/compiler.h>
-
- #include <linux/string.h>
- EXPORT_SYMBOL(memset);
-@@ -94,16 +95,19 @@ EXPORT_SYMBOL($$divI_15);
-
- extern void __ashrdi3(void);
- extern void __ashldi3(void);
--extern void __lshrdi3(void);
- extern void __muldi3(void);
- extern void __ucmpdi2(void);
-
- EXPORT_SYMBOL(__ashrdi3);
- EXPORT_SYMBOL(__ashldi3);
--EXPORT_SYMBOL(__lshrdi3);
- EXPORT_SYMBOL(__muldi3);
- EXPORT_SYMBOL(__ucmpdi2);
-
-+#if !(defined(CONFIG_64BIT) && (GCC_VERSION >=3D 110000))
-+extern void __lshrdi3(void);
-+EXPORT_SYMBOL(__lshrdi3);
-+#endif
-+
- asmlinkage void * __canonicalize_funcptr_for_compare(void *);
- EXPORT_SYMBOL(__canonicalize_funcptr_for_compare);
-
+diff --git a/arch/parisc/configs/generic-64bit_defconfig b/arch/parisc/con=
+figs/generic-64bit_defconfig
+index d2daeac2b217..1b8fd80cbe7f 100644
+=2D-- a/arch/parisc/configs/generic-64bit_defconfig
++++ b/arch/parisc/configs/generic-64bit_defconfig
+@@ -1,7 +1,9 @@
+ CONFIG_LOCALVERSION=3D"-64bit"
+ # CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_KERNEL_LZ4=3Dy
+ CONFIG_SYSVIPC=3Dy
+ CONFIG_POSIX_MQUEUE=3Dy
++CONFIG_AUDIT=3Dy
+ CONFIG_BSD_PROCESS_ACCT=3Dy
+ CONFIG_BSD_PROCESS_ACCT_V3=3Dy
+ CONFIG_TASKSTATS=3Dy
+@@ -35,6 +37,7 @@ CONFIG_MODVERSIONS=3Dy
+ CONFIG_BLK_DEV_INTEGRITY=3Dy
+ CONFIG_BINFMT_MISC=3Dm
+ # CONFIG_COMPACTION is not set
++CONFIG_MEMORY_FAILURE=3Dy
+ CONFIG_NET=3Dy
+ CONFIG_PACKET=3Dy
+ CONFIG_UNIX=3Dy
+@@ -65,12 +68,15 @@ CONFIG_SCSI_ISCSI_ATTRS=3Dy
+ CONFIG_SCSI_SRP_ATTRS=3Dy
+ CONFIG_ISCSI_BOOT_SYSFS=3Dy
+ CONFIG_SCSI_MPT2SAS=3Dy
+-CONFIG_SCSI_LASI700=3Dm
++CONFIG_SCSI_LASI700=3Dy
+ CONFIG_SCSI_SYM53C8XX_2=3Dy
+ CONFIG_SCSI_ZALON=3Dy
+ CONFIG_SCSI_QLA_ISCSI=3Dm
+ CONFIG_SCSI_DH=3Dy
+ CONFIG_ATA=3Dy
++CONFIG_SATA_SIL=3Dy
++CONFIG_SATA_SIS=3Dy
++CONFIG_SATA_VIA=3Dy
+ CONFIG_PATA_NS87415=3Dy
+ CONFIG_PATA_SIL680=3Dy
+ CONFIG_ATA_GENERIC=3Dy
+@@ -79,6 +85,7 @@ CONFIG_MD_LINEAR=3Dm
+ CONFIG_BLK_DEV_DM=3Dm
+ CONFIG_DM_RAID=3Dm
+ CONFIG_DM_UEVENT=3Dy
++CONFIG_DM_AUDIT=3Dy
+ CONFIG_FUSION=3Dy
+ CONFIG_FUSION_SPI=3Dy
+ CONFIG_FUSION_SAS=3Dy
+@@ -196,10 +203,15 @@ CONFIG_FB_MATROX_G=3Dy
+ CONFIG_FB_MATROX_I2C=3Dy
+ CONFIG_FB_MATROX_MAVEN=3Dy
+ CONFIG_FB_RADEON=3Dy
++CONFIG_LOGO=3Dy
++# CONFIG_LOGO_LINUX_CLUT224 is not set
+ CONFIG_HIDRAW=3Dy
+ CONFIG_HID_PID=3Dy
+ CONFIG_USB_HIDDEV=3Dy
+ CONFIG_USB=3Dy
++CONFIG_USB_EHCI_HCD=3Dy
++CONFIG_USB_OHCI_HCD=3Dy
++CONFIG_USB_OHCI_HCD_PLATFORM=3Dy
+ CONFIG_UIO=3Dy
+ CONFIG_UIO_PDRV_GENIRQ=3Dm
+ CONFIG_UIO_AEC=3Dm
 =2D-
 2.31.1
 
