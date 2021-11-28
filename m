@@ -2,82 +2,114 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 691DD4601F0
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Nov 2021 23:27:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C19D246028F
+	for <lists+linux-parisc@lfdr.de>; Sun, 28 Nov 2021 01:31:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233576AbhK0Waq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 27 Nov 2021 17:30:46 -0500
-Received: from mta-mtl-002.bell.net ([209.71.208.12]:14906 "EHLO
-        cmx-mtlrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232447AbhK0W2q (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 27 Nov 2021 17:28:46 -0500
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [67.71.8.137]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6197756C00C6EEEC
-X-CM-Envelope: MS4xfCt3oMzK5l/RrsSjhfRpv+foEyCO4hktvNlsgCXHMpX1EmQknftdGpS6aJPr+KYegZeRgyJq96bMs/l9KTYPa3WFfqC2DtAx9AG4lM+vVxl8wrr1p8yw
- ARmjrqz+wufWxaYokK3/MWjs6s8uNV/gc8+RiRVtnlUuWSArHGuamEABGnabGM+mUjIsXCU0+iof0o3soSadAfL4LgkvSPi1BdJpMl/Q3pK+M2w/FGBN/NWk
- meeIrgsWWtlAjbHBmRyYT1MPdKFXwqR/+k49ypAvSqd+mPBKK0oNg7JQqfQByQP3MWbqe8vCR94G64iYnZcii7JKbEuaNZFmVJvuk4yGDwn3Wk+sXgIYAcew
- Cp3Ps/rumDhkQHuWm9eHmh2gi2HoEIvoPLx3KDOCClLvL1Q3BXY=
-X-CM-Analysis: v=2.4 cv=WtFIjfTv c=1 sm=1 tr=0 ts=61a2b056
- a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
- a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=FBHGMhGWAAAA:8
- a=MICf5ksLqv1DdChD9HUA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 6197756C00C6EEEC; Sat, 27 Nov 2021 17:25:26 -0500
-Message-ID: <ee0175ea-aee1-86a0-a337-88bb979f1fa4@bell.net>
-Date:   Sat, 27 Nov 2021 17:25:27 -0500
+        id S1356706AbhK1AeT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 Nov 2021 19:34:19 -0500
+Received: from rere.qmqm.pl ([91.227.64.183]:24740 "EHLO rere.qmqm.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1356618AbhK1AcS (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 27 Nov 2021 19:32:18 -0500
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 4J1q8r4xRGz9Y;
+        Sun, 28 Nov 2021 01:28:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1638059340; bh=BpCUv6sc6+ijt8bP2X1dBPBQztb08CMPEjcmSI4mWHs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=E2pJXVdwpF7xa7NgJpuaA7I4sUgCSxdIM51ma240k1OvyN0BqmbHCll/qibc7LmRW
+         l2lYyRdiOG0LzZZRcQGCbOEp7l5l7FW2EF13o78tAxh2BlfQLPIqSf2RtHjwNL3AHE
+         ag5QLlLhW95Kp8fH9dCV3j4Imx5XQ5T4nV1vyleMAzKz1Soq6c6OnKpJ5TdzfdwJ2G
+         LnQoKtgUWmpQEblg3IMnaxzgslueaP8apjKdZ9y96JJ35QjeXKQSawNEPmoxjBztTd
+         XADr6Ffb3r0e7Kv67f/UCkeky+8m4GCPkGRqXkdYh2BWzTit8bUIHp4dPNUh/LgLHY
+         SH/yCd1X39o+Q==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.103.3 at mail
+Date:   Sun, 28 Nov 2021 01:28:40 +0100
+From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
+        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated
+ priority
+Message-ID: <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl>
+References: <20211126180101.27818-1-digetx@gmail.com>
+ <20211126180101.27818-6-digetx@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: [PATCH] parisc: Do not export __lshrdi3 on 64-bit with gcc >= 11
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Sven Schnelle <svens@stackframe.org>,
-        Mikulas Patocka <mpatocka@redhat.com>
-References: <20211127105818.299902-1-deller@gmx.de>
- <0ed4c18f-79fb-fc95-5baf-ae9a1f99625b@bell.net>
- <a2e9d25d-9a59-1cdf-a0cc-8344625bd2dc@bell.net>
- <67e98d1b-ad50-26ff-7201-047fd0256895@gmx.de>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <67e98d1b-ad50-26ff-7201-047fd0256895@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211126180101.27818-6-digetx@gmail.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2021-11-27 5:08 p.m., Helge Deller wrote:
-> On 11/27/21 22:52, John David Anglin wrote:
->> On 2021-11-27 11:32 a.m., John David Anglin wrote:
->>> On 2021-11-27 5:58 a.m., Helge Deller wrote:
->>>> It seems the __lshrdi3 symbol was dropped from libgcc.a from gcc-11 for
->>>> 64-bit executables.
->>> This is gcc bug.  There's a typo in libgcc/config/pa/t-dimode:
->>>
->>> # Extra DImode libgcc2 functions to build.
->>> lib2difuncs = _muldi3 _negdi2 _lshrdi _ashldi3 _ashrdi3 _cmpdi2 _ucmpdi2
->>>
->>> Will fix.
->> This is now fixed in upstream gcc source.
-> Thanks for fixing, Dave!
->
-> So, my patch:
-> https://patchwork.kernel.org/project/linux-parisc/patch/20211127105818.299902-1-deller@gmx.de/
-> and Mikulas patch:
-> https://patchwork.kernel.org/project/linux-parisc/patch/alpine.LRH.2.02.2111270717490.10680@file01.intranet.prod.int.rdu2.redhat.com/
-> won't be needed.
-Yes.  I will rebuild gcc-11 with fix but that will take a day or so.  In the meantime, gcc-10 should work.
+On Fri, Nov 26, 2021 at 09:00:41PM +0300, Dmitry Osipenko wrote:
+> Add sanity check which ensures that there are no two restart handlers
+> registered with the same priority. Normally it's a direct sign of a
+> problem if two handlers use the same priority.
 
-But it would be good to know if the shift routines in libgcc are needed with gcc-11.  All the shifts should be inline.
+The patch doesn't ensure the property that there are no duplicated-priority
+entries on the chain.
 
-Dave
+I'd rather see a atomic_notifier_chain_register_unique() that returns
+-EBUSY or something istead of adding an entry with duplicate priority.
+That way it would need only one list traversal unless you want to
+register the duplicate anyway (then you would call the older
+atomic_notifier_chain_register() after reporting the error).
 
--- 
-John David Anglin  dave.anglin@bell.net
+(Or you could return > 0 when a duplicate is registered in
+atomic_notifier_chain_register() if the callers are prepared
+for that. I don't really like this way, though.)
 
+Best Regards
+Micha� Miros�aw
