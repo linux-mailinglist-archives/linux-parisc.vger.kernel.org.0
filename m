@@ -2,147 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9A48460BC3
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Nov 2021 01:38:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 594C5461026
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Nov 2021 09:28:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376386AbhK2Al6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 28 Nov 2021 19:41:58 -0500
-Received: from rere.qmqm.pl ([91.227.64.183]:39946 "EHLO rere.qmqm.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235045AbhK2Aj6 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 28 Nov 2021 19:39:58 -0500
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 4J2RHF5R6Gz9Y;
-        Mon, 29 Nov 2021 01:36:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1638146198; bh=DI1VWBOrDzR1kSFvGVwF5e/uC6F95umcWDF0D1gW0co=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=H73sBxsM7L9z8xEfnp2Ak7MzBK8+vuHhYSpX9ZmIw96z66YhhL0jbzAc1kAW4E8/k
-         E+n0myrDaFBdTPW3DCJBAB1QxLCznookgF41GB3ur/8AtJ172fB625fAJLQBCfF2Il
-         1tVB3rwB3wCft3kEONBcl+9mGZ0YFJna/va55m2Id6G5OQJMzxWyiW8mEoVG9uWh4D
-         9FU7cd4y+9BUv1/bcd+v0FTSSINIJ8msC5Z+cow25KP+uSrFkzTmZSbuYJNYmoN8pj
-         wIHmD3sAFqkn2Up4Tyhb9Q0kZcFFYL4JTYDk03Wdeze2AnxwyR74tes3GEAEUnF7BY
-         Uq7OHC/U12/7A==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.103.3 at mail
-Date:   Mon, 29 Nov 2021 01:36:24 +0100
-From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
-        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v4 08/25] kernel: Add combined power-off+restart handler
- call chain API
-Message-ID: <YaQgiLw03lPyvuhr@qmqm.qmqm.pl>
-References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-9-digetx@gmail.com>
- <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
- <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
- <YaPx0kY7poGpwCL9@qmqm.qmqm.pl>
- <1fa2d9d5-f5f6-77f5-adf6-827921acce49@gmail.com>
+        id S1348285AbhK2Ibt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 29 Nov 2021 03:31:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43658 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242989AbhK2I3s (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 29 Nov 2021 03:29:48 -0500
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7EDAC06139E
+        for <linux-parisc@vger.kernel.org>; Mon, 29 Nov 2021 00:23:05 -0800 (PST)
+Received: by mail-lj1-x232.google.com with SMTP id p8so19396761ljo.5
+        for <linux-parisc@vger.kernel.org>; Mon, 29 Nov 2021 00:23:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h5SGxromuDQtUoJTnxkhza7HXaouvO2qwEGMHxx3weM=;
+        b=TXPNJdC2r1iwoSZ/Y8M1XP+KzZCam0+qziJjQijxTu5aqUDFE6JJ5XRer9/5Z/weKl
+         rORkmJ++sjeg2i1Hs/e4qXTBGXFuyqZx8Eto8SzExPVFZPit/3uugPFSTfC/iRStp2dK
+         zTqkbs3TjOi/Mt/fUFQj0qyYvXesuYhHwPMnKaOCoi1bhK05rgj2Y7cIVdTMJ3lrAuVa
+         b/TnI3IHqUGTLOmN2hylhI2F6JGPG5YiMC6Ha0EJyd7y27iYMJmJAqJE0WPGc5hj05tR
+         7UHjb4JyMX+pzzs4clVFpy9qfb0LhrQnc8xAoy3dGMm+Z4lMEPyRiNH0ltaXklCgXiXR
+         E/qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h5SGxromuDQtUoJTnxkhza7HXaouvO2qwEGMHxx3weM=;
+        b=Um3vB88LO/E28uhDcUr4pyvfkDJE4N679jxw86XwL0Lr6b9ABO/vp/T/7E3+NE5ZYa
+         gwwQFouHlWHjMWhr9X9CpQBH/XW/kcObwfQyPwbwmJFcnDFRIqxtEnDpilB7i8xcWYGd
+         8ytAMRgRMz35Yq1PJgwgEsjnG5gKLaiNpJXFFgkE16pL32KNbsaQqEwF+Fk3arJdk23W
+         tUxDPSPqsML1XbCA8b3IA3xgyGaIUt3tPJwS3+WwsS1fH/JejtTMYeH6MOV19dpsGu52
+         p9Ctj/jAZdcSGEt/4lYPYahLI28rUlJLRBSv4pknoej27cYAAlGEVsY6raw/vap/bNmh
+         hhHQ==
+X-Gm-Message-State: AOAM533iQZdlPYXB4czVYXNRaIvLqIfs2ElISYRzSlFRidKtq+TIs/Xw
+        KL/Z+vs6aYWJbpZ9buMRoohTFsrKW3UnaiPFMQ==
+X-Google-Smtp-Source: ABdhPJz4zItSG/eUm7nkCJe5HruRiFSBp317oc5/jeAcc+fKYmc5q3XsdUdGc1yGDz5u04vm+2YL+vhHeLjaa7ACIcI=
+X-Received: by 2002:a2e:2a43:: with SMTP id q64mr47923476ljq.102.1638174183800;
+ Mon, 29 Nov 2021 00:23:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1fa2d9d5-f5f6-77f5-adf6-827921acce49@gmail.com>
+Received: by 2002:ab3:7796:0:0:0:0:0 with HTTP; Mon, 29 Nov 2021 00:23:03
+ -0800 (PST)
+Reply-To: evelyngaby76@gmail.com
+From:   Evelyn Gaby <evelyngaby313@gmail.com>
+Date:   Mon, 29 Nov 2021 08:23:03 +0000
+Message-ID: <CAA63f6y83iyLQjiOT2wVUYfXgSveYedA0FqnM8oZbkQt9TJucw@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Nov 29, 2021 at 12:53:51AM +0300, Dmitry Osipenko wrote:
-> 29.11.2021 00:17, Michał Mirosław пишет:
-> >> I'm having trouble with parsing this comment. Could you please try to
-> >> rephrase it? I don't see how you could check whether power-off handler
-> >> is available if you'll mix all handlers together.
-> > If notify_call_chain() would be fixed to return NOTIFY_OK if any call
-> > returned NOTIFY_OK, then this would be a clear way to gather the
-> > answer if any of the handlers will attempt the final action (reboot or
-> > power off).
-> Could you please show a code snippet that implements your suggestion?
+.
+Please get back to me for more details,
+I like to disclose something very important to you,
 
-A rough idea is this:
-
- static int notifier_call_chain(struct notifier_block **nl,
- 			       unsigned long val, void *v,
- 			       int nr_to_call, int *nr_calls)
- {
--	int ret = NOTIFY_DONE;
-+	int ret, result = NOTIFY_DONE;
- 	struct notifier_block *nb, *next_nb;
- 
- 	nb = rcu_dereference_raw(*nl);
- 
- 	while (nb && nr_to_call) {
-...
- 		ret = nb->notifier_call(nb, val, v);
-+
-+		/* Assuming NOTIFY_STOP-carrying return is always greater than non-stopping one. */
-+		if (result < ret)
-+			result = ret;
-... 
- 	}
--	return ret;
-+	return result;
- }
-
-Then:
-
-bool prepare_reboot()
-{
-	int ret = xx_notifier_call_chain(&shutdown_notifier, PREPARE_REBOOT, ...);
-	return ret == NOTIFY_OK;
-}
-
-And the return value would signify whether the reboot will be attempted
-when calling the chain for the REBOOT action. (Analogously for powering off.)
-
-Best Regards
-Michał Mirosław
+Regards.
+Mrs Evelyn Gaby.
