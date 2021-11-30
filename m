@@ -2,47 +2,49 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9707C4638D1
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Nov 2021 16:02:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1EE74638D4
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 Nov 2021 16:02:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244655AbhK3PGI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 Nov 2021 10:06:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33182 "EHLO
+        id S244697AbhK3PGK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 30 Nov 2021 10:06:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243976AbhK3O7n (ORCPT
+        with ESMTP id S244274AbhK3PAz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 Nov 2021 09:59:43 -0500
+        Tue, 30 Nov 2021 10:00:55 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE834C07E5C5;
-        Tue, 30 Nov 2021 06:52:15 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29443C08E8AB;
+        Tue, 30 Nov 2021 06:52:59 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B6A65B81A4D;
-        Tue, 30 Nov 2021 14:52:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20B5C8D180;
-        Tue, 30 Nov 2021 14:52:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AEC3EB81A46;
+        Tue, 30 Nov 2021 14:52:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73BDC53FC1;
+        Tue, 30 Nov 2021 14:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638283933;
-        bh=y/mWlJLwBesZaiB8Tk9gpOyq1Ev3BhUtLKK1E+zZKxE=;
+        s=k20201202; t=1638283977;
+        bh=ntHuwoODWvSFgSKfMhijI4fsVG4ii0OIJc9wZ2LY3s4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ugHNzphbbW3Ov0UKnPjt8O1nCipcllDsH/fPTRv1bz+gpY3o0fBULOguTE8Yktuql
-         1aHI7hOE/+IoHQfnCZoAPti1poi7bpCjq5TpO2q2KbwyzhGrTEDlUqLWKcRyQMkesT
-         euoBE9dLgMD8xr1dV4MGgqLq8+DrM3Mo6TGkyq996di48DfgZfnBWOQ2P36FqJvQdj
-         PyedkLbrXlxjd5YKN/f+wP2VagPNjLtxh6LjW0fWZCEEhBmF1D1iRREhLkQfpwrjkR
-         Ug1YdccWR7IuhRd54/6U88jSoZal31IXT1P5SU87a7CUbyWrnqv4K0u5VtN9gSvy+w
-         WJ5glgjh8xk7Q==
+        b=bsu3kp9biAz2TkLhaCsCTmNRdx5WaIaU3DoKuLmnx18QGRNlREBbUj/FCwHMf8KEM
+         B0QIrzAxLbaTr+3x/NFjFuBr1BA7WTnX0qLVEb6BXUxdwLf9TiE1VDUhrPkbR+Fdp/
+         MyHios5VbChLLt9EJwdKtrdmc/vBKI72/yxQ5wBwDzf5MDs3sH1oVKKuTCFzOZLyuH
+         NpAcT5kJ1fsHf4PJZ690zu/ZJZW4vHWWj3lv1g+NMybDErjscJ8YCprhnvHggOgj8U
+         RMTXZpkxOhRrTyqfP1ogV5LeAqqT+1F3B42KDrJFS+7YF5lEA067krlSHIa+f+mJDt
+         reII/S9aokaig==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
+Cc:     Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com, svens@stackframe.org,
-        dave.anglin@bell.net, linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 08/25] parisc: Convert PTE lookup to use extru_safe() macro
-Date:   Tue, 30 Nov 2021 09:51:38 -0500
-Message-Id: <20211130145156.946083-8-sashal@kernel.org>
+        linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 07/17] parisc: Provide an extru_safe() macro to extract unsigned bits
+Date:   Tue, 30 Nov 2021 09:52:31 -0500
+Message-Id: <20211130145243.946407-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211130145156.946083-1-sashal@kernel.org>
-References: <20211130145156.946083-1-sashal@kernel.org>
+In-Reply-To: <20211130145243.946407-1-sashal@kernel.org>
+References: <20211130145243.946407-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -53,49 +55,41 @@ X-Mailing-List: linux-parisc@vger.kernel.org
 
 From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 3fbdc121bd051d9f1b3b2e232ad734c44b47d32c ]
+[ Upstream commit 169d1a4a2adb2c246396c56aa2f9eec3868546f1 ]
 
-Convert the PTE lookup functions to use the safer extru_safe macro.
+The extru instruction leaves the most significant 32 bits of the
+target register in an undefined state on PA 2.0 systems.
+Provide a macro to safely use extru on 32- and 64-bit machines.
 
+Suggested-by: John David Anglin <dave.anglin@bell.net>
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/entry.S | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ arch/parisc/include/asm/assembly.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-index 2f64f112934b6..286fb50259bb3 100644
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -394,17 +394,9 @@
- 	 */
- 	.macro		L2_ptep	pmd,pte,index,va,fault
- #if CONFIG_PGTABLE_LEVELS == 3
--	extru		\va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
-+	extru_safe	\va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
- #else
--# if defined(CONFIG_64BIT)
--	extrd,u		\va,63-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
--  #else
--  # if PAGE_SIZE > 4096
--	extru		\va,31-ASM_PGDIR_SHIFT,32-ASM_PGDIR_SHIFT,\index
--  # else
--	extru		\va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
--  # endif
--# endif
-+	extru_safe	\va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
- #endif
- 	dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
- 	copy		%r0,\pte
-@@ -412,7 +404,7 @@
- 	bb,>=,n		\pmd,_PxD_PRESENT_BIT,\fault
- 	dep		%r0,31,PxD_FLAG_SHIFT,\pmd /* clear flags */
- 	SHLREG		\pmd,PxD_VALUE_SHIFT,\pmd
--	extru		\va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
-+	extru_safe	\va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
- 	dep		%r0,31,PAGE_SHIFT,\pmd  /* clear offset */
- 	shladd		\index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
+diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/assembly.h
+index 6f30fa5bdaedf..b32d212c5e6eb 100644
+--- a/arch/parisc/include/asm/assembly.h
++++ b/arch/parisc/include/asm/assembly.h
+@@ -155,6 +155,17 @@
+ 	extrd,u \r, 63-(\sa), 64-(\sa), \t
  	.endm
+ 
++	/* Extract unsigned for 32- and 64-bit
++	 * The extru instruction leaves the most significant 32 bits of the
++	 * target register in an undefined state on PA 2.0 systems. */
++	.macro extru_safe r, p, len, t
++#ifdef CONFIG_64BIT
++	extrd,u	\r, 32+(\p), \len, \t
++#else
++	extru	\r, \p, \len, \t
++#endif
++	.endm
++
+ 	/* load 32-bit 'value' into 'reg' compensating for the ldil
+ 	 * sign-extension when running in wide mode.
+ 	 * WARNING!! neither 'value' nor 'reg' can be expressions
 -- 
 2.33.0
 
