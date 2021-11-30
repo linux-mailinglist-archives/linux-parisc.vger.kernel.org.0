@@ -2,47 +2,47 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3880C4638CE
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Nov 2021 16:02:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9707C4638D1
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 Nov 2021 16:02:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244630AbhK3PGG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 Nov 2021 10:06:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33186 "EHLO
+        id S244655AbhK3PGI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 30 Nov 2021 10:06:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242943AbhK3O5j (ORCPT
+        with ESMTP id S243976AbhK3O7n (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 Nov 2021 09:57:39 -0500
+        Tue, 30 Nov 2021 09:59:43 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502EEC0698CA;
-        Tue, 30 Nov 2021 06:51:12 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE834C07E5C5;
+        Tue, 30 Nov 2021 06:52:15 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1AF97B81A4D;
-        Tue, 30 Nov 2021 14:51:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38ADC53FCD;
-        Tue, 30 Nov 2021 14:51:08 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B6A65B81A4D;
+        Tue, 30 Nov 2021 14:52:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20B5C8D180;
+        Tue, 30 Nov 2021 14:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638283869;
-        bh=oGxz23YAkk3Yiv9CNxq7yYjjVJDbaNfQm/HJFeV+cNI=;
+        s=k20201202; t=1638283933;
+        bh=y/mWlJLwBesZaiB8Tk9gpOyq1Ev3BhUtLKK1E+zZKxE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WRpE1Ix2nS9iNJqiM6CMc67K9zBi81X7eayJ2qPcEHDdBG9oqiAPBnA3QnG8sZTaR
-         xFdrzl+/CdRHqf4f3aY3a76QegZBIRIIsU3li0FVS3NbET28vFOAKcFxgztiGi9cc7
-         QNv0IiAR92XC62HQ9hd58y68KkQzEqd9Wrdb0o2S8fu8l+VHb+wUki4sa7Bk+9Qlkw
-         RRt7ibYCmi+fdFLXX2l5ZS2VQiPc67ducnRKCKs2N5C6hElLQS1Mf6aMxSJJ0hlT/3
-         Ip/25Izwe6h3LycFxWAxcBZFSbXe2blHd2tQrnlVowQGLvU63j4eFHiKsoXn1kz7sY
-         nNxGMRMUiTDCw==
+        b=ugHNzphbbW3Ov0UKnPjt8O1nCipcllDsH/fPTRv1bz+gpY3o0fBULOguTE8Yktuql
+         1aHI7hOE/+IoHQfnCZoAPti1poi7bpCjq5TpO2q2KbwyzhGrTEDlUqLWKcRyQMkesT
+         euoBE9dLgMD8xr1dV4MGgqLq8+DrM3Mo6TGkyq996di48DfgZfnBWOQ2P36FqJvQdj
+         PyedkLbrXlxjd5YKN/f+wP2VagPNjLtxh6LjW0fWZCEEhBmF1D1iRREhLkQfpwrjkR
+         Ug1YdccWR7IuhRd54/6U88jSoZal31IXT1P5SU87a7CUbyWrnqv4K0u5VtN9gSvy+w
+         WJ5glgjh8xk7Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com, svens@stackframe.org,
         dave.anglin@bell.net, linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 19/43] parisc: Convert PTE lookup to use extru_safe() macro
-Date:   Tue, 30 Nov 2021 09:49:56 -0500
-Message-Id: <20211130145022.945517-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 08/25] parisc: Convert PTE lookup to use extru_safe() macro
+Date:   Tue, 30 Nov 2021 09:51:38 -0500
+Message-Id: <20211130145156.946083-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211130145022.945517-1-sashal@kernel.org>
-References: <20211130145022.945517-1-sashal@kernel.org>
+In-Reply-To: <20211130145156.946083-1-sashal@kernel.org>
+References: <20211130145156.946083-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -64,7 +64,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 11 deletions(-)
 
 diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-index 3da39140babcf..420097af7cc1b 100644
+index 2f64f112934b6..286fb50259bb3 100644
 --- a/arch/parisc/kernel/entry.S
 +++ b/arch/parisc/kernel/entry.S
 @@ -394,17 +394,9 @@
