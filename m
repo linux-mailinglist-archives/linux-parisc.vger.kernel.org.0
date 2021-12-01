@@ -2,94 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0938B4638DA
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Nov 2021 16:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADD0F464CB8
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 Dec 2021 12:34:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244740AbhK3PGN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 Nov 2021 10:06:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33342 "EHLO
+        id S1348896AbhLALhZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 1 Dec 2021 06:37:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244691AbhK3PCl (ORCPT
+        with ESMTP id S243193AbhLALhY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 Nov 2021 10:02:41 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29202C08EA41;
-        Tue, 30 Nov 2021 06:53:54 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 76166CE1A84;
-        Tue, 30 Nov 2021 14:53:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE798C53FCD;
-        Tue, 30 Nov 2021 14:53:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638284030;
-        bh=EGDJvL6BOLQxfNAUYSF7urXaPeK+GMK9kP0lBV4i+94=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aoHrm0wc2Gw4huw/0eJNyuh32YIlw7TTyloWZtbH9YaiuD4VGq0/5yEz6BMCQ0tdY
-         wdu4Gw9HZERU2Pmc7/wqXvwmphGz/0+CxJTPVRkDsrbgETmARvWy7jZjyaEurt+/Jm
-         R4yZzP78Aa4hQBlHEEqQpW2z1puaYlrpKVBGbiySe76SeQzHSAmQ57Kea1hgQxaySl
-         CdGOpKegu4rK/JjokVbvHyN+fscJUVK4C7lAKdNWO1SmE4IMPrtY8ENGcP+E2Sb+2c
-         wuA6mP7AQZ7E9kOSnESH4ksmfANFQothVhWFu6WJQscdOJLW0zpZulixr7ERYSqNlf
-         HzBFSA3B5IOKA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, svens@stackframe.org,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 05/12] parisc: Provide an extru_safe() macro to extract unsigned bits
-Date:   Tue, 30 Nov 2021 09:53:33 -0500
-Message-Id: <20211130145341.946891-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211130145341.946891-1-sashal@kernel.org>
-References: <20211130145341.946891-1-sashal@kernel.org>
+        Wed, 1 Dec 2021 06:37:24 -0500
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 242BDC06175A
+        for <linux-parisc@vger.kernel.org>; Wed,  1 Dec 2021 03:34:00 -0800 (PST)
+Received: by mail-ua1-x92b.google.com with SMTP id l24so48290136uak.2
+        for <linux-parisc@vger.kernel.org>; Wed, 01 Dec 2021 03:34:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=nKE9e+4jEQRb21OhoYPSbxPLfJ2IuSmNXU0U6wmcP4ykCacrWpdbtE0jjuz/hSLLGi
+         3CHjeG+lFmWzoULwCsmlhVFgDEk5dLFaYb51pw7bXGjZ9H8t0j91dP9aL17MRQYkMPZK
+         Snvty/Yp8/ZrWZr2EuFXHqBxUdbU8X39ik45viERJ1Dn7qW8BPCFp2vlafV2okU0kn5j
+         QPTIDY8QJSy8zAVbK10d6+AY0lky+mrQRAAg0uS1DacQStzD/dQtt/uBz/RlGIdZCai/
+         BHep24kmiLdl1nvBvHYMFonu8NoJvJlErv7lbZlg2+2c277BpkzmDA4WwPZoxzlIf0Mh
+         Af5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=kIreNbl8qfwZZ7/aFp4aVAO5uc/VoF66Zvp0nGqUAUt6iewv4ElhQRZLt5HUDijAPu
+         dkQm8ia8Qpm+aJgbqOPpAl2YuwbIMZDfos6S2xgtUV36m0aVrTW2juOFIK6NkuhQu05a
+         pgcH+W8dmDPq5xueRQu3G0yo4glrSF8xL+PKBml1pDN3UhSDLVgTw2Kpg5/bIVPQH6E1
+         FJMhRfCWjrgIqcfF/5sQOlMZ4m+NSu4FGmgKGVlRfjKkWBA4BvnwG/6mNp1KrMntbDKX
+         0wrmF26T0FDAN/nxpYYEbnQrVUBC2r155Ugboe7+HxEBXkjwZltFsqcr3NQa6p4wJVof
+         86+A==
+X-Gm-Message-State: AOAM5324LOA4Zf0E58ebBOGvTDxm5f8unzLawdIEr4AADUszPGYyyhrE
+        1V1OTd2EMSUo4cZoJUzMRVz++HqZmKhCAuBQ8B4=
+X-Google-Smtp-Source: ABdhPJwK+H50pzFgfv5CJPfAwBzUdMqIKHh+Ckkuju2lG2knVlJrzqINPiiwPjc/Uz6xuSJez7Fkn5YZPcfa5CPpvro=
+X-Received: by 2002:a67:ef4d:: with SMTP id k13mr6266305vsr.4.1638358439020;
+ Wed, 01 Dec 2021 03:33:59 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Sender: unitednationawardwinner@gmail.com
+Received: by 2002:ab0:6c55:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:33:58 -0800 (PST)
+From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
+Date:   Wed, 1 Dec 2021 03:33:58 -0800
+X-Google-Sender-Auth: uTQ_nfkzXaWGWaTWp1BSFqK3Ucs
+Message-ID: <CAJ4dHaSrD-X=xpfKNZV-hXSiMV6mNYrgy5vWCNkKm6iu5RQStg@mail.gmail.com>
+Subject: Your long awaited part payment of $2.5.000.00Usd
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+Attention: Beneficiary, Your long awaited part payment of
+$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
+Dollars) is ready for immediate release to you, and it was
+electronically credited into an ATM Visa Card for easy delivery.
 
-[ Upstream commit 169d1a4a2adb2c246396c56aa2f9eec3868546f1 ]
+Your new Payment Reference No.- 6363836,
+Pin Code No: 1787
+Your Certificate of Merit Payment No: 05872,
 
-The extru instruction leaves the most significant 32 bits of the
-target register in an undefined state on PA 2.0 systems.
-Provide a macro to safely use extru on 32- and 64-bit machines.
+Your Names: |
+Address: |
 
-Suggested-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/include/asm/assembly.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Person to Contact:MR KELLY HALL the Director of the International
+Audit unit ATM Payment Center,
 
-diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/assembly.h
-index eb83d65153b83..2272cbeb65f22 100644
---- a/arch/parisc/include/asm/assembly.h
-+++ b/arch/parisc/include/asm/assembly.h
-@@ -153,6 +153,17 @@
- 	extrd,u \r, 63-(\sa), 64-(\sa), \t
- 	.endm
- 
-+	/* Extract unsigned for 32- and 64-bit
-+	 * The extru instruction leaves the most significant 32 bits of the
-+	 * target register in an undefined state on PA 2.0 systems. */
-+	.macro extru_safe r, p, len, t
-+#ifdef CONFIG_64BIT
-+	extrd,u	\r, 32+(\p), \len, \t
-+#else
-+	extru	\r, \p, \len, \t
-+#endif
-+	.endm
-+
- 	/* load 32-bit 'value' into 'reg' compensating for the ldil
- 	 * sign-extension when running in wide mode.
- 	 * WARNING!! neither 'value' nor 'reg' can be expressions
--- 
-2.33.0
+Email: uba-bf@e-ubabf.com
+TELEPHONE: +226 64865611 You can whatsApp the bank
 
+Regards.
+Mrs ORGIL BAATAR
