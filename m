@@ -2,69 +2,58 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30AD2468D68
-	for <lists+linux-parisc@lfdr.de>; Sun,  5 Dec 2021 22:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F24A468DDD
+	for <lists+linux-parisc@lfdr.de>; Mon,  6 Dec 2021 00:05:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239202AbhLEVJd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 5 Dec 2021 16:09:33 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:53734 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238875AbhLEVJc (ORCPT
+        id S230208AbhLEXI5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 5 Dec 2021 18:08:57 -0500
+Received: from mta-mtl-001.bell.net ([209.71.208.11]:41022 "EHLO
+        cmx-mtlrgo001.bell.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229918AbhLEXI5 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 5 Dec 2021 16:09:32 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC79E6114F;
-        Sun,  5 Dec 2021 21:06:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4847AC00446;
-        Sun,  5 Dec 2021 21:06:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638738364;
-        bh=TCSFNQkZ5Q9YOgledH3d1uV6AZwHpH9ybYqeCttF9n4=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=i/du8iYe7/CsYP4QEj4Dm5OTfbo0bU+PHpNOLJ8vzu0/YoBQxMwBkDzW0hmm8OvdX
-         EQlG31Fb2laHPBdC6xBhSmyYDkgvE8yUicRn91jBodu1TkoKxIWkGzXzWfTwriaC+r
-         BoJGJ2T0WqYkxROc/kxbobwmQoxZZwQQdg0b8MPs8NpjqIcYv8KxdSr2+Gs1JO9ua0
-         yZlfQLmsPArvHJ52kqxklA5E4jAJJT1WuaqEERfldFpLphPQA1K1dapKIWXgH/4dqq
-         2qxdvd+dTyaonsw3F2XYlzzEvqc9mSBdglXJiN1HYFqHOClWi0S61VQjo3ID34kLcc
-         mK7R7PDp4iW2A==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 22F1F609B9;
-        Sun,  5 Dec 2021 21:06:04 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture bug and warning fixes for kernel
- v5.16-rc4
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <Ya0fu9qlJFsBdjWF@ls3530>
-References: <Ya0fu9qlJFsBdjWF@ls3530>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <Ya0fu9qlJFsBdjWF@ls3530>
-X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-6
-X-PR-Tracked-Commit-Id: afdb4a5b1d340e4afffc65daa21cc71890d7d589
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 268ba095371cb28841bd9bd7f61c73290104a064
-Message-Id: <163873836408.16033.15831097716424868487.pr-tracker-bot@kernel.org>
-Date:   Sun, 05 Dec 2021 21:06:04 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
+        Sun, 5 Dec 2021 18:08:57 -0500
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6197730201906C4A
+X-CM-Envelope: MS4xfBcvQkVYCtRY5n/gZh4xENjB+w86HcqKPQSm3KtTnkrWvgSVoSGyS6XJBvVrLCtNbAiMrvsFR4FmdO8AZN+r5G5ix2rn9DevgKy3ufWqxCQd3CGqGxCv
+ jXAEZhqvl6t+OyBP9e0FrMZf2unt+lU+9iatENDAPFv1mVr7aORoTW+khbaLNARvrlnHASSJf2mhB7JU4jH98Gy2Fif9RhpYa8K3rVBOMnN5mKfwQ2WMPTuI
+ 5LkiKrtibYJ1vmfeZiO9pGQv/qwVhENgDn+IFjO2q+0=
+X-CM-Analysis: v=2.4 cv=eZxew5IH c=1 sm=1 tr=0 ts=61ad45b8
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=PrlL4mABic7yGiltdWcA:9 a=QEXdDO2ut3YA:10
+ a=ATlVsGG5QSsA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 6197730201906C4A; Sun, 5 Dec 2021 18:05:28 -0500
+Message-ID: <a00c91d7-85d4-7c5d-85db-af812aadcb31@bell.net>
+Date:   Sun, 5 Dec 2021 18:05:24 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: Your System ate a SPARC! Gah! in map_pages()
+Content-Language: en-US
+From:   John David Anglin <dave.anglin@bell.net>
+To:     Helge Deller <deller@gmx.de>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+References: <f3ba5c65-37d9-60a5-d2ae-19faa5dba384@bell.net>
+ <872b7d67-82f6-cf6b-93b8-68fc79abcbaf@gmx.de>
+ <8341244f-5db3-3dd0-5952-88e706eb9e81@bell.net>
+In-Reply-To: <8341244f-5db3-3dd0-5952-88e706eb9e81@bell.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Sun, 5 Dec 2021 21:23:23 +0100:
+On 2021-12-05 4:00 p.m., John David Anglin wrote:
+>> Does it boot if you remove the __init in front of map_pages?
+> I'll try.  I thought of trying it but wasn't sure if map_pages() had to be an init routine or not.
+This appears to fix boot.  System booted okay about six times.
 
-> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.16/parisc-6
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/268ba095371cb28841bd9bd7f61c73290104a064
-
-Thank you!
+Dave
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+John David Anglin  dave.anglin@bell.net
+
