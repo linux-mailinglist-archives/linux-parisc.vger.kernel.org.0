@@ -2,48 +2,46 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E635246AA3D
-	for <lists+linux-parisc@lfdr.de>; Mon,  6 Dec 2021 22:20:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0098F46AA45
+	for <lists+linux-parisc@lfdr.de>; Mon,  6 Dec 2021 22:21:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351251AbhLFVYK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 6 Dec 2021 16:24:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60388 "EHLO
+        id S1351503AbhLFVYR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 6 Dec 2021 16:24:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351365AbhLFVX6 (ORCPT
+        with ESMTP id S1350903AbhLFVYL (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 6 Dec 2021 16:23:58 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 530D7C0611F7;
-        Mon,  6 Dec 2021 13:20:29 -0800 (PST)
+        Mon, 6 Dec 2021 16:24:11 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D01FC0698C6;
+        Mon,  6 Dec 2021 13:20:41 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1C9B5B8110F;
-        Mon,  6 Dec 2021 21:20:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F801C341CA;
-        Mon,  6 Dec 2021 21:20:25 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id B9B4ACE1846;
+        Mon,  6 Dec 2021 21:20:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCB6C341C1;
+        Mon,  6 Dec 2021 21:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638825626;
+        s=k20201202; t=1638825638;
         bh=6QpwS/9Vb12Zo4I5wEAM8ZPeJpvINJqCzEKoMF6wWOM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J8XBOFc4X3pVGAETqb2F8UCkr/ED8u+bO857zjrzBbOehlmr6HtzKZh70g5rfTOmn
-         ilMhhCaJNcizwwQtdpoboWkpQgAU2MdVmihJr0vJbThRJHhG69EdrDRHtq0vX3Rb8X
-         QBFfakT7QrTeIi1rjw+ymDMCR0VksVlzRfB2BwATXSMYMAxyGC2lA+m6hvW2UWmQE5
-         O4GkQszTOCt1gBoNOqv01Qk7cura0DtmOTouOeSadz9HuaqfOVViPUb5/Q6sm0xhB8
-         bArxpeKSe1YKXkJuNRAFTOEbzHt4YnRZ3MVlUHLwhg3y2sSz/BDcdskpC/AbbmSqt1
-         3xr3jB+Yv9Bcw==
+        h=From:To:Cc:Subject:Date:From;
+        b=HoXi/NOril+9F7K/md0z09gHkbgDiRDeYXo/Y4YgR5UAnhVPAnzEaoJVQdw9SEx/Y
+         TYvWTaisvXQWC//m5iEDfKpR/f+jzEmy547hD9iNVeRXQ1I49Yzb20v7csHW4bWg9o
+         2tAnDMkeZufFLe5RUzQDR568iauJlZq6t5YMoZwqErcTmGWjHTWP2E8R/DbWWkwte2
+         2yXWPHhDDHUXRJk5bex+OixmaQ/oEDrq+6El5vJFyl8wXyphphR4Zapb0grq2NNyax
+         3vfSSJbLEHa7Y7gPLKzQTrcOjVRKXDo4yqadUIzpo6CNazvNo0/l+9KaNHukzT591O
+         zhuE1F20ZAGfA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, kernel test robot <lkp@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com, airlied@linux.ie,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 2/5] parisc/agp: Annotate parisc agp init functions with __init
-Date:   Mon,  6 Dec 2021 16:20:18 -0500
-Message-Id: <20211206212021.1661517-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 1/3] parisc/agp: Annotate parisc agp init functions with __init
+Date:   Mon,  6 Dec 2021 16:20:32 -0500
+Message-Id: <20211206212034.1661597-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211206212021.1661517-1-sashal@kernel.org>
-References: <20211206212021.1661517-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
