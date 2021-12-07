@@ -2,96 +2,69 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0098F46AA45
-	for <lists+linux-parisc@lfdr.de>; Mon,  6 Dec 2021 22:21:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F03F46BF92
+	for <lists+linux-parisc@lfdr.de>; Tue,  7 Dec 2021 16:37:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351503AbhLFVYR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 6 Dec 2021 16:24:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60510 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350903AbhLFVYL (ORCPT
+        id S233929AbhLGPkW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 Dec 2021 10:40:22 -0500
+Received: from mta-tor-004.bell.net ([209.71.212.31]:26428 "EHLO
+        cmx-torrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S239030AbhLGPkK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 6 Dec 2021 16:24:11 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D01FC0698C6;
-        Mon,  6 Dec 2021 13:20:41 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id B9B4ACE1846;
-        Mon,  6 Dec 2021 21:20:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCB6C341C1;
-        Mon,  6 Dec 2021 21:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638825638;
-        bh=6QpwS/9Vb12Zo4I5wEAM8ZPeJpvINJqCzEKoMF6wWOM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=HoXi/NOril+9F7K/md0z09gHkbgDiRDeYXo/Y4YgR5UAnhVPAnzEaoJVQdw9SEx/Y
-         TYvWTaisvXQWC//m5iEDfKpR/f+jzEmy547hD9iNVeRXQ1I49Yzb20v7csHW4bWg9o
-         2tAnDMkeZufFLe5RUzQDR568iauJlZq6t5YMoZwqErcTmGWjHTWP2E8R/DbWWkwte2
-         2yXWPHhDDHUXRJk5bex+OixmaQ/oEDrq+6El5vJFyl8wXyphphR4Zapb0grq2NNyax
-         3vfSSJbLEHa7Y7gPLKzQTrcOjVRKXDo4yqadUIzpo6CNazvNo0/l+9KaNHukzT591O
-         zhuE1F20ZAGfA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, kernel test robot <lkp@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, airlied@linux.ie,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 1/3] parisc/agp: Annotate parisc agp init functions with __init
-Date:   Mon,  6 Dec 2021 16:20:32 -0500
-Message-Id: <20211206212034.1661597-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
+        Tue, 7 Dec 2021 10:40:10 -0500
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [67.71.8.137]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6197648701A8329A
+X-CM-Envelope: MS4xfLxsq6hPfY/9ZDuCRFSQe8Faz94MlncbuLE6H3cC8TdVm05XDrqBGRn0Og4RjiMZy9Kqhj5f+SuH/rx9ozuey2pU3mrQqbTYw8vfTL1llrzvN8bdD0wj
+ IEKx2d7TZK5o7StmSuLRDgpC64XcrVIoVQnCTqE+tGsW8ypq61xcY3Z99gUcZjd1RkB/ZF4oJbg3G66KZMK/cgsRrSqPdUp3ZYtAwxGMvMhDBksTaNSahC2W
+ pNHTufJ5UgKoJns1hFLlPeXQupjlCCEdrYQUsMr6loM=
+X-CM-Analysis: v=2.4 cv=W7Vb6Tak c=1 sm=1 tr=0 ts=61af7f86
+ a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=x35WnGInAYXiAG2AhQIA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (67.71.8.137) by cmx-torrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 6197648701A8329A; Tue, 7 Dec 2021 10:36:38 -0500
+Message-ID: <fafa4a5e-8e2d-351a-5a41-56b30f9cf48a@bell.net>
+Date:   Tue, 7 Dec 2021 10:36:38 -0500
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: Your System ate a SPARC! Gah! in map_pages()
+Content-Language: en-US
+From:   John David Anglin <dave.anglin@bell.net>
+To:     Helge Deller <deller@gmx.de>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+References: <f3ba5c65-37d9-60a5-d2ae-19faa5dba384@bell.net>
+ <872b7d67-82f6-cf6b-93b8-68fc79abcbaf@gmx.de>
+ <8341244f-5db3-3dd0-5952-88e706eb9e81@bell.net>
+ <a00c91d7-85d4-7c5d-85db-af812aadcb31@bell.net>
+ <e76b69c3-0351-7054-bf8c-6de2bd9c33ca@gmx.de>
+ <0b9576fe-12f5-1d4c-0540-77fca7e2d619@bell.net>
+In-Reply-To: <0b9576fe-12f5-1d4c-0540-77fca7e2d619@bell.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+On 2021-12-06 2:07 p.m., John David Anglin wrote:
+> On 2021-12-06 1:41 p.m., Helge Deller wrote:
+>> On 12/6/21 00:05, John David Anglin wrote:
+>>> On 2021-12-05 4:00 p.m., John David Anglin wrote:
+>>>>> Does it boot if you remove the __init in front of map_pages?
+>>>> I'll try.  I thought of trying it but wasn't sure if map_pages() had to be an init routine or not.
+>>> This appears to fix boot.  System booted okay about six times.
+>> Do you have huge pages enabled?
+> Yes.  It's enabled on both mx3210 (rp3440) and atlas (c8000).
+>> If so you could try this patch (instead of markung map_pages __init):
+> I'll try it.
+The patch made things worse on rp3440 (8 GB).  Going back to removing __init marking.
 
-[ Upstream commit 8d88382b7436551a9ebb78475c546b670790cbf6 ]
+Dave
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/char/agp/parisc-agp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/char/agp/parisc-agp.c b/drivers/char/agp/parisc-agp.c
-index 15f2e7025b78e..1d5510cb6db4e 100644
---- a/drivers/char/agp/parisc-agp.c
-+++ b/drivers/char/agp/parisc-agp.c
-@@ -285,7 +285,7 @@ agp_ioc_init(void __iomem *ioc_regs)
-         return 0;
- }
- 
--static int
-+static int __init
- lba_find_capability(int cap)
- {
- 	struct _parisc_agp_info *info = &parisc_agp_info;
-@@ -370,7 +370,7 @@ parisc_agp_setup(void __iomem *ioc_hpa, void __iomem *lba_hpa)
- 	return error;
- }
- 
--static int
-+static int __init
- find_quicksilver(struct device *dev, void *data)
- {
- 	struct parisc_device **lba = data;
-@@ -382,7 +382,7 @@ find_quicksilver(struct device *dev, void *data)
- 	return 0;
- }
- 
--static int
-+static int __init
- parisc_agp_init(void)
- {
- 	extern struct sba_device *sba_list;
 -- 
-2.33.0
+John David Anglin  dave.anglin@bell.net
 
