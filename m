@@ -2,59 +2,93 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D65B46C719
-	for <lists+linux-parisc@lfdr.de>; Tue,  7 Dec 2021 23:07:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EB4D46CC1E
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Dec 2021 05:13:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241502AbhLGWLX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 7 Dec 2021 17:11:23 -0500
-Received: from mta-tor-002.bell.net ([209.71.212.29]:63906 "EHLO
-        cmx-torrgo001.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S241827AbhLGWLX (ORCPT
+        id S244171AbhLHERI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 Dec 2021 23:17:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41520 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234195AbhLHERI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 7 Dec 2021 17:11:23 -0500
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [67.71.8.137]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6197A9B101ABA0F4
-X-CM-Envelope: MS4xfNQg9ETCf2eZ++z/I8UHteTrUvWyEBS/Lep3J1yh7OdC253KRa5p0OiYgy5oPUz9iOoP7yGnSok5EenJTIeoo3K7gZqTznvhieD1CfvxVcJnouSftovn
- iHXWMrTkkUn4xZhNZFAre0eUd+zX0u9Bgo5busa/HeNy9ijymHR+hYnRmMMnjJv8OeViRDaGOFDPIcl6b/pZ0uteafHaj15lZ9wlvB3/PJuJMzB8iAA74AcR
- rjN3LQo5fFqWUJKb5kH+I7434cNwzoE7Q7O163NRQX8=
-X-CM-Analysis: v=2.4 cv=f44ruM+M c=1 sm=1 tr=0 ts=61afdb37
- a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=GSXnk10e5J79XGs1CaYA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (67.71.8.137) by cmx-torrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 6197A9B101ABA0F4; Tue, 7 Dec 2021 17:07:51 -0500
-Message-ID: <a5eef9c4-8e0d-95e8-0c3d-0d0052d8edae@bell.net>
-Date:   Tue, 7 Dec 2021 17:07:51 -0500
+        Tue, 7 Dec 2021 23:17:08 -0500
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA18C061D7E
+        for <linux-parisc@vger.kernel.org>; Tue,  7 Dec 2021 20:13:36 -0800 (PST)
+Received: by mail-il1-x144.google.com with SMTP id a11so1067480ilj.6
+        for <linux-parisc@vger.kernel.org>; Tue, 07 Dec 2021 20:13:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=w0n14T57zPuvlg1YaFYy3gRfrUPFN1bDHGIrct+fXgc=;
+        b=cGWxDwe8B66FlIrZtrergIqE5+JvdqJ48sEvPTrvhBJ9xEqZLGyWZmuSPdCEFce/7D
+         /sVR44uqtlb2dmBH+iwgt0kboAu4/HTy3OZt9J6nwOu1H5twbKwVBnMykOKrBLHcBBEb
+         cgMJ7/59oMUtMggaQ9x/N1xe+U0YzN1k+xfCXkO5L7YIW30RFDnvCB0PrD7sMExliX7S
+         joeNtgfdJmxv3l42BA4cQp1HveXj/LpauGoYMsZKrrlYurvW6FC9Nrn9v/z7yklCLUv+
+         2uZJGSHlx+O0Rg+LxyFVcXJ8erZC2O96QnEFLkA1QmSl94RBUxOevwSkF8rG8CDqN06m
+         KdcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=w0n14T57zPuvlg1YaFYy3gRfrUPFN1bDHGIrct+fXgc=;
+        b=kuUltgnOX6CIfnGnuCoRcQsesySlqeH/hlhEfez99zP5YFxPTgK51Ps8Ws7Czv4zwK
+         p1xHAm/IFIc6U4iUruuHGe1nlhShpiGS4K0+cgmfidHH2aN0y//klaqO9Ofj0iY8PMRH
+         2AWKFn0spmqitYewPR5cPWO0u1BbyTlHWbLsb9b9FB8DJl2VAHOqfVPZQVKjWukc7u2V
+         UF/c5MQzZGS5ekUzJ2HdBbdsRyek/0Nvzc9Q2hwk/UXqOtvyBZo8M53UZo3fRzL4lVI0
+         zHUdF47s9GDxtlkNjLsERa1lV/rfHfe8fjCJeKCGuaohWy1Bm5ifXF16II+JlVOlipAy
+         69rA==
+X-Gm-Message-State: AOAM53176Cz60wNjF3mSnyf7GnmF34p9poNG9J/Yd2Mq616SqUzZMYlt
+        QgEpQXZYWJs6uF/aurMkQiJ1gmMt+/SoUSmuE+s=
+X-Google-Smtp-Source: ABdhPJx498jQ3rDCAEAukf875uPMCUUvAAHHJyp/169nhahBv8dg1ZTt80/LmlBc7j967yPpWx87fZn4PQyrL4JX27A=
+X-Received: by 2002:a92:600f:: with SMTP id u15mr3954317ilb.292.1638936815828;
+ Tue, 07 Dec 2021 20:13:35 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: Your System ate a SPARC! Gah! in map_pages()
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-References: <f3ba5c65-37d9-60a5-d2ae-19faa5dba384@bell.net>
- <872b7d67-82f6-cf6b-93b8-68fc79abcbaf@gmx.de>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <872b7d67-82f6-cf6b-93b8-68fc79abcbaf@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6e02:1a07:0:0:0:0 with HTTP; Tue, 7 Dec 2021 20:13:35
+ -0800 (PST)
+Reply-To: dj0015639@gmail.com
+From:   David Jackson <enkenpaul@gmail.com>
+Date:   Wed, 8 Dec 2021 05:13:35 +0100
+Message-ID: <CAG7-cQ_JEx-8fDdxn0Ex314ViSE32kaUjoR=sUvV7wmCUiKRGw@mail.gmail.com>
+Subject: FEDERAL BUREAU OF INVESTIGATION
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2021-12-05 3:46 p.m., Helge Deller wrote:
->>   10574:       43 ff ff 40     ldb 1fa0(sr3,r31),r31
-> This IIR is strange. We most likely don't touch userspace at this stage
-> when the kernel boots, and...
-I'm thinking IIR is sometimes unreliable.  I see the same value printed for the tst-minsigstksz-5 fault
-yet the actual fault instruction was "ldi 1,r25".
+Our Ref: RTB /SNT/STB
+To: Beneficiary
 
-Dave
+This is FBI special agents, David Jackson. I was delegated along side
+others by the United Nations to investigate scammers who has been in
+the business of swindling foreigners especially those that has one
+form of transaction/contracts and another. Please be informed that in
+the course of our investigation, we detected that your name and
+details in our Scammed Monitoring Network. We also found out that you
+were scammed of a huge sum of money by scammers via Western union and
+MoneyGram. Be informed here that in a bid to alleviate the suffering
+of scammed victims, the United Nations initiated this compensation
+program and therefore, you are entitled to the sum of Five Million Two
+Hundred Thousand United States Dollars ($5,200,000.00 USD) for being a
+victim.
 
--- 
-John David Anglin  dave.anglin@bell.net
+Note that the said fund will be transfer to you via the Citibank being
+the paying bank mandated by the United Nations officials.
 
+However, we have to inform you that we have been able to arrest some
+of the swindlers who has been in this illicit business and will all be
+prosecuted accordingly. Be informed as well that we have limited time
+to stay back here, so we will advice that you urgently respond to this
+message ASAP. And do not inform any of the people that collected money
+from you before now about this new development to avoid jeopardizing
+our investigation. All you need to do is to follow our instruction and
+receive your compensation accordingly as directed by the United
+Nations.
+
+We urgently wait to receive your response.
+
+Regards,
+DAVID JACKSON
+FEDERAL BUREAU OF INVESTIGATION
+INVESTIGATION ON ALL ONLINE WIRE TRANSFER
