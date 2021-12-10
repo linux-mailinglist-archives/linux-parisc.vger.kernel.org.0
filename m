@@ -2,172 +2,116 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BAA2470AE5
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Dec 2021 20:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 222CF470AFF
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Dec 2021 20:53:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242435AbhLJTx3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 10 Dec 2021 14:53:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48336 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231156AbhLJTx2 (ORCPT
+        id S242897AbhLJT5V (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 10 Dec 2021 14:57:21 -0500
+Received: from outbound5h.eu.mailhop.org ([18.156.94.234]:28164 "EHLO
+        outbound5h.eu.mailhop.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242855AbhLJT5V (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 10 Dec 2021 14:53:28 -0500
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79751C0617A1;
-        Fri, 10 Dec 2021 11:49:52 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id z7so19884343lfi.11;
-        Fri, 10 Dec 2021 11:49:52 -0800 (PST)
+        Fri, 10 Dec 2021 14:57:21 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1639166025; cv=none;
+        d=outbound.mailhop.org; s=arc-outbound20181012;
+        b=ezHChSz4xMPXcPAf3ORm7YNip2OZjfynCFXmw6HI0T7TjUONaNweDdGviLGincXqWNtwUHYXiuE8l
+         IrejlWCmNhHbAgcp5kdFiOpoTEAc+0+uIB+OjUJD9z6d9x7w/+6h53Dj7+1od8f3vSg+UEkSznlPzT
+         PbHnSsPqx/XmzCjsBpjbmTUDTxmKy1NSH2/DA4i8zbdsv8WQrrgRGP/IjpskSRZxQANGxttF6Vd+F9
+         0AVKADKJIbdKt3Obe21Ezk8SAy4sjezFZ6ytr5wWY6FmZa8oRDoqwuQFmCxnDEvVVfXP1A1FWhqoBi
+         M+/C2oYylTu4HQN0DE0gYkysh2suCuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=outbound.mailhop.org; s=arc-outbound20181012;
+        h=content-transfer-encoding:content-type:mime-version:message-id:in-reply-to:
+         date:references:subject:cc:to:from:dkim-signature:dkim-signature:from;
+        bh=aPSF5uWnewaVgfsHsFbBpR3KIYtsSAgSImOUnFjOS6Y=;
+        b=GbWFywc+FXNYzDn1TDYJPopuX2Kotoll8iAO44PIg2fIyTKizYK6scPEMDgBhgqjUbucLGIMaFh8Q
+         FsQLUyn+r6BrvnS1ZrPrEnsdsMAxo5nfduVMmVXb39ZCoKltlmc4XZlnyaxrwuw/3b7FwkW89Pb5gZ
+         l8AOMYfcUq+TRstajkg0gOX1HdABII0ViaVBLNd7cI3NQp+gOI0x3iSCChumwzGblnY1DFCaYEJqva
+         ucHnw7qpdsknbnVe9HIgAwNGJS8Da7jSDhVRt145bA8NGw8G6nLhZjCk48W3dWOM51ElsmY1t5b5a6
+         CqN73WYM/Ui6Pihz0scKIckgDW1llHA==
+ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
+        spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=91.207.61.48;
+        dmarc=none header.from=stackframe.org;
+        arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=8Fx2AxGyl7h70TiPIfAS4vLJoC4O4KHoawTu1bt5PLU=;
-        b=V/Owe18bjaHxi/q9LMXS8LNROf16L9DCZYGpExoCj+SNTLCiSQNB3HcPLajV/NP5JE
-         39hqIvfIb3bc7xrS2E0EYCC3yAPKzLg7BnA0PumFQ89YOCGyLF9Ipz3BTISejc0ZvQJA
-         z5FDAeVaX1e2/Z9TFGOO31SRX4KXbVNvKZ2tbYOwQTeu/RyJ9cs6xalps+Kn8iqrggDL
-         HFUryH5SPjqHR6nW0F4ENPTnll1o3uJ7tQu3AMV7MUX+qx7nV3LMFjM06jk+Y2dJ7HtP
-         J+zk+OszrogiRw5+RRL4W19jTgJEJXo+L0tNHRiDg9ofDsu8gJQpDKtlXAuJgOp4GYiB
-         LSvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=8Fx2AxGyl7h70TiPIfAS4vLJoC4O4KHoawTu1bt5PLU=;
-        b=0m2nazqEmMMp1ckjsVHQq7ZqF+bEWQpI/PXVwxALXj7VTaR4pePC/QpT3bYbB5TZ1c
-         3JEYBRO8rskfIuw+VcvdTRUbg/AD3W2RHn2h3CpwVtRDBaInUW2zPqyyObXH0zTEgm69
-         bydNMiR8Aq0HREUwIHDVCqs5YfTkLKhFa1e4nomavcz8Rx5WxnK/3JusLrTGrIxuI3Bf
-         XKlxCO7jCNXUjc2F6KveZDDYLHBwr4M3G1E5v9svFx5QwtNUQzu58TW1h57YnDiarmSd
-         fR2Qrwz0kdeRpyKN7SZA5AojIP43gRwccWqIo79GikpOu+3hN01Eih06K9FPtmXHs/9d
-         FeGQ==
-X-Gm-Message-State: AOAM530BnbQuDPvr/E7mIHIEnkX7FRd0EV9VRy4S31qX+60qvIKTuC+u
-        w7ZqfcD4CQkoZlzGsjR/CQigW8NzhcE=
-X-Google-Smtp-Source: ABdhPJz32UCAa2RfOn9XCHx2JjAq/5XnkzKJ8mqE0CmU9Bnm8cg96K7fElVvubFW0G/2Bv0vNQ8r/g==
-X-Received: by 2002:a05:6512:114a:: with SMTP id m10mr14457333lfg.188.1639165790431;
-        Fri, 10 Dec 2021 11:49:50 -0800 (PST)
-Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru. [94.29.46.111])
-        by smtp.googlemail.com with ESMTPSA id z24sm395757lfh.289.2021.12.10.11.49.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Dec 2021 11:49:49 -0800 (PST)
-Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated
- priority
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
-        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-6-digetx@gmail.com> <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl>
- <033ddf2a-6223-1a82-ec64-30f17c891f67@gmail.com>
- <YaQeQgbW+CjEdsqG@qmqm.qmqm.pl>
- <091321ea-4919-0579-88a8-23d05871575d@gmail.com>
- <CAJZ5v0jMvdhfBqjY+V9h_Z6EH1ohuJH+KjuGiOw_Jor1Tnp7vg@mail.gmail.com>
- <45025b2d-4be1-f694-be61-31903795cf5d@gmail.com>
- <CAJZ5v0ieTwnBVjW8R_VTdPFH3yr5AwLc+ZEG5N3KrpTH+j8qZw@mail.gmail.com>
- <45228c88-4d51-591e-5da5-9ec468e71684@gmail.com>
- <ad6c7d73-e7d3-4901-fd63-ef87eecd39a2@gmail.com>
-Message-ID: <7875d10b-0d9b-ca29-668b-630ea3650fd0@gmail.com>
-Date:   Fri, 10 Dec 2021 22:49:47 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        d=stackframe.org; s=duo-1634547266507-560c42ae;
+        h=content-transfer-encoding:content-type:mime-version:message-id:in-reply-to:
+         date:references:subject:cc:to:from:from;
+        bh=aPSF5uWnewaVgfsHsFbBpR3KIYtsSAgSImOUnFjOS6Y=;
+        b=RyeV4R7ViPZjv7woFZP98XZmAHhzHUcErBzaQ3Uyj/N2IE2KfVPzQSXy7Jtn46IIwd4sY1/lI/2Jj
+         /6huaM7kxsnSnvnMUJBNRiNMezJQ5Z12g0bviqXKBKpRPjZXUTK/FrFVgjMoOswGemp97DG8Ew1o8j
+         B8jKskooqcxYFa94=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=outbound.mailhop.org; s=dkim-high;
+        h=content-transfer-encoding:content-type:mime-version:message-id:in-reply-to:
+         date:references:subject:cc:to:from:from;
+        bh=aPSF5uWnewaVgfsHsFbBpR3KIYtsSAgSImOUnFjOS6Y=;
+        b=jSCFET6TZejz9HkgHxHS3rpyM9CgPx4h2Ljq9YBgN/uEsa2z2RokqckK/sOdorGamV+t3Uz1JWSEP
+         cfg+dRKrAJXYfD5BqNNIDhuGOgOdCBdLiONTFz+T+MpUlsYvTHwb0e9WhkkUAHHUFqVTUvAbsLm9dN
+         hsfQ8uEqWAYK95B6r7sFXyLsnNMNZx8br9lrlW97XTIM/bveg/nkJpU8CC0HghYP3F7ZSWljrk9MUB
+         M7z7QR97Sa7TCkKajgXwLc5JsktfrT5Tve38utab97AXaXgtSqDfJj0XQKlGZ1lE5GLX0OoHb6K9ty
+         dNkqsz0qIiOnlvSi+YEhuyemm1ls/7w==
+X-Originating-IP: 91.207.61.48
+X-MHO-RoutePath: dG9ta2lzdG5lcm51
+X-MHO-User: e024d289-59f2-11ec-a073-973b52397bcb
+X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Mail-Handler: DuoCircle Outbound SMTP
+Received: from mail.duncanthrax.net (propper.duncanthrax.net [91.207.61.48])
+        by outbound2.eu.mailhop.org (Halon) with ESMTPSA
+        id e024d289-59f2-11ec-a073-973b52397bcb;
+        Fri, 10 Dec 2021 19:53:42 +0000 (UTC)
+Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org.stackframe.org)
+        by mail.duncanthrax.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <svens@stackframe.org>)
+        id 1mvlxd-0008GI-BG; Fri, 10 Dec 2021 21:53:41 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Subject: Re: Your System ate a SPARC! Gah! in map_pages()
+References: <f3ba5c65-37d9-60a5-d2ae-19faa5dba384@bell.net>
+        <872b7d67-82f6-cf6b-93b8-68fc79abcbaf@gmx.de>
+        <a5eef9c4-8e0d-95e8-0c3d-0d0052d8edae@bell.net>
+        <8a56f234-1126-e068-a70c-3b333320ef14@gmx.de>
+Date:   Fri, 10 Dec 2021 20:53:39 +0100
+In-Reply-To: <8a56f234-1126-e068-a70c-3b333320ef14@gmx.de> (Helge Deller's
+        message of "Wed, 8 Dec 2021 09:14:38 +0100")
+Message-ID: <87fsr0s0cc.fsf@x1.stackframe.org>
 MIME-Version: 1.0
-In-Reply-To: <ad6c7d73-e7d3-4901-fd63-ef87eecd39a2@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-10.12.2021 22:44, Dmitry Osipenko пишет:
-> 10.12.2021 22:42, Dmitry Osipenko пишет:
-> ...
->>>> There is no strong requirement for priorities to be unique, the reboot.c
->>>> code will work properly.
->>>
->>> In which case adding the WARN() is not appropriate IMV.
->>>
->>> Also I've looked at the existing code and at least in some cases the
->>> order in which the notifiers run doesn't matter.  I'm not sure what
->>> the purpose of this patch is TBH.
->>
->> The purpose is to let developer know that driver needs to be corrected.
->>
->>>> The potential problem is on the user's side and the warning is intended
->>>> to aid the user.
->>>
->>> Unless somebody has the panic_on_warn mentioned previously set and
->>> really the user need not understand what the WARN() is about.  IOW,
->>> WARN() helps developers, not users.
->>>
->>>> We can make it a strong requirement, but only after converting and
->>>> testing all kernel drivers.
->>>
->>> Right.
->>>
->>>> I'll consider to add patches for that.
->>>
->>> But can you avoid adding more patches to this series?
->>
->> I won't add more patches since such patches can be added only after
->> completion of transition to the new API of the whole kernel.
->>
-> 
-> Thank you for the review.
-> 
+Helge Deller <deller@gmx.de> writes:
 
-I meant you, Rafael, and Michał, just in case :)
+> On 12/7/21 23:07, John David Anglin wrote:
+>> On 2021-12-05 3:46 p.m., Helge Deller wrote:
+>>>> =C2=A0 10574:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 43 ff ff 40=C2=A0=C2=
+=A0=C2=A0=C2=A0 ldb 1fa0(sr3,r31),r31
+>>> This IIR is strange. We most likely don't touch userspace at this stage
+>>> when the kernel boots, and...
+>> I'm thinking IIR is sometimes unreliable.  I see the same value
+>> printed for the tst-minsigstksz-5 fault yet the actual fault
+>> instruction was "ldi 1,r25".
+>
+> Good finding.
+> It seems to be at least always unreliable if we get a trap 7 (Instruction=
+ access rights).
+> In that case the CPU couldn't execute the instruction due to missing
+> execute permissions. I believe the CPU simply didn't fetched the
+> instruction and as such has stale content in IIR.
+>
+> I'm sending a patch to the list which marks IIR with a magic value in tha=
+t case.
+
+The same might happen with ISR and IOR - i wonder whether we should take
+a few bit in struct pt_regs, store the interruption code there, and only
+display the fields that are valid for a certain code? pt_regs has an
+unused pad0 field (at least i think it's unused...) which we could use.
+What's your take on this? I would prefer this over some magic values in
+the oops output...
+
+Sven
