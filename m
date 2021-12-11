@@ -2,60 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F26470C6A
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Dec 2021 22:18:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4A5471045
+	for <lists+linux-parisc@lfdr.de>; Sat, 11 Dec 2021 03:02:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244017AbhLJVWE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 10 Dec 2021 16:22:04 -0500
-Received: from mta-tor-004.bell.net ([209.71.212.31]:30516 "EHLO
-        cmx-torrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S243990AbhLJVWD (ORCPT
+        id S1345696AbhLKCFw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 10 Dec 2021 21:05:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48240 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345684AbhLKCFv (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 10 Dec 2021 16:22:03 -0500
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [67.71.8.137]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6197648701EDFAA9
-X-CM-Envelope: MS4xfKyp6A8ZnvV+wfGym50+GteyToEoQawuq4iQfUIceyvetWq2qn/n1mYNL3OjQKwu49zcjEMzoMrEaOIeZcnBBcKx7sQqqZL1M/mgX6bPWQPlM8OprJ1s
- DdlxI6vep9yoG1GSay8K9Qdstk90XaSbwBRXELuriJ/3caejwEkVewTpgSHIqBrOliXBird7bm3kppyaiTCaN3aeINlHH+w71J7xECMIcWht1gu6T/Vsda05
- JvHVJbVnYqIilgZjK9usG3i1LRBz6YvD8BS7f8snX78j1dkbp5DE8VF/CeYTX2qhr5ExQ87SUSLjXVecbcgmgQ==
-X-CM-Analysis: v=2.4 cv=W7Vb6Tak c=1 sm=1 tr=0 ts=61b3c41f
- a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=nx_0LQpeSx6JqU0RufoA:9 a=QEXdDO2ut3YA:10
- a=ATlVsGG5QSsA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (67.71.8.137) by cmx-torrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 6197648701EDFAA9; Fri, 10 Dec 2021 16:18:23 -0500
-Message-ID: <456e7622-3d3e-e37e-c40a-d3af5bf5bb27@bell.net>
-Date:   Fri, 10 Dec 2021 16:18:22 -0500
+        Fri, 10 Dec 2021 21:05:51 -0500
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98E4AC061714
+        for <linux-parisc@vger.kernel.org>; Fri, 10 Dec 2021 18:02:15 -0800 (PST)
+Received: by mail-lj1-x243.google.com with SMTP id u22so16129789lju.7
+        for <linux-parisc@vger.kernel.org>; Fri, 10 Dec 2021 18:02:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
+        b=YLFlW2EU3wC14KpVTk+IM58oSghSYLjMmVu6zQ/IYCwgsR5Sf12xJCL/5+CVpbXsnt
+         22KfNqT06o98mhCtfoOfWNh/4tfFmj2AFDjLdssqJs8+fwuuzWeqstsrP9Eqc87OlMHn
+         TvZYh66KNDgDYMOMzV+7fqlsVNnsPbs5tbKal0uE5CTp2Rk7sipJ65nnPaJWW6urjiYG
+         yjhaQr0+DsLsyIMnaiNd6rjtUc7yQgIo65YEuBLpX5cuMOVjNiZW8dTCMF1ZcQmI8lLg
+         ts2zRNIssQ7WVu8YEQseHp9elEHPuA+qDafMGck3ipNTcw1LcoccQXJFJcltFVTtty4m
+         33gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
+        b=D6soBN2AEeehBAe2acrsAxhbyWa+8kgHMY3+9Esz2+0rGqNdfunQ9ehaTLQX+SzQSJ
+         0ldqz66wLBI8ranYa8gW17O0sGr+vekelrA3lCZVqvkJRJgWvW98eEu94FwHKC2MYBVI
+         XtccjthYhCwplpy5F48fk6JRrLIlN+dEk8RTGWISTP/UITLXzVx8zAnp9ycKnEL6wyF8
+         meGIA+gHmemOkbKv89oOUTzZtVwmrheixtRN4/9M/TWBiVhcGJsD9YnQpM5pkgN3l6yw
+         NZBsnxnfuU22jMllH/vKz+kzESUitVOGinLFddVE28b2tQ4r/xM3OQvuYNEPuPJfD5gi
+         dtFw==
+X-Gm-Message-State: AOAM532VIE0bHZBccGdJikpzrzjAHM+QMMnKvqAnKBHcbxfPCSvLE90O
+        zpJgY/WvOlh8GCbvfgeuuzkDev1v/mYZeMxEOx4Dz8z+84hlLWnP
+X-Google-Smtp-Source: ABdhPJxBVYZ26kuukI+qghu2oEbePULLlY8UzOvy8Thh2XI49DVZF++TlN5eyoWkvajWnohXM36KonRfGTJC1IRe82w=
+X-Received: by 2002:a2e:9d8f:: with SMTP id c15mr17452679ljj.477.1639188123220;
+ Fri, 10 Dec 2021 18:02:03 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: Your System ate a SPARC! Gah! in map_pages()
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>, Sven Schnelle <svens@stackframe.org>
-Cc:     linux-parisc <linux-parisc@vger.kernel.org>
-References: <f3ba5c65-37d9-60a5-d2ae-19faa5dba384@bell.net>
- <872b7d67-82f6-cf6b-93b8-68fc79abcbaf@gmx.de>
- <a5eef9c4-8e0d-95e8-0c3d-0d0052d8edae@bell.net>
- <8a56f234-1126-e068-a70c-3b333320ef14@gmx.de>
- <87fsr0s0cc.fsf@x1.stackframe.org>
- <970b7b0a-eef9-df91-e474-e68dbcc3ae25@gmx.de>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <970b7b0a-eef9-df91-e474-e68dbcc3ae25@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6512:12c7:0:0:0:0 with HTTP; Fri, 10 Dec 2021 18:02:02
+ -0800 (PST)
+Reply-To: internationallmonetary695@gmail.com
+From:   International Monetary fund <abubakarsadiq1297@gmail.com>
+Date:   Fri, 10 Dec 2021 18:02:02 -0800
+Message-ID: <CAHXNoSg3Z7iK4ieUWhau28hUaL637ztb2vgqOT3oZCxEMRC3RQ@mail.gmail.com>
+Subject: Dear Beneficiary,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2021-12-10 4:14 p.m., Helge Deller wrote:
-> Btw, it seems I currently have vDSO (32bit) working with signal return code:-)
-Awesome.  Will you post change?
-
-Dave
-
 -- 
-John David Anglin  dave.anglin@bell.net
+ I.M.F Head Office
+#1900 Pennsylvania Ave NW,
+Washington, DC 20431
+INTERNATIONAL MONETARY FUND.
+REF:-XVGNN82010
+internationallmonetary695@gmail.com
+Telephone : +12062785473
 
+This message is from International Monetary fund (IMF) I am Mr Bo Li
+deputy to  Kristalina Georgieva the current president of International
+  Monetary fund (IMF) We are aware of the stress you have been passing
+through and how you have lost your money trying to claim your fund ,
+you have to worry no more for the international monetary fund is fully
+ in-charge of your fund now, contact  me for more info on how you will
+receive your fund( internationallmonetary695@gmail.com) or call me
+on-Telephone : +12062785473 for more info.
+
+Regards,
+Mr Bo Li
