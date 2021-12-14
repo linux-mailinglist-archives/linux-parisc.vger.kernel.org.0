@@ -2,225 +2,169 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B62F44723B4
-	for <lists+linux-parisc@lfdr.de>; Mon, 13 Dec 2021 10:23:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AF604740AE
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 Dec 2021 11:45:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233686AbhLMJXl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Mon, 13 Dec 2021 04:23:41 -0500
-Received: from mail-vk1-f179.google.com ([209.85.221.179]:38527 "EHLO
-        mail-vk1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233673AbhLMJXh (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 13 Dec 2021 04:23:37 -0500
-Received: by mail-vk1-f179.google.com with SMTP id s17so9966812vka.5;
-        Mon, 13 Dec 2021 01:23:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=7JQ6xhDuC8UGs/jm3YR6x8QoCCs8KyehtdxluDCRZKo=;
-        b=s1vr4fKxoqXExk3EECIfYm4XnjnYCI9FntQ4nfRSKG1qDpqNF9Ln+oyQ+8AlkOmNZY
-         4VKiBsJuu+BAAMm6QtPPMfTP8l403QFB9Uc1hR/hLkkeUmz4NOq9DyGh796m9mNutLIJ
-         9dmGJIbRxcCMcWHcqcjslDyjrICWEIGHiLxUaU8S5YF6QkMz/C+jXeqnTPmQjjJqG5dJ
-         DmyRVHmFe1uRt/Nbgr8f/fqhsR3JckM0CbT/qJL8nxByU6P2aCObAAE9k9LrHm8V4BZI
-         O4fstT3MvC/FSeM0K6PLkHUslGnIIUAADonm70KDKHyXKuxJLmFh91rJ3HnUgrPDo6BS
-         4mKQ==
-X-Gm-Message-State: AOAM5329nOcx31Hc48LnBiGEsDoJpYJbc+mLykjJXH6bvW5Y9lmtzdhi
-        W+mLuBR5yt3KD2Q9Z9wXEnGVb9ZOGT4H6g==
-X-Google-Smtp-Source: ABdhPJy36iwzFCGQ3/LfaGF4Odlhfj2OLNrCWA4IlVb15gm8DIeNRZjtFj9sldbBl2GYTgKVUkSP6A==
-X-Received: by 2002:a05:6122:20a7:: with SMTP id i39mr29371339vkd.15.1639387415861;
-        Mon, 13 Dec 2021 01:23:35 -0800 (PST)
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com. [209.85.222.49])
-        by smtp.gmail.com with ESMTPSA id t20sm3875484vsj.27.2021.12.13.01.23.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Dec 2021 01:23:35 -0800 (PST)
-Received: by mail-ua1-f49.google.com with SMTP id ay21so27952890uab.12;
-        Mon, 13 Dec 2021 01:23:34 -0800 (PST)
-X-Received: by 2002:a67:c106:: with SMTP id d6mr26074577vsj.77.1639387403608;
- Mon, 13 Dec 2021 01:23:23 -0800 (PST)
+        id S233114AbhLNKpZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 14 Dec 2021 05:45:25 -0500
+Received: from mout.gmx.net ([212.227.15.15]:49489 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231415AbhLNKpZ (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 14 Dec 2021 05:45:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1639478711;
+        bh=drSjkyonQU7oy65m/aGuRAsYLy8dbe9fDUf7Dm9VbPI=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=IOMQaJSkEM4yO9yw4VLb5ZYDNq1/zGhdjacLXoUiZqwsxLXJ7hN/Oc7F+02t01ifH
+         DBwDq0wOAsS7KIj7AdCj/CLe9yaN1HjhxjDu6Ww2jtNKj/FcVMkzGenMdcdRTnaS7r
+         u513aAbZxklx8RsgYNt6DBWvvGwDxFuQKgx5Opps=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.139.19]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MSKuA-1n3ad43xRA-00ScCO; Tue, 14
+ Dec 2021 11:45:11 +0100
+Message-ID: <0314b689-4445-def8-5f17-0c73f7567cf1@gmx.de>
+Date:   Tue, 14 Dec 2021 11:45:05 +0100
 MIME-Version: 1.0
-References: <20211126180101.27818-1-digetx@gmail.com> <20211126180101.27818-6-digetx@gmail.com>
- <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl> <033ddf2a-6223-1a82-ec64-30f17c891f67@gmail.com>
- <YaQeQgbW+CjEdsqG@qmqm.qmqm.pl> <091321ea-4919-0579-88a8-23d05871575d@gmail.com>
- <CAJZ5v0jMvdhfBqjY+V9h_Z6EH1ohuJH+KjuGiOw_Jor1Tnp7vg@mail.gmail.com>
- <45025b2d-4be1-f694-be61-31903795cf5d@gmail.com> <CAJZ5v0ieTwnBVjW8R_VTdPFH3yr5AwLc+ZEG5N3KrpTH+j8qZw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0ieTwnBVjW8R_VTdPFH3yr5AwLc+ZEG5N3KrpTH+j8qZw@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 13 Dec 2021 10:23:12 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXW1bCLkJhC1Jnf2rkS1rBnXsMX=4LMVdXDvMV5HOzrLw@mail.gmail.com>
-Message-ID: <CAMuHMdXW1bCLkJhC1Jnf2rkS1rBnXsMX=4LMVdXDvMV5HOzrLw@mail.gmail.com>
-Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated priority
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Dmitry Osipenko <digetx@gmail.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] parisc: decompressor: do not copy source files while
+ building
+Content-Language: en-US
+To:     Masahiro Yamada <masahiroy@kernel.org>,
+        linux-parisc@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
-        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+References: <20211213030915.1170219-1-masahiroy@kernel.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20211213030915.1170219-1-masahiroy@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:BC5ZmpRDbkwN6GVfkT0uC9g9xvx8/sQ0zFN2GqfOeAfnr67kV2X
+ ECzUDVu2koPvoQj46NxkqNeOV8D6A+OxKqLEuRyiQPqeGNQ3Hfc7nGQoHmGBbNCyR5vUkuW
+ mY9zTnIp5kVSReT9e3wP7NlyINhWmKv16qlupSknkbHJ1IZB7k2Q+yseMLZg4n33NpBQ8Y6
+ Uc7nqRKtgh/rQs8rs1abg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SuxwQnTSisE=:j76seZhXHwZ8ZjspwI4c8d
+ o8h7URu0xn9yQRXQnIfmb4n0/+Dj8ojiXy0PH8/Z0EUWJ1JBVov11RaQx2SEf9pQerlesrpZk
+ p5M5C29VACWZAm93Ivb0ix6jXhc86Wdeh8TjhyJJYjS/FBE1iUxVzjvALAWj07FwhLFINY2TI
+ u8t3DPmG4/9rQo3Nex4bCVbmnoKX5ANBkYoPkYzbKPzoHG0yXi03vf3E3YQTG/E7xO3X6O3fN
+ mVqvt7iGpAPog09i4m0U2QRPr43aJU9cOENtQu6ZGLRDUMo860Vh6Q/HSh+kVQ+q3ShRL0gbM
+ X1ts0OKPQZxbAU8Bs/0n/ZoS2dAq9HpAyghNmLFj6o10D7TYBE3E17ifhKkJrzRisD3VvTwoT
+ Y+e+0h5jDIX4hpDDFHy/q+cPXdOMiIzXFA8KD7aB9PKpJ0/gEhruPxKWgg+gZXXmskDpxkgrG
+ n6ZR+22EFbRZWaGIYoRUVbmtUOnJ9ka3nI8ZDC5VkfmaExQFjng1uhNAycrImjL+X1mdwdev7
+ p/0sswuL177MGNRVAeB9P0HITqKh3/w3pB3gJaXOvYc+w44YsPJj3aooqW/A1dX0I1ZNCGILw
+ kTwab4noqS01wOkMnvu7ynp3wKYGF/+wR9RJqpcpuKJqG0y+0YLFSjjVr/9xCoMF8uCmr0OFG
+ eHsKHJ+Jy7emRzpolE0uDc43aK4YzJWAWcm45aWUVonAT1az5czhtGXro3g1wD9jsgrWCbEh/
+ qZp170Dxc3jQdh0p5ZcXueRB5VBFZbyDokSTD9wSkLmYWvCCHM4YN+GtRCSV7vXMAa6H78Yf+
+ RZgV/lwhmCkeJLsTDqDJXOzIl9ZU7uz5yAbZgDTIhCraAwhUj7ZeoTVZwPxqW76nEQ8BtXamb
+ VQN2a1NN2PKLQSPGOjm+DXb85b2XZgpKGqEShcQrH0JCpSpIOgCeiibYr+vGjac5r/+6AKiVq
+ MNuSwIY+qYCXru0kb9Ou1x9hUDPFayg66iF+aZxdltQudV/M9ZZrxwV1QjgzpsguBS2Xdlzro
+ E2VllLY+xPTVX8M51igsPbm64mT1Z9FBIt+LHNmtQGw+IP3UTTYhTsJXb3Urb9qlkvStElUmu
+ UtUF0ICuE6Z5HU=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Dec 10, 2021 at 8:14 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> On Fri, Dec 10, 2021 at 8:04 PM Dmitry Osipenko <digetx@gmail.com> wrote:
-> > 10.12.2021 21:27, Rafael J. Wysocki пишет:
-> > > On Mon, Nov 29, 2021 at 12:34 PM Dmitry Osipenko <digetx@gmail.com> wrote:
-> > >> 29.11.2021 03:26, Michał Mirosław пишет:
-> > >>> On Mon, Nov 29, 2021 at 12:06:19AM +0300, Dmitry Osipenko wrote:
-> > >>>> 28.11.2021 03:28, Michał Mirosław пишет:
-> > >>>>> On Fri, Nov 26, 2021 at 09:00:41PM +0300, Dmitry Osipenko wrote:
-> > >>>>>> Add sanity check which ensures that there are no two restart handlers
-> > >>>>>> registered with the same priority. Normally it's a direct sign of a
-> > >>>>>> problem if two handlers use the same priority.
-> > >>>>>
-> > >>>>> The patch doesn't ensure the property that there are no duplicated-priority
-> > >>>>> entries on the chain.
-> > >>>>
-> > >>>> It's not the exact point of this patch.
-> > >>>>
-> > >>>>> I'd rather see a atomic_notifier_chain_register_unique() that returns
-> > >>>>> -EBUSY or something istead of adding an entry with duplicate priority.
-> > >>>>> That way it would need only one list traversal unless you want to
-> > >>>>> register the duplicate anyway (then you would call the older
-> > >>>>> atomic_notifier_chain_register() after reporting the error).
-> > >>>>
-> > >>>> The point of this patch is to warn developers about the problem that
-> > >>>> needs to be fixed. We already have such troubling drivers in mainline.
-> > >>>>
-> > >>>> It's not critical to register different handlers with a duplicated
-> > >>>> priorities, but such cases really need to be corrected. We shouldn't
-> > >>>> break users' machines during transition to the new API, meanwhile
-> > >>>> developers should take action of fixing theirs drivers.
-> > >>>>
-> > >>>>> (Or you could return > 0 when a duplicate is registered in
-> > >>>>> atomic_notifier_chain_register() if the callers are prepared
-> > >>>>> for that. I don't really like this way, though.)
-> > >>>>
-> > >>>> I had a similar thought at some point before and decided that I'm not in
-> > >>>> favor of this approach. It's nicer to have a dedicated function that
-> > >>>> verifies the uniqueness, IMO.
-> > >>>
-> > >>> I don't like the part that it traverses the list second time to check
-> > >>> the uniqueness. But actually you could avoid that if
-> > >>> notifier_chain_register() would always add equal-priority entries in
-> > >>> reverse order:
-> > >>>
-> > >>>  static int notifier_chain_register(struct notifier_block **nl,
-> > >>>               struct notifier_block *n)
-> > >>>  {
-> > >>>       while ((*nl) != NULL) {
-> > >>>               if (unlikely((*nl) == n)) {
-> > >>>                       WARN(1, "double register detected");
-> > >>>                       return 0;
-> > >>>               }
-> > >>> -             if (n->priority > (*nl)->priority)
-> > >>> +             if (n->priority >= (*nl)->priority)
-> > >>>                       break;
-> > >>>               nl = &((*nl)->next);
-> > >>>       }
-> > >>>       n->next = *nl;
-> > >>>       rcu_assign_pointer(*nl, n);
-> > >>>       return 0;
-> > >>>  }
-> > >>>
-> > >>> Then the check for uniqueness after adding would be:
-> > >>>
-> > >>>  WARN(nb->next && nb->priority == nb->next->priority);
-> > >>
-> > >> We can't just change the registration order because invocation order of
-> > >> the call chain depends on the registration order
-> > >
-> > > It doesn't if unique priorities are required and isn't that what you want?
-> > >
-> > >> and some of current
-> > >> users may rely on that order. I'm pretty sure that changing the order
-> > >> will have unfortunate consequences.
-> > >
-> > > Well, the WARN() doesn't help much then.
-> > >
-> > > Either you can make all of the users register with unique priorities,
-> > > and then you can make the registration reject non-unique ones, or you
-> > > cannot assume them to be unique.
-> >
-> > There is no strong requirement for priorities to be unique, the reboot.c
-> > code will work properly.
+On 12/13/21 04:09, Masahiro Yamada wrote:
+> As commit 7ae4a78daacf ("ARM: 8969/1: decompressor: simplify libfdt
+> builds") stated, copying source files during the build time may not
+> end up with as clean code as expected.
 >
-> In which case adding the WARN() is not appropriate IMV.
+> Do similar for parisc to clean up the Makefile.
 >
-> Also I've looked at the existing code and at least in some cases the
-> order in which the notifiers run doesn't matter.  I'm not sure what
-> the purpose of this patch is TBH.
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+
+Acked-by: Helge Deller <deller@gmx.de>
+
+Thanks!
+Helge
+
+> ---
 >
-> > The potential problem is on the user's side and the warning is intended
-> > to aid the user.
+>  arch/parisc/boot/compressed/.gitignore | 2 --
+>  arch/parisc/boot/compressed/Makefile   | 8 --------
+>  arch/parisc/boot/compressed/firmware.c | 2 ++
+>  arch/parisc/boot/compressed/real2.S    | 2 ++
+>  scripts/remove-stale-files             | 5 +++++
+>  5 files changed, 9 insertions(+), 10 deletions(-)
+>  create mode 100644 arch/parisc/boot/compressed/firmware.c
+>  create mode 100644 arch/parisc/boot/compressed/real2.S
 >
-> Unless somebody has the panic_on_warn mentioned previously set and
-> really the user need not understand what the WARN() is about.  IOW,
-> WARN() helps developers, not users.
+> diff --git a/arch/parisc/boot/compressed/.gitignore b/arch/parisc/boot/c=
+ompressed/.gitignore
+> index b9853a356ab2..a5839aa16706 100644
+> --- a/arch/parisc/boot/compressed/.gitignore
+> +++ b/arch/parisc/boot/compressed/.gitignore
+> @@ -1,6 +1,4 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> -firmware.c
+> -real2.S
+>  sizes.h
+>  vmlinux
+>  vmlinux.lds
+> diff --git a/arch/parisc/boot/compressed/Makefile b/arch/parisc/boot/com=
+pressed/Makefile
+> index bf4f2891d0b7..116bd5c1873c 100644
+> --- a/arch/parisc/boot/compressed/Makefile
+> +++ b/arch/parisc/boot/compressed/Makefile
+> @@ -13,7 +13,6 @@ OBJECTS :=3D head.o real2.o firmware.o misc.o piggy.o
+>  targets :=3D vmlinux.lds vmlinux vmlinux.bin vmlinux.bin.gz vmlinux.bin=
+.bz2
+>  targets +=3D vmlinux.bin.xz vmlinux.bin.lzma vmlinux.bin.lzo vmlinux.bi=
+n.lz4
+>  targets +=3D $(OBJECTS) sizes.h
+> -targets +=3D real2.S firmware.c
+>
+>  KBUILD_CFLAGS :=3D -D__KERNEL__ -O2 -DBOOTLOADER
+>  KBUILD_CFLAGS +=3D -DDISABLE_BRANCH_PROFILING
+> @@ -42,14 +41,7 @@ $(obj)/head.o: $(obj)/sizes.h
+>  CFLAGS_misc.o +=3D -I$(objtree)/$(obj)
+>  $(obj)/misc.o: $(obj)/sizes.h
+>
+> -$(obj)/firmware.o: $(obj)/firmware.c
+> -$(obj)/firmware.c: $(srctree)/arch/$(SRCARCH)/kernel/firmware.c
+> -	$(call cmd,shipped)
+> -
+>  AFLAGS_real2.o +=3D -DBOOTLOADER
+> -$(obj)/real2.o: $(obj)/real2.S
+> -$(obj)/real2.S: $(srctree)/arch/$(SRCARCH)/kernel/real2.S
+> -	$(call cmd,shipped)
+>
+>  CPPFLAGS_vmlinux.lds +=3D -I$(objtree)/$(obj) -DBOOTLOADER
+>  $(obj)/vmlinux.lds: $(obj)/sizes.h
+> diff --git a/arch/parisc/boot/compressed/firmware.c b/arch/parisc/boot/c=
+ompressed/firmware.c
+> new file mode 100644
+> index 000000000000..16a07137fe92
+> --- /dev/null
+> +++ b/arch/parisc/boot/compressed/firmware.c
+> @@ -0,0 +1,2 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include "../../kernel/firmware.c"
+> diff --git a/arch/parisc/boot/compressed/real2.S b/arch/parisc/boot/comp=
+ressed/real2.S
+> new file mode 100644
+> index 000000000000..cdc6a4da3240
+> --- /dev/null
+> +++ b/arch/parisc/boot/compressed/real2.S
+> @@ -0,0 +1,2 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#include "../../kernel/real2.S"
+> diff --git a/scripts/remove-stale-files b/scripts/remove-stale-files
+> index f0d53227fe7b..80430b8fb617 100755
+> --- a/scripts/remove-stale-files
+> +++ b/scripts/remove-stale-files
+> @@ -33,4 +33,9 @@ if [ -n "${building_out_of_srctree}" ]; then
+>  	do
+>  		rm -f arch/mips/boot/compressed/${f}
+>  	done
+> +
+> +	for f in firmware.c real2.S
+> +	do
+> +		rm -f arch/parisc/boot/compressed/${f}
+> +	done
+>  fi
+>
 
-Do panic_on_warn and reboot_on_panic play well with having a WARN()
-in the reboot notifier handling?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
