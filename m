@@ -2,105 +2,86 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 459554740B0
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 Dec 2021 11:45:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC03047707A
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Dec 2021 12:42:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233184AbhLNKpk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 14 Dec 2021 05:45:40 -0500
-Received: from mout.gmx.net ([212.227.15.18]:49699 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231415AbhLNKpk (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 14 Dec 2021 05:45:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1639478732;
-        bh=zqk/pHvVJ3FHgJ6F96DqY/QK28/RIMBWknw0SFLiL2Q=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=iXgw147vn0lMmLM+FQuRZkRhdR/N9G3ngdkr3PI4FYkqWs1UsW1BFy3OeZFNSQMUa
-         Fsi7dZo3VgNQSyv7Zd98fUkGilUcwJYzpzp2a1fYWi0wDbSve3q6lbCeNvDIx1IM/X
-         WcKuLy3dFtdL4rI90weuTfUYiW8FKNc87EHD37U8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.139.19]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mn2aD-1mH6zr1eKt-00k953; Tue, 14
- Dec 2021 11:45:32 +0100
-Message-ID: <2fa1f8fb-2a30-1445-758c-4aa2e7fc5ec0@gmx.de>
-Date:   Tue, 14 Dec 2021 11:45:29 +0100
+        id S233170AbhLPLmS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 16 Dec 2021 06:42:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60070 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231918AbhLPLmP (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 16 Dec 2021 06:42:15 -0500
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9BCFC06175C
+        for <linux-parisc@vger.kernel.org>; Thu, 16 Dec 2021 03:42:06 -0800 (PST)
+Received: by mail-qt1-x831.google.com with SMTP id z9so25079883qtj.9
+        for <linux-parisc@vger.kernel.org>; Thu, 16 Dec 2021 03:42:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=DbH1Ji01P93LyTzDoauO1Rc48sDWVtdwnBGUamxeb8T/9DnmNwFlL0JvNxtTxnIik8
+         AF4fiOnh94EFQzdZz8KJBnzwauC2lZM0yNVUv4pWHip6opgPog4u/vluZhPJXjw78vDA
+         f6sh/ed1OxoJ1g1t7gzdPodwSxTC5c4DgCybEoK61DXARfmFs8snxFiiIRa/Iu1/hNzN
+         fZIim177r1ShSprd0HKY5DfawS5hKhFwBWxLO3U7SnQ0mHNCzrBDbHpz1jt5tPoBjmr8
+         7Ae3NOwI9TZO/6l6pkdqJZg2o0eCT7Tj9ACDNqagtOISwltP3H2yXXWnIzZMI4wBc7By
+         rM9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=heUcaGrcZOUxU7EAIC26bjB/ENOdger38HBl17ITUx2ABzhLUQsD0GrJ7q6PLmIF9F
+         1uoL7K5KP4G5Z2avlPIBs7q0x3Mk16d2aBj2DWRFOt51vbVSRu0pvEWU5ebRIpooNk49
+         eSBVPk+vH7Dat0iFcH5EdHg32NWKADSPRL1ACfKcwCwQen/fjjTOIbudDJhp4S7qZ3xg
+         gUEwVaC2Q+vz5FknAvge+8EGHw6SDj4VvPvsvL+XO1vd9uSOR4VMG33UUn1nzvHMfWE5
+         PZv/HgVM1MQd1aC/QAIKLz2/kvBUBzovXFHgTxzjNDMVlW3Cz/Nwym4ooNmlbX5aKhZE
+         lnnA==
+X-Gm-Message-State: AOAM531XoPb4/9iiDqtpI1CcK4rs/T9Kp6kMy0TzYdmjFa/Sb+ypHKSY
+        0kUj+8T7+JROphjrB9JC97Gcwwv2xAcpv+2hlBc=
+X-Google-Smtp-Source: ABdhPJyrnf396a9ziJGBm+8eiYGOgUpOQ7p2/85GJukkUSbvGu1la687iolipeGN8a/w1GmTH3LvDnglSFpjsilKeBU=
+X-Received: by 2002:a05:622a:510:: with SMTP id l16mr16475505qtx.619.1639654925163;
+ Thu, 16 Dec 2021 03:42:05 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] parisc: remove ARCH_DEFCONFIG
-Content-Language: en-US
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        linux-parisc@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-References: <20211213024044.1165969-1-masahiroy@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20211213024044.1165969-1-masahiroy@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Y2ozY65yWjfAJcDEcEiPdW/KgeSSWMPdNCp8cYBqNEGtChdIQwF
- fGFzsc6ZzSCKrgENeUOfZp274O3v3meLvP33tmMQ0iq5+xWuXcI4EYuR21lbKJo6q/EfX3f
- 3CKALTUH2HWGhZFuGIZahLrl4AXLN4izHvqtazHbhrxV2ABWA2RA/D2I2YcJtNW0TuhxUaD
- pgHrLit3H23II863BWT9w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:iaKuMwudLco=:oQM+5snDkc2JyCRYJIn+le
- IMgfpfLEfdd3nLEpUbRnub1bX73KhpB6ewuFye2RfLtTgl3tQhXSj9autuqtZ/Oorw6zspnfb
- bzpkL9N0uOdtDCbmXc9H9bAygDxmgcX8cG1xhbYdBemdfEKwKcSmp/lVlb27HJVXeXWdVrE3r
- zk2hpilmCiFkiMVPccJvaPSOprwXvc3BM2Qoaw8LN/CNBJjyn9UEvvlSsTxM/H8/t8VqS3S7z
- 8VHgbhJzb8CipDXKl393xQwcg6LIeNq6Q/aMLyh4gbAL3o/KfH/WjwXzMfSKHGGpH8Oh2XYGz
- IIZCGQexQH7O+BBJvsdOzAg3M5ExHvi5Jp5OWj2dircR5knikh3vZiuDJGUlKdW3FSHTLC2Rq
- Bud4LThpDlWVP1AksAGSy6BBUWY6hQAaAuYpk9AkkDI/Fb9EVGVChU6fwmA1DESRYUIq4ZU7C
- jGPdEWgrIA66FVaJWEiHFmxOoiR74vShYCGcCFfISSvi2EQbjMGliyQMeLimxk4etlv349oTu
- Vj7siEuXojG0ZIM/raJhoJxZI2NthUjL7jEMu32Cb6ROnkYd5QBQ8RluduYrQ7cEvdYa0KPEg
- dh0js7yv/Q3GflhhSLZnzjFz/mPiQGHObXRI1R/yRzrL8I8Hk9ePC44Rk2Hsymraho5rK1Gt7
- oLp1DvNYsL69ojKioGiQmfMAisSsSUTp+EtCYwhamffRkMgCW9cq81EhnrWtLeNcKxmzYdcTY
- K9Zp4umVCWegd9HGgF4WE2iOE1f+IP2Zhv4GzH3IITW11RoPsVBtF8WetbcQwfnECHE5/mBlw
- eGRqLoVs+1028D3Aiu2km8HaWTwUph+imztjfgHHRyRQ7+uoZ55DFdJIEcI+KM3jzlEEcNn2O
- 8Lat9nUCynEUYSsdWmJz8RYdSZKMcVi4M9h/SzvI730D3LZZPwhKYl5nIeD3+dG8HIry37vx/
- Kg5unyONW9hrdWRQH83R8oBOWEno+QvnTFBoLe+nIX3hiOSS/fsScdI9gMjhJP8dVHp3Ktb4X
- EbQldhy8r5skt7n/4vz8Bg4At3zIYbbeDbsXGLIaLE76F3pAQN3Qika8R8842i9ee9G/42Rwk
- ZxX7CUjliUnmK4=
+Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:04
+ -0800 (PST)
+Reply-To: selviasantiago1@gmail.com
+From:   Selvia Santiago <mariamatinez119@gmail.com>
+Date:   Thu, 16 Dec 2021 11:42:04 +0000
+Message-ID: <CAONDhKNqZ3ja5a2mdpyxiYfPYVQwq_MdxvhX-F--7sW9gxb1ZQ@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 12/13/21 03:40, Masahiro Yamada wrote:
-> Commit 2a86f6612164 ("kbuild: use KBUILD_DEFCONFIG as the fallback for
-> DEFCONFIG_LIST") removed ARCH_DEFCONFIG because it does not make much
-> sense.
->
-> In the same development cycle, Commit ededa081ed20 ("parisc: Fix
-> defconfig selection") added ARCH_DEFCONFIG for parisc.
->
-> Please use KBUILD_DEFCONFIG in arch/*/Makefile for defconfig selection.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+-- 
+Urgent
 
-Acked-by: Helge Deller <deller@gmx.de>
+I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
+suffering from long time illness (Cancer), there is funds I inherited
+from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
+Million Dollars) which he deposited in bank before his death, I need a
+honest and Faithful person that can use these funds for humanity work.
 
-Thanks!
-Helge
+I took this decision because I don't have any child that will inherit
+this money and I don't want a situation where this money will be used
+in an ungodly way. That is why I am taking this decision, and my
+doctor has confirmed to me that I have less than two weeks to live,
+having known my condition I decided to donate this fund to a charity
+or individual that will utilize this money to assist the poor and the
+needy in accordance to my instructions.
 
-> ---
->
->  arch/parisc/Kconfig | 5 -----
->  1 file changed, 5 deletions(-)
->
-> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-> index b2188da09c73..011dc32fdb4d 100644
-> --- a/arch/parisc/Kconfig
-> +++ b/arch/parisc/Kconfig
-> @@ -85,11 +85,6 @@ config MMU
->  config STACK_GROWSUP
->  	def_bool y
->
-> -config ARCH_DEFCONFIG
-> -	string
-> -	default "arch/parisc/configs/generic-32bit_defconfig" if !64BIT
-> -	default "arch/parisc/configs/generic-64bit_defconfig" if 64BIT
-> -
->  config GENERIC_LOCKBREAK
->  	bool
->  	default y
->
+I want you to use 70% of this funds for orphanages, school, church,
+widows, propagating the word and other humanity works,The remaining
+30% should be yours for your efforts as the new beneficiary.
 
+Please if you would be able to use these funds for humanity work
+kindly reply me. As soon as I have received your response, I will give
+you further directives on how you are to go about the claims of the
+said funds.
+
+Remain blessed.
+Mrs Selvia Santiago.
