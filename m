@@ -2,72 +2,150 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 584F747E8AD
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 Dec 2021 21:19:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C24747E8DD
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 Dec 2021 21:53:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350239AbhLWUTl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 23 Dec 2021 15:19:41 -0500
-Received: from mta-mtl-001.bell.net ([209.71.208.11]:56230 "EHLO
-        cmx-mtlrgo001.bell.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240669AbhLWUTh (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 23 Dec 2021 15:19:37 -0500
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [67.71.8.137]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 61C4B2F400046F42
-X-CM-Envelope: MS4xfBROuOZ3XlsqrtUuHwdWyC3GmExmSMlu0qWHjynm1B3we+nDTCklN9BRLDXslB3YUIEGBAvsgrM5wPXfGInQLVL4YlIzBtGYkAEeEsRHdnA9y16H2Fgc
- 6l519xoAPkwHVWaEmgV4JKwbT7OrYvYta3pLmtpG0heYpRkTU/e60gYwxvxgC02jH62PwH3PRygZ817junZILVCCUNpEe0lir/k1h8fTv/TUiEIC86CjXbFe
- /M77KGsOWJKtOV+fFb0KqwRtXV8QqnTfcvQR/c6pNFL+R+uWuKpcjIcfCuj0fBD0Z74mE2IlTjUe8c749ifNZ5ga2B8U8scdQBIuuOZofhyyDDEN1kc522U2
- jez3NeCb
-X-CM-Analysis: v=2.4 cv=eZxew5IH c=1 sm=1 tr=0 ts=61c4d9d7
- a=jrdA9tB8yuRqUzQ1EpSZjA==:117 a=jrdA9tB8yuRqUzQ1EpSZjA==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=ucK_BCECNZZ-K_TlwAYA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (67.71.8.137) by cmx-mtlrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 61C4B2F400046F42; Thu, 23 Dec 2021 15:19:35 -0500
-Message-ID: <cdbb6cca-29c0-361a-4a86-be8ef6c62f14@bell.net>
-Date:   Thu, 23 Dec 2021 15:19:35 -0500
+        id S1350278AbhLWUxq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 23 Dec 2021 15:53:46 -0500
+Received: from mout.gmx.net ([212.227.15.18]:35053 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1350277AbhLWUxq (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 23 Dec 2021 15:53:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1640292820;
+        bh=pEAhuovbLdiJZZUrTelZV8cteFGwPBv/83yoUAe3jE0=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=XqvwwaBHe26OnKRuA5vGXR48nfmSw8EeNnRcKNmpe53aSPwV6W/vWkr5QlYL5Yvrn
+         8gXrTWIqnqQ2vSbDysekSiIYOysJchWDScw2P4OaBwCNOUQCrBI52ehIG4X66HQpnE
+         8BS1HcUNWL1dsZ1vQU72o97dD7X5yI2QFlSTwtC4=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.187.188]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNbkv-1mqHfM3l75-00P9mh; Thu, 23
+ Dec 2021 21:53:40 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>
+Subject: [PATCH] parisc: Switch user access functions to signal errors in r29 instead of r8
+Date:   Thu, 23 Dec 2021 21:52:46 +0100
+Message-Id: <20211223205246.16105-1-deller@gmx.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.1
-Subject: Re: [PATCH v2] parisc: Rewrite light-weight syscall and futex code
-Content-Language: en-US
-From:   John David Anglin <dave.anglin@bell.net>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-parisc <linux-parisc@vger.kernel.org>,
-        Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <YcScAR4cPgyI5B6d@mx3210.localdomain> <YcTEOhVnmT8kQRmf@ls3530>
- <888da884-86e0-e6f4-68c3-e3448eb4c9c8@bell.net>
- <6e4b0354-c3d9-ec11-4303-525e04c2d5d8@gmx.de>
- <96a706a5-a2c0-68ae-2541-0ae7287e2aab@bell.net>
-In-Reply-To: <96a706a5-a2c0-68ae-2541-0ae7287e2aab@bell.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6XFnTQrI8FTlH8jL4Kv+NJVGnJPEbb9TpG2BOdr/zXDJYiRh8b3
+ oqrXGnNdUatAtr/c1gX26d5xtxRxDxqIwLDvilhDMqLIQxyk6ChrNcL95ifqLLGYpsPI/n9
+ IZRe8aMgI6DPqj06BDQ2Qxs6al+6hnCmmcNvl2H9uH/o3g/gTfygJD3M5pAKBP0UtHJB1cH
+ 2g690vDfAvdPjNlEQ1N9A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:WExa5IWqBKk=:2DJZV2dmnzT6Ls09mHUxq6
+ YeZqGx8ylUQRTJ4rKyLC1uxp8RRUa7QMV9uUvKR/9BDG1Tip4seKfI+ShhFQtVHtqrAtME9Sv
+ iFBrLm0m/XIm8LbY2S2SqVafFOoPkJCaIV+g4Pm1uzrJSVC2SbAkFejeQB/ZzSkUbs++2NK9P
+ pTS6WA8NlDKoVwhpYOXsaWAC8CWbMJdR2JUhMroSTiC6fVU5FHN8bpXUKqAweFSs0W//KAcRz
+ CXFq9ZUi9DMeoPhPDpZB3utbTxfVYkdxU5O2dgsgybn8Z/6dTMGWFhooyljQLyOk76lMmHPCH
+ gT/SBlZnsuzg9K6/WcdPZ8jB6oc6gxQu4gDnjEWp1O3ld+F+8ssSlh35oOCytAbJRlLE68Lvy
+ R+OlTtKEhYNoGQb+6Laq3KPT9Xynd10ukP8DqNoPIgpIMI4q/G0BJqpNf3bTlq3ohaR6DOLgr
+ uS+iAnBkhPdHHdlQhtlOVmy+tlPj+DHdf1Wr0DgVzE8JauC2qcZEZTm5yUAajCA+kFafCSyW8
+ YFg5bUQ4xilXNwck8Lb0L1OGst8t55KO4AYZRkya8UT4HTdN+/Eq5RmmgZCuE9YK/RT1hA1VX
+ FSG5EF2yULunCZtIRxWHhD/heTgqNQyebx1plhhUE8I6QwcR2GIyYdRtV6Qf0DjFGQW/mPJNo
+ CvkFwrjj0c7Rrh4I1dCGVVPcH5g+jLoN6seFerIhp9BUwMwIMLcU5UOYWkPi03hB/sskMBzLM
+ mJmJqiRwHD74NZO9uJ6Gq3a8NMTn0qjb6MuBa6FBL5U/OdVwBRvuzpP4gVBETUtDGtRp2/aSJ
+ W1hnqMSQQ8noSLkZsr1QXCQJE/a4zGEX9Qg6CemmATL0A4bHE59GfvH/+YDmf/vq1xjYYVBHn
+ F0TpmJepE4J7K+5jdCRtxIW89f5XfM+XhG9LxBZdEuR4FmRwJr70iF5P6SxWZRmGNkcyLu7m/
+ oFerWwJxPscLeno8SgKgmDEKKIuCk787rYYK0Li9ywu6trZblFKlzinJd0/hELgRNBxoMdPJi
+ 4wYJqI4gYLBEQ0Een8Q6Z+tFrtYfCrzqBrxCZ13AMGTfpSCLj7q0gRdZWN0zabyYrzML5c20h
+ y0jFtn8GQ2Nm1o=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2021-12-23 3:14 p.m., John David Anglin wrote:
-> -static inline bool _futex_force_interruptions(unsigned long ua)
-> +static inline unsigned long _futex_force_interruptions(unsigned long ua)
->    {
-> -    bool result;
-> +    register unsigned long error __asm__ ("r8") = 0;
-> +    register unsigned long temp;
->
->        __asm__ __volatile__(
-> -        "1:\tldw 0(%1), %0\n"
-We can avoid two variables if we clear the return value after ldw.
-> -        "2:\tstbys,e %%r0, 0(%1)\n"
-> -        "\tcomclr,= %%r0, %%r0, %0\n"
-> -        "3:\tldi 1, %0\n"
+Use register r29 instead of register r8 to signal faults when accessing
+user memory. In case of faults, the fixup routine will store -EFAULT in
+this register.
 
-Dave
+This change saves up to 752 bytes on a 32bit kernel, partly because the
+compiler doesn't need to save and restore the old r8 value on the stack.
 
--- 
-John David Anglin  dave.anglin@bell.net
+bloat-o-meter results for usage with r29 register:
+add/remove: 0/0 grow/shrink: 23/86 up/down: 228/-980 (-752)
+
+bloat-o-meter results for usage with r28 register:
+add/remove: 0/0 grow/shrink: 28/83 up/down: 296/-956 (-660)
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/include/asm/uaccess.h | 12 ++++++++----
+ arch/parisc/mm/fault.c            |  6 +++---
+ 2 files changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm/u=
+access.h
+index 192ad9e11b25..ebf8a845b017 100644
+=2D-- a/arch/parisc/include/asm/uaccess.h
++++ b/arch/parisc/include/asm/uaccess.h
+@@ -53,15 +53,18 @@ struct exception_table_entry {
+ /*
+  * ASM_EXCEPTIONTABLE_ENTRY_EFAULT() creates a special exception table en=
+try
+  * (with lowest bit set) for which the fault handler in fixup_exception()=
+ will
+- * load -EFAULT into %r8 for a read or write fault, and zeroes the target
++ * load -EFAULT into %r29 for a read or write fault, and zeroes the targe=
+t
+  * register in case of a read fault in get_user().
+  */
++#define ASM_EXCEPTIONTABLE_REG	29
++#define ASM_EXCEPTIONTABLE_VAR(__variable)		\
++	register long __variable __asm__ ("r29") =3D 0
+ #define ASM_EXCEPTIONTABLE_ENTRY_EFAULT( fault_addr, except_addr )\
+ 	ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr + 1)
+
+ #define __get_user_internal(sr, val, ptr)		\
+ ({							\
+-	register long __gu_err __asm__ ("r8") =3D 0;	\
++	ASM_EXCEPTIONTABLE_VAR(__gu_err);		\
+ 							\
+ 	switch (sizeof(*(ptr))) {			\
+ 	case 1: __get_user_asm(sr, val, "ldb", ptr); break; \
+@@ -131,7 +134,7 @@ struct exception_table_entry {
+
+ #define __put_user_internal(sr, x, ptr)				\
+ ({								\
+-	register long __pu_err __asm__ ("r8") =3D 0;      	\
++	ASM_EXCEPTIONTABLE_VAR(__pu_err);		      	\
+         __typeof__(*(ptr)) __x =3D (__typeof__(*(ptr)))(x);	\
+ 								\
+ 	switch (sizeof(*(ptr))) {				\
+@@ -168,7 +171,8 @@ struct exception_table_entry {
+  * gcc knows about, so there are no aliasing issues. These macros must
+  * also be aware that fixups are executed in the context of the fault,
+  * and any registers used there must be listed as clobbers.
+- * r8 is already listed as err.
++ * The register holding the possible EFAULT error (ASM_EXCEPTIONTABLE_REG=
+)
++ * is already listed as input and output register.
+  */
+
+ #define __put_user_asm(sr, stx, x, ptr)				\
+diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
+index 4a6221b869fd..01fd2a32acc6 100644
+=2D-- a/arch/parisc/mm/fault.c
++++ b/arch/parisc/mm/fault.c
+@@ -148,11 +148,11 @@ int fixup_exception(struct pt_regs *regs)
+ 		 * Fix up get_user() and put_user().
+ 		 * ASM_EXCEPTIONTABLE_ENTRY_EFAULT() sets the least-significant
+ 		 * bit in the relative address of the fixup routine to indicate
+-		 * that %r8 should be loaded with -EFAULT to report a userspace
+-		 * access error.
++		 * that gr[ASM_EXCEPTIONTABLE_REG] should be loaded with
++		 * -EFAULT to report a userspace access error.
+ 		 */
+ 		if (fix->fixup & 1) {
+-			regs->gr[8] =3D -EFAULT;
++			regs->gr[ASM_EXCEPTIONTABLE_REG] =3D -EFAULT;
+
+ 			/* zero target register for get_user() */
+ 			if (parisc_acctyp(0, regs->iir) =3D=3D VM_READ) {
+=2D-
+2.31.1
 
