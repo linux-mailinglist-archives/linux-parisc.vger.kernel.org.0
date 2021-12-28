@@ -2,93 +2,54 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2062D4803EC
-	for <lists+linux-parisc@lfdr.de>; Mon, 27 Dec 2021 20:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D24D480558
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Dec 2021 01:27:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232875AbhL0TGL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Dec 2021 14:06:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56788 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232361AbhL0TFf (ORCPT
+        id S230385AbhL1A1K convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Mon, 27 Dec 2021 19:27:10 -0500
+Received: from mail-wr1-f99.google.com ([209.85.221.99]:41666 "EHLO
+        mail-wr1-f99.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230342AbhL1A1J (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Dec 2021 14:05:35 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57796C06175A;
-        Mon, 27 Dec 2021 11:05:35 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 171B7B8113A;
-        Mon, 27 Dec 2021 19:05:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E5BC36AEC;
-        Mon, 27 Dec 2021 19:05:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640631932;
-        bh=KN/rfn8uLbLW12jyH3PUZ8URqNdpwFCpFYUNeRo93vw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qcoOYOi/CDBwm9xZ0KkK+/ZMJsLbmzYW/MzSlVVmDwBV4+z6m4H2lBI+hZpl1VwBP
-         egf/RhTZ4n7FzPqDnUXN7+yOIancFRz5Z5u8GFlRdF0hGBgzC7p0flyX7kTU7vvHCc
-         pdr/2PZmvC9Gf1I3z2uprPLewBgwdpmDy/7Js7n3qRUzGMh40zonshCJjdJR2L4Z9K
-         IempMakeb9VN8h2ufmG7livfqUa/Gb4xwX0g349gxVs/KMKZI3o7bcz2U84VKnk/Un
-         ly6Zd74rBkBe3QeFvDq4jZSclr1Ungqt4sg0y5hZJ02jcV7Ku/2hVQ0HyrxKi/oqPs
-         e7mxpuelwfqNQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, svens@stackframe.org,
-        wangkefeng.wang@huawei.com, rmk+kernel@armlinux.org.uk,
-        akpm@linux-foundation.org, linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 12/14] parisc: Clear stale IIR value on instruction access rights trap
-Date:   Mon, 27 Dec 2021 14:04:50 -0500
-Message-Id: <20211227190452.1042714-12-sashal@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211227190452.1042714-1-sashal@kernel.org>
-References: <20211227190452.1042714-1-sashal@kernel.org>
+        Mon, 27 Dec 2021 19:27:09 -0500
+Received: by mail-wr1-f99.google.com with SMTP id a9so35021600wrr.8
+        for <linux-parisc@vger.kernel.org>; Mon, 27 Dec 2021 16:27:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:mime-version
+         :content-transfer-encoding:content-description:subject:to:from:date
+         :reply-to;
+        bh=TPPWK3AEJz2BpcFnhUaAzlB0mKAMI/i0SVxqCOEE3R0=;
+        b=HXVtW5fdSCfMydz18kOLjxVFnWsDxts0YfUqer98B3pGlS7xVFAZulNAlHyHnG0T5o
+         V/GI0kpWxKdvwjyGRnLOxGtZmDCJaW1kCXgc82elvXc9ZXMViYtD5EACGWidGKz+eDmj
+         O7kTPAoi0TNZtOrNJzjQJ8sosbLqI5DVqd5OJar7gnzZdqLctZiW6LnwBUWnjtFFccIB
+         xwfIhr0IfXpfQDFRiiTMuVrx7TH+T42JDvGcWn3dRtVJ/s8OJe/picXEJPqh7P0aAH2m
+         LX4wALYC5tiOtyqoFSl+Ic9gkPIHFKva6TpfG4Wfh+xfS/tq9dSf8DmjAnQeoLgx6Dam
+         ANRg==
+X-Gm-Message-State: AOAM532IcLFqbDHlVELaAJjlRe+T+Jc1LwiIoY4adnnv8GB9PKWTXx7H
+        5VCFkg0QRz25+ilmejDhigee3Wi2Vn/sEKXzu+gaRV4eY25uYA==
+X-Google-Smtp-Source: ABdhPJy9UJ5R9wBxae1a+VZWexc7BB0fQ/+snUL0H2imP/m2+MDF1a1W5XRSi/NtBgo79P+4oN3UPY6RekX0
+X-Received: by 2002:a5d:4810:: with SMTP id l16mr14183461wrq.672.1640651228771;
+        Mon, 27 Dec 2021 16:27:08 -0800 (PST)
+Received: from [192.168.0.104] ([164.160.92.240])
+        by smtp-relay.gmail.com with ESMTPS id h81sm739643wmh.21.2021.12.27.16.26.59
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Mon, 27 Dec 2021 16:27:08 -0800 (PST)
+X-Relaying-Domain: rewalopiste.com
+Message-ID: <61ca59dc.1c69fb81.1ef21.4fa7SMTPIN_ADDED_MISSING@mx.google.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Business proposal
+To:     Recipients <suzaira@smartglove.com.my>
+From:   "Mrs Amina Medjahed" <suzaira@smartglove.com.my>
+Date:   Mon, 27 Dec 2021 16:26:50 -0800
+Reply-To: AMedgolfbnk@hotmail.com
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
-
-[ Upstream commit 484730e5862f6b872dca13840bed40fd7c60fa26 ]
-
-When a trap 7 (Instruction access rights) occurs, this means the CPU
-couldn't execute an instruction due to missing execute permissions on
-the memory region.  In this case it seems the CPU didn't even fetched
-the instruction from memory and thus did not store it in the cr19 (IIR)
-register before calling the trap handler. So, the trap handler will find
-some random old stale value in cr19.
-
-This patch simply overwrites the stale IIR value with a constant magic
-"bad food" value (0xbaadf00d), in the hope people don't start to try to
-understand the various random IIR values in trap 7 dumps.
-
-Noticed-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/kernel/traps.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/parisc/kernel/traps.c b/arch/parisc/kernel/traps.c
-index a52c7abf2ca49..43f56335759a4 100644
---- a/arch/parisc/kernel/traps.c
-+++ b/arch/parisc/kernel/traps.c
-@@ -729,6 +729,8 @@ void notrace handle_interruption(int code, struct pt_regs *regs)
- 			}
- 			mmap_read_unlock(current->mm);
- 		}
-+		/* CPU could not fetch instruction, so clear stale IIR value. */
-+		regs->iir = 0xbaadf00d;
- 		fallthrough;
- 	case 27: 
- 		/* Data memory protection ID trap */
--- 
-2.34.1
-
+Good day,
+Please i have a business proposal that will benefit both of us. Please respond if you are interested.
+Thanks and God bless.
