@@ -2,136 +2,129 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79536480B53
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Dec 2021 17:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 335F1480D8F
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Dec 2021 22:55:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235745AbhL1QcW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 Dec 2021 11:32:22 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:40078 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233260AbhL1QcV (ORCPT
+        id S231416AbhL1Vz6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 Dec 2021 16:55:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42430 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231292AbhL1Vz6 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 Dec 2021 11:32:21 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CA7E0B81648;
-        Tue, 28 Dec 2021 16:32:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C686CC36AE8;
-        Tue, 28 Dec 2021 16:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640709137;
-        bh=wYaH3iu50Xg/A/DNjyHFOWIgZ4rByTFlvgaE/FMZWqY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BTzyk4t+6+nRs9+zo0NSJy02+zZ1BbNUT8+XJkgAXThbIqJ8Tu8Bp03GHCGKlrzYX
-         f6mxa+4pitBIl4IybQMSKiUDklqv+EWiC5aYtEZ6X8W5ej/Y8IazWuQESnlWIxcuv8
-         qpU3CbEDSyN9MmSRXbz0D4xklNr1SXs2T+TD8ORlrOWK73AvxU+cJQKO+CcdLaW79G
-         ATgeIIpXvKMfQoRIkEcfC8ZFCuCdHf6v7cpx9bOyNNQeNgeuyk4t75tVGNPued/kzl
-         l93VJjvTGGYCbrQFgpNex301S0U5MY1BOFyW0fzdInsg4whSwmaK2ya34ydGPe6YZY
-         2nZg+WlyMxMSA==
-Date:   Tue, 28 Dec 2021 17:32:02 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Niklas Schnelle <schnelle@linux.ibm.com>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        John Garry <john.garry@huawei.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Chris Zankel <chris@zankel.net>,
-        Karol Gugala <kgugala@antmicro.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Brian Cain <bcain@codeaurora.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, openrisc@lists.librecores.org,
-        linux-s390@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [RFC 02/32] Kconfig: introduce HAS_IOPORT option and select it
- as necessary
-Message-ID: <20211228173202.678baa44@coco.lan>
-In-Reply-To: <20211227164317.4146918-3-schnelle@linux.ibm.com>
-References: <20211227164317.4146918-1-schnelle@linux.ibm.com>
-        <20211227164317.4146918-3-schnelle@linux.ibm.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-redhat-linux-gnu)
+        Tue, 28 Dec 2021 16:55:58 -0500
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78BA6C061574
+        for <linux-parisc@vger.kernel.org>; Tue, 28 Dec 2021 13:55:57 -0800 (PST)
+Received: (qmail 17590 invoked from network); 28 Dec 2021 21:56:15 -0000
+Received: from p200300cf07194a002d44b0807b269561.dip0.t-ipconnect.de ([2003:cf:719:4a00:2d44:b080:7b26:9561]:51894 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Tue, 28 Dec 2021 22:56:15 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-parisc@vger.kernel.org
+Subject: Re: pagefaults and hang with 5.15.11
+Date:   Tue, 28 Dec 2021 22:55:47 +0100
+Message-ID: <3407744.iIbC2pHGDl@daneel.sf-tec.de>
+In-Reply-To: <12921974.uLZWGnKmhe@daneel.sf-tec.de>
+References: <11891682.O9o76ZdvQC@daneel.sf-tec.de> <a42cff7e-d06c-c687-a0a7-6fd781b03aed@bell.net> <12921974.uLZWGnKmhe@daneel.sf-tec.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="nextPart8872545.CDJkKcVGEf"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Em Mon, 27 Dec 2021 17:42:47 +0100
-Niklas Schnelle <schnelle@linux.ibm.com> escreveu:
+--nextPart8872545.CDJkKcVGEf
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-> We introduce a new HAS_IOPORT Kconfig option to gate support for
-> I/O port access. In a future patch HAS_IOPORT=n will disable compilation
-> of the I/O accessor functions inb()/outb() and friends on architectures
-> which can not meaningfully support legacy I/O spaces. On these platforms
-> inb()/outb() etc are currently just stubs in asm-generic/io.h which when
-> called will cause a NULL pointer access which some compilers actually
-> detect and warn about.
+Am Montag, 27. Dezember 2021, 15:30:10 CET schrieb Rolf Eike Beer:
+> Am Sonntag, 26. Dezember 2021, 18:22:12 CET schrieb John David Anglin:
+> > On 2021-12-26 11:21 a.m., Rolf Eike Beer wrote:
+> > > [139181.966881] WARNING: CPU: 1 PID: 0 at kernel/rcu/tree.c:613
+> > > rcu_eqs_enter.constprop.0+0x8c/0x98
+> > 
+> > This is probably not reproducible. You might try this change from Sven
 > 
-> The dependencies on HAS_IOPORT in drivers as well as ifdefs for
-> HAS_IOPORT specific sections will be added in subsequent patches on
-> a per subsystem basis. Then a final patch will ifdef the I/O access
-> functions on HAS_IOPORT thus turning any use not gated by HAS_IOPORT
-> into a compile-time warning.
+> At least this time the git testsuite has finished, but with some errors as
+> usual.
 > 
-> Link: https://lore.kernel.org/lkml/CAHk-=wg80je=K7madF4e7WrRNp37e3qh6y10Svhdc7O8SZ_-8g@mail.gmail.com/
-> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> > diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
+> > index cf92ece20b75..0cd97fa004c5 100644
+> > --- a/arch/parisc/kernel/smp.c
+> > +++ b/arch/parisc/kernel/smp.c
+> > @@ -228,11 +228,13 @@ static inline void
+> > 
+> >   send_IPI_allbutself(enum ipi_message_type op)
+> >   {
+> >   
+> >          int i;
+> > 
+> > -
+> > +
+> > +       preempt_disable();
+> > 
+> >          for_each_online_cpu(i) {
+> >          
+> >                  if (i != smp_processor_id())
+> >                  
+> >                          send_IPI_single(i, op);
+> >          
+> >          }
+> > 
+> > +       preempt_enable();
+> > 
+> >   }
+> >   
+> >   #ifdef CONFIG_KGDB
+> 
+> I'll add this and see what happens.
 
-...
+The machine locked up again, but without many output:
 
-> @@ -486,6 +487,9 @@ config HAS_IOMEM
->  	depends on !NO_IOMEM
->  	default y
->  
-> +config HAS_IOPORT
-> +	def_bool ISA || LEGACY_PCI
-> +
+[13093.642353] INEQUIVALENT ALIASES 0x96000 and 0xf5bba000 in file xargs
+[13094.122900] INEQUIVALENT ALIASES 0x110000 and 0xf5a63000 in file find
+[13260.968430] INEQUIVALENT ALIASES 0x96000 and 0xf5bba000 in file xargs
+[16995.351108] ttyS ttyS1:[17649.655079] t[17650.739194] t[17658.174951] 
+t[17659.307044] t[24039.432030] INEQUIVALENT ALIASES 0x113000 and 0xf5a66000 
+in file find
 
-That doesn't sound right. 
+And after reset it got trouble during boot:
 
-The only dependency for LEGACY_PCI is PCI. If one selects LEGACY_PCI
-on an architecture that doesn't support it, this will cause problems.
+  Configuration setting "allocation/zero_metadata" unknown.
+[   76.490814] watchdog: BUG: soft lockup - CPU#3 stuck for 23s! [lvm:2612]
 
-Instead, HAS_IOPORT should be selected at architecture level, and
-the dependency here should be just the opposite: LEGACY_API should
-depends on HAS_IOPORT.
+Luckily it worked on the next attempt.
 
-Thanks,
-Mauro
+> > and my "[PATCH v3] parisc: Rewrite light-weight syscall and futex code"
+> > change. Page faults in the LWS code can mess up scheduling.
+> 
+> But that would be nothing new. At least the machine has been quite stable in
+> the last time.
+> 
+> > I haven't found 5.15.11 to be stable.
+
+Neither do I.
+
+I assume it's some sort of backport, since 5.15.0 has been quite stable:
+
+reboot   system boot  5.15.11-gentoo-p Sat Dec 25 00:18   still running
+reboot   system boot  5.15.0-gentoo-pa Sun Dec 19 11:46 - 00:13 (5+12:27)
+reboot   system boot  5.15.0-gentoo-pa Thu Nov 25 14:40 - 00:13 (29+09:33)
+reboot   system boot  5.15.0-gentoo-pa Thu Nov  4 10:23 - 14:35 (21+04:11)
+
+Eike
+--nextPart8872545.CDJkKcVGEf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYcuH4wAKCRBcpIk+abn8
+ThZLAKCAFTyIyWQVgFurc0IzzGi7SyOR0wCfYCZ6yYHWqvQ/+fipI7Yl6Q73hfw=
+=n8Ah
+-----END PGP SIGNATURE-----
+
+--nextPart8872545.CDJkKcVGEf--
+
+
+
