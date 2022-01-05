@@ -2,84 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D53F485059
-	for <lists+linux-parisc@lfdr.de>; Wed,  5 Jan 2022 10:51:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD7B3485243
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Jan 2022 13:09:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239064AbiAEJvp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 5 Jan 2022 04:51:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35196 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234266AbiAEJvo (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 5 Jan 2022 04:51:44 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B82C061761;
-        Wed,  5 Jan 2022 01:51:43 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4JTPrp22rHz4y46;
-        Wed,  5 Jan 2022 20:51:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1641376298;
-        bh=1hgp8kruCIQnJDveBIyIgTl3QAqnEAYOHyEaJ9NyVl0=;
-        h=Date:From:To:Cc:Subject:From;
-        b=kRgeLlUj5lZo6gm2OGEMmHsTNDWEtQX7CdmoWKUT1Y6cRkW47I/MuObJ3RwvBx5Yw
-         rYphnR6r1bxEEspDBfRBtJs9tW3uTzGZKd+ONoFGOQWbCVudi2v3uz9jexmxcCp3qT
-         UHOZCRYRuaXnAISFdSIFf75kQYbbnPqZ0EoGKEKr0fIbfLW4Pl9EAeSW7EMO4Mki2d
-         gvHGRbBiqI3P4OWYxuU3cl0H4vvRBvi6hbRpQAKM2sQnmx24kRMLPpEddKDbVIjpfp
-         zKlDA81M5V0/Ah8su0pRY0I2W7eSgd24KmTVZruKepYLK8JXmKtXQVXTJUE/CH72UL
-         h4xuXejd9PK8w==
-Date:   Wed, 5 Jan 2022 20:51:35 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Helge Deller <deller@gmx.de>,
-        Parisc List <linux-parisc@vger.kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: Signed-off-by missing for commit in the parisc-hd tree
-Message-ID: <20220105205135.5e5c466f@canb.auug.org.au>
+        id S235854AbiAEMJ3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 5 Jan 2022 07:09:29 -0500
+Received: from mout.gmx.net ([212.227.15.15]:44021 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235413AbiAEMJ2 (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Wed, 5 Jan 2022 07:09:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1641384538;
+        bh=YelKOGdWUsJTHmRUTgeEAWUyFe6ZkFA9+uY6+mV6i4k=;
+        h=X-UI-Sender-Class:Date:To:References:From:Subject:In-Reply-To;
+        b=OWnWyBl0sRom7ijcgSHNOXgbL6zQTIHNUruOVCWyKJRT1Vhq4E6sOn7T0labQytBe
+         y9Hs5EvesmWm4GbURQQSsYsaDkbyhxrFkCM0q4O2Y3VntiUaSVcjpCOpKFfxN052hJ
+         uSD8c0eW0orzWPEo8+lXyfHHUVwz38fuyM2RYMBk=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.146.36]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MKKZ3-1mov7l05Pj-00Lmqy; Wed, 05
+ Jan 2022 13:08:58 +0100
+Message-ID: <4f725f27-744c-c34d-5eec-fbc04eb7f623@gmx.de>
+Date:   Wed, 5 Jan 2022 13:08:00 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/RF6dgx.=CnPdtN3A667Tj5M";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Content-Language: en-US
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org
+References: <11891682.O9o76ZdvQC@daneel.sf-tec.de>
+ <3407744.iIbC2pHGDl@daneel.sf-tec.de> <87pmpbds1r.fsf@x1.stackframe.org>
+ <2089338.irdbgypaU6@daneel.sf-tec.de>
+From:   Helge Deller <deller@gmx.de>
+Subject: Re: pagefaults and hang with 5.15.11
+In-Reply-To: <2089338.irdbgypaU6@daneel.sf-tec.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:XeqY1KtIml7ETyh+Nc8S5lDJ1lvSp/Cn8m+qd9V4FUiqcmtCXtc
+ Nkb6Xl6blqlFSUMcGUsD7s9Hwa/hb5nh04bkVnkslC/ipyRlVY+Rv4Zm1KDDQOFhIL9WCIL
+ 2+NNNxNzFGsaA3NtLucH9LOcJzjDFqhQ/tXEfWPMset+8EEYDUKbcvt/2ygNpqB21CvfnWw
+ 3eNu7uOCLaluk6npMW34Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0zbfrmuAIzM=:hzWh2fDHkakVX6bD3pn+8Q
+ 9FuwHeUCWzHl2ilQvYAKH5lwEd/U21foRP28XkrTJGyPw8jr5jECsmsXjbkfuMNG7ibmLrgN1
+ kD3ZCmAa4/TUkaERXx71yeuAUShhbVLRTN3aArZA41mEwxpLiudYsiRPxQr7UhAd0XVzfryuc
+ HgcfvBrp7KsYLmkgXGosSU/FiUPE2iuRC71exw5ngLvARCDf4AtdAyRZKFNyPVLp0LCZFCUss
+ ZU8DKcEPx5JuAEXd/tQQcCtAuZYZA2o7DxTqLIYgq+k4F2LOnIrVL4lgvMZwJVi77owl9p0RB
+ ejSkqgy4/t7pcBQXiK1UtUEIsgW+t60AtlNiMpU24ASPamQzMkgx340WRiBR+8U3fffFgWUaM
+ x6J3vbZlHx/A7Vt9axW+Km/VPjOjhm7G8E4bdjGhZuEx6i2iDowCNeNFHG5osmfLvsPxNkzwW
+ fx7I+2P9SdjczB3tLXzBsDAVIolPdbjX72Kc4qF0l/BBuDcL/0acehA5kNdHxpwtm0fF/d2+G
+ sdUoX4Ek3Bxekl77iH0+J2V1RDCG9P+25lavz8zIS1Iy6V//quU44qQDCwTn/tJ4JL4kDwIiW
+ SyX0Qy+bRmOxPhAg2YfFN5Ex8EyG55x++Pu87vrBvrXpNAN5dWLrh1suXzHk9yzXoCqzZg2bQ
+ GMi6EscSD5MmnC6pkpPwP+c8t+P3DQ0yK7bLDD8Lg3BTqPe4Clu+ByonGMu6L32sLfV7BF03O
+ zIwIzDTWAUKGgE/ta/xORLulDOwxRe4xWkj4DuRDptF4KMrn0RD/ibZV/kvL+rtqjXWHX46Fd
+ GuqXA7iV5MFsAgDWgIcSaRkrac6wVpVxF+9R3yyIvhbc5t/yhKAAF69CMzoWhlVbsU73jqVgO
+ /VcJ9tBt/yVEoAxjkzZNJ9uf8EcSxgpEvSCQ+fU+OGvmX6mR8w6QREYLkKrfqMnjs2br0J2FP
+ 3JsKphf9Su1mp8Ll8xdE0lwT/h3cg1d4UkG7ctQGvSHGQ6r7RoZNFs9nmkLuNVBKFiZ/4nf8c
+ CxZ60lCUT/tOzp3VfvosTwwkFBOskDSP4kMopXCvgdEIGWZA49xH7k3l66Jowt9MDSbYAIIZ1
+ kkc8ay+oOFNaL8=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---Sig_/RF6dgx.=CnPdtN3A667Tj5M
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 1/5/22 08:42, Rolf Eike Beer wrote:
+> Am Samstag, 1. Januar 2022, 23:12:16 CET schrieb Sven Schnelle:
+>
+>> Looks like you have a serial console connected? If yes, could you trigg=
+er a
+>> 'TOC s' from the BMC, and post the output from 'ser x 0 toc', where x i=
+s
+>> the processer number? This could help debugging this.
+>
+> It locked up again, but the important part is not in the mail or the wik=
+i:
+> clear the error log before :/ And even worse, the C8000 does not seem to
+> support "ser clearpim". You can see the firmware commands of a C8000 her=
+e:
+> https://parisc.wiki.kernel.org/index.php/BMC.
 
-Hi all,
+I think you mix up the BMC console (for remote management, always availabl=
+e) and
+the BCH (boot console handler, only available on machine reboot before sta=
+rting
+the OS).
+I'm sure the C8000 has a "ser clearpim" in the BCH.
 
-Commits
+> Fun fact: when doing a command in firmware that prints a lot of stuff, l=
+ike
+> "se", and then switching back to the normal system console via ESC-) see=
+ms not
+> to stop the firmware from printing more of it's stuff, so you get junk o=
+n the
+> serial line until the firmware is eventually finished.
 
-  71174cc59436 ("parisc: Add lws_atomic_xchg and lws_atomic_store syscalls")
-  8e38228709b0 ("parisc: Rewrite light-weight syscall and futex code")
-  3a747b528b6d ("parisc: Enhance page fault termination message")
-  e62aecc32fac ("parisc: Don't call faulthandler_disabled() in do_page_faul=
-t()")
+Yes, I saw this once too.
 
-are missing a Signed-off-by from their committer.
+> Is there a way to
+> switch the C8000 firmware to more than 9600 baud?
 
---=20
-Cheers,
-Stephen Rothwell
+In the BCH I assume.
 
---Sig_/RF6dgx.=CnPdtN3A667Tj5M
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+> Sorry for the bad mood, but if that is what you first find after wakeup=
+=E2=80=A6
 
------BEGIN PGP SIGNATURE-----
+:-)
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmHVaigACgkQAVBC80lX
-0GyRUQf9FKjpLqlXnkHw67fc+FvRXGwb+qWu8LUesiYEeu29ZZaqKk2IQ/lrNQQU
-kHNdjB+3P3vWrg0ztuWsfkGU99UODVHQPBmIvHO8cdOR7HsNxr8KKUYh1xIkBd00
-A8zZmKKZWKeb0dNBTElXx4yBWyXCyOcp/RiN40zF2v6R2X+LpzkjjZ+pCflOtqwo
-c971YXIRtAZqPeQfNCzsbf0NjGP8gm7A3kCL9S0wlxqBSTu0c+0XRVi8iwfUSx3U
-apR+4bb1xbDVENj3NqBdpcrBHrECwVS2RoH4ew8GGwu3X8n1mVr5npRtzeMn7G9c
-Yegy+8nvl76cXne3C4G/m+EWEVYvTg==
-=vEdV
------END PGP SIGNATURE-----
-
---Sig_/RF6dgx.=CnPdtN3A667Tj5M--
+Helge
