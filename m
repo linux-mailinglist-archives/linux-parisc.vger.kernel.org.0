@@ -2,80 +2,84 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ED14484ED0
-	for <lists+linux-parisc@lfdr.de>; Wed,  5 Jan 2022 08:42:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D53F485059
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Jan 2022 10:51:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238182AbiAEHmP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 5 Jan 2022 02:42:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33948 "EHLO
+        id S239064AbiAEJvp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 5 Jan 2022 04:51:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238168AbiAEHmO (ORCPT
+        with ESMTP id S234266AbiAEJvo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 5 Jan 2022 02:42:14 -0500
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90C5AC061761
-        for <linux-parisc@vger.kernel.org>; Tue,  4 Jan 2022 23:42:13 -0800 (PST)
-Received: (qmail 30447 invoked from network); 5 Jan 2022 07:42:00 -0000
-Received: from p200300cf07141800183e67d29ced1f8c.dip0.t-ipconnect.de ([2003:cf:714:1800:183e:67d2:9ced:1f8c]:43466 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <linux-parisc@vger.kernel.org>; Wed, 05 Jan 2022 08:42:00 +0100
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     linux-parisc@vger.kernel.org
-Subject: Re: pagefaults and hang with 5.15.11
-Date:   Wed, 05 Jan 2022 08:42:05 +0100
-Message-ID: <2089338.irdbgypaU6@daneel.sf-tec.de>
-In-Reply-To: <87pmpbds1r.fsf@x1.stackframe.org>
-References: <11891682.O9o76ZdvQC@daneel.sf-tec.de> <3407744.iIbC2pHGDl@daneel.sf-tec.de> <87pmpbds1r.fsf@x1.stackframe.org>
+        Wed, 5 Jan 2022 04:51:44 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B82C061761;
+        Wed,  5 Jan 2022 01:51:43 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4JTPrp22rHz4y46;
+        Wed,  5 Jan 2022 20:51:37 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1641376298;
+        bh=1hgp8kruCIQnJDveBIyIgTl3QAqnEAYOHyEaJ9NyVl0=;
+        h=Date:From:To:Cc:Subject:From;
+        b=kRgeLlUj5lZo6gm2OGEMmHsTNDWEtQX7CdmoWKUT1Y6cRkW47I/MuObJ3RwvBx5Yw
+         rYphnR6r1bxEEspDBfRBtJs9tW3uTzGZKd+ONoFGOQWbCVudi2v3uz9jexmxcCp3qT
+         UHOZCRYRuaXnAISFdSIFf75kQYbbnPqZ0EoGKEKr0fIbfLW4Pl9EAeSW7EMO4Mki2d
+         gvHGRbBiqI3P4OWYxuU3cl0H4vvRBvi6hbRpQAKM2sQnmx24kRMLPpEddKDbVIjpfp
+         zKlDA81M5V0/Ah8su0pRY0I2W7eSgd24KmTVZruKepYLK8JXmKtXQVXTJUE/CH72UL
+         h4xuXejd9PK8w==
+Date:   Wed, 5 Jan 2022 20:51:35 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Helge Deller <deller@gmx.de>,
+        Parisc List <linux-parisc@vger.kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: Signed-off-by missing for commit in the parisc-hd tree
+Message-ID: <20220105205135.5e5c466f@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart12927898.uLZWGnKmhe"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+Content-Type: multipart/signed; boundary="Sig_/RF6dgx.=CnPdtN3A667Tj5M";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart12927898.uLZWGnKmhe
+--Sig_/RF6dgx.=CnPdtN3A667Tj5M
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
 
-Am Samstag, 1. Januar 2022, 23:12:16 CET schrieb Sven Schnelle:
+Hi all,
 
-> Looks like you have a serial console connected? If yes, could you trigger=
- a
-> 'TOC s' from the BMC, and post the output from 'ser x 0 toc', where x is
-> the processer number? This could help debugging this.
+Commits
 
-It locked up again, but the important part is not in the mail or the wiki:=
-=20
-clear the error log before :/ And even worse, the C8000 does not seem to=20
-support "ser clearpim". You can see the firmware commands of a C8000 here:=
-=20
-https://parisc.wiki.kernel.org/index.php/BMC.
+  71174cc59436 ("parisc: Add lws_atomic_xchg and lws_atomic_store syscalls")
+  8e38228709b0 ("parisc: Rewrite light-weight syscall and futex code")
+  3a747b528b6d ("parisc: Enhance page fault termination message")
+  e62aecc32fac ("parisc: Don't call faulthandler_disabled() in do_page_faul=
+t()")
 
-=46un fact: when doing a command in firmware that prints a lot of stuff, li=
-ke=20
-"se", and then switching back to the normal system console via ESC-) seems =
-not=20
-to stop the firmware from printing more of it's stuff, so you get junk on t=
-he=20
-serial line until the firmware is eventually finished. Is there a way to=20
-switch the C8000 firmware to more than 9600 baud?
+are missing a Signed-off-by from their committer.
 
-Sorry for the bad mood, but if that is what you first find after wakeup=E2=
-=80=A6
+--=20
+Cheers,
+Stephen Rothwell
 
-Eike
---nextPart12927898.uLZWGnKmhe
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+--Sig_/RF6dgx.=CnPdtN3A667Tj5M
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYdVLzQAKCRBcpIk+abn8
-TvC+AJ4mq56D5+o/zpd7HI0OOcfTGrZi7gCfW8YVTSiNISfMKOodUmdwRwgvTJc=
-=aUIS
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmHVaigACgkQAVBC80lX
+0GyRUQf9FKjpLqlXnkHw67fc+FvRXGwb+qWu8LUesiYEeu29ZZaqKk2IQ/lrNQQU
+kHNdjB+3P3vWrg0ztuWsfkGU99UODVHQPBmIvHO8cdOR7HsNxr8KKUYh1xIkBd00
+A8zZmKKZWKeb0dNBTElXx4yBWyXCyOcp/RiN40zF2v6R2X+LpzkjjZ+pCflOtqwo
+c971YXIRtAZqPeQfNCzsbf0NjGP8gm7A3kCL9S0wlxqBSTu0c+0XRVi8iwfUSx3U
+apR+4bb1xbDVENj3NqBdpcrBHrECwVS2RoH4ew8GGwu3X8n1mVr5npRtzeMn7G9c
+Yegy+8nvl76cXne3C4G/m+EWEVYvTg==
+=vEdV
 -----END PGP SIGNATURE-----
 
---nextPart12927898.uLZWGnKmhe--
-
-
-
+--Sig_/RF6dgx.=CnPdtN3A667Tj5M--
