@@ -2,147 +2,80 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FDC0485D4D
-	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jan 2022 01:40:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91688486264
+	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jan 2022 10:51:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343895AbiAFAkM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 5 Jan 2022 19:40:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41064 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343881AbiAFAkK (ORCPT
+        id S237585AbiAFJvX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 6 Jan 2022 04:51:23 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:55276 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237581AbiAFJvX (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 5 Jan 2022 19:40:10 -0500
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF579C061245
-        for <linux-parisc@vger.kernel.org>; Wed,  5 Jan 2022 16:40:09 -0800 (PST)
-Received: (qmail 30038 invoked from network); 6 Jan 2022 00:39:55 -0000
-Received: from p200300cf07141800183e67d29ced1f8c.dip0.t-ipconnect.de ([2003:cf:714:1800:183e:67d2:9ced:1f8c]:45316 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <linux-parisc@vger.kernel.org>; Thu, 06 Jan 2022 01:39:55 +0100
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     linux-parisc@vger.kernel.org
-Subject: Re: pagefaults and hang with 5.15.11
-Date:   Thu, 06 Jan 2022 01:40:01 +0100
-Message-ID: <8010710.T7Z3S40VBb@daneel.sf-tec.de>
-In-Reply-To: <87pmpbds1r.fsf@x1.stackframe.org>
-References: <11891682.O9o76ZdvQC@daneel.sf-tec.de> <3407744.iIbC2pHGDl@daneel.sf-tec.de> <87pmpbds1r.fsf@x1.stackframe.org>
+        Thu, 6 Jan 2022 04:51:23 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D2384B81FFA;
+        Thu,  6 Jan 2022 09:51:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A594C36AE5;
+        Thu,  6 Jan 2022 09:51:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1641462680;
+        bh=PMPnhquV4QwPaJwJNCUlbGJ4KmAUZao9eZBzGe90ndw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ndfMl4cVMv17FSPS8mYxbLWa6t8eZtWn1pPf7YIHZ3Y8dGF5WR5O08OkHX73D2+D8
+         m7+jpNJx+CkcR//fevYrq89437PhPmiVQ7sfTTogRPpEnqfKrJxvLS/bhXxGtiDTwP
+         yhG+rvGAdjkDt3ADqJFLdK7sek6yRAKMDlYk0hpw=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc: pdc_stable: use default_groups in kobj_type
+Date:   Thu,  6 Jan 2022 10:51:17 +0100
+Message-Id: <20220106095117.3273204-1-gregkh@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart10012454.nUPlyArG6x"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1318; h=from:subject; bh=PMPnhquV4QwPaJwJNCUlbGJ4KmAUZao9eZBzGe90ndw=; b=owGbwMvMwCRo6H6F97bub03G02pJDInXdk/tEsxYZcX7UIC9aNe0pc+XnfyuvGt2SEp3zw828cWn Hs/i64hlYRBkYpAVU2T5so3n6P6KQ4pehranYeawMoEMYeDiFICJcP9mmCsZ7fNSvPrQYavruv7f4z XumcZM38swP/zKD1Xd68n9zxL/i3//PqXge3iRGAA=
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart10012454.nUPlyArG6x
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+There are currently 2 ways to create a set of sysfs files for a
+kobj_type, through the default_attrs field, and the default_groups
+field.  Move the parisc pdc_stable sysfs code to use default_groups
+field which has been the preferred way since aa30f47cf666 ("kobject: Add
+support for default attribute groups to kobj_type") so that we can soon
+get rid of the obsolete default_attrs field.
 
-Am Samstag, 1. Januar 2022, 23:12:16 CET schrieb Sven Schnelle:
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/parisc/pdc_stable.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> Looks like you have a serial console connected? If yes, could you trigger a
-> 'TOC s' from the BMC, and post the output from 'ser x 0 toc', where x is
-> the processer number? This could help debugging this.
-
-That command does not exist, I guess you meant this?
-
-Service Menu: Enter command > ser 0 0 toc
-
-ERROR: Unknown command
-
-Service Menu: Enter command > pim 0 toc
-
-FIRMWARE INFORMATION
-
-   Firmware Version:           2.13
-        BMC Version:          02.32
-
-
-PROCESSOR PIM INFORMATION
-
------------------  Processor 0 TOC Information -------------------
-
-General Registers 0 - 31
-00-03  0000000000000000  0000000040c0d500  00000000402970f0  00000040b6e3cad0
-04-07  0000000040b6a500  0000000041f50270  0000000040daf6c0  0000000040b22a00
-08-11  0000000041f50278  0000000040c0d500  0000000040daf778  0000000000000004
-12-15  0000000000000001  0000000041f50278  0000000040b22a00  00000000401902e0
-16-19  0000000000000004  0000000040b92d00  0000000040b92d00  000000000000000e
-20-23  0000000000000000  0000000000000000  0000000000000000  0000000000000000
-24-27  0000000000000001  0000000041f50278  0000000000000002  0000000040b6a500
-28-31  0000000000000001  00000040b6e3cad0  00000040b6e3cb00  0000000041f8f2e0
-
-
-                                                                 
-Control Registers 0 - 31
-00-03  0000000000000000  0000000000000000  0000000000000000  0000000000000000
-04-07  0000000000000000  0000000000000000  0000000000000000  0000000000000000
-08-11  0000000000037c9a  0000000000000000  00000000000000c0  000000000000003d
-12-15  0000000000000000  0000000000000000  0000000000197000  fff8000000000000
-16-19  000037f770d420a2  0000000000000000  0000000040297124  000000000ff0109c
-20-23  0000000000000000  0000000000000000  000000ff0804ff0f  8000000000000000
-24-27  0000000000f87000  0000004076032000  fffffdfeffffdfff  00000000f7afde80
-28-31  0000004076e6e374  fffffd7effffffff  00000040b6e3c000  fffffffffffdffff
-
-Space Registers 0 - 7
-00-03  0000000006f93400  0000000000000000  0000000000000000  0000000006f93400
-04-07  0000000000000000  0000000000000000  0000000000000000  0000000000000000
-
-IIA Space (back entry)       = 0x0000000000000000
-IIA Offset (back entry)      = 0x0000000040297128
-CPU State                    = 0x9e000000
-
-And this is the kernel bug:
-
-[61412.598820] watchdog: BUG: soft lockup - CPU#0 stuck for 2998s! [cc1:7634]
-[61412.598820] Modules linked in: 8021q ipmi_poweroff ipmi_si sata_via ipmi_devintf ipmi_msghandler cbc dm_zero dm_snapshot dm_mirror dm_region_hash dm_log dm_crypt dm_bufio pata_sil680 libata
-[61412.598820] CPU: 0 PID: 7634 Comm: cc1 Tainted: G             L    5.15.11-gentoo-parisc64 #2
-[61412.598820] Hardware name: 9000/785/C8000
-[61412.598820]
-[61412.598820]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-[61412.598820] PSW: 00001000000001001111111100001111 Tainted: G             L
-[61412.598820] r00-03  000000ff0804ff0f 0000000040c0d500 00000000402970f0 00000040b6e3cad0
-[61412.598820] r04-07  0000000040b6a500 0000000041f50270 0000000040daf6c0 0000000040b22a00
-[61412.598820] r08-11  0000000041f50278 0000000040c0d500 0000000040daf778 0000000000000004
-[61412.598820] r12-15  0000000000000001 0000000041f50278 0000000040b22a00 00000000401902e0
-[61412.598820] r16-19  0000000000000004 0000000040b92d00 0000000040b92d00 000000000000000e
-[61412.598820] r20-23  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[61412.598820] r24-27  0000000000000001 0000000041f50278 0000000000000002 0000000040b6a500
-[61412.598820] r28-31  0000000000000001 00000040b6e3cad0 00000040b6e3cb00 0000000041f8f2e0
-[61412.598820] sr00-03  0000000006f93400 0000000000000000 0000000000000000 0000000006f93400
-[61412.598820] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[61412.598820]
-[61412.598820] IASQ: 0000000000000000 0000000000000000 IAOQ: 0000000040297124 0000000040297128
-[61412.598820]  IIR: 0ff0109c    ISR: 00000040b6e3c8f0  IOR: 000000000000000f
-[61412.598820]  CPU:        0   CR30: 00000040b6e3c000 CR31: fffffffffffdffff
-[61412.598820]  ORIG_R28: 00000000401db218
-[61412.598820]  IAOQ[0]: smp_call_function_many_cond+0x20c/0x508
-[61412.598820]  IAOQ[1]: smp_call_function_many_cond+0x210/0x508
-[61412.598820]  RP(r2): smp_call_function_many_cond+0x1d8/0x508
-[61412.598820] Backtrace:
-[61412.598820]  [<00000000402974ec>] on_each_cpu_cond_mask+0x3c/0x48
-[61412.598820]  [<000000004019c3b8>] flush_tlb_all+0x188/0x270
-[61412.598820]  [<000000004019e224>] __flush_tlb_range+0x16c/0x178
-[61412.598820]  [<000000004019ecb4>] flush_cache_range+0x384/0x410
-[61412.598820]  [<00000000403144c0>] unmap_page_range+0xb8/0xc58
-[61412.598820]  [<00000000403154dc>] unmap_vmas+0x9c/0xe0
-[61412.598820]  [<000000004031fa78>] unmap_region+0x108/0x1b8
-[61412.598820]  [<00000000403238d4>] __do_munmap+0x284/0x728
-[61412.598820]  [<0000000040324754>] __vm_munmap+0xb4/0x148
-[61412.598820]  [<0000000040325784>] sys_munmap+0x24/0x30
-[61412.598820]  [<0000000040199f68>] syscall_exit+0x0/0x14
-
---nextPart10012454.nUPlyArG6x
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYdY6YQAKCRBcpIk+abn8
-TnSKAJ4xu/yNue0VTxha9tKl7BYLWNJvKgCfTa9mxt/KEP6YWDgpaKOveQPQGM4=
-=9/ti
------END PGP SIGNATURE-----
-
---nextPart10012454.nUPlyArG6x--
-
-
+diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
+index e090978518f1..9513c39719d1 100644
+--- a/drivers/parisc/pdc_stable.c
++++ b/drivers/parisc/pdc_stable.c
+@@ -482,11 +482,12 @@ static struct attribute *paths_subsys_attrs[] = {
+ 	&paths_attr_layer.attr,
+ 	NULL,
+ };
++ATTRIBUTE_GROUPS(paths_subsys);
+ 
+ /* Specific kobject type for our PDC paths */
+ static struct kobj_type ktype_pdcspath = {
+ 	.sysfs_ops = &pdcspath_attr_ops,
+-	.default_attrs = paths_subsys_attrs,
++	.default_groups = paths_subsys_groups,
+ };
+ 
+ /* We hard define the 4 types of path we expect to find */
+-- 
+2.34.1
 
