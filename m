@@ -2,106 +2,107 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4D44862F7
-	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jan 2022 11:33:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DAC04862F8
+	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jan 2022 11:34:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237989AbiAFKdF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 6 Jan 2022 05:33:05 -0500
-Received: from mout.gmx.net ([212.227.17.20]:48949 "EHLO mout.gmx.net"
+        id S237996AbiAFKeH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 6 Jan 2022 05:34:07 -0500
+Received: from mout.gmx.net ([212.227.15.15]:39365 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237059AbiAFKdF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 6 Jan 2022 05:33:05 -0500
+        id S237059AbiAFKeG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 6 Jan 2022 05:34:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1641465175;
-        bh=a+d3ouwVPKSi7h9BPSCzStsAuRF4nxh1JXphg8yUST0=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=Qn+jBgqBdunuiVYqQApvpdDxIlDttownlzXp1T7nZOz5xbJGjDZFvEIRNMC24OMsK
-         kUAdr61FNW+x9idUUtLjNHMm1oQy25s5lL0UzqRMNrYkiIZhcjmyf4JkXa5UXTMFOD
-         j3u7jXj2RcnLwtzTwVmNxw2XiMUqs91FwhkP8B1I=
+        s=badeba3b8450; t=1641465212;
+        bh=kyeIeZ0HdgzuCyOsYmaeqH6yQLfMFs6QcXaYdAQ9WIc=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=hyk7oICuLFE/lAGI+wphVzOSRGb8dJSWegoLzEw2GEAnokiJ7RTzjM9c3fouefa/t
+         qDpGxs9vma84HpYTdcwqPHevBH3IFBBWTzea5DRmvP1rM6AGzXfDY7gY8ol4FJcyWy
+         gTYGxmzTgNdkv/PYM8VNQKuT7QJi/ZEvrOg6YaE0=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.152.191]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MFKGP-1nCLy21a2r-00FnsW; Thu, 06
- Jan 2022 11:32:55 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+Received: from [192.168.20.60] ([92.116.152.191]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmDIo-1mev1Q2vqq-00i8lR; Thu, 06
+ Jan 2022 11:33:32 +0100
+Message-ID: <213a7020-c7d5-b9c2-0e81-a16bb94d2361@gmx.de>
+Date:   Thu, 6 Jan 2022 11:32:31 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH 2/2] parisc: Provide a trivial PDC-based io_module for
+ kgdb
+Content-Language: en-US
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
         Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH] parisc: Add kgdb io_module to read chars via PDC
-Date:   Thu,  6 Jan 2022 11:31:55 +0100
-Message-Id: <20220106103155.609070-1-deller@gmx.de>
-X-Mailer: git-send-email 2.31.1
-MIME-Version: 1.0
+References: <20220105214552.590606-1-deller@gmx.de>
+ <20220105214552.590606-2-deller@gmx.de> <1881841.PYKUYFuaPT@daneel.sf-tec.de>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <1881841.PYKUYFuaPT@daneel.sf-tec.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:S/7zTl7Eu2dg5eOLA6RCtmyPipNpq1bpdJljWkQlOqucmX2c0KQ
- vRl2aTSRPdQyj2h1t2jviv2kpahGdHe6vYp0PmjZUn1B7zvDxq6NRCzwgdrEiqNKc+app0d
- ISuw2MOhn49LNiKABTrr2ejwxJP5P+Nzek2QCb/r/Lo7PM9BaPoiyE1MvuPSCu5V7X+NRNm
- mtolT4ehXVK5mhqL1Xk5Q==
+X-Provags-ID: V03:K1:bXIlGk2hai9m2Tqq4/z9hFILlQqmY06KNicc2UjUkdcrpaH1jPT
+ vBaE68OP9bJjeUaZr+262nZXOUHpecw3ih6Z89N/ytatIwrvRYFSPR3hrzaNpKj+TgSvZez
+ X1mFbCD9l/gKWowhkxPf8uawz9k76DKgNB6HUZHZpOrQDMOtFdefTaDAocOKua6NDhdA2pW
+ VS4UYCZbrd1REz2xYukxw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:o8/VUDA4Ek8=:IGtPHXbtXTtPOnwJLNy3wI
- cYWuI+Og5Kck2w7sVDLzSp7YRHrWoRENm2QNwjQCAfdW/riUhyhuCOpoUT7OzeJuFTXpggAeY
- 9TchgK3UXHSt1DdEBQLkom+AixneeY4sH1owxhGpi44xd1oNqOPY+fcOSFpNaeawdPW91adav
- fR0eKb1J8uwI/oUS/bgKdcwwlVw3BI/iD8hyI2po0U445lu2BDf+B2VvgOSTc36QGhTjn23KP
- XniUEkl3YaLCpGb1laq6ap6QTusxs03HgNsPu3YnjCjpoLGHoAj1l/5pLPRU2EJsVb2K1MXv9
- evQuhgZ1jKRdp29OzJQl3k7fvmFHAcCwUNnKmmEWepTE4RDSQ9y+OPBm7OiWRlI4ScmZ+ko/d
- FB86VCzuqQ9V5BBVDjUNhELrLAZFmcjjf2ql+HNsWGl9KUCHfQc5oAcUAOeMSkJOszDmHF+cI
- QP/6XfMD6aI16aDYCSlsd2cIuGsnPIV3orSUnoz8Una2M2QssNE1hlz2ZFWFXD/PZ/8C9wXtE
- vMszDg61aGzrWDNSnTNAnII7sqGJFcsziqdodh1smoHYKsHXKZu+a5ulBkpAhvLrfm6gpLUv2
- Lrm+4kzOwdUMQhrd2dPrU/RBIhhY1mMpVvoIkJfsZmmLbEr40ce9DKKMMjYBzlZrsGNCPM58R
- cnE9BrBUNRjXcI7XnBjqu3i+yuwfdbdtTyERSZ+c3GeGKzziXUli5QTK2Uj/Xl8r2ZwFc+ivQ
- P14BJGFkdfCOFD+4inuS/fsvF1aJLSDAsMcRxK+TcFwpBHdWzuaAU+6KARsnlHmjYBUuRaVwf
- WBLJ6Uu8sOWUHYr3ihQy1NEDbllFpl0NZI6E4taFUeQSZS1yXUcfXM1ImtHtpTutmbE+AMTW+
- rTASE3CavNgFxzS95u9wXfw0EeGrO3NdT7AVmgZWntG8Lod7DsLr8FSgTSFIjCIfYNa6vEIUJ
- biMh6R4/LzoQRXg3/kHZ0xD3R2+IzC4J/cw/gisJ2zcjNCy30eT+6GboiipBV5uCa288/pKHP
- OAiaxjGnvpaPAo97NkT176mjpjSS5KvJVixY6YvXVitAJM9AB0kE4ssENNL079dWdw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ccOVf94sT18=:bWbvG3bMEG+GnqVNsyQTsW
+ itVOX1OqG5+aeSuQq4yau7FjUSfSpvNTHNEmi8v9kScYwTNy64vNFZH/rZj1OQzCe+K0cA/uW
+ N2bWnaiO32awAvbQgHVE0kQtSBWnbpvsn7MtUp2ncR6Li3/f6INu+3pwoi5ISXx198/5Vk66b
+ kV3Y7VcfhXjjoTJ85RfKPDqwbNpoTA2IKgQxbMjHI9Y1y4Kn1k7l3FE0t17EAAZEI9zssWwD8
+ bSqosLz/5EpyaTh3lJ/Aq8pHMXN8fI9XsuNPQz3OrthCltdtne3uaP0vtiHcJdQdQKT9/YrXg
+ 3hgHO36XGovnNix0KIZeiyxQmATz4s2r2s3n73K1dKgA+rUEyhd/0xB6wpmA2Gy1wkVGPT2l3
+ JKoZYU6bdiZ/3AX1eXnJTiT0cRdcP1HlCNhfFNUEIQmqUkMfp8d8DJQc59jCkci8jaCuBYU6P
+ RP9kMJ2R8bFf374fTjRlfPyM8gltDLD8EKt51pNDP6Cl0XPs8RYZScIjw1Ihthxe3uIl7Omx9
+ 7WTY7s184sLBcbg6UsXEDgooK1XSj7TqAab0w6c5IasVxxC7vpK3mfxx4KkezOzFZPtXvudPI
+ arQosObcVOdG7Q54fcMm58r+NMLv2920ZzMZGIEd/THJtWKFShbPwthIrc8N6qr2GeUNkgfIb
+ kM/pMWs6CSZXxUmUM7nmM8qJAZjpLQI7o/Dgg4JA0Xr83gTHQFgZR22BhshACUGYTBIoTr4qF
+ PrHw5nKZMNKpP7jM5TV5fktMrrTUry0RmYozycC+mq9K5xHxYRHEvnHAxrpq4c+ggQDpKAciy
+ gSIm9lPMVF4aIYbl/AQu/tLCzMA/eiyIwbIOLaUmYf6tg+1PPkq4n9s5ZFkACENzoKt1ENisz
+ JnNzj/XtogCv4MuRyzAFzHoCGQfm5NPQKxVsjRc3mjtEO+0GFyZ4Hjr0wNT5C+czn4oAhKT8W
+ cu4ziubScyY93atWr4uCGww+e/i5y3NVE3ZHj5bfyW66xo0mm/JJLRKv/h3dDwJsRGWvomwsB
+ JJ9Nt36Tm2XxtSLa+/BCCKiZ2QkjbT6z6wFVsRXw3kvNm2Qy6entulY0FEs26xQd3P4Oszeo6
+ fjqEialjZ4T+Hk=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add a simplistic keyboard driver for usage of PDC I/O functions
-with kgdb. This driver makes it possible to use KGDB with QEMU.
+On 1/6/22 11:04, Rolf Eike Beer wrote:
+> Am Mittwoch, 5. Januar 2022, 22:45:52 CET schrieb Helge Deller:
+>> Add a simple keyboard driver for usage of PDC I/O functions
+>> with kgdb. This driver makes it possible to use KGDB with QEMU.
+>>
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>> ---
+>>  arch/parisc/kernel/toc.c | 27 +++++++++++++++++++++++++++
+>>  1 file changed, 27 insertions(+)
+>>
+>> diff --git a/arch/parisc/kernel/toc.c b/arch/parisc/kernel/toc.c
+>> index 18327611cf8f..dfe7cccc086f 100644
+>> --- a/arch/parisc/kernel/toc.c
+>> +++ b/arch/parisc/kernel/toc.c
+>> @@ -109,3 +109,30 @@ static __init int setup_toc(void)
+>>  	return 0;
+>>  }
+>>  early_initcall(setup_toc);
+>> +
+>> +
+>
+> double newline
+>
+>> +#ifdef CONFIG_KGDB_KDB
+>> +/* read a character, return -1 if no char can be polled. */
+>> +static int kgdbpdc_read_char(void)
+>> +{
+>> +	return pdc_iodc_getc();
+>> +}
+>> +
+>> +static void kgdbpdc_write_char(u8 chr)
+>> +{
+>> +	/* no need to print char. kdb will do it. */
+>
+> kgdb?
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- arch/parisc/kernel/kgdb.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+Thanks, I fixed this and moved the driver to kgdb.c...
 
-diff --git a/arch/parisc/kernel/kgdb.c b/arch/parisc/kernel/kgdb.c
-index c4554ac13eac..ab7620f695be 100644
-=2D-- a/arch/parisc/kernel/kgdb.c
-+++ b/arch/parisc/kernel/kgdb.c
-@@ -3,6 +3,7 @@
-  * PA-RISC KGDB support
-  *
-  * Copyright (c) 2019 Sven Schnelle <svens@stackframe.org>
-+ * Copyright (c) 2022 Helge Deller <deller@gmx.de>
-  *
-  */
-
-@@ -207,3 +208,23 @@ int kgdb_arch_handle_exception(int trap, int signo,
- 	}
- 	return -1;
- }
-+
-+/* KGDB console driver which uses PDC to read chars from keyboard */
-+
-+static void kgdb_pdc_write_char(u8 chr)
-+{
-+	/* no need to print char. kgdb will do it. */
-+}
-+
-+static struct kgdb_io kgdb_pdc_io_ops =3D {
-+	.name		=3D "kgdb_pdc",
-+	.read_char	=3D pdc_iodc_getc,
-+	.write_char	=3D kgdb_pdc_write_char,
-+};
-+
-+static int __init kgdb_pdc_init(void)
-+{
-+	kgdb_register_io_module(&kgdb_pdc_io_ops);
-+	return 0;
-+}
-+early_initcall(kgdb_pdc_init);
-=2D-
-2.31.1
-
+Helge
