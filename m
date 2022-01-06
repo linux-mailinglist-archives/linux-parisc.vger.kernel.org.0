@@ -2,80 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91688486264
-	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jan 2022 10:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51A454862A5
+	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jan 2022 11:04:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237585AbiAFJvX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 6 Jan 2022 04:51:23 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:55276 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237581AbiAFJvX (ORCPT
+        id S236802AbiAFKEu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 6 Jan 2022 05:04:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54122 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236677AbiAFKEu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 6 Jan 2022 04:51:23 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D2384B81FFA;
-        Thu,  6 Jan 2022 09:51:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A594C36AE5;
-        Thu,  6 Jan 2022 09:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1641462680;
-        bh=PMPnhquV4QwPaJwJNCUlbGJ4KmAUZao9eZBzGe90ndw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ndfMl4cVMv17FSPS8mYxbLWa6t8eZtWn1pPf7YIHZ3Y8dGF5WR5O08OkHX73D2+D8
-         m7+jpNJx+CkcR//fevYrq89437PhPmiVQ7sfTTogRPpEnqfKrJxvLS/bhXxGtiDTwP
-         yhG+rvGAdjkDt3ADqJFLdK7sek6yRAKMDlYk0hpw=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH] parisc: pdc_stable: use default_groups in kobj_type
-Date:   Thu,  6 Jan 2022 10:51:17 +0100
-Message-Id: <20220106095117.3273204-1-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.34.1
+        Thu, 6 Jan 2022 05:04:50 -0500
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2EF7C061245
+        for <linux-parisc@vger.kernel.org>; Thu,  6 Jan 2022 02:04:49 -0800 (PST)
+Received: (qmail 13129 invoked from network); 6 Jan 2022 10:04:32 -0000
+Received: from p200300cf0713cf00183e67d29ced1f8c.dip0.t-ipconnect.de ([2003:cf:713:cf00:183e:67d2:9ced:1f8c]:38760 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Thu, 06 Jan 2022 11:04:32 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>
+Subject: Re: [PATCH 2/2] parisc: Provide a trivial PDC-based io_module for kgdb
+Date:   Thu, 06 Jan 2022 11:04:40 +0100
+Message-ID: <1881841.PYKUYFuaPT@daneel.sf-tec.de>
+In-Reply-To: <20220105214552.590606-2-deller@gmx.de>
+References: <20220105214552.590606-1-deller@gmx.de> <20220105214552.590606-2-deller@gmx.de>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1318; h=from:subject; bh=PMPnhquV4QwPaJwJNCUlbGJ4KmAUZao9eZBzGe90ndw=; b=owGbwMvMwCRo6H6F97bub03G02pJDInXdk/tEsxYZcX7UIC9aNe0pc+XnfyuvGt2SEp3zw828cWn Hs/i64hlYRBkYpAVU2T5so3n6P6KQ4pehranYeawMoEMYeDiFICJcP9mmCsZ7fNSvPrQYavruv7f4z XumcZM38swP/zKD1Xd68n9zxL/i3//PqXge3iRGAA=
-X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart21321444.EfDdHjke4D"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-There are currently 2 ways to create a set of sysfs files for a
-kobj_type, through the default_attrs field, and the default_groups
-field.  Move the parisc pdc_stable sysfs code to use default_groups
-field which has been the preferred way since aa30f47cf666 ("kobject: Add
-support for default attribute groups to kobj_type") so that we can soon
-get rid of the obsolete default_attrs field.
+--nextPart21321444.EfDdHjke4D
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/parisc/pdc_stable.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Am Mittwoch, 5. Januar 2022, 22:45:52 CET schrieb Helge Deller:
+> Add a simple keyboard driver for usage of PDC I/O functions
+> with kgdb. This driver makes it possible to use KGDB with QEMU.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> ---
+>  arch/parisc/kernel/toc.c | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+> 
+> diff --git a/arch/parisc/kernel/toc.c b/arch/parisc/kernel/toc.c
+> index 18327611cf8f..dfe7cccc086f 100644
+> --- a/arch/parisc/kernel/toc.c
+> +++ b/arch/parisc/kernel/toc.c
+> @@ -109,3 +109,30 @@ static __init int setup_toc(void)
+>  	return 0;
+>  }
+>  early_initcall(setup_toc);
+> +
+> +
 
-diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
-index e090978518f1..9513c39719d1 100644
---- a/drivers/parisc/pdc_stable.c
-+++ b/drivers/parisc/pdc_stable.c
-@@ -482,11 +482,12 @@ static struct attribute *paths_subsys_attrs[] = {
- 	&paths_attr_layer.attr,
- 	NULL,
- };
-+ATTRIBUTE_GROUPS(paths_subsys);
- 
- /* Specific kobject type for our PDC paths */
- static struct kobj_type ktype_pdcspath = {
- 	.sysfs_ops = &pdcspath_attr_ops,
--	.default_attrs = paths_subsys_attrs,
-+	.default_groups = paths_subsys_groups,
- };
- 
- /* We hard define the 4 types of path we expect to find */
--- 
-2.34.1
+double newline
+
+> +#ifdef CONFIG_KGDB_KDB
+> +/* read a character, return -1 if no char can be polled. */
+> +static int kgdbpdc_read_char(void)
+> +{
+> +	return pdc_iodc_getc();
+> +}
+> +
+> +static void kgdbpdc_write_char(u8 chr)
+> +{
+> +	/* no need to print char. kdb will do it. */
+
+kgdb?
+
+Eike
+--nextPart21321444.EfDdHjke4D
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYda+uAAKCRBcpIk+abn8
+TlavAJ96eWRvPKSKFSTubiiRn96miJuU2QCgpdx+yyb0Z+U8DSGtLmPzuaWo/K0=
+=eSqy
+-----END PGP SIGNATURE-----
+
+--nextPart21321444.EfDdHjke4D--
+
+
 
