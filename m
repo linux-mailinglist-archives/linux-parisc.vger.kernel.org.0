@@ -2,107 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DAC04862F8
-	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jan 2022 11:34:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C5D4865EB
+	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jan 2022 15:18:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237996AbiAFKeH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 6 Jan 2022 05:34:07 -0500
-Received: from mout.gmx.net ([212.227.15.15]:39365 "EHLO mout.gmx.net"
+        id S239857AbiAFOSw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 6 Jan 2022 09:18:52 -0500
+Received: from mout.gmx.net ([212.227.17.22]:51385 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237059AbiAFKeG (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 6 Jan 2022 05:34:06 -0500
+        id S239854AbiAFOSv (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 6 Jan 2022 09:18:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1641465212;
-        bh=kyeIeZ0HdgzuCyOsYmaeqH6yQLfMFs6QcXaYdAQ9WIc=;
+        s=badeba3b8450; t=1641478726;
+        bh=XmBQEQdpVKDeVaGl1xSjDSY3DfE3NwuYVyzERjAro34=;
         h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=hyk7oICuLFE/lAGI+wphVzOSRGb8dJSWegoLzEw2GEAnokiJ7RTzjM9c3fouefa/t
-         qDpGxs9vma84HpYTdcwqPHevBH3IFBBWTzea5DRmvP1rM6AGzXfDY7gY8ol4FJcyWy
-         gTYGxmzTgNdkv/PYM8VNQKuT7QJi/ZEvrOg6YaE0=
+        b=JyoLx5WfKy3MC87Ifwo0qWe0jqdVhTuNU0FxVUR75DlVIIQLXjev0NYpBsHxDFe8T
+         +l3mIpah3BHg16HiQvUk2ldSh0bzuCe8p1xrlrX+nWu2b9ptChMO5LnUeM41B5nXGq
+         iM6kEQBy0bc5q+c3VUbd5Ahu2uQbZObnBEDM7bSQ=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.152.191]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmDIo-1mev1Q2vqq-00i8lR; Thu, 06
- Jan 2022 11:33:32 +0100
-Message-ID: <213a7020-c7d5-b9c2-0e81-a16bb94d2361@gmx.de>
-Date:   Thu, 6 Jan 2022 11:32:31 +0100
+Received: from [192.168.20.60] ([92.116.152.191]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MG9kC-1nAv853x9w-00GV4r; Thu, 06
+ Jan 2022 15:18:45 +0100
+Message-ID: <f95569dc-1d84-232d-b09f-6d531b1e6261@gmx.de>
+Date:   Thu, 6 Jan 2022 15:17:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.3.0
-Subject: Re: [PATCH 2/2] parisc: Provide a trivial PDC-based io_module for
- kgdb
+Subject: Re: [PATCH] parisc: pdc_stable: use default_groups in kobj_type
 Content-Language: en-US
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org
+Cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-References: <20220105214552.590606-1-deller@gmx.de>
- <20220105214552.590606-2-deller@gmx.de> <1881841.PYKUYFuaPT@daneel.sf-tec.de>
+References: <20220106095117.3273204-1-gregkh@linuxfoundation.org>
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <1881841.PYKUYFuaPT@daneel.sf-tec.de>
+In-Reply-To: <20220106095117.3273204-1-gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:bXIlGk2hai9m2Tqq4/z9hFILlQqmY06KNicc2UjUkdcrpaH1jPT
- vBaE68OP9bJjeUaZr+262nZXOUHpecw3ih6Z89N/ytatIwrvRYFSPR3hrzaNpKj+TgSvZez
- X1mFbCD9l/gKWowhkxPf8uawz9k76DKgNB6HUZHZpOrQDMOtFdefTaDAocOKua6NDhdA2pW
- VS4UYCZbrd1REz2xYukxw==
+X-Provags-ID: V03:K1:speqiOUorjZaSnmJNZavu/FrKCGKY8pxcorJyyOJY2L2qrqxdXd
+ CRRwW4KIlhoIvQ8sl00M0l3S4L5JDsyye9CSBss8UbbIkTsMX2fRgFRwIysE+68SVFbnno2
+ Y+VinMncL1ne+czGSJ5Ju2eTa4mJVmbZLF5cl4X69JC8VoL7oe/X3F/qKZE291sOzj6GHpz
+ s98ETKe4MHl9Bt0/R4sQA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ccOVf94sT18=:bWbvG3bMEG+GnqVNsyQTsW
- itVOX1OqG5+aeSuQq4yau7FjUSfSpvNTHNEmi8v9kScYwTNy64vNFZH/rZj1OQzCe+K0cA/uW
- N2bWnaiO32awAvbQgHVE0kQtSBWnbpvsn7MtUp2ncR6Li3/f6INu+3pwoi5ISXx198/5Vk66b
- kV3Y7VcfhXjjoTJ85RfKPDqwbNpoTA2IKgQxbMjHI9Y1y4Kn1k7l3FE0t17EAAZEI9zssWwD8
- bSqosLz/5EpyaTh3lJ/Aq8pHMXN8fI9XsuNPQz3OrthCltdtne3uaP0vtiHcJdQdQKT9/YrXg
- 3hgHO36XGovnNix0KIZeiyxQmATz4s2r2s3n73K1dKgA+rUEyhd/0xB6wpmA2Gy1wkVGPT2l3
- JKoZYU6bdiZ/3AX1eXnJTiT0cRdcP1HlCNhfFNUEIQmqUkMfp8d8DJQc59jCkci8jaCuBYU6P
- RP9kMJ2R8bFf374fTjRlfPyM8gltDLD8EKt51pNDP6Cl0XPs8RYZScIjw1Ihthxe3uIl7Omx9
- 7WTY7s184sLBcbg6UsXEDgooK1XSj7TqAab0w6c5IasVxxC7vpK3mfxx4KkezOzFZPtXvudPI
- arQosObcVOdG7Q54fcMm58r+NMLv2920ZzMZGIEd/THJtWKFShbPwthIrc8N6qr2GeUNkgfIb
- kM/pMWs6CSZXxUmUM7nmM8qJAZjpLQI7o/Dgg4JA0Xr83gTHQFgZR22BhshACUGYTBIoTr4qF
- PrHw5nKZMNKpP7jM5TV5fktMrrTUry0RmYozycC+mq9K5xHxYRHEvnHAxrpq4c+ggQDpKAciy
- gSIm9lPMVF4aIYbl/AQu/tLCzMA/eiyIwbIOLaUmYf6tg+1PPkq4n9s5ZFkACENzoKt1ENisz
- JnNzj/XtogCv4MuRyzAFzHoCGQfm5NPQKxVsjRc3mjtEO+0GFyZ4Hjr0wNT5C+czn4oAhKT8W
- cu4ziubScyY93atWr4uCGww+e/i5y3NVE3ZHj5bfyW66xo0mm/JJLRKv/h3dDwJsRGWvomwsB
- JJ9Nt36Tm2XxtSLa+/BCCKiZ2QkjbT6z6wFVsRXw3kvNm2Qy6entulY0FEs26xQd3P4Oszeo6
- fjqEialjZ4T+Hk=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:PRBHOqWiGec=:cbWXA6DvjhCG0W0e5qolGR
+ chyXMlUwlIMVK36cxMBjXrov09FkWQYf78hIo/tIje5O+tR+e9Iin4rGLR0/7KpdPRKFNPruy
+ NUTFaaQhQ4jUioVpCWUy9AmGw/n+OidWMvRT0qzrQf+khFc8aKNnJWPRvEWT08KvqxOrkYeTU
+ +ulWHRmaIp7OL74Jdsl4C+tItC+7+psq2CpmjWDbpsBxySIkOXWXioc2PfjL7z4rBYlHTCFIO
+ RPmfSzUwgY5ZHwYlUocyWpkZuaVkVeFLRvXwKYMDQTaGmgRDNcmTbWLq4u+cW1pATIMzDPgtR
+ T66zSI+UOkvc3tx757qQXuns1MbOZumJta5mWWi7kGdP7x93J7P6l3lwnL+bgE7GHENARCCTW
+ q3/ksvmJuj3kJsfZgOT0nAjnVwq6eIbwkDJizRMmz3+CSodIw/o4+hH/EVbuZvUDHxFfjSEHz
+ oiXoZgoLT88nnYvDZugf4Ez/LjESe8Fxh85qlVQVJknDy4Bz4MVGU8AmNWVRBdNjIgkxBwaHf
+ nZCGRSAdLy0QAIuihoYX4YcRfyjmtMFRC2dwBqUlAAyHvjxeZGft4ettiBxcw+XYl6c0dBpsR
+ ddgEJvDHFNrv/6d3MfOrMHrGHlxnBz7IBd98D0ui3KkuI7tp38QGmMPOYkJRUd3DMQPcG1gdb
+ 51kl0vd7jCWJhZ2V/3jkL2deEvEteDR+MfAa8nBMOp/rFQ7LbX0XijNx7DMpRIte2nKKlGbmM
+ O+t7UFpscut40SNdH8IiO8C55TQ+MnzhwJjVNPO/4uDJk44HETJvprl8m23L/5s6SxFgU61UK
+ dBA6s8okg/vw2rSim2vOpp/y/2Ku799gwWQHxSDt8TWzgwjnZXaStcl/UW9yZZHs7BuOj8yzY
+ tibZOjjeyec/tXuQO3W7LMpgMcX9tmbCZPqcaGbHqABCHY0urWTeC09UY12WTJ5sddJnVZkKy
+ aBLc+lZ1FadruuIXXrXCxS/L+LUpM9cvzI0UdxIAYqBbR+5jK5TYdLVqDb8NhF8mRzBmwHq6F
+ fre+jBPcah9C7eey9S4YNcJRIQObsTjpEIWLKwSaK9yxz91B7uhhHmgRCi7o9w9NpyHZRa/0U
+ H0mWGVPBtJTw7k=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 1/6/22 11:04, Rolf Eike Beer wrote:
-> Am Mittwoch, 5. Januar 2022, 22:45:52 CET schrieb Helge Deller:
->> Add a simple keyboard driver for usage of PDC I/O functions
->> with kgdb. This driver makes it possible to use KGDB with QEMU.
->>
->> Signed-off-by: Helge Deller <deller@gmx.de>
->> ---
->>  arch/parisc/kernel/toc.c | 27 +++++++++++++++++++++++++++
->>  1 file changed, 27 insertions(+)
->>
->> diff --git a/arch/parisc/kernel/toc.c b/arch/parisc/kernel/toc.c
->> index 18327611cf8f..dfe7cccc086f 100644
->> --- a/arch/parisc/kernel/toc.c
->> +++ b/arch/parisc/kernel/toc.c
->> @@ -109,3 +109,30 @@ static __init int setup_toc(void)
->>  	return 0;
->>  }
->>  early_initcall(setup_toc);
->> +
->> +
+On 1/6/22 10:51, Greg Kroah-Hartman wrote:
+> There are currently 2 ways to create a set of sysfs files for a
+> kobj_type, through the default_attrs field, and the default_groups
+> field.  Move the parisc pdc_stable sysfs code to use default_groups
+> field which has been the preferred way since aa30f47cf666 ("kobject: Add
+> support for default attribute groups to kobj_type") so that we can soon
+> get rid of the obsolete default_attrs field.
 >
-> double newline
->
->> +#ifdef CONFIG_KGDB_KDB
->> +/* read a character, return -1 if no char can be polled. */
->> +static int kgdbpdc_read_char(void)
->> +{
->> +	return pdc_iodc_getc();
->> +}
->> +
->> +static void kgdbpdc_write_char(u8 chr)
->> +{
->> +	/* no need to print char. kdb will do it. */
->
-> kgdb?
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: linux-parisc@vger.kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Thanks, I fixed this and moved the driver to kgdb.c...
+Applied.
 
+Thanks!
 Helge
+
+> ---
+>  drivers/parisc/pdc_stable.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
+> index e090978518f1..9513c39719d1 100644
+> --- a/drivers/parisc/pdc_stable.c
+> +++ b/drivers/parisc/pdc_stable.c
+> @@ -482,11 +482,12 @@ static struct attribute *paths_subsys_attrs[] =3D =
+{
+>  	&paths_attr_layer.attr,
+>  	NULL,
+>  };
+> +ATTRIBUTE_GROUPS(paths_subsys);
+>
+>  /* Specific kobject type for our PDC paths */
+>  static struct kobj_type ktype_pdcspath =3D {
+>  	.sysfs_ops =3D &pdcspath_attr_ops,
+> -	.default_attrs =3D paths_subsys_attrs,
+> +	.default_groups =3D paths_subsys_groups,
+>  };
+>
+>  /* We hard define the 4 types of path we expect to find */
+>
+
