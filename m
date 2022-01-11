@@ -2,83 +2,110 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C84A48B07D
-	for <lists+linux-parisc@lfdr.de>; Tue, 11 Jan 2022 16:10:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C923048B0E1
+	for <lists+linux-parisc@lfdr.de>; Tue, 11 Jan 2022 16:33:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238115AbiAKPKm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 11 Jan 2022 10:10:42 -0500
-Received: from mout.gmx.net ([212.227.15.15]:58143 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231876AbiAKPKm (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 11 Jan 2022 10:10:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1641913835;
-        bh=KJspO9Y7hgfp/0K1qaVTIz6HeftxHsNQEPKbO6/K+7s=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=ScLdxnb6UjrcEqxP32LK3sitrdvbkx/vnQLHtN0HuNTVAd9vyONftVXkVm7BVizwN
-         n4z+6CkSElZeZ5F2kUUhRFh1kGM7lt0QiiMd9dqFsZISbCjED0HJ50ODEwraPJBtCi
-         cN0gaPDi4D1AklNhoHenteQN2CrNqG8cXj65w5K4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.169.189]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MtOGa-1mDfvw3b1K-00uqhC; Tue, 11
- Jan 2022 16:10:34 +0100
-Message-ID: <e1949af8-0d5a-baac-4017-1c25a7412aaf@gmx.de>
-Date:   Tue, 11 Jan 2022 16:10:31 +0100
+        id S1343589AbiAKPdu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 11 Jan 2022 10:33:50 -0500
+Received: from mout.kundenserver.de ([212.227.17.10]:52235 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245121AbiAKPdu (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Tue, 11 Jan 2022 10:33:50 -0500
+Received: from mail-wm1-f51.google.com ([209.85.128.51]) by
+ mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MwQKp-1mF4TW2esX-00sQ6O; Tue, 11 Jan 2022 16:33:47 +0100
+Received: by mail-wm1-f51.google.com with SMTP id bg19-20020a05600c3c9300b0034565e837b6so913789wmb.1;
+        Tue, 11 Jan 2022 07:33:47 -0800 (PST)
+X-Gm-Message-State: AOAM5302PD/H/LL+Ue9VnmV6tsOAQS6wR6H1gkAhTQflzf2S8jBCBdX/
+        TjFu3Kr+PKZUKQiES9tUFYMuAH5ZQ7q/xgW8rZA=
+X-Google-Smtp-Source: ABdhPJyFFinYnz2sZBS9mJMA0LPDw6WfY7Va14XdJpsCQCV44OO8uJYaRTfqzAgePL4Snx4fHkOYLxmTt0Ze2tTLQxc=
+X-Received: by 2002:a05:600c:287:: with SMTP id 7mr2989838wmk.98.1641915227093;
+ Tue, 11 Jan 2022 07:33:47 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH 1/2] parisc: Enable TOC (transfer of contents) feature
- unconditionally
-Content-Language: en-US
-To:     Jeroen Roovers <jer@xs4all.nl>
-Cc:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-References: <20220107131850.737880-1-deller@gmx.de>
- <20220111160625.5fb21b59@wim.jer>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220111160625.5fb21b59@wim.jer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:WuOD/4zwajjw+i+1J8x+6LQAKBdbmA4equxTFh8/kR6CGXAmLRl
- dtptCLiuXdGBfIIsk34VF4LToXNfzW4Ghy2SeVvfMj3HNzXkeVlcbjz3D42fhlBQqa98RWw
- pbyKZLt2aN7lK3BCxpUqWIYeEemot4dW3hLRNr07+3hvmMFslFgqOa4ueyhoAeS3Z7Yh0qX
- ZdWwAQAEWImX/S9FTuFTA==
+References: <20220111083515.502308-1-hch@lst.de> <20220111083515.502308-5-hch@lst.de>
+In-Reply-To: <20220111083515.502308-5-hch@lst.de>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 11 Jan 2022 16:33:30 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0mHC5=OOGV=sGnC9JqZWxzsJyZbTefnCtryQU3o3PY_g@mail.gmail.com>
+Message-ID: <CAK8P3a0mHC5=OOGV=sGnC9JqZWxzsJyZbTefnCtryQU3o3PY_g@mail.gmail.com>
+Subject: Re: [PATCH 4/5] uapi: always define F_GETLK64/F_SETLK64/F_SETLKW64 in fcntl.h
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:tx6IPv0ygRrFwEX45u6YGmYZF4q2tKY6A4+hu9TKlEe4uh5NsZa
+ QRpuFp+LN4kZi2zmoTXgxqnhWVQYJtpEcjdI7819zEKV7QSqF/1EleKbktsn+kKtfz0h2D0
+ tLBfeFGy7Ju2xSluoAuZaQyn/drX0z0lM1dy3iNgwLxVTUjmFpAuZnGhsD8+jj/Lf4d8KEa
+ yR/p9izO+KVN844fr1GEQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/px3S+Q8Hrk=:XTFA5wc+FMz4rm8hB1H0a/
- QPQiKiZquNecR+FQS7kTb6HgaLkYoRDUYRYSklwJusadgcHR3ReyPz1HlUEjTTnpW7aHH210w
- z9cpJLqinyUm+OkSk6NBxWg4Nz9TQ3nsEZB+nuQIi8yGvLgzoP6myYv5YIn7yDU1K50UwOoik
- YdUUCw46BqjsaeoQ1fDEA4zk/ZFuv/f9/XrMQBySIB47IOW/OzKtP3vel+weDFLV3/V4dJ2vl
- tjuSUjiTCT2X59qJ4Dehlb4XPsq0wq1kDfL89eaD9Fj53sF+jNxxwqO/tOywY9s3GZLDD8Z0v
- hwfshCEvfUoq81FlSZj5daktJPTP6ObKvciyOlpoEpMm4wgIQWDSZEGCCFeyks5Kcj7pJ7T7E
- HVm7/szBB66ZsehMdC3iYt/FqOWWwPvH6Bm7dm6QgptYrV8XeZ6h2yh6D9d99Mh7WY/SHACBZ
- qRKj33Pm+is1dLb7C0sAq6NDSdt4hYwSNN/BqVsWKi4iLRtU3xAQgdI479+glD10G96GbECGN
- BUSImAW6HFadsctNDo7m85UkD13FPZArOZtRi/v7nkqgZXwR0RZ2utYGffyhtGF6D7G2b60Xg
- oS5lXBVWxRC7VrY4f2qlmZSPyZ/yjAoBXrdaq0rKQ3ryefOh1+x88i75yX8IgzVB8x9aiZDiv
- Zsn3jkh1rLSJygB92zQTTecvu5j14ROLTID+bVfnwsUR5wZc7vHANu9XsDLmr5YZxK8/ExDSJ
- bnIvUnW8zYOXDfHGk5gzku0T+NhixKDdTcXMVt08kRPBX8s/66OpjwtlY5fNqz6NbHtY3bzpI
- wEs78XI0XLGBrdc0zLfSd/WTKbe1ZQvdaNts3Ylr1LwfFNbj85o2T6jTWQafjUdNlAcwH58v+
- wBiFB4N+TZ0l4lc1AeIBhCW68xAvkQu5Acmz126YhwOskahyAwjAs6I+kTATWZnYBi6/Z+Fnl
- aHH/QFLAwt3/zl/qY+jaJHoAIDavuYkO6Kk4aV7ToIIShilrhVWiliTJjWspH6ZKIE57FDXd0
- s9ffgCM5qpVm5ujZhuo4izZi6bJyozk75xXAzI7PpHqI8a0xEOAhi3xnbWFwqevUfTLTfejW3
- GPWE0YKdjm7Ew4=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:k9mBvFF1K44=:R1UiRCxQjZewR+TumBOQJH
+ KHbMrEAVPoyOjTjnVznPLlAeTuUXJCMXPe91vVSV1VPlK+9sFORPHJaE9Oqb5vWsDxiuX/umF
+ 2eOAOArrgNLa8V2xYqVDDXcexEn44g0mwV6PYp5JTV8WJ86CioJ+4Zf1xDGTIwSFFfIwPcX1l
+ Xw60AAonM7sdk6FZ63DylMTYHZdmpD8t22aR0vK2nNI5Lkal88BdvGjWt8JjHI8pJP03ebaXA
+ 6u3RaakXFV7mu2hpWDNRWKH55q/3CRUFseB8WIpIEKP00a5CfJ4acF4ioav3DECnj3pDk41c9
+ kdnovlyq4iCquGzzMa0jieTckQfP7biyZNOboS01neuWhtp6VDdqXbFkfyOzx73482ytgi/WG
+ +xa34Xth2dhJMU+Q0p5TKCojpbBB8UteuAf2j1BDMBRytXvmv6dHmq5QzrpgckqY8Xl1orx7I
+ K4i8BN3pjYlX9r42OXQrmW0YcrXqE3rlRyir5KN1+rVzLqNgnO5tLAc85E822sS5M+o3L2IxO
+ frzlC3Dno3fP62wpk2clzxEWqw0lngxh7kmbhZ+aW6f+eVnFmGr6rkL+uYudCm2n2X21go2Zc
+ /Ne6oWu73KoGx4CvZeeWD/0Qkn21H9pYDD9UwU8zm8fHrl6tcA+Iqp/RC5VUeSXlf/6JDKeLS
+ IpgJdcZT71vKDGZGhA5srpwjumfNrgJIyzUPUXlqby2b2f9YcNpgT4jQWKlPn/mWBO/I=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 1/11/22 16:06, Jeroen Roovers wrote:
-> On Fri,  7 Jan 2022 14:18:49 +0100
->> Before this patch, the TOC code used a pre-allocated stack of 16kb for
->> each possible CPU. That space overhead was the reason why the TOC
->> feature wasn't enabled by default for 32-bit kernels.
+On Tue, Jan 11, 2022 at 9:35 AM Christoph Hellwig <hch@lst.de> wrote:
 >
-> Referring to the message subject, shouldn't that read
-> "TOC (Transfer-of-control)", or similar? See [1] and [2].
+> The fcntl F_GETLK64/F_SETLK64/F_SETLKW64 are only implemented for the
+> 32-bit syscall APIs, but we also need them for compat handling on 64-bit
+> builds.  Redefining them is error prone (as shown by the example that
+> parisc gets it wrong currently), so we should use the same defines for
+> both case.  In theory we could try to hide them from userspace, but
+> given that only MIPS actually gets that right, while the asm-generic
+> version used by most architectures relies on a Kconfig symbol that can't
+> be relied on to be set properly by userspace is a clear indicator to not
+> bother.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
 
-Uh, yes.
-I've just pushed it. Fixing that typo isn't so important IMHO, so I leave =
-it as is.
+> diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+> index 98f4ff165b776..43d7c44031be0 100644
+> --- a/include/uapi/asm-generic/fcntl.h
+> +++ b/include/uapi/asm-generic/fcntl.h
+> @@ -116,13 +116,11 @@
+>  #define F_GETSIG       11      /* for sockets. */
+>  #endif
+>
+> -#ifndef CONFIG_64BIT
+>  #ifndef F_GETLK64
+>  #define F_GETLK64      12      /*  using 'struct flock64' */
+>  #define F_SETLK64      13
+>  #define F_SETLKW64     14
+>  #endif
+> -#endif
+>
+>  #ifndef F_SETOWN_EX
+>  #define F_SETOWN_EX    15
 
-Thanks for noticing!
-Helge
+This is a very subtle change to the exported UAPI header contents:
+On 64-bit architectures, the three unusable numbers are now always
+shown, rather than depending on a user-controlled symbol.
+
+This is probably what we want here for compatibility reasons, but I think
+it should be explained in the changelog text, and I'd like Jeff or Bruce
+to comment on it as well: the alternative here would be to make the
+uapi definition depend on __BITS_PER_LONG==32, which is
+technically the right thing to do but more a of a change.
+
+       Arnd
