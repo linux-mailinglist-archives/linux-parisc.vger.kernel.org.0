@@ -2,140 +2,252 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E04AF489993
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Jan 2022 14:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3076548A8FC
+	for <lists+linux-parisc@lfdr.de>; Tue, 11 Jan 2022 08:57:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231278AbiAJNMP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 10 Jan 2022 08:12:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44376 "EHLO
+        id S1348751AbiAKH5V (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 11 Jan 2022 02:57:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231650AbiAJNLt (ORCPT
+        with ESMTP id S235827AbiAKH5T (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 10 Jan 2022 08:11:49 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69E84C0611FF
-        for <linux-parisc@vger.kernel.org>; Mon, 10 Jan 2022 05:11:47 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id k30so9101917wrd.9
-        for <linux-parisc@vger.kernel.org>; Mon, 10 Jan 2022 05:11:47 -0800 (PST)
+        Tue, 11 Jan 2022 02:57:19 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2B5EC061748;
+        Mon, 10 Jan 2022 23:57:18 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id s30so25453515lfo.7;
+        Mon, 10 Jan 2022 23:57:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
-        b=Bgie3w5lZXcUpEJsNUNnYT9D80sz6831OKMgWSWMpAMR4c04HQM1hwHkoZ1AqHgJ5M
-         pQJfhFBsNTGc+jfMsWTuSDXhNBe5XPwJ8/UQZKbYcWTDQ68Eu4MBBVsHf0V3Baa+27Pp
-         IUJW/950IUGNsTto2NnsTW49/Cy4Vf+KfgzDT0+KZ2gcb/QkEKg3LEIj8qPJpiII0Qbk
-         buE3CbPl0T8T6omQLXT3KYJBxN98pPIrfxDam1Qs0diPFN43pWVugWbd8LU8WaIGviK3
-         O/t/NLMKhR03EdE8rMi5c8T5epCw09Yzc4YmAU5QrO9ZaREbayNwAtpm1SWYSR1IiBuY
-         5w9A==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=LWyZT2KfS7vn2dLo/4rK0hRIU1bTIB9BhSt1xTZyjfs=;
+        b=o816YNn0CIDbCy7uwUkg0QIssuplfNYZWg1E7+kMoiU09fEhi1ExzqEDKdXYCKWai9
+         qL9GIVzs3SGnxKwGJEOsSM3dx9RhiXQOO+ArNyWLk+C6CEkyik9J0oiqnGoR0d0pIAj9
+         53smI6i/pfdhdE0TtmtHvyvhbPCgckL8+ELBFQn7KfvHLFewJSBKJEg5/OYThOUaKs30
+         YfS/REggk0oGjchlK3DJSLwWFv3g0lGM/Rxm4G3MobhsE5sy8EV2tAxeU17tchxilpyJ
+         Cm1nk2GkD8C8mwFhmX8oxyCwbcyhBHAvQH1mhnlt/pBPXM0S0279pLMAkDnMH4r8aI8U
+         4vGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
-        b=yy+2IEYk1DZla3Ij9+2gIiuyZeDTaE5n5+mLF7yxrHjs+euAr8vXoyXA6kjx0Xlbb6
-         y/sxRSTLHirf0T84kvW+THPcdk0e+s4nUXyUGr64Z4aN+lV6uCWgSp8OXzEzZ945/b3h
-         7fgyMQiG+cnTyf5EznxWEzyqdMdrp4ShpdTrwiB1TRpswmgbpjkW8QrOuCwSFLxl/gdT
-         Tz7ZzYEuW6B42/sH9UGViFjZw8Pt/Bq/3QB7YMlm+4CfcNjpfIjJk96SEaRy8v9KS3gz
-         iIv3KM+JBdsHbCgd4reZI9PWX4zFwXGnzcWAhHjgGZ6biZgDj+dqp5AFbXDqKP/xTLpV
-         iX7g==
-X-Gm-Message-State: AOAM533d5BloBnMpCbLZmsV8/b3/n+Wov2FmjYqKj7obrUwTqX2jHUGG
-        fS6zUAM0AuLB9yVOfYowMmyUn3s4GmxdJuAycIAegp8sEVw=
-X-Google-Smtp-Source: ABdhPJyUuzfRq9+VAp3YIslVsNF7E8r6u+SDvjtiaFw6sfTA9uOxrmlrl9JDay/jDh10uqplhgk07a+YHTpM3Ge0znw=
-X-Received: by 2002:ac2:4c51:: with SMTP id o17mr60639917lfk.558.1641820293776;
- Mon, 10 Jan 2022 05:11:33 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=LWyZT2KfS7vn2dLo/4rK0hRIU1bTIB9BhSt1xTZyjfs=;
+        b=WYIrbhWAC3gGrifEArtJGhYA3s00sCcyqYqiwH40w8lx3/C53v75dQN33oha+i95zn
+         GuewEqgMz0j8wuUGktv7X9scCpVOIgA3kzq6iXJqz8WnV56BaslcvUd2eYBMrznnG3Ln
+         2V5Xiv81/3GZy1P9WDWuIva1rMV/ptz571Y+df4g427qenjkA03jhGSS4ITZobHbpPtQ
+         ZpUEYvYVSivecCD5y+ix4Dkbrc/sj+/NAvrdWx/Vk2osM7mLonzzDxw/WlBXX4CuVae/
+         ucALdh6l1d4gTJ5BFTuBmHFcVjScTD/dQnvOu6kAIqXY+5EmO7cUzoxFt+OfJtgvhWaq
+         LrCg==
+X-Gm-Message-State: AOAM5324Z+uZwPt/blGoQASwOdFKw9eY8H1YQDeB4Gu7YZaSFm5eiw2/
+        L6DwHlSdJ+aVMCKBoxEW4TSKTVMFwvY=
+X-Google-Smtp-Source: ABdhPJwj4SWIivJF19fC8reHgAOesHmr0N4ouSyiTwjUsKFxuFFgsPk/HMJ5T5WGAATZ9pKSch9NEg==
+X-Received: by 2002:a05:651c:49a:: with SMTP id s26mr2063487ljc.109.1641887836867;
+        Mon, 10 Jan 2022 23:57:16 -0800 (PST)
+Received: from ?IPv6:2a00:1370:810c:714f:a10:76ff:fe69:21b6? ([2a00:1370:810c:714f:a10:76ff:fe69:21b6])
+        by smtp.googlemail.com with ESMTPSA id x14sm1206180ljd.76.2022.01.10.23.57.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Jan 2022 23:57:16 -0800 (PST)
+Subject: Re: [PATCH v5 04/21] kernel: Add combined power-off+restart handler
+ call chain API
+To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
+        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
+        linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+References: <20211212210309.9851-1-digetx@gmail.com>
+ <20211212210309.9851-5-digetx@gmail.com> <Ydofs2CIfA+r5KAz@qmqm.qmqm.pl>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <80f5a739-0850-a8db-7493-e8c387109ce0@gmail.com>
+Date:   Tue, 11 Jan 2022 10:57:13 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Received: by 2002:a05:6504:15d1:0:0:0:0 with HTTP; Mon, 10 Jan 2022 05:11:32
- -0800 (PST)
-Reply-To: gtbank107@yahoo.com
-From:   Barr Robert Richter <westernunion.benin982@gmail.com>
-Date:   Mon, 10 Jan 2022 14:11:32 +0100
-Message-ID: <CAP=nHBK9zHzp_=-EVswWQiLxEoc+HV4oqddgtnEqf-9qYab_4Q@mail.gmail.com>
-Subject: Contact GT Bank-Benin to receive your transfer amount of $18.5m US Dollars.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <Ydofs2CIfA+r5KAz@qmqm.qmqm.pl>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Attn,Dear
-I need you to know that the fear of the LORD is
-the beginning of wisdom, and knowledge of the Holy One is
-understanding. As power of God Most High. And This is the confidence
-we have in approaching God, that if we ask anything according to his
-will, he hears us. I will make you know that Slow and steady wins the race.
-It is your turn to receive your overdue compensation funds total
-amount $18.5Milion  USD.
-I actualized that you will receive your transfer today without any more delay
-No More fee OK, Believe me , I am your Attorney standing here on your favor.
-I just concluded conversation with the Gt Bank Director, Mrs Mary Gate
-And She told me that your transfer is ready today
+09.01.2022 02:35, Michał Mirosław пишет:
+> On Mon, Dec 13, 2021 at 12:02:52AM +0300, Dmitry Osipenko wrote:
+> [...]
+>> +/**
+>> + * struct power_off_data - Power-off callback argument
+>> + *
+>> + * @cb_data: Callback data.
+>> + */
+>> +struct power_off_data {
+>> +	void *cb_data;
+>> +};
+>> +
+>> +/**
+>> + * struct power_off_prep_data - Power-off preparation callback argument
+>> + *
+>> + * @cb_data: Callback data.
+>> + */
+>> +struct power_off_prep_data {
+>> +	void *cb_data;
+>> +};
+> 
+> Why two exactly same structures? Why only a single pointer instead? If
+> it just to enable type-checking callbacks, then thouse could be opaque
+> or zero-sized structs that would be embedded or casted away in
+> respective callbacks.
 
-So the Bank Asked you to contact them immediately by re-confirming
-your Bank details asap.
-Because this is the Only thing holding this transfer
-If you did not trust me and Mrs Mary Gate,Who Else will you Trust?
-For we are the ones trying to protect your funds here
-and make sure that your funds is secure.
-So Promisingly, I am here to assure you, that Grate Miracle is coming on
-your way, and this funds total amount of $18.500,000 is your
-compensation, entitlement inheritance overdue funds on your name.
-Which you cannot let anything delay you from receiving your funds now,
+Preparation and final execution are two different operations, it's much
+cleaner from a user's perspective to have same separated, IMO. In the
+future we may would want to extend one of the structs, and not the
+other. Type-checking is another benefit, of course.
 
-Finally i advised you to try your possible best and contact Gt Bank Benin
-once you get this message to receive your transfer $18.5 USD today.
-I know that a journey of thousand miles begins with a single step.
-Always put your best foot forward
-Try as hard as you can, God give you best.
-take my advice and follow the due process of your payment, the
-transfer will be released to
-you smoothly without any hitches or hindrance.
+The single callback pointer is what is utilized by all current kernel
+users. This may change in the future and then it won't be a problem to
+extend the power-off API without disrupting whole kernel.
 
-Contact DR.MRS MARY GATE, Director Gt bank-Benin to receive your
-transfer amount of $18.5m US Dollars
-It was deposited and registered to your name this morning.
-Contact the Bank now to know when they will transfer to your
-country today
+>> +
+>> +/**
+>> + * struct restart_data - Restart callback argument
+>> + *
+>> + * @cb_data: Callback data.
+>> + * @cmd: Restart command string.
+>> + * @stop_chain: Further lower priority callbacks won't be executed if set to
+>> + *		true. Can be changed within callback. Default is false.
+>> + * @mode: Reboot mode ID.
+>> + */
+>> +struct restart_data {
+>> +	void *cb_data;
+>> +	const char *cmd;
+>> +	bool stop_chain;
+>> +	enum reboot_mode mode;
+>> +};
+>> +
+>> +/**
+>> + * struct reboot_prep_data - Reboot and shutdown preparation callback argument
+>> + *
+>> + * @cb_data: Callback data.
+>> + * @cmd: Restart command string.
+>> + * @stop_chain: Further lower priority callbacks won't be executed if set to
+>> + *		true. Can be changed within callback. Default is false.
+> 
+> Why would we want to stop power-off or erboot chain? If the callback
+> succeded, then further calls won't be made. If it doesn't succeed, but
+> possibly breaks the system somehow, it shouldn't return. Then the only
+> case left would be to just try the next method of shutting down.
 
-Email id: gtbank107@yahoo.com
-Tel/mobile, +229 99069872
-Contact person, Mrs Mary Gate,Director Gt bank-Benin.
-Among the blind the one-eyed man is king
+This is what some of the API users were doing for years. I don't know
+for sure why they want to stop the chain, it indeed looks like an
+incorrect behaviour, but that's up to developers to decide. I only
+retained the old behaviour for those users.
 
-As you sow, so you shall reap, i want you to receive your funds
-Best things in life are free
-Send to her your Bank Details as i listed here.
+>> + * @mode: Preparation mode ID.
+>> + */
+>> +struct reboot_prep_data {
+>> +	void *cb_data;
+>> +	const char *cmd;
+>> +	bool stop_chain;
+>> +	enum reboot_prepare_mode mode;
+>> +};
+>> +
+>> +struct sys_off_handler_private_data {
+>> +	struct notifier_block power_off_nb;
+>> +	struct notifier_block restart_nb;
+>> +	struct notifier_block reboot_nb;
+> 
+> What's the difference between restart and reboot?
 
-Your account name-------------
-Your Bank Name----------------
-Account Number----------
-your Bank address----------
-Country-----------
-Your private phone number---------
-Routing Numbers-------------
-Swift Code-----------
+Reboot is always executed before restart and power-off callbacks. This
+is explained in the doc-comment of the struct sys_off_handler.
 
-Note, Your funds is %100 Percent ready for
-transfer.
-Everything you do remember that Good things come to those who wait.
-I have done this work for you with my personally effort, Honesty is
-the best policy.
-now your transfer is currently deposited with paying bank this morning.
-It is by the grace of God that I received Christ, having known the truth.
-I had no choice than to do what is lawful and justice in the
-sight of God for eternal life and in the sight of man for witness of
-God & His Mercies and glory upon my life.
++ * @reboot_prepare_cb: Reboot/shutdown preparation callback. All reboot
++ * preparation callbacks are invoked before @restart_cb or @power_off_cb,
++ * depending on the mode. It's registered with register_reboot_notifier().
++ * The point is to remove boilerplate code from drivers which use this
++ * callback in conjunction with the restart/power-off callbacks.
++ *
 
-send this needed bank details to the bank today, so that you receive
-your transfer today as
-it is available for your confirmation today.
-Please do your best as a serious person and send the fee urgent, Note
-that this transfer of $18.500.000 M USD is a Gift from God to Bless
-you.
+This reboot callback usually performs early preparations that are need
+to be done before machine is placed into reset state, please see [1] for
+the examples.
 
-If you did not contact the bank urgent, finally the Bank will release
-your transfer of $18.500.000M USD to  Mr. David Bollen as your
-representative.
-So not allow another to claim your Money.
-Thanks For your Understanding.
+[1] https://elixir.bootlin.com/linux/v5.16/A/ident/register_reboot_notifier
 
-Barr Robert Richter, UN Attorney At Law Court-Benin
+I agree that "reboot" sounds like a misnomer. This name was coined long
+time ago, perhaps not worth to rename it at this point. I'm also not
+sure what could be a better name.
+
+>> +	void (*platform_power_off_cb)(void);
+>> +	void (*simple_power_off_cb)(void *data);
+>> +	void *simple_power_off_cb_data;
+>> +	bool registered;
+>> +};
+> 
+> BTW, I couldn't find a right description of my idea of unifying the
+> chains before, so let me sketch it now.
+> 
+> The idea is to have a single system-off chain in which the callback
+> gets a mode ({QUERY_*, PREP_*, DO_*} for each of {*_REBOOT, *_POWEROFF, ...?).
+> The QUERY_* calls would be made in can_kernel_reboot/poweroff(): all
+> would be called, and if at least one returned true, then the shutdown
+> mode would continue. All of PREP_* would be called then. After that
+> all DO_* would be tried until one doesn't return (succeeded or broke
+> the system hard). Classic for(;;); could be a final fallback for the
+> case where arch/machine (lowest priority) call would return instead
+> of halting the system in machine-dependent way. The QUERY and PREP
+> stages could be combined, but I haven't thought about it enough to
+> see what conditions would need to be imposed on the callbacks in
+> that case (maybe it's not worth the trouble, since it isn't a fast
+> path anyway?). The goal here is to have less (duplicated) code in
+> kernel, but otherwise it seems equivalent to your API proposal.
+
+Michał, thank you for the review and suggestions! I'll take another look
+at yours proposal during this merge window, in a preparation to v6.
