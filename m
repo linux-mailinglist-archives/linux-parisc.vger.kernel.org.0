@@ -2,80 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60DF148B12D
-	for <lists+linux-parisc@lfdr.de>; Tue, 11 Jan 2022 16:46:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D61548BBAA
+	for <lists+linux-parisc@lfdr.de>; Wed, 12 Jan 2022 01:14:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243975AbiAKPql (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 11 Jan 2022 10:46:41 -0500
-Received: from mout.kundenserver.de ([212.227.17.24]:44707 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240010AbiAKPqk (ORCPT
+        id S1347073AbiALANz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 11 Jan 2022 19:13:55 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:36388 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347332AbiALANr (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 11 Jan 2022 10:46:40 -0500
-Received: from mail-wm1-f48.google.com ([209.85.128.48]) by
- mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1N79q6-1mHX7K2h9o-017WVg; Tue, 11 Jan 2022 16:46:38 +0100
-Received: by mail-wm1-f48.google.com with SMTP id e5so11364324wmq.1;
-        Tue, 11 Jan 2022 07:46:38 -0800 (PST)
-X-Gm-Message-State: AOAM533QG5EGLvNOjqRhv+pSIHPRQ6LL9SkCwSpGuII0dprxoZkRRsZY
-        uCLnTmo9kwRzf3sMlp2u7+BmmeT0kpDNOnHX5mA=
-X-Google-Smtp-Source: ABdhPJwB2xKozQuCORkKSCQAL8ClRXdu0xcIO+JF0MBbhis3uIel6aCgUYRUOftHzuYWMBNA7fgNkNtxR2C9Ihxf1Yo=
-X-Received: by 2002:a05:600c:5c1:: with SMTP id p1mr2988726wmd.1.1641915998117;
- Tue, 11 Jan 2022 07:46:38 -0800 (PST)
-MIME-Version: 1.0
-References: <20220111083515.502308-1-hch@lst.de>
-In-Reply-To: <20220111083515.502308-1-hch@lst.de>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 11 Jan 2022 16:46:21 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2nY60Pgz1Q0YJ-bMsJdJfFNw8q6R7R2WzPCj+tVdA=+g@mail.gmail.com>
-Message-ID: <CAK8P3a2nY60Pgz1Q0YJ-bMsJdJfFNw8q6R7R2WzPCj+tVdA=+g@mail.gmail.com>
-Subject: Re: consolidate the compat fcntl definitions
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:OhqwhpDN2ksPKZsBYhrIQ0Jy/a2mcdyEzEvgvAilHeQi8HUC6D0
- XD3UZZXtkDC0wz9zAmXZILu0SRnEkV2TvA+Vna+RRAegFesdETytq27fHjaAFrM4ZomTVQS
- rYChRPOGjQFxEom9Vc9ua/N0ZsgoDA1Rx/25h8VslivCKlCcQY8h/v/3+/hqbvZz+Ce1yBE
- kq5hRM/4IHzmUlqDdvJrg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:u7BSYyK0FWg=:tUu0i99KWoFD2LamSf60D6
- ZfBcp6W7ZmDOTFCGr3jRBrAHuAb1Sh9ZKoTTQoAmEeFARn6cQPagUSlAqB4jUFSqFQ++UTbHY
- LU9tjpaZSbIweC9XIXkSjykSpPVIX9RuHNymMLfbXxHXlUxGQCSMdaEuNkGJFAKOr5kRCwRiq
- r9I9Sufz5PUbcgYGSXaiIXWA6AZc/E75RfLScTdMr18xmZF70D4bmj2bV5tn+rP2GKoi+4oCu
- 7wIH+j5jcFyVswAd5f18r/Jz/JOxBZ5lkBcy3GoWL7dvNcoHK3XanVFMzO8R4SDB4Krj3bDOl
- fKqA7lhDu/FUYGj4Ulr5MZn03yxAThWc5KX7jJXPNsXSmSq05tkAR2pQMw2ctWu1I5hh+U7h/
- K71JhtYAC69vfQLd3FFKxFD9xdaIzVJPTfWLpFg4kaFC6Of/eAEm9Ui9eCbgGIuBdIeGtqOyp
- ZKo0vt3Wp9att8c8puUYa4cKzUPaBVL/Cu6LFD4SZ1mo6RXyh9SFXNPmXVbITukts0rCX5RSn
- iFaP25llRgorIrihPDUr6N10ZPbqg22OASy/Aa7VS5wDHUMVXMCxQTZEGrco44OLUsPIRomN/
- X3fjkXh+dbD0OiDkTkNJpf24hYgMsBn4/QW8+apGMpHlrim3k6framygL7ZOO58Xd4kl95W4r
- FbIUZjsVuIsVZ9ML1wcDNVa1qjBqRChEIvnqKUKgdG0SVWJMAXezCKMkXDP9MwPNGwvkuvn16
- w+4oXbWxYkVPuNKUiDMbZSXj2z9Abc7+w5KlZxSEsgaQrqSjTwxEGLR+SrRaWX6lBGFNsdYhG
- uODMcaoBEAfUpM0BObiDS3o/GJrFrfOj/3614xE4UnHN/QU3oE=
+        Tue, 11 Jan 2022 19:13:47 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36D1461637;
+        Wed, 12 Jan 2022 00:13:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A0DCCC36AF6;
+        Wed, 12 Jan 2022 00:13:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641946426;
+        bh=idPmRD3vDDYJQLa+CtrngNkb7v8wUZgsDGQVv7fun7k=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=aneDntADCU5oIm9Jz1ER/J6n1xyBRq1rCQONjwpg2Q5+B8yvhb1ubo9bJXYXsSlef
+         cGAj0W8ph3ESxJsNGnplfDptD32eoiK++DPW5yRZ+iMg4nkQMuQjUX6X0AMr4Kk8UZ
+         XtE780HVPAQImoG+25JitnPUCi2aM24YU3mT/2v6PsP3VWWaPlqpkq923zbYwEb2Rp
+         Vn/njv2VtP44VTcYnGj8zMzSvrgR2bDfe0bm2REC2luGQxkCGvrtXZPCtkKp7JULTe
+         P22/0/KH4Y2TgD1kS9XQQlG41AruydSoQ1l0nroh6sJyAw6/HlLdr9EQMQ1etLpbmA
+         vPLXyq9s1aXkw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 8C76BF60793;
+        Wed, 12 Jan 2022 00:13:46 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture updates v5.17-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <Yd1up5g3mSzj7eHL@ls3530>
+References: <Yd1up5g3mSzj7eHL@ls3530>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <Yd1up5g3mSzj7eHL@ls3530>
+X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.17/parisc-1
+X-PR-Tracked-Commit-Id: 68d247ad38b1ef46bd945a5220fa6d28c901c2f2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c1eb8f6cff3442b0b7eff5b801c9745ea9abcb14
+Message-Id: <164194642657.21161.3159844271949198469.pr-tracker-bot@kernel.org>
+Date:   Wed, 12 Jan 2022 00:13:46 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Masahiro Yamada <masahiroy@kernel.org>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Jan 11, 2022 at 9:35 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> Hi all,
->
-> currenty the compat fcnt definitions are duplicate for all compat
-> architectures, and the native fcntl64 definitions aren't even usable
-> from userspace due to a bogus CONFIG_64BIT ifdef.  This series tries
-> to sort out all that.
+The pull request you sent on Tue, 11 Jan 2022 12:48:55 +0100:
 
-The changes look good, but I have the same comment on your last patch that
-I had for Guo Ren's version. Once we have resolved that, I can apply the
-series in the asm-generic tree, or provide an Ack to have it all merged
-along with the compat mode changes in the risc-v tree.
+> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.17/parisc-1
 
-       Arnd
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c1eb8f6cff3442b0b7eff5b801c9745ea9abcb14
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
