@@ -2,87 +2,137 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 450BC48D643
-	for <lists+linux-parisc@lfdr.de>; Thu, 13 Jan 2022 12:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69A1648DACD
+	for <lists+linux-parisc@lfdr.de>; Thu, 13 Jan 2022 16:41:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233950AbiAMLBq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 13 Jan 2022 06:01:46 -0500
-Received: from mout.gmx.net ([212.227.15.15]:51709 "EHLO mout.gmx.net"
+        id S231216AbiAMPlu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 13 Jan 2022 10:41:50 -0500
+Received: from mout.gmx.net ([212.227.17.20]:44205 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233924AbiAMLBm (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 13 Jan 2022 06:01:42 -0500
+        id S233305AbiAMPlt (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 13 Jan 2022 10:41:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1642071692;
-        bh=BIheFpEg2oz/uN3QfpGYnZi+szyiaS6MFzqWAyncep4=;
+        s=badeba3b8450; t=1642088500;
+        bh=Pm16orVY4OVh2JPou8ROtUueZdZWdS9G0avKCkWVR9Y=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=TkyJMz5ZaICgg/5kAZswFBjsUrQRdZEX7vI9bSVlgeSdv09ghQ75a+IfJZ/g8IG1Z
-         IR/AcwAKDq6tUK9SzduTXoNPZ2pOV4Ddsm/GHlKP2EhVnLzvVCBq4iqaSUuVYXUeo0
-         mZeRbc5kyBqudhvymLE5yJc0LF1zqGobdZRgTtdA=
+        b=Nvz0PXh9F2zCDmcwRtZjMn0Lhv17Fzgyh51MDcaaoWHdcBKz1dmaMZqtRO09cJVo+
+         Aifi1wZcIp7PdiDiu6RMkEmeBYnwVCLEWGhAkSvd6AgESOwWpqO1gJHF1d40m+5Iw1
+         ENyINu3TH1XNEhxecGjc0iyedxsqI+UmRAsLOUME=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.168.79]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MZktZ-1mo0RX0KsJ-00Wozr; Thu, 13
- Jan 2022 12:01:32 +0100
+Received: from ls3530.fritz.box ([92.116.168.79]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N4zAy-1m9eAi2M2W-010vdH; Thu, 13
+ Jan 2022 16:41:40 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
 Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
         Sven Schnelle <svens@stackframe.org>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH] parisc: Add visible flag to toc_stack variable
-Date:   Thu, 13 Jan 2022 12:00:26 +0100
-Message-Id: <20220113110026.27604-1-deller@gmx.de>
+        linux-fbdev@vger.kernel.org
+Subject: [PATCH] video/fbdev/stifb: Implement the stifb_fillrect() function
+Date:   Thu, 13 Jan 2022 16:40:37 +0100
+Message-Id: <20220113154037.49294-1-deller@gmx.de>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gfSuVMrdBaMufgBBC1pl6+qrdxpJrwy4XIlwcmqliFcEwkmQlIa
- PTcqa6sBLAu330HCyvRXDWiC0hxy5JXemf+n09lnaodDT3KqWROR2WQpNIWeLP0nAWF38ZT
- fV8A6j4ORplrRMEjgYH4aEG2eltokJn7j+ZVbHgyqKWU2mID8MEey+2xySeeNaLzV1r6pH9
- r5eFfVq01om6dA9tRYSiw==
+X-Provags-ID: V03:K1:uZDYNAnQnkvzBm7uDLeBebVoRxHZ6kLdIYnWtrsZiOzphrkGnLQ
+ wFf3H0qfga5luk0+vxYNzFcaiwPBbeF6ItyzFSrL8DQglULm8htNciz13ljPYGd8qRiQwwV
+ cEa/sQ8l/JXtogbYYIqZ+rNf5FzfU0ZtVj1pUUmndUcasewHw+i+OWVcUEOiOfwZRTn0Z72
+ FVCAduqRY/3yuT3h5hZ3A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:n0IM3jun20w=:3WxuV1SypKS1V4bnLkzWhd
- zWiK74/dO5owV7/QlkMyAVMSAVn7s0mXw4UZDEbd83fl0ElBXFmRpjFG50zOiiangS1gNUrMf
- yH5yJz2Ex/zQgG/wXn/UVoHJXGWIqhqfe2ZeYleg3b1/TaufGr9bt4HT+2Dd0a90N+5QODaOH
- mqNmsA+ABr2Qx6HAyaAArcBGYaWIRI2xCgjgXu19Xg82K+hG+mZslH5t0gCIPxZwAsZu9ngW9
- OgEAOCW3KHosnAf/3WVdzvcx+y5OoPcwcvPipFT/AT57dHYqYaLU/Ikg0XTzsAZDaITLOOtIw
- b+IOlkELhL/pudnUzBkmLOzQQwrP0FwU/IJsiHd3qml3lHt78mkoWzvZxgfqGGD1fgIRlySna
- HCnaADqzqsfhx/w6qsjHdQXyW846k/Q4lVfi5QNYus1KkEhbw7yIiZVawM15RDE5IN4dP+peT
- Kzp3bd7lT9VxTeMs4Yke/VINdhbzeob2hAStgUKtQimra35heMY6IcGNU/GFptZ2c8A3UoSsP
- 5PyTfX5g98TITIZVbMimMdTbYmhjeNO35s1RM3Tm52sg5Je4H5MFM/s8sScTzj5IjSkXxQjEn
- G70Z2jzS8dQqhXhHIh8ovkeuxOmXDqdYGzTH78NSxIS8i+s058Tzzr7afoAIKxgM5BaSlwZpN
- 0e391Yave1v2xtFxgvMAtESiltgePMG5AMFENpFtKQns+IRw/O/07PPL0j62ECPBkPXLJcUYA
- zRucLwFvRABQoXadOniHEWajlJm0zW/dxGTNzHSRw0zyCOvmI4Tm2Ud9bmSW27MXjB3ZHpNIW
- CPVsTlTD/Mb/dhAeeFh/HSRW/WNijivOcUgMV4YFldQu8Ziq6v04GZPsSCedXsK21xKSK0/QV
- CMbWY2gUspYVPkvf8HjiWE9nWqhxIvgoY8dAmzCGJI1jbwpr7OiEXlGFyDKffqMime/gGXX/r
- LIbzHc3GixBaQf9JVIZVfTCpVA9wKo/lQTKi9ds5u7pMnPstHfE8vcIv+4exfGk3vCjqvBruH
- BZdVcwAuf7Fptv7hqoKNxWKcBQ76EcEMWPorWB1qS374YrH0HOtGAOmMmBWOlUzPYSsVTfzPP
- NiKtDx6IPfF+Yg=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:DxfzyF7tOlY=:hHHBqbZM+TnNcbvFa4SeyT
+ At25mQ9xu134Tw5L5SyBl0IVo+JWikVSqssaGuTRrc8UGwCgV2JnA0FgUWimFOOETeL/YeHaw
+ sgmuYJSKojf7rSveotujwmoLUdZzKcPWZgdZSt/nb2lVKij0YG0ZJ6iuD9UW9b7rji+MvemVn
+ l5R/ElJa6ij6xmtye7kaa2PKb1VF0pRhi6+FrStlKx1JGavLg2LlnX90JRvXJijkiRGL8LGXr
+ Daop6Ns36ch/GlQnlUePYNjlTGW163qSLXlVDc+PrkWc6nz+osSKFaC0XdMeUwnhw0MU3mxtY
+ BhVqrt8Yt8+kjQy7JKFOAbyCW4EuHRmerJaWz8xoEAyytcZSYN6KR7tQKIjFUZMRj1IIv7bUW
+ /pYSZvuvaOk804qywg5wnVuKFoDvm6IGWblnkgdPjtXLjWg3sTgnqcf0Zml0aXS76rteoapYI
+ nJOjS7CqfA1oNN6Ia7KPyH5rTq6/qmJH6KvODck1l5URtFcjv4ZQuxc4hQ4jT1ZrcbIVbw1eu
+ AjmJDaQJuHK/pNUeWQ1o/j6nLcFNT6r59U7YYp2pCpG3T+7d5hnGi9v0V8zJ8BXYfWGHjMgv7
+ RQifA/ittWP12aopP5sLeAMnwl/pxZ3FIg46uCv9H7zSGqzQUHnnOdtdltTKNw2jp0Xc+Hawa
+ h4ctqPtwnqXqEN6/bH1kBx+q8YtR7LbxoZhR+BNeVb01yPTkZ00W+sz79YoKqx6FwYXMoRGHg
+ m/4eBP3YmR4tZ7jHn/MUiPV38zHhTkXLe7x9VdovC07TTdLUsB3evsFI2yeBBa7Tm2JZZqZfC
+ Epu+auKMXw7E2UnxSmwiNQZtqZLK8FXkYRy4G810H3E8trsKUUykcUv+R8uXwO4HKFU4W4tIl
+ OwsXznP6g5o89xePI/tKTIr55/TJYOx2GF7dLu1DicmKRjwgDQ9gaBOcSIDZvuBUGzezJ1E+k
+ EsTHePeL50wWmemGFNjGfeS8M2yQifDEeHORai8040fuj3wu0HuOOoq3FmQGMHEHTW3KW8kfX
+ b2aaz1k9Rds2ceIlKQ9Le6+Qh6uhVyETcY4CYKfdcuJ4kOECEP08Xo950PTeUMe21zXCy92V7
+ ycYDIZb3ArtiPI=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add the visible flag to the toc_stack variable to make it visible for
-assembly code and to avoid a sparse warning.
+The stifb driver (for Artist/HCRX graphics on PA-RISC) was missing
+the fillrect function.
+Tested on a 715/64 PA-RISC machine and in qemu.
 
-Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
 =2D--
- arch/parisc/kernel/toc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/stifb.c | 43 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/arch/parisc/kernel/toc.c b/arch/parisc/kernel/toc.c
-index be9a0bebe61e..fa5a10eaf0aa 100644
-=2D-- a/arch/parisc/kernel/toc.c
-+++ b/arch/parisc/kernel/toc.c
-@@ -12,7 +12,7 @@
- #include <asm/ldcw.h>
+diff --git a/drivers/video/fbdev/stifb.c b/drivers/video/fbdev/stifb.c
+index 265865610edc..aae6c9f6ff97 100644
+=2D-- a/drivers/video/fbdev/stifb.c
++++ b/drivers/video/fbdev/stifb.c
+@@ -1041,6 +1041,47 @@ stifb_copyarea(struct fb_info *info, const struct f=
+b_copyarea *area)
+ 	SETUP_FB(fb);
+ }
 
- static unsigned int __aligned(16) toc_lock =3D 1;
--DEFINE_PER_CPU_PAGE_ALIGNED(char [16384], toc_stack);
-+DEFINE_PER_CPU_PAGE_ALIGNED(char [16384], toc_stack) __visible;
-
- static void toc20_to_pt_regs(struct pt_regs *regs, struct pdc_toc_pim_20 =
-*toc)
++#define ARTIST_VRAM_SIZE			0x000804
++#define ARTIST_VRAM_SRC				0x000808
++#define ARTIST_VRAM_SIZE_TRIGGER_WINFILL	0x000a04
++#define ARTIST_VRAM_DEST_TRIGGER_BLOCKMOVE	0x000b00
++#define ARTIST_SRC_BM_ACCESS			0x018008
++#define ARTIST_FGCOLOR				0x018010
++#define ARTIST_BGCOLOR				0x018014
++#define ARTIST_BITMAP_OP			0x01801c
++
++static void
++stifb_fillrect(struct fb_info *info, const struct fb_fillrect *rect)
++{
++	struct stifb_info *fb =3D container_of(info, struct stifb_info, info);
++
++	if (rect->rop !=3D ROP_COPY)
++		return cfb_fillrect(info, rect);
++
++	SETUP_HW(fb);
++
++	if (fb->info.var.bits_per_pixel =3D=3D 32) {
++		WRITE_WORD(0xBBA0A000, fb, REG_10);
++
++		NGLE_REALLY_SET_IMAGE_PLANEMASK(fb, 0xffffffff);
++	} else {
++		WRITE_WORD(fb->id =3D=3D S9000_ID_HCRX ? 0x13a02000 : 0x13a01000, fb, R=
+EG_10);
++
++		NGLE_REALLY_SET_IMAGE_PLANEMASK(fb, 0xff);
++	}
++
++	WRITE_WORD(0x03000300, fb, ARTIST_BITMAP_OP);
++	WRITE_WORD(0x2ea01000, fb, ARTIST_SRC_BM_ACCESS);
++	NGLE_QUICK_SET_DST_BM_ACCESS(fb, 0x2ea01000);
++	NGLE_REALLY_SET_IMAGE_FG_COLOR(fb, rect->color);
++	WRITE_WORD(0, fb, ARTIST_BGCOLOR);
++
++	NGLE_SET_DSTXY(fb, (rect->dx << 16) | (rect->dy));
++	SET_LENXY_START_RECFILL(fb, (rect->width << 16) | (rect->height));
++
++	SETUP_FB(fb);
++}
++
+ static void __init
+ stifb_init_display(struct stifb_info *fb)
  {
+@@ -1105,7 +1146,7 @@ static const struct fb_ops stifb_ops =3D {
+ 	.owner		=3D THIS_MODULE,
+ 	.fb_setcolreg	=3D stifb_setcolreg,
+ 	.fb_blank	=3D stifb_blank,
+-	.fb_fillrect	=3D cfb_fillrect,
++	.fb_fillrect	=3D stifb_fillrect,
+ 	.fb_copyarea	=3D stifb_copyarea,
+ 	.fb_imageblit	=3D cfb_imageblit,
+ };
 =2D-
 2.31.1
 
