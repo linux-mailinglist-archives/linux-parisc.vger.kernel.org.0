@@ -2,137 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69A1648DACD
-	for <lists+linux-parisc@lfdr.de>; Thu, 13 Jan 2022 16:41:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6733048E4AD
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Jan 2022 08:08:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231216AbiAMPlu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 13 Jan 2022 10:41:50 -0500
-Received: from mout.gmx.net ([212.227.17.20]:44205 "EHLO mout.gmx.net"
+        id S236022AbiANHIc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 14 Jan 2022 02:08:32 -0500
+Received: from mout.gmx.net ([212.227.15.18]:38949 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233305AbiAMPlt (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 13 Jan 2022 10:41:49 -0500
+        id S235841AbiANHIc (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 14 Jan 2022 02:08:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1642088500;
-        bh=Pm16orVY4OVh2JPou8ROtUueZdZWdS9G0avKCkWVR9Y=;
+        s=badeba3b8450; t=1642144104;
+        bh=BxfRhreYujPeGp9+nJXdTyutjragMB4S+jmRTEjvV9g=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=Nvz0PXh9F2zCDmcwRtZjMn0Lhv17Fzgyh51MDcaaoWHdcBKz1dmaMZqtRO09cJVo+
-         Aifi1wZcIp7PdiDiu6RMkEmeBYnwVCLEWGhAkSvd6AgESOwWpqO1gJHF1d40m+5Iw1
-         ENyINu3TH1XNEhxecGjc0iyedxsqI+UmRAsLOUME=
+        b=TwJEhODW9CsBflhHXPZ5a3a8ZkgkENG/TAo1MoV6E3d7ABW3Khyr1VhhsSqNCe9C2
+         /O2MLN1DjX3abdC0pGf+tr9Ip8IpEAXGO7vRsAcJ1rhIVu89OdP9vGhkj+uBisOTDK
+         oVyWY5mANuDvbhDzurKA9HfZ+dkVRNRser2v6cZ8=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.168.79]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N4zAy-1m9eAi2M2W-010vdH; Thu, 13
- Jan 2022 16:41:40 +0100
+Received: from ls3530.fritz.box ([92.116.186.160]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M2O2W-1nC8JS0ZMk-003utK; Fri, 14
+ Jan 2022 08:08:24 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
 Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>,
-        linux-fbdev@vger.kernel.org
-Subject: [PATCH] video/fbdev/stifb: Implement the stifb_fillrect() function
-Date:   Thu, 13 Jan 2022 16:40:37 +0100
-Message-Id: <20220113154037.49294-1-deller@gmx.de>
+        Sven Schnelle <svens@stackframe.org>
+Subject: [PATCH 1/2] parisc: Use safer strscpy() in setup_cmdline()
+Date:   Fri, 14 Jan 2022 08:07:19 +0100
+Message-Id: <20220114070720.73353-1-deller@gmx.de>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uZDYNAnQnkvzBm7uDLeBebVoRxHZ6kLdIYnWtrsZiOzphrkGnLQ
- wFf3H0qfga5luk0+vxYNzFcaiwPBbeF6ItyzFSrL8DQglULm8htNciz13ljPYGd8qRiQwwV
- cEa/sQ8l/JXtogbYYIqZ+rNf5FzfU0ZtVj1pUUmndUcasewHw+i+OWVcUEOiOfwZRTn0Z72
- FVCAduqRY/3yuT3h5hZ3A==
+X-Provags-ID: V03:K1:AL+gSoW0b5rnxUEaIYu+TPfpx3cTN7j46ygbCMs9sJkZ32R+7GJ
+ q3dP+RdIlqoOs/A+RV1l8reXvXa+OR/xfDF7D2pHrKtAiRku+qwyg4vY6JFw58lljxUpism
+ fC3TksaNuSoXNvtFv7Wm8ceebnPUDyw+Y66e6qnDPg66oev2imFFAJlKZi38EjsFqwZCIqb
+ 5TGtbuyS5xNBzLNQ3CJcA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:DxfzyF7tOlY=:hHHBqbZM+TnNcbvFa4SeyT
- At25mQ9xu134Tw5L5SyBl0IVo+JWikVSqssaGuTRrc8UGwCgV2JnA0FgUWimFOOETeL/YeHaw
- sgmuYJSKojf7rSveotujwmoLUdZzKcPWZgdZSt/nb2lVKij0YG0ZJ6iuD9UW9b7rji+MvemVn
- l5R/ElJa6ij6xmtye7kaa2PKb1VF0pRhi6+FrStlKx1JGavLg2LlnX90JRvXJijkiRGL8LGXr
- Daop6Ns36ch/GlQnlUePYNjlTGW163qSLXlVDc+PrkWc6nz+osSKFaC0XdMeUwnhw0MU3mxtY
- BhVqrt8Yt8+kjQy7JKFOAbyCW4EuHRmerJaWz8xoEAyytcZSYN6KR7tQKIjFUZMRj1IIv7bUW
- /pYSZvuvaOk804qywg5wnVuKFoDvm6IGWblnkgdPjtXLjWg3sTgnqcf0Zml0aXS76rteoapYI
- nJOjS7CqfA1oNN6Ia7KPyH5rTq6/qmJH6KvODck1l5URtFcjv4ZQuxc4hQ4jT1ZrcbIVbw1eu
- AjmJDaQJuHK/pNUeWQ1o/j6nLcFNT6r59U7YYp2pCpG3T+7d5hnGi9v0V8zJ8BXYfWGHjMgv7
- RQifA/ittWP12aopP5sLeAMnwl/pxZ3FIg46uCv9H7zSGqzQUHnnOdtdltTKNw2jp0Xc+Hawa
- h4ctqPtwnqXqEN6/bH1kBx+q8YtR7LbxoZhR+BNeVb01yPTkZ00W+sz79YoKqx6FwYXMoRGHg
- m/4eBP3YmR4tZ7jHn/MUiPV38zHhTkXLe7x9VdovC07TTdLUsB3evsFI2yeBBa7Tm2JZZqZfC
- Epu+auKMXw7E2UnxSmwiNQZtqZLK8FXkYRy4G810H3E8trsKUUykcUv+R8uXwO4HKFU4W4tIl
- OwsXznP6g5o89xePI/tKTIr55/TJYOx2GF7dLu1DicmKRjwgDQ9gaBOcSIDZvuBUGzezJ1E+k
- EsTHePeL50wWmemGFNjGfeS8M2yQifDEeHORai8040fuj3wu0HuOOoq3FmQGMHEHTW3KW8kfX
- b2aaz1k9Rds2ceIlKQ9Le6+Qh6uhVyETcY4CYKfdcuJ4kOECEP08Xo950PTeUMe21zXCy92V7
- ycYDIZb3ArtiPI=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1jwmLCznY2Y=:P+zRUHQ/J5kKjbUz1Tr+eb
+ blfHjYUNBXY0gZfT99BXU33CRvT4EizHJ9mJk+77WmXAYyCa2Przv5OwAC0VP45xcvzO6MedS
+ p62FsMA7FvV6LFf3tO3a+Yn3lhjezECg+4us+QcMsEEf9LF3nBEs7I1EM37FlAjELeHS0BZte
+ Ne1lvqhuS+UJUbjk7bTkE9K8ZvAYOft8dqFUFX1DcDihg0vs7/H5r8Nfdr4ul5YMi5ayxXkxD
+ gV7GWwHNKLHzK48QVAYmpEVeIq2dI7Uy6b6VhNHNHCGhhGG+kLmMFekT4JCow5t1B85RPW+gM
+ ZAbrq0BrrF12aITs6PLsJaVszCypGZnEzAAundDGuHwafIUeordgUa+l/kTWI1TRSC93zX005
+ 7EQV1d9I3ygvU26wcBPC3XsWf0nW68zobOtyX9yZvlIx8I5DAfAKcifWFB2NKsGeg+7TJ4Bvi
+ tlfYV5NpdLYQrRgJh4LS5tEUbfE5tD2aX7dhaTZkb8UW0W9e9QJpS+ECtqJfieLe1cDIZ/MVw
+ +GIOHTCM6+ELuXZHCwRcY+1OfKYqerTBpJ5TgHV8cThqPaoKUE56bYktFo5kHDsnGgSBKKMq+
+ XRpi1+pSNopB7RCTHzTHg1R/IE31unJ8BJMh5CicUwubXFvJE6bBuvBw+Qe8fDuHX8CciBso+
+ KItcy/0jIFIpM7rPtRGIhyrG63bxDQnCSZ1VrV8VqWBVJR5yaMYVLA1koo5EwXKiIJtrcoj2Q
+ bGdA308xKVkbUwMMXphM1tuYl4l1xxLK4xN736SiemZngSO1pwYtiBPfYKuh1uILOUUVZJFLY
+ dcFfLNvRrKZr/56NBLV2USxuikOEWRSOOvDeuHFwoJEgcjc8IliqwQO8xClrLcCJmXKsM4te+
+ 7/2VGWd16MstXtw4OaKAv4gWNwi47j0vbcoJLUeiQS0alV05ScKW1BEVxG43irXYCxfeYgI88
+ lYRkYVh6uFZPi57ADtaDBv0spWwvpmiKpSkEwbF/0R+KtLFvXSAU4IO2sD4gjhojs5FsVaOjF
+ WlKpDizy+qcPrqKIL9eOgiz2eLePARt91bdxxtgxLeeP8nlx6J2Gb9zSPNEp9CE14XmgzbJoQ
+ Jaik4Uhb7Uc9t4=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The stifb driver (for Artist/HCRX graphics on PA-RISC) was missing
-the fillrect function.
-Tested on a 715/64 PA-RISC machine and in qemu.
-
 Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: linux-fbdev@vger.kernel.org
 =2D--
- drivers/video/fbdev/stifb.c | 43 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/stifb.c b/drivers/video/fbdev/stifb.c
-index 265865610edc..aae6c9f6ff97 100644
-=2D-- a/drivers/video/fbdev/stifb.c
-+++ b/drivers/video/fbdev/stifb.c
-@@ -1041,6 +1041,47 @@ stifb_copyarea(struct fb_info *info, const struct f=
-b_copyarea *area)
- 	SETUP_FB(fb);
+diff --git a/arch/parisc/kernel/setup.c b/arch/parisc/kernel/setup.c
+index cceb09855e03..456087a2350c 100644
+=2D-- a/arch/parisc/kernel/setup.c
++++ b/arch/parisc/kernel/setup.c
+@@ -56,7 +56,7 @@ void __init setup_cmdline(char **cmdline_p)
+ 		/* called from hpux boot loader */
+ 		boot_command_line[0] =3D '\0';
+ 	} else {
+-		strlcpy(boot_command_line, (char *)__va(boot_args[1]),
++		strscpy(boot_command_line, (char *)__va(boot_args[1]),
+ 			COMMAND_LINE_SIZE);
+
+ #ifdef CONFIG_BLK_DEV_INITRD
+@@ -68,7 +68,7 @@ void __init setup_cmdline(char **cmdline_p)
+ #endif
+ 	}
+
+-	strcpy(command_line, boot_command_line);
++	strscpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+ 	*cmdline_p =3D command_line;
  }
 
-+#define ARTIST_VRAM_SIZE			0x000804
-+#define ARTIST_VRAM_SRC				0x000808
-+#define ARTIST_VRAM_SIZE_TRIGGER_WINFILL	0x000a04
-+#define ARTIST_VRAM_DEST_TRIGGER_BLOCKMOVE	0x000b00
-+#define ARTIST_SRC_BM_ACCESS			0x018008
-+#define ARTIST_FGCOLOR				0x018010
-+#define ARTIST_BGCOLOR				0x018014
-+#define ARTIST_BITMAP_OP			0x01801c
-+
-+static void
-+stifb_fillrect(struct fb_info *info, const struct fb_fillrect *rect)
-+{
-+	struct stifb_info *fb =3D container_of(info, struct stifb_info, info);
-+
-+	if (rect->rop !=3D ROP_COPY)
-+		return cfb_fillrect(info, rect);
-+
-+	SETUP_HW(fb);
-+
-+	if (fb->info.var.bits_per_pixel =3D=3D 32) {
-+		WRITE_WORD(0xBBA0A000, fb, REG_10);
-+
-+		NGLE_REALLY_SET_IMAGE_PLANEMASK(fb, 0xffffffff);
-+	} else {
-+		WRITE_WORD(fb->id =3D=3D S9000_ID_HCRX ? 0x13a02000 : 0x13a01000, fb, R=
-EG_10);
-+
-+		NGLE_REALLY_SET_IMAGE_PLANEMASK(fb, 0xff);
-+	}
-+
-+	WRITE_WORD(0x03000300, fb, ARTIST_BITMAP_OP);
-+	WRITE_WORD(0x2ea01000, fb, ARTIST_SRC_BM_ACCESS);
-+	NGLE_QUICK_SET_DST_BM_ACCESS(fb, 0x2ea01000);
-+	NGLE_REALLY_SET_IMAGE_FG_COLOR(fb, rect->color);
-+	WRITE_WORD(0, fb, ARTIST_BGCOLOR);
-+
-+	NGLE_SET_DSTXY(fb, (rect->dx << 16) | (rect->dy));
-+	SET_LENXY_START_RECFILL(fb, (rect->width << 16) | (rect->height));
-+
-+	SETUP_FB(fb);
-+}
-+
- static void __init
- stifb_init_display(struct stifb_info *fb)
- {
-@@ -1105,7 +1146,7 @@ static const struct fb_ops stifb_ops =3D {
- 	.owner		=3D THIS_MODULE,
- 	.fb_setcolreg	=3D stifb_setcolreg,
- 	.fb_blank	=3D stifb_blank,
--	.fb_fillrect	=3D cfb_fillrect,
-+	.fb_fillrect	=3D stifb_fillrect,
- 	.fb_copyarea	=3D stifb_copyarea,
- 	.fb_imageblit	=3D cfb_imageblit,
- };
 =2D-
 2.31.1
 
