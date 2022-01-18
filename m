@@ -2,49 +2,49 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48876491983
-	for <lists+linux-parisc@lfdr.de>; Tue, 18 Jan 2022 03:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73E2049198B
+	for <lists+linux-parisc@lfdr.de>; Tue, 18 Jan 2022 03:55:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235553AbiARCyX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 17 Jan 2022 21:54:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58654 "EHLO
+        id S1346489AbiARCyY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 17 Jan 2022 21:54:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345832AbiARCcF (ORCPT
+        with ESMTP id S1345657AbiARCs5 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 17 Jan 2022 21:32:05 -0500
+        Mon, 17 Jan 2022 21:48:57 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF5BC06173F;
-        Mon, 17 Jan 2022 18:31:36 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78ABC06175B;
+        Mon, 17 Jan 2022 18:39:54 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E0CF2B811FF;
-        Tue, 18 Jan 2022 02:31:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAA9C36AE3;
-        Tue, 18 Jan 2022 02:31:32 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9D2CCB81255;
+        Tue, 18 Jan 2022 02:39:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AC0C36AEB;
+        Tue, 18 Jan 2022 02:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642473093;
-        bh=G82Q4cPxhw81sOqVHOtuTQNejvoexVwt2CxtmuQC0No=;
+        s=k20201202; t=1642473592;
+        bh=3nv0rTAvSjmrK3ODMmnkVpkb/3ZV6bPUkz/GTjh9ROM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UhBXAq8MbeRdIMIpi59YBZTwE+ZkpXKt0+k0PDwX3fg6Ehw6QIeoEF3D/4/jqlSn7
-         0znNuUW9eEEGhHjec2eq+0u6OCNKKMEw3nLR3pogV3wPehnOMmgWUGlZsWmtlPe+AE
-         I1bn1qBlWy1C6tZ2X9EzvnTELyMuxaMXl+Az2RrUkXXw48F9oLOh3vm4Xqe72+Ax95
-         yNSCmhUy2FLfxIqUYFT6/oqzIdoXKHd20DDJ2rpV6bUSE+PtPjhoL60WTRRKKwogBB
-         NDq8rLZzYLGhg3Z+u1rZTKwAs8eSPKlIp9maFaeVmE+U1QBzrKPpTG4l0r66FJkOEA
-         pviPKerGtdUOQ==
+        b=hQU9m/JVgqk8lee2AVat5YX/ME4IZlybOHDJuC/zv6C0uS70YkBAoN7lVb64+qBCC
+         2Uj4Ra1dg1Y7NRD+F1R68/x+NJDOVC0jezpfKzNyIPC8MX3Dv581rQ7UPLLoE/Exbw
+         IcJp+8V1+z+gCiTzqMcoHGNsBqI5djJuHmLLyOtPuUsepsr5PuPj/5/2CdhguteDto
+         5x3vFBx5Mn5yp3hXrLxBlgph1ZayG0kMo53CqKIHSqBbWA/clvdDx0fJMwfnAZbHa1
+         AUJcwlzb+JKLyGJ9H3hazgZKS5J5TObuZ7FbQI1JCNW87SdFjRVhxbETAei6dRa6Ia
+         mnWhHVkqbDY2w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     John David Anglin <dave.anglin@bell.net>,
         Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com, svens@stackframe.org,
-        mpe@ellerman.id.au, wangkefeng.wang@huawei.com,
-        ebiederm@xmission.com, linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.16 211/217] parisc: Avoid calling faulthandler_disabled() twice
-Date:   Mon, 17 Jan 2022 21:19:34 -0500
-Message-Id: <20220118021940.1942199-211-sashal@kernel.org>
+        ebiederm@xmission.com, wangkefeng.wang@huawei.com,
+        rmk+kernel@armlinux.org.uk, linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 182/188] parisc: Avoid calling faulthandler_disabled() twice
+Date:   Mon, 17 Jan 2022 21:31:46 -0500
+Message-Id: <20220118023152.1948105-182-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220118021940.1942199-1-sashal@kernel.org>
-References: <20220118021940.1942199-1-sashal@kernel.org>
+In-Reply-To: <20220118023152.1948105-1-sashal@kernel.org>
+References: <20220118023152.1948105-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/parisc/kernel/traps.c b/arch/parisc/kernel/traps.c
-index 892b7fc8f3c45..eb41fece19104 100644
+index 197cb8480350c..afe8b902a8fc4 100644
 --- a/arch/parisc/kernel/traps.c
 +++ b/arch/parisc/kernel/traps.c
-@@ -785,7 +785,7 @@ void notrace handle_interruption(int code, struct pt_regs *regs)
+@@ -784,7 +784,7 @@ void notrace handle_interruption(int code, struct pt_regs *regs)
  	     * unless pagefault_disable() was called before.
  	     */
  
