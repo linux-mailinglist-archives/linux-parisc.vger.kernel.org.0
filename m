@@ -2,99 +2,106 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B344A494DC0
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jan 2022 13:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A81C495335
+	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jan 2022 18:28:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235570AbiATMSS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 20 Jan 2022 07:18:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58314 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232764AbiATMSS (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 20 Jan 2022 07:18:18 -0500
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26DB4C061574;
-        Thu, 20 Jan 2022 04:18:18 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id x37so1413496pfh.8;
-        Thu, 20 Jan 2022 04:18:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7Ik94/eld5uHGn3bZKP+GwLJe2ovChEc9eeEQCx97DA=;
-        b=fabB3iISSP9VCRA/ON+MRMlr44Tb3dhfBGhBTJXPfS/t1oeQHbga2DcV/kTfjLeNeY
-         dz5Xi7Xz0s8G48vtK0IactR9wnjZjApjMFDVP9siMUXdqmOWVvWEPI5LEhU1RfENSVt7
-         YhiNxqsf75W8Z4iDxcNTPBXJVepgsWbYbHA3gKk8oY4DauCtbCODmH9zmyYfNRMqdAaJ
-         bS6oARI9LCLMU/pCAJr+aEdqMlQ+uqvkWFJzF6MGT0ThHDEmPW6qv514SoN1VsF+n2NH
-         mIjfENDEMA2TNdMfZWRjkTmIHcM3FH4VCtNowX/dNCBT44SoUCxYcgfaiZUDRI40oroK
-         3qog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7Ik94/eld5uHGn3bZKP+GwLJe2ovChEc9eeEQCx97DA=;
-        b=cDefyIKpXK1GfeYM5x2txc671XEu5CqtNQSuHcT/lYH2b+9m1E+sUxxLbz5PSRFTig
-         vVP1gY4UMA/Y8LbeYoqrgMxX+EAnCE2Bm4JU1SgOb50Ku1pAX7DKl9kEVEKs3vVerYwD
-         tZxVl8SzbUtbWCfe1Z40GwKJKsb/1t13mSkoEAbdllSrJU7UW+uCE3dAafvikFewJVob
-         BSeeSVHMB8S0f2Kvdp+iHhhuECFyj3hqUY3GEv51DI9l7KU5nuHFzyZAGlYWq0LZaV4R
-         djlCVDZ8I/Ag5ixwsg+g0bAZfkkm45YYB9/IxyquEXeX4Sxeuhrqndq0a8/OpAUuHIga
-         jY2w==
-X-Gm-Message-State: AOAM532K1u1Gpa/jno/eRDWBzXLSoCJ+n8ZMhGOn17v8/FjtauU5Mt8i
-        CAiX/Vv71+xWEXgPO3KybdU=
-X-Google-Smtp-Source: ABdhPJziVWpUMMjAt6OqkDffgHJvUinzucSciCJlcXVk2GC0MdW92szy+GiTxOmSUoDL3aAs0KMTjQ==
-X-Received: by 2002:a63:2a0d:: with SMTP id q13mr9391353pgq.601.1642681097684;
-        Thu, 20 Jan 2022 04:18:17 -0800 (PST)
-Received: from localhost.localdomain ([159.226.95.43])
-        by smtp.googlemail.com with ESMTPSA id n4sm2307360pjf.0.2022.01.20.04.18.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jan 2022 04:18:17 -0800 (PST)
-From:   Miaoqian Lin <linmq006@gmail.com>
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
+        id S231516AbiATR2m (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 20 Jan 2022 12:28:42 -0500
+Received: from mout.gmx.net ([212.227.17.22]:38521 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232295AbiATR2f (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 20 Jan 2022 12:28:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1642699710;
+        bh=UHhjAWf/9pVz8wScRWDow/ubaju2WM3ooNGJadQmmyw=;
+        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+        b=LRdm3g8HDi1CpAlqU42nsOWO6j9clZ6kil00zIf/i1lpPN3Z/0H7FCDwmtUKgP+mQ
+         jaQlQhla/9hR9yZRmHoO0dCdhtdm/Bgefyv/trfyYxU78gsUy6jeccJvPBDN9bkPYL
+         kAmBt7tDgWUG0Ta9d7UPMw8V0W4H58k+a23Ie/zU=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.166.9]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M1HZi-1n8wH13hMY-002l7u; Thu, 20
+ Jan 2022 18:28:29 +0100
+Message-ID: <cb82c739-b496-670a-13dd-0f1a37c085f8@gmx.de>
+Date:   Thu, 20 Jan 2022 18:27:22 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] parisc: pdc_stable: Fix memory leak in
+ pdcs_register_pathentries
+Content-Language: en-US
+To:     Miaoqian Lin <linmq006@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Greg Kroah-Hartman <gregkh@suse.de>,
         linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     linmq006@gmail.com
-Subject: [PATCH] parisc: pdc_stable: Fix memory leak in pdcs_register_pathentries
-Date:   Thu, 20 Jan 2022 12:18:12 +0000
-Message-Id: <20220120121812.14943-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
+References: <20220120121812.14943-1-linmq006@gmail.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20220120121812.14943-1-linmq006@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:sN32WROnKtNl1RxHyC+SOF3Teld739cwnAAnkP9wfgeaXxFUhhc
+ HiVZdhTDHPpKkVLSErcERtsnVHvlqkiK9tL/R+7eyeCgnBVQBQffCv1Eo/0wbTiqVMtfWQ4
+ v/QHvC+xmOVTDRc98iy4+LfQtJcscKyGh1PFnUdQHE0iMhKbFA3OzJ8KjwyI8W9Au5odEgU
+ 1CfY2OvnxV5dv90XCXqGA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:5Ox+WbnmG2g=:GiURZDMCA/lNYj9F43Y0Bw
+ 15dvZ1c90M8rfDJtwSdcZJ1UzYxt3UMCHu3SUlKoxROXz+l5GJWPOeAHWR83JgPebRBdaw45w
+ T39mXwOWD5znid5BhWGbaOsgE+RLzKBSTzlXI3oBStWiOvaZfpzC30LJV71yP/vcACTtUPYfs
+ d/x+QFqnqGiolIiTVaaG7ZADaMZEPGBiQKXpW4onk+Rb+7Sf6YWIfZY9W+gdGMgh46KmmSHvm
+ VzaYc2mXmA20IKvNuDE/QW+d1Tnh9vikMpgToEpSv5fMPt8FTnK/KY3zjWZb+BWCRn4TZglQX
+ cgAZDd97UX+3tSNOIJ23EyWDy5xVkFxEUS2mFOgM+Lw/mHXM0AyAgY7X0WdeD/p0+R2gMGtQ4
+ 5S76G+QbbSR+XFS8alBkYYJKDmY0PGXwey6DuIYffPQoSPEVNkVLLlfYkylXr3gLKnsubm4dk
+ +UnWFd21Cp2Cqg2mVT+7gg70tk0oFDYVlCiOVmdr1eVnkPDdl/T1JV/b0u8+zn6QsCWoSHeML
+ s3CGAdvGzkNuyhsSIuw9p9NruIkAy6+njrNq/3VnD5Sb53YRhYnBrxnK93/e6/ezv8jQV7cbS
+ bkVlzsJ2tdyQC5M4d80N6z4r49ojutTP021urIUrKY+2E3B6Omx/IZWcKvuX4uQt5BTZJ8MR0
+ 0b2Z16EY+n3N7hc3NdUw0CLQfD50mUhJ5WZcdSkA+V5AiQmQCawuc2ghN3IFpjJI9J1dP5AG/
+ r0tISGmPyga9jvWESoh1qI+YirTyJlz0cRu5/R2aN9wMZRkE2876i52AYkiwjfFcpV7jTPyFX
+ 5CyoreL1qoPPftnI1WzRzuJ+xp+Ux+7gnXn9au6LKMARFcnc0kqfLG7EuOdv6Iq4ZcmlpqUz4
+ wSAxL/sxwNvFeu+vThlEqLnap0S2Dntu/TT2LkbTh3iTLQilLa0VWMvhM46UlOU1Q5++9QnhX
+ gkknvHSQ4SWZXJwIY8Q6zQHJzj81A00oDHrug78ww3m3RTpDzyNcDEAXwv04/PEdPtQAT6c5h
+ vIJC4zEEFO0waZfksRDiESPtmOHOX/Y2drEVlFIXtyWrrEF1NBp/NYVfoMpvjiISmt1g0KF1p
+ QmjC4yrWVqFcUA=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-kobject_init_and_add() takes reference even when it fails.
-According to the doc of kobject_init_and_add()：
+On 1/20/22 13:18, Miaoqian Lin wrote:
+> kobject_init_and_add() takes reference even when it fails.
+> According to the doc of kobject_init_and_add()=EF=BC=9A
+>
+>    If this function returns an error, kobject_put() must be called to
+>    properly clean up the memory associated with the object.
+>
+> Fix memory leak by calling kobject_put().
+>
+> Fixes: 73f368cf679b ("Kobject: change drivers/parisc/pdc_stable.c to use=
+ kobject_init_and_add")
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 
-   If this function returns an error, kobject_put() must be called to
-   properly clean up the memory associated with the object.
+applied.
+Thanks!
+Helge
 
-Fix memory leak by calling kobject_put().
 
-Fixes: 73f368cf679b ("Kobject: change drivers/parisc/pdc_stable.c to use kobject_init_and_add")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/parisc/pdc_stable.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
-index 9513c39719d1..d9e51036a4fa 100644
---- a/drivers/parisc/pdc_stable.c
-+++ b/drivers/parisc/pdc_stable.c
-@@ -980,8 +980,10 @@ pdcs_register_pathentries(void)
- 		entry->kobj.kset = paths_kset;
- 		err = kobject_init_and_add(&entry->kobj, &ktype_pdcspath, NULL,
- 					   "%s", entry->name);
--		if (err)
-+		if (err) {
-+			kobject_put(&entry->kobj);
- 			return err;
-+		}
- 
- 		/* kobject is now registered */
- 		write_lock(&entry->rw_lock);
--- 
-2.17.1
+> ---
+>  drivers/parisc/pdc_stable.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
+> index 9513c39719d1..d9e51036a4fa 100644
+> --- a/drivers/parisc/pdc_stable.c
+> +++ b/drivers/parisc/pdc_stable.c
+> @@ -980,8 +980,10 @@ pdcs_register_pathentries(void)
+>  		entry->kobj.kset =3D paths_kset;
+>  		err =3D kobject_init_and_add(&entry->kobj, &ktype_pdcspath, NULL,
+>  					   "%s", entry->name);
+> -		if (err)
+> +		if (err) {
+> +			kobject_put(&entry->kobj);
+>  			return err;
+> +		}
+>
+>  		/* kobject is now registered */
+>  		write_lock(&entry->rw_lock);
+>
 
