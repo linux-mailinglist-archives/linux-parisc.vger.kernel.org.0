@@ -2,200 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 338184942B0
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Jan 2022 23:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 926F6494540
+	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jan 2022 01:56:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357468AbiASWA3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Jan 2022 17:00:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229935AbiASWA2 (ORCPT
+        id S230463AbiATA4F (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Jan 2022 19:56:05 -0500
+Received: from mta-tor-002.bell.net ([209.71.212.29]:17146 "EHLO
+        cmx-torrgo002.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230426AbiATA4F (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Jan 2022 17:00:28 -0500
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C8BC061574
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Jan 2022 14:00:28 -0800 (PST)
-Received: by mail-pf1-x429.google.com with SMTP id w204so3518387pfc.7
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Jan 2022 14:00:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=JI5jEcI1hiEGc8WLPgbqQTxkl08Ju0kSWlXY2eIoY9Q=;
-        b=Qxk8ZlOzgx4vMG2yojzX5wqvtn5rpGheXm11Z2NyGGBIUXeWLr4XOg3b0q3SyZigtH
-         iGaQnWl3zb1OvgUv/kyJhvoC8mXZPAhUz50q7uhfasP7KXx2JeaPhKPNgtg4s8H9BDUo
-         vvaHlGGVz9UU7HVblsspusc51ErXeXhgqq8Bk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=JI5jEcI1hiEGc8WLPgbqQTxkl08Ju0kSWlXY2eIoY9Q=;
-        b=y8uolNCCCHz3uePat/MgTKjOGxudFGwyKBa3OLNk9GOjMNpkM6X6TFX8fO5+syhYaE
-         R3u8iBGU91acqlY/MwgP3CyXp+9HgZKvSL2l48dDC1MqQRkfFUkyvncVpg2SihVfihnh
-         1XG/2B7hVPR6gsXgwHtOPdVInE5AtyoJxQUa4Uy722UKRLpk8sW1sFYQ+qyvdmbTKpI6
-         kjjJDEviPy39lDFAgmjf5ncktH/IXteH37vm30eqcytxKXEaUrmmLHxsIAi8PcIt/+fv
-         LPg5ah0ZqeEoy8jclUu4WVw9sf+OJaf+rYtadJyrgf78l//fkyYVPDlDuSZ0jqLir1Ha
-         6dSg==
-X-Gm-Message-State: AOAM531hIPzsQljwQ9mykz0sJKLBtu3o4uZtB5HpyG0A8cWaU+QVJcVw
-        AdYxsWXcOGn1+nvQtATk5sewrg==
-X-Google-Smtp-Source: ABdhPJwt4Nv5793SP6zTE20w2tmeoTfB5V156ftaoTtLpJsdxvELruQabzZX/RUlM9ATmwCRik8jUg==
-X-Received: by 2002:aa7:918e:0:b0:4bb:793:b7a7 with SMTP id x14-20020aa7918e000000b004bb0793b7a7mr32876692pfa.71.1642629627636;
-        Wed, 19 Jan 2022 14:00:27 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id k12sm602597pfc.107.2022.01.19.14.00.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jan 2022 14:00:26 -0800 (PST)
-Date:   Wed, 19 Jan 2022 14:00:26 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-ia64@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v3 11/12] lkdtm: Fix execute_[user]_location()
-Message-ID: <202201191359.5E67E74A@keescook>
-References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
- <d4688c2af08dda706d3b6786ae5ec5a74e6171f1.1634457599.git.christophe.leroy@csgroup.eu>
- <e7793192-6879-490d-1f37-3d6d6908a121@csgroup.eu>
- <c635dff6-2bca-3486-014f-12ae00bd1777@csgroup.eu>
+        Wed, 19 Jan 2022 19:56:05 -0500
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.50.7.94]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 61E6FD76002AF725
+X-CM-Envelope: MS4xfIVYlbxgt/5nr7/vyAgh2aCvFtNttkPT2KrrC73z4xu4RgYDlqIiruejFf/trwF3374x22sSioWhXmBCBpu985M7BhvqKVlmPaJLlT3rGUdtiGY6zDYz
+ 5fw+awpHOvyWbhCiuwYoFlARzZxqRRbGUCvEgX2WF7bOYPz6KzCEBWA9H3sdvCFSXCNfIPBh+KVkA4mpB3uX18GjfoRmnbORiR3nfaHgUY0Bp18GHq51mnMS
+ Sa8sF3wKBVcjYxdQI91X7iPu9+kl36sra9i0HXSrgNGUOYukNIOQJ5o+b50z8MgGxfGNbt8o+ihKwddj8Rk34HGeouAlfpdadMfaPs5UZapTdVxZ/T4K9Xp+
+ efJzYCpsgLflGDqd5Cj4/mMkQVhaY2uK5Vbm6jHvctuILHoDnEZZDBcMZ7iGeLeNOAXdRABQAmLQLOJvZ3cW+z7EPDYI6eKTA4UZ6csL12tcbAb2ciCFsBSY
+ OeQGna6yF+uNZuwz5WLB/esgxMPL59WmQ7wZftvwxga9eCrbiJJTK1lsxZ3ZLW9RNc+RLj344S/CUp2HXDEMVNPuLLwS3gDhA6Rfw4yQkPdLN6rwT1IzPqZQ
+ c6Jr9pJ7oLHV9gyW15IIfbgJZRaDrjBK3gi1ulm7x0pVmA==
+X-CM-Analysis: v=2.4 cv=W7Vb6Tak c=1 sm=1 tr=0 ts=61e8b312
+ a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
+ a=DghFqjY3_ZEA:10 a=FBHGMhGWAAAA:8 a=2oCxmd4MbWu7oaBBeJcA:9 a=CjuIK1q_8ugA:10
+ a=WBo9P5VBDFbwtsgBEzMA:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from mx3210.localdomain (70.50.7.94) by cmx-torrgo002.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
+        id 61E6FD76002AF725; Wed, 19 Jan 2022 19:55:46 -0500
+Received: by mx3210.localdomain (Postfix, from userid 1000)
+        id A6BC4220115; Thu, 20 Jan 2022 00:55:45 +0000 (UTC)
+Date:   Thu, 20 Jan 2022 00:55:45 +0000
+From:   John David Anglin <dave.anglin@bell.net>
+To:     linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: [PATCH] parisc: Drop __init from map_pages declaration
+Message-ID: <YeizEbZ6JftgFyw1@mx3210.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Lc+5zmV9N+BKm02X"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c635dff6-2bca-3486-014f-12ae00bd1777@csgroup.eu>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Jan 19, 2022 at 08:28:54PM +0100, Christophe Leroy wrote:
-> Hi Kees,
-> 
-> 
-> Le 17/12/2021 à 12:49, Christophe Leroy a écrit :
-> > Hi Kees,
-> > 
-> > Le 17/10/2021 à 14:38, Christophe Leroy a écrit :
-> > > execute_location() and execute_user_location() intent
-> > > to copy do_nothing() text and execute it at a new location.
-> > > However, at the time being it doesn't copy do_nothing() function
-> > > but do_nothing() function descriptor which still points to the
-> > > original text. So at the end it still executes do_nothing() at
-> > > its original location allthough using a copied function descriptor.
-> > > 
-> > > So, fix that by really copying do_nothing() text and build a new
-> > > function descriptor by copying do_nothing() function descriptor and
-> > > updating the target address with the new location.
-> > > 
-> > > Also fix the displayed addresses by dereferencing do_nothing()
-> > > function descriptor.
-> > > 
-> > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > 
-> > Do you have any comment to this patch and to patch 12 ?
-> > 
-> > If not, is it ok to get your acked-by ?
-> 
-> Any feedback please, even if it's to say no feedback ?
 
-Hi! Thanks for the ping; I haven't had time yet to look at this, but
-with -rc1 coming, I should be able to task-switch back to LKDTM for the
-dev cycle and I can give some feedback.
+--Lc+5zmV9N+BKm02X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--Kees
+With huge kernel pages, we randomly eat a SPARC in map_pages(). This
+is fixed by dropping __init from the declaration.
 
-> 
-> Many thanks,
-> Christophe
-> 
-> > 
-> > Thanks
-> > Christophe
-> > 
-> > > ---
-> > >   drivers/misc/lkdtm/perms.c | 37 ++++++++++++++++++++++++++++---------
-> > >   1 file changed, 28 insertions(+), 9 deletions(-)
-> > > 
-> > > diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-> > > index 035fcca441f0..1cf24c4a79e9 100644
-> > > --- a/drivers/misc/lkdtm/perms.c
-> > > +++ b/drivers/misc/lkdtm/perms.c
-> > > @@ -44,19 +44,34 @@ static noinline void do_overwritten(void)
-> > >       return;
-> > >   }
-> > > +static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
-> > > +{
-> > > +    if (!have_function_descriptors())
-> > > +        return dst;
-> > > +
-> > > +    memcpy(fdesc, do_nothing, sizeof(*fdesc));
-> > > +    fdesc->addr = (unsigned long)dst;
-> > > +    barrier();
-> > > +
-> > > +    return fdesc;
-> > > +}
-> > > +
-> > >   static noinline void execute_location(void *dst, bool write)
-> > >   {
-> > > -    void (*func)(void) = dst;
-> > > +    void (*func)(void);
-> > > +    func_desc_t fdesc;
-> > > +    void *do_nothing_text = dereference_function_descriptor(do_nothing);
-> > > -    pr_info("attempting ok execution at %px\n", do_nothing);
-> > > +    pr_info("attempting ok execution at %px\n", do_nothing_text);
-> > >       do_nothing();
-> > >       if (write == CODE_WRITE) {
-> > > -        memcpy(dst, do_nothing, EXEC_SIZE);
-> > > +        memcpy(dst, do_nothing_text, EXEC_SIZE);
-> > >           flush_icache_range((unsigned long)dst,
-> > >                      (unsigned long)dst + EXEC_SIZE);
-> > >       }
-> > > -    pr_info("attempting bad execution at %px\n", func);
-> > > +    pr_info("attempting bad execution at %px\n", dst);
-> > > +    func = setup_function_descriptor(&fdesc, dst);
-> > >       func();
-> > >       pr_err("FAIL: func returned\n");
-> > >   }
-> > > @@ -66,16 +81,19 @@ static void execute_user_location(void *dst)
-> > >       int copied;
-> > >       /* Intentionally crossing kernel/user memory boundary. */
-> > > -    void (*func)(void) = dst;
-> > > +    void (*func)(void);
-> > > +    func_desc_t fdesc;
-> > > +    void *do_nothing_text = dereference_function_descriptor(do_nothing);
-> > > -    pr_info("attempting ok execution at %px\n", do_nothing);
-> > > +    pr_info("attempting ok execution at %px\n", do_nothing_text);
-> > >       do_nothing();
-> > > -    copied = access_process_vm(current, (unsigned long)dst, do_nothing,
-> > > +    copied = access_process_vm(current, (unsigned long)dst,
-> > > do_nothing_text,
-> > >                      EXEC_SIZE, FOLL_WRITE);
-> > >       if (copied < EXEC_SIZE)
-> > >           return;
-> > > -    pr_info("attempting bad execution at %px\n", func);
-> > > +    pr_info("attempting bad execution at %px\n", dst);
-> > > +    func = setup_function_descriptor(&fdesc, dst);
-> > >       func();
-> > >       pr_err("FAIL: func returned\n");
-> > >   }
-> > > @@ -153,7 +171,8 @@ void lkdtm_EXEC_VMALLOC(void)
-> > >   void lkdtm_EXEC_RODATA(void)
-> > >   {
-> > > -    execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
-> > > +    execute_location(dereference_function_descriptor(lkdtm_rodata_do_nothing),
-> > > 
-> > > +             CODE_AS_IS);
-> > >   }
-> > >   void lkdtm_EXEC_USERSPACE(void)
-> > > 
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+---
 
--- 
-Kees Cook
+diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+index 1ae31db9988f..b90d7e408b0d 100644
+--- a/arch/parisc/mm/init.c
++++ b/arch/parisc/mm/init.c
+@@ -337,7 +337,7 @@ static void __init setup_bootmem(void)
+=20
+ static bool kernel_set_to_readonly;
+=20
+-static void __init map_pages(unsigned long start_vaddr,
++static void map_pages(unsigned long start_vaddr,
+ 			     unsigned long start_paddr, unsigned long size,
+ 			     pgprot_t pgprot, int force)
+ {
+
+
+--Lc+5zmV9N+BKm02X
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmHoswgACgkQXb/Nrl8Z
+TfGnnBAAgIwEgQPp7qT2xlHdhvpNaqFo8214Q27MBY9Ogr3th5WD6fv7pNb6dmNS
+JbdzX9DvqhHqyZxlZRFSd9J9mjHExPFClZhnk0HNfigaOS1HfnF0Gr4sDvEkdJSt
+J/RnxOb5t9PHjcJgRaVSI90dAqJRJjEvMWsOBx7ES+AGFqko2GhAADfo482MbNoA
+sxAWWpzEZv2o8eVtfakiNZE/0FIjsJgOCtjQ/w0sGM8r1m49iRaO13VjRjs4gA7v
+tOsBWOdjCfIEBmomNT1f+l1TrJfX1hBmPwAO3Js3Xp22hF4lf24ne1voXr6NRE1i
+sy+sxG1Cu95JKHxzUonmf3QtruA7JenAHQ4o9uZRFWGWSWPP1KZAFq16kb2gX07R
+Ac4SP5AvXB03hiPP5dUdAjTRwheyn0NQ054vslzAj3Uedr9uQlnRNnOiheDSbbog
+i/wxsTbUTKEWkl2d0YSHiA9l3+HiqjMB+xHK/KdwJywAh7I+s+wS+xlk6a5Ra3Ko
+x6/7OcZh9EhVqnD297HvxBQplrMlsQe0yCiF9RojK+/30fIL9hZNdNFBpY5a3RWY
+R1qAiGwBUfh6oTQ3pnNgphLbB2Xvb7KWjbVEzLy9v5TBQwoBYaRnYwXptPaIMqPv
+UqzIcXlKsso8gQpMHVF7BmkYxukwMxkeDQ8OuMz7lkS4Ip/pg4c=
+=9WEE
+-----END PGP SIGNATURE-----
+
+--Lc+5zmV9N+BKm02X--
