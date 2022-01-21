@@ -2,109 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 827EF49679A
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jan 2022 22:54:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21B7A4967DC
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jan 2022 23:28:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232441AbiAUVyz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 21 Jan 2022 16:54:55 -0500
-Received: from mout.gmx.net ([212.227.15.15]:33209 "EHLO mout.gmx.net"
+        id S229569AbiAUW2h (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 21 Jan 2022 17:28:37 -0500
+Received: from mout.gmx.net ([212.227.17.21]:59459 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231329AbiAUVyy (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 21 Jan 2022 16:54:54 -0500
+        id S229471AbiAUW2g (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 21 Jan 2022 17:28:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1642802072;
-        bh=o3HriOZZYTQr0RY2qA5gv/JQ+l5Hfs4zA46TyN1O4JI=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Cyt9ijGHiAcuBFq7i1sKEXAXVc05o8facJ2ZWY2ycjTwBuWwBd8KWBtWAV9qF7CWI
-         phD6JbCEeO37xJJHvEji6CPBEK7HSPv5GxM8EkFsnQZ0YqNcDlywsUpcmp2/K+ot95
-         nV9nqAtZeaOI9JqFWeE0PWbK4aAolPN5eBHLZJEA=
+        s=badeba3b8450; t=1642804106;
+        bh=zL6nm69DWgZVJHYquUk/KWyKFBQIbncygS6u/DCkUWE=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=gl7bnviXQ4bIHPmUqg0gV7sAhwwP59VEEZers9g3TdA96uYYMjngl9pJaPqnlZCt4
+         bRVIxRVtpE4sAMqKhSF01HmAdCpnK7EmLZDeuZIVUS3f1wBTlMGoZobHdD95OGw3nz
+         ApfQ0uIkqO4ShFkJBgSKRCN+tZh54s1RrJ4ZzayM=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.180.114]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MAOJV-1mz9u70RiN-00Bpnn; Fri, 21
- Jan 2022 22:54:32 +0100
-Message-ID: <d150a5df-157c-a435-5696-93a1c1ed6406@gmx.de>
-Date:   Fri, 21 Jan 2022 22:53:23 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [next] parisc: allnoconfig: ERROR: modpost: Section mismatches
- detected. Set CONFIG_SECTION_MISMATCH_WARN_ONLY=y to allow them.
-Content-Language: en-US
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        John David Anglin <dave.anglin@bell.net>,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        regressions@lists.linux.dev, lkft-triage@lists.linaro.org,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org,
-        linux-parisc <linux-parisc@vger.kernel.org>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>, pavel@ucw.cz,
-        rppt@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-        linux-mm <linux-mm@kvack.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <CA+G9fYvuEqeoLO6dC_qtGyRUz=UPv5i0C3jZ_n9nz5kWOuCHYQ@mail.gmail.com>
- <CA+G9fYuKGaDfyke81wbSe2yqTm6GqWNuKw2wB6NFaCLa1q7z6A@mail.gmail.com>
+Received: from ls3530 ([92.116.180.114]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3UZG-1nAUA42bIY-000ZPz; Fri, 21
+ Jan 2022 23:28:26 +0100
+Date:   Fri, 21 Jan 2022 23:27:18 +0100
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <CA+G9fYuKGaDfyke81wbSe2yqTm6GqWNuKw2wB6NFaCLa1q7z6A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:X5d0rsZTnoWGQfPByshx5re1SKOdQJRDvYRKNsEOWYjGMPMVEGH
- q5eWkJQbCg6jX3cHpq1ylLgtXak6CRPRqlJ2EJykNVJi0VDI2a6N72VHCarEe0CBNJbOwLz
- s5TuyUCEVRgtH3lWcOpsYQc0/eQs59D1ikjyhlWnpOCik3YSN5mCxv7K2xuNlD6Haf5gBO+
- GK/ElISvRuUEdtxugGR4Q==
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>
+Subject: [GIT PULL] parisc architecture fixes & updates v5.17-rc1
+Message-ID: <YeszRlKu5dWqiHDQ@ls3530>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:yehtTieKYk6DBlPRYFOH4VTggDhraqu6eSPSgRCRqX85IxjFm4F
+ QucgigxltC316dG0Ve+bpguDObDIHdyOjELNVfrr3FsE+iQ9h4f75ODmFCMxgC04wMmUAw7
+ d2xJfHzXxpYyx8Fu3lPvtX8YIW4CUDYuPj+9hLQ7pmmlLpUPm7jd/Bc9+2KX71Chd0oyd/z
+ 5vMKVumAeU0mLEj7mHU4g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lUI10Suj44Q=:7jAVRQBTyxJN3t/c1FvNpj
- xyO02MpC52wNdI8H40C+fVWQTH1l2FHsTiMsZkRoKyWyNzzJ+s6Dj0aeOyFSsCwmRb9hlf+PT
- 4lQ9Vuaf2PsCPT8D8SBilye1vj4RdpZBTeytUNrNqKfH2gSbM2zVTB1087ETLMGNSU4Rk3WUf
- HHVpvHx5fY7pPbHyPus9o91xhNE0Hp5T+W+hHlAGlWb1uRGqEkvO+TUzeHAKUgENYIxUKcNOS
- 6t+FW/dC8i1NSRiD9TYwxG9ZndLJuC4CLc+f6bsuxbMygTEb8BuLaeouDiuTpNSG5v0OqH2V8
- 4ppseO6bzfrrX5LQG2U4UGlVJ/cSuuGuGE0owG8SlG4Azb2Vu13z0IvGGMvbF9By3IrlmX7Im
- IgXyii62Xcf6MozWBWLbNqbnJRqeXPsFS7a56OWvTNp1bC+mD08zGSXSbUc2tGPKZ1+yx52yZ
- wceFnVk4xddpyV4HaS0KcCcQpcjpU4ZYqBmQ0DkjaE8EIgeUU6JsxjG6si6cma0f5rjoEf0DZ
- RH7JkqZkelPXp/VAy/2E7MGXoJDI6ztW3zXzE8aPuejh5X+ZrTqV5ldU2/TSu/1a/cSokdq74
- 98w8Xb67lqq6pDrxo8EP9zpnivxtYmGJ9CHXppyOdzNdhWkAzIJb9yYMPPaavPdQdaZjMxPyi
- yL4qBu3eQoRjwTL62xL2rZUopjeWjZ5YAARXjfIZJxiMyVr7TJDH60Pcn5y0MZiLzJbGME+eC
- 6MrFhWJvVEywQ9p4a6fOjCH9mfqdUmQlwb2w5/FX34occdFeeQBuwhUS3LJXfW093D6z3iDDt
- EtC2qTwqpBZC15wHkKrAcwml5yxNULewPG+iaR/NsyMHWneq0QyC0+iBSorvbkp7dX9T1CE59
- P/TZ3HxSQyZX4lC8gkVV1+1vlczdqTam8JXmvR6vT1XHNzSwPVYIMAn0LuGuB3gaY9VEZS8oK
- Vrn0+8IuVSHHTakkWw1diHvCEoHkJAIgfu/h8TG8yJzyuYXVFZlo8prcLsIAn8+ZGzmuAykHj
- IryZFf9Al6dG5HZ9YON+vbuwDucZYkHilCEwjBzh3EzSTXikOerdHoVNQpDSgt/+wS9xyeSOV
- dInWiD26xKZr1k=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:pK0W4AuRleM=:KPgR0LnE29rbN8sAKo5QdP
+ 4Q7kfV4axpMaJqVJNiH+odfIWsLjMxAU2ciQARmlpzYWinmlqwBODthi+1N7/16Dr+inlTB/T
+ xXwIVJPZ+B1rsMff5gBPhBhGbhxLQpJ2fom0wVrUKKdRVZYgsivJYqZKzzey3mEJ+o3QiBIK0
+ NSawQM90eRA/N/rY7Au1gwgKj8boZ5m7c1yLvifVE7hfkVcRRDu+B/2T9NBnb5FR03+PCn0TH
+ DIW0sLHSH6mg7VpSl3YNps8rNsWxmYm4kSWP9zNwsmERyinNxp7WAJ+p88kYXNZeDw32G2cEH
+ /memlkgCD3+fzBlh9IlMV+b3y2cEY/CiGfXqfKR8iCjjEMQUFsLjkAu7uP75f7V99VLt7u3Pz
+ MJzvh5+KUvppfa+/XiqNUanyO5DRc3iY+XPHOO5QvKEBxKO0G8m5ZNqbB0zBWwXPv3pDdjwD3
+ ELhgN40o1u7t/y1NTOAUew1n2xy2ru6bC6Z4CfcQQ1hcgeITXnL4tAccHhx5LVkSEK+YFkyik
+ 8Fc/zth9BVYirQQYTGCgENPO+JCv8ZgPvlLLyNj0GpHEaDw5HvVnliqFPsyQtR+yyH/ovRb8q
+ Uwz+Fke3vQ8kHiP6C9KuTz2Ph33zlJYpanZ7PITAXk9kKGegt2h4l94OiAceR2FetGtb1kUJb
+ 5IO0M9jgr4Oy6J2RiPOZyavq9GyMOJaIiz0aLaQzGXEeYZEfwtUjg4xD9d6eH8sHg4j7/62h6
+ lyqSXUqVgNBEfXa40ufLvd0kTxEsydHnpoy1xEw4HEuQ4PbdxQGsSkxj3DMG5BG/WFzDqXgjO
+ s+xMUcll+W/jvFmQrTuQfmXRPy0gHID8Xnbv8LlHoNnR/2df0IZKPMZ3rdrcvfeXrbS+3HoCM
+ 1i7wjj2mnUcIpmq3/YjZcPYzIAoZVlC2cpHoIpudb6PQRQAlROFS13ZgzxfOXQEJHHUMbXFb8
+ SYR8KTeqcHr1hpZq8Dhmyh6jADfx/jQIrEQhv+gdWyQwHb8gLVN0MUAFWfEPhXadmAwQZG1rz
+ rEcGTiH5LnVfBzdrZd7gcz489umAqJBiJPYHnoVOesettthBIszoTB5d4SAyGDNqkcba77VDh
+ MHeBtknF+yQM1U=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 1/21/22 16:24, Naresh Kamboju wrote:
-> On Fri, 21 Jan 2022 at 13:16, Naresh Kamboju <naresh.kamboju@linaro.org>=
- wrote:
->>
->> Linux next-20220121 parisc allnoconfig build failed with gcc-9/10/11.
->>
->> make --silent --keep-going --jobs=3D8 ARCH=3Dparisc
->> CROSS_COMPILE=3Dhppa-linux-gnu- 'CC=3Dsccache hppa-linux-gnu-gcc'
->> 'HOSTCC=3Dsccache gcc'
->>
->> WARNING: modpost: vmlinux.o(.text+0x1c8): Section mismatch in
->> reference from the function ksys_sync() to the function
->> .init.text:memblock_alloc_try_nid()
->> The function ksys_sync() references
->> the function __init memblock_alloc_try_nid().
->> This is often because ksys_sync lacks a __init
->> annotation or the annotation of memblock_alloc_try_nid is wrong.
->>
->> ERROR: modpost: Section mismatches detected.
->> Set CONFIG_SECTION_MISMATCH_WARN_ONLY=3Dy to allow them.
->> make[2]: *** [/builds/linux/scripts/Makefile.modpost:59:
->> vmlinux.symvers] Error 1
->
-> Anders bisected this build and the first bad commit is point to,
->
-> first bad commit: [4f05e5a3946923676e147ad0e33c80df8249b2fe]
-> parisc: Drop __init from map_pages declaration
+The following changes since commit 455e73a07f6e288b0061dfcf4fcf54fa9fe06458:
 
-I've dropped that patch for now. Will need some time to find
-the best solution.
+  Merge tag 'clk-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux (2022-01-12 17:02:27 -0800)
 
-Helge
+are available in the Git repository at:
+
+  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.17/parisc-2
+
+for you to fetch changes up to d24846a4246b6e61ecbd036880a4adf61681d241:
+
+  parisc: pdc_stable: Fix memory leak in pdcs_register_pathentries (2022-01-21 22:48:54 +0100)
+
+----------------------------------------------------------------
+parisc architecture fixes & enhancements for kernel v5.17-rc1
+
+- a memory leak fix in an error path in pdc_stable (Miaoqian Lin)
+- two compiler warning fixes in the TOC code
+- added autodetection for currently used console type (serial or graphics)
+  which inserts console=<type> if it's missing
+
+----------------------------------------------------------------
+Helge Deller (4):
+      parisc: Add visible flag to toc_stack variable
+      parisc: Use safer strscpy() in setup_cmdline()
+      parisc: Autodetect default output device and set console= kernel parameter
+      parisc: Fix missing prototype for 'toc_intr' warning in toc.c
+
+Miaoqian Lin (1):
+      parisc: pdc_stable: Fix memory leak in pdcs_register_pathentries
+
+ arch/parisc/include/asm/processor.h |  1 +
+ arch/parisc/kernel/setup.c          | 15 +++++++++++++--
+ arch/parisc/kernel/toc.c            |  3 ++-
+ drivers/parisc/pdc_stable.c         |  4 +++-
+ 4 files changed, 19 insertions(+), 4 deletions(-)
