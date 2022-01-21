@@ -2,106 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A81C495335
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jan 2022 18:28:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0122495B19
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jan 2022 08:46:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231516AbiATR2m (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 20 Jan 2022 12:28:42 -0500
-Received: from mout.gmx.net ([212.227.17.22]:38521 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232295AbiATR2f (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 20 Jan 2022 12:28:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1642699710;
-        bh=UHhjAWf/9pVz8wScRWDow/ubaju2WM3ooNGJadQmmyw=;
-        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
-        b=LRdm3g8HDi1CpAlqU42nsOWO6j9clZ6kil00zIf/i1lpPN3Z/0H7FCDwmtUKgP+mQ
-         jaQlQhla/9hR9yZRmHoO0dCdhtdm/Bgefyv/trfyYxU78gsUy6jeccJvPBDN9bkPYL
-         kAmBt7tDgWUG0Ta9d7UPMw8V0W4H58k+a23Ie/zU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.166.9]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M1HZi-1n8wH13hMY-002l7u; Thu, 20
- Jan 2022 18:28:29 +0100
-Message-ID: <cb82c739-b496-670a-13dd-0f1a37c085f8@gmx.de>
-Date:   Thu, 20 Jan 2022 18:27:22 +0100
+        id S1379136AbiAUHqN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 21 Jan 2022 02:46:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37700 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1379101AbiAUHqM (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Fri, 21 Jan 2022 02:46:12 -0500
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC29C06173F
+        for <linux-parisc@vger.kernel.org>; Thu, 20 Jan 2022 23:46:12 -0800 (PST)
+Received: by mail-yb1-xb2b.google.com with SMTP id c10so25206114ybb.2
+        for <linux-parisc@vger.kernel.org>; Thu, 20 Jan 2022 23:46:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=6VGlaNwo012lzA+7kz/lrPF90trnFFi6FJ6/mHic+hs=;
+        b=xMPuSfeAAlBJoeqTa7zrkdfi+fcCQodwVxBlhLKj0MhKB1NnACApVZgTImEC6sApU8
+         9AvVAlCAqJoyMWZ+Bgz1mADiqpeMprrtN8j4Q6zppP3f4GT2ZXfcqw1LKFaBA9WlhIxq
+         4TeGYRYUwQV84j7lGnjGaacA+AmlgWCaxzWLNkDqHNv+vDZW6S1SpJf15evnnWP2rPGg
+         wI3YE75QumJ8g5TyAOH6Djrq5nRfxp1gHViE1mIi5Q9+WJwHBskFL1YPMI1gycvpkiu5
+         /7b5FtsKvlMBUX9pGLIeU0Fr9sZIl6/PdsUCZtjU/vvDU2ObGsMkqhEcpf9OOibLtvNc
+         B5pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=6VGlaNwo012lzA+7kz/lrPF90trnFFi6FJ6/mHic+hs=;
+        b=MHZwNwxGhtXQT4KUpzGDt5d/RlyHVFdUlXxLkMNqb1RrVt8oDYc72F0FusFrnhyXgz
+         BtifjSBGwmHMEenSBPESC/g0L7Nrd2NzgiazAU0mTh49C0wcTBQg3rZVo7i1efjsPO7K
+         h8bHeAgoruf/4GqBo6Ta8r/CNYi5wREHJh+I3apVXjaH/5We18nVQBSr9P6aczSU86XW
+         XRvz/DtUMu2TBlbG0WveD+hVTr4WDzaHtOOzWZajjju0rORQ+by1sPWA6X4uACRqZ6Sh
+         UT3YgY36i5nLJA7Q0KIB3aYNz2K43l4w4cqXi93vX9YgADn03PqW0ZSBYEdwxr11SobV
+         9pkA==
+X-Gm-Message-State: AOAM530vCTOppQu/Bq8MEj7Ll9tBVEvDVWATkD82cOcianramFnCZxKx
+        OwWt2ESvpaKDcrut8Y1RfDvPVlXjfpg72mMSd0YQRA==
+X-Google-Smtp-Source: ABdhPJwK9URes+a+U/H7ToYTf1isUH/kpRc2JSjoWu9Z7aUB1iVP5o2fLVMPV8e7sZaI40IlE/NocAVbxaMs+F8uP7I=
+X-Received: by 2002:a25:8e89:: with SMTP id q9mr5016082ybl.520.1642751171389;
+ Thu, 20 Jan 2022 23:46:11 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] parisc: pdc_stable: Fix memory leak in
- pdcs_register_pathentries
-Content-Language: en-US
-To:     Miaoqian Lin <linmq006@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Greg Kroah-Hartman <gregkh@suse.de>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220120121812.14943-1-linmq006@gmail.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220120121812.14943-1-linmq006@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:sN32WROnKtNl1RxHyC+SOF3Teld739cwnAAnkP9wfgeaXxFUhhc
- HiVZdhTDHPpKkVLSErcERtsnVHvlqkiK9tL/R+7eyeCgnBVQBQffCv1Eo/0wbTiqVMtfWQ4
- v/QHvC+xmOVTDRc98iy4+LfQtJcscKyGh1PFnUdQHE0iMhKbFA3OzJ8KjwyI8W9Au5odEgU
- 1CfY2OvnxV5dv90XCXqGA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:5Ox+WbnmG2g=:GiURZDMCA/lNYj9F43Y0Bw
- 15dvZ1c90M8rfDJtwSdcZJ1UzYxt3UMCHu3SUlKoxROXz+l5GJWPOeAHWR83JgPebRBdaw45w
- T39mXwOWD5znid5BhWGbaOsgE+RLzKBSTzlXI3oBStWiOvaZfpzC30LJV71yP/vcACTtUPYfs
- d/x+QFqnqGiolIiTVaaG7ZADaMZEPGBiQKXpW4onk+Rb+7Sf6YWIfZY9W+gdGMgh46KmmSHvm
- VzaYc2mXmA20IKvNuDE/QW+d1Tnh9vikMpgToEpSv5fMPt8FTnK/KY3zjWZb+BWCRn4TZglQX
- cgAZDd97UX+3tSNOIJ23EyWDy5xVkFxEUS2mFOgM+Lw/mHXM0AyAgY7X0WdeD/p0+R2gMGtQ4
- 5S76G+QbbSR+XFS8alBkYYJKDmY0PGXwey6DuIYffPQoSPEVNkVLLlfYkylXr3gLKnsubm4dk
- +UnWFd21Cp2Cqg2mVT+7gg70tk0oFDYVlCiOVmdr1eVnkPDdl/T1JV/b0u8+zn6QsCWoSHeML
- s3CGAdvGzkNuyhsSIuw9p9NruIkAy6+njrNq/3VnD5Sb53YRhYnBrxnK93/e6/ezv8jQV7cbS
- bkVlzsJ2tdyQC5M4d80N6z4r49ojutTP021urIUrKY+2E3B6Omx/IZWcKvuX4uQt5BTZJ8MR0
- 0b2Z16EY+n3N7hc3NdUw0CLQfD50mUhJ5WZcdSkA+V5AiQmQCawuc2ghN3IFpjJI9J1dP5AG/
- r0tISGmPyga9jvWESoh1qI+YirTyJlz0cRu5/R2aN9wMZRkE2876i52AYkiwjfFcpV7jTPyFX
- 5CyoreL1qoPPftnI1WzRzuJ+xp+Ux+7gnXn9au6LKMARFcnc0kqfLG7EuOdv6Iq4ZcmlpqUz4
- wSAxL/sxwNvFeu+vThlEqLnap0S2Dntu/TT2LkbTh3iTLQilLa0VWMvhM46UlOU1Q5++9QnhX
- gkknvHSQ4SWZXJwIY8Q6zQHJzj81A00oDHrug78ww3m3RTpDzyNcDEAXwv04/PEdPtQAT6c5h
- vIJC4zEEFO0waZfksRDiESPtmOHOX/Y2drEVlFIXtyWrrEF1NBp/NYVfoMpvjiISmt1g0KF1p
- QmjC4yrWVqFcUA=
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Fri, 21 Jan 2022 13:16:00 +0530
+Message-ID: <CA+G9fYvuEqeoLO6dC_qtGyRUz=UPv5i0C3jZ_n9nz5kWOuCHYQ@mail.gmail.com>
+Subject: [next] parisc: allnoconfig: ERROR: modpost: Section mismatches
+ detected. Set CONFIG_SECTION_MISMATCH_WARN_ONLY=y to allow them.
+To:     Linux-Next Mailing List <linux-next@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-parisc@vger.kernel.org, regressions@lists.linux.dev,
+        lkft-triage@lists.linaro.org, Linux PM <linux-pm@vger.kernel.org>,
+        linux-fsdevel@vger.kernel.org
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>, pavel@ucw.cz,
+        rppt@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 1/20/22 13:18, Miaoqian Lin wrote:
-> kobject_init_and_add() takes reference even when it fails.
-> According to the doc of kobject_init_and_add()=EF=BC=9A
->
->    If this function returns an error, kobject_put() must be called to
->    properly clean up the memory associated with the object.
->
-> Fix memory leak by calling kobject_put().
->
-> Fixes: 73f368cf679b ("Kobject: change drivers/parisc/pdc_stable.c to use=
- kobject_init_and_add")
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Linux next-20220121 parisc allnoconfig build failed with gcc-9/10/11.
 
-applied.
-Thanks!
-Helge
+make --silent --keep-going --jobs=8 ARCH=parisc
+CROSS_COMPILE=hppa-linux-gnu- 'CC=sccache hppa-linux-gnu-gcc'
+'HOSTCC=sccache gcc'
 
+WARNING: modpost: vmlinux.o(.text+0x1c8): Section mismatch in
+reference from the function ksys_sync() to the function
+.init.text:memblock_alloc_try_nid()
+The function ksys_sync() references
+the function __init memblock_alloc_try_nid().
+This is often because ksys_sync lacks a __init
+annotation or the annotation of memblock_alloc_try_nid is wrong.
 
-> ---
->  drivers/parisc/pdc_stable.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
-> index 9513c39719d1..d9e51036a4fa 100644
-> --- a/drivers/parisc/pdc_stable.c
-> +++ b/drivers/parisc/pdc_stable.c
-> @@ -980,8 +980,10 @@ pdcs_register_pathentries(void)
->  		entry->kobj.kset =3D paths_kset;
->  		err =3D kobject_init_and_add(&entry->kobj, &ktype_pdcspath, NULL,
->  					   "%s", entry->name);
-> -		if (err)
-> +		if (err) {
-> +			kobject_put(&entry->kobj);
->  			return err;
-> +		}
->
->  		/* kobject is now registered */
->  		write_lock(&entry->rw_lock);
->
+ERROR: modpost: Section mismatches detected.
+Set CONFIG_SECTION_MISMATCH_WARN_ONLY=y to allow them.
+make[2]: *** [/builds/linux/scripts/Makefile.modpost:59:
+vmlinux.symvers] Error 1
 
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+metadata:
+  git branch: master
+  git repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
+  git describe: next-20220121
+  kernel-config: https://builds.tuxbuild.com/23zIAxC4uCgy4zadA01JYyOwCR4/config
+  build: https://builds.tuxbuild.com/23zIAxC4uCgy4zadA01JYyOwCR4/
+
+# To install tuxmake on your system globally:
+# sudo pip3 install -U tuxmake
+#
+# See https://docs.tuxmake.org/ for complete documentation.
+# Original tuxmake command with fragments listed below.
+
+tuxmake --runtime podman --target-arch parisc --toolchain gcc-11
+--kconfig allnoconfig
+
+--
+Linaro LKFT
+https://lkft.linaro.org
