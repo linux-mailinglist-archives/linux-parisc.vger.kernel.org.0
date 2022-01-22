@@ -2,96 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21B7A4967DC
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jan 2022 23:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A18F496AE7
+	for <lists+linux-parisc@lfdr.de>; Sat, 22 Jan 2022 09:07:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229569AbiAUW2h (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 21 Jan 2022 17:28:37 -0500
-Received: from mout.gmx.net ([212.227.17.21]:59459 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229471AbiAUW2g (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 21 Jan 2022 17:28:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1642804106;
-        bh=zL6nm69DWgZVJHYquUk/KWyKFBQIbncygS6u/DCkUWE=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=gl7bnviXQ4bIHPmUqg0gV7sAhwwP59VEEZers9g3TdA96uYYMjngl9pJaPqnlZCt4
-         bRVIxRVtpE4sAMqKhSF01HmAdCpnK7EmLZDeuZIVUS3f1wBTlMGoZobHdD95OGw3nz
-         ApfQ0uIkqO4ShFkJBgSKRCN+tZh54s1RrJ4ZzayM=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.180.114]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3UZG-1nAUA42bIY-000ZPz; Fri, 21
- Jan 2022 23:28:26 +0100
-Date:   Fri, 21 Jan 2022 23:27:18 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        id S233822AbiAVIGp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 22 Jan 2022 03:06:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53560 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229912AbiAVIGm (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 22 Jan 2022 03:06:42 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22ECDC06173B;
+        Sat, 22 Jan 2022 00:06:42 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B08AE6119C;
+        Sat, 22 Jan 2022 08:06:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 201D5C340E9;
+        Sat, 22 Jan 2022 08:06:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642838801;
+        bh=PZF6sCjjGVJ/A/xG+NQnhuOlB6l61nOmt3YKJuu6+u4=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=uuCTRy95wMWsFqj2O/vvN/g4E9tjU+alZlO3QEzZkR1bjTnOEGdb1kjnKSMzeRoTk
+         A5XL03AwGMeZbdPLkOr4lzuF89isJvnBMX8o7Q/rAw+BxNHVPHVlpz5Qxv8jdirinD
+         zwOe3BpdHv1B+azrIoFRmeOezxUEm9Qfcu8klSKh08de6dtDIBjptsDpTTlcOvR5ME
+         egNzLDeFZJVdSx8baWUTuonGrzRGUpNFLezOdpwR2CIgOKoUS8scR3qE+Tb4Ac6ivX
+         mH5gc6D+bLCm7RV1dB/ce85nSYEFgHkoZl3UXy5q4uzkX+8mKBZsAONdauPcodzsCk
+         /qTQJUNogYK+g==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0C5E4F60796;
+        Sat, 22 Jan 2022 08:06:41 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture fixes & updates v5.17-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <YeszRlKu5dWqiHDQ@ls3530>
+References: <YeszRlKu5dWqiHDQ@ls3530>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <YeszRlKu5dWqiHDQ@ls3530>
+X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.17/parisc-2
+X-PR-Tracked-Commit-Id: d24846a4246b6e61ecbd036880a4adf61681d241
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: dc5341f41dc81bd497828e562da135bcff9c876c
+Message-Id: <164283880104.17909.5130893167658400839.pr-tracker-bot@kernel.org>
+Date:   Sat, 22 Jan 2022 08:06:41 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
         Sven Schnelle <svens@stackframe.org>
-Subject: [GIT PULL] parisc architecture fixes & updates v5.17-rc1
-Message-ID: <YeszRlKu5dWqiHDQ@ls3530>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:yehtTieKYk6DBlPRYFOH4VTggDhraqu6eSPSgRCRqX85IxjFm4F
- QucgigxltC316dG0Ve+bpguDObDIHdyOjELNVfrr3FsE+iQ9h4f75ODmFCMxgC04wMmUAw7
- d2xJfHzXxpYyx8Fu3lPvtX8YIW4CUDYuPj+9hLQ7pmmlLpUPm7jd/Bc9+2KX71Chd0oyd/z
- 5vMKVumAeU0mLEj7mHU4g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:pK0W4AuRleM=:KPgR0LnE29rbN8sAKo5QdP
- 4Q7kfV4axpMaJqVJNiH+odfIWsLjMxAU2ciQARmlpzYWinmlqwBODthi+1N7/16Dr+inlTB/T
- xXwIVJPZ+B1rsMff5gBPhBhGbhxLQpJ2fom0wVrUKKdRVZYgsivJYqZKzzey3mEJ+o3QiBIK0
- NSawQM90eRA/N/rY7Au1gwgKj8boZ5m7c1yLvifVE7hfkVcRRDu+B/2T9NBnb5FR03+PCn0TH
- DIW0sLHSH6mg7VpSl3YNps8rNsWxmYm4kSWP9zNwsmERyinNxp7WAJ+p88kYXNZeDw32G2cEH
- /memlkgCD3+fzBlh9IlMV+b3y2cEY/CiGfXqfKR8iCjjEMQUFsLjkAu7uP75f7V99VLt7u3Pz
- MJzvh5+KUvppfa+/XiqNUanyO5DRc3iY+XPHOO5QvKEBxKO0G8m5ZNqbB0zBWwXPv3pDdjwD3
- ELhgN40o1u7t/y1NTOAUew1n2xy2ru6bC6Z4CfcQQ1hcgeITXnL4tAccHhx5LVkSEK+YFkyik
- 8Fc/zth9BVYirQQYTGCgENPO+JCv8ZgPvlLLyNj0GpHEaDw5HvVnliqFPsyQtR+yyH/ovRb8q
- Uwz+Fke3vQ8kHiP6C9KuTz2Ph33zlJYpanZ7PITAXk9kKGegt2h4l94OiAceR2FetGtb1kUJb
- 5IO0M9jgr4Oy6J2RiPOZyavq9GyMOJaIiz0aLaQzGXEeYZEfwtUjg4xD9d6eH8sHg4j7/62h6
- lyqSXUqVgNBEfXa40ufLvd0kTxEsydHnpoy1xEw4HEuQ4PbdxQGsSkxj3DMG5BG/WFzDqXgjO
- s+xMUcll+W/jvFmQrTuQfmXRPy0gHID8Xnbv8LlHoNnR/2df0IZKPMZ3rdrcvfeXrbS+3HoCM
- 1i7wjj2mnUcIpmq3/YjZcPYzIAoZVlC2cpHoIpudb6PQRQAlROFS13ZgzxfOXQEJHHUMbXFb8
- SYR8KTeqcHr1hpZq8Dhmyh6jADfx/jQIrEQhv+gdWyQwHb8gLVN0MUAFWfEPhXadmAwQZG1rz
- rEcGTiH5LnVfBzdrZd7gcz489umAqJBiJPYHnoVOesettthBIszoTB5d4SAyGDNqkcba77VDh
- MHeBtknF+yQM1U=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The following changes since commit 455e73a07f6e288b0061dfcf4fcf54fa9fe06458:
+The pull request you sent on Fri, 21 Jan 2022 23:27:18 +0100:
 
-  Merge tag 'clk-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux (2022-01-12 17:02:27 -0800)
+> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.17/parisc-2
 
-are available in the Git repository at:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/dc5341f41dc81bd497828e562da135bcff9c876c
 
-  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.17/parisc-2
+Thank you!
 
-for you to fetch changes up to d24846a4246b6e61ecbd036880a4adf61681d241:
-
-  parisc: pdc_stable: Fix memory leak in pdcs_register_pathentries (2022-01-21 22:48:54 +0100)
-
-----------------------------------------------------------------
-parisc architecture fixes & enhancements for kernel v5.17-rc1
-
-- a memory leak fix in an error path in pdc_stable (Miaoqian Lin)
-- two compiler warning fixes in the TOC code
-- added autodetection for currently used console type (serial or graphics)
-  which inserts console=<type> if it's missing
-
-----------------------------------------------------------------
-Helge Deller (4):
-      parisc: Add visible flag to toc_stack variable
-      parisc: Use safer strscpy() in setup_cmdline()
-      parisc: Autodetect default output device and set console= kernel parameter
-      parisc: Fix missing prototype for 'toc_intr' warning in toc.c
-
-Miaoqian Lin (1):
-      parisc: pdc_stable: Fix memory leak in pdcs_register_pathentries
-
- arch/parisc/include/asm/processor.h |  1 +
- arch/parisc/kernel/setup.c          | 15 +++++++++++++--
- arch/parisc/kernel/toc.c            |  3 ++-
- drivers/parisc/pdc_stable.c         |  4 +++-
- 4 files changed, 19 insertions(+), 4 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
