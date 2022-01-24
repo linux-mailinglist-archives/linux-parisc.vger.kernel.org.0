@@ -2,115 +2,144 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCDCE497903
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jan 2022 07:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B49A4498020
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jan 2022 13:58:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232302AbiAXGlm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 24 Jan 2022 01:41:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41432 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbiAXGll (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 24 Jan 2022 01:41:41 -0500
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C90C06173B
-        for <linux-parisc@vger.kernel.org>; Sun, 23 Jan 2022 22:41:41 -0800 (PST)
-Received: (qmail 9043 invoked from network); 24 Jan 2022 06:40:36 -0000
-Received: from p200300cf0708d10076d435fffeb7be92.dip0.t-ipconnect.de ([2003:cf:708:d100:76d4:35ff:feb7:be92]:46032 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <linux-parisc@vger.kernel.org>; Mon, 24 Jan 2022 07:40:36 +0100
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     linux-parisc@vger.kernel.org
-Subject: Re: pagefaults and hang with 5.15.11
-Date:   Mon, 24 Jan 2022 07:41:30 +0100
-Message-ID: <2615489.mvXUDI8C0e@eto.sf-tec.de>
-In-Reply-To: <4372681.LvFx2qVVIh@eto.sf-tec.de>
-References: <11891682.O9o76ZdvQC@daneel.sf-tec.de> <a42cff7e-d06c-c687-a0a7-6fd781b03aed@bell.net> <4372681.LvFx2qVVIh@eto.sf-tec.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart11909241.O9o76ZdvQC"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+        id S239894AbiAXM6o (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 24 Jan 2022 07:58:44 -0500
+Received: from foss.arm.com ([217.140.110.172]:33152 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242855AbiAXM6g (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Mon, 24 Jan 2022 07:58:36 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 949A0101E;
+        Mon, 24 Jan 2022 04:58:35 -0800 (PST)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.43.190])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id ACC1C3F774;
+        Mon, 24 Jan 2022 04:58:31 -0800 (PST)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org
+Cc:     linux-kernel@vger.kernel.org, hch@infradead.org,
+        akpm@linux-foundation.org,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        linux-parisc@vger.kernel.org
+Subject: [RFC V1 21/31] parisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+Date:   Mon, 24 Jan 2022 18:26:58 +0530
+Message-Id: <1643029028-12710-22-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1643029028-12710-1-git-send-email-anshuman.khandual@arm.com>
+References: <1643029028-12710-1-git-send-email-anshuman.khandual@arm.com>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart11909241.O9o76ZdvQC
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+This defines and exports a platform specific custom vm_get_page_prot() via
+subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
+macros can be dropped which are no longer needed.
 
-Am Sonntag, 23. Januar 2022, 12:53:22 CET schrieb Rolf Eike Beer:
-> Am Sonntag, 26. Dezember 2021, 18:22:12 CET schrieb John David Anglin:
-> > On 2021-12-26 11:21 a.m., Rolf Eike Beer wrote:
-> > > [139181.966881] WARNING: CPU: 1 PID: 0 at kernel/rcu/tree.c:613
-> > > rcu_eqs_enter.constprop.0+0x8c/0x98
-> > 
-> > This is probably not reproducible. You might try this change from Sven
-> > 
-> > I haven't found 5.15.11 to be stable.
-> 
-> When I was running 5.15.0 I had uptimes of 21 and 29 days before crashes,
-> and then 5 days before I rebooted into 5.15.11 to test that.
-> 
-> With 5.15.11 my longest uptime was 5 days.
-> 
-> I have switched to 5.15.4 afterwards, which is now already up for 2 weeks. I
-> see regular userspace crashes with that, usually gcc or ld as the machine
-> is mainly building things, which seems to happen way more often than it has
-> happened with 5.15.0 for me.
-> 
-> So much for the moment.
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ arch/parisc/Kconfig               |  1 +
+ arch/parisc/include/asm/pgtable.h | 20 ---------------
+ arch/parisc/mm/init.c             | 41 +++++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+), 20 deletions(-)
 
-That was yesterday. And now I just got this:
-
-[1274934.746891] Bad Address (null pointer deref?): Code=15 (Data TLB miss fault) at addr 0000004140000018
-[1274934.746891] CPU: 3 PID: 5549 Comm: cmake Not tainted 5.15.4-gentoo-parisc64 #4
-[1274934.746891] Hardware name: 9000/785/C8000
-[1274934.746891]
-[1274934.746891]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-[1274934.746891] PSW: 00001000000001001111111000001110 Not tainted
-[1274934.746891] r00-03  000000ff0804fe0e 0000000040bc9bc0 00000000406760e4 0000004140000000
-[1274934.746891] r04-07  0000000040b693c0 0000004140000000 000000004a2b08b0 0000000000000001
-[1274934.746891] r08-11  0000000041f98810 0000000000000000 000000004a0a7000 0000000000000001
-[1274934.746891] r12-15  0000000040bddbc0 0000000040c0cbc0 0000000040bddbc0 0000000040bddbc0
-[1274934.746891] r16-19  0000000040bde3c0 0000000040bddbc0 0000000040bde3c0 0000000000000007
-[1274934.746891] r20-23  0000000000000006 000000004a368950 0000000000000000 0000000000000001
-[1274934.746891] r24-27  0000000000001fff 000000000800000e 000000004a1710f0 0000000040b693c0
-[1274934.746891] r28-31  0000000000000001 0000000041f988b0 0000000041f98840 000000004a171118
-[1274934.746891] sr00-03  00000000066e5800 0000000000000000 0000000000000000 00000000066e5800
-[1274934.746891] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[1274934.746891]
-[1274934.746891] IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000406760e8 00000000406760ec
-[1274934.746891]  IIR: 48780030    ISR: 0000000000000000  IOR: 0000004140000018
-[1274934.746891]  CPU:        3   CR30: 00000040e3a9c000 CR31: ffffffffffffffff
-[1274934.746891]  ORIG_R28: 0000000040acdd58
-[1274934.746891]  IAOQ[0]: sba_unmap_sg+0xb0/0x118
-[1274934.746891]  IAOQ[1]: sba_unmap_sg+0xb4/0x118
-[1274934.746891]  RP(r2): sba_unmap_sg+0xac/0x118
-[1274934.746891] Backtrace:
-[1274934.746891]  [<00000000402740cc>] dma_unmap_sg_attrs+0x6c/0x70
-[1274934.746891]  [<000000004074d6bc>] scsi_dma_unmap+0x54/0x60
-[1274934.746891]  [<00000000407a3488>] mptscsih_io_done+0x150/0xd70
-[1274934.746891]  [<0000000040798600>] mpt_interrupt+0x168/0xa68
-[1274934.746891]  [<0000000040255a48>] __handle_irq_event_percpu+0xc8/0x278
-[1274934.746891]  [<0000000040255c34>] handle_irq_event_percpu+0x3c/0xd8
-[1274934.746891]  [<000000004025ecb4>] handle_percpu_irq+0xb4/0xf0
-[1274934.746891]  [<00000000402548e0>] generic_handle_irq+0x50/0x70
-[1274934.746891]  [<000000004019a254>] call_on_stack+0x18/0x24
-[1274934.746891]
-[1274934.746891] Kernel panic - not syncing: Bad Address (null pointer deref?)
-
-
---nextPart11909241.O9o76ZdvQC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYe5KGgAKCRBcpIk+abn8
-TlnIAKCoV8IQ/+GUBrTvjMhxqgGCWqBadQCeOgLmwl3eENsODv0ZdJpnX2LD54Y=
-=+Um0
------END PGP SIGNATURE-----
-
---nextPart11909241.O9o76ZdvQC--
-
-
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 43c1c880def6..de512f120b50 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -10,6 +10,7 @@ config PARISC
+ 	select ARCH_HAS_ELF_RANDOMIZE
+ 	select ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
++	select ARCH_HAS_VM_GET_PAGE_PROT
+ 	select ARCH_NO_SG_CHAIN
+ 	select ARCH_SUPPORTS_HUGETLBFS if PA20
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+index 3e7cf882639f..80d99b2b5913 100644
+--- a/arch/parisc/include/asm/pgtable.h
++++ b/arch/parisc/include/asm/pgtable.h
+@@ -269,26 +269,6 @@ extern void __update_cache(pte_t pte);
+  * pages.
+  */
+ 
+-	 /*xwr*/
+-#define __P000  PAGE_NONE
+-#define __P001  PAGE_READONLY
+-#define __P010  __P000 /* copy on write */
+-#define __P011  __P001 /* copy on write */
+-#define __P100  PAGE_EXECREAD
+-#define __P101  PAGE_EXECREAD
+-#define __P110  __P100 /* copy on write */
+-#define __P111  __P101 /* copy on write */
+-
+-#define __S000  PAGE_NONE
+-#define __S001  PAGE_READONLY
+-#define __S010  PAGE_WRITEONLY
+-#define __S011  PAGE_SHARED
+-#define __S100  PAGE_EXECREAD
+-#define __S101  PAGE_EXECREAD
+-#define __S110  PAGE_RWX
+-#define __S111  PAGE_RWX
+-
+-
+ extern pgd_t swapper_pg_dir[]; /* declared in init_task.c */
+ 
+ /* initial page tables for 0-8MB for kernel */
+diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+index 1ae31db9988f..c8316e97e1a2 100644
+--- a/arch/parisc/mm/init.c
++++ b/arch/parisc/mm/init.c
+@@ -866,3 +866,44 @@ void flush_tlb_all(void)
+ 	spin_unlock(&sid_lock);
+ }
+ #endif
++
++pgprot_t vm_get_page_prot(unsigned long vm_flags)
++{
++	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
++	case VM_NONE:
++		return PAGE_NONE;
++	case VM_READ:
++		return PAGE_READONLY;
++	case VM_WRITE:
++		return PAGE_NONE;
++	case VM_READ | VM_WRITE:
++		return PAGE_READONLY;
++	case VM_EXEC:
++		return PAGE_EXECREAD;
++	case VM_EXEC | VM_READ:
++		return PAGE_EXECREAD;
++	case VM_EXEC | VM_WRITE:
++		return PAGE_EXECREAD;
++	case VM_EXEC | VM_READ | VM_WRITE:
++		return PAGE_EXECREAD;
++	case VM_SHARED:
++		return PAGE_NONE;
++	case VM_SHARED | VM_READ:
++		return PAGE_READONLY;
++	case VM_SHARED | VM_WRITE:
++		return PAGE_WRITEONLY;
++	case VM_SHARED | VM_READ | VM_WRITE:
++		return PAGE_SHARED;
++	case VM_SHARED | VM_EXEC:
++		return PAGE_EXECREAD;
++	case VM_SHARED | VM_EXEC | VM_READ:
++		return PAGE_EXECREAD;
++	case VM_SHARED | VM_EXEC | VM_WRITE:
++		return PAGE_RWX;
++	case VM_SHARED | VM_EXEC | VM_READ | VM_WRITE:
++		return PAGE_RWX;
++	default:
++		BUILD_BUG();
++	}
++}
++EXPORT_SYMBOL(vm_get_page_prot);
+-- 
+2.25.1
 
