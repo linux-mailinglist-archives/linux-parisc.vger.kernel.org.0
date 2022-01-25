@@ -2,62 +2,172 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1BB49B7EA
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Jan 2022 16:48:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9ED649B96F
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Jan 2022 17:59:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1582373AbiAYPrS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 25 Jan 2022 10:47:18 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:50476 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356552AbiAYPpP (ORCPT
+        id S1587197AbiAYQ6i (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 25 Jan 2022 11:58:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43526 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1379490AbiAYQ4l (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 25 Jan 2022 10:45:15 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 73C7A61708;
-        Tue, 25 Jan 2022 15:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D28C340E8;
-        Tue, 25 Jan 2022 15:45:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643125513;
-        bh=CcIRjfm17aVakeeVnaDmo1N/8z0dKUqDwIOCF455pyg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PzdVvAi+XKWBtlAo5HeCx7ZHwYJbZQti60n0ZrEtI+d4JBsSQ5AwRR6lMIYnMjYrC
-         wkpZ9/oLtxf7lblkl2jlbwO6hzrCZpZGHtB81cY1rfoC4ZhBwuImj52ynbKWr9Eww5
-         pz1u/LklUez7FC4055Mq/DvOfYNzM0/45E//yBMRZHpnNmkFAoPVZbrwSAEl0aQ+Zf
-         IrIF4sAiXT2oceh/uclpaCPoQj9c2mKYACQTQ1JO9TOXHuAuujH0p7lsKTZHNLh8V2
-         6dByHdZT57tNcmD9DdUZJ+X8YURpRJ49bCkEmWVlpdfQDyvRsA5hfCeJaS0RTgCF01
-         gwCsfmW6MwheA==
-Date:   Tue, 25 Jan 2022 07:45:12 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Colin Ian King <colin.i.king@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: tulip: remove redundant assignment to variable
- new_csr6
-Message-ID: <20220125074512.73cc5cec@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-In-Reply-To: <20220125141401.GV1951@kadam>
-References: <20220123183440.112495-1-colin.i.king@gmail.com>
-        <20220124103038.76f15516@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-        <20220125141401.GV1951@kadam>
+        Tue, 25 Jan 2022 11:56:41 -0500
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A17FC06178A
+        for <linux-parisc@vger.kernel.org>; Tue, 25 Jan 2022 08:53:38 -0800 (PST)
+Received: (qmail 10734 invoked from network); 25 Jan 2022 16:52:27 -0000
+Received: from p200300cf0713e20076d435fffeb7be92.dip0.t-ipconnect.de ([2003:cf:713:e200:76d4:35ff:feb7:be92]:48794 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-mm@kvack.org>; Tue, 25 Jan 2022 17:52:27 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-mm@kvack.org, Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-kernel@vger.kernel.org, hch@infradead.org,
+        akpm@linux-foundation.org,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        linux-parisc@vger.kernel.org
+Subject: Re: [RFC V1 21/31] parisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+Date:   Tue, 25 Jan 2022 17:53:27 +0100
+Message-ID: <11909976.O9o76ZdvQC@eto.sf-tec.de>
+In-Reply-To: <1643029028-12710-22-git-send-email-anshuman.khandual@arm.com>
+References: <1643029028-12710-1-git-send-email-anshuman.khandual@arm.com> <1643029028-12710-22-git-send-email-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="nextPart5535662.DvuYhMxLoT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, 25 Jan 2022 17:14:01 +0300 Dan Carpenter wrote:
-> You're looking at the wrong function.  This is pnic_do_nway() and you're
-> looking at pnic_timer().
+--nextPart5535662.DvuYhMxLoT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Ah, that explains it! Thanks, applied now.
+Anshuman Khandual wrote:
+> This defines and exports a platform specific custom vm_get_page_prot() via
+> subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
+> macros can be dropped which are no longer needed.
+> 
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/parisc/Kconfig               |  1 +
+>  arch/parisc/include/asm/pgtable.h | 20 ---------------
+>  arch/parisc/mm/init.c             | 41 +++++++++++++++++++++++++++++++
+>  3 files changed, 42 insertions(+), 20 deletions(-)
+> 
+> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+> index 43c1c880def6..de512f120b50 100644
+> --- a/arch/parisc/Kconfig
+> +++ b/arch/parisc/Kconfig
+> @@ -10,6 +10,7 @@ config PARISC
+>  	select ARCH_HAS_ELF_RANDOMIZE
+>  	select ARCH_HAS_STRICT_KERNEL_RWX
+>  	select ARCH_HAS_UBSAN_SANITIZE_ALL
+> +	select ARCH_HAS_VM_GET_PAGE_PROT
+>  	select ARCH_NO_SG_CHAIN
+>  	select ARCH_SUPPORTS_HUGETLBFS if PA20
+>  	select ARCH_SUPPORTS_MEMORY_FAILURE
+> diff --git a/arch/parisc/include/asm/pgtable.h
+> b/arch/parisc/include/asm/pgtable.h index 3e7cf882639f..80d99b2b5913 100644
+> --- a/arch/parisc/include/asm/pgtable.h
+> +++ b/arch/parisc/include/asm/pgtable.h
+> @@ -269,26 +269,6 @@ extern void __update_cache(pte_t pte);
+>   * pages.
+>   */
+> 
+> -	 /*xwr*/
+> -#define __P000  PAGE_NONE
+> -#define __P001  PAGE_READONLY
+> -#define __P010  __P000 /* copy on write */
+> -#define __P011  __P001 /* copy on write */
+> -#define __P100  PAGE_EXECREAD
+> -#define __P101  PAGE_EXECREAD
+> -#define __P110  __P100 /* copy on write */
+> -#define __P111  __P101 /* copy on write */
+> -
+> -#define __S000  PAGE_NONE
+> -#define __S001  PAGE_READONLY
+> -#define __S010  PAGE_WRITEONLY
+> -#define __S011  PAGE_SHARED
+> -#define __S100  PAGE_EXECREAD
+> -#define __S101  PAGE_EXECREAD
+> -#define __S110  PAGE_RWX
+> -#define __S111  PAGE_RWX
+> -
+> -
+>  extern pgd_t swapper_pg_dir[]; /* declared in init_task.c */
+> 
+>  /* initial page tables for 0-8MB for kernel */
+> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+> index 1ae31db9988f..c8316e97e1a2 100644
+> --- a/arch/parisc/mm/init.c
+> +++ b/arch/parisc/mm/init.c
+> @@ -866,3 +866,44 @@ void flush_tlb_all(void)
+>  	spin_unlock(&sid_lock);
+>  }
+>  #endif
+> +
+> +pgprot_t vm_get_page_prot(unsigned long vm_flags)
+> +{
+> +	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
+> +	case VM_NONE:
+> +		return PAGE_NONE;
+> +	case VM_READ:
+> +		return PAGE_READONLY;
+> +	case VM_WRITE:
+> +		return PAGE_NONE;
+> +	case VM_READ | VM_WRITE:
+> +		return PAGE_READONLY;
 
-> Of course, Colin's patch assumes the current behavior is correct...  I
-> guess the current behavior can't be that terrible since it predates git
-> and no one has complained.
+This looks extremely strange. It probably is correct when it comes to CoW, how 
+about including the comment that was in the original definitions for the cases 
+where CoW is expected?
 
-Entirely possible this driver was never used in the git era.
+> +	case VM_EXEC:
+> +		return PAGE_EXECREAD;
+> +	case VM_EXEC | VM_READ:
+> +		return PAGE_EXECREAD;
+> +	case VM_EXEC | VM_WRITE:
+> +		return PAGE_EXECREAD;
+> +	case VM_EXEC | VM_READ | VM_WRITE:
+> +		return PAGE_EXECREAD;
+> +	case VM_SHARED:
+> +		return PAGE_NONE;
+> +	case VM_SHARED | VM_READ:
+> +		return PAGE_READONLY;
+> +	case VM_SHARED | VM_WRITE:
+> +		return PAGE_WRITEONLY;
+> +	case VM_SHARED | VM_READ | VM_WRITE:
+> +		return PAGE_SHARED;
+> +	case VM_SHARED | VM_EXEC:
+> +		return PAGE_EXECREAD;
+> +	case VM_SHARED | VM_EXEC | VM_READ:
+> +		return PAGE_EXECREAD;
+> +	case VM_SHARED | VM_EXEC | VM_WRITE:
+> +		return PAGE_RWX;
+> +	case VM_SHARED | VM_EXEC | VM_READ | VM_WRITE:
+> +		return PAGE_RWX;
+> +	default:
+> +		BUILD_BUG();
+> +	}
+> +}
+> +EXPORT_SYMBOL(vm_get_page_prot);
+
+
+--nextPart5535662.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYfArBwAKCRBcpIk+abn8
+Tn3fAJ9mCiqlAWz0LSE02l6g56q9bKoqEgCfTTU/KTI/Xf7FeIAR89tBwIQgI/A=
+=Hgfz
+-----END PGP SIGNATURE-----
+
+--nextPart5535662.DvuYhMxLoT--
+
+
+
