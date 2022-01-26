@@ -2,85 +2,129 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 868C949BA5A
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Jan 2022 18:29:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93F2D49CB2E
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Jan 2022 14:45:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356162AbiAYR26 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 25 Jan 2022 12:28:58 -0500
-Received: from mta-mtl-004.bell.net ([209.71.208.14]:59832 "EHLO
-        cmx-mtlrgo001.bell.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S243073AbiAYR0U (ORCPT
+        id S241168AbiAZNpf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 26 Jan 2022 08:45:35 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:58226 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235305AbiAZNpe (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 25 Jan 2022 12:26:20 -0500
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 61E9B8D0005DF66C
-X-CM-Envelope: MS4xfKsAj1QS4w2pICvt7ktb7XP3vx8Dfq97lRRTGiQeYAy2Kgq9dmwvu5tv1rQVp5nUdZebW1Xc/A7oc2/QTXy8wlRO7xE7SVF1SZ/Btuy3tHiQsjof7agA
- AVHDpIvr+52rgGSGCOFyMCt7s8T06O13TvS/m2njz/ovq4lHB1EgFfIhz3cPSMtmkeOq1JaxyvVpPA4jmlMf5kbCXME+v+LsE4ShuS4JaExkOFxZRabh8ZaZ
- 1oQTXQgbFa52P5m8Ty9SYJIqbHiPSGn0JESw5USNZBU=
-X-CM-Analysis: v=2.4 cv=eZxew5IH c=1 sm=1 tr=0 ts=61f032b6
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=1E80NrEGeS-ZdDQDv_MA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (70.50.7.94) by cmx-mtlrgo001.bell.net (5.8.716.03) (authenticated as dave.anglin@bell.net)
-        id 61E9B8D0005DF66C; Tue, 25 Jan 2022 12:26:14 -0500
-Message-ID: <e045d706-62cb-d3ff-53a9-727192068d5d@bell.net>
-Date:   Tue, 25 Jan 2022 12:26:15 -0500
+        Wed, 26 Jan 2022 08:45:34 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7CE77B81E0F;
+        Wed, 26 Jan 2022 13:45:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9195C340E3;
+        Wed, 26 Jan 2022 13:45:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1643204731;
+        bh=aXQde9wq7cWvdCRLRrI1FIQr3++bEQ4exG2q/lhqD3E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=v+g8gUQjIt/c0ktBUQcit03sTj8G5mLw8FT+LXQqudlxh2iXfgafDrgsKIgJcd+6A
+         KW7BP0Pf7wtiKC9gzDKJw1Q0VKMx5apmABXH/60JK3d2VK/Sw93FHWeCcfYpb1QPrC
+         cxProUa3b1FFVLRT4j2tOajkb4EpxDNqSymszfjw=
+Date:   Wed, 26 Jan 2022 14:45:28 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Walt Drummond <walt@drummond.us>
+Cc:     agordeev@linux.ibm.com, arnd@arndb.de, benh@kernel.crashing.org,
+        borntraeger@linux.ibm.com, chris@zankel.net, davem@davemloft.net,
+        hca@linux.ibm.com, deller@gmx.de, ink@jurassic.park.msu.ru,
+        James.Bottomley@hansenpartnership.com, jirislaby@kernel.org,
+        mattst88@gmail.com, jcmvbkbc@gmail.com, mpe@ellerman.id.au,
+        paulus@samba.org, rth@twiddle.net, dalias@libc.org,
+        tsbogend@alpha.franken.de, gor@linux.ibm.com, ysato@users.osdn.me,
+        linux-kernel@vger.kernel.org, ar@cs.msu.ru,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH 0/3] status: TTY status message request
+Message-ID: <YfFQeC1cUVFmISMK@kroah.com>
+References: <20220118044259.764945-1-walt@drummond.us>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: pagefaults and hang with 5.15.11
-Content-Language: en-US
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        linux-parisc@vger.kernel.org
-References: <11891682.O9o76ZdvQC@daneel.sf-tec.de>
- <f872b4fc-2d26-5b89-c985-261966c9f49d@bell.net>
- <a23a26c3-6760-33e1-a390-5f51b103dd17@bell.net>
- <4711347.31r3eYUQgx@eto.sf-tec.de>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <4711347.31r3eYUQgx@eto.sf-tec.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220118044259.764945-1-walt@drummond.us>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2022-01-25 11:54 a.m., Rolf Eike Beer wrote:
-> Am Montag, 24. Januar 2022, 18:41:27 CET schrieb John David Anglin:
->> On 2022-01-24 12:24 p.m., John David Anglin wrote:
->>> Faulting instruction is "ldw 18(r3),r24".  Address in $r3 (and $r5) seems
->>> bad.  Think the sglist argument
->>> to sba_unmap_sg() is bad.  Don't have a clue as to why this might be.
->> Maybe try interchanging operands of following &&
->>
->>           while (sg_dma_len(sglist) && nents--) {
->>
->> so nents is checked first.
-> But nents would be increased then even for the case that sg_dma_len() returns
-> false, which may or may not be wanted.
-You are correct.  The decrement of nents needs to be in loop so count in following DBG_RUN_SG is correct:
+On Mon, Jan 17, 2022 at 08:42:57PM -0800, Walt Drummond wrote:
+> This patchset adds TTY status message request feature to the n_tty
+> line dicipline.  This feature prints a brief message containing basic
+> system and process group information to a user's TTY in response to a
+> new control character in the line dicipline (default Ctrl-T) or the
+> TIOCSTAT ioctl.  The message contains the current system load, the
+> name and PID of an interesting process in the forground process group,
+> it's run time, percent CPU usage and RSS.  An example of this message
+> is:
+> 
+>   load: 0.31  cmd: sleep 3616843 [sleeping] 0.36r 0.00u 0.00s 0% 696k
+> 
+> User API visible changes are limited to:
+>  - The addition of VSTATUS in termios.c_cc[]
+>  - The addition of NOKERNINFO bit in termios.l_cflags
+>  - The addition of the TIOCSTAT ioctl number
+> 
+> None of these changes break the existing kernel api as the termios
+> structure on all architectures has enough space in the control
+> character array (.c_cc) for the new character, and the other changes
+> are space agnostic.
+> 
+> This feature is in many other Unix-like systems, both current and
+> historical.  In other implementations, this feature would also send
+> SIGINFO to the process group; this implementation does not.
+> 
+> Walt Drummond (3):
+>   vstatus: Allow the n_tty line dicipline to write to a user tty
+>   vstatus: Add user space API definitions for VSTATUS, NOKERNINFO and
+>     TIOCSTAT
+>   status: Display an informational message when the VSTATUS character is
+>     pressed or TIOCSTAT ioctl is called.
+> 
+>  arch/alpha/include/asm/termios.h         |   4 +-
+>  arch/alpha/include/uapi/asm/ioctls.h     |   1 +
+>  arch/alpha/include/uapi/asm/termbits.h   |  34 ++---
+>  arch/ia64/include/asm/termios.h          |   4 +-
+>  arch/ia64/include/uapi/asm/termbits.h    |  34 ++---
+>  arch/mips/include/asm/termios.h          |   4 +-
+>  arch/mips/include/uapi/asm/ioctls.h      |   1 +
+>  arch/mips/include/uapi/asm/termbits.h    |  36 ++---
+>  arch/parisc/include/asm/termios.h        |   4 +-
+>  arch/parisc/include/uapi/asm/ioctls.h    |   1 +
+>  arch/parisc/include/uapi/asm/termbits.h  |  34 ++---
+>  arch/powerpc/include/asm/termios.h       |   4 +-
+>  arch/powerpc/include/uapi/asm/ioctls.h   |   2 +
+>  arch/powerpc/include/uapi/asm/termbits.h |  34 ++---
+>  arch/s390/include/asm/termios.h          |   4 +-
+>  arch/sh/include/uapi/asm/ioctls.h        |   1 +
+>  arch/sparc/include/uapi/asm/ioctls.h     |   1 +
+>  arch/sparc/include/uapi/asm/termbits.h   |  38 +++---
+>  arch/xtensa/include/uapi/asm/ioctls.h    |   1 +
+>  drivers/tty/Makefile                     |   2 +-
+>  drivers/tty/n_tty.c                      | 113 +++++++++++-----
+>  drivers/tty/n_tty_status.c               | 162 +++++++++++++++++++++++
+>  drivers/tty/tty_io.c                     |   2 +-
+>  include/asm-generic/termios.h            |   4 +-
+>  include/linux/tty.h                      | 123 ++++++++---------
+>  include/uapi/asm-generic/ioctls.h        |   1 +
+>  include/uapi/asm-generic/termbits.h      |  34 ++---
+>  27 files changed, 461 insertions(+), 222 deletions(-)
+>  create mode 100644 drivers/tty/n_tty_status.c
+> 
+> -- 
+> 2.30.2
+> 
 
-         while (sg_dma_len(sglist) && nents--) {
+You forgot to cc: me on patch 2/3, which would be needed if I was to
+take them all.
 
-                 sba_unmap_page(dev, sg_dma_address(sglist), sg_dma_len(sglist),
-                                 direction, 0);
-#ifdef SBA_COLLECT_STATS
-                 ioc->usg_pages += ((sg_dma_address(sglist) & ~IOVP_MASK) + sg_dma_len(sglist) + IOVP_SIZE - 1) >> PAGE_SHIFT;
-                 ioc->usingle_calls--;   /* kluge since call is unmap_sg() */
-#endif
-                 ++sglist;
-         }
+Please fix up patch 2 and resend the whole series.
 
-         DBG_RUN_SG("%s() DONE (nents %d)\n", __func__,  nents);
+thanks,
 
-However, nents still needs to be checked first.
-
-What has happened is the sglist pointer has crossed a page boundary causing the TLB miss.  The offset of sg_dma_len is 0x18
-and checking sg_dma_len(sglist) first causes the fault.
-
--- 
-John David Anglin  dave.anglin@bell.net
-
+greg k-h
