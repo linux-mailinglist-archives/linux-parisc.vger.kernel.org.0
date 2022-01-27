@@ -2,119 +2,84 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D61D49EAF3
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jan 2022 20:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E59D249ED24
+	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jan 2022 22:11:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234797AbiA0TTx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 27 Jan 2022 14:19:53 -0500
-Received: from outbound5e.eu.mailhop.org ([52.28.168.19]:51203 "EHLO
-        outbound5e.eu.mailhop.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232986AbiA0TTx (ORCPT
+        id S1344238AbiA0VLA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 27 Jan 2022 16:11:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59346 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344244AbiA0VLA (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 27 Jan 2022 14:19:53 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1643310227; cv=none;
-        d=outbound.mailhop.org; s=arc-outbound20181012;
-        b=XmOIhG/kusqQZhOZHvgclA5Y035wrWyxN3vk6rSaA0Nw7MFvfaZ39haGAfvA0u00hsc8e4R1Mcmyl
-         BdA7uaxey4ZT/2ub2Gujpf/d+mCfxGFd0vmbySG7VcOp835Pty/ik46nkQqSTftLMpbc6keYuZUc1f
-         51WNTn/35QncShJHi+4kseprmzOvno5R+sbBTNBKdvXYMITt1+CamPwrwwbPdUCNPCpIM+z4Kw6K5o
-         e8Ibz/EHyMeRMwP0geSLdROPKx3E9+NV3FyYt8tw1KHY4tyFNHMA/05PNl/BEwBSvhXFL/Qq/XhQEx
-         M+wl4sdYEA68tAFQD/Qz1Y1S2bCPVHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=outbound.mailhop.org; s=arc-outbound20181012;
-        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
-         to:from:dkim-signature:dkim-signature:from;
-        bh=ZPOoAh9ilR0mDf2sGLTWKIgj5O+vg7Y8DEFiCpa40cI=;
-        b=PynOkqGLTt/cBF4XyvaikcntXYxmLkK6g/FkDi80kEVYY5ZoKmZLy1YS7adUA9quoDrFCY/KCXHu5
-         fzVkBh7/pNjT5/SVfdN9Polz6W3aSEJGZIkioH+XNmHGEaizTTFD96qS10cqOhhgozXJb6qnxQkM4i
-         ZkONICbPvOYdU30d4duUGOtAxUm3SxrCj+ldIVi+GEb+PFvUpFFVJ5qXXZtTfkT0JUAlcXhMzAivnF
-         ZZ6bmQ+Bxdu5RfroZ9LraCeTbVvwiWiDif2ILAuhg7zIJRd3EJV6DV2vTpZ3+ZtJvNS0iDpaqIoe1H
-         1ER1VewTpvUf3+U/AcVx8UKUeOIq0ew==
-ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
-        spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=91.207.61.48;
-        dmarc=none header.from=stackframe.org;
-        arc=none header.oldest-pass=0;
+        Thu, 27 Jan 2022 16:11:00 -0500
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6CA0C061757
+        for <linux-parisc@vger.kernel.org>; Thu, 27 Jan 2022 13:10:59 -0800 (PST)
+Received: by mail-qt1-x832.google.com with SMTP id i4so3642520qtr.0
+        for <linux-parisc@vger.kernel.org>; Thu, 27 Jan 2022 13:10:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=stackframe.org; s=duo-1634547266507-560c42ae;
-        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
-         to:from:from;
-        bh=ZPOoAh9ilR0mDf2sGLTWKIgj5O+vg7Y8DEFiCpa40cI=;
-        b=sf+CSgcB2S8FS7i8w5gOYZ399ZV3KikJV/JWhAzf1mfhipkqdEd9YVATpBOUWJlgyOlqDdefwjBau
-         6p061PYZzMeceDBH7PGmgIFf7IdfFK/xogyYHD7mPRzlTOBDTK/WwG89eKHAx39qEHZlKDo4zVopq2
-         IYIxpTu/lRY4U8Do=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=outbound.mailhop.org; s=dkim-high;
-        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
-         to:from:from;
-        bh=ZPOoAh9ilR0mDf2sGLTWKIgj5O+vg7Y8DEFiCpa40cI=;
-        b=NtFjJ/cqVCyljlDqPGqg5Z6BbPDsUamusZVkWPLeLkZ37IHSlMVQvIEBHpR+uVk7sgKAEOtZ1WwiZ
-         NNhUnZWwlD7AmZEN1nsQ/cJNK7z1SM80CVkIqVC1rUwS0uzDvinDJw+WFkJZRd3EF+x7BekNSDKuCg
-         TsB5fKWI/Tldw+i7R/Z0j2CrudhSNFKeyXOly0c2ZJ/bfgX3l4i3RlUa8AhO5klovyNmNQL3lFNTWf
-         SNI6DMIGxbDnAdznOlM57NwMtTTiBZ5rn3gSg8w3Dm9MlxHex2llQcvJey51DavIDxpFW81JAGprgr
-         bO41FwzxvdCE/Qdk9hks6X7Gp0NAl8g==
-X-Originating-IP: 91.207.61.48
-X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: d7a1b121-7fa3-11ec-a079-973b52397bcb
-X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
-X-Mail-Handler: DuoCircle Outbound SMTP
-Received: from mail.duncanthrax.net (propper.duncanthrax.net [91.207.61.48])
-        by outbound2.eu.mailhop.org (Halon) with ESMTPSA
-        id d7a1b121-7fa3-11ec-a079-973b52397bcb;
-        Thu, 27 Jan 2022 19:03:42 +0000 (UTC)
-Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org.stackframe.org)
-        by mail.duncanthrax.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <svens@stackframe.org>)
-        id 1nDA3Y-00767l-Pz; Thu, 27 Jan 2022 21:03:40 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-csky@vger.kernel.org, linux-mm@kvack.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Guo Ren <guoren@kernel.org>, linux-parisc@vger.kernel.org,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Subject: Re: [PATCH v2] usercopy/csky: Do not fail on memory from former
- init sections
-References: <YfLpNkmlvoR8iPcq@ls3530>
-Date:   Thu, 27 Jan 2022 20:03:38 +0100
-In-Reply-To: <YfLpNkmlvoR8iPcq@ls3530> (Helge Deller's message of "Thu, 27 Jan
-        2022 19:49:26 +0100")
-Message-ID: <87k0el57cl.fsf@x1.stackframe.org>
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=wXM0hly6tyNlZq07rMipvtfpnu3wRqtV0B2JSV05g3E=;
+        b=m0D8ivz9PDCDCKh/arptMpR3/ao+LhFd+WDbL0Ndw6mZAYZf1UgxGLzVj40s+AmZjb
+         DuEwjd7NT9LFwA9OjKx7vr7puLYpS6zkJNbh+1BfuQgx4db+dU06Jgc7C75K093Hwjn/
+         9mCc5rYI5j3y1VvMx9vpxL5dad+OafMT9QhIQgFRN9dvv+QgByQ7o1yzKGSP02L54Znm
+         q7FBXWGkelfiR3xpWnnkdKDqg2UlG70uCnsM1s4SP7cRlEb+IJNQAjeVKHpZy42mZonq
+         RnHAdJAaDrxUHvlQWr6CsD5rnkBvpJUkcJOYzRgUFr/Bb7DCHALpPY9Ux9K4Rjywr0lt
+         YgYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=wXM0hly6tyNlZq07rMipvtfpnu3wRqtV0B2JSV05g3E=;
+        b=dqvjBwocjW5dD3XggCTIDuGYXgALTppg3EedE15/pt7kCvDxCxKX+ONEL3CSYGySjM
+         QnjbrLLFGu9mET79NW3BTuWOqSKm6fE45k1dBA6j1evMlxrV1pQbMihvX0ELzQ04EoSO
+         Rtsbnst328qWTD/xQtfuOcpDM4jN8IBSytatB4/RU0e/V1YDtAU1Y/+4FqlzbuYTuN5Z
+         6BTPiejC8OCNHlJVOXxkjJ2LNoOWy9e0vMqhz+T9qA1M4mXdb0lhZ3M/dQ+OOea9KyaC
+         +ROty/eCfbh8SZ8NKKYDd1J+XFzn9IHIFH0Q9caXyID6bXYNW/fVeOGSWaCkslRdI7Hl
+         wptw==
+X-Gm-Message-State: AOAM532UMC3983YjjlWAosuiReDFGpgGUabO5Eun/K3ihLaBQsGgk1ud
+        DB+AC9B3Xl8zBUELMm80uv1cXJDJkZWJO7kEk6hctK2WSWw=
+X-Google-Smtp-Source: ABdhPJxjfwa8g49rNfb5xQ4Dtq316EM5E6QepnaR+uvM+BcTaI+qmB/caHz8VslukXXXqzp0798ys0wp0mZ+YQ4gMH8=
+X-Received: by 2002:ac8:4e48:: with SMTP id e8mr4202203qtw.64.1643317847801;
+ Thu, 27 Jan 2022 13:10:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a05:6214:e4b:0:0:0:0 with HTTP; Thu, 27 Jan 2022 13:10:46
+ -0800 (PST)
+Reply-To: eanna00111@gmail.com
+From:   Mrs Anna Edward <mussaaliooooo7@gmail.com>
+Date:   Thu, 27 Jan 2022 13:10:46 -0800
+Message-ID: <CAFbf-n2dj0f-EXo2OhZA4D_6QXVYoysuMB5_+AOQv9Sb_nGe0w@mail.gmail.com>
+Subject: Urgent Reply
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Helge Deller <deller@gmx.de> writes:
+Greeting to you,
+Please forgive me for stressing you with my predicaments and I sorry
+to approach you through this media because it serves the fastest means
+of communication. I came across your E-mail from my personal search
+and I decided to contact you believing you will be honest to fulfill
+my final wish before I die.
 
-> While working on the parisc port I suddenly noticed that with
-> HARDENED_USERCOPY=y the usercopy checks randomly reported errors which even
-> prevented the kernel to boot into userspace.
->
-> Specifically the function check_kernel_text_object() reported those errors, as
-> it thought the kernel variable I was using belongs to the kernel text area, and
-> as such was invalid to be used.
-> [..]
-> diff --git a/mm/usercopy.c b/mm/usercopy.c
-> index b3de3c4eefba..37a35c6051bc 100644
-> --- a/mm/usercopy.c
-> +++ b/mm/usercopy.c
-> @@ -113,6 +113,15 @@ static bool overlaps(const unsigned long ptr, unsigned long n,
->  	return true;
->  }
->
-> +static bool inside_init_area(const unsigned long ptr, unsigned long n,
-> +		char *start, char *end)
-> +{
-> +	unsigned long initlow = (unsigned long) start;
-> +	unsigned long inithigh = (unsigned long) end;
-> +
-> +	return (ptr >= initlow && (ptr + n) < inithigh);
-> +}
+I am Mrs Anna Edward, 63 years, from USA, I am childless and I am
+suffering from a pro-long critical cancer, my doctors confirmed I may
+not live beyond two months from now as my ill health has defiled all
+forms of medical treatment. Since my days are numbered, I have decided
+willingly to fulfill my long-time promise to donate you the sum
+($5.000.000.00) million dollars I inherited from my late husband Mr.
+Edward Herbart, foreign bank account over years. I need a very honest
+person who can assist in transfer of this money to his or her account
+and use the funds for charity work of God while you use 50% for
+yourself. I want you to know there is no risk involved; it is 100%
+hitch free & safe.
 
-Gerald added something similar with 7a5da02de8d6 ("locking/lockdep:
-check for freed initmem in static_obj()"), so i wonder whether that
-could be used?
+If you are interested in assisting in getting this fund into your
+account for a charity project to fulfill my promise before I die
+please let me know immediately.
 
-Regards
-Sven
+I will appreciate your utmost confidentiality as I wait for your reply.
+Best Regards,
+Mrs Anna Edward
