@@ -2,137 +2,149 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F64B49D984
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jan 2022 05:06:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2564C49DA91
+	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jan 2022 07:23:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235944AbiA0EGE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 26 Jan 2022 23:06:04 -0500
-Received: from foss.arm.com ([217.140.110.172]:33258 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235900AbiA0EGD (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 26 Jan 2022 23:06:03 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B20D11FB;
-        Wed, 26 Jan 2022 20:06:02 -0800 (PST)
-Received: from [10.163.42.218] (unknown [10.163.42.218])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 119263F7D8;
-        Wed, 26 Jan 2022 20:05:59 -0800 (PST)
-Subject: Re: [RFC V1 21/31] parisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>, linux-mm@kvack.org
-Cc:     linux-kernel@vger.kernel.org, hch@infradead.org,
-        akpm@linux-foundation.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org
-References: <1643029028-12710-1-git-send-email-anshuman.khandual@arm.com>
- <1643029028-12710-22-git-send-email-anshuman.khandual@arm.com>
- <11909976.O9o76ZdvQC@eto.sf-tec.de>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <db475121-e113-3287-c27e-e0c8d7ff74eb@arm.com>
-Date:   Thu, 27 Jan 2022 09:36:05 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S233669AbiA0GXA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 27 Jan 2022 01:23:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48446 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233650AbiA0GW7 (ORCPT
+        <rfc822;linux-parisc@vger.kernel.org>);
+        Thu, 27 Jan 2022 01:22:59 -0500
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1861C061714
+        for <linux-parisc@vger.kernel.org>; Wed, 26 Jan 2022 22:22:58 -0800 (PST)
+Received: (qmail 11553 invoked from network); 27 Jan 2022 06:21:42 -0000
+Received: from p200300cf0710410038a5bdfffef1938d.dip0.t-ipconnect.de ([2003:cf:710:4100:38a5:bdff:fef1:938d]:47738 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Thu, 27 Jan 2022 07:21:42 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-parisc@vger.kernel.org,
+        John David Anglin <dave.anglin@bell.net>
+Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: Re: [PATCH] parisc: Fix data TLB miss in sba_unmap_sg
+Date:   Thu, 27 Jan 2022 07:22:49 +0100
+Message-ID: <11910725.O9o76ZdvQC@eto.sf-tec.de>
+In-Reply-To: <YfGxafKxQdw8GhMc@mx3210.localdomain>
+References: <YfGxafKxQdw8GhMc@mx3210.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <11909976.O9o76ZdvQC@eto.sf-tec.de>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="nextPart5535888.DvuYhMxLoT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+--nextPart5535888.DvuYhMxLoT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-
-On 1/25/22 10:23 PM, Rolf Eike Beer wrote:
-> Anshuman Khandual wrote:
->> This defines and exports a platform specific custom vm_get_page_prot() via
->> subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
->> macros can be dropped which are no longer needed.
->>
->> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
->> Cc: linux-parisc@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  arch/parisc/Kconfig               |  1 +
->>  arch/parisc/include/asm/pgtable.h | 20 ---------------
->>  arch/parisc/mm/init.c             | 41 +++++++++++++++++++++++++++++++
->>  3 files changed, 42 insertions(+), 20 deletions(-)
->>
->> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
->> index 43c1c880def6..de512f120b50 100644
->> --- a/arch/parisc/Kconfig
->> +++ b/arch/parisc/Kconfig
->> @@ -10,6 +10,7 @@ config PARISC
->>  	select ARCH_HAS_ELF_RANDOMIZE
->>  	select ARCH_HAS_STRICT_KERNEL_RWX
->>  	select ARCH_HAS_UBSAN_SANITIZE_ALL
->> +	select ARCH_HAS_VM_GET_PAGE_PROT
->>  	select ARCH_NO_SG_CHAIN
->>  	select ARCH_SUPPORTS_HUGETLBFS if PA20
->>  	select ARCH_SUPPORTS_MEMORY_FAILURE
->> diff --git a/arch/parisc/include/asm/pgtable.h
->> b/arch/parisc/include/asm/pgtable.h index 3e7cf882639f..80d99b2b5913 100644
->> --- a/arch/parisc/include/asm/pgtable.h
->> +++ b/arch/parisc/include/asm/pgtable.h
->> @@ -269,26 +269,6 @@ extern void __update_cache(pte_t pte);
->>   * pages.
->>   */
->>
->> -	 /*xwr*/
->> -#define __P000  PAGE_NONE
->> -#define __P001  PAGE_READONLY
->> -#define __P010  __P000 /* copy on write */
->> -#define __P011  __P001 /* copy on write */
->> -#define __P100  PAGE_EXECREAD
->> -#define __P101  PAGE_EXECREAD
->> -#define __P110  __P100 /* copy on write */
->> -#define __P111  __P101 /* copy on write */
->> -
->> -#define __S000  PAGE_NONE
->> -#define __S001  PAGE_READONLY
->> -#define __S010  PAGE_WRITEONLY
->> -#define __S011  PAGE_SHARED
->> -#define __S100  PAGE_EXECREAD
->> -#define __S101  PAGE_EXECREAD
->> -#define __S110  PAGE_RWX
->> -#define __S111  PAGE_RWX
->> -
->> -
->>  extern pgd_t swapper_pg_dir[]; /* declared in init_task.c */
->>
->>  /* initial page tables for 0-8MB for kernel */
->> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
->> index 1ae31db9988f..c8316e97e1a2 100644
->> --- a/arch/parisc/mm/init.c
->> +++ b/arch/parisc/mm/init.c
->> @@ -866,3 +866,44 @@ void flush_tlb_all(void)
->>  	spin_unlock(&sid_lock);
->>  }
->>  #endif
->> +
->> +pgprot_t vm_get_page_prot(unsigned long vm_flags)
->> +{
->> +	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
->> +	case VM_NONE:
->> +		return PAGE_NONE;
->> +	case VM_READ:
->> +		return PAGE_READONLY;
->> +	case VM_WRITE:
->> +		return PAGE_NONE;
->> +	case VM_READ | VM_WRITE:
->> +		return PAGE_READONLY;
-> This looks extremely strange. It probably is correct when it comes to CoW, how 
-> about including the comment that was in the original definitions for the cases 
-> where CoW is expected?
+Am Mittwoch, 26. Januar 2022, 21:39:05 CET schrieb John David Anglin:
+> Rolf Eike Beer reported the following bug:
+> 
+> [1274934.746891] Bad Address (null pointer deref?): Code=15 (Data TLB miss
+> fault) at addr 0000004140000018 [1274934.746891] CPU: 3 PID: 5549 Comm:
+> cmake Not tainted 5.15.4-gentoo-parisc64 #4 [1274934.746891] Hardware name:
+> 9000/785/C8000
+> [1274934.746891]
+> [1274934.746891]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+> [1274934.746891] PSW: 00001000000001001111111000001110 Not tainted
+> [1274934.746891] r00-03  000000ff0804fe0e 0000000040bc9bc0 00000000406760e4
+> 0000004140000000 [1274934.746891] r04-07  0000000040b693c0 0000004140000000
+> 000000004a2b08b0 0000000000000001 [1274934.746891] r08-11  0000000041f98810
+> 0000000000000000 000000004a0a7000 0000000000000001 [1274934.746891] r12-15 
+> 0000000040bddbc0 0000000040c0cbc0 0000000040bddbc0 0000000040bddbc0
+> [1274934.746891] r16-19  0000000040bde3c0 0000000040bddbc0 0000000040bde3c0
+> 0000000000000007 [1274934.746891] r20-23  0000000000000006 000000004a368950
+> 0000000000000000 0000000000000001 [1274934.746891] r24-27  0000000000001fff
+> 000000000800000e 000000004a1710f0 0000000040b693c0 [1274934.746891] r28-31 
+> 0000000000000001 0000000041f988b0 0000000041f98840 000000004a171118
+> [1274934.746891] sr00-03  00000000066e5800 0000000000000000
+> 0000000000000000 00000000066e5800 [1274934.746891] sr04-07 
+> 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> [1274934.746891]
+> [1274934.746891] IASQ: 0000000000000000 0000000000000000 IAOQ:
+> 00000000406760e8 00000000406760ec [1274934.746891]  IIR: 48780030    ISR:
+> 0000000000000000  IOR: 0000004140000018 [1274934.746891]  CPU:        3  
+> CR30: 00000040e3a9c000 CR31: ffffffffffffffff [1274934.746891]  ORIG_R28:
+> 0000000040acdd58
+> [1274934.746891]  IAOQ[0]: sba_unmap_sg+0xb0/0x118
+> [1274934.746891]  IAOQ[1]: sba_unmap_sg+0xb4/0x118
+> [1274934.746891]  RP(r2): sba_unmap_sg+0xac/0x118
+> [1274934.746891] Backtrace:
+> [1274934.746891]  [<00000000402740cc>] dma_unmap_sg_attrs+0x6c/0x70
+> [1274934.746891]  [<000000004074d6bc>] scsi_dma_unmap+0x54/0x60
+> [1274934.746891]  [<00000000407a3488>] mptscsih_io_done+0x150/0xd70
+> [1274934.746891]  [<0000000040798600>] mpt_interrupt+0x168/0xa68
+> [1274934.746891]  [<0000000040255a48>] __handle_irq_event_percpu+0xc8/0x278
+> [1274934.746891]  [<0000000040255c34>] handle_irq_event_percpu+0x3c/0xd8
+> [1274934.746891]  [<000000004025ecb4>] handle_percpu_irq+0xb4/0xf0
+> [1274934.746891]  [<00000000402548e0>] generic_handle_irq+0x50/0x70
+> [1274934.746891]  [<000000004019a254>] call_on_stack+0x18/0x24
+> [1274934.746891]
+> [1274934.746891] Kernel panic - not syncing: Bad Address (null pointer
+> deref?)
+> 
+> The bug is caused by overrunning the sglist and incorrectly testing
+> sg_dma_len(sglist) before nents. Normally this doesn't cause a crash,
+> but in this case sglist crossed a page boundary. This occurs in the
+> following code:
+> 
+> 	while (sg_dma_len(sglist) && nents--) {
+> 
+> The fix is simply to test nents first and move the decrement of nents
+> into the loop.
+> 
+> Reported-by: Rolf Eike Beer <eike-kernel@sf-tec.de>
+> Signed-off-by: John David Anglin <dave.anglin@bell.net>
+> ---
+> 
+> diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
+> index e60690d38d67..374b9199878d 100644
+> --- a/drivers/parisc/sba_iommu.c
+> +++ b/drivers/parisc/sba_iommu.c
+> @@ -1047,7 +1047,7 @@ sba_unmap_sg(struct device *dev, struct scatterlist
+> *sglist, int nents, spin_unlock_irqrestore(&ioc->res_lock, flags);
+>  #endif
+> 
+> -	while (sg_dma_len(sglist) && nents--) {
+> +	while (nents && sg_dma_len(sglist)) {
 > 
 
-Assuming that you suggest the following four comments here, sure will add them.
+What about:
 
--#define __P000  PAGE_NONE
--#define __P001  PAGE_READONLY
--#define __P010  __P000 /* copy on write */
--#define __P011  __P001 /* copy on write */
--#define __P100  PAGE_EXECREAD
--#define __P101  PAGE_EXECREAD
--#define __P110  __P100 /* copy on write */
--#define __P111  __P101 /* copy on write */
+	for (; nents && sg_dma_len(sglist); nents--) {
+
+And when you touch that area anyway, please remove the following newline as 
+well.
+
+>  		sba_unmap_page(dev, sg_dma_address(sglist), 
+sg_dma_len(sglist),
+>  				direction, 0);
+> @@ -1056,6 +1056,7 @@ sba_unmap_sg(struct device *dev, struct scatterlist
+> *sglist, int nents, ioc->usingle_calls--;	/* kluge since call is unmap_sg()
+> */
+>  #endif
+>  		++sglist;
+> +		nents--;
+>  	}
+> 
+>  	DBG_RUN_SG("%s() DONE (nents %d)\n", __func__,  nents);
+
+Eike
+--nextPart5535888.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYfI6OQAKCRBcpIk+abn8
+TkuNAJ4tN2dvem142ezhJDtNZga/MH7b4QCeL8LWZ5CL75mI+8XyOSrcsyqlfUI=
+=DGFI
+-----END PGP SIGNATURE-----
+
+--nextPart5535888.DvuYhMxLoT--
+
+
+
