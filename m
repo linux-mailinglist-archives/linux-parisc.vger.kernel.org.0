@@ -2,40 +2,40 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2564C49DA91
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jan 2022 07:23:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4951549DA9B
+	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jan 2022 07:27:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233669AbiA0GXA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 27 Jan 2022 01:23:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48446 "EHLO
+        id S236510AbiA0G1m (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 27 Jan 2022 01:27:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233650AbiA0GW7 (ORCPT
+        with ESMTP id S231461AbiA0G1l (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 27 Jan 2022 01:22:59 -0500
+        Thu, 27 Jan 2022 01:27:41 -0500
 Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1861C061714
-        for <linux-parisc@vger.kernel.org>; Wed, 26 Jan 2022 22:22:58 -0800 (PST)
-Received: (qmail 11553 invoked from network); 27 Jan 2022 06:21:42 -0000
-Received: from p200300cf0710410038a5bdfffef1938d.dip0.t-ipconnect.de ([2003:cf:710:4100:38a5:bdff:fef1:938d]:47738 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45EE5C061714
+        for <linux-parisc@vger.kernel.org>; Wed, 26 Jan 2022 22:27:41 -0800 (PST)
+Received: (qmail 11712 invoked from network); 27 Jan 2022 06:26:25 -0000
+Received: from p200300cf0710410038a5bdfffef1938d.dip0.t-ipconnect.de ([2003:cf:710:4100:38a5:bdff:fef1:938d]:47742 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
         by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <linux-parisc@vger.kernel.org>; Thu, 27 Jan 2022 07:21:42 +0100
+        for <linux-parisc@vger.kernel.org>; Thu, 27 Jan 2022 07:26:25 +0100
 From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
 To:     linux-parisc@vger.kernel.org,
         John David Anglin <dave.anglin@bell.net>
 Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
         James Bottomley <James.Bottomley@hansenpartnership.com>
 Subject: Re: [PATCH] parisc: Fix data TLB miss in sba_unmap_sg
-Date:   Thu, 27 Jan 2022 07:22:49 +0100
-Message-ID: <11910725.O9o76ZdvQC@eto.sf-tec.de>
+Date:   Thu, 27 Jan 2022 07:27:39 +0100
+Message-ID: <4373396.LvFx2qVVIh@eto.sf-tec.de>
 In-Reply-To: <YfGxafKxQdw8GhMc@mx3210.localdomain>
 References: <YfGxafKxQdw8GhMc@mx3210.localdomain>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5535888.DvuYhMxLoT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+Content-Type: multipart/signed; boundary="nextPart2226644.ElGaqSPkdT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart5535888.DvuYhMxLoT
+--nextPart2226644.ElGaqSPkdT
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 
@@ -97,54 +97,21 @@ Am Mittwoch, 26. Januar 2022, 21:39:05 CET schrieb John David Anglin:
 > 
 > Reported-by: Rolf Eike Beer <eike-kernel@sf-tec.de>
 > Signed-off-by: John David Anglin <dave.anglin@bell.net>
-> ---
-> 
-> diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
-> index e60690d38d67..374b9199878d 100644
-> --- a/drivers/parisc/sba_iommu.c
-> +++ b/drivers/parisc/sba_iommu.c
-> @@ -1047,7 +1047,7 @@ sba_unmap_sg(struct device *dev, struct scatterlist
-> *sglist, int nents, spin_unlock_irqrestore(&ioc->res_lock, flags);
->  #endif
-> 
-> -	while (sg_dma_len(sglist) && nents--) {
-> +	while (nents && sg_dma_len(sglist)) {
-> 
 
-What about:
-
-	for (; nents && sg_dma_len(sglist); nents--) {
-
-And when you touch that area anyway, please remove the following newline as 
-well.
-
->  		sba_unmap_page(dev, sg_dma_address(sglist), 
-sg_dma_len(sglist),
->  				direction, 0);
-> @@ -1056,6 +1056,7 @@ sba_unmap_sg(struct device *dev, struct scatterlist
-> *sglist, int nents, ioc->usingle_calls--;	/* kluge since call is unmap_sg()
-> */
->  #endif
->  		++sglist;
-> +		nents--;
->  	}
-> 
->  	DBG_RUN_SG("%s() DONE (nents %d)\n", __func__,  nents);
-
-Eike
---nextPart5535888.DvuYhMxLoT
+This needs a "CC:stable" as well, no?
+--nextPart2226644.ElGaqSPkdT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYfI6OQAKCRBcpIk+abn8
-TkuNAJ4tN2dvem142ezhJDtNZga/MH7b4QCeL8LWZ5CL75mI+8XyOSrcsyqlfUI=
-=DGFI
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYfI7WwAKCRBcpIk+abn8
+TthzAJ9FSH/zg5BpCiTTlcc6GhiGQQ0vKQCdHocR80sIywKbGAh461VBqI3xp20=
+=H6AY
 -----END PGP SIGNATURE-----
 
---nextPart5535888.DvuYhMxLoT--
+--nextPart2226644.ElGaqSPkdT--
 
 
 
