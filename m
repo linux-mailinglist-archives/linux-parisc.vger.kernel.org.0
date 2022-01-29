@@ -2,150 +2,120 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 772C04A3044
-	for <lists+linux-parisc@lfdr.de>; Sat, 29 Jan 2022 16:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 210DC4A30C2
+	for <lists+linux-parisc@lfdr.de>; Sat, 29 Jan 2022 17:44:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346747AbiA2PXn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 29 Jan 2022 10:23:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36500 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350805AbiA2PXl (ORCPT
-        <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 29 Jan 2022 10:23:41 -0500
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E35EC06174E
-        for <linux-parisc@vger.kernel.org>; Sat, 29 Jan 2022 07:23:40 -0800 (PST)
-Received: by mail-lj1-x22a.google.com with SMTP id bx31so1549876ljb.0
-        for <linux-parisc@vger.kernel.org>; Sat, 29 Jan 2022 07:23:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=drummond.us; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0mCWH6Tux8tcx0O8BuZbvK36ydxh3XeFUHA8Flrblcc=;
-        b=cmvGYiFpo2ar6tVj5q2BCQVYb9k8BBD0XwhyxqAVItAmy2DCdgiftAuj8oc7BBE49Q
-         LjK1fzbe0hOX97nInIogSNxADc9w4GpCfyauU6NFtNktDIG03u61lrQy9hqdUvd6EUft
-         C6I/tHY4kzyBauIRoXYOzo9LGSe929OK0jEzQ59wjAL3By0a+QjA0M9X3G7I1kcoxcb7
-         Q0AdPG8TS8c6yTTOUze5l0qFpdoVitgV/p2s3UNbwqPC0EG+SKAZieLlLnSPMO8rnFD5
-         +FIv54+PLtXCBluE0vkOLnAVfI1OEciJIeE6mtAgIHH1+Z3qSeTB6dFp5Kah63auycAx
-         k05w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0mCWH6Tux8tcx0O8BuZbvK36ydxh3XeFUHA8Flrblcc=;
-        b=kP1wn8teHQ/32SktyPnPXKF04+9I00ZF1t4uWzarqmUJFGO/7b2noajPUNRSix4jKa
-         2DYk+rFyS3nOF0j6neRGNK1+aMZDW89yXfCjw1SCEvmzt6COtT8ZqKJ4fAEJeNPc93hX
-         ytV3sKd2IUpd7oiFrJneH4LPLy1ns1V272bb/l4gN8ZTo9EtHvTlw/0SbddI0q+liCVw
-         M8gMpSUesBYeX2ZVCxJdby1lHyz8ZdPA9wAtoX/rRaALlgMNSeMITsoAPC2LByUyGDXV
-         4LjGQiyxgOJ3mknulERg+mQlCb04wFIqiGotRD1+2K2rmqbyfQ2HFNz5+8xRncQttlvs
-         4dFA==
-X-Gm-Message-State: AOAM530i+1lOFBH9/dXgZjWcKxREMmEQsaaIteg+0G0jc/F4411Og8sz
-        3vtwUPtRtqzrxBxWv4ErVbNWd0vgDcJa3woPs/4Mxw==
-X-Google-Smtp-Source: ABdhPJzK4pFoabd9NoIBHHNS2OQ2X0frUhiKWXvHsU/uBjqxnLeu+8dmN2me2gLqvfH4JEfcPiamxCIYMad5ipU8E2c=
-X-Received: by 2002:a2e:994a:: with SMTP id r10mr8482884ljj.254.1643469817879;
- Sat, 29 Jan 2022 07:23:37 -0800 (PST)
+        id S1352789AbiA2QoG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 29 Jan 2022 11:44:06 -0500
+Received: from mout.gmx.net ([212.227.15.15]:49103 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243327AbiA2QoF (ORCPT <rfc822;linux-parisc@vger.kernel.org>);
+        Sat, 29 Jan 2022 11:44:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1643474611;
+        bh=loleVrdL8FOXm5Nyx2GQarQzIdTlxj8ayQCxXLl+Myk=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=Bfzu/pOaEYrr/7/24zFZtTMj/C7eUlB+h43f9V13JIr1cgA9qX+41SpyxRlf/Yi0p
+         IXbDG+W/JvQvnAd+ziWPN4Pu7CUieeY1qK1PvxQbgKijCQ4bbpDVm4C/hDWw1LOYoc
+         4iB/zW7p39P5/Eg6AaTUr8Su3nMdjyvaYtG57yfI=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.149.251]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MUGi9-1mnciv3XKV-00RJPn; Sat, 29
+ Jan 2022 17:43:30 +0100
+Message-ID: <a4da36f3-2a7a-5f6c-0f4c-252977e12a75@gmx.de>
+Date:   Sat, 29 Jan 2022 17:42:19 +0100
 MIME-Version: 1.0
-References: <20220118044259.764945-1-walt@drummond.us> <YfFQeC1cUVFmISMK@kroah.com>
-In-Reply-To: <YfFQeC1cUVFmISMK@kroah.com>
-From:   Walt Drummond <walt@drummond.us>
-Date:   Sat, 29 Jan 2022 07:23:26 -0800
-Message-ID: <CADCN6nyyChM=jb9nmc2jDg2UdHUoXp3E05=ifxRpcs=8k8t09Q@mail.gmail.com>
-Subject: Re: [PATCH 0/3] status: TTY status message request
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     agordeev@linux.ibm.com, arnd@arndb.de, benh@kernel.crashing.org,
-        borntraeger@linux.ibm.com, chris@zankel.net, davem@davemloft.net,
-        hca@linux.ibm.com, deller@gmx.de, ink@jurassic.park.msu.ru,
-        James.Bottomley@hansenpartnership.com, jirislaby@kernel.org,
-        mattst88@gmail.com, jcmvbkbc@gmail.com, mpe@ellerman.id.au,
-        paulus@samba.org, rth@twiddle.net, dalias@libc.org,
-        tsbogend@alpha.franken.de, gor@linux.ibm.com, ysato@users.osdn.me,
-        linux-kernel@vger.kernel.org, ar@cs.msu.ru,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] parisc: Add initial vDSO support
+Content-Language: en-US
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Randolph Chung <randolph@tausq.org>
+References: <20220129110342.50853-1-deller@gmx.de>
+ <11912593.O9o76ZdvQC@eto.sf-tec.de>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <11912593.O9o76ZdvQC@eto.sf-tec.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:y9AKP507yT7MEVdFvckgChQ21O2gHgX7ytxSJBqPwz8qiBnCH02
+ ypyZ1uzRueof7/06dnip4CoC39kB+R79/NkRB5JMJbQoU327ZErmKt3zF7sZCt13hhrZUJ5
+ pvqaD7qg1ZYrd1kyYYc7LHEfCWGBC6ktH5aF4S76BhDO3XzV08jIPsHX8FG916dco/lexDD
+ FYp+wWAKXNBWOqGH/T5ZA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:q5FtIRvzNlI=:foAnUzUzHjzs089sbjE+jy
+ BE32HSlyqvZiBoxyyuJj3eRa2lCXTdKrsr8iucRz8+kjNAyW8rESxvY3tKuBo4lx3dmqLIdP4
+ VEH/oJaX93Ua4+ye5sCrJSAhV0hYS8LLdNQo2JuDBJorZljdpoOMiE9cTaiFeL+/CMYmXPADh
+ AB3TnGJt3zIkGH+Zv0HF6ZCdBOQdPlRCUes7Sk2zC1mMMdRQAzK3jH7IgmW60eC1/R33Br30I
+ Z1lTO7YOHEes0hApyDU0c3rCKwwb7jXjMcSllnh56njOHOYLy4RUjLX1j7bEJQI7SA+GELLQG
+ 5vo0ZIoA3ITogz5790A8LFJRuGGNVzobJKr1/wwfwTjtYwyffsZv43tSLLITpaUK0kEwJZH3Q
+ efyjIdN4xj8dVzgZIIqLeRd+xAG4gmEpz3UoJ9Gtz0Q1W5gkdrs4PlcFGGqZrItsVcM436dnc
+ 5YclRFM6C86U+mytnSxtFCjtarXlwHpP4pn3PffzExvIFDV8omcT5vO5vyQHxr5Elqf+X5FM2
+ Uu5T5JsH/sJ1KC7mVNS6MBVtuTP/vvdBIf6cyyzAwSPhM+Gbh1OO7faCbKg1PV5HzAZZ8DkzI
+ AuKvplCo9HKcZFVAJDHciBRRlya0IH0UpNKAhNfQDKdROwmW0ODZwUvaMIU8egj9tlR0GCDxA
+ 0ya8/Glj9aKx25PzSLIkMMTS9rxGpoV/PeS2WYeAfQcsf7cJxGv37O1FiEtZBnnkJFrDNzNF9
+ rJGS0p4+KKe4Aj6OeRNnYljf5C2rHRNIhNr8C4lmkbToCRjtubUB4ITDY9GtLtYTOTmRkGFWw
+ rd/lgQlK/mk0brRzmqK4efo/ds8DcIwmhd06AQ9dNH+qRvkxuFtuTcOg4muTi4G5zWB09LU+A
+ tp0M0muIxHF+WCq93XmNYuwwJjHZO4a5jBwC4ZpabECr8fgvkIg11YOsp3A0t02MlHh2RwifT
+ xX2JY0aSzxdOM7xLhr/2q9xkWs4tvhlEIOkzG+jdpuMYZYj4Mlo5646EUBgyTFHfJGFa3X+7e
+ vgTxY6s8/iTMZsxG5RriJ3bZfrtsRKdKl4wSKrgTff/bBTs5NkF5ntEgnGAmluZv9MinB/Sua
+ 8H7BWocR8P87QY=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-ACK, will do.
+Hi Rolf,
 
-On Wed, Jan 26, 2022 at 5:45 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+On 1/29/22 15:55, Rolf Eike Beer wrote:
+> Am Samstag, 29. Januar 2022, 12:03:42 CET schrieb Helge Deller:
+>> Add minimal vDSO support, which provides the signal trampoline helpers,=
+ but
+>> none of the userspace syscall helpers like time functions.
+>>
+>> The big benefit of this vDSO implementation is, that we now don't need =
+an
+>> executeable stack any longer. PA-RISC is one of the last architectures =
+where
+>> an executeable stack was needed in oder to implement the signal trampol=
+ines
+>> by putting assembly instructions on the stack which then gets executed.
+>> With this implementation the kernel will utilize the assembler statemen=
+ts
+>> in the vDSO page which is mapped into each userspace application instea=
+d
+>> and just put the pointers to the signal information on the stack.
+>> By dropping the need for executable stacks we now avoid running into is=
+sues
+>> with various applications in Debian which nowadays want non-executable
+>> stacks for security reasons. Additionally, alternative stacks are suppo=
+rted
+>> better as well.
+>>
+>> This code is based on an initial implementation by Randolph Chung from =
+2006:
+>> https://lore.kernel.org/linux-parisc/4544A34A.6080700@tausq.org/
+>>
+>> I did the porting and lifted the code to current code base. Dave fixed =
+the
+>> unwind code so that gdb and glibc are able to backtrace through the cod=
+e. An
+>> additional patch to gdb will be pushed upstream by Dave.
 >
-> On Mon, Jan 17, 2022 at 08:42:57PM -0800, Walt Drummond wrote:
-> > This patchset adds TTY status message request feature to the n_tty
-> > line dicipline.  This feature prints a brief message containing basic
-> > system and process group information to a user's TTY in response to a
-> > new control character in the line dicipline (default Ctrl-T) or the
-> > TIOCSTAT ioctl.  The message contains the current system load, the
-> > name and PID of an interesting process in the forground process group,
-> > it's run time, percent CPU usage and RSS.  An example of this message
-> > is:
-> >
-> >   load: 0.31  cmd: sleep 3616843 [sleeping] 0.36r 0.00u 0.00s 0% 696k
-> >
-> > User API visible changes are limited to:
-> >  - The addition of VSTATUS in termios.c_cc[]
-> >  - The addition of NOKERNINFO bit in termios.l_cflags
-> >  - The addition of the TIOCSTAT ioctl number
-> >
-> > None of these changes break the existing kernel api as the termios
-> > structure on all architectures has enough space in the control
-> > character array (.c_cc) for the new character, and the other changes
-> > are space agnostic.
-> >
-> > This feature is in many other Unix-like systems, both current and
-> > historical.  In other implementations, this feature would also send
-> > SIGINFO to the process group; this implementation does not.
-> >
-> > Walt Drummond (3):
-> >   vstatus: Allow the n_tty line dicipline to write to a user tty
-> >   vstatus: Add user space API definitions for VSTATUS, NOKERNINFO and
-> >     TIOCSTAT
-> >   status: Display an informational message when the VSTATUS character is
-> >     pressed or TIOCSTAT ioctl is called.
-> >
-> >  arch/alpha/include/asm/termios.h         |   4 +-
-> >  arch/alpha/include/uapi/asm/ioctls.h     |   1 +
-> >  arch/alpha/include/uapi/asm/termbits.h   |  34 ++---
-> >  arch/ia64/include/asm/termios.h          |   4 +-
-> >  arch/ia64/include/uapi/asm/termbits.h    |  34 ++---
-> >  arch/mips/include/asm/termios.h          |   4 +-
-> >  arch/mips/include/uapi/asm/ioctls.h      |   1 +
-> >  arch/mips/include/uapi/asm/termbits.h    |  36 ++---
-> >  arch/parisc/include/asm/termios.h        |   4 +-
-> >  arch/parisc/include/uapi/asm/ioctls.h    |   1 +
-> >  arch/parisc/include/uapi/asm/termbits.h  |  34 ++---
-> >  arch/powerpc/include/asm/termios.h       |   4 +-
-> >  arch/powerpc/include/uapi/asm/ioctls.h   |   2 +
-> >  arch/powerpc/include/uapi/asm/termbits.h |  34 ++---
-> >  arch/s390/include/asm/termios.h          |   4 +-
-> >  arch/sh/include/uapi/asm/ioctls.h        |   1 +
-> >  arch/sparc/include/uapi/asm/ioctls.h     |   1 +
-> >  arch/sparc/include/uapi/asm/termbits.h   |  38 +++---
-> >  arch/xtensa/include/uapi/asm/ioctls.h    |   1 +
-> >  drivers/tty/Makefile                     |   2 +-
-> >  drivers/tty/n_tty.c                      | 113 +++++++++++-----
-> >  drivers/tty/n_tty_status.c               | 162 +++++++++++++++++++++++
-> >  drivers/tty/tty_io.c                     |   2 +-
-> >  include/asm-generic/termios.h            |   4 +-
-> >  include/linux/tty.h                      | 123 ++++++++---------
-> >  include/uapi/asm-generic/ioctls.h        |   1 +
-> >  include/uapi/asm-generic/termbits.h      |  34 ++---
-> >  27 files changed, 461 insertions(+), 222 deletions(-)
-> >  create mode 100644 drivers/tty/n_tty_status.c
-> >
-> > --
-> > 2.30.2
-> >
->
-> You forgot to cc: me on patch 2/3, which would be needed if I was to
-> take them all.
->
-> Please fix up patch 2 and resend the whole series.
->
-> thanks,
->
-> greg k-h
+> There are a few extra newlines in the first few files which you may or m=
+ay not
+> want to remove.
+
+Thanks for noticing.
+I fixed them up now.
+
+> OTOH I would split out the change to mm_context_t into it's own patch, w=
+ithout
+> adding the vdso_base there. This would reduce the overall size of the ac=
+tual
+> vdso patch and eases review.
+
+Yes, maybe I'll do that. Not sure yet.
+
+Helge
