@@ -2,81 +2,87 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 077034A2F3C
-	for <lists+linux-parisc@lfdr.de>; Sat, 29 Jan 2022 13:20:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B63184A3023
+	for <lists+linux-parisc@lfdr.de>; Sat, 29 Jan 2022 15:55:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347744AbiA2MUr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 29 Jan 2022 07:20:47 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:48558 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346889AbiA2MTi (ORCPT
+        id S1345931AbiA2Oze (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 29 Jan 2022 09:55:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58696 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241965AbiA2Oze (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 29 Jan 2022 07:19:38 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E0017B8234E;
-        Sat, 29 Jan 2022 12:19:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA85DC36AE3;
-        Sat, 29 Jan 2022 12:19:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643458775;
-        bh=J65VF607Au+lXQP+8mKXArK6fDS/9hBK5qV8mWwi4fM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hNexS/zfRcpJQb9tKy9uq83XaLRwvXw8cgOzwvW9WGM8zvfpjFXUMmOHV7wpYFjBp
-         R4zZeyMkYScimS69R0rmPSDQiLeoyC4tNXnoZopSCmrKnJ8CXAdNqsBzb1ez7gi6HN
-         0Tyxrhtp5Mi9AKTv9oQEZpKazjfoFIi00SyeBHUBliq5cJENB09Lf+Pi7mLjn7YNBT
-         aPsDFmioeyhcJlUMm3AZSlSK9ucd2doig8+iZU2Wyg6rU0gRs5rtmxtw+5HhoIUawl
-         66/hvRTiAyCZ/rB8cQbfhby7/PO6/fXx4w8NqSqdB00+lX+6mDb6AecdxvXlTOakZB
-         Pa6OVe+KOUrow==
-From:   guoren@kernel.org
-To:     guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de,
-        anup@brainfault.org, gregkh@linuxfoundation.org,
-        liush@allwinnertech.com, wefu@redhat.com, drew@beagleboard.org,
-        wangjunqiang@iscas.ac.cn, hch@lst.de, hch@infradead.org
-Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        x86@kernel.org, Guo Ren <guoren@linux.alibaba.com>
-Subject: [PATCH V4 17/17] KVM: compat: riscv: Prevent KVM_COMPAT from being selected
-Date:   Sat, 29 Jan 2022 20:17:28 +0800
-Message-Id: <20220129121728.1079364-18-guoren@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220129121728.1079364-1-guoren@kernel.org>
-References: <20220129121728.1079364-1-guoren@kernel.org>
+        Sat, 29 Jan 2022 09:55:34 -0500
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D0DC061714
+        for <linux-parisc@vger.kernel.org>; Sat, 29 Jan 2022 06:55:33 -0800 (PST)
+Received: (qmail 2342 invoked from network); 29 Jan 2022 14:54:06 -0000
+Received: from p200300cf0746ee0076d435fffeb7be92.dip0.t-ipconnect.de ([2003:cf:746:ee00:76d4:35ff:feb7:be92]:50366 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Sat, 29 Jan 2022 15:54:06 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Randolph Chung <randolph@tausq.org>
+Subject: Re: [PATCH] parisc: Add initial vDSO support
+Date:   Sat, 29 Jan 2022 15:55:23 +0100
+Message-ID: <11912593.O9o76ZdvQC@eto.sf-tec.de>
+In-Reply-To: <20220129110342.50853-1-deller@gmx.de>
+References: <20220129110342.50853-1-deller@gmx.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart5536966.DvuYhMxLoT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Guo Ren <guoren@linux.alibaba.com>
+--nextPart5536966.DvuYhMxLoT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Current riscv doesn't support the 32bit KVM API. Let's make it
-clear by not selecting KVM_COMPAT.
+Am Samstag, 29. Januar 2022, 12:03:42 CET schrieb Helge Deller:
+> Add minimal vDSO support, which provides the signal trampoline helpers, but
+> none of the userspace syscall helpers like time functions.
+> 
+> The big benefit of this vDSO implementation is, that we now don't need an
+> executeable stack any longer. PA-RISC is one of the last architectures where
+> an executeable stack was needed in oder to implement the signal trampolines
+> by putting assembly instructions on the stack which then gets executed.
+> With this implementation the kernel will utilize the assembler statements
+> in the vDSO page which is mapped into each userspace application instead
+> and just put the pointers to the signal information on the stack.
+> By dropping the need for executable stacks we now avoid running into issues
+> with various applications in Debian which nowadays want non-executable
+> stacks for security reasons. Additionally, alternative stacks are supported
+> better as well.
+> 
+> This code is based on an initial implementation by Randolph Chung from 2006:
+> https://lore.kernel.org/linux-parisc/4544A34A.6080700@tausq.org/
+> 
+> I did the porting and lifted the code to current code base. Dave fixed the
+> unwind code so that gdb and glibc are able to backtrace through the code. An
+> additional patch to gdb will be pushed upstream by Dave.
 
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
----
- virt/kvm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+There are a few extra newlines in the first few files which you may or may not 
+want to remove.
 
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index f4834c20e4a6..a8c5c9f06b3c 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -53,7 +53,7 @@ config KVM_GENERIC_DIRTYLOG_READ_PROTECT
- 
- config KVM_COMPAT
-        def_bool y
--       depends on KVM && COMPAT && !(S390 || ARM64)
-+       depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
- 
- config HAVE_KVM_IRQ_BYPASS
-        bool
--- 
-2.25.1
+OTOH I would split out the change to mm_context_t into it's own patch, without 
+adding the vdso_base there. This would reduce the overall size of the actual 
+vdso patch and eases review.
+
+Eike
+--nextPart5536966.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYfVVWwAKCRBcpIk+abn8
+Tgt5AJ9qEkRfmbd0FzX1L4pNR3PE8CjqowCfZ26QrpoHKACXNeWykwImMeFBBE0=
+=oHhe
+-----END PGP SIGNATURE-----
+
+--nextPart5536966.DvuYhMxLoT--
+
+
 
