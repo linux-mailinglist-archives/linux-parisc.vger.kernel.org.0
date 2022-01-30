@@ -2,94 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 900304A35B5
-	for <lists+linux-parisc@lfdr.de>; Sun, 30 Jan 2022 11:29:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 445004A35ED
+	for <lists+linux-parisc@lfdr.de>; Sun, 30 Jan 2022 12:32:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354604AbiA3K3t (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 30 Jan 2022 05:29:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59512 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354443AbiA3K3t (ORCPT
+        id S1354638AbiA3Lcx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 30 Jan 2022 06:32:53 -0500
+Received: from mout.kundenserver.de ([212.227.17.13]:58971 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344102AbiA3Lcu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 30 Jan 2022 05:29:49 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17EDEC061714;
-        Sun, 30 Jan 2022 02:29:49 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id j2so33010966ejk.6;
-        Sun, 30 Jan 2022 02:29:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:reply-to:content-language
-         :from:subject:to:content-transfer-encoding;
-        bh=n3AxlPjpoyIwBpeRiLjtiDwxcqTz19I44jmzv2Qsc4E=;
-        b=VQg83ZY73oRzvWz5mplCxugQg2nWeIZKyQZyo18k5OQt96PJvjSRqLcs6puBMB2QFz
-         bdrGalALPpobXBcG7rTB/PhiCQsn0FwTvXb3UbTwY0KaK9xVIBqTiISNh1hTmsN8CIlp
-         wbXiV/4qyjVQftsM5N/oHxMwgq7yF+ABfbHoDUINcwBW+ddIv27hB+/72Cy/xteov8/r
-         YJ/87ZoaE0Ccgb57h7xoQce1c+lGxiwSf1eauwLbpfYb0aqEnqxtJFsod42ts//5lQVk
-         WtYsHfl7MlmbmeaRxWw/iSCLnc76WTj7yvH/TJ+R7X9yaNAcc50TAtSyireoGgg2S/f4
-         sNUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:reply-to
-         :content-language:from:subject:to:content-transfer-encoding;
-        bh=n3AxlPjpoyIwBpeRiLjtiDwxcqTz19I44jmzv2Qsc4E=;
-        b=m1pEb2Dz5YtTAV/Uj3rOOqSlCauvZtkzqK2F4daSVR9XV6Bs4DAm6JNmkvAPlCUq7x
-         4YziMj+L9Pz6ZIzpfTnsohlU2S5r5EZUXQEtHe2TtncEPK+gTqa6k71mdOQXnskwAgfM
-         vx+YN3eUx/HVtX5hwzZDfwiLTlkBvihw3yRjVP3gl8pQf6XpJEVr48P9GggBuZR5eyFf
-         S/kvC4fCxYPFseUNVz7/DH+ZS6UJcg2aUor78Fq23PpOB3WIFiptE/T8VRK24u4Bmpx1
-         Ndhk+oM3kyk7Zn1kmWOsURUCKGmIqwHDqoHYylJf0bS87L2xF9uEvaAViO3aIPFdLQlq
-         4Byw==
-X-Gm-Message-State: AOAM530iFMnE4mRC13+ppfeHfUpkdMHdqghGinqPmDU8XRc57NQS88bp
-        iLh5K3XvMNMrPTws3+OizTE=
-X-Google-Smtp-Source: ABdhPJynlX0ExX24wodu38qn8s+jkkERnhleLdkNxtEZEAlbDeoH3VgdAfeOOx6t/ChL7GOSrANgFQ==
-X-Received: by 2002:a17:907:3f99:: with SMTP id hr25mr13239240ejc.588.1643538587702;
-        Sun, 30 Jan 2022 02:29:47 -0800 (PST)
-Received: from [192.168.88.10] ([45.156.31.32])
-        by smtp.gmail.com with ESMTPSA id gc12sm12242691ejb.23.2022.01.30.02.29.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Jan 2022 02:29:47 -0800 (PST)
-Message-ID: <35469e35-e932-1033-b22f-8413ca8c1aa1@gmail.com>
-Date:   Sun, 30 Jan 2022 13:29:30 +0300
+        Sun, 30 Jan 2022 06:32:50 -0500
+Received: from mail-ot1-f49.google.com ([209.85.210.49]) by
+ mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MCayD-1n51Vk460h-009cnm; Sun, 30 Jan 2022 12:32:48 +0100
+Received: by mail-ot1-f49.google.com with SMTP id o9-20020a9d7189000000b0059ee49b4f0fso10267743otj.2;
+        Sun, 30 Jan 2022 03:32:47 -0800 (PST)
+X-Gm-Message-State: AOAM532cCbxEelwRHlt25HUiGSKF8InPnYi6gUnC3N0/EyVNse6eycj+
+        uxkeTKq8fqFIxlBHl5EH7e1nAU80CZOsusUscHU=
+X-Google-Smtp-Source: ABdhPJwfE8JwIPR39kNR+t9u+MXKrX+M/IvR4BevQAZ6Ex6kYRsjbH69gpBCBcpvwPyYexj/E8Z2vleiIWqqwcDE0P4=
+X-Received: by 2002:a05:6830:33c2:: with SMTP id q2mr8818491ott.368.1643542365934;
+ Sun, 30 Jan 2022 03:32:45 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Reply-To: marketucker275@gmail.com
-Content-Language: en-US
-From:   G4 Finance Limited <roycockrum1130@gmail.com>
-Subject: Investment plan
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20220129121728.1079364-1-guoren@kernel.org> <20220129121728.1079364-9-guoren@kernel.org>
+ <CAK8P3a3JGP6fLVOyLgdNw2YpRSmArbEX8orUhRrN=GHmcdk=1g@mail.gmail.com> <CAJF2gTQQnrUFNQ85vvoMkpxnCWuMw8iXtPZOJwWGaEA9f+rTwA@mail.gmail.com>
+In-Reply-To: <CAJF2gTQQnrUFNQ85vvoMkpxnCWuMw8iXtPZOJwWGaEA9f+rTwA@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Sun, 30 Jan 2022 12:32:29 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a12CygLFT7qoQ9K=sowvTgNpeRej6Zh6Pv2PL_e2zMhMQ@mail.gmail.com>
+Message-ID: <CAK8P3a12CygLFT7qoQ9K=sowvTgNpeRej6Zh6Pv2PL_e2zMhMQ@mail.gmail.com>
+Subject: Re: [PATCH V4 08/17] riscv: compat: syscall: Add compat_sys_call_table
+ implementation
+To:     Guo Ren <guoren@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Anup Patel <anup@brainfault.org>,
+        gregkh <gregkh@linuxfoundation.org>,
+        liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
+        Drew Fustini <drew@beagleboard.org>,
+        Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+        Christoph Hellwig <hch@lst.de>,
+        Christoph Hellwig <hch@infradead.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-csky@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Guo Ren <guoren@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:s+QB4RyZjKJhrb5eRJs6jI0hTwFihOqehJSH7HnwKR1Mql0VAi5
+ u21yO7l5oALaUX9DERN/QeXkP7eAmS8jZkHjs92PN+IZeirfgR7Ql/uPJCei9wC4ZRIypm5
+ r02VfVWq/0hbyNZz07lCwmHnZCErMtNQopjlguoZ1YQJG1n2sNki3rK3oZ5qldawNE2phqf
+ D8fgClrXLWJy3LNJnloBw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ZWoipqB24Tg=:ye1vFxvIQLsaCuYBZZ9XbO
+ a5hEFioB7YtytOQdB2A9Lr4tONnTXpusBSARti+KoGWyMNuvruKoWQMH0ETnu05bdc/HKjPT7
+ huwalokfHNDc63FEXrFXpwh9ahn77VTnh1vr0fixjqcvGIi8P9Q3OHJamxg9DMV0cabwBpt2u
+ iZW77e6dvvwoyG0zry9bzPvql7k49w0KWcZwEUypw3vMu5L7qV4im1FDBFvC7zL9TjGvwkzld
+ aRoVMl9OYf82TvxFFYLIa5kr8VBC33aTO6CdGQ5lTqrxl/8ZWSzYUOZP53uYLyq6D0jc9t3ZE
+ om4QFNiUVrTKrr0kEyBdE5cKpx6OBQ6Qw5YGNpl0hAsHRXIy20WUKGC41EaiM1zqHLinnuQ/s
+ biOTzn4ON0IoD3kMeWj6LRIqzbLZQjmTuWmfzdpVrru/IruZGZ2AFBJ1sHDZ9HuGWfyhXJbO1
+ 5I99qzRD//Z2BKgJD9oYJJhJDBlQTbcloJHLeit7kqBd/xPgsJETjJFYuvdvKN55BDc3M0TQk
+ yf1rO1MQRBrugPYU+ZyvOHbNJdhqwLFeqMJxMm7pWfWiOKZUg5MH1XaZOOjmna3xnTXtnXAMi
+ QNJRFKlNeXdTK3/dg75Vw2FJXqecEEby2sqiAH/pmjI33vnPUI8WTkst7/p0dV+Nplx1khLAo
+ X+mvB2RkfYfj+YaHgeMAoHNE40AmA1FODQLiH5L1VXv8rqVWjZURt8jvAIN2bSFAtFcgZlfeP
+ jCcgozgUX9axmoFCawmynVSNTbvPIwlP6+MYjGgAs43coiyEX0yO4jpf1sfgBCbhKoRQrjzdj
+ 9JC9xQcao/vy/Pp9rZkYbkjp60JeOvJd6qRTungoei5L6umgwY=
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Sun, Jan 30, 2022 at 6:54 AM Guo Ren <guoren@kernel.org> wrote:
+> On Sun, Jan 30, 2022 at 6:41 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> >
+> > I would make these endian-specific, and reverse them on big-endian
+> > architectures. That way it
+> > should be possible to share them across all compat architectures
+> > without needing the override
+> > option.
+> I hope it could be another patch. Because it's not clear to
+> _LITTLE_ENDIAN definition in archs.
+>
+> eg: Names could be __ORDER_LITTLE_ENDIAN__ CPU_LITTLE_ENDIAN
+> SYS_SUPPORTS_LITTLE_ENDIAN __LITTLE_ENDIAN
+>
+> riscv is little-endian, but no any LITTLE_ENDIAN definition.
+>
+> So let's keep them in the patch, first, Thx
 
--- 
-Dear Sir/Ma'am,
+The correct way to do it is to check for CONFIG_CPU_BIG_ENDIAN,
+which works on all architectures. Since nothing else selects the
+__ARCH_WANT_COMPAT_* symbols, there is also no risk for
+regressions, so just use this and leave the #ifndef compat_arg_u64
+check in place.
 
-I'm a broker with G4 Finance Limited. I’m inviting you to join over 200 million investors with a reliable source of high income.
-G4 Finance LTD is an international financial company engaged in investment activities, which are related to trading on financial
-markets and crypto-currency exchanges performed by qualified professional traders.
-
-Get involved in our tremendous platform and Invest. We will utilize your money and give you profit in your wallet automatically.
-
-Step 1: Create an account
-Step 2: Deposit and Invest to Plan
-Step 3: Get Profit Daily.
-
-We also offer a wide range loan to interested Business Owners, Investors, Contractors who are looking for Loans to Finance their projects.
-
-. Commercial Loans
-. Real Estate Loans
-. Business Loans
-. Personal Loans.
-
-Our Company service is due at a minimum Nine Billion Dollars and our rate is 1.5% to suit your Business needs.
-
-Contact back for more details:-
-
-Regards,
-G4 Finance Limited.
-Mr.Mark Tucker
-
+      Arnd
