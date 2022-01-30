@@ -2,118 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 109084A3496
-	for <lists+linux-parisc@lfdr.de>; Sun, 30 Jan 2022 06:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 900304A35B5
+	for <lists+linux-parisc@lfdr.de>; Sun, 30 Jan 2022 11:29:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239864AbiA3Fyf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 30 Jan 2022 00:54:35 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:60604 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232509AbiA3Fyf (ORCPT
+        id S1354604AbiA3K3t (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 30 Jan 2022 05:29:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59512 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354443AbiA3K3t (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 30 Jan 2022 00:54:35 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 33BDEB828BB;
-        Sun, 30 Jan 2022 05:54:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B706CC340EE;
-        Sun, 30 Jan 2022 05:54:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643522071;
-        bh=KTwtRKH/OVKhaNoB2dpS+9CRT5rYtiTrBbRTY58frfI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KbqY9YcjYQ53gmY2dHmrpw7RqkS4V6dNNJjtLBbW8U4K47uqz0ecQoZbQwgfGmZma
-         tRCWkNjivI6OGFruhAjydv25WQ48WPT8wiGKtc8VkkqRijcv4FkBddBEiA9bZ6UpWM
-         I5RJVntAdZO8XAOSx+Hzslf2/jqxqMaVH/0ebTmNHQjz/YBFdn/6EIt7d+vxsPHNSZ
-         ZaFIL+Fyvt5HOclTxwg6T2ZdaTD4y5Z172agNJmW87mhTO2d74ig4seQ3g/0cZwPaa
-         1X8MVufLeenvPKvFey3paLO3ejlnzOfUnZP2orkztfEtq678+ZCjwp7m/wgaw/Qbsh
-         4OleGJIuGH/Uw==
-Received: by mail-vs1-f50.google.com with SMTP id r20so7975499vsn.0;
-        Sat, 29 Jan 2022 21:54:31 -0800 (PST)
-X-Gm-Message-State: AOAM5308+np7kMCyDNQotlUnib0rAwi3GriWPQ1cZ5QdfJumkteRXJBX
-        RSAYzQhONChfOJBk15UkoH22tLJIvwifVVQsqXY=
-X-Google-Smtp-Source: ABdhPJw3SI5w6wpfoRZZErXNv34dgmNp5eduh3H4LQwaI7qbmi+2hfTO0XEH13fEEhf3iFH2jsVqfmVsSGc5OwjgZr4=
-X-Received: by 2002:a67:e0d9:: with SMTP id m25mr5857135vsl.51.1643522070834;
- Sat, 29 Jan 2022 21:54:30 -0800 (PST)
+        Sun, 30 Jan 2022 05:29:49 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17EDEC061714;
+        Sun, 30 Jan 2022 02:29:49 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id j2so33010966ejk.6;
+        Sun, 30 Jan 2022 02:29:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:reply-to:content-language
+         :from:subject:to:content-transfer-encoding;
+        bh=n3AxlPjpoyIwBpeRiLjtiDwxcqTz19I44jmzv2Qsc4E=;
+        b=VQg83ZY73oRzvWz5mplCxugQg2nWeIZKyQZyo18k5OQt96PJvjSRqLcs6puBMB2QFz
+         bdrGalALPpobXBcG7rTB/PhiCQsn0FwTvXb3UbTwY0KaK9xVIBqTiISNh1hTmsN8CIlp
+         wbXiV/4qyjVQftsM5N/oHxMwgq7yF+ABfbHoDUINcwBW+ddIv27hB+/72Cy/xteov8/r
+         YJ/87ZoaE0Ccgb57h7xoQce1c+lGxiwSf1eauwLbpfYb0aqEnqxtJFsod42ts//5lQVk
+         WtYsHfl7MlmbmeaRxWw/iSCLnc76WTj7yvH/TJ+R7X9yaNAcc50TAtSyireoGgg2S/f4
+         sNUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:reply-to
+         :content-language:from:subject:to:content-transfer-encoding;
+        bh=n3AxlPjpoyIwBpeRiLjtiDwxcqTz19I44jmzv2Qsc4E=;
+        b=m1pEb2Dz5YtTAV/Uj3rOOqSlCauvZtkzqK2F4daSVR9XV6Bs4DAm6JNmkvAPlCUq7x
+         4YziMj+L9Pz6ZIzpfTnsohlU2S5r5EZUXQEtHe2TtncEPK+gTqa6k71mdOQXnskwAgfM
+         vx+YN3eUx/HVtX5hwzZDfwiLTlkBvihw3yRjVP3gl8pQf6XpJEVr48P9GggBuZR5eyFf
+         S/kvC4fCxYPFseUNVz7/DH+ZS6UJcg2aUor78Fq23PpOB3WIFiptE/T8VRK24u4Bmpx1
+         Ndhk+oM3kyk7Zn1kmWOsURUCKGmIqwHDqoHYylJf0bS87L2xF9uEvaAViO3aIPFdLQlq
+         4Byw==
+X-Gm-Message-State: AOAM530iFMnE4mRC13+ppfeHfUpkdMHdqghGinqPmDU8XRc57NQS88bp
+        iLh5K3XvMNMrPTws3+OizTE=
+X-Google-Smtp-Source: ABdhPJynlX0ExX24wodu38qn8s+jkkERnhleLdkNxtEZEAlbDeoH3VgdAfeOOx6t/ChL7GOSrANgFQ==
+X-Received: by 2002:a17:907:3f99:: with SMTP id hr25mr13239240ejc.588.1643538587702;
+        Sun, 30 Jan 2022 02:29:47 -0800 (PST)
+Received: from [192.168.88.10] ([45.156.31.32])
+        by smtp.gmail.com with ESMTPSA id gc12sm12242691ejb.23.2022.01.30.02.29.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 30 Jan 2022 02:29:47 -0800 (PST)
+Message-ID: <35469e35-e932-1033-b22f-8413ca8c1aa1@gmail.com>
+Date:   Sun, 30 Jan 2022 13:29:30 +0300
 MIME-Version: 1.0
-References: <20220129121728.1079364-1-guoren@kernel.org> <20220129121728.1079364-9-guoren@kernel.org>
- <CAK8P3a3JGP6fLVOyLgdNw2YpRSmArbEX8orUhRrN=GHmcdk=1g@mail.gmail.com>
-In-Reply-To: <CAK8P3a3JGP6fLVOyLgdNw2YpRSmArbEX8orUhRrN=GHmcdk=1g@mail.gmail.com>
-From:   Guo Ren <guoren@kernel.org>
-Date:   Sun, 30 Jan 2022 13:54:20 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQQnrUFNQ85vvoMkpxnCWuMw8iXtPZOJwWGaEA9f+rTwA@mail.gmail.com>
-Message-ID: <CAJF2gTQQnrUFNQ85vvoMkpxnCWuMw8iXtPZOJwWGaEA9f+rTwA@mail.gmail.com>
-Subject: Re: [PATCH V4 08/17] riscv: compat: syscall: Add compat_sys_call_table
- implementation
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Anup Patel <anup@brainfault.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
-        Drew Fustini <drew@beagleboard.org>,
-        Wang Junqiang <wangjunqiang@iscas.ac.cn>,
-        Christoph Hellwig <hch@lst.de>,
-        Christoph Hellwig <hch@infradead.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-csky@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Guo Ren <guoren@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Reply-To: marketucker275@gmail.com
+Content-Language: en-US
+From:   G4 Finance Limited <roycockrum1130@gmail.com>
+Subject: Investment plan
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Jan 30, 2022 at 6:41 AM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> > Implement compat sys_call_table and some system call functions:
-> > truncate64, ftruncate64, fallocate, pread64, pwrite64,
-> > sync_file_range, readahead, fadvise64_64 which need argument
-> > translation.
-> >
-> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > Cc: Arnd Bergmann <arnd@arndb.de>
->
-> This all looks really good, but I would change one detail:
->
-> > +#ifndef compat_arg_u64
-> > +#define compat_arg_u64(name)           u32  name##_lo, u32  name##_hi
-> > +#define compat_arg_u64_dual(name)      u32, name##_lo, u32, name##_hi
-> > +#define compat_arg_u64_glue(name)      (((u64)name##_hi << 32) | \
-> > +                                        ((u64)name##_lo & 0xffffffffUL))
-> > +#endif
->
-> I would make these endian-specific, and reverse them on big-endian
-> architectures. That way it
-> should be possible to share them across all compat architectures
-> without needing the override
-> option.
-I hope it could be another patch. Because it's not clear to
-_LITTLE_ENDIAN definition in archs.
-
-eg: Names could be __ORDER_LITTLE_ENDIAN__ CPU_LITTLE_ENDIAN
-SYS_SUPPORTS_LITTLE_ENDIAN __LITTLE_ENDIAN
-
-riscv is little-endian, but no any LITTLE_ENDIAN definition.
-
-So let's keep them in the patch, first, Thx
-
->
->         Arnd
-
-
 
 -- 
-Best Regards
- Guo Ren
+Dear Sir/Ma'am,
 
-ML: https://lore.kernel.org/linux-csky/
+I'm a broker with G4 Finance Limited. I’m inviting you to join over 200 million investors with a reliable source of high income.
+G4 Finance LTD is an international financial company engaged in investment activities, which are related to trading on financial
+markets and crypto-currency exchanges performed by qualified professional traders.
+
+Get involved in our tremendous platform and Invest. We will utilize your money and give you profit in your wallet automatically.
+
+Step 1: Create an account
+Step 2: Deposit and Invest to Plan
+Step 3: Get Profit Daily.
+
+We also offer a wide range loan to interested Business Owners, Investors, Contractors who are looking for Loans to Finance their projects.
+
+. Commercial Loans
+. Real Estate Loans
+. Business Loans
+. Personal Loans.
+
+Our Company service is due at a minimum Nine Billion Dollars and our rate is 1.5% to suit your Business needs.
+
+Contact back for more details:-
+
+Regards,
+G4 Finance Limited.
+Mr.Mark Tucker
+
