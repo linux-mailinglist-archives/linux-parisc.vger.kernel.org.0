@@ -2,74 +2,59 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A5AC4AB4EC
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Feb 2022 07:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA64F4AC3AC
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Feb 2022 16:33:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229679AbiBGGVa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 7 Feb 2022 01:21:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33492 "EHLO
+        id S237012AbiBGPcc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 7 Feb 2022 10:32:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239061AbiBGFiW (ORCPT
+        with ESMTP id S237870AbiBGPRf (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 7 Feb 2022 00:38:22 -0500
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9C5C043181;
-        Sun,  6 Feb 2022 21:38:21 -0800 (PST)
-Received: by mail-wr1-f49.google.com with SMTP id k18so22618586wrg.11;
-        Sun, 06 Feb 2022 21:38:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=byr958ymnG7EGtbbRHy8FEsvmnA+OZjvX3uXRPh6Z4E=;
-        b=xWqxHPzWfiPnCRWqMX0G6nt9K63YEHMlaBJcreR7keWoEHD6lSiv6awVPqd4pJ0qCe
-         W2x50WA2xEAyPlRDIWz4fLCwvHhXiVTL5af2TxBKrfTDnaiyn3k1VFkbivInnHdQoCgG
-         hoYQMb4tN+lgoXs+wCsCWIxQqedEdi6kLntDz3mMwoKocuvxtkkS5kzkUao1xTDkhpRC
-         EEwIDc7f0hz+a9E10R32pV3K591aB+EOVFTXIZKQwF9qvvsRZaTdmMkr5BnL7kOeG0nR
-         ZHwgU4ouzdxx6vBpNGAGzkIyVEu+zCWvS2OmeXNwySP94WLWifeLjXg545u09mBuMtM6
-         UdXQ==
-X-Gm-Message-State: AOAM533OjWGYDqkxFfHGpPwHdf0tfpLoK/fS3ax+bLKS0jjOfIXqSDZk
-        2LHuRrgKfZ1VEwmWDfYOEnlkAukmZLV4ag==
-X-Google-Smtp-Source: ABdhPJwPLsGKwDunoy8I0Myez3SxQ6VYLq3bfG33of6vYqoVy/EKGY4dAvht6XnNrJZEz+OnSQ488A==
-X-Received: by 2002:adf:d1c6:: with SMTP id b6mr8399158wrd.669.1644212299712;
-        Sun, 06 Feb 2022 21:38:19 -0800 (PST)
-Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
-        by smtp.gmail.com with ESMTPSA id f14sm8693006wmq.40.2022.02.06.21.38.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Feb 2022 21:38:18 -0800 (PST)
-Message-ID: <35f29dbd-04ec-037e-007c-7a079caf0d5b@kernel.org>
-Date:   Mon, 7 Feb 2022 06:38:16 +0100
+        Mon, 7 Feb 2022 10:17:35 -0500
+X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 07:17:34 PST
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C64F7C0401C1
+        for <linux-parisc@vger.kernel.org>; Mon,  7 Feb 2022 07:17:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1644247054; x=1675783054;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RVfpHwKqjohdLekv0K+S7TGWa9dDO77kQ5CF3SAMaFk=;
+  b=jX++m6o+rstETn/iKsoq4juviCRN/MYK/Uyrer0nZDoohZ69gilK0qLv
+   6iEiZgbDCszpeL2h8VDFzx0+X8Ur/CZ1W2ISJkkkgAlPl8DqlyVN/uOUl
+   lfeSWp8PsjsP58sKBIfWVVHkBoN0BMj3TQBr0WRxJ94x3sV8klgyT6I2f
+   m4BI0t9+fQnnKR05K28+dT3yW7Vsz4UcaJuqLZOPCYQyf+YcCm2mDQekU
+   UCQOtWlTdu3AStvdx/ncHIdTK6nxP9k6UnbT86RWd9YAxo3QPzTtkKEAE
+   tT8BNnHxeaTJGrv4bgV1sG+3cJEcYnjf7u7JRU2kzDJS3Qm+yzOWk6jvW
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10250"; a="335137274"
+X-IronPort-AV: E=Sophos;i="5.88,350,1635231600"; 
+   d="scan'208";a="335137274"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2022 07:16:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,350,1635231600"; 
+   d="scan'208";a="540139670"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga008.jf.intel.com with ESMTP; 07 Feb 2022 07:16:30 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 3AFB631D; Mon,  7 Feb 2022 17:16:44 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Subject: [PATCH v1 1/1] parisc: Add ioread64_lo_hi() and iowrite64_lo_hi()
+Date:   Mon,  7 Feb 2022 17:16:39 +0200
+Message-Id: <20220207151639.75086-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 3/3] vstatus: Display an informational message when the
- VSTATUS character is pressed or TIOCSTAT ioctl is called.
-Content-Language: en-US
-To:     Walt Drummond <walt@drummond.us>, agordeev@linux.ibm.com,
-        arnd@arndb.de, benh@kernel.crashing.org, borntraeger@de.ibm.com,
-        chris@zankel.net, davem@davemloft.net, gregkh@linuxfoundation.org,
-        hca@linux.ibm.com, deller@gmx.de, ink@jurassic.park.msu.ru,
-        James.Bottomley@HansenPartnership.com, mattst88@gmail.com,
-        jcmvbkbc@gmail.com, mpe@ellerman.id.au, paulus@samba.org,
-        rth@twiddle.net, dalias@libc.org, tsbogend@alpha.franken.de,
-        gor@linux.ibm.com, ysato@users.osdn.me
-Cc:     linux-kernel@vger.kernel.org, ar@cs.msu.ru,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-References: <20220206154856.2355838-1-walt@drummond.us>
- <20220206154856.2355838-4-walt@drummond.us>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20220206154856.2355838-4-walt@drummond.us>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,39 +62,67 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 06. 02. 22, 16:48, Walt Drummond wrote:
-> When triggered by pressing the VSTATUS key or calling the TIOCSTAT
-> ioctl, the n_tty line discipline will display a message on the user's
-> tty that provides basic information about the system and an
-> 'interesting' process in the current foreground process group, eg:
-> 
->    load: 0.58  cmd: sleep 744474 [sleeping] 0.36r 0.00u 0.00s 0% 772k
-> 
-> The status message provides:
->   - System load average
->   - Command name and process id (from the perspective of the session)
->   - Scheduler state
->   - Total wall-clock run time
->   - User space run time
->   - System space run time
->   - Percentage of on-cpu time
->   - Resident set size
-> 
-> The message is only displayed when the tty has the VSTATUS character
-> set, the local flags ICANON and IEXTEN are enabled and NOKERNINFO is
-> disabled; it is always displayed when TIOCSTAT is called regardless of
-> tty settings.
-> 
-> Signed-off-by: Walt Drummond <walt@drummond.us>
-> ---
+It's a followup to the previous commit f15309d7ad5d ("parisc: Add
+ioread64_hi_lo() and iowrite64_hi_lo()") which does only half of
+the job. Add the rest, so we won't get a new kernel test robot
+reports.
 
-It looks like my comments were addressed. However you did not document 
-the chances since v1 here. IOW, [v2] tag missing here.
+Fixes: f15309d7ad5d ("parisc: Add ioread64_hi_lo() and iowrite64_hi_lo()")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ arch/parisc/lib/iomap.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-And please add the CCs I added last time, so that relevant people still 
-can comment.
-
-thanks,
+diff --git a/arch/parisc/lib/iomap.c b/arch/parisc/lib/iomap.c
+index 367f6397bda7..860385058085 100644
+--- a/arch/parisc/lib/iomap.c
++++ b/arch/parisc/lib/iomap.c
+@@ -346,6 +346,16 @@ u64 ioread64be(const void __iomem *addr)
+ 	return *((u64 *)addr);
+ }
+ 
++u64 ioread64_lo_hi(const void __iomem *addr)
++{
++	u32 low, high;
++
++	low = ioread32(addr);
++	high = ioread32(addr + sizeof(u32));
++
++	return low + ((u64)high << 32);
++}
++
+ u64 ioread64_hi_lo(const void __iomem *addr)
+ {
+ 	u32 low, high;
+@@ -419,6 +429,12 @@ void iowrite64be(u64 datum, void __iomem *addr)
+ 	}
+ }
+ 
++void iowrite64_lo_hi(u64 val, void __iomem *addr)
++{
++	iowrite32(val, addr);
++	iowrite32(val >> 32, addr + sizeof(u32));
++}
++
+ void iowrite64_hi_lo(u64 val, void __iomem *addr)
+ {
+ 	iowrite32(val >> 32, addr + sizeof(u32));
+@@ -530,6 +546,7 @@ EXPORT_SYMBOL(ioread32);
+ EXPORT_SYMBOL(ioread32be);
+ EXPORT_SYMBOL(ioread64);
+ EXPORT_SYMBOL(ioread64be);
++EXPORT_SYMBOL(ioread64_lo_hi);
+ EXPORT_SYMBOL(ioread64_hi_lo);
+ EXPORT_SYMBOL(iowrite8);
+ EXPORT_SYMBOL(iowrite16);
+@@ -538,6 +555,7 @@ EXPORT_SYMBOL(iowrite32);
+ EXPORT_SYMBOL(iowrite32be);
+ EXPORT_SYMBOL(iowrite64);
+ EXPORT_SYMBOL(iowrite64be);
++EXPORT_SYMBOL(iowrite64_lo_hi);
+ EXPORT_SYMBOL(iowrite64_hi_lo);
+ EXPORT_SYMBOL(ioread8_rep);
+ EXPORT_SYMBOL(ioread16_rep);
 -- 
-js
-suse labs
+2.34.1
+
