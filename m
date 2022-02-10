@@ -2,94 +2,171 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B334B0A96
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Feb 2022 11:31:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2F364B0B90
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Feb 2022 11:57:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239644AbiBJKat (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 10 Feb 2022 05:30:49 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44066 "EHLO
+        id S240405AbiBJK5C (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 10 Feb 2022 05:57:02 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239658AbiBJKas (ORCPT
+        with ESMTP id S240406AbiBJK47 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 10 Feb 2022 05:30:48 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1F08B92;
-        Thu, 10 Feb 2022 02:30:49 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4JvY1J0XpGz4xdh;
-        Thu, 10 Feb 2022 21:30:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-        s=201909; t=1644489045;
-        bh=/j80aUQlKa/S6QbooAK3y3Gg9NwGU+PKEkWBN3ktOAM=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=TCawh+Udct1RMjVH8ZU19XAOaHAEWi8UE1gSqYxtxWKCdRgozgSyMUWR+VA7h+4A3
-         Y2Gyi5C40KuLmrAQqF/6A+MsFAN+YhOqhEfvn2Y+2ycFiYtPbcbTshYBObJyP8KJpD
-         tNOxEYpjJyuyllbretPziOS745L4qVaZMOpvP4gCycccURrg7tABnvGHCU0WMDfdnc
-         pPjeHrx9ubrYDqQVG9HhvZVJg0KptHYyoMC5QExkKEF4mRtdrzhg24JzeaTF3mQcwc
-         2uscyDi9MUqhI1cZoTyihNTNMY8RpFcVwAawyAl3q5b1LQ+bP6NK6OGjQFoPNiLAgA
-         c4imi8H1U2f+A==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 08/12] asm-generic: Refactor
- dereference_[kernel]_function_descriptor()
-In-Reply-To: <93a2006a5d90292baf69cb1c34af5785da53efde.1634457599.git.christophe.leroy@csgroup.eu>
-References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
- <93a2006a5d90292baf69cb1c34af5785da53efde.1634457599.git.christophe.leroy@csgroup.eu>
-Date:   Thu, 10 Feb 2022 21:30:43 +1100
-Message-ID: <8735kr814c.fsf@mpe.ellerman.id.au>
+        Thu, 10 Feb 2022 05:56:59 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC021011
+        for <linux-parisc@vger.kernel.org>; Thu, 10 Feb 2022 02:56:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1644490611;
+        bh=xls2TN1boz+0NRetU6TK5lIm3i0RfxuVl71mXjK6r6M=;
+        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+        b=R3V5z/ZDbAY4yMk79nk17gn//LRPyrBmvQgxl36jdpH9MstiwoEeZCCjikBsGOS66
+         D0rToNnMvLSsNaGwWXOqfzVSYI6m8sya3MSPSSvvJo/osE8Dnhc8cesTNHqfpblDqT
+         rIerEoA5auO2CytF0pD/nyB5vSP/gr8mCip+SUq4=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.179.245]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MBm1U-1nRxxG3upA-00CAAv; Thu, 10
+ Feb 2022 11:56:51 +0100
+Message-ID: <a4693e9b-5ff0-b4be-9ebc-1d547ff3a560@gmx.de>
+Date:   Thu, 10 Feb 2022 11:56:45 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] parisc: Fix user access miscompilation
+Content-Language: en-US
+To:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Sven Schnelle <svens@stackframe.org>
+References: <YgQGzle/mBRK9lBc@p100>
+ <f82d3a96-c70a-5eee-5e2d-905175597978@bell.net>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <f82d3a96-c70a-5eee-5e2d-905175597978@bell.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Provags-ID: V03:K1:fpRoffWDwE6uqCYYe2SQgDlt0gsOrxeGL2lp1pXwXt6l4SC1UwY
+ cXUwj3hsGL1d8R2CrTimqpJoBjO0F8sOm7ovLMvl6mO43v3PNA7F9fTuO3tO/C4XfVYaNMK
+ sWQhsx0JhDViMudDdDN/izVxMSLAzYEkFZMmlf0zxhA8XMnY2UML4Y46gfDDemzZx6AHWrx
+ Q/7q/xRwtp4e6HFSRtJzw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:FowSoYV2jy0=:xgxN4mah4PQo20chw86bLW
+ lB2j+J5FOMyhCgFYuVBTOVuzUB4UfJrV6bV0hU/4GhdYT2oZqonjle6dohAgh+Zz/7/SylDN6
+ QUKXDWLk06pYMtxrFJ2GMg1GXVKMEXx3Cgfy4F7Sxm4Vl9zd+6ioEl4z9yOu/stPYGwMNelJz
+ IjILWq9eZ5ITvWkQ7KWs3Fr1FDldjqvIVKJaxbxRr6TOVHv93chEfZx7YUZnKZqeFo4dK8g26
+ ASSuhbor7zhAuxdIGyLy5bhZ10qK5LkKbFBmCwXcOjx+fy32644M2huQVk2q7TTOqMe0bcwUW
+ oz85FvAJz7wZFEnCBkcWUfceO7T76/hx4pC+7d9pjwQXamKl75bQU2V963wTsHBFhvYOtMENQ
+ A8bWr3Q95PvIUqgFJm5BIVbJDqcXtzlUJsth82oeExXRWTMgZxifhcuQR55nVnp3hEnCyTSQA
+ x3ESttXzhinu37hty5GyH/kPOYIaTyUJn8KLAav3ug2DiBMgP+Db+tKYb/6fE5mJq+cvCUXMF
+ 3Gmm+6/KkUV5Ru7952wLQWhszHcfqczFt5guIdQxBE4r4opNB0poDvqSDuQWSE5xp27J9YnSH
+ Q866BmUASkcpBZj9Nz4BrSqG9kOdoukOIRvT+wy4B9v+mnEws4G+0/Ony9faO11RtONij929e
+ Wn6Q5o+Rb63akeRR+k6Cc9VQnaQ+PokIr9M3JZqUnY1e7C2/Xb2EpogZI2DJVx189FAtlzZNu
+ CcXnj9/JMSUb0PfgJ9B3PbZs2XF43AVhTajvJOQZzLUjWSwplzEEPJWKGdtq4W2B2wUYrGq0d
+ Yk3B1tJpYDsGodEGqpyLvQYZa5C/IzeL7o35d5hg481Gs2mhhLDbFH2HqjD7KiXkNdNBOr3Ac
+ nvvhfEAqd+2sdlewSJZbeP/GLmOGd997Ozpupe/El5inl4EEVInYv7V7AqhcI4pd4egEXpmDg
+ 8tbMb6MMqgZ082LWyO5udWLdfLJCryvX7TQRekgXgMauGJZx1DBb0XD2y7r9tV2kmaul4ajsZ
+ 3JWyeN/reF5AS/wvXL2eCiTDgVzyH0ntW71rXNz6kg6ETWQyw2UXK54exhAwcWkWlcyq8gCFX
+ MLeYfcvRwSzYYA=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> diff --git a/kernel/extable.c b/kernel/extable.c
-> index b0ea5eb0c3b4..1ef13789bea9 100644
-> --- a/kernel/extable.c
-> +++ b/kernel/extable.c
-> @@ -159,12 +160,32 @@ int kernel_text_address(unsigned long addr)
->  }
->  
->  /*
-> - * On some architectures (PPC64, IA64) function pointers
-> + * On some architectures (PPC64, IA64, PARISC) function pointers
->   * are actually only tokens to some data that then holds the
->   * real function address. As a result, to find if a function
->   * pointer is part of the kernel text, we need to do some
->   * special dereferencing first.
->   */
-> +#ifdef CONFIG_HAVE_FUNCTION_DESCRIPTORS
-> +void *dereference_function_descriptor(void *ptr)
-> +{
-> +	func_desc_t *desc = ptr;
-> +	void *p;
-> +
-> +	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> +		ptr = p;
-> +	return ptr;
-> +}
-
-This needs an EXPORT_SYMBOL_GPL(), otherwise the build breaks after
-patch 10 with CONFIG_LKDTM=m.
-
-cheers
+T24gMi8xMC8yMiAxMToyNiwgSm9obiBEYXZpZCBBbmdsaW4gd3JvdGU6DQo+IE9uIDIwMjItMDIt
+MDkgMToyNCBwLm0uLCBIZWxnZSBEZWxsZXIgd3JvdGU6DQo+PiBBZnRlciBjb21taXQgNGI5ZDJh
+NzMxYzNkICgicGFyaXNjOiBTd2l0Y2ggdXNlciBhY2Nlc3MgZnVuY3Rpb25zDQo+PiB0byBzaWdu
+YWwgZXJyb3JzIGluIHIyOSBpbnN0ZWFkIG9mIHI4IikgYmFzaCBzdWRkZW5seSBzdGFydGVkDQo+
+PiB0byByZXBvcnQgdGhvc2Ugd2FybmluZ3MgYWZ0ZXIgbG9naW46DQo+Pg0KPj4gLWJhc2g6IGNh
+bm5vdCBzZXQgdGVybWluYWwgcHJvY2VzcyBncm91cCAoLTEpOiBCYWQgZmlsZSBkZXNjcmlwdG9y
+DQo+PiAtYmFzaDogbm8gam9iIGNvbnRyb2wgaW4gdGhpcyBzaGVsbA0KPj4NCj4+IEl0IHR1cm5l
+ZCBvdXQsIHRoYXQgYW5vdGhlciBmdW5jdGlvbiBjYWxsIGluc2lkZSBhIHB1dF91c2VyKCksIGUu
+Zy46DQo+PiDCoMKgIHB1dF91c2VyKHZ0X2RvX2tkZ2tibW9kZShjb25zb2xlKSwgKGludCBfX3Vz
+ZXIgKilhcmcpOw0KPj4gY2xvYmJlcmVkIHRoZSBlcnJvciByZWdpc3RlciAocjI5KSBhbmQgdGh1
+cyBmYWlsZWQuDQo+PiBBdm9pZCB0aGlzIG1pc2NvbXBpbGF0aW9uIGJ5IGZpcnN0IGNhbGN1bGF0
+ZSB0aGUgdmFsdWUgaW4NCj4+IF9fcHV0X3VzZXIoKSBiZWZvcmUgY2FsbGluZyBfX3B1dF91c2Vy
+X2ludGVybmFsKCkgdG8gYWN0dWFsbHkNCj4+IHdyaXRlIHRoZSB2YWx1ZSB0byB1c2VyIHNwYWNl
+Lg0KPiBDb3VsZG4ndCB0aGUgc2FtZSBpc3N1ZSBvY2N1ciB3aXRoIHB0ciBhcmd1bWVudCBpbiB0
+aGVzZSBtYWNyb3M/DQoNClRoZW9yZXRpY2FsbHksIHllcy4gSGF2ZW4ndCBzZWVuIGl0IHRob3Vn
+aC4NCg0KPj4gQWRkaXRpb25hbGx5LCBwcmVmZXIgdGhlICIrIiBjb25zdHJhaW50IG9uIHB1X2Vy
+ciBhbmQgZ3VfZXJyIHJlZ2lzdGVycyB0byB0ZWxsDQo+PiB0aGUgY29tcGlsZXIgdGhhdCB0aG9z
+ZSBvcGVyYW5kcyBhcmUgYm90aCByZWFkIGFuZCB3cml0dGVuIGJ5IHRoZSBhc3NlbWJseQ0KPj4g
+aW5zdHJ1Y3Rpb24uDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogSGVsZ2UgRGVsbGVyIDxkZWxsZXJA
+Z214LmRlPg0KPj4gRml4ZXM6IDRiOWQyYTczMWMzZCAoInBhcmlzYzogU3dpdGNoIHVzZXIgYWNj
+ZXNzIGZ1bmN0aW9ucyB0byBzaWduYWwgZXJyb3JzIGluIHIyOSBpbnN0ZWFkIG9mIHI4IikNCj4+
+DQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9wYXJpc2MvaW5jbHVkZS9hc20vdWFjY2Vzcy5oIGIvYXJj
+aC9wYXJpc2MvaW5jbHVkZS9hc20vdWFjY2Vzcy5oDQo+PiBpbmRleCBlYmY4YTg0NWIwMTcuLjY4
+ZjVjMWVhYWE2ZiAxMDA2NDQNCj4+IC0tLSBhL2FyY2gvcGFyaXNjL2luY2x1ZGUvYXNtL3VhY2Nl
+c3MuaA0KPj4gKysrIGIvYXJjaC9wYXJpc2MvaW5jbHVkZS9hc20vdWFjY2Vzcy5oDQo+PiBAQCAt
+ODksNyArODksNyBAQCBzdHJ1Y3QgZXhjZXB0aW9uX3RhYmxlX2VudHJ5IHsNCj4+IMKgwqDCoMKg
+wqAgX19hc21fXygiMTogIiBsZHggIiAwKCIgc3IgIiUyKSwlMFxuIsKgwqDCoMKgwqDCoMKgIFwN
+Cj4+IMKgwqDCoMKgwqDCoMKgwqDCoCAiOTpcbiLCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBcDQo+PiDCoMKgwqDCoMKgwqDCoMKgwqAgQVNNX0VYQ0VQVElPTlRBQkxFX0VO
+VFJZX0VGQVVMVCgxYiwgOWIpwqDCoMKgIFwNCj4+IC3CoMKgwqDCoMKgwqDCoCA6ICI9ciIoX19n
+dV92YWwpLCAiPXIiKF9fZ3VfZXJyKcKgwqDCoMKgwqDCoMKgIFwNCj4+ICvCoMKgwqDCoMKgwqDC
+oCA6ICI9JnIiKF9fZ3VfdmFsKSwgIityIihfX2d1X2VycinCoMKgwqDCoMKgwqDCoCBcDQo+IEkg
+ZG9uJ3QgYmVsaWV2ZSB0aGUgZWFybHkgY2xvYmJlciBpcyBuZWVkZWQgb24gX19nbnVfdmFsLg0K
+DQpSaWdodC4NCg0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgIDogInIiKHB0ciksICIxIihfX2d1X2Vy
+cikpO8KgwqDCoMKgwqDCoMKgIFwNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0KPj4gwqDCoMKgwqDCoCAodmFsKSA9IChfX2Zv
+cmNlIF9fdHlwZW9mX18oKihwdHIpKSkgX19ndV92YWw7wqDCoMKgIFwNCj4+IEBAIC0xMjMsNyAr
+MTIzLDcgQEAgc3RydWN0IGV4Y2VwdGlvbl90YWJsZV9lbnRyeSB7DQo+PiDCoMKgwqDCoMKgwqDC
+oMKgwqAgIjk6XG4iwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0KPj4g
+wqDCoMKgwqDCoMKgwqDCoMKgIEFTTV9FWENFUFRJT05UQUJMRV9FTlRSWV9FRkFVTFQoMWIsIDli
+KcKgwqDCoCBcDQo+PiDCoMKgwqDCoMKgwqDCoMKgwqAgQVNNX0VYQ0VQVElPTlRBQkxFX0VOVFJZ
+X0VGQVVMVCgyYiwgOWIpwqDCoMKgIFwNCj4+IC3CoMKgwqDCoMKgwqDCoCA6ICI9JnIiKF9fZ3Vf
+dG1wLmwpLCAiPXIiKF9fZ3VfZXJyKcKgwqDCoCBcDQo+PiArwqDCoMKgwqDCoMKgwqAgOiAiPSZy
+IihfX2d1X3RtcC5sKSwgIityIihfX2d1X2VycinCoMKgwqAgXA0KPj4gwqDCoMKgwqDCoMKgwqDC
+oMKgIDogInIiKHB0ciksICIxIihfX2d1X2VycikpO8KgwqDCoMKgwqDCoMKgIFwNCj4+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0K
+Pj4gwqDCoMKgwqDCoCAodmFsKSA9IF9fZ3VfdG1wLnQ7wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIFwNCj4+IEBAIC0xMzIsMTAgKzEzMiw5IEBAIHN0cnVjdCBleGNlcHRpb25fdGFibGVf
+ZW50cnkgew0KPj4gwqAgI2VuZGlmIC8qICFkZWZpbmVkKENPTkZJR182NEJJVCkgKi8NCj4+DQo+
+Pg0KPj4gLSNkZWZpbmUgX19wdXRfdXNlcl9pbnRlcm5hbChzciwgeCwgcHRyKcKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+PiArI2RlZmluZSBfX3B1dF91c2VyX2ludGVybmFsKHNy
+LCBfX3gsIHB0cinCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFwNCj4+IMKgICh7wqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0KPj4g
+wqDCoMKgwqDCoCBBU01fRVhDRVBUSU9OVEFCTEVfVkFSKF9fcHVfZXJyKTvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIFwNCj4+IC3CoMKgwqDCoMKgwqDCoCBfX3R5cGVvZl9fKCoo
+cHRyKSkgX194ID0gKF9fdHlwZW9mX18oKihwdHIpKSkoeCk7wqDCoMKgIFwNCj4+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBcDQo+PiDCoMKgwqDCoMKgIHN3aXRjaCAoc2l6ZW9mKCoocHRyKSkpIHvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgXA0KPj4gwqDCoMKgwqDCoCBjYXNlIDE6IF9fcHV0X3VzZXJfYXNt
+KHNyLCAic3RiIiwgX194LCBwdHIpOyBicmVhazvCoMKgwqAgXA0KPj4gQEAgLTE1MCw3ICsxNDks
+OSBAQCBzdHJ1Y3QgZXhjZXB0aW9uX3RhYmxlX2VudHJ5IHsNCj4+DQo+PiDCoCAjZGVmaW5lIF9f
+cHV0X3VzZXIoeCwgcHRyKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFwN
+Cj4+IMKgICh7wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgXA0KPj4gLcKgwqDCoCBfX3B1dF91c2VyX2ludGVybmFsKCIlJXNyMywi
+LCB4LCBwdHIpO8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0KPj4gK8KgwqDCoMKgIF9fdHlwZW9m
+X18oKihwdHIpKSBfX3ggPSAoX190eXBlb2ZfXygqKHB0cikpKSh4KTvCoMKgwqAgXA0KPiBXaGl0
+ZXNwYWNlPw0KDQpXaWxsIGZpeC4NCg0KPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFwNCj4+ICvCoMKgwqAgX19wdXRfdXNl
+cl9pbnRlcm5hbCgiJSVzcjMsIiwgX194LCBwdHIpO8KgwqDCoMKgwqDCoMKgIFwNCj4+IMKgIH0p
+DQo+Pg0KPj4gwqAgI2RlZmluZSBfX3B1dF9rZXJuZWxfbm9mYXVsdChkc3QsIHNyYywgdHlwZSwg
+ZXJyX2xhYmVsKcKgwqDCoMKgwqDCoMKgIFwNCj4+IEBAIC0xODAsNyArMTgxLDcgQEAgc3RydWN0
+IGV4Y2VwdGlvbl90YWJsZV9lbnRyeSB7DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqAgIjE6ICIgc3R4
+ICIgJTIsMCgiIHNyICIlMSlcbiLCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFwNCj4+IMKgwqDCoMKg
+wqDCoMKgwqDCoCAiOTpcbiLCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIFwNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoCBBU01fRVhDRVBUSU9OVEFCTEVfRU5UUllf
+RUZBVUxUKDFiLCA5YinCoMKgwqDCoMKgwqDCoCBcDQo+PiAtwqDCoMKgwqDCoMKgwqAgOiAiPXIi
+KF9fcHVfZXJyKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+PiArwqDCoMKgwqDC
+oMKgwqAgOiAiK3IiKF9fcHVfZXJyKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+
+PiDCoMKgwqDCoMKgwqDCoMKgwqAgOiAiciIocHRyKSwgInIiKHgpLCAiMCIoX19wdV9lcnIpKQ0K
+Pj4NCj4+DQo+PiBAQCAtMTkzLDcgKzE5NCw3IEBAIHN0cnVjdCBleGNlcHRpb25fdGFibGVfZW50
+cnkgew0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgICI5OlxuIsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgIEFTTV9FWENF
+UFRJT05UQUJMRV9FTlRSWV9FRkFVTFQoMWIsIDliKcKgwqDCoMKgwqDCoMKgIFwNCj4+IMKgwqDC
+oMKgwqDCoMKgwqDCoCBBU01fRVhDRVBUSU9OVEFCTEVfRU5UUllfRUZBVUxUKDJiLCA5YinCoMKg
+wqDCoMKgwqDCoCBcDQo+PiAtwqDCoMKgwqDCoMKgwqAgOiAiPXIiKF9fcHVfZXJyKcKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+PiArwqDCoMKgwqDCoMKgwqAgOiAiK3IiKF9fcHVf
+ZXJyKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+PiDCoMKgwqDCoMKgwqDCoMKg
+wqAgOiAiciIocHRyKSwgInIiKF9fdmFsKSwgIjAiKF9fcHVfZXJyKSk7wqDCoMKgwqDCoMKgwqAg
+XA0KPj4gwqAgfSB3aGlsZSAoMCkNCg0KT3ZlcmFsbCwgdGhpcyBjdXJyZW50IHBhdGNoIHR1cm5l
+ZCBvdXQgdG8gbm90IGNvdmVyIGFsbCBjYXNlcy4NCkkgdGhpbmsgaXQncyB0b28gY29tcGxpY2F0
+ZWQgdG8gcmVhbGx5IHRyeSBwcmV2ZW50IHRoZSBjb21waWxlciB0bw0Kb3B0aW1pemUgaXQgaGVy
+ZSwgc28gSSdsbCBzZW5kIG91dCBhIG5ldyBwYXRjaCBzaG9ydGx5IHdoaWNoDQpzaW1wbHkgaW5p
+dGlhbGl6ZXMgX19ndV9lcnIgYW5kIF9fcHVfZXJyIGluIHRoZSBhc3NlbWJseSBzdGF0ZW1lbnQg
+aXRzZWxmLg0KTXkgb3RoZXIgY29kaW5ncyB0byBhdm9pZCB0aGF0IHdvdWxkIGluY3JlYXNlIHRo
+ZSBjb2RlIGEgbG90LA0KYW5kIEknbSBub3Qgc3VyZSBpZiBpdCdzIGV2ZW4gdGhlbiBwb3NzaWJs
+ZSB0byBhdm9pZCB0aGUgZmFpbHVyZSBhbHdheXMuDQoNCkhlbGdlDQo=
