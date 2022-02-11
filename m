@@ -2,55 +2,55 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 427B24B1ACB
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Feb 2022 01:57:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6D544B1ADC
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Feb 2022 02:01:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346587AbiBKA46 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 10 Feb 2022 19:56:58 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43998 "EHLO
+        id S1345107AbiBKBBK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 10 Feb 2022 20:01:10 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346574AbiBKA45 (ORCPT
+        with ESMTP id S1346585AbiBKBBJ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 10 Feb 2022 19:56:57 -0500
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EEB7272E
-        for <linux-parisc@vger.kernel.org>; Thu, 10 Feb 2022 16:56:57 -0800 (PST)
-Received: by mail-pj1-x102f.google.com with SMTP id t4-20020a17090a510400b001b8c4a6cd5dso7273245pjh.5
-        for <linux-parisc@vger.kernel.org>; Thu, 10 Feb 2022 16:56:57 -0800 (PST)
+        Thu, 10 Feb 2022 20:01:09 -0500
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32164272E
+        for <linux-parisc@vger.kernel.org>; Thu, 10 Feb 2022 17:01:09 -0800 (PST)
+Received: by mail-pj1-x1035.google.com with SMTP id r64-20020a17090a43c600b001b8854e682eso7349641pjg.0
+        for <linux-parisc@vger.kernel.org>; Thu, 10 Feb 2022 17:01:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=ij/kmXjVco913jFIkkr0+ao7hUYo8HGlc/rK4hm1cYU=;
-        b=M5RXsM8hcmF2OyubtKqmtKo9RQPAPFPtvpfZEQCB2c6Yh3rjKFo51PskthrNNxXsr7
-         zbR6px5umZ8O8jrv0grWJWpisBdpRGU+wZ/a6x9Q+B7hMAGf18yBfGQq4BkRaDUVXnWe
-         yd1fF+V2U67gyXSd8Lol6Adn51X6EmhwjU59k=
+        bh=RdgcHpK2QxPcOYOUkcGQd2wPLDeTg88ycTZ52tqwOpM=;
+        b=ayaQeq+iHp1StJk08sGOB8wL9hF2ax+YroHj/Q2xe57EsF2tmwRM+bRcoP5B6RJSao
+         zVRGQxURnYafJmjj2pjUpW4Gbc4ywJAnHBFGFsrK1qUnpQSCr8sghtVn51G6hSguVMPD
+         lHPaakslQ0USKodMgm+Qx4Kb22euGUvZ0qMSM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=ij/kmXjVco913jFIkkr0+ao7hUYo8HGlc/rK4hm1cYU=;
-        b=l8g46FI5OJhnLTseI68azYbCGV+dM24YUB88HsGqYKbfbx9yzbFk3BZhIpRUKjWaif
-         niyjM1+6kH4j/W8vOhEvEJK7SSeiP/ovnAQJTB91NiykoutiL41AlcOt01pq4KzFgpFy
-         kyPq+sVstcfzit7dmeIrhrlwudDVz8m44q/piHYT/HACRbUrFtknoEdMPhcwm3AGS+ic
-         numK5JvBcT3HUHbZ46A62s4wrw4ef3dzd6hELIdkKyS2pdMSM6wXyEigXR5Zb3sc7g3i
-         Z53bO6ECk/ekykBdguXE9QeM9Z/BaEnkqJW1wXmLKv8zF+x/zC/CLiVJUpVmHazCYSgF
-         U8qQ==
-X-Gm-Message-State: AOAM533ckW2XyVK4DTHY8djGKQubTM2Yc3JwFYSWFiQLBJFU3Uu1J6hf
-        bUuoolzHaQV/coXImxqVspi2ZQ==
-X-Google-Smtp-Source: ABdhPJxO7mzzG+kyJMfp7NkXFdu5xyqbCDL1T1A1JqI341m3kYcbAuWEHEe++omXhqTKNFgkrZ2BTQ==
-X-Received: by 2002:a17:902:cf02:: with SMTP id i2mr9960280plg.146.1644541016958;
-        Thu, 10 Feb 2022 16:56:56 -0800 (PST)
+        bh=RdgcHpK2QxPcOYOUkcGQd2wPLDeTg88ycTZ52tqwOpM=;
+        b=fWRuI80fa1SFbgKvS2MlE2FEp1JAByYBFy2wSAErG8LoxEkDqOrfoyn1PKCz0uCFaz
+         YiQGFv1j6EnpkyxhLsH+x85nl5yNqgcm06UV/k7wE7a5gqu4S16k4SkxT+GPCkfBPBBv
+         J2ytMvCktiTtlGKDlrJpQ8F/SttkHjxjcfXYQ1/S5IqNkj1I5qMQ+IoKy0REFdGQOYGD
+         DbNp79g/XXmIzJvheI+xA/1mezfBY3YZkDHD+bdDaNN+rzCmVtMBQcu8o4GFykz89a7l
+         jBXzFxOe7YFFk3HALORODxlR81GMSXkFfpXQrN2cUwhWslz3VfgsL0dSLl9TucJfkRpD
+         rJiw==
+X-Gm-Message-State: AOAM530LUsGRFGcAUoPyWhfX/2BelhG9sXXzpNvd3jHlmW+sptIiC76F
+        OUXdW1yXpJD6CI6iR6m7P2Ib2g==
+X-Google-Smtp-Source: ABdhPJy2kB/YH9xMcBfAS96T6mrN64LEHeytd1RwomHu8ZQbb2OHvCkkk5zZkV2I8D5+PzLBVw0c7Q==
+X-Received: by 2002:a17:902:a413:: with SMTP id p19mr10224104plq.35.1644541268697;
+        Thu, 10 Feb 2022 17:01:08 -0800 (PST)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id a14sm1718704pgw.27.2022.02.10.16.56.56
+        by smtp.gmail.com with ESMTPSA id c20sm13253330pfl.46.2022.02.10.17.01.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Feb 2022 16:56:56 -0800 (PST)
-Date:   Thu, 10 Feb 2022 16:56:55 -0800
+        Thu, 10 Feb 2022 17:01:08 -0800 (PST)
+Date:   Thu, 10 Feb 2022 17:01:07 -0800
 From:   Kees Cook <keescook@chromium.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Andrew Morton <akpm@linux-foundation.org>,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
@@ -58,19 +58,17 @@ Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
         linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
         linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 08/12] asm-generic: Refactor
- dereference_[kernel]_function_descriptor()
-Message-ID: <202202101655.13C794F0F@keescook>
+Subject: Re: [PATCH v3 11/12] lkdtm: Fix execute_[user]_location()
+Message-ID: <202202101700.985C29A@keescook>
 References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
- <93a2006a5d90292baf69cb1c34af5785da53efde.1634457599.git.christophe.leroy@csgroup.eu>
- <8735kr814c.fsf@mpe.ellerman.id.au>
+ <d4688c2af08dda706d3b6786ae5ec5a74e6171f1.1634457599.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8735kr814c.fsf@mpe.ellerman.id.au>
+In-Reply-To: <d4688c2af08dda706d3b6786ae5ec5a74e6171f1.1634457599.git.christophe.leroy@csgroup.eu>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,42 +76,114 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Feb 10, 2022 at 09:30:43PM +1100, Michael Ellerman wrote:
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> > diff --git a/kernel/extable.c b/kernel/extable.c
-> > index b0ea5eb0c3b4..1ef13789bea9 100644
-> > --- a/kernel/extable.c
-> > +++ b/kernel/extable.c
-> > @@ -159,12 +160,32 @@ int kernel_text_address(unsigned long addr)
-> >  }
-> >  
-> >  /*
-> > - * On some architectures (PPC64, IA64) function pointers
-> > + * On some architectures (PPC64, IA64, PARISC) function pointers
-> >   * are actually only tokens to some data that then holds the
-> >   * real function address. As a result, to find if a function
-> >   * pointer is part of the kernel text, we need to do some
-> >   * special dereferencing first.
-> >   */
-> > +#ifdef CONFIG_HAVE_FUNCTION_DESCRIPTORS
-> > +void *dereference_function_descriptor(void *ptr)
-> > +{
-> > +	func_desc_t *desc = ptr;
-> > +	void *p;
-> > +
-> > +	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> > +		ptr = p;
-> > +	return ptr;
-> > +}
+On Sun, Oct 17, 2021 at 02:38:24PM +0200, Christophe Leroy wrote:
+> execute_location() and execute_user_location() intent
+> to copy do_nothing() text and execute it at a new location.
+> However, at the time being it doesn't copy do_nothing() function
+> but do_nothing() function descriptor which still points to the
+> original text. So at the end it still executes do_nothing() at
+> its original location allthough using a copied function descriptor.
 > 
-> This needs an EXPORT_SYMBOL_GPL(), otherwise the build breaks after
-> patch 10 with CONFIG_LKDTM=m.
+> So, fix that by really copying do_nothing() text and build a new
+> function descriptor by copying do_nothing() function descriptor and
+> updating the target address with the new location.
+> 
+> Also fix the displayed addresses by dereferencing do_nothing()
+> function descriptor.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Oh good catch!
+This looks good. I might rename variables in the future (e.g. to avoid
+the churn from adding _text) but also, that does help keep it clear. :)
 
-(There have been a few cases of LKDTM=m being the only thing needed a
-symbol, so I've pondered giving it a namespace or constructing a little
-ifdef wrapper... but this seems ok to export...)
+Acked-by: Kees Cook <keescook@chromium.org>
+
+-Kees
+
+> ---
+>  drivers/misc/lkdtm/perms.c | 37 ++++++++++++++++++++++++++++---------
+>  1 file changed, 28 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+> index 035fcca441f0..1cf24c4a79e9 100644
+> --- a/drivers/misc/lkdtm/perms.c
+> +++ b/drivers/misc/lkdtm/perms.c
+> @@ -44,19 +44,34 @@ static noinline void do_overwritten(void)
+>  	return;
+>  }
+>  
+> +static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
+> +{
+> +	if (!have_function_descriptors())
+> +		return dst;
+> +
+> +	memcpy(fdesc, do_nothing, sizeof(*fdesc));
+> +	fdesc->addr = (unsigned long)dst;
+> +	barrier();
+> +
+> +	return fdesc;
+> +}
+> +
+>  static noinline void execute_location(void *dst, bool write)
+>  {
+> -	void (*func)(void) = dst;
+> +	void (*func)(void);
+> +	func_desc_t fdesc;
+> +	void *do_nothing_text = dereference_function_descriptor(do_nothing);
+>  
+> -	pr_info("attempting ok execution at %px\n", do_nothing);
+> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
+>  	do_nothing();
+>  
+>  	if (write == CODE_WRITE) {
+> -		memcpy(dst, do_nothing, EXEC_SIZE);
+> +		memcpy(dst, do_nothing_text, EXEC_SIZE);
+>  		flush_icache_range((unsigned long)dst,
+>  				   (unsigned long)dst + EXEC_SIZE);
+>  	}
+> -	pr_info("attempting bad execution at %px\n", func);
+> +	pr_info("attempting bad execution at %px\n", dst);
+> +	func = setup_function_descriptor(&fdesc, dst);
+>  	func();
+>  	pr_err("FAIL: func returned\n");
+>  }
+> @@ -66,16 +81,19 @@ static void execute_user_location(void *dst)
+>  	int copied;
+>  
+>  	/* Intentionally crossing kernel/user memory boundary. */
+> -	void (*func)(void) = dst;
+> +	void (*func)(void);
+> +	func_desc_t fdesc;
+> +	void *do_nothing_text = dereference_function_descriptor(do_nothing);
+>  
+> -	pr_info("attempting ok execution at %px\n", do_nothing);
+> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
+>  	do_nothing();
+>  
+> -	copied = access_process_vm(current, (unsigned long)dst, do_nothing,
+> +	copied = access_process_vm(current, (unsigned long)dst, do_nothing_text,
+>  				   EXEC_SIZE, FOLL_WRITE);
+>  	if (copied < EXEC_SIZE)
+>  		return;
+> -	pr_info("attempting bad execution at %px\n", func);
+> +	pr_info("attempting bad execution at %px\n", dst);
+> +	func = setup_function_descriptor(&fdesc, dst);
+>  	func();
+>  	pr_err("FAIL: func returned\n");
+>  }
+> @@ -153,7 +171,8 @@ void lkdtm_EXEC_VMALLOC(void)
+>  
+>  void lkdtm_EXEC_RODATA(void)
+>  {
+> -	execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
+> +	execute_location(dereference_function_descriptor(lkdtm_rodata_do_nothing),
+> +			 CODE_AS_IS);
+>  }
+>  
+>  void lkdtm_EXEC_USERSPACE(void)
+> -- 
+> 2.31.1
+> 
 
 -- 
 Kees Cook
