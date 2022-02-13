@@ -2,94 +2,133 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E644B3D26
-	for <lists+linux-parisc@lfdr.de>; Sun, 13 Feb 2022 20:39:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7AF4B3D58
+	for <lists+linux-parisc@lfdr.de>; Sun, 13 Feb 2022 21:17:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233674AbiBMTjN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 13 Feb 2022 14:39:13 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50798 "EHLO
+        id S231844AbiBMURK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 13 Feb 2022 15:17:10 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229737AbiBMTjN (ORCPT
+        with ESMTP id S231777AbiBMURJ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 13 Feb 2022 14:39:13 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D5656C2B;
-        Sun, 13 Feb 2022 11:39:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=8wk56JhGdlcQBk1SHLgauEyhCZzPUCKrQNT4Qxie6hE=; b=ev09HBmSkOOsf26kNFWf+6MwSk
-        V62iWgjf/5ysgMK4blcPc2MzS4uajHZkzlUU5OZ+bg2rrGEJz0QiqDjVhMQZBG++aFeH3PdGz9q5+
-        CpTj8flarf+LVqKqeAfCrhTVUAMaWlmzpZB8j2yvCfhqCh2QRrSZO8LHfJK82fukecGpgrfXSdz4v
-        UU1ER9woszomIWKMQybecMQgVOMv/O8f4ekrGpJsahWDepfMEpo7Qb6Ivi5upjLOar8WJjvjzBeob
-        8JWskmvQPoHTwrlVq2ZpS3uzfM7EC3WjgI+Um/kZpvQRw2vtrrefJFPAQFLp7YqjM2hwTNkF2RvBk
-        +yowOS6g==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nJKi8-00CO3h-PL; Sun, 13 Feb 2022 19:39:04 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-serial@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH] serial: parisc: GSC: fix build when PCI_LBA is not set
-Date:   Sun, 13 Feb 2022 11:39:03 -0800
-Message-Id: <20220213193903.8815-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.34.1
+        Sun, 13 Feb 2022 15:17:09 -0500
+X-Greylist: delayed 401 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 13 Feb 2022 12:17:02 PST
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79A70532DE
+        for <linux-parisc@vger.kernel.org>; Sun, 13 Feb 2022 12:17:02 -0800 (PST)
+Received: (qmail 32439 invoked from network); 13 Feb 2022 20:08:33 -0000
+Received: from p200300cf070bc0006843b1fffef17acc.dip0.t-ipconnect.de ([2003:cf:70b:c000:6843:b1ff:fef1:7acc]:35786 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Sun, 13 Feb 2022 21:08:33 +0100
+From:   Rolf Eike Beer <eike@sf-mail.de>
+To:     linux-parisc@vger.kernel.org
+Subject: BUG: soft lockup in on_each_cpu_cond_mask() from do_exit()
+Date:   Sun, 13 Feb 2022 21:10:13 +0100
+Message-ID: <4689005.GXAFRqVoOG@eto.sf-tec.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; boundary="nextPart1808483.tdWV9SEqCh"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,WEIRD_PORT autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-There is a build error when using a kernel .config file from
-'kernel test robot' for a different build problem:
+--nextPart1808483.tdWV9SEqCh
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-hppa64-linux-ld: drivers/tty/serial/8250/8250_gsc.o: in function `.LC3':
-(.data.rel.ro+0x18): undefined reference to `iosapic_serial_irq'
+Just happened on my C8000 using kernel 5.15.4:
 
-when:
-  CONFIG_GSC=y
-  CONFIG_SERIO_GSCPS2=y
-  CONFIG_SERIAL_8250_GSC=y
-  CONFIG_PCI is not set
-    and hence PCI_LBA is not set.
-  IOSAPIC depends on PCI_LBA, so IOSAPIC is not set/enabled.
+[1775820.602907] watchdog: BUG: soft lockup - CPU#0 stuck for 674s! [python3.9:28328]
+[1775820.602907] Modules linked in: 8021q ipmi_poweroff pata_sil680 sata_via ipmi_si libata ipmi_devintf ipmi_msghandler
+[1775820.602907] CPU: 0 PID: 28328 Comm: python3.9 Tainted: G             L    5.15.4-gentoo-parisc64 #4
+[1775820.602907] Hardware name: 9000/785/C8000
+[1775820.602907] 
+[1775820.602907]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[1775820.602907] PSW: 00001000000001001111111100001111 Tainted: G             L   
+[1775820.602907] r00-03  000000ff0804ff0f 0000000040c0c3c0 0000000040296ec0 0000000184090a90
+[1775820.602907] r04-07  0000000040b693c0 0000000041f52270 0000000040db26c0 0000000040b219c0
+[1775820.602907] r08-11  0000000041f52278 0000000040c0c3c0 0000000040db2778 0000000000000004
+[1775820.602907] r12-15  0000000000000001 0000000041f52278 0000000040b219c0 00000000401902e0
+[1775820.602907] r16-19  0000000000000004 0000000040b91bc0 0000000040b91bc0 000000000000000e
+[1775820.602907] r20-23  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[1775820.602907] r24-27  0000000000000001 0000000041f52278 0000000000000002 0000000040b693c0
+[1775820.602907] r28-31  0000000000000001 0000000184090a90 0000000184090ac0 0000000041f912e0
+[1775820.602907] sr00-03  000000000440c400 0000000000000000 0000000000000000 000000000440c400
+[1775820.602907] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[1775820.602907] 
+[1775820.602907] IASQ: 0000000000000000 0000000000000000 IAOQ: 0000000040296ef4 0000000040296ef8
+[1775820.602907]  IIR: 0ff0109c    ISR: 0000000040b22120  IOR: 000000000001920d
+[1775820.602907]  CPU:        0   CR30: 0000000184090000 CR31: fffffffffffdffff
+[1775820.602907]  ORIG_R28: 000000000000001c
+[1775820.602907]  IAOQ[0]: smp_call_function_many_cond+0x20c/0x508
+[1775820.602907]  IAOQ[1]: smp_call_function_many_cond+0x210/0x508
+[1775820.602907]  RP(r2): smp_call_function_many_cond+0x1d8/0x508
+[1775820.602907] Backtrace:
+[1775820.602907]  [<00000000402972bc>] on_each_cpu_cond_mask+0x3c/0x48
+[1775820.602907]  [<000000004019c3b8>] flush_tlb_all+0x188/0x270
+[1775820.602907]  [<000000004019e928>] flush_cache_mm+0x460/0x468
+[1775820.602907]  [<0000000040325974>] exit_mmap+0xa4/0x420
+[1775820.602907]  [<00000000401ca634>] mmput+0xdc/0x2a0
+[1775820.602907]  [<00000000401d6c58>] do_exit+0x578/0x1338
+[1775820.602907]  [<00000000401d9728>] do_group_exit+0x68/0x130
+[1775820.602907]  [<00000000401ede30>] get_signal+0x318/0xe38
+[1775820.602907]  [<00000000401adc4c>] do_signal+0x74/0x860
+[1775820.602907]  [<00000000401ae498>] do_notify_resume+0x60/0x108
+[1775820.602907]  [<00000000401990b8>] intr_check_sig+0x38/0x3c
+[1775820.602907] 
+[1775835.870907] watchdog: BUG: soft lockup - CPU#1 stuck for 690s! [ebuild.sh:28327]
+[1775835.870907] Modules linked in: 8021q ipmi_poweroff pata_sil680 sata_via ipmi_si libata ipmi_devintf ipmi_msghandler
+[1775835.870907] CPU: 1 PID: 28327 Comm: ebuild.sh Tainted: G             L    5.15.4-gentoo-parisc64 #4
+[1775835.870907] Hardware name: 9000/785/C8000
+[1775835.870907] 
+[1775835.870907]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[1775835.870907] PSW: 00001000000001001111111100001111 Tainted: G             L   
+[1775835.870907] r00-03  000000ff0804ff0f 0000000040c0c3c0 0000000040296ec0 00000041063588a0
+[1775835.870907] r04-07  0000000040b693c0 0000000041f70270 0000000040db26c0 0000000040b219c0
+[1775835.870907] r08-11  0000000041f70278 0000000040c0c3c0 0000000040db2778 0000000000000004
+[1775835.870907] r12-15  0000000000000001 0000000041f70278 0000000040b219c0 0000000040191060
+[1775835.870907] r16-19  0000000000000004 0000000040b91bc0 0000000040b91bc0 000000000000000d
+[1775835.870907] r20-23  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[1775835.870907] r24-27  0000000000000001 0000000041f70278 0000000000000002 0000000040b693c0
+[1775835.870907] r28-31  0000000000000001 00000041063588a0 00000041063588d0 0000000041f92060
+[1775835.870907] sr00-03  000000000440bc00 0000000000000000 0000000000000000 000000000440bc00
+[1775835.870907] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[1775835.870907] 
+[1775835.870907] IASQ: 0000000000000000 0000000000000000 IAOQ: 0000000040296ef4 0000000040296ef8
+[1775835.870907]  IIR: 0ff0109c    ISR: 000000000800000f  IOR: 0000000040b693c0
+[1775835.870907]  CPU:        1   CR30: 0000004106358000 CR31: fffa7fffff7f9fd7
+[1775835.870907]  ORIG_R28: 0000000001de3000
+[1775835.870907]  IAOQ[0]: smp_call_function_many_cond+0x20c/0x508
+[1775835.870907]  IAOQ[1]: smp_call_function_many_cond+0x210/0x508
+[1775835.870907]  RP(r2): smp_call_function_many_cond+0x1d8/0x508
+[1775835.870907] Backtrace:
+[1775835.870907]  [<00000000402972bc>] on_each_cpu_cond_mask+0x3c/0x48
+[1775835.870907]  [<000000004019c3b8>] flush_tlb_all+0x188/0x270
+[1775835.870907]  [<000000004019e928>] flush_cache_mm+0x460/0x468
+[1775835.870907]  [<0000000040325974>] exit_mmap+0xa4/0x420
+[1775835.870907]  [<00000000401ca634>] mmput+0xdc/0x2a0
+[1775835.870907]  [<00000000401d6c58>] do_exit+0x578/0x1338
+[1775835.870907]  [<00000000401d9728>] do_group_exit+0x68/0x130
+[1775835.870907]  [<00000000401d9814>] sys_exit_group+0x24/0x28
+[1775835.870907]  [<0000000040199f68>] syscall_exit+0x0/0x14
 
-Making SERIAL_8250_GSC depend on PCI_LBA prevents the build error.
+--nextPart1808483.tdWV9SEqCh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-serial@vger.kernel.org
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Johan Hovold <johan@kernel.org>
----
- drivers/tty/serial/8250/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-----BEGIN PGP SIGNATURE-----
 
---- linux-next-20220211.orig/drivers/tty/serial/8250/Kconfig
-+++ linux-next-20220211/drivers/tty/serial/8250/Kconfig
-@@ -118,7 +118,7 @@ config SERIAL_8250_CONSOLE
- 
- config SERIAL_8250_GSC
- 	tristate
--	depends on SERIAL_8250 && GSC
-+	depends on SERIAL_8250 && GSC && PCI_LBA
- 	default SERIAL_8250
- 
- config SERIAL_8250_DMA
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYgllpQAKCRBcpIk+abn8
+TqMwAJ9LJ4/R7CoSd8x1fDCl0/tPsMOWjACgp5+AKCGO8vcpNcATcrvyP8g1HHc=
+=SvfY
+-----END PGP SIGNATURE-----
+
+--nextPart1808483.tdWV9SEqCh--
+
+
+
