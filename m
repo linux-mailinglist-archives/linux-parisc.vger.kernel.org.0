@@ -2,55 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C645D4B3DA9
-	for <lists+linux-parisc@lfdr.de>; Sun, 13 Feb 2022 22:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF4D4B3DCA
+	for <lists+linux-parisc@lfdr.de>; Sun, 13 Feb 2022 22:35:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238272AbiBMVHU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 13 Feb 2022 16:07:20 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44032 "EHLO
+        id S238447AbiBMVfD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 13 Feb 2022 16:35:03 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231176AbiBMVHT (ORCPT
+        with ESMTP id S238446AbiBMVfC (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 13 Feb 2022 16:07:19 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 524CD53726;
-        Sun, 13 Feb 2022 13:07:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=TpeZJruUWIHQrec6INjMOe3tJKkfB5AtMyx8DX9DlJQ=; b=dTCnjumE+jgwvROuWmmif1aESN
-        vamLKBGywF3n4msqcO1hqQlg3Utk9zzASDP2EubYBsL3TbKCYnmtcwYIGBHTJCfUKfHLP+75IgcO8
-        /KAyFEY3DjtaqJT2eD+6SanPhJHnXB+ZvYdy1Ja2yjg1Z3BMghBBQ6co8QaBpcWOWinNfZyn/553i
-        S/Ah2RB5DVgDhpRc/4+byLkmxMjAduxMaI517+NyE3GhAH1nOrZ7Ffa9QWqDazxK8pv1bQ8RykO5S
-        9o6LF/Itgzohg3df0FZr0Nf3N6yYfAIl9JZ2PMQI3DJgL8fUduCB6MYKKCwfP9O1bILBR+GnQvahT
-        C5PC0Uvg==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nJM5M-00CHWi-Vl; Sun, 13 Feb 2022 21:07:09 +0000
-Message-ID: <55c73cb4-21ae-7307-7b14-a19cf270f4d6@infradead.org>
-Date:   Sun, 13 Feb 2022 13:07:04 -0800
+        Sun, 13 Feb 2022 16:35:02 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB9D454184
+        for <linux-parisc@vger.kernel.org>; Sun, 13 Feb 2022 13:34:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1644788089;
+        bh=VUhXbwT/8iAB6iiRSejThQV7aC9Xn8BvHyWAY1fD4oY=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=LojfENVy24ThOfcO5XCImqZkIm8yFZ941VEVtXmWTPCH7rPedOEDlSVwopp8YPlt2
+         1OxVVgaXs27e3r6vSg39YP12On7G4oIm/D4YieTzCNZUiffd+5z5iNpZS36sE55mwf
+         YSuJ2qv1dCCZe8n/sHq1nShbcvSI2hT3L91LGEao=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.190.238]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N9Mtg-1oOTmu3cUm-015LD1; Sun, 13
+ Feb 2022 22:34:48 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH] parisc: Show error if wrong 32/64-bit compiler is being used
+Date:   Sun, 13 Feb 2022 22:34:41 +0100
+Message-Id: <20220213213441.227700-1-deller@gmx.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH] serial: parisc: GSC: fix build when PCI_LBA is not set
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org
-Cc:     kernel test robot <lkp@intel.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-serial@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-        Johan Hovold <johan@kernel.org>
-References: <20220213193903.8815-1-rdunlap@infradead.org>
- <0baabcbc-196e-08fa-e2db-b7e925993cc1@gmx.de>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <0baabcbc-196e-08fa-e2db-b7e925993cc1@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rjtRfd9o60PL/84dIJoooToazIBI7A+l25wKfhoMukzomITjA6I
+ vqayT/4pEnTSkW418xxSXnt4YRLeVXF6u/oOgF8+1c4dJb5u+D4K4451IGDtInK4/7Oy+fx
+ IixiElL3hq2Coqnv4yKxn7qkloZf/5OSek7MD1rHLaBZIhwD0SULDF16dl3n9sabI5Nzawx
+ ceatWNjx9jd0/26z7XcUA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jbbWT7Ql+3U=:W3ke1Y9k7vZ2ZRkMWhMeEb
+ ix9BM6yUVs4WluRZoT6gJLJXINeVqfUiIsLYN1weOJUdkLox7LwWrHdfUA1J2peSoZJxJVb0a
+ 4Dlpqj/Lb42ts8qrUw+gOkV2msPinm7x5SmOaL+E67vKlpRxQYKFYigE87Qsq+KUGZCNak3gR
+ ET4pCRQavCXOKcz0JWNu4h/DbRoRlLjQu422dQm2TfZGfec7dIBBQr40BHMc4UyqLBy26D+Rs
+ afX/mdsjdsyRyvEn1vkx4aTDwaRVt981FBVon5mpSZcLnO0dK1OTgRpDbvu6QwE9Wbgf3R2HO
+ EbcKAsio1wZGp8PaF3VNkNjc/JkKghlBM1iU5NWxch4pa8XRH5/0AFbcIND1Zfo7FFIuqF8D8
+ J7P4aNhrgFfQVeCn3U9/xvY9rMBNGomipttISVXaXy06lwPWz99f9oBDW6n0kPfmHT7s2s131
+ fG0rlYVPiNwwFZVkBXgXGImtlbWq+TxCS1Cik09bGBUVyr+nvnK6eUsVRBDo9qXIoA1zOVMUW
+ F0UfrKLiURv8FR7nwukD5+ZYDxdJiEBWvcLnpm889aiScwdbQAyzBSQ8IkMVznrcJk0uWt6Jt
+ ApNxZgD+01LLSY8tb4GcUBVx5SZjFyYJE/IV5mwH6/Bi/FIkMH4QHdH0C0yhA7ZE2VOckYrLv
+ 3mSTUZz/lFzm4haVhwtAeAWopWbivyIRJJXGART+e0orrY7Vk7hYxoVk3664EbNDfeSxUS1Ci
+ YgE/DpkGp5SkW8tzKGWFpTQ1ynZaHmMgc/YjCzrfy7Op2eETXGN9nlU2VfuRi3NCJUqELiNRB
+ opsEoSYdPggq0RJbNKupSbat3ujVO8qEh3Lj/v2C/NSnUCYZCymVAAFe4Dj6bnHtaxkPYh2qt
+ bxzMlEENAM4aTDPO0Lc0XYpwWQ82rsg/KpMi6vTYH0QkQ/8UI/ktNyfkNqfVaiCB3bTprVBc4
+ tf9nbJbI5y0Ye2kvkJlRYBb+Z07uYUOZTVdESZqgch3PnR/RoFk6DhKoUj3oNavK67QyM19dZ
+ Sa0wIrZeivenjkGccmpBTfDqaZgcWvALaBg9PXJ6HdGQZWWEy4Er7tSl1L6PQEfkrY+xlul74
+ CEXiWxMz6vz6yk=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,67 +66,40 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+It happens quite often that people use the wrong compiler to build the
+kernel:
 
+make ARCH=3Dparisc   -> builds the 32-bit kernel
+make ARCH=3Dparisc64 -> builds the 64-bit kernel
 
-On 2/13/22 12:35, Helge Deller wrote:
-> Hi Randy,
-> 
-> On 2/13/22 20:39, Randy Dunlap wrote:
->> There is a build error when using a kernel .config file from
->> 'kernel test robot' for a different build problem:
->>
->> hppa64-linux-ld: drivers/tty/serial/8250/8250_gsc.o: in function `.LC3':
->> (.data.rel.ro+0x18): undefined reference to `iosapic_serial_irq'
->>
->> when:
->>   CONFIG_GSC=y
->>   CONFIG_SERIO_GSCPS2=y
->>   CONFIG_SERIAL_8250_GSC=y
->>   CONFIG_PCI is not set
->>     and hence PCI_LBA is not set.
->>   IOSAPIC depends on PCI_LBA, so IOSAPIC is not set/enabled.
->>
->> Making SERIAL_8250_GSC depend on PCI_LBA prevents the build error.
-> 
-> It maybe makes the build error go away, but ...
-> 
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
->> Cc: Helge Deller <deller@gmx.de>
->> Cc: linux-parisc@vger.kernel.org
->> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Cc: linux-serial@vger.kernel.org
->> Cc: Jiri Slaby <jirislaby@kernel.org>
->> Cc: Johan Hovold <johan@kernel.org>
->> ---
->>  drivers/tty/serial/8250/Kconfig |    2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> --- linux-next-20220211.orig/drivers/tty/serial/8250/Kconfig
->> +++ linux-next-20220211/drivers/tty/serial/8250/Kconfig
->> @@ -118,7 +118,7 @@ config SERIAL_8250_CONSOLE
->>
->>  config SERIAL_8250_GSC
->>  	tristate
->> -	depends on SERIAL_8250 && GSC
->> +	depends on SERIAL_8250 && GSC && PCI_LBA
->>  	default SERIAL_8250
-> 
-> The serial device is on the GSC bus, so if you make it
-> dependend on the PCI bus it will not be useable on machines
-> which only have a GSC bus...
-> 
-> We need another patch.
-> Do you have a link to the build error?
+This patch adds a sanity check which errors out with an instruction how
+use the correct ARCH=3D option.
 
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/include/asm/bitops.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-No, it's from the other build error that you just replied to,
-where the incorrect compiler was used.
+diff --git a/arch/parisc/include/asm/bitops.h b/arch/parisc/include/asm/bi=
+tops.h
+index 0ec9cfc5131f..56ffd260c669 100644
+=2D-- a/arch/parisc/include/asm/bitops.h
++++ b/arch/parisc/include/asm/bitops.h
+@@ -12,6 +12,14 @@
+ #include <asm/barrier.h>
+ #include <linux/atomic.h>
 
-I'll recheck it and reconsider what to do, if anything.
++/* compiler build environment sanity checks: */
++#if !defined(CONFIG_64BIT) && defined(__LP64__)
++#error "Please use 'ARCH=3Dparisc' to build the 32-bit kernel."
++#endif
++#if defined(CONFIG_64BIT) && !defined(__LP64__)
++#error "Please use 'ARCH=3Dparisc64' to build the 64-bit kernel."
++#endif
++
+ /* See http://marc.theaimsgroup.com/?t=3D108826637900003 for discussion
+  * on use of volatile and __*_bit() (set/clear/change):
+  *	*_bit() want use of volatile.
+=2D-
+2.34.1
 
-thanks.
-
--- 
-~Randy
