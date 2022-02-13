@@ -2,64 +2,66 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4BB4B3DD7
-	for <lists+linux-parisc@lfdr.de>; Sun, 13 Feb 2022 22:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E9D4B3DEC
+	for <lists+linux-parisc@lfdr.de>; Sun, 13 Feb 2022 23:10:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238471AbiBMV4Z (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 13 Feb 2022 16:56:25 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57720 "EHLO
+        id S238555AbiBMWKp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 13 Feb 2022 17:10:45 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238448AbiBMV4Z (ORCPT
+        with ESMTP id S238553AbiBMWKo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 13 Feb 2022 16:56:25 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35EF754192
-        for <linux-parisc@vger.kernel.org>; Sun, 13 Feb 2022 13:56:18 -0800 (PST)
+        Sun, 13 Feb 2022 17:10:44 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 829FB54199;
+        Sun, 13 Feb 2022 14:10:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1644789371;
-        bh=1Itp++xv8W/R2ulqDlIKu3fZRTFp1222976vAT9X+yA=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=QofCFkIoHCOECh8pwO0ggroYVkk7N8epyVMCRz9LF4r9xZow1aP1qX1AhSMA2HSCZ
-         1u3+Up2flwY3OxI+LqNUUaREGdrjHQFPVhg6Wvah8o1Iob5yaZfTxDTfoyIY1UgePw
-         PIs6wbSYTJ7IGVDAdDFeBPdYn2JVatdjYoKIc/gA=
+        s=badeba3b8450; t=1644790230;
+        bh=4UNYbRzhi/YcdTi4VTb2dKrOemdjk4GOFtfpCuSIxMk=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=YLkCSHr/K7TjZj9IpVn3PpLsObd+hk98j9xxjYvJdjpiRLmYiPjHBobzwpmtkyyQx
+         J0OdxdSSs2RyrXE8Z4XdXdqVqRaUEscaj0hA9TA2KLNeHWVFDKxJEFFH21d54ARCgM
+         IKH+oXlCrDM+N8f4u92DKrTuC9aPuTnpt5dXXsSY=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100.fritz.box ([92.116.190.238]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MMXUN-1ncGc941QN-00JaGg; Sun, 13
- Feb 2022 22:56:11 +0100
+Received: from p100 ([92.116.190.238]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MOiDd-1nee0w3cBr-00QFz6; Sun, 13
+ Feb 2022 23:10:29 +0100
+Date:   Sun, 13 Feb 2022 23:10:27 +0100
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH v5] parisc: Fix some apparent put_user() failures
-Date:   Sun, 13 Feb 2022 22:55:47 +0100
-Message-Id: <20220213215546.230680-1-deller@gmx.de>
-X-Mailer: git-send-email 2.34.1
+To:     OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-parisc@vger.kernel.org
+Subject: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat case
+Message-ID: <YgmB01p+p45Cihhg@p100>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:X6LCPrZ0kr1crKFZrUdYJYQNiEJX1nRoaUhMouGZOa7lhJ7uFbk
- J/JSrr+JbyoM3AkFQ+SJjM+IC71bJXuAOUgybAIlZCSrXr9/RImVH9ihrZ82cS1mTiuS6Z6
- ZkHPGDG5dKinbdObKwW/ZhNO5pG+J32VzDfqN7YmJJY49z9M4EDDjlEWf2RBCOYqu/80n1g
- FJxBPIY/4+OQTl8taxyNA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:4yzGj7kpflU=:OAgn3eaBt16pg+a/iSRHoZ
- Dm5RXKM6EXBF+M1UTPlT6V+MLqJxyizR8ukJEPJgunwuaj8po4EWCHh1oTNAASpphYZ/75kSQ
- 11dy2hLYqDB+HgOtcR0yQcAulHGfq8Xm9p+SyeCZ794cqwDn5XJWpTEHs0k+dszqiaCOHoqZN
- rjTYDVj2C330E6Wz7mfb6ti7aVOWuc3pnA4ErDyEO3A5Q7NiSEypUlGlyAf7hMIXIL/6E0GVK
- ukXvbenJzRu5pnB0vsKaJWYv6sD4Y0Q+vZusHC4XSifsLMzJLsyWFNOoo2Q0iMnXOB3+KYTT9
- Uat+H0B5wfgmmmm6uM7ztiVg8NPmNofEIt70nt9VwriYvp2cgp83WqGDbBosraz/zsZVDIyU8
- 96p+WS/zj6Xdhlr0vuCHbkOZpzBe3kRUR326qJfMzxXglI/o8QHxbro2YsJnCvoxCboLFkpWn
- wvapQtE0JC07Fj/4YxiaY54BKP4uuEOKhwVyCyhNC3zZzENYrR3+D13lOq3zo5Qk/dnuPkILh
- E2Pvrko44Ypw+3Tdz/Ea4f8VWHCiY+00/1y2E4YQi89Vx7gwSo7Qsnv52wKaey1k2ad8IO8Jw
- Lf9F7RGBfnTHnzHnYvJvNNX3NOhmmnUaUVqPQ+duk8fTlVVCtG+xP1mbbWawUDy3g8/KTLFKv
- 4i/BdT+0gVJvDsi44OdvtSDRuKDe3x+CsOn3MX4vXS0o6vbqKgvHJZAr6R0mxSP0eUhA1wxgC
- oX6gq9zCSsQqMbpga+hPvfeVsBg7VMrchwY/63LzTTOmp4LS2E0l2YyRBRxsJRQiYuGsP5CHf
- 3xgEw1pBOA+3m6bGJKRwq2j54sv+OB2e3iIheSGSvRZoifa9yOe0+zEmU7Mgaq+uc0i8ODzCK
- p97J1SUuKauZ7kRr4+lVloSfnXMJfRnluFAzBmQMWwnxMTtZeVSz+4/PMIVeTwxdWD2Ya9xR6
- C/iWAn5by5DqiI5fEDkVxdLaO0oiCflSNym679XGchGeN5NRqmDKvXk2RNPc5p3XN7QiuhcoS
- xFpgmfqmmwARVdCwKKeyy7MQEkHuJYwfW2VTfAfHly2EwpdMwo0Tt96CR8kBm9WEOEzgJpPqk
- 3ACeuPX7K5YoDc=
+X-Provags-ID: V03:K1:E12ICo73xWG4DDvZRiAxdDZIaode5BSNu8/1BOKsz2rk3PJunay
+ N3Lk2Dn4+r7IY461XkyLk61W+8gZS75sQwU+RtrVlLZP6FDjBHnjN6Ej4tQkuuU6EKhvRtP
+ +ol1SszrjwmoBA6Ge/8ut5fHMh87aqpsSWjD2BCpbv7f8/momn17EBV/ZLdI1YdjB1yJm0r
+ K9S6oPsmyf2QtdQdTMx1g==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:/60Iao04bx0=:yJrNxom32DP5LEYAsbIArt
+ Q84p2yEqqFgKkWnzZNIgE+LQQbirFK2ulzm37ix6ERbK9XuJz8hGYONt7VUpHHtXHSxmDF/OZ
+ C2FQ7O8elIm1WGjjKyGTDTz8QALLf3BrmMbBrT24AozcHuKD2rznzVxOOVFzgrNDAEBdC9jTl
+ mAxW3cYDoKves4r7dQuKGNXC5kIsou87znvMWQ/j0NkVELf4QjkFilHz9WJW3LbEVqxBqxOLz
+ koacfnnUoiHpzkYlqe9B9BXiccs4PfGqO9SkQ240L8/DJvzcKVlxf9Rg7ipONJsqMj9ZYusQK
+ Zx9ElqVhraVFHx/5lVnSsw5zTc0EYCtR4Zm8MzBXcoYOebrx5AYR2otA8t3CrlUNePrMm7MUD
+ wLy4rmGJt8sMaXAQD10ZNZnwNyJYYyqg/+kl5hbt4P8hi305nMFJbg/8ASXliJZQDCNvsVs5a
+ HW2eZk7cuTiaKOnTSo/SN7f/GhF3el0Ez3ItJuhIrfkpe03PrK+Tzh4RVBfQzUCMB3Z1a+qTf
+ tb9lvJRBYBrB5Dw859vEzM+yfDGIegdT2pBSiylcSE6GODIoHnIngBzKRH0igOa04cRw6Fx0V
+ 3Fj234j0g1RqZm7t3WQ9Los0PH7kPv2XS/TSCZFPDRiX7EjRpzIzjimpq+fqeXQ+L0fy6XNSh
+ WfgZhllIhfKCTjLAJAMI1X1TIR/ywbbOhliiwHoVmnJGl8NJ/ljRMQrYd0LI5NeXiBPtMf+1t
+ Baly0uj+Lidh5iLIgOFDt/C6LMooblVaCSOIvvb4ru7QJtwLcqRTZQAxzTCINO/s/bPmHXH0K
+ rNTPHkfIsgxoZLz5w9ERp9RIjGrwd1rYGCZt39wri7/9DzcrxbHI5qoM7Ig1AYnqxoI0HJhBA
+ g3/XG5itXKOZkWrUORrBe+D/98jhjeXP8EnqryklJdSJVDiFKVQm6ojpUGKrW4o9xkLu8Y5gd
+ hu7nOJTWm8v5H/L82DeVb0gE+I6wwsct4Jdq2qgoxXungpCwDwr1lzXB5D/ZZV6SJ0ceFSCaP
+ aFoqtAvDGeIwGrjbqCVKBz+/TjIKLvYRt+2ezjQXkHvfvcE4wvrVvmHLZwXYlqRG5hTmJm0C2
+ grVcQjp00zs1tw=
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,110 +69,50 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-After commit 4b9d2a731c3d ("parisc: Switch user access functions
-to signal errors in r29 instead of r8") bash suddenly started
-to report those warnings after login:
+The put_user(val,ptr) macro wants a pointer in the second parameter, but i=
+n
+fat_ioctl_filldir() the d_name field references a whole "array of chars".
+Usually the compiler automatically converts it and uses a pointer to that
+array, but it's more clean to explicitly give the real pointer to where so=
+meting
+is put, which is in this case the first character of the d_name[] array.
 
--bash: cannot set terminal process group (-1): Bad file descriptor
--bash: no job control in this shell
+I noticed that issue while trying to optimize the parisc put_user() macro
+and used an intermediate variable to store the pointer. In that case I
+got this error:
 
-It turned out, that a function call inside a put_user(), e.g.:
-put_user(vt_do_kdgkbmode(console), (int __user *)arg);
-clobbered the error register (r29) and thus the put_user() call itself
-seem to have failed.
+In file included from include/linux/uaccess.h:11,
+                 from include/linux/compat.h:17,
+                 from fs/fat/dir.c:18:
+fs/fat/dir.c: In function =E2=80=98fat_ioctl_filldir=E2=80=99:
+fs/fat/dir.c:725:33: error: invalid initializer
+  725 |                 if (put_user(0, d2->d_name)                     ||=
+         \
+      |                                 ^~
+include/asm/uaccess.h:152:33: note: in definition of macro =E2=80=98__put_=
+user=E2=80=99
+  152 |         __typeof__(ptr) __ptr =3D ptr;                            =
+\
+      |                                 ^~~
+fs/fat/dir.c:759:1: note: in expansion of macro =E2=80=98FAT_IOCTL_FILLDIR=
+_FUNC=E2=80=99
+  759 | FAT_IOCTL_FILLDIR_FUNC(fat_ioctl_filldir, __fat_dirent)
 
-Rearrange the C-code to pre-calculate the intermediate value
-and then do the put_user().
-Additionally prefer the "+" constraint on pu_err and gu_err registers
-to tell the compiler that those operands are both read and written by
-the assembly instruction.
+The patch below cleans it up.
 
-Reported-by: John David Anglin <dave.anglin@bell.net>
 Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 4b9d2a731c3d ("parisc: Switch user access functions to signal error=
-s in r29 instead of r8")
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- arch/parisc/include/asm/uaccess.h | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm/u=
-access.h
-index ebf8a845b017..175e17197813 100644
-=2D-- a/arch/parisc/include/asm/uaccess.h
-+++ b/arch/parisc/include/asm/uaccess.h
-@@ -89,8 +89,8 @@ struct exception_table_entry {
- 	__asm__("1: " ldx " 0(" sr "%2),%0\n"		\
- 		"9:\n"					\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
--		: "=3Dr"(__gu_val), "=3Dr"(__gu_err)        \
--		: "r"(ptr), "1"(__gu_err));		\
-+		: "=3Dr"(__gu_val), "+r"(__gu_err)        \
-+		: "r"(ptr));				\
- 							\
- 	(val) =3D (__force __typeof__(*(ptr))) __gu_val;	\
- }
-@@ -123,8 +123,8 @@ struct exception_table_entry {
- 		"9:\n"					\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)	\
--		: "=3D&r"(__gu_tmp.l), "=3Dr"(__gu_err)	\
--		: "r"(ptr), "1"(__gu_err));		\
-+		: "=3D&r"(__gu_tmp.l), "+r"(__gu_err)	\
-+		: "r"(ptr));				\
- 							\
- 	(val) =3D __gu_tmp.t;				\
- }
-@@ -135,13 +135,12 @@ struct exception_table_entry {
- #define __put_user_internal(sr, x, ptr)				\
- ({								\
- 	ASM_EXCEPTIONTABLE_VAR(__pu_err);		      	\
--        __typeof__(*(ptr)) __x =3D (__typeof__(*(ptr)))(x);	\
- 								\
- 	switch (sizeof(*(ptr))) {				\
--	case 1: __put_user_asm(sr, "stb", __x, ptr); break;	\
--	case 2: __put_user_asm(sr, "sth", __x, ptr); break;	\
--	case 4: __put_user_asm(sr, "stw", __x, ptr); break;	\
--	case 8: STD_USER(sr, __x, ptr); break;			\
-+	case 1: __put_user_asm(sr, "stb", x, ptr); break;	\
-+	case 2: __put_user_asm(sr, "sth", x, ptr); break;	\
-+	case 4: __put_user_asm(sr, "stw", x, ptr); break;	\
-+	case 8: STD_USER(sr, x, ptr); break;			\
- 	default: BUILD_BUG();					\
- 	}							\
- 								\
-@@ -150,7 +149,8 @@ struct exception_table_entry {
-
- #define __put_user(x, ptr)					\
- ({								\
--	__put_user_internal("%%sr3,", x, ptr);			\
-+	__typeof__(*(ptr)) __x =3D (__typeof__(*(ptr)))(x);	\
-+	__put_user_internal("%%sr3,", __x, ptr);		\
- })
-
- #define __put_kernel_nofault(dst, src, type, err_label)		\
-@@ -180,8 +180,8 @@ struct exception_table_entry {
- 		"1: " stx " %2,0(" sr "%1)\n"			\
- 		"9:\n"						\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
--		: "=3Dr"(__pu_err)				\
--		: "r"(ptr), "r"(x), "0"(__pu_err))
-+		: "+r"(__pu_err)				\
-+		: "r"(ptr), "r"(x))
-
-
- #if !defined(CONFIG_64BIT)
-@@ -193,8 +193,8 @@ struct exception_table_entry {
- 		"9:\n"						\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)		\
--		: "=3Dr"(__pu_err)				\
--		: "r"(ptr), "r"(__val), "0"(__pu_err));		\
-+		: "+r"(__pu_err)				\
-+		: "r"(ptr), "r"(__val));			\
- } while (0)
-
- #endif /* !defined(CONFIG_64BIT) */
-=2D-
-2.34.1
-
+diff --git a/fs/fat/dir.c b/fs/fat/dir.c
+index c4a274285858..249825017da7 100644
+=2D-- a/fs/fat/dir.c
++++ b/fs/fat/dir.c
+@@ -722,7 +722,7 @@ static int func(struct dir_context *ctx, const char *n=
+ame, int name_len,   \
+ 		if (name_len >=3D sizeof(d1->d_name))			   \
+ 			name_len =3D sizeof(d1->d_name) - 1;		   \
+ 									   \
+-		if (put_user(0, d2->d_name)			||	   \
++		if (put_user(0, &d2->d_name[0])			||	   \
+ 		    put_user(0, &d2->d_reclen)			||	   \
+ 		    copy_to_user(d1->d_name, name, name_len)	||	   \
+ 		    put_user(0, d1->d_name + name_len)		||	   \
