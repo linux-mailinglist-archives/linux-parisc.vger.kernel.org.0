@@ -2,32 +2,33 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA27B4B4546
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 10:12:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB0C24B45A1
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 10:26:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242686AbiBNJMO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 14 Feb 2022 04:12:14 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59604 "EHLO
+        id S242855AbiBNJ0b (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 14 Feb 2022 04:26:31 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235720AbiBNJMN (ORCPT
+        with ESMTP id S237076AbiBNJ0b (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 14 Feb 2022 04:12:13 -0500
+        Mon, 14 Feb 2022 04:26:31 -0500
 Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5404260056
-        for <linux-parisc@vger.kernel.org>; Mon, 14 Feb 2022 01:12:05 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 150D7606F4
+        for <linux-parisc@vger.kernel.org>; Mon, 14 Feb 2022 01:26:23 -0800 (PST)
 Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-225-3ObD8h0vMEC7W4ZlGhGL-Q-1; Mon, 14 Feb 2022 09:12:02 +0000
-X-MC-Unique: 3ObD8h0vMEC7W4ZlGhGL-Q-1
+ uk-mta-313-sjXgZp0fOm66Vo-KMrSp4w-1; Mon, 14 Feb 2022 09:26:21 +0000
+X-MC-Unique: sjXgZp0fOm66Vo-KMrSp4w-1
 Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
  AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Mon, 14 Feb 2022 09:12:01 +0000
+ Server (TLS) id 15.0.1497.28; Mon, 14 Feb 2022 09:26:20 +0000
 Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
  AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Mon, 14 Feb 2022 09:12:01 +0000
+ 15.00.1497.028; Mon, 14 Feb 2022 09:26:20 +0000
 From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Helge Deller' <deller@gmx.de>,
+To:     David Laight <David.Laight@ACULAB.COM>,
+        'Helge Deller' <deller@gmx.de>,
         OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>
@@ -36,11 +37,12 @@ Subject: RE: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
  case
 Thread-Topic: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
  case
-Thread-Index: AQHYISaVap2r7qAO+E+IsFLjJVJIxKySvtow
-Date:   Mon, 14 Feb 2022 09:12:01 +0000
-Message-ID: <49a26b7a30254d9fb9653c2f815eaa28@AcuMS.aculab.com>
+Thread-Index: AQHYISaVap2r7qAO+E+IsFLjJVJIxKySvtowgAAIGvA=
+Date:   Mon, 14 Feb 2022 09:26:20 +0000
+Message-ID: <0ecb87dcc4cf42328f1f5a7d6abd08ed@AcuMS.aculab.com>
 References: <YgmB01p+p45Cihhg@p100>
-In-Reply-To: <YgmB01p+p45Cihhg@p100>
+ <49a26b7a30254d9fb9653c2f815eaa28@AcuMS.aculab.com>
+In-Reply-To: <49a26b7a30254d9fb9653c2f815eaa28@AcuMS.aculab.com>
 Accept-Language: en-GB, en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
@@ -63,21 +65,26 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-RnJvbTogSGVsZ2UgRGVsbGVyDQo+IFNlbnQ6IDEzIEZlYnJ1YXJ5IDIwMjIgMjI6MTANCj4gDQo+
-IFRoZSBwdXRfdXNlcih2YWwscHRyKSBtYWNybyB3YW50cyBhIHBvaW50ZXIgaW4gdGhlIHNlY29u
-ZCBwYXJhbWV0ZXIsIGJ1dCBpbg0KPiBmYXRfaW9jdGxfZmlsbGRpcigpIHRoZSBkX25hbWUgZmll
-bGQgcmVmZXJlbmNlcyBhIHdob2xlICJhcnJheSBvZiBjaGFycyIuDQo+IFVzdWFsbHkgdGhlIGNv
-bXBpbGVyIGF1dG9tYXRpY2FsbHkgY29udmVydHMgaXQgYW5kIHVzZXMgYSBwb2ludGVyIHRvIHRo
-YXQNCj4gYXJyYXksIGJ1dCBpdCdzIG1vcmUgY2xlYW4gdG8gZXhwbGljaXRseSBnaXZlIHRoZSBy
-ZWFsIHBvaW50ZXIgdG8gd2hlcmUgc29tZXRpbmcNCj4gaXMgcHV0LCB3aGljaCBpcyBpbiB0aGlz
-IGNhc2UgdGhlIGZpcnN0IGNoYXJhY3RlciBvZiB0aGUgZF9uYW1lW10gYXJyYXkuDQoNClRoYXQg
-anVzdCBpc24ndCB0cnVlLg0KDQpJbiBDIGJvdGggeC0+Y2hhcl9hcnJheSBhbmQgJngtPmNoYXJf
-YXJyYXlbMF0gaGF2ZSB0aGUgc2FtZSB0eXBlDQonY2hhciAqJy4NCg0KVGhlICdidWcnIGlzIGNh
-dXNlZCBieSBwdXRfdXNlcigpIHRyeWluZyB0byBkbzoNCglfX3R5cGVvZl9fKHB0cikgX19wdHIg
-PSBwdHI7DQp3aGVyZSBfX3R5cGVvZl9fIGlzIHJldHVybmluZyBjaGFyW25dIG5vdCBjaGFyICou
-DQoNCkkndmUgdHJpZWQgYSBmZXcgdGhpbmdzIGJ1dCBjYW4ndCBnZXQgX190eXBlb2ZfXyB0bw0K
-Z2VuZXJhdGUgYSBzdWl0YWJsZSB0eXBlIGZvciBib3RoIGEgc2ltcGxlIHR5cGUgYW5kIGFycmF5
-Lg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJv
-YWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24g
-Tm86IDEzOTczODYgKFdhbGVzKQ0K
+RnJvbTogRGF2aWQgTGFpZ2h0DQo+IFNlbnQ6IDE0IEZlYnJ1YXJ5IDIwMjIgMDk6MTINCj4gDQo+
+IEZyb206IEhlbGdlIERlbGxlcg0KPiA+IFNlbnQ6IDEzIEZlYnJ1YXJ5IDIwMjIgMjI6MTANCj4g
+Pg0KPiA+IFRoZSBwdXRfdXNlcih2YWwscHRyKSBtYWNybyB3YW50cyBhIHBvaW50ZXIgaW4gdGhl
+IHNlY29uZCBwYXJhbWV0ZXIsIGJ1dCBpbg0KPiA+IGZhdF9pb2N0bF9maWxsZGlyKCkgdGhlIGRf
+bmFtZSBmaWVsZCByZWZlcmVuY2VzIGEgd2hvbGUgImFycmF5IG9mIGNoYXJzIi4NCj4gPiBVc3Vh
+bGx5IHRoZSBjb21waWxlciBhdXRvbWF0aWNhbGx5IGNvbnZlcnRzIGl0IGFuZCB1c2VzIGEgcG9p
+bnRlciB0byB0aGF0DQo+ID4gYXJyYXksIGJ1dCBpdCdzIG1vcmUgY2xlYW4gdG8gZXhwbGljaXRs
+eSBnaXZlIHRoZSByZWFsIHBvaW50ZXIgdG8gd2hlcmUgc29tZXRpbmcNCj4gPiBpcyBwdXQsIHdo
+aWNoIGlzIGluIHRoaXMgY2FzZSB0aGUgZmlyc3QgY2hhcmFjdGVyIG9mIHRoZSBkX25hbWVbXSBh
+cnJheS4NCj4gDQo+IFRoYXQganVzdCBpc24ndCB0cnVlLg0KPiANCj4gSW4gQyBib3RoIHgtPmNo
+YXJfYXJyYXkgYW5kICZ4LT5jaGFyX2FycmF5WzBdIGhhdmUgdGhlIHNhbWUgdHlwZQ0KPiAnY2hh
+ciAqJy4NCj4gDQo+IFRoZSAnYnVnJyBpcyBjYXVzZWQgYnkgcHV0X3VzZXIoKSB0cnlpbmcgdG8g
+ZG86DQo+IAlfX3R5cGVvZl9fKHB0cikgX19wdHIgPSBwdHI7DQo+IHdoZXJlIF9fdHlwZW9mX18g
+aXMgcmV0dXJuaW5nIGNoYXJbbl0gbm90IGNoYXIgKi4NCj4gDQo+IEkndmUgdHJpZWQgYSBmZXcg
+dGhpbmdzIGJ1dCBjYW4ndCBnZXQgX190eXBlb2ZfXyB0bw0KPiBnZW5lcmF0ZSBhIHN1aXRhYmxl
+IHR5cGUgZm9yIGJvdGggYSBzaW1wbGUgdHlwZSBhbmQgYXJyYXkuDQoNCkFjdHVhbGx5IHRoZSBp
+c3N1ZSBpcyB0aGF0IHB1dF91c2VyKCkgd3JpdGVzIGEgc2luZ2xlIHZhcmlhYmxlDQphbmQgbmVl
+ZHMgYSBwb2ludGVyIHRvIG9uZS4NClNvIGNoYW5naW5nIHRvOg0KCXB1dF91c2VyKDAsICZhcnJh
+eVswXSk7DQppcyBwcm9iYWJseSBmaW5lLg0KQnV0IHRoZSBkZXNjcmlwdGlvbiBpcyBhbGwgd3Jv
+bmcuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkg
+Um9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlv
+biBObzogMTM5NzM4NiAoV2FsZXMpDQo=
 
