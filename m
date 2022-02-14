@@ -2,68 +2,77 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 222254B4F04
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 12:43:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0636A4B4FA8
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 13:08:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352968AbiBNLm0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 14 Feb 2022 06:42:26 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42976 "EHLO
+        id S232896AbiBNMGU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 14 Feb 2022 07:06:20 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353940AbiBNLmF (ORCPT
+        with ESMTP id S231465AbiBNMGT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 14 Feb 2022 06:42:05 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A653E673E6;
-        Mon, 14 Feb 2022 03:33:57 -0800 (PST)
+        Mon, 14 Feb 2022 07:06:19 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF8A2AE2;
+        Mon, 14 Feb 2022 04:06:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1644838406;
-        bh=l0MId2ooioe9nhI8ydZZddkQWWaIGBE574K+uHgUpuI=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=A2LNuKntQMEkGCFnYD7TVHURXPujekwDJjHaU4Ab1f6o/YaPUIwSmb8jbL/i65RwJ
-         BUC4HebW/iH1lxZ/G37Gdx+siqtH/lYV4jcki7eW1DotdV8gm4DEXqGnt/A0pEDw53
-         eihs0JuRWJUKr3NI3oOdgbytKFKHVY1iRC13F/ww=
+        s=badeba3b8450; t=1644840351;
+        bh=iB8OA7D0RPbBYZw3mdJlg01reTkb29jHogKxVACPhTw=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=OenWcuLMGt2uduq7nlLu7kit96MI0NFWOvjLO63AXuEDiL+G29sUBOfYkZ3c244Ii
+         hHNivhHSUbUbTo4ZroumI3+HOCehNvNFknAoQOKo9QlRPMQqtc6P85IA86NG44GfT2
+         8bMXPf22gEoxwqPnZs5/QQRnnAbFaXl0OY+MzS5U=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100 ([92.116.168.11]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MfpOT-1nvML908EL-00gDvH; Mon, 14
- Feb 2022 12:33:26 +0100
-Date:   Mon, 14 Feb 2022 12:33:23 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-        linux-kernel@vger.kernel.org,
-        David Laight <David.Laight@aculab.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andreas Schwab <schwab@linux-m68k.org>
-Cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH v2] fat: Use pointer to simple type in put_user()
-Message-ID: <Ygo+A9MREmC1H3kr@p100>
+Received: from [192.168.20.60] ([92.116.168.11]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MTRR0-1niqln2u2W-00TmbU; Mon, 14
+ Feb 2022 13:05:51 +0100
+Message-ID: <e8781486-b3ce-b2dd-2c84-f0b2a651556f@gmx.de>
+Date:   Mon, 14 Feb 2022 13:05:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] serial: parisc: GSC: fix build when PCI_LBA is not set
+Content-Language: en-US
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc:     kernel test robot <lkp@intel.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        linux-parisc@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-serial@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
+        Johan Hovold <johan@kernel.org>
+References: <20220213193903.8815-1-rdunlap@infradead.org>
+ <0baabcbc-196e-08fa-e2db-b7e925993cc1@gmx.de>
+ <55c73cb4-21ae-7307-7b14-a19cf270f4d6@infradead.org>
+ <1e43c3b9-c5b7-de77-dd28-981d60a4d97d@gmx.de>
+ <0ffc9f5f-546a-a797-01bf-d62953e6d26c@infradead.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <0ffc9f5f-546a-a797-01bf-d62953e6d26c@infradead.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6VtQofOaDIt+6iCeywwAg3EM05gYptORwCwQO6QaD16L6NNbGSk
- faH/tRWWzIG05lHz2ajmbbyv20IkzFoqX2uJ54ZY0nAfU3IXkpC6vG/qaqCIFpJGmqAK5MA
- jg36avzJjIm6KCxILXxlgUpvdkOYlwdGcAWH1z14POYziyZVAkmc+f1B0AAg5/7Q1gt/kPt
- 6YA7S7vjC8VFiMIiQl3lQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1SDUOhDczFs=:yfH/Gjw6hI+2r5fxYBDdtz
- 7znt6IV6ZExhqbalPWIAgpXi9ze8Na0N5AfKZAxyqeFYOqBQUcRTtBR5dGDEKCz36XJQtDblm
- YfZplPONsF5bwGG56Gr4pSpmQs/V9TM/o158LDgMGlnzoX2RgJcRAIW0qmM+xKg3Y8obZ+0ZT
- ONRe8VM62LOmiZYSQF6IrKEg4dgU8aM8kkJ8W3k8vEFjqJPNGTQx2VMFArg5mgKZhu882PTOA
- qD5hNlHcw9cK7XQLcxPmtG8VBQKu/x6WCOzo2W6S2TVl+weEhR8CpunsESxZ9DHYLD7KnU9g9
- zSkE2e7DtnAHxE9J91a4mAcKt4wN1LL4fhMmlifmiybAeULucegU52QvE4XzC+FHVVSnTFiBS
- Vy4e5UX+WhsICc43K1HrsGnjqBJV8wRmG2/AFwsi5EEtRW3zcCneWVcAKuLttGGBlCHaoUC+r
- P2J42ppcJr6AKwSjc1H3u6GswlO/udTe5SdcresE2MLNm/eLgUwYoGgEa74GQHTHB+PLMjaYd
- /r3ify9Lleid7/sONPUuktzhvzFeoMWNcfrS+Vr26k1C+SpUMPPECXD0OdBCW4qU6xHZXZTwo
- dhiXd0ZoKAG28l2gErYQ1Q0bDGL9AkalLujlusRab/m5KQhKbTkikMTYqNpewkeN7IKaDWRFV
- wMGShI/jKwmrdKEsVv6rS/98lCN2pw/aLD8UwdJtgQdYhKFui3IttwzNMc2SMdV8tVeAZHrJJ
- mCGnQmXQAh8BQXGdqt4VxAvvzU6jMiB+K2QzazaQJC0IeNa07t+odIaYfnRK3QOJvAwjVNnMj
- wNp2Gti9oNvCQM1rj7C1FeUcoKhPW31UWZUexRjXFnm9xk6Ivi/FRJltuQROWlhVKPg2Hir+c
- AyAxD0p2VWyCfdMUgrGCTj7050Ze49OEe6FMfZxzbFHATCK0dBLq2eOyc1BxO7ZHs3ZT13qbo
- BXxAS2ZS/7k/6QCO3YZeuRU3NlhyeU9w4YSXMVUaqr/SpyCmmfTwRusFt/jPV3Ndyq8RNgLNC
- 39lsItA6/hQowFrKXVsKDvjZkgyZnsgbW9n3kHzkM75StXmUKw4PepcTy9yTLiLkuIsqkf+sm
- HZ+cwaviMjn74Q=
+X-Provags-ID: V03:K1:jm09AfvxANKB8kN/320M0GbFGeYK7enhOSfkBNyQ53NKzSNvdFD
+ 5/jXs2bugiVxb9wQFuk07gJBtXpQXN6HJJIbVun4ZmRTZW9/PyGpj50ATAxhAt05LnHQcpR
+ gijF/IC2juBW0HoFTkqxfP3QmWqkEs174C/gTfJ6gig7QR6RIB4hCvBkAFGnGYmE2UF0F4I
+ R+5jhE6xcaAvFobN7Zvpg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+tdk/YGpEOA=:yKMigYhL6mILNuRG8p0ETZ
+ M7x8FfuBBEPf80MLZMUbJsyMG5VKOvMA9zNG8QJQDNaPPkcryP7a1RiCwjlCDYECFXKd0hB45
+ b6s5KNXZhUkrTLq23qA/mebx7N+AKJi46lAnXKH/mMppSsWLCgxafPrxF2IuSHMeR+P2IwVSy
+ gCfGPpcsv87jR/mqAB+iNkZmqJ7sAHZjVrtUxsFIGGJkmmQus6hHmw+TfFpawClT9LyjGd4Gx
+ QuI2JjmU8ERxlREDHTNsRgB6FsrzA8fp+0InGt3i/AtylGxb248L2AwEoIjLR1Sh6t4kIFDlN
+ U3N/Ey5Ne+TEXkWeTP3qsZCVwPZHi8trOs8jFhpTVwWW1R2cZBO05VYx/+MoUmVsvHdlsSZhs
+ NpRwGpfQ2gUfcspiACzole5eGJfd9HtfLcnIQVIQvmNhhHPQMbNlmSfsaQr4cLLGZfwrcs6sa
+ QI9NzB9ymr9SVNycTWEqPQuFXrsdfOyBBuRul1NUnIe2UwHvNdK4oXZhjr+R3e0jR6fM7Nz9S
+ rvj01ncx6F1y3lyldEYSZeeOT0ko8NIjJXo5NT5VgPpYPjjecYQiZ5uznSrZs0DU1ia6HNiRi
+ uesAicAO0JBvSj1NkC5wdsIBt1nVXjmmEmOidwrAK9v+8Cs3fm24vKvFZbSyn7acydDbaHygr
+ RrAkLtd7aSB0Nsa6+76CsIjMIVLe9aJUm2Tou1vdo4Yeg/HbPt8YSxm3X5er5m/pL0EpGXrNa
+ zH41J6aKoXB20kkZkJfWrxt1QpqrvmkDwhU76+2vwaFz+VxJJiLHDZwBt7K8bP18c0+RqsQoi
+ yT1V48cb1GVcYSIKvtzAwiaxB2ajAT7o+knVaaJHvbMD1FEXAaZFBi3p19syYvRPRDXstP5OJ
+ rbu/cFFeddh3ejZmysY5E5xQ4pMxs7OAISGnL29RpvRT83dfngzLbzq/Jj90QYusl3F3mCIq1
+ 3dT1R6TkmZJuksTg1Dj4uF0nj8LsWku/EhsNtnGXG4rILTa9aBis8hGDtcITS8ombYS4HnxoZ
+ 9lfoQCk0uvvjjvfPfgmjBH2yH7WIrX3AOyWeGmQO65tuOtRkW9e5ELlRIZmhAt27Zfeqedw8X
+ 6pyveJKjY2zp2Y=
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,55 +80,94 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The put_user(val,ptr) macro wants a pointer to a simple type, but in
-fat_ioctl_filldir() the d_name field references an "array of chars".
-Be more accurate and explicitly give the pointer to the first character
-of the d_name[] array.
+On 2/14/22 01:15, Randy Dunlap wrote:
+> Hi,
+>
+> On 2/13/22 14:15, Helge Deller wrote:
+>> On 2/13/22 22:07, Randy Dunlap wrote:
+>>>
+>>>
+>>> On 2/13/22 12:35, Helge Deller wrote:
+>>>> Hi Randy,
+>>>>
+>>>> On 2/13/22 20:39, Randy Dunlap wrote:
+>>>>> There is a build error when using a kernel .config file from
+>>>>> 'kernel test robot' for a different build problem:
+>>>>>
+>>>>> hppa64-linux-ld: drivers/tty/serial/8250/8250_gsc.o: in function `.L=
+C3':
+>>>>> (.data.rel.ro+0x18): undefined reference to `iosapic_serial_irq'
+>>>>>
+>>>>> when:
+>>>>>   CONFIG_GSC=3Dy
+>>>>>   CONFIG_SERIO_GSCPS2=3Dy
+>>>>>   CONFIG_SERIAL_8250_GSC=3Dy
+>>>>>   CONFIG_PCI is not set
+>>>>>     and hence PCI_LBA is not set.
+>>>>>   IOSAPIC depends on PCI_LBA, so IOSAPIC is not set/enabled.
+>>>>>
+>>>>> Making SERIAL_8250_GSC depend on PCI_LBA prevents the build error.
+>>>>
+>>>> It maybe makes the build error go away, but ...
+>>>>
+>>>>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>>>>> Reported-by: kernel test robot <lkp@intel.com>
+>>>>> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+>>>>> Cc: Helge Deller <deller@gmx.de>
+>>>>> Cc: linux-parisc@vger.kernel.org
+>>>>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>>>> Cc: linux-serial@vger.kernel.org
+>>>>> Cc: Jiri Slaby <jirislaby@kernel.org>
+>>>>> Cc: Johan Hovold <johan@kernel.org>
+>>>>> ---
+>>>>>  drivers/tty/serial/8250/Kconfig |    2 +-
+>>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>
+>>>>> --- linux-next-20220211.orig/drivers/tty/serial/8250/Kconfig
+>>>>> +++ linux-next-20220211/drivers/tty/serial/8250/Kconfig
+>>>>> @@ -118,7 +118,7 @@ config SERIAL_8250_CONSOLE
+>>>>>
+>>>>>  config SERIAL_8250_GSC
+>>>>>  	tristate
+>>>>> -	depends on SERIAL_8250 && GSC
+>>>>> +	depends on SERIAL_8250 && GSC && PCI_LBA
+>>>>>  	default SERIAL_8250
+>>>>
+>>>> The serial device is on the GSC bus, so if you make it
+>>>> dependend on the PCI bus it will not be useable on machines
+>>>> which only have a GSC bus...
+>>>>
+>>>> We need another patch.
+>>>> Do you have a link to the build error?
+>>>
+>>>
+>>> No, it's from the other build error that you just replied to,
+>>> where the incorrect compiler was used.
+>>>
+>>> I'll recheck it and reconsider what to do, if anything.
+>>
+>> Ok, thank you!
+>
+> I dunno what to do. This:
+>
+> #ifdef CONFIG_64BIT
+> 	if (!dev->irq && (dev->id.sversion =3D=3D 0xad))
+> 		dev->irq =3D iosapic_serial_irq(dev);
+> #endif
+>
+> makes it look like 64BIT requires IOSAPIC (hence PCI_LBA).
 
-I noticed that issue while trying to optimize the parisc put_user() macro
-and used an intermediate variable to store the pointer. In that case I
-got this error:
+Although I think all 64bit machines have a PCI bus, the better
+fix is that the driver should only call iosapic_serial_irq(dev)
+if CONFIG_IOSAPIC is set. This patch fixes the build:
 
-In file included from include/linux/uaccess.h:11,
-                 from include/linux/compat.h:17,
-                 from fs/fat/dir.c:18:
-fs/fat/dir.c: In function =E2=80=98fat_ioctl_filldir=E2=80=99:
-fs/fat/dir.c:725:33: error: invalid initializer
-  725 |                 if (put_user(0, d2->d_name)                     ||=
-         \
-      |                                 ^~
-include/asm/uaccess.h:152:33: note: in definition of macro =E2=80=98__put_=
-user=E2=80=99
-  152 |         __typeof__(ptr) __ptr =3D ptr;                            =
-\
-      |                                 ^~~
-fs/fat/dir.c:759:1: note: in expansion of macro =E2=80=98FAT_IOCTL_FILLDIR=
-_FUNC=E2=80=99
-  759 | FAT_IOCTL_FILLDIR_FUNC(fat_ioctl_filldir, __fat_dirent)
+-#ifdef CONFIG_64BIT
++#ifdef CONFIG_IOSAPIC
+        if (!dev->irq && (dev->id.sversion =3D=3D 0xad))
+                dev->irq =3D iosapic_serial_irq(dev);
+ #endif
 
+Will you send an updated patch?
 
-Andreas Schwab <schwab@linux-m68k.org> suggested to use
-   __typeof__(&*(ptr)) __ptr =3D ptr;
-instead. This works, but nevertheless it's probably reasonable to
-fix the original caller too.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-__
-v2: Adjusted the description with input from David Laight
-    <David.Laight@ACULAB.COM> and Andreas Schwab <schwab@linux-m68k.org>.
-
-diff --git a/fs/fat/dir.c b/fs/fat/dir.c
-index c4a274285858..249825017da7 100644
-=2D-- a/fs/fat/dir.c
-+++ b/fs/fat/dir.c
-@@ -722,7 +722,7 @@ static int func(struct dir_context *ctx, const char *n=
-ame, int name_len,   \
- 		if (name_len >=3D sizeof(d1->d_name))			   \
- 			name_len =3D sizeof(d1->d_name) - 1;		   \
- 									   \
--		if (put_user(0, d2->d_name)			||	   \
-+		if (put_user(0, &d2->d_name[0])			||	   \
- 		    put_user(0, &d2->d_reclen)			||	   \
- 		    copy_to_user(d1->d_name, name, name_len)	||	   \
- 		    put_user(0, d1->d_name + name_len)		||	   \
+Thanks!
+Helge
