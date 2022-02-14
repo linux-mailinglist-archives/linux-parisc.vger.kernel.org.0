@@ -2,89 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB0C24B45A1
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 10:26:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11C4A4B46E1
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 10:53:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242855AbiBNJ0b (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 14 Feb 2022 04:26:31 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39910 "EHLO
+        id S244486AbiBNJlx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 14 Feb 2022 04:41:53 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237076AbiBNJ0b (ORCPT
+        with ESMTP id S244990AbiBNJlC (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 14 Feb 2022 04:26:31 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 150D7606F4
-        for <linux-parisc@vger.kernel.org>; Mon, 14 Feb 2022 01:26:23 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-313-sjXgZp0fOm66Vo-KMrSp4w-1; Mon, 14 Feb 2022 09:26:21 +0000
-X-MC-Unique: sjXgZp0fOm66Vo-KMrSp4w-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Mon, 14 Feb 2022 09:26:20 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Mon, 14 Feb 2022 09:26:20 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     David Laight <David.Laight@ACULAB.COM>,
-        'Helge Deller' <deller@gmx.de>,
+        Mon, 14 Feb 2022 04:41:02 -0500
+X-Greylist: delayed 541 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Feb 2022 01:36:37 PST
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE4F6579C
+        for <linux-parisc@vger.kernel.org>; Mon, 14 Feb 2022 01:36:37 -0800 (PST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 4JxzQZ21l3z1r5Sf;
+        Mon, 14 Feb 2022 10:27:34 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 4JxzQZ1HbSz1qqkD;
+        Mon, 14 Feb 2022 10:27:34 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id aNRyA1YptquK; Mon, 14 Feb 2022 10:27:33 +0100 (CET)
+X-Auth-Info: R0XjbQXb2+5gGB2bT5bpBZHuDOLFj/16nNUnBauej6c6LUkDgKfgDP03UTXie8CI
+Received: from igel.home (ppp-46-244-178-131.dynamic.mnet-online.de [46.244.178.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Mon, 14 Feb 2022 10:27:33 +0100 (CET)
+Received: by igel.home (Postfix, from userid 1000)
+        id D80442C39FF; Mon, 14 Feb 2022 10:27:32 +0100 (CET)
+From:   Andreas Schwab <schwab@linux-m68k.org>
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     'Helge Deller' <deller@gmx.de>,
         OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-CC:     "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>
-Subject: RE: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>
+Subject: Re: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
  case
-Thread-Topic: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
- case
-Thread-Index: AQHYISaVap2r7qAO+E+IsFLjJVJIxKySvtowgAAIGvA=
-Date:   Mon, 14 Feb 2022 09:26:20 +0000
-Message-ID: <0ecb87dcc4cf42328f1f5a7d6abd08ed@AcuMS.aculab.com>
 References: <YgmB01p+p45Cihhg@p100>
- <49a26b7a30254d9fb9653c2f815eaa28@AcuMS.aculab.com>
-In-Reply-To: <49a26b7a30254d9fb9653c2f815eaa28@AcuMS.aculab.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        <49a26b7a30254d9fb9653c2f815eaa28@AcuMS.aculab.com>
+X-Yow:  YOU PICKED KARL MALDEN'S NOSE!!
+Date:   Mon, 14 Feb 2022 10:27:32 +0100
+In-Reply-To: <49a26b7a30254d9fb9653c2f815eaa28@AcuMS.aculab.com> (David
+        Laight's message of "Mon, 14 Feb 2022 09:12:01 +0000")
+Message-ID: <8735klx0fv.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.0.91 (gnu/linux)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-RnJvbTogRGF2aWQgTGFpZ2h0DQo+IFNlbnQ6IDE0IEZlYnJ1YXJ5IDIwMjIgMDk6MTINCj4gDQo+
-IEZyb206IEhlbGdlIERlbGxlcg0KPiA+IFNlbnQ6IDEzIEZlYnJ1YXJ5IDIwMjIgMjI6MTANCj4g
-Pg0KPiA+IFRoZSBwdXRfdXNlcih2YWwscHRyKSBtYWNybyB3YW50cyBhIHBvaW50ZXIgaW4gdGhl
-IHNlY29uZCBwYXJhbWV0ZXIsIGJ1dCBpbg0KPiA+IGZhdF9pb2N0bF9maWxsZGlyKCkgdGhlIGRf
-bmFtZSBmaWVsZCByZWZlcmVuY2VzIGEgd2hvbGUgImFycmF5IG9mIGNoYXJzIi4NCj4gPiBVc3Vh
-bGx5IHRoZSBjb21waWxlciBhdXRvbWF0aWNhbGx5IGNvbnZlcnRzIGl0IGFuZCB1c2VzIGEgcG9p
-bnRlciB0byB0aGF0DQo+ID4gYXJyYXksIGJ1dCBpdCdzIG1vcmUgY2xlYW4gdG8gZXhwbGljaXRs
-eSBnaXZlIHRoZSByZWFsIHBvaW50ZXIgdG8gd2hlcmUgc29tZXRpbmcNCj4gPiBpcyBwdXQsIHdo
-aWNoIGlzIGluIHRoaXMgY2FzZSB0aGUgZmlyc3QgY2hhcmFjdGVyIG9mIHRoZSBkX25hbWVbXSBh
-cnJheS4NCj4gDQo+IFRoYXQganVzdCBpc24ndCB0cnVlLg0KPiANCj4gSW4gQyBib3RoIHgtPmNo
-YXJfYXJyYXkgYW5kICZ4LT5jaGFyX2FycmF5WzBdIGhhdmUgdGhlIHNhbWUgdHlwZQ0KPiAnY2hh
-ciAqJy4NCj4gDQo+IFRoZSAnYnVnJyBpcyBjYXVzZWQgYnkgcHV0X3VzZXIoKSB0cnlpbmcgdG8g
-ZG86DQo+IAlfX3R5cGVvZl9fKHB0cikgX19wdHIgPSBwdHI7DQo+IHdoZXJlIF9fdHlwZW9mX18g
-aXMgcmV0dXJuaW5nIGNoYXJbbl0gbm90IGNoYXIgKi4NCj4gDQo+IEkndmUgdHJpZWQgYSBmZXcg
-dGhpbmdzIGJ1dCBjYW4ndCBnZXQgX190eXBlb2ZfXyB0bw0KPiBnZW5lcmF0ZSBhIHN1aXRhYmxl
-IHR5cGUgZm9yIGJvdGggYSBzaW1wbGUgdHlwZSBhbmQgYXJyYXkuDQoNCkFjdHVhbGx5IHRoZSBp
-c3N1ZSBpcyB0aGF0IHB1dF91c2VyKCkgd3JpdGVzIGEgc2luZ2xlIHZhcmlhYmxlDQphbmQgbmVl
-ZHMgYSBwb2ludGVyIHRvIG9uZS4NClNvIGNoYW5naW5nIHRvOg0KCXB1dF91c2VyKDAsICZhcnJh
-eVswXSk7DQppcyBwcm9iYWJseSBmaW5lLg0KQnV0IHRoZSBkZXNjcmlwdGlvbiBpcyBhbGwgd3Jv
-bmcuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkg
-Um9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlv
-biBObzogMTM5NzM4NiAoV2FsZXMpDQo=
+On Feb 14 2022, David Laight wrote:
 
+> The 'bug' is caused by put_user() trying to do:
+> 	__typeof__(ptr) __ptr = ptr;
+> where __typeof__ is returning char[n] not char *.
+>
+> I've tried a few things but can't get __typeof__ to
+> generate a suitable type for both a simple type and array.
+
+Does it work to use __typeof__(&*(ptr))?
+
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
