@@ -2,104 +2,82 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C9F54B433F
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 09:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA27B4B4546
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 10:12:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240293AbiBNIHA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 14 Feb 2022 03:07:00 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38300 "EHLO
+        id S242686AbiBNJMO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 14 Feb 2022 04:12:14 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229908AbiBNIHA (ORCPT
+        with ESMTP id S235720AbiBNJMN (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 14 Feb 2022 03:07:00 -0500
-X-Greylist: delayed 419 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Feb 2022 00:06:52 PST
-Received: from mail.parknet.co.jp (mail.parknet.co.jp [210.171.160.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 848B75F27B;
-        Mon, 14 Feb 2022 00:06:52 -0800 (PST)
-Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
-        by mail.parknet.co.jp (Postfix) with ESMTPSA id 5364915F93A;
-        Mon, 14 Feb 2022 16:59:52 +0900 (JST)
-Received: from devron.myhome.or.jp (foobar@devron.myhome.or.jp [192.168.0.3])
-        by ibmpc.myhome.or.jp (8.16.1/8.16.1/Debian-2) with ESMTPS id 21E7xoRZ051364
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Mon, 14 Feb 2022 16:59:51 +0900
-Received: from devron.myhome.or.jp (foobar@localhost [127.0.0.1])
-        by devron.myhome.or.jp (8.16.1/8.16.1/Debian-2) with ESMTPS id 21E7xoWK253761
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Mon, 14 Feb 2022 16:59:50 +0900
-Received: (from hirofumi@localhost)
-        by devron.myhome.or.jp (8.16.1/8.16.1/Submit) id 21E7xoEx253760;
-        Mon, 14 Feb 2022 16:59:50 +0900
-From:   OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-parisc@vger.kernel.org
-Subject: Re: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
+        Mon, 14 Feb 2022 04:12:13 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5404260056
+        for <linux-parisc@vger.kernel.org>; Mon, 14 Feb 2022 01:12:05 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-225-3ObD8h0vMEC7W4ZlGhGL-Q-1; Mon, 14 Feb 2022 09:12:02 +0000
+X-MC-Unique: 3ObD8h0vMEC7W4ZlGhGL-Q-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.28; Mon, 14 Feb 2022 09:12:01 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.028; Mon, 14 Feb 2022 09:12:01 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Helge Deller' <deller@gmx.de>,
+        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+CC:     "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>
+Subject: RE: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
  case
+Thread-Topic: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
+ case
+Thread-Index: AQHYISaVap2r7qAO+E+IsFLjJVJIxKySvtow
+Date:   Mon, 14 Feb 2022 09:12:01 +0000
+Message-ID: <49a26b7a30254d9fb9653c2f815eaa28@AcuMS.aculab.com>
 References: <YgmB01p+p45Cihhg@p100>
-Date:   Mon, 14 Feb 2022 16:59:50 +0900
-In-Reply-To: <YgmB01p+p45Cihhg@p100> (Helge Deller's message of "Sun, 13 Feb
-        2022 23:10:27 +0100")
-Message-ID: <87y22dho95.fsf@mail.parknet.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/29.0.50 (gnu/linux)
+In-Reply-To: <YgmB01p+p45Cihhg@p100>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-2022-jp
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Helge Deller <deller@gmx.de> writes:
+RnJvbTogSGVsZ2UgRGVsbGVyDQo+IFNlbnQ6IDEzIEZlYnJ1YXJ5IDIwMjIgMjI6MTANCj4gDQo+
+IFRoZSBwdXRfdXNlcih2YWwscHRyKSBtYWNybyB3YW50cyBhIHBvaW50ZXIgaW4gdGhlIHNlY29u
+ZCBwYXJhbWV0ZXIsIGJ1dCBpbg0KPiBmYXRfaW9jdGxfZmlsbGRpcigpIHRoZSBkX25hbWUgZmll
+bGQgcmVmZXJlbmNlcyBhIHdob2xlICJhcnJheSBvZiBjaGFycyIuDQo+IFVzdWFsbHkgdGhlIGNv
+bXBpbGVyIGF1dG9tYXRpY2FsbHkgY29udmVydHMgaXQgYW5kIHVzZXMgYSBwb2ludGVyIHRvIHRo
+YXQNCj4gYXJyYXksIGJ1dCBpdCdzIG1vcmUgY2xlYW4gdG8gZXhwbGljaXRseSBnaXZlIHRoZSBy
+ZWFsIHBvaW50ZXIgdG8gd2hlcmUgc29tZXRpbmcNCj4gaXMgcHV0LCB3aGljaCBpcyBpbiB0aGlz
+IGNhc2UgdGhlIGZpcnN0IGNoYXJhY3RlciBvZiB0aGUgZF9uYW1lW10gYXJyYXkuDQoNClRoYXQg
+anVzdCBpc24ndCB0cnVlLg0KDQpJbiBDIGJvdGggeC0+Y2hhcl9hcnJheSBhbmQgJngtPmNoYXJf
+YXJyYXlbMF0gaGF2ZSB0aGUgc2FtZSB0eXBlDQonY2hhciAqJy4NCg0KVGhlICdidWcnIGlzIGNh
+dXNlZCBieSBwdXRfdXNlcigpIHRyeWluZyB0byBkbzoNCglfX3R5cGVvZl9fKHB0cikgX19wdHIg
+PSBwdHI7DQp3aGVyZSBfX3R5cGVvZl9fIGlzIHJldHVybmluZyBjaGFyW25dIG5vdCBjaGFyICou
+DQoNCkkndmUgdHJpZWQgYSBmZXcgdGhpbmdzIGJ1dCBjYW4ndCBnZXQgX190eXBlb2ZfXyB0bw0K
+Z2VuZXJhdGUgYSBzdWl0YWJsZSB0eXBlIGZvciBib3RoIGEgc2ltcGxlIHR5cGUgYW5kIGFycmF5
+Lg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJv
+YWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24g
+Tm86IDEzOTczODYgKFdhbGVzKQ0K
 
-> The put_user(val,ptr) macro wants a pointer in the second parameter, but in
-> fat_ioctl_filldir() the d_name field references a whole "array of chars".
-> Usually the compiler automatically converts it and uses a pointer to that
-> array, but it's more clean to explicitly give the real pointer to where someting
-> is put, which is in this case the first character of the d_name[] array.
->
-> I noticed that issue while trying to optimize the parisc put_user() macro
-> and used an intermediate variable to store the pointer. In that case I
-> got this error:
->
-> In file included from include/linux/uaccess.h:11,
->                  from include/linux/compat.h:17,
->                  from fs/fat/dir.c:18:
-> fs/fat/dir.c: In function ‘fat_ioctl_filldir’:
-> fs/fat/dir.c:725:33: error: invalid initializer
->   725 |                 if (put_user(0, d2->d_name)                     ||         \
->       |                                 ^~
-> include/asm/uaccess.h:152:33: note: in definition of macro ‘__put_user’
->   152 |         __typeof__(ptr) __ptr = ptr;                            \
->       |                                 ^~~
-> fs/fat/dir.c:759:1: note: in expansion of macro ‘FAT_IOCTL_FILLDIR_FUNC’
->   759 | FAT_IOCTL_FILLDIR_FUNC(fat_ioctl_filldir, __fat_dirent)
->
-> The patch below cleans it up.
->
-> Signed-off-by: Helge Deller <deller@gmx.de>
-
-Looks good.
-
-Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-
-> diff --git a/fs/fat/dir.c b/fs/fat/dir.c
-> index c4a274285858..249825017da7 100644
-> --- a/fs/fat/dir.c
-> +++ b/fs/fat/dir.c
-> @@ -722,7 +722,7 @@ static int func(struct dir_context *ctx, const char *name, int name_len,   \
->  		if (name_len >= sizeof(d1->d_name))			   \
->  			name_len = sizeof(d1->d_name) - 1;		   \
->  									   \
-> -		if (put_user(0, d2->d_name)			||	   \
-> +		if (put_user(0, &d2->d_name[0])			||	   \
->  		    put_user(0, &d2->d_reclen)			||	   \
->  		    copy_to_user(d1->d_name, name, name_len)	||	   \
->  		    put_user(0, d1->d_name + name_len)		||	   \
-
--- 
-OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
