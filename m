@@ -2,122 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC4FF4B4E7B
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 12:34:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB374B4E65
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Feb 2022 12:34:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350751AbiBNL2T (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 14 Feb 2022 06:28:19 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59196 "EHLO
+        id S234009AbiBNLai (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 14 Feb 2022 06:30:38 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350808AbiBNL2H (ORCPT
+        with ESMTP id S1351689AbiBNLaM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 14 Feb 2022 06:28:07 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACABC6BDE4;
-        Mon, 14 Feb 2022 03:05:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1644836710;
-        bh=/jEI0qa5et1A5fI5AP02quv5hC2xHhHOiKa1B7BmQpY=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Vc/Z2Y4nQv7sFots98IcQCiTdEZZbwjXU650/1G/9ZssKOFBIbJtOfAj4Kuvbb2aN
-         vVIKnL3zslcEqlqDPeQobhRoZ4ec79wJKwRULO2vYEyevgy9+pQzzQhxeFZqQkfgHi
-         dHU7ZRQrv6jhpfJX4amBI/4saUgt5rfLhY5xtjoc=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.168.11]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M4s0j-1nKNqU3qop-001x2X; Mon, 14
- Feb 2022 12:05:09 +0100
-Message-ID: <ffebaea4-8135-6e2e-fca1-8e9f118ef70b@gmx.de>
-Date:   Mon, 14 Feb 2022 12:05:00 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
- case
-Content-Language: en-US
-To:     David Laight <David.Laight@ACULAB.COM>,
+        Mon, 14 Feb 2022 06:30:12 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 267723F886
+        for <linux-parisc@vger.kernel.org>; Mon, 14 Feb 2022 03:11:37 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-33-IItVuRDPNvWlDoJ-8YoAUQ-1; Mon, 14 Feb 2022 11:11:35 +0000
+X-MC-Unique: IItVuRDPNvWlDoJ-8YoAUQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.28; Mon, 14 Feb 2022 11:11:14 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.028; Mon, 14 Feb 2022 11:11:13 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Helge Deller' <deller@gmx.de>,
         OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>
-Cc:     "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>
+CC:     "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>
+Subject: RE: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
+ case
+Thread-Topic: [PATCH] fat: Use pointer to d_name[0] in put_user() for compat
+ case
+Thread-Index: AQHYISaVap2r7qAO+E+IsFLjJVJIxKySvtowgAAIGvCAABwpAIAAAYyg
+Date:   Mon, 14 Feb 2022 11:11:13 +0000
+Message-ID: <01801d084adf442aa5b8dc4bf1eee771@AcuMS.aculab.com>
 References: <YgmB01p+p45Cihhg@p100>
  <49a26b7a30254d9fb9653c2f815eaa28@AcuMS.aculab.com>
  <0ecb87dcc4cf42328f1f5a7d6abd08ed@AcuMS.aculab.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <0ecb87dcc4cf42328f1f5a7d6abd08ed@AcuMS.aculab.com>
+ <ffebaea4-8135-6e2e-fca1-8e9f118ef70b@gmx.de>
+In-Reply-To: <ffebaea4-8135-6e2e-fca1-8e9f118ef70b@gmx.de>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:AONVuZwsErb6wKyc0u0ZjdTu/g4fjzt+2aSTAeYXCLwWk3OOGTH
- GPVQdm/wadZSzxXBacz+2n0780srvUVhG2XiNWsVbgD6OQm28vEeWsAHJk+WHmsm4QMy9yX
- oD7XxUqGLr63EvDMUhR/DNplZifM46ZDbWBz/QYPuSQeTRoNngJGY/6NEH5OVfkZBdRlqQJ
- 2/lFQdZQm0PdfS/+Z/7Ng==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3M2sH2Q9UIY=:afp2wr2FwYnyB758PMvNhv
- 4rzNw1+08QTUCBM48Mp+55HJyDr2ZMga2Rnf9QsAa21n9EJpVs8tczkKLQIm3zgy0NUF0Tva6
- P+p/TQRYgryu9wt87SwJvwgYfyN7UVbLGRjrUlOqWqc6LhgJRJUfqdI6Va3SlM76cEBYy7TwI
- 5poEhJRGRucUPqWS9Sl+4bi0nz6u+yD5gzE21SKvIZpx2Qeugf1e3CAUNQ+USFVVSehfCVaS/
- kIHmGtXpMS6Q4CHYQHza0A5sPDqh7QTsWvpUVKfoZvZKPE22KaQKD02zqxZZTx2A5x/P4qssq
- 2lymyz12kKBLI7btoqz2NemKgWWlAiEypRsK1oL9aAIBM49jxaY3ryAWeYYhSbQhsoY3eKzFL
- xRDh7yD9o0Uwus1HpgELCccVX/GJwKB7qAeM9emxlgvYiREvcvKhB6GP7YIRPZDo4we9n/ipu
- upZmwj6HbNj0RN55RMK2PGOqPqVurQpu3jqE3FSN0l/luibxf85kstDxaOhwMISYfYBCCmnkX
- p+5FgeTAGSMSNPiOSvdfeJ7tunMgsLZljJRGstGzX75yq5GFbaqSptMvdEHdQbm33isBm0IHu
- RomQvBeSvMNyKkI5e7+Dpvprivd6Hftx9Ep+ihoN8JGRcldasICwyCg4lhRuJ0VczCiO5wA53
- CuvO8Y5a8UGpGSqltUU2n3ZveN+7MfEX4EX8U4Rae2Z6mWYx1Pa1n/T9N7sepcZdnUXkEDQMu
- 7GqJkwB5BfxMeWbFe8UX+6AvLDKXkLMVjrfiKiZz0zp516Ufs0/SDKgDYfPSYcmjFRdFO/BXj
- dRBP5NrSCusXv1PO82ja54NnHSmVGlMRfT3P7c9PT1FkLe/GjwjMuYtu4nqUuppX2HdbihlV1
- yjx283lktqZqKHfOuEQnXlAN+RzLJYzABSyyEdjWIVW8y5qzJZnmNxEaDSjKt8tEA9uCrkC52
- Z092y7NLt1QoyRjIphmCRqP0XkSnFw7GaFa8UBjlKwuwHoVdKDtn5GT6BPEurlsZfDhaGkF1k
- duKE7HfsvKRo3J26O0/yGQojDpdu3zVzTrN/l6uzDf95piaF/iml8BKpeIIRgo5VgKVmoC21Z
- g6zsYggJw7U1sU=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2/14/22 10:26, David Laight wrote:
-> From: David Laight
->> Sent: 14 February 2022 09:12
->>
->> From: Helge Deller
->>> Sent: 13 February 2022 22:10
->>>
->>> The put_user(val,ptr) macro wants a pointer in the second parameter, b=
-ut in
->>> fat_ioctl_filldir() the d_name field references a whole "array of char=
-s".
->>> Usually the compiler automatically converts it and uses a pointer to t=
-hat
->>> array, but it's more clean to explicitly give the real pointer to wher=
-e someting
->>> is put, which is in this case the first character of the d_name[] arra=
-y.
->>
->> That just isn't true.
->>
->> In C both x->char_array and &x->char_array[0] have the same type
->> 'char *'.
->>
->> The 'bug' is caused by put_user() trying to do:
->> 	__typeof__(ptr) __ptr =3D ptr;
->> where __typeof__ is returning char[n] not char *.
->>
->> I've tried a few things but can't get __typeof__ to
->> generate a suitable type for both a simple type and array.
->
-> Actually the issue is that put_user() writes a single variable
-> and needs a pointer to one.
-> So changing to:
-> 	put_user(0, &array[0]);
-> is probably fine.
+RnJvbTogSGVsZ2UgRGVsbGVyDQo+IFNlbnQ6IDE0IEZlYnJ1YXJ5IDIwMjIgMTE6MDUNCj4gDQo+
+IE9uIDIvMTQvMjIgMTA6MjYsIERhdmlkIExhaWdodCB3cm90ZToNCj4gPiBGcm9tOiBEYXZpZCBM
+YWlnaHQNCj4gPj4gU2VudDogMTQgRmVicnVhcnkgMjAyMiAwOToxMg0KPiA+Pg0KPiA+PiBGcm9t
+OiBIZWxnZSBEZWxsZXINCj4gPj4+IFNlbnQ6IDEzIEZlYnJ1YXJ5IDIwMjIgMjI6MTANCj4gPj4+
+DQo+ID4+PiBUaGUgcHV0X3VzZXIodmFsLHB0cikgbWFjcm8gd2FudHMgYSBwb2ludGVyIGluIHRo
+ZSBzZWNvbmQgcGFyYW1ldGVyLCBidXQgaW4NCj4gPj4+IGZhdF9pb2N0bF9maWxsZGlyKCkgdGhl
+IGRfbmFtZSBmaWVsZCByZWZlcmVuY2VzIGEgd2hvbGUgImFycmF5IG9mIGNoYXJzIi4NCj4gPj4+
+IFVzdWFsbHkgdGhlIGNvbXBpbGVyIGF1dG9tYXRpY2FsbHkgY29udmVydHMgaXQgYW5kIHVzZXMg
+YSBwb2ludGVyIHRvIHRoYXQNCj4gPj4+IGFycmF5LCBidXQgaXQncyBtb3JlIGNsZWFuIHRvIGV4
+cGxpY2l0bHkgZ2l2ZSB0aGUgcmVhbCBwb2ludGVyIHRvIHdoZXJlIHNvbWV0aW5nDQo+ID4+PiBp
+cyBwdXQsIHdoaWNoIGlzIGluIHRoaXMgY2FzZSB0aGUgZmlyc3QgY2hhcmFjdGVyIG9mIHRoZSBk
+X25hbWVbXSBhcnJheS4NCj4gPj4NCj4gPj4gVGhhdCBqdXN0IGlzbid0IHRydWUuDQo+ID4+DQo+
+ID4+IEluIEMgYm90aCB4LT5jaGFyX2FycmF5IGFuZCAmeC0+Y2hhcl9hcnJheVswXSBoYXZlIHRo
+ZSBzYW1lIHR5cGUNCj4gPj4gJ2NoYXIgKicuDQo+ID4+DQo+ID4+IFRoZSAnYnVnJyBpcyBjYXVz
+ZWQgYnkgcHV0X3VzZXIoKSB0cnlpbmcgdG8gZG86DQo+ID4+IAlfX3R5cGVvZl9fKHB0cikgX19w
+dHIgPSBwdHI7DQo+ID4+IHdoZXJlIF9fdHlwZW9mX18gaXMgcmV0dXJuaW5nIGNoYXJbbl0gbm90
+IGNoYXIgKi4NCj4gPj4NCj4gPj4gSSd2ZSB0cmllZCBhIGZldyB0aGluZ3MgYnV0IGNhbid0IGdl
+dCBfX3R5cGVvZl9fIHRvDQo+ID4+IGdlbmVyYXRlIGEgc3VpdGFibGUgdHlwZSBmb3IgYm90aCBh
+IHNpbXBsZSB0eXBlIGFuZCBhcnJheS4NCj4gPg0KPiA+IEFjdHVhbGx5IHRoZSBpc3N1ZSBpcyB0
+aGF0IHB1dF91c2VyKCkgd3JpdGVzIGEgc2luZ2xlIHZhcmlhYmxlDQo+ID4gYW5kIG5lZWRzIGEg
+cG9pbnRlciB0byBvbmUuDQo+ID4gU28gY2hhbmdpbmcgdG86DQo+ID4gCXB1dF91c2VyKDAsICZh
+cnJheVswXSk7DQo+ID4gaXMgcHJvYmFibHkgZmluZS4NCj4gDQo+IE9rLg0KPiANCj4gPiBCdXQg
+dGhlIGRlc2NyaXB0aW9uIGlzIGFsbCB3cm9uZy4NCj4gDQo+IEkgYWdyZWUgaXQgY2FuIGJlIGlt
+cHJvdmVkLg0KPiBXb3VsZCB5b3UgbWluZCBwcm9wb3NpbmcgYSBiZXR0ZXIgZGVzY3JpcHRpb24/
+DQoNCnB1dF91c2VyKCkgbmVlZHMgYSBwb2ludGVyIHRvIGEgc2ltcGxlIHR5cGUuDQoNCglEYXZp
+ZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQg
+RmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4
+NiAoV2FsZXMpDQo=
 
-Ok.
-
-> But the description is all wrong.
-
-I agree it can be improved.
-Would you mind proposing a better description?
-
-Helge
