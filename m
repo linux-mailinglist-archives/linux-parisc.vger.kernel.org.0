@@ -2,72 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79F524B70F8
-	for <lists+linux-parisc@lfdr.de>; Tue, 15 Feb 2022 17:39:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE3244B773D
+	for <lists+linux-parisc@lfdr.de>; Tue, 15 Feb 2022 21:50:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237346AbiBOQHr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 15 Feb 2022 11:07:47 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37918 "EHLO
+        id S242401AbiBORSm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 15 Feb 2022 12:18:42 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241281AbiBOQHp (ORCPT
+        with ESMTP id S242362AbiBORSl (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 15 Feb 2022 11:07:45 -0500
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EECDDE95
-        for <linux-parisc@vger.kernel.org>; Tue, 15 Feb 2022 08:07:35 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id t4-20020a17090a510400b001b8c4a6cd5dso2514659pjh.5
-        for <linux-parisc@vger.kernel.org>; Tue, 15 Feb 2022 08:07:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=9F1cZHityGGoWBhfQ6coBOoN6sLDbcrG5DsSqFvaDqU=;
-        b=QerMelEYY6ZDyyl1cI/YVp6a+3AiRTY9PXCnsmnFgeUeqOfD0RdHc1oShO5TFk3a1e
-         reRp5IdzoSDGiTUW0TUs9obthAaR6Fd7ALoGIVLN+mzEsNiFaBatztWhabOU5Mdkco4q
-         B/zJoBvoW6A94AVKVgT4SIX+4LVEqROqThJII=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9F1cZHityGGoWBhfQ6coBOoN6sLDbcrG5DsSqFvaDqU=;
-        b=U4agZ+rJm3I4l3TFFal9cXLvgX3h1vPLqAa4f7lqTPK3b7dsTUJbsEuGMz5tkbDAYc
-         rIgh0EzzqafEeDCGvClD1FoUYDYi4Zb+3W67s3kuLX8/oQs0I/xPKNisGix/+Qdlr7iB
-         1Fb9dS+oQfMDb9WLMM0iUyYcLlQdI39tP6n4Mko3b6enzZ95ktZGB+Y4XL+OLH70Hs0d
-         qwZYdu4oCB+GiuOSnbhy9nCthds3euXd3NHjYwBfeLfUqYiGqXoquiKp6D6AQd+Hmt0H
-         B9G1HDP11B6d/Hd3nYm4Gr4uq4tiRsaEH2x4XdS40M5RZez/W3PgA1ul/yfUlj5kX/Qc
-         rLBw==
-X-Gm-Message-State: AOAM532yxHsfz7ntcGVKXJ66Lwti8D+/z2fSl6bIGdgTCcI3ii2RrVxb
-        hO5waJS3rT8LvlS85t+FBseMQA==
-X-Google-Smtp-Source: ABdhPJy9XUFQBS9qoJ92jrgPj0aOGN3xbqhE/n4oek8xKKJdVkIpgUPawPDOLHN99L+h2PeDtK1eNw==
-X-Received: by 2002:a17:902:b413:: with SMTP id x19mr5046708plr.103.1644941254817;
-        Tue, 15 Feb 2022 08:07:34 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id n29sm2964422pgc.10.2022.02.15.08.07.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Feb 2022 08:07:34 -0800 (PST)
-Date:   Tue, 15 Feb 2022 08:07:33 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 00/13] Fix LKDTM for PPC64/IA64/PARISC v4
-Message-ID: <202202150807.D584917D34@keescook>
-References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1644928018.git.christophe.leroy@csgroup.eu>
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        Tue, 15 Feb 2022 12:18:41 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CFF2140DC;
+        Tue, 15 Feb 2022 09:18:31 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1909F61575;
+        Tue, 15 Feb 2022 17:18:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7B812C340F0;
+        Tue, 15 Feb 2022 17:18:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644945510;
+        bh=loJNfziP5x5OSoelOJGo2doEquGsGTCzrWIiC3mF9MU=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=OZxIUtehTfs6hE5EWhpCsfXL4xPXGuD4ttRGWUoSD5MP9Ehdx4h91J0ZTQqZKbKiL
+         DxWgt9jxJ6YOFqLe0GTisVfeBLxmqabVOrqbKlXtJZS4kCbMLRf6iadEfEEaCH0BW8
+         Rn43/7c8N6ZVLGgc5TeyJTbLRgxN12dm3LdqYU+UhRKQkHZRDd1WScT+yDCrVbIhJP
+         AKQD4azKmDP7ld00/en9A9hQK+SCgNHnFubcEJFT7HQjJTttGlRehNEHPJ2iibSSph
+         hFqyK1kFL6Ui/+3JpRJNR16McHJVWONJqS/XrZsQlVYlamWYIaZERq7DTMqdqMLhub
+         pMfipGFGnFb5g==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6792AE6D458;
+        Tue, 15 Feb 2022 17:18:30 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture fixes for v5.17-rc5
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <YgvAdaab22aRk18r@ls3530>
+References: <YgvAdaab22aRk18r@ls3530>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <YgvAdaab22aRk18r@ls3530>
+X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.17/parisc-3
+X-PR-Tracked-Commit-Id: 6e8793674bb0d1135ca0e5c9f7e16fecbf815926
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 2572da44a51192ad181482c1989e66e5eb47dcbe
+Message-Id: <164494551041.28256.4169809147321829116.pr-tracker-bot@kernel.org>
+Date:   Tue, 15 Feb 2022 17:18:30 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,86 +66,15 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 01:40:55PM +0100, Christophe Leroy wrote:
-> PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
-> on those three architectures because LKDTM messes up function
-> descriptors with functions.
-> 
-> This series does some cleanup in the three architectures and
-> refactors function descriptors so that it can then easily use it
-> in a generic way in LKDTM.
+The pull request you sent on Tue, 15 Feb 2022 16:02:13 +0100:
 
-Thanks for doing this! It looks good to me. :)
+> http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.17/parisc-3
 
--Kees
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/2572da44a51192ad181482c1989e66e5eb47dcbe
 
-> 
-> Changes in v4:
-> - Added patch 1 which Fixes 'sparse' for powerpc64le after wrong report on previous series, refer https://github.com/ruscur/linux-ci/actions/runs/1351427671
-> - Exported dereference_function_descriptor() to modules
-> - Addressed other received comments
-> - Rebased on latest powerpc/next (5a72345e6a78120368fcc841b570331b6c5a50da)
-> 
-> Changes in v3:
-> - Addressed received comments
-> - Swapped some of the powerpc patches to keep func_descr_t renamed as struct func_desc and remove 'struct ppc64_opd_entry'
-> - Changed HAVE_FUNCTION_DESCRIPTORS macro to a config item CONFIG_HAVE_FUNCTION_DESCRIPTORS
-> - Dropped patch 11 ("Fix lkdtm_EXEC_RODATA()")
-> 
-> Changes in v2:
-> - Addressed received comments
-> - Moved dereference_[kernel]_function_descriptor() out of line
-> - Added patches to remove func_descr_t and func_desc_t in powerpc
-> - Using func_desc_t instead of funct_descr_t
-> - Renamed HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR to HAVE_FUNCTION_DESCRIPTORS
-> - Added a new lkdtm test to check protection of function descriptors
-> 
-> Christophe Leroy (13):
->   powerpc: Fix 'sparse' checking on PPC64le
->   powerpc: Move and rename func_descr_t
->   powerpc: Use 'struct func_desc' instead of 'struct ppc64_opd_entry'
->   powerpc: Remove 'struct ppc64_opd_entry'
->   powerpc: Prepare func_desc_t for refactorisation
->   ia64: Rename 'ip' to 'addr' in 'struct fdesc'
->   asm-generic: Define CONFIG_HAVE_FUNCTION_DESCRIPTORS
->   asm-generic: Define 'func_desc_t' to commonly describe function
->     descriptors
->   asm-generic: Refactor dereference_[kernel]_function_descriptor()
->   lkdtm: Force do_nothing() out of line
->   lkdtm: Really write into kernel text in WRITE_KERN
->   lkdtm: Fix execute_[user]_location()
->   lkdtm: Add a test for function descriptors protection
-> 
->  arch/Kconfig                             |  3 +
->  arch/ia64/Kconfig                        |  1 +
->  arch/ia64/include/asm/elf.h              |  2 +-
->  arch/ia64/include/asm/sections.h         | 24 +-------
->  arch/ia64/kernel/module.c                |  6 +-
->  arch/parisc/Kconfig                      |  1 +
->  arch/parisc/include/asm/sections.h       | 16 ++----
->  arch/parisc/kernel/process.c             | 21 -------
->  arch/powerpc/Kconfig                     |  1 +
->  arch/powerpc/Makefile                    |  2 +-
->  arch/powerpc/include/asm/code-patching.h |  2 +-
->  arch/powerpc/include/asm/elf.h           |  6 ++
->  arch/powerpc/include/asm/sections.h      | 29 ++--------
->  arch/powerpc/include/asm/types.h         |  6 --
->  arch/powerpc/include/uapi/asm/elf.h      |  8 ---
->  arch/powerpc/kernel/module_64.c          | 42 ++++++--------
->  arch/powerpc/kernel/ptrace/ptrace.c      |  6 ++
->  arch/powerpc/kernel/signal_64.c          |  8 +--
->  drivers/misc/lkdtm/core.c                |  1 +
->  drivers/misc/lkdtm/lkdtm.h               |  1 +
->  drivers/misc/lkdtm/perms.c               | 71 +++++++++++++++++++-----
->  include/asm-generic/sections.h           | 15 ++++-
->  include/linux/kallsyms.h                 |  2 +-
->  kernel/extable.c                         | 24 +++++++-
->  tools/testing/selftests/lkdtm/tests.txt  |  1 +
->  25 files changed, 155 insertions(+), 144 deletions(-)
-> 
-> -- 
-> 2.34.1
-> 
+Thank you!
 
 -- 
-Kees Cook
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
