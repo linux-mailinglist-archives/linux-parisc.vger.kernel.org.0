@@ -2,25 +2,26 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66F5A4B614B
-	for <lists+linux-parisc@lfdr.de>; Tue, 15 Feb 2022 04:03:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4594B6375
+	for <lists+linux-parisc@lfdr.de>; Tue, 15 Feb 2022 07:29:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233448AbiBODEC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 14 Feb 2022 22:04:02 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59590 "EHLO
+        id S234403AbiBOG37 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 15 Feb 2022 01:29:59 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229734AbiBODD5 (ORCPT
+        with ESMTP id S232447AbiBOG36 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 14 Feb 2022 22:03:57 -0500
-Received: from zeniv-ca.linux.org.uk (zeniv-ca.linux.org.uk [IPv6:2607:5300:60:148a::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0512EBD88B;
-        Mon, 14 Feb 2022 19:03:49 -0800 (PST)
-Received: from viro by zeniv-ca.linux.org.uk with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nJo7z-001r4A-EX; Tue, 15 Feb 2022 03:03:43 +0000
-Date:   Tue, 15 Feb 2022 03:03:43 +0000
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Tue, 15 Feb 2022 01:29:58 -0500
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC64B11E3E9;
+        Mon, 14 Feb 2022 22:29:48 -0800 (PST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 11DDB68AA6; Tue, 15 Feb 2022 07:29:43 +0100 (CET)
+Date:   Tue, 15 Feb 2022 07:29:42 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
         linux-mm@kvack.org, linux-api@vger.kernel.org, arnd@arndb.de,
         linux-kernel@vger.kernel.org, linux@armlinux.org.uk,
@@ -41,43 +42,30 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
         linux-xtensa@linux-xtensa.org
-Subject: Re: [PATCH 14/14] uaccess: drop set_fs leftovers
-Message-ID: <YgsYD2nW9GjWJtn5@zeniv-ca.linux.org.uk>
-References: <20220214163452.1568807-1-arnd@kernel.org>
- <20220214163452.1568807-15-arnd@kernel.org>
+Subject: Re: [PATCH 09/14] m68k: drop custom __access_ok()
+Message-ID: <20220215062942.GA12551@lst.de>
+References: <20220214163452.1568807-1-arnd@kernel.org> <20220214163452.1568807-10-arnd@kernel.org> <Ygr11RGjj3C9uAUg@zeniv-ca.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220214163452.1568807-15-arnd@kernel.org>
-Sender: Al Viro <viro@ftp.linux.org.uk>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <Ygr11RGjj3C9uAUg@zeniv-ca.linux.org.uk>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Feb 14, 2022 at 05:34:52PM +0100, Arnd Bergmann wrote:
-> diff --git a/arch/parisc/include/asm/futex.h b/arch/parisc/include/asm/futex.h
-> index b5835325d44b..2f4a1b1ef387 100644
-> --- a/arch/parisc/include/asm/futex.h
-> +++ b/arch/parisc/include/asm/futex.h
-> @@ -99,7 +99,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
->  	/* futex.c wants to do a cmpxchg_inatomic on kernel NULL, which is
->  	 * our gateway page, and causes no end of trouble...
->  	 */
-> -	if (uaccess_kernel() && !uaddr)
-> +	if (!uaddr)
->  		return -EFAULT;
+On Tue, Feb 15, 2022 at 12:37:41AM +0000, Al Viro wrote:
+> Perhaps simply wrap that sucker into #ifdef CONFIG_CPU_HAS_ADDRESS_SPACES
+> (and trim the comment down to "coldfire and 68000 will pick generic
+> variant")?
 
-	Huh?  uaccess_kernel() is removed since it becomes always false now,
-so this looks odd.
-
-	AFAICS, the comment above that check refers to futex_detect_cmpxchg()
--> cmpxchg_futex_value_locked() -> futex_atomic_cmpxchg_inatomic() call chain.
-Which had been gone since commit 3297481d688a (futex: Remove futex_cmpxchg
-detection).  The comment *and* the check should've been killed off back
-then.
-	Let's make sure to get both now...
+I wonder if we should invert CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE,
+select the separate address space config for s390, sparc64, non-coldfire
+m68k and mips with EVA and then just have one single access_ok for
+overlapping address space (as added by Arnd) and non-overlapping ones
+(always return true).
