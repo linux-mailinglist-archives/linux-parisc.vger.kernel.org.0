@@ -2,78 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54B234B89E0
-	for <lists+linux-parisc@lfdr.de>; Wed, 16 Feb 2022 14:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12A254B8A41
+	for <lists+linux-parisc@lfdr.de>; Wed, 16 Feb 2022 14:35:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232138AbiBPN2o (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 16 Feb 2022 08:28:44 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40640 "EHLO
+        id S233813AbiBPNf7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 16 Feb 2022 08:35:59 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230126AbiBPN2n (ORCPT
+        with ESMTP id S234564AbiBPNfo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 16 Feb 2022 08:28:43 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BB43151D3E;
-        Wed, 16 Feb 2022 05:28:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1645018096;
-        bh=HwNrev1x9N/bAHozCMnHh0/SWdmQxawrVLg0m+YakW0=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=RUtWJPgj02d9RdJYQ7YoSVHPNgdJKkbQLGxH/3959fWlRoxCzs+SEUv8MhF9EIuSd
-         UPOms99OagbeNHn9T2GREA/Kzg1CItzhmNQ9p1MZePz84ZabXDt6BIzIIZkLX4OEiL
-         umm0oSmyex5vNBSnWFCgn2yRL7eID38JcE3sRZpk=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.128.232]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MlNtF-1nz7c511Rd-00lnUS; Wed, 16
- Feb 2022 14:28:16 +0100
-Message-ID: <7c557d0c-6718-4e16-29c6-8b75c704b773@gmx.de>
-Date:   Wed, 16 Feb 2022 14:26:54 +0100
+        Wed, 16 Feb 2022 08:35:44 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4FAFD2AB53B
+        for <linux-parisc@vger.kernel.org>; Wed, 16 Feb 2022 05:35:31 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mtapsc-5-x7kvjQ_dNbmfJSCohruuVA-1; Wed, 16 Feb 2022 13:35:28 +0000
+X-MC-Unique: x7kvjQ_dNbmfJSCohruuVA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.28; Wed, 16 Feb 2022 13:35:25 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.028; Wed, 16 Feb 2022 13:35:25 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Arnd Bergmann' <arnd@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>
+CC:     "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "will@kernel.org" <will@kernel.org>,
+        "guoren@kernel.org" <guoren@kernel.org>,
+        "bcain@codeaurora.org" <bcain@codeaurora.org>,
+        "geert@linux-m68k.org" <geert@linux-m68k.org>,
+        "monstr@monstr.eu" <monstr@monstr.eu>,
+        "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
+        "nickhu@andestech.com" <nickhu@andestech.com>,
+        "green.hu@gmail.com" <green.hu@gmail.com>,
+        "dinguyen@kernel.org" <dinguyen@kernel.org>,
+        "shorne@gmail.com" <shorne@gmail.com>,
+        "deller@gmx.de" <deller@gmx.de>,
+        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "hca@linux.ibm.com" <hca@linux.ibm.com>,
+        "dalias@libc.org" <dalias@libc.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "richard@nod.at" <richard@nod.at>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>,
+        "ebiederm@xmission.com" <ebiederm@xmission.com>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "ardb@kernel.org" <ardb@kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-snps-arc@lists.infradead.org" 
+        <linux-snps-arc@lists.infradead.org>,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>
+Subject: RE: [PATCH v2 02/18] uaccess: fix nios2 and microblaze get_user_8()
+Thread-Topic: [PATCH v2 02/18] uaccess: fix nios2 and microblaze get_user_8()
+Thread-Index: AQHYIzdfY+IsqXyFuUGlEUsFmAHn6KyWK9Eg
+Date:   Wed, 16 Feb 2022 13:35:25 +0000
+Message-ID: <4a7e026b07c94668a18cb4857ad6b7a5@AcuMS.aculab.com>
+References: <20220216131332.1489939-1-arnd@kernel.org>
+ <20220216131332.1489939-3-arnd@kernel.org>
+In-Reply-To: <20220216131332.1489939-3-arnd@kernel.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v4 00/13] Fix LKDTM for PPC64/IA64/PARISC v4
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org
-References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
- <202202150807.D584917D34@keescook>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <202202150807.D584917D34@keescook>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:7WUZ8IdPRgrLzg2kYAsCubjhcGSsfWfnDerK+e6MsDTo0WVtSo1
- Qo1CSZAO42swRuv6lToQn2mbsuQy/pB029PlMs3UDpE+ADYKs4fY8RkSq6zythe/H0UD0qp
- PJiEhm1bu11UqjwgQDhFNERLa6KstnkZlTWu4pgSqsVGe95043DiptKYmRvLXMi+S5ig2G7
- A9mnu9SU2Bsce/RvmK/YQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:HQlDLvllLB4=:zG9VjdQRhRW5zMKE35JAvQ
- sTaBZEmtmI9M5ryeCAdLypOUp+VWPjwhleh58s4Bx0MfvSQfMtggCwUjcI0R8FJVGQcyqOZIs
- gqHhsqvhwutFDRldf6md8zmmGtk6TwaVyquzZ1MCESW2SrE6zcGTymzFpltWz+Rdkdm1YFzoa
- lhTa5F+9uqsO8bDVGoqGaDUIiyihY5hNJSxdBLYV4ERtbrvekgcL3XZjnnhPOTyNx8JQ28Yjp
- 4fK2TTtL0ghtJ4mnEmXuu4xsl/+m2AaqMf5GyF2X+Gss44eGD/xxCgtYJBPRBw4FbPSnQiUXK
- ESp0mlJlpOtqulWHrEWJSxblPFaZMQF80liBI30esPGycROuavhe7HL9FL0IPQjGywvwrnUQB
- YK+pU/QiiMlEJYmZdHT4tV65PWHI4/4wFVfWyEHguIml8zPF+yrR4FQ2LPLOEElJj2ZXmP1Il
- ptIbyziXpMsIbCltb1QduqrC2jpL8QzlTmh0AO3SaXvAkH12v5CYNAIjLx8CJ7BOOuQlzFA3b
- 5EF70bAPJl1RszsfR54ncea2HR/kjLjsEjAAnlAyOPytQAbaWqQnzaoirFM9KCpaxCytx71Pk
- 0Bb+Cvv81aE5/W0KggKYi9IITAtuxBRxtjjoHnTv0CuPXBKjqr8o7rKDbWNaeOBjVtsAXTBIE
- nfQiRXLcflgKsnrIhrvnwElHTrj4HOnt39TJRk7y3MuTYdx++/uvDNrsBEi4Sm8QW0ZPUCWWC
- 5d0WWIxb+B84bK4DfWOp7hVVSl/WYpgWqH5b4hU2WVpaBhs3zjSNoE03rlVfqj8Plm/0XcYMn
- HKbc0j0eIXagEdOr/A8UnONn6xvHzDG6IlK86sNVMaW6miOMxkiqDf4AXt3RcD60mUBOpxWh6
- hovUfJj4ODRTGQeG6EIMT9I2fWf/qBJtPssP+L6yma1zYEBPucaJAUDCNTf14W8tDovm0ErnO
- U31rrGLF8j6wf/UYsXTNfyVbf6s0842T9tNF8uum82B211/ALU5kr2q7fOpyto8A6IZl1VN8I
- U/XrzPQALxcWCHwdRPHpc7x1H1HZuNVH/zyWx8sChgHXxjHJl2Os5vV4IHwWbTE/HLT+foop1
- IGBNEhLpIEk+tI=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -82,99 +108,43 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2/15/22 17:07, Kees Cook wrote:
-> On Tue, Feb 15, 2022 at 01:40:55PM +0100, Christophe Leroy wrote:
->> PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
->> on those three architectures because LKDTM messes up function
->> descriptors with functions.
->>
->> This series does some cleanup in the three architectures and
->> refactors function descriptors so that it can then easily use it
->> in a generic way in LKDTM.
->
-> Thanks for doing this! It looks good to me. :)
+From: Arnd Bergmann
+> Sent: 16 February 2022 13:13
+> 
+> These two architectures implement 8-byte get_user() through
+> a memcpy() into a four-byte variable, which won't fit.
+> 
+> Use a temporary 64-bit variable instead here, and use a double
+> cast the way that risc-v and openrisc do to avoid compile-time
+> warnings.
+> 
+...
+>  	case 4:								\
+> -		__get_user_asm("lw", (ptr), __gu_val, __gu_err);	\
+> +		__get_user_asm("lw", (ptr), x, __gu_err);		\
+>  		break;							\
+> -	case 8:								\
+> -		__gu_err = __copy_from_user(&__gu_val, ptr, 8);		\
+> -		if (__gu_err)						\
+> -			__gu_err = -EFAULT;				\
+> +	case 8: {							\
+> +		__u64 __x = 0;						\
+> +		__gu_err = raw_copy_from_user(&__x, ptr, 8) ?		\
+> +							-EFAULT : 0;	\
+> +		(x) = (typeof(x))(typeof((x) - (x)))__x;		\
+>  		break;							\
 
-I endorse that.
-Thank you, Christophe!
+Wouldn't it be better to just fetch two 32bit values:
+Something like (for LE - nios2 is definitely LE:
+		__u32 val_lo, val_hi;
+		__get_user_asm("lw", (ptr), val_lo, __gu_err);
+		__get_user_asm("lw", (ptr) + 4, val_hi, __gu_err);
+		x = val_lo | val_hi << 32;
+		break;
 
-Acked-by: Helge Deller <deller@gmx.de>
+	David
 
-Helge
-
-> -Kees
->
->>
->> Changes in v4:
->> - Added patch 1 which Fixes 'sparse' for powerpc64le after wrong report=
- on previous series, refer https://github.com/ruscur/linux-ci/actions/runs=
-/1351427671
->> - Exported dereference_function_descriptor() to modules
->> - Addressed other received comments
->> - Rebased on latest powerpc/next (5a72345e6a78120368fcc841b570331b6c5a5=
-0da)
->>
->> Changes in v3:
->> - Addressed received comments
->> - Swapped some of the powerpc patches to keep func_descr_t renamed as s=
-truct func_desc and remove 'struct ppc64_opd_entry'
->> - Changed HAVE_FUNCTION_DESCRIPTORS macro to a config item CONFIG_HAVE_=
-FUNCTION_DESCRIPTORS
->> - Dropped patch 11 ("Fix lkdtm_EXEC_RODATA()")
->>
->> Changes in v2:
->> - Addressed received comments
->> - Moved dereference_[kernel]_function_descriptor() out of line
->> - Added patches to remove func_descr_t and func_desc_t in powerpc
->> - Using func_desc_t instead of funct_descr_t
->> - Renamed HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR to HAVE_FUNCTION_DESCRIP=
-TORS
->> - Added a new lkdtm test to check protection of function descriptors
->>
->> Christophe Leroy (13):
->>   powerpc: Fix 'sparse' checking on PPC64le
->>   powerpc: Move and rename func_descr_t
->>   powerpc: Use 'struct func_desc' instead of 'struct ppc64_opd_entry'
->>   powerpc: Remove 'struct ppc64_opd_entry'
->>   powerpc: Prepare func_desc_t for refactorisation
->>   ia64: Rename 'ip' to 'addr' in 'struct fdesc'
->>   asm-generic: Define CONFIG_HAVE_FUNCTION_DESCRIPTORS
->>   asm-generic: Define 'func_desc_t' to commonly describe function
->>     descriptors
->>   asm-generic: Refactor dereference_[kernel]_function_descriptor()
->>   lkdtm: Force do_nothing() out of line
->>   lkdtm: Really write into kernel text in WRITE_KERN
->>   lkdtm: Fix execute_[user]_location()
->>   lkdtm: Add a test for function descriptors protection
->>
->>  arch/Kconfig                             |  3 +
->>  arch/ia64/Kconfig                        |  1 +
->>  arch/ia64/include/asm/elf.h              |  2 +-
->>  arch/ia64/include/asm/sections.h         | 24 +-------
->>  arch/ia64/kernel/module.c                |  6 +-
->>  arch/parisc/Kconfig                      |  1 +
->>  arch/parisc/include/asm/sections.h       | 16 ++----
->>  arch/parisc/kernel/process.c             | 21 -------
->>  arch/powerpc/Kconfig                     |  1 +
->>  arch/powerpc/Makefile                    |  2 +-
->>  arch/powerpc/include/asm/code-patching.h |  2 +-
->>  arch/powerpc/include/asm/elf.h           |  6 ++
->>  arch/powerpc/include/asm/sections.h      | 29 ++--------
->>  arch/powerpc/include/asm/types.h         |  6 --
->>  arch/powerpc/include/uapi/asm/elf.h      |  8 ---
->>  arch/powerpc/kernel/module_64.c          | 42 ++++++--------
->>  arch/powerpc/kernel/ptrace/ptrace.c      |  6 ++
->>  arch/powerpc/kernel/signal_64.c          |  8 +--
->>  drivers/misc/lkdtm/core.c                |  1 +
->>  drivers/misc/lkdtm/lkdtm.h               |  1 +
->>  drivers/misc/lkdtm/perms.c               | 71 +++++++++++++++++++-----
->>  include/asm-generic/sections.h           | 15 ++++-
->>  include/linux/kallsyms.h                 |  2 +-
->>  kernel/extable.c                         | 24 +++++++-
->>  tools/testing/selftests/lkdtm/tests.txt  |  1 +
->>  25 files changed, 155 insertions(+), 144 deletions(-)
->>
->> --
->> 2.34.1
->>
->
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
