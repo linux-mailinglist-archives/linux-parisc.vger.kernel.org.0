@@ -2,64 +2,51 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6276D4B93A7
-	for <lists+linux-parisc@lfdr.de>; Wed, 16 Feb 2022 23:11:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD1624B986A
+	for <lists+linux-parisc@lfdr.de>; Thu, 17 Feb 2022 06:46:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236440AbiBPWLl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 16 Feb 2022 17:11:41 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56860 "EHLO
+        id S234437AbiBQFqW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 17 Feb 2022 00:46:22 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230121AbiBPWLk (ORCPT
+        with ESMTP id S230317AbiBQFqV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 16 Feb 2022 17:11:40 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A967B1116A
-        for <linux-parisc@vger.kernel.org>; Wed, 16 Feb 2022 14:11:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1645049481;
-        bh=eZ0oRIhEyYOJw7srh0eR8XdDTZrRdie0YDy6r7FysZ0=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=dxzkcitOvNThhHmBxfF0lfy/vScNalmJqb05/4sjRmlRvqM67yGaG8fsl96oRIg3M
-         Pv2Cq9KNLHC2BNRJRCegDhnWaH+OHPkRyOzsbv8NFXPpHiCBdrMawffwnXtFgIkxUQ
-         0HC+ddxZ1no/PIuw3uRSL/W2UF5XnhIrzarK2Br4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100.fritz.box ([92.116.128.232]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MGhyS-1nY9e63iJ0-00DnNN; Wed, 16
- Feb 2022 23:11:20 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Use PRIV_USER and PRIV_KERNEL in get_user() and put_user()
-Date:   Wed, 16 Feb 2022 23:11:20 +0100
-Message-Id: <20220216221120.233845-1-deller@gmx.de>
-X-Mailer: git-send-email 2.34.1
+        Thu, 17 Feb 2022 00:46:21 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC7027FB8A;
+        Wed, 16 Feb 2022 21:46:07 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzkMc3f6sz4xNq;
+        Thu, 17 Feb 2022 16:46:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1645076766;
+        bh=p+Um8RNaCHTI1zf6BsFpsoyhkmB9hkJgJE8X6Y245rg=;
+        h=Date:From:To:Cc:Subject:From;
+        b=Um94UWKP8xqWPoHU7twbMRWCs1Q3XmPCZBgyaHk3nmBV4M23p687IF2wWnluhwdC+
+         zu5nnOTbBg9fNWkfMvq11cw6QeojQSLKvXUqZ4cjunAMc+RSPCaS9YQPnyj3cUMlfE
+         xPgg32TWMi8WFB+LY67MOhZ+XOfsFBgBQ5DWSIRu2GAnGHyFf7IE9zISourGNTCTM9
+         SkmlbPn/R2vmhRQa8AiIlmCqN8ELRVCiV/xYE8Hlga644BKhgeQBk4/B3AClYWplyP
+         g+DaFukHM86pUw3BIpw5kAaCn8aJoijFmYjbEkfV3ePFrQVZ4RgdhNhUgqEuMRcfB/
+         JsJAfkLo79nkQ==
+Date:   Thu, 17 Feb 2022 16:46:03 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Liam Howlett <liam.howlett@oracle.com>,
+        Helge Deller <deller@gmx.de>,
+        Parisc List <linux-parisc@vger.kernel.org>
+Cc:     Dave Anglin <dave.anglin@bell.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: linux-next: manual merge of the maple tree with the parisc-hd tree
+Message-ID: <20220217164603.33035dab@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:HKFFoTtj3fyS7VSmJcX18mZC2m+GIIcWpgOYHR5skI7ob56UPy5
- PgDziCrC/wxCBee8FBKDME2Ld5ejlyuHLPcfSPAIbo+TwLWFHHMZrucpV9dYGfXDBnmZWlE
- YpzsqyfEjYgGzunaUTAV2CvQ8F0wJqIS7lYKiy/q0X9dK+z62ebRs9lWtrCaiC64gjZirqr
- 7MsyA85n8L5Kgiu5/iE2g==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lKLho5J4ZBM=:plHtGV7BBmm2slXgPOnIfH
- JIELyjSEUj1eDqnIiV2rv0PNiyFtpHDTr94don5Jxz0b326SnyJpaocZoz9tpDK+WpF+1mrmR
- Ff9VcWYwG/KvMNAtkKH0gYUr4i4X2baRtt0DJZgoeXaffmuPbEzh+CndI3Z5BGp4w/GO0lS1V
- uJOVjigzBHHeAPggroRJuPZYgy1UpW8QMxt/lyy1qnwGg68ueqfSipovHW8KojaNUW+t8gcZV
- RTF3yxZVSaMbjLA+rLjdlvT5ldOa73Hb/QwD6niODEgj+hrCXCwRVVIF3e+HhHumldTzI8Jy4
- UaPs9ewHAHkHbDTrVaoGwKfx/Bwc5lnkCMp+JNjWGDmXGxoTZKoNfFp+CHZnTpCaX8VZoo7P7
- BNOPFq2PFmL6uR+93GpKmnA1kmLK5bOXq1oxTa5KJO9ypoY1tjeSxdkKjoPfYI2rwS8HrsWHw
- NiAgko/hqzF2ZGuWWkl2Z8FVoA1ycqgzmthO1TNKTHI7C0aRZHtGcEGK1LVrjL1NW/huK9pbf
- hamBGM6IZfFQoXTXfYrgRbguF5Tw266VbWp/CTjlm1vdZpOG8mbFzghv9bvo4xZy1sOKnYmu5
- /I/6YzW1MvxYyL8ZM0KXe9ZzSZ+bIvtU6CSqYWZLCxI8fWe25Bcwgzgg56hQ1kdx1QzKm/jBY
- Oo8lSDuTnS7O/1hYFIY5InpfCMezklzSFLar25vFiVUCIbyBdaSa1UpTVl8VsxqhdMX2I3smI
- 1gd+rYCLh0+JX/8cYKyzFTC2s2UmVfpBCMulfjvCxv+npy6bvWxnu0a8LVsGZxwo5tqyV+4wr
- VK+iA1z5g/KYSpN9dgYO+GuImG83BdoXNsFfMbqjFWBym0ooS6kzPiDLgVW+KfFK/9yI5h+RF
- wB7BoUQhI6Lk7EEN4qspu3mwIau2EJ6SDogKXAkdoNtofs1VNkVu7IYuwimm7vYhPaWz3J6ud
- 1ROvgSYiif5GHDSA331i7AlrLmRmYzi3F3QsV16Gyr0on8fN3apld8q6BpXoAMVi5dCNIjNsV
- o9TyfMHVMQkt+fulEId4gjMzLSkKdypr5LnT4ylE6k30K6euO+iTVYU7cAKlRMwOp+07+qB1u
- tD/QNlwZaPtAGM=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: multipart/signed; boundary="Sig_/hc9TgN0STIYtzt7V.=7RBdI";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,115 +54,67 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Instead of hardcoding the space registers as strings, use the PRIV_USER
-and PRIV_KERNEL constants to form the space register in the access
-functions.
+--Sig_/hc9TgN0STIYtzt7V.=7RBdI
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- arch/parisc/include/asm/uaccess.h | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+Hi all,
 
-diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm/u=
-access.h
-index 123d5f16cd9d..17aa83729cc2 100644
-=2D-- a/arch/parisc/include/asm/uaccess.h
-+++ b/arch/parisc/include/asm/uaccess.h
-@@ -79,18 +79,18 @@ struct exception_table_entry {
+Today's linux-next merge of the maple tree got a conflict in:
 
- #define __get_user(val, ptr)				\
- ({							\
--	__get_user_internal("%%sr3,", val, ptr);	\
-+	__get_user_internal(PRIV_USER, val, ptr);	\
- })
+  arch/parisc/kernel/cache.c
 
- #define __get_user_asm(sr, val, ldx, ptr)		\
- {							\
- 	register long __gu_val;				\
- 							\
--	__asm__("1: " ldx " 0(" sr "%2),%0\n"		\
-+	__asm__("1: " ldx " 0(%%sr%2,%3),%0\n"		\
- 		"9:\n"					\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
- 		: "=3Dr"(__gu_val), "+r"(__gu_err)        \
--		: "r"(ptr));				\
-+		: "i"(sr), "r"(ptr));			\
- 							\
- 	(val) =3D (__force __typeof__(*(ptr))) __gu_val;	\
- }
-@@ -100,7 +100,7 @@ struct exception_table_entry {
- {							\
- 	type __z;					\
- 	long __err;					\
--	__err =3D __get_user_internal("%%sr0,", __z, (type *)(src)); \
-+	__err =3D __get_user_internal(PRIV_KERNEL, __z, (type *)(src)); \
- 	if (unlikely(__err))				\
- 		goto err_label;				\
- 	else						\
-@@ -118,13 +118,13 @@ struct exception_table_entry {
- 	} __gu_tmp;					\
- 							\
- 	__asm__("   copy %%r0,%R0\n"			\
--		"1: ldw 0(" sr "%2),%0\n"		\
--		"2: ldw 4(" sr "%2),%R0\n"		\
-+		"1: ldw 0(%%sr%2,%3),%0\n"		\
-+		"2: ldw 4(%%sr%2,%3),%R0\n"		\
- 		"9:\n"					\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)	\
- 		: "=3D&r"(__gu_tmp.l), "+r"(__gu_err)	\
--		: "r"(ptr));				\
-+		: "i"(sr), "r"(ptr));			\
- 							\
- 	(val) =3D __gu_tmp.t;				\
- }
-@@ -151,14 +151,14 @@ struct exception_table_entry {
- ({								\
- 	__typeof__(&*(ptr)) __ptr =3D ptr;			\
- 	__typeof__(*(__ptr)) __x =3D (__typeof__(*(__ptr)))(x);	\
--	__put_user_internal("%%sr3,", __x, __ptr);		\
-+	__put_user_internal(PRIV_USER, __x, __ptr);		\
- })
+between commit:
 
- #define __put_kernel_nofault(dst, src, type, err_label)		\
- {								\
- 	type __z =3D *(type *)(src);				\
- 	long __err;						\
--	__err =3D __put_user_internal("%%sr0,", __z, (type *)(dst)); \
-+	__err =3D __put_user_internal(PRIV_KERNEL, __z, (type *)(dst)); \
- 	if (unlikely(__err))					\
- 		goto err_label;					\
- }
-@@ -178,24 +178,24 @@ struct exception_table_entry {
+  aca41f39ad08 ("parisc: Add vDSO support")
 
- #define __put_user_asm(sr, stx, x, ptr)				\
- 	__asm__ __volatile__ (					\
--		"1: " stx " %2,0(" sr "%1)\n"			\
-+		"1: " stx " %1,0(%%sr%2,%3)\n"			\
- 		"9:\n"						\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
- 		: "+r"(__pu_err)				\
--		: "r"(ptr), "r"(x))
-+		: "r"(x), "i"(sr), "r"(ptr))
+from the parisc-hd tree and commit:
 
+  59f11d074faa ("parisc: Remove mmap linked list from cache handling")
 
- #if !defined(CONFIG_64BIT)
+from the maple tree.
 
- #define __put_user_asm64(sr, __val, ptr) do {			\
- 	__asm__ __volatile__ (					\
--		"1: stw %2,0(" sr "%1)\n"			\
--		"2: stw %R2,4(" sr "%1)\n"			\
-+		"1: stw %1,0(%%sr%2,%3)\n"			\
-+		"2: stw %R1,4(%%sr%2,%3)\n"			\
- 		"9:\n"						\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
- 		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)		\
- 		: "+r"(__pu_err)				\
--		: "r"(ptr), "r"(__val));			\
-+		: "r"(__val), "i"(sr), "r"(ptr));		\
- } while (0)
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
 
- #endif /* !defined(CONFIG_64BIT) */
-=2D-
-2.34.1
+--=20
+Cheers,
+Stephen Rothwell
 
+diff --cc arch/parisc/kernel/cache.c
+index a08f8499b720,c3a8d29b6f9f..000000000000
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@@ -582,8 -585,8 +585,8 @@@ void flush_cache_mm(struct mm_struct *m
+  	}
+ =20
+  	preempt_disable();
+ -	if (mm->context =3D=3D mfsp(3)) {
+ +	if (mm->context.space_id =3D=3D mfsp(3)) {
+- 		for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
++ 		for_each_vma(vmi, vma)
+  			flush_user_cache_tlb(vma, vma->vm_start, vma->vm_end);
+  		preempt_enable();
+  		return;
+
+--Sig_/hc9TgN0STIYtzt7V.=7RBdI
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmIN4RsACgkQAVBC80lX
+0GxGkgf+IkYTSbVodyoDkCXe2GkBYFXOZRC5FBnlvowgBETifg7uaj4wGqWATbd+
+Mkujh/yuDGdOKu3Q8+i+ESpVkNd76hoJaSpOSUqIh1mHEmZKAHH0bTS3F8LD8Jmc
+z1KDSksbGkEpX05dIt/LGHfJuFQj1/gxo6wqRq8TD2UqM00TGoZCH+L0t2ohcV/e
+XcqAIBdh8boaiNUPaFTvaHq80EQujy3eJ0BAViiPGWORPV3nFkmrVdkFtCbdJP4h
+aB9Il2eWsQqS1wPZhkfQhxvVHNBM2L1BQbfC6AEwlbDIcV0WhSz/wlMRsp4sp9bD
+KUA65RzTxer+aqH0V5nq2YzA3eYa5g==
+=pu+k
+-----END PGP SIGNATURE-----
+
+--Sig_/hc9TgN0STIYtzt7V.=7RBdI--
