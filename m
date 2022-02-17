@@ -2,131 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7C854BAAB9
-	for <lists+linux-parisc@lfdr.de>; Thu, 17 Feb 2022 21:20:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 981944BAB3D
+	for <lists+linux-parisc@lfdr.de>; Thu, 17 Feb 2022 21:46:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243937AbiBQUUV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 17 Feb 2022 15:20:21 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46318 "EHLO
+        id S229923AbiBQUqV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 17 Feb 2022 15:46:21 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231553AbiBQUUU (ORCPT
+        with ESMTP id S242835AbiBQUqU (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 17 Feb 2022 15:20:20 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2260B1451DC
-        for <linux-parisc@vger.kernel.org>; Thu, 17 Feb 2022 12:20:01 -0800 (PST)
+        Thu, 17 Feb 2022 15:46:20 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95BA015DB10
+        for <linux-parisc@vger.kernel.org>; Thu, 17 Feb 2022 12:46:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1645129200;
-        bh=slLux7enVKWYUMnvnAoZKEeISAUoGHHwaLpZc56UOgw=;
-        h=X-UI-Sender-Class:Date:Subject:References:To:From:In-Reply-To;
-        b=jwn7sH8Prn63SRyhATdGP90QI0Fp/Tz+67IZU4+HIUNLHvn9+ipXCuUlhAb11bX0c
-         iynpsXKTU+DP6SXBdWkkuKxCWeKEkqbiFz/ybFTXk0yphMp5kkl51NRXcL5DYMQxjC
-         SM/iybnBR7Ncq6JLAM82xpQcIKT82cy9h255smc8=
+        s=badeba3b8450; t=1645130755;
+        bh=B6Xo1m3cDpc/uLaoYuD1DFEzIyDdozNsioiatBIcQsU=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=LKziR68IRRQUJGVI4jmDqeCpyf9EkrbKolPs84ELPijC0toPy64AX0iCaQST2Q8vZ
+         seMMGH7QAatTYDD4jgGlKScdxaSdUSj+IVjB5D+LOiBeP1yydQ/ePCwBxZRrVCoBEJ
+         C8NgoK3AxRRpkoPL/hNucCD9IQriMHCKMuxTAEEg=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.175.13]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M4b1y-1nJ8pa14X0-001fcb; Thu, 17
- Feb 2022 21:20:00 +0100
-Message-ID: <d8aeab0d-979b-d35d-0f4c-eac5b7ad31d4@gmx.de>
-Date:   Thu, 17 Feb 2022 21:18:39 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Fwd: [PATCH v6 33/71] parisc: Remove mmap linked list from cache
- handling
-Content-Language: en-US
-References: <20220215144241.3812052-33-Liam.Howlett@oracle.com>
-To:     linux-parisc <linux-parisc@vger.kernel.org>
+Received: from p100.fritz.box ([92.116.175.13]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MF3HU-1nVky30xgW-00FRPx; Thu, 17
+ Feb 2022 21:45:55 +0100
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220215144241.3812052-33-Liam.Howlett@oracle.com>
-X-Forwarded-Message-Id: <20220215144241.3812052-33-Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+To:     linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH 1/4] parisc: Add defines for various space register
+Date:   Thu, 17 Feb 2022 21:45:51 +0100
+Message-Id: <20220217204554.305554-1-deller@gmx.de>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/ofp4kHkreLC4px1tx4gNIeBI+rMuWzl3E9AwVspRhbPwr6Dqt0
- 3yWIrYuaPa2B0bzZTFsID6llxXeqBBBqMpzzJrgUlNCV9/wMIz0un/pLV62B6P7t6pMLm9m
- 8NqC28G1JViQJKSeLm4x0fYPd/m11+KSk9pq45CwwS2T9qug0Q0rmWgisSgJizniGF1mlaL
- tfsxnleChPtxOf9TF8X3A==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qvzssCbDai0=:cmxDp42kK+VEIIy5wsKXj8
- 5G3nmKdfq2BZ8u3cbv1EsEqlkT2Fe/+TIK3WKWoo5EQoo+Gh68UNUUqjPpil0pKoTLYcroNZZ
- G0MHv1hUzWW021Z9lSk5xs5nAsNSGCMOorjLi8s/YpDoXRWThHssf0ATqdKPn7g7+wbeXLea/
- RFn9MBxj9+dw3g2dAgS4D2letkN6Mut2KiiU64y9z6tLlAgVx4UCxRbydl8Sht0nPVwVUYQTz
- ewzaDP5ExWt70EpSYjO2hdOHqAqnW6A32iMt4b+z0FWW8hpRJOoK2OcNaB22miyDoEgkFr/Au
- dAjMVW/Al0+yhNnC8012PGe3Vd7XvRIHZDa4iTKzlIP0PVwWg9S0aopYqlaiV74cV56UDgRDn
- LFURSGFFatsYav/wosIhV24ockZbylDNWNOqq+D6TlMvwPr//4biHf3yB6P83T1j/71ZbARHc
- 9YAxtBm1KS/6eNIpSO8U6zXMulPsQquRTtF1lQlrzlvJabhL7OQxwhfdsxgPj/V8fy05L8oQ+
- nGPcDJT8KWzEf+MpB2Dh+/Q6FBB/h1paywZX/WBpMt4apfZrGKOiJfom0hA8P2SW1mKn+uM8F
- 8RAtCtpG3dnhG2UENLKUiWRIEu23PnV4MwRia6clShc4FZX6prmeMuqVvTQv+RVBXyfwexiv6
- 2p8T8SeykdcEMGxcnKaTcjFvV+lmzMglRyTgMqhJTGvAukkSGGcAUUw3t/WGscFXxZ9WreTET
- KXI123qfwLWNs+v2pruSJ9toaZdmWwUGFM7yAH3vkWJYj4PRDanM34qqeUoLFOCvM/Ci+/4M2
- hnLb7qc+UsQjTdUh/IkXA+90jaZqRr9RCvXLzrdiElnbb8llmecoDObPJtFwT/1+KE/AuV++7
- 34e5joKUiIAR+ywx54q8ydpa2R8lpCXdv2pl35kKZR5hWJUtZmChV5ljzFnSFdjMb/RBVx01v
- ujqTmLOymUpebjO497VJVfDLIqeZDgxDG6x6DokUB6KzLhHtbmV0vbL+3AqMi5VEmzanCl4M1
- tI+9+eiraTHMYBUBADOwYWTmsqqh862kIxBxzvKoISq/MOVpXeW4NG1dD30h773fXSWDGIkCl
- 6JDQO+O1xOa5lQ=
+X-Provags-ID: V03:K1:bzQag6ZxM1Y/uTe2kKTjX2MkERytkt5iyKUXRQ22zTLbuupEgh2
+ 2g5WN41gD7IdexJ191uSd9Qy5CR1f8fdnWHVRea1x0fA+MiBMuoCp1AecModsacmiOxBH41
+ 3NCDzhg4HTwNGWXNyKua4BKJIRyp/EQ/OKpA23cXdkhfkV7pqWVShOdkb9yTMZ4u38clmot
+ NZygHiMF5iKWUVKActT3w==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:97cKcTpn95U=:1IWkCJmQF0Hh1+IeeiTROc
+ nSUvcw+oUKUu3b85HmJDEaYKw03mR+NSmQlp6ZuFOtdhpptobcXkCpDAQCyN58Zmzfo9eFiqi
+ 2S8OyuWkvSiTaGYcypm/VYE92OYOd8xP3U3Be+I8kMlLx+rosZ9EkOUj4EfM/98kNXvXTw2Zp
+ e7uvUJEKYO3wjRv7KG8/tzM0X3EVJ7GtMTgvf/7CtKMXvJLKZSUofU2jKwHEVieVKX7aQXyl2
+ sP6HxUjQ0x4E7DZCsktVZrizWjw1XiR5lsh7+x9RZWXEIVLeYhZ5GJeU+zeEOjvXK8YAcIGhi
+ jsg7BxHi0M1ceI3xv/F1Ktcv8fiYhyWGSA+YuXl4P47v/qoED5YKUd7Dx0KooN8fBmtaQjGyP
+ t05LRpoQQafxg6ap7ydgJgTzHmjNA8MM1vPASftb3uNfIMfM3K2mla1L+hV+F7Mt11LBwXbiv
+ mRZee4jXjxqblnUYIRiS32vXA+XFDS50f+xvUDfZwB1UmCMPjg5T/gfVjtirVv7ODsuaPTJbt
+ BMkS9hp15JkoBf9EI7DZbxzrqEeQNJucWTEbpCc9nmqlyaR/5PWjvptyeGYZDctii6GUoLj9w
+ qm+XqyGJtyY7kFc9S5iT7RbbUyluYLjhEcNi7H4sD6L/iQMDMwniRIdIdGz/jjX484hNgjOOe
+ J8pGVVenmQK0GOusgcAPW4/9Ecc7SN6NGUKbRRtpXKHVYQ4tAUnvMN6LD4NN19aHDO3D5qDtQ
+ 8xJGm8w1HqsXOJ/7Cxht+yoMjTLMnjtt1xjrPS4d+xp7krRshG3S/YzQQ9Ux+G1DsQDAmbVeq
+ Sfl5oBTbi08/QLmK/fcje7vdVpg3J1cvYdoXSrw8x1DxVcEcDXaCr/Bsq1vZ73E1PdOTSob+L
+ 4ShHSE7nonDJIlm3RPqapV3Ilfz6U6tDvnNwJVQIy6Bv1tdO4TlNj4HXZejz3bqw1yb3Hsdwg
+ TS2YpOrJkhpfkBuA8UuW43Duzg4PZ0zjJJMBEYr7HogJJe1WQ0hZX4oyCfpiImKF+eKuNMePh
+ BEuWW71NZxDFO/AUCRbyOzljzW7Qd9luQLvPD+gP2AlZJUWsgk3jXmj4bpypHXWu5irNPevK5
+ SZpJX0HmhDjGh0=
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-To be queued up after next merge window:
+Provide defines for space registers (SR_KERNEL, SR_USER, ...) which
+should be used instead of hardcoding the values.
 
-From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-
-Use the VMA iterator instead.
-
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- arch/parisc/kernel/cache.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/parisc/include/asm/assembly.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 94150b91c96f..c3a8d29b6f9f 100644
-=2D-- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -519,9 +519,11 @@ static inline unsigned long mm_total_size(struct mm_s=
-truct *mm)
- {
- 	struct vm_area_struct *vma;
- 	unsigned long usize =3D 0;
-+	VMA_ITERATOR(vmi, mm, 0);
+diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/=
+assembly.h
+index 6369082c6c74..ea0cb318b13d 100644
+=2D-- a/arch/parisc/include/asm/assembly.h
++++ b/arch/parisc/include/asm/assembly.h
+@@ -47,6 +47,12 @@
+ #define PRIV_USER	3
+ #define PRIV_KERNEL	0
 
--	for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
-+	for_each_vma(vmi, vma)
- 		usize +=3D vma->vm_end - vma->vm_start;
++/* Space register used inside kernel */
++#define SR_KERNEL	0
++#define SR_TEMP1	1
++#define SR_TEMP2	2
++#define SR_USER		3
 +
- 	return usize;
- }
+ #ifdef __ASSEMBLY__
 
-@@ -570,6 +572,7 @@ static void flush_user_cache_tlb(struct vm_area_struct=
- *vma,
- void flush_cache_mm(struct mm_struct *mm)
- {
- 	struct vm_area_struct *vma;
-+	VMA_ITERATOR(vmi, mm, 0);
-
- 	/* Flushing the whole cache on each cpu takes forever on
- 	   rp3440, etc.  So, avoid it if the mm isn't too big.  */
-@@ -583,13 +586,13 @@ void flush_cache_mm(struct mm_struct *mm)
-
- 	preempt_disable();
- 	if (mm->context =3D=3D mfsp(3)) {
--		for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
-+		for_each_vma(vmi, vma)
- 			flush_user_cache_tlb(vma, vma->vm_start, vma->vm_end);
- 		preempt_enable();
- 		return;
- 	}
-
--	for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
-+	for_each_vma(vmi, vma)
- 		flush_cache_pages(vma, mm, vma->vm_start, vma->vm_end);
- 	preempt_enable();
- }
+ #ifdef CONFIG_64BIT
 =2D-
 2.34.1
+
