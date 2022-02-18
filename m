@@ -2,154 +2,161 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A60794BBF02
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Feb 2022 19:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2F254BC1D1
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Feb 2022 22:25:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238952AbiBRSHk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 18 Feb 2022 13:07:40 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41892 "EHLO
+        id S239732AbiBRVZX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 18 Feb 2022 16:25:23 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238956AbiBRSHi (ORCPT
+        with ESMTP id S236664AbiBRVZW (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 18 Feb 2022 13:07:38 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654E31DE939
-        for <linux-parisc@vger.kernel.org>; Fri, 18 Feb 2022 10:07:20 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id u18so16835114edt.6
-        for <linux-parisc@vger.kernel.org>; Fri, 18 Feb 2022 10:07:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3DIqXxPmp6dtbTijOx2KTFQ/AdtfYUTWecKVh7q3dDI=;
-        b=5c/qRto3YK3Y6/Rhnnpp4RzKmf8QhiKseObhkqXIpnLfhpnv2ua8Z7YCExbmjSYUCG
-         SbBSycxSpm4FRe5zOaxst92xyRDLRie0B4d4p8x0W6snNr+dG6MghxLfcakTWMQA17Pf
-         gOp7JS9gIpdJumtDaMv9IluyX8dB5LI5eLR/YC2U+D7T5N3aQr9NOYHAOP982E02xanw
-         SC1uTLhbyKEp3+LiMa1bFSquyveVGLxTCPf/eSvmTiEZzxEI+wIe4AMdv5VgRD2GYf6G
-         kO3gnVVxKK1wWuKxjcQ5nhLyDgmj/c1nxTJoqfRQTmuVCBNlEZ4IpVOo74LURbiOVsEg
-         CBWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3DIqXxPmp6dtbTijOx2KTFQ/AdtfYUTWecKVh7q3dDI=;
-        b=x/ea3sn+E6MT0V0VyETmMP5PmdKycRLixcQPw1JHDbgnI/+lU6q+uUbPmFj70Tbx9I
-         CV1CYoPF/VP3A9+ty+y+nivlhvMrmncgdWpbDYz70ywioOJfzQEaLyB/+/2GbgCimwAf
-         Ku4/qgQAPtotyooRWbyEZoAreLS9DUWH4/Frkwah87LLr7IOIPL0ld+jywL+2NH400Dr
-         f0ezBr+OlNJ2YNDzyEKRTGugTMAOxuNpIREjp7a/NLQdWhjsRCNucFB5BwLcn6fKq9j+
-         r47rKkwKvcILbAcSK7aT6AWTwKLxbXwM57H1EgEx0MHok6ldNCiTOwkfWFbpWTaQp1SB
-         FsjA==
-X-Gm-Message-State: AOAM531y9WY9iWy8FjFa5xofzY33LPyMjLtH4/VtJdtG0F8D2lMKRjgf
-        zw1fLZA/+4TlYFgy2GjDobx4LUeNDb5kCNUFM1RtYg==
-X-Google-Smtp-Source: ABdhPJzKi9/dAquBFvy+ZlpESpcVBT1I3X4XtLJClo2SaEqFpqb8kdqwnL9Fphl8e/qcsjqeDfp/tX4JIrAspWajnck=
-X-Received: by 2002:a05:6402:430f:b0:410:a082:c6da with SMTP id
- m15-20020a056402430f00b00410a082c6damr9386454edc.438.1645207638871; Fri, 18
- Feb 2022 10:07:18 -0800 (PST)
+        Fri, 18 Feb 2022 16:25:22 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1A123F0A3;
+        Fri, 18 Feb 2022 13:25:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1645219495;
+        bh=8Qbp9ywMfLLJGNDUfXa/H7AcuBYMzUpeopGjalIQ8jM=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=duwlvrRfWriC8JRaADzI/uCCfClLIoyZ5OBOOCVsOhKllVONmxmZ7nCQWZ4GIKfog
+         9QpZrULjL2n0AbCYIa8ZJ29PPdMGjatujtMylhwy0h/df9yJ6n/5B9DE/7hhpnJM5M
+         oseBLS3xubRNQot4Eeew6QXa6/IQ1cyNk6T3z6i0=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.159.38]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MZTqg-1niw1R1e7i-00WYDt; Fri, 18
+ Feb 2022 22:24:55 +0100
+Message-ID: <882c62b7-78a2-f443-c8c5-0477fdf5d306@gmx.de>
+Date:   Fri, 18 Feb 2022 22:23:33 +0100
 MIME-Version: 1.0
-References: <20220216131332.1489939-1-arnd@kernel.org> <20220216131332.1489939-14-arnd@kernel.org>
- <CALCETrVOvYPN4_6hS8wpm2v9bGZupZ5x4=vZAseG57OUgvLGfw@mail.gmail.com> <93a1ee797e9d4f789dff85a3c0f0c232@AcuMS.aculab.com>
-In-Reply-To: <93a1ee797e9d4f789dff85a3c0f0c232@AcuMS.aculab.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Fri, 18 Feb 2022 10:07:07 -0800
-Message-ID: <CALCETrWTB65vJXsQTPd_o7BRoSU=uqD0pFzKS+r4YgDuiCCqaQ@mail.gmail.com>
-Subject: Re: [PATCH v2 13/18] uaccess: generalize access_ok()
-To:     David Laight <David.Laight@aculab.com>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
-        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "will@kernel.org" <will@kernel.org>,
-        "guoren@kernel.org" <guoren@kernel.org>,
-        "bcain@codeaurora.org" <bcain@codeaurora.org>,
-        "geert@linux-m68k.org" <geert@linux-m68k.org>,
-        "monstr@monstr.eu" <monstr@monstr.eu>,
-        "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
-        "nickhu@andestech.com" <nickhu@andestech.com>,
-        "green.hu@gmail.com" <green.hu@gmail.com>,
-        "dinguyen@kernel.org" <dinguyen@kernel.org>,
-        "shorne@gmail.com" <shorne@gmail.com>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "hca@linux.ibm.com" <hca@linux.ibm.com>,
-        "dalias@libc.org" <dalias@libc.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "richard@nod.at" <richard@nod.at>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>,
-        "ebiederm@xmission.com" <ebiederm@xmission.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "ardb@kernel.org" <ardb@kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-snps-arc@lists.infradead.org" 
-        <linux-snps-arc@lists.infradead.org>,
-        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] parisc: Use the VMA iterator in the cache handling
+Content-Language: en-US
+To:     Liam Howlett <liam.howlett@oracle.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+References: <20220218203418.831810-1-Liam.Howlett@oracle.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20220218203418.831810-1-Liam.Howlett@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:UGZ1uZhVMlR3cLLTsfmuip3Abwu7MtsoH9hav8BXru7GId0WAwQ
+ F9uzWA2ZfGi+WaA3sQLlDKBV/ATrbBiBY0S+s7qSN+b5vV9eXi95ntzDKCgCkumG+k00UyD
+ oPeK7BUWykdscKAWNaqWDcLIrlYSlgVvp524BQMgkM94JTVZFTYsSeov3CsD2TPYztAC9E6
+ E4JHC/A34qVLuvbF9gbhg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VGndFVT3Bw4=:4AC9CvME+11yPtbG7gF5aP
+ cA96Ok9NE+9Kbiq8iuv+tO3di4n6XN58YrQji40WEvy+v6XPoSUqGAB8PPI2k5Fp4Uxmq1jMi
+ ctq2/9TmCZW9AlOf285Ijl200JsrTT39W/n/PrVk3xSfm8dPSt2CHNw/x3u8cYfEL6wCzlAcE
+ Rjgi6Fj/JV9lUG+VdQCFlQf4TeHE8rxxc7razIO+hRlFHGseqkDyn11vClIkAvQ+EFn2N9V2S
+ Qg6B6AxGQA/Fuweuy4aJogMEcsSlo3oa5ihB+A01Zdx1Ul/JIwIrm6t3CwPVDGCrPNc9PWAXS
+ A9C6je63hY0JGnt7gtJhEXSHwB3wYLRU6f2zUbfhM98poy7Hd4FNQ81zIQnKZg65k1GmEcO0D
+ tARUAvEkt6DhrUFJ4R3h3/ZGl4TrEvaZqiIRWgkJX+Gg+tW1vd+f3Dkx9W2NSFs6mK6KbdNPK
+ kGWnyovz4zwM8jxkPrtBylUP4eiYoEnmscUh7jPdkdW7+40fQuLY+YbgtMpZ9q2TTzSdT3YeR
+ zFzUuZXlPlealGyHmhNgyjfMEGJ0HPQCYgIJ0aAL9qLpbnoznvGZfF1FQf7TPHKuPWQvwbTWK
+ eLlHwUJrHs5ZVcGU/Cq99WTw4mF1m51ZpUUNBtAuAKL14E4wDSd7sBCdzeYaOal0gRFr0m3jB
+ GPtqd499BZD4udTa6C0rQFwZS+ACPL3ngu2tokxG2FI+KZ+T9CwqrT0dXOtyxgr8fGqSmHP2i
+ MPf1lDCmGcvZFUHiqdCw87SnLEYfXFB+DK2cZ9k4WodvHH/DWJZgAEbo4ca5LorE3faJyRvvH
+ HjBL6YWxKc6qsYvyyZZsxBKl7Bcy4BFcF8DO6oO8XmckU9BsNmem3EPFWGq8m14EOZP90X/md
+ cBBhtmMG0MzkvF/AXqBb+CT0KbglsHpF18sbn3anpwDfMANTin5WP8xLL8g44sPJgevcGd312
+ 5c5+tA8jQr7L8zJpiGeKUGiJVo9o6eb04Oj0P8yhr4G9BqGgL7XATE2yeVp943nMkX9gDoCg8
+ WQgO4pCyXGCP97iH1gWWIOBHWlNQhDWiDTrCdlShppiqm0fat9jdQxM15PCugvcPL0OsOKHhB
+ vEUEWOmdM4GvfQ=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Feb 18, 2022 at 1:30 AM David Laight <David.Laight@aculab.com> wrote:
+On 2/18/22 21:34, Liam Howlett wrote:
+> This patch is on top of the parisc branch for-next.
 >
-> From: Andy Lutomirski
-> > Sent: 17 February 2022 19:15
-> ...
-> > This isn't actually optimal.  On x86, TASK_SIZE_MAX is a bizarre
-> > constant that has a very specific value to work around a bug^Wdesign
-> > error^Wfeature of Intel CPUs.  TASK_SIZE_MAX is the maximum address at
-> > which userspace is permitted to allocate memory, but there is a huge
-> > gap between user and kernel addresses, and any value in the gap would
-> > be adequate for the comparison.  If we wanted to optimize this, simply
-> > checking the high bit (which x86 can do without any immediate
-> > constants at all) would be sufficient and, for an access known to fit
-> > in 32 bits, one could get even fancier and completely ignore the size
-> > of the access.  (For accesses not known to fit in 32 bits, I suspect
-> > some creativity could still come up with a construction that's
-> > substantially faster than the one in your patch.)
-> >
-> > So there's plenty of room for optimization here.
-> >
-> > (This is not in any respect a NAK -- it's just an observation that
-> > this could be even better.)
->
-> For 64bit arch that use the top bit to separate user/kernel
-> you can test '(addr | size) >> 62)'.
-> The compiler optimises out constant sizes.
->
-> This has all been mentioned a lot of times.
-> You do get different fault types.
->
-> OTOH an explicit check for constant size (less than something big)
-> can use the cheaper test of the sign bit.
-> Big constant sizes could be compile time errors.
+> Helge Deller identified a conflict between the maple tree next branch
+> and the parisc next branch.
 
-The different fault type issue may well be a real problem.  Right now
-the core x86 fault code reserves the right to grouch if we get #GP
-instead of #PF.  We could change that.
+Actually, Stephen noticed and reported it with the linux-next branch...
+
+> This patch removes the vma linked list
+> usage in the parisc next branch identified by Helge as a conflict to
+> maple tree "parisc: Remove mmap linked list from cache handling" and the
+> parisc "parisc: Add vDSO support" patch.  I do not expect this to apply
+> cleanly after the maple tree next merge, but the resolution should be
+> made clear by this patch.
+>
+> This is an untested conflict resolution for linux-next.
+
+Thanks for doing this, Liam!
+
+I'd propose to keep for now (for the linux-next tree) the conflict resolut=
+ion
+fix which Stephen has in place already, and then figure out when the
+merge window opens how to resolve it - either you or me or fixing afterwar=
+ds
+with this patch.
+
+Would that be ok?
+
+Helge
+
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> ---
+>  arch/parisc/kernel/cache.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+> index e7b8e74dad8e..05b4498a1244 100644
+> --- a/arch/parisc/kernel/cache.c
+> +++ b/arch/parisc/kernel/cache.c
+> @@ -515,12 +515,12 @@ void flush_cache_all(void)
+>  	on_each_cpu(cacheflush_h_tmp_function, NULL, 1);
+>  }
+>
+> -static inline unsigned long mm_total_size(struct mm_struct *mm)
+> +static inline unsigned long mm_total_size(struct vma_iterator *vmi)
+>  {
+>  	struct vm_area_struct *vma;
+>  	unsigned long usize =3D 0;
+>
+> -	for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
+> +	for_each_vma(*vmi, vma)
+>  		usize +=3D vma->vm_end - vma->vm_start;
+>  	return usize;
+>  }
+> @@ -570,11 +570,12 @@ static void flush_user_cache_tlb(struct vm_area_st=
+ruct *vma,
+>  void flush_cache_mm(struct mm_struct *mm)
+>  {
+>  	struct vm_area_struct *vma;
+> +	VMA_ITERATOR(vmi, mm, 0);
+>
+>  	/* Flushing the whole cache on each cpu takes forever on
+>  	   rp3440, etc.  So, avoid it if the mm isn't too big.  */
+>  	if ((!IS_ENABLED(CONFIG_SMP) || !arch_irqs_disabled()) &&
+> -	    mm_total_size(mm) >=3D parisc_cache_flush_threshold) {
+> +	    mm_total_size(&vmi) >=3D parisc_cache_flush_threshold) {
+>  		if (mm->context.space_id)
+>  			flush_tlb_all();
+>  		flush_cache_all();
+> @@ -583,13 +584,13 @@ void flush_cache_mm(struct mm_struct *mm)
+>
+>  	preempt_disable();
+>  	if (mm->context.space_id =3D=3D mfsp(3)) {
+> -		for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
+> +		for_each_vma(vmi, vma)
+>  			flush_user_cache_tlb(vma, vma->vm_start, vma->vm_end);
+>  		preempt_enable();
+>  		return;
+>  	}
+>
+> -	for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
+> +	for_each_vma(vmi, vma)
+>  		flush_cache_pages(vma, mm, vma->vm_start, vma->vm_end);
+>  	preempt_enable();
+>  }
+
