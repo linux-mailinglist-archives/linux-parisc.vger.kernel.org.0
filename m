@@ -2,169 +2,138 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 976024BB33F
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Feb 2022 08:30:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 603244BB41E
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Feb 2022 09:25:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232010AbiBRHai (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 18 Feb 2022 02:30:38 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34354 "EHLO
+        id S231713AbiBRIZv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 18 Feb 2022 03:25:51 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231174AbiBRHah (ORCPT
+        with ESMTP id S232538AbiBRIZt (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 18 Feb 2022 02:30:37 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED59726B79D;
-        Thu, 17 Feb 2022 23:30:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9F9E7B820CC;
-        Fri, 18 Feb 2022 07:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2B4C340FC;
-        Fri, 18 Feb 2022 07:30:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645169417;
-        bh=4Rk51yI7cy+h8GrR+wkZuFO6d6ZOgVmodthZQla/xGE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=W+QkvboqRofbLzCm9hHbzxq3Qth8S5HybnqRYBMCOV1+sxzSrsO0GxsWzCKKMdHEn
-         bqDIEx/e5uKVtXdEgKU0zauKVsAP+BwRxL7Eht14lnrZY8/Snkv6ooC0Xtnb3PIWOU
-         TH9CI9oqKC4NB6YlmX9GiyVVlzJ9JxhHp19vd8W2yF7M0r4JQcSsxSZGgcunHmnBls
-         jIKpwMz+6/fED/WEoZ31MUXYk0elz6QstAQFVIrh0vdiPiG2fQNGZe4Ls/9ylnZeuT
-         EPDfxlf0eA4H0vr8C6AxZVCkxFWsivLQ9riuK2cmIaTDgPv5zksZWQSERe1IxP+qyj
-         OVCD1xp4hu7Yg==
-Received: by mail-wr1-f53.google.com with SMTP id o24so13020470wro.3;
-        Thu, 17 Feb 2022 23:30:17 -0800 (PST)
-X-Gm-Message-State: AOAM533Pn0K1psX08r8MR/7uIPoYLosS7GxMRhKr7RvKUFAahONEFcGZ
-        56vGzBunQmxfc7bc1gmCrRw124pgkUxH0XSUlNI=
-X-Google-Smtp-Source: ABdhPJz4trlMwdvjT8y0UPggztkdijECp2hMuaf6QP4pGa8b+VYFZp4/tSgCA0YRdkm1OA4dObRIZr3wh6XhtS+RfLY=
-X-Received: by 2002:adf:ea01:0:b0:1e4:b3e6:1f52 with SMTP id
- q1-20020adfea01000000b001e4b3e61f52mr4942117wrm.317.1645169415535; Thu, 17
- Feb 2022 23:30:15 -0800 (PST)
+        Fri, 18 Feb 2022 03:25:49 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6201A23E5FB
+        for <linux-parisc@vger.kernel.org>; Fri, 18 Feb 2022 00:25:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1645172723;
+        bh=tEUtSWuwoaDiN+IsjoOhrxMnA4tI+3f66HSLU14lblo=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=XCkqIq0eyaCkG4kvRBkJ58QaF30T5Wc2lywQTpXGUGW9Jqa/eCknstAZwL4t6zUHO
+         30m4wCh0DizCDOPPVJBJbgoDBv9MJ7oMaYnj9MW9NofzJGxkrN5XHMenVuZi/TbjuU
+         3AxHsFuf/lIHNj/xPbP5RjPlq8kPqQhi3Q7SM2zI=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100 ([92.116.159.38]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MYvcG-1npipX0nB2-00UuMr; Fri, 18
+ Feb 2022 09:25:23 +0100
+Date:   Fri, 18 Feb 2022 09:25:20 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>
+Subject: [PATCH] parisc: Fix fldd and fstd unaligned handlers on 32-bit kernel
+Message-ID: <Yg9X8N/FN+GHvNuK@p100>
 MIME-Version: 1.0
-References: <20220216131332.1489939-1-arnd@kernel.org> <20220216131332.1489939-6-arnd@kernel.org>
- <20220218062851.GC22576@lst.de>
-In-Reply-To: <20220218062851.GC22576@lst.de>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Fri, 18 Feb 2022 08:29:59 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1Dhn1Gsap1Wss2xpKBwe3jWLAmMYtL7S1-26tZ5D_2fQ@mail.gmail.com>
-Message-ID: <CAK8P3a1Dhn1Gsap1Wss2xpKBwe3jWLAmMYtL7S1-26tZ5D_2fQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/18] x86: remove __range_not_ok()
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Brian Cain <bcain@codeaurora.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        David Miller <davem@davemloft.net>,
-        Richard Weinberger <richard@nod.at>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        "open list:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>, linux-csky@vger.kernel.org,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Openrisc <openrisc@lists.librecores.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        Christoph Hellwig <hch@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:vAwGEFZBvLKFTw05xxnn79HSHpDuyEjRsI5L+mWyFaoLI9/TAsf
+ /LQFct3L9TCIxSsd22+pq3n2nzJUWhl33OpnvURTreBFQPHm2LPnSlqBxDS8KAK+vFsW6d/
+ WXAfEMeiNIZ6xs7uQFFsfard53pwFxZGvYH+5q21GiUo/C3Vq1GNdenICMb4o9sYn4M76AR
+ l580d5t3rd2CVf2EJSPvQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:eFnAgGdharU=:zs4V4w4QvECWloM+FsqmI8
+ u6ef5i1h/aBrSGmaACtrZJmGk/vNCV/95lgOH2Aespxq2AXKX0tIPAu5sbjw7arRI8c0dcOih
+ VFScSqFqSEjsCTmUczZ9WcdvZq9mZjDqN9KrBhBHERkrVoWJpPDnKxOwaxpWPJO3ix6rOBwG9
+ DhIvX7stCV4yOcI8WVy5mxFurtH5YdGzND6Qb5B0aF8Vf2Z2Hqpsg+9NAsMIwPypCyznq7j6d
+ mLdz/10ykk3xTwOnMAIKrPChFCouwPBZbp6WlKN0PjiIdrTodYgTO36hemegsEMVNwSgxntpg
+ //JK1AFcOKVP0RNn+lqo9/2AWYSk4NDGuvusJ+wsukET2vd6PQRqtnhJIB5SNZS+uSV3j5lGk
+ QvvsA+TmYP1EquJAulkQzUWC0epGSev4iBh3daFtnWKlIL1GnlDR0u83WpNb0TM32db4UMaZM
+ xtOktyw05bKzdEAf0dl6BPIOwJ8XWj8aEeVGVFWuHNwgts1g5AItg8GiYo8T9cQThlKyESsCO
+ f27dRZntf6U3nQGj0q12pa8BwZj+6QwW5+WDEqnxPaZ0KA9ChZzsq4iSbGpX/Ok6eVY9xcp17
+ NUzsHpmkIscyqlRb5A9rfGoSPJjHSNVN8ilcLUdVU1cvydwbWNMUWwv0jim0wnXVbTyR1VgP0
+ lTNtmnrGt2AgZSlNc6+XphwWVDFYOoFyG2GpclrbK05IHk79sJHC3uGhjdHZtqiITQarZgEBR
+ 6pLuQIRqZ0KXevWQFUf7PsvdKVS51kBc1xkGSbZ0BklVArVISUGzcvGo2mPEygkBu1renQoga
+ REoxkdzTHKZl5QQ1ZekiHmAAK6uXKpCMP0makRYp/I156U6GdI1mxG6QPVarKK4n2nR3BKTjF
+ Ci2098m3ABcjkwgsFBSta83gCqcs8gMw1hkuGcUUp2VIajkCveuuzFRKZ4WeCOwviDp3nXCuH
+ +NpvsYEbm4O+aGsjIRIdXvbWrVaVa3Nsvh0B1iqQ6GPGGPtmy7Hv4SvEfcgP7zvIu0jPJT1Qn
+ 2LrBmt8Vblrv26bw1Radbf3N+zajdYDMsCnNFP4jecD9fWQK+3GO8vuBHBR7ufDpqcgW4i7Fm
+ D2oD5FzU4afdjg=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Feb 18, 2022 at 7:28 AM Christoph Hellwig <hch@lst.de> wrote:
-> On Wed, Feb 16, 2022 at 02:13:19PM +0100, Arnd Bergmann wrote:
-> > --- a/arch/x86/events/core.c
-> > +++ b/arch/x86/events/core.c
-> > @@ -2794,7 +2794,7 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
-> >  static inline int
-> >  valid_user_frame(const void __user *fp, unsigned long size)
-> >  {
-> > -     return (__range_not_ok(fp, size, TASK_SIZE) == 0);
-> > +     return __access_ok(fp, size);
-> >  }
->
-> valid_user_frame just need to go away and the following __get_user calls
-> replaced with normal get_user ones.
+Usually the kernel provides fixup routines to emulate the fldd and fstd
+floating-point instructions if they load or store 8-byte from/to a not
+natuarally aligned memory location.
 
-As I understand it, that would not work here because get_user() calls
-access_ok() rather than __access_ok(), and on x86 that can not be
-called in NMI context.
+On a 32-bit kernel I noticed that those unaligned handlers didn't worked and
+instead the application got a SEGV.
+While checking the code I found two problems:
 
-It is a bit odd that x86 is the only architecture that has this check,
-but adding
-it was clearly intentional, see 7c4788950ba5 ("x86/uaccess, sched/preempt:
-Verify access_ok() context").
+First, the OPCODE_FLDD_L and OPCODE_FSTD_L cases were ifdef'ed out by the
+CONFIG_PA20 option, and as such those weren't built on a pure 32-bit kernel.
+This is now fixed by moving the CONFIG_PA20 #ifdef to prevent the compilation
+of OPCODE_LDD_L and OPCODE_FSTD_L only, and handling the fldd and fstd
+instructions.
 
-> > diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-> > index 53de044e5654..da534fb7b5c6 100644
-> > --- a/arch/x86/kernel/dumpstack.c
-> > +++ b/arch/x86/kernel/dumpstack.c
-> > @@ -85,7 +85,7 @@ static int copy_code(struct pt_regs *regs, u8 *buf, unsigned long src,
-> >        * Make sure userspace isn't trying to trick us into dumping kernel
-> >        * memory by pointing the userspace instruction pointer at it.
-> >        */
-> > -     if (__chk_range_not_ok(src, nbytes, TASK_SIZE_MAX))
-> > +     if (!__access_ok((void __user *)src, nbytes))
-> >               return -EINVAL;
->
-> This one is not needed at all as copy_from_user_nmi already checks the
-> access range.
+The second problem are two bugs in the 32-bit inline assembly code, where the
+wrong registers where used. The calculation of the natural alignment used %2
+(vall) instead of %3 (ior), and the first word was stored back to address %1
+(valh) instead of %3 (ior).
 
-Ok, removing this.
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
 
-> > diff --git a/arch/x86/kernel/stacktrace.c b/arch/x86/kernel/stacktrace.c
-> > index 15b058eefc4e..ee117fcf46ed 100644
-> > --- a/arch/x86/kernel/stacktrace.c
-> > +++ b/arch/x86/kernel/stacktrace.c
-> > @@ -90,7 +90,7 @@ copy_stack_frame(const struct stack_frame_user __user *fp,
-> >  {
-> >       int ret;
-> >
-> > -     if (__range_not_ok(fp, sizeof(*frame), TASK_SIZE))
-> > +     if (!__access_ok(fp, sizeof(*frame)))
-> >               return 0;
->
-> Just switch the __get_user calls below to get_user instead.
-
-Same as the first one, I think we can't do this in NMI context.
-
-         Arnd
+diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
+index 237d20dd5622..a238b7fe8908 100644
+--- a/arch/parisc/kernel/unaligned.c
++++ b/arch/parisc/kernel/unaligned.c
+@@ -397,7 +397,7 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
+ 	__asm__ __volatile__ (
+ "	mtsp	%4, %%sr1\n"
+ "	zdep	%2, 29, 2, %%r19\n"
+-"	dep	%%r0, 31, 2, %2\n"
++"	dep	%%r0, 31, 2, %3\n"
+ "	mtsar	%%r19\n"
+ "	zvdepi	-2, 32, %%r19\n"
+ "1:	ldw	0(%%sr1,%3),%%r20\n"
+@@ -409,7 +409,7 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
+ "	andcm	%%r21, %%r19, %%r21\n"
+ "	or	%1, %%r20, %1\n"
+ "	or	%2, %%r21, %2\n"
+-"3:	stw	%1,0(%%sr1,%1)\n"
++"3:	stw	%1,0(%%sr1,%3)\n"
+ "4:	stw	%%r1,4(%%sr1,%3)\n"
+ "5:	stw	%2,8(%%sr1,%3)\n"
+ "	copy	%%r0, %0\n"
+@@ -596,7 +596,6 @@ void handle_unaligned(struct pt_regs *regs)
+ 		ret = ERR_NOTHANDLED;	/* "undefined", but lets kill them. */
+ 		break;
+ 	}
+-#ifdef CONFIG_PA20
+ 	switch (regs->iir & OPCODE2_MASK)
+ 	{
+ 	case OPCODE_FLDD_L:
+@@ -607,14 +606,15 @@ void handle_unaligned(struct pt_regs *regs)
+ 		flop=1;
+ 		ret = emulate_std(regs, R2(regs->iir),1);
+ 		break;
++#ifdef CONFIG_PA20
+ 	case OPCODE_LDD_L:
+ 		ret = emulate_ldd(regs, R2(regs->iir),0);
+ 		break;
+ 	case OPCODE_STD_L:
+ 		ret = emulate_std(regs, R2(regs->iir),0);
+ 		break;
+-	}
+ #endif
++	}
+ 	switch (regs->iir & OPCODE3_MASK)
+ 	{
+ 	case OPCODE_FLDW_L:
