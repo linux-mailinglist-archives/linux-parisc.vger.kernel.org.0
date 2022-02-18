@@ -2,161 +2,110 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2F254BC1D1
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Feb 2022 22:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45C214BC2A7
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Feb 2022 23:40:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239732AbiBRVZX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 18 Feb 2022 16:25:23 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50008 "EHLO
+        id S233451AbiBRWkl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 18 Feb 2022 17:40:41 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236664AbiBRVZW (ORCPT
+        with ESMTP id S233435AbiBRWkl (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 18 Feb 2022 16:25:22 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1A123F0A3;
-        Fri, 18 Feb 2022 13:25:03 -0800 (PST)
+        Fri, 18 Feb 2022 17:40:41 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00865546B7
+        for <linux-parisc@vger.kernel.org>; Fri, 18 Feb 2022 14:40:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1645219495;
-        bh=8Qbp9ywMfLLJGNDUfXa/H7AcuBYMzUpeopGjalIQ8jM=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=duwlvrRfWriC8JRaADzI/uCCfClLIoyZ5OBOOCVsOhKllVONmxmZ7nCQWZ4GIKfog
-         9QpZrULjL2n0AbCYIa8ZJ29PPdMGjatujtMylhwy0h/df9yJ6n/5B9DE/7hhpnJM5M
-         oseBLS3xubRNQot4Eeew6QXa6/IQ1cyNk6T3z6i0=
+        s=badeba3b8450; t=1645224016;
+        bh=Wm552Cni7GA5drzrerY9mp+2IZGmK2tsRNjcuJ1Fr0g=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=RdfvQZ7vRIkb01G3iEWaT79ILJ8BgOeAjp45y8Y1ir4fzaMNlSOKZWe6pY9PkS8s6
+         Iccovpe7nGy0ik302hkW5lCbK4d6S4P7uybBcSEaWp1PObY0v7KVnqG71Iic1pdwAj
+         E+RR2VZQaNj/mof3caRmnoeNpEcmsKNlj3qU+U8I=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.159.38]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MZTqg-1niw1R1e7i-00WYDt; Fri, 18
- Feb 2022 22:24:55 +0100
-Message-ID: <882c62b7-78a2-f443-c8c5-0477fdf5d306@gmx.de>
-Date:   Fri, 18 Feb 2022 22:23:33 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH] parisc: Use the VMA iterator in the cache handling
-Content-Language: en-US
-To:     Liam Howlett <liam.howlett@oracle.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-References: <20220218203418.831810-1-Liam.Howlett@oracle.com>
+Received: from p100 ([92.116.159.38]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N4hzZ-1oMtMt0rbT-011isH; Fri, 18
+ Feb 2022 23:40:16 +0100
+Date:   Fri, 18 Feb 2022 23:40:14 +0100
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220218203418.831810-1-Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>
+Subject: [PATCH] Fix ldw() and stw() unalignment handlers
+Message-ID: <YhAgTthQ/orMnNba@p100>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:TNTFmCPKzro8Flv/41ZlcDpxK32dsrFvFxYGHNJKA0mIeOIanBb
+ cEj0Gcw/qneKxIDLo1OAczwjXYVmqq+Q55sDyD1/lZ5h8MyhlmxitrWDkqIqSs77bmNgqow
+ LkRLZoiUcYbu2S1kBfc6ykOKlRKDITxaDK6unFRQcG1c4PjCCCd1pocVZnnsfjbvbOCRUly
+ CVEAznS8tWgd1I2zZEhAQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1+EoGPxWa04=:otdlXB3/MOu6k/tOjGylah
+ 3lrGZgeZaZ+A/63ygSJBPviL8Kce2BWNI9t8xv7edqpaImjcgJlbvBKik3u+cbHvnjfryzJSm
+ fLrIUJRUI6BOR7/hg8BFlN5+jc94jgYTW1mORbnguTnwS6gZnVjHFm6RPBfZ4vPSjw0Z0x4ou
+ ajaQZgQFE/zKshkbz+o9is9cdbaIdG9+hv+1+BVdJ3CX8HpCyUOmMQNI25qHs89qAGGdUoeIT
+ Bb0fIwlN05NlEHGo/ckLMOMMXEhwvU1gIUuYvi5CAeO71+1Gnj4HpKnqhYuAHiDUQDqXzXHf2
+ ba2/1HWdcIhR7y8saFON0/J/188SNaiTWRaYMiUbnU1dyfSrqPBh0f9d8EI6/spZjxgWNQWbm
+ chbMsRA5Jtr+N7tC9L0Gf4k23cjVWJ13f+Yvwar600SpXNnes/K1qd3ORl+TX3nPdPXP+Zk2W
+ 0cAyVW/MXlwwIjp/XXIov0dZXpWEOUeNxLCaGqNSTJcy+ZNrSewZP3huePdgclFgthLfMANhM
+ zmU9hDPi+juIZwrYdikThubKt4g3IK3nomeqYsTWFjxaap6J8xlBI7cxZ+N+VqChYiilHOWoq
+ cDOFov9QrkuIMvsHOc7YLAx3X96OPV0AHOHHPwySweUKMpn2zyAGxibzC5PIP5b+F+PK6DXSq
+ cGGZqP5t1Rt0dy2wNuuQ+6KhqtH6SuLmfn6WmalAlHHNmlglEyifTLcsHOLPrbyNXhn+j9+6G
+ T69Y/O3VSd5oKNjW/KEKtrJRLCDFk2sJBw3evQfhuB85R185rZ/KwcU8C0aHP9SY4h6mm8J1F
+ iYoSiPBMejT6j3/9GStvioxfuisIMkd+CGFZj4cklkD/C99nseYxkkE7me5uPB2biHnfbjzYX
+ KzGQBvn0PqvOERkel7RiQ8mb3/gLSX6VYBeApj+LRVEPNHMjV5q+4TpfybCnV1X9DdGwDqCT+
+ q0zvK7YEywXqrsBO5cQeQlgihSjcXa29gQm6jERx+V1o+0+SGV+hKmFgupg9hm0oXKCQWpwII
+ dbL6ZRsH7HTPQUaIIzeWPwPsnHPvB5qEpgAqOKY53enCWAcYJhEs83fPtfpjfDPfSpDOgJ001
+ ivhhc2ZLR+CSaI=
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:UGZ1uZhVMlR3cLLTsfmuip3Abwu7MtsoH9hav8BXru7GId0WAwQ
- F9uzWA2ZfGi+WaA3sQLlDKBV/ATrbBiBY0S+s7qSN+b5vV9eXi95ntzDKCgCkumG+k00UyD
- oPeK7BUWykdscKAWNaqWDcLIrlYSlgVvp524BQMgkM94JTVZFTYsSeov3CsD2TPYztAC9E6
- E4JHC/A34qVLuvbF9gbhg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:VGndFVT3Bw4=:4AC9CvME+11yPtbG7gF5aP
- cA96Ok9NE+9Kbiq8iuv+tO3di4n6XN58YrQji40WEvy+v6XPoSUqGAB8PPI2k5Fp4Uxmq1jMi
- ctq2/9TmCZW9AlOf285Ijl200JsrTT39W/n/PrVk3xSfm8dPSt2CHNw/x3u8cYfEL6wCzlAcE
- Rjgi6Fj/JV9lUG+VdQCFlQf4TeHE8rxxc7razIO+hRlFHGseqkDyn11vClIkAvQ+EFn2N9V2S
- Qg6B6AxGQA/Fuweuy4aJogMEcsSlo3oa5ihB+A01Zdx1Ul/JIwIrm6t3CwPVDGCrPNc9PWAXS
- A9C6je63hY0JGnt7gtJhEXSHwB3wYLRU6f2zUbfhM98poy7Hd4FNQ81zIQnKZg65k1GmEcO0D
- tARUAvEkt6DhrUFJ4R3h3/ZGl4TrEvaZqiIRWgkJX+Gg+tW1vd+f3Dkx9W2NSFs6mK6KbdNPK
- kGWnyovz4zwM8jxkPrtBylUP4eiYoEnmscUh7jPdkdW7+40fQuLY+YbgtMpZ9q2TTzSdT3YeR
- zFzUuZXlPlealGyHmhNgyjfMEGJ0HPQCYgIJ0aAL9qLpbnoznvGZfF1FQf7TPHKuPWQvwbTWK
- eLlHwUJrHs5ZVcGU/Cq99WTw4mF1m51ZpUUNBtAuAKL14E4wDSd7sBCdzeYaOal0gRFr0m3jB
- GPtqd499BZD4udTa6C0rQFwZS+ACPL3ngu2tokxG2FI+KZ+T9CwqrT0dXOtyxgr8fGqSmHP2i
- MPf1lDCmGcvZFUHiqdCw87SnLEYfXFB+DK2cZ9k4WodvHH/DWJZgAEbo4ca5LorE3faJyRvvH
- HjBL6YWxKc6qsYvyyZZsxBKl7Bcy4BFcF8DO6oO8XmckU9BsNmem3EPFWGq8m14EOZP90X/md
- cBBhtmMG0MzkvF/AXqBb+CT0KbglsHpF18sbn3anpwDfMANTin5WP8xLL8g44sPJgevcGd312
- 5c5+tA8jQr7L8zJpiGeKUGiJVo9o6eb04Oj0P8yhr4G9BqGgL7XATE2yeVp943nMkX9gDoCg8
- WQgO4pCyXGCP97iH1gWWIOBHWlNQhDWiDTrCdlShppiqm0fat9jdQxM15PCugvcPL0OsOKHhB
- vEUEWOmdM4GvfQ=
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2/18/22 21:34, Liam Howlett wrote:
-> This patch is on top of the parisc branch for-next.
->
-> Helge Deller identified a conflict between the maple tree next branch
-> and the parisc next branch.
+Fix 3 bugs:
 
-Actually, Stephen noticed and reported it with the linux-next branch...
+a) emulate_stw() doesn't return the error code value, so faulting
+instructions are not reported and aborted.
 
-> This patch removes the vma linked list
-> usage in the parisc next branch identified by Helge as a conflict to
-> maple tree "parisc: Remove mmap linked list from cache handling" and the
-> parisc "parisc: Add vDSO support" patch.  I do not expect this to apply
-> cleanly after the maple tree next merge, but the resolution should be
-> made clear by this patch.
->
-> This is an untested conflict resolution for linux-next.
+b) Tell emulate_ldw() to handle fldw_l as floating point instruction
 
-Thanks for doing this, Liam!
+c) Tell emulate_ldw() to handle ldw_m as integer instruction
 
-I'd propose to keep for now (for the linux-next tree) the conflict resolut=
-ion
-fix which Stephen has in place already, and then figure out when the
-merge window opens how to resolve it - either you or me or fixing afterwar=
-ds
-with this patch.
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
 
-Would that be ok?
+diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned=
+.c
+index a238b7fe8908..02fd2ecf4b16 100644
+=2D-- a/arch/parisc/kernel/unaligned.c
++++ b/arch/parisc/kernel/unaligned.c
+@@ -340,7 +340,7 @@ static int emulate_stw(struct pt_regs *regs, int frreg=
+, int flop)
+ 	: "r" (val), "r" (regs->ior), "r" (regs->isr)
+ 	: "r19", "r20", "r21", "r22", "r1", FIXUP_BRANCH_CLOBBER );
 
-Helge
+-	return 0;
++	return ret;
+ }
+ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
+ {
+@@ -619,10 +619,10 @@ void handle_unaligned(struct pt_regs *regs)
+ 	{
+ 	case OPCODE_FLDW_L:
+ 		flop=3D1;
+-		ret =3D emulate_ldw(regs, R2(regs->iir),0);
++		ret =3D emulate_ldw(regs, R2(regs->iir),1);
+ 		break;
+ 	case OPCODE_LDW_M:
+-		ret =3D emulate_ldw(regs, R2(regs->iir),1);
++		ret =3D emulate_ldw(regs, R2(regs->iir),0);
+ 		break;
 
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> ---
->  arch/parisc/kernel/cache.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-> index e7b8e74dad8e..05b4498a1244 100644
-> --- a/arch/parisc/kernel/cache.c
-> +++ b/arch/parisc/kernel/cache.c
-> @@ -515,12 +515,12 @@ void flush_cache_all(void)
->  	on_each_cpu(cacheflush_h_tmp_function, NULL, 1);
->  }
->
-> -static inline unsigned long mm_total_size(struct mm_struct *mm)
-> +static inline unsigned long mm_total_size(struct vma_iterator *vmi)
->  {
->  	struct vm_area_struct *vma;
->  	unsigned long usize =3D 0;
->
-> -	for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
-> +	for_each_vma(*vmi, vma)
->  		usize +=3D vma->vm_end - vma->vm_start;
->  	return usize;
->  }
-> @@ -570,11 +570,12 @@ static void flush_user_cache_tlb(struct vm_area_st=
-ruct *vma,
->  void flush_cache_mm(struct mm_struct *mm)
->  {
->  	struct vm_area_struct *vma;
-> +	VMA_ITERATOR(vmi, mm, 0);
->
->  	/* Flushing the whole cache on each cpu takes forever on
->  	   rp3440, etc.  So, avoid it if the mm isn't too big.  */
->  	if ((!IS_ENABLED(CONFIG_SMP) || !arch_irqs_disabled()) &&
-> -	    mm_total_size(mm) >=3D parisc_cache_flush_threshold) {
-> +	    mm_total_size(&vmi) >=3D parisc_cache_flush_threshold) {
->  		if (mm->context.space_id)
->  			flush_tlb_all();
->  		flush_cache_all();
-> @@ -583,13 +584,13 @@ void flush_cache_mm(struct mm_struct *mm)
->
->  	preempt_disable();
->  	if (mm->context.space_id =3D=3D mfsp(3)) {
-> -		for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
-> +		for_each_vma(vmi, vma)
->  			flush_user_cache_tlb(vma, vma->vm_start, vma->vm_end);
->  		preempt_enable();
->  		return;
->  	}
->
-> -	for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
-> +	for_each_vma(vmi, vma)
->  		flush_cache_pages(vma, mm, vma->vm_start, vma->vm_end);
->  	preempt_enable();
->  }
-
+ 	case OPCODE_FSTW_L:
