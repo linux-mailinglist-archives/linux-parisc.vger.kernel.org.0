@@ -2,138 +2,170 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 603244BB41E
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Feb 2022 09:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F8044BB4BD
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Feb 2022 10:00:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231713AbiBRIZv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 18 Feb 2022 03:25:51 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42408 "EHLO
+        id S232972AbiBRJBK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 18 Feb 2022 04:01:10 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232538AbiBRIZt (ORCPT
+        with ESMTP id S232897AbiBRJBJ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 18 Feb 2022 03:25:49 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6201A23E5FB
-        for <linux-parisc@vger.kernel.org>; Fri, 18 Feb 2022 00:25:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1645172723;
-        bh=tEUtSWuwoaDiN+IsjoOhrxMnA4tI+3f66HSLU14lblo=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=XCkqIq0eyaCkG4kvRBkJ58QaF30T5Wc2lywQTpXGUGW9Jqa/eCknstAZwL4t6zUHO
-         30m4wCh0DizCDOPPVJBJbgoDBv9MJ7oMaYnj9MW9NofzJGxkrN5XHMenVuZi/TbjuU
-         3AxHsFuf/lIHNj/xPbP5RjPlq8kPqQhi3Q7SM2zI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100 ([92.116.159.38]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MYvcG-1npipX0nB2-00UuMr; Fri, 18
- Feb 2022 09:25:23 +0100
-Date:   Fri, 18 Feb 2022 09:25:20 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH] parisc: Fix fldd and fstd unaligned handlers on 32-bit kernel
-Message-ID: <Yg9X8N/FN+GHvNuK@p100>
+        Fri, 18 Feb 2022 04:01:09 -0500
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7711D1867C4;
+        Fri, 18 Feb 2022 01:00:52 -0800 (PST)
+Received: by mail-vs1-f54.google.com with SMTP id q9so3731377vsg.2;
+        Fri, 18 Feb 2022 01:00:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1nYL/qjPVlkIqK+5dnbJ/5QVdVKG9AQSDTVmJuSTxwE=;
+        b=Zv5we/RxYb0vPcwmthg0UKS7t8MJAYVmVgrUzX//i6/+r/z75j0fq9KuaSGpBRCpRD
+         pZQVMpJrgHDjmG/pE8NlMIvxraQAFXZnmK35GZwk3dCq7hULFowna8Yz/6wIN1vtjrWg
+         lj0Oyn2RsxPnATMlbZt062i4aueZdDsQ8CYOVZfIggEJ5EAMCANlwVUlMHA196K4g6b+
+         kT0ndFGmgRy0zi8Tbd/Tqb7JAUhQDMdAROWAJIF1NzUZ27qX4OlzI5x0LiEXRgN4YiWd
+         sKJI0XDR/2shnBfhqNzA1yJeMbZQTBjUrPoMcf/6mCGwNr017Gv2BTYqMMgB8+rLJ4jD
+         YlzQ==
+X-Gm-Message-State: AOAM532ndTqZyoRzKkrB94qVdAYO9LGhrj6jjuLVe0C2uEIPb4o6vVLZ
+        Dfoh87O71pgFgZS3iuGX6YHyHo0+q8dGPA==
+X-Google-Smtp-Source: ABdhPJxp40nmkJXiu8iNeCwx9n2AED0TZQVM/tj+B9o99AsQIveQ6vybTcySkFQDWjbvuLfgWeR4eA==
+X-Received: by 2002:a67:d50a:0:b0:31b:9be2:8aa0 with SMTP id l10-20020a67d50a000000b0031b9be28aa0mr2906226vsj.76.1645174851807;
+        Fri, 18 Feb 2022 01:00:51 -0800 (PST)
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
+        by smtp.gmail.com with ESMTPSA id n77sm7184646vkn.29.2022.02.18.01.00.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Feb 2022 01:00:50 -0800 (PST)
+Received: by mail-vs1-f53.google.com with SMTP id u10so9161585vsu.13;
+        Fri, 18 Feb 2022 01:00:50 -0800 (PST)
+X-Received: by 2002:a67:e113:0:b0:30e:303d:d1d6 with SMTP id
+ d19-20020a67e113000000b0030e303dd1d6mr3151546vsl.38.1645174850220; Fri, 18
+ Feb 2022 01:00:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:vAwGEFZBvLKFTw05xxnn79HSHpDuyEjRsI5L+mWyFaoLI9/TAsf
- /LQFct3L9TCIxSsd22+pq3n2nzJUWhl33OpnvURTreBFQPHm2LPnSlqBxDS8KAK+vFsW6d/
- WXAfEMeiNIZ6xs7uQFFsfard53pwFxZGvYH+5q21GiUo/C3Vq1GNdenICMb4o9sYn4M76AR
- l580d5t3rd2CVf2EJSPvQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:eFnAgGdharU=:zs4V4w4QvECWloM+FsqmI8
- u6ef5i1h/aBrSGmaACtrZJmGk/vNCV/95lgOH2Aespxq2AXKX0tIPAu5sbjw7arRI8c0dcOih
- VFScSqFqSEjsCTmUczZ9WcdvZq9mZjDqN9KrBhBHERkrVoWJpPDnKxOwaxpWPJO3ix6rOBwG9
- DhIvX7stCV4yOcI8WVy5mxFurtH5YdGzND6Qb5B0aF8Vf2Z2Hqpsg+9NAsMIwPypCyznq7j6d
- mLdz/10ykk3xTwOnMAIKrPChFCouwPBZbp6WlKN0PjiIdrTodYgTO36hemegsEMVNwSgxntpg
- //JK1AFcOKVP0RNn+lqo9/2AWYSk4NDGuvusJ+wsukET2vd6PQRqtnhJIB5SNZS+uSV3j5lGk
- QvvsA+TmYP1EquJAulkQzUWC0epGSev4iBh3daFtnWKlIL1GnlDR0u83WpNb0TM32db4UMaZM
- xtOktyw05bKzdEAf0dl6BPIOwJ8XWj8aEeVGVFWuHNwgts1g5AItg8GiYo8T9cQThlKyESsCO
- f27dRZntf6U3nQGj0q12pa8BwZj+6QwW5+WDEqnxPaZ0KA9ChZzsq4iSbGpX/Ok6eVY9xcp17
- NUzsHpmkIscyqlRb5A9rfGoSPJjHSNVN8ilcLUdVU1cvydwbWNMUWwv0jim0wnXVbTyR1VgP0
- lTNtmnrGt2AgZSlNc6+XphwWVDFYOoFyG2GpclrbK05IHk79sJHC3uGhjdHZtqiITQarZgEBR
- 6pLuQIRqZ0KXevWQFUf7PsvdKVS51kBc1xkGSbZ0BklVArVISUGzcvGo2mPEygkBu1renQoga
- REoxkdzTHKZl5QQ1ZekiHmAAK6uXKpCMP0makRYp/I156U6GdI1mxG6QPVarKK4n2nR3BKTjF
- Ci2098m3ABcjkwgsFBSta83gCqcs8gMw1hkuGcUUp2VIajkCveuuzFRKZ4WeCOwviDp3nXCuH
- +NpvsYEbm4O+aGsjIRIdXvbWrVaVa3Nsvh0B1iqQ6GPGGPtmy7Hv4SvEfcgP7zvIu0jPJT1Qn
- 2LrBmt8Vblrv26bw1Radbf3N+zajdYDMsCnNFP4jecD9fWQK+3GO8vuBHBR7ufDpqcgW4i7Fm
- D2oD5FzU4afdjg=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220216131332.1489939-1-arnd@kernel.org> <20220216131332.1489939-11-arnd@kernel.org>
+In-Reply-To: <20220216131332.1489939-11-arnd@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 18 Feb 2022 10:00:39 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWMhP5WgZ7CvOz53SyfizaAvLkHbeuds8G+_nZkwzhWWw@mail.gmail.com>
+Message-ID: <CAMuHMdWMhP5WgZ7CvOz53SyfizaAvLkHbeuds8G+_nZkwzhWWw@mail.gmail.com>
+Subject: Re: [PATCH v2 10/18] m68k: fix access_ok for coldfire
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Russell King <linux@armlinux.org.uk>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Brian Cain <bcain@codeaurora.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Stafford Horne <shorne@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Richard Weinberger <richard@nod.at>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        linux-csky@vger.kernel.org,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Openrisc <openrisc@lists.librecores.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Usually the kernel provides fixup routines to emulate the fldd and fstd
-floating-point instructions if they load or store 8-byte from/to a not
-natuarally aligned memory location.
+Hi Arnd,
 
-On a 32-bit kernel I noticed that those unaligned handlers didn't worked and
-instead the application got a SEGV.
-While checking the code I found two problems:
+On Wed, Feb 16, 2022 at 2:17 PM Arnd Bergmann <arnd@kernel.org> wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> While most m68k platforms use separate address spaces for user
+> and kernel space, at least coldfire does not, and the other
+> ones have a TASK_SIZE that is less than the entire 4GB address
+> range.
+>
+> Using the default implementation of __access_ok() stops coldfire
+> user space from trivially accessing kernel memory.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-First, the OPCODE_FLDD_L and OPCODE_FSTD_L cases were ifdef'ed out by the
-CONFIG_PA20 option, and as such those weren't built on a pure 32-bit kernel.
-This is now fixed by moving the CONFIG_PA20 #ifdef to prevent the compilation
-of OPCODE_LDD_L and OPCODE_FSTD_L only, and handling the fldd and fstd
-instructions.
+Thanks for your patch!
 
-The second problem are two bugs in the 32-bit inline assembly code, where the
-wrong registers where used. The calculation of the natural alignment used %2
-(vall) instead of %3 (ior), and the first word was stored back to address %1
-(valh) instead of %3 (ior).
+> --- a/arch/m68k/include/asm/uaccess.h
+> +++ b/arch/m68k/include/asm/uaccess.h
+> @@ -12,14 +12,21 @@
+>  #include <asm/extable.h>
+>
+>  /* We let the MMU do all checking */
+> -static inline int access_ok(const void __user *addr,
+> +static inline int access_ok(const void __user *ptr,
+>                             unsigned long size)
+>  {
+> +       unsigned long limit = TASK_SIZE;
+> +       unsigned long addr = (unsigned long)ptr;
+> +
+>         /*
+>          * XXX: for !CONFIG_CPU_HAS_ADDRESS_SPACES this really needs to check
+>          * for TASK_SIZE!
+> +        * Removing this helper is probably sufficient.
+>          */
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
+Shouldn't the above comment block be removed completely,
+as this is now implemented below?
 
-diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
-index 237d20dd5622..a238b7fe8908 100644
---- a/arch/parisc/kernel/unaligned.c
-+++ b/arch/parisc/kernel/unaligned.c
-@@ -397,7 +397,7 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
- 	__asm__ __volatile__ (
- "	mtsp	%4, %%sr1\n"
- "	zdep	%2, 29, 2, %%r19\n"
--"	dep	%%r0, 31, 2, %2\n"
-+"	dep	%%r0, 31, 2, %3\n"
- "	mtsar	%%r19\n"
- "	zvdepi	-2, 32, %%r19\n"
- "1:	ldw	0(%%sr1,%3),%%r20\n"
-@@ -409,7 +409,7 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
- "	andcm	%%r21, %%r19, %%r21\n"
- "	or	%1, %%r20, %1\n"
- "	or	%2, %%r21, %2\n"
--"3:	stw	%1,0(%%sr1,%1)\n"
-+"3:	stw	%1,0(%%sr1,%3)\n"
- "4:	stw	%%r1,4(%%sr1,%3)\n"
- "5:	stw	%2,8(%%sr1,%3)\n"
- "	copy	%%r0, %0\n"
-@@ -596,7 +596,6 @@ void handle_unaligned(struct pt_regs *regs)
- 		ret = ERR_NOTHANDLED;	/* "undefined", but lets kill them. */
- 		break;
- 	}
--#ifdef CONFIG_PA20
- 	switch (regs->iir & OPCODE2_MASK)
- 	{
- 	case OPCODE_FLDD_L:
-@@ -607,14 +606,15 @@ void handle_unaligned(struct pt_regs *regs)
- 		flop=1;
- 		ret = emulate_std(regs, R2(regs->iir),1);
- 		break;
-+#ifdef CONFIG_PA20
- 	case OPCODE_LDD_L:
- 		ret = emulate_ldd(regs, R2(regs->iir),0);
- 		break;
- 	case OPCODE_STD_L:
- 		ret = emulate_std(regs, R2(regs->iir),0);
- 		break;
--	}
- #endif
-+	}
- 	switch (regs->iir & OPCODE3_MASK)
- 	{
- 	case OPCODE_FLDW_L:
+> -       return 1;
+> +       if (IS_ENABLED(CONFIG_CPU_HAS_ADDRESS_SPACES))
+> +               return 1;
+> +
+> +       return (size <= limit) && (addr <= (limit - size));
+>  }
+
+Any pesky compilers that warn (or worse with -Werror) about
+"condition always true" for TASK_SIZE = 0xFFFFFFFFUL?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
