@@ -2,48 +2,53 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB6424BE238
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Feb 2022 18:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D50964BE737
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Feb 2022 19:03:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345594AbiBUIwf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 21 Feb 2022 03:52:35 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43750 "EHLO
+        id S1347158AbiBUJEn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 21 Feb 2022 04:04:43 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345227AbiBUIwV (ORCPT
+        with ESMTP id S1347135AbiBUJEA (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 21 Feb 2022 03:52:21 -0500
+        Mon, 21 Feb 2022 04:04:00 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3E6CE6;
-        Mon, 21 Feb 2022 00:51:53 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E32402DA9C;
+        Mon, 21 Feb 2022 00:58:36 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 552FBB80EB4;
-        Mon, 21 Feb 2022 08:51:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CA4C340EB;
-        Mon, 21 Feb 2022 08:51:50 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AB3B8B80EAC;
+        Mon, 21 Feb 2022 08:58:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88E6C36AE3;
+        Mon, 21 Feb 2022 08:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1645433510;
-        bh=UaSgY94cpIw3Kq+VL3L3kwDcvctXgZSVInyJ4w1tZ9A=;
+        s=korg; t=1645433901;
+        bh=V+GAnAacYdkyKm/bNFvDuRxcECMVX1bM81QitkE3o3U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TG7LpX/y1CKLtQaiDnZJ8xyp5jHbHsK3JCx8Ras9Y6WRdgxyXo+3x8w8T9mQbos+X
-         qQPF63t+02BTA1CwXvFxG0J8R82yMSOD480vSHMCQtY8gp8Hq5LGugZ/yBJcHPNY9L
-         aw8o0hOKAORJwfe9nB5FxWVO9Ez2EZz12tV2MoCA=
+        b=bGFJYiFMUtoaMeQ9aM+dtGfddAfl8scLujkE3AJvvCn/m84ZPgwUjHx3B7IdLFPqY
+         ZSsdq9OcB0JSJGgxXbxtGib21T3XfnL7v3coTi9pWfRRqfXrNxX6Qx033ls4NpOQ4p
+         1Kul/4MeIEEWwhuHljuu9gLVrFd2cgqApV6WWdZA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
+        stable@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+        Helge Deller <deller@gmx.de>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Torsten Duwe <duwe@suse.de>,
+        Amit Daniel Kachhap <amit.kachhap@arm.com>,
+        Sven Schnelle <svens@stackframe.org>,
+        Ingo Molnar <mingo@redhat.com>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        linux-serial@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.9 03/33] serial: parisc: GSC: fix build when IOSAPIC is not set
-Date:   Mon, 21 Feb 2022 09:48:56 +0100
-Message-Id: <20220221084908.679203081@linuxfoundation.org>
+        Jessica Yu <jeyu@kernel.org>, linux-parisc@vger.kernel.org,
+        Stephen Boyd <swboyd@chromium.org>
+Subject: [PATCH 5.4 24/80] module/ftrace: handle patchable-function-entry
+Date:   Mon, 21 Feb 2022 09:49:04 +0100
+Message-Id: <20220221084916.374474220@linuxfoundation.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220221084908.568970525@linuxfoundation.org>
-References: <20220221084908.568970525@linuxfoundation.org>
+In-Reply-To: <20220221084915.554151737@linuxfoundation.org>
+References: <20220221084915.554151737@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,54 +63,168 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 6e8793674bb0d1135ca0e5c9f7e16fecbf815926 upstream.
+commit a1326b17ac03a9012cb3d01e434aacb4d67a416c upstream.
 
-There is a build error when using a kernel .config file from
-'kernel test robot' for a different build problem:
+When using patchable-function-entry, the compiler will record the
+callsites into a section named "__patchable_function_entries" rather
+than "__mcount_loc". Let's abstract this difference behind a new
+FTRACE_CALLSITE_SECTION, so that architectures don't have to handle this
+explicitly (e.g. with custom module linker scripts).
 
-hppa64-linux-ld: drivers/tty/serial/8250/8250_gsc.o: in function `.LC3':
-(.data.rel.ro+0x18): undefined reference to `iosapic_serial_irq'
+As parisc currently handles this explicitly, it is fixed up accordingly,
+with its custom linker script removed. Since FTRACE_CALLSITE_SECTION is
+only defined when DYNAMIC_FTRACE is selected, the parisc module loading
+code is updated to only use the definition in that case. When
+DYNAMIC_FTRACE is not selected, modules shouldn't have this section, so
+this removes some redundant work in that case.
 
-when:
-  CONFIG_GSC=y
-  CONFIG_SERIO_GSCPS2=y
-  CONFIG_SERIAL_8250_GSC=y
-  CONFIG_PCI is not set
-    and hence PCI_LBA is not set.
-  IOSAPIC depends on PCI_LBA, so IOSAPIC is not set/enabled.
+To make sure that this is keep up-to-date for modules and the main
+kernel, a comment is added to vmlinux.lds.h, with the existing ifdeffery
+simplified for legibility.
 
-Make the use of iosapic_serial_irq() conditional to fix the build error.
+I built parisc generic-{32,64}bit_defconfig with DYNAMIC_FTRACE enabled,
+and verified that the section made it into the .ko files for modules.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Helge Deller <deller@gmx.de>
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Reviewed-by: Torsten Duwe <duwe@suse.de>
+Tested-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
+Tested-by: Sven Schnelle <svens@stackframe.org>
+Tested-by: Torsten Duwe <duwe@suse.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Jessica Yu <jeyu@kernel.org>
 Cc: linux-parisc@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-serial@vger.kernel.org
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Johan Hovold <johan@kernel.org>
-Suggested-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: Stephen Boyd <swboyd@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_gsc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/Makefile              |    1 -
+ arch/parisc/kernel/module.c       |   10 +++++++---
+ arch/parisc/kernel/module.lds     |    7 -------
+ include/asm-generic/vmlinux.lds.h |   14 +++++++-------
+ include/linux/ftrace.h            |    5 +++++
+ kernel/module.c                   |    2 +-
+ 6 files changed, 20 insertions(+), 19 deletions(-)
+ delete mode 100644 arch/parisc/kernel/module.lds
 
---- a/drivers/tty/serial/8250/8250_gsc.c
-+++ b/drivers/tty/serial/8250/8250_gsc.c
-@@ -30,7 +30,7 @@ static int __init serial_init_chip(struc
- 	unsigned long address;
- 	int err;
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -65,7 +65,6 @@ KBUILD_CFLAGS += -DCC_USING_PATCHABLE_FU
+ 		 -DFTRACE_PATCHABLE_FUNCTION_SIZE=$(NOP_COUNT)
  
--#ifdef CONFIG_64BIT
-+#if defined(CONFIG_64BIT) && defined(CONFIG_IOSAPIC)
- 	if (!dev->irq && (dev->id.sversion == 0xad))
- 		dev->irq = iosapic_serial_irq(dev);
+ CC_FLAGS_FTRACE := -fpatchable-function-entry=$(NOP_COUNT),$(shell echo $$(($(NOP_COUNT)-1)))
+-KBUILD_LDS_MODULE += $(srctree)/arch/parisc/kernel/module.lds
+ endif
+ 
+ OBJCOPY_FLAGS =-O binary -R .note -R .comment -S
+--- a/arch/parisc/kernel/module.c
++++ b/arch/parisc/kernel/module.c
+@@ -43,6 +43,7 @@
+ #include <linux/elf.h>
+ #include <linux/vmalloc.h>
+ #include <linux/fs.h>
++#include <linux/ftrace.h>
+ #include <linux/string.h>
+ #include <linux/kernel.h>
+ #include <linux/bug.h>
+@@ -862,7 +863,7 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 	const char *strtab = NULL;
+ 	const Elf_Shdr *s;
+ 	char *secstrings;
+-	int err, symindex = -1;
++	int symindex = -1;
+ 	Elf_Sym *newptr, *oldptr;
+ 	Elf_Shdr *symhdr = NULL;
+ #ifdef DEBUG
+@@ -946,11 +947,13 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 			/* patch .altinstructions */
+ 			apply_alternatives(aseg, aseg + s->sh_size, me->name);
+ 
++#ifdef CONFIG_DYNAMIC_FTRACE
+ 		/* For 32 bit kernels we're compiling modules with
+ 		 * -ffunction-sections so we must relocate the addresses in the
+-		 *__mcount_loc section.
++		 *  ftrace callsite section.
+ 		 */
+-		if (symindex != -1 && !strcmp(secname, "__mcount_loc")) {
++		if (symindex != -1 && !strcmp(secname, FTRACE_CALLSITE_SECTION)) {
++			int err;
+ 			if (s->sh_type == SHT_REL)
+ 				err = apply_relocate((Elf_Shdr *)sechdrs,
+ 							strtab, symindex,
+@@ -962,6 +965,7 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 			if (err)
+ 				return err;
+ 		}
++#endif
+ 	}
+ 	return 0;
+ }
+--- a/arch/parisc/kernel/module.lds
++++ /dev/null
+@@ -1,7 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-
+-SECTIONS {
+-	__mcount_loc : {
+-		*(__patchable_function_entries)
+-	}
+-}
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -110,17 +110,17 @@
+ #endif
+ 
+ #ifdef CONFIG_FTRACE_MCOUNT_RECORD
+-#ifdef CC_USING_PATCHABLE_FUNCTION_ENTRY
+-#define MCOUNT_REC()	. = ALIGN(8);				\
+-			__start_mcount_loc = .;			\
+-			KEEP(*(__patchable_function_entries))	\
+-			__stop_mcount_loc = .;
+-#else
++/*
++ * The ftrace call sites are logged to a section whose name depends on the
++ * compiler option used. A given kernel image will only use one, AKA
++ * FTRACE_CALLSITE_SECTION. We capture all of them here to avoid header
++ * dependencies for FTRACE_CALLSITE_SECTION's definition.
++ */
+ #define MCOUNT_REC()	. = ALIGN(8);				\
+ 			__start_mcount_loc = .;			\
+ 			KEEP(*(__mcount_loc))			\
++			KEEP(*(__patchable_function_entries))	\
+ 			__stop_mcount_loc = .;
+-#endif
+ #else
+ #define MCOUNT_REC()
+ #endif
+--- a/include/linux/ftrace.h
++++ b/include/linux/ftrace.h
+@@ -738,6 +738,11 @@ static inline unsigned long get_lock_par
+ 
+ #ifdef CONFIG_FTRACE_MCOUNT_RECORD
+ extern void ftrace_init(void);
++#ifdef CC_USING_PATCHABLE_FUNCTION_ENTRY
++#define FTRACE_CALLSITE_SECTION	"__patchable_function_entries"
++#else
++#define FTRACE_CALLSITE_SECTION	"__mcount_loc"
++#endif
+ #else
+ static inline void ftrace_init(void) { }
+ #endif
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -3377,7 +3377,7 @@ static int find_module_sections(struct m
+ #endif
+ #ifdef CONFIG_FTRACE_MCOUNT_RECORD
+ 	/* sechdrs[0].sh_size is always zero */
+-	mod->ftrace_callsites = section_objs(info, "__mcount_loc",
++	mod->ftrace_callsites = section_objs(info, FTRACE_CALLSITE_SECTION,
+ 					     sizeof(*mod->ftrace_callsites),
+ 					     &mod->num_ftrace_callsites);
  #endif
 
 
