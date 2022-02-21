@@ -2,40 +2,54 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C22E4BD66F
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Feb 2022 07:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 398F44BE0D4
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Feb 2022 18:52:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345399AbiBUGlb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 21 Feb 2022 01:41:31 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41614 "EHLO
+        id S1350849AbiBUJsf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 21 Feb 2022 04:48:35 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345403AbiBUGlT (ORCPT
+        with ESMTP id S1351463AbiBUJp0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 21 Feb 2022 01:41:19 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1D3394476E;
-        Sun, 20 Feb 2022 22:39:58 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DFE271509;
-        Sun, 20 Feb 2022 22:39:57 -0800 (PST)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.49.67])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3A4493F70D;
-        Sun, 20 Feb 2022 22:39:54 -0800 (PST)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-To:     linux-mm@kvack.org, akpm@linux-foundation.org
-Cc:     linux-kernel@vger.kernel.org,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        linux-arch@vger.kernel.org,
+        Mon, 21 Feb 2022 04:45:26 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A05CB3F897;
+        Mon, 21 Feb 2022 01:18:26 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F87A60EDF;
+        Mon, 21 Feb 2022 09:18:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B61EC340F3;
+        Mon, 21 Feb 2022 09:18:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1645435105;
+        bh=HKrIBi5m5CFXzZ+6/xBVUfB/8hJp8GunVilEDIKwwTQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=kCT8vsVpUOkV/nYEknVs0EKe9WQOFGaqiV2AOEsc1YT1qfzSSjAZ8hom800iN1+4U
+         j1+lG82WGuT/wEJe9u1wjLdMUfHLkVKw2Rt+eWdToKk25XLr9C5D1u8PyF7PDpzHrD
+         GB/B864hd1T1lb/FhGcqNkH1G0FlKL/kVloCZaMk=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH V2 21/30] parisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Date:   Mon, 21 Feb 2022 12:08:30 +0530
-Message-Id: <1645425519-9034-22-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1645425519-9034-1-git-send-email-anshuman.khandual@arm.com>
-References: <1645425519-9034-1-git-send-email-anshuman.khandual@arm.com>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        linux-serial@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.16 014/227] serial: parisc: GSC: fix build when IOSAPIC is not set
+Date:   Mon, 21 Feb 2022 09:47:13 +0100
+Message-Id: <20220221084935.310770945@linuxfoundation.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220221084934.836145070@linuxfoundation.org>
+References: <20220221084934.836145070@linuxfoundation.org>
+User-Agent: quilt/0.66
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -44,111 +58,54 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This defines and exports a platform specific custom vm_get_page_prot() via
-subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
-macros can be dropped which are no longer needed.
+From: Randy Dunlap <rdunlap@infradead.org>
 
+commit 6e8793674bb0d1135ca0e5c9f7e16fecbf815926 upstream.
+
+There is a build error when using a kernel .config file from
+'kernel test robot' for a different build problem:
+
+hppa64-linux-ld: drivers/tty/serial/8250/8250_gsc.o: in function `.LC3':
+(.data.rel.ro+0x18): undefined reference to `iosapic_serial_irq'
+
+when:
+  CONFIG_GSC=y
+  CONFIG_SERIO_GSCPS2=y
+  CONFIG_SERIAL_8250_GSC=y
+  CONFIG_PCI is not set
+    and hence PCI_LBA is not set.
+  IOSAPIC depends on PCI_LBA, so IOSAPIC is not set/enabled.
+
+Make the use of iosapic_serial_irq() conditional to fix the build error.
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
 Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
 Cc: linux-parisc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-serial@vger.kernel.org
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Johan Hovold <johan@kernel.org>
+Suggested-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Kconfig               |  1 +
- arch/parisc/include/asm/pgtable.h | 20 ----------------
- arch/parisc/mm/init.c             | 40 +++++++++++++++++++++++++++++++
- 3 files changed, 41 insertions(+), 20 deletions(-)
+ drivers/tty/serial/8250/8250_gsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 43c1c880def6..de512f120b50 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -10,6 +10,7 @@ config PARISC
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_STRICT_KERNEL_RWX
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
-+	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_NO_SG_CHAIN
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
-diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
-index 3e7cf882639f..80d99b2b5913 100644
---- a/arch/parisc/include/asm/pgtable.h
-+++ b/arch/parisc/include/asm/pgtable.h
-@@ -269,26 +269,6 @@ extern void __update_cache(pte_t pte);
-  * pages.
-  */
+--- a/drivers/tty/serial/8250/8250_gsc.c
++++ b/drivers/tty/serial/8250/8250_gsc.c
+@@ -26,7 +26,7 @@ static int __init serial_init_chip(struc
+ 	unsigned long address;
+ 	int err;
  
--	 /*xwr*/
--#define __P000  PAGE_NONE
--#define __P001  PAGE_READONLY
--#define __P010  __P000 /* copy on write */
--#define __P011  __P001 /* copy on write */
--#define __P100  PAGE_EXECREAD
--#define __P101  PAGE_EXECREAD
--#define __P110  __P100 /* copy on write */
--#define __P111  __P101 /* copy on write */
--
--#define __S000  PAGE_NONE
--#define __S001  PAGE_READONLY
--#define __S010  PAGE_WRITEONLY
--#define __S011  PAGE_SHARED
--#define __S100  PAGE_EXECREAD
--#define __S101  PAGE_EXECREAD
--#define __S110  PAGE_RWX
--#define __S111  PAGE_RWX
--
--
- extern pgd_t swapper_pg_dir[]; /* declared in init_task.c */
- 
- /* initial page tables for 0-8MB for kernel */
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index 1dc2e88e7b04..f9e841f874a8 100644
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -865,3 +865,43 @@ void flush_tlb_all(void)
- 	spin_unlock(&sid_lock);
- }
+-#ifdef CONFIG_64BIT
++#if defined(CONFIG_64BIT) && defined(CONFIG_IOSAPIC)
+ 	if (!dev->irq && (dev->id.sversion == 0xad))
+ 		dev->irq = iosapic_serial_irq(dev);
  #endif
-+
-+pgprot_t vm_get_page_prot(unsigned long vm_flags)
-+{
-+	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
-+	case VM_NONE:
-+		return PAGE_NONE;
-+	case VM_READ:
-+		return PAGE_READONLY;
-+	/* copy on write */
-+	case VM_WRITE:
-+		return PAGE_NONE;
-+	/* copy on write */
-+	case VM_WRITE | VM_READ:
-+		return PAGE_READONLY;
-+	case VM_EXEC:
-+	case VM_EXEC | VM_READ:
-+	/* copy on write */
-+	case VM_EXEC | VM_WRITE:
-+	/* copy on write */
-+	case VM_EXEC | VM_WRITE | VM_READ:
-+		return PAGE_EXECREAD;
-+	case VM_SHARED:
-+		return PAGE_NONE;
-+	case VM_SHARED | VM_READ:
-+		return PAGE_READONLY;
-+	case VM_SHARED | VM_WRITE:
-+		return PAGE_WRITEONLY;
-+	case VM_SHARED | VM_WRITE | VM_READ:
-+		return PAGE_SHARED;
-+	case VM_SHARED | VM_EXEC:
-+	case VM_SHARED | VM_EXEC | VM_READ:
-+		return PAGE_EXECREAD;
-+	case VM_SHARED | VM_EXEC | VM_WRITE:
-+	case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
-+		return PAGE_RWX;
-+	default:
-+		BUILD_BUG();
-+	}
-+}
-+EXPORT_SYMBOL(vm_get_page_prot);
--- 
-2.25.1
+
 
