@@ -2,50 +2,41 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64B404BD5F5
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Feb 2022 07:23:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C22E4BD66F
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Feb 2022 07:57:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344884AbiBUGJh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 21 Feb 2022 01:09:37 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38958 "EHLO
+        id S1345399AbiBUGlb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 21 Feb 2022 01:41:31 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231645AbiBUGJg (ORCPT
+        with ESMTP id S1345403AbiBUGlT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 21 Feb 2022 01:09:36 -0500
-X-Greylist: delayed 86922 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 20 Feb 2022 22:09:12 PST
-Received: from smtpproxy21.qq.com (smtpbg703.qq.com [203.205.195.89])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DED4B90
-        for <linux-parisc@vger.kernel.org>; Sun, 20 Feb 2022 22:09:12 -0800 (PST)
-X-QQ-mid: bizesmtp85t1645423744tm9q9x8g
-Received: from localhost.localdomain (unknown [49.93.178.145])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Mon, 21 Feb 2022 14:08:57 +0800 (CST)
-X-QQ-SSF: 01400000002000B0F000000A0000000
-X-QQ-FEAT: 1CJnxdOjzOnht1ipS2+wNCQ6Ym2RPp0krCe5+nsnDX21mh57cqVU+OckU5q1n
-        klxdhyzumpbURgjvdHwotciZt4MjLKCm6dJ+ZWbgAFLLCBZDlVRi9E7rnkET687B2YFY7aa
-        LiFAjy4tau6Vc7zVidj6lUf2uYuJ1gW11MrIfWUHyzqJYBpgTfdyRjAVLbKR6kNnkc72eWe
-        zfQJ6UlbLiDWki1fIAKOuVhb0XCAdA9jCNei04SY4Mk7HlS1c3c8FWB9nwipNJaQu4xFKcs
-        lz6SKxNTHS7QjTdeiidvlGoyuztGQENDjgXKuY6fEDmKpDZUN7AZo4UTpu6f882VO5mlE1N
-        uGZU/h/9E8uMPCKDVxvJJiG66oXFw==
-X-QQ-GoodBg: 1
-From:   tangmeng <tangmeng@uniontech.com>
-To:     James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        mcgrof@kernel.org, keescook@chromium.org, yzaikin@google.com
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, nizhen@uniontech.com,
-        zhanglianjie@uniontech.com, nixiaoming@huawei.com,
-        tangmeng <tangmeng@uniontech.com>
-Subject: [PATCH v2 01/11] kernel/parisc: move soft-power sysctl to its own file
-Date:   Mon, 21 Feb 2022 14:08:47 +0800
-Message-Id: <20220221060847.9917-1-tangmeng@uniontech.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:uniontech.com:qybgforeign:qybgforeign5
-X-QQ-Bgrelay: 1
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        Mon, 21 Feb 2022 01:41:19 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1D3394476E;
+        Sun, 20 Feb 2022 22:39:58 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DFE271509;
+        Sun, 20 Feb 2022 22:39:57 -0800 (PST)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.49.67])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3A4493F70D;
+        Sun, 20 Feb 2022 22:39:54 -0800 (PST)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org, akpm@linux-foundation.org
+Cc:     linux-kernel@vger.kernel.org,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        linux-arch@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        linux-parisc@vger.kernel.org
+Subject: [PATCH V2 21/30] parisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+Date:   Mon, 21 Feb 2022 12:08:30 +0530
+Message-Id: <1645425519-9034-22-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1645425519-9034-1-git-send-email-anshuman.khandual@arm.com>
+References: <1645425519-9034-1-git-send-email-anshuman.khandual@arm.com>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,108 +44,111 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-kernel/sysctl.c is a kitchen sink where everyone leaves their dirty
-dishes, this makes it very difficult to maintain.
+This defines and exports a platform specific custom vm_get_page_prot() via
+subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
+macros can be dropped which are no longer needed.
 
-To help with this maintenance let's start by moving sysctls to places
-where they actually belong.  The proc sysctl maintainers do not want to
-know what sysctl knobs you wish to add for your own piece of code, we
-just care about the core logic.
-
-All filesystem syctls now get reviewed by fs folks. This commit
-follows the commit of fs, move the soft-power sysctl to its own file,
-kernel/parisc/power.c.
-
-Signed-off-by: tangmeng <tangmeng@uniontech.com>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- drivers/parisc/power.c | 24 ++++++++++++++++++++++--
- include/linux/sysctl.h |  1 -
- kernel/sysctl.c        |  9 ---------
- 3 files changed, 22 insertions(+), 12 deletions(-)
+ arch/parisc/Kconfig               |  1 +
+ arch/parisc/include/asm/pgtable.h | 20 ----------------
+ arch/parisc/mm/init.c             | 40 +++++++++++++++++++++++++++++++
+ 3 files changed, 41 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/parisc/power.c b/drivers/parisc/power.c
-index 456776bd8ee6..2426b6868a5a 100644
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -109,7 +109,26 @@ static struct task_struct *power_task;
- #define SYSCTL_FILENAME	"sys/kernel/power"
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 43c1c880def6..de512f120b50 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -10,6 +10,7 @@ config PARISC
+ 	select ARCH_HAS_ELF_RANDOMIZE
+ 	select ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
++	select ARCH_HAS_VM_GET_PAGE_PROT
+ 	select ARCH_NO_SG_CHAIN
+ 	select ARCH_SUPPORTS_HUGETLBFS if PA20
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+index 3e7cf882639f..80d99b2b5913 100644
+--- a/arch/parisc/include/asm/pgtable.h
++++ b/arch/parisc/include/asm/pgtable.h
+@@ -269,26 +269,6 @@ extern void __update_cache(pte_t pte);
+  * pages.
+  */
  
- /* soft power switch enabled/disabled */
--int pwrsw_enabled __read_mostly = 1;
-+static int pwrsw_enabled __read_mostly = 1;
-+#ifdef CONFIG_SYSCTL
-+static struct ctl_table kern_parisc_power_table[] = {
-+	{
-+		.procname       = "soft-power",
-+		.data           = &pwrsw_enabled,
-+		.maxlen         = sizeof(int),
-+		.mode           = 0644,
-+		.proc_handler   = proc_dointvec,
-+	},
-+	{ }
-+};
-+
-+static void __init kernel_parisc_power_sysctls_init(void)
-+{
-+	register_sysctl_init("kernel", kern_parisc_power_table);
-+}
-+#else
-+#define kernel_parisc_power_sysctls_init() do { } while (0)
-+#endif /* CONFIG_SYSCTL */
- 
- /* main kernel thread worker. It polls the button state */
- static int kpowerswd(void *param)
-@@ -193,7 +212,6 @@ static struct notifier_block parisc_panic_block = {
- 	.priority	= INT_MAX,
- };
- 
+-	 /*xwr*/
+-#define __P000  PAGE_NONE
+-#define __P001  PAGE_READONLY
+-#define __P010  __P000 /* copy on write */
+-#define __P011  __P001 /* copy on write */
+-#define __P100  PAGE_EXECREAD
+-#define __P101  PAGE_EXECREAD
+-#define __P110  __P100 /* copy on write */
+-#define __P111  __P101 /* copy on write */
 -
- static int __init power_init(void)
- {
- 	unsigned long ret;
-@@ -233,6 +251,8 @@ static int __init power_init(void)
- 	atomic_notifier_chain_register(&panic_notifier_list,
- 			&parisc_panic_block);
+-#define __S000  PAGE_NONE
+-#define __S001  PAGE_READONLY
+-#define __S010  PAGE_WRITEONLY
+-#define __S011  PAGE_SHARED
+-#define __S100  PAGE_EXECREAD
+-#define __S101  PAGE_EXECREAD
+-#define __S110  PAGE_RWX
+-#define __S111  PAGE_RWX
+-
+-
+ extern pgd_t swapper_pg_dir[]; /* declared in init_task.c */
  
-+	kernel_parisc_power_sysctls_init();
-+
- 	return 0;
+ /* initial page tables for 0-8MB for kernel */
+diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+index 1dc2e88e7b04..f9e841f874a8 100644
+--- a/arch/parisc/mm/init.c
++++ b/arch/parisc/mm/init.c
+@@ -865,3 +865,43 @@ void flush_tlb_all(void)
+ 	spin_unlock(&sid_lock);
  }
- 
-diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
-index 6353d6db69b2..e00bf436d63b 100644
---- a/include/linux/sysctl.h
-+++ b/include/linux/sysctl.h
-@@ -242,7 +242,6 @@ int do_proc_douintvec(struct ctl_table *table, int write,
- 				  int write, void *data),
- 		      void *data);
- 
--extern int pwrsw_enabled;
- extern int unaligned_enabled;
- extern int unaligned_dump_stack;
- extern int no_unaligned_warning;
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 22037f03cd2b..d11390634321 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -1737,15 +1737,6 @@ static struct ctl_table kern_table[] = {
- 		.proc_handler	= proc_dointvec,
- 	},
  #endif
--#ifdef CONFIG_PARISC
--	{
--		.procname	= "soft-power",
--		.data		= &pwrsw_enabled,
--		.maxlen		= sizeof (int),
--		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
--	},
--#endif
- #ifdef CONFIG_SYSCTL_ARCH_UNALIGN_ALLOW
- 	{
- 		.procname	= "unaligned-trap",
++
++pgprot_t vm_get_page_prot(unsigned long vm_flags)
++{
++	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
++	case VM_NONE:
++		return PAGE_NONE;
++	case VM_READ:
++		return PAGE_READONLY;
++	/* copy on write */
++	case VM_WRITE:
++		return PAGE_NONE;
++	/* copy on write */
++	case VM_WRITE | VM_READ:
++		return PAGE_READONLY;
++	case VM_EXEC:
++	case VM_EXEC | VM_READ:
++	/* copy on write */
++	case VM_EXEC | VM_WRITE:
++	/* copy on write */
++	case VM_EXEC | VM_WRITE | VM_READ:
++		return PAGE_EXECREAD;
++	case VM_SHARED:
++		return PAGE_NONE;
++	case VM_SHARED | VM_READ:
++		return PAGE_READONLY;
++	case VM_SHARED | VM_WRITE:
++		return PAGE_WRITEONLY;
++	case VM_SHARED | VM_WRITE | VM_READ:
++		return PAGE_SHARED;
++	case VM_SHARED | VM_EXEC:
++	case VM_SHARED | VM_EXEC | VM_READ:
++		return PAGE_EXECREAD;
++	case VM_SHARED | VM_EXEC | VM_WRITE:
++	case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
++		return PAGE_RWX;
++	default:
++		BUILD_BUG();
++	}
++}
++EXPORT_SYMBOL(vm_get_page_prot);
 -- 
-2.20.1
-
-
+2.25.1
 
