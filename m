@@ -2,98 +2,156 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 691514C19E4
-	for <lists+linux-parisc@lfdr.de>; Wed, 23 Feb 2022 18:27:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7A8D4C1CE4
+	for <lists+linux-parisc@lfdr.de>; Wed, 23 Feb 2022 21:11:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242746AbiBWR1b (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 23 Feb 2022 12:27:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39706 "EHLO
+        id S234567AbiBWULn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 23 Feb 2022 15:11:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239033AbiBWR1a (ORCPT
+        with ESMTP id S233325AbiBWULm (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 23 Feb 2022 12:27:30 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21B451E6;
-        Wed, 23 Feb 2022 09:27:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1645637214;
-        bh=LPsjSmV0AW6oNRFK93v2KYQmZ22UPSkf9MaEPo7lXQU=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=E3Jk6KIMAqNpbIIBIcjuP0ahrnYMQNE97EUmmDfaUS6iLo8KQO7BBETbeYN5aSZhc
-         ZtHzCZOhBk+BMkVC4l6aL+JsRxkTTbn9KW0Nnt+0SbIddByvSUC39QqIIA28WKzHk6
-         jAyl5uBmGTNH3A52Tmi+y5ipRuyqUS7ARyiH5LgA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.191.154]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MMGRK-1ncnZT3pIs-00JL2y; Wed, 23
- Feb 2022 18:26:53 +0100
-Date:   Wed, 23 Feb 2022 18:26:51 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-Subject: [GIT PULL] parisc unaligned handler fixes for v5.17-rc6
-Message-ID: <YhZuW0o9A4qhfdZ5@ls3530>
+        Wed, 23 Feb 2022 15:11:42 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 434924C7AD
+        for <linux-parisc@vger.kernel.org>; Wed, 23 Feb 2022 12:11:14 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id u20so251688lff.2
+        for <linux-parisc@vger.kernel.org>; Wed, 23 Feb 2022 12:11:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+S6BFzj6o5ckty5iXSThNrfkPsdFE94/fVb8NP4+aFs=;
+        b=F/2f/aEUKxSuzDdCknAbug+t8clrlE0v7gj9NkhphhHftuFg6XGIjvpJXVx+ZHKhn9
+         jOIdz4l7lK+/F1JhXkxR/PARyehOhzu1/S93ijWQKe7fGKOKTiRs9R81aIq3OYNVOgnf
+         G4UcKLBEtMgH8cssPIzV42vV3R64/Z0YRVhdY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+S6BFzj6o5ckty5iXSThNrfkPsdFE94/fVb8NP4+aFs=;
+        b=bDbPPeQB8B07Q75m9+k0fY5w1PNRv7Vdxx0Py1uZ2aAMF8q8rROSRUO0Sam0ccDi7Y
+         vp/xdl02q4bhv2JxLpUsHkdyxavLNHtAOQr8+tF13/6pL5oHVmzDVV2mguzHiUt3mZgO
+         THxZO/h1UFCqZSzLsTxiH2nuzZxaxPJdzBRHvB6p4W7uWFGs3X74gv0xyeCDfIXrcMtW
+         veEeCozOV7r19UBhsYNlBv6dj2KjcnU/X4TJwGW17+VvXsCOsJpCZ/pYXlbinBa7CSbY
+         q+Hlo1UlHDExj9vrNfDppUBqfYMMisSvCnWTU1dG04EU3Kfv9SXRAD8QKHUEMjhgwHo4
+         jYuA==
+X-Gm-Message-State: AOAM531UsWmRZ/3TQyRWP/G+eV/VfVzuGK3Q2YNl7DlXxMCLRHPKjL9B
+        jRHqDPPi+wtGvGJ36wWEJp6q233SWIx9xKJvbFs=
+X-Google-Smtp-Source: ABdhPJxLBBfSH+lbXVfTtCe5UaUWnthU/OjuXsO52XM/rCPIRkDGvH0rk7kaBbOh/ofw3zGfWgWT2Q==
+X-Received: by 2002:ac2:5148:0:b0:442:f24f:1aea with SMTP id q8-20020ac25148000000b00442f24f1aeamr852864lfd.20.1645647072208;
+        Wed, 23 Feb 2022 12:11:12 -0800 (PST)
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
+        by smtp.gmail.com with ESMTPSA id t10sm80354ljd.37.2022.02.23.12.11.11
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Feb 2022 12:11:11 -0800 (PST)
+Received: by mail-lj1-f178.google.com with SMTP id bn33so26311058ljb.6
+        for <linux-parisc@vger.kernel.org>; Wed, 23 Feb 2022 12:11:11 -0800 (PST)
+X-Received: by 2002:a05:6512:130b:b0:443:c2eb:399d with SMTP id
+ x11-20020a056512130b00b00443c2eb399dmr822016lfu.27.1645646720244; Wed, 23 Feb
+ 2022 12:05:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:OKAG+fF1F81XlSTqFe02e38imDLCbDPCIbNqJSCCHmlK6pkJDk6
- YvfmCCJyFLM++lsSmxhdwhodHm6xCDK0yTZp/BmZI76GRV2ySbxI0rnFCnlZz/ZDag/XDd7
- WrpyziN7e8eL5JZEX8CSLw3zcDTkFkDKcsBzNj8NraRosRY2HqVFULMns8+/hsGpvwI+R8y
- 6iNIG05MLvjjX03B5B49w==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YZesXhFq358=:EWA2cRoXmJPRn89Z3HeAkr
- UDA/t2BE83CTFqbrvyvRCpJso+jg48E2OxHGoY2ifSPtBLfWYUg2xzkDRgNU7qvP7Vj2CSAMK
- A2TvdAHpdpV5km4MNY6TLrLK8v0Hs0N9iwu76fSK5A0XJL5qD47ZhPCkemy0lIhCqtsD6Icwi
- lJCJ6rRt0m+jXqfxQcLpcTAMacg6lKA7+OFIr8vB8irVgEoNsfo+IO4dQ3W5q/afktqAS5Itn
- MYFdIvjYftnO3DhrktlTpvbWP/2khwHScNALkWIUzRAh5Y2Pa15JYi01NxIbAEK7YDDDbfKm5
- KTDNEDH83/lCeZXqvHwz4CkfD7BgoaM8hfRhw4s9g86IQ/Pbzl0cRZqR0Z9u3vQa4Yg3L8mKi
- v3gANIhDfHeKHJopdNEMZQ+l+Q4wg8SUQ8VXf/QYPHSeH00EiXIutct1Ubo361Wqcoc0uj0sx
- p2bBgy/o5uek2mWldg4+d1xvESKvHAwrVN65GEaQ/dN5Kk9kV9NM5YnARIAuGiNmyxrAnuBDo
- wt1W4XlVm00Nn3nnTFUjmN/QAPs32it7t+Qdyxk8XSS7e5jQpIQc3gPfN3vearHAXOvuuvwFS
- wY54mfUiERULM+2ASY+aU+ohlDB81SPOwIn6LQWddG42Bw7/6LdFL/C2rmw5eAwE+QqrDQESa
- RoROBqWbhhGYd9cuMKdvXJph3HugzGa8tXH8B164QA/1wtlRU8ra3qUrGCMcTlyS3W8SgtwpW
- nU8FL1TXGaKP3KmgvXvzg60MTpCAFk5MIAVnuHwo02YXObEgCD7JdRD8fnfQCp4irqTBQ2uaw
- sDjW+lZCU3ID+hlsVlVKwlxd/TjggOF8j4AIxk0Jykpv+dF4us860pP3Q2SK1pgj+Nxw40vfj
- 2ASkcMRoTT42zRf179e4R4iRnjDOxKUnIqsEm4wujTtFc+/qGrj/VagE9q3FMCQ3FevG+S2jO
- PapSb5/IoHW1fRFu18yo0/k6LwwNYicGFy1/ZDYNtypO71Pli0IFnPDVCxXuBZ1g6KpR+pX6H
- zFyggi74dC4U/J43sICnuOe66AiChp5eQksddcYl61vySojpgwNgmZ7wZIVbxhZpLNPzua2AJ
- QLTr1jXSsUN2uk=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220216131332.1489939-1-arnd@kernel.org> <20220216131332.1489939-10-arnd@kernel.org>
+ <20220221132456.GA7139@alpha.franken.de>
+In-Reply-To: <20220221132456.GA7139@alpha.franken.de>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 23 Feb 2022 12:05:04 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjdHz6OU3M9T5zE9Fc9SNdDs52iOE+eVn-wuUT6UDpBLg@mail.gmail.com>
+Message-ID: <CAHk-=wjdHz6OU3M9T5zE9Fc9SNdDs52iOE+eVn-wuUT6UDpBLg@mail.gmail.com>
+Subject: Re: [PATCH v2 09/18] mips: use simpler access_ok()
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     Arnd Bergmann <arnd@kernel.org>, Christoph Hellwig <hch@lst.de>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Brian Cain <bcain@codeaurora.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Stafford Horne <shorne@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        David Miller <davem@davemloft.net>,
+        Richard Weinberger <richard@nod.at>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        "open list:SYNOPSYS ARC ARCHITECTURE" 
+        <linux-snps-arc@lists.infradead.org>, linux-csky@vger.kernel.org,
+        linux-hexagon <linux-hexagon@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Openrisc <openrisc@lists.librecores.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-sparc <sparclinux@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The following changes since commit 8b97cae315cafd7debf3601f88621e2aa8956ef3:
+On Mon, Feb 21, 2022 at 5:25 AM Thomas Bogendoerfer
+<tsbogend@alpha.franken.de> wrote:
+>
+> With this patch
+[ .. snip snip ..]
+> I at least get my simple test cases fixed, but I'm not sure this is
+> correct.
 
-  Merge tag 'net-5.17-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2022-02-17 11:33:59 -0800)
+I think you really want to do that anyway, just to get things like
+wild kernel pointers right (ie think get_kernel_nofault() and friends
+for ftrace etc).
 
-are available in the Git repository at:
+They shouldn't happen in any normal situation, but those kinds of
+unverified pointers is why we _have_ get_kernel_nofault() in the first
+place.
 
-  http://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.17/parisc-4
+On x86-64, the roughly equivalent situation is that addresses that
+aren't in canonical format do not take a #PF (page fault), they take a
+#GP (general protection) fault.
 
-for you to fetch changes up to a97279836867b1cb50a3d4f0b1bf60e0abe6d46c:
+So I think you want to do that fixup_exception() for any possible addresses.
 
-  parisc/unaligned: Fix ldw() and stw() unalignment handlers (2022-02-23 18:01:06 +0100)
+> Is there a reason to not also #define TASK_SIZE_MAX   __UA_LIMIT like
+> for the 32bit case ?
 
-----------------------------------------------------------------
-parisc unaligned handler fixes
+I would suggest against using a non-constant TASK_SIZE_MAX. Being
+constant is literally one reason why it exists, when TASK_SIZE itself
+has often been about other things (ie "32-bit process").
 
-Two patches which fix a few bugs in the unalignment handlers.  The fldd
-and fstd instructions weren't handled at all on 32-bit kernels, the stw
-instruction didn't checked for fault errors and the fldw_l and ldw_m
-were handled wrongly as integer vs. floating point instructions.
-Both patches are tagged for stable series.
+Having to load variables for things like get_user() is annoying, if
+you could do it with a simple constant instead (where that "simple"
+part is to avoid having to load big values from a constant pool -
+often constants like "high bit set" can be loaded and compared against
+more efficiently).
 
-----------------------------------------------------------------
-Helge Deller (2):
-      parisc/unaligned: Fix fldd and fstd unaligned handlers on 32-bit kernel
-      parisc/unaligned: Fix ldw() and stw() unalignment handlers
-
- arch/parisc/kernel/unaligned.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+               Linus
