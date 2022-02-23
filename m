@@ -2,140 +2,114 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D4D4C12FF
-	for <lists+linux-parisc@lfdr.de>; Wed, 23 Feb 2022 13:42:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D23CB4C191D
+	for <lists+linux-parisc@lfdr.de>; Wed, 23 Feb 2022 17:55:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240551AbiBWMnH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 23 Feb 2022 07:43:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57986 "EHLO
+        id S243057AbiBWQzf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 23 Feb 2022 11:55:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbiBWMnG (ORCPT
+        with ESMTP id S243056AbiBWQze (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 23 Feb 2022 07:43:06 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29CE535DED;
-        Wed, 23 Feb 2022 04:42:39 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B910761179;
-        Wed, 23 Feb 2022 12:42:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F58BC340F1;
-        Wed, 23 Feb 2022 12:42:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645620158;
-        bh=vfHK+gkNDrAvQXi1VtrHdfwiLvh+3euoD4Z2MIR/0m0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=O/3TthIL4XfWE4YBU4n+//W2s9Oow3MOp0B72JrNSWI9KdK60Fxzenp1OHUXkcfNg
-         wQ7nSn9LwIWUM+G3FYGfPJNfyAsXufq6P/hrN4O65dMg+sODhN+Eq+xESdDU6kkZPn
-         KGWyOsXBMn0QXs3d1k/784mt2AhszZ2hGQ24pD0l+ywIQ8PdW3Lv6NpsT3QhFcby8J
-         IgUqm/pVBKu3CC3PrhVeIq9ZhkFShwNCPKjC2XoyoUGEOvbYj6krNNEmELypMGKImn
-         A7z8e4rFe7arHT49oeRXRQiNaNFWqRLSlQSuF6qDCG+RKV0Sg8fWcV0Xrgo04qcTyl
-         ivzYRC93uGpoA==
-Received: by mail-vk1-f174.google.com with SMTP id x62so4366408vkg.6;
-        Wed, 23 Feb 2022 04:42:38 -0800 (PST)
-X-Gm-Message-State: AOAM531YwYtI9iDBDvlNUPjT8kU2y9b/HaDU8fp3bGlb95NKjgDCUCzW
-        Y6qqFfmi2jzk7G1tB2c8rrU6pXWyD/UtnapWBGs=
-X-Google-Smtp-Source: ABdhPJwiS2/TnUZj6eqhOkeNucJDlHqkwMwsfsk+suYlfmqT0vHvdSP7AQRVGgao7f8HjSLljPJQRV0WirIw6+DTixk=
-X-Received: by 2002:a05:6122:887:b0:332:699e:7e67 with SMTP id
- 7-20020a056122088700b00332699e7e67mr1166442vkf.35.1645620157156; Wed, 23 Feb
- 2022 04:42:37 -0800 (PST)
+        Wed, 23 Feb 2022 11:55:34 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BC0549248
+        for <linux-parisc@vger.kernel.org>; Wed, 23 Feb 2022 08:55:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1645635296;
+        bh=aIuSp5XEcCBCUpXkC5SFSqxsTRWBcfx3QCV5lEE+ycI=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=JRPjlUe0865hHMJkMCLIp2bub+UdRbVMk8YxVE7gx8fwaCjxJG5ea+3XWmCQb1Xxx
+         kBH5fz3+ZFrqpz2O727tijWHRtGLVzZX6n9gJrUKjTAiS1SmPQtCIqxlPkVCzAHbQt
+         4ATGD188bk+0B4MWPZVLmxtDMM7JrqmuhvnwcZN8=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.191.154]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mqs0X-1o0uVC3lXF-00mqXt; Wed, 23
+ Feb 2022 17:54:55 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH 1/4] parisc/unaligned: Tweak inline assembly of emulate_ldh()
+Date:   Wed, 23 Feb 2022 17:54:52 +0100
+Message-Id: <20220223165455.3764-1-deller@gmx.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20220201150545.1512822-1-guoren@kernel.org> <20220201150545.1512822-18-guoren@kernel.org>
- <4379941.LvFx2qVVIh@eto.sf-tec.de>
-In-Reply-To: <4379941.LvFx2qVVIh@eto.sf-tec.de>
-From:   Guo Ren <guoren@kernel.org>
-Date:   Wed, 23 Feb 2022 20:42:26 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTRcfvd6Sin=3Dv91WZO6DxLsUsB=ap+F1WehKb6=w5fkA@mail.gmail.com>
-Message-ID: <CAJF2gTRcfvd6Sin=3Dv91WZO6DxLsUsB=ap+F1WehKb6=w5fkA@mail.gmail.com>
-Subject: Re: [PATCH V5 17/21] riscv: compat: vdso: Add setup additional pages implementation
-To:     Rolf Eike Beer <eb@emlix.com>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>, Arnd Bergmann <arnd@arndb.de>,
-        Anup Patel <anup@brainfault.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
-        Drew Fustini <drew@beagleboard.org>,
-        Wang Junqiang <wangjunqiang@iscas.ac.cn>,
-        Christoph Hellwig <hch@lst.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-csky@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Guo Ren <guoren@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Provags-ID: V03:K1:+F/SQEpOwQs0YB+c8PZH2Bf9e3thnJtSjTvPDlVVxHWYdYKL+vk
+ m1xvUjMu6HYOntgsyXWepfEHV/avcI7c+BNFS1odcOC3dlsKjt9egc9iKfKjotFR7H4Va+A
+ DhRXX6DXzyRAE55ea8/v7bfStoyWCRM2sxshe6/Hv7v3nOKQOgbdFRhiWea0CchbLLVvp9V
+ lz/D8f6i9oFYX0Jzw21hg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:EeC9fhP9I/A=:QWt/zfts9PcUi3qkNZpi3u
+ 0POztU3UpcXytdtQJpS3GYCGEMwo+1lDiMZLbY2O4Vv2twZK/ZFe4sROp7HdRmX4swrqzVfVF
+ WjhSC3qXyqje2UK2Ofqtvbua2x2Dq1jGPvHFVKTuEnPT3fZTM6grdJLGKV0bNeSy3IMghKiGw
+ CyPHokdFnT+14o2UoLGfSct/MNnW4SMHUhvYoaowuneDqQEA+ymMD4A/Z/esX+9TDCQIvb9h2
+ LLHDed0noui3ywQ+DsPOzoUdxi9v0WyjPHJnGCgF39TjhrSa7pTSfQ0ThC33y/voQKOz4FNsP
+ A2jxE/2qOniqfZ0wDDs5/SNPSRuEW8girwPo1IxntZ2nLCcpO2EoFOcFFRgYyemSyIuspt0Hx
+ Oi8CyZBNNXGqCfkM85FCzG/rtgzvFy5YZZpr/0wE3NPD6fwaXgiyQPszIOUuo524Z7WHggUnt
+ WtZM3s7As8WnVEGF/lav6gehYODqJzwvxsweNqMrjCVkSDmTz+1eFWhittBoz0MLTSIcvWM3e
+ jgSOFXIsAtjAzF3hGOVxR35PgvywWbv0Z6Ch2xH0hETgokga0TSCLxFjBnF+1wWDdmv82idJX
+ 5mmEQfoSyU4oycdgGJezD0+5cJsL835Qzbz1WswnyYIlwzQDqBDX3H/QnERoGiTgvriaLqDTn
+ Unn5NGxcpdEQCiv34LMVPOZQ6Flwbb3EU4/xijlDBQOEdo9Fk0Kj3/tbj6o01XNOMD04S1lmg
+ 18waKXTn7XVrreUfOP9XVdI5HpwI6MyAIh3dKMzi83t+tIK8Xo0x9ued6ev3Ff2CXPNHXR5xR
+ N44UH4wjVvEucC6Jk8KPFJiSfUpVxyXrF1m1A7Ibf1XVSJuUFLqN1YP/q0hBgE05kO6XMA9S/
+ EZHy6g3xNiUki5YlArvTKFIGUliRkB2HwsSbBQAY00dC9vJ7DXgQjmyRIf0M00O1DxWxizw/s
+ KeoKTKLPoTbrPTI4l9H0nDQg4gyZ06iz5NjSS/blSMWLILlNku4LQ1fhD8YdlWwdZk+oLmtP4
+ sue7PD7IYI3mEv7//ElGTAd6F4hJumkxr86oFAsIKQy3Qh1zo6uUN0IXtrGhf+NAO/YazKO+g
+ in1FvmDZCRW8oo=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Feb 23, 2022 at 8:19 PM Rolf Eike Beer <eb@emlix.com> wrote:
->
-> > @@ -66,35 +68,35 @@ static int vdso_mremap(const struct vm_special_mapp=
-ing
-> > *sm, return 0;
-> >  }
-> >
-> > -static int __init __vdso_init(void)
-> > +static int __init __vdso_init(struct __vdso_info *vdso_info)
-> >  {
-> >       unsigned int i;
-> >       struct page **vdso_pagelist;
-> >       unsigned long pfn;
-> >
-> > -     if (memcmp(vdso_info.vdso_code_start, "\177ELF", 4)) {
-> > +     if (memcmp(vdso_info->vdso_code_start, "\177ELF", 4)) {
-> >               pr_err("vDSO is not a valid ELF object!\n");
-> >               return -EINVAL;
-> >       }
-> >
->
-> Does anyone actually guarantee that this is at least this 4 bytes long?
+Convert to use real temp variables instead of clobbering processor
+registers.
 
-You can ref:
-arch/arm64/kernel/vdso.c
-arch/arm/kernel/vdso.c
-arch/nds32/kernel/vdso.c
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/kernel/unaligned.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-and in arch/powerpc/boot/elf.h:
-arch/powerpc/kernel/fadump.c:   memcpy(elf->e_ident, ELFMAG, SELFMAG);
-arch/powerpc/boot/elf.h:#define ELFMAG0         0x7f    /* EI_MAG */
-arch/powerpc/boot/elf.h:#define ELFMAG1         'E'
-arch/powerpc/boot/elf.h:#define ELFMAG2         'L'
-arch/powerpc/boot/elf.h:#define ELFMAG3         'F'
-arch/powerpc/boot/elf.h:#define ELFMAG          "\177ELF"
-arch/powerpc/boot/elf.h:#define SELFMAG         4
+diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned=
+.c
+index 857dcc790122..b923bc135d29 100644
+=2D-- a/arch/parisc/kernel/unaligned.c
++++ b/arch/parisc/kernel/unaligned.c
+@@ -113,7 +113,7 @@ int unaligned_enabled __read_mostly =3D 1;
+ static int emulate_ldh(struct pt_regs *regs, int toreg)
+ {
+ 	unsigned long saddr =3D regs->ior;
+-	unsigned long val =3D 0;
++	unsigned long val =3D 0, temp1;
+ 	ASM_EXCEPTIONTABLE_VAR(ret);
 
+ 	DPRINTF("load " RFMT ":" RFMT " to r%d for 2 bytes\n",
+@@ -121,15 +121,14 @@ static int emulate_ldh(struct pt_regs *regs, int tor=
+eg)
 
->
-> Eike
-> --
-> Rolf Eike Beer, emlix GmbH, https://www.emlix.com
-> Fon +49 551 30664-0, Fax +49 551 30664-11
-> Gothaer Platz 3, 37083 G=C3=B6ttingen, Germany
-> Sitz der Gesellschaft: G=C3=B6ttingen, Amtsgericht G=C3=B6ttingen HR B 31=
-60
-> Gesch=C3=A4ftsf=C3=BChrung: Heike Jordan, Dr. Uwe Kracke =E2=80=93 Ust-Id=
-Nr.: DE 205 198 055
->
-> emlix - smart embedded open source
+ 	__asm__ __volatile__  (
+ "	mtsp	%4, %%sr1\n"
+-"1:	ldbs	0(%%sr1,%3), %%r20\n"
++"1:	ldbs	0(%%sr1,%3), %2\n"
+ "2:	ldbs	1(%%sr1,%3), %0\n"
+-"	depw	%%r20, 23, 24, %0\n"
++"	depw	%2, 23, 24, %0\n"
+ "3:	\n"
+ 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
+ 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
+-	: "=3Dr" (val), "+r" (ret)
+-	: "0" (val), "r" (saddr), "r" (regs->isr)
+-	: "r20" );
++	: "+r" (val), "+r" (ret), "=3D&r" (temp1)
++	: "r" (saddr), "r" (regs->isr) );
 
+ 	DPRINTF("val =3D 0x" RFMT "\n", val);
 
+=2D-
+2.34.1
 
---=20
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
