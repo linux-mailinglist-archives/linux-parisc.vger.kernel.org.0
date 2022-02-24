@@ -2,226 +2,350 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 012AC4C3188
-	for <lists+linux-parisc@lfdr.de>; Thu, 24 Feb 2022 17:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9CEC4C3436
+	for <lists+linux-parisc@lfdr.de>; Thu, 24 Feb 2022 18:57:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229770AbiBXQfR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 24 Feb 2022 11:35:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43590 "EHLO
+        id S232543AbiBXR6A (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 24 Feb 2022 12:58:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229921AbiBXQfQ (ORCPT
+        with ESMTP id S232568AbiBXR6A (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 24 Feb 2022 11:35:16 -0500
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54CE31E149B;
-        Thu, 24 Feb 2022 08:34:40 -0800 (PST)
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21OFWRnl007294;
-        Thu, 24 Feb 2022 16:34:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-id : content-transfer-encoding : mime-version; s=corp-2021-07-09;
- bh=Gl4e9J/ho1YKJO7iaUI7t2Kg6a8zBojRZoy/VcN+VHU=;
- b=SeKfR3NDFYMzcUL3q27AWfkNqNTqJwoJHE37tNkNWvSeGXM87SlDFyUBU5ivk5V0AKHX
- nWHjfaww9IGy1GhM9FGpiAVbc400eATaSY+7BJOp1kBe/ID/5pIeI3i7uPEYo1IdKvA9
- /SlWjQ8y+/en9zpzpEmS29q5Oa3otrXKUc+3ySpEuXK4o+P1PtiePSrTz9qnQwvhqOJF
- NrZY6lXEmQhRfyUIFTHqrTrM4ASxjG5DwDLbGxwMV0ZMukftAkdeoRgg+zbvJstxodK3
- VLLO8SeuhUjYgMBAL7s2B5nB3IlNhUeLhmcittOWpb9z10s4k0BSE31j9JlMFRQ1pbu9 XA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3ectsx7xbp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 24 Feb 2022 16:34:13 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 21OGV11U043574;
-        Thu, 24 Feb 2022 16:34:13 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2102.outbound.protection.outlook.com [104.47.70.102])
-        by aserp3030.oracle.com with ESMTP id 3eapkkebxp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 24 Feb 2022 16:34:13 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SQFpspE1lZ3Wi8EBId6L/5F76mdEybhJUb/VeBsqay45Ryo/Aymwk+/9L89XrCdXjnntHyTsXY/FA+FR1rgN+benlhZ/VjvbMoouFU8xZJsx0dS69g+iZjTGxToHEi2AzBfaFd0/wKYNA45Sf8rJijTTF5TK4YXP27Suis9MIZS+KVGW5hSWA+ChhIgGkyFIjPmMT1Sagt3AxxrRTy/mzwquLqPX/dqvvgGpjeU85+i7d4e+Hxk0aj2OInj6GbVF6QeCwkPbikS0aIG/LNMFX+03pyixamHsvCq3E2MtI2HH4u/CCU3oNsDQOm6W15qkVAoiNyXKlMxy05XuJZKqpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gl4e9J/ho1YKJO7iaUI7t2Kg6a8zBojRZoy/VcN+VHU=;
- b=JlXBcmzplukkR+6mSjVxm+F1lcsyF99lVQZ0aH/4Qw78sSxikSZt5snoOxK+y7xzgrDm9dBZn8yDVUCQAx2jMdRw4aWhtqgR0sJKwXx0IE1P+6TBWEFLXLEvXD/ZMhT8yWOlmzWaLE1unH1FeDKvIhyKOFFdWdRog2FSuP4IueBwrcM/3k6/ZsjrqzIcQl70xLcrmqCpJExzCkhwRwH/eK/tQeZSVZGby9FM42ZCEyGseAYH5l9VxmvkhQ04Z/XgPr0RTRMO+tsw3iQ5R2EYYXxTJLWlXhG8Ds1aBZ8Mg7MpxaMtsNARBE6u9F4L+x+RRMO0VeUOYpBdS93EfYG/FA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        Thu, 24 Feb 2022 12:58:00 -0500
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA36F6F4B7
+        for <linux-parisc@vger.kernel.org>; Thu, 24 Feb 2022 09:57:27 -0800 (PST)
+Received: by mail-pl1-x62f.google.com with SMTP id i1so2465623plr.2
+        for <linux-parisc@vger.kernel.org>; Thu, 24 Feb 2022 09:57:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gl4e9J/ho1YKJO7iaUI7t2Kg6a8zBojRZoy/VcN+VHU=;
- b=o29fACHhTM6BpwLNK5RCHdxC+TJzxvY0hGQVNoy6rqaFnDr4GiEDExmnNM1rXOPaBVE1DWB7swxJtVSY7m/95dP6Ii6Ntwtd+Lme/fCszIYvip2DWeiQ9KHh5yndxkao4Tdzy23QRgkc2a58s2V0R+NvRQbmt1pwGebBRAYC5gI=
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
- by MN2PR10MB3599.namprd10.prod.outlook.com (2603:10b6:208:113::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.22; Thu, 24 Feb
- 2022 16:34:10 +0000
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::8df4:1db9:57f2:a96a]) by SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::8df4:1db9:57f2:a96a%3]) with mapi id 15.20.5017.024; Thu, 24 Feb 2022
- 16:34:10 +0000
-From:   Liam Howlett <liam.howlett@oracle.com>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-CC:     linux-mm <linux-mm@kvack.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        "lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>
-Subject: Re: [next] mm/mmap.c:1962:25: error: passing argument 1 of 'vma_find'
- from incompatible pointer type
-Thread-Topic: [next] mm/mmap.c:1962:25: error: passing argument 1 of
- 'vma_find' from incompatible pointer type
-Thread-Index: AQHYKYdDQot6Qj0tQ0qfGJ899RLyf6yi5ZyA
-Date:   Thu, 24 Feb 2022 16:34:09 +0000
-Message-ID: <20220224163403.5nrgh753fkwpg3pi@revolver>
-References: <CA+G9fYvdFWYQ4GJkvD9KK8ut=DqHu8MKM-jok+tXo6-HiaPT0g@mail.gmail.com>
-In-Reply-To: <CA+G9fYvdFWYQ4GJkvD9KK8ut=DqHu8MKM-jok+tXo6-HiaPT0g@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 718747cd-0fed-4bed-2349-08d9f7b37c51
-x-ms-traffictypediagnostic: MN2PR10MB3599:EE_
-x-microsoft-antispam-prvs: <MN2PR10MB359988EA42C7A696D5372348FD3D9@MN2PR10MB3599.namprd10.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: m1+61KrI2GyfAN4rdqVYcVIbcPCD1lJdQh23cfBr9QrFg9rHEftD9BjqHNhLTPXLYXlCopWuBkDBfeFpue2Snhtfj6qb4UBwAsPN6+iKxKxlOZ9mEiQK5eaExJgJ5PpoaLnD/sPyRSVw1sBdeaOQ00bjKm30sFMdKQzAtM42Hf+b/vBV5srPv8N4fE2NRCnB/ymYEfOFPzWj0MBoOx2LNWZIW/frFcfgDxVPYHzL4zyus6IfRFcXMw67c589enwyH4HnXtPeZArYXIdOD/cNGl2lgy3MJaC4yV43vr3rA45pfLwZcgUVc0WLH8plvfCAzGNApcEE4Mm8Z0kqDvi986Ww9TiHoP3zF8yBhGeHVoflf4LmD4P6W9drUU3PCRmfytKeD1rUNW4v/jpoJ6PsyM0rmxuayVrpPBjTW8ubyFBj5kUc6vnDKo/Q6sUTGFqYmWaPuKh1bDA8q6fTFuzJ8eUESEGsJf4hm2u30VX3NtiS5bIIt/BWLthXEQqt3bMRVN0HAOaKDT3i9cA/wyGzt4VC6Xn1NrOuvB46QVFuTmVvpyMIVM4ujd8dNRGNAFAuSq19kqnGEs4K0TYZSIC3pOakCCB5vK0s3g+s+sRUR7k3rK5fbVw4x2tlTQY/fHLMNpJssTFbiAv4snfvskOjKP9eEFmUBw+MFdL5pai/N+JK+fyLKoxk03ouIWhBgkPmENqN218Qy2O3u/cwx8CUrWMc0AuaG/fB6EtpsieHJDELVRT7C/whkME/KmYQqOYpnmaNWlwZDCa/gft8XIln3L/XjPjScyDFjt9yhV9JPok=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(7916004)(366004)(2906002)(4326008)(91956017)(71200400001)(508600001)(64756008)(8676002)(66946007)(66446008)(66556008)(76116006)(966005)(6486002)(66476007)(122000001)(5660300002)(1076003)(33716001)(54906003)(83380400001)(38100700002)(316002)(38070700005)(6916009)(9686003)(86362001)(6512007)(6506007)(26005)(44832011)(8936002)(7416002)(186003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?i2VPTL4hYsXYMkPj/tRD02CDTH7ICcN01QpVDLF5KrzKp5xTZZYvxrHNZOuP?=
- =?us-ascii?Q?NzoqnP8fHyN5aY5AYtki6nVCy0BVkKlIifBPwzeoVWPC/qdZlPax7S4N4MD5?=
- =?us-ascii?Q?m0j3FM7SFbTfCSucQ8L5ZGyjLyzu4X1yWJqUT2ZGfC5C7eacHJ5A2hG3VS6J?=
- =?us-ascii?Q?6AlFyZoLkas1rMf7nihfOr5nFu8e+8oHlQzwx1gQunikLGhmgGtSSMT4fC8R?=
- =?us-ascii?Q?k0C+dC0BlT4BuIAQGZXAVTN/g14k3rSQ7H9o08DMmymdJG4pLWJG6hIInOBW?=
- =?us-ascii?Q?ui8O+cm2p3xWJooB1VGuC2gngBJm56HE1YihvqffWxnTis1NWOxa+R2wWX3J?=
- =?us-ascii?Q?OVbjIXCi/Y0SHL1xKFZxYI2o3fRfOCDL6nO/NXLDK2uZgq8yvv3IT+N4KCO5?=
- =?us-ascii?Q?FZJsjgZSpm0GsyTm8HEGIACocLeN0lAuA28bbQT6GXZiqPVu0qqdggqakde3?=
- =?us-ascii?Q?3VU2O4327a4UkvUMXcNnMrur5pAP8rOLK+7WeEXMYEmpD+y/n49z8iAQU+AP?=
- =?us-ascii?Q?9txHItu0qRhw17mS81h6JjX8rRHoAUcsUVCzHPdBTZK9HdqLjmm1Er1U0Pc7?=
- =?us-ascii?Q?d+sCOolgUp+T1247UygZtEOv/MIoVty/Ptuwzcccl/jDkd/6c/s4qs2jS76o?=
- =?us-ascii?Q?2vwHrxUZ0dUPCyd7gXoeN+kakEW8pYupNmRUhfEkt+MC1mMLGZkIOCkrNIUI?=
- =?us-ascii?Q?oDLKy81jh+Jk4/8gQax+yYs69lw8Nx7uMP5QN0z/lv5QGwCQY8O+vx9h95Ls?=
- =?us-ascii?Q?NAZGqk78IJ2Yc+5OTRYnESjuDYjWGWv4gCcDzM67q7vwdIsKUz3OqnKS22Ii?=
- =?us-ascii?Q?370lmooV26tVk+q8QLMIOBqx90ja5URkNUuTnZWjs9lBJ6CzduLKBvbFmrNh?=
- =?us-ascii?Q?plhGCvU19dYVj1UOr31FG9dtkFiwXdGmFwFNq6tcVZ+9ppS8n3SgyUrRSodd?=
- =?us-ascii?Q?4cqZxfsVvfgiiEjkDNUVB7XhQ6Ct2XfstIby2i8hScqpGAQjMBGTiwv9tDrD?=
- =?us-ascii?Q?kSFnrBg9IBkpHf98UlEPOdai1Vs0dNpw25xeb7XzkAdADovDcxPAij42jHNy?=
- =?us-ascii?Q?ezYmEGbyqaMWfIzCLcZPtdyGk8rBNzwWsL2oxjimA5WGPzZB9DpK/aMUS5PN?=
- =?us-ascii?Q?ymvUotVrSIKdVmei68g5TMI9hiklbrzQe90WcmAPr6pKhBmUBZFR+A55UPJT?=
- =?us-ascii?Q?kX0CdNvmUbgbw/wb4vfsKLGoIQHe2ajaRZdAi5IuOZyEbWw2rHOIxe9qRhcz?=
- =?us-ascii?Q?vRhwepgh9udEzN3bnulxf/Le2L71x6gBPf2cFeFl9SNK82NuM3dIt1TLkYI3?=
- =?us-ascii?Q?tyx2oT80rsjqPI0New7fkLcbDqj8r0kfpSFN2NRwrXCqrgMDRL3GHzjOo0dY?=
- =?us-ascii?Q?skKOQfPzMfIADX+cZ+zPebiJXzlaXfQsoLa61CECbH0KS1vDvKupEhmpenis?=
- =?us-ascii?Q?grRU34kp05zvUB7cArJOxyb2AerGSc52bhKxjeDPj9+jmSA4oq5E2ekRZsWe?=
- =?us-ascii?Q?cSx69RJGCu9NBqNC2kuHVpOTB0NjIaBa9/MSJD5u4Q4iK8GLP0iWDqpI+CW+?=
- =?us-ascii?Q?IKJbY0Eo8yhDo4RHNcWYWL/01h2FdfcUbm0rzNsEcDCQqggPLmjv8HHvYadt?=
- =?us-ascii?Q?+gzrjewaXo/cROOIYXXfXMM=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <615EA2D34CDB774E9A0A72F1F4A23720@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 718747cd-0fed-4bed-2349-08d9f7b37c51
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2022 16:34:10.5441
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Sw5AFt+oPRiYvC0Emp1rEpcF81WO38dj7+QV2gQGF0hERCIg2Wy6eoSMuTsdYiWrLI9hmcKVepjpqlYAiTOY8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR10MB3599
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10268 signatures=684655
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 adultscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2202240096
-X-Proofpoint-ORIG-GUID: un8SZZj-8EtjFpSTeYRm-d3J_7beMNzV
-X-Proofpoint-GUID: un8SZZj-8EtjFpSTeYRm-d3J_7beMNzV
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4cyzICQ/23bHkeHtwzkbDtebSfIDfHBmF44TmpxS3Qs=;
+        b=QZHtEKtUvZANVn2ElYT0MVq8L/sw0zRAND1G1+7+T2vN4rMWTQslOFNc01eWURY+2B
+         sy0EKF687Is70s9G179bTT4gb7OQj+aQvL7fNGMlm6ZA8EcAnbYhS2KBw8jCxSfkagq+
+         NucZ/R5TLUf/99L9ngjjYTgdH5a/n6N1tEKoBktikDcP1aWmcVutEpP4UHTORBHS9qay
+         VyS3Euibr59HFzGcQDm5Yb7u3hl49gPPn7xuZGLRjDMT13qhnDD4l6inYvCW8iV01vNz
+         aHx07dUlEYNNW1X1TiCzN3QQXMEUIWH8zIPIAR3ST5+sQ2z8sYlghZ5x1NpIC2rYLmfR
+         XjLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=4cyzICQ/23bHkeHtwzkbDtebSfIDfHBmF44TmpxS3Qs=;
+        b=OqKMrw4txGX3ymj0CyCoodR+is+mLUKtTARDpn99by0dghpXce4a7aGhVdlwJubtyb
+         BfVaW0lZb7LWSxUM4uJ0ouC8hGEA/vsCbuuxO3ihCZ+th7IJJfDOepB6VUzwkUZU6Ir3
+         N68hTIOSKiTB7fcP4NCF2hjye3rCdLWplNWQ2AqxAc+b0gmXGW5GqWfKA9TRsEXWkEei
+         d2UzJBNuDU663ObjOkW/menXCc21uXABg7IBIDwZEmRnLNQs0LWftfqBSiuGp8SLjc+u
+         GpCKuxuSTOn+pDj4dFOuUdwZzJJNmbN/R2k6RLdKPa9Vj9ZXbzt3VzUpBdlWkr/DRvxI
+         cNfQ==
+X-Gm-Message-State: AOAM532FkYNGvDMixu7CTBJfb4LIdpIXJdU/yCT4IHe7eT28dgJQyW12
+        Y+ID10cvbm6J26/KalF6JwyXVQ==
+X-Google-Smtp-Source: ABdhPJyVgqSJ004YUstyik+jYZz4EuPzBWmUx2Fjtwy+WACEd9Ui4gBxtYL98zOt7vqmGF1V37Iq4w==
+X-Received: by 2002:a17:902:e74e:b0:14f:f1c0:aaed with SMTP id p14-20020a170902e74e00b0014ff1c0aaedmr3958082plf.19.1645725447254;
+        Thu, 24 Feb 2022 09:57:27 -0800 (PST)
+Received: from localhost ([12.3.194.138])
+        by smtp.gmail.com with ESMTPSA id b9-20020a056a000cc900b004f3581ae086sm183340pfv.16.2022.02.24.09.57.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Feb 2022 09:57:26 -0800 (PST)
+Date:   Thu, 24 Feb 2022 09:57:26 -0800 (PST)
+X-Google-Original-Date: Thu, 24 Feb 2022 09:56:39 PST (-0800)
+Subject:     Re: [PATCH V6 17/20] riscv: compat: vdso: Add setup additional pages implementation
+In-Reply-To: <20220224085410.399351-18-guoren@kernel.org>
+CC:     guoren@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        anup@brainfault.org, Greg KH <gregkh@linuxfoundation.org>,
+        liush@allwinnertech.com, wefu@redhat.com, drew@beagleboard.org,
+        wangjunqiang@iscas.ac.cn, Christoph Hellwig <hch@lst.de>,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        x86@kernel.org, guoren@linux.alibaba.com
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     guoren@kernel.org
+Message-ID: <mhng-985c5e53-71d5-4d94-b9ff-deff7f834fc5@palmer-ri-x1c9>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-* Naresh Kamboju <naresh.kamboju@linaro.org> [220224 09:03]:
-> Linux next-20220223 arch parisc builds failed due to following errors.
-> Build configs:
->   - gcc-11-defconfig
->   - gcc-11-allnoconfig
->   - gcc-11-tinyconfig
->=20
-> metadata:
->   git_ref: master
->   git_repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
->   git_sha: d4a0ae62a277377de396850ed4b709b6bd9b7326
->   git_describe: next-20220223
->   arch: parisc
->   toolchain: gcc-11
->=20
->=20
-> Build error:
-> -----------
-> mm/mmap.c: In function 'expand_upwards':
-> mm/mmap.c:1962:25: error: passing argument 1 of 'vma_find' from
-> incompatible pointer type [-Werror=3Dincompatible-pointer-types]
->  1962 |         next =3D vma_find(mm, vma->vm_end);
->       |                         ^~
->       |                         |
->       |                         struct mm_struct *
+On Thu, 24 Feb 2022 00:54:07 PST (-0800), guoren@kernel.org wrote:
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> Reconstruct __setup_additional_pages() by appending vdso info
+> pointer argument to meet compat_vdso_info requirement. And change
+> vm_special_mapping *dm, *cm initialization into static.
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/riscv/include/asm/elf.h |   5 ++
+>  arch/riscv/include/asm/mmu.h |   1 +
+>  arch/riscv/kernel/vdso.c     | 103 +++++++++++++++++++++++------------
+>  3 files changed, 74 insertions(+), 35 deletions(-)
+>
+> diff --git a/arch/riscv/include/asm/elf.h b/arch/riscv/include/asm/elf.h
+> index 3a4293dc7229..d87d3bcc758d 100644
+> --- a/arch/riscv/include/asm/elf.h
+> +++ b/arch/riscv/include/asm/elf.h
+> @@ -134,5 +134,10 @@ do {    if ((ex).e_ident[EI_CLASS] == ELFCLASS32)		\
+>  typedef compat_ulong_t			compat_elf_greg_t;
+>  typedef compat_elf_greg_t		compat_elf_gregset_t[ELF_NGREG];
+>
+> +extern int compat_arch_setup_additional_pages(struct linux_binprm *bprm,
+> +					      int uses_interp);
+> +#define compat_arch_setup_additional_pages \
+> +				compat_arch_setup_additional_pages
+> +
+>  #endif /* CONFIG_COMPAT */
+>  #endif /* _ASM_RISCV_ELF_H */
+> diff --git a/arch/riscv/include/asm/mmu.h b/arch/riscv/include/asm/mmu.h
+> index 0099dc116168..cedcf8ea3c76 100644
+> --- a/arch/riscv/include/asm/mmu.h
+> +++ b/arch/riscv/include/asm/mmu.h
+> @@ -16,6 +16,7 @@ typedef struct {
+>  	atomic_long_t id;
+>  #endif
+>  	void *vdso;
+> +	void *vdso_info;
+>  #ifdef CONFIG_SMP
+>  	/* A local icache flush is needed before user execution can resume. */
+>  	cpumask_t icache_stale_mask;
+> diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
+> index a9436a65161a..f864811aa011 100644
+> --- a/arch/riscv/kernel/vdso.c
+> +++ b/arch/riscv/kernel/vdso.c
+> @@ -23,6 +23,9 @@ struct vdso_data {
+>  #endif
+>
+>  extern char vdso_start[], vdso_end[];
+> +#ifdef CONFIG_COMPAT
+> +extern char compat_vdso_start[], compat_vdso_end[];
+> +#endif
+>
+>  enum vvar_pages {
+>  	VVAR_DATA_PAGE_OFFSET,
+> @@ -30,6 +33,11 @@ enum vvar_pages {
+>  	VVAR_NR_PAGES,
+>  };
+>
+> +enum rv_vdso_map {
+> +	RV_VDSO_MAP_VVAR,
+> +	RV_VDSO_MAP_VDSO,
+> +};
+> +
+>  #define VVAR_SIZE  (VVAR_NR_PAGES << PAGE_SHIFT)
+>
+>  /*
+> @@ -52,12 +60,6 @@ struct __vdso_info {
+>  	struct vm_special_mapping *cm;
+>  };
+>
+> -static struct __vdso_info vdso_info __ro_after_init = {
+> -	.name = "vdso",
+> -	.vdso_code_start = vdso_start,
+> -	.vdso_code_end = vdso_end,
+> -};
+> -
+>  static int vdso_mremap(const struct vm_special_mapping *sm,
+>  		       struct vm_area_struct *new_vma)
+>  {
+> @@ -66,37 +68,33 @@ static int vdso_mremap(const struct vm_special_mapping *sm,
+>  	return 0;
+>  }
+>
+> -static int __init __vdso_init(void)
+> +static void __init __vdso_init(struct __vdso_info *vdso_info)
+>  {
+>  	unsigned int i;
+>  	struct page **vdso_pagelist;
+>  	unsigned long pfn;
+>
+> -	if (memcmp(vdso_info.vdso_code_start, "\177ELF", 4)) {
+> -		pr_err("vDSO is not a valid ELF object!\n");
+> -		return -EINVAL;
+> -	}
+> +	if (memcmp(vdso_info->vdso_code_start, "\177ELF", 4))
+> +		panic("vDSO is not a valid ELF object!\n");
+>
+> -	vdso_info.vdso_pages = (
+> -		vdso_info.vdso_code_end -
+> -		vdso_info.vdso_code_start) >>
+> +	vdso_info->vdso_pages = (
+> +		vdso_info->vdso_code_end -
+> +		vdso_info->vdso_code_start) >>
+>  		PAGE_SHIFT;
+>
+> -	vdso_pagelist = kcalloc(vdso_info.vdso_pages,
+> +	vdso_pagelist = kcalloc(vdso_info->vdso_pages,
+>  				sizeof(struct page *),
+>  				GFP_KERNEL);
+>  	if (vdso_pagelist == NULL)
+> -		return -ENOMEM;
+> +		panic("vDSO kcalloc failed!\n");
+>
+>  	/* Grab the vDSO code pages. */
+> -	pfn = sym_to_pfn(vdso_info.vdso_code_start);
+> +	pfn = sym_to_pfn(vdso_info->vdso_code_start);
+>
+> -	for (i = 0; i < vdso_info.vdso_pages; i++)
+> +	for (i = 0; i < vdso_info->vdso_pages; i++)
+>  		vdso_pagelist[i] = pfn_to_page(pfn + i);
+>
+> -	vdso_info.cm->pages = vdso_pagelist;
+> -
+> -	return 0;
+> +	vdso_info->cm->pages = vdso_pagelist;
+>  }
+>
+>  #ifdef CONFIG_TIME_NS
+> @@ -116,13 +114,14 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+>  {
+>  	struct mm_struct *mm = task->mm;
+>  	struct vm_area_struct *vma;
+> +	struct __vdso_info *vdso_info = mm->context.vdso_info;
+>
+>  	mmap_read_lock(mm);
+>
+>  	for (vma = mm->mmap; vma; vma = vma->vm_next) {
+>  		unsigned long size = vma->vm_end - vma->vm_start;
+>
+> -		if (vma_is_special_mapping(vma, vdso_info.dm))
+> +		if (vma_is_special_mapping(vma, vdso_info->dm))
+>  			zap_page_range(vma, vma->vm_start, size);
+>  	}
+>
+> @@ -187,11 +186,6 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+>  	return vmf_insert_pfn(vma, vmf->address, pfn);
+>  }
+>
+> -enum rv_vdso_map {
+> -	RV_VDSO_MAP_VVAR,
+> -	RV_VDSO_MAP_VDSO,
+> -};
+> -
+>  static struct vm_special_mapping rv_vdso_maps[] __ro_after_init = {
+>  	[RV_VDSO_MAP_VVAR] = {
+>  		.name   = "[vvar]",
+> @@ -203,25 +197,44 @@ static struct vm_special_mapping rv_vdso_maps[] __ro_after_init = {
+>  	},
+>  };
+>
+> +static struct __vdso_info vdso_info __ro_after_init = {
+> +	.name = "vdso",
+> +	.vdso_code_start = vdso_start,
+> +	.vdso_code_end = vdso_end,
+> +	.dm = &rv_vdso_maps[RV_VDSO_MAP_VVAR],
+> +	.cm = &rv_vdso_maps[RV_VDSO_MAP_VDSO],
+> +};
+> +
+> +#ifdef CONFIG_COMPAT
+> +static struct __vdso_info compat_vdso_info __ro_after_init = {
+> +	.name = "compat_vdso",
+> +	.vdso_code_start = compat_vdso_start,
+> +	.vdso_code_end = compat_vdso_end,
+> +	.dm = &rv_vdso_maps[RV_VDSO_MAP_VVAR],
+> +	.cm = &rv_vdso_maps[RV_VDSO_MAP_VDSO],
+> +};
+> +#endif
+> +
+>  static int __init vdso_init(void)
+>  {
+> -	vdso_info.dm = &rv_vdso_maps[RV_VDSO_MAP_VVAR];
+> -	vdso_info.cm = &rv_vdso_maps[RV_VDSO_MAP_VDSO];
+> +	__vdso_init(&vdso_info);
+> +	__vdso_init(&compat_vdso_info);
 
-I have a fix and will push it into my tree for next - at least it fixes the
-below tuxmake command.  I am attempting to boot test it.  If anyone wants t=
-o
-try the fix, I've included it below since it is rather small.
+An autobuilder is pointing out an issue here.  I'm assuming just an `#if 
+defined(CONFIG_COMPAT)` will fix it, I'm OK squashing that in if it's 
+the only issue -- a fixed one never hurts, though ;)
 
--       next =3D vma_find(mm, vma->vm_end);
--       if (next && next->vm_start < gap_addr && vma_is_accessible(next)) {
-+       next =3D find_vma_intersection(mm, vma->vm_end, gap_addr);
-+       if (next && vma_is_accessible(next)) {
+I'll try to take another look soon.
 
-
-> In file included from arch/parisc/include/asm/cacheflush.h:5,
->                  from include/linux/cacheflush.h:5,
->                  from include/linux/highmem.h:8,
->                  from include/linux/bvec.h:10,
->                  from include/linux/blk_types.h:10,
->                  from include/linux/writeback.h:13,
->                  from include/linux/backing-dev.h:16,
->                  from mm/mmap.c:14:
-> include/linux/mm.h:661:54: note: expected 'struct vma_iterator *' but
-> argument is of type 'struct mm_struct *'
->   661 | struct vm_area_struct *vma_find(struct vma_iterator *vmi,
-> unsigned long max)
->       |                                 ~~~~~~~~~~~~~~~~~~~~~^~~
-> cc1: some warnings being treated as errors
->=20
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->=20
-> Steps to reproduce:
-> ------------------
-> # To install tuxmake on your system globally:
-> # sudo pip3 install -U tuxmake
->=20
-> tuxmake --runtime podman --target-arch parisc --toolchain gcc-11
-> --kconfig allnoconfig
->=20
->=20
-> --
-> Linaro LKFT
-> https://lkft.linaro.org
->=20
-> [1] https://builds.tuxbuild.com/25XO7KdJCJcum36gCorICgGU8C5/=
+> -	return __vdso_init();
+> +	return 0;
+>  }
+>  arch_initcall(vdso_init);
+>
+>  static int __setup_additional_pages(struct mm_struct *mm,
+>  				    struct linux_binprm *bprm,
+> -				    int uses_interp)
+> +				    int uses_interp,
+> +				    struct __vdso_info *vdso_info)
+>  {
+>  	unsigned long vdso_base, vdso_text_len, vdso_mapping_len;
+>  	void *ret;
+>
+>  	BUILD_BUG_ON(VVAR_NR_PAGES != __VVAR_PAGES);
+>
+> -	vdso_text_len = vdso_info.vdso_pages << PAGE_SHIFT;
+> +	vdso_text_len = vdso_info->vdso_pages << PAGE_SHIFT;
+>  	/* Be sure to map the data page */
+>  	vdso_mapping_len = vdso_text_len + VVAR_SIZE;
+>
+> @@ -232,16 +245,18 @@ static int __setup_additional_pages(struct mm_struct *mm,
+>  	}
+>
+>  	ret = _install_special_mapping(mm, vdso_base, VVAR_SIZE,
+> -		(VM_READ | VM_MAYREAD | VM_PFNMAP), vdso_info.dm);
+> +		(VM_READ | VM_MAYREAD | VM_PFNMAP), vdso_info->dm);
+>  	if (IS_ERR(ret))
+>  		goto up_fail;
+>
+>  	vdso_base += VVAR_SIZE;
+>  	mm->context.vdso = (void *)vdso_base;
+> +	mm->context.vdso_info = (void *)vdso_info;
+> +
+>  	ret =
+>  	   _install_special_mapping(mm, vdso_base, vdso_text_len,
+>  		(VM_READ | VM_EXEC | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC),
+> -		vdso_info.cm);
+> +		vdso_info->cm);
+>
+>  	if (IS_ERR(ret))
+>  		goto up_fail;
+> @@ -253,6 +268,24 @@ static int __setup_additional_pages(struct mm_struct *mm,
+>  	return PTR_ERR(ret);
+>  }
+>
+> +#ifdef CONFIG_COMPAT
+> +int compat_arch_setup_additional_pages(struct linux_binprm *bprm,
+> +				       int uses_interp)
+> +{
+> +	struct mm_struct *mm = current->mm;
+> +	int ret;
+> +
+> +	if (mmap_write_lock_killable(mm))
+> +		return -EINTR;
+> +
+> +	ret = __setup_additional_pages(mm, bprm, uses_interp,
+> +							&compat_vdso_info);
+> +	mmap_write_unlock(mm);
+> +
+> +	return ret;
+> +}
+> +#endif
+> +
+>  int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+>  {
+>  	struct mm_struct *mm = current->mm;
+> @@ -261,7 +294,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+>  	if (mmap_write_lock_killable(mm))
+>  		return -EINTR;
+>
+> -	ret = __setup_additional_pages(mm, bprm, uses_interp);
+> +	ret = __setup_additional_pages(mm, bprm, uses_interp, &vdso_info);
+>  	mmap_write_unlock(mm);
+>
+>  	return ret;
