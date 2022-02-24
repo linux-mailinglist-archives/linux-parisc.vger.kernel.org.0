@@ -2,77 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F40214C2970
-	for <lists+linux-parisc@lfdr.de>; Thu, 24 Feb 2022 11:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5D14C2DC5
+	for <lists+linux-parisc@lfdr.de>; Thu, 24 Feb 2022 15:03:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233486AbiBXKbQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 24 Feb 2022 05:31:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50656 "EHLO
+        id S235288AbiBXODW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 24 Feb 2022 09:03:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233478AbiBXKbM (ORCPT
+        with ESMTP id S235256AbiBXODW (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 24 Feb 2022 05:31:12 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A553420A3B8;
-        Thu, 24 Feb 2022 02:30:42 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 438F76162C;
-        Thu, 24 Feb 2022 10:30:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAB6C340F5;
-        Thu, 24 Feb 2022 10:30:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645698641;
-        bh=UVBFu/2kd+72msKvbsEhY06n98IaQ0VgsAo0y3uTQ2c=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=uKMo67CXZRSwdhBzi8/EEN9oztBr9soHLP8RvL0hIDZzDAQWECQ7f8/Z8eugIY42z
-         hdfwcBluy+paiOgWEjWvgQKMnK4adKDRPYUcdzCO1eHFfPr8N0p6F+ynpzpVaLf9iv
-         CZRG6rIeJEwNiFrzJtmKDTMeHAoxInP0LBcoot5lwoVNesSWsfBfyAK/NsNtQnkts0
-         AMlDmrllC81ZcK3cvVTbMA9khRkXj8pu1dHnRsqHjwpW8ZIpgngP/5/BCpTl75RUUI
-         vy/3K30H2fYs4D+RRMADFd4EhSy9aqCosQIJHK8SpqR9iXdhesbYPT0MaBTAKEOI9x
-         ItmMoXkR49BCQ==
-Received: by mail-vk1-f176.google.com with SMTP id k9so922391vki.4;
-        Thu, 24 Feb 2022 02:30:41 -0800 (PST)
-X-Gm-Message-State: AOAM53356GDXiNzYC3BdaVZfnWdnLdzuU6RTWh+kwNDoTN7fiPNJdVzG
-        q40iGuFT0bflOc33OENuEZJUDBMJ9+7vj4FN45I=
-X-Google-Smtp-Source: ABdhPJzrvZFAbp4Whh2uDrOBDpqD226YSRYRm6BxUCxiOKTwC758aaNZI0rGrTfTm/5o1TQu5AW4BErik6sfPZlMfiQ=
-X-Received: by 2002:a1f:2355:0:b0:32a:e5bb:29a1 with SMTP id
- j82-20020a1f2355000000b0032ae5bb29a1mr790584vkj.2.1645698640594; Thu, 24 Feb
- 2022 02:30:40 -0800 (PST)
+        Thu, 24 Feb 2022 09:03:22 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54F020D82A
+        for <linux-parisc@vger.kernel.org>; Thu, 24 Feb 2022 06:02:51 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id j12so3985544ybh.8
+        for <linux-parisc@vger.kernel.org>; Thu, 24 Feb 2022 06:02:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=Uu/up663McmtHwyoDsIfscJIaOT5C+2Ofku1sz+3c7s=;
+        b=yeaQV/RM7+yh7dyByba3Uw81wfq81mO7nu0TI1EIsiKw1na9UNQ5yiAkFLa2frERQW
+         jbhkruRz/0mKJTe4q2i8KivPZXfjhxkX4YMGUA8Jr8JiIeKw6v35R/vg+Q1Y2UudXLzz
+         I+g+XXszoc6acZz3QeX7+XNT1bSS9Xa9kq60oI6VJkldWS/UKfW+Syv4j/9Wrkmm0GhO
+         ttr1kb9ueMYL3JgGOxfwlMpFer8Yjd3sKt+RZbI7Tm3ZHlNHoGmQQOGnc7I5NopQ/bzK
+         zXxhfLMn4iaPtk5PyAJjnoskqnC4L4luHO+6tmPhjsArHuUbxYadXmvnii8WXt35NKWr
+         /VMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=Uu/up663McmtHwyoDsIfscJIaOT5C+2Ofku1sz+3c7s=;
+        b=QGUSsTTsi3gQ8hqrUCxxcwtzGksrXsO4Vzh+kurvp2dRwHDcQtEunRW8wW7wpLVvOz
+         fizBcePiV4Nwyx24p7xrmQOcLqCvPdBl3JPaaTIz62zC4/s+krGQVB23RIaEZTGfOYqL
+         95dqiHNFHrLNozuy6U/jDur6h0F1SxijufW/lI1ceo6FGA2EKyy4CWrC02CyOPlYhVkT
+         PBzqmbjGUyQ52bVgMf1EpfXcpdUoA5WAxOz0lfquRzr5sa/v4vFUbfVTh1om7qgmmDxI
+         bKJLJbIcKGkGyeI8fLJV4UUfKAYNSYpjVw9nR4rGMEzEf44WY/fhwMf/0Fc+QrukwyhZ
+         m8IA==
+X-Gm-Message-State: AOAM530eG4JN1lvbIPBLzxyeFFAzSMdrL6sFwSPGX0ZUBnBvsiNv58df
+        35F7OrB0MVdRUzHwY/35ZnQefUXBrNtBXeVkGfMLtA==
+X-Google-Smtp-Source: ABdhPJyFgcSPtZ+7eIpJu47YYVNdcJlDOjQ2o+dB7cqBHv4UdHQ6MtQQsUac7jeboUaZhHeeixU4ZJErYZVWYCtypuQ=
+X-Received: by 2002:a25:2551:0:b0:623:a424:e2b5 with SMTP id
+ l78-20020a252551000000b00623a424e2b5mr2624980ybl.603.1645711368889; Thu, 24
+ Feb 2022 06:02:48 -0800 (PST)
 MIME-Version: 1.0
-References: <20220224085410.399351-1-guoren@kernel.org> <20220224085410.399351-12-guoren@kernel.org>
- <CAK8P3a3wg9S_zPad74FiJzYBn0M9bQyunuKzmH3z_QQrags5ng@mail.gmail.com>
-In-Reply-To: <CAK8P3a3wg9S_zPad74FiJzYBn0M9bQyunuKzmH3z_QQrags5ng@mail.gmail.com>
-From:   Guo Ren <guoren@kernel.org>
-Date:   Thu, 24 Feb 2022 18:30:29 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQratosmRtoiKx9xTm3-gBSrnEaWgVrYj1U2WZafR1RVg@mail.gmail.com>
-Message-ID: <CAJF2gTQratosmRtoiKx9xTm3-gBSrnEaWgVrYj1U2WZafR1RVg@mail.gmail.com>
-Subject: Re: [PATCH V6 11/20] riscv: compat: syscall: Add compat_sys_call_table
- implementation
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Anup Patel <anup@brainfault.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
-        Drew Fustini <drew@beagleboard.org>,
-        Wang Junqiang <wangjunqiang@iscas.ac.cn>,
-        Christoph Hellwig <hch@lst.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-csky@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Guo Ren <guoren@linux.alibaba.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 24 Feb 2022 19:32:38 +0530
+Message-ID: <CA+G9fYvdFWYQ4GJkvD9KK8ut=DqHu8MKM-jok+tXo6-HiaPT0g@mail.gmail.com>
+Subject: [next] mm/mmap.c:1962:25: error: passing argument 1 of 'vma_find'
+ from incompatible pointer type
+To:     linux-mm <linux-mm@kvack.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        Linux-Next Mailing List <linux-next@vger.kernel.org>
+Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        lkft-triage@lists.linaro.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,44 +71,58 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Feb 24, 2022 at 5:38 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Thu, Feb 24, 2022 at 9:54 AM <guoren@kernel.org> wrote:
-> >
-> > From: Guo Ren <guoren@linux.alibaba.com>
-> >
-> > Implement compat sys_call_table and some system call functions:
-> > truncate64, ftruncate64, fallocate, pread64, pwrite64,
-> > sync_file_range, readahead, fadvise64_64 which need argument
-> > translation.
-> >
-> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > Cc: Arnd Bergmann <arnd@arndb.de>
-> > Cc: Palmer Dabbelt <palmer@dabbelt.com>
->
-> Here, I was hoping you'd convert some of the other architectures to use
-> the same code, but the changes you did do look correct.
->
-> Please at least add the missing bit for big-endian architectures here:
->
-> +#if !defined(compat_arg_u64) && !defined(CONFIG_CPU_BIG_ENDIAN)
-> +#define compat_arg_u64(name)           u32  name##_lo, u32  name##_hi
-> +#define compat_arg_u64_dual(name)      u32, name##_lo, u32, name##_hi
-> +#define compat_arg_u64_glue(name)      (((u64)name##_hi << 32) | \
-> +                                        ((u64)name##_lo & 0xffffffffUL))
-> +#endif
->
-> with the lo/hi words swapped. With that change:
-Got it, I would change it in next version of patch.
+Linux next-20220223 arch parisc builds failed due to following errors.
+Build configs:
+  - gcc-11-defconfig
+  - gcc-11-allnoconfig
+  - gcc-11-tinyconfig
 
->
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+metadata:
+  git_ref: master
+  git_repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
+  git_sha: d4a0ae62a277377de396850ed4b709b6bd9b7326
+  git_describe: next-20220223
+  arch: parisc
+  toolchain: gcc-11
 
 
+Build error:
+-----------
+mm/mmap.c: In function 'expand_upwards':
+mm/mmap.c:1962:25: error: passing argument 1 of 'vma_find' from
+incompatible pointer type [-Werror=incompatible-pointer-types]
+ 1962 |         next = vma_find(mm, vma->vm_end);
+      |                         ^~
+      |                         |
+      |                         struct mm_struct *
+In file included from arch/parisc/include/asm/cacheflush.h:5,
+                 from include/linux/cacheflush.h:5,
+                 from include/linux/highmem.h:8,
+                 from include/linux/bvec.h:10,
+                 from include/linux/blk_types.h:10,
+                 from include/linux/writeback.h:13,
+                 from include/linux/backing-dev.h:16,
+                 from mm/mmap.c:14:
+include/linux/mm.h:661:54: note: expected 'struct vma_iterator *' but
+argument is of type 'struct mm_struct *'
+  661 | struct vm_area_struct *vma_find(struct vma_iterator *vmi,
+unsigned long max)
+      |                                 ~~~~~~~~~~~~~~~~~~~~~^~~
+cc1: some warnings being treated as errors
 
--- 
-Best Regards
- Guo Ren
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-ML: https://lore.kernel.org/linux-csky/
+Steps to reproduce:
+------------------
+# To install tuxmake on your system globally:
+# sudo pip3 install -U tuxmake
+
+tuxmake --runtime podman --target-arch parisc --toolchain gcc-11
+--kconfig allnoconfig
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
+
+[1] https://builds.tuxbuild.com/25XO7KdJCJcum36gCorICgGU8C5/
