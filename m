@@ -2,135 +2,119 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 456C34C4A17
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Feb 2022 17:07:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 525404C5383
+	for <lists+linux-parisc@lfdr.de>; Sat, 26 Feb 2022 04:11:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242633AbiBYQIO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 25 Feb 2022 11:08:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40414 "EHLO
+        id S229708AbiBZDM0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 25 Feb 2022 22:12:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242636AbiBYQHv (ORCPT
+        with ESMTP id S229681AbiBZDMZ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 25 Feb 2022 11:07:51 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9EB21131F;
-        Fri, 25 Feb 2022 08:07:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8EE9AB83273;
-        Fri, 25 Feb 2022 16:07:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22393C340F2;
-        Fri, 25 Feb 2022 16:07:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645805236;
-        bh=KbJfW32hJ/F19yfN7A1bXil25wuVvtsMCViBmRGt63Q=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=WkbIlFcJhtK50zmM1SUqT+c2BPoPb/PAsS5g6c6LqFS7dLJTZxLAPvig1x6SXi8te
-         l5Cx5rIlFRnbSFqV0Md2Gt99TvNmEAE85nc8zZkW2KAysaFXNYW8weU3KRSI1Joub1
-         XfgGa954+3/CiMxkbGo51ZitZf59ze3/G/mztC6h6fIENRXkrcAjUFFN1d6J+PDcBw
-         gx1uVRfyOgaOR4bZKjVcG7PIz/MCA3RNLoXSnngVfstymXQ0A55zH1r8rE0BbpfyBI
-         53H/HcqUiVVHaCBF70mR9z8l6owgUIz3VOsTGHF1gt/NgeAutWcTYSskkxOKLmnMHx
-         9rb/DOmJIf44g==
-Received: by mail-ua1-f46.google.com with SMTP id 4so2689384uaf.0;
-        Fri, 25 Feb 2022 08:07:16 -0800 (PST)
-X-Gm-Message-State: AOAM532qmB3RCzM2eOyjrm4h1R0Jocb2mLGQ2iLUY34AQqe43FcrxgKL
-        8xYBWINlULGTU8a+TQKYajEleFQ9L6CmhHkvOLQ=
-X-Google-Smtp-Source: ABdhPJzyFkCkLFwk2uiu55UbxfUmfSs3x9iDpfEO2XzZ1mh9E9zaiS00R4pCw1xb9Wsx0R973/NIBGmLnXTfXz/Q4Mk=
-X-Received: by 2002:ab0:1112:0:b0:33e:802f:e335 with SMTP id
- e18-20020ab01112000000b0033e802fe335mr3769822uab.57.1645805235064; Fri, 25
- Feb 2022 08:07:15 -0800 (PST)
+        Fri, 25 Feb 2022 22:12:25 -0500
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4994E2671EF
+        for <linux-parisc@vger.kernel.org>; Fri, 25 Feb 2022 19:11:52 -0800 (PST)
+Received: by mail-wm1-x344.google.com with SMTP id r10so2678106wma.2
+        for <linux-parisc@vger.kernel.org>; Fri, 25 Feb 2022 19:11:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=1WmTiruYcLYjgfCVpwaSh4JcERuBX8rKufTgiQZnbQI=;
+        b=BoqVQHt6JQ5I7JtsAWqwrjbfn676fu98HobhqaiOHHD1sRoS3hA18X7nI2SVy+M+WP
+         hiQUZBOE1sHRErmv1tEiQgtvwDoSPWc2P+uqdMjbYpGHNNEINDkfj4G2VamoWPNLKTw6
+         ZrNp6QT4hGAT0hNGeBULSBRpBQSRcwFg/T1ZZQ1hF7jxfMOtOYzuKwjq3CUHRJGlU3KT
+         r3KpAH2NXK7xHdO1cea/fmOErT5J0DQcPK+IyqcROjigOp+ArFXI3mxvmSS8yBbYZMET
+         v+5ACRSXLz3MqwJ/vfTxFpnh0vNqOGsLuQyv3QV8cPn1BmjQMKnXpdk96B7Z61AsZ13v
+         vAog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=1WmTiruYcLYjgfCVpwaSh4JcERuBX8rKufTgiQZnbQI=;
+        b=FFad9M+rt+XXygC1XdWya2axG0YGhcLgzQdR6wmrUUPYkW1P7Vmg1xxvhSyB6CKerP
+         stY5osf7wF5BQJDj/JFLPIuxDuG5GxJSND5Hx1AXuVpWvYI9H41H47Aal7WwbpdSALAp
+         j6br3BHPNKNuiOfs3BPUNac82bJjtmDQPY8UmowLPLB6G53YbRsHIdC6G9UksSI0rrws
+         ZP4s9QrT2aotYhZLrhyg+OuGbMdTttsBn8yk6J7e1Jlu7JPIs9SvTxv5GAvav/U8tmUg
+         JlO7fD+0p+D/TFX4WMdFdfHUZ1tNyCaaKPa1MtFBMY3AnSFNVadgkSd4+kErQjqjbwa5
+         u0XA==
+X-Gm-Message-State: AOAM532U5i6C/KcF9NGH8saMVZCedTszGGQm9DAMtdffyXXxs3KTsMOc
+        EZafpUTAsAEZHsReDXJ8OUBIiP5VAj5jgJn43wA=
+X-Google-Smtp-Source: ABdhPJynBaHqyA9yHQVDtUXwYZu1XZSnKSikSc2o1MJUOrZ2kl3jzS0+YiR6UJwkMky63l/7BUQbuGZeFCU8Z4g9pcs=
+X-Received: by 2002:a05:600c:a4b:b0:37b:ea2b:5583 with SMTP id
+ c11-20020a05600c0a4b00b0037bea2b5583mr5104668wmq.139.1645845110032; Fri, 25
+ Feb 2022 19:11:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20220224085410.399351-1-guoren@kernel.org> <20220224085410.399351-17-guoren@kernel.org>
- <CAK8P3a13_VBpTidoF_pUdV5g0MFqpSe17rgw=XUv69CCFCN0_g@mail.gmail.com>
- <CAJF2gTTu5=XwDUwNq=PfnzVRj-jPHH+0cOGhhLr_dFED1H24_g@mail.gmail.com> <CAK8P3a0MtcB7YMWKZKvpcy4Txi4JTXT61KqFoKZOqhVP530oEA@mail.gmail.com>
-In-Reply-To: <CAK8P3a0MtcB7YMWKZKvpcy4Txi4JTXT61KqFoKZOqhVP530oEA@mail.gmail.com>
-From:   Guo Ren <guoren@kernel.org>
-Date:   Sat, 26 Feb 2022 00:07:04 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQtUonLQn+aRyf6f1Ei9o6wWCrjHXNkfa2rxKMEGuDw2g@mail.gmail.com>
-Message-ID: <CAJF2gTQtUonLQn+aRyf6f1Ei9o6wWCrjHXNkfa2rxKMEGuDw2g@mail.gmail.com>
-Subject: Re: [PATCH V6 16/20] riscv: compat: vdso: Add rv32 VDSO base code implementation
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Anup Patel <anup@brainfault.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
-        Drew Fustini <drew@beagleboard.org>,
-        Wang Junqiang <wangjunqiang@iscas.ac.cn>,
-        Christoph Hellwig <hch@lst.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-csky@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Guo Ren <guoren@linux.alibaba.com>
+Sender: ag2439229@gmail.com
+Received: by 2002:adf:c793:0:0:0:0:0 with HTTP; Fri, 25 Feb 2022 19:11:49
+ -0800 (PST)
+From:   aisha gaddafi <madamisha00@gmail.com>
+Date:   Sat, 26 Feb 2022 04:11:49 +0100
+X-Google-Sender-Auth: PBXvlLd4xQgHcAfA8zzlHoyNdQA
+Message-ID: <CALz623FZ2SReVUMHC8AK13M9qK+f=gw4ko=n_dTUbaef5=g40w@mail.gmail.com>
+Subject: I want to invest in your country
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLY,LOTS_OF_MONEY,MILLION_HUNDRED,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_MONEY,URG_BIZ autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:344 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [ag2439229[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [ag2439229[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.6 URG_BIZ Contains urgent matter
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  1.0 FREEMAIL_REPLY From and body contain different freemails
+        *  3.5 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Feb 25, 2022 at 11:50 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Fri, Feb 25, 2022 at 4:42 PM Guo Ren <guoren@kernel.org> wrote:
-> >
-> > Hi Arnd & Palmer,
-> >
-> > Here is the new modified compat_vdso/Makefile, please have a look,
-> > first. Then I would update it to v7:
-> > ===========================================
-> > # SPDX-License-Identifier: GPL-2.0-only
-> > #
-> > # Makefile for compat_vdso
-> > #
-> >
-> > # Symbols present in the compat_vdso
-> > compat_vdso-syms  = rt_sigreturn
-> > compat_vdso-syms += getcpu
-> > compat_vdso-syms += flush_icache
-> >
-> > ifdef CROSS_COMPILE_COMPAT
-> >         COMPAT_CC := $(CROSS_COMPILE_COMPAT)gcc
-> >         COMPAT_LD := $(CROSS_COMPILE_COMPAT)ld
-> > else
-> >         COMPAT_CC := $(CC)
-> >         COMPAT_LD := $(LD)
-> > endif
-> >
-> > COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
-> > COMPAT_LD_FLAGS := -melf32lriscv
->
-> Have you come across a case in which a separate cross toolchain
-> is required? If not, I would leave this out and just set the flags for the
-> normal toolchain.
-Okay
+--=20
+Greetings Sir/Madam.
 
->
-> I also think it would be a nicer split to build the two vdso variants
-> as vdso64/vdso32 rather than vdso/compat_vdso. That way,
-> the build procedure can be kept as close as possible to the
-> native 32-bit build.
-Yes, current native 32-bit vdso & 64-bit vdso use the same
-vdso/Makfile. So, I think it could be another patch for this cleanup.
-
->
->         Arnd
-
-
-
--- 
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
+I want to invest in your country
+May i use this medium to open a mutual communication with you, and
+seeking your acceptance towards investing in your country under your
+management as my partner, My name is Aisha Gaddafi , i am a Widow and
+single Mother with three Children, the only biological Daughter of
+late Libyan President (Late Colonel Muammar Gaddafi) and presently i
+am under political asylum protection by the  Government of this
+nation.
+I have funds worth =E2=80=9CTwenty Seven Million Five Hundred Thousand Unit=
+ed
+State Dollars=E2=80=9D -$27.500.000.00 US Dollars which i want to entrust o=
+n
+you for investment project in your country. If you are willing to
+handle this project on my behalf, kindly reply urgent to enable me
+provide you more details to start the transfer process.
+I shall appreciate your urgent response through my email address
+below: madamgadafiaisha@gmail.com
+Thanks
+Yours Truly Aisha
