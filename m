@@ -2,103 +2,150 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B3764C602F
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Feb 2022 01:45:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FD5C4C6332
+	for <lists+linux-parisc@lfdr.de>; Mon, 28 Feb 2022 07:40:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231996AbiB1AqI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 27 Feb 2022 19:46:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43614 "EHLO
+        id S233345AbiB1Gkx convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Mon, 28 Feb 2022 01:40:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbiB1AqH (ORCPT
+        with ESMTP id S231852AbiB1Gks (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 27 Feb 2022 19:46:07 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB80D3A725;
-        Sun, 27 Feb 2022 16:45:29 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4K6M9d0d1Bz4xbw;
-        Mon, 28 Feb 2022 11:45:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1646009125;
-        bh=jIeh5ZDTWWqfmzOCG451MDPxA/sl3YsI/XKs8m17ny8=;
-        h=Date:From:To:Cc:Subject:From;
-        b=OJ5275vKY/9y2tH2T2avpkThoUeOhTD4ewjQ4GuPH+1q3we7u45rM/FkWRNrQ3+aA
-         pSMb5olUUOwvEQdAtVvx/s5U4Nkqd7Pufps0WlkPLvepsH2lkvMfUXNNogymKkSkhT
-         sAFj1VNs1q3pFcvIOkL3ljMe0STNETRl6QkfO7x49wUUyo0Ntm0rkgvCTe71WPgWrp
-         Ezy3znTrcsasPiWDY2o/Gk/c72oTd6NLsRIZn9NpvHWvPHtahInjygIXyjPNQl48lu
-         a170v7+rjxKShS4uN0+qWaduULHYS+J6PwTn1cXY2dNh76GbQE08bfhY3ZrgZKzSBU
-         9w24yOlolcI3g==
-Date:   Mon, 28 Feb 2022 11:45:23 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Helge Deller <deller@gmx.de>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the parisc-hd tree with the asm-generic
- tree
-Message-ID: <20220228114523.03b2f921@canb.auug.org.au>
+        Mon, 28 Feb 2022 01:40:48 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 135343D1CE
+        for <linux-parisc@vger.kernel.org>; Sun, 27 Feb 2022 22:40:09 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-127-ln2z8qc2NY6O0etIBpyffg-1; Mon, 28 Feb 2022 06:40:07 +0000
+X-MC-Unique: ln2z8qc2NY6O0etIBpyffg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.28; Mon, 28 Feb 2022 06:40:04 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.028; Mon, 28 Feb 2022 06:40:04 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "'guoren@kernel.org'" <guoren@kernel.org>,
+        "palmer@dabbelt.com" <palmer@dabbelt.com>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "anup@brainfault.org" <anup@brainfault.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "liush@allwinnertech.com" <liush@allwinnertech.com>,
+        "wefu@redhat.com" <wefu@redhat.com>,
+        "drew@beagleboard.org" <drew@beagleboard.org>,
+        "wangjunqiang@iscas.ac.cn" <wangjunqiang@iscas.ac.cn>,
+        "hch@lst.de" <hch@lst.de>
+CC:     "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "x86@kernel.org" <x86@kernel.org>
+Subject: RE: [PATCH V7 03/20] compat: consolidate the compat_flock{,64}
+ definition
+Thread-Topic: [PATCH V7 03/20] compat: consolidate the compat_flock{,64}
+ definition
+Thread-Index: AQHYK/ctkLOBFN5NzkqkonsQCyvC26yogbZg
+Date:   Mon, 28 Feb 2022 06:40:04 +0000
+Message-ID: <b8e765910e274c0fb574ff23f88b881c@AcuMS.aculab.com>
+References: <20220227162831.674483-1-guoren@kernel.org>
+ <20220227162831.674483-4-guoren@kernel.org>
+In-Reply-To: <20220227162831.674483-4-guoren@kernel.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/env_jC=hHeghxkPdsvWNmCI";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---Sig_/env_jC=hHeghxkPdsvWNmCI
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: guoren@kernel.org
+> Sent: 27 February 2022 16:28
+> 
+> From: Christoph Hellwig <hch@lst.de>
+> 
+> Provide a single common definition for the compat_flock and
+> compat_flock64 structures using the same tricks as for the native
+> variants.  Another extra define is added for the packing required on
+> x86.
+...
+> diff --git a/arch/x86/include/asm/compat.h b/arch/x86/include/asm/compat.h
+...
+>  /*
+> - * IA32 uses 4 byte alignment for 64 bit quantities,
+> - * so we need to pack this structure.
+> + * IA32 uses 4 byte alignment for 64 bit quantities, so we need to pack the
+> + * compat flock64 structure.
+>   */
+...
+> +#define __ARCH_NEED_COMPAT_FLOCK64_PACKED
+> 
+>  struct compat_statfs {
+>  	int		f_type;
+> diff --git a/include/linux/compat.h b/include/linux/compat.h
+> index 1c758b0e0359..a0481fe6c5d5 100644
+> --- a/include/linux/compat.h
+> +++ b/include/linux/compat.h
+> @@ -258,6 +258,37 @@ struct compat_rlimit {
+>  	compat_ulong_t	rlim_max;
+>  };
+> 
+> +#ifdef __ARCH_NEED_COMPAT_FLOCK64_PACKED
+> +#define __ARCH_COMPAT_FLOCK64_PACK	__attribute__((packed))
+> +#else
+> +#define __ARCH_COMPAT_FLOCK64_PACK
+> +#endif
+...
+> +struct compat_flock64 {
+> +	short		l_type;
+> +	short		l_whence;
+> +	compat_loff_t	l_start;
+> +	compat_loff_t	l_len;
+> +	compat_pid_t	l_pid;
+> +#ifdef __ARCH_COMPAT_FLOCK64_PAD
+> +	__ARCH_COMPAT_FLOCK64_PAD
+> +#endif
+> +} __ARCH_COMPAT_FLOCK64_PACK;
+> +
 
-Hi all,
+Provided compat_loff_t are correctly defined with __aligned__(4)
+marking the structure packed isn't needed.
+I believe compat_u64 and compat_s64 both have aligned(4).
+It is also wrong, consider:
 
-Today's linux-next merge of the parisc-hd tree got a conflict in:
+struct foo {
+	char x;
+	struct compat_flock64 fl64;
+};
 
-  arch/parisc/lib/memcpy.c
+There should be 3 bytes of padding after 'x'.
+But you've removed it.
 
-between commit:
+	David
 
-  967747bbc084 ("uaccess: remove CONFIG_SET_FS")
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
-from the asm-generic tree and commit:
-
-  d4a767ea8b0e ("parisc: Use constants to encode the space registers like S=
-R_KERNEL")
-
-from the parisc-hd tree.
-
-I fixed it up (I just used the latter) and can carry the fix as
-necessary. This is now fixed as far as linux-next is concerned, but any
-non trivial conflicts should be mentioned to your upstream maintainer
-when your tree is submitted for merging.  You may also want to consider
-cooperating with the maintainer of the conflicting tree to minimise any
-particularly complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/env_jC=hHeghxkPdsvWNmCI
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmIcGyMACgkQAVBC80lX
-0GzlAgf/Y+T9OD9bA/CjKlAT2MmZvVmr6WUxoHdvl/nMGtPJwGhmzTEcwoQh/5BV
-S5H/M4fZSFaFJa7ky2prbwM4kvQYNnZvPku9RTDI7AKKNX1aLS2A2zjo6TPkRfrn
-4ECamNmBox2Qvp/BFwMLjutvGTOVReaGVEPTp7pa+LlAOOC8V/cfdAQZKxY77dmh
-GijSl/iz8MnCO8tLpTJzGzvaz3bXaHhVcP7S+NIfJnbwn/ZqJeS3tNVymp1lldnF
-ZpLcGi091OYwqVRKaiYLB9lc1Ou6gydrD9xxWuFEim6kXX5mCUG/7Gz0g4cnVOA1
-xoiyRWs8oXW4YNfqLeMp8BfO6sty1w==
-=Epxv
------END PGP SIGNATURE-----
-
---Sig_/env_jC=hHeghxkPdsvWNmCI--
