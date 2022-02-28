@@ -2,130 +2,103 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E4044C5D5D
-	for <lists+linux-parisc@lfdr.de>; Sun, 27 Feb 2022 17:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3764C602F
+	for <lists+linux-parisc@lfdr.de>; Mon, 28 Feb 2022 01:45:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231278AbiB0QcP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 27 Feb 2022 11:32:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57918 "EHLO
+        id S231996AbiB1AqI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 27 Feb 2022 19:46:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231793AbiB0Qbm (ORCPT
+        with ESMTP id S229662AbiB1AqH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 27 Feb 2022 11:31:42 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B07456D3AA;
-        Sun, 27 Feb 2022 08:30:50 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Sun, 27 Feb 2022 19:46:07 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB80D3A725;
+        Sun, 27 Feb 2022 16:45:29 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6EA10B80CE8;
-        Sun, 27 Feb 2022 16:30:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBC8C36AE5;
-        Sun, 27 Feb 2022 16:30:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645979448;
-        bh=IJ7jR8mTvejG9VzZtr4+z5Hdjv3FHdsfGnEFZTtHWjA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cR2wJgH+zoufDToYTUD+1USCs3uBgNk9Vu5T/Jsv51PXurzHTdpo3qnl8FCqqq4SZ
-         pxVQ2A1oxJ2m5w4iZMJZdpAKiO7v9Aw6y9tSE7kOacf12sqBfPioXBNC3v5tqXutH6
-         V9oUL7mVEGNWbnKcAmKuL0q4g+VEejgLSprNwt+UqS5uKkihBHV88+BdalOH/2FILn
-         DkJOF4RC5wwmNFWdQLkrh7D1P53c1Z4POdkI8rTcnZrzSrl4RQbQSVWTEgUVOjfYYF
-         sd968+cQYROL61p0e7fyzZfbX3EY3CVXdW+9olIzZAyNfN8t/OvLH85pp3cre7Rrav
-         8RZusExHrrs4w==
-From:   guoren@kernel.org
-To:     guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de,
-        anup@brainfault.org, gregkh@linuxfoundation.org,
-        liush@allwinnertech.com, wefu@redhat.com, drew@beagleboard.org,
-        wangjunqiang@iscas.ac.cn, hch@lst.de
-Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        x86@kernel.org, Guo Ren <guoren@linux.alibaba.com>
-Subject: [PATCH V7 20/20] riscv: compat: Add COMPAT Kbuild skeletal support
-Date:   Mon, 28 Feb 2022 00:28:31 +0800
-Message-Id: <20220227162831.674483-21-guoren@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220227162831.674483-1-guoren@kernel.org>
-References: <20220227162831.674483-1-guoren@kernel.org>
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4K6M9d0d1Bz4xbw;
+        Mon, 28 Feb 2022 11:45:24 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1646009125;
+        bh=jIeh5ZDTWWqfmzOCG451MDPxA/sl3YsI/XKs8m17ny8=;
+        h=Date:From:To:Cc:Subject:From;
+        b=OJ5275vKY/9y2tH2T2avpkThoUeOhTD4ewjQ4GuPH+1q3we7u45rM/FkWRNrQ3+aA
+         pSMb5olUUOwvEQdAtVvx/s5U4Nkqd7Pufps0WlkPLvepsH2lkvMfUXNNogymKkSkhT
+         sAFj1VNs1q3pFcvIOkL3ljMe0STNETRl6QkfO7x49wUUyo0Ntm0rkgvCTe71WPgWrp
+         Ezy3znTrcsasPiWDY2o/Gk/c72oTd6NLsRIZn9NpvHWvPHtahInjygIXyjPNQl48lu
+         a170v7+rjxKShS4uN0+qWaduULHYS+J6PwTn1cXY2dNh76GbQE08bfhY3ZrgZKzSBU
+         9w24yOlolcI3g==
+Date:   Mon, 28 Feb 2022 11:45:23 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Helge Deller <deller@gmx.de>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the parisc-hd tree with the asm-generic
+ tree
+Message-ID: <20220228114523.03b2f921@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/env_jC=hHeghxkPdsvWNmCI";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Guo Ren <guoren@linux.alibaba.com>
+--Sig_/env_jC=hHeghxkPdsvWNmCI
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Adds initial skeletal COMPAT Kbuild (Running 32bit U-mode on
-64bit S-mode) support.
- - Setup kconfig & dummy functions for compiling.
- - Implement compat_start_thread by the way.
+Hi all,
 
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
----
- arch/riscv/Kconfig | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+Today's linux-next merge of the parisc-hd tree got a conflict in:
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 5adcbd9b5e88..6f11df8c189f 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -73,6 +73,7 @@ config RISCV
- 	select HAVE_ARCH_KGDB if !XIP_KERNEL
- 	select HAVE_ARCH_KGDB_QXFER_PKT
- 	select HAVE_ARCH_MMAP_RND_BITS if MMU
-+	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if 64BIT && MMU
-@@ -123,12 +124,18 @@ config ARCH_MMAP_RND_BITS_MIN
- 	default 18 if 64BIT
- 	default 8
- 
-+config ARCH_MMAP_RND_COMPAT_BITS_MIN
-+	default 8
-+
- # max bits determined by the following formula:
- #  VA_BITS - PAGE_SHIFT - 3
- config ARCH_MMAP_RND_BITS_MAX
- 	default 24 if 64BIT # SV39 based
- 	default 17
- 
-+config ARCH_MMAP_RND_COMPAT_BITS_MAX
-+	default 17
-+
- # set if we run in machine mode, cleared if we run in supervisor mode
- config RISCV_M_MODE
- 	bool
-@@ -406,6 +413,18 @@ config CRASH_DUMP
- 
- 	  For more details see Documentation/admin-guide/kdump/kdump.rst
- 
-+config COMPAT
-+	bool "Kernel support for 32-bit U-mode"
-+	default 64BIT
-+	depends on 64BIT && MMU
-+	help
-+	  This option enables support for a 32-bit U-mode running under a 64-bit
-+	  kernel at S-mode. riscv32-specific components such as system calls,
-+	  the user helper functions (vdso), signal rt_frame functions and the
-+	  ptrace interface are handled appropriately by the kernel.
-+
-+	  If you want to execute 32-bit userspace applications, say Y.
-+
- endmenu
- 
- menu "Boot options"
--- 
-2.25.1
+  arch/parisc/lib/memcpy.c
 
+between commit:
+
+  967747bbc084 ("uaccess: remove CONFIG_SET_FS")
+
+from the asm-generic tree and commit:
+
+  d4a767ea8b0e ("parisc: Use constants to encode the space registers like S=
+R_KERNEL")
+
+from the parisc-hd tree.
+
+I fixed it up (I just used the latter) and can carry the fix as
+necessary. This is now fixed as far as linux-next is concerned, but any
+non trivial conflicts should be mentioned to your upstream maintainer
+when your tree is submitted for merging.  You may also want to consider
+cooperating with the maintainer of the conflicting tree to minimise any
+particularly complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/env_jC=hHeghxkPdsvWNmCI
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmIcGyMACgkQAVBC80lX
+0GzlAgf/Y+T9OD9bA/CjKlAT2MmZvVmr6WUxoHdvl/nMGtPJwGhmzTEcwoQh/5BV
+S5H/M4fZSFaFJa7ky2prbwM4kvQYNnZvPku9RTDI7AKKNX1aLS2A2zjo6TPkRfrn
+4ECamNmBox2Qvp/BFwMLjutvGTOVReaGVEPTp7pa+LlAOOC8V/cfdAQZKxY77dmh
+GijSl/iz8MnCO8tLpTJzGzvaz3bXaHhVcP7S+NIfJnbwn/ZqJeS3tNVymp1lldnF
+ZpLcGi091OYwqVRKaiYLB9lc1Ou6gydrD9xxWuFEim6kXX5mCUG/7Gz0g4cnVOA1
+xoiyRWs8oXW4YNfqLeMp8BfO6sty1w==
+=Epxv
+-----END PGP SIGNATURE-----
+
+--Sig_/env_jC=hHeghxkPdsvWNmCI--
