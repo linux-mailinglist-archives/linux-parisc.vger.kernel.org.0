@@ -2,86 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 079EA4D15AC
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Mar 2022 12:07:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05FF74D16E4
+	for <lists+linux-parisc@lfdr.de>; Tue,  8 Mar 2022 13:10:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346137AbiCHLHz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 8 Mar 2022 06:07:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37746 "EHLO
+        id S1344833AbiCHMLm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 8 Mar 2022 07:11:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242129AbiCHLHz (ORCPT
+        with ESMTP id S234137AbiCHMLm (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 8 Mar 2022 06:07:55 -0500
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1895D45059;
-        Tue,  8 Mar 2022 03:06:59 -0800 (PST)
-Received: by mail-ed1-f43.google.com with SMTP id y12so4208628edc.13;
-        Tue, 08 Mar 2022 03:06:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent
-         :content-language:to:from:subject:content-transfer-encoding;
-        bh=UBEfcUeXOl6T8RYX0TXPmII0+ljclksH8bH/f8fmMoA=;
-        b=s2BMLXST++YE2gBOYxCj78WBNIW6ii5mTyhiIqSryBCpIrSyX9ycQAxRfWP6bbQAwp
-         z0XFNag+Unv4C8t22AmN51vy2F2E+u6/UYQBMMG6QpKArkryCPqM0sb/lCt71k6Oq6b2
-         cfJNgfsgVnv7kWa4EDBsH8KR7ZqvHzfDdDRHbbeY3W6/DDq3aaAE5DB0RUy5tOMKiTaA
-         LrJDH6EQUh3mlzPmQFlDzaLboC9hs9DnsBJ9S+JyRm2VdTO6CnhdNoKXWVNNIyOKQclT
-         SUTdngu4Drk07qJg6KFnPmjoFe5VD3rV7XqD7ou6IvnfWqmMy8Q+e5kSeWkpY+yI0D2X
-         QFoA==
-X-Gm-Message-State: AOAM5334oxv4HM42nHISX++hCVKk7fznurHGSItANXIWuvHiw4OzfnOW
-        NNWiynMWbd+eSCKPdkjfempCGNBVwVk=
-X-Google-Smtp-Source: ABdhPJwGR7oB7lqphuthKLr5kn93jbunQA5BEbq8HBuYq1hgJl5Yu4nN1v0l2teCTzFnxqb1zL9Vog==
-X-Received: by 2002:a05:6402:b78:b0:416:171e:835d with SMTP id cb24-20020a0564020b7800b00416171e835dmr15340066edb.270.1646737617552;
-        Tue, 08 Mar 2022 03:06:57 -0800 (PST)
-Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
-        by smtp.gmail.com with ESMTPSA id z15-20020a170906240f00b006d703ca573fsm5690446eja.85.2022.03.08.03.06.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Mar 2022 03:06:56 -0800 (PST)
-Message-ID: <d2713ae1-0ca5-9e5a-b7d2-b7d0f1f5614a@kernel.org>
-Date:   Tue, 8 Mar 2022 12:06:55 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>,
+        Tue, 8 Mar 2022 07:11:42 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B8D3ED14;
+        Tue,  8 Mar 2022 04:10:45 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4KCZ0d4W2hz4xvG;
+        Tue,  8 Mar 2022 23:10:41 +1100 (AEDT)
+From:   Michael Ellerman <patch-notifications@ellerman.id.au>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Helge Deller <deller@gmx.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Mackerras <paulus@samba.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org,
-        Linux kernel mailing list <linux-kernel@vger.kernel.org>
-From:   Jiri Slaby <jirislaby@kernel.org>
-Subject: hppa vDSO and compiler (non-)support
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <cover.1644928018.git.christophe.leroy@csgroup.eu>
+References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 00/13] Fix LKDTM for PPC64/IA64/PARISC v4
+Message-Id: <164674125384.3322453.12551849351633372798.b4-ty@ellerman.id.au>
+Date:   Tue, 08 Mar 2022 23:07:33 +1100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi,
+On Tue, 15 Feb 2022 13:40:55 +0100, Christophe Leroy wrote:
+> PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
+> on those three architectures because LKDTM messes up function
+> descriptors with functions.
+> 
+> This series does some cleanup in the three architectures and
+> refactors function descriptors so that it can then easily use it
+> in a generic way in LKDTM.
+> 
+> [...]
 
-since the "parisc: Add vDSO support" commit, I can no longer cross-build 
-a hppa kernel. I see two issues:
+Applied to powerpc/next.
 
-1) CROSS32_COMPILE detection doesn't work here, as openSUSE provides 
-hppa-suse-linux-* binaries. It's easy to overcome by 
-"CROSS32_COMPILE=hppa-suse-linux-"
+[01/13] powerpc: Fix 'sparse' checking on PPC64le
+        https://git.kernel.org/powerpc/c/81df21de8fb45d3a55d41da9c7f5724797d51ce6
+[02/13] powerpc: Move and rename func_descr_t
+        https://git.kernel.org/powerpc/c/5b23cb8cc6b0aab0535253cc2aa362572bab7072
+[03/13] powerpc: Use 'struct func_desc' instead of 'struct ppc64_opd_entry'
+        https://git.kernel.org/powerpc/c/d3e32b997a4ca2e7be71cb770bcb2c000ee20b36
+[04/13] powerpc: Remove 'struct ppc64_opd_entry'
+        https://git.kernel.org/powerpc/c/0a9c5ae279c963149df9a84588281d3d607f7a1f
+[05/13] powerpc: Prepare func_desc_t for refactorisation
+        https://git.kernel.org/powerpc/c/2fd986377d546bedaf27e36554dc9090d272f15d
+[06/13] ia64: Rename 'ip' to 'addr' in 'struct fdesc'
+        https://git.kernel.org/powerpc/c/41a88b45479da873bfc5d29ba1a545a780c5329a
+[07/13] asm-generic: Define CONFIG_HAVE_FUNCTION_DESCRIPTORS
+        https://git.kernel.org/powerpc/c/a257cacc38718c83cee003487e03197f237f5c3f
+[08/13] asm-generic: Define 'func_desc_t' to commonly describe function descriptors
+        https://git.kernel.org/powerpc/c/0dc690e4ef5b901e9d4b53520854fbd5c749e09d
+[09/13] asm-generic: Refactor dereference_[kernel]_function_descriptor()
+        https://git.kernel.org/powerpc/c/e1478d8eaf27704db17a44dee4c53696ed01fc9c
+[10/13] lkdtm: Force do_nothing() out of line
+        https://git.kernel.org/powerpc/c/69b420ed8fd3917ac7073256b4929aa246b6fe31
+[11/13] lkdtm: Really write into kernel text in WRITE_KERN
+        https://git.kernel.org/powerpc/c/b64913394f123e819bffabc79a0e48f98e78dc5d
+[12/13] lkdtm: Fix execute_[user]_location()
+        https://git.kernel.org/powerpc/c/72a86433049dcfe918886645ac3d19c1eaaa67ab
+[13/13] lkdtm: Add a test for function descriptors protection
+        https://git.kernel.org/powerpc/c/5e5a6c5441654d1b9e576ce4ca8a1759e701079e
 
-2) openSUSE doesn't provide any libc for hppa. So gcc doesn't provide 
-libgcc.a and the build of vDSO fails.
-
-So could vDSO be optional on hppa via KConfig?
-
-I used to use the cross compiler to at least compile-check the following 
-  tty drivers:
-arch/parisc/kernel/pdc_cons.o
-drivers/tty/serial/mux.o
-drivers/tty/serial/8250/8250_gsc.o
-
-thanks,
--- 
-js
-suse labs
+cheers
