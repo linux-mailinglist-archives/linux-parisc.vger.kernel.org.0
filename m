@@ -2,119 +2,226 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A228D4D288F
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Mar 2022 06:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A8C84D2E06
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Mar 2022 12:31:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229588AbiCIFtw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 9 Mar 2022 00:49:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44502 "EHLO
+        id S232196AbiCILcP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 9 Mar 2022 06:32:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229678AbiCIFtv (ORCPT
+        with ESMTP id S230468AbiCILcO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 9 Mar 2022 00:49:51 -0500
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A035140C8;
-        Tue,  8 Mar 2022 21:48:53 -0800 (PST)
-Received: by mail-wm1-f43.google.com with SMTP id i66so693109wma.5;
-        Tue, 08 Mar 2022 21:48:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=L/2hLME7wbG3iYnMiEc+NU9UJToaXXdZRluS6g6KT3U=;
-        b=s4pJMRiD/XjJ6QgGW9miRxfJw6S9FL9smGmxh8vqjh5BqZspsG3BVZN2Sse9uMeCVV
-         joYsmUKXFNKNJB7YpCXYEw1fb07CooBKlW4kTP/qTsaesjfHzgF6FJENUbW3HR1NeebT
-         88QS61oRmyAlUYY04+c4V8bPgCrq7dNgQ3od1BPgV4om9G8E6leS9LB1psW3AMQ+npUa
-         DXZ05AiCyvG7+W3jtgrG3hfUaJJOlxdpPB+yX4HqaMEA1e77zkKTvMbHrH7N0os0QsC2
-         73hXte98Vj0xV4UGwwFO7VtpNUF5dG4/TPsL1EIyhKKvLdI1AJOAPA36iV63Xwe949+Y
-         McUQ==
-X-Gm-Message-State: AOAM531vqdv8ou+4foDV2k5jnEU7KXQ4/l4NpyHWKl8SBWJdatb0XWjW
-        sSRFQd3iyAa9ZT2gnFy2Qjm+VcAOH78=
-X-Google-Smtp-Source: ABdhPJyr+zRDrqPwGQ9WMZPFvipbWpPfP0XxBgmuP68pwUNHCELlQIQESYkX7Pxrx0w2KNGD8YojUg==
-X-Received: by 2002:a1c:4404:0:b0:382:a672:987b with SMTP id r4-20020a1c4404000000b00382a672987bmr6233389wma.115.1646804931467;
-        Tue, 08 Mar 2022 21:48:51 -0800 (PST)
-Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
-        by smtp.gmail.com with ESMTPSA id i8-20020a7bc948000000b003898dfd7990sm678289wml.29.2022.03.08.21.48.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Mar 2022 21:48:50 -0800 (PST)
-Message-ID: <d2a09bf3-9bd3-588a-99a1-598281d08678@kernel.org>
-Date:   Wed, 9 Mar 2022 06:48:49 +0100
+        Wed, 9 Mar 2022 06:32:14 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6A83F14FFD4;
+        Wed,  9 Mar 2022 03:31:15 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 233BF1655;
+        Wed,  9 Mar 2022 03:31:15 -0800 (PST)
+Received: from [10.163.33.203] (unknown [10.163.33.203])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EFA443FA4D;
+        Wed,  9 Mar 2022 03:31:03 -0800 (PST)
+Message-ID: <f1b4dbb5-7cd4-7513-4b18-169b97745a0a@arm.com>
+Date:   Wed, 9 Mar 2022 17:01:02 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: hppa vDSO and compiler (non-)support
+ Thunderbird/91.5.0
+Subject: Re: [PATCH V3 05/30] arm64/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
 Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org,
-        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
-        =?UTF-8?Q?Martin_Li=c5=a1ka?= <mliska@suse.cz>,
-        Andreas Schwab <schwab@linux-m68k.org>
-References: <d2713ae1-0ca5-9e5a-b7d2-b7d0f1f5614a@kernel.org>
- <2e1f3e41-7097-e68d-d312-9319ad62565c@gmx.de>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <2e1f3e41-7097-e68d-d312-9319ad62565c@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+To:     Catalin Marinas <catalin.marinas@arm.com>
+Cc:     linux-mm@kvack.org, akpm@linux-foundation.org,
+        linux-kernel@vger.kernel.org, geert@linux-m68k.org,
+        Christoph Hellwig <hch@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, sparclinux@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-s390@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-alpha@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-parisc@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-um@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>
+References: <1646045273-9343-1-git-send-email-anshuman.khandual@arm.com>
+ <1646045273-9343-6-git-send-email-anshuman.khandual@arm.com>
+ <YiDessYDSt060Euc@arm.com>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <YiDessYDSt060Euc@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi,
 
-On 08. 03. 22, 15:51, Helge Deller wrote:
-> Hi Jiri,
+
+On 3/3/22 20:58, Catalin Marinas wrote:
+> Hi Anshuman,
 > 
-> Thanks for testing on parisc!
+> On Mon, Feb 28, 2022 at 04:17:28PM +0530, Anshuman Khandual wrote:
+>> +static inline pgprot_t __vm_get_page_prot(unsigned long vm_flags)
+>> +{
+>> +	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
+>> +	case VM_NONE:
+>> +		return PAGE_NONE;
+>> +	case VM_READ:
+>> +	case VM_WRITE:
+>> +	case VM_WRITE | VM_READ:
+>> +		return PAGE_READONLY;
+>> +	case VM_EXEC:
+>> +		return PAGE_EXECONLY;
+>> +	case VM_EXEC | VM_READ:
+>> +	case VM_EXEC | VM_WRITE:
+>> +	case VM_EXEC | VM_WRITE | VM_READ:
+>> +		return PAGE_READONLY_EXEC;
+>> +	case VM_SHARED:
+>> +		return PAGE_NONE;
+>> +	case VM_SHARED | VM_READ:
+>> +		return PAGE_READONLY;
+>> +	case VM_SHARED | VM_WRITE:
+>> +	case VM_SHARED | VM_WRITE | VM_READ:
+>> +		return PAGE_SHARED;
+>> +	case VM_SHARED | VM_EXEC:
+>> +		return PAGE_EXECONLY;
+>> +	case VM_SHARED | VM_EXEC | VM_READ:
+>> +		return PAGE_READONLY_EXEC;
+>> +	case VM_SHARED | VM_EXEC | VM_WRITE:
+>> +	case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
+>> +		return PAGE_SHARED_EXEC;
+>> +	default:
+>> +		BUILD_BUG();
+>> +	}
+>> +}
 > 
-> On 3/8/22 12:06, Jiri Slaby wrote:
->> since the "parisc: Add vDSO support" commit, I can no longer cross-build a hppa kernel. I see two issues:
->>
->> 1) CROSS32_COMPILE detection doesn't work here, as openSUSE provides hppa-suse-linux-* binaries. It's easy to overcome by "CROSS32_COMPILE=hppa-suse-linux-"
+> I'd say ack for trying to get of the extra arch_vm_get_page_prot() and
+> arch_filter_pgprot() but, TBH, I'm not so keen on the outcome. I haven't
+> built the code to see what's generated but I suspect it's no significant
+> improvement. As for the code readability, the arm64 parts don't look
+> much better either. The only advantage with this patch is that all
+> functions have been moved under arch/arm64.
+
+Got it.
+
 > 
-> How is it handled for other platforms like s390x?
-
-s390 simply uses CC for vdso32:
-cmd_vdso32cc = $(CC) $(c_flags) -c -o $@ $<
-
-> Would it make sense to add the detection for SUSE too?
-
-Maybe.
-
->> 2) openSUSE doesn't provide any libc for hppa. So gcc doesn't provide libgcc.a and the build of vDSO fails.
+> I'd keep most architectures that don't have own arch_vm_get_page_prot()
+> or arch_filter_pgprot() unchanged and with a generic protection_map[]
+> array. For architectures that need fancier stuff, add a
+> CONFIG_ARCH_HAS_VM_GET_PAGE_PROT (as you do) and allow them to define
+> vm_get_page_prot() while getting rid of arch_vm_get_page_prot() and
+> arch_filter_pgprot(). I think you could also duplicate protection_map[]
+> for architectures with own vm_get_page_prot() (make it static) and
+> #ifdef it out in mm/mmap.c.
 > 
-> libgcc.a comes with the compiler, I don't think you need libc for that.
+> If later you have more complex needs or a switch statement generates
+> better code, go for it, but for this series I'd keep things simple, only
+> focus on getting rid of arch_vm_get_page_prot() and
+> arch_filter_pgprot().
 
-I was told glibc is needed to build libgcc.a.
+Got it.
 
-> I'm currently installing opensuse to try myself though...
 > 
->> So could vDSO be optional on hppa via KConfig?
-> The vDSO is one of the first things which is built during kernel build process.
-> This is why you fail.
-> Making it optional doesn't make sense, because then the kernel wouldn't be able
-> to start the user space processes.
-> 
->> I used to use the cross compiler to at least compile-check the following  tty drivers:
->> arch/parisc/kernel/pdc_cons.o
->> drivers/tty/serial/mux.o
->> drivers/tty/serial/8250/8250_gsc.o
-> 
-> I assume you never built a full kernel, but stopped when building those modules?
-> Without libgcc.a the kernel itself wouldn't have linked before either.
+> If I grep'ed correctly, there are only 4 architectures that have own
+> arch_vm_get_page_prot() (arm64, powerpc, sparc, x86) and 2 that have own
+> arch_filter_pgprot() (arm64, x86). Try to only change these for the time
+> being, together with the other generic mm cleanups you have in this
+> series. I think there are a couple more that touch protection_map[]
+> (arm, m68k). You can leave the generic protection_map[] global if the
+> arch does not select ARCH_HAS_VM_GET_PAGE_PROT.
 
-Correct, I am only build-testing parisc-only drivers when doing global 
-tty changes.
+Okay, I will probably split the series into two parts.
 
-thanks,
--- 
-js
-suse labs
+-  Drop arch_vm_get_page_prot() and arch_filter_pgprot() on relevant
+   platforms i.e arm64, powerpc, sparc and x86 via this new config
+   ARCH_HAS_VM_GET_PAGE_PROT, keeping the generic protection_map[]
+   since platform __SXXX/__PXX macros would be still around.
+
+-  Drop __SXXX/__PXXX across all platforms via just initializing
+   protection_map[] early during boot in the platform OR moving
+   both vm_get_page_prot() via ARCH_HAS_VM_GET_PAGE_PROT and the
+   generic protection_map[] inside the platform.
+
+   There were some objections with respect to switch case code in
+   comparison to the array based table look up.
+
+> 
+>> +static pgprot_t arm64_arch_filter_pgprot(pgprot_t prot)
+>> +{
+>> +	if (cpus_have_const_cap(ARM64_HAS_EPAN))
+>> +		return prot;
+>> +
+>> +	if (pgprot_val(prot) != pgprot_val(PAGE_EXECONLY))
+>> +		return prot;
+>> +
+>> +	return PAGE_READONLY_EXEC;
+>> +}
+>> +
+>> +static pgprot_t arm64_arch_vm_get_page_prot(unsigned long vm_flags)
+>> +{
+>> +	pteval_t prot = 0;
+>> +
+>> +	if (vm_flags & VM_ARM64_BTI)
+>> +		prot |= PTE_GP;
+>> +
+>> +	/*
+>> +	 * There are two conditions required for returning a Normal Tagged
+>> +	 * memory type: (1) the user requested it via PROT_MTE passed to
+>> +	 * mmap() or mprotect() and (2) the corresponding vma supports MTE. We
+>> +	 * register (1) as VM_MTE in the vma->vm_flags and (2) as
+>> +	 * VM_MTE_ALLOWED. Note that the latter can only be set during the
+>> +	 * mmap() call since mprotect() does not accept MAP_* flags.
+>> +	 * Checking for VM_MTE only is sufficient since arch_validate_flags()
+>> +	 * does not permit (VM_MTE & !VM_MTE_ALLOWED).
+>> +	 */
+>> +	if (vm_flags & VM_MTE)
+>> +		prot |= PTE_ATTRINDX(MT_NORMAL_TAGGED);
+>> +
+>> +	return __pgprot(prot);
+>> +}
+>> +
+>> +pgprot_t vm_get_page_prot(unsigned long vm_flags)
+>> +{
+>> +	pgprot_t ret = __pgprot(pgprot_val(__vm_get_page_prot(vm_flags)) |
+>> +			pgprot_val(arm64_arch_vm_get_page_prot(vm_flags)));
+>> +
+>> +	return arm64_arch_filter_pgprot(ret);
+>> +}
+> 
+> If we kept the array, we can have everything in a single function
+> (untested and with my own comments for future changes):
+
+Got it.
+
+> 
+> pgprot_t vm_get_page_prot(unsigned long vm_flags)
+> {
+> 	pgprot_t prot = __pgprot(pgprot_val(protection_map[vm_flags &
+> 				(VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]));
+> 
+> 	/*
+> 	 * We could get rid of this test if we updated protection_map[]
+> 	 * to turn exec-only into read-exec during boot.
+> 	 */
+> 	if (!cpus_have_const_cap(ARM64_HAS_EPAN) &&
+> 	    pgprot_val(prot) == pgprot_val(PAGE_EXECONLY))
+> 		prot = PAGE_READONLY_EXEC;
+> 
+> 	if (vm_flags & VM_ARM64_BTI)
+> 		prot != PTE_GP;
+> 
+> 	/*
+> 	 * We can get rid of the requirement for PROT_NORMAL to be 0
+> 	 * since here we can mask out PTE_ATTRINDX_MASK.
+> 	 */
+> 	if (vm_flags & VM_MTE) {
+> 		prot &= ~PTE_ATTRINDX_MASK;
+> 		prot |= PTE_ATTRINDX(MT_NORMAL_TAGGED);
+> 	}
+> 
+> 	return prot;
+> }
+> 
