@@ -2,191 +2,215 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B25874D1D94
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Mar 2022 17:41:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19E584D2552
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Mar 2022 02:13:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238790AbiCHQmN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 8 Mar 2022 11:42:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38828 "EHLO
+        id S229628AbiCIBDm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 8 Mar 2022 20:03:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348599AbiCHQlr (ORCPT
+        with ESMTP id S229714AbiCIBDd (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 8 Mar 2022 11:41:47 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E696251E7D;
-        Tue,  8 Mar 2022 08:40:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1646757614;
-        bh=Fho49uNGHXrjkDqL2Zd43Us7RILgLH8PK5c7wbh+2iE=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=a1anfpCFjprsBJecwuUdttDpSP7OjniphoJULZyzDPooa5vldIx2gL68sT6YsIBV+
-         sNfAI0sJb7E+gVr3osOjPp11k9upPmo3Jy9jNrUdhfUSKVlG3o/HibPRh9zW+62orH
-         qB6TXrtNkI95oDX6DzmKG6RHZmgf1sHIfxh1K0+U=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530 ([92.116.180.167]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N3bSj-1o8lIr2iY7-010d8u; Tue, 08
- Mar 2022 17:40:14 +0100
-Date:   Tue, 8 Mar 2022 17:40:13 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     Jiri Slaby <jirislaby@kernel.org>
-Cc:     linux-parisc@vger.kernel.org,
-        Linux kernel mailing list <linux-kernel@vger.kernel.org>
-Subject: Re: hppa vDSO and compiler (non-)support
-Message-ID: <YieG7XxeM8B83AbP@ls3530>
-References: <d2713ae1-0ca5-9e5a-b7d2-b7d0f1f5614a@kernel.org>
- <2e1f3e41-7097-e68d-d312-9319ad62565c@gmx.de>
+        Tue, 8 Mar 2022 20:03:33 -0500
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-005.bell.net [209.71.208.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B5F971323E8
+        for <linux-parisc@vger.kernel.org>; Tue,  8 Mar 2022 16:40:37 -0800 (PST)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.50.7.94]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6225B9A1004AE872
+X-CM-Envelope: MS4xfCh16oaAq6Olk3rJ0m/QWZrafh1BZn+s3OeL0QriLgDzx7jr/qrAY0ou4VndFEjXx1tJzcA4/Cwr6I2S9V5ocNa9NU6KQC1ErvAdJ9++WAnwD6Ndye4F
+ MZgXmCzBwp9MpRUJekUbDm1kXQrc7HZ2oL7AAZNMzy1hYn1bc8b1Ng05YXCY6Bq23xUtO+LnbeNyk+YlD2EGQoVQIooXdG/oywNmrOGpUkj30yiG/ETO889G
+ DVm+mhx+N9mvdX56BzIU5pqXUgjUJ5DR7R7BPBRcBZj9qU9sBC+YJTyrxHDtFI4G3gWV13/jTP2J1YFruKzawuXi/xMsQI10waQxFJ8P58yI+Z/vSDHfY3U2
+ /i9W03zugZlqY3taH4T/Ncqq6MPs/5I9qd220esHw1cMS0Y83Qr+7Hkua9xnvXLjZ+5JOMo3NiiD2WyB+AFFOgLdanRzjHK3YFg/elXn0N6Spb5C+0bPa0OL
+ ClyuiBWThpEz087+KLDnHmNp58FCCfQ75TdeEBCE0BN809xxrhDXw6Bqho0eq/3mJbjMVhAjgdg9LC713KzA1O7rTtFsAbUgrRCzAhH4CD9610Zh5m222ZJp
+ k6NAjc5NFUPdiCoyw6tBEJtw4ae0PkygmYRO0ik9fKU/JQ==
+X-CM-Analysis: v=2.4 cv=YYreWydf c=1 sm=1 tr=0 ts=6227f4ab
+ a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
+ a=o8Y5sQTvuykA:10 a=FBHGMhGWAAAA:8 a=cGPhu0GUHzPwQ_FncaUA:9 a=CjuIK1q_8ugA:10
+ a=-BzfZxxVLh24reVZQScA:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from mx3210.localdomain (70.50.7.94) by cmx-mtlrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 6225B9A1004AE872; Tue, 8 Mar 2022 19:28:27 -0500
+Received: by mx3210.localdomain (Postfix, from userid 1000)
+        id A142C220115; Wed,  9 Mar 2022 00:28:26 +0000 (UTC)
+Date:   Wed, 9 Mar 2022 00:28:26 +0000
+From:   John David Anglin <dave.anglin@bell.net>
+To:     linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: [PATCH, RFC] parisc: Fix handling off probe non-access faults
+Message-ID: <Yif0qrUlR4ixIaVL@mx3210.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="h4IXhlplqW6k4WB2"
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <2e1f3e41-7097-e68d-d312-9319ad62565c@gmx.de>
-X-Provags-ID: V03:K1:V4v9y6JKOakEFg8H6nVyPytTWKwWdvWEVpeSvbhE9yQoR52ohDM
- 0p30sc4JangSVLB+t/7gMCEDffQ5msKP1zyM/1zP8Kvr0HYBjsIDK45E+BBN+lpvTvywRuP
- vkvo/j3/BwxdL0+2/6vKoOc+hMZax+vzfhBXI8+22WJlB9CL0+rxiZiAT3nSDwJikE/EmZ/
- Vm7NrhXL1M/BBOLfnShog==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0X4/MLsWD1Y=:1zavGvfPaMlwgaf1ga+C79
- W7njnbCUCADn80Bc6uvOeXi7hsASNg4J1vqHmAEHm+qcjLv4vMweAFVSzfxl+0YhUrgUTbOhZ
- xYa0LxgnkueZND+0fcr3naIFowqpPrvai3gfTSZWd7MVaV97djuJBg5OEQelFX/3ivLsVKl1J
- Ec6FaiIpax1fw6J4og8l/ecnXuoB+5C8BAoXl60WOCcos+mCLhSDgBtFGSySd1PhTHxDVQDO2
- kow5CxOgG+so9wENVHsqTEZX25FOkzLfTfyiCuC/u3zVKF9yvpPXmPwsUoEvNt18Dkn5y0mmC
- xaxNc2Uk8uzBAeglaY3KH8PUVHGGZdfXSxzpDlQRmHOAayVKiy+tfCsKaxXx6dUAgYRzyhVGi
- oq6tL3CLywN2Tg9Fi8n7d9X6IjKdkrCf/7wvupfbM50L3DWB8nZWMW4l1/w/f8/HiJv8k05Gd
- 0zp3vwdeYRXbzjYeFfOJcgP03/JF+cAVo2kMm/S9EjBXrxkI/i58PtOQ3txAJmcYbCvLt+iHN
- 5ELBBy5VhwMH6RQPX+Nt9ybJCgKkbD1/1Gh72WAsJy8uvge9V3EgstoFanYtSErx9ycyb9yIy
- exwIGzM8cBBr2OrBuUqQF3ClWhxnQNQ9eduOkrfxIVV3JA7VuL/S2u+Z3PI6XGM8iWOlEo7gl
- LsJtjXvxfhdWZ/xrxgMf0yRuCo9WCEspyBJ7253yiBSucRGnzE9AWi1o3EpFE/QnpkA8VLjq1
- 1+EpnVBRLE7SRfiFitYu0QIyvZVmzmuOaUN1Ys+SQexrXjdJgEcX1Vs1cQSbAF271b2NGaHM5
- ryQ3KH50oILTbt6ekKxErSPT+rOfQGXrxmXRlXvi3zb6Dubi/o5au494JJCBFTIvJCS/Asu1G
- AyE5Go+UsD5ePgJ8i8VC57cperIBKnNN6gJi4KRKtHFM82CH4gc7qeOypS8imn7geQQuQEeTK
- 9iUVBqnmA151KxUFX+UYis48vKE5E1/Yax6yiqMoqUv9wqhGbipURmUiwE+9kXbyOR/ZH6FQv
- ABAHSf7bv3y60Q3wyPW/FPg/8EZ2wLVUgGuJOACZk63SxK4ACekvXiaVFXsjAPAZFLntV5ozC
- ehwMpeGNcDEi1I=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-* Helge Deller <deller@gmx.de>:
-> Hi Jiri,
->
-> Thanks for testing on parisc!
->
-> On 3/8/22 12:06, Jiri Slaby wrote:
-> > since the "parisc: Add vDSO support" commit, I can no longer cross-bui=
-ld a hppa kernel. I see two issues:
-> >
-> > 1) CROSS32_COMPILE detection doesn't work here, as openSUSE provides h=
-ppa-suse-linux-* binaries. It's easy to overcome by "CROSS32_COMPILE=3Dhpp=
-a-suse-linux-"
->
-> How is it handled for other platforms like s390x?
-> Would it make sense to add the detection for SUSE too?
->
-> > 2) openSUSE doesn't provide any libc for hppa. So gcc doesn't provide =
-libgcc.a and the build of vDSO fails.
->
-> libgcc.a comes with the compiler, I don't think you need libc for that.
-> I'm currently installing opensuse to try myself though...
->
-> > So could vDSO be optional on hppa via KConfig?
-> The vDSO is one of the first things which is built during kernel build p=
-rocess.
-> This is why you fail.
-> Making it optional doesn't make sense, because then the kernel wouldn't =
-be able
-> to start the user space processes.
->
-> > I used to use the cross compiler to at least compile-check the followi=
-ng =A0tty drivers:
-> > arch/parisc/kernel/pdc_cons.o
-> > drivers/tty/serial/mux.o
-> > drivers/tty/serial/8250/8250_gsc.o
->
-> I assume you never built a full kernel, but stopped when building those =
-modules?
-> Without libgcc.a the kernel itself wouldn't have linked before either.
 
-Below is a hackish patch which should allow you to build at least until
-those modules. The make will still fail when linking the vmlinux file,
-because libgcc.a provides the necessary low level symbols.
+--h4IXhlplqW6k4WB2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'm currently not planning to include this patch, because it simply
-doesn't make sense. Maybe you could nevertheless try/use it?
-I'm open to any other ideas you may have.
+Currently, the parisc kernel does not fully support non-access TLB
+fault handling for probe instructions. In the fast path, we set the
+target register to zero if it is not a shadowed register. The slow
+path is not implemented, so we call do_page_fault. The architecture
+indicates that non-access faults should not cause a page fault from
+disk.
 
-IMHO, the only solution is, that libgcc.a gets included into the suse cros=
-s
-compiler rpm package.
+This change adds to code to provide non-access fault support for
+probe instructions. It also modifies the handling of faults on
+userspace so that if the address lies in a valid VMA and the access
+type matches that for the VMA, the probe target register is set to
+one. Otherwise, the target register is set to zero.
 
-Helge
+This was done to make probe instructions more useful for userspace.
+Probe instructions are not very useful if they set the target register
+to zero whenever a page is not present in memory. Nominally, the
+purpose of the probe instruction is determine whether read or write
+access to a given address is allowed.
 
+This fixes a problem in function pointer comparison noticed in the
+glibc testsuite (stdio-common/tst-vfprintf-user-type). The same
+problem is likely in glibc (_dl_lookup_address).
 
-diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
-index 2a9387a93592..3e62527db749 100644
-=2D-- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -165,6 +165,7 @@ vmlinuz: bzImage
- 	$(OBJCOPY) $(boot)/bzImage $@
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+---
 
- ifeq ($(KBUILD_EXTMOD),)
-+ifdef CONFIG_VDSO
- # We need to generate vdso-offsets.h before compiling certain files in ke=
-rnel/.
- # In order to do that, we should use the archprepare target, but we can't=
- since
- # asm-offsets.h is included in some files used to generate vdso-offsets.h=
-, and
-@@ -177,6 +178,7 @@ vdso_prepare: prepare0
- 		$(build)=3Darch/parisc/kernel/vdso64 include/generated/vdso64-offsets.h=
-)
- 	$(Q)$(MAKE) $(build)=3Darch/parisc/kernel/vdso32 include/generated/vdso3=
-2-offsets.h
- endif
-+endif
-
- PHONY +=3D vdso_install
-
-diff --git a/arch/parisc/include/asm/vdso.h b/arch/parisc/include/asm/vdso=
-.h
-index ef8206193f82..d667cddd700d 100644
-=2D-- a/arch/parisc/include/asm/vdso.h
-+++ b/arch/parisc/include/asm/vdso.h
-@@ -2,6 +2,7 @@
- #ifndef __PARISC_VDSO_H__
- #define __PARISC_VDSO_H__
-
-+#ifdef CONFIG_VDSO
- #ifndef __ASSEMBLY__
-
- #ifdef CONFIG_64BIT
-@@ -15,6 +16,12 @@
- extern struct vdso_data *vdso_data;
-
- #endif /* __ASSEMBLY __ */
-+#else /* CONFIG_VDSO */
+diff --git a/arch/parisc/include/asm/traps.h b/arch/parisc/include/asm/trap=
+s.h
+index 34619f010c63..0ccdb738a9a3 100644
+--- a/arch/parisc/include/asm/traps.h
++++ b/arch/parisc/include/asm/traps.h
+@@ -18,6 +18,7 @@ unsigned long parisc_acctyp(unsigned long code, unsigned =
+int inst);
+ const char *trap_name(unsigned long code);
+ void do_page_fault(struct pt_regs *regs, unsigned long code,
+ 		unsigned long address);
++int handle_nadtlb_fault(struct pt_regs *regs);
+ #endif
+=20
+ #endif
+diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+index 6e9cdb269862..85de7a0c26d0 100644
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -1348,6 +1348,8 @@ nadtlb_probe_check:
+ 	ldi             0x80,%r16
+ 	and             %r9,%r16,%r17
+ 	cmpb,<>,n       %r16,%r17,nadtlb_fault /* Must be probe,[rw]*/
++	mfctl		%isr,%r16
++	cmpib,COND(<>),n	0,%r16,nadtlb_fault
+ 	BL              get_register,%r25      /* Find the target register */
+ 	extrw,u         %r9,31,5,%r8           /* Get target register */
+ 	cmpib,COND(=3D),n        -1,%r1,nadtlb_fault    /* have to use slow path =
+*/
+diff --git a/arch/parisc/kernel/traps.c b/arch/parisc/kernel/traps.c
+index b6fdebddc8e9..39576a9245c7 100644
+--- a/arch/parisc/kernel/traps.c
++++ b/arch/parisc/kernel/traps.c
+@@ -662,6 +662,8 @@ void notrace handle_interruption(int code, struct pt_re=
+gs *regs)
+ 			 by hand. Technically we need to emulate:
+ 			 fdc,fdce,pdc,"fic,4f",prober,probeir,probew, probeiw
+ 		*/
++		if (code =3D=3D 17 && handle_nadtlb_fault(regs))
++			return;
+ 		fault_address =3D regs->ior;
+ 		fault_space =3D regs->isr;
+ 		break;
+diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
+index e9eabf8f14d7..fc2b6d0f22e8 100644
+--- a/arch/parisc/mm/fault.c
++++ b/arch/parisc/mm/fault.c
+@@ -425,3 +425,57 @@ void do_page_fault(struct pt_regs *regs, unsigned long=
+ code,
+ 	}
+ 	pagefault_out_of_memory();
+ }
 +
-+#define VDSO64_SYMBOL(tsk, name) (0)
-+#define VDSO32_SYMBOL(tsk, name) (0)
++/* Handle non-access data TLB miss faults. Accesses to userspace are
++ * considered allowed if they lie in a valid VMA and the access type
++ * matches. We are not allowed to handle MM faults here so there may
++ * be situations where an actual access would fail even though a probe
++ * was successful.
++ */
++int
++handle_nadtlb_fault(struct pt_regs *regs)
++{
++	unsigned long insn =3D regs->iir;
++	int toreg, val =3D 0;
++	struct vm_area_struct *vma, *prev_vma;
++	struct task_struct *tsk;
++	struct mm_struct *mm;
++	unsigned long address;
++	unsigned long acc_type;
 +
-+#endif /* CONFIG_VDSO */
++	switch (insn & 0x380) {
++	case 0x180:
++		/* PROBE instruction */
++		toreg =3D insn & 0x1f;
++		if (regs->isr) {
++			tsk =3D current;
++			mm =3D tsk->mm;
++			if (mm) {
++				/* Search for VMA */
++				address =3D regs->ior;
++				mmap_read_lock(mm);
++				vma =3D find_vma_prev(mm, address, &prev_vma);
++				mmap_read_unlock(mm);
++
++				/*
++				 * Check if access to the VMA is okay.
++				 * We don't allow for stack expansion.
++				 */
++				acc_type =3D (insn & 0x40) ? VM_WRITE : VM_READ;
++				if (vma
++				    && address >=3D vma->vm_start
++				    && (vma->vm_flags & acc_type) =3D=3D acc_type)
++					val =3D 1;
++			}
++		}
++		if (toreg)
++			regs->gr[toreg] =3D val;
++		regs->gr[0]|=3DPSW_N;
++		return 1;
++
++	default:
++		break;
++	}
++
++	return 0;
++}
 
- /* Default link addresses for the vDSOs */
- #define VDSO_LBASE	0
-diff --git a/arch/parisc/kernel/Makefile b/arch/parisc/kernel/Makefile
-index d579243edc2f..461dd4a85e99 100644
-=2D-- a/arch/parisc/kernel/Makefile
-+++ b/arch/parisc/kernel/Makefile
-@@ -41,6 +41,8 @@ obj-$(CONFIG_KEXEC_CORE)		+=3D kexec.o relocate_kernel.o
- obj-$(CONFIG_KEXEC_FILE)		+=3D kexec_file.o
+--h4IXhlplqW6k4WB2
+Content-Type: application/pgp-signature; name="signature.asc"
 
- # vdso
-+ifdef CONFIG_VDSO
- obj-y			+=3D vdso.o
- obj-$(CONFIG_64BIT)	+=3D vdso64/
- obj-y			+=3D vdso32/
-+endif
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmIn9KIACgkQXb/Nrl8Z
+TfErGBAAmBH3OMrBKBzyRPvdx0X+26QnJpW2lPVPfNuhddED8Uh8FzjBWyqEdAJG
+En0NTsB314BIgmW5w/LYwjRJLKuDcJaMqjK7mgyRhCjj/20D7v7qLUYj4bZ1VX+m
+Wmlxt0Z5NkIEG9ZREe20lIKXMn86SNxkYiQsiYRUFKrrRodTruD3c+1yvqoXV/+m
+dyMvxOgzN/WAdANTRvT4Xy6GKLeGrLnUlbDJPyOthYRVkqi7ezhIfiDR8m+UBSqi
+R+2cwCsDSbvYVhgCFbnRjjzraUHzGXiMi8nOks4YSCHikYENPBr7N97XZt1UjWGw
+pUmWqhjJtAnRyw4t0CsA5plFbrxaCXwfXJJJaC2HuxA+mPg7qUzePKk/Zx3eytvT
+xp94/7x0XhmgfLrHIY8xLeVpisFTvYYIStwBDYhoHAMRTK+1LhY7+zrs10SPHSpY
+MsCYl8S0/ddKVQxRyGs0XURq84lF0N1h7z6ABRytWD4WPWc/lOU1ad7Xep/exHtb
+gnDHV3pFDEsd2yekg0pqf5HvaomoH19s5oZw3GHYj+JD2gEBgq1W5Xsb4lF5yme5
+plXhzfaa6NLZdRmzeuOj4Eg5rR9GCVV5bcDEvsC54gTsPfT1dU4rj5UQhtqaWyOy
+yelsPYTMgpGyHmwW+TLqFajoQCfLiFVxDljpId2ECTOu4VQOUgY=
+=gxgn
+-----END PGP SIGNATURE-----
+
+--h4IXhlplqW6k4WB2--
