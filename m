@@ -2,71 +2,132 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABB664D54E2
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Mar 2022 23:52:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8790C4D5830
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Mar 2022 03:38:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245089AbiCJWxW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 10 Mar 2022 17:53:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48366 "EHLO
+        id S1345665AbiCKCjZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 10 Mar 2022 21:39:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237854AbiCJWxW (ORCPT
+        with ESMTP id S235051AbiCKCjY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 10 Mar 2022 17:53:22 -0500
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-005.bell.net [209.71.208.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 71F65E98FD
-        for <linux-parisc@vger.kernel.org>; Thu, 10 Mar 2022 14:52:20 -0800 (PST)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 621D9CE901648BE4
-X-CM-Envelope: MS4xfPfpw6R6MoMO+3Xz/+KNB0nuDeD5TA9cQceStF5F7MK/UuD4DFFJqFHuTOUrl+212IwFLFte3XYYK5H5jobuFd4VqoWW2rO0HqTU2jIoelwI0tPSelH/
- vOVm1bc20mGlpfD7TazjlIaPemOPtrhhSzWCr6MSyorQNlWvl6rp7f7K2a2YPGpnkc3UEJlvJd4SqFqee9ltnXb8OcfXbUe248bFY74VTHI18lq/NkS8YzS2
- iz+bigHNiGRjMsY/JRDwGjh/hqqr+e7W4LTM0XmL1feQTTXKnBx0/9Jeby5jNiaHN9BR0WaSKzxBSDtjqTACvMO517DVavuP8DKtqZ/uQeNmr2rjZz+ju2Nk
- 06Tkt4gKeMoY/6IlioyG4oy9r77K6Q==
-X-CM-Analysis: v=2.4 cv=aKWTFZxm c=1 sm=1 tr=0 ts=622a811f
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=_yMya56UR72vfMHM47MA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (70.50.7.94) by cmx-mtlrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 621D9CE901648BE4; Thu, 10 Mar 2022 17:52:15 -0500
-Message-ID: <eccd21ab-773d-273d-b396-a4cb2f4fd2b7@bell.net>
-Date:   Thu, 10 Mar 2022 17:52:15 -0500
+        Thu, 10 Mar 2022 21:39:24 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D24EA108763;
+        Thu, 10 Mar 2022 18:38:22 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D373600BE;
+        Fri, 11 Mar 2022 02:38:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC43C340FC;
+        Fri, 11 Mar 2022 02:38:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646966301;
+        bh=Jl8zmUlue4qqSpvupSe770nwEDFbxuYU+7Bv15ArLNk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=lSDH6JbZLjCrBKwhP5l06T0OkCO9oN/A8aEEjauCFSKrSGqZSLjhPkfyba8lYXT8b
+         qYNbLTfBYoaFYS9/EdstBjbcmkW1UfcrGbXKAA3XzivX2N/X7M8/MG2dJGhgzUj1xe
+         JwIgADZuHHJQV+vkPugE9tLJ05ZgR4K+s7Tqg3OYy0S0d/gkDWxZGRTQdcVyEyVTta
+         XcdW+bJU/6F0zGvwFWhD4c7+eaOFthHqbXVWvY103F1BoVPLPmpdBFX9VrRB9dX0cQ
+         RFdNXU0aoXtMTFwXmsyOd8jEdA/NcC/+rOGDrpxxb7LrGBkBTS5gvraGhc0yhF8ir3
+         59IUblFQhb99Q==
+Received: by mail-vs1-f48.google.com with SMTP id u124so8098304vsb.10;
+        Thu, 10 Mar 2022 18:38:21 -0800 (PST)
+X-Gm-Message-State: AOAM531r+0RCSa1uP+4DxvpwfnmVIeolCIthRU6hs16y0vps/+RpTX7N
+        HjMThTmSp9v4Mq//k9W35qDGb7jrYRzugH1eYPA=
+X-Google-Smtp-Source: ABdhPJzYUvUjuAFq8XvtZ71Qsvionf8y5EprAZIyEokbvQbCG5RE3xULelpIsGE/d8q0ktAquLt4SKjjcxqaZOgU8Ls=
+X-Received: by 2002:a05:6102:806:b0:31e:2206:f1c with SMTP id
+ g6-20020a056102080600b0031e22060f1cmr3912870vsb.59.1646966300562; Thu, 10 Mar
+ 2022 18:38:20 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] parisc: Fix non-access data TLB cache flush faults
-Content-Language: en-US
-To:     Sven Schnelle <svens@stackframe.org>
-Cc:     linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>,
-        Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <Yij4pmK8Yjt7Wh1A@mx3210.localdomain>
- <87fsnp34qh.fsf@x1.stackframe.org>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <87fsnp34qh.fsf@x1.stackframe.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220227162831.674483-1-guoren@kernel.org> <20220227162831.674483-14-guoren@kernel.org>
+In-Reply-To: <20220227162831.674483-14-guoren@kernel.org>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Fri, 11 Mar 2022 10:38:09 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSJFMg1YJ=dbaNyemNV4sc_3P=+_PrS=RD_Y2_xz3TzPA@mail.gmail.com>
+Message-ID: <CAJF2gTSJFMg1YJ=dbaNyemNV4sc_3P=+_PrS=RD_Y2_xz3TzPA@mail.gmail.com>
+Subject: Re: [PATCH V7 13/20] riscv: compat: process: Add UXL_32 support in start_thread
+To:     Guo Ren <guoren@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Anup Patel <anup@brainfault.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
+        Drew Fustini <drew@beagleboard.org>,
+        Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-csky@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Guo Ren <guoren@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2022-03-10 3:57 p.m., Sven Schnelle wrote:
-> I think the preempt_enable()/disable() calls are no longer
-> required. I've added them to fix a bug when the kernel is preempted
-> after the mm->context / mfsp(3) compare but as that is now removed
-> this shouldn't be required anymore.
-Good thought.  I'll test.
+Hi Arnd,
 
-Dave
+On Mon, Feb 28, 2022 at 12:30 AM <guoren@kernel.org> wrote:
+>
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> If the current task is in COMPAT mode, set SR_UXL_32 in status for
+> returning userspace. We need CONFIG _COMPAT to prevent compiling
+> errors with rv32 defconfig.
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> ---
+>  arch/riscv/kernel/process.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+> index 03ac3aa611f5..54787ca9806a 100644
+> --- a/arch/riscv/kernel/process.c
+> +++ b/arch/riscv/kernel/process.c
+> @@ -97,6 +97,11 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
+>         }
+>         regs->epc = pc;
+>         regs->sp = sp;
+> +
+FIxup:
+
++ #ifdef CONFIG_COMPAT
+> +       if (is_compat_task())
+> +               regs->status = (regs->status & ~SR_UXL) | SR_UXL_32;
+> +       else
+> +               regs->status = (regs->status & ~SR_UXL) | SR_UXL_64;
++ #endif
+
+We still need "#ifdef CONFIG_COMPAT" here, because for rv32 we can't
+set SR_UXL at all. SR_UXL is BIT[32, 33].
+
+>  }
+>
+>  void flush_thread(void)
+> --
+> 2.25.1
+>
+
 
 -- 
-John David Anglin  dave.anglin@bell.net
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
