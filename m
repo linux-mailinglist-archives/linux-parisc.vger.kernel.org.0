@@ -2,52 +2,77 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED51D4D68D5
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Mar 2022 19:59:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1FC74D6BD3
+	for <lists+linux-parisc@lfdr.de>; Sat, 12 Mar 2022 03:13:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350936AbiCKTAY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 11 Mar 2022 14:00:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39798 "EHLO
+        id S229983AbiCLCOg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 11 Mar 2022 21:14:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242878AbiCKTAY (ORCPT
+        with ESMTP id S229477AbiCLCOf (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 11 Mar 2022 14:00:24 -0500
-Received: from cmx-torrgo001.bell.net (mta-tor-005.bell.net [209.71.212.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 446201B371B
-        for <linux-parisc@vger.kernel.org>; Fri, 11 Mar 2022 10:59:20 -0800 (PST)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 62280491003AE0E5
-X-CM-Envelope: MS4xfLT98fQyUNJMYFZY6S7OnC/d+DyJeMAAVZUWUs5z05rJtTixdL/Gnp2YREEXtSQAEqa2mK2t5zr+GQLRN5q569FpJ7qVkR9MMl6YAxezmHkJgg/1JHiB
- jZSGlWuYPicHHzZZEtECV199943mzPgqnY4Mo/sc43nIQ0/3HGRfUKBTWjKffutwzZq95Vh0mKEU9lRVcM8PRKi2MN5/j1NBSro/9jPcBZW02jinS5+FzEu2
- YQ+xZ1fx108x1pp4sgilNsXg/C1OpKBI4y7lPlsi0yVZg1YZfSuC2IPpUxjS2ZWM9rB4cJRtlNBQ+TWlSot2S3eKY9+2+kuhaCgFoh1UoQ4w6SneBzUUBZe+
- qE7Hc1yUPG+GhvlsLLVm9weMUU4WVDn594ovhHpW/bj7zr0E7cpkK+3OpIAmd3wxqGNb+EbUH6ukJb59qE5JlTjdC0fVR/+WZjxE4JzBMoHTb5SDuxt7MFVd
- RrC5VPNmF3a3hQvlhV6jCx6AdosqA+Phig285It7YBHaAqclz+EaTVYWLxX9QjWOGIReCBzO0CDLbzR13uYIPjr7Jd9ThYBoH42oyPFk5kOcIMf6cuHDfruY
- tDWxEmuNLACCS1beW5e33MjCDI3FDR4BOMG1kZhcUDV+0g==
-X-CM-Analysis: v=2.4 cv=B8zabMhM c=1 sm=1 tr=0 ts=622b9c01
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=o8Y5sQTvuykA:10 a=FBHGMhGWAAAA:8 a=RSDYW5cEIICebtOVsnUA:9 a=CjuIK1q_8ugA:10
- a=JWyi9f5enEdtDAEazwIA:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from mx3210.localdomain (70.50.7.94) by cmx-torrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 62280491003AE0E5; Fri, 11 Mar 2022 13:59:13 -0500
-Received: by mx3210.localdomain (Postfix, from userid 1000)
-        id 8F872220115; Fri, 11 Mar 2022 18:59:12 +0000 (UTC)
-Date:   Fri, 11 Mar 2022 18:59:12 +0000
-From:   John David Anglin <dave.anglin@bell.net>
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Subject: [PATCH] parisc: Increase parisc_cache_flush_threshold setting
-Message-ID: <YiucABkD7eYLQ/0T@mx3210.localdomain>
+        Fri, 11 Mar 2022 21:14:35 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DD90CEA07;
+        Fri, 11 Mar 2022 18:13:30 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 32AE3616FF;
+        Sat, 12 Mar 2022 02:13:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96180C340EE;
+        Sat, 12 Mar 2022 02:13:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647051209;
+        bh=iRWRs787HfJQ4SmemjGupG5ATeZbj3chEC+s846rFUI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=dzXW6D8a2fZcblys/QjCjL1M/69kjw27NQiwmxnI6v3Ty+JBSWuIwfIfHMmel2imr
+         vGu03UC1vkaZOz0pVbvbaJ9VjatjyUMXrOjzw24dIgQIhPT2twm3Y7jpIEc+Sz1sZv
+         xbefw+amYIJbHgLb9GrTrmKiMUF0Kh9g0oRa9QtveWDvFd6jsFRy9NIp4DXV0Ut1IQ
+         qOhqK6ZRwENFgrFfhjtXN1OmpfCbVK48hQDU1kPXHAQlBTM9+QsrxqThgGkRXzKr2N
+         vavIpsLAOCj0FM0mLCPoFRDvSj/f0Tjjlyok2eBV73W6cwj6H+ndb0VRdsWuF97g+/
+         fjPsQcegOyixw==
+Received: by mail-vs1-f47.google.com with SMTP id a186so11438325vsc.3;
+        Fri, 11 Mar 2022 18:13:29 -0800 (PST)
+X-Gm-Message-State: AOAM532FGz9ujwjqJuwNQBFVM5/3NTtFzxwhIVOqfjAMfz6+Xu2z4ClP
+        pFKOX+FYA0hrePt2W9/cSw1JS1yOTi9rzqar40I=
+X-Google-Smtp-Source: ABdhPJzCzz+Egly7/GI0fNYhw4sbiCEhUuQJ2YUO3cGoxYtVTwt+tqnmQKqPh36WSK6cQ0MJdLShbyuO/M99QnpoqW0=
+X-Received: by 2002:a67:fc17:0:b0:320:b039:afc0 with SMTP id
+ o23-20020a67fc17000000b00320b039afc0mr7125264vsq.2.1647051208526; Fri, 11 Mar
+ 2022 18:13:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="bslAzcOv8b43gu6L"
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220227162831.674483-1-guoren@kernel.org> <20220227162831.674483-14-guoren@kernel.org>
+ <CAJF2gTSJFMg1YJ=dbaNyemNV4sc_3P=+_PrS=RD_Y2_xz3TzPA@mail.gmail.com> <509d2b62-7d52-bf5c-7a6c-213a740a5c00@codethink.co.uk>
+In-Reply-To: <509d2b62-7d52-bf5c-7a6c-213a740a5c00@codethink.co.uk>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Sat, 12 Mar 2022 10:13:17 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSkrm+Ek5i--TTikR2RDBUa6Eo72jwvszbj3uZg=Kxorg@mail.gmail.com>
+Message-ID: <CAJF2gTSkrm+Ek5i--TTikR2RDBUa6Eo72jwvszbj3uZg=Kxorg@mail.gmail.com>
+Subject: Re: [PATCH V7 13/20] riscv: compat: process: Add UXL_32 support in start_thread
+To:     Ben Dooks <ben.dooks@codethink.co.uk>
+Cc:     Palmer Dabbelt <palmer@dabbelt.com>, Arnd Bergmann <arnd@arndb.de>,
+        Anup Patel <anup@brainfault.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
+        Drew Fustini <drew@beagleboard.org>,
+        Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+        Christoph Hellwig <hch@lst.de>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-csky@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Guo Ren <guoren@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,80 +80,73 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Fri, Mar 11, 2022 at 9:38 PM Ben Dooks <ben.dooks@codethink.co.uk> wrote:
+>
+> On 11/03/2022 02:38, Guo Ren wrote:
+> > Hi Arnd,
+> >
+> > On Mon, Feb 28, 2022 at 12:30 AM <guoren@kernel.org> wrote:
+> >>
+> >> From: Guo Ren <guoren@linux.alibaba.com>
+> >>
+> >> If the current task is in COMPAT mode, set SR_UXL_32 in status for
+> >> returning userspace. We need CONFIG _COMPAT to prevent compiling
+> >> errors with rv32 defconfig.
+> >>
+> >> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> >> Signed-off-by: Guo Ren <guoren@kernel.org>
+> >> Cc: Arnd Bergmann <arnd@arndb.de>
+> >> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> >> ---
+> >>   arch/riscv/kernel/process.c | 5 +++++
+> >>   1 file changed, 5 insertions(+)
+> >>
+> >> diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+> >> index 03ac3aa611f5..54787ca9806a 100644
+> >> --- a/arch/riscv/kernel/process.c
+> >> +++ b/arch/riscv/kernel/process.c
+> >> @@ -97,6 +97,11 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
+> >>          }
+> >>          regs->epc = pc;
+> >>          regs->sp = sp;
+> >> +
+> > FIxup:
+> >
+> > + #ifdef CONFIG_COMPAT
+> >> +       if (is_compat_task())
+> >> +               regs->status = (regs->status & ~SR_UXL) | SR_UXL_32;
+> >> +       else
+> >> +               regs->status = (regs->status & ~SR_UXL) | SR_UXL_64;
+> > + #endif
+> >
+> > We still need "#ifdef CONFIG_COMPAT" here, because for rv32 we can't
+> > set SR_UXL at all. SR_UXL is BIT[32, 33].
+>
+> would an if (IS_ENABLED(CONFIG_COMPAT)) { } around the lot be better
+> than an #ifdef here?
+I don't think, seems #ifdef CONFIG_COMPAT is more commonly used in arch/*
 
---bslAzcOv8b43gu6L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>
+> >>   }
+> >>
+> >>   void flush_thread(void)
+> >> --
+> >> 2.25.1
+> >>
+> >
+> >
+>
+>
+> --
+> Ben Dooks                               http://www.codethink.co.uk/
+> Senior Engineer                         Codethink - Providing Genius
+>
+> https://www.codethink.co.uk/privacy.html
 
-In testing the "Fix non-access data TLB cache flush faults" change,
-I noticed a significant improvement in glibc build and check times.
-This led me to investigate the parisc_cache_flush_threshold setting.
-It determines when we switch from line flushing to whole cache flushing.
 
-It turned out that the parisc_cache_flush_threshold setting on
-mako and mako2 machines (PA8800 and PA8900 processors) was way too
-small. Adjusting this setting provided almost a factor two improvement
-in the glibc build and check time.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
----
+-- 
+Best Regards
+ Guo Ren
 
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 94150b91c96f..8368fefdd217 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -388,7 +388,7 @@ void __init parisc_setup_cache_timing(void)
- {
- 	unsigned long rangetime, alltime;
- 	unsigned long size;
--	unsigned long threshold;
-+	unsigned long threshold, threshold2;
-=20
- 	alltime =3D mfctl(16);
- 	flush_data_cache();
-@@ -403,8 +403,20 @@ void __init parisc_setup_cache_timing(void)
- 		alltime, size, rangetime);
-=20
- 	threshold =3D L1_CACHE_ALIGN(size * alltime / rangetime);
--	if (threshold > cache_info.dc_size)
--		threshold =3D cache_info.dc_size;
-+
-+	/*
-+	 * The threshold computed above isn't very reliable since the
-+	 * flush times depend greatly on the percentage of dirty lines
-+	 * in the flush range. Further, the whole cache time doesn't
-+	 * include the time to refill lines that aren't in the mm/vma
-+	 * being flushed. By timing glibc build and checks on mako cpus,
-+	 * the following formula seems to work reasonably well. The
-+	 * value from the timing calculation is too small, and increases
-+	 * build and check times by almost a factor two.
-+	 */
-+	threshold2 =3D cache_info.dc_size * num_online_cpus();
-+	if (threshold2 > threshold)
-+		threshold =3D threshold2;
- 	if (threshold)
- 		parisc_cache_flush_threshold =3D threshold;
- 	printk(KERN_INFO "Cache flush threshold set to %lu KiB\n",
-
---bslAzcOv8b43gu6L
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmIrm/cACgkQXb/Nrl8Z
-TfHqVg//cnSvvT5jz0eZVof6d/5WXfDL4A+kCn9+uo5iP5hLs5XnKFWpE+XJ/8GY
-POHYoK5nz3m0Q16LnqgJ4vDdjJZJlV4QSwKl6UOBR8BvZ5/dIehj/2OLIJo3xiQd
-i23298Z7wRSJTZy2DlNOdxXOlE3/4CV4CfLPQUANzWWjM9KMS9DLav6bcuI/s2P5
-IXw5jt/JxhPOQNIV8xCkhVYkdz+cxhFxmOL/BV4k6jc4wn63S0RaF1df+vwnmu3C
-PrmD6rEjJL//z5sXUF239Rkoj8/O3h/OJjjkfZRg2ZDXQdOVmpNlvE8PB56iReyC
-BUCNVJUg0pFwwq82eRBcI3YdSx45llB8gtX+lLOKLnVzKXZns7HQ69EwpVoSQjh5
-RPPWeHqpuLpE8XTqyw+AkrccO58LBEZ/tqzxY2u2ZMme2OyS8j3DvWqjJE24gq48
-bGPGOGJhorw8yVargazcMpYYIEARtzdGqxc8y/oqzNIFPBUO30IWAUPsHeUW5UsH
-gOKEj7JWv3jRn55NCUDum2thpUf4swHrIpV2lYEWeOg74fOESYCi7dNWw/m+brfK
-f+iGG3iKAPiUPklhg09v7yUSfBjzpgvmSq9hx+0LEfXJL4e+1zEJEriV+PLlK9Vx
-aKovYYxqc7Neduqsf6//hfuy4loEsK/Gn12m8uE+wT3LgNyTXSI=
-=yfBF
------END PGP SIGNATURE-----
-
---bslAzcOv8b43gu6L--
+ML: https://lore.kernel.org/linux-csky/
