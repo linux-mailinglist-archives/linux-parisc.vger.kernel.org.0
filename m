@@ -2,150 +2,134 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A93C84DE3F7
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Mar 2022 23:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 483794DE434
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Mar 2022 23:46:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241270AbiCRW0H (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 18 Mar 2022 18:26:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40274 "EHLO
+        id S240531AbiCRWsA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 18 Mar 2022 18:48:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233444AbiCRW0H (ORCPT
+        with ESMTP id S234984AbiCRWr7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 18 Mar 2022 18:26:07 -0400
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-001.bell.net [209.71.208.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5CCDBFD6DC
-        for <linux-parisc@vger.kernel.org>; Fri, 18 Mar 2022 15:24:47 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 621D9CE9021538AA
-X-CM-Envelope: MS4xfKRyiWJQs/uLHIaIUXFmci40jaAveJqv8gLHfXObwX3FoGdRuTcGKe64tNV6wmloCupub7OqQJQPsKY2EaY/kUEkxskCLJbpGFNFzZ7iNJ1boRopI16z
- r+h6FvzmcEMzKvQG494eb8hSZYGonOnr8Zg4Zky2+ru7ImCtxsRhG51nY+CVL7GdLiyOrN8dJCYOChgPvffKEmzQmxGin1TR4sQwJE6Ny3w/4v76zk4JlBLo
- RghwKStVt4mZZfmhTbHHCqIenyinklHlbU106/JJYX9oDo5Gr3GsnQ2SdzVFYWa9idaz/FaxR4lU6WYjHe7VopLD/qijA54Ly9bbjBcgW8/X/OlYKlU54djY
- o7BHpO5tnAkOz7KuFYBrbghWUm2Ki9+0Y3KAs4hFdqZErnQnwNioDPXPri7Y+Xv5Wh3v40dOm9MoE7UU1HIT4w1oTvW+mzrLe5hthVWlpRux0QjzZgxjBtJ4
- anxtU9Pqzx0ZRirYOowKskmqf0kEynDjkfjEIlTw+G+1k/pP+p280kqXzI6DoNXe0AWh2pwAg6KlF2W2aVRY80UirYcWl2jN8OHdCbGCDUNHe9E/ak4+E64J
- 5xOfkxiL+7wh/rbOst2UWpxqHxS5SBTooBBmGtjdkIV8Tw==
-X-CM-Analysis: v=2.4 cv=aKWTFZxm c=1 sm=1 tr=0 ts=62350697
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=o8Y5sQTvuykA:10 a=FBHGMhGWAAAA:8 a=Q2245be5OrS5l0onsbsA:9 a=CjuIK1q_8ugA:10
- a=TU7ha1VK5XSi81ZK5zAA:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from mx3210.localdomain (70.50.7.94) by cmx-mtlrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 621D9CE9021538AA; Fri, 18 Mar 2022 18:24:23 -0400
-Received: by mx3210.localdomain (Postfix, from userid 1000)
-        id 72D02220115; Fri, 18 Mar 2022 22:24:22 +0000 (UTC)
-Date:   Fri, 18 Mar 2022 22:24:22 +0000
-From:   John David Anglin <dave.anglin@bell.net>
+        Fri, 18 Mar 2022 18:47:59 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6B0C2487AE
+        for <linux-parisc@vger.kernel.org>; Fri, 18 Mar 2022 15:46:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1647643593;
+        bh=LTvVrGnJHzIqcPngVDeiuQm0EZAowcs0wvfFnvRFFGA=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=fyMO8iiQ3EEzmQD6+Ufmmed40MNdOdaceWEXlhdNqrNk0gK6HxKtxRBKysrNvFCxE
+         UPz18HkLShcWhxxEYRCywJ7gk4UIY2zLQ74i6NxEfLuDcQ7DYeYJ/pOH/1BL/osDjl
+         GTrMb+WX9pPd4lNifxZGzjIXhxyKy334QO7tXtsM=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.186.189]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MSbxD-1ngA3U1Lbd-00Sx3z; Fri, 18
+ Mar 2022 23:46:33 +0100
+From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Subject: [PATCH] parisc: Fix invalidate/flush vmap routines
-Message-ID: <YjUGloM6ji+4Ii9k@mx3210.localdomain>
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Convert parisc_requires_coherency() to static branch
+Date:   Fri, 18 Mar 2022 23:46:32 +0100
+Message-Id: <20220318224632.132721-1-deller@gmx.de>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="clxxys8PpSMiMKDs"
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ZsAQiRf1/mt82fOXGpKEb+pwzj7WnaZ1UPpoBVfh1nZYgedRhnY
+ a+8j0VNqtPCQDBjHcMBcc3lvAdNNdf0dUSLf8AyRlayN+nN4Bqvq8YKv6zKgqKlnE5r82ll
+ 5OSrlf80KcFkreL1NuxIhdbXVtUE0cVPEowJIwCOZ/Gf6/Gp+D8O7ipZ7kLt2cn7LA0rLkf
+ 98fKhBUPFKHZigzrkyo5g==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:KnrmSKZhMMA=:yNoDG2l1YLyMEem5D9TSYQ
+ 5JCFd7HRiL8qCpAQIjGZw05UO7nFwX7ZjOW4ws+6P5cAiZeJkegLE6gjSHSJ/ui7wR9GPr+1t
+ HFiSkSqKgpDaXSp0ADo6KJSTe3JiidFLbN9Ph6Vf2unMpU419xKhMdLZQAGmt5S0D9uTZSzsj
+ gpC0EMybGvdCLt7+GoJUa1hccknN7rKJKRQxRNrL7uR2lwn1C45/jRyRNqQDf0DEpiwh9QqQN
+ jYsPgGDFsMEQAjc6SIUugUAht16+jC3enoJy6+ZpxYVNqQw+qsi0eGoWmxRK8OVoxO/MTuEnY
+ s1ajFVAvjCnsLAC5/T3zEbqPhZlMIqxyujjhJeedvOPMNzUN4scV0XVwCmnmK4U7NaKgdhdgg
+ 73b+R6IP5vnCpZGMrUQ+HLhDpFU+4zVsYLqWjA/OxSulGFuIRBtaXPjgtiTCrHa19G97zdlzg
+ qGz3HnxlAgobvuDNT7Tq89+lm6Hry/S9iMp/LTaxNqFWlOLYojWCEaVkVq1tSxwBKfSHSATb3
+ loKNJwELhmwFi+9QKXKIvkwb+k58ilRNqJf+bJYmK05k75XnSHR2X3oV7O5vr3iurMDUcd/6V
+ SBPdd4TEnzwDLqU8/qVkP1jDt0Ons3UU2q3/9z/IHfbm9Py1kcg31FZ2eq6tGPEc1zlhMp3Xw
+ oGGfiEgaMp86TD2hCaFn2a6GE1RLCWoQIN1PJSCsNOxM0zolCFQNz13fGDK3+yqyoWhXKuDmq
+ TrO9+Ya4p1iu+CGsAcRi0FUA3jQEnXgsRoGuloLkgjgTtLF1/bR7jW3kiUT+L/gdAT+UffQkp
+ v5Soc4d1acOnstMBc9LxrmqSCPOzLGOxI/tXnYAEgJIuYGBkPKfmog5irKVnl8MYG3k4dd/eY
+ nKLnWWcczu0SKF4r9ZQFS0OWDGD9u40o/WH2DbT6Tvl8NEkzMzmc86mhRw3ajApnwjR1EQ6rn
+ J7WP3ZBKSNbKaTQUdJjIFzSOJokYP6x+ddF4VdKl0Eln85uOuKl+t3KaLqIRy9DJQfAlEFahy
+ Wwt9uJcoaX4EEsIMgrwGSKqOTE3PRJIBhdCPe/50jQTvYxzP95iY30vzcrILUj2A15xCFiKSe
+ WPAjozhJagzfwE=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Optimize the parisc_requires_coherency() macro to use a static branch.
 
---clxxys8PpSMiMKDs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/include/asm/processor.h | 5 +++--
+ arch/parisc/kernel/processor.c      | 7 +++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-Cache move-in for virtual accesses is controlled by the TLB.  Thus,
-we must generally purge TLB entries before flushing.  The flush routines
-must use TLB entries that inhibit cache move-in.
+diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm=
+/processor.h
+index 006364212795..9fc80a77b46a 100644
+=2D-- a/arch/parisc/include/asm/processor.h
++++ b/arch/parisc/include/asm/processor.h
+@@ -11,6 +11,7 @@
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
----
+ #ifndef __ASSEMBLY__
+ #include <linux/threads.h>
++#include <linux/jump_label.h>
 
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 94150b91c96f..a7c68d14ba94 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -633,16 +619,23 @@ void flush_kernel_vmap_range(void *vaddr, int size)
- {
- 	unsigned long start =3D (unsigned long)vaddr;
- 	unsigned long end =3D start + size;
-+	unsigned long physaddr;
-=20
-+	flush_tlb_kernel_range(start, end);
- 	if ((!IS_ENABLED(CONFIG_SMP) || !arch_irqs_disabled()) &&
- 	    (unsigned long)size >=3D parisc_cache_flush_threshold) {
--		flush_tlb_kernel_range(start, end);
- 		flush_data_cache();
- 		return;
- 	}
-=20
--	flush_kernel_dcache_range_asm(start, end);
--	flush_tlb_kernel_range(start, end);
-+	preempt_disable();
-+	while (start <=3D end) {
-+		physaddr =3D lpa(start);
-+		if (physaddr)
-+			flush_dcache_page_asm(physaddr, start);
-+		start +=3D PAGE_SIZE;
-+	}
-+	preempt_enable();
- }
- EXPORT_SYMBOL(flush_kernel_vmap_range);
-=20
-@@ -650,15 +643,22 @@ void invalidate_kernel_vmap_range(void *vaddr, int si=
-ze)
- {
- 	unsigned long start =3D (unsigned long)vaddr;
- 	unsigned long end =3D start + size;
-+	unsigned long physaddr;
-=20
-+	flush_tlb_kernel_range(start, end);
- 	if ((!IS_ENABLED(CONFIG_SMP) || !arch_irqs_disabled()) &&
- 	    (unsigned long)size >=3D parisc_cache_flush_threshold) {
--		flush_tlb_kernel_range(start, end);
- 		flush_data_cache();
- 		return;
- 	}
-=20
--	purge_kernel_dcache_range_asm(start, end);
--	flush_tlb_kernel_range(start, end);
-+	preempt_disable();
-+	while (start <=3D end) {
-+		physaddr =3D lpa(start);
-+		if (physaddr)
-+			purge_dcache_page_asm(physaddr, start);
-+		start +=3D PAGE_SIZE;
-+	}
-+	preempt_enable();
- }
- EXPORT_SYMBOL(invalidate_kernel_vmap_range);
+ #include <asm/assembly.h>
+ #include <asm/prefetch.h>
+@@ -281,8 +282,8 @@ extern unsigned long __get_wchan(struct task_struct *p=
+);
+  * with different data, whether clean or not) to operate
+  */
+ #ifdef CONFIG_PA8X00
+-extern int _parisc_requires_coherency;
+-#define parisc_requires_coherency()	_parisc_requires_coherency
++DECLARE_STATIC_KEY_TRUE(_parisc_requires_coherency);
++#define parisc_requires_coherency() static_branch_likely(&_parisc_require=
+s_coherency)
+ #else
+ #define parisc_requires_coherency()	(0)
+ #endif
+diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor=
+.c
+index 1b6129e7d776..ccaf075d0750 100644
+=2D-- a/arch/parisc/kernel/processor.c
++++ b/arch/parisc/kernel/processor.c
+@@ -32,8 +32,7 @@
+ struct system_cpuinfo_parisc boot_cpu_data __ro_after_init;
+ EXPORT_SYMBOL(boot_cpu_data);
+ #ifdef CONFIG_PA8X00
+-int _parisc_requires_coherency __ro_after_init;
+-EXPORT_SYMBOL(_parisc_requires_coherency);
++DEFINE_STATIC_KEY_TRUE(_parisc_requires_coherency);
+ #endif
 
+ DEFINE_PER_CPU(struct cpuinfo_parisc, cpu_data);
+@@ -284,8 +283,8 @@ void __init collect_boot_cpu_data(void)
+ 	boot_cpu_data.family_name =3D cpu_name_version[boot_cpu_data.cpu_type][1=
+];
 
---clxxys8PpSMiMKDs
-Content-Type: application/pgp-signature; name="signature.asc"
+ #ifdef CONFIG_PA8X00
+-	_parisc_requires_coherency =3D (boot_cpu_data.cpu_type =3D=3D mako) ||
+-				(boot_cpu_data.cpu_type =3D=3D mako2);
++	if ((boot_cpu_data.cpu_type !=3D mako) && (boot_cpu_data.cpu_type !=3D m=
+ako2))
++		static_branch_disable(&_parisc_requires_coherency);
+ #endif
 
------BEGIN PGP SIGNATURE-----
+ 	if (pdc_model_platform_info(orig_prod_num, current_prod_num, serial_no) =
+=3D=3D PDC_OK) {
+=2D-
+2.35.1
 
-iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmI1Bo4ACgkQXb/Nrl8Z
-TfGDJw/+Ns8WUOwvrp1sMoG0p95LG2gG6VVhxukUCi+9HHWTzM8oij+yfO5+rzHF
-UrlWaYaXxVgJZ1gpKHmzeJFhwFRDUvjm3ZFrNcHhEOOd32K4UDi31v3gRxt8QZ9T
-7zVERdRdzVnUIHafhq/l4TciKKLaEcQzcvaqaFzzk+7iE3ef6IOPX/O9Idj7T7Uf
-WZEzAPqtNMRB//0mNbCUqZr/n8MpNGw9AjgQGo/RfGxANTOrUGxgJEreN+ZQj5ay
-+Sjh/hmRKLgsxA7uugEGX005LY6p6XUW6C+Mv9DTenJ4L7bc2LlbeLkgcu7giXqb
-ZMTT1l5ZH35qxS2JJtAfyCiS82nsbOUmFbGqPhNI6S2sMBLbfcn4CnWOVV2vI+iH
-x2FGeCX+t/Py5VidezJywT24wTpESzLbYJT101tnF8OAO9hyYLRB8LDaU/6pFha3
-UFjSQ3cCAC4BUrSJ+Ni562XOTNeWr1eOh5zQGQpkcMZqlsOX4tyJ+PTd3YVgrsq1
-1VFSnOMwp5h8AtR2DmzCcFl1gid1feNaZQKfSM8vcKe8bu+ezj3JB4lcB8ed/lFg
-ZntORlDxB9O0K8ZnUi9kH64cdq0eFFwiIWUMjku2tr/9WQrLkiMfeiQ/E4BcVe1Q
-7Nta0142GLcd2ka/NbnJo68ucRozyQpBeINnCNLBkGgXx1Kjcms=
-=zaMe
------END PGP SIGNATURE-----
-
---clxxys8PpSMiMKDs--
