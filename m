@@ -2,93 +2,77 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 619BC4E3183
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Mar 2022 21:13:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BA864E3185
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Mar 2022 21:13:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352944AbiCUUOS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 21 Mar 2022 16:14:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45550 "EHLO
+        id S1353011AbiCUUOT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 21 Mar 2022 16:14:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353636AbiCUUN2 (ORCPT
+        with ESMTP id S1354024AbiCUUOC (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 21 Mar 2022 16:13:28 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D1153725
-        for <linux-parisc@vger.kernel.org>; Mon, 21 Mar 2022 13:11:13 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id k21so9910975lfe.4
-        for <linux-parisc@vger.kernel.org>; Mon, 21 Mar 2022 13:11:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HxSmzv7mQZ7JUvz7ojdvZAF+4FKtifambs8UajreWKQ=;
-        b=YRsq7D0j0R9Z60aR3WWEyswK/kSVnQuXRpE+1RTRLz1AhAbhu7YFRRwTglXvtv/QU0
-         ylS8SXopbd6FP7DtmIfh3yQ8twQb5m3x5qzHE+b9NjsBMHn+HSch8X6PD3z5tioZUVso
-         zf5P2i6MlykbE6mxxm1EQ0quGo1jH305Yu9uA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HxSmzv7mQZ7JUvz7ojdvZAF+4FKtifambs8UajreWKQ=;
-        b=PO7oMPsFcHRhgGko1QW3pTyt13kqzYcr0JHAI7Wz0LKWt6mc1wpHLrUTDKQa6y5p1w
-         alBJGF26Ofj39Mv1Vu0IvlnzGqAQ3AWMzj7tL0JUWMGl2xaqpnZNu3V1FLuwsWdSiYLq
-         21V11q6X0zKwCDRPn+JjsKzqFNJ15/qAz22saPkYUPC0hh4RSx/WIqhTtSRYAMuq1BI8
-         Xuxcg/dbVShpUzw/yqWooNi2Ou16iPLB8bBTfv+tG/EhjbwJMY5X9xM8IOh+S/xx7yy1
-         HnyY0cgyOD+XymdmSeX9S6NFg3utcQ5vNZP+idXsPrZst3afBkoSpuP+OOQWVgl90gW7
-         2QRQ==
-X-Gm-Message-State: AOAM532wpNcoXNMmqN/qCywoWjDwidOwSDhU8/Tr+fd3/4Yyby3navPs
-        heQQhqIveLYyIXtBflk20ezN1aBGaYOQOowTv6Y=
-X-Google-Smtp-Source: ABdhPJwZCtPj7DrUOUcqs4hui3YwwoFXlD1N6RXwEvGR0ABA1OmZ+VcWpz78PIfniDtOJp7293MT0Q==
-X-Received: by 2002:a05:6512:4014:b0:44a:2b77:bed6 with SMTP id br20-20020a056512401400b0044a2b77bed6mr4599367lfb.381.1647893471138;
-        Mon, 21 Mar 2022 13:11:11 -0700 (PDT)
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
-        by smtp.gmail.com with ESMTPSA id z13-20020a056512308d00b0044874828803sm1891310lfd.309.2022.03.21.13.11.10
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Mar 2022 13:11:10 -0700 (PDT)
-Received: by mail-lf1-f49.google.com with SMTP id m3so14450242lfj.11
-        for <linux-parisc@vger.kernel.org>; Mon, 21 Mar 2022 13:11:10 -0700 (PDT)
-X-Received: by 2002:a19:e048:0:b0:448:2caa:7ed2 with SMTP id
- g8-20020a19e048000000b004482caa7ed2mr16082525lfj.449.1647893469870; Mon, 21
- Mar 2022 13:11:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <YjiyOIc71r53GME+@p100>
-In-Reply-To: <YjiyOIc71r53GME+@p100>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 21 Mar 2022 13:10:53 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whnG8uJqNz83Fh=6je2u71syaenWEpDQCeHoPoxZyM5Dw@mail.gmail.com>
-Message-ID: <CAHk-=whnG8uJqNz83Fh=6je2u71syaenWEpDQCeHoPoxZyM5Dw@mail.gmail.com>
+        Mon, 21 Mar 2022 16:14:02 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF20653A51;
+        Mon, 21 Mar 2022 13:12:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 83BCBB819C7;
+        Mon, 21 Mar 2022 20:12:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4C2B7C340E8;
+        Mon, 21 Mar 2022 20:12:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647893546;
+        bh=rCtnPLwKWKSgcE3f4N+j+E1IB0JhpuyKvIJs8eI24WE=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=hyvT1Zpw6jp4YmkXxhCcTH09OFlwnUJBBdcOBBFc7fm6cg3Coj6gxb9b1EzKme+Tn
+         00ONcpwie8DUr1WrzQVRPSx3y2fuwVk9y/UEsmyY3dvuTQFwZjBmNSf8SVGpKeofSq
+         yapuVVFtitKG4J33Ick/mnv/6VArOrjw2LlDcYCbQ6BQpPqsTsezw54KqYeW4a04bT
+         J0Y/CsZjYf+94k+uXu5GzIddjKvY+7ga3dcmp9W6lmIutUdiqYqaytb5njXLbMZco6
+         Pm9htENqAHRJp/iYRucztTRhl7zX0K21xt07PqugSdH2BfzzmILjIr/dJ8gjeofi2G
+         /2fN43I7Pnogw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 39FD8E7BB0B;
+        Mon, 21 Mar 2022 20:12:26 +0000 (UTC)
 Subject: Re: [GIT PULL] parisc architecture updates for v5.18-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <YjiyOIc71r53GME+@p100>
+References: <YjiyOIc71r53GME+@p100>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <YjiyOIc71r53GME+@p100>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.18/parisc-1
+X-PR-Tracked-Commit-Id: 53d862fac4a09b9c56cca0433fa9de5732fd05a1
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: a04b1bf574e1f4875ea91f5c62ca051666443200
+Message-Id: <164789354623.19380.3760360425035563977.pr-tracker-bot@kernel.org>
+Date:   Mon, 21 Mar 2022 20:12:26 +0000
 To:     Helge Deller <deller@gmx.de>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
         Sven Schnelle <svens@stackframe.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Mar 21, 2022 at 10:13 AM Helge Deller <deller@gmx.de> wrote:
->
-> parisc architecture updates for kernel v5.18-rc1
->
-> - add vDSO support (allows us to use read-only stacks)
-[...]
+The pull request you sent on Mon, 21 Mar 2022 18:13:28 +0100:
 
-I was all "WTF?".
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.18/parisc-1
 
-Then I checked the code.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/a04b1bf574e1f4875ea91f5c62ca051666443200
 
-You mean non-executable, not read-only.
+Thank you!
 
-Fixed up in the merge message.
-
-                   Linus
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
