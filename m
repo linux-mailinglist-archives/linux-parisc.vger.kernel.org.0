@@ -2,52 +2,72 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 844204DEA49
-	for <lists+linux-parisc@lfdr.de>; Sat, 19 Mar 2022 20:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F26B4E1E66
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Mar 2022 01:22:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240856AbiCSTF5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 19 Mar 2022 15:05:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44080 "EHLO
+        id S1343874AbiCUAXp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 20 Mar 2022 20:23:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235662AbiCSTF4 (ORCPT
+        with ESMTP id S234559AbiCUAXp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 19 Mar 2022 15:05:56 -0400
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-002.bell.net [209.71.208.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EB4B9FD0D
-        for <linux-parisc@vger.kernel.org>; Sat, 19 Mar 2022 12:04:33 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 621D9CE902246668
-X-CM-Envelope: MS4xfGaFxEocuT9wBOAQpCFYdnJAntkSSTW/8UQw2WTQT4jkCz0X2yFtkUBIeQCsiv+dQbSYZcccM2Mm6E2K5Hj9fVWoNP9OnYJaeaysAm8r0c8ZbTin8Z+4
- VFOnBRTb5Z1mbF/OscNdpB0j/SHwSRbEWyeLOJMp/Jdm3cdtBsBrKey4jd0X/G8oTEkxzfzujTr/4tnDdeGxFAyEbVxHFe3MXgorZqrtVgflHa2q3tlZ28On
- i+nkCVTkkGDrs5r8Eb0IcGJogBKWXUFpL+WttMCzIF/DamqLuNF3sQxP1vogEp1S1Wb62pBiq+lLQIwvL1g5aIkVwHPnb2xRykRdUOMr/XMEO6onrCQFelCl
- Lgf2Uh77uBTgxMSMYRkjyKC1vSp7seXOwL9Bp7uQ3qiwKI+u5CBQgtlw+1+Yo7PO8sqGOiDFC0dMfjsMvHvzcTyhFThmC8I482YmtcPV3UpUYPiIdNbp96fV
- 6wPgZuIrRkqC6JYGiNh4dXG0DPvyzf/WN7AgTF0yro20Vl6GYDD/hociqwIUwTIEcc7tvNBfE1aZkTll8XB5N9u6kMHL+zyErokn+3QB2ICGmSfwBMJdTpG/
- Etq0Fm9r5D317aT3U5uWmH0slNxA5ERKhb4+q6mq159AWw==
-X-CM-Analysis: v=2.4 cv=aKWTFZxm c=1 sm=1 tr=0 ts=62362931
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=o8Y5sQTvuykA:10 a=FBHGMhGWAAAA:8 a=8L605btn6AFxFWT6bJQA:9 a=CjuIK1q_8ugA:10
- a=3Dc4TvUQF3CNNRbq9nQA:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from mx3210.localdomain (70.50.7.94) by cmx-mtlrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 621D9CE902246668; Sat, 19 Mar 2022 15:04:17 -0400
-Received: by mx3210.localdomain (Postfix, from userid 1000)
-        id 3C09C220116; Sat, 19 Mar 2022 19:04:16 +0000 (UTC)
-Date:   Sat, 19 Mar 2022 19:04:15 +0000
-From:   John David Anglin <dave.anglin@bell.net>
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Subject: [PATCH v3] parisc: Fix invalidate/flush vmap routines
-Message-ID: <YjYpL/67UBzHGhuB@mx3210.localdomain>
+        Sun, 20 Mar 2022 20:23:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BFBD95C3;
+        Sun, 20 Mar 2022 17:22:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F39166126A;
+        Mon, 21 Mar 2022 00:22:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2A6C36AE2;
+        Mon, 21 Mar 2022 00:22:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647822140;
+        bh=sl757+nQ+uoFAxIuw/aW760I9HoJj/9PyrFKOdrvNPc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=FaiuqVxuSXdpGRvEpDxoM+RJxM/OiPTeOBHcmxMy4hOU34jzlt7y8hxP1G9mgEEME
+         YSYT3z/urqe2Jix0G2SD5g2K8I7xvs5FfETynak3yu1xUVdnnydZ7NhSjGmZEPHOZi
+         yn83ZWnN+anRqZEXdP7wNRAW5/RQUJx+++8CxsUhvAtPms7Xtrwe0fJZ3fXJQvbH9R
+         UDgziGUYpQlnF2Crqt+yGJ5TAU+smY5s8nVPEorCmdBuD00ycNVS7ye4ugauhVzBrS
+         ANHE8JNJsO3F1cVJ+4BqUTMXb90mjqNHqwPgSdg7IY7YT8t3GGikF6Qs7TY3xMQ8IT
+         4jbU8GeAkYJuw==
+Received: by mail-vk1-f179.google.com with SMTP id x125so1427666vkb.7;
+        Sun, 20 Mar 2022 17:22:20 -0700 (PDT)
+X-Gm-Message-State: AOAM533zl//8y7x2w5FAypLqVSlBZUxpWo94NPMPnXwddfx5dQzI8+iq
+        QFwIzP8pszQ07Jx/EqnaTdMjzGWTWwQvenNn9Z4=
+X-Google-Smtp-Source: ABdhPJwJRuOhAiysCoOvQHwSmmYd801IxVPP+erWrfdv5T2vb3ztD/y1NOJnWVmPMPDyYpcC1/3ppbBpVDzb6NrH1hM=
+X-Received: by 2002:a1f:2d6:0:b0:33e:9b64:e07e with SMTP id
+ 205-20020a1f02d6000000b0033e9b64e07emr5719806vkc.28.1647822139345; Sun, 20
+ Mar 2022 17:22:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="uJCCahXmDDsNiAVT"
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220316070317.1864279-1-guoren@kernel.org> <20220316070317.1864279-11-guoren@kernel.org>
+In-Reply-To: <20220316070317.1864279-11-guoren@kernel.org>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Mon, 21 Mar 2022 08:22:08 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSqbS3cUNcxKGoMT2zE3ws+gH6a0EssVEutpypR5YoHCA@mail.gmail.com>
+Message-ID: <CAJF2gTSqbS3cUNcxKGoMT2zE3ws+gH6a0EssVEutpypR5YoHCA@mail.gmail.com>
+Subject: Re: [PATCH V8 10/20] riscv: compat: Re-implement TASK_SIZE for COMPAT_32BIT
+To:     Palmer Dabbelt <palmer@dabbelt.com>, Arnd Bergmann <arnd@arndb.de>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-csky@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+        Guo Ren <guoren@linux.alibaba.com>, Guo Ren <guoren@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,108 +75,87 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+For this patch, we need to add below to fixup the rv32 call rv64 elf
+segment fault.
 
---uJCCahXmDDsNiAVT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+diff --git a/arch/riscv/include/asm/processor.h
+b/arch/riscv/include/asm/processor.h
+index 0749924d9e55..21c8072dce17 100644
+--- a/arch/riscv/include/asm/processor.h
++++ b/arch/riscv/include/asm/processor.h
+@@ -19,7 +19,11 @@
+ #define TASK_UNMAPPED_BASE     PAGE_ALIGN(TASK_SIZE / 3)
 
-Cache move-in for virtual accesses is controlled by the TLB.  Thus,
-we must generally purge TLB entries before flushing.  The flush routines
-must use TLB entries that inhibit cache move-in.
+ #define STACK_TOP              TASK_SIZE
+-#define STACK_TOP_MAX          STACK_TOP
++#ifdef CONFIG_64BIT
++#define STACK_TOP_MAX          TASK_SIZE_64
++#else
++#define STACK_TOP_MAX          TASK_SIZE
++#endif
+ #define STACK_ALIGN            16
 
-V2: Load physical address prior to flushing TLB.  In flush_cache_page,
-flush TLB when flushing and purging.
+ #ifndef __ASSEMBLY__
 
-V3: Don't flush when start equals end.
+On Wed, Mar 16, 2022 at 3:04 PM <guoren@kernel.org> wrote:
+>
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> Make TASK_SIZE from const to dynamic detect TIF_32BIT flag
+> function. Refer to arm64 to implement DEFAULT_MAP_WINDOW_64 for
+> efi-stub.
+>
+> Limit 32-bit compatible process in 0-2GB virtual address range
+> (which is enough for real scenarios), because it could avoid
+> address sign extend problem when 32-bit enter 64-bit and ease
+> software design.
+>
+> The standard 32-bit TASK_SIZE is 0x9dc00000:FIXADDR_START, and
+> compared to a compatible 32-bit, it increases 476MB for the
+> application's virtual address.
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> Tested-by: Heiko Stuebner <heiko@sntech.de>
+> ---
+>  arch/riscv/include/asm/pgtable.h | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pg=
+table.h
+> index e3549e50de95..afdc9ece2ba4 100644
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -705,8 +705,17 @@ static inline pmd_t pmdp_establish(struct vm_area_st=
+ruct *vma,
+>   * 63=E2=80=9348 all equal to bit 47, or else a page-fault exception wil=
+l occur."
+>   */
+>  #ifdef CONFIG_64BIT
+> -#define TASK_SIZE      (PGDIR_SIZE * PTRS_PER_PGD / 2)
+> -#define TASK_SIZE_MIN  (PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
+> +#define TASK_SIZE_64   (PGDIR_SIZE * PTRS_PER_PGD / 2)
+> +#define TASK_SIZE_MIN  (PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
+> +
+> +#ifdef CONFIG_COMPAT
+> +#define TASK_SIZE_32   (_AC(0x80000000, UL) - PAGE_SIZE)
+> +#define TASK_SIZE      (test_thread_flag(TIF_32BIT) ? \
+> +                        TASK_SIZE_32 : TASK_SIZE_64)
+> +#else
+> +#define TASK_SIZE      TASK_SIZE_64
+> +#endif
+> +
+>  #else
+>  #define TASK_SIZE      FIXADDR_START
+>  #define TASK_SIZE_MIN  TASK_SIZE
+> --
+> 2.25.1
+>
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
----
 
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 231cebb3fc0d..c7da11a278b5 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -607,8 +607,8 @@ void
- flush_cache_page(struct vm_area_struct *vma, unsigned long vmaddr, unsigne=
-d long pfn)
- {
- 	if (pfn_valid(pfn)) {
-+		flush_tlb_page(vma, vmaddr);
- 		if (likely(vma->vm_mm->context.space_id)) {
--			flush_tlb_page(vma, vmaddr);
- 			__flush_cache_page(vma, vmaddr, PFN_PHYS(pfn));
- 		} else {
- 			__purge_cache_page(vma, vmaddr, PFN_PHYS(pfn));
-@@ -620,6 +620,7 @@ void flush_kernel_vmap_range(void *vaddr, int size)
- {
- 	unsigned long start =3D (unsigned long)vaddr;
- 	unsigned long end =3D start + size;
-+	unsigned long flags, physaddr;
-=20
- 	if ((!IS_ENABLED(CONFIG_SMP) || !arch_irqs_disabled()) &&
- 	    (unsigned long)size >=3D parisc_cache_flush_threshold) {
-@@ -628,8 +629,14 @@ void flush_kernel_vmap_range(void *vaddr, int size)
- 		return;
- 	}
-=20
--	flush_kernel_dcache_range_asm(start, end);
--	flush_tlb_kernel_range(start, end);
-+	while (start < end) {
-+		physaddr =3D lpa(start);
-+		purge_tlb_start(flags);
-+		pdtlb(SR_KERNEL, start);
-+		purge_tlb_end(flags);
-+		flush_dcache_page_asm(physaddr, start);
-+		start +=3D PAGE_SIZE;
-+	}
- }
- EXPORT_SYMBOL(flush_kernel_vmap_range);
-=20
-@@ -637,6 +644,7 @@ void invalidate_kernel_vmap_range(void *vaddr, int size)
- {
- 	unsigned long start =3D (unsigned long)vaddr;
- 	unsigned long end =3D start + size;
-+	unsigned long flags, physaddr;
-=20
- 	if ((!IS_ENABLED(CONFIG_SMP) || !arch_irqs_disabled()) &&
- 	    (unsigned long)size >=3D parisc_cache_flush_threshold) {
-@@ -645,7 +653,13 @@ void invalidate_kernel_vmap_range(void *vaddr, int siz=
-e)
- 		return;
- 	}
-=20
--	purge_kernel_dcache_range_asm(start, end);
--	flush_tlb_kernel_range(start, end);
-+	while (start < end) {
-+		physaddr =3D lpa(start);
-+		purge_tlb_start(flags);
-+		pdtlb(SR_KERNEL, start);
-+		purge_tlb_end(flags);
-+		purge_dcache_page_asm(physaddr, start);
-+		start +=3D PAGE_SIZE;
-+	}
- }
- EXPORT_SYMBOL(invalidate_kernel_vmap_range);
+--
+Best Regards
+ Guo Ren
 
---uJCCahXmDDsNiAVT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmI2KSgACgkQXb/Nrl8Z
-TfH/dA//Q8C9I5Xq3kVHYOhQNy9Hszht/Y9q00jRi/mH7fQkyOgPY4rirPV3LVYF
-NnqwAvOoiLHsSQnkg1fMSsbysNIltWkGzKB1K/tyBOH7WUabDn7RhXzYExbfURcJ
-a0RS0KLEixXoHnRR7K8ttzeyoJV7VCOs1rAWHKHVr0KYx1YehhWaudZa9BH0gnic
-YPACU0/VPPtdVSbRd9+Oo9aU4rqqnK4gU7tGqJAaNS1+5aXsMHkrUSNYlLApBxFE
-DpMF3VgoTlFcMPc7iqZcwl0byz918McM9eNGUAhisrBsn0pbHldrKluRIPXSdNvU
-EriRNzxDJRXSxcsTvE43rllKVLRVg/PNbQ+G5N8C9g+WEWHjy0gkB2mj5Mc5X9dD
-jAhve4YDG9z6ceqIRqZVw1O8A4m7MfdmocLRKN5LN79hDhwawUhJ4vXugHY2lLIF
-65tgyEzcglFVfGfLn69L5VOPb5COXbxJJWbtia9DW3aqvocquwpQ2Q2CZ8oHeoce
-POikJ7Jd2R6xfiMtFDjD/GcAZ21LHbLO7nHqp5D9uvLQK2o7qShYzg7B9DZR+rg4
-xLzV7t0WReDHJkgvbaWGWkLNqz7JtK032whaUkhV7q9Cu/gIqNGxCaoSZiLtInm9
-PQm9jnjnMmEsBc6E5xcEMtysHNacr2rtb4fyfGqdaKmlzgvdu7w=
-=OUKi
------END PGP SIGNATURE-----
-
---uJCCahXmDDsNiAVT--
+ML: https://lore.kernel.org/linux-csky/
