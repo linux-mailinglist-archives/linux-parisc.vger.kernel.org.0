@@ -2,191 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7326B4E2EE2
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Mar 2022 18:13:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECEF54E3005
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Mar 2022 19:31:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348409AbiCURPK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 21 Mar 2022 13:15:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44596 "EHLO
+        id S1352185AbiCUScp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 21 Mar 2022 14:32:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235913AbiCURPJ (ORCPT
+        with ESMTP id S1352180AbiCUSco (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 21 Mar 2022 13:15:09 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17CA31EEE0;
-        Mon, 21 Mar 2022 10:13:40 -0700 (PDT)
+        Mon, 21 Mar 2022 14:32:44 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A6D76D95B
+        for <linux-parisc@vger.kernel.org>; Mon, 21 Mar 2022 11:31:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1647882810;
-        bh=514yCqBt9YIkWc17kdwF2tfB3GhQiz/IBxYH5kyKNho=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=CBSakBpgwHkh/n0km3I3JnCuh0tP46aYfGS8586beG1Tn3HVZAlgb8rvlyJOsGdXx
-         KBAHQD8nC6Wm1FsLvGWJ53xBj2/IDjhgbwrQmTbEwQVNjg4wFuW7iD1/ABuDVmGDdZ
-         BUMV4/uQ2tYmOaroZgwXt3JYCb9luSI8TLatw75M=
+        s=badeba3b8450; t=1647887458;
+        bh=ZUhx6p7AyY+Ugf0+XSfxADI1/HQ6JP4j7bifTjlavTA=;
+        h=X-UI-Sender-Class:Date:Subject:References:To:Cc:From:In-Reply-To;
+        b=UXKAC5SnzzqTMsThfIUvMYQ7ELc0vNhQjzgdsCrhTTMKUyg9gSmp7yq3hqYbfVWen
+         hq4qJqY/dk4nZpTTI1x3X5PemBCrbjXZl1fzLEKZPmFymH9WN8AAW6hhiy8TqDOi5N
+         q55vsVw1knaAW+Ncq3bnKry28Oe3lerDO4pxm7/4=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100 ([92.116.171.242]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N3bSt-1oF49J3CBX-010gE5; Mon, 21
- Mar 2022 18:13:30 +0100
-Date:   Mon, 21 Mar 2022 18:13:28 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-Subject: [GIT PULL] parisc architecture updates for v5.18-rc1
-Message-ID: <YjiyOIc71r53GME+@p100>
+Received: from [192.168.20.60] ([92.116.171.242]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M59C8-1nXSje318e-0016KG; Mon, 21
+ Mar 2022 19:30:58 +0100
+Message-ID: <17f3c449-a37b-9903-24a7-ed52bd59df25@gmx.de>
+Date:   Mon, 21 Mar 2022 19:30:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:ctT6yXFmvgp8eSc8nDMezAyMb5yxgAH4RoS2eNeumiq0VNJE3Tf
- bRuiWwhtdt+D79Mh5AoX2rCMJTNm0spf0Df71D/LN8P4xhAD7cdYurf1iQpFq2GYj3RaB1n
- 4SYaOvLOtpVCJEYsWPrZk0ajoDA3fQnPT+xcYZLf7q7uJ7dz5lM3upbhAT/wTPTZO5oVGbR
- CfrO8NiZ8bWDnCzRez+bg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:875aeV5KhRE=:5VpYrkf2WQlSrmYIJMK4Kw
- bU9EFfEw+OOAEOWGpe3IIfDQMLHTl6NX/s6i8vc5+09pLLnbSnUviwqpnKQXuYzj3wwcCG76D
- Iwhgd5/EAh9xH9bwgqtXruJu9p8Ql+XEcfRE8LOJshRk5k/UnfPtp0zt+X1MTTsY0ySZSRWzP
- ea3NVvfOiRcPe6JWPXSvayCBfhXyajEMdywM2/cXfPX5zxs1GpfoBgCrMHMsz6My4y1m44LOq
- 7k0KfvGQKzmPjIHKPxQnTgeVc8D2SBT187r+RQfbRqVQ8ukDkIxX/ebkKnho4Xfj7ovYmmXrc
- VqXdwN0PCTxN9HHJfcfAqXQxQTI/7dAhJcmo5gpe5xR0QbQREy5mOGVIDZdGdlstxSUimlg4r
- oLfPQaNjBJsM/fYa5SfsGCTGAwLNOGU9RoNenNp0p8o0lBr/NypGQepd+xuW1Yr+pLwYVnyY4
- g3GIEnZGv1pOBbGSrmeuv6G3Kn//idbrjdX1Qlm1TW55SvE21kQmhVP1c6x6mo8RJ6M7uDUQj
- qMPb+uw/b/cGQx/fVJUc9PyiSc5nRrquwthh3vMw+6Z2KO0mMYt+GeeKn7Ytmv5UbmqGo6rZv
- 3rxokL0/wnlvVAdL/IcgNbIj3zTmrrFQ8Gahs+LJAsYcsjlRf7EYmonix/dhheCNNV5PpqJze
- VclNom8Scx1Y6h84h0e7ZxPMMKPSWUjqCFsBlkY+Tiwd6eLUq7pfSfu2FqVMXZpIA5mvqphIU
- iLu/xZlPZ14XPBbIy/Dlgu+5DUA4CIFlzDBb8KWgqJH5aCQflDA+wQnpHuuw3QEjSX8BYH9DF
- ZteALXkh7PXoei5Wm1vvI62dz/nZ8xsyBrKJPZfp+WdRTzCmWvnReL1Y0DBTCmG/YnUj8V0bN
- yehdXfYZV7gWcTT9ZQvwaGS1Gvp3hQY4l3t95VoN5r0mE2W2goHWL0I2piN1KwaJVCqcvjIlf
- W7y0dBRZhJSBcERwR5ulwTsDc9dgSVNj5HZaEdp4Zm87tkWVlplEKSRiFpgSMNdKH3N+0MBuh
- LqspHigK/qoZe/r0jwA7qUaMNLHBbS2DrkblxssIJ5ugPkh2OnY6NM29nVD/Fuf7Mg==
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Fwd: Updated Debian Ports installation images
+Content-Language: en-US
+References: <0357f0c9-81ec-31f1-5d96-2da27df679d5@physik.fu-berlin.de>
+To:     linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <0357f0c9-81ec-31f1-5d96-2da27df679d5@physik.fu-berlin.de>
+X-Forwarded-Message-Id: <0357f0c9-81ec-31f1-5d96-2da27df679d5@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:mihOeRH4C4p0EQQmxLqNH7sswIyugs23nUAUEcx1ggsG2A2/E/Y
+ 0GMLeES/EPifgzOOMHpM7l2swT7JYS7FDi/l8hsyU2Suw1fpV4BlHJdKSwOA7fl30mmyj6Y
+ +7820LCel0w2QwAyuM5mI+j2ZNrwZBLQfC2rgIaY113m+BapEcjiq5xWCnIgvaVy6CAYAzR
+ 3YEnEbTmegMLoMw4b+5jA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:JWj3hiw8DeQ=:FkQ/J0WUfC77hFqTYS06P3
+ uuMtWIy6peftpm97ixJ6ZlnC9bnTqZnxzZfCvAvuZAddYogUJyuJ3kCfY3Bzl7wICPlItkiZf
+ c/G5oaq1A0R9jO8f3XgPy9tznSuNgc1ljQcxNCvP35+MsHLlXDjaW2ZDv59wUPvVwwaIy9A3B
+ UpNwE2/l8o5fCPHKEDNdIEUCFx/ejA++MOfRMAXQhFv+YS9QdvmVEjAe7jxVToii4fExQ0C7p
+ LmYRjP/PTMePpFBPEQOAztIa6ZdXJSElPQ0p/wHUhAQpO6dOJXjN/qlKRQPDCi+u/eDY9aS2R
+ gIf1kX9JQ3iByYh2iciA1KzzYewOxSQQ2qBiicDbxCGneO4MMp3O9b89JvSt6jfp+qZrfslfR
+ RctHwdeQAuulU6Hoi8+maQbGlZcSthwTlg4nay+pSrAQUAYpzx39zF4q/NsdyKAjaf8G164FA
+ hw50dkiNUVg6gb1gcskl0E7WT49cAQG7MN9XS2tNuwiADMdPTqltRDYHRa7DJSngTYz4yt3Qp
+ DnFle8NTtagjtoWAjLcJ49JWDAMmIoOSWqTcYe3m/8gJCf2lP5dWAvort8RGlNWk71Mzk27pI
+ ozX67kY0g538qaQmywx1m4cxaXfB13rdoI1yeKMpOSeuaWfD2OvNJukOo4mlA5HjrkDtTyQa4
+ STodMH8YmK6cI/4hovxinDRffjjeJgK8X+U7aWiTMY8Mi7gV7VpbZLNfbeB6Tq8qYq2sVCK6I
+ OrdS1iUqn/G9rUshudTVsFDUCwY642qerWBIwQBXK/31K7p2Cw/zmTWKVg2+z/IOX7OPDgMpj
+ H3lwzuiDb++6RRnUbsSzkgJXbgXT+lmHWaFpoVAuaaJs/BLWsfo0g2PdW55KTDYuW6Fye+fh4
+ 2dNBalxI+Ysn7CggF1Tf+8viFjzeKddFeyN6x/OTjPl5TAPL9qbqL58JjzDay2n5soccNtCT7
+ nOuS4kf1D+FTXfI92lXLE/vT2CCyRApBTS4aOSvlYFYDraEcDLtsi6w8Ah1esS/fpknIEOCsO
+ wkXmUnu32KYKcabXjSF3PEkYPoOmTnCspNPCUDKXsbg4XyNY6rUYBxxGd7SJc1TV1AOz5SCYT
+ beExZJAo2wxgvQ=
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The following changes since commit ffb217a13a2eaf6d5bd974fc83036a53ca69f1e2:
+=2D------- Forwarded Message --------
+Subject: Updated Debian Ports installation images
+Resent-Date: Fri, 18 Mar 2022 17:58:50 +0000 (UTC)
+Resent-From: debian-alpha@lists.debian.org
+Date: Fri, 18 Mar 2022 18:58:32 +0100
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: debian-alpha@lists.debian.org <debian-alpha@lists.debian.org>
 
-  Linux 5.17-rc7 (2022-03-06 14:28:31 -0800)
+Hello!
 
-are available in the Git repository at:
+I have created the first set of installation images in 2022, these are
+available at the usual location in [1].
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.18/parisc-1
+The ISO image for sparc64 has been verified to work correctly, I don't
+know about the other architectures, however.
 
-for you to fetch changes up to 53d862fac4a09b9c56cca0433fa9de5732fd05a1:
+I have also created the first images which include non-free firmware packa=
+ges
+but these are completely untested and firmware installation might not work
+correctly as DEP-11 information is not available on the Debian Ports mirro=
+rs.
 
-  parisc: Fix invalidate/flush vmap routines (2022-03-21 13:30:54 +0100)
+The non-free images can be found here [2].
 
-----------------------------------------------------------------
-parisc architecture updates for kernel v5.18-rc1
+Adrian
 
-- add vDSO support (allows us to use read-only stacks)
-- many TLB and cache flush optimizations (by Dave Anglin)
-- fix handling of probe non-access faults (by Dave Anglin)
-- fix invalidate/flush vmap routines (by Dave Anglin)
-- avoid using hardware single-step in kprobes
-- enable ARCH_HAS_DEBUG_VM_PGTABLE
-- many cleanups in unaligned handlers, e.g. rewrite of existing assembly code
-- always use the self-extracting kernel feature
-- big refacturing and code reductions regarding space-register usage in get_user() and put_user()
-- add fillrect() support to stifb graphics driver
+> [1] https://cdimage.debian.org/cdimage/ports/snapshots/2022-03-18/
+> [2] https://cdimage.debian.org/cdimage/ports/snapshots/2022-03-18/non-fr=
+ee/
 
-----------------------------------------------------------------
-Helge Deller (18):
-      parisc: Add vDSO support
-      video/fbdev/stifb: Implement the stifb_fillrect() function
-      parisc: Always use the self-extracting kernel feature
-      parisc: Add defines for various space register
-      parisc: Use SR_USER and SR_KERNEL in get_user() and put_user()
-      parisc: Use constants to encode the space registers like SR_KERNEL
-      parisc: Reduce code size by optimizing get_current() function calls
-      parisc/unaligned: Use EFAULT fixup handler in unaligned handlers
-      parisc/unaligned: Rewrite inline assembly of emulate_ldh()
-      parisc/unaligned: Rewrite inline assembly of emulate_ldw()
-      parisc/unaligned: Rewrite 32-bit inline assembly of emulate_ldd()
-      parisc/unaligned: Rewrite 32-bit inline assembly of emulate_sth()
-      parisc/unaligned: Enhance user-space visible output
-      parisc: Avoid calling SMP cache flush functions on cache-less machines
-      parisc: Enable ARCH_HAS_DEBUG_VM_PGTABLE
-      parisc: Improve CPU socket and core bootup info text
-      parisc: Avoid using hardware single-step in kprobes
-      parisc: Avoid flushing cache on cache-less machines
+=2D-
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
-John David Anglin (5):
-      parisc: Fix non-access data TLB cache flush faults
-      parisc: Fix handling off probe non-access faults
-      parisc: Simplify fast path for non-access data TLB faults
-      parisc: Increase parisc_cache_flush_threshold setting
-      parisc: Fix invalidate/flush vmap routines
-
- arch/parisc/Kconfig                           |  14 +-
- arch/parisc/Makefile                          |  37 +++-
- arch/parisc/include/asm/assembly.h            |   6 +
- arch/parisc/include/asm/cache.h               |  11 +-
- arch/parisc/include/asm/cacheflush.h          |  15 +-
- arch/parisc/include/asm/current.h             |   8 +-
- arch/parisc/include/asm/elf.h                 |  15 ++
- arch/parisc/include/asm/kprobes.h             |   5 +-
- arch/parisc/include/asm/mmu.h                 |   6 +-
- arch/parisc/include/asm/mmu_context.h         |  16 +-
- arch/parisc/include/asm/pgtable.h             |  11 +-
- arch/parisc/include/asm/processor.h           |   2 +-
- arch/parisc/include/asm/rt_sigframe.h         |  10 +-
- arch/parisc/include/asm/special_insns.h       |   4 +-
- arch/parisc/include/asm/tlbflush.h            |   2 +-
- arch/parisc/include/asm/traps.h               |   1 +
- arch/parisc/include/asm/uaccess.h             |  28 +--
- arch/parisc/include/asm/unistd.h              |   4 -
- arch/parisc/include/asm/vdso.h                |  24 +++
- arch/parisc/include/uapi/asm/auxvec.h         |   8 +
- arch/parisc/kernel/Makefile                   |   5 +
- arch/parisc/kernel/alternative.c              |  10 +
- arch/parisc/kernel/asm-offsets.c              |   9 +
- arch/parisc/kernel/cache.c                    | 137 +++++++-------
- arch/parisc/kernel/entry.S                    |  72 +-------
- arch/parisc/kernel/kprobes.c                  |  28 +--
- arch/parisc/kernel/pci-dma.c                  |   4 +-
- arch/parisc/kernel/signal.c                   | 225 +++++++++++-----------
- arch/parisc/kernel/signal32.h                 |  19 +-
- arch/parisc/kernel/topology.c                 |   4 +-
- arch/parisc/kernel/traps.c                    |  12 +-
- arch/parisc/kernel/unaligned.c                | 257 ++++++++++----------------
- arch/parisc/kernel/vdso.c                     | 122 ++++++++++++
- arch/parisc/kernel/vdso32/Makefile            |  53 ++++++
- arch/parisc/kernel/vdso32/gen_vdso_offsets.sh |  15 ++
- arch/parisc/kernel/vdso32/note.S              |  26 +++
- arch/parisc/kernel/vdso32/restart_syscall.S   |  32 ++++
- arch/parisc/kernel/vdso32/sigtramp.S          | 195 +++++++++++++++++++
- arch/parisc/kernel/vdso32/vdso32.lds.S        | 111 +++++++++++
- arch/parisc/kernel/vdso32/vdso32_wrapper.S    |  14 ++
- arch/parisc/kernel/vdso64/Makefile            |  48 +++++
- arch/parisc/kernel/vdso64/gen_vdso_offsets.sh |  15 ++
- arch/parisc/kernel/vdso64/note.S              |   2 +
- arch/parisc/kernel/vdso64/restart_syscall.S   |   3 +
- arch/parisc/kernel/vdso64/sigtramp.S          | 166 +++++++++++++++++
- arch/parisc/kernel/vdso64/vdso64.lds.S        | 109 +++++++++++
- arch/parisc/kernel/vdso64/vdso64_wrapper.S    |  14 ++
- arch/parisc/lib/memcpy.c                      |  16 +-
- arch/parisc/mm/fault.c                        |  89 +++++++++
- drivers/video/fbdev/stifb.c                   |  45 ++++-
- 50 files changed, 1534 insertions(+), 550 deletions(-)
- create mode 100644 arch/parisc/include/asm/vdso.h
- create mode 100644 arch/parisc/include/uapi/asm/auxvec.h
- create mode 100644 arch/parisc/kernel/vdso.c
- create mode 100644 arch/parisc/kernel/vdso32/Makefile
- create mode 100755 arch/parisc/kernel/vdso32/gen_vdso_offsets.sh
- create mode 100644 arch/parisc/kernel/vdso32/note.S
- create mode 100644 arch/parisc/kernel/vdso32/restart_syscall.S
- create mode 100644 arch/parisc/kernel/vdso32/sigtramp.S
- create mode 100644 arch/parisc/kernel/vdso32/vdso32.lds.S
- create mode 100644 arch/parisc/kernel/vdso32/vdso32_wrapper.S
- create mode 100644 arch/parisc/kernel/vdso64/Makefile
- create mode 100755 arch/parisc/kernel/vdso64/gen_vdso_offsets.sh
- create mode 100644 arch/parisc/kernel/vdso64/note.S
- create mode 100644 arch/parisc/kernel/vdso64/restart_syscall.S
- create mode 100644 arch/parisc/kernel/vdso64/sigtramp.S
- create mode 100644 arch/parisc/kernel/vdso64/vdso64.lds.S
- create mode 100644 arch/parisc/kernel/vdso64/vdso64_wrapper.S
