@@ -2,98 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 744BE4E3195
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Mar 2022 21:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B954E3565
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 01:25:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348541AbiCUUSy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 21 Mar 2022 16:18:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50546 "EHLO
+        id S233868AbiCVANv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 21 Mar 2022 20:13:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240617AbiCUUSx (ORCPT
+        with ESMTP id S233876AbiCVANu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 21 Mar 2022 16:18:53 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2292166ADA;
-        Mon, 21 Mar 2022 13:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1647893840;
-        bh=gMZUlaRhHtOuNiUNkognlAAgZhxejeKPaZRmrnNBtrg=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=WSz/VADNqR/Ws7ZCPVXgwCO+aQxOimtHviOW/C+LYH79WhfM+vTD2jVYx+MhNz2GN
-         NSaAo12Tez0NAcojb9yPR59hW3UU9/MQRTZLMUaclHnBPE2yuhUfF+jTc8+Jn3i213
-         0/o2tXOuLNG0sBxhzibR8ja+hhc3d9p9WQndRjXU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.171.242]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MvbBk-1oOdFO20aU-00sd2L; Mon, 21
- Mar 2022 21:17:20 +0100
-Message-ID: <23093534-380c-5cd0-389f-0fb4206fe784@gmx.de>
-Date:   Mon, 21 Mar 2022 21:17:18 +0100
+        Mon, 21 Mar 2022 20:13:50 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0CC52D4D7A;
+        Mon, 21 Mar 2022 17:11:06 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4KMsKy5bk3z4xL3;
+        Tue, 22 Mar 2022 11:09:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1647907767;
+        bh=4nqnqth803i/Xf8RxS2LPdwAs0gytBUqS/Ki9UbFU/o=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=WkyHmOlGWeOcConUsOwGb5wtziOlfFWgr3Pqf1iBP9uPQ9AhTO3RafUR7aldIjINl
+         RtIxaFZkziB5SMLc4FofJ8dBOhnd4pa5WqDssv+yEH37otNPV0G4evYR+Y+3Qc92KP
+         qhMAYyWc5qVPPQYpQAfFpK6SW2PQLVZwQDgfEctjWZEqu5ankEEmoxPnppTwyCVilF
+         nidqkuMoT8b5S28dTvugDeApUpiLudT0PVamTRxSlKXpTk/i30feDdwuIDsfwMXBd7
+         39CFr463iSLpEPnRyWv92UFOYuE/FGODRi5eXJ0+koyZymRYpdDTg6jntu19Z4gWSa
+         5e5+TDK3Cq6dA==
+Date:   Tue, 22 Mar 2022 11:09:25 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Helge Deller <deller@gmx.de>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: Re: linux-next: manual merge of the parisc-hd tree with the
+ asm-generic tree
+Message-ID: <20220322110925.7b295e54@canb.auug.org.au>
+In-Reply-To: <20220228114523.03b2f921@canb.auug.org.au>
+References: <20220228114523.03b2f921@canb.auug.org.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [GIT PULL] parisc architecture updates for v5.18-rc1
-Content-Language: en-US
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-References: <YjiyOIc71r53GME+@p100>
- <CAHk-=whnG8uJqNz83Fh=6je2u71syaenWEpDQCeHoPoxZyM5Dw@mail.gmail.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <CAHk-=whnG8uJqNz83Fh=6je2u71syaenWEpDQCeHoPoxZyM5Dw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:sQcAdzhQcldnfYm/RRMbzGL21xJtg3hbgAy2o2X3WUhEACYJOxL
- 14E1X8jx5d1LjLyLaQPG6rw8M+/XJ+H/19znQlulmYxpB4sp6TPURFENQxdua/RYSJFOPyA
- ca/PcrvNfQX6hMm//QFpja0hB84/8Df0qPc6x85RL278WjCZ/nL7BG1cnIHKZKHjUylxDJZ
- lPaIVubgYUr+ENpfaNHPg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:P9eJGqUeUuI=:gtMS0hp48t86P/LBEG26tn
- txw5TbBmmjYkGWeT2d1CpEBgaSjbdLWfYSGLhIPdte6TLiYaJ+lPR+DCc7cmfklyQxnNje3cr
- sViH+nn0dC9zGfSBZhuc0FAQAENNJJm8J0LXwk3WCiGWI9QcIQbgnvWuEGTFVZtJZmkNCsK8+
- vQqveM3Wnl4ywKIqH/YN0HnpWVs2iiztgS4Lhm/IqXpgMl9X3YKVytNDyfLaBqx8EI1BmMuap
- wBX4RN1SR+Omo9e7tUyYs2JQMjP3uMGLOhtliWmOxKTXjTX6WbTVJ8+N0sW7oB4REcvBqDsYV
- H+bwKTjEk9Z5fE6ahdhGBBqeXp62j9WxFxYKn/VczhxncINAs8bruGCDVBqP8LLt03D3VNlPB
- HiIA1+T7FaX6WPfXCl1k3ZGYZ/cd7Fb23zK8nSN6PduYKwcBg0Li/33megx14ux2ZGv9gv5BO
- tUsZaXvDuPB3iVZiehAviF4I6Yv/vjwIwqRKUf26c+Cy9XYQRreDiqwtl3ipdg3yWwgkbXxpr
- b+BTN83uR+fdI9celYyb56gUBbe2B6e5eXDMu0+TxlfcALr4PZMJa14WL5yi5H01QGiYUzDJ6
- Jdg9KFa/o2Bzh8kR91Vwlol/K43PHBboxzFSKLMCGQGRh2sM0Bz+2lFuFoGlGyhE/bnx9ui5e
- o/oKWY2uqX214BD4EIgjX1jsAOtuxY/rN4kyu4kAyV8tmkSPqCDfZJVOeNVQJQWMOGihnqnI7
- cCmy//2bSrUQxHJoaYwlHak+R7nh1fkp6s2OZ1ULN60GMiPdHw2IdEwDk8IYrGnOKODiyJMdN
- LwdwXPD7uJW+wjknq5yiojqMg5cetjhQjWCbR/k7PqZW+Cy8tLfw4S6Wx0cKuRz63+P7r5BSr
- 2fFXKoWcy301xjzFAoQkIm6B+i9bLqLHXdRHCPDv7XzeICZuI2EFbCO4/K4Ur3uy54CNcXqqe
- 15j1qJ8RXYlHn5EXxD0PVIaTbmnn72S9E4XoayoR/+SW3tAGDYhHpnA5ttnEHT5ejNzAKzgUK
- Fe/Ild3ba0PH9awri8z50YzOeGR4UEDD3W+z8SZ4xnvDIkvC8OZFdQs7O7WEC1PxLxn8qwE03
- v+bNIXI/3o1gqk=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/JECP/m+MkvZbCsBV3x2wGku";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 3/21/22 21:10, Linus Torvalds wrote:
-> On Mon, Mar 21, 2022 at 10:13 AM Helge Deller <deller@gmx.de> wrote:
->>
->> parisc architecture updates for kernel v5.18-rc1
->>
->> - add vDSO support (allows us to use read-only stacks)
-> [...]
+--Sig_/JECP/m+MkvZbCsBV3x2wGku
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+Hi all,
+
+On Mon, 28 Feb 2022 11:45:23 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
 >
-> I was all "WTF?".
->
-> Then I checked the code.
->
-> You mean non-executable, not read-only.
+> Today's linux-next merge of the parisc-hd tree got a conflict in:
+>=20
+>   arch/parisc/lib/memcpy.c
+>=20
+> between commit:
+>=20
+>   967747bbc084 ("uaccess: remove CONFIG_SET_FS")
+>=20
+> from the asm-generic tree and commit:
+>=20
+>   d4a767ea8b0e ("parisc: Use constants to encode the space registers like=
+ SR_KERNEL")
+>=20
+> from the parisc-hd tree.
 
-Hmpf, Yes :-)
+This is now a conflict between the asm-generic tree and commit
 
-> Fixed up in the merge message.
+  360bd6c65807 ("parisc: Use constants to encode the space registers like S=
+R_KERNEL")
 
-Thanks!
+in Linus' tree.
 
-Helge
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/JECP/m+MkvZbCsBV3x2wGku
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmI5E7UACgkQAVBC80lX
+0GxbDggAn6FQaXTvpmAOqqfelYM0EN747gukeBKFXbUP64zbqUjQg9wzpSULUR0I
+bIrR4kAJEmic2i5goPHE5c/KgG+pGC80muNBL2KXtEPwSBk5cJHv0v7tUC9SYgSD
+ePEI75xwHjd2fc6iWjXTewd8CTEcfw+n+DSHsF9GHBD30+JG76OfdbgU3Bjx+NZq
+guwsbqCaoqkBGF4lmj+tWi0dopokNfCRkXzVx7RxHuvQSsGyYbSSzp6a5SjUfxQH
+0ferJuYWLMTNO13pyhxdMhlHsnzVabnFh61/uGsZNp3pdKC6y0O6Hs+j409edwR+
+FiuFT1zPrK+48+jZTqfOQZPIRsDKoQ==
+=FBOi
+-----END PGP SIGNATURE-----
+
+--Sig_/JECP/m+MkvZbCsBV3x2wGku--
