@@ -2,161 +2,112 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31CF24E3F86
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 14:27:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1998A4E413B
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 15:26:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235529AbiCVN3X (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 22 Mar 2022 09:29:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38274 "EHLO
+        id S237829AbiCVO17 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 22 Mar 2022 10:27:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235495AbiCVN3W (ORCPT
+        with ESMTP id S236981AbiCVO1h (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 22 Mar 2022 09:29:22 -0400
-X-Greylist: delayed 1355 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Mar 2022 06:27:54 PDT
-Received: from gateway30.websitewelcome.com (gateway30.websitewelcome.com [192.185.198.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A05FF86E18
-        for <linux-parisc@vger.kernel.org>; Tue, 22 Mar 2022 06:27:54 -0700 (PDT)
-Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
-        by gateway30.websitewelcome.com (Postfix) with ESMTP id CD0C7EA4B
-        for <linux-parisc@vger.kernel.org>; Tue, 22 Mar 2022 08:05:18 -0500 (CDT)
-Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
-        by cmsmtp with SMTP
-        id WeCMnMGcc22u3WeCMnmfOB; Tue, 22 Mar 2022 08:05:18 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=MxE07mPON8bBYJz+PnvdhC6D7SXQUQUwbhxn+4LZ528=; b=2fjG48UrIP8LPtie98zeiROBLq
-        gNrp1no6FDtGclEZkeu4WfUEs2yC7a7/S+coPu0CcvaF69R3JMS/Fv5lMHwehrbuwewdK/UwDvkYm
-        A7rSJzl7mU2+dEfZw5/ZTo3/9oBazm9RcjvGMAo/Ft+/UMXocUr79DsqDEbDtkDrLY/vr0lcf4L3u
-        TjMOOE/2SLuq5CjHOFtJlzvlLYHcq9g95EK5bXhBK3NTkT55s5C3NVSZ0uENp/SrBwLDnuUDIqeuQ
-        NW8mVYUQxMnnarRl1P2+Sb2NyacVTiK7YoRvkQtoAST8EplCedUPeErqung0n8VOsLWLJiLvoyEnt
-        JqY98ntA==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:57606 helo=localhost)
-        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@roeck-us.net>)
-        id 1nWeCM-002rZ3-4y; Tue, 22 Mar 2022 13:05:18 +0000
-Date:   Tue, 22 Mar 2022 06:05:16 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Helge Deller <deller@gmx.de>
+        Tue, 22 Mar 2022 10:27:37 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5E9D3524D;
+        Tue, 22 Mar 2022 07:26:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1647959143;
+        bh=MbjQ8ngPUYiViOJVeuhy6MOj6FjhcYketyZ/x/URxDw=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=dSmhOUHUpwLP1/2+yUaoB+QXL6Xp43zmNf6riSj8CALGp/90RpCXHnS1qC7tYtn0C
+         f0U+V7WsSDfiLwUJCx8RN4zrV8zOPBp0Kyp2zNYNoh28XRXrSW1p6MWNHYKGLdRaAo
+         /E+GrsGziPUWFQRwCyTdf7uF491JVDyH/GFZc5KU=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.191.132]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MDhhN-1nPHBg094B-00AjLy; Tue, 22
+ Mar 2022 15:25:43 +0100
+Message-ID: <ccc25312-890a-a534-1681-5ecde56328d0@gmx.de>
+Date:   Tue, 22 Mar 2022 15:25:40 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: hppa vDSO and compiler (non-)support
+Content-Language: en-US
+To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     Jiri Slaby <jirislaby@kernel.org>, linux-parisc@vger.kernel.org,
         Linux kernel mailing list <linux-kernel@vger.kernel.org>,
-        Martin =?utf-8?B?TGnFoWth?= <mliska@suse.cz>,
+        =?UTF-8?Q?Martin_Li=c5=a1ka?= <mliska@suse.cz>,
         Andreas Schwab <schwab@linux-m68k.org>
-Subject: Re: hppa vDSO and compiler (non-)support
-Message-ID: <20220322130516.GA724287@roeck-us.net>
 References: <d2713ae1-0ca5-9e5a-b7d2-b7d0f1f5614a@kernel.org>
  <2e1f3e41-7097-e68d-d312-9319ad62565c@gmx.de>
  <d2a09bf3-9bd3-588a-99a1-598281d08678@kernel.org>
- <dd4e55aa-0b3e-6e18-7ec2-3bec02cafde0@kernel.org>
- <YjjJNb0D/b+ZXBVZ@ls3530>
+ <dd4e55aa-0b3e-6e18-7ec2-3bec02cafde0@kernel.org> <YjjJNb0D/b+ZXBVZ@ls3530>
  <28696c20-21ad-b0ac-8093-4ce07225fcd8@kernel.org>
  <812d4a38-8cb1-a7be-c504-87d095aea883@gmx.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <812d4a38-8cb1-a7be-c504-87d095aea883@gmx.de>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1nWeCM-002rZ3-4y
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:57606
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 4
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+ <20220322130516.GA724287@roeck-us.net>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20220322130516.GA724287@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:EgWnZNVwca2AUlh8w37+u3MyrL47xG7BNA3Zr9Qrbdit1BeFxgg
+ hNq0sF9Vqx0LnHbiGaTTlFU6WuYLz8aNg7WB/NE6eRkYhtFof7TBiX5MujTzhl+NnqZT+lK
+ KsZn34r35cL0jPSuYEWwp5He1upIRIC8azDHint56ngabeuy56ldceaUtU9WxiftP7+I2Lm
+ TbEKQoMwc9c6oEpP5SlrA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:KAbXK5HtyYU=:0fSj6y84YXVhn/c3PAkC84
+ WShaij9f2A0ZRBvyJup81BiQ0kpkGcawgYQuYzy2HeqOwm8FoiS4ighpzPu8QOzNpd2onZome
+ kmcNLqhPW//fFEfK9TF1CYmn9jt/gBos81dPIX3zsi7G++WYZGFuRA+aUZc7TT92BCD6cdSCx
+ ivvL/dEBv+QOd+YEg8sochV9rpCdCQovf1hmMopqsWCuDzD75GWkIFMADcqbELrvfxpcRqoCc
+ DFfjUr3hmlymPAfbAxeC7E+8NAWAbTGnG0X3hq/F6Qd4W85uQMspUAJGYFn6NkjKcLQ7ptGs4
+ cgDjWqKfh0nek9X4cDOW1IxzL+yOjbolq3tsuIKRfibUrTF209YB4h2XRdzgo8Uy5Wk3ddBK5
+ tJE0OZEX5Qhjd2YJNXqJ3jtlfZtRc/fLnjmghKewurqd8IC6oDbLl1POfXEXGOsmwPqjl+gz7
+ 0+fwVFdLbpJKLuqV9Xe7CSMJ3Fs2IhRCCZXHEjgadnTIYsb707QkDKWC/gJkQ7TwbAnzfPZgw
+ gSUQFRABOUqjguEwFIplWjrSOH6SsxU9MgYBfBfVSu6oQZ5TEnjozQVkr+QNX+lfCqkqm7RA8
+ q0u7V6uFzlpP91iljT+hTnkuocP2XQvXGRC7s+Tdx1EHwQe6RheYsUCUqyjU++vaWrTggoCqI
+ ShE7DRfPGd5tBj42mUJh/OMhltZZ9og1VzrE0PQ2qSQQMM9Jr+GFZ5XT6eh6brxHtgZU5tZBb
+ 9HbsWFcHmRuF4B1jVvX+WPRrxND9x2M7qXFAjbwrd0i2BtonV6PsHL75Q4vf5lpmOQICUWMWw
+ NjzIWFu8BCcSuWY7SpnyHtHHgtlNgTyrf6fwy8gK44ceUfqHiaz1RawM6CsHBEX9vWHLnhPTE
+ PJXMen43ZgkjkQnbFsIdChiY2VoiNh2pvSyckuyZ5Fon167jzXdDTE7hlbi4V0trmRf42cKLH
+ 1P5op6iVBHFM7fGIruw1kd+QepCHIK4qWqUPxrOE73s9uOroZJEsYD43nTLan/5WepIgWAyfr
+ WDz67kwGeMfBNn03yf/7pAkwIRyTCoKQMxxlLWhEe6Qd4cIrDI9DI764TVesErKdODDJzoYNJ
+ chQadze1CnUJsA=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Mar 22, 2022 at 10:42:33AM +0100, Helge Deller wrote:
-> On 3/22/22 10:19, Jiri Slaby wrote:
-> > Hello,
-> >
-> > On 21. 03. 22, 19:51, Helge Deller wrote:
-> >> * Jiri Slaby <jirislaby@kernel.org>:
-> >>> On 09. 03. 22, 6:48, Jiri Slaby wrote:
-> >>>> On 08. 03. 22, 15:51, Helge Deller wrote:
-> >>>>> On 3/8/22 12:06, Jiri Slaby wrote:
-> >>>>>> since the "parisc: Add vDSO support" commit, I can no longer
-> >>>>>> cross-build a hppa kernel. I see two issues:
-> >>>>>>
-> >>>>>> 1) CROSS32_COMPILE detection doesn't work here, as openSUSE
-> >>>>>> provides hppa-suse-linux-* binaries. It's easy to overcome by
-> >>>>>> "CROSS32_COMPILE=hppa-suse-linux-"
-> >>>>>
-> >>>> ...
-> >>>>> Would it make sense to add the detection for SUSE too?
-> >>>
-> >>> So, could 1) be fixed on the Kconfig side? Or should I (people running SUSE)
-> >>> use "CROSS32_COMPILE=hppa-suse-linux-"?
-> >>
-> >> Could you please try if this patch fixes it for you?
-> >
-> > Works like a charm:
-> > $ make V=1 O=../a/arch/parisc/ ARCH=parisc -j6 drivers/tty/serial/mux.o
-> > ...
-> >>  hppa-suse-linux-gcc <flags deleted> -o drivers/tty/serial/mux.o /home/latest/linux/drivers/tty/serial/mux.c
-> >>  if hppa-suse-linux-objdump -h drivers/tty/serial/mux.o | ...; fi
-> >
-> > Thanks.
-> 
-> Great!
-> I've queued up a patch in for-next...
-> 
+On 3/22/22 14:05, Guenter Roeck wrote:
+> Does that also fix the build problems now seen in mainline ?
 
-Does that also fix the build problems now seen in mainline ?
+No.
 
-Building parisc64:generic-64bit_defconfig ... failed
---------------
-Error log:
-arch/parisc/kernel/vdso64/Makefile:30: FORCE prerequisite is missing
-arch/parisc/kernel/vdso32/sigtramp.S: Assembler messages:
-arch/parisc/kernel/vdso32/sigtramp.S:39: Error: unknown pseudo-op: `.proc'
-arch/parisc/kernel/vdso32/sigtramp.S:40: Error: unknown pseudo-op: `.callinfo'
-arch/parisc/kernel/vdso32/sigtramp.S:41: Error: unknown pseudo-op: `.entry'
-arch/parisc/kernel/vdso32/sigtramp.S:44: Error: no such instruction: `ldi 0,%r25'
-arch/parisc/kernel/vdso32/sigtramp.S:45: Error: no such instruction: `ldi 173,%r20'
-arch/parisc/kernel/vdso32/sigtramp.S:46: Error: no such instruction: `ble 0x100(%sr2,%r0)'
-arch/parisc/kernel/vdso32/sigtramp.S:49: Error: no such instruction: `ldi 1,%r25'
-arch/parisc/kernel/vdso32/sigtramp.S:50: Error: no such instruction: `ldi 173,%r20'
-arch/parisc/kernel/vdso32/sigtramp.S:51: Error: no such instruction: `ble 0x100(%sr2,%r0)'
-arch/parisc/kernel/vdso32/sigtramp.S:54: Error: unknown pseudo-op: `.exit'
-arch/parisc/kernel/vdso32/sigtramp.S:55: Error: unknown pseudo-op: `.procend'
-arch/parisc/kernel/vdso32/sigtramp.S:76: Error: unknown pseudo-op: `.stringz'
-arch/parisc/kernel/vdso32/restart_syscall.S: Assembler messages:
-arch/parisc/kernel/vdso32/restart_syscall.S:16: Error: bad or irreducible absolute expression
-arch/parisc/kernel/vdso32/restart_syscall.S:16: Error: junk at end of line, first unrecognized character is `:'
-arch/parisc/kernel/vdso32/restart_syscall.S:26: Error: no such instruction: `ldw 0(%sp),%r31'
-arch/parisc/kernel/vdso32/restart_syscall.S:29: Error: no such instruction: `be 0x100(%sr2,%r0)'
-arch/parisc/kernel/vdso32/restart_syscall.S:30: Error: no such instruction: `ldi 0,%r20'
-arch/parisc/kernel/vdso32/restart_syscall.S:32: Error: .cfi_endproc without corresponding .cfi_startproc
-make[2]: *** [arch/parisc/kernel/vdso32/Makefile:34: arch/parisc/kernel/vdso32/restart_syscall.o] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[2]: *** [arch/parisc/kernel/vdso32/Makefile:34: arch/parisc/kernel/vdso32/sigtramp.o] Error 1
-make[1]: *** [arch/parisc/Makefile:177: vdso_prepare] Error 2
-make: *** [Makefile:219: __sub-make] Error 2
+> Building parisc64:generic-64bit_defconfig ... failed
+> --------------
+> Error log:
+> arch/parisc/kernel/vdso64/Makefile:30: FORCE prerequisite is missing
+> arch/parisc/kernel/vdso32/sigtramp.S: Assembler messages:
+> arch/parisc/kernel/vdso32/sigtramp.S:39: Error: unknown pseudo-op: `.pro=
+c'
+> ...
+> arch/parisc/kernel/vdso32/restart_syscall.S:32: Error: .cfi_endproc with=
+out corresponding .cfi_startproc
+> make[2]: *** [arch/parisc/kernel/vdso32/Makefile:34: arch/parisc/kernel/=
+vdso32/restart_syscall.o] Error 1
+> make[2]: *** Waiting for unfinished jobs....
+> make[2]: *** [arch/parisc/kernel/vdso32/Makefile:34: arch/parisc/kernel/=
+vdso32/sigtramp.o] Error 1
+> make[1]: *** [arch/parisc/Makefile:177: vdso_prepare] Error 2
+> make: *** [Makefile:219: __sub-make] Error 2
+>
+> This is with hppa64-linux-gcc (GCC) 11.2.0.
 
-This is with hppa64-linux-gcc (GCC) 11.2.0.
+Can you check if you have the 32-bit compiler (hppa-linux-gcc) installed t=
+oo?
+The errors above happen when building the 32-bit vDSO, for which you need =
+the 32-bit compiler.
 
-Thanks,
-Guenter
+Helge
