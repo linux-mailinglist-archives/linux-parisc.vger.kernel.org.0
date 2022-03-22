@@ -2,127 +2,128 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E476E4E39BD
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 08:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F07A54E3BA0
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 10:20:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229528AbiCVHlR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 22 Mar 2022 03:41:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48980 "EHLO
+        id S232166AbiCVJVc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 22 Mar 2022 05:21:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229882AbiCVHj1 (ORCPT
+        with ESMTP id S231328AbiCVJVa (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 22 Mar 2022 03:39:27 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FDAA27B05;
-        Tue, 22 Mar 2022 00:34:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1647934476;
-        bh=Hs+LekFd6E4SGdt8i1Ad3ZnN5tN6xqp8p83T7REJkQ8=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=XA5MZZ4kQSCE87s3wgnN1UAGqNRezIP2Vg1OHovMqT83iImAh0MhTTVDkq1tKgqr1
-         5AlgRgS30XebDTfhY9TIar5O388PTza26gcDrKcfAFO99cPZE86LYw71KQ0OCV0eqx
-         d8GvppfUALbR6fa7KMRT/Q2/ufmZ3ylwZj8IFZQk=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.191.132]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mulm5-1oNhzL23ut-00rrDh; Tue, 22
- Mar 2022 08:34:36 +0100
-Message-ID: <8ce9d045-c3c9-c839-7b82-9f5ccdae2d52@gmx.de>
-Date:   Tue, 22 Mar 2022 08:34:32 +0100
+        Tue, 22 Mar 2022 05:21:30 -0400
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D1815C847;
+        Tue, 22 Mar 2022 02:20:02 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id i186so590197wma.3;
+        Tue, 22 Mar 2022 02:20:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=dOhc948YByb3X4njXePU+uM0J2dUUfssn4Dzwq4pjgs=;
+        b=WNNFcHaYWa2cL5HJbbSPwE9d58YSsw4NJVJiV5+moo37We116eMJiaVd65myWQCaCH
+         kItkdg5ny5udVY+ennFhybadikB3MJ/byK1hWqwp9ncP098YDDJ0Ptf3dutQw2zzEjF+
+         Y1O0v2rjtGF3lhPW1jQVxiGRLHd4tlsrB/Qgp5MKgxH87x7229sUkVD3IJA7xLCQtNsH
+         3UCqcNFJG18C2erJmI9pIVZa8dOfEKbdASnNDp6rJJGFPhMPqeS9SPXKm/Cm1WEIiLRu
+         aSAQTSgwT4SgT2XndLvZgDfvCkbBetOGIlHOdDBhUusANsO8F1EE8UaQJmNKmO0RDmd/
+         WuJw==
+X-Gm-Message-State: AOAM533YdD7+WE9wo0IMXGhYYsK7INKiTKmA3TND91pFIGF1WNjE1zZT
+        t6ybLckRlTtQ3FVROi17OhE=
+X-Google-Smtp-Source: ABdhPJyT5mw6+28NcJn9iGRWPEBClXbyxwOahskWUbT9xdMMdntanGruWXf6u0KwMNLIORVlsqZ8UA==
+X-Received: by 2002:a05:600c:1c8e:b0:38c:a386:26aa with SMTP id k14-20020a05600c1c8e00b0038ca38626aamr2776405wms.204.1647940801298;
+        Tue, 22 Mar 2022 02:20:01 -0700 (PDT)
+Received: from [192.168.1.49] (185-219-167-24-static.vivo.cz. [185.219.167.24])
+        by smtp.gmail.com with ESMTPSA id l15-20020a05600c4f0f00b0038cbdf5221dsm59059wmq.41.2022.03.22.02.20.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Mar 2022 02:20:00 -0700 (PDT)
+Message-ID: <28696c20-21ad-b0ac-8093-4ce07225fcd8@kernel.org>
+Date:   Tue, 22 Mar 2022 10:19:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: linux-next: manual merge of the parisc-hd tree with the
- asm-generic tree
+ Thunderbird/91.6.0
+Subject: Re: hppa vDSO and compiler (non-)support
 Content-Language: en-US
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20220228114523.03b2f921@canb.auug.org.au>
- <20220322110925.7b295e54@canb.auug.org.au>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220322110925.7b295e54@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:e5hbO80bo1ozr4PzUgKbhkXQcCIXaFuDpSIEMhxhGqA/g2UhW9O
- MIb4dwSCoEZBHoHdlZ8eXZR+rRVHCaOtCi21Mpbj6F1n8XqB3IlO9UjtIpg5nDv9AvtSA4M
- b/gVyECMaJL8gSEzDdeCIJVYvgLCw2UPHIv5Tj7IxpgcIPzoYk506pLllldzYl9cKY2M45i
- bzkmknm1UxO/mqiZxOeEQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Kd1MJCl/xh4=:d+hPN41aPGL8S+OXZAiPTL
- X5JMLqvPw7shoytLMFV+mBxt7QNhU3fOVYTtd71MRfe560TuoNXR4MkyAHE56aaSqyjjBNz35
- Tf65vglLRUz9gmFYa4bmKwOS+6LbtZTTorOeBPnvKYtyfnU7kLnz/AuJW8tsE5ITZJRvXn467
- 0sRovYl2XPm0DojucscYhrHoG3MHCaf173ffPr6ORpEVjZrpO5kNp6vOSoX4isix2jIGE5omA
- 1Q5DahOcOQOOMTQQShe+N7BhM127OLyDhgXgaxpXhldAIf9NKH7Bz8NUPKVtN8umlw/JMkiYk
- UNC42JCckxEinK3srYEwaqBBnFap3Qb985v5UGdOhXmxrv9j3LrOOmBlUjepkYs0KqJNvcYK/
- 8xOZAQ4Ij26YQh4eAsvR4iU6WF4iP9FIvz4k3lDRXrK3H+bcQ+WN4rzF194xS3Bn+denpb1ZA
- NAtE+jXZErV9tPma2hDUfZmXF8hOq/8b+sBekTuG6U2m5aLLbqlYQ+BRD0pMHkpVHUWGymP2c
- 9383GMnz9Yf+yLgiJQV9ibYizThfJIDmZ2e4/0ovjqUDHOhDE8P8vOVCeABF6+BQHVodqV/fx
- HcqI/HYp5WDT4wsE8DC5/ssuZUxrGWO0PEcl6slPaI2T7deQDCCsJGWBQDMMe8HPppB2ifLT6
- HQgTAYWz2q7615JWSGKEGjFC57HDgvlcNt2TRZnzWoarerM/+xYxTD1B5/2RtHCDtMejpKwOP
- RIVCtAV/71e8XuSR38ZWQbIWapmZNtX3grC8+1O2yzbX19MkpFQTuEdPEZLvt18aTOKMPxg5x
- AOrpmu0KyaXl4fSu7BiJRKxMheicSwlQlMyzrVBjrgYHB63xA1n8DCJIiICw/2fNbVMOfZfv9
- j32CLiIyoMoy07ewBrtoQpQ5P5mYfl3Aw7bFLJHgWPYjexTnJ4zgaK0jI2W7IX6SHCCj/XgJU
- LHeHbMJ8cT4SLYNBBtRHbBKpOnlCeU0OGys6D9e5jAPPFA0RvmhxhV7nrIxeU0CZRqGUZl9uR
- UVkN+wRYdLRDdUCnit/VXBEIcNdPIUbxtFt9jeeKeV5ldq5xuxLYTmeOVRtVeeVAJYkEaFP/7
- WcsLfgp3ionQcs=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Martin_Li=c5=a1ka?= <mliska@suse.cz>,
+        Andreas Schwab <schwab@linux-m68k.org>
+References: <d2713ae1-0ca5-9e5a-b7d2-b7d0f1f5614a@kernel.org>
+ <2e1f3e41-7097-e68d-d312-9319ad62565c@gmx.de>
+ <d2a09bf3-9bd3-588a-99a1-598281d08678@kernel.org>
+ <dd4e55aa-0b3e-6e18-7ec2-3bec02cafde0@kernel.org> <YjjJNb0D/b+ZXBVZ@ls3530>
+From:   Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <YjjJNb0D/b+ZXBVZ@ls3530>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 3/22/22 01:09, Stephen Rothwell wrote:
-> Hi all,
->
-> On Mon, 28 Feb 2022 11:45:23 +1100 Stephen Rothwell <sfr@canb.auug.org.a=
-u> wrote:
+Hello,
+
+On 21. 03. 22, 19:51, Helge Deller wrote:
+> * Jiri Slaby <jirislaby@kernel.org>:
+>> On 09. 03. 22, 6:48, Jiri Slaby wrote:
+>>> On 08. 03. 22, 15:51, Helge Deller wrote:
+>>>> On 3/8/22 12:06, Jiri Slaby wrote:
+>>>>> since the "parisc: Add vDSO support" commit, I can no longer
+>>>>> cross-build a hppa kernel. I see two issues:
+>>>>>
+>>>>> 1) CROSS32_COMPILE detection doesn't work here, as openSUSE
+>>>>> provides hppa-suse-linux-* binaries. It's easy to overcome by
+>>>>> "CROSS32_COMPILE=hppa-suse-linux-"
+>>>>
+>>> ...
+>>>> Would it make sense to add the detection for SUSE too?
 >>
->> Today's linux-next merge of the parisc-hd tree got a conflict in:
->>
->>   arch/parisc/lib/memcpy.c
->>
->> between commit:
->>
->>   967747bbc084 ("uaccess: remove CONFIG_SET_FS")
->>
->> from the asm-generic tree and commit:
->>
->>   d4a767ea8b0e ("parisc: Use constants to encode the space registers li=
-ke SR_KERNEL")
->>
->> from the parisc-hd tree.
->
-> This is now a conflict between the asm-generic tree and commit
->
->   360bd6c65807 ("parisc: Use constants to encode the space registers lik=
-e SR_KERNEL")
->
-> in Linus' tree.
+>> So, could 1) be fixed on the Kconfig side? Or should I (people running SUSE)
+>> use "CROSS32_COMPILE=hppa-suse-linux-"?
+> 
+> Could you please try if this patch fixes it for you?
 
+Works like a charm:
+$ make V=1 O=../a/arch/parisc/ ARCH=parisc -j6 drivers/tty/serial/mux.o
+...
+ >  hppa-suse-linux-gcc <flags deleted> -o drivers/tty/serial/mux.o 
+/home/latest/linux/drivers/tty/serial/mux.c
+ >  if hppa-suse-linux-objdump -h drivers/tty/serial/mux.o | ...; fi
 
-Arnd,
-can you please drop the changes in your asm-generic tree for
-arch/parisc/lib/memcpy.c
-They are not needed any more.
+Thanks.
 
-Helge
+> diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
+> index 2a9387a93592..7583fc39ab2d 100644
+> --- a/arch/parisc/Makefile
+> +++ b/arch/parisc/Makefile
+> @@ -42,7 +42,7 @@ export LD_BFD
+> 
+>   # Set default 32 bits cross compilers for vdso
+>   CC_ARCHES_32 = hppa hppa2.0 hppa1.1
+> -CC_SUFFIXES  = linux linux-gnu unknown-linux-gnu
+> +CC_SUFFIXES  = linux linux-gnu unknown-linux-gnu suse-linux
+>   CROSS32_COMPILE := $(call cc-cross-prefix, \
+>   	$(foreach a,$(CC_ARCHES_32), \
+>   	$(foreach s,$(CC_SUFFIXES),$(a)-$(s)-)))
+> @@ -52,7 +52,7 @@ export CROSS32CC
+>   # Set default cross compiler for kernel build
+>   ifdef cross_compiling
+>   	ifeq ($(CROSS_COMPILE),)
+> -		CC_SUFFIXES = linux linux-gnu unknown-linux-gnu
+> +		CC_SUFFIXES = linux linux-gnu unknown-linux-gnu suse-linux
+>   		CROSS_COMPILE := $(call cc-cross-prefix, \
+>   			$(foreach a,$(CC_ARCHES), \
+>   			$(foreach s,$(CC_SUFFIXES),$(a)-$(s)-)))
 
-diff --git a/arch/parisc/lib/memcpy.c b/arch/parisc/lib/memcpy.c
-index 468704ce8a1c..ea70a0e08321 100644
-=2D-- a/arch/parisc/lib/memcpy.c
-+++ b/arch/parisc/lib/memcpy.c
-@@ -13,7 +13,7 @@
- #include <linux/compiler.h>
- #include <linux/uaccess.h>
-
--#define get_user_space() (mfsp(3))
-+#define get_user_space() (uaccess_kernel() ? 0 : mfsp(3))
-
-
-
-
+-- 
+-- 
+js
+suse labs
