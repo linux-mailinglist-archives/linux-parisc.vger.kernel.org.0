@@ -2,79 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE7ED4E440A
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 17:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC3644E44B0
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 18:06:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238353AbiCVQSX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 22 Mar 2022 12:18:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58294 "EHLO
+        id S239345AbiCVRII (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 22 Mar 2022 13:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236414AbiCVQSW (ORCPT
+        with ESMTP id S231186AbiCVRIH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 22 Mar 2022 12:18:22 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC3027EB1E;
-        Tue, 22 Mar 2022 09:16:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1647965793;
-        bh=F6WLBIO9AkZhj7l3Wrau4KMhfoblbH6OC/1yWXtZnBI=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=DNr2RE1WJai2WZSr5wCSSKn5Ik7riDf0SZuC6IQknVkoiRWHPpI12UbT5b2E9CPS1
-         27vaoLM1wKTnlpVitz6MCYhWZo4UzpSIDrL8RgVZJ/jLNv7VkzaXZkxbgXTehS9z/P
-         VRVv6ar2+Qb3UCNnU40BP3/odFEYCiYuLdspGiTo=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.191.132]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MryTF-1ntKLs2hs5-00nwzV; Tue, 22
- Mar 2022 17:16:33 +0100
-Message-ID: <4d52b78d-ed39-102f-ba64-3ba9c17f58f9@gmx.de>
-Date:   Tue, 22 Mar 2022 17:16:32 +0100
+        Tue, 22 Mar 2022 13:08:07 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6FA86AA7C;
+        Tue, 22 Mar 2022 10:06:38 -0700 (PDT)
+Received: from mail-wr1-f49.google.com ([209.85.221.49]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MdwRi-1o6b0t0Zra-00b7Oq; Tue, 22 Mar 2022 18:06:37 +0100
+Received: by mail-wr1-f49.google.com with SMTP id v22so10423937wra.2;
+        Tue, 22 Mar 2022 10:06:37 -0700 (PDT)
+X-Gm-Message-State: AOAM531HT4Ch/uG5ZhcbR5kuU8Q7NyPTyYn5C+Sb8OwItukgQ1dSXfgG
+        E8UeBjs/tpn4VTPLX44eAwEUuc1w3CWTo6FWLQo=
+X-Google-Smtp-Source: ABdhPJzYB6ox3wweLxkaJdVg1CSTqhO684+KAFRluL7iV1tWdFcF/ONdn4ZX1CPYE6vDSSNrGQ2IMjZPkjDxTSOkd/Q=
+X-Received: by 2002:a5d:66ca:0:b0:203:fb72:a223 with SMTP id
+ k10-20020a5d66ca000000b00203fb72a223mr15794201wrw.12.1647968796788; Tue, 22
+ Mar 2022 10:06:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: hppa vDSO and compiler (non-)support
-Content-Language: en-US
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Jiri Slaby <jirislaby@kernel.org>, linux-parisc@vger.kernel.org,
-        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
-        =?UTF-8?Q?Martin_Li=c5=a1ka?= <mliska@suse.cz>,
-        Andreas Schwab <schwab@linux-m68k.org>
-References: <d2713ae1-0ca5-9e5a-b7d2-b7d0f1f5614a@kernel.org>
- <2e1f3e41-7097-e68d-d312-9319ad62565c@gmx.de>
- <d2a09bf3-9bd3-588a-99a1-598281d08678@kernel.org>
- <dd4e55aa-0b3e-6e18-7ec2-3bec02cafde0@kernel.org> <YjjJNb0D/b+ZXBVZ@ls3530>
- <28696c20-21ad-b0ac-8093-4ce07225fcd8@kernel.org>
- <812d4a38-8cb1-a7be-c504-87d095aea883@gmx.de>
- <20220322130516.GA724287@roeck-us.net>
- <ccc25312-890a-a534-1681-5ecde56328d0@gmx.de>
- <78abe69b-7914-1b38-c94e-7143f61f4909@roeck-us.net>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <78abe69b-7914-1b38-c94e-7143f61f4909@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:b2DAvetGLdxAO6CU/aDnMkQ1MLIIKAHZtTcU+nmyjTOKeaCT3sN
- gHA6BtuLBzl5cd6p35WpxbfelzpJ4/oxY94+M7aAFA6ES8vSwgECm/FCl9VBH5SAHv4hewu
- zO1XVYta8wUKweTvBI8isWYRF1remEiFXrtdwicEy9hpf5Zz/2aPN5oSkQO2S5x2B/ejdGE
- Vb54p4kqcYZtvA/kIcE+A==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:n35AoG1nhyc=:FMmG0DSD5fVY8VhySAE8TB
- 050KayzVY58zdD4jLXfZgz8KCNsJwAl1OdTDkhCeZ5zQnvoFLtPxQ0/znN0ZsXZ6oUy0DI3jO
- G8Z7no+qkRR9CAPNFF16F0FwNY0m+g2s1xko5MUSWT3z+mZJ29n5lh7kRdbgsdcxz3pb4z2J8
- 37igv6no8x17d67vFNJ2LEY1yRkFbOWqg7Yzz2UgzRld3C/8/xNbn/vFvOkIAZZ7vI2n5R2gh
- VdRBV5DxzPxfZOKksGp6l2pisAb4acYQD5JsiNtbszlAI/nHCMIQs2ZKj+YbQwmZAcg4jEgZ9
- cf25LCSZAHr/fwJTGeDsrTjcO3c58CRsRcD5Kaxsf2zm5BiI985FohB6Yefh2ceStPPWB/v7n
- 9AzKFRCAd1An4B+ulNGqe9u0Ayj0SJsMgqjcs/ab2G7Vxc8b+iDj5VdZwYnu5yvrl85gHftUa
- ptdWYUemG6O+mb76AgecH/CgW9j0t6DAPCwPnb05q56vUPMIiZJ8zLabikjKdConzZw+GBSdm
- +IeCq6DD9jH+ZAfwlFVAIaY/L7/uefxXDBXVm7YgaER0OdS3gRKZZZvqEKvyUDqo9soI9yDsU
- b6f0KVFpj+172WLkIl19tS7kJVU0oFkKH9cCSokhB6iQUsK7zl30/G2PRXXImlwIdJQaX+zuN
- BC3ctFW1oEzVEaKN6BHjb58qotPeh8NG2SNSVGyC/EPO6JGYBiNuZHA0H+D4g6Q2tVNSjUFBr
- Iq2LRrG3HGDghRETzgL70PzlQHkQo7GvhzgUH/u9RyNRquDD4ir9/GEHXQZG/yPMhJnk9XbU5
- XXgAO2SIHyv96KQW/LI+GLzDzWd453f0PY58cUK4cPlx4nX2GIoHyfStG8A1nn2EanEPutueP
- Ds8JqSLJhMwVr5jvjDJnYMUt52IUGdq+fUzFav6+BnIOTg7y8KfjzquDOXeC0rPFFbfwH4Zin
- iHHp2vlSCX1FW0tGdSxoI26F/+g0NLQp7E+YXtzL/Ex49ranfEsxEsTiCQg+RXduKeJQELxXL
- 2zwp4kdja+PFuwpJJWub0jTLCpDJSapMTjRjnHcIyupOGoEh1erkI1hHLbldEsVItwE21hWd9
- ZCSvSGn7JD1Uns=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+References: <20220228114523.03b2f921@canb.auug.org.au> <20220322110925.7b295e54@canb.auug.org.au>
+ <8ce9d045-c3c9-c839-7b82-9f5ccdae2d52@gmx.de>
+In-Reply-To: <8ce9d045-c3c9-c839-7b82-9f5ccdae2d52@gmx.de>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 22 Mar 2022 18:06:20 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3hR0JP-coRBNDytC1onPUfYCUn_q148kMO5-FWvxwgOg@mail.gmail.com>
+Message-ID: <CAK8P3a3hR0JP-coRBNDytC1onPUfYCUn_q148kMO5-FWvxwgOg@mail.gmail.com>
+Subject: Re: linux-next: manual merge of the parisc-hd tree with the
+ asm-generic tree
+To:     Helge Deller <deller@gmx.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:b7arbufAWiTYFolXORfGQsCYX9SiUGAUTONI9A2Nlj4TyoOF0zf
+ ND1U9hnsMYobhHze2QgiYShUwv/Wm8RpBjdIYUZ+NlCJDZ60PBmMojx8mwSSF0z1EEt58HG
+ LadnFRWmvoVv3pPhbnulDnWZkzw1V0Ejibmy8kC5rvC/LJwGyBn1/V4lEfrtQIivqY/YBfy
+ gqnv8UBCCQLgq5Dd9ofEg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:O1EZIwAfhLY=:ShQmAeFA9GihY9zCn8wNuu
+ p10TnwrPoQKQri0fKPeeTFH5OOMKoLD0VWVSsH/ptvt/ZmDzLqRGLQZASdr0w/uR9dTsVLZfR
+ xfqtqYFo2ff3ruEPeptyeOA0loBk9V+2d4QCDf/2zVQLhzSxuczV3TO2IzlySU9iUhO3Q1LmK
+ qC4U7+hdK8JwT8XklftGKfeA0p2E6RsecRPCk3mg1ka0sURspZ+jH6h/GQZv560J7hxe8pS0O
+ qQpajIdFbgEkpEjB9rDNo5MUMiEhQLa3/C2Gd/oYPFKYM0FOVLBs5U0/3vGBMZ6p88hqFDY4t
+ u3xGEU98Ru7i0wswik1ZokDfGE27rr/q4QqW9LIg++BF0Dbr/X27skTL0Brp+or1o9JPERjP4
+ MPEOFNwG4L/xY5pqV06T/1A5Kffh3kYxxsBYwmKrSPHBlyZZbubdiIjBxPSKzzBZGKK9lHYzq
+ 0a4s+pBMCyq/QqD2mY7sC+U9RK2f50GKyQ/QKdlpYFh9jqzVjn9BrlZ1uEv48PHYefnL5gQIU
+ dD7oz/kowuGAWXhV6zmJOanH88nYH2UbFK+BfpXMhMWZooV9VevBlYJMSEQRqY2ae8nSWVEqg
+ cA7Wn7UYm/y9dg/du/lal/ZDpkWAsyR21/UauX/IRs842LO+hkQTXacn3WPQ1nfDC5TIfFCM1
+ PNELxvhBdZ0bRA/q2vSer/ajszcTJMsd4nhVSuNWahg6UxEJQ9hof3CE6kkUjRitAMxI=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,48 +67,44 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 3/22/22 16:19, Guenter Roeck wrote:
-> On 3/22/22 07:25, Helge Deller wrote:
->> On 3/22/22 14:05, Guenter Roeck wrote:
->>> Does that also fix the build problems now seen in mainline ?
->>
->> No.
->>
->>> Building parisc64:generic-64bit_defconfig ... failed
->>> --------------
->>> Error log:
->>> arch/parisc/kernel/vdso64/Makefile:30: FORCE prerequisite is missing
->>> arch/parisc/kernel/vdso32/sigtramp.S: Assembler messages:
->>> arch/parisc/kernel/vdso32/sigtramp.S:39: Error: unknown pseudo-op: `.p=
-roc'
->>> ...
->>> arch/parisc/kernel/vdso32/restart_syscall.S:32: Error: .cfi_endproc wi=
-thout corresponding .cfi_startproc
->>> make[2]: *** [arch/parisc/kernel/vdso32/Makefile:34: arch/parisc/kerne=
-l/vdso32/restart_syscall.o] Error 1
->>> make[2]: *** Waiting for unfinished jobs....
->>> make[2]: *** [arch/parisc/kernel/vdso32/Makefile:34: arch/parisc/kerne=
-l/vdso32/sigtramp.o] Error 1
->>> make[1]: *** [arch/parisc/Makefile:177: vdso_prepare] Error 2
->>> make: *** [Makefile:219: __sub-make] Error 2
->>>
->>> This is with hppa64-linux-gcc (GCC) 11.2.0.
->>
->> Can you check if you have the 32-bit compiler (hppa-linux-gcc) installe=
-d too?
->> The errors above happen when building the 32-bit vDSO, for which you ne=
-ed the 32-bit compiler.
->>
+On Tue, Mar 22, 2022 at 8:34 AM Helge Deller <deller@gmx.de> wrote:
 >
-> Yes, I do, but that doesn't help much if I want to build a 64-bit target=
- such
-> as generic-64bit_defconfig. Am I missing something ?
+> On 3/22/22 01:09, Stephen Rothwell wrote:
+> > Hi all,
+> >
+> > On Mon, 28 Feb 2022 11:45:23 +1100 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+> >>
+> >> Today's linux-next merge of the parisc-hd tree got a conflict in:
+> >>
+> >>   arch/parisc/lib/memcpy.c
+> >>
+> >> between commit:
+> >>
+> >>   967747bbc084 ("uaccess: remove CONFIG_SET_FS")
+> >>
+> >> from the asm-generic tree and commit:
+> >>
+> >>   d4a767ea8b0e ("parisc: Use constants to encode the space registers like SR_KERNEL")
+> >>
+> >> from the parisc-hd tree.
+> >
+> > This is now a conflict between the asm-generic tree and commit
+> >
+> >   360bd6c65807 ("parisc: Use constants to encode the space registers like SR_KERNEL")
+> >
+> > in Linus' tree.
+>
+>
+> Arnd,
+> can you please drop the changes in your asm-generic tree for
+> arch/parisc/lib/memcpy.c
+> They are not needed any more.
+>
 
-The 64-bit PA-RISC kernel now includes a built-in a 32-bit and a 64-bit vD=
-SO for userspace.
-To build the 32-bit vDSO (vdso32) you need the 32-bit hppa compiler instal=
-led.
-That's what's being done above - see the path: arch/parisc/kernel/vdso32/
-Can you try "make V=3D1" to see the command line?
+Sorry I missed that earlier when the conflict happened originally.
 
-Helge
+I can't really rebase my changes on top of your tree now, and just dropping
+the change without a rebase would break mine. I'll make sure to mention
+the conflict in the pull request then and have Linus resolve it.
+
+       Arnd
