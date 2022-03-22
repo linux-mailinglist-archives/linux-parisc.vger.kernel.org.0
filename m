@@ -2,509 +2,144 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9CFB4E47F7
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 22:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48CCC4E480D
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 22:04:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234676AbiCVVBz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 22 Mar 2022 17:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41458 "EHLO
+        id S233607AbiCVVGW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 22 Mar 2022 17:06:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234812AbiCVVBx (ORCPT
+        with ESMTP id S230015AbiCVVGV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 22 Mar 2022 17:01:53 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 109B749F82
-        for <linux-parisc@vger.kernel.org>; Tue, 22 Mar 2022 14:00:22 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id mz9-20020a17090b378900b001c657559290so4359945pjb.2
-        for <linux-parisc@vger.kernel.org>; Tue, 22 Mar 2022 14:00:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lBrpNrc10p6AUET1V3wTZfU9uz0sY/ApybA25eiqMtU=;
-        b=iIdz9fFwaD2VKDC+3GIlvl7lpSo3Lh75C3RmgsS4Nspc0itldhoNMD24CEClUKjzn6
-         skcH0Nh79Q/LJQHlKH8qq+o/wP57JqDUzOi/mRuFXhoU3bTFmQsDchRXyn8zZyTk7gs1
-         BTfb59DgBbGKCZT4N2dZVtfktdRjAHTcRCASI9AYT27RtaWxiCq8WAuvvRLhqatupHSX
-         AzCpCNfG2QchxFA+F3YW73Xt6mGmiz4EqFZXuz87SA1nP9cjB3zWNXCWXExKMx8qc5ld
-         vjyt+vB2LsQjplyq1DK95s3oGtsTc8L9/bwkEfeM8sPSUd6B+LWLQkc5EhcK8szDy4iR
-         j66A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=lBrpNrc10p6AUET1V3wTZfU9uz0sY/ApybA25eiqMtU=;
-        b=nizfy3/CPGI2GQ73DSYyGnQ9SfZ2ri90AMq7JA2aC2d4w/47uBYE1IEpCzwmBDpn+5
-         xAV9Yu0zPmLG0hs1hrJAFUYfttDlUFzJyd2Kr6DapiWVNl4xHz6/TOcGSGpq70X5uBJT
-         0JsUz+eV7IWfmyCfzj59gTs7jnOQ4ituu42QrCWEpOQ0oSbvvMk+buwA9Sa/S71R1XnB
-         KMzRT0h5PdDiOpZOiB3Pg7sBC3Q9TTTH8TiAkdEI7aqEAnbfMLJGwoe1g5cRHXW/9SXq
-         UTaLV7Uhi2360v4YNBAppPK8j1feUlUypy9Dh1K89E79MvLFeCzlTzjZ2Q6L2Gl4MR/O
-         XzOQ==
-X-Gm-Message-State: AOAM533DEuNJP89CdClq9QyrTNIo5A/PkbUBZfa4kaYD8yRYPmrMHzbQ
-        2493r8GBLpvD4hfE4a/zf2ehgw==
-X-Google-Smtp-Source: ABdhPJwbfPdRM/Q23d5nTLuBdolnU/Bz8J8v0z6tFuvQa7541uCRgTxPq9dwmoS1+HsuSBY8AbBmrg==
-X-Received: by 2002:a17:90a:5915:b0:1c5:d0fc:9135 with SMTP id k21-20020a17090a591500b001c5d0fc9135mr7343201pji.105.1647982821225;
-        Tue, 22 Mar 2022 14:00:21 -0700 (PDT)
-Received: from localhost ([12.3.194.138])
-        by smtp.gmail.com with ESMTPSA id ml16-20020a17090b361000b001c6c9141b0csm3604010pjb.45.2022.03.22.14.00.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Mar 2022 14:00:20 -0700 (PDT)
-Date:   Tue, 22 Mar 2022 14:00:20 -0700 (PDT)
-X-Google-Original-Date: Tue, 22 Mar 2022 13:52:58 PDT (-0700)
-Subject:     Re: [PATCH V9 00/20] riscv: compat: Add COMPAT Kbuild skeletal support
-In-Reply-To: <20220322144003.2357128-1-guoren@kernel.org>
-CC:     guoren@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-csky@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        heiko@sntech.de, guoren@linux.alibaba.com
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     guoren@kernel.org
-Message-ID: <mhng-b8d03c4e-ca8e-4220-a132-6d40a3ace231@palmer-ri-x1c9>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        Tue, 22 Mar 2022 17:06:21 -0400
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-003.bell.net [209.71.208.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 605F139804
+        for <linux-parisc@vger.kernel.org>; Tue, 22 Mar 2022 14:04:53 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.50.7.94]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6238C363001C4DDF
+X-CM-Envelope: MS4xfP1BOBMcX/B8laQJiHYlyadhwXQAgGhS4p34IFh1hoz+FZF51pUQnfEaroD9unohTtC6W5Evs8Cxpafz/+xeLz77laixMnX4RzTdKfaBj5aNILtcoLmX
+ iJkeqgVRcT/hNY6daxhiC1/WQHNwnI+/hA/7u0bxNeCjUl7J6sRcH8xv+8QlygHUzdja0JffrNDlxGOG6XjLtC4Ara5Iw5vwlowvgJXQlG3JnbZY16FjGHOq
+ 14FxKqpvrZiHHe2tugnHhqaD5BnV4mTRwKBaxWcvLs6w3nlxnAGzVCwfbBjgWGttcPOvDdGRJE+Ol3EE6qKzqQ==
+X-CM-Analysis: v=2.4 cv=YYreWydf c=1 sm=1 tr=0 ts=623a39f0
+ a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
+ a=r77TgQKjGQsHNAKrUKIA:9 a=FBHGMhGWAAAA:8 a=t5DttLsFM1BjXEjqeSQA:9
+ a=QEXdDO2ut3YA:10 a=fKR227dseSlTr2TUCuAA:9 a=De_Ol2h6w80A:10
+ a=1d9taX949Dl2REJ9ZAYA:9 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (70.50.7.94) by cmx-mtlrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 6238C363001C4DDF; Tue, 22 Mar 2022 17:04:48 -0400
+Content-Type: multipart/mixed; boundary="------------iN6xcanfwzcP03Oj6rtqf3ev"
+Message-ID: <1f0d062d-2168-c1b7-f5be-f018aa79927d@bell.net>
+Date:   Tue, 22 Mar 2022 17:04:49 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: Recurring INEQUIVALENT ALIASES issues and userland
+ corruption/crashes
+Content-Language: en-US
+To:     Sam James <sam@gentoo.org>, Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org, hppa@gentoo.org
+References: <63DA313A-FCE1-4535-9BF3-11E36B2DE422@gentoo.org>
+ <b84f1c67-eea7-f07a-0163-6e06b0f5f650@bell.net>
+ <309C1399-6AA2-44BD-8EB9-FDB66F5D972E@gentoo.org>
+ <a8756bee-e149-c03c-36cd-6842eb12d2de@gmx.de>
+ <FBC408F2-F3D7-4148-8006-DC6189DC78CB@gentoo.org>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <FBC408F2-F3D7-4148-8006-DC6189DC78CB@gentoo.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, 22 Mar 2022 07:39:43 PDT (-0700), guoren@kernel.org wrote:
-> From: Guo Ren <guoren@linux.alibaba.com>
->
-> Currently, most 64-bit architectures (x86, parisc, powerpc, arm64,
-> s390, mips, sparc) have supported COMPAT mode. But they all have
-> history issues and can't use standard linux unistd.h. RISC-V would
-> be first standard __SYSCALL_COMPAT user of include/uapi/asm-generic
-> /unistd.h.
->
-> The patchset are based on v5.17-rc8, you can compare rv64-compat
-> v.s. rv32-native in qemu with following steps:
->
->  - Prepare rv32 rootfs & fw_jump.bin by buildroot.org
->    $ git clone git://git.busybox.net/buildroot
->    $ cd buildroot
->    $ make qemu_riscv32_virt_defconfig O=qemu_riscv32_virt_defconfig
->    $ make -C qemu_riscv32_virt_defconfig
->    $ make qemu_riscv64_virt_defconfig O=qemu_riscv64_virt_defconfig
->    $ make -C qemu_riscv64_virt_defconfig
->    (Got fw_jump.bin & rootfs.ext2 in qemu_riscvXX_virt_defconfig/images)
->
->  - Prepare Linux rv32 & rv64 Image
->    $ git clone git@github.com:c-sky/csky-linux.git -b riscv_compat_v8 linux
->    $ cd linux
->    $ echo "CONFIG_STRICT_KERNEL_RWX=n" >> arch/riscv/configs/defconfig
->    $ echo "CONFIG_STRICT_MODULE_RWX=n" >> arch/riscv/configs/defconfig
->    $ make ARCH=riscv CROSS_COMPILE=riscv32-buildroot-linux-gnu- O=../build-rv32/ rv32_defconfig
->    $ make ARCH=riscv CROSS_COMPILE=riscv32-buildroot-linux-gnu- O=../build-rv32/ Image
->    $ make ARCH=riscv CROSS_COMPILE=riscv64-buildroot-linux-gnu- O=../build-rv64/ defconfig
->    $ make ARCH=riscv CROSS_COMPILE=riscv64-buildroot-linux-gnu- O=../build-rv64/ Image
->
->  - Prepare Qemu:
->    $ git clone https://gitlab.com/qemu-project/qemu.git -b master linux
->    $ cd qemu
->    $ ./configure --target-list="riscv64-softmmu riscv32-softmmu"
->    $ make
->
-> Now let's compare rv64-compat with rv32-native memory footprint with almost the same
-> defconfig, rootfs, opensbi in one qemu.
->
->  - Run rv64 with rv32 rootfs in compat mode:
->    $ ./build/qemu-system-riscv64 -cpu rv64 -M virt -m 64m -nographic -bios qemu_riscv64_virt_defconfig/images/fw_jump.bin -kernel build-rv64/Image -drive file qemu_riscv32_virt_defconfig/images/rootfs.ext2,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 -append "rootwait root=/dev/vda ro console=ttyS0 earlycon=sbi" -netdev user,id=net0 -device virtio-net-device,netdev=net0
->
-> QEMU emulator version 6.2.50 (v6.2.0-29-g196d7182c8)
-> OpenSBI v0.9
-> [    0.000000] Linux version 5.16.0-rc6-00017-g750f87086bdd-dirty (guoren@guoren-Z87-HD3) (riscv64-unknown-linux-gnu-gcc (GCC) 10.2.0, GNU ld (GNU Binutils) 2.37) #96 SMP Tue Dec 28 21:01:55 CST 2021
-> [    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80200000
-> [    0.000000] Machine model: riscv-virtio,qemu
-> [    0.000000] earlycon: sbi0 at I/O port 0x0 (options '')
-> [    0.000000] printk: bootconsole [sbi0] enabled
-> [    0.000000] efi: UEFI not found.
-> [    0.000000] Zone ranges:
-> [    0.000000]   DMA32    [mem 0x0000000080200000-0x0000000083ffffff]
-> [    0.000000]   Normal   empty
-> [    0.000000] Movable zone start for each node
-> [    0.000000] Early memory node ranges
-> [    0.000000]   node   0: [mem 0x0000000080200000-0x0000000083ffffff]
-> [    0.000000] Initmem setup node 0 [mem 0x0000000080200000-0x0000000083ffffff]
-> [    0.000000] SBI specification v0.2 detected
-> [    0.000000] SBI implementation ID=0x1 Version=0x9
-> [    0.000000] SBI TIME extension detected
-> [    0.000000] SBI IPI extension detected
-> [    0.000000] SBI RFENCE extension detected
-> [    0.000000] SBI v0.2 HSM extension detected
-> [    0.000000] riscv: ISA extensions acdfhimsu
-> [    0.000000] riscv: ELF capabilities acdfim
-> [    0.000000] percpu: Embedded 17 pages/cpu s30696 r8192 d30744 u69632
-> [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 15655
-> [    0.000000] Kernel command line: rootwait root=/dev/vda ro console=ttyS0 earlycon=sbi
-> [    0.000000] Dentry cache hash table entries: 8192 (order: 4, 65536 bytes, linear)
-> [    0.000000] Inode-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
-> [    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
-> [    0.000000] Virtual kernel memory layout:
-> [    0.000000]       fixmap : 0xffffffcefee00000 - 0xffffffceff000000   (2048 kB)
-> [    0.000000]       pci io : 0xffffffceff000000 - 0xffffffcf00000000   (  16 MB)
-> [    0.000000]      vmemmap : 0xffffffcf00000000 - 0xffffffcfffffffff   (4095 MB)
-> [    0.000000]      vmalloc : 0xffffffd000000000 - 0xffffffdfffffffff   (65535 MB)
-> [    0.000000]       lowmem : 0xffffffe000000000 - 0xffffffe003e00000   (  62 MB)
-> [    0.000000]       kernel : 0xffffffff80000000 - 0xffffffffffffffff   (2047 MB)
-> [    0.000000] Memory: 52788K/63488K available (6184K kernel code, 888K rwdata, 1917K rodata, 294K init, 297K bss, 10700K reserved, 0K cma-reserved)
-> [    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
-> [    0.000000] rcu: Hierarchical RCU implementation.
-> [    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=8 to nr_cpu_ids=1.
-> [    0.000000] rcu:     RCU debug extended QS entry/exit.
-> [    0.000000]  Tracing variant of Tasks RCU enabled.
-> [    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
-> [    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
-> [    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
-> [    0.000000] riscv-intc: 64 local interrupts mapped
-> [    0.000000] plic: plic@c000000: mapped 53 interrupts with 1 handlers for 2 contexts.
-> ...
-> Welcome to Buildroot
-> buildroot login: root
-> # cat /proc/cpuinfo
-> processor       : 0
-> hart            : 0
-> isa             : rv64imafdcsuh
-> mmu             : sv48
->
-> # file /bin/busybox
-> /bin/busybox: setuid ELF 32-bit LSB shared object, UCB RISC-V, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-riscv32-ilp32d.so.1, for GNU/Linux 5.15.0, stripped
-> # ca[   78.386630] random: fast init done
-> # cat /proc/meminfo
-> MemTotal:          53076 kB
-> MemFree:           40264 kB
-> MemAvailable:      40244 kB
-> Buffers:             236 kB
-> Cached:             1560 kB
-> SwapCached:            0 kB
-> Active:             1700 kB
-> Inactive:            516 kB
-> Active(anon):         40 kB
-> Inactive(anon):      424 kB
-> Active(file):       1660 kB
-> Inactive(file):       92 kB
-> Unevictable:           0 kB
-> Mlocked:               0 kB
-> SwapTotal:             0 kB
-> SwapFree:              0 kB
-> Dirty:                 0 kB
-> Writeback:             0 kB
-> AnonPages:           444 kB
-> Mapped:             1188 kB
-> Shmem:                44 kB
-> KReclaimable:        952 kB
-> Slab:               5744 kB
-> SReclaimable:        952 kB
-> SUnreclaim:         4792 kB
-> KernelStack:         624 kB
-> PageTables:          156 kB
-> NFS_Unstable:          0 kB
-> Bounce:                0 kB
-> WritebackTmp:          0 kB
-> CommitLimit:       26536 kB
-> Committed_AS:       1748 kB
-> VmallocTotal:   67108863 kB
-> VmallocUsed:         652 kB
-> VmallocChunk:          0 kB
-> Percpu:               80 kB
-> #
->
->  - Run rv32 with rv32 rootfs:
->    $ ./build/qemu-system-riscv32 -cpu rv32 -M virt -m 64m -nographic -bios qemu_riscv32_virt_defconfig/images/fw_jump.bin -kernel build-rv32/Image -drive file qemu_riscv32_virt_defconfig/images/rootfs.ext2,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 -append "rootwait root=/dev/vda ro console=ttyS0 earlycon=sbi" -netdev user,id=net0 -device virtio-net-device,netdev=net0
->
-> QEMU emulator version 6.2.50 (v6.2.0-29-g196d7182c8)
-> OpenSBI v0.9
-> [    0.000000] Linux version 5.16.0-rc6-00017-g750f87086bdd-dirty (guoren@guoren-Z87-HD3) (riscv32-buildroot-linux-gnu-gcc.br_real (Buildroot 2021.11-201-g7600ca7960-dirty) 10.3.0, GNU ld (GNU Binutils) 2.36.1) #7 SMP Tue Dec 28 21:02:21 CST 2021
-> [    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80400000
-> [    0.000000] Machine model: riscv-virtio,qemu
-> [    0.000000] earlycon: sbi0 at I/O port 0x0 (options '')
-> [    0.000000] printk: bootconsole [sbi0] enabled
-> [    0.000000] efi: UEFI not found.
-> [    0.000000] Zone ranges:
-> [    0.000000]   Normal   [mem 0x0000000080400000-0x0000000083ffffff]
-> [    0.000000] Movable zone start for each node
-> [    0.000000] Early memory node ranges
-> [    0.000000]   node   0: [mem 0x0000000080400000-0x0000000083ffffff]
-> [    0.000000] Initmem setup node 0 [mem 0x0000000080400000-0x0000000083ffffff]
-> [    0.000000] SBI specification v0.2 detected
-> [    0.000000] SBI implementation ID=0x1 Version=0x9
-> [    0.000000] SBI TIME extension detected
-> [    0.000000] SBI IPI extension detected
-> [    0.000000] SBI RFENCE extension detected
-> [    0.000000] SBI v0.2 HSM extension detected
-> [    0.000000] riscv: ISA extensions acdfhimsu
-> [    0.000000] riscv: ELF capabilities acdfim
-> [    0.000000] percpu: Embedded 12 pages/cpu s16600 r8192 d24360 u49152
-> [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 15240
-> [    0.000000] Kernel command line: rootwait root=/dev/vda ro console=ttyS0 earlycon=sbi
-> [    0.000000] Dentry cache hash table entries: 8192 (order: 3, 32768 bytes, linear)
-> [    0.000000] Inode-cache hash table entries: 4096 (order: 2, 16384 bytes, linear)
-> [    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
-> [    0.000000] Virtual kernel memory layout:
-> [    0.000000]       fixmap : 0x9dc00000 - 0x9e000000   (4096 kB)
-> [    0.000000]       pci io : 0x9e000000 - 0x9f000000   (  16 MB)
-> [    0.000000]      vmemmap : 0x9f000000 - 0x9fffffff   (  15 MB)
-> [    0.000000]      vmalloc : 0xa0000000 - 0xbfffffff   ( 511 MB)
-> [    0.000000]       lowmem : 0xc0000000 - 0xc3c00000   (  60 MB)
-> [    0.000000] Memory: 51924K/61440K available (6117K kernel code, 695K rwdata, 1594K rodata, 255K init, 241K bss, 9516K reserved, 0K cma-reserved)
-> [    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
-> [    0.000000] rcu: Hierarchical RCU implementation.
-> [    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=8 to nr_cpu_ids=1.
-> [    0.000000] rcu:     RCU debug extended QS entry/exit.
-> [    0.000000]  Tracing variant of Tasks RCU enabled.
-> [    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
-> [    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
-> [    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
-> [    0.000000] riscv-intc: 32 local interrupts mapped
-> [    0.000000] plic: plic@c000000: mapped 53 interrupts with 1 handlers for 2 contexts.
-> ...
-> Welcome to Buildroot
-> buildroot login: root
-> # cat /proc/cpuinfo
-> processor       : 0
-> hart            : 0
-> isa             : rv32imafdcsuh
-> mmu             : sv32
->
-> # file /bin/busybox
-> /bin/busybox: setuid ELF 32-bit LSB shared object, UCB RISC-V, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-riscv32-ilp32d.so.1, for GNU/Linux 5.15.0, stripped
-> [   79.320589] random: fast init done
-> # cat /proc/meminfo
-> MemTotal:          52176 kB
-> MemFree:           41012 kB
-> MemAvailable:      42176 kB
-> Buffers:             644 kB
-> Cached:             2724 kB
-> SwapCached:            0 kB
-> Active:             3128 kB
-> Inactive:            752 kB
-> Active(anon):         40 kB
-> Inactive(anon):      516 kB
-> Active(file):       3088 kB
-> Inactive(file):      236 kB
-> Unevictable:           0 kB
-> Mlocked:               0 kB
-> SwapTotal:             0 kB
-> SwapFree:              0 kB
-> Dirty:                 4 kB
-> Writeback:             0 kB
-> AnonPages:           556 kB
-> Mapped:             2172 kB
-> Shmem:                44 kB
-> KReclaimable:        656 kB
-> Slab:               3684 kB
-> SReclaimable:        656 kB
-> SUnreclaim:         3028 kB
-> KernelStack:         312 kB
-> PageTables:           88 kB
-> NFS_Unstable:          0 kB
-> Bounce:                0 kB
-> WritebackTmp:          0 kB
-> CommitLimit:       26088 kB
-> Committed_AS:       2088 kB
-> VmallocTotal:     524287 kB
-> VmallocUsed:          12 kB
-> VmallocChunk:          0 kB
-> Percpu:               60 kB
-> #
->
->  Some conclusions:
->  - kernel statics:
->    64: Memory: 52788K/63488K available (6184K kernel code, 888K rwdata, 1917K rodata, 294K init, 297K bss, 10700K reserved)
->    32: Memory: 51924K/61440K available (6117K kernel code, 695K rwdata, 1594K rodata, 255K init, 241K bss,  9516K reserved)
->    rv32 better than rv64:                  1%               22%           17%          13%        19%         11%
->    The code size is very similar, but data size rv32 would be better.
->
->  - rv32 kernel runtime KernelStack, Slab... are smaller,
->    rv64: MemTotal: 53076 kB,        MemFree: 40264 kB
->    rv32: MemTotal: 52176 + 2048 kB, MemFree: 41012  + 2048 kB
->    rv32 better than rv64:       2%                         6%
->
->    (Because opensbi problem, we could add another 2MB for rv32.)
->    Overall in 64MB memory situation, rv64-compat is 6% worse than rv32-native
->    at memory footprint. If the userspace memory usage increases, I think
->    the gap will be further reduced.
->
-> Changes in v9:
->  - Fixup rv32 call rv64 segment fault
->  - Ready for 5.18
+This is a multi-part message in MIME format.
+--------------iN6xcanfwzcP03Oj6rtqf3ev
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thanks.  I'd also seen some arm64 autobuilder failures, not sure if 
-those got fixed as I don't see anything specificlly listed in here 
-(sorry if I just missed it).
+On 2022-03-22 4:42 p.m., Sam James wrote:
+>> I suspected that as well, because I had the impression we still carry a patch in
+>> debian's glibc. But I checked debian glibc sources again, and I think all such
+>> relevant patches are now upstreamed.
+> Yeah, I had a rough look at Debian's toolchain bits and didn't see any patches
+> which might be relevant. But of course I could have missed something as I'm
+> not super familiar with Debian's development processes etc.
+There two patches in debian's glibc for hppa.  I'm not familiar with history of the local-inlining.diff
+patch.  I don't test with it.  Thus I think it can be removed.
 
-I've gone ahead and put this on palmer/riscv-compat, I'm going to let it 
-sit at least overnight before putting it on for-next proper.  It's a 
-big one and the autobuilders seem to find stuff over there, I don't want 
-to break any of the other ports.  IIRC you were getting CC'd on the 
-build failures I was seeing.
+The other relates to NONBLOCK defines.  O_NONBLOCK warns have come back with 2.33, so this
+needs looking at.  For example,
 
-If it's clean I'll merge it into for-next propely.  It's passing my 
-staging merge tests, but I don't yet have anything specifically for 
-compat -- at least it's not causing any regressions, though.
+acngtool(8325) uses a deprecated O_NONBLOCK value. Please recompile with newer glibc.
 
->
-> Changes in v8:
->  - Enhanced elf_check_arch with EI_CLASS
->  - Fixup SR_UXL doesn't exist in CONFIG_32BIT
->  - Add Tested-by with Heiko
->  - Update qemu compile tips with upstream repo
->
-> Changes in v7:
->  - Re-construct compat_vdso/Makefile
->  - Fixup disable COMPAT compile error by csr.h's macro.
->  - Optimize coding convention for lo/hi in compat.h
->
-> Changes in v6:
->  - Rebase on linux-5.17-rc5
->  - Optimize hw capability check for elf
->  - Optimize comment in thread_info.h
->  - Optimize start_thread with SR_UXL setting
->  - Optimize vdso.c with direct panic
->
-> Changes in v5:
->  - Rebase on linux-5.17-rc2
->  - Include consolidate the fcntl patches by Christoph Hellwig
->  - Remove F_GETLK64/F_SETLK64/F_SETLKW64 from asm/compat.h
->  - Change COMPAT_RLIM_INFINITY from 0x7fffffff to 0xffffffff
->  - Bring back "Add hw-cap detect in setup_arch patch" in v1
->
-> Changes in v4:
->  - Rebase on linux-5.17-rc1
->  - Optimize compat_sys_call_table implementation with Arnd's advice
->  - Add reviewed-by for Arnd. Thx :)
->  - Remove FIXME comment in elf.h
->  - Optimize Cleanup duplicate definitions in compat.h with Arnd's advice
->
-> Changes in v3:
->  - Rebase on newest master (pre linux-5.17-rc1)
->  - Using newest qemu version v7 for test
->  - Remove fcntl common modification
->  - Fixup SET_PERSONALITY in elf.h by Arnd
->  - Fixup KVM Kconfig
->  - Update Acked-by & Reviewed-by
->
-> Changes in v2:
->  - Add __ARCH_WANT_COMPAT_STAT suggested
->  - Cleanup fcntl compatduplicate definitions
->  - Cleanup compat.h
->  - Move rv32_defconfig into Makefile
->  - Fixup rv64 rootfs boot failed, remove hw_compat_mode_detect
->  - Move SYSVIPC_COMPAT into init/Kconfig
->  - Simplify compat_elf_check
->
-> Christoph Hellwig (3):
->   uapi: simplify __ARCH_FLOCK{,64}_PAD a little
->   uapi: always define F_GETLK64/F_SETLK64/F_SETLKW64 in fcntl.h
->   compat: consolidate the compat_flock{,64} definition
->
-> Guo Ren (17):
->   kconfig: Add SYSVIPC_COMPAT for all architectures
->   fs: stat: compat: Add __ARCH_WANT_COMPAT_STAT
->   asm-generic: compat: Cleanup duplicate definitions
->   syscalls: compat: Fix the missing part for __SYSCALL_COMPAT
->   riscv: Fixup difference with defconfig
->   riscv: compat: Add basic compat data type implementation
->   riscv: compat: Re-implement TASK_SIZE for COMPAT_32BIT
->   riscv: compat: syscall: Add compat_sys_call_table implementation
->   riscv: compat: syscall: Add entry.S implementation
->   riscv: compat: process: Add UXL_32 support in start_thread
->   riscv: compat: Add elf.h implementation
->   riscv: compat: Add hw capability check for elf
->   riscv: compat: vdso: Add COMPAT_VDSO base code implementation
->   riscv: compat: vdso: Add setup additional pages implementation
->   riscv: compat: signal: Add rt_frame implementation
->   riscv: compat: ptrace: Add compat_arch_ptrace implement
->   riscv: compat: Add COMPAT Kbuild skeletal support
->
->  arch/arm64/Kconfig                            |   4 -
->  arch/arm64/include/asm/compat.h               |  91 +------
->  arch/arm64/include/asm/unistd.h               |   1 +
->  arch/mips/Kconfig                             |   5 -
->  arch/mips/include/asm/compat.h                |  41 +--
->  arch/mips/include/asm/unistd.h                |   2 +
->  arch/mips/include/uapi/asm/fcntl.h            |  30 +--
->  arch/parisc/Kconfig                           |   4 -
->  arch/parisc/include/asm/compat.h              |  45 +---
->  arch/parisc/include/asm/unistd.h              |   1 +
->  arch/powerpc/Kconfig                          |   5 -
->  arch/powerpc/include/asm/compat.h             |  50 +---
->  arch/powerpc/include/asm/unistd.h             |   1 +
->  arch/riscv/Kconfig                            |  19 ++
->  arch/riscv/Makefile                           |   9 +
->  arch/riscv/configs/rv32_defconfig             | 135 ----------
->  arch/riscv/include/asm/compat.h               | 129 ++++++++++
->  arch/riscv/include/asm/csr.h                  |   7 +
->  arch/riscv/include/asm/elf.h                  |  50 +++-
->  arch/riscv/include/asm/mmu.h                  |   1 +
->  arch/riscv/include/asm/pgtable.h              |  13 +-
->  arch/riscv/include/asm/processor.h            |   6 +-
->  arch/riscv/include/asm/syscall.h              |   1 +
->  arch/riscv/include/asm/thread_info.h          |   1 +
->  arch/riscv/include/asm/unistd.h               |  11 +
->  arch/riscv/include/asm/vdso.h                 |   9 +
->  arch/riscv/include/uapi/asm/unistd.h          |   2 +-
->  arch/riscv/kernel/Makefile                    |   3 +
->  arch/riscv/kernel/compat_signal.c             | 243 ++++++++++++++++++
->  arch/riscv/kernel/compat_syscall_table.c      |  19 ++
->  arch/riscv/kernel/compat_vdso/.gitignore      |   2 +
->  arch/riscv/kernel/compat_vdso/Makefile        |  78 ++++++
->  arch/riscv/kernel/compat_vdso/compat_vdso.S   |   8 +
->  .../kernel/compat_vdso/compat_vdso.lds.S      |   3 +
->  arch/riscv/kernel/compat_vdso/flush_icache.S  |   3 +
->  .../compat_vdso/gen_compat_vdso_offsets.sh    |   5 +
->  arch/riscv/kernel/compat_vdso/getcpu.S        |   3 +
->  arch/riscv/kernel/compat_vdso/note.S          |   3 +
->  arch/riscv/kernel/compat_vdso/rt_sigreturn.S  |   3 +
->  arch/riscv/kernel/entry.S                     |  18 +-
->  arch/riscv/kernel/process.c                   |  37 +++
->  arch/riscv/kernel/ptrace.c                    |  87 ++++++-
->  arch/riscv/kernel/signal.c                    |  13 +-
->  arch/riscv/kernel/sys_riscv.c                 |   6 +-
->  arch/riscv/kernel/vdso.c                      | 105 +++++---
->  arch/riscv/kernel/vdso/vdso.S                 |   6 +-
->  arch/s390/Kconfig                             |   3 -
->  arch/s390/include/asm/compat.h                |  99 +------
->  arch/s390/include/asm/unistd.h                |   1 +
->  arch/sparc/Kconfig                            |   5 -
->  arch/sparc/include/asm/compat.h               |  61 ++---
->  arch/sparc/include/asm/unistd.h               |   1 +
->  arch/x86/Kconfig                              |   4 -
->  arch/x86/include/asm/compat.h                 | 104 ++------
->  arch/x86/include/asm/unistd.h                 |   1 +
->  fs/open.c                                     |  24 ++
->  fs/read_write.c                               |  16 ++
->  fs/stat.c                                     |   2 +-
->  fs/sync.c                                     |   9 +
->  include/asm-generic/compat.h                  | 113 ++++++++
->  include/linux/compat.h                        |  68 +++++
->  include/uapi/asm-generic/fcntl.h              |  23 +-
->  include/uapi/asm-generic/unistd.h             |   4 +-
->  init/Kconfig                                  |   4 +
->  mm/fadvise.c                                  |  11 +
->  mm/readahead.c                                |   7 +
->  tools/include/uapi/asm-generic/fcntl.h        |  21 +-
->  tools/include/uapi/asm-generic/unistd.h       |   4 +-
->  68 files changed, 1205 insertions(+), 698 deletions(-)
->  delete mode 100644 arch/riscv/configs/rv32_defconfig
->  create mode 100644 arch/riscv/include/asm/compat.h
->  create mode 100644 arch/riscv/kernel/compat_signal.c
->  create mode 100644 arch/riscv/kernel/compat_syscall_table.c
->  create mode 100644 arch/riscv/kernel/compat_vdso/.gitignore
->  create mode 100644 arch/riscv/kernel/compat_vdso/Makefile
->  create mode 100644 arch/riscv/kernel/compat_vdso/compat_vdso.S
->  create mode 100644 arch/riscv/kernel/compat_vdso/compat_vdso.lds.S
->  create mode 100644 arch/riscv/kernel/compat_vdso/flush_icache.S
->  create mode 100755 arch/riscv/kernel/compat_vdso/gen_compat_vdso_offsets.sh
->  create mode 100644 arch/riscv/kernel/compat_vdso/getcpu.S
->  create mode 100644 arch/riscv/kernel/compat_vdso/note.S
->  create mode 100644 arch/riscv/kernel/compat_vdso/rt_sigreturn.S
+Dave
+
+-- 
+John David Anglin  dave.anglin@bell.net
+
+--------------iN6xcanfwzcP03Oj6rtqf3ev
+Content-Type: text/plain; charset=UTF-8; name="git-fcntl.h-update.diff"
+Content-Disposition: attachment; filename="git-fcntl.h-update.diff"
+Content-Transfer-Encoding: base64
+
+SW5kZXg6IGdsaWJjLTIuMzEvc3lzZGVwcy91bml4L3N5c3YvbGludXgvaHBwYS9iaXRzL2V2
+ZW50ZmQuaAo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09Ci0tLSBnbGliYy0yLjMxLm9yaWcvc3lzZGVwcy91bml4
+L3N5c3YvbGludXgvaHBwYS9iaXRzL2V2ZW50ZmQuaAorKysgZ2xpYmMtMi4zMS9zeXNkZXBz
+L3VuaXgvc3lzdi9saW51eC9ocHBhL2JpdHMvZXZlbnRmZC5oCkBAIC0yNiw2ICsyNiw2IEBA
+IGVudW0KICNkZWZpbmUgRUZEX1NFTUFQSE9SRSBFRkRfU0VNQVBIT1JFCiAgICAgRUZEX0NM
+T0VYRUMgPSAwMTAwMDAwMDAsCiAjZGVmaW5lIEVGRF9DTE9FWEVDIEVGRF9DTE9FWEVDCi0g
+ICAgRUZEX05PTkJMT0NLID0gMDAyMDAwMDQgLyogSFBVWCBoYXMgc2VwYXJhdGUgTkRFTEFZ
+ICYgTk9OQkxPQ0sgKi8KKyAgICBFRkRfTk9OQkxPQ0sgPSAwMDIwMDAwMAogI2RlZmluZSBF
+RkRfTk9OQkxPQ0sgRUZEX05PTkJMT0NLCiAgIH07CkluZGV4OiBnbGliYy0yLjMxL3N5c2Rl
+cHMvdW5peC9zeXN2L2xpbnV4L2hwcGEvYml0cy9pbm90aWZ5LmgKPT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQot
+LS0gZ2xpYmMtMi4zMS5vcmlnL3N5c2RlcHMvdW5peC9zeXN2L2xpbnV4L2hwcGEvYml0cy9p
+bm90aWZ5LmgKKysrIGdsaWJjLTIuMzEvc3lzZGVwcy91bml4L3N5c3YvbGludXgvaHBwYS9i
+aXRzL2lub3RpZnkuaApAQCAtMjQsNiArMjQsNiBAQCBlbnVtCiAgIHsKICAgICBJTl9DTE9F
+WEVDID0gMDEwMDAwMDAwLAogI2RlZmluZSBJTl9DTE9FWEVDIElOX0NMT0VYRUMKLSAgICBJ
+Tl9OT05CTE9DSyA9IDAwMDIwMDAwNCAvKiBIUFVYIGhhcyBzZXBhcmF0ZSBOREVMQVkgJiBO
+T05CTE9DSyAqLworICAgIElOX05PTkJMT0NLID0gMDAwMjAwMDAwCiAjZGVmaW5lIElOX05P
+TkJMT0NLIElOX05PTkJMT0NLCiAgIH07CkluZGV4OiBnbGliYy0yLjMxL3N5c2RlcHMvdW5p
+eC9zeXN2L2xpbnV4L2hwcGEvYml0cy9zaWduYWxmZC5oCj09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KLS0tIGds
+aWJjLTIuMzEub3JpZy9zeXNkZXBzL3VuaXgvc3lzdi9saW51eC9ocHBhL2JpdHMvc2lnbmFs
+ZmQuaAorKysgZ2xpYmMtMi4zMS9zeXNkZXBzL3VuaXgvc3lzdi9saW51eC9ocHBhL2JpdHMv
+c2lnbmFsZmQuaApAQCAtMjQsNiArMjQsNiBAQCBlbnVtCiAgIHsKICAgICBTRkRfQ0xPRVhF
+QyA9IDAxMDAwMDAwMCwKICNkZWZpbmUgU0ZEX0NMT0VYRUMgU0ZEX0NMT0VYRUMKLSAgICBT
+RkRfTk9OQkxPQ0sgPSAwMDIwMDAwNCAvKiBIUFVYIGhhcyBzZXBhcmF0ZSBOREVMQVkgJiBO
+T05CTE9DSyAqLworICAgIFNGRF9OT05CTE9DSyA9IDAwMjAwMDAwCiAjZGVmaW5lIFNGRF9O
+T05CTE9DSyBTRkRfTk9OQkxPQ0sKICAgfTsKSW5kZXg6IGdsaWJjLTIuMzEvc3lzZGVwcy91
+bml4L3N5c3YvbGludXgvaHBwYS9iaXRzL3RpbWVyZmQuaAo9PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Ci0tLSBn
+bGliYy0yLjMxLm9yaWcvc3lzZGVwcy91bml4L3N5c3YvbGludXgvaHBwYS9iaXRzL3RpbWVy
+ZmQuaAorKysgZ2xpYmMtMi4zMS9zeXNkZXBzL3VuaXgvc3lzdi9saW51eC9ocHBhL2JpdHMv
+dGltZXJmZC5oCkBAIC0yNCw2ICsyNCw2IEBAIGVudW0KICAgewogICAgIFRGRF9DTE9FWEVD
+ID0gMDEwMDAwMDAwLAogI2RlZmluZSBURkRfQ0xPRVhFQyBURkRfQ0xPRVhFQwotICAgIFRG
+RF9OT05CTE9DSyA9IDAwMDIwMDAwNCAvKiBIUFVYIGhhcyBzZXBhcmF0ZSBOREVMQVkgJiBO
+T05CTE9DSyAqLworICAgIFRGRF9OT05CTE9DSyA9IDAwMDIwMDAwMAogI2RlZmluZSBURkRf
+Tk9OQkxPQ0sgVEZEX05PTkJMT0NLCiAgIH07Cg==
+--------------iN6xcanfwzcP03Oj6rtqf3ev
+Content-Type: text/plain; charset=UTF-8; name="local-inlining.diff"
+Content-Disposition: attachment; filename="local-inlining.diff"
+Content-Transfer-Encoding: base64
+
+SW5jcmVhc2UgdGhlIG1heGltYWwgb3ZlcmFsbCBncm93dGggb2YgdGhlIGNvbXBpbGF0aW9u
+IHVuaXQgY2F1c2VkCmJ5IGlubGluaW5nIGZvciBkbC1yZWxvYy5jIG9uIGhwcGEuIFRoaXMg
+cmVtb3ZlIHNvbWUgd2FybmluZ3MgYW5kIApzdHJhbmdlbHkgaXQgcmVkdWNlcyB0aGUgc2l6
+ZSBvZiB0aGUgZmluYWwgYmluYXJ5LgoKLS0tCiBzeXNkZXBzL2hwcGEvTWFrZWZpbGUgfCAg
+ICAxICsKIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQoKLS0tIGEvc3lzZGVwcy9o
+cHBhL01ha2VmaWxlCisrKyBiL3N5c2RlcHMvaHBwYS9NYWtlZmlsZQpAQCAtMjMsNiArMjMs
+NyBAQAogCiBpZmVxICgkKHN1YmRpciksZWxmKQogQ0ZMQUdTLXJ0bGQuYyArPSAtbWRpc2Fi
+bGUtZnByZWdzCitDRkxBR1MtZGwtcmVsb2MuYyArPSAtLXBhcmFtIGlubGluZS11bml0LWdy
+b3d0aD0xMDAKIHN5c2RlcC1kbC1yb3V0aW5lcyArPSBkbC1zeW1hZGRyIGRsLWZwdHIKICMg
+ZGwtZnB0ci5jIG5lZWRzIGEgY29tcGxldGUgcmV3cml0ZSB0byBmaXggSVNPIEMgYWxpYXNp
+bmcgdmlvbGF0aW9ucy4KIENGTEFHUy1kbC1mcHRyLmMgPSAtV25vLWVycm9yCg==
+
+--------------iN6xcanfwzcP03Oj6rtqf3ev--
