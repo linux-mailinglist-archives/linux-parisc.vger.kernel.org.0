@@ -2,56 +2,88 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1134D4E421F
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 15:43:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 517A44E4347
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Mar 2022 16:43:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238219AbiCVOoT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 22 Mar 2022 10:44:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48772 "EHLO
+        id S238724AbiCVPpE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 22 Mar 2022 11:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238156AbiCVOoH (ORCPT
+        with ESMTP id S238721AbiCVPpC (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 22 Mar 2022 10:44:07 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F178189337;
-        Tue, 22 Mar 2022 07:42:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8B403B81D07;
-        Tue, 22 Mar 2022 14:42:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29A4C36AE2;
-        Tue, 22 Mar 2022 14:42:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647960143;
-        bh=qyoPYJlSA6NEig6jnwlt/QYfSWiYQ9maXb6WEkmPDVA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OfR6sAJka8wfUUiM43qGreLVN5SPIpmmMPa66UNRB2ZiKpNvdeF61xiBk2WKBEIR2
-         hLgcIe9UOXgyQsz7Aywb54SIphKL7HXbUMYmXNflLuU4IteYo2TDiRQT4nzR0KyFGp
-         8W+rr+gxr/Qr3D4fk4bqZ+zkcCwtdK0iRxo9IHlMw4MeRSpRafyDMMAzy5brqIRvpO
-         +3M6wL/0MLp9ikO/2uFX7sA6UIj8lavazZHBe0dJI3uTlVLv5YxnITVnLb/XK6WDKt
-         QsksuB3qJ9qf9OTr4iigCk8pYmZRsfjYl7xPamOLY9kiRhUZjLz3nmF4PYb9rSY1pM
-         QPEp+dv60eKkQ==
-From:   guoren@kernel.org
-To:     guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de,
-        gregkh@linuxfoundation.org, hch@lst.de
-Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        x86@kernel.org, heiko@sntech.de, Guo Ren <guoren@linux.alibaba.com>
-Subject: [PATCH V9 20/20] riscv: compat: Add COMPAT Kbuild skeletal support
-Date:   Tue, 22 Mar 2022 22:40:03 +0800
-Message-Id: <20220322144003.2357128-21-guoren@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220322144003.2357128-1-guoren@kernel.org>
-References: <20220322144003.2357128-1-guoren@kernel.org>
+        Tue, 22 Mar 2022 11:45:02 -0400
+X-Greylist: delayed 1361 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Mar 2022 08:43:32 PDT
+Received: from gateway30.websitewelcome.com (gateway30.websitewelcome.com [192.185.149.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5FCA1C911
+        for <linux-parisc@vger.kernel.org>; Tue, 22 Mar 2022 08:43:31 -0700 (PDT)
+Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
+        by gateway30.websitewelcome.com (Postfix) with ESMTP id A597E51864
+        for <linux-parisc@vger.kernel.org>; Tue, 22 Mar 2022 10:19:39 -0500 (CDT)
+Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
+        by cmsmtp with SMTP
+        id WgINnPMPc22u3WgINnpWaB; Tue, 22 Mar 2022 10:19:39 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=CPW0jKKDu2ErkcxGpk3zLqZYpgPh+rOyqsZe2Y8TEt4=; b=YEwIwL3kI9LQjIR69kJnYUwJnx
+        kFrm50Ke2/4YuDre3URXPm69vvo2XFbq8JDM43i+Ly6edQ9qaD0K2CFl+AcHL10v2aRROYtMgzK3n
+        qbjLELTOs4xI2QNFJgiRzc/ECnSKlbm5iwjcjgYYBsShOxjIeqFDtOyQlW4sS4PSyJnWrQhqi/AzC
+        txYek+g9vITOkNC/rOx3mhGcSPwK4DnVBDBcX7o2XN/uUWLJFbIpiBl0DcjjV18utxXfizoYV1K6V
+        /MVpk7dqjMmDR8kQo2c2N39vIRQAPPzcmPDy0cF+4YhdRFeRDgkwzxu/Hrxmcrgf8XWQYcEjjYJY3
+        VVGZZufg==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54396)
+        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@roeck-us.net>)
+        id 1nWgIN-000PFB-28; Tue, 22 Mar 2022 15:19:39 +0000
+Message-ID: <78abe69b-7914-1b38-c94e-7143f61f4909@roeck-us.net>
+Date:   Tue, 22 Mar 2022 08:19:37 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: hppa vDSO and compiler (non-)support
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>
+Cc:     Jiri Slaby <jirislaby@kernel.org>, linux-parisc@vger.kernel.org,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Martin_Li=c5=a1ka?= <mliska@suse.cz>,
+        Andreas Schwab <schwab@linux-m68k.org>
+References: <d2713ae1-0ca5-9e5a-b7d2-b7d0f1f5614a@kernel.org>
+ <2e1f3e41-7097-e68d-d312-9319ad62565c@gmx.de>
+ <d2a09bf3-9bd3-588a-99a1-598281d08678@kernel.org>
+ <dd4e55aa-0b3e-6e18-7ec2-3bec02cafde0@kernel.org> <YjjJNb0D/b+ZXBVZ@ls3530>
+ <28696c20-21ad-b0ac-8093-4ce07225fcd8@kernel.org>
+ <812d4a38-8cb1-a7be-c504-87d095aea883@gmx.de>
+ <20220322130516.GA724287@roeck-us.net>
+ <ccc25312-890a-a534-1681-5ecde56328d0@gmx.de>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <ccc25312-890a-a534-1681-5ecde56328d0@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1nWgIN-000PFB-28
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net [108.223.40.66]:54396
+X-Source-Auth: linux@roeck-us.net
+X-Email-Count: 4
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,72 +91,33 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Guo Ren <guoren@linux.alibaba.com>
+On 3/22/22 07:25, Helge Deller wrote:
+> On 3/22/22 14:05, Guenter Roeck wrote:
+>> Does that also fix the build problems now seen in mainline ?
+> 
+> No.
+> 
+>> Building parisc64:generic-64bit_defconfig ... failed
+>> --------------
+>> Error log:
+>> arch/parisc/kernel/vdso64/Makefile:30: FORCE prerequisite is missing
+>> arch/parisc/kernel/vdso32/sigtramp.S: Assembler messages:
+>> arch/parisc/kernel/vdso32/sigtramp.S:39: Error: unknown pseudo-op: `.proc'
+>> ...
+>> arch/parisc/kernel/vdso32/restart_syscall.S:32: Error: .cfi_endproc without corresponding .cfi_startproc
+>> make[2]: *** [arch/parisc/kernel/vdso32/Makefile:34: arch/parisc/kernel/vdso32/restart_syscall.o] Error 1
+>> make[2]: *** Waiting for unfinished jobs....
+>> make[2]: *** [arch/parisc/kernel/vdso32/Makefile:34: arch/parisc/kernel/vdso32/sigtramp.o] Error 1
+>> make[1]: *** [arch/parisc/Makefile:177: vdso_prepare] Error 2
+>> make: *** [Makefile:219: __sub-make] Error 2
+>>
+>> This is with hppa64-linux-gcc (GCC) 11.2.0.
+> 
+> Can you check if you have the 32-bit compiler (hppa-linux-gcc) installed too?
+> The errors above happen when building the 32-bit vDSO, for which you need the 32-bit compiler.
+> 
 
-Adds initial skeletal COMPAT Kbuild (Running 32bit U-mode on
-64bit S-mode) support.
- - Setup kconfig & dummy functions for compiling.
- - Implement compat_start_thread by the way.
+Yes, I do, but that doesn't help much if I want to build a 64-bit target such
+as generic-64bit_defconfig. Am I missing something ?
 
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
----
- arch/riscv/Kconfig | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 5adcbd9b5e88..6f11df8c189f 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -73,6 +73,7 @@ config RISCV
- 	select HAVE_ARCH_KGDB if !XIP_KERNEL
- 	select HAVE_ARCH_KGDB_QXFER_PKT
- 	select HAVE_ARCH_MMAP_RND_BITS if MMU
-+	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if 64BIT && MMU
-@@ -123,12 +124,18 @@ config ARCH_MMAP_RND_BITS_MIN
- 	default 18 if 64BIT
- 	default 8
- 
-+config ARCH_MMAP_RND_COMPAT_BITS_MIN
-+	default 8
-+
- # max bits determined by the following formula:
- #  VA_BITS - PAGE_SHIFT - 3
- config ARCH_MMAP_RND_BITS_MAX
- 	default 24 if 64BIT # SV39 based
- 	default 17
- 
-+config ARCH_MMAP_RND_COMPAT_BITS_MAX
-+	default 17
-+
- # set if we run in machine mode, cleared if we run in supervisor mode
- config RISCV_M_MODE
- 	bool
-@@ -406,6 +413,18 @@ config CRASH_DUMP
- 
- 	  For more details see Documentation/admin-guide/kdump/kdump.rst
- 
-+config COMPAT
-+	bool "Kernel support for 32-bit U-mode"
-+	default 64BIT
-+	depends on 64BIT && MMU
-+	help
-+	  This option enables support for a 32-bit U-mode running under a 64-bit
-+	  kernel at S-mode. riscv32-specific components such as system calls,
-+	  the user helper functions (vdso), signal rt_frame functions and the
-+	  ptrace interface are handled appropriately by the kernel.
-+
-+	  If you want to execute 32-bit userspace applications, say Y.
-+
- endmenu
- 
- menu "Boot options"
--- 
-2.25.1
-
+Guenter
