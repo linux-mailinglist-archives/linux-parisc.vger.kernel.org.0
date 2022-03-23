@@ -2,72 +2,436 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 993764E49D8
-	for <lists+linux-parisc@lfdr.de>; Wed, 23 Mar 2022 00:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DE504E5355
+	for <lists+linux-parisc@lfdr.de>; Wed, 23 Mar 2022 14:40:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240808AbiCWAA4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 22 Mar 2022 20:00:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36318 "EHLO
+        id S244369AbiCWNmC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 23 Mar 2022 09:42:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbiCWAAz (ORCPT
+        with ESMTP id S236660AbiCWNmB (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 22 Mar 2022 20:00:55 -0400
-Received: from cmx-torrgo002.bell.net (mta-tor-005.bell.net [209.71.212.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5F37F32980
-        for <linux-parisc@vger.kernel.org>; Tue, 22 Mar 2022 16:59:27 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 621B30220294EFB5
-X-CM-Envelope: MS4xfILKJcisbRXav26JZNfNie8OQFwa8x7+YT8Ufou/yqNXrnWYtWT0OAUZKIWU88c7Z2b4suIWR6oJi7f8XSIA1zTll/cIhURh1ibqsCfr6aYOgJ4MaYGo
- ecRoPP27A7kkdTdUu28kd0/VjEgMAIwOe/7XBGXiDydUyOrTIqwlAaokN22jvrfvXoG42LK7SKU1/OsQZmyAWHbd97JrrSzpADG0od1ew72bNR7/fInMuK/w
- vSK5uXVCAxEL5jSP84CIVW9j9BvcUuA06M6zEjeqnTb41L/LHZOsAsWzCQGg6JL1
-X-CM-Analysis: v=2.4 cv=G99/r/o5 c=1 sm=1 tr=0 ts=623a62d6
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=4kdaShGxUNUxmyNJHXsA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (70.50.7.94) by cmx-torrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 621B30220294EFB5; Tue, 22 Mar 2022 19:59:18 -0400
-Message-ID: <89051efe-7b06-1d67-dfc4-1f17024f9ed9@bell.net>
-Date:   Tue, 22 Mar 2022 19:59:20 -0400
+        Wed, 23 Mar 2022 09:42:01 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34F4174849;
+        Wed, 23 Mar 2022 06:40:30 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A061BB81F53;
+        Wed, 23 Mar 2022 13:40:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B68BC340F3;
+        Wed, 23 Mar 2022 13:40:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648042827;
+        bh=tfAJdIq2+RYdVHZ38GzSMwiGmA3mYSLGoPCsYK/Ay0o=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=uURvrSQYWoBDbOJ1HJhmy4zq35Wx1u92YfhAJjselJu+G8KZl4y/4epaPOKQFhp86
+         e8VZNnOBbO/ktj6k+JKr407It53apzOQA52t2ZaWuP2k6XTZ52oSFeFqKqdKrBnI79
+         e+h+GlWqbJCvNW/dJFFTun/pfdlihLnlSfevvfRe8Od2DiA5PPC58S/Sw2CT7LaGgx
+         vRPmWwBDcfmb6lBwS6yGFY5dtq/AtP+pJPVEtbuDPfgiy7V7e/BvAXEOBbDuxjBTSy
+         WeSKZsuamgmFXT84rsRMyZYU/5UL1M8XpQPabdxZhi+QVjhbD0odc//B58wz5CV33+
+         tsFxE8jN2V55Q==
+Received: by mail-vk1-f172.google.com with SMTP id m84so849605vke.1;
+        Wed, 23 Mar 2022 06:40:27 -0700 (PDT)
+X-Gm-Message-State: AOAM531XDgSrObUaMkqOe7bmQgfDa6GHUkn9strsPvCtMBpugmNVhdRk
+        8OqqiBavGsRt+Km5ciAOc5+MaQVHQKLxitzdItc=
+X-Google-Smtp-Source: ABdhPJwacFP88rQle1BS8Fl0WkwH/yl7QzXYYyv8GMnk2rx9FSXhwtYXtlbmIrv2UbeMrdZOjlC8mGra51uCgccxAVo=
+X-Received: by 2002:a05:6122:c85:b0:33f:ab27:5f5d with SMTP id
+ ba5-20020a0561220c8500b0033fab275f5dmr626464vkb.2.1648042826087; Wed, 23 Mar
+ 2022 06:40:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: Recurring INEQUIVALENT ALIASES issues and userland
- corruption/crashes
-Content-Language: en-US
-To:     Sam James <sam@gentoo.org>
-Cc:     linux-parisc@vger.kernel.org, hppa@gentoo.org
-References: <63DA313A-FCE1-4535-9BF3-11E36B2DE422@gentoo.org>
- <b84f1c67-eea7-f07a-0163-6e06b0f5f650@bell.net>
- <309C1399-6AA2-44BD-8EB9-FDB66F5D972E@gentoo.org>
- <73bf3336-9207-ba0e-1950-8cb1b7d6adc3@bell.net>
- <f7a714d9-b620-5100-a0e7-51360419eeda@bell.net>
- <17C0A3CF-01B8-4457-B040-8E96A10AE2DF@gentoo.org>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <17C0A3CF-01B8-4457-B040-8E96A10AE2DF@gentoo.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220322144003.2357128-1-guoren@kernel.org> <20220322144003.2357128-12-guoren@kernel.org>
+In-Reply-To: <20220322144003.2357128-12-guoren@kernel.org>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Wed, 23 Mar 2022 21:40:14 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQnnEDbXCe142tbVzNENS+HTRDNkKy5qDzNMOdTdoDBJg@mail.gmail.com>
+Message-ID: <CAJF2gTQnnEDbXCe142tbVzNENS+HTRDNkKy5qDzNMOdTdoDBJg@mail.gmail.com>
+Subject: Re: [PATCH V9 11/20] riscv: compat: syscall: Add compat_sys_call_table
+ implementation
+To:     Palmer Dabbelt <palmer@dabbelt.com>, Arnd Bergmann <arnd@arndb.de>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-csky@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+        Guo Ren <guoren@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2022-03-22 4:43 p.m., Sam James wrote:
->> In order to debug, one needs to find the circumstances that cause it.
->>
-> Understood & agreed. I'm going to try Helge's config w/ 5.10.x, then yours with 5.16.x, and try get some
-> more information on how to reproduce too. I'll report back.
-Looking back at my notes, I see that INEQUIVALENT ALIASES occur building gnuradio on debian.
+Hi Palmer & Arnd,
 
-Dave
+Fixup fadvise64_64 arguments problem.
+
+On Tue, Mar 22, 2022 at 10:41 PM <guoren@kernel.org> wrote:
+>
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> Implement compat sys_call_table and some system call functions:
+> truncate64, ftruncate64, fallocate, pread64, pwrite64,
+> sync_file_range, readahead, fadvise64_64 which need argument
+> translation.
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> Tested-by: Heiko Stuebner <heiko@sntech.de>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> ---
+>  arch/riscv/include/asm/syscall.h         |  1 +
+>  arch/riscv/include/asm/unistd.h          | 11 +++++++
+>  arch/riscv/include/uapi/asm/unistd.h     |  2 +-
+>  arch/riscv/kernel/Makefile               |  1 +
+>  arch/riscv/kernel/compat_syscall_table.c | 19 ++++++++++++
+>  arch/riscv/kernel/sys_riscv.c            |  6 ++--
+>  fs/open.c                                | 24 +++++++++++++++
+>  fs/read_write.c                          | 16 ++++++++++
+>  fs/sync.c                                |  9 ++++++
+>  include/asm-generic/compat.h             |  7 +++++
+>  include/linux/compat.h                   | 37 ++++++++++++++++++++++++
+>  mm/fadvise.c                             | 11 +++++++
+>  mm/readahead.c                           |  7 +++++
+>  13 files changed, 148 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/riscv/kernel/compat_syscall_table.c
+>
+> diff --git a/arch/riscv/include/asm/syscall.h b/arch/riscv/include/asm/syscall.h
+> index 7ac6a0e275f2..384a63b86420 100644
+> --- a/arch/riscv/include/asm/syscall.h
+> +++ b/arch/riscv/include/asm/syscall.h
+> @@ -16,6 +16,7 @@
+>
+>  /* The array of function pointers for syscalls. */
+>  extern void * const sys_call_table[];
+> +extern void * const compat_sys_call_table[];
+>
+>  /*
+>   * Only the low 32 bits of orig_r0 are meaningful, so we return int.
+> diff --git a/arch/riscv/include/asm/unistd.h b/arch/riscv/include/asm/unistd.h
+> index 6c316093a1e5..5ddac412b578 100644
+> --- a/arch/riscv/include/asm/unistd.h
+> +++ b/arch/riscv/include/asm/unistd.h
+> @@ -11,6 +11,17 @@
+>  #define __ARCH_WANT_SYS_CLONE
+>  #define __ARCH_WANT_MEMFD_SECRET
+>
+> +#ifdef CONFIG_COMPAT
+> +#define __ARCH_WANT_COMPAT_TRUNCATE64
+> +#define __ARCH_WANT_COMPAT_FTRUNCATE64
+> +#define __ARCH_WANT_COMPAT_FALLOCATE
+> +#define __ARCH_WANT_COMPAT_PREAD64
+> +#define __ARCH_WANT_COMPAT_PWRITE64
+> +#define __ARCH_WANT_COMPAT_SYNC_FILE_RANGE
+> +#define __ARCH_WANT_COMPAT_READAHEAD
+> +#define __ARCH_WANT_COMPAT_FADVISE64_64
+> +#endif
+> +
+>  #include <uapi/asm/unistd.h>
+>
+>  #define NR_syscalls (__NR_syscalls)
+> diff --git a/arch/riscv/include/uapi/asm/unistd.h b/arch/riscv/include/uapi/asm/unistd.h
+> index 8062996c2dfd..c9e50eed14aa 100644
+> --- a/arch/riscv/include/uapi/asm/unistd.h
+> +++ b/arch/riscv/include/uapi/asm/unistd.h
+> @@ -15,7 +15,7 @@
+>   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+>   */
+>
+> -#ifdef __LP64__
+> +#if defined(__LP64__) && !defined(__SYSCALL_COMPAT)
+>  #define __ARCH_WANT_NEW_STAT
+>  #define __ARCH_WANT_SET_GET_RLIMIT
+>  #endif /* __LP64__ */
+> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+> index ffc87e76b1dd..3b3e425aadd2 100644
+> --- a/arch/riscv/kernel/Makefile
+> +++ b/arch/riscv/kernel/Makefile
+> @@ -68,3 +68,4 @@ obj-$(CONFIG_CRASH_DUMP)      += crash_dump.o
+>  obj-$(CONFIG_JUMP_LABEL)       += jump_label.o
+>
+>  obj-$(CONFIG_EFI)              += efi.o
+> +obj-$(CONFIG_COMPAT)           += compat_syscall_table.o
+> diff --git a/arch/riscv/kernel/compat_syscall_table.c b/arch/riscv/kernel/compat_syscall_table.c
+> new file mode 100644
+> index 000000000000..651f2b009c28
+> --- /dev/null
+> +++ b/arch/riscv/kernel/compat_syscall_table.c
+> @@ -0,0 +1,19 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#define __SYSCALL_COMPAT
+> +
+> +#include <linux/compat.h>
+> +#include <linux/syscalls.h>
+> +#include <asm-generic/mman-common.h>
+> +#include <asm-generic/syscalls.h>
+> +#include <asm/syscall.h>
+> +
+> +#undef __SYSCALL
+> +#define __SYSCALL(nr, call)      [nr] = (call),
+> +
+> +asmlinkage long compat_sys_rt_sigreturn(void);
+> +
+> +void * const compat_sys_call_table[__NR_syscalls] = {
+> +       [0 ... __NR_syscalls - 1] = sys_ni_syscall,
+> +#include <asm/unistd.h>
+> +};
+> diff --git a/arch/riscv/kernel/sys_riscv.c b/arch/riscv/kernel/sys_riscv.c
+> index 12f8a7fce78b..9c0194f176fc 100644
+> --- a/arch/riscv/kernel/sys_riscv.c
+> +++ b/arch/riscv/kernel/sys_riscv.c
+> @@ -33,7 +33,9 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, unsigned long, len,
+>  {
+>         return riscv_sys_mmap(addr, len, prot, flags, fd, offset, 0);
+>  }
+> -#else
+> +#endif
+> +
+> +#if defined(CONFIG_32BIT) || defined(CONFIG_COMPAT)
+>  SYSCALL_DEFINE6(mmap2, unsigned long, addr, unsigned long, len,
+>         unsigned long, prot, unsigned long, flags,
+>         unsigned long, fd, off_t, offset)
+> @@ -44,7 +46,7 @@ SYSCALL_DEFINE6(mmap2, unsigned long, addr, unsigned long, len,
+>          */
+>         return riscv_sys_mmap(addr, len, prot, flags, fd, offset, 12);
+>  }
+> -#endif /* !CONFIG_64BIT */
+> +#endif
+>
+>  /*
+>   * Allows the instruction cache to be flushed from userspace.  Despite RISC-V
+> diff --git a/fs/open.c b/fs/open.c
+> index 9ff2f621b760..b25613f7c0a7 100644
+> --- a/fs/open.c
+> +++ b/fs/open.c
+> @@ -224,6 +224,21 @@ SYSCALL_DEFINE2(ftruncate64, unsigned int, fd, loff_t, length)
+>  }
+>  #endif /* BITS_PER_LONG == 32 */
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_TRUNCATE64)
+> +COMPAT_SYSCALL_DEFINE3(truncate64, const char __user *, pathname,
+> +                      compat_arg_u64_dual(length))
+> +{
+> +       return ksys_truncate(pathname, compat_arg_u64_glue(length));
+> +}
+> +#endif
+> +
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_FTRUNCATE64)
+> +COMPAT_SYSCALL_DEFINE3(ftruncate64, unsigned int, fd,
+> +                      compat_arg_u64_dual(length))
+> +{
+> +       return ksys_ftruncate(fd, compat_arg_u64_glue(length));
+> +}
+> +#endif
+>
+>  int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+>  {
+> @@ -339,6 +354,15 @@ SYSCALL_DEFINE4(fallocate, int, fd, int, mode, loff_t, offset, loff_t, len)
+>         return ksys_fallocate(fd, mode, offset, len);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_FALLOCATE)
+> +COMPAT_SYSCALL_DEFINE6(fallocate, int, fd, int, mode, compat_arg_u64_dual(offset),
+> +                      compat_arg_u64_dual(len))
+> +{
+> +       return ksys_fallocate(fd, mode, compat_arg_u64_glue(offset),
+> +                             compat_arg_u64_glue(len));
+> +}
+> +#endif
+> +
+>  /*
+>   * access() needs to use the real uid/gid, not the effective uid/gid.
+>   * We do this by temporarily clearing all FS-related capabilities and
+> diff --git a/fs/read_write.c b/fs/read_write.c
+> index 0074afa7ecb3..548657c462e8 100644
+> --- a/fs/read_write.c
+> +++ b/fs/read_write.c
+> @@ -681,6 +681,14 @@ SYSCALL_DEFINE4(pread64, unsigned int, fd, char __user *, buf,
+>         return ksys_pread64(fd, buf, count, pos);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_PREAD64)
+> +COMPAT_SYSCALL_DEFINE5(pread64, unsigned int, fd, char __user *, buf,
+> +                      size_t, count, compat_arg_u64_dual(pos))
+> +{
+> +       return ksys_pread64(fd, buf, count, compat_arg_u64_glue(pos));
+> +}
+> +#endif
+> +
+>  ssize_t ksys_pwrite64(unsigned int fd, const char __user *buf,
+>                       size_t count, loff_t pos)
+>  {
+> @@ -707,6 +715,14 @@ SYSCALL_DEFINE4(pwrite64, unsigned int, fd, const char __user *, buf,
+>         return ksys_pwrite64(fd, buf, count, pos);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_PWRITE64)
+> +COMPAT_SYSCALL_DEFINE5(pwrite64, unsigned int, fd, const char __user *, buf,
+> +                      size_t, count, compat_arg_u64_dual(pos))
+> +{
+> +       return ksys_pwrite64(fd, buf, count, compat_arg_u64_glue(pos));
+> +}
+> +#endif
+> +
+>  static ssize_t do_iter_readv_writev(struct file *filp, struct iov_iter *iter,
+>                 loff_t *ppos, int type, rwf_t flags)
+>  {
+> diff --git a/fs/sync.c b/fs/sync.c
+> index c7690016453e..dc725914e1ed 100644
+> --- a/fs/sync.c
+> +++ b/fs/sync.c
+> @@ -373,6 +373,15 @@ SYSCALL_DEFINE4(sync_file_range, int, fd, loff_t, offset, loff_t, nbytes,
+>         return ksys_sync_file_range(fd, offset, nbytes, flags);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_SYNC_FILE_RANGE)
+> +COMPAT_SYSCALL_DEFINE6(sync_file_range, int, fd, compat_arg_u64_dual(offset),
+> +                      compat_arg_u64_dual(nbytes), unsigned int, flags)
+> +{
+> +       return ksys_sync_file_range(fd, compat_arg_u64_glue(offset),
+> +                                   compat_arg_u64_glue(nbytes), flags);
+> +}
+> +#endif
+> +
+>  /* It would be nice if people remember that not all the world's an i386
+>     when they introduce new system calls */
+>  SYSCALL_DEFINE4(sync_file_range2, int, fd, unsigned int, flags,
+> diff --git a/include/asm-generic/compat.h b/include/asm-generic/compat.h
+> index 11653d6846cc..d06308a2a7a8 100644
+> --- a/include/asm-generic/compat.h
+> +++ b/include/asm-generic/compat.h
+> @@ -14,6 +14,13 @@
+>  #define COMPAT_OFF_T_MAX       0x7fffffff
+>  #endif
+>
+> +#if !defined(compat_arg_u64) && !defined(CONFIG_CPU_BIG_ENDIAN)
+> +#define compat_arg_u64(name)           u32  name##_lo, u32  name##_hi
+> +#define compat_arg_u64_dual(name)      u32, name##_lo, u32, name##_hi
+> +#define compat_arg_u64_glue(name)      (((u64)name##_lo & 0xffffffffUL) | \
+> +                                        ((u64)name##_hi << 32))
+> +#endif
+> +
+>  /* These types are common across all compat ABIs */
+>  typedef u32 compat_size_t;
+>  typedef s32 compat_ssize_t;
+> diff --git a/include/linux/compat.h b/include/linux/compat.h
+> index a0481fe6c5d5..8779e283a1e9 100644
+> --- a/include/linux/compat.h
+> +++ b/include/linux/compat.h
+> @@ -926,6 +926,43 @@ asmlinkage long compat_sys_sigaction(int sig,
+>  /* obsolete: net/socket.c */
+>  asmlinkage long compat_sys_socketcall(int call, u32 __user *args);
+>
+> +#ifdef __ARCH_WANT_COMPAT_TRUNCATE64
+> +asmlinkage long compat_sys_truncate64(const char __user *pathname, compat_arg_u64(len));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_FTRUNCATE64
+> +asmlinkage long compat_sys_ftruncate64(unsigned int fd, compat_arg_u64(len));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_FALLOCATE
+> +asmlinkage long compat_sys_fallocate(int fd, int mode, compat_arg_u64(offset),
+> +                                    compat_arg_u64(len));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_PREAD64
+> +asmlinkage long compat_sys_pread64(unsigned int fd, char __user *buf, size_t count,
+> +                                  compat_arg_u64(pos));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_PWRITE64
+> +asmlinkage long compat_sys_pwrite64(unsigned int fd, const char __user *buf, size_t count,
+> +                                   compat_arg_u64(pos));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_SYNC_FILE_RANGE
+> +asmlinkage long compat_sys_sync_file_range(int fd, compat_arg_u64(pos),
+> +                                          compat_arg_u64(nbytes), unsigned int flags);
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_FADVISE64_64
+> +asmlinkage long compat_sys_fadvise64_64(int fd, int advice, compat_arg_u64(pos),
+> +                                       compat_arg_u64(len));
+This should be:
++asmlinkage long compat_sys_fadvise64_64(int fd, compat_arg_u64(pos),
++                                        compat_arg_u64(len), int advice);
+
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_READAHEAD
+> +asmlinkage long compat_sys_readahead(int fd, compat_arg_u64(offset), size_t count);
+> +#endif
+> +
+>  #endif /* CONFIG_ARCH_HAS_SYSCALL_WRAPPER */
+>
+>  /**
+> diff --git a/mm/fadvise.c b/mm/fadvise.c
+> index d6baa4f451c5..8950f7c05d20 100644
+> --- a/mm/fadvise.c
+> +++ b/mm/fadvise.c
+> @@ -215,5 +215,16 @@ SYSCALL_DEFINE4(fadvise64, int, fd, loff_t, offset, size_t, len, int, advice)
+>         return ksys_fadvise64_64(fd, offset, len, advice);
+>  }
+>
+> +#endif
+> +
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_FADVISE64_64)
+> +
+> +COMPAT_SYSCALL_DEFINE6(fadvise64_64, int, fd, int, advice, compat_arg_u64_dual(offset),
+> +                      compat_arg_u64_dual(len))
+Ditto, this should be.
+
++COMPAT_SYSCALL_DEFINE6(fadvise64_64, int, fd, compat_arg_u64_dual(offset),
++                      compat_arg_u64_dual(len), int, advice)
+
+> +{
+> +       return ksys_fadvise64_64(fd, compat_arg_u64_glue(offset),
+> +                                compat_arg_u64_glue(len), advice);
+> +}
+> +
+>  #endif
+>  #endif
+> diff --git a/mm/readahead.c b/mm/readahead.c
+> index cf0dcf89eb69..9adf57044299 100644
+> --- a/mm/readahead.c
+> +++ b/mm/readahead.c
+> @@ -640,6 +640,13 @@ SYSCALL_DEFINE3(readahead, int, fd, loff_t, offset, size_t, count)
+>         return ksys_readahead(fd, offset, count);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_READAHEAD)
+> +COMPAT_SYSCALL_DEFINE4(readahead, int, fd, compat_arg_u64_dual(offset), size_t, count)
+> +{
+> +       return ksys_readahead(fd, compat_arg_u64_glue(offset), count);
+> +}
+> +#endif
+> +
+>  /**
+>   * readahead_expand - Expand a readahead request
+>   * @ractl: The request to be expanded
+> --
+> 2.25.1
+>
+
 
 -- 
-John David Anglin  dave.anglin@bell.net
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
