@@ -2,63 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89A394E7534
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Mar 2022 15:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA9854E752A
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Mar 2022 15:38:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359348AbiCYOkY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 25 Mar 2022 10:40:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49084 "EHLO
+        id S1359341AbiCYOkR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 25 Mar 2022 10:40:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359350AbiCYOkS (ORCPT
+        with ESMTP id S1359344AbiCYOkQ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 25 Mar 2022 10:40:18 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB450972E5
-        for <linux-parisc@vger.kernel.org>; Fri, 25 Mar 2022 07:38:43 -0700 (PDT)
+        Fri, 25 Mar 2022 10:40:16 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB71972E6
+        for <linux-parisc@vger.kernel.org>; Fri, 25 Mar 2022 07:38:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
         s=badeba3b8450; t=1648219115;
-        bh=VR8qPK9Dzn3QdAzeiNPmyam7q5XtGtB0PRh6/8eqJa4=;
+        bh=LI10puTNNK6tskId7IFHg8uCclJ7ZBfeS9cwtacOLc8=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=bIS6KjVKIfnRXDHd3wSMCjknpoXy3G54AtYdsaxqEc6V0+i/VPeDPMciClWhVIT6d
-         oC60R02tyvnIcRaNtPgDX6TX/4z5sujtCt6Ep5vSj4AgjkUSyTpPhVRgOQi4FMlD3o
-         p61JzHQQRMvO9sfY5GWmZBbBYhFpQQ/P5jErvdno=
+        b=OIuOPBWaTqb3aSfRG6dC3vA5A/qKd3iF3X+OqPwMM2Z4LaIw4i7Z69x04RTWOkZfB
+         P2YgijyNFX1UFcw2nlyZKPD5RoxFRxNZG3aWSFVH2OH93WqHrLJyeo9+FS/u31ODdM
+         LnhHPg6dpyLu1OR0daFQXNiAbO0Yq4eD0kHodKhw=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from p100.fritz.box ([92.116.164.212]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MuUnK-1oOtbN09q6-00rWlJ; Fri, 25
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MUXtY-1ngWUd0fmS-00QPUN; Fri, 25
  Mar 2022 15:38:35 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
 Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH 05/12] parisc: Move init_per_cpu() init __cpuinit section
-Date:   Fri, 25 Mar 2022 15:38:26 +0100
-Message-Id: <20220325143833.402631-5-deller@gmx.de>
+Subject: [PATCH 06/12] parisc: Move disable_sr_hashing_asm() into __cpuinit section
+Date:   Fri, 25 Mar 2022 15:38:27 +0100
+Message-Id: <20220325143833.402631-6-deller@gmx.de>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220325143833.402631-1-deller@gmx.de>
 References: <20220325143833.402631-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fbniOUFFkqxoKtvZYuGOTBo2ZtZgYaHk2eH6T1HZpRzzpI2pTVJ
- SyYhPZW1/pQ1nXH6CiSfsn4KtYLCqbJEHjmFrLU+l25KunUVMAGe0g0JJXcFkISB+BoIHlg
- 194xewr3k+OtzDRpNHK9mDMWoK01lF9LPlTvFzTQORH14lOFmezI8pdoWa3stHJAyDCnrJi
- V8h2EfOQhET2fvhOBKqsQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YTuxLA3dqZM=:genPiE53xFoLcQKGK11+vR
- SOE+pYBAXycpSssV6t0OuzljUU9KBA6ilSDrXTw234EuGFn/Ym0DQuv8U4qDsQOvS8RsnovTf
- AtX41QXd17JSrc8/NgtfB81kpWNAx9zxwGTZoBGcoy7H0ArSL6omHW+mziyf+FMsPKCf3vJNx
- b1GMt9yS48IwR9KG1mqqcwHUHVEKD5wFBElUyApeZ6CblYFdWGa0n3zjqMT4aUZU0jcDbn4yH
- 9gOzHDNP97XINL5Ry8MGXKxW7YqKPiNE2NnI6JBsoWcz6zbFhtOHlXn5UmQXgQVRuLsxONyRv
- QTrTmm+8lzIn2NlPNzEdrdIoAKm/tvalEH8eryeFKNCWF5iNG2xumqK3L+m2tIiue4LurZctL
- MBC1VWWGyuaqfsGs44mNya2ofktmCe97obg97Mu/wC1bSb3wQ//rSyPUL4a6x8SuzWmcxZgPj
- 65CwWjKYehYNLo9zNBAN13V0K48zK7kwPRXLv8GGgMaAg1LGdA5Hosja1pj4GmwWnRB5tSomz
- GJv6cWKGJJSth7e1lshqNe70aozh67N8z21vptkYoTq3rPX9oy7gcNaMkilb6co3Vp80Y1dIh
- 97Ras14Yv7aHaX36JvY2Rfv30LLy/l+Pev08ZrGp/UhZMsSE1B8QboHXODZ60qM4sPpbFsPnC
- f1b4aZiKgP9bllZNWdjx/wY9vkNQyr1nKEXP4/sTv3NZhLgyYM8y6NKbVX2elO4diKxYi6Lz+
- eI0Mwr23DrCoYfdlxPH0ZfUlQozK4PyVmggjZi06pBf6WUMFPrBaBj8ll8SXBFb+9lvncmHZF
- Wz6eFGA17+twB6AwUaalVjHQ22o40kCgzcHjPan9TSEx66sCQLSi7iwbn4ZosSrmtkXgn9Ct0
- /5hGkk2FGxl6IkY4DSjSmM7DzZtAwY5mMfhxUFCIMxKFGURFvsMx5ilqWfRsKDMAELtcxm/4A
- 5DrVW2cEP6ZFZGx5Rxm1CGnXa5Jz15ESOoI8H/7JWzFNWfsTTafRaZ8+iLPIWP30eB6voFzMq
- EQDcHTALzohkATGMJC45YeCiFTEaKGmUQVrTdg1KNX4Fos/oBjmpQLrkJ8HdPMpZhfOKS3P2+
- cWW00PawlL0G8Q=
+X-Provags-ID: V03:K1:Z2jHBRXDy93YXknke44d1qGJaZNjA31kgbhzqQPrvz0wdLlw5/R
+ LFwc2XfEmOnMOE5iShrC035jOUZoCU3KGtoFoBCpr/wmvIOLfRRnPk66x9OZPGZvUxC4avZ
+ sclE30ssYIQS/YaisPHPMl3UWCakeyi5Zmm6HniB1shbOjkoTjUwUXWKSlapbKAq0PUdJ1B
+ nho7HRZLd/AQavIB26lQw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:nogc3zvYWbQ=:gJTdKuHpeHaNzUJ8VaZMqR
+ VjnDMnRETRZKkYMZUSHa+CGRovjb3qo4dE+GDPozrcPWpM9p3bMT1Bpst1jCEXwPQF7cQJHCq
+ tGLBvRoBYFKviDRSnuuOB6PBWMUc+6Jy9yRsgzSv6E+8ClFiweYvsLGf4VxSS44ENW+hnz4Ez
+ Y8WyqGShrzna/Pp4LqIv9KBMYHUQqm3UgTDa5gcHCiX2ee6pi89XZZBR1jFZZq9l7/B3iBBRJ
+ RCpV0Xyu+TC5Kj1SKiTX6ZBT/LqOIRGhN4A1SqvYcScBHT4Eat7z+LZNEtyKr6QW8EJG97iJf
+ +YdGja2jayUmXGFsozLFLbMxeNlu2g5+TuN/Uy+Ub2DyhupQTNlvMkMh5hsfmqGXG6/zAHx7E
+ DlPQqy+Yhxc8Nru8ErvEqYGQIXZSikvEYgK8h0b9E+xOvfEgrjasnbunJtSz7Xw9Hfc5JULv9
+ rVihxmMMaorrxvkyYc6+JNEX5hufMH6By8Fz8N2bQ3g5RoUjMl5xdcl+vFqMfBtAaq9b2PDKW
+ RO4/veVDmTEnjnN8u1alVEypmUTM1mlW6dCutNokY0LEqv2WUToeNbH064mFfYQIJY6RytHyf
+ C+w+KjvGt2Ay4uKUzYbmmMBE+Hx4HDhqT/ZKxv1TA2V3qEHhlp+H/MJUNkbHUvAWmRwqSFMNC
+ jGmE5gZec3/T5aKuL9W+kMn9vC5IQj0L0Zw3QUWS73yv1nmPERUymXQD93EuWY6zEWr4MNovv
+ dhNrBKv824bgoYuPKebkXmpu67J4JLPJMpWxWvrr7z0m77Dhlyizb+hJNdxrQkM94m+xXlRv5
+ 6UoQVULd84PPA0pcnfbqvY+UgONo+Ps+TrtNTpsXxL9gHNEEfCMuQEl/fs1+PWgmL7hqcEc2G
+ Czxb7FK0Fst/KQbghZ3NEvNFby9B6mG3lLBL+FCkT8+cZXR0EGTUHFEs2bA2YJLG88jX0utz/
+ zwoOnToYO7H8aSp9Yv+qYWpSlsUqaSnEQK2+Kqo5IOr5fBkREdx98MVQbYfbgd1oy1+t2gj0B
+ OrqgM2n1bmp3nZnNnlAOy8HMlPZvTNZqns1RGm6advBdO2+G38AWMjpXIPNzsUlG/vQ+kgDaG
+ PP9q9hF9o68id8=
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -71,31 +71,25 @@ X-Mailing-List: linux-parisc@vger.kernel.org
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- arch/parisc/kernel/processor.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/pacache.S | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor=
-.c
-index d0bfd61a4623..89284e79c159 100644
-=2D-- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -29,6 +29,7 @@
- #include <asm/pdcpat.h>
- #include <asm/irq.h>		/* for struct irq_region */
- #include <asm/parisc-device.h>
-+#include <asm/sections.h>
+diff --git a/arch/parisc/kernel/pacache.S b/arch/parisc/kernel/pacache.S
+index b2ba6d633065..661b1834ac94 100644
+=2D-- a/arch/parisc/kernel/pacache.S
++++ b/arch/parisc/kernel/pacache.S
+@@ -1264,7 +1264,11 @@ ENTRY_CFI(flush_kernel_icache_range_asm)
+ 	nop
+ ENDPROC_CFI(flush_kernel_icache_range_asm)
 
- struct system_cpuinfo_parisc boot_cpu_data __ro_after_init;
- EXPORT_SYMBOL(boot_cpu_data);
-@@ -317,7 +318,7 @@ void __init collect_boot_cpu_data(void)
-  *
-  * o Enable CPU profiling hooks.
-  */
--int __init init_per_cpu(int cpunum)
-+int __cpuinit init_per_cpu(int cpunum)
- {
- 	int ret;
- 	struct pdc_coproc_cfg coproc_cfg;
++#ifdef CONFIG_HOTPLUG_CPU
++	.text
++#else
+ 	__INIT
++#endif
+
+ 	/* align should cover use of rfi in disable_sr_hashing_asm and
+ 	 * srdis_done.
 =2D-
 2.35.1
 
