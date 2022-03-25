@@ -2,175 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2084F4E79AD
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Mar 2022 18:10:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51E414E79B9
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Mar 2022 18:14:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234974AbiCYRMX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 25 Mar 2022 13:12:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44268 "EHLO
+        id S235276AbiCYRP5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 25 Mar 2022 13:15:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234579AbiCYRMX (ORCPT
+        with ESMTP id S233371AbiCYRPz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 25 Mar 2022 13:12:23 -0400
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E96C12CB
-        for <linux-parisc@vger.kernel.org>; Fri, 25 Mar 2022 10:10:48 -0700 (PDT)
-Received: (qmail 3212 invoked from network); 25 Mar 2022 17:10:45 -0000
-Received: from p200300cf070e1300b9c188bfe20b0b3e.dip0.t-ipconnect.de ([2003:cf:70e:1300:b9c1:88bf:e20b:b3e]:54462 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <linux-parisc@vger.kernel.org>; Fri, 25 Mar 2022 18:10:45 +0100
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>
+        Fri, 25 Mar 2022 13:15:55 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC4C5E72AA
+        for <linux-parisc@vger.kernel.org>; Fri, 25 Mar 2022 10:14:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1648228420;
+        bh=I8Kdm1zn7/P5iuXH8rX2tQk7+n4PgigfZMBLveQJns8=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=EKhhw8VrgT5jo2jx029d8lH8syu0eZMHec0QbasJAXlxgmD9nVN8p8Xnq+axpFGx5
+         krNx7mfYguSyeJcBTRqj7UagNfSbvTEAimS31aERbESZXLZr/iiH/QFXHTMcyeVwYT
+         amEm7aKsxTLIYk7fIxGQbhIzqWl1GCUzdAXF3Mc0=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.164.212]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MfYPi-1o0EVY0zJA-00fxmV; Fri, 25
+ Mar 2022 18:13:40 +0100
+Message-ID: <58e88fda-e9d0-2d69-0d8c-cc4b5e4da776@gmx.de>
+Date:   Fri, 25 Mar 2022 18:12:03 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH 03/12] parisc: Move store_cpu_topology() into __cpuinit
+ section
+Content-Language: en-US
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org
 Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: Re: [PATCH 12/12] parisc: Implement __cpu_die() and __cpu_disable() for CPU hotplugging
-Date:   Fri, 25 Mar 2022 18:10:39 +0100
-Message-ID: <1909223.usQuhbGJ8B@daneel.sf-tec.de>
-In-Reply-To: <20220325143833.402631-12-deller@gmx.de>
-References: <20220325143833.402631-1-deller@gmx.de> <20220325143833.402631-12-deller@gmx.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3347019.QJadu78ljV"; micalg="pgp-sha1"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220325143833.402631-1-deller@gmx.de>
+ <20220325143833.402631-3-deller@gmx.de> <3161280.aeNJFYEL58@daneel.sf-tec.de>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <3161280.aeNJFYEL58@daneel.sf-tec.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:H9ErLxXnLZ16NzhwPWiZpTbtvQnPu4G7JMOaazbnJXJLk//mQR0
+ fktlx+MD10vMXW6qjCq8N2Shc1oDSk6oxtUJR2Z2ABGZCWl48Lxkz62rhdxyKznmYLDIufE
+ wJFggXXP34pe7oMFM7EuspN8GS8WY9XFP3nfsTwlC1KG/8kMqr8K5TupaqqGe3mIdT5PMsE
+ jC6+Qr94ZzE6jWSOcjBfA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4LokGtS4ftY=:rc5LYPFNK+j5V7KWLM7WmJ
+ g/PwLQZTAVASv1sgXlOUbVA3zJ1JHr/bGwHzl4h86lTkZzLwezcJK0bJprPLgvHJPjr/F6ivk
+ 8oBejUr7UcgnXOLYkpn0XkW6qsoBTx/K3QKc93yamzMBwkUoNQs4K2IxzdbX+9HjYseMRTAPX
+ 6UcCubdUf0AsJMH1Pz/2CITip7Wwuyora9g2tUj+Ir8xqYXy6QiDwtAdSqbBIg09dpcwe/Yh9
+ V30iCU899Kft9S2AyYK5VIbDULfrG7sAGAcHOJiprYf7yPIVA5Spr2oawsMjD3bMxRVAiZglX
+ 3vGQSY3HvWa5c4fT2WBTS74su5hBv9IPKsXQi28polKCKTp543FZt/blECf+j/oDqa+DnSmHD
+ iVRYbLP4RtXQK/UogzOv2boY8pC7lUpJ/G5nnQHmS2DGzKYOq6mBeduC7Uet9AIDss8oZ6rZU
+ N1QPrmUPtCEwO6ADhs7xsGO/Pfc8L0pr5loWwZL/6SZKSiQLy4lFUuEO2gHmXHJcIaKMMGx7X
+ 6HSTTNiSO2Kg+9bDGlcMND2zzksoWxlM2QLQGktIV6gLAC+ZFWdie8MWUA72cW6VV8zYStHh1
+ NXebIfmgFmUqdL29z1mdr+ohTsmFnzVg3BbfktDGNTaHGlapGwbTYOGFD35a8aGLaSuGdCJq8
+ vc+yfj80a7eCFpuiSTUXA/iLfnsDAheoVx7tog252i1bqqI89PVAkZCOry1Zzi3pRASGihOlK
+ iwc7pllU2aDuQVGnZ9ijp2/Qpl56gYuey1l7UmY+KsjO9wYfv3f3pNyWiTDEiH5Eo+yyJ6CQd
+ moM6eF1uWZEnehdI8weZgg+ZYUsw6InRKVDO7BGe3L0pEvY9hIJXS0ULn0yYDNDcwdCqx4hJg
+ 9LaSGA9u4vh8XSUP7cExgOc+uqoGLjrCa9uqu9EXdfZW1acAR82qgmbsFKXncT1sTNxGY8B0i
+ DUefZfd/5/SgE8MMpx/9BmeFMzld++13jMXZKB8a3H5lQIlm7jvA50rTL3IG8N3PGGxjpnOMV
+ UqEr6Ks/FJu1jbakigD8ks9Mzpgv5xAXEOPor3Y8QgJlcZFyk3e6Vz8bDEgz52cxWKYBgFmmU
+ UgdSczZobCPAEs=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart3347019.QJadu78ljV
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+On 3/25/22 17:52, Rolf Eike Beer wrote:
+> Am Freitag, 25. M=C3=A4rz 2022, 15:38:24 CET schrieb Helge Deller:
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>> ---
+>>  arch/parisc/kernel/topology.c | 5 +++--
+>>  1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/parisc/kernel/topology.c b/arch/parisc/kernel/topolog=
+y.c
+>> index 72d9aeb54fbe..dc766fb55491 100644
+>> --- a/arch/parisc/kernel/topology.c
+>> +++ b/arch/parisc/kernel/topology.c
+>> @@ -16,17 +16,18 @@
+>>  #include <linux/cpu.h>
+>>
+>>  #include <asm/topology.h>
+>> +#include <asm/sections.h>
+>>
+>>  static DEFINE_PER_CPU(struct cpu, cpu_devices);
+>>
+>> -static int dualcores_found __initdata;
+>> +static int dualcores_found;
+>
+> I wonder if that should not be something like __cpuinit_data.
 
-Am Freitag, 25. M=E4rz 2022, 15:38:33 CET schrieb Helge Deller:
-> Add relevant code to __cpu_die() and __cpu_disable() to finally enable
-> the CPU hotplugging features. Reset the irq count values in smp_callin()
-> to zero before bringing up the CPU.
->=20
-> Use "chcpu -d 1" to bring CPU1 down, and "chcpu -e 1" to bring it up.
->=20
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> ---
->  arch/parisc/Kconfig           |  1 +
->  arch/parisc/include/asm/smp.h |  9 +---
->  arch/parisc/kernel/smp.c      | 80 +++++++++++++++++++++++++++++++++--
->  3 files changed, 79 insertions(+), 11 deletions(-)
->=20
-> diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
-> index a32a882a2d58..60cc33fd345c 100644
-> --- a/arch/parisc/kernel/smp.c
-> +++ b/arch/parisc/kernel/smp.c
-> @@ -430,10 +444,68 @@ void smp_cpus_done(unsigned int cpu_max)
->=20
->  int __cpu_up(unsigned int cpu, struct task_struct *tidle)
->  {
-> -	if (cpu !=3D 0 && cpu < parisc_max_cpus && smp_boot_one_cpu(cpu,=20
-tidle))
-> -		return -ENOSYS;
-> +	if (cpu_online(cpu))
-> +		return 0;
-> +
-> +	if (num_online_cpus() < parisc_max_cpus && smp_boot_one_cpu(cpu,=20
-tidle))
-> +		return -EIO;
+Heh ... all other platforms got rid of __cpuinit and __cpuinit_data.
+I just wanted to keep it on parisc in order to have small code in case of =
+UP.
+That said, introducing a __cpuinit_data section for this single variable d=
+idn't made sense.
 
-I had to look up parisc_max_cpus, and found this:
-
-> static int parisc_max_cpus =3D 1;
-
-Hm, signed?
-
-> parisc_max_cpus =3D max_cpus;
->        if (!max_cpus)
->                printk(KERN_INFO "SMP mode deactivated.\n");
-
-So parisc_max_cpus is now 0, which seems wrong. Shouldn't the check be befo=
-re=20
-the assignment? This would have avoided the "cpu !=3D 0" in the old code=20
-completely.
-
-> +
-> +	return cpu_online(cpu) ? 0 : -EIO;
-> +}
-> +
-> +/*
-> + * __cpu_disable runs on the processor to be shutdown.
-> + */
-> +int __cpu_disable(void)
-> +{
-> +#ifdef CONFIG_HOTPLUG_CPU
-> +	unsigned int cpu =3D smp_processor_id();
-> +
-> +	remove_cpu_topology(cpu);
-> +
-> +	/*
-> +	 * Take this CPU offline.  Once we clear this, we can't return,
-> +	 * and we must not schedule until we're ready to give up the cpu.
-> +	 */
-> +	set_cpu_online(cpu, false);
-> +
-> +	/*
-> +	 * disable IPI interrupt
-> +	 */
-> +	disable_percpu_irq(IPI_IRQ);
-> +
-> +	/*
-> +	 * migrate IRQs away from this CPU
-> +	 */
-> +	irq_migrate_all_off_this_cpu();
-
-While I really enjoy good code comments the last 2 seem a t bit wasteful,=20
-given that the code is basically exactly the same as the text.
-
-> +	/*
-> +	 * Flush user cache and TLB mappings, and then remove this CPU
-> +	 * from the vm mask set of all processes.
-> +	 *
-> +	 * Caches are flushed to the Level of Unification Inner Shareable
-> +	 * to write-back dirty lines to unified caches shared by all CPUs.
-> +	 */
-> +	flush_cache_all_local();
-> +	flush_tlb_all_local(NULL);
->=20
-> -	return cpu_online(cpu) ? 0 : -ENOSYS;
-> +	/* disable all irqs, including timer irq */
-> +	local_irq_disable();
-> +#endif
-> +	return 0;
-> +}
-> +
-> +/*
-> + * called on the thread which is asking for a CPU to be shutdown -
-> + * waits until shutdown has completed, or it is timed out.
-> + */
-> +void __cpu_die(unsigned int cpu)
-> +{
-> +	if (!cpu_wait_death(cpu, 5)) {
-> +		pr_crit("CPU%u: cpu didn't die\n", cpu);
-> +		return;
-> +	}
-> +	pr_debug("CPU%u: shutdown\n", cpu);
->  }
->=20
->  #ifdef CONFIG_PROC_FS
-> --
-> 2.35.1
-
-
---nextPart3347019.QJadu78ljV
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYj33jwAKCRBcpIk+abn8
-TkVuAKCNuZ88OjomTfZm3MfAM7CT6sZJCACgpFpaoV3Hmx49Z+sX4a9rpwDHPcI=
-=JidR
------END PGP SIGNATURE-----
-
---nextPart3347019.QJadu78ljV--
-
-
-
+Helge
