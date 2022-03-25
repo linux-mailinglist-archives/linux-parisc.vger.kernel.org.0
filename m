@@ -2,63 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB184E752B
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Mar 2022 15:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 006204E752E
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Mar 2022 15:38:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359354AbiCYOkT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 25 Mar 2022 10:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49020 "EHLO
+        id S1353013AbiCYOkU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 25 Mar 2022 10:40:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359346AbiCYOkR (ORCPT
+        with ESMTP id S1359345AbiCYOkR (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
         Fri, 25 Mar 2022 10:40:17 -0400
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4EA4972FF
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A2F5972ED
         for <linux-parisc@vger.kernel.org>; Fri, 25 Mar 2022 07:38:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
         s=badeba3b8450; t=1648219116;
-        bh=lXyzy3GOxyMDK40biUVP97KgTYN+dTugnTrUHzWDMnE=;
+        bh=VeXH08U6o9RgNfldRtp2u1AmoHAErZ1QgI99hc7Lxd4=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=MqHfZe+JMmtvH0QJNSdsoqSv1sp+OFwrD6PFGZcbXK7PlFEOJ0gNqX5/yfbFt6Fs1
-         d4vW9PeEcCPE91u5yFvOC8xOOpIP9Z0JjD0T1kClgxzyI8FL6Rwix70bNu07vcNSzX
-         Gdugo/TK8oiSEqmQDDyllufn9fcWEgSaAdH0XueI=
+        b=ixBkg8a01Qa8QJcF8zqDVFnZ3b2DYB+Q5HCI2omTIKmPhKDDdYAryQyPaykaFg6EL
+         D5KlSx8Z4QHlJRoLbMK3GSRr231DESMPFUd5VC6SV5waxHPzO0igLQ9ZjGXjjM6OgD
+         b0MuwASLnkw3EnLlKJ0dqfhaA0ZKRcV6rRmay6RI=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from p100.fritz.box ([92.116.164.212]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MAfYm-1nMnmV3ihc-00B4Sd; Fri, 25
- Mar 2022 15:38:35 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MRTNF-1njV2v079B-00NRLG; Fri, 25
+ Mar 2022 15:38:36 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
 Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH 11/12] parisc: Rewrite arch_cpu_idle_dead() for CPU hotplugging
-Date:   Fri, 25 Mar 2022 15:38:32 +0100
-Message-Id: <20220325143833.402631-11-deller@gmx.de>
+Subject: [PATCH 12/12] parisc: Implement __cpu_die() and __cpu_disable() for CPU hotplugging
+Date:   Fri, 25 Mar 2022 15:38:33 +0100
+Message-Id: <20220325143833.402631-12-deller@gmx.de>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220325143833.402631-1-deller@gmx.de>
 References: <20220325143833.402631-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:LZj4cdxw+PuJKk39OysNJZC7J1cWXPrKlOmAGHm+WHRkxDn27AC
- qWYkk7KzrEwDzsCbbenbhwjd9DJluQ3zsGqMVc59JjFI1rXMa0Y92MW2XkerhnQVs3SQbM3
- tSQJM6ehDW+ZSo9gt3ONPqC+2x8iqLCUGyc8D/cbxcwfgcAhWUhtO4BR0dut/ae5HvbcieI
- nok1SsManPzpSQkgDzyZQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ZzsFIqEAI9o=:wqyl6CebfLCBkD6ramB5Hu
- MxmqPy7ulJ0hrVaLK96w9sbG3e1j3VqmcsKkwK2FOv0UHyoZV0xWSmztzKAVC2Cm4jOA9ryY/
- /hdAdKeDrZNoGy4nUpRvm+ElR+D6dTm4vS0QwgXncDgD8je2oraZa0z8NDu3Wi4iPiIDVH/5B
- /4FmXbF9y9wU+2wAJ+yBnhcN/2kiqMO3k3P3DtRDstH3Fz/9/fcVpCJXVzHC6PxZ2dDRR/JLL
- Yp+ojPHxTZ89xP07mktjJHXF3u/y6G6N6tHBPTF2tF6LDWs4LcQAPDjBNAYTy3Frd+bcHlqWM
- tjb3jmpUDwVytpaiSw70A6IHnogVnLQEIzqeMxI5kNvcvNrE1kJtrvMNgSk1jwQwYbmbTg5g7
- YcOza087JkuxMEwQf5tP4tNJm3KbNFASNNSeSYyupJGwqlMGsv+4nefRSQwBysaVIgDIMMdmp
- sMGSVs+1E4Z8mv4wafdO3Eo23I/Fy8YAbRMqqFUsoNyBk3ain2gxrwRX5SBrV1zsIbpZYWvvb
- sNzu4wNXsHxO4NzsbP4t8BHFhCHlcFy096yAnDRUKBm6pJDpDQM4lHqY811kV470W6NTFPPQk
- +sS0nErfn1qTQ7FY5phOVaqUKAUOQiry/Cb/PiUZxBdzWViyHLYzuEtG1KlI6sflcFL1tyBTf
- Jdr2yuayd2lJOo2IN7xxE8ZiSJs9wclhlhxVwW0eOKiRhDmlPdePWIt7A+ol5oYRvC5bF1FXs
- o4VqfkGYRQY84vhTsxkx79aVaqeHkhaf2c1bcD7NFub9n4QnpshRGESAdrxLPjkQ2ko4YUpBW
- hJLLUg9zZsvIfz8uLTaOJMUn0gVLemuHpFvI8E4uIFWLjiyGM/by6x705GGL+oxGh6EMAzlpe
- 0D1VhNVzRm+//OGav78cY7p9khN25wr3NaL9s7S4K//6nsiUItZWZ3Clm+yrcNml5wL9rpX8Q
- oB8HK/xmL3A+plCKoKdE/dzrTJjvd4wj0CKZjx2TPEvw8YIyrhwbeBm3XPpFsLULJOPFXT9sY
- jipWUQMaeLlc7xT/XR93Ppdmz/6cmZW+hpetJUwPD3/2HsrSwaWKNIhPvMOzHajVsuThOJkC+
- KL/scwd0dOiNYM=
+X-Provags-ID: V03:K1:XDywusJ0V1cHWLP1BMVEsjCYvhcfaOEq1Yq4YBninT++W1r6dMG
+ BScOzHo0G9BHFYTx3sCxveZyMkUCTgokKWvbGsjjoMNW8rwBTxBQLYrFzSChpFvXU6tpHA/
+ TG0GReI0Ls8vJSptxm/9i2uTx7YcdQGHrJCWfPWwhLQlLunwgs027rRC/D/zIX0bgiMP/Ql
+ Zqqu5xEEVaBvbRnoMcn0w==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:FeNlkaIqG9c=:3Y+5rLGqtPq9Wyf7C1lG1F
+ HBwB/d1Wgh9KpRNLJifCj9VHSfJgQ83e1QmSZanSIOLcEFyKRGQ0R7r9W1P2BEwJ6DAfL5U/w
+ 9pWy3t1uYmmFbbECCHWkV7ssXCb94y+1lOmN7SUBVLmA/X1Bb1raTiLAKygfDvHFC82K3Qo4V
+ 9joLYB4Uu9ZdLonYGS4g1B9QomwwMNYdfy1UVz3DclV+5rjFyiFElIsf/syExh3t/2ExcidXk
+ JRDiMeSbtUW1SdBW7EXcFRPf0nurbwFVQiUzdNad8QMFoRTYVBv1UBVmvmZYkBgERrJe/xmyF
+ 5qadufwGUmpTHa9tUyvtOBYKsdjWbffgcLIwqwC9k7d9JHeDTdO3WmA+DKarrnPZgejzlMFjU
+ FKvM06g19ws91F/zX9h7ARsBVcIY6gaRQkpdCGwXcvgyBMWq1dKHHQYwAhLg6fT3W7bQ/VY2W
+ dSKMB1VTO+Axcbf8tH2pUmpndwbvdEUIeLBv5jlks8EoOXlRBXm7bZy6Dfxon1JwGYXX3EvCG
+ HE7BEPecYbBLFPrmya6y5HrjNp5RnigaUXIxbkGEIGaX6czWAofzm/Jiwerau+TuOaXk1trTz
+ 8m8M+EyCyFZVUG9yVhSy6v4dPqgXTuqH2YKBwkEnTFgubCxmFXnJVST+/nD5+VR8PcevijKHm
+ sOMJbuN9Kb9wdH3S8CYDqGQsZCXBCLCo6QxVMYpzQrEK29M+myjODLSGod3wLDSTo+PZ1+Tgz
+ R608cHE4B06XrjOdR3HrVHKVwfAyiV6djSIZGRH1CIhEuy8C1TJAU3RyRpEKmUPDlA5AmupRR
+ IaaPCkf2lzxlxAjF9PXkyxCQWb0FHntC3vXzsd05KOsNF0z+m6WxLkSCy40oVT36ON0gnwYAy
+ 5TUGpOmwY+QT/kVGMfnLl7FuAkYuep008L4zrSroTLrt5zwsaIcLmHzhBPuEe40eqoK08g0Tt
+ LmvtwSthoi2e0dSntayLJZudOdb3hIcKO1A7QbF05gQw7UIiuTWG6nMujGpqUNwstdG8gs3VV
+ 95zAboBH6AD65c9SwkagfYVaR7cylWDIlKA5EiVfaLvS0EYysrJmbEV/WQmT2D6G3H1SYnQJk
+ 8Cvy+fI0mc7qFo=
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -69,73 +69,165 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Let the PDC firmware put the CPU into firmware idle loop with
-pdc_cpu_rendezvous() function.
+Add relevant code to __cpu_die() and __cpu_disable() to finally enable
+the CPU hotplugging features. Reset the irq count values in smp_callin()
+to zero before bringing up the CPU.
+
+Use "chcpu -d 1" to bring CPU1 down, and "chcpu -e 1" to bring it up.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- arch/parisc/kernel/process.c | 33 ++++++++++++++++++++++++++++++---
- 1 file changed, 30 insertions(+), 3 deletions(-)
+ arch/parisc/Kconfig           |  1 +
+ arch/parisc/include/asm/smp.h |  9 +---
+ arch/parisc/kernel/smp.c      | 80 +++++++++++++++++++++++++++++++++--
+ 3 files changed, 79 insertions(+), 11 deletions(-)
 
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index ea3d83b6fb62..44fa89fbb280 100644
-=2D-- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -38,6 +38,7 @@
- #include <linux/rcupdate.h>
- #include <linux/random.h>
- #include <linux/nmi.h>
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 6bd42c82a019..ec5bb9626d06 100644
+=2D-- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -56,6 +56,7 @@ config PARISC
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select GENERIC_SCHED_CLOCK
++	select GENERIC_IRQ_MIGRATION
+ 	select HAVE_UNSTABLE_SCHED_CLOCK if SMP
+ 	select LEGACY_TIMER_TICK
+ 	select CPU_NO_EFFICIENT_FFS
+diff --git a/arch/parisc/include/asm/smp.h b/arch/parisc/include/asm/smp.h
+index 2279ebe5e2da..94d1f21ce99a 100644
+=2D-- a/arch/parisc/include/asm/smp.h
++++ b/arch/parisc/include/asm/smp.h
+@@ -44,12 +44,7 @@ static inline void smp_send_all_nop(void) { return; }
+
+ #define NO_PROC_ID		0xFF		/* No processor magic marker */
+ #define ANY_PROC_ID		0xFF		/* Any processor magic marker */
+-static inline int __cpu_disable (void) {
+-  return 0;
+-}
+-static inline void __cpu_die (unsigned int cpu) {
+-  while(1)
+-    ;
+-}
++int __cpu_disable(void);
++void __cpu_die(unsigned int cpu);
+
+ #endif /*  __ASM_SMP_H */
+diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
+index a32a882a2d58..60cc33fd345c 100644
+=2D-- a/arch/parisc/kernel/smp.c
++++ b/arch/parisc/kernel/smp.c
+@@ -30,6 +30,7 @@
+ #include <linux/ftrace.h>
+ #include <linux/cpu.h>
+ #include <linux/kgdb.h>
 +#include <linux/sched/hotplug.h>
 
- #include <asm/io.h>
- #include <asm/asm-offsets.h>
-@@ -46,6 +47,7 @@
- #include <asm/pdc_chassis.h>
- #include <asm/unwind.h>
- #include <asm/sections.h>
-+#include <asm/cacheflush.h>
-
- #define COMMAND_GLOBAL  F_EXTEND(0xfffe0030)
- #define CMD_RESET       5       /* reset any module */
-@@ -158,10 +160,35 @@ void release_thread(struct task_struct *dead_task)
- int running_on_qemu __ro_after_init;
- EXPORT_SYMBOL(running_on_qemu);
-
--void __cpuidle arch_cpu_idle_dead(void)
-+/*
-+ * Called from the idle thread for the CPU which has been shutdown.
-+ */
-+void arch_cpu_idle_dead(void)
+ #include <linux/atomic.h>
+ #include <asm/current.h>
+@@ -309,7 +310,7 @@ smp_cpu_init(int cpunum)
+  * Slaves start using C here. Indirectly called from smp_slave_stext.
+  * Do what start_kernel() and main() do for boot strap processor (aka mon=
+arch)
+  */
+-void __init smp_callin(unsigned long pdce_proc)
++void __cpuinit smp_callin(unsigned long pdce_proc)
  {
--	/* nop on real hardware, qemu will offline CPU. */
--	asm volatile("or %%r31,%%r31,%%r31\n":::);
+ 	int slave_id =3D cpu_now_booting;
+
+@@ -339,6 +340,19 @@ int smp_boot_one_cpu(int cpuid, struct task_struct *i=
+dle)
+ 	const struct cpuinfo_parisc *p =3D &per_cpu(cpu_data, cpuid);
+ 	long timeout;
+
 +#ifdef CONFIG_HOTPLUG_CPU
-+	idle_task_exit();
++	int i;
 +
-+	local_irq_disable();
++	/* reset irq statistics for this CPU */
++	memset(&per_cpu(irq_stat, cpuid), 0, sizeof(irq_cpustat_t));
++	for (i =3D 0; i < NR_IRQS; i++) {
++		struct irq_desc *desc =3D irq_to_desc(i);
++
++		if (desc && desc->kstat_irqs)
++			*per_cpu_ptr(desc->kstat_irqs, cpuid) =3D 0;
++	}
++#endif
++
+ 	/* Let _start know what logical CPU we're booting
+ 	** (offset into init_tasks[],cpu_data[])
+ 	*/
+@@ -430,10 +444,68 @@ void smp_cpus_done(unsigned int cpu_max)
+
+ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+ {
+-	if (cpu !=3D 0 && cpu < parisc_max_cpus && smp_boot_one_cpu(cpu, tidle))
+-		return -ENOSYS;
++	if (cpu_online(cpu))
++		return 0;
++
++	if (num_online_cpus() < parisc_max_cpus && smp_boot_one_cpu(cpu, tidle))
++		return -EIO;
++
++	return cpu_online(cpu) ? 0 : -EIO;
++}
++
++/*
++ * __cpu_disable runs on the processor to be shutdown.
++ */
++int __cpu_disable(void)
++{
++#ifdef CONFIG_HOTPLUG_CPU
++	unsigned int cpu =3D smp_processor_id();
++
++	remove_cpu_topology(cpu);
 +
 +	/*
-+	 * Tell __cpu_die() that this CPU is now safe to dispose of.
++	 * Take this CPU offline.  Once we clear this, we can't return,
++	 * and we must not schedule until we're ready to give up the cpu.
 +	 */
-+	(void)cpu_report_death();
++	set_cpu_online(cpu, false);
 +
 +	/*
-+	 * Ensure that the cache lines are written out.
++	 * disable IPI interrupt
++	 */
++	disable_percpu_irq(IPI_IRQ);
++
++	/*
++	 * migrate IRQs away from this CPU
++	 */
++	irq_migrate_all_off_this_cpu();
++
++	/*
++	 * Flush user cache and TLB mappings, and then remove this CPU
++	 * from the vm mask set of all processes.
++	 *
++	 * Caches are flushed to the Level of Unification Inner Shareable
++	 * to write-back dirty lines to unified caches shared by all CPUs.
 +	 */
 +	flush_cache_all_local();
 +	flush_tlb_all_local(NULL);
-+
-+	/*
-+	 * Let PDC firmware put CPU into firmware idle loop.
-+	 */
-+	__pdc_cpu_rendezvous();
-+
-+	pr_warn("PDC does not provide rendezvous function.\n");
+
+-	return cpu_online(cpu) ? 0 : -ENOSYS;
++	/* disable all irqs, including timer irq */
++	local_irq_disable();
 +#endif
-+	while (1);
++	return 0;
++}
++
++/*
++ * called on the thread which is asking for a CPU to be shutdown -
++ * waits until shutdown has completed, or it is timed out.
++ */
++void __cpu_die(unsigned int cpu)
++{
++	if (!cpu_wait_death(cpu, 5)) {
++		pr_crit("CPU%u: cpu didn't die\n", cpu);
++		return;
++	}
++	pr_debug("CPU%u: shutdown\n", cpu);
  }
 
- void __cpuidle arch_cpu_idle(void)
+ #ifdef CONFIG_PROC_FS
 =2D-
 2.35.1
 
