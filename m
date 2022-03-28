@@ -2,50 +2,50 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 491224E9399
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Mar 2022 13:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F5244E948D
+	for <lists+linux-parisc@lfdr.de>; Mon, 28 Mar 2022 13:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240891AbiC1LYe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 28 Mar 2022 07:24:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43550 "EHLO
+        id S241424AbiC1Lab (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 28 Mar 2022 07:30:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240825AbiC1LYb (ORCPT
+        with ESMTP id S239586AbiC1L37 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 28 Mar 2022 07:24:31 -0400
+        Mon, 28 Mar 2022 07:29:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4E155BD0;
-        Mon, 28 Mar 2022 04:22:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13491120;
+        Mon, 28 Mar 2022 04:23:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 154AB61169;
-        Mon, 28 Mar 2022 11:22:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10193C340EC;
-        Mon, 28 Mar 2022 11:22:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5ED1961174;
+        Mon, 28 Mar 2022 11:23:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751BEC340EC;
+        Mon, 28 Mar 2022 11:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648466568;
-        bh=CV240FBWJ+J/RE78ZouTlWfvTag+OZii7101escWnGk=;
+        s=k20201202; t=1648466621;
+        bh=bPX/khrWPtuH6lxw45TCKs76d2OxZC/P91UXYox1D2c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZC+qL1LmCqzE9mCksAJ/DZKJNNCx6kFANHWfpV+SDQ+x0+YW7DoOV3JzXwVu50qmS
-         nIKezayTblQ/ByhE2wZwy90v7T4xDrfLw7WREWBUWICEhjlGXKsxh0A3FrizJNk/q4
-         c+IMh0dAu75u5Fk/EuCv40o0PUozwCiMlhN6Q3hWdgykNKQrxpif8OE4Mvmm9QbrlK
-         JGrVglpfcCs9IOMX+EmWmucJpNC3ErhtkDJIPw7ed0k4SonHpr4CUjne5VPjD/rJnF
-         ScsitU1X6szD/lxyAQlvV2/CIJIa48orlwALlM9mtyYrgEiPu3uHirEet7kgrkLC5O
-         hJIYDSsPeNOqQ==
+        b=AmIWko0MxrQz2vAWas11Gr56JNWwrwOJpBRkECfXtjqrQxwdzi2Hn/dbfYQ/hV1kN
+         tMEXInavCot79w2XR6JXI2kFCKveIOwBVIe0q1FjDrDCyI9oxrOCl/2Rk3eXEPaMzn
+         ewgYsCGHMrZuIUp6F69HEDyGzMqaTePHZp8aJV1iIN9ZxLATdliAz+EDH8I2Piy4Rb
+         8JrIurdMWBy0b/nnMjq/g08Ikw38q5onQhUhBFo7PWgfdC16e3I0zSrAr8bsUXcPIR
+         u5HPZ7MKeXekpiBNZn1qk2ZkQKjorv6Kqc08qCSnsq8hSEctJe8Lqu8l7XAvVhnToi
+         d6lK24sQSkIiw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     John David Anglin <dave.anglin@bell.net>,
         Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com, svens@stackframe.org,
-        wangkefeng.wang@huawei.com, ebiederm@xmission.com,
-        zhengqi.arch@bytedance.com, akpm@linux-foundation.org,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 26/29] parisc: Fix handling off probe non-access faults
-Date:   Mon, 28 Mar 2022 07:21:28 -0400
-Message-Id: <20220328112132.1555683-26-sashal@kernel.org>
+        rmk+kernel@armlinux.org.uk, akpm@linux-foundation.org,
+        ebiederm@xmission.com, wangkefeng.wang@huawei.com,
+        zhengqi.arch@bytedance.com, linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 19/21] parisc: Fix handling off probe non-access faults
+Date:   Mon, 28 Mar 2022 07:22:52 -0400
+Message-Id: <20220328112254.1556286-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220328112132.1555683-1-sashal@kernel.org>
-References: <20220328112132.1555683-1-sashal@kernel.org>
+In-Reply-To: <20220328112254.1556286-1-sashal@kernel.org>
+References: <20220328112254.1556286-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -111,7 +111,7 @@ index 8ecc1f0c0483..d0e090a2c000 100644
  
  #endif
 diff --git a/arch/parisc/kernel/traps.c b/arch/parisc/kernel/traps.c
-index afe8b902a8fc..6fe5a3e98edc 100644
+index 269b737d2629..bce47e0fb692 100644
 --- a/arch/parisc/kernel/traps.c
 +++ b/arch/parisc/kernel/traps.c
 @@ -661,6 +661,8 @@ void notrace handle_interruption(int code, struct pt_regs *regs)
