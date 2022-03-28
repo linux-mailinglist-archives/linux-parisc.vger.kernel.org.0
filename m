@@ -2,101 +2,147 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB1264E8AF5
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Mar 2022 00:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2F6B4E9393
+	for <lists+linux-parisc@lfdr.de>; Mon, 28 Mar 2022 13:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235920AbiC0Wwh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 27 Mar 2022 18:52:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49848 "EHLO
+        id S240849AbiC1LYd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 28 Mar 2022 07:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235460AbiC0Wwg (ORCPT
+        with ESMTP id S240999AbiC1LXD (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 27 Mar 2022 18:52:36 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A02333A0A
-        for <linux-parisc@vger.kernel.org>; Sun, 27 Mar 2022 15:50:57 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id a17so15009520edm.9
-        for <linux-parisc@vger.kernel.org>; Sun, 27 Mar 2022 15:50:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=VSEH8Q3Lr+Mcr/0lsL1VFPftJp7ALZ21MKYEz4sry74=;
-        b=GZKN/pcGaUedCujf95Jv4pHSCbZl12BFh6tDgneFSmw9gDEEb3Fx5sYixpRCtT3laG
-         RMtuAcDWhnnGV7p+u8RrByNJj1nndmsbC9uBjNcsnK851mPis/Su59HY4dK6s07YJAgM
-         Gd6CRDwuyOzNDTbq1S5phGnP5AydSsxlvkVYrJvddTwQjmrFou2/4FvX6o9/fS2/VXxe
-         xv6SDg56hGBpi4GquhV5AFSSISJpKNz6dbcaHRaKnGTUxjeTsMO28bLSrPflXtDMHySb
-         LmMBZSLOFfgOoZhLscBvN41kwpV5u79riAT58yH3cLCFU/dwbjfg7k5ZWhTxekZwfxpn
-         6SZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=VSEH8Q3Lr+Mcr/0lsL1VFPftJp7ALZ21MKYEz4sry74=;
-        b=s4da3uFkAX2qC36kIRPoZMMO0+pQiPb7LcVusa2/Wtzatne0yTcRStqwW2exW20FAk
-         ttOYteE2p8e8Mq4s8COLzM7fYmVC3nFoB/SIr/3DzFJrwxGsIxMvbJtZ4UKCQTU3mqJN
-         17XDpEc3LUxIoftUXwmELhMBhdnpBClpfsQ8QENobLnVAgePlBGgUH1M2Icz4HeHhXZy
-         czWZ0K5lAKWDFqEDRotYkdO9bI1FnVE13peTy0t5wJKz1r0mZWijR6h/0eMRgyVCmRno
-         QsVOfm5vT+J1poGsR57vkeDm8ZiR/KTErE7O3fCBuAMBqfHJOiW9jwG5eckbSRQy2wLL
-         kzzQ==
-X-Gm-Message-State: AOAM5324KRRCuz3JFCQBbRzxayb5Hmic04Ydm+g/RG9UjfEgaqF8l4JN
-        l+O5rsBWCKJc1f7DEsSiY6F262ea+AhFGazLFMk=
-X-Google-Smtp-Source: ABdhPJwvadZvHZHTl1imgfopM/w4AS2+t3tP9SRvRAZ1wbWjyol+UnSh4kkISblyyyofGrgPHGMlcrup8R9JaYf6VR0=
-X-Received: by 2002:a05:6402:50cf:b0:418:ee57:ed9 with SMTP id
- h15-20020a05640250cf00b00418ee570ed9mr12526934edb.37.1648421455392; Sun, 27
- Mar 2022 15:50:55 -0700 (PDT)
+        Mon, 28 Mar 2022 07:23:03 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB2A56219;
+        Mon, 28 Mar 2022 04:19:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0BE3BB81058;
+        Mon, 28 Mar 2022 11:19:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3FCC34100;
+        Mon, 28 Mar 2022 11:19:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648466395;
+        bh=TzN9S2c1jJpI9v8G0EpdcxObJsrqJKiqIfBV48VR++4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=QWb47MVqqOrbWmsOejZHe0cYnXjrcqD9BzoK6BGnNnNvNElEJ8XL7jru7VMNja99p
+         360R92JMZvozOrWuqkWvcGsCiNglIDfgrM3pMBLg2cd74Ln7enLHPlRKcHVzyqt4tr
+         BHLGM9/D8Cps/2iw8XENtCK1fB0+ctWoytISrjop3grfBRSnnx4lQYT2EnRJNt/Goj
+         XOye7MoARZAQSpu4NKR62RtsoqKzi5aAFmeoJQwl6ul0hQeHP8VvBW/eW96aqokpbk
+         cgqAkHssLJiUxcQKcapHJg9w2WH32ikqBuQipRx+KEoWpvXfXlp0yFhpoC16+Q+fuj
+         Z5VKD32jMdjHg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     John David Anglin <dave.anglin@bell.net>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
+        James.Bottomley@HansenPartnership.com, svens@stackframe.org,
+        ira.weiny@intel.com, akpm@linux-foundation.org,
+        linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.17 38/43] parisc: Fix non-access data TLB cache flush faults
+Date:   Mon, 28 Mar 2022 07:18:22 -0400
+Message-Id: <20220328111828.1554086-38-sashal@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220328111828.1554086-1-sashal@kernel.org>
+References: <20220328111828.1554086-1-sashal@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a50:294b:0:0:0:0:0 with HTTP; Sun, 27 Mar 2022 15:50:54
- -0700 (PDT)
-Reply-To: christopherdaniel830@gmail.com
-From:   Christopher Daniel <cd01100222@gmail.com>
-Date:   Sun, 27 Mar 2022 22:50:54 +0000
-Message-ID: <CAO=CV9KP+m2qYKAMYi_FkbGe8KVnZkYKnizRjdBTpHM7MC66mQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:543 listed in]
-        [list.dnswl.org]
-        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
-        *      [score: 0.3994]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [christopherdaniel830[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [cd01100222[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [cd01100222[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-.
-I wish to invite you to participate in our Investment Funding Program,
-get back to me for more details if interested please.
+From: John David Anglin <dave.anglin@bell.net>
 
-Regards.
-Christopher Daniel.
+[ Upstream commit f839e5f1cef36ce268950c387129b1bfefdaebc9 ]
+
+When a page is not present, we get non-access data TLB faults from
+the fdc and fic instructions in flush_user_dcache_range_asm and
+flush_user_icache_range_asm. When these occur, the cache line is
+not invalidated and potentially we get memory corruption. The
+problem was hidden by the nullification of the flush instructions.
+
+These faults also affect performance. With pa8800/pa8900 processors,
+there will be 32 faults per 4 KB page since the cache line is 128
+bytes.  There will be more faults with earlier processors.
+
+The problem is fixed by using flush_cache_pages(). It does the flush
+using a tmp alias mapping.
+
+The flush_cache_pages() call in flush_cache_range() flushed too
+large a range.
+
+V2: Remove unnecessary preempt_disable() and preempt_enable() calls.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/parisc/kernel/cache.c | 28 +---------------------------
+ 1 file changed, 1 insertion(+), 27 deletions(-)
+
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index 94150b91c96f..bce71cefe572 100644
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -558,15 +558,6 @@ static void flush_cache_pages(struct vm_area_struct *vma, struct mm_struct *mm,
+ 	}
+ }
+ 
+-static void flush_user_cache_tlb(struct vm_area_struct *vma,
+-				 unsigned long start, unsigned long end)
+-{
+-	flush_user_dcache_range_asm(start, end);
+-	if (vma->vm_flags & VM_EXEC)
+-		flush_user_icache_range_asm(start, end);
+-	flush_tlb_range(vma, start, end);
+-}
+-
+ void flush_cache_mm(struct mm_struct *mm)
+ {
+ 	struct vm_area_struct *vma;
+@@ -581,17 +572,8 @@ void flush_cache_mm(struct mm_struct *mm)
+ 		return;
+ 	}
+ 
+-	preempt_disable();
+-	if (mm->context == mfsp(3)) {
+-		for (vma = mm->mmap; vma; vma = vma->vm_next)
+-			flush_user_cache_tlb(vma, vma->vm_start, vma->vm_end);
+-		preempt_enable();
+-		return;
+-	}
+-
+ 	for (vma = mm->mmap; vma; vma = vma->vm_next)
+ 		flush_cache_pages(vma, mm, vma->vm_start, vma->vm_end);
+-	preempt_enable();
+ }
+ 
+ void flush_cache_range(struct vm_area_struct *vma,
+@@ -605,15 +587,7 @@ void flush_cache_range(struct vm_area_struct *vma,
+ 		return;
+ 	}
+ 
+-	preempt_disable();
+-	if (vma->vm_mm->context == mfsp(3)) {
+-		flush_user_cache_tlb(vma, start, end);
+-		preempt_enable();
+-		return;
+-	}
+-
+-	flush_cache_pages(vma, vma->vm_mm, vma->vm_start, vma->vm_end);
+-	preempt_enable();
++	flush_cache_pages(vma, vma->vm_mm, start, end);
+ }
+ 
+ void
+-- 
+2.34.1
+
