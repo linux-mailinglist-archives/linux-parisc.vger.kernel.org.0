@@ -2,224 +2,171 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5244E948D
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Mar 2022 13:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2B7E4EB3BC
+	for <lists+linux-parisc@lfdr.de>; Tue, 29 Mar 2022 20:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241424AbiC1Lab (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 28 Mar 2022 07:30:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37152 "EHLO
+        id S239585AbiC2S4a (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 29 Mar 2022 14:56:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239586AbiC1L37 (ORCPT
+        with ESMTP id S237828AbiC2S43 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 28 Mar 2022 07:29:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13491120;
-        Mon, 28 Mar 2022 04:23:55 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5ED1961174;
-        Mon, 28 Mar 2022 11:23:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751BEC340EC;
-        Mon, 28 Mar 2022 11:23:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648466621;
-        bh=bPX/khrWPtuH6lxw45TCKs76d2OxZC/P91UXYox1D2c=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AmIWko0MxrQz2vAWas11Gr56JNWwrwOJpBRkECfXtjqrQxwdzi2Hn/dbfYQ/hV1kN
-         tMEXInavCot79w2XR6JXI2kFCKveIOwBVIe0q1FjDrDCyI9oxrOCl/2Rk3eXEPaMzn
-         ewgYsCGHMrZuIUp6F69HEDyGzMqaTePHZp8aJV1iIN9ZxLATdliAz+EDH8I2Piy4Rb
-         8JrIurdMWBy0b/nnMjq/g08Ikw38q5onQhUhBFo7PWgfdC16e3I0zSrAr8bsUXcPIR
-         u5HPZ7MKeXekpiBNZn1qk2ZkQKjorv6Kqc08qCSnsq8hSEctJe8Lqu8l7XAvVhnToi
-         d6lK24sQSkIiw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, svens@stackframe.org,
-        rmk+kernel@armlinux.org.uk, akpm@linux-foundation.org,
-        ebiederm@xmission.com, wangkefeng.wang@huawei.com,
-        zhengqi.arch@bytedance.com, linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 19/21] parisc: Fix handling off probe non-access faults
-Date:   Mon, 28 Mar 2022 07:22:52 -0400
-Message-Id: <20220328112254.1556286-19-sashal@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220328112254.1556286-1-sashal@kernel.org>
-References: <20220328112254.1556286-1-sashal@kernel.org>
+        Tue, 29 Mar 2022 14:56:29 -0400
+Received: from cmx-torrgo002.bell.net (mta-tor-005.bell.net [209.71.212.37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 95F5622E953
+        for <linux-parisc@vger.kernel.org>; Tue, 29 Mar 2022 11:54:45 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.50.7.94]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6243254D0005D102
+X-CM-Envelope: MS4xfBllL5ENdj3dX0GR9RQ383zqxCETF66gPrNeYcPx+XCDfQLXlS5VH2mOXkAndvArpuIVVChsaWwv0eAk1/L/PnJCuL8iBVsIMyxeFYUNGGy/OHRD9H9x
+ 2ZKL83gHj2OGxthEZMGJcRstSSpyXQraYVUx0L+B3LEHUNBEoFvLl1o8HLoZ0Yej5asK8yC9ICyC3o0MMzGsbgUDf06BqWFHZDBKo0vz7KEc1GG0kQ/bymPd
+ UVCsA0DtDmpJbCi6ybvWkmnUsZ0eb2N1xoohR6mJcwPAAJkY084vx4gvwhd4oqCfAGD4AEbeLFHL71KMMWo1Nl76pkz5I1KKGbRy5iBrcvjL5Q9gWoDZrjso
+ 96PRyzc6HUH42mZ5w255f5/UchIyMsFQrkyK7O8FLnk9jYHv44CUxxzfJEysFOuufAeBtWHVXgJJXSYY1nBluZQKMME/sd2g0w8OiNeXt+TVO2/GmOAjHT6u
+ BGfGrvZssdgSoBHGWvhXYq4NJeJVEEs1oJfg/hIY8asKx2dO0MIxj8dD9dJ7n1q1n8z+zwIzrYXeV78w00FvPilpCqdHQLsjwPG5uJOWJTQf3yW0s90LtQIG
+ v+cy/p3qsf5qV+Sf0X8aRYHPr2YUsSAQKZij256bcJ7D+w==
+X-CM-Analysis: v=2.4 cv=G99/r/o5 c=1 sm=1 tr=0 ts=624355ed
+ a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
+ a=o8Y5sQTvuykA:10 a=FBHGMhGWAAAA:8 a=Fe-wxvhmr2ytpZrFxScA:9 a=CjuIK1q_8ugA:10
+ a=LX2NGLxKwRSNBg788TcA:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from mx3210.localdomain (70.50.7.94) by cmx-torrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 6243254D0005D102; Tue, 29 Mar 2022 14:54:37 -0400
+Received: by mx3210.localdomain (Postfix, from userid 1000)
+        id 1D431220115; Tue, 29 Mar 2022 18:54:36 +0000 (UTC)
+Date:   Tue, 29 Mar 2022 18:54:36 +0000
+From:   John David Anglin <dave.anglin@bell.net>
+To:     linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: [PATCH] parisc: Fix patch code locking and flushing
+Message-ID: <YkNV7FZMUsvlPiRe@mx3210.localdomain>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="j4827DxhtXJW81e+"
+Content-Disposition: inline
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit e00b0a2ab8ec019c344e53bfc76e31c18bb587b7 ]
+--j4827DxhtXJW81e+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Currently, the parisc kernel does not fully support non-access TLB
-fault handling for probe instructions. In the fast path, we set the
-target register to zero if it is not a shadowed register. The slow
-path is not implemented, so we call do_page_fault. The architecture
-indicates that non-access faults should not cause a page fault from
-disk.
+This change fixes the following:
 
-This change adds to code to provide non-access fault support for
-probe instructions. It also modifies the handling of faults on
-userspace so that if the address lies in a valid VMA and the access
-type matches that for the VMA, the probe target register is set to
-one. Otherwise, the target register is set to zero.
+1) The flags variable is not initialized. Always use raw_spin_lock_irqsave
+and raw_spin_unlock_irqrestore to serialize patching.
 
-This was done to make probe instructions more useful for userspace.
-Probe instructions are not very useful if they set the target register
-to zero whenever a page is not present in memory. Nominally, the
-purpose of the probe instruction is determine whether read or write
-access to a given address is allowed.
+2) flush_kernel_vmap_range is primarily intended for DMA flushes. Since
+__patch_text_multiple is often called with interrupts disabled, it is
+better to directly call flush_kernel_dcache_range_asm and
+flush_kernel_icache_range_asm. This avoids an extra call.
 
-This fixes a problem in function pointer comparison noticed in the
-glibc testsuite (stdio-common/tst-vfprintf-user-type). The same
-problem is likely in glibc (_dl_lookup_address).
-
-V2 adds flush and lpa instruction support to handle_nadtlb_fault.
+3) The final call to flush_icache_range is unnecessary.
 
 Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/traps.h |  1 +
- arch/parisc/kernel/traps.c      |  2 +
- arch/parisc/mm/fault.c          | 89 +++++++++++++++++++++++++++++++++
- 3 files changed, 92 insertions(+)
 
-diff --git a/arch/parisc/include/asm/traps.h b/arch/parisc/include/asm/traps.h
-index 8ecc1f0c0483..d0e090a2c000 100644
---- a/arch/parisc/include/asm/traps.h
-+++ b/arch/parisc/include/asm/traps.h
-@@ -17,6 +17,7 @@ void die_if_kernel(char *str, struct pt_regs *regs, long err);
- const char *trap_name(unsigned long code);
- void do_page_fault(struct pt_regs *regs, unsigned long code,
- 		unsigned long address);
-+int handle_nadtlb_fault(struct pt_regs *regs);
- #endif
- 
- #endif
-diff --git a/arch/parisc/kernel/traps.c b/arch/parisc/kernel/traps.c
-index 269b737d2629..bce47e0fb692 100644
---- a/arch/parisc/kernel/traps.c
-+++ b/arch/parisc/kernel/traps.c
-@@ -661,6 +661,8 @@ void notrace handle_interruption(int code, struct pt_regs *regs)
- 			 by hand. Technically we need to emulate:
- 			 fdc,fdce,pdc,"fic,4f",prober,probeir,probew, probeiw
- 		*/
-+		if (code == 17 && handle_nadtlb_fault(regs))
-+			return;
- 		fault_address = regs->ior;
- 		fault_space = regs->isr;
- 		break;
-diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-index 716960f5d92e..5faa3cff4738 100644
---- a/arch/parisc/mm/fault.c
-+++ b/arch/parisc/mm/fault.c
-@@ -424,3 +424,92 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- 		goto no_context;
- 	pagefault_out_of_memory();
+diff --git a/arch/parisc/kernel/patch.c b/arch/parisc/kernel/patch.c
+index 80a0ab372802..e59574f65e64 100644
+--- a/arch/parisc/kernel/patch.c
++++ b/arch/parisc/kernel/patch.c
+@@ -40,10 +40,7 @@ static void __kprobes *patch_map(void *addr, int fixmap,=
+ unsigned long *flags,
+=20
+ 	*need_unmap =3D 1;
+ 	set_fixmap(fixmap, page_to_phys(page));
+-	if (flags)
+-		raw_spin_lock_irqsave(&patch_lock, *flags);
+-	else
+-		__acquire(&patch_lock);
++	raw_spin_lock_irqsave(&patch_lock, *flags);
+=20
+ 	return (void *) (__fix_to_virt(fixmap) + (uintaddr & ~PAGE_MASK));
  }
-+
-+/* Handle non-access data TLB miss faults.
-+ *
-+ * For probe instructions, accesses to userspace are considered allowed
-+ * if they lie in a valid VMA and the access type matches. We are not
-+ * allowed to handle MM faults here so there may be situations where an
-+ * actual access would fail even though a probe was successful.
-+ */
-+int
-+handle_nadtlb_fault(struct pt_regs *regs)
-+{
-+	unsigned long insn = regs->iir;
-+	int breg, treg, xreg, val = 0;
-+	struct vm_area_struct *vma, *prev_vma;
-+	struct task_struct *tsk;
-+	struct mm_struct *mm;
-+	unsigned long address;
-+	unsigned long acc_type;
-+
-+	switch (insn & 0x380) {
-+	case 0x280:
-+		/* FDC instruction */
-+		fallthrough;
-+	case 0x380:
-+		/* PDC and FIC instructions */
-+		if (printk_ratelimit()) {
-+			pr_warn("BUG: nullifying cache flush/purge instruction\n");
-+			show_regs(regs);
-+		}
-+		if (insn & 0x20) {
-+			/* Base modification */
-+			breg = (insn >> 21) & 0x1f;
-+			xreg = (insn >> 16) & 0x1f;
-+			if (breg && xreg)
-+				regs->gr[breg] += regs->gr[xreg];
-+		}
-+		regs->gr[0] |= PSW_N;
-+		return 1;
-+
-+	case 0x180:
-+		/* PROBE instruction */
-+		treg = insn & 0x1f;
-+		if (regs->isr) {
-+			tsk = current;
-+			mm = tsk->mm;
-+			if (mm) {
-+				/* Search for VMA */
-+				address = regs->ior;
-+				mmap_read_lock(mm);
-+				vma = find_vma_prev(mm, address, &prev_vma);
-+				mmap_read_unlock(mm);
-+
-+				/*
-+				 * Check if access to the VMA is okay.
-+				 * We don't allow for stack expansion.
-+				 */
-+				acc_type = (insn & 0x40) ? VM_WRITE : VM_READ;
-+				if (vma
-+				    && address >= vma->vm_start
-+				    && (vma->vm_flags & acc_type) == acc_type)
-+					val = 1;
-+			}
-+		}
-+		if (treg)
-+			regs->gr[treg] = val;
-+		regs->gr[0] |= PSW_N;
-+		return 1;
-+
-+	case 0x300:
-+		/* LPA instruction */
-+		if (insn & 0x20) {
-+			/* Base modification */
-+			breg = (insn >> 21) & 0x1f;
-+			xreg = (insn >> 16) & 0x1f;
-+			if (breg && xreg)
-+				regs->gr[breg] += regs->gr[xreg];
-+		}
-+		treg = insn & 0x1f;
-+		if (treg)
-+			regs->gr[treg] = 0;
-+		regs->gr[0] |= PSW_N;
-+		return 1;
-+
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
--- 
-2.34.1
+@@ -52,10 +49,7 @@ static void __kprobes patch_unmap(int fixmap, unsigned l=
+ong *flags)
+ {
+ 	clear_fixmap(fixmap);
+=20
+-	if (flags)
+-		raw_spin_unlock_irqrestore(&patch_lock, *flags);
+-	else
+-		__release(&patch_lock);
++	raw_spin_unlock_irqrestore(&patch_lock, *flags);
+ }
+=20
+ void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int l=
+en)
+@@ -67,8 +61,9 @@ void __kprobes __patch_text_multiple(void *addr, u32 *ins=
+n, unsigned int len)
+ 	int mapped;
+=20
+ 	/* Make sure we don't have any aliases in cache */
+-	flush_kernel_vmap_range(addr, len);
+-	flush_icache_range(start, end);
++	flush_kernel_dcache_range_asm(start, end);
++	flush_kernel_icache_range_asm(start, end);
++	flush_tlb_kernel_range(start, end);
+=20
+ 	p =3D fixmap =3D patch_map(addr, FIX_TEXT_POKE0, &flags, &mapped);
+=20
+@@ -81,8 +76,10 @@ void __kprobes __patch_text_multiple(void *addr, u32 *in=
+sn, unsigned int len)
+ 			 * We're crossing a page boundary, so
+ 			 * need to remap
+ 			 */
+-			flush_kernel_vmap_range((void *)fixmap,
+-						(p-fixmap) * sizeof(*p));
++			flush_kernel_dcache_range_asm((unsigned long)fixmap,
++						      (unsigned long)p);
++			flush_tlb_kernel_range((unsigned long)fixmap,
++					       (unsigned long)p);
+ 			if (mapped)
+ 				patch_unmap(FIX_TEXT_POKE0, &flags);
+ 			p =3D fixmap =3D patch_map(addr, FIX_TEXT_POKE0, &flags,
+@@ -90,10 +87,10 @@ void __kprobes __patch_text_multiple(void *addr, u32 *i=
+nsn, unsigned int len)
+ 		}
+ 	}
+=20
+-	flush_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
++	flush_kernel_dcache_range_asm((unsigned long)fixmap, (unsigned long)p);
++	flush_tlb_kernel_range((unsigned long)fixmap, (unsigned long)p);
+ 	if (mapped)
+ 		patch_unmap(FIX_TEXT_POKE0, &flags);
+-	flush_icache_range(start, end);
+ }
+=20
+ void __kprobes __patch_text(void *addr, u32 insn)
 
+--j4827DxhtXJW81e+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmJDVeUACgkQXb/Nrl8Z
+TfGLbQ//XyJoB2e4QUvyYpOT5Cev+QIUt/s2ZeHu/coDqz6xLnjW2YUAVuyTpjSY
+Fbqz8efzniWNMWeMUonOMI1iDy5GKm08RzQvc1dYza1W1HgTTknZR4QRMud0n3pF
+kc9gFVr7PzMTjT1zkv/b+2eR2IecnhSD9D/3Cfitm+EKk7p0pteQiPPyOcOc1iSs
+aa7SFaUKeCuduDy4gVp3u0iWvFSOBy7oajuH3qRCoeKEzkn7dUZ38JcUJSJBlhut
+fYqqLkB2H/AA1OSLQO6WiEV75LRDWepGrJ4R+ulkwr85vBekgal9CyE0S8fymBNK
+965papiKxLhv3nr6IJi2SPsIwMkqv9OxyM+8hDYOn/2i0hsBRgkn5SXpmL4Omdn+
+xKZ6qDQUDYibRAiT/tK5zM+tVdJBEYsQf1p/ETD/+4xtJkEmFnzwmJFbZAxIzgGZ
+HHmIC3r72wzmEkcWMNAw2OPsxgHufIzxq6IuwE0VgMW2qCKkIzSgJf/9PHwscqq4
+iLgSZzSsqyZZjkcbbD1cEc8yjoRLPBTQk/0g/BjtKJuVz0cfh8+yGXmiWBwjJV4+
+/RhZQtWcAAvVZKup2Cm/UIjybXn5M2ecLDVcQhMwUZ+JAJmOLLmgemRbmuOaLnad
+EGmIDmU2LuQPM0n/Rqxk8nuJBs9BQUrKpcYMW00DHEq0KOTtwUo=
+=CQ8r
+-----END PGP SIGNATURE-----
+
+--j4827DxhtXJW81e+--
