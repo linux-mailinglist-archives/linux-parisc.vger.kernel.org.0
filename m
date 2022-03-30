@@ -2,144 +2,114 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87B784EC94D
-	for <lists+linux-parisc@lfdr.de>; Wed, 30 Mar 2022 18:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 436834ECC1A
+	for <lists+linux-parisc@lfdr.de>; Wed, 30 Mar 2022 20:28:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348604AbiC3QKA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 30 Mar 2022 12:10:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40022 "EHLO
+        id S1350606AbiC3S1c (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 30 Mar 2022 14:27:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348617AbiC3QKA (ORCPT
+        with ESMTP id S1350440AbiC3S0r (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 30 Mar 2022 12:10:00 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDC51D0FA;
-        Wed, 30 Mar 2022 09:08:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1648656484;
-        bh=eyZgoSOXBgiY7IogFE1g9ozYUMFErfGzTyG1DhV1kkY=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=P5R+TUQXTBR5ZCq5q4HQJgGqqqXy95xx0yWYvvjiEXxb1IoYII3Vsw2os0viT82VJ
-         IlVaN1aWaxdevY0iJmoc6+YB+HkYMUF3eQP956IaVeHocoZfE93WpXQNW1BUJqsd1J
-         0aB4gFT3fyxbAii6w1AQlbe9kfmYVY7lDjuSvfPA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100 ([92.116.163.139]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M4s0j-1nZKHT3P31-0023Lm; Wed, 30
- Mar 2022 18:08:04 +0200
-Date:   Wed, 30 Mar 2022 18:08:02 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        Sven Schnelle <svens@stackframe.org>
-Subject: [GIT PULL] parisc architecture updates for v5.18-rc1 - part 2
-Message-ID: <YkSAYq2dExCq1TcP@p100>
+        Wed, 30 Mar 2022 14:26:47 -0400
+Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61C54A92F
+        for <linux-parisc@vger.kernel.org>; Wed, 30 Mar 2022 11:23:50 -0700 (PDT)
+Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-d6e29fb3d7so22919654fac.7
+        for <linux-parisc@vger.kernel.org>; Wed, 30 Mar 2022 11:23:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=6PnxJaVdYHTfEoSreao3ANO+XeqxY/p/4dxKSObIH1I=;
+        b=U1oUia1Thamt6Z7oWm6PGNKOk9RXK6Jv76DGrI1cLcYRcY5/d1Tt5qepQRdZm6lsyq
+         RBa/xpJM28ShOu5ibphzafHjPKptRC4OMeOVco0xYKihrCNFhnaGQOBDSvUdgHWgE3gf
+         cWTbx+dPO2nv/wujOZrrbxfJpePUzp7QZ1RCloUPxJhGXTvBKUziPieC1LSkK8oSaB+t
+         E85QJNBGnQK8HE8wei7Zq5jQSpeI5JY8kzofCGcJSUHLIHQXWsBy6ta+brl9WPLZzyWA
+         2jPBZlOFyxLxFI8awBJCcZtcLmSyu35IRMr8cJ72zb2pokIUUqe6EUB9pKUwVKwbq4my
+         ou5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=6PnxJaVdYHTfEoSreao3ANO+XeqxY/p/4dxKSObIH1I=;
+        b=v/zPZRpj6gPU2GAju1rpEhJSk1cxOJkZBv7w2+qqO2tP++oHde5xAgrY5jcEnFKSXv
+         nFycK/5a5nDFnUNSZWHKQ2Xd4BjHB1lNMawFhSpYMjtHTSuU5ffaMv3bVRmPmuM61fZt
+         F4fYypusAzLeDVKRyBUBMli0hg0bo0CxfoGTQYSgH4ktaUtWKcWrcZPqPjS84Kyve7ua
+         8RrJ2wdIc2xZma79s5kjW4p2+2gbjvMN+MW8GcIVdWSRdoD3PSdC79M/GQZj3Su6f2M4
+         lHmu8ZU6lCj57Omf8iEfOuMNKefTyYQdd+qj0ZMS1TRuW/F0W6KQ16txn9fWmuklKu6H
+         GDaw==
+X-Gm-Message-State: AOAM530fh5/6uRJXEsbDMmdbwJZosYIX5BBQxo1UqSsqjVt+EbhhXELi
+        s/skyvf7VgNUv65HSjWUwkWSSebwURiayUCvGEKrvQ7NrmUm
+X-Google-Smtp-Source: ABdhPJzkTl+tJbylc9dRvis6ZhULbTl7j4ynIkLgm4b/Lu4YSrf6PCWjehKBvofPJCmWKHUKJGD0xbE01MjL0VC50Jo=
+X-Received: by 2002:a17:90b:3143:b0:1c7:5cee:3948 with SMTP id
+ ip3-20020a17090b314300b001c75cee3948mr852445pjb.140.1648664618224; Wed, 30
+ Mar 2022 11:23:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:MbVWdF/mQgvKGKlOMFlTd9dekYyXQSvHMFQhLCksPoJI1ugbOr3
- n1lfwy+jWdULLkT2hKaGclODh0OpeW6kDtZ/IFMLu8czFJ/fN1Hkkn603tPT/Iyr2JAjnIL
- 2NVmZrUrSHUI4F2OF9/292PY1Q1LMjoMHYwu+HqzXIZInobQ0TZMp4SHhMMn6fPJ9YTwUu8
- 1KU9YSJTHeElju21FzSvQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:e381kNrS15c=:VZUO+9WCVHeJFzsWc6ssxd
- w51nALGlBlEFiW+c0ZsabN6qXGFKqftVpiwvnz0AaqrYjN9XrAKi/OnBoffEt8eDdYRCHsC06
- 6kQjSRba2HC8t0G53zBARFTv6hVLwDyCO+YjXd3yzOnimLP0MXqjuKd96JFUQA9qVvIGkgD00
- XkuABS+QQPcmnBMytKYYOli3D9ZNQrlrr+lzFg9Gp4v/+iet6IRqZw1gkdP3w61IIzpZu2mWy
- zTZOUkJk4khai6iIssNV1cEv0IY3TE8oLeBmmyki59cAOnDo9lBU5PTeUnUtW01MtEPXWdgnk
- DOFvNRWRk7aHY3yaCQNXN7sZpWJu8ZMPsfTlvBdKUlFSxR3ncPDPFYmLOEO0FcWoXwzdWIAQu
- tM5dg8r/U53FJ8n6PruWdjA5MqdCmHG7WePM4udqRW2asqv58xmxV6cQgzOhdjF39IJ2zbytj
- BNmwsAWAgq/9sJeIEXDwP5Z1Xd6ARkWn/BBGA0AKS0Jj5k73ordXs5caAfl2uktcKzIL50k6/
- MS1rWguLjkcfnP6Gs7C3HQqk9DY/I/L5C3UGk9Uz+jwHkUHUpiO4wKxTkVYi4FWJmRlVtbiRo
- XA5W3A3fGGUNFVYmt+SGDXHNkWbpcGril1LN2EEeD6jWHkz34Ip4tIJr0jlSjsfuftImfUHo8
- wVA8l+UBtGqYP3al81VUQBtXCKj/JAVBHMTPPFszLYGR57wYQEd11KpTowLCVXVHm/E8oB59c
- X1oDgkFKV5n7ZTQ2hIF9m9B/McIeo5Ztt9Pwt6XitB3pH+DZfK8XOs9+gDEgz8WKmcTsNlwJu
- n7WkQOfh/61zJUqW+OfvGxaA28lzlR8weLLuaHVCU2Qta60+z/YIBwhwP41V8UuDQIWjIT1ye
- 4HkbB9T7Pov6a2VPrneS77NYXp3rcLglSHGVNtm4M28RbQ5hIdRiuyeQQuEwHSTHTZ3yDe2dA
- 0sJlSxTWy0MJqol6Oj85clHN1d3Di3+N97yjTGn2uowMK1p4imewyO+O254WLtno7UP6+qWcU
- vkrUfOBERGZJDVUYEGJtUPnloWHuS03LC7Wn0JZ8Y9gIe+ZZi2X6Clfo742xFI3qK+ad0rlWP
- 8VvcqWFYC9nhqo=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Reply-To: isabellasayouba0@gmail.com
+Sender: 040stherchurch@gmail.com
+Received: by 2002:a05:6a20:691d:b0:76:6cf5:d552 with HTTP; Wed, 30 Mar 2022
+ 11:23:37 -0700 (PDT)
+From:   Mrs Isabella Sayouba <isabellasayouba0@gmail.com>
+Date:   Wed, 30 Mar 2022 18:23:37 +0000
+X-Google-Sender-Auth: _Xe1kByDkvq-Dn04BagO7gok_qM
+Message-ID: <CAAzQq761QVaWKiKernxpKjqNCK+6V9mRKHBnOcqF8rXJO9Y+aA@mail.gmail.com>
+Subject: =?UTF-8?B?44GC44GE44GV44Gk44CC?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_99,BAYES_999,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The following changes since commit ae085d7f9365de7da27ab5c0d16b12d51ea7fca9:
-
-  mm: kfence: fix missing objcg housekeeping for SLAB (2022-03-27 18:47:00 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.18/parisc-2
-
-for you to fetch changes up to a9fe7fa7d874a536e0540469f314772c054a0323:
-
-  parisc: Fix patch code locking and flushing (2022-03-29 21:37:13 +0200)
-
-----------------------------------------------------------------
-More parisc architecture updates & fixes for kernel v5.18-rc1
-
-* Revert a patch to the invalidate/flush vmap routines which broke kernel
-  patching functions on older PA-RISC machines.
-
-* Fix the kernel patching code wrt. locking and flushing. Works now on
-  B160L machine as well.
-
-* Fix CPU IRQ affinity for LASI, WAX and Dino chips
-
-* CPU hotplug support
-
-* Detect the hppa-suse-linux-gcc compiler when cross-compiling
-
-----------------------------------------------------------------
-Helge Deller (15):
-      Revert "parisc: Fix invalidate/flush vmap routines"
-      parisc: Fix CPU affinity for Lasi, WAX and Dino chips
-      parisc: Clean up cpu_check_affinity() and drop cpu_set_affinity_irq()
-      parisc: Detect hppa-suse-linux-gcc compiler for cross-building
-      parisc: Add constants for control registers and clean up mfctl()
-      parisc: Ensure set_firmware_width() is called only once
-      parisc: Switch from GENERIC_CPU_DEVICES to GENERIC_ARCH_TOPOLOGY
-      parisc: Move store_cpu_topology() into text section
-      parisc: Move CPU startup-related functions into .text section
-      parisc: Move disable_sr_hashing_asm() into .text section
-      parisc: Add PDC locking functions for rendezvous code
-      parisc: Implement __cpu_die() and __cpu_disable() for CPU hotplugging
-      parisc: Rewrite arch_cpu_idle_dead() for CPU hotplugging
-      parisc: Move common_stext into .text section when CONFIG_HOTPLUG_CPU=y
-      parisc: Find a new timesync master if current CPU is removed
-
-John David Anglin (1):
-      parisc: Fix patch code locking and flushing
-
- arch/parisc/Kconfig                     |  12 +---
- arch/parisc/Makefile                    |   4 +-
- arch/parisc/include/asm/pdc.h           |   3 +
- arch/parisc/include/asm/pdcpat.h        |   3 +-
- arch/parisc/include/asm/processor.h     |   1 +
- arch/parisc/include/asm/smp.h           |   9 +--
- arch/parisc/include/asm/special_insns.h |  17 +++--
- arch/parisc/include/asm/topology.h      |  23 +------
- arch/parisc/kernel/Makefile             |   2 +-
- arch/parisc/kernel/cache.c              |  26 ++------
- arch/parisc/kernel/firmware.c           |  44 ++++++++++++-
- arch/parisc/kernel/head.S               |  11 +++-
- arch/parisc/kernel/irq.c                |  25 +-------
- arch/parisc/kernel/pacache.S            |   2 +-
- arch/parisc/kernel/patch.c              |  25 ++++----
- arch/parisc/kernel/process.c            |  27 +++++++-
- arch/parisc/kernel/processor.c          |   6 +-
- arch/parisc/kernel/smp.c                | 108 +++++++++++++++++++++++++++-----
- arch/parisc/kernel/time.c               |   6 +-
- arch/parisc/kernel/topology.c           |  77 ++++++-----------------
- drivers/parisc/dino.c                   |  41 +++++++++---
- drivers/parisc/gsc.c                    |  31 +++++++++
- drivers/parisc/gsc.h                    |   1 +
- drivers/parisc/lasi.c                   |   7 +--
- drivers/parisc/wax.c                    |   7 +--
- 25 files changed, 312 insertions(+), 206 deletions(-)
+44GC44GE44GV44Gk44CCDQoNCua2meOCkua1geOBl+OBquOBjOOCieOBk+OBruODoeODvOODq+OC
+kuabuOOBhOOBpuOBhOOBvuOBmeOAguengeOBruebruOBq+OBr+Wkp+OBjeOBquaCsuOBl+OBv+OB
+jOOBguOCiuOBvuOBmeOAguengeOBruWQjeWJjeOBr+OCpOOCtuODmeODqeODu+OCteODqOOCpuOD
+kOOBleOCk+OBp+OBmeOAguODgeODpeODi+OCuOOCouWHuui6q+OBp+OAgeODluODq+OCreODiuOD
+leOCoeOCveOBrueXhemZouOBi+OCiemAo+e1oeOCkuWPluOCiuOBvuOBmeOAguengeOBr+OBguOB
+quOBn+OBq+W/g+OCkumWi+OBhOOBpuaEn+WLleOBl+OBn+OBruOBp+OAgeOBguOBquOBn+OBq+ip
+seOBmeS7peWkluOBq+mBuOaKnuiCouOBr+OBguOCiuOBvuOBm+OCk+OAguengeOBr+OAgTIwMTHl
+ubTjgavkuqHjgY/jgarjgovliY3jgavjg5bjg6vjgq3jg4rjg5XjgqHjgr3jga7jg4Hjg6Xjg4vj
+grjjgqLlpKfkvb/jgag55bm06ZaT5YON44GE44Gm44GE44GfU2F5b3ViYQ0KQnJvd27msI/jgajn
+tZDlqZrjgZfjgb7jgZfjgZ/jgILlrZDkvpvjgarjgZfjgacxMeW5tOmWk+e1kOWpmuOBl+OBn+OA
+gg0KDQrlvbzjga/jgZ/jgaPjgZ815pel6ZaT57aa44GE44Gf55+t44GE55eF5rCX44Gu5b6M44Gn
+5q2744Gr44G+44GX44Gf44CC5b2844Gu5q275b6M44CB56eB44Gv5YaN5ama44GX44Gq44GE44GT
+44Go44Gr5rG644KB44G+44GX44Gf44CC5Lqh44GP44Gq44Gj44Gf5aSr44GM55Sf44GN44Gm44GE
+44Gf44Go44GN44CB5b2844Gv57eP6aGNODUw5LiH44OJ44Or44KS6aCQ44GR44G+44GX44Gf44CC
+DQrvvIg4MDDkuIc1MDAw44OJ44Or77yJ6KW/44Ki44OV44Oq44Kr44Gu44OW44Or44Kt44OK44OV
+44Kh44K944Gu6aaW6YO944Ov44Ks44OJ44Kl44Kw44O844Gu6YqA6KGM44Gn44CC54++5Zyo44CB
+44GT44Gu44GK6YeR44Gv44G+44Gg6YqA6KGM44Gr44GC44KK44G+44GZ44CC5b2844Gv44GT44Gu
+44GK6YeR44KS44OW44Or44Kt44OK44OV44Kh44K944Gu6Ymx5qWt44GL44KJ44Gu6YeR44Gu6Ly4
+5Ye644Gr5Yip55So44Gn44GN44KL44KI44GG44Gr44GX44G+44GX44Gf44CCDQoNCuacgOi/keOA
+geengeOBruWMu+iAheOBr+engeOBjOeZjOOBqOiEs+WNkuS4reOBruWVj+mhjOOBruOBn+OCgeOB
+qzfjg7bmnIjplpPjga/ntprjgYvjgarjgYTjgaDjgo3jgYbjgajnp4HjgavoqIDjgYTjgb7jgZfj
+gZ/jgILnp4HjgpLmnIDjgoLmgqnjgb7jgZvjgabjgYTjgovjga7jga/ohLPljZLkuK3jga7nl4Xm
+sJfjgafjgZnjgILnp4Hjga7nirbmhYvjgpLnn6XjgaPjgZ/jga7jgafjgIHnp4Hjga/jgZPjga7j
+gYrph5HjgpLjgYLjgarjgZ/jgavmuKHjgZfjgabjgIHmgbXjgb7jgozjgarjgYTkurrjgIXjga7k
+uJboqbHjgpLjgZnjgovjgZPjgajjgavjgZfjgb7jgZfjgZ/jgILjgYLjgarjgZ/jga/jgZPjga7j
+gYrph5HjgpLnp4HjgYzjgZPjgZPjgafmjIfnpLrjgZnjgovmlrnms5XjgafliKnnlKjjgZnjgovj
+gafjgZfjgofjgYbjgILnp4Hjga/jgYLjgarjgZ/jgavjgYLjgarjgZ/jga7lgIvkurrnmoTjgark
+vb/nlKjjga7jgZ/jgoHjgavnt4/jgYrph5Hjga4zMOODkeODvOOCu+ODs+ODiOOCkuWPluOBo+OB
+puassuOBl+OBhOOBp+OBmeOAguOBiumHkeOBrjcw77yF44Gv56eB44Gu5ZCN5YmN44Gn5a2k5YWQ
+6Zmi44KS5bu644Gm44CB6YCa44KK44Gu6LKn44GX44GE5Lq644CF44KS5Yqp44GR44KL44Gf44KB
+44Gr5L2/44GG44Gn44GX44KH44GG44CC56eB44Gv5a2k5YWQ44Go44GX44Gm6IKy44Gh44G+44GX
+44Gf44GM44CB56We44Gu5a6244KS57at5oyB44GZ44KL44Gf44KB44Gg44GR44Gr44CB5a625peP
+44Gr44Gv6Kqw44KC44GE44G+44Gb44KT44CC44GT44Gu55eF5rCX44GM56eB44KS44Go44Gm44KC
+6Ium44GX44KB44Gf44Gu44Gn44CB56We44GM56eB44Gu572q44KS6LWm44GX44CB5qW95ZyS44Gn
+56eB44Gu6a2C44KS5Y+X44GR5YWl44KM44KL44KI44GG44Gr44GT44KM44KS44GX44Gm44GE44KL
+44Gu44Gn44GZ44CCDQoNCui/lOS/oeOCkuWPl+OBkeWPluOCiuasoeesrOOAgeODluODq+OCreOD
+iuODleOCoeOCveOBrumKgOihjOOBrumAo+e1oeWFiOOCkuOBiuefpeOCieOBm+OBl+OBvuOBmeOA
+guOBvuOBn+OAgemKgOihjOOBruePvuWcqOOBruWPl+WPluS6uuOBp+OBguOCi+OBk+OBqOOCkuio
+vOaYjuOBmeOCi+aoqemZkOabuOOCkueZuuihjOOBmeOCi+OCiOOBhumKgOihjOmVt+OBq+aMh+ek
+uuOBl+OBvuOBmeOAguengeOBjOOBk+OBk+OBp+i/sOOBueOBn+OCiOOBhuOBq+OBguOBquOBn+OB
+jOOBneOCjOOBq+W/nOOBmOOBpuihjOWLleOBmeOCi+OBk+OBqOOCkuengeOBq+S/neiovOOBl+OB
+puOBj+OBoOOBleOBhOOAgg0KDQrjgqTjgrbjg5njg6njg7vjgrXjg6jjgqbjg5DlpKvkurrjgYvj
+gonjgIINCg==
