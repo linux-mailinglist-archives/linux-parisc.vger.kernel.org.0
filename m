@@ -2,85 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC7F4EB5CB
-	for <lists+linux-parisc@lfdr.de>; Wed, 30 Mar 2022 00:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80A604EC6C8
+	for <lists+linux-parisc@lfdr.de>; Wed, 30 Mar 2022 16:39:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236683AbiC2WVO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 29 Mar 2022 18:21:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59532 "EHLO
+        id S1347026AbiC3OlY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 30 Mar 2022 10:41:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236569AbiC2WVH (ORCPT
+        with ESMTP id S243859AbiC3OlX (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 29 Mar 2022 18:21:07 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB73043395;
-        Tue, 29 Mar 2022 15:19:23 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id i4so7930006wrb.5;
-        Tue, 29 Mar 2022 15:19:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:mime-version:content-transfer-encoding
-         :content-description:subject:to:from:date:reply-to;
-        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
-        b=EI+WksCmVbRC/2kaUpDV4lImggCdl7hTG6lnDop5/l6Kc9iY6C4MKDJj/QS3/l7l99
-         z6S2Dq4S04clTtMENKOXoINFp+eIVysNjKNNbnMOTf9hEPi1Ig9Kd8Bm2ZNnqfZNgZgI
-         1gd2S/nMz7HLcTIz9IpLdbKKmQswv3a52kSESsbirj0Gs3+A+S2XhlE9C2A+AlHNVMNe
-         Q+XGvt5635W8umVbOO9Wi0/xQsAmRCcH8iztu9CFT80wVuPXU/x5qir0d7vsoJf2MgsE
-         GOcginJhIyJt9R11H7ZS1D91Vj8ALUWZkoGR60K/2hM2DTPnosbjqE6pjiWj/w9c/MzU
-         nhAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:mime-version
-         :content-transfer-encoding:content-description:subject:to:from:date
-         :reply-to;
-        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
-        b=hmhtMS6wGkwFYl3eqAjI1maU/iG2O5USpxqWFrvCQg0QF9MVxyusN10eyk3dHrC88R
-         xdvagg5tEwbS2v0U6/hehFyYMI8oV48Jc/xZBSDdYCz3pKkUkgbT94hRDQgzRyrP/PfJ
-         Vw9GoyWNsq1LefrmziezHNJ5cJeC0fY02fQ8g8+vX9G+HmwSk41BJzj8jVJ+p/AypFTA
-         lPEUEVmVLwwaAz914B6iMXHlVyyOHbNlBS2De9W2HA2X6I7Bvtxg8swOfleUe+F2K7c3
-         hH+Il5BZd40CSiQss8rAhJDgAir76Xes4ntdcbOqLT0S5ioROUwn3j4/m7L6hun4e0TJ
-         papw==
-X-Gm-Message-State: AOAM532k338wmQQYodoM/tv48m3gPrT2QyleV5pHvoiOrFUQZxowmxhv
-        F+t7fwKUY6Ah5aU8oXkIaYY=
-X-Google-Smtp-Source: ABdhPJzWpksgtbEr5QfXaQr88KyAkZFlEluaDdLac2gSTsfoF23Sff1aDHwgkak9pSTR7wqJ0Y/vOw==
-X-Received: by 2002:a5d:4205:0:b0:205:7acf:d111 with SMTP id n5-20020a5d4205000000b002057acfd111mr34074731wrq.444.1648592362494;
-        Tue, 29 Mar 2022 15:19:22 -0700 (PDT)
-Received: from [172.20.10.4] ([197.210.71.189])
-        by smtp.gmail.com with ESMTPSA id x3-20020a5d6b43000000b001e317fb86ecsm15642619wrw.57.2022.03.29.15.19.15
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Tue, 29 Mar 2022 15:19:20 -0700 (PDT)
-Message-ID: <624385e8.1c69fb81.af85d.d5ce@mx.google.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        Wed, 30 Mar 2022 10:41:23 -0400
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-005.bell.net [209.71.208.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1D85553E2A
+        for <linux-parisc@vger.kernel.org>; Wed, 30 Mar 2022 07:39:25 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.50.7.94]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6243249C0021DA0A
+X-CM-Envelope: MS4xfPWb97lPoliU7pAZq/A4vxpiSKAueEgKN3FY6AG3/bBrYVailBamNHHAe/fX5+WkdkA78UjcS9TjaFkIlUUxYUJUMUUafEr97VRgqbCgtyKzl3OTlDYs
+ 5bPMWywfm2xTY/Zb68drtMRrcLII4kZdX9y4uAXl8uHAZy+r7HHdPbl+4iEJLyPP/PZPtGBeEmQbY7SLAQhamn1jDZ4VQA1aCav7zE8W4LOwI8deAPERznRJ
+ INNxvha9rqV5I7WzLfjdLx0+Zjv4SpCNDA2IezMJi4nSvxGvG5JDREk+CAJrCEb5aUT7rDoGX/Xihrz6sNIaXlPAp6xWqhvhQcth7sJVBiHxxrfiHNQF4O+a
+ m/D5Bljjg5fOsb2ksIc4LazHko7codI6l2xHzt4leeU2x9kdkDlIEtbsdRWFKqnehWoCovHeEkuL6vr4vkBxit2XpjnSre9nJ5/MBgKERpvhwlOstkgEki7q
+ dFpkg6tU1BEJUn5QU64wh0SifSHxO3dy0QATYaLlHvGSnCxx0utEo+KgxlohJsqaZp7zWxl9vL8pkYnvPftpe5t6AEX3h/b2aUOyDAxMub40HduYi8E0KxIL
+ BDDsjWm9VYbDeqfxNEoybsA46o4pldaCdGh652TS3/FL9Q==
+X-CM-Analysis: v=2.4 cv=YYreWydf c=1 sm=1 tr=0 ts=62446ad7
+ a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
+ a=o8Y5sQTvuykA:10 a=FBHGMhGWAAAA:8 a=A9HHB92PKj38awnmFOAA:9 a=CjuIK1q_8ugA:10
+ a=6dC2SKYju5Z_YjFVazYA:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from mx3210.localdomain (70.50.7.94) by cmx-mtlrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 6243249C0021DA0A; Wed, 30 Mar 2022 10:36:07 -0400
+Received: by mx3210.localdomain (Postfix, from userid 1000)
+        id 475BB220116; Wed, 30 Mar 2022 14:36:06 +0000 (UTC)
+Date:   Wed, 30 Mar 2022 14:36:05 +0000
+From:   John David Anglin <dave.anglin@bell.net>
+To:     linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: [PATCH] parisc: In flush_cache_page, always flush tlb if pfn is valid
+Message-ID: <YkRq1YhoRloLL9dz@mx3210.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Gefeliciteerd, er is geld aan je gedoneerd
-To:     Recipients <adeboyejofolashade55@gmail.com>
-From:   adeboyejofolashade55@gmail.com
-Date:   Tue, 29 Mar 2022 23:19:07 +0100
-Reply-To: mike.weirsky.foundation003@gmail.com
-X-Spam-Status: No, score=2.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,RCVD_IN_SBL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,T_US_DOLLARS_3
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mrF1SdyeoC4JD9sw"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Beste begunstigde,
 
- Je hebt een liefdadigheidsdonatie van ($ 10.000.000,00) van Mr. Mike Weirs=
-ky, een winnaar van een powerball-jackpotloterij van $ 273 miljoen.  Ik don=
-eer aan 5 willekeurige personen als je deze e-mail ontvangt, dan is je e-ma=
-il geselecteerd na een spin-ball. Ik heb vrijwillig besloten om het bedrag =
-van $ 10 miljoen USD aan jou te doneren als een van de geselecteerde 5, om =
-mijn winst te verifi=EBren
- =
+--mrF1SdyeoC4JD9sw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-  Vriendelijk antwoord op: mike.weirsky.foundation003@gmail.com
- Voor uw claim.
+The purpose of this change is to inhibit move-in whenever we flush
+or purge.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+---
+
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index 23348199f3f8..91d218953b5c 100644
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -611,8 +611,8 @@ void
+ flush_cache_page(struct vm_area_struct *vma, unsigned long vmaddr, unsigned long pfn)
+ {
+ 	if (pfn_valid(pfn)) {
++		flush_tlb_page(vma, vmaddr);
+ 		if (likely(vma->vm_mm->context.space_id)) {
+-			flush_tlb_page(vma, vmaddr);
+ 			__flush_cache_page(vma, vmaddr, PFN_PHYS(pfn));
+ 		} else {
+ 			__purge_cache_page(vma, vmaddr, PFN_PHYS(pfn));
+
+
+--mrF1SdyeoC4JD9sw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmJEas0ACgkQXb/Nrl8Z
+TfHCVhAAoDMM5DDrhVxmOVxLRR1kvf+nLBUJ+LRYT1XzmIZ0JjwIVWIY4atuWxoq
+n7mlteqzCni+P+R723Vm8+m9pUj7BVcu00JEgX+ECFllJHumAo/ZaixuPx4rQPqP
+RFqiOzIPuwmkxr0Hvt9dBhWMDNaS9KX43Z1ZCf4t9Mn4fSr+59sdvqPdwbg7Yun3
+u949lsJwHRJJL1nfyP9TKCMcSwh89TyW+099mYmKUHsPIdlzSB5El2A2fZ3oiaWZ
+iVwkqVVNCOKqxNC0Blpi53E0QMqhM8rcc/9JuWY7NSbH4DB7cFqIN1O/qiqUBAQj
+0umJ5VTL7VtbND3AIWetfU5xePoeV0hdv+2E8vpwzPmq6pIAH1UUaxN++R2IZvn2
+/18G/AStasTf8zB18Mt5ufcI/Stwfnxe2NNwr3vmOrPtRxwSzIJQJbUG0ZRbgm+u
+JGXvAm4g90d2i+ARNC1Fb0He2TO1f0LdYcKHlT8vs9XbF92LOICd9AqJvyMaP0Jz
+pz6Li+pnBtleeuSHrkuIh2bDt7SU8qDNkZVKtlUPyphz5BCmRTn0xjBjBco0/AMY
+3qDOdyQVnpQ3Ml6VvCgfFpRf7pV7PmQrtC5csFpBnnHZjSaYqvAo5pLZDA3TfX9o
+XKD+WzWlfGrUyAHikAxx86yOmuZ8cQ9Jxx1OXhnPSFb50R4G36M=
+=0BJi
+-----END PGP SIGNATURE-----
+
+--mrF1SdyeoC4JD9sw--
