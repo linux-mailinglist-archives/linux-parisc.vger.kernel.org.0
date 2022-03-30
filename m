@@ -2,52 +2,66 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBDF24EC748
-	for <lists+linux-parisc@lfdr.de>; Wed, 30 Mar 2022 16:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87B784EC94D
+	for <lists+linux-parisc@lfdr.de>; Wed, 30 Mar 2022 18:08:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347306AbiC3OwJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 30 Mar 2022 10:52:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49584 "EHLO
+        id S1348604AbiC3QKA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 30 Mar 2022 12:10:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347335AbiC3OwH (ORCPT
+        with ESMTP id S1348617AbiC3QKA (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 30 Mar 2022 10:52:07 -0400
-Received: from cmx-torrgo002.bell.net (mta-tor-002.bell.net [209.71.212.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 672754925A
-        for <linux-parisc@vger.kernel.org>; Wed, 30 Mar 2022 07:50:19 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6243254D001A98F7
-X-CM-Envelope: MS4xfKx8NLN/vGmdja8UPnP5wD84gt6EL7BcKPYYzRkDv55YiYklMbvWis6f3lI29zCUQFWwwpZPrDid2UUnhKUv3J5ldNfokxtqgRpdoDEDVr6whzl6BS7f
- 2u85Dh2hRsLvYn5puQVRhLWdrM9qUziwoturLi6QviWDG7ZyQlbyeqxiQnOoBVw1ifPOVcyilXYsJ+mIQqj9DAU4GWNZ2VnTEsqF4+NJYEqnSLDDQc+dC6Wu
- YKSY8tuaUjRxx8TN+R6jIJjSkbT3xXNtJxr5ECvRYiUbQpvlPy3zk60vdcqQHN/oldBuiVHfThLADl9GQTG0x2mCpXSQsrFhK6Nm+qvNf0Wbbh+YRi1RcUcO
- y/lw+yPologkewJGRQi+Ky4/HUYqbxa/iy9DBdE+UFwzCiU1ul9YnWDc8OaZdxHHgZmlCxBNCddjhGegTTrEwPGv3+lUYEo4EWUTtpn63HsfkvhnYclpFd2N
- 5LvYGX/3xL3u56sEdt7j6PMfJ769AYsdeeiIVQjmHP55yV6hqdV+ESoC/ZY4YGLhlPThrlWCrFyCtEOek9Toa1htwwEmoIjwAMORdS9ogQ4npVITIqUbtTI9
- OiGEgWztBkObKf68o6Go/TEeDAggqAsxzAVtxZ5e0T2O9w==
-X-CM-Analysis: v=2.4 cv=G99/r/o5 c=1 sm=1 tr=0 ts=62446c57
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=o8Y5sQTvuykA:10 a=FBHGMhGWAAAA:8 a=pwD9VVs-Zs8JKL4LVKUA:9 a=CjuIK1q_8ugA:10
- a=96wnEI4cIE8GtJseiSoA:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from mx3210.localdomain (70.50.7.94) by cmx-torrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 6243254D001A98F7; Wed, 30 Mar 2022 10:42:31 -0400
-Received: by mx3210.localdomain (Postfix, from userid 1000)
-        id 7E5C7220116; Wed, 30 Mar 2022 14:42:30 +0000 (UTC)
-Date:   Wed, 30 Mar 2022 14:42:30 +0000
-From:   John David Anglin <dave.anglin@bell.net>
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Subject: [PATCH] parisc: Don't enforce DMA completion order in cache flushes
-Message-ID: <YkRsVukdryZ2isYA@mx3210.localdomain>
+        Wed, 30 Mar 2022 12:10:00 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDC51D0FA;
+        Wed, 30 Mar 2022 09:08:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1648656484;
+        bh=eyZgoSOXBgiY7IogFE1g9ozYUMFErfGzTyG1DhV1kkY=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=P5R+TUQXTBR5ZCq5q4HQJgGqqqXy95xx0yWYvvjiEXxb1IoYII3Vsw2os0viT82VJ
+         IlVaN1aWaxdevY0iJmoc6+YB+HkYMUF3eQP956IaVeHocoZfE93WpXQNW1BUJqsd1J
+         0aB4gFT3fyxbAii6w1AQlbe9kfmYVY7lDjuSvfPA=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100 ([92.116.163.139]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M4s0j-1nZKHT3P31-0023Lm; Wed, 30
+ Mar 2022 18:08:04 +0200
+Date:   Wed, 30 Mar 2022 18:08:02 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Sven Schnelle <svens@stackframe.org>
+Subject: [GIT PULL] parisc architecture updates for v5.18-rc1 - part 2
+Message-ID: <YkSAYq2dExCq1TcP@p100>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="W8TQcDmBNHPs11YM"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Provags-ID: V03:K1:MbVWdF/mQgvKGKlOMFlTd9dekYyXQSvHMFQhLCksPoJI1ugbOr3
+ n1lfwy+jWdULLkT2hKaGclODh0OpeW6kDtZ/IFMLu8czFJ/fN1Hkkn603tPT/Iyr2JAjnIL
+ 2NVmZrUrSHUI4F2OF9/292PY1Q1LMjoMHYwu+HqzXIZInobQ0TZMp4SHhMMn6fPJ9YTwUu8
+ 1KU9YSJTHeElju21FzSvQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:e381kNrS15c=:VZUO+9WCVHeJFzsWc6ssxd
+ w51nALGlBlEFiW+c0ZsabN6qXGFKqftVpiwvnz0AaqrYjN9XrAKi/OnBoffEt8eDdYRCHsC06
+ 6kQjSRba2HC8t0G53zBARFTv6hVLwDyCO+YjXd3yzOnimLP0MXqjuKd96JFUQA9qVvIGkgD00
+ XkuABS+QQPcmnBMytKYYOli3D9ZNQrlrr+lzFg9Gp4v/+iet6IRqZw1gkdP3w61IIzpZu2mWy
+ zTZOUkJk4khai6iIssNV1cEv0IY3TE8oLeBmmyki59cAOnDo9lBU5PTeUnUtW01MtEPXWdgnk
+ DOFvNRWRk7aHY3yaCQNXN7sZpWJu8ZMPsfTlvBdKUlFSxR3ncPDPFYmLOEO0FcWoXwzdWIAQu
+ tM5dg8r/U53FJ8n6PruWdjA5MqdCmHG7WePM4udqRW2asqv58xmxV6cQgzOhdjF39IJ2zbytj
+ BNmwsAWAgq/9sJeIEXDwP5Z1Xd6ARkWn/BBGA0AKS0Jj5k73ordXs5caAfl2uktcKzIL50k6/
+ MS1rWguLjkcfnP6Gs7C3HQqk9DY/I/L5C3UGk9Uz+jwHkUHUpiO4wKxTkVYi4FWJmRlVtbiRo
+ XA5W3A3fGGUNFVYmt+SGDXHNkWbpcGril1LN2EEeD6jWHkz34Ip4tIJr0jlSjsfuftImfUHo8
+ wVA8l+UBtGqYP3al81VUQBtXCKj/JAVBHMTPPFszLYGR57wYQEd11KpTowLCVXVHm/E8oB59c
+ X1oDgkFKV5n7ZTQ2hIF9m9B/McIeo5Ztt9Pwt6XitB3pH+DZfK8XOs9+gDEgz8WKmcTsNlwJu
+ n7WkQOfh/61zJUqW+OfvGxaA28lzlR8weLLuaHVCU2Qta60+z/YIBwhwP41V8UuDQIWjIT1ye
+ 4HkbB9T7Pov6a2VPrneS77NYXp3rcLglSHGVNtm4M28RbQ5hIdRiuyeQQuEwHSTHTZ3yDe2dA
+ 0sJlSxTWy0MJqol6Oj85clHN1d3Di3+N97yjTGn2uowMK1p4imewyO+O254WLtno7UP6+qWcU
+ vkrUfOBERGZJDVUYEGJtUPnloWHuS03LC7Wn0JZ8Y9gIe+ZZi2X6Clfo742xFI3qK+ad0rlWP
+ 8VvcqWFYC9nhqo=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,96 +69,77 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+The following changes since commit ae085d7f9365de7da27ab5c0d16b12d51ea7fca9:
 
---W8TQcDmBNHPs11YM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  mm: kfence: fix missing objcg housekeeping for SLAB (2022-03-27 18:47:00 -0700)
 
-The only place we need to ensure all outstanding cache coherence
-operations are complete is in invalidate_kernel_vmap_range. All
-parisc drivers synchronize DMA operations internally and do not
-call invalidate_kernel_vmap_range. We only need this for non-coherent
-I/O operations.
+are available in the Git repository at:
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
----
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.18/parisc-2
 
-diff --git a/arch/parisc/include/asm/cache.h b/arch/parisc/include/asm/cach=
-e.h
-index 5032e758594e..e23d06b51a20 100644
---- a/arch/parisc/include/asm/cache.h
-+++ b/arch/parisc/include/asm/cache.h
-@@ -54,6 +54,7 @@ void parisc_setup_cache_timing(void);
- #define asm_io_sync()	asm volatile("sync" \
- 			ALTERNATIVE(ALT_COND_NO_DCACHE, INSN_NOP) \
- 			ALTERNATIVE(ALT_COND_NO_IOC_FDC, INSN_NOP) :::"memory")
-+#define asm_syncdma()	asm volatile("syncdma" :::"memory")
-=20
- #endif /* ! __ASSEMBLY__ */
-=20
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 533c5643c3fe..7eb3467a0432 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -642,6 +642,9 @@ void invalidate_kernel_vmap_range(void *vaddr, int size)
- 	unsigned long start =3D (unsigned long)vaddr;
- 	unsigned long end =3D start + size;
-=20
-+	/* Ensure DMA is complete */
-+	asm_syncdma();
-+
- 	if ((!IS_ENABLED(CONFIG_SMP) || !arch_irqs_disabled()) &&
- 	    (unsigned long)size >=3D parisc_cache_flush_threshold) {
- 		flush_tlb_kernel_range(start, end);
-diff --git a/arch/parisc/kernel/pacache.S b/arch/parisc/kernel/pacache.S
-index b4c3f01e2399..8569141e3e67 100644
---- a/arch/parisc/kernel/pacache.S
-+++ b/arch/parisc/kernel/pacache.S
-@@ -300,7 +300,6 @@ fdoneloop2:
- 	fdce,m		%arg1(%sr1, %arg0)	/* Fdce for one loop */
-=20
- fdsync:
--	syncdma
- 	sync
- 	mtsm		%r22			/* restore I-bit */
- 89:	ALTERNATIVE(88b, 89b, ALT_COND_NO_DCACHE, INSN_NOP)
-@@ -1098,7 +1097,6 @@ ENTRY_CFI(flush_kernel_dcache_range_asm)
-=20
- 	sync
- 89:	ALTERNATIVE(88b, 89b, ALT_COND_NO_DCACHE, INSN_NOP)
--	syncdma
- 	bv		%r0(%r2)
- 	nop
- ENDPROC_CFI(flush_kernel_dcache_range_asm)
-@@ -1140,7 +1138,6 @@ ENTRY_CFI(purge_kernel_dcache_range_asm)
-=20
- 	sync
- 89:	ALTERNATIVE(88b, 89b, ALT_COND_NO_DCACHE, INSN_NOP)
--	syncdma
- 	bv		%r0(%r2)
- 	nop
- ENDPROC_CFI(purge_kernel_dcache_range_asm)
+for you to fetch changes up to a9fe7fa7d874a536e0540469f314772c054a0323:
 
+  parisc: Fix patch code locking and flushing (2022-03-29 21:37:13 +0200)
 
---W8TQcDmBNHPs11YM
-Content-Type: application/pgp-signature; name="signature.asc"
+----------------------------------------------------------------
+More parisc architecture updates & fixes for kernel v5.18-rc1
 
------BEGIN PGP SIGNATURE-----
+* Revert a patch to the invalidate/flush vmap routines which broke kernel
+  patching functions on older PA-RISC machines.
 
-iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmJEbFUACgkQXb/Nrl8Z
-TfEfDhAAo28GHDACm+N/TvSa49LSTszaAcMPsjnMmXTWEt1Gku250JfPFYB5wswX
-2qSNqrw1k8BaqVGnSkYOrWLGSAgyc/wbMoIQiEdhHaBbJ74C47TYhNAC55x5rxEr
-Ih78r1fg9VJFE2dr00ufLzCkOxUFA+fZxGBNsSA2xwRergpJspAb5vli9oKonGdk
-w7sX5pIJqoETGTf4mWn9z4fDLbDl4sGrydGmwK9d4+H4obX0QgHeA3hs4QoY8Gfj
-Lu5vRB2iGSUejqpkgRjf9OlFp1sDF0V0gxdIVsV/k0gCoZ5RAcmyG6g/qBmRK7ag
-0Vu4IibJTWsJxql9/wB0/4KZ0Ch2eQ6nsteaAm2JGNPIK+rWw6pSl2fxQ7BH1kIM
-4MxzrGa7xlKZgWk7sCdio+uvUIqSlmkwNFjmnC7WQ6RsyjHNc1dCbaxkwT/ohFhV
-tuByNXtKjl8ZjFQlfH3YbxscQDIYiOtqczsUmF28bjq/8PmdZ85yLb4BzO2b4jsr
-bGVnko5h1d/2K9SevrNB2nzGXSCVyKBZvUBJ9xIaXFo8mSuW2pcU5Jsr+NwXgPV0
-q5XWj84FS7EJJSOqvF0L/nGfRv/GsRExsQnfKzZIO6Inou5WWYy/bcQgJHXhFb4e
-Jk916Qwkd2K3i2uyqFv20K2iD5xvrXJuM9FOW/ZijyfitEjCg2Y=
-=Uf5w
------END PGP SIGNATURE-----
+* Fix the kernel patching code wrt. locking and flushing. Works now on
+  B160L machine as well.
 
---W8TQcDmBNHPs11YM--
+* Fix CPU IRQ affinity for LASI, WAX and Dino chips
+
+* CPU hotplug support
+
+* Detect the hppa-suse-linux-gcc compiler when cross-compiling
+
+----------------------------------------------------------------
+Helge Deller (15):
+      Revert "parisc: Fix invalidate/flush vmap routines"
+      parisc: Fix CPU affinity for Lasi, WAX and Dino chips
+      parisc: Clean up cpu_check_affinity() and drop cpu_set_affinity_irq()
+      parisc: Detect hppa-suse-linux-gcc compiler for cross-building
+      parisc: Add constants for control registers and clean up mfctl()
+      parisc: Ensure set_firmware_width() is called only once
+      parisc: Switch from GENERIC_CPU_DEVICES to GENERIC_ARCH_TOPOLOGY
+      parisc: Move store_cpu_topology() into text section
+      parisc: Move CPU startup-related functions into .text section
+      parisc: Move disable_sr_hashing_asm() into .text section
+      parisc: Add PDC locking functions for rendezvous code
+      parisc: Implement __cpu_die() and __cpu_disable() for CPU hotplugging
+      parisc: Rewrite arch_cpu_idle_dead() for CPU hotplugging
+      parisc: Move common_stext into .text section when CONFIG_HOTPLUG_CPU=y
+      parisc: Find a new timesync master if current CPU is removed
+
+John David Anglin (1):
+      parisc: Fix patch code locking and flushing
+
+ arch/parisc/Kconfig                     |  12 +---
+ arch/parisc/Makefile                    |   4 +-
+ arch/parisc/include/asm/pdc.h           |   3 +
+ arch/parisc/include/asm/pdcpat.h        |   3 +-
+ arch/parisc/include/asm/processor.h     |   1 +
+ arch/parisc/include/asm/smp.h           |   9 +--
+ arch/parisc/include/asm/special_insns.h |  17 +++--
+ arch/parisc/include/asm/topology.h      |  23 +------
+ arch/parisc/kernel/Makefile             |   2 +-
+ arch/parisc/kernel/cache.c              |  26 ++------
+ arch/parisc/kernel/firmware.c           |  44 ++++++++++++-
+ arch/parisc/kernel/head.S               |  11 +++-
+ arch/parisc/kernel/irq.c                |  25 +-------
+ arch/parisc/kernel/pacache.S            |   2 +-
+ arch/parisc/kernel/patch.c              |  25 ++++----
+ arch/parisc/kernel/process.c            |  27 +++++++-
+ arch/parisc/kernel/processor.c          |   6 +-
+ arch/parisc/kernel/smp.c                | 108 +++++++++++++++++++++++++++-----
+ arch/parisc/kernel/time.c               |   6 +-
+ arch/parisc/kernel/topology.c           |  77 ++++++-----------------
+ drivers/parisc/dino.c                   |  41 +++++++++---
+ drivers/parisc/gsc.c                    |  31 +++++++++
+ drivers/parisc/gsc.h                    |   1 +
+ drivers/parisc/lasi.c                   |   7 +--
+ drivers/parisc/wax.c                    |   7 +--
+ 25 files changed, 312 insertions(+), 206 deletions(-)
