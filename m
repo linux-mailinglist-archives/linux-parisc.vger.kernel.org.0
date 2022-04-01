@@ -2,127 +2,122 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C94454EF884
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Apr 2022 18:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C67D64EF982
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Apr 2022 20:06:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236989AbiDAQ7P (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Apr 2022 12:59:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60338 "EHLO
+        id S236208AbiDASIq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 Apr 2022 14:08:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240531AbiDAQ7P (ORCPT
+        with ESMTP id S1344731AbiDASIp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Apr 2022 12:59:15 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC96A1385AD
-        for <linux-parisc@vger.kernel.org>; Fri,  1 Apr 2022 09:57:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1648832238;
-        bh=4tTy/hXIiYSMwfPpOkR+agUAlpRz/ul3oFK8DVv3F+g=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=HztN/a+i3XT2G1YKDfoUBTdo3XCoLNMk1UOPxE/DCEvtbEB2SyqT93qVOEqITJYix
-         n9kM68+8kp2is628atvg0ohzB/eN7uAthLf1Fw2aY6YSDriAxgwvUyYexcp+iP8S20
-         t5h65+u0oJy6suS+sZsA73+EZUdHGFQVMgOfSGIo=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100.fritz.box ([92.116.191.12]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M3DO3-1nb8zo3usn-003dmL; Fri, 01
- Apr 2022 18:57:17 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Update 32- and 64-bit defconfigs
-Date:   Fri,  1 Apr 2022 18:57:17 +0200
-Message-Id: <20220401165717.202265-1-deller@gmx.de>
-X-Mailer: git-send-email 2.35.1
+        Fri, 1 Apr 2022 14:08:45 -0400
+X-Greylist: delayed 1345 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 01 Apr 2022 11:06:54 PDT
+Received: from gateway23.websitewelcome.com (gateway23.websitewelcome.com [192.185.48.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4FC3104A7A
+        for <linux-parisc@vger.kernel.org>; Fri,  1 Apr 2022 11:06:54 -0700 (PDT)
+Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
+        by gateway23.websitewelcome.com (Postfix) with ESMTP id 830B110665
+        for <linux-parisc@vger.kernel.org>; Fri,  1 Apr 2022 12:44:28 -0500 (CDT)
+Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
+        by cmsmtp with SMTP
+        id aLK0nhUc3RnrraLK0no4kl; Fri, 01 Apr 2022 12:44:28 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:Subject:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=R6CCo0Ivq9tj59jKVA48y3vxWF19qfaCGqdqIiS/OJ8=; b=1KBTGtweF9m2/5SMW5VKYht5Ss
+        9An8Kj2crLaaTJ124SKAEyHbM/EAE3qyCc/AiT91ccH3mMd3F8/ARzmNz4o8+EFG4WC5GLXtBsuOK
+        V3JoQ8VH2jrlIONVtH2zX9tIrlhnLuv73Pn0D0o9fYJRGZ9ahLAd/bE8HvVYyjMlE4vyLqgQcUw+Z
+        xgeDScjKk/6Q3H8h2gyWlNgVhct5YP5RwLZiXZkZOq7GDafPHvq66H1eFYtiQLxz7kfyeZnq7CAJ2
+        pQtB480N9IAVhtUTfKsSA1curEbvuHujUQS550pfiFuFeJf9k/6xFqf/okNYKREFT/zBwaGV3/kQP
+        5HXL9dXA==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54658)
+        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@roeck-us.net>)
+        id 1naLK0-000z9O-5c; Fri, 01 Apr 2022 17:44:28 +0000
+Message-ID: <927a54f9-b413-0c71-461d-28ed9d5ece96@roeck-us.net>
+Date:   Fri, 1 Apr 2022 10:44:26 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:KF9RVvaJ8CfeZ3ydZXiksJQfnLeQSnXHRtl6IgSAJP9DWxR32Rw
- SgZdQbfj2QNGlp6qKAVHFX35ducvucNnjxUkkqdboemEt0opJM7f3Rn+MxIk26GL8gDS2n6
- PFD3lx6D8RQvAo/Q8cW3fePsFNMuQ3hfsNbtWTjQBXAkmoanFn0z2owedo5O6uTRQGepSYZ
- f8bTeCTavlCbzUjQO14Pg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:XhI+8BVssNc=:GhtOVwE2cVzwXwsjzwSzOT
- a8I51dzxv2fyYnyAmTMcY1Z8/hH/70kxkdFXRHn1ERil719d47jqSzMIAxZJfJQ5I6a7F3K+i
- AdkXRB6RvEQXteuqctNuD5zN/GKclxvkA2vLwlcfcqxWW6xhYCITtIZNKc7I0nUv6+LsmVFd3
- ldx8uv/n0oY0/qqGbnkKCOAqDqKVPaVv1oJbpDEMtnOp4geSqoy6x3or5GT73JnaXasMdenog
- cquB8r0n/YvEE/H3PB3JwQVk7t9LXy22+ink5i0DEGLMY34Lg8XQk86q9c2Qu8Fw5c8z3HY4d
- SXQm/0o9B4BLhSbaQ+MwcqRHFj0ffScjP0+NNW/zLQL3JYw+hJQKSKImoYmHRKlH5+gr32NBW
- ku7DzHvLZAOxaYRwkL3K3ydJOKfiara6qJo274qG1z2HJorntTgnZimv27GpPy5kx32zkQjVl
- GQrjmOrL1bnNzhAQndXPW4ZNEgziKgd6O6PvsBI8KagoyVIIhh1vrJM7IzS6cwhK6IUaim6ui
- LE1wSAm7tNzgtMp8TMuuaWoBSrzxl+4QfWlo8a2/J0PZ0HuroY9fXsApAXkS0AI+pUy3c10M1
- z2rfJS2QhOyBJgGnBoLaPF3nJYB0f9seb1+sPZFmMY+a4f7r3b2C/dzEoZ1EP1TXL2d9k+zyf
- ogII9/V9ybcvrrzFHVDlNavRzL3bg7alGMDsih1bl7bJHZOxNLBeQdaL7kp/Uad/D16dQPYj3
- /oQiBc5/dFUq8FSAGagiazNFuRfHtdZz03oPa+LtcAicoNSJbSMonB1e3tN0oTA12RkaeI+SR
- 26QYyXMmUczgbj0RInbZNpcxdNFrQ719iaKZ4Tqp7LkFeo4lyn3F16dtl9B78WA7/736fo39W
- yx0Q+R7SY4nxK0+YRxYsf5uO8/isVxUVBy9p6YcK3c5qhPaBNZzuZk9AmzT2vIc1KWSYb89u8
- 0L6wY4+7C0d7opFY4bJ/vdSuFHinK5/C6iPWpDEtiVfK6XN5yXWPu0neS+kj02mpBmqyyiqqy
- 36/mWyzG5KzSi5VtxkHbqOk+796Pj22YfRUV3wzhvIucUWFPgUKQ4YBT2nIUS2WtfBAolEzvi
- NU2RD2kolckhTg=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>
+Cc:     James.Bottomley@HansenPartnership.com,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220401154137.GA3745625@roeck-us.net>
+ <57e79014-25e6-62d3-27de-64797e43992b@gmx.de>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] parisc: Switch from GENERIC_CPU_DEVICES to
+ GENERIC_ARCH_TOPOLOGY
+In-Reply-To: <57e79014-25e6-62d3-27de-64797e43992b@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1naLK0-000z9O-5c
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net [108.223.40.66]:54658
+X-Source-Auth: linux@roeck-us.net
+X-Email-Count: 2
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Enable CONFIG_CGROUPS=3Dy on 32-bit defconfig for systemd-support, and
-enable CONFIG_NAMESPACES and CONFIG_USER_NS.
+On 4/1/22 09:47, Helge Deller wrote:
+> Hi Günter,
+> 
+> On 4/1/22 17:41, Guenter Roeck wrote:
+>> On Thu, Mar 24, 2022 at 07:46:50PM +0100, Helge Deller wrote:
+>>> Switch away from the own cpu topology code to common code which is used
+>>> by ARM64 and RISCV. That will allow us to enable CPU hotplug later on.
+>>>
+>>> Signed-off-by: Helge Deller <deller@gmx.de>
+>>
+>> This patch results in the following traceback when
+>> booting generic-32bit_defconfig - SMP in qemu.
+> 
+> That's strange, because I just built this generic-32bit_defconfig myself and
+> it boots up nicely in qemu for me. The only thing missing is CONFIG_CGROUPS=y so that
+> systemd can start.
+> 
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- arch/parisc/configs/generic-32bit_defconfig | 4 +++-
- arch/parisc/configs/generic-64bit_defconfig | 3 ++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+Did you disable SMP (that is what - SMP was supposed to mean) ?
+Also, note that the system does boot fine, it just spits out the warning.
 
-diff --git a/arch/parisc/configs/generic-32bit_defconfig b/arch/parisc/con=
-figs/generic-32bit_defconfig
-index a5fee10d76ee..8ce0ae370680 100644
-=2D-- a/arch/parisc/configs/generic-32bit_defconfig
-+++ b/arch/parisc/configs/generic-32bit_defconfig
-@@ -6,6 +6,9 @@ CONFIG_BSD_PROCESS_ACCT=3Dy
- CONFIG_IKCONFIG=3Dy
- CONFIG_IKCONFIG_PROC=3Dy
- CONFIG_LOG_BUF_SHIFT=3D16
-+CONFIG_CGROUPS=3Dy
-+CONFIG_NAMESPACES=3Dy
-+CONFIG_USER_NS=3Dy
- CONFIG_BLK_DEV_INITRD=3Dy
- CONFIG_EXPERT=3Dy
- CONFIG_PERF_EVENTS=3Dy
-@@ -47,7 +50,6 @@ CONFIG_PARPORT=3Dy
- CONFIG_PARPORT_PC=3Dm
- CONFIG_PARPORT_1284=3Dy
- CONFIG_BLK_DEV_LOOP=3Dy
--CONFIG_BLK_DEV_CRYPTOLOOP=3Dy
- CONFIG_BLK_DEV_RAM=3Dy
- CONFIG_BLK_DEV_RAM_SIZE=3D6144
- CONFIG_BLK_DEV_SD=3Dy
-diff --git a/arch/parisc/configs/generic-64bit_defconfig b/arch/parisc/con=
-figs/generic-64bit_defconfig
-index 1b8fd80cbe7f..57501b0aed92 100644
-=2D-- a/arch/parisc/configs/generic-64bit_defconfig
-+++ b/arch/parisc/configs/generic-64bit_defconfig
-@@ -16,6 +16,7 @@ CONFIG_CGROUPS=3Dy
- CONFIG_MEMCG=3Dy
- CONFIG_CGROUP_PIDS=3Dy
- CONFIG_CPUSETS=3Dy
-+CONFIG_USER_NS=3Dy
- CONFIG_RELAY=3Dy
- CONFIG_BLK_DEV_INITRD=3Dy
- CONFIG_CC_OPTIMIZE_FOR_SIZE=3Dy
-@@ -267,9 +268,9 @@ CONFIG_CRYPTO_DEFLATE=3Dm
- CONFIG_CRC_CCITT=3Dm
- CONFIG_LIBCRC32C=3Dy
- CONFIG_PRINTK_TIME=3Dy
-+CONFIG_DEBUG_KERNEL=3Dy
- CONFIG_STRIP_ASM_SYMS=3Dy
- CONFIG_MAGIC_SYSRQ=3Dy
- CONFIG_DEBUG_FS=3Dy
--CONFIG_DEBUG_KERNEL=3Dy
- CONFIG_DEBUG_STACKOVERFLOW=3Dy
- # CONFIG_SCHED_DEBUG is not set
-=2D-
-2.35.1
+> I'm not sure how I can debug/reproduce your bug report...
+> 
 
+I see the problem with generic-32bit_defconfig if I disable SMP.
+I normally have some other (debug) options enabled, but I confirmed
+that it is sufficient to disable SMP. The actual command line should
+not matter, but here is one of mine as example (for booting from
+initrd). I currently use qemu v6.2.
+
+qemu-system-hppa -kernel vmlinux \
+     -no-reboot -initrd rootfs.cpio \
+     -device e1000,netdev=net0 -netdev user,id=net0 \
+     -append "panic=-1 slub_debug=FZPUA rdinit=/sbin/init console=ttyS0,115200" \
+     -nographic -monitor null
+
+Guenter
