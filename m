@@ -2,64 +2,75 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA234EE922
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Apr 2022 09:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44C354EF7F5
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Apr 2022 18:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230344AbiDAHeK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Apr 2022 03:34:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35488 "EHLO
+        id S238409AbiDAQbo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 Apr 2022 12:31:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244722AbiDAHeJ (ORCPT
+        with ESMTP id S243350AbiDAQbd (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Apr 2022 03:34:09 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8711225E32B
-        for <linux-parisc@vger.kernel.org>; Fri,  1 Apr 2022 00:32:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1648798331;
-        bh=6KOrpts29Pohn7oENhQPsa7ZEgeWmI3n3wrYVR6DbfI=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=WW4m/rbY3GH/9FqRlSFUtIyAW40U3ed+AVaorhzCQi5IsrmFodijJBDZvpDYFBeP7
-         D7eSYAXC0pzpQK+tCIc9ywmMstWAJC0dKb9EQuVkTAmzQvGb2ZhRs8NItT34tpgq68
-         7qJXI4ck+VAx1cdcMKcwPzePn3nqBkJdb5SBL3J4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100.fritz.box ([92.116.191.12]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M2wGs-1nbHh13Lqu-003MmZ; Fri, 01
- Apr 2022 09:32:11 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Only list existing CPUs in cpu_possible_mask
-Date:   Fri,  1 Apr 2022 09:32:10 +0200
-Message-Id: <20220401073210.33645-1-deller@gmx.de>
-X-Mailer: git-send-email 2.35.1
+        Fri, 1 Apr 2022 12:31:33 -0400
+X-Greylist: delayed 1328 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 01 Apr 2022 09:03:48 PDT
+Received: from gateway31.websitewelcome.com (gateway31.websitewelcome.com [192.185.144.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E22919A55B
+        for <linux-parisc@vger.kernel.org>; Fri,  1 Apr 2022 09:03:46 -0700 (PDT)
+Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
+        by gateway31.websitewelcome.com (Postfix) with ESMTP id 6ACA5A8197
+        for <linux-parisc@vger.kernel.org>; Fri,  1 Apr 2022 10:41:39 -0500 (CDT)
+Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
+        by cmsmtp with SMTP
+        id aJP9nDPJMb6UBaJP9nE2jN; Fri, 01 Apr 2022 10:41:39 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:
+        To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=jYAFnwL/trWc/tMIlxDuzyohVvM2VKCSHxk9x+Omj0s=; b=XyifY4BY2SuYmYWXVgnx1XKJxW
+        LJZRjk7WxqQw6djH49Dp/OwHHqZoDQy6U74WAiMvQCOKSOeZgCSfv2ZukuF3qihwgFLB0BamUEwAE
+        9s3ecFs3n93DuMTnzLcT/bUoBw/ZXN9s/8X8VfC7nwYvZoKjgV+GXVEMXXOesvXJUTPhAjA3yGYXa
+        /5DDY8vwa1sm902VWVIf3GwXIIvdydbEbN3Xh8ez7BZXG3CIJFgp3GSXN6SFmn0pf28TVEltVclAR
+        cTTO4+jVWc+rhkdr5S9/dxhvfYXtoVf0yukFMphqor6tfl60rxgHO7NUXU/MhdagY81QZbW8yPLFI
+        Lu5y9x4g==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:57806 helo=localhost)
+        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@roeck-us.net>)
+        id 1naJP9-004BW2-01; Fri, 01 Apr 2022 15:41:39 +0000
+Date:   Fri, 1 Apr 2022 08:41:37 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Helge Deller <deller@gmx.de>
+Cc:     James.Bottomley@HansenPartnership.com,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] parisc: Switch from GENERIC_CPU_DEVICES to
+ GENERIC_ARCH_TOPOLOGY
+Message-ID: <20220401154137.GA3745625@roeck-us.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZMP7anWF7Il0Qs5dVISnXxMJyb3NnVHgeY+7zOaYEouq5bz2IWM
- PA2RoOYholO5I0BX1tvomUHQGfbSHA9LVz7gtna5BnDfBtuKKxOujpX5AYFX4QhEc5wlybE
- MHGQd4KrLwPCyiA5s992hDabtjwlNX6L//cGeGsfnZ65IxioqCGobbEU0CRAQxP0+RM3M7O
- DfXH1GKmvivM7J56UWJAA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xfdaH0yqvI8=:vM1y/i8MT/tocKDXQTOvaQ
- wxby0vI/eHUFXWTgWsc6B2mdLTNMyqD55zMbmz1AA4D77NPtlHC5GiTm/au/2DmwWNNCT+OI/
- 3tIyYx3bGeWDQjChv/oECCSrGa6Mgs8XeSCozOBcJTPQjkKh6kMzK95Je4vgA90ylG1cWhP/E
- Uf4E5quDrsh4uTOak6tmxh/CnYQXLsUD/J8T2OvyarsCStkD9LKf2l02YblUZ0ZR+DzVMUpAt
- J+ogXV7gUMrihv1/GhdkwPjH22Ln1MszlFmfiSL0fLFxcWnrzoTLtb3UU+HUqsD0+4ANffJVY
- tef8rQZmLcZsD2Z6P8ObEJnVxOdWUQsJ00+x/VBaUKEcLNCPsz41ZV7BuGdwrAjnKUDNH9jgm
- ebrbB4sa5hbQCyh/NA2Mgm3hEF7mfxFug96gYCgHAK6aYD3h4QmP7aer48+YBg3XCS/qNLvSf
- PbRYFg901z07SytwbbIdZbmQhAr2fzWLi5sTCV/7y3zGsBcrtMIBnP0mtnskM7BR0792RVV10
- tcEXflCR/0Zlug5xOXkKkU0e7fL6iFqAyrIjnRha9nxp+9ak1CtIEu3oDVMdLSgriZhI+QObN
- loxfEZNBd6OM8m+AyGK48PGrNDFXsGsS9EIWNFvfARLpeNJaY8B75bW6q8Eyh7Krq5Yie6YfM
- O3GMZeL43r9ASKu7jT9p7TFaFV+Lz3V+pSnBIZf0kYyIQtdttq2fsUGY/shRO3Rr1xtMbuXXP
- Q20nZwS5nQWkRvvNKC9PWa0UNsqa4KZkOjvpTXNBmARHjDCxbAjvqUOcDmj/7TAIbL9emQ+a6
- cXWCuSQ3iytu8eiYyIYlKyDkC8K2W24wwB5u9IbTtLWxWeqtpwkTjgopkLCE5UZ+qBMQM9cs8
- lt3qLGVfdLGn9CWuDmAmIxaPt6BVr+OVFgIcY6vgwzlH0LHNy7oepm4TUxWTchGiDJ2Wx2YaF
- lslIAmDPuP7grUhmqOm+CyUfWW7+evSQGO29U8CBjz1l90j1R4yuRnuFwRT7/qI7rdUVO8B8a
- XOlNStda1Vk3ThN2QzTP4G88qF1Yc5cL13IMsYbCHEVr+7ReJclFIWonQh42tCPWhTOEzFBea
- NAUh4JqFehOiwI=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1naJP9-004BW2-01
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:57806
+X-Source-Auth: guenter@roeck-us.net
+X-Email-Count: 23
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,51 +78,82 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The inventory knows which CPUs are in the system, so this bitmask should
-be in cpu_possible_mask instead of the bitmask based on CONFIG_NR_CPUS.
+Hi,
 
-Reset the cpu_possible_mask before scanning the system for CPUs, and
-mark each existing CPU as possible during initialization of that CPU.
+On Thu, Mar 24, 2022 at 07:46:50PM +0100, Helge Deller wrote:
+> Switch away from the own cpu topology code to common code which is used
+> by ARM64 and RISCV. That will allow us to enable CPU hotplug later on.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
 
-This avoids those warnings later on too:
+This patch results in the following traceback when
+booting generic-32bit_defconfig - SMP in qemu.
 
- register_cpu_capacity_sysctl: too early to get CPU4 device!
+[    9.432811] ------------[ cut here ]------------
+[    9.433305] WARNING: CPU: 0 PID: 1 at fs/sysfs/group.c:115 internal_create_group+0x360/0x394
+[    9.433825] Modules linked in:
+[    9.434267] CPU: 0 PID: 1 Comm: swapper Not tainted 5.17.0-32bit+ #1
+[    9.434621] Hardware name: 9000/778/B160L
+[    9.434889]
+[    9.435014]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[    9.435201] PSW: 00000000000001001011111100001111 Not tainted
+[    9.435392] r00-03  0004bf0f 114305c0 103518bc 11430600
+[    9.435578] r04-07  0000003c 10db3d20 10b27ecc 00000000
+[    9.435725] r08-11  106f6c88 00000001 00000000 00000000
+[    9.435876] r12-15  10c59000 00000000 00000001 00000000
+[    9.436022] r16-19  00000028 00080000 00000000 10db4ad8
+[    9.436168] r20-23  0000012c 10eb0a00 106f6c88 00000000
+[    9.436314] r24-27  10b27ecc 00000000 00000000 10cf00e0
+[    9.436460] r28-31  00000000 ae147af8 114306c0 101a66d8
+[    9.436625] sr00-03  00000000 00000000 00000000 00000000
+[    9.436785] sr04-07  00000000 00000000 00000000 00000000
+[    9.436942]
+[    9.437006] IASQ: 00000000 00000000 IAOQ: 1035186c 10351870
+[    9.437161]  IIR: 03ffe01f    ISR: 00000000  IOR: 10e02d68
+[    9.437307]  CPU:        0   CR30: 1141a010 CR31: 00000000
+[    9.437470]  ORIG_R28: 00000000
+[    9.437579]  IAOQ[0]: internal_create_group+0x360/0x394
+[    9.437753]  IAOQ[1]: internal_create_group+0x364/0x394
+[    9.437913]  RP(r2): sysfs_create_group+0x1c/0x2c
+[    9.438180] Backtrace:
+[    9.438892]  [<103518bc>] sysfs_create_group+0x1c/0x2c
+[    9.439116]  [<106f6cb0>] topology_add_dev+0x28/0x38
+[    9.439407]  [<101a66d8>] cpuhp_invoke_callback.constprop.0+0xcc/0x17c
+[    9.440321]  [<101a68b0>] __cpuhp_setup_state_cpuslocked+0x128/0x210
+[    9.440545]  [<101a69c0>] __cpuhp_setup_state+0x28/0x38
+[    9.440657]  [<10126fa4>] topology_sysfs_init+0x3c/0x4c
+[    9.440795]  [<1018510c>] do_one_initcall+0x68/0x510
+[    9.440918]  [<10101420>] kernel_init_freeable+0x1d4/0x268
+[    9.441040]  [<10aa7bdc>] kernel_init+0x2c/0x150
+[    9.441191]  [<1018201c>] ret_from_kernel_thread+0x1c/0x24
+[    9.441574]
+[    9.441716] ---[ end trace 0000000000000000 ]---
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Noticed-by: John David Anglin <dave.anglin@bell.net>
-=2D--
- arch/parisc/kernel/processor.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Reverting the offending commit fixes the problem.
+Bisect log is attached.
 
-diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor=
-.c
-index d98692115221..9e92b76b0ce0 100644
-=2D-- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -171,6 +171,7 @@ static int __init processor_probe(struct parisc_device=
- *dev)
- 	p->cpu_num =3D cpu_info.cpu_num;
- 	p->cpu_loc =3D cpu_info.cpu_loc;
+Guenter
 
-+	set_cpu_possible(cpuid, true);
- 	store_cpu_topology(cpuid);
-
- #ifdef CONFIG_SMP
-@@ -461,6 +462,13 @@ static struct parisc_driver cpu_driver __refdata =3D =
-{
-  */
- void __init processor_init(void)
- {
-+	unsigned int cpu;
-+
- 	reset_cpu_topology();
-+
-+	/* reset possible mask. We will mark those which are possible. */
-+	for_each_possible_cpu(cpu)
-+		set_cpu_possible(cpu, false);
-+
- 	register_parisc_driver(&cpu_driver);
- }
-=2D-
-2.35.1
-
+---
+# bad: [e8b767f5e04097aaedcd6e06e2270f9fe5282696] Merge tag 'for-linus-5.18-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rw/uml
+# good: [d888c83fcec75194a8a48ccd283953bdba7b2550] fs: fix fd table size alignment properly
+git bisect start 'HEAD' 'd888c83fcec7'
+# good: [2a44cdaa01837355b14b9221e87d75963846296c] Merge tag 'dmaengine-5.18-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine
+git bisect good 2a44cdaa01837355b14b9221e87d75963846296c
+# bad: [b8321ed4a40c02054f930ca59d3570caa27bc86c] Merge tag 'kbuild-v5.18-v2' of git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild
+git bisect bad b8321ed4a40c02054f930ca59d3570caa27bc86c
+# bad: [93235e3df29c084a37e0daed17801c6adfce4cb6] Merge tag 'v5.18-p1' of git://git.kernel.org/pub/scm/linux/kernel/git/herbert/crypto-2.6
+git bisect bad 93235e3df29c084a37e0daed17801c6adfce4cb6
+# good: [84b3b8df51e26b8bc2c7178b068ef447473d4609] dt-bindings: pwm: renesas,pwm: Include generic PWM schema
+git bisect good 84b3b8df51e26b8bc2c7178b068ef447473d4609
+# bad: [a9fe7fa7d874a536e0540469f314772c054a0323] parisc: Fix patch code locking and flushing
+git bisect bad a9fe7fa7d874a536e0540469f314772c054a0323
+# bad: [95370b4031ec67f9749e5873ae7139a53cc6bf53] parisc: Move store_cpu_topology() into text section
+git bisect bad 95370b4031ec67f9749e5873ae7139a53cc6bf53
+# good: [ed9794812b0a61f62317991c5c3e6c78749a0bdc] parisc: Detect hppa-suse-linux-gcc compiler for cross-building
+git bisect good ed9794812b0a61f62317991c5c3e6c78749a0bdc
+# good: [1e93848a385ed2c2df9cb246b073dc8c66d10793] parisc: Ensure set_firmware_width() is called only once
+git bisect good 1e93848a385ed2c2df9cb246b073dc8c66d10793
+# bad: [62773112acc55d29727465d075fc61ed08a0a532] parisc: Switch from GENERIC_CPU_DEVICES to GENERIC_ARCH_TOPOLOGY
+git bisect bad 62773112acc55d29727465d075fc61ed08a0a532
+# first bad commit: [62773112acc55d29727465d075fc61ed08a0a532] parisc: Switch from GENERIC_CPU_DEVICES to GENERIC_ARCH_TOPOLOGY
