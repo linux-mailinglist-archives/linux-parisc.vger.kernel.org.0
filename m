@@ -2,122 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C67D64EF982
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Apr 2022 20:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9456C4EFBA8
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Apr 2022 22:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236208AbiDASIq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Apr 2022 14:08:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46212 "EHLO
+        id S235145AbiDAUd0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 Apr 2022 16:33:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344731AbiDASIp (ORCPT
+        with ESMTP id S233141AbiDAUdZ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Apr 2022 14:08:45 -0400
-X-Greylist: delayed 1345 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 01 Apr 2022 11:06:54 PDT
-Received: from gateway23.websitewelcome.com (gateway23.websitewelcome.com [192.185.48.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4FC3104A7A
-        for <linux-parisc@vger.kernel.org>; Fri,  1 Apr 2022 11:06:54 -0700 (PDT)
-Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
-        by gateway23.websitewelcome.com (Postfix) with ESMTP id 830B110665
-        for <linux-parisc@vger.kernel.org>; Fri,  1 Apr 2022 12:44:28 -0500 (CDT)
-Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
-        by cmsmtp with SMTP
-        id aLK0nhUc3RnrraLK0no4kl; Fri, 01 Apr 2022 12:44:28 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:Subject:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=R6CCo0Ivq9tj59jKVA48y3vxWF19qfaCGqdqIiS/OJ8=; b=1KBTGtweF9m2/5SMW5VKYht5Ss
-        9An8Kj2crLaaTJ124SKAEyHbM/EAE3qyCc/AiT91ccH3mMd3F8/ARzmNz4o8+EFG4WC5GLXtBsuOK
-        V3JoQ8VH2jrlIONVtH2zX9tIrlhnLuv73Pn0D0o9fYJRGZ9ahLAd/bE8HvVYyjMlE4vyLqgQcUw+Z
-        xgeDScjKk/6Q3H8h2gyWlNgVhct5YP5RwLZiXZkZOq7GDafPHvq66H1eFYtiQLxz7kfyeZnq7CAJ2
-        pQtB480N9IAVhtUTfKsSA1curEbvuHujUQS550pfiFuFeJf9k/6xFqf/okNYKREFT/zBwaGV3/kQP
-        5HXL9dXA==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54658)
-        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@roeck-us.net>)
-        id 1naLK0-000z9O-5c; Fri, 01 Apr 2022 17:44:28 +0000
-Message-ID: <927a54f9-b413-0c71-461d-28ed9d5ece96@roeck-us.net>
-Date:   Fri, 1 Apr 2022 10:44:26 -0700
+        Fri, 1 Apr 2022 16:33:25 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0531E102437
+        for <linux-parisc@vger.kernel.org>; Fri,  1 Apr 2022 13:31:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1648845076;
+        bh=LJBKA8q7jhmTpgfkcVbvdAAatfJXDOkG0+64Hqsize8=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=Q/4EVV9b2oxJC5rDg0RO+ic8NwGw13Fz/4YwRN7vP+jd9Qk7yGU8Qpy6seRZuXHJe
+         M6Vkz0qUWUATD1fuQmIWDUtsDPDWU5j3DWPZ1e2O0UNB+oZrS4AyRIrmbwXQf0+HwK
+         3ir/lfS5v0hOW44jULXD58TuQGDu42bDf3Acb89E=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.191.12]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MXXuB-1nWBkh18tL-00Z2rx; Fri, 01
+ Apr 2022 22:31:16 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH] parisc: Re-enable GENERIC_CPU_DEVICES for !SMP
+Date:   Fri,  1 Apr 2022 22:31:14 +0200
+Message-Id: <20220401203114.348053-1-deller@gmx.de>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>
-Cc:     James.Bottomley@HansenPartnership.com,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220401154137.GA3745625@roeck-us.net>
- <57e79014-25e6-62d3-27de-64797e43992b@gmx.de>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] parisc: Switch from GENERIC_CPU_DEVICES to
- GENERIC_ARCH_TOPOLOGY
-In-Reply-To: <57e79014-25e6-62d3-27de-64797e43992b@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1naLK0-000z9O-5c
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net [108.223.40.66]:54658
-X-Source-Auth: linux@roeck-us.net
-X-Email-Count: 2
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:D8zg+oO3I3VR8w2Ms49aXd/1L/fqZEX49Eem/7R/vW53P+ZpZfX
+ 6eoPNWxiIpAZ0qDkeezBHp+sUZBKrwUvTDSv984tGjecWApJyARuFN94kqWTfgomoPJz+n2
+ nhzQsVcCwljqql8BUjp2OTok5afA54NK8dRpwzlYH8BMGwSGgFm2olb30JH9mWZB9jw+9aQ
+ n8KcMErhVbPbgTyKvF+ug==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Su9vLY6bzLY=:yzB2zNsggATOzN9KTRHlll
+ 3NIvjrs/iAEWk9Ttl6XrUXruqx6uj2LwEIa+4aKjcCZUu2QxXv2gaj8Tn4g5ZiTtlixa+gXAU
+ aCYG/GnnoowiWAudKx9dWBQyFQ9LFRTCUNcbHE9klmUhaEME2sndx62530PD5R4K8Xq6sp4Wg
+ unmpTsPcR9LW4nJJW4d3C07Tdm9l/scADx0pYBKvv9vnbMtEaPppUdEuWSQO+W01rYZfr9+4Z
+ gms+Y5cHJFCjaQC9V+fbmW30EPilvJP3tmxUhRsk2y4i9PwEwmpzNqQHE+GrLg5PyJqPLhXce
+ EGMjA8YZm+/09knvXlCiokwtycn5bC9+9oiU06BtERLlj6KX23AQFy/N+mA03lOYdUmJxMrH9
+ Aopek02vvc5O47nIELpIv6UyBqMCUggfnAui0Obzw/UC0TeJAEqsTwigznjfsomqNrl4MzOUN
+ yK5pqb8TUr09AhO8Icei+yoqSIU3OvIjwza3csEk21TFLFmZcnTbhNDLRN1WuSVly28BuTd/b
+ /IfWEx7WppnBhzoNqZ7hLiCns9Sfj+KxC66cyEft90F2/22pv0PJTUvQoOR6SZYPqQWZFvxjO
+ AFpOyDw2cX7gDc6PNi6hc27FbFpnI0CuKMdSYdLuZl1lGGfIS+mHjHLyPSsRlJ+ShWgMBR5S1
+ LPs6UTsOMBSNYs4f+wUcVqCKqdVr/BTFg5YcxoVO2XZ39P6fUGY9hhcFFe+Hq8Gn/4KeL+Kyj
+ jaqDUTGvFb+YREGsVXDZPq4gBrx3Qly+Mvhr9+98oWVebwWMT4//KAvMPpjn7vKVl+nqbidb6
+ 9VMhFrnEPjnkO+mNo5Y2QLmxui9hd6SeF+M8Rh03BqjXazxp/W+YCHg1CuUQ2qhafGuFipOnL
+ kI+HySvL50J7fRYd2w6Jw32COLTlFG+Vt0jqDUWzs19RyhvnWnxQQ9hpyZDdHR0g9cozPJGh5
+ jaPqJo4mp73K23NiJLelScAiuLRfx0Ie9Hp4rAwHYUxCQ/YUfGe6yMybJCNT44TwJ8SVXupK/
+ FS3Q/XrNf8shNFjTkXXlsGmUt+An+AEhPaWaAG9/oguKcvx3iYptwYtBfazAB0TPH1JSGyrEg
+ XlVJzPa0m1ufIA=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 4/1/22 09:47, Helge Deller wrote:
-> Hi Günter,
-> 
-> On 4/1/22 17:41, Guenter Roeck wrote:
->> On Thu, Mar 24, 2022 at 07:46:50PM +0100, Helge Deller wrote:
->>> Switch away from the own cpu topology code to common code which is used
->>> by ARM64 and RISCV. That will allow us to enable CPU hotplug later on.
->>>
->>> Signed-off-by: Helge Deller <deller@gmx.de>
->>
->> This patch results in the following traceback when
->> booting generic-32bit_defconfig - SMP in qemu.
-> 
-> That's strange, because I just built this generic-32bit_defconfig myself and
-> it boots up nicely in qemu for me. The only thing missing is CONFIG_CGROUPS=y so that
-> systemd can start.
-> 
+In commit 62773112acc5 ("parisc: Switch from GENERIC_CPU_DEVICES to
+GENERIC_ARCH_TOPOLOGY") GENERIC_CPU_DEVICES was unconditionally turned
+off, but this triggers a warning in topology_add_dev(). Turning it back
+on for the !SMP case avoids this warning.
 
-Did you disable SMP (that is what - SMP was supposed to mean) ?
-Also, note that the system does boot fine, it just spits out the warning.
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 62773112acc5 ("parisc: Switch from GENERIC_CPU_DEVICES to GENERIC_A=
+RCH_TOPOLOGY")
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-> I'm not sure how I can debug/reproduce your bug report...
-> 
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 52e550b45692..bd22578859d0 100644
+=2D-- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -38,6 +38,7 @@ config PARISC
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_ARCH_TOPOLOGY if SMP
++	select GENERIC_CPU_DEVICES if !SMP
+ 	select GENERIC_LIB_DEVMEM_IS_ALLOWED
+ 	select SYSCTL_ARCH_UNALIGN_ALLOW
+ 	select SYSCTL_EXCEPTION_TRACE
+=2D-
+2.35.1
 
-I see the problem with generic-32bit_defconfig if I disable SMP.
-I normally have some other (debug) options enabled, but I confirmed
-that it is sufficient to disable SMP. The actual command line should
-not matter, but here is one of mine as example (for booting from
-initrd). I currently use qemu v6.2.
-
-qemu-system-hppa -kernel vmlinux \
-     -no-reboot -initrd rootfs.cpio \
-     -device e1000,netdev=net0 -netdev user,id=net0 \
-     -append "panic=-1 slub_debug=FZPUA rdinit=/sbin/init console=ttyS0,115200" \
-     -nographic -monitor null
-
-Guenter
