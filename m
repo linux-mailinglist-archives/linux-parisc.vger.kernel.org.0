@@ -2,71 +2,95 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81BF24F06FD
-	for <lists+linux-parisc@lfdr.de>; Sun,  3 Apr 2022 05:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51F564F0C6E
+	for <lists+linux-parisc@lfdr.de>; Sun,  3 Apr 2022 22:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231670AbiDCDIX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 2 Apr 2022 23:08:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52946 "EHLO
+        id S241054AbiDCUI6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 3 Apr 2022 16:08:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231384AbiDCDIU (ORCPT
+        with ESMTP id S239271AbiDCUI5 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 2 Apr 2022 23:08:20 -0400
-X-Greylist: delayed 361 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 02 Apr 2022 20:06:25 PDT
-Received: from mta-out-01.alice.it (mta-out-01.alice.it [217.169.118.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 04A5139144
-        for <linux-parisc@vger.kernel.org>; Sat,  2 Apr 2022 20:06:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alice.it; s=20211207; t=1648955186; 
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        h=Reply-To:From:To:Date:Message-ID:MIME-Version;
-        b=HNawPrdtn+BS2SvWn+PSDt90ZTzr2UuWJRraQD/uHPdUnPvsVr6+VE+VW7yu57oZ54QngPogsd/S8TfTz7H3j37OZfp00JvLG5RTWTN+9ex5aX1IGoFDVaadblyB1vkf6gJMyWX+fM0tgfPIhv688uWPLw5mhXvBmrPVbZdNeLHOdZte+dO6yiKYQTIpfUO8svTJOCKWzcPZJ5ewQUW9OkFLpSllyg9Gm1vqO0erdrk5dxp6/EsbZrLfGnWZ1xxAtW98Q6Zi+7nw0YbvijjLT77PgufB/JGSlFFEDRMXSg2Fbl4s5wLZTm22blBZjvIHvGwBZmLkxdVx6rSfwRYwXA==
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvvddrudeiledgiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuvffgnffgvefqoffkvfetnffktedpqfgfvfenuceurghilhhouhhtmecufedtudenucfgmhhpthihuchsuhgsjhgvtghtucdluddtmdengfhmphhthicusghougihucdlhedtmdenucfjughrpehrhffvfffkggestddtfedttddttdenucfhrhhomhephggvuchhrghvvgcurghnuchofhhfvghruchtohcuihhnvhgvshhtuchinhcuhihouhhrucgtohhunhhtrhihuchunhguvghrucgruchjohhinhhtuchvvghnthhurhgvuchprghrthhnvghrshhhihhpuchplhgvrghsvgcurhgvphhlhicufhhorhcumhhorhgvucguvghtrghilhhsuceofhgpphgvnhhnrgesrghlihgtvgdrihhtqeenucggtffrrghtthgvrhhnpeehjeetgefhleetiedtkeelfffgjeeugeegleekueffgfegtdekkeeifedvvdffteenucfkphepudejiedrvddvjedrvdegvddrudeltdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegrlhhitggvrdhithdpihhnvghtpedujeeirddvvdejrddvgedvrdduledtpdhmrghilhhfrhhomhepfhgpphgvnhhnrgesrghlihgtvgdrihhtpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-RazorGate-Vade-Verdict: clean 60
-X-RazorGate-Vade-Classification: clean
-Received: from alice.it (176.227.242.190) by mta-out-01.alice.it (5.8.807.04) (authenticated as f_penna@alice.it)
-        id 6244775000E19E4F for linux-parisc@vger.kernel.org; Sun, 3 Apr 2022 05:00:22 +0200
-Reply-To: dougfield20@inbox.lv
-From:   We have an offer to invest in your country under a
-         joint venture partnership please reply for more
-         details <f_penna@alice.it>
+        Sun, 3 Apr 2022 16:08:57 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 129DC3A1A6
+        for <linux-parisc@vger.kernel.org>; Sun,  3 Apr 2022 13:07:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1649016412;
+        bh=UfFARla4LRJo23P894N11t+lOIXNck9rWxYehQZUgO0=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=He745vEpdVFBNeD1jIBKyH4qVtw6OaBONNZVAGEU16LL7g9VzaKg6X7s4IepAF7tK
+         p7KM419yrgWjDhix/IieQldsFLHWHD30S+o46xqgM+tGSa/MCXZX45bH0gGZMvT9pq
+         3OgiVccOIxJvzNZyHTlzyoidVROehhs6UQQT1x7M=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.160.29]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M6ll8-1nevB73pE6-008Jih; Sun, 03
+ Apr 2022 22:06:51 +0200
+From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
-Date:   02 Apr 2022 20:00:20 -0700
-Message-ID: <20220402200020.4DE0B0869B26648C@alice.it>
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Show model and model name in one line in /proc/cpuinfo
+Date:   Sun,  3 Apr 2022 22:06:50 +0200
+Message-Id: <20220403200650.143325-1-deller@gmx.de>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,BODY_EMPTY,
-        DKIM_INVALID,DKIM_SIGNED,EMPTY_MESSAGE,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,MISSING_SUBJECT,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.7 RCVD_IN_DNSWL_LOW RBL: Sender listed at https://www.dnswl.org/,
-        *       low trust
-        *      [217.169.118.7 listed in list.dnswl.org]
-        *  0.0 RCVD_IN_MSPIKE_L3 RBL: Low reputation (-3)
-        *      [217.169.118.7 listed in bl.mailspike.net]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5142]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [f_penna[at]alice.it]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [dougfield20[at]inbox.lv]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  2.3 EMPTY_MESSAGE Message appears to have no textual parts and no
-        *      Subject: text
-        *  1.8 MISSING_SUBJECT Missing Subject: header
-        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
-        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blacklisted
-        *  0.0 BODY_EMPTY No body text in message
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:RCVOfQoCwt+j2msrSL3st2s9Pa4/dkpjgSuvJxq1ExxHqk+Z5s9
+ 2Hyhx87D4btBGoxoDTjU9kIDxMikLAPso2gTtMTIYxFi3lfx0NiM1pijExK9AK0Nft+l5Ov
+ jxzpmrtTuvzH1fy1Nn3hHDMum2EUmaHm7maI54P/7kxia/N0O4Qpkw6NBqSOYI1X7JNUJys
+ frITBS6dMochrCOvlbEow==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:JLWI0b4DlAo=:GQCOUHjfjyvfJGzOGOK0Ou
+ RPAJINqrTu7iqgkJQ88e6NjD16kkj8pPfTZsSDgDk34kTznRz8WLknGwBc/HDvU+qogUemx1W
+ 8HXPT282fXLtpgRA/cm++UI+uubQsJ9Hkj/ed0aBESns211rEa4WjoyO24tFu9tOIJ4cBUqNf
+ eL+yc3nKzHB2INBVKXTjFe0fL7zPgZbcyGsgkx2fKuOTMfzlUx2xu5PDSZRuMgmUR/39kX6SZ
+ ODCDymdl0iIP4la8rJkiro6LKx3AyRYJTYvLc0MTzw2AVTimezKwNml8an8Kg6ssiB/AYRuTx
+ q+hUr7letbaH/VXDMmDabEtTSVtAohtLPppteOnMqadnt8dq6OWG/KjTfyLCcnj75EwX8ETz4
+ pEIUXFTksW3Oar/VoLln+04VlOfzlKoWn8OVr5Meg91KLzA7LliuaMFawoAFfRZI9I64tsEuI
+ uFQ1srhJg3xY0/MZquJPhIIAXc+W+OOvSdZHonjhA14pksmu8L8YbHA+ZfST6Fy5pH3yLwDaa
+ sdkHOoMS5cEHtKDkVb+1+BWNyAD/AzLVpSd5SmDENaJzmCiO/0e4sHJzLfMOqSVfUrXB6ofOF
+ RC46cVO85AGZa35q60cUxn3fI63UHzKFuJQ1NfCXEyQCki6SuIlpd4qXDhtiAxfq0WKQ/82qy
+ NEeCxIF1rxSoqeIzArCFjnByWkgOHh94aMkWNjAePFkcit8/EN8mLvRwg2hQsyzlrODjP4oOb
+ BgXNe/p4HPFz/5iIZCIOeoP+X20vGeXO8IXY7fVnLyTU93dMI9hOKIKwrGYXmaBEJmkNEygaK
+ yV7XCYolfYmw/VcnGIRv70UBlIx5Zn0mx61gBzI8EyHRiD9C1AdH+cdWtU25LFUoKByWtpwcz
+ HD/EkR2rIobgi7X/CNS9dORkv3H+MgPvooyNETibnCFXHdMHK/hoYDbbvSpbQrvrFFEV/V1Mo
+ d2kEMKysx9PnaxMdibSplXmDpXlQnoWVbiaM59mD/1X/1PU5L18FpuL307QQCEetcZi3FPuak
+ IYhym+kk3uyJ3uXxeMV6l1ERfyLOKHhKfZ+TiHM4W/jalp0kB4zBUZ5w7Sy6Paux0PGNf90vi
+ rmWPNONHEYrW/I=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
+
+The Linux tool "lscpu" shows double amount of CPUs if we have
+"model" and "model name" in two different lines in /proc/cpuinfo.
+This change combines the model and the model name in one line.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/kernel/processor.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor=
+.c
+index 9e92b76b0ce0..26eb568f8b96 100644
+=2D-- a/arch/parisc/kernel/processor.c
++++ b/arch/parisc/kernel/processor.c
+@@ -420,8 +420,7 @@ show_cpuinfo (struct seq_file *m, void *v)
+ 		}
+ 		seq_printf(m, " (0x%02lx)\n", boot_cpu_data.pdc.capabilities);
+
+-		seq_printf(m, "model\t\t: %s\n"
+-				"model name\t: %s\n",
++		seq_printf(m, "model\t\t: %s - %s\n",
+ 				 boot_cpu_data.pdc.sys_model_name,
+ 				 cpuinfo->dev ?
+ 				 cpuinfo->dev->name : "Unknown");
+=2D-
+2.35.1
 
