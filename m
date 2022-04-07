@@ -2,126 +2,210 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 666A74F541D
-	for <lists+linux-parisc@lfdr.de>; Wed,  6 Apr 2022 06:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33D2F4F871A
+	for <lists+linux-parisc@lfdr.de>; Thu,  7 Apr 2022 20:32:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239645AbiDFEEC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 6 Apr 2022 00:04:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58330 "EHLO
+        id S233280AbiDGSeX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 7 Apr 2022 14:34:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1445972AbiDEWWC (ORCPT
+        with ESMTP id S229710AbiDGSeX (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 5 Apr 2022 18:22:02 -0400
-Received: from cmx-torrgo001.bell.net (mta-tor-005.bell.net [209.71.212.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 96BB1D4451
-        for <linux-parisc@vger.kernel.org>; Tue,  5 Apr 2022 14:13:40 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 624AF5870031D69B
-X-CM-Envelope: MS4xfN4xqDprShbZCgYa/Oh5kv3WX/TuBEMbkteyU71cq+cqt2UVkU9ZsEmo2sty2/5RXPU59npboB0udhXjm1fV1Le5vJDVgeKqqzAz3g7jdc3gPCpDDOqM
- Pul1AoYuRj/8qKECD/deWSXb28KV//SFAeV4iZ5KD8YPZNYJNz0aS2B12KhijTvgGZY4v5fPNJmfci+g5KVQOT9Q4MqlJTFGjspsMLzIlKOHVT84qHyHrabM
- tQFTS3uwi8An9CLpZ/yTanBhxmS1ChlM07mKHjANQe3tGJChTykEwduurTjLHrob
-X-CM-Analysis: v=2.4 cv=B8zabMhM c=1 sm=1 tr=0 ts=624cb0f9
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=IkcTkHD0fZMA:10 a=7mOBRU54AAAA:8 a=FBHGMhGWAAAA:8 a=FFk6Qn2WtypZk9e6MTUA:9
- a=QEXdDO2ut3YA:10 a=wa9RWnbW_A1YIeRBVszw:22 a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (70.50.7.94) by cmx-torrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 624AF5870031D69B; Tue, 5 Apr 2022 17:13:29 -0400
-Message-ID: <f2ad1439-f304-e6ae-6e4e-b9fda73ec4cd@bell.net>
-Date:   Tue, 5 Apr 2022 17:13:29 -0400
+        Thu, 7 Apr 2022 14:34:23 -0400
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 437F91B0BFE;
+        Thu,  7 Apr 2022 11:32:22 -0700 (PDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+        by localhost (Postfix) with ESMTP id 4KZ9385y6Fz9sRn;
+        Thu,  7 Apr 2022 20:32:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 34dnQT70PsPL; Thu,  7 Apr 2022 20:32:20 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase2.c-s.fr (Postfix) with ESMTP id 4KZ9384kBPz9sRk;
+        Thu,  7 Apr 2022 20:32:20 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 925B38B792;
+        Thu,  7 Apr 2022 20:32:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id KpdHInGLHfNB; Thu,  7 Apr 2022 20:32:20 +0200 (CEST)
+Received: from [192.168.202.234] (unknown [192.168.202.234])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id CDCA38B765;
+        Thu,  7 Apr 2022 20:32:17 +0200 (CEST)
+Message-ID: <9b1b475c-f3de-02a4-b863-c00345d3364b@csgroup.eu>
+Date:   Thu, 7 Apr 2022 20:32:16 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: Recurring INEQUIVALENT ALIASES issues and userland
- corruption/crashes
-Content-Language: en-US
-To:     Sam James <sam@gentoo.org>, linux-parisc@vger.kernel.org
-Cc:     hppa@gentoo.org
-References: <63DA313A-FCE1-4535-9BF3-11E36B2DE422@gentoo.org>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <63DA313A-FCE1-4535-9BF3-11E36B2DE422@gentoo.org>
+Subject: Re: [RFC PATCH] lkdtm: Replace lkdtm_rodata_do_nothing() by
+ do_nothing()
+Content-Language: fr-FR
+From:   Christophe Leroy <christophe.leroy@csgroup.eu>
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org
+References: <fe36bf23fb14e7eff92a95a1092ed38edb01d5f5.1634491011.git.christophe.leroy@csgroup.eu>
+ <26d37781-9824-3306-240d-6ce6044c2412@csgroup.eu>
+In-Reply-To: <26d37781-9824-3306-240d-6ce6044c2412@csgroup.eu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2022-03-22 1:52 p.m., Sam James wrote:
-> In Gentoo, we've just got our hands on an RP3440 (PA8800) which seems to quite easily hit inequivalent aliasing issues.
->
-> We've found that under some workloads, the machine copes fine, none of that appears in dmesg, and all is well - even for
-> over a week. But as soon as we start other workloads (the problematic one is building "stages" -- release media for Gentoo),
-> within 30m or so, the machine is in a broken state, with these messages flooding dmesg:
-> ```
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x42994000 and 0x426e1000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x426e1000 and 0x41b56000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x41b56000 and 0x41aae000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x41aae000 and 0x42774000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x42774000 and 0x41202000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x41202000 and 0x428dd000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x41e2c000 and 0x418f6000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x418f6000 and 0x42980000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x42980000 and 0x426cd000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x426cd000 and 0x41b42000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x41b42000 and 0x41a9a000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x41a9a000 and 0x42760000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x42760000 and 0x411ee000 in file bash
-> Mar 22 04:19:55 muta.hppa.dev.gentoo.org kernel: INEQUIVALENT ALIASES 0x411ee000 and 0x428c9000 in file bash
-> ```
-It seems all these messages result from a single call to flush_dcache_page.  Note the sequential behavior of old_addr
-and addr, and message times.
+Hi Kees,
 
-Possibly, the VMA interval tree is corrupt, so the loop doesn't terminate properly.
+Le 23/02/2022 à 18:17, Christophe Leroy a écrit :
+> Hi Kees,
+> 
+> Le 17/10/2021 à 19:19, Christophe Leroy a écrit :
+>> All EXEC tests are based on running a copy of do_nothing()
+>> except lkdtm_EXEC_RODATA which uses a different function
+>> called lkdtm_rodata_do_nothing().
+>>
+>> On architectures using function descriptors, EXEC tests are
+>> performed using execute_location() which is a function
+>> that most of the time copies do_nothing() at the tested
+>> location then duplicates do_nothing() function descriptor
+>> and updates it with the address of the copy of do_nothing().
+>>
+>> But for EXEC_RODATA test, execute_location() uses
+>> lkdtm_rodata_do_nothing() which is already in rodata section
+>> at build time instead of using a copy of do_nothing(). However
+>> it still uses the function descriptor of do_nothing(). There
+>> is a risk that running lkdtm_rodata_do_nothing() with the
+>> function descriptor of do_thing() is wrong.
+>>
+>> To remove the above risk, change the approach and do the same
+>> as for other EXEC tests: use a copy of do_nothing(). The copy
+>> cannot be done during the test because RODATA area is write
+>> protected. Do the copy during init, before RODATA becomes
+>> write protected.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+> Any opinion on this patch ?
 
-         vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
-                 offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
-                 addr = mpnt->vm_start + offset;
+Any opinion ?
 
-                 /* The TLB is the engine of coherence on parisc: The
-                  * CPU is entitled to speculate any page with a TLB
-                  * mapping, so here we kill the mapping then flush the
-                  * page along a special flush only alias mapping.
-                  * This guarantees that the page is no-longer in the
-                  * cache for any process and nor may it be
-                  * speculatively read in (until the user or kernel
-                  * specifically accesses it, of course) */
+Thanks
+Christophe
 
-                 flush_tlb_page(mpnt, addr);
-                 if (old_addr == 0 || (old_addr & (SHM_COLOUR - 1))
-                                       != (addr & (SHM_COLOUR - 1))) {
-                         __flush_cache_page(mpnt, addr, page_to_phys(page));
-                         if (parisc_requires_coherency() && old_addr)
-                                 printk(KERN_ERR "INEQUIVALENT ALIASES 0x%lx and 0x%lx in file %pD\n", old_addr, addr, mpnt->vm_file);
-                         old_addr = addr;
-                 }
-         }
-
-I see arm skips some VMAs:
-
-         vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
-                 unsigned long offset;
-
-                 /*
-                  * If this VMA is not in our MM, we can ignore it.
-                  */
-                 if (mpnt->vm_mm != mm)
-                         continue;
-                 if (!(mpnt->vm_flags & VM_MAYSHARE))
-                         continue;
-                 offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
-                 flush_cache_page(mpnt, mpnt->vm_start + offset, page_to_pfn(page));
-         }
-
-Dave
-
--- 
-John David Anglin  dave.anglin@bell.net
-
+> 
+> Thanks
+> Christophe
+> 
+>> ---
+>> This applies on top of series v3 "Fix LKDTM for PPC64/IA64/PARISC"
+>>
+>>   drivers/misc/lkdtm/Makefile | 11 -----------
+>>   drivers/misc/lkdtm/lkdtm.h  |  3 ---
+>>   drivers/misc/lkdtm/perms.c  |  9 +++++++--
+>>   drivers/misc/lkdtm/rodata.c | 11 -----------
+>>   4 files changed, 7 insertions(+), 27 deletions(-)
+>>   delete mode 100644 drivers/misc/lkdtm/rodata.c
+>>
+>> diff --git a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
+>> index e2984ce51fe4..3d45a2b3007d 100644
+>> --- a/drivers/misc/lkdtm/Makefile
+>> +++ b/drivers/misc/lkdtm/Makefile
+>> @@ -6,21 +6,10 @@ lkdtm-$(CONFIG_LKDTM)        += bugs.o
+>>   lkdtm-$(CONFIG_LKDTM)        += heap.o
+>>   lkdtm-$(CONFIG_LKDTM)        += perms.o
+>>   lkdtm-$(CONFIG_LKDTM)        += refcount.o
+>> -lkdtm-$(CONFIG_LKDTM)        += rodata_objcopy.o
+>>   lkdtm-$(CONFIG_LKDTM)        += usercopy.o
+>>   lkdtm-$(CONFIG_LKDTM)        += stackleak.o
+>>   lkdtm-$(CONFIG_LKDTM)        += cfi.o
+>>   lkdtm-$(CONFIG_LKDTM)        += fortify.o
+>>   lkdtm-$(CONFIG_PPC_BOOK3S_64)    += powerpc.o
+>> -KASAN_SANITIZE_rodata.o        := n
+>>   KASAN_SANITIZE_stackleak.o    := n
+>> -KCOV_INSTRUMENT_rodata.o    := n
+>> -CFLAGS_REMOVE_rodata.o        += $(CC_FLAGS_LTO)
+>> -
+>> -OBJCOPYFLAGS :=
+>> -OBJCOPYFLAGS_rodata_objcopy.o    := \
+>> -            --rename-section 
+>> .noinstr.text=.rodata,alloc,readonly,load,contents
+>> -targets += rodata.o rodata_objcopy.o
+>> -$(obj)/rodata_objcopy.o: $(obj)/rodata.o FORCE
+>> -    $(call if_changed,objcopy)
+>> diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
+>> index 188bd0fd6575..905555d4c2cf 100644
+>> --- a/drivers/misc/lkdtm/lkdtm.h
+>> +++ b/drivers/misc/lkdtm/lkdtm.h
+>> @@ -137,9 +137,6 @@ void lkdtm_REFCOUNT_SUB_AND_TEST_SATURATED(void);
+>>   void lkdtm_REFCOUNT_TIMING(void);
+>>   void lkdtm_ATOMIC_TIMING(void);
+>> -/* rodata.c */
+>> -void lkdtm_rodata_do_nothing(void);
+>> -
+>>   /* usercopy.c */
+>>   void __init lkdtm_usercopy_init(void);
+>>   void __exit lkdtm_usercopy_exit(void);
+>> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+>> index 2c6aba3ff32b..9b951ca48363 100644
+>> --- a/drivers/misc/lkdtm/perms.c
+>> +++ b/drivers/misc/lkdtm/perms.c
+>> @@ -27,6 +27,7 @@ static const unsigned long rodata = 0xAA55AA55;
+>>   /* This is marked __ro_after_init, so it should ultimately be 
+>> .rodata. */
+>>   static unsigned long ro_after_init __ro_after_init = 0x55AA5500;
+>> +static u8 rodata_area[EXEC_SIZE] __ro_after_init;
+>>   /*
+>>    * This just returns to the caller. It is designed to be copied into
+>> @@ -193,8 +194,7 @@ void lkdtm_EXEC_VMALLOC(void)
+>>   void lkdtm_EXEC_RODATA(void)
+>>   {
+>> -    
+>> execute_location(dereference_function_descriptor(lkdtm_rodata_do_nothing), 
+>>
+>> -             CODE_AS_IS);
+>> +    execute_location(rodata_area, CODE_AS_IS);
+>>   }
+>>   void lkdtm_EXEC_USERSPACE(void)
+>> @@ -269,4 +269,9 @@ void __init lkdtm_perms_init(void)
+>>   {
+>>       /* Make sure we can write to __ro_after_init values during 
+>> __init */
+>>       ro_after_init |= 0xAA;
+>> +
+>> +    memcpy(rodata_area, dereference_function_descriptor(do_nothing),
+>> +           EXEC_SIZE);
+>> +    flush_icache_range((unsigned long)rodata_area,
+>> +               (unsigned long)rodata_area + EXEC_SIZE);
+>>   }
+>> diff --git a/drivers/misc/lkdtm/rodata.c b/drivers/misc/lkdtm/rodata.c
+>> deleted file mode 100644
+>> index baacb876d1d9..000000000000
+>> --- a/drivers/misc/lkdtm/rodata.c
+>> +++ /dev/null
+>> @@ -1,11 +0,0 @@
+>> -// SPDX-License-Identifier: GPL-2.0
+>> -/*
+>> - * This includes functions that are meant to live entirely in .rodata
+>> - * (via objcopy tricks), to validate the non-executability of .rodata.
+>> - */
+>> -#include "lkdtm.h"
+>> -
+>> -void noinstr lkdtm_rodata_do_nothing(void)
+>> -{
+>> -    /* Does nothing. We just want an architecture agnostic "return". */
+>> -}
