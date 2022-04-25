@@ -2,449 +2,276 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A27FF50E35E
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Apr 2022 16:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EBBF50EC58
+	for <lists+linux-parisc@lfdr.de>; Tue, 26 Apr 2022 00:59:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbiDYOjV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Apr 2022 10:39:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41340 "EHLO
+        id S234873AbiDYXCh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Apr 2022 19:02:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242555AbiDYOjS (ORCPT
+        with ESMTP id S235918AbiDYXCg (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Apr 2022 10:39:18 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 264B137AA9;
-        Mon, 25 Apr 2022 07:36:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1650897371; x=1682433371;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=09yRLDdukF2NqScy5FEXRNekxsijnB9E2xteSASuYuI=;
-  b=PkUT8tIgqaLz+O+/umRLKBbu2fFD0tm4L9SdooNgLG3ejoL5bSNWEvWG
-   nAR25rE8NeJbhtp1Bgv88MIj/BNjTp3UkbustQ209nC/uRFR5wIj87xJJ
-   C6YdnbZQ8TtOcjeTIf/9i5pCY0Pi2KBbyOLw1NgtpEUF0jtE+bUfiPqFt
-   IBlRHmZHx802ZSb7FnScCprfXcHyPUtK3SFIPHu6qfIJuES1lF0jLHuH4
-   KOeNEFm8zYmOfOlhru118JZQoG4QOEfAMs/yW3e6f2MIMkGC6YQrtTgFZ
-   ebtkXogSmRxfzSXrpM5Jqyl5MIhvH28DJsUNQG+u3IC2Fm9sTcXT0wxx9
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10328"; a="351710872"
-X-IronPort-AV: E=Sophos;i="5.90,288,1643702400"; 
-   d="scan'208";a="351710872"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2022 07:36:10 -0700
-X-IronPort-AV: E=Sophos;i="5.90,288,1643702400"; 
-   d="scan'208";a="579316136"
-Received: from lpuglia-mobl.ger.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.251.217.93])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2022 07:35:58 -0700
-From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     linux-serial@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Lukas Wunner <lukas@wunner.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Vicente Bergas <vicencb@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Johan Hovold <johan@kernel.org>, heiko@sntech.de,
-        giulio.benetti@micronovasrl.com,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        linux-api@vger.kernel.org,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>, linux-alpha@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: [PATCH v4 09/13] serial: General support for multipoint addresses
-Date:   Mon, 25 Apr 2022 17:34:06 +0300
-Message-Id: <20220425143410.12703-10-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220425143410.12703-1-ilpo.jarvinen@linux.intel.com>
-References: <20220425143410.12703-1-ilpo.jarvinen@linux.intel.com>
+        Mon, 25 Apr 2022 19:02:36 -0400
+Received: from cmx-torrgo002.bell.net (mta-tor-001.bell.net [209.71.212.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D5CAC3A5F5
+        for <linux-parisc@vger.kernel.org>; Mon, 25 Apr 2022 15:59:29 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.50.7.94]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 625E3E3F00ABA3B9
+X-CM-Envelope: MS4xfGQB2yC5dWF2sZH0nTUwTYyup/SwLIlx942Ebpd5HZ9brptvv28wZIxySaykYXW37eBgCRHHtZUFq9aW8AtU82CvUM9npiBuFjoHqPdJ+9YGcfur3+l1
+ Pcx4K9iZOHSLNFeAk58ZOBQLfgv+dn7I8zA+WxEBbMc+YUHdjAmbmka3ZsDFCni/Ksn607myyEMkTBFoHq+iO6togzpnWS0CTI9PItLSm2V0gVe0dYjY9kD8
+ EqCHdv+LMwzWtWXJmp7DLqwopx1sYzc97HUyiOEjlOA7TJo2y2BJb+fNVWNocx875xDRaEKuA3MsZv0SKIlfJpUqaQ3JBhlhms19kdziFMVTZ7Kt5iIiEAHa
+ 7kYqF0Cc0NHWDweZ/Ppk4ZjOb3iQBL+M6Yfgp03tgQFI285Ne6IAvYECG3O9Bao9Tqbnf4NATIWoqia6/K0NWlhInv+9xxCkqrYeKWRefsBWBZ1VJi5tfAd6
+ /a6vfAFyNDIqFVJbb3Yz9ZyLeu9j2NvLOG/o6av6uNxTSTry4mfJOZmpidvgS8gae2gPIkZuXwKXXS8oCm81Bm1b7BeladnOCrmObcqEwsj95Ev082nbd/XI
+ rff1WJIW/I1booWA55VJXR9JzVvzs7NhJor4++T4FWPiyw==
+X-CM-Analysis: v=2.4 cv=G99/r/o5 c=1 sm=1 tr=0 ts=62671c30
+ a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
+ a=z0gMJWrwH1QA:10 a=FBHGMhGWAAAA:8 a=GhmPXVJ66nKjZJ6kmfYA:9
+ a=pwvGW-Ypp_HDPceq:21 a=CjuIK1q_8ugA:10 a=KNAKltQrHSywft33S5YA:9
+ a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from mx3210.localdomain (70.50.7.94) by cmx-torrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 625E3E3F00ABA3B9; Mon, 25 Apr 2022 18:09:52 -0400
+Received: by mx3210.localdomain (Postfix, from userid 1000)
+        id 3D0DA220115; Mon, 25 Apr 2022 22:09:52 +0000 (UTC)
+Date:   Mon, 25 Apr 2022 22:09:52 +0000
+From:   John David Anglin <dave.anglin@bell.net>
+To:     linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: [Patch] parisc: Don't hardcode assembler bit definitions in tmpalias
+ code
+Message-ID: <YmccMPPKlERMLE4+@mx3210.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="PoyuuePkE/7oyePq"
+Content-Disposition: inline
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add generic support for serial multipoint addressing. Two new ioctls
-are added. TIOCSADDR is used to indicate the destination/receive
-address. TIOCGADDR returns the current address in use. The driver
-should implement set_addr and get_addr to support addressing mode.
 
-Adjust ADDRB clearing to happen only if driver does not provide
-set_addr (=the driver doesn't support address mode).
+--PoyuuePkE/7oyePq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This change is necessary for supporting devices with RS485 multipoint
-addressing [*]. A following patch in the patch series adds support for
-Synopsys Designware UART capable for 9th bit addressing mode. In this
-mode, 9th bit is used to indicate an address (byte) within the
-communication line. The 9th bit addressing mode is selected using ADDRB
-introduced by the previous patch.
+This change removes the hardcoded bit definitions in the tmpalias
+assembly code. This makes it easy to change the size of the tmpalias
+region.
 
-Transmit addresses / receiver filter are specified by setting the flags
-SER_ADDR_DEST and/or SER_ADDR_RECV. When the user supplies the transmit
-address, in the 9bit addressing mode it is sent out immediately with
-the 9th bit set to 1. After that, the subsequent normal data bytes are
-sent with 9th bit as 0 and they are intended to the device with the
-given address. It is up to receiver to enforce the filter using
-SER_ADDR_RECV. When userspace has supplied the receive address, the
-driver is expected to handle the matching of the address and only data
-with that address is forwarded to the user. Both SER_ADDR_DEST and
-SER_ADDR_RECV can be given at the same time in a single call if the
-addresses are the same.
-
-The user can clear the receive filter with SER_ADDR_RECV_CLEAR.
-
-[*] Technically, RS485 is just an electronic spec and does not itself
-specify the 9th bit addressing mode but 9th bit seems at least
-"semi-standard" way to do addressing with RS485.
-
-Cc: linux-api@vger.kernel.org
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: linux-alpha@vger.kernel.org
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-xtensa@linux-xtensa.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-arch@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
 ---
- .../driver-api/serial/serial-rs485.rst        | 23 ++++++-
- arch/alpha/include/uapi/asm/ioctls.h          |  3 +
- arch/mips/include/uapi/asm/ioctls.h           |  3 +
- arch/parisc/include/uapi/asm/ioctls.h         |  3 +
- arch/powerpc/include/uapi/asm/ioctls.h        |  3 +
- arch/sh/include/uapi/asm/ioctls.h             |  3 +
- arch/sparc/include/uapi/asm/ioctls.h          |  3 +
- arch/xtensa/include/uapi/asm/ioctls.h         |  3 +
- drivers/tty/serial/8250/8250_core.c           |  2 +
- drivers/tty/serial/serial_core.c              | 62 ++++++++++++++++++-
- drivers/tty/tty_io.c                          |  2 +
- include/linux/serial_core.h                   |  6 ++
- include/uapi/asm-generic/ioctls.h             |  3 +
- include/uapi/linux/serial.h                   |  8 +++
- 14 files changed, 125 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/driver-api/serial/serial-rs485.rst b/Documentation/driver-api/serial/serial-rs485.rst
-index 6bc824f948f9..2f45f007fa5b 100644
---- a/Documentation/driver-api/serial/serial-rs485.rst
-+++ b/Documentation/driver-api/serial/serial-rs485.rst
-@@ -95,7 +95,28 @@ RS485 Serial Communications
- 		/* Error handling. See errno. */
- 	}
- 
--5. References
-+5. Multipoint Addressing
-+========================
-+
-+   The Linux kernel provides serial_addr structure to handle addressing within
-+   multipoint serial communications line such as RS485. 9th bit addressiong mode
-+   is enabled by adding ADDRB flag in termios c_cflag.
-+
-+   Serial core calls device specific set/get_addr in response to TIOCSADDR and
-+   TIOCGADDR ioctls with a pointer to serial_addr. Destination and receive
-+   address can be specified using serial_addr flags field. Receive address may
-+   also be cleared using flags. Once an address is set, the communication
-+   can occur only with the particular device and other peers are filtered out.
-+   It is left up to the receiver side to enforce the filtering.
-+
-+   Address flags:
-+	- SER_ADDR_RECV: Receive (filter) address.
-+	- SER_ADDR_RECV_CLEAR: Clear receive filter (only for TIOCSADDR).
-+	- SER_ADDR_DEST: Destination address.
-+
-+   Note: not all devices supporting RS485 support multipoint addressing.
-+
-+6. References
- =============
- 
-  [1]	include/uapi/linux/serial.h
-diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
-index 971311605288..500cab3e1d6b 100644
---- a/arch/alpha/include/uapi/asm/ioctls.h
-+++ b/arch/alpha/include/uapi/asm/ioctls.h
-@@ -125,4 +125,7 @@
- #define TIOCMIWAIT	0x545C	/* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif /* _ASM_ALPHA_IOCTLS_H */
-diff --git a/arch/mips/include/uapi/asm/ioctls.h b/arch/mips/include/uapi/asm/ioctls.h
-index 16aa8a766aec..3859dc46857e 100644
---- a/arch/mips/include/uapi/asm/ioctls.h
-+++ b/arch/mips/include/uapi/asm/ioctls.h
-@@ -96,6 +96,9 @@
- #define TIOCGISO7816	_IOR('T', 0x42, struct serial_iso7816)
- #define TIOCSISO7816	_IOWR('T', 0x43, struct serial_iso7816)
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* I hope the range from 0x5480 on is free ... */
- #define TIOCSCTTY	0x5480		/* become controlling tty */
- #define TIOCGSOFTCAR	0x5481
-diff --git a/arch/parisc/include/uapi/asm/ioctls.h b/arch/parisc/include/uapi/asm/ioctls.h
-index 82d1148c6379..62337743db64 100644
---- a/arch/parisc/include/uapi/asm/ioctls.h
-+++ b/arch/parisc/include/uapi/asm/ioctls.h
-@@ -86,6 +86,9 @@
- #define TIOCSTOP	0x5462
- #define TIOCSLTC	0x5462
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* Used for packet mode */
- #define TIOCPKT_DATA		 0
- #define TIOCPKT_FLUSHREAD	 1
-diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
-index 2c145da3b774..84fd69ac366a 100644
---- a/arch/powerpc/include/uapi/asm/ioctls.h
-+++ b/arch/powerpc/include/uapi/asm/ioctls.h
-@@ -120,4 +120,7 @@
- #define TIOCMIWAIT	0x545C	/* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif	/* _ASM_POWERPC_IOCTLS_H */
-diff --git a/arch/sh/include/uapi/asm/ioctls.h b/arch/sh/include/uapi/asm/ioctls.h
-index 11866d4f60e1..f82966b7dba2 100644
---- a/arch/sh/include/uapi/asm/ioctls.h
-+++ b/arch/sh/include/uapi/asm/ioctls.h
-@@ -113,4 +113,7 @@
- #define TIOCMIWAIT	_IO('T', 92) /* 0x545C */	/* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif /* __ASM_SH_IOCTLS_H */
-diff --git a/arch/sparc/include/uapi/asm/ioctls.h b/arch/sparc/include/uapi/asm/ioctls.h
-index 7fd2f5873c9e..e44624c67c79 100644
---- a/arch/sparc/include/uapi/asm/ioctls.h
-+++ b/arch/sparc/include/uapi/asm/ioctls.h
-@@ -125,6 +125,9 @@
- #define TIOCMIWAIT	0x545C /* Wait for change on serial input line(s) */
- #define TIOCGICOUNT	0x545D /* Read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* Kernel definitions */
- 
- /* Used for packet mode */
-diff --git a/arch/xtensa/include/uapi/asm/ioctls.h b/arch/xtensa/include/uapi/asm/ioctls.h
-index 6d4a87296c95..759ca9377f2a 100644
---- a/arch/xtensa/include/uapi/asm/ioctls.h
-+++ b/arch/xtensa/include/uapi/asm/ioctls.h
-@@ -127,4 +127,7 @@
- #define TIOCMIWAIT	_IO('T', 92) /* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif /* _XTENSA_IOCTLS_H */
-diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-index 01d30f6ed8fb..f67bc3b76f65 100644
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -1008,6 +1008,8 @@ int serial8250_register_8250_port(const struct uart_8250_port *up)
- 		uart->port.rs485	= up->port.rs485;
- 		uart->rs485_start_tx	= up->rs485_start_tx;
- 		uart->rs485_stop_tx	= up->rs485_stop_tx;
-+		uart->port.set_addr	= up->port.set_addr;
-+		uart->port.get_addr	= up->port.get_addr;
- 		uart->dma		= up->dma;
- 
- 		/* Take tx_loadsz from fifosize if it wasn't set separately */
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index de198c2acefe..2cd129c78ef6 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1350,6 +1350,56 @@ static int uart_set_iso7816_config(struct uart_port *port,
- 	return 0;
- }
- 
-+static int uart_set_addr(struct uart_port *port,
-+			 struct serial_addr __user *serial_addr_user)
-+{
-+	struct serial_addr addr;
-+	unsigned long flags;
-+	int ret;
-+
-+	if (!port->set_addr)
-+		return -ENOTTY;
-+
-+	if (copy_from_user(&addr, serial_addr_user, sizeof(*serial_addr_user)))
-+		return -EFAULT;
-+
-+	spin_lock_irqsave(&port->lock, flags);
-+	ret = port->set_addr(port, &addr);
-+	spin_unlock_irqrestore(&port->lock, flags);
-+	if (ret)
-+		return ret;
-+
-+	if (copy_to_user(serial_addr_user, &addr, sizeof(addr)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int uart_get_addr(struct uart_port *port,
-+			 struct serial_addr __user *serial_addr_user)
-+{
-+	struct serial_addr addr;
-+	unsigned long flags;
-+	int ret;
-+
-+	if (!port->get_addr)
-+		return -ENOTTY;
-+
-+	if (copy_from_user(&addr, serial_addr_user, sizeof(*serial_addr_user)))
-+		return -EFAULT;
-+
-+	spin_lock_irqsave(&port->lock, flags);
-+	ret = port->get_addr(port, &addr);
-+	spin_unlock_irqrestore(&port->lock, flags);
-+	if (ret)
-+		return ret;
-+
-+	if (copy_to_user(serial_addr_user, &addr, sizeof(addr)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
- /*
-  * Called via sys_ioctl.  We can use spin_lock_irq() here.
-  */
-@@ -1427,6 +1477,15 @@ uart_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
- 	case TIOCGISO7816:
- 		ret = uart_get_iso7816_config(state->uart_port, uarg);
- 		break;
-+
-+	case TIOCSADDR:
-+		ret = uart_set_addr(uport, uarg);
-+		break;
-+
-+	case TIOCGADDR:
-+		ret = uart_get_addr(uport, uarg);
-+		break;
-+
- 	default:
- 		if (uport->ops->ioctl)
- 			ret = uport->ops->ioctl(uport, cmd, arg);
-@@ -1493,7 +1552,8 @@ static void uart_set_termios(struct tty_struct *tty,
- 		goto out;
- 	}
- 
--	tty->termios.c_cflag &= ~ADDRB;
-+	if (!uport->set_addr)
-+		tty->termios.c_cflag &= ~ADDRB;
- 
- 	uart_change_speed(tty, state, old_termios);
- 	/* reload cflag from termios; port driver may have overridden flags */
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 7e8b3bd59c7b..93d8609e88aa 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -2885,6 +2885,8 @@ static long tty_compat_ioctl(struct file *file, unsigned int cmd,
- 	case TIOCSERGETLSR:
- 	case TIOCGRS485:
- 	case TIOCSRS485:
-+	case TIOCSADDR:
-+	case TIOCGADDR:
- #ifdef TIOCGETP
- 	case TIOCGETP:
- 	case TIOCSETP:
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 504d365e2803..a2efd3fe2635 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -135,6 +135,12 @@ struct uart_port {
- 						struct serial_rs485 *rs485);
- 	int			(*iso7816_config)(struct uart_port *,
- 						  struct serial_iso7816 *iso7816);
-+
-+	int			(*set_addr)(struct uart_port *p,
-+					    struct serial_addr *addr);
-+	int			(*get_addr)(struct uart_port *p,
-+					    struct serial_addr *addr);
-+
- 	unsigned int		irq;			/* irq number */
- 	unsigned long		irqflags;		/* irq flags  */
- 	unsigned int		uartclk;		/* base uart clock */
-diff --git a/include/uapi/asm-generic/ioctls.h b/include/uapi/asm-generic/ioctls.h
-index cdc9f4ca8c27..689743366091 100644
---- a/include/uapi/asm-generic/ioctls.h
-+++ b/include/uapi/asm-generic/ioctls.h
-@@ -106,6 +106,9 @@
- # define FIOQSIZE	0x5460
+diff --git a/arch/parisc/include/asm/fixmap.h b/arch/parisc/include/asm/fix=
+map.h
+index e480b2c05407..5cd80ce1163a 100644
+--- a/arch/parisc/include/asm/fixmap.h
++++ b/arch/parisc/include/asm/fixmap.h
+@@ -9,12 +9,27 @@
+  *
+  * All of the values in this file must be <4GB (because of assembly
+  * loading restrictions).  If you place this region anywhere above
+- * __PAGE_OFFSET, you must adjust the memory map accordingly */
++ * __PAGE_OFFSET, you must adjust the memory map accordingly
++ */
+=20
+-/* The alias region is used in kernel space to do copy/clear to or
+- * from areas congruently mapped with user space.  It is 8MB large
+- * and must be 16MB aligned */
+-#define TMPALIAS_MAP_START	((__PAGE_OFFSET) - 16*1024*1024)
++/*
++ * The tmpalias region is used in kernel space to copy/clear/flush data
++ * from pages congruently mapped with user space. It is comprised of
++ * a pair regions. The size of these regions is determined by the largest
++ * cache aliasing boundary for machines that support equivalent aliasing.
++ *
++ * The c3750 with PA8700 processor returns an alias value of 11. This
++ * indicates that it has an alias boundary of 4 MB. It also supports
++ * non-equivalent aliasing without a performance penalty.
++ *
++ * Machines with PA8800/PA8900 processors return an alias value of 0.
++ * This indicates the alias boundary is unknown and may be larger than
++ * 16 MB. Non-equivalent aliasing is not supported.
++ *
++ * Here we assume the maximum alias boundary is 4 MB.
++ */
++#define TMPALIAS_SIZE_BITS	22	/* 4 MB */
++#define TMPALIAS_MAP_START	((__PAGE_OFFSET) - (2 << TMPALIAS_SIZE_BITS))
+=20
+ #define FIXMAP_SIZE		(FIX_BITMAP_COUNT << PAGE_SHIFT)
+ #define FIXMAP_START		(TMPALIAS_MAP_START - FIXMAP_SIZE)
+diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+index ecf50159359e..2af27c8b4aa6 100644
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -554,8 +554,9 @@
+ 	extrd,s		\pte,63,25,\pte
+ 	.endm
+=20
+-	/* The alias region is an 8MB aligned 16MB to do clear and
+-	 * copy user pages at addresses congruent with the user
++	/* The alias region is comprised of a pair of 4 MB regions
++	 * aligned to 8 MB. It is used to clear/copy/flush user pages
++	 * using kernel virtual addresses congruent with the user
+ 	 * virtual address.
+ 	 *
+ 	 * To use the alias page, you set %r26 up with the to TLB
+@@ -571,7 +572,7 @@
+ 	depdi		0,31,32,\tmp
  #endif
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* Used for packet mode */
- #define TIOCPKT_DATA		 0
- #define TIOCPKT_FLUSHREAD	 1
-diff --git a/include/uapi/linux/serial.h b/include/uapi/linux/serial.h
-index fa6b16e5fdd8..8cb785ea7087 100644
---- a/include/uapi/linux/serial.h
-+++ b/include/uapi/linux/serial.h
-@@ -149,4 +149,12 @@ struct serial_iso7816 {
- 	__u32	reserved[5];
- };
- 
-+struct serial_addr {
-+	__u32	flags;
-+#define SER_ADDR_RECV			(1 << 0)
-+#define SER_ADDR_RECV_CLEAR		(1 << 1)
-+#define SER_ADDR_DEST			(1 << 2)
-+	__u32	addr;
-+};
-+
- #endif /* _UAPI_LINUX_SERIAL_H */
--- 
-2.30.2
+ 	copy		\va,\tmp1
+-	depi		0,31,23,\tmp1
++	depi_safe	0,31,TMPALIAS_SIZE_BITS+1,\tmp1
+ 	cmpb,COND(<>),n	\tmp,\tmp1,\fault
+ 	mfctl		%cr19,\tmp	/* iir */
+ 	/* get the opcode (first six bits) into \tmp */
+@@ -605,9 +606,9 @@
+ 	 * Check "subtle" note in pacache.S re: r23/r26.
+ 	 */
+ #ifdef CONFIG_64BIT
+-	extrd,u,*=3D	\va,41,1,%r0
++	extrd,u,*=3D	\va,63-TMPALIAS_SIZE_BITS,1,%r0
+ #else
+-	extrw,u,=3D	\va,9,1,%r0
++	extrw,u,=3D	\va,31-TMPALIAS_SIZE_BITS,1,%r0
+ #endif
+ 	or,COND(tr)	%r23,%r0,\pte
+ 	or		%r26,%r0,\pte
+diff --git a/arch/parisc/kernel/pacache.S b/arch/parisc/kernel/pacache.S
+index 8569141e3e67..45762a9ca064 100644
+--- a/arch/parisc/kernel/pacache.S
++++ b/arch/parisc/kernel/pacache.S
+@@ -487,6 +487,8 @@ ENDPROC_CFI(copy_page_asm)
+  *       parisc chip designers that there will not ever be a parisc
+  *       chip with a larger alias boundary (Never say never :-) ).
+  *
++ *       Yah, what about the PA8800 and PA8900 processors?
++ *
+  *       Subtle: the dtlb miss handlers support the temp alias region by
+  *       "knowing" that if a dtlb miss happens within the temp alias
+  *       region it must have occurred while in clear_user_page. Since
+@@ -545,17 +547,17 @@ ENTRY_CFI(copy_user_page_asm)
+ #endif
+ 	convert_phys_for_tlb_insert20 %r26	/* convert phys addr to tlb insert for=
+mat */
+ 	convert_phys_for_tlb_insert20 %r23	/* convert phys addr to tlb insert for=
+mat */
+-	depd		%r24,63,22, %r28	/* Form aliased virtual address 'to' */
++	depd		%r24,63,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address 't=
+o' */
+ 	depdi		0, 63,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ 	copy		%r28, %r29
+-	depdi		1, 41,1, %r29		/* Form aliased virtual address 'from' */
++	depdi		1, 63-TMPALIAS_SIZE_BITS,1, %r29	/* Form aliased virtual address '=
+=66rom' */
+ #else
+ 	extrw,u		%r26, 24,25, %r26	/* convert phys addr to tlb insert format */
+ 	extrw,u		%r23, 24,25, %r23	/* convert phys addr to tlb insert format */
+-	depw		%r24, 31,22, %r28	/* Form aliased virtual address 'to' */
++	depw		%r24, 31,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address '=
+to' */
+ 	depwi		0, 31,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ 	copy		%r28, %r29
+-	depwi		1, 9,1, %r29		/* Form aliased virtual address 'from' */
++	depwi		1, 31-TMPALIAS_SIZE_BITS,1, %r29	/* Form aliased virtual address '=
+=66rom' */
+ #endif
+=20
+ 	/* Purge any old translations */
+@@ -691,11 +693,11 @@ ENTRY_CFI(clear_user_page_asm)
+ 	depdi		0, 31,32, %r28		/* clear any sign extension */
+ #endif
+ 	convert_phys_for_tlb_insert20 %r26	/* convert phys addr to tlb insert for=
+mat */
+-	depd		%r25, 63,22, %r28	/* Form aliased virtual address 'to' */
++	depd		%r25, 63,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address '=
+to' */
+ 	depdi		0, 63,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ #else
+ 	extrw,u		%r26, 24,25, %r26	/* convert phys addr to tlb insert format */
+-	depw		%r25, 31,22, %r28	/* Form aliased virtual address 'to' */
++	depw		%r25, 31,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address '=
+to' */
+ 	depwi		0, 31,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ #endif
+=20
+@@ -767,11 +769,11 @@ ENTRY_CFI(flush_dcache_page_asm)
+ 	depdi		0, 31,32, %r28		/* clear any sign extension */
+ #endif
+ 	convert_phys_for_tlb_insert20 %r26	/* convert phys addr to tlb insert for=
+mat */
+-	depd		%r25, 63,22, %r28	/* Form aliased virtual address 'to' */
++	depd		%r25, 63,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address '=
+to' */
+ 	depdi		0, 63,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ #else
+ 	extrw,u		%r26, 24,25, %r26	/* convert phys addr to tlb insert format */
+-	depw		%r25, 31,22, %r28	/* Form aliased virtual address 'to' */
++	depw		%r25, 31,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address '=
+to' */
+ 	depwi		0, 31,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ #endif
+=20
+@@ -826,11 +828,11 @@ ENTRY_CFI(purge_dcache_page_asm)
+ 	depdi		0, 31,32, %r28		/* clear any sign extension */
+ #endif
+ 	convert_phys_for_tlb_insert20 %r26	/* convert phys addr to tlb insert for=
+mat */
+-	depd		%r25, 63,22, %r28	/* Form aliased virtual address 'to' */
++	depd		%r25, 63,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address '=
+to' */
+ 	depdi		0, 63,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ #else
+ 	extrw,u		%r26, 24,25, %r26	/* convert phys addr to tlb insert format */
+-	depw		%r25, 31,22, %r28	/* Form aliased virtual address 'to' */
++	depw		%r25, 31,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address '=
+to' */
+ 	depwi		0, 31,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ #endif
+=20
+@@ -885,11 +887,11 @@ ENTRY_CFI(flush_icache_page_asm)
+ 	depdi		0, 31,32, %r28		/* clear any sign extension */
+ #endif
+ 	convert_phys_for_tlb_insert20 %r26	/* convert phys addr to tlb insert for=
+mat */
+-	depd		%r25, 63,22, %r28	/* Form aliased virtual address 'to' */
++	depd		%r25, 63,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address '=
+to' */
+ 	depdi		0, 63,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ #else
+ 	extrw,u		%r26, 24,25, %r26	/* convert phys addr to tlb insert format */
+-	depw		%r25, 31,22, %r28	/* Form aliased virtual address 'to' */
++	depw		%r25, 31,TMPALIAS_SIZE_BITS, %r28	/* Form aliased virtual address '=
+to' */
+ 	depwi		0, 31,PAGE_SHIFT, %r28	/* Clear any offset bits */
+ #endif
+=20
 
+--PoyuuePkE/7oyePq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmJnHCgACgkQXb/Nrl8Z
+TfHWYQ//aRUGJZIgYwbL2m/1R67ED1iF4CCWYtcWhNKHPITpo9SjnyFTMEQPvw1R
+ZgyQAYXPneGTgvmlijcbZsQ2UXEr5k5g7MwU8r4vMil2ieiExEyZl0Eq6ns07BK3
+UrPoVcwKEyo3joUr6rtaufNb2bRalED1x53u5V2dksIwxumvbVlX4vvOyw3svOIF
+EFxmFY89+jkJgsm5WqvDALDWfoQntM7dIJ+TarcbHAvcpGBeLEKYTP55u0dVPGzz
+Cq+js0elySDQemEIub4/4/A3TIgVwn7ElrjIqRwCCbDhvH+fjqYkQu9ZwxNTrh9q
+nMwjGcODI8U6mYTBF21nu4T4K7S+2ma7RoCssXkNbaZA4dXGrtC4WmeZu0Ah2Vlj
+WRNgqQLdGyyLJ9oyK7JmszhunO2rJOxUL41hEJy3bzlBSAf9f1+A0z6+bp0NhYFX
+K+8eiXiB4+HRjQpUrOQuOvop+OT6gVwn7yXNPtBkFNn2C3/OwzrBkJ9BnKfxsIDr
+g12FM+XQxq2D3Ioc7LDEBBUsCXEKy3w/se4gmVTDqsxuxoL6G22QHPa4yHUDrVR8
+DhTAg/r/poPqWW/Gls31xczmAyfghYL8YvJj5KqnthgKwOaf4GLZyx5SNK40OsBw
+Pcr1j0+OqLRPzOYXet7pJW270RZ8VBeUzbsZawZiObgaVcwwqj8=
+=FevS
+-----END PGP SIGNATURE-----
+
+--PoyuuePkE/7oyePq--
