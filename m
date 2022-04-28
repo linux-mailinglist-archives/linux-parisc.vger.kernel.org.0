@@ -2,183 +2,107 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7004A512DF8
-	for <lists+linux-parisc@lfdr.de>; Thu, 28 Apr 2022 10:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8DB513287
+	for <lists+linux-parisc@lfdr.de>; Thu, 28 Apr 2022 13:33:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343821AbiD1IRl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 28 Apr 2022 04:17:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34802 "EHLO
+        id S1345597AbiD1Lff (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 28 Apr 2022 07:35:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232726AbiD1IRi (ORCPT
+        with ESMTP id S1345574AbiD1Lfe (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 28 Apr 2022 04:17:38 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4BCF0771CD;
-        Thu, 28 Apr 2022 01:14:24 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB9C31474;
-        Thu, 28 Apr 2022 01:14:23 -0700 (PDT)
-Received: from [10.57.12.231] (unknown [10.57.12.231])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 801DE3F774;
-        Thu, 28 Apr 2022 01:14:12 -0700 (PDT)
-Message-ID: <7956ab00-66b6-bd89-dcc0-f10cf2741e4d@arm.com>
-Date:   Thu, 28 Apr 2022 09:14:11 +0100
+        Thu, 28 Apr 2022 07:35:34 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485955F276
+        for <linux-parisc@vger.kernel.org>; Thu, 28 Apr 2022 04:32:19 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id h8so6089647iov.12
+        for <linux-parisc@vger.kernel.org>; Thu, 28 Apr 2022 04:32:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=UXiI1Ou+hgS6xUOBleoXBZ0P1W6h3cfa19FRe+lKcNc=;
+        b=qdRXWsH4VboVZqMp+U+9xgTkruA8gP1PnMemdrmmg0YO6COokK/UN2OFrTer0rQTAT
+         L/Gk1tYZKKFPFqo7JdutorIHaZilUNgMXSNSOCNevKkAHmcBVMElQGq6HpkYC/lBhR+z
+         cGdhDa6PfwxJvXH1rpfTD2kgzo8ZHUp1se8gwJDs9ievPavEXtbkGq5W5APCsSBEjbhG
+         b6RpLTbmn4cGsMi3ZP7Vc/UnPeVn3UhTzAwx9cOph6YMcAfGfSlA3NE/eQL+O/fC+ky6
+         WCEFGtzo/pZQofGZq0COcl2SR3VgReM6aVbjBeulJfsOg1nbD9JO0lCeZ9TTXm3ROS5F
+         lBgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=UXiI1Ou+hgS6xUOBleoXBZ0P1W6h3cfa19FRe+lKcNc=;
+        b=qdxPZm1wrtqrNtqZZs8nsz5mpoP7OwrnUNHdArmDmVhJVRKJVuINGLJY6ghQSRQBZg
+         4C/yDjW8TkVQYz0+3KJfk8IU/EvvSXNrnmd1AtQVJR1nTlpBFEDqdcmO6BlMT8Rgkafb
+         yNziqfDGz03ENZf7OoLTyN7OmV9+QlX5IUW8/4Z87dFXxQTGUpfX55SKB2rkcWMyQDZi
+         vXk+EE9PV77xQKfmaLcLjPpMzNmutdR57QTDQxnweZaZ35PC7DQFC/OqaC9L/xeVxYWj
+         7gB9TwJGP3DNItQxdXfnunSnQ/Nqv0aGXnX6y8MXXi/kUiH52qrWbItKsAuV66fwQFSS
+         +StA==
+X-Gm-Message-State: AOAM532PG132eah/EFNuw8hvzJWxQnfx/dx7koDFNczBdak5OECnTwju
+        Lmwg1gShMykywxNZCmWrW5qn1019wiOBmHF46D0=
+X-Google-Smtp-Source: ABdhPJy//UOmnScX3U+9HAMHSaslp0Zg2kKG2rsRF1VyHdz+6Vg1gTuTmghrLA5VXddaXujrR+D0UZta7z+mQH+DG2g=
+X-Received: by 2002:a6b:680c:0:b0:657:aecd:c666 with SMTP id
+ d12-20020a6b680c000000b00657aecdc666mr4431049ioc.218.1651145538572; Thu, 28
+ Apr 2022 04:32:18 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.8.1
-Subject: Re: [PATCH 20/30] panic: Add the panic informational notifier list
-To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        akpm@linux-foundation.org, bhe@redhat.com, pmladek@suse.com,
-        kexec@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com, coresight@lists.linaro.org,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        netdev@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
-        rcu@vger.kernel.org, sparclinux@vger.kernel.org,
-        xen-devel@lists.xenproject.org, x86@kernel.org,
-        kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
-        fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
-        andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de,
-        corbet@lwn.net, d.hatayama@jp.fujitsu.com,
-        dave.hansen@linux.intel.com, dyoung@redhat.com,
-        feng.tang@intel.com, gregkh@linuxfoundation.org,
-        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mike Leach <mike.leach@linaro.org>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-21-gpiccoli@igalia.com>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20220427224924.592546-21-gpiccoli@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Received: by 2002:a05:6e02:20e7:0:0:0:0 with HTTP; Thu, 28 Apr 2022 04:32:18
+ -0700 (PDT)
+Reply-To: barristerbenwaidhoferb@gmail.com
+From:   "Barrister. Ben Waidhofer" <gogalonasiru@gmail.com>
+Date:   Thu, 28 Apr 2022 04:32:18 -0700
+Message-ID: <CAPs4PmpVKkFuMtUTtqYzDMEM1tkHd6mExwR5ngFD_ZF_qd_qtg@mail.gmail.com>
+Subject: Investment Offer
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.4 required=5.0 tests=BAYES_80,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:d44 listed in]
+        [list.dnswl.org]
+        *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
+        *      [score: 0.9476]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [gogalonasiru[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 27/04/2022 23:49, Guilherme G. Piccoli wrote:
-> The goal of this new panic notifier is to allow its users to
-> register callbacks to run earlier in the panic path than they
-> currently do. This aims at informational mechanisms, like dumping
-> kernel offsets and showing device error data (in case it's simple
-> registers reading, for example) as well as mechanisms to disable
-> log flooding (like hung_task detector / RCU warnings) and the
-> tracing dump_on_oops (when enabled).
-> 
-> Any (non-invasive) information that should be provided before
-> kmsg_dump() as well as log flooding preventing code should fit
-> here, as long it offers relatively low risk for kdump.
-> 
-> For now, the patch is almost a no-op, although it changes a bit
-> the ordering in which some panic notifiers are executed - specially
-> affected by this are the notifiers responsible for disabling the
-> hung_task detector / RCU warnings, which now run first. In a
-> subsequent patch, the panic path will be refactored, then the
-> panic informational notifiers will effectively run earlier,
-> before ksmg_dump() (and usually before kdump as well).
-> 
-> We also defer documenting it all properly in the subsequent
-> refactor patch. Finally, while at it, we removed some useless
-> header inclusions too.
-> 
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Frederic Weisbecker <frederic@kernel.org>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Joel Fernandes <joel@joelfernandes.org>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: Josh Triplett <josh@joshtriplett.org>
-> Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-> Cc: Leo Yan <leo.yan@linaro.org>
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Mike Leach <mike.leach@linaro.org>
-> Cc: Mikko Perttunen <mperttunen@nvidia.com>
-> Cc: Neeraj Upadhyay <quic_neeraju@quicinc.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-> ---
->   arch/arm64/kernel/setup.c                         | 2 +-
->   arch/mips/kernel/relocate.c                       | 2 +-
->   arch/powerpc/kernel/setup-common.c                | 2 +-
->   arch/x86/kernel/setup.c                           | 2 +-
->   drivers/bus/brcmstb_gisb.c                        | 2 +-
->   drivers/hwtracing/coresight/coresight-cpu-debug.c | 4 ++--
->   drivers/soc/tegra/ari-tegra186.c                  | 3 ++-
->   include/linux/panic_notifier.h                    | 1 +
->   kernel/hung_task.c                                | 3 ++-
->   kernel/panic.c                                    | 4 ++++
->   kernel/rcu/tree.c                                 | 1 -
->   kernel/rcu/tree_stall.h                           | 3 ++-
->   kernel/trace/trace.c                              | 2 +-
->   13 files changed, 19 insertions(+), 12 deletions(-)
-> 
+Good day,
 
-...
+I am Barrister. Ben Waidhofer from the stated law firm in London. I act
+for Mr. Andrew Walker, a former loyalist and a personal Friend to the
+President of Russia Vladimir Putin presently in London; he flew into
+the UK months ago before the invasion of Ukraine by Russian government.
+The sum of $3.5b was deposited in a Private bank in Switzerland for
+the procurement of MIC war equipment from North Korea to fight the
+war, but he has decided to back out of the initial plan to divert part
+of the fund for investment in a viable venture.
 
-> diff --git a/drivers/hwtracing/coresight/coresight-cpu-debug.c b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-> index 1874df7c6a73..7b1012454525 100644
-> --- a/drivers/hwtracing/coresight/coresight-cpu-debug.c
-> +++ b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-> @@ -535,7 +535,7 @@ static int debug_func_init(void)
->   			    &debug_func_knob_fops);
->   
->   	/* Register function to be called for panic */
-> -	ret = atomic_notifier_chain_register(&panic_notifier_list,
-> +	ret = atomic_notifier_chain_register(&panic_info_list,
->   					     &debug_notifier);
->   	if (ret) {
->   		pr_err("%s: unable to register notifier: %d\n",
-> @@ -552,7 +552,7 @@ static int debug_func_init(void)
->   
->   static void debug_func_exit(void)
->   {
-> -	atomic_notifier_chain_unregister(&panic_notifier_list,
-> +	atomic_notifier_chain_unregister(&panic_info_list,
->   					 &debug_notifier);
->   	debugfs_remove_recursive(debug_debugfs_dir);
->   }
+There is a need for a matured and trusted individual or corporate
+organization to receive part of the fund. All the needed documentation
+will be perfected here in London.
 
-Acked-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+You are at liberty to respond for more detail.
 
+Thanks.
+Regards,
+Barrister. Ben Waidhofer
