@@ -2,115 +2,100 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57C66512CA8
-	for <lists+linux-parisc@lfdr.de>; Thu, 28 Apr 2022 09:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ACC0512DE7
+	for <lists+linux-parisc@lfdr.de>; Thu, 28 Apr 2022 10:12:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238669AbiD1H2d (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 28 Apr 2022 03:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35894 "EHLO
+        id S1343804AbiD1IOy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 28 Apr 2022 04:14:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233871AbiD1H2a (ORCPT
+        with ESMTP id S244874AbiD1IOg (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 28 Apr 2022 03:28:30 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA8C21A3BE;
-        Thu, 28 Apr 2022 00:25:14 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4KpnFh33nTz4ySY;
-        Thu, 28 Apr 2022 17:25:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-        s=201909; t=1651130713;
-        bh=C4UdvvBeWY91RIypqvjFLe8UHWVKtFwPIG23O7DBFW8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=CPxAsekmTKCpn041eRTbmR2p7d+DCOZs+wTm/EvvQf+hNyaGcNArusaXqKJs6ONxW
-         UosN18FRzbo4g0ROwCDiYBEEdgXw7k+Auv5HyQuv0ZHavLgWJTBY3gDR0aMeqI5+JN
-         HodlYm2qK9nJycUJNQ+NUHESR8lDtZEzbOiOs1J+Kk2jc8qcwwT+dYC6el8gRKPEiP
-         KBsN8b1z0sWIEwLX/RpeT0uE0GLVGui0CKCIFMlYzu1BX4MHiRKEWpMWrbMY+uIC+0
-         D0qeTOP2iGhRVpKHh0RszaxhLXCKkcCeZSAysbdS39WVlSb9tp4hs/sGjFGOjoEhWM
-         kgCB0Tzrqreeg==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Helge Deller <deller@gmx.de>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>
-Subject: Re: Build regressions/improvements in v5.18-rc1
-In-Reply-To: <CAMuHMdX45omg_3pUPYnOdkwQC+wP89L3RE-GZq5A=jTHDqDJFA@mail.gmail.com>
-References: <CAHk-=wg6FWL1xjVyHx7DdjD2dHZETA5_=FqqW17Z19X-WTfWSg@mail.gmail.com>
- <20220404074734.1092959-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2204041006230.1941618@ramsan.of.borg>
- <545e68c7-2872-9ee7-0b39-59c39f2bb9d1@gmx.de>
- <CAMuHMdX45omg_3pUPYnOdkwQC+wP89L3RE-GZq5A=jTHDqDJFA@mail.gmail.com>
-Date:   Thu, 28 Apr 2022 17:25:08 +1000
-Message-ID: <87fslxacvf.fsf@mpe.ellerman.id.au>
+        Thu, 28 Apr 2022 04:14:36 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 364F776282;
+        Thu, 28 Apr 2022 01:11:21 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0C4C213D5;
+        Thu, 28 Apr 2022 01:11:21 -0700 (PDT)
+Received: from [10.57.12.231] (unknown [10.57.12.231])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E93F3F774;
+        Thu, 28 Apr 2022 01:11:11 -0700 (PDT)
+Message-ID: <3cafe4fd-8a0b-2633-44a3-2995abd6c38c@arm.com>
+Date:   Thu, 28 Apr 2022 09:11:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.8.1
+Subject: Re: [PATCH 09/30] coresight: cpu-debug: Replace mutex with
+ mutex_trylock on panic notifier
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        akpm@linux-foundation.org, bhe@redhat.com, pmladek@suse.com,
+        kexec@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com, coresight@lists.linaro.org,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        netdev@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+        rcu@vger.kernel.org, sparclinux@vger.kernel.org,
+        xen-devel@lists.xenproject.org, x86@kernel.org,
+        kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
+        fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
+        andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de,
+        corbet@lwn.net, d.hatayama@jp.fujitsu.com,
+        dave.hansen@linux.intel.com, dyoung@redhat.com,
+        feng.tang@intel.com, gregkh@linuxfoundation.org,
+        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
+        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
+        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
+        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
+        senozhatsky@chromium.org, stern@rowland.harvard.edu,
+        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
+        will@kernel.org, Leo Yan <leo.yan@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-10-gpiccoli@igalia.com>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20220427224924.592546-10-gpiccoli@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Geert Uytterhoeven <geert@linux-m68k.org> writes:
-> Hi Helge,
->
-> CC Michael
->
-> On Tue, Apr 5, 2022 at 8:45 AM Helge Deller <deller@gmx.de> wrote:
->> On 4/4/22 10:16, Geert Uytterhoeven wrote:
->> > On Mon, 4 Apr 2022, Geert Uytterhoeven wrote:
->> >> Below is the list of build error/warning regressions/improvements in
->> >> v5.18-rc1[1] compared to v5.17[2].
->> >>
->> >> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/3123109284176b1532874591f7c81f3837bbdc17/ (all 96 configs)
->> >> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/f443e374ae131c168a065ea1748feac6b2e76613/ (all 96 configs)
->> >>
->> >> *** ERRORS ***
->> > parisc64-gcc8/generic-64bit_defconfig
->> > parisc-gcc8/generic-32bit_defconfig
->> > parisc-gcc8/parisc-allmodconfig
->> > parisc-gcc8/parisc-allnoconfig
->>
->> Someone needs to adjust how the parisc kernel is built on kisskb...
->>
->> The parisc platform got vDSO support, so now the 32- and 64-bit
->> hppa compiler needs to be installed when building (for 64-bit).
->>
->> In addition, it changed how to build a kernel:
->>  make ARCH=parisc                         # to build a 32-bit kernel
->>  or
->>  make ARCH=parisc64                       # to build a 64-bit kernel
->> (before ARCH=parisc was sufficient to build either for 32- or 64-bit).
->>
->> And, in case "CROSS_COMPILE=" is given, you need to give "CROSS32_COMPILE=" as well.
->> It's preferred to leave out both CROSS[32]_COMPILE= parameters and let
->> the environment detect the compilers automatically. They just need to be in $PATH.
->>
->> Who can change that on kisskb ?
->
-> Michael (CCed).
+Hi Guilherme,
 
-Hi all,
+On 27/04/2022 23:49, Guilherme G. Piccoli wrote:
+> The panic notifier infrastructure executes registered callbacks when
+> a panic event happens - such callbacks are executed in atomic context,
+> with interrupts and preemption disabled in the running CPU and all other
+> CPUs disabled. That said, mutexes in such context are not a good idea.
+> 
+> This patch replaces a regular mutex with a mutex_trylock safer approach;
+> given the nature of the mutex used in the driver, it should be pretty
+> uncommon being unable to acquire such mutex in the panic path, hence
+> no functional change should be observed (and if it is, that would be
+> likely a deadlock with the regular mutex).
+> 
+> Fixes: 2227b7c74634 ("coresight: add support for CPU debug module")
+> Cc: Leo Yan <leo.yan@linaro.org>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Mike Leach <mike.leach@linaro.org>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-Sorry for the delay, I don't have much time to work on kisskb these days :}
+How would you like to proceed with queuing this ? I am happy
+either way. In case you plan to push this as part of this
+series (I don't see any potential conflicts) :
 
-I've updated things to work. It required a bit of fiddling because the
-cross compilers I use from kernel.org don't have hppa and hppa64 in the
-same prefix. But I just rsync'ed them into a shared directory and that
-seems to be working.
-
-The two parisc configs we have are here, everything recent is green:
-
-  http://kisskb.ellerman.id.au/kisskb/config/507/
-  http://kisskb.ellerman.id.au/kisskb/config/508/
-
-I also added gcc11 for parisc.
-
-cheers
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
