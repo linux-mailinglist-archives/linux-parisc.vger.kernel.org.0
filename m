@@ -2,105 +2,158 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64332515B37
-	for <lists+linux-parisc@lfdr.de>; Sat, 30 Apr 2022 10:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B8F515FF6
+	for <lists+linux-parisc@lfdr.de>; Sat, 30 Apr 2022 21:07:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376310AbiD3IEJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 30 Apr 2022 04:04:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48724 "EHLO
+        id S233917AbiD3TKt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 30 Apr 2022 15:10:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382278AbiD3IEH (ORCPT
+        with ESMTP id S229617AbiD3TKs (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 30 Apr 2022 04:04:07 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D42F237E2;
-        Sat, 30 Apr 2022 01:00:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E34F5B81D03;
-        Sat, 30 Apr 2022 08:00:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8E6A1C385AF;
-        Sat, 30 Apr 2022 08:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651305641;
-        bh=pe08Mdjqla3FNT96mNNuQXP8ILn0+/mHR01kJNYaDic=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=kpvXG6gAXQ7u8p7VNWhLHi8OioRjTUEMNeyaytnu64Tlm3WDc+9G65aHyH17I6Diz
-         5jBIXhCOYaE9MWPbblLVP34glVbcEXDFadZeC1m/ozWT0DtLOuk2lY2OLQTqEZxjcv
-         UF1SUB7qrKBQNqJGV7DS+LErHbW5e24ev50IE4aqZ37tG1QD6bYzt2wRvMtP19xyET
-         kb+hm3gSIlqoDwVSbGXCbAfFHb5+Fm+WKfhA6RRKW2aw3Bc5cVLkCO390GaRHqO0JS
-         QYcBYGc+38fsaLliNEJEjp8cr1wYSjcYriu5X5/AHsphXMh14EX8ojqfJUpVrlLxY1
-         S/K+3C67aDB6Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5DB96E8DBDA;
-        Sat, 30 Apr 2022 08:00:41 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Sat, 30 Apr 2022 15:10:48 -0400
+Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08DCB8E1AA;
+        Sat, 30 Apr 2022 12:07:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=inria.fr; s=dc;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8DTrblqO8J3paPSDxJvJXQCLzUNcAKq9ZyxmqPsm0+A=;
+  b=RGm5RjvmrcjgEkV06vTcWvy2eiN3fVg/IVMEgE1C9fo7xQqUngSZpXCw
+   BDXlPqbLdynn+MhaLjI6Do692PaD+Yn4weCR4Ve37/tCKb3eoeq00YgVu
+   yr24SCLiNrwwprip40K2xlm4LBsvVKB3w6awL7SDQ9Rrdc1D0n9HYTyeU
+   E=;
+Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
+X-IronPort-AV: E=Sophos;i="5.91,188,1647298800"; 
+   d="scan'208";a="12857821"
+Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2022 21:07:23 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     Helge Deller <deller@gmx.de>
+Cc:     kernel-janitors@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] parisc: fix typos in comments
+Date:   Sat, 30 Apr 2022 21:07:18 +0200
+Message-Id: <20220430190718.8046-1-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3] net: SO_RCVMARK socket option for SO_MARK with
- recvmsg()
-From:   patchwork-bot+bluetooth@kernel.org
-Message-Id: <165130564137.32506.12098247313333350008.git-patchwork-notify@kernel.org>
-Date:   Sat, 30 Apr 2022 08:00:41 +0000
-References: <20220427200259.2564-1-lnx.erin@gmail.com>
-In-Reply-To: <20220427200259.2564-1-lnx.erin@gmail.com>
-To:     Erin MacNeil <lnx.erin@gmail.com>
-Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com, arnd@arndb.de, marcel@holtmann.org,
-        johan.hedberg@gmail.com, luiz.dentz@gmail.com,
-        socketcan@hartkopp.net, mkl@pengutronix.de, robin@protonic.nl,
-        linux@rempel-privat.de, kernel@pengutronix.de,
-        alex.aring@gmail.com, stefan@datenfreihafen.org,
-        yoshfuji@linux-ipv6.org, dsahern@kernel.org,
-        steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-        jk@codeconstruct.com.au, matt@codeconstruct.com.au,
-        vyasevich@gmail.com, nhorman@tuxdriver.com,
-        marcelo.leitner@gmail.com, edumazet@google.com, lmb@cloudflare.com,
-        ptikhomirov@virtuozzo.com, m@lambda.lt, hmukos@yandex-team.ru,
-        sfr@canb.auug.org.au, weiwan@google.com, yangbo.lu@nxp.com,
-        fw@strlen.de, tglx@linutronix.de, rpalethorpe@suse.com,
-        willemb@google.com, liuhangbin@gmail.com, pablo@netfilter.org,
-        rsanger@wand.net.nz, yajun.deng@linux.dev,
-        jiapeng.chong@linux.alibaba.com, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello:
+Various spelling mistakes in comments.
+Detected with the help of Coccinelle.
 
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-On Wed, 27 Apr 2022 16:02:37 -0400 you wrote:
-> Adding a new socket option, SO_RCVMARK, to indicate that SO_MARK
-> should be included in the ancillary data returned by recvmsg().
-> 
-> Renamed the sock_recv_ts_and_drops() function to sock_recv_cmsgs().
-> 
-> Signed-off-by: Erin MacNeil <lnx.erin@gmail.com>
-> 
-> [...]
+---
+ arch/parisc/kernel/kprobes.c |    2 +-
+ arch/parisc/kernel/time.c    |    2 +-
+ arch/parisc/kernel/traps.c   |    2 +-
+ arch/parisc/math-emu/dfadd.c |    2 +-
+ arch/parisc/math-emu/dfsub.c |    2 +-
+ arch/parisc/math-emu/sfadd.c |    2 +-
+ arch/parisc/math-emu/sfsub.c |    2 +-
+ 7 files changed, 7 insertions(+), 7 deletions(-)
 
-Here is the summary with links:
-  - [net-next,v3] net: SO_RCVMARK socket option for SO_MARK with recvmsg()
-    https://git.kernel.org/bluetooth/bluetooth-next/c/6fd1d51cfa25
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+diff --git a/arch/parisc/kernel/kprobes.c b/arch/parisc/kernel/kprobes.c
+index 3343d2fb7889..6e0b86652f30 100644
+--- a/arch/parisc/kernel/kprobes.c
++++ b/arch/parisc/kernel/kprobes.c
+@@ -152,7 +152,7 @@ int __kprobes parisc_kprobe_ss_handler(struct pt_regs *regs)
+ 	/* for absolute branch instructions we can copy iaoq_b. for relative
+ 	 * branch instructions we need to calculate the new address based on the
+ 	 * difference between iaoq_f and iaoq_b. We cannot use iaoq_b without
+-	 * modificationt because it's based on our ainsn.insn address.
++	 * modifications because it's based on our ainsn.insn address.
+ 	 */
+ 
+ 	if (p->post_handler)
+diff --git a/arch/parisc/kernel/time.c b/arch/parisc/kernel/time.c
+index bb27dfeeddfc..cafd3ad20272 100644
+--- a/arch/parisc/kernel/time.c
++++ b/arch/parisc/kernel/time.c
+@@ -251,7 +251,7 @@ void __init time_init(void)
+ static int __init init_cr16_clocksource(void)
+ {
+ 	/*
+-	 * The cr16 interval timers are not syncronized across CPUs, even if
++	 * The cr16 interval timers are not synchronized across CPUs, even if
+ 	 * they share the same socket.
+ 	 */
+ 	if (num_online_cpus() > 1 && !running_on_qemu) {
+diff --git a/arch/parisc/kernel/traps.c b/arch/parisc/kernel/traps.c
+index a6e61cf2cad0..b78f1b9d45c1 100644
+--- a/arch/parisc/kernel/traps.c
++++ b/arch/parisc/kernel/traps.c
+@@ -469,7 +469,7 @@ void parisc_terminate(char *msg, struct pt_regs *regs, int code, unsigned long o
+ 	 * panic notifiers, and we should call panic
+ 	 * directly from the location that we wish. 
+ 	 * e.g. We should not call panic from
+-	 * parisc_terminate, but rather the oter way around.
++	 * parisc_terminate, but rather the other way around.
+ 	 * This hack works, prints the panic message twice,
+ 	 * and it enables reboot timers!
+ 	 */
+diff --git a/arch/parisc/math-emu/dfadd.c b/arch/parisc/math-emu/dfadd.c
+index ec487e07f004..00e561d4aa55 100644
+--- a/arch/parisc/math-emu/dfadd.c
++++ b/arch/parisc/math-emu/dfadd.c
+@@ -253,7 +253,7 @@ dbl_fadd(
+ 	    return(NOEXCEPTION);
+ 	    }
+ 	right_exponent = 1;	/* Set exponent to reflect different bias
+-				 * with denomalized numbers. */
++				 * with denormalized numbers. */
+ 	}
+     else
+ 	{
+diff --git a/arch/parisc/math-emu/dfsub.c b/arch/parisc/math-emu/dfsub.c
+index c4f30acf2d48..4f03782284bd 100644
+--- a/arch/parisc/math-emu/dfsub.c
++++ b/arch/parisc/math-emu/dfsub.c
+@@ -256,7 +256,7 @@ dbl_fsub(
+ 	    return(NOEXCEPTION);
+ 	    }
+ 	right_exponent = 1;	/* Set exponent to reflect different bias
+-				 * with denomalized numbers. */
++				 * with denormalized numbers. */
+ 	}
+     else
+ 	{
+diff --git a/arch/parisc/math-emu/sfadd.c b/arch/parisc/math-emu/sfadd.c
+index 838758279d5b..9b98c874dfac 100644
+--- a/arch/parisc/math-emu/sfadd.c
++++ b/arch/parisc/math-emu/sfadd.c
+@@ -249,7 +249,7 @@ sgl_fadd(
+ 	    return(NOEXCEPTION);
+ 	    }
+ 	right_exponent = 1;	/* Set exponent to reflect different bias
+-				 * with denomalized numbers. */
++				 * with denormalized numbers. */
+ 	}
+     else
+ 	{
+diff --git a/arch/parisc/math-emu/sfsub.c b/arch/parisc/math-emu/sfsub.c
+index 583d3ace4634..29d9eed09d12 100644
+--- a/arch/parisc/math-emu/sfsub.c
++++ b/arch/parisc/math-emu/sfsub.c
+@@ -252,7 +252,7 @@ sgl_fsub(
+ 	    return(NOEXCEPTION);
+ 	    }
+ 	right_exponent = 1;	/* Set exponent to reflect different bias
+-				 * with denomalized numbers. */
++				 * with denormalized numbers. */
+ 	}
+     else
+ 	{
 
