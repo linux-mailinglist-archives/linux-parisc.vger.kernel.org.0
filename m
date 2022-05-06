@@ -2,87 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5C7651D4A3
-	for <lists+linux-parisc@lfdr.de>; Fri,  6 May 2022 11:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5ED951D581
+	for <lists+linux-parisc@lfdr.de>; Fri,  6 May 2022 12:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1390574AbiEFJgS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 6 May 2022 05:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44904 "EHLO
+        id S1390873AbiEFKWf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 6 May 2022 06:22:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1390426AbiEFJex (ORCPT
+        with ESMTP id S1390872AbiEFKWf (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 6 May 2022 05:34:53 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D7A7B68;
-        Fri,  6 May 2022 02:31:10 -0700 (PDT)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Kvlfs6CCSzfYkx;
-        Fri,  6 May 2022 17:30:45 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 6 May 2022 17:31:08 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Fri, 6 May
- 2022 17:31:08 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-CC:     <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>
-Subject: [PATCH] ethernet: tulip: fix missing pci_disable_device() on error in tulip_init_one()
-Date:   Fri, 6 May 2022 17:42:50 +0800
-Message-ID: <20220506094250.3630615-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 6 May 2022 06:22:35 -0400
+X-Greylist: delayed 401 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 May 2022 03:18:51 PDT
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA82B5F8D4
+        for <linux-parisc@vger.kernel.org>; Fri,  6 May 2022 03:18:51 -0700 (PDT)
+Received: (qmail 10290 invoked from network); 6 May 2022 10:12:03 -0000
+Received: from p200300cf070a0b0076d435fffeb7be92.dip0.t-ipconnect.de ([2003:cf:70a:b00:76d4:35ff:feb7:be92]:41972 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-kernel@vger.kernel.org>; Fri, 06 May 2022 12:12:03 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        netdev@vger.kernel.org, Yang Yingliang <yangyingliang@huawei.com>
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org
+Subject: Re: [PATCH] ethernet: tulip: fix missing pci_disable_device() on error in tulip_init_one()
+Date:   Fri, 06 May 2022 12:11:56 +0200
+Message-ID: <5564948.DvuYhMxLoT@eto.sf-tec.de>
+In-Reply-To: <20220506094250.3630615-1-yangyingliang@huawei.com>
+References: <20220506094250.3630615-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="nextPart5819534.lOV4Wx5bFT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Fix the missing pci_disable_device() before return
-from tulip_init_one() in the error handling case.
+--nextPart5819534.lOV4Wx5bFT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/net/ethernet/dec/tulip/tulip_core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Am Freitag, 6. Mai 2022, 11:42:50 CEST schrieb Yang Yingliang:
+> Fix the missing pci_disable_device() before return
+> from tulip_init_one() in the error handling case.
 
-diff --git a/drivers/net/ethernet/dec/tulip/tulip_core.c b/drivers/net/ethernet/dec/tulip/tulip_core.c
-index 79df5a72877b..0040dcaab945 100644
---- a/drivers/net/ethernet/dec/tulip/tulip_core.c
-+++ b/drivers/net/ethernet/dec/tulip/tulip_core.c
-@@ -1399,8 +1399,10 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	/* alloc_etherdev ensures aligned and zeroed private structures */
- 	dev = alloc_etherdev (sizeof (*tp));
--	if (!dev)
-+	if (!dev) {
-+		pci_disable_device(pdev);
- 		return -ENOMEM;
-+	}
- 
- 	SET_NETDEV_DEV(dev, &pdev->dev);
- 	if (pci_resource_len (pdev, 0) < tulip_tbl[chip_idx].io_size) {
-@@ -1785,6 +1787,7 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- err_out_free_netdev:
- 	free_netdev (dev);
-+	pci_disable_device(pdev);
- 	return -ENODEV;
- }
- 
--- 
-2.25.1
+I would suggest removing the pci_disable_device() from tulip_remove_one() 
+instead and using pcim_enable_device(), i.e. devres, and let the driver core 
+handle all these things. Of course more of the used functions could be 
+converted them, e.g. using devm_alloc_etherdev() and so on.
+
+Eike
+--nextPart5819534.lOV4Wx5bFT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYnT0bAAKCRBcpIk+abn8
+TpRJAKCSFE72ZhtgBsEs3gZhAmNmCY5v1ACgkwsyEadMyOecFRXMtHurVSrfEz0=
+=LQcA
+-----END PGP SIGNATURE-----
+
+--nextPart5819534.lOV4Wx5bFT--
+
+
 
