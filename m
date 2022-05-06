@@ -2,98 +2,142 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FAB851E0A5
-	for <lists+linux-parisc@lfdr.de>; Fri,  6 May 2022 23:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 486E151E11A
+	for <lists+linux-parisc@lfdr.de>; Fri,  6 May 2022 23:30:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444348AbiEFVJf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 6 May 2022 17:09:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33816 "EHLO
+        id S1444471AbiEFVeg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 6 May 2022 17:34:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1444405AbiEFVJU (ORCPT
+        with ESMTP id S1392437AbiEFVef (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 6 May 2022 17:09:20 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82951B796
-        for <linux-parisc@vger.kernel.org>; Fri,  6 May 2022 14:05:35 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id c9so7881366plh.2
-        for <linux-parisc@vger.kernel.org>; Fri, 06 May 2022 14:05:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:to;
-        bh=VSSUIwdzgxQxnEkB7+u7pnweyPajIQMP3nQqWYs8VX0=;
-        b=gmmgqd2enKSblS7bCmnm2ivMD5ZTgpfnW/j/MNizwci6pH3rJEQXq3L9+ZdKL4HUTr
-         YB+Dhjpe2MkKztjhU+UDqenquKjwj+pPKOCMhVrtxmSec4u8GzSTlKnYmXQROsqwJ7YF
-         fpyt4ZWxoGKOIdNHSzn6X8527WsL9seFFIUc417Aceaz0HyqyfLzhrTyiK1hfEoe7bgf
-         O66BH+VPp/USBREXReLf48zIB9vdsgcsn+kPDpodP7afE/7TIv51GGMLWkNAhK51uLVF
-         lGR5deZqynPeLivFeL+j4lPiytJOppTfXKPKuEkvtzBoRNP5faKFInL0FLuVz9LTzW90
-         0CuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
-         :from:date:message-id:subject:to;
-        bh=VSSUIwdzgxQxnEkB7+u7pnweyPajIQMP3nQqWYs8VX0=;
-        b=5ohqklTM9SLJP4ERjX6b7Z43ow+pIB0MWRiufG0XO+nFBn9OBtxuEICTlqIdiFBQ17
-         s4fcwHxR6MbLMFOF0dH5zMI6QXDa4rRYfxiW65NX0jMoy4N+MoN2DfIfioxJE913zvy4
-         yloNRJmhuKe+CWPzd5QDMNsriO2ARX0dbEwwHHfxW6uiLqpPX0tPvzOgXsLDMXr7DERe
-         yS4fzjKzazLqvkOV2uej4gXp1p4ab5L+fz+H9UAsvJyR+hzyCXS9sEWsY44yxoY0+OjK
-         j47xJluFzrAjgpPhP54GqtMt8UKhYDkUvdwuKBQY/7eVb4ZQkn7eN2mS4TLdyWSqVdzH
-         Te2w==
-X-Gm-Message-State: AOAM531jCT+kwzqsZgqnSBz7HkAFP/3Ji+WrGmYDVy6vVTyBSnO5J9pu
-        9jHF6d4Rjmy5UgspeK87FHfTwyH7+9xs5xg3Rg==
-X-Google-Smtp-Source: ABdhPJyqTkc39jIaJ9/Rbqdi6sONfGmoHQRCW6ADRHNTA3OhSOJwlsoTVRnEtva6v71BUuTBbiWSrg7BAnP42QBwIqU=
-X-Received: by 2002:a17:902:a501:b0:153:f956:29f0 with SMTP id
- s1-20020a170902a50100b00153f95629f0mr5598333plq.120.1651871135500; Fri, 06
- May 2022 14:05:35 -0700 (PDT)
+        Fri, 6 May 2022 17:34:35 -0400
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-003.bell.net [209.71.208.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 48697579AF
+        for <linux-parisc@vger.kernel.org>; Fri,  6 May 2022 14:30:51 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.50.7.94]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6271AB0600498508
+X-CM-Envelope: MS4xfM5YB5rnjLjFbwFZWaPcn0Y4zIhUUDdp2+Z8fFXmSj/Z91gmAhnI7Osfj6wDQfeE0fN9Xxj7Pqrqb1HKm4hQLnROqfFKIyXzqPo8OaUspzPt0vnnNyCs
+ CAaGKhSSgMwSA/F5ezBMJDwrbitHjnPNkwC9NHoQPS9Il6rdQeUeDzULXc8Cg4mgmt8MvSOARrj29D2WuypR8oKnRcS7VKGH2IRRJM+etjcMTN34GW0359oM
+ oS/ya2bYeB2WozpjrnDf9CKSBuXiBEotZzX+aagmseoysts33O3WxfTy3rMThpx0
+X-CM-Analysis: v=2.4 cv=YYreWydf c=1 sm=1 tr=0 ts=62759376
+ a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
+ a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=FBHGMhGWAAAA:8 a=4uZ0dcm00FkM3wklGukA:9
+ a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (70.50.7.94) by cmx-mtlrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 6271AB0600498508; Fri, 6 May 2022 17:30:30 -0400
+Message-ID: <bbc8e524-de3f-f6ee-cc30-0e208ca56ba4@bell.net>
+Date:   Fri, 6 May 2022 17:30:31 -0400
 MIME-Version: 1.0
-Received: by 2002:ac4:9906:0:b0:4ba:807b:b8f3 with HTTP; Fri, 6 May 2022
- 14:05:33 -0700 (PDT)
-Reply-To: warren001buffett@gmail.com
-In-Reply-To: <CAD_xG_pvNZK6BFCW+28Xv4DE=_5rbDZXDok2BYNn9xw6Ma7iow@mail.gmail.com>
-References: <CAD_xG_pvNZK6BFCW+28Xv4DE=_5rbDZXDok2BYNn9xw6Ma7iow@mail.gmail.com>
-From:   Warren Buffett <guidayema@gmail.com>
-Date:   Fri, 6 May 2022 21:05:33 +0000
-Message-ID: <CAD_xG_o-NeOti3yu7R9R5-myJ=Pi4nnU5Tuumw-xPcT-nT8e=Q@mail.gmail.com>
-Subject: Fwd: My name is Warren Buffett, an American businessman.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:643 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4985]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [guidayema[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: Latest PA8800/PA8900 cache flush patch
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>
+Cc:     Deller <deller@kernel.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+References: <YmhSJPy1MVBYWSrB@mx3210.localdomain>
+ <791a2aee-1a9a-6680-c9d4-438c6b5519a6@gmx.de>
+ <2ee9360d-7ddc-8cf1-46c5-b29663e10193@bell.net>
+ <0cafa13b-336c-a425-7284-162467349bc9@bell.net>
+ <2b28f20d-0183-96a7-463f-492cc972b3fa@gmx.de>
+ <418213d7-a306-d3cd-2b78-50f0c96b1b8d@gmx.de>
+ <0449745b-f3fd-eb86-31f9-1e26cc8bc0fd@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <0449745b-f3fd-eb86-31f9-1e26cc8bc0fd@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-My name is Warren Buffett, an American businessman and investor I have
-something important to discuss with you.
+On 2022-04-27 5:21 p.m., Helge Deller wrote:
+> On 4/27/22 23:08, Helge Deller wrote:
+>> On 4/27/22 23:04, Helge Deller wrote:
+>>> On 4/27/22 22:50, John David Anglin wrote:
+>>>> On 2022-04-27 4:44 p.m., John David Anglin wrote:
+>>>>> On 2022-04-26 4:43 p.m., Helge Deller wrote:
+>>>>>>> I have removed the flush_cache_dup_mm code as it improve perforance
+>>>>>>> and hopefully it will fix issues on B160L.
+>>>>>> I applied your patch on top of for-next tree.
+>>>>>> I still see the same issue on the C3700 (PA8700 (PCX-W2)) with 32bit kernel...
+>>>>>> Maybe it's not related to your cache flush patches but to mine?
+>>>>>>
+>>>>> Boot fails with your 32-bit config on c3750 with latest cache patch.  So, problem appears
+>>>> Bah, I meant "without".
+>>>>> to have been introduced earlier.
+>>> Yes, happens before for-next tree and your patches.
+>>>
+>>>> I still have install problem with 5.17.0-1-parisc64.
+>>> So, you run 5.17 (debian) and it is unstable? I'll try, but currently again my time is limited.
+>> Debian 5.17 is based on stable-5.17-3.
+>> This version includes this patch:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-5.17.y&id=e115f5a44360c4a2f158074ecb3feea88c45fdc0
+>> Greg pulled it down from 5.18-rc...
+>> Maybe that's the issue?
+> I've built 5.17.5 (32bit). Boots ok on c3000. No segfaults.
+> But I do see the stalls as well:
+> ...
+> Starting Avahi mDNS/DNS-SD Daemon: avahi-daemon.
+> Starting periodic command scheduler: cron.
+> [   31.472708] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+> [   31.543577]  (detected by 0, t=2102 jiffies, g=7361, q=10)
+> [   31.609191] rcu: All QSes seen, last rcu_sched kthread activity 2102 (-22271--24373), jiffies_till_next_fqs=1, root ->qsmask 0x0
+> [   31.747614] rcu: rcu_sched kthread starved for 2102 jiffies! g7361 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
+> [   31.867313] rcu:     Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
+> [   31.974535] rcu: RCU grace-period kthread stack dump:
+> [   32.034962] task:rcu_sched       state:R  running task     stack:    0 pid:   10 ppid:     2 flags:0x00000000
+> [   32.153733] Backtrace:
+> [   32.181916]  [<1094c21c>] __schedule+0x2dc/0x964
+> [   32.237240]  [<1094c90c>] schedule+0x68/0x138
+> [   32.289340]  [<10953068>] schedule_timeout+0x84/0x178
+> [   32.349762]  [<102472b4>] rcu_gp_fqs_loop+0x32c/0x428
+> [   32.410186]  [<10249660>] rcu_gp_kthread+0x10c/0x1e8
+> [   32.469569]  [<101ebc98>] kthread+0x100/0x108
+> [   32.521674]  [<1019b01c>] ret_from_kernel_thread+0x1c/0x24
+>
+> ARGH!!!
+This was introduced by the following commit:
 
-Mr. Warren Buffett
-warren001buffett@gmail.com
-Chief Executive Officer: Berkshire Hathaway
-aphy/Warren-Edward-Buffett
+commit d97180ad68bdb7ee10f327205a649bc2f558741d
+Author: Helge Deller <deller@gmx.de>
+Date:   Wed Sep 8 23:27:00 2021 +0200
+
+     parisc: Mark sched_clock unstable only if clocks are not syncronized
+
+     We check at runtime if the cr16 clocks are stable across CPUs. Only mark
+     the sched_clock unstable by calling clear_sched_clock_stable() if we
+     know that we run on a system which isn't syncronized across CPUs.
+
+     Signed-off-by: Helge Deller <deller@gmx.de>
+
+In searching for the cause, I also noticed this commit:
+
+commit e4f2006f1287e7ea17660490569cff323772dac4
+Author: Helge Deller <deller@gmx.de>
+Date:   Tue Sep 7 05:03:29 2021 +0200
+
+     parisc: Reduce sigreturn trampoline to 3 instructions
+
+     We can move the INSN_LDI_R20 instruction into the branch delay slot.
+
+     Signed-off-by: Helge Deller <deller@gmx.de>
+
+Changing the sigreturn trampoline breaks gdb's detection of signal frames.
+I suspect the INSN_LDI_R20 instruction was intentionally put before the
+branch to make the sequence more unique.
+
+Dave
+
+-- 
+John David Anglin  dave.anglin@bell.net
+
