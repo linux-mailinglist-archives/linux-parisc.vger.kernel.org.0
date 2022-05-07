@@ -2,122 +2,180 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A361451E1EB
-	for <lists+linux-parisc@lfdr.de>; Sat,  7 May 2022 01:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFC1751E2A7
+	for <lists+linux-parisc@lfdr.de>; Sat,  7 May 2022 02:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444801AbiEFWih (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 6 May 2022 18:38:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45458 "EHLO
+        id S1445034AbiEGAOl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 6 May 2022 20:14:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1390473AbiEFWig (ORCPT
+        with ESMTP id S235557AbiEGAOg (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 6 May 2022 18:38:36 -0400
-Received: from cmx-torrgo001.bell.net (mta-tor-005.bell.net [209.71.212.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 35EA561295
-        for <linux-parisc@vger.kernel.org>; Fri,  6 May 2022 15:34:50 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 62716914004FF580
-X-CM-Envelope: MS4xfGAJQcElB1BSoLp5BtAh1mYo3uR9O8z5M/szYpBuTB7TOMtShW4A8auueMMc70XRyWC/uYcfsXi9rrng3KeRl9KugIp48yqM6MlgE927+Hx0RK9uiHkG
- iZ7/2RKwT1y5f+YMPYDQbBZByIWguj7fDgGhSVloglu9FqYyBjjpkXqd7mAbI5exyVPGoRq97owhlkNo4+2OKULDsi2WcuZSMdZ4me2dlLT851kIUa4bnNrf
- fCIjof8+NZHoVVbxkDyoHuRcXwOPdaE+aUULOQuR2eUtvJbRIelOphkqvANfgWen
-X-CM-Analysis: v=2.4 cv=B8zabMhM c=1 sm=1 tr=0 ts=6275a276
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=HxRN8ZKwy-bFrGGKEz0A:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (70.50.7.94) by cmx-torrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 62716914004FF580; Fri, 6 May 2022 18:34:30 -0400
-Message-ID: <5a4f104c-80fb-a70f-23ce-e87bae25c46c@bell.net>
-Date:   Fri, 6 May 2022 18:34:31 -0400
+        Fri, 6 May 2022 20:14:36 -0400
+X-Greylist: delayed 538 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 May 2022 17:10:50 PDT
+Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46FB8193D5;
+        Fri,  6 May 2022 17:10:48 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 08A20581367;
+        Fri,  6 May 2022 20:01:49 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Fri, 06 May 2022 20:01:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1651881709; x=
+        1651888909; bh=hJxEFAuP3W0ocRuq9vLXjN5OlZEUnHk8AMHl1pdwrIw=; b=C
+        xRLkEfhUbEyE90JzCIIfMF0OZav1zcZBYtpgecP8ApnTN4fdlBb3TWucKtiiLVnd
+        phR+z33NIKiN5vvoQl4oIZhk8c/stiSlc7YKhqnLniKgN7mh6i4gdLlpwMgXN8Jx
+        e7Ktbm6oij1Rve4npuV/JXnd7tlkfyM/0Bz3txW/0SUizxpE/JN1o4B4fiIigl5B
+        ODk4g+2AMO40GC7n/7n0pEgUnXqDIMz17cgAN6FmIv1e9zegzqwaJ0I+kStibxBe
+        g4XBZSsTbqspbyCFDBCsvGdO+loAMO92OKfZTh/4kTG2uqmiuWrZjJm45yvGLmba
+        KNmSVM+dKifWafpBnnHDw==
+X-ME-Sender: <xms:4rZ1Ytzfx8dyKZqHQrV2iYrMdgRUVRPJ5uUwNS7astnHeUoPA5JP-Q>
+    <xme:4rZ1YtQUABIDxMMBtegJM8AXkRrr-tzXbMdH0cN7W3yw1nTwwmuUilavkeuJbaLH-
+    jiXIcpKb_V12BfL3wo>
+X-ME-Received: <xmr:4rZ1YnWuj7-Y-n3U8_P9SrVRCen9EuBDcbjR5eG7oX-EXFUmoFKaghxcC96Gl5aI4_7s5rHGeJqG5FVCSZIPe5G--o2Z8oFtO20>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeeggddviecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefujgfkfhggtgesthdtredttddtvdenucfhrhhomhephfhinhhnucfv
+    hhgrihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrth
+    htvghrnhepfeeiheejvdetgfeitddutefhkeeilefhveehgfdvtdekkedvkeehffdtkeev
+    vdeunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehk
+    rdhorhhg
+X-ME-Proxy: <xmx:4rZ1YvjRqTV1kqzGfEZqExc-y3C87C0PjwUsUwS-om8USnmpQPRsXQ>
+    <xmx:4rZ1YvD61kgrS-YFzaAD5iTYUCb5iH6iosfkwZGmHVIza5eNfoZf5Q>
+    <xmx:4rZ1YoIUIx-XKteSS56qWnxoAmafmX5tikXV710a88-2E5zTPDOJsg>
+    <xmx:7bZ1Yh30nOThnpoXJeJtrRg9vb4kwFxuUl_bN4rVDjV8z-IxFV2paA>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 6 May 2022 20:01:37 -0400 (EDT)
+Date:   Sat, 7 May 2022 10:01:39 +1000 (AEST)
+From:   Finn Thain <fthain@linux-m68k.org>
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Arnd Bergmann <arnd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "open list:IA64 (Itanium) PLATFORM" <linux-ia64@vger.kernel.org>,
+        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
+        <linuxppc-dev@lists.ozlabs.org>,
+        "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:SPARC + UltraSPARC (sparc/sparc64)" 
+        <sparclinux@vger.kernel.org>
+Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select
+ it as necessary
+In-Reply-To: <105ccec439f709846e82b69cb854ac825d7a6a49.camel@linux.ibm.com>
+Message-ID: <7dfa7578-039-e132-c573-ad89bd3215@linux-m68k.org>
+References: <20220505195342.GA509942@bhelgaas>  <22bec167-241f-2cbe-829f-a3f65e40e71@linux-m68k.org> <105ccec439f709846e82b69cb854ac825d7a6a49.camel@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: Latest PA8800/PA8900 cache flush patch
-Content-Language: en-US
-From:   John David Anglin <dave.anglin@bell.net>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Deller <deller@kernel.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-References: <YmhSJPy1MVBYWSrB@mx3210.localdomain>
- <791a2aee-1a9a-6680-c9d4-438c6b5519a6@gmx.de>
- <2ee9360d-7ddc-8cf1-46c5-b29663e10193@bell.net>
- <0cafa13b-336c-a425-7284-162467349bc9@bell.net>
- <2b28f20d-0183-96a7-463f-492cc972b3fa@gmx.de>
- <418213d7-a306-d3cd-2b78-50f0c96b1b8d@gmx.de>
- <0449745b-f3fd-eb86-31f9-1e26cc8bc0fd@gmx.de>
- <bbc8e524-de3f-f6ee-cc30-0e208ca56ba4@bell.net>
-In-Reply-To: <bbc8e524-de3f-f6ee-cc30-0e208ca56ba4@bell.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2022-05-06 5:30 p.m., John David Anglin wrote:
->> I've built 5.17.5 (32bit). Boots ok on c3000. No segfaults.
->> But I do see the stalls as well:
->> ...
->> Starting Avahi mDNS/DNS-SD Daemon: avahi-daemon.
->> Starting periodic command scheduler: cron.
->> [   31.472708] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
->> [   31.543577]  (detected by 0, t=2102 jiffies, g=7361, q=10)
->> [   31.609191] rcu: All QSes seen, last rcu_sched kthread activity 2102 (-22271--24373), jiffies_till_next_fqs=1, root ->qsmask 0x0
->> [   31.747614] rcu: rcu_sched kthread starved for 2102 jiffies! g7361 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
->> [   31.867313] rcu:     Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
->> [   31.974535] rcu: RCU grace-period kthread stack dump:
->> [   32.034962] task:rcu_sched       state:R  running task     stack:    0 pid:   10 ppid:     2 flags:0x00000000
->> [   32.153733] Backtrace:
->> [   32.181916]  [<1094c21c>] __schedule+0x2dc/0x964
->> [   32.237240]  [<1094c90c>] schedule+0x68/0x138
->> [   32.289340]  [<10953068>] schedule_timeout+0x84/0x178
->> [   32.349762]  [<102472b4>] rcu_gp_fqs_loop+0x32c/0x428
->> [   32.410186]  [<10249660>] rcu_gp_kthread+0x10c/0x1e8
->> [   32.469569]  [<101ebc98>] kthread+0x100/0x108
->> [   32.521674]  [<1019b01c>] ret_from_kernel_thread+0x1c/0x24
->>
->> ARGH!!!
-> This was introduced by the following commit:
->
-> commit d97180ad68bdb7ee10f327205a649bc2f558741d
-> Author: Helge Deller <deller@gmx.de>
-> Date:   Wed Sep 8 23:27:00 2021 +0200
->
->     parisc: Mark sched_clock unstable only if clocks are not syncronized
->
->     We check at runtime if the cr16 clocks are stable across CPUs. Only mark
->     the sched_clock unstable by calling clear_sched_clock_stable() if we
->     know that we run on a system which isn't syncronized across CPUs.
->
->     Signed-off-by: Helge Deller <deller@gmx.de>
->
-> In searching for the cause, I also noticed this commit:
->
-> commit e4f2006f1287e7ea17660490569cff323772dac4
-> Author: Helge Deller <deller@gmx.de>
-> Date:   Tue Sep 7 05:03:29 2021 +0200
->
->     parisc: Reduce sigreturn trampoline to 3 instructions
->
->     We can move the INSN_LDI_R20 instruction into the branch delay slot.
->
->     Signed-off-by: Helge Deller <deller@gmx.de>
->
-> Changing the sigreturn trampoline breaks gdb's detection of signal frames.
-> I suspect the INSN_LDI_R20 instruction was intentionally put before the
-> branch to make the sequence more unique.
 
-It appears the latter commit has been reverted.  The former commit has been modified.
+On Fri, 6 May 2022, Niklas Schnelle wrote:
 
-Dave
+> On Fri, 2022-05-06 at 19:12 +1000, Finn Thain wrote:
+> > 
+> > On Thu, 5 May 2022, Bjorn Helgaas wrote:
+> > 
+> > > On Thu, May 05, 2022 at 07:39:42PM +0200, Arnd Bergmann wrote:
+> > > > On Thu, May 5, 2022 at 6:10 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > > On Wed, May 04, 2022 at 11:31:28PM +0200, Arnd Bergmann wrote:
+> > > > > > The main goal is to avoid c), which is what happens on s390, 
+> > > > > > but can also happen elsewhere. Catching b) would be nice as 
+> > > > > > well, but is much harder to do from generic code as you'd need 
+> > > > > > an architecture specific inline asm statement to insert a 
+> > > > > > ex_table fixup, or a runtime conditional on each access.
+> > > > > 
+> > > > > Or s390 could implement its own inb().
+> > > > > 
+> > > > > I'm hearing that generic powerpc kernels have to run both on 
+> > > > > machines that have I/O port space and those that don't.  That 
+> > > > > makes me think s390 could do something similar.
+> > > > 
+> > > > No, this is actually the current situation, and it makes 
+> > > > absolutely no sense. s390 has no way of implementing inb()/outb() 
+> > > > because there are no instructions for it and it cannot tunnel them 
+> > > > through a virtual address mapping like on most of the other 
+> > > > architectures. (it has special instructions for accessing memory 
+> > > > space, which is not the same as a pointer dereference here).
+> > > > 
+> > > > The existing implementation gets flagged as a NULL pointer 
+> > > > dereference by a compiler warning because it effectively is.
+> > > 
+> > > I think s390 currently uses the inb() in asm-generic/io.h, i.e., 
+> > > "__raw_readb(PCI_IOBASE + addr)".  I understand that's a NULL 
+> > > pointer dereference because the default PCI_IOBASE is 0.
+> > > 
+> > > I mooted a s390 inb() implementation like "return ~0" because that's 
+> > > what happens on most arches when there's no device to respond to the 
+> > > inb().
+> > > 
+> > > The HAS_IOPORT dependencies are fairly ugly IMHO, and they clutter 
+> > > drivers that use I/O ports in some cases but not others.  But maybe 
+> > > it's the most practical way.
+> > > 
+> > 
+> > Do you mean, "the most practical way to avoid a compiler warning on 
+> > s390"? What about "#pragma GCC diagnostic ignored"?
+> 
+> This actually happens with clang.
 
--- 
-John David Anglin  dave.anglin@bell.net
+That suggests a clang bug to me. If you believe GCC should behave like 
+clang, then I guess the pragma above really is the one you want. If you 
+somehow feel that the kernel should cater to gcc and clang even where they 
+disagree then you would have to use "#pragma clang diagnostic ignored".
 
+> Apart from that, I think this would also fall under the same argument as 
+> the original patch Linus unpulled. We would just paint over someting 
+> that we know at compile time won't work:
+> 
+> https://lore.kernel.org/lkml/CAHk-=wg80je=K7madF4e7WrRNp37e3qh6y10Svhdc7O8SZ_-8g@mail.gmail.com/
+> 
+
+I wasn't advocating adding any warnings.
+
+If you know at compile time that a driver won't work, the usual solution 
+is scripts/config -d CONFIG_SOME_UNDESIRED_DRIVER. Why is that no 
+longer appropriate for drivers that use IO ports?
