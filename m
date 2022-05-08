@@ -2,119 +2,139 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C34551EDD0
-	for <lists+linux-parisc@lfdr.de>; Sun,  8 May 2022 15:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 580AE51F05C
+	for <lists+linux-parisc@lfdr.de>; Sun,  8 May 2022 21:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233557AbiEHNfu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 8 May 2022 09:35:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59784 "EHLO
+        id S231587AbiEHTfE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 8 May 2022 15:35:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233526AbiEHNft (ORCPT
+        with ESMTP id S233986AbiEHTem (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 8 May 2022 09:35:49 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1E27101CA
-        for <linux-parisc@vger.kernel.org>; Sun,  8 May 2022 06:31:57 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id q4so8708647plr.11
-        for <linux-parisc@vger.kernel.org>; Sun, 08 May 2022 06:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=PmPqsk4Ds+rkfpu3nL2hTmPZ4zZI7ndI1Rv+jcAXn+g=;
-        b=SyLOThmLnXTk6qRKX1oo9DRLScsXkpBQJcjqc2ZX8BklsBr9Jd5/4XzS5R0rdBNn64
-         Gj08t8HnQPHGWv/6lK5azajHcMs4BDXMAWO/si9Vg++doIk4TwR6gjg96i/2Ieo239U+
-         GD/hhn1ajJzQO2Fu00Id46ibFUBWFedLdoweGjfehLyxDpd+kx2jhOMeAvgK4hJi70uy
-         2Sxen0AzDNegfxiv3X3keWQqOByVGhCLH68rwxiyhvd4lp5cQorNpjcRm00TCUGhYcZj
-         TpQMhfYAi5LQjolnYmnz+/jetR/+obipzK9Rq4yk9iPkemX0aPQqHJMSY4KTNlniPFzy
-         Gz1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=PmPqsk4Ds+rkfpu3nL2hTmPZ4zZI7ndI1Rv+jcAXn+g=;
-        b=mC4zPi3Qr0BeCp7xoUNEf4dclkulM6VRnIc+6tEiHztrHkcOOym9JcalXHVZgu2tiF
-         7Cf2w+iQrAXPiX33IADboOauFWFt4ioOdOF5raubLzQEgtpfC4z3j2wrbsrCjCxbWih5
-         8h2eZt/xux5Aixas6XHQcShXRoulFiOX7JGhlLlKlTxoAmXKxH1EnHYaCa9Wddd5P/Ms
-         HyUFh1Fwj6JEuAk2txdN1xxjzVV0Dgu2G/5aFAWSfu/vnRfbbhtpnhXAMgEXfKMKoBmI
-         IdClSk6q6OMSOiObtAs3M2RR2+V7mrTWaozuzuhyKXQx8DPZIJJeyofliDdjI/Fw0RhE
-         KYLQ==
-X-Gm-Message-State: AOAM530Ylxg7pssbqkcYLZVTiohp9gEU2V51vBkTzK7vIRTumEn5TiV2
-        nsuRjPyGEYqlGXUKIQ+aCC6CUg==
-X-Google-Smtp-Source: ABdhPJxahffH9rcJXLYibIJ0tdGcqVx0aeXH5wYUXoWTVBpSrJpN/ltMk318QQF+PAogtyB3/7uLhQ==
-X-Received: by 2002:a17:90b:4c88:b0:1dc:60c2:25b2 with SMTP id my8-20020a17090b4c8800b001dc60c225b2mr21748033pjb.133.1652016717528;
-        Sun, 08 May 2022 06:31:57 -0700 (PDT)
-Received: from localhost ([139.177.225.234])
-        by smtp.gmail.com with ESMTPSA id cj25-20020a056a00299900b0050dc76281e1sm6590444pfb.187.2022.05.08.06.31.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 May 2022 06:31:57 -0700 (PDT)
-Date:   Sun, 8 May 2022 21:31:54 +0800
-From:   Muchun Song <songmuchun@bytedance.com>
-To:     Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc:     akpm@linux-foundation.org, mike.kravetz@oracle.com,
-        catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue
- when migration
-Message-ID: <YnfGSu8tPzTt9ozL@FVFYT0MHHV2J.usts.net>
-References: <cover.1652002221.git.baolin.wang@linux.alibaba.com>
- <1ec8a987be1a5400e077260a300d0079564b1472.1652002221.git.baolin.wang@linux.alibaba.com>
+        Sun, 8 May 2022 15:34:42 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DB5D103A;
+        Sun,  8 May 2022 12:30:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1652038216;
+        bh=bWo1NsHRzKo/7mczgQM8M9vFn1mbdbdEYbRB3K13bxc=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=HleKCe4hrwOyeZL6mHFuyy4edh6AkfgOvpHOfuEdLHq4wXjZFiADDTKgk3pgRO6yJ
+         y5as1qZxQ5E0MVUUocQPLXWKR74Eo7ydi3qHgWCx4fS5mV72Tuxb/ROpDuJpUAYPdy
+         pkhippR4gsFg64BCtTRB8tteUrP2jvkTtYm35P0M=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100 ([92.116.176.85]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MuDXz-1o4lC10iGz-00uWjA; Sun, 08
+ May 2022 21:30:16 +0200
+Date:   Sun, 8 May 2022 21:30:14 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture updates for v5.18-rc6
+Message-ID: <YngaRj/nUEkAKbZL@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1ec8a987be1a5400e077260a300d0079564b1472.1652002221.git.baolin.wang@linux.alibaba.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Provags-ID: V03:K1:JZjR+y9aDfGLRtGGgCp5cOJKE4NHd/k5bXin4pVbcUN9fyvV+Mr
+ EMw4zPeeQyS4UT8N9MGY6aHanbalMVte07zSokiTeDt1aXO2dMple+WisbpJQ3esS4qBx3w
+ G4ksGP1/6LomH2+Uwh56pSeQ/lGNNhZ584fqYvSoe05bqLz/sDwy0bb/087bXg3FL8HmnFI
+ VBTRzmOvZJyEcI6IywQHQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:X0aIJu9HeXM=:hp1NnnHqz1LcaoHVaEICWe
+ g23esKUJPHIR4HnM9hfLRde5gECBYMjqzfYvXqK2+miAR87yw/HgNspjqnkUzw5TuhZaZvWWc
+ nc4NILWQA+wVBZyJwHVmENhQJZZkUT211133sZIXRCp4Iemp6ax0M7b2MLKuMKf3qvhatCfbo
+ 6cBg261EGiWxy4K4lfNZlt39crdBjRSwNTzIVcSf8Lh9kd2QGI1o0ywCE0L0rdmyzg0UZbIHh
+ 4ai3VepO+FN7KiRf6UPaTPW7ZZj/hfbeGDPdCeyQL3r1DsPB3oXPd6umqpUy5ekaVlOzh0DwJ
+ OgmZEqotk1N8oL80uD+BwUwdPABmm+3GA+MUSz9G1DeMsz7PCwx/IJ1/lw7gahjP49zbJ1D4w
+ 04ODLuwqV61qIkpM5mYxZWuNp3okxWBaBerKLen4iUPbRlcpMbwclK8aHneWOFEFgoKxzolSC
+ SB/0F0bzZ/5VKxMIs4m+1W7r1VGngMTgzYvg7wItJynlwA4+SZj2MaVpIFF8SqpPUqOJsg12p
+ yfpsZJMIYiyWzQbPuCnW19py74FCHEcTH9Zs22edRk2Fi5b6t9mxYe56rbliWw9oujVco9Kkv
+ Qu/+Dv1FQrRqaknRj7FHOaXTw9lbL7zpWPoRMNXSoYa63KL295S/bXJYYon7EkBaYH9NZUXqs
+ KXt/Efxt6mD8ppHZsfxVYr4SDK7bkIBcSstMtiItXNuQXNR9wjjPso/BpPMQczhAOJqxakOy/
+ xw0+cykrCzVJcpANDgdFUDnop2yKv48Ke6W5qFvefI0Mo1d+Zi/V3TTaItZTFa8MKp/hDxgjq
+ aoNudTcru5s1AQ6Qmmh2UAw+PQhQNWs7k90B4AwGuLUU2UzA1sUERCfmMFgQvnJ31t43grIRX
+ cQ8mibTZKGDnQBBtfXbh9IqLLH2uKQqqucQz2zUk1AvOkcC5wWcJnzKo2PLJWorgNmrc1cCPY
+ pb+6PXfK8c8P34V4ggGzO+bG0pgzNF/B/iTrnSW3/Rs4dpFoxxDw2+wfyQNzcPo9R+dosyUWO
+ t+7uYOKRnkcdnblYKPVYoqH7WepJzGFzmxeNoufPW+Dw9Wn/U8uL7lDAI3selqQjr+Ywgy9ha
+ n0rI245Hn8N2pE=
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, May 08, 2022 at 05:36:40PM +0800, Baolin Wang wrote:
-> On some architectures (like ARM64), it can support CONT-PTE/PMD size
-> hugetlb, which means it can support not only PMD/PUD size hugetlb:
-> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
-> size specified.
-> 
-> When migrating a hugetlb page, we will get the relevant page table
-> entry by huge_pte_offset() only once to nuke it and remap it with
-> a migration pte entry. This is correct for PMD or PUD size hugetlb,
-> since they always contain only one pmd entry or pud entry in the
-> page table.
-> 
-> However this is incorrect for CONT-PTE and CONT-PMD size hugetlb,
-> since they can contain several continuous pte or pmd entry with
-> same page table attributes. So we will nuke or remap only one pte
-> or pmd entry for this CONT-PTE/PMD size hugetlb page, which is
-> not expected for hugetlb migration. The problem is we can still
-> continue to modify the subpages' data of a hugetlb page during
-> migrating a hugetlb page, which can cause a serious data consistent
-> issue, since we did not nuke the page table entry and set a
-> migration pte for the subpages of a hugetlb page.
-> 
-> To fix this issue, we should change to use huge_ptep_clear_flush()
-> to nuke a hugetlb page table, and remap it with set_huge_pte_at()
-> and set_huge_swap_pte_at() when migrating a hugetlb page, which
-> already considered the CONT-PTE or CONT-PMD size hugetlb.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Hi Linus,
 
-This looks fine to me.
+please pull the latest set of fixes for the parisc architecture.
 
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
+It includes 4 reverts of existing patches, which were necessary because we had
+boot issues due to wrong CPU clock handling and cache issues which led to
+userspace segfaults with 32bit kernels. Dave has a whole bunch of upcoming
+cache fixes which I then plan to push in the next merge window.
 
-Thanks.
+Other than that there are just small updates and fixes, e.g. defconfig updates,
+spelling fixes, a clocksource fix, boot topology fixes and a fix for
+/proc/cpuinfo output to satisfy lscpu.
+
+----------------------------------------------------------------
+
+The following changes since commit 30c8e80f79329617012f07b09b70114592092ea4:
+
+  Merge tag 'gpio-fixes-for-v5.18-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux (2022-05-07 11:02:02 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.18/parisc-3
+
+for you to fetch changes up to ba0c04104082ca211e108dd8eec6db2ad7676528:
+
+  Revert "parisc: Increase parisc_cache_flush_threshold setting" (2022-05-08 20:13:36 +0200)
+
+----------------------------------------------------------------
+parisc architecture fixes for kernel v5.18-rc6
+
+Some reverts of existing patches, which were necessary because of boot
+issues due to wrong CPU clock handling and cache issues which led to
+userspace segfaults with 32bit kernels.
+
+Other than that just small updates and fixes, e.g. defconfig updates,
+spelling fixes, a clocksource fix, boot topology fixes and a fix for
+/proc/cpuinfo output to satisfy lscpu.
+
+----------------------------------------------------------------
+Helge Deller (10):
+      Revert "parisc: Mark cr16 CPU clocksource unstable on all SMP machines"
+      Revert "parisc: Mark sched_clock unstable only if clocks are not syncronized"
+      Revert "parisc: Fix patch code locking and flushing"
+      parisc: Only list existing CPUs in cpu_possible_mask
+      parisc: Update 32- and 64-bit defconfigs
+      parisc: Re-enable GENERIC_CPU_DEVICES for !SMP
+      parisc: Merge model and model name into one line in /proc/cpuinfo
+      parisc: Change MAX_ADDRESS to become unsigned long long
+      parisc: Mark cr16 clock unstable on all SMP machines
+      Revert "parisc: Increase parisc_cache_flush_threshold setting"
+
+Julia Lawall (1):
+      parisc: Fix typos in comments
+
+ arch/parisc/Kconfig                         |  1 +
+ arch/parisc/configs/generic-32bit_defconfig |  4 +++-
+ arch/parisc/configs/generic-64bit_defconfig |  3 ++-
+ arch/parisc/include/asm/pgtable.h           |  2 +-
+ arch/parisc/kernel/cache.c                  | 18 +++---------------
+ arch/parisc/kernel/kprobes.c                |  2 +-
+ arch/parisc/kernel/patch.c                  | 25 ++++++++++++++-----------
+ arch/parisc/kernel/processor.c              | 11 +++++++++--
+ arch/parisc/kernel/setup.c                  |  2 ++
+ arch/parisc/kernel/time.c                   |  6 +-----
+ arch/parisc/kernel/traps.c                  |  2 +-
+ arch/parisc/math-emu/dfadd.c                |  2 +-
+ arch/parisc/math-emu/dfsub.c                |  2 +-
+ arch/parisc/math-emu/sfadd.c                |  2 +-
+ arch/parisc/math-emu/sfsub.c                |  2 +-
+ 15 files changed, 42 insertions(+), 42 deletions(-)
