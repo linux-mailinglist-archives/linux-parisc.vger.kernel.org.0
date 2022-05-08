@@ -2,62 +2,57 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B32851EAC0
-	for <lists+linux-parisc@lfdr.de>; Sun,  8 May 2022 03:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ADD451EC6C
+	for <lists+linux-parisc@lfdr.de>; Sun,  8 May 2022 11:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230040AbiEHBGX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 7 May 2022 21:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55088 "EHLO
+        id S232081AbiEHJXE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 8 May 2022 05:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229988AbiEHBGW (ORCPT
+        with ESMTP id S230000AbiEHJXD (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 7 May 2022 21:06:22 -0400
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-005.bell.net [209.71.208.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D75292705
-        for <linux-parisc@vger.kernel.org>; Sat,  7 May 2022 18:02:33 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6276ABD8000D46E5
-X-CM-Envelope: MS4xfIpVn9HVZDquTV50XcpK2EO0hcxYdkg9gap+6hhRHVwoYuwHQZLdl8BdaKIJQUXxkmbJS5FNWCYx0B71r3NNJC+NT39AxXQLn1/uKR3k+wbM2sS/D2iJ
- +0R3w/KZGmU4HwhBxpT5kg2ehlo/H88/9XZzKx6YNMtMMQ6ZGGFK1wQT0F/9iJL+drPF5190f4dA4S7eHGyWWZQws7+vbT/q9WW2rzGeAvknSnyv4XzpEcod
- wXBkCfGgQuXj9gG3nOh5/v6JvuDuH73yFzS55GRNPe330bdb01Ycw83iVoiwnIPn
-X-CM-Analysis: v=2.4 cv=aKWTFZxm c=1 sm=1 tr=0 ts=6277169e
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=gImVeR_VWKle8ojgjS8A:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (70.50.7.94) by cmx-mtlrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 6276ABD8000D46E5; Sat, 7 May 2022 21:02:22 -0400
-Message-ID: <09124333-34f7-94b1-a9ee-76e3c7a99662@bell.net>
-Date:   Sat, 7 May 2022 21:02:23 -0400
+        Sun, 8 May 2022 05:23:03 -0400
+Received: from out30-42.freemail.mail.aliyun.com (out30-42.freemail.mail.aliyun.com [115.124.30.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20191E015;
+        Sun,  8 May 2022 02:19:09 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=30;SR=0;TI=SMTPD_---0VCZtzMG_1652001541;
+Received: from 30.15.195.77(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0VCZtzMG_1652001541)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Sun, 08 May 2022 17:19:03 +0800
+Message-ID: <1fad03a6-98cf-1b0e-e012-82dc6466c7d2@linux.alibaba.com>
+Date:   Sun, 8 May 2022 17:19:43 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: Latest PA8800/PA8900 cache flush patch
-Content-Language: en-US
-From:   John David Anglin <dave.anglin@bell.net>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Deller <deller@kernel.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>
-References: <YmhSJPy1MVBYWSrB@mx3210.localdomain>
- <791a2aee-1a9a-6680-c9d4-438c6b5519a6@gmx.de>
- <2ee9360d-7ddc-8cf1-46c5-b29663e10193@bell.net>
- <0cafa13b-336c-a425-7284-162467349bc9@bell.net>
- <2b28f20d-0183-96a7-463f-492cc972b3fa@gmx.de>
- <418213d7-a306-d3cd-2b78-50f0c96b1b8d@gmx.de>
- <0449745b-f3fd-eb86-31f9-1e26cc8bc0fd@gmx.de>
- <bbc8e524-de3f-f6ee-cc30-0e208ca56ba4@bell.net>
- <5a4f104c-80fb-a70f-23ce-e87bae25c46c@bell.net>
- <5e24be22-35d7-f9ae-7aa0-fd38018fcc98@bell.net>
- <10617c84-75d9-a3f8-21a0-22dee44dbcba@gmx.de>
- <e2c497f9-2fdf-74f3-ff6b-8d91416c8d74@bell.net>
-In-Reply-To: <e2c497f9-2fdf-74f3-ff6b-8d91416c8d74@bell.net>
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
+ migration
+From:   Baolin Wang <baolin.wang@linux.alibaba.com>
+To:     Mike Kravetz <mike.kravetz@oracle.com>, akpm@linux-foundation.org,
+        catalin.marinas@arm.com, will@kernel.org
+Cc:     tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+        paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org
+References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
+ <11b92502b3df0e0bba6a1dc71476d79cab6c79ba.1651216964.git.baolin.wang@linux.alibaba.com>
+ <5cab0eca-9630-a7c6-4f5d-5cb45ff82c83@oracle.com>
+ <21b11024-e893-8c11-9b98-ab1d13413b61@linux.alibaba.com>
+ <85bd80b4-b4fd-0d3f-a2e5-149559f2f387@oracle.com>
+ <e8b56f7d-ad95-7938-21a5-55caedbbb354@linux.alibaba.com>
+In-Reply-To: <e8b56f7d-ad95-7938-21a5-55caedbbb354@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-Spam-Status: No, score=-11.4 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,14 +60,116 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2022-05-07 3:18 p.m., John David Anglin wrote:
-> On 2022-05-07 2:49 p.m., Helge Deller wrote:
->> Ok, so we now need to find the cause why v5.18-rc crashes...:-(
-> Working on it.
-Mainline 32bit v5.17 boots okay.  v5.18-rc1 fails.  Looks like another extended regression hunt.
 
-Dave
 
--- 
-John David Anglin  dave.anglin@bell.net
+On 5/7/2022 10:33 AM, Baolin Wang wrote:
+> 
+> 
+> On 5/7/2022 1:56 AM, Mike Kravetz wrote:
+>> On 5/5/22 20:39, Baolin Wang wrote:
+>>>
+>>> On 5/6/2022 7:53 AM, Mike Kravetz wrote:
+>>>> On 4/29/22 01:14, Baolin Wang wrote:
+>>>>> On some architectures (like ARM64), it can support CONT-PTE/PMD size
+>>>>> hugetlb, which means it can support not only PMD/PUD size hugetlb:
+>>>>> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
+>>>>> size specified.
+>>>> <snip>
+>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>> index 6fdd198..7cf2408 100644
+>>>>> --- a/mm/rmap.c
+>>>>> +++ b/mm/rmap.c
+>>>>> @@ -1924,13 +1924,15 @@ static bool try_to_migrate_one(struct folio 
+>>>>> *folio, struct vm_area_struct *vma,
+>>>>>                        break;
+>>>>>                    }
+>>>>>                }
+>>>>> +
+>>>>> +            /* Nuke the hugetlb page table entry */
+>>>>> +            pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
+>>>>>            } else {
+>>>>>                flush_cache_page(vma, address, pte_pfn(*pvmw.pte));
+>>>>> +            /* Nuke the page table entry. */
+>>>>> +            pteval = ptep_clear_flush(vma, address, pvmw.pte);
+>>>>>            }
+>>>>
+>>>> On arm64 with CONT-PTE/PMD the returned pteval will have dirty or 
+>>>> young set
+>>>> if ANY of the PTE/PMDs had dirty or young set.
+>>>
+>>> Right.
+>>>
+>>>>
+>>>>> -        /* Nuke the page table entry. */
+>>>>> -        pteval = ptep_clear_flush(vma, address, pvmw.pte);
+>>>>> -
+>>>>>            /* Set the dirty flag on the folio now the pte is gone. */
+>>>>>            if (pte_dirty(pteval))
+>>>>>                folio_mark_dirty(folio);
+>>>>> @@ -2015,7 +2017,10 @@ static bool try_to_migrate_one(struct folio 
+>>>>> *folio, struct vm_area_struct *vma,
+>>>>>                pte_t swp_pte;
+>>>>>                  if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+>>>>> -                set_pte_at(mm, address, pvmw.pte, pteval);
+>>>>> +                if (folio_test_hugetlb(folio))
+>>>>> +                    set_huge_pte_at(mm, address, pvmw.pte, pteval);
+>>>>
+>>>> And, we will use that pteval for ALL the PTE/PMDs here.  So, we 
+>>>> would set
+>>>> the dirty or young bit in ALL PTE/PMDs.
+>>>>
+>>>> Could that cause any issues?  May be more of a question for the 
+>>>> arm64 people.
+>>>
+>>> I don't think this will cause any issues. Since the hugetlb can not 
+>>> be split, and we should not lose the the dirty or young state if any 
+>>> subpages were set. Meanwhile we already did like this in hugetlb.c:
+>>>
+>>> pte = huge_ptep_get_and_clear(mm, address, ptep);
+>>> tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
+>>> if (huge_pte_dirty(pte))
+>>>      set_page_dirty(page);
+>>>
+>>
+>> Agree that it 'should not' cause issues.  It just seems inconsistent.
+>> This is not a problem specifically with your patch, just the handling of
+>> CONT-PTE/PMD entries.
+>>
+>> There does not appear to be an arm64 specific version of huge_ptep_get()
+>> that takes CONT-PTE/PMD into account.  So, huge_ptep_get() would only
+>> return the one specific value.  It would not take into account the dirty
+>> or young bits of CONT-PTE/PMDs like your new version of
+>> huge_ptep_get_and_clear.  Is that correct?  Or, am I missing something.
+> 
+> Yes, you are right.
+> 
+>>
+>> If I am correct, then code like the following may not work:
+>>
+>> static int gather_hugetlb_stats(pte_t *pte, unsigned long hmask,
+>>                  unsigned long addr, unsigned long end, struct mm_walk 
+>> *walk)
+>> {
+>>          pte_t huge_pte = huge_ptep_get(pte);
+>>          struct numa_maps *md;
+>>          struct page *page;
+>>
+>>          if (!pte_present(huge_pte))
+>>                  return 0;
+>>
+>>          page = pte_page(huge_pte);
+>>
+>>          md = walk->private;
+>>          gather_stats(page, md, pte_dirty(huge_pte), 1);
+>>          return 0;
+>> }
+> 
+> Right, this is inconsistent with current huge_ptep_get() interface like 
+> you said. So I think we can define an ARCH-specific huge_ptep_get() 
+> interface for arm64, and some sample code like below. How do you think?
 
+After some investigation, I send out a RFC patch set[1] to address this 
+issue. We can talk about this issue in that thread. Thanks.
+
+[1] 
+https://lore.kernel.org/all/cover.1651998586.git.baolin.wang@linux.alibaba.com/
