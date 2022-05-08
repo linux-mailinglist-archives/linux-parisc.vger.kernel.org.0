@@ -2,138 +2,77 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4E5151EAAC
-	for <lists+linux-parisc@lfdr.de>; Sun,  8 May 2022 02:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B32851EAC0
+	for <lists+linux-parisc@lfdr.de>; Sun,  8 May 2022 03:02:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231875AbiEHATk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 7 May 2022 20:19:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55306 "EHLO
+        id S230040AbiEHBGX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 7 May 2022 21:06:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbiEHATd (ORCPT
+        with ESMTP id S229988AbiEHBGW (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 7 May 2022 20:19:33 -0400
-Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA5F163BC;
-        Sat,  7 May 2022 17:15:41 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.west.internal (Postfix) with ESMTP id BA7102B01A5E;
-        Sat,  7 May 2022 20:15:36 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Sat, 07 May 2022 20:15:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1651968936; x=
-        1651976136; bh=hBCmJbIqgEytzYwa8CW7BN7wQ9FjoZGR5Pq0KkOSgR4=; b=a
-        Fd+8vokQcvbA4GWW9owApfwSeCCmripmwI1V8BhLeK5KaZNhXYioKWO7gI/i4WS2
-        7k47a/ZWVbS9L9Tb94YqvYOtS7N7Odf5y1vj4JNgmK7LNQqCWISAKcO+P4rj0UMi
-        q+RtVMiTD2S0odWphzabgNOzrXhZiGf5nIMLf0LKorYXqpXkyhAyhpWHbDYXh7SC
-        lIsqVRz6rHiSoRmYVbBPXTr50ooseR0KbMmjBLcBybt5kQU3VX6Uv3BlsayvPX8K
-        rT/CABNOI5QNmto+53M1TPT98lstPKrnj3wt67ZKWi2d0IKDKzkcno0YDJCen2gb
-        pvOvYx7XyUrz2lynIGXHQ==
-X-ME-Sender: <xms:nQt3Yu2EHi4ipuqnh-IQxeR3-pYmafCL0ycLmbVR9jkQSZuwwhMCTw>
-    <xme:nQt3YhGj3WbJjLWRninJPo0UdIhOCVOzhNulF-SivW5rfLH6ZZQyRpAgUojPbF8-C
-    5lTRDk0I_hwK1GBwHg>
-X-ME-Received: <xmr:nQt3Ym4M7PXyIjFTVPJSxyNTs6iYk-KiuVj0c9xbLZnPIwKKKX3pbGagQ0aMJCEstBpD08vkytiENlEH1oJyJPG-juBdv5xk6po>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeeigdeftdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefujgfkfhggtgesthdtredttddtvdenucfhrhhomhephfhinhhnucfv
-    hhgrihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrth
-    htvghrnhepleeuheelheekgfeuvedtveetjeekhfffkeeffffftdfgjeevkeegfedvueeh
-    ueelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfh
-    hthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgh
-X-ME-Proxy: <xmx:ngt3Yv2K9-Zw_Jv6Z_K6SmuSI0Dgy56dsjusRgWQOeGaH_9LVHsGyA>
-    <xmx:ngt3YhFAxYHvfpVbkpFftwsm7VPnoe1hEExANO3zwqFSWMnA4ZPxbQ>
-    <xmx:ngt3Yo8pHsdl-eEhvlnevon6M7vqHjCeDigA6J9OPD9hPyVH2q_GOw>
-    <xmx:qAt3Ym7_mrm_1RQ5vAt6Czfp_u6IruN66F4H7V-seVcfOQQjEYOJyLnz_fE>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 7 May 2022 20:15:23 -0400 (EDT)
-Date:   Sun, 8 May 2022 10:15:31 +1000 (AEST)
-From:   Finn Thain <fthain@linux-m68k.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-cc:     Niklas Schnelle <schnelle@linux.ibm.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "open list:IA64 (Itanium) PLATFORM" <linux-ia64@vger.kernel.org>,
-        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
-        "open list:MIPS" <linux-mips@vger.kernel.org>,
-        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
-        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
-        <linuxppc-dev@lists.ozlabs.org>,
-        "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:SPARC + UltraSPARC (sparc/sparc64)" 
-        <sparclinux@vger.kernel.org>
-Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select
- it as necessary
-In-Reply-To: <6f33385-5612-7042-e1b3-aa32895e91e0@linux-m68k.org>
-Message-ID: <e01fac8a-7568-14b6-84-affc4a40c6d@linux-m68k.org>
-References: <20220505195342.GA509942@bhelgaas> <22bec167-241f-2cbe-829f-a3f65e40e71@linux-m68k.org> <105ccec439f709846e82b69cb854ac825d7a6a49.camel@linux.ibm.com> <7dfa7578-039-e132-c573-ad89bd3215@linux-m68k.org> <CAK8P3a3tds8O+Gg2nF3MfrVVcmtLbtdQ2TnCJaDYz28cyhhWkg@mail.gmail.com>
- <6f33385-5612-7042-e1b3-aa32895e91e0@linux-m68k.org>
+        Sat, 7 May 2022 21:06:22 -0400
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-005.bell.net [209.71.208.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D75292705
+        for <linux-parisc@vger.kernel.org>; Sat,  7 May 2022 18:02:33 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.50.7.94]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6276ABD8000D46E5
+X-CM-Envelope: MS4xfIpVn9HVZDquTV50XcpK2EO0hcxYdkg9gap+6hhRHVwoYuwHQZLdl8BdaKIJQUXxkmbJS5FNWCYx0B71r3NNJC+NT39AxXQLn1/uKR3k+wbM2sS/D2iJ
+ +0R3w/KZGmU4HwhBxpT5kg2ehlo/H88/9XZzKx6YNMtMMQ6ZGGFK1wQT0F/9iJL+drPF5190f4dA4S7eHGyWWZQws7+vbT/q9WW2rzGeAvknSnyv4XzpEcod
+ wXBkCfGgQuXj9gG3nOh5/v6JvuDuH73yFzS55GRNPe330bdb01Ycw83iVoiwnIPn
+X-CM-Analysis: v=2.4 cv=aKWTFZxm c=1 sm=1 tr=0 ts=6277169e
+ a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=gImVeR_VWKle8ojgjS8A:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (70.50.7.94) by cmx-mtlrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 6276ABD8000D46E5; Sat, 7 May 2022 21:02:22 -0400
+Message-ID: <09124333-34f7-94b1-a9ee-76e3c7a99662@bell.net>
+Date:   Sat, 7 May 2022 21:02:23 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: Latest PA8800/PA8900 cache flush patch
+Content-Language: en-US
+From:   John David Anglin <dave.anglin@bell.net>
+To:     Helge Deller <deller@gmx.de>
+Cc:     Deller <deller@kernel.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+References: <YmhSJPy1MVBYWSrB@mx3210.localdomain>
+ <791a2aee-1a9a-6680-c9d4-438c6b5519a6@gmx.de>
+ <2ee9360d-7ddc-8cf1-46c5-b29663e10193@bell.net>
+ <0cafa13b-336c-a425-7284-162467349bc9@bell.net>
+ <2b28f20d-0183-96a7-463f-492cc972b3fa@gmx.de>
+ <418213d7-a306-d3cd-2b78-50f0c96b1b8d@gmx.de>
+ <0449745b-f3fd-eb86-31f9-1e26cc8bc0fd@gmx.de>
+ <bbc8e524-de3f-f6ee-cc30-0e208ca56ba4@bell.net>
+ <5a4f104c-80fb-a70f-23ce-e87bae25c46c@bell.net>
+ <5e24be22-35d7-f9ae-7aa0-fd38018fcc98@bell.net>
+ <10617c84-75d9-a3f8-21a0-22dee44dbcba@gmx.de>
+ <e2c497f9-2fdf-74f3-ff6b-8d91416c8d74@bell.net>
+In-Reply-To: <e2c497f9-2fdf-74f3-ff6b-8d91416c8d74@bell.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On 2022-05-07 3:18 p.m., John David Anglin wrote:
+> On 2022-05-07 2:49 p.m., Helge Deller wrote:
+>> Ok, so we now need to find the cause why v5.18-rc crashes...:-(
+> Working on it.
+Mainline 32bit v5.17 boots okay.  v5.18-rc1 fails.  Looks like another extended regression hunt.
 
-On Sun, 8 May 2022, I wrote:
+Dave
 
-> 
-> That suggests to me that we need a "bool CONFIG_WARINGS_INTO_ERRORS" to 
-> control -Werror, which could be disabled for .config files (like make 
-> allmodconfig) where it is not helping.
-> 
+-- 
+John David Anglin  dave.anglin@bell.net
 
-I just noticed that we already have CONFIG_WERROR. So perhaps something 
-like this would help.
-
-diff --git a/init/Kconfig b/init/Kconfig
-index ddcbefe535e9..765d83fb148e 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -150,6 +150,8 @@ config WERROR
- 
- 	  However, if you have a new (or very old) compiler with odd and
- 	  unusual warnings, or you have some architecture with problems,
-+	  or if you are using a compiler that doesn't happen to interpret
-+	  the C standards in quite the same way as some other compilers,
- 	  you may need to disable this config option in order to
- 	  successfully build the kernel.
- 
