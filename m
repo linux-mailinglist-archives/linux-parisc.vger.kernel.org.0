@@ -2,148 +2,107 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3830851F7DA
-	for <lists+linux-parisc@lfdr.de>; Mon,  9 May 2022 11:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7834F51F924
+	for <lists+linux-parisc@lfdr.de>; Mon,  9 May 2022 12:00:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbiEIJTI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 9 May 2022 05:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51732 "EHLO
+        id S232850AbiEIJxK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 9 May 2022 05:53:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236759AbiEIItl (ORCPT
+        with ESMTP id S238828AbiEIJk1 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 9 May 2022 04:49:41 -0400
-Received: from out30-54.freemail.mail.aliyun.com (out30-54.freemail.mail.aliyun.com [115.124.30.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9973517B60D;
-        Mon,  9 May 2022 01:45:46 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R501e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=30;SR=0;TI=SMTPD_---0VChb3kD_1652085922;
-Received: from 30.32.96.14(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0VChb3kD_1652085922)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 09 May 2022 16:45:24 +0800
-Message-ID: <a6cc9765-1d8c-b725-978f-53f226d2fbb9@linux.alibaba.com>
-Date:   Mon, 9 May 2022 16:46:03 +0800
+        Mon, 9 May 2022 05:40:27 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97905193217;
+        Mon,  9 May 2022 02:36:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652088970; x=1683624970;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=D/x1ycw0QvCLLhMcVpaUSr9cP6MhaUOF3dS7CsbLTm8=;
+  b=OyKHWmdj/pFZhcct06STunaHCeRVGSb4/ct4OhGBMJPy4yjgGAPwTmI9
+   Yi5uS8B/6OVOmfuWrWjHpcdFHvZIiw6q2pn9TDsOjP2o4B8+yHDOJcUMw
+   F8wilyE3BgMMjqUbaTAxJsXXPF9P8IuEdihYy3LSWehX9x01/TgGl3liu
+   DJp3kT9HpIFb0RxhTRIYnstaaGVsJbqA0+ajzYxl3XDDG2WIrt7XhXTW1
+   73eGKVwY/dKUwTQF2EwPCYcUdsa8LO8oWZvX/YVpW6CS3od6IoP3VJ2zl
+   sT23FjMlme3kGmH1XnJgGP7OnDdEsD4GllAWglWTFpH3ZX3qOd294nCbk
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10341"; a="251040429"
+X-IronPort-AV: E=Sophos;i="5.91,211,1647327600"; 
+   d="scan'208";a="251040429"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 02:34:59 -0700
+X-IronPort-AV: E=Sophos;i="5.91,211,1647327600"; 
+   d="scan'208";a="564969527"
+Received: from mfuent2x-mobl1.amr.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.251.220.67])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 02:34:53 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     linux-serial@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org
+Cc:     =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 0/3] termbits.h: Further improvements
+Date:   Mon,  9 May 2022 12:34:43 +0300
+Message-Id: <20220509093446.6677-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v2 1/3] mm: change huge_ptep_clear_flush() to return the
- original pte
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Muchun Song <songmuchun@bytedance.com>
-Cc:     "dalias@libc.org" <dalias@libc.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "James.Bottomley@HansenPartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "paulus@samba.org" <paulus@samba.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "ysato@users.sourceforge.jp" <ysato@users.sourceforge.jp>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
-        "gor@linux.ibm.com" <gor@linux.ibm.com>,
-        "hca@linux.ibm.com" <hca@linux.ibm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "svens@linux.ibm.com" <svens@linux.ibm.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>
-References: <cover.1652002221.git.baolin.wang@linux.alibaba.com>
- <012a484019e7ad77c39deab0af52a6755d8438c8.1652002221.git.baolin.wang@linux.alibaba.com>
- <Ynek+b3k6PVN3x7J@FVFYT0MHHV2J.usts.net>
- <bf627d1a-42f8-77f3-6ac2-67edde2feb8a@linux.alibaba.com>
- <d5055b48-d722-e03d-fc32-16fd76e3fa22@csgroup.eu>
-From:   Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <d5055b48-d722-e03d-fc32-16fd76e3fa22@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-11.0 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Again, I prefer Greg to take these through his tty tree.
 
+Changes done by this serie:
 
-On 5/9/2022 1:46 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 08/05/2022 à 15:09, Baolin Wang a écrit :
->>
->>
->> On 5/8/2022 7:09 PM, Muchun Song wrote:
->>> On Sun, May 08, 2022 at 05:36:39PM +0800, Baolin Wang wrote:
->>>> It is incorrect to use ptep_clear_flush() to nuke a hugetlb page
->>>> table when unmapping or migrating a hugetlb page, and will change
->>>> to use huge_ptep_clear_flush() instead in the following patches.
->>>>
->>>> So this is a preparation patch, which changes the
->>>> huge_ptep_clear_flush()
->>>> to return the original pte to help to nuke a hugetlb page table.
->>>>
->>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
->>>
->>> Reviewed-by: Muchun Song <songmuchun@bytedance.com>
->>
->> Thanks for reviewing.
->>
->>>
->>> But one nit below:
->>>
->>> [...]
->>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>> index 8605d7e..61a21af 100644
->>>> --- a/mm/hugetlb.c
->>>> +++ b/mm/hugetlb.c
->>>> @@ -5342,7 +5342,7 @@ static vm_fault_t hugetlb_wp(struct mm_struct
->>>> *mm, struct vm_area_struct *vma,
->>>>            ClearHPageRestoreReserve(new_page);
->>>>            /* Break COW or unshare */
->>>> -        huge_ptep_clear_flush(vma, haddr, ptep);
->>>> +        (void)huge_ptep_clear_flush(vma, haddr, ptep);
->>>
->>> Why add a "(void)" here? Is there any warning if no "(void)"?
->>> IIUC, I think we can remove this, right?
->>
->> I did not meet any warning without the casting, but this is per Mike's
->> comment[1] to make the code consistent with other functions casting to
->> void type explicitly in hugetlb.c file.
->>
->> [1]
->> https://lore.kernel.org/all/495c4ebe-a5b4-afb6-4cb0-956c1b18d0cc@oracle.com/
->>
-> 
-> As far as I understand, Mike said that you should be accompagnied with a
-> big fat comment explaining why we ignore the returned value from
-> huge_ptep_clear_flush(). >
-> By the way huge_ptep_clear_flush() is not declared 'must_check' so this
-> cast is just visual polution and should be removed.
-> 
-> In the meantime the comment suggested by Mike should be added instead.
-Sorry for my misunderstanding. I just follow the explicit void casting 
-like other places in hugetlb.c file. And I am not sure if it is useful 
-adding some comments like below, since we did not need the original pte 
-value in the COW case mapping with a new page, and the code is more 
-readable already I think.
+1) Create termbits-common.h for the most obvious termbits.h intersection.
+2) Reformat some lines that remain in termbits.h files.
+3) Don't include posix_types.h unnecessarily.
 
-Mike, could you help to clarify what useful comments would you like? and 
-remove the explicit void casting? Thanks.
+Please do check I got the uapi include things done correctly! That is,
+that including using asm-generic/termbits-common.h path is the preferred
+approach for a header file that is not supposed to be overridden by the
+arch specific header files and that mandatory-y is not required for
+termbits-common.h.
 
-/*
-  * Just ignore the return value with new page mapped.
-  */
+Unfortunately I couldn't move also tcflag_t into termbits-common.h due
+to the way it is being defined for sparc. However, by the looks of how
+the type for tcflag_t is being chosen there, having just unsigned int
+might work also for sparc?
+
+Ilpo Järvinen (3):
+  termbits.h: create termbits-common.h for identical bits
+  termbits.h: Align lines & format
+  termbits.h: Remove posix_types.h include
+
+ arch/alpha/include/uapi/asm/termbits.h     | 182 ++++++-----------
+ arch/mips/include/uapi/asm/termbits.h      | 209 ++++++++-----------
+ arch/parisc/include/uapi/asm/termbits.h    | 131 ++++--------
+ arch/powerpc/include/uapi/asm/termbits.h   | 152 +++++---------
+ arch/sparc/include/uapi/asm/termbits.h     | 223 ++++++++-------------
+ include/uapi/asm-generic/termbits-common.h |  65 ++++++
+ include/uapi/asm-generic/termbits.h        | 129 ++++--------
+ 7 files changed, 418 insertions(+), 673 deletions(-)
+ create mode 100644 include/uapi/asm-generic/termbits-common.h
+
+-- 
+2.30.2
+
