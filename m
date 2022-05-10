@@ -2,47 +2,47 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7854D521F84
-	for <lists+linux-parisc@lfdr.de>; Tue, 10 May 2022 17:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F50521FBE
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 May 2022 17:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346251AbiEJPu0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 10 May 2022 11:50:26 -0400
+        id S244667AbiEJPwT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 10 May 2022 11:52:19 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346253AbiEJPsq (ORCPT
+        with ESMTP id S1346496AbiEJPvA (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 10 May 2022 11:48:46 -0400
+        Tue, 10 May 2022 11:51:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4592281341;
-        Tue, 10 May 2022 08:44:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015B228B696;
+        Tue, 10 May 2022 08:45:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41B866142F;
-        Tue, 10 May 2022 15:44:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEB8C385CA;
-        Tue, 10 May 2022 15:44:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BE27614E8;
+        Tue, 10 May 2022 15:45:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D06C385CB;
+        Tue, 10 May 2022 15:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652197468;
+        s=k20201202; t=1652197511;
         bh=21bwpjNudExl89E+GWay/earnO1hhomI8Dv+7vwzFGE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sqpvUS8ZgmHhDeo0KFl0Nkrv41ZmRy2f4Gvezhty9ov9qd4cbBshyOjn1JugpF90R
-         /Q6dnOwktw7rHOMoSADOW1HQSVN/29Yasb9BcL0bvavjyhgG/8BjRyItSoFOkY3AUM
-         lzEtHdFvhNySKf5Ku7mvMzsJJjQwHcXsgt+/ZAQnMg+ct29eZEJn2l9pvcD7m40c8M
-         qWmNfMb21M6PjUb9vbjq4sm7cwOvvkqHkfcER7JdnJoCYI3npaCymLPDIkxh+udnRy
-         bblDgOAo3ghINMD+vgHreEDq6Lik8sUTf88ab7lwagq1VS/lzaJ5Xr897GIT5dDC5Z
-         D/Nt6aSSQlPzw==
+        b=aGQHn3PhinxxrPmgBQONV3sx1z3It5AS/LMDw1STNIOxOdPZsfkjPwl1PLYfD6FQ5
+         YxxuQuYrGf4hB/2kt5d86kcYdUvFynlzR+T919Iw91s1lapqvBxYHstDALK4jugub9
+         E6Y0XDtTMWrcs5HeA3Ny2AWveiC8jUqp+nxK7Q26BMpgL78z/cK/6IlffyXiU8E+yF
+         Vc1c8YaFrNrsty9Kmy/oD5WI4b7g0wt8GVTsWpL6KHrrLbyq3hPBoLkqkoTRBkagYW
+         VBU2fUUVmmKqNZ6jZj4lpmVOfUrM8Yy8YwYyPWytr63lkYPx+CGN1ZyGay5/UTPhDT
+         WTM5XcLyyGZrA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com, dave.anglin@bell.net,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.17 21/21] Revert "parisc: Fix patch code locking and flushing"
-Date:   Tue, 10 May 2022 11:43:40 -0400
-Message-Id: <20220510154340.153400-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 19/19] Revert "parisc: Fix patch code locking and flushing"
+Date:   Tue, 10 May 2022 11:44:29 -0400
+Message-Id: <20220510154429.153677-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220510154340.153400-1-sashal@kernel.org>
-References: <20220510154340.153400-1-sashal@kernel.org>
+In-Reply-To: <20220510154429.153677-1-sashal@kernel.org>
+References: <20220510154429.153677-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
