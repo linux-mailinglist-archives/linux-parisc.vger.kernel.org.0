@@ -2,76 +2,54 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2FA4521EAF
-	for <lists+linux-parisc@lfdr.de>; Tue, 10 May 2022 17:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7854D521F84
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 May 2022 17:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345889AbiEJPed (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 10 May 2022 11:34:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50478 "EHLO
+        id S1346251AbiEJPu0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 10 May 2022 11:50:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345654AbiEJPeU (ORCPT
+        with ESMTP id S1346253AbiEJPsq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 10 May 2022 11:34:20 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A0A436B52;
-        Tue, 10 May 2022 08:28:44 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id BDBAF21B8C;
-        Tue, 10 May 2022 15:28:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1652196522; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=e4wukkdgHyYEEL082h2+8MXPywOa6STdjbSVdRIKUGE=;
-        b=rR4mS/+oT4jH07pNjBmARAg7zdRtaoeIif/UACNxEBTH30BjG7Bppc3qvkDfJRoCh4TawW
-        6luoRejPAMFZr+z9Kvz9iubCA5AxZw1bIiLsMXPqeMDKaF9ra8TkGI7FOIFKW72kOoldt+
-        xkdV40YW6dtF4zTHXKWuKX4kUttIYC0=
-Received: from suse.cz (unknown [10.100.208.146])
+        Tue, 10 May 2022 11:48:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4592281341;
+        Tue, 10 May 2022 08:44:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 913582C141;
-        Tue, 10 May 2022 15:28:41 +0000 (UTC)
-Date:   Tue, 10 May 2022 17:28:40 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc:     akpm@linux-foundation.org, bhe@redhat.com,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com, coresight@lists.linaro.org,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        netdev@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
-        rcu@vger.kernel.org, sparclinux@vger.kernel.org,
-        xen-devel@lists.xenproject.org, x86@kernel.org,
-        kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
-        fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
-        andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de,
-        corbet@lwn.net, d.hatayama@jp.fujitsu.com,
-        dave.hansen@linux.intel.com, dyoung@redhat.com,
-        feng.tang@intel.com, gregkh@linuxfoundation.org,
-        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org, Brian Norris <computersforpeace@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 15/30] bus: brcmstb_gisb: Clean-up panic/die notifiers
-Message-ID: <YnqEqDnMfUgC4dM6@alley>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-16-gpiccoli@igalia.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 41B866142F;
+        Tue, 10 May 2022 15:44:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEB8C385CA;
+        Tue, 10 May 2022 15:44:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652197468;
+        bh=21bwpjNudExl89E+GWay/earnO1hhomI8Dv+7vwzFGE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=sqpvUS8ZgmHhDeo0KFl0Nkrv41ZmRy2f4Gvezhty9ov9qd4cbBshyOjn1JugpF90R
+         /Q6dnOwktw7rHOMoSADOW1HQSVN/29Yasb9BcL0bvavjyhgG/8BjRyItSoFOkY3AUM
+         lzEtHdFvhNySKf5Ku7mvMzsJJjQwHcXsgt+/ZAQnMg+ct29eZEJn2l9pvcD7m40c8M
+         qWmNfMb21M6PjUb9vbjq4sm7cwOvvkqHkfcER7JdnJoCYI3npaCymLPDIkxh+udnRy
+         bblDgOAo3ghINMD+vgHreEDq6Lik8sUTf88ab7lwagq1VS/lzaJ5Xr897GIT5dDC5Z
+         D/Nt6aSSQlPzw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
+        James.Bottomley@HansenPartnership.com, dave.anglin@bell.net,
+        linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.17 21/21] Revert "parisc: Fix patch code locking and flushing"
+Date:   Tue, 10 May 2022 11:43:40 -0400
+Message-Id: <20220510154340.153400-21-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220510154340.153400-1-sashal@kernel.org>
+References: <20220510154340.153400-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220427224924.592546-16-gpiccoli@igalia.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,52 +57,86 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed 2022-04-27 19:49:09, Guilherme G. Piccoli wrote:
-> This patch improves the panic/die notifiers in this driver by
-> making use of a passed "id" instead of comparing pointer
-> address; also, it removes an useless prototype declaration
-> and unnecessary header inclusion.
-> 
-> This is part of a panic notifiers refactor - this notifier in
-> the future will be moved to a new list, that encompass the
-> information notifiers only.
-> 
-> --- a/drivers/bus/brcmstb_gisb.c
-> +++ b/drivers/bus/brcmstb_gisb.c
-> @@ -347,25 +346,14 @@ static irqreturn_t brcmstb_gisb_bp_handler(int irq, void *dev_id)
->  /*
->   * Dump out gisb errors on die or panic.
->   */
-> -static int dump_gisb_error(struct notifier_block *self, unsigned long v,
-> -			   void *p);
-> -
-> -static struct notifier_block gisb_die_notifier = {
-> -	.notifier_call = dump_gisb_error,
-> -};
-> -
-> -static struct notifier_block gisb_panic_notifier = {
-> -	.notifier_call = dump_gisb_error,
-> -};
-> -
->  static int dump_gisb_error(struct notifier_block *self, unsigned long v,
->  			   void *p)
->  {
->  	struct brcmstb_gisb_arb_device *gdev;
-> -	const char *reason = "panic";
-> +	const char *reason = "die";
->  
-> -	if (self == &gisb_die_notifier)
-> -		reason = "die";
-> +	if (v == PANIC_NOTIFIER)
-> +		reason = "panic";
+From: Helge Deller <deller@gmx.de>
 
-IMHO, the check of the @self parameter was the proper solution.
+[ Upstream commit 6c800d7f55fcd78e17deae5ae4374d8e73482c13 ]
 
-"gisb_die_notifier" list uses @val from enum die_val.
-"gisb_panic_notifier" list uses @val from enum panic_notifier_val.
+This reverts commit a9fe7fa7d874a536e0540469f314772c054a0323.
 
-These are unrelated types. It might easily break when
-someone defines the same constant also in enum die_val.
+Leads to segfaults on 32bit kernel.
 
-Best Regards,
-Petr
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/parisc/kernel/patch.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/arch/parisc/kernel/patch.c b/arch/parisc/kernel/patch.c
+index e59574f65e64..80a0ab372802 100644
+--- a/arch/parisc/kernel/patch.c
++++ b/arch/parisc/kernel/patch.c
+@@ -40,7 +40,10 @@ static void __kprobes *patch_map(void *addr, int fixmap, unsigned long *flags,
+ 
+ 	*need_unmap = 1;
+ 	set_fixmap(fixmap, page_to_phys(page));
+-	raw_spin_lock_irqsave(&patch_lock, *flags);
++	if (flags)
++		raw_spin_lock_irqsave(&patch_lock, *flags);
++	else
++		__acquire(&patch_lock);
+ 
+ 	return (void *) (__fix_to_virt(fixmap) + (uintaddr & ~PAGE_MASK));
+ }
+@@ -49,7 +52,10 @@ static void __kprobes patch_unmap(int fixmap, unsigned long *flags)
+ {
+ 	clear_fixmap(fixmap);
+ 
+-	raw_spin_unlock_irqrestore(&patch_lock, *flags);
++	if (flags)
++		raw_spin_unlock_irqrestore(&patch_lock, *flags);
++	else
++		__release(&patch_lock);
+ }
+ 
+ void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int len)
+@@ -61,9 +67,8 @@ void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int len)
+ 	int mapped;
+ 
+ 	/* Make sure we don't have any aliases in cache */
+-	flush_kernel_dcache_range_asm(start, end);
+-	flush_kernel_icache_range_asm(start, end);
+-	flush_tlb_kernel_range(start, end);
++	flush_kernel_vmap_range(addr, len);
++	flush_icache_range(start, end);
+ 
+ 	p = fixmap = patch_map(addr, FIX_TEXT_POKE0, &flags, &mapped);
+ 
+@@ -76,10 +81,8 @@ void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int len)
+ 			 * We're crossing a page boundary, so
+ 			 * need to remap
+ 			 */
+-			flush_kernel_dcache_range_asm((unsigned long)fixmap,
+-						      (unsigned long)p);
+-			flush_tlb_kernel_range((unsigned long)fixmap,
+-					       (unsigned long)p);
++			flush_kernel_vmap_range((void *)fixmap,
++						(p-fixmap) * sizeof(*p));
+ 			if (mapped)
+ 				patch_unmap(FIX_TEXT_POKE0, &flags);
+ 			p = fixmap = patch_map(addr, FIX_TEXT_POKE0, &flags,
+@@ -87,10 +90,10 @@ void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int len)
+ 		}
+ 	}
+ 
+-	flush_kernel_dcache_range_asm((unsigned long)fixmap, (unsigned long)p);
+-	flush_tlb_kernel_range((unsigned long)fixmap, (unsigned long)p);
++	flush_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
+ 	if (mapped)
+ 		patch_unmap(FIX_TEXT_POKE0, &flags);
++	flush_icache_range(start, end);
+ }
+ 
+ void __kprobes __patch_text(void *addr, u32 insn)
+-- 
+2.35.1
+
