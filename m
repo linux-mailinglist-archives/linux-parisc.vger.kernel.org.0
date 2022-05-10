@@ -2,173 +2,135 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4370B522036
-	for <lists+linux-parisc@lfdr.de>; Tue, 10 May 2022 17:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBC0C5220F2
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 May 2022 18:18:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346537AbiEJP6k (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 10 May 2022 11:58:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53430 "EHLO
+        id S1347241AbiEJQV5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 10 May 2022 12:21:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347325AbiEJP50 (ORCPT
+        with ESMTP id S1347193AbiEJQVr (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 10 May 2022 11:57:26 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2570929B00D;
-        Tue, 10 May 2022 08:50:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1652197774;
-        bh=jGOBs/UK7Wuf/73tooLnJSTteyWCS+jQ2JdfAa53BZI=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=SdjJ4H/hJFvsqer19yer80ICiNhhCDbdTsDks2vnoGsKMVxZVXjkkon/tGAF5ukI/
-         O8LTiTB3OJtp/rSsNweIyO5iOTsdftAVGS35+88JwBJplDqm6PqXL5e827QoLXGECj
-         3YdLvr27CnJbFce0zk1hc4P/Jq8GDZla1mg42xdY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.182.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mk0NU-1oCXSv3qKO-00kPE5; Tue, 10
- May 2022 17:49:33 +0200
-Message-ID: <37d6bcac-bca4-06a6-ecab-bf83bd3468cd@gmx.de>
-Date:   Tue, 10 May 2022 17:49:31 +0200
+        Tue, 10 May 2022 12:21:47 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C21D428ED28;
+        Tue, 10 May 2022 09:17:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=DG+kC/U+ySej5D6tfV4OCa8YH0d8ESpuNC4bFJt4RU8=; b=C2KkFYKUIxmXZpa9w2+Tc0j2Ea
+        RFFr76ch465vsOUiMZW1uqZNDnhRYy0QqpFeaougTFG9GOX2EvcKO8NnFtvJdvaTDSvmTGm5I6bLE
+        gx/SYLZAEuVfjx7NJeu1tB8cieKdzixVjql/phg2ZRqRsu9xZgqdP1nbzw6Nv7UUXN3Dua0weQYl6
+        +N3ACyNpHY020LPMtgokauBK3/rzBv0qIzP0VJEueNDPsJdk0Noe60ugWXyfyRTapgsSXBPVXAg4/
+        oobDhrEfQYteiYAwrodL1TGkVGLJREzPqDYfYYN3sh0JBT6vnlq6trf1vxZCJI19NPJiA+YiSFKJe
+        qkMs6K7A==;
+Received: from [177.183.162.244] (helo=[192.168.0.5])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1noSY8-0008UD-Jz; Tue, 10 May 2022 18:17:24 +0200
+Message-ID: <244a412c-4589-28d1-bb77-d3648d4f0b12@igalia.com>
+Date:   Tue, 10 May 2022 13:16:54 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH AUTOSEL 5.17 21/21] Revert "parisc: Fix patch code locking
- and flushing"
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 14/30] panic: Properly identify the panic event to the
+ notifiers' callbacks
 Content-Language: en-US
-To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc:     James.Bottomley@HansenPartnership.com, dave.anglin@bell.net,
-        linux-parisc@vger.kernel.org
-References: <20220510154340.153400-1-sashal@kernel.org>
- <20220510154340.153400-21-sashal@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220510154340.153400-21-sashal@kernel.org>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     akpm@linux-foundation.org, bhe@redhat.com,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-edac@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, netdev@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org, kernel-dev@igalia.com, kernel@gpiccoli.net,
+        halves@canonical.com, fabiomirmar@gmail.com,
+        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
+        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
+        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
+        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
+        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
+        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
+        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
+        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
+        senozhatsky@chromium.org, stern@rowland.harvard.edu,
+        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
+        will@kernel.org
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-15-gpiccoli@igalia.com> <YnqBsXBImU64PAOL@alley>
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <YnqBsXBImU64PAOL@alley>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:DbkjErZqGYtxT2MmD6i3Zo6PUeOP1VMhIDXgUqyYizJoykpfmQ4
- d2PxGyVXkrbmeEuymU2QPyskc5EsBVI7MeBlBQBVkDgucQnJu5w+ByFqoMenT19x4Z0YCpd
- OfQeGDM6kmQ0jvI/CATPhcvwNeKrSEFjsj125OFeILAzrfAGKUs9niKtkB0HtgqKRhVoY0v
- gaKiTPZvm8dsvPtaC7pSA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Hs2MDU1jC1A=:8TpJZn618p2URZBBZ9GZ/g
- 8sQFXgdgmx521RiPGsCqPLNYXbqtqbFrh1Ds0deT6pAn7dl6LrMZ/cwYWQgpfmrUHU0op2HqZ
- OgIDWnMlV8baftwQZ+FuV88EoThjuEJQ5ZPpkHq3KIcJ1JbwUo1MmsaVOmQpwj1hIyEHW7s4U
- 08btqIwgIrWXhP1c+KKFeszp8UxF9iEr7dGKQnPQJyGFtaauoAnmY2u8ZUdeXENto4Z5PxdQN
- wetQ3RiIBl9HB9V9MjOhe3d58xfwUSRlj6EiobtZ6hhwwuHrQ2uyyZIlvp6socqmI/xvMfd6o
- sFzHTXsW8Ix338wk+SwOpGug4xdnnjeqaONcpMS2w7/bLdY+RIr2peqTottdfetQKbSEx3OK3
- +p9p1ITLV5X3WFTfuCkUP8V+meIpP3nog1EMvb2DIFbdUpDm+R5EkerzVTz+t14pno/qVIcTD
- Qs/eVPiItldLEdJtXkiqV+VpyYIONR8M2/jbVuzsdXGOLSzjhE6dyxDO6AaXuYJMjYIN3j7si
- fryb1efui2cI1c/K9w2rkQB+EacYPpo1YektXXkjWgAs1rRgWLIroNfyRzeHAQ6gu0WiH9eff
- rQfxQs67ihrhjKqfk7A7ZhUflwDJU7MiIZFOppgmcyouhwmGqV9RjDkJwHCcX/Swz42CT5SsR
- HnXBC3yDBptgSsjfJgXy6HhlQo9Pockzz9RgVqsiZaLJ0C7LCs/ku933i0KSP4PCg+LElF1xa
- fOKJw2MPteHAcNwDzpJItf8na/RvxEEckkdwaBof97pAIgeaeqMQXKcKHdszo2kfs0l4fkaGL
- yEI1k7o5xniG+e8Q4gpNPbjB6X4/8+coz55asevkNul71VyOINJLTsCwBUnV5FuxyqhPNmfrl
- +A7O5jaqD5xIR8rTx/zxI3cM6TnHW/YJQ8UooFFfgXlyGCDcqrnAzirP8xbRFCG0v2Eh1xILC
- yuvHYDKXOu6UMsqrvkYEZ5TSYG+N5cJB786ogXXNo797oRHWknErpRq/eCLktsdmP2/Dl/9DN
- oN1CNs78dmI4qSn0PqX5QNcFvb1JhJ9TZvLHpGFzXZee3uy94YeJYPa0XuyS1Qs4JRx88/fRc
- tq4XMWG9h3GUII=
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello Sascha,
+On 10/05/2022 12:16, Petr Mladek wrote:
+> [...]
+> Hmm, this looks like a hack. PANIC_UNUSED will never be used.
+> All notifiers will be always called with PANIC_NOTIFIER.
+> 
+> The @val parameter is normally used when the same notifier_list
+> is used in different situations.
+> 
+> But you are going to use it when the same notifier is used
+> in more lists. This is normally distinguished by the @nh
+> (atomic_notifier_head) parameter.
+> 
+> IMHO, it is a bad idea. First, it would confuse people because
+> it does not follow the original design of the parameters.
+> Second, the related code must be touched anyway when
+> the notifier is moved into another list so it does not
+> help much.
+> 
+> Or do I miss anything, please?
+> 
+> Best Regards,
+> Petr
 
-please drop this patch from all your stable-series queues....
-It shouldn't be backported.
+Hi Petr, thanks for the review.
 
-Thanks,
-Helge
+I'm not strong attached to this patch, so we could drop it and refactor
+the code of next patches to use the @nh as identification - but
+personally, I feel this parameter could be used to identify the list
+that called such function, in other words, what is the event that
+triggered the callback. Some notifiers are even declared with this
+parameter called "ev", like the event that triggers the notifier.
 
-On 5/10/22 17:43, Sasha Levin wrote:
-> From: Helge Deller <deller@gmx.de>
->
-> [ Upstream commit 6c800d7f55fcd78e17deae5ae4374d8e73482c13 ]
->
-> This reverts commit a9fe7fa7d874a536e0540469f314772c054a0323.
->
-> Leads to segfaults on 32bit kernel.
->
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  arch/parisc/kernel/patch.c | 25 ++++++++++++++-----------
->  1 file changed, 14 insertions(+), 11 deletions(-)
->
-> diff --git a/arch/parisc/kernel/patch.c b/arch/parisc/kernel/patch.c
-> index e59574f65e64..80a0ab372802 100644
-> --- a/arch/parisc/kernel/patch.c
-> +++ b/arch/parisc/kernel/patch.c
-> @@ -40,7 +40,10 @@ static void __kprobes *patch_map(void *addr, int fixm=
-ap, unsigned long *flags,
->
->  	*need_unmap =3D 1;
->  	set_fixmap(fixmap, page_to_phys(page));
-> -	raw_spin_lock_irqsave(&patch_lock, *flags);
-> +	if (flags)
-> +		raw_spin_lock_irqsave(&patch_lock, *flags);
-> +	else
-> +		__acquire(&patch_lock);
->
->  	return (void *) (__fix_to_virt(fixmap) + (uintaddr & ~PAGE_MASK));
->  }
-> @@ -49,7 +52,10 @@ static void __kprobes patch_unmap(int fixmap, unsigne=
-d long *flags)
->  {
->  	clear_fixmap(fixmap);
->
-> -	raw_spin_unlock_irqrestore(&patch_lock, *flags);
-> +	if (flags)
-> +		raw_spin_unlock_irqrestore(&patch_lock, *flags);
-> +	else
-> +		__release(&patch_lock);
->  }
->
->  void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned in=
-t len)
-> @@ -61,9 +67,8 @@ void __kprobes __patch_text_multiple(void *addr, u32 *=
-insn, unsigned int len)
->  	int mapped;
->
->  	/* Make sure we don't have any aliases in cache */
-> -	flush_kernel_dcache_range_asm(start, end);
-> -	flush_kernel_icache_range_asm(start, end);
-> -	flush_tlb_kernel_range(start, end);
-> +	flush_kernel_vmap_range(addr, len);
-> +	flush_icache_range(start, end);
->
->  	p =3D fixmap =3D patch_map(addr, FIX_TEXT_POKE0, &flags, &mapped);
->
-> @@ -76,10 +81,8 @@ void __kprobes __patch_text_multiple(void *addr, u32 =
-*insn, unsigned int len)
->  			 * We're crossing a page boundary, so
->  			 * need to remap
->  			 */
-> -			flush_kernel_dcache_range_asm((unsigned long)fixmap,
-> -						      (unsigned long)p);
-> -			flush_tlb_kernel_range((unsigned long)fixmap,
-> -					       (unsigned long)p);
-> +			flush_kernel_vmap_range((void *)fixmap,
-> +						(p-fixmap) * sizeof(*p));
->  			if (mapped)
->  				patch_unmap(FIX_TEXT_POKE0, &flags);
->  			p =3D fixmap =3D patch_map(addr, FIX_TEXT_POKE0, &flags,
-> @@ -87,10 +90,10 @@ void __kprobes __patch_text_multiple(void *addr, u32=
- *insn, unsigned int len)
->  		}
->  	}
->
-> -	flush_kernel_dcache_range_asm((unsigned long)fixmap, (unsigned long)p)=
-;
-> -	flush_tlb_kernel_range((unsigned long)fixmap, (unsigned long)p);
-> +	flush_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
->  	if (mapped)
->  		patch_unmap(FIX_TEXT_POKE0, &flags);
-> +	flush_icache_range(start, end);
->  }
->
->  void __kprobes __patch_text(void *addr, u32 insn)
 
+You mentioned 2 cases:
+
+(a) Same notifier_list used in different situations;
+
+(b) Same *notifier callback* used in different lists;
+
+Mine is case (b), right? Can you show me an example of case (a)? You can
+see in the following patches (or grep the kernel) that people are using
+this identification parameter to determine which kind of OOPS trigger
+the callback to condition the execution of the function to specific
+cases. IIUIC, this is more or less what I'm doing, but extending the
+idea for panic notifiers.
+
+Again, as a personal preference, it makes sense to me using id's VS
+comparing pointers to differentiate events/callers.
+
+Cheers,
+
+
+Guilherme
