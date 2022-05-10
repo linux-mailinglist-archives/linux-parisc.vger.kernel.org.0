@@ -2,47 +2,47 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48460521FB0
-	for <lists+linux-parisc@lfdr.de>; Tue, 10 May 2022 17:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8937522004
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 May 2022 17:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346423AbiEJPwW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 10 May 2022 11:52:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35456 "EHLO
+        id S1346685AbiEJPxI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 10 May 2022 11:53:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346695AbiEJPvS (ORCPT
+        with ESMTP id S1346933AbiEJPvp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 10 May 2022 11:51:18 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 764C928ED3F;
-        Tue, 10 May 2022 08:45:38 -0700 (PDT)
+        Tue, 10 May 2022 11:51:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626BD62BE5;
+        Tue, 10 May 2022 08:46:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 23CA7B81DB5;
-        Tue, 10 May 2022 15:45:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB89C385A6;
-        Tue, 10 May 2022 15:45:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD98161373;
+        Tue, 10 May 2022 15:46:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF5FC385C9;
+        Tue, 10 May 2022 15:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652197535;
+        s=k20201202; t=1652197573;
         bh=21bwpjNudExl89E+GWay/earnO1hhomI8Dv+7vwzFGE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aOPNYzQvvzBufEVhvzQHVOPv0YDwb/gsnMX+kv0XJG52Tl4zERvm2cpmpoZBwg/81
-         Ytlt8vqPz/BDAIupNQISdVi7o1KQ8lu5WfgAf0rqkXr9S4y/dw/RUfP/Qi9iKzsqBC
-         zz/0rKmkW0kJ0AC6el2HlkPCCW3qjgeRpPDz3u7iMM5YMepCctJ0ioToAqLW/Qyf1y
-         D1pOb9S5lWlbnZZTw5Wrw8U9ndEv6WTFz1Gu5q2SzJvXRg6o7HX7E+GfLzn94CS8rw
-         VF61e2UgEAw0P38Xlbu6mtl7YnMkTPojqhr3060LRvaMalhAE3d7pGBSzhldkTYkRm
-         9LXBgIPXdlJYg==
+        b=nlPITQTXIBFL3WQdkOw5g8It6pvqP4pu03cmobfFQ7DDOM0F9+/V9fmtx2sqEL5mb
+         9dXK3XcWurCon0AfNP1ClK7uPGnRQHv/yggW46N44EQ746UScW1kuxTtSF20t97NHE
+         rJxA4Qu/9cgZjpuc30cJWNSFvDB+HoJ1g6pq3e2lxvv+3q1jKPW3yKTstZdHAsAXXu
+         pVnMGG8EY5tS7l0oV92SP5FvV9SJNoZawU4NXuHnGxm8KTZlERRPRPpWJNNCWX3+CJ
+         UMrYTRx0U4GaGvj1ZUxjRjsieaG9kmR5fODCB66fLyhiCOMkFw/4+S9xnWlJPD2r+Y
+         PR+eNYsnVM4Bg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com, dave.anglin@bell.net,
         linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 9/9] Revert "parisc: Fix patch code locking and flushing"
-Date:   Tue, 10 May 2022 11:45:12 -0400
-Message-Id: <20220510154512.153945-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 8/8] Revert "parisc: Fix patch code locking and flushing"
+Date:   Tue, 10 May 2022 11:45:36 -0400
+Message-Id: <20220510154536.154070-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220510154512.153945-1-sashal@kernel.org>
-References: <20220510154512.153945-1-sashal@kernel.org>
+In-Reply-To: <20220510154536.154070-1-sashal@kernel.org>
+References: <20220510154536.154070-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
