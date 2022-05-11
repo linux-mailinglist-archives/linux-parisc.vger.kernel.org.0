@@ -2,67 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA5C7523B7E
-	for <lists+linux-parisc@lfdr.de>; Wed, 11 May 2022 19:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E005523BA7
+	for <lists+linux-parisc@lfdr.de>; Wed, 11 May 2022 19:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345558AbiEKR2F (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 11 May 2022 13:28:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33250 "EHLO
+        id S1345632AbiEKRgL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 11 May 2022 13:36:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345541AbiEKR2C (ORCPT
+        with ESMTP id S1345654AbiEKRf7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 11 May 2022 13:28:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D173352530
-        for <linux-parisc@vger.kernel.org>; Wed, 11 May 2022 10:28:00 -0700 (PDT)
+        Wed, 11 May 2022 13:35:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 628A262CE0
+        for <linux-parisc@vger.kernel.org>; Wed, 11 May 2022 10:35:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1652290079;
+        s=mimecast20190719; t=1652290556;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cS5E6UtIkG/hFuUJaz85MfZ3xWqLO1I63lqGQCOfSNw=;
-        b=I/TWgzq3wZ9tX0ZdebCt2Q/QHoEGdPYJKy2I8L7/cNTyZWGwdwbZSzRhlGCtN6tmfx/BC6
-        JqcQOwhwIwI/p9a/+DRB9vmDd2HqFj6kLhz8QkMo1X+ID1Fq+Rp88X/AXsQI4eO4RH/Pg+
-        F/+rBhl64Z3KDHfKPuo2zSU8u7VQ4+A=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=RHJ9jDCm2aZov2g6klEdi92ZsrYHfyKzIwTmWcp9UH8=;
+        b=NGJbLnGGiDFyIX+Hl7BzT6EPOfvGrBeehd963Ns6mcWO1tiZ/pbENRbDTeSbBEdUJe3l31
+        xvDggPY0LDlNY5FKZAsSpzoBxgaQPD/FQ+WmbS7AajKtAgDLLiPogHzmMZyzeYkK1jWisx
+        KbZYFLhum9M/aQYDBM2DPlQbE7AzZ+s=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-387-XF6DXy9pPce-S_zkWITvKw-1; Wed, 11 May 2022 13:27:58 -0400
-X-MC-Unique: XF6DXy9pPce-S_zkWITvKw-1
-Received: by mail-wr1-f72.google.com with SMTP id m8-20020adfc588000000b0020c4edd8a57so1098165wrg.10
-        for <linux-parisc@vger.kernel.org>; Wed, 11 May 2022 10:27:58 -0700 (PDT)
+ us-mta-628-LE8FXNJ2OxGDKKDsMlpKxg-1; Wed, 11 May 2022 13:35:55 -0400
+X-MC-Unique: LE8FXNJ2OxGDKKDsMlpKxg-1
+Received: by mail-wm1-f72.google.com with SMTP id m186-20020a1c26c3000000b003943e12185dso928923wmm.7
+        for <linux-parisc@vger.kernel.org>; Wed, 11 May 2022 10:35:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:organization:in-reply-to
          :content-transfer-encoding;
-        bh=cS5E6UtIkG/hFuUJaz85MfZ3xWqLO1I63lqGQCOfSNw=;
-        b=Onbm22D7LJw8Q4xGX7RWMMk37+gxPB5oZdu0In1oMAsf0id0wwx5oUz9oq0rpW1fOb
-         0kJ4iFafmU+D+FXCDaS35OIQL8jb2mh5ZkB5ut7O7WXtDdl0IfJgGPwgxfTOjZ8vYiXU
-         P5g7LzoaLTAhea3OmBJ4rCc2SedguF3tMUABiYxoeJ4q4vVxGhJjAm6JuUICmyVdJ9pl
-         DYD5q3wucsUkVPw68346yi3Pt7yo+VWE4W5V2e5N7tEQ3vM2BIjAPuXaQCP20Kvg1k1b
-         ftN8jIw7jUSO6i4KCYk+rWrnvrW5C3Cs/gPCBhcrzyZgOBGYxVnyi7RqVRu2LjVYCfBr
-         2d3w==
-X-Gm-Message-State: AOAM530ssYHmPngGLbEojTGY6+CSSz4hsB5B8MMfrtmHVf4gPTE2LRr6
-        xRsouLdAXXAKU3/28mQK2QNWRlUeAIn5eLWBoNYy4vKGiSQhl0iXsGJAkNjZCwZuGrgPA6QZttR
-        mfXe69CBSna6Eba8Ka3RH3Zje
-X-Received: by 2002:a7b:c4d8:0:b0:393:fecd:2718 with SMTP id g24-20020a7bc4d8000000b00393fecd2718mr6012809wmk.23.1652290077482;
-        Wed, 11 May 2022 10:27:57 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzBTzXKBES23B3psLkzxI9cGRRJgtAEIRhBp8LvQHOEvCQMFPcLMWgEwEKr1C169Li1EVKAzw==
-X-Received: by 2002:a7b:c4d8:0:b0:393:fecd:2718 with SMTP id g24-20020a7bc4d8000000b00393fecd2718mr6012790wmk.23.1652290077160;
-        Wed, 11 May 2022 10:27:57 -0700 (PDT)
+        bh=RHJ9jDCm2aZov2g6klEdi92ZsrYHfyKzIwTmWcp9UH8=;
+        b=BkOtasRLW6DKa59JTQAtR7TGa6sIvVPSonL1vHFTpYdnHWKV5e7zHEqJ2fd6baf/c5
+         /z9oIGVDLFdl+LIHAkILJ3FQAo9ZP+CXYJKYEh6yxuzfAEaVs0e3P6rpqDs27EMFuwQp
+         Ya6ANvxuI6YZRsH7ATqo8iOkSCLPSZvIjBJV7qsIah1crH/AIAEmoWcsia8qEHG2vjn/
+         1+04zBNZ3jGPGtfr3D67KR8aEH4AdMemqKECEblYDVrIZ2rY10TpiRhcySMQyxzUQ8Bh
+         Ko37eGKvU7M8VwFu4q4ngJrPjGeD0KV+fRI6Ra+7J+oQ+tYdvDKWyF0PsaUXth8mqkhx
+         20NQ==
+X-Gm-Message-State: AOAM532JdMKsm0XtcajUtQhV+7HqMSS13GOPehAzVHb134RrvBS16o+9
+        jQowzhwyDtSN69BYe89JEPaeXbE+E6oe80f+zfB+FGtNKcHfEPbVL1NWe8ormb2zYvT/682po7v
+        aHXudaY0vY52i/ISi0wUDgkvL
+X-Received: by 2002:a05:6000:1f0f:b0:20c:87b6:df9d with SMTP id bv15-20020a0560001f0f00b0020c87b6df9dmr25088272wrb.115.1652290553805;
+        Wed, 11 May 2022 10:35:53 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxowLcNuhjX33XV+v3YeRfpwZS/+uKcfuTSz0ColENR5G1SBprMZ1XzQiN/ReI3dYYeeSg9JA==
+X-Received: by 2002:a05:6000:1f0f:b0:20c:87b6:df9d with SMTP id bv15-20020a0560001f0f00b0020c87b6df9dmr25088227wrb.115.1652290553449;
+        Wed, 11 May 2022 10:35:53 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c701:700:2393:b0f4:ef08:bd51? (p200300cbc70107002393b0f4ef08bd51.dip0.t-ipconnect.de. [2003:cb:c701:700:2393:b0f4:ef08:bd51])
-        by smtp.gmail.com with ESMTPSA id r12-20020a5d694c000000b0020c5253d8c3sm2174483wrw.15.2022.05.11.10.27.54
+        by smtp.gmail.com with ESMTPSA id u12-20020a7bc04c000000b003942a244ed6sm387130wmc.27.2022.05.11.10.35.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 May 2022 10:27:55 -0700 (PDT)
-Message-ID: <55e85b3e-dd6a-1dc2-719d-c6be9d5124c0@redhat.com>
-Date:   Wed, 11 May 2022 19:27:53 +0200
+        Wed, 11 May 2022 10:35:52 -0700 (PDT)
+Message-ID: <f1c904e7-0b16-2893-eb25-0b968817fb8c@redhat.com>
+Date:   Wed, 11 May 2022 19:35:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH v4 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- migration
+Subject: Re: [PATCH v4 3/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
+ unmapping
 Content-Language: en-US
 To:     Baolin Wang <baolin.wang@linux.alibaba.com>,
         akpm@linux-foundation.org, mike.kravetz@oracle.com
@@ -80,10 +80,10 @@ Cc:     catalin.marinas@arm.com, will@kernel.org, songmuchun@bytedance.com,
         sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
         linux-mm@kvack.org
 References: <cover.1652270205.git.baolin.wang@linux.alibaba.com>
- <a4baca670aca637e7198d9ae4543b8873cb224dc.1652270205.git.baolin.wang@linux.alibaba.com>
+ <0a2e547238cad5bc153a85c3e9658cb9d55f9cac.1652270205.git.baolin.wang@linux.alibaba.com>
 From:   David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <a4baca670aca637e7198d9ae4543b8873cb224dc.1652270205.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <0a2e547238cad5bc153a85c3e9658cb9d55f9cac.1652270205.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -102,35 +102,103 @@ On 11.05.22 14:04, Baolin Wang wrote:
 > 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
 > size specified.
 > 
-> When migrating a hugetlb page, we will get the relevant page table
-> entry by huge_pte_offset() only once to nuke it and remap it with
-> a migration pte entry. This is correct for PMD or PUD size hugetlb,
-> since they always contain only one pmd entry or pud entry in the
-> page table.
+> When unmapping a hugetlb page, we will get the relevant page table
+> entry by huge_pte_offset() only once to nuke it. This is correct
+> for PMD or PUD size hugetlb, since they always contain only one
+> pmd entry or pud entry in the page table.
 > 
 > However this is incorrect for CONT-PTE and CONT-PMD size hugetlb,
 > since they can contain several continuous pte or pmd entry with
-> same page table attributes. So we will nuke or remap only one pte
-> or pmd entry for this CONT-PTE/PMD size hugetlb page, which is
-> not expected for hugetlb migration. The problem is we can still
-> continue to modify the subpages' data of a hugetlb page during
-> migrating a hugetlb page, which can cause a serious data consistent
-> issue, since we did not nuke the page table entry and set a
-> migration pte for the subpages of a hugetlb page.
+> same page table attributes, so we will nuke only one pte or pmd
+> entry for this CONT-PTE/PMD size hugetlb page.
 > 
-> To fix this issue, we should change to use huge_ptep_clear_flush()
-> to nuke a hugetlb page table, and remap it with set_huge_pte_at()
-> and set_huge_swap_pte_at() when migrating a hugetlb page, which
-> already considered the CONT-PTE or CONT-PMD size hugetlb.
+> And now try_to_unmap() is only passed a hugetlb page in the case
+> where the hugetlb page is poisoned. Which means now we will unmap
+> only one pte entry for a CONT-PTE or CONT-PMD size poisoned hugetlb
+> page, and we can still access other subpages of a CONT-PTE or CONT-PMD
+> size poisoned hugetlb page, which will cause serious issues possibly.
+> 
+> So we should change to use huge_ptep_clear_flush() to nuke the
+> hugetlb page table to fix this issue, which already considered
+> CONT-PTE and CONT-PMD size hugetlb.
+> 
+> We've already used set_huge_swap_pte_at() to set a poisoned
+> swap entry for a poisoned hugetlb page. Meanwhile adding a VM_BUG_ON()
+> to make sure the passed hugetlb page is poisoned in try_to_unmap().
 > 
 > Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Reviewed-by: Muchun Song <songmuchun@bytedance.com>
 > Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+> ---
+>  mm/rmap.c | 39 ++++++++++++++++++++++-----------------
+>  1 file changed, 22 insertions(+), 17 deletions(-)
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 4e96daf..219e287 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1528,6 +1528,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  
+>  		if (folio_test_hugetlb(folio)) {
+>  			/*
+> +			 * The try_to_unmap() is only passed a hugetlb page
+> +			 * in the case where the hugetlb page is poisoned.
+> +			 */
+> +			VM_BUG_ON_PAGE(!PageHWPoison(subpage), subpage);
+> +			/*
+>  			 * huge_pmd_unshare may unmap an entire PMD page.
+>  			 * There is no way of knowing exactly which PMDs may
+>  			 * be cached for this mm, so we must flush them all.
+> @@ -1562,28 +1567,28 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  					break;
+>  				}
+>  			}
+> +			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
+>  		} else {
+>  			flush_cache_page(vma, address, pte_pfn(*pvmw.pte));
+> -		}
+> -
+> -		/*
+> -		 * Nuke the page table entry. When having to clear
+> -		 * PageAnonExclusive(), we always have to flush.
+> -		 */
+> -		if (should_defer_flush(mm, flags) && !anon_exclusive) {
+>  			/*
+> -			 * We clear the PTE but do not flush so potentially
+> -			 * a remote CPU could still be writing to the folio.
+> -			 * If the entry was previously clean then the
+> -			 * architecture must guarantee that a clear->dirty
+> -			 * transition on a cached TLB entry is written through
+> -			 * and traps if the PTE is unmapped.
+> +			 * Nuke the page table entry. When having to clear
+> +			 * PageAnonExclusive(), we always have to flush.
+>  			 */
+> -			pteval = ptep_get_and_clear(mm, address, pvmw.pte);
+> +			if (should_defer_flush(mm, flags) && !anon_exclusive) {
+> +				/*
+> +				 * We clear the PTE but do not flush so potentially
+> +				 * a remote CPU could still be writing to the folio.
+> +				 * If the entry was previously clean then the
+> +				 * architecture must guarantee that a clear->dirty
+> +				 * transition on a cached TLB entry is written through
+> +				 * and traps if the PTE is unmapped.
+> +				 */
+> +				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
+>  
+> -			set_tlb_ubc_flush_pending(mm, pte_dirty(pteval));
+> -		} else {
+> -			pteval = ptep_clear_flush(vma, address, pvmw.pte);
+> +				set_tlb_ubc_flush_pending(mm, pte_dirty(pteval));
+> +			} else {
+> +				pteval = ptep_clear_flush(vma, address, pvmw.pte);
+> +			}
+>  		}
+>  
+>  		/*
 
-Makes sense to me.
+LGTM
 
 Acked-by: David Hildenbrand <david@redhat.com>
-
 
 -- 
 Thanks,
