@@ -2,119 +2,83 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF83F523ED8
-	for <lists+linux-parisc@lfdr.de>; Wed, 11 May 2022 22:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADE6C523FC1
+	for <lists+linux-parisc@lfdr.de>; Wed, 11 May 2022 23:55:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347751AbiEKUYW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 11 May 2022 16:24:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60436 "EHLO
+        id S1344371AbiEKVzT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 11 May 2022 17:55:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238984AbiEKUYR (ORCPT
+        with ESMTP id S244119AbiEKVzS (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 11 May 2022 16:24:17 -0400
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0345A72E01;
-        Wed, 11 May 2022 13:24:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=LCKlEcL/+gLbho7zoJo89g9MDYx2GFkg8N7n1nlW+0g=; b=MQpyMZ3nMM+SlSF0Ic+7AggIHS
-        wWCWxLFJNdpcNC/qKw1wNJR3uSo8xMkfiJlq7d2aikSbZG9yuq1pfGOyawWDcFgWnRsla4fbF455Y
-        3RXCIUoMIO9o6uix81B+J++RZraHoxYIg5AFTEzg2KmNpXSrs7BEjvRicrp5TYhs6s3mYN27kkyAz
-        njPDxaRSeQ75fkZPzqisnL9xIuav4szhmycF8VItK7avDyCoEE8U/Zs7xTZO8x+jizmxi0qGskMhG
-        GsWdK7oyZ7kJDFhpPsgWAmAhF7aiE+T5aNpN2RQ5WYTzC7ql7jtRy3esjCfYNiJNCeB+2D6JHceeB
-        Ayva3vzg==;
-Received: from [177.183.162.244] (helo=[192.168.0.5])
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-        id 1noss0-000Aod-US; Wed, 11 May 2022 22:23:41 +0200
-Message-ID: <4b003501-f5c3-cd66-d222-88d98c93e141@igalia.com>
-Date:   Wed, 11 May 2022 17:22:22 -0300
+        Wed, 11 May 2022 17:55:18 -0400
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DDB816ABF5
+        for <linux-parisc@vger.kernel.org>; Wed, 11 May 2022 14:55:17 -0700 (PDT)
+Received: (qmail 13869 invoked from network); 11 May 2022 21:55:07 -0000
+Received: from p200300cf0714e800cc89edd9cd300843.dip0.t-ipconnect.de ([2003:cf:714:e800:cc89:edd9:cd30:843]:36748 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <kuba@kernel.org>; Wed, 11 May 2022 23:55:07 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        netdev@vger.kernel.org, Yang Yingliang <yangyingliang@huawei.com>,
+        davem@davemloft.net, edumazet@google.com
+Subject: Re: [PATCH] ethernet: tulip: fix missing pci_disable_device() on error in tulip_init_one()
+Date:   Wed, 11 May 2022 23:55:04 +0200
+Message-ID: <5568353.DvuYhMxLoT@daneel.sf-tec.de>
+In-Reply-To: <20220506092152.405ce691@kernel.org>
+References: <20220506094250.3630615-1-yangyingliang@huawei.com> <5564948.DvuYhMxLoT@eto.sf-tec.de> <20220506092152.405ce691@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 11/30] um: Improve panic notifiers consistency and
- ordering
-Content-Language: en-US
-To:     Petr Mladek <pmladek@suse.com>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Richard Weinberger <richard@nod.at>
-Cc:     akpm@linux-foundation.org, bhe@redhat.com,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-edac@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, netdev@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
-        x86@kernel.org, kernel-dev@igalia.com, kernel@gpiccoli.net,
-        halves@canonical.com, fabiomirmar@gmail.com,
-        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
-        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
-        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
-        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
-        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-12-gpiccoli@igalia.com> <Ynp2hRodh04K3pzK@alley>
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <Ynp2hRodh04K3pzK@alley>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="nextPart5823012.lOV4Wx5bFT"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/05/2022 11:28, Petr Mladek wrote:
-> [...]
-> It is not clear to me why user mode linux should not care about
-> the other notifiers. It might be because I do not know much
-> about the user mode linux.
+--nextPart5823012.lOV4Wx5bFT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+
+Am Freitag, 6. Mai 2022, 18:21:52 CEST schrieb Jakub Kicinski:
+> On Fri, 06 May 2022 12:11:56 +0200 Rolf Eike Beer wrote:
+> > Am Freitag, 6. Mai 2022, 11:42:50 CEST schrieb Yang Yingliang:
+> > > Fix the missing pci_disable_device() before return
+> > > from tulip_init_one() in the error handling case.
+> > 
+> > I would suggest removing the pci_disable_device() from tulip_remove_one()
+> > instead and using pcim_enable_device(), i.e. devres, and let the driver
+> > core handle all these things. Of course more of the used functions could
+> > be converted them, e.g. using devm_alloc_etherdev() and so on.
 > 
-> Is the because they always create core dump or are never running
-> in a hypervisor or ...?
-> 
-> AFAIK, the notifiers do many different things. For example, there
-> is a notifier that disables RCU watchdog, print some extra
-> information. Why none of them make sense here?
->
+> Let's not rewrite the error handling in this dinosaur of a driver
+> any more than absolutely necessary, please.
 
-Hi Petr, my understanding is that UML is a form of running Linux as a
-regular userspace process for testing purposes. With that said, as soon
-as we exit in the error path, less "pollution" would happen, so users
-can use GDB to debug the core dump for example.
+Challenge accepted ;)
 
-In later patches of this series (when we split the panic notifiers in 3
-lists) these UML notifiers run in the pre-reboot list, so they run after
-the informational notifiers for example (in the default level).
-But without the list split we cannot order properly, so my gut feeling
-is that makes sense to run them rather earlier than later in the panic
-process...
+[  274.452394] tulip0: no phy info, aborting mtable build
+[  274.499041] tulip0:  MII transceiver #1 config 1000 status 782d advertising 01e1
+[  274.750691] net eth0: Digital DS21142/43 Tulip rev 65 at MMIO 0xf4008000, 00:30:6e:08:7d:21, IRQ 17
+[  283.104520] net eth0: Setting full-duplex based on MII#1 link partner capability of c1e1
 
-Maybe Anton / Johannes / Richard could give their opinions - appreciate
-that, I'm not attached to the priority here, it's more about users'
-common usage of UML I can think of...
+Works fine, patch in a minute.
+--nextPart5823012.lOV4Wx5bFT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-Cheers,
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYnwwuAAKCRBcpIk+abn8
+Ti85AJ9kQ7SD83xxU6gnW4mBa4gibh6QfgCeLiMiLBwYV6WZOMq/2YAj4ZVKgf4=
+=pjR/
+-----END PGP SIGNATURE-----
+
+--nextPart5823012.lOV4Wx5bFT--
 
 
-Guilherme
+
