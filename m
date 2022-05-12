@@ -2,73 +2,68 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01E7D5251F5
-	for <lists+linux-parisc@lfdr.de>; Thu, 12 May 2022 18:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51BF4525835
+	for <lists+linux-parisc@lfdr.de>; Fri, 13 May 2022 01:23:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356223AbiELQFF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 12 May 2022 12:05:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
+        id S1359429AbiELXXm (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 12 May 2022 19:23:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356224AbiELQFC (ORCPT
+        with ESMTP id S1359444AbiELXXk (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 12 May 2022 12:05:02 -0400
-Received: from mail.pekanbaru.go.id (mail.pekanbaru.go.id [103.131.245.194])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2564661615;
-        Thu, 12 May 2022 09:04:59 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.pekanbaru.go.id (Postfix) with ESMTP id 9F70198ADDD;
-        Thu, 12 May 2022 10:45:37 +0700 (WIB)
-Received: from mail.pekanbaru.go.id ([127.0.0.1])
-        by localhost (mail.pekanbaru.go.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id tgogYINyP6j9; Thu, 12 May 2022 10:45:37 +0700 (WIB)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.pekanbaru.go.id (Postfix) with ESMTP id C3CD198AE02;
-        Thu, 12 May 2022 10:45:35 +0700 (WIB)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.pekanbaru.go.id C3CD198AE02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pekanbaru.go.id;
-        s=EA5C5C9E-4206-11EC-835B-1ADACEA726A0; t=1652327135;
-        bh=WgQd2bW8hb2KeIDNbeIeW1Bb4lp6m29iibMhAQT/egc=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=mwqd6QBsp8TSvmGMWvx1SvcaFHOTg0WDqsFIBY+DfDbU6nYRAWoTNZoZS7//vyVYO
-         NVg3sUWVI1/1sLpFZwyvYGZZu2lbKBSMywgCX2TSnV4kte4+vMFMzqmYCxCaqOMZ07
-         5VDjmc+ExSB4Pr7IBByusLAHdEyhjoBFY7kG+RHbwiDlh32SGF+kXvW9Q3vssrkfv2
-         z7Sg8eLweXHfuYeTE1ER0o0kVa2USgWoLFrN/ovgYqi081ebOje8YxXeBunr15lNp1
-         ++67L6fUcAqsKdeviC8XKNA5YdH+0gU/nlqu/NEFfB/NBnBeeoc6YsibBiJ/Yz05si
-         uK1fpSiKMCXDQ==
-X-Virus-Scanned: amavisd-new at mail.pekanbaru.go.id
-Received: from mail.pekanbaru.go.id ([127.0.0.1])
-        by localhost (mail.pekanbaru.go.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id GY3qS2PbXL7Q; Thu, 12 May 2022 10:45:35 +0700 (WIB)
-Received: from [192.168.15.101] (unknown [41.79.219.176])
-        by mail.pekanbaru.go.id (Postfix) with ESMTPSA id 44F5598ADEF;
-        Thu, 12 May 2022 10:45:25 +0700 (WIB)
-Content-Type: text/plain; charset="iso-8859-1"
+        Thu, 12 May 2022 19:23:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D16E1D6750;
+        Thu, 12 May 2022 16:23:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B09960F5D;
+        Thu, 12 May 2022 23:23:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A167C385B8;
+        Thu, 12 May 2022 23:23:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652397816;
+        bh=1+VKeKmeev1IPlg54X6Ohnlzj3mt4SWjDIWp2UZ8ZYo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=FA1sjBTUgB8e/ET0IAKIpJMhlUsNa7YIlaMA9o/UTKyLGHBzs1HgM7rwapg4zRl+n
+         vkcB7Kokd0u7vw+rHli0ndid/ODTu7B0wRs5x/31yvfqvaV5KmJGe/14blXoWCy36g
+         cQCGJdYU/CFaXbbseoWbqZSUOAMLQPKUXOwoPwSD7vCyvucQp4AKJjdnhG8dEcD4Vj
+         5sIZWaPI0RLOrSDPDP+eAaibaYHEzRvbjyKttowFfYtaXZsS/qRjMp+kmryeb4maGn
+         ZEc2swUI4xU8iq7RQ/DqZGczO8GKTQ6tBw8bIsDU7OSvHPE2NGjYxlle3DMO88Wse+
+         WEC0OoIyi2ibw==
+Date:   Thu, 12 May 2022 16:23:34 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>
+Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        netdev@vger.kernel.org, Yang Yingliang <yangyingliang@huawei.com>,
+        davem@davemloft.net, edumazet@google.com
+Subject: Re: [PATCH] net: tulip: convert to devres
+Message-ID: <20220512162334.6e669feb@kernel.org>
+In-Reply-To: <2240900.ElGaqSPkdT@daneel.sf-tec.de>
+References: <2240900.ElGaqSPkdT@daneel.sf-tec.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Awaiting your response 
-To:     Recipients <waterproject@pekanbaru.go.id>
-From:   waterproject@pekanbaru.go.id
-Date:   Thu, 12 May 2022 04:45:17 +0100
-Reply-To: test@hostnextdoor.com
-Message-Id: <20220512034526.44F5598ADEF@mail.pekanbaru.go.id>
-X-Spam-Status: No, score=2.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi =
+On Wed, 11 May 2022 23:57:30 +0200 Rolf Eike Beer wrote:
+> Works fine on my HP C3600:
+> 
+> [  274.452394] tulip0: no phy info, aborting mtable build
+> [  274.499041] tulip0:  MII transceiver #1 config 1000 status 782d advertising 01e1
+> [  274.750691] net eth0: Digital DS21142/43 Tulip rev 65 at MMIO 0xf4008000, 00:30:6e:08:7d:21, IRQ 17
+> [  283.104520] net eth0: Setting full-duplex based on MII#1 link partner capability of c1e1
+> 
+> Signed-off-by: Rolf Eike Beer <eike-kernel@sf-tec.de>
 
-
-Did you get my previous email? I have attempted over 3 times to open up com=
-munication with you. Please acknowledge if you receive this email. =
-
-
-Regards
-Morten Friis
+Does not apply cleanly any more since the fix came in thru net.
+Please rebase / repost.
