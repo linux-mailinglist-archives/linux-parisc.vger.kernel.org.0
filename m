@@ -2,219 +2,139 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F0B4526842
-	for <lists+linux-parisc@lfdr.de>; Fri, 13 May 2022 19:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444A6526D94
+	for <lists+linux-parisc@lfdr.de>; Sat, 14 May 2022 01:51:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354748AbiEMRYL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 13 May 2022 13:24:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36020 "EHLO
+        id S229970AbiEMXtb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 13 May 2022 19:49:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382969AbiEMRYK (ORCPT
+        with ESMTP id S229608AbiEMXtb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 13 May 2022 13:24:10 -0400
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0582F703DD
-        for <linux-parisc@vger.kernel.org>; Fri, 13 May 2022 10:24:05 -0700 (PDT)
-Received: (qmail 5299 invoked from network); 13 May 2022 17:23:55 -0000
-Received: from p200300cf07132b0076d435fffeb7be92.dip0.t-ipconnect.de ([2003:cf:713:2b00:76d4:35ff:feb7:be92]:43442 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <kuba@kernel.org>; Fri, 13 May 2022 19:23:55 +0200
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        netdev@vger.kernel.org, Yang Yingliang <yangyingliang@huawei.com>,
-        davem@davemloft.net, edumazet@google.com
-Subject: [PATCH v2] net: tulip: convert to devres
-Date:   Fri, 13 May 2022 19:23:59 +0200
-Message-ID: <2630407.mvXUDI8C0e@eto.sf-tec.de>
-In-Reply-To: <2240900.ElGaqSPkdT@daneel.sf-tec.de>
-References: <2240900.ElGaqSPkdT@daneel.sf-tec.de>
+        Fri, 13 May 2022 19:49:31 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E166B37F0DB
+        for <linux-parisc@vger.kernel.org>; Fri, 13 May 2022 16:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1652485125;
+        bh=pweQQJPZiqbjKV39ncToWiFpy5ZxCoCXUpaM5jUjrpA=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=bYM38lehs2A0ptrRhPl/LB3+Rgv5iXKua/PUJG4a2q4Wk0eF70OPLYPRYJpTDV/zF
+         F8l9sZoE1v3eFiu0hQZXup98dRseAoNg+q2woQwmfLMoo67WJChRriFeUNYSMD03yR
+         Lpu9sC7mm7VDMS3LpyX1tf3UPsm0Om65KtUDhsRM=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100 ([92.116.176.141]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N1fis-1nw0eT2IJM-011yPI; Sat, 14
+ May 2022 01:38:45 +0200
+Date:   Sat, 14 May 2022 01:38:43 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Unconditionally flush tlb entry in tmpalias functions
+Message-ID: <Yn7sA9LCVrYSgWk6@p100>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:uIA0bhlqejLCbA4snNqMc9ecxwYdoYyqSh44EkhGNr89vBGHkjm
+ CJk8jxD5rWqCYFOp5+J+GbSKExpK2m3P4CQehKq+m0oLj7tRiRLLRInpTBdfbRVD6XcdmYJ
+ 6y0zZZd+Hw10KFxxZHhC/p3NZJRm/1h+VXSKgxlTIRU5MNkJdPZoT4zk+Yyy+oOyEOzIhWk
+ KFanuwe8x8Il3ueRxNIYQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:md5MGsO4O9w=:sXd6SoGu2LjzVkh5izre/a
+ tLkSStErvoEOuql3LNt/3g5VhLaMyzOHnuDmO07OKMMTTwfbJIeewMfhzV+FdbEEaq2s7fYjF
+ QzT8ejlPJZm0At0/q3N1MKGQDn8uiKj/uUuQRe36HFXyhwdIJYzz3f5AmHxM1UgCFxWmhG+hp
+ hYj/5NHsVDLFGF8atUl5A9srsKi10R2oGTCO6o6csALGxYr8BQ/gnbH2lDCJ2NTv/rjGzhbSk
+ al25JPNxBA5aQAbHRnZHq13zBRxaycg97O40SVIYuH2D5zjKMlLoWvNtaMr5DvKUh0bLWBHbf
+ 4dFvCDSjtuxVvrw2HWCxr47L+4fY3Gb4QyPjc8SoCHxX8C60rcz0ka85Mx28Z05apvoatzxuN
+ gu5Nd+GrxsjELfzB/I15KJGiCdgORo0JCK78M9rZyinj5+Hp0/+yTst6X5YlUbLSeS2VSN2LM
+ kU9s8/geLaXWJGlUYPRtbVxunji/8cV3wbtqj4ut57FeC1xvo+OzMBHmuPHw1093rBnNt0VVY
+ lSBwTIZrDWbt++1hTYc3EGLr2lkn3p3mW5GFKdgt8rkxJvVib6/gZ5sV6JjTEgD0VHIVwObpV
+ Nhm9UNcjpfT1VJmmt2vrIhkCWNFoYyMssRnvVw7ecKC9DYrUZaR205mLeTav60T8I32c/ZVwz
+ VO6d+/wKSZo2oICKrqTQcsHPhZ1UR3hwoiLHzyHExg+tLedIeVw8261DNrhOkYR31cY/v7xBI
+ nAqbxfsRUOfFJcMGUv3qOHeJeN41vCohcp13bcPIpOJpSX+LCBjfE3URTTZZEbcR5k04Lmx60
+ OsffGdhllv89C9BiUCK1b4NULkpJ64UikwJ4d4HJcmPcHm5rozd1YHuKWhi+itHrpn/2B3qJB
+ qm8HWEwBpfqDmuss/BmnGHXSAfWWmq64IN2v9CYlYGiMRTOqQBcBpVZ/LcIq6v7EhPDnLGh5n
+ zw3e0JLyfsQMcA/q0Li1Lc7xnuD/hlec6uceEnGB8cZEuS5Aki8pfLZ2F/nnxtH0hu0y9+U5+
+ GiG5xMWxZBtjffQLAj4xO/gfgzni+MezMFWxmbKynnYFJrbQypyT7QoZE+zXLHOUddYABNqy+
+ 5UoFev5qmeNMgvZyuMvO9QYmPFNFzBhS7Gynmp4SSKONTpoyP+N97xrng==
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Works fine on my HP C3600:
+Drop the ALTERNATIVE() instructions in the tmpalias functions for the
+32-bit kernel.
+Functions which use the tmpalias mappings to flush/copy/invalidate
+congruently mapped memory need to always flush the TLB entry prior
+accessing the newly-to-be mapped memory areas. This is independed if
+it's a SMP kernel or not.  Otherwise the new memory mappings (stored in
+r28 and possibly r23) won't get loaded into the TLB.
 
-[  274.452394] tulip0: no phy info, aborting mtable build
-[  274.499041] tulip0:  MII transceiver #1 config 1000 status 782d advertising 01e1
-[  274.750691] net eth0: Digital DS21142/43 Tulip rev 65 at MMIO 0xf4008000, 00:30:6e:08:7d:21, IRQ 17
-[  283.104520] net eth0: Setting full-duplex based on MII#1 link partner capability of c1e1
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
 
-Signed-off-by: Rolf Eike Beer <eike-kernel@sf-tec.de>
----
- drivers/net/ethernet/dec/tulip/eeprom.c     |  7 ++-
- drivers/net/ethernet/dec/tulip/tulip_core.c | 64 ++++++---------------
- 2 files changed, 20 insertions(+), 51 deletions(-)
-
-v2: rebased
-
-diff --git a/drivers/net/ethernet/dec/tulip/eeprom.c b/drivers/net/ethernet/dec/tulip/eeprom.c
-index ba0a69b363f8..67a67cb78dbb 100644
---- a/drivers/net/ethernet/dec/tulip/eeprom.c
-+++ b/drivers/net/ethernet/dec/tulip/eeprom.c
-@@ -117,8 +117,8 @@ static void tulip_build_fake_mediatable(struct tulip_private *tp)
- 			  0x00, 0x06  /* ttm bit map */
- 			};
- 
--		tp->mtable = kmalloc(sizeof(struct mediatable) +
--				     sizeof(struct medialeaf), GFP_KERNEL);
-+		tp->mtable = devm_kmalloc(&tp->pdev->pdev, sizeof(struct mediatable) +
-+					  sizeof(struct medialeaf), GFP_KERNEL);
- 
- 		if (tp->mtable == NULL)
- 			return; /* Horrible, impossible failure. */
-@@ -224,7 +224,8 @@ void tulip_parse_eeprom(struct net_device *dev)
- 		        return;
- 		}
- 
--		mtable = kmalloc(struct_size(mtable, mleaf, count), GFP_KERNEL);
-+		mtable = devm_kmalloc(&tp->pdev->dev, struct_size(mtable, mleaf, count),
-+				      GFP_KERNEL);
- 		if (mtable == NULL)
- 			return;				/* Horrible, impossible failure. */
- 		last_mediatable = tp->mtable = mtable;
-diff --git a/drivers/net/ethernet/dec/tulip/tulip_core.c b/drivers/net/ethernet/dec/tulip/tulip_core.c
-index 0040dcaab945..1a09d3753073 100644
---- a/drivers/net/ethernet/dec/tulip/tulip_core.c
-+++ b/drivers/net/ethernet/dec/tulip/tulip_core.c
-@@ -1389,7 +1389,7 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	 *	And back to business
- 	 */
- 
--	i = pci_enable_device(pdev);
-+	i = pcim_enable_device(pdev);
- 	if (i) {
- 		pr_err("Cannot enable tulip board #%d, aborting\n", board_idx);
- 		return i;
-@@ -1398,11 +1398,9 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	irq = pdev->irq;
- 
- 	/* alloc_etherdev ensures aligned and zeroed private structures */
--	dev = alloc_etherdev (sizeof (*tp));
--	if (!dev) {
--		pci_disable_device(pdev);
-+	dev = devm_alloc_etherdev(&pdev->dev, sizeof(*tp));
-+	if (!dev)
- 		return -ENOMEM;
--	}
- 
- 	SET_NETDEV_DEV(dev, &pdev->dev);
- 	if (pci_resource_len (pdev, 0) < tulip_tbl[chip_idx].io_size) {
-@@ -1410,18 +1408,18 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		       pci_name(pdev),
- 		       (unsigned long long)pci_resource_len (pdev, 0),
- 		       (unsigned long long)pci_resource_start (pdev, 0));
--		goto err_out_free_netdev;
-+		return -ENODEV;
- 	}
- 
- 	/* grab all resources from both PIO and MMIO regions, as we
- 	 * don't want anyone else messing around with our hardware */
--	if (pci_request_regions (pdev, DRV_NAME))
--		goto err_out_free_netdev;
-+	if (pci_request_regions(pdev, DRV_NAME))
-+		return -ENODEV;
- 
--	ioaddr =  pci_iomap(pdev, TULIP_BAR, tulip_tbl[chip_idx].io_size);
-+	ioaddr = pcim_iomap(pdev, TULIP_BAR, tulip_tbl[chip_idx].io_size);
- 
- 	if (!ioaddr)
--		goto err_out_free_res;
-+		return -ENODEV;
- 
- 	/*
- 	 * initialize private data structure 'tp'
-@@ -1430,12 +1428,12 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	tp = netdev_priv(dev);
- 	tp->dev = dev;
- 
--	tp->rx_ring = dma_alloc_coherent(&pdev->dev,
--					 sizeof(struct tulip_rx_desc) * RX_RING_SIZE +
--					 sizeof(struct tulip_tx_desc) * TX_RING_SIZE,
--					 &tp->rx_ring_dma, GFP_KERNEL);
-+	tp->rx_ring = dmam_alloc_coherent(&pdev->dev,
-+					  sizeof(struct tulip_rx_desc) * RX_RING_SIZE +
-+					  sizeof(struct tulip_tx_desc) * TX_RING_SIZE,
-+					  &tp->rx_ring_dma, GFP_KERNEL);
- 	if (!tp->rx_ring)
--		goto err_out_mtable;
-+		return -ENODEV;
- 	tp->tx_ring = (struct tulip_tx_desc *)(tp->rx_ring + RX_RING_SIZE);
- 	tp->tx_ring_dma = tp->rx_ring_dma + sizeof(struct tulip_rx_desc) * RX_RING_SIZE;
- 
-@@ -1695,8 +1693,9 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/arch/parisc/kernel/pacache.S b/arch/parisc/kernel/pacache.S
+index b4c3f01e2399..1cc55e668fe0 100644
+=2D-- a/arch/parisc/kernel/pacache.S
++++ b/arch/parisc/kernel/pacache.S
+@@ -565,10 +565,8 @@ ENTRY_CFI(copy_user_page_asm)
+ 	pdtlb,l		%r0(%r28)
+ 	pdtlb,l		%r0(%r29)
+ #else
+-0:	pdtlb		%r0(%r28)
+-1:	pdtlb		%r0(%r29)
+-	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+-	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SMP, INSN_PxTLB)
++	pdtlb		%r0(%r28)
++	pdtlb		%r0(%r29)
  #endif
- 	dev->ethtool_ops = &ops;
- 
--	if (register_netdev(dev))
--		goto err_out_free_ring;
-+	i = register_netdev(dev);
-+	if (i)
-+		return i;
- 
- 	pci_set_drvdata(pdev, dev);
- 
-@@ -1771,24 +1770,6 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	tulip_set_power_state (tp, 0, 1);
- 
- 	return 0;
--
--err_out_free_ring:
--	dma_free_coherent(&pdev->dev,
--			  sizeof(struct tulip_rx_desc) * RX_RING_SIZE +
--			  sizeof(struct tulip_tx_desc) * TX_RING_SIZE,
--			  tp->rx_ring, tp->rx_ring_dma);
--
--err_out_mtable:
--	kfree (tp->mtable);
--	pci_iounmap(pdev, ioaddr);
--
--err_out_free_res:
--	pci_release_regions (pdev);
--
--err_out_free_netdev:
--	free_netdev (dev);
--	pci_disable_device(pdev);
--	return -ENODEV;
- }
- 
- 
-@@ -1888,24 +1869,11 @@ static int __maybe_unused tulip_resume(struct device *dev_d)
- static void tulip_remove_one(struct pci_dev *pdev)
- {
- 	struct net_device *dev = pci_get_drvdata (pdev);
--	struct tulip_private *tp;
- 
- 	if (!dev)
- 		return;
- 
--	tp = netdev_priv(dev);
- 	unregister_netdev(dev);
--	dma_free_coherent(&pdev->dev,
--			  sizeof(struct tulip_rx_desc) * RX_RING_SIZE +
--			  sizeof(struct tulip_tx_desc) * TX_RING_SIZE,
--			  tp->rx_ring, tp->rx_ring_dma);
--	kfree (tp->mtable);
--	pci_iounmap(pdev, tp->base_addr);
--	free_netdev (dev);
--	pci_release_regions (pdev);
--	pci_disable_device(pdev);
--
--	/* pci_power_off (pdev, -1); */
- }
- 
- #ifdef CONFIG_NET_POLL_CONTROLLER
--- 
-2.35.3
 
+ #ifdef CONFIG_64BIT
+@@ -705,8 +703,7 @@ ENTRY_CFI(clear_user_page_asm)
+ #ifdef CONFIG_PA20
+ 	pdtlb,l		%r0(%r28)
+ #else
+-0:	pdtlb		%r0(%r28)
+-	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
++	pdtlb		%r0(%r28)
+ #endif
 
+ #ifdef CONFIG_64BIT
+@@ -781,8 +778,7 @@ ENTRY_CFI(flush_dcache_page_asm)
+ #ifdef CONFIG_PA20
+ 	pdtlb,l		%r0(%r28)
+ #else
+-0:	pdtlb		%r0(%r28)
+-	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
++	pdtlb		%r0(%r28)
+ #endif
 
+ 88:	ldil		L%dcache_stride, %r1
+@@ -840,8 +836,7 @@ ENTRY_CFI(purge_dcache_page_asm)
+ #ifdef CONFIG_PA20
+ 	pdtlb,l		%r0(%r28)
+ #else
+-0:	pdtlb		%r0(%r28)
+-	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
++	pdtlb		%r0(%r28)
+ #endif
+
+ 88:	ldil		L%dcache_stride, %r1
+@@ -904,10 +899,8 @@ ENTRY_CFI(flush_icache_page_asm)
+ 1:	pitlb,l         %r0(%sr4,%r28)
+ 	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SPLIT_TLB, INSN_NOP)
+ #else
+-0:	pdtlb		%r0(%r28)
++	pdtlb		%r0(%r28)
+ 1:	pitlb           %r0(%sr4,%r28)
+-	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+-	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+ 	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SPLIT_TLB, INSN_NOP)
+ #endif
 
