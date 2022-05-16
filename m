@@ -2,176 +2,210 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E5B45288EC
-	for <lists+linux-parisc@lfdr.de>; Mon, 16 May 2022 17:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0A1A5289DC
+	for <lists+linux-parisc@lfdr.de>; Mon, 16 May 2022 18:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245175AbiEPPcW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 16 May 2022 11:32:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58622 "EHLO
+        id S235988AbiEPQKM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 16 May 2022 12:10:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245358AbiEPPcS (ORCPT
+        with ESMTP id S236219AbiEPQKL (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 16 May 2022 11:32:18 -0400
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-003.bell.net [209.71.208.13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 290F41CFC3
-        for <linux-parisc@vger.kernel.org>; Mon, 16 May 2022 08:32:17 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 627B9EAF010B432F
-X-CM-Envelope: MS4xfEkb0I/M+4xn+09xrvxspck4mvdQJl7BE1APDC7pY4NYxBkSqCyxgT4WOcIkP01b/lpnYIjvoIBOGvLYkPS6rJUoYlk4sQRvpyErQ0/ko5gC7rE46bqU
- V8hbmr+I+CvWF3ObfR80KgCkHkiXmF5Ak+LHLT3iAnvVMpCvFNZPkau1dTmnPnMDDe0iztbXv/qDfpZa5O4g1Z7nrANQk+AAGF8R1vXg2h3z5hbFx8slG4hd
- EPRuHO68qQWYuc/I4OqF8QTtftglwwFS8o/71mVI0DLzVXvErE7nX2V5rRATEo8E2R1GivQCkeB7HFE6ykvuhNvprO700XXah87PO42cLqwAJAvIw8EyfPH/
- aIzWiV9N4FO6P8C/JkzxxPircPUP3i/I+LAOnWuZQNiTEY8ff6NpE2On8nzFXnummAQnSORizt04UyU+/3MPQLpt7wQzh6gzWkto48P8vC3sY/KwvXYQbe0n
- XDTFDkm2kS890mK4pmR+QhmrZwF9urDmgtTcR659+D/2N08RXLryVpvRaS0u3qmSLbG10BXXYeKHDN+PgzOKnARqDUUI1Tqbnkt0Mmw8quGbbyyRTgpR1ibo
- Mc2f0z3ahpj8+CIgfli/94s9vVeUxGSe6LaZFV2H3s8BnQ==
-X-CM-Analysis: v=2.4 cv=aKWTFZxm c=1 sm=1 tr=0 ts=62826e72
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=oZkIemNP1mAA:10 a=FBHGMhGWAAAA:8 a=Nk2dSr2Pk589_36mt_kA:9 a=CjuIK1q_8ugA:10
- a=lYunwYPgJkivqHgAo2sA:9 a=FfaGCDsud1wA:10 a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from mx3210.localdomain (70.50.7.94) by cmx-mtlrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 627B9EAF010B432F; Mon, 16 May 2022 11:32:02 -0400
-Received: by mx3210.localdomain (Postfix, from userid 1000)
-        id A4B2F220115; Mon, 16 May 2022 15:32:00 +0000 (UTC)
-Date:   Mon, 16 May 2022 15:32:00 +0000
-From:   John David Anglin <dave.anglin@bell.net>
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Subject: [PATCH, resend] parisc: Fix patch code locking and flushing
-Message-ID: <YoJucETadOQh4knf@mx3210.localdomain>
+        Mon, 16 May 2022 12:10:11 -0400
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D9CC37AA8
+        for <linux-parisc@vger.kernel.org>; Mon, 16 May 2022 09:10:10 -0700 (PDT)
+Received: by mail-ot1-x334.google.com with SMTP id k25-20020a056830169900b00605f215e55dso10364803otr.13
+        for <linux-parisc@vger.kernel.org>; Mon, 16 May 2022 09:10:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ScgtWm2uFkOxfulqs7520gHM/my4MYIe3yq/VcV3Ozw=;
+        b=Ui6BaQ6lQ9IwPfOUL4TJm7cJvfYf8UFV8wI0yIE/ecSwLqobvQf4rTIikXPC8Ksnp/
+         JRSTr3Fgwya3hm14X44WgUx1HJGuc9H1MoeHAN4VBzxuhJEnypxN8+xF6HAWoKiAVAs3
+         mxYrKvjtDKZ5Z0eJvjVSmqSHIwF8R/De7GbNU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ScgtWm2uFkOxfulqs7520gHM/my4MYIe3yq/VcV3Ozw=;
+        b=oxre+pry+uIHdwMqljBhjSSLUlCbRB9dBnw4zCzvH00skw9+DH5pSXf2NeHNZ/GbpK
+         J2LVOPvk7Ar/ZTmUV3jWXI14mk0kW3Ae4PWJ1LbcJAQUL03FvH6IgMZ6lqrqy3pazL/0
+         VVbOB031trTu/ZPlrtDBv5rlySOEDKtsisZapd9UNF4iDyGyEDbJuGqK1EPlyzSOexaG
+         nBR+zFGKjE9HzrT02lzJRAHkhQhCcMSXDRrRNz60PqHJjt8WpXrvVALfNNnrLIhXdOm6
+         yJTIZo/kzQiopqQYq50uLw/v4Wdi4RJeueQKI7AYwhjYCJXJ0+r/bwmZxAsNhvf2vRo1
+         f7xA==
+X-Gm-Message-State: AOAM532fcfXZgR+L6iyp57FBk+29WiNVLNyq6fzZUFHVlnF4ylXQfoNT
+        5IdVV996L3Hs9VyDXQ6m7kajMKlkZ5Qvk6AY
+X-Google-Smtp-Source: ABdhPJyydJ4hhkN/K4xGFYASsbME4ko8zRAUNNAGqiDJiav0HhM5XEhKVOGX2lWlYO5DqunsMi3SvQ==
+X-Received: by 2002:a9d:74c1:0:b0:606:bc44:45de with SMTP id a1-20020a9d74c1000000b00606bc4445demr6358332otl.168.1652717408733;
+        Mon, 16 May 2022 09:10:08 -0700 (PDT)
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com. [209.85.160.50])
+        by smtp.gmail.com with ESMTPSA id f22-20020a9d5e96000000b00606765d8db2sm3989589otl.77.2022.05.16.09.10.08
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 May 2022 09:10:08 -0700 (PDT)
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-edf9ddb312so20722888fac.8
+        for <linux-parisc@vger.kernel.org>; Mon, 16 May 2022 09:10:08 -0700 (PDT)
+X-Received: by 2002:a05:6870:63a0:b0:f1:8bca:8459 with SMTP id
+ t32-20020a05687063a000b000f18bca8459mr4861359oap.174.1652716966894; Mon, 16
+ May 2022 09:02:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="2Seqj9gfhcDwHBCp"
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220427224924.592546-1-gpiccoli@igalia.com> <20220427224924.592546-20-gpiccoli@igalia.com>
+ <YoJZVZl/MH0KiE/J@alley> <ad082ce7-db50-13bb-3dbb-9b595dfa78be@igalia.com>
+In-Reply-To: <ad082ce7-db50-13bb-3dbb-9b595dfa78be@igalia.com>
+From:   Evan Green <evgreen@chromium.org>
+Date:   Mon, 16 May 2022 09:02:10 -0700
+X-Gmail-Original-Message-ID: <CAE=gft7ds+dHfEkRz8rnSH1EbTpGTpKbi5Wxj9DW0Jr5mX_j4w@mail.gmail.com>
+Message-ID: <CAE=gft7ds+dHfEkRz8rnSH1EbTpGTpKbi5Wxj9DW0Jr5mX_j4w@mail.gmail.com>
+Subject: Re: [PATCH 19/30] panic: Add the panic hypervisor notifier list
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     Petr Mladek <pmladek@suse.com>, David Gow <davidgow@google.com>,
+        Julius Werner <jwerner@chromium.org>,
+        Scott Branden <scott.branden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Sebastian Reichel <sre@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>, bhe@redhat.com,
+        kexec@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        linux-edac@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        netdev@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+        rcu@vger.kernel.org, sparclinux@vger.kernel.org,
+        xen-devel@lists.xenproject.org, x86@kernel.org,
+        kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
+        fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Jonathan Corbet <corbet@lwn.net>, d.hatayama@jp.fujitsu.com,
+        dave.hansen@linux.intel.com, dyoung@redhat.com,
+        feng.tang@intel.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
+        jgross@suse.com, john.ogness@linutronix.de,
+        Kees Cook <keescook@chromium.org>, luto@kernel.org,
+        mhiramat@kernel.org, mingo@redhat.com, paulmck@kernel.org,
+        peterz@infradead.org, rostedt@goodmis.org,
+        senozhatsky@chromium.org, Alan Stern <stern@rowland.harvard.edu>,
+        Thomas Gleixner <tglx@linutronix.de>, vgoyal@redhat.com,
+        vkuznets@redhat.com, Will Deacon <will@kernel.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dexuan Cui <decui@microsoft.com>,
+        Doug Berger <opendmb@gmail.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Justin Chen <justinpopo6@gmail.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mihai Carabas <mihai.carabas@oracle.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+        Shile Zhang <shile.zhang@linux.alibaba.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Wang ShaoBo <bobo.shaobowang@huawei.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        zhenwei pi <pizhenwei@bytedance.com>,
+        Stephen Boyd <swboyd@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Mon, May 16, 2022 at 8:07 AM Guilherme G. Piccoli
+<gpiccoli@igalia.com> wrote:
+>
+> Thanks for the review!
+>
+> I agree with the blinking stuff, I can rework and add all LED/blinking
+> stuff into the loop list, it does make sense. I'll comment a bit in the
+> others below...
+>
+> On 16/05/2022 11:01, Petr Mladek wrote:
+> > [...]
+> >> --- a/arch/mips/sgi-ip22/ip22-reset.c
+> >> +++ b/arch/mips/sgi-ip22/ip22-reset.c
+> >> @@ -195,7 +195,7 @@ static int __init reboot_setup(void)
+> >>      }
+> >>
+> >>      timer_setup(&blink_timer, blink_timeout, 0);
+> >> -    atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
+> >> +    atomic_notifier_chain_register(&panic_hypervisor_list, &panic_block);
+> >
+> > This notifier enables blinking. It is not much safe. It calls
+> > mod_timer() that takes a lock internally.
+> >
+> > This kind of functionality should go into the last list called
+> > before panic() enters the infinite loop. IMHO, all the blinking
+> > stuff should go there.
+> > [...]
+> >> --- a/arch/mips/sgi-ip32/ip32-reset.c
+> >> +++ b/arch/mips/sgi-ip32/ip32-reset.c
+> >> @@ -145,7 +144,7 @@ static __init int ip32_reboot_setup(void)
+> >>      pm_power_off = ip32_machine_halt;
+> >>
+> >>      timer_setup(&blink_timer, blink_timeout, 0);
+> >> -    atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
+> >> +    atomic_notifier_chain_register(&panic_hypervisor_list, &panic_block);
+> >
+> > Same here. Should be done only before the "loop".
+> > [...]
+>
+> Ack.
+>
+>
+> >> --- a/drivers/firmware/google/gsmi.c
+> >> +++ b/drivers/firmware/google/gsmi.c
+> >> @@ -1034,7 +1034,7 @@ static __init int gsmi_init(void)
+> >>
+> >>      register_reboot_notifier(&gsmi_reboot_notifier);
+> >>      register_die_notifier(&gsmi_die_notifier);
+> >> -    atomic_notifier_chain_register(&panic_notifier_list,
+> >> +    atomic_notifier_chain_register(&panic_hypervisor_list,
+> >>                                     &gsmi_panic_notifier);
+> >
+> > I am not sure about this one. It looks like some logging or
+> > pre_reboot stuff.
+> >
+>
+> Disagree here. I'm looping Google maintainers, so they can comment.
+> (CCed Evan, David, Julius)
+>
+> This notifier is clearly a hypervisor notification mechanism. I've fixed
+> a locking stuff there (in previous patch), I feel it's low-risk but even
+> if it's mid-risk, the class of such callback remains a perfect fit with
+> the hypervisor list IMHO.
 
---2Seqj9gfhcDwHBCp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This logs a panic to our "eventlog", a tiny logging area in SPI flash
+for critical and power-related events. In some cases this ends up
+being the only clue we get in a Chromebook feedback report that a
+panic occurred, so from my perspective moving it to the front of the
+line seems like a good idea.
 
-This change fixes the following:
-
-1) The flags variable is not initialized. Always use raw_spin_lock_irqsave
-and raw_spin_unlock_irqrestore to serialize patching.
-
-2) flush_kernel_vmap_range is primarily intended for DMA flushes.
-The whole cache flush in flush_kernel_vmap_range is only possible
-when interrupts are enabled on SMP machines. Since __patch_text_multiple
-calls flush_kernel_vmap_range with interrupts disabled, it is better
-to directly call flush_kernel_dcache_range_asm and
-flush_kernel_icache_range_asm.
-
-3) The final call to flush_icache_range is unnecessary.
-
-Tested with `[PATCH, V3] parisc: Rewrite cache flush code for
-PA8800/PA8900' change on rp3440, c8000 and c3750 (32 and 64-bit).
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
----
-
-diff --git a/arch/parisc/kernel/patch.c b/arch/parisc/kernel/patch.c
-index 80a0ab372802..e59574f65e64 100644
---- a/arch/parisc/kernel/patch.c
-+++ b/arch/parisc/kernel/patch.c
-@@ -40,10 +40,7 @@ static void __kprobes *patch_map(void *addr, int fixmap,=
- unsigned long *flags,
-=20
- 	*need_unmap =3D 1;
- 	set_fixmap(fixmap, page_to_phys(page));
--	if (flags)
--		raw_spin_lock_irqsave(&patch_lock, *flags);
--	else
--		__acquire(&patch_lock);
-+	raw_spin_lock_irqsave(&patch_lock, *flags);
-=20
- 	return (void *) (__fix_to_virt(fixmap) + (uintaddr & ~PAGE_MASK));
- }
-@@ -52,10 +49,7 @@ static void __kprobes patch_unmap(int fixmap, unsigned l=
-ong *flags)
- {
- 	clear_fixmap(fixmap);
-=20
--	if (flags)
--		raw_spin_unlock_irqrestore(&patch_lock, *flags);
--	else
--		__release(&patch_lock);
-+	raw_spin_unlock_irqrestore(&patch_lock, *flags);
- }
-=20
- void __kprobes __patch_text_multiple(void *addr, u32 *insn, unsigned int l=
-en)
-@@ -67,8 +61,9 @@ void __kprobes __patch_text_multiple(void *addr, u32 *ins=
-n, unsigned int len)
- 	int mapped;
-=20
- 	/* Make sure we don't have any aliases in cache */
--	flush_kernel_vmap_range(addr, len);
--	flush_icache_range(start, end);
-+	flush_kernel_dcache_range_asm(start, end);
-+	flush_kernel_icache_range_asm(start, end);
-+	flush_tlb_kernel_range(start, end);
-=20
- 	p =3D fixmap =3D patch_map(addr, FIX_TEXT_POKE0, &flags, &mapped);
-=20
-@@ -81,8 +76,10 @@ void __kprobes __patch_text_multiple(void *addr, u32 *in=
-sn, unsigned int len)
- 			 * We're crossing a page boundary, so
- 			 * need to remap
- 			 */
--			flush_kernel_vmap_range((void *)fixmap,
--						(p-fixmap) * sizeof(*p));
-+			flush_kernel_dcache_range_asm((unsigned long)fixmap,
-+						      (unsigned long)p);
-+			flush_tlb_kernel_range((unsigned long)fixmap,
-+					       (unsigned long)p);
- 			if (mapped)
- 				patch_unmap(FIX_TEXT_POKE0, &flags);
- 			p =3D fixmap =3D patch_map(addr, FIX_TEXT_POKE0, &flags,
-@@ -90,10 +87,10 @@ void __kprobes __patch_text_multiple(void *addr, u32 *i=
-nsn, unsigned int len)
- 		}
- 	}
-=20
--	flush_kernel_vmap_range((void *)fixmap, (p-fixmap) * sizeof(*p));
-+	flush_kernel_dcache_range_asm((unsigned long)fixmap, (unsigned long)p);
-+	flush_tlb_kernel_range((unsigned long)fixmap, (unsigned long)p);
- 	if (mapped)
- 		patch_unmap(FIX_TEXT_POKE0, &flags);
--	flush_icache_range(start, end);
- }
-=20
- void __kprobes __patch_text(void *addr, u32 insn)
-
---2Seqj9gfhcDwHBCp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmKCbmkACgkQXb/Nrl8Z
-TfF6Ww/+KG/1OxMkBYo7fEE2rITjihNVQoACRpaNvcRcsY5D9Gm94PXcS6jKle9w
-X4ISWR/oETn9fkb07xCQpLseGR+UgtG8FyGC1pyj/5unxoE3E5vyOkvBN+6OXr/r
-s0xjWZm9vTGKE29B/owBCZGGY4SPuW0NUEGGyTzDwask0r1oQlszsX8BPcH3Bg8+
-3fs+R0mdtxRr6iA/qWJBeay92yr6H25LrBb75svFSnK4iB2OUPM+OXxk4dBIh+2R
-ij7Y9vtvyimrrIXmXgc3rngKth4S6jiAQJBzvAf1S8tsMpuVHohFCamz3Z0IJ/8x
-F6RRz/qroyoqwxSAs+bU6JTESwUQ+ke6YtDVIqMOrT7m4RljZlPZOAQqXzcQDgtQ
-pFgbAUaniXkUpeE5O/vx6dWE1se2bJot2s2OrWgv5qfTo9NMNxxgbOFkJ9FMd2KY
-54gZ1KLcMKMoxBhQVpzqYdyAEdguoxp+B+4wBeu5I1lIkWo29mlx//zoppszw2d4
-OWukyFW+yjE0EW1u31eEMkwPRH4iDA/xIoS3dHEFBRb8NscS7VP7V7Xcsa0c/tI3
-DsDDjB1e8USN8K1vmkYxfcblBKFpe43Hn8jUyY6JdL8LeN/JycrdRISEaZrjSS8G
-8Dxtb98Z5u8y9otHJfMeLnxKc572ElK5wLGkjfX6RafOqE8x1Lc=
-=1U6t
------END PGP SIGNATURE-----
-
---2Seqj9gfhcDwHBCp--
+-Evan
