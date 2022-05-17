@@ -2,99 +2,171 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEA5F52A43C
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 16:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB13E52A467
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 16:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348422AbiEQOFb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 May 2022 10:05:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41514 "EHLO
+        id S1348717AbiEQOMJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 May 2022 10:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348421AbiEQOFa (ORCPT
+        with ESMTP id S1348525AbiEQOLI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 May 2022 10:05:30 -0400
-Received: from cmx-mtlrgo001.bell.net (mta-mtl-002.bell.net [209.71.208.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 61D3F4C78E
-        for <linux-parisc@vger.kernel.org>; Tue, 17 May 2022 07:05:29 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [70.50.7.94]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 627CF32E0139DB0D
-X-CM-Envelope: MS4xfJ7nWhQlyvWLsTfOqyaG5b3x2f81FDFWBaKvmYWoWyg1ePSjqOIZMlUu/fP2oSoGkaVwCqSSnM5AzgyC7zR9wh1dLwoR4JFawR7u20J7Ncb+IYjXm+A1
- Z5gr63ylAHeaWEt8GeTaG+HSGGpVIFt91SCu7KSgshOxuMdqaUmjj5/agvJcBsnDln6dUUu18Hj4lvX8Ckku7QFQ475PX+0BXlRmpDZR+pEzQMhBibg+Yn8s
- X0voZpNTEFgjmSamqgSfWEajr6/cujZC/EaOkriDZa25n8M5KoBkM5NbLXt9xtZyo+vyQtFqmpQhIsY6wOzzkAa5iv6oFoheRszQjqrKy+yL7uCG2uRSKaMn
- ZB98ANW3IA+dBeayTsfpNmhFB3Er5A==
-X-CM-Analysis: v=2.4 cv=YYreWydf c=1 sm=1 tr=0 ts=6283aba3
- a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=x5izIYeS4UwojOwunX8A:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (70.50.7.94) by cmx-mtlrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 627CF32E0139DB0D; Tue, 17 May 2022 10:05:23 -0400
-Message-ID: <9baf3f90-0956-0e42-f2e1-2a4765faf417@bell.net>
-Date:   Tue, 17 May 2022 10:05:25 -0400
+        Tue, 17 May 2022 10:11:08 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1FB9EAE;
+        Tue, 17 May 2022 07:11:06 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id 67D211F8CA;
+        Tue, 17 May 2022 14:11:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1652796665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=UazRNADyyJz2HI+RS6R0a4/dm7+XkEeyBn9yGoLISk0=;
+        b=BKp7+FEVfq6NcVwdI04E/j1IXhL8fav2W9wQb6/2V+MLS4zVCpGBL04+5kiZPUHpPEWWSJ
+        UCuw6cy5UFA5oDKAHRw0jxrGspZnMX7jbttS2tX8QWMEWQryA8mHzjbrpe5MfzzbeKkAE+
+        HL6pRS/de3kEkB9TyLHSW9ZDBKYUAwA=
+Received: from suse.cz (unknown [10.100.201.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id 10D772C141;
+        Tue, 17 May 2022 14:11:04 +0000 (UTC)
+Date:   Tue, 17 May 2022 16:11:00 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     "Luck, Tony" <tony.luck@intel.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "bhe@redhat.com" <bhe@redhat.com>,
+        "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "bcm-kernel-feedback-list@broadcom.com" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "openipmi-developer@lists.sourceforge.net" 
+        <openipmi-developer@lists.sourceforge.net>,
+        "rcu@vger.kernel.org" <rcu@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
+        "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
+        "halves@canonical.com" <halves@canonical.com>,
+        "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
+        "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "arnd@arndb.de" <arnd@arndb.de>, "bp@alien8.de" <bp@alien8.de>,
+        "corbet@lwn.net" <corbet@lwn.net>,
+        "d.hatayama@jp.fujitsu.com" <d.hatayama@jp.fujitsu.com>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "dyoung@redhat.com" <dyoung@redhat.com>,
+        "Tang, Feng" <feng.tang@intel.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "mikelley@microsoft.com" <mikelley@microsoft.com>,
+        "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
+        "jgross@suse.com" <jgross@suse.com>,
+        "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "luto@kernel.org" <luto@kernel.org>,
+        "mhiramat@kernel.org" <mhiramat@kernel.org>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "paulmck@kernel.org" <paulmck@kernel.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
+        "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "vgoyal@redhat.com" <vgoyal@redhat.com>,
+        "vkuznets@redhat.com" <vkuznets@redhat.com>,
+        "will@kernel.org" <will@kernel.org>, Alex Elder <elder@kernel.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Chris Zankel <chris@zankel.net>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Corey Minyard <minyard@acm.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        James Morse <james.morse@arm.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+        Richard Weinberger <richard@nod.at>,
+        Robert Richter <rric@kernel.org>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH 21/30] panic: Introduce the panic pre-reboot notifier list
+Message-ID: <YoOs9GJ5Ovq63u5Q@alley>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-22-gpiccoli@igalia.com>
+ <YoJgcC8c6LaKADZV@alley>
+ <63a74b56-89ef-8d1f-d487-cdb986aab798@igalia.com>
+ <bed66b9467254a5a8bafc1983dad643a@intel.com>
+ <e895ce94-e6b9-caf6-e5d3-06bf0149445c@igalia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH, V3] parisc: Rewrite cache flush code for PA8800/PA8900
-Content-Language: en-US
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <YoJqZ2rUA25360Ld@mx3210.localdomain>
- <4739001.31r3eYUQgx@eto.sf-tec.de>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <4739001.31r3eYUQgx@eto.sf-tec.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e895ce94-e6b9-caf6-e5d3-06bf0149445c@igalia.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2022-05-17 9:06 a.m., Rolf Eike Beer wrote:
->> @@ -450,10 +452,12 @@ handle_nadtlb_fault(struct pt_regs *regs)
->>   		fallthrough;
->>   	case 0x380:
->>   		/* PDC and FIC instructions */
->> +#ifdef DEBUG_NATLB
->>   		if (printk_ratelimit()) {
->> -			pr_warn("BUG: nullifying cache flush/purge
-> instruction\n");
->> +			pr_warn("WARNING: nullifying cache flush/
-> purge instruction\n");
->>   			show_regs(regs);
->>   		}
->> +#endif
->>   		if (insn & 0x20) {
->>   			/* Base modification */
->>   			breg = (insn >> 21) & 0x1f;
-> This surely deserves it's own commit as it has nothing to do with the actual
-> change. I wonder if it is actually intended to go upstream or if this was just
-> a local debug hack?
-I changed "BUG" to "WARNING" and disabled the message because it triggers occasionally in spite of
-the check in flush_cache_page_if_present.
+On Mon 2022-05-16 13:33:51, Guilherme G. Piccoli wrote:
+> On 16/05/2022 13:18, Luck, Tony wrote:
+> >> [...]
+> > Would it be possible to have some global "kdump is configured + enabled" flag?
+> > 
+> > Then notifiers could make an informed choice on whether to deep dive to
+> > get all the possible details (when there is no kdump) or just skim the high
+> > level stuff (to maximize chance of getting a successful kdump).
+> > 
+> > -Tony
+> 
+> Good idea Tony! What if I wire a kexec_crash_loaded() in the notifier?
 
-The pte value extracted for the "from" page in copy_user_highpage is racy and occasionally the pte is
-cleared before the flush is complete.  I assume that the page is simultaneously flushed by flush_cache_mm
-before the pte is cleared as nullifying the fdc doesn't seem to cause problems.
+I like this idea.
 
-I investigated various locking scenarios but I wasn't able to find a way to sequence the flushes.  This
-code is called for every COW break and locks impact performance.
+One small problem is that kexec_crash_loaded() has valid result
+only under kexec_mutex. On the other hand, it should stay true
+once loaded so that the small race window should be innocent.
 
-This is related to this patch because we need the pte on PA8800/PA8900 to flush using the vma context.
+> With that, are you/Petr/Dinh OK in moving it for the info list?
 
-I have also seen this from copy_to_user_page and copy_from_user_page.
+Sounds good to me.
 
-The messages appear infrequently when enabled.
-
-Dave
-
--- 
-John David Anglin  dave.anglin@bell.net
-
+Best Regards,
+Petr
