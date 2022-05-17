@@ -2,67 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C4852A225
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 14:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F41352A253
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 14:59:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236093AbiEQMzH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 May 2022 08:55:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35044 "EHLO
+        id S1346624AbiEQM7D (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 May 2022 08:59:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346569AbiEQMzF (ORCPT
+        with ESMTP id S1346591AbiEQM6L (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 May 2022 08:55:05 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A161D21834
-        for <linux-parisc@vger.kernel.org>; Tue, 17 May 2022 05:55:01 -0700 (PDT)
+        Tue, 17 May 2022 08:58:11 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 160404BBA2
+        for <linux-parisc@vger.kernel.org>; Tue, 17 May 2022 05:58:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1652792093;
-        bh=LfJk1TJmh7HFYKT7+vpf7AH40SbrSN8EKpz9WGZjA+I=;
+        s=badeba3b8450; t=1652792269;
+        bh=lOzC3T9WNbp88pp2+nwLssizBwoAFM59sAm4a2NI+NU=;
         h=X-UI-Sender-Class:Date:Subject:From:To:References:In-Reply-To;
-        b=Hapghfi95rIRy3Ygsbj8VjSKMrGz0FXn0ksrfhcMD9HTftLWzFDrjhlG8k380zWsc
-         1P65LhIoXwphdEPZ/5e/imgRaThbPLAmtN6/kKLKKEb2HFzYFQJ337mHW/YzmtXxD5
-         V8Zb5E/98OUB88+6zPVol0o+SXlYPDWbwd8lULgs=
+        b=hEoCuSw8OUqHPiPvHxZoHrw1HIHZcR3GU8oNHjJlKTCOV8g4tiWGhcwziD6IMnp/T
+         QscAlZayY2JjswxH1AIiDqa1voNKJusIhIABY9YXxPOHn24nx50Cxucb15pV4ZOAB8
+         laFiH8I8FZBsa7tbKhg2whhNe/lhF+/Xy0Aj1qeE=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from [192.168.20.60] ([92.116.173.219]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MsHns-1nav0Y3n4c-00thhk; Tue, 17
- May 2022 14:54:52 +0200
-Message-ID: <8b5c308a-f3ea-e07f-053a-ad086ce75c43@gmx.de>
-Date:   Tue, 17 May 2022 14:54:44 +0200
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MDQeK-1o0Khn2mlK-00AZdl; Tue, 17
+ May 2022 14:57:49 +0200
+Message-ID: <241a1eab-e3ae-7420-684b-871bc2be7498@gmx.de>
+Date:   Tue, 17 May 2022 14:57:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
-Subject: Re: [PATCH] parisc: Prevent using same register as soure and target
- in extru/shr
+Subject: Re: [PATCH] parisc: Unconditionally flush tlb entry in tmpalias
+ functions
 Content-Language: en-US
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-References: <YoOZy3A3R0i0DUWB@p100>
-In-Reply-To: <YoOZy3A3R0i0DUWB@p100>
+References: <Yn7sA9LCVrYSgWk6@p100>
+In-Reply-To: <Yn7sA9LCVrYSgWk6@p100>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:d/JHZIe85sGZE6Q3SluVRh6k91zpcPLcK9ulCuM8ika7sUK3xJu
- XIiIqAejz8/uBlr9y8r0l0tdDR+FSoMvtjVDycYYQ0MWlZCr5icnRwbVK8uzLz4Fwd2db3O
- tzyrWec16UyfqxbmeHDbaEjhZi/aTWURuf8adZ5K4wDnST8aQiVgHdOC2iI700tGuAZ2IDS
- 6k7RZ3ok+UR7kt4KSz/Pg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Z/3x90Gzy/Q=:/sY69OZdDjKYsG/GuCmxsh
- x8VDxaT9mvC0lrcZhtRuUXJ3cafxogrO2pZqK7CJTJu4iYTCINDZGVMJjwFPf+nfrl8iEiMVS
- OE50M0fw+5vw6V/A9PPynXWsOu7me+G6fnSdz6Z+ZV0d3vYDk35lI9V23ZXJlfzo1Vn4TKqir
- aHTd9wz+U8BSa7RsmRHjeP7b0Ic28oi0RpYUeAXZ5DiTdGtp2gEfomgAjZRg/af0VTBFTtmLx
- vP/1oTdnPB98rfOPbiY+NoaJp17CnslkyfuJS96hSd3+FIHs4sNX0N/u8xL8VaOjPzuEsE3bp
- UIZEzB8icLLgZQFhZ+LCoJitLs8eDxo6xiKzdHXnwbk5f2tGAzJCIS5GhucBE0talITMkZqkY
- 7caDxyJ/0J4DKsTNbvYkjEnz3ldnOgNlwtEf4PfIdVQcgp4k6DBZEW6R3Ex5JC2rXpWmFd61j
- D8AQrU/ksaz7kEnfDJoNc1FJ2RERZwcQAzLVtaBJB01TXCDs8yZzkVikfXOIfAgx+VYq/efVC
- MWx9bBbeJK9FYWsRMEbmX+qzRYzfxx9o1xRTLClLxCSYe++8qLBcPJsbjw6pkfpb8JoQz0WCe
- ZW1yltZ+toN8hrY2/HZ3b0avcwZbtv1RmTHPvi9WFGsgcUVxkApyI4zJpNHGxJGiTHPUhsDTF
- gRWnkjwB/0J0m6qjhwXMoXkguWxMeurmvzf74CvrgWosDg0jpiKkvIbuqbmMmkWmMBnuiKmL9
- kRCjH30CL4+eWVw0Fz2AC2mbngxxrLOj0aLh93In0N4BU0+CQPi4zFW5KHVUZIp/GHfM3hAjC
- s8ZXzJOlhRrxQF7uXgnQxzMLlFiyjogBj3y3UeJ7/fUxOYkP/S6cZle1AHgny9umdn5d4zoqR
- 85mnvvCXhCgqUmv77iaXNpKzHX9r1jedPOgcx3ZdrVyOBW5jJERTy8Exo/ZKivf1wfcLBpIOz
- QgSXF+Tky7yahXGygdXmQQHmoD5EElzJ/cYzXYFXWzLqPcLwc9sVnVDureKuLH7rmPJRQJaXx
- fRn5jAlm0juHDDJylXd1O/IvFWf30s1MKzdYqaXEI20QiJmmg3ovwzs7SE3NBXtl9ILfzT31l
- 3TXx/9WCNODMXKWHp59zyvkpgSJsOd6GotpKxZNLzqPOwiONl/kibQyGg==
+X-Provags-ID: V03:K1:ASAhfYQ+NCfG5Lxox06KeNU535td13mLD5Z1hfkXTPHy1fxAr5u
+ 6Fe0pwtoq7vwAKOKOQcF+MShWdjP25F8xmMclxgKGGgXocUHY9LhWTEXjrJOBHhOmYGbvhQ
+ 35WL3xP9Ob8CxnJSu7k3x6iMM6GH9yE0FzO7JajPVCIVeZacvaxoUNYelk35Y7D+0IgmEfm
+ 6yTAUH93OkozlVhB6JigA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jE8qSHGiKTs=:HVS9mrvHSKx2S0EFcNkjgi
+ WixiFFN4c286G/ngJeHDWZbZi1n0ao4zc1Jv0PxzRcsOtpYxAsXOeMBbUUFJfqBmjxEYPWg+h
+ g69BIn6pOkeeYwv/CMMGaW3rsZwLrO5SGX8fcxeyiTNB3wyfaiCN6vd2h23Y/B9JbQjQ02X3d
+ ZagzOYumzDjIv/ywruBmFxPbPKizeo17cmuyekVN/n63QR/fWmni0gYFzlNOmfsPLcaW8b5Q4
+ nzB/mz3/6hHnrAT+I168K98aVVXd8rMyGCNlH3X4oQFZlZeB8nJTygR92M2EguiohWy+sl5RT
+ spN+UcAEsNndrCO0x7a89zj70NrbcTxboJ8MDzMunHSpWpoYr6NWkFeoD8EfwBsaQTztO7Qtt
+ rpHkQRbJvjN9X6qmzbD+qBfImA1HMsUXcFbWtfBqhv43jetAs1vYsoA6uCDhWmZ56EQubQ1L7
+ uJyQhsIm9KvhBH2gTx811q/C0OPfF+XolrCY7+XVvUB1e9fljkoxaFGQN8fwvM3PPzlumicAd
+ bsDwtJMccNpciS5qjLgX9Zh3efgd4ouqE18YHWkPVpanM752MSsuc/AnwSC86P6sMsXcR3pYb
+ 2NtyOfGbHQOt1tejQOf774Uw3Etasck/x34lR/hXQAwcWoyxdFtzJWJ4NdGOWpbgi6cVhSwh+
+ 9yIthfwdGNDAO0XFuZWLwRccyFlqhSLvkE/pW5fyLzTiEAf8h3uSMciV9tJGNNkqeVeqUW2Cs
+ gHaFaCSWFnigE/clUEbVG6qzqBEzgx9xctXBSQ+ey8JlXdVeFs+g9C676r10p1zGXuJNhq8ty
+ N04QoS2N8bRRyXtDSlcraSPH2Os1aij4biU0SfhoMLC9aOlXLrfMg0PxdpObj2aAMVZDGtdDF
+ 0vJt5MBbNvJZ4y9562FyjnZqNsYEqIpyL/e4uF8kxRm01lCTqaUCdz42f+MBrBQPDojJhDtAD
+ JlxeyGvuitc3Hoah8rB4qIAFuis5oicRx9mlOWlnPcxQh/njq1zGeyEAvHXcMVyTz1dCazz6R
+ 6DCCw72ZumhLS7FM79LOpFl9wkxhUTHYpRfiy3L+0uHZfJUoYReEH5ILRHpMCbfCNAZccpvzY
+ D82R5n9L+6gDs8liREbyRonLHxjCjingjSlVHzzIeseIOTGeaX1j6sx+Q==
 X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -73,42 +73,82 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/17/22 14:49, Helge Deller wrote:
-> In 2004 Randolph added the shr() assembly macro and noted that the
-> source and target register could not be the same.
+On 5/14/22 01:38, Helge Deller wrote:
+> Drop the ALTERNATIVE() instructions in the tmpalias functions for the
+> 32-bit kernel.
+> Functions which use the tmpalias mappings to flush/copy/invalidate
+> congruently mapped memory need to always flush the TLB entry prior
+> accessing the newly-to-be mapped memory areas. This is independed if
+> it's a SMP kernel or not.  Otherwise the new memory mappings (stored in
+> r28 and possibly r23) won't get loaded into the TLB.
 >
-> I did not find any confindence in the docs for this restriction. Maybe
-> it's related that on PA2.0 the upper bits may be clobbered?
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Cc: stable@vger.kernel.org
 
-Looking at the generated kernel code from C-files, I'll find all over usag=
-es of
-	extru source, x,y,  target
-where source and target are the same register.
-So, at least for 32-bit this restriction can't be true.
-
-Any ideas why this restriction could have been added to the comments?
+This patch is contra-productive.
+The ALTERNATIVE() replacement will only trigger on PA20 CPUs, in
+which case the pdtlb gets replaced by pdtlb,l - which is good because
+we use the tmpalias mapping only on the local currently CPU.
 
 Helge
 
-
-> Anyway, add a compile-time check for it now.
+> diff --git a/arch/parisc/kernel/pacache.S b/arch/parisc/kernel/pacache.S
+> index b4c3f01e2399..1cc55e668fe0 100644
+> --- a/arch/parisc/kernel/pacache.S
+> +++ b/arch/parisc/kernel/pacache.S
+> @@ -565,10 +565,8 @@ ENTRY_CFI(copy_user_page_asm)
+>  	pdtlb,l		%r0(%r28)
+>  	pdtlb,l		%r0(%r29)
+>  #else
+> -0:	pdtlb		%r0(%r28)
+> -1:	pdtlb		%r0(%r29)
+> -	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+> -	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+> +	pdtlb		%r0(%r28)
+> +	pdtlb		%r0(%r29)
+>  #endif
 >
-> Signed-off-by: Helge Deller <deller@gmx.de>
+>  #ifdef CONFIG_64BIT
+> @@ -705,8 +703,7 @@ ENTRY_CFI(clear_user_page_asm)
+>  #ifdef CONFIG_PA20
+>  	pdtlb,l		%r0(%r28)
+>  #else
+> -0:	pdtlb		%r0(%r28)
+> -	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+> +	pdtlb		%r0(%r28)
+>  #endif
 >
-> diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/as=
-m/assembly.h
-> index ea0cb318b13d..ca1a12ae5ee7 100644
-> --- a/arch/parisc/include/asm/assembly.h
-> +++ b/arch/parisc/include/asm/assembly.h
-> @@ -146,6 +146,9 @@
->  	/* Shift Right - note the r and t can NOT be the same! */
->  	.macro shr r, sa, t
->  	extru \r, 31-(\sa), 32-(\sa), \t
-> +.ifc \r,\t
-> +        .error "Can not used the same register (\r) in shr/extru as sou=
-rce and target register."
-> +.endif
->  	.endm
+>  #ifdef CONFIG_64BIT
+> @@ -781,8 +778,7 @@ ENTRY_CFI(flush_dcache_page_asm)
+>  #ifdef CONFIG_PA20
+>  	pdtlb,l		%r0(%r28)
+>  #else
+> -0:	pdtlb		%r0(%r28)
+> -	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+> +	pdtlb		%r0(%r28)
+>  #endif
 >
->  	/* pa20w version of shift right */
+>  88:	ldil		L%dcache_stride, %r1
+> @@ -840,8 +836,7 @@ ENTRY_CFI(purge_dcache_page_asm)
+>  #ifdef CONFIG_PA20
+>  	pdtlb,l		%r0(%r28)
+>  #else
+> -0:	pdtlb		%r0(%r28)
+> -	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+> +	pdtlb		%r0(%r28)
+>  #endif
+>
+>  88:	ldil		L%dcache_stride, %r1
+> @@ -904,10 +899,8 @@ ENTRY_CFI(flush_icache_page_asm)
+>  1:	pitlb,l         %r0(%sr4,%r28)
+>  	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SPLIT_TLB, INSN_NOP)
+>  #else
+> -0:	pdtlb		%r0(%r28)
+> +	pdtlb		%r0(%r28)
+>  1:	pitlb           %r0(%sr4,%r28)
+> -	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+> -	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+>  	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SPLIT_TLB, INSN_NOP)
+>  #endif
+>
 
