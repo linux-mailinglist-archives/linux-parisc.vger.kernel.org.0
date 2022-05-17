@@ -2,253 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6254552A3F9
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 15:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEA5F52A43C
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 16:05:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348088AbiEQN5j (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 May 2022 09:57:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48540 "EHLO
+        id S1348422AbiEQOFb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 May 2022 10:05:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232153AbiEQN5h (ORCPT
+        with ESMTP id S1348421AbiEQOFa (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 May 2022 09:57:37 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A94673C4A1;
-        Tue, 17 May 2022 06:57:35 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 5FD4E1F8CA;
-        Tue, 17 May 2022 13:57:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1652795854; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=F/28g65NUYRrE0kqo9hb+aIMt4lDnxj7qFXJPB2SFKQ=;
-        b=La0hw1fimyOXZWGy7NhUralYCHdeUAgxZ7Jx2l4teL3ZObgxCoYN3MJlutKivdf7Tw8ScF
-        Jcou2BEeZy+SMDvZr2KkytW34i2oUnUQq/Rvj3HIt6rmBgE0M6mmkljwufeUEZWWTXnkMR
-        l7FZzEHlQDvQ7gIrbLVQoj/qRxAknBE=
-Received: from suse.cz (unknown [10.100.201.202])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 47D802C141;
-        Tue, 17 May 2022 13:57:32 +0000 (UTC)
-Date:   Tue, 17 May 2022 15:57:29 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc:     David Gow <davidgow@google.com>, Evan Green <evgreen@chromium.org>,
-        Julius Werner <jwerner@chromium.org>,
-        Scott Branden <scott.branden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        akpm@linux-foundation.org, bhe@redhat.com,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, netdev@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
-        x86@kernel.org, kernel-dev@igalia.com, kernel@gpiccoli.net,
-        halves@canonical.com, fabiomirmar@gmail.com,
-        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
-        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
-        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
-        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
-        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dexuan Cui <decui@microsoft.com>,
-        Doug Berger <opendmb@gmail.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Justin Chen <justinpopo6@gmail.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mihai Carabas <mihai.carabas@oracle.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
-        Shile Zhang <shile.zhang@linux.alibaba.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Wang ShaoBo <bobo.shaobowang@huawei.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        zhenwei pi <pizhenwei@bytedance.com>
-Subject: Re: [PATCH 19/30] panic: Add the panic hypervisor notifier list
-Message-ID: <YoOpyW1+q+Z5as78@alley>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-20-gpiccoli@igalia.com>
- <YoJZVZl/MH0KiE/J@alley>
- <ad082ce7-db50-13bb-3dbb-9b595dfa78be@igalia.com>
+        Tue, 17 May 2022 10:05:30 -0400
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-002.bell.net [209.71.208.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 61D3F4C78E
+        for <linux-parisc@vger.kernel.org>; Tue, 17 May 2022 07:05:29 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [70.50.7.94]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 627CF32E0139DB0D
+X-CM-Envelope: MS4xfJ7nWhQlyvWLsTfOqyaG5b3x2f81FDFWBaKvmYWoWyg1ePSjqOIZMlUu/fP2oSoGkaVwCqSSnM5AzgyC7zR9wh1dLwoR4JFawR7u20J7Ncb+IYjXm+A1
+ Z5gr63ylAHeaWEt8GeTaG+HSGGpVIFt91SCu7KSgshOxuMdqaUmjj5/agvJcBsnDln6dUUu18Hj4lvX8Ckku7QFQ475PX+0BXlRmpDZR+pEzQMhBibg+Yn8s
+ X0voZpNTEFgjmSamqgSfWEajr6/cujZC/EaOkriDZa25n8M5KoBkM5NbLXt9xtZyo+vyQtFqmpQhIsY6wOzzkAa5iv6oFoheRszQjqrKy+yL7uCG2uRSKaMn
+ ZB98ANW3IA+dBeayTsfpNmhFB3Er5A==
+X-CM-Analysis: v=2.4 cv=YYreWydf c=1 sm=1 tr=0 ts=6283aba3
+ a=9k1bCY7nR7m1ZFzoCuQ56g==:117 a=9k1bCY7nR7m1ZFzoCuQ56g==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=x5izIYeS4UwojOwunX8A:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (70.50.7.94) by cmx-mtlrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 627CF32E0139DB0D; Tue, 17 May 2022 10:05:23 -0400
+Message-ID: <9baf3f90-0956-0e42-f2e1-2a4765faf417@bell.net>
+Date:   Tue, 17 May 2022 10:05:25 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad082ce7-db50-13bb-3dbb-9b595dfa78be@igalia.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH, V3] parisc: Rewrite cache flush code for PA8800/PA8900
+Content-Language: en-US
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <YoJqZ2rUA25360Ld@mx3210.localdomain>
+ <4739001.31r3eYUQgx@eto.sf-tec.de>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <4739001.31r3eYUQgx@eto.sf-tec.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon 2022-05-16 12:06:17, Guilherme G. Piccoli wrote:
-> Thanks for the review!
-> 
-> I agree with the blinking stuff, I can rework and add all LED/blinking
-> stuff into the loop list, it does make sense. I'll comment a bit in the
-> others below...
-> 
-> On 16/05/2022 11:01, Petr Mladek wrote:
-> >> --- a/drivers/firmware/google/gsmi.c
-> >> +++ b/drivers/firmware/google/gsmi.c
-> >> @@ -1034,7 +1034,7 @@ static __init int gsmi_init(void)
-> >>  
-> >>  	register_reboot_notifier(&gsmi_reboot_notifier);
-> >>  	register_die_notifier(&gsmi_die_notifier);
-> >> -	atomic_notifier_chain_register(&panic_notifier_list,
-> >> +	atomic_notifier_chain_register(&panic_hypervisor_list,
-> >>  				       &gsmi_panic_notifier);
-> > 
-> > I am not sure about this one. It looks like some logging or
-> > pre_reboot stuff.
-> > 
-> 
-> Disagree here. I'm looping Google maintainers, so they can comment.
-> (CCed Evan, David, Julius)
-> 
-> This notifier is clearly a hypervisor notification mechanism. I've fixed
-> a locking stuff there (in previous patch), I feel it's low-risk but even
-> if it's mid-risk, the class of such callback remains a perfect fit with
-> the hypervisor list IMHO.
+On 2022-05-17 9:06 a.m., Rolf Eike Beer wrote:
+>> @@ -450,10 +452,12 @@ handle_nadtlb_fault(struct pt_regs *regs)
+>>   		fallthrough;
+>>   	case 0x380:
+>>   		/* PDC and FIC instructions */
+>> +#ifdef DEBUG_NATLB
+>>   		if (printk_ratelimit()) {
+>> -			pr_warn("BUG: nullifying cache flush/purge
+> instruction\n");
+>> +			pr_warn("WARNING: nullifying cache flush/
+> purge instruction\n");
+>>   			show_regs(regs);
+>>   		}
+>> +#endif
+>>   		if (insn & 0x20) {
+>>   			/* Base modification */
+>>   			breg = (insn >> 21) & 0x1f;
+> This surely deserves it's own commit as it has nothing to do with the actual
+> change. I wonder if it is actually intended to go upstream or if this was just
+> a local debug hack?
+I changed "BUG" to "WARNING" and disabled the message because it triggers occasionally in spite of
+the check in flush_cache_page_if_present.
 
-It is similar to drivers/soc/bcm/brcmstb/pm/pm-arm.c.
-See below for another idea.
+The pte value extracted for the "from" page in copy_user_highpage is racy and occasionally the pte is
+cleared before the flush is complete.  I assume that the page is simultaneously flushed by flush_cache_mm
+before the pte is cleared as nullifying the fdc doesn't seem to cause problems.
 
-> >> --- a/drivers/misc/bcm-vk/bcm_vk_dev.c
-> >> +++ b/drivers/misc/bcm-vk/bcm_vk_dev.c
-> >> @@ -1446,7 +1446,7 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-> >>  
-> >>  	/* register for panic notifier */
-> >>  	vk->panic_nb.notifier_call = bcm_vk_on_panic;
-> >> -	err = atomic_notifier_chain_register(&panic_notifier_list,
-> >> +	err = atomic_notifier_chain_register(&panic_hypervisor_list,
-> >>  					     &vk->panic_nb);
-> > 
-> > It seems to reset some hardware or so. IMHO, it should go into the
-> > pre-reboot list.
-> 
-> Mixed feelings here, I'm looping Broadcom maintainers to comment.
-> (CC Scott and Broadcom list)
-> 
-> I'm afraid it breaks kdump if this device is not reset beforehand - it's
-> a doorbell write, so not high risk I think...
-> 
-> But in case the not-reset device can be probed normally in kdump kernel,
-> then I'm fine in moving this to the reboot list! I don't have the HW to
-> test myself.
+I investigated various locking scenarios but I wasn't able to find a way to sequence the flushes.  This
+code is called for every COW break and locks impact performance.
 
-Good question. Well, it if has to be called before kdump then
-even "hypervisor" list is a wrong place because is not always
-called before kdump.
+This is related to this patch because we need the pte on PA8800/PA8900 to flush using the vma context.
 
+I have also seen this from copy_to_user_page and copy_from_user_page.
 
-> >> --- a/drivers/power/reset/ltc2952-poweroff.c
-> >> +++ b/drivers/power/reset/ltc2952-poweroff.c
-> >> @@ -279,7 +279,7 @@ static int ltc2952_poweroff_probe(struct platform_device *pdev)
-> >>  	pm_power_off = ltc2952_poweroff_kill;
-> >>  
-> >>  	data->panic_notifier.notifier_call = ltc2952_poweroff_notify_panic;
-> >> -	atomic_notifier_chain_register(&panic_notifier_list,
-> >> +	atomic_notifier_chain_register(&panic_hypervisor_list,
-> >>  				       &data->panic_notifier);
-> > 
-> > I looks like this somehow triggers the reboot. IMHO, it should go
-> > into the pre_reboot list.
-> 
-> Mixed feeling again here - CCing the maintainers for comments (Sebastian
-> / PM folks).
-> 
-> This is setting a variable only, and once it's set (data->kernel_panic
-> is the bool's name), it just bails out the IRQ handler and a timer
-> setting - this timer seems kinda tricky, so bailing out ASAP makes sense
-> IMHO.
+The messages appear infrequently when enabled.
 
-IMHO, the timer informs the hardware that the system is still alive
-in the middle of panic(). If the timer is not working then the
-hardware (chip) will think that the system frozen in panic()
-and will power off the system. See the comments in
-drivers/power/reset/ltc2952-poweroff.c:
+Dave
 
- * The following GPIOs are used:
- * - trigger (input)
- *     A level change indicates the shut-down trigger. If it's state reverts
- *     within the time-out defined by trigger_delay, the shut down is not
- *     executed. If no pin is assigned to this input, the driver will start the
- *     watchdog toggle immediately. The chip will only power off the system if
- *     it is requested to do so through the kill line.
- *
- * - watchdog (output)
- *     Once a shut down is triggered, the driver will toggle this signal,
- *     with an internal (wde_interval) to stall the hardware shut down.
+-- 
+John David Anglin  dave.anglin@bell.net
 
-IMHO, we really have to keep it alive until we reach the reboot stage.
-
-Another question is how it actually works when the interrupts are
-disabled during panic() and the timer callbacks are not handled.
-
-
-> > [...]
-> >> --- a/drivers/soc/bcm/brcmstb/pm/pm-arm.c
-> >> +++ b/drivers/soc/bcm/brcmstb/pm/pm-arm.c
-> >> @@ -814,7 +814,7 @@ static int brcmstb_pm_probe(struct platform_device *pdev)
-> >>  		goto out;
-> >>  	}
-> >>  
-> >> -	atomic_notifier_chain_register(&panic_notifier_list,
-> >> +	atomic_notifier_chain_register(&panic_hypervisor_list,
-> >>  				       &brcmstb_pm_panic_nb);
-> > 
-> > I am not sure about this one. It instruct some HW to preserve DRAM.
-> > IMHO, it better fits into pre_reboot category but I do not have
-> > strong opinion.
-> 
-> Disagree here, I'm CCing Florian for information.
-> 
-> This notifier preserves RAM so it's *very interesting* if we have
-> kmsg_dump() for example, but maybe might be also relevant in case kdump
-> kernel is configured to store something in a persistent RAM (then,
-> without this notifier, after kdump reboots the system data would be lost).
-
-I see. It is actually similar problem as with
-drivers/firmware/google/gsmi.c.
-
-I does similar things like kmsg_dump() so it should be called in
-the same location (after info notifier list and before kdump).
-
-A solution might be to put it at these notifiers at the very
-end of the "info" list or make extra "dump" notifier list.
-
-Best Regards,
-Petr
