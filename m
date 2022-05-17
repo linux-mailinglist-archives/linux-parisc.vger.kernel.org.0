@@ -2,179 +2,110 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D191C52AB95
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 21:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F30B052AC59
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 22:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352531AbiEQTIG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 May 2022 15:08:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51618 "EHLO
+        id S1345343AbiEQUAy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 May 2022 16:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352515AbiEQTIA (ORCPT
+        with ESMTP id S233668AbiEQUAx (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 May 2022 15:08:00 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3020711A03;
-        Tue, 17 May 2022 12:07:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652814479; x=1684350479;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=dMu3qmaQOzDmPfmmDPn/58HAfnv205GwUCrX1kk3ZHk=;
-  b=krY32QVABR11lSLbV/PPyT1/BIPqjn8qfufw7lnr9KPEnUQQCnx4jTD3
-   dA7yLRnCzk5GgS08qninF7Hm8JTen97pg1XQIHnuLSBoWw2g1RZbmVLUn
-   5izyPKzZ9ZjC4zFnQi76FBMX016cB5qJ3EnNUsOnbt9Ik7W/BxWeYU2E4
-   iUb2W2S8l+XS9Wo8iFdFW80Pdd+csoAKg9QFu5EqqDG/CfScK2zrZ8Pi2
-   oR1pn2jySbsMo6mvqM8WUoDWUuAX15Q7DbgKeQBC32TyqQIp8ZSv+L6gk
-   wVT1GncmYSGc563YJtrzsfhHCOIIh76+zu11JvziWwrEmMC1u0d7yqlJY
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="270985083"
-X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="270985083"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 12:07:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="605497608"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by orsmga001.jf.intel.com with ESMTP; 17 May 2022 12:07:56 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Tue, 17 May 2022 12:07:55 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Tue, 17 May 2022 12:07:55 -0700
-Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
- fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.2308.027;
- Tue, 17 May 2022 12:07:55 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Dinh Nguyen <dinguyen@kernel.org>
-CC:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "bhe@redhat.com" <bhe@redhat.com>,
-        "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "bcm-kernel-feedback-list@broadcom.com" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "openipmi-developer@lists.sourceforge.net" 
-        <openipmi-developer@lists.sourceforge.net>,
-        "rcu@vger.kernel.org" <rcu@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
-        "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
-        "halves@canonical.com" <halves@canonical.com>,
-        "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
-        "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "arnd@arndb.de" <arnd@arndb.de>, "bp@alien8.de" <bp@alien8.de>,
-        "corbet@lwn.net" <corbet@lwn.net>,
-        "d.hatayama@jp.fujitsu.com" <d.hatayama@jp.fujitsu.com>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "dyoung@redhat.com" <dyoung@redhat.com>,
-        "Tang, Feng" <feng.tang@intel.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "mikelley@microsoft.com" <mikelley@microsoft.com>,
-        "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
-        "jgross@suse.com" <jgross@suse.com>,
-        "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "luto@kernel.org" <luto@kernel.org>,
-        "mhiramat@kernel.org" <mhiramat@kernel.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "paulmck@kernel.org" <paulmck@kernel.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
-        "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "vgoyal@redhat.com" <vgoyal@redhat.com>,
-        "vkuznets@redhat.com" <vkuznets@redhat.com>,
-        "will@kernel.org" <will@kernel.org>, Alex Elder <elder@kernel.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Chris Zankel <chris@zankel.net>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        "Corey Minyard" <minyard@acm.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "Heiko Carstens" <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        James Morse <james.morse@arm.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        "Matt Turner" <mattst88@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
-        "Richard Weinberger" <richard@nod.at>,
-        Robert Richter <rric@kernel.org>,
-        "Stefano Stabellini" <sstabellini@kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "Vasily Gorbik" <gor@linux.ibm.com>, Wei Liu <wei.liu@kernel.org>
-Subject: RE: [PATCH 21/30] panic: Introduce the panic pre-reboot notifier list
-Thread-Topic: [PATCH 21/30] panic: Introduce the panic pre-reboot notifier
- list
-Thread-Index: AQHYWooLnXaT7guJw0OCpuGv/IkEoK0iJCSAgAAZuAD//40QkIAAesuAgAFqbACAACtDgP//jcxAgACKZID//5nyAA==
-Date:   Tue, 17 May 2022 19:07:54 +0000
-Message-ID: <7f9f6feb9f494b0288deab718807172d@intel.com>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-22-gpiccoli@igalia.com> <YoJgcC8c6LaKADZV@alley>
- <63a74b56-89ef-8d1f-d487-cdb986aab798@igalia.com>
- <bed66b9467254a5a8bafc1983dad643a@intel.com>
- <e895ce94-e6b9-caf6-e5d3-06bf0149445c@igalia.com> <YoOs9GJ5Ovq63u5Q@alley>
- <599b72f6-76a4-8e6d-5432-56fb1ffd7e0b@igalia.com>
- <06d85642fef24bc482642d669242654b@intel.com>
- <62a63fc2-346f-f375-043a-fa21385279df@igalia.com>
-In-Reply-To: <62a63fc2-346f-f375-043a-fa21385279df@igalia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.6.401.20
-x-originating-ip: [10.1.200.100]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 17 May 2022 16:00:53 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE02862E9
+        for <linux-parisc@vger.kernel.org>; Tue, 17 May 2022 13:00:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1652817614;
+        bh=Qz7tThec12QW83xNtSTaCdbR8olRm3cUpUQJ1VzcBQM=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=OHTcyok9KRF5wUrMo2nzdNbVppwI8SDcBBTpvHY1MF8ClhNV2ThrgaoeBr5ndgRL5
+         d/9Q124wsSyZi254cLTdYsz8Lqx0r/m+dHEDBclpX5OPHk92qedbLzdZvV99OUlSqR
+         GClxxvrgdlLdV4umAm/n6kNSZr+b5cs57uBx+gLk=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.173.219]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MOiDd-1oFQVW3d7f-00Q7uT; Tue, 17
+ May 2022 22:00:13 +0200
+Message-ID: <3e255faa-25a7-b886-6956-239bdd88cbdf@gmx.de>
+Date:   Tue, 17 May 2022 22:00:05 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH, V3] parisc: Rewrite cache flush code for PA8800/PA8900
+Content-Language: en-US
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        John David Anglin <dave.anglin@bell.net>
+Cc:     linux-parisc@vger.kernel.org, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <YoJqZ2rUA25360Ld@mx3210.localdomain>
+ <aa7e15ff-3e74-1b9d-4d65-235517b26675@bell.net>
+ <5ea9b91f-1d64-027a-b00d-53e0ad2302ff@gmx.de>
+ <4399477.LvFx2qVVIh@daneel.sf-tec.de>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <4399477.LvFx2qVVIh@daneel.sf-tec.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:KS4rKbqxsl2fx1+/TXiDq9ssPAhZqREH6YB74cY511nlHSURBNL
+ OWCGvs+SgQF6ImZoJ5sDVA93+OgMJqs4mbFcbE06etjGwIMembK0D78l+ucrjX/ATAhyiam
+ oBx2zA6JT1NcQZ8gMloP/RQrRf7RX5s1rivPuIbH77s7quBLqAEonbtCzt0e54KfBR/izZQ
+ v4xg1YRgM6vB0BfpcwC0Q==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:5P85G0Qk3Qc=:LDhdwVCn92GiFGLb89DHb8
+ oCMDv/j0q7mjp3LONN8R6KP20RPkHSH0yidpyT9mrfcv3es+VNG0utgmDdAiJGXqtGr/fDEA4
+ CJ1rorjaonqwWJYJ/HFO1hxgnWsUW44QyB1cWm8X7m0wD+8xFW6Ez2F5LknprVSPK0ECS+WaY
+ 9AB3Z9/Q6MW1TPJyEgJVbIuh7MUI6BZoYsSsB/Bk6hAsyvyDU7ikBUnMw6Qa8F9oPU6PtPoU0
+ Un8jxHQDWTDlT+qsKvuGAr/X3S/cOFDhxxfw2pYjhvCtW3snFjaCuD6pS0SNJi559prueA9pD
+ OfuiMEMQ2aEFWqdTWnsn2j9HB9RA7mJDX/ePebUv2ze5PLBx81QwCBfub8yHApFJuyOpzmnHL
+ kov9l2ExOu3oFo4Cfw0VNSDoPsXfszA+N4mthLIIgF+VzxqpJZi+SkXlBIzq3gtXNiCV2wjEv
+ J40FZ0Gx9IaSbc+aEKgUmGNrzOnPZCxFJ6OZH4Nlcj84gQQw/lXDNoQt4lUDdaFfnu/Kwxsrk
+ 8Mqxa6P4nov0uUbsFx0zJlYHCULjUq0LtnlCBRyYo5T43atr3e5em5IyVvX3u+PGtHVQWeOzJ
+ Pb2LddSkmm6BOfnXNeomkcHfpaY7VnrW2/JBproNPhEcWzkbr0rgyZXjrHzj7v4E+5+8sVRPh
+ kJT9UqyiDGFrWVnxzxmb0AQNlyTehh1EJm624TUoBYqzLpEcrSFwg24a6oANSOtxTAR8c6UFA
+ sMCr5T0IkGsZud0hSuArnZDdUbQU8D2zmXdZKDnDUxuWLRAupYoFq+e0lVZT5BVXWjd1hTxuo
+ WFe4eCxle1bUdb7BIFGuQ/Rx5xvxnN5Ao5JUtjHHIa3GLF7Eokbu25OZwnzQ1Ug5S8/qhGQrj
+ YZydOhQPgf+PPI4CC5WbwSmRrbDh+kfJG2V3PwUOPT3l6rVnyKVRCDPpeu/BAVMxgo8QejBtX
+ d9WTXfu9B/tQjHQyfZa6PtbOVrVK/ujxZxZZUtsFIaludRp860hTUexuYyABnFEZgKBAjKAKV
+ 5e0CMQiIKpM3LtAQKGJg0QJyaRf+0+jSvaWgmCcVClRPpYTWtDFoj2QzHnjtlSaW9r9F8nZ//
+ addjQrS5IxrmLfFdDE8NDfwTfTjDNMZ/ckbrti0fHN2Y9zG/8+7mn7fjg==
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-PiBXaGF0IEknbSBwbGFubmluZyB0byBkbyBpbiB0aGUgYWx0ZXJhX2VkYWMgbm90aWZpZXIgaXM6
-DQo+DQo+IGlmIChrZHVtcF9pc19zZXQpDQo+ICAgcmV0dXJuOw0KDQpZZXMuIFRoYXQncyB3aGF0
-IEkgdGhpbmsgc2hvdWxkIGhhcHBlbi4NCg0KLVRvbnkNCg==
+On 5/17/22 20:28, Rolf Eike Beer wrote:
+> Am Dienstag, 17. Mai 2022, 20:11:38 CEST schrieb Helge Deller:
+>
+>> I can easily split out the pr_warn("WARNING").
+>
+> Would make sense IMHO.
+
+I split that patch out now.
+Dave, can you please check if you are ok with it?
+https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/co=
+mmit/?h=3Dfor-next&id=3D67c35a3b646cc68598ff0bb28de5f8bd7b2e81b3
+I used the wording from your other mail.
+
+>> Moving the get_ptep() back to the original place seems ok, and I'll kee=
+p
+>> the strange indenting which checkpatch want.
+>
+> If its back at the original place then there is no need to change as
+> checkpatch will not complain on unmodified lines.
+
+I meant "back to the place where it was versions before".
+So, it has to move anyway now.
+
+> If it needs to be moved and
+> changed then I would say do it in it's own patch as well.
+
+I kept it in the way Dave sent it (with the checkpatch fixups I added).
+
+Just pushed a new "for-next" tree at the usual place:
+https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/lo=
+g/?h=3Dfor-next
+
+Helge
