@@ -2,195 +2,134 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0836529C32
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 10:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE007529FDA
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 12:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242922AbiEQISN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 May 2022 04:18:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43850 "EHLO
+        id S1344742AbiEQK6W (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 May 2022 06:58:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243198AbiEQISE (ORCPT
+        with ESMTP id S1344691AbiEQK6U (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 May 2022 04:18:04 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2519E49911;
-        Tue, 17 May 2022 01:17:45 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        Tue, 17 May 2022 06:58:20 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13820483AA;
+        Tue, 17 May 2022 03:58:18 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id 97F9F21CB7;
+        Tue, 17 May 2022 10:58:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1652785097; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=UpU3PwW0+vEopHT6mwlEtKZnt5vjcj6K5z6p2RvwFDI=;
+        b=A62HHwy96rt3Peh/2oQoJb/W5OQ8Z85j1RGtcSopCMAn7XlytDk/24zuEW9Tpga7/Yq/ue
+        yQKQnkJYG61eGpGqLTfCCGX/srVGllxHF23XScgduJU8Byym34HyS4Bk1MWh3Z8Rwo0Y9Q
+        s5hDkQjh35sYKTX8Zcjp7xwrzg3RpvU=
+Received: from suse.cz (unknown [10.100.201.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4L2TWR2YKSz4xXk;
-        Tue, 17 May 2022 18:17:39 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1652775460;
-        bh=572SuXd7v4FRWek+kcJo9wkb5oH+FJnOllGT7clrH8g=;
-        h=Date:From:To:Cc:Subject:From;
-        b=S537oM7FIdlQhaKxoFDpQwJXehRPgBgifW16Xqr72nv4PfhwYl4Oiejovec8Qax7Y
-         6m+bRkqy8O2VLJHCT7XX10FW+tzFON1B4xGyVyALDIYGYTR4dxQr8t8iWNKi5dqeuM
-         Fyzgf0wmWBe72mD8jaW5YsxgHRb5M0U4PoBkGdMK+bi/MwrorCb0eyEigu5UM8Q9bk
-         moVpRfB7JCEuwL3phTFv9JfSaKGnvb4BPkBv0MZgDDfLSuyrbn9sNDBJmJZP4rgNFj
-         86PRzDfypm1LWuMdHadWiVaduHqOmJmfU/DZExfZi8G1ThAKtEnzTHLRXpn1pvndbM
-         YnqHE06EnuqTw==
-Date:   Tue, 17 May 2022 18:17:37 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Helge Deller <deller@gmx.de>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>,
-        John David Anglin <dave.anglin@bell.net>,
-        "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: linux-next: manual merge of the mm tree with the parisc-hd tree
-Message-ID: <20220517181737.102eec7a@canb.auug.org.au>
+        by relay2.suse.de (Postfix) with ESMTPS id 5CD572C141;
+        Tue, 17 May 2022 10:58:15 +0000 (UTC)
+Date:   Tue, 17 May 2022 12:58:15 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     akpm@linux-foundation.org, bhe@redhat.com,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com, coresight@lists.linaro.org,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        netdev@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+        rcu@vger.kernel.org, sparclinux@vger.kernel.org,
+        xen-devel@lists.xenproject.org, x86@kernel.org,
+        kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
+        fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
+        andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de,
+        corbet@lwn.net, d.hatayama@jp.fujitsu.com,
+        dave.hansen@linux.intel.com, dyoung@redhat.com,
+        feng.tang@intel.com, gregkh@linuxfoundation.org,
+        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
+        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
+        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
+        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
+        senozhatsky@chromium.org, stern@rowland.harvard.edu,
+        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
+        will@kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Mihai Carabas <mihai.carabas@oracle.com>,
+        Shile Zhang <shile.zhang@linux.alibaba.com>,
+        Wang ShaoBo <bobo.shaobowang@huawei.com>,
+        zhenwei pi <pizhenwei@bytedance.com>
+Subject: Re: [PATCH 05/30] misc/pvpanic: Convert regular spinlock into
+ trylock on panic path
+Message-ID: <YoN/x2fpdDU4+nSB@alley>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-6-gpiccoli@igalia.com>
+ <YnpXGOXicwdy1E6n@alley>
+ <0a20dd06-f459-638e-cb4d-8255ab1a1f23@igalia.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/GEXnIpNlGZWHBpaVRHcF8xa";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0a20dd06-f459-638e-cb4d-8255ab1a1f23@igalia.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---Sig_/GEXnIpNlGZWHBpaVRHcF8xa
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Tue 2022-05-10 10:00:58, Guilherme G. Piccoli wrote:
+> On 10/05/2022 09:14, Petr Mladek wrote:
+> > [...]
+> >> With that said, it's dangerous to use regular spinlocks in such path,
+> >> as introduced by commit b3c0f8774668 ("misc/pvpanic: probe multiple instances").
+> >> This patch fixes that by replacing regular spinlocks with the trylock
+> >> safer approach.
+> > 
+> > It seems that the lock is used just to manipulating a list. A super
+> > safe solution would be to use the rcu API: rcu_add_rcu() and
+> > list_del_rcu() under rcu_read_lock(). The spin lock will not be
+> > needed and the list will always be valid.
+> > 
+> > The advantage would be that it will always call members that
+> > were successfully added earlier. That said, I am not familiar
+> > with pvpanic and am not sure if it is worth it.
+> > 
+> >> It also fixes an old comment (about a long gone framebuffer code) and
+> >> the notifier priority - we should execute hypervisor notifiers early,
+> >> deferring this way the panic action to the hypervisor, as expected by
+> >> the users that are setting up pvpanic.
+> > 
+> > This should be done in a separate patch. It changes the behavior.
+> > Also there might be a discussion whether it really should be
+> > the maximal priority.
+> > 
+> > Best Regards,
+> > Petr
+> 
+> Thanks for the review Petr. Patch was already merged - my goal was to be
+> concise, i.e., a patch per driver / module, so the patch kinda fixes
+> whatever I think is wrong with the driver with regards panic handling.
+> 
+> Do you think it worth to remove this patch from Greg's branch just to
+> split it in 2? Personally I think it's not worth, but opinions are welcome.
 
-Hi all,
+No problem. It is not worth the effort.
 
-Today's linux-next merge of the mm tree got a conflict in:
 
-  arch/parisc/kernel/cache.c
+> About the RCU part, this one really could be a new patch, a good
+> improvement patch - it makes sense to me, we can think about that after
+> the fixes I guess.
 
-between commit:
+Yup.
 
-  2d30c4586e69 ("parisc: Rewrite cache flush code for PA8800/PA8900")
-
-from the parisc-hd tree and commit:
-
-  25ba0672baad ("parisc: remove mmap linked list from cache handling")
-
-from the mm tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc arch/parisc/kernel/cache.c
-index 0fd04073d4b6,ab7c789541bf..000000000000
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@@ -654,51 -559,50 +654,56 @@@ static void flush_cache_pages(struct vm
-  			}
-  		}
-  	}
- -	return ptep;
-  }
- =20
- -static void flush_cache_pages(struct vm_area_struct *vma, struct mm_struc=
-t *mm,
- -			      unsigned long start, unsigned long end)
- +static inline unsigned long mm_total_size(struct mm_struct *mm)
-  {
- -	unsigned long addr, pfn;
- -	pte_t *ptep;
- +	struct vm_area_struct *vma;
- +	unsigned long usize =3D 0;
-++	VMA_ITERATOR(vmi, mm, 0);
- =20
-- 	for (vma =3D mm->mmap; vma && usize < parisc_cache_flush_threshold; vma =
-=3D vma->vm_next)
- -	for (addr =3D start; addr < end; addr +=3D PAGE_SIZE) {
- -		ptep =3D get_ptep(mm->pgd, addr);
- -		if (ptep) {
- -			pfn =3D pte_pfn(*ptep);
- -			flush_cache_page(vma, addr, pfn);
- -		}
-++	for_each_vma(vmi, vma) {
-++		if (usize >=3D parisc_cache_flush_threshold)
-++			break;
- +		usize +=3D vma->vm_end - vma->vm_start;
-+ 	}
- +	return usize;
-  }
- =20
-  void flush_cache_mm(struct mm_struct *mm)
-  {
-  	struct vm_area_struct *vma;
-+ 	VMA_ITERATOR(vmi, mm, 0);
- =20
- -	/* Flushing the whole cache on each cpu takes forever on
- -	   rp3440, etc.  So, avoid it if the mm isn't too big.  */
- -	if ((!IS_ENABLED(CONFIG_SMP) || !arch_irqs_disabled()) &&
- -	    mm_total_size(mm) >=3D parisc_cache_flush_threshold) {
- -		if (mm->context.space_id)
- -			flush_tlb_all();
- +	/*
- +	 * Flushing the whole cache on each cpu takes forever on
- +	 * rp3440, etc. So, avoid it if the mm isn't too big.
- +	 *
- +	 * Note that we must flush the entire cache on machines
- +	 * with aliasing caches to prevent random segmentation
- +	 * faults.
- +	 */
- +	if (!parisc_requires_coherency()
- +	    ||  mm_total_size(mm) >=3D parisc_cache_flush_threshold) {
- +		if (WARN_ON(IS_ENABLED(CONFIG_SMP) && arch_irqs_disabled()))
- +			return;
- +		flush_tlb_all();
-  		flush_cache_all();
-  		return;
-  	}
- =20
- +	/* Flush mm */
-- 	for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
-+ 	for_each_vma(vmi, vma)
- -		flush_cache_pages(vma, mm, vma->vm_start, vma->vm_end);
- +		flush_cache_pages(vma, vma->vm_start, vma->vm_end);
-  }
- =20
- -void flush_cache_range(struct vm_area_struct *vma,
- -		unsigned long start, unsigned long end)
- +void flush_cache_range(struct vm_area_struct *vma, unsigned long start, u=
-nsigned long end)
-  {
- -	if ((!IS_ENABLED(CONFIG_SMP) || !arch_irqs_disabled()) &&
- -	    end - start >=3D parisc_cache_flush_threshold) {
- -		if (vma->vm_mm->context.space_id)
- -			flush_tlb_range(vma, start, end);
- +	if (!parisc_requires_coherency()
- +	    || end - start >=3D parisc_cache_flush_threshold) {
- +		if (WARN_ON(IS_ENABLED(CONFIG_SMP) && arch_irqs_disabled()))
- +			return;
- +		flush_tlb_range(vma, start, end);
-  		flush_cache_all();
-  		return;
-  	}
-
---Sig_/GEXnIpNlGZWHBpaVRHcF8xa
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmKDWiEACgkQAVBC80lX
-0GyrLQf9GVM3Bv1aHnYRjNLCxQPO/wRAYJocfdnxj0DHUsq2Xs/qjw1/w4Jjb1fP
-5vd0ekpd21+A3uzAi0rmwNbQ3BIwDEHJE3MWt5/LPRGXmu9x7bCJ1FVjGqR+kqxl
-/EunM7S7wOOf6Yf7sSSx5dpX6YUpyBTW6FMLGUCnu8jv5SUdvJXltKc1aHPrAy4V
-kuOP/7/CqhMk4hgENZPayjLYZ82nGuO2LKdbqkQZJM0cCBcvLJ4F2OK5y/yldNK+
-wz49aGGKrFAAx/aS1mYOxAOnVLO92ttj6Eo4QiMN3IMSvJTE6FFFgTElfRlpUiIF
-aqDI4mui8rgJSGnDOAT8SY3Dy0FI0A==
-=q2H8
------END PGP SIGNATURE-----
-
---Sig_/GEXnIpNlGZWHBpaVRHcF8xa--
+Best Regards,
+Petr
