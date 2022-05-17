@@ -2,196 +2,180 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2379B52AA51
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 20:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EDBE52AA53
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 20:14:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346076AbiEQSOQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 May 2022 14:14:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33920 "EHLO
+        id S1352120AbiEQSOc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 May 2022 14:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351869AbiEQSNb (ORCPT
+        with ESMTP id S1351992AbiEQSN4 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 May 2022 14:13:31 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7A051E51
-        for <linux-parisc@vger.kernel.org>; Tue, 17 May 2022 11:12:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1652811107;
-        bh=kI5zFU/+L/9/rUSUDO54Haa5xweht+ODlNYRsTK1CsY=;
-        h=X-UI-Sender-Class:Date:To:Cc:References:From:Subject:In-Reply-To;
-        b=ICaQ8u1BbU5rPAvCcNWyonBc6p7dfzkcyMNRuHf4iEhMTGPBRQ96D7ToHT7FmyJmV
-         X7JIaHLk8qID3cLqkmfuI5qjEF+rGef3DpNF6u8Ag0uX1PIOfeVcErPfE6eNCdhEN2
-         LnMOzgItUoxpgUE9kAyCKwRprcibul4fMzsdSax0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.173.219]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MrhUE-1nVy7y3T9g-00nkU6; Tue, 17
- May 2022 20:11:46 +0200
-Message-ID: <5ea9b91f-1d64-027a-b00d-53e0ad2302ff@gmx.de>
-Date:   Tue, 17 May 2022 20:11:38 +0200
+        Tue, 17 May 2022 14:13:56 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05D2E50E0D;
+        Tue, 17 May 2022 11:13:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=6MSK1Z4Nv/e1GFKFinCP8P3dIYao0CoLyUe3quXpDhY=; b=cRMrVSVTR+3cn6FVG65SC4Au0y
+        UkLE3SVfqGk36g/jG1E9IomGRvED5Awi+eOSCTntuGE0jPXl5+kfHlbKsvhvVjaCNf8y4mBWXGPlT
+        8r/o/CMKhbUaIdrKhLkt446cgXa07HTSiorku/w0xJvIn3aE4uqi2qj8QGi7eb4Kmsg0/Wh5BR8Vi
+        YCGb8f9djqv6fWXVwjRpFQtg+9b6W6H4TQisr9ZwQKSIB4SsmfEWL196/jrcNQFL2lm66S4LfYE8s
+        uZ+fz2jSIIuBy2Np//l8BP/gbXHu+JyZVeJsb8IAXoZSlvi3RYMR9sSIMXj8sSzR7kYxeP4KKKokk
+        nGGtp5Zg==;
+Received: from 200-161-159-120.dsl.telesp.net.br ([200.161.159.120] helo=[192.168.1.60])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1nr1gv-008nSU-6m; Tue, 17 May 2022 20:13:05 +0200
+Message-ID: <62a63fc2-346f-f375-043a-fa21385279df@igalia.com>
+Date:   Tue, 17 May 2022 15:12:25 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
+Subject: Re: [PATCH 21/30] panic: Introduce the panic pre-reboot notifier list
 Content-Language: en-US
-To:     John David Anglin <dave.anglin@bell.net>,
-        Rolf Eike Beer <eike-kernel@sf-tec.de>
-Cc:     linux-parisc@vger.kernel.org, Deller <deller@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <YoJqZ2rUA25360Ld@mx3210.localdomain>
- <5568470.DvuYhMxLoT@daneel.sf-tec.de>
- <325ef4bc-5dd3-bae2-e435-c00768f85377@gmx.de>
- <2239732.ElGaqSPkdT@eto.sf-tec.de>
- <91bd7b0e-0830-37cc-270c-a3e9d3069e78@gmx.de>
- <aa7e15ff-3e74-1b9d-4d65-235517b26675@bell.net>
-From:   Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH, V3] parisc: Rewrite cache flush code for PA8800/PA8900
-In-Reply-To: <aa7e15ff-3e74-1b9d-4d65-235517b26675@bell.net>
+To:     "Luck, Tony" <tony.luck@intel.com>, Petr Mladek <pmladek@suse.com>,
+        Dinh Nguyen <dinguyen@kernel.org>
+Cc:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "bhe@redhat.com" <bhe@redhat.com>,
+        "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "bcm-kernel-feedback-list@broadcom.com" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "openipmi-developer@lists.sourceforge.net" 
+        <openipmi-developer@lists.sourceforge.net>,
+        "rcu@vger.kernel.org" <rcu@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
+        "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
+        "halves@canonical.com" <halves@canonical.com>,
+        "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
+        "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "arnd@arndb.de" <arnd@arndb.de>, "bp@alien8.de" <bp@alien8.de>,
+        "corbet@lwn.net" <corbet@lwn.net>,
+        "d.hatayama@jp.fujitsu.com" <d.hatayama@jp.fujitsu.com>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "dyoung@redhat.com" <dyoung@redhat.com>,
+        "Tang, Feng" <feng.tang@intel.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "mikelley@microsoft.com" <mikelley@microsoft.com>,
+        "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
+        "jgross@suse.com" <jgross@suse.com>,
+        "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "luto@kernel.org" <luto@kernel.org>,
+        "mhiramat@kernel.org" <mhiramat@kernel.org>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "paulmck@kernel.org" <paulmck@kernel.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
+        "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "vgoyal@redhat.com" <vgoyal@redhat.com>,
+        "vkuznets@redhat.com" <vkuznets@redhat.com>,
+        "will@kernel.org" <will@kernel.org>, Alex Elder <elder@kernel.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Chris Zankel <chris@zankel.net>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Corey Minyard <minyard@acm.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        James Morse <james.morse@arm.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+        Richard Weinberger <richard@nod.at>,
+        Robert Richter <rric@kernel.org>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Wei Liu <wei.liu@kernel.org>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-22-gpiccoli@igalia.com> <YoJgcC8c6LaKADZV@alley>
+ <63a74b56-89ef-8d1f-d487-cdb986aab798@igalia.com>
+ <bed66b9467254a5a8bafc1983dad643a@intel.com>
+ <e895ce94-e6b9-caf6-e5d3-06bf0149445c@igalia.com> <YoOs9GJ5Ovq63u5Q@alley>
+ <599b72f6-76a4-8e6d-5432-56fb1ffd7e0b@igalia.com>
+ <06d85642fef24bc482642d669242654b@intel.com>
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <06d85642fef24bc482642d669242654b@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:y76hvs5BIbvD+fc/0IN7zLwWdj+hPR074+7bAwhlEjRTuowzkQT
- ggMEulwwNddwHbyVlPfQTLcEHkdAiXUxXe/nhKjVZWfeY3ullFIU+zPc/FHU/3VGGhv4h4j
- gSV9jukuTa5CcplV27FNafDVeri1S+m1Ei1QjBLQ+w2U2Q2m4c3oS8fEL5U7vXlutk+ijiN
- MFekFSGcIDBQ64OoxftSQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6Fk+Kxs9RWg=:KGBh8KaXF/RmpMLAoUYRlY
- oMd+XdEpPUx0gq64bP1aAWiG1Ku6MP5ppb4DfId7yTNY+yGsJBGxvGn1j4o7EQ5XosJJ+CXUP
- sE4/DQ4tBW4/YolB+DQVlhhuhMq7XC4/6aBXfMrZU0+qt7UBQsSw4+295KLEhCWhEWJtgGhO5
- q7fnuh86sVvsrFWBe3ouatoZXBD+muEE4c2p3tDWXsIlNxRH+A2dSeVjwjl9Fa+P0AbrFISLz
- nirJfpw+pLu4uqKnxhJX0kMrw7dZkPWWHJ5krk9uijpKB++FLe0bK3XA+4F5WwlkRj0Uvc45K
- uHojW0thavqw1MFDnq8/l3ltJHXaP3xaIKpFKFezPAxco+lb6jXVNnHFxhrwR/B+L1CP4GNwp
- Sa1JPHuFXItgUyfxxp+BERVFxisgRHf1ZU7briIo6n4h6Kj4dfisl6zUTotr12voeUlSvhJwg
- PD7DlOJXreuDQkE6lqQRPnXE+axrJ3P9V2v21pNOE+oZ+xrWgnuCT0mbOeDiLpYLH8+ijlFV7
- wWd7GMgnXv8Qnq4FnzB116c4VZA4/MwUkqtuV48Q2DNW8waZ++je+mtlrSxl9bOdtTE7Np8Do
- B0yo00hBdxs2zB3e+YPPk0ZpZ/R3V12lcJQjosDIEzUULNI0Cjm1+85PVNrvus1gg/lRqvuvN
- HTtKNs8GOkZt/VQryWs6ouVFiQhETfx15yg4U0LPEAZRSUc9+rgbuoyylqo6Acs+0c8cptLxT
- hYXKzcFcFd6+4cTe5UtXxukORGH7tIBrBN73crVVU504jzvuNvb/a7YDyS7/hEL1fTJq/RZtG
- oFv83MSIDcbEwnBhqD170u3Hp8mbg4uR2tTnI19MO3AG/cgzHgbe1/xr9655KXHe4GAKlL5wx
- EuQOIm8DJ9Ufe+hFetc+eolzj16JpN5g2HPmnVkc4fTcfSfgjT5E0HN1Va+VBuJ1IMIiYn9Wa
- 2sgaxZ62OcBUKm/6fNzQIlFDbS3Fl4hPYFNiQMQ7YTNpUQkM6PjH8tZL4oy+fJWnNIrMC7WbV
- UJq9RIeoLjUhoYFnbjBE2n0iCuU+dmfyd8KTAz8JM8KFjaeBRx8oy2P9JTjyv0jNbTMcRpD36
- esYPdjLoTAQfGlAcGTC4V544e485Iuw5A4QxsEM9DmY+PS39H1nIiGcEw==
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/17/22 16:26, John David Anglin wrote:
-> On 2022-05-17 9:24 a.m., Helge Deller wrote:
->> On 5/17/22 15:19, Rolf Eike Beer wrote:
->>> Am Montag, 16. Mai 2022, 23:49:10 CEST schrieb Helge Deller:
->>>> On 5/16/22 23:28, Rolf Eike Beer wrote:
->>>>> Am Montag, 16. Mai 2022, 17:14:47 CEST schrieb John David Anglin:
->>>>>> Originally, I was convinced that we needed to use tmpalias flushes
->>>>>> everwhere, for both user and kernel flushes. However, when I modifi=
-ed
->>>>>> flush_kernel_dcache_page_addr, to use a tmpalias flush, my c8000
->>>>>> would crash quite early when booting.
->>>>>>
->>>>>> The PDC returns alias values of 0 for the icache and dcache. This
->>>>>> indicates that either the alias boundary is greater than 16MB or
->>>>>> equivalent aliasing doesn't work. I modified the tmpalias code to
->>>>>> make it easy to try alternate boundaries. I tried boundaries up to
->>>>>> 128MB but still kernel tmpalias flushes didn't work on c8000.
->>>>>>
->>>>>> This led me to conclude that tmpalias flushes don't work on PA8800
->>>>>> and PA8900 machines, and that we needed to flush directly using the
->>>>>> virtual address of user and kernel pages. This is likely the major
->>>>>> cause of instability on the c8000 and rp34xx machines.
->>>>>>
->>>>>> Flushing user pages requires doing a temporary context switch as we
->>>>>> have to flush pages that don't belong to the current context. Furth=
-er,
->>>>>> we have to deal with pages that aren't present. If a page isn't
->>>>>> present, the flush instructions fault on every line.
->>>>>>
->>>>>> Other code has been rearranged and simplified based on testing. For
->>>>>> example, I introduced a flush_cache_dup_mm routine. flush_cache_mm
->>>>>> and flush_cache_dup_mm differ in that flush_cache_mm calls
->>>>>> purge_cache_pages and flush_cache_dup_mm calls flush_cache_pages.
->>>>>> In some implementations, pdc is more efficient than fdc. Based on
->>>>>> my testing, I don't believe there's any performance benefit on the
->>>>>> c8000.
->>>>>>
->>>>>> V2:
->>>>>> 1) Add flush_cache_page_check_pte routine.
->>>>>> 2) Use it in copy_to_user_page and copy_from_user_page.
->>>>>> 3) flush_anon_page moved to cache.c and updated.
->>>>>> 4) Changed alias boundary to 64 MB for 64-bit kernels. Revised comm=
-ent
->>>>>>
->>>>>> =C2=A0=C2=A0=C2=A0 regarding alias boundary for PA8800/PA8900 proce=
-ssors.
->>>>>>
->>>>>> 5) Removed struct mm_struct * argument from flush_cache_pages.
->>>>>> 6) Fixed thinko in flush_cache_range. It increased the number of pa=
-ges
->>>>>>
->>>>>> =C2=A0=C2=A0=C2=A0 flushed and slowed performance.
->>>>>>
->>>>>> 7) Removed sync changes from pacache.S.
->>>>>>
->>>>>> V3:
->>>>>> 1) copy_to_user_page and copy_from_user_page moved to cache.c to
->>>>>>
->>>>>> =C2=A0=C2=A0=C2=A0 improve inlining.
->>>>>>
->>>>>> 2) Replaced copy_user_page with copy_user_highpage.
->>>>>> 3) Fixed cache threshold calculation on 32-bit kernels.
->>>>>> 4) Don't warn on inequivalent private mappings in flush_dcache_page=
-.
->>>>>> 5) Return early from mm_total_size if size exceeds
->>>>>>
->>>>>> =C2=A0=C2=A0=C2=A0 parisc_cache_flush_threshold.
->>>>>>
->>>>>> 6) Disable non-access TLB warning in handle_nadtlb_fault. Warning
->>>>>>
->>>>>> =C2=A0=C2=A0=C2=A0 happens occassionally handling flushes for COW f=
-aults.
->>>>>>
->>>>>> 7) Remove flush_cache_dup_mm.
->>>>>> 8) Flush entire cache in flush_cache_mm and flush_cache_range on
->>>>>>
->>>>>> =C2=A0=C2=A0=C2=A0 processors with aliasing caches. Only flush smal=
-l cache ranges
->>>>>> =C2=A0=C2=A0=C2=A0 on machines with PA8800/PA8900 processors.
->>>>>>
->>>>>> 9) Tested on rp3440, c8000 and c3750.
->>>>> Given how long these changelogs are, and how fragile the whole cachi=
-ng is
->>>>> I
->>>>> think it is a good idea to split this patch into smaller ones, to im=
-prove
->>>>> readability and being able to bisect it.
->>>> FWIW, I've done some cleanups to this patch and committed it to my fo=
-r-next
->>>> tree. In case it's split up, please use the revised version.
->>> Why did you modify get_ptep()? Until now it was just moved around in t=
-he file,
->>> and IMHO it becomes less readable because all these needless variables=
- are
->>> batched up at the start of the function now. The only point I would se=
-e in
->>> moving them all to the front is if there would be no nesting anymore, =
-and
->>> every condition was inverted:
->> Dave's original patch did not moved the variables to the beginning.
->> That change was me - just because checkpatch complained otherwise.
->>
->> I agree that it's less readable.
-> The get_ptep code was originally based on the vmalloc_to_page code in vm=
-alloc.c.
-> vmalloc_to_page code.=C2=A0 This code has now changed, so I think get_pt=
-ep needs updating.
-> See get_old_pud in mremap.c.=C2=A0 It looks good to me.
+On 17/05/2022 14:02, Luck, Tony wrote:
+>> Tony / Dinh - can I just *skip* this notifier *if kdump* is set or else
+>> we run the code as-is? Does that make sense to you?
+> 
+> The "skip" option sounds like it needs some special flag associated with
+> an entry on the notifier chain. But there are other notifier chains ... so that
+> sounds messy to me.
+> 
+> Just all the notifiers in priority order. If any want to take different actions
+> based on kdump status, change the code. That seems more flexible than
+> an "all or nothing" approach by skipping.
+> 
+> -Tony
 
-So, what's the consense of this discussion now?
+I guess I've expressed myself in a poor way - sorry!
 
-I can easily split out the pr_warn("WARNING").
-Moving the get_ptep() back to the original place seems ok, and I'll keep
-the strange indenting which checkpatch want.
-Is that ok?
+What I'm planning to do in the altera_edac notifier is:
 
-Helge
+if (kdump_is_set)
+ return;
+
+/* regular code */
+
+In other words: if the kdump is set, this notifier will be effectively a
+nop (although it's gonna be called).
+
+Lemme know your thoughts Tony, if that makes sense.
+Thanks,
+
+
+Guilherme
