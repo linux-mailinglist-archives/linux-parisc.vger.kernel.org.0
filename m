@@ -2,84 +2,36 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77EC452A299
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 15:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE60D52A2B0
+	for <lists+linux-parisc@lfdr.de>; Tue, 17 May 2022 15:07:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346100AbiEQNFO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 May 2022 09:05:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37004 "EHLO
+        id S239863AbiEQNHJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 17 May 2022 09:07:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346828AbiEQNE7 (ORCPT
+        with ESMTP id S1347028AbiEQNHH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 May 2022 09:04:59 -0400
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 482551583A;
-        Tue, 17 May 2022 06:04:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=7k65fdRTQg/wflBs9f0TJRvKoWTammEy4iwKmtzcPs4=; b=OpLRZBE1TUxWd4SJevol7qmbWp
-        7cf/63XEfW1McNr9yfxJ/wNA5PzTA6GfEDtrBWeHePG4UP9vT004IKq/Y2n1Wdo9PCU8d40cNtPr7
-        evvA1G/GsHzDMrD3kL1RWnjHzehDzDywj5u53TN0tmnpdWb3jYfL8mY4Uh+43rmflK1PctID/9pFc
-        ZvUCbSUysCdoW+hfAZNQhZbT4OFisfS/H/quOUTTDHZ+I5zaEEC4729JtousRNxBxXebYRI1Dcqzp
-        PvSzoHit05E/cq1DK95qfXV5U60l7efTEeM0sV+06rVod3szWCADFSxvFodt56BQEE6VcTzDLc2Bf
-        FOG6Wfyw==;
-Received: from 200-161-159-120.dsl.telesp.net.br ([200.161.159.120] helo=[192.168.1.60])
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-        id 1nqwrY-008RNM-0M; Tue, 17 May 2022 15:03:44 +0200
-Message-ID: <53ceb2c7-f2d7-3b92-4efa-a063487585bc@igalia.com>
-Date:   Tue, 17 May 2022 10:03:13 -0300
+        Tue, 17 May 2022 09:07:07 -0400
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 051E82B26D
+        for <linux-parisc@vger.kernel.org>; Tue, 17 May 2022 06:07:05 -0700 (PDT)
+Received: (qmail 6072 invoked from network); 17 May 2022 13:07:04 -0000
+Received: from p200300cf071fc00050fc79fffe65e6bc.dip0.t-ipconnect.de ([2003:cf:71f:c000:50fc:79ff:fe65:e6bc]:33932 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Tue, 17 May 2022 15:07:04 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-parisc@vger.kernel.org,
+        John David Anglin <dave.anglin@bell.net>
+Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: Re: [PATCH, V3] parisc: Rewrite cache flush code for PA8800/PA8900
+Date:   Tue, 17 May 2022 15:06:58 +0200
+Message-ID: <4739001.31r3eYUQgx@eto.sf-tec.de>
+In-Reply-To: <YoJqZ2rUA25360Ld@mx3210.localdomain>
+References: <YoJqZ2rUA25360Ld@mx3210.localdomain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH 05/30] misc/pvpanic: Convert regular spinlock into trylock
- on panic path
-Content-Language: en-US
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     akpm@linux-foundation.org, bhe@redhat.com,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        netdev@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
-        rcu@vger.kernel.org, sparclinux@vger.kernel.org,
-        xen-devel@lists.xenproject.org, x86@kernel.org,
-        kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
-        fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
-        andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de,
-        corbet@lwn.net, d.hatayama@jp.fujitsu.com,
-        dave.hansen@linux.intel.com, dyoung@redhat.com,
-        feng.tang@intel.com, gregkh@linuxfoundation.org,
-        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Mihai Carabas <mihai.carabas@oracle.com>,
-        Shile Zhang <shile.zhang@linux.alibaba.com>,
-        Wang ShaoBo <bobo.shaobowang@huawei.com>,
-        zhenwei pi <pizhenwei@bytedance.com>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-6-gpiccoli@igalia.com> <YnpXGOXicwdy1E6n@alley>
- <0a20dd06-f459-638e-cb4d-8255ab1a1f23@igalia.com> <YoN/x2fpdDU4+nSB@alley>
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <YoN/x2fpdDU4+nSB@alley>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+Content-Type: multipart/signed; boundary="nextPart4398930.LvFx2qVVIh"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -88,21 +40,88 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 17/05/2022 07:58, Petr Mladek wrote:
-> [...]
->> Thanks for the review Petr. Patch was already merged - my goal was to be
->> concise, i.e., a patch per driver / module, so the patch kinda fixes
->> whatever I think is wrong with the driver with regards panic handling.
->>
->> Do you think it worth to remove this patch from Greg's branch just to
->> split it in 2? Personally I think it's not worth, but opinions are welcome.
+--nextPart4398930.LvFx2qVVIh
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+
+Am Montag, 16. Mai 2022, 17:14:47 CEST schrieb John David Anglin:
+> Originally, I was convinced that we needed to use tmpalias flushes
+> everwhere, for both user and kernel flushes. However, when I modified
+> flush_kernel_dcache_page_addr, to use a tmpalias flush, my c8000
+> would crash quite early when booting.
 > 
-> No problem. It is not worth the effort.
+> The PDC returns alias values of 0 for the icache and dcache. This
+> indicates that either the alias boundary is greater than 16MB or
+> equivalent aliasing doesn't work. I modified the tmpalias code to
+> make it easy to try alternate boundaries. I tried boundaries up to
+> 128MB but still kernel tmpalias flushes didn't work on c8000.
 > 
+> This led me to conclude that tmpalias flushes don't work on PA8800
+> and PA8900 machines, and that we needed to flush directly using the
+> virtual address of user and kernel pages. This is likely the major
+> cause of instability on the c8000 and rp34xx machines.
+> 
+> Flushing user pages requires doing a temporary context switch as we
+> have to flush pages that don't belong to the current context. Further,
+> we have to deal with pages that aren't present. If a page isn't
+> present, the flush instructions fault on every line.
+> 
+> Other code has been rearranged and simplified based on testing. For
+> example, I introduced a flush_cache_dup_mm routine. flush_cache_mm
+> and flush_cache_dup_mm differ in that flush_cache_mm calls
+> purge_cache_pages and flush_cache_dup_mm calls flush_cache_pages.
+> In some implementations, pdc is more efficient than fdc. Based on
+> my testing, I don't believe there's any performance benefit on the
+> c8000.
 
-OK, perfect!
+> diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
+> index f114e102aaf2..ca49765784fc 100644
+> --- a/arch/parisc/mm/fault.c
+> +++ b/arch/parisc/mm/fault.c
+> @@ -22,6 +22,8 @@
+> 
+>  #include <asm/traps.h>
+> 
+> +/* #define DEBUG_NATLB 1 */
+> +
+>  /* Various important other fields */
+>  #define bit22set(x)		(x & 0x00000200)
+>  #define bits23_25set(x)		(x & 0x000001c0)
+> @@ -450,10 +452,12 @@ handle_nadtlb_fault(struct pt_regs *regs)
+>  		fallthrough;
+>  	case 0x380:
+>  		/* PDC and FIC instructions */
+> +#ifdef DEBUG_NATLB
+>  		if (printk_ratelimit()) {
+> -			pr_warn("BUG: nullifying cache flush/purge 
+instruction\n");
+> +			pr_warn("WARNING: nullifying cache flush/
+purge instruction\n");
+>  			show_regs(regs);
+>  		}
+> +#endif
+>  		if (insn & 0x20) {
+>  			/* Base modification */
+>  			breg = (insn >> 21) & 0x1f;
 
-Cheers,
+This surely deserves it's own commit as it has nothing to do with the actual 
+change. I wonder if it is actually intended to go upstream or if this was just 
+a local debug hack?
+
+Eike
+--nextPart4398930.LvFx2qVVIh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCYoOd8gAKCRBcpIk+abn8
+TlG7AJ0TyNnCFo/gd9KxaunDgft5OVavuwCgngLE8MwNNqk1p7YKuweScG2rb24=
+=iGOW
+-----END PGP SIGNATURE-----
+
+--nextPart4398930.LvFx2qVVIh--
 
 
-Guilherme
+
