@@ -2,36 +2,36 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAB6652BACE
-	for <lists+linux-parisc@lfdr.de>; Wed, 18 May 2022 14:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 743DB52BB13
+	for <lists+linux-parisc@lfdr.de>; Wed, 18 May 2022 14:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237052AbiERMeu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 18 May 2022 08:34:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57380 "EHLO
+        id S237112AbiERMem (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 18 May 2022 08:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236971AbiERMeL (ORCPT
+        with ESMTP id S237116AbiERMd7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 18 May 2022 08:34:11 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D406170641;
-        Wed, 18 May 2022 05:29:57 -0700 (PDT)
+        Wed, 18 May 2022 08:33:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B991912CE;
+        Wed, 18 May 2022 05:29:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B0142B81FBA;
-        Wed, 18 May 2022 12:29:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2971CC385AA;
-        Wed, 18 May 2022 12:29:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DADB46164C;
+        Wed, 18 May 2022 12:29:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A64C385A5;
+        Wed, 18 May 2022 12:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652876979;
+        s=k20201202; t=1652876994;
         bh=T4OxzCgaUBm2DqSHVnJ48Imayt8DaPfRZpxmkuNlJUk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O4Gwy2CLaxkWGYPlfjE1xp8IMfIBQ+EP+i4O99KjWycwZG2QpL7WZDKreU3OiEr+S
-         2mDfdUcKVi/foTYTaUup6PEPF1hC9zHr8xQBZ9fapi6bsF7WsDdndDxw9C0bxac8Sc
-         smBi4cnwHY+mDmpK1yRj/Q2IDSHzc2koOnC+vUoOEgb5Bk6qyGp3N+zDnDIX5Ojf4Q
-         NzjlFFfsa+3rxfHKxDCghwzeJPb9cZLqq0zmQFhLWTHeQZHKtbzyS0X7AEif0qAR17
-         P4I0Gr0ErirOPDFcjnIhGF7aufGAxfXhdum/xYx3uk1XC9523kymQgo8mPHck04ZRZ
-         MsO0aeo7Lpb6Q==
+        b=WY8gkAbMbyUZP5HzcSpZ6gbgFtMkbr/7PwWrewHRfj/PnoyOrAzhJsEqzf0Noc5yG
+         VvLle8noGo4NrCkB5yqysQgyowGzzB175qk6OXVysvRr9gx0OlgFzngrpwFr2oR2oC
+         g7HAkNJVpNXS6QyZ5JEeiz/aFZFUpg5Vtk4xa97foxSk6otgiZHT+mwkuqBNWgdzRs
+         KbHppJJP3wnfc1kzQHtPQg3s1YQCTnLcXXlUOZzO9zVmyV+Xf6TiSomPgXzabSxNMI
+         SPkCyWnML1jFaQRNoHScSUpO9kub6cmkGnmOzVdLl80X7FS9ZEEGXcFxIXcqMKUlhl
+         ADJ1W5i7U+Y3g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Yang Yingliang <yangyingliang@huawei.com>,
@@ -40,12 +40,12 @@ Cc:     Yang Yingliang <yangyingliang@huawei.com>,
         Sasha Levin <sashal@kernel.org>, davem@davemloft.net,
         edumazet@google.com, pabeni@redhat.com, arnd@arndb.de,
         jgg@ziepe.ca, netdev@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 4/6] ethernet: tulip: fix missing pci_disable_device() on error in tulip_init_one()
-Date:   Wed, 18 May 2022 08:29:27 -0400
-Message-Id: <20220518122929.343615-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 3/5] ethernet: tulip: fix missing pci_disable_device() on error in tulip_init_one()
+Date:   Wed, 18 May 2022 08:29:43 -0400
+Message-Id: <20220518122946.343712-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220518122929.343615-1-sashal@kernel.org>
-References: <20220518122929.343615-1-sashal@kernel.org>
+In-Reply-To: <20220518122946.343712-1-sashal@kernel.org>
+References: <20220518122946.343712-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
