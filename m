@@ -2,112 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93CE452B3DF
-	for <lists+linux-parisc@lfdr.de>; Wed, 18 May 2022 09:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DD852B2F9
+	for <lists+linux-parisc@lfdr.de>; Wed, 18 May 2022 09:10:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232318AbiERHn5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 18 May 2022 03:43:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33282 "EHLO
+        id S231768AbiERHKb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 18 May 2022 03:10:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232373AbiERHn4 (ORCPT
+        with ESMTP id S231755AbiERHKY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 18 May 2022 03:43:56 -0400
-X-Greylist: delayed 1801 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 18 May 2022 00:43:52 PDT
-Received: from outbound5i.eu.mailhop.org (outbound5i.eu.mailhop.org [35.156.234.212])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6977027FF9
-        for <linux-parisc@vger.kernel.org>; Wed, 18 May 2022 00:43:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1652857063; cv=none;
-        d=outbound.mailhop.org; s=arc-outbound20181012;
-        b=bRd8+Q46NgbENUyIchSjDUSeu2fpzdS4QFbCk3vZ6xZAERIsNy/gaMfx0PIl9XEav8rv6p8BAudUT
-         rkfVYHRYAbn4MSeDjs3Oww5P0O5iJb5/NiJH/KjahLHDPAHQ3Ef+Azg/zyRxZ5iEMysWxzgrCvXqKb
-         Usd9lrdm4khDKx6u1S3CpPHDwAw7ogvaUdXv81mEv7kZ80G7JvCgujIg0doSMAAeTw1U3mwG2xFUSa
-         ElbzY9lMWlke9jToHpkMzQvgiRkeYS1iRFzsbhyPTyjcVI3mZLNC1fJtTDSb6PHWXWU/6vKvpJNINP
-         ynNEv5NEZAciq2QxlHxGJza8SORv0qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=outbound.mailhop.org; s=arc-outbound20181012;
-        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
-         to:from:dkim-signature:dkim-signature:from;
-        bh=N/AKMdeBtgz5NQpWuWjsa101CdoV6t7LzXY8BMZ3fMw=;
-        b=DoX9rQ7Nj2mhTjJsXWmcGMdx+Vq2rrWvcCdZXZaIhZauBSLZmxmg7TgKhJM/tLoRiEkwR4JS07tr2
-         2wU/bUdDbcebSeA2vcn9fhnACg8xIpUXYULGgiSqMSkuzd/+eJSnqrDbk14Iu/HHryRafDZY5CXYIo
-         oJA1GEM3vfzGU3vy92xaGx2tkSL5Ff2nmrZ/1kRdAffYK2OF6XVnikoGmEUUjcwPOaciT8CppC4BTW
-         tQ6PKOcT0tN9mlD83r3wAgJQ/mvPLmKQnr3hZsjFziaNrCpM0yThviwXj+dtL2Te1O4SR3MVm/7U5y
-         q/OAptRsCodZ2rbZKa+cIOQ2WKEJ9DQ==
-ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
-        spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
-        dmarc=none header.from=stackframe.org;
-        arc=none header.oldest-pass=0;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=stackframe.org; s=duo-1634547266507-560c42ae;
-        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
-         to:from:from;
-        bh=N/AKMdeBtgz5NQpWuWjsa101CdoV6t7LzXY8BMZ3fMw=;
-        b=pjWBNuhmQMkaPfH2nDM9FJ6nIieBw9uWsU38qgsoGkvtQUpocZhvYWmaeHghKkHaVJuRfOvb97ibm
-         bb5zWoWcAnK3HNzmJaune5ej2NjvARBt4pjOCu1aBdN6hPEIInkXlW+nSLGzAfzllvNqBm9w+5w/F5
-         02TPwIepknJGPPD4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=outbound.mailhop.org; s=dkim-high;
-        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
-         to:from:from;
-        bh=N/AKMdeBtgz5NQpWuWjsa101CdoV6t7LzXY8BMZ3fMw=;
-        b=C5JWoV/XCME7SRTZM9uEBf0N8H9VvOudCR3f6adjtyZyB8EP3j/i33zSJ9K/7Z9dHp0ug/xcnEbHN
-         3bJ0/QVNNAsmX/FeUzQIPLPt+mydsAjWV3hUhcdjSOPGYanqiXnfjSg9fI7onzcJUjtBCWoOumojWp
-         FrzdXoHwRzkIseoDPgWH93JYQKrde+/2AnlAy532NLH+Cm+3kw0fBPWltATu7GsutoVVVwukzvksxw
-         Tonnb93MXbXL6MAAbNR9b8WY0CnGmHsW8vNbZvqsQfLMbur6RR0wvjpIszCMirwXHJV/2gSEZL+peD
-         KekrsPMYXcG16hOlfTB5MAF6wVAARpg==
-X-Originating-IP: 130.180.31.158
-X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: cd84c994-d677-11ec-bc05-4b4748ac966b
-X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
-X-Mail-Handler: DuoCircle Outbound SMTP
-Received: from mail.duncanthrax.net (ip-130-180-031-158.um40.pools.vodafone-ip.de [130.180.31.158])
-        by outbound2.eu.mailhop.org (Halon) with ESMTPSA
-        id cd84c994-d677-11ec-bc05-4b4748ac966b;
-        Wed, 18 May 2022 06:57:40 +0000 (UTC)
-Received: from ip-046-005-169-013.um12.pools.vodafone-ip.de ([46.5.169.13] helo=x1.stackframe.org.stackframe.org)
-        by mail.duncanthrax.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <svens@stackframe.org>)
-        id 1nrDct-0000CC-IW; Wed, 18 May 2022 08:57:43 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Helge Deller <deller@gmx.de>
+        Wed, 18 May 2022 03:10:24 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A92EDEBEA8
+        for <linux-parisc@vger.kernel.org>; Wed, 18 May 2022 00:10:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1652857816;
+        bh=niUe6EjYHTv4BcyaIEaYeFWxWYQyVH0Ljt7XFXMZpwc=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=Oi6FsqLbzHmgbaRhU4qHg18ZtHa1Dim2P5w8ms5JloKctsBWqGq0mo2RXlVk7EKx9
+         EBQ1LhUQEFvVqZuFnSfYQLzPjU63cVxbEls/aeowOvm8lGT/G4iRbAbGAO4BLgmwYe
+         vXcYQagTDB7gnLLmcuzY/ZKKqL44l7vkynoY6sSE=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.138.233]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MPokD-1oE5rA3Ljn-00MpKU; Wed, 18
+ May 2022 09:10:15 +0200
+Message-ID: <25c5c394-64a5-b14f-7c22-cc5f3a06994d@gmx.de>
+Date:   Wed, 18 May 2022 09:10:06 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH] parisc: Prevent using same register as soure and target
+ in extru/shr
+Content-Language: en-US
+To:     Sven Schnelle <svens@stackframe.org>
 Cc:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: Re: [PATCH] parisc: Prevent using same register as soure and target
- in extru/shr
 References: <YoOZy3A3R0i0DUWB@p100>
-        <8b5c308a-f3ea-e07f-053a-ad086ce75c43@gmx.de>
-Date:   Wed, 18 May 2022 08:57:36 +0200
-In-Reply-To: <8b5c308a-f3ea-e07f-053a-ad086ce75c43@gmx.de> (Helge Deller's
-        message of "Tue, 17 May 2022 14:54:44 +0200")
-Message-ID: <87zgjfl44f.fsf@x1.stackframe.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+ <8b5c308a-f3ea-e07f-053a-ad086ce75c43@gmx.de>
+ <87zgjfl44f.fsf@x1.stackframe.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <87zgjfl44f.fsf@x1.stackframe.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:/6+LXnR1P7LeH8phelrqFQ3SkKWp8ClvjOWPKCqoeG0FmRjqfiy
+ BKzWwlFfABOzDR0evzNlQ0uFU5CoVw7dBgcCN7aIPz+vJW0WLA67Uv1dsiSHaa7atdNSpM+
+ SFNczxLqEu7U6IFyRQA9eLmvlXkOGOp1hlbqkD8BBycRTmddpjg+HQkSRysuEHpyEeQiqbM
+ HhGGcjFQ3U6oiWMXLN+tA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qkLZD9jN0GU=:UbA7LBdi0QTkpCNyilAv4P
+ iPAnmfAm/8p9Upj4T0mTvzONI6ZbSwsT3rVbCEgqMXjr9to69cWpJaHTVOUGPrmCjlewvVNdq
+ 8nUQ/4dUwOrDwOGV5YKig1NYyXdIv9IgfJD87r7mf4v99ulEKIrKCOPrMtBcKkJ29jGWnZAPK
+ 8cdpX9PLuwSS0N3d7BgkHoJ7kCSv3BUDtHrZcpMxMFlHnnRw8BINCneimrzMq6xVY/w4Zg617
+ AswQevN9yWPawM+qa+3CrEzvSBsAi7vciAAE9UL+cpXldUqX5pe+F/YRgxip/AN2YMkwy/Xu1
+ aClP0mPk2xpq7Qj4+12x63WHokCHAS1JfUXMioW2CM3aplSWrNK9Lti+q5LDEV+au+TIIMCQC
+ DmsKNKN7iXTElHZZu423wQqn/nVxc8QStqO5r3a0vGt5y6w5+WbbP46bcmH3JQC0W9U2h6Kjp
+ lVBLNZ4YWB+Rk3ywIKAx47N2PZFioZD7Lsr1c/4OJPBSRn5gCwrdBOk/hT3qDTHoZEBUnbLLy
+ UwfdtLk/EDrcR73WtUR8gGsCBWO2ZGHEHSt6CO76hxO5/6V24fqgVro5aRAUTi1A9V4Gy9uNI
+ sZqJGvOtQOvO+RCZ8mLPLsU5Rg3RxAqjO/xPDsV5Zbln6mBKVX2xAoudY2w7L+sRSCQ3pLYc6
+ botflwp3sy8YbhcjUgsoqJg6uSMSYKX8D2mB5xJ5SPZPen2usepvT65Hrf5QcfKyHdw9lKCcB
+ D8ysVGUhoyuCUcZsMJqOj7+OS9U9N1of/ytaLd+Dww1U2yCJKJqGrE5UiFbs81Jin99mgMGJw
+ Xya1GgBqU41nF1C4Qm2JFqfcTxbnffZzERnVj9K05TNkRjFocuQYkVvwOJLVwT2wRxlspnbwB
+ pYaetP4jQwkO/MTElijbSUzq5DKIXK1baFpf0UWYUFIplXoSLNgzaBRf43BfdIR13UI/xMANQ
+ NqNVVG4lbqmlX8WYHariF24/7/BAqJtlMYh315x70K48m4j942Tar4o+sd018qQWV1idP1im5
+ HQCifFqRsW6tcaUsDiKgEOJgtB+kmju2g6jpHoEwd9T1tsa6rQ7ZyggmHzUi4VNEI5qZ91lqu
+ PzwX7cFzxrwQcAN+N7OBDqQCUVfCYgC0rBOJyAFHvbmaN65Kjqct5OoWg==
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Helge Deller <deller@gmx.de> writes:
-
-> On 5/17/22 14:49, Helge Deller wrote:
->> In 2004 Randolph added the shr() assembly macro and noted that the
->> source and target register could not be the same.
->>
->> I did not find any confindence in the docs for this restriction. Maybe
->> it's related that on PA2.0 the upper bits may be clobbered?
+On 5/18/22 08:57, Sven Schnelle wrote:
+> Helge Deller <deller@gmx.de> writes:
 >
-> Looking at the generated kernel code from C-files, I'll find all over usages of
-> 	extru source, x,y,  target
-> where source and target are the same register.
-> So, at least for 32-bit this restriction can't be true.
+>> On 5/17/22 14:49, Helge Deller wrote:
+>>> In 2004 Randolph added the shr() assembly macro and noted that the
+>>> source and target register could not be the same.
+>>>
+>>> I did not find any confindence in the docs for this restriction. Maybe
+>>> it's related that on PA2.0 the upper bits may be clobbered?
+>>
+>> Looking at the generated kernel code from C-files, I'll find all over u=
+sages of
+>> 	extru source, x,y,  target
+>> where source and target are the same register.
+>> So, at least for 32-bit this restriction can't be true.
+>
+> I did a quick objdump on the 64 bit HP-UX kernel and that one also uses
+> extrd/extrw where target and source are the same register. So i don't
+> think that restriction is true.
 
-I did a quick objdump on the 64 bit HP-UX kernel and that one also uses
-extrd/extrw where target and source are the same register. So i don't
-think that restriction is true.
+Thanks for checking!
+Maybe it's meant that it clobbers when running *32-bit* code on PA2.0?
+Just a thought...
+
+Helge
