@@ -2,351 +2,323 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB06C52BDE5
-	for <lists+linux-parisc@lfdr.de>; Wed, 18 May 2022 17:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1133652C614
+	for <lists+linux-parisc@lfdr.de>; Thu, 19 May 2022 00:17:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238951AbiEROqg convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Wed, 18 May 2022 10:46:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33910 "EHLO
+        id S229762AbiERWRX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 18 May 2022 18:17:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238819AbiEROqa (ORCPT
+        with ESMTP id S229516AbiERWRV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 18 May 2022 10:46:30 -0400
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A97AD60055;
-        Wed, 18 May 2022 07:46:27 -0700 (PDT)
-Received: by mail-yb1-f170.google.com with SMTP id p139so4027713ybc.11;
-        Wed, 18 May 2022 07:46:27 -0700 (PDT)
+        Wed, 18 May 2022 18:17:21 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8C27209B7B
+        for <linux-parisc@vger.kernel.org>; Wed, 18 May 2022 15:17:19 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id l7-20020a17090aaa8700b001dd1a5b9965so3429351pjq.2
+        for <linux-parisc@vger.kernel.org>; Wed, 18 May 2022 15:17:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=tbiP3naYItE82zWTVSiD1/9GUBBjYEQmYmriwz//MEA=;
+        b=MMsVTNduhm/DaHXhEnDCiSxL9y81cKGdan+A6FaGvpqVkXdFMp0BUddwSXIvfPQVOP
+         YQyKxQP/I/qiT7uzlMk61qIfRIybC3vTamia/5THNQm/zlwitmZDqRmqONIU323GDD65
+         2t+zYMl9Fox4T8S9ZTgNtSrrfBKIp/rw2zFUo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=3SGArFKDihyEBXlF8/XNeAemrWMKKpCb4khL75HityU=;
-        b=HrXu/4Fqb4W++p3J0fMDguI6mvmaCrke9hjmQ1eoi/2R98qPueBWcsLRSm5BqSo/BF
-         QJOXQDhgbaFRgyHI4yhPOWKp4hP0A6/DXgg9OXVIr3nnwz0fAII5PlTpZtyto/8Vf532
-         7QjMFr1ufUSuUa7gXJ3688wxdRBeKybAfBPyAB6N/DDuzkxhgEAAvSeIweuHJYM0MCk7
-         qkLCFHarG8VuOivefQvE8VSZoxG+EiOeFrMw70rtuC1F8SGY/JwXsrqhM5ZaJ5NtjnrS
-         c4fdD2RTI3GYKSE5x1ZOa135V9jz8pIdRi1j7Hz1qU+eb2Tpz9tdo95qsTPEHRHW7gvx
-         EBRQ==
-X-Gm-Message-State: AOAM531kJ23JIubbfkweBw7gzmgI2ZBCygEQBsuHBdNrKkginRuRra9p
-        fx1jV5hCTZqyznsm6x/iiBywQpbbySFlK8i6YpA=
-X-Google-Smtp-Source: ABdhPJzrRXyFkOYYP+knWo30LGdADGmZZVDFFkLi378Dx+GKoFEryYPjgFz2aAoFwQStjD/27f3Wowem4YVwVmdPLVU=
-X-Received: by 2002:a25:d687:0:b0:64e:3a41:8d5 with SMTP id
- n129-20020a25d687000000b0064e3a4108d5mr3149496ybg.622.1652885186733; Wed, 18
- May 2022 07:46:26 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to;
+        bh=tbiP3naYItE82zWTVSiD1/9GUBBjYEQmYmriwz//MEA=;
+        b=gBBq1dxRTiqSRnn28Y6Ph/VRilCFVxy2sBH7VmtGPJnFImZmZ+/1vU3zHXoLEWanBO
+         8bmFN+07mTTrgotUb9lUicY7FIyj34XsIMIIVX8+980iYMlZllbEU7a5wkUFm1suh11y
+         og9H7HIe0ZzjtqcjJpVCkuz1v0brWCkul8Ffqc+S1dC7q1++ZLkP6xOp9r6n2Cw2cKtp
+         XzV3xCZxA/QIGMsTyj7WxuWuu+SXz7QJgQgkJ6T0JE+8hUbniI7uGOZxcV0/VPcSsr+N
+         xvpil9ECIjejCSP0AtuPeiPoZ215DzDSBDA9eAfFdD0HKEdiD1c8fE3XN3f8mNCqVjFr
+         Yidg==
+X-Gm-Message-State: AOAM5313sluSyJVqB2NgOc4OldEGZlb/kqfijnyUVXjrfAxgI/ZyEJMJ
+        UjdSiEqwXnEFlLSdADbE2tC2xQ==
+X-Google-Smtp-Source: ABdhPJxkLsE36Kq2JcCUoiWV2ClSYG7H68DZOk0Dnd5ufVpjZfzcSk9Zz5AbXiW59SdIpTBHz/LAmw==
+X-Received: by 2002:a17:902:ec92:b0:161:7e29:6f9d with SMTP id x18-20020a170902ec9200b001617e296f9dmr1458536plg.157.1652912238747;
+        Wed, 18 May 2022 15:17:18 -0700 (PDT)
+Received: from [10.136.13.180] ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id ji15-20020a170903324f00b001616e13fccdsm2195161plb.221.2022.05.18.15.17.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 May 2022 15:17:17 -0700 (PDT)
+Message-ID: <81878a67-21f1-fee8-1add-f381bc8b05df@broadcom.com>
+Date:   Wed, 18 May 2022 15:17:07 -0700
 MIME-Version: 1.0
-References: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
-In-Reply-To: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 18 May 2022 16:46:15 +0200
-Message-ID: <CAJZ5v0jhWs-8ChHddebTZcaH6kA05sLEMsXM9Op7kHWAQDxeYA@mail.gmail.com>
-Subject: Re: [PATCH v8 00/27] Introduce power-off+restart call chain API
-To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 19/30] panic: Add the panic hypervisor notifier list
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Petr Mladek <pmladek@suse.com>,
         Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Desmond yan <desmond.yan@broadcom.com>
+Cc:     David Gow <davidgow@google.com>, Evan Green <evgreen@chromium.org>,
+        Julius Werner <jwerner@chromium.org>,
+        bcm-kernel-feedback-list@broadcom.com, linux-pm@vger.kernel.org,
+        akpm@linux-foundation.org, bhe@redhat.com,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, netdev@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org, kernel-dev@igalia.com, kernel@gpiccoli.net,
+        halves@canonical.com, fabiomirmar@gmail.com,
+        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
+        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
+        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
+        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
+        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
+        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
+        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
+        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
+        senozhatsky@chromium.org, stern@rowland.harvard.edu,
+        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
+        will@kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dexuan Cui <decui@microsoft.com>,
+        Doug Berger <opendmb@gmail.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Justin Chen <justinpopo6@gmail.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
         Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Markus Mayer <mmayer@broadcom.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mihai Carabas <mihai.carabas@oracle.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+        Shile Zhang <shile.zhang@linux.alibaba.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Wang ShaoBo <bobo.shaobowang@huawei.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        zhenwei pi <pizhenwei@bytedance.com>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-20-gpiccoli@igalia.com> <YoJZVZl/MH0KiE/J@alley>
+ <ad082ce7-db50-13bb-3dbb-9b595dfa78be@igalia.com> <YoOpyW1+q+Z5as78@alley>
+ <d72b9aab-675c-ac89-b73a-b1de4a0b722d@igalia.com>
+From:   Scott Branden <scott.branden@broadcom.com>
+In-Reply-To: <d72b9aab-675c-ac89-b73a-b1de4a0b722d@igalia.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000df9bf705df509ee4"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, May 10, 2022 at 1:33 AM Dmitry Osipenko
-<dmitry.osipenko@collabora.com> wrote:
->
-> Problem
-> -------
->
-> SoC devices require power-off call chaining functionality from kernel.
-> We have a widely used restart chaining provided by restart notifier API,
-> but nothing for power-off.
->
-> Solution
-> --------
->
-> Introduce new API that provides call chains support for all restart and
-> power-off modes. The new API is designed with simplicity and extensibility
-> in mind.
->
-> This is a third attempt to introduce the new API. First was made by
-> Guenter Roeck back in 2014, second was made by Thierry Reding in 2017.
-> In fact the work didn't stop and recently arm_pm_restart() was removed
-> from v5.14 kernel, which was a part of preparatory work started by
-> Guenter Roeck.
->
-> Adoption plan
-> -------------
->
-> This patchset introduces the new API. It also converts multiple drivers
-> and arch code to the new API to demonstrate how it all looks in practice,
-> removing the pm_power_off_prepare global variable.
->
-> The plan is:
->
-> 1. Merge the new API and convert arch code to use do_kernel_power_off().
->    For now the new API will co-exist with the older API.
->
-> 2. Convert all drivers and platform code to the new API.
->
-> 3. Remove obsoleted pm_power_off and pm_power_off_prepare variables.
->
-> Results
-> -------
->
-> 1. Devices can be powered off properly.
->
-> 2. Global variables are removed from drivers.
->
-> 3. Global pm_power_off and pm_power_off_prepare callback variables are
-> removed once all users are converted to the new API. The latter callback
-> is removed by patch #24 of this series.
->
-> 4. Ambiguous call chain ordering is prohibited for non-default priorities.
->
-> Changelog:
->
-> v8: - Reworked sys-off handler like was suggested by Rafael Wysocki in
->       the comments to v7.
->
->     - The struct sys-off handler now is private to kernel/reboot.c and
->       new API is simplified.
->
->     - There is a single sys-off API function for all handler types.
->       Users shall pass the required sys-off mode type (restart, power-off
->       and etc).
->
->     - There is single struct sys_off_data callback argument for all
->       handler modes.
->
->     - User's callback now must return NOTIFY_DONE or NOTIFY_STOP.
->
->     - The default priority level is zero now.
->
->     - Multiple handlers now allowed to be registered at the default
->       priority level.
->
->     - Power-off call chain is atomic now, like the restart chain.
->
->     - kernel/reboot.c changes are split up into several logical patches.
->
->     - Added r-b from Michał Mirosław to unmodified patches from v7.
->
->     - Added acks that were missing in v7 by accident.
+--000000000000df9bf705df509ee4
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The v8 looks much better than the previous versions to me.
+Hi Guilherme,
 
-I actually don't really have any comments on it except for the minor
-remark regarding patch [1/27] sent separately.
++Desmond
 
-Please just send an update of that one patch and I will queue up the
-series for 5.19.
+On 2022-05-17 09:42, Guilherme G. Piccoli wrote:
+> On 17/05/2022 10:57, Petr Mladek wrote:
+>> [...]
+>>>>> --- a/drivers/misc/bcm-vk/bcm_vk_dev.c
+>>>>> +++ b/drivers/misc/bcm-vk/bcm_vk_dev.c
+>>>>> @@ -1446,7 +1446,7 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>>>> [... snip ...]
+>>>> It seems to reset some hardware or so. IMHO, it should go into the
+>>>> pre-reboot list.
+>>>
+>>> Mixed feelings here, I'm looping Broadcom maintainers to comment.
+>>> (CC Scott and Broadcom list)
+>>>
+>>> I'm afraid it breaks kdump if this device is not reset beforehand - it's
+>>> a doorbell write, so not high risk I think...
+>>>
+>>> But in case the not-reset device can be probed normally in kdump kernel,
+>>> then I'm fine in moving this to the reboot list! I don't have the HW to
+>>> test myself.
+>>
+>> Good question. Well, it if has to be called before kdump then
+>> even "hypervisor" list is a wrong place because is not always
+>> called before kdump.
+> 
+> Agreed! I'll defer that to Scott and Broadcom folks to comment.
+> If it's not strictly necessary, I'll happily move it to the reboot list.
+> 
+> If necessary, we could use the machine_crash_kexec() approach, but we'll
+> fall into the case arm64 doesn't support it and I'm not sure if this
+> device is available for arm - again a question for the maintainers.
+We register to the panic notifier so that we can kill the VK card ASAP
+to stop DMAing things over to the host side.  If it is not notified then
+memory may not be frozen when kdump is occurring.
+Notifying the card on panic is also needed to allow for any type of 
+reset to occur.
 
-However, I'm going to send a pull request with it in the second half
-of the merge window, after the majority of the other changes in the
-subsystems touched by it have been integrated.
+So, the only thing preventing moving the notifier later is the chance
+that memory is modified while kdump is occurring.  Or, if DMA is 
+disabled before kdump already then this wouldn't be an issue and the 
+notification to the card (to allow for clean resets) can be done later.
+> 
+> 
+>>   [...]
+>>>>> --- a/drivers/power/reset/ltc2952-poweroff.c
+>>>>> +++ b/drivers/power/reset/ltc2952-poweroff.c
+>>> [...]
+>>> This is setting a variable only, and once it's set (data->kernel_panic
+>>> is the bool's name), it just bails out the IRQ handler and a timer
+>>> setting - this timer seems kinda tricky, so bailing out ASAP makes sense
+>>> IMHO.
+>>
+>> IMHO, the timer informs the hardware that the system is still alive
+>> in the middle of panic(). If the timer is not working then the
+>> hardware (chip) will think that the system frozen in panic()
+>> and will power off the system. See the comments in
+>> drivers/power/reset/ltc2952-poweroff.c:
+>> [.... snip ...]
+>> IMHO, we really have to keep it alive until we reach the reboot stage.
+>>
+>> Another question is how it actually works when the interrupts are
+>> disabled during panic() and the timer callbacks are not handled.
+> 
+> Agreed here! Guess I can move this one the reboot list, fine by me.
+> Unless PM folks think otherwise.
+> 
+> 
+>> [...]
+>>> Disagree here, I'm CCing Florian for information.
+>>>
+>>> This notifier preserves RAM so it's *very interesting* if we have
+>>> kmsg_dump() for example, but maybe might be also relevant in case kdump
+>>> kernel is configured to store something in a persistent RAM (then,
+>>> without this notifier, after kdump reboots the system data would be lost).
+>>
+>> I see. It is actually similar problem as with
+>> drivers/firmware/google/gsmi.c.
+>>
+>> I does similar things like kmsg_dump() so it should be called in
+>> the same location (after info notifier list and before kdump).
+>>
+>> A solution might be to put it at these notifiers at the very
+>> end of the "info" list or make extra "dump" notifier list.
+> 
+> Here I still disagree. I've commented in the other response thread
+> (about Google gsmi) about the semantics of the hypervisor list, but
+> again: this list should contain callbacks that
+> 
+> (a) Should run early, _by default_ before a kdump;
+> (b) Communicate with the firmware/hypervisor in a "low-risk" way;
+> 
+> Imagine a scenario where users configure kdump kernel to save something
+> in a persistent form in DRAM - it'd be like a late pstore, in the next
+> kernel. This callback enables that, it's meant to inform FW "hey, panic
+> happened, please from now on don't clear the RAM in the next FW-reboot".
+> I don't see a reason to postpone that - let's see if the maintainers
+> have an opinion.
+> 
+> Cheers,
+> 
+> 
+> Guilherme
 
-> v7: - Rebased on a recent linux-next. Dropped the recently removed
->       NDS32 architecture. Only SH and x86 arches left un-acked.
->
->     - Added acks from Thomas Bogendoerfer and Krzysztof Kozlowski
->       to the MIPS and memory/emif patches respectively.
->
->     - Made couple minor cosmetic improvements to the new API.
->
->     - A month ago I joined Collabora and continuing to work on this series
->       on the company's time, so changed my email address to collabora.com
->
-> v6: - Rebased on a recent linux-next.
->
->     - Made minor couple cosmetic changes.
->
-> v5: - Dropped patches which cleaned up notifier/reboot headers, as was
->       requested by Rafael Wysocki.
->
->     - Dropped WARN_ON() from the code, as was requested by Rafael Wysocki.
->       Replaced it with pr_err() appropriately.
->
->     - Dropped *_notifier_has_unique_priority() functions and added
->       *_notifier_chain_register_unique_prio() instead, as was suggested
->       by Michał Mirosław and Rafael Wysocki.
->
->     - Dropped export of blocking_notifier_call_chain_is_empty() symbol,
->       as was suggested by Rafael Wysocki.
->
->     - Michał Mirosław suggested that will be better to split up patch
->       that adds the new API to ease reviewing, but Rafael Wysocki asked
->       not add more patches, so I kept it as a single patch.
->
->     - Added temporary "weak" stub for pm_power_off() which fixes linkage
->       failure once symbol is removed from arch/* code. Previously I missed
->       this problem because was only compile-testing object files.
->
-> v4: - Made a very minor improvement to doc comments, clarifying couple
->       default values.
->
->     - Corrected list of emails recipient by adding Linus, Sebastian,
->       Philipp and more NDS people. Removed bouncing emails.
->
->     - Added acks that were given to v3.
->
-> v3: - Renamed power_handler to sys_off_handler as was suggested by
->       Rafael Wysocki.
->
->     - Improved doc-comments as was suggested by Rafael Wysocki. Added more
->       doc-comments.
->
->     - Implemented full set of 180 patches which convert whole kernel in
->       accordance to the plan, see link [1] above. Slightly adjusted API to
->       better suit for the remaining converted drivers.
->
->       * Added unregister_sys_off_handler() that is handy for a couple old
->         platform drivers.
->
->       * Dropped devm_register_trivial_restart_handler(), 'simple' variant
->         is enough to have.
->
->     - Improved "Add atomic/blocking_notifier_has_unique_priority()" patch,
->       as was suggested by Andy Shevchenko. Also replaced down_write() with
->       down_read() and factored out common notifier_has_unique_priority().
->
->     - Added stop_chain field to struct restart_data and reboot_prep_data
->       after discovering couple drivers wanting that feature.
->
->     - Added acks that were given to v2.
->
-> v2: - Replaced standalone power-off call chain demo-API with the combined
->       power-off+restart API because this is what drivers want. It's a more
->       comprehensive solution.
->
->     - Converted multiple drivers and arch code to the new API. Suggested by
->       Andy Shevchenko. I skimmed through the rest of drivers, verifying that
->       new API suits them. The rest of the drivers will be converted once we
->       will settle on the new API, otherwise will be too many patches here.
->
->     - v2 API doesn't expose notifier to users and require handlers to
->       have unique priority. Suggested by Guenter Roeck.
->
->     - v2 API has power-off chaining disabled by default and require
->       drivers to explicitly opt-in to the chaining. This preserves old
->       behaviour for existing drivers once they are converted to the new
->       API.
->
-> Dmitry Osipenko (27):
->   notifier: Add atomic_notifier_call_chain_is_empty()
->   notifier: Add blocking/atomic_notifier_chain_register_unique_prio()
->   kernel/reboot: Introduce sys-off handler API
->   kernel/reboot: Wrap legacy power-off callbacks into sys-off handlers
->   kernel/reboot: Add do_kernel_power_off()
->   kernel/reboot: Add stub for pm_power_off
->   kernel/reboot: Add kernel_can_power_off()
->   kernel/reboot: Add register_platform_power_off()
->   ARM: Use do_kernel_power_off()
->   csky: Use do_kernel_power_off()
->   riscv: Use do_kernel_power_off()
->   arm64: Use do_kernel_power_off()
->   parisc: Use do_kernel_power_off()
->   xen/x86: Use do_kernel_power_off()
->   powerpc: Use do_kernel_power_off()
->   m68k: Switch to new sys-off handler API
->   sh: Use do_kernel_power_off()
->   x86: Use do_kernel_power_off()
->   ia64: Use do_kernel_power_off()
->   mips: Use do_kernel_power_off()
->   memory: emif: Use kernel_can_power_off()
->   ACPI: power: Switch to sys-off handler API
->   regulator: pfuze100: Use devm_register_sys_off_handler()
->   reboot: Remove pm_power_off_prepare()
->   soc/tegra: pmc: Use sys-off handler API to power off Nexus 7 properly
->   kernel/reboot: Add devm_register_power_off_handler()
->   kernel/reboot: Add devm_register_restart_handler()
->
->  arch/arm/kernel/reboot.c               |   4 +-
->  arch/arm64/kernel/process.c            |   3 +-
->  arch/csky/kernel/power.c               |   6 +-
->  arch/ia64/kernel/process.c             |   4 +-
->  arch/m68k/emu/natfeat.c                |   3 +-
->  arch/m68k/include/asm/machdep.h        |   1 -
->  arch/m68k/kernel/process.c             |   5 +-
->  arch/m68k/kernel/setup_mm.c            |   1 -
->  arch/m68k/kernel/setup_no.c            |   1 -
->  arch/m68k/mac/config.c                 |   4 +-
->  arch/mips/kernel/reset.c               |   3 +-
->  arch/parisc/kernel/process.c           |   4 +-
->  arch/powerpc/kernel/setup-common.c     |   4 +-
->  arch/powerpc/xmon/xmon.c               |   3 +-
->  arch/riscv/kernel/reset.c              |  12 +-
->  arch/sh/kernel/reboot.c                |   3 +-
->  arch/x86/kernel/reboot.c               |   4 +-
->  arch/x86/xen/enlighten_pv.c            |   4 +-
->  drivers/acpi/sleep.c                   |  16 +-
->  drivers/memory/emif.c                  |   2 +-
->  drivers/regulator/pfuze100-regulator.c |  42 ++-
->  drivers/soc/tegra/pmc.c                |  87 +++++--
->  include/linux/notifier.h               |   7 +
->  include/linux/pm.h                     |   1 -
->  include/linux/reboot.h                 |  91 +++++++
->  kernel/notifier.c                      | 101 +++++--
->  kernel/reboot.c                        | 347 ++++++++++++++++++++++++-
->  27 files changed, 639 insertions(+), 124 deletions(-)
->
-> --
-> 2.35.1
->
+--000000000000df9bf705df509ee4
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+cRe0CRXA7ypOJSgxO/nOOyQoaJxT7CGg1npOeSpPjEuc3fE4xum3l0nvU85hj6MlKZu43hokdBh0
+D0nLyyhEwlR3AC/msdff/UGbM/JR9vk812RP4m/aNWZFJwIDAQABo4IB2zCCAdcwDgYDVR0PAQH/
+BAQDAgWgMIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZCaHR0cDovL3NlY3VyZS5nbG9i
+YWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3J0MEEGCCsGAQUF
+BzABhjVodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAy
+MDBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xv
+YmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNVHR8EQjBAMD6gPKA6hjhodHRw
+Oi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNybDAlBgNV
+HREEHjAcgRpzY290dC5icmFuZGVuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAf
+BgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQUOhjEpl04Sz9dh5MI82E1
+V39lM/owDQYJKoZIhvcNAQELBQADggEBAA7Rlypx/esz/iq1yA4+KW7uwV/aBY344BWcXt6I+SNK
+VwFBgFWfLj5vaEud9TVv2fPSiaHJo0umemOJk+43QD+bsoqmgcFXd21PrOt7Jjs+jjVED9VC5kJq
+S4NNKUkS+BqijJwSegtVygrc/atrIlJbjI21q4qpemUo5fgwqCNm++BmBGTI8yA09vtGSNDRN42k
+lLX9hl3iEj5SBgkQqCbbnoE+ZjjKfqt7ED166WhgyQWNrl39yLcvLj+JRUB3RuvXKZjH0NQEEBII
+wZBDSkyneykLt3CBNIhSCTxKM6OWxVp936ALSa5K9FNy00TeWSpokR6NmzaW8VD/EjTgvqAxggJt
+MIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYD
+VQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgx9oXSJpKniO4dS
+Gk8wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIILFBbO32At0jlQYmvDlBzxxKfke
+QfIJzMrdu2nIpFihMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIy
+MDUxODIyMTcxOVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsG
+CWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFl
+AwQCATANBgkqhkiG9w0BAQEFAASCAQBIc7nOZb/W3CkCvD0kf3LJMsgwBiUyTBcOQHeudvIMXgiB
+QQ8+U0c03geY7pr3oC9UDTjRSIF1RwJcP3BwheBLJu7kfHK3jy1JiouqgOLb3cV+n/v8R/+Xc+Q9
+MlWFHGJrAD9gPOMrvJ1KMqx0CFXaz0l8rlyXDGV6s+r8X1jt1rnbjZIGoBbGOP0+bObjxE+1Gdyd
+bQJRFfYVGChsqzAPm+mOmOBOafJhgclqEhJSTDfXRiL12HGLyzWipIAmcAo0FrSMyjIkYTvnPG2n
+n3uZVbKScFO51F6GoCOYWwE5SK0CHfHOWXk8TRl9CTBHlWCZR0XRAfCmijeVCq6/xT0J
+--000000000000df9bf705df509ee4--
