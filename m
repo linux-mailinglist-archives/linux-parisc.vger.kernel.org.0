@@ -2,132 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB8CF52EAB3
-	for <lists+linux-parisc@lfdr.de>; Fri, 20 May 2022 13:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A21B52EC12
+	for <lists+linux-parisc@lfdr.de>; Fri, 20 May 2022 14:31:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348455AbiETLYe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 20 May 2022 07:24:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
+        id S237176AbiETMbS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 20 May 2022 08:31:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232303AbiETLYb (ORCPT
+        with ESMTP id S241416AbiETMbR (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 20 May 2022 07:24:31 -0400
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECA58B36CE;
-        Fri, 20 May 2022 04:24:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=DGPrrkXTp6oI8cbbgByz5QLKv15GNHxUgmjuIwTAy/E=; b=eqnE/suLTpG3xbkMCBtDpxLY3n
-        NIRgLQiaBi0sCvdNCD4AFRLhJwRt1fDLW5HSSGFY7WXFEGFCYXn6Q0dC8gIFph3vTjXA6DvyBiQwz
-        I5PwxVn4HFAkq1g0udGCDh7f8awWYDjllyLtGAcRh6eSoRE6OIuNpAwHVy7SfEQenDYcne2doKiCl
-        jXXzZQlRm486qDYGQtQ0jW8Ms6RtpLdk65Qcz7YJ7/YEdFvKdb+dzF1Re9Q6nwXZnFrLVKgAD5Mwb
-        LfHsy0RngN1antwERG5D/EtoEWfAXqtoLg2k7TzZKasJtkGm7zpf+kH+Fd2GGS1HnQh8pXfJiIePS
-        VAbFF/9w==;
-Received: from 200-161-159-120.dsl.telesp.net.br ([200.161.159.120] helo=[192.168.1.60])
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-        id 1ns0jj-00Cb4k-Od; Fri, 20 May 2022 13:24:04 +0200
-Message-ID: <ded31ec0-076b-2c5b-0fe6-0c274954821f@igalia.com>
-Date:   Fri, 20 May 2022 08:23:33 -0300
+        Fri, 20 May 2022 08:31:17 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6146447568;
+        Fri, 20 May 2022 05:31:13 -0700 (PDT)
+Received: from mail-yb1-f172.google.com ([209.85.219.172]) by
+ mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1N3KDM-1nidun1Y1a-010L21; Fri, 20 May 2022 14:31:11 +0200
+Received: by mail-yb1-f172.google.com with SMTP id r1so13919589ybo.7;
+        Fri, 20 May 2022 05:31:10 -0700 (PDT)
+X-Gm-Message-State: AOAM533XICYSchr83/2dnnvlXYJ4p8DurUidGgS1IQc22J1Xjhw4Rq8S
+        ggohQQS/MAC5kuY3vi/H1bpfmpgzzMs77SmJ3i4=
+X-Google-Smtp-Source: ABdhPJzM0/g+q1PRwguziGorhB8SDUsN9iEFZbR/3vnqE9X6zeZuqHYx8uEJ7JXjS9vB4zG423aFir2s+dxjeU1ONqo=
+X-Received: by 2002:a25:31c2:0:b0:641:660f:230f with SMTP id
+ x185-20020a2531c2000000b00641660f230fmr9208955ybx.472.1653049869839; Fri, 20
+ May 2022 05:31:09 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH 24/30] panic: Refactor the panic path
-Content-Language: en-US
-To:     Baoquan He <bhe@redhat.com>, Petr Mladek <pmladek@suse.com>
-Cc:     "michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Dave Young <dyoung@redhat.com>, d.hatayama@jp.fujitsu.com,
-        akpm@linux-foundation.org, kexec@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        netdev@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
-        rcu@vger.kernel.org, sparclinux@vger.kernel.org,
-        xen-devel@lists.xenproject.org, x86@kernel.org,
-        kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
-        fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
-        andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de,
-        corbet@lwn.net, dave.hansen@linux.intel.com, feng.tang@intel.com,
-        gregkh@linuxfoundation.org, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-25-gpiccoli@igalia.com> <Yn0TnsWVxCcdB2yO@alley>
- <d313eec2-96b6-04e3-35cd-981f103d010e@igalia.com>
- <20220519234502.GA194232@MiWiFi-R3L-srv>
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <20220519234502.GA194232@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220519031345.2134401-1-kuba@kernel.org>
+In-Reply-To: <20220519031345.2134401-1-kuba@kernel.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 20 May 2022 13:30:50 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3_4fNQV51V0-QUnuTr4dK0-S_ffeFzfA8vG1uGh8vyhg@mail.gmail.com>
+Message-ID: <CAK8P3a3_4fNQV51V0-QUnuTr4dK0-S_ffeFzfA8vG1uGh8vyhg@mail.gmail.com>
+Subject: Re: [PATCH net-next] eth: de4x5: remove support for Generic DECchip &
+ DIGITAL EtherWORKS PCI/EISA
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+        pabeni@redhat.com, corbet@lwn.net, tsbogend@alpha.franken.de,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        sburla@marvell.com, vburru@marvell.com, aayarekar@marvell.com,
+        arnd@arndb.de, zhangyue1@kylinos.cn, linux-doc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-parisc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:RxidTNlQXTP5LyaUmtNAetv6uI1NVNaDYJwJVsMWQ7BOLaI5KHE
+ BtANPl6/Mpb7IMmupUSDX+IsM35n8hWFOMNOYw+0YgSgKQA2FDDwU3YK4lDZQcZZlJmaAvo
+ SZV9v5sCdIrOTEIPAKcGMViiGmdUCw1NuunYTM5JMQxgHn6zNKtV7QRkg8i+MLpW5EhFOmi
+ b6RNeMTv+G71tkjVyMk8A==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:e/tDl3btj98=:gvOYMsp+h25Jgb6dzhVdva
+ 0DyHnXDqjhtjeu4Pk1OZ7FZJJ0bWPdC7LgJPFm2pUoYTY1F0VUqKRRLkBeGRiXqHGPanmkBd+
+ aBFbqZ1AH/5ZyPSmzjB4Hda9TFjuZ9/G4+47e4Ia4AYmjPQt1jzcvc4NmsqYvL6oCYvwdHnY6
+ kDxgSXfGtcSRfBhgFpnzK59seeAPmZZ21ChXfu7UN5MxNYv1Oabmsaxc9HbvSARXxsZEGkET4
+ JPlTMGSQfO8EQ7JwPs8E/EqpcxgY6LhsO5bQj7su6dveLB2o0P9NoEUxs+tSxloGZf0dBZm0V
+ w6zMWKM2cbpW4nMJvsFnCyYOUzDIQCHcnjiqmffej7ibOqrcOmphjBGin276Nqs3gIvv+b48r
+ 5wQwolelaftPAGlEgFefW4ygh72SVpzU8pllcGBxxUqgtJ0Wl/0VdpAnIIaH+bWzbLF/K6VGA
+ aO9SMtfT8BK4nploXjRUy2cAOYCVd/f8nfJRn2B3smFoS/5bxcR2dgS3nywOTAqVE8+FhoqvL
+ doSY0NqYBY+V6MYhXUNYUHOOw2FW1SQnTwGBRh9NP6L3nvkrq5FIMm3ZHFYJ0pSM/AZRzeI58
+ 9XpJMw4OKijWCak2SAMy8yI5K1eHIx3dOkt9fLY8w1ClnwAOsXDpujOVyX+MHeN62xpsgX/s8
+ WNtT3MNIhnjSQp1mwux3EHkbsArd/vYRfGujMyo48otmyeNLK7DdNRLAxWCwJ1U5ziJ+DQ1Tl
+ aRQKRUuEWzdY+gEyN2VlWys8iHRjxTpid1Joig==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 19/05/2022 20:45, Baoquan He wrote:
-> [...]
->> I really appreciate the summary skill you have, to convert complex
->> problems in very clear and concise ideas. Thanks for that, very useful!
->> I agree with what was summarized above.
-> 
-> I want to say the similar words to Petr's reviewing comment when I went
-> through the patches and traced each reviewing sub-thread to try to
-> catch up. Petr has reivewed this series so carefully and given many
-> comments I want to ack immediately.
-> 
-> I agree with most of the suggestions from Petr to this patch, except of
-> one tiny concern, please see below inline comment.
+On Thu, May 19, 2022 at 4:13 AM Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> Looks like almost all changes to this driver had been tree-wide
+> refactoring since git era begun. There is one commit from Al
+> 15 years ago which could potentially be fixing a real bug.
+>
+> The driver is using virt_to_bus() and is a real magnet for pointless
+> cleanups. It seems unlikely to have real users. Let's try to shed
+> this maintenance burden.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: corbet@lwn.net
+> CC: tsbogend@alpha.franken.de
+> CC: mpe@ellerman.id.au
+> CC: benh@kernel.crashing.org
+> CC: paulus@samba.org
+> CC: sburla@marvell.com
+> CC: vburru@marvell.com
+> CC: aayarekar@marvell.com
+> CC: arnd@arndb.de
 
-Hi Baoquan, thanks! I'm glad you're also reviewing that =)
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-
-> [...]
-> 
-> I like the proposed skeleton of panic() and code style suggested by
-> Petr very much. About panic_prefer_crash_dump which might need be added,
-> I hope it has a default value true. This makes crash_dump execute at
-> first by default just as before, unless people specify
-> panic_prefer_crash_dump=0|n|off to disable it. Otherwise we need add
-> panic_prefer_crash_dump=1 in kernel and in our distros to enable kdump,
-> this is inconsistent with the old behaviour.
-
-I'd like to understand better why the crash_kexec() must always be the
-first thing in your use case. If we keep that behavior, we'll see all
-sorts of workarounds - see the last patches of this series, Hyper-V and
-PowerPC folks hardcoded "crash_kexec_post_notifiers" in order to force
-execution of their relevant notifiers (like the vmbus disconnect,
-specially in arm64 that has no custom machine_crash_shutdown, or the
-fadump case in ppc). This led to more risk in kdump.
-
-The thing is: with the notifiers' split, we tried to keep only the most
-relevant/necessary stuff in this first list, things that ultimately
-should improve kdump reliability or if not, at least not break it. My
-feeling is that, with this series, we should change the idea/concept
-that kdump must run first nevertheless, not matter what. We're here
-trying to accommodate the antagonistic goals of hypervisors that need
-some clean-up (even for kdump to work) VS. kdump users, that wish a
-"pristine" system reboot ASAP after the crash.
-
-Cheers,
+> ---
+>  .../device_drivers/ethernet/dec/de4x5.rst     |  189 -
+>  .../device_drivers/ethernet/index.rst         |    1 -
+>  arch/mips/configs/mtx1_defconfig              |    1 -
+>  arch/powerpc/configs/chrp32_defconfig         |    1 -
+>  arch/powerpc/configs/ppc6xx_defconfig         |    1 -
+>  drivers/net/ethernet/dec/tulip/Kconfig        |   15 -
+>  drivers/net/ethernet/dec/tulip/Makefile       |    1 -
+>  drivers/net/ethernet/dec/tulip/de4x5.c        | 5591 -----------------
+>  drivers/net/ethernet/dec/tulip/de4x5.h        | 1017 ---
 
 
-Guilherme
+I checked the defconfig files to make sure we are not removing the
+last ethernet driver from
+one of them. mtx1 has built-in networking and no PCI slot, so this is
+definitely fine.
+the ppc32 configs are for machines with PCI slots and also enable
+multiple drivers but I saw
+nothing specifically needing this card.
+
+       Arnd
