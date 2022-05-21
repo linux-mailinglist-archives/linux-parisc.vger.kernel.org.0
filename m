@@ -2,83 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 580A852F6B2
-	for <lists+linux-parisc@lfdr.de>; Sat, 21 May 2022 02:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFCC852F7CD
+	for <lists+linux-parisc@lfdr.de>; Sat, 21 May 2022 05:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238308AbiEUAUO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 20 May 2022 20:20:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34862 "EHLO
+        id S1354396AbiEUDAb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 20 May 2022 23:00:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235316AbiEUAUN (ORCPT
+        with ESMTP id S239452AbiEUDAa (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 20 May 2022 20:20:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04343190D06;
-        Fri, 20 May 2022 17:20:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A0B961E6C;
-        Sat, 21 May 2022 00:20:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AA043C34113;
-        Sat, 21 May 2022 00:20:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653092411;
-        bh=okerM4+dRze994O7cYyBfgw7RR8XASMlqcJVm//DF3k=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=hPSzRDHYe4x6lPC6MeRMkCgle1xdmP/ct8ODkQYkooLYkXrY4VbCgLOLTD95jbVb8
-         bjbdIA+2UUPvGNGw7cjOM+k56pyCmU6E/6kyrXu3vF0lYmabnqHR8GXx42q1OZPuku
-         8s+/MUwDODiEMwsvPba7RiZkXhy3TQ2ndWuorH2cdd+GQks8awG4TcqSpJpLslxEq6
-         xJizSRFpOfBPVh/HJ/VD734iafX/ntXU3mlvhx7Zo3Ll7Eaa/x6V9yTWm4LRHuvvyS
-         K7s8oaFB764MeGy73SNMQ5SEHoZVSk3OvYKt9Z4WSBt/0irNXxkujbfWskY7ydHsbZ
-         Q4arg8yyQBWbA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 90126F0383D;
-        Sat, 21 May 2022 00:20:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Fri, 20 May 2022 23:00:30 -0400
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F0A51195936;
+        Fri, 20 May 2022 20:00:29 -0700 (PDT)
+Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 24L2lVGD004361;
+        Fri, 20 May 2022 21:47:32 -0500
+Message-ID: <f84c4cb17eebe385fe22c3fc4563645742269d46.camel@kernel.crashing.org>
+Subject: Re: [PATCH net-next] eth: de4x5: remove support for Generic DECchip
+ & DIGITAL EtherWORKS PCI/EISA
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc:     netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+        corbet@lwn.net, tsbogend@alpha.franken.de, mpe@ellerman.id.au,
+        paulus@samba.org, sburla@marvell.com, vburru@marvell.com,
+        aayarekar@marvell.com, arnd@arndb.de, zhangyue1@kylinos.cn,
+        linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org
+Date:   Sat, 21 May 2022 12:47:31 +1000
+In-Reply-To: <20220519031345.2134401-1-kuba@kernel.org>
+References: <20220519031345.2134401-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: tulip: fix build with CONFIG_GSC
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <165309241158.18678.4082296643005446274.git-patchwork-notify@kernel.org>
-Date:   Sat, 21 May 2022 00:20:11 +0000
-References: <4719560.GXAFRqVoOG@eto.sf-tec.de>
-In-Reply-To: <4719560.GXAFRqVoOG@eto.sf-tec.de>
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>
-Cc:     kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
-        yangyingliang@huawei.com, davem@davemloft.net, edumazet@google.com
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello:
+On Wed, 2022-05-18 at 20:13 -0700, Jakub Kicinski wrote:
+> Looks like almost all changes to this driver had been tree-wide
+> refactoring since git era begun. There is one commit from Al
+> 15 years ago which could potentially be fixing a real bug.
+> 
+> The driver is using virt_to_bus() and is a real magnet for pointless
+> cleanups. It seems unlikely to have real users. Let's try to shed
+> this maintenance burden.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-This patch was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Removing this driver will kill support for some rather old PowerMac
+models (some PowerBooks I think, paulus would know). No objection on my
+part, though. I doubt people still use these things with new kernels
+but ... who knows ? :-)
 
-On Fri, 20 May 2022 15:28:21 +0200 you wrote:
-> Fixes: 3daebfbeb455 ("net: tulip: convert to devres")
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Rolf Eike Beer <eike-kernel@sf-tec.de>
-> ---
->  drivers/net/ethernet/dec/tulip/eeprom.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Here is the summary with links:
-  - net: tulip: fix build with CONFIG_GSC
-    https://git.kernel.org/netdev/net-next/c/dc2df00af951
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Cheers,
+Ben.
 
