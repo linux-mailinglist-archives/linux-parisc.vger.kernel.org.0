@@ -2,99 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1687D531717
-	for <lists+linux-parisc@lfdr.de>; Mon, 23 May 2022 22:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CC89531DCD
+	for <lists+linux-parisc@lfdr.de>; Mon, 23 May 2022 23:31:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230233AbiEWUlM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 23 May 2022 16:41:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50046 "EHLO
+        id S229721AbiEWVby (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 23 May 2022 17:31:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233175AbiEWUlD (ORCPT
+        with ESMTP id S229625AbiEWVbx (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 23 May 2022 16:41:03 -0400
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE309C3F;
-        Mon, 23 May 2022 13:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=LG2HkLvcft3PZ/5y+RaNtcoQpztQykGkc8EQp8pxJfI=; b=fPCMiuZns16FgBzoGF9Je3OLkO
-        LL4L2QHAG/wGtiXgEhS21zRsWqE1LMzGwwDxe6f9KpfZaY9eV7CGD4vwhcqTRNInSSR1HDaLnpPpS
-        miMpU8/+9j0GmfawjCEu88Tqk7uAI9V6UbtlRLQsT2Paj7KpRr9Eexx/1nt9uyC0/PRdqZ6qso//5
-        331flFwFw5rYDxq1lD4s7YGntuImz8x8p2XDCS463SY8sQhksTBKudAp4pKnME8DpTbZ4fGAvbQxT
-        wafY442u8mSqR6x/cwniP7CEUq4fd8W+eVImWzP4xrptC52doj1jXiLwbdsJQSnWbw0nF1P7Xd8f/
-        wPYC4mSw==;
-Received: from 200-161-159-120.dsl.telesp.net.br ([200.161.159.120] helo=[192.168.1.60])
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-        id 1ntEr0-00Gje9-7b; Mon, 23 May 2022 22:40:38 +0200
-Message-ID: <0dda86c0-3a54-8c70-d1e7-18bbb4d41bab@igalia.com>
-Date:   Mon, 23 May 2022 17:40:07 -0300
+        Mon, 23 May 2022 17:31:53 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C95687893E;
+        Mon, 23 May 2022 14:31:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1653341487;
+        bh=L1yXvKPj03tgXtdi0Z6vcohjXwEcWIHIczflYFGsM4A=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=kRISwuGHKbdS2MGbdPOHKrw1ZUEeqlRcrNpysyGZzipT6WQP0PWN+FNzP5TudRQFG
+         MqgxLEt/COwH7q8xUYfNMen/VJBRaVCSAVqv3jIhvSVAk+eGuZGdwHRmlYNQx/mf2z
+         LV6MU12stsP39m0cRyOOaA58epA9aw3Ip1cuXcjY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.182.49]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MzQkK-1nfpV92vnU-00vSgo; Mon, 23
+ May 2022 23:31:27 +0200
+Message-ID: <43de5653-7587-3e8e-274c-b2729649d0fd@gmx.de>
+Date:   Mon, 23 May 2022 23:31:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
 Subject: Re: [PATCH 12/30] parisc: Replace regular spinlock with spin_trylock
  on panic path
 Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-        pmladek@suse.com, bhe@redhat.com, akpm@linux-foundation.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-edac@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, netdev@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
-        x86@kernel.org, kernel-dev@igalia.com, kernel@gpiccoli.net,
-        halves@canonical.com, fabiomirmar@gmail.com,
-        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
-        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
-        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
-        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
-        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
  <20220427224924.592546-13-gpiccoli@igalia.com>
  <6a7c924a-54a9-c5ea-8a9d-3ea92987b436@gmx.de>
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <6a7c924a-54a9-c5ea-8a9d-3ea92987b436@gmx.de>
+ <0dda86c0-3a54-8c70-d1e7-18bbb4d41bab@igalia.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <0dda86c0-3a54-8c70-d1e7-18bbb4d41bab@igalia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:S8C8ggPQAzt2THMCXCJm3DvZjsLOdiXAmmgPthategQkvdDnN69
+ zCW1E+F7T3INuitTqNMdFNfBBVGZk1CSobePKVyrah47Rm6eJdFOwV0S3iJmABoepKkLiR8
+ WexQ5t0W1Vfmm4+xYttaKUFWU1NVqVrbDohap0z6r0Ul/xUp5t9CsQcAJHl79p7NlBUl/JN
+ ZcOmLrMkmD1PXIPLQv7sQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ZUMQspFc4ME=:KRRGDrtumXRJDjjD0dvBJl
+ G/vXNlgH26JaOIslpu8ec10Z9s0d/6z+DS0BPRtfC/fv/B0+l3F9kP5hFLiq8hOnlEe/qfOOw
+ 0PML0OIG+y6nFNAmjNSsIjVBlKPtL2ulq0H4JsPza0NLCa+jF0t+zyZkEgr6VSXb4NITrbiJ9
+ eBMgy0mATXulbujo17rfMibYvylGY7/TjkoefButNuKTjlpa5Xkc75OXbiM/PHl94Qcujw0V/
+ tBVWMar5+i03UP7QVWX1XOGyxlGqPoUl9AjxbqYPRyC0a1ZKXBKKSbdtsGa/qsRNtGC99CN3W
+ y5iH782ovLcd7GuzpQ8xLYbMDuHVOQAuo3YVvLsoUav30f29R2nFYYf95wNJat4Ucy0efrJgH
+ TkFjk5xQhGiC+2UuXxUb1bNA9zaN1y+hfDU7VI6DVzSyMx2d2aNJ6VRcrMaqldZi2xbSJbylX
+ rWoiV6YyA39pYjHjWRcLs93eNW/ibJyKIX02V378NRl15h/r/h5J3Y4bwvkFncNMP41zi6EPI
+ /S94B+frU+ljH5f77a3TaitAMHxtVjF3CK+LQIXrWwNITCUPPvnVgdFnDBOeV+8PvpTrAkZHD
+ SHgVejcjZLKKzn5KK8n5qXRmBsXSW6MtZ4LaDPXN3i0pzqlwX3F41JlmWl0zuOsLuVW+xUxVU
+ +Mfe5CFwGmrmYzKKaWI8v52e8rxhVDlnExo+tZrhDJBXx+nf3Y9onaSzX3lNOXkUKxsY8JU8k
+ H7OzaYE2m+0QqR0WiKn1nXXI1+2m3P1BI3MeYMzpDcSFMI8kiiAa8pMqpBeMDlTHf8SzwSVc1
+ KVOooIdnXhdHeRWJPLUzBTAEdwVtjvNGzacNgti42mISyD/K8uD5qLYm3DhnVFoJoOXULILST
+ E3p83+R9Qz6rMGPBmOW3nTT2dpjpdoZtvPJob+btcLH+xiRxLpzaPQh/ii2oBK7aYJpO+Yb4W
+ PrK2fbh5qR+yO1QEw6RV3gcqwpAz2rZ/1/8Ho30ehl6sQRFMX1sCZDhEtl8CY+tBV1D43Opgl
+ qgJOSdaysVwLi+OOw9GGnfYdWvXEorjqzye4Z1qYNfhBm+9vchoVQCvHrMfbO8mIsM+zBUD5W
+ VVM53tlmaAObbXRPaLV+Ud7i4eymtmNjnfLTwn2vUCiUO5mfwm32QTkMg==
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 28/04/2022 13:55, Helge Deller wrote:
-> [...]
-> You may add:
-> Acked-by: Helge Deller <deller@gmx.de> # parisc
-> 
-> Helge
+Hello Guilherme,
 
-Hi Helge, do you think would be possible to still pick this one for
-v5.19 or do you prefer to hold for the next release?
+On 5/23/22 22:40, Guilherme G. Piccoli wrote:
+> On 28/04/2022 13:55, Helge Deller wrote:
+>> [...]
+>> You may add:
+>> Acked-by: Helge Deller <deller@gmx.de> # parisc
+>
+> Hi Helge, do you think would be possible to still pick this one for
+> v5.19 or do you prefer to hold for the next release?
 
-I'm working on V2, so if it's merged for 5.19 I won't send it again.
-Thanks,
+Actually, I'd prefer if you push this patch together with the whole
+series upstream at once. The patch itself makes not much sense without
+your series...
 
+> I'm working on V2, so if it's merged for 5.19 I won't send it again.
 
-Guilherme
+Helge
