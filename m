@@ -2,206 +2,183 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3C2F53275F
-	for <lists+linux-parisc@lfdr.de>; Tue, 24 May 2022 12:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3310532B07
+	for <lists+linux-parisc@lfdr.de>; Tue, 24 May 2022 15:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236040AbiEXKT2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 24 May 2022 06:19:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39162 "EHLO
+        id S237666AbiEXNPW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 24 May 2022 09:15:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230087AbiEXKTN (ORCPT
+        with ESMTP id S234130AbiEXNPT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 24 May 2022 06:19:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 678428AE4E
-        for <linux-parisc@vger.kernel.org>; Tue, 24 May 2022 03:19:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1653387544;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=5hjdGDxm/5eb7UZfehykEkfZZM041fRa5GaKQ9lwQHI=;
-        b=iKpecxYMD7VCxtrbU+sPxVvd0BSKFPCnIGYphDjbIyqtrXmm7uONgJzKCgiq2l2C1zb1ED
-        /eqwxKuc7BCt611qLNzwgMt1rlWEUTeCzgQN74FbOYZv9C6PUgx7VCkkvioUfM7nXLcpQv
-        9su6hBX4jKR9SNvklGaEN9jbKuR/20Q=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-13-cdRBusv8OiWHr2Ge-bjGGw-1; Tue, 24 May 2022 06:19:03 -0400
-X-MC-Unique: cdRBusv8OiWHr2Ge-bjGGw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7889A101A52C;
-        Tue, 24 May 2022 10:19:00 +0000 (UTC)
-Received: from localhost (ovpn-13-156.pek2.redhat.com [10.72.13.156])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 2727240E7F0C;
-        Tue, 24 May 2022 10:18:59 +0000 (UTC)
-Date:   Tue, 24 May 2022 18:18:55 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        "michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Dave Young <dyoung@redhat.com>, d.hatayama@jp.fujitsu.com,
-        akpm@linux-foundation.org, kexec@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        netdev@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
-        rcu@vger.kernel.org, sparclinux@vger.kernel.org,
-        xen-devel@lists.xenproject.org, x86@kernel.org,
-        kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
-        fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
-        andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de,
-        corbet@lwn.net, dave.hansen@linux.intel.com, feng.tang@intel.com,
-        gregkh@linuxfoundation.org, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org
-Subject: Re: [PATCH 24/30] panic: Refactor the panic path
-Message-ID: <YoyxD3WApHpa/N1n@MiWiFi-R3L-srv>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-25-gpiccoli@igalia.com>
- <Yn0TnsWVxCcdB2yO@alley>
- <d313eec2-96b6-04e3-35cd-981f103d010e@igalia.com>
- <20220519234502.GA194232@MiWiFi-R3L-srv>
- <ded31ec0-076b-2c5b-0fe6-0c274954821f@igalia.com>
- <YoyQyHHfhIIXSX0U@alley>
+        Tue, 24 May 2022 09:15:19 -0400
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A758092D3C;
+        Tue, 24 May 2022 06:15:16 -0700 (PDT)
+Received: by mail-vk1-f172.google.com with SMTP id i25so3509450vkr.8;
+        Tue, 24 May 2022 06:15:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=S/pNo5ypsj8sjqbjG1l1gWrym6AVA3NFtAtotZSuvpI=;
+        b=Nlnp3Tt7ggn57HIpiVd8CvV+0ugogeUYN+jELykDDIxebKZC9XGaCn5KFR486E2X0k
+         qTx3JF5rJfvLifnrCOLM80QF0/ZUXpj5nColqtphIzI++D/sVniQAqq5vQ+lPX47gGkA
+         KBx1AgXROK6AfhviJCRB3xoaB4DF7ozHk+wv4BVfGJqH8XobD3FiaCb4UKX9nrOUzTXu
+         i11tyLLgMm2rzWkr87NZCzemjsM24C4BE5tcLfHA0VpF2C3RHWIXr3h5xxSvYHSrcYbO
+         02uaWF3TKJSebcR1dNamHmOMRypwr41nJ2MOU+VFXixo2Hs3A9/C/H/yO/zDAFISzX/K
+         8GVw==
+X-Gm-Message-State: AOAM531yx760ja3yIFmW5n/5PG/ykmXFSNo0ablQ3Idb7/7i8Ujvq8Jr
+        qylPGpq5obQlUylrePr1dcu1etL99R+xwmBf4bQ=
+X-Google-Smtp-Source: ABdhPJyQMjkU2pFncm97tvshlgqAgIyKOlZpUu863vwvqA6s/pj0DzpChnIjsM4xuD6o3+RIk2euBw==
+X-Received: by 2002:a1f:2f8b:0:b0:357:8887:811 with SMTP id v133-20020a1f2f8b000000b0035788870811mr4393420vkv.0.1653398115473;
+        Tue, 24 May 2022 06:15:15 -0700 (PDT)
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com. [209.85.222.52])
+        by smtp.gmail.com with ESMTPSA id x184-20020a1fe0c1000000b00352a7e95666sm1479777vkg.29.2022.05.24.06.15.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 May 2022 06:15:15 -0700 (PDT)
+Received: by mail-ua1-f52.google.com with SMTP id n24so6240512uap.13;
+        Tue, 24 May 2022 06:15:14 -0700 (PDT)
+X-Received: by 2002:a25:e7ce:0:b0:64d:6028:96b9 with SMTP id
+ e197-20020a25e7ce000000b0064d602896b9mr25151338ybh.365.1653398104009; Tue, 24
+ May 2022 06:15:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YoyQyHHfhIIXSX0U@alley>
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.1
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <20220509233235.995021-1-dmitry.osipenko@collabora.com> <20220509233235.995021-8-dmitry.osipenko@collabora.com>
+In-Reply-To: <20220509233235.995021-8-dmitry.osipenko@collabora.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 24 May 2022 15:14:52 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVGjeFe=Z_1Kr9ZaNZ7HUVH1usvubEB31WUQf0fg8E1kA@mail.gmail.com>
+Message-ID: <CAMuHMdVGjeFe=Z_1Kr9ZaNZ7HUVH1usvubEB31WUQf0fg8E1kA@mail.gmail.com>
+Subject: Re: [PATCH v8 07/27] kernel/reboot: Add kernel_can_power_off()
+To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 05/24/22 at 10:01am, Petr Mladek wrote:
-> On Fri 2022-05-20 08:23:33, Guilherme G. Piccoli wrote:
-> > On 19/05/2022 20:45, Baoquan He wrote:
-> > > [...]
-> > >> I really appreciate the summary skill you have, to convert complex
-> > >> problems in very clear and concise ideas. Thanks for that, very useful!
-> > >> I agree with what was summarized above.
-> > > 
-> > > I want to say the similar words to Petr's reviewing comment when I went
-> > > through the patches and traced each reviewing sub-thread to try to
-> > > catch up. Petr has reivewed this series so carefully and given many
-> > > comments I want to ack immediately.
-> > > 
-> > > I agree with most of the suggestions from Petr to this patch, except of
-> > > one tiny concern, please see below inline comment.
-> > 
-> > Hi Baoquan, thanks! I'm glad you're also reviewing that =)
-> > 
-> > 
-> > > [...]
-> > > 
-> > > I like the proposed skeleton of panic() and code style suggested by
-> > > Petr very much. About panic_prefer_crash_dump which might need be added,
-> > > I hope it has a default value true. This makes crash_dump execute at
-> > > first by default just as before, unless people specify
-> > > panic_prefer_crash_dump=0|n|off to disable it. Otherwise we need add
-> > > panic_prefer_crash_dump=1 in kernel and in our distros to enable kdump,
-> > > this is inconsistent with the old behaviour.
-> > 
-> > I'd like to understand better why the crash_kexec() must always be the
-> > first thing in your use case. If we keep that behavior, we'll see all
-> > sorts of workarounds - see the last patches of this series, Hyper-V and
-> > PowerPC folks hardcoded "crash_kexec_post_notifiers" in order to force
-> > execution of their relevant notifiers (like the vmbus disconnect,
-> > specially in arm64 that has no custom machine_crash_shutdown, or the
-> > fadump case in ppc). This led to more risk in kdump.
-> > 
-> > The thing is: with the notifiers' split, we tried to keep only the most
-> > relevant/necessary stuff in this first list, things that ultimately
-> > should improve kdump reliability or if not, at least not break it. My
-> > feeling is that, with this series, we should change the idea/concept
-> > that kdump must run first nevertheless, not matter what. We're here
-> > trying to accommodate the antagonistic goals of hypervisors that need
-> > some clean-up (even for kdump to work) VS. kdump users, that wish a
-> > "pristine" system reboot ASAP after the crash.
-> 
-> Good question. I wonder if Baoquan knows about problems caused by the
-> particular notifiers that will end up in the hypervisor list. Note
-> that there will be some shuffles and the list will be slightly
-> different in V2.
+Hi Dmitry,
 
-Yes, I knew some of them. Please check my response to Guilherme.
+On Tue, May 10, 2022 at 1:33 AM Dmitry Osipenko
+<dmitry.osipenko@collabora.com> wrote:
+> Add kernel_can_power_off() helper that replaces open-coded checks of
+> the global pm_power_off variable. This is a necessary step towards
+> supporting chained power-off handlers.
+>
+> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
-We have bug to track the issue on Hyper-V in which failure happened
-during panic notifiers running, haven't come to kdump. Seems both of
-us sent mail replying to Guilherme at the same time. 
+Thanks for your patch, which is now commit 0e2110d2e910e44c
+("kernel/reboot: Add kernel_can_power_off()") in pm/linux-next.
 
-> 
-> Anyway, I see four possible solutions:
-> 
->   1. The most conservative approach is to keep the current behavior
->      and call kdump first by default.
-> 
->   2. A medium conservative approach to change the default default
->      behavior and call hypervisor and eventually the info notifiers
->      before kdump. There still would be the possibility to call kdump
->      first by the command line parameter.
-> 
->   3. Remove the possibility to call kdump first completely. It would
->      assume that all the notifiers in the info list are super safe
->      or that they make kdump actually more safe.
-> 
->   4. Create one more notifier list for operations that always should
->      be called before crash_dump.
+This causes the "poweroff" command (Debian nfsroot) to no longer
+cleanly halt the system on arm32 systems, but fail with a panic
+instead:
 
-I would vote for 1 or 4 without any hesitation, and prefer 4. I ever
-suggest the variant of solution 4 in v1 reviewing. That's taking those
-notifiers out of list and enforcing to execute them before kdump. E.g
-the one on HyperV to terminate VMbus connection. Maybe solution 4 is
-better to provide a determinate way for people to add necessary code
-at the earliest part.
+-reboot: System halted
++reboot: Power down
++Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000000
++CPU: 0 PID: 1 Comm: systemd-shutdow Not tainted
+5.18.0-rc7-shmobile-00007-g0e2110d2e910 #1274
++Hardware name: Generic R-Car Gen2 (Flattened Device Tree)
++ unwind_backtrace from show_stack+0x10/0x14
++ show_stack from dump_stack_lvl+0x40/0x4c
++ dump_stack_lvl from panic+0xf4/0x330
++ panic from do_exit+0x1c8/0x8e4
++ do_exit from __do_sys_reboot+0x174/0x1fc
++ __do_sys_reboot from ret_fast_syscall+0x0/0x54
++Exception stack(0xf0815fa8 to 0xf0815ff0)
++5fa0:                   004e6954 00000000 fee1dead 28121969 4321fedc f0d94600
++5fc0: 004e6954 00000000 00000000 00000058 befa0c78 00000000 befa0c10 004e56f8
++5fe0: 00000058 befa0b6c b6ec8d45 b6e4a746
++---[ end Kernel panic - not syncing: Attempted to kill init!
+exitcode=0x00000000 ]---
 
-> 
-> Regarding the extra notifier list (4th solution). It is not clear to
-> me whether it would be always called even before hypervisor list or
-> when kdump is not enabled. We must not over-engineer it.
+On arm64, "poweroff" causes a clean "reboot: Power down" before/after.
 
-One thing I would like to notice is, no matter how perfect we split the
-lists this time, we can't gurantee people will add notifiers reasonablly
-in the future. And people from different sub-component may not do
-sufficient investigation and add them to fulfil their local purpose.
+On both arm32 and arm64, the same handlers are registered:
+  - SYS_OFF_MODE_POWER_OFF_PREPARE: legacy_pm_power_off_prepare
+  - SYS_OFF_MODE_POWER_OFF: legacy_pm_power_off
 
-The current panic notifers list is the best example. Hyper-V actually
-wants to run some necessary code before kdump, but not all of them, they
-just add it, ignoring the original purpose of
-crash_kexec_post_notifiers. I guess they do like this just because it's
-easy to do, no need to bother changing code in generic place.
+On both arm32 and arm64, legacy_pm_power_off_prepare() is called.
+On both arm32 and arm64, legacy_pm_power_off() does not seem to
+be called.
 
-Solution 4 can make this no doubt, that's why I like it better.
+On arm32, both pm_power_off_prepare and pm_power_off are NULL.
+On arm64, pm_power_off_prepare is NULL, and
+pm_power_off is psci_sys_poweroff.
 
-> 
-> 2nd proposal looks like a good compromise. But maybe we could do
-> this change few releases later. The notifiers split is a big
-> change on its own.
+Do you have a clue?
+Thanks!
 
-As I replied to Guilherme, solution 2 will cause regression if not
-calling kdump firstly. Solution 3 leaves people space to make mistake,
-they could add nontifier into wrong list.
+Gr{oetje,eeting}s,
 
-I would like to note again that the panic notifiers are optional to run,
-while kdump is expectd once loaded, from the original purpose. I guess
-people I know will still have this thought, e.g Hatayama, Masa, they are
-truly often use panic notifiers like this on their company's system.
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
