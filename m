@@ -2,179 +2,75 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75FCA535E9B
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 May 2022 12:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED83B536399
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 May 2022 15:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351153AbiE0Kqt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 May 2022 06:46:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51052 "EHLO
+        id S1350186AbiE0Nyt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Fri, 27 May 2022 09:54:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344688AbiE0Kqi (ORCPT
+        with ESMTP id S240514AbiE0Nyt (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 May 2022 06:46:38 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 248E4140E2;
-        Fri, 27 May 2022 03:46:37 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id m20so7894959ejj.10;
-        Fri, 27 May 2022 03:46:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=VEAekRrz/FSY4pk4QnV3m6H5QVjhz8BFDYr0EcpVw1E=;
-        b=nXTl96gpCDbYy3bbmZHUFxanwBKanpTD5T3ye91nNt0S5DzRS50X+C3V5calou/Tbd
-         W3tp+Pa5ui5nyk/J9IilzxqUhKzX+QyGcukjZk0ELfa/RtKrZMaq9i+yE1j0RcYeHGEH
-         V+4RtLXDWPxnAymJMfcVpu0JZEZoxenwNXkmgyYKMQXGnN1Ls7NkOSx9TgW4IEazH0HS
-         TOy4lNsQjFRd71dz5D/Ux8BGGU+UgNurAc7P2zcBMC8bJFwbS5pJWekOq461oc+DsRDd
-         eh87WbfBiCTIu2NxwA+S3LoC7J0WxrnESI1Jt77XHjKjToAke3bka2tT28oXpFfiDYxk
-         GFbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=VEAekRrz/FSY4pk4QnV3m6H5QVjhz8BFDYr0EcpVw1E=;
-        b=LO/1f7GqF0w+xraxHPRErJiYfcdeZvbNzV9YGGojCAY5Bupb1bp0W3LZctCENfsFtR
-         /WAKDzDKat2OkwGPW6D9fTl8fLj4Etmld6CZcJPticTjrF4H+haFomQ5h2e2HbYEdbs9
-         rJXKpbLU4YBYdRz+DOOZSbUePDCap7/oqhjphJIaE5H/vNGTmKGyWs34XdICGbJfAF2E
-         FnHaX6s/oiFnVrTvwhnGudEJM0wErbTqenz+2gjOQJe2b/lD6oLvnqlQCGKjtFr1Yece
-         d/2nPYfV3C7ZHShCeCpBEDW/M2LNQKNi0ij4kNVyvIb3aU7A7WLEEfAmvHnsZOmvVZPm
-         eUGQ==
-X-Gm-Message-State: AOAM530kWFv/pmgO/9MV407r0PZ0iD3pk3N1Wphwja2DI6Sdq8+O0cTf
-        4C7lKcUVxCvRV2qALA5lixmZBgoYiWo=
-X-Google-Smtp-Source: ABdhPJyWn7wVchQLELsEVq6TA/gUzEaBn19VUAXtFTYBInhQr0sSQqMx29HcpQwhBHqmmOM8Z+iT0g==
-X-Received: by 2002:a17:907:7baa:b0:6fe:b3dc:2378 with SMTP id ne42-20020a1709077baa00b006feb3dc2378mr30766036ejc.266.1653648395645;
-        Fri, 27 May 2022 03:46:35 -0700 (PDT)
-Received: from gmail.com (563BA16F.dsl.pool.telekom.hu. [86.59.161.111])
-        by smtp.gmail.com with ESMTPSA id i20-20020a17090639d400b006fec1a73e48sm1320742eje.64.2022.05.27.03.46.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 May 2022 03:46:34 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Fri, 27 May 2022 12:46:31 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Peter Xu <peterx@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Richard Henderson <rth@twiddle.net>,
-        David Hildenbrand <david@redhat.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Michal Simek <monstr@monstr.eu>,
-        Russell King <linux@armlinux.org.uk>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        linux-riscv@lists.infradead.org,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jonas Bonn <jonas@southpole.se>, Will Deacon <will@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        openrisc@lists.librecores.org, linux-s390@vger.kernel.org,
-        Ingo Molnar <mingo@redhat.com>,
-        linux-m68k@lists.linux-m68k.org,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Chris Zankel <chris@zankel.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Alistair Popple <apopple@nvidia.com>,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        sparclinux@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Stafford Horne <shorne@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Paul Mackerras <paulus@samba.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-xtensa@linux-xtensa.org, Nicholas Piggin <npiggin@gmail.com>,
-        linux-sh@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
-        Borislav Petkov <bp@alien8.de>, linux-mips@vger.kernel.org,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Helge Deller <deller@gmx.de>, Vineet Gupta <vgupta@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-um@lists.infradead.org, linux-alpha@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-ia64@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Dinh Nguyen <dinguyen@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-snps-arc@lists.infradead.org,
-        Hugh Dickins <hughd@google.com>, Rich Felker <dalias@libc.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        linuxppc-dev@lists.ozlabs.org, Brian Cain <bcain@quicinc.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        linux-parisc@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v3] mm: Avoid unnecessary page fault retires on shared
- memory types
-Message-ID: <YpCsBwFArieTpvg2@gmail.com>
-References: <20220524234531.1949-1-peterx@redhat.com>
+        Fri, 27 May 2022 09:54:49 -0400
+X-Greylist: delayed 10111 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 May 2022 06:54:48 PDT
+Received: from mail.composit.net (mail.composit.net [195.49.185.119])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A1AB6B8BCB;
+        Fri, 27 May 2022 06:54:48 -0700 (PDT)
+Received: from mail.composit.net (localhost.localdomain [127.0.0.1])
+        by mail.composit.net (Proxmox) with ESMTP id AEA1C383FA5;
+        Fri, 27 May 2022 14:02:53 +0300 (MSK)
+Received: from mail.composit.net (unknown [192.168.101.14])
+        by mail.composit.net (Proxmox) with SMTP id 86DF23888B7;
+        Fri, 27 May 2022 14:02:53 +0300 (MSK)
+Received: from [192.168.1.105] (Unknown [197.234.219.23])
+        by mail.composit.net with ESMTPSA
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256)
+        ; Fri, 27 May 2022 14:02:54 +0300
+Message-ID: <CCEA6016-BBCB-41FA-A99B-4B9532B44E56@mail.composit.net>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220524234531.1949-1-peterx@redhat.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Greetings From Ukraine.  
+To:     Recipients <heiss@dnet.it>
+From:   "Kostiantyn Chichkov" <heiss@dnet.it>
+Date:   Fri, 27 May 2022 12:00:02 +0100
+Reply-To: kostiantync@online.ee
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,
+        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_SBL,RCVD_IN_SORBS_WEB,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
+        *      bl.spamcop.net
+        *      [Blocked - see <https://www.spamcop.net/bl.shtml?195.49.185.119>]
+        *  1.5 RCVD_IN_SORBS_WEB RBL: SORBS: sender is an abusable web server
+        *      [197.234.219.23 listed in dnsbl.sorbs.net]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [197.234.219.23 listed in zen.spamhaus.org]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [195.49.185.119 listed in bl.score.senderscore.com]
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Good Morning,
 
-* Peter Xu <peterx@redhat.com> wrote:
+We are Kostiantyn Chychkov and Maryna Chudnovska from Ukraine, we need your service, we have gone through your profile and we will like to work with you on an important service that needs urgent attention due to the ongoing war in our country. Kindly acknowledge this inquiry as soon as possible for a detailed discussion about the service.
 
-> This patch provides a ~12% perf boost on my aarch64 test VM with a simple
-> program sequentially dirtying 400MB shmem file being mmap()ed and these are
-> the time it needs:
->
->   Before: 650.980 ms (+-1.94%)
->   After:  569.396 ms (+-1.38%)
+Thank you.
 
-Nice!
+Yours expectantly,
 
->  arch/x86/mm/fault.c           |  4 ++++
+Kostiantyn Chichkov & Ms. Maryna Chudnovska,
+From Ukraine.
 
-Reviewed-by: Ingo Molnar <mingo@kernel.org>
 
-Minor comment typo:
-
-> +		/*
-> +		 * We should do the same as VM_FAULT_RETRY, but let's not
-> +		 * return -EBUSY since that's not reflecting the reality on
-> +		 * what has happened - we've just fully completed a page
-> +		 * fault, with the mmap lock released.  Use -EAGAIN to show
-> +		 * that we want to take the mmap lock _again_.
-> +		 */
-
-s/reflecting the reality on what has happened
- /reflecting the reality of what has happened
-
->  	ret = handle_mm_fault(vma, address, fault_flags, NULL);
-> +
-> +	if (ret & VM_FAULT_COMPLETED) {
-> +		/*
-> +		 * NOTE: it's a pity that we need to retake the lock here
-> +		 * to pair with the unlock() in the callers. Ideally we
-> +		 * could tell the callers so they do not need to unlock.
-> +		 */
-> +		mmap_read_lock(mm);
-> +		*unlocked = true;
-> +		return 0;
-
-Indeed that's a pity - I guess more performance could be gained here, 
-especially in highly parallel threaded workloads?
-
-Thanks,
-
-	Ingo
