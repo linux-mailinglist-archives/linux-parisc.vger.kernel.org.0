@@ -2,300 +2,175 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D468153637F
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 May 2022 15:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 567EC53639F
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 May 2022 15:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352749AbiE0NtN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 May 2022 09:49:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60892 "EHLO
+        id S1352174AbiE0N6J (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 27 May 2022 09:58:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237698AbiE0NtL (ORCPT
+        with ESMTP id S240514AbiE0N6J (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 May 2022 09:49:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 365B543AE7
-        for <linux-parisc@vger.kernel.org>; Fri, 27 May 2022 06:49:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1653659349;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=u3wM6LMtd0WRKF0TJX2qWAIusndSWh4uKD1DEnhNev8=;
-        b=GnhzP5Zro7Q+YgUUUxlCFu0wpQzw7xT84gsoDvlxumO9xBnREdTK+jdpbsFiaRAwQK4gC1
-        rU5Q5UCvP6PMJ0ZuISQz4IQU52fIaMZEFqF+QgorL3et9ONL62yzD8ydkMmEpeqk6wrD9Z
-        ILi7hy3bMwCOn/Wm+x/GAXBaMA91dV8=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-613-yoYkTYmtO2SEo_bE5cijQw-1; Fri, 27 May 2022 09:49:08 -0400
-X-MC-Unique: yoYkTYmtO2SEo_bE5cijQw-1
-Received: by mail-il1-f198.google.com with SMTP id j2-20020a056e02218200b002d16c950c5cso3093813ila.12
-        for <linux-parisc@vger.kernel.org>; Fri, 27 May 2022 06:49:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=u3wM6LMtd0WRKF0TJX2qWAIusndSWh4uKD1DEnhNev8=;
-        b=Wd6sMexovGFHYoTB/5Nt+E/QuYrssFOnKH17vX8aZwUGDf0GskImXKqcRbVhHq36PI
-         i0F5chYA3HfJPz/Uksdu+Zk3K1b5wRv+kxRIrpYOaSDjeqCnKEKrSHGh9tA9T4gssu0x
-         R4PaBoJAhsb3rKt13R1ODZVTDj6eR1xaVxLu5kBJJZ4DDiXXGsZOdeX4InNcVxnkuXF7
-         WTj9OihAh/Fqv25I+c8HDGSAmUXp2YkPV4INZpsagELfs2hBE0Yhaa2qpNEKWHE8YxD0
-         Aubm36uP2bboWEpW/bAzlnc+39/VXftcglg3hARryeK7baK3/eKlxm39+4rt7vPveeQo
-         IB2g==
-X-Gm-Message-State: AOAM532r2EvXC5F5PpxAhsyGfrdUeBP0bDRMBgP4/WYowVdYA1Nk2zRk
-        eSYnQGZNIHSsdE0VTfEi5KYBvMxsf+v5LkDT9PBJbFF0M+MiVKaEn+NhcTOpWxI6C4lN7vcisGW
-        0Giy8qgFvBx/C0KcY0NA+oYvg
-X-Received: by 2002:a05:6602:1584:b0:664:ab0f:5339 with SMTP id e4-20020a056602158400b00664ab0f5339mr10502540iow.146.1653659347385;
-        Fri, 27 May 2022 06:49:07 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzCqN3qwLLuYZMqrMI7aGsb6Zn5OHs31WIJQ3aUgDc8PhP19ReX/GZlaKbEBJ1PdD9YunS6AA==
-X-Received: by 2002:a05:6602:1584:b0:664:ab0f:5339 with SMTP id e4-20020a056602158400b00664ab0f5339mr10502527iow.146.1653659347005;
-        Fri, 27 May 2022 06:49:07 -0700 (PDT)
-Received: from xz-m1.local (cpec09435e3e0ee-cmc09435e3e0ec.cpe.net.cable.rogers.com. [99.241.198.116])
-        by smtp.gmail.com with ESMTPSA id x25-20020a029719000000b0032b3a7817d6sm563254jai.154.2022.05.27.06.49.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 May 2022 06:49:06 -0700 (PDT)
-Date:   Fri, 27 May 2022 09:49:01 -0400
-From:   Peter Xu <peterx@redhat.com>
-To:     Heiko Carstens <hca@linux.ibm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Richard Henderson <rth@twiddle.net>,
-        David Hildenbrand <david@redhat.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Michal Simek <monstr@monstr.eu>,
-        Russell King <linux@armlinux.org.uk>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        linux-riscv@lists.infradead.org,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jonas Bonn <jonas@southpole.se>, Will Deacon <will@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        openrisc@lists.librecores.org, linux-s390@vger.kernel.org,
-        Ingo Molnar <mingo@redhat.com>,
-        linux-m68k@lists.linux-m68k.org,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Chris Zankel <chris@zankel.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Alistair Popple <apopple@nvidia.com>,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        sparclinux@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Stafford Horne <shorne@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Paul Mackerras <paulus@samba.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-xtensa@linux-xtensa.org, Nicholas Piggin <npiggin@gmail.com>,
-        linux-sh@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
-        Borislav Petkov <bp@alien8.de>, linux-mips@vger.kernel.org,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Helge Deller <deller@gmx.de>, Vineet Gupta <vgupta@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-um@lists.infradead.org, linux-alpha@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-ia64@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Dinh Nguyen <dinguyen@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-snps-arc@lists.infradead.org,
-        Hugh Dickins <hughd@google.com>, Rich Felker <dalias@libc.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        linuxppc-dev@lists.ozlabs.org, Brian Cain <bcain@quicinc.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        linux-parisc@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Janosch Frank <frankja@linux.ibm.com>
-Subject: Re: [PATCH v3] mm: Avoid unnecessary page fault retires on shared
- memory types
-Message-ID: <YpDWzX8dyh1259Mo@xz-m1.local>
-References: <20220524234531.1949-1-peterx@redhat.com>
- <YpDCzvLER9AYJJc8@osiris>
+        Fri, 27 May 2022 09:58:09 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A72613CD4;
+        Fri, 27 May 2022 06:58:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1653659861;
+        bh=sguvIpamEs+8ZftKok+OD4Ae+fTk7JTH8TB8h2DNyw4=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=HQymCyj5my8UySLozJjhivzXzt2O0D3r/5PfQ3jcl8OQgtvEq5KzA3SFtU7DNS3Hp
+         PWh49sZU3Q7PmNJ+MebkwMDkQ/CbWc/xig115tEzeosFMDkMm9JdfIwVlHhq+2O6/+
+         1CaeBDR74w3UZxlqMNdnEVPOd3QKUJjfKEzSsvyY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.153.1]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mkpav-1nYD1e2jCZ-00mLHH; Fri, 27
+ May 2022 15:57:41 +0200
+Message-ID: <1c12cd26-d8aa-4498-f4c0-29478b9578fe@gmx.de>
+Date:   Fri, 27 May 2022 15:57:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YpDCzvLER9AYJJc8@osiris>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH v7 3/8] parisc: fix the exit status of arch/parisc/nm
+Content-Language: en-US
+To:     Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kbuild@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, llvm@lists.linux.dev,
+        linux-parisc@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+References: <20220527100155.1996314-1-masahiroy@kernel.org>
+ <20220527100155.1996314-4-masahiroy@kernel.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20220527100155.1996314-4-masahiroy@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rnzEX+fIh/b7XvFHwFrUOvS+E6bfrWBb0OjbmoABoY7eEYFwol/
+ tSEWZTjKLpLoqys43MoXs9LV3XC/t33zohBzXhXDnwtbvSno9l/gRbtG/Pd9sk4M4LPf7Os
+ CpX/dRb36KQR5bz4XG8tmGwqNX6rim9wnN5pdQ+n1xXsfFZvb2iNOAOx4n4SREIxmDddzA4
+ 4wRUOA3dl2IhZ9ivSXCjg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ejNS0xTMqGk=:EGcSQ5nJGcNajPmlb+fvdZ
+ /QWChlhJsNiHTp0PvSWb62rKbY5nkRZrtbqbWAECIZrY7p+QijMVYLH6Yt+dZHCC4as5kgGGF
+ No14sXj55Wh+xoF0pSXptmfZvhjAYKUcfqvNgSzJg2Ri6OV7TyTDRcriDYi74rK6s+7cwWhHI
+ w6mNOkVEXlGdHH/1MwMxNPIrvQcaDdtfYqjBTN/5m0htj94ha1XfTCXCfIJx1sxroLA1WR5Es
+ cd3JUws5DZM0AWzj3tOEvIuAz24ns3uTLOD52w4kZir7EYrLVvsd5Rc1a8KQZPBaQNRBsKMgV
+ A5FpTKj1zGd49+2lS5d4qedChEzIVdSIQQANym0TSN8AsesHV2GqO/Jp0A1RPZv7FxmglYPQE
+ tFjIvXuW2AIRZtfQ+5+X4a7x6zT0b7OrrSKStgk64M59cQNJ06Dab92nI62+ruznjiqyagDJn
+ dfwZX5lWPL9JAS2smWX1v2xdQf6apJ0ZNidHJgTYocooDB7PYYSAtyorrPLgXyuE+sg9nOOmF
+ RBM/h7xf3KVviBjBfITaOK5+IUar/SNWoaY2CrjORe0Y9v767XZXhn5dOmUxQ5QZzpvKQ4Ksq
+ MnQciTFX+6VnSwNqknnsvca+Z/+JWGqpn5EqfnHkYPsM5sQhZ9DMEZ/SqDxV+uuo5tlAk4Yhq
+ a4TEGB+2Ekh2SYzmVXZUu6W9kj2A6E62yGFtecKRXXO8374ixLAYTH1ooGWeS+ANYGUycv0JY
+ l03v08Yq3i1CXa8v7QhCnUM6B5uzXu4slJbPz8SysciVTNHhdtMkOX6SrcLgBPHycpYVU97pY
+ CZJsFwQtIKcNJc+EoRYsJ7izdVa04BEwVkfbKT/acXoN9d9trj+uJIeksLiZO61oF8qww4yFz
+ HF73JFkJKrDT4pLJX+HR8gnCHLhlSA4fnhj8rzjV/lwCJPMr+ymnLtheTlczF9lk/YlHmynVB
+ pEuHsx8P/fv2Sns08Ipp2hyC9dEfKVVdpLfk/xljEhZVFhgcuSiDIrSNgBnnsFxfiL51oNfRQ
+ /PVYhx36fXwKU/ICxvqjuG8jgBRYYK2/NRGL1uOQqqEZ+TwG2k0QD3PxASD1U4QyjdstUYLZ6
+ Me0dcmpD2Uv65lQIFqL8x4pj6Ew9Mvx4Be3eoepPyNGoTqv3sg1UZdGlA==
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi, Heiko,
+Hello Masahiro,
 
-On Fri, May 27, 2022 at 02:23:42PM +0200, Heiko Carstens wrote:
-> On Tue, May 24, 2022 at 07:45:31PM -0400, Peter Xu wrote:
-> > I observed that for each of the shared file-backed page faults, we're very
-> > likely to retry one more time for the 1st write fault upon no page.  It's
-> > because we'll need to release the mmap lock for dirty rate limit purpose
-> > with balance_dirty_pages_ratelimited() (in fault_dirty_shared_page()).
-> > 
-> > Then after that throttling we return VM_FAULT_RETRY.
-> > 
-> > We did that probably because VM_FAULT_RETRY is the only way we can return
-> > to the fault handler at that time telling it we've released the mmap lock.
-> > 
-> > However that's not ideal because it's very likely the fault does not need
-> > to be retried at all since the pgtable was well installed before the
-> > throttling, so the next continuous fault (including taking mmap read lock,
-> > walk the pgtable, etc.) could be in most cases unnecessary.
-> > 
-> > It's not only slowing down page faults for shared file-backed, but also add
-> > more mmap lock contention which is in most cases not needed at all.
-> > 
-> > To observe this, one could try to write to some shmem page and look at
-> > "pgfault" value in /proc/vmstat, then we should expect 2 counts for each
-> > shmem write simply because we retried, and vm event "pgfault" will capture
-> > that.
-> > 
-> > To make it more efficient, add a new VM_FAULT_COMPLETED return code just to
-> > show that we've completed the whole fault and released the lock.  It's also
-> > a hint that we should very possibly not need another fault immediately on
-> > this page because we've just completed it.
-> > 
-> > This patch provides a ~12% perf boost on my aarch64 test VM with a simple
-> > program sequentially dirtying 400MB shmem file being mmap()ed and these are
-> > the time it needs:
-> > 
-> >   Before: 650.980 ms (+-1.94%)
-> >   After:  569.396 ms (+-1.38%)
-> > 
-> > I believe it could help more than that.
-> > 
-> > We need some special care on GUP and the s390 pgfault handler (for gmap
-> > code before returning from pgfault), the rest changes in the page fault
-> > handlers should be relatively straightforward.
-> > 
-> > Another thing to mention is that mm_account_fault() does take this new
-> > fault as a generic fault to be accounted, unlike VM_FAULT_RETRY.
-> > 
-> > I explicitly didn't touch hmm_vma_fault() and break_ksm() because they do
-> > not handle VM_FAULT_RETRY even with existing code, so I'm literally keeping
-> > them as-is.
-> > 
-> > Signed-off-by: Peter Xu <peterx@redhat.com>
-> ...
-> > diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-> > index e173b6187ad5..9503a7cfaf03 100644
-> > --- a/arch/s390/mm/fault.c
-> > +++ b/arch/s390/mm/fault.c
-> > @@ -339,6 +339,7 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-> >  	unsigned long address;
-> >  	unsigned int flags;
-> >  	vm_fault_t fault;
-> > +	bool need_unlock = true;
-> >  	bool is_write;
-> >  
-> >  	tsk = current;
-> > @@ -433,6 +434,13 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-> >  			goto out_up;
-> >  		goto out;
-> >  	}
-> > +
-> > +	/* The fault is fully completed (including releasing mmap lock) */
-> > +	if (fault & VM_FAULT_COMPLETED) {
-> > +		need_unlock = false;
-> > +		goto out_gmap;
-> > +	}
-> > +
-> >  	if (unlikely(fault & VM_FAULT_ERROR))
-> >  		goto out_up;
-> >  
-> > @@ -452,6 +460,7 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-> >  		mmap_read_lock(mm);
-> >  		goto retry;
-> >  	}
-> > +out_gmap:
-> >  	if (IS_ENABLED(CONFIG_PGSTE) && gmap) {
-> >  		address =  __gmap_link(gmap, current->thread.gmap_addr,
-> >  				       address);
-> > @@ -466,7 +475,8 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-> >  	}
-> >  	fault = 0;
-> >  out_up:
-> > -	mmap_read_unlock(mm);
-> > +	if (need_unlock)
-> > +		mmap_read_unlock(mm);
-> >  out:
-> 
-> This seems to be incorrect. __gmap_link() requires the mmap_lock to be
-> held. Christian, Janosch, or David, could you please check?
+On 5/27/22 12:01, Masahiro Yamada wrote:
+> parisc overrides 'nm' with a shell script. I do not know the reason,
+> but anyway it is how it has worked since 2003. [1]
 
-Thanks for pointing that out.  Indeed I see the clue right above the
-comment of __gmap_link():
+I don't know the reason either...
+I assume it was that the older toolchains had bugs and kept lots of local
+symbols like .LC? in the object files.
 
-/*
- * ...
- * The mmap_lock of the mm that belongs to the address space must be held
- * when this function gets called.
- */
-int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
+I did a small build without the nm script (and removed it's reference
+in the Makefile), and it did not seem to break anything.
 
-A further fact is it'll walk the pgtable right afterwards, assuming
-gmap->mm will definitely be the current mm or it'll definitely go wrong.
+> A problem is that this script returns the exit code of grep instead of
+> ${CROSS_COMPILE}nm.
 
-I'll change s390 to retake the lock with the new COMPLETE retcode, so at
-least it'll avoid one pgtable work procedure even if the lock overhead was
-kept.
+Instead of fixing this, I'd suggest that you simply remove the nm script
+alltogether. If you like I can apply such a patch in the parisc git tree,
+and you just drop this specific patch. Or you change your patch to remove =
+it.
+Just let me know what you prefer.
 
-With that, one more possible further optimization for s390 only will be
-conditionally not taking that lock when !CONFIG_PGSTE, but I have totally
-no idea whether that'll be a common use case, so I plan to leave that for
-later in all cases.
+Helge
 
-Actually after doing that the whole changeset of s390 is even more
-straightforward:
-
----8<---
-diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-index e173b6187ad5..4608cc962ecf 100644
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -433,6 +433,17 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-                        goto out_up;
-                goto out;
-        }
-+
-+       /* The fault is fully completed (including releasing mmap lock) */
-+       if (fault & VM_FAULT_COMPLETED) {
-+               /*
-+                * Gmap will need the mmap lock again, so retake it.  TODO:
-+                * only conditionally take the lock when CONFIG_PGSTE set.
-+                */
-+               mmap_read_lock(mm);
-+               goto out_gmap;
-+       }
-+
-        if (unlikely(fault & VM_FAULT_ERROR))
-                goto out_up;
- 
-@@ -452,6 +463,7 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-                mmap_read_lock(mm);
-                goto retry;
-        }
-+out_gmap:
-        if (IS_ENABLED(CONFIG_PGSTE) && gmap) {
-                address =  __gmap_link(gmap, current->thread.gmap_addr,
-                                       address);
----8<---
-
-Thanks,
-
--- 
-Peter Xu
+> grep(1) says:
+>     Normally the exit status is 0 if a line is selected, 1 if no lines
+>     were selected, and 2 if an error occurred. However, if the -q or
+>     --quiet or --silent is used and a line is selected, the exit status
+>     is 0 even if an error occurred.
+>
+> When the given object has no symbol, grep returns 1, while the true nm
+> returns 0. Hence, build rules using ${NM} fail on ARCH=3Dparisc even if
+> the given object is valid.
+>
+> This commit corrects the exit status of the script.
+>
+>  - A pipeline returns the exit status of the last command (here, grep).
+>    The exit status of ${CROSS_COMPILE}nm is just ignored. Use bash's
+>    pipefail flag to catch errors of ${CROSS_COMPILE}nm.
+>
+>  - If grep returns 1, this script should return 0 in order to mimic
+>    true nm. If grep returns 2, it is a real and fatal error. Return
+>    it as is.
+>
+> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git=
+/commit/?id=3D36eaa6e4c0e0b6950136b956b72fd08155b92ca3
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+> Changes in v7:
+>   - New patch
+>
+>  arch/parisc/Makefile |  2 +-
+>  arch/parisc/nm       | 12 ++++++++++--
+>  2 files changed, 11 insertions(+), 3 deletions(-)
+>  mode change 100644 =3D> 100755 arch/parisc/nm
+>
+> diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
+> index aca1710fd658..e7139955367d 100644
+> --- a/arch/parisc/Makefile
+> +++ b/arch/parisc/Makefile
+> @@ -18,7 +18,7 @@
+>  boot :=3D arch/parisc/boot
+>  KBUILD_IMAGE :=3D $(boot)/bzImage
+>
+> -NM		=3D sh $(srctree)/arch/parisc/nm
+> +NM		=3D $(srctree)/arch/parisc/nm
+>  CHECKFLAGS	+=3D -D__hppa__=3D1
+>
+>  ifdef CONFIG_64BIT
+> diff --git a/arch/parisc/nm b/arch/parisc/nm
+> old mode 100644
+> new mode 100755
+> index c788308de33f..3e72238a91f3
+> --- a/arch/parisc/nm
+> +++ b/arch/parisc/nm
+> @@ -1,6 +1,14 @@
+> -#!/bin/sh
+> +#!/bin/bash
+>  ##
+>  # Hack to have an nm which removes the local symbols.  We also rely
+>  # on this nm being hidden out of the ordinarily executable path
+>  ##
+> -${CROSS_COMPILE}nm $* | grep -v '.LC*[0-9]*$'
+> +
+> +# use pipefail to catch error of ${CROSS_COMPILE}nm
+> +set -o pipefail
+> +
+> +# grep exits with 1 if no lines were selected.
+> +# If the given object has no symbol, grep returns 1, but it is not an e=
+rror.
+> +
+> +${CROSS_COMPILE}nm "$@" |
+> +{ grep -v '.LC*[0-9]*$' || { exit_code=3D$?; test $exit_code -eq 1 || e=
+xit $exit_code; } }
 
