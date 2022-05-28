@@ -2,143 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B858536B57
-	for <lists+linux-parisc@lfdr.de>; Sat, 28 May 2022 09:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25E36536DE0
+	for <lists+linux-parisc@lfdr.de>; Sat, 28 May 2022 19:17:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbiE1HMN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 28 May 2022 03:12:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55646 "EHLO
+        id S238906AbiE1RRQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 28 May 2022 13:17:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229636AbiE1HMM (ORCPT
+        with ESMTP id S238740AbiE1RRP (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 28 May 2022 03:12:12 -0400
-Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com [210.131.2.91])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BDBF2DE8;
-        Sat, 28 May 2022 00:12:09 -0700 (PDT)
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51]) (authenticated)
-        by conssluserg-06.nifty.com with ESMTP id 24S7Bllt002344;
-        Sat, 28 May 2022 16:11:48 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 24S7Bllt002344
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1653721908;
-        bh=Ke5jHo8VtsnIBuHnKcTafO9UNs8CqmDY9CjC7LoWcyg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=SvcSdFCEKE8RRXBMIA7XpimKe+J6UWfLaXXEF+jpQfgdH3GrR8iY9q+ZsIV8xpUKG
-         St5ue4XgFERGiF+RT4A6EvCeqUvsstIYFgPOqpteV32R21Bjx2ckbRlHWHpo47vG/u
-         I88KuEAfS8feRvZ1Zeu6e8/TF4z9c0qR3/CeLnvYu1SNlyr0FGFXmOg9qe8kTiydNj
-         XOVejqH6RrgBpRp8OhPPt43V0mzC7828XWYpqPtFLDDVU5P4JWiXvfNQNb71p9BZqb
-         gtsgVUBMyYe+u8aEOVKUYCS6ptlP6MLeS0ATaUDDjS8saLcJzCjLZSIqfyqyfzvrf5
-         uzrCpOzyd8HEA==
-X-Nifty-SrcIP: [209.85.216.51]
-Received: by mail-pj1-f51.google.com with SMTP id c10-20020a17090a4d0a00b001e283823a00so2764637pjg.0;
-        Sat, 28 May 2022 00:11:48 -0700 (PDT)
-X-Gm-Message-State: AOAM531zQaVWxXBQqYCASmimnbBy+RekmmU/IR17+KK2VGxCk/LQZG+4
-        pzucTx50/0ztqOSeHxet2oVIXgtpbU9sW/8gtuE=
-X-Google-Smtp-Source: ABdhPJxIgcs0jv5kYFRTIFUI+PolCz13bwvjdRWJmELBANgzVLOZHuuZI+qAblhvtkFaI4hepCODALq+NqXohlAZTOc=
-X-Received: by 2002:a17:90a:9b08:b0:1e2:837f:bcce with SMTP id
- f8-20020a17090a9b0800b001e2837fbccemr5889109pjp.144.1653721907307; Sat, 28
- May 2022 00:11:47 -0700 (PDT)
+        Sat, 28 May 2022 13:17:15 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA002F35
+        for <linux-parisc@vger.kernel.org>; Sat, 28 May 2022 10:17:13 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id d2so8774434ybc.12
+        for <linux-parisc@vger.kernel.org>; Sat, 28 May 2022 10:17:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=pSKuz9BJS/Qwel4yBJUKsJP++c1z8gtIosTtEbMtN5I=;
+        b=Evcz97LOKzHfSgT/AL/l+ZvMvf33Mnf2JcLi4+SabJA4RVfVM4/A46bF7LrAex2ihQ
+         DAlRR8/zXtJTnIoEfh6f7bdC2JRR+yXK1eOVqaphmBhPg+nXO/886U3X5GDEMu2yZzTG
+         2QbvLBgO/2ZnaMZ64zlK5XOVIIl1SuH3E1vYjFzTh4ifT/z4GjIOkdCqWZaLHfZRu/L9
+         XInGcHNGmawHrNpuj/q0VbBJWcYR7YDA070uYdD/UQCxkpMMrEj2bhBVT3vnoFUN6ubb
+         FY2vKq+UskzZ+khk4B7ynDvYv4mv8uOY5VIkwWrNQ13Yu6d+0uCVvcPG55NygjZC9ZzA
+         KzyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=pSKuz9BJS/Qwel4yBJUKsJP++c1z8gtIosTtEbMtN5I=;
+        b=1Qo10gezdq6yboNI6Cry7cxovgXMPcKHoTA2RaEb46eJqfJ4sXqkqvHwDdalOg+fZZ
+         dEv1/G5QFydWxe+USt78tMAPsg7BHnuPbO9cXj/dfmO1hVkKCJSZYJynHiIyvySH7a16
+         mSge/ta6xx6P2msQ4ByKXACbLEekY60l+5Meui79XYMCq/9W+wNfKmyeMEArU+bX4BjU
+         L56OjbYoOijXXIHTvOZb20zVYvO9B3U6iJWpZc6pAViIMCUVk0xWkNSM9WHFUbH7okz5
+         bFzpFCe6pbYGa3bMR9X8Jn1zdipGt76ehY5m7sr8rgj6I+im+9ySvEbFzMOhVboBxbUL
+         rxzQ==
+X-Gm-Message-State: AOAM5306F859m0DFRFcJitDNuoCetHV75ifDgH9xegAgCO625sIo32Lf
+        UX+UkctqQCEf/zyE3bWKZytiAsy7A14S0vxDatE=
+X-Google-Smtp-Source: ABdhPJxPsnNngIXYUzCPybntA0BZ3Hio+So97vpfEl2GjbHePX/ZnvzzyR/z5l50rmRV1R4F3fvnNoPkkQhCO5/mYL4=
+X-Received: by 2002:a25:168b:0:b0:64a:54ba:e88e with SMTP id
+ 133-20020a25168b000000b0064a54bae88emr42052597ybw.17.1653758233195; Sat, 28
+ May 2022 10:17:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220527100155.1996314-1-masahiroy@kernel.org>
- <20220527100155.1996314-2-masahiroy@kernel.org> <CA+icZUX_xeZ8k-3YZppGbuYzeypU8f_iz_-tuMJ1bg0dhikH8A@mail.gmail.com>
-In-Reply-To: <CA+icZUX_xeZ8k-3YZppGbuYzeypU8f_iz_-tuMJ1bg0dhikH8A@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sat, 28 May 2022 16:10:22 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARyyomaAS1FK6CMbXKB69RzZMA-hDHL1wzLsuHtCkckyw@mail.gmail.com>
-Message-ID: <CAK7LNARyyomaAS1FK6CMbXKB69RzZMA-hDHL1wzLsuHtCkckyw@mail.gmail.com>
-Subject: Re: [PATCH v7 1/8] kbuild: replace $(linked-object) with CONFIG options
-To:     Sedat Dilek <sedat.dilek@gmail.com>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        clang-built-linux <llvm@lists.linux.dev>,
-        Helge Deller <deller@gmx.de>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>
+Received: by 2002:a05:7108:768b:0:0:0:0 with HTTP; Sat, 28 May 2022 10:17:12
+ -0700 (PDT)
+Reply-To: davidnelson7702626@gmail.com
+From:   Viviane Amouzou <vivianeamouzou5@gmail.com>
+Date:   Sat, 28 May 2022 18:17:12 +0100
+Message-ID: <CAHpnGrhK7NLqZF9qc8c4tF7S0W5tp9A3wdfsMR8bpNThgpvN4w@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b32 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5055]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [vivianeamouzou5[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [vivianeamouzou5[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [davidnelson7702626[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, May 28, 2022 at 11:32 AM Sedat Dilek <sedat.dilek@gmail.com> wrote:
->
-> On Fri, May 27, 2022 at 1:56 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> >
-> > *.prelink.o is created when CONFIG_LTO_CLANG or CONFIG_X86_KERNEL_IBT
-> > is enabled.
-> >
-> > Replace $(linked-object) with $(CONFIG_LTO_CLANG)$(CONFIG_X86_KERNEL_IBT)
-> > so you will get better idea when the --link option is passed.
-> >
-> > No functional change is intended.
-> >
-> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
->
-> Hi Masahiroy,
->
-> I was not CCed on the cover-letter and only on some patches in this series.
->
-> So, I have re-tested this series by pulling from kbuild.git#kbuild
-> (saw later you renewed the parisc/nm patch).
->
-> While testing my selfmade LLVM version 14.0.4 (PGO + ThinLTO
-> optimized) toolchain I included this series.
->
-> Just built fine and I was able to boot on bare metal.
->
-> -Sedat -
->
-
-Thanks for your testing!
-
-I added your Tested-by tag.
-
-
-
-
-
-> > ---
-> >
-> > Changes in v7:
-> >   - New patch
-> >
-> >  scripts/Makefile.build | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> > index 06400504150b..f80196eef03a 100644
-> > --- a/scripts/Makefile.build
-> > +++ b/scripts/Makefile.build
-> > @@ -219,7 +219,7 @@ objtool_args =                                                              \
-> >         $(if $(CONFIG_STACK_VALIDATION), --stackval)                    \
-> >         $(if $(CONFIG_HAVE_STATIC_CALL_INLINE), --static-call)          \
-> >         --uaccess                                                       \
-> > -       $(if $(linked-object), --link)                                  \
-> > +       $(if $($(CONFIG_LTO_CLANG)$(CONFIG_X86_KERNEL_IBT)), --link)    \
-> >         $(if $(part-of-module), --module)                               \
-> >         $(if $(CONFIG_GCOV_KERNEL), --no-unreachable)
-> >
-> > @@ -284,7 +284,6 @@ quiet_cmd_cc_prelink_modules = LD [M]  $@
-> >  # modules into native code
-> >  $(obj)/%.prelink.o: objtool-enabled = y
-> >  $(obj)/%.prelink.o: part-of-module := y
-> > -$(obj)/%.prelink.o: linked-object := y
-> >
-> >  $(obj)/%.prelink.o: $(obj)/%.o FORCE
-> >         $(call if_changed,cc_prelink_modules)
-> > --
-> > 2.32.0
-> >
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+Hello friend, I want to send money to you to enable me invest in your
+country get back to me if you are interested.
