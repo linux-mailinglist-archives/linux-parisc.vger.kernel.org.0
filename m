@@ -2,59 +2,59 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A9D05385B1
-	for <lists+linux-parisc@lfdr.de>; Mon, 30 May 2022 18:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A37935385CD
+	for <lists+linux-parisc@lfdr.de>; Mon, 30 May 2022 18:02:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239593AbiE3P7q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 30 May 2022 11:59:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54998 "EHLO
+        id S241127AbiE3QCg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 30 May 2022 12:02:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240364AbiE3P7j (ORCPT
+        with ESMTP id S242416AbiE3QC2 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 30 May 2022 11:59:39 -0400
+        Mon, 30 May 2022 12:02:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1D15436B77
-        for <linux-parisc@vger.kernel.org>; Mon, 30 May 2022 08:53:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7482462D2
+        for <linux-parisc@vger.kernel.org>; Mon, 30 May 2022 09:01:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1653925988;
+        s=mimecast20190719; t=1653926487;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=bDYue/Afd3VGZHzU7tYF7qy5xBeBUpqe85rLuoAiRcE=;
-        b=J1k0ViqXX50q4YtrtSr+gUyUFh8HWbwq8lrj3YOlJReGycsAfTrN4ha7IS9/MYleZV5BoC
-        DDkLmRENtwy2IA8YjtxdqunukNLU9RHg/Lqlwzd5BQIQB5+6uSPZ9SSQd4cPtXfZGHwUqA
-        hMmc5YYN80rBR10NXFaKHTj1qveKv5M=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=9ZWphZRcK3afyDhn+H8+iYAM34Y/wtF11YrAt0KXpqo=;
+        b=dTSzb8JXzfdWdfEcLuHNmG1YW6wF34sn5uJweSd9QnWj+XwvdmrvIxj0JgnV1rmx8VZYu6
+        k35wTdu/YDXOoo/g0i8mwVMUhJ6Idn9QdWDBnnVopiUssKqKD26lzTkNcPHBCCc6tx5vYe
+        wZ9FOGKarngljYcole8kBDspsZwVWTM=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-274-pWGES00RMoe657dyFcTcpQ-1; Mon, 30 May 2022 11:53:01 -0400
-X-MC-Unique: pWGES00RMoe657dyFcTcpQ-1
-Received: by mail-il1-f198.google.com with SMTP id r9-20020a92cd89000000b002d16798b3cfso8564292ilb.22
-        for <linux-parisc@vger.kernel.org>; Mon, 30 May 2022 08:53:01 -0700 (PDT)
+ us-mta-650-3qtJ2K3qNAiUypXC6irNQg-1; Mon, 30 May 2022 12:00:59 -0400
+X-MC-Unique: 3qtJ2K3qNAiUypXC6irNQg-1
+Received: by mail-io1-f71.google.com with SMTP id z19-20020a05660200d300b0066583f8cf2eso5682127ioe.2
+        for <linux-parisc@vger.kernel.org>; Mon, 30 May 2022 09:00:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=bDYue/Afd3VGZHzU7tYF7qy5xBeBUpqe85rLuoAiRcE=;
-        b=PDGkQggyiqkr4B2XSLEvtkrHZatQfslUQolQRVgi0X6KGxTnmsK16eELxtk7r8ICzH
-         1tni9ZrXsmjcfkb2jqG/wKxujrGp1lr5WUurHJ46D68f/9tBkZvcKO54FM7V109S78qb
-         QH1w3QDFlS72yDbgsZkN0lmonTBkVaekpTDpk7ilWbCn8jsHTVuDPTFk53v5u77maNBA
-         sQT/IZPw8GrNKtNNMC5WlgYO4jBfouaLcK2SzJpqvBOiwxIkByHsF9UIBXFawmUMkWuP
-         LKNHiK8y5vG4RqvCBCXR2OeQoaTRDiZujYqZdraGXDnTHEogjltHIVg3Mp6rjfxoF2xJ
-         08vQ==
-X-Gm-Message-State: AOAM532ZpiUmdlE0a4uhDl5MCy+q/W24WGNAEmP3OKJR0Mp1hUz0WB1R
-        nPPoyA0KjxaJaIb1cYHB2jCpw6NOST0F3zqQMnbxIwiu/GtNOoY7kDyPH+Jav7EAHS9TFnevx2i
-        nho9gGH8baD2En0hC3TMhMURB
-X-Received: by 2002:a5d:9cc8:0:b0:663:2899:4b8 with SMTP id w8-20020a5d9cc8000000b00663289904b8mr16857399iow.192.1653925980597;
-        Mon, 30 May 2022 08:53:00 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyKQIoyyqGc41UCjMUnObS0GZ5Lh8IPSVLY8KDGIOa5YRMfMwdzANPXLWIG/1E7oUnwvcvO1w==
-X-Received: by 2002:a5d:9cc8:0:b0:663:2899:4b8 with SMTP id w8-20020a5d9cc8000000b00663289904b8mr16857337iow.192.1653925980357;
-        Mon, 30 May 2022 08:53:00 -0700 (PDT)
+        bh=9ZWphZRcK3afyDhn+H8+iYAM34Y/wtF11YrAt0KXpqo=;
+        b=8PoaRooo6oTOpkQmTM3pMuVtPeVkF19kPuuVn+jbGG6M4zY1TwD5acibrf/Mbgk+cI
+         NgS895BqHQhmlSSZXG0kYnc9D1og+8nQGu6JpyIu6NjdAjfAwFb5zVXMwFkTgo7eqdTI
+         AQZLAb2RXCeEpISJiRfXWRofkspC2owqA+f3V39e+IiQKOXvQ5pLSnGgBA9N+rIfsfPX
+         OR3LOyMai+lEkH3JdPHPmwBcPKwjRSJQLfA2nAdXtIHCIY4scsqnSWpPe8GtzRWeGm6c
+         vynVGJnGG+uPYk7J7Kh5M+J0EvRgmU4ana8S2jPSCg1chnGEO078RP05JX82GEnS1nPY
+         7klA==
+X-Gm-Message-State: AOAM532TGyZ6QwRuJxi5AKw/R2ryNRr3vL3XQQokIOCt1yKu/4F12iX5
+        w5QDr6budjLLfGoRRVWXKX7nXNcX4aMEgjcjosWxqJVI2iw/u6RA47Kg2xG/KhHDaA91IHrrDPK
+        MpluWkPngK90pLS2P1n0pDaNB
+X-Received: by 2002:a05:6e02:1648:b0:2cd:fe43:39db with SMTP id v8-20020a056e02164800b002cdfe4339dbmr30191744ilu.172.1653926458627;
+        Mon, 30 May 2022 09:00:58 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz0UxFyFLwjW1ZOMQsp2rrmtoQtqcFmY+n0cdYYM503zYLjoFDoHLhs+0Zam5Eh/FIDylo0ew==
+X-Received: by 2002:a05:6e02:1648:b0:2cd:fe43:39db with SMTP id v8-20020a056e02164800b002cdfe4339dbmr30191721ilu.172.1653926458383;
+        Mon, 30 May 2022 09:00:58 -0700 (PDT)
 Received: from xz-m1.local (cpec09435e3e0ee-cmc09435e3e0ec.cpe.net.cable.rogers.com. [99.241.198.116])
-        by smtp.gmail.com with ESMTPSA id 66-20020a021d45000000b0032e75bfe344sm2781109jaj.171.2022.05.30.08.52.55
+        by smtp.gmail.com with ESMTPSA id b16-20020a926710000000b002cde6e352e5sm3863762ilc.47.2022.05.30.09.00.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 May 2022 08:52:59 -0700 (PDT)
-Date:   Mon, 30 May 2022 11:52:54 -0400
+        Mon, 30 May 2022 09:00:57 -0700 (PDT)
+Date:   Mon, 30 May 2022 12:00:52 -0400
 From:   Peter Xu <peterx@redhat.com>
 To:     Christian Borntraeger <borntraeger@linux.ibm.com>
 Cc:     Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org,
@@ -117,14 +117,15 @@ Cc:     Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>
 Subject: Re: [PATCH v4] mm: Avoid unnecessary page fault retires on shared
  memory types
-Message-ID: <YpToVpjXmdFqGOpY@xz-m1.local>
+Message-ID: <YpTqNKMTt8PoA41n@xz-m1.local>
 References: <20220527193936.30678-1-peterx@redhat.com>
  <YpPYkzbrQmy4FjrI@osiris>
  <33fd4731-9765-d78b-bdc3-f8243c98e81f@linux.ibm.com>
+ <YpToVpjXmdFqGOpY@xz-m1.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <33fd4731-9765-d78b-bdc3-f8243c98e81f@linux.ibm.com>
+In-Reply-To: <YpToVpjXmdFqGOpY@xz-m1.local>
 X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
@@ -135,40 +136,42 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, May 30, 2022 at 11:35:10AM +0200, Christian Borntraeger wrote:
-> 
-> 
-> Am 29.05.22 um 22:33 schrieb Heiko Carstens:
-> [...]
+On Mon, May 30, 2022 at 11:52:54AM -0400, Peter Xu wrote:
+> On Mon, May 30, 2022 at 11:35:10AM +0200, Christian Borntraeger wrote:
 > > 
-> > Guess the patch below on top of your patch is what we want.
-> > Just for clarification: if gmap is not NULL then the process is a kvm
-> > process. So, depending on the workload, this optimization makes sense.
 > > 
-> > diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-> > index 4608cc962ecf..e1d40ca341b7 100644
-> > --- a/arch/s390/mm/fault.c
-> > +++ b/arch/s390/mm/fault.c
-> > @@ -436,12 +436,11 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-> >   	/* The fault is fully completed (including releasing mmap lock) */
-> >   	if (fault & VM_FAULT_COMPLETED) {
-> > -		/*
-> > -		 * Gmap will need the mmap lock again, so retake it.  TODO:
-> > -		 * only conditionally take the lock when CONFIG_PGSTE set.
-> > -		 */
-> > -		mmap_read_lock(mm);
-> > -		goto out_gmap;
-> > +		if (gmap) {
-> > +			mmap_read_lock(mm);
-> > +			goto out_gmap;
-> > +		}
-> > +		goto out;
-> 
-> Yes, that makes sense. With that
-> 
-> Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> > Am 29.05.22 um 22:33 schrieb Heiko Carstens:
+> > [...]
+> > > 
+> > > Guess the patch below on top of your patch is what we want.
+> > > Just for clarification: if gmap is not NULL then the process is a kvm
+> > > process. So, depending on the workload, this optimization makes sense.
+> > > 
+> > > diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+> > > index 4608cc962ecf..e1d40ca341b7 100644
+> > > --- a/arch/s390/mm/fault.c
+> > > +++ b/arch/s390/mm/fault.c
+> > > @@ -436,12 +436,11 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
+> > >   	/* The fault is fully completed (including releasing mmap lock) */
+> > >   	if (fault & VM_FAULT_COMPLETED) {
+> > > -		/*
+> > > -		 * Gmap will need the mmap lock again, so retake it.  TODO:
+> > > -		 * only conditionally take the lock when CONFIG_PGSTE set.
+> > > -		 */
+> > > -		mmap_read_lock(mm);
+> > > -		goto out_gmap;
+> > > +		if (gmap) {
+> > > +			mmap_read_lock(mm);
+> > > +			goto out_gmap;
+> > > +		}
+> > > +		goto out;
 
-Looks sane, thanks Heiko, Christian.  I'll cook another one.
+Hmm, right after I replied I found "goto out" could be problematic, since
+all s390 callers of do_exception() will assume it an error condition (side
+note: "goto out_gmap" contains one step to clear "fault" to 0).  I'll
+replace this with "return 0" instead if it looks good to both of you.
+
+I'll wait for a confirmation before reposting.  Thanks,
 
 -- 
 Peter Xu
