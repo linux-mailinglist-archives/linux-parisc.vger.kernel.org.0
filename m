@@ -2,112 +2,113 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3BBE539558
-	for <lists+linux-parisc@lfdr.de>; Tue, 31 May 2022 19:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A79415395D0
+	for <lists+linux-parisc@lfdr.de>; Tue, 31 May 2022 20:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236589AbiEaRRl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 31 May 2022 13:17:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54706 "EHLO
+        id S1346776AbiEaSCu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 31 May 2022 14:02:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346487AbiEaRRl (ORCPT
+        with ESMTP id S233752AbiEaSCu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 31 May 2022 13:17:41 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C7812CC90
-        for <linux-parisc@vger.kernel.org>; Tue, 31 May 2022 10:17:36 -0700 (PDT)
+        Tue, 31 May 2022 14:02:50 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BED2D7CB0F
+        for <linux-parisc@vger.kernel.org>; Tue, 31 May 2022 11:02:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1654017443;
-        bh=m3St2I8MTBVdqnWsRffv6TkzHlrytzjvGVk3ulY1dyo=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=AFGwqE8+gGSn6PEREYleZJf2RvYrCIcuD+Qyd7B/TwET47JIwMGh+5wvpE1a224oc
-         R5+eFR7cigJGNVLa8B7YuIBmeM8xdPINV86E7ob5eFDy60xg9IDhJ1zPNDCh5lBtVa
-         bca8z2I3WZFMcW9pn0WQuoUO51DO+cCE7zivYJGk=
+        s=badeba3b8450; t=1654020160;
+        bh=XK5iBGXgD2hJobay3KxfqsEuB8V6iGGapFvTuN9HE2A=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=RwjsxYgmG0OzrI6jBYvmTTQjObdJRNF/9sC7gORRpEEoRoqc735VKPlqn3NOQugdf
+         BBo8E2b4E9JEvocn8ZiyOeKKKAetMixyiMVRcDBSQAEYpaQTfXQSsUEbiPZMj23Sw1
+         5UC2t/jWZuRKp6eZ9BiDsh/YiuCqocE+XMs5BjI0=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.178.167]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N1fii-1npa9r0LdY-0122PG; Tue, 31
- May 2022 19:17:23 +0200
-Message-ID: <3b471bfa-595f-cf1c-6d61-8edcd7c39ffe@gmx.de>
-Date:   Tue, 31 May 2022 19:17:06 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: non-booting kernel caused by "parisc: Switch from
- GENERIC_CPU_DEVICES to GENERIC_ARCH_TOPOLOGY"
-Content-Language: en-US
-To:     Mikulas Patocka <mpatocka@redhat.com>
-Cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        John David Anglin <dave.anglin@bell.net>,
-        linux-parisc@vger.kernel.org
-References: <alpine.LRH.2.02.2205310542460.5691@file01.intranet.prod.int.rdu2.redhat.com>
- <4dcb485a-d0ae-9c49-5bd2-43327e930ee5@gmx.de>
- <alpine.LRH.2.02.2205310832260.16547@file01.intranet.prod.int.rdu2.redhat.com>
- <alpine.LRH.2.02.2205311035450.1173@file01.intranet.prod.int.rdu2.redhat.com>
+Received: from p100 ([92.116.178.167]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MulqN-1neIV92GIt-00rq60; Tue, 31
+ May 2022 20:02:40 +0200
+Date:   Tue, 31 May 2022 20:02:38 +0200
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <alpine.LRH.2.02.2205311035450.1173@file01.intranet.prod.int.rdu2.redhat.com>
-Content-Type: text/plain; charset=UTF-8
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>,
+        Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH] Drop CONFIG_SCHED_MC
+Message-ID: <YpZYPokZr9s4uwtt@p100>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:h0oqw+SEInTAatQYWrWlE+FEiT598A/26eWfI0C7/jNqqD2Ekf5
+ TMFH0M0sWhLrlNhJvRzTRDjS+sDjjbgbBGg1OlRvQUBka9vkIpae6MjSusPslTpm6ZRTzc2
+ qu+x/9EaSiinczBS5VS88NxdlevyQOPQed9DxZ/lg/e+xOf0BN58DGH7Uk/sEOG/1Sx1TdT
+ eyby4P6S0WoWwgnIBsH1w==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VFZrgkY2jNY=:yfbcDpVTlAlOVi9w8Q7BQb
+ CDR2WQTNejwaXWqKayrOFK3SRiCU6DBgTCtHJAE/MVe5u1MQ4LZWXbnLTftA7JQb0Dqm/YfvX
+ XOShgXaN210BKnCzT24NmK2Qg8UEnh980RYFy0opDO3VkH/GwqoJGqebxCwDKVIJRASpF67WG
+ 45MQnOaFqEWSN9d4y42o1CuwQDSlq0vN3dWphDfsXPqlJjRd+JyngNxN1nmeT60epnzJr73f8
+ 7iA3e6xb2qaRDumKkLCMfWayHbXIbBa6N6cXNgCLlQdlJp163XbRyI9mDkPf0ms0AdMOIb213
+ bd5EzuE49upOrpk8vgNHLlexToxw3wSKGF6J6wkNTBf1v0S2eWaIV4rzVrcfHvHsU8lFvQKw1
+ 3z0ECx3UjN/781QMMc2+keRd3nEo0S06Q0X32VCn3V/TmkIvRFgG4NRXpaWeZO70+uB3glDkh
+ fNa/y2pQX3bYT9WTdwJUYXW4IRMHL9N024/Rl76yGY2spQ4Wjdzfzdan5q4VYR1BlE/mJJfK/
+ 3/ySbDgQ+IjUCOS2w47me4xip+IH0d7FtCeFpZt+xtX4LkniWtljwAZUSQyP+i+ThyPbGgzms
+ pj/s09S6rYWfE2rdFDN0UrQhadEzHvcRr2H3d89fDahLa6ombe07O+edn3S7oTxZ8N+I03rQd
+ S07+OG8QEbsHIj2d+DFhWF99wE5K8ie25NYcF9ftXerrBLBmutrbFKtzuxDXlMRJb/JumUzoB
+ 5Ob4Bteu11ie0s3tZ64HdHxUhWEfaSZaukDrYH9QKhzrf97MZzM/HO+/P5LlEVzm4DIUPlesn
+ EITy/TUv9khqmkFwwpfAkMPyRc4YMSD98o6gQd6cgKS4BiyPYwVcEOGBHjwvTnC0JUc11hyO4
+ u+3S2vRWFKbm2v88crfDalAG6NB7tWFEuhMeCZwSQtY421sm02dnYF2Ay9N6PJPlHIujGqh24
+ tesubIzi95RwGwYKf5l63y+ax/z5myHst30ZQV7JQrtLq6/v1rkhsDMQm54aS1/PW8ocClVFP
+ BI8zh4BuoaunRlgdGT6zgF6ix3mZWEMylrMh14q9BEwSvBHB9dibemCUqYzN3jbmLQ24MKETN
+ VlV9qpNjaltB1USaK5uFKaZ0dQpgIaYo4dBws4AqrGnAHmxUvYH6LEOKA==
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:2HwQTZqjjJpo+m1sUh1P6P8jRogUIgiyA4YT8d4Vk+Wiqmg0KR/
- sDZrayUMkoknH32PYilwul/V8oGcxh/jhu/v/E/oSPCp9w8Yld86fB6MwcbYvoqmpMJxvbV
- yvWHuVQ2rPU194XGgCCbm5syIPw9hg7JuOcRh0M4kPnw7xoaLJ4p9CHEHpFZD2VU6u3Zvf+
- MVvDm6h6P5FD7wTcLauDA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7rV/+4OaibU=:xRrcSaMK59w+k4WIpu217b
- Kf9Rqq59A6oZR7Kyh9/vQvAfHY951zk0ppB/qqfEdcInf2dFEz/8e3UnUwlj70oSBQLJGQSFC
- /Kqwzc5HgQAfH+5KRF/c5FVEdCT6+QjycAK3kKdEibEL+nrpRxRNXKU7gVKwqoQMaV5S53nVs
- g6fCIJn1Ws9uAFL7cIGgPXTSARGCxjjZvHaPKCRrDeml28pYOH4jIv+DrZZ3t5RiLii8YuRcs
- uItywhZstR08cbqwmZSd5C1RNdgzVXxdra4Lm+pOTcqeIHD5CdyLweGJLcmWgi0SQoYgld2Qb
- ASRwUKKwBJbxwRc0l8cOgvHinezGW3dHJPEIDHO1Bt9iz2eQVlgosZW7jHH+ksNdml69FE55w
- RPOWl8+P6rXSlnIRj0eQq1NPO+FpqIh7CFMeBX05gI2AZubnm81xuercg/Amt1jbHWUojTrV8
- cBSlDE4VhpEQ0Tw38hXDvUNBG1lBo+t5q5UNJ3XbBy4Cvj6lvoixERK0vaQMvJb7BU4VigaaD
- Ec+j7G0ChxpoDkQMkP2oHAjuCZhQNWJjjwbFOyKBhvORq6q10heWcuKGksWfFyIfgg2v5MBzr
- tPU8AwIjNSOuaiDDmYM37ePNf23T12jiNtv5S+FTsO597rMrs9f9FGFTqibvDG95bibKd+PY4
- NzjEcvMzZOtE8gP7pipfv6NrA0k11kgvuQveqZvn+GcwEQD6fF58dKG5bJaOYlJrIblk4xnhg
- qbHmwRq2nUeCyD17thqvoFOAsUWXo69PYoTE4VxXvKgv+2BFqoFo17L8JMbttSDjeNjAjyBRs
- rdT6mjYDhxkVrnVvHFDDBeD5WqdHej0FRkBLr25nnRlGqs2PbtXmiq81HZJJ2SSdJGAFmHWlB
- OUS33XazmtuZdm20siCBSvwbC1xfeQzWnOI1W0gOnC0PhkzG8lGAS3v+m0uldEWMhCiP/oZW+
- x4WyrouvkoMtqT+1rLz8VeK4Z+sUo4HGitj9QoqDPGh8dZuAu0COalxkX5iLyEBcXVkuGFTEN
- WYH4hNEycWuVlMCUJWKM3BhsPHzIudCFuEHNAXPO9vN/cCH6LLbYOlxqTZxlEUYsR9rqkWch5
- qNDaom31wG/AlJdRg8IlbVgOf9vEXEyRp4SSX5D5ZKbb5dkBf9jNYwR6w==
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/31/22 16:44, Mikulas Patocka wrote:
->
->
-> On Tue, 31 May 2022, Mikulas Patocka wrote:
->
->>> So, right now I'm somehow lost how I can help.
->>
->> If you don't know what causes it, I can try to add some debug printks i=
-nto
->> the kernel and analyze it when I have time.
->>
->>> You could you send me your .config, then I'll check locally.
->>> Please also try a "make oldconfig" with your .config so that the optio=
-ns don't have any leftovers.
->>
->> I uploaded my config here:
->> https://people.redhat.com/~mpatocka/testcases/parisc-config-5.18.txt
->
-> CONFIG_SCHED_MC is causing it. It's on in my config, off in your config.
-> If I turn it off, the crash goes away.
->
-> The crash happens in "sd_init":
->
-> sd_span =3D sched_domain_span(sd);	sets sd_span to an empty cpumask.
-> sd_id =3D cpumask_first(sd_span);		sets sd_id to 4 (it is out of
-> 					range because CONFIG_NR_CPUS=3D4)
-> sd->shared =3D *per_cpu_ptr(sdd->sds, sd_id);  sets sd->shared to NULL
-> atomic_inc(&sd->shared->ref);		crashes without printing anything
+Mikulas noticed that the parisc kernel crashes in sd_init() if
+CONFIG_SCHED_MC is enabled.
+Multicore-scheduling is probably not very useful on parisc, so simply
+drop this option.
 
-Nice finding! Thanks.
+Signed-off-by: Helge Deller <deller@gmx.de>
+Noticed-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: <stable@vger.kernel.org> # 5.18
 
-I'm tempted to drop the CONFIG_SCHED_MC option completely from parisc...
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index bd22578859d0..34591a981cb7 100644
+=2D-- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -281,14 +281,6 @@ config SMP
 
-Helge
+ 	  If you don't know what to do here, say N.
+
+-config SCHED_MC
+-	bool "Multi-core scheduler support"
+-	depends on GENERIC_ARCH_TOPOLOGY && PA8X00
+-	help
+-	  Multi-core scheduler support improves the CPU scheduler's decision
+-	  making when dealing with multi-core CPU chips at a cost of slightly
+-	  increased overhead in some places. If unsure say N here.
+-
+ config IRQSTACKS
+ 	bool "Use separate kernel stacks when processing interrupts"
+ 	default y
+diff --git a/arch/parisc/kernel/topology.c b/arch/parisc/kernel/topology.c
+index 9696e3cb6a2a..71a678ceb33a 100644
+=2D-- a/arch/parisc/kernel/topology.c
++++ b/arch/parisc/kernel/topology.c
+@@ -81,10 +81,6 @@ void store_cpu_topology(unsigned int cpuid)
+ }
+
+ static struct sched_domain_topology_level parisc_mc_topology[] =3D {
+-#ifdef CONFIG_SCHED_MC
+-	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
+-#endif
+-
+ 	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
+ 	{ NULL, },
+ };
