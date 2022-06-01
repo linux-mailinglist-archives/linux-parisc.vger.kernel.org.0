@@ -2,65 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6543053A94E
-	for <lists+linux-parisc@lfdr.de>; Wed,  1 Jun 2022 16:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D587E53A96B
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 Jun 2022 16:54:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353562AbiFAOjQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 1 Jun 2022 10:39:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41168 "EHLO
+        id S245525AbiFAOyO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 1 Jun 2022 10:54:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbiFAOjP (ORCPT
+        with ESMTP id S241149AbiFAOyN (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 1 Jun 2022 10:39:15 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90B1F31233;
-        Wed,  1 Jun 2022 07:39:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654094354; x=1685630354;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kgeZ5dHKGAmvtm2SI9klD7xeCUa8LmfIDO8LskDbpCY=;
-  b=MyuPw3nzSlQyeCaTmkm7Ejw6KJHsH675eqa5SmbWap7jFNJ/xMaYJDqT
-   LcG5mXaQwjwZTpl3btRS16ja0lzt3brAE2pkcGnCa+H5YaGJJsZg/uYMt
-   rifWWALy9MFPYaDKDwg+sMrx3kDu/iAgkTZRjfYKxXnLMZSfsq+AjgvS8
-   5QStByOq5thYnnAcjfm3VW0QqCWk/vK0fu/G5YuaEfqeAtAt+dbpE8kvc
-   tM9DeShSxR+0pB/CGmcQEmEO4SxdmohNxwGq+hVZG16A1fMerHoxsDnRQ
-   14cM7nsGN0lOtB8N4oL+XWK7KClFKQBPmTEwpEa7gprXfSfu1CnNDZBTN
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10365"; a="338656201"
-X-IronPort-AV: E=Sophos;i="5.91,268,1647327600"; 
-   d="scan'208";a="338656201"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 07:39:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,268,1647327600"; 
-   d="scan'208";a="581611535"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 01 Jun 2022 07:39:10 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nwPV2-00044e-Nc;
-        Wed, 01 Jun 2022 14:39:04 +0000
-Date:   Wed, 1 Jun 2022 22:38:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Haowen Bai <baihaowen@meizu.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        netdev@vger.kernel.org, Haowen Bai <baihaowen@meizu.com>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: tulip: de4x5: remove unused variable
-Message-ID: <202206012206.rmnA2Zg6-lkp@intel.com>
-References: <1654068277-6691-1-git-send-email-baihaowen@meizu.com>
+        Wed, 1 Jun 2022 10:54:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8B11264BD6
+        for <linux-parisc@vger.kernel.org>; Wed,  1 Jun 2022 07:54:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1654095251;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=4OlADR47jIHXyCalLFaoHj71W3xclrBvMra2NPvFxEQ=;
+        b=MPa6QitNNOGklK4ixSkW6siIsWHAhGPEz/cp89hvBaRLJB8ZtQ8iMGeyIRBZ+Msv7BUxEp
+        4qSJjfUZXocyJNw8Zhou8SqJ3iLtiCBCgw2lWafuRFZgIZRrmiIYdINfShiTTUHO+mwGHL
+        QghMVUYfwGLG3iR5W4yftksYuau+DCc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-669-N4rAK0hlMuSQf6nZZ_V48Q-1; Wed, 01 Jun 2022 10:54:09 -0400
+X-MC-Unique: N4rAK0hlMuSQf6nZZ_V48Q-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E8401C051A2;
+        Wed,  1 Jun 2022 14:54:09 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 137611410F36;
+        Wed,  1 Jun 2022 14:54:09 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 251Es9eT020829;
+        Wed, 1 Jun 2022 10:54:09 -0400
+Received: from localhost (mpatocka@localhost)
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 251Es8jn020825;
+        Wed, 1 Jun 2022 10:54:08 -0400
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date:   Wed, 1 Jun 2022 10:54:08 -0400 (EDT)
+From:   Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To:     Helge Deller <deller@gmx.de>
+cc:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: Re: [PATCH] Drop CONFIG_SCHED_MC
+In-Reply-To: <alpine.LRH.2.02.2206010911370.15916@file01.intranet.prod.int.rdu2.redhat.com>
+Message-ID: <alpine.LRH.2.02.2206011053050.20771@file01.intranet.prod.int.rdu2.redhat.com>
+References: <YpZYPokZr9s4uwtt@p100> <alpine.LRH.2.02.2206010911370.15916@file01.intranet.prod.int.rdu2.redhat.com>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1654068277-6691-1-git-send-email-baihaowen@meizu.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,79 +69,67 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Haowen,
-
-Thank you for the patch! Yet something to improve:
-
-[auto build test ERROR on horms-ipvs/master]
-[also build test ERROR on v5.18]
-[cannot apply to net-next/master net/master linus/master next-20220601]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Haowen-Bai/net-tulip-de4x5-remove-unused-variable/20220601-152922
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/horms/ipvs.git master
-config: i386-randconfig-a004 (https://download.01.org/0day-ci/archive/20220601/202206012206.rmnA2Zg6-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project c825abd6b0198fb088d9752f556a70705bc99dfd)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/98c118e28527e7ff29469521c68414943a7cfc3a
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Haowen-Bai/net-tulip-de4x5-remove-unused-variable/20220601-152922
-        git checkout 98c118e28527e7ff29469521c68414943a7cfc3a
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> drivers/net/ethernet/dec/tulip/de4x5.c:3823:2: error: use of undeclared identifier 'imr'
-           UNMASK_IRQs;
-           ^
-   drivers/net/ethernet/dec/tulip/de4x5.c:694:5: note: expanded from macro 'UNMASK_IRQs'
-       imr |= lp->irq_mask;\
-       ^
->> drivers/net/ethernet/dec/tulip/de4x5.c:3823:2: error: use of undeclared identifier 'imr'
-   drivers/net/ethernet/dec/tulip/de4x5.c:695:10: note: expanded from macro 'UNMASK_IRQs'
-       outl(imr, DE4X5_IMR);               /* Unmask the IRQs */\
-            ^
-   drivers/net/ethernet/dec/tulip/de4x5.c:3826:2: error: use of undeclared identifier 'imr'
-           ENABLE_IRQs;
-           ^
-   drivers/net/ethernet/dec/tulip/de4x5.c:683:5: note: expanded from macro 'ENABLE_IRQs'
-       imr |= lp->irq_en;\
-       ^
-   drivers/net/ethernet/dec/tulip/de4x5.c:3826:2: error: use of undeclared identifier 'imr'
-   drivers/net/ethernet/dec/tulip/de4x5.c:684:10: note: expanded from macro 'ENABLE_IRQs'
-       outl(imr, DE4X5_IMR);               /* Enable the IRQs */\
-            ^
-   4 errors generated.
 
 
-vim +/imr +3823 drivers/net/ethernet/dec/tulip/de4x5.c
+On Wed, 1 Jun 2022, Mikulas Patocka wrote:
 
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3814  
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3815  static void
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3816  de4x5_setup_intr(struct net_device *dev)
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3817  {
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3818      struct de4x5_private *lp = netdev_priv(dev);
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3819      u_long iobase = dev->base_addr;
-98c118e28527e7 drivers/net/ethernet/dec/tulip/de4x5.c Haowen Bai     2022-06-01  3820      s32 sts;
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3821  
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3822      if (inl(DE4X5_OMR) & OMR_SR) {   /* Only unmask if TX/RX is enabled */
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16 @3823  	UNMASK_IRQs;
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3824  	sts = inl(DE4X5_STS);        /* Reset any pending (stale) interrupts */
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3825  	outl(sts, DE4X5_STS);
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3826  	ENABLE_IRQs;
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3827      }
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3828  }
-^1da177e4c3f41 drivers/net/tulip/de4x5.c              Linus Torvalds 2005-04-16  3829  
+> 
+> 
+> On Tue, 31 May 2022, Helge Deller wrote:
+> 
+> > Mikulas noticed that the parisc kernel crashes in sd_init() if
+> > CONFIG_SCHED_MC is enabled.
+> > Multicore-scheduling is probably not very useful on parisc, so simply
+> > drop this option.
+> > 
+> > Signed-off-by: Helge Deller <deller@gmx.de>
+> > Noticed-by: Mikulas Patocka <mpatocka@redhat.com>
+> > Cc: <stable@vger.kernel.org> # 5.18
+> 
+> Hi
+> 
+> I think that we should fix the root cause instead of trying to treat the 
+> symptoms.
+> 
+> Some more testing showed that:
+> 
+> in sd_init: tl->mask(cpu) returns an empty mask
+> tl->mask is cpu_coregroup_mask
+> in cpu_coregroup_mask: cpu_topology[cpu].core_sibling is an empty mask, 
+> that gets returned to sd_init
+> 
+> In arch/parisc/kernel/topology.c:
+> init_cpu_topology is called before store_cpu_topology, but it depends on 
+> the variable dualcores_found being set by store_cpu_topology. Thus, it is 
+> not set.
+> 
+> store_cpu_topology returns if cpuid_topo->core_id != -1, but during boot, 
+> store_cpu_topology is called before reset_cpu_topology, thus the member 
+> "core_id" is uninitialized zero and store_cpu_tolopogy does nothing.
+> 
+> If these issues are addrssed, multicore scheduling will work.
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+I've found that this fixes it.
+
+Mikulas
+
+
+---
+ arch/parisc/kernel/topology.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+Index: linux-2.6/arch/parisc/kernel/topology.c
+===================================================================
+--- linux-2.6.orig/arch/parisc/kernel/topology.c	2022-06-01 15:32:59.000000000 +0200
++++ linux-2.6/arch/parisc/kernel/topology.c	2022-06-01 16:47:36.000000000 +0200
+@@ -95,7 +95,8 @@ static struct sched_domain_topology_leve
+  */
+ void __init init_cpu_topology(void)
+ {
++	reset_cpu_topology();
+ 	/* Set scheduler topology descriptor */
+-	if (dualcores_found)
++	/*if (dualcores_found)*/
+ 		set_sched_topology(parisc_mc_topology);
+ }
+
