@@ -2,62 +2,63 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A4A453D737
-	for <lists+linux-parisc@lfdr.de>; Sat,  4 Jun 2022 16:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F080F53D768
+	for <lists+linux-parisc@lfdr.de>; Sat,  4 Jun 2022 17:07:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235423AbiFDO1I (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 4 Jun 2022 10:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40748 "EHLO
+        id S237443AbiFDPHu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 4 Jun 2022 11:07:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236341AbiFDO1F (ORCPT
+        with ESMTP id S232805AbiFDPHq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 4 Jun 2022 10:27:05 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E353B2B6
-        for <linux-parisc@vger.kernel.org>; Sat,  4 Jun 2022 07:27:00 -0700 (PDT)
+        Sat, 4 Jun 2022 11:07:46 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A99251107;
+        Sat,  4 Jun 2022 08:07:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1654352807;
+        s=badeba3b8450; t=1654355257;
         bh=MK7DuyiZdK1YpKOOq0sNLlM/dwzCP4yHWHcA3XxuvMQ=;
         h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=BOCRUqW6BBKlnUOr5xhcCtPIJY0sMnlPMhXg2H8/4HmqMdVo7qn9YmfuirVykZLMz
-         paE7rF4M2BWqG/8H0DrnCe2anZIXDo5RwGAzHrq1qHWdA4s8MOAGVGbPkyf7OfQFFk
-         oLQymJneyjuUdwuaSdnsN/h3l2dp23XHPQwSjELo=
+        b=cMk34iwwBF58lwHtSR7cfeVmzK9c2G0cnlQfS9x45xrQjtGjDsm63XaTgXQF3aRCB
+         HFyRrZY8wGaUfZBE0x26SL/0Q1BjI0B7y9RoodHSBNOFGBfduSq+ilO6LMKs0jgfbx
+         pm0JzYUxNU0Hwvn5d3RBvNDME7Rp2vtTUjJWHZ54=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100 ([92.116.176.199]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N17YY-1nly7p18eY-012Z8L; Sat, 04
- Jun 2022 16:26:47 +0200
-Date:   Sat, 4 Jun 2022 16:26:43 +0200
+Received: from p100 ([92.116.176.199]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MAOJV-1o3FrO2Xyl-00Bx0g; Sat, 04
+ Jun 2022 17:07:37 +0200
+Date:   Sat, 4 Jun 2022 17:07:35 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>,
         Mikulas Patocka <mpatocka@redhat.com>
 Subject: [GIT PULL] more parisc architecture fixes/updates for v5.19-rc1
-Message-ID: <Yptro6e0a8xyXVRI@p100>
+Message-ID: <Ypt1N+GyXEMfAxR6@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:EFN/OgPgciWyJ2X23D2hHvITcGUIgS6J/6uoJ8xuz59XHQn4iKF
- KljBpBeKd77e+9U7AsvZH2J3x4MhIUD5xHo9MXdD7sorMJoKffIqk94oz/urEcRzEKfFfKL
- lwDPspoU7HU9+dTh8gtIlY+NTtWGwiuxG1ayvwbXO5X/jUMUSbCdZE+MqU5mASdYueFapVL
- AJb1UL7oucpZJvgQc3j2A==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:zPOzDRZVDII=:U9mLl6f6CQKe7XLLTxfLNi
- 9Kktd2o14wR1R2YuLAF0BerWyNqWFKak1MrQ7rC8UKQQ2NAKkCRvoRsW4TSAfzsGVG7qZIoGq
- 2UnxpibnmEKUN96MGaOIT2V+hxkUz+oXXoS9k93bzYY5TVhErotBYTk54QPBEddDscFNlqDO/
- JlgeDs1zc+8e+8Egl08+BhJMqR4zqoAlzxvdZ27ArZldQkv55Q14jE6gp0FD9eCw3kwQ+tBoi
- AI1safZFwjTJUh7Egt8khFEOigJQAuZABHabH9eg50CkapbJC+vqY8of5YjAZPTuarItNCyIC
- 3VzpRKMPzWwC4fSExA8GBQh7ilr+NNdEqnfdnaMZzZOWCuUfh/HD3WnHvrA6HA1oPLl7OKVCX
- zpavC6LLcVwO5+PTLRLuD0GYyq7FDIW0PDDfKQjFnJcdNIlaWXOIe25RRh0I2Q0oWP220txCr
- cGl3TJJflBLSSHO8nUJkf6pyWRTZwTmpufJAjE/cWNQdjlqu5SIGGNY0gvFc6oQVca6P8P9wT
- MSbP1fo1PnmGJGYR9a0l+GDkGzXRJeRb0aIwstmYAnhZS9oawgCHWFOBU6yNLpZgKUIiDejvX
- kkfeo6XYtMtCxvFe7E8vy60noEeXauh4gtyH1Uy6cB5ZQmcU1XVjpvMM1h2JDfOux6toZXLxM
- eWqmJxLpoeP3SESjiEq18q8t4hjbd1bQpfW7d2Cdgju+3XPM57ecSrlWUYaClF1uXXJzkIyfq
- dUKit5cUvbmV+jJcJbCbOqUPujwfw/VMg+7KnVanNut/0KVzQnPWVFnFaC7JNpQ+LhrX8FknG
- TBZwof/gimDQuNTds1NSDqrbXUCvqQSOn1m7alZShEv972U7oKeLKY/YgR/Z2rdYCNUjnThqk
- Y/LOhRy87XntSYbbReU0v0WnCemtcDdhqjhX+A6RLIG0mwaMEEgpFE1gU3XfRO+pKodckMUVB
- 9nOPfF3UYQl3BM5nS+IeH2nTNP4yPcu99efummUqiqx1/QLUn6a3hS6Ym5IMWfPSj0+Xzxd//
- VrH2j/PMNJq2Xz4VRf4zely6cW/onIQoa2GrF06iNeTgYpuIAG26F8sIz3fNxzV3Ge6U+UmE1
- w+3dO4CQu8wv3yTazvIV7mBrP0zKBtHnPEYYF44KfyKM6qk6Dy6SFDv3w==
+X-Provags-ID: V03:K1:QCDalqORPxkFFBgSja/LphiCYN0xIX5hS+XV2kLSORgE7MAQJMm
+ cUjdsHeu/xJCBnTuC4tNcPZ37Cj7O1Uv0Lm1aQ90z+mPduX+uX1H+yGngwhF9Y7KQidJMLR
+ soTna8k1s47wiI75tr/1qBkfE2h4TWQyWykSByrM3ntoGnTwpiVLxiGSF/WARFBuWz2sYX8
+ asWF1bqM/AyG/eHGrB5Bg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VaCAlYmrQi0=:4WEAaTu1pPYu3l30uZGaqQ
+ o7ZQBNnV91RDIov58iAQ4Y19Q4TXaktTpIjS2I09JKLTv1+aTvNHSe5AP6wasc+0Ny2/DUDTJ
+ QMnTqziEHrpA2HQPBb7t0LlMFQUbq9tTZYumTisUvAS9qFR4HwRl+ywIpI9qQBCYOOGAX5t8Z
+ pz78/nUanlOagyxmrl7YWy4m0hOpZOZ7Oo0Dm8y8Kk1ZI5ZYpKll4rzSB1YrnhZVQ0THGX/+p
+ Om7HRvoYr2d00C2BjOugXlGw/pyCqzQg9d99oY6Bf9vbmbMCPCYYGcPuCut8PB7tZXsEOzLFS
+ bVSTaAI/EpNBI9YUrZFh3vuvik/c5yiyl184yrkZPKE96Im1r01MnePNZP1HbCojayWz7E1AH
+ sZbsg5Cqi1V2jJYU6jz0DzkyYwn8o0pc0Vhau0UkrVcuryo9TIahB3fRSeFvbitFcza4+qc36
+ lVRF1bFr4l/Tdf41OIvirm/i8hDFWLFdErvOzaYq6aSSrwKwAPDN9V2PdIMx1lxQWmxi0pXEB
+ 2zqNDkbPrT+xHV5ewcP//okD6inrVk0Dk1ek2ACxNRdDZwy0H5xFStetfeFfMCDBJ4vFlC+2+
+ 1hcV5XmOZChaWlhizP9czdpPFTxIXGWEnS/I6jubeF6/TXitl58UZZZxxpL7W5pz7y5oJKfrW
+ 5GkktOaDBmW5Jabgood8U1iaBIV4gijp/Svqydjsgthz/del+Ey2BNycy4KayJWN5t59PwdNa
+ CjSJnGsPCeaCP6oKohpsxla/edN4JwrZabhJBevvj3LoWxOFSMKSA1tvrIT7StXsi9spPFayW
+ EogPO1363I19aF3AtFIje8ZRwYQAE4u9/99pbqvJrqnhVNZsSbiDKn6xq5bdseEm30Db0HO88
+ FPPjceuCDYk36TatOAHMhv6UxZ9aqodEPC2Xcwh/utZ4dfaxqEJ7MTXSpc9OH/RnrlWMEnhXz
+ LPeWu/hxqZfbMMURRPc5Z5vZlPethkyrm02oLZzLpcV6Pdu6ZLtGe/k0Mcph+0tIWeBX5I8Wa
+ Bmtv4F/dFYUbDOcsmNagMOIua+Smj0Kk/OchzEqN3E/mxiaZbGugkoXsy1PA8FUo6CeQp8hmk
+ CQ7Fy7MEB6k5Egghenq4jHTLjt97JuPbRTIEkgQpS/otj1V6yAUVC91/w==
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -120,3 +121,4 @@ Mikulas Patocka (1):
  drivers/video/fbdev/sticore.h   |  3 +++
  drivers/video/fbdev/stifb.c     |  4 ++--
  7 files changed, 38 insertions(+), 28 deletions(-)
+
