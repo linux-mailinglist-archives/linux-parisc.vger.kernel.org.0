@@ -2,127 +2,128 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43C8C546C37
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Jun 2022 20:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B7DE547154
+	for <lists+linux-parisc@lfdr.de>; Sat, 11 Jun 2022 04:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347192AbiFJSS2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 10 Jun 2022 14:18:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58298 "EHLO
+        id S242747AbiFKCZR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 10 Jun 2022 22:25:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346557AbiFJSS2 (ORCPT
+        with ESMTP id S1348965AbiFKCXU (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 10 Jun 2022 14:18:28 -0400
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-003.bell.net [209.71.208.13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F369CF826B
-        for <linux-parisc@vger.kernel.org>; Fri, 10 Jun 2022 11:18:25 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [64.229.209.22]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6296A35D01D9C166
-X-CM-Envelope: MS4xfKV/usUSVlsj288z/6Y9nHUIdvQbLYEBlzIf9IdINRPPM115fE9CaIjuK1C449vlcrm6ywo6QgpMMzCwPlxaV0b4ZEc7BL5+T251+d5kXi7C/4wsXOb5
- XdCmgPz85PADzES3AG8C9p+ww5ax2fuTENw8+KjUkkoTctHxLdmTh3OV7DyrgiLOylZYrhcONikuU+bZxdHIzAL9pyHvNwjo+hyWZMn6ZyVs3kU1JS9kSYYY
- brzqiz8C3w08wLSzNyBTSu7712WCIPnG1k0gDbg6rtQoDPS0kc9QvGGlvdCcnmPHP07ORToOTguWLdW/WWK3LT+dTtQxe2i5VpqlaUlVPwE=
-X-CM-Analysis: v=2.4 cv=FMx4e8ks c=1 sm=1 tr=0 ts=62a38ae9
- a=PzUcMIm+zPr1bDMlhKZIxQ==:117 a=PzUcMIm+zPr1bDMlhKZIxQ==:17
- a=r77TgQKjGQsHNAKrUKIA:9 a=FBHGMhGWAAAA:8 a=qT3U_4Zh8-Ffl2r-W-sA:9
- a=QEXdDO2ut3YA:10 a=-OCGrLeyKfsu9YLd8L8A:9 a=B2y7HmGcmWMA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (64.229.209.22) by cmx-mtlrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
-        id 6296A35D01D9C166; Fri, 10 Jun 2022 14:18:17 -0400
-Content-Type: multipart/mixed; boundary="------------peMODtnHCWgwrCbK0otdPzHB"
-Message-ID: <76323d1a-114b-2cf7-2f4a-05612b28c9e2@bell.net>
-Date:   Fri, 10 Jun 2022 14:18:18 -0400
+        Fri, 10 Jun 2022 22:23:20 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8254D3F4A20
+        for <linux-parisc@vger.kernel.org>; Fri, 10 Jun 2022 19:23:14 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id g7so1019198eda.3
+        for <linux-parisc@vger.kernel.org>; Fri, 10 Jun 2022 19:23:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HvaEucNyttJ72r4dgkt1sbWCJsvBPyIh5zMt0LNXalY=;
+        b=D62jI1p8sOcmW+dGG367yCKI6736qfwlRYdRbtg+pQI3VQ/mZvhMkSh4muEy4yFzXi
+         1pifN6keFBPADAFAutLs2f+vKDRy3jOy1SmannYfmHY7tjbpoLbP8600CMqIboz22zit
+         FmdCeKC+IDyY3i3YwKCGDz5In1oYgHbIW3q58=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HvaEucNyttJ72r4dgkt1sbWCJsvBPyIh5zMt0LNXalY=;
+        b=SpLtLBm0LZgJK7dqDjRLm8joxn1dDEHbAXZa+S4ixU7yrRL5NjnGfjSesLMJbl0DfA
+         jQw41NPhN843r6Lsohc9EZOak544O//ZKMJD2LlDVv4PbsRH8mxnj5lLAqXG8mfznN1L
+         GSDmcQN/lklL9fVxTTsivA6LP6otf+/sxuN4UkNGNLji9v0aBntYcSqNtQdzc6cSevUM
+         AsDvelGEJbfdttimcjD43uC8O236s6pDy+RXOS7HsehJ3SyfIoB8o7W1wup60eEbS+wA
+         pcLWRInGw9qkho2kdoLkECTQUUH3DsHlVEExheXDjlSTJ3R2ciGURDiPbSF9uJFBBy9U
+         tXmw==
+X-Gm-Message-State: AOAM5326j8ePH0TlTSk0KszeCwqjaARq5VEd62vLlFTRQ+SoaEvqKqQu
+        BRx1d3lMr2MM0LDRzWeIuIokJeGKNpn6+yhZT4ORmg==
+X-Google-Smtp-Source: ABdhPJz16+9kQdS9QDTB0tjL4FsLbUEsFaIS0ykQfnx5qpyFYyBQCn1i8W4mcCkA/y3viUzYkXAgYYv9JpSOTwgMdpQ=
+X-Received: by 2002:a50:eb91:0:b0:42d:c1d8:616a with SMTP id
+ y17-20020a50eb91000000b0042dc1d8616amr54940771edr.219.1654914192936; Fri, 10
+ Jun 2022 19:23:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: linux v5.18.3 fails to boot
-Content-Language: en-US
-From:   John David Anglin <dave.anglin@bell.net>
-To:     Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc:     deller@gmx.de, kuniyu@amazon.co.jp, linux-parisc@vger.kernel.org
-References: <07d91863-dacc-a503-aa2b-05c3b92a1e39@bell.net>
- <20220610160624.95035-1-kuniyu@amazon.com>
- <7beb6e90-4532-cba2-8121-4cfc413f4d3f@bell.net>
-In-Reply-To: <7beb6e90-4532-cba2-8121-4cfc413f4d3f@bell.net>
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220608142723.103523089@infradead.org> <20220608144517.444659212@infradead.org>
+ <YqG6URbihTNCk9YR@alley> <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net> <YqHwOFg/WlMqe8/Z@alley>
+In-Reply-To: <YqHwOFg/WlMqe8/Z@alley>
+From:   Sergey Senozhatsky <senozhatsky@chromium.org>
+Date:   Sat, 11 Jun 2022 11:23:02 +0900
+Message-ID: <CA+_sPaq_47C2PWnGU7WfGXMc03E1Nz+1=F-wZe0B2+ymqdm3Fg@mail.gmail.com>
+Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
+        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
+        dinguyen@kernel.org, jonas@southpole.se,
+        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, anup@brainfault.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, rostedt@goodmis.org,
+        john.ogness@linutronix.de, paulmck@kernel.org, frederic@kernel.org,
+        quic_neeraju@quicinc.com, josh@joshtriplett.org,
+        mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+        joel@joelfernandes.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
+        vschneid@redhat.com, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------peMODtnHCWgwrCbK0otdPzHB
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 2022-06-10 12:49 p.m., John David Anglin wrote:
->> The commit was added to prevent compiler optimisation from splitting
->> read/write operations.  I think it can lead in a change in opcodes but
->> must be safe.  So I'm not sure why the commit causes boot failure for now.
-> Neither am I.
->>
->> I'm not familiar with PARISC and this may be a stupid question though,
->> what does `ldd` exactly do? and which line is it executed in the func/file?
-> ldd performs a 64-bit load to register rp (r2).  It is part of mpt_reply's epilogue.
-> The prior "sync" instruction corresponds to the "mb()" at the end of mpt_reply.
+On Thu, Jun 9, 2022 at 10:06 PM Petr Mladek <pmladek@suse.com> wrote:
 >
-> I would have thought this code should have been write protected.  It seems
-> CONFIG_STRICT_MODULE_RWX is not explicitly set in config:
+> Makes sense. Feel free to use for this patch:
 >
-> CONFIG_ARCH_HAS_STRICT_KERNEL_RWX=y
-> CONFIG_STRICT_KERNEL_RWX=y
->
-> I think I need to try enabling CONFIG_STRICT_MODULE_RWX.
-With CONFIG_STRICT_MODULE_RWX, the fault went away and the system boots normally.
+> Acked-by: Petr Mladek <pmladek@suse.com>
 
-To enable CONFIG_STRICT_MODULE_RWX, I needed to add attached patch to Kconfig.
-
-As far as I can tell, this only affects patch_map in the parisc backend:
-
-static void __kprobes *patch_map(void *addr, int fixmap, unsigned long *flags,
-                                  int *need_unmap)
-{
-         unsigned long uintaddr = (uintptr_t) addr;
-         bool module = !core_kernel_text(uintaddr);
-         struct page *page;
-
-         *need_unmap = 0;
-         if (module && IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
-                 page = vmalloc_to_page(addr);
-         else if (!module && IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
-                 page = virt_to_page(addr);
-         else
-                 return addr;
-
-Possibly, this might affect Fusion MPT base driver but no patches are applied:
-
-[   29.971295] mptbase alternatives: applied 0 out of 3 patches
-[   29.971295] Fusion MPT base driver 3.04.20
-[   29.971295] Copyright (c) 1999-2008 LSI Corporation
-[   29.971295] Fusion MPT SPI Host driver 3.04.20
-
-Dave
-
--- 
-John David Anglin  dave.anglin@bell.net
-
---------------peMODtnHCWgwrCbK0otdPzHB
-Content-Type: text/plain; charset=UTF-8; name="Kconfig.patch"
-Content-Disposition: attachment; filename="Kconfig.patch"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL2FyY2gvcGFyaXNjL0tjb25maWcgYi9hcmNoL3BhcmlzYy9LY29uZmln
-CmluZGV4IGJkMjI1Nzg4NTlkMC4uZjNhMjA0NGVlNDAyIDEwMDY0NAotLS0gYS9hcmNoL3Bh
-cmlzYy9LY29uZmlnCisrKyBiL2FyY2gvcGFyaXNjL0tjb25maWcKQEAgLTEwLDYgKzEwLDcg
-QEAgY29uZmlnIFBBUklTQwogCXNlbGVjdCBBUkNIX1dBTlRfRlJBTUVfUE9JTlRFUlMKIAlz
-ZWxlY3QgQVJDSF9IQVNfRUxGX1JBTkRPTUlaRQogCXNlbGVjdCBBUkNIX0hBU19TVFJJQ1Rf
-S0VSTkVMX1JXWAorCXNlbGVjdCBBUkNIX0hBU19TVFJJQ1RfTU9EVUxFX1JXWAogCXNlbGVj
-dCBBUkNIX0hBU19VQlNBTl9TQU5JVElaRV9BTEwKIAlzZWxlY3QgQVJDSF9IQVNfUFRFX1NQ
-RUNJQUwKIAlzZWxlY3QgQVJDSF9OT19TR19DSEFJTgo=
-
---------------peMODtnHCWgwrCbK0otdPzHB--
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
