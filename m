@@ -2,81 +2,116 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2A6554DBC1
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jun 2022 09:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC6D954DC96
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jun 2022 10:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359556AbiFPHdi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 16 Jun 2022 03:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49330 "EHLO
+        id S233903AbiFPIL6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 16 Jun 2022 04:11:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359591AbiFPHdP (ORCPT
+        with ESMTP id S1359612AbiFPIL6 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 16 Jun 2022 03:33:15 -0400
-Received: from me-region.ru (email.me-region.ru [178.238.126.75])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 4EDB810E8
-        for <linux-parisc@vger.kernel.org>; Thu, 16 Jun 2022 00:33:04 -0700 (PDT)
-Received: from rmail.major-express.ru (rmail [127.0.0.1])
-        by me-region.ru (Postfix) with ESMTP id 8312B2BE388
-        for <linux-parisc@vger.kernel.org>; Thu, 16 Jun 2022 10:33:02 +0300 (MSK)
-Authentication-Results: rmail.major-express.ru (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)" header.d=me-region.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=me-region.ru; h=
-        reply-to:date:date:from:from:to:subject:subject
-        :content-description:content-transfer-encoding:mime-version
-        :content-type:content-type; s=dkim; t=1655364781; x=1656228782;
-         bh=q+AB6wTcFowTQDN3yBj6V7w56hj7BQnkh6i5A0MwiTQ=; b=avN+Ovj7Z/X4
-        3JZt+nb0KbSRlnQ8uzvb3+u3iGzM8XZhbRITIdNmuBHz9IxYNKJjxYofEIGM3XNu
-        5IFau0FtshOsngXBP4ATvZUNyC0bQXqVXRnEcc5gw467WDGgBuqhX1ogdnYUh9ls
-        xcDsJvbnZpqP3IAkggpOChYJhfCHep4=
-X-Virus-Scanned: Debian amavisd-new at rmail
-Received: from me-region.ru ([127.0.0.1])
-        by rmail.major-express.ru (rmail.major-express.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 2HTqcHk1YxfI for <linux-parisc@vger.kernel.org>;
-        Thu, 16 Jun 2022 10:33:01 +0300 (MSK)
-Received: from [2.56.59.106] (unknown [2.56.59.106])
-        by me-region.ru (Postfix) with ESMTPSA id E61FE2B1668;
-        Wed, 15 Jun 2022 12:33:13 +0300 (MSK)
-Content-Type: text/plain; charset="iso-8859-1"
+        Thu, 16 Jun 2022 04:11:58 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AAAB5D658;
+        Thu, 16 Jun 2022 01:11:55 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id a15so818148wrh.2;
+        Thu, 16 Jun 2022 01:11:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=amDKED5mOsWQ+K/CNIGULiX1ELwKCA1nvvmyVqf77To=;
+        b=a8siBkH637bA11QQzzQ3C0wN2P3xzXYSr+nJqJgAr44mli5jvIzPSia4y9/XpC+2Hj
+         eHBsKThuPe3ZeCiXZLKkgadkmUkaCbeU1ZqDdxhkR84uMb/vtWav0bC7HdH5XcFpunVt
+         FE7aGJsU1E7BAKq6N2k9OYM8hF64yq9RWTvx0KFtTRpHJEQREm9Ef1G6fyz8yHQGA6Zx
+         0ZkxVLZGdqOFdPaTUHivovdxlezUDnzGV2iL7lcCQV/899mdlLpxiweRNU+5IdWTUwQn
+         Xnf8IeNhU8YL72JlEb8x27e3CR6/Xk4z0k5CF+oT6xGW3jZu2suPXoMmmab2oubJV9NF
+         KDew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=amDKED5mOsWQ+K/CNIGULiX1ELwKCA1nvvmyVqf77To=;
+        b=LiE2Qn1oaRKKLz1855tQakpgS+KRcvHJiNuRmZYGIzkxaHxjZAEw6yjPNL3/pZRRo8
+         x6DAMA+6+O7s8kJvSuPXpNg8baaz44JP4iE+giJaTc1unxRCPj0uHzIxRHLUjAwqQ0ub
+         10cuKRdmDIP6Eppum78l8SFZ1HqzwB4Wtw+zI4PN9Lp47q7hcO2kuNxEFIGUhbRrHiYi
+         s993IRMVwDx7O2JKXvB+O8FH+KqQqrtQBdo4Ucx2WrgQ7SpRRX8K8uelKY2SNr+n3tfA
+         qdK7KbT/RUaf4sKvfuvIlIhQEy8kuMTpdWfgOo8u1d9N9GxTT9mn0UrsXPJElpbZww/0
+         gFZw==
+X-Gm-Message-State: AJIora/okulU64LEqBWzjH0yGYjSrrmvZ0PFuDvKQAO7XD7lbG5aI3ha
+        50YupG6M58DqsrOAkw4inE0=
+X-Google-Smtp-Source: AGRyM1tA5uOFbmCqdUcOl257wMGAaUdvz/veRfzBd7RyXGoXL0BYHVKGwGsAa72bXy/8qZWbm6LzDg==
+X-Received: by 2002:a5d:6484:0:b0:219:eb95:3502 with SMTP id o4-20020a5d6484000000b00219eb953502mr3452169wri.692.1655367114079;
+        Thu, 16 Jun 2022 01:11:54 -0700 (PDT)
+Received: from localhost.localdomain (host-87-16-96-199.retail.telecomitalia.it. [87.16.96.199])
+        by smtp.gmail.com with ESMTPSA id o18-20020a5d6852000000b0021552eebde6sm1121807wrw.32.2022.06.16.01.11.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jun 2022 01:11:53 -0700 (PDT)
+From:   "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
+To:     David Sterba <dsterba@suse.com>
+Cc:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+        Nick Terrell <terrelln@fb.com>, linux-btrfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org,
+        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
+Subject: [PATCH v4 0/2] Replace kmap() with kmap_local_page() in zstd.c
+Date:   Thu, 16 Jun 2022 10:11:31 +0200
+Message-Id: <20220616081133.14144-1-fmdefrancesco@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Good day, 93.189.94.68
-To:     Recipients <postmaster@me-region.ru>
-From:   "Lynn Page" <postmaster@me-region.ru>
-Date:   Wed, 15 Jun 2022 02:33:04 -0700
-Reply-To: lewislekan@outlook.com
-Message-Id: <20220616073302.8312B2BE388@me-region.ru>
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,RCVD_IN_BL_SPAMCOP_NET,
-        RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?2.56.59.106>]
-        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
-        *      [178.238.126.75 listed in wl.mailspike.net]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [178.238.126.75 listed in bl.score.senderscore.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Good day,
+This is a little series which serves the purpose to replace kmap() with
+kmap_local_page() in btrfs/zstd.c. Actually this task is only
+accomplished in patch 2/2. 
 
-This email will come to your as surprise, i will like to discuss Business P=
-roposal with u Kindly get back to me asap
+Instead patch 1/2 is a pre-requisite for the above-mentioned replacement,
+but, above all else, it has the purpose to conform the prototypes of
+__kunmap_{local,atomic}() to their own semantic. Since those functions
+don't make changes to the memory pointed by their arguments, make those
+arguments take pointers to const void.
 
-Mrs.Lynn Page
+This little series has version number 4, despite it's the first time the
+two component patches have been re-united in a series. This may be a
+questionable choice, however patch 1/2 should be at its v4 and patch 2/2
+should be at its v3. I've tried to preserve the logs of version changes,
+so, as said, this new series carries v4.
+
+Furthermore, v4 is due to the fact that for v3 (where for the first time
+the two above-mentioned patches had been united in a series) I forgot to
+Cc several Maintainers and lists related to patch 1/2.
+
+Sorry for the noise I provided to whom have received this same series
+twice with no changes at all.
+
+Fabio M. De Francesco (2):
+  highmem: Make __kunmap_{local,atomic}() take "const void *"
+  btrfs: Replace kmap() with kmap_local_page() in zstd.c
+
+ arch/parisc/include/asm/cacheflush.h |  6 ++--
+ arch/parisc/kernel/cache.c           |  2 +-
+ fs/btrfs/zstd.c                      | 42 +++++++++++++++-------------
+ include/linux/highmem-internal.h     | 10 +++----
+ mm/highmem.c                         |  2 +-
+ 5 files changed, 33 insertions(+), 29 deletions(-)
+
+-- 
+2.36.1
+
