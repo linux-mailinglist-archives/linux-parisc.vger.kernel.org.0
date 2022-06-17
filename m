@@ -2,174 +2,156 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C829454F6A0
-	for <lists+linux-parisc@lfdr.de>; Fri, 17 Jun 2022 13:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28A6B54F7E8
+	for <lists+linux-parisc@lfdr.de>; Fri, 17 Jun 2022 14:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380573AbiFQL0t (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 17 Jun 2022 07:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54168 "EHLO
+        id S1382099AbiFQM6H (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 17 Jun 2022 08:58:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235394AbiFQL0s (ORCPT
+        with ESMTP id S232578AbiFQM6F (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 17 Jun 2022 07:26:48 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2AE6A06B;
-        Fri, 17 Jun 2022 04:26:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655465207; x=1687001207;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=O0OzaZWt5JBpgO+HWeUig13mrHT0bkF4JZGnMqUmzAI=;
-  b=Rv1zjxjwhl0YSHCALlE56R8qHdmizvxY81phVDtkG+XB7o40XLsVEL//
-   c4sp74bDQszlHt5s/j1NsLg0oUq/esQzOTTlfl4gd/jmQi+53JcuDPhRu
-   6OR3XkcQr22FT2jx6GIFzyCvYFz1/U3UGG4/CrrN+Hts/Kn8825XGxAHM
-   WLB3Ru8iukqzhpnm7XFrRfz5YcvQEMt1Nxunsju5o7mM5soHRg5WOaHz/
-   qobCeXD0IK1DyqQIi/tJd2uF8dPLZjy3mSn79mS7+12Uu58hqs4PXkQ6z
-   yQog4DY3LQpQU6qzOCqxgHP++HyUnZOMVniOVTVxHeWrv0wzXS+J8GTBB
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="268178377"
-X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
-   d="scan'208";a="268178377"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2022 04:26:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
-   d="scan'208";a="675457992"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 17 Jun 2022 04:26:40 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o2A7b-000PP9-Vz;
-        Fri, 17 Jun 2022 11:26:39 +0000
-Date:   Fri, 17 Jun 2022 19:26:21 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Mike Kravetz <mike.kravetz@oracle.com>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        Muchun Song <songmuchun@bytedance.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>,
-        Naoya Horiguchi <naoya.horiguchi@linux.dev>,
-        James Houghton <jthoughton@google.com>,
-        Mina Almasry <almasrymina@google.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        catalin.marinas@arm.com, will@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [PATCH 1/4] hugetlb: skip to end of PT page mapping when pte not
- present
-Message-ID: <202206171929.ZIUrNg6p-lkp@intel.com>
-References: <20220616210518.125287-2-mike.kravetz@oracle.com>
+        Fri, 17 Jun 2022 08:58:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB291A832;
+        Fri, 17 Jun 2022 05:58:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 781BF61FA8;
+        Fri, 17 Jun 2022 12:58:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CBDC3411B;
+        Fri, 17 Jun 2022 12:57:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655470682;
+        bh=cLraNpkEnCzF/4zKCRGjwHG57BoDqUlRiy0OHq9zjK0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oH4x2PycGtrhhz35364UaeAzZu23iN71evljdxuntEZ1VsVln0947L4kgXWuEzLrC
+         OLWEWoJhN8r14vT4yHg3QQ8tQZDKO4OIba+kSPV417/BH7s5oxSh7c9Yljg6Gr1afz
+         xj6FbXz6U/9X2aXj04KSLFiOeD9C/zZoF0JfQi5Xj9zHHyGlm4nv/8XJxqnfGaiKhC
+         xU+lb1e94omoeQ0C4aaO2uCUV9m066p1W0G5moNKShM55uVOSpn4kV7bLBshwrY4Rp
+         NgxDokayeZJhS/Gn+T5DZpIazOVqwZSNsiUx9537mSMzxTSIGDTQ6H1nn5bxhvpiW3
+         g1++SMPFn7Evg==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>, Jakub Kicinski <kuba@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        iommu@lists.linux-foundation.org,
+        Khalid Aziz <khalid@gonehiking.org>,
+        "Maciej W . Rozycki" <macro@orcam.me.uk>,
+        Matt Wang <wwentao@vmware.com>,
+        Miquel van Smoorenburg <mikevs@xs4all.net>,
+        Mark Salyzyn <salyzyn@android.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-parisc@vger.kernel.org, Denis Efremov <efremov@linux.com>
+Subject: [PATCH v2 0/3] phase out CONFIG_VIRT_TO_BUS
+Date:   Fri, 17 Jun 2022 14:57:47 +0200
+Message-Id: <20220617125750.728590-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220616210518.125287-2-mike.kravetz@oracle.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Mike,
+From: Arnd Bergmann <arnd@arndb.de>
 
-I love your patch! Yet something to improve:
+The virt_to_bus/bus_to_virt interface has been deprecated for
+decades. After Jakub Kicinski put a lot of work into cleaning out the
+network drivers using them, there are only a couple of other drivers
+left, which can all be removed or otherwise cleaned up, to remove the
+old interface for good.
 
-[auto build test ERROR on soc/for-next]
-[also build test ERROR on linus/master v5.19-rc2 next-20220617]
-[cannot apply to arm64/for-next/core arm/for-next kvmarm/next xilinx-xlnx/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Any out of tree drivers using virt_to_bus() should be converted to
+using the dma-mapping interfaces, typically dma_alloc_coherent()
+or dma_map_single()).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mike-Kravetz/hugetlb-speed-up-linear-address-scanning/20220617-050726
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
-config: i386-randconfig-a002 (https://download.01.org/0day-ci/archive/20220617/202206171929.ZIUrNg6p-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project f0e608de27b3d568000046eebf3712ab542979d6)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/4c647687607f10fece04967b8180c0dadaf765e6
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Mike-Kravetz/hugetlb-speed-up-linear-address-scanning/20220617-050726
-        git checkout 4c647687607f10fece04967b8180c0dadaf765e6
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
+There are a few m68k and ppc32 specific drivers that keep using the
+interfaces, but these are all guarded with architecture-specific
+Kconfig dependencies, and are not actually broken.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+There are still a number of drivers that are using virt_to_phys()
+and phys_to_virt() in place of dma-mapping operations, and these
+are often broken, but they are out of scope for this series.
 
-All errors (new ones prefixed by >>):
+I would like the first two patches to either get merged through
+the SCSI tree, or get an Ack from the SCSI maintainers so I can
+merge them through the asm-generic tree
 
->> mm/hugetlb.c:6901:7: error: duplicate case value '4194304'
-           case PUD_SIZE:
-                ^
-   include/asm-generic/pgtable-nopud.h:20:20: note: expanded from macro 'PUD_SIZE'
-   #define PUD_SIZE        (1UL << PUD_SHIFT)
-                           ^
-   mm/hugetlb.c:6899:7: note: previous case defined here
-           case P4D_SIZE:
-                ^
-   include/asm-generic/pgtable-nop4d.h:13:19: note: expanded from macro 'P4D_SIZE'
-   #define P4D_SIZE                (1UL << P4D_SHIFT)
-                                   ^
-   mm/hugetlb.c:6903:7: error: duplicate case value '4194304'
-           case PMD_SIZE:
-                ^
-   include/asm-generic/pgtable-nopmd.h:22:20: note: expanded from macro 'PMD_SIZE'
-   #define PMD_SIZE        (1UL << PMD_SHIFT)
-                           ^
-   mm/hugetlb.c:6901:7: note: previous case defined here
-           case PUD_SIZE:
-                ^
-   include/asm-generic/pgtable-nopud.h:20:20: note: expanded from macro 'PUD_SIZE'
-   #define PUD_SIZE        (1UL << PUD_SHIFT)
-                           ^
-   2 errors generated.
+      Arnd
 
+---
+Changes since v1:
+ - dropped VME patches that are already in staging-next
+ - dropped media patch that gets merged independently
+ - added a networking patch and dropped it again after it got merged
+ - replace BusLogic removal with a workaround
 
-vim +/4194304 +6901 mm/hugetlb.c
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org> # dma-mapping
+Cc: Marek Szyprowski <m.szyprowski@samsung.com> # dma-mapping
+Cc: Robin Murphy <robin.murphy@arm.com> # dma-mapping
+Cc: iommu@lists.linux-foundation.org
+Cc: Khalid Aziz <khalid@gonehiking.org> # buslogic
+Cc: Maciej W. Rozycki <macro@orcam.me.uk> # buslogic
+Cc: Matt Wang <wwentao@vmware.com> # buslogic
+Cc: Miquel van Smoorenburg <mikevs@xs4all.net> # dpt_i2o
+Cc: Mark Salyzyn <salyzyn@android.com> # dpt_i2o
+Cc: linux-scsi@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-parisc@vger.kernel.org
+Cc: Denis Efremov <efremov@linux.com> # floppy
 
-  6886	
-  6887	/*
-  6888	 * Return a mask that can be used to update an address to the last huge
-  6889	 * page in a page table page mapping size.  Used to skip non-present
-  6890	 * page table entries when linearly scanning address ranges.  Architectures
-  6891	 * with unique huge page to page table relationships can define their own
-  6892	 * version of this routine.
-  6893	 */
-  6894	unsigned long hugetlb_mask_last_page(struct hstate *h)
-  6895	{
-  6896		unsigned long hp_size = huge_page_size(h);
-  6897	
-  6898		switch (hp_size) {
-  6899		case P4D_SIZE:
-  6900			return PGDIR_SIZE - P4D_SIZE;
-> 6901		case PUD_SIZE:
-  6902			return P4D_SIZE - PUD_SIZE;
-  6903		case PMD_SIZE:
-  6904			return PUD_SIZE - PMD_SIZE;
-  6905		default:
-  6906			break; /* Should never happen */
-  6907		}
-  6908	
-  6909		return ~(0UL);
-  6910	}
-  6911	
+Arnd Bergmann (3):
+  scsi: dpt_i2o: drop stale VIRT_TO_BUS dependency
+  scsi: BusLogic remove bus_to_virt
+  arch/*/: remove CONFIG_VIRT_TO_BUS
+
+ .../core-api/bus-virt-phys-mapping.rst        | 220 ------------------
+ Documentation/core-api/dma-api-howto.rst      |  14 --
+ Documentation/core-api/index.rst              |   1 -
+ .../translations/zh_CN/core-api/index.rst     |   1 -
+ arch/alpha/Kconfig                            |   1 -
+ arch/alpha/include/asm/floppy.h               |   2 +-
+ arch/alpha/include/asm/io.h                   |   8 +-
+ arch/ia64/Kconfig                             |   1 -
+ arch/ia64/include/asm/io.h                    |   8 -
+ arch/m68k/Kconfig                             |   1 -
+ arch/m68k/include/asm/virtconvert.h           |   4 +-
+ arch/microblaze/Kconfig                       |   1 -
+ arch/microblaze/include/asm/io.h              |   2 -
+ arch/mips/Kconfig                             |   1 -
+ arch/mips/include/asm/io.h                    |   9 -
+ arch/parisc/Kconfig                           |   1 -
+ arch/parisc/include/asm/floppy.h              |   4 +-
+ arch/parisc/include/asm/io.h                  |   2 -
+ arch/powerpc/Kconfig                          |   1 -
+ arch/powerpc/include/asm/io.h                 |   2 -
+ arch/riscv/include/asm/page.h                 |   1 -
+ arch/x86/Kconfig                              |   1 -
+ arch/x86/include/asm/io.h                     |   9 -
+ arch/xtensa/Kconfig                           |   1 -
+ arch/xtensa/include/asm/io.h                  |   3 -
+ drivers/scsi/BusLogic.c                       |  27 ++-
+ drivers/scsi/Kconfig                          |   4 +-
+ drivers/scsi/dpt_i2o.c                        |   4 +-
+ include/asm-generic/io.h                      |  14 --
+ mm/Kconfig                                    |   8 -
+ 30 files changed, 30 insertions(+), 326 deletions(-)
+ delete mode 100644 Documentation/core-api/bus-virt-phys-mapping.rst
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.29.2
+
