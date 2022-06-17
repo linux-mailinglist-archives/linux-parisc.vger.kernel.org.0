@@ -2,80 +2,153 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F43F54FAC7
-	for <lists+linux-parisc@lfdr.de>; Fri, 17 Jun 2022 18:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56C8854FC30
+	for <lists+linux-parisc@lfdr.de>; Fri, 17 Jun 2022 19:24:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383064AbiFQQGX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 17 Jun 2022 12:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52960 "EHLO
+        id S1382444AbiFQRXg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 17 Jun 2022 13:23:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382943AbiFQQGT (ORCPT
+        with ESMTP id S1382906AbiFQRXe (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 17 Jun 2022 12:06:19 -0400
-X-Greylist: delayed 1496 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 09:06:18 PDT
-Received: from sv220.xserver.jp (sv220.xserver.jp [202.226.39.121])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B03186F5;
-        Fri, 17 Jun 2022 09:06:18 -0700 (PDT)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw2.xserver.jp)
-Received: from webmail.xserver.ne.jp (webmail.xserver.ne.jp [210.188.201.183])
-        by sv220.xserver.jp (Postfix) with ESMTPA id 038CD12025F434;
-        Sat, 18 Jun 2022 00:16:31 +0900 (JST)
+        Fri, 17 Jun 2022 13:23:34 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADBB918383;
+        Fri, 17 Jun 2022 10:23:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655486613; x=1687022613;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5r0rapPYszeZBBEbJ/ZlpHIsTYM/ozOqcBVhPIANdrM=;
+  b=eO+bj2hEeWAUudtg5CU9yl9fxz0asyamHWOeYHJ1EqkZMBoywm3DB07O
+   aGX083DvfOXZPN2ZXOmJI1ZgcaGukg1qroBnoGQ44xP2o8WFM+BeCkroY
+   rh4bWzzWk+OKKYO7SlwsYvamyMbMbntL3o0TRfPYlxn71wfwPsUjPs997
+   VpHzLjF8EJp3GU56yeCLC9Cd98FD81sLzoTPTPSA04zuJncDwl5qnKvvp
+   dDxBqAAkjRdtKVR1jj6BBg4lxGKmo83PxNNP67U5qSyrpa7eiLOlP28Ua
+   zGd05SBQxpAtIZDuL2dJMWgkX3KRRT8yqKE2dqZYhJkiV9k/NWy6nmCbr
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="259358208"
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="259358208"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2022 10:06:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="560563793"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 17 Jun 2022 10:06:50 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o2FQn-000Pcp-M0;
+        Fri, 17 Jun 2022 17:06:49 +0000
+Date:   Sat, 18 Jun 2022 01:06:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Mike Kravetz <mike.kravetz@oracle.com>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc:     kbuild-all@lists.01.org, Muchun Song <songmuchun@bytedance.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>,
+        Naoya Horiguchi <naoya.horiguchi@linux.dev>,
+        James Houghton <jthoughton@google.com>,
+        Mina Almasry <almasrymina@google.com>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        catalin.marinas@arm.com, will@kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>
+Subject: Re: [PATCH 1/4] hugetlb: skip to end of PT page mapping when pte not
+ present
+Message-ID: <202206180021.rcc4B1by-lkp@intel.com>
+References: <20220616210518.125287-2-mike.kravetz@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 17 Jun 2022 23:16:31 +0800
-From:   Steve Dibenedetto <y-kitsuya@bell-group.co.jp>
-To:     undisclosed-recipients:;
-Subject: THIS IS VERY CONFIDENTIAL
-Reply-To: stevedibenedetto17@gmail.com
-Mail-Reply-To: stevedibenedetto17@gmail.com
-Message-ID: <ec1bb68d0d72aa3e007bad8b0e72f08f@bell-group.co.jp>
-X-Sender: y-kitsuya@bell-group.co.jp
-User-Agent: Roundcube Webmail/1.2.0
-X-Spam-Status: Yes, score=6.9 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,ODD_FREEM_REPTO,
-        SPF_HELO_PASS,SPF_SOFTFAIL,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [stevedibenedetto17[at]gmail.com]
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.6 ODD_FREEM_REPTO Has unusual reply-to header
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220616210518.125287-2-mike.kravetz@oracle.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Hi Mike,
 
+I love your patch! Yet something to improve:
+
+[auto build test ERROR on soc/for-next]
+[also build test ERROR on linus/master v5.19-rc2 next-20220617]
+[cannot apply to arm64/for-next/core arm/for-next kvmarm/next xilinx-xlnx/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Mike-Kravetz/hugetlb-speed-up-linear-address-scanning/20220617-050726
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
+config: i386-debian-10.3 (https://download.01.org/0day-ci/archive/20220618/202206180021.rcc4B1by-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/intel-lab-lkp/linux/commit/4c647687607f10fece04967b8180c0dadaf765e6
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Mike-Kravetz/hugetlb-speed-up-linear-address-scanning/20220617-050726
+        git checkout 4c647687607f10fece04967b8180c0dadaf765e6
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   mm/hugetlb.c: In function 'hugetlb_mask_last_page':
+>> mm/hugetlb.c:6901:9: error: duplicate case value
+    6901 |         case PUD_SIZE:
+         |         ^~~~
+   mm/hugetlb.c:6899:9: note: previously used here
+    6899 |         case P4D_SIZE:
+         |         ^~~~
+
+
+vim +6901 mm/hugetlb.c
+
+  6886	
+  6887	/*
+  6888	 * Return a mask that can be used to update an address to the last huge
+  6889	 * page in a page table page mapping size.  Used to skip non-present
+  6890	 * page table entries when linearly scanning address ranges.  Architectures
+  6891	 * with unique huge page to page table relationships can define their own
+  6892	 * version of this routine.
+  6893	 */
+  6894	unsigned long hugetlb_mask_last_page(struct hstate *h)
+  6895	{
+  6896		unsigned long hp_size = huge_page_size(h);
+  6897	
+  6898		switch (hp_size) {
+  6899		case P4D_SIZE:
+  6900			return PGDIR_SIZE - P4D_SIZE;
+> 6901		case PUD_SIZE:
+  6902			return P4D_SIZE - PUD_SIZE;
+  6903		case PMD_SIZE:
+  6904			return PUD_SIZE - PMD_SIZE;
+  6905		default:
+  6906			break; /* Should never happen */
+  6907		}
+  6908	
+  6909		return ~(0UL);
+  6910	}
+  6911	
 
 -- 
-Hello,
-
-My name is Steve Dibenedetto.I apologize to have contacted you this way
-without a direct relationship. There is an opportunity to collaborate
-with me in the sourcing of some materials needed by our company for
-production of the different medicines we are researching.
-
-I'm aware that this might be totally outside your professional
-specialization, but it will be a great source for generating extra
-revenue. I  discovered a manufacturer who can supply us at a lower rate
-than our company's previous purchases.
-I will give you more specific details when/if I receive feedback from
-you showing interest.
-
-Warm Regards
-Steve Dibenedetto
-Production & Control Manager,
-Green Field Laboratories
-Gothic House, Barker Gate,
-Nottingham, NG1 1JU,
-United Kingdom.
+0-DAY CI Kernel Test Service
+https://01.org/lkp
