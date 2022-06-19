@@ -2,92 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AD14550696
-	for <lists+linux-parisc@lfdr.de>; Sat, 18 Jun 2022 21:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 383705507DD
+	for <lists+linux-parisc@lfdr.de>; Sun, 19 Jun 2022 03:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232043AbiFRTlO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 18 Jun 2022 15:41:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50660 "EHLO
+        id S229783AbiFSBSq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 18 Jun 2022 21:18:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229680AbiFRTlM (ORCPT
+        with ESMTP id S229446AbiFSBSq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 18 Jun 2022 15:41:12 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBCBC13D1C;
-        Sat, 18 Jun 2022 12:41:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=a0bL49uOiCfKwT3pkrVPnT1ka4/B28/6uyQ2X04Z2uE=; b=v7sWJzFOGdSYdZIqrUgltulDvB
-        4OYLCiBKpTU/gxVWoe7+5BZDCThsZIpeVflFB2hKb9xef5S9oR1IzVv/TIPNZ8352DZ7L4y2H9bjc
-        Jmm3lucQ5r46W+jh0YPPdpufOhL0oc+6u/z1/HnxocLAcrLExQk/tV+r89h7h2rJBW7HkWMzNVF0q
-        +WIbMin/lIE9rFhhyDjKdL9OzkPDDLx9So6dRWroeqd+o2BLMeRQMd+jBz8OKtZA/L9fXvpViA0ij
-        3FOXifV7VGCmCrmPC9jPkGMAJgjGydG1JnS8N8FfoYeqV3urXj5BnPigDS9O7tvXEKOSK4e67Qkxt
-        5/OlBqAw==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1o2eIt-003s30-RQ; Sat, 18 Jun 2022 19:40:19 +0000
-Date:   Sat, 18 Jun 2022 20:40:19 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Ralph Corderoy <ralph@inputplus.co.uk>
-Cc:     Nate Karstens <nate.karstens@garmin.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        David Laight <David.Laight@aculab.com>,
-        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Changli Gao <xiaosuo@gmail.com>
-Subject: Re: [PATCH v2] Implement close-on-fork
-Message-ID: <Yq4qIxh5QnhQZ0SJ@casper.infradead.org>
-References: <20200515152321.9280-1-nate.karstens@garmin.com>
- <20220618114111.61EC71F981@orac.inputplus.co.uk>
+        Sat, 18 Jun 2022 21:18:46 -0400
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-003.bell.net [209.71.208.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6108FFD03
+        for <linux-parisc@vger.kernel.org>; Sat, 18 Jun 2022 18:18:45 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [64.229.209.22]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 629E2A8B0236B61C
+X-CM-Envelope: MS4xfIYiyunoc1T8Uzb3UqHDSXmLVp8+GCyX02afq0JDkFpulC/9FT95fJszdBR6f1gdbQ+7DKdMR1nJVsg1o2CiAGAzU0EhvXcO5qfEe/SsKe06e/nETtk0
+ XxaMGXrtCL+0+QhxLvBi3QK8RR1+yTrGMFi3Lf5FfXNPboMF13BwsweASuUMupvp2+HeDReH6dNKV0ktOEqt2BnYWXutqsNrK4XKeJASdZO3bZmH2kSVc1Go
+ m58SWEcg4QLJPFKic3ML5VfQZyG1BDGW/COkyWVF76VzuzZSCXnc2IZt1tpVw47eQsC1wO8S/4na/UaUHSM1EjuiPOODTRIIzIX8v9fkywB0b5JC7nKqFCJ/
+ CXeT2cuE7ttoU1AcB0YCTcAkb3F+ywvSRtbvh0Q9l6+LFBjArGY=
+X-CM-Analysis: v=2.4 cv=Psnw0yA3 c=1 sm=1 tr=0 ts=62ae796e
+ a=PzUcMIm+zPr1bDMlhKZIxQ==:117 a=PzUcMIm+zPr1bDMlhKZIxQ==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=ecANfcYXldN5EznTvtEA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (64.229.209.22) by cmx-mtlrgo001.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 629E2A8B0236B61C; Sat, 18 Jun 2022 21:18:38 -0400
+Message-ID: <9ba8ebca-9d20-85e0-0184-859e08eaa29c@bell.net>
+Date:   Sat, 18 Jun 2022 21:18:39 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH] parisc: Fix flush_anon_page on PA8800/PA8900
+Content-Language: en-US
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>, Deller <deller@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <Yq3r2qO//NzJGVlO@mx3210.localdomain>
+ <12000710.O9o76ZdvQC@daneel.sf-tec.de>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <12000710.O9o76ZdvQC@daneel.sf-tec.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220618114111.61EC71F981@orac.inputplus.co.uk>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Jun 18, 2022 at 12:41:11PM +0100, Ralph Corderoy wrote:
-> Hi Nate,
-> 
-> > One manifestation of this is a race conditions in system(), which
-> > (depending on the implementation) is non-atomic in that it first calls
-> > a fork() and then an exec().
-> 
-> The need for O_CLOFORK might be made more clear by looking at a
-> long-standing Go issue, i.e. unrelated to system(3), which was started
-> in 2017 by Russ Cox when he summed up the current race-condition
-> behaviour of trying to execve(2) a newly created file:
-> https://github.com/golang/go/issues/22315.  I raised it on linux-kernel
-> in 2017, https://marc.info/?l=linux-kernel&m=150834137201488, and linked
-> to a proposed patch from 2011, ‘[PATCH] fs: add FD_CLOFORK and
-> O_CLOFORK’ by Changli Gao.  As I said, long-standing.
+On 2022-06-18 1:08 p.m., Rolf Eike Beer wrote:
+> Am Samstag, 18. Juni 2022, 17:14:34 CEST schrieb John David Anglin:
+>> Anonymous pages are allocated with the shared mappings colouring,
+>> SHM_COLOUR. Since the alias boundary on machines with PA8800 and
+>> PA8900 processors is unknown, flush_user_cache_page() might not
+>> flush all mappings of a shared anonymous page. Flushing the whole
+>> data cache flushes all mappings.
+>>
+>> This won't fix all coherency issues with shared mappings but it
+>> seems to work well in practice.  I haven't seen any random memory
+>> faults in almost a month on a rp3440 running as a debian buildd
+>> machine.
+>>
+>> There is a small preformance hit.
+> Is there a limit we can limit this to the given CPU types? And given that this
+It is limited to PA8800 and PA8900 CPUs by the parisc_requires_coherency() check.
+There are already a bunch of similar checks in cache.c that have comments (e.g.,
+range an mm flush routines).
+> seems to be a best effort workaround I would suggest adding a comment in the
+> code as explaining why this happens, otherwise someone looking at the code in
+> 3 years may not get the point of it and a quick test will just show "oh, it
+> works without that".
+The change is not a best effort workaround. Flushing the whole data cache always flushes
+all aliases to a page. It could be used for all anonymous page flushes but it is slow.
 
-The problem is that people advocating for O_CLOFORK understand its
-value, but not its cost.  Other google employees have a system which has
-literally millions of file descriptors in a single process.  Having to
-maintain this extra state per-fd is a cost they don't want to pay
-(and have been quite vocal about earlier in this thread).
+Shared anonymous mappings only work when the mappings are equivalent or meet the
+requirements for multi reader, single writer.  The problem is we don't in general know what
+mappings are equivalent on PA8800/PA8900 processors.
 
-Fundamentally, fork()+exec() is a terrible model.  Mind you, so is
-spawn().  I haven't seen a good model yet.
+There is a comment about the alias boundary of machines with PA8800/PA8900
+processors in arch/parisc/include/asm/fixmap.h. This is why we can't flush all aliases
+of a shared page with single flush or use tmpalias flushes on these machines. Sometimes
+they work and sometimes they don't.
+
+Dave
+
+-- 
+John David Anglin  dave.anglin@bell.net
+
