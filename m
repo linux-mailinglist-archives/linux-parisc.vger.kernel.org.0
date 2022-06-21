@@ -2,74 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 314E85529A9
-	for <lists+linux-parisc@lfdr.de>; Tue, 21 Jun 2022 05:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78D79552B14
+	for <lists+linux-parisc@lfdr.de>; Tue, 21 Jun 2022 08:40:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344951AbiFUDNX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 20 Jun 2022 23:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42498 "EHLO
+        id S245590AbiFUGkF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 21 Jun 2022 02:40:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345004AbiFUDNW (ORCPT
+        with ESMTP id S242106AbiFUGkF (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 20 Jun 2022 23:13:22 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB8D712AB6
-        for <linux-parisc@vger.kernel.org>; Mon, 20 Jun 2022 20:13:20 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id e63so10383533pgc.5
-        for <linux-parisc@vger.kernel.org>; Mon, 20 Jun 2022 20:13:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=MUPE+WCKiaoxRAdnteR3TsIHrvUD8FAr/F1eBQt4pX0=;
-        b=VuxBloebgqYs6q47Hdp+hDzN42mMVAk49JQ3qzvYsp/hBTLXwJUXe1nKHE9Wo/tnlx
-         FV+L4G/9jcqPBdyoIX/TL2fsi0acPWP2hDAvGb8O4kl+ridK3PcU2FhUwJw2G5+Bnr5B
-         5WX/yEwjh7lYUeXbLA2P332gBoFikewQngvBoQFGCEIVq4MA5neFJVHBJXbgXGyAazX2
-         S3QkawbW6dC+1fS3tJAH+glmKoNyFUhi02lDAl/e/GXF3A/8p5/q07pGoSzpx+1U16ch
-         OCjqW+IDf1TVsoAldLDPHP+ieOZbzPpEFWmg5dCea0Ifhpe8TIdioNJ3w7TTI9e7wkxN
-         uFaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=MUPE+WCKiaoxRAdnteR3TsIHrvUD8FAr/F1eBQt4pX0=;
-        b=gSWVOeEDAvZtwFfnOGpbCiJxYHBu2/s4xOB8qjWi9+1BLcMc0hI/IuHwKcaIJzek4t
-         QG3B61KV44oywfKFioYYJV51JD0IVlkIQG+1TYUit9wvB0Zl0FYIJKa5Owbj3UDWUMAq
-         fCiM1xlLkSPv09yFFH0g9yb2SUOePZiLrkLnv+SlhQWewYq/8gOFa3d/np7Vvyt59bs2
-         8S0Ge0lzC6bw4T8Z/ii696J5T/uctb3ZVJgqz+mDxp2jCoc74JZX/SUEGhPAbvExaPMV
-         6ubJvg3K0/8BaslNU86sqrTsePBJAnsNWY+86W67YlTE6gAE8qmV1qlIOgm+kmukmock
-         K1nA==
-X-Gm-Message-State: AJIora+yw9X37Amz1Kl97jZy1u/6mFbFiU+UaJAa7gGuHFNisWgMQv/e
-        JgQEXjn6pzpu6U9QMJiEOofc53Q68CChDV9hyU4=
-X-Google-Smtp-Source: AGRyM1vPILnufbOgVS46XEALHToRWDWJz9CMAN1pqRSwT+bCE/w+2MR3KNWyllBbK1FCvUfXfsMeNimOzK/kVCQOmF8=
-X-Received: by 2002:a63:4a4d:0:b0:401:9f40:26a7 with SMTP id
- j13-20020a634a4d000000b004019f4026a7mr24688786pgl.282.1655781200308; Mon, 20
- Jun 2022 20:13:20 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a05:7300:3726:b0:69:5676:9027 with HTTP; Mon, 20 Jun 2022
- 20:13:19 -0700 (PDT)
-Reply-To: jerrydosso@hotmail.com
-From:   Jerry Dosso <jerry20dosso@gmail.com>
-Date:   Tue, 21 Jun 2022 05:13:19 +0200
-Message-ID: <CAHfM5QYEBY0PFE0sK4_q__d1U3Cm0T=5KGYaRAhQLOXSTL81Lw@mail.gmail.com>
-Subject: Mr Jerry Dosso
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+        Tue, 21 Jun 2022 02:40:05 -0400
+Received: from smtpbg.qq.com (smtpbg123.qq.com [175.27.65.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509A918B23;
+        Mon, 20 Jun 2022 23:40:00 -0700 (PDT)
+X-QQ-mid: bizesmtp64t1655793517tmrm8rur
+Received: from ubuntu.localdomain ( [106.117.99.68])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Tue, 21 Jun 2022 14:38:26 +0800 (CST)
+X-QQ-SSF: 01000000007000109000B00A0000000
+X-QQ-FEAT: HDjpALELSmHSkcqf/eUCTnznWl2xwjSNZKVZJ/yeu8A2thDJ7WFAVIIIf5HXV
+        Sb+Teo0lPjW4DuGNPJQF1kfMoJPUH7j6SNA2aRXtb5bOMcMz6X2fXDEckxM3cr6HeC7Ft3q
+        +D9jjC6MN79oWrpo65Hhqkiab1+1V+yi9++04Qs0Y2YRei7wZUjIxkyZU0ptGYJfw9370eq
+        LJndK3hG7R8sKEuHfdSEAStuyCk+IH0LhCwseIiBiR4mnupXLJNZ1Rw+StrhpZ41eDiSbSJ
+        +B2vVpqQgGbZQ0aw4mp51CUjy8UKraaeT5Ym/5WgamWIELEGwX4vy9GiKxtmH9jVjKhrJpM
+        2wZneF6
+X-QQ-GoodBg: 0
+From:   Jiang Jian <jiangjian@cdjrlc.com>
+To:     deller@gmx.de
+Cc:     James.Bottomley@HansenPartnership.com, keescook@chromium.org,
+        jiangjian@cdjrlc.com, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] parisc: aligned '*' in comments
+Date:   Tue, 21 Jun 2022 14:38:23 +0800
+Message-Id: <20220621063823.22064-1-jiangjian@cdjrlc.com>
+X-Mailer: git-send-email 2.17.1
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam8
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Consider * alignment in comments
+
+Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
+---
+ arch/parisc/math-emu/decode_exc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/parisc/math-emu/decode_exc.c b/arch/parisc/math-emu/decode_exc.c
+index 494ca41df05d..d41ddb3430b5 100644
+--- a/arch/parisc/math-emu/decode_exc.c
++++ b/arch/parisc/math-emu/decode_exc.c
+@@ -102,7 +102,7 @@ decode_fpu(unsigned int Fpu_register[], unsigned int trap_counts[])
+      * that happen.  Want to keep this overhead low, but still provide
+      * some information to the customer.  All exits from this routine
+      * need to restore Fpu_register[0]
+-    */
++     */
+ 
+     bflags=(Fpu_register[0] & 0xf8000000);
+     Fpu_register[0] &= 0x07ffffff;
 -- 
-My Dear Friend,
+2.17.1
 
-Did you receive the message i sent to you?
-
-Regards,
-
-Mr Jerry Dosso
