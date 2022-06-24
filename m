@@ -2,93 +2,77 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3022559F58
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Jun 2022 19:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC26F55A05D
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 Jun 2022 20:08:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231759AbiFXRIo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 Jun 2022 13:08:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60584 "EHLO
+        id S231688AbiFXRkS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 24 Jun 2022 13:40:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231772AbiFXRIn (ORCPT
+        with ESMTP id S231903AbiFXRjn (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 Jun 2022 13:08:43 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0398651E60;
-        Fri, 24 Jun 2022 10:08:39 -0700 (PDT)
-Received: from mail-yw1-f170.google.com ([209.85.128.170]) by
- mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MIMOy-1nqSvK0TRs-00ENS2; Fri, 24 Jun 2022 19:08:38 +0200
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-317741c86fdso31022967b3.2;
-        Fri, 24 Jun 2022 10:08:37 -0700 (PDT)
-X-Gm-Message-State: AJIora+vOReRoiC0ol6rAf1TN1n5lpY9MjcHfMs32HjfyxUReNol3N7a
-        26A5lClE/+ipAMln9vDPfZ4vhcpYmfYWx6jsmPI=
-X-Google-Smtp-Source: AGRyM1tBSdPwbFq9GZSjizWzVuAB7giujhHzzt55cTqkntbPy6yauQrkbaXTZ2eocC/Zbg06KphUioMdhsic93kqOWE=
-X-Received: by 2002:a81:b93:0:b0:317:791f:3c0 with SMTP id 141-20020a810b93000000b00317791f03c0mr17394782ywl.42.1656090516599;
- Fri, 24 Jun 2022 10:08:36 -0700 (PDT)
+        Fri, 24 Jun 2022 13:39:43 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB20A340F8
+        for <linux-parisc@vger.kernel.org>; Fri, 24 Jun 2022 10:39:35 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id c4so2684572plc.8
+        for <linux-parisc@vger.kernel.org>; Fri, 24 Jun 2022 10:39:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=rkX1oaIqIjSQ+fhxhMvndP4sOtvnnrDnDjuV5umF/NU=;
+        b=h39vafez0xPfjeqmyVCqsVEnND5p4DQC/7P/f19Qd/5AACaxcSGjhb59Tcy21u00+6
+         CqmXwsFB1M3UAmRj/DHtfuG0dy1UevWDMa/M2O+0Qxx1yvJM1JCrt+ctAWkrsxjPifl6
+         bASfdDlzi3t/bFHSiFhsgWpN2ifrQ4LbRne90=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=rkX1oaIqIjSQ+fhxhMvndP4sOtvnnrDnDjuV5umF/NU=;
+        b=vT/u6wuCygivcMmk8j3pGXcdJpjgQAA+ap0ImP0zhlN38iJIfO3TfdZX9sRc/OvO6s
+         e7/pT3CKq+zS5E5xBJXnUoD2dUYwRuuMgKMf3+sL7222srhZl4XMf+x8IJCRvCKw3NTL
+         3QfpM/z/zCILODa2MQhEUlU8hgfF36M5ZywCO9pbZembWuc5hBTRJFbCcqFQqf0DkANB
+         R8cO2TBRqkJX1+9b1J0Bt7VuSiqT3TJ039ywvPKrX/E7KnEU+M4NPJZbWAhPHXZlTqng
+         uANGtOgnwSElNALRlnt3mUe2WxTKtJ2MlpGcTN2aNyiDYgG/FmWBkF1Bvd+5zULF0HU+
+         0V2Q==
+X-Gm-Message-State: AJIora/2mIrYk4BFnykFwZKp3p36annLcAmEbRkkg9RJhm9iOEYZLJRz
+        cvkVIkPMxh6DJOw8EgO5rfdTcg==
+X-Google-Smtp-Source: AGRyM1smB8K/UWVQFuL8bSpt3tgOdRk5hNU98NCVefIgSohiO2UNLio86AJpaKdlgR8zuSL5E3mtWQ==
+X-Received: by 2002:a17:902:ef47:b0:169:a2a7:94cf with SMTP id e7-20020a170902ef4700b00169a2a794cfmr163884plx.143.1656092375445;
+        Fri, 24 Jun 2022 10:39:35 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id 71-20020a63034a000000b0040d2d9f15e0sm1916327pgd.20.2022.06.24.10.39.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jun 2022 10:39:35 -0700 (PDT)
+Date:   Fri, 24 Jun 2022 10:39:34 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Jiang Jian <jiangjian@cdjrlc.com>
+Cc:     deller@gmx.de, James.Bottomley@hansenpartnership.com,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] parisc: aligned '*' in comments
+Message-ID: <202206241039.B98CEE0735@keescook>
+References: <20220621063823.22064-1-jiangjian@cdjrlc.com>
 MIME-Version: 1.0
-References: <20220624155226.2889613-1-arnd@kernel.org>
-In-Reply-To: <20220624155226.2889613-1-arnd@kernel.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 24 Jun 2022 19:08:19 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a04C+ZavWb2nnYs-02CKZq10OA8rDE7QHMFF5qZzb6t9g@mail.gmail.com>
-Message-ID: <CAK8P3a04C+ZavWb2nnYs-02CKZq10OA8rDE7QHMFF5qZzb6t9g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] phase out CONFIG_VIRT_TO_BUS
-To:     linux-scsi <linux-scsi@vger.kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Jakub Kicinski <kuba@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        Khalid Aziz <khalid@gonehiking.org>,
-        "Maciej W . Rozycki" <macro@orcam.me.uk>,
-        Matt Wang <wwentao@vmware.com>,
-        Miquel van Smoorenburg <mikevs@xs4all.net>,
-        Mark Salyzyn <salyzyn@android.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Denis Efremov <efremov@linux.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:cui5DZKm2UZs4D6xVfnz2Gnj6IaNBXSsNsy8dkyFFcf5zgG8W9N
- THm08VdtRdX/KI3hpQL0WwzH6+ZkmeayH2g6LC9T4JqNSp3zkjkVrPnBiwO/wGWL2hyrjj8
- hAUFsFgAXbY58a4KXnJIdRUV4TfbVu+JW4K5PkSzY3kRBkEr4UKUfTvXJeiru5EhTLL2TtJ
- wHZ88KKL+ozSPjchnpxbw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:TVyTIRisiFw=:XyqgDRsNqkZE8ZfaKwZVDv
- b0a3W5I/Wvl/obs+EfzaOaAo1o+AqQVCPceu8TcV592SxfTnxERW1BfZ4/C0veb5TdvVs34Tn
- YMOTQ+MXMuovUm9oYj9RQ39CFefWQdXulJmKlLiHG+DJIZA39Ao7iJpbVMGvCTFFELZ3zb6nI
- D/aEzVULUnbktOEQCopSCr2YGo49AWega6KKlWkbTB/NXP+bD52xeeAJaUz8TxLzbAvxGwgcq
- ApQSwbILzb7pgrA9E8mwXwm2aSgmPJn6CbD1WjXjQkOJbhTBvlv5DpHQKF0dK3N5y04rW4g37
- Z1FPBjwlJu8kIOE6Qzf9ySvOsnRGFGHDFaS9kT+NrJaI2583NHMNjIBl/EMyvkD6BGZ0Cmn/c
- 3ekzpBQwH6x6gNXLD0V/8+TZChRy1/XCPRyign08nafSzxP8sFS8UwcZpRjQ1k+fcUxQ+YwwA
- il6uUCDBDUfyFcCgTUUnCFpvs8ALuUVTuHN+jldFZ5o14igqHveXY0jc0okHB9RdX5uiWyZZM
- y5jVfq5hIWKJlejd7+P5AeC5N0Q3pYkw3uOE4ZMjRWoo7epLR/FeQDfc7/L5MnDXBf4v6verl
- tUZ0igFL1hjF4WePaNc1BZL2CvFB0ItvrYBINsMXY78tf6i4a9bSIAZr1FqxWgDxphbzfe7Pl
- fEs9Axp55DpsRybGJPMpBPzbuBHe2xc9x21QJkaWi7C279675pu4ESmixsjYq/nglEJvrz3mj
- p/PRo9FZn+uoIcxBACd3Sgpwiu0bAEw7cGe18jR54XATmirpfmMvlMsV7gwFFTp6DGQ8YaiK4
- SZpqvCxoxMdAPhZuX9j4WvuOInBQ3ngPAYQofTuAfqvFJ7GdfofZ8nt+uucvHb4mJSCnpwBgO
- ALrq0cCWmln+i3BUJ02oLMwfcbaXWYIpsQul1zBQo=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220621063823.22064-1-jiangjian@cdjrlc.com>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 5:52 PM Arnd Bergmann <arnd@kernel.org> wrote:
+On Tue, Jun 21, 2022 at 02:38:23PM +0800, Jiang Jian wrote:
+> Consider * alignment in comments
+> 
+> Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
 
-> Arnd Bergmann (3):
->   scsi: BusLogic remove bus_to_virt
->   scsi: dpt_i2o: remove obsolete driver
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-The dpt_i2o removal is overly large and got dropped by some of the
-mailing lists,
-if anyone wants to see the full patch, it did make it through to the linux-scsi
-list at least:
-
-https://lore.kernel.org/all/20220624155226.2889613-3-arnd@kernel.org/
-
-         Arnd
+-- 
+Kees Cook
