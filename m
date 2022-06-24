@@ -2,67 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1EA55999B
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Jun 2022 14:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8C39559D7C
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 Jun 2022 17:40:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231400AbiFXMYn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 24 Jun 2022 08:24:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44342 "EHLO
+        id S232101AbiFXPic (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 24 Jun 2022 11:38:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230415AbiFXMYm (ORCPT
+        with ESMTP id S232556AbiFXPiZ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 24 Jun 2022 08:24:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0206B46B3A;
-        Fri, 24 Jun 2022 05:24:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DCEC60F50;
-        Fri, 24 Jun 2022 12:24:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996C0C34114;
-        Fri, 24 Jun 2022 12:24:36 +0000 (UTC)
-Date:   Fri, 24 Jun 2022 13:24:32 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, hch@infradead.org, christophe.leroy@csgroup.eu,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, openrisc@lists.librecores.org,
-        linux-xtensa@linux-xtensa.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-um@lists.infradead.org,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Will Deacon <will@kernel.org>
-Subject: Re: [PATCH V4 05/26] arm64/mm: Move protection_map[] inside the
- platform
-Message-ID: <YrWtALCwqrL6mU3T@arm.com>
-References: <20220624044339.1533882-1-anshuman.khandual@arm.com>
- <20220624044339.1533882-6-anshuman.khandual@arm.com>
+        Fri, 24 Jun 2022 11:38:25 -0400
+Received: from mailout.easymail.ca (mailout.easymail.ca [64.68.200.34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F15BE1E3F8;
+        Fri, 24 Jun 2022 08:38:23 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mailout.easymail.ca (Postfix) with ESMTP id 36ABB61F0C;
+        Fri, 24 Jun 2022 15:38:22 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at emo09-pco.easydns.vpn
+Received: from mailout.easymail.ca ([127.0.0.1])
+        by localhost (emo09-pco.easydns.vpn [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id E8sVpuImiYNQ; Fri, 24 Jun 2022 15:38:22 +0000 (UTC)
+Received: from mail.gonehiking.org (unknown [38.15.45.1])
+        by mailout.easymail.ca (Postfix) with ESMTPA id E956B61EFC;
+        Fri, 24 Jun 2022 15:38:21 +0000 (UTC)
+Received: from [192.168.1.4] (internal [192.168.1.4])
+        by mail.gonehiking.org (Postfix) with ESMTP id 146083EE4C;
+        Fri, 24 Jun 2022 09:38:21 -0600 (MDT)
+Message-ID: <c955bf95-838f-cc0a-8496-322b831e5648@gonehiking.org>
+Date:   Fri, 24 Jun 2022 09:38:20 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220624044339.1533882-6-anshuman.khandual@arm.com>
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Reply-To: khalid@gonehiking.org
+Subject: Re: [PATCH v2 2/3] scsi: BusLogic remove bus_to_virt
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     linux-scsi <linux-scsi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        "Maciej W . Rozycki" <macro@orcam.me.uk>,
+        Matt Wang <wwentao@vmware.com>,
+        Miquel van Smoorenburg <mikevs@xs4all.net>,
+        Mark Salyzyn <salyzyn@android.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Denis Efremov <efremov@linux.com>
+References: <20220617125750.728590-1-arnd@kernel.org>
+ <20220617125750.728590-3-arnd@kernel.org>
+ <7a6df2da-95e8-b2fd-7565-e4b7a51c5b63@gonehiking.org>
+ <CAK8P3a0t_0scofn_2N1Q8wgJ4panKCN58AgnsJSVEj28K614oQ@mail.gmail.com>
+From:   Khalid Aziz <khalid@gonehiking.org>
+In-Reply-To: <CAK8P3a0t_0scofn_2N1Q8wgJ4panKCN58AgnsJSVEj28K614oQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 10:13:18AM +0530, Anshuman Khandual wrote:
-> This moves protection_map[] inside the platform and makes it a static.
+On 6/23/22 08:47, Arnd Bergmann wrote:
 > 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> 
+> Can you test it again with this patch on top?
+> 
+> diff --git a/drivers/scsi/BusLogic.c b/drivers/scsi/BusLogic.c
+> index d057abfcdd5c..9e67f2ee25ee 100644
+> --- a/drivers/scsi/BusLogic.c
+> +++ b/drivers/scsi/BusLogic.c
+> @@ -2554,8 +2554,14 @@ static void blogic_scan_inbox(struct
+> blogic_adapter *adapter)
+>          enum blogic_cmplt_code comp_code;
+> 
+>          while ((comp_code = next_inbox->comp_code) != BLOGIC_INBOX_FREE) {
+> -               struct blogic_ccb *ccb = blogic_inbox_to_ccb(adapter,
+> adapter->next_inbox);
+> -               if (comp_code != BLOGIC_CMD_NOTFOUND) {
+> +               struct blogic_ccb *ccb = blogic_inbox_to_ccb(adapter,
+> next_inbox);
+> +               if (!ccb) {
+> +                       /*
+> +                        * This should never happen, unless the CCB list is
+> +                        * corrupted in memory.
+> +                        */
+> +                       blogic_warn("Could not find CCB for dma
+> address 0x%x\n", adapter, next_inbox->ccb);
+> +               } else if (comp_code != BLOGIC_CMD_NOTFOUND) {
+>                          if (ccb->status == BLOGIC_CCB_ACTIVE ||
+>                                          ccb->status == BLOGIC_CCB_RESET) {
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Hi Arnd,
+
+Driver works with this change. next_inbox is the correct pointer to pass.
+
+Thanks,
+Khalid
