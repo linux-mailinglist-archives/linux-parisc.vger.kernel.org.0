@@ -2,79 +2,70 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2620755A6C1
-	for <lists+linux-parisc@lfdr.de>; Sat, 25 Jun 2022 06:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29FDD55ACE3
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jun 2022 00:20:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231331AbiFYEFB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 25 Jun 2022 00:05:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53544 "EHLO
+        id S233317AbiFYWUW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 25 Jun 2022 18:20:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231300AbiFYEE7 (ORCPT
+        with ESMTP id S230246AbiFYWUV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 25 Jun 2022 00:04:59 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94B6AB7D3;
-        Fri, 24 Jun 2022 21:04:58 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id h192so4113735pgc.4;
-        Fri, 24 Jun 2022 21:04:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=WBt/btUb8fidp7Od3hgblEREGwTCWyy1gmQjOCfY3fU=;
-        b=U/9jOhfyin/xPm7/lhb3QQD5hUeqWoso3ZUE4nrDpj+uCxrVZoUa6Nd3Ck/My6d0yi
-         uppYCT29YGR4+ED265rzl5CvHaPa9jAGrevS8NrjQCL2swa/6jIuJFW7ijxN5Kwk3kBm
-         JV3zRaXX17ljjVxLWEmEYneBMjkOzcbgPwAATblJGSLPQW9zrru3NcHlbevjvxhjXf2X
-         4fZUXrqKoxs5SGRwhMih22jCYG6mLHxDBQ9QA+V/Ap/ZmZMWhJBLgf3cIDLH/WvFpZqO
-         6XUFzNOC5pd+9LH1sxuFUCYfWolIKgEMvYZ3auh92ECWjOyrr+qjV1d2Dawwr5UE8zHy
-         fSYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=WBt/btUb8fidp7Od3hgblEREGwTCWyy1gmQjOCfY3fU=;
-        b=JlHATJqtj6UdYHVGZ3CXdT+D7fwYr68iu2Qjj4caqKs2kusi0GO+PewAE7ZSSW6j0A
-         gM6IutqEb8xXS7Ea3QEY2Cm+rAn7fl/JT/HM3VFBuvipltzTJe94IFeeA0FGtZww++IB
-         uabcFiTF9n/hvnCLf2vhTQuhushhCJ0cpD+G8nArzqIdshVqvhkPTSXWVp0ZByDzi5Zg
-         SSD4RSUiJuWU0j/yDei7k9FaHxw9NM2bqDzOHSKb+O3xDoYPdTXEdqyJR6QkKvIKuSSn
-         989EveowvJ8YlFPzT/D45w0rEiKAolRaqu7FyYpqZ5B9irT5fgqsiaXAqM762bbP2MZj
-         8Kzw==
-X-Gm-Message-State: AJIora+whcGAISbWTdpT/3NY0fjUo89XspbU4H+HMcr18OkcsDI3JtFr
-        A6pbBqnU92qt9CslA6XrRFl2F2HH4kqsCA==
-X-Google-Smtp-Source: AGRyM1vLmqY6wDucr+TwoJMOmf3PJcPGDXbsAVQaOC2Ok2+1xpNGLbPuxQdolETx+44LH2D87vYqmw==
-X-Received: by 2002:a63:44:0:b0:40c:9f98:a172 with SMTP id 65-20020a630044000000b0040c9f98a172mr1947422pga.65.1656129897973;
-        Fri, 24 Jun 2022 21:04:57 -0700 (PDT)
-Received: from localhost ([2409:10:24a0:4700:e8ad:216a:2a9d:6d0c])
-        by smtp.gmail.com with ESMTPSA id n1-20020a170902e54100b00168adae4eb2sm2579898plf.262.2022.06.24.21.04.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jun 2022 21:04:57 -0700 (PDT)
-Date:   Sat, 25 Jun 2022 13:04:55 +0900
-From:   Stafford Horne <shorne@gmail.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-riscv@lists.infradead.org, Jonas Bonn <jonas@southpole.se>,
-        linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        x86@kernel.org, christophe.leroy@csgroup.eu, hch@infradead.org,
-        linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
-        openrisc@lists.librecores.org,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH V4 10/26] openrisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Message-ID: <YraJZ7OahapN5Y6z@antec>
-References: <20220624044339.1533882-1-anshuman.khandual@arm.com>
- <20220624044339.1533882-11-anshuman.khandual@arm.com>
+        Sat, 25 Jun 2022 18:20:21 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F28C13CC0;
+        Sat, 25 Jun 2022 15:20:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1656195613;
+        bh=elP5Ix8g7dGoColM+2BwFdyvDAU4gFD7NlbDYJejqd0=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=jNcADOpPp2BWVVWMZHY+0i8w264xCCPzErGVsmU3TGN4Kz96WAXuW6LVcAUUVr5NZ
+         3m0/nIycDmR6QU2Pxvd+5vFRVOlj2QtDP05W4fOozAepf25kIdsDyXvgHwE5U1axsC
+         iwbVbg3cILhYgysLchlVbgR7F+IubS4B2rq/IYkY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.162.44]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MKKUp-1oNAG33kuV-00Lp8w; Sun, 26
+ Jun 2022 00:20:13 +0200
+Message-ID: <6d2b4f81-1715-2b20-d419-e661ce7f92bc@gmx.de>
+Date:   Sun, 26 Jun 2022 00:19:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220624044339.1533882-11-anshuman.khandual@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH] parisc: aligned '*' in comments
+Content-Language: en-US
+To:     Kees Cook <keescook@chromium.org>,
+        Jiang Jian <jiangjian@cdjrlc.com>
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220621063823.22064-1-jiangjian@cdjrlc.com>
+ <202206241039.B98CEE0735@keescook>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <202206241039.B98CEE0735@keescook>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ORik/xWtQWRS21tF4PV0igGhKOW3f14iu2VijyVfKZ3ZnI2waWw
+ WFRXhrw7YYsk5BFM7ryfOBy4DIWVDVOE6eJflJ/0FStt20/cqXJNdCCD7dTABE6MdOmEiuP
+ mUnRaULHpa/WDOg+ItAdbM5gZPAylh+tYMoXY6Vuu22pv5CaTU0BwHIEfcNly29oFg6PyrS
+ DUl09OkUk9i6uVrMaB8Pw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:GEyCDEOsuQc=:u9+shoKvA3y6I4lHTQzxeP
+ blRUKmcgq6aCsMVHTJGoPyzfZN/K7HHON6kTLPnY6UG6FjTGSHXR7sHzteYix4lkh3B3pd3Hh
+ +1uW0zlS7LZHph/xWlIA8gyjxqw0gOym34M6HqFN9CIrh/JhUhVPUwKMQgAXP+Lxu8HxrKS/M
+ jJLEwmEA55PAIjeDg5/h+BtMjKiDoMwS2gsvKrfYWupRPUi3IVep1tOdpyhgrMwRHoisOk5Id
+ 3BVd0bSAKBrGcba9cHAISqGwLCHzDanmAGpojRiUwsun6Hzu8u2qmsIVs51LuXRNnOgTolaYK
+ WLAwSPn+jtvY+T0uK01xX7C/i5Z/ffiNRzHVuMi3PO1B47qTMW1o1YuGEObRUj+wFs22b/E+S
+ jSYCxdwaAbTa+0h341HPCaTO3bmfB2eShZNqAHnLCLYHZ1y9t/hkxKVUVvspR8vvLyeSY/T99
+ XdVQsIyroz7ssdsv4RCqXzjhSRnXXy7n49YWqZbHdfYQMHzGn6zP+z9+gIilYedjmKtM59bJ6
+ 2GACIuquVME8sM17YkIjhVNgbX+w2McX3ZQ/3Gu/uj7h7J03RoGrDbVPVwfhAOWbuh8fHloY3
+ FxgEyOG2wYv0t+AKWdbskobnGVvI7FeUjPK3G9xqVG9FL4Bd+dutSedhfyxAQ4gLyYw5vVTs7
+ Fv+5HjBEOxaarggpDpFpKEaFt8EIWrGKfsb+A9ehYlKyp4JueRheGBvuonad+oudrkjRZyQOl
+ uL93K9UZWasTPvNG1U4wzEezNDlWJj22mzT0dxS5k98tlvvKqmmjBxbjS+wi9jhlQoKAXIu/6
+ LerS7wbzkiyUoAX5cd2HgHAnG0CLsss2HtXJ/7wrcNsJAecDbDs0w45pP7WbSuVT+uxCRP+/+
+ P/aGXkWdJ29HDsRuyLerTMdanBOAM+HysOr2mgbdM0+23NV9FhFc2MGCTh3+8/mkECGp6Lo6e
+ ONPutf0fbDaqzbUKeef+qNRlyBda1XQQGd2kESlo9Qsm1skOin1bvgLq1Vq0y0cI48mjvio6b
+ ypOOGcO6qjIRjR/B1laZq1I5ck3SbohfYCy8lg2sQXLA5hsnjNUQh/In44OdJLVzyoRxEnFIS
+ A0X7oa2Xz4rL/ScBYz7uvHsrXEJOMA3fMZymDpH1tmp24HOS3sojt4m5Q==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,93 +73,15 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 10:13:23AM +0530, Anshuman Khandual wrote:
-> This enables ARCH_HAS_VM_GET_PAGE_PROT on the platform and exports standard
-> vm_get_page_prot() implementation via DECLARE_VM_GET_PAGE_PROT, which looks
-> up a private and static protection_map[] array. Subsequently all __SXXX and
-> __PXXX macros can be dropped which are no longer needed.
-> 
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: openrisc@lists.librecores.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/openrisc/Kconfig               |  1 +
->  arch/openrisc/include/asm/pgtable.h | 18 ------------------
->  arch/openrisc/mm/init.c             | 20 ++++++++++++++++++++
->  3 files changed, 21 insertions(+), 18 deletions(-)
-> 
-> diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
-> index e814df4c483c..fe0dfb50eb86 100644
-> --- a/arch/openrisc/Kconfig
-> +++ b/arch/openrisc/Kconfig
-> @@ -10,6 +10,7 @@ config OPENRISC
->  	select ARCH_HAS_DMA_SET_UNCACHED
->  	select ARCH_HAS_DMA_CLEAR_UNCACHED
->  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
-> +	select ARCH_HAS_VM_GET_PAGE_PROT
->  	select COMMON_CLK
->  	select OF
->  	select OF_EARLY_FLATTREE
-> diff --git a/arch/openrisc/include/asm/pgtable.h b/arch/openrisc/include/asm/pgtable.h
-> index c3abbf71e09f..dcae8aea132f 100644
-> --- a/arch/openrisc/include/asm/pgtable.h
-> +++ b/arch/openrisc/include/asm/pgtable.h
-> @@ -176,24 +176,6 @@ extern void paging_init(void);
->  	__pgprot(_PAGE_ALL | _PAGE_SRE | _PAGE_SWE \
->  		 | _PAGE_SHARED | _PAGE_DIRTY | _PAGE_EXEC | _PAGE_CI)
->  
-> -#define __P000	PAGE_NONE
-> -#define __P001	PAGE_READONLY_X
-> -#define __P010	PAGE_COPY
-> -#define __P011	PAGE_COPY_X
-> -#define __P100	PAGE_READONLY
-> -#define __P101	PAGE_READONLY_X
-> -#define __P110	PAGE_COPY
-> -#define __P111	PAGE_COPY_X
-> -
-> -#define __S000	PAGE_NONE
-> -#define __S001	PAGE_READONLY_X
-> -#define __S010	PAGE_SHARED
-> -#define __S011	PAGE_SHARED_X
-> -#define __S100	PAGE_READONLY
-> -#define __S101	PAGE_READONLY_X
-> -#define __S110	PAGE_SHARED
-> -#define __S111	PAGE_SHARED_X
-> -
->  /* zero page used for uninitialized stuff */
->  extern unsigned long empty_zero_page[2048];
->  #define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-> diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
-> index 3a021ab6f1ae..a654b9dcba91 100644
-> --- a/arch/openrisc/mm/init.c
-> +++ b/arch/openrisc/mm/init.c
-> @@ -208,3 +208,23 @@ void __init mem_init(void)
->  	mem_init_done = 1;
->  	return;
->  }
-> +
-> +static pgprot_t protection_map[16] __ro_after_init = {
-> +	[VM_NONE]					= PAGE_NONE,
-> +	[VM_READ]					= PAGE_READONLY_X,
-> +	[VM_WRITE]					= PAGE_COPY,
-> +	[VM_WRITE | VM_READ]				= PAGE_COPY_X,
-> +	[VM_EXEC]					= PAGE_READONLY,
-> +	[VM_EXEC | VM_READ]				= PAGE_READONLY_X,
-> +	[VM_EXEC | VM_WRITE]				= PAGE_COPY,
-> +	[VM_EXEC | VM_WRITE | VM_READ]			= PAGE_COPY_X,
-> +	[VM_SHARED]					= PAGE_NONE,
-> +	[VM_SHARED | VM_READ]				= PAGE_READONLY_X,
-> +	[VM_SHARED | VM_WRITE]				= PAGE_SHARED,
-> +	[VM_SHARED | VM_WRITE | VM_READ]		= PAGE_SHARED_X,
-> +	[VM_SHARED | VM_EXEC]				= PAGE_READONLY,
-> +	[VM_SHARED | VM_EXEC | VM_READ]			= PAGE_READONLY_X,
-> +	[VM_SHARED | VM_EXEC | VM_WRITE]		= PAGE_SHARED,
-> +	[VM_SHARED | VM_EXEC | VM_WRITE | VM_READ]	= PAGE_SHARED_X
-> +};
-> +DECLARE_VM_GET_PAGE_PROT
+On 6/24/22 19:39, Kees Cook wrote:
+> On Tue, Jun 21, 2022 at 02:38:23PM +0800, Jiang Jian wrote:
+>> Consider * alignment in comments
+>>
+>> Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
+>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Looks good.
+applied.
 
-Acked-by: Stafford Horne <shorne@gmail.com>
-
+Thanks!
+Helge
