@@ -2,64 +2,59 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F40F55B27A
-	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jun 2022 16:41:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21BF255B328
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jun 2022 19:36:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbiFZOlQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 26 Jun 2022 10:41:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57324 "EHLO
+        id S232040AbiFZRgZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 26 Jun 2022 13:36:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiFZOlQ (ORCPT
+        with ESMTP id S232003AbiFZRgT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 26 Jun 2022 10:41:16 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C96EBC10;
-        Sun, 26 Jun 2022 07:41:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1656254465;
-        bh=O+20x6Ln82NyZwC0tlbjDZszW4v87ztjQKwidZpougI=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=dLE1hs0f5G7x2mMeT6R4/jOV8mvvRmVxYwdmn733EglW84w1+aZdA8BO82/6IAQrr
-         8IXnkSDQCZh0Z6ybHF0NTc464Ae7QOhlK2l4edMRbraKlTEAXtTG+uGvVdzT/jwWLm
-         wWaVfPW0RgR507lAWcSQxo4ZnMGMIA5ZJtlPuPUQ=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100 ([92.116.135.166]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MPog5-1oJPpi231P-00MscU; Sun, 26
- Jun 2022 16:41:05 +0200
-Date:   Sun, 26 Jun 2022 16:41:01 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Sun, 26 Jun 2022 13:36:19 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A95EE0A2;
+        Sun, 26 Jun 2022 10:36:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CC88FB8018A;
+        Sun, 26 Jun 2022 17:36:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 94E44C341C7;
+        Sun, 26 Jun 2022 17:36:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656264972;
+        bh=Sqxv/eGHah0+udl+9WRPbs+su5IX+iDFmjRUAidCBww=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=jRPdJf8Zo5LaR+3Sj0XUSpo7UsJhNOwXUALkVTy3iJNyHllvsxMKESMysob/Giogy
+         hP/ZCY98N4hLfrScDJi9zHR+7KeRF0x0hFhwr+rSQtYGMmrHKy74A0kDrJJD8DpNiu
+         PmuDxZSwnU7xEWyXXF6Y0Enwk4myO398jNp/gzTaWhUCEnmy7yD3RqJOWem9cmXxFm
+         P1MnlmAhuH1UuQpBmK7OCKga8373uhaUxy4mBYiLSjhgNE4fnL73Nsdg2ADz7KLURG
+         2bwVRoQPTIU/hUlPUQ9SyU9HffO3YNtewXij74V+C3XY5EC3HdRG7iE+2UFpd1P6Ro
+         MTj0oo7e0mc4Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 81E96FD99FF;
+        Sun, 26 Jun 2022 17:36:12 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture updates for v5.19-rc4
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <Yrhv/Z0vCzSX/kK3@p100>
+References: <Yrhv/Z0vCzSX/kK3@p100>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <Yrhv/Z0vCzSX/kK3@p100>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.19/parisc-3
+X-PR-Tracked-Commit-Id: 0a1355db36718178becd2bfe728a023933d73123
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c0c6a7bd4c6f87d6d3621fd58c94110bf2404e12
+Message-Id: <165626497252.22456.16889702125998263613.pr-tracker-bot@kernel.org>
+Date:   Sun, 26 Jun 2022 17:36:12 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture updates for v5.19-rc4
-Message-ID: <Yrhv/Z0vCzSX/kK3@p100>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:15CGdLZHdPI1zWwYycjOAiqPey0NrhsmDHYX62NP8FKXaT0GUMk
- G2gzTlOJjeZGDmTss3Hi0erXQSJGB6UpGDtgY4/ll9bIPdDTl9YM6P8QkE5PHs9w+D+iwSL
- 0GAB3+yQ8fGKLQlmLR/VjFSsKikQpqJgohkC1FCTgV1RS9SJE7JdyS7ayjCuKXAffga3lDA
- KsFCV9MlC7efXqF7ITpaQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1bE+uueP5Yw=:OROI8y8p8QuFeMl6gIBsl9
- SeVcBGXup3USaD+AihXBvc8PhXAI64yE8rzd9M4zSSnmNgBJuGSwxZLefOtxECZni6wPs/SkW
- rSaQZU53NPM3IR7ihNKPZtpoeUKjGAv+tPJfoYFWK/g8cIxJnLSvhRUO/Slm/04jMoYKBd/ur
- BuXiYMajDwMPrmdo5GweLw5yZSoBvwltfmlKbUTnXIhauyBPbqQ8nymL87Hbff0ZGfC9o6T5g
- rYzmd7806KvArvr4EXP/Lk9i2i3beObZgPvVqv+yVD4eA/fiPBX0k/Abnh+Kd/FGn44999JJO
- Yqyvv11W6bdiVwlvWAOUUXX79O+IvCR3rK4Tm2b36IeHKWpECMzqCsQryz6Z9asDaL+oonllg
- PSurL8x66iaIR5csa06dsDjlnBtaxbrWYo9H4ifu6WpmOYQy+qpd+uKskuPNhcpfHgM1Ram+S
- gFJTYRxJht5VeJEe+0zKCW+2s1RbNClGBIwC8Jebfbei/wqnkt9F3Mg23Nfeg+ZrsEvMCT7Ev
- RUA0z+YVJe9PdNlZbfosm7lw5XzrY0h1r6duucbeKb2YKlLe9l1d407qKIgowj3fAJfKXbQVx
- aVOjz3AD/wA8gXp6zuCZqkC7RL7jvIMLkF8F9GDSdMWXuqXrHpniiTv9gilpkrqEiwPA/LAK7
- qSzFLviQQ1uEBH2nRd/jp8PJtKcHAC+hDir5ULjFnwxLL4mervSWP4P2A7nUK4ywLkc+yv7vR
- rZjFVw2nrbEygiQoM3Js6tRWtR4m/tuPaO7oG169TIP7dvzi+BSRO3FuALGGWO4Yypf29etl8
- qSWRbQAJrOsPMlREAHbJVHcr1Cw2ISO6zQLj8EKhuPxdfinrWtfVw2HHJIPc/PgPKyT/sMNWh
- fm8DY5PJnoP+DnXedU8Sa8Wl1ofu7i3PB8GxpY38eV0CXfXvZ4eAI0Yl9++GZCpbT4AWPyRph
- KIqTgwKmMeEyjLN8Q2PzhQ6bx4rrbCoHVpGUdeC2CpzhXlvadDIdSKGdo+yNkU16od8Vat0wY
- orMnS9pAGlfJw1fEMa3NxaAKmo/40L3z/JwCQ1I5Ac6gpkEarWxXltvnTlBbilb/HYf3I8j7d
- rvi6VjXQBfJzMzj/jmLA2uBLFBC2ALnk2ktTykeJE7zRI5KzVNCc+bfeA==
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,62 +63,15 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Sun, 26 Jun 2022 16:41:01 +0200:
 
-please pull three important parisc architecture fixes for kernel v5.19-rc4:
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.19/parisc-3
 
-- enable ARCH_HAS_STRICT_MODULE_RWX to prevent a boot crash on c8000 machines
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c0c6a7bd4c6f87d6d3621fd58c94110bf2404e12
 
-- flush all mappings of a shared anonymous page on PA8800/8900 machines via
-  flushing the whole data cache.  This may slow down such machines but
-  makes sure that the cache is consistent
+Thank you!
 
-- Fix duplicate definition build error regarding fb_is_primary_device()
-
-All of them are tagged for backporting.
-
-Thanks,
-Helge
-
-----------------------------------------------------------------
-The following changes since commit f2906aa863381afb0015a9eb7fefad885d4e5a56:
-
-  Linux 5.19-rc1 (2022-06-05 17:18:54 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.19/parisc-3
-
-for you to fetch changes up to 0a1355db36718178becd2bfe728a023933d73123:
-
-  parisc: Enable ARCH_HAS_STRICT_MODULE_RWX (2022-06-26 12:23:15 +0200)
-
-----------------------------------------------------------------
-parisc architecture fixes & updates for kernel v5.19-rc4:
-
-Three important fixes:
-- enable ARCH_HAS_STRICT_MODULE_RWX to prevent a boot crash on c8000 machines
-
-- flush all mappings of a shared anonymous page on PA8800/8900 machines via
-  flushing the whole data cache.  This may slow down such machines but
-  makes sure that the cache is consistent
-
-- Fix duplicate definition build error regarding fb_is_primary_device()
-
-----------------------------------------------------------------
-Helge Deller (2):
-      parisc/stifb: Fix fb_is_primary_device() only available with CONFIG_FB_STI
-      parisc: Enable ARCH_HAS_STRICT_MODULE_RWX
-
-Jiang Jian (1):
-      parisc: align '*' in comment in math-emu code
-
-John David Anglin (1):
-      parisc: Fix flush_anon_page on PA8800/PA8900
-
- arch/parisc/Kconfig               | 1 +
- arch/parisc/include/asm/fb.h      | 2 +-
- arch/parisc/kernel/cache.c        | 5 ++++-
- arch/parisc/math-emu/decode_exc.c | 2 +-
- drivers/video/console/sticore.c   | 2 ++
- 5 files changed, 9 insertions(+), 3 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
