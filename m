@@ -2,70 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29FDD55ACE3
-	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jun 2022 00:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8ADF55AF4A
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jun 2022 07:21:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233317AbiFYWUW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 25 Jun 2022 18:20:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46152 "EHLO
+        id S233946AbiFZFVQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 26 Jun 2022 01:21:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230246AbiFYWUV (ORCPT
+        with ESMTP id S229957AbiFZFVP (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 25 Jun 2022 18:20:21 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F28C13CC0;
-        Sat, 25 Jun 2022 15:20:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1656195613;
-        bh=elP5Ix8g7dGoColM+2BwFdyvDAU4gFD7NlbDYJejqd0=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=jNcADOpPp2BWVVWMZHY+0i8w264xCCPzErGVsmU3TGN4Kz96WAXuW6LVcAUUVr5NZ
-         3m0/nIycDmR6QU2Pxvd+5vFRVOlj2QtDP05W4fOozAepf25kIdsDyXvgHwE5U1axsC
-         iwbVbg3cILhYgysLchlVbgR7F+IubS4B2rq/IYkY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.162.44]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MKKUp-1oNAG33kuV-00Lp8w; Sun, 26
- Jun 2022 00:20:13 +0200
-Message-ID: <6d2b4f81-1715-2b20-d419-e661ce7f92bc@gmx.de>
-Date:   Sun, 26 Jun 2022 00:19:46 +0200
+        Sun, 26 Jun 2022 01:21:15 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D297015709;
+        Sat, 25 Jun 2022 22:21:14 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id g7so1310666pjj.2;
+        Sat, 25 Jun 2022 22:21:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=FyhqfSxVNsjhzX9WxR80RFXqe2zcrAY7cm8JcsXFPog=;
+        b=hBenD693M5G/Q6eFcNTFzS4SnqsJJrltg/unkzqdkXjt1KZuJOowmubr8N6pLoDaKD
+         fVFiOpC8iAD7EGIlliBp9rs3u8PN97EiT1+qNvS41+MZgPOCJTjoQyeiIIs3aN/S65Mk
+         ROLoo90QARopRA/G16LXEfV3XzWV2cbm6BSPsXLWjrONfwr4KFBEPylDD+dVHgwCbYpH
+         Nln7DI28nZLcldKdK/hMm8jAMkLlh8JImCgANRilyPgE9ECSv7Kfb/sBQgpFGEXAGxKo
+         nt7BB5Uz/MHiajgMyFwmvhtRiUdUohrDkZhxMV7UvAUfaWc1n/g20OMg10VWWb/yD+Eh
+         bEKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=FyhqfSxVNsjhzX9WxR80RFXqe2zcrAY7cm8JcsXFPog=;
+        b=KMJi2AxRZJmjFh8qtRxdhJCaERXCnFVZLFOaZsalSTKZ+iPSPoms4hDStLUNlXrnnY
+         4N0ScISe5tD5VTsmBEwU77A1Vy7gKSacigbGrmj0yAEmpRpsBC7ykzRynqT9/cByf2O1
+         4AB16ioCxMwl414z6JR9thZig32Y96UlsD/b10esw84T6EACvFqWwOjchS63d/q5xphV
+         3stN72NtCkHy/+FQJQ/w0czQ2vAlpQ6prF85oZHDFV5IRdbxUgcb2+Qsc3uAgXCWUEji
+         DeXIah1dQF4heIvXIw0AON/7fQfgC5CFCSXzVrrUgDXyE2/2uCYNaTxy2PlbHenBd43/
+         uF2Q==
+X-Gm-Message-State: AJIora9dpDfL8Jz96TXbkoH1JiDyB3eKF/QVws/tw/dKTAAK+PJK3F6O
+        cWIvAHyr1TKJqDe3ZOabXeQ=
+X-Google-Smtp-Source: AGRyM1vu+xqOXfmR3FCthMvvOLmEwQYO6Fqr3qEmZORzf9ji8yNUeLLR6T09iITPOsTmJm0q6+GBiw==
+X-Received: by 2002:a17:902:8a91:b0:168:e74b:1056 with SMTP id p17-20020a1709028a9100b00168e74b1056mr7540306plo.16.1656220874223;
+        Sat, 25 Jun 2022 22:21:14 -0700 (PDT)
+Received: from [10.1.1.24] (222-155-0-244-adsl.sparkbb.co.nz. [222.155.0.244])
+        by smtp.gmail.com with ESMTPSA id p9-20020a1709026b8900b0016372486febsm4482864plk.297.2022.06.25.22.21.03
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 25 Jun 2022 22:21:13 -0700 (PDT)
+Subject: Re: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
+To:     Arnd Bergmann <arnd@kernel.org>
+References: <20220617125750.728590-1-arnd@kernel.org>
+ <20220617125750.728590-4-arnd@kernel.org>
+ <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
+ <CAK8P3a1XfwkTOV7qOs1fTxf4vthNBRXKNu8A5V7TWnHT081NGA@mail.gmail.com>
+Cc:     linux-scsi <linux-scsi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        Khalid Aziz <khalid@gonehiking.org>,
+        "Maciej W . Rozycki" <macro@orcam.me.uk>,
+        Matt Wang <wwentao@vmware.com>,
+        Miquel van Smoorenburg <mikevs@xs4all.net>,
+        Mark Salyzyn <salyzyn@android.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Denis Efremov <efremov@linux.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <6d1d88ee-1cf6-c735-1e6d-bafd2096e322@gmail.com>
+Date:   Sun, 26 Jun 2022 17:21:01 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] parisc: aligned '*' in comments
-Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>,
-        Jiang Jian <jiangjian@cdjrlc.com>
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220621063823.22064-1-jiangjian@cdjrlc.com>
- <202206241039.B98CEE0735@keescook>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <202206241039.B98CEE0735@keescook>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ORik/xWtQWRS21tF4PV0igGhKOW3f14iu2VijyVfKZ3ZnI2waWw
- WFRXhrw7YYsk5BFM7ryfOBy4DIWVDVOE6eJflJ/0FStt20/cqXJNdCCD7dTABE6MdOmEiuP
- mUnRaULHpa/WDOg+ItAdbM5gZPAylh+tYMoXY6Vuu22pv5CaTU0BwHIEfcNly29oFg6PyrS
- DUl09OkUk9i6uVrMaB8Pw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:GEyCDEOsuQc=:u9+shoKvA3y6I4lHTQzxeP
- blRUKmcgq6aCsMVHTJGoPyzfZN/K7HHON6kTLPnY6UG6FjTGSHXR7sHzteYix4lkh3B3pd3Hh
- +1uW0zlS7LZHph/xWlIA8gyjxqw0gOym34M6HqFN9CIrh/JhUhVPUwKMQgAXP+Lxu8HxrKS/M
- jJLEwmEA55PAIjeDg5/h+BtMjKiDoMwS2gsvKrfYWupRPUi3IVep1tOdpyhgrMwRHoisOk5Id
- 3BVd0bSAKBrGcba9cHAISqGwLCHzDanmAGpojRiUwsun6Hzu8u2qmsIVs51LuXRNnOgTolaYK
- WLAwSPn+jtvY+T0uK01xX7C/i5Z/ffiNRzHVuMi3PO1B47qTMW1o1YuGEObRUj+wFs22b/E+S
- jSYCxdwaAbTa+0h341HPCaTO3bmfB2eShZNqAHnLCLYHZ1y9t/hkxKVUVvspR8vvLyeSY/T99
- XdVQsIyroz7ssdsv4RCqXzjhSRnXXy7n49YWqZbHdfYQMHzGn6zP+z9+gIilYedjmKtM59bJ6
- 2GACIuquVME8sM17YkIjhVNgbX+w2McX3ZQ/3Gu/uj7h7J03RoGrDbVPVwfhAOWbuh8fHloY3
- FxgEyOG2wYv0t+AKWdbskobnGVvI7FeUjPK3G9xqVG9FL4Bd+dutSedhfyxAQ4gLyYw5vVTs7
- Fv+5HjBEOxaarggpDpFpKEaFt8EIWrGKfsb+A9ehYlKyp4JueRheGBvuonad+oudrkjRZyQOl
- uL93K9UZWasTPvNG1U4wzEezNDlWJj22mzT0dxS5k98tlvvKqmmjBxbjS+wi9jhlQoKAXIu/6
- LerS7wbzkiyUoAX5cd2HgHAnG0CLsss2HtXJ/7wrcNsJAecDbDs0w45pP7WbSuVT+uxCRP+/+
- P/aGXkWdJ29HDsRuyLerTMdanBOAM+HysOr2mgbdM0+23NV9FhFc2MGCTh3+8/mkECGp6Lo6e
- ONPutf0fbDaqzbUKeef+qNRlyBda1XQQGd2kESlo9Qsm1skOin1bvgLq1Vq0y0cI48mjvio6b
- ypOOGcO6qjIRjR/B1laZq1I5ck3SbohfYCy8lg2sQXLA5hsnjNUQh/In44OdJLVzyoRxEnFIS
- A0X7oa2Xz4rL/ScBYz7uvHsrXEJOMA3fMZymDpH1tmp24HOS3sojt4m5Q==
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+In-Reply-To: <CAK8P3a1XfwkTOV7qOs1fTxf4vthNBRXKNu8A5V7TWnHT081NGA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,15 +94,116 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 6/24/22 19:39, Kees Cook wrote:
-> On Tue, Jun 21, 2022 at 02:38:23PM +0800, Jiang Jian wrote:
->> Consider * alignment in comments
+Arnd,
+
+Am 24.06.2022 um 21:10 schrieb Arnd Bergmann:
+> On Sat, Jun 18, 2022 at 3:06 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+>> Am 18.06.2022 um 00:57 schrieb Arnd Bergmann:
+>>>
+>>> All architecture-independent users of virt_to_bus() and bus_to_virt()
+>>> have been fixed to use the dma mapping interfaces or have been
+>>> removed now.  This means the definitions on most architectures, and the
+>>> CONFIG_VIRT_TO_BUS symbol are now obsolete and can be removed.
+>>>
+>>> The only exceptions to this are a few network and scsi drivers for m68k
+>>> Amiga and VME machines and ppc32 Macintosh. These drivers work correctly
+>>> with the old interfaces and are probably not worth changing.
 >>
->> Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
+>> The Amiga SCSI drivers are all old WD33C93 ones, and replacing
+>> virt_to_bus by virt_to_phys in the dma_setup() function there would
+>> cause no functional change at all.
 >
-> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Ok, thanks for taking a look here.
+>
+>> drivers/vme/bridges/vme_ca91cx42.c hasn't been used at all on m68k (it
+>> is a PCI-to-VME bridge chipset driver that would be needed on
+>> architectures that natively use a PCI bus). I haven't found anything
+>> that selects that driver, so not sure it is even still in use??
+>
+> It's gone now, Greg has already taken my patches for this through
+> the staging tree.
 
-applied.
+One less to worry about, thanks.
 
-Thanks!
-Helge
+>> That would allow you to drop the remaining virt_to_bus define from
+>> arch/m68k/include/asm/virtconvert.h.
+>>
+>> I could submit a patch to convert the Amiga SCSI drivers to use
+>> virt_to_phys if Geert and the SCSI maintainers think it's worth the churn.
+>
+> I don't think using virt_to_phys() is an improvement here, as
+> virt_to_bus() was originally meant as a better abstraction to
+> replace the use of virt_to_phys() to make drivers portable, before
+> it got replaced by the dma-mapping interface in turn.
+>
+> It looks like the Amiga SCSI drivers have an open-coded version of
+> what dma_map_single() does, to do bounce buffering and cache
+> management. The ideal solution would be to convert the drivers
+> actually use the appropriate dma-mapping interfaces and remove
+> this custom code.
+
+I've taken another look at these drivers' dma_setup() functions and they 
+all look much more complex than the Amiga ESP drivers (which do use the 
+dma-mapping interface for parts of the DMA setup). From my limited 
+understanding, the difference between the ESP and WD33C93 drivers is 
+that the former are used on 040/060 accelerator boards only (where the 
+processor does do bus snooping and DMA can access all of RAM). The 
+latter ones would need cache management, could only use non-coherent 
+mappings and would require special case handling for DMA-inaccessible 
+RAM inside a device-specific dma ops' map_page() function.
+
+That's several bridges too far for me ... I have no Amiga hardware 
+whatsoever, and know no one who could test changes to WD33C93 drivers 
+for me.
+
+What I have is a NCR5380 with the proverbial 'pathological DMA' 
+integration example (and its driver was never changed to even use 
+virt_to_bus()!). I might learn enough about using the dma-mapping API on 
+that one eventually (though the requirement for at least 1 MB swiotlb 
+bounce buffers looks hard to meet), and use that to convert the WD33C93 
+drivers, but it would still remain untested.
+
+ > The same could be done for the two vme drivers (scsi/mvme147.c
+> and ethernet/82596.c), which do the cache management but
+> apparently don't need swiotlb bounce buffering.
+>
+> Rewriting the drivers to modern APIs is of course non-trivial,
+> and if you want a shortcut here, I would suggest introducing
+> platform specific helpers similar to isa_virt_to_bus() and call
+> them amiga_virt_to_bus() and vme_virt_to_bus, respectively.
+
+I don't think Amiga and m68k VME differ at all in that respect, so might 
+just call it m68k_virt_to_bus() for now.
+
+> Putting these into a platform specific header file at least helps
+> clarify that both the helper functions and the drivers using them
+> are non-portable.
+
+There are no platform specific header files other than asm/amigahw.h and 
+asm/mvme147hw.h, currently only holding register address definitions. 
+Would it be OK to add m68k_virt_to_bus() in there if it can't remain in 
+asm/virtconvert.h, Geert?
+
+>
+>> 32bit powerpc is a different matter though.
+>
+> It's similar, but unrelated. The two apple ethernet drivers
+> (bmac and mace) can again either get changed to use the
+> dma-mapping interfaces, or get a custom pmac_virt_to_bus()/
+> pmac_bus_to_virt() helper.
+
+Hmmm - I see Finn had done the DMA API conversion on macmace.c which 
+might give some hints on what to do about mace.c ... no idea about 
+bmac.c though. And again, haven't got hardware to test, so custom 
+helpers is it, then.
+
+Cheers,
+
+	Michael
+
+> There is also drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c,
+> which I think just needs a trivial change, but I'm not sure
+> how to do it correctly.
+>
+>       Arnd
+>
