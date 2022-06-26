@@ -2,61 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 821CD55B10C
-	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jun 2022 12:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F40F55B27A
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jun 2022 16:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229532AbiFZKNy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 26 Jun 2022 06:13:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50872 "EHLO
+        id S229626AbiFZOlQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 26 Jun 2022 10:41:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229513AbiFZKNy (ORCPT
+        with ESMTP id S229441AbiFZOlQ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 26 Jun 2022 06:13:54 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E69611146D
-        for <linux-parisc@vger.kernel.org>; Sun, 26 Jun 2022 03:13:52 -0700 (PDT)
+        Sun, 26 Jun 2022 10:41:16 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C96EBC10;
+        Sun, 26 Jun 2022 07:41:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1656238425;
-        bh=jKlG43vKonX8SZBK/M/E3ZkmVqAJ89qqlVbjdyvtzUQ=;
-        h=X-UI-Sender-Class:From:To:Subject:Date;
-        b=bPRkK1WUmZcJ/ydqRIFM7sanxfCjDCV6j9TmmSiSnPjg6GkNa4aP8mZ6M161jPg0h
-         PUtKL+yRm1XrzE/VxfrESVinOZLiizv7GEf/tNiv3FVKc1o5hRIN7gKRg+c5feX9PO
-         laCTwaGSnui1UeXvZubsskhPAmk6gvB/dMp8agBs=
+        s=badeba3b8450; t=1656254465;
+        bh=O+20x6Ln82NyZwC0tlbjDZszW4v87ztjQKwidZpougI=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=dLE1hs0f5G7x2mMeT6R4/jOV8mvvRmVxYwdmn733EglW84w1+aZdA8BO82/6IAQrr
+         8IXnkSDQCZh0Z6ybHF0NTc464Ae7QOhlK2l4edMRbraKlTEAXtTG+uGvVdzT/jwWLm
+         wWaVfPW0RgR507lAWcSQxo4ZnMGMIA5ZJtlPuPUQ=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100.fritz.box ([92.116.135.166]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQ5rU-1oIenR1vYu-00M3v7; Sun, 26
- Jun 2022 12:13:45 +0200
+Received: from p100 ([92.116.135.166]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MPog5-1oJPpi231P-00MscU; Sun, 26
+ Jun 2022 16:41:05 +0200
+Date:   Sun, 26 Jun 2022 16:41:01 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Enable ARCH_HAS_STRICT_MODULE_RWX
-Date:   Sun, 26 Jun 2022 12:13:44 +0200
-Message-Id: <20220626101344.122111-1-deller@gmx.de>
-X-Mailer: git-send-email 2.35.3
+Subject: [GIT PULL] parisc architecture updates for v5.19-rc4
+Message-ID: <Yrhv/Z0vCzSX/kK3@p100>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:VQRlxpqldyWjBo/2t7O9aw82mMqD12kHimsVWk/4Fz6r5XI5ErO
- gEqw2tu/QdWuPNgLBUczcc4t8XSH3FINFIOuMHy9odYqZHwWOdrMSPtUsb7ztikT+2AT+lh
- nx+l3xTAqHMzc83WAsc7PfPPtOHRUE5BEKuHawwGhvosO9raxv8Se3dUIC9E2FcMMs+Bq7/
- +cV2aWrR6VmPER9f4B2jw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:5yygcQjxZgE=:YMONq7JhPs8EynVDS/eQtg
- eJHBF2tPujhWQML3miSQC2Nh2JM0YlKqcg/QWE+dFuEAhJiMWEOr96EppIIliAj5uJ4rKU4z5
- QPP9SaisfuVudnVJEpwBM7+lc6KWdpT1SKeB/qt6vDjkVyjCV/P5Uo2+NdThBS8lMvQnYp/tP
- rGtBFD6lzLT+rQGrktJ3BHlieuzYehvfcMeFrMlkfVe1J/vNyLBdvVAuGJ/4EQ8icxfj0wLOd
- 3MWeZpYFcgrzferYJ9wDmracBR6ug1HdrMz+gaQGRjJoXgjJCjPGvuYlvK1mqAZDiqwahK5RN
- kgtKEHuADGbkjEORnKGgPks7HduGA1XQ312GO4aAvXLyCAVZxgPCGf2V0hfAL2Y+H1yGxo32/
- 0mtK1U8Hz4qd1nRd9f4LZz3DQUhA4PItUtkGYXvfHrsjcytZyy4IS8+rwJqiVbfoahUgQgjaA
- b58Fj+tg3hMi1zCffalOu0eRCvY3lNpvzAZVD/EP7JKMRKUrEzeJrv+mz4if4VLMoBmCy0b33
- LqemKB5Wnubl3/Q6tPs/nxLFsMwvoVVKc3noI6i9AZO4lHkLzjrPzmOvuY+1JQ/1lB6dJ3xDw
- mOBcitwmGYrzLpbnR96Hj0nyOoxYzUOWFwDlxoWs+P1+cN8frOLkTDbUDpuxu1OnWypkeCNYW
- qQQ8fQ41oeVvUWtKR9IfzPKVJRgr9nuSKTpv2nUHLk8dO0A9SzQwh6NbdX7l0+q+XfJ4Edl2O
- zfj1EFvRVxEwCdxepVns/indOkjIwHLRAMaiNiBvwyehWswWdHWjGjL9R4pPSbvsT/FuN7kBl
- sx4yqTrGrOQEHLUq8FhzirvmSfG96c8BI31te9KVVNEDhND+Qi6rOPZRIsF1JkRfWCnz8oLKi
- vGXIQzaHOMup3DOheW5oKi7ML57Mn1s8HNE85HxI7fLJ7uDgVQFESnc+z5xvSRhrD+0idOY1E
- vZaQcInh3L2dVAXt1I5EzwFv1WKoOMuKx8YU9M8sw3UdLh2CaFKjlgqm1q+/sVwPi198aoRAH
- +7aBEBGtwrBZHazIHzryL529VLWNYGvq+M8VNTxMaOj0dAB49ppZ6rPszZCqEppjuhlM+av9A
- Kdh8LpZ+0LrA72qmRr8YpXnoWAqumsziq45QGFgTTytU/7U3m8U/bQsVQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:15CGdLZHdPI1zWwYycjOAiqPey0NrhsmDHYX62NP8FKXaT0GUMk
+ G2gzTlOJjeZGDmTss3Hi0erXQSJGB6UpGDtgY4/ll9bIPdDTl9YM6P8QkE5PHs9w+D+iwSL
+ 0GAB3+yQ8fGKLQlmLR/VjFSsKikQpqJgohkC1FCTgV1RS9SJE7JdyS7ayjCuKXAffga3lDA
+ KsFCV9MlC7efXqF7ITpaQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1bE+uueP5Yw=:OROI8y8p8QuFeMl6gIBsl9
+ SeVcBGXup3USaD+AihXBvc8PhXAI64yE8rzd9M4zSSnmNgBJuGSwxZLefOtxECZni6wPs/SkW
+ rSaQZU53NPM3IR7ihNKPZtpoeUKjGAv+tPJfoYFWK/g8cIxJnLSvhRUO/Slm/04jMoYKBd/ur
+ BuXiYMajDwMPrmdo5GweLw5yZSoBvwltfmlKbUTnXIhauyBPbqQ8nymL87Hbff0ZGfC9o6T5g
+ rYzmd7806KvArvr4EXP/Lk9i2i3beObZgPvVqv+yVD4eA/fiPBX0k/Abnh+Kd/FGn44999JJO
+ Yqyvv11W6bdiVwlvWAOUUXX79O+IvCR3rK4Tm2b36IeHKWpECMzqCsQryz6Z9asDaL+oonllg
+ PSurL8x66iaIR5csa06dsDjlnBtaxbrWYo9H4ifu6WpmOYQy+qpd+uKskuPNhcpfHgM1Ram+S
+ gFJTYRxJht5VeJEe+0zKCW+2s1RbNClGBIwC8Jebfbei/wqnkt9F3Mg23Nfeg+ZrsEvMCT7Ev
+ RUA0z+YVJe9PdNlZbfosm7lw5XzrY0h1r6duucbeKb2YKlLe9l1d407qKIgowj3fAJfKXbQVx
+ aVOjz3AD/wA8gXp6zuCZqkC7RL7jvIMLkF8F9GDSdMWXuqXrHpniiTv9gilpkrqEiwPA/LAK7
+ qSzFLviQQ1uEBH2nRd/jp8PJtKcHAC+hDir5ULjFnwxLL4mervSWP4P2A7nUK4ywLkc+yv7vR
+ rZjFVw2nrbEygiQoM3Js6tRWtR4m/tuPaO7oG169TIP7dvzi+BSRO3FuALGGWO4Yypf29etl8
+ qSWRbQAJrOsPMlREAHbJVHcr1Cw2ISO6zQLj8EKhuPxdfinrWtfVw2HHJIPc/PgPKyT/sMNWh
+ fm8DY5PJnoP+DnXedU8Sa8Wl1ofu7i3PB8GxpY38eV0CXfXvZ4eAI0Yl9++GZCpbT4AWPyRph
+ KIqTgwKmMeEyjLN8Q2PzhQ6bx4rrbCoHVpGUdeC2CpzhXlvadDIdSKGdo+yNkU16od8Vat0wY
+ orMnS9pAGlfJw1fEMa3NxaAKmo/40L3z/JwCQ1I5Ac6gpkEarWxXltvnTlBbilb/HYf3I8j7d
+ rvi6VjXQBfJzMzj/jmLA2uBLFBC2ALnk2ktTykeJE7zRI5KzVNCc+bfeA==
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -67,31 +68,62 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This fixes a boot crash on a c8000 machine as reported by Dave.
-Basically it changes patch_map() to return an alias mapping to the
-to-be-patched code in order to preent writing to write-protected memory.
+Hi Linus,
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Suggested-by: John David Anglin <dave.anglin@bell.net>
-Cc: stable@vger.kernel.org   # v5.2+
-Link: https://lore.kernel.org/all/e8ec39e8-25f8-e6b4-b7ed-4cb23efc756e@bel=
-l.net/
-=2D--
- arch/parisc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+please pull three important parisc architecture fixes for kernel v5.19-rc4:
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 5f2448dc5a2b..fa400055b2d5 100644
-=2D-- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -10,6 +10,7 @@ config PARISC
- 	select ARCH_WANT_FRAME_POINTERS
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_STRICT_KERNEL_RWX
-+	select ARCH_HAS_STRICT_MODULE_RWX
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_NO_SG_CHAIN
-=2D-
-2.35.3
+- enable ARCH_HAS_STRICT_MODULE_RWX to prevent a boot crash on c8000 machines
 
+- flush all mappings of a shared anonymous page on PA8800/8900 machines via
+  flushing the whole data cache.  This may slow down such machines but
+  makes sure that the cache is consistent
+
+- Fix duplicate definition build error regarding fb_is_primary_device()
+
+All of them are tagged for backporting.
+
+Thanks,
+Helge
+
+----------------------------------------------------------------
+The following changes since commit f2906aa863381afb0015a9eb7fefad885d4e5a56:
+
+  Linux 5.19-rc1 (2022-06-05 17:18:54 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/for-5.19/parisc-3
+
+for you to fetch changes up to 0a1355db36718178becd2bfe728a023933d73123:
+
+  parisc: Enable ARCH_HAS_STRICT_MODULE_RWX (2022-06-26 12:23:15 +0200)
+
+----------------------------------------------------------------
+parisc architecture fixes & updates for kernel v5.19-rc4:
+
+Three important fixes:
+- enable ARCH_HAS_STRICT_MODULE_RWX to prevent a boot crash on c8000 machines
+
+- flush all mappings of a shared anonymous page on PA8800/8900 machines via
+  flushing the whole data cache.  This may slow down such machines but
+  makes sure that the cache is consistent
+
+- Fix duplicate definition build error regarding fb_is_primary_device()
+
+----------------------------------------------------------------
+Helge Deller (2):
+      parisc/stifb: Fix fb_is_primary_device() only available with CONFIG_FB_STI
+      parisc: Enable ARCH_HAS_STRICT_MODULE_RWX
+
+Jiang Jian (1):
+      parisc: align '*' in comment in math-emu code
+
+John David Anglin (1):
+      parisc: Fix flush_anon_page on PA8800/PA8900
+
+ arch/parisc/Kconfig               | 1 +
+ arch/parisc/include/asm/fb.h      | 2 +-
+ arch/parisc/kernel/cache.c        | 5 ++++-
+ arch/parisc/math-emu/decode_exc.c | 2 +-
+ drivers/video/console/sticore.c   | 2 ++
+ 5 files changed, 9 insertions(+), 3 deletions(-)
