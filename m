@@ -2,141 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 720BE55B0E0
-	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jun 2022 11:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 821CD55B10C
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jun 2022 12:16:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234030AbiFZJjk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 26 Jun 2022 05:39:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36668 "EHLO
+        id S229532AbiFZKNy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 26 Jun 2022 06:13:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229782AbiFZJjj (ORCPT
+        with ESMTP id S229513AbiFZKNy (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 26 Jun 2022 05:39:39 -0400
+        Sun, 26 Jun 2022 06:13:54 -0400
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 084849FD6;
-        Sun, 26 Jun 2022 02:39:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E69611146D
+        for <linux-parisc@vger.kernel.org>; Sun, 26 Jun 2022 03:13:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1656236372;
-        bh=HTV/uvihrFAjWA7e7fPC8tf5ji2lp1NnoBIr/742GVk=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=deOIKi6HlsVEkbqwm5BjG1qHsQDkE1Si6S0GWT0XqWL2FFvDd7q8506yVC7ftQl8O
-         8w/IDbx6JRSgJr4ka+Zd5GuACmIOKUsPUbbfH+zqjNuXsCLaLkZ6erfnxQ3IgLdw/R
-         Dx3SGoJ/xl4bwQp2oHXM+KPRWq8VaQAgKS/1zJsY=
+        s=badeba3b8450; t=1656238425;
+        bh=jKlG43vKonX8SZBK/M/E3ZkmVqAJ89qqlVbjdyvtzUQ=;
+        h=X-UI-Sender-Class:From:To:Subject:Date;
+        b=bPRkK1WUmZcJ/ydqRIFM7sanxfCjDCV6j9TmmSiSnPjg6GkNa4aP8mZ6M161jPg0h
+         PUtKL+yRm1XrzE/VxfrESVinOZLiizv7GEf/tNiv3FVKc1o5hRIN7gKRg+c5feX9PO
+         laCTwaGSnui1UeXvZubsskhPAmk6gvB/dMp8agBs=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.135.166]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MFKGP-1nqFOE3LnV-00FiqT; Sun, 26
- Jun 2022 11:39:31 +0200
-Message-ID: <2d4476f2-496e-8fea-6be9-9b610302523e@gmx.de>
-Date:   Sun, 26 Jun 2022 11:39:06 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v3 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-        linux-parisc@vger.kernel.org
-References: <20220624155226.2889613-1-arnd@kernel.org>
- <20220624155226.2889613-4-arnd@kernel.org>
+Received: from p100.fritz.box ([92.116.135.166]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQ5rU-1oIenR1vYu-00M3v7; Sun, 26
+ Jun 2022 12:13:45 +0200
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220624155226.2889613-4-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Enable ARCH_HAS_STRICT_MODULE_RWX
+Date:   Sun, 26 Jun 2022 12:13:44 +0200
+Message-Id: <20220626101344.122111-1-deller@gmx.de>
+X-Mailer: git-send-email 2.35.3
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GrHAdzyWf9bARQSXvDwaTAID+3E0L9s52IxQUqx5HxkwyvkcpKo
- wBfCSKIuu45O7PWpz3OMsu1SxW4CH2V0yVepXikx25SI9d1A4F0viWLTOfsacU6LukqLGhd
- KxsRU3NjrNU44DDlu6qPUkQX120LhSqfatXpmeLybBNvRLDDSvTu2+MUfZ2WGjGAjnkHyvy
- 0vouMplAX9ef1OS9rkiaA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:jsnZiX9bMcY=:HrRl/k+Po+w3RmVLu6j8IY
- +uWOnSWt0EkqzLH0cFgwNOljNYcrCx2Xj5QJmLts9WIVurQ7vD1F8Wviu0uIH+vFy6Sc8o2UQ
- v7CfpfeQ+brb68qJyP9RTDuZ2Y3zRue08FEuannL5Db+ANqIyVQG9pUub6Av+8HU9JYDHVC7u
- C2h/TqmfZLczW5o+wnTXhWkKKXlpHush7YxauK4lRSZVQwGCmlzv5PLIqUKwVk9/pgzwAAdcQ
- vq5XcUw7HvYWLDu3FQ05gZ5mBFG2v+v7RK0gq7yt0Iuo2K6AXdbUcRjgGGINVRkVnjSeo+azw
- d4E9UQXJc88Q1wxiBeDeEcN8yJ3AlnUS7s8yxlTmeRh2WEwBBEfF/i3fH/GOBiytrC5wjF2D7
- UupxIp8kHKwWlF+F6t+5pT0QS2m/0UQNEwXgM0uB1aB5fxSMS0aLm8TeZ4xHTYdbH7/mA3uda
- HiinBqFgbGpl3Ze8vyWjpBzp7Q0sPQKZhEGNq9v93j9OFIBpwGnQOWZJW1yqH1VT7yjAZyRvo
- EuOvYHse1kogAlz5ivi11/VJHCQlKSdEx4h0v4UlR0lMjhfPb8kvytAkSgKlgwDC1B+WBT//+
- j6QhNoZ0/zwQnKJJQsf0NAdIbvHqU3rM90cf43eQh4VItTiORKj1uNDCmG4ugdIEWYBO4Zjn9
- thggv+TVMYo9SeuRyzZLH7WKNF5DuGUEsQAoq1YTxWpmp2YDpIQkzeHfqV6P93H1Vmlp9zx2p
- 4YtyassdpTtPLCk8h1oV+zAtD9gJ9qFCzJEtAqC6uB4nZHPFzmhiDkFmPqw+s9LNrLXObSl6F
- JZbFQ/IsjqWjPJxCds1mjC5435xIGAyanYkJ0AQY00GUJoybvhH4pz5QciGhe9FVoB4+5pixD
- adcmBah/iuQzbdrtMGOXVHmnfx6/8SHlRFcR79IocR2BzzH8taSkBWpjlxRsfPN3Eg6TgbDMY
- YkjWL0TWjyJJbBuQDg22KEBdqROy5xd3SwbunTky0vOvCSWKWxrcKsjPfJmz2VU3PtZJweKtl
- cCsZ6BEHd7jdDalA3QAX6Sw1HdMskhViNSae7cxsWzeuR17+PuL/vFcAjkkltgF5QvII4a14A
- xQpea0LZGGUQ4ZWfJ9MSUGsi4fUh5nXKXKMI0maSLyu0owfiDEe4YGHCA==
+X-Provags-ID: V03:K1:VQRlxpqldyWjBo/2t7O9aw82mMqD12kHimsVWk/4Fz6r5XI5ErO
+ gEqw2tu/QdWuPNgLBUczcc4t8XSH3FINFIOuMHy9odYqZHwWOdrMSPtUsb7ztikT+2AT+lh
+ nx+l3xTAqHMzc83WAsc7PfPPtOHRUE5BEKuHawwGhvosO9raxv8Se3dUIC9E2FcMMs+Bq7/
+ +cV2aWrR6VmPER9f4B2jw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:5yygcQjxZgE=:YMONq7JhPs8EynVDS/eQtg
+ eJHBF2tPujhWQML3miSQC2Nh2JM0YlKqcg/QWE+dFuEAhJiMWEOr96EppIIliAj5uJ4rKU4z5
+ QPP9SaisfuVudnVJEpwBM7+lc6KWdpT1SKeB/qt6vDjkVyjCV/P5Uo2+NdThBS8lMvQnYp/tP
+ rGtBFD6lzLT+rQGrktJ3BHlieuzYehvfcMeFrMlkfVe1J/vNyLBdvVAuGJ/4EQ8icxfj0wLOd
+ 3MWeZpYFcgrzferYJ9wDmracBR6ug1HdrMz+gaQGRjJoXgjJCjPGvuYlvK1mqAZDiqwahK5RN
+ kgtKEHuADGbkjEORnKGgPks7HduGA1XQ312GO4aAvXLyCAVZxgPCGf2V0hfAL2Y+H1yGxo32/
+ 0mtK1U8Hz4qd1nRd9f4LZz3DQUhA4PItUtkGYXvfHrsjcytZyy4IS8+rwJqiVbfoahUgQgjaA
+ b58Fj+tg3hMi1zCffalOu0eRCvY3lNpvzAZVD/EP7JKMRKUrEzeJrv+mz4if4VLMoBmCy0b33
+ LqemKB5Wnubl3/Q6tPs/nxLFsMwvoVVKc3noI6i9AZO4lHkLzjrPzmOvuY+1JQ/1lB6dJ3xDw
+ mOBcitwmGYrzLpbnR96Hj0nyOoxYzUOWFwDlxoWs+P1+cN8frOLkTDbUDpuxu1OnWypkeCNYW
+ qQQ8fQ41oeVvUWtKR9IfzPKVJRgr9nuSKTpv2nUHLk8dO0A9SzQwh6NbdX7l0+q+XfJ4Edl2O
+ zfj1EFvRVxEwCdxepVns/indOkjIwHLRAMaiNiBvwyehWswWdHWjGjL9R4pPSbvsT/FuN7kBl
+ sx4yqTrGrOQEHLUq8FhzirvmSfG96c8BI31te9KVVNEDhND+Qi6rOPZRIsF1JkRfWCnz8oLKi
+ vGXIQzaHOMup3DOheW5oKi7ML57Mn1s8HNE85HxI7fLJ7uDgVQFESnc+z5xvSRhrD+0idOY1E
+ vZaQcInh3L2dVAXt1I5EzwFv1WKoOMuKx8YU9M8sw3UdLh2CaFKjlgqm1q+/sVwPi198aoRAH
+ +7aBEBGtwrBZHazIHzryL529VLWNYGvq+M8VNTxMaOj0dAB49ppZ6rPszZCqEppjuhlM+av9A
+ Kdh8LpZ+0LrA72qmRr8YpXnoWAqumsziq45QGFgTTytU/7U3m8U/bQsVQ==
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 6/24/22 17:52, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> All architecture-independent users of virt_to_bus() and bus_to_virt()
-> have been fixed to use the dma mapping interfaces or have been
-> removed now.  This means the definitions on most architectures, and the
-> CONFIG_VIRT_TO_BUS symbol are now obsolete and can be removed.
->
-> The only exceptions to this are a few network and scsi drivers for m68k
-> Amiga and VME machines and ppc32 Macintosh. These drivers work correctly
-> with the old interfaces and are probably not worth changing.
->
-> On alpha and parisc, virt_to_bus() were still used in asm/floppy.h.
-> alpha can use isa_virt_to_bus() like x86 does, and parisc can just
-> open-code the virt_to_phys() here, as this is architecture specific
-> code.
->
-> I tried updating the bus-virt-phys-mapping.rst documentation, which
-> started as an email from Linus to explain some details of the Linux-2.0
-> driver interfaces. The bits about virt_to_bus() were declared obsolete
-> backin 2000, and the rest is not all that relevant any more, so in the
-> end I just decided to remove the file completely.
->
-> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+This fixes a boot crash on a c8000 machine as reported by Dave.
+Basically it changes patch_map() to return an alias mapping to the
+to-be-patched code in order to preent writing to write-protected memory.
 
-Thanks for this cleanup!
+Signed-off-by: Helge Deller <deller@gmx.de>
+Suggested-by: John David Anglin <dave.anglin@bell.net>
+Cc: stable@vger.kernel.org   # v5.2+
+Link: https://lore.kernel.org/all/e8ec39e8-25f8-e6b4-b7ed-4cb23efc756e@bel=
+l.net/
+=2D--
+ arch/parisc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-You may add:
-Acked-by: Helge Deller <deller@gmx.de> # parisc
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 5f2448dc5a2b..fa400055b2d5 100644
+=2D-- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -10,6 +10,7 @@ config PARISC
+ 	select ARCH_WANT_FRAME_POINTERS
+ 	select ARCH_HAS_ELF_RANDOMIZE
+ 	select ARCH_HAS_STRICT_KERNEL_RWX
++	select ARCH_HAS_STRICT_MODULE_RWX
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_NO_SG_CHAIN
+=2D-
+2.35.3
 
-Helge
-
-
-
-> ---
->  .../core-api/bus-virt-phys-mapping.rst        | 220 ------------------
->  Documentation/core-api/dma-api-howto.rst      |  14 --
->  Documentation/core-api/index.rst              |   1 -
->  .../translations/zh_CN/core-api/index.rst     |   1 -
->  arch/alpha/Kconfig                            |   1 -
->  arch/alpha/include/asm/floppy.h               |   2 +-
->  arch/alpha/include/asm/io.h                   |   8 +-
->  arch/ia64/Kconfig                             |   1 -
->  arch/ia64/include/asm/io.h                    |   8 -
->  arch/m68k/Kconfig                             |   1 -
->  arch/m68k/include/asm/virtconvert.h           |   4 +-
->  arch/microblaze/Kconfig                       |   1 -
->  arch/microblaze/include/asm/io.h              |   2 -
->  arch/mips/Kconfig                             |   1 -
->  arch/mips/include/asm/io.h                    |   9 -
->  arch/parisc/Kconfig                           |   1 -
->  arch/parisc/include/asm/floppy.h              |   4 +-
->  arch/parisc/include/asm/io.h                  |   2 -
->  arch/powerpc/Kconfig                          |   1 -
->  arch/powerpc/include/asm/io.h                 |   2 -
->  arch/riscv/include/asm/page.h                 |   1 -
->  arch/x86/Kconfig                              |   1 -
->  arch/x86/include/asm/io.h                     |   9 -
->  arch/xtensa/Kconfig                           |   1 -
->  arch/xtensa/include/asm/io.h                  |   3 -
->  include/asm-generic/io.h                      |  14 --
->  mm/Kconfig                                    |   8 -
->  27 files changed, 10 insertions(+), 311 deletions(-)
->  delete mode 100644 Documentation/core-api/bus-virt-phys-mapping.rst
