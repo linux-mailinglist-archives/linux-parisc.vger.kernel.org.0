@@ -2,116 +2,93 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F50E55C3F0
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jun 2022 14:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46D7955C442
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jun 2022 14:49:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235734AbiF0Rlt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Jun 2022 13:41:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48902 "EHLO
+        id S237236AbiF0STd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Jun 2022 14:19:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235042AbiF0Rlt (ORCPT
+        with ESMTP id S234890AbiF0STc (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Jun 2022 13:41:49 -0400
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1AF411828
-        for <linux-parisc@vger.kernel.org>; Mon, 27 Jun 2022 10:41:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1656351708; x=1687887708;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QYyzvaW7+2ioQ+f12GBUt6U7XC7m2vbg7KANxkeEig4=;
-  b=rSKhevO8Ht6OHKmHFs0gldhQQEU/iSSlT//X/oOkNemGHWFQTu6/y/++
-   kEOFntKRmLR3Jj0F0Uo4XXFJdHCUR+4aLDyBPHszZaAQoGJd4GdPCkEc1
-   SylnzO7QIYGexHgneiZ0vU+VBXkjSqXJTsPpz1BQQ8uww64UEZpEYUmQr
-   E=;
-X-IronPort-AV: E=Sophos;i="5.92,226,1650931200"; 
-   d="scan'208";a="102313699"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-pdx-2b-6e5a0cd6.us-west-2.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP; 27 Jun 2022 17:24:38 +0000
-Received: from EX13MTAUWB001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2b-6e5a0cd6.us-west-2.amazon.com (Postfix) with ESMTPS id 6FCD4A2AFE;
-        Mon, 27 Jun 2022 17:24:38 +0000 (UTC)
-Received: from EX13D04ANC001.ant.amazon.com (10.43.157.89) by
- EX13MTAUWB001.ant.amazon.com (10.43.161.249) with Microsoft SMTP Server (TLS)
- id 15.0.1497.36; Mon, 27 Jun 2022 17:24:37 +0000
-Received: from 88665a182662.ant.amazon.com (10.43.161.183) by
- EX13D04ANC001.ant.amazon.com (10.43.157.89) with Microsoft SMTP Server (TLS)
- id 15.0.1497.36; Mon, 27 Jun 2022 17:24:36 +0000
-From:   Kuniyuki Iwashima <kuniyu@amazon.com>
-To:     <deller@gmx.de>
-CC:     <dave.anglin@bell.net>, <kuniyu@amazon.co.jp>, <kuniyu@amazon.com>,
-        <linux-parisc@vger.kernel.org>
-Subject: Re: linux v5.18.3 fails to boot
-Date:   Mon, 27 Jun 2022 10:24:28 -0700
-Message-ID: <20220627172428.83872-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <faea80e5-de8f-f1ca-1412-43f513b3b45c@gmx.de>
-References: <faea80e5-de8f-f1ca-1412-43f513b3b45c@gmx.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.43.161.183]
-X-ClientProxiedBy: EX13D04UWA001.ant.amazon.com (10.43.160.47) To
- EX13D04ANC001.ant.amazon.com (10.43.157.89)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Mon, 27 Jun 2022 14:19:32 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E3EE008;
+        Mon, 27 Jun 2022 11:19:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7F468B81A2E;
+        Mon, 27 Jun 2022 18:19:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E2BC3411D;
+        Mon, 27 Jun 2022 18:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1656353969;
+        bh=TWYurZfD/jUE/28ERIZq8LqjtfVRpiQiuznUyRsMsO8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=FeAwLx+rI+mBj0NI0QoHuA4Rvcx16ZYK+rUfbIaWckGhHUG3auHvoG7DiEo27CxjZ
+         Or0f6z+BNgZY2MAa270mBYYezoq1NWsREaFd+XKeSK7xj8hfT8F1fpz3SFBnoMTSxl
+         /E1FBs2J9PvQ62Si3qjuZde6FIQGne1a+3Bh+mks=
+Date:   Mon, 27 Jun 2022 11:19:27 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
+Cc:     David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Nick Terrell <terrelln@fb.com>, linux-btrfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org, David Sterba <dsterba@suse.cz>
+Subject: Re: [RESEND PATCH v4 1/2] highmem: Make __kunmap_{local,atomic}()
+ take "const void *"
+Message-Id: <20220627111927.3ef94745aab4491901d43028@linux-foundation.org>
+In-Reply-To: <2192593.iZASKD2KPV@opensuse>
+References: <20220616210037.7060-1-fmdefrancesco@gmail.com>
+        <20220616210037.7060-2-fmdefrancesco@gmail.com>
+        <2192593.iZASKD2KPV@opensuse>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From:   Helge Deller <deller@gmx.de>
-Date:   Mon, 27 Jun 2022 02:08:29 +0200
-> On 6/10/22 20:18, John David Anglin wrote:
->> On 2022-06-10 12:49 p.m., John David Anglin wrote:
->>>> The commit was added to prevent compiler optimisation from splitting
->>>> read/write operations.  I think it can lead in a change in opcodes but
->>>> must be safe.  So I'm not sure why the commit causes boot failure for now.
->>> Neither am I.
->>>>
->>>> I'm not familiar with PARISC and this may be a stupid question though,
->>>> what does `ldd` exactly do? and which line is it executed in the func/file?
->>> ldd performs a 64-bit load to register rp (r2).  It is part of mpt_reply's epilogue.
->>> The prior "sync" instruction corresponds to the "mb()" at the end of mpt_reply.
->>>
->>
->> Possibly, this might affect Fusion MPT base driver but no patches are applied:
->>
->> [   29.971295] mptbase alternatives: applied 0 out of 3 patches
->> [   29.971295] Fusion MPT base driver 3.04.20
->> [   29.971295] Copyright (c) 1999-2008 LSI Corporation
->> [   29.971295] Fusion MPT SPI Host driver 3.04.20
-> 
-> To sum it up - this issue war triggered by a few special situations:
-> 
-> The kernel patching code uses the altinstructions table from kernel modules to patch
-> in alternative assembly instructions.
-> To read the entries it uses a 32-bit ldw() instruction since the table holds 32-bit values.
-> Because of another issue this table was located at unaligned memory addresses.
-> That's why then the kernel ldw() emulation jumped in and read the content.
-> Commit e8aa7b17fe41 ("parisc/unaligned: Rewrite inline assembly of emulate_ldw()")
-> broke the ldw() emulation and as such invalid 32-bit values were read back.
-> This then triggered random memory corruption, because the kernel then patched addresses which it shouldn't.
-> 
-> I just sent a patch to the parisc mailing list to fix up the ldw() handler, which
-> finally fixed this issue here too.
+On Mon, 27 Jun 2022 19:02:31 +0200 "Fabio M. De Francesco" <fmdefrancesco@gmail.com> wrote:
 
-Interesting!
-I was wondering enabling CONFIG_STRICT_MODULE_RWX, which was originally off,
-could have another impact.
-I appreciate your summary and fix!
-
-Best regards,
-Kuniyuki
-
-
+> > v1->v2: Change the commit message to clearly explain why these functions
+> >         should require pointers to const void. The fundamental argument
+> >         behind the commit message changes is semantic correctness.
+> >         Obviously, there are no changes to the code.
+> >         Many thanks to David Sterba and Ira Weiny for suggestions and
+> >         reviews.
+> >
+> >  arch/parisc/include/asm/cacheflush.h |  6 +++---
+> >  arch/parisc/kernel/cache.c           |  2 +-
+> >  include/linux/highmem-internal.h     | 10 +++++-----
+> >  mm/highmem.c                         |  2 +-
+> >  4 files changed, 10 insertions(+), 10 deletions(-)
 > 
-> Everyone who runs kernel v5.18+ on parisc should better apply the patch I sent:
-> https://patchwork.kernel.org/project/linux-parisc/patch/20220626233911.1023515-1-deller@gmx.de/
+> @Andrew:
 > 
-> Helge
+> Ira Weiny asked David Sterba for taking this patch through his tree because 
+> it is a pre-requisite for a patch to fs/btrfs. He agreed with the above-
+> mentioned suggestion, however I suppose that an ACK by you is needed.
+> 
+> Can you please take a look at this patch and say what you think about it?
+
+Looks OK to me.  It's one of those "if it compiles, it's good" things.
+
+I don't believe the patch has ever appeared on linux-mm?  Please send
+it there for some review then go ahead and merge it up.
 
