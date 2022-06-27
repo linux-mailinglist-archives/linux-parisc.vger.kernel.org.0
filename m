@@ -2,140 +2,138 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D88F55C2CE
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jun 2022 14:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB80355DC3C
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jun 2022 15:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229850AbiF0GP0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Jun 2022 02:15:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51090 "EHLO
+        id S233331AbiF0IKM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Jun 2022 04:10:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232367AbiF0GPZ (ORCPT
+        with ESMTP id S233318AbiF0IKI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Jun 2022 02:15:25 -0400
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B332AC2
-        for <linux-parisc@vger.kernel.org>; Sun, 26 Jun 2022 23:15:23 -0700 (PDT)
-Content-Type: multipart/signed;
-        boundary="Apple-Mail=_7CC86B1B-E132-455E-A04C-77DE1E1CE9BB";
-        protocol="application/pgp-signature";
-        micalg=pgp-sha512
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
-Subject: Re: linux v5.18.3 fails to boot
-From:   Sam James <sam@gentoo.org>
-In-Reply-To: <faea80e5-de8f-f1ca-1412-43f513b3b45c@gmx.de>
-Date:   Mon, 27 Jun 2022 07:15:13 +0100
-Cc:     John David Anglin <dave.anglin@bell.net>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>, kuniyu@amazon.co.jp,
-        linux-parisc@vger.kernel.org
-Message-Id: <CAED4F1C-C219-4B58-946C-DFD156AA22E5@gentoo.org>
-References: <07d91863-dacc-a503-aa2b-05c3b92a1e39@bell.net>
- <20220610160624.95035-1-kuniyu@amazon.com>
- <7beb6e90-4532-cba2-8121-4cfc413f4d3f@bell.net>
- <76323d1a-114b-2cf7-2f4a-05612b28c9e2@bell.net>
- <faea80e5-de8f-f1ca-1412-43f513b3b45c@gmx.de>
-To:     Helge Deller <deller@gmx.de>
-X-Mailer: Apple Mail (2.3696.100.31)
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Mon, 27 Jun 2022 04:10:08 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E01F560F5;
+        Mon, 27 Jun 2022 01:10:07 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id n12so8333861pfq.0;
+        Mon, 27 Jun 2022 01:10:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=Kp9FmTyX7dGRB9FFbW8qRxYhCrBAW1WHUiTJLo4/9H4=;
+        b=K613IOtiRm08GX4X7oLeBesl1pBHqqYHcDPxV7/3JEOF5n76WCWDPXYNIgN0NseE0r
+         8bhO3DE3uflpJFhEfLuanvcY7ac1lLtGB/8aZNJ1w8d3jV6V1SXnxHfkCRZIkH+m60fi
+         ilVcVdkV5hD1+m3AzPdKtBDW9iqf+vzUo0E9kO/Oxbv+90q0xA8uOJhRB2Gz3SW5oEWi
+         yKk2yydgdryqRmqfaDuIl43PVHCXytxBCYpQ5I2V4y5AEhtLIR3BDFYDUcWk3s24zyZI
+         ERJQUFowl0fWdYSG/t8vSvdCVgNdMU6LggXDVdbEtT+SZx0p1RxJ0xGekYMy+MddZSUr
+         wYaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=Kp9FmTyX7dGRB9FFbW8qRxYhCrBAW1WHUiTJLo4/9H4=;
+        b=mcP8nfCwrJo9ffxhw6K0c7s/ERC6gMcQxrjz8Ak++nrITeKJc4lfBpLKM/Wga+O4an
+         +daghyrFIZCeP5qgpQpBm0ILbAAHqsd8YCsAsdYmyUuFbBj/81QQ4HaxVZO0DLIPcqUb
+         pAvZcWr3XTCxrd0qP1uI8+YhU3YEF0xHiE4MGMo5/MxSuqwLVFBLo9iYr6pdFT99oMGF
+         l25DH0KSKcI5uePlL6zwJiTgs8FsaI1GOlObEHOCysFkROPX/m7B47Zy0o0DeFNQEWHD
+         EN1LFSgFbkPyiThzAq5P2Sri2rJKXP877PUMm39b3ZsE4qFg2Kt3cO7AlaCHqCp+DktI
+         kDlA==
+X-Gm-Message-State: AJIora90ORWReK6fYnuFwQ8ycV7MXHYi571Gj8Zpn2PPKWtli98+OAuG
+        98vZO6d3K0ylMnxce4G9dU4=
+X-Google-Smtp-Source: AGRyM1sg7iF/y7vKHgXwujHvRSIecgmir4U7fRrNlW+Dv0GKekuR9SBw+l3PLY+27c36Xro7hy0FTA==
+X-Received: by 2002:a63:794e:0:b0:40d:99b:bb4 with SMTP id u75-20020a63794e000000b0040d099b0bb4mr11868551pgc.133.1656317407267;
+        Mon, 27 Jun 2022 01:10:07 -0700 (PDT)
+Received: from [10.1.1.24] (222-155-0-244-adsl.sparkbb.co.nz. [222.155.0.244])
+        by smtp.gmail.com with ESMTPSA id y3-20020a17090ad70300b001ecdd9507b9sm6536341pju.26.2022.06.27.01.09.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 27 Jun 2022 01:10:06 -0700 (PDT)
+Subject: Re: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
+To:     Arnd Bergmann <arnd@kernel.org>
+References: <20220617125750.728590-1-arnd@kernel.org>
+ <20220617125750.728590-4-arnd@kernel.org>
+ <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
+ <CAK8P3a1XfwkTOV7qOs1fTxf4vthNBRXKNu8A5V7TWnHT081NGA@mail.gmail.com>
+ <6d1d88ee-1cf6-c735-1e6d-bafd2096e322@gmail.com>
+ <CAK8P3a1KKPXr0ews9po_xjmnGYUWf18gBaZYYmnC+DvtxTKLmQ@mail.gmail.com>
+Cc:     linux-scsi <linux-scsi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        Khalid Aziz <khalid@gonehiking.org>,
+        "Maciej W . Rozycki" <macro@orcam.me.uk>,
+        Matt Wang <wwentao@vmware.com>,
+        Miquel van Smoorenburg <mikevs@xs4all.net>,
+        Mark Salyzyn <salyzyn@android.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Denis Efremov <efremov@linux.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <1fa7f932-ed3d-974c-dccb-de628191993d@gmail.com>
+Date:   Mon, 27 Jun 2022 20:09:46 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
+MIME-Version: 1.0
+In-Reply-To: <CAK8P3a1KKPXr0ews9po_xjmnGYUWf18gBaZYYmnC+DvtxTKLmQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Arnd,
 
---Apple-Mail=_7CC86B1B-E132-455E-A04C-77DE1E1CE9BB
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
+Am 26.06.2022 um 20:36 schrieb Arnd Bergmann:
+>> There are no platform specific header files other than asm/amigahw.h and
+>> asm/mvme147hw.h, currently only holding register address definitions.
+>> Would it be OK to add m68k_virt_to_bus() in there if it can't remain in
+>> asm/virtconvert.h, Geert?
+>
+> In that case, I would just leave it under the current name and not change
+> m68k at all. I don't like the m68k_virt_to_bus() name because there is
+> not anything CPU specific in what it does, and keeping it in a common
+> header does nothing to prevent it from being used on other platforms
+> either.
 
+Fair enough.
 
+>>>> 32bit powerpc is a different matter though.
+>>>
+>>> It's similar, but unrelated. The two apple ethernet drivers
+>>> (bmac and mace) can again either get changed to use the
+>>> dma-mapping interfaces, or get a custom pmac_virt_to_bus()/
+>>> pmac_bus_to_virt() helper.
+>>
+>> Hmmm - I see Finn had done the DMA API conversion on macmace.c which
+>> might give some hints on what to do about mace.c ... no idea about
+>> bmac.c though. And again, haven't got hardware to test, so custom
+>> helpers is it, then.
+>
+> Ok.
 
-> On 27 Jun 2022, at 01:08, Helge Deller <deller@gmx.de> wrote:
->=20
-> On 6/10/22 20:18, John David Anglin wrote:
->> On 2022-06-10 12:49 p.m., John David Anglin wrote:
->>>> The commit was added to prevent compiler optimisation from =
-splitting
->>>> read/write operations.  I think it can lead in a change in opcodes =
-but
->>>> must be safe.  So I'm not sure why the commit causes boot failure =
-for now.
->>> Neither am I.
->>>>=20
->>>> I'm not familiar with PARISC and this may be a stupid question =
-though,
->>>> what does `ldd` exactly do? and which line is it executed in the =
-func/file?
->>> ldd performs a 64-bit load to register rp (r2).  It is part of =
-mpt_reply's epilogue.
->>> The prior "sync" instruction corresponds to the "mb()" at the end of =
-mpt_reply.
->>>=20
->>=20
->> Possibly, this might affect Fusion MPT base driver but no patches are =
-applied:
->>=20
->> [   29.971295] mptbase alternatives: applied 0 out of 3 patches
->> [   29.971295] Fusion MPT base driver 3.04.20
->> [   29.971295] Copyright (c) 1999-2008 LSI Corporation
->> [   29.971295] Fusion MPT SPI Host driver 3.04.20
->=20
-> To sum it up - this issue war triggered by a few special situations:
->=20
-> The kernel patching code uses the altinstructions table from kernel =
-modules to patch
-> in alternative assembly instructions.
-> To read the entries it uses a 32-bit ldw() instruction since the table =
-holds 32-bit values.
-> Because of another issue this table was located at unaligned memory =
-addresses.
-> That's why then the kernel ldw() emulation jumped in and read the =
-content.
-> Commit e8aa7b17fe41 ("parisc/unaligned: Rewrite inline assembly of =
-emulate_ldw()")
-> broke the ldw() emulation and as such invalid 32-bit values were read =
-back.
-> This then triggered random memory corruption, because the kernel then =
-patched addresses which it shouldn't.
->=20
-> I just sent a patch to the parisc mailing list to fix up the ldw() =
-handler, which
-> finally fixed this issue here too.
->=20
-> Everyone who runs kernel v5.18+ on parisc should better apply the =
-patch I sent:
-> =
-https://patchwork.kernel.org/project/linux-parisc/patch/20220626233911.102=
-3515-1-deller@gmx.de/
->=20
+Again, no platform specific headers to shift renamed helpers to, so may 
+as well keep this as-is.
 
-Appreciate you summarising - I was just wondering about this bug earlier =
-:)
+Cheers,
 
-> Helge
+	Michael
 
 
-Best,
-sam
-
---Apple-Mail=_7CC86B1B-E132-455E-A04C-77DE1E1CE9BB
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP
-
------BEGIN PGP SIGNATURE-----
-
-iNUEARYKAH0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCYrlK9F8UgAAAAAAuAChp
-c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB
-NkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MAAKCRBzhAn1IN+R
-kAZNAP0Y6x8MLbxdhMWeuLMeVFU8/0oeh2krcHYC74RAJp5QnwEA6hyHKkA12+uJ
-knTYNlrGSByXFDyp2B24LOl95BSWHgQ=
-=4yAM
------END PGP SIGNATURE-----
-
---Apple-Mail=_7CC86B1B-E132-455E-A04C-77DE1E1CE9BB--
+>
+>           Arnd
+>
