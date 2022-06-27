@@ -2,134 +2,234 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA49E55B48F
-	for <lists+linux-parisc@lfdr.de>; Mon, 27 Jun 2022 02:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A580355B693
+	for <lists+linux-parisc@lfdr.de>; Mon, 27 Jun 2022 07:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbiF0AJD (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 26 Jun 2022 20:09:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33064 "EHLO
+        id S231561AbiF0E6y (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Jun 2022 00:58:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiF0AJC (ORCPT
+        with ESMTP id S230319AbiF0E6x (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 26 Jun 2022 20:09:02 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A282A0
-        for <linux-parisc@vger.kernel.org>; Sun, 26 Jun 2022 17:09:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1656288536;
-        bh=3yJ1i/LIZde0U/okUTURqyrBU7TCWRhlgFb31aajWbQ=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=NpaunRlR1L4ei+zhnMfVAFgkC7ujkyZbSus9N8GtQMPZQiNI0H4Ro7wsAAQ4QWgxy
-         VxLcuWj5ocMKbfdioCuWepwGf7NkjQl8pzwMu1G4iD36Pf9TlPGuIKukKCvdxrurRy
-         cuutcciDCyYwT99wAV1Dan6x3ibujyoWHOsEwWsQ=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.135.166]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MORAU-1oIBdu0wd4-00PtrP; Mon, 27
- Jun 2022 02:08:56 +0200
-Message-ID: <faea80e5-de8f-f1ca-1412-43f513b3b45c@gmx.de>
-Date:   Mon, 27 Jun 2022 02:08:29 +0200
+        Mon, 27 Jun 2022 00:58:53 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BC4E6272E;
+        Sun, 26 Jun 2022 21:58:51 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D61923A;
+        Sun, 26 Jun 2022 21:58:51 -0700 (PDT)
+Received: from a077893.blr.arm.com (unknown [10.162.42.6])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 125053F5A1;
+        Sun, 26 Jun 2022 21:58:43 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org
+Cc:     hch@infradead.org, christophe.leroy@csgroup.eu,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, openrisc@lists.librecores.org,
+        linux-xtensa@linux-xtensa.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V5 00/26] mm/mmap: Drop __SXXX/__PXXX macros from across platforms
+Date:   Mon, 27 Jun 2022 10:28:07 +0530
+Message-Id: <20220627045833.1590055-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: linux v5.18.3 fails to boot
-Content-Language: en-US
-To:     John David Anglin <dave.anglin@bell.net>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc:     kuniyu@amazon.co.jp, linux-parisc@vger.kernel.org
-References: <07d91863-dacc-a503-aa2b-05c3b92a1e39@bell.net>
- <20220610160624.95035-1-kuniyu@amazon.com>
- <7beb6e90-4532-cba2-8121-4cfc413f4d3f@bell.net>
- <76323d1a-114b-2cf7-2f4a-05612b28c9e2@bell.net>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <76323d1a-114b-2cf7-2f4a-05612b28c9e2@bell.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:G9ca4IrIbrFsWpl6QnyNTomJTz07EPyOGjnW5Z3cthjdbN6HrhJ
- g2Ae7fsAiopK8oGJ62Tms9zwA3rd14zVXv41+mi6N/AqNW1IKYS1JvN74Vx9WXAZYDJsyTF
- z/mU6Ln9MWgvDtiefl58x/rO5cq8Gmhb2mB8pn5/FI+Z9h5XfueszJU2q9YzZom3VOxUpzm
- T7VwORsN8o52QuQhnxMKA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:10Iq3SlamkA=:60Ogu/NdzmSUYTj7tKkRuc
- Uc1U6ppGYJLkHJcKis5qoVNczQjtajm7O0GUQrWJBPhrT3RTA10ilQ7xkUAy+w6ZbD7WOtFLY
- uSVuWyofaUbtaqL0tQktr+4fiDS5cK8fnwHWai8cJvXDouHWnn3+fQ2XI/hO+AqiHwUtkW/m8
- XNQ981ssYqb0rRvSeg0L5Q9oDmEJvtmv0N9XoVyRkMpX9Uw3dR7c9lmUqQ9DSYYlXTQNd5i3E
- p5aiASATkG08Qo9QVU1cRMLkgxQ+7CzR+MAPIjwWR1mJB5BsiLoamd/fxpoidpO2BcOjvsI4N
- 0BJVm7/Uf9AghkcABuPtqc3z7E/5eJ+8uIRjahYIiYlSfibRXqkbwe9QyVIVlRV/G0+6sE5oc
- /BOf6u8YN5npf7xNNlKQ7HsPzGRb0pe5UPBnNc5SJ297XJJvRbOdtfh1Bw9HNeD8IA7UyRPWD
- JwrxvGxMoOMYp99Liqck6S0TUPA/g6mDMf8txb9qYJsDHINC8+gUuWX/siJoUG5mCN30Tb/IP
- iVXALfdIT06mMv+hSmxoJ/xLjoHBt5Oze3JY5xsYQvU5njug6fivvLQZ2TwEewTosLNxdFsRI
- 1dMGcYRwbHVqNlXzc+8IU5PqkBchXtjc/XwqYM62DheAp9KshiLkpp40R4sm9W3tYWSDduIpO
- t7w+vOpR1e0xBJMdjgLrO7L/LFulA7IBSghp+57lHWGL0ph1jXdK9h5S0RTfgnY8dCggLpNpd
- CUEMQOhPd+mYYVsEnuF6OfUJ5454qasftQnkDeNu5BKqh5WFJ7sN12T4wnmrzisqyR32DTl6K
- 0XSrEf14SHhQk/A5qcY7RmxS2HtIZaCp8li0jYk00DPBACLb7yu9dESgNX44aszeb/a+yPItt
- 5OKaKm+bo5YHx3goGFT+TpEnLUDEyO/+PAERs+kt0MiCF3o3gDZTnfVr+/LAsHVVL8DNteaax
- K5fDwNEIOPKGvXArEG9aeiRpKI4+kLZi46DSVniVQZDPGbn5tZov5EU0EOeSU2X4L1WV0zprr
- bQzdGblhjCZArL/Lbhz4IkMfRao63GjI2pmiYXF2zFY8XxcA04kmsBclPDLwSMi0GXnS7GIrt
- 7xEssOrl8ZIqqZdbN0UO32inH4Z/EK8NB8t6uS0xc7XluZLs5HUyNcc2w==
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 6/10/22 20:18, John David Anglin wrote:
-> On 2022-06-10 12:49 p.m., John David Anglin wrote:
->>> The=C2=A0commit=C2=A0was=C2=A0added=C2=A0to=C2=A0prevent=C2=A0compiler=
-=C2=A0optimisation=C2=A0from=C2=A0splitting
->>> read/write=C2=A0operations.=C2=A0=C2=A0I=C2=A0think=C2=A0it=C2=A0can=
-=C2=A0lead=C2=A0in=C2=A0a=C2=A0change=C2=A0in=C2=A0opcodes=C2=A0but
->>> must=C2=A0be=C2=A0safe.=C2=A0=C2=A0So=C2=A0I'm=C2=A0not=C2=A0sure=C2=
-=A0why=C2=A0the=C2=A0commit=C2=A0causes=C2=A0boot=C2=A0failure=C2=A0for=C2=
-=A0now.
->> Neither=C2=A0am=C2=A0I.
->>>
->>> I'm=C2=A0not=C2=A0familiar=C2=A0with=C2=A0PARISC=C2=A0and=C2=A0this=C2=
-=A0may=C2=A0be=C2=A0a=C2=A0stupid=C2=A0question=C2=A0though,
->>> what=C2=A0does=C2=A0`ldd`=C2=A0exactly=C2=A0do?=C2=A0and=C2=A0which=C2=
-=A0line=C2=A0is=C2=A0it=C2=A0executed=C2=A0in=C2=A0the=C2=A0func/file?
->> ldd=C2=A0performs=C2=A0a=C2=A064-bit=C2=A0load=C2=A0to=C2=A0register=C2=
-=A0rp=C2=A0(r2).=C2=A0=C2=A0It=C2=A0is=C2=A0part=C2=A0of=C2=A0mpt_reply's=
-=C2=A0epilogue.
->> The=C2=A0prior=C2=A0"sync"=C2=A0instruction=C2=A0corresponds=C2=A0to=C2=
-=A0the=C2=A0"mb()"=C2=A0at=C2=A0the=C2=A0end=C2=A0of=C2=A0mpt_reply.
->>
->
-> Possibly, this might affect Fusion MPT base driver but no patches are ap=
-plied:
->
-> [=C2=A0=C2=A0 29.971295] mptbase alternatives: applied 0 out of 3 patche=
-s
-> [=C2=A0=C2=A0 29.971295] Fusion MPT base driver 3.04.20
-> [=C2=A0=C2=A0 29.971295] Copyright (c) 1999-2008 LSI Corporation
-> [=C2=A0=C2=A0 29.971295] Fusion MPT SPI Host driver 3.04.20
+__SXXX/__PXXX macros is an unnecessary abstraction layer in creating the
+generic protection_map[] array which is used for vm_get_page_prot(). This
+abstraction layer can be avoided, if the platforms just define the array
+protection_map[] for all possible vm_flags access permission combinations
+and also export vm_get_page_prot() implementation.
 
-To sum it up - this issue war triggered by a few special situations:
+This series drops __SXXX/__PXXX macros from across platforms in the tree.
+First it build protects generic protection_map[] array with '#ifdef __P000'
+and moves it inside platforms which enable ARCH_HAS_VM_GET_PAGE_PROT. Later
+this build protects same array with '#ifdef ARCH_HAS_VM_GET_PAGE_PROT' and
+moves inside remaining platforms while enabling ARCH_HAS_VM_GET_PAGE_PROT.
+This adds a new macro DECLARE_VM_GET_PAGE_PROT defining the current generic
+vm_get_page_prot(), in order for it to be reused on platforms that do not
+require custom implementation. Finally, ARCH_HAS_VM_GET_PAGE_PROT can just
+be dropped, as all platforms now define and export vm_get_page_prot(), via
+looking up a private and static protection_map[] array. protection_map[]
+data type has been changed as 'static const' on all platforms that do not
+change it during boot.
 
-The kernel patching code uses the altinstructions table from kernel module=
-s to patch
-in alternative assembly instructions.
-To read the entries it uses a 32-bit ldw() instruction since the table hol=
-ds 32-bit values.
-Because of another issue this table was located at unaligned memory addres=
-ses.
-That's why then the kernel ldw() emulation jumped in and read the content.
-Commit e8aa7b17fe41 ("parisc/unaligned: Rewrite inline assembly of emulate=
-_ldw()")
-broke the ldw() emulation and as such invalid 32-bit values were read back=
-.
-This then triggered random memory corruption, because the kernel then patc=
-hed addresses which it shouldn't.
+This series applies on v5.19-rc3 and has been build tested for multiple
+platforms. While here it has dropped off all previous tags from folks after
+the current restructuring. Series common CC list has been expanded to cover
+all impacted platforms for wider reach.
 
-I just sent a patch to the parisc mailing list to fix up the ldw() handler=
-, which
-finally fixed this issue here too.
+- Anshuman
 
-Everyone who runs kernel v5.18+ on parisc should better apply the patch I =
-sent:
-https://patchwork.kernel.org/project/linux-parisc/patch/20220626233911.102=
-3515-1-deller@gmx.de/
+Changes in V5:
 
-Helge
+- Converted most platfomr protection_map[] array as 'static const'
+- Moved DECLARE_VM_GET_PAGE_PROT inside <include/linux/pgtable.h>
+- Moved generic protection_map[] comment near DECLARE_VM_GET_PAGE_PROT
+- Updated some commit messages
+
+Changes in V4:
+
+https://lore.kernel.org/all/20220624044339.1533882-1-anshuman.khandual@arm.com/
+
+- Both protection_map[] and vm_get_page_prot() moves inside all platforms
+- Split patches to create modular changes for individual platforms
+- Add macro DECLARE_VM_GET_PAGE_PROT defining generic vm_get_page_prot()
+- Drop ARCH_HAS_VM_GET_PAGE_PROT
+
+Changes in V3:
+
+https://lore.kernel.org/all/20220616040924.1022607-1-anshuman.khandual@arm.com/
+
+- Fix build issues on powerpc and riscv
+
+Changes in V2:
+
+https://lore.kernel.org/all/20220613053354.553579-1-anshuman.khandual@arm.com/
+
+- Add 'const' identifier to protection_map[] on powerpc
+- Dropped #ifndef CONFIG_ARCH_HAS_VM_GET_PAGE_PROT check from sparc 32
+- Dropped protection_map[] init from sparc 64
+- Dropped all new platform changes subscribing ARCH_HAS_VM_GET_PAGE_PROT
+- Added a second patch which moves generic protection_map[] array into
+  all remaining platforms (!ARCH_HAS_VM_GET_PAGE_PROT)
+
+Changes in V1:
+
+https://lore.kernel.org/all/20220603101411.488970-1-anshuman.khandual@arm.com/
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+Cc: openrisc@lists.librecores.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-sh@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (26):
+  mm/mmap: Build protect protection_map[] with __P000
+  mm/mmap: Define DECLARE_VM_GET_PAGE_PROT
+  powerpc/mm: Move protection_map[] inside the platform
+  sparc/mm: Move protection_map[] inside the platform
+  arm64/mm: Move protection_map[] inside the platform
+  x86/mm: Move protection_map[] inside the platform
+  mm/mmap: Build protect protection_map[] with ARCH_HAS_VM_GET_PAGE_PROT
+  microblaze/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  loongarch/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  openrisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  xtensa/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  hexagon/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  parisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  alpha/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  nios2/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  riscv/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  csky/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  s390/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  ia64/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  mips/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  m68k/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  arc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  arm/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  um/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  sh/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  mm/mmap: Drop ARCH_HAS_VM_GET_PAGE_PROT
+
+ arch/alpha/include/asm/pgtable.h          | 17 -------
+ arch/alpha/mm/init.c                      | 22 +++++++++
+ arch/arc/include/asm/pgtable-bits-arcv2.h | 18 --------
+ arch/arc/mm/mmap.c                        | 20 +++++++++
+ arch/arm/include/asm/pgtable.h            | 17 -------
+ arch/arm/lib/uaccess_with_memcpy.c        |  2 +-
+ arch/arm/mm/mmu.c                         | 20 +++++++++
+ arch/arm64/Kconfig                        |  1 -
+ arch/arm64/include/asm/pgtable-prot.h     | 18 --------
+ arch/arm64/mm/mmap.c                      | 21 +++++++++
+ arch/csky/include/asm/pgtable.h           | 18 --------
+ arch/csky/mm/init.c                       | 20 +++++++++
+ arch/hexagon/include/asm/pgtable.h        | 27 -----------
+ arch/hexagon/mm/init.c                    | 42 +++++++++++++++++
+ arch/ia64/include/asm/pgtable.h           | 18 --------
+ arch/ia64/mm/init.c                       | 28 +++++++++++-
+ arch/loongarch/include/asm/pgtable-bits.h | 19 --------
+ arch/loongarch/mm/cache.c                 | 46 +++++++++++++++++++
+ arch/m68k/include/asm/mcf_pgtable.h       | 54 ----------------------
+ arch/m68k/include/asm/motorola_pgtable.h  | 22 ---------
+ arch/m68k/include/asm/sun3_pgtable.h      | 17 -------
+ arch/m68k/mm/mcfmmu.c                     | 55 +++++++++++++++++++++++
+ arch/m68k/mm/motorola.c                   | 20 +++++++++
+ arch/m68k/mm/sun3mmu.c                    | 20 +++++++++
+ arch/microblaze/include/asm/pgtable.h     | 17 -------
+ arch/microblaze/mm/init.c                 | 20 +++++++++
+ arch/mips/include/asm/pgtable.h           | 22 ---------
+ arch/mips/mm/cache.c                      |  3 ++
+ arch/nios2/include/asm/pgtable.h          | 16 -------
+ arch/nios2/mm/init.c                      | 20 +++++++++
+ arch/openrisc/include/asm/pgtable.h       | 18 --------
+ arch/openrisc/mm/init.c                   | 20 +++++++++
+ arch/parisc/include/asm/pgtable.h         | 18 --------
+ arch/parisc/mm/init.c                     | 20 +++++++++
+ arch/powerpc/Kconfig                      |  1 -
+ arch/powerpc/include/asm/pgtable.h        | 20 +--------
+ arch/powerpc/mm/pgtable.c                 | 24 ++++++++++
+ arch/riscv/include/asm/pgtable.h          | 20 ---------
+ arch/riscv/mm/init.c                      | 20 +++++++++
+ arch/s390/include/asm/pgtable.h           | 17 -------
+ arch/s390/mm/mmap.c                       | 20 +++++++++
+ arch/sh/include/asm/pgtable.h             | 17 -------
+ arch/sh/mm/mmap.c                         | 20 +++++++++
+ arch/sparc/Kconfig                        |  1 -
+ arch/sparc/include/asm/pgtable_32.h       | 19 --------
+ arch/sparc/include/asm/pgtable_64.h       | 19 --------
+ arch/sparc/mm/init_32.c                   | 20 +++++++++
+ arch/sparc/mm/init_64.c                   |  3 ++
+ arch/um/include/asm/pgtable.h             | 17 -------
+ arch/um/kernel/mem.c                      | 20 +++++++++
+ arch/x86/Kconfig                          |  1 -
+ arch/x86/include/asm/pgtable_types.h      | 19 --------
+ arch/x86/mm/mem_encrypt_amd.c             |  7 ++-
+ arch/x86/mm/pgprot.c                      | 27 +++++++++++
+ arch/x86/um/mem_32.c                      |  2 +-
+ arch/xtensa/include/asm/pgtable.h         | 18 --------
+ arch/xtensa/mm/init.c                     | 20 +++++++++
+ include/linux/mm.h                        |  1 -
+ include/linux/pgtable.h                   | 28 ++++++++++++
+ mm/Kconfig                                |  3 --
+ mm/mmap.c                                 | 47 -------------------
+ 61 files changed, 604 insertions(+), 563 deletions(-)
+
+-- 
+2.25.1
+
