@@ -2,60 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D7955C442
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jun 2022 14:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2FEF55C716
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jun 2022 14:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237236AbiF0STd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Jun 2022 14:19:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39476 "EHLO
+        id S240088AbiF0TG0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Jun 2022 15:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234890AbiF0STc (ORCPT
+        with ESMTP id S235718AbiF0TGZ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Jun 2022 14:19:32 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E3EE008;
-        Mon, 27 Jun 2022 11:19:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7F468B81A2E;
-        Mon, 27 Jun 2022 18:19:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E2BC3411D;
-        Mon, 27 Jun 2022 18:19:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1656353969;
-        bh=TWYurZfD/jUE/28ERIZq8LqjtfVRpiQiuznUyRsMsO8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FeAwLx+rI+mBj0NI0QoHuA4Rvcx16ZYK+rUfbIaWckGhHUG3auHvoG7DiEo27CxjZ
-         Or0f6z+BNgZY2MAa270mBYYezoq1NWsREaFd+XKeSK7xj8hfT8F1fpz3SFBnoMTSxl
-         /E1FBs2J9PvQ62Si3qjuZde6FIQGne1a+3Bh+mks=
-Date:   Mon, 27 Jun 2022 11:19:27 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
-Cc:     David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Nick Terrell <terrelln@fb.com>, linux-btrfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        John David Anglin <dave.anglin@bell.net>,
-        linux-parisc@vger.kernel.org, David Sterba <dsterba@suse.cz>
-Subject: Re: [RESEND PATCH v4 1/2] highmem: Make __kunmap_{local,atomic}()
- take "const void *"
-Message-Id: <20220627111927.3ef94745aab4491901d43028@linux-foundation.org>
-In-Reply-To: <2192593.iZASKD2KPV@opensuse>
-References: <20220616210037.7060-1-fmdefrancesco@gmail.com>
-        <20220616210037.7060-2-fmdefrancesco@gmail.com>
-        <2192593.iZASKD2KPV@opensuse>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+        Mon, 27 Jun 2022 15:06:25 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C552627;
+        Mon, 27 Jun 2022 12:06:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1656356778;
+        bh=byy4E4EiJd0hCnXHmLJQZVe2F93ir294u7Rcd5JqdM4=;
+        h=X-UI-Sender-Class:From:To:Subject:Date;
+        b=aE2wIFFVNNeiqP/wqCcKS3AnWp5JhwkIakaAqwFWDARR/s2WnhnlqNGrFHU4uW/3v
+         ZLHyYPS1c22i06V0nNUK4rL7J36cKyuN8CgRHbsx5rXSXxdOXbROYxI0ivuTpW2OW5
+         TBfU/I7ON20RJTFlJ1duVFHlRvng5hvYSXONStvg=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530.fritz.box ([92.116.176.39]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M2wGs-1o4n4A2hUi-003JuJ; Mon, 27
+ Jun 2022 21:06:18 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     mcgrof@kernel.org, jeyu@kernel.org, linux-modules@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: [PATCH 1/2] modules: Ensure natural alignment for .altinstructions and __bug_table sections
+Date:   Mon, 27 Jun 2022 21:05:50 +0200
+Message-Id: <20220627190551.517561-1-deller@gmx.de>
+X-Mailer: git-send-email 2.35.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:tDjHc/AtG5ryQJBeAYXVlyFl2ik7Oe2mNxsz3suMzz3oXSq4X4w
+ 9Hiat9N9u70hSW0Md276tcPPTDkDDYMlh/pnQjDVi5WwCtlCFn4aWAiPirAbHTS2A/PwVU3
+ 7mrRWmNol0ejPz49RXvG9a5OOMrgeoPMIEoiN12QQx36PTUcS/mmbfq2/U0c6fINzND9/x9
+ Rl3xhBT3vvwzQb44fZcnA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:HP79HB2Hc9M=:eq+bDKebwImE9OIBQW47+y
+ B6TS59ZEpB20QkT673aoRAgaosNayuALbVUcc02xsm/ojIpRW/kYwVabY30qDfcQSKuEIewSn
+ aCOwNGYmwr12V6Es3y348Kf80KOoCQAS+0aeze6fIuW1Rwlzz6hOnIAzi9Fq2QVAmcOam0SGm
+ CdkZ4TyxJLt7lflRggXKcW//UCmOxmAANDagSMuWIfgj+/zeqcB+s1kiEzGXCrbR4kZQNJHKv
+ 0zsdoFJTsq/BvNkXS9BitIrURHGZjA6x2Lh3mafLs+YwD3pQx/tMVN6vkK7ST3TDfZtzdpx9A
+ o3VDpeFsKWO4waSc+1WbOXKEyIgYXuMXzBaqK2fth4xoiGbDVvmeUmdhxkC9wzZrSzpUs4iMm
+ Pm3M01vXXdjkO744HASC3x8glQZhIvsLVfZMzoz6HHn1D4dEcCIGR/hFYQLC0uboEuzmwe1oG
+ kyAE2+RVHCzgtPecwLA6yb2AegwJlmDqHVKjgRnWRhyRbL8tdxSPA2qdFmQlvza5CGOwc3jWP
+ kaWyMqi01V1WKNMsS4aVscdcu2SKTO54dxLI/iYT8LzeSi+rbjS18YPt7K0w4FhtZmc66nLNs
+ udMm3Dd1JbEw+PVcWlc44ZPYpefnC7f2GkbF2YiY4AkhJEKWSI+huGtvY4kYAphX3xgg++GT7
+ t3VgVU5HOvsU1terHFYeRR7YU8rDN1tj7zDOBidf7PL+t5dk9jlMUwrCYIsXIOKMSY0WhxDaY
+ GeuzXUnGMtoaDm4atwPIb3RyfuRu+hkVSI9fkzsEJY4bDvPUQ0kbnc/q6hFSCaWxwG32U1PZt
+ pGzFWoT+4lvQ/DcdkhbU85fNL0FiCXUITLONbEsxJozno/AWmZmqDjcI6W4OCLfK8lD8jrfRv
+ sPra+ETeD8D+LgPosdaGeDfgnDjm7JPEwma9t07tHArhiJyNfpx6LFk/Iu88RhLGcy6zQWL5I
+ 0YOilTQacuwR9sW6nwkfU50y3X0yq1ntLnwPTFRspF6rH5bAmBzpToZFSMb82HjFiPHFiFpfV
+ HOntSAx23rQdE+jpjUqt44GcBB+iy0uJRBfbMxV+KGxG20WdktJ4GpOsYl187Dt32uWE0Hbty
+ mKbxQLj6XPIGJh2rzIunhysP3O4QeKPguVuyKBJk38951QjN24IwxwgtA==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,31 +66,34 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, 27 Jun 2022 19:02:31 +0200 "Fabio M. De Francesco" <fmdefrancesco@gmail.com> wrote:
+In the kernel image vmlinux.lds.S linker scripts the .altinstructions
+and __bug_table sections are 32- or 64-bit aligned because they hold 32-
+and/or 64-bit values.
 
-> > v1->v2: Change the commit message to clearly explain why these functions
-> >         should require pointers to const void. The fundamental argument
-> >         behind the commit message changes is semantic correctness.
-> >         Obviously, there are no changes to the code.
-> >         Many thanks to David Sterba and Ira Weiny for suggestions and
-> >         reviews.
-> >
-> >  arch/parisc/include/asm/cacheflush.h |  6 +++---
-> >  arch/parisc/kernel/cache.c           |  2 +-
-> >  include/linux/highmem-internal.h     | 10 +++++-----
-> >  mm/highmem.c                         |  2 +-
-> >  4 files changed, 10 insertions(+), 10 deletions(-)
-> 
-> @Andrew:
-> 
-> Ira Weiny asked David Sterba for taking this patch through his tree because 
-> it is a pre-requisite for a patch to fs/btrfs. He agreed with the above-
-> mentioned suggestion, however I suppose that an ACK by you is needed.
-> 
-> Can you please take a look at this patch and say what you think about it?
+But for modules the module.lds.S linker script doesn't define a default
+alignment yet, so the linker chooses the default byte-alignment, which
+then leads to unnecessary unaligned memory accesses at runtime.
 
-Looks OK to me.  It's one of those "if it compiles, it's good" things.
+This patch adds the missing alignments.
 
-I don't believe the patch has ever appeared on linux-mm?  Please send
-it there for some review then go ahead and merge it up.
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ scripts/module.lds.S | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/scripts/module.lds.S b/scripts/module.lds.S
+index 1d0e1e4dc3d2..3a3aa2354ed8 100644
+=2D-- a/scripts/module.lds.S
++++ b/scripts/module.lds.S
+@@ -27,6 +27,8 @@ SECTIONS {
+ 	.ctors			0 : ALIGN(8) { *(SORT(.ctors.*)) *(.ctors) }
+ 	.init_array		0 : ALIGN(8) { *(SORT(.init_array.*)) *(.init_array) }
+
++	.altinstructions	0 : ALIGN(8) { KEEP(*(.altinstructions)) }
++	__bug_table		0 : ALIGN(8) { KEEP(*(__bug_table)) }
+ 	__jump_table		0 : ALIGN(8) { KEEP(*(__jump_table)) }
+
+ 	__patchable_function_entries : { *(__patchable_function_entries) }
+=2D-
+2.35.3
 
