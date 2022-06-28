@@ -2,78 +2,95 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7448455E741
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jun 2022 18:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E813255F01D
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Jun 2022 23:04:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347201AbiF1OrL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 Jun 2022 10:47:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55170 "EHLO
+        id S229869AbiF1VDy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 Jun 2022 17:03:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347198AbiF1OrK (ORCPT
+        with ESMTP id S229928AbiF1VDt (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 Jun 2022 10:47:10 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 919D42FFDA;
-        Tue, 28 Jun 2022 07:47:09 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id e40so17956375eda.2;
-        Tue, 28 Jun 2022 07:47:09 -0700 (PDT)
+        Tue, 28 Jun 2022 17:03:49 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7689637AA5;
+        Tue, 28 Jun 2022 14:03:48 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id jb13so12159069plb.9;
+        Tue, 28 Jun 2022 14:03:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=dIIRV/7xVavrFkkRlTpxT9AeMVsp3yCltb4nZgV8P1s=;
-        b=qGNxf1bADOzY0oaDCwYwIYCbj/BRm3RniW/mZ+asrY9SGcUIcMECDpkK4UtWVHbbDI
-         fCTlTo9PM5Z/rnNmijNug+wKrLQyZLBzoX6ybPKlvv43gbiny9BsSkAJIG3upIUx3x3W
-         rarZFrRNv45vuEAlWH1gssTuA8V4/O+63QgL2FF6YHq3cOYHXojGzN62fWS6zjnePhMf
-         GWzoVxdZxCyCaCLXwLF/m4vtuanQ+uS+EBRDgXpzvHKuyvDDeJ0ORlKtatCryLvUHrwf
-         LCEsHG8WNgcZbd/SRgDj7+g/IAxFd7IZ1970+2Y7o6NR+QKuIQZrG65jEUzaNKD3jqwA
-         G8cw==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=LLK2uhNNvPadjp2Oh/1lKQPTCLeKdmpKaTeJ3RDCHv0=;
+        b=Plf/V32RTHjAIcY0bkPGhJbIRr6v2P2QgRVB8+7eP0P4RsyHw26WFtNVMjh4450VSL
+         X8EowJeUAPv65bojUQi/l4q/mcLgIz1TUZop7B8mMf4UYeSMN97O5PhtCWd4P5KjohDY
+         ALLie3yLHIm0bsPU/TnBkkd6JuMbBayFBbZiLBvLd2yar7+HLEz7eMmp19DAOWF3IuTH
+         PHvtCurN4N9bl0vEQmQzWlMPAd2VaDMz3hbsjPHd4Xm7SbhJbAT/RBX6xYjOUAqBtWrm
+         FLKt/ZIKzNjI8UX/5SZnYKO15W+v0GW/s3+FFXv5IZLkJGau9LvwFj0fBmt76ie2MA/E
+         v/wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=dIIRV/7xVavrFkkRlTpxT9AeMVsp3yCltb4nZgV8P1s=;
-        b=o7uFoEQaPE9b5GCcBhjzT5Nya6GRALbn3ibxoSiSnGdh5nzwaHhAA0Ja8GE8920KBB
-         UGQWk1g3qqoGn7SfwYlLqmW/UDYDhM+IgKnkZPFaL/p4F18whPHRxIDxciCT7gPI7Yr8
-         pMPadUyk8syzKfmwpBIYxsPD7ouFEmiTT81lWMvlyWV8v8KQdflsKWE8QccOA5lcHBaV
-         KDNg+GMXVifXPbGEJJwqU1WGFFp5s/vHUuE57rS1imsaYvmMe9/Q8nBFh0Or0HYosxzN
-         4qMzkBykxF0zfqxB6nI7s6AsUndyftm8gSp603e4R9h9SU3BjKrJehJkZoI0xzxK3Sn6
-         UYSA==
-X-Gm-Message-State: AJIora/aWOc4xAX2RAab0L08+R1mKasKRwXmKyhTFjCxEUj3qbdyBvjW
-        aVlyoNw+fkwhwVwAaZDED9o=
-X-Google-Smtp-Source: AGRyM1s8agwP30emipXMea2Yd5kcSZn4HD82LY6PSp7nDUobBq+OMJE80ZA0m5S5w638nDjHfKOKQw==
-X-Received: by 2002:a05:6402:320f:b0:435:7236:e312 with SMTP id g15-20020a056402320f00b004357236e312mr23890254eda.115.1656427627929;
-        Tue, 28 Jun 2022 07:47:07 -0700 (PDT)
-Received: from localhost.localdomain (host-87-6-98-182.retail.telecomitalia.it. [87.6.98.182])
-        by smtp.gmail.com with ESMTPSA id v10-20020a1709063bca00b006ffa19b7782sm6450420ejf.74.2022.06.28.07.47.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jun 2022 07:47:06 -0700 (PDT)
-From:   "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
-To:     David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Nick Terrell <terrelln@fb.com>, linux-btrfs@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Ira Weiny <ira.weiny@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "James E. J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        John David Anglin <dave.anglin@bell.net>,
-        linux-parisc@vger.kernel.org
-Cc:     "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
-        David Sterba <dsterba@suse.cz>
-Subject: [RESEND PATCH v4 1/2] highmem: Make __kunmap_{local,atomic}() take "const void *"
-Date:   Tue, 28 Jun 2022 16:46:49 +0200
-Message-Id: <20220628144649.28046-1-fmdefrancesco@gmail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220627111927.3ef94745aab4491901d43028@linux-foundation.org>
-References: <20220627111927.3ef94745aab4491901d43028@linux-foundation.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=LLK2uhNNvPadjp2Oh/1lKQPTCLeKdmpKaTeJ3RDCHv0=;
+        b=2XuBkufW7ABofm0k0+5GHe6sz1vwTD+OqtBKfEromgYkgGSi8+LM7IehH7F7IPUgff
+         UUcFGjXVSEEG7KHFXa7dXtn9J1D7U3KrXksC5+J/cMAsKbU47b162WqESlA0yOjJTxFj
+         PU6MZ/aWHN69pSAFhyQdmvuOZZjAeYVJ5myvWUHkqx+EiclNMXj1QD5PZlq5n/1ss1xZ
+         S6J5KBbEivUt5MXuEvKOhXi3+0KmAkjopKy9laWz9ISJVe0fka3GepGqqkoVl+VaiYGV
+         sbptlbLhplAU1h/Kyx7J3rNAG/RdcJxMaiqKiXz/tMpYYaqvcirRcDwVxBubz5xqukvD
+         fZdA==
+X-Gm-Message-State: AJIora9Q18JI4dVlroX3gmRGQhyzHHHYWJNmOXhrMLdgVV7/3qxDDkAf
+        FPBno+2a+DeFScrpmU2TUMk=
+X-Google-Smtp-Source: AGRyM1s3Nd/my/4+QoWL+yZMzu+YZKCug56iAjfd8RAtHTbgADBf9oHlpjvJ/8KE0n/2rDkR0+nsiw==
+X-Received: by 2002:a17:90a:1485:b0:1ec:788e:a053 with SMTP id k5-20020a17090a148500b001ec788ea053mr1707919pja.16.1656450227992;
+        Tue, 28 Jun 2022 14:03:47 -0700 (PDT)
+Received: from ?IPV6:2001:df0:0:200c:75aa:d6ca:4354:6033? ([2001:df0:0:200c:75aa:d6ca:4354:6033])
+        by smtp.gmail.com with ESMTPSA id a14-20020aa795ae000000b005259d99ccffsm6254097pfk.8.2022.06.28.14.03.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jun 2022 14:03:47 -0700 (PDT)
+Message-ID: <c30bc9b6-6ccd-8856-dc6b-4e16450dad6f@gmail.com>
+Date:   Wed, 29 Jun 2022 09:03:37 +1200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Arnd Bergmann <arnd@kernel.org>, scsi <linux-scsi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        Khalid Aziz <khalid@gonehiking.org>,
+        "Maciej W . Rozycki" <macro@orcam.me.uk>,
+        Matt Wang <wwentao@vmware.com>,
+        Miquel van Smoorenburg <mikevs@xs4all.net>,
+        Mark Salyzyn <salyzyn@android.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Denis Efremov <efremov@linux.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+References: <20220617125750.728590-1-arnd@kernel.org>
+ <20220617125750.728590-4-arnd@kernel.org>
+ <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
+ <CAMuHMdVewn0OYA9oJfStk0-+vCKAUou+4Mvd5H2kmrSks1p5jg@mail.gmail.com>
+ <b4e5a1c9-e375-63fb-ec7c-abb7384a6d59@gmail.com>
+ <9289fd82-285c-035f-5355-4d70ce4f87b0@gmail.com>
+ <CAMuHMdXUihTPD9A9hs__Xr2ErfOqkZ5KgCHqm+9HvRf39uS5kA@mail.gmail.com>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+In-Reply-To: <CAMuHMdXUihTPD9A9hs__Xr2ErfOqkZ5KgCHqm+9HvRf39uS5kA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -82,147 +99,69 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-__kunmap_ {local,atomic}() currently take pointers to void. However, this
-is semantically incorrect, since these functions do not change the memory
-their arguments point to.
+Hi Geert,
 
-Therefore, make this semantics explicit by modifying the
-__kunmap_{local,atomic}() prototypes to take pointers to const void.
+On 28/06/22 19:03, Geert Uytterhoeven wrote:
+>
+>> Leaving the bounce buffer handling in place, and taking a few other
+>> liberties - this is what converting the easiest case (a3000 SCSI) might
+>> look like. Any obvious mistakes? The mvme147 driver would be very
+>> similar to handle (after conversion to a platform device).
+> Thanks, looks reasonable.
+Thanks, I'll take care of Arnd's comments and post a corrected version 
+later.
+>> The driver allocates bounce buffers using kmalloc if it hits an
+>> unaligned data buffer - can such buffers still even happen these days?
+> No idea.
+Hmmm - I think I'll stick a WARN_ONCE() in there so we know whether this 
+code path is still being used.
+>
+>> If I understand dma_map_single() correctly, the resulting dma handle
+>> would be equally misaligned?
+>>
+>> To allocate a bounce buffer, would it be OK to use dma_alloc_coherent()
+>> even though AFAIU memory used for DMA buffers generally isn't consistent
+>> on m68k?
+>>
+>> Thinking ahead to the other two Amiga drivers - I wonder whether
+>> allocating a static bounce buffer or a DMA pool at driver init is likely
+>> to succeed if the kernel runs from the low 16 MB RAM chunk? It certainly
+>> won't succeed if the kernel runs from a higher memory address, so the
+>> present bounce buffer logic around amiga_chip_alloc() might still need
+>> to be used here.
+>>
+>> Leaves the question whether converting the gvp11 and a2091 drivers is
+>> actually worth it, if bounce buffers still have to be handled explicitly.
+> A2091 should be straight-forward, as A3000 is basically A2091 on the
+> motherboard (comparing the two drivers, looks like someone's been
+> sprinkling mb()s over the A3000 driver).
 
-As a side effect, compilers will likely produce more efficient code.
+Yep, and at least the ones in the dma_setup() function are there for no 
+reason (the compiler won't reorder stores around the cache flush calls, 
+I hope?).
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Suggested-by: David Sterba <dsterba@suse.cz>
-Suggested-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
----
+Just leaves the 24 bit DMA mask there (and likely need for bounce buffers).
 
-This is a resend of the same patch CC'ed to linux-mm.
+> I don't have any of these SCSI host adapters (not counting the A590
+> (~A2091) expansion of the old A500, which is not Linux-capable, and
+>   hasn't been powered on for 20 years).
 
-v3->v4: Cc Maintainers and mailing lists I had overlooked when I sent v3.
+I wonder whether kullervo has survived - that one was an A3000. Should 
+have gone to Adrian a few years ago...
 
-v2->v3: Fix compilation errors for ARCH=parisc.
-        Reported-by: kernel test robot <lkp@intel.com>
+Cheers,
 
-v1->v2: Change the commit message to clearly explain why these functions
-        should require pointers to const void. The fundamental argument
-        behind the commit message changes is semantic correctness.
-        Obviously, there are no changes to the code.
-        Many thanks to David Sterba and Ira Weiny for suggestions and
-        reviews.
+     Michael
 
- arch/parisc/include/asm/cacheflush.h |  6 +++---
- arch/parisc/kernel/cache.c           |  2 +-
- include/linux/highmem-internal.h     | 10 +++++-----
- mm/highmem.c                         |  2 +-
- 4 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/parisc/include/asm/cacheflush.h b/arch/parisc/include/asm/cacheflush.h
-index 8d03b3b26229..0bdee6724132 100644
---- a/arch/parisc/include/asm/cacheflush.h
-+++ b/arch/parisc/include/asm/cacheflush.h
-@@ -22,7 +22,7 @@ void flush_kernel_icache_range_asm(unsigned long, unsigned long);
- void flush_user_dcache_range_asm(unsigned long, unsigned long);
- void flush_kernel_dcache_range_asm(unsigned long, unsigned long);
- void purge_kernel_dcache_range_asm(unsigned long, unsigned long);
--void flush_kernel_dcache_page_asm(void *);
-+void flush_kernel_dcache_page_asm(const void *addr);
- void flush_kernel_icache_page(void *);
- 
- /* Cache flush operations */
-@@ -31,7 +31,7 @@ void flush_cache_all_local(void);
- void flush_cache_all(void);
- void flush_cache_mm(struct mm_struct *mm);
- 
--void flush_kernel_dcache_page_addr(void *addr);
-+void flush_kernel_dcache_page_addr(const void *addr);
- 
- #define flush_kernel_dcache_range(start,size) \
- 	flush_kernel_dcache_range_asm((start), (start)+(size));
-@@ -75,7 +75,7 @@ void flush_dcache_page_asm(unsigned long phys_addr, unsigned long vaddr);
- void flush_anon_page(struct vm_area_struct *vma, struct page *page, unsigned long vmaddr);
- 
- #define ARCH_HAS_FLUSH_ON_KUNMAP
--static inline void kunmap_flush_on_unmap(void *addr)
-+static inline void kunmap_flush_on_unmap(const void *addr)
- {
- 	flush_kernel_dcache_page_addr(addr);
- }
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index a9bc578e4c52..993999a65e54 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -549,7 +549,7 @@ extern void purge_kernel_dcache_page_asm(unsigned long);
- extern void clear_user_page_asm(void *, unsigned long);
- extern void copy_user_page_asm(void *, void *, unsigned long);
- 
--void flush_kernel_dcache_page_addr(void *addr)
-+void flush_kernel_dcache_page_addr(const void *addr)
- {
- 	unsigned long flags;
- 
-diff --git a/include/linux/highmem-internal.h b/include/linux/highmem-internal.h
-index cddb42ff0473..034b1106d022 100644
---- a/include/linux/highmem-internal.h
-+++ b/include/linux/highmem-internal.h
-@@ -8,7 +8,7 @@
- #ifdef CONFIG_KMAP_LOCAL
- void *__kmap_local_pfn_prot(unsigned long pfn, pgprot_t prot);
- void *__kmap_local_page_prot(struct page *page, pgprot_t prot);
--void kunmap_local_indexed(void *vaddr);
-+void kunmap_local_indexed(const void *vaddr);
- void kmap_local_fork(struct task_struct *tsk);
- void __kmap_local_sched_out(void);
- void __kmap_local_sched_in(void);
-@@ -89,7 +89,7 @@ static inline void *kmap_local_pfn(unsigned long pfn)
- 	return __kmap_local_pfn_prot(pfn, kmap_prot);
- }
- 
--static inline void __kunmap_local(void *vaddr)
-+static inline void __kunmap_local(const void *vaddr)
- {
- 	kunmap_local_indexed(vaddr);
- }
-@@ -121,7 +121,7 @@ static inline void *kmap_atomic_pfn(unsigned long pfn)
- 	return __kmap_local_pfn_prot(pfn, kmap_prot);
- }
- 
--static inline void __kunmap_atomic(void *addr)
-+static inline void __kunmap_atomic(const void *addr)
- {
- 	kunmap_local_indexed(addr);
- 	pagefault_enable();
-@@ -197,7 +197,7 @@ static inline void *kmap_local_pfn(unsigned long pfn)
- 	return kmap_local_page(pfn_to_page(pfn));
- }
- 
--static inline void __kunmap_local(void *addr)
-+static inline void __kunmap_local(const void *addr)
- {
- #ifdef ARCH_HAS_FLUSH_ON_KUNMAP
- 	kunmap_flush_on_unmap(addr);
-@@ -224,7 +224,7 @@ static inline void *kmap_atomic_pfn(unsigned long pfn)
- 	return kmap_atomic(pfn_to_page(pfn));
- }
- 
--static inline void __kunmap_atomic(void *addr)
-+static inline void __kunmap_atomic(const void *addr)
- {
- #ifdef ARCH_HAS_FLUSH_ON_KUNMAP
- 	kunmap_flush_on_unmap(addr);
-diff --git a/mm/highmem.c b/mm/highmem.c
-index 1a692997fac4..e32083e4ce0d 100644
---- a/mm/highmem.c
-+++ b/mm/highmem.c
-@@ -561,7 +561,7 @@ void *__kmap_local_page_prot(struct page *page, pgprot_t prot)
- }
- EXPORT_SYMBOL(__kmap_local_page_prot);
- 
--void kunmap_local_indexed(void *vaddr)
-+void kunmap_local_indexed(const void *vaddr)
- {
- 	unsigned long addr = (unsigned long) vaddr & PAGE_MASK;
- 	pte_t *kmap_pte;
--- 
-2.36.1
-
+>
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
