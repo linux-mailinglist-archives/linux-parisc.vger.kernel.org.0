@@ -2,124 +2,116 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC8EA561266
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jun 2022 08:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD8D856141E
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jun 2022 10:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232384AbiF3GXL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 30 Jun 2022 02:23:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60802 "EHLO
+        id S233583AbiF3IEv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 30 Jun 2022 04:04:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232231AbiF3GXL (ORCPT
+        with ESMTP id S233546AbiF3IEu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 30 Jun 2022 02:23:11 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C976B49D;
-        Wed, 29 Jun 2022 23:23:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1656570174;
-        bh=9no9UVFH+eQR836qWFvRWMdx3fxP2OaI7OaE+hfAIMY=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=CnNiwm2MrxE1svdABLjcsOAK+WvrcIDPptmHBhtXTtMjOcjz/ByifP3xey3R/RV6x
-         NbFhL0xeJ62jkXBm3hrbmosJUI7rHDQAFMtp0DmwMX0DF6SvQ2ed0Hl7RgagmsnmUB
-         67zvLKSqQeiSQG6p0omuMCo8cLUSKW6z5DtDkeG8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.136.11]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MQ5vW-1oJwjt411k-00M3Xg; Thu, 30
- Jun 2022 08:22:54 +0200
-Message-ID: <04b47f81-77d6-9429-5b8f-fdf4fbbfb62d@gmx.de>
-Date:   Thu, 30 Jun 2022 08:22:25 +0200
+        Thu, 30 Jun 2022 04:04:50 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C3BCF40A1B
+        for <linux-parisc@vger.kernel.org>; Thu, 30 Jun 2022 01:04:48 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-214-9jXG4kaVPcae5B0FitiCbQ-1; Thu, 30 Jun 2022 09:04:45 +0100
+X-MC-Unique: 9jXG4kaVPcae5B0FitiCbQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.36; Thu, 30 Jun 2022 09:04:43 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.036; Thu, 30 Jun 2022 09:04:43 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Michael Schmitz' <schmitzmic@gmail.com>,
+        Arnd Bergmann <arnd@kernel.org>
+CC:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        scsi <linux-scsi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        Khalid Aziz <khalid@gonehiking.org>,
+        "Maciej W . Rozycki" <macro@orcam.me.uk>,
+        Matt Wang <wwentao@vmware.com>,
+        Miquel van Smoorenburg <mikevs@xs4all.net>,
+        Mark Salyzyn <salyzyn@android.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Denis Efremov <efremov@linux.com>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: RE: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
+Thread-Topic: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
+Thread-Index: AQHYi0Qnhtr21GMXN0qgKN5inTL9yK1nmAnQ
+Date:   Thu, 30 Jun 2022 08:04:43 +0000
+Message-ID: <26852797d822462abc1c9f96def7fa42@AcuMS.aculab.com>
+References: <20220617125750.728590-1-arnd@kernel.org>
+ <20220617125750.728590-4-arnd@kernel.org>
+ <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
+ <CAMuHMdVewn0OYA9oJfStk0-+vCKAUou+4Mvd5H2kmrSks1p5jg@mail.gmail.com>
+ <b4e5a1c9-e375-63fb-ec7c-abb7384a6d59@gmail.com>
+ <9289fd82-285c-035f-5355-4d70ce4f87b0@gmail.com>
+ <CAMuHMdXUihTPD9A9hs__Xr2ErfOqkZ5KgCHqm+9HvRf39uS5kA@mail.gmail.com>
+ <c30bc9b6-6ccd-8856-dc6b-4e16450dad6f@gmail.com>
+ <CAK8P3a1rxEVwVF5U-PO6pQkfURU5Tro1Qp8SPUfHEV9jjWOmCQ@mail.gmail.com>
+ <9f812d3d-0fcd-46e6-6d7e-6d4bf66f24ab@gmail.com>
+In-Reply-To: <9f812d3d-0fcd-46e6-6d7e-6d4bf66f24ab@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] dec/tulip:fix repeated words in comments
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-To:     Jilin Yuan <yuanjilin@cdjrlc.com>, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com
-Cc:     netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220629095405.8668-1-yuanjilin@cdjrlc.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220629095405.8668-1-yuanjilin@cdjrlc.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:HZk557EiuA7heqLeox0iNOLRa7BQNU1W5AzmGYEGvOgGq05m5Fk
- wTbbwrvi6Hr6Pl1jCnl21CmMyfy9Dscaqw86Z2NT8wP4xTPVoxfrPdwUEYlfYcJo2Sl8GVR
- 4AMafTR3qBBvh2ObQzngxyR+oJrzY0OlZGTeh3mjuSnMXoGb85Y38r+/MABqfV0Nav1omOX
- DiPL/AhKyKJVb8/3pu2eg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1cXFSoHM2eQ=:/o58ILoAMTSTmEZy3b2FZu
- 7Ex2FuzVLfIQ4eIi+QLDd7NfsjyKqJZuzLSRMv7sr8zoGWsxHnjs4zZgTxHR7l0beLP9GFwjJ
- p5c3TkjIY0M3aECNjoqMxrfk8pFoxqqS5z706/y0WT2XIZDNIBWTuoz6ZJbdwXV7fA+9zb/PG
- MKXOtrhNagNCPfQ8zzjX8RxD3TUbBXBWZqPYFJr4LgopNazsucDywEVxBKtquZkKRp60ObYV+
- wtGJ7HHxRwWQj9p75vnCyr4sCfI+3EB+wgdU51le6GhOJ12Qvc1YEh3ObINC4tvME3DAWalF6
- 1NlvsjSMabFofynxnQSvilGcd/rnqmfpcHvvP5H1QbFEwd1CAzgjLfu8aKL/zXjbcS1McgQbB
- st+/1KTZuePdI9Nvj+HVzXTkqX4ZplHd05YBxz2GuL+OI5py2BHMAMuBwC8FL9TeYIyUqKx/Y
- 2NjjFv8BsJz6XjDvjizq0e/aV4lQ0Q0eKGQKEwbqqbrjCRQZv2aHpWMf5gHb8ef8BKECj8PaB
- Q1YZowxgHQ7rO+CgN4gE8uZlE6lDbJeWDuONszvXrbAKnOZ5GXSuHUNOqGMv2dW0epZnzQ0WP
- YHwFzZS2HVAH0dlDcq7CWhlQ+c97cGtxE5vK/nAwq76G760Lpcs4KLoh3RWrbhC2warwxQSDV
- 7niYKfsV+MOsYKDw1SLmKKPFnqNYgbChhmVoT/pZexOKqfjqKyELuah2DTX/rb/thV7P4M2rO
- OItsGeoHgDOrr69LLmLJrNqOl1xXZGVafjkml8EzOskwbKZQLuglVteKLVHJ7wrKR7aE0SfeM
- QnyX6vDDtpOGfD2v04+10BxqG2kSj1/zHGKTQWcwPneZ3gc4BD5674dsO/cBSmr0wmeVsSahT
- ui9Kshm9v+7A8UnyGx1ZdfnueNySOmZ44Wvh2DZ47f5QoGG1TkW+Ts6QcKk4XbHIMXEGasWlt
- HuOhOx2hehle+e9z6SBNFYjeo3yHQvbylC3tIkDKioF5jG4LUCFz4Ehn/axc7q5noG/UmJIze
- 3X9CXDCteHvgiR7Fyh9JSbuE9hA20hTmNBf+tdwYR+yaC0Pq7nS/H0cm3Mz3j5s8C4m6FAKxC
- 2gP+dBrueh/2sILB0gAEQbWOHoDxK2VnsqkEU84Zx1eY04E90F7FKJ6jA==
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 6/29/22 11:54, Jilin Yuan wrote:
-> Delete the redundant word 'this'.
->
-> Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
-> ---
->  drivers/net/ethernet/dec/tulip/xircom_cb.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/dec/tulip/xircom_cb.c b/drivers/net/et=
-hernet/dec/tulip/xircom_cb.c
-> index 8759f9f76b62..61825c9bd6be 100644
-> --- a/drivers/net/ethernet/dec/tulip/xircom_cb.c
-> +++ b/drivers/net/ethernet/dec/tulip/xircom_cb.c
-> @@ -742,7 +742,7 @@ static void activate_receiver(struct xircom_private =
-*card)
->
->  /*
->  deactivate_receiver disables the receiver on the card.
-> -To achieve this this code disables the receiver first;
-> +To achieve this code disables the receiver first;
-
-No.
-Instead it should be something like:
-To achieve this, this code disables the receiver first; ...
-
-but better look at the whole comment including the next line,
-in which case it could become:
-
-Disable the receiver first, then wait for it to become inactive.
-
-...
-
->  then it waits for the receiver to become inactive.
->
->  must be called with the lock held and interrupts disabled.
-> @@ -829,7 +829,7 @@ static void activate_transmitter(struct xircom_priva=
-te *card)
->
->  /*
->  deactivate_transmitter disables the transmitter on the card.
-> -To achieve this this code disables the transmitter first;
-> +To achieve this code disables the transmitter first;
->  then it waits for the transmitter to become inactive.
-
-same here...
-
-
->
->  must be called with the lock held and interrupts disabled.
+RnJvbTogTWljaGFlbCBTY2htaXR6DQo+IFNlbnQ6IDI5IEp1bmUgMjAyMiAwMDowOQ0KPiANCj4g
+SGkgQXJuZCwNCj4gDQo+IE9uIDI5LzA2LzIyIDA5OjUwLCBBcm5kIEJlcmdtYW5uIHdyb3RlOg0K
+PiA+IE9uIFR1ZSwgSnVuIDI4LCAyMDIyIGF0IDExOjAzIFBNIE1pY2hhZWwgU2NobWl0eiA8c2No
+bWl0em1pY0BnbWFpbC5jb20+IHdyb3RlOg0KPiA+PiBPbiAyOC8wNi8yMiAxOTowMywgR2VlcnQg
+VXl0dGVyaG9ldmVuIHdyb3RlOg0KPiA+Pj4+IFRoZSBkcml2ZXIgYWxsb2NhdGVzIGJvdW5jZSBi
+dWZmZXJzIHVzaW5nIGttYWxsb2MgaWYgaXQgaGl0cyBhbg0KPiA+Pj4+IHVuYWxpZ25lZCBkYXRh
+IGJ1ZmZlciAtIGNhbiBzdWNoIGJ1ZmZlcnMgc3RpbGwgZXZlbiBoYXBwZW4gdGhlc2UgZGF5cz8N
+Cj4gPj4+IE5vIGlkZWEuDQo+ID4+IEhtbW0gLSBJIHRoaW5rIEknbGwgc3RpY2sgYSBXQVJOX09O
+Q0UoKSBpbiB0aGVyZSBzbyB3ZSBrbm93IHdoZXRoZXIgdGhpcw0KPiA+PiBjb2RlIHBhdGggaXMg
+c3RpbGwgYmVpbmcgdXNlZC4NCj4gPiBrbWFsbG9jKCkgZ3VhcmFudGVlcyBhbGlnbm1lbnQgdG8g
+dGhlIG5leHQgcG93ZXItb2YtdHdvIHNpemUgb3INCj4gPiBLTUFMTE9DX01JTl9BTElHTiwgd2hp
+Y2hldmVyIGlzIGJpZ2dlci4gT24gbTY4ayB0aGlzIG1lYW5zIGl0DQo+ID4gaXMgY2FjaGVsaW5l
+IGFsaWduZWQuDQo+IA0KPiBBbmQgYWxsIFNDU0kgYnVmZmVycyBhcmUgYWxsb2NhdGVkIHVzaW5n
+IGttYWxsb2M/IE5vIHdheSBhdCBhbGwgZm9yIHVzZXINCj4gc3BhY2UgdG8gcGFzcyB1bmFsaWdu
+ZWQgZGF0YT8NCg0KSSBkaWRuJ3QgdGhpbmsga21hbGxvYygpIGdhdmUgYW55IHN1Y2ggZ3VhcmFu
+dGVlIGFib3V0IGFsaWdubWVudC4NClRoZXJlIGFyZSBjYWNoZS1saW5lIGFsaWdubWVudCByZXF1
+aXJlbWVudHMgb24gc3lzdGVtcyB3aXRoIG5vbi1jb2hlcmVudA0KZG1hLCBidXQgb3RoZXJ3aXNl
+IHRoZSBhbGlnbm1lbnQgY2FuIGJlIG11Y2ggc21hbGxlci4NCg0KT25lIG9mIHRoZSBhbGxvY2F0
+b3JzIGFkZHMgYSBoZWFkZXIgdG8gZWFjaCBpdGVtLCBJSVJDIHRoYXQgY2FuDQpsZWFkIHRvICd1
+bmV4cGVjdGVkJyBhbGlnbm1lbnRzIC0gZXNwZWNpYWxseSBvbiBtNjhrLg0KDQpkbWFfYWxsb2Nf
+Y29oZXJlbnQoKSBkb2VzIGFsaWduIHRvIG5leHQgJ3Bvd2VyIG9mIDInLg0KQW5kIHNvbWV0aW1l
+cyB5b3UgbmVlZCAoZWcpIDE2ayBhbGxvY2F0ZXMgdGhhdCBhcmUgMTZrIGFsaWduZWQuDQoNCglE
+YXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91
+bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5
+NzM4NiAoV2FsZXMpDQo=
 
