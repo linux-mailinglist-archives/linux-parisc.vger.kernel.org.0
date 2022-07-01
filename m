@@ -2,192 +2,120 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78364563A73
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Jul 2022 22:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46C52563BB8
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Jul 2022 23:23:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231946AbiGAUKw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Jul 2022 16:10:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
+        id S231726AbiGAVXu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 1 Jul 2022 17:23:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231648AbiGAUKu (ORCPT
+        with ESMTP id S230296AbiGAVXu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Jul 2022 16:10:50 -0400
-Received: from new2-smtp.messagingengine.com (new2-smtp.messagingengine.com [66.111.4.224])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE96E1EAE1;
-        Fri,  1 Jul 2022 13:10:48 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 50D84580357;
-        Fri,  1 Jul 2022 16:01:57 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Fri, 01 Jul 2022 16:01:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
-        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1656705717; x=1656712917; bh=mr
-        ZZqztLVKSIkpl2ZtG9SZsAXGvA9Vl+x5zOkvs3Bjg=; b=ifFqAwFeM2wxyJCvKE
-        TcogHoKvz8Ikgyvbheen4lB6TK8my3nTFtPtZqZwV2EJoW1d675CVWiRCQYrtpCV
-        gjmX3xfutUzOU3hClg0Njj4ieVpzITbRxgXZVuosglRi9Ve/QUV4hEboq9Cl6D5q
-        5ZUDm0FkkQme2ysoms3ELh8Ej8sCf/bY7d3513Rv+xbTCp2MmH04t4WPs+p30/R/
-        NUoTk/RQLxrRh5NqM1X0miI8sZ9j0rcT8Y1gbcNzWv3fehEjbKWta0Zm2a34hcFz
-        IRiPSucdZsSIbDrwFJcccZcbWOSp8i+md8XOrmXWaR/5piNMD50Sh8euiQzn0koH
-        sIGA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1656705717; x=1656712917; bh=mrZZqztLVKSIk
-        pl2ZtG9SZsAXGvA9Vl+x5zOkvs3Bjg=; b=P1MvxlIOuM7l0z+qS8yeYED1ddgJs
-        ZCs2QYRhK40y97qVVKx50uDXKGc7mEB0wEwGcSiJsX1JtDdjkQWUx99X65YS4sz+
-        VfSaSS6Ie4KKuWHsotLfT5em9QY23iuX70+vsHcDY2KRtIP+aVtenEK44OuBMsai
-        UBAjIHn3DU+BwynQs3RgoaYjQarWyRcQP7W5Gh2Uup25KvchrpUJqNUtKa3U+bgZ
-        BTQhJ+xzfCrqL5QAda74Vyo+egxNHDbWs7GXn2vOV7ssh9klKGGfy1CHr9gnsXME
-        J2Ch54d15PxAoSgBunXMCXpz/ijn5crnwUN/1XIG9K1lsPwNHpUnb99dA==
-X-ME-Sender: <xms:tVK_Yn0kldOcLkWk3dfIzfXt7vEQSWSDQuQhk6xOyUH6462s2Aafdw>
-    <xme:tVK_YmHzembFAoNWd77N3YnMz2ToCVVA3ID83I0u19Nq-hOul4kwoPfowFqG0OJU5
-    9Up9yAkJymy0CEPig>
-X-ME-Received: <xmr:tVK_Yn4ez4uypnFnFJ_3S-MZZK2rMoSOVkyJcaQENIV3-JxGd7QBPtijtwYnd0ibdz0oyf0Ih3Ol2g8rOwlklU9P9_G8MyY9ieFatffNBjzmGTzr0MCSIh0uclg2SZmSBTnenw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrudehfedgudeggecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefurghm
-    uhgvlhcujfholhhlrghnugcuoehsrghmuhgvlhesshhhohhllhgrnhgurdhorhhgqeenuc
-    ggtffrrghtthgvrhhnpedukeetueduhedtleetvefguddvvdejhfefudelgfduveeggeeh
-    gfdufeeitdevteenucevlhhushhtvghrufhiiigvpeegnecurfgrrhgrmhepmhgrihhlfh
-    hrohhmpehsrghmuhgvlhesshhhohhllhgrnhgurdhorhhg
-X-ME-Proxy: <xmx:tVK_Ys2boEFyZ2b7B1aml8ZopCfvtqe4SBKhfTNbbjUwaL5H_-Vt5w>
-    <xmx:tVK_YqFInOCCYvQ6u16XXnQamCJINVqY-HKUCA2295MtRmC9HX0L8w>
-    <xmx:tVK_Yt8uHh-EDhML-nWscQ8f9B1_bd-I8tbDH-V2EpmCZ_1zpFsBkg>
-    <xmx:tVK_YiGQ7OXgBCgZlUMKnwYghy6mgLV662iTefVRH5xGXr6DzTd3uQ>
-Feedback-ID: i0ad843c9:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 1 Jul 2022 16:01:54 -0400 (EDT)
-From:   Samuel Holland <samuel@sholland.org>
-To:     Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
-Cc:     Samuel Holland <samuel@sholland.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Chris Zankel <chris@zankel.net>,
-        Colin Ian King <colin.king@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Jan Beulich <jbeulich@suse.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Juergen Gross <jgross@suse.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Kees Cook <keescook@chromium.org>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Maximilian Heyne <mheyne@amazon.de>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Rich Felker <dalias@libc.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Sven Schnelle <svens@stackframe.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Wei Liu <wei.liu@kernel.org>, Wei Xu <xuwei5@hisilicon.com>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        iommu@lists.linux-foundation.org, iommu@lists.linux.dev,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-hyperv@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        x86@kernel.org, xen-devel@lists.xenproject.org
-Subject: [PATCH v3 8/8] genirq: Provide an IRQ affinity mask in non-SMP configs
-Date:   Fri,  1 Jul 2022 15:00:56 -0500
-Message-Id: <20220701200056.46555-9-samuel@sholland.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220701200056.46555-1-samuel@sholland.org>
-References: <20220701200056.46555-1-samuel@sholland.org>
+        Fri, 1 Jul 2022 17:23:50 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C1937A10;
+        Fri,  1 Jul 2022 14:23:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=R1q5UrG3cvoya5AOA/7NpRAVj1mgsomo7+FzxeOMlVY=; b=mIrtwHl1cJE/Kj5/8/O0ntriEJ
+        vH1isf8cQCAgXG7njs6nVt6zo2mhbRYJNp6Q2QdVBNh6Zzrx6iUjv3bXLAalQGenGlOMej1T5v/BY
+        /pg9mS6FZhcZJQOOrXg/vkSWSTseyHAUF9wC4oaiUh0slrMk/hrwRSMejTvUS63Q971zdpoVX44Nj
+        NRidynAsNy3sCJ0xc/CoNzi2iIutGpWGj7sQ1F9FYeOwQapQSU010PgzYyGbp9gI6HHbO7q0eYsjT
+        SRQB82xtn4o/f0Xoq7so3lgdM10JA7vzYcp7ev1n92U2b/HsI3xM4+iWE1eTmiy/W6+z/O/1QbbLX
+        XYskewkQ==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1o7O71-00703B-K2; Fri, 01 Jul 2022 21:23:39 +0000
+Date:   Fri, 1 Jul 2022 14:23:39 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Helge Deller <deller@gmx.de>,
+        Lucas De Marchi <lucas.demarchi@intel.com>
+Cc:     jeyu@kernel.org, linux-modules@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: Re: [PATCH v2] modules: Ensure natural alignment for
+ .altinstructions and __bug_table sections
+Message-ID: <Yr9l24rvCAPJvuJQ@bombadil.infradead.org>
+References: <Yr8/gr8e8I7tVX4d@p100>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Yr8/gr8e8I7tVX4d@p100>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-IRQ affinity masks are not allocated in uniprocessor configurations.
-This requires special case non-SMP code in drivers for irqchips which
-have per-CPU enable or mask registers.
+On Fri, Jul 01, 2022 at 08:40:02PM +0200, Helge Deller wrote:
+> In the kernel image vmlinux.lds.S linker scripts the .altinstructions
+> and __bug_table sections are 32- or 64-bit aligned because they hold 32-
+> and/or 64-bit values.
+> 
+> But for modules the module.lds.S linker script doesn't define a default
+> alignment yet, so the linker chooses the default byte alignment, which
+> then leads to unnecessary unaligned memory accesses at runtime.
+> 
+> Usually such unaligned accesses are unnoticed, because either the
+> hardware (as on x86 CPUs) or in-kernel exception handlers (e.g. on hppa
+> or sparc) emulate and fix them up at runtime.
+> 
+> On hppa the 32-bit unalignment exception handler was temporarily broken
+> due another bad commit, and as such wrong values were returned on
+> unaligned accesses to the altinstructions table.
 
-Since IRQ affinity is always the same in a uniprocessor configuration,
-we can provide a correct affinity mask without allocating one per IRQ.
+OK so some bad commit broke something which caused bad alignment access
+on altinstructions... But why on modules?!
 
-By returning a real cpumask from irq_data_get_affinity_mask even when
-SMP is disabled, irqchip drivers which iterate over that mask will
-automatically do the right thing.
+I am not aware of modules using alternatives, given that alternatives
+are hacks to help with bootup. For modules we can use other things
+like jump labels, static keys.
 
-Signed-off-by: Samuel Holland <samuel@sholland.org>
----
+So I don't understand still how this happened yet.
 
-Changes in v3:
- - Use cpumask_of(0) instead of cpu_possible_mask
+> This then led to
+> undefined behaviour because wrong kernel addresses were patched and we
+> suddenly faced lots of unrelated bugs, as can be seen in this mail
+> thread:
+> https://lore.kernel.org/all/07d91863-dacc-a503-aa2b-05c3b92a1e39@bell.net/T/#mab602dfa32be5e229d5e192ab012af196d04d75d
+> 
+> This patch adds the missing natural alignment for kernel modules to
+> avoid unnecessary (hard- or software-based) fixups.
 
- include/linux/irq.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Is it correct to infer that issue you found through a bad commit was
+then through code inspection after the bad commit made the kernel do
+something stupid with unaligned access to some module altinstructions
+section ? Ie, that should not have happened.
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 02073f7a156e..996e22744edd 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -151,7 +151,9 @@ struct irq_common_data {
- #endif
- 	void			*handler_data;
- 	struct msi_desc		*msi_desc;
-+#ifdef CONFIG_SMP
- 	cpumask_var_t		affinity;
-+#endif
- #ifdef CONFIG_GENERIC_IRQ_EFFECTIVE_AFF_MASK
- 	cpumask_var_t		effective_affinity;
- #endif
-@@ -882,13 +884,19 @@ static inline int irq_data_get_node(struct irq_data *d)
- static inline
- const struct cpumask *irq_data_get_affinity_mask(struct irq_data *d)
- {
-+#ifdef CONFIG_SMP
- 	return d->common->affinity;
-+#else
-+	return cpumask_of(0);
-+#endif
- }
- 
- static inline void irq_data_update_affinity(struct irq_data *d,
- 					    const struct cpumask *m)
- {
-+#ifdef CONFIG_SMP
- 	cpumask_copy(d->common->affinity, m);
-+#endif
- }
- 
- static inline const struct cpumask *irq_get_affinity_mask(int irq)
--- 
-2.35.1
+I'd like to determine if this is a stable fix, a regression, etc. And
+this is not yet clear.
 
+  Luis
+
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> ---
+>  scripts/module.lds.S | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> --
+> v2: updated commit message
+> 
+> diff --git a/scripts/module.lds.S b/scripts/module.lds.S
+> index 1d0e1e4dc3d2..3a3aa2354ed8 100644
+> --- a/scripts/module.lds.S
+> +++ b/scripts/module.lds.S
+> @@ -27,6 +27,8 @@ SECTIONS {
+>  	.ctors			0 : ALIGN(8) { *(SORT(.ctors.*)) *(.ctors) }
+>  	.init_array		0 : ALIGN(8) { *(SORT(.init_array.*)) *(.init_array) }
+> 
+> +	.altinstructions	0 : ALIGN(8) { KEEP(*(.altinstructions)) }
+> +	__bug_table		0 : ALIGN(8) { KEEP(*(__bug_table)) }
+>  	__jump_table		0 : ALIGN(8) { KEEP(*(__jump_table)) }
+> 
+>  	__patchable_function_entries : { *(__patchable_function_entries) }
