@@ -2,194 +2,264 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD098563D5E
-	for <lists+linux-parisc@lfdr.de>; Sat,  2 Jul 2022 03:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0057356416D
+	for <lists+linux-parisc@lfdr.de>; Sat,  2 Jul 2022 18:25:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231880AbiGBBDo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Jul 2022 21:03:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35774 "EHLO
+        id S232221AbiGBQZi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 2 Jul 2022 12:25:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231173AbiGBBDi (ORCPT
+        with ESMTP id S231295AbiGBQZh (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Jul 2022 21:03:38 -0400
-Received: from out1.migadu.com (out1.migadu.com [91.121.223.63])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C4682409E;
-        Fri,  1 Jul 2022 18:03:35 -0700 (PDT)
-Date:   Fri, 1 Jul 2022 18:03:10 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1656723813;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UefsvJWBOCsJEHG/jcpgIGR+KBtUCRUqjXcROu7qjh4=;
-        b=oGHlDm4tgr6UzDbC5z/sb7q2WEts5mi8mJ8aiIMXBOzW75BRr4BaIuszRL9hOCzoFfVxku
-        tmO6BM7R9GzDDzZbe/MQeyeOEOAx+3VHqH/w/8ecEZ7fImffcNYGlal4Cw/gQ26E9Sym1J
-        usYWeNXz8OdB9Vt23HLuxwKOwXbZ7ng=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Roman Gushchin <roman.gushchin@linux.dev>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        kernel test robot <lkp@intel.com>
-Cc:     virtualization@lists.linux-foundation.org,
-        usbb2k-api-dev@nongnu.org, tipc-discussion@lists.sourceforge.net,
-        target-devel@vger.kernel.org, sound-open-firmware@alsa-project.org,
-        samba-technical@lists.samba.org, rds-devel@oss.oracle.com,
-        patches@opensource.cirrus.com, osmocom-net-gprs@lists.osmocom.org,
-        openipmi-developer@lists.sourceforge.net, nvdimm@lists.linux.dev,
-        ntb@lists.linux.dev, netfilter-devel@vger.kernel.org,
-        netdev@vger.kernel.org, mjpeg-users@lists.sourceforge.net,
-        megaraidlinux.pdl@broadcom.com, linuxppc-dev@lists.ozlabs.org,
-        linux1394-devel@lists.sourceforge.net, linux-x25@vger.kernel.org,
-        linux-wpan@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-unionfs@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
-        linux-sctp@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-raid@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-parport@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-nfc@lists.01.org, linux-mtd@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-fpga@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-cxl@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org,
-        linux-bluetooth@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-bcache@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linaro-mm-sig@lists.linaro.org,
-        legousb-devel@lists.sourceforge.net, kvm@vger.kernel.org,
-        keyrings@vger.kernel.org, isdn4linux@listserv.isdn4linux.de,
-        iommu@lists.linux.dev, iommu@lists.linux-foundation.org,
-        intel-wired-lan@lists.osuosl.org, dri-devel@lists.freedesktop.org,
-        dm-devel@redhat.com, devicetree@vger.kernel.org,
-        dev@openvswitch.org, dccp@vger.kernel.org, damon@lists.linux.dev,
-        coreteam@netfilter.org, cgroups@vger.kernel.org,
-        ceph-devel@vger.kernel.org, apparmor@lists.ubuntu.com,
-        amd-gfx@lists.freedesktop.org, alsa-devel@alsa-project.org,
-        accessrunner-general@lists.sourceforge.net
-Subject: Re: [linux-next:master] BUILD REGRESSION
- 6cc11d2a1759275b856e464265823d94aabd5eaf
-Message-ID: <Yr+ZTnLb9lJk6fJO@castle>
-References: <62be3696.+PAAAVlbtWK6G2hk%lkp@intel.com>
+        Sat, 2 Jul 2022 12:25:37 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF45FDFED;
+        Sat,  2 Jul 2022 09:25:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1656779123;
+        bh=ECmIgjLTKytPyBEDMmI2VK9eRJh1128iQ8MWsgmvsKs=;
+        h=X-UI-Sender-Class:Date:To:Cc:References:From:Subject:In-Reply-To;
+        b=E+xmS4SFVAL6Zy53anXRIj5s7tyGiiZHrMBOHCw4v1T/h6BXV8tdtHT6Dx7g9P3wm
+         0luEz6qR0A6joYxzTwC3BkfNN5W5+/f85kfCkuZWfpyam2nPa0iYEdxbpm7f36KeB3
+         +gyY7uZDuhKS1ooPOTewLIKgVG9sdCZrWMhm/9w4=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.191.144]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1McpJq-1nZASf23ZC-00a02L; Sat, 02
+ Jul 2022 18:25:23 +0200
+Message-ID: <040d5924-eb42-2ee4-d663-88ef393cd4ae@gmx.de>
+Date:   Sat, 2 Jul 2022 18:24:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <62be3696.+PAAAVlbtWK6G2hk%lkp@intel.com>
-X-Migadu-Flow: FLOW_OUT
-X-Migadu-Auth-User: linux.dev
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Content-Language: en-US
+To:     Luis Chamberlain <mcgrof@kernel.org>,
+        Lucas De Marchi <lucas.demarchi@intel.com>
+Cc:     jeyu@kernel.org, linux-modules@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+References: <Yr8/gr8e8I7tVX4d@p100> <Yr9l24rvCAPJvuJQ@bombadil.infradead.org>
+From:   Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH v2] modules: Ensure natural alignment for .altinstructions
+ and __bug_table sections
+In-Reply-To: <Yr9l24rvCAPJvuJQ@bombadil.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:d6098/lqYVZ20tS1l89uFsCFqQB1S0RvNxPNlGEyumJZc8rOcW2
+ GvmnERpuS/ZlV0HZMpz40JeKSzHitTGzUgHKe4jbqV1Oif7ADIaF6W78YZQMvzCeuOsyrtq
+ 4tfgM6Kj2AGvzijt8T6aL+U/Pw28EHESarPUux0IrfsX1iR6CE+GBh5/rcFxT3I5Hiwj3zV
+ 52OwjI0tZJpySwoC1EDmg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:eN3IGzjjCC0=:ViB7D5Jt+QBPGsf05dYqca
+ 1QChswvqbAWjcDS/bLfq9LSpIfOL/ukW7LGRCVpitvU/Mc6GIgCn5oLoFqZeaQDcT+a7YJ9s4
+ 0wygtuFX06EIBP+hfQCkjtdYIf5Mgs40X5u+fc/5Bhq1T/zFjdSlwgfIhhQz+U8V5aWMcL7tx
+ AbikhTufveJhYvrzgAZU1+fV7qgKI4mpXr+M144VEJO8xPCKDbN3qtbK9rikWd5z/Fw7Yb5zo
+ mYsnAmE7vuWMO2Quay5QJIOLrTidQudAYKf5vUFItEOAUNme13qN5975j/BJ3tit+RDX3nadt
+ XUAvF4PNguv+LmpQ30aT+6PxXR3wZlXUUkT90XwbteL4e8FawsCz3e6+V1W6A4j7ofHxnZEM1
+ rZcH/PyylxoI+l4dKNzmExBS3L/Anz2gq1oXSjQjnDU4bwvdl6KRD+leeVjXnw+w2TOM4VCWA
+ z2rQc9BRNyfGT1fE/TSjwb3bqE4L2p+bmjAEBATBr/uLHk6ecJi9FesInCrWazUmgL0jwv+F1
+ fo7+RnuNPyGhB0ZVl0mbv02+bt2mSk3kzUJErvjyAglgtJTWbPWL2mrJMSJTZJYnVn/f2XmsH
+ 6guLtLH0GBv7ZDGy25lbAGEyVR0eiSQrWBLjLYxp9ZvlnNXx6QbwOogAZEX6ssXgUGoBZn4zD
+ +QlTUuBG08LcjXtSJPpD7MZjVT4prq3FnRYlUyiHGrx00565Jqcsdu6LCoCcuTXWb0XzvnYbk
+ M8j17/B2j21TAHEw7aTvVKC1ekDPLIVLesQy0JAeCYd9stsNKFVJ+Y+aTidYKvA/xeGC6KCdV
+ H5Q6Lobf8KC2fDzye+dq7CHY2cMI3Hi36UG/77kc7O+OPvR3nAL208CYmqRwUUv5hgXmXDqhl
+ 8++TL6Son9TV7kx72xhwqCo+J3CJT80Vjh1t2d4DzZnGwbAFebnkm3wg2im65RmwTXfgu3xdH
+ A7pFSZ8LbLA34OB/3/5YuPTsMAm15hVOCwtn9vFNrZ/Zo83rrEUIkRZhrMtaopPg4pbSb5hAc
+ kOM+DSGE5/graqg4u4lBfWQ8RBVMOehuuPtK7sWvbS+EzHKSB/uvYb7J2sfNdox3Y+9SUmIBT
+ amWL5Eee0oy0VdAKPlVQqiIm+VUuHF1+n7J1cvPmidseQUWaTfniJX0UQ==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-esOn Fri, Jul 01, 2022 at 07:49:42AM +0800, kbuild test robot wrote:
-> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> branch HEAD: 6cc11d2a1759275b856e464265823d94aabd5eaf  Add linux-next specific files for 20220630
-> 
-> Error/Warning reports:
-> 
-> https://lore.kernel.org/linux-mm/202206301859.UodBCrva-lkp@intel.com
-> 
-> Error/Warning: (recently discovered and may have been fixed)
-> 
-> arch/powerpc/kernel/interrupt.c:542:55: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
-> arch/powerpc/kernel/interrupt.c:542:55: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
-> drivers/pci/endpoint/functions/pci-epf-vntb.c:975:5: warning: no previous prototype for 'pci_read' [-Wmissing-prototypes]
-> drivers/pci/endpoint/functions/pci-epf-vntb.c:984:5: warning: no previous prototype for 'pci_write' [-Wmissing-prototypes]
-> mm/shrinker_debug.c:143:9: warning: function 'shrinker_debugfs_rename' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-> mm/shrinker_debug.c:217:9: warning: function 'shrinker_debugfs_rename' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-> mm/vmscan.c:637:9: warning: function 'prealloc_shrinker' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-> mm/vmscan.c:642:9: warning: function 'prealloc_shrinker' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-> mm/vmscan.c:697:9: warning: function 'register_shrinker' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-> mm/vmscan.c:702:9: warning: function 'register_shrinker' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
+Hi Luis,
 
-Shrinker-related warnings should be fixed by the following patch.
+On 7/1/22 23:23, Luis Chamberlain wrote:
+> On Fri, Jul 01, 2022 at 08:40:02PM +0200, Helge Deller wrote:
+>> In the kernel image vmlinux.lds.S linker scripts the .altinstructions
+>> and __bug_table sections are 32- or 64-bit aligned because they hold 32=
+-
+>> and/or 64-bit values.
+>>
+>> But for modules the module.lds.S linker script doesn't define a default
+>> alignment yet, so the linker chooses the default byte alignment, which
+>> then leads to unnecessary unaligned memory accesses at runtime.
+>>
+>> Usually such unaligned accesses are unnoticed, because either the
+>> hardware (as on x86 CPUs) or in-kernel exception handlers (e.g. on hppa
+>> or sparc) emulate and fix them up at runtime.
+>>
+>> On hppa the 32-bit unalignment exception handler was temporarily broken
+>> due another bad commit, and as such wrong values were returned on
+>> unaligned accesses to the altinstructions table.
+>
+> OK so some bad commit broke something which caused bad alignment access
+> on altinstructions... But why on modules?!
+>
+> I am not aware of modules using alternatives, given that alternatives
+> are hacks to help with bootup. For modules we can use other things
+> like jump labels, static keys.
 
-Thanks!
+IMHO altinstructions isn't a hack.
+They are much simpler and easier to use for static replacements.
+jump labels and static keys are much more komplex, but of course they
+give the possibility to switch back and forth if you need it.
+But let's keep this discussion aside...
 
---
+I checked a few other architectures, and here is what I found.
+I dropped unimportant sections/lines.
 
-From c399aff65c7745a209397a531c5b28fd404d83c2 Mon Sep 17 00:00:00 2001
-From: Roman Gushchin <roman.gushchin@linux.dev>
-Date: Fri, 1 Jul 2022 17:38:31 -0700
-Subject: [PATCH] mm:shrinkers: fix build warnings
+Linux amdahl 4.19.0-20-arm64 #1 SMP Debian 4.19.235-1 (2022-03-17) aarch64=
+ GNU/Linux
+deller@amdahl:/lib/modules/4.19.0-19-arm64/kernel/block$ objdump -h bfq.ko
+bfq.ko:     file format elf64-littleaarch64
+Sections:
+Idx Name          Size      VMA               LMA               File off  =
+Algn
+  6 .altinstructions 000000b4  0000000000000000  0000000000000000  000090a=
+4  2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+ 13 __jump_table  00000018  0000000000000000  0000000000000000  0000d358  =
+2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 15 __bug_table   00000018  0000000000000000  0000000000000000  0000dcf8  =
+2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
 
-Add __printf(a, b) attributes to shrinker functions taking shrinker
-name as an argument to avoid compiler warnings like:
+-> aarch64 uses altinstructions in modules as well.
+-> alignment of altinstructions is wrong (but offset suggests it gets addr=
+ess right).
+-> jump_table/bug_table -> Ok.
 
-mm/shrinker_debug.c:143:9: warning: function 'shrinker_debugfs_rename'
-  might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-mm/shrinker_debug.c:217:9: warning: function 'shrinker_debugfs_rename'
-  might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-mm/vmscan.c:637:9: warning: function 'prealloc_shrinker' might be a
-  candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-mm/vmscan.c:642:9: warning: function 'prealloc_shrinker' might be a
-  candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-mm/vmscan.c:697:9: warning: function 'register_shrinker' might be a
-  candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-mm/vmscan.c:702:9: warning: function 'register_shrinker' might be a
-  candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
+=2D---
 
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
----
- include/linux/shrinker.h | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+Linux abel 4.19.0-20-armmp-lpae #1 SMP Debian 4.19.235-1 (2022-03-17) armv=
+7l GNU/Linux
+deller@abel:/lib/modules/4.19.0-20-armmp-lpae/kernel/block$ objdump -h bfq=
+.ko
+bfq.ko:     file format elf32-littlearm
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  9 __mcount_loc  000002ac  00000000  00000000  00009bf4  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+ 11 __jump_table  0000000c  00000000  00000000  0000b320  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
 
-diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
-index 64416f3e0a1f..08e6054e061f 100644
---- a/include/linux/shrinker.h
-+++ b/include/linux/shrinker.h
-@@ -93,9 +93,11 @@ struct shrinker {
-  */
- #define SHRINKER_NONSLAB	(1 << 3)
- 
--extern int prealloc_shrinker(struct shrinker *shrinker, const char *fmt, ...);
-+extern int __printf(2, 3) prealloc_shrinker(struct shrinker *shrinker,
-+					    const char *fmt, ...);
- extern void register_shrinker_prepared(struct shrinker *shrinker);
--extern int register_shrinker(struct shrinker *shrinker, const char *fmt, ...);
-+extern int __printf(2, 3) register_shrinker(struct shrinker *shrinker,
-+					    const char *fmt, ...);
- extern void unregister_shrinker(struct shrinker *shrinker);
- extern void free_prealloced_shrinker(struct shrinker *shrinker);
- extern void synchronize_shrinkers(void);
-@@ -103,8 +105,8 @@ extern void synchronize_shrinkers(void);
- #ifdef CONFIG_SHRINKER_DEBUG
- extern int shrinker_debugfs_add(struct shrinker *shrinker);
- extern void shrinker_debugfs_remove(struct shrinker *shrinker);
--extern int shrinker_debugfs_rename(struct shrinker *shrinker,
--				   const char *fmt, ...);
-+extern int __printf(2, 3) shrinker_debugfs_rename(struct shrinker *shrinker,
-+						  const char *fmt, ...);
- #else /* CONFIG_SHRINKER_DEBUG */
- static inline int shrinker_debugfs_add(struct shrinker *shrinker)
- {
-@@ -113,8 +115,8 @@ static inline int shrinker_debugfs_add(struct shrinker *shrinker)
- static inline void shrinker_debugfs_remove(struct shrinker *shrinker)
- {
- }
--static inline int shrinker_debugfs_rename(struct shrinker *shrinker,
--					  const char *fmt, ...)
-+static inline __printf(2, 3)
-+int shrinker_debugfs_rename(struct shrinker *shrinker, const char *fmt, ...)
- {
- 	return 0;
- }
--- 
-2.36.1
+-> arm looks good.
+
+=2D---
+
+Linux plummer 4.19.0-20-powerpc64le #1 SMP Debian 4.19.235-1 (2022-03-17) =
+ppc64le GNU/Linux
+deller@plummer:/lib/modules/4.19.0-20-powerpc64le/kernel/block$ objdump -h=
+ bfq.ko
+bfq.ko:     file format elf64-powerpcle
+Sections:
+Idx Name          Size      VMA               LMA               File off  =
+Algn
+  9 __mcount_loc  00000530  0000000000000000  0000000000000000  0000bc68  =
+2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+ 12 __jump_table  00000018  0000000000000000  0000000000000000  000109d8  =
+2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 16 __bug_table   00000030  0000000000000000  0000000000000000  000115a0  =
+2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+
+-> ppc64le has wrong alignment for mcount_loc and bug_table (but file offs=
+ suggests it's correct).
+
+=2D---
+
+Linux zelenka 4.19.0-20-s390x #1 SMP Debian 4.19.235-1 (2022-03-17) s390x =
+GNU/Linux
+deller@zelenka:/lib/modules/4.19.0-20-s390x/kernel/block$ objdump -h bfq.k=
+o
+bfq.ko:     file format elf64-s390
+Sections:
+Idx Name          Size      VMA               LMA               File off  =
+Algn
+  3 .altinstr_replacement 00000038  0000000000000000  0000000000000000  00=
+00a440  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  8 .altinstructions 000000a8  0000000000000000  0000000000000000  0000b04=
+e  2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+ 10 __mcount_loc  00000538  0000000000000000  0000000000000000  0000b1b0  =
+2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+ 13 __jump_table  00000018  0000000000000000  0000000000000000  0000c8e0  =
+2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 17 __bug_table   00000018  0000000000000000  0000000000000000  0000d280  =
+2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+
+-> s390x uses altinstructions in modules.
+-> alignment should be fixed for altinstructions and bug_table
+
+> So I don't understand still how this happened yet.
+
+Happened what?
+Even on x86 there is a call to apply_alternatives() in module_finalize() i=
+n
+arch/x86/kernel/module.c.
+I didn't found alternatives in amd64 modules in kernel 4.19 though...
+
+>> This then led to
+>> undefined behaviour because wrong kernel addresses were patched and we
+>> suddenly faced lots of unrelated bugs, as can be seen in this mail
+>> thread:
+>> https://lore.kernel.org/all/07d91863-dacc-a503-aa2b-05c3b92a1e39@bell.n=
+et/T/#mab602dfa32be5e229d5e192ab012af196d04d75d
+>>
+>> This patch adds the missing natural alignment for kernel modules to
+>> avoid unnecessary (hard- or software-based) fixups.
+>
+> Is it correct to infer that issue you found through a bad commit was
+> then through code inspection after the bad commit made the kernel do
+> something stupid with unaligned access to some module altinstructions
+> section ? Ie, that should not have happened.
+
+Right. Without the bad commit I would not have noticed the problem.
+
+> I'd like to determine if this is a stable fix, a regression, etc. And
+> this is not yet clear.
+
+I fully understand that it's a hard to decide if it should go to stable!
+It's not critical or required to go to stable series now.
+My suggestion:
+Add it to current head, wait for 1-2 releases, and *if required* we can
+push it backwards at any time later.
+
+Helge
+
+
+>   Luis
+>
+>>
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>> ---
+>>  scripts/module.lds.S | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> --
+>> v2: updated commit message
+>>
+>> diff --git a/scripts/module.lds.S b/scripts/module.lds.S
+>> index 1d0e1e4dc3d2..3a3aa2354ed8 100644
+>> --- a/scripts/module.lds.S
+>> +++ b/scripts/module.lds.S
+>> @@ -27,6 +27,8 @@ SECTIONS {
+>>  	.ctors			0 : ALIGN(8) { *(SORT(.ctors.*)) *(.ctors) }
+>>  	.init_array		0 : ALIGN(8) { *(SORT(.init_array.*)) *(.init_array) }
+>>
+>> +	.altinstructions	0 : ALIGN(8) { KEEP(*(.altinstructions)) }
+>> +	__bug_table		0 : ALIGN(8) { KEEP(*(__bug_table)) }
+>>  	__jump_table		0 : ALIGN(8) { KEEP(*(__jump_table)) }
+>>
+>>  	__patchable_function_entries : { *(__patchable_function_entries) }
 
