@@ -2,97 +2,111 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1DC564DC0
-	for <lists+linux-parisc@lfdr.de>; Mon,  4 Jul 2022 08:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A53B95659AD
+	for <lists+linux-parisc@lfdr.de>; Mon,  4 Jul 2022 17:23:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231730AbiGDGhg (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 4 Jul 2022 02:37:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47930 "EHLO
+        id S232622AbiGDPXd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 4 Jul 2022 11:23:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230123AbiGDGhg (ORCPT
+        with ESMTP id S230100AbiGDPXb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 4 Jul 2022 02:37:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE0162AC4;
-        Sun,  3 Jul 2022 23:37:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F69861351;
-        Mon,  4 Jul 2022 06:37:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9052CC3411E;
-        Mon,  4 Jul 2022 06:37:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656916654;
-        bh=Ev99x2/dGK/AfHwjAp99Abizv7vniBu6IQA5CawQMQE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PFJVmhiYn6Ic6FTheiyt1yAOHTodfrybFiqBvVQ/qjJyqvMcrf1iEMEQ/sockNodS
-         ONjRsGxOWH8Cfs69RjqlQ6woEHTlfn5jDBz8nPLFjT72zKvzgWfCgsTNTPCO4TvPkj
-         uwLufFvGkCfNTFWsGIoYzNf29FFaGS0USFD+b4wjw7PxPT6FVuf/T0z4or7bBn/A2i
-         NLtBgjQ1GgdHb5h/x2cfDvUqGj0IWK9OcUpaBWJIWtp5mJNteU1glbswFU1WdZNqOb
-         JmmU/VcV1X3eYwOhhr4yzKOS0q9pNiC0cCirbCUjL6QELQ10pfnXNAwNGPmOVMkb4+
-         HTG0pR49rjXDg==
-Date:   Mon, 4 Jul 2022 09:37:17 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     WANG Xuerui <kernel@xen0n.name>
-Cc:     Matthew Wilcox <willy@infradead.org>,
+        Mon, 4 Jul 2022 11:23:31 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24C765C5;
+        Mon,  4 Jul 2022 08:23:30 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id t17-20020a1c7711000000b003a0434b0af7so5888620wmi.0;
+        Mon, 04 Jul 2022 08:23:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4xM5MK26CZ/c80sgGRiAvi/tYGUd6tin4tICi/jLr3g=;
+        b=StziVOwR2dqeGT1vkrtGCUdDAS1P9FphpWD52LirNPf3iqYLtKZmz96p6YLOKpyirW
+         Xg8JOmCVBVJAAgA7tHVbxrmMaFg7Gh5oxqY5L3mjEIfMUEADw3V729BEfgHKPuDN7HSZ
+         hghcl2Y9AQyVE1zfSWC2uyJnOhLIHDj20IkjS4W8ow0xEEwULbIC5anBQ+7XAVulGgDh
+         KrvXgKdOdn5ttyZmEM9b9hfPmNqv9SaQO0HN/rBE/ePL5T/JOhk+y4ZlbCQknX1+CxkY
+         uigE6jI+scbqDnD/Sm5hiEYq9Gfbupw2sCW/y4S21GQvilSXMyNd61Jg1AMbi2DNC16w
+         AR7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4xM5MK26CZ/c80sgGRiAvi/tYGUd6tin4tICi/jLr3g=;
+        b=iYCNssxbJjgViLts+ylTWQG5rt0RPXUzdDxRBJCVQwEWelaBRhfx65858QMEUvXNa0
+         fV3DSI7HQS9nPxaqnZTb+jSMRRtm7cakwleaz5XR4eqSBXd22aRqUo8X7zQjVS0TeMqS
+         Et3X22Ja3z1gjOADE2AWe4KopKdWcJ96ykwH/ZRqXzdyNwC6d4yNtOqTLEZ97/oAVTaP
+         qECXWC+EAqs0veXXNYx//q5dZNHwK8GiyMLcYY5qd0jFW2nXPTTR8g2r9OX9EzQgCrbO
+         H5wThg/xStuxmQLAl8Tq4IlGLrAI1rC9xZplsonXNYTbZ/uLuhwPs0/E8iWxT3ut5xhR
+         JFnw==
+X-Gm-Message-State: AJIora+zlxna/XnvYzWUmCpJdUd9RNgFYpVuhAlfcPNrXVMBCVAIfZ8F
+        zlTrFk741F7TsSXF9W4U+yo=
+X-Google-Smtp-Source: AGRyM1vzf20CdbFist58GfvoI3TvwOK/hr0xIWe08/cnfGoFCg1oShfoM7s/f5wOgE994h/OSlOlmg==
+X-Received: by 2002:a05:600c:500a:b0:3a1:8c53:9bd5 with SMTP id n10-20020a05600c500a00b003a18c539bd5mr20226182wmr.82.1656948209080;
+        Mon, 04 Jul 2022 08:23:29 -0700 (PDT)
+Received: from localhost.localdomain (host-79-53-109-127.retail.telecomitalia.it. [79.53.109.127])
+        by smtp.gmail.com with ESMTPSA id p28-20020a1c545c000000b003a02de5de80sm16089631wmi.4.2022.07.04.08.23.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Jul 2022 08:23:27 -0700 (PDT)
+From:   "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
+To:     David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Nick Terrell <terrelln@fb.com>, linux-btrfs@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Ira Weiny <ira.weiny@intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Dinh Nguyen <dinguyen@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "James E. J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, loongarch@lists.linux.dev
-Subject: Re: [PATCH 12/14] loongarch: drop definition of PGD_ORDER
-Message-ID: <YsKKnSk/kgf2uMg6@kernel.org>
-References: <20220703141203.147893-1-rppt@kernel.org>
- <20220703141203.147893-13-rppt@kernel.org>
- <YsIBFVcdJSQNK+pV@casper.infradead.org>
- <aa74c870-e4e9-a2aa-ddae-91cce62a3fe5@xen0n.name>
+        John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org
+Cc:     "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
+Subject: [PATCH v5 0/2] btrfs: Replace kmap() with kmap_local_page() in zstd.c
+Date:   Mon,  4 Jul 2022 17:23:20 +0200
+Message-Id: <20220704152322.20955-1-fmdefrancesco@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aa74c870-e4e9-a2aa-ddae-91cce62a3fe5@xen0n.name>
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Jul 04, 2022 at 11:57:28AM +0800, WANG Xuerui wrote:
-> 
-> On 2022/7/4 04:50, Matthew Wilcox wrote:
-> > On Sun, Jul 03, 2022 at 05:12:01PM +0300, Mike Rapoport wrote:
-> > > +++ b/arch/loongarch/kernel/asm-offsets.c
-> > > @@ -190,7 +190,6 @@ void output_mm_defines(void)
-> > >   #endif
-> > >   	DEFINE(_PTE_T_LOG2, PTE_T_LOG2);
-> > >   	BLANK();
-> > > -	DEFINE(_PGD_ORDER, PGD_ORDER);
-> > >   	BLANK();
-> > >   	DEFINE(_PMD_SHIFT, PMD_SHIFT);
-> > >   	DEFINE(_PGDIR_SHIFT, PGDIR_SHIFT);
-> > Should probably also drop one of these BLANK() lines too?
-> > 
-> Agreed; IMO the blank lines can and should be removed because the
-> surrounding lines are also mm definitions.
+This is a little series which serves the purpose to replace kmap() with
+kmap_local_page() in btrfs/zstd.c. Actually this task is only accomplished
+in patch 2/2.
 
-They are mm definitions, but still they are separated by blanks to have
-nice grouping in the generated asm-offsets.h.
+Instead patch 1/2 is a pre-requisite for the above-mentioned replacement,
+however, above all else, it has the purpose to conform the prototypes of
+__kunmap_{local,atomic}() to their own correct semantics. Since those
+functions don't make changes to the memory pointed by their arguments,
+change the type of those arguments to become pointers to const void.
 
-I suspect that there are more unused definitions in asm-offsets.c, worth
-taking a look.
+v4 -> v5: Use plain page_address() for pages which cannot come from Highmem
+(instead of kmapping them); remove unnecessary initialisations to NULL
+(thanks to Ira Weiny).
+
+v3 -> v4: Resend and add linux-mm to the list of recipients (thanks to
+Andrew Morton).
+
+Fabio M. De Francesco (2):
+  highmem: Make __kunmap_{local,atomic}() take "const void *"
+  btrfs: Replace kmap() with kmap_local_page() in zstd.c
+
+ arch/parisc/include/asm/cacheflush.h |  6 ++---
+ arch/parisc/kernel/cache.c           |  2 +-
+ fs/btrfs/zstd.c                      | 34 ++++++++++++----------------
+ include/linux/highmem-internal.h     | 10 ++++----
+ mm/highmem.c                         |  2 +-
+ 5 files changed, 24 insertions(+), 30 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.36.1
+
