@@ -2,60 +2,52 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4130D56791F
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Jul 2022 23:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E76C3567E12
+	for <lists+linux-parisc@lfdr.de>; Wed,  6 Jul 2022 07:58:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231750AbiGEVC7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 5 Jul 2022 17:02:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40882 "EHLO
+        id S230274AbiGFF6M (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 6 Jul 2022 01:58:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232492AbiGEVCw (ORCPT
+        with ESMTP id S229617AbiGFF6L (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 5 Jul 2022 17:02:52 -0400
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 868B3A180;
-        Tue,  5 Jul 2022 14:02:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1657054968;
-        bh=YgWzh+6xAhVZmhNiRAGCghd03lbCI399QAh5EJvstO8=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=WG6JAHRuuovkKlwHIAGmmwS8o4md89S+zhK4zcu0ZMWIagGecT8JmRf1WNa1W9Szx
-         gaeQIaaU9xNM8psZgNk8CJhwuxB26d8/SEhffX7ejPV7mxhIMCNiSZ5YqnIjx5cDDn
-         3rPMwedtXF8nnv5+1l5xR1PW4JzkugFrDKAmNPW0=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 3C25D1287B1C;
-        Tue,  5 Jul 2022 17:02:48 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Y7EVco9mAS-T; Tue,  5 Jul 2022 17:02:48 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1657054968;
-        bh=YgWzh+6xAhVZmhNiRAGCghd03lbCI399QAh5EJvstO8=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=WG6JAHRuuovkKlwHIAGmmwS8o4md89S+zhK4zcu0ZMWIagGecT8JmRf1WNa1W9Szx
-         gaeQIaaU9xNM8psZgNk8CJhwuxB26d8/SEhffX7ejPV7mxhIMCNiSZ5YqnIjx5cDDn
-         3rPMwedtXF8nnv5+1l5xR1PW4JzkugFrDKAmNPW0=
-Received: from [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b] (unknown [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 9B5E61287A76;
-        Tue,  5 Jul 2022 17:02:47 -0400 (EDT)
-Message-ID: <b72fb530cbfe35800fca33f7110b17b1ea1f3649.camel@HansenPartnership.com>
-Subject: Re: flush_icache_range in the sticore driver
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Date:   Tue, 05 Jul 2022 17:02:46 -0400
-In-Reply-To: <20220705164623.GA14566@lst.de>
-References: <20220705164623.GA14566@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+        Wed, 6 Jul 2022 01:58:11 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0AE201C927;
+        Tue,  5 Jul 2022 22:58:10 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EBF5A1570;
+        Tue,  5 Jul 2022 22:58:09 -0700 (PDT)
+Received: from [10.163.43.16] (unknown [10.163.43.16])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C01D3F70D;
+        Tue,  5 Jul 2022 22:58:01 -0700 (PDT)
+Message-ID: <8a6ccbae-7d7c-6e08-cc28-eeb649f86112@arm.com>
+Date:   Wed, 6 Jul 2022 11:27:59 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH V6 00/26] mm/mmap: Drop __SXXX/__PXXX macros from across
+ platforms
+Content-Language: en-US
+To:     linux-mm@kvack.org, akpm@linux-foundation.org
+Cc:     hch@infradead.org, christophe.leroy@csgroup.eu,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, openrisc@lists.librecores.org,
+        linux-xtensa@linux-xtensa.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220630051630.1718927-1-anshuman.khandual@arm.com>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20220630051630.1718927-1-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,SUSPICIOUS_RECIPS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,33 +55,52 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, 2022-07-05 at 18:46 +0200, Christoph Hellwig wrote:
-> Hi all,
+
+
+On 6/30/22 10:46, Anshuman Khandual wrote:
+> __SXXX/__PXXX macros is an unnecessary abstraction layer in creating the
+> generic protection_map[] array which is used for vm_get_page_prot(). This
+> abstraction layer can be avoided, if the platforms just define the array
+> protection_map[] for all possible vm_flags access permission combinations
+> and also export vm_get_page_prot() implementation.
 > 
-> flush_icache_range is supposed to flush the instruction cache, which
-> is something no driver should be doing.  It was added in commit
-> 03b18f1b2afe ("[PARISC] Clean up sti_flush") but the explanation in
-> there looks odd.
+> This series drops __SXXX/__PXXX macros from across platforms in the tree.
+> First it build protects generic protection_map[] array with '#ifdef __P000'
+> and moves it inside platforms which enable ARCH_HAS_VM_GET_PAGE_PROT. Later
+> this build protects same array with '#ifdef ARCH_HAS_VM_GET_PAGE_PROT' and
+> moves inside remaining platforms while enabling ARCH_HAS_VM_GET_PAGE_PROT.
+> This adds a new macro DECLARE_VM_GET_PAGE_PROT defining the current generic
+> vm_get_page_prot(), in order for it to be reused on platforms that do not
+> require custom implementation. Finally, ARCH_HAS_VM_GET_PAGE_PROT can just
+> be dropped, as all platforms now define and export vm_get_page_prot(), via
+> looking up a private and static protection_map[] array. protection_map[]
+> data type has been changed as 'static const' on all platforms that do not
+> change it during boot.
 > 
-> Can someone shed a light what flushes this tries to flush and why it
-> can't be done behind a proper API?
+> This series applies on v5.19-rc4 and has been build tested for multiple
+> platforms. While here it has dropped off all previous tags from folks after
+> the current restructuring. Series common CC list has been expanded to cover
+> all impacted platforms for wider reach.
+> 
+> - Anshuman
+> 
+> Changes in V6:
+> 
+> - Converted protection_map[] array as 'static const' on sparc32 platform
+> - Rebased on v5.19-rc4
+> - Collected tags
 
-What's wrong with the explanation:
+There are two linux-next based build fixes for this series (listed below), when
+vm_get_page_prot() gets redefined with !CONFIG_MMU. Platform vm_get_page_prot()
+is required only with CONFIG_MMU enabled, otherwise there is a generic fallback
+stub in include/linux/mm.h
 
-"sti_flush is supposed to flush the caches so we can execute the STI
-rom we copied to memory."
+https://lore.kernel.org/all/20220705221411.3381797-1-jcmvbkbc@gmail.com/	[xtensa]
+https://lore.kernel.org/all/20220706054002.1936820-1-anshuman.khandual@arm.com/ [sh]
 
-Which is in that commit?
+It does not seem CONFIG_MMU can be disabled on other platforms thus exposing a build
+failure. But just to be on the safer side, should all vm_get_page_prot() be wrapped
+around with #ifdef CONFIG_MMU ? In that case will resend the series with above build
+fixes folded back in as well. Please do suggest. Thank you.
 
-The STI driver is taking the executable STI ROM code, which is in a
-very slow to access part of the system and copying it to RAM so it can
-be executed.  After the driver has done the copy it needs to flush the
-icache just in case there's anything stale in there before executing
-the newly copied code.
-
-If you grep the drive for sti_call, you'll see all the points we call
-into the copied rom code.
-
-James
-
-
+- Anshuman
