@@ -2,117 +2,202 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B99A56849C
-	for <lists+linux-parisc@lfdr.de>; Wed,  6 Jul 2022 12:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7155685BF
+	for <lists+linux-parisc@lfdr.de>; Wed,  6 Jul 2022 12:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232562AbiGFKEj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 6 Jul 2022 06:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43296 "EHLO
+        id S232963AbiGFKii (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 6 Jul 2022 06:38:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232428AbiGFKEi (ORCPT
+        with ESMTP id S232953AbiGFKig (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 6 Jul 2022 06:04:38 -0400
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 831AA24F12;
-        Wed,  6 Jul 2022 03:04:37 -0700 (PDT)
-Received: by mail-qk1-f177.google.com with SMTP id k20so10664082qkj.1;
-        Wed, 06 Jul 2022 03:04:37 -0700 (PDT)
+        Wed, 6 Jul 2022 06:38:36 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D0B64F9;
+        Wed,  6 Jul 2022 03:38:35 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 205-20020a1c02d6000000b003a03567d5e9so10909466wmc.1;
+        Wed, 06 Jul 2022 03:38:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=YU7/aTVmwMw1xiBrffIxn8qMUTw+gm+umroriH5I92o=;
+        b=ghSozxp8QV21TAro3RolO4UMKa+ccDr5PJ59lVX3tlVeCT7KTpO1FEbFAWdQL9A9Q/
+         Vulcqud9QeYF5LlhpGGu5zFNVp7E0Pw1H5AKFUDG2J0sEw8BNJTPrOLa23xwxFGdYjKf
+         If5VMtxoBF9DKYqHHkC2gisg2D1nGqpEv3ZjaQf+aDUmlgQG8PyPmHQ+p87NZ5pL+DU2
+         tsWjcMEmSKV+k8rV0ibunpSkVo4CpOltRtd0xY3hltVRq/6bETrZpMViQfqwdm2LZJvt
+         ozlHQfX4HjQlurVfc5cKdfTFBC0fE5p4WvIIqSK2UZfiEAdpOcjGjgmTgMXFZg9Ud90k
+         DzNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Bj57DZQxAwyQ5rJJj/iE7VR9xSo/KE2P6unWd/aXevs=;
-        b=me00YsG/CTPgmtw6XBBNNqyHRnIhI5p4+QrnMlqczQBUU5g8ALhHRfeaXQ54m2JhjL
-         B2aVuqw0AoVgm5K2r7k7YEZJ7RPHkSF15PPENHNE5k5gRiMNebhTw6iva0+YnkYKkP85
-         lbu0+IgKGZNinFjkbLpWkgY+EVV9PzhsIy0YzQItEc7qrec62fTNY7ub7ExmzYpB+8cw
-         qjEivTws2DYbF1/hFICTAA0v2ho/RETLQAdcXwV7smV2Fw79/juMqBA58Iwx5OkUPYf1
-         dCUeeJNX5BGkwl9qbwrNhEIAVcDkHvH31jCLOyoGqD9c0h+63Fpp22RWPrUUzPCKDpGk
-         dd0Q==
-X-Gm-Message-State: AJIora+9UYeQkxIC4YJClRYpI8pV3MRWfBJtn+GP9cWAD6RrHx46XJj6
-        k3TZCu+tlY0hQzyPKejbTqKtknGL9KRLECh/
-X-Google-Smtp-Source: AGRyM1uew14ejTFGCfT4Wj367a0dGX6ivHmE5ftDDeHvVWEGdY5QNX6jtVG2mdBkJ7kxdm7k90YzEw==
-X-Received: by 2002:ae9:f808:0:b0:6af:dfa:a290 with SMTP id x8-20020ae9f808000000b006af0dfaa290mr26249582qkh.741.1657101876397;
-        Wed, 06 Jul 2022 03:04:36 -0700 (PDT)
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com. [209.85.219.176])
-        by smtp.gmail.com with ESMTPSA id y11-20020a05620a44cb00b006a37eb728cfsm25037529qkp.1.2022.07.06.03.04.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Jul 2022 03:04:35 -0700 (PDT)
-Received: by mail-yb1-f176.google.com with SMTP id 64so17199350ybt.12;
-        Wed, 06 Jul 2022 03:04:35 -0700 (PDT)
-X-Received: by 2002:a25:2b48:0:b0:668:3b7d:326c with SMTP id
- r69-20020a252b48000000b006683b7d326cmr41431788ybr.380.1657101874906; Wed, 06
- Jul 2022 03:04:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220630051630.1718927-1-anshuman.khandual@arm.com> <20220630051630.1718927-27-anshuman.khandual@arm.com>
-In-Reply-To: <20220630051630.1718927-27-anshuman.khandual@arm.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 6 Jul 2022 12:04:23 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVJiS6vm2td-PBH3zpsNZJeeoudS4+yu4JG08sOi+XFdA@mail.gmail.com>
-Message-ID: <CAMuHMdVJiS6vm2td-PBH3zpsNZJeeoudS4+yu4JG08sOi+XFdA@mail.gmail.com>
-Subject: Re: [PATCH V6 26/26] mm/mmap: Drop ARCH_HAS_VM_GET_PAGE_PROT
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     Linux MM <linux-mm@kvack.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=YU7/aTVmwMw1xiBrffIxn8qMUTw+gm+umroriH5I92o=;
+        b=uJtSFpx5B/Cli1bD+7gHQL9eS3jlQSI6P0UMXxWGRCqWKvA1Yh/LASR5s2FWD3Yhse
+         3LuG7jIgzAofQoyJ+mCvnD6WVjEP+8uElqCnDCTFsCohNfEYZaJWxfGJwnpUKHJuNztH
+         SOWEGIKHiH/SwcqCrQGX+azYbn+pi1WeqXgg1iZyEUimFgUQBbD5gC2MqObTgqLXQ//m
+         2exhvtMgth4jwUL93gGOwJhDfz80qtX+v0HpdVpfMXT6z9Fwv3buR8nkjlNnCWm+lTMM
+         l1yy5ejy8UIxkYZWp9U5a3w+z79oeiOQeRbkXAdZBrRbERg8WRSOgvOjWkOYtst1Kpu0
+         h6gA==
+X-Gm-Message-State: AJIora/mhFm4KLIdifXqu2G+74T1nkv6ES+lC0mBBqZUytz6TaFDodIb
+        oI094RcXjLGbAfNgwMNbIws=
+X-Google-Smtp-Source: AGRyM1t7dpxKdmG7n71wWdoedPFPmkmnYg17fxZqQSno2zFUho02OLAK4wpsuebRyha/rsbvmeEh0Q==
+X-Received: by 2002:a7b:c4cb:0:b0:3a2:b45a:e344 with SMTP id g11-20020a7bc4cb000000b003a2b45ae344mr12785004wmk.157.1657103914353;
+        Wed, 06 Jul 2022 03:38:34 -0700 (PDT)
+Received: from opensuse.localnet (host-79-53-109-127.retail.telecomitalia.it. [79.53.109.127])
+        by smtp.gmail.com with ESMTPSA id g1-20020adffc81000000b00213ba3384aesm36323831wrr.35.2022.07.06.03.38.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Jul 2022 03:38:32 -0700 (PDT)
+From:   "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
+To:     Ira Weiny <ira.weiny@intel.com>
+Cc:     David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Nick Terrell <terrelln@fb.com>, linux-btrfs@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Christoph Hellwig <hch@infradead.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Openrisc <openrisc@lists.librecores.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Matthew Wilcox <willy@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "James E. J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org, Filipe Manana <fdmanana@kernel.org>
+Subject: Re: [PATCH v5 2/2] btrfs: Replace kmap() with kmap_local_page() in zstd.c
+Date:   Wed, 06 Jul 2022 12:38:29 +0200
+Message-ID: <2250236.ElGaqSPkdT@opensuse>
+In-Reply-To: <YsSLJBzwB5bCyuNR@iweiny-desk3>
+References: <20220704152322.20955-1-fmdefrancesco@gmail.com> <20220704152322.20955-3-fmdefrancesco@gmail.com> <YsSLJBzwB5bCyuNR@iweiny-desk3>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Jun 30, 2022 at 7:20 AM Anshuman Khandual
-<anshuman.khandual@arm.com> wrote:
-> Now all the platforms enable ARCH_HAS_GET_PAGE_PROT. They define and export
-> own vm_get_page_prot() whether custom or standard DECLARE_VM_GET_PAGE_PROT.
-> Hence there is no need for default generic fallback for vm_get_page_prot().
-> Just drop this fallback and also ARCH_HAS_GET_PAGE_PROT mechanism.
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+On marted=C3=AC 5 luglio 2022 21:04:04 CEST Ira Weiny wrote:
+> On Mon, Jul 04, 2022 at 05:23:22PM +0200, Fabio M. De Francesco wrote:
+> > The use of kmap() is being deprecated in favor of kmap_local_page().=20
+With
+> > kmap_local_page(), the mapping is per thread, CPU local and not=20
+globally
+> > visible.
+> >=20
+> > Therefore, use kmap_local_page() / kunmap_local() in zstd.c because in=
+=20
+this
+> > file the mappings are per thread and are not visible in other contexts.=
+=20
+In
+> > the meanwhile use plain page_address() on pages allocated with the=20
+GFP_NOFS
+> > flag instead of calling kmap*() on them (since they are always=20
+allocated
+> > from ZONE_NORMAL).
+> >=20
+> > Tested with xfstests on QEMU + KVM 32 bits VM with 4GB of RAM and
+> > booting a kernel with HIGHMEM64G enabled.
+> >=20
+> > Cc: Filipe Manana <fdmanana@kernel.org>
+> > Suggested-by: Ira Weiny <ira.weiny@intel.com>
+> > Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+> > ---
+> >  fs/btrfs/zstd.c | 34 ++++++++++++++--------------------
+> >  1 file changed, 14 insertions(+), 20 deletions(-)
+> >=20
+> > diff --git a/fs/btrfs/zstd.c b/fs/btrfs/zstd.c
+> > index 0fe31a6f6e68..78e0272e770e 100644
+> > --- a/fs/btrfs/zstd.c
+> > +++ b/fs/btrfs/zstd.c
+> > @@ -403,7 +403,7 @@ int zstd_compress_pages(struct list_head *ws,=20
+struct address_space *mapping,
+> > =20
+> >  	/* map in the first page of input data */
+> >  	in_page =3D find_get_page(mapping, start >> PAGE_SHIFT);
+> > -	workspace->in_buf.src =3D kmap(in_page);
+> > +	workspace->in_buf.src =3D kmap_local_page(in_page);
+> >  	workspace->in_buf.pos =3D 0;
+> >  	workspace->in_buf.size =3D min_t(size_t, len, PAGE_SIZE);
+> > =20
+> > @@ -415,7 +415,7 @@ int zstd_compress_pages(struct list_head *ws,=20
+struct address_space *mapping,
+> >  		goto out;
+> >  	}
+> >  	pages[nr_pages++] =3D out_page;
+> > -	workspace->out_buf.dst =3D kmap(out_page);
+> > +	workspace->out_buf.dst =3D page_address(out_page);
+> >  	workspace->out_buf.pos =3D 0;
+> >  	workspace->out_buf.size =3D min_t(size_t, max_out, PAGE_SIZE);
+> > =20
+> > @@ -450,9 +450,7 @@ int zstd_compress_pages(struct list_head *ws,=20
+struct address_space *mapping,
+> >  		if (workspace->out_buf.pos =3D=3D workspace->out_buf.size)=20
+{
+> >  			tot_out +=3D PAGE_SIZE;
+> >  			max_out -=3D PAGE_SIZE;
+> > -			kunmap(out_page);
+> >  			if (nr_pages =3D=3D nr_dest_pages) {
+> > -				out_page =3D NULL;
+> >  				ret =3D -E2BIG;
+> >  				goto out;
+> >  			}
+> > @@ -462,7 +460,7 @@ int zstd_compress_pages(struct list_head *ws,=20
+struct address_space *mapping,
+> >  				goto out;
+> >  			}
+> >  			pages[nr_pages++] =3D out_page;
+> > -			workspace->out_buf.dst =3D kmap(out_page);
+> > +			workspace->out_buf.dst =3D=20
+page_address(out_page);
+> >  			workspace->out_buf.pos =3D 0;
+> >  			workspace->out_buf.size =3D min_t(size_t,=20
+max_out,
+> >  						=09
+PAGE_SIZE);
+> > @@ -477,15 +475,15 @@ int zstd_compress_pages(struct list_head *ws,=20
+struct address_space *mapping,
+> >  		/* Check if we need more input */
+> >  		if (workspace->in_buf.pos =3D=3D workspace->in_buf.size) {
+> >  			tot_in +=3D PAGE_SIZE;
+> > -			kunmap(in_page);
+> > +			kunmap_local(workspace->in_buf.src);
+> >  			put_page(in_page);
+> > -
+> >  			start +=3D PAGE_SIZE;
+> >  			len -=3D PAGE_SIZE;
+> >  			in_page =3D find_get_page(mapping, start >>=20
+PAGE_SHIFT);
+> > -			workspace->in_buf.src =3D kmap(in_page);
+> > +			workspace->in_buf.src =3D=20
+kmap_local_page(in_page);
+> >  			workspace->in_buf.pos =3D 0;
+> >  			workspace->in_buf.size =3D min_t(size_t, len,=20
+PAGE_SIZE);
+> > +			workspace->out_buf.dst =3D=20
+page_address(out_page);
+>=20
+> Why is this needed?
 
->  arch/m68k/Kconfig       |  1 -
+Sorry. This initialization is not needed at all.
+Probably made a mistake with copy-pasting snippets of code.
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+I'm going to send ASAP the fifth version of this series.
 
-Gr{oetje,eeting}s,
+> The rest looks good,
 
-                        Geert
+Thanks,
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+=46abio
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> Ira
+>=20
+> [snip]
+>=20
+
+
+
