@@ -2,236 +2,157 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7048A56A045
-	for <lists+linux-parisc@lfdr.de>; Thu,  7 Jul 2022 12:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3339A56A4CF
+	for <lists+linux-parisc@lfdr.de>; Thu,  7 Jul 2022 16:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235173AbiGGKpp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 7 Jul 2022 06:45:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39314 "EHLO
+        id S235645AbiGGODE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 7 Jul 2022 10:03:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234834AbiGGKpn (ORCPT
+        with ESMTP id S235106AbiGGODC (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 7 Jul 2022 06:45:43 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACDAD4D4C0;
-        Thu,  7 Jul 2022 03:45:41 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id y18so10859731ljj.6;
-        Thu, 07 Jul 2022 03:45:41 -0700 (PDT)
+        Thu, 7 Jul 2022 10:03:02 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB9A2408D;
+        Thu,  7 Jul 2022 07:03:01 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id g126so5153510pfb.3;
+        Thu, 07 Jul 2022 07:03:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=WY98p2xpQdOFXmhJtt3xHyGiLiAUhi6XRf4hr9Uc3Wg=;
-        b=b6GFfkBqjaMf2ocm+NmB4Pdq8BftwMkyn64oPaQ4MV4pvFzFkwxMEQeq6P80Hm4/xV
-         qZ+8LuyU5wRQNERGgQNFjcHh58vvfaC0ptqNORWmxffraiT9/DjbcHTSFTsFBlux58Ot
-         XhtqsfAx1Sa2gM/tjlsL0QsZtd9LNBgjw9CnnsV557EhbpHb9gCv8v2p+Oj+GmTrlkqp
-         mUp+nL+5dVYNjaxqq1uCJh+k/gsHSTvygVI9uMaKcsKBGCdHzMWvDPsDHQivCRNcB3z5
-         282ePxgRE2AokBxYCEN4Y+8PqCSOtSZbzmUbIGk4eL7kv/uEwV39B6EvqmW8CS1gOdOi
-         UC1w==
+        bh=afbiyF16Fd4Ewaaf3EKKCpvpR7aHAsNAQp7K3TuQXs4=;
+        b=EzpeppBfdoHkOWruUNAYNHzOi8S5lBuVkWR/uarc/O7MDVJ2qM1NUNdy3hxzZeKinw
+         1f6tPe15AftcBiSP1Sugt5jiQpAKlLcyz+gPyHgHTvK6IkiuSg6SYHkmzqBCpGaHkm3K
+         GirawtqITR+EFkG0pF8QxPm0bxzk97EH7JYJxQXFRi4d1kRfsZVOuxKRapjByLByJ3DF
+         qAVqAZfaAfJT+F8T/W2rPtPmXy6/uaYwejGaDWQ5Frl3XCXwsQlqWF67lU3BIXdseGBS
+         CTJ5pH+oR76s++4uNTCxHCZwHNyWF4xdxY3ay2k5fQlKGRbstnEbIjnAVDZkl7wMQgN9
+         oSpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=WY98p2xpQdOFXmhJtt3xHyGiLiAUhi6XRf4hr9Uc3Wg=;
-        b=5Eo/0Z9lE0dnEeA9CuAdzgT3ij2ITH1jbtYNGQ3ygRTp6jZ+ZR9exxaGcxsdWLOp43
-         QEfLLPrepVslpODTt1c/qMl2IB5pR1uJbrnRoxK3I/RrgsGUtsG5sjFEaxpM0rxv7VZB
-         6yFa4tvQySbXnXgQdXI5P2XVZ2T838olFWqvhX7ardxLCW9rniWNuC3chL9ntyBbv9VU
-         gTJ+ctTszv+uIF5a1LzpKx5VHuD6KJjeLh9OGF4MPEtyXszsyNiZB4rrTWvvgA8ipBpo
-         qsruG5dF5+MsgNhHJ+lXuQf0T4SFgwiFleFinWHRUzJWDuzuCYv0LZ4ZX6Bb70Rb0PS8
-         AQpg==
-X-Gm-Message-State: AJIora+KWHbZBHMQ09F9agduePiLBnsypQP2ImH/lJvQ7Ytt3b/WMIi9
-        7Ccx7XfzwyGkgpAJZ45OVhc=
-X-Google-Smtp-Source: AGRyM1u/4QG+lv01OuNQRv5dICfp1iMojBGdOQCB054Of0nHO6eJIDlEiA+XLi20gZMrDBLB66OBnA==
-X-Received: by 2002:a05:651c:158a:b0:25d:1cc9:3ce7 with SMTP id h10-20020a05651c158a00b0025d1cc93ce7mr13652854ljq.450.1657190739851;
-        Thu, 07 Jul 2022 03:45:39 -0700 (PDT)
-Received: from mobilestation ([95.79.140.178])
-        by smtp.gmail.com with ESMTPSA id g2-20020a056512118200b0047f701f6d09sm6766233lfr.184.2022.07.07.03.45.35
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=afbiyF16Fd4Ewaaf3EKKCpvpR7aHAsNAQp7K3TuQXs4=;
+        b=z/OhwksyOp469scWVs4PaYhNC01pXiyHvOwOAPTqy+pvH2sZnN6XRZ28vSAujPutvg
+         AQGgZhLZ6b3oc+7LSlfFt5U0/C+XJmECqeCtvLa4OnsKYoIxPft0iiHX4dtUOUVVNUB7
+         o72nh0ELJf3U9b+yyqEedzG2zEcK016yJwvgjxBOYlp6WuNXVcI+F2+gmAIiXH9GEXmI
+         e0vcR+88sWEl5sqYG3UvOQtrtLFGVXKrKxZQO0pdrK7dgKYQvLkQtqOvnIUOjXNMCnTL
+         ZOSG6KMdU1kw0QUexsBYdIFk/iqmwXqSO9SNDDktXRZnojoCdRBSKzl/F4iaHlhna0VS
+         T/iA==
+X-Gm-Message-State: AJIora+ocuIwxhLJzHhnnSu+WxjiLc3tnw/dFIKUzzDFT6j9ccAbwr5i
+        VaOjjRnKKhvxqeBmGOblA/WrVTwMxpHjaNmP
+X-Google-Smtp-Source: AGRyM1uGEg1zRLKU3mt/8yK/HfEqKFBdv1eoQpzxhqHLW6DjIp1gLh6JEsU/RWRdBfoHFypH/TfaNQ==
+X-Received: by 2002:a17:90b:4c8f:b0:1ec:cdd0:41b7 with SMTP id my15-20020a17090b4c8f00b001eccdd041b7mr5420238pjb.119.1657202580508;
+        Thu, 07 Jul 2022 07:03:00 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id k127-20020a632485000000b004148cbdd4e5sm1215293pgk.57.2022.07.07.07.02.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Jul 2022 03:45:37 -0700 (PDT)
-Date:   Thu, 7 Jul 2022 13:45:33 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     Samuel Holland <samuel@sholland.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Chris Zankel <chris@zankel.net>,
-        Colin Ian King <colin.king@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Jan Beulich <jbeulich@suse.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Juergen Gross <jgross@suse.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Kees Cook <keescook@chromium.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Maximilian Heyne <mheyne@amazon.de>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Rich Felker <dalias@libc.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Sven Schnelle <svens@stackframe.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Wei Liu <wei.liu@kernel.org>, Wei Xu <xuwei5@hisilicon.com>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        iommu@lists.linux-foundation.org, iommu@lists.linux.dev,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-hyperv@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        x86@kernel.org, xen-devel@lists.xenproject.org,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v3 1/8] irqchip/mips-gic: Only register IPI domain when
- SMP is enabled
-Message-ID: <20220707104533.7iakliv2f5i2qi33@mobilestation>
-References: <20220701200056.46555-1-samuel@sholland.org>
- <20220701200056.46555-2-samuel@sholland.org>
- <20220705135243.ydbwfo4kois64elr@mobilestation>
- <87czehmiwt.wl-maz@kernel.org>
+        Thu, 07 Jul 2022 07:02:59 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Thu, 7 Jul 2022 07:02:58 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     kernel test robot <lkp@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        virtualization@lists.linux-foundation.org,
+        usbb2k-api-dev@nongnu.org, tipc-discussion@lists.sourceforge.net,
+        target-devel@vger.kernel.org, sound-open-firmware@alsa-project.org,
+        samba-technical@lists.samba.org, rds-devel@oss.oracle.com,
+        patches@opensource.cirrus.com, osmocom-net-gprs@lists.osmocom.org,
+        openipmi-developer@lists.sourceforge.net, nvdimm@lists.linux.dev,
+        ntb@lists.linux.dev, netfilter-devel@vger.kernel.org,
+        netdev@vger.kernel.org, mjpeg-users@lists.sourceforge.net,
+        megaraidlinux.pdl@broadcom.com, linuxppc-dev@lists.ozlabs.org,
+        linux1394-devel@lists.sourceforge.net, linux-x25@vger.kernel.org,
+        linux-wpan@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-unionfs@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
+        linux-sctp@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-raid@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-parport@lists.infradead.org,
+        linux-parisc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-nfc@lists.01.org, linux-mtd@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-fpga@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-cxl@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linaro-mm-sig@lists.linaro.org,
+        legousb-devel@lists.sourceforge.net, kvm@vger.kernel.org,
+        keyrings@vger.kernel.org, isdn4linux@listserv.isdn4linux.de,
+        iommu@lists.linux.dev, iommu@lists.linux-foundation.org,
+        intel-wired-lan@lists.osuosl.org, greybus-dev@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, dm-devel@redhat.com,
+        devicetree@vger.kernel.org, dev@openvswitch.org,
+        dccp@vger.kernel.org, damon@lists.linux.dev,
+        coreteam@netfilter.org, cgroups@vger.kernel.org,
+        ceph-devel@vger.kernel.org, ath11k@lists.infradead.org,
+        apparmor@lists.ubuntu.com, amd-gfx@lists.freedesktop.org,
+        alsa-devel@alsa-project.org,
+        accessrunner-general@lists.sourceforge.net
+Subject: Re: [linux-next:master] BUILD REGRESSION
+ 088b9c375534d905a4d337c78db3b3bfbb52c4a0
+Message-ID: <20220707140258.GA3492673@roeck-us.net>
+References: <62c683a2.g1VSVt6BrQC6ZzOz%lkp@intel.com>
+ <YsaUgfPbOg7WuBuB@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87czehmiwt.wl-maz@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+In-Reply-To: <YsaUgfPbOg7WuBuB@kroah.com>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Jul 07, 2022 at 09:22:26AM +0100, Marc Zyngier wrote:
-> On Tue, 05 Jul 2022 14:52:43 +0100,
-> Serge Semin <fancer.lancer@gmail.com> wrote:
+On Thu, Jul 07, 2022 at 10:08:33AM +0200, Greg KH wrote:
+
+[ ... ]
 > > 
-> > Hi Samuel
+> > Unverified Error/Warning (likely false positive, please contact us if interested):
 > > 
-> > On Fri, Jul 01, 2022 at 03:00:49PM -0500, Samuel Holland wrote:
-> > > The MIPS GIC irqchip driver may be selected in a uniprocessor
-> > > configuration, but it unconditionally registers an IPI domain.
-> > > 
-> > > Limit the part of the driver dealing with IPIs to only be compiled when
-> > > GENERIC_IRQ_IPI is enabled, which corresponds to an SMP configuration.
-> > 
-> > Thanks for the patch. Some comment is below.
-> > 
-> > > 
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Signed-off-by: Samuel Holland <samuel@sholland.org>
-> > > ---
-> > > 
-> > > Changes in v3:
-> > >  - New patch to fix build errors in uniprocessor MIPS configs
-> > > 
-> > >  drivers/irqchip/Kconfig        |  3 +-
-> > >  drivers/irqchip/irq-mips-gic.c | 80 +++++++++++++++++++++++-----------
-> > >  2 files changed, 56 insertions(+), 27 deletions(-)
-> > > 
-> > > diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> > > index 1f23a6be7d88..d26a4ff7c99f 100644
-> > > --- a/drivers/irqchip/Kconfig
-> > > +++ b/drivers/irqchip/Kconfig
-> > > @@ -322,7 +322,8 @@ config KEYSTONE_IRQ
-> > >  
-> > >  config MIPS_GIC
-> > >  	bool
-> > > -	select GENERIC_IRQ_IPI
-> > > +	select GENERIC_IRQ_IPI if SMP
-> > 
-> > > +	select IRQ_DOMAIN_HIERARCHY
-> > 
-> > It seems to me that the IRQ domains hierarchy is supposed to be
-> > created only if IPI is required. At least that's what the MIPS GIC
-> > driver implies. Thus we can go further and CONFIG_IRQ_DOMAIN_HIERARCHY
-> > ifdef-out the gic_irq_domain_alloc() and gic_irq_domain_free()
-> > methods definition together with the initialization:
-> > 
-> >  static const struct irq_domain_ops gic_irq_domain_ops = {
-> >  	.xlate = gic_irq_domain_xlate,
-> > +#ifdef CONFIG_IRQ_DOMAIN_HIERARCHY
-> >  	.alloc = gic_irq_domain_alloc,
-> >  	.free = gic_irq_domain_free,
-> > +#endif
-> >  	.map = gic_irq_domain_map,
-> > };
-> > 
-> > If the GENERIC_IRQ_IPI config is enabled, CONFIG_IRQ_DOMAIN_HIERARCHY
-> > will be automatically selected (see the config definition in
-> > kernel/irq/Kconfig). If the IRQs hierarchy is needed for some another
-> > functionality like GENERIC_MSI_IRQ_DOMAIN or GPIOs then they will
-> > explicitly enable the IRQ_DOMAIN_HIERARCHY config thus activating the
-> > denoted .alloc and .free methods definitions.
-> > 
-> > To sum up you can get rid of the IRQ_DOMAIN_HIERARCHY config
-> > force-select from this patch and make the MIPS GIC driver code a bit
-> > more coherent.
-> > 
-> > @Marc, please correct me if were wrong.
+> > arch/x86/events/core.c:2114 init_hw_perf_events() warn: missing error code 'err'
+> > drivers/android/binder.c:1481:19-23: ERROR: from is NULL but dereferenced.
+> > drivers/android/binder.c:2920:29-33: ERROR: target_thread is NULL but dereferenced.
+> > drivers/android/binder.c:353:25-35: ERROR: node -> proc is NULL but dereferenced.
+> > drivers/android/binder.c:4888:16-20: ERROR: t is NULL but dereferenced.
+> > drivers/base/regmap/regmap.c:1996:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> > drivers/char/random.c:869:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> > drivers/firmware/arm_scmi/clock.c:394:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> > drivers/firmware/arm_scmi/powercap.c:376:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> > drivers/gpu/drm/amd/amdgpu/../pm/powerplay/hwmgr/vega10_powertune.c:1214:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> > drivers/gpu/drm/amd/display/dc/os_types.h: drm/drm_print.h is included more than once.
+> > drivers/gpu/drm/bridge/ite-it66121.c:1398:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> > drivers/greybus/operation.c:617:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> 
+> <snip>
+> 
+> When the compiler crashes, why are you blaming all of these different
+> mailing lists?  Perhaps you need to fix your compiler :)
 > 
 
-> Either way probably works correctly, but Samuel's approach is more
-> readable IMO. It is far easier to reason about a high-level feature
-> (GENERIC_IRQ_IPI) than an implementation detail (IRQ_DOMAIN_HIERARCHY).
-> 
+To be fair, it says above "likely false positive, please contact us
+if interested". Also, the 32-bit build errors _are_ real, and the NULL
+dereferences in the binder driver are at the very least suspicious.
 
-The main idea of my comment was to get rid of the forcible
-IRQ_DOMAIN_HIERARCHY config selection, because the basic part of the
-driver doesn't depends on the hierarchical IRQ-domains functionality.
-It's needed only for IPIs and implicitly for the lower level IRQ
-device drivers like GPIO or PCIe-controllers, which explicitly enable
-the IRQ_DOMAIN_HIERARCHY config anyway. That's why instead of forcible
-IRQ_DOMAIN_HIERARCHY config selection (see Samuel patch) I suggested
-to make the corresponding functionality defined under the
-IRQ_DOMAIN_HIERARCHY config ifdefs, thus having the driver capable of
-creating the hierarchical IRQs domains only if it's required.
-
-> If you really want to save a handful of bytes, you can make the
-> callbacks conditional on GENERIC_IRQ_IPI, and be done with it.
-
-AFAIU I can't in this case. It must be either IRQ_DOMAIN_HIERARCHY
-ifdefs or explicit IRQ_DOMAIN_HIERARCHY select. There can be non-SMP
-(UP) systems with no need in IPIs but for instance having a GPIO or
-PCIe controller which require the hierarchical IRQ-domains support of
-the parental IRQ controller. So making the callbacks definition
-depended on the GENERIC_IRQ_IPI config state will break the driver for
-these systems. That's why I suggested to use
-CONFIG_IRQ_DOMAIN_HIERARCHY which activates the hierarchical IRQ
-domains support in the IRQ-chip system (see the irq_domain_ops
-structure conditional fields definition) and shall we have the
-suggested approach implemented in the MIPS GIC driver.
-
--Sergey
-
-> But this can come as an additional patch.
-> 
-> Thanks,
-> 
-> 	M.
-> 
-> -- 
-> Without deviation from the norm, progress is not possible.
+Guenter
