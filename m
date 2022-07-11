@@ -2,68 +2,47 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35CC856C747
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 Jul 2022 07:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9440F56D52B
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 Jul 2022 09:06:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbiGIFed (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 9 Jul 2022 01:34:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37568 "EHLO
+        id S229827AbiGKHGX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 11 Jul 2022 03:06:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbiGIFec (ORCPT
+        with ESMTP id S229518AbiGKHGV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 9 Jul 2022 01:34:32 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E76F089A81;
-        Fri,  8 Jul 2022 22:34:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1657344868;
-        bh=WQJYEsiTE2uKcSIa88wX9tDWIRA1dKUlveQY5EoYUgs=;
-        h=X-UI-Sender-Class:Date:To:From:Subject;
-        b=i0f0K89NqWgoVBjzdY0fafkvfiTGvnzO1NBRlwsgIxjkcgUoEEXWrZ4weTRrkxNcn
-         NW7u3m50Mf3ZT2ET0FYDpzjY1iE7JOZ7z2SlWyvzh7nwaOxTzMWelpCqDXirKhFDiJ
-         xqLxElJ2pwXTsJQv+cg9MNx25qGi07jE84yhZ51I=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.134.222]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MQ5vW-1nwtwh3iJU-00M0As; Sat, 09
- Jul 2022 07:34:27 +0200
-Message-ID: <fe10a412-8a1b-d582-a80b-8832519e0314@gmx.de>
-Date:   Sat, 9 Jul 2022 07:33:51 +0200
+        Mon, 11 Jul 2022 03:06:21 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 08E991836A;
+        Mon, 11 Jul 2022 00:06:19 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F0B5223A;
+        Mon, 11 Jul 2022 00:06:19 -0700 (PDT)
+Received: from a077893.arm.com (unknown [10.163.45.183])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B2CF33F70D;
+        Mon, 11 Jul 2022 00:06:11 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org, akpm@linux-foundation.org
+Cc:     hch@infradead.org, christophe.leroy@csgroup.eu,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, openrisc@lists.librecores.org,
+        linux-xtensa@linux-xtensa.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V7 00/26] mm/mmap: Drop __SXXX/__PXXX macros from across platforms
+Date:   Mon, 11 Jul 2022 12:35:34 +0530
+Message-Id: <20220711070600.2378316-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Content-Language: en-US
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        linux-parisc <linux-parisc@vger.kernel.org>
-From:   Helge Deller <deller@gmx.de>
-Subject: WARNING: CPU: 1 PID: 14735 at fs/dcache.c:365 dentry_free+0x100/0x128
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Bo1iDPqNzEIlDBTe7ZziPASjiqeLpZ4fTonwjaN0gNa3vU69Bie
- HQ3cYQhieH9i02VADN4ZB1FXOUF+Xmq+ncjsf6sSWYMBsI0cENrSB8ryMPcrM9DsXSwaTfR
- s5UC0OYqJu4hTMdgSiAbty9JITVNAiHatT/V7CLdhTZOmgf18fhWCh7bNDdRjlry8xDhqge
- 7ABeW/1l72cr7vqZ3/iHA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:evpVDAfgM/k=:FCitVBuC0+fSEB/pYdIaol
- C2VDu+NHLSjtOnHcYgYLb11qp9eIGp355AD+JkfE80nspWX3hgrgoSNyzr8NES9eoMolfDp4q
- y1wZL59hvKW1KKOep1JsY3FnTDpRJDCzDMhp+YkO89F4M/p/hiKoGt6OL+H5HSy/FeYH/xyA3
- kCeqslt5v69IRM/N+dDlqgiRluA/wz+hLirJMycoUV4mqkMT6mTZn4Sxk1tPZBK4jZc85nlMp
- 3fEmT3ah0r3Qhv+1ioAggISxeaQzdjYquLPtGoPyvvZof/K3dC+K7EBCJPBut77KDeWHzvWcD
- YY2p2UWOLt4z7q6IsPsQyrweGeVOV6v7x9jziQ52g4JQcCdPvduyu6mmIx9wBFlXWUPvwFO2k
- R1khYS6FtGbi0hkvWEAL1kAJuQJVKmUyST/EsQ8ka9QVpuvBWDjs/++Kjqrso0EgSxuGLFvRg
- ccDhjazA19+pBNorlqXJA7WxIvD/rk5l39Ls2rtQYvsavXOhLJqRxuC3mIopFwcs4dOis/iDw
- SYsBQl6aSeUigqK1ISuYPX2WUzp2Uful6bLZcyIa/Z72G7ImclTzPP8zUPcJFai83TC7pDGtQ
- YtZHscCJA3/u1E2LOuU96VVz+ymoULjx4S7B81xa4QPBsgWcXFmkPw9fZv4YP0JOHBrFwGMHG
- mtu/AwOIGZWdOR5eFXClKeHgFGQmxS8x1Qmb1QcCWZLHPw8ZLo5PGJhI8GHkEbR05bxlY+NbP
- 905fUoI2df2wXaDVCjIbx5vOJpdLMFN4RmcO9sYy6qL6FNHmcIKjtBCWeVo5NvovVc42eACV4
- ulolLpRSco9tDFWhPwSzdlYBfvv/u4zmf7sORx7TuF60KbeEBenH1ChZrPr0hUQblgdyxFSnz
- 7gA0DaVNyrDRboVqnQFBhqPBW0TijECn+/RW7gZ9fyswaktKkfRT5hei1zyX6+uZxZkyvUfJT
- y6HgNkeUTaG30Kx87NDAO9UrknbvNMVXYl6Zfq/cjxEnkFfEIiTBISspTZlcUTkLfyClgxYir
- SAue5kqn3FAMTMFpbluvOFFnGqckhdjThSAukwD6DCvfRDayWCGrd+Q6fJv2dAyEMx/hg060g
- TiFM6LijjqKX2LBMX1U2RPYG5cjQjcnNA85+7qEO0Wn0k+Ke6t6kMH48g==
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,103 +50,211 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On the debian buildd servers for the parisc architecture I'm facing
-the following warning, after which it gets stuck so that I need to
-reboot the server.
-This happens rarely, but I can reproduce it after some time.
-Filesystem is tmpfs.
+__SXXX/__PXXX macros is an unnecessary abstraction layer in creating the
+generic protection_map[] array which is used for vm_get_page_prot(). This
+abstraction layer can be avoided, if the platforms just define the array
+protection_map[] for all possible vm_flags access permission combinations
+and also export vm_get_page_prot() implementation.
 
-I'm happy to add debug code if necessary...
+This series drops __SXXX/__PXXX macros from across platforms in the tree.
+First it build protects generic protection_map[] array with '#ifdef __P000'
+and moves it inside platforms which enable ARCH_HAS_VM_GET_PAGE_PROT. Later
+this build protects same array with '#ifdef ARCH_HAS_VM_GET_PAGE_PROT' and
+moves inside remaining platforms while enabling ARCH_HAS_VM_GET_PAGE_PROT.
+This adds a new macro DECLARE_VM_GET_PAGE_PROT defining the current generic
+vm_get_page_prot(), in order for it to be reused on platforms that do not
+require custom implementation. Finally, ARCH_HAS_VM_GET_PAGE_PROT can just
+be dropped, as all platforms now define and export vm_get_page_prot(), via
+looking up a private and static protection_map[] array. protection_map[]
+data type has been changed as 'static const' on all platforms that do not
+change it during boot.
 
-Helge
+This series applies on v5.19-rc6 and has been build tested for multiple
+platforms. While here it has dropped off all previous tags from folks after
+the current restructuring. Series common CC list has been expanded to cover
+all impacted platforms for wider reach.
 
-[128321.224739] ------------[ cut here ]------------
-[128321.283492] WARNING: CPU: 1 PID: 14735 at fs/dcache.c:365 dentry_free+=
-0x100/0x128
-[128321.371369] Modules linked in: dm_mod(E) ipt_REJECT(E) nf_reject_ipv4(=
-E) xt_multiport(E) nft_compat(E) nf_tables(E) nfnetlink(E) ipmi_si(E) ipmi=
-_devintf(E) sg(E) ipmi_msghandler(E) fuse(E) configfs(E) sunrpc(E) ip_tabl=
-es(E) x_tables(E) autofs4(E) ext4(E) crc16(E) mbcache(E) jbd2(E) btrfs(E) =
-blake2b_generic(E) xor(E) raid6_pq(E) zstd_compress(E) libcrc32c(E) crc32c=
-_generic(E) sd_mod(E) t10_pi(E) crc64_rocksoft(E) crc64(E) crc_t10dif(E) c=
-rct10dif_generic(E) ohci_pci(E) crct10dif_common(E) ata_generic(E) sata_si=
-l(E) ehci_pci(E) pata_sil680(E) mptspi(E) mptscsih(E) ohci_hcd(E) mptbase(=
-E) scsi_transport_spi(E) ehci_hcd(E) libata(E) scsi_mod(E) usbcore(E) e100=
-0(E) usb_common(E) scsi_common(E)
-[128322.103374] CPU: 1 PID: 14735 Comm: cc1plus Tainted: G            E   =
-  5.18.9+ #27
-[128322.195315] Hardware name: 9000/785/C8000
-[128322.247318]
-[128322.263314]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-[128322.323316] PSW: 00001000000001101111000000001111 Tainted: G          =
-  E
-[128322.407315] r00-03  000000000806f00f 0000000239aa8700 000000004073be90=
- 0000000239aa87a0
-[128322.507313] r04-07  00000000410e1a00 000000411c8e3b40 0000000211715ad8=
- 000000411c8e3b98
-[128322.603314] r08-11  00000000410b8e80 0000000041147200 00000000000800e0=
- 0000000041147200
-[128322.699311] r12-15  0000000000000001 0000000010000000 0000000041147200=
- 0000000041147200
-[128322.795312] r16-19  000000411c8e3b98 0000000000000000 00000000415084d0=
- 0000000002c55000
-[128322.895311] r20-23  000000000800000f 000000004fb33600 000000000800000f=
- 0000000211715b20
-[128322.991311] r24-27  000000411c8e3bd0 000000411c8e3bd0 000000411c8e3b40=
- 00000000410e1a00
-[128323.087309] r28-31  00000000416bf9d8 0000000239aa8770 0000000239aa8820=
- 000000000000cf14
-[128323.187310] sr00-03  000000000500a800 0000000000000000 000000000000000=
-0 000000000500a800
-[128323.283324] sr04-07  0000000000000000 0000000000000000 000000000000000=
-0 0000000000000000
-[128323.383313]
-[128323.399309] IASQ: 0000000000000000 0000000000000000 IAOQ: 000000004073=
-b3d4 000000004073b3d8
-[128323.503310]  IIR: 03ffe01f    ISR: 0000000010340400  IOR: 000003e6aa2a=
-87a8
-[128323.587306]  CPU:        1   CR30: 0000000212ff0ce0 CR31: ffffffffffff=
-ffff
-[128323.667328]  ORIG_R28: 0000000239aa8920
-[128323.715307]  IAOQ[0]: dentry_free+0x100/0x128
-[128323.771306]  IAOQ[1]: dentry_free+0x104/0x128
-[128323.823305]  RP(r2): __dentry_kill+0x284/0x2e8
-[128323.875347] Backtrace:
-[128323.907319]  [<000000004073be90>] __dentry_kill+0x284/0x2e8
-[128323.975309]  [<000000004073d6d8>] dput+0x334/0x5a8
-[128324.031311]  [<0000000040726d94>] step_into+0x790/0xa88
-[128324.095309]  [<0000000040728910>] path_openat+0x21c/0x1ba8
-[128324.163310]  [<000000004072c018>] do_filp_open+0x9c/0x198
-[128324.231310]  [<0000000040702320>] do_sys_openat2+0x14c/0x2a8
-[128324.299309]  [<0000000040702c54>] compat_sys_openat+0x58/0xb8
-[128324.367308]  [<0000000040303e30>] syscall_exit+0x0/0x10
+- Anshuman
 
-after that:
+Changes in V7:
 
-[128324.451303] ---[ end trace 0000000000000000 ]---
-[128345.511159] rcu: INFO: rcu_sched self-detected stall on CPU
-[128345.511159] rcu:    0-...!: (5249 ticks this GP) idle=3D3c3/1/0x400000=
-0000000002 softirq=3D35954078/35954078 fqs=3D54
-[128345.511159]         (t=3D5250 jiffies g=3D33838821 q=3D175418)
-[128345.511159] rcu: rcu_sched kthread starved for 5146 jiffies! g33838821=
- f0x0 RCU_GP_WAIT_FQS(5) ->state=3D0x0 ->cpu=3D1
-[128345.511159] rcu:    Unless rcu_sched kthread gets sufficient CPU time,=
- OOM is now expected behavior.
-[128345.511159] ...
-[128345.511159]
-[128345.511159] rcu: Stack dump where RCU GP kthread last ran:
-[128345.511159] Task dump for CPU 1:
-[128345.511159] task:cc1plus         state:R  running task     stack:    0=
- pid:14735 ppid: 14734 flags:0x00000014
-[128345.511159] Backtrace:
-[128345.511159]  [<000000004071f5c8>] __legitimize_path+0x7c/0x108
-[128345.511159]  [<00000000407210d4>] lookup_fast+0x1c8/0x290
-[128345.511159]  [<00000000407277b4>] walk_component+0x1e8/0x330
-[128345.511159]  [<0000000040727be8>] link_path_walk.part.0.constprop.0+0x=
-2ec/0x4d0
-[128345.511159]  [<0000000040728844>] path_openat+0x150/0x1ba8
-[128345.511159]  [<000000004072c018>] do_filp_open+0x9c/0x198
-[128345.511159]  [<0000000040702320>] do_sys_openat2+0x14c/0x2a8
-[128345.511159]  [<0000000040702c54>] compat_sys_openat+0x58/0xb8
-[128345.511159]  [<0000000040303e30>] syscall_exit+0x0/0x10
-[128345.511159]
+- Dropped comments from arch/m68k/include/asm/mcf_pgtable.h per Geert
+- Dropped comments from arch/m68k/include/asm/sun3_pgtable.h per Geert
+- Moved the *_C definitions above into arch/m68k/mm/motorola.c per Geert
+- Folded in following build failure fix patches on linux-next
+
+https://lore.kernel.org/all/20220705221411.3381797-1-jcmvbkbc@gmail.com/
+https://lore.kernel.org/all/20220706054002.1936820-1-anshuman.khandual@arm.com/
+https://lore.kernel.org/all/20220708230646.CA9B7C341C0@smtp.kernel.org/	
+
+- Collected tags from Geert
+- Rebased on v5.19-rc6
+
+Changes in V6:
+
+https://lore.kernel.org/all/20220630051630.1718927-1-anshuman.khandual@arm.com/
+
+- Converted protection_map[] array as 'static const' on sparc32 platform
+- Rebased on v5.19-rc4
+- Collected tags
+
+Changes in V5:
+
+https://lore.kernel.org/all/20220627045833.1590055-1-anshuman.khandual@arm.com/
+
+- Converted most platfomr protection_map[] array as 'static const'
+- Moved DECLARE_VM_GET_PAGE_PROT inside <include/linux/pgtable.h>
+- Moved generic protection_map[] comment near DECLARE_VM_GET_PAGE_PROT
+- Updated some commit messages
+
+Changes in V4:
+
+https://lore.kernel.org/all/20220624044339.1533882-1-anshuman.khandual@arm.com/
+
+- Both protection_map[] and vm_get_page_prot() moves inside all platforms
+- Split patches to create modular changes for individual platforms
+- Add macro DECLARE_VM_GET_PAGE_PROT defining generic vm_get_page_prot()
+- Drop ARCH_HAS_VM_GET_PAGE_PROT
+
+Changes in V3:
+
+https://lore.kernel.org/all/20220616040924.1022607-1-anshuman.khandual@arm.com/
+
+- Fix build issues on powerpc and riscv
+
+Changes in V2:
+
+https://lore.kernel.org/all/20220613053354.553579-1-anshuman.khandual@arm.com/
+
+- Add 'const' identifier to protection_map[] on powerpc
+- Dropped #ifndef CONFIG_ARCH_HAS_VM_GET_PAGE_PROT check from sparc 32
+- Dropped protection_map[] init from sparc 64
+- Dropped all new platform changes subscribing ARCH_HAS_VM_GET_PAGE_PROT
+- Added a second patch which moves generic protection_map[] array into
+  all remaining platforms (!ARCH_HAS_VM_GET_PAGE_PROT)
+
+Changes in V1:
+
+https://lore.kernel.org/all/20220603101411.488970-1-anshuman.khandual@arm.com/
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+Cc: openrisc@lists.librecores.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-sh@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+
+
+Anshuman Khandual (26):
+  mm/mmap: Build protect protection_map[] with __P000
+  mm/mmap: Define DECLARE_VM_GET_PAGE_PROT
+  powerpc/mm: Move protection_map[] inside the platform
+  sparc/mm: Move protection_map[] inside the platform
+  arm64/mm: Move protection_map[] inside the platform
+  x86/mm: Move protection_map[] inside the platform
+  mm/mmap: Build protect protection_map[] with ARCH_HAS_VM_GET_PAGE_PROT
+  microblaze/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  loongarch/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  openrisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  xtensa/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  hexagon/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  parisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  alpha/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  nios2/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  riscv/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  csky/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  s390/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  ia64/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  mips/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  m68k/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  arc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  arm/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  um/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  sh/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  mm/mmap: Drop ARCH_HAS_VM_GET_PAGE_PROT
+
+ arch/alpha/include/asm/pgtable.h          | 17 -------
+ arch/alpha/mm/init.c                      | 22 +++++++++
+ arch/arc/include/asm/pgtable-bits-arcv2.h | 18 -------
+ arch/arc/mm/mmap.c                        | 20 ++++++++
+ arch/arm/include/asm/pgtable.h            | 17 -------
+ arch/arm/lib/uaccess_with_memcpy.c        |  2 +-
+ arch/arm/mm/mmu.c                         | 20 ++++++++
+ arch/arm64/Kconfig                        |  1 -
+ arch/arm64/include/asm/pgtable-prot.h     | 18 -------
+ arch/arm64/mm/mmap.c                      | 21 ++++++++
+ arch/csky/include/asm/pgtable.h           | 18 -------
+ arch/csky/mm/init.c                       | 20 ++++++++
+ arch/hexagon/include/asm/pgtable.h        | 27 -----------
+ arch/hexagon/mm/init.c                    | 42 ++++++++++++++++
+ arch/ia64/include/asm/pgtable.h           | 18 -------
+ arch/ia64/mm/init.c                       | 28 ++++++++++-
+ arch/loongarch/include/asm/pgtable-bits.h | 19 --------
+ arch/loongarch/mm/cache.c                 | 46 ++++++++++++++++++
+ arch/m68k/include/asm/mcf_pgtable.h       | 59 -----------------------
+ arch/m68k/include/asm/motorola_pgtable.h  | 29 -----------
+ arch/m68k/include/asm/sun3_pgtable.h      | 23 ---------
+ arch/m68k/mm/mcfmmu.c                     | 55 +++++++++++++++++++++
+ arch/m68k/mm/motorola.c                   | 29 +++++++++++
+ arch/m68k/mm/sun3mmu.c                    | 20 ++++++++
+ arch/microblaze/include/asm/pgtable.h     | 17 -------
+ arch/microblaze/mm/init.c                 | 20 ++++++++
+ arch/mips/include/asm/pgtable.h           | 22 ---------
+ arch/mips/mm/cache.c                      |  3 ++
+ arch/nios2/include/asm/pgtable.h          | 16 ------
+ arch/nios2/mm/init.c                      | 20 ++++++++
+ arch/openrisc/include/asm/pgtable.h       | 18 -------
+ arch/openrisc/mm/init.c                   | 20 ++++++++
+ arch/parisc/include/asm/pgtable.h         | 18 -------
+ arch/parisc/mm/init.c                     | 20 ++++++++
+ arch/powerpc/Kconfig                      |  1 -
+ arch/powerpc/include/asm/pgtable.h        | 20 +-------
+ arch/powerpc/mm/pgtable.c                 | 24 +++++++++
+ arch/riscv/include/asm/pgtable.h          | 20 --------
+ arch/riscv/mm/init.c                      | 20 ++++++++
+ arch/s390/include/asm/pgtable.h           | 17 -------
+ arch/s390/mm/mmap.c                       | 20 ++++++++
+ arch/sh/include/asm/pgtable.h             | 17 -------
+ arch/sh/mm/mmap.c                         | 20 ++++++++
+ arch/sparc/Kconfig                        |  1 -
+ arch/sparc/include/asm/pgtable_32.h       | 19 --------
+ arch/sparc/include/asm/pgtable_64.h       | 19 --------
+ arch/sparc/mm/init_32.c                   | 20 ++++++++
+ arch/sparc/mm/init_64.c                   |  3 ++
+ arch/um/include/asm/pgtable.h             | 17 -------
+ arch/um/kernel/mem.c                      | 20 ++++++++
+ arch/x86/Kconfig                          |  1 -
+ arch/x86/include/asm/mem_encrypt.h        |  2 +
+ arch/x86/include/asm/pgtable_types.h      | 19 --------
+ arch/x86/mm/mem_encrypt_amd.c             |  6 +--
+ arch/x86/mm/pgprot.c                      | 28 +++++++++++
+ arch/x86/um/mem_32.c                      |  2 +-
+ arch/xtensa/include/asm/pgtable.h         | 18 -------
+ arch/xtensa/mm/init.c                     | 22 +++++++++
+ include/linux/mm.h                        |  1 -
+ include/linux/pgtable.h                   | 28 +++++++++++
+ mm/Kconfig                                |  3 --
+ mm/mmap.c                                 | 47 ------------------
+ 62 files changed, 617 insertions(+), 581 deletions(-)
+
+-- 
+2.25.1
+
