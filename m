@@ -2,101 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97713578686
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Jul 2022 17:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6251F578A39
+	for <lists+linux-parisc@lfdr.de>; Mon, 18 Jul 2022 21:02:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231334AbiGRPlA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 18 Jul 2022 11:41:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52192 "EHLO
+        id S234802AbiGRTBu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 18 Jul 2022 15:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235506AbiGRPkw (ORCPT
+        with ESMTP id S234765AbiGRTB0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 18 Jul 2022 11:40:52 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F4012D37;
-        Mon, 18 Jul 2022 08:40:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1658158844;
-        bh=IrkLks5eIUK+nX3FGtjfRZqe8WD356p9NQUNDR586w4=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=dQgnGlcwyhXL5Q+92g4v2MMLW095BBmQXJLlb7bT3WfeVpNCAkEvhkRGEVZmc6IIK
-         f9TJ0idJVxTmX/hGEtV8Tr43WmvZT+358McRbKeqHsg7PKXLp6rTlSx5OKTx2q3PtQ
-         Y2921I2+e03EvxTm/a8LPGabsfFHluSASjrjo5hk=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.165.57]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mbir8-1ng2S20Joc-00dBdS; Mon, 18
- Jul 2022 17:40:44 +0200
-Message-ID: <0523dc43-f79b-bc28-a588-80a688e143a0@gmx.de>
-Date:   Mon, 18 Jul 2022 17:40:39 +0200
+        Mon, 18 Jul 2022 15:01:26 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A65382F672
+        for <linux-parisc@vger.kernel.org>; Mon, 18 Jul 2022 12:01:17 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id i14so22593437yba.1
+        for <linux-parisc@vger.kernel.org>; Mon, 18 Jul 2022 12:01:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=IQXHlBQ3jHSYUTt89EYBBYMpS/rXYtHBaNUJ6e2ZzB07/ETpvOJM0/ZijryokIEfDh
+         oJG0jiachEiIldTcksV5XzU+dy3csOVeMrzVRYAIpdf4PUrGYfI/KNNvcLIWjvmc8oHa
+         yWKlPWKnOFkuEw2Mq2CzZYpqcRK9kJ+LygeUXE0izxh4s3I+nauj1w40rP+480vJCi+X
+         rAPSoEvo8wXV23cydMjOZnuzBivYToT/OwjRuq1iqX/8Isb8Rqougy46FnOdoQuh9Z/u
+         z7xKihQATs9EIIDqpmGAQl/2n//vpMk3ZDpLHQioaLk/1hVBrL4som/CgeyT77yPFwbn
+         VU6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=UUSO+CIgz6pck4ivmbneukkvRNEzF48gIYcyCMGdDkaO7g7DlPF4S3UIHORm/zcyk9
+         ZD8uRTxmaobDPXalQgqYX7SBb/6OsWHLy2jYEobojNfFsPSXChPOWgFsXtWz/Nb09Wgi
+         utY8Pzrf/ugGbmgnTs8itpE7MQJoESbTrhZljdn68hdj/8JBwLdqZm3MsUh+1FjquqRZ
+         Q1a5a5Hw2XVfX7tYAroO/LNR8ysVzjSJAKrAxJhXKGJPP6haEwdrbHeJdVI+BNmf4gSL
+         ELhO6acmKcn9/vXjH6x2fsbJXlW7F6KjIFDzSgIh8fJ5JlCaip+IQIcUA/mzxU+usbsX
+         HdOQ==
+X-Gm-Message-State: AJIora9l3Oll6fRe+TIqJ9wX4j3L0QFQg5Ax3ltuoYuMGm0o0UGWNPUJ
+        aUAi6GvEkT+XoUzqaWREftEBRFlHw5qJtAK7bSSNVxuBBqSqUw==
+X-Google-Smtp-Source: AGRyM1sOF4caZ/Mzb7i1HwUB8dyXYAmjf9y+Pd1nVHRKiUHeMR6opOrMc10oZNu5DLkN2HS0cpkKNGEh0T+MU99Jmes=
+X-Received: by 2002:a81:5747:0:b0:31d:1bb8:65b7 with SMTP id
+ l68-20020a815747000000b0031d1bb865b7mr30830046ywb.168.1658170865217; Mon, 18
+ Jul 2022 12:01:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] mm: Fix comment typo
-Content-Language: en-US
-To:     Jason Wang <wangborong@cdjrlc.com>
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220715044915.21077-1-wangborong@cdjrlc.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220715044915.21077-1-wangborong@cdjrlc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FSSHr0eKFRjxOGG1NmNguZ4LKlBjRR/rVdJvdSSW7lRYJp4D33I
- 0ldXskhyMGdK9/pZzj+hfLyAsmOr8TT1x0vrQMHVTtuwDR5fy1aOUmG2jSRGpYOYf953CKq
- PnNokTZ6vyX6FsbI+/asg/UfitUAbXHOE0Qo7zUdGG23QsXq4fsezkV7Rk2PGRYfpp2y9MC
- kCy56pIdio/AgCy/YhHng==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:wToMVn+bVjQ=:PqlLAp423xKvnXQeAaBP6V
- vhTmZm9L9/twUKGWfB1ee8zMwnYZXzoaQELq2CuZmMMQgB42C2Y/LjT0B2Xmc1G5iPifnectZ
- oBjXQbZoBPloaTrTtn3ybuLQVzazQ7dEMUqcz8i7faebu7BkKCp1W8Wb/4wEmKnYR1bZ69fq0
- KA/8J5aYNPMtIR47Jbv97CdKBekiSADe0qhT5wXGrgcWnunyrbokYqVmABQqffSeIqwZQPgOz
- k52NZRWURxyzhwpPKer4VygCRlLCc4nHmN/ln0bNNCB9eGyj//Q+cgyIi7hJkcLgd0UP2SpjK
- s9KWESkMym337IkZFMhyY1ALeK01ljw2qESuJJnTM1ppoaYnrEmtW+YjdyvJne/z6N1irSiV7
- tvo299uzzqpwu61mn4Xe3FfZ3BZKtzAjjCltzv4BNpo/y+jofYyq1mXS4Kz4Tbltn/wW6oElI
- w1JOLiHAb0BiWlixNloA5bwrzesHak/QBPHC3cpQdPDEzpR5Ya307GFtk06oNlSiYbccmmuys
- SkSpnahxSKhKOE9R1KBg3BMtLiboDrUkUV5Oc7Os2AHmcq7/HhbP4CnaI4/J1xcxwhCSDXpKo
- isLaEh9uAbc2ZnHQUvT0AlAGTyEfqUo90ucZ3PKQ2yJDl0MUcNOUm5TsqaSublOPo4bypWTll
- 6aDlBLT7rv2UnuARPJMAm6fNIQi8FYsPc8+A8BdCDIbdRJSic4lU9OLKdxP5lJ8bOwJUIzFAE
- gsimSPT+iTwSAVmaI0NwmaDnHGMss9zhsafnmIu7y/3eHKOA2OzO0uyKFBi0qnyFyCgpVTzqh
- kikKj7bSukwKkXXj6aHv+TQTO3tMmPy7Mgid5bQzlZwUzbyJ96dSR+RaKk0KQaiso4B3MGvgB
- e2LyjhOhQJChg7ELehy7ucn9GZVt3G2MZMFcrg6VVSH7mGM+pzt3DYpG1kO3z2Z2hQxKzXJhJ
- pBy4uSh4dRzH9XCTB+eYCo2eE8evkhA6vhDLkXxOJry82u5sBGPpBDsUA2SOm6sTbsIFzSGOG
- cxWbJkVHVPMojsVHMhcbagS6eeB8Y76BZA+ghLdfEi0639OEOuxLcrqd486eQjvlqhXQbBDTy
- cUr0JrX5kGBfLquiaOme8mFp7LEkLwdoYLcfz7B/6HrB+7or0u+/aW/aQ==
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6919:4004:b0:cc:50ff:b3d8 with HTTP; Mon, 18 Jul 2022
+ 12:01:04 -0700 (PDT)
+Reply-To: lilywilliam989@gmail.com
+From:   Lily William <sgtalberts@gmail.com>
+Date:   Mon, 18 Jul 2022 11:01:04 -0800
+Message-ID: <CALPTejMFgL0Bg7jCKa7j+5KxVv_jnSM4ZPq-QhHCiUpG_ZswsQ@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 7/15/22 06:49, Jason Wang wrote:
-> The double `the' is duplicated in line 41, remove one.
->
-> Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
-> ---
->  arch/parisc/mm/fault.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Dear,
 
-applied to parisc tree.
+My name is Dr Lily William from the United States.I am a French and
+American nationality (dual) living in the U.S and sometimes in France
+for Work Purpose.
 
-Thanks!
-Helge
+I hope you consider my friend request. I will share some of my pics
+and more details about myself when I get your response.
 
->
-> diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-> index 9ad80d4d3389..869204e97ec9 100644
-> --- a/arch/parisc/mm/fault.c
-> +++ b/arch/parisc/mm/fault.c
-> @@ -38,7 +38,7 @@ int show_unhandled_signals =3D 1;
->  /*
->   * parisc_acctyp(unsigned int inst) --
->   *    Given a PA-RISC memory access instruction, determine if the
-> - *    the instruction would perform a memory read or memory write
-> + *    instruction would perform a memory read or memory write
->   *    operation.
->   *
->   *    This function assumes that the given instruction is a memory acce=
-ss
+Thanks
 
+With love
+Lily
