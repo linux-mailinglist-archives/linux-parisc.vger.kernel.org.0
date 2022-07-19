@@ -2,206 +2,165 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF81357A7B9
-	for <lists+linux-parisc@lfdr.de>; Tue, 19 Jul 2022 21:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E3F057A8BC
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 Jul 2022 23:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239946AbiGST5Z (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 19 Jul 2022 15:57:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44138 "EHLO
+        id S238113AbiGSVCQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 19 Jul 2022 17:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239733AbiGST4v (ORCPT
+        with ESMTP id S230311AbiGSVCP (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 19 Jul 2022 15:56:51 -0400
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C9A75D5BB;
-        Tue, 19 Jul 2022 12:56:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=mqfih26lBSsDQZv1H6eACJYrHLpfO1zloM0q474LjNQ=; b=Ss8JPhG0TkQqkvGQCOEtsMEnUA
-        YpnR1i8ZfodnQTKjFlcR1dTNNVGBCvVD2u4A1NvZcBP9BHuiMnoKBJrBPSKV6UgWAus/bdgpkW2UB
-        /0iOrU0VPrMksBn+tdQ7tXIlTlCF3AcM6cPf0cdTBBWwu+V831EBynm7AYfpAF1p4hHXKB0uFE3c9
-        Jy8HTxYta1NWUhHWfe38TSjh1sNcI5ekD/9EgeZ9z4VIdZMDERqRlX0ZNjbcLKzG/HS85nGayvpBy
-        bOs0rwIoBW/D7zsS4r6nG5xfSc7p3UyzFko99SvlUniGlM5HHvtQVgnVD3g0kWhvwmKdcVMqdKNRC
-        qIzDdipw==;
-Received: from 200-100-212-117.dial-up.telesp.net.br ([200.100.212.117] helo=localhost)
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1oDtKc-006fYB-Ri; Tue, 19 Jul 2022 21:56:35 +0200
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-To:     akpm@linux-foundation.org, bhe@redhat.com, pmladek@suse.com,
-        kexec@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, x86@kernel.org, kernel-dev@igalia.com,
-        kernel@gpiccoli.net, halves@canonical.com, fabiomirmar@gmail.com,
-        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
-        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
-        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
-        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
-        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org, "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-parisc@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>
-Subject: [PATCH v2 07/13] parisc: Replace regular spinlock with spin_trylock on panic path
-Date:   Tue, 19 Jul 2022 16:53:20 -0300
-Message-Id: <20220719195325.402745-8-gpiccoli@igalia.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220719195325.402745-1-gpiccoli@igalia.com>
-References: <20220719195325.402745-1-gpiccoli@igalia.com>
+        Tue, 19 Jul 2022 17:02:15 -0400
+X-Greylist: delayed 163 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 19 Jul 2022 14:02:13 PDT
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-002.bell.net [209.71.208.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E28E34F1B2;
+        Tue, 19 Jul 2022 14:02:13 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [142.181.186.4]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 62D6EBC60007B342
+X-CM-Envelope: MS4xfPDKSqTeFgeIo8sbqKxR534z6yt384bsV8dXD9yb2d5RklzIIvS0QtRMICXbTr3KmV3474YlZmZ3fHkVEFb0DRCVSxQmSjtNIuq0erVxKynvy+EfI/yw
+ YqR9kLNggq2GhFioaZUdba4iV2qRynrMnWXQfs9134YiR45T9nPbNh5p+nwI30D7K5YIiFH2xCqUrKWlgfiV8IX5xfuorlvo9/qNZUDRjMmoUj8WVEzIZzM9
+ Ga+LfnxMDAhEpeolnuhn0fir7UXznKCsppsyQ1EkpkwlXoRjVPMuK3yUUMPGHdET4cx3jRrImRycVC1zZkPD7FOhMs8Cg3PyiRCj89NQHrwKrmiBXPpjisAG
+ UeUOhPSq
+X-CM-Analysis: v=2.4 cv=FMx4e8ks c=1 sm=1 tr=0 ts=62d71b28
+ a=HvfK566jdESv8vPwpMqobg==:117 a=HvfK566jdESv8vPwpMqobg==:17
+ a=IkcTkHD0fZMA:10 a=2e59O1INAAAA:8 a=FBHGMhGWAAAA:8 a=GJOq0uU_-oSRmziDgnsA:9
+ a=QEXdDO2ut3YA:10 a=qinn3d7XxS3vONFlH6pt:22 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (142.181.186.4) by cmx-mtlrgo002.bell.net (5.8.807) (authenticated as dave.anglin@bell.net)
+        id 62D6EBC60007B342; Tue, 19 Jul 2022 16:59:20 -0400
+Message-ID: <7d53692b-6ac8-e1bd-4d0d-7e97aa01b18d@bell.net>
+Date:   Tue, 19 Jul 2022 16:59:21 -0400
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: WARNING: CPU: 1 PID: 14735 at fs/dcache.c:365
+ dentry_free+0x100/0x128
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>, Hillf Danton <hdanton@sina.com>
+Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+References: <20220709090756.2384-1-hdanton@sina.com>
+ <20220715133300.1297-1-hdanton@sina.com>
+ <cff76e00-3561-4069-f5c7-26d3de4da3c4@gmx.de>
+ <20220717113634.1552-1-hdanton@sina.com>
+ <0aa365ca-a9f0-8d15-b515-adb8823f5d28@gmx.de>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <0aa365ca-a9f0-8d15-b515-adb8823f5d28@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The panic notifiers' callbacks execute in an atomic context, with
-interrupts/preemption disabled, and all CPUs not running the panic
-function are off, so it's very dangerous to wait on a regular
-spinlock, there's a risk of deadlock.
+Hi Helge,
 
-Refactor the panic notifier of parisc/power driver to make use
-of spin_trylock - for that, we've added a second version of the
-soft-power function. Also, some comments were reorganized and
-trailing white spaces, useless header inclusion and blank lines
-were removed.
+I hit this warning with the patch below building ghc on mx3210:
 
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Acked-by: Helge Deller <deller@gmx.de> # parisc
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+mx3210 login: ------------[ cut here ]------------
+WARNING: CPU: 2 PID: 32654 at fs/dcache.c:365 dentry_free+0xfc/0x108
+Modules linked in: binfmt_misc ext2 ext4 crc16 mbcache jbd2 ipmi_watchdog sg ipmi_si ipmi_poweroff ipmi_devintf ipmi_msghandler fuse nfsd 
+ip_tables x_tables ipv6 autofs4 xfs raid10 raid456 async_raid6_recov async_memcpy async_pq async_xor async_tx xor raid6_pq libcrc32c 
+crc32c_generic raid1 raid0 multipath linear md_mod sd_mod t10_pi ses enclosure scsi_transport_sas crc64_rocksoft crc64 uas usb_storage sr_mod 
+cdrom ohci_pci sym53c8xx pata_cmd64x ehci_pci ohci_hcd libata scsi_transport_spi ehci_hcd tg3 scsi_mod usbcore scsi_common usb_common
+CPU: 2 PID: 32654 Comm: cc1 Not tainted 5.18.12+ #2
+Hardware name: 9000/800/rp3440
 
----
+      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+PSW: 00001000000001000110100000001111 Not tainted
+r00-03  000000000804680f 00000040ce7fc880 00000000404f2b74 00000040ce7fc920
+r04-07  0000000040be4940 000000410f6cd630 00000001413e4068 000000410f6cd688
+r08-11  0000000040fd2e60 0000000040bc5020 0000000040c2c940 00000000000800e0
+r12-15  0000000040c2c940 0000000000000001 0000000040c2c940 000000410f6cd688
+r16-19  00000001f9fe105d 00000040ce7fc1f8 000000000000002f 000000000a0c1000
+r20-23  000000000800000f 000000000800000f 000000410f6cd639 000000000800000f
+r24-27  0000000000000000 0000000000000385 000000410f6cd630 0000000040be4940
+r28-31  0000000041104530 00000040ce7fc8f0 00000040ce7fc9a0 0000000000000000
+sr00-03  0000000000a03800 0000000000000000 0000000000000000 0000000000a03800
+sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
 
-V2:
-- Added Helge's ACK - thanks!
+IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000404f18bc 00000000404f18c0
+  IIR: 03ffe01f    ISR: 0000000010350000  IOR: 00000239ff3fc928
+  CPU:        2   CR30: 00000040cadd1380 CR31: ffffffffffffffff
+  ORIG_R28: 00000040ce7fcb70
+  IAOQ[0]: dentry_free+0xfc/0x108
+  IAOQ[1]: dentry_free+0x100/0x108
+  RP(r2): __dentry_kill+0x2bc/0x338
+Backtrace:
+  [<00000000404f2b74>] __dentry_kill+0x2bc/0x338
+  [<00000000404f37b8>] dentry_kill+0xb0/0x318
+  [<00000000404f3d08>] dput+0x2e8/0x328
+  [<00000000404dd7dc>] step_into+0x344/0x390
+  [<00000000404dda4c>] walk_component+0xa4/0x310
+  [<00000000404df234>] link_path_walk.part.0+0x2ec/0x4b0
+  [<00000000404e0000>] path_openat+0xe8/0x348
+  [<00000000404e2c58>] do_filp_open+0x98/0x178
+  [<00000000404babe8>] do_sys_openat2+0x148/0x288
+  [<00000000404bb41c>] compat_sys_openat+0x54/0x98
+  [<0000000040203e30>] syscall_exit+0x0/0x10
 
- arch/parisc/include/asm/pdc.h |  1 +
- arch/parisc/kernel/firmware.c | 27 +++++++++++++++++++++++----
- drivers/parisc/power.c        | 17 ++++++++++-------
- 3 files changed, 34 insertions(+), 11 deletions(-)
+---[ end trace 0000000000000000 ]---
+watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [cc1:32657]
 
-diff --git a/arch/parisc/include/asm/pdc.h b/arch/parisc/include/asm/pdc.h
-index b643092d4b98..7a106008e258 100644
---- a/arch/parisc/include/asm/pdc.h
-+++ b/arch/parisc/include/asm/pdc.h
-@@ -83,6 +83,7 @@ int pdc_do_firm_test_reset(unsigned long ftc_bitmap);
- int pdc_do_reset(void);
- int pdc_soft_power_info(unsigned long *power_reg);
- int pdc_soft_power_button(int sw_control);
-+int pdc_soft_power_button_panic(int sw_control);
- void pdc_io_reset(void);
- void pdc_io_reset_devices(void);
- int pdc_iodc_getc(void);
-diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware.c
-index 6a7e315bcc2e..0e2f70b592f4 100644
---- a/arch/parisc/kernel/firmware.c
-+++ b/arch/parisc/kernel/firmware.c
-@@ -1232,15 +1232,18 @@ int __init pdc_soft_power_info(unsigned long *power_reg)
- }
- 
- /*
-- * pdc_soft_power_button - Control the soft power button behaviour
-- * @sw_control: 0 for hardware control, 1 for software control 
-+ * pdc_soft_power_button{_panic} - Control the soft power button behaviour
-+ * @sw_control: 0 for hardware control, 1 for software control
-  *
-  *
-  * This PDC function places the soft power button under software or
-  * hardware control.
-- * Under software control the OS may control to when to allow to shut 
-- * down the system. Under hardware control pressing the power button 
-+ * Under software control the OS may control to when to allow to shut
-+ * down the system. Under hardware control pressing the power button
-  * powers off the system immediately.
-+ *
-+ * The _panic version relies in spin_trylock to prevent deadlock
-+ * on panic path.
-  */
- int pdc_soft_power_button(int sw_control)
- {
-@@ -1254,6 +1257,22 @@ int pdc_soft_power_button(int sw_control)
- 	return retval;
- }
- 
-+int pdc_soft_power_button_panic(int sw_control)
-+{
-+	int retval;
-+	unsigned long flags;
-+
-+	if (!spin_trylock_irqsave(&pdc_lock, flags)) {
-+		pr_emerg("Couldn't enable soft power button\n");
-+		return -EBUSY; /* ignored by the panic notifier */
-+	}
-+
-+	retval = mem_pdc_call(PDC_SOFT_POWER, PDC_SOFT_POWER_ENABLE, __pa(pdc_result), sw_control);
-+	spin_unlock_irqrestore(&pdc_lock, flags);
-+
-+	return retval;
-+}
-+
- /*
-  * pdc_io_reset - Hack to avoid overlapping range registers of Bridges devices.
-  * Primarily a problem on T600 (which parisc-linux doesn't support) but
-diff --git a/drivers/parisc/power.c b/drivers/parisc/power.c
-index 456776bd8ee6..8512884de2cf 100644
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -37,7 +37,6 @@
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
--#include <linux/notifier.h>
- #include <linux/panic_notifier.h>
- #include <linux/reboot.h>
- #include <linux/sched/signal.h>
-@@ -175,16 +174,21 @@ static void powerfail_interrupt(int code, void *x)
- 
- 
- 
--/* parisc_panic_event() is called by the panic handler.
-- * As soon as a panic occurs, our tasklets above will not be
-- * executed any longer. This function then re-enables the 
-- * soft-power switch and allows the user to switch off the system
-+/*
-+ * parisc_panic_event() is called by the panic handler.
-+ *
-+ * As soon as a panic occurs, our tasklets above will not
-+ * be executed any longer. This function then re-enables
-+ * the soft-power switch and allows the user to switch off
-+ * the system. We rely in pdc_soft_power_button_panic()
-+ * since this version spin_trylocks (instead of regular
-+ * spinlock), preventing deadlocks on panic path.
-  */
- static int parisc_panic_event(struct notifier_block *this,
- 		unsigned long event, void *ptr)
- {
- 	/* re-enable the soft-power switch */
--	pdc_soft_power_button(0);
-+	pdc_soft_power_button_panic(0);
- 	return NOTIFY_DONE;
- }
- 
-@@ -193,7 +197,6 @@ static struct notifier_block parisc_panic_block = {
- 	.priority	= INT_MAX,
- };
- 
--
- static int __init power_init(void)
- {
- 	unsigned long ret;
+Regards,
+Dave
+
+On 2022-07-19 12:32 p.m., Helge Deller wrote:
+> Hello Hillf,
+>
+> On 7/17/22 13:36, Hillf Danton wrote:
+>> On Sun, 17 Jul 2022 11:42:48 +0200
+>>> I used WARN_ON() instead of BUG_ON().
+>>> With that, both triggered, first the first one, then the second one.
+>>> Full log is here:
+>>> http://dellerweb.de/testcases/minicom.dcache.crash.6-warn
+>> Given the first BUG_ON triggered, and dentry at the moment is supposed to
+>> not be alias, see if it is still in lookup with d_lock held. That is the
+>> step before de-unioning d_alias with d_in_lookup_hash.
+>>
+>> On the other hand if only the second one triggered, we should track
+>> DCACHE_DENTRY_KILLED instead in assumption that killed dentry was
+>> used again after releasing d_lock surrounding the firt one.
+> The machine has now been up for 2 days without any issues, while it had pretty
+> much the same load as when it was crashing earlier.
+> So, in summary I'd assume that your patch below fixes the issue.
+>
+> I'm now rebooting the machine with a new kernel, where I just changed
+> 	if (unlikely(d_in_lookup(dentry)))
+> to
+> 	if (WARN_ON_ONCE(d_in_lookup(dentry)))
+> in order to see if this really triggered.
+>
+> Anyway, I think your patch is good so far.
+> Would that be the final patch, or should I test some others?
+>
+> Thanks!
+> Helge
+>
+>> --- a/fs/dcache.c
+>> +++ b/fs/dcache.c
+>> @@ -605,8 +605,12 @@ static void __dentry_kill(struct dentry
+>>   		spin_unlock(&parent->d_lock);
+>>   	if (dentry->d_inode)
+>>   		dentry_unlink_inode(dentry);
+>> -	else
+>> +	else {
+>> +		if (unlikely(d_in_lookup(dentry))) {
+>> +			__d_lookup_done(dentry);
+>> +		}
+>>   		spin_unlock(&dentry->d_lock);
+>> +	}
+>>   	this_cpu_dec(nr_dentry);
+>>   	if (dentry->d_op && dentry->d_op->d_release)
+>>   		dentry->d_op->d_release(dentry);
+
+
 -- 
-2.37.1
+John David Anglin  dave.anglin@bell.net
 
