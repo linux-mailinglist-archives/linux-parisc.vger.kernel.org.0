@@ -2,79 +2,94 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6251F578A39
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Jul 2022 21:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F73F5791C6
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 Jul 2022 06:22:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234802AbiGRTBu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 18 Jul 2022 15:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55688 "EHLO
+        id S235029AbiGSEWJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 19 Jul 2022 00:22:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234765AbiGRTB0 (ORCPT
+        with ESMTP id S233619AbiGSEWI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 18 Jul 2022 15:01:26 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A65382F672
-        for <linux-parisc@vger.kernel.org>; Mon, 18 Jul 2022 12:01:17 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id i14so22593437yba.1
-        for <linux-parisc@vger.kernel.org>; Mon, 18 Jul 2022 12:01:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=IQXHlBQ3jHSYUTt89EYBBYMpS/rXYtHBaNUJ6e2ZzB07/ETpvOJM0/ZijryokIEfDh
-         oJG0jiachEiIldTcksV5XzU+dy3csOVeMrzVRYAIpdf4PUrGYfI/KNNvcLIWjvmc8oHa
-         yWKlPWKnOFkuEw2Mq2CzZYpqcRK9kJ+LygeUXE0izxh4s3I+nauj1w40rP+480vJCi+X
-         rAPSoEvo8wXV23cydMjOZnuzBivYToT/OwjRuq1iqX/8Isb8Rqougy46FnOdoQuh9Z/u
-         z7xKihQATs9EIIDqpmGAQl/2n//vpMk3ZDpLHQioaLk/1hVBrL4som/CgeyT77yPFwbn
-         VU6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=UUSO+CIgz6pck4ivmbneukkvRNEzF48gIYcyCMGdDkaO7g7DlPF4S3UIHORm/zcyk9
-         ZD8uRTxmaobDPXalQgqYX7SBb/6OsWHLy2jYEobojNfFsPSXChPOWgFsXtWz/Nb09Wgi
-         utY8Pzrf/ugGbmgnTs8itpE7MQJoESbTrhZljdn68hdj/8JBwLdqZm3MsUh+1FjquqRZ
-         Q1a5a5Hw2XVfX7tYAroO/LNR8ysVzjSJAKrAxJhXKGJPP6haEwdrbHeJdVI+BNmf4gSL
-         ELhO6acmKcn9/vXjH6x2fsbJXlW7F6KjIFDzSgIh8fJ5JlCaip+IQIcUA/mzxU+usbsX
-         HdOQ==
-X-Gm-Message-State: AJIora9l3Oll6fRe+TIqJ9wX4j3L0QFQg5Ax3ltuoYuMGm0o0UGWNPUJ
-        aUAi6GvEkT+XoUzqaWREftEBRFlHw5qJtAK7bSSNVxuBBqSqUw==
-X-Google-Smtp-Source: AGRyM1sOF4caZ/Mzb7i1HwUB8dyXYAmjf9y+Pd1nVHRKiUHeMR6opOrMc10oZNu5DLkN2HS0cpkKNGEh0T+MU99Jmes=
-X-Received: by 2002:a81:5747:0:b0:31d:1bb8:65b7 with SMTP id
- l68-20020a815747000000b0031d1bb865b7mr30830046ywb.168.1658170865217; Mon, 18
- Jul 2022 12:01:05 -0700 (PDT)
+        Tue, 19 Jul 2022 00:22:08 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4644A3ED5D
+        for <linux-parisc@vger.kernel.org>; Mon, 18 Jul 2022 21:22:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1658204518;
+        bh=ti8gNzUzSg1pAiVhjbSsCTrqv4F4hL9+LUtAQG0Vpzg=;
+        h=X-UI-Sender-Class:From:To:Subject:Date;
+        b=VguibWuEUPznsq9G8AV0VjQ7Pf5hzTHUqKZltJVQQLoUj8QcZ7/0NzrjYHVYFalVy
+         tLIfcoLEyh+bjtsKaxvEUBiVy8afk4YZwKP7YoKXE++A0PRnV1rbd7aLyQx6HwJUIo
+         Fb2j+mmUc9UntIbsnLQcyUKAuoh/3Oj0NQlxtEG8=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.165.57]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MD9XF-1oMh9T1Mmn-0097EB; Tue, 19
+ Jul 2022 06:21:58 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Drop pa_swapper_pg_lock spinlock
+Date:   Tue, 19 Jul 2022 06:21:55 +0200
+Message-Id: <20220719042155.2739-1-deller@gmx.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Received: by 2002:a05:6919:4004:b0:cc:50ff:b3d8 with HTTP; Mon, 18 Jul 2022
- 12:01:04 -0700 (PDT)
-Reply-To: lilywilliam989@gmail.com
-From:   Lily William <sgtalberts@gmail.com>
-Date:   Mon, 18 Jul 2022 11:01:04 -0800
-Message-ID: <CALPTejMFgL0Bg7jCKa7j+5KxVv_jnSM4ZPq-QhHCiUpG_ZswsQ@mail.gmail.com>
-Subject: Hi Dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Uo4AJrmdM4tNI7bdTVHh7+8j6CWXOyZbZqZjbiYc+zlszYxqI2m
+ m01h9Uvj//37KxyeIeKCiasZj6dCAlwrxV+ceDtjn1TajLDwbZkqkc4/mv4jjgH/eaghjrs
+ kLakNI+254/9RuoToHhqJ9tpHFrwXhVMVFrhx/KcfHxQalcjFgkbhA4Jsgdk7ehJuKdAxiA
+ +uA+tn6BqtePO5Onl/oOw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3u5YJS+m0QU=:5v09rCCNO/4y438keUaXMf
+ Ve3XwlEgCWahlWCns1rbB4GvSCkaTNHOG9FBMMJMRUzlZXbQZcQrn1QqKhrSt2CYptQ9KGupC
+ oKe7Fufzbg1Wh9kHbcck6pyfWwJS2b+johx9Q/VIcikZ0wp5VJTWb+Vxd0FfpMH3hAK3MrXbw
+ XMFUq58K5QUszQ00wSqClJqCHXuI4O0gel0ngxcXM9poaq3byDzcE0gim+YYbClxSfEaoTC4T
+ GvTQnFjwsADAhIZTrtI41U38SBta+VKNp//cMAcEvdbzaodpGY1c6mVFlBe5+5Y+vr9LL7JuP
+ c+yPMd6rRWYWlOdP62DPQf9vUhNilc8xbVfmkSppc3xp/at56NtjyPvuY9kO0V9Bp1RIWkDhu
+ fwDElejLA1Sv8RWhKo9fr13t9XAa/dN5J0yPWvEFQWAtqGUj8kzh9T/YiO06e7RU8LhnoCzxM
+ 3Ja1LmULnhGNvg+2SJBRVFLyypQmKZ0Q8/uVHEbGx5bxPdFvyO07gtt/t9uTyvF7Yt4H5hfS5
+ cU15p81dQMs7zsE5PZw7WNZin1HvE1IklS7+m7hzM74bqaQ/E4xOsYVYyrcPnpUigbKk+y42Q
+ F2jlPzkGP20YUpHP7iTb5Z/7F2yf06FHb5KV3qad76hOZNP70ZvDdh4g2uV9D4w7P6QcioY/4
+ Hnlor902dzbiDHhs6k9x8SsvUSWUngZoWfk20bF0Rv7cpz0GeGp2JAAAUngi/WKalgSIlcLuy
+ iWAMR1t7+B0CYW7702sZ7PONiLfQ7XfCv631DQnxPJUkxw2si2GUk7I3XicatC3WToMUAaGWO
+ 3Rt4viA+wKV6oqveabtH7weVFTmjt7iQi7uGpbKPmFdD/42EV3ibvl12oAdneJjBrIAvTBwOQ
+ b0AWRHhSMP8fY5/ZqMTO/EWjVm2iKJt7Gg8fpOF8OxpJlUab6yWI+RnghtNBsmNtCYfxlFBqW
+ blMiQPX5uDBCpl3vIx2JOlVzK6U64JPZ5JerCAnJ0uqMZDWmNgFpc2qnMxiFPGdegD6T6Aesp
+ i8tKgb4ulwaMam+igtG1EwbiWW2IvJ531i8P+pdoD6r0yeApDIwvhSUEdQYqP6IhW/MDOlRUk
+ 9FbpOe1zfPSzx8tJA4W3ANlpacW1Z2SeNkzEJ70dVKDxZqhm9xjB08gxw==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Dear,
+This spinlock isn't used any longer. Remove it to silence a sparse
+warning.
 
-My name is Dr Lily William from the United States.I am a French and
-American nationality (dual) living in the U.S and sometimes in France
-for Work Purpose.
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: kernel test robot <lkp@intel.com>
+=2D--
+ arch/parisc/kernel/cache.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-I hope you consider my friend request. I will share some of my pics
-and more details about myself when I get your response.
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index a9bc578e4c52..af3d7cdc1541 100644
+=2D-- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -50,9 +50,6 @@ void flush_instruction_cache_local(void); /* flushes loc=
+al code-cache only */
+  */
+ DEFINE_SPINLOCK(pa_tlb_flush_lock);
 
-Thanks
+-/* Swapper page setup lock. */
+-DEFINE_SPINLOCK(pa_swapper_pg_lock);
+-
+ #if defined(CONFIG_64BIT) && defined(CONFIG_SMP)
+ int pa_serialize_tlb_flushes __ro_after_init;
+ #endif
+=2D-
+2.35.3
 
-With love
-Lily
