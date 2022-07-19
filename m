@@ -2,129 +2,154 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F34657A434
-	for <lists+linux-parisc@lfdr.de>; Tue, 19 Jul 2022 18:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A91A257A788
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 Jul 2022 21:54:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231495AbiGSQcR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 19 Jul 2022 12:32:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35524 "EHLO
+        id S232986AbiGSTyh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 19 Jul 2022 15:54:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbiGSQcR (ORCPT
+        with ESMTP id S230205AbiGSTyg (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 19 Jul 2022 12:32:17 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD5E0140C2;
-        Tue, 19 Jul 2022 09:32:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1658248330;
-        bh=08NO4ajYTq7L6Yz0UzsFvyYhOxLXwbgVf0lxHpS+jts=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=c/U99IiTp9+rB2ylrMqjNdVUE/RPi6Cgih4/L2MK0cE89TrB1IEFVp1nZlkBuB2nN
-         4b2dp+11yUqJBfmL7+PbVjgU0Rj9yQVq7pZkrjO8AHOjMUQeJ8vbC5sKifMQFo8uy5
-         yC5xLVQ1n2MPS2Z2f6QaESY1vmTCO4109jCXT8cU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.145.26]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MYeMt-1o0JmE3eWh-00VeJ4; Tue, 19
- Jul 2022 18:32:09 +0200
-Message-ID: <0aa365ca-a9f0-8d15-b515-adb8823f5d28@gmx.de>
-Date:   Tue, 19 Jul 2022 18:32:04 +0200
+        Tue, 19 Jul 2022 15:54:36 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2DC352E7E;
+        Tue, 19 Jul 2022 12:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=v6ALRzuY4RIlvqb5/OysD83kMB2n09igJBmCmJkb/mQ=; b=QX2ndssTwYlCGQttlP6yZb1v8t
+        5s2Hg+pF+iNzzwWbJ4MQaGSaf6qkeb05PdTsq+Deth55WrA0pCBg5abgJ5rgV7rYQ1in6Q0iGiphA
+        Ny8wQRwMi4VTn4nbzPtFheSJmfPAAsWP3wO6T6rwqeMZ6FBPSZbVJscxJAF1he9ZTINlqR7pMavHd
+        JUmz54ZCbUg5czNAxrGNtKvvD4CjMf1IUILFMG1Fr7T+NXdQ+h0VrvP3Jd0esGE2WeLQ3wNsRgsoR
+        A2H70K6+3TnyaQxqB5nwJ5zwLOp0Bqh1CdPhvwI1Y5O+c66ciesYb/MZNrPpMNAzxEEfLahEMj+q0
+        vfS69Cnw==;
+Received: from 200-100-212-117.dial-up.telesp.net.br ([200.100.212.117] helo=localhost)
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+        id 1oDtIK-006f8k-U4; Tue, 19 Jul 2022 21:54:15 +0200
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To:     akpm@linux-foundation.org, bhe@redhat.com, pmladek@suse.com,
+        kexec@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        netdev@vger.kernel.org, x86@kernel.org, kernel-dev@igalia.com,
+        kernel@gpiccoli.net, halves@canonical.com, fabiomirmar@gmail.com,
+        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
+        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
+        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
+        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
+        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
+        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
+        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
+        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
+        senozhatsky@chromium.org, stern@rowland.harvard.edu,
+        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
+        will@kernel.org, "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-um@lists.infradead.org
+Subject: [PATCH v2 00/13] The panic notifiers refactor strikes back - fixes/clean-ups
+Date:   Tue, 19 Jul 2022 16:53:13 -0300
+Message-Id: <20220719195325.402745-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: WARNING: CPU: 1 PID: 14735 at fs/dcache.c:365
- dentry_free+0x100/0x128
-Content-Language: en-US
-To:     Hillf Danton <hdanton@sina.com>
-Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <20220709090756.2384-1-hdanton@sina.com>
- <20220715133300.1297-1-hdanton@sina.com>
- <cff76e00-3561-4069-f5c7-26d3de4da3c4@gmx.de>
- <20220717113634.1552-1-hdanton@sina.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220717113634.1552-1-hdanton@sina.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tVlPD/7xMU6x1n8XIiXM1z5w1B4tgHndptPO3FVJYI2wIcetCIx
- hU81JmqQ41EvYUhZHCWccMh5hAlSeLQ9h3NaAF2uWJ12miKk1o0q7XPV4ELpEfyb9Z1nt8y
- cgaKTMZtWQIY4WHY+KjiHY7UMcXDKnO/F8qCeEQ1PijCSPVyq21jxC/tN7tZIAQ0GGIHtwP
- /npN7a4y9ZN8nJmoP4cIw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:30ovPcoxtHw=:eiMIZZ/ZPpHrMN+3I2Ug0Y
- RfjwMnovmTvp+31/DPIW0uwlVNhef5CS1X0Mh7Puhx4vgmTAzCAPFcwh0NcXu/FKpgdLNHiXY
- w3N/tA5HcpFCh+F+76L+VZyMB2la2yPlE1TXudYQFUzGM6rd7dfQ2ZlCOFyYPpGd9RpEtdjgx
- ismaflT5iI+MZMDML6THWII3YfU2PNRLI9ghoUvj1IMRT/xK0Bwk3Pju60z9M0uwrxU/n2BD+
- TXZ00J8AanZJqdQM0vhkH6CMSmV6PaPY7Zd6QRhhuJeTbbzBYNSzNk/hAuXC7tx81mc8230DP
- W1Sx4t5K3iuXHiJqA9q+Nv8KNQstB5c3//WWaNvCoYDX/AjxMkMZtJ0ScVQvZwvxLPA7o8bOQ
- wEA2uihaO1ixQeRd2OkWYB5wvXX+LmmzGG5nEcA8c9R8WjoNgzG5IpUEfGsQbv1xixjA/4Izs
- a/AnAzoLxn5Ts3of/AZzlDm43asYgi9YfZnwnUpsGneu6RcfFKI46+nj5BEo1BoAaxzNjJVg9
- 5km6pM4hW6hoSZREF5sSRkHwts3ukYYlCBsK0Tf/6UEoTy79c/6jRyR0oA6URYMymOGB/7WWV
- cWSkr9tQC/LOj31hXSMeJmQJo95ORVCBKIiIY6C58q+8lsyWBMZrGENOVt6qEX5TIS1WATK8Q
- hK0J7f5iLbe2J+wIeI0VhALFJbAg1W7/TdbuudM8dhS8iIFXbrbxEIlDuVZBkXxt8MjdLvY3d
- RFOveJ/n7CCYaRpvSudLNWSwyyf3nkQ+iyiYPGKbEzixHmBTbZIygkJUir4pHPLslI8cLTWxH
- X63+W9o7WkvpLUU6/CyBFVNkMRkE0oZRFpIxS885pp9Ev2c1nm+F6WZdmsrs23FzaOreBuYIm
- VOyWmSJVIL+5r4nxI+nuLNZqaOMQMi9bZnVilnEsKo8vghZFnWOLOpkr1Pb84c/PFrSsXKhyc
- CjosHgTpxK0QeqO16REN8WHo6X8DvB85odO+eXLggW9oad4BeE3NpPgsPawtt0Lj3rmC0huw5
- c3jViqsxnxAOLK7PjXjoudI6Li17M8Wl/xPZCb4tzO7VVcOKt55eDvwtCWz6AjpMagyynMp2Z
- EFvfECDdY34Eq3IaDC3/PLAsiX2e8g1KjXqvhPF+Ewv/oRbew2U+yrl9A==
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello Hillf,
+Hi folks, this the second iteration of the panic notifiers refactor work,
+but limited to the fixes/clean-ups in the first moment. The (full) V1 is
+available at:
+https://lore.kernel.org/lkml/20220427224924.592546-1-gpiccoli@igalia.com/
 
-On 7/17/22 13:36, Hillf Danton wrote:
-> On Sun, 17 Jul 2022 11:42:48 +0200
->> I used WARN_ON() instead of BUG_ON().
->> With that, both triggered, first the first one, then the second one.
->> Full log is here:
->> http://dellerweb.de/testcases/minicom.dcache.crash.6-warn
->
-> Given the first BUG_ON triggered, and dentry at the moment is supposed t=
-o
-> not be alias, see if it is still in lookup with d_lock held. That is the
-> step before de-unioning d_alias with d_in_lookup_hash.
->
-> On the other hand if only the second one triggered, we should track
-> DCACHE_DENTRY_KILLED instead in assumption that killed dentry was
-> used again after releasing d_lock surrounding the firt one.
+The idea of splitting the series is that, originally we had a bunch of fixes
+followed by the notifiers refactor, but this second part (the effective
+refactor) is a bit "polemic", with reviews having antagonistic goals and some
+complexities  - it might be hard to achieve consensus.
+For the curious, here is a good summary of the conflicting views and some
+strategies we might take in the refactor V2:
+https://lore.kernel.org/lkml/0d084eed-4781-c815-29c7-ac62c498e216@igalia.com/
 
-The machine has now been up for 2 days without any issues, while it had pr=
-etty
-much the same load as when it was crashing earlier.
-So, in summary I'd assume that your patch below fixes the issue.
+So splitting and sending only the simple fixes/clean-ups in a first moment
+makes sense, this way we don't prevent them to be discussed/merged/reworked
+while the more complex part is subject to scrutiny in a different (future)
+email thread.
 
-I'm now rebooting the machine with a new kernel, where I just changed
-	if (unlikely(d_in_lookup(dentry)))
-to
-	if (WARN_ON_ONCE(d_in_lookup(dentry)))
-in order to see if this really triggered.
 
-Anyway, I think your patch is good so far.
-Would that be the final patch, or should I test some others?
+I've tried to test this series building for all affected architecture/drivers
+and also through some boot/runtime tests; below the test "matrix" used:
 
-Thanks!
-Helge
+Build tests (using cross-compilers): alpha, arm, arm64, parisc, um, x86_64.
+Boot/Runtime tests: x86_64 (Hyper-V and QEMU guests).
 
->
-> --- a/fs/dcache.c
-> +++ b/fs/dcache.c
-> @@ -605,8 +605,12 @@ static void __dentry_kill(struct dentry
->  		spin_unlock(&parent->d_lock);
->  	if (dentry->d_inode)
->  		dentry_unlink_inode(dentry);
-> -	else
-> +	else {
-> +		if (unlikely(d_in_lookup(dentry))) {
-> +			__d_lookup_done(dentry);
-> +		}
->  		spin_unlock(&dentry->d_lock);
-> +	}
->  	this_cpu_dec(nr_dentry);
->  	if (dentry->d_op && dentry->d_op->d_release)
->  		dentry->d_op->d_release(dentry);
+Here is the link with the .config files used:
+https://people.igalia.com/gpiccoli/panic_notifiers_configs/5.19-rc7/
+(tried my best to build all the affected code).
+
+
+The series is based on 5.19-rc7; I'd like to ask that, if possible, maintainers
+take the patches here in their trees, since there is no need to merge the series
+as whole, patches are independent from each other.
+
+Regarding the CC strategy, I've tried to reduce a bit the list of CCed emails,
+given that it was huge in the first iteration. Hopefully I didn't forget
+anybody interested in the topic (my apologies if so).
+
+As usual, reviews / comments are always welcome, thanks in advance for them!
+Cheers,
+
+
+Guilherme
+
+
+
+
+Guilherme G. Piccoli (13):
+  ARM: Disable FIQs (but not IRQs) on CPUs shutdown paths
+  notifier: Add panic notifiers info and purge trailing whitespaces
+  firmware: google: Test spinlock on panic path to avoid lockups
+  soc: bcm: brcmstb: Document panic notifier action and remove useless header
+  alpha: Clean-up the panic notifier code
+  um: Improve panic notifiers consistency and ordering
+  parisc: Replace regular spinlock with spin_trylock on panic path
+  tracing: Improve panic/die notifiers
+  notifier: Show function names on notifier routines if DEBUG_NOTIFIERS is set
+  EDAC/altera: Skip the panic notifier if kdump is loaded
+  video/hyperv_fb: Avoid taking busy spinlock on panic path
+  drivers/hv/vmbus, video/hyperv_fb: Untangle and refactor Hyper-V panic notifiers
+  panic: Fixes the panic_print NMI backtrace setting
+
+ arch/alpha/kernel/setup.c           |  36 ++++-----
+ arch/arm/kernel/machine_kexec.c     |   2 +
+ arch/arm/kernel/smp.c               |   5 +-
+ arch/parisc/include/asm/pdc.h       |   1 +
+ arch/parisc/kernel/firmware.c       |  27 ++++++-
+ arch/um/drivers/mconsole_kern.c     |   7 +-
+ arch/um/kernel/um_arch.c            |   8 +-
+ drivers/edac/altera_edac.c          |  16 +++-
+ drivers/firmware/google/gsmi.c      |   8 ++
+ drivers/hv/ring_buffer.c            |  16 ++++
+ drivers/hv/vmbus_drv.c              | 109 +++++++++++++++++-----------
+ drivers/parisc/power.c              |  17 +++--
+ drivers/soc/bcm/brcmstb/pm/pm-arm.c |  16 +++-
+ drivers/video/fbdev/hyperv_fb.c     |  16 +++-
+ include/linux/hyperv.h              |   2 +
+ include/linux/notifier.h            |   8 +-
+ kernel/notifier.c                   |  22 ++++--
+ kernel/panic.c                      |  47 +++++++-----
+ kernel/trace/trace.c                |  55 +++++++-------
+ 19 files changed, 268 insertions(+), 150 deletions(-)
+
+-- 
+2.37.1
 
