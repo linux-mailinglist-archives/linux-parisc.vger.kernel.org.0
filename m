@@ -2,48 +2,47 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 507A357ADFD
-	for <lists+linux-parisc@lfdr.de>; Wed, 20 Jul 2022 04:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13C8457AF7A
+	for <lists+linux-parisc@lfdr.de>; Wed, 20 Jul 2022 05:29:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236195AbiGTCdj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 19 Jul 2022 22:33:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37212 "EHLO
+        id S235290AbiGTD3Z (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 19 Jul 2022 23:29:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235203AbiGTCdi (ORCPT
+        with ESMTP id S238767AbiGTD3P (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 19 Jul 2022 22:33:38 -0400
+        Tue, 19 Jul 2022 23:29:15 -0400
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1239D42AE3;
-        Tue, 19 Jul 2022 19:33:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684C943E57;
+        Tue, 19 Jul 2022 20:29:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
         MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=zaALNxq5RVE2wjPOSeDTpB0sKVHkbLNiPRaByZS/1GI=; b=IHKUeO3sXdxDSJ+BN+U2VtaQBu
-        cVrF1C2jiLA4xaefnjOPhHGiLPJdFhg3CAr4thqWfrwxaJufD3kjI1FxgsD4hMXnS72YaR5UXvFMH
-        zzshbqJLKcTfXwvKX19vpPCR3gV9ZFjU8UVlkPdkmIbtcEpKY1Cc401W6mMvK2OOVDv7ZE3nlfLaE
-        Q6nbYdTO920jdD7fVyISr6eGzFnZMWmq9OXs2xX+JEtFur0wvRorsXePBWOShcc4Ew8KnIsmvue8r
-        /yiDgu31dr6yoZlsNJEDyNrmu2yHBjLACubuADcSI5EK9AGARf9jIABOZqLiTPxldnkUCljLYwsTR
-        xbbfuiIQ==;
+        bh=P4xF5O0YfncCV5o9E/Adz6pnaqQem+VWuDXhk3O2bPk=; b=eklu/gT4NI8m2bnawZYlSqZ1uU
+        Z87zYrp8jGWV04PygQfFdOBzPkjyuQSfQHtvgGstCBgV+nXDiBfRH9gewYOCrb/Dxj1OtMtmjcm5b
+        Hh++C8SQJ26D2/IIXhA07oz182v2dGnRAb57i46LLqvGU/wT53++aRwJ0xhpQnlrqT5SEzR4eIvZO
+        JeBrQLSkqOq9c1qmcIYAszf/k01jcEPkh9KgDpV4z3mkAMhOOJmyrlTUUspx//fAwmDiWdgybAhmi
+        B1npMQ9VN8UKNc+BfBTMJg5mqrXnDzVnWkuUvNlQgmlMNtvqS02yamu3oIitKUktAok00TOmv9bu9
+        qKCkcYJA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.95 #2 (Red Hat Linux))
-        id 1oDzWk-00DxLn-KV;
-        Wed, 20 Jul 2022 02:33:30 +0000
-Date:   Wed, 20 Jul 2022 03:33:30 +0100
+        id 1oE0OZ-00DyI3-S9;
+        Wed, 20 Jul 2022 03:29:07 +0000
+Date:   Wed, 20 Jul 2022 04:29:07 +0100
 From:   Al Viro <viro@zeniv.linux.org.uk>
 To:     Helge Deller <deller@gmx.de>
 Cc:     Hillf Danton <hdanton@sina.com>, linux-kernel@vger.kernel.org,
         linux-parisc@vger.kernel.org
 Subject: Re: WARNING: CPU: 1 PID: 14735 at fs/dcache.c:365
  dentry_free+0x100/0x128
-Message-ID: <YtdpegRORT8TMYD8@ZenIV>
+Message-ID: <Ytd2g72cj0Aq1MBG@ZenIV>
 References: <20220709090756.2384-1-hdanton@sina.com>
  <20220715133300.1297-1-hdanton@sina.com>
  <cff76e00-3561-4069-f5c7-26d3de4da3c4@gmx.de>
- <Ytdo7pNf5W4VMr2H@ZenIV>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Ytdo7pNf5W4VMr2H@ZenIV>
+In-Reply-To: <cff76e00-3561-4069-f5c7-26d3de4da3c4@gmx.de>
 Sender: Al Viro <viro@ftp.linux.org.uk>
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -54,41 +53,10 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Jul 20, 2022 at 03:31:10AM +0100, Al Viro wrote:
-> On Sat, Jul 16, 2022 at 07:27:30AM +0200, Helge Deller wrote:
-> > [108564.845444] dentry = 000000031624e6c0
-> 
-> *blink*
-> Is that really a plausible address of a kernel object on
-> parisc?  Or is that "mangle pointers for security fetish^W
-> purposes, lest somebody manages to get a useful information
-> out of dmesg" in action?
-> 
-> > [108564.889437] spin_is_locked(&dentry->d_lock) = 0
-> > [108564.945436] dname_external(dentry) = 0
-> > [108564.993436] dentry->d_flags & DCACHE_NORCU = 0
-> > [108565.045446] dentry->d_name.len = 3
-> > [108565.089435] dentry->d_name.hash = 89116695
-> > [108565.137435] dentry->d_lockref.count = -128
-> > [108565.189434] dentry->d_flags = 32776
-> 
-> 0x8008, i.e. DCACHE_OP_DELETE | DCACHE_DENTRY_KILLED.  No
-> DCACHE_PAR_LOOKUP in sight...
-> 
-> > [108569.801407] dentry = 000000016d7d0000
-> > [108569.845407] spin_is_locked(&dentry->d_lock) = 0
-> > [108569.901422] dname_external(dentry) = 0
-> > [108569.949405] dentry->d_flags & DCACHE_NORCU = 0
-> > [108570.001405] dentry->d_name.len = 10
-> > [108570.045421] dentry->d_name.hash = e6582e53
-> > [108570.093476] dentry->d_lockref.count = -128
-> > [108570.145404] dentry->d_flags = 32776
-> > [108570.189420] dentry->d_inode = 0000000000000000
-> > [108570.241404] dentry->d_parent = 00000002332c2780
-> > [108570.297403] dentry->d_u.d_rcu = 0x416be770
-> 
-> Ditto.  Pointers look really weird...
+On Sat, Jul 16, 2022 at 07:27:30AM +0200, Helge Deller wrote:
+> On 7/15/22 15:33, Hillf Danton wrote:
 
-PS: I think I've caught what could be found on l-k; could you
-please forward the rest (parisc list? private thread?) to
-fsdevel or directly my way.
+> [108565.341434] dentry->d_u.d_rcu = 0x416be770
+
+Incidentally, does that match the address of __d_free() on your build,
+or is it something different?
