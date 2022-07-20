@@ -2,75 +2,103 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53BFB57BEB5
-	for <lists+linux-parisc@lfdr.de>; Wed, 20 Jul 2022 21:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B92E57C0B8
+	for <lists+linux-parisc@lfdr.de>; Thu, 21 Jul 2022 01:15:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229673AbiGTTkI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 20 Jul 2022 15:40:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45368 "EHLO
+        id S231745AbiGTXPy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 20 Jul 2022 19:15:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbiGTTkI (ORCPT
+        with ESMTP id S231676AbiGTXPx (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 20 Jul 2022 15:40:08 -0400
-Received: from smtpbg.qq.com (biz-43-154-54-12.mail.qq.com [43.154.54.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD1565D4A;
-        Wed, 20 Jul 2022 12:40:02 -0700 (PDT)
-X-QQ-mid: bizesmtp91t1658345995to035zp2
-Received: from harry-jrlc.. ( [125.70.163.183])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Thu, 21 Jul 2022 03:39:43 +0800 (CST)
-X-QQ-SSF: 0100000000200030C000C00A0000020
-X-QQ-FEAT: +bXiSo2NuBeKioPucw27azFzSN7FKN7KqmpjEqbFFM0StNhYLSCZB7gZB64hp
-        Mrbc+QPsqLWG1ZxJmJ0GmLM6JOHIdY7zPZsRak1+247BDVvvyXgKZu84vZqYxmzE1KMmlwP
-        ITwh7ZFK/zDWEKxC4S4bxEvmYJ6FwnATDKXTp3vf32SzVqfmm11SiGnj5acrIs9PlOJXLOa
-        +ooV4XJrMIOEke6MaMHLs+Eu6UAi9S74yDs8kAlsvBLph8MVvmSW4vQYMTPfI+f+1E34N3n
-        CcYrYKXJRVshGzLvu+A7PDGEr43d+hSX0CNUtAqpZwelYmldqckvKQ1DUJnp7rPyNqBFypW
-        r6gyyLxTCTeGtwaKc/QIKLH2xLMR9CKjrJ6c/toUexu00hw1VCaooFi2rzr6w==
-X-QQ-GoodBg: 0
-From:   Xin Gao <gaoxin@cdjrlc.com>
-To:     James.Bottomley@HansenPartnership.com, deller@gmx.de
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Xin Gao <gaoxin@cdjrlc.com>
-Subject: [PATCH] dma-mapping:do not initialise statics to 0.
-Date:   Thu, 21 Jul 2022 03:39:41 +0800
-Message-Id: <20220720193941.8261-1-gaoxin@cdjrlc.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr6
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,RDNS_DYNAMIC,
-        SPF_PASS,T_SPF_HELO_TEMPERROR autolearn=no autolearn_force=no
-        version=3.4.6
+        Wed, 20 Jul 2022 19:15:53 -0400
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E122B66AFF;
+        Wed, 20 Jul 2022 16:15:50 -0700 (PDT)
+Content-Type: multipart/signed;
+        boundary="Apple-Mail=_1A5477F2-D165-412B-B925-92359613B8D1";
+        protocol="application/pgp-signature";
+        micalg=pgp-sha512
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: WARNING: CPU: 1 PID: 14735 at fs/dcache.c:365
+ dentry_free+0x100/0x128
+From:   Sam James <sam@gentoo.org>
+In-Reply-To: <Ytg2CDLzLo+FKbTZ@ZenIV>
+Date:   Thu, 21 Jul 2022 00:15:43 +0100
+Cc:     Hillf Danton <hdanton@sina.com>, Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org
+Message-Id: <9B4CB715-FEA1-4991-ABA1-23B2DF203258@gentoo.org>
+References: <20220709090756.2384-1-hdanton@sina.com>
+ <20220715133300.1297-1-hdanton@sina.com>
+ <cff76e00-3561-4069-f5c7-26d3de4da3c4@gmx.de> <Ytd2g72cj0Aq1MBG@ZenIV>
+ <860792bb-1fd6-66c6-ef31-4edd181e2954@gmx.de> <YtepmwLj//zrD3V3@ZenIV>
+ <20220720110032.1787-1-hdanton@sina.com> <Ytg2CDLzLo+FKbTZ@ZenIV>
+To:     Al Viro <viro@zeniv.linux.org.uk>, Helge Deller <deller@gmx.de>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-do not initialise statics to 0.
 
-Signed-off-by: Xin Gao <gaoxin@cdjrlc.com>
----
- arch/parisc/kernel/pci-dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
-index 160996f2198e..ba87f791323b 100644
---- a/arch/parisc/kernel/pci-dma.c
-+++ b/arch/parisc/kernel/pci-dma.c
-@@ -36,8 +36,8 @@
- #include <asm/tlbflush.h>	/* for purge_tlb_*() macros */
- 
- static struct proc_dir_entry * proc_gsc_root __read_mostly = NULL;
--static unsigned long pcxl_used_bytes __read_mostly = 0;
--static unsigned long pcxl_used_pages __read_mostly = 0;
-+static unsigned long pcxl_used_bytes __read_mostly;
-+static unsigned long pcxl_used_pages __read_mostly;
- 
- extern unsigned long pcxl_dma_start; /* Start of pcxl dma mapping area */
- static DEFINE_SPINLOCK(pcxl_res_lock);
--- 
-2.30.2
+--Apple-Mail=_1A5477F2-D165-412B-B925-92359613B8D1
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset=us-ascii
 
 
+
+> On 20 Jul 2022, at 18:06, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> 
+> On Wed, Jul 20, 2022 at 07:00:32PM +0800, Hillf Danton wrote:
+> 
+>> To help debug it, de-union d_in_lookup_hash with d_alias and add debug
+>> info after dentry is killed. If any warning hits, we know where to add
+>> something like
+>> 
+>> 	WARN_ON(dentry->d_flags & DCACHE_DENTRY_KILLED);
+>> 
+>> before hlist_bl_add or hlist_add.
+
+> [snip]
+> I wonder if anyone had seen anything similar outside of parisc...
+> I don't know if I have any chance to reproduce it here - the only
+> parisc box I've got is a 715/100 (assuming the disk is still alive)
+> and it's 32bit, unlike the reported setups and, er, not fast.
+> qemu seems to have some parisc support, but it's 32bit-only at the
+> moment...
+
+I don't think I've seen this on parisc either, but I don't think
+I've used tmpfs that heavily. I'll try it in case it's somehow more
+likely to trigger it.
+
+Helge, were there any particular steps to reproduce this? Or just
+start doing your normal Debian builds on a tmpfs and it happens
+soon enough?
+
+
+--Apple-Mail=_1A5477F2-D165-412B-B925-92359613B8D1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename=signature.asc
+Content-Type: application/pgp-signature;
+	name=signature.asc
+Content-Description: Message signed with OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iNUEARYKAH0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCYtiMn18UgAAAAAAuAChp
+c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB
+NkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MAAKCRBzhAn1IN+R
+kC/ZAP41H2nChPS5kcT3/RPjAriOl8IqbRAX0xhphni9gDrL0wEA5pTvzToiSULd
+MSJA6dtocW+ZwQjPiokSt8vHK6HKCgI=
+=tB0a
+-----END PGP SIGNATURE-----
+
+--Apple-Mail=_1A5477F2-D165-412B-B925-92359613B8D1--
