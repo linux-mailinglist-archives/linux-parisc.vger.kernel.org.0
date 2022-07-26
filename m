@@ -2,83 +2,114 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BD7A5806F5
-	for <lists+linux-parisc@lfdr.de>; Mon, 25 Jul 2022 23:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4BC9580EF9
+	for <lists+linux-parisc@lfdr.de>; Tue, 26 Jul 2022 10:28:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231174AbiGYVwi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 25 Jul 2022 17:52:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41824 "EHLO
+        id S237942AbiGZI2w (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 26 Jul 2022 04:28:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbiGYVwi (ORCPT
+        with ESMTP id S238323AbiGZI2u (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 25 Jul 2022 17:52:38 -0400
-X-Greylist: delayed 1788 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 25 Jul 2022 14:52:36 PDT
-Received: from imap5.colo.codethink.co.uk (imap5.colo.codethink.co.uk [78.40.148.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3596185;
-        Mon, 25 Jul 2022 14:52:36 -0700 (PDT)
-Received: from cpc152649-stkp13-2-0-cust121.10-2.cable.virginm.net ([86.15.83.122] helo=[192.168.0.17])
-        by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
-        id 1oG508-006V3d-JH; Mon, 25 Jul 2022 21:48:29 +0100
-Message-ID: <a5b079bb-64ab-092d-27d4-d32d0d35afcb@codethink.co.uk>
-Date:   Mon, 25 Jul 2022 21:48:28 +0100
+        Tue, 26 Jul 2022 04:28:50 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D3030551;
+        Tue, 26 Jul 2022 01:28:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1658824097;
+        bh=3RSP2yx7K3NGv3aWWQj5WbiKUEF0R+QuwyU5XYA0lUQ=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=FZIClfp0A6gDrpjYXvMXdJF1dM4XQ6/hzxaqkzy2/9p2tPkLBXw5zeCbcPigkVy2L
+         9a5fXGTE+ETaRSWT8xYYmod5nIaSDKVNnrbpXQRiLMVheXMZojrvjhhDwevoBc/nsx
+         q14gcXlyqUzIPczzYcCU8ngPymNsYIQFCn0jPB7Q=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.186.181]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mirng-1nbQvt1lBs-00ey03; Tue, 26
+ Jul 2022 10:28:17 +0200
+Message-ID: <70afefa0-2f18-c8c0-33cd-f6abd4010535@gmx.de>
+Date:   Tue, 26 Jul 2022 10:27:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] profile: setup_profiling_timer() is moslty not
- implemented
-Content-Language: en-GB
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Ben Dooks <ben-linux@fluff.org>
-Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-parisc@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-snps-arc@lists.infradead.org, linux-alpha@vger.kernel.org
-References: <20220721195509.418205-1-ben-linux@fluff.org>
- <20220725123948.f16674b10022404814161d4a@linux-foundation.org>
-From:   Ben Dooks <ben.dooks@codethink.co.uk>
-Organization: Codethink Limited.
-In-Reply-To: <20220725123948.f16674b10022404814161d4a@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] parisc: check the return value of ioremap() in
+ lba_driver_probe()
+Content-Language: en-US
+To:     williamsukatube@163.com, James.Bottomley@HansenPartnership.com,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     William Dean <williamsukatube@gmail.com>,
+        Hacash Robot <hacashRobot@santino.com>
+References: <20220722025709.2924616-1-williamsukatube@163.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20220722025709.2924616-1-williamsukatube@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:u3lbQyxSlwgZR4uGgGbLerNKFvAO9zBJMtW2I/xOystHTZU2Dq9
+ A1RpqVXYlLWi6Nr2yYM6ypc8dJ+s5newIk6hN6NaSDNpotsmAknZZp1LSyAxCpPOur9FBGI
+ awF3RtMbRyU66qvm/ogPg/f6YOvbH0vuYMKmOqB76ypuvBV/vJ0+JcqNCfGaZxStcVcRW1Z
+ eJZbWpYP4sriFM/Gx5lmg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UelfYpVGDxQ=:EMXQzo4e6WvwZbHYqb9Abt
+ 7wPcX2/jGLJVTVQYRbjgI/kudpHTeHgiSlSH/h5sREgKbkvVjxjErmw7Jl+BjGiIsWQS2Wqjt
+ RCplNTp7UA6fcSA4Y+VZT0CJoNtlpIS7IVy8ZAXjBF4O9xqNGiV/HkRpyGXlKN4RgOPuxzoc/
+ mhYKjEon549Mt16AICOTEE3I6QKshib7+NSz6l4HJtb4L7zfPe5Hdyay4VYeHHsl0SS91Y4sj
+ fJ3NuBWq4DHdsXtgwa64/WyHSxr0ImCv/5lMD60K6hElaSnCrGwC8QUV0ipZNsuIXcCKhaBjV
+ Wkua2KGbW6Z/Y/XDWQJqN+x6U+tvIqVaBJgZFpNa/O/h7mQ0m8uNxd7ST6GmXOzQ06JJaMhhe
+ HOadky/AO8iw2XNEEKk/qCkF7qX01CPk6eDskEU+EwQoDt2bGXAYjoJ6SMFc47ce/BpkQmmDW
+ GCD81pZq+UHPgzv42GDlwRb79MGAWxGq801jBKjhqimRrTCPQzABDb4Y8vXldulnGJZ0TSrzV
+ Uj5NHB7L1X5CfeLZ38sI0kl3jqRm49dM2C1f1Hocfn9S2a9XC/9ykDMFNn+zBxSa/5gy3LArk
+ cNQzhDaa/k8P4pilmLK89wSD8/YpJPAlAIaeJFHBvtKouS7lN3cI8+/B2uKVcZGwBhAtwcF6Q
+ deo1zM5uQQGIXzaBsuQSFzMevIuPju4G78ctbm+P1zaRHW7l7eJXCqTYC6i7wukUt7p2uawtC
+ CEyIrJsSxjo513grqu6ZD8Jf+MXnDPeCrk8Bj4KtMuM2CuEZZljXs0km1CoLwrnFxYzSGUtaj
+ K2VPTmLLMvWF6Q96msyAe/3OtRHJwEaw4h+eeUopUroKuyqhyoRD+kjqyH3aJUvPtgTJMYeec
+ kKkpNtr1Zmotwp7T7Af73ZCMVMcaEZQG/7VkVgyDPXlN1N0MF5K6iYaIWVg4TkI4YgmP/WW5U
+ p5bMfm5eso5u0dBFVkDqs8Vqk+Lg6IDnEB24xElBWcTt66Z7pV4Zj8b8j1xY11GcKWL/xz2gH
+ IfdrwKdT57KK7c2UZZznP6eevPnSljgEcXd+u5hx1UaJkOfRowcgO0xaL5u3PEut9eTdTtWyF
+ X1lAqZ4rOUbSyoS8ag2HqHXnC7uN75nsTaxeOHUJIM024B9p2I0b8yfbw==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 25/07/2022 20:39, Andrew Morton wrote:
-> On Thu, 21 Jul 2022 20:55:09 +0100 Ben Dooks <ben-linux@fluff.org> wrote:
-> 
->> The setup_profiling_timer() is mostly un-implemented by many
->> architectures. In many places it isn't guarded by CONFIG_PROFILE
->> which is needed for it to be used. Make it a weak symbol in
->> kernel/profile.c and remove the 'return -EINVAL' implementations
->> from the kenrel.
->>
->> There are a couple of architectures which do return 0 from
->> the setup_profiling_timer() function but they don't seem to
->> do anything else with it. To keep the /proc compatibility for
->> now, leave these for a future update or removal.
->>
->> On ARM, this fixes the following sparse warning:
->> arch/arm/kernel/smp.c:793:5: warning: symbol 'setup_profiling_timer' was not declared. Should it be static?
-> 
-> I'll grab this.
-> 
-> We have had some problems with weak functions lately.  See
-> 
-> https://lore.kernel.org/all/87ee0q7b92.fsf@email.froward.int.ebiederm.org/T/#u
-> 
-> Hopefully that was a rare corner case.
+On 7/22/22 04:57, williamsukatube@163.com wrote:
+> From: William Dean <williamsukatube@gmail.com>
+>
+> The function ioremap() in lba_driver_probe() can fail, so
+> its return value should be checked.
+>
+> Fixes: 4bdc0d676a643 ("remove ioremap_nocache and devm_ioremap_nocache")
+> Reported-by: Hacash Robot <hacashRobot@santino.com>
+> Signed-off-by: William Dean <williamsukatube@gmail.com>
 
-Great, thanks.
+applied.
 
--- 
-Ben Dooks				http://www.codethink.co.uk/
-Senior Engineer				Codethink - Providing Genius
+Thanks!
+Helge
 
-https://www.codethink.co.uk/privacy.html
+> ---
+>  drivers/parisc/lba_pci.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/parisc/lba_pci.c b/drivers/parisc/lba_pci.c
+> index 732b516c7bf8..afc6e66ddc31 100644
+> --- a/drivers/parisc/lba_pci.c
+> +++ b/drivers/parisc/lba_pci.c
+> @@ -1476,9 +1476,13 @@ lba_driver_probe(struct parisc_device *dev)
+>  	u32 func_class;
+>  	void *tmp_obj;
+>  	char *version;
+> -	void __iomem *addr =3D ioremap(dev->hpa.start, 4096);
+> +	void __iomem *addr;
+>  	int max;
+>
+> +	addr =3D ioremap(dev->hpa.start, 4096);
+> +	if (addr =3D=3D NULL)
+> +		return -ENOMEM;
+> +
+>  	/* Read HW Rev First */
+>  	func_class =3D READ_REG32(addr + LBA_FCLASS);
+>
+
