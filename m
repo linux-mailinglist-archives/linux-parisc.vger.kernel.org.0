@@ -2,204 +2,100 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A6AE586D1B
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Aug 2022 16:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF45B586E39
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Aug 2022 18:03:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231802AbiHAOmb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 1 Aug 2022 10:42:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54424 "EHLO
+        id S231310AbiHAQD6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 1 Aug 2022 12:03:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233167AbiHAOlq (ORCPT
+        with ESMTP id S231712AbiHAQD6 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 1 Aug 2022 10:41:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 24A2C3CBFE
-        for <linux-parisc@vger.kernel.org>; Mon,  1 Aug 2022 07:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1659364889;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7btrmOvCwxUbWnRbGW9HAB+h/F7WiYkudy0+tZC07Ew=;
-        b=HWxLH/jSuwNdsHFx62QAleduAz5A4KH3S4spo6Nr4P71YcurQyLlFY5fH6AAGxHYXVVX/c
-        5n6orB2w20HL9Q3xYguyp150epnPoPG48mp9A8pgmAhrSVC2gDdmUEitNtgH27y1+X3Q8F
-        zUhZLG/3/a2B7gPzi3h8QHuJoRR1HGw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-518-mR9E7DbFOuOXnfVfrRdWoA-1; Mon, 01 Aug 2022 10:41:23 -0400
-X-MC-Unique: mR9E7DbFOuOXnfVfrRdWoA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B253780602A;
-        Mon,  1 Aug 2022 14:41:22 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-103.pek2.redhat.com [10.72.12.103])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1B528141510F;
-        Mon,  1 Aug 2022 14:41:17 +0000 (UTC)
-From:   Baoquan He <bhe@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, akpm@linux-foundation.org, hch@infradead.org,
-        wangkefeng.wang@huawei.com, linux-arm-kernel@lists.infradead.org,
-        Baoquan He <bhe@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH 08/11] parisc: mm: Convert to GENERIC_IOREMAP
-Date:   Mon,  1 Aug 2022 22:40:26 +0800
-Message-Id: <20220801144029.57829-9-bhe@redhat.com>
-In-Reply-To: <20220801144029.57829-1-bhe@redhat.com>
-References: <20220801144029.57829-1-bhe@redhat.com>
+        Mon, 1 Aug 2022 12:03:58 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 890983CBF4
+        for <linux-parisc@vger.kernel.org>; Mon,  1 Aug 2022 09:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1659369827;
+        bh=Lhb+GVJiG1RsKHIHfzJfH8QMK2zaLKZktbw4lPTcxTA=;
+        h=X-UI-Sender-Class:From:To:Subject:Date;
+        b=HSIrm6q8x0Z6ahUQplZZ735hM4GQl9XW2ICRrDK+nuG0PVfrto0WfSe4oke9uWfAf
+         9+U5nGbg0YACNA+5Df+an3b9kb3s8pt8/gbrVCfnR0kPxG67De3PF+f/NbQM8ayGjZ
+         GPP9oKe0zm6nSvJWYMHKY+m+Aj2txBhcQi9YIKYE=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.150.19]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCbEp-1o8t6m3Jat-009e1s; Mon, 01
+ Aug 2022 18:03:47 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: io_pgetevents_time64() needs compat syscall in 32-bit compat mode
+Date:   Mon,  1 Aug 2022 18:03:46 +0200
+Message-Id: <20220801160346.82008-1-deller@gmx.de>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:n0gCQg6gnv8VdQtHCV//D2snCVDk65bImso2CeWr98o8hzWVGWV
+ wqGeq5x7qJtGCjIKEZrMl7DCSnSYj8iabSGKaj75qonzOtLxiwEfu/eYIew3iE9kKKB1ICP
+ USTECGxSD0l0ivVPVpl/j8XowA1S3cTpcYTdtOExwVr9ridvBDpC+Ay8qd6cbgslhhLq6P8
+ TmQjkJH6nGi0dKUzswdig==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:h0YdEZzGfuw=:sARitXAzd3dc0Vwg+G4L/0
+ UR7D7E99X3U9bTlj6/6APV6Qqjbl9TxKnhsx+wMlmGhcYnM7JxsfiGQju8MftY9GcVjYOYHna
+ 9PWpdLUl37yhxykG0w9sma+y59IWcKMjItqI1IvCBk44QpeWn/jSjCEgPM5uGABbxBeEPk5bi
+ xieyfm2cEfyJAgE4COkw6e1uFNmx6pRHBTgF+hFLIBh5388TozmbqPhOEPAgwgiHqxRCtyEVK
+ ZZqWaZmRwgo5pBkoSA3FU/mWFP+GDTwWXtodjJg7voEhFyzIwGj40vUPZ0dvOKSudCobYS5oU
+ 6vw8F0nKQ2Nq5De64uTmc5x3WzZrX9aJzpUkCJ5nZLOpf9nsiWhxY+sFYFeEGCglXv4wGd7O+
+ Fh1Tg0mH8La+CctnXBnYFRK3gxPuDK5wUH55ybgdEjV17zkUdwn5nmaidnsvIDjE58dhS2kGw
+ 5RwQU9JGDp8t3l0o2OVfE89NYuAewI2lbXtyjt/VdjJP/u7tAlTJnZuoOCSb/rekM8OrqfdIG
+ 134RcAqRWooKo46BpjROkKMVun+HYw1+eh8NoBB4+T8t2mZoENwPBz7xr1jpRPMQeLphHOdW3
+ /ZD5ngterwQhZHEXH6K0yzH7PAL0a43PATpGNY2+n2u6oH7UqkDFFopvBDPC/bJBWRkffH42f
+ JYnVwDnO4pHzMH5xVdfl3tmKOPkONpje138QK7dFXk478vzE6xjEQJnN+VI6eG661l+Xk4+Yj
+ EUVCcjilYvj5b/Az5gJTVEt62TW0BlkGHPFFIpFzkIg2a+S6EE2ylBGjzGn0ZYMThC1z0A3rI
+ Ro3ZkTRkiCnRiNZxQGegh/NswwIBSJ+WHuvYybTwFBDwQ0bnDkfPDVrnUP3T4rJfbc8mWAI/K
+ WkuaZU5fbkj1xOlZtyaGrQuabaPiabbPcc+jg3v6pTrtIsBO4zkXLRGvNwOXejzPdy04xd8EW
+ q8q1FqJ/T98Q0HKgLOBWRDw9xJW+AnRsbPawG7y1ygytVNvdtW3okNu17Wozqa0tOL2IdMkzZ
+ Nr6Gkw29M9smWGPa8H9hPsM6VbXqGNB4IAuH0awAB7wZyXTdJDPpBv+TEf9CWZB0Ejd2xby/4
+ Xg1LN2fPa0mGePx/MgrM04gBwRIs/LOqlBf50KBf/vXnqVLIiDffboREg==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add hook ioremap_allowed() for parisc's special operation when
-ioremap(), then ioremap_[wc|uc]() are converted to use ioremap_prot()
-from GENERIC_IOREMAP.
+For all syscalls in 32-bit compat mode on 64-bit kernels the upper
+32-bits of the 64-bit registers are zeroed out, so a negative 32-bit
+signed value will show up as positive 64-bit signed value.
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
----
- arch/parisc/include/asm/io.h | 16 ++++++---
- arch/parisc/mm/ioremap.c     | 66 ++++--------------------------------
- 2 files changed, 18 insertions(+), 64 deletions(-)
+This behaviour breaks the io_pgetevents_time64() syscall which expects
+signed 64-bit values for the "min_nr" and "nr" parameters.
+Fix this by switching to the compat_sys_io_pgetevents_time64() syscall,
+which uses "compat_long_t" types for those parameters.
 
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index 837ddddbac6a..4183f05ca1c4 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -125,13 +125,19 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
- }
- 
- /*
-- * The standard PCI ioremap interfaces
-+ * I/O memory mapping functions.
-  */
--void __iomem *ioremap(unsigned long offset, unsigned long size);
--#define ioremap_wc			ioremap
--#define ioremap_uc			ioremap
-+void __iomem *
-+ioremap_allowed(phys_addr_t *paddr, size_t size, unsigned long prot);
-+#define ioremap_allowed ioremap_allowed
- 
--extern void iounmap(const volatile void __iomem *addr);
-+#define _PAGE_IOREMAP (_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | \
-+		       _PAGE_ACCESSED | _PAGE_NO_CACHE)
-+
-+#define ioremap_wc(addr, size)  \
-+	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-+#define ioremap_uc(addr, size)  \
-+	ioremap_prot((addr), (size), _PAGE_IOREMAP)
- 
- static inline unsigned char __raw_readb(const volatile void __iomem *addr)
- {
-diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
-index 345ff0b66499..1a6f928e8339 100644
---- a/arch/parisc/mm/ioremap.c
-+++ b/arch/parisc/mm/ioremap.c
-@@ -13,38 +13,20 @@
- #include <linux/io.h>
- #include <linux/mm.h>
- 
--/*
-- * Generic mapping function (not visible outside):
-- */
--
--/*
-- * Remap an arbitrary physical address space into the kernel virtual
-- * address space.
-- *
-- * NOTE! We need to allow non-page-aligned mappings too: we will obviously
-- * have to convert them into an offset in a page-aligned mapping, but the
-- * caller shouldn't need to know that small detail.
-- */
--void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
-+void __iomem *
-+ioremap_allowed(phys_addr_t *paddr, size_t size, unsigned long *prot_val)
- {
--	void __iomem *addr;
--	struct vm_struct *area;
--	unsigned long offset, last_addr;
--	pgprot_t pgprot;
-+	phys_addr_t phys_addr = *paddr;
-+	int ret = -EINVAL;
- 
- #ifdef CONFIG_EISA
- 	unsigned long end = phys_addr + size - 1;
- 	/* Support EISA addresses */
- 	if ((phys_addr >= 0x00080000 && end < 0x000fffff) ||
- 	    (phys_addr >= 0x00500000 && end < 0x03bfffff))
--		phys_addr |= F_EXTEND(0xfc000000);
-+		*paddr = phys_addr |= F_EXTEND(0xfc000000);
- #endif
- 
--	/* Don't allow wraparound or zero size */
--	last_addr = phys_addr + size - 1;
--	if (!size || last_addr < phys_addr)
--		return NULL;
--
- 	/*
- 	 * Don't allow anybody to remap normal RAM that we're using..
- 	 */
-@@ -58,43 +40,9 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
- 		for (page = virt_to_page(t_addr); 
- 		     page <= virt_to_page(t_end); page++) {
- 			if(!PageReserved(page))
--				return NULL;
-+				return IOMEM_ERR_PTR(ret);
- 		}
- 	}
- 
--	pgprot = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY |
--			  _PAGE_ACCESSED | _PAGE_NO_CACHE);
--
--	/*
--	 * Mappings have to be page-aligned
--	 */
--	offset = phys_addr & ~PAGE_MASK;
--	phys_addr &= PAGE_MASK;
--	size = PAGE_ALIGN(last_addr + 1) - phys_addr;
--
--	/*
--	 * Ok, go for it..
--	 */
--	area = get_vm_area(size, VM_IOREMAP);
--	if (!area)
--		return NULL;
--
--	addr = (void __iomem *) area->addr;
--	if (ioremap_page_range((unsigned long)addr, (unsigned long)addr + size,
--			       phys_addr, pgprot)) {
--		vunmap(addr);
--		return NULL;
--	}
--
--	return (void __iomem *) (offset + (char __iomem *)addr);
--}
--EXPORT_SYMBOL(ioremap);
--
--void iounmap(const volatile void __iomem *io_addr)
--{
--	unsigned long addr = (unsigned long)io_addr & PAGE_MASK;
--
--	if (is_vmalloc_addr((void *)addr))
--		vunmap((void *)addr);
-+	return NULL;
- }
--EXPORT_SYMBOL(iounmap);
--- 
-2.34.1
+Cc: <stable@vger.kernel.org> # v5.1+
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/kernel/syscalls/syscall.tbl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/=
+syscalls/syscall.tbl
+index 68b46fe2f17c..8a99c998da9b 100644
+=2D-- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -413,7 +413,7 @@
+ 412	32	utimensat_time64		sys_utimensat			sys_utimensat
+ 413	32	pselect6_time64			sys_pselect6			compat_sys_pselect6_time64
+ 414	32	ppoll_time64			sys_ppoll			compat_sys_ppoll_time64
+-416	32	io_pgetevents_time64		sys_io_pgetevents		sys_io_pgetevents
++416	32	io_pgetevents_time64		sys_io_pgetevents		compat_sys_io_pgetevents_=
+time64
+ 417	32	recvmmsg_time64			sys_recvmmsg			compat_sys_recvmmsg_time64
+ 418	32	mq_timedsend_time64		sys_mq_timedsend		sys_mq_timedsend
+ 419	32	mq_timedreceive_time64		sys_mq_timedreceive		sys_mq_timedreceive
+=2D-
+2.37.1
 
