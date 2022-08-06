@@ -2,91 +2,159 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21A9258B3A9
-	for <lists+linux-parisc@lfdr.de>; Sat,  6 Aug 2022 06:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3A6258B562
+	for <lists+linux-parisc@lfdr.de>; Sat,  6 Aug 2022 14:24:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237015AbiHFEWY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Sat, 6 Aug 2022 00:22:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39672 "EHLO
+        id S231569AbiHFMYM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 6 Aug 2022 08:24:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233185AbiHFEWW (ORCPT
+        with ESMTP id S230321AbiHFMYK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 6 Aug 2022 00:22:22 -0400
-X-Greylist: delayed 64 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 05 Aug 2022 21:22:21 PDT
-Received: from lvs-smtpgate3.nz.fh-koeln.de (lvs-smtpgate3.nz.FH-Koeln.DE [139.6.1.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 414D0167F3
-        for <linux-parisc@vger.kernel.org>; Fri,  5 Aug 2022 21:22:20 -0700 (PDT)
-Message-Id: <c8230b$21k9pj@smtp.intranet.fh-koeln.de>
-X-IPAS-Result: =?us-ascii?q?A2D//wCU6+1iKtLeBosRCj8cAQEBKwsGAQEEBAEBAgEBB?=
- =?us-ascii?q?wEBFYFPAgEBGQgBgRYCAQEBAQEBSgEBAQGBE4EsAQErhE6DT4hPI4MgAYEpg?=
- =?us-ascii?q?nWLFoFjBQIBAYIpjFkLAQEBAQEBAQEBCRICJQkEAQGFBAFTAQEBAQeEHyY3B?=
- =?us-ascii?q?g4BAgQBAQEBAwIDAQEBAQEBAwEBCAEBAQEGBAcBAQEBAUhIhS85DV8BAQGBD?=
- =?us-ascii?q?DQBAQGEEAEBAQYBAQErayACGQ0CRQQWRwEBAQGCRkUBAQGCJQEBMxOCdJ9Bh?=
- =?us-ascii?q?2GBMYEBgimBJgGBC4IpBYJygRcqAgEBAQEBAQEBh2uQXIEPAQKFGB0TglIEm?=
- =?us-ascii?q?CkCAho4AzQRHjcLA10ICRcSIAIEERoLBgMWPgkCBA4DQAgNAxEEAw8YCRIIE?=
- =?us-ascii?q?AQGAzEMJQsDFAwBBgMGBQMBAxsDFAMFJAcDHA8jDQ0EHx0DAwUlAwICGwcCA?=
- =?us-ascii?q?gMCBhUGAgJOOQgECAQrJA8FAgcvBQQvAh4EBQYRCAIWAgYEBAQEFgIQCAIIJ?=
- =?us-ascii?q?xcHEzMZAQVZEAkhHAkfEAUGEwMgbwVFDygzNTwrHxsKYCcLKicEFQMEBAMCB?=
- =?us-ascii?q?hMDAyICEC4xAxUGKRMSLQkqdQkCAyJuAwMEKC4DCUAHCSYsPQUFRz4PlnmCE?=
- =?us-ascii?q?IE4AjCHC41Cg2UFilagWwcDg1GBRAKTfowogkaSdA4EkX0JhW+EdowSp1iBd?=
- =?us-ascii?q?4F/cIFuCSWBG1EZD5ISil90AjkCBgEKAQEDCYxlgQqBGAEB?=
-IronPort-Data: A9a23:fbJOaa2yLw0DdJSftPbD5UB2kn2cJEfYwER7XKvMYLTBsI5bp2APz
- mQZCzvXO6zZYGf8KdkgPdnj8kIO75fUm4MwQAdp3Hw8FHgiRegppDi6wuUcGwvIc6UvmWo+t
- 512huHodZxyFDmEzvuUGuCJhWFm0q2VTabLBufBOyRgLSdpUy5JZShLwobVv6Yx6TSHK1LV0
- T/Ni5CHULOV82YcGn4Z7auFtCRusJza0N/PlgVjDRzjlAa2e0g9VPrzF4noR5fLatU88tqBe
- gr25OrRElU1X/saIojNfr7TKiXmS1NJVOSEoiI+t6OK2nCuqsGuu0o2HKJ0VKtZt9mGt+9gz
- NRHlZOickQkA73GhtYFYkNdKxgraMWq+JefSZS+mem65BSbXSCq3e1oSk82eI4f9+JxR21Dn
- RAaAGlWP1bdwbjsmvThE7EEascLdaEHOKsas3pjwDfLDPtgXY3fX6HHzdRRmi0qwMtJGJ4yY
- uJHOWo1NkSbPnWjPH82V8oPwv7w2UXVWCJ3rlDNjKozuUzcmVkZPL/FaoOOI4faFK25hH2wr
- GLP5X7+GREyLNWZwCGM6TSngeqntTjwWJ0bHpW89/h3kBiWmDwQThoMWjOTrOGwkE+lc8hSJ
- 0wd5mwlqq1a3E6uScPnXgaQpneBsx9aXMBfe8U24R+AyILO7gqZD3RCRTlEAPQls8k3Xjwrk
- EWYgsj0BjFHtLSfD3SB6vGfqnWwIUA9Ln4GaAceQAcF6sWlq4Y25jrAS4w+SvbrptfyHDv5z
- zGO6ik4ia8agcMC2+O851+vqzCmq4XNTwU1zgPQQG+h6kVyY4vNT5av41XB8bBaLY2ZUlSbl
- HEBl46V6+VmJZSHvCaQG/4GHPel6p6tMyzYjHZqFJwo7Sis/TiodOh45DB4OVcsKs8eeCTiS
- FHctBkX55JJOnauK6htbOqZDsMs1rT6PdHiUOvIdJxDf/BZdgiH+mdxZEqU3mnoi2A0nL02P
- ZCUcNbqBnEfYYx1zDOwSP4c2LkkgCojzGr7SpXyzhDh2r2bDFaQUq8MNlSmZfsy6L6O5hjK+
- spSLc+NzFNUWYXWbzPW+sgfMFUDP3UnLZ/zos1TMOWEJ2JOAmglBdfVwLU8a8lgnrxO0ODS8
- RmVXEJZzFDXnmDcJEOGZxhehKjHRcwl9yhiZWoyJVDt12klJ4ivqaQYep8xO7UqnAB+8RJqZ
- 8YUf8SKIvtdcXfKxiQXc6vlndZnTC3+0GpiIBGZjCgDk49IHlKUq4G6I1S2qEHiHQLq7Zpk8
- uLIOhfzH8tfF1UK4NP+NarH8r+ngZQKsM5fN6ciCvJUfELj9oUCx8fZ06dpfJ9kxfnr4DyAy
- wbeOxcZo+SInIIu7MHJjKSFpu+U/wpC8qlyRjezAU6eb3Wyw4Za6dYovBy0VT7cTnjo366pe
- P9YyfrxWNVewgsb7NAgSe0ylP5kjzcKm1O85ls6dJksRwvwYo6M3lHcgZYnWlBlme4J6VrnA
- CpjBPEHYOnWY6sJ72L91CJ/N7/ajqFF8tUjxfg4PVnh7y965/KJVl9JNBmRjiNGKrZpIusYL
- RQJ56YrB/iEokt0WutqewgRqjTkwoooAvh85/n3webD02IW9721ScWEVXWusMDVO4sk34tDC
- mb8uZcuTo90niLqG0ff31CUtQaBrfziYCx38WI=
-IronPort-HdrOrdr: A9a23:1vx/EqsBgyoFPbV8Sc34XUYf7skDYdV00zEX/kB9WHVpmgXxra
- yTdZMguCMc6Qx7ZJhOo7C90cW7IE80lqQe3WB5B97LYOCBghrKEGmmhrGSpgEIcBeQygcy78
- ldmtNFeb/NMWQ=
-X-IronPort-Anti-Spam-Filtered: true
-THK-HEADER: Antispam--identified_spam--outgoing_filter
-Received: from p222210.vpn-dyn.fh-koeln.de (HELO MAC15F3.vpn.fh-koeln.de) ([139.6.222.210])
-  by smtp.intranet.fh-koeln.de with ESMTP/TLS/DHE-RSA-AES128-SHA; 06 Aug 2022 06:21:13 +0200
+        Sat, 6 Aug 2022 08:24:10 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1725BDE8B;
+        Sat,  6 Aug 2022 05:24:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1659788630;
+        bh=2Q7uVoi9etUHQcg6k8CWD2qINr2lwPxkOfHfz7vCqgM=;
+        h=X-UI-Sender-Class:From:To:Subject:Date;
+        b=dFXsfITa8u0yUy3ATKvqfVosIu2sxDMttJpXYT3TExqQp1qxFdgnoUQjeMpqd5gQ/
+         QQMHQiWm6SdRlU8OgFdbjAzlUKw2mQ1dhutjmaGiPsYC8liv37JyMFe1/qpAHknbYv
+         DYlmqzk0EIASiPY1ep0YZABrkVCvEuXaXAojiaVs=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.170.46]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M2wGs-1oGzSU1xXg-003PL9; Sat, 06
+ Aug 2022 14:23:50 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-s390@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+        Josh Triplett <josh@joshtriplett.org>,
+        linux-fsdevel@vger.kernel.org
+Subject: [PATCH v2 0/3] Dump command line of faulting process to syslog
+Date:   Sat,  6 Aug 2022 14:23:45 +0200
+Message-Id: <20220806122348.82584-1-deller@gmx.de>
+X-Mailer: git-send-email 2.37.1
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Charity Donation
-To:     You <mackenzie.tuttle@ca.rr.com>
-From:   "MacKenzie Scott" <mackenzie.tuttle@ca.rr.com>
-Date:   Sat, 06 Aug 2022 05:21:11 +0100
-Reply-To: mackenzie-tuttle@californiamail.com
-X-Priority: 1 (High)
-Sensitivity: Company-Confidential
-X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,MSGID_FROM_MTA_HEADER,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:SFsa6Df2ppv7VmXIO81pLmiWdYqA+5p7hjdVr9P8sJdlxgTdXyx
+ 4V3iT2wC6bHvXC7t2xifm5y+1XtJi7CeGrvmNskRuT+NUD70O1J5kP8BJ76oKwyi2IlzJAr
+ BeVqMiWEYJvxsEVrSmCLgUqGp4CJmeKFij/TJWDQe8IoiingusSdIpMlpJ9baRQDqGsZIjv
+ Umt6qVYh0t5eerHTwNAng==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:waMzHaSporw=:pQQ6T0vUgoaQCVoAd7gFx7
+ H8ZBcdX2uzjCQClblhUib7tkJIHgOxIQohRDHqxhIWZdiWr4boLS/sQ9PTFwgAk6Um8zRnRMM
+ Gg+BqEmCX1lSXMxIdAQ1Z0zSn2q4mfQHHg6J8mp/spSzeBmtzqjUl46qQjwi7cGbNrkM3aoEQ
+ 2KYtL6YvPbn6Fw5G82JRCMl5znSrsBdw7aAQthAWmvEB6mlk0lAi3QEeXCPJf9bbseBNg99h2
+ mVJPPfovCvwh465Yq5qtGD+OqVQf5KeCtLQSW+oarzW6uEgb+orvD34GckkJ/HUjA9kWbHtS4
+ PeNa3ok49xe/PRcLCQ+L65pnUgJwAI3rnYhzzk0PHuPyVpPyYSXlqKgfnWAblvHPckqrjplua
+ xhrWpIQjOznlPKvGjTbm3ALXChSVyEuamC85KXGhk1LUrtGbvJYDwbpMe2SfX6HKyF7QXDeEI
+ qyI+XTnEzuUzhoJe410UWCc8rxeLSdkToyTtrnCit02WglwTPgxoXqO9iejf1FAlIVJ/JsB9I
+ jtC2YV+S0rVcC4LBhHpJF2KECzMZImJWt6nGr1tFUu9gWF7hnSyKfBlGihnnYmTCDrlhJ+cMQ
+ 0/H4LZKXvI/3hW4Cen8Xi9YINAQ01GjOdEsAo9m1YrsjnRgGiKIW6qpUoIP8RSmViT9zyMZrJ
+ 8sOHniLPOdPeHP0xTSZ5HAcZqIqYDN/UEVZgllQjDrlUq90JW7wh8AufIIJ5KTCw2i/94zRjC
+ /O3NtijzwGRs8wAtY20v7nhukQBt/c2Wc7uwnB0fC4rk4/RCM1ogUYyKidgHgyX54VlaW3Rbw
+ nimX0uG44H8ll17vPZdKe/deUwIe5Jk7VFvUnt42qnnBzUP/OOgRVPOQwLzLTm+/vpy+gZYN9
+ 87oJQANgA7w/dJmnp0pvs0mRgAV3jXhoyEguzuw1x1JWxWb0Im7/ToAJOq2amhQfeZVVQWEQi
+ HfSiHrbgxVk4SM5aifHPQ4GYREukr8JSjjSscgDJaupYeFWtv6m/mkWt6qBtEyZqPmJRkN01n
+ +9RmeFlvcC5tQ9ZRZOxyjKnn9f/LpeYVvd1XBc6k8iviKZgjzN8iIz15z+oMOCq+ykV/7gpEM
+ 7dtXolVTvvRrkiLCJgrNc2tjARUPGdMGI/3X0z8o+CrNmWV0eVzMu7/FQ==
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLACK autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi,
-  My name is MacKenzie Scott Tuttle; I'm a philanthropist and founder of one of the largest private foundations in the world. I'm on a mission to give it all away as I believe in ‘giving while living.’ I always had the idea that never changed in my mind — that wealth should be used to help each other, which has made me decide to donate to you. Kindly acknowledge this message and I will get back to you with more details.
+This patch series allows the arch-specific kernel fault handlers to dump
+the command line parameters of the faulting process.
 
-Visit the web page to know more about me: https://www.nytimes.com/2022/04/10/business/mackenzie-scott-charity.html
+The motivation for this patch is that it's sometimes quite hard to find ou=
+t and
+annoying to not know which program *exactly* faulted when looking at the s=
+yslog.
 
-Regards,
-MacKenzie Scott Tuttle.
+Some examples from the syslog are:
+
+On parisc:
+   do_page_fault() command=3D'cc1' type=3D15 address=3D0x00000000 in libc-=
+2.33.so[f6abb000+184000]
+   CPU: 1 PID: 13472 Comm: cc1 Tainted: G            E     5.10.133+ #45
+   Hardware name: 9000/785/C8000
+
+-> We see the "cc1" compiler crashed, but it would be useful to know which=
+ file was compiled.
+
+With this patch series, the kernel now prints in addition:
+   cc1[13472] cmdline: /usr/lib/gcc/hppa-linux-gnu/12/cc1 -quiet @/tmp/ccR=
+kFSfY -imultilib . -imultiarch hppa-linux-gnu -D USE_MINIINTERPRETER -D NO=
+_REGS -D _HPUX_SOURCE -D NOSMP -D THREADED_RTS -include /build/ghc/ghc-9.0=
+.2/includes/dist-install/build/ghcversion.h -iquote compiler/GHC/Iface -qu=
+iet -dumpdir /tmp/ghc13413_0/ -dumpbase ghc_5.hc -dumpbase-ext .hc -O -Wim=
+plicit -fno-PIC -fwrapv -fno-builtin -fno-strict-aliasing -o /tmp/ghc13413=
+_0/ghc_5.s
+
+-> now we know that cc1 crashed while compiling some haskell code.
+
+Another parisc example:
+   do_page_fault() command=3D'ld.so.1' type=3D15 address=3D0x565921d8 in l=
+ibc.so[f7339000+1bb000]
+   CPU: 1 PID: 1151 Comm: cc1 Tainted: G            E     5.10.133+ #45
+   Hardware name: 9000/785/C8000
+
+-> apparently here a program from the glibc testsuite segfaulted.
+
+With this patch we now additionally get:
+   ld.so.1[1151] cmdline: /home/gnu/glibc/objdir/elf/ld.so.1 --library-pat=
+h /home/gnu/glibc/objdir:/home/gnu/glibc/objdir/math:/home/gnu/
+        /home/gnu/glibc/objdir/malloc/tst-safe-linking-malloc-hugetlb1
+
+-> it was the tst-safe-linking-malloc-hugetlb1 testcase which faulted.
+
+An example of a typical x86 fault shows up as:
+   crash[2326]: segfault at 0 ip 0000561a7969c12e sp 00007ffe97a05630 erro=
+r 6 in crash[561a7969c000+1000]
+   Code: 68 ff ff ff c6 05 19 2f 00 00 01 5d c3 0f 1f 80 00 00 00 00 c3 0f=
+ 1f 80 00 00 00 00 e9 7b ff ff ff 55 48 89 e5 b8 00 00 00 00 <c7> 00 01 00=
+ 00 00 b8 00 00 00 00 5d c3 0f 1f 44 00 00 41 57 4c 8d
+
+-> with this patch we now will see the whole command line:
+   crash[2326] cmdline: ./crash test_write_to_page_0
+
+The patches are relatively small, and reuses functions which are used
+to create the output for the /proc/<pid>/cmdline files.
+
+In this version 2 of the patch set, all or parts of the command line isn't
+shown if the value of the kptr_restrict sysctl >=3D 1.
+
+Thanks!
+Helge
+
+=2D--
+
+Changes compared to v1 of this patchset:
+=2D---------------------------------------
+- Don't dump all or parts of the commandline depending on the
+  kptr_restrict sysctl value (suggested by Josh Triplett).
+- Patch sent to more arch mailing lists
+
+Helge Deller (3):
+  proc: Add get_task_cmdline_kernel() function
+  lib/dump_stack: Add dump_stack_print_cmdline() and wire up in
+    dump_stack_print_info()
+  x86/fault: Dump command line of faulting process to syslog
+
+ arch/x86/mm/fault.c     |  2 ++
+ fs/proc/base.c          | 68 +++++++++++++++++++++++++++--------------
+ include/linux/printk.h  |  5 +++
+ include/linux/proc_fs.h |  5 +++
+ lib/dump_stack.c        | 34 +++++++++++++++++++++
+ 5 files changed, 91 insertions(+), 23 deletions(-)
+
+=2D-
+2.37.1
+
