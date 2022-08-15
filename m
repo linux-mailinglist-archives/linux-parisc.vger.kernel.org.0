@@ -1,109 +1,126 @@
 Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79CF7591FBB
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 Aug 2022 14:30:13 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7A8593495
+	for <lists+linux-parisc@lfdr.de>; Mon, 15 Aug 2022 20:26:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235437AbiHNMaL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 14 Aug 2022 08:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36754 "EHLO
+        id S233061AbiHOSKO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 15 Aug 2022 14:10:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229820AbiHNMaK (ORCPT
+        with ESMTP id S233035AbiHOSKN (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 14 Aug 2022 08:30:10 -0400
-Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665601CFD6
-        for <linux-parisc@vger.kernel.org>; Sun, 14 Aug 2022 05:30:08 -0700 (PDT)
-Received: by mail-ua1-x941.google.com with SMTP id b22so965861uap.0
-        for <linux-parisc@vger.kernel.org>; Sun, 14 Aug 2022 05:30:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=fSRXR4YbG2axxAJZbn0K7cCdiNWLnoF7h1uis7VyTt/hE6MtShMFS+sq4BclgsyGPm
-         nYlaKohRak9aHOsgM4dZH/l70djqxWRtrNFwARwggPRd3kvV66LRt6II2U9wh5YhdP4g
-         4WYsHuhOnG9b/bdr6WvC2yTswzczOfbwCa/OyYB/ZTv74DqA2JFt/tfuATJ5wp9TfuMw
-         VSFTYIEoC0n0e+8pc6pj4ewdrjcqgivmB9y3ForbjOSbKLzvnnCZQT3QeAU0hGICjqok
-         rW5bs02LI87ApKYDV+Oqk1uZEpmO5BH5Gm+v5gMwAPhCj71nL3APmi+BzIXyr8UuGrwA
-         1pVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=SbR5uK3jEDNaY9qTgAId8aj4gCOOjVyqHLUbnWPG5ziI+pRf5rgCXfFyEYLIR640rh
-         QKba3lxZPoxmAzojj0jnQWCFMFN/lo4Yh1nNoguzF0CN+mIdtVlYQCJw9iqCeFbw8hzk
-         q0NkBjojCMCC8puuJ7y+o9kOL3cplVR4O9BPk7gOYx5AtIYqQI0/jXaINMvcmmt0bSsK
-         evLmJOeQs7WOldVk0YH1llvOXO+QH3RNY4c5Z6jgVEis8fb/jG1r0vY+8un9mCRL1c7q
-         TcOGOAEAOi5JBrylv8h7BvvWFnaRXiXM4jiPNd3b7SJpPNAAE96sFn4YgxuLMiXk3co7
-         jyrg==
-X-Gm-Message-State: ACgBeo27v1xaUCBXWCMxqK3khrLTh+75jp5AuHyL8FXMSKMoC7O8Di5Z
-        YMIiKADpbPrXUU0T2jXTt9ZZAHQ8n0GE8O8jUR0=
-X-Google-Smtp-Source: AA6agR6WifmR2QNyOk2Xet2zC2jgXp9R9hmNgNzAoqmx9PDYVh32g/0WjIV8RxL95eVGV0XsKl4ImBuuxDfFf1Cu+98=
-X-Received: by 2002:ab0:2242:0:b0:38c:7f0d:623e with SMTP id
- z2-20020ab02242000000b0038c7f0d623emr4809600uan.59.1660480207346; Sun, 14 Aug
- 2022 05:30:07 -0700 (PDT)
+        Mon, 15 Aug 2022 14:10:13 -0400
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4068C2A24C
+        for <linux-parisc@vger.kernel.org>; Mon, 15 Aug 2022 11:10:11 -0700 (PDT)
+Received: from ramsan.of.borg ([84.195.186.194])
+        by albert.telenet-ops.be with bizsmtp
+        id 7uA42800C4C55Sk06uA4oE; Mon, 15 Aug 2022 20:10:09 +0200
+Received: from geert (helo=localhost)
+        by ramsan.of.borg with local-esmtp (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1oNeXL-001DJO-RF; Mon, 15 Aug 2022 20:10:03 +0200
+Date:   Mon, 15 Aug 2022 20:10:03 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+X-X-Sender: geert@ramsan.of.borg
+To:     linux-kernel@vger.kernel.org
+cc:     linux-parisc@vger.kernel.org, linux-staging@lists.linux.dev,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
+Subject: Re: Build regressions/improvements in v6.0-rc1
+In-Reply-To: <20220815180438.2875559-1-geert@linux-m68k.org>
+Message-ID: <alpine.DEB.2.22.394.2208152006320.289321@ramsan.of.borg>
+References: <CAHk-=wgRFjPHV-Y_eKP9wQMLFDgG+dEUHiv5wC17OQHsG5z7BA@mail.gmail.com> <20220815180438.2875559-1-geert@linux-m68k.org>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Received: by 2002:a05:612c:708:b0:2de:ed04:8dc7 with HTTP; Sun, 14 Aug 2022
- 05:30:06 -0700 (PDT)
-Reply-To: lilywilliam989@gmail.com
-From:   Lily William <moussapare92@gmail.com>
-Date:   Sun, 14 Aug 2022 04:30:06 -0800
-Message-ID: <CAA0Xjhrhu_vYS_qWErZ3E4ppLhJMYSOq-EQqiZw3rgXkyWhTzg@mail.gmail.com>
-Subject: Hi,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:941 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [moussapare92[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [moussapare92[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [lilywilliam989[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Dear,
+On Mon, 15 Aug 2022, Geert Uytterhoeven wrote:
+> Below is the list of build error/warning regressions/improvements in
+> v6.0-rc1[1] compared to v5.19[2].
+>
+> Summarized:
+>  - build errors: +26/-15
 
-My name is Dr Lily William from the United States.I am a French and
-American nationality (dual) living in the U.S and sometimes in France
-for Work Purpose.
+   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: .cfi_endproc without corresponding .cfi_startproc:  => 32
+   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: bad or irreducible absolute expression:  => 16
+   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: junk at end of line, first unrecognized character is `:':  => 16
+   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: no such instruction: `be 0x100(%sr2,%r0)':  => 29
+   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: no such instruction: `ldi 0,%r20':  => 30
+   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: no such instruction: `ldw 0(%sp),%r31':  => 26
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: no such instruction: `ble 0x100(%sr2,%r0)':  => 51, 46
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: no such instruction: `ldi 0,%r25':  => 44
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: no such instruction: `ldi 1,%r25':  => 49
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: no such instruction: `ldi 173,%r20':  => 50, 45
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.callinfo':  => 40
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.entry':  => 41
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.exit':  => 54
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.proc':  => 39
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.procend':  => 55
+   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.stringz':  => 76
 
-I hope you consider my friend request. I will share some of my pics
-and more details about myself when I get your response.
+parisc64-gcc11/generic-64bit_defconfig
+parisc-gcc11/generic-32bit_defconfig
+parisc-gcc11/parisc-{allmod,allno,def}config
 
-Thanks
+   + /kisskb/src/arch/sh/include/asm/io.h: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]:  => 239:34
 
-With love
-Lily
+sh4-gcc11/sh-allmodconfig (drivers/staging/octeon/ethernet-mem.c)
+
+   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn30/display_mode_vba_30.c: error: the frame size of 2096 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 6806:1
+   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn32/display_mode_vba_32.c: error: the frame size of 2160 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 3778:1
+
+x86_64-gcc8/x86-allmodconfig
+
+   + /kisskb/src/include/linux/bitfield.h: error: call to '__field_overflow' declared with attribute error: value doesn't fit into mask:  => 151:3
+
+mipsel-gcc5/mips-allmodconfig (net/mac80211/tx.c)
+
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_603' declared with attribute error: FIELD_GET: mask is not constant:  => 354:38
+
+arm64-gcc5/arm64-allmodconfig (arch/arm64/kvm/arm.c)
+
+   + /kisskb/src/include/linux/random.h: error: 'latent_entropy' undeclared (first use in this function):  => 25:39
+
+powerpc-gcc5/powerpc-all{mod,yes}config
+powerpc-gcc5/ppc32_allmodconfig
+powerpc-gcc5/ppc64_book3e_allmodconfig
+powerpc-gcc5/ppc64le_allmodconfig
+
+   + /kisskb/src/include/linux/random.h: error: 'latent_entropy' undeclared (first use in this function); did you mean 'add_latent_entropy'?:  => 25:46
+
+powerpc-gcc11/powerpc-all{mod,yes}config
+powerpc-gcc11/ppc64_book3e_allmodconfig
+
+   + {standard input}: Error: displacement to undefined symbol .L377 overflows 12-bit field:  => 2286
+   + {standard input}: Error: displacement to undefined symbol .L378 overflows 8-bit field :  => 2302
+   + {standard input}: Error: displacement to undefined symbol .L382 overflows 8-bit field :  => 2213
+
+sh4-gcc11/sh-allmodconfig (seen before, root cause is internal compiler error)
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/568035b01cfb107af8d2e4bd2fb9aea22cf5b868/ (all 135 configs)
+> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/3d7cb6b04c3f3115719235cc6866b10326de34cd/ (all 135 configs)
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
