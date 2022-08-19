@@ -2,67 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D66359A675
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Aug 2022 21:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1B6459A691
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Aug 2022 21:40:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351095AbiHST1v (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Aug 2022 15:27:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50664 "EHLO
+        id S1349686AbiHSTbz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Aug 2022 15:31:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349705AbiHST1u (ORCPT
+        with ESMTP id S1349705AbiHSTbx (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Aug 2022 15:27:50 -0400
+        Fri, 19 Aug 2022 15:31:53 -0400
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7A4581B2F;
-        Fri, 19 Aug 2022 12:27:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DBA2D758A;
+        Fri, 19 Aug 2022 12:31:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1660937264;
-        bh=T8yJKMD8o6XFclCIp2z4mMB1SQbgLUqQpqvOc1TdR3M=;
+        s=badeba3b8450; t=1660937501;
+        bh=S9XSHGciNIn79h/yqTTFzk/eQagf9Lf+whoQDfPRleg=;
         h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=fIFaRjfRAQtEvkdlYxGSb8HpBqGiWtizBI1/T8hPoi2+X0GpXRDXIpyRyiKMyJWiD
-         s0+58VeP3zIhJ3vgWnU4OdYDE1eYQGrbG14yRmLuOoV8UPZ48Ud9+QdnWN9EnXwUgS
-         ZIyHKuP59v5Ec8YvkRSzN/xyBRkC0s5Ncl2S7b5c=
+        b=ddTEMirLyv+YLVRKyw3garrKG7yLA0m9QETbymTnuRXz42FyIYLb85j42Zo85+/kN
+         S9sbMhwLECQFi9GzO+5RQpSxfg+yUuxN2wamTJM+gSJyHZz7A825kvEdyC9NhVIFkf
+         ExBad+NNZtRdzeagqTSqDTJIm2W0KK5F343S5Gw0=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.153.160]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MRmfo-1nvsks2keI-00T9Uz; Fri, 19
- Aug 2022 21:27:44 +0200
-Message-ID: <10e7f147-6f7e-76ad-02f9-2db32c533953@gmx.de>
-Date:   Fri, 19 Aug 2022 21:26:46 +0200
+Received: from [192.168.20.60] ([92.116.153.160]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MWASe-1nrV6l0H98-00XeEg; Fri, 19
+ Aug 2022 21:31:41 +0200
+Message-ID: <9ad5cdb5-3f72-1305-b509-d0f68943b618@gmx.de>
+Date:   Fri, 19 Aug 2022 21:30:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.12.0
-Subject: Re: [PATCH] parisc: move from strlcpy with unused retval to strscpy
+Subject: Re: [PATCH] parisc: handle failure of kmalloc in ccio_init_resources
 Content-Language: en-US
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-kernel@vger.kernel.org
-Cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org
-References: <20220818210055.7181-1-wsa+renesas@sang-engineering.com>
+To:     Li Qiong <liqiong@nfschina.com>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        yuzhe <yuzhe@nfschina.com>
+References: <20220819041510.75473-1-liqiong@nfschina.com>
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220818210055.7181-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20220819041510.75473-1-liqiong@nfschina.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:QmeEpcKlr3qlUzuFyD6WPk0AZuKFJtm3XO8GctBcN+J/ae6GQaJ
- 5/vf8HEr3PXnNWjMOUVP9ja39NdkOdfuzB+Fpe3xjlehr/nlss0hi84in+aSLZjaYe2bRkj
- V2yKv2mYDsRv9o5IygdnuKV5x30QvgW2NE4jR6C1TZRoFaFkO0nyzukEvwsdp04xNet1rYr
- SXmQzkaIZv0e4w5A96Meg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:jL28/mYB9xA=:9Trwc9b09DhN56RlKyflb8
- ilnnMOnIh97osZm8HdI+JT9O0Rm2JGsr8LXjRpyC25nh2FnQb4KPOezWbcA+Ept124FjCSNoN
- WDP9fC+nl39wyqLMeT8wdT9LvuLYxN2sI5w5UoUwDF6WJOkhrxP0OPuMnxH5n/2UR6xJnW+VQ
- Thr0z/qGl5/31q2CXQw72u+S05EqHP5o87i7nAYumIGvLW4VM0vPr0gRAml2KAoAkOeEAdaHv
- WuBEUcDXySCWQMZ0x/50tXSM+wpjzp2qkDAgbYUg2OkLf8zL49OTFolBsz7g5/6dV1vTTQHWo
- EIUCFFGqFICHaD+rCGY5Fbj0tdPTsjHUIpKAfSipkiYVYqRb29g8md4ofZQqtWBYGUkRZfLrx
- N+PK2IRmHtHu/yAsCsMXW4t+Et+AF+ItN2QGekUHpvoyyF06HSJu6Xa08mGljm20vySrFTTjQ
- q18Tz+Ow4eEtiovrA6uyBm3UznHVGJ/IJwy0dvfNEfEkvZDR6zjW4ESf9jcGZRsJJbqCuMQSD
- fru3RpQH9T6CN7vv8bzeFtu5Bd+F4SEGPO/I7on2E4zxMP7x53Ad6ODL8jmQg0QWmtir6KpOI
- PcrEEhuSfr+Iu+h9Y/HTziUANBRosVzp/MLNT/v6TtfiUO0rFTExK0QQ4J4zMOiRbP7sQEAVR
- vmAk2q6SqoVnbfXnw4I3HJx6E/oMeH/oU9PH1oiGVv/wODUMcA8lO24qqBtsvQMxQ4UbSP+3d
- 4x5WqQ5nSanIFLC7D9LCpEYJKLE3PT57k61WK3bBLWlFB+5DLf9rn/APBeUpWyh8bnXZmw2Mu
- 8v7yP3sGKi5B1fRFH+JqqpDOYW6PUp+fXhYiIvjH17p3UOU3zEFCqRkylupqW/5Z3kgiDMhAU
- 20PQhfgKGiIWDlC0K3QMQiBXmdBoR/JVLH/6nsZ+GPsQYKUojogAKbL28QVNShW4HTWUHrhUJ
- RaPP4Y8MRyiC8QXcxUFr35sUBK5kByu5jMFWm8MeHslZTMOB+h+nX72M/9GQiX/zi8oychk+7
- yJLdJAdheL46yd88IVvln52HCtKU3x2MqoBY9B/cYqwbhiYNA4UQ0J77CZ293T+DvA7nB7TpF
- X81IHsxHl/9v1ZClsBCgs8LRHj8PM27PZs84IHeBgxUhucEjusrcSHuvQ==
+X-Provags-ID: V03:K1:KitrQKEzV9hFGl+PSdcnzshEw9jqQ8aecACCnOxaKzzfryANmcV
+ IIh9BCpQMmEdWxnZ4cKAbzpyiSGJ61Zt3xTfK5mXU432DhfbIaiKzWnicD3a7Ji3CbPPrEX
+ iBol1CIKhH+t8gW6LepnhCpThbfVOIejVfjc3+c6OeGO0HNtQetIWbuSJouLdtkmFh7PWbB
+ vwRvEGmFZrI6THBXz/eDQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:z8UfPHmWJ5o=:87dt2GN+iXv4oqnaofDWtV
+ jgSNfkMtyrHUjA3qs/2MSBDuR2DSVEsnFfAEkhkMCb7VjeMrkJa7CriOzo4a15vbhZMLzGBn0
+ UpJqxiJsE1pjvVJhhUZlHKXC4+nVbrnwX4TScMbiuoUbrTvlE+iMw56HUma/FcQzA+YdphTJ2
+ 4w2VChAMtWJJLNait2owgVKqDgIv4ZcpCsm1HqU8Zhq1JWCoEeg0s+C/8jdczmxK28+fL40yv
+ 4x67pAl+WgVX24EjFD0Iq1EEiW0CKpEweL8KWwn7gUiGoLoGR6neNDsuoxHqfOWXqEeFOs1tQ
+ DsZuAH3boXsG1nKrH1zngLaC1tHrq4nyDPq+BIT7U1xT+XWRtEkS4TmIND3+Zax7oJTVz9WgK
+ Izxshcte4sXDr5jsPKS7gBONxhhlH66j8ftfcLvE4SNgn8pRSS3HxshSguAb3qHhBpOabJWky
+ hGWLYKbu2t9VC4C6tDMQwHFmzDREc+fkP9853MXBZBvIJt6lZbPgRfe2fZ+T1k8bFMtRyRKCq
+ Wc17p+zsJBxXejPQT2USxyc6qp+o4k29SsSZkAYTX3ap0CPOf7KiBxG1t5kg6XIGpPHTN7nYR
+ /zFA2zpjPJIWFT20p4JdflNv6HHghpU7xYxJzCjqRkgmJminzE2AB5NP0c3FYg8JHUYhQSa3Z
+ ZR4W91+ifIh+ppNFcMzkxkCtbYaucnQpqmF4SZO70f7mHaqKDTbUWjGViKynshi123foLV7vV
+ gc4jeNZc60o6mOVQO372rOf1DdNB93eUtOXp2IGhDDAy4scrOvdSAsnA+SY91o1VV30vpetl6
+ PIo1/OYS3zLWknsfDxM/kEjCfx4tP+Nv/xUmlgSXHpvszTo4TUYC5Y8mrXAjU9dL58cJ7iPE/
+ PNuuyhgLTZdGME7mHaz598SvTlJdXu6jawL7wS3PONtKL559UP0xyf8xlPvC5FkdSm4hbYg1q
+ GfS8/YBGn/CgP9+VRdGB4WO/v9ZqE5bgPlP+Xk2K2T9mF9+4uxzeu2foATe/MYoHt/vcCiijW
+ rUelFTq6uKI4NwLywHWL8zdCGOij1KXw3JptDD9PYsiXxDLOwM4HQ8CAsWqtutJCpY0epOlED
+ J+M1+bOqgotA3//10TvYg4FEADmBiJWeo5EqYLhecCzagWR56YzE2qynA==
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -73,34 +73,57 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 8/18/22 23:00, Wolfram Sang wrote:
-> Follow the advice of the below link and prefer 'strscpy' in this
-> subsystem. Conversion is 1:1 because the return value is not used.
-> Generated by a coccinelle script.
+On 8/19/22 06:15, Li Qiong wrote:
+> As the possible failure of the kmalloc(), it should be better
+> to fix this error path, check and return '-ENOMEM' error code.
 >
-> Link: https://lore.kernel.org/r/CAHk-=3DwgfRnXz0W3D37d01q3JFkr_i_uTL=3DV=
-6A6G1oUZcprmknw@mail.gmail.com/
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Signed-off-by: Li Qiong <liqiong@nfschina.com>
 
-applied to parisc git tree.
+applied.
+
 Thanks!
 Helge
 
 > ---
->  drivers/parisc/led.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/parisc/ccio-dma.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/parisc/led.c b/drivers/parisc/led.c
-> index 1e4a5663d011..d4be9d2ee74d 100644
-> --- a/drivers/parisc/led.c
-> +++ b/drivers/parisc/led.c
-> @@ -646,7 +646,7 @@ int lcd_print( const char *str )
->  		cancel_delayed_work_sync(&led_task);
+> diff --git a/drivers/parisc/ccio-dma.c b/drivers/parisc/ccio-dma.c
+> index 9be007c9420f..f69ab90b5e22 100644
+> --- a/drivers/parisc/ccio-dma.c
+> +++ b/drivers/parisc/ccio-dma.c
+> @@ -1380,15 +1380,17 @@ ccio_init_resource(struct resource *res, char *n=
+ame, void __iomem *ioaddr)
+>  	}
+>  }
 >
->  	/* copy display string to buffer for procfs */
-> -	strlcpy(lcd_text, str, sizeof(lcd_text));
-> +	strscpy(lcd_text, str, sizeof(lcd_text));
+> -static void __init ccio_init_resources(struct ioc *ioc)
+> +static int __init ccio_init_resources(struct ioc *ioc)
+>  {
+>  	struct resource *res =3D ioc->mmio_region;
+>  	char *name =3D kmalloc(14, GFP_KERNEL);
+> -
+> +	if (unlikely(!name))
+> +		return -ENOMEM;
+>  	snprintf(name, 14, "GSC Bus [%d/]", ioc->hw_path);
 >
->  	/* Set LCD Cursor to 1st character */
->  	gsc_writeb(lcd_info.reset_cmd1, LCD_CMD_REG);
+>  	ccio_init_resource(res, name, &ioc->ioc_regs->io_io_low);
+>  	ccio_init_resource(res + 1, name, &ioc->ioc_regs->io_io_low_hv);
+> +	return 0;
+>  }
+>
+>  static int new_ioc_area(struct resource *res, unsigned long size,
+> @@ -1543,7 +1545,10 @@ static int __init ccio_probe(struct parisc_device=
+ *dev)
+>  		return -ENOMEM;
+>  	}
+>  	ccio_ioc_init(ioc);
+> -	ccio_init_resources(ioc);
+> +	if (ccio_init_resources(ioc)) {
+> +		kfree(ioc);
+> +		return -ENOMEM;
+> +	}
+>  	hppa_dma_ops =3D &ccio_ops;
+>
+>  	hba =3D kzalloc(sizeof(*hba), GFP_KERNEL);
 
