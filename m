@@ -2,122 +2,101 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BE37599DD7
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Aug 2022 16:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 691E5599DDE
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Aug 2022 16:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349591AbiHSO5Q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Aug 2022 10:57:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39458 "EHLO
+        id S1349236AbiHSO4E (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Aug 2022 10:56:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349172AbiHSO5O (ORCPT
+        with ESMTP id S1348695AbiHSO4D (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Aug 2022 10:57:14 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F342C64C4;
-        Fri, 19 Aug 2022 07:57:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=SYqd0jVvSqn0LYdbb0mNobM+NLD0i8990uNItjrpJW0=; b=p8X1gMssAFqz7Cj5E1IU3EN3xz
-        t/snbLEyJv1XAdu4J+MpAgDpW86NPkUeqqsmS64YxuYIDoz1/0nSwGnJ4A7MRHs6v4/DfY13yylRH
-        yTpJ3gDO1i4G6ew5SrDgljBdNE61ShqeAK0joibG/N9CQrD4C5DO+D+oHobsM0kWRo/T88yRl68DM
-        ivZpQK7KoicNncKbbL3cMwzclIbdo4NBfFt8WVkYbV7Yt9Ti+iBnKi0iAa3qakANtULKlnjVs0VPW
-        qMm4R7XYp2iFBesGctz7KWjgzPu53WYvs3CSQtaYwSCE20OErGTcffzJDbyUtNOmEl2QCsbCVzRVd
-        fg0lrl+g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33852)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1oP3PW-0007vG-Sl; Fri, 19 Aug 2022 15:55:47 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1oP3PE-0007s8-Jr; Fri, 19 Aug 2022 15:55:28 +0100
-Date:   Fri, 19 Aug 2022 15:55:28 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc:     Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Brian Cain <bcain@quicinc.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        akpm@linux-foundation.org
-Subject: Re: [PATCH] kernel: exit: cleanup release_thread()
-Message-ID: <Yv+kYPnf8c6rLXgN@shell.armlinux.org.uk>
-References: <20220819014406.32266-1-wangkefeng.wang@huawei.com>
+        Fri, 19 Aug 2022 10:56:03 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C5BF243D
+        for <linux-parisc@vger.kernel.org>; Fri, 19 Aug 2022 07:56:02 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id n4so5452489wrp.10
+        for <linux-parisc@vger.kernel.org>; Fri, 19 Aug 2022 07:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=tPcog03lOMlmDYTA/VZmxZ5X+gfPzW5wt/APF98WRZ4=;
+        b=hzJdGAR/18inJqXDz/+gYiYF6bfYxUd1lkG9ckp+zQ91FGkGdorLjl3JXVO4QxG1cb
+         JoyJRly/DbBvuIXOFgtM3FRH7zfGn3OggzMSGbPsXHsStz7LU2ouHuviKIy6g+GxMWzM
+         fXf0R1r/eWMYwSStWBV8uaknxImeXEnlQ3yiO0aIalIBNLBcAonZrYjzkTlOPqTjwajl
+         B3ygVDZGqIahx2ZlN78nKqnVTF2TGjp4qOUsAd3VutI4zEK2XdZtRrHIzkLWSe9NsM4T
+         6nYgf3xv40HT9mR6Ltzs5JtepLZdb5NeyIK8OB9SGhTMEryMvW31FW7ceiUdAjOm0C0L
+         paHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=tPcog03lOMlmDYTA/VZmxZ5X+gfPzW5wt/APF98WRZ4=;
+        b=fHja55FWy3a1tYcOW3sKSFgV20UP8JjzcR3GV8Qa8VmWPqfzUeoWK6/XY0gRrTTD7x
+         IsmnLlO1OzWenUiXDGGNot5aBYcP2gs/eTfDZhW/n3GO2Pk2TFgczUi7zpJiYLEWvqKT
+         BErg9JZeyoy1FA0nYKQVHh30HiWxJmroWOZnMMuL7QdIYU86L6r1dChE4YA8TvazH2iu
+         YgyZCU3Eds/iHAtbdGp2NU4Zfpa/9wPN+bdikTLUWpkocor+tWPwwTEjv1QlqETx4mwm
+         agb7LyFZON5lsT5WPR3GU1XvgdeZOE7HpLQmJw5kXfy4FWvDTr1ATxyQdTxHH90n4sbf
+         jCtg==
+X-Gm-Message-State: ACgBeo3iNKiktQXZC3EiT333+d9NBQvzaVNg7qvuhgRf33Fik59B6hlZ
+        sqETEku1umbR3BdL00ecjpEC7HiJJwvAzNWDMHE=
+X-Google-Smtp-Source: AA6agR62okEkCXseU9qFZg0M9vQpSwtNiQI7783Hevk3Otd9DmdppwtRm4I6r4wWvkcAXxN88L3IN2fkviFgI1ORYDM=
+X-Received: by 2002:adf:f2c1:0:b0:223:a7d2:4283 with SMTP id
+ d1-20020adff2c1000000b00223a7d24283mr4283942wrp.485.1660920960582; Fri, 19
+ Aug 2022 07:56:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220819014406.32266-1-wangkefeng.wang@huawei.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:600c:228f:0:0:0:0 with HTTP; Fri, 19 Aug 2022 07:55:59
+ -0700 (PDT)
+Reply-To: sj7373313@gmail.com
+From:   Sandra Johnson <idrissasouleymane159@gmail.com>
+Date:   Fri, 19 Aug 2022 15:55:59 +0100
+Message-ID: <CAF+DzuGm9oaHzG6AsfUGKvN0bA3Hwn8_bLCTtd1qQzyUVyG2rw@mail.gmail.com>
+Subject: Sandra J
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:436 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4965]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [idrissasouleymane159[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [idrissasouleymane159[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [sj7373313[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Aug 19, 2022 at 09:44:06AM +0800, Kefeng Wang wrote:
-> Only x86 has own release_thread(), introduce a new weak
-> release_thread() function to clean empty definitions in
-> other ARCHs.
-> 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-...
->  arch/arm/include/asm/processor.h        | 3 ---
->  arch/arm/kernel/process.c               | 4 ----
-
-Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-
-Thanks!
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+HI,
+Good day.
+Kindly confirm to me if this is your correct email Address and get
+back to me for our interest.
+Sincerely,
+Sandra J
