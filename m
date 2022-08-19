@@ -2,548 +2,632 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D2A4598EF4
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Aug 2022 23:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF9265992A6
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Aug 2022 03:41:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346634AbiHRVJU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 18 Aug 2022 17:09:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43724 "EHLO
+        id S243277AbiHSBjY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 18 Aug 2022 21:39:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346599AbiHRVIm (ORCPT
+        with ESMTP id S239103AbiHSBjV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 18 Aug 2022 17:08:42 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A54D59AB
-        for <linux-parisc@vger.kernel.org>; Thu, 18 Aug 2022 14:04:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding; s=k1; bh=jAGdiy01QjFZdMcr7H4GvPmESRt
-        lhhyjFBPKrBE08G8=; b=DPdnNW+K+4OBDy3EK9Yw4qVPRXZdxcEfrenNKyobftK
-        Eu6+V1T6NJgFMeZJYrpu+LJ9JogvK36qaYT/EvB7R5EwrKHB71/BvTY5JfL/zWL+
-        yTGuYH/dly1rDHNn7nCeLJYxT0hgTpNY4xLYIxDfgQb6WBrN/4kHp+LHuAMrpJEE
-        =
-Received: (qmail 3961765 invoked from network); 18 Aug 2022 23:01:19 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:01:19 +0200
-X-UD-Smtp-Session: l3s3148p1@fy11SIrmy80ucref
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Thu, 18 Aug 2022 21:39:21 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C81F7C18E;
+        Thu, 18 Aug 2022 18:39:19 -0700 (PDT)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4M84BZ2tZpzGpfX;
+        Fri, 19 Aug 2022 09:37:42 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 19 Aug 2022 09:39:16 +0800
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 19 Aug 2022 09:39:14 +0800
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+To:     Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@kernel.org>,
         Russell King <linux@armlinux.org.uk>,
-        Andres Salomon <dilinger@queued.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Thomas Winischhofer <thomas@winischhofer.net>,
-        linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH] video: move from strlcpy with unused retval to strscpy
-Date:   Thu, 18 Aug 2022 23:01:17 +0200
-Message-Id: <20220818210118.7541-1-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.35.1
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Brian Cain <bcain@quicinc.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "Helge Deller" <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Nicholas Piggin" <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        "Johannes Berg" <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        <linux-alpha@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-snps-arc@lists.infradead.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-csky@vger.kernel.org>, <linux-hexagon@vger.kernel.org>,
+        <linux-ia64@vger.kernel.org>, <loongarch@lists.linux.dev>,
+        <linux-m68k@lists.linux-m68k.org>, <linux-mips@vger.kernel.org>,
+        <openrisc@lists.librecores.org>, <linux-parisc@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
+        <linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+        <sparclinux@vger.kernel.org>, <linux-um@lists.infradead.org>,
+        <linux-xtensa@linux-xtensa.org>, <akpm@linux-foundation.org>
+CC:     Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH] kernel: exit: cleanup release_thread()
+Date:   Fri, 19 Aug 2022 09:44:06 +0800
+Message-ID: <20220819014406.32266-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Follow the advice of the below link and prefer 'strscpy' in this
-subsystem. Conversion is 1:1 because the return value is not used.
-Generated by a coccinelle script.
+Only x86 has own release_thread(), introduce a new weak
+release_thread() function to clean empty definitions in
+other ARCHs.
 
-Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- drivers/video/console/sticore.c                | 2 +-
- drivers/video/fbdev/aty/atyfb_base.c           | 2 +-
- drivers/video/fbdev/aty/radeon_base.c          | 2 +-
- drivers/video/fbdev/bw2.c                      | 2 +-
- drivers/video/fbdev/cirrusfb.c                 | 2 +-
- drivers/video/fbdev/clps711x-fb.c              | 2 +-
- drivers/video/fbdev/core/fbcon.c               | 2 +-
- drivers/video/fbdev/cyber2000fb.c              | 8 ++++----
- drivers/video/fbdev/ffb.c                      | 2 +-
- drivers/video/fbdev/geode/gx1fb_core.c         | 6 +++---
- drivers/video/fbdev/gxt4500.c                  | 2 +-
- drivers/video/fbdev/i740fb.c                   | 2 +-
- drivers/video/fbdev/imxfb.c                    | 2 +-
- drivers/video/fbdev/matrox/matroxfb_base.c     | 6 +++---
- drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 2 +-
- drivers/video/fbdev/pxa168fb.c                 | 2 +-
- drivers/video/fbdev/pxafb.c                    | 2 +-
- drivers/video/fbdev/s3fb.c                     | 2 +-
- drivers/video/fbdev/simplefb.c                 | 2 +-
- drivers/video/fbdev/sis/sis_main.c             | 4 ++--
- drivers/video/fbdev/sm501fb.c                  | 2 +-
- drivers/video/fbdev/sstfb.c                    | 2 +-
- drivers/video/fbdev/sunxvr1000.c               | 2 +-
- drivers/video/fbdev/sunxvr2500.c               | 2 +-
- drivers/video/fbdev/sunxvr500.c                | 2 +-
- drivers/video/fbdev/tcx.c                      | 2 +-
- drivers/video/fbdev/tdfxfb.c                   | 4 ++--
- drivers/video/fbdev/tgafb.c                    | 2 +-
- drivers/video/fbdev/tridentfb.c                | 2 +-
- 29 files changed, 38 insertions(+), 38 deletions(-)
+ arch/alpha/include/asm/processor.h      | 2 --
+ arch/alpha/kernel/process.c             | 5 -----
+ arch/arc/include/asm/processor.h        | 3 ---
+ arch/arm/include/asm/processor.h        | 3 ---
+ arch/arm/kernel/process.c               | 4 ----
+ arch/arm64/include/asm/processor.h      | 3 ---
+ arch/arm64/kernel/process.c             | 4 ----
+ arch/csky/include/asm/processor.h       | 5 -----
+ arch/hexagon/include/asm/processor.h    | 4 ----
+ arch/hexagon/kernel/process.c           | 7 -------
+ arch/ia64/include/asm/processor.h       | 7 -------
+ arch/loongarch/include/asm/processor.h  | 3 ---
+ arch/m68k/include/asm/processor.h       | 5 -----
+ arch/microblaze/include/asm/processor.h | 5 -----
+ arch/mips/include/asm/processor.h       | 3 ---
+ arch/nios2/include/asm/processor.h      | 5 -----
+ arch/openrisc/include/asm/processor.h   | 1 -
+ arch/openrisc/kernel/process.c          | 4 ----
+ arch/parisc/include/asm/processor.h     | 3 ---
+ arch/parisc/kernel/process.c            | 4 ----
+ arch/powerpc/include/asm/processor.h    | 1 -
+ arch/powerpc/kernel/process.c           | 5 -----
+ arch/riscv/include/asm/processor.h      | 5 -----
+ arch/s390/include/asm/processor.h       | 3 ---
+ arch/sh/include/asm/processor_32.h      | 3 ---
+ arch/sh/kernel/process_32.c             | 5 -----
+ arch/sparc/include/asm/processor_32.h   | 3 ---
+ arch/sparc/include/asm/processor_64.h   | 3 ---
+ arch/um/include/asm/processor-generic.h | 4 ----
+ arch/x86/include/asm/processor.h        | 3 ---
+ arch/xtensa/include/asm/processor.h     | 3 ---
+ include/linux/sched/task.h              | 3 +++
+ kernel/exit.c                           | 4 ++++
+ 33 files changed, 7 insertions(+), 118 deletions(-)
 
-diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
-index bd4dc97d4d34..db568f67e4dc 100644
---- a/drivers/video/console/sticore.c
-+++ b/drivers/video/console/sticore.c
-@@ -290,7 +290,7 @@ static char default_sti_path[21] __read_mostly;
- static int __init sti_setup(char *str)
- {
- 	if (str)
--		strlcpy (default_sti_path, str, sizeof (default_sti_path));
-+		strscpy(default_sti_path, str, sizeof(default_sti_path));
- 	
- 	return 1;
- }
-diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
-index a3e6faed7745..14eb718bd67c 100644
---- a/drivers/video/fbdev/aty/atyfb_base.c
-+++ b/drivers/video/fbdev/aty/atyfb_base.c
-@@ -3891,7 +3891,7 @@ static int __init atyfb_setup(char *options)
- 			 && (!strncmp(this_opt, "Mach64:", 7))) {
- 			static unsigned char m64_num;
- 			static char mach64_str[80];
--			strlcpy(mach64_str, this_opt + 7, sizeof(mach64_str));
-+			strscpy(mach64_str, this_opt + 7, sizeof(mach64_str));
- 			if (!store_video_par(mach64_str, m64_num)) {
- 				m64_num++;
- 				mach64_count = m64_num;
-diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
-index 6851f47613e1..73b07c77a4e1 100644
---- a/drivers/video/fbdev/aty/radeon_base.c
-+++ b/drivers/video/fbdev/aty/radeon_base.c
-@@ -1980,7 +1980,7 @@ static int radeon_set_fbinfo(struct radeonfb_info *rinfo)
- 	info->screen_base = rinfo->fb_base;
- 	info->screen_size = rinfo->mapped_vram;
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, rinfo->name, sizeof(info->fix.id));
-+	strscpy(info->fix.id, rinfo->name, sizeof(info->fix.id));
-         info->fix.smem_start = rinfo->fb_base_phys;
-         info->fix.smem_len = rinfo->video_ram;
-         info->fix.type = FB_TYPE_PACKED_PIXELS;
-diff --git a/drivers/video/fbdev/bw2.c b/drivers/video/fbdev/bw2.c
-index e7702fe1fe7d..6403ae07970d 100644
---- a/drivers/video/fbdev/bw2.c
-+++ b/drivers/video/fbdev/bw2.c
-@@ -182,7 +182,7 @@ static int bw2_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg)
+diff --git a/arch/alpha/include/asm/processor.h b/arch/alpha/include/asm/processor.h
+index 43e234c518b1..714abe494e5f 100644
+--- a/arch/alpha/include/asm/processor.h
++++ b/arch/alpha/include/asm/processor.h
+@@ -36,8 +36,6 @@ extern void start_thread(struct pt_regs *, unsigned long, unsigned long);
  
- static void bw2_init_fix(struct fb_info *info, int linebytes)
- {
--	strlcpy(info->fix.id, "bwtwo", sizeof(info->fix.id));
-+	strscpy(info->fix.id, "bwtwo", sizeof(info->fix.id));
+ /* Free all resources held by a thread. */
+ struct task_struct;
+-extern void release_thread(struct task_struct *);
+-
+ unsigned long __get_wchan(struct task_struct *p);
  
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.visual = FB_VISUAL_MONO01;
-diff --git a/drivers/video/fbdev/cirrusfb.c b/drivers/video/fbdev/cirrusfb.c
-index a41a75841e10..2a9fa06881b5 100644
---- a/drivers/video/fbdev/cirrusfb.c
-+++ b/drivers/video/fbdev/cirrusfb.c
-@@ -1999,7 +1999,7 @@ static int cirrusfb_set_fbinfo(struct fb_info *info)
- 	}
- 
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, cirrusfb_board_info[cinfo->btype].name,
-+	strscpy(info->fix.id, cirrusfb_board_info[cinfo->btype].name,
- 		sizeof(info->fix.id));
- 
- 	/* monochrome: only 1 memory plane */
-diff --git a/drivers/video/fbdev/clps711x-fb.c b/drivers/video/fbdev/clps711x-fb.c
-index 771ce1f76951..a1061c2f1640 100644
---- a/drivers/video/fbdev/clps711x-fb.c
-+++ b/drivers/video/fbdev/clps711x-fb.c
-@@ -326,7 +326,7 @@ static int clps711x_fb_probe(struct platform_device *pdev)
- 	info->var.vmode = FB_VMODE_NONINTERLACED;
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.accel = FB_ACCEL_NONE;
--	strlcpy(info->fix.id, CLPS711X_FB_NAME, sizeof(info->fix.id));
-+	strscpy(info->fix.id, CLPS711X_FB_NAME, sizeof(info->fix.id));
- 	fb_videomode_to_var(&info->var, &cfb->mode);
- 
- 	ret = fb_alloc_cmap(&info->cmap, BIT(CLPS711X_FB_BPP_MAX), 0);
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index cf9ac4da0a82..4a032fcf0d14 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -412,7 +412,7 @@ static int __init fb_console_setup(char *this_opt)
- 
- 	while ((options = strsep(&this_opt, ",")) != NULL) {
- 		if (!strncmp(options, "font:", 5)) {
--			strlcpy(fontname, options + 5, sizeof(fontname));
-+			strscpy(fontname, options + 5, sizeof(fontname));
- 			continue;
- 		}
- 		
-diff --git a/drivers/video/fbdev/cyber2000fb.c b/drivers/video/fbdev/cyber2000fb.c
-index d45355b9a58c..8f041f9b14c7 100644
---- a/drivers/video/fbdev/cyber2000fb.c
-+++ b/drivers/video/fbdev/cyber2000fb.c
-@@ -1134,7 +1134,7 @@ int cyber2000fb_attach(struct cyberpro_info *info, int idx)
- 		info->fb_size	      = int_cfb_info->fb.fix.smem_len;
- 		info->info	      = int_cfb_info;
- 
--		strlcpy(info->dev_name, int_cfb_info->fb.fix.id,
-+		strscpy(info->dev_name, int_cfb_info->fb.fix.id,
- 			sizeof(info->dev_name));
- 	}
- 
-@@ -1229,7 +1229,7 @@ static int cyber2000fb_ddc_getsda(void *data)
- 
- static int cyber2000fb_setup_ddc_bus(struct cfb_info *cfb)
- {
--	strlcpy(cfb->ddc_adapter.name, cfb->fb.fix.id,
-+	strscpy(cfb->ddc_adapter.name, cfb->fb.fix.id,
- 		sizeof(cfb->ddc_adapter.name));
- 	cfb->ddc_adapter.owner		= THIS_MODULE;
- 	cfb->ddc_adapter.class		= I2C_CLASS_DDC;
-@@ -1304,7 +1304,7 @@ static int cyber2000fb_i2c_getscl(void *data)
- 
- static int cyber2000fb_i2c_register(struct cfb_info *cfb)
- {
--	strlcpy(cfb->i2c_adapter.name, cfb->fb.fix.id,
-+	strscpy(cfb->i2c_adapter.name, cfb->fb.fix.id,
- 		sizeof(cfb->i2c_adapter.name));
- 	cfb->i2c_adapter.owner = THIS_MODULE;
- 	cfb->i2c_adapter.algo_data = &cfb->i2c_algo;
-@@ -1500,7 +1500,7 @@ static int cyber2000fb_setup(char *options)
- 		if (strncmp(opt, "font:", 5) == 0) {
- 			static char default_font_storage[40];
- 
--			strlcpy(default_font_storage, opt + 5,
-+			strscpy(default_font_storage, opt + 5,
- 				sizeof(default_font_storage));
- 			default_font = default_font_storage;
- 			continue;
-diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
-index b3d580e57221..7cba3969a970 100644
---- a/drivers/video/fbdev/ffb.c
-+++ b/drivers/video/fbdev/ffb.c
-@@ -883,7 +883,7 @@ static void ffb_init_fix(struct fb_info *info)
- 	} else
- 		ffb_type_name = "Elite 3D";
- 
--	strlcpy(info->fix.id, ffb_type_name, sizeof(info->fix.id));
-+	strscpy(info->fix.id, ffb_type_name, sizeof(info->fix.id));
- 
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.visual = FB_VISUAL_TRUECOLOR;
-diff --git a/drivers/video/fbdev/geode/gx1fb_core.c b/drivers/video/fbdev/geode/gx1fb_core.c
-index 5d34d89fb665..e41204ecb0e3 100644
---- a/drivers/video/fbdev/geode/gx1fb_core.c
-+++ b/drivers/video/fbdev/geode/gx1fb_core.c
-@@ -410,13 +410,13 @@ static void __init gx1fb_setup(char *options)
- 			continue;
- 
- 		if (!strncmp(this_opt, "mode:", 5))
--			strlcpy(mode_option, this_opt + 5, sizeof(mode_option));
-+			strscpy(mode_option, this_opt + 5, sizeof(mode_option));
- 		else if (!strncmp(this_opt, "crt:", 4))
- 			crt_option = !!simple_strtoul(this_opt + 4, NULL, 0);
- 		else if (!strncmp(this_opt, "panel:", 6))
--			strlcpy(panel_option, this_opt + 6, sizeof(panel_option));
-+			strscpy(panel_option, this_opt + 6, sizeof(panel_option));
- 		else
--			strlcpy(mode_option, this_opt, sizeof(mode_option));
-+			strscpy(mode_option, this_opt, sizeof(mode_option));
- 	}
- }
- #endif
-diff --git a/drivers/video/fbdev/gxt4500.c b/drivers/video/fbdev/gxt4500.c
-index e5475ae1e158..94588b809ebf 100644
---- a/drivers/video/fbdev/gxt4500.c
-+++ b/drivers/video/fbdev/gxt4500.c
-@@ -650,7 +650,7 @@ static int gxt4500_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	cardtype = ent->driver_data;
- 	par->refclk_ps = cardinfo[cardtype].refclk_ps;
- 	info->fix = gxt4500_fix;
--	strlcpy(info->fix.id, cardinfo[cardtype].cardname,
-+	strscpy(info->fix.id, cardinfo[cardtype].cardname,
- 		sizeof(info->fix.id));
- 	info->pseudo_palette = par->pseudo_palette;
- 
-diff --git a/drivers/video/fbdev/i740fb.c b/drivers/video/fbdev/i740fb.c
-index 7f09a0daaaa2..bd30d8314b68 100644
---- a/drivers/video/fbdev/i740fb.c
-+++ b/drivers/video/fbdev/i740fb.c
-@@ -159,7 +159,7 @@ static int i740fb_setup_ddc_bus(struct fb_info *info)
- {
- 	struct i740fb_par *par = info->par;
- 
--	strlcpy(par->ddc_adapter.name, info->fix.id,
-+	strscpy(par->ddc_adapter.name, info->fix.id,
- 		sizeof(par->ddc_adapter.name));
- 	par->ddc_adapter.owner		= THIS_MODULE;
- 	par->ddc_adapter.class		= I2C_CLASS_DDC;
-diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-index d97d7456d15a..94f3bc637fc8 100644
---- a/drivers/video/fbdev/imxfb.c
-+++ b/drivers/video/fbdev/imxfb.c
-@@ -681,7 +681,7 @@ static int imxfb_init_fbinfo(struct platform_device *pdev)
- 
- 	fbi->devtype = pdev->id_entry->driver_data;
- 
--	strlcpy(info->fix.id, IMX_NAME, sizeof(info->fix.id));
-+	strscpy(info->fix.id, IMX_NAME, sizeof(info->fix.id));
- 
- 	info->fix.type			= FB_TYPE_PACKED_PIXELS;
- 	info->fix.type_aux		= 0;
-diff --git a/drivers/video/fbdev/matrox/matroxfb_base.c b/drivers/video/fbdev/matrox/matroxfb_base.c
-index 236521b19daf..68bba2688f4c 100644
---- a/drivers/video/fbdev/matrox/matroxfb_base.c
-+++ b/drivers/video/fbdev/matrox/matroxfb_base.c
-@@ -2383,9 +2383,9 @@ static int __init matroxfb_setup(char *options) {
- 		else if (!strncmp(this_opt, "mem:", 4))
- 			mem = simple_strtoul(this_opt+4, NULL, 0);
- 		else if (!strncmp(this_opt, "mode:", 5))
--			strlcpy(videomode, this_opt+5, sizeof(videomode));
-+			strscpy(videomode, this_opt + 5, sizeof(videomode));
- 		else if (!strncmp(this_opt, "outputs:", 8))
--			strlcpy(outputs, this_opt+8, sizeof(outputs));
-+			strscpy(outputs, this_opt + 8, sizeof(outputs));
- 		else if (!strncmp(this_opt, "dfp:", 4)) {
- 			dfp_type = simple_strtoul(this_opt+4, NULL, 0);
- 			dfp = 1;
-@@ -2455,7 +2455,7 @@ static int __init matroxfb_setup(char *options) {
- 			else if (!strcmp(this_opt, "dfp"))
- 				dfp = value;
- 			else {
--				strlcpy(videomode, this_opt, sizeof(videomode));
-+				strscpy(videomode, this_opt, sizeof(videomode));
- 			}
- 		}
- 	}
-diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-index afa688e754b9..5ccddcfce722 100644
---- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-+++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-@@ -1331,7 +1331,7 @@ static void clear_fb_info(struct fb_info *fbi)
- {
- 	memset(&fbi->var, 0, sizeof(fbi->var));
- 	memset(&fbi->fix, 0, sizeof(fbi->fix));
--	strlcpy(fbi->fix.id, MODULE_NAME, sizeof(fbi->fix.id));
-+	strscpy(fbi->fix.id, MODULE_NAME, sizeof(fbi->fix.id));
+ #define KSTK_EIP(tsk) (task_pt_regs(tsk)->pc)
+diff --git a/arch/alpha/kernel/process.c b/arch/alpha/kernel/process.c
+index e2e25f8b5e76..dbf1bc5e2ad2 100644
+--- a/arch/alpha/kernel/process.c
++++ b/arch/alpha/kernel/process.c
+@@ -225,11 +225,6 @@ flush_thread(void)
+ 	current_thread_info()->pcb.unique = 0;
  }
  
- static int omapfb_free_all_fbmem(struct omapfb2_device *fbdev)
-diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
-index e943300d23e8..d5d0bbd39213 100644
---- a/drivers/video/fbdev/pxa168fb.c
-+++ b/drivers/video/fbdev/pxa168fb.c
-@@ -640,7 +640,7 @@ static int pxa168fb_probe(struct platform_device *pdev)
- 	info->flags = FBINFO_DEFAULT | FBINFO_PARTIAL_PAN_OK |
- 		      FBINFO_HWACCEL_XPAN | FBINFO_HWACCEL_YPAN;
- 	info->node = -1;
--	strlcpy(info->fix.id, mi->id, 16);
-+	strscpy(info->fix.id, mi->id, 16);
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.type_aux = 0;
- 	info->fix.xpanstep = 0;
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index 66cfc3e9d3cf..696ac5431180 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2042,7 +2042,7 @@ static int __init pxafb_setup_options(void)
- 		return -ENODEV;
+-void
+-release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ /*
+  * Copy architecture-specific thread state
+  */
+diff --git a/arch/arc/include/asm/processor.h b/arch/arc/include/asm/processor.h
+index 54db9d7bb562..fb844fce1ab6 100644
+--- a/arch/arc/include/asm/processor.h
++++ b/arch/arc/include/asm/processor.h
+@@ -43,9 +43,6 @@ struct task_struct;
+ #define task_pt_regs(p) \
+ 	((struct pt_regs *)(THREAD_SIZE + (void *)task_stack_page(p)) - 1)
  
- 	if (options)
--		strlcpy(g_options, options, sizeof(g_options));
-+		strscpy(g_options, options, sizeof(g_options));
+-/* Free all resources held by a thread */
+-#define release_thread(thread) do { } while (0)
+-
+ /*
+  * A lot of busy-wait loops in SMP are based off of non-volatile data otherwise
+  * get optimised away by gcc
+diff --git a/arch/arm/include/asm/processor.h b/arch/arm/include/asm/processor.h
+index bdc35c0e8dfb..326864f79d18 100644
+--- a/arch/arm/include/asm/processor.h
++++ b/arch/arm/include/asm/processor.h
+@@ -81,9 +81,6 @@ static inline void arch_thread_struct_whitelist(unsigned long *offset,
+ /* Forward declaration, a strange C thing */
+ struct task_struct;
  
+-/* Free all resources held by a thread. */
+-extern void release_thread(struct task_struct *);
+-
+ unsigned long __get_wchan(struct task_struct *p);
+ 
+ #define task_pt_regs(p) \
+diff --git a/arch/arm/kernel/process.c b/arch/arm/kernel/process.c
+index 3d9cace63884..712d3e6d9be9 100644
+--- a/arch/arm/kernel/process.c
++++ b/arch/arm/kernel/process.c
+@@ -232,10 +232,6 @@ void flush_thread(void)
+ 	thread_notify(THREAD_NOTIFY_FLUSH, thread);
+ }
+ 
+-void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ asmlinkage void ret_from_fork(void) __asm__("ret_from_fork");
+ 
+ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
+index 86eb0bfe3b38..4cfb4cd1d475 100644
+--- a/arch/arm64/include/asm/processor.h
++++ b/arch/arm64/include/asm/processor.h
+@@ -323,9 +323,6 @@ static inline bool is_ttbr1_addr(unsigned long addr)
+ /* Forward declaration, a strange C thing */
+ struct task_struct;
+ 
+-/* Free all resources held by a thread. */
+-extern void release_thread(struct task_struct *);
+-
+ unsigned long __get_wchan(struct task_struct *p);
+ 
+ void update_sctlr_el1(u64 sctlr);
+diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+index 92bcc1768f0b..9015f49c206e 100644
+--- a/arch/arm64/kernel/process.c
++++ b/arch/arm64/kernel/process.c
+@@ -279,10 +279,6 @@ void flush_thread(void)
+ 	flush_tagged_addr_state();
+ }
+ 
+-void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ void arch_release_task_struct(struct task_struct *tsk)
+ {
+ 	fpsimd_release_task(tsk);
+diff --git a/arch/csky/include/asm/processor.h b/arch/csky/include/asm/processor.h
+index 9638206bc44f..63ad71fab30d 100644
+--- a/arch/csky/include/asm/processor.h
++++ b/arch/csky/include/asm/processor.h
+@@ -69,11 +69,6 @@ do {									\
+ /* Forward declaration, a strange C thing */
+ struct task_struct;
+ 
+-/* Free all resources held by a thread. */
+-static inline void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ /* Prepare to copy thread state - unlazy all lazy status */
+ #define prepare_to_copy(tsk)    do { } while (0)
+ 
+diff --git a/arch/hexagon/include/asm/processor.h b/arch/hexagon/include/asm/processor.h
+index 615f7e49968e..0cd39c2cdf8f 100644
+--- a/arch/hexagon/include/asm/processor.h
++++ b/arch/hexagon/include/asm/processor.h
+@@ -60,10 +60,6 @@ struct thread_struct {
+ #define KSTK_EIP(tsk) (pt_elr(task_pt_regs(tsk)))
+ #define KSTK_ESP(tsk) (pt_psp(task_pt_regs(tsk)))
+ 
+-/*  Free all resources held by a thread; defined in process.c  */
+-extern void release_thread(struct task_struct *dead_task);
+-
+-/* Get wait channel for task P.  */
+ extern unsigned long __get_wchan(struct task_struct *p);
+ 
+ /*  The following stuff is pretty HEXAGON specific.  */
+diff --git a/arch/hexagon/kernel/process.c b/arch/hexagon/kernel/process.c
+index f0552f98a7ba..e15eeaebd785 100644
+--- a/arch/hexagon/kernel/process.c
++++ b/arch/hexagon/kernel/process.c
+@@ -112,13 +112,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
  	return 0;
  }
-diff --git a/drivers/video/fbdev/s3fb.c b/drivers/video/fbdev/s3fb.c
-index 5069f6f67923..67b63a753cb2 100644
---- a/drivers/video/fbdev/s3fb.c
-+++ b/drivers/video/fbdev/s3fb.c
-@@ -248,7 +248,7 @@ static int s3fb_setup_ddc_bus(struct fb_info *info)
+ 
+-/*
+- * Release any architecture-specific resources locked by thread
+- */
+-void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ /*
+  * Some archs flush debug and FPU info here
+  */
+diff --git a/arch/ia64/include/asm/processor.h b/arch/ia64/include/asm/processor.h
+index 757c2f6d8d4b..d1978e004054 100644
+--- a/arch/ia64/include/asm/processor.h
++++ b/arch/ia64/include/asm/processor.h
+@@ -318,13 +318,6 @@ struct thread_struct {
+ struct mm_struct;
+ struct task_struct;
+ 
+-/*
+- * Free all resources held by a thread. This is called after the
+- * parent of DEAD_TASK has collected the exit status of the task via
+- * wait().
+- */
+-#define release_thread(dead_task)
+-
+ /* Get wait channel for task P.  */
+ extern unsigned long __get_wchan (struct task_struct *p);
+ 
+diff --git a/arch/loongarch/include/asm/processor.h b/arch/loongarch/include/asm/processor.h
+index 1c4b4308378d..6954dc5d24e9 100644
+--- a/arch/loongarch/include/asm/processor.h
++++ b/arch/loongarch/include/asm/processor.h
+@@ -176,9 +176,6 @@ struct thread_struct {
+ 
+ struct task_struct;
+ 
+-/* Free all resources held by a thread. */
+-#define release_thread(thread) do { } while (0)
+-
+ enum idle_boot_override {IDLE_NO_OVERRIDE = 0, IDLE_HALT, IDLE_NOMWAIT, IDLE_POLL};
+ 
+ extern unsigned long		boot_option_idle_override;
+diff --git a/arch/m68k/include/asm/processor.h b/arch/m68k/include/asm/processor.h
+index d86b4009880b..7a2da780830b 100644
+--- a/arch/m68k/include/asm/processor.h
++++ b/arch/m68k/include/asm/processor.h
+@@ -145,11 +145,6 @@ static inline void start_thread(struct pt_regs * regs, unsigned long pc,
+ /* Forward declaration, a strange C thing */
+ struct task_struct;
+ 
+-/* Free all resources held by a thread. */
+-static inline void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ unsigned long __get_wchan(struct task_struct *p);
+ void show_registers(struct pt_regs *regs);
+ 
+diff --git a/arch/microblaze/include/asm/processor.h b/arch/microblaze/include/asm/processor.h
+index 7e9e92670df3..4e193c7550df 100644
+--- a/arch/microblaze/include/asm/processor.h
++++ b/arch/microblaze/include/asm/processor.h
+@@ -63,11 +63,6 @@ struct thread_struct {
+ 	.pgdir = swapper_pg_dir, \
+ }
+ 
+-/* Free all resources held by a thread. */
+-static inline void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ unsigned long __get_wchan(struct task_struct *p);
+ 
+ /* The size allocated for kernel stacks. This _must_ be a power of two! */
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index 4bb24579d12e..3fde1ff72bd1 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -344,9 +344,6 @@ struct thread_struct {
+ 
+ struct task_struct;
+ 
+-/* Free all resources held by a thread. */
+-#define release_thread(thread) do { } while(0)
+-
+ /*
+  * Do necessary setup to start up a newly executed thread.
+  */
+diff --git a/arch/nios2/include/asm/processor.h b/arch/nios2/include/asm/processor.h
+index b8125dfbcad2..8916d93d5c2d 100644
+--- a/arch/nios2/include/asm/processor.h
++++ b/arch/nios2/include/asm/processor.h
+@@ -64,11 +64,6 @@ extern void start_thread(struct pt_regs *regs, unsigned long pc,
+ 
+ struct task_struct;
+ 
+-/* Free all resources held by a thread. */
+-static inline void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ extern unsigned long __get_wchan(struct task_struct *p);
+ 
+ #define task_pt_regs(p) \
+diff --git a/arch/openrisc/include/asm/processor.h b/arch/openrisc/include/asm/processor.h
+index aa1699c18add..ed9efb430afa 100644
+--- a/arch/openrisc/include/asm/processor.h
++++ b/arch/openrisc/include/asm/processor.h
+@@ -72,7 +72,6 @@ struct thread_struct {
+ 
+ 
+ void start_thread(struct pt_regs *regs, unsigned long nip, unsigned long sp);
+-void release_thread(struct task_struct *);
+ unsigned long __get_wchan(struct task_struct *p);
+ 
+ #define cpu_relax()     barrier()
+diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
+index 52dc983ddeba..f94b5ec06786 100644
+--- a/arch/openrisc/kernel/process.c
++++ b/arch/openrisc/kernel/process.c
+@@ -125,10 +125,6 @@ void show_regs(struct pt_regs *regs)
+ 	show_registers(regs);
+ }
+ 
+-void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ /*
+  * Copy the thread-specific (arch specific) info from the current
+  * process to the new one p
+diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm/processor.h
+index 4621ceb51314..a608970b249a 100644
+--- a/arch/parisc/include/asm/processor.h
++++ b/arch/parisc/include/asm/processor.h
+@@ -266,9 +266,6 @@ on downward growing arches, it looks like this:
+ 
+ struct mm_struct;
+ 
+-/* Free all resources held by a thread. */
+-extern void release_thread(struct task_struct *);
+-
+ extern unsigned long __get_wchan(struct task_struct *p);
+ 
+ #define KSTK_EIP(tsk)	((tsk)->thread.regs.iaoq[0])
+diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
+index 7c37e09c92da..3db0e97e6c06 100644
+--- a/arch/parisc/kernel/process.c
++++ b/arch/parisc/kernel/process.c
+@@ -146,10 +146,6 @@ void flush_thread(void)
+ 	*/
+ }
+ 
+-void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ /*
+  * Idle thread support
+  *
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index fdfaae194ddd..92e332415d02 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -75,7 +75,6 @@ extern int _chrp_type;
+ 
+ struct task_struct;
+ void start_thread(struct pt_regs *regs, unsigned long fdptr, unsigned long sp);
+-void release_thread(struct task_struct *);
+ 
+ #define TS_FPR(i) fp_state.fpr[i][TS_FPROFFSET]
+ #define TS_CKFPR(i) ckfp_state.fpr[i][TS_FPROFFSET]
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 0fbda89cd1bb..991cda25b9a9 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1655,11 +1655,6 @@ EXPORT_SYMBOL_GPL(set_thread_tidr);
+ 
+ #endif /* CONFIG_PPC64 */
+ 
+-void
+-release_thread(struct task_struct *t)
+-{
+-}
+-
+ /*
+  * this gets called so that we can store coprocessor state into memory and
+  * copy the current task into the new thread.
+diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
+index 19eedd4af4cd..94a0590c6971 100644
+--- a/arch/riscv/include/asm/processor.h
++++ b/arch/riscv/include/asm/processor.h
+@@ -65,11 +65,6 @@ static inline void arch_thread_struct_whitelist(unsigned long *offset,
+ extern void start_thread(struct pt_regs *regs,
+ 			unsigned long pc, unsigned long sp);
+ 
+-/* Free all resources held by a thread. */
+-static inline void release_thread(struct task_struct *dead_task)
+-{
+-}
+-
+ extern unsigned long __get_wchan(struct task_struct *p);
+ 
+ 
+diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
+index bd66f8e34949..c52fe651eeba 100644
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -186,9 +186,6 @@ struct pt_regs;
+ void show_registers(struct pt_regs *regs);
+ void show_cacheinfo(struct seq_file *m);
+ 
+-/* Free all resources held by a thread. */
+-static inline void release_thread(struct task_struct *tsk) { }
+-
+ /* Free guarded storage control block */
+ void guarded_storage_release(struct task_struct *tsk);
+ void gs_load_bc_cb(struct pt_regs *regs);
+diff --git a/arch/sh/include/asm/processor_32.h b/arch/sh/include/asm/processor_32.h
+index 45240ec6b85a..27aebf1e75a2 100644
+--- a/arch/sh/include/asm/processor_32.h
++++ b/arch/sh/include/asm/processor_32.h
+@@ -127,9 +127,6 @@ struct task_struct;
+ 
+ extern void start_thread(struct pt_regs *regs, unsigned long new_pc, unsigned long new_sp);
+ 
+-/* Free all resources held by a thread. */
+-extern void release_thread(struct task_struct *);
+-
+ /*
+  * FPU lazy state save handling.
+  */
+diff --git a/arch/sh/kernel/process_32.c b/arch/sh/kernel/process_32.c
+index a808843375e7..92b6649d4929 100644
+--- a/arch/sh/kernel/process_32.c
++++ b/arch/sh/kernel/process_32.c
+@@ -84,11 +84,6 @@ void flush_thread(void)
+ #endif
+ }
+ 
+-void release_thread(struct task_struct *dead_task)
+-{
+-	/* do nothing */
+-}
+-
+ asmlinkage void ret_from_fork(void);
+ asmlinkage void ret_from_kernel_thread(void);
+ 
+diff --git a/arch/sparc/include/asm/processor_32.h b/arch/sparc/include/asm/processor_32.h
+index b26c35336b51..ba8b70ffec08 100644
+--- a/arch/sparc/include/asm/processor_32.h
++++ b/arch/sparc/include/asm/processor_32.h
+@@ -80,9 +80,6 @@ static inline void start_thread(struct pt_regs * regs, unsigned long pc,
+ 			     : "memory");
+ }
+ 
+-/* Free all resources held by a thread. */
+-#define release_thread(tsk)		do { } while(0)
+-
+ unsigned long __get_wchan(struct task_struct *);
+ 
+ #define task_pt_regs(tsk) ((tsk)->thread.kregs)
+diff --git a/arch/sparc/include/asm/processor_64.h b/arch/sparc/include/asm/processor_64.h
+index 89850dff6b03..2667f35d5ea5 100644
+--- a/arch/sparc/include/asm/processor_64.h
++++ b/arch/sparc/include/asm/processor_64.h
+@@ -176,9 +176,6 @@ do { \
+ 	regs->tstate &= ~TSTATE_PEF;	\
+ } while (0)
+ 
+-/* Free all resources held by a thread. */
+-#define release_thread(tsk)		do { } while (0)
+-
+ unsigned long __get_wchan(struct task_struct *task);
+ 
+ #define task_pt_regs(tsk) (task_thread_info(tsk)->kregs)
+diff --git a/arch/um/include/asm/processor-generic.h b/arch/um/include/asm/processor-generic.h
+index d0fc1862da95..bb5f06480da9 100644
+--- a/arch/um/include/asm/processor-generic.h
++++ b/arch/um/include/asm/processor-generic.h
+@@ -55,10 +55,6 @@ struct thread_struct {
+ 	.request		= { 0 } \
+ }
+ 
+-static inline void release_thread(struct task_struct *task)
+-{
+-}
+-
+ /*
+  * User space process size: 3GB (default).
+  */
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 356308c73951..67c9d73b31fa 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -587,9 +587,6 @@ static inline void load_sp0(unsigned long sp0)
+ 
+ #endif /* CONFIG_PARAVIRT_XXL */
+ 
+-/* Free all resources held by a thread. */
+-extern void release_thread(struct task_struct *);
+-
+ unsigned long __get_wchan(struct task_struct *p);
+ 
+ /*
+diff --git a/arch/xtensa/include/asm/processor.h b/arch/xtensa/include/asm/processor.h
+index 76bc63127c66..5abde43c570c 100644
+--- a/arch/xtensa/include/asm/processor.h
++++ b/arch/xtensa/include/asm/processor.h
+@@ -221,9 +221,6 @@ struct thread_struct {
+ struct task_struct;
+ struct mm_struct;
+ 
+-/* Free all resources held by a thread. */
+-#define release_thread(thread) do { } while(0)
+-
+ extern unsigned long __get_wchan(struct task_struct *p);
+ 
+ #define KSTK_EIP(tsk)		(task_pt_regs(tsk)->pc)
+diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+index 81cab4b01edc..d6c48163c6de 100644
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -127,6 +127,9 @@ static inline void put_task_struct_many(struct task_struct *t, int nr)
+ 
+ void put_task_struct_rcu_user(struct task_struct *task);
+ 
++/* Free all architecture-specific resources held by a thread. */
++void release_thread(struct task_struct *dead_task);
++
+ #ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+ extern int arch_task_struct_size __read_mostly;
+ #else
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 80376b4ac763..30cabf933fed 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -183,6 +183,10 @@ void put_task_struct_rcu_user(struct task_struct *task)
+ 		call_rcu(&task->rcu, delayed_put_task_struct);
+ }
+ 
++void __weak release_thread(struct task_struct *dead_task)
++{
++}
++
+ void release_task(struct task_struct *p)
  {
- 	struct s3fb_info *par = info->par;
- 
--	strlcpy(par->ddc_adapter.name, info->fix.id,
-+	strscpy(par->ddc_adapter.name, info->fix.id,
- 		sizeof(par->ddc_adapter.name));
- 	par->ddc_adapter.owner		= THIS_MODULE;
- 	par->ddc_adapter.class		= I2C_CLASS_DDC;
-diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
-index cf2a90ecd64e..e770b4a356b5 100644
---- a/drivers/video/fbdev/simplefb.c
-+++ b/drivers/video/fbdev/simplefb.c
-@@ -355,7 +355,7 @@ static int simplefb_regulators_get(struct simplefb_par *par,
- 		if (!p || p == prop->name)
- 			continue;
- 
--		strlcpy(name, prop->name,
-+		strscpy(name, prop->name,
- 			strlen(prop->name) - strlen(SUPPLY_SUFFIX) + 1);
- 		regulator = devm_regulator_get_optional(&pdev->dev, name);
- 		if (IS_ERR(regulator)) {
-diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
-index f28fd69d5eb7..d6bcc9d60b2d 100644
---- a/drivers/video/fbdev/sis/sis_main.c
-+++ b/drivers/video/fbdev/sis/sis_main.c
-@@ -1872,7 +1872,7 @@ sisfb_get_fix(struct fb_fix_screeninfo *fix, int con, struct fb_info *info)
- 
- 	memset(fix, 0, sizeof(struct fb_fix_screeninfo));
- 
--	strlcpy(fix->id, ivideo->myid, sizeof(fix->id));
-+	strscpy(fix->id, ivideo->myid, sizeof(fix->id));
- 
- 	mutex_lock(&info->mm_lock);
- 	fix->smem_start  = ivideo->video_base + ivideo->video_offset;
-@@ -5867,7 +5867,7 @@ static int sisfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			ivideo->cardnumber++;
- 	}
- 
--	strlcpy(ivideo->myid, chipinfo->chip_name, sizeof(ivideo->myid));
-+	strscpy(ivideo->myid, chipinfo->chip_name, sizeof(ivideo->myid));
- 
- 	ivideo->warncount = 0;
- 	ivideo->chip_id = pdev->device;
-diff --git a/drivers/video/fbdev/sm501fb.c b/drivers/video/fbdev/sm501fb.c
-index 6a52eba64559..fce6cfbadfd6 100644
---- a/drivers/video/fbdev/sm501fb.c
-+++ b/drivers/video/fbdev/sm501fb.c
-@@ -1719,7 +1719,7 @@ static int sm501fb_init_fb(struct fb_info *fb, enum sm501_controller head,
- 		enable = 0;
- 	}
- 
--	strlcpy(fb->fix.id, fbname, sizeof(fb->fix.id));
-+	strscpy(fb->fix.id, fbname, sizeof(fb->fix.id));
- 
- 	memcpy(&par->ops,
- 	       (head == HEAD_CRT) ? &sm501fb_ops_crt : &sm501fb_ops_pnl,
-diff --git a/drivers/video/fbdev/sstfb.c b/drivers/video/fbdev/sstfb.c
-index 27d4b0ace2d6..cd4d640f9477 100644
---- a/drivers/video/fbdev/sstfb.c
-+++ b/drivers/video/fbdev/sstfb.c
-@@ -1382,7 +1382,7 @@ static int sstfb_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		goto fail;
- 	}
- 	sst_get_memsize(info, &fix->smem_len);
--	strlcpy(fix->id, spec->name, sizeof(fix->id));
-+	strscpy(fix->id, spec->name, sizeof(fix->id));
- 
- 	printk(KERN_INFO "%s (revision %d) with %s dac\n",
- 		fix->id, par->revision, par->dac_sw.name);
-diff --git a/drivers/video/fbdev/sunxvr1000.c b/drivers/video/fbdev/sunxvr1000.c
-index 15b079505a00..490bd9a14763 100644
---- a/drivers/video/fbdev/sunxvr1000.c
-+++ b/drivers/video/fbdev/sunxvr1000.c
-@@ -80,7 +80,7 @@ static int gfb_set_fbinfo(struct gfb_info *gp)
- 	info->pseudo_palette = gp->pseudo_palette;
- 
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, "gfb", sizeof(info->fix.id));
-+	strscpy(info->fix.id, "gfb", sizeof(info->fix.id));
-         info->fix.smem_start = gp->fb_base_phys;
-         info->fix.smem_len = gp->fb_size;
-         info->fix.type = FB_TYPE_PACKED_PIXELS;
-diff --git a/drivers/video/fbdev/sunxvr2500.c b/drivers/video/fbdev/sunxvr2500.c
-index 1d3bacd9d5ac..1279b02234f8 100644
---- a/drivers/video/fbdev/sunxvr2500.c
-+++ b/drivers/video/fbdev/sunxvr2500.c
-@@ -84,7 +84,7 @@ static int s3d_set_fbinfo(struct s3d_info *sp)
- 	info->pseudo_palette = sp->pseudo_palette;
- 
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, "s3d", sizeof(info->fix.id));
-+	strscpy(info->fix.id, "s3d", sizeof(info->fix.id));
-         info->fix.smem_start = sp->fb_base_phys;
-         info->fix.smem_len = sp->fb_size;
-         info->fix.type = FB_TYPE_PACKED_PIXELS;
-diff --git a/drivers/video/fbdev/sunxvr500.c b/drivers/video/fbdev/sunxvr500.c
-index 9daf17b11106..f7b463633ba0 100644
---- a/drivers/video/fbdev/sunxvr500.c
-+++ b/drivers/video/fbdev/sunxvr500.c
-@@ -207,7 +207,7 @@ static int e3d_set_fbinfo(struct e3d_info *ep)
- 	info->pseudo_palette = ep->pseudo_palette;
- 
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, "e3d", sizeof(info->fix.id));
-+	strscpy(info->fix.id, "e3d", sizeof(info->fix.id));
-         info->fix.smem_start = ep->fb_base_phys;
-         info->fix.smem_len = ep->fb_size;
-         info->fix.type = FB_TYPE_PACKED_PIXELS;
-diff --git a/drivers/video/fbdev/tcx.c b/drivers/video/fbdev/tcx.c
-index 1638a40fed22..01d87f53324d 100644
---- a/drivers/video/fbdev/tcx.c
-+++ b/drivers/video/fbdev/tcx.c
-@@ -333,7 +333,7 @@ tcx_init_fix(struct fb_info *info, int linebytes)
- 	else
- 		tcx_name = "TCX24";
- 
--	strlcpy(info->fix.id, tcx_name, sizeof(info->fix.id));
-+	strscpy(info->fix.id, tcx_name, sizeof(info->fix.id));
- 
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.visual = FB_VISUAL_PSEUDOCOLOR;
-diff --git a/drivers/video/fbdev/tdfxfb.c b/drivers/video/fbdev/tdfxfb.c
-index 67e37a62b07c..8a8122f8bfeb 100644
---- a/drivers/video/fbdev/tdfxfb.c
-+++ b/drivers/video/fbdev/tdfxfb.c
-@@ -1264,7 +1264,7 @@ static int tdfxfb_setup_ddc_bus(struct tdfxfb_i2c_chan *chan, const char *name,
- {
- 	int rc;
- 
--	strlcpy(chan->adapter.name, name, sizeof(chan->adapter.name));
-+	strscpy(chan->adapter.name, name, sizeof(chan->adapter.name));
- 	chan->adapter.owner		= THIS_MODULE;
- 	chan->adapter.class		= I2C_CLASS_DDC;
- 	chan->adapter.algo_data		= &chan->algo;
-@@ -1293,7 +1293,7 @@ static int tdfxfb_setup_i2c_bus(struct tdfxfb_i2c_chan *chan, const char *name,
- {
- 	int rc;
- 
--	strlcpy(chan->adapter.name, name, sizeof(chan->adapter.name));
-+	strscpy(chan->adapter.name, name, sizeof(chan->adapter.name));
- 	chan->adapter.owner		= THIS_MODULE;
- 	chan->adapter.algo_data		= &chan->algo;
- 	chan->adapter.dev.parent	= dev;
-diff --git a/drivers/video/fbdev/tgafb.c b/drivers/video/fbdev/tgafb.c
-index ae0cf5540636..1fff5fd7ab51 100644
---- a/drivers/video/fbdev/tgafb.c
-+++ b/drivers/video/fbdev/tgafb.c
-@@ -1344,7 +1344,7 @@ tgafb_init_fix(struct fb_info *info)
- 		memory_size = 16777216;
- 	}
- 
--	strlcpy(info->fix.id, tga_type_name, sizeof(info->fix.id));
-+	strscpy(info->fix.id, tga_type_name, sizeof(info->fix.id));
- 
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.type_aux = 0;
-diff --git a/drivers/video/fbdev/tridentfb.c b/drivers/video/fbdev/tridentfb.c
-index 319131bd72cf..cda095420ee8 100644
---- a/drivers/video/fbdev/tridentfb.c
-+++ b/drivers/video/fbdev/tridentfb.c
-@@ -270,7 +270,7 @@ static int tridentfb_setup_ddc_bus(struct fb_info *info)
- {
- 	struct tridentfb_par *par = info->par;
- 
--	strlcpy(par->ddc_adapter.name, info->fix.id,
-+	strscpy(par->ddc_adapter.name, info->fix.id,
- 		sizeof(par->ddc_adapter.name));
- 	par->ddc_adapter.owner		= THIS_MODULE;
- 	par->ddc_adapter.class		= I2C_CLASS_DDC;
+ 	struct task_struct *leader;
 -- 
-2.35.1
+2.35.3
 
