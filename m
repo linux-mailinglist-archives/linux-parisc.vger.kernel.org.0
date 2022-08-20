@@ -2,62 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E9D859AA79
-	for <lists+linux-parisc@lfdr.de>; Sat, 20 Aug 2022 03:29:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41ADE59AB19
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 Aug 2022 06:04:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231538AbiHTBW4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Aug 2022 21:22:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48072 "EHLO
+        id S230139AbiHTEEd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 20 Aug 2022 00:04:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229672AbiHTBWz (ORCPT
+        with ESMTP id S229458AbiHTEEb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Aug 2022 21:22:55 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672FBEA316;
-        Fri, 19 Aug 2022 18:22:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=OpNrq55m/JLCvI2ky9eQsoWN7lws3PlwSAsyx8RIXCI=; b=p8aL/PdE2aGPqVuP0OhuQKiFpa
-        Z64cov40S/wTuqpF9Kf/Ten9kx3riUlMY5jisAge0/UbWG9FsHcuzHuOPG30cyZivnBWQuxEvLBXk
-        2dfDiXlr079CrNXS8pDPjUMBc+hdeIp/Rs9WvRk7LemZ+nk6jDqHFE8VwVOiJ+nuM5Y+AE5TYcJlD
-        +XO5my02azhJ80Wg/C7uXP/CoqgALsBYTofSiPvZs4a8Ovo3rm0A7F/R7pMZQkftasc5uqDKIKJVn
-        1IINszv2ZK6T1Mw0+s/s+8ZbyClHwRX1NYtcLNCOw6ntFvsNs7628NOnC5kLXTNGQgQRa7ci0gQ3j
-        po3sIfvg==;
-Received: from [2601:1c0:6280:3f0::a6b3]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oPDCN-00ERZg-UD; Sat, 20 Aug 2022 01:22:52 +0000
-Message-ID: <20061362-7415-a7bb-12f2-2956561ce68a@infradead.org>
-Date:   Fri, 19 Aug 2022 18:22:51 -0700
+        Sat, 20 Aug 2022 00:04:31 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F0126E2D5;
+        Fri, 19 Aug 2022 21:04:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1660968269; x=1692504269;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cBvMddEtt4UQqHMg0rq14ho6Xv1Ko3mJzB2RdT3ptPQ=;
+  b=dLiArMA2G5dWN3EfEWIXqGuqwlGJMg4VCkGSBhWeIMWxR9YmY/b7ESlo
+   3JLejxtsNWDu/vLMPk7RAtube28xPa9gItcAnFD4i+zaYJqDXGJlW6vp+
+   vUPHpZpFQNfZXi2BqLWV8k1RLt8DMOosz1KkrByBR8xpNH1R1ozx1iaAA
+   ne6T4ja39rMJe6EcRz+LDliDpgbr65BxL0tj1RxL55qGTzJZWN1ji+B2/
+   zUdp2qohDEQXPZxcrgEdOAZp/n4VD6Ecy/7POEnx+Pq15xLjq5nrT8e6H
+   bTic5gDuh4jT9W0DDBs9BjKQYaazyQ/MYsAyBxgtkfFw9vMCneR4j4F6/
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10444"; a="272907718"
+X-IronPort-AV: E=Sophos;i="5.93,250,1654585200"; 
+   d="scan'208";a="272907718"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2022 21:04:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,250,1654585200"; 
+   d="scan'208";a="641468410"
+Received: from lkp-server01.sh.intel.com (HELO 44b6dac04a33) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 19 Aug 2022 21:04:24 -0700
+Received: from kbuild by 44b6dac04a33 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oPFih-00027Q-16;
+        Sat, 20 Aug 2022 04:04:23 +0000
+Date:   Sat, 20 Aug 2022 12:03:25 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, linux-mm@kvack.org,
+        akpm@linux-foundation.org, hch@infradead.org,
+        agordeev@linux.ibm.com, wangkefeng.wang@huawei.com,
+        linux-arm-kernel@lists.infradead.org, Baoquan He <bhe@redhat.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: Re: [PATCH v2 08/11] parisc: mm: Convert to GENERIC_IOREMAP
+Message-ID: <202208201135.YyN9CXsu-lkp@intel.com>
+References: <20220820003125.353570-9-bhe@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-From:   Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: linux-parisc compile failure in current git
-To:     Helge Deller <deller@gmx.de>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Parisc List <linux-parisc@vger.kernel.org>,
-        Meelis Roos <mroos@linux.ee>,
-        Linux Kernel Development <linux-kernel@vger.kernel.org>
-References: <892b6ab7-862c-1c0a-2996-0f8408e5043d@linux.ee>
- <89515325-fc21-31da-d238-6f7a9abbf9a0@gmx.de>
- <CAK7LNATuzry1MUj-VruOVUwU_nH2xJd_2SxD_s_Z1QBb3PVnQw@mail.gmail.com>
- <5dfd81eb-c8ca-b7f5-e80e-8632767c022d@gmx.de>
- <CAK7LNATO_30uHzAe-Vsy+hgu=wwEN_aPGET4Ys78rc3=nSuJsg@mail.gmail.com>
- <YNOafsB81ZcP2r7z@ls3530>
- <f599c358-815f-088e-f2aa-b064ccb64e44@infradead.org>
- <CAK7LNAREcSW2Hn3Ty_zTVzTCLgYnFfo=ZcibE2zif1mBWp==4A@mail.gmail.com>
- <39ee0ca2-48a0-755b-605c-3ce1205b9715@gmx.de>
- <CAK7LNAQceFhO1-vupRAJy3rU+p+MK97vRuswVXvVEgF7q0akDA@mail.gmail.com>
- <Yv/PLFLga51+T9xg@p100>
-Content-Language: en-US
-In-Reply-To: <Yv/PLFLga51+T9xg@p100>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220820003125.353570-9-bhe@redhat.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,112 +68,86 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi,
+Hi Baoquan,
 
-On 8/19/22 10:58, Helge Deller wrote:
-> * Masahiro Yamada <masahiroy@kernel.org>:
->>
->> Then, you can mimic sparc code.
+I love your patch! Yet something to improve:
 
-Good idea.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-> The patch below fixes it nicely and I've pushed it into the parisc
-> for-next git tree.
-> 
-> @Randy: Maybe you could try it as well. With that approach
-> you get what you want. Maybe that's a better approach for riscv64 as
-> well?
+url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/mm-ioremap-Convert-architectures-to-take-GENERIC_IOREMAP-way/20220820-083435
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+config: parisc-randconfig-r005-20220820 (https://download.01.org/0day-ci/archive/20220820/202208201135.YyN9CXsu-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/570f2a3347cc83c9ea71d3dbbebfad8ea085ecc6
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Baoquan-He/mm-ioremap-Convert-architectures-to-take-GENERIC_IOREMAP-way/20220820-083435
+        git checkout 570f2a3347cc83c9ea71d3dbbebfad8ea085ecc6
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=parisc prepare
 
-I like this one better than the earlier attempt.
-It's more generic.
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
+All error/warnings (new ones prefixed by >>):
 
-> From a529c0a388f74a243363976af8535b10d3d69d20 Mon Sep 17 00:00:00 2001
-> From: Helge Deller <deller@gmx.de>
-> Date: Fri, 19 Aug 2022 19:30:50 +0200
-> Subject: [PATCH] parisc: Enable CONFIG_64BIT for ARCH=parisc64 only
-> 
-> With this patch the ARCH= parameter decides if the
-> CONFIG_64BIT option will be set or not. This means, the
-> ARCH= parameter will give:
-> 
-> 	ARCH=parisc	-> 32-bit kernel
-> 	ARCH=parisc64	-> 64-bit kernel
-> 
-> This simplifies the usage of the other config options like
-> randconfig, allmodconfig and allyesconfig a lot and produces
-> the output which is expected for parisc64 (64-bit) vs. parisc (32-bit).
-> 
-> Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> 
-> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-> index 7f059cd1196a..9aede2447011 100644
-> --- a/arch/parisc/Kconfig
-> +++ b/arch/parisc/Kconfig
-> @@ -146,10 +146,10 @@ menu "Processor type and features"
-> 
->  choice
->  	prompt "Processor type"
-> -	default PA7000
-> +	default PA7000 if "$(ARCH)" = "parisc"
-> 
->  config PA7000
-> -	bool "PA7000/PA7100"
-> +	bool "PA7000/PA7100" if "$(ARCH)" = "parisc"
->  	help
->  	  This is the processor type of your CPU.  This information is
->  	  used for optimizing purposes.  In order to compile a kernel
-> @@ -160,21 +160,21 @@ config PA7000
->  	  which is required on some machines.
-> 
->  config PA7100LC
-> -	bool "PA7100LC"
-> +	bool "PA7100LC" if "$(ARCH)" = "parisc"
->  	help
->  	  Select this option for the PCX-L processor, as used in the
->  	  712, 715/64, 715/80, 715/100, 715/100XC, 725/100, 743, 748,
->  	  D200, D210, D300, D310 and E-class
-> 
->  config PA7200
-> -	bool "PA7200"
-> +	bool "PA7200" if "$(ARCH)" = "parisc"
->  	help
->  	  Select this option for the PCX-T' processor, as used in the
->  	  C100, C110, J100, J110, J210XC, D250, D260, D350, D360,
->  	  K100, K200, K210, K220, K400, K410 and K420
-> 
->  config PA7300LC
-> -	bool "PA7300LC"
-> +	bool "PA7300LC" if "$(ARCH)" = "parisc"
->  	help
->  	  Select this option for the PCX-L2 processor, as used in the
->  	  744, A180, B132L, B160L, B180L, C132L, C160L, C180L,
-> @@ -224,17 +224,8 @@ config MLONGCALLS
->  	  Enabling this option will probably slow down your kernel.
-> 
->  config 64BIT
-> -	bool "64-bit kernel"
-> +	def_bool "$(ARCH)" = "parisc64"
->  	depends on PA8X00
-> -	help
-> -	  Enable this if you want to support 64bit kernel on PA-RISC platform.
-> -
-> -	  At the moment, only people willing to use more than 2GB of RAM,
-> -	  or having a 64bit-only capable PA-RISC machine should say Y here.
-> -
-> -	  Since there is no 64bit userland on PA-RISC, there is no point to
-> -	  enable this option otherwise. The 64bit kernel is significantly bigger
-> -	  and slower than the 32bit one.
-> 
->  choice
->  	prompt "Kernel page size"
-
-LGTM.
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+   In file included from arch/parisc/include/asm/io.h:315,
+                    from include/linux/io.h:13,
+                    from include/linux/irq.h:20,
+                    from arch/parisc/include/asm/hardirq.h:13,
+                    from include/linux/hardirq.h:11,
+                    from arch/parisc/kernel/asm-offsets.c:21:
+>> include/asm-generic/iomap.h:97: warning: "ioremap_wc" redefined
+      97 | #define ioremap_wc ioremap
+         | 
+   arch/parisc/include/asm/io.h:135: note: this is the location of the previous definition
+     135 | #define ioremap_wc(addr, size)  \
+         | 
+   include/linux/io.h: In function 'pci_remap_cfgspace':
+>> include/linux/io.h:89:44: error: implicit declaration of function 'ioremap'; did you mean 'ioremap_np'? [-Werror=implicit-function-declaration]
+      89 |         return ioremap_np(offset, size) ?: ioremap(offset, size);
+         |                                            ^~~~~~~
+         |                                            ioremap_np
+>> include/linux/io.h:89:42: warning: pointer/integer type mismatch in conditional expression
+      89 |         return ioremap_np(offset, size) ?: ioremap(offset, size);
+         |                                          ^
+   cc1: some warnings being treated as errors
+   make[2]: *** [scripts/Makefile.build:117: arch/parisc/kernel/asm-offsets.s] Error 1
+   make[2]: Target '__build' not remade because of errors.
+   make[1]: *** [Makefile:1207: prepare0] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:222: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
 
 
-Thanks.
+vim +89 include/linux/io.h
+
+7d3dcf26a6559f Christoph Hellwig 2015-08-10  72  
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  73  #ifdef CONFIG_PCI
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  74  /*
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  75   * The PCI specifications (Rev 3.0, 3.2.5 "Transaction Ordering and
+b10eb2d50911f9 Hector Martin     2021-03-25  76   * Posting") mandate non-posted configuration transactions. This default
+b10eb2d50911f9 Hector Martin     2021-03-25  77   * implementation attempts to use the ioremap_np() API to provide this
+b10eb2d50911f9 Hector Martin     2021-03-25  78   * on arches that support it, and falls back to ioremap() on those that
+b10eb2d50911f9 Hector Martin     2021-03-25  79   * don't. Overriding this function is deprecated; arches that properly
+b10eb2d50911f9 Hector Martin     2021-03-25  80   * support non-posted accesses should implement ioremap_np() instead, which
+b10eb2d50911f9 Hector Martin     2021-03-25  81   * this default implementation can then use to return mappings compliant with
+b10eb2d50911f9 Hector Martin     2021-03-25  82   * the PCI specification.
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  83   */
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  84  #ifndef pci_remap_cfgspace
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  85  #define pci_remap_cfgspace pci_remap_cfgspace
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  86  static inline void __iomem *pci_remap_cfgspace(phys_addr_t offset,
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  87  					       size_t size)
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  88  {
+b10eb2d50911f9 Hector Martin     2021-03-25 @89  	return ioremap_np(offset, size) ?: ioremap(offset, size);
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  90  }
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  91  #endif
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  92  #endif
+cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  93  
+
 -- 
-~Randy
+0-DAY CI Kernel Test Service
+https://01.org/lkp
