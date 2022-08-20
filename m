@@ -2,212 +2,216 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55D5B59A84E
-	for <lists+linux-parisc@lfdr.de>; Sat, 20 Aug 2022 00:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C728559AA29
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 Aug 2022 02:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241296AbiHSWWd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Aug 2022 18:22:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46436 "EHLO
+        id S245119AbiHTAc0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Aug 2022 20:32:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241454AbiHSWWc (ORCPT
+        with ESMTP id S245133AbiHTAcV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Aug 2022 18:22:32 -0400
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8226610C832;
-        Fri, 19 Aug 2022 15:22:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=c6bNbdkIvWKnXnfsb/cTBvGyb1ZPIuxweFGpqUPvTxs=; b=fvlRUlb5+jeq3HjwBCUDmjRGuw
-        FilBZcRWvSvdyCdl3M9r1XaItVZZxUcdRx6Af1/Q/kzO3pO3UiFRTh3n5+uGQ32xPzqt87/q3NWjP
-        dXBFA/8ttmKc3J8Ytpzvokb9t9WEPe5cB8SNibeXcLXWO/DmRho3BYUF3JGMV/40ycduXcMApaDPr
-        BLxjodof8siwHC75VBwyv2EWv6whqmW1vmyIKVdla1tYuBU4tU80OZWtwW57TYjT9M5BR9Bd4H5TB
-        NZ1XLPZJZ2ISvmifyTxMxbLzbSr7rBVPYpaVeSj8Yr1NajLCst5p2OrxgMYVp6BDav9peZIjRMnJp
-        rYW0DQqQ==;
-Received: from [179.232.144.59] (helo=localhost)
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1oPANk-00Cb3c-5Y; Sat, 20 Aug 2022 00:22:25 +0200
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-To:     akpm@linux-foundation.org, bhe@redhat.com, pmladek@suse.com,
-        kexec@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, x86@kernel.org, kernel-dev@igalia.com,
-        kernel@gpiccoli.net, halves@canonical.com, fabiomirmar@gmail.com,
-        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
-        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
-        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
-        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
-        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
-        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, stern@rowland.harvard.edu,
-        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
-        will@kernel.org, xuqiang36@huawei.com,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-parisc@vger.kernel.org,
+        Fri, 19 Aug 2022 20:32:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B75210C814
+        for <linux-parisc@vger.kernel.org>; Fri, 19 Aug 2022 17:32:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1660955538;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nLr2YHSkl4TYF2OfhT4AaOM1UnBcFcPBR9I5Nw8Jroc=;
+        b=hq+iU27Wp3qlQjcMnemxAw/MTWBlssFkvEFwZEuWKzFgUYy+bNa2Q51Ry4aUswp5fVn1Zf
+        cQqO7lXJ0wxvAFuepOsYD6jwnsi9EUh6vr02QCVUyfvu6tZa2R7V/XZzFTWdFIeXqp1+bj
+        2W1FOQQjKvwOgk/KrdRNmbdUkk1zlOU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-363-NdrpkDDiNHmDYjYGweXesw-1; Fri, 19 Aug 2022 20:32:16 -0400
+X-MC-Unique: NdrpkDDiNHmDYjYGweXesw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61106811E81;
+        Sat, 20 Aug 2022 00:32:15 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-17.pek2.redhat.com [10.72.12.17])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3DE8F4010D2A;
+        Sat, 20 Aug 2022 00:32:09 +0000 (UTC)
+From:   Baoquan He <bhe@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, akpm@linux-foundation.org, hch@infradead.org,
+        agordeev@linux.ibm.com, wangkefeng.wang@huawei.com,
+        linux-arm-kernel@lists.infradead.org, Baoquan He <bhe@redhat.com>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Jeroen Roovers <jer@xs4all.nl>, Helge Deller <deller@gmx.de>
-Subject: [PATCH V3 05/11] parisc: Replace regular spinlock with spin_trylock on panic path
-Date:   Fri, 19 Aug 2022 19:17:25 -0300
-Message-Id: <20220819221731.480795-6-gpiccoli@igalia.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20220819221731.480795-1-gpiccoli@igalia.com>
-References: <20220819221731.480795-1-gpiccoli@igalia.com>
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: [PATCH v2 08/11] parisc: mm: Convert to GENERIC_IOREMAP
+Date:   Sat, 20 Aug 2022 08:31:22 +0800
+Message-Id: <20220820003125.353570-9-bhe@redhat.com>
+In-Reply-To: <20220820003125.353570-1-bhe@redhat.com>
+References: <20220820003125.353570-1-bhe@redhat.com>
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The panic notifiers' callbacks execute in an atomic context, with
-interrupts/preemption disabled, and all CPUs not running the panic
-function are off, so it's very dangerous to wait on a regular
-spinlock, there's a risk of deadlock.
+Add hook arch_ioremap() for parisc's special operation when ioremap(),
+then ioremap_[wc|uc]() are converted to use ioremap_prot() from
+GENERIC_IOREMAP.
 
-Refactor the panic notifier of parisc/power driver to make use
-of spin_trylock - for that, we've added a second version of the
-soft-power function. Also, some comments were reorganized and
-trailing white spaces, useless header inclusion and blank lines
-were removed.
-
+Signed-off-by: Baoquan He <bhe@redhat.com>
 Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Jeroen Roovers <jer@xs4all.nl>
-Acked-by: Helge Deller <deller@gmx.de> # parisc
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
 ---
+ arch/parisc/Kconfig          |  1 +
+ arch/parisc/include/asm/io.h | 16 ++++++---
+ arch/parisc/mm/ioremap.c     | 65 ++++--------------------------------
+ 3 files changed, 18 insertions(+), 64 deletions(-)
 
-V3:
-- s/in/on as per Jeroen's suggestion - thanks!
-
-V2:
-- Added Helge's ACK - thanks!
-
-
- arch/parisc/include/asm/pdc.h |  1 +
- arch/parisc/kernel/firmware.c | 27 +++++++++++++++++++++++----
- drivers/parisc/power.c        | 17 ++++++++++-------
- 3 files changed, 34 insertions(+), 11 deletions(-)
-
-diff --git a/arch/parisc/include/asm/pdc.h b/arch/parisc/include/asm/pdc.h
-index b643092d4b98..7a106008e258 100644
---- a/arch/parisc/include/asm/pdc.h
-+++ b/arch/parisc/include/asm/pdc.h
-@@ -83,6 +83,7 @@ int pdc_do_firm_test_reset(unsigned long ftc_bitmap);
- int pdc_do_reset(void);
- int pdc_soft_power_info(unsigned long *power_reg);
- int pdc_soft_power_button(int sw_control);
-+int pdc_soft_power_button_panic(int sw_control);
- void pdc_io_reset(void);
- void pdc_io_reset_devices(void);
- int pdc_iodc_getc(void);
-diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware.c
-index 6a7e315bcc2e..3b1f7641e3c9 100644
---- a/arch/parisc/kernel/firmware.c
-+++ b/arch/parisc/kernel/firmware.c
-@@ -1232,15 +1232,18 @@ int __init pdc_soft_power_info(unsigned long *power_reg)
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 7f059cd1196a..5fed465c9b83 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -36,6 +36,7 @@ config PARISC
+ 	select GENERIC_ATOMIC64 if !64BIT
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_PCI_IOMAP
++	select GENERIC_IOREMAP
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_ARCH_TOPOLOGY if SMP
+diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+index 42ffb60a6ea9..614e21d9749f 100644
+--- a/arch/parisc/include/asm/io.h
++++ b/arch/parisc/include/asm/io.h
+@@ -123,13 +123,19 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
  }
  
  /*
-- * pdc_soft_power_button - Control the soft power button behaviour
-- * @sw_control: 0 for hardware control, 1 for software control 
-+ * pdc_soft_power_button{_panic} - Control the soft power button behaviour
-+ * @sw_control: 0 for hardware control, 1 for software control
-  *
-  *
-  * This PDC function places the soft power button under software or
-  * hardware control.
-- * Under software control the OS may control to when to allow to shut 
-- * down the system. Under hardware control pressing the power button 
-+ * Under software control the OS may control to when to allow to shut
-+ * down the system. Under hardware control pressing the power button
-  * powers off the system immediately.
-+ *
-+ * The _panic version relies on spin_trylock to prevent deadlock
-+ * on panic path.
+- * The standard PCI ioremap interfaces
++ * I/O memory mapping functions.
   */
- int pdc_soft_power_button(int sw_control)
+-void __iomem *ioremap(unsigned long offset, unsigned long size);
+-#define ioremap_wc			ioremap
+-#define ioremap_uc			ioremap
++void __iomem *
++arch_ioremap(phys_addr_t *paddr, size_t size, unsigned long prot);
++#define arch_ioremap arch_ioremap
+ 
+-extern void iounmap(const volatile void __iomem *addr);
++#define _PAGE_IOREMAP (_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | \
++		       _PAGE_ACCESSED | _PAGE_NO_CACHE)
++
++#define ioremap_wc(addr, size)  \
++	ioremap_prot((addr), (size), _PAGE_IOREMAP)
++#define ioremap_uc(addr, size)  \
++	ioremap_prot((addr), (size), _PAGE_IOREMAP)
+ 
+ static inline unsigned char __raw_readb(const volatile void __iomem *addr)
  {
-@@ -1254,6 +1257,22 @@ int pdc_soft_power_button(int sw_control)
- 	return retval;
- }
+diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
+index 345ff0b66499..28884757fad0 100644
+--- a/arch/parisc/mm/ioremap.c
++++ b/arch/parisc/mm/ioremap.c
+@@ -13,38 +13,19 @@
+ #include <linux/io.h>
+ #include <linux/mm.h>
  
-+int pdc_soft_power_button_panic(int sw_control)
-+{
-+	int retval;
-+	unsigned long flags;
-+
-+	if (!spin_trylock_irqsave(&pdc_lock, flags)) {
-+		pr_emerg("Couldn't enable soft power button\n");
-+		return -EBUSY; /* ignored by the panic notifier */
-+	}
-+
-+	retval = mem_pdc_call(PDC_SOFT_POWER, PDC_SOFT_POWER_ENABLE, __pa(pdc_result), sw_control);
-+	spin_unlock_irqrestore(&pdc_lock, flags);
-+
-+	return retval;
-+}
-+
- /*
-  * pdc_io_reset - Hack to avoid overlapping range registers of Bridges devices.
-  * Primarily a problem on T600 (which parisc-linux doesn't support) but
-diff --git a/drivers/parisc/power.c b/drivers/parisc/power.c
-index 456776bd8ee6..8512884de2cf 100644
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -37,7 +37,6 @@
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
--#include <linux/notifier.h>
- #include <linux/panic_notifier.h>
- #include <linux/reboot.h>
- #include <linux/sched/signal.h>
-@@ -175,16 +174,21 @@ static void powerfail_interrupt(int code, void *x)
- 
- 
- 
--/* parisc_panic_event() is called by the panic handler.
-- * As soon as a panic occurs, our tasklets above will not be
-- * executed any longer. This function then re-enables the 
-- * soft-power switch and allows the user to switch off the system
-+/*
-+ * parisc_panic_event() is called by the panic handler.
-+ *
-+ * As soon as a panic occurs, our tasklets above will not
-+ * be executed any longer. This function then re-enables
-+ * the soft-power switch and allows the user to switch off
-+ * the system. We rely in pdc_soft_power_button_panic()
-+ * since this version spin_trylocks (instead of regular
-+ * spinlock), preventing deadlocks on panic path.
-  */
- static int parisc_panic_event(struct notifier_block *this,
- 		unsigned long event, void *ptr)
- {
- 	/* re-enable the soft-power switch */
--	pdc_soft_power_button(0);
-+	pdc_soft_power_button_panic(0);
- 	return NOTIFY_DONE;
- }
- 
-@@ -193,7 +197,6 @@ static struct notifier_block parisc_panic_block = {
- 	.priority	= INT_MAX,
- };
- 
+-/*
+- * Generic mapping function (not visible outside):
+- */
 -
- static int __init power_init(void)
+-/*
+- * Remap an arbitrary physical address space into the kernel virtual
+- * address space.
+- *
+- * NOTE! We need to allow non-page-aligned mappings too: we will obviously
+- * have to convert them into an offset in a page-aligned mapping, but the
+- * caller shouldn't need to know that small detail.
+- */
+-void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
++void __iomem *
++arch_ioremap(phys_addr_t *paddr, size_t size, unsigned long *prot_val)
  {
- 	unsigned long ret;
+-	void __iomem *addr;
+-	struct vm_struct *area;
+-	unsigned long offset, last_addr;
+-	pgprot_t pgprot;
++	phys_addr_t phys_addr = *paddr;
+ 
+ #ifdef CONFIG_EISA
+ 	unsigned long end = phys_addr + size - 1;
+ 	/* Support EISA addresses */
+ 	if ((phys_addr >= 0x00080000 && end < 0x000fffff) ||
+ 	    (phys_addr >= 0x00500000 && end < 0x03bfffff))
+-		phys_addr |= F_EXTEND(0xfc000000);
++		*paddr = phys_addr |= F_EXTEND(0xfc000000);
+ #endif
+ 
+-	/* Don't allow wraparound or zero size */
+-	last_addr = phys_addr + size - 1;
+-	if (!size || last_addr < phys_addr)
+-		return NULL;
+-
+ 	/*
+ 	 * Don't allow anybody to remap normal RAM that we're using..
+ 	 */
+@@ -58,43 +39,9 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
+ 		for (page = virt_to_page(t_addr); 
+ 		     page <= virt_to_page(t_end); page++) {
+ 			if(!PageReserved(page))
+-				return NULL;
++				return IOMEM_ERR_PTR(-EINVAL);
+ 		}
+ 	}
+ 
+-	pgprot = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY |
+-			  _PAGE_ACCESSED | _PAGE_NO_CACHE);
+-
+-	/*
+-	 * Mappings have to be page-aligned
+-	 */
+-	offset = phys_addr & ~PAGE_MASK;
+-	phys_addr &= PAGE_MASK;
+-	size = PAGE_ALIGN(last_addr + 1) - phys_addr;
+-
+-	/*
+-	 * Ok, go for it..
+-	 */
+-	area = get_vm_area(size, VM_IOREMAP);
+-	if (!area)
+-		return NULL;
+-
+-	addr = (void __iomem *) area->addr;
+-	if (ioremap_page_range((unsigned long)addr, (unsigned long)addr + size,
+-			       phys_addr, pgprot)) {
+-		vunmap(addr);
+-		return NULL;
+-	}
+-
+-	return (void __iomem *) (offset + (char __iomem *)addr);
+-}
+-EXPORT_SYMBOL(ioremap);
+-
+-void iounmap(const volatile void __iomem *io_addr)
+-{
+-	unsigned long addr = (unsigned long)io_addr & PAGE_MASK;
+-
+-	if (is_vmalloc_addr((void *)addr))
+-		vunmap((void *)addr);
++	return NULL;
+ }
+-EXPORT_SYMBOL(iounmap);
 -- 
-2.37.2
+2.34.1
 
