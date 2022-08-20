@@ -2,65 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41ADE59AB19
-	for <lists+linux-parisc@lfdr.de>; Sat, 20 Aug 2022 06:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C57B59AEF3
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 Aug 2022 17:59:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230139AbiHTEEd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 20 Aug 2022 00:04:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37880 "EHLO
+        id S229773AbiHTP7c (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 20 Aug 2022 11:59:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbiHTEEb (ORCPT
+        with ESMTP id S230343AbiHTP7b (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 20 Aug 2022 00:04:31 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F0126E2D5;
-        Fri, 19 Aug 2022 21:04:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660968269; x=1692504269;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cBvMddEtt4UQqHMg0rq14ho6Xv1Ko3mJzB2RdT3ptPQ=;
-  b=dLiArMA2G5dWN3EfEWIXqGuqwlGJMg4VCkGSBhWeIMWxR9YmY/b7ESlo
-   3JLejxtsNWDu/vLMPk7RAtube28xPa9gItcAnFD4i+zaYJqDXGJlW6vp+
-   vUPHpZpFQNfZXi2BqLWV8k1RLt8DMOosz1KkrByBR8xpNH1R1ozx1iaAA
-   ne6T4ja39rMJe6EcRz+LDliDpgbr65BxL0tj1RxL55qGTzJZWN1ji+B2/
-   zUdp2qohDEQXPZxcrgEdOAZp/n4VD6Ecy/7POEnx+Pq15xLjq5nrT8e6H
-   bTic5gDuh4jT9W0DDBs9BjKQYaazyQ/MYsAyBxgtkfFw9vMCneR4j4F6/
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10444"; a="272907718"
-X-IronPort-AV: E=Sophos;i="5.93,250,1654585200"; 
-   d="scan'208";a="272907718"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2022 21:04:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,250,1654585200"; 
-   d="scan'208";a="641468410"
-Received: from lkp-server01.sh.intel.com (HELO 44b6dac04a33) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 19 Aug 2022 21:04:24 -0700
-Received: from kbuild by 44b6dac04a33 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oPFih-00027Q-16;
-        Sat, 20 Aug 2022 04:04:23 +0000
-Date:   Sat, 20 Aug 2022 12:03:25 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, linux-mm@kvack.org,
-        akpm@linux-foundation.org, hch@infradead.org,
-        agordeev@linux.ibm.com, wangkefeng.wang@huawei.com,
-        linux-arm-kernel@lists.infradead.org, Baoquan He <bhe@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH v2 08/11] parisc: mm: Convert to GENERIC_IOREMAP
-Message-ID: <202208201135.YyN9CXsu-lkp@intel.com>
-References: <20220820003125.353570-9-bhe@redhat.com>
+        Sat, 20 Aug 2022 11:59:31 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 661693ED57
+        for <linux-parisc@vger.kernel.org>; Sat, 20 Aug 2022 08:59:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1661011162;
+        bh=wu9KwNGczkoJI0+tdf0YihWeT79JXh0hQFtHi8XlaB8=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=SKhWFEkprB6LlueBXGnneuzs7pcGK/rIH4Slv1SN8o1rihIA8so80M9JBnRViGn3z
+         FypQMPCvzl/rkq0tdWIu7RG+XOM9ST0BGHKr1uUidfJ9FvIjObTxt2J7edC47HAb9I
+         kd4D6bV9G7nLvk7Cty9btfyALSE1fcN5aKX9MXpU=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100 ([92.116.161.100]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MAwbp-1oaCWZ0Xm5-00BJj0; Sat, 20
+ Aug 2022 17:59:22 +0200
+Date:   Sat, 20 Aug 2022 17:59:17 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Fix unalignment handler for fldw and fstw
+Message-ID: <YwEE1caP4rvzZvqQ@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220820003125.353570-9-bhe@redhat.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Provags-ID: V03:K1:hksc3yB86bOkF0dISQ+a5PLEJCXAVd/pGEf+0DxDxzylvvmww8/
+ IJRC8HSBJ2R2DePqzxOor6ef3t556mcw1jx0pEZGHVVOICY3czg03bzUej9QRg9q/OTdoMi
+ JBJMfGj3X0jL3c0yTtufxg+9ARGEdKY5qgS0UvI30Sn04xgwjPMssBncC12SmgUNU1NbX6y
+ Hzo+gqu45eucfNwrtIcyQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:zqiavG4nxN4=:Fg+csv2ky/yFKUzSCY4j84
+ K1FpjDzrY8hM29rvsqLQAszTHFANYZocEulxviZe+y0/PnI5CQCzBf8iIwZPP9uf489NtGn6f
+ bs5j8jSBhM5+41uUL1zN0ufnEfg7x/DSS+y2L5CEV+JbUxOGyl5+GtXuxjpFbgYxdFz/E9rsT
+ WfiCwilq07chagptoSCh58JAax3HbyoitEiIpo5/aa/iuzyFdoqaZHhu5VQ1e51q2Ukcv2VOl
+ I+PKqlpXWGLrjbcCLMOmFCiBZ7XxYD7G9IhLrlTnTbRbTCUH6LfoQL8L0ex5digrvL7sGPjxo
+ IHmrqZqTJJtQoJnK+OKHHRo5bH+T8uGn5P8W8hrfyHctHUaINNIC94kZ8PLZrkDzfIwW+3epB
+ zbL87EsJejGOhVhHFXQozRvKHcHc7M1ylewCXd643ysZL2Y2Gp7J3LNooGxID4KGzkD2vADKo
+ y27HSsa4vg551OioHk/D8dO0/ix/rLW47PLJ6isXuz1H4ovw3y3aHJvGe4AyBmW88CuaQwWPS
+ CaCHiaBn9FtiOVQrmU+aU7/4Os4mvYmXVR3pZWHgthROv4wTZ8myMr8leIuoAL/qEQ9lSuXCW
+ 1CmWn26YQf3qs4/zaJaaHeHEhgh/veYebq/hlrDWxHWJRb45yWl4uigVP6/I9iNq77JnkHHM+
+ 9oZ9mCggFKzIuf3lhnACLofSLK9L9cnrQKSJKKmCK2oJB+QJqyO2UzZnzAG0TvwRmAH7tKo42
+ bFz2aL1x09XqGBrNzX1Q529WpkdrVWGIwasFvRUbVXnLzUffOqQDB+tfbv2pUM8CN058q7Id6
+ ubph4Yz6h83vWnWd2nuerSh6R4ovcOatu5PS2MouYO2j1rKDHq6oD2+EZ1h3IQ+lsfTqAWZ1+
+ GK40xR6SEek1rO5uiydA7ISgst+mDc2qzhobfQDKyM0LrFigJl5m93rPBBWdJ7oPrpXSZ/dQs
+ wjDRtK31842LSpu6HapCj/rvSIpxafy/AJjQW594gdljPXc0Ybaxm3y32S/7KlGXp0Cu4iUM3
+ PFzt9cebG5tmdHrFVk+QGWziWcBZftwUuiq2o/5DYmDJqoxNtTabwiIJguYcnZiLURNHt9ZmQ
+ OKZYUyJbbfcQq1qt3J3OEiSBxjCl16X0yeCjsENcn4iuZD6kHocSHpThA==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,86 +67,36 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Baoquan,
+This ugly bug has been since forever in the parisc kernel and I wonder
+why it wasn't detected earlier. Interestingly I noticed this bug just
+because the libime debian package failed to build on *native* hardware,
+while it successfully built in qemu.
 
-I love your patch! Yet something to improve:
+The instruction "fldw 0(addr),%fr22L" (and the other fldw/fstw
+instructions) encode the target register (%fr22) in the rightmost 5
+bits. The 7th rightmost bit defines if the left or right half of %fr22
+should be used.
 
-[auto build test ERROR on akpm-mm/mm-everything]
+While processing unaligned address accesses, the FR3() define is used to
+calculate the offset into the floating-point register set.  But the
+calculation in FR3() was buggy, so that for example instead of %fr22,
+register %fr12 [((22 * 2) & 0x1f) = 12] was used.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/mm-ioremap-Convert-architectures-to-take-GENERIC_IOREMAP-way/20220820-083435
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-config: parisc-randconfig-r005-20220820 (https://download.01.org/0day-ci/archive/20220820/202208201135.YyN9CXsu-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/570f2a3347cc83c9ea71d3dbbebfad8ea085ecc6
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Baoquan-He/mm-ioremap-Convert-architectures-to-take-GENERIC_IOREMAP-way/20220820-083435
-        git checkout 570f2a3347cc83c9ea71d3dbbebfad8ea085ecc6
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=parisc prepare
+Correct the calculation in FR3() to get the correct FP register.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org>
 
-All error/warnings (new ones prefixed by >>):
-
-   In file included from arch/parisc/include/asm/io.h:315,
-                    from include/linux/io.h:13,
-                    from include/linux/irq.h:20,
-                    from arch/parisc/include/asm/hardirq.h:13,
-                    from include/linux/hardirq.h:11,
-                    from arch/parisc/kernel/asm-offsets.c:21:
->> include/asm-generic/iomap.h:97: warning: "ioremap_wc" redefined
-      97 | #define ioremap_wc ioremap
-         | 
-   arch/parisc/include/asm/io.h:135: note: this is the location of the previous definition
-     135 | #define ioremap_wc(addr, size)  \
-         | 
-   include/linux/io.h: In function 'pci_remap_cfgspace':
->> include/linux/io.h:89:44: error: implicit declaration of function 'ioremap'; did you mean 'ioremap_np'? [-Werror=implicit-function-declaration]
-      89 |         return ioremap_np(offset, size) ?: ioremap(offset, size);
-         |                                            ^~~~~~~
-         |                                            ioremap_np
->> include/linux/io.h:89:42: warning: pointer/integer type mismatch in conditional expression
-      89 |         return ioremap_np(offset, size) ?: ioremap(offset, size);
-         |                                          ^
-   cc1: some warnings being treated as errors
-   make[2]: *** [scripts/Makefile.build:117: arch/parisc/kernel/asm-offsets.s] Error 1
-   make[2]: Target '__build' not remade because of errors.
-   make[1]: *** [Makefile:1207: prepare0] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:222: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
-
-
-vim +89 include/linux/io.h
-
-7d3dcf26a6559f Christoph Hellwig 2015-08-10  72  
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  73  #ifdef CONFIG_PCI
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  74  /*
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  75   * The PCI specifications (Rev 3.0, 3.2.5 "Transaction Ordering and
-b10eb2d50911f9 Hector Martin     2021-03-25  76   * Posting") mandate non-posted configuration transactions. This default
-b10eb2d50911f9 Hector Martin     2021-03-25  77   * implementation attempts to use the ioremap_np() API to provide this
-b10eb2d50911f9 Hector Martin     2021-03-25  78   * on arches that support it, and falls back to ioremap() on those that
-b10eb2d50911f9 Hector Martin     2021-03-25  79   * don't. Overriding this function is deprecated; arches that properly
-b10eb2d50911f9 Hector Martin     2021-03-25  80   * support non-posted accesses should implement ioremap_np() instead, which
-b10eb2d50911f9 Hector Martin     2021-03-25  81   * this default implementation can then use to return mappings compliant with
-b10eb2d50911f9 Hector Martin     2021-03-25  82   * the PCI specification.
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  83   */
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  84  #ifndef pci_remap_cfgspace
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  85  #define pci_remap_cfgspace pci_remap_cfgspace
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  86  static inline void __iomem *pci_remap_cfgspace(phys_addr_t offset,
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  87  					       size_t size)
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  88  {
-b10eb2d50911f9 Hector Martin     2021-03-25 @89  	return ioremap_np(offset, size) ?: ioremap(offset, size);
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  90  }
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  91  #endif
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  92  #endif
-cf9ea8ca4a0bea Lorenzo Pieralisi 2017-04-19  93  
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
+index bac581b5ecfc..e8a4d77cff53 100644
+--- a/arch/parisc/kernel/unaligned.c
++++ b/arch/parisc/kernel/unaligned.c
+@@ -93,7 +93,7 @@
+ #define R1(i) (((i)>>21)&0x1f)
+ #define R2(i) (((i)>>16)&0x1f)
+ #define R3(i) ((i)&0x1f)
+-#define FR3(i) ((((i)<<1)&0x1f)|(((i)>>6)&1))
++#define FR3(i) ((((i)&0x1f)<<1)|(((i)>>6)&1))
+ #define IM(i,n) (((i)>>1&((1<<(n-1))-1))|((i)&1?((0-1L)<<(n-1)):0))
+ #define IM5_2(i) IM((i)>>16,5)
+ #define IM5_3(i) IM((i),5)
