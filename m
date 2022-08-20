@@ -2,41 +2,41 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C4C359AA68
-	for <lists+linux-parisc@lfdr.de>; Sat, 20 Aug 2022 03:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E9D859AA79
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 Aug 2022 03:29:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241560AbiHTBRU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 Aug 2022 21:17:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42384 "EHLO
+        id S231538AbiHTBW4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 Aug 2022 21:22:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230223AbiHTBRT (ORCPT
+        with ESMTP id S229672AbiHTBWz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 Aug 2022 21:17:19 -0400
+        Fri, 19 Aug 2022 21:22:55 -0400
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE3807F260;
-        Fri, 19 Aug 2022 18:17:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672FBEA316;
+        Fri, 19 Aug 2022 18:22:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+        Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
         Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=AUTHFix9jNIqY9vcL1qz0lK6YNEyAaS0zQ4JNLB0z7c=; b=MZWcsFD1TYR5KoEoE0VPUvu/z1
-        viJVdtxxTXoEN4JsHfyp0CEkSDqV8SsHLdr5l2CN14djt9Yj4uzJjV3Lrbo1dXHvyNGFhl1aJaCAo
-        /7MYIiO6Ip9kDG34GLt9gX2D9HJkx1eFb63SogdUpn03/UTOZpiKZRj0MCkDPPUu+16xrqWD87Yrc
-        bfuvYuiFlPrCv2V2OS2FveH0xo22m5IwaWX95oph76XuQXqj24QqoBwDoaWLJND8Ir8ibJsQZESzk
-        Iik2guX+OQ0sFTMb5k1nK1wXV/vSUsUzuQEjJPWzqYfKGHM9EJcE/zMvJ8dRRNUdSgwCSEFjO63R5
-        CbrDjhmg==;
+        bh=OpNrq55m/JLCvI2ky9eQsoWN7lws3PlwSAsyx8RIXCI=; b=p8aL/PdE2aGPqVuP0OhuQKiFpa
+        Z64cov40S/wTuqpF9Kf/Ten9kx3riUlMY5jisAge0/UbWG9FsHcuzHuOPG30cyZivnBWQuxEvLBXk
+        2dfDiXlr079CrNXS8pDPjUMBc+hdeIp/Rs9WvRk7LemZ+nk6jDqHFE8VwVOiJ+nuM5Y+AE5TYcJlD
+        +XO5my02azhJ80Wg/C7uXP/CoqgALsBYTofSiPvZs4a8Ovo3rm0A7F/R7pMZQkftasc5uqDKIKJVn
+        1IINszv2ZK6T1Mw0+s/s+8ZbyClHwRX1NYtcLNCOw6ntFvsNs7628NOnC5kLXTNGQgQRa7ci0gQ3j
+        po3sIfvg==;
 Received: from [2601:1c0:6280:3f0::a6b3]
         by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oPD6v-00EOcs-4z; Sat, 20 Aug 2022 01:17:13 +0000
-Message-ID: <66a14f79-18ae-5b5c-4540-0718ff5e93d7@infradead.org>
-Date:   Fri, 19 Aug 2022 18:17:11 -0700
+        id 1oPDCN-00ERZg-UD; Sat, 20 Aug 2022 01:22:52 +0000
+Message-ID: <20061362-7415-a7bb-12f2-2956561ce68a@infradead.org>
+Date:   Fri, 19 Aug 2022 18:22:51 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+From:   Randy Dunlap <rdunlap@infradead.org>
 Subject: Re: linux-parisc compile failure in current git
-Content-Language: en-US
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        Helge Deller <deller@gmx.de>
+To:     Helge Deller <deller@gmx.de>,
+        Masahiro Yamada <masahiroy@kernel.org>
 Cc:     Parisc List <linux-parisc@vger.kernel.org>,
         Meelis Roos <mroos@linux.ee>,
         Linux Kernel Development <linux-kernel@vger.kernel.org>
@@ -50,8 +50,9 @@ References: <892b6ab7-862c-1c0a-2996-0f8408e5043d@linux.ee>
  <CAK7LNAREcSW2Hn3Ty_zTVzTCLgYnFfo=ZcibE2zif1mBWp==4A@mail.gmail.com>
  <39ee0ca2-48a0-755b-605c-3ce1205b9715@gmx.de>
  <CAK7LNAQceFhO1-vupRAJy3rU+p+MK97vRuswVXvVEgF7q0akDA@mail.gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <CAK7LNAQceFhO1-vupRAJy3rU+p+MK97vRuswVXvVEgF7q0akDA@mail.gmail.com>
+ <Yv/PLFLga51+T9xg@p100>
+Content-Language: en-US
+In-Reply-To: <Yv/PLFLga51+T9xg@p100>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -66,25 +67,109 @@ X-Mailing-List: linux-parisc@vger.kernel.org
 
 Hi,
 
-On 8/19/22 09:41, Masahiro Yamada wrote:
-> On Fri, Aug 19, 2022 at 10:56 PM Helge Deller <deller@gmx.de> wrote:
+On 8/19/22 10:58, Helge Deller wrote:
+> * Masahiro Yamada <masahiroy@kernel.org>:
 >>
->> On 8/19/22 14:45, Masahiro Yamada wrote:
->>> On Thu, Aug 18, 2022 at 5:59 AM Randy Dunlap <rdunlap@infradead.org> wrote:
->>>>
+>> Then, you can mimic sparc code.
 
->>> Is this thread related?
->>
->> What thread?
+Good idea.
 
-It is related to ARCH=parisc64, but I probably should have
-started a new thread instead of replying here.
-
-> This thread ("linux-parisc compile failure in current git")
-> was posted more than a year ago.
+> The patch below fixes it nicely and I've pushed it into the parisc
+> for-next git tree.
 > 
-> If you start a new discussion,
-> let's open a new thread with a proper mail subject.
+> @Randy: Maybe you could try it as well. With that approach
+> you get what you want. Maybe that's a better approach for riscv64 as
+> well?
+
+I like this one better than the earlier attempt.
+It's more generic.
+
+
+> From a529c0a388f74a243363976af8535b10d3d69d20 Mon Sep 17 00:00:00 2001
+> From: Helge Deller <deller@gmx.de>
+> Date: Fri, 19 Aug 2022 19:30:50 +0200
+> Subject: [PATCH] parisc: Enable CONFIG_64BIT for ARCH=parisc64 only
+> 
+> With this patch the ARCH= parameter decides if the
+> CONFIG_64BIT option will be set or not. This means, the
+> ARCH= parameter will give:
+> 
+> 	ARCH=parisc	-> 32-bit kernel
+> 	ARCH=parisc64	-> 64-bit kernel
+> 
+> This simplifies the usage of the other config options like
+> randconfig, allmodconfig and allyesconfig a lot and produces
+> the output which is expected for parisc64 (64-bit) vs. parisc (32-bit).
+> 
+> Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> 
+> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+> index 7f059cd1196a..9aede2447011 100644
+> --- a/arch/parisc/Kconfig
+> +++ b/arch/parisc/Kconfig
+> @@ -146,10 +146,10 @@ menu "Processor type and features"
+> 
+>  choice
+>  	prompt "Processor type"
+> -	default PA7000
+> +	default PA7000 if "$(ARCH)" = "parisc"
+> 
+>  config PA7000
+> -	bool "PA7000/PA7100"
+> +	bool "PA7000/PA7100" if "$(ARCH)" = "parisc"
+>  	help
+>  	  This is the processor type of your CPU.  This information is
+>  	  used for optimizing purposes.  In order to compile a kernel
+> @@ -160,21 +160,21 @@ config PA7000
+>  	  which is required on some machines.
+> 
+>  config PA7100LC
+> -	bool "PA7100LC"
+> +	bool "PA7100LC" if "$(ARCH)" = "parisc"
+>  	help
+>  	  Select this option for the PCX-L processor, as used in the
+>  	  712, 715/64, 715/80, 715/100, 715/100XC, 725/100, 743, 748,
+>  	  D200, D210, D300, D310 and E-class
+> 
+>  config PA7200
+> -	bool "PA7200"
+> +	bool "PA7200" if "$(ARCH)" = "parisc"
+>  	help
+>  	  Select this option for the PCX-T' processor, as used in the
+>  	  C100, C110, J100, J110, J210XC, D250, D260, D350, D360,
+>  	  K100, K200, K210, K220, K400, K410 and K420
+> 
+>  config PA7300LC
+> -	bool "PA7300LC"
+> +	bool "PA7300LC" if "$(ARCH)" = "parisc"
+>  	help
+>  	  Select this option for the PCX-L2 processor, as used in the
+>  	  744, A180, B132L, B160L, B180L, C132L, C160L, C180L,
+> @@ -224,17 +224,8 @@ config MLONGCALLS
+>  	  Enabling this option will probably slow down your kernel.
+> 
+>  config 64BIT
+> -	bool "64-bit kernel"
+> +	def_bool "$(ARCH)" = "parisc64"
+>  	depends on PA8X00
+> -	help
+> -	  Enable this if you want to support 64bit kernel on PA-RISC platform.
+> -
+> -	  At the moment, only people willing to use more than 2GB of RAM,
+> -	  or having a 64bit-only capable PA-RISC machine should say Y here.
+> -
+> -	  Since there is no 64bit userland on PA-RISC, there is no point to
+> -	  enable this option otherwise. The 64bit kernel is significantly bigger
+> -	  and slower than the 32bit one.
+> 
+>  choice
+>  	prompt "Kernel page size"
+
+LGTM.
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+
 
 Thanks.
 -- 
