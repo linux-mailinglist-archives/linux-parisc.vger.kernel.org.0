@@ -2,82 +2,88 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 628725A3FA7
-	for <lists+linux-parisc@lfdr.de>; Sun, 28 Aug 2022 22:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CD015A4D4D
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Aug 2022 15:14:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbiH1Ulf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 28 Aug 2022 16:41:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41142 "EHLO
+        id S229871AbiH2NOv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 29 Aug 2022 09:14:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbiH1Ule (ORCPT
+        with ESMTP id S230296AbiH2NOU (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 28 Aug 2022 16:41:34 -0400
-Received: from bk-medien.net (bk-medien.net [164.132.13.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A90E28723
-        for <linux-parisc@vger.kernel.org>; Sun, 28 Aug 2022 13:41:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=bk-medien.net; s=default; h=Content-Type:MIME-Version:Message-ID:From:Date:
-        Subject:To:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=muz/mFD/kzC1MMtFB/pGoMq2gkemD002tYC9lk1PlLY=; b=k7TBPY7Z8TDnZSbnZGmutxyC76
-        lsBbi2sAPaXCiKdN9qDVmYDOxoJ4yBlVct5navNAKD1uPpnAhwuKKqOi3cTnNybVm2/PKIzg8zdAc
-        25tj+v++koRmakR3PjOmId/woJ7z6P08xgW5W3FAZnGkdc106eFSWT6g+gjfzIQ7eufUSYgGlLV9R
-        nChKARLmqBjzAotOQnZcVT9pTKPIEeaF2a40UwOPRuFS51D0uU9KEfjRpWOc2PLIkt4B07WdJBHfL
-        fWdkjmY3IGTzG6uz8ZaAkbEGKzNOmYp4QrcJ9b6a01j3Sa1ni7S5INx9gzCaNMFLt8afOq7yR9F6A
-        qsyQyvjw==;
-Received: from xxxedien by whm02.nmkr-hosting.at with local (Exim 4.95)
-        (envelope-from <xxxedien@whm02.nmkr-hosting.at>)
-        id 1oSP5z-00012z-Sy
-        for linux-parisc@vger.kernel.org;
-        Sun, 28 Aug 2022 20:41:27 +0000
-To:     linux-parisc@vger.kernel.org
-Subject: =?us-ascii?Q?Forbes:_Millionen_von_Dollar_in_Kryptowahrung_i?=  =?us-ascii?Q?n_nur_wenigen_Monaten?=
-X-PHP-Script: bk-medien.net/index.php for 156.146.63.135
-X-PHP-Originating-Script: 1016:PHPMailer.php
-Date:   Sun, 28 Aug 2022 20:41:27 +0000
-From:   JosephBrisy <linux-parisc@vger.kernel.org>
-Message-ID: <53Wj0NJTbHJV8gNe4WhM244WDZyx2N4doQzZ3748@bk-medien.net>
-X-Mailer: PHPMailer 6.5.3 (https://github.com/PHPMailer/PHPMailer)
+        Mon, 29 Aug 2022 09:14:20 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5565873920
+        for <linux-parisc@vger.kernel.org>; Mon, 29 Aug 2022 06:14:02 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id br21so5329237lfb.0
+        for <linux-parisc@vger.kernel.org>; Mon, 29 Aug 2022 06:14:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc;
+        bh=5SGZXXm779vUUr1cqzGV/gRigE4jlSEMeyxYIdb55pM=;
+        b=JuH2DuBhqdooGDeH883fQInKWy+C9o/rlQH9zR2Rg7rLnNT8vQWi/d/pql0qHIyNzO
+         0xCr/Mj0aNiyp5M+K6i2SauxP5CRm/Bs8kC+lcDo5tUF1/iNwWfIauloIR2P5f2A17VE
+         GHDRE7h1ZBefbgdRhvl1+ijSL5bikibhK4eLlQIHwrR+hs3qROlhaikjsLyd9O47F6g8
+         ZFHTh5VOiqkenHpaauukTp8mO067Y2DvSKcEP1BW9SvCo84REnPTkeeOZxjjF9KJ5kFi
+         5fdVYIjs99Sgk6OVy8KlxA6xME7P7k5BAowfYe3aQS9tcu2Bx5qIf59QRAQFRjk6FFGT
+         V/YQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=5SGZXXm779vUUr1cqzGV/gRigE4jlSEMeyxYIdb55pM=;
+        b=7vA5C3dLAtzLoD9kjFY1HB/Q5oPLDS65LQMS6Ncyqz8QBCIMt4nPI5U3VdnLAhb+r+
+         9XFrQykjiK4o55nRvQeerJsqs8C/KHW5hIO9fFzCnhjMAd3nwvltlOBA6rWSyshD44ez
+         mPsCDevGMV5lfkkgWxjrZi+OkXFimOLLucgJ/+JqCm30QH/kf4ivzU/UGNFH+eywmgJ2
+         evtD1xYzD5r5kGachxyFw30pNocKiw3v2Cjj/LU+JSSb8T+NfKsTqRiZG8SlTrzD5MVC
+         sMF02ndaq7x4GsQd2GRTyBm3KMxoLCafYXKFfBNDW9HBmodUjFOsd9lhpInYfV/NOyaJ
+         VlGA==
+X-Gm-Message-State: ACgBeo3S7QgIq+5vtboq4ZpSUyNLtw4yflW1YnpsRyMsj+8NR6hTnuOS
+        ziQ7MAFvYbUSjZdl8OdOUJulu++N3Ea8vgUXylc=
+X-Google-Smtp-Source: AA6agR7kSZ3W0aPnlDsOm9XqEUTqV0E4ofM+7ZuKXF3HH/fn5crAd1jiF96UYXECTdAz25DRPOJVR/o+wjrQ8nRw42g=
+X-Received: by 2002:a05:6512:b90:b0:494:6a80:c63 with SMTP id
+ b16-20020a0565120b9000b004946a800c63mr1880465lfv.634.1661778833603; Mon, 29
+ Aug 2022 06:13:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - whm02.nmkr-hosting.at
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [1016 993] / [47 12]
-X-AntiAbuse: Sender Address Domain - whm02.nmkr-hosting.at
-X-Get-Message-Sender-Via: whm02.nmkr-hosting.at: authenticated_id: xxxedien/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: whm02.nmkr-hosting.at: xxxedien
-X-Source: 
-X-Source-Args: php-fpm: pool bk-medien_net                              
-X-Source-Dir: bk-medien.net:/public_html
-X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,LOTS_OF_MONEY,PHP_SCRIPT,
-        SCC_BODY_URI_ONLY,SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE,
-        URIBL_PH_SURBL autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.6 URIBL_PH_SURBL Contains an URL listed in the PH SURBL blocklist
-        *      [URIs: crankycoconut.com]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 HEADER_FROM_DIFFERENT_DOMAINS From and EnvelopeFrom 2nd level
-        *      mail domains are different
-        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  1.9 PHP_SCRIPT Sent by PHP script
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  1.7 SCC_BODY_URI_ONLY No description available.
-X-Spam-Level: *****
+Sender: sorerachid81@gmail.com
+Received: by 2002:a05:6520:6104:b0:213:94e:9775 with HTTP; Mon, 29 Aug 2022
+ 06:13:52 -0700 (PDT)
+From:   sofiaoleksander <sofiaoleksander2@gmail.com>
+Date:   Mon, 29 Aug 2022 14:13:52 +0100
+X-Google-Sender-Auth: hx7J8JWiLbPc9r2tM9sc1TOcz2M
+Message-ID: <CAKL4mRenY6-217rDyFRi58ROnQ0E3c9gt5SMgkMYt64prswJ8w@mail.gmail.com>
+Subject: Hello my dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_USD,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Message Body:
-Willst du reich werden? Fahre fort http://bitcoin-5-year-price-prediction.crankycoconut.com/dayli-news-6110
+Hello my dear,
 
+    My Name is, sofia oleksander, a 20 years old girl from Ukraine and
+I'm presently in a refugee camp here in Poland. I lost my parents in
+the recent war in Ukraine, right now I'm in a refugee camp in Poland.
+Please I'm in great need of your help in transferring my late father
+deposited fund, the sum of $3.5 MILLION UNITED STATES DOLLAR, he
+deposited  in a bank in United State.
+
+the deposited money was from the sale of the company shares death
+benefits payment, and entitlements of my deceased father by his
+company.  i have every necessary document for the fund, i seek for an
+honest foreigner who will stand as my foreign partner and investor. i
+just need this fund to be transferred to your bank account so that I
+will come over to your country and complete my education over there in
+your country. as you know, my country has been in a deep crisis due to
+the recent war and I cannot go back.
+
+Please I need your urgent,
+sofia oleksander,
