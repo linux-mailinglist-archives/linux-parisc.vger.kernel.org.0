@@ -2,136 +2,61 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EA265A6ACE
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Aug 2022 19:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFF335A6B52
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 Aug 2022 19:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232106AbiH3RdM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 Aug 2022 13:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34940 "EHLO
+        id S229543AbiH3RyF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 30 Aug 2022 13:54:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231989AbiH3RcL (ORCPT
+        with ESMTP id S232024AbiH3Rxi (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 Aug 2022 13:32:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674D2647C3;
-        Tue, 30 Aug 2022 10:28:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55B68617AE;
-        Tue, 30 Aug 2022 17:27:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E28C433C1;
-        Tue, 30 Aug 2022 17:27:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661880436;
-        bh=0cH85VvIYBOZ+pBLS98yG/BMwMyFTJk/yyn7iuR9B+E=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jQ39efbFUyO4uybn/w0+VZ4RKA4NJKOKZKknazGmGMwFCUuqi+lCKseChTwnJ1/3a
-         WI53qKU/khKmENNWZ1Rudzk1ObJ1JgDH4oWpq2e+aKi5Faa9GFIA+X9MqunluGckeE
-         +X6d0p3Gz6/A+CpVSpM++jLY4cpCrVl9+V1oDF19/M3gFExW4pqsyyHfB3I7NmiJLq
-         1rWaKAPmQ9JLPJ6cAfoW3vkbVE6Ia2IY0MQfH4lxQf42+PcADs2x+Trg/vrH09fDAF
-         DZoHDQWma1EXWVtDckgMQy4RRW62H9McPOYN3+1nBVMc1Ttc612Q8UFxHpYEQdTV3X
-         oecMuq2U12lYA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, svens@stackframe.org,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 4/6] parisc: Add runtime check to prevent PA2.0 kernels on PA1.x machines
-Date:   Tue, 30 Aug 2022 13:27:04 -0400
-Message-Id: <20220830172706.582088-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220830172706.582088-1-sashal@kernel.org>
-References: <20220830172706.582088-1-sashal@kernel.org>
+        Tue, 30 Aug 2022 13:53:38 -0400
+X-Greylist: delayed 561 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 30 Aug 2022 10:51:06 PDT
+Received: from capitanantonio.escuelaartegranada.net (unknown [82.223.67.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D1909E11F
+        for <linux-parisc@vger.kernel.org>; Tue, 30 Aug 2022 10:51:05 -0700 (PDT)
+Received: by capitanantonio.escuelaartegranada.net (Postfix, from userid 10011)
+        id 0922C24692; Tue, 30 Aug 2022 17:32:27 +0000 (UTC)
+To:     linux-parisc@vger.kernel.org
+Subject: =?UTF-8?Q?MANIPULADOS_PUBLITEX_=C2=ABTelegram:_Sind_Sie_es_l?=
+ =?UTF-8?Q?eid, _in_Schulden_zu_leben=3F_Es_gibt_einen_Ausweg_?=
+ =?UTF-8?Q?und_es_ist_sehr_einfach.=C2=BB?=
+Date:   Tue, 30 Aug 2022 17:32:26 +0000
+From:   MANIPULADOS PUBLITEX <info@manipuladospublitex.com>
+Message-ID: <O6SD2kGFEEfAPeTP157evMEGFZiq1UtwaOdwDYXWw@manipuladospublitex.com>
+X-Mailer: PHPMailer 6.5.3 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-PPP-Message-ID: <166188074699.86508.15838016994247406134@capitanantonio.escuelaartegranada.net>
+X-PPP-Vhost: manipuladospublitex.com
+X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAD_ENC_HEADER,BAYES_50,
+        BODY_URI_ONLY,RCVD_IN_VALIDITY_RPBL,SCC_BODY_URI_ONLY,SPF_HELO_NONE,
+        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 BAD_ENC_HEADER Message has bad MIME encoding in the header
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [82.223.67.229 listed in bl.score.senderscore.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  1.7 SCC_BODY_URI_ONLY No description available.
+        *  1.4 BODY_URI_ONLY Message body is only a URI in one line of text or
+        *       for an image
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
-
-[ Upstream commit 591d2108f3abc4db9f9073cae37cf3591fd250d6 ]
-
-If a 32-bit kernel was compiled for PA2.0 CPUs, it won't be able to run
-on machines with PA1.x CPUs. Add a check and bail out early if a PA1.x
-machine is detected.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/kernel/head.S | 43 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
-
-diff --git a/arch/parisc/kernel/head.S b/arch/parisc/kernel/head.S
-index 9b99eb0712ad1..2f570a5205866 100644
---- a/arch/parisc/kernel/head.S
-+++ b/arch/parisc/kernel/head.S
-@@ -22,7 +22,7 @@
- #include <linux/linkage.h>
- #include <linux/init.h>
- 
--	.level	PA_ASM_LEVEL
-+	.level	1.1
- 
- 	__INITDATA
- ENTRY(boot_args)
-@@ -69,6 +69,47 @@ $bss_loop:
- 	stw,ma          %arg2,4(%r1)
- 	stw,ma          %arg3,4(%r1)
- 
-+#if !defined(CONFIG_64BIT) && defined(CONFIG_PA20)
-+	/* This 32-bit kernel was compiled for PA2.0 CPUs. Check current CPU
-+	 * and halt kernel if we detect a PA1.x CPU. */
-+	ldi		32,%r10
-+	mtctl		%r10,%cr11
-+	.level 2.0
-+	mfctl,w		%cr11,%r10
-+	.level 1.1
-+	comib,<>,n	0,%r10,$cpu_ok
-+
-+	load32		PA(msg1),%arg0
-+	ldi		msg1_end-msg1,%arg1
-+$iodc_panic:
-+	copy		%arg0, %r10
-+	copy		%arg1, %r11
-+	load32		PA(init_stack),%sp
-+#define MEM_CONS 0x3A0
-+	ldw		MEM_CONS+32(%r0),%arg0	// HPA
-+	ldi		ENTRY_IO_COUT,%arg1
-+	ldw		MEM_CONS+36(%r0),%arg2	// SPA
-+	ldw		MEM_CONS+8(%r0),%arg3	// layers
-+	load32		PA(__bss_start),%r1
-+	stw		%r1,-52(%sp)		// arg4
-+	stw		%r0,-56(%sp)		// arg5
-+	stw		%r10,-60(%sp)		// arg6 = ptr to text
-+	stw		%r11,-64(%sp)		// arg7 = len
-+	stw		%r0,-68(%sp)		// arg8
-+	load32		PA(.iodc_panic_ret), %rp
-+	ldw		MEM_CONS+40(%r0),%r1	// ENTRY_IODC
-+	bv,n		(%r1)
-+.iodc_panic_ret:
-+	b .				/* wait endless with ... */
-+	or		%r10,%r10,%r10	/* qemu idle sleep */
-+msg1:	.ascii "Can't boot kernel which was built for PA8x00 CPUs on this machine.\r\n"
-+msg1_end:
-+
-+$cpu_ok:
-+#endif
-+
-+	.level	PA_ASM_LEVEL
-+
- 	/* Initialize startup VM. Just map first 16/32 MB of memory */
- 	load32		PA(swapper_pg_dir),%r4
- 	mtctl		%r4,%cr24	/* Initialize kernel root pointer */
+Cuerpo del mensaje:
+Lifehack. Wie man ohne Erfahrung und Wissen aus 1000 Dollar pro Tag verdient http://about-bitcoin-cash.mybulletminds.com/news-4008
 -- 
-2.35.1
+Este mensaje se ha enviado desde un formulario de contacto en MANIPULADOS PUBLITEX (https://manipuladospublitex.com).
+En breve nos pondremos en contacto contigo.
+Gracias por confiar en nosotros.
 
