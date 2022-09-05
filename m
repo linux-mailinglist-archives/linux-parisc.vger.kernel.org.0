@@ -2,121 +2,117 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D64AA5AC362
-	for <lists+linux-parisc@lfdr.de>; Sun,  4 Sep 2022 10:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE9C55AD34B
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Sep 2022 14:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233236AbiIDILR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 4 Sep 2022 04:11:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44034 "EHLO
+        id S237179AbiIEMwj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 5 Sep 2022 08:52:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232793AbiIDILQ (ORCPT
+        with ESMTP id S237012AbiIEMwi (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 4 Sep 2022 04:11:16 -0400
-Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C9A3ED50;
-        Sun,  4 Sep 2022 01:11:12 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.west.internal (Postfix) with ESMTP id 12DCE2B05E77;
-        Sun,  4 Sep 2022 04:11:09 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Sun, 04 Sep 2022 04:11:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm1; t=1662279069; x=1662282669; bh=GmIJUh8a0b
-        qNdokPkQCJbK/aqSeG2wVzu5bAlLl44Yg=; b=VDzD4vEe1cQ8Qa+CwfOJLi6Yjf
-        0CtxsOaLjvil3Bcmh/97DHGVpIm+SkQBL3X/zZ7R10pDR6kLiMhDb0UmY1oD5pvk
-        TP7zSlf6y6p1WQQ3UxTP3Bu74fUen0x/DDvuecbz5YUt0QeitSYxfWVmbJtm70B0
-        vCfrqSqaLTPV8bORbkzSoDIVH4Kfs+VUespVAMuEnVR6VBF9al6kh6Kj5saD5F2T
-        Eyatx60smtoz+wtA+tCj+MCPuU6KEDpsnoxM+QOe3LCzv1RwbWMCorvMHDKpPrEF
-        SuytBNnyEVAuYoui83mzyOc/Du0DOkS+Nz5VSsDkwt7YdGF4oE5MAq2tpp6g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        i56a14606.fm1; t=1662279069; x=1662282669; bh=GmIJUh8a0bqNdokPkQ
-        CJbK/aqSeG2wVzu5bAlLl44Yg=; b=utGey7os7UJCKWBcQwk4SM5x9OOCiQuJRj
-        7nWp3WGGvAXOboRyUluQvWZoUFACDnkV52Dh7CPakiJN4g4OKiPwP7eVP5T96UMi
-        OZeDSniSHQpSt9hZrFRYILIWMs7RR68CXoU9b+BkzKC04ZNIezhBlrkbUCbABPj3
-        VVdho3b3Zxk2LFyaIDXe2pnXZ2e+eu5pzE+29yXgre2f7qAYATw58oGBetBgxqA2
-        okknTzHKmhQMRYbuJJWDuMSVs53ZW1eayI6b2TzdeQv5TUAZdAwcR9u30AtjH7qY
-        /RJwkZTSFti15KJjQnIl2AS52r+cI8wPmj6YlC2gvf37g0VYe84Q==
-X-ME-Sender: <xms:nV0UY-u2oDOm6AeYCakuLXVtz-EHTAnp6N-8miNW3jow4HoZaKtS7A>
-    <xme:nV0UYzcgXxJo2xIudA7dOmLoJjJs0legwLZSUH3eeebRMLET_pbAcEfFCM0Sv1rmz
-    hHWts5_9ekP4rlZWGA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdelgedgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:nV0UY5x5hqUBtoPU6MBtv3uZgn23_StmLVUr4UT9WVQBlS0ezgbvZA>
-    <xmx:nV0UY5NbN_T5PtU0YQcwJbeIzc5iE1fNboKxDrMMXHwmhf8yu0IfgA>
-    <xmx:nV0UY-_Tn9kZR9JgmtNh4cF3iFFEs4kvTLQc8YDMy2Qbk5UO_e3B8w>
-    <xmx:nV0UY1ZmzthWojjUxhUrw1f8auXbDw_rSNEq0tdsOkdn_qgUm0MGwONsjlc>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id EA084B60083; Sun,  4 Sep 2022 04:11:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-841-g7899e99a45-fm-20220811.002-g7899e99a
-Mime-Version: 1.0
-Message-Id: <eded16ee-b9c9-4830-a75c-685056e56b56@www.fastmail.com>
-In-Reply-To: <20220903224526.553897-1-linus.walleij@linaro.org>
-References: <20220903224526.553897-1-linus.walleij@linaro.org>
-Date:   Sun, 04 Sep 2022 10:10:48 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Linus Walleij" <linus.walleij@linaro.org>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        "Helge Deller" <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        "John David Anglin" <dave.anglin@bell.net>
-Subject: Re: [PATCH 1/2 v4] parisc: Remove 64bit access on 32bit machines
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Mon, 5 Sep 2022 08:52:38 -0400
+Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B531C10C
+        for <linux-parisc@vger.kernel.org>; Mon,  5 Sep 2022 05:52:36 -0700 (PDT)
+Received: by mail-yb1-xb41.google.com with SMTP id y82so4488962yby.6
+        for <linux-parisc@vger.kernel.org>; Mon, 05 Sep 2022 05:52:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date;
+        bh=6iyQDafiYBXnSsgnRlfbKAxcwMtuNVs3v7T0vJde0mE=;
+        b=RiXpv2wcwYE/WTV/NafiP3Da0dYIlE/5Z3TzTX3rMmLgfFuVAp+YZXHMDmAWcAZuIH
+         eV6yQtW24J+fck8k8fuZKifcCwtn/eWalYvQJaSeHDN2nV62pXcQVDIVK7UN9t4LAMuw
+         HkcoYlr5MHm6ujyYem8x+RykPc/otF04bI9Yov5XY3XH1AMqM4TBuH7HLOAYsbt4uKGD
+         2xO1Rxc2OqqtPGLhcsaJh9GRxdcqx4pq/5IZA/tnv3JYFWd4YooD4OZ246g9/17C6h1y
+         7NLRSrRu8wKnEq7vaRZPIzvyHrXOOB9NO9+n63ppwwNSJebKziSUDObbs6ntMeCDBTwD
+         eC1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=6iyQDafiYBXnSsgnRlfbKAxcwMtuNVs3v7T0vJde0mE=;
+        b=khVLth/5EPgCCOhWOV5GLwN3WBOYUw3B6f/iNQnI58p0fHXlutFMUPRuu5u8pnElXl
+         CEvwY6jyAjpWXF/PBJ6kXuwbwo9FJGS3OCzr1MjG0DrjhJQAoe/2XTXuwjVQv+KtpVKd
+         KWdLyRPR5vRPJdLKFpFbE6vH42Nieoe9YlFN/QtoFjDzsdHIMHjad+cerAEzZ5+qO+h3
+         eJE75y7Z/FS71BOxepZB2zesgdyzTpBYzSDcais5kRuoob575BOus4q3SmH0Oc6Ca4HO
+         u0ixF2dumCJPd22GM7ZC/q46DY7mUubEvUGRvjqB53d51077SfU9SK/RT76tucRCk83H
+         HIaA==
+X-Gm-Message-State: ACgBeo3jkjgrKGXFWT+9hqjBmaT/oRVCRgairIhvq1mmv77Q6rYyN7vY
+        nO+amVaJLGKo2kTO4b+jr/u6TB8NBgSjaua0xXw=
+X-Google-Smtp-Source: AA6agR5MaC+kWRMw9AWsWJZGoNUOSd2Z/NFUmoS0Bhbtiomrsix56lXQyXkQSX2Ho5MvRc5QkDULDk7uHP1k9XFv+Ww=
+X-Received: by 2002:a05:6902:24d:b0:6a8:fc7a:e24a with SMTP id
+ k13-20020a056902024d00b006a8fc7ae24amr5180198ybs.481.1662382356120; Mon, 05
+ Sep 2022 05:52:36 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:7000:4a43:0:0:0:0 with HTTP; Mon, 5 Sep 2022 05:52:35
+ -0700 (PDT)
+Reply-To: lemrtino@outlook.fr
+From:   Lene Martino <lemrtin03@gmail.com>
+Date:   Mon, 5 Sep 2022 14:52:35 +0200
+Message-ID: <CAGruaR3eiwDJP-1Daq=9hhmgwjP1JyWcdj1u8TUk5siMpP1vHw@mail.gmail.com>
+Subject: =?UTF-8?Q?Ihre_Hilfe_wird_ben=C3=B6tigt?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b41 listed in]
+        [list.dnswl.org]
+        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.6367]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [lemrtin03[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [lemrtin03[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sun, Sep 4, 2022, at 12:45 AM, Linus Walleij wrote:
-> The parisc was using some readq/writeq accessors without special
-> considerations as to what will happen on 32bit CPUs if you do
-> this. Maybe we have been lucky that it "just worked" on 32bit
-> due to the compiler behaviour, or the code paths were never
-> executed.
->
-> Fix the two offending code sites like this:
->
-> arch/parisc/lib/iomap.c:
->
-> - Put ifdefs around the 64bit accessors and make sure
->   that ioread64, ioread64be, iowrite64 and iowrite64be
->   are not available on 32bit builds.
->
-> - Also fold in a bug fix where 64bit access was by
->   mistake using 32bit writel() accessors rather
->   than 64bit writeq().
->
-> drivers/parisc/sba_iommu.c:
->
-> - Access any 64bit registers using _lo_hi-semantics by way
->   of the readq and writeq operations provided by
->   <linux/io-64-nonatomic-lo-hi.h>
->
-> Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linux-arch@vger.kernel.org
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: John David Anglin <dave.anglin@bell.net>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Mit geb=C3=BChrendem Respekt und Menschlichkeit war ich gezwungen, Ihnen
+aus humanit=C3=A4ren Gr=C3=BCnden zu schreiben. Mein Name ist Lene Martino,=
+ ich
+komme von der Elfenbeink=C3=BCste und bin 57 Jahre alt. Ich bin mit dem
+verstorbenen Dr. Joseph Samuel Martino verheiratet, der in einer
+=C3=96lfirma in der Elfenbeink=C3=BCste gearbeitet hat und nach einer
+Herzoperation gestorben ist. Wenn es Ihnen nichts ausmacht, w=C3=BCrde ich
+gerne ein wichtiges Gespr=C3=A4ch mit Ihnen f=C3=BChren, in dem es um meine
+Entscheidung geht, mein Erbe, das ich in einer der Banken hier
+hinterlegt habe, f=C3=BCr den Dienst an der Menschheit durch Sie zu
+verwenden, weil ich nicht wei=C3=9F, wann mein Sch=C3=B6pfer meine Seele ab=
+holen
+wird.Der Betrag betr=C3=A4gt nur 5,5 Millionen US-Dollar. Sehr, sehr
+wichtig. Wenn Sie interessiert und =C3=BCberzeugt sind, mir bei der
+Verwirklichung dieses wohlt=C3=A4tigen Projekts zu helfen, lassen Sie es
+mich wissen, um weitere Einzelheiten zu erfahren. Ich werde auf Ihre
+dringende Antwort warten.
+Mit freundlichen Gr=C3=BC=C3=9Fen,
+Frau Lene Martino,
