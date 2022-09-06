@@ -2,117 +2,84 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE9C55AD34B
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Sep 2022 14:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B56B5ADF0A
+	for <lists+linux-parisc@lfdr.de>; Tue,  6 Sep 2022 07:50:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237179AbiIEMwj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 5 Sep 2022 08:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55986 "EHLO
+        id S229818AbiIFFt5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 6 Sep 2022 01:49:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237012AbiIEMwi (ORCPT
+        with ESMTP id S233073AbiIFFtz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 5 Sep 2022 08:52:38 -0400
-Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B531C10C
-        for <linux-parisc@vger.kernel.org>; Mon,  5 Sep 2022 05:52:36 -0700 (PDT)
-Received: by mail-yb1-xb41.google.com with SMTP id y82so4488962yby.6
-        for <linux-parisc@vger.kernel.org>; Mon, 05 Sep 2022 05:52:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date;
-        bh=6iyQDafiYBXnSsgnRlfbKAxcwMtuNVs3v7T0vJde0mE=;
-        b=RiXpv2wcwYE/WTV/NafiP3Da0dYIlE/5Z3TzTX3rMmLgfFuVAp+YZXHMDmAWcAZuIH
-         eV6yQtW24J+fck8k8fuZKifcCwtn/eWalYvQJaSeHDN2nV62pXcQVDIVK7UN9t4LAMuw
-         HkcoYlr5MHm6ujyYem8x+RykPc/otF04bI9Yov5XY3XH1AMqM4TBuH7HLOAYsbt4uKGD
-         2xO1Rxc2OqqtPGLhcsaJh9GRxdcqx4pq/5IZA/tnv3JYFWd4YooD4OZ246g9/17C6h1y
-         7NLRSrRu8wKnEq7vaRZPIzvyHrXOOB9NO9+n63ppwwNSJebKziSUDObbs6ntMeCDBTwD
-         eC1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=6iyQDafiYBXnSsgnRlfbKAxcwMtuNVs3v7T0vJde0mE=;
-        b=khVLth/5EPgCCOhWOV5GLwN3WBOYUw3B6f/iNQnI58p0fHXlutFMUPRuu5u8pnElXl
-         CEvwY6jyAjpWXF/PBJ6kXuwbwo9FJGS3OCzr1MjG0DrjhJQAoe/2XTXuwjVQv+KtpVKd
-         KWdLyRPR5vRPJdLKFpFbE6vH42Nieoe9YlFN/QtoFjDzsdHIMHjad+cerAEzZ5+qO+h3
-         eJE75y7Z/FS71BOxepZB2zesgdyzTpBYzSDcais5kRuoob575BOus4q3SmH0Oc6Ca4HO
-         u0ixF2dumCJPd22GM7ZC/q46DY7mUubEvUGRvjqB53d51077SfU9SK/RT76tucRCk83H
-         HIaA==
-X-Gm-Message-State: ACgBeo3jkjgrKGXFWT+9hqjBmaT/oRVCRgairIhvq1mmv77Q6rYyN7vY
-        nO+amVaJLGKo2kTO4b+jr/u6TB8NBgSjaua0xXw=
-X-Google-Smtp-Source: AA6agR5MaC+kWRMw9AWsWJZGoNUOSd2Z/NFUmoS0Bhbtiomrsix56lXQyXkQSX2Ho5MvRc5QkDULDk7uHP1k9XFv+Ww=
-X-Received: by 2002:a05:6902:24d:b0:6a8:fc7a:e24a with SMTP id
- k13-20020a056902024d00b006a8fc7ae24amr5180198ybs.481.1662382356120; Mon, 05
- Sep 2022 05:52:36 -0700 (PDT)
+        Tue, 6 Sep 2022 01:49:55 -0400
+Received: from mail-m973.mail.163.com (mail-m973.mail.163.com [123.126.97.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 628633F1D2;
+        Mon,  5 Sep 2022 22:49:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=xNbDr
+        StuvGwqNWDw0moNbItRHfUwiEd/kR4i8Eepi4o=; b=cpK+KPJH5Nd4O2uXzqhYd
+        ysvezgukB+IWTxmiQqT7AMDzyP4dK/+6EwYJdrDvdFiBpepHagD0TyW/Dlo5ZAGj
+        df/TATXXT1KKEzbs4mytgkpE83uWuTWnyuUEr1HP9jK8WnNCAAGPMM/9BCOcT6WT
+        u5ZQR1qR2St2g3GtQPLt+Y=
+Received: from localhost.localdomain (unknown [116.128.244.169])
+        by smtp3 (Coremail) with SMTP id G9xpCgD3EVZw3xZjkgoxbQ--.41059S2;
+        Tue, 06 Sep 2022 13:49:39 +0800 (CST)
+From:   Jiangshan Yi <13667453960@163.com>
+To:     James.Bottomley@HansenPartnership.com, deller@gmx.de
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiangshan Yi <yijiangshan@kylinos.cn>,
+        k2ci <kernel-bot@kylinos.cn>
+Subject: [PATCH] Input: hp_sdc: fix spelling typo in comment
+Date:   Tue,  6 Sep 2022 13:49:01 +0800
+Message-Id: <20220906054901.2283059-1-13667453960@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a05:7000:4a43:0:0:0:0 with HTTP; Mon, 5 Sep 2022 05:52:35
- -0700 (PDT)
-Reply-To: lemrtino@outlook.fr
-From:   Lene Martino <lemrtin03@gmail.com>
-Date:   Mon, 5 Sep 2022 14:52:35 +0200
-Message-ID: <CAGruaR3eiwDJP-1Daq=9hhmgwjP1JyWcdj1u8TUk5siMpP1vHw@mail.gmail.com>
-Subject: =?UTF-8?Q?Ihre_Hilfe_wird_ben=C3=B6tigt?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: G9xpCgD3EVZw3xZjkgoxbQ--.41059S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrury7Jr47ZFy5GFyfZr4Utwb_yoWfAFc_Gw
+        1xWr48Xr4kGF4Igw4UtFWavF1Ikr98KrnrZwn5ZwsxWa9rZan8K34kGryIk347WFWqkr15
+        Xa1ruFZ29r13KjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbl4i5UUUUU==
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: bprtllyxuvjmiwq6il2tof0z/1tbi8BN0+1uoiEvWwwAAsJ
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b41 listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6367]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lemrtin03[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [lemrtin03[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+        FREEMAIL_FROM,FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Mit geb=C3=BChrendem Respekt und Menschlichkeit war ich gezwungen, Ihnen
-aus humanit=C3=A4ren Gr=C3=BCnden zu schreiben. Mein Name ist Lene Martino,=
- ich
-komme von der Elfenbeink=C3=BCste und bin 57 Jahre alt. Ich bin mit dem
-verstorbenen Dr. Joseph Samuel Martino verheiratet, der in einer
-=C3=96lfirma in der Elfenbeink=C3=BCste gearbeitet hat und nach einer
-Herzoperation gestorben ist. Wenn es Ihnen nichts ausmacht, w=C3=BCrde ich
-gerne ein wichtiges Gespr=C3=A4ch mit Ihnen f=C3=BChren, in dem es um meine
-Entscheidung geht, mein Erbe, das ich in einer der Banken hier
-hinterlegt habe, f=C3=BCr den Dienst an der Menschheit durch Sie zu
-verwenden, weil ich nicht wei=C3=9F, wann mein Sch=C3=B6pfer meine Seele ab=
-holen
-wird.Der Betrag betr=C3=A4gt nur 5,5 Millionen US-Dollar. Sehr, sehr
-wichtig. Wenn Sie interessiert und =C3=BCberzeugt sind, mir bei der
-Verwirklichung dieses wohlt=C3=A4tigen Projekts zu helfen, lassen Sie es
-mich wissen, um weitere Einzelheiten zu erfahren. Ich werde auf Ihre
-dringende Antwort warten.
-Mit freundlichen Gr=C3=BC=C3=9Fen,
-Frau Lene Martino,
+From: Jiangshan Yi <yijiangshan@kylinos.cn>
+
+Fix spelling typo in comment.
+
+Reported-by: k2ci <kernel-bot@kylinos.cn>
+Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+---
+ include/linux/hp_sdc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/hp_sdc.h b/include/linux/hp_sdc.h
+index 6f1dee7e67e0..9be8704e2d38 100644
+--- a/include/linux/hp_sdc.h
++++ b/include/linux/hp_sdc.h
+@@ -180,7 +180,7 @@ switch (val) {						\
+ 
+ #define HP_SDC_CMD_SET_IM	0x40    /* 010xxxxx == set irq mask */
+ 
+-/* The documents provided do not explicitly state that all registers betweem 
++/* The documents provided do not explicitly state that all registers between
+  * 0x01 and 0x1f inclusive can be read by sending their register index as a 
+  * command, but this is implied and appears to be the case.
+  */
+-- 
+2.25.1
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
+
