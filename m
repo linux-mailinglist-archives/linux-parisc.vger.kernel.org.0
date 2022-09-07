@@ -2,81 +2,114 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D166C5AE49F
-	for <lists+linux-parisc@lfdr.de>; Tue,  6 Sep 2022 11:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 358205B06B3
+	for <lists+linux-parisc@lfdr.de>; Wed,  7 Sep 2022 16:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232983AbiIFJp6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 6 Sep 2022 05:45:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38168 "EHLO
+        id S229808AbiIGOb7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 7 Sep 2022 10:31:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233015AbiIFJpt (ORCPT
+        with ESMTP id S230049AbiIGObk (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 6 Sep 2022 05:45:49 -0400
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A92A74341
-        for <linux-parisc@vger.kernel.org>; Tue,  6 Sep 2022 02:45:47 -0700 (PDT)
-Received: by mail-qv1-xf44.google.com with SMTP id j1so7898018qvv.8
-        for <linux-parisc@vger.kernel.org>; Tue, 06 Sep 2022 02:45:47 -0700 (PDT)
+        Wed, 7 Sep 2022 10:31:40 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5442B627A
+        for <linux-parisc@vger.kernel.org>; Wed,  7 Sep 2022 07:31:37 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id 29so14923406edv.2
+        for <linux-parisc@vger.kernel.org>; Wed, 07 Sep 2022 07:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date;
-        bh=u9uKjPX3k13UvUOYMOJvh5rXl4CYd65xfgfhCzs7K28=;
-        b=j8NzHef+8kCeULU3Rr0lp/hiTJl3Aseo4iF3niUGQS9m0Bt5G5V3TD+8lcCYn75owz
-         DxYdh4sInd1aq8FAUOfq05ncrCDAJp635RbzeraXql0KLGeh+eHdQTGZ5WpxY+2tSH9G
-         tg3wU9TtbZKUvn/v2GrIoJMJ2kKOvUYto3adn1v+D/LFHEsitQEGSA9rSoFAbaWJEFou
-         OPjjatydtpHJIHklfEYNJRQCm5MRYTAM3xZbAPKgP2DqUorAnfl1FHOqoslzLrM3bcCu
-         FiS34cRTxJKpwowJNzL2BO578OOUcxOPKOfsAdwIvm3Q88qcmoAvetj98CrUc/CzhUJ4
-         zkqw==
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=k+kTmF4dNKKC1tFdYzcwH7/l46epf5FbUFPW9fotRQ90/DS7R3h9yaNhOg0lTJdIKN
+         YHdSCTkM8Zkjp7Hn3R4P0XvsDr7GxfmeGBL++Unk5TJmx9qVPx583aTDfnV2PWRJleSF
+         V9CWF3CXrTGHaUKzdckweUxspufsytFwPi4BnYsAOc2hSOm8q6pA2t/VPIekeXstFpXE
+         htt2kpsyRtvUjut5U+QWEOTH3kFoTjQxxF4WczaCcSaHvXanBanYGkEYwnM/Vnd0ubg4
+         W8etIyyum3dHJgEwMgk9+gvP+Ht+yKtyVUWfAI5wHJqHC9VVX3XlSnd5oyt/DWf9M1PE
+         uqfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=u9uKjPX3k13UvUOYMOJvh5rXl4CYd65xfgfhCzs7K28=;
-        b=3HrliVgcvyyLQBB1zhBAFYAc5PfE7/RNpyEo2hJnE+u684kKsyXwDnSMTon2t8THPM
-         3ieyTlYTB6ytTSbts3jGVbbKXNwKqmxc7Z5UZshyYpk+fyahxCA+fu6jtqrqEhbqBePQ
-         mMN2KR7AddZynpqHBE3v3QvP95Db28YB8+XDRbh1r/DUjFb7rVjWVuZF2/gKVt6sp7XV
-         sJ1sXZHq/Zm52PCLSkqFQUV5OXMi6Ldkxsy6lWpuZF8TcfiUOK5gp3DuzcLl33pi+4kn
-         i6hJnhhV/q+/Z1bvo8SMudMJhAfS5+wBqP4Of9FVcY43NfPBlZcsf1n/BsuZ0JqVO9UN
-         Bo2g==
-X-Gm-Message-State: ACgBeo2eKY4WM8kXcuLvJLGVZx66gdwV8PXpj0dNmwKGW62oG14zLaTq
-        GIqf2SZQWpPWca8PbnaffLo12DNGFIRSEQwhLOM=
-X-Google-Smtp-Source: AA6agR7WIwWTasWhuQ+wQ80+oYBb5lJ+yUb0hViQQURtQLHgy4Ii4rWzV9kd5MYkkx7JJ6QpY/AgbVIJS/sk5QZEoFQ=
-X-Received: by 2002:a0c:aa59:0:b0:4aa:a37d:582a with SMTP id
- e25-20020a0caa59000000b004aaa37d582amr785984qvb.82.1662457546273; Tue, 06 Sep
- 2022 02:45:46 -0700 (PDT)
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=s3tv070M0i9E+CS2spoJUZXMHJmmCFtx1Vv3HGNCgpXvkcvRYqwo3zLeDfk2kNF68b
+         qEalq1XSKAo+JL7WVCx7ETSTseCiFy5Nhxu5iDPVAM6xFyEF/jW7OmgzZVHKGclFF/Ba
+         QIV2S/QQti75s6cGuRkbJ20/WTI57i45WSUPMnVxkYSd0ZHh1JY3+KLkzQyX+h/cnRdy
+         1xJ8kSBtxJ43aUlpoXzS1bAlEkfcIxzjHVsd/rCnt8EaPkpi9jil0ECGr/g12eha6M9Y
+         GggmRG2B/1KBuy0/320WV/VaAN0FmCTUMKnkMdc5tDdA1Am9p1Dlfq03X6ZPvM9ZIxk3
+         vO5A==
+X-Gm-Message-State: ACgBeo0vPjTbgVY1ZuURZKPcQ7N1JUrYskxtMNxe8AwKxywPCAk+nZvH
+        2omOewn5D2cEzvauRnvVfNXAOLjIp14a12BvY6U=
+X-Google-Smtp-Source: AA6agR7oVOAvDjQn3BvyL8TRl7TU52ugVo1oxft3hLVGbPDpO77yZb9oqAmvuH8HvlLOfxUiSLCWLP4h3TKLUQD64AM=
+X-Received: by 2002:a05:6402:2937:b0:44e:b578:6fdd with SMTP id
+ ee55-20020a056402293700b0044eb5786fddmr3322109edb.159.1662561095860; Wed, 07
+ Sep 2022 07:31:35 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6214:20a1:0:0:0:0 with HTTP; Tue, 6 Sep 2022 02:45:45
- -0700 (PDT)
-Reply-To: olsonfinancial.de@gmail.com
-From:   OLSON FINANCIAL GROUP <aminaaliyugarki1@gmail.com>
-Date:   Tue, 6 Sep 2022 02:45:45 -0700
-Message-ID: <CAAtz+bgh2wohr3g5zO49S_8zp5M4XMFmERAaEXWzR4JzR8tqiQ@mail.gmail.com>
-Subject: 
+Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:31:34 -0700 (PDT)
+Reply-To: lumar.casey@outlook.com
+From:   LUMAR CASEY <miriankushrat@gmail.com>
+Date:   Wed, 7 Sep 2022 16:31:34 +0200
+Message-ID: <CAO4StN1ngaz5Z=OEaG_ttEwdR6_pWWO2Esip5rtKi-tOEu80oA@mail.gmail.com>
+Subject: ATTENTION/PROPOSAL
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:541 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5035]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [miriankushrat[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---=20
-h Guten Morgen,
-Ben=C3=B6tigen Sie dringend einen Kredit, um ein Haus oder ein Unternehmen
-zu kaufen? oder ben=C3=B6tigen Sie ein Gesch=C3=A4fts- oder Privatdarlehen,=
- um
-zu investieren? ein neues Gesch=C3=A4ft er=C3=B6ffnen, Rechnungen bezahlen?=
- Und
-zahlen Sie uns Installationen zur=C3=BCck? Wir sind ein zertifiziertes
-Finanzunternehmen. Wir bieten Privatpersonen und Unternehmen Kredite
-an. Wir bieten zuverl=C3=A4ssige Kredite zu einem sehr niedrigen Zinssatz
-von 2 %. F=C3=BCr weitere Informationen
-mailen Sie uns an: olsonfinancial.de@gmail.com........
+ATTENTION
+
+BUSINESS PARTNER,
+
+I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
+MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
+PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
+DIPLOMATIC OUTLET.
+
+I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
+PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
+YOUR COUNTRY.
+
+I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
+
+REGARDS,
+
+LUMAR CASEY
