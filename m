@@ -2,80 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F6FA5B571A
-	for <lists+linux-parisc@lfdr.de>; Mon, 12 Sep 2022 11:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 294F35B6CB2
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 Sep 2022 14:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbiILJWT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 12 Sep 2022 05:22:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40932 "EHLO
+        id S231633AbiIMMBe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 13 Sep 2022 08:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229903AbiILJWP (ORCPT
+        with ESMTP id S231977AbiIMMBc (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 12 Sep 2022 05:22:15 -0400
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44362326E6
-        for <linux-parisc@vger.kernel.org>; Mon, 12 Sep 2022 02:22:13 -0700 (PDT)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed50:cc25:8ef2:d433:c52b])
-        by andre.telenet-ops.be with bizsmtp
-        id JxNB280093GaAlK01xNBG4; Mon, 12 Sep 2022 11:22:11 +0200
-Received: from geert (helo=localhost)
-        by ramsan.of.borg with local-esmtp (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1oXfdq-004w4j-Ur; Mon, 12 Sep 2022 11:22:10 +0200
-Date:   Mon, 12 Sep 2022 11:22:10 +0200 (CEST)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-X-X-Sender: geert@ramsan.of.borg
-To:     linux-kernel@vger.kernel.org
-cc:     linux-parisc@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.0-rc5
-In-Reply-To: <20220912091325.1780524-1-geert@linux-m68k.org>
-Message-ID: <alpine.DEB.2.22.394.2209121120590.1176514@ramsan.of.borg>
-References: <CAHk-=wjG0js0MpsoH3-yvp05u_gXHu+uhkvqdAZDVb=9xUmX=g@mail.gmail.com> <20220912091325.1780524-1-geert@linux-m68k.org>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Tue, 13 Sep 2022 08:01:32 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99916371A6;
+        Tue, 13 Sep 2022 05:01:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1663070466;
+        bh=2f96pn4UIFUvK+G0zJudGrPeTA7P8Z3ba2bU4qOzo0Q=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=dgGK4ooSjbX0R9ANla/QfSGJcd2IbOjVAzaocYThGe9nf8SJpfojCLL7NgevhAurp
+         tAmzLeoOzlX9q6NzWNpwBdEwymJUpJKB/injdplK0ns706XLkF3dPNsRRPRZ7TzT2B
+         Kclnb46IPyCvtrPinwLX4L2otI3pcMwQpst8t5Uc=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.190.164]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N17Ye-1pIrlo1Txq-012Zm5; Tue, 13
+ Sep 2022 14:01:06 +0200
+Message-ID: <a9c8f766-f0f8-b85f-cb11-70accdc6ad93@gmx.de>
+Date:   Tue, 13 Sep 2022 14:01:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [PATCH] Input: hp_sdc: fix spelling typo in comment
+Content-Language: en-US
+To:     Jiangshan Yi <13667453960@163.com>
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiangshan Yi <yijiangshan@kylinos.cn>,
+        k2ci <kernel-bot@kylinos.cn>
+References: <20220906054901.2283059-1-13667453960@163.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20220906054901.2283059-1-13667453960@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:jvGN3DYfjyIxOxutLjd/88EjLs0cSoDEh88edzs4lqkQND4bjfK
+ 3b1pGM+0Nm/JfAiVbz1HnJBSrkQJsj5iVJmWHM3di4m8Z/sCK6103R6ZynDTPiTN/U3L8BH
+ q16i4Sx8beURtT4eDHxLGTFtSjICczWm14bZdDTuKZKr9+LaUdY7KPYJ0sAzCUSuOghQ4P5
+ g/B6UnTs2PmB/lsPsZq0Q==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:QUhVHo29Hnc=:rRpQr8CG7+udNZM41tTlFN
+ eC0aXeelAHxnrKjsHtPPILMp11gChk9pK3NNUD2aVSdnAzxChkmWRb2sa4xN4/CJ5gpjN7Gr/
+ z3lMq5PJF+H0Cxh5hpeFNK2f3MLMbF2AAlda2AZ4+PTlyLxa0hhDaUyDvW2MjzFfTKzVd7uVK
+ v31V5n2iE9zDJR+DTxHvvZFivxmVK3LIw0DMdrir/z4wos1EOvd7fVePQKe+2I3/lVAVXR4ry
+ Vt8BaJZDEMZGmiiJkJixot9QxvNF08xF8SWPwir8Yqml+JpgWtXwELTOMuzXqF3D18I6rxbGm
+ GPwaFkDEyKUq3Q5DETcNxzX1ROWq6xcMJPfI7Xhq/dGV4klBMy7oOyh5hyt7oPYAwGVY0j9OO
+ Emhmpn9wKaxbw2Lsm4Is6ybbsFcFPnRY1Wwq1iemOkjLdChaQ1OLiCjDAtg4xiyVq4oX0uLj4
+ T7e5wTcgZ7itmuCCEtHJYC8Wdk3y4TMtqi3vVwHCfDtUFE4bbL99vsX0U2EhrgwLSvncBlAUF
+ c2wgD9nXBU0DZ3NBQH29ot3R9MbgGXdEbV8YgBjagVdFJDhhN5qqDzDqvm4nIUVMqoDRbhNUE
+ h1gItrm83Kmv8cLijCn+diQVQJU3GIFFjzmbdbnMWPyfjlOxwDL7CI6dFwrWEMVx/v87Yk6Li
+ c5IV7UPoE1C4Pl4BlpLX+ymd50IFsiQ9YWL1Ree6DSObgeO7YdTeKviDE7pZJp1X0mMBQzTKg
+ e5Nbtb6DzoPYMQxMvHGkZQr0CIU060RHRHBCHDgrM+g5lFDFopaoW17C+h1fa12uqyRCbNbsg
+ Th8XDxmSeWHKWaR8399y7aWAh2LjSi4kjWo5ReutMljDu1uJ6G7jhslAMGmaVb582QCRvazOo
+ wrFWZ0cpGAGvB45gjdulZg6D6w6dxAAH8/OZZOkzmmn7ZcMKIeP7JG2gvuaEoHEYwJtsYisLc
+ lZYJgAvNO7XH0e5t/FThB+ZSkE0EdAW2/HFDsKWOKKPXjr6k7rfAwX3tvV/pEah/uxXF9t+CC
+ 0w6Yhq9jlnsMSntn+r/4M8irTkYKuh1hyfxDb/BPLGqhqToMZDeBIHVHW7Q6q87WCQ0bUx76Q
+ DPA0mb3qtqnr6Ymnyf8h+CIeHcoyQQJwt+pLBA2clj8LZt6H1wrWmAYag/JImgJl5j0suPmyY
+ 7d6LJjU7DkJlIWuXM8D8WqinCX
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, 12 Sep 2022, Geert Uytterhoeven wrote:
-> JFYI, when comparing v6.0-rc5[1] to v6.0-rc4[3], the summaries are:
->  - build errors: +16/-1
+On 9/6/22 07:49, Jiangshan Yi wrote:
+> From: Jiangshan Yi <yijiangshan@kylinos.cn>
+>
+> Fix spelling typo in comment.
+>
+> Reported-by: k2ci <kernel-bot@kylinos.cn>
+> Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
 
-   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: .cfi_endproc without corresponding .cfi_startproc:  => 32
-   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: bad or irreducible absolute expression:  => 16
-   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: junk at end of line, first unrecognized character is `:':  => 16
-   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: no such instruction: `be 0x100(%sr2,%r0)':  => 29
-   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: no such instruction: `ldi 0,%r20':  => 30
-   + /kisskb/src/arch/parisc/kernel/vdso32/restart_syscall.S: Error: no such instruction: `ldw 0(%sp),%r31':  => 26
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: no such instruction: `ble 0x100(%sr2,%r0)':  => 46, 51
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: no such instruction: `ldi 0,%r25':  => 44
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: no such instruction: `ldi 1,%r25':  => 49
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: no such instruction: `ldi 173,%r20':  => 45, 50
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.callinfo':  => 40
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.entry':  => 41
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.exit':  => 54
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.proc':  => 39
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.procend':  => 55
-   + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S: Error: unknown pseudo-op: `.stringz':  => 76
+applied.
 
-parisc-gcc8/generic-32bit_defconfig
+Thanks!
+Helge
 
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/80e78fcce86de0288793a0ef0f6acf37656ee4cf/ (all 135 configs)
-> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/7e18e42e4b280c85b76967a9106a13ca61c16179/ (all 135 configs)
+> ---
+>   include/linux/hp_sdc.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/include/linux/hp_sdc.h b/include/linux/hp_sdc.h
+> index 6f1dee7e67e0..9be8704e2d38 100644
+> --- a/include/linux/hp_sdc.h
+> +++ b/include/linux/hp_sdc.h
+> @@ -180,7 +180,7 @@ switch (val) {						\
+>
+>   #define HP_SDC_CMD_SET_IM	0x40    /* 010xxxxx =3D=3D set irq mask */
+>
+> -/* The documents provided do not explicitly state that all registers be=
+tweem
+> +/* The documents provided do not explicitly state that all registers be=
+tween
+>    * 0x01 and 0x1f inclusive can be read by sending their register index=
+ as a
+>    * command, but this is implied and appears to be the case.
+>    */
 
-Gr{oetje,eeting}s,
-
- 						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
