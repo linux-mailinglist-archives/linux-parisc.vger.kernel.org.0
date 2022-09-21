@@ -2,112 +2,191 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F88A5BFD03
-	for <lists+linux-parisc@lfdr.de>; Wed, 21 Sep 2022 13:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9805F5E4F6D
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 Sep 2022 20:30:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbiIULfj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 21 Sep 2022 07:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47704 "EHLO
+        id S229723AbiIUSaC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 21 Sep 2022 14:30:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbiIULfj (ORCPT
+        with ESMTP id S229506AbiIUS37 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 21 Sep 2022 07:35:39 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E27748C023
-        for <linux-parisc@vger.kernel.org>; Wed, 21 Sep 2022 04:35:37 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id hy2so9254573ejc.8
-        for <linux-parisc@vger.kernel.org>; Wed, 21 Sep 2022 04:35:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date;
-        bh=aMioWMQ5lVJKEiDBUkqZkMsP+xqmAfQusNjWWrMJHWU=;
-        b=NJRCKM3ElxcZ3njCsyw6d9DY8HZC875ZH42X+pbopfe41v7bL04DvzDZ4hPPGouYal
-         KdkqKXDvKo/SS0y+pgy+mM7433QVa2UjMz1A1hSnGYC/Aubwr5IekQwFz5mCj4vyWeLM
-         N5yG510Mkr9mi6IY+bc8lEU+wmrJoiVuQL0ulfuuIJDxj0sepb4zZH7fcU2/MgHxjJp4
-         7dgKHFeSIAlOPplkooQBJQls8Yj6KjkiNwHEFAu4FSIQSZntHz2Feu/1WcLP/TYOJyOZ
-         /s3Xg6EJR4CXlUJiyQkCSBaOeFJ5C86lAiqIHpW1qivslElxKqKsNAVUN9nL+QG9Ig0b
-         5qeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=aMioWMQ5lVJKEiDBUkqZkMsP+xqmAfQusNjWWrMJHWU=;
-        b=O3p3hFaRe6EOtFhZ7WzE+YPeIVuai68pM67XnAf/TwaYssSN49GEteUIS4FSt2aOlR
-         Lvk65UWXWxFxneidNs/gS3s8TDcibyxtdxNGAWrBEF9cSvKwsHvSvSw5zwKdJq0ByKf6
-         ZnpjrISr2Wq1qeXEPbvnWWFUhIsY68JoNWSRr74DKbVxjmYWUGKmVLOo2TSoGkJbdVGm
-         +baqiNupNmN8qmMLrN11/2E6PwAPI3mJwpW37GR79idzvSDyJBNTyTWXaZxQh72ZIYO3
-         NZJif5ZKy9XI/GU5ziXJszszsE4Qni7yy0U4OJilI2yeoE9GhPutC8aOZsPPyOijTvZf
-         9M6w==
-X-Gm-Message-State: ACrzQf1YD7AcvD4Ybizvix0EmonKkDlCpMdZBQDSmwEn1ULwkl/BbIBQ
-        lWotV4DBc4Isb99gNZl/ABKzleEvuDxP/QvYLVA=
-X-Google-Smtp-Source: AMsMyM4cOYCs5+7qgd72VGiuEKp037Z+m4CdIRI28WrYux8rs6zY7KAMayj6uzpXn3s10lSJdn54POC2FELyL1sBBmg=
-X-Received: by 2002:a17:907:8a03:b0:77f:f5ac:8b46 with SMTP id
- sc3-20020a1709078a0300b0077ff5ac8b46mr21166266ejc.65.1663760136236; Wed, 21
- Sep 2022 04:35:36 -0700 (PDT)
+        Wed, 21 Sep 2022 14:29:59 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D2F979EE0;
+        Wed, 21 Sep 2022 11:29:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1663784984;
+        bh=b3lVnjzHJnI2hox1U6bYkV03+nrOPmxwirOzuMk0ql8=;
+        h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
+        b=ashkB3EVKY6wJv4SqMG43od/dABHvVr2MwAP/TFXvtJ7Toj7XBb9lw0G8ybJIHpDV
+         gmMOigIxP1LETzuanRb/8Odzwg69ZQRG5OycR4LxuM8K/FiIIzvIuuPbIhcysncfmE
+         KBXtkOiIk33tdSL41xni3bhIuc+wf15RNplB9zjc=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.154.88]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MG9kM-1oVaIt3oR2-00GV44; Wed, 21
+ Sep 2022 20:29:43 +0200
+Message-ID: <a26ed5e3-1b87-22c5-2761-141a0bdb55e6@gmx.de>
+Date:   Wed, 21 Sep 2022 20:29:42 +0200
 MIME-Version: 1.0
-Received: by 2002:a17:906:b099:b0:781:9b2e:3103 with HTTP; Wed, 21 Sep 2022
- 04:35:35 -0700 (PDT)
-Reply-To: albertabossi2020@gmail.com
-From:   Barrister Albert Abossi <albertabossi04@gmail.com>
-Date:   Wed, 21 Sep 2022 11:35:35 +0000
-Message-ID: <CABNWvX1knmAo6=G=Ef60eTPeVGBd3cuepwSMPusYFF2ShRZUyw@mail.gmail.com>
-Subject: Lieber Freund
-To:     albertabossi2020@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: Build regressions/improvements in v6.0-rc5
+Content-Language: en-US
+From:   Helge Deller <deller@gmx.de>
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>
+Cc:     linux-parisc@vger.kernel.org
+References: <CAHk-=wjG0js0MpsoH3-yvp05u_gXHu+uhkvqdAZDVb=9xUmX=g@mail.gmail.com>
+ <20220912091325.1780524-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2209121120590.1176514@ramsan.of.borg>
+ <647e2197-8f89-f5a0-a60b-476aff2fd134@gmx.de>
+ <d54e7e26-7797-bedb-142a-2101a4e497de@infradead.org>
+ <812d649c-380b-8a7e-1584-891c7e643656@gmx.de>
+In-Reply-To: <812d649c-380b-8a7e-1584-891c7e643656@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_99,BAYES_999,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-Provags-ID: V03:K1:pMW3MyEJ6WJm3MJXRP8eaTk9sCS5ZRC2bnbyPDBJsw27f2EW0k0
+ dD4g3nlpt0K6PmTq5KiAhVG6O+uitUkyFfj1CagUG84P/01VgxTMhYJtlPiCbWdxKWl8TrR
+ BTLM1oO+QJiCrFpaNEzJBjx3NpK98OWYN3WZsvh1sJxmxB47DGgoBh+lj3nX1HSqusdSSm4
+ 9n6yC/EDdYpLq6g3yZFRA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lHUQxoo7DIs=:Ig9YKERrLlKJ26inOBDJ4L
+ AaF8rDDp345z/a5xtPyf2Poj8ItPosdinOpdNXC9KKvushGGirqXWj9xf0x8IMdjb9bSufShU
+ qIuGX8dhWl6wPqlR+MwLpuQqbbddgmqqBbm5SlSbHZwVNSdZOg+nBO/Z94KqBRBTWv0fL4ujc
+ uj6u5/LVjsgm4TgFFSO2iwFh19gjNw74pwom4XMLPzfP2A9N4idl4hZTLXf5ZjsYtY+x8F4SL
+ Yqm3qpfqEsJhkCRBo1r/679iGbqNHJJ0GdGCd019jKgJ8h8tx3X62Bf+K6b63gVDSTMY8ifD7
+ Rqyu3nIqOyio+QdwPzDR1GS8min8CliE9Nebt+B2KQbFQHCL5pOaY2+K8PGYRdgry9zuhk7wU
+ 5YjJsKzIkT3vDHv8c7ctQzL008CuUNorhq+waFgoYgSxpZv1pD8Qn/V7YZs6ehqWtfa1jqDWz
+ e7MKBc4Cez52RpkgH48flJjhExtvdmsUaZ+6FdyL2p6kSz7yTiQdhBLGPFodBcVu9V0WPW4LE
+ 3t2t2a0MV3NfNOVYffJRNJZDuccyAzLGvWXJXwK6mOTBBCvsU0EWFdznzC9Hle629Cg070Jbb
+ GLvgEBr5DY2mJ+MUstj0oGui1dAO7G3/3JiQGs50mm13ZZqUU2HBAkSdLG3KFvjduxrRi0MbP
+ Eu+CH/wURsc8F1mZFjJ4W3JbmupGNzPWusxML2tyvxXJnJmWasMEJx3qkL03UHYNg/7f/kZhZ
+ rgfiwb0bKS8Gmqz4SaGL2S/LJkZKcBVGhpZU74FRLM1wszVRJNyQ+KNxwsu+BXidhYLQX50kj
+ YyyMyE++nq5I3gwmBcHcEbdCuHr7DmNYivzWrSGHTmVQhI6Qys8r1wq+aZJuDNWF6FUHJC+xo
+ wVt5QS2Ujc46Po23aohIXy9QrkKT+Seev7qVYXTIxUjDAV4p69TAtah8Iv2w6pK8fTYCGqo2+
+ 8FblabLlBrj3zA62z9ufweqG94KqAwJchnMW3JK/h07zqPh45Z1XV0eEjXU096SlVrx9Ij6HJ
+ gK4a1pnLfGEasZ6rd9hDhxYKnahXmeW/X5vob7Slv2OuseSUfhETa6i9TzCF1GUI6H7qm198j
+ Qm8/bOnXUDF18d5EFswngLhZmJyGK9uR+6ZOmum00ezfOBDIeJvqlB3+gIRJCo3fNqtJCTTN7
+ 1QcdMn7Oa9rT5uRw+q2KvBDbFY
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:62a listed in]
-        [list.dnswl.org]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 0.9994]
-        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 0.9994]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [albertabossi04[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [albertabossi2020[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [albertabossi04[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Lieber Freund
-Ich bin von Beruf Rechtsanwalt hier in meinem Heimatland Togo in
-Westafrika. Einer meiner Mandanten aus Ihrem Land hat hier in der
-Republik Togo mit einer Briefkastenentwicklungsfirma
-zusammengearbeitet. Mein Mandant, seine Frau und ihre einzige Tochter
-waren hier in meinem Land in einen Autounfall verwickelt. Ich habe
-beschlossen, Sie zu kontaktieren, damit die 10,5 Millionen Dollar, die
-er hier in einer Bank hinterlassen hat, sofort auf Ihr Bankkonto
-=C3=BCberwiesen werden.
-Mit freundlichen Gr=C3=BC=C3=9Fen.
-Rechtsanwalt Albert ABOSSI
+On 9/20/22 23:07, Helge Deller wrote:
+> On 9/20/22 22:29, Randy Dunlap wrote:
+>>
+>>
+>> On 9/20/22 13:23, Helge Deller wrote:
+>>> On 9/12/22 11:22, Geert Uytterhoeven wrote:
+>>>> On Mon, 12 Sep 2022, Geert Uytterhoeven wrote:
+>>>>> JFYI, when comparing v6.0-rc5[1] to v6.0-rc4[3], the summaries are:
+>>>>> =C2=A0=C2=A0- build errors: +16/-1
+>>>>
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: .cfi_endproc without corresponding .cfi_startproc:=C2=A0 =
+=3D> 32
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: bad or irreducible absolute expression:=C2=A0 =3D> 16
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: junk at end of line, first unrecognized character is `:':=
+=C2=A0 =3D> 16
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: no such instruction: `be 0x100(%sr2,%r0)':=C2=A0 =3D> 29
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: no such instruction: `ldi 0,%r20':=C2=A0 =3D> 30
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: no such instruction: `ldw 0(%sp),%r31':=C2=A0 =3D> 26
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: no such instruction: `ble 0x100(%sr2,%r0)':=C2=A0 =3D> 46, 51
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: no such instruction: `ldi 0,%r25':=C2=A0 =3D> 44
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: no such instruction: `ldi 1,%r25':=C2=A0 =3D> 49
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: no such instruction: `ldi 173,%r20':=C2=A0 =3D> 45, 50
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.callinfo':=C2=A0 =3D> 40
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.entry':=C2=A0 =3D> 41
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.exit':=C2=A0 =3D> 54
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.proc':=C2=A0 =3D> 39
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.procend':=C2=A0 =3D> 55
+>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.stringz':=C2=A0 =3D> 76
+>>>>
+>>>> parisc-gcc8/generic-32bit_defconfig
+>>>>
+>>>>> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/80e78fcce8=
+6de0288793a0ef0f6acf37656ee4cf/ (all 135 configs)
+>>>>> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/7e18e42e4b=
+280c85b76967a9106a13ca61c16179/ (all 135 configs)
+>>>
+>>> I see those errors on the kiss website, but I'm unable to reproduce th=
+em.
+>>> Downloaded that .config, used same compiler (from https://mirrors.edge=
+.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.5.0/)....
+>>> Not sure how to get this fixed.
+>>> If someone has an idea or can reproduce, please let me know.
+>>
+>> Hi,
+>> I can reproduce it using the (x86_64 hosted) crosstool gcc-12.1.0 from =
+kernel.org that Arnd builds/provides.
+>> https://mirrors.edge.kernel.org/pub/tools/crosstool/
+>
+> Ah....
+> Building with "make=C2=A0 ARCH=3Dparisc=C2=A0 CROSS_COMPILE=3D/some/path=
+/nolibc/hppa-linux/bin/hppa-linux-"
+> uses this CROSS_COMPILE prefix for compiling the .c files, but not for t=
+he .S files.
+> So, you will end up with the default hppa-linux-gcc installed on the sys=
+tem, not the one provided
+> by CROSS_COMPILE.
+
+Ok, it seems CROSS_COMPILE doesn't work as one would expect (and as it did=
+ in the past).
+I'm not sure if this can be fixed.
+
+Since kernel v5.18 the parisc kernel comes with a 32-bit and a 64-bit vDSO=
+.
+On parisc we have two compilers:
+- hppa-linux-gnu-gcc for 32-bit, and
+- hppa64-linux-gnu-gcc for 64-bit code.
+There is no -m64 flag like on x86 which can be used to just use one compil=
+er for both targets.
+If you provide a CROSS_COMPILE command, you can only provide either a 32- =
+or 64-bit compiler,
+so e.g. you won't be able to build the 64-bit kernel and a 32-bit vDSO wit=
+h the same compiler.
+
+Instead of using CROSS_COMPILE, please just install your compiler(s) and m=
+ake sure that
+the compiler(s) can be found via the PATH environment variable.
+In arch/parisc/Makefile (line 42ff) various variants like hppa-linux-gnu-g=
+cc or
+hppa1.1-unknown-linux-gnu-gcc will be searched.
+
+So, instead of
+  make ARCH=3Dparisc CROSS_COMPILE=3D/opt/cross/kisskb/korg/gcc-8.5.0-noli=
+bc/hppa-linux/bin/hppa-linux-
+please use for 32-bit:
+  PATH=3D/opt/cross/kisskb/korg/gcc-8.5.0-nolibc/hppa-linux/bin/:$PATH    =
+ make ARCH=3Dparisc
+or for 64-bit:
+  PATH=3D/opt/cross/kisskb/korg/gcc-8.5.0-nolibc/hppa64-linux/bin/:$PATH  =
+ make ARCH=3Dparisc64
+
+I haven't yet checked how other platforms do it, but I'm open for any sugg=
+estions
+how this could be made easier.
+
+Helge
