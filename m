@@ -2,175 +2,105 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF9B95E7A03
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Sep 2022 13:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7215E82B7
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Sep 2022 21:53:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231547AbiIWLxF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 23 Sep 2022 07:53:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42642 "EHLO
+        id S231533AbiIWTxT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 23 Sep 2022 15:53:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231346AbiIWLxE (ORCPT
+        with ESMTP id S230325AbiIWTxS (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 23 Sep 2022 07:53:04 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C285138F0D;
-        Fri, 23 Sep 2022 04:53:03 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4MYrBP425Hz4wgr;
-        Fri, 23 Sep 2022 21:53:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-        s=201909; t=1663933981;
-        bh=5zdv+RLQqAtc8v2pEpSSPDxmbj5GL+BOe3bxhxAoGfc=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=qETfDxGu9ZXwu/AumnaN7OPLzZMy3Bxe8dM6D4G+xnu7ltnDBA4AUdpjz5I5AC+f1
-         /wa1yRlaR7KUJyny//UTSZqrMeLiJ+QUG6/YKiq0lNX1bOdb8OjgcuxFlHZvaiznk6
-         EYGyh8YYZyuYs/ilfvNFNsMyCpVkUOWOjbAff88Hx3I0lKZPjX2Yjqs73vg+AK+Fa4
-         oxi+0pKawM04MeLCMpzWgBCTWFg3/Gr+qSgsK2LQKfw9e5MGrzcxq9A3uBbzNNLKS5
-         cUlHWkBaJ4KdAyPvSXG2WRLITbnHJzle4P8BJnBRMXgwO8iZ8LC0pesN1PxXQfaW44
-         83DLl+D8ZhgeQ==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Helge Deller <deller@gmx.de>, Randy Dunlap <rdunlap@infradead.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-kernel@vger.kernel.org
-Cc:     linux-parisc@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.0-rc5
-In-Reply-To: <a26ed5e3-1b87-22c5-2761-141a0bdb55e6@gmx.de>
-References: <CAHk-=wjG0js0MpsoH3-yvp05u_gXHu+uhkvqdAZDVb=9xUmX=g@mail.gmail.com>
- <20220912091325.1780524-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2209121120590.1176514@ramsan.of.borg>
- <647e2197-8f89-f5a0-a60b-476aff2fd134@gmx.de>
- <d54e7e26-7797-bedb-142a-2101a4e497de@infradead.org>
- <812d649c-380b-8a7e-1584-891c7e643656@gmx.de>
- <a26ed5e3-1b87-22c5-2761-141a0bdb55e6@gmx.de>
-Date:   Fri, 23 Sep 2022 21:52:57 +1000
-Message-ID: <87r102z4rq.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 23 Sep 2022 15:53:18 -0400
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86C42130710
+        for <linux-parisc@vger.kernel.org>; Fri, 23 Sep 2022 12:53:17 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 84385580A10;
+        Fri, 23 Sep 2022 15:53:13 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Fri, 23 Sep 2022 15:53:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1663962793; x=1663966393; bh=CPzJdRIyef
+        IFIL6wOyy3xMdqx7XEvC95QDeVGbdSL8M=; b=fdsO0pBPvmTmmjWVAtu6NfQ3My
+        svHnja3KP2HGjtho85NILwaggMtkS24yL/jtOtjZyyMs0gEhQaKeB3lXnXOmWmgd
+        R16x0RCt4ovvWHE5iBZl0zqVoSa1mwZ6frz1Q7AdYgTJn+ANFxI+Fz5MhVG4gVAY
+        d+Dz6osdXBeSgdy8q0QMQSyUr0oVOLKgANOSwUhSmNhylIxMXmjVnZgPsZUzXSKu
+        RcADqrQqH396Vz7P6XdCYbdBWvLdUyb/ra8iRArrKwz+r3OZ/rJsYF6sZdSz7siZ
+        oEQk3KbnHDMHcpgz3XFbyiGxGrHljjsgnBjxjIg5A5uypV20CYexpsXTrQKQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1663962793; x=1663966393; bh=CPzJdRIyefIFIL6wOyy3xMdqx7XE
+        vC95QDeVGbdSL8M=; b=qd1iS+Y7crgQlBPyNmpgGQscRqWv09Y4lmesh2ehHbz5
+        klJpNWVgPtWyDcObEAUoFLmG9vkD9IqBmvEIjNKe4h8G8B+P4KWm2cPn6Y8nHkcR
+        Ql9rNr5w7yqZmJZab+Y1Sy2Ptk4Jd4CErIl/g5bf9BidRRZLy6MMSL/aGfIrZeBh
+        iCYiuDAS5UGdq9Rkb0aa7v0MSItswN3KZJOvC+nQAifmdmm+ZofqguHApn2JozuK
+        JaB9mj9IUGt2P4oF90XfOTSuuKaH3erF14+AqiywL1ioU5vmRdg6VUIPpcjAIPjC
+        nl3Zv6R2LZV8OoIa0QMs860ZjdO+9JAKormjW/uLvQ==
+X-ME-Sender: <xms:qA4uY294ud_e8780W92RIJu4ASUJb8mVHdJNpKZlN-QT_bj-GnNYMA>
+    <xme:qA4uY2sddnThOodffYUdP3S2lJrfWnewEkWdVTYhfWIRf2PBTVa9yjscLjTLUbXDi
+    g7DynezA-hmdY2SKJE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeefiedgudeghecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:qA4uY8AAvZRm0rufc819ZHz16KIiwNWI_aZcQbQHGmJXEGOcw5smrQ>
+    <xmx:qA4uY-c9CZm8_D5gfvc6RHU_wlu69HPtN-SGvYdDbro1km0KLJPjoA>
+    <xmx:qA4uY7OpxBVBd1r7Im8Kzjk8dj0h0wppF5U1LOcXbVx-Gh8KAeHT4w>
+    <xmx:qQ4uY0YaamSY8mOm_tOL8ZMWBON-ZMYmHITV0XjuoBjdKXf-nRblDQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id AE227B60086; Fri, 23 Sep 2022 15:53:12 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-935-ge4ccd4c47b-fm-20220914.001-ge4ccd4c4
+Mime-Version: 1.0
+Message-Id: <97efc9ed-886f-4a2d-b4bc-758adb8e02a0@www.fastmail.com>
+In-Reply-To: <20220922191839.585186-1-linus.walleij@linaro.org>
+References: <20220922191839.585186-1-linus.walleij@linaro.org>
+Date:   Fri, 23 Sep 2022 21:52:50 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Linus Walleij" <linus.walleij@linaro.org>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "Helge Deller" <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org, "kernel test robot" <lkp@intel.com>
+Subject: Re: [PATCH] parisc: Drop homebrewn io[read|write]64_[lo_hi|hi_lo]
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Helge Deller <deller@gmx.de> writes:
-> On 9/20/22 23:07, Helge Deller wrote:
->> On 9/20/22 22:29, Randy Dunlap wrote:
->>>
->>>
->>> On 9/20/22 13:23, Helge Deller wrote:
->>>> On 9/12/22 11:22, Geert Uytterhoeven wrote:
->>>>> On Mon, 12 Sep 2022, Geert Uytterhoeven wrote:
->>>>>> JFYI, when comparing v6.0-rc5[1] to v6.0-rc4[3], the summaries are:
->>>>>> =C2=A0=C2=A0- build errors: +16/-1
->>>>>
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
-scall.S: Error: .cfi_endproc without corresponding .cfi_startproc:=C2=A0 =
-=3D> 32
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
-scall.S: Error: bad or irreducible absolute expression:=C2=A0 =3D> 16
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
-scall.S: Error: junk at end of line, first unrecognized character is `:':=
-=C2=A0 =3D> 16
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
-scall.S: Error: no such instruction: `be 0x100(%sr2,%r0)':=C2=A0 =3D> 29
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
-scall.S: Error: no such instruction: `ldi 0,%r20':=C2=A0 =3D> 30
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
-scall.S: Error: no such instruction: `ldw 0(%sp),%r31':=C2=A0 =3D> 26
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: no such instruction: `ble 0x100(%sr2,%r0)':=C2=A0 =3D> 46, 51
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: no such instruction: `ldi 0,%r25':=C2=A0 =3D> 44
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: no such instruction: `ldi 1,%r25':=C2=A0 =3D> 49
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: no such instruction: `ldi 173,%r20':=C2=A0 =3D> 45, 50
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: unknown pseudo-op: `.callinfo':=C2=A0 =3D> 40
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: unknown pseudo-op: `.entry':=C2=A0 =3D> 41
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: unknown pseudo-op: `.exit':=C2=A0 =3D> 54
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: unknown pseudo-op: `.proc':=C2=A0 =3D> 39
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: unknown pseudo-op: `.procend':=C2=A0 =3D> 55
->>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
-: Error: unknown pseudo-op: `.stringz':=C2=A0 =3D> 76
->>>>>
->>>>> parisc-gcc8/generic-32bit_defconfig
->>>>>
->>>>>> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/80e78fcce8=
-6de0288793a0ef0f6acf37656ee4cf/ (all 135 configs)
->>>>>> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/7e18e42e4b=
-280c85b76967a9106a13ca61c16179/ (all 135 configs)
->>>>
->>>> I see those errors on the kiss website, but I'm unable to reproduce th=
-em.
->>>> Downloaded that .config, used same compiler (from https://mirrors.edge=
-.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.5.0/)....
->>>> Not sure how to get this fixed.
->>>> If someone has an idea or can reproduce, please let me know.
->>>
->>> Hi,
->>> I can reproduce it using the (x86_64 hosted) crosstool gcc-12.1.0 from =
-kernel.org that Arnd builds/provides.
->>> https://mirrors.edge.kernel.org/pub/tools/crosstool/
->>
->> Ah....
->> Building with "make=C2=A0 ARCH=3Dparisc=C2=A0 CROSS_COMPILE=3D/some/path=
-/nolibc/hppa-linux/bin/hppa-linux-"
->> uses this CROSS_COMPILE prefix for compiling the .c files, but not for t=
-he .S files.
->> So, you will end up with the default hppa-linux-gcc installed on the sys=
-tem, not the one provided
->> by CROSS_COMPILE.
+On Thu, Sep 22, 2022, at 9:18 PM, Linus Walleij wrote:
+> The parisc implements ioread64_lo_hi(), ioread64_hi_lo()
+> iowrite64_lo_hi() and iowrite64_hi_lo() while we already
+> have a perfectly working generic version in the generic
+> portable assembly in <linux/io-64-nonatomic-hi-lo.h>.
 >
-> Ok, it seems CROSS_COMPILE doesn't work as one would expect (and as it di=
-d in the past).
-> I'm not sure if this can be fixed.
+> Drop the custom versions in favor for the defaults.
 >
-> Since kernel v5.18 the parisc kernel comes with a 32-bit and a 64-bit vDS=
-O.
-> On parisc we have two compilers:
-> - hppa-linux-gnu-gcc for 32-bit, and
-> - hppa64-linux-gnu-gcc for 64-bit code.
-> There is no -m64 flag like on x86 which can be used to just use one compi=
-ler for both targets.
-> If you provide a CROSS_COMPILE command, you can only provide either a 32-=
- or 64-bit compiler,
-> so e.g. you won't be able to build the 64-bit kernel and a 32-bit vDSO wi=
-th the same compiler.
->
-> Instead of using CROSS_COMPILE, please just install your compiler(s) and =
-make sure that
-> the compiler(s) can be found via the PATH environment variable.
-> In arch/parisc/Makefile (line 42ff) various variants like hppa-linux-gnu-=
-gcc or
-> hppa1.1-unknown-linux-gnu-gcc will be searched.
->
-> So, instead of
->   make ARCH=3Dparisc CROSS_COMPILE=3D/opt/cross/kisskb/korg/gcc-8.5.0-nol=
-ibc/hppa-linux/bin/hppa-linux-
-> please use for 32-bit:
->   PATH=3D/opt/cross/kisskb/korg/gcc-8.5.0-nolibc/hppa-linux/bin/:$PATH   =
-  make ARCH=3Dparisc
-> or for 64-bit:
->   PATH=3D/opt/cross/kisskb/korg/gcc-8.5.0-nolibc/hppa64-linux/bin/:$PATH =
-  make ARCH=3Dparisc64
+> Fixes: 77bfc8bdb5a1 ("parisc: Remove 64bit access on 32bit machines")
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Acked-by: Helge Deller <deller@gmx.de>
+> Reported-by: Helge Deller <deller@gmx.de>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> Arnd: please queue this on top of your pile in linux-arch
+> if it looks all right.
 
-I actually did that change a while back, but hadn't pushed it to one of
-the builders -_-
+Applied now, thanks!
 
-I've done that now, so we shouldn't see this error in future.
-
-Sorry for the noise.
-
-cheers
+      Arnd
