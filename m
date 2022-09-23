@@ -2,162 +2,175 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76ED95E6BA6
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Sep 2022 21:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF9B95E7A03
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Sep 2022 13:53:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232448AbiIVTUt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 22 Sep 2022 15:20:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36778 "EHLO
+        id S231547AbiIWLxF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 23 Sep 2022 07:53:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232464AbiIVTUq (ORCPT
+        with ESMTP id S231346AbiIWLxE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 22 Sep 2022 15:20:46 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BFA5F858D
-        for <linux-parisc@vger.kernel.org>; Thu, 22 Sep 2022 12:20:45 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id k10so16318754lfm.4
-        for <linux-parisc@vger.kernel.org>; Thu, 22 Sep 2022 12:20:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=KtnnvekeIG3AbHaZTlvsgkpZEmg94g53bOzjaDeD0m0=;
-        b=GwUN2WmOMes03sCM4vcCQfLNMzRw/WSaQHhpu/xiOlQP3jDC3xr2PI91CHDlsp6j9m
-         MVWXl+TMygIS1IJvFIhRPn6Yy8gUIMNUjEsAUNxf9QB3jrPEipTrl542qt0SuXIOaKBS
-         ku/BlTDq3RBPEmNrjTBkFto1PZ2RkCldhWvuKY50wGQmSEn8xL94rI7EFxemLH9DloLB
-         S1WOoT7N0EG7/LePcuyDV3hcamOdjzM9y0hSxN1C2T1hiSfU1zVWAcNlDI1uyyAp9nSL
-         farcVQXrKBvDQ73u380xIyRQX46X8hBwRo9eES3OJhFtHdgHs13vu9V0/ETCXwF3sZWv
-         gGZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=KtnnvekeIG3AbHaZTlvsgkpZEmg94g53bOzjaDeD0m0=;
-        b=zMMdfa341f2xsJGnQb1LRev+vRuICJoo1dUTjt7eYabU3LjgkboDO1EO3S0tdD3P9z
-         g7XieJ5qPuF7g1nsM+S701uT2rSbawdxS9MhbITx3RY71qcU1hTpP8frWWkBjGbuHpDM
-         H4rJ8lbhQl45PA0x3GTCi7WIlgrdV2oP6evrltijYHRVL+iR3assuV6Kc+IXoZrUbDni
-         bt2FpORk8mRfc1AF4LjTr2UsomxBBhyJmDdvANhj5oPORM58NM5dxmj3/ZNlLcCMQkSs
-         4r7ZEp4929gPG5EW67d7oZ/fgqKTiy8ZUbE/FZL7OcMV8cEMcBgqZ/Juo9Iuta2+l836
-         Ws4A==
-X-Gm-Message-State: ACrzQf37EqXIe35Td9TcOXjBzYkLoC1dWmOr5pnsGlFFBjQcxBhqIXFB
-        mRt3wwkqN+sA0dnMWgW1Ohqihw==
-X-Google-Smtp-Source: AMsMyM6OgvYu2UItbjr6/8Zr8NrldHCVxo9qibiV8uwWBgyPSDBnrAjABYu3iWLbD3dHanWcb281kw==
-X-Received: by 2002:a05:6512:3091:b0:49a:d800:2828 with SMTP id z17-20020a056512309100b0049ad8002828mr1862379lfd.534.1663874443611;
-        Thu, 22 Sep 2022 12:20:43 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id z7-20020a056512376700b00498fbec3f8asm1072199lft.129.2022.09.22.12.20.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Sep 2022 12:20:42 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH] parisc: Drop homebrewn io[read|write]64_[lo_hi|hi_lo]
-Date:   Thu, 22 Sep 2022 21:18:39 +0200
-Message-Id: <20220922191839.585186-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.37.3
+        Fri, 23 Sep 2022 07:53:04 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C285138F0D;
+        Fri, 23 Sep 2022 04:53:03 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4MYrBP425Hz4wgr;
+        Fri, 23 Sep 2022 21:53:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1663933981;
+        bh=5zdv+RLQqAtc8v2pEpSSPDxmbj5GL+BOe3bxhxAoGfc=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=qETfDxGu9ZXwu/AumnaN7OPLzZMy3Bxe8dM6D4G+xnu7ltnDBA4AUdpjz5I5AC+f1
+         /wa1yRlaR7KUJyny//UTSZqrMeLiJ+QUG6/YKiq0lNX1bOdb8OjgcuxFlHZvaiznk6
+         EYGyh8YYZyuYs/ilfvNFNsMyCpVkUOWOjbAff88Hx3I0lKZPjX2Yjqs73vg+AK+Fa4
+         oxi+0pKawM04MeLCMpzWgBCTWFg3/Gr+qSgsK2LQKfw9e5MGrzcxq9A3uBbzNNLKS5
+         cUlHWkBaJ4KdAyPvSXG2WRLITbnHJzle4P8BJnBRMXgwO8iZ8LC0pesN1PxXQfaW44
+         83DLl+D8ZhgeQ==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Helge Deller <deller@gmx.de>, Randy Dunlap <rdunlap@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-parisc@vger.kernel.org
+Subject: Re: Build regressions/improvements in v6.0-rc5
+In-Reply-To: <a26ed5e3-1b87-22c5-2761-141a0bdb55e6@gmx.de>
+References: <CAHk-=wjG0js0MpsoH3-yvp05u_gXHu+uhkvqdAZDVb=9xUmX=g@mail.gmail.com>
+ <20220912091325.1780524-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2209121120590.1176514@ramsan.of.borg>
+ <647e2197-8f89-f5a0-a60b-476aff2fd134@gmx.de>
+ <d54e7e26-7797-bedb-142a-2101a4e497de@infradead.org>
+ <812d649c-380b-8a7e-1584-891c7e643656@gmx.de>
+ <a26ed5e3-1b87-22c5-2761-141a0bdb55e6@gmx.de>
+Date:   Fri, 23 Sep 2022 21:52:57 +1000
+Message-ID: <87r102z4rq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The parisc implements ioread64_lo_hi(), ioread64_hi_lo()
-iowrite64_lo_hi() and iowrite64_hi_lo() while we already
-have a perfectly working generic version in the generic
-portable assembly in <linux/io-64-nonatomic-hi-lo.h>.
+Helge Deller <deller@gmx.de> writes:
+> On 9/20/22 23:07, Helge Deller wrote:
+>> On 9/20/22 22:29, Randy Dunlap wrote:
+>>>
+>>>
+>>> On 9/20/22 13:23, Helge Deller wrote:
+>>>> On 9/12/22 11:22, Geert Uytterhoeven wrote:
+>>>>> On Mon, 12 Sep 2022, Geert Uytterhoeven wrote:
+>>>>>> JFYI, when comparing v6.0-rc5[1] to v6.0-rc4[3], the summaries are:
+>>>>>> =C2=A0=C2=A0- build errors: +16/-1
+>>>>>
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: .cfi_endproc without corresponding .cfi_startproc:=C2=A0 =
+=3D> 32
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: bad or irreducible absolute expression:=C2=A0 =3D> 16
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: junk at end of line, first unrecognized character is `:':=
+=C2=A0 =3D> 16
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: no such instruction: `be 0x100(%sr2,%r0)':=C2=A0 =3D> 29
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: no such instruction: `ldi 0,%r20':=C2=A0 =3D> 30
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/restart_sy=
+scall.S: Error: no such instruction: `ldw 0(%sp),%r31':=C2=A0 =3D> 26
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: no such instruction: `ble 0x100(%sr2,%r0)':=C2=A0 =3D> 46, 51
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: no such instruction: `ldi 0,%r25':=C2=A0 =3D> 44
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: no such instruction: `ldi 1,%r25':=C2=A0 =3D> 49
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: no such instruction: `ldi 173,%r20':=C2=A0 =3D> 45, 50
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.callinfo':=C2=A0 =3D> 40
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.entry':=C2=A0 =3D> 41
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.exit':=C2=A0 =3D> 54
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.proc':=C2=A0 =3D> 39
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.procend':=C2=A0 =3D> 55
+>>>>> =C2=A0=C2=A0=C2=A0 + /kisskb/src/arch/parisc/kernel/vdso32/sigtramp.S=
+: Error: unknown pseudo-op: `.stringz':=C2=A0 =3D> 76
+>>>>>
+>>>>> parisc-gcc8/generic-32bit_defconfig
+>>>>>
+>>>>>> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/80e78fcce8=
+6de0288793a0ef0f6acf37656ee4cf/ (all 135 configs)
+>>>>>> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/7e18e42e4b=
+280c85b76967a9106a13ca61c16179/ (all 135 configs)
+>>>>
+>>>> I see those errors on the kiss website, but I'm unable to reproduce th=
+em.
+>>>> Downloaded that .config, used same compiler (from https://mirrors.edge=
+.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.5.0/)....
+>>>> Not sure how to get this fixed.
+>>>> If someone has an idea or can reproduce, please let me know.
+>>>
+>>> Hi,
+>>> I can reproduce it using the (x86_64 hosted) crosstool gcc-12.1.0 from =
+kernel.org that Arnd builds/provides.
+>>> https://mirrors.edge.kernel.org/pub/tools/crosstool/
+>>
+>> Ah....
+>> Building with "make=C2=A0 ARCH=3Dparisc=C2=A0 CROSS_COMPILE=3D/some/path=
+/nolibc/hppa-linux/bin/hppa-linux-"
+>> uses this CROSS_COMPILE prefix for compiling the .c files, but not for t=
+he .S files.
+>> So, you will end up with the default hppa-linux-gcc installed on the sys=
+tem, not the one provided
+>> by CROSS_COMPILE.
+>
+> Ok, it seems CROSS_COMPILE doesn't work as one would expect (and as it di=
+d in the past).
+> I'm not sure if this can be fixed.
+>
+> Since kernel v5.18 the parisc kernel comes with a 32-bit and a 64-bit vDS=
+O.
+> On parisc we have two compilers:
+> - hppa-linux-gnu-gcc for 32-bit, and
+> - hppa64-linux-gnu-gcc for 64-bit code.
+> There is no -m64 flag like on x86 which can be used to just use one compi=
+ler for both targets.
+> If you provide a CROSS_COMPILE command, you can only provide either a 32-=
+ or 64-bit compiler,
+> so e.g. you won't be able to build the 64-bit kernel and a 32-bit vDSO wi=
+th the same compiler.
+>
+> Instead of using CROSS_COMPILE, please just install your compiler(s) and =
+make sure that
+> the compiler(s) can be found via the PATH environment variable.
+> In arch/parisc/Makefile (line 42ff) various variants like hppa-linux-gnu-=
+gcc or
+> hppa1.1-unknown-linux-gnu-gcc will be searched.
+>
+> So, instead of
+>   make ARCH=3Dparisc CROSS_COMPILE=3D/opt/cross/kisskb/korg/gcc-8.5.0-nol=
+ibc/hppa-linux/bin/hppa-linux-
+> please use for 32-bit:
+>   PATH=3D/opt/cross/kisskb/korg/gcc-8.5.0-nolibc/hppa-linux/bin/:$PATH   =
+  make ARCH=3Dparisc
+> or for 64-bit:
+>   PATH=3D/opt/cross/kisskb/korg/gcc-8.5.0-nolibc/hppa64-linux/bin/:$PATH =
+  make ARCH=3Dparisc64
 
-Drop the custom versions in favor for the defaults.
+I actually did that change a while back, but hadn't pushed it to one of
+the builders -_-
 
-Fixes: 77bfc8bdb5a1 ("parisc: Remove 64bit access on 32bit machines")
-Cc: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Helge Deller <deller@gmx.de>
-Reported-by: Helge Deller <deller@gmx.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-Arnd: please queue this on top of your pile in linux-arch
-if it looks all right.
----
- arch/parisc/lib/iomap.c | 36 ------------------------------------
- 1 file changed, 36 deletions(-)
+I've done that now, so we shouldn't see this error in future.
 
-diff --git a/arch/parisc/lib/iomap.c b/arch/parisc/lib/iomap.c
-index d3d57119df64..915c0c4da663 100644
---- a/arch/parisc/lib/iomap.c
-+++ b/arch/parisc/lib/iomap.c
-@@ -360,26 +360,6 @@ u64 ioread64be(const void __iomem *addr)
- }
- #endif
- 
--u64 ioread64_lo_hi(const void __iomem *addr)
--{
--	u32 low, high;
--
--	low = ioread32(addr);
--	high = ioread32(addr + sizeof(u32));
--
--	return low + ((u64)high << 32);
--}
--
--u64 ioread64_hi_lo(const void __iomem *addr)
--{
--	u32 low, high;
--
--	high = ioread32(addr + sizeof(u32));
--	low = ioread32(addr);
--
--	return low + ((u64)high << 32);
--}
--
- void iowrite8(u8 datum, void __iomem *addr)
- {
- 	if (unlikely(INDIRECT_ADDR(addr))) {
-@@ -445,18 +425,6 @@ void iowrite64be(u64 datum, void __iomem *addr)
- }
- #endif
- 
--void iowrite64_lo_hi(u64 val, void __iomem *addr)
--{
--	iowrite32(val, addr);
--	iowrite32(val >> 32, addr + sizeof(u32));
--}
--
--void iowrite64_hi_lo(u64 val, void __iomem *addr)
--{
--	iowrite32(val >> 32, addr + sizeof(u32));
--	iowrite32(val, addr);
--}
--
- /* Repeating interfaces */
- 
- void ioread8_rep(const void __iomem *addr, void *dst, unsigned long count)
-@@ -564,8 +532,6 @@ EXPORT_SYMBOL(ioread32be);
- EXPORT_SYMBOL(ioread64);
- EXPORT_SYMBOL(ioread64be);
- #endif
--EXPORT_SYMBOL(ioread64_lo_hi);
--EXPORT_SYMBOL(ioread64_hi_lo);
- EXPORT_SYMBOL(iowrite8);
- EXPORT_SYMBOL(iowrite16);
- EXPORT_SYMBOL(iowrite16be);
-@@ -575,8 +541,6 @@ EXPORT_SYMBOL(iowrite32be);
- EXPORT_SYMBOL(iowrite64);
- EXPORT_SYMBOL(iowrite64be);
- #endif
--EXPORT_SYMBOL(iowrite64_lo_hi);
--EXPORT_SYMBOL(iowrite64_hi_lo);
- EXPORT_SYMBOL(ioread8_rep);
- EXPORT_SYMBOL(ioread16_rep);
- EXPORT_SYMBOL(ioread32_rep);
--- 
-2.37.3
+Sorry for the noise.
 
+cheers
