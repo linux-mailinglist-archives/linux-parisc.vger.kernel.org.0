@@ -2,82 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB4F65E8B1A
-	for <lists+linux-parisc@lfdr.de>; Sat, 24 Sep 2022 11:47:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 500465E8B9B
+	for <lists+linux-parisc@lfdr.de>; Sat, 24 Sep 2022 12:54:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233438AbiIXJrt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 24 Sep 2022 05:47:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49010 "EHLO
+        id S233477AbiIXKyI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 24 Sep 2022 06:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233048AbiIXJrs (ORCPT
+        with ESMTP id S233342AbiIXKyI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 24 Sep 2022 05:47:48 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C89B1288A1
-        for <linux-parisc@vger.kernel.org>; Sat, 24 Sep 2022 02:47:47 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d11so2178299pll.8
-        for <linux-parisc@vger.kernel.org>; Sat, 24 Sep 2022 02:47:47 -0700 (PDT)
+        Sat, 24 Sep 2022 06:54:08 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F26DDDB0
+        for <linux-parisc@vger.kernel.org>; Sat, 24 Sep 2022 03:54:06 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id s90-20020a17090a2f6300b00203a685a1aaso2513142pjd.1
+        for <linux-parisc@vger.kernel.org>; Sat, 24 Sep 2022 03:54:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=3+pOaDQW9YjxLklfVNTeyrUxpQCI7rQ2FY27kMcvVNA=;
-        b=HB9MKYQSVCpN/uOYAgHtfTu8vX+gh120MEMg6y8EIcdyz09xYzp2JSduLy24Dvszy4
-         1P6BsSMu2mOvfjkp7zHTUtONSi2wbDo6M1uy9AKuN43KZoUA4/EqJvSPJHoKE8piFuiq
-         TFDPTQqsUqfRalbN7HFLyt9F8n9Jwf+Qj+abU=
+        bh=2T/nAXofM+cBGCCzdK/WhAhFJ6YKGhgXDN2daZJ21cQ=;
+        b=RrYv3vma8l+uA3BgIPpdjCQlzwFxeVsVyO30kx+88rAIAa7gpFLg4iObx7k3VcN/IC
+         4qNSedKcnXVWzGuLPpldSaHpXaIZo60/f+f/+F9dY3BXCmXoq7QTzFuQdSp0OqDFgvU6
+         0/6oRZNMcaC6u0wEny+s+Sf6jsJR2wfkwfeVM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=3+pOaDQW9YjxLklfVNTeyrUxpQCI7rQ2FY27kMcvVNA=;
-        b=mqnWv6d3WvLJi/wmv6+JL79/5lVPzgvxtzCCX7Gw1eXwKUBzS2UMdFWKvWp7URinN+
-         BRn6sunIY7iD2tfqfEdBBBopIO+Rlc8iiWPVdWl+zGAPewQOvsysrGMlXwmXCOW7Aaf+
-         PBYINHBGYG8+WNYxLSYh/BxkRl3qEiP9k1K8p/E2PaLavH2pOMr2u8NivQeKlSJjsC3I
-         tf4RqYCrBbxazHiyOgaMtTDmnQ8stl6M/8L62zcCpRbiY2rZ2lUZZr8NnX7KRRdoDfHw
-         mwfeV/AHnEu9y3V35lTVeaxXdpKeQ34739bhcoXoXdUQOyZJWl2iHTZgtPmkiJa6loFZ
-         zJZw==
-X-Gm-Message-State: ACrzQf1NrD8IhTatQXeGhnEIhHIS0cKkbjIpU7W2Z9Lnj4UiUtgPHRqQ
-        4ChO6UBlcn3JytYyfQSWEXdFAvoDPzasXA==
-X-Google-Smtp-Source: AMsMyM50G4MkB+jPSoG0HzIFo+yOu3RUvfrllcNX4ltgLcfVL+PMcHqel4EXpC55kA3rQFQuMU8DdQ==
-X-Received: by 2002:a17:90a:fe0a:b0:203:467b:9e64 with SMTP id ck10-20020a17090afe0a00b00203467b9e64mr14759009pjb.146.1664012866953;
-        Sat, 24 Sep 2022 02:47:46 -0700 (PDT)
+        bh=2T/nAXofM+cBGCCzdK/WhAhFJ6YKGhgXDN2daZJ21cQ=;
+        b=SQ2Q5GtCZrvVIZrj9xYlnZpH5KriCS/AniT+4Pq9ORKHliDrNjqAh8ruDVlmAh7qGn
+         +/RqXa7C5KDlwu7LNf0gSB0G8o/GTcbOwuzJYXTKj/pmp41jL6mgmCvuNwzDlbNhd7XV
+         kaQV7BGn2wnb+qhmESVErnp05gIQpgPGC778pTJine+u+UMZBUevOhHTwEU5n5OA+P15
+         WhmPwq5VlWo7A99OmUSwTioq6d2tcbguDX6Ha7Wvw1B4o8ZBPkNLfJHPJpfZQc9MyVpF
+         F0YHqk1ZpDU2vZqbjgBv//dr2WYGt4LKxHuv5XXFa1s2OqYTjQHo9UqT3InXdrW2ymo6
+         QFLw==
+X-Gm-Message-State: ACrzQf3B23evis9R6q1HjsToARLvW4ycLxzempmzGOukxMKeD5kLCJrh
+        8VicXgZRPPO23HeDdz66TMWK/g==
+X-Google-Smtp-Source: AMsMyM71AQgkf5TJ0FexsQnrVew9TRRjvxzcx0KaOzhnhIf9ge1do5GUeDCFKOKWjtZ7mpRdlQOLyA==
+X-Received: by 2002:a17:90b:4b49:b0:202:e09c:6662 with SMTP id mi9-20020a17090b4b4900b00202e09c6662mr14180414pjb.138.1664016845708;
+        Sat, 24 Sep 2022 03:54:05 -0700 (PDT)
 Received: from google.com ([240f:75:7537:3187:f4de:2419:efa3:8fed])
-        by smtp.gmail.com with ESMTPSA id y23-20020aa78f37000000b0053e61633057sm7899715pfr.132.2022.09.24.02.47.41
+        by smtp.gmail.com with ESMTPSA id z4-20020a1709027e8400b00177e5d83d3dsm7575087pla.170.2022.09.24.03.54.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Sep 2022 02:47:46 -0700 (PDT)
-Date:   Sat, 24 Sep 2022 18:47:38 +0900
+        Sat, 24 Sep 2022 03:54:04 -0700 (PDT)
+Date:   Sat, 24 Sep 2022 19:53:59 +0900
 From:   Sergey Senozhatsky <senozhatsky@chromium.org>
 To:     John Ogness <john.ogness@linutronix.de>
 Cc:     Petr Mladek <pmladek@suse.com>,
         Sergey Senozhatsky <senozhatsky@chromium.org>,
         Steven Rostedt <rostedt@goodmis.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
+        linux-kernel@vger.kernel.org,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
-        Sven Schnelle <svens@stackframe.org>,
-        John David Anglin <dave.anglin@bell.net>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        linux-parisc@vger.kernel.org,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
-        Aaron Tomlin <atomlin@redhat.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: Re: [PATCH printk 00/18] preparation for threaded/atomic printing
-Message-ID: <Yy7SOp9wKWdDnbLM@google.com>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH printk 11/18] printk: Convert console_drivers list to
+ hlist
+Message-ID: <Yy7hxxJVzY6GYHkG@google.com>
 References: <20220924000454.3319186-1-john.ogness@linutronix.de>
+ <20220924000454.3319186-12-john.ogness@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220924000454.3319186-1-john.ogness@linutronix.de>
+In-Reply-To: <20220924000454.3319186-12-john.ogness@linutronix.de>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -85,9 +77,54 @@ List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
 On (22/09/24 02:10), John Ogness wrote:
-> 
->    Patches  6 - 12:  Locking and list conversion
-> 
+[..]
+>  static int console_unregister_locked(struct console *console)
+>  {
+> -	struct console *con;
+>  	int res;
+>  
+>  	con_printk(KERN_INFO, console, "disabled\n");
+> @@ -3274,32 +3287,28 @@ static int console_unregister_locked(struct console *console)
+>  	if (res > 0)
+>  		return 0;
+>  
+> -	res = -ENODEV;
+>  	console_lock();
+> -	if (console_drivers == console) {
+> -		console_drivers=console->next;
+> -		res = 0;
+> -	} else {
+> -		for_each_console(con) {
+> -			if (con->next == console) {
+> -				con->next = console->next;
+> -				res = 0;
+> -				break;
+> -			}
+> -		}
+> -	}
+>  
+> -	if (res)
+> -		goto out_disable_unlock;
+> +	/* Disable it unconditionally */
+> +	console->flags &= ~CON_ENABLED;
+> +
+> +	if (hlist_unhashed(&console->node))
+> +		goto out_unlock;
 
-A quick question: I wonder why xenfb_make_preferred_console() isn't
-converted to list lock and for_each_registered_console()?
+Shouldn't this set `ret` to -ENODEV before goto? Otherwise it will always
+return 0 (which is set by _braille_unregister_console()).
+
+> +
+> +	hlist_del_init(&console->node);
+>  
+>  	/*
+> +	 * <HISTORICAL>
+>  	 * If this isn't the last console and it has CON_CONSDEV set, we
+>  	 * need to set it on the next preferred console.
+> +	 * </HISTORICAL>
+> +	 *
+> +	 * The above makes no sense as there is no guarantee that the next
+> +	 * console has any device attached. Oh well....
+>  	 */
+
+It's complicated...
