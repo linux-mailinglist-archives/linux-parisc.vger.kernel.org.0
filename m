@@ -2,62 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B0CA5E9147
-	for <lists+linux-parisc@lfdr.de>; Sun, 25 Sep 2022 08:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 159DD5E914A
+	for <lists+linux-parisc@lfdr.de>; Sun, 25 Sep 2022 08:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229573AbiIYGlp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 25 Sep 2022 02:41:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44748 "EHLO
+        id S229573AbiIYG4Q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 25 Sep 2022 02:56:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbiIYGlo (ORCPT
+        with ESMTP id S229554AbiIYG4P (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 25 Sep 2022 02:41:44 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995303A175
-        for <linux-parisc@vger.kernel.org>; Sat, 24 Sep 2022 23:41:41 -0700 (PDT)
+        Sun, 25 Sep 2022 02:56:15 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96ABF2AC6E
+        for <linux-parisc@vger.kernel.org>; Sat, 24 Sep 2022 23:56:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1664088092;
-        bh=g5Moh1CPwnSp0U5kqnb7wXhTV9eJE5bDP3aCswABsE0=;
+        s=badeba3b8450; t=1664088966;
+        bh=7IFfmzR7aXZ1Yhpt8kJ8Pu2b5UsesJ49N53B9H4dMr8=;
         h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=Sqbhp4JjeutPcgvwZH/wK6OUS6yVWlLxUKoN8D8GsgGJ/wlKjl9kMsVozpitwzgud
-         vX5pZEvJzXn7dSw8BHnnFp+t/3CZgjw38WTLJGYBHvjaGJT/xmH/AlKT79jb5Du9u8
-         mJmaGiscBag9gkyaGQS49oIgQS5lPdBxxRiKB2sw=
+        b=P0Uffb6iS0lVjJFYbk6usSO0nAbJ/6k0opeAcUDJx4s3yNGxTUD1J2BjzhvgtJY35
+         9ZacmYGdh/qp+cswUcNikdCWBAwy5ZmiFJBD4jw9sRfeFMHj+iHpoFS1GzOze+0SQK
+         DlbLR3kRmdWuzJLMY+DbY2kUVs+RsCZRyg4jvO70=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100 ([92.116.188.118]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M72sP-1ocbEx0LiZ-008YwH; Sun, 25
- Sep 2022 08:41:32 +0200
-Date:   Sun, 25 Sep 2022 08:41:28 +0200
+Received: from p100 ([92.116.188.118]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MdNY8-1pBPG93vVo-00ZNm3; Sun, 25
+ Sep 2022 08:56:06 +0200
+Date:   Sun, 25 Sep 2022 08:56:03 +0200
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Add alternative prefetchw() on 32-bit CPUs
-Message-ID: <Yy/4GF75gFz86ZAH@p100>
+Subject: [PATCH][RFC] parisc: Use local tlb purges only on UP machines
+Message-ID: <Yy/7g0NzOi/igNi7@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:ZsQSDm5r4zssr9lwJgYJ4Jn5h52mUe7t74Ev8M8iJ3xh8Y3M3cQ
- 8rGPRzF1e/Da7uBtAVaVMQ7PaspxtO8PE437quCEJHIhNIwi85jL4lEIbwby6IUq5lELJWX
- 9O7oXhgDfDVWqwGUwReVr2vZsvIjiDhG7BADXImsncvqzoJ4+V2uO3y8Q4FnkHlmBfUpTz5
- zmhX2s7wknen9jcnbTkjA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:8jsp8TK+7B4=:XVGvvYhsTavL65+xLKF+rs
- 2sf/gMVFXyxLekASCcKIBxlsIy8Krb+XCU3kSjQ43Pz1Kym3NMyb2cmqsTskgXIIzme/0FHcZ
- W/j96NqIdyXzpipJXE2iRYAt5dh8y3r+Rnwz2T/+qPd6PhBcKnSb8xTGBC/155BcjLUyn1w9U
- 58ey+jsWRHcY08vcnBhuYTDL805tVTjDib0G90QiwNlWHEdK9qhihkc86So21axZloRilODn6
- cajbjRKValEl6vfHDHQUdgnwxcJykNUlhTSXmujEY9dzj3Y+JvZ7B9T8Bi0pVmrj0tyEnTres
- GCL5YqIty6xdzvRswmCh1ufr0fY3/1At1xxmxihUMonhcHE73m/HU11WUtE8R9La9NRXDVk30
- tFMfb0KAkZ0gz869vYHWNSK2CTovAbN/J8lawDGXRGlhrR1959DPy0oTjypghNPA+iBF1LBGQ
- fqxJlzNBRiSLqKD6D0YOUXrWtUnR92Id7zc2tuv/xeBEVpBa4473s+ALa1tozR+aeyb/u+LK1
- uWCkkT0mX5WDzqKrf3HQxkgcW3DWJipVmD93Nzr0WssfcZQLRwg8iDBFZtV6/HKdzLLeAmGhC
- NE1zMCWJfpvhkEbh3EPJqBOcWAwKWwmCYPkHbfDAe9UDYCTaC6iMaDuex79y5HBsIGu8b21pO
- VtRGUN3zjE3mXHtMvMszHS6xSYPArf7bqQ1cPtoQxyaMdcZt52VSnNxUhlJQF+5+cfoMT93nP
- ulL9sTC8mLCCEpMfs2Vf0x19o/KAqFJH7Vz8tAhxNSmNf1As+Nowdl+6NEzYgOgVepEEQY+Od
- t6LmWYxrxixuYG/UGuRJbcuoq4L6SeY7kXMYjdTn0u8EJFS9cohEFaU4kUE4plUbcDC7HY2TB
- hEalRvM+lzFUvF2Ap8ONX5+VqxLDiN/2tHt7R4HVGvwcFasBjv5JGlNXNq6FBZmtksLySSznn
- ofujNykuEYp/njT2Zfw9lpJl+2kNftp/QWdCKOmHKNDqhjdcexmLTlJsRJoBWEwcSjSymbBQZ
- G5ouZllxWcZKRPnWOxMvJWFBL098G3ZgTbo3iYlhdJK885vyy9zUllabuw4jxDcBqxpI/D9yN
- fZRlY3C4sYgONqeW9XhzWkepX/1OXPctIbKBzeLRU9WhZrF3ol/eGqpw+PDwprFAJXIpegB4f
- PJvgU7kN6rSlOAhb4Um8gD1LHx
+X-Provags-ID: V03:K1:KyuCB9FNlA1aeB7IOBUG2gBpwsEUCEydanrOW6Z2B2L1RDmm5iP
+ Q/OSHCNAV7Bu8Zn+FTu/OqNVF7zpw/MnLWjwexIfwzPxCdG5jyhSnG6/hIMkUJs3zc1qd65
+ sAuhW/k3TuSQRUk3cMd1lnqFpxnhYwF9IX6KX50ojRAaS0rPos9kDlnfRsF9fuHFXiXx0Xh
+ V/fVlnv1RvATGg8psOCmQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3wBFdumgIG4=:ePtQPoAWb3eQTCRZJNJ1ae
+ WDR8xcz0BgUGb7sJBH+AiXzLaUeaXFPrRNOTPQZv7chdgFUqtH6MBAO8YtmghVPKJxlAutVlP
+ xo/IhWBPukfexDugprKE2O2kHR+eRLC+wJUjP6dt8aWCshdoXX034fJRHz4rXYEwIadiwVuK9
+ mJC7yVqaUn6hCKzHq7uod9ogff+av+4CczPZ8wc8CUC9RTcHErw1tb7ncN57F3nMz9161QWp/
+ tCv7916bwSyOZHzd+Z/CZ6mFZEIwXhHk+w4JMdcr7AJMbeHmFcsqBPmn7wudv/f5bi45SM7Am
+ vg/yZgpbaX6xOyD3d698maBVa4JOQE3GK8U6N2pXgeRX0GGH5Ib+vU/eVU2vXJIkDKdZi7hi6
+ b8DSEm4yL9lN47n7EYUyXYnIgYoL4J1L68zr8cLj4PTTkD0oq8fEBm41fBeCstUm+L+7PG8Bt
+ 475+X714abHyMxJCtdGEnPI4dM4vpaQouViFITAr2vMcPeg8P80KUj/Ghmh3b70mUzxZouc/e
+ RGOiWikiIX1o5U1sCX9cWovhE/D+Vl3Q7sVbRD1IKZEopsAjwfNbZ9f2QDSorAt+3ui+ZWkKD
+ 8DHV+cMBAj6U8htpcDDYsePsHKMyFbXWBSgM7bTnndb5IQQyZ0pLTJcPEATiIPNP8vDHs7iTt
+ BA2K/8wn071YxDpmHvjqFWx1A4w1JKbT+MecTfAd2drCsXItarjpTCmMwfJtCzOmWDoZ//nPo
+ tpMXZhR6eJbnUeQyG6Zy05isWqY89ydjBitdSar6Q6zHJCD776PcfMVRXbQeLulInD+x5oV0y
+ oarh9+dr6OEu6o5o/tqRgmrVIvxzMK8Ix1eIv9LL0aabcwk/iRYC9giaWOcIPo4ATbAUXycnA
+ VFwqU96D160wm/09u6zmQSjOCOx4N4l7t5ihHtnT+sW9HLLDey2V5Nv/DMacPaqNTC3NerQVj
+ gJv8nZsIDYOARS7LwO0jDGvK9bMYxfXHzX9c8rccocOUiplHvv+mMYNLyUd3chRYj/W/HyNYn
+ tEeLFjfF9duZxKAtbuLq1877uC7Zqhc6z5HLeXm5ELMaqk4mnVAxx7DVmUbovXg6kMCmIiosv
+ HrGuRl1k5kUo/iJTlGl1wiq4x3VdA/9r+1IIfwPCQtyp+BrYAmSVj1BTROH5O9xI86OF2fOZ/
+ NCbCYCNw70IILzkUnTwEe2J3yP
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
@@ -68,60 +68,86 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add the ALT_COND_RUN_ON_PA1X alternative conditional to nop
-out a 64-bit ldd instruction in prefetchw() when running on 32-bit CPUs.
+Limit usage of CPU-local tlb flushes in pacache.S to non-SMP machines.
+On 32-bit kernels this was the case already, with this patch this
+behaviour is used on 64-bit kernels now too.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 
-diff --git a/arch/parisc/include/asm/alternative.h b/arch/parisc/include/a=
-sm/alternative.h
-index 0ec54f43d6d2..8b94aa4f1bd7 100644
-=2D-- a/arch/parisc/include/asm/alternative.h
-+++ b/arch/parisc/include/asm/alternative.h
-@@ -9,6 +9,7 @@
- #define ALT_COND_NO_SPLIT_TLB	0x08	/* if split_tlb =3D=3D 0  */
- #define ALT_COND_NO_IOC_FDC	0x10	/* if I/O cache does not need flushes */
- #define ALT_COND_RUN_ON_QEMU	0x20	/* if running on QEMU */
-+#define ALT_COND_RUN_ON_PA1X	0x40	/* if running on PA1.x CPU */
+diff --git a/arch/parisc/kernel/pacache.S b/arch/parisc/kernel/pacache.S
+index 9a0018f1f42c..920f6ef5c3e5 100644
+=2D-- a/arch/parisc/kernel/pacache.S
++++ b/arch/parisc/kernel/pacache.S
+@@ -539,15 +539,10 @@ ENTRY_CFI(copy_user_page_asm)
 
- #define INSN_PxTLB	0x02		/* modify pdtlb, pitlb */
- #define INSN_NOP	0x08000240	/* nop */
-diff --git a/arch/parisc/include/asm/prefetch.h b/arch/parisc/include/asm/=
-prefetch.h
-index 6e63f720024d..ea898362dfc0 100644
-=2D-- a/arch/parisc/include/asm/prefetch.h
-+++ b/arch/parisc/include/asm/prefetch.h
-@@ -17,6 +17,8 @@
- #define __ASM_PARISC_PREFETCH_H
+ 	/* Purge any old translations */
 
- #ifndef __ASSEMBLY__
-+#include <asm/alternative.h>
-+
- #ifdef CONFIG_PREFETCH
+-#ifdef CONFIG_PA20
+-	pdtlb,l		%r0(%r28)
+-	pdtlb,l		%r0(%r29)
+-#else
+ 0:	pdtlb		%r0(%r28)
+ 1:	pdtlb		%r0(%r29)
+ 	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+ 	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+-#endif
 
- #define ARCH_HAS_PREFETCH
-@@ -35,7 +37,9 @@ static inline void prefetch(const void *addr)
- #define ARCH_HAS_PREFETCHW
- static inline void prefetchw(const void *addr)
- {
--	__asm__("ldd 0(%0), %%r0" : : "r" (addr));
-+	__asm__("ldd 0(%0), %%r0"
-+		ALTERNATIVE(ALT_COND_RUN_ON_PA1X, INSN_NOP)
-+		: : "r" (addr));
- }
- #endif /* CONFIG_PA20 */
+ #ifdef CONFIG_64BIT
+ 	/* PA8x00 CPUs can consume 2 loads or 1 store per cycle.
+@@ -670,12 +665,8 @@ ENTRY_CFI(clear_user_page_asm)
 
-diff --git a/arch/parisc/kernel/alternative.c b/arch/parisc/kernel/alterna=
-tive.c
-index daa1e9047275..276904ab7265 100644
-=2D-- a/arch/parisc/kernel/alternative.c
-+++ b/arch/parisc/kernel/alternative.c
-@@ -33,6 +33,7 @@ void __init_or_module apply_alternatives(struct alt_inst=
-r *start,
- 		((cache_info.dc_size =3D=3D 0) ? ALT_COND_NO_DCACHE : 0) |
- 		((cache_info.ic_size =3D=3D 0) ? ALT_COND_NO_ICACHE : 0) |
- 		(running_on_qemu ? ALT_COND_RUN_ON_QEMU : 0) |
-+		((boot_cpu_data.cpu_type < pcxu) ? ALT_COND_RUN_ON_PA1X : 0) |
- 		((split_tlb =3D=3D 0) ? ALT_COND_NO_SPLIT_TLB : 0) |
- 		/*
- 		 * If the PDC_MODEL capabilities has Non-coherent IO-PDIR bit
+ 	/* Purge any old translation */
+
+-#ifdef CONFIG_PA20
+-	pdtlb,l		%r0(%r28)
+-#else
+ 0:	pdtlb		%r0(%r28)
+ 	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+-#endif
+
+ #ifdef CONFIG_64BIT
+ 	ldi		(PAGE_SIZE / 128), %r1
+@@ -736,12 +727,8 @@ ENTRY_CFI(flush_dcache_page_asm)
+
+ 	/* Purge any old translation */
+
+-#ifdef CONFIG_PA20
+-	pdtlb,l		%r0(%r28)
+-#else
+ 0:	pdtlb		%r0(%r28)
+ 	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+-#endif
+
+ 88:	ldil		L%dcache_stride, %r1
+ 	ldw		R%dcache_stride(%r1), r31
+@@ -785,12 +772,8 @@ ENTRY_CFI(purge_dcache_page_asm)
+
+ 	/* Purge any old translation */
+
+-#ifdef CONFIG_PA20
+-	pdtlb,l		%r0(%r28)
+-#else
+ 0:	pdtlb		%r0(%r28)
+ 	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+-#endif
+
+ 88:	ldil		L%dcache_stride, %r1
+ 	ldw		R%dcache_stride(%r1), r31
+@@ -837,17 +820,11 @@ ENTRY_CFI(flush_icache_page_asm)
+ 	 * have a flat address space, it's not clear which TLB will be
+ 	 * used.  So, we purge both entries.  */
+
+-#ifdef CONFIG_PA20
+-	pdtlb,l		%r0(%r28)
+-1:	pitlb,l         %r0(%sr4,%r28)
+-	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SPLIT_TLB, INSN_NOP)
+-#else
+ 0:	pdtlb		%r0(%r28)
+ 1:	pitlb           %r0(%sr4,%r28)
+ 	ALTERNATIVE(0b, 0b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+ 	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SMP, INSN_PxTLB)
+ 	ALTERNATIVE(1b, 1b+4, ALT_COND_NO_SPLIT_TLB, INSN_NOP)
+-#endif
+
+ 88:	ldil		L%icache_stride, %r1
+ 	ldw		R%icache_stride(%r1), %r31
