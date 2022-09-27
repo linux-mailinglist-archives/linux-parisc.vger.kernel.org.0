@@ -2,113 +2,160 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 001CC5EBAB6
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Sep 2022 08:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DD225ECDE0
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Sep 2022 22:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230254AbiI0Gba (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 27 Sep 2022 02:31:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56016 "EHLO
+        id S232665AbiI0UId (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 27 Sep 2022 16:08:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229834AbiI0GbS (ORCPT
+        with ESMTP id S232681AbiI0UIF (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 27 Sep 2022 02:31:18 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3B430979F9;
-        Mon, 26 Sep 2022 23:31:14 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 5E7B081BD;
-        Tue, 27 Sep 2022 06:22:54 +0000 (UTC)
-Date:   Tue, 27 Sep 2022 09:31:11 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        khilman@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
-        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
-        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
-        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
-        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
-        richard@nod.at, anton.ivanov@cambridgegreys.com,
-        johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
-        gregkh@linuxfoundation.org, mturquette@baylibre.com,
-        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, konrad.dybcio@somainline.org,
-        anup@brainfault.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
-        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
-        cl@linux.com, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, fweisbec@gmail.com,
-        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-        dvyukov@google.com, vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v2 00/44] cpuidle,rcu: Clean up the mess
-Message-ID: <YzKYrx8Kd9SBYcUg@atomide.com>
-References: <20220919095939.761690562@infradead.org>
+        Tue, 27 Sep 2022 16:08:05 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 734E51D983B
+        for <linux-parisc@vger.kernel.org>; Tue, 27 Sep 2022 13:06:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1664309200;
+        bh=EZWiHHdEi5zCZg2gpsfHeIDMSAgMFdKAkKguxFZYlNA=;
+        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+        b=On07nfGhWU4ZwxxxpCCj+zg/sqDlszcKPTtnHbkVicbrYZq4WvWqxFm3Ueed1FMR9
+         aOWueJt16D3ZnobaFEJxbNmSrIAK/nm0pEpkiC10Ui6C9GrBaqOrF8ISeC/eQfn88F
+         Yv9svxQfISYFi8uNAuCjgodYUpQ8lhOOTk4E/auQ=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.138.255]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mel3t-1pDQPt2Ggf-00akjv; Tue, 27
+ Sep 2022 22:06:40 +0200
+Message-ID: <efb7b1fa-f593-3c52-c8b2-cd42c2594848@gmx.de>
+Date:   Tue, 27 Sep 2022 22:06:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220919095939.761690562@infradead.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH][RFC] parisc: Use local tlb purges only on PA2.0 machines
+Content-Language: en-US
+To:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <YzCkkyktEZFM0svQ@p100>
+ <1063fc54-738a-a1b9-fb53-8202287805c7@bell.net>
+ <1de28183-2252-04dc-9838-d695161a01ed@gmx.de>
+ <5f476a72-d2c0-8b0e-2446-13456a92e0bf@bell.net>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <5f476a72-d2c0-8b0e-2446-13456a92e0bf@bell.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:RRKIzX1/GV7jyab6VBpDBeJ+aZPa0YpcDo9vdFExjTHjUcJHiip
+ IqJj8FiX8ocxRdjrN0QUV3oEeyINlmRRyt/u2cm0+YZNBJj963w7ET+MvLuHxD6mSMcJQWD
+ Ez1jB18wf8y9HDJ/pUKv6VAvR4YTNXXQQAQMHMLM9mlvv31N6V/9nx81A4rvHse5i1KjXhU
+ KRKsY5B6t2LTfk2Sg8VXg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0yogiM7yxVU=:uBSy3yBQ7xObQh8JPHfUF7
+ tc3S+A54foYiHJUAytS3/QE/28OZs3o5q6y+rbDKpePbyEqE+m4N9FILw6Bo6lRTAE+wM/GWu
+ NWcawzAlppd/BJSXlENm+iRDl+Ca62BQqwsNW32mSZT1HUadjyQpDAAMMfNdiU59p9MVciIN0
+ uKrhEdjLlu9QNiTlTAM4XkthgdeWo8sxxmT5BXgyj0czgD2CPT3PbFi8o+2y+xLrR+qCta2Dj
+ B9NJgZ7Npzfh4bU/NleCgnk2GlEhW/tetI50JgwIcnrGiGA7Pt/rK81dpS0DU0Ea2rq/YUvV1
+ pJ9FyATvu5N6R8C/jZzcKyjXIO1dhi4mYaCybO4UKgubF8LJ9BH7mKwH4XiaMoCVCXQ1yh2nD
+ byNOmedXBZSVM7V/epqJsgWO391ZGQMIF2HMrJaqkAs+uryNHkomAWgd6uA9wUjIgXkCBTPbm
+ ik3+YxWFTvgFo0coMjTp95HoH87wQXQCACZNOGFOjENC0YAIwGIixzWTDFo9BwvD2yx9jMI+r
+ d1FRZ41Cf0u64mVncxWWdy9F5zyOMsNUCrHDeictux2DzQgQy5A4QjcAezqE6AZXFUHm5C6g8
+ rNVfCA1VuaGhhLhcAsdLheM2tl0Y9zhbfdi/rjDwR0erx4RUr+vJFjNMVCLdCpFHUVemGjDGN
+ b7mMh+T88O8qYrXDL1aY2tR9DNuzSVTqB9WzNkxfN3OnRt8PkCjPTg9Spt+SPfyjXeA3Pk0An
+ gWW2uNFnZbH6mbrMn3GBlyMdUNh0OG8YxsSC0yzdWq/B1kKH40b3BeYKOSfzrdvPJ1y4N37hs
+ m1BVGbIS4GGNYJpUOwXCkgD0vi0UzRMGGBAk3pU8XUudw2nk1w89rqllEYVtSIhijBC4PhSlE
+ tBYmmh9AbpnUZoLvCxf03gswor0V9Y/Bx572JZVfjnhRnmQm0ld1S53ngPIR4lU91LHov3f12
+ v1WFRxN2rMBhmOOVRDRXLhB/t20kq6JAMWznzxgKFk1pSOvcPXmkHQSUBtqewc58+73hopl+7
+ Sv9/JJQc5P2bR/gQQ55kDJdXpgXISa4eYEtB67FQ5VulKca4no2XIbQIZR1Dsf26YkyUsslY/
+ 4GMhQxJL7aAEaphREuas/Laepepnb4xq57gu+cOVXdO9QKpcMSPxM/qZaSJlthXgmSim4TWWf
+ UUBgC/tGdCpYVNiup3DShlJyQI
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_H2,RCVD_IN_MSPIKE_ZBI,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi,
+On 9/25/22 22:28, John David Anglin wrote:
+> On 2022-09-25 4:11 p.m., Helge Deller wrote:
+>> n=C2=A09/25/22=C2=A022:02,=C2=A0John=C2=A0David=C2=A0Anglin=C2=A0wrote:
+>>> On=C2=A02022-09-25=C2=A02:57=C2=A0p.m.,=C2=A0Helge=C2=A0Deller=C2=A0wr=
+ote:
+>>>> +#ifdef=C2=A0CONFIG_PA20
+>>>> +#define=C2=A0ALT_COND_PACACHE=C2=A0=C2=A0=C2=A0=C2=A0ALT_COND_ALWAYS
+>>>> +#else
+>>>> +#define=C2=A0ALT_COND_PACACHE=C2=A0=C2=A0=C2=A0=C2=A0ALT_COND_NO_SMP
+>>>> +#endif
+>>>> +
+>>>> =C2=A0=C2=A0ENTRY_CFI(flush_tlb_all_local)
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*=C2=A0The=C2=A0pitlbe=C2=
+=A0and=C2=A0pdtlbe=C2=A0instructions=C2=A0should=C2=A0only=C2=A0be=C2=A0us=
+ed=C2=A0to
+>>>> @@=C2=A0-539,15=C2=A0+545,10=C2=A0@@=C2=A0ENTRY_CFI(copy_user_page_as=
+m)
+>>>>
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*=C2=A0Purge=C2=A0any=C2=A0old=
+=C2=A0translations=C2=A0*/
+>>>>
+>>>> -#ifdef=C2=A0CONFIG_PA20
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0pdtlb,l=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0%r0(%r28)
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0pdtlb,l=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0%r0(%r29)
+>>>> -#else
+>>>> =C2=A0=C2=A00:=C2=A0=C2=A0=C2=A0=C2=A0pdtlb=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0%r0(%r28)
+>>>> =C2=A0=C2=A01:=C2=A0=C2=A0=C2=A0=C2=A0pdtlb=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0%r0(%r29)
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0ALTERNATIVE(0b,=C2=A00b+4,=C2=A0ALT_COND_NO_=
+SMP,=C2=A0INSN_PxTLB)
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0ALTERNATIVE(1b,=C2=A01b+4,=C2=A0ALT_COND_NO_=
+SMP,=C2=A0INSN_PxTLB)
+>>>> -#endif
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0ALTERNATIVE(0b,=C2=A00b+4,=C2=A0ALT_COND_PAC=
+ACHE,=C2=A0INSN_PxTLB)
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0ALTERNATIVE(1b,=C2=A01b+4,=C2=A0ALT_COND_PAC=
+ACHE,=C2=A0INSN_PxTLB)
+>>> This=C2=A0doesn't=C2=A0look=C2=A0correct.=C2=A0=C2=A0If=C2=A0ALT_COND_=
+PACACHE=C2=A0is=C2=A0defined=C2=A0as=C2=A0ALT_COND_NO_SMP,=C2=A0the=C2=A0p=
+dtlb
+>>> instructions=C2=A0will=C2=A0be=C2=A0converted=C2=A0to=C2=A0pdtlb,l=C2=
+=A0instructions=C2=A0when=C2=A0running=C2=A0UP.=C2=A0=C2=A0These=C2=A0are=
+=C2=A0not=C2=A0supported
+>>> on PA 1.1.
+>>
+>> Your=C2=A0concern=C2=A0is=C2=A0correct,=C2=A0but=C2=A0there=C2=A0is=C2=
+=A0an=C2=A0additonal=C2=A0check=C2=A0in=C2=A0the=C2=A0alternative-coding,
+>> which=C2=A0prevents=C2=A0enabling=C2=A0the=C2=A0local=C2=A0flag=C2=A0if=
+=C2=A0we're=C2=A0not=C2=A0running=C2=A0on=C2=A0a=C2=A0PA2.0=C2=A0CPU.
+>> So,=C2=A0those=C2=A0ALTERNATIVE()=C2=A0macros=C2=A0will=C2=A0only=C2=A0=
+apply=C2=A0on=C2=A0PA2.0=C2=A0machines.
+> You are correct.=C2=A0 Missed that.
+>
+> That only leaves the bus serialization issue when pdtlb is used on an SM=
+P machine.
 
-* Peter Zijlstra <peterz@infradead.org> [220919 10:08]:
-> Hi All!
-> 
-> At long last, a respin of the cpuidle vs rcu cleanup patches.
-> 
-> v1: https://lkml.kernel.org/r/20220608142723.103523089@infradead.org
-> 
-> These here patches clean up the mess that is cpuidle vs rcuidle.
+I think we are Ok with what's in the kernel already.
 
-I just gave these a quick test and things still work for me. The old
-omap3 off mode during idle still works. No more need to play the
-whack the mole game with RCU-idle :) I did not test on x86, or on other
-ARMs, but considering the test pretty much covered the all the
-affected RCU-idle related paths, where suitable, feel free to add:
+According to arch/parisc/include/asm/pgtable.h:
 
-Tested-by: Tony Lindgren <tony@atomide.com>
+* This is for the serialization of PxTLB broadcasts. At least on the N cla=
+ss
+  * systems, only one PxTLB inter processor broadcast can be active at any=
+ one
+  * time on the Merced bus. */
+extern spinlock_t pa_tlb_flush_lock;
+#if defined(CONFIG_64BIT) && defined(CONFIG_SMP)
+extern int pa_serialize_tlb_flushes;
+#else
+#define pa_serialize_tlb_flushes        (0)
+#endif
+
+we currently do TLB serialization on 64-bit machines with a 64-bit kernel =
+only.
+N-class machines are 64-bit-only machines which can't run a 32-bit kernel.
+So, 32-bit SMP kernels (which don't have serialization for PxTLB flushes)
+don't seem to be affected.
+
+Helge
