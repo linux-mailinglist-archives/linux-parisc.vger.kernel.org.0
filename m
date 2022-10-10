@@ -2,133 +2,128 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 690B75F8BB5
-	for <lists+linux-parisc@lfdr.de>; Sun,  9 Oct 2022 16:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D4D15F97B5
+	for <lists+linux-parisc@lfdr.de>; Mon, 10 Oct 2022 07:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230143AbiJIOSM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 9 Oct 2022 10:18:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51776 "EHLO
+        id S230310AbiJJFSU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 10 Oct 2022 01:18:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229854AbiJIOSJ (ORCPT
+        with ESMTP id S229854AbiJJFST (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 9 Oct 2022 10:18:09 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09CF626ADE;
-        Sun,  9 Oct 2022 07:18:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A6EE7B80D2B;
-        Sun,  9 Oct 2022 14:18:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659D2C433D6;
-        Sun,  9 Oct 2022 14:17:59 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="YgHbN0I0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1665325077;
+        Mon, 10 Oct 2022 01:18:19 -0400
+Received: from out2.migadu.com (out2.migadu.com [188.165.223.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 429404D4C4;
+        Sun,  9 Oct 2022 22:18:18 -0700 (PDT)
+Message-ID: <8da9812d-eb84-2a84-321e-ea2826ef8981@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1665379096;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oirLAgHKzqbm2tDuRRRruxvBPFu6OuA1m1Bdo0JewVo=;
-        b=YgHbN0I0lUsk61F/tkacjTtELz9m0jTOee92icnhvNyHJrs9iBf1nxk5rIk4LCzkioh8sG
-        190YFxxX+8obr4IDytSpJV/y+LGJPtZT2kSp6+N5MRfHp0a/WJLUeHRU53NaAsEmu2d/gM
-        WcwjBCYWAwT/EnbHfbZZP/9zFIVJmUM=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 76b4077f (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Sun, 9 Oct 2022 14:17:57 +0000 (UTC)
-Date:   Sun, 9 Oct 2022 08:17:41 -0600
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christoph =?utf-8?Q?B=C3=B6hmwalder?= 
-        <christoph.boehmwalder@linbit.com>, Christoph Hellwig <hch@lst.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Dave Airlie <airlied@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Westphal <fw@strlen.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Helge Deller <deller@gmx.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Hugh Dickins <hughd@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        Jan Kara <jack@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Jens Axboe <axboe@kernel.dk>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        KP Singh <kpsingh@kernel.org>, Marco Elver <elver@google.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Thomas Graf <tgraf@suug.ch>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>,
-        Yury Norov <yury.norov@gmail.com>,
-        dri-devel@lists.freedesktop.org, kasan-dev@googlegroups.com,
-        kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-nvme@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        loongarch@lists.linux.dev, netdev@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v5 0/7] treewide cleanup of random integer usage
-Message-ID: <Y0LYBaooZKDbL93G@zx2c4.com>
-References: <20221008055359.286426-1-Jason@zx2c4.com>
- <202210082028.692DFA21@keescook>
+        bh=RPNRy9onik+CC8H+dbLBGG/JFwC/8JgqUDFh6TQvjgI=;
+        b=dVajeWBCcCO1PzScOej77248yySjwbUmP9SvX6xR/puhU5jnZMHgj6LOku/wZMaMMQ98Ki
+        yfo+nMCN0uF3CE04ZlxkeKXtYTYNGRGuE1oxwx74rgy0CIYe1/njfj6gTTjQAl8S86mL5O
+        rJsCdqqalBAjnegbuN5Fmk7Xe1Lqvpk=
+Date:   Sun, 9 Oct 2022 22:18:11 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <202210082028.692DFA21@keescook>
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v3 4/4] arc: Use generic dump_stack_print_cmdline()
+ implementation
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>, linux-s390@vger.kernel.org,
+        Josh Triplett <josh@joshtriplett.org>, x86@kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+References: <20220808130917.30760-1-deller@gmx.de>
+ <20220808130917.30760-5-deller@gmx.de>
+Cc:     Alexey Brodkin <abrodkin@synopsys.com>,
+        Shahab Vahedi <Shahab.Vahedi@synopsys.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Vineet Gupta <vineet.gupta@linux.dev>
+In-Reply-To: <20220808130917.30760-5-deller@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Oct 08, 2022 at 08:41:14PM -0700, Kees Cook wrote:
-> On Fri, Oct 07, 2022 at 11:53:52PM -0600, Jason A. Donenfeld wrote:
-> > This is a five part treewide cleanup of random integer handling. The
-> > rules for random integers are:
-> 
-> Reviewing the delta between of my .cocci rules and your v5, everything
-> matches, except for get_random_int() conversions for files not in
-> your tree:
-> [...]
-> So, I guess I mean to say that "prandom: remove unused functions" is
-> going to cause some pain. :) Perhaps don't push that to -next, and do a
-> final pass next merge window to catch any new stuff, and then send those
-> updates and the removal before -rc1 closes?
+On 8/8/22 06:09, Helge Deller wrote:
+> The process program name and command line is now shown in generic code
+> in dump_stack_print_info(), so drop the arc-specific implementation.
+>
+> Signed-off-by: Helge Deller <deller@gmx.de>
 
-Ooof. Actually I think what I'll do is include a suggested diff for the
-merge commit that fixes up the remaining two thankfully trivial cases.
+But that info printing was added back in 2018 by e36df28f532f882.
+I don't think arc is using show_regs_print_info -> dump_stack_print_info 
+yet.
+Or is there a different code path now which calls here ?
 
-Jason
+> ---
+>   arch/arc/kernel/troubleshoot.c | 24 ------------------------
+>   1 file changed, 24 deletions(-)
+>
+> diff --git a/arch/arc/kernel/troubleshoot.c b/arch/arc/kernel/troubleshoot.c
+> index 7654c2e42dc0..9807e590ee55 100644
+> --- a/arch/arc/kernel/troubleshoot.c
+> +++ b/arch/arc/kernel/troubleshoot.c
+> @@ -51,29 +51,6 @@ static void print_regs_callee(struct callee_regs *regs)
+>   		regs->r24, regs->r25);
+>   }
+>
+> -static void print_task_path_n_nm(struct task_struct *tsk)
+> -{
+> -	char *path_nm = NULL;
+> -	struct mm_struct *mm;
+> -	struct file *exe_file;
+> -	char buf[ARC_PATH_MAX];
+> -
+> -	mm = get_task_mm(tsk);
+> -	if (!mm)
+> -		goto done;
+> -
+> -	exe_file = get_mm_exe_file(mm);
+> -	mmput(mm);
+> -
+> -	if (exe_file) {
+> -		path_nm = file_path(exe_file, buf, ARC_PATH_MAX-1);
+> -		fput(exe_file);
+> -	}
+> -
+> -done:
+> -	pr_info("Path: %s\n", !IS_ERR(path_nm) ? path_nm : "?");
+> -}
+> -
+>   static void show_faulting_vma(unsigned long address)
+>   {
+>   	struct vm_area_struct *vma;
+> @@ -176,7 +153,6 @@ void show_regs(struct pt_regs *regs)
+>   	 */
+>   	preempt_enable();
+
+Maybe we remove preempt* as well now (perhaps as a follow up patch) 
+since that was added by f731a8e89f8c78 "ARC: show_regs: lockdep: 
+re-enable preemption" where show_regs -> print_task_path_n_nm -> mmput 
+was triggering lockdep splat which is supposedly removed.
+
+>
+> -	print_task_path_n_nm(tsk);
+>   	show_regs_print_info(KERN_INFO);
+>
+>   	show_ecr_verbose(regs);
+> --
+> 2.37.1
+>
+>
+> _______________________________________________
+> linux-snps-arc mailing list
+> linux-snps-arc@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-snps-arc
+
