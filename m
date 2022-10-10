@@ -2,290 +2,148 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C92A65FA2A8
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Oct 2022 19:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA2425FA2BC
+	for <lists+linux-parisc@lfdr.de>; Mon, 10 Oct 2022 19:28:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbiJJRVO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 10 Oct 2022 13:21:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35500 "EHLO
+        id S229672AbiJJR2s (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 10 Oct 2022 13:28:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbiJJRVJ (ORCPT
+        with ESMTP id S229477AbiJJR2r (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 10 Oct 2022 13:21:09 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885464DF26;
-        Mon, 10 Oct 2022 10:21:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665422464; x=1696958464;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=M93sagOiE/afYlRfaYmB3FD+toccP4mfctXeQdrive4=;
-  b=iC9ZEb8J0G4P2xsMgdfVc0Vbcdv/38oSWktCg6gQxioAa84fWKdodHHy
-   iKUeVPjqRHMFeb3hVSPzuY/SLTcMPMnGs8OqvoWArwvG0jQ7sHNcfkDMc
-   CDqeNkTvS999Kmig8LubCohpRuD9rnsMypSQZvr8FbDDLiY/B6LxVKIDY
-   F0JQiBXIYGQmPkQnz/pXtw3swUh3kW1nuVZmvdz6azrjCt6DbUrPG6Uqo
-   JupjjqtDWRKSFfyZ6vjlvMxOPJDQH+olr3yiYdUxOZSCO59T5R6Nu0exL
-   hFi9SWc4w4NqoAMGFkMmZq9AmrLGAbl3yF1CLQP46NXjHWU/uSVRYspLg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10496"; a="304274073"
-X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="304274073"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2022 10:21:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10496"; a="577125185"
-X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="577125185"
-Received: from lkp-server01.sh.intel.com (HELO 2af0a69ca4e0) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 10 Oct 2022 10:20:57 -0700
-Received: from kbuild by 2af0a69ca4e0 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ohwSX-00024U-0X;
-        Mon, 10 Oct 2022 17:20:57 +0000
-Date:   Tue, 11 Oct 2022 01:20:12 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        linux-parisc@vger.kernel.org, linux-nvme@lists.infradead.org,
-        linux-iio@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, apparmor@lists.ubuntu.com,
-        amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- cd9fd78f5c11b5e165d9317ef11e613f4aef4dd1
-Message-ID: <6344544c.DxCKNhruy5lsz7YH%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+        Mon, 10 Oct 2022 13:28:47 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2097.outbound.protection.outlook.com [40.107.92.97])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1AC5760EE
+        for <linux-parisc@vger.kernel.org>; Mon, 10 Oct 2022 10:28:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=B0LsgKtotHchCqgb3bgHn+Y4qYXgsX5n5hscBUiZU2+YLIl+QaQ/pn/ny7gkhfxKjmFw7UmGiwf6tYi/PejD3caZPDs0oIMTvYuW9wyR/g7GA2bPAu4RuRboQVKWPMKbXT2HeSpZE/aUk9ZWoFY0QWbQOgQW07pyKYTAthzuafgiFtSicc+N4qEyHb14oDnG42OOvxEeepjCvNAoXynkm6vxhZ4WqZ4Mg4LLysXURshbhFVRnqpc4ahqpL/8OZuancJ+M88+WknL9tHRgJZ0soXXRiXGivgezJQcMotnmC/IysUk3ilccDCUC0qFVqAc/NeZLhhgZkHob+qLFWwwnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6SjCvkIzRIo4KuAYgJYxvzXMu2xUiNYj12OAtRBgGGE=;
+ b=g5jEVua/loEzcokR+ZEgFgzeH5GiEnomIsdXP6POFdnZ1vXmCmNMgtrMhr4HivMsXJ8mIP+s3GCBbDi8mmexbwKcnhFbUBaLG7J3UZ0OPlBZKUd96Ja+WFiCZPp79THmmsDxEL7mbS8NCupRddHL5fkYc0o+eHc03qjH9Jrw3JAHRRnByLxGCpZsyQQS9qqxOJovm0bvRf0Ek6mcqE+PR8zmubhQ1Ddu9ditK5kdn0YDJ1CI0hnQKlWB6CVQsBvk8J31weFsUE5v9zE5mz3lSJ0ewSsjBPDUFIDkJUO+ikXtx1h67UUEjvjPD2ASYTs25atZxTEO36k691p7G+V9CA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress-tech.com; dmarc=pass action=none
+ header.from=cypress-tech.com; dkim=pass header.d=cypress-tech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=NETORG5074309.onmicrosoft.com; s=selector2-NETORG5074309-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6SjCvkIzRIo4KuAYgJYxvzXMu2xUiNYj12OAtRBgGGE=;
+ b=OYd8CRz9w9MInSS52AN/R1V8jeJx6bbTYK5yUXAsBE4wdv+73Ga+RZWc/d2/wtASFnmPE1BfHQGFJQgttH1GfRBbKSf34OgxM8ewQrHZdrzNBSCc4NBrHmp2YVzhHwnV7q/RvOCSxXEKFjznaR5cQ+O7mYThLEmfjQV/bc7oON4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cypress-tech.com;
+Received: from MW4PR17MB5642.namprd17.prod.outlook.com (2603:10b6:303:12d::13)
+ by MN2PR17MB4093.namprd17.prod.outlook.com (2603:10b6:208:209::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.38; Mon, 10 Oct
+ 2022 17:28:44 +0000
+Received: from MW4PR17MB5642.namprd17.prod.outlook.com
+ ([fe80::9de5:86bc:9703:4fef]) by MW4PR17MB5642.namprd17.prod.outlook.com
+ ([fe80::9de5:86bc:9703:4fef%5]) with mapi id 15.20.5709.015; Mon, 10 Oct 2022
+ 17:28:44 +0000
+From:   Jesse Dougherty <jesse@cypress-tech.com>
+Subject: <Plug> HP PA-RISC / IA64 hardware platform for Linux Debian, Gentoo,
+ NetBSD, OpenBSD and HP-UX Unix
+To:     linux-parisc@vger.kernel.org
+Message-ID: <fc9cd72c-c130-0b0e-4deb-d6366a436fb9@cypress-tech.com>
+Date:   Mon, 10 Oct 2022 13:28:41 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,SUSPICIOUS_RECIPS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Language: en-US
+X-ClientProxiedBy: BLAPR05CA0025.namprd05.prod.outlook.com
+ (2603:10b6:208:335::6) To MW4PR17MB5642.namprd17.prod.outlook.com
+ (2603:10b6:303:12d::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR17MB5642:EE_|MN2PR17MB4093:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24eed7d1-fab7-4864-0bdf-08daaae4e1d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 6iKhV619s/ruP8CROLdOT7aF9X6JhoHARBi/yiip/sHnw5qSCdy0SxJcq6ra23I7+r+PYmawVgXdYRJoRzOOn03eu1wFGD1czykxHdw0Sb4ZnsGbTAKkwoNdOpcewyqHypWM2Is+kGpaqaEXyemksiZ4BJ0MGuFFSkDdUQ2gMwApKdsR2Nye6with+88RHYxIr5BUxw7QMXIdd+R6ptRAfk3U8ltgheJn30nD4evxADSsOyO3e013wYBWl3y5blqw33J6/ouv32H9qJfJc+CRPTaEDc1L/8TDESOQkznzZFZNs1vuwlt0a6Wld0Uo7ekErhXvzcHzFvBx2fhiOHEpxlLjwiT6Z69sL55bxNkDuKhLYcaN0jbocrnc8Kn3nThE2nHI6owBPiTxSrwQJqYYKwRXV0WA3Sxte0XQCXCXZLDR8vwBZarE85qn2YDWLH72UtoKbv5WubpOiDsU+f6Ee7/g5oy6N6b/DTHYn16XUloj2oxrkLSNX9GrdeF+Vg5ZPvlKtGRbfZ3u62N4O1AMs5fx0qa2c4O5co7Ro74y8iZVVg0YxW/5v530Wn2PXlQJFHN0onwz0yrzWtHjZY51fYv5LUhX+7qLtpuDY/I5fMh9ixOJSV3GJ6aN8fB71cxtFSAZ35j7VTiFuktuIjJ3lACAgLKTSVKTa5NIRVplyYXkFvCZwe/Yhp+08zRWxvnjJRY7W1LPvbnjEFz29uyZNDm30DFiuXMiyTLh8ww4bNcRjMCM8OW3PH6E8XEvcPNYxrsA2EEQqdbmBZKIEXl0C39BnijheJVTIltufkjOcvj58q383wPU3ecKeK+gKjQzN2vHOZ11tgTTiaI3FP3gw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR17MB5642.namprd17.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(136003)(376002)(39830400003)(346002)(366004)(396003)(451199015)(8936002)(31686004)(52116002)(86362001)(316002)(66946007)(8676002)(66476007)(31696002)(15974865002)(2616005)(36756003)(38100700002)(66556008)(83380400001)(6486002)(6506007)(478600001)(41300700001)(6666004)(6916009)(4744005)(2906002)(186003)(5660300002)(6512007)(43740500002)(45980500001)(18886075002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L09uYXRvMTJxZndTSk8rYVlUazZlTkhPS1BRQi9BZFBRNmxVNWxvODd6dENs?=
+ =?utf-8?B?RUtvcTA4K0QrdkU0L01MaGdiSlVOZ3FqOEM3bnlpMUp4OXlKQzk5aVgrVm9k?=
+ =?utf-8?B?eHRPMGZXaVdGVUlPS3oyR2Q0ZWRLbG5STkg1ZENTWTZEYjVUeHVkYUhnRU9l?=
+ =?utf-8?B?ZDBLTUt4WnJybVBoTGk3Uk82OWtlMTdZSStZbmc5U0NJbWRGTGk0SG55S3Zk?=
+ =?utf-8?B?bUxhQVJVc3BxYVg0U21ZZGJ5b2ZzbGlXSER6SnFrRkFJdktGUWl4QXpwY0E1?=
+ =?utf-8?B?VlQ5RlJhdGtCRzRaM3lSN3V1VnhCYXpzTEs0cVdWZXhlQ0ZZS2R6cEJreVNF?=
+ =?utf-8?B?Z0FtL2d0MEJPUG82bmZ4NHpsMG1MVGpUY0xFS3NXaXY5dlJyV0QrTlB6cFpv?=
+ =?utf-8?B?QUJzOWF4b2tURDVUekxhZGNvdFhaUmNzZXR6b0NseWtJa2k0d3BIWlVWRm5p?=
+ =?utf-8?B?VWlYVXdMcjRNMXM5U3FtbVBwUkdFaEZiT3FPSHpXKzlJaWV0K2kzWHZZZzJ2?=
+ =?utf-8?B?a1l6UG5aSDd2SlM3dU8vdW9NTk5iQVBRWGpUVmJwek91ZUlVWkp6Uis1bXU5?=
+ =?utf-8?B?ZURkdFlmVEEvSWJlNlk0eTJ2NVBuYXVZN2kvdHFMNytjS1hpMWNKUmwwTUFC?=
+ =?utf-8?B?ejFBei9iYWJsS1pTM0h2WXA4SHNGRSs1QzFEbTBNNDVweG11Z1U5cTEyQ3J0?=
+ =?utf-8?B?OXdOeFQ5VWtyMElPQk8xb09FbXY2MjFqVXJGaXg2b0xmSElWZTRjMFFhNUhq?=
+ =?utf-8?B?ekxsOEhaWENadG9ENi9sajFJblExOHVaYVg4OHFUQXM4di9RSEtPaW52VzBG?=
+ =?utf-8?B?ZVhCSDRTejlLdU9GZTNVVDExeDAvZTJDZGU2S3N6MmxzVzhyRGFLbjVmNWhW?=
+ =?utf-8?B?UVNWSXJ0dHhTUkg0aFRZdHhIV244MHZrdEtXODZMSm1TTlpDaFMwcjJPaFRC?=
+ =?utf-8?B?OWFqWFlteWxkNlZub1dQS290VGJ1M1dxd3I3T0IxUzU0Z0p0MTlaVlk1QVZz?=
+ =?utf-8?B?RUhxVGdYcTVWZHZqT3VTNWkvTHNyOGpqN1RqM01Vem1TTGNBa2d4YU5HWThl?=
+ =?utf-8?B?aXY5WFVFVmU4aTBiMmdQRUoydzRSQnYzelo2ZDRMd0g5OG1BdWprRFRjdWEr?=
+ =?utf-8?B?K2V6ZHl2ZHl6bXRQNk91ZjEvRjA5WXNkZzhzYStuQkR2VGJtR3lBZFFNS2I1?=
+ =?utf-8?B?cFFuOFNVNjgrNG9PanUvSEdTM1U5czlkSS9xT3ZQS3VZZWF4V3FuVkZoVHBq?=
+ =?utf-8?B?NWRjWkpQVjA2a1QreXI4S3NIZmVSMUplRndmM1g0Rm5UNDZ2RWRnK0MzZ0VC?=
+ =?utf-8?B?ZjJqbUpBZHUxNDFFK28rYUNsRkZXbDNIQWkvMy9aSlVFRlNwQjBiUTFTdWRQ?=
+ =?utf-8?B?dHVrcm50amVLZ1hFUXZZVWxqWmNCQVVrUUJ0K3R4UVZBRC9WdjVhN2hKLzJL?=
+ =?utf-8?B?QzdLanUyTHlTc01Fd2N5TzNSeEFOcVhLbEhlcWR1eGg5Z2tJT213eGVYTnNp?=
+ =?utf-8?B?cDJUb3RTdVRHVmJoNmtzaEVGeHdkTnY1a1JNOHJIMWR2TmplNU1Gd2xJdWhE?=
+ =?utf-8?B?SHZEYVBXZGlwS1NESnYrSUhBMHlUV01LT1ZXMHJxREkrUGR3T08xTzJib3kr?=
+ =?utf-8?B?TmpHc1dZTzRaS3Zjb3BtT0dGcjgyWld0ZDlLOXl4d2FoSEl4WWZtdk9ROVRB?=
+ =?utf-8?B?OFcrbFVWSnNTeGRxU0krYzZ4UWRMeGtka1k3a05TcW5jQjNoNnArWXcwSW93?=
+ =?utf-8?B?SGJVNklNT0J2QUhBMWw5UWV0L3ZuZWNOUmZ1djA3Q2wvZ3oyYVFmYVpaanNX?=
+ =?utf-8?B?VzNOaWMyUmFCODQ2S21VZkdoM2d3cGlVcGF6dWUwOU51L25kbmpHcmxybHdN?=
+ =?utf-8?B?ZGxPcVZHM05ETkZBZ0FHUVZyU0g5M0V4MXdlaWRsajlaSWJuYVl0c0F4YkpP?=
+ =?utf-8?B?amNJdW9HVyt1VXBrUUI0T0tNWkVVME9PaTR6SGt1MFpnQXpNUUN1ZHlNckFW?=
+ =?utf-8?B?SnptejNvSDR1SThRU0ZyY0p6WDlmTmJxMUo4MVJJZlNPVENRaENiYjdsekZy?=
+ =?utf-8?B?YmNZNXZuRHM5a0hvTk84bFlKNTBZRFFGZnZjTXVPcHgzM1BzU3dlSFhQYzJo?=
+ =?utf-8?B?ODNjT0hlak5WRmRscWNCdm95M0Nib3dEUmg0Q2lUZlJIaWs0R05hcEtydzEr?=
+ =?utf-8?B?bDg4dkhiaTYvM2hOekg4ZXFsanZ4dDhhV0hEVVFhdVNYcHl4b2JTY21YQlFi?=
+ =?utf-8?B?N3NvZ3JjTy9kQXc0VHhUYzFYUFJRPT0=?=
+X-OriginatorOrg: cypress-tech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24eed7d1-fab7-4864-0bdf-08daaae4e1d1
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR17MB5642.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2022 17:28:44.5591
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: daf09015-3d9a-4dbb-b0c5-310700bdf5cb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +R4AE8iXyYJXkE+TKLAGi4LiwszlIIqb/x1fcwOYvv+jBB0+7FKiwT3fWt7avdRSz+H21+jMqx6BZQKfleN55g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR17MB4093
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: cd9fd78f5c11b5e165d9317ef11e613f4aef4dd1  Add linux-next specific files for 20221010
+Hi, I'm Jesse at Cypress Technology Inc. We at Cypress sell HP hardware. 
+Below are some links to HP PA-RISC and IA64 boxes that support the Linux 
+Debian, Gentoo, NetBSD, OpenBSD Linux and HP-UX Unix platforms. If you 
+are in need of systems, feel free to email back with any question or 
+requests. We also sell / buy all boxes and parts that HP made for the 
+HP-UX / Unix (PA-RISC & ia64) line.
 
-Error/Warning reports:
+PA-RISC
+www.ebay.com/itm/385130495455
+www.ebay.com/itm/384211227917
 
-https://lore.kernel.org/linux-doc/202209201326.sY9kHOLm-lkp@intel.com
-https://lore.kernel.org/linux-doc/202209231933.vcyETtUl-lkp@intel.com
-https://lore.kernel.org/linux-doc/202210070057.NpbaMyxB-lkp@intel.com
-https://lore.kernel.org/linux-mm/202210090954.pTR6m6rj-lkp@intel.com
-https://lore.kernel.org/llvm/202209220019.Yr2VuXhg-lkp@intel.com
+IA64
+www.ebay.com/itm/384272059488
+www.ebay.com/itm/384211228177
 
-Error/Warning: (recently discovered and may have been fixed)
+IA64 - For Telco / Data Center users / 48v DC
+www.ebay.com/itm/384966825704
 
-Warning: Documentation/translations/zh_CN/devicetree/kernel-api.rst references a file that doesn't exist: Documentation/Devicetree/kernel-api.rst
-Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/clock/microchip,mpfs.yaml
-Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/mtd/amlogic,meson-nand.txt
-arch/arm64/kernel/alternative.c:199:6: warning: no previous prototype for 'apply_alternatives_vdso' [-Wmissing-prototypes]
-arch/arm64/kernel/alternative.c:295:14: warning: no previous prototype for 'alt_cb_patch_nops' [-Wmissing-prototypes]
-arch/loongarch/mm/init.c:166:24: warning: variable 'new' set but not used [-Wunused-but-set-variable]
-arch/parisc/kernel/setup.c:78 setup_cmdline() warn: curly braces intended?
-drivers/gpu/drm/amd/amdgpu/../display/dc/virtual/virtual_link_hwss.c:40:6: warning: no previous prototype for 'virtual_disable_link_output' [-Wmissing-prototypes]
-drivers/iio/adc/mcp3911.c:252 mcp3911_write_raw() error: buffer overflow 'mcp3911_osr_table' 8 <= 31
-drivers/iio/adc/mcp3911.c:499 mcp3911_probe() warn: passing zero to 'PTR_ERR'
-drivers/nvme/target/loop.c:578 nvme_loop_create_ctrl() warn: 'opts->queue_size - 1' 18446744073709551615 can't fit into 65535 'ctrl->ctrl.sqsize'
-drivers/nvme/target/loop.c:578 nvme_loop_create_ctrl() warn: 'opts->queue_size - 1' 4294967295 can't fit into 65535 'ctrl->ctrl.sqsize'
-fs/ext4/super.c:1744:19: warning: 'deprecated_msg' defined but not used [-Wunused-const-variable=]
-include/linux/compiler_types.h:357:45: error: call to '__compiletime_assert_422' declared with attribute error: FIELD_GET: mask is not constant
-include/linux/thread_info.h:217: undefined reference to `riscv_cbom_block_size'
-riscv64-linux-ld: include/linux/thread_info.h:217: undefined reference to `riscv_cbom_block_size'
-security/apparmor/policy_unpack.c:1089 unpack_profile() warn: passing zero to 'ERR_PTR'
-security/apparmor/policy_unpack.c:548 unpack_trans_table() error: uninitialized symbol 'table'.
+Thanks
+Jesse Dougherty
+Resellers of HP hardware
+Jesse@cypress-tech.com
+www.cypress-tech.com
 
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-randconfig-r002-20221010
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-virtual-virtual_link_hwss.c:warning:no-previous-prototype-for-virtual_disable_link_output
-|-- alpha-randconfig-r006-20221010
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-virtual-virtual_link_hwss.c:warning:no-previous-prototype-for-virtual_disable_link_output
-|-- arm-allyesconfig
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-virtual-virtual_link_hwss.c:warning:no-previous-prototype-for-virtual_disable_link_output
-|-- arm64-allyesconfig
-|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-alt_cb_patch_nops
-|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-apply_alternatives_vdso
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-virtual-virtual_link_hwss.c:warning:no-previous-prototype-for-virtual_disable_link_output
-|-- arm64-randconfig-c043-20221010
-|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-alt_cb_patch_nops
-|   `-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-apply_alternatives_vdso
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-virtual-virtual_link_hwss.c:warning:no-previous-prototype-for-virtual_disable_link_output
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-defconfig
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-a011-20221010
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-a012-20221010
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-a014-20221010
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-a016-20221010
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-c001-20221010
-|   `-- include-linux-compiler_types.h:error:call-to-__compiletime_assert_NNN-declared-with-attribute-error:FIELD_GET:mask-is-not-constant
-|-- i386-randconfig-c021-20221010
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-m021-20221010
-|   |-- arch-x86-kernel-apic-apic.c-generic_processor_info()-warn:always-true-condition-(num_processors-()-)-(-u32max-)
-|   |-- drivers-iio-adc-mcp3911.c-mcp3911_probe()-warn:passing-zero-to-PTR_ERR
-|   |-- drivers-iio-adc-mcp3911.c-mcp3911_write_raw()-error:buffer-overflow-mcp3911_osr_table
-|   |-- drivers-nvme-target-loop.c-nvme_loop_create_ctrl()-warn:opts-queue_size-can-t-fit-into-ctrl-ctrl.sqsize
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-s051-20221010
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-int-priv1-got-restricted-__le16-addressable-usertype-fc_len
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-int-tag-got-restricted-__le16-addressable-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-short-usertype-tag-got-restricted-__le16-addressable-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-fc_len-got-unsigned-short-usertype
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-fc_tag-got-unsigned-short-usertype
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-int-tag-got-restricted-__le16-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:restricted-__le16-degrades-to-integer
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- ia64-allmodconfig
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-virtual-virtual_link_hwss.c:warning:no-previous-prototype-for-virtual_disable_link_output
-|-- ia64-randconfig-r013-20221010
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-virtual-virtual_link_hwss.c:warning:no-previous-prototype-for-virtual_disable_link_output
-|-- ia64-randconfig-s041-20221010
-clang_recent_errors
-|-- arm-sama7_defconfig
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- arm64-randconfig-r004-20221010
-|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-function-apply_alternatives_vdso
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- hexagon-defconfig
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- hexagon-randconfig-r041-20221010
-|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmnewmap
-|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmsetvec
-|   `-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-memset
-|-- i386-randconfig-a001-20221010
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- i386-randconfig-a003-20221010
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- i386-randconfig-a004-20221010
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- i386-randconfig-a005-20221010
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- powerpc-mpc512x_defconfig
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- powerpc-mpc834x_itxgp_defconfig
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- powerpc-mpc866_ads_defconfig
-|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-A_c-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-B_c-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- arch-powerpc-math-emu-fctiw.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- arch-powerpc-math-emu-fctiwz.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- arch-powerpc-math-emu-fsel.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- powerpc-mpc885_ads_defconfig
-|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-A_c-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-B_c-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- arch-powerpc-math-emu-fctiw.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
-|   |-- arch-powerpc-math-emu-fctiwz.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
-|   `-- arch-powerpc-math-emu-fsel.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
-|-- powerpc-randconfig-r033-20221010
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-virtual-virtual_link_hwss.c:warning:no-previous-prototype-for-function-virtual_disable_link_output
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- x86_64-randconfig-a001-20221010
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- x86_64-randconfig-a003-20221010
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- x86_64-randconfig-a004-20221010
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- x86_64-randconfig-r031-20221010
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-
-elapsed time: 733m
-
-configs tested: 70
-configs skipped: 27
-
-gcc tested configs:
-csky                              allnoconfig
-arm                           imxrt_defconfig
-i386                 randconfig-a012-20221010
-sh                           sh2007_defconfig
-arc                               allnoconfig
-alpha                             allnoconfig
-sh                                  defconfig
-riscv                             allnoconfig
-i386                 randconfig-a011-20221010
-arc                  randconfig-r043-20221010
-i386                 randconfig-a013-20221010
-powerpc                     tqm8541_defconfig
-m68k                       m5275evb_defconfig
-xtensa                    xip_kc705_defconfig
-x86_64               randconfig-a011-20221010
-i386                 randconfig-a015-20221010
-i386                 randconfig-a014-20221010
-x86_64                         rhel-8.3-kunit
-riscv                randconfig-r042-20221010
-x86_64               randconfig-a012-20221010
-x86_64               randconfig-a013-20221010
-sh                          sdk7780_defconfig
-x86_64               randconfig-a016-20221010
-m68k                                defconfig
-i386                 randconfig-a016-20221010
-arm                       omap2plus_defconfig
-x86_64               randconfig-a014-20221010
-mips                          rb532_defconfig
-x86_64               randconfig-a015-20221010
-s390                 randconfig-r044-20221010
-parisc64                         alldefconfig
-parisc                generic-64bit_defconfig
-arm                        oxnas_v6_defconfig
-powerpc                 linkstation_defconfig
-arm                         at91_dt_defconfig
-nios2                         10m50_defconfig
-nios2                            alldefconfig
-powerpc                     ep8248e_defconfig
-powerpc                    sam440ep_defconfig
-powerpc                     sequoia_defconfig
-i386                 randconfig-c001-20221010
-arm                                 defconfig
-i386                                defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-ia64                             allmodconfig
-i386                             allyesconfig
-
-clang tested configs:
-x86_64               randconfig-a002-20221010
-x86_64               randconfig-a001-20221010
-x86_64               randconfig-a003-20221010
-i386                 randconfig-a003-20221010
-i386                 randconfig-a002-20221010
-i386                 randconfig-a001-20221010
-x86_64               randconfig-a006-20221010
-i386                 randconfig-a006-20221010
-hexagon              randconfig-r045-20221010
-powerpc                     mpc512x_defconfig
-x86_64               randconfig-a004-20221010
-i386                 randconfig-a004-20221010
-hexagon                             defconfig
-arm                          collie_defconfig
-x86_64               randconfig-a005-20221010
-arm                       versatile_defconfig
-hexagon              randconfig-r041-20221010
-i386                 randconfig-a005-20221010
-arm                           sama7_defconfig
-powerpc               mpc834x_itxgp_defconfig
-mips                        bcm63xx_defconfig
-powerpc                  mpc866_ads_defconfig
-powerpc                  mpc885_ads_defconfig
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
