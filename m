@@ -2,72 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C9075FDE26
-	for <lists+linux-parisc@lfdr.de>; Thu, 13 Oct 2022 18:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F6F5FE52B
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Oct 2022 00:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229885AbiJMQVf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 13 Oct 2022 12:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59438 "EHLO
+        id S229608AbiJMWTV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 13 Oct 2022 18:19:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbiJMQVd (ORCPT
+        with ESMTP id S229502AbiJMWTT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 13 Oct 2022 12:21:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CBCBA3F69;
-        Thu, 13 Oct 2022 09:21:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 182AB6173A;
-        Thu, 13 Oct 2022 16:21:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5671C433D6;
-        Thu, 13 Oct 2022 16:21:28 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="GP4P33Go"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1665678086;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=kPntWr7A6bA616PExnbnx5reDbccdV4V+F7u1oTVbdw=;
-        b=GP4P33GoTZTXwgHWO1z/FqyjryY8qsqfXNBCumID69G06rmzAbuflrmGXm0knLxOwy6AOV
-        r5Se8is8rcJ8teWZq2zoRDvfJGTZawQk7FulxMoGHupIBrT9us1rnRt6jRmg3GIbXoJ/w6
-        20UjSRmQn/6S5nyrDvb7rvSacSvCVHE=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5f752f1b (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Thu, 13 Oct 2022 16:21:25 +0000 (UTC)
-Date:   Thu, 13 Oct 2022 10:21:18 -0600
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>
-Cc:     Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Thomas Graf <tgraf@suug.ch>, kasan-dev@googlegroups.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-nvme@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        loongarch@lists.linux.dev, netdev@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v6 5/7] treewide: use get_random_u32() when possible
-Message-ID: <Y0g6/sIJMq/JRe6y@zx2c4.com>
-References: <20221010230613.1076905-1-Jason@zx2c4.com>
- <3026360.ZldQQBzMgz@eto.sf-tec.de>
- <20221013101635.GB11818@breakpoint.cc>
- <11986571.xaOnivgMc4@eto.sf-tec.de>
+        Thu, 13 Oct 2022 18:19:19 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F43A18BE2C;
+        Thu, 13 Oct 2022 15:19:18 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id n12so4903577wrp.10;
+        Thu, 13 Oct 2022 15:19:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eWZO5WnwoOpM53BSawLAhm+17muuf4rDOcrXPg61DsU=;
+        b=Qqwxjd5fM+3Tl0CF42MlCBv0ZHKMLr4H3dDBr2R4Uddzo1fu8IfPXR4d6RY639jn3L
+         UniozUcSUa0tomcaB8rHCRSmxz0guNaLDq8DE0b5768+4vELuZ1a2VKZJoY7RwWdDsYp
+         /UebX1fyTIQqlc/Iohw0TjOVFZC9drQN6XQA0buhzGyZAI3orie0NR0eDS8olkWF39Zr
+         nQCk8kURKIwFN8sz8Il6nvX4hOpUdAX6Nk6FweV9BtWr5CNY1xdIGPgo4RWeF/9cFycB
+         8WM+cbV92versPcs9jGVGUwz7i6/ihDZpUYmT1TM7GehTtVtve8tRbkCe92scsTj+6Mx
+         PdrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eWZO5WnwoOpM53BSawLAhm+17muuf4rDOcrXPg61DsU=;
+        b=JCNzeudFJb2MtC6cqxq7ngJfDXyigoyljovCoJYecjxqN7P3/YMWnSszwujHdpG95h
+         cte+he0wh+OxnVAWE2R6YW+s5s+fMnDKH+GSuS00GgXKqIfkMo9akLfJQ5vld9c8fzvy
+         5kVC8RIF/h9Go1P4nHL9I6oW+RqDCyZzrGVIc/r3WfaWOiBsHLVHJkQVMBS2vRcJdHLY
+         yvmu7uX4/TmLcclMyiUrJsOxT7giCiHaaZn1xyooudNmYX1WIqD/M65s1UcisQULJhIk
+         oDOaFAdYJFqP7t6Qjq+DjBb04tF4x3xOMF07FyBFAUO8Vd4ZBNm0UGteKjfkxSQMSYdB
+         5wlQ==
+X-Gm-Message-State: ACrzQf36M+XAwu9Fv8c+K6TazYvpfKrRXQTPBJrhsb60puDDQqc7NJ56
+        sIMognxAuWh5gXa/xiOy2YE=
+X-Google-Smtp-Source: AMsMyM5T/Y1MImg0a4Kir6/WdNfneT469otZ9Tn10qUf9O79uLuYlnTv8o1gAsdrZYyo8Rc7pQ150g==
+X-Received: by 2002:adf:fd04:0:b0:22e:4bf6:4a08 with SMTP id e4-20020adffd04000000b0022e4bf64a08mr1402434wrr.619.1665699556688;
+        Thu, 13 Oct 2022 15:19:16 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id c16-20020a5d4cd0000000b002302dc43d77sm478674wrt.115.2022.10.13.15.19.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Oct 2022 15:19:16 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] parisc: Fix spelling mistake "mis-match" -> "mismatch"
+Date:   Thu, 13 Oct 2022 23:19:15 +0100
+Message-Id: <20221013221915.128286-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <11986571.xaOnivgMc4@eto.sf-tec.de>
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,22 +70,51 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 13, 2022 at 01:40:40PM +0200, Rolf Eike Beer wrote:
-> Am Donnerstag, 13. Oktober 2022, 12:16:35 CEST schrieb Florian Westphal:
-> > Rolf Eike Beer <eike-kernel@sf-tec.de> wrote:
-> > > Florian, can you comment and maybe fix it?
-> > 
-> > Can't comment, do not remember -- this was 5 years ago.
-> > 
-> > > Or you wanted to move the variable before the loop and keep the random
-> > > state between the loops and only reseed when all '1' bits have been
-> > > consumed.
-> > Probably.  No clue, best to NOT change it to not block Jasons series and
-> > then just simplify this and remove all the useless shifts.
-> 
-> Sure. Jason, just in case you are going to do a v7 this could move to u8 then.
+There are several spelling mistakes in kernel error messages. Fix them.
 
-Indeed I think this is one to send individually to netdev@ once the tree
-opens there for 6.2.
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/parisc/eisa_enumerator.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Jason
+diff --git a/drivers/parisc/eisa_enumerator.c b/drivers/parisc/eisa_enumerator.c
+index f54a6f450391..f0cb31198a8f 100644
+--- a/drivers/parisc/eisa_enumerator.c
++++ b/drivers/parisc/eisa_enumerator.c
+@@ -393,7 +393,7 @@ static int parse_slot_config(int slot,
+ 		}
+ 		
+ 		if (p0 + function_len < pos) {
+-			printk(KERN_ERR "eisa_enumerator: function %d length mis-match "
++			printk(KERN_ERR "eisa_enumerator: function %d length mismatch "
+ 			       "got %d, expected %d\n",
+ 			       num_func, pos-p0, function_len);
+ 			res=-1;
+@@ -407,13 +407,13 @@ static int parse_slot_config(int slot,
+ 	}
+ 	
+ 	if (pos != es->config_data_length) {
+-		printk(KERN_ERR "eisa_enumerator: config data length mis-match got %d, expected %d\n",
++		printk(KERN_ERR "eisa_enumerator: config data length mismatch got %d, expected %d\n",
+ 			pos, es->config_data_length);
+ 		res=-1;
+ 	}
+ 	
+ 	if (num_func != es->num_functions) {
+-		printk(KERN_ERR "eisa_enumerator: number of functions mis-match got %d, expected %d\n",
++		printk(KERN_ERR "eisa_enumerator: number of functions mismatch got %d, expected %d\n",
+ 			num_func, es->num_functions);
+ 		res=-2;
+ 	}
+@@ -451,7 +451,7 @@ static int init_slot(int slot, struct eeprom_eisa_slot_info *es)
+ 		}
+ 		if (es->eisa_slot_id != id) {
+ 			print_eisa_id(id_string, id);
+-			printk(KERN_ERR "EISA slot %d id mis-match: got %s", 
++			printk(KERN_ERR "EISA slot %d id mismatch: got %s",
+ 			       slot, id_string);
+ 			
+ 			print_eisa_id(id_string, es->eisa_slot_id);
+-- 
+2.37.3
+
