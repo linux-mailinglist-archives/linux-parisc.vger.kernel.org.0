@@ -2,124 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93DF55FF54C
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Oct 2022 23:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4175F5FF675
+	for <lists+linux-parisc@lfdr.de>; Sat, 15 Oct 2022 00:56:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbiJNVYT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 14 Oct 2022 17:24:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55470 "EHLO
+        id S229485AbiJNW4D (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 14 Oct 2022 18:56:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229955AbiJNVYD (ORCPT
+        with ESMTP id S229491AbiJNW4C (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 14 Oct 2022 17:24:03 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08891DD890;
-        Fri, 14 Oct 2022 14:23:55 -0700 (PDT)
-Received: from localhost.localdomain (178.176.75.138) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 15 Oct
- 2022 00:23:08 +0300
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-To:     Oleg Nesterov <oleg@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, <linux-parisc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 09/13] parisc: ptrace: user_regset_copyin_ignore() always returns 0
-Date:   Sat, 15 Oct 2022 00:22:31 +0300
-Message-ID: <20221014212235.10770-10-s.shtylyov@omp.ru>
-X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20221014212235.10770-1-s.shtylyov@omp.ru>
-References: <20221014212235.10770-1-s.shtylyov@omp.ru>
+        Fri, 14 Oct 2022 18:56:02 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0798C63850
+        for <linux-parisc@vger.kernel.org>; Fri, 14 Oct 2022 15:55:59 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id h185so5520463pgc.10
+        for <linux-parisc@vger.kernel.org>; Fri, 14 Oct 2022 15:55:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=RHi4HpCHLZwzmmVvLyoysEi/wEu4tLve7AUDKL5ilC8=;
+        b=TfDcFRxoh9JSWdkgsluQPfc445gYvwHsYt5Zprm5b/xnRRFf7WIG1yIKVO/urwJaQe
+         XrJvKsMSxt3JvwSaecDb9OScGAt7js3FyJM+cl0jalhf9a6+KIy1TmutAwPU0VRV+JyZ
+         tZz8WYSX1F6WdbhexdpZPCC1Rnd2Y44Z6Wd4a+DtMeJf0ciWkWKTrSpf4vW1LIRn1zEr
+         EgsHmKWD5wcgXLbYwM71UrjZ8oeY3EvqPIjruk3A1nbHwxdbseICvJHkIBWnGufoCMUf
+         Ecq3JK+nclHnsTh93hhoBN9EPRndSqRSgP5UA+gOrKsVotC1DPqb2wWGV5PVnmZdMt3I
+         FxvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RHi4HpCHLZwzmmVvLyoysEi/wEu4tLve7AUDKL5ilC8=;
+        b=m/HfsWSCCTkr6xvekCt6lI1q5ct1Ggp3Zm8qZ2xgceVl0ccETZuzMQxggFlLfe5+w7
+         Y0q9oKcAtdTu9vBun2LNcf39cE5bmeydkPW4lVRVPW0qJ0d79JZ1LSKMm/KvMwwoFARm
+         DuzHSwcNLkkSwUYhhYrQwqJHmAESbw9WTsQOUdunnbgK5Sweg9/WyiCUDG6qO613SqFT
+         WjT1h2x/viLgJlxS8U9VeBJDbHlO24Zcc5H7kYaQhct82u7yhhIqgbHHleyvEy6fduLF
+         8nsgpytgawqVhuZcfcmgjRSo4LwxMyXrLtVU/NmtHUQbHQr0umrSf2Olb/dIsi9xdAxK
+         GTaA==
+X-Gm-Message-State: ACrzQf2RFA27J92yCnTlmm0DmTFVZi5ck0MZl0YJCBN0ivTVrugGXmMo
+        VniALrxtiso9XUANKEdieg7ts2s6bcGvuBpovzh5rrRYxdk=
+X-Google-Smtp-Source: AMsMyM57NVR+Ef0sHZvHcjtWOeZ1z+6TfoejunFXJgizb6UKuxBGAf7JuPVffakqpcCMSV9pihbZnQ09SfgJLUY1XIs=
+X-Received: by 2002:a63:2215:0:b0:43b:e00f:7c7b with SMTP id
+ i21-20020a632215000000b0043be00f7c7bmr111875pgi.511.1665788159380; Fri, 14
+ Oct 2022 15:55:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [178.176.75.138]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/14/2022 21:00:39
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 173137 [Oct 14 2022]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 500 500 6cc86d8f5638d79810308830d98d6b6279998c49
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: omp.ru:7.1.1;127.0.0.199:7.1.2;178.176.75.138:7.7.3;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.75.138
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/14/2022 21:03:00
-X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 10/14/2022 3:23:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <Y0mwJrtT+XyXAjQS@p100>
+In-Reply-To: <Y0mwJrtT+XyXAjQS@p100>
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Fri, 14 Oct 2022 18:55:46 -0400
+Message-ID: <CAEdQ38FKzAPjJpJikaiE6UuwuVf-MgKBT4oU7GeuUQP4RPoaJg@mail.gmail.com>
+Subject: Re: [PATCH] parisc: fbdev/stifb: Align graphics memory size to 4MB
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-user_regset_copyin_ignore() always returns 0, so checking its result seems
-pointless -- don't do this anymore...
+On Fri, Oct 14, 2022 at 3:14 PM Helge Deller <deller@gmx.de> wrote:
+>
+> Independend of the current graphics resolution, adjust the reported
 
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
----
- arch/parisc/kernel/ptrace.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
-index 96ef6a6b66e5..69c62933e952 100644
---- a/arch/parisc/kernel/ptrace.c
-+++ b/arch/parisc/kernel/ptrace.c
-@@ -424,8 +424,9 @@ static int fpr_set(struct task_struct *target,
- 	ubuf = u;
- 	pos *= sizeof(reg);
- 	count *= sizeof(reg);
--	return user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
--					 ELF_NFPREG * sizeof(reg), -1);
-+	user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
-+				  ELF_NFPREG * sizeof(reg), -1);
-+	return 0;
- }
- 
- #define RI(reg) (offsetof(struct user_regs_struct,reg) / sizeof(long))
-@@ -543,8 +544,9 @@ static int gpr_set(struct task_struct *target,
- 	ubuf = u;
- 	pos *= sizeof(reg);
- 	count *= sizeof(reg);
--	return user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
--					 ELF_NGREG * sizeof(reg), -1);
-+	user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
-+				  ELF_NGREG * sizeof(reg), -1);
-+	return 0;
- }
- 
- static const struct user_regset native_regsets[] = {
-@@ -606,8 +608,9 @@ static int gpr32_set(struct task_struct *target,
- 	ubuf = u;
- 	pos *= sizeof(reg);
- 	count *= sizeof(reg);
--	return user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
--					 ELF_NGREG * sizeof(reg), -1);
-+	user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
-+				  ELF_NGREG * sizeof(reg), -1);
-+	return 0;
- }
- 
- /*
--- 
-2.26.3
-
+Typo: independent
