@@ -2,68 +2,68 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC6FE5FF3D2
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Oct 2022 20:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B8E75FF3D9
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Oct 2022 20:53:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230158AbiJNSuW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 14 Oct 2022 14:50:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35936 "EHLO
+        id S229534AbiJNSxh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 14 Oct 2022 14:53:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbiJNSuV (ORCPT
+        with ESMTP id S231183AbiJNSxf (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 14 Oct 2022 14:50:21 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2AD8C90F3;
-        Fri, 14 Oct 2022 11:50:16 -0700 (PDT)
+        Fri, 14 Oct 2022 14:53:35 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CE61D2F64
+        for <linux-parisc@vger.kernel.org>; Fri, 14 Oct 2022 11:53:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1665773410;
-        bh=ZtvchjV4WF9IiOG5tVyll+Nvgxr9HV1SgnVf5l+pb4k=;
+        s=badeba3b8450; t=1665773608;
+        bh=v4oE7g1w0BDbzUVHCgPm+mCLtQWtTUIE7NWu7FBZ3pM=;
         h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=ItMTyvFc7np40tDJTJxjwPACVJyITg/E3doYWZc5pJ36Ru2iEjDti1hkzIcAJ7SMh
-         meY29eaSVeLdFW3A+nKWlb7eCRNiJVtqFWRAFDnr4jpHDf0evHFrCIY2xcEAY8O8Ou
-         L+zHn7Zb4aBg0aeBYdBzwCoOEnz3zQKBlRfBKgOs=
+        b=IW5SkiMTL05NdBiWXJ8Qw1znXr8FtIT/rNm7OT9f5EEagZBSKkfCEVliXBzeJYz0b
+         OMPT5RppOrivGI+153nMSSVm6CShl6rGXW7IyeIH0b5gT/VnzLHHVRZsBRrayDA8co
+         wBfvnkEgQXWldOZmWLtGLMNqyv+/PEWNHp1sWN4g=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100 ([92.116.188.185]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MOzSu-1oVBja0kyS-00PQ5k; Fri, 14
- Oct 2022 20:50:10 +0200
-Date:   Fri, 14 Oct 2022 20:50:05 +0200
+Received: from p100 ([92.116.188.185]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N8ob6-1pFkZK0r4g-015rbV; Fri, 14
+ Oct 2022 20:53:28 +0200
+Date:   Fri, 14 Oct 2022 20:53:26 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+To:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture fixes and enhancements for v6.1-rc1
-Message-ID: <Y0mvXY9NMPyBfsNF@p100>
+Subject: [PATCH] parisc: fbdev/stifb: Align graphics memory size to 4MB
+Message-ID: <Y0mwJrtT+XyXAjQS@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:QC+wHL94T091S0BdNNtUDz++md9KCSVZn1vVw1OOoCb7sp9g/Yw
- YbhDneydG2YxbAwzZNFvk/2dUNA7/wcynq/Iw4OQ0Qx4WiJxHinVTwsSM9H+DBsOudb++hx
- nPomaZj+dbnJP0O90lhX9D5KbZhkfMIxzYVjpHB0dkM6XcLJrzDqIUONBrr6Kik/nG9923/
- +hXVCU8CPNEI09NQjdEiw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:y2cT5wqOBvc=:BIkSbCpMqe82yfNq7nZR6N
- aeqoRxl0ENvwVPC8xsMr+J/p2XCUNQdvo5b2yGfXfH5tVPD4BYmsmlODQEzNBYFO9yrWPvmTv
- okECehcEDxP3DYHhbo50PRe9PrEYHLY76ggLYL55jt5aGPkP2kRO7HUw1xNYNg3xZ2FxTQssu
- kQEwN+8+dOO1b2DQC4OGajEn+Tk4p4WqDr38gZT0vhbtD5khWk95WABvXMhMPur2eZYhTyX8j
- pygK15/Jt3oyjWLTdtLeg6JsyYHvYqmwh1n+FD2WWCreG9SMUU9VDk0aVM68aGbyThZK+JOE8
- YRKisTfg68BNZP8EiBTtEjCWs0YMD1vB/NcqSPvuwWhCSj35S//76Hb8RlGk+9zKuIXltLDQm
- hhKUgiD6xAc2KPDSVbrzc8spCzNOBpEqq3piDuAMnbchIksexfPuhTg5OCkBGf+Zg2BLmDM4n
- X27zHKdxDlY9ylydL89Ge2FXVubLz3egBmodC1prE+DRI03thJtN1J16nFMuEfE8bUGSwl1Nj
- avJ0WusluZSED7loI9TnmQMkLdorH50KWVK5vqvl1xF+0UfYSdYybowQsqwpv7q73582R8sz1
- 2Unvw0VjFOCwuISPzNur14Gzm3c6/A38Mk2zRtn0y+EdkhKhJKIUyvqL+QRun5gqALUvsUWBb
- E0wBTRcGVYS4X2md6QoKyHxNkGTdH1mZdoLMJ+VvggxJ1SZMm19uihzEB2u3hNT2cUoRp+zjW
- nDQt6bmEZIzaL33Ij8wo6Fsv+RltrspRuGnoA5MAwftQuvyt5D4RfXD61U2Ii07kpaNDbddXt
- HmWDs/GcopdF7kYbZkSxZ6bgrFtR1HaZfbU1Kwrkv/FzvZBcll5ytP/k5J3mH+kWbbW5XvR3J
- xmKMcRV46nEUk/E4WuXvq0FAXT1yp0c+Bky0C36wnN2dkeYfTRNuaVr7s1P2qwTvZtPwxBPRW
- Gex6vjDQDrhsLvbQ4UvVuOWu98e/0rBXUIEf96B1+QeaE8dwnHnWFpLjavK75+kxfBZez9nJS
- KH9gmcU/UFa7B/OdUGVXtNsF7G171gp4djDXGKvwIfgfTxTv6P7mbSse2zHhli11Maalv14Bd
- /Cvgr03Tj/+JBFaUhl2QlZ02NQ6Ckhcbxa8OBF4ySceIDYEARGLOrw/PEcKKT7xKXBWglAZ5l
- FWKHmQUO0ljaM95dNkd07hke5tEFoRUpM9fHlwui1vD/rU7LUcZpKha2HxhtjiRrtVa2gfzUP
- Uw1mIxusYKJAK5EL4LFcQgYNPVHZnkUrRDMVakueIMRi8qTcfaOFp/znkAdlmQLOiRSybZvc5
- o38lZ7DsCudmfWSUN3Pa0lXsbg/aEPeHhcHmTOjw4bumGywCr5U0zatNg0ySXukelzXtVxnbe
- wCM4Z0e02Wr6nA5Jgp8pIL7kiJtpUsjXMQYYorMYLi9smSqQPhDnd0Qgq7NBqK/uB832mSav4
- 098lNPw/XHsh8hsTTJKXeimP7fyTxgKVnEd3mO/RigeUadwP3ufsUHOLFRfpkG9WdQHfROVga
- q6LHxVNA7UPlXL2ZO7Hmo/bc8EijNm0kAafHq+W+7h0VJ
+X-Provags-ID: V03:K1:9L15unTKJmmcoKciVaJxb6rjkOnIi6cVBAuKUkejQ/jtJyHkYtZ
+ xfSobSSNIFIcMQEBYPVhgjdzl4jkVuiSr62hsoUV7pDxUm+2aqSMAJNwxwNW08piC3h9Jie
+ k11NCTz0urjaD0vEX2ZZVKI+ieZDpnGuObA9j2ZPftVl4zNG/ox3R7zWIX/eVBRDbdYOqXV
+ GlYjiP0Xfm94eCe1ylUhw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:rRG8EETIhBU=:+WpWP88oSZP9PSatnh8osa
+ Ye93JH234F1Shw346+iQnbUOt6eSS18V7e4ovySdwFBG8CvfJFYq9Tes2jhm6dDqVzpPRYfIF
+ L83Tz4wDd8TwYrdFUTTkzH911WLIGUf3dLSAUPIkNigTgPlpD3SDN9mP3JggkttN1DMkC34uj
+ SawomyES29dk2Wcv3PelCsBAqDCLR96H/zdUiIr+YTdLvDZK3LTqo14dneFYQ5ZsVQQt73Qy2
+ Sk4MH0sJDLga4b+XgSnbnFnfJ9Eqzp3Jni+kEcgC54jI10WWF+ua0kHvvHkxl1GcBKIVVbBHT
+ V4I7OycwVXDZ7KJmoeHFWldX+A1YNk7XHN/q8yMN8gKS3SX/Srt4w/96LcI2iMBttaJ6mvWHz
+ gfjtgC+TtKiHl9MCpw4N2oxdUzcoi4iOkElQEFq34DQe3wiMrTb9Z2mlgG1XdFTTo21tckE9L
+ 4NiPvtpGpQl2EQL+Bj+K4fDwE4Sc0WJTQo8TNWjFwX8R3MIasB8RAdySe6wdBshQFSRELV2aj
+ egSMdPvfJz6Oxv8FXgAfD9wkdwq5IdbIlQZ2xLCE8hI3lvSHdzLna3eTvu5oeZkSlATe0zgLu
+ ZO5utXgRJVDtbbJHxFbwWmgRA72fAQ13VCljBazxyrhk7LvRKvpcGk1FtCtLhnBTIV6TMmoP9
+ 0hoc9C8ICJvNzl4Kcr9iGBxTGU4RSTYKTKCGfjwVBmUh1ZJmtOJFPL/AATkKO+dT0VeizQe++
+ LZ+BnlVJtQra6zFSaMwrjaNH1qUrUCek44MaQHy2ZW/QiO0jbpOcM/ksJ7c2HcORwfsjB9Vh2
+ y11SrZu08ckfRRxPoUVu0/ayIPbTMGRaUyIty1P37TzynUM9Uwc2V2b4G/ZEkP/2vylFHFGnk
+ ZXrMM6nWh1+gT0y+Ol2VlIb0fgyLj27OPs3yKHcRcBCO+SiuHVqLFyEZozlAAtQa0a6YBcAyK
+ wrrc34nPGKLDgQeZiTwW6WEInFU7bHGufSo4jjqEsxzr8HquyFHfOSmul8Up3zd/8P6Df/9rd
+ ABqBXl8CSlzPWBtHMQZH+y/I+lYicbweypmgzG0Fs9HgT2B256LMkOmblYezumH80ivsk386X
+ ufrZxRTl2wNdu/f5mGcLO2/4144t5OwENhmW5SnjqJZoj7cTxoQDvaQZPnxAYJh039iBZprvb
+ wUFn4/nhEE1eCxFeIYIe+bwVpIp8CFXdFGGfjQfL7JhF9B5jHtdSb1Qxm2auje81QkPkUO53y
+ qUSIV34B0IkH5w3GyWLOk9vL0sPt/7OTIuzRbIWM3hIf8FYtrFTxGXeM3IED4zadpnJl1a92q
+ YrBncW8lNhRZ8HgsX4Ls7doq8WBcmsZeAdl4jtwWQ6LTFlNylfGNfRDu9d9Qgr1LLboUtZKFX
+ RgTy6hsVd6OrqNng1ONPkV5Xx0PyuihFpGq5bghTAbOXvBInmfu+rXcN6jF+/TAl6G4yeJyrE
+ XzVokPURkPGLWRyx5YP9lT+f2nuAEFUGSRbcoUZBvZuA1uVO9G448eXdYFfYg5gkgTARMBoGb
+ TSa/iBXSsgwFzVm1dHamq0OjhBJmUt+iQwLkGZgT2s/+1
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -73,69 +73,23 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+Independend of the current graphics resolution, adjust the reported
+graphics card memory size to the next 4MB boundary.
+This fixes the fbtest program which expects a naturally aligned size.
 
-please pull the following set of fixes and enhancements for the
-parisc architecture for 6.1-rc1:
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-Fixes:
-- When we added basic vDSO support in kernel 5.18 we introduced a bug
-  which prevented a mmap() of graphic card memory. This is because we
-  used the DMB (data memory break trap bit) page flag as special-bit, but
-  missed to clear that bit when loading the TLB.
-- Graphics card memory size was not correctly aligned
-- Spelling fixes (from Colin Ian King)
+diff --git a/drivers/video/fbdev/stifb.c b/drivers/video/fbdev/stifb.c
+index 38a861e22c33..7753e586e65a 100644
+=2D-- a/drivers/video/fbdev/stifb.c
++++ b/drivers/video/fbdev/stifb.c
+@@ -1298,7 +1298,7 @@ static int __init stifb_init_fb(struct sti_struct *s=
+ti, int bpp_pref)
 
-Enhancements:
-- PDC console (which uses firmware calls) now rewritten as early console
-- Reduced size of alternative tables
+ 	/* limit fbsize to max visible screen size */
+ 	if (fix->smem_len > yres*fix->line_length)
+-		fix->smem_len =3D yres*fix->line_length;
++		fix->smem_len =3D ALIGN(yres*fix->line_length, 4*1024*1024);
 
-Thanks,
-Helge
+ 	fix->accel =3D FB_ACCEL_NONE;
 
----
-
-The following changes since commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f:
-
-  Linux 6.0 (2022-10-02 14:09:07 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.1-1
-
-for you to fetch changes up to 34314cd615af5036e582fad14f2bb13e4383bfe1:
-
-  parisc: Fix spelling mistake "mis-match" -> "mismatch" in eisa driver (2022-10-14 20:06:30 +0200)
-
-----------------------------------------------------------------
-parisc architecture fixes and updates for kernel v6.1-rc1:
-
-* Convert the PDC console to an early console
-* Unbreak mmap() of graphics card memory due to PAGE_SPECIAL pgtable flag
-* Reduce the size of the alternative tables
-* Align stifb graphics card memory size to 4MB
-* Spelling fixes
-
-----------------------------------------------------------------
-Colin Ian King (1):
-      parisc: Fix spelling mistake "mis-match" -> "mismatch" in eisa driver
-
-Helge Deller (4):
-      parisc: Reduce kernel size by packing alternative tables
-      parisc: Convert PDC console to an early console
-      parisc: fbdev/stifb: Align graphics memory size to 4MB
-      parisc: Fix userspace graphics card breakage due to pgtable special bit
-
- arch/parisc/include/asm/alternative.h |  21 +--
- arch/parisc/include/asm/pdc.h         |   3 -
- arch/parisc/include/asm/pgtable.h     |   7 +-
- arch/parisc/kernel/alternative.c      |   7 +-
- arch/parisc/kernel/entry.S            |   8 ++
- arch/parisc/kernel/pdc_cons.c         | 240 ++++------------------------------
- arch/parisc/kernel/setup.c            |   6 +-
- arch/parisc/kernel/traps.c            |  15 +--
- drivers/parisc/eisa_enumerator.c      |   8 +-
- drivers/tty/serial/Kconfig            |  15 ---
- drivers/video/fbdev/stifb.c           |   2 +-
- lib/Kconfig.kgdb                      |   2 +-
- 12 files changed, 67 insertions(+), 267 deletions(-)
