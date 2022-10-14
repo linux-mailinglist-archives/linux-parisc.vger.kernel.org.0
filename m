@@ -2,75 +2,138 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF61E5FF3F5
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Oct 2022 21:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9759D5FF538
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Oct 2022 23:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231337AbiJNTNt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 14 Oct 2022 15:13:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53594 "EHLO
+        id S229792AbiJNVW7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 14 Oct 2022 17:22:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231313AbiJNTNs (ORCPT
+        with ESMTP id S229436AbiJNVW6 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 14 Oct 2022 15:13:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F315190E78;
-        Fri, 14 Oct 2022 12:13:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C2CA61350;
-        Fri, 14 Oct 2022 19:13:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8C554C433D6;
-        Fri, 14 Oct 2022 19:13:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665774826;
-        bh=QZ9EMOYyUwLdTvQtiz+ZBUfiLvvFj1z1eqmpQHmL0Vk=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=rZrsRmQ3YTnRKkfZr9iW7GkXR2ekeHXuzOe8Low4N2TxrZnfo6NrdmJD9NFY0Bg3n
-         PIFo46v8P61/7aM86VS/01AG9rLyPtHrV66Pnu/7p3BWED7NqVa4q1pymJ+aPyJpig
-         r06ZiEwhoKQSHOR/HtgJDCNQatfs4JW3kj3tv7pOHSyQ2bIL+u0SC57CKMzB+G6n+n
-         vTJmMxAhspznFmz59i26f1KmDuvqS7OSuFBGxfKZtr3rh/iRYq1UqhBTeBkfMM0r0v
-         bSuhqiVNxp4WV6/n1wCbrT4A4izJPDrpat/AQP79tbRFOJnAnV3cpw37IbyFDp1qF3
-         sE2Cie1yV5glQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 78600E4D00A;
-        Fri, 14 Oct 2022 19:13:46 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fixes and enhancements for v6.1-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <Y0mvXY9NMPyBfsNF@p100>
-References: <Y0mvXY9NMPyBfsNF@p100>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <Y0mvXY9NMPyBfsNF@p100>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.1-1
-X-PR-Tracked-Commit-Id: 34314cd615af5036e582fad14f2bb13e4383bfe1
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f2e44139f3e0edb8be8821fe4dc93afd7b034182
-Message-Id: <166577482647.24477.6095579070079517276.pr-tracker-bot@kernel.org>
-Date:   Fri, 14 Oct 2022 19:13:46 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 14 Oct 2022 17:22:58 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265AE1D375E;
+        Fri, 14 Oct 2022 14:22:50 -0700 (PDT)
+Received: from localhost.localdomain (178.176.75.138) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 15 Oct
+ 2022 00:22:41 +0300
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+To:     Oleg Nesterov <oleg@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Brian Cain <bcain@quicinc.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-hexagon@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+        <linux-parisc@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <openrisc@lists.librecores.org>,
+        <sparclinux@vger.kernel.org>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        <lvc-patches@linuxtesting.org>, <lvc-project@linuxtesting.org>
+Subject: [PATCH 00/13] Make user_regset_copyin_ignore() *void*
+Date:   Sat, 15 Oct 2022 00:22:22 +0300
+Message-ID: <20221014212235.10770-1-s.shtylyov@omp.ru>
+X-Mailer: git-send-email 2.26.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [178.176.75.138]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/14/2022 21:00:39
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 173137 [Oct 14 2022]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 500 500 6cc86d8f5638d79810308830d98d6b6279998c49
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: omp.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.75.138
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/14/2022 21:03:00
+X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 10/14/2022 3:23:00 PM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Fri, 14 Oct 2022 20:50:05 +0200:
+Here are 13 patches against the 'next-20221014' tag of the 'linux-next.git'
+repo.  I'm not sure how this cross-arch series should be merged -- perhaps
+thru Andrew Morton's tree?
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.1-1
+user_regset_copyin_ignore() apparently cannot fail and so always returns 0.
+Let's first remove the result checks in several architectures that call this
+function and then make user_regset_copyin_ignore() return *void* instead of
+*int*...
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f2e44139f3e0edb8be8821fe4dc93afd7b034182
+Sergey Shtylyov (13):
+  arc: ptrace: user_regset_copyin_ignore() always returns 0
+  arm: ptrace: user_regset_copyin_ignore() always returns 0
+  arm64: ptrace: user_regset_copyin_ignore() always returns 0
+  hexagon: ptrace: user_regset_copyin_ignore() always returns 0
+  ia64: ptrace: user_regset_copyin_ignore() always returns 0
+  mips: ptrace: user_regset_copyin_ignore() always returns 0
+  nios2: ptrace: user_regset_copyin_ignore() always returns 0
+  openrisc: ptrace: user_regset_copyin_ignore() always returns 0
+  parisc: ptrace: user_regset_copyin_ignore() always returns 0
+  powerpc: ptrace: user_regset_copyin_ignore() always returns 0
+  sh: ptrace: user_regset_copyin_ignore() always returns 0
+  sparc: ptrace: user_regset_copyin_ignore() always returns 0
+  regset: make user_regset_copyin_ignore() *void*
 
-Thank you!
+ arch/arc/kernel/ptrace.c                 |  2 +-
+ arch/arm/kernel/ptrace.c                 |  8 +++-----
+ arch/arm64/kernel/ptrace.c               | 16 ++++------------
+ arch/hexagon/kernel/ptrace.c             |  7 +++----
+ arch/ia64/kernel/ptrace.c                | 20 +++++++++-----------
+ arch/mips/kernel/ptrace.c                |  9 +++++----
+ arch/nios2/kernel/ptrace.c               |  6 +++---
+ arch/openrisc/kernel/ptrace.c            |  8 +++-----
+ arch/parisc/kernel/ptrace.c              | 15 +++++++++------
+ arch/powerpc/kernel/ptrace/ptrace-tm.c   | 10 +++++-----
+ arch/powerpc/kernel/ptrace/ptrace-view.c | 10 +++++-----
+ arch/sh/kernel/ptrace_32.c               |  8 ++++----
+ arch/sparc/kernel/ptrace_32.c            |  9 +++++----
+ arch/sparc/kernel/ptrace_64.c            | 23 +++++++++++------------
+ include/linux/regset.h                   | 15 +++++++--------
+ 15 files changed, 77 insertions(+), 89 deletions(-)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.26.3
+
