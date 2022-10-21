@@ -2,68 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52E7A606FF9
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Oct 2022 08:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 867246070DA
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Oct 2022 09:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229897AbiJUGZC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 21 Oct 2022 02:25:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47664 "EHLO
+        id S229478AbiJUHUz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 21 Oct 2022 03:20:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229742AbiJUGZB (ORCPT
+        with ESMTP id S229716AbiJUHUy (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 21 Oct 2022 02:25:01 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0E895725B
-        for <linux-parisc@vger.kernel.org>; Thu, 20 Oct 2022 23:24:57 -0700 (PDT)
+        Fri, 21 Oct 2022 03:20:54 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5DFE24472F
+        for <linux-parisc@vger.kernel.org>; Fri, 21 Oct 2022 00:20:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1666333494;
-        bh=wFQsF1cjqJo95iMLqGtGrEvdIyBG7ZGhjsvwCx/S510=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=jyNjMVG9XOgQgvvZJT5Nx7a8VK5rEWfsS/ZJDI6dsfMFnokXHzkdyNxSVgDdjpmsV
-         SFU20ORbOf3MmwcAaFw8Vpi14wMuE+prhbkyGD0kTV17v33lpT64vvJrS8fsUnwsgh
-         CwywVXw909IS3V4u6yMsBgvp4bHJ+q+8LuuqHVW0=
+        s=badeba3b8450; t=1666336850;
+        bh=U1qAUaxUwLof0kgz7r1VNvvv+lsnLtMM60u2lGmpqoY=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=OPfLKyzPGBU2WPsl4hIVkkBCyLqO0/LweWnLLEhPygm770PyEKmP1u8USnBmtva01
+         Ryr4U9nQcxRg3U68J9RvggWQ1o7X4aGQDZLkXLzXhpvz2CGXcgTCeUnQvYnaT52sBg
+         da8YMHUhnklkzQm7xHvqWrWS+iPhnuhNH5znoWB8=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100.fritz.box ([92.116.168.94]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MplXp-1pT19n1pGP-00q83H; Fri, 21
- Oct 2022 08:24:54 +0200
+Received: from p100.fritz.box ([92.116.168.94]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MIdeR-1orbtf0zPp-00EhO5; Fri, 21
+ Oct 2022 09:20:50 +0200
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
-Cc:     Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 2/2] parisc/serial: Rename 8250_gsc.c to 8250_parisc.c
-Date:   Fri, 21 Oct 2022 08:24:45 +0200
-Message-Id: <20221021062445.28701-2-deller@gmx.de>
+Cc:     Helge Deller <deller@gmx.de>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>
+Subject: [PATCH] parisc: Use signed char for hardware path in pdc.h
+Date:   Fri, 21 Oct 2022 09:20:38 +0200
+Message-Id: <20221021072038.83248-1-deller@gmx.de>
 X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221021062445.28701-1-deller@gmx.de>
-References: <20221021062445.28701-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rADhSgdJMDZMm0FSRfuluyOSfIbeFQK8wrIXI/l8VKbqCpK00C6
- 0O1WlTrYaScJQ5R1lZN+4w+5P6xbjvUXD/OLTPzNSqQRQTU5JtflY+mQu48oVlvoiQ7EU6z
- urJfYLm4CyFJ6tONs5+sCkZOIwpNkfKzPO43XbkxygRnV9DGPgy8t9cK6GPuHIzFFxBUoab
- rZiDr8LHZA84MZj2BcsKQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YjMamR/KSN4=:Lk4rAN3fhCBNjzPcU39PUO
- pV4SKMd428VqeDn81ixohtZ8LYw79ediMYMiS11KR5iceekhNf3JIrwN6GCHsdvb5FPvDzJHd
- 2Xoo56kgTLZRd5X66T23AaAJcyeYDgksgfZXObQp2GPXKtsqBiKdkdiK8QwVCNFpPqDQwEFsz
- cIQScXISbn0bjkdzljZ9orvhnKrgpuJW6bS52P8caVv8JK5vySpwqib30qoLNghyXtytWxsKM
- fl/lcsbpX37C6M1wuvdZ6KdlgE1uHSJ5mVPtcbBFcD+DFWiToWRz3m5XeldvMzk8pSu2huSUV
- gG9ToeolljUmq9pKZcJeEX1iNd1MeRzw8QitH7AryvFl5G2mwJ0vnj2+7kOzHUQUKHZ10cDUa
- kWrLJXy5hLMd4lSpm9b1/83wRTgtwAeLyXLuBvzMrqday+gmibQp6OGN71Kxd7Clm3ha3w8Jr
- Jlxe9aXV/3gKRdFxtWprTnGQ9n8bF7GvLMhq7joooepXConJCdGbGjDpGczzUvkahkb3fGqNq
- KtGgm2chEOj+QeMKR+f+hayr7cdD1cseydAsJ07qXgGcEIHN8aRg/vbAP1xicao0+Xn9ihyYH
- 7d4U1cPd5s7VBu8yXlv2KNlIE7bnxYrbZcM1HSqL3EwTtS+ZDxH00e7FVJGTn5b9AkP0lgB+s
- PI0zZro5DX+xaCxNwHc7HxfQYrl5rbAMyVNEOZvhoGuVwR2emJsz3dtT8mSbMa56cvh6tO1L4
- n4F+GG++Hqkycii+01qV6JWlzKtphsAANvPTRhrWmXp0rDqHv71eKbLGhNWpOPWgvjxMrFrTw
- LZNsp+6f7rbeZxFafufFEt133uu9PSQYNZB/BzVKNrDLh+eN4rg1cjCk0cWCN0jVxmTT28IYy
- 5veF9xi8fST4QD6Y3O9LS04ti45tNnKtf8jj4i7XuAkYXyVICqpwTMrDT/CpAzR/AbD4gLuGO
- ZMsyVeULogsE8RkUO4RUf9GNvOcD6OKE/FH/qPhZ4fTU0IbCLehcNi5THef8P8uEhf1njfxX+
- nBPMxTq7WIiZ+KbQ6pd8DChr6dGP375tNUwihUE7U3YjK9P1ylR2+XUbjxrM1CGJOSDusMO9a
- iwA2MO1Ofjk3rujpy5Dt9RZ5O9J6ZiqW3E45sIjxkn+XoWQGaiJhk7zAwnoVqqigkrLRZzY1i
- 7FLSNVuc5FJxjOZKsSHGnbmcb0LrOVG3xpRX0m008ozTQbuTJev1wB7pi7FlpMCi5KuAVcUkZ
- H3BJRZV8VgN2uAtFuifzMvWUw0mHSaxmitrUw2Tf8+Jv2xGYdnL4UO+jkz++voPawnLg6OMm6
- lrpbolOtCWKFB/9QR4pMrGskPymIPROyvB3Bj6MZGpHXr2yecFe71GskR7vrM5qiFgqMOQJIJ
- vO3GQFure9OpgrE2krGu4YI/Bw1U0DSr5MpN2+ZtRCyQW0yJP0zesH2+WnEzFJ1sZJMGc/9U9
- Umy5Hi1YKNhQMev5VDtEv4F1eq/6tPzQrzbgDwZuquSLQNTR1dbMzNWGTU26AXk4Gt3X/ZN3w
- vEME55PgxAerzEkFvqx7jHT1VPpcsFRXAG3Y5JFtWBWvU
+X-Provags-ID: V03:K1:Nny1b/YxPjbTpVkS+2SpIZCAWFiisIA/Rp4cJk1X7QiqOo3XHy3
+ mp4A7NZ12xg4lraN5zzMImofVK8DKj7MNed1gYnFnOJAWAD90/OjC5wl1ytyKRGnFRSfojq
+ xHWgE8rTz65mhwy+6BMKJf2PAEFua4NHZTzjaMl8xTFacXCMr4q7MIP6ebG/b+GIFmOHllO
+ ZdKfmkCHKUA4DldXp7lFg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:acNH9/B/Hog=:PwMVe5KQ5mAVSd4xbgzDYP
+ oJ60iBy8JvICf3L2eqzAtQ2VhR1sWisgnX2FLyszpxq2pL/AdDqD78qlNQs7roLpv8aLlVPbU
+ /FCWCrn1FmenHWpFNyVV1agMGAvPOWrYh35vvkuO50Wrg+pyRnsweT/JJh8IbwILgJbd+IS2u
+ J586drCbK7r4FlGaJrYWF9ILdvbFU635nn5YvZcC1PREwbbyuab971sn6t2FhgCaXU091K1cH
+ Vn/ta+nblhw+62ePHIU09JP2lkMkNurwkEqOl+KhxxHgEDZSeaW75gfyfzJ75HvFYJ1l9XRF/
+ P/htyRZwI8xIP8YuTLxf3nTK5SQja80xrvLofmXsUwpyz0dqM5tpqtKRG4J0k+L0JooMIwNGW
+ O/6rTHTtuwplJgTjDE03Pspwx5XhytcxvizLan8KVMi9atkMb6GdP4jzz17XMukilnpeSFIiX
+ T1XwQqJK1jV+Ey1c50QkWHVNeni30ctjH2lE7HVBLSKmUkeh+94Nv1oXuy9Jo5/1BOqioXf30
+ XqYoxnaElIscETa96marqr1cJxvFWUBKUXhlCO7fNiJldDa4rlbN2pG7Dqu8VGQ4zNaap80nu
+ BkkQii6+B7iu04rUSaT9GfryvCxYos6GfclqH7YWZwx4v80rty369UzXXtyvO8OOHkyvtQXgr
+ sTtlzcUV23OU9oZkTYCCJYUlpk1ZDoSWH/dsgazcjh/haRMUCMOvWC+Rf5xMa6yq9qxkgju57
+ 0A86jh48B5mBOd6Zt3Rck0hMBtWkq5jSgkDTLEtmtA5nXC5kqJuIGYkxasQHDFvsBz2BXNH4N
+ PvpDdUAmQM7kNPWN7JaoQ4rVzHdeX1UkB/J/hD7gUVg/+LwCMBgx5inlKjr6S2NjlK5yXtETe
+ tBiRqWZm3K62L5ySIl3neSKQP8TmkDgPU8ZSS+HHaugPvpsTON+7kF1+OxQ620vhM89HPAWpl
+ rgT6saiOPDbJz3dRdJhOcN6DNmHIjM/vH5fpvNafu2SB8vJNRpe/FCCrVjcyc5siyJfxGWk9c
+ 0PTFr7IgcgNEkMQHXGmYcW2H5ys2cmPkOtCwD7IhK063vcB6s3WaeeTR0VfY0vLM9EC6s8N95
+ nuYElBeADX64QZOyV6/x5ovNkuNUxz9y3djjxiQ6eQwf77sUgj48kU178a1Wl62kcR5C7w6/A
+ oF3QbRcvmEvOOah8q6SOBxU+vwcV0AWPpLELuNZuVJvcGn2nyLXsy1Utzp5aAhvTgN67ppz6a
+ 4n7YkSsFP//CLco/alv4ogS8/YJZQJFwm2O+D/ZQpQZJtrJKyiUTDLy5k6yVNEvFuGyMVvNBs
+ KQp31xSoXtUTxVbH98KCS7qYh4NyVvvWH41kijAUmOoNBsBvIo+e3wPNqHB3Up+skQtfOdn8l
+ wB5Gk3JTeGMH15r8jLB7svDURfG97t8h792KbkplOaR8ivFwCB+eItWGOzEviNOT1v/GctYZW
+ JJ3Oo0L5n2AjCIsl+iRz2B0KD9Dn2YfZImJ4XkX2gBq4B5TKtH9UxWsd/Tw9AEZJi/WeNBd8Y
+ JS/zkRI77Ya+PXEt3RZmlLW/hqDI2/juDv5oLiNKifyMg
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -73,52 +72,228 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The file name of this driver is misleading - it handles various serial
-ports on parisc machines, not just such on the GSC bus.
-Rename the file to make this clearer.
+Clean up the struct for hardware_path and drop the struct device_path
+with a proper assignment of bc[] and mod members as signed chars.
 
-Suggested-by: Mikulas Patocka <mpatocka@redhat.com>
+This patch prepares for the kbuild change from Jason A. Donenfeld to
+treat char as always unsigned.
+
 Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
 =2D--
- drivers/tty/serial/8250/{8250_gsc.c =3D> 8250_parisc.c} | 0
- drivers/tty/serial/8250/Kconfig                       | 2 +-
- drivers/tty/serial/8250/Makefile                      | 2 +-
- 3 files changed, 2 insertions(+), 2 deletions(-)
- rename drivers/tty/serial/8250/{8250_gsc.c =3D> 8250_parisc.c} (100%)
+ arch/parisc/include/uapi/asm/pdc.h | 36 +++++++++++-------------------
+ drivers/parisc/pdc_stable.c        | 34 ++++++++++++++--------------
+ 2 files changed, 30 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_gsc.c b/drivers/tty/serial/8250/=
-8250_parisc.c
-similarity index 100%
-rename from drivers/tty/serial/8250/8250_gsc.c
-rename to drivers/tty/serial/8250/8250_parisc.c
-diff --git a/drivers/tty/serial/8250/Kconfig b/drivers/tty/serial/8250/Kco=
-nfig
-index 7b3ffb7f50ab..b0f62345bc84 100644
-=2D-- a/drivers/tty/serial/8250/Kconfig
-+++ b/drivers/tty/serial/8250/Kconfig
-@@ -116,7 +116,7 @@ config SERIAL_8250_CONSOLE
+diff --git a/arch/parisc/include/uapi/asm/pdc.h b/arch/parisc/include/uapi=
+/asm/pdc.h
+index e794e143ec5f..7a90070136e8 100644
+=2D-- a/arch/parisc/include/uapi/asm/pdc.h
++++ b/arch/parisc/include/uapi/asm/pdc.h
+@@ -363,20 +363,25 @@
 
- 	  If unsure, say N.
+ #if !defined(__ASSEMBLY__)
 
--config SERIAL_8250_GSC
-+config SERIAL_8250_PARISC
- 	tristate
- 	depends on SERIAL_8250 && PARISC
- 	default SERIAL_8250
-diff --git a/drivers/tty/serial/8250/Makefile b/drivers/tty/serial/8250/Ma=
-kefile
-index bee908f99ea0..1615bfdde2a0 100644
-=2D-- a/drivers/tty/serial/8250/Makefile
-+++ b/drivers/tty/serial/8250/Makefile
-@@ -12,7 +12,7 @@ obj-$(CONFIG_SERIAL_8250)		+=3D 8250.o 8250_base.o
- 8250_base-$(CONFIG_SERIAL_8250_DMA)	+=3D 8250_dma.o
- 8250_base-$(CONFIG_SERIAL_8250_DWLIB)	+=3D 8250_dwlib.o
- 8250_base-$(CONFIG_SERIAL_8250_FINTEK)	+=3D 8250_fintek.o
--obj-$(CONFIG_SERIAL_8250_GSC)		+=3D 8250_gsc.o
-+obj-$(CONFIG_SERIAL_8250_PARISC)	+=3D 8250_parisc.o
- obj-$(CONFIG_SERIAL_8250_PCI)		+=3D 8250_pci.o
- obj-$(CONFIG_SERIAL_8250_EXAR)		+=3D 8250_exar.o
- obj-$(CONFIG_SERIAL_8250_HP300)		+=3D 8250_hp300.o
+-/* flags of the device_path */
++/* flags for hardware_path */
+ #define	PF_AUTOBOOT	0x80
+ #define	PF_AUTOSEARCH	0x40
+ #define	PF_TIMER	0x0F
+
+-struct device_path {		/* page 1-69 */
+-	unsigned char flags;	/* flags see above! */
+-	unsigned char bc[6];	/* bus converter routing info */
+-	unsigned char mod;
+-	unsigned int  layers[6];/* device-specific layer-info */
+-} __attribute__((aligned(8))) ;
++struct hardware_path {
++	unsigned char flags;	/* see bit definitions below */
++	signed   char bc[6];	/* Bus Converter routing info to a specific */
++				/* I/O adaptor (< 0 means none, > 63 resvd) */
++	signed   char mod;	/* fixed field of specified module */
++};
++
++struct pdc_module_path {	/* page 1-69 */
++	struct hardware_path path;
++	unsigned int layers[6]; /* device-specific info (ctlr #, unit # ...) */
++} __attribute__((aligned(8)));
+
+ struct pz_device {
+-	struct	device_path dp;	/* see above */
++	struct pdc_module_path dp;	/* see above */
+ 	/* struct	iomod *hpa; */
+ 	unsigned int hpa;	/* HPA base address */
+ 	/* char	*spa; */
+@@ -611,21 +616,6 @@ struct pdc_initiator { /* PDC_INITIATOR */
+ 	int mode;
+ };
+
+-struct hardware_path {
+-	char  flags;	/* see bit definitions below */
+-	char  bc[6];	/* Bus Converter routing info to a specific */
+-			/* I/O adaptor (< 0 means none, > 63 resvd) */
+-	char  mod;	/* fixed field of specified module */
+-};
+-
+-/*
+- * Device path specifications used by PDC.
+- */
+-struct pdc_module_path {
+-	struct hardware_path path;
+-	unsigned int layers[6]; /* device-specific info (ctlr #, unit # ...) */
+-};
+-
+ /* Only used on some pre-PA2.0 boxes */
+ struct pdc_memory_map {		/* PDC_MEMORY_MAP */
+ 	unsigned long hpa;	/* mod's register set address */
+diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
+index d9e51036a4fa..d6af5726ddf3 100644
+=2D-- a/drivers/parisc/pdc_stable.c
++++ b/drivers/parisc/pdc_stable.c
+@@ -14,7 +14,7 @@
+  *    all) PA-RISC machines should have them. Anyway, for safety reasons,=
+ the
+  *    following code can deal with just 96 bytes of Stable Storage, and a=
+ll
+  *    sizes between 96 and 192 bytes (provided they are multiple of struc=
+t
+- *    device_path size, eg: 128, 160 and 192) to provide full information=
+.
++ *    pdc_module_path size, eg: 128, 160 and 192) to provide full informa=
+tion.
+  *    One last word: there's one path we can always count on: the primary=
+ path.
+  *    Anything above 224 bytes is used for 'osdep2' OS-dependent storage =
+area.
+  *
+@@ -88,7 +88,7 @@ struct pdcspath_entry {
+ 	short ready;			/* entry record is valid if !=3D 0 */
+ 	unsigned long addr;		/* entry address in stable storage */
+ 	char *name;			/* entry name */
+-	struct device_path devpath;	/* device path in parisc representation */
++	struct pdc_module_path devpath;	/* device path in parisc representation =
+*/
+ 	struct device *dev;		/* corresponding device */
+ 	struct kobject kobj;
+ };
+@@ -138,7 +138,7 @@ struct pdcspath_attribute paths_attr_##_name =3D { \
+ static int
+ pdcspath_fetch(struct pdcspath_entry *entry)
+ {
+-	struct device_path *devpath;
++	struct pdc_module_path *devpath;
+
+ 	if (!entry)
+ 		return -EINVAL;
+@@ -153,7 +153,7 @@ pdcspath_fetch(struct pdcspath_entry *entry)
+ 		return -EIO;
+
+ 	/* Find the matching device.
+-	   NOTE: hardware_path overlays with device_path, so the nice cast can
++	   NOTE: hardware_path overlays with pdc_module_path, so the nice cast c=
+an
+ 	   be used */
+ 	entry->dev =3D hwpath_to_device((struct hardware_path *)devpath);
+
+@@ -179,7 +179,7 @@ pdcspath_fetch(struct pdcspath_entry *entry)
+ static void
+ pdcspath_store(struct pdcspath_entry *entry)
+ {
+-	struct device_path *devpath;
++	struct pdc_module_path *devpath;
+
+ 	BUG_ON(!entry);
+
+@@ -221,7 +221,7 @@ static ssize_t
+ pdcspath_hwpath_read(struct pdcspath_entry *entry, char *buf)
+ {
+ 	char *out =3D buf;
+-	struct device_path *devpath;
++	struct pdc_module_path *devpath;
+ 	short i;
+
+ 	if (!entry || !buf)
+@@ -236,11 +236,11 @@ pdcspath_hwpath_read(struct pdcspath_entry *entry, c=
+har *buf)
+ 		return -ENODATA;
+
+ 	for (i =3D 0; i < 6; i++) {
+-		if (devpath->bc[i] >=3D 128)
++		if (devpath->path.bc[i] < 0)
+ 			continue;
+-		out +=3D sprintf(out, "%u/", (unsigned char)devpath->bc[i]);
++		out +=3D sprintf(out, "%d/", devpath->path.bc[i]);
+ 	}
+-	out +=3D sprintf(out, "%u\n", (unsigned char)devpath->mod);
++	out +=3D sprintf(out, "%u\n", (unsigned char)devpath->path.mod);
+
+ 	return out - buf;
+ }
+@@ -296,12 +296,12 @@ pdcspath_hwpath_write(struct pdcspath_entry *entry, =
+const char *buf, size_t coun
+ 	for (i=3D5; ((temp =3D strrchr(in, '/'))) && (temp-in > 0) && (likely(i)=
+=29; i--) {
+ 		hwpath.bc[i] =3D simple_strtoul(temp+1, NULL, 10);
+ 		in[temp-in] =3D '\0';
+-		DPRINTK("%s: bc[%d]: %d\n", __func__, i, hwpath.bc[i]);
++		DPRINTK("%s: bc[%d]: %d\n", __func__, i, hwpath.path.bc[i]);
+ 	}
+
+ 	/* Store the final field */
+ 	hwpath.bc[i] =3D simple_strtoul(in, NULL, 10);
+-	DPRINTK("%s: bc[%d]: %d\n", __func__, i, hwpath.bc[i]);
++	DPRINTK("%s: bc[%d]: %d\n", __func__, i, hwpath.path.bc[i]);
+
+ 	/* Now we check that the user isn't trying to lure us */
+ 	if (!(dev =3D hwpath_to_device((struct hardware_path *)&hwpath))) {
+@@ -342,7 +342,7 @@ static ssize_t
+ pdcspath_layer_read(struct pdcspath_entry *entry, char *buf)
+ {
+ 	char *out =3D buf;
+-	struct device_path *devpath;
++	struct pdc_module_path *devpath;
+ 	short i;
+
+ 	if (!entry || !buf)
+@@ -547,7 +547,7 @@ static ssize_t pdcs_auto_read(struct kobject *kobj,
+ 	pathentry =3D &pdcspath_entry_primary;
+
+ 	read_lock(&pathentry->rw_lock);
+-	out +=3D sprintf(out, "%s\n", (pathentry->devpath.flags & knob) ?
++	out +=3D sprintf(out, "%s\n", (pathentry->devpath.path.flags & knob) ?
+ 					"On" : "Off");
+ 	read_unlock(&pathentry->rw_lock);
+
+@@ -594,8 +594,8 @@ static ssize_t pdcs_timer_read(struct kobject *kobj,
+
+ 	/* print the timer value in seconds */
+ 	read_lock(&pathentry->rw_lock);
+-	out +=3D sprintf(out, "%u\n", (pathentry->devpath.flags & PF_TIMER) ?
+-				(1 << (pathentry->devpath.flags & PF_TIMER)) : 0);
++	out +=3D sprintf(out, "%u\n", (pathentry->devpath.path.flags & PF_TIMER)=
+ ?
++				(1 << (pathentry->devpath.path.flags & PF_TIMER)) : 0);
+ 	read_unlock(&pathentry->rw_lock);
+
+ 	return out - buf;
+@@ -764,7 +764,7 @@ static ssize_t pdcs_auto_write(struct kobject *kobj,
+
+ 	/* Be nice to the existing flag record */
+ 	read_lock(&pathentry->rw_lock);
+-	flags =3D pathentry->devpath.flags;
++	flags =3D pathentry->devpath.path.flags;
+ 	read_unlock(&pathentry->rw_lock);
+
+ 	DPRINTK("%s: flags before: 0x%X\n", __func__, flags);
+@@ -785,7 +785,7 @@ static ssize_t pdcs_auto_write(struct kobject *kobj,
+ 	write_lock(&pathentry->rw_lock);
+
+ 	/* Change the path entry flags first */
+-	pathentry->devpath.flags =3D flags;
++	pathentry->devpath.path.flags =3D flags;
+
+ 	/* Now, dive in. Write back to the hardware */
+ 	pdcspath_store(pathentry);
 =2D-
 2.37.3
 
