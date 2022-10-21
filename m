@@ -2,108 +2,145 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A633607100
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Oct 2022 09:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BC26071A4
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Oct 2022 10:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230129AbiJUHZr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 21 Oct 2022 03:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47024 "EHLO
+        id S229441AbiJUIFR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 21 Oct 2022 04:05:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbiJUHZl (ORCPT
+        with ESMTP id S229915AbiJUIFQ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 21 Oct 2022 03:25:41 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED4401757A3
-        for <linux-parisc@vger.kernel.org>; Fri, 21 Oct 2022 00:25:28 -0700 (PDT)
+        Fri, 21 Oct 2022 04:05:16 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9EEDF07D1
+        for <linux-parisc@vger.kernel.org>; Fri, 21 Oct 2022 01:05:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1666337122;
-        bh=rWG7dHkEe8fm6kb/956VXTz5+Yt10EEtWE7AYQ99LiY=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=MDS6RanWSr3Q2ATsN0IEDT6ZYCN2vGC2sv/THW3LD4pCgXGcwKcomLePe/hYBo4n3
-         KoVureMBc0nUx7DWY3/fY9BODpV/L7kga05zuypNFv2QaP9eclSLFJEFGYp9c0IHlH
-         PPp3EhcF1d8Nhaouh4roM4bykU76WfGjoGfrxnbI=
+        s=badeba3b8450; t=1666339511;
+        bh=TYbgUR/qDXxfxJ3eiCAqBmG8BU64rPEtmG1ejieDqpE=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=e8y59b7AmcxPVPQC5zCyW8rGVoMsRL8/ikPKSLD0GFgPTvilzSfBzQwLwBi48g1AP
+         6XBjcG/kXYBYKKkAbl52/D4sLcC1o3znM5CXseIGc9ZRQmhqkbjqMtXBUGarXDOrVj
+         4ooG62WmFokXJko2SmMyhWvSEH+rnGdiKC42s9G8=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.168.94]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M4b1o-1omKu41ixK-001iGZ; Fri, 21
- Oct 2022 09:25:22 +0200
-Message-ID: <bf9fc3a5-5591-f2d1-6a19-faa4987a15eb@gmx.de>
-Date:   Fri, 21 Oct 2022 09:25:21 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [linux-next:master] BUILD REGRESSION
- acee3e83b493505058d1e48fce167f623dac1a05
-Content-Language: en-US
-To:     kernel test robot <lkp@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>
-Cc:     linux-parisc@vger.kernel.org
-References: <63522a57.pwxlK8v2/w+DMFI9%lkp@intel.com>
+Received: from p100.fritz.box ([92.116.168.94]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MtOKc-1p6DYf0GMw-00ut55; Fri, 21
+ Oct 2022 10:05:11 +0200
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <63522a57.pwxlK8v2/w+DMFI9%lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>
+Subject: [PATCH] parisc: Show MPE model string at bootup
+Date:   Fri, 21 Oct 2022 10:05:03 +0200
+Message-Id: <20221021080503.215792-1-deller@gmx.de>
+X-Mailer: git-send-email 2.37.3
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rV+MCPq5jouwLprEolJ65PJUM469ANdW0fOaywiKXBEsncf3YcJ
- LaiaIbt9MBajoqGKvSPFXBohEDStmvcaOLUH7kP48pcIEJuRgv0y+7Fzjpe3wQAptoaN2O8
- MLUJAd9CybKl95NGKfbVAhGRwEy++VegDZfwXIUdUSkQ+FViF51VEEqnZ1olMhrYwQFZZYA
- S+8POmtIeuBptzBcS2UIA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:JeDJs6nCG9Q=:rVamZ2mEsfl2Ed0OUpRBBV
- yeyAN3EpfBGBK9IqLhNo9NWWXD/Zo0UxiUtAU/gwzy4LpWxM7JaMtUx7gkEbR2xZTgBbjptUN
- NeDSPfqWQ5bd2MwYFtY5wjwSwEy6f6fXu1saYSpUsnfNgQ4zLup9ZmeUHR6IK5+llvf6xKBl3
- YIa9Er4tPP6UvgLTeW7Nx9t6Oz//LPN3CxVHrTsDW/i/6iwYZJHRo58mON2Xm/jCZ1XrTcxEI
- mZnh5S+Ym06GCSjrBzYBDbaO3ODeRZh5xiHA8DT4N7jtucbwnd+8CHxWXtKy6+yX2RQxynHT4
- lZGzVVDOc1dlEubkSXHfjrChwBDSG6qPlrD6yAq5Y/Xzu4ZYZah5789mw1OUOGjI3GbxNczic
- 9r7ORBiu77wh3kVfFtHLOdwULid7UXytlYErtfUS8n7OboQpzTEFqU0hhlwn4E/gnCsSgyJV2
- HQiR7GsEJZT5JaVqy6XAZhGEemWEWTDvCCHRZMKgKbvXAUiLIyYHUpk0gx+Pzn95rnbjBZ8QK
- Y7CGbrhIXWr4AWlhDZX91mrpaBltwXGbh83B4EeDf4QcUCyceZM16PdRM58bujd65z714Ytjd
- VdLxbXD2FhKRBcH455O1D52MczF6Gm4LfA/Y4nlbKZHZvcZ4+vtPRvpe5CngWD5CbCoKDe663
- QmqKEqvugzQDIOq1U/Wd8SUZDHzN1FAVe9J1RukOZVDczqtZxAaFQUV2BxYCn3CQemq65yw2F
- +p1un9TG42FJ2JOmIY/ke6OWBkW3NzmJgcTAyYfBQZd2DIr2/Nglp2OyDBpJBka0S89//aAcb
- IMD3211COAm6RBYtpwymnemGjOc2vMPD/5gXiJMEhHHF0cOTQiZkJAmXrCPDGAmnVI1LnuF3m
- UPyUyMyy6Hansfzls0LEvcHyuqHNiwWE5ipT85NPZZP/T0x+nEROt7nkFEc8fOvA0U+iBmfzA
- vlF8O7e8r1O4pX2eZKtd1UAnmG40o11LQj5b4Ktbwmoj+U2FsUKYGkqmp7y2/jRqVPMFnEMzh
- xYV2Hv0gfZ6AwbSI50+NzCZKbQlBYrfe7Q5iy73nGojylzeRCHb7DW6kwHeZVRIJzHAeQ2Sab
- r1eKxl27YxFYfFEtyZRdYbCbxFWzdWKHx5teQAHPVPZmpEWhxq1Kk+xzTWdfimr4aO2FYiFek
- NTiTHpID0PWkq3Am1vs4CYaXsAv1mhg/dwqcfQyE6Bk/bu+FHQRweHQ81FLZJDfJaoGyp6/fJ
- GvpcN9gyBZOlO3WCOUaZc0iidlY8hfXcl/G/CvpsdWDRq3NWOjZQMh6NL+8eyPLblz8Vwklfo
- 3gBk7uq+RvnbSF0zr41YCNkCn7LRFQ9FZap9dnmLzAEvlaoIrred1Ldq38rjRCZdZ7mXDZ95J
- w2zG0xZNH3/jBpDfYkfSO7TiPNlfH0MGi38AvRSRssRfrw5LClvkDg6+qCnZMVo0rTE8bFSme
- VnyvoXBVxcPrxJidXqzfoO/n922AfWiDZHn2dRiC2cfNioSw+9Y/HbQXs2LLCkRKwiYRVTNzH
- 564YAMZ+XgAzEhHXt/Xdfir1hhQh464QaHQo2ryTS1qzf
+X-Provags-ID: V03:K1:TP6NzZ4at8X2HH9VyHl2s+10j4X2KfL1mkGpMwAjhb7EA72vcDk
+ GvEaWpR84smufPl8JF2CcsRvEH8/R6//hBbsVS3t1LzmO0iKSPk/WtyN1gyyh5NfMqfSmfO
+ KBv0cxbr4m81dO3Stck3S92Uw+VYVMMR2muepgMakhB1yt4C8n9qQ5GQH0H9TfM0AaVnla4
+ qNLNjh5CcYkvWxVWTRY5Q==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ujVSqH2/Ejo=:q9iK0EeaeniUzrqx5MOI/k
+ eaMv3GwtuXk5vldoQOzWZf+90W9+iHf3DpHQYn13gJ45KKKve019indE+gy/b5Xl5uDSfO1Oe
+ StOEM+pFtfr+ottXiv352wqFcG2tebPAPVh37JF0WfcFBwFiPAcTG/s8l4tKA3ZAc6aA4vgEH
+ sGPT4gvts13rhRVIv2ttaVbFe5r+JKuuinn3HIY2LHZzLROujhp8TQHpIngNQJKAw7BiNgXBb
+ 5XNk8vUMU1Bm1JWS1f/NAYy9pQG2Uzd1OVZ+IaUtsaZtr+jBRw1SCF7w7QblF1OpQU2g8azRr
+ mNFMPJdebTx0UQityU7tLKk0cD3faFLX/PMR/p0+WI3eqxE5NwKruWSekGaluWtuY2xVDY553
+ dSj4y8r1GrH+2dtEKgz4Cohec1YY8+8NGSgpuYi1ZD3/dXbibh7hvLjE3uo4GLRvTibIVvqU2
+ sRE2KuZxb/KCHs2oAN/zH6/ghW1L/MKX6MXXbg14lcs/SaFj5ZPhYUy6kUppureD9UgjfAHNZ
+ vL93Pc6U+hS5L/w0Wu6Tls1OQcwZjsD3zEaWtsPErb134hmX4bpnopJkIACL+VosS/vQ63tHS
+ b+HS+XYR6Y+pOPEACLiFx91G4VgqYFrRQGxTvUwYH1v5ZFitAHA4Ktdmtg+2xfr1gC5i3ccpj
+ NgzwXVGNuThJfX7NBixSin/e7UYvxqIUHAqmdVnoGDGuowWw1H0liCvaCoreHvht86mtEa993
+ QEaDpXPlFs81paQa3SC43r1TJ67WqIdNCSCSL/HfLtNtq0//TPPmcuiOopfQ/b2/zEc24gyM3
+ P2IvnM2MKHicKanXifyavnmSR/Y933ajNf1tOvcPBZd4tFey7sNsJwPug0HzE2qSvGKrKLB+v
+ 2ylDmWtJRkXzwXf3SBJvzVKea303WtR9gG0OQzD+j3LD2HtLnAu5uE3yWTScV0aRHp8TAnp1C
+ X8M0UfEgnz41hAKHPvK1SJHaRhxsLQH2iSANdltEgE1mb/zwoJKLOPCoW53p7bcY0O+bO/UM1
+ E6n2cEw/fmj+n2X71S2zDpvBI6W3A+x2B8URf7aH6lAMHMItKc8Q08zDjg6gOR7TONvyvSYwa
+ qsDTtrqxFj9Ag/ca6QnhVETgPv/nMOFezTWlpeDat3A+AOVcghstYxKhP9AloXb/T23oGhd4i
+ 9Cq1AVULD4rqX2Ua8wx9EpNdQxYvls9OWwZr+NkFPnF8sXnhk2vgYsmdkUc/ct/tiVjip1NHp
+ tJ+9oUx8SwQ3736KKix0YuN6NrTV4v+OPc5r4I1NUvGghEQkFovBpVKDZmtNE8gdT40okwv9D
+ qFQNY5yV5KU/WUOOmVy8niM0lwUPHORWLPfRvmaX0QuW4xFo4IHAW+7/AB8h5xZHeNkTRu740
+ oW8EU6DASqjHcPJg1KJhHd0wF/6Xl6MuUeqO2yfzOQQetp8xQvk7JxctpnalBKUZolfLY+QeR
+ bT5JofxxtlBtwqfEzgpuk2sz0i2CiX1kL5T+mM4s069NFnY742CWPXtZ8BlH3NgeayrnzMJbB
+ oUIysS87YPgfuZhDc5dhJVuQb1m7F8Db3hxD4Q45/S4He
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 10/21/22 07:12, kernel test robot wrote:
-> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-=
-next.git master
-> branch HEAD: acee3e83b493505058d1e48fce167f623dac1a05  Add linux-next sp=
-ecific files for 20221020
->
-> Error/Warning reports:
->
-> https://lore.kernel.org/linux-mm/202210090954.pTR6m6rj-lkp@intel.com
-> https://lore.kernel.org/linux-mm/202210110857.9s0tXVNn-lkp@intel.com
->
-> Error/Warning: (recently discovered and may have been fixed)
->
-> arch/parisc/kernel/drivers.c:337 print_hwpath() warn: impossible conditi=
-on '(path->bc[i] =3D=3D -1) =3D> (0-255 =3D=3D (-1))'
-> arch/parisc/kernel/drivers.c:410 setup_bus_id() warn: impossible conditi=
-on '(path.bc[i] =3D=3D -1) =3D> (0-255 =3D=3D (-1))'
-> arch/parisc/kernel/drivers.c:486 create_parisc_device() warn: impossible=
- condition '(modpath->bc[i] =3D=3D -1) =3D> (0-255 =3D=3D (-1))'
-> arch/parisc/kernel/drivers.c:759 hwpath_to_device() warn: impossible con=
-dition '(modpath->bc[i] =3D=3D -1) =3D> (0-255 =3D=3D (-1))'
+If the machine supports running MPE, firmware provides the
+MPE specific model name.
 
-This is due to Jason's patch to treat char as always unsigned.
-I've cleaned it up for parisc and pushed a patch into the parisc git tree
-(for-next branch) to fix it.
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/include/asm/pdc.h  | 2 +-
+ arch/parisc/kernel/firmware.c  | 4 ++--
+ arch/parisc/kernel/processor.c | 8 ++++++--
+ 3 files changed, 9 insertions(+), 5 deletions(-)
 
-Helge
+diff --git a/arch/parisc/include/asm/pdc.h b/arch/parisc/include/asm/pdc.h
+index fcbcf9a96c11..40793bef8429 100644
+=2D-- a/arch/parisc/include/asm/pdc.h
++++ b/arch/parisc/include/asm/pdc.h
+@@ -37,7 +37,7 @@ int pdc_system_map_find_mods(struct pdc_system_map_mod_i=
+nfo *pdc_mod_info,
+ int pdc_system_map_find_addrs(struct pdc_system_map_addr_info *pdc_addr_i=
+nfo,
+ 			      long mod_index, long addr_index);
+ int pdc_model_info(struct pdc_model *model);
+-int pdc_model_sysmodel(char *name);
++int pdc_model_sysmodel(unsigned int os_id, char *name);
+ int pdc_model_cpuid(unsigned long *cpu_id);
+ int pdc_model_versions(unsigned long *versions, int id);
+ int pdc_model_capabilities(unsigned long *capabilities);
+diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware.c
+index 6a7e315bcc2e..543497342a80 100644
+=2D-- a/arch/parisc/kernel/firmware.c
++++ b/arch/parisc/kernel/firmware.c
+@@ -527,14 +527,14 @@ int pdc_model_info(struct pdc_model *model)
+  * Using OS_ID_HPUX will return the equivalent of the 'modelname' command
+  * on HP/UX.
+  */
+-int pdc_model_sysmodel(char *name)
++int pdc_model_sysmodel(unsigned int os_id, char *name)
+ {
+         int retval;
+ 	unsigned long flags;
+
+         spin_lock_irqsave(&pdc_lock, flags);
+         retval =3D mem_pdc_call(PDC_MODEL, PDC_MODEL_SYSMODEL, __pa(pdc_r=
+esult),
+-                              OS_ID_HPUX, __pa(name));
++                              os_id, __pa(name));
+         convert_to_wide(pdc_result);
+
+         if (retval =3D=3D PDC_OK) {
+diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor=
+.c
+index dddaaa6e7a82..0031b8b7c5aa 100644
+=2D-- a/arch/parisc/kernel/processor.c
++++ b/arch/parisc/kernel/processor.c
+@@ -272,10 +272,14 @@ void __init collect_boot_cpu_data(void)
+ 		printk(KERN_INFO "capabilities 0x%lx\n",
+ 			boot_cpu_data.pdc.capabilities);
+
+-	if (pdc_model_sysmodel(boot_cpu_data.pdc.sys_model_name) =3D=3D PDC_OK)
+-		printk(KERN_INFO "model %s\n",
++	if (pdc_model_sysmodel(OS_ID_HPUX, boot_cpu_data.pdc.sys_model_name) =3D=
+=3D PDC_OK)
++		pr_info("HP-UX model name: %s\n",
+ 			boot_cpu_data.pdc.sys_model_name);
+
++	serial_no[0] =3D 0;
++	pdc_model_sysmodel(OS_ID_MPEXL, serial_no);
++	pr_info("MPEXL model name: %s\n", serial_no[0] ? serial_no : "n/a");
++
+ 	dump_stack_set_arch_desc("%s", boot_cpu_data.pdc.sys_model_name);
+
+ 	boot_cpu_data.hversion =3D  boot_cpu_data.pdc.model.hversion;
+=2D-
+2.37.3
+
