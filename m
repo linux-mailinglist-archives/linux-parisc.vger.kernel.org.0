@@ -2,97 +2,175 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7AFC6084E4
-	for <lists+linux-parisc@lfdr.de>; Sat, 22 Oct 2022 08:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9414E608B3A
+	for <lists+linux-parisc@lfdr.de>; Sat, 22 Oct 2022 12:05:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbiJVGD3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 22 Oct 2022 02:03:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
+        id S229815AbiJVKF0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 22 Oct 2022 06:05:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbiJVGD1 (ORCPT
+        with ESMTP id S230345AbiJVKEv (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 22 Oct 2022 02:03:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6238E2B3AEE;
-        Fri, 21 Oct 2022 23:03:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E98CB601C6;
-        Sat, 22 Oct 2022 06:03:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12E6C433C1;
-        Sat, 22 Oct 2022 06:03:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666418605;
-        bh=tCXdIEe/bRuPmuD8DZJI7sITbkxpBfee1t0FtUrlE1s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LGS4FPjZ0GenPE80Ht65ggEck6bgj5dMaBGUbmI1p5KIioZcU/U0B3w+tI1Dn25rx
-         llIng6acUhVuJ/HM4vaBISzwQ0bzbS9XtQmJ0Vcv4gBrkA4Yvn+Z2n4iaDXSOr93lP
-         6kE0ELPCFel8IWbq2XeR8VABeZZKCK5yTtr8p63JXPEROgpP0teOCA5RybzOekIHey
-         WO01JaNbJ4vidygloxS7RXdQaKTXIlWeMJqqphRYpzZR07P/w8/CEUZljrbdPYJwK0
-         sq4K9MbjRVh/iSW4OILqP9q7FbHb8Bp51AV9w0kHCsF0BcDX0ybnQzP/gy7AmQZBK5
-         pdal5+51PPfEA==
-Date:   Fri, 21 Oct 2022 23:03:22 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Christoph =?UTF-8?B?QsO2aG13YWxkZXI=?= 
-        <christoph.boehmwalder@linbit.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        "Darrick J . Wong" <djwong@kernel.org>,
-        SeongJae Park <sj@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Helge Deller <deller@gmx.de>, netdev@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mmc@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH v1 0/5] convert tree to
- get_random_u32_{below,above,between}()
-Message-ID: <20221021230322.00dd045c@kernel.org>
-In-Reply-To: <Y1OD2tdVwQsydSNV@zx2c4.com>
-References: <20221022014403.3881893-1-Jason@zx2c4.com>
-        <20221021205522.6b56fd24@kernel.org>
-        <Y1NwJJOIB4gI5G11@zx2c4.com>
-        <20221021223242.05df0a5b@kernel.org>
-        <Y1OD2tdVwQsydSNV@zx2c4.com>
+        Sat, 22 Oct 2022 06:04:51 -0400
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3E9F2E5E3F
+        for <linux-parisc@vger.kernel.org>; Sat, 22 Oct 2022 02:20:48 -0700 (PDT)
+Received: (qmail 23867 invoked from network); 22 Oct 2022 08:18:28 -0000
+Received: from p200300cf0747190076d435fffeb7be92.dip0.t-ipconnect.de ([2003:cf:747:1900:76d4:35ff:feb7:be92]:60696 HELO eto.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <linux-parisc@vger.kernel.org>; Sat, 22 Oct 2022 10:18:28 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>
+Subject: Re: [PATCH] parisc: Use signed char for hardware path in pdc.h
+Date:   Sat, 22 Oct 2022 10:19:09 +0200
+Message-ID: <1948987.QruaqtAZS7@eto.sf-tec.de>
+In-Reply-To: <20221021072038.83248-1-deller@gmx.de>
+References: <20221021072038.83248-1-deller@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="nextPart3505395.YnlCFIzDc1"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, 22 Oct 2022 07:47:06 +0200 Jason A. Donenfeld wrote:
-> On Fri, Oct 21, 2022 at 10:32:42PM -0700, Jakub Kicinski wrote:
-> > But whatever. I mean - hopefully there aren't any conflicts in the ~50
-> > networking files you touch. I just wish that people didn't pipe up with
-> > the tree wide changes right after the merge window. Feels like the
-> > worst possible timing.  
-> 
-> Oh, if the timing is what makes this especially worrisome, I have
-> no qualms about rebasing much later, and reposting this series then.
-> I'll do that.
+--nextPart3505395.YnlCFIzDc1
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Rolf Eike Beer <eike-kernel@sf-tec.de>
+Date: Sat, 22 Oct 2022 10:19:09 +0200
+Message-ID: <1948987.QruaqtAZS7@eto.sf-tec.de>
+In-Reply-To: <20221021072038.83248-1-deller@gmx.de>
+References: <20221021072038.83248-1-deller@gmx.de>
+MIME-Version: 1.0
 
-Cool, thanks! I promise to not be grumpy if you repost around rc6 :)
+Am Freitag, 21. Oktober 2022, 09:20:38 CEST schrieb Helge Deller:
+> Clean up the struct for hardware_path and drop the struct device_path
+> with a proper assignment of bc[] and mod members as signed chars.
+> 
+> This patch prepares for the kbuild change from Jason A. Donenfeld to
+> treat char as always unsigned.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+> ---
+>  arch/parisc/include/uapi/asm/pdc.h | 36 +++++++++++-------------------
+>  drivers/parisc/pdc_stable.c        | 34 ++++++++++++++--------------
+>  2 files changed, 30 insertions(+), 40 deletions(-)
+> 
+> diff --git a/arch/parisc/include/uapi/asm/pdc.h
+> b/arch/parisc/include/uapi/asm/pdc.h index e794e143ec5f..7a90070136e8
+> 100644
+> --- a/arch/parisc/include/uapi/asm/pdc.h
+> +++ b/arch/parisc/include/uapi/asm/pdc.h
+> @@ -363,20 +363,25 @@
+> 
+>  #if !defined(__ASSEMBLY__)
+> 
+> -/* flags of the device_path */
+> +/* flags for hardware_path */
+>  #define	PF_AUTOBOOT	0x80
+>  #define	PF_AUTOSEARCH	0x40
+>  #define	PF_TIMER	0x0F
+> 
+> -struct device_path {		/* page 1-69 */
+> -	unsigned char flags;	/* flags see above! */
+> -	unsigned char bc[6];	/* bus converter routing info */
+> -	unsigned char mod;
+> -	unsigned int  layers[6];/* device-specific layer-info */
+> -} __attribute__((aligned(8))) ;
+> +struct hardware_path {
+> +	unsigned char flags;	/* see bit definitions below */
+> +	signed   char bc[6];	/* Bus Converter routing info to a specific */
+> +				/* I/O adaptor (< 0 means none, > 63 resvd) */
+> +	signed   char mod;	/* fixed field of specified module */
+> +};
+> +
+> +struct pdc_module_path {	/* page 1-69 */
+> +	struct hardware_path path;
+> +	unsigned int layers[6]; /* device-specific info (ctlr #, unit # ...) */
+> +} __attribute__((aligned(8)));
+> 
+>  struct pz_device {
+> -	struct	device_path dp;	/* see above */
+> +	struct pdc_module_path dp;	/* see above */
+>  	/* struct	iomod *hpa; */
+>  	unsigned int hpa;	/* HPA base address */
+>  	/* char	*spa; */
+> @@ -611,21 +616,6 @@ struct pdc_initiator { /* PDC_INITIATOR */
+>  	int mode;
+>  };
+> 
+> -struct hardware_path {
+> -	char  flags;	/* see bit definitions below */
+> -	char  bc[6];	/* Bus Converter routing info to a specific */
+> -			/* I/O adaptor (< 0 means none, > 63 resvd) */
+> -	char  mod;	/* fixed field of specified module */
+> -};
+> -
+> -/*
+> - * Device path specifications used by PDC.
+> - */
+> -struct pdc_module_path {
+> -	struct hardware_path path;
+> -	unsigned int layers[6]; /* device-specific info (ctlr #, unit # ...) */
+> -};
+> -
+>  /* Only used on some pre-PA2.0 boxes */
+>  struct pdc_memory_map {		/* PDC_MEMORY_MAP */
+>  	unsigned long hpa;	/* mod's register set address */
+> diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
+> index d9e51036a4fa..d6af5726ddf3 100644
+> --- a/drivers/parisc/pdc_stable.c
+> +++ b/drivers/parisc/pdc_stable.c
+> @@ -88,7 +88,7 @@ struct pdcspath_entry {
+>  	short ready;			/* entry record is valid if != 0 */
+>  	unsigned long addr;		/* entry address in stable storage */
+>  	char *name;			/* entry name */
+> -	struct device_path devpath;	/* device path in parisc representation */
+> +	struct pdc_module_path devpath;	/* device path in parisc representation */
+> struct device *dev;		/* corresponding device */
+>  	struct kobject kobj;
+>  };
+> @@ -138,7 +138,7 @@ struct pdcspath_attribute paths_attr_##_name = { \
+>  static int
+>  pdcspath_fetch(struct pdcspath_entry *entry)
+>  {
+> -	struct device_path *devpath;
+> +	struct pdc_module_path *devpath;
+> 
+>  	if (!entry)
+>  		return -EINVAL;
+> @@ -153,7 +153,7 @@ pdcspath_fetch(struct pdcspath_entry *entry)
+>  		return -EIO;
+> 
+>  	/* Find the matching device.
+> -	   NOTE: hardware_path overlays with device_path, so the nice cast can
+> +	   NOTE: hardware_path overlays with pdc_module_path, so the nice cast can
+> be used */
+>  	entry->dev = hwpath_to_device((struct hardware_path *)devpath);
+
+Maybe just use &devpath->path instead and scrap the comment?
+
+Regards,
+
+Eike
+--nextPart3505395.YnlCFIzDc1
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCY1OnfQAKCRBcpIk+abn8
+TgRIAJ9WXdmp66qsowsRjUSB9msbWmUtFgCeJ/4ijSwW0n7mvXXxxb+zTuwg1N4=
+=5sMO
+-----END PGP SIGNATURE-----
+
+--nextPart3505395.YnlCFIzDc1--
+
+
+
