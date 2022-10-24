@@ -2,230 +2,119 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D5E60B56E
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Oct 2022 20:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C7ED60B948
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Oct 2022 22:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231537AbiJXS0u (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 24 Oct 2022 14:26:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48178 "EHLO
+        id S233387AbiJXUIF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 24 Oct 2022 16:08:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231881AbiJXS0d (ORCPT
+        with ESMTP id S231857AbiJXUHq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 24 Oct 2022 14:26:33 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AD117F100;
-        Mon, 24 Oct 2022 10:08:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666631284; x=1698167284;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=9hFNN8FocKL1s+t62fqYOxCC2IjJmS0OeL8/lk60yi4=;
-  b=ZB3Le7AknfvHmRCA5ulPNGOt4r+KoJBwaOnpK4h/nvonVF61OUB4S720
-   Pi+5EnIdzYU5x/GSaQcowY13AKjFsC54opoLgyHRdPcm6UYCsAyOlHTsO
-   5WlvLu6eE61RhNDirXrBkjpAuLt3eVQ92Dpe/OKKDTu6LXZNqxHNOXEC5
-   eiCSVXtbN9Ww+OtJr+jQTJ8KNOb5+VBj0dglefCjWifzND6qAw6/kA+2e
-   qSlfW55d3QM9584nwFkFIXK6iHYGeDjDKjTQXoVZTw1YmXVzROJZmOalU
-   96h/lBH2lW6T1wdGMITxZl9aHsTbKyYRWIUCNXGBkDeTAnLghVTdiyqS4
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="371689507"
-X-IronPort-AV: E=Sophos;i="5.95,209,1661842800"; 
-   d="scan'208";a="371689507"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 09:59:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="662496666"
-X-IronPort-AV: E=Sophos;i="5.95,209,1661842800"; 
-   d="scan'208";a="662496666"
-Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 24 Oct 2022 09:59:46 -0700
-Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1on0nh-0005Wl-1e;
-        Mon, 24 Oct 2022 16:59:45 +0000
-Date:   Tue, 25 Oct 2022 00:58:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     ntfs3@lists.linux.dev, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD SUCCESS WITH WARNING
- 76cf65d1377f733af1e2a55233e3353ffa577f54
-Message-ID: <6356c451.pwLIF+9EvDUrDjTY%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Mon, 24 Oct 2022 16:07:46 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC58457E30;
+        Mon, 24 Oct 2022 11:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1666635988;
+        bh=AHsSRYOn624aglQzBbLTGeMMeK4dqdkEWBCmG0Qjo0c=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=Xb99oPI3Bv8y0+6+AzNe69kBOwgCKvpWHOeW/bYLY3GZmZukYvqliSJMnJYILnc1/
+         ReV2JzC2EHdkXqGrtPwmxCimb+JTYTMK/b2niqBb0SwtI6P8ZklMTq9KvA+hwOHpXe
+         zu+HmZt/61Z8/NgrHkacRPfShKyaD1K4yamtETfU=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.136.30]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MFsUv-1osH8Z1Abf-00HKCF; Mon, 24
+ Oct 2022 20:21:12 +0200
+Message-ID: <703cb0e6-a98a-a8cf-880b-c86a456f57b2@gmx.de>
+Date:   Mon, 24 Oct 2022 20:21:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.1
+Subject: Re: [PATCH] MAINTAINERS: adjust entry after renaming parisc serial
+ driver
+Content-Language: en-US
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-parisc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221024132223.9697-1-lukas.bulwahn@gmail.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20221024132223.9697-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:X+RkhzcAKeJ4LaBz452qdQRxK7w7nMwo0/N8QXvkyA8rTCrO51P
+ ykRVIZVpAJLLv93RHCxL/KHLh4Gh8aVPmN0BVFkgbdf6cuMI64plWRW2ZUiqJqyfaQleS8j
+ m+/XwtREHojiolHMxnQo335Q/ksZ65VvtAaduvY91Mv0jvSQOTFNhxPJ8ZU+U4E18DqrHi2
+ bQo2nu3DamlzL2sqXwlwA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ckw8bMAx+o0=:buDpt2fWNcjgKDH3O+qEgm
+ zxBePrRCZyai4uxYvYVr/TmdkAE5uO+TV5qZfRsqjFX2xOfmTCJWlAIwWrs4ncsjqS/conkmR
+ QQtzxJwo6rJ6FyEvBiNwZEsLh+OI+WyUfb+fsIH9YOC+wZhuWD+bV2qmkX2Cl0644golveWt8
+ REy51jWubVH8Y1lXSyPaQcEMzo1Fiso8M4bseFnVZKgdJ8wPqvdAG/drQ0fvDxTdL0kLyv4mT
+ VpAgJALpDduI2KCxicF8f89ZZg9H7MSizAWkOROqlxlOh4PpAa94e3GHv/HJa0ucTlBkvubDB
+ CsNMi/FNQE8zkvdvL1PMth1KcuVceFv4qtMEuQwJeKylS07QWchZGo9y9qVQR3lMsGiJ+4olI
+ 9meyWIBVOmAkrQE9Vs3oXFWukuizYu6pR78FjXvI9tB7J6KMi6n+5rLeT80F0Um3TbTv8FvmC
+ 3Tev97gzjR1nmfBDS/reHi4qjkbs0pBIUtyQU5Z4JFZRRIzeMPdvj5pBLhaw0yf4iCr3h60Zc
+ +xJQppc+o4x/YHGdbciF0xPBr8jf+sMksmZ7bVOFwWXrr5QIXThD/LW6S6dPZFGZvO9MF6omR
+ BgEriNDTvvdzc9ceQOoEFilLS0cJs9NP5Gl7xWmXFH+kluDWQ7xqAEqtF05ZuqdgMUR+yuSXr
+ s9mLaRs1KHGCek/TeX0yoPXOMAx7PjYGJCKc/UQ2oSIMXVDJWrc0C6dfzr+sfY/kDh3yxNKyb
+ TaPdHBVYMVyDtn8QzLMICLzjPsetsbbE55eE2+i5LpTE10d8tf3WNaqtmILNvYSwr6+L/lc3s
+ sWS2yAAIx4y8/it+Eua1gEB1rfCv8Un6ZRnzKe0Wueml4kXTgrdTkiIEs/6ia87GInnFv9Iuq
+ X+daJOzuRmyt0TvmDAzxmb066G5C/xGBUb6ACyE8J4W+QO8nXb4hE07LbeoEvql+jy54AdHFL
+ duC++sZB94m3AI7GM/f0oXVcQchNjgtuhAgj67sVOtE4ehMcAEhRHa0IbwiWr+DOIXNF6jEWa
+ aVigZ+4U3X1HquQiXlxndUGqS+jPaJeD3fJXNdb4yQ+2GI81TzNvilhVjJthrFTUXuWx1rSMS
+ IDZxX3zHleOWFV9VEwjo82HX8R0eiAqkBJdSwtunopeFMhUpi37hH3ZkLGh1RCaR6CpREn402
+ WprwsTPvFxkPFTGvdqCzxmK9ro+Y8QCwE9cKOtGIVytwS454m+Adzj6t9tW+IFUPXBH6daBmC
+ oZsfDX8sxeXoJciYCGqkXDUw2vB1VppMPq3rE1bYmzW7iSzh+Rmist4khJOVYPTyIm65ETP84
+ afFNxCUF/xzdRMq/HF20L8E4iFSrAZxOoxDhIza9O9w/Jhv44w0cdG+d/9KB9Mrvnf5mDJpUv
+ hsrNEJuXOW2Yqu9eIaRLrq8rRZX/d1QtTSZ2elZ3rNPQBj26zcoG0nd3nyiznpxTHIDTrDNLs
+ 3fs2seKkapg8375H6gN7s/pZLzdOXKWtD0xj+AcCk2KqIainPX/hCtgzzgIY4kcYwVdVySIYT
+ DfWcEEtyehAZolUgVAixKU5vCJKPfl/hujgcFDbMtQxBT
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 76cf65d1377f733af1e2a55233e3353ffa577f54  Add linux-next specific files for 20221024
+On 10/24/22 15:22, Lukas Bulwahn wrote:
+> Commit 9e4e2ce1a78e ("parisc/serial: Rename 8250_gsc.c to 8250_parisc.c"=
+)
+> renames the parisc serial driver file, but does not adjust the entry in
+> MAINTAINERS.
+>
+> Hence, ./scripts/get_maintainer.pl --self-test=3Dpatterns complains abou=
+t a
+> broken reference.
+>
+> Repair this file reference in PARISC ARCHITECTURE.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Warning reports:
+Nice catch, Lukas!
+Applied to the parisc git tree.
 
-https://lore.kernel.org/linux-mm/202210090954.pTR6m6rj-lkp@intel.com
-https://lore.kernel.org/linux-mm/202210110857.9s0tXVNn-lkp@intel.com
-https://lore.kernel.org/linux-mm/202210111318.mbUfyhps-lkp@intel.com
-https://lore.kernel.org/linux-mm/202210240729.zs46Cfzo-lkp@intel.com
+Thanks,
+Helge
 
-Warning: (recently discovered and may have been fixed)
 
-arch/parisc/kernel/setup.c:78 setup_cmdline() warn: curly braces intended?
-drivers/net/phy/phylink.c:588 phylink_validate_mask_caps() warn: variable dereferenced before check 'state' (see line 583)
+> ---
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 91d95924cff4..0c8198b3329a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -15637,7 +15637,7 @@ F:	drivers/input/serio/gscps2.c
+>   F:	drivers/input/serio/hp_sdc*
+>   F:	drivers/parisc/
+>   F:	drivers/parport/parport_gsc.*
+> -F:	drivers/tty/serial/8250/8250_gsc.c
+> +F:	drivers/tty/serial/8250/8250_parisc.c
+>   F:	drivers/video/console/sti*
+>   F:	drivers/video/fbdev/sti*
+>   F:	drivers/video/logo/logo_parisc*
 
-Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- i386-randconfig-s041-20221024
-|   |-- fs-ntfs3-index.c:sparse:sparse:restricted-__le32-degrades-to-integer
-|   |-- fs-ntfs3-namei.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-restricted-__le16-const-usertype-s1-got-unsigned-short
-|   `-- fs-ntfs3-namei.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-restricted-__le16-const-usertype-s2-got-unsigned-short
-|-- microblaze-randconfig-m031-20221023
-|   `-- drivers-net-phy-phylink.c-phylink_validate_mask_caps()-warn:variable-dereferenced-before-check-state-(see-line-)
-|-- parisc-randconfig-m031-20221023
-|   `-- arch-parisc-kernel-setup.c-setup_cmdline()-warn:curly-braces-intended
-`-- x86_64-randconfig-m001
-    `-- arch-x86-kernel-apic-apic.c-generic_processor_info()-warn:always-true-condition-(num_processors-()-)-(-u32max-)
-clang_recent_errors
-|-- hexagon-randconfig-r045-20221023
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt2701.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|   |-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8183.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|   |-- drivers-phy-mediatek-phy-mtk-tphy.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(unsigned-c
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- i386-randconfig-a001-20221024
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- i386-randconfig-a011
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- i386-randconfig-a015
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- powerpc-randconfig-r015-20221023
-|   |-- drivers-gpu-drm-amd-amdgpu-mmhub_v2_0.c:warning:variable-data-is-uninitialized-when-used-here
-|   |-- drivers-phy-mediatek-phy-mtk-tphy.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(unsigned-c
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- riscv-randconfig-r042-20221023
-|   `-- ld.lld:error:undefined-symbol:dax_holder_notify_failure
-|-- s390-randconfig-r022-20221023
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- s390-randconfig-r044-20221023
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- x86_64-randconfig-a002-20221024
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- x86_64-randconfig-a004-20221024
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-`-- x86_64-randconfig-a005-20221024
-    `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-
-elapsed time: 726m
-
-configs tested: 91
-configs skipped: 3
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                          rhel-8.3-func
-i386                                defconfig
-x86_64               randconfig-a013-20221024
-x86_64                               rhel-8.3
-x86_64               randconfig-a012-20221024
-x86_64                           allyesconfig
-x86_64                           rhel-8.3-syz
-x86_64                           rhel-8.3-kvm
-m68k                        m5272c3_defconfig
-x86_64               randconfig-a016-20221024
-powerpc                           allnoconfig
-arm                                 defconfig
-mips                             allyesconfig
-x86_64               randconfig-a011-20221024
-i386                          randconfig-a014
-powerpc                          allmodconfig
-x86_64               randconfig-a015-20221024
-csky                              allnoconfig
-i386                             allyesconfig
-sh                          kfr2r09_defconfig
-sh                               allmodconfig
-x86_64               randconfig-a014-20221024
-i386                          randconfig-a012
-i386                          randconfig-a016
-arc                                 defconfig
-alpha                            allyesconfig
-powerpc                      makalu_defconfig
-arm                              allyesconfig
-arm                            xcep_defconfig
-m68k                             allmodconfig
-powerpc                    amigaone_defconfig
-sh                           sh2007_defconfig
-arm64                            allyesconfig
-arc                              allyesconfig
-arc                  randconfig-r043-20221024
-m68k                             allyesconfig
-arc                         haps_hs_defconfig
-alpha                               defconfig
-sh                            migor_defconfig
-mips                     loongson1b_defconfig
-riscv                randconfig-r042-20221024
-s390                                defconfig
-parisc                generic-64bit_defconfig
-arc                  randconfig-r043-20221023
-s390                             allmodconfig
-xtensa                          iss_defconfig
-s390                 randconfig-r044-20221024
-powerpc                      bamboo_defconfig
-ia64                             allmodconfig
-s390                             allyesconfig
-arm                        shmobile_defconfig
-arm                            hisi_defconfig
-arc                          axs103_defconfig
-powerpc                        cell_defconfig
-mips                        bcm47xx_defconfig
-sparc                       sparc64_defconfig
-x86_64                         rhel-8.3-kunit
-
-clang tested configs:
-i386                 randconfig-a001-20221024
-i386                 randconfig-a002-20221024
-i386                 randconfig-a003-20221024
-i386                 randconfig-a004-20221024
-i386                 randconfig-a005-20221024
-i386                 randconfig-a006-20221024
-hexagon              randconfig-r045-20221023
-i386                          randconfig-a013
-hexagon              randconfig-r041-20221024
-i386                          randconfig-a011
-riscv                randconfig-r042-20221023
-x86_64               randconfig-a001-20221024
-arm                          moxart_defconfig
-powerpc                      obs600_defconfig
-x86_64               randconfig-a005-20221024
-x86_64               randconfig-a003-20221024
-powerpc                       ebony_defconfig
-x86_64               randconfig-a006-20221024
-i386                          randconfig-a015
-hexagon              randconfig-r045-20221024
-x86_64               randconfig-a004-20221024
-arm                             mxs_defconfig
-s390                 randconfig-r044-20221023
-mips                       rbtx49xx_defconfig
-x86_64               randconfig-a002-20221024
-arm                          pxa168_defconfig
-powerpc                     tqm8540_defconfig
-powerpc                      ppc44x_defconfig
-hexagon              randconfig-r041-20221023
-arm                            dove_defconfig
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
