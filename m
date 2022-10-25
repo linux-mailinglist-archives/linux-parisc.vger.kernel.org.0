@@ -2,42 +2,39 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 711AF60C650
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Oct 2022 10:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE1BE60D430
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Oct 2022 20:52:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232187AbiJYIVj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 25 Oct 2022 04:21:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47476 "EHLO
+        id S233161AbiJYSwk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 25 Oct 2022 14:52:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232200AbiJYIVe (ORCPT
+        with ESMTP id S233077AbiJYSw1 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 25 Oct 2022 04:21:34 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C54DFF248;
-        Tue, 25 Oct 2022 01:21:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=EtmojnUqnCVKWOh8C7J92DZrsq9/z0GK3KV0rT9mLpw=; b=BiKMTB/c8/919DvH6LZjZyf2T7
-        Lk+Oc0WQgSHrU043Y+cnUTrcCAWFFIRwbP/gwShZJOH7Ph6ZjNkE4YzQLwl+rZ6FQMYOZVZ1KaAAv
-        JrHnpzzBk58E6Bw1q1q6MogLgb0j7g2H4c3zZg9FWX17eaRq/RM83PQCbfJMvNXNS9KzKq0aINVsM
-        KaygbGcRwn6F39U9DxcVpgeF99Nlne7F879RubTg63DmK7uq37EnDvG5KYZFfCKozoHb2sgk7eO4l
-        lwO6xacAFy+7uJjlKmYCqjbyjVIn9IsBwGV8SHQv4hpDF3zC3DsR7nT9nOHu1R4lpXKIo3O5UJycU
-        fdMcQzOw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34940)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1onFBQ-0004Dt-7i; Tue, 25 Oct 2022 09:21:12 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1onFBL-0007xV-IX; Tue, 25 Oct 2022 09:21:07 +0100
-Date:   Tue, 25 Oct 2022 09:21:07 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Jakub Kicinski <kuba@kernel.org>
+        Tue, 25 Oct 2022 14:52:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D1001217E6;
+        Tue, 25 Oct 2022 11:52:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD2FE61AF9;
+        Tue, 25 Oct 2022 18:52:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B672AC433C1;
+        Tue, 25 Oct 2022 18:52:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666723936;
+        bh=TQdJlERfQEUABscmmDLT7Y2HrdNrXv8E1A8x0FSRGM0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HXDjtzO+UBdc1yePh5W/WLyMc2oBVDdqLtEyJlyYfQFURF57pFKrqXSW+UPaZgfDe
+         /J5qfQ34amGSi1DcyeqPwJ2zcr9+kab5xk5EakePQ60CKJJ69OixTqZQNqlbPCadn1
+         BbtqO81A0cfshr4hly4SDb4WourJsd9sJqFAxtDwMnD9KBRfC5PxIYZj1H7kY7XMlC
+         dk7WpufcgTIuHAKKuRaY+n7swd4MfCATpj4+zGaPDHY0VwMjhkd0G9/vxZNmy5sOYn
+         8eGQGzXCeqeaekcSMnjCybgm1iXyUZ+WKQjx73kKf6ePmFxUT+B3zDoLmPWmYdi2KT
+         vJRF+9c8CHYoQ==
+Date:   Tue, 25 Oct 2022 11:52:14 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc:     kernel test robot <lkp@intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         ntfs3@lists.linux.dev, netdev@vger.kernel.org,
@@ -47,47 +44,40 @@ Cc:     kernel test robot <lkp@intel.com>,
         Linux Memory Management List <linux-mm@kvack.org>
 Subject: Re: [linux-next:master] BUILD SUCCESS WITH WARNING
  76cf65d1377f733af1e2a55233e3353ffa577f54
-Message-ID: <Y1eccygLSjEoPdHV@shell.armlinux.org.uk>
+Message-ID: <20221025115214.26a12211@kernel.org>
+In-Reply-To: <Y1eccygLSjEoPdHV@shell.armlinux.org.uk>
 References: <6356c451.pwLIF+9EvDUrDjTY%lkp@intel.com>
- <20221024145527.0eff7844@kernel.org>
+        <20221024145527.0eff7844@kernel.org>
+        <Y1eccygLSjEoPdHV@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221024145527.0eff7844@kernel.org>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Oct 24, 2022 at 02:55:27PM -0700, Jakub Kicinski wrote:
-> On Tue, 25 Oct 2022 00:58:57 +0800 kernel test robot wrote:
-> > drivers/net/phy/phylink.c:588 phylink_validate_mask_caps() warn: variable dereferenced before check 'state' (see line 583)
+On Tue, 25 Oct 2022 09:21:07 +0100 Russell King (Oracle) wrote:
+> Not me, Sean. My original implementation of phylink_validate_mask_caps()
+> doesn't know anything about rate matching, so my version didn't have
+> this issue.
 > 
-> Hi Russell, I think the warning is semi-legit. Your commit f392a1846489
-> ("net: phylink: provide phylink_validate_mask_caps() helper") added an 
-> if (state) before defer'ing state but it's already deref'ed higher up
-> so can't be null.
+> Sean's version of my patch (which is what was submitted) added the
+> dereference that causes this, so, it's up to Sean to figure out a fix -
+> but he reading his follow up to the build bot's message, he seems to
+> be passing it over to me to fix!
+> 
+> I've got other issues to be worked on right now, and have no time to
+> spare to fix other people's mistakes. Sorry.
+> 
+> You can't always rely on the apparent author mentioned in the commit to
+> be the actual person responsible for the changes in a patch.
 
-Not me, Sean. My original implementation of phylink_validate_mask_caps()
-doesn't know anything about rate matching, so my version didn't have
-this issue.
+Eh, confusing authorship trail, sorry.
 
-Sean's version of my patch (which is what was submitted) added the
-dereference that causes this, so, it's up to Sean to figure out a fix -
-but he reading his follow up to the build bot's message, he seems to
-be passing it over to me to fix!
-
-I've got other issues to be worked on right now, and have no time to
-spare to fix other people's mistakes. Sorry.
-
-You can't always rely on the apparent author mentioned in the commit to
-be the actual person responsible for the changes in a patch.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+I'll send a patch to drop the if (), if it's really needed we'll hear
+about it sooner or later.
