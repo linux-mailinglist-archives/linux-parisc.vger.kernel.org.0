@@ -2,87 +2,150 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75D6360F108
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Oct 2022 09:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7827460FBBD
+	for <lists+linux-parisc@lfdr.de>; Thu, 27 Oct 2022 17:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234291AbiJ0HQ0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 27 Oct 2022 03:16:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37724 "EHLO
+        id S235181AbiJ0PVr convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Thu, 27 Oct 2022 11:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233669AbiJ0HQ0 (ORCPT
+        with ESMTP id S235835AbiJ0PVM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 27 Oct 2022 03:16:26 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5320786F7
-        for <linux-parisc@vger.kernel.org>; Thu, 27 Oct 2022 00:16:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1666854982; bh=4bkDGGt84/IgzrbcBDD71Z9TZyzQfGcrUGWpTRyaNgI=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=rCDQWR3dMuBIA9Ul9iDzunxMjHiRen6Ii1OBR3Xz9r/COidPgzyGrk0i3f9doxAvG
-         UOhejVuCIu0m/FMIFQM5M+VLrDUhRaIWP+E+3cwTJwHp+JbMI4ASHY6ZQXZdZRoyUo
-         5tLyyh5gu/OAtFit1pzSomdhVd9jvbUYZa3FAhKCBlaGbelFOgJ4JvhPQdefw8AAad
-         iNNpLP2ZLyvD2R3fGWCWmBpUZpMlRpnA8f3iEssuVfmMsm+qRvWB6pqrY81TzlZi3C
-         EaPVAJbSXt+xE/lAOlDHPbANaJ9e3OydBfbQ1s+lBIOKdKOsRK4+H0A/p8YKERbUwN
-         rVmRVr7P4JLdg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([92.116.164.228]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MkYbu-1pUQ1Y2i4M-00m4gi for
- <linux-parisc@vger.kernel.org>; Thu, 27 Oct 2022 09:16:22 +0200
-Date:   Thu, 27 Oct 2022 09:16:21 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Subject: [PATCH] parisc: Export iosapic_serial_irq() symbol for serial port
- driver
-Message-ID: <Y1owRTWYoEU7DCZS@p100>
+        Thu, 27 Oct 2022 11:21:12 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DECD101D6;
+        Thu, 27 Oct 2022 08:21:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C3E28B826DB;
+        Thu, 27 Oct 2022 15:21:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20249C433C1;
+        Thu, 27 Oct 2022 15:21:03 +0000 (UTC)
+Date:   Thu, 27 Oct 2022 11:21:17 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Pali =?UTF-8?B?Um9ow6Fy?= <pali@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, Tony Lindgren <tony@atomide.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-input@vger.kernel.org,
+        linux-parisc@vger.kernel.org
+Subject: Re: [RFC][PATCH v2 15/31] timers: Input: Use del_timer_shutdown()
+ before freeing timer
+Message-ID: <20221027112117.7324570a@gandalf.local.home>
+In-Reply-To: <20221027150927.992061541@goodmis.org>
+References: <20221027150525.753064657@goodmis.org>
+        <20221027150927.992061541@goodmis.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:qP0drYfeMuE18eTAkzO0y8TI/45f8otuXjXDUOe9aZb3h0J+ZOl
- 73akH9ubIXlmsz0xlZ8Kr7rAnSFYsvleB61I50Gu/ah7gyQM2JVk8/68pEgyWj8y2BowYhL
- vtIPScc9FqAL2yA2WNDm6H8rYLOX+wQmZFoP3G4VZSxUII1ffVEQWXWjRcZhv7dPcNZvatG
- 9a8lQhR0UyhAZ5pFA6rUg==
-UI-OutboundReport: notjunk:1;M01:P0:zx7xHPSlqxQ=;FVsC86YifKWWKwj0q3GoRZrmYGg
- 6Wd+himiP5clMUiBySPLDBZ528UTFv0YkcJxptyOsVtAnEgHg0YmKUmXrBgmppmDtIdbIRQxo
- T3t9jRBORc0zuFUibrAsI2I/K75lCe+ST3tsoZARbxQluecu2OxMQ/6BBMIRRI9OnQZ4JSv60
- tz8w1Fm35eMeV8TQNkulTv4ZNYb+slfFD5YfBkZWqqgVuJgT1wgvnmiRDHM65T2s52OqVlAv4
- hsYvCXPh3kWya3eXjp/k72LBY9MqheFRnkxBYbE5oCgImLTZS32m8E47r0hm53OxVH2lvnojX
- NdpRXJIeV091kw08hExUeekPfjCdVlEzitVXJ2soLAmGIB5tZ1Xt+RaqUfSl7kUmpXuOZssM5
- ermCZ9mLsUcGuyMjy0uaaOpB9YNuCDWiR3LY8f0HB0v43gvEesoZVYH/ZumRnOL8BgbsRhdBa
- AiZ1u2RftOJsSjtFlOSlMdrAXX2PITLHOF7FmDWRLA4WfmUCmreCSgElHk3WEdrYFlb306i80
- GynHTtl7S/3Irh1IOrvuRO4Ns4NXXFslsMsLn+64+OLOzl+uoWYsOY/G+fPhwA+247zrSNKni
- ddzVtnzoGgjaOIhq/vjGjcICtT58dFzu6+OpIR+RGMpSPwCXCHB7mLyRrYJRBDjcHGjmrbwPP
- qP2b4CpAiSkdmqBea8ppCFCOhaMW0cZc72IcGvUFC6GARAQYfHJskV8qaQGIYorIL7kho1M98
- VzRNCPznrijmG4p5cVfl5eoQBR/05Rq2DSkY2W4yR6vY628Qr6uA9mWuTFGIic/RKH6ACu3tn
- p/FlBDY5VdhuD+NTe8chJYR4W4suuNMVsfqXk9bNSY9E7luyM1FDxrU663BYa64tSE+wf5Bfp
- SC88G80dTs/QBOSoOLpI5tFhZbXECf/vXZDEZFLk2VZL36AMqAmBOf1KCK2bpz51/FvE2kfZq
- j4VI8Iz+P+0XXCbizjy7MZtqClg=
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The parisc serial port driver needs this symbol when it's compiled
-as module.
+[
+  quilt mail --send still can't handle unicode characters.
+    Here's the patch again
+]
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: <stable@vger.kernel.org>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-diff --git a/drivers/parisc/iosapic.c b/drivers/parisc/iosapic.c
-index bdef7a8d6ab8..bcc1dae00780 100644
-=2D-- a/drivers/parisc/iosapic.c
-+++ b/drivers/parisc/iosapic.c
-@@ -866,6 +866,7 @@ int iosapic_serial_irq(struct parisc_device *dev)
+Before a timer is freed, del_timer_shutdown() must be called.
 
- 	return vi->txn_irq;
+Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home/
+
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: "Pali Rohár" <pali@kernel.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-input@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ drivers/input/keyboard/locomokbd.c   | 2 +-
+ drivers/input/keyboard/omap-keypad.c | 2 +-
+ drivers/input/mouse/alps.c           | 2 +-
+ drivers/input/serio/hil_mlc.c        | 2 +-
+ drivers/input/serio/hp_sdc.c         | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/input/keyboard/locomokbd.c b/drivers/input/keyboard/locomokbd.c
+index dae053596572..aabd1f6a986a 100644
+--- a/drivers/input/keyboard/locomokbd.c
++++ b/drivers/input/keyboard/locomokbd.c
+@@ -310,7 +310,7 @@ static void locomokbd_remove(struct locomo_dev *dev)
+ 
+ 	free_irq(dev->irq[0], locomokbd);
+ 
+-	del_timer_sync(&locomokbd->timer);
++	del_timer_shutdown(&locomokbd->timer);
+ 
+ 	input_unregister_device(locomokbd->input);
+ 	locomo_set_drvdata(dev, NULL);
+diff --git a/drivers/input/keyboard/omap-keypad.c b/drivers/input/keyboard/omap-keypad.c
+index 57447d6c9007..39974158961d 100644
+--- a/drivers/input/keyboard/omap-keypad.c
++++ b/drivers/input/keyboard/omap-keypad.c
+@@ -296,7 +296,7 @@ static int omap_kp_remove(struct platform_device *pdev)
+ 	omap_writew(1, OMAP1_MPUIO_BASE + OMAP_MPUIO_KBD_MASKIT);
+ 	free_irq(omap_kp->irq, omap_kp);
+ 
+-	del_timer_sync(&omap_kp->timer);
++	del_timer_shutdown(&omap_kp->timer);
+ 	tasklet_kill(&kp_tasklet);
+ 
+ 	/* unregister everything */
+diff --git a/drivers/input/mouse/alps.c b/drivers/input/mouse/alps.c
+index 4a6b33bbe7ea..4d402e75aca8 100644
+--- a/drivers/input/mouse/alps.c
++++ b/drivers/input/mouse/alps.c
+@@ -2970,7 +2970,7 @@ static void alps_disconnect(struct psmouse *psmouse)
+ 	struct alps_data *priv = psmouse->private;
+ 
+ 	psmouse_reset(psmouse);
+-	del_timer_sync(&priv->timer);
++	del_timer_shutdown(&priv->timer);
+ 	if (priv->dev2)
+ 		input_unregister_device(priv->dev2);
+ 	if (!IS_ERR_OR_NULL(priv->dev3))
+diff --git a/drivers/input/serio/hil_mlc.c b/drivers/input/serio/hil_mlc.c
+index d36e89d6fc54..33fc73da8e54 100644
+--- a/drivers/input/serio/hil_mlc.c
++++ b/drivers/input/serio/hil_mlc.c
+@@ -1017,7 +1017,7 @@ static int __init hil_mlc_init(void)
+ 
+ static void __exit hil_mlc_exit(void)
+ {
+-	del_timer_sync(&hil_mlcs_kicker);
++	del_timer_shutdown(&hil_mlcs_kicker);
+ 	tasklet_kill(&hil_mlcs_tasklet);
  }
-+EXPORT_SYMBOL(iosapic_serial_irq);
- #endif
-
-
+ 
+diff --git a/drivers/input/serio/hp_sdc.c b/drivers/input/serio/hp_sdc.c
+index 13eacf6ab431..49e5884df801 100644
+--- a/drivers/input/serio/hp_sdc.c
++++ b/drivers/input/serio/hp_sdc.c
+@@ -980,7 +980,7 @@ static void hp_sdc_exit(void)
+ 	free_irq(hp_sdc.irq, &hp_sdc);
+ 	write_unlock_irq(&hp_sdc.lock);
+ 
+-	del_timer_sync(&hp_sdc.kicker);
++	del_timer_shutdown(&hp_sdc.kicker);
+ 
+ 	tasklet_kill(&hp_sdc.task);
+ 
+-- 
+2.35.1
