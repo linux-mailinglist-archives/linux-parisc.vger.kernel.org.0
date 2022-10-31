@@ -2,115 +2,81 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55DA060FD48
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Oct 2022 18:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63779613AC9
+	for <lists+linux-parisc@lfdr.de>; Mon, 31 Oct 2022 16:56:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235551AbiJ0Qiw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 27 Oct 2022 12:38:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54900 "EHLO
+        id S231942AbiJaP4G (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 31 Oct 2022 11:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235659AbiJ0Qiv (ORCPT
+        with ESMTP id S231621AbiJaP4D (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 27 Oct 2022 12:38:51 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6669B18708A;
-        Thu, 27 Oct 2022 09:38:51 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id f5-20020a17090a4a8500b002131bb59d61so6050189pjh.1;
-        Thu, 27 Oct 2022 09:38:51 -0700 (PDT)
+        Mon, 31 Oct 2022 11:56:03 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4637D120B8
+        for <linux-parisc@vger.kernel.org>; Mon, 31 Oct 2022 08:56:01 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id z97so18050636ede.8
+        for <linux-parisc@vger.kernel.org>; Mon, 31 Oct 2022 08:56:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4/1b1qcy/q10T/xwgjyAFlhqgrlOQeWECP0LCGi9PrM=;
-        b=kR+vQY5k4SVLrCb743A3JHbbgYqiBt7Cq6HYCSuJ1fDX1M8gu+PLLJA8as+BSESMpS
-         EdCqdj+v9yDXU2Mg8ZoETV7ph55TjCA3sImosMIChII8sFDgeth2mVWVuPnyEO/rN5T/
-         4WK4C97ij4A8rOw9RMEqwBvb0nE5idBSnEEpwuC4Xbl9zRJLndurVLtgWtBTGn4ZNA9A
-         AncikKgof6oFcmmYtXlXzESkC+wLxWGu0QTnqIMoPxoiegZGNu0NaUngeDMzRIG2ovU8
-         o57CHpi+d/YhjTbR2hUGYn8hs8hm70BLNv/eUnGC9o0WLWmS3AeT0jSkf9bLY6Gcrd5j
-         rang==
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=54IXG2FPqhGXRhjbMJeBZJCoE2PKYVWz3wVMDeZTLCU=;
+        b=Zskj8hY47y9/vRBVhsXI/zOvfwa2iyJBv9QUq1+i13j5qsNOJnVU3wL/JUdlYLqz4v
+         Mk75ESkgustxHq75/QaQ5OEO1eZt7heVL+VSe9tWHj5UP5z0WxpoZwggf/S4CeijV4z5
+         HpPLq4by6bha61t+359KMwWeXzdOid4NQVZsaks1CdeCumgLsRV5VNAtoBtOUtua3AOs
+         B5a4nrT+akXiUSdAx3LfyeaIm/nUCwSaWn4ght0Rx/QkIRjjlRNszAEfCaGP1d1g0WE4
+         nBI6wREzdJQ6Rx+IOYKCW7XmWBLDVtspMgcS3+GdeG5+YYpDHOEQlReggADgkn+UXgD5
+         SxHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        h=to:subject:message-id:date:from:reply-to:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4/1b1qcy/q10T/xwgjyAFlhqgrlOQeWECP0LCGi9PrM=;
-        b=xLGUcFFY2mb/Ilfm3iAvzUYS0qJb8VMZOajySugPRCPeK5hTAU9eKBctt7c4la8ivC
-         Yem/2MnH8Sz8/5SV3f5fLBnsbI+mHdvU3Z/0YqUVC2G6C/xXl1bk23uOqOvvJEpWhAuo
-         hskyjFkhlJBEJ1xLUHA0xuXN9U2txQYAYCFq5pK8xiqs9w4wXEmceDIdtm71HNMy9vKL
-         reRSrJZGMTpHlPfZIURalDF+S2L+b/EiDxnT1l2o+QLBrlCmzi+9sBJavMHCOlSxSUiz
-         gx48K9AFO1gYskV59zTb18LTdaFImGMjXrGX2MFBwuW7VB+Ll32Mjoea27TqpWb5UyUL
-         gFVA==
-X-Gm-Message-State: ACrzQf1U3p4caOxWy+Pist7AUcoSjEXSwb4WqsLlCCCni49XKdxxHudZ
-        zNcrrtoJFeiO1zaLEcJ7l+E=
-X-Google-Smtp-Source: AMsMyM6NQyy9M6pqOOyiHu/Iq8naC2MMbmNJilYhAd895GtcEme5YsDNjgXNAMotBpRf5wqwbsIfNw==
-X-Received: by 2002:a17:90a:c691:b0:212:fd5f:1ab8 with SMTP id n17-20020a17090ac69100b00212fd5f1ab8mr10886380pjt.11.1666888730774;
-        Thu, 27 Oct 2022 09:38:50 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:99d6:ae15:f9aa:1819])
-        by smtp.gmail.com with ESMTPSA id a6-20020a170902710600b001865e69b4d7sm1370799pll.264.2022.10.27.09.38.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Oct 2022 09:38:50 -0700 (PDT)
-Date:   Thu, 27 Oct 2022 09:38:46 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Tony Lindgren <tony@atomide.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-input@vger.kernel.org,
-        linux-parisc@vger.kernel.org
-Subject: Re: [RFC][PATCH v2 15/31] timers: Input: Use del_timer_shutdown()
- before freeing timer
-Message-ID: <Y1q0FiznpwJ7/TPm@google.com>
-References: <20221027150525.753064657@goodmis.org>
- <20221027150927.992061541@goodmis.org>
- <20221027112117.7324570a@gandalf.local.home>
+        bh=54IXG2FPqhGXRhjbMJeBZJCoE2PKYVWz3wVMDeZTLCU=;
+        b=ATIiuzR218CVXGe951juWS2Lno+qamXYwDft3sxb/58RH/BWOJItO7rXjBsOqcmqL8
+         91Q2asfcIx7AlVcr2Yha45ST1/E//0P5hOZvfkY726lXFLDzu3dEJ4FrUyBgnzwjhiZm
+         N2XKDMLUE2MjEertTaGkDeLaIN4IYxcBX+JhIZVOnMlPyzNJBEQVMZ75nqSnucJ2ifF3
+         GssxKqnXYKUZ7fH0UrLlBk1Uqpkvfj3n/6tuhBKvbW+exRj0bZu0w0twQ+97RyD/0G+Q
+         QBTy4K5UDfnnatKXWt79BbxVw7A2hZA+hllCUzZv+DHpzOFbxyRdA1DsGY5+lZC+JEEI
+         gPkg==
+X-Gm-Message-State: ACrzQf1R1YeEt/umRsN+K8z3OqwSSZL8JDvwwRMsulMFSDMTQ9zHq3Gz
+        5hDWGYV6pglXnnpM2lMNUoFjsITBoCpdaDxryF8=
+X-Google-Smtp-Source: AMsMyM4G/j8m1/zSeccQf2AkVugX8309cUfDI+UYDvZQuRuoGB23q/LHl7RH2mbAs7rIvYUS8mc5Ee0Zt9e7fN034Ws=
+X-Received: by 2002:a05:6402:f0e:b0:461:aaa3:a11c with SMTP id
+ i14-20020a0564020f0e00b00461aaa3a11cmr14510961eda.53.1667231759743; Mon, 31
+ Oct 2022 08:55:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221027112117.7324570a@gandalf.local.home>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:7208:608b:b0:5d:5fd:eaac with HTTP; Mon, 31 Oct 2022
+ 08:55:59 -0700 (PDT)
+Reply-To: victorinaquezon01@yahoo.com
+From:   Victorina <victorinaquezon@gmail.com>
+Date:   Mon, 31 Oct 2022 15:55:59 +0000
+Message-ID: <CAAOoKdtKiOsY9NHKOKnMFde+5RJ9erb66BYraxj99G3YEi+ybg@mail.gmail.com>
+Subject: Bonjour
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Oct 27, 2022 at 11:21:17AM -0400, Steven Rostedt wrote:
-> [
->   quilt mail --send still can't handle unicode characters.
->     Here's the patch again
-> ]
-> 
-> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-> 
-> Before a timer is freed, del_timer_shutdown() must be called.
-> 
-> Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home/
-> 
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: "Pali Rohár" <pali@kernel.org>
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-parisc@vger.kernel.org
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-
-Please feel free to merge with the rest of the series.
-
-Thanks.
-
 -- 
-Dmitry
+I am Madam Victorina Quezon a citizen of philippine,A widow
+I am  woman going through so much pain and suffer and might not walk
+again if nothing is been done fast
+Please  I want you to help me retrieve the only Thing I have now in a
+box  which contains my jewelries and 585,000 thounsand dollars   which
+ my late husband left for me which is currently in a Security company,
+I have no strength to do this due to my health condition and safety
+Please Keep this Confidential
+I await your response
+Please reply me at     victorinaquezon01@yahoo.com
+So i can explain more
+With love
+Victorina Quezon
