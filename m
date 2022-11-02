@@ -2,109 +2,127 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FE78615108
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Nov 2022 18:47:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D5536168E0
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Nov 2022 17:30:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230220AbiKARrT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 1 Nov 2022 13:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44274 "EHLO
+        id S231905AbiKBQai (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 2 Nov 2022 12:30:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbiKARrS (ORCPT
+        with ESMTP id S231861AbiKBQaM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 1 Nov 2022 13:47:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 514231D0D3;
-        Tue,  1 Nov 2022 10:47:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0AF6616D8;
-        Tue,  1 Nov 2022 17:47:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD53C433D6;
-        Tue,  1 Nov 2022 17:47:05 +0000 (UTC)
-Date:   Tue, 1 Nov 2022 17:47:01 +0000
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linux-fsdevel@vger.kernel.org,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>
-Subject: Re: [PATCH] mm: remove kern_addr_valid() completely
-Message-ID: <Y2FblZlz2LIGh5qH@arm.com>
-References: <20221018074014.185687-1-wangkefeng.wang@huawei.com>
+        Wed, 2 Nov 2022 12:30:12 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D861AD98;
+        Wed,  2 Nov 2022 09:26:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1667406376; bh=rJgbLL+FBceI4uWxw9o8fqzyiU5e5oNjbPi2SaLVtdk=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=nmN4oUtR+81ZhLCPh/c1t8RkUz+5MMHinX9EfWqgu8Un1E+5LwqoJjPVRwCo7cUZq
+         36fWxq+DB5WxVYMkQWbKIukkwnaqYorPSu+l3IuFQjgpuwl3lK0+fqWwEkSuz6/71d
+         iE4UuN1RCYZI078jYKLtsNk9z8yytdRXsydD+5LPGXPL1zvb6256hnn1P17ppVRQdP
+         xzKuZIZHHxb4t82zqMF7IJHfFyicrIwJWsBek6VUUzerqHocPqOZs0e37HjeWE9fVY
+         tmqw6Fu7xmXxjDXCPkaoMnzdu9mIgVuguzjIOM+Xe8F0n10ovMGwWdZbu0Wq+LymuF
+         B5s9XhqheQuCw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([92.116.147.88]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M1Hdw-1oruC20Nyc-002oEe; Wed, 02
+ Nov 2022 17:26:16 +0100
+Date:   Wed, 2 Nov 2022 17:26:13 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture fixes for v6.1-rc4
+Message-ID: <Y2KaFoe7n4lkr25c@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221018074014.185687-1-wangkefeng.wang@huawei.com>
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Provags-ID: V03:K1:xHbuEPnV5UQKfq1zLYVpnAvTryrB5+ElqFEDJ3HzOPkPDNMUQWn
+ sRERA0xrMomSyGNxnlM9MEB1tHRQ4r0rywmKVMNT5AYtZyzroRs3JAlwn2RnydopAgkhLuf
+ 9X9Rt33ZxoLSl+03AlgZlWjukNteFrWFeYtVs8bDkdVPoTlBNFYj7B0lxFfKS82exwwo4t3
+ A1JjcpObgFh13w+QArLiw==
+UI-OutboundReport: notjunk:1;M01:P0:qJ9MS02Cxrk=;PSb2fFkwTQlJh/G3lCdnleb3ebP
+ 4spYwm014E5mtDPSfcQi2fM33E3ySSlXiE1BTtSGNP3mshrMH5mqKm+oVimZ0CHI0DULbGNtm
+ 7E+Es4w3cReofjTwWzWy+JrjEZs9mQh23O0VMAd3YPI49AkQq5797J+B3mk+spLVnyuT0dFX+
+ Yq2wEAP0Y7unJ7y49xEgRAJVOgdNYxwpiid3r5/dPN0qMFNsh1t63lYJD2o9DGCztIhB+Rqd/
+ 0nZLGKzOglkXXix/05rP8mM7ldzvfxt6OLLgzz6LhZMAoDX7bdDpXTOdqvGie5T2D2+U9U+8p
+ UDC0toDa065xetkgGQOOXG/gsKd9y1dzqncW73j27wM4wxlD0fIaez2vznR/KN/0F1N3y3KsC
+ gMocExGInbA0IkbXp2h0bBwMwTivHLrlytYRnbfdHVwWoXmC+zX0ZO3PWbqNnSibB7qZ5/q7+
+ rpDP3DGr+7YG7rWpOuWeNO+6d9Xlgf8gxeIhzpCZUCtk+z6jGsskbTeMLnXvUFtvFsC81fVLX
+ 6JanIZCxpFm3+MoH2SH689xp+eEEmFTSOPC8z9rpbKXiw3l4fajUJ+PxukdKRkLz1LfGhdKc8
+ KAjfPphjbBb1YM8+YcAtR1jBX1PECMVnF2DWYkW9vERbAn0w+AJ5H1beaTitlfoohYE5pM0r2
+ IdPefkb0BLe9Zx4K+9/zt1NuJ/pLgR4IlblKzFw12s/m0dRsgbMvKlKm1Yr1bqexOTx1Es6tc
+ ZCRqGbpO3cIfVtZpVRQOe1++uUsjLIObpdbE7FH+IgdDfKxS8Ydz5SzolvfWwu+oI3pXEbYuw
+ MrTQqcZU3/fApnDFVk2AbViYQXucauZg/ucOFkHq/LjXdDzBhX5m6JfiyhCFr4MxM5DEmo7yM
+ kOCOE79mIWayorFpHC/5nrz8ikdohU07/c22QdFeECeG9CRtQCx/65QRT7cAyW9O2br2UlGX/
+ eL6Vpi/+sRqcbB/WA4u8Dj6KmXE=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Oct 18, 2022 at 03:40:14PM +0800, Kefeng Wang wrote:
-> Most architectures(except arm64/x86/sparc) simply return 1 for
-> kern_addr_valid(), which is only used in read_kcore(), and it
-> calls copy_from_kernel_nofault() which could check whether the
-> address is a valid kernel address, so no need kern_addr_valid(),
-> let's remove unneeded kern_addr_valid() completely.
-> 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Hi Linus,
 
-For arm64:
+please pull some fixes for the parisc architecture for 6.1-rc4.
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+This patchset handles mostly oddities with the serial port 8250_gsc.c driver.
+Although the name suggests it's just for serial ports on the GSC bus (e.g. in
+older PA-RISC machines), it handles serial ports on PA-RISC PCI devices (e.g.
+on the SuperIO chip) as well.
+Thus this patchset renames the driver to 8250_parisc and fixes the config
+dependencies.
+The other change is a cleanup on how the device IDs of devices in a PA-RISC
+machine are shown at startup.
+
+Thanks,
+Helge
+
+-----
+
+The following changes since commit 9abf2313adc1ca1b6180c508c25f22f9395cc780:
+
+  Linux 6.1-rc1 (2022-10-16 15:36:24 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.1-2
+
+for you to fetch changes up to 2b6ae0962b421103feb41a80406732944b0665b3:
+
+  parisc: Avoid printing the hardware path twice (2022-10-31 15:37:14 +0100)
+
+----------------------------------------------------------------
+parisc architecture fixes for kernel v6.1-rc4:
+
+Rename the serial port 8250_gsc.c driver to 8250_parisc.c and cleanup
+how the device IDs of devices in a PA-RISC machine are shown at startup.
+
+----------------------------------------------------------------
+Helge Deller (5):
+      parisc: Make 8250_gsc driver dependend on CONFIG_PARISC
+      parisc/serial: Rename 8250_gsc.c to 8250_parisc.c
+      parisc: Use signed char for hardware path in pdc.h
+      parisc: Export iosapic_serial_irq() symbol for serial port driver
+      parisc: Avoid printing the hardware path twice
+
+Lukas Bulwahn (1):
+      MAINTAINERS: adjust entry after renaming parisc serial driver
+
+ MAINTAINERS                                        |  2 +-
+ arch/parisc/include/asm/hardware.h                 | 12 ++++----
+ arch/parisc/include/uapi/asm/pdc.h                 | 36 ++++++++--------------
+ arch/parisc/kernel/drivers.c                       | 14 ++++-----
+ drivers/parisc/iosapic.c                           |  1 +
+ drivers/parisc/pdc_stable.c                        | 34 ++++++++++----------
+ .../tty/serial/8250/{8250_gsc.c => 8250_parisc.c}  |  0
+ drivers/tty/serial/8250/Kconfig                    |  4 +--
+ drivers/tty/serial/8250/Makefile                   |  2 +-
+ 9 files changed, 47 insertions(+), 58 deletions(-)
+ rename drivers/tty/serial/8250/{8250_gsc.c => 8250_parisc.c} (100%)
