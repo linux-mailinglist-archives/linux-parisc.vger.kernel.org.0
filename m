@@ -2,305 +2,75 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39396616C85
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Nov 2022 19:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE2C7616CA1
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Nov 2022 19:39:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231337AbiKBShk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 2 Nov 2022 14:37:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56696 "EHLO
+        id S231386AbiKBSjO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 2 Nov 2022 14:39:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231536AbiKBShS (ORCPT
+        with ESMTP id S231543AbiKBSiy (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 2 Nov 2022 14:37:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3249C2F66B
-        for <linux-parisc@vger.kernel.org>; Wed,  2 Nov 2022 11:34:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1667414083;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7XyLq04ta6QuCycJK0DkWOlQEFxqI5/2Oi7Ln2qoW2w=;
-        b=KkW86cZ5PWeDuzVuGa5ENDA9dXOZFVuFSuVuo2JGeyhJPyHOVEQL9vKi99vSyqLS24DmDK
-        ZwCbrXuuw2FmWyXJqmvAA+IwppBkR9oakwOpACUTC98lW3a6DKYtX4q+lnKtwMVskNKn7i
-        5RdwUdcvZVd/Rwg91dtL6Po4bzxoc+o=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-81-kThAKZ9WOda6KCCfr2bjLQ-1; Wed, 02 Nov 2022 14:34:42 -0400
-X-MC-Unique: kThAKZ9WOda6KCCfr2bjLQ-1
-Received: by mail-qt1-f198.google.com with SMTP id gc12-20020a05622a59cc00b003a5444280e1so2168544qtb.13
-        for <linux-parisc@vger.kernel.org>; Wed, 02 Nov 2022 11:34:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7XyLq04ta6QuCycJK0DkWOlQEFxqI5/2Oi7Ln2qoW2w=;
-        b=VwwUP5IJ1QOSQZ378sjOtxerlca0V1/mgGQH+vDEEjewjumMI1oh3lNFPOICdK69Qo
-         dqiRSExAB9QHbgtDocjTcF9a4Q6R5wIK8axzKwewOFgtc3becLTtvgaHRa9nBuw6u+ZC
-         KxkqHI5c7IhlOOM+1opm+wrPxUGIa0Qtb14Owmv6AiX967ypI9uvRYKf1ucxAzriA/BL
-         XRqmAiAxpJEDbpNzBuSOSh+urV6mj3D8QntGlxU3GG4w/n4gvJvOn3r5EgCMmD7RbNT/
-         gIXCsOScAe2fFgcH6J6ilEdwAO1g85d5riO/fF9TIJ8c2wwy63HEm9gKqyFpTqk4OgVa
-         lx5w==
-X-Gm-Message-State: ACrzQf1fqSsJ1j94bzLfybprvWci61wch5f0GqR7IiYDeIxwvXh7Loxq
-        ZBPOyiS7Bj+V0zPsQaC11EE47t4XaWSS/jzt9HM4jPelK6SwLWMmxgf8a/e/GB8LztsMH8s8faZ
-        5yEkUyMNpQpVRGGvrUKr/nJ7l
-X-Received: by 2002:a05:622a:110:b0:39d:33f:7502 with SMTP id u16-20020a05622a011000b0039d033f7502mr21405675qtw.233.1667414081821;
-        Wed, 02 Nov 2022 11:34:41 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM55Ji1MqyBOQLGXo2l/bSvuQt49ZAkCzlyyMp5CHGsdCK97M9vqAD8ECZ5Nyub/9y/Uvf6gSw==
-X-Received: by 2002:a05:622a:110:b0:39d:33f:7502 with SMTP id u16-20020a05622a011000b0039d033f7502mr21405647qtw.233.1667414081547;
-        Wed, 02 Nov 2022 11:34:41 -0700 (PDT)
-Received: from vschneid.remote.csb ([149.71.65.94])
-        by smtp.gmail.com with ESMTPSA id w187-20020a3794c4000000b006eed47a1a1esm8757820qkd.134.2022.11.02.11.34.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Nov 2022 11:34:40 -0700 (PDT)
-From:   Valentin Schneider <vschneid@redhat.com>
-To:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        x86@kernel.org
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Marc Zyngier <maz@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Guo Ren <guoren@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [RFC PATCH v2 8/8] sched, smp: Trace smp callback causing an IPI
-Date:   Wed,  2 Nov 2022 18:33:36 +0000
-Message-Id: <20221102183336.3120536-7-vschneid@redhat.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20221102182949.3119584-1-vschneid@redhat.com>
-References: <20221102182949.3119584-1-vschneid@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        Wed, 2 Nov 2022 14:38:54 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94D86DA;
+        Wed,  2 Nov 2022 11:38:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4694DB82435;
+        Wed,  2 Nov 2022 18:38:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E71D2C4347C;
+        Wed,  2 Nov 2022 18:38:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667414298;
+        bh=rYOl5OTHc/ivT6RQWAuAJy/bdcOtVRO69Iaa83V8BSY=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=G9QaxQfcDORa4WyUiEZ+2VnnTR7VI1fhSa8AthtYSjfJEE5tWMRTE2+0UwAxKulZ5
+         fGnJvZZGuOGoEELPIre/Rr+aiIA5sEW5ueI7utbAHRcfHCyg73X9qpv98w/+5MfUYH
+         dXxiyZSFIj+NEbOJwbEidxfLsvn3Ge+XnsgAisxSSvkJ0Q46qy4sCMQxg/UyH3386V
+         0JfvXaXrDu6/IjnJNufhiBHTizfJxJ9EZ3NrT03km1MSxN+emp0EI3OFdk95ABsPN4
+         uV4XTgJRG9Th4Bu4brcD/cZSfK9OGbfyLVl0zWGG5bKakRdgpoMJ7Q6D+cbTvoLgY7
+         RyN2XK1lycQZQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D11D2E270D2;
+        Wed,  2 Nov 2022 18:38:18 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture fixes for v6.1-rc4
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <Y2KaFoe7n4lkr25c@p100>
+References: <Y2KaFoe7n4lkr25c@p100>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <Y2KaFoe7n4lkr25c@p100>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.1-2
+X-PR-Tracked-Commit-Id: 2b6ae0962b421103feb41a80406732944b0665b3
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 8e5423e991e8cd0988d0c4a3f4ac4ca1af7d148a
+Message-Id: <166741429885.10915.18365223380630694529.pr-tracker-bot@kernel.org>
+Date:   Wed, 02 Nov 2022 18:38:18 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The newly-introduced ipi_send_cpumask tracepoint has a "callback" parameter
-which so far has only been fed with NULL.
+The pull request you sent on Wed, 2 Nov 2022 17:26:13 +0100:
 
-While CSD_TYPE_SYNC/ASYNC and CSD_TYPE_IRQ_WORK share a similar backing
-struct layout (meaning their callback func can be accessed without caring
-about the actual CSD type), CSD_TYPE_TTWU doesn't even have a function
-attached to its struct. This means we need to check the type of a CSD
-before eventually dereferencing its associated callback.
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.1-2
 
-This isn't as trivial as it sounds: the CSD type is stored in
-__call_single_node.u_flags, which get cleared right before the callback is
-executed via csd_unlock(). This implies checking the CSD type before it is
-enqueued on the call_single_queue, as the target CPU's queue can be flushed
-before we get to sending an IPI.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/8e5423e991e8cd0988d0c4a3f4ac4ca1af7d148a
 
-Furthermore, send_call_function_single_ipi() only has a CPU parameter, and
-would need to have an additional argument to trickle down the invoked
-function. This is somewhat silly, as the extra argument will always be
-pushed down to the function even when nothing is being traced, which is
-unnecessary overhead.
+Thank you!
 
-Two options present themselves:
-a) Create copies of send_call_function_{single_ipi, ipi_mask}() that take
-   an extra argument used for tracing, so that codepaths remain unchanged
-   when tracing isn't in effect (a sort of manual -fipa-sra).
-
-b) Stash the CSD func in somewhere as a side effect that
-   the portion of send_call_function_{single_ipi, ipi_mask}() under the
-   tracepoint's static key can fetch.
-
-a) creates redundant code, and b) is quite fragile due to requiring extra
-care for "reentrant" functions (async SMP calls).
-
-This implements a).
-
-Signed-off-by: Valentin Schneider <vschneid@redhat.com>
----
- kernel/irq_work.c   |  2 ++
- kernel/sched/core.c | 35 ++++++++++++++++++++++++-----------
- kernel/sched/smp.h  |  1 +
- kernel/smp.c        | 42 ++++++++++++++++++++++++++++++++++++++----
- 4 files changed, 65 insertions(+), 15 deletions(-)
-
-diff --git a/kernel/irq_work.c b/kernel/irq_work.c
-index aec38c294ce68..fcfa75c4a5daf 100644
---- a/kernel/irq_work.c
-+++ b/kernel/irq_work.c
-@@ -24,6 +24,8 @@
- 
- #include <trace/events/ipi.h>
- 
-+#include "sched/smp.h"
-+
- static DEFINE_PER_CPU(struct llist_head, raised_list);
- static DEFINE_PER_CPU(struct llist_head, lazy_list);
- static DEFINE_PER_CPU(struct task_struct *, irq_workd);
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 02181f8072b5f..41196ca67e913 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3743,17 +3743,30 @@ void sched_ttwu_pending(void *arg)
- 	rq_unlock_irqrestore(rq, &rf);
- }
- 
--void send_call_function_single_ipi(int cpu)
--{
--	struct rq *rq = cpu_rq(cpu);
--
--	if (!set_nr_if_polling(rq->idle)) {
--		trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, NULL);
--		arch_send_call_function_single_ipi(cpu);
--	} else {
--		trace_sched_wake_idle_without_ipi(cpu);
--	}
--}
-+/*
-+ * We want a variant that traces the function causing the IPI to be sent, but
-+ * we don't want the extra argument to cause unnecessary overhead when tracing
-+ * isn't happening.
-+ */
-+#define GEN_CFSI(suffix, IPI_EXP, ...)						\
-+void send_call_function_single_ipi##suffix(__VA_ARGS__)				\
-+{										\
-+	struct rq *rq = cpu_rq(cpu);						\
-+										\
-+	if (!set_nr_if_polling(rq->idle)) {					\
-+		IPI_EXP;							\
-+		arch_send_call_function_single_ipi(cpu);			\
-+	} else {								\
-+		trace_sched_wake_idle_without_ipi(cpu);				\
-+	}									\
-+}
-+
-+GEN_CFSI(/* nop */,
-+	 /* nop */,
-+	 int cpu)
-+GEN_CFSI(_trace,
-+	 trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, func),
-+	 int cpu, smp_call_func_t func)
- 
- /*
-  * Queue a task on the target CPUs wake_list and wake the CPU via IPI if
-diff --git a/kernel/sched/smp.h b/kernel/sched/smp.h
-index 2eb23dd0f2856..8075ad5e84181 100644
---- a/kernel/sched/smp.h
-+++ b/kernel/sched/smp.h
-@@ -7,6 +7,7 @@
- extern void sched_ttwu_pending(void *arg);
- 
- extern void send_call_function_single_ipi(int cpu);
-+extern void send_call_function_single_ipi_trace(int cpu, smp_call_func_t func);
- 
- #ifdef CONFIG_SMP
- extern void flush_smp_call_function_queue(void);
-diff --git a/kernel/smp.c b/kernel/smp.c
-index b96579fe08f09..3b8e6456ac7e7 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -161,12 +161,18 @@ void __init call_function_init(void)
- }
- 
- static inline void
--send_call_function_ipi_mask(const struct cpumask *mask)
-+send_call_function_ipi_mask_trace(const struct cpumask *mask, smp_call_func_t func)
- {
- 	trace_ipi_send_cpumask(mask, _RET_IP_, func);
- 	arch_send_call_function_ipi_mask(mask);
- }
- 
-+static inline void
-+send_call_function_ipi_mask(const struct cpumask *mask)
-+{
-+	arch_send_call_function_ipi_mask(mask);
-+}
-+
- void smp_send_reschedule(int cpu)
- {
- 	/* XXX scheduler_ipi is inline :/ */
-@@ -438,12 +444,16 @@ static void __smp_call_single_queue_debug(int cpu, struct llist_node *node)
- 	struct cfd_seq_local *seq = this_cpu_ptr(&cfd_seq_local);
- 	struct call_function_data *cfd = this_cpu_ptr(&cfd_data);
- 	struct cfd_percpu *pcpu = per_cpu_ptr(cfd->pcpu, cpu);
-+	struct __call_single_data *csd;
-+
-+	csd = container_of(node, call_single_data_t, node.llist);
-+	WARN_ON_ONCE(!(CSD_TYPE(csd) & (CSD_TYPE_SYNC | CSD_TYPE_ASYNC)));
- 
- 	cfd_seq_store(pcpu->seq_queue, this_cpu, cpu, CFD_SEQ_QUEUE);
- 	if (llist_add(node, &per_cpu(call_single_queue, cpu))) {
- 		cfd_seq_store(pcpu->seq_ipi, this_cpu, cpu, CFD_SEQ_IPI);
- 		cfd_seq_store(seq->ping, this_cpu, cpu, CFD_SEQ_PING);
--		send_call_function_single_ipi(cpu);
-+		send_call_function_single_ipi_trace(cpu, csd->func);
- 		cfd_seq_store(seq->pinged, this_cpu, cpu, CFD_SEQ_PINGED);
- 	} else {
- 		cfd_seq_store(pcpu->seq_noipi, this_cpu, cpu, CFD_SEQ_NOIPI);
-@@ -501,6 +511,26 @@ void __smp_call_single_queue(int cpu, struct llist_node *node)
- 		}
- 	}
- #endif
-+	/*
-+	 * We have to check the type of the CSD before queueing it, because
-+	 * once queued it can have its flags cleared by
-+	 *   flush_smp_call_function_queue()
-+	 * even if we haven't sent the smp_call IPI yet (e.g. the stopper
-+	 * executes migration_cpu_stop() on the remote CPU).
-+	 */
-+	if (trace_ipi_send_cpumask_enabled()) {
-+		call_single_data_t *csd;
-+		smp_call_func_t func;
-+
-+		csd = container_of(node, call_single_data_t, node.llist);
-+		func = CSD_TYPE(csd) == CSD_TYPE_TTWU ?
-+			sched_ttwu_pending : csd->func;
-+
-+		/* See below comment on ordering requirements */
-+		if (llist_add(node, &per_cpu(call_single_queue, cpu)))
-+			send_call_function_single_ipi_trace(cpu, func);
-+		return;
-+	}
- 
- 	/*
- 	 * The list addition should be visible to the target CPU when it pops
-@@ -984,9 +1014,13 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
- 		 * provided mask.
- 		 */
- 		if (nr_cpus == 1)
--			send_call_function_single_ipi(last_cpu);
-+			trace_ipi_send_cpumask_enabled() ?
-+				send_call_function_single_ipi_trace(last_cpu, func) :
-+				send_call_function_single_ipi(last_cpu);
- 		else if (likely(nr_cpus > 1))
--			send_call_function_ipi_mask(cfd->cpumask_ipi);
-+			trace_ipi_send_cpumask_enabled() ?
-+				send_call_function_ipi_mask_trace(mask, func) :
-+				send_call_function_ipi_mask(mask);
- 
- 		cfd_seq_store(this_cpu_ptr(&cfd_seq_local)->pinged, this_cpu, CFD_SEQ_NOCPU, CFD_SEQ_PINGED);
- 	}
 -- 
-2.31.1
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
