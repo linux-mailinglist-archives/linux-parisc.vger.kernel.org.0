@@ -2,128 +2,113 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B47B62E805
-	for <lists+linux-parisc@lfdr.de>; Thu, 17 Nov 2022 23:16:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A8D62EDD6
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Nov 2022 07:44:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240662AbiKQWQQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Thu, 17 Nov 2022 17:16:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53686 "EHLO
+        id S241283AbiKRGof (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 18 Nov 2022 01:44:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240558AbiKQWPr (ORCPT
+        with ESMTP id S241293AbiKRGoX (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 17 Nov 2022 17:15:47 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3130E7C004
-        for <linux-parisc@vger.kernel.org>; Thu, 17 Nov 2022 14:15:41 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-135-r8pLcNsHMNSPwdstNZNmIw-1; Thu, 17 Nov 2022 22:15:38 +0000
-X-MC-Unique: r8pLcNsHMNSPwdstNZNmIw-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Thu, 17 Nov
- 2022 22:15:36 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.044; Thu, 17 Nov 2022 22:15:36 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Theodore Ts'o' <tytso@mit.edu>, Kees Cook <kees@kernel.org>
-CC:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Kees Cook <keescook@chromium.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        =?iso-8859-1?Q?Christoph_B=F6hmwalder?= 
-        <christoph.boehmwalder@linbit.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        "Darrick J . Wong" <djwong@kernel.org>,
-        SeongJae Park <sj@kernel.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Helge Deller <deller@gmx.de>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "ydroneaud@opteya.com" <ydroneaud@opteya.com>
-Subject: RE: [PATCH v2 3/3] treewide: use get_random_u32_between() when
- possible
-Thread-Topic: [PATCH v2 3/3] treewide: use get_random_u32_between() when
- possible
-Thread-Index: AQHY+pt8WAMBAHgXDk6lkwvXqmmyGK5DraKg
-Date:   Thu, 17 Nov 2022 22:15:36 +0000
-Message-ID: <5b2afac148e24181a206e540768e465b@AcuMS.aculab.com>
-References: <20221114164558.1180362-1-Jason@zx2c4.com>
- <20221114164558.1180362-4-Jason@zx2c4.com> <202211161436.A45AD719A@keescook>
- <Y3V4g8eorwiU++Y3@zx2c4.com> <Y3V6QtYMayODVDOk@zx2c4.com>
- <202211161628.164F47F@keescook> <Y3WDyl8ArQgeEoUU@zx2c4.com>
- <0EE39896-C7B6-4CB6-87D5-22AA787740A9@kernel.org> <Y3ZWbcoGOdFjlPhS@mit.edu>
-In-Reply-To: <Y3ZWbcoGOdFjlPhS@mit.edu>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Fri, 18 Nov 2022 01:44:23 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D387E8FE58
+        for <linux-parisc@vger.kernel.org>; Thu, 17 Nov 2022 22:42:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1668753755; bh=FErtSEwuD/Lho6M5L74EtBKmjJbjwMRmeKrYklfqGOA=;
+        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+        b=iP/iW3b2ToCtLUO+3eWzY6lptXBPSh5jHew3x1GlRw9AZad5i3+mExO5FwPue2d0a
+         TeKaDBsA4bt/6FzLtCRUiaJ+EjQlHX96KTgO5sePcwJba19jUZOCAQF/m9WiW4PHW7
+         gceO5oOFkFG99RYczbvWyd164MHbUHxxTE8eaQzOB5DUjO6qGUQ2A9RI/f0DGu7p3Q
+         xgN1Yg6x6mQ/jJMUg3Z9yKSBZ6v93uecpq2hCEmWRvKMcMGFAiE2nWtIexAopTjnrj
+         VC4JewJr7969pOZ5weisS1F5k642+Wa4/UnpNrZVH3spPBdtMtq7dQv5WbUhOc4Ifv
+         UR6+uq9jSUCSQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([92.116.164.156]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M5fMe-1otBFh2id8-007CCZ; Fri, 18
+ Nov 2022 07:42:35 +0100
+Message-ID: <c8ff1b4a-485a-94c9-a488-ed323e12c165@gmx.de>
+Date:   Fri, 18 Nov 2022 07:42:35 +0100
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [PATCH] parisc: led: Fix potential null-ptr-deref in start_task()
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+To:     Shang XiaoJing <shangxiaojing@huawei.com>,
+        linux-parisc@vger.kernel.org
+References: <20221117024514.3620-1-shangxiaojing@huawei.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20221117024514.3620-1-shangxiaojing@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:e1PtjI3v9GUwpXNrAziLlddoLaiUTH5fE7bC22ASy8da6QiGz1O
+ tm2heA5cGvbFroxdg5N7o8T74syvFQ7jcNItx27yAvmhJrvHKcBMBq5u+NzN940myHgvdtD
+ NX6KyCvwuahzOLgIfNmd7+Qqx4FmEciQABWAknKkjPbRceQGZE1azjcPRHy+CChs49P4b4i
+ SGYy4sZsQYQ1EUer+VDcQ==
+UI-OutboundReport: notjunk:1;M01:P0:6/hZLQyl8vo=;nHZGKwhb1tBIhSN7M7FhncreNNh
+ TwxjUhx0edmqdQHeiiDHx4rB42jGm1Uzo6Nw2t8iuwjIhsTOWyg5RU+ZCb7Y+zCRCoya0QMcx
+ +jJE3iS2nRmEs5LyLsZuXYB+p/ofzkIAVF24ov0w4VshmKML6727AUr0Tpv1aKjUdFnf9FZoh
+ YUG6BVcCRUEGRs2nW53FOiWldNM81GccSbwuymQGjkTNqJ9v7npiakkG/6C5QpdegpU0b1lRp
+ B0G9hpMROpnwknPUGQHSu8pAQlOe0Js3JtHRujTUlbDg7djY/wP/+pIOB4hTcC2VMiiaL3YXf
+ dSFmXBT02HDHlwsDZa0Z8A+ggZop2xqhvBtBYFwG1kqHrypQxJ4+Yx7cM0mztIxAkI4zYaI9Y
+ h7TeEqbEj4sY2BVU3cG4DgP+8+gsu0uv3vXwx+93XfvhVj/3xiS7nYTNg+znBb+jvXZHkmBZ0
+ PVDEPWLinbYgyWQ/6AZ+5861vvht8NxKV7TG+PKsNg1ZtmQWGjndg5+yqHTSarbHFmtfIKhWk
+ kn2TWMlY5hBaIdOh/Y/qgAXUoSxQ3TrElQL53rKUAgXQ7BrtWziYvtB7rbhyO5k9Y2jPqzoYw
+ D6n1tFjIo7z3eM64+qAp2f+OJQV+0/wHi/4mzLX+S69dncIOQVMq9jYmcx3/BFnNr5+603GVm
+ an0X3u8XHEq2q4KE1mbseo7T2oi4QH4LoYcTUDM9OoLhJgM/sZj23yhI4T+1EHvpwf4q1jLNC
+ uNX0EEDTZtOiLMH505TN+nyySHK448NpnLcD816Io9QDM8S6L/SSONcJBMje9kdf3kfyLP+X2
+ 4ceVnLt4I/WzPpituHhLgfYTKz7qRYFvsEMAHYMzwnZ9uM1bdHu2K8Oz4m8F6JNEGf14rYPo+
+ Phz2gvpAYR5UTrfjA4znMmIAXJ22NUHPPjUiY6jpTYyxxLSnCGslfWlxmbwKFUyHRd5iBuaP6
+ twY4bg==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Theodore Ts'o
-> Sent: 17 November 2022 15:43
-...
-> The problem with "between", "ranged", "spanning" is that they don't
-> tell the reader whether we're dealing with an "open interval" or a
-> "closed interval".  They are just different ways of saying that it's a
-> range between, say, 0 and 20.  But it doesn't tell you whether it
-> includes 0 or 20 or not.
-> 
-> The only way I can see for making it ambiguous is either to use the
-> terminology "closed interval" or "inclusive".  And "open" and "closed"
-> can have other meanings, so get_random_u32_inclusive() is going to be
-> less confusing than get_random_u32_closed().
+On 11/17/22 03:45, Shang XiaoJing wrote:
+> start_task() calls create_singlethread_workqueue() and not checked the
+> ret value, which may return NULL. And a null-ptr-deref may happen:
+>
+> start_task()
+>      create_singlethread_workqueue() # failed, led_wq is NULL
+>      queue_delayed_work()
+>          queue_delayed_work_on()
+>              __queue_delayed_work()  # warning here, but continue
+>                  __queue_work()      # access wq->flags, null-ptr-deref
+>
+> Check the ret value and return -ENOMEM if it is NULL.
+>
+> Fixes: 3499495205a6 ("[PARISC] Use work queue in LED/LCD driver instead =
+of tasklet.")
+> Signed-off-by: Shang XiaoJing <shangxiaojing@huawei.com>
 
-It has to be said that removing the extra function and requiring
-the callers use 'base + get_random_below(high [+1] - base)' is
-likely to be the only way to succinctly make the code readable
-and understandable.
+applied.
 
-Otherwise readers either have to look up another function to see
-what it does or waste variable brain cells on more trivia.
+Thanks!
+Helge
 
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+> ---
+>   drivers/parisc/led.c | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/parisc/led.c b/drivers/parisc/led.c
+> index d4be9d2ee74d..8bdc5e043831 100644
+> --- a/drivers/parisc/led.c
+> +++ b/drivers/parisc/led.c
+> @@ -137,6 +137,9 @@ static int start_task(void)
+>
+>   	/* Create the work queue and queue the LED task */
+>   	led_wq =3D create_singlethread_workqueue("led_wq");
+> +	if (!led_wq)
+> +		return -ENOMEM;
+> +
+>   	queue_delayed_work(led_wq, &led_task, 0);
+>
+>   	return 0;
 
