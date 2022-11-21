@@ -2,562 +2,101 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86343632344
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Nov 2022 14:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C54563258C
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Nov 2022 15:23:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbiKUNQj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 21 Nov 2022 08:16:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
+        id S230415AbiKUOXB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 21 Nov 2022 09:23:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiKUNQh (ORCPT
+        with ESMTP id S230450AbiKUOW7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 21 Nov 2022 08:16:37 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A861C1E3DD
-        for <linux-parisc@vger.kernel.org>; Mon, 21 Nov 2022 05:16:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=Cl9utKEJ1GW3kyK2rm9/vT7FbRP7iQh+Br2mRZjm2Xw=; b=aiZxSRYivx1Yh951pSrwO+PGqY
-        3KMRmFUGWJiJ9RSutWkc+2hbQ4oRfQQLmJIZHx976ljsxd1ERQ1X+sbgGn+pc0yhljmliKZORTB1i
-        bbdcYgms4AEUp2F1Ef1pV89D7eSwek0oM4ARd8m0D1EoxRsSByas3FlH755S7yHufmXEy8PN5uUrU
-        EmTxnO7p8tcbDhX3o19m07c0endx9U46Ne6iAas+IU4MQsYku+lX891h7OwTKpsLHsaeYvR50jsM+
-        VEZpilGa4q7xS4yxm7F44m1do5TJAZl/gRr+Ft16IO0zJXydi4cxVVvjkjFnitx5OiCXMbdfTERQ6
-        E9yS0LZw==;
-Received: from [2001:4bb8:199:6d04:9a88:dc19:c657:d17f] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1ox6f1-00Dwvv-Kq; Mon, 21 Nov 2022 13:16:32 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>
-Cc:     linux-parisc@vger.kernel.org, iommu@lists.linux.dev
-Subject: [PATCH 2/2] parisc: use the generic remapping dma allocator
-Date:   Mon, 21 Nov 2022 14:16:23 +0100
-Message-Id: <20221121131623.228727-3-hch@lst.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221121131623.228727-1-hch@lst.de>
-References: <20221121131623.228727-1-hch@lst.de>
+        Mon, 21 Nov 2022 09:22:59 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACFD6D132
+        for <linux-parisc@vger.kernel.org>; Mon, 21 Nov 2022 06:22:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1669040565; bh=kLgwWbPGjHzbqAaR5tU5kEsFVB2PXzcJZ+7PhdF+gFc=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=Un+AbR0AypcNFMoqt6w24nIcmd771HS69hCf7bH2i6gzeh+YwTfUMwVDfVjiOeT9y
+         Ow570Or1fCvZl8wXK2hEQG9m2tKkV3DCD3ZQkChXGhL/dbhL2qjd/kTe2lLvZQ55jK
+         GwQl9/Oc0YEP6MwTxYqUpf451M/x0hvrjJGPtbOyl50gdtPy88yOt6Yo50zzgLvuPP
+         XX1VERWPtEmwOGk03NJD7fl9Ai8YjanuRy3pAXXThvDOMN9lOYB0Z59u5khQrTMrgX
+         kyR4yU6wRGXAGxyk0nRXHKkKopQwXKZGdOL3mwQQ+fxhu8FCmRMHp8UpLFy1HriBNr
+         +gEVuyaloZ0zg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([92.116.168.19]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MtwUm-1pDY5J0Ipg-00uK1U; Mon, 21
+ Nov 2022 15:22:45 +0100
+Message-ID: <fe7d7c8b-ac23-6025-fd7d-12f22b174220@gmx.de>
+Date:   Mon, 21 Nov 2022 15:22:41 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: RFC: switch to use the generic remapping dma-allocator
+Content-Language: en-US
+To:     Christoph Hellwig <hch@lst.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     linux-parisc@vger.kernel.org, iommu@lists.linux.dev
+References: <20221121131623.228727-1-hch@lst.de>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20221121131623.228727-1-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ODcLNIqhk5u9y7pypM52V6bp3Vc4w57Arm+LC10gmPLaAzIvKPN
+ KfLOpvNMRIpi71MkUfY966gEYZs50LcfGbzKq6xNRpvfhEKZbjnLQq3Yg51jnBWEgYNw67L
+ l1Pu1lgRNACXZ28lZLwBN6wHTaIK3eTif05gF5LkPLc+lAH4WrC7gUO7zFXxWScsBF2C9Kn
+ 3oUb06Y71NQfvp8D0whnQ==
+UI-OutboundReport: notjunk:1;M01:P0:heweo/uRmF0=;7gn2PlAAcVT3sQY1Ml/+aL7UHpa
+ MaWKRK6Ajybt671P+USQ1IOMEbjiSMdIdZzoYe+I1AfFKpeuQA/+bkl5o9QZQLbI2vkq5/So9
+ lQpnbo7r2j8UPAYz5SJQEGZtt48Gn0C60G81uZhiSYOSjB/7GD1oKdOXX1uOCrny/2JfmeObz
+ ETz1DwJtNB5eKPbUyQET9eN94IHcibs8Bb+O7AtqqHGehsBYq7kYEX6AS2MwuXQnv3yIVFs+s
+ br4YT+i1cZp8WiF6AX238hauZy7ooRZcy50vdvLI+vL+o0OTBM61nCmCu7X7p2OnD5HGgOLq1
+ 52PZO+pH3YLzIusz1Zrxm/EtgNrrwFuhAHc7+wUQXwW5HbP6jYklCLRsajNtCRuT/mhR5iRyA
+ vMkfM5SfwIjXocNUVnJV3wTtr73epj4CsThSvEfkdbBSgWuClpOz2DzqatvGmqfZvT2PNJ9zz
+ P+lj6fXy1v59+9j/Ofg0mJ1AbQV8rvmUgbLOb40pk1iUx0SLXyIplKoAD3LxEt+juuDvarBrQ
+ 9gZC8Z9uq+KzlxVThLgrQC4YrPlWAacBVFX8cDjSPw1SLNhdiXjA5e2nLdId+bO9g5hUgSiEe
+ XP+4aYFInd5PiCyCxeGDcwt1sm5SuZMzqv/N18YrWkMpyVFb+PmOMD4c569CtxR0sZw88rzdf
+ VpY9g7M9rP+RsNqPJbvTmAATtnfGgkCgiPEmjMMwIdUy5NUr9lbCMVVDBVsLsl7QIgioD61hx
+ eIw9YRJnse4gJc6DWLc9DidJt7CQkwqZ+1w83bvvnXu7nmggO8xJTbVhXSmYgX7xDjkDOQW7L
+ J9WzNGfHEZCpxB56hE0DZ/F3ECN4JW7DpJ3PqxlFfsyysY7za5bOGubSe/JaHqu5S83So0Yis
+ IdFoJHyIGKmolRMTdZT623u7BgpCRFG8jTJUcun/4EKyoLrvmIYoBSre+641YvUP5jKW3Pj/a
+ QV/rhw==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Use the dma-direct code that uses vmap to create an uncacheable mapping
-for coherent allocations instead of the hand-crafted bitmap.
+Hi Christoph,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/parisc/Kconfig               |   4 +
- arch/parisc/include/asm/pgtable.h |   1 -
- arch/parisc/kernel/pci-dma.c      | 446 +-----------------------------
- 3 files changed, 16 insertions(+), 435 deletions(-)
+On 11/21/22 14:16, Christoph Hellwig wrote:
+> currently parisc has it's own implementation of the dma-coherent
+> allocator that sets up PTEs with the uncached bit.  I can't see any
+> reason why using vmap to do the same kind of setup shouldn't work.
+> This small series shows how that could work, but due to a lack of
+> actual parisc hardware it is compile tested only and not only needs
+> a careful review but also actual testing on hardware.
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index a98940e642432..c1c8bec74aa7c 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -8,6 +8,8 @@ config PARISC
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select ARCH_WANT_FRAME_POINTERS
-+	select ARCH_HAS_CAN_DMA_ALLOC_COHERENT
-+	select ARCH_HAS_DMA_PREP_COHERENT
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_STRICT_KERNEL_RWX
- 	select ARCH_HAS_STRICT_MODULE_RWX
-@@ -19,6 +21,8 @@ config PARISC
- 	select ARCH_STACKWALK
- 	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select HAVE_RELIABLE_STACKTRACE
-+	select DMA_COHERENT_POOL
-+	select DMA_DIRECT_REMAP
- 	select DMA_OPS
- 	select RTC_CLASS
- 	select RTC_DRV_GENERIC
-diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
-index ecd0288544698..d76013716f694 100644
---- a/arch/parisc/include/asm/pgtable.h
-+++ b/arch/parisc/include/asm/pgtable.h
-@@ -263,7 +263,6 @@ extern void __update_cache(pte_t pte);
- #define PAGE_KERNEL_EXEC	__pgprot(_PAGE_KERNEL_EXEC)
- #define PAGE_KERNEL_RWX	__pgprot(_PAGE_KERNEL_RWX)
- #define PAGE_KERNEL_RO	__pgprot(_PAGE_KERNEL_RO)
--#define PAGE_KERNEL_UNC	__pgprot(_PAGE_KERNEL | _PAGE_NO_CACHE)
- #define PAGE_GATEWAY    __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_GATEWAY| _PAGE_READ)
- 
- 
-diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
-index ba87f791323be..b34d3442073d4 100644
---- a/arch/parisc/kernel/pci-dma.c
-+++ b/arch/parisc/kernel/pci-dma.c
-@@ -1,446 +1,24 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
--** PARISC 1.1 Dynamic DMA mapping support.
--** This implementation is for PA-RISC platforms that do not support
--** I/O TLBs (aka DMA address translation hardware).
--** See Documentation/core-api/dma-api-howto.rst for interface definitions.
--**
--**      (c) Copyright 1999,2000 Hewlett-Packard Company
--**      (c) Copyright 2000 Grant Grundler
--**	(c) Copyright 2000 Philipp Rumpf <prumpf@tux.org>
--**      (c) Copyright 2000 John Marvin
--**
--** "leveraged" from 2.3.47: arch/ia64/kernel/pci-dma.c.
--** (I assume it's from David Mosberger-Tang but there was no Copyright)
--**
--** AFAIK, all PA7100LC and PA7300LC platforms can use this code.
--**
--** - ggg
--*/
--
--#include <linux/init.h>
--#include <linux/gfp.h>
--#include <linux/mm.h>
--#include <linux/proc_fs.h>
--#include <linux/seq_file.h>
--#include <linux/string.h>
--#include <linux/types.h>
--#include <linux/dma-direct.h>
-+ * PARISC helpers for noncoherent DMA.
-+ *
-+ *	(c) Copyright 1999,2000 Hewlett-Packard Company
-+ *	(c) Copyright 2000 Grant Grundler
-+ *	(c) Copyright 2000 Philipp Rumpf <prumpf@tux.org>
-+ *	(c) Copyright 2000 John Marvin
-+ */
- #include <linux/dma-map-ops.h>
--
- #include <asm/cacheflush.h>
--#include <asm/dma.h>    /* for DMA_CHUNK_SIZE */
--#include <asm/io.h>
--#include <asm/page.h>	/* get_order */
--#include <linux/uaccess.h>
--#include <asm/tlbflush.h>	/* for purge_tlb_*() macros */
--
--static struct proc_dir_entry * proc_gsc_root __read_mostly = NULL;
--static unsigned long pcxl_used_bytes __read_mostly;
--static unsigned long pcxl_used_pages __read_mostly;
--
--extern unsigned long pcxl_dma_start; /* Start of pcxl dma mapping area */
--static DEFINE_SPINLOCK(pcxl_res_lock);
--static char    *pcxl_res_map;
--static int     pcxl_res_hint;
--static int     pcxl_res_size;
--
--#ifdef DEBUG_PCXL_RESOURCE
--#define DBG_RES(x...)	printk(x)
--#else
--#define DBG_RES(x...)
--#endif
--
--
--/*
--** Dump a hex representation of the resource map.
--*/
--
--#ifdef DUMP_RESMAP
--static
--void dump_resmap(void)
--{
--	u_long *res_ptr = (unsigned long *)pcxl_res_map;
--	u_long i = 0;
--
--	printk("res_map: ");
--	for(; i < (pcxl_res_size / sizeof(unsigned long)); ++i, ++res_ptr)
--		printk("%08lx ", *res_ptr);
--
--	printk("\n");
--}
--#else
--static inline void dump_resmap(void) {;}
--#endif
--
--static inline int map_pte_uncached(pte_t * pte,
--		unsigned long vaddr,
--		unsigned long size, unsigned long *paddr_ptr)
--{
--	unsigned long end;
--	unsigned long orig_vaddr = vaddr;
--
--	vaddr &= ~PMD_MASK;
--	end = vaddr + size;
--	if (end > PMD_SIZE)
--		end = PMD_SIZE;
--	do {
--		unsigned long flags;
--
--		if (!pte_none(*pte))
--			printk(KERN_ERR "map_pte_uncached: page already exists\n");
--		purge_tlb_start(flags);
--		set_pte(pte, __mk_pte(*paddr_ptr, PAGE_KERNEL_UNC));
--		pdtlb(SR_KERNEL, orig_vaddr);
--		purge_tlb_end(flags);
--		vaddr += PAGE_SIZE;
--		orig_vaddr += PAGE_SIZE;
--		(*paddr_ptr) += PAGE_SIZE;
--		pte++;
--	} while (vaddr < end);
--	return 0;
--}
--
--static inline int map_pmd_uncached(pmd_t * pmd, unsigned long vaddr,
--		unsigned long size, unsigned long *paddr_ptr)
--{
--	unsigned long end;
--	unsigned long orig_vaddr = vaddr;
--
--	vaddr &= ~PGDIR_MASK;
--	end = vaddr + size;
--	if (end > PGDIR_SIZE)
--		end = PGDIR_SIZE;
--	do {
--		pte_t * pte = pte_alloc_kernel(pmd, vaddr);
--		if (!pte)
--			return -ENOMEM;
--		if (map_pte_uncached(pte, orig_vaddr, end - vaddr, paddr_ptr))
--			return -ENOMEM;
--		vaddr = (vaddr + PMD_SIZE) & PMD_MASK;
--		orig_vaddr += PMD_SIZE;
--		pmd++;
--	} while (vaddr < end);
--	return 0;
--}
- 
--static inline int map_uncached_pages(unsigned long vaddr, unsigned long size,
--		unsigned long paddr)
-+bool arch_can_dma_alloc_coherent(void)
- {
--	pgd_t * dir;
--	unsigned long end = vaddr + size;
--
--	dir = pgd_offset_k(vaddr);
--	do {
--		p4d_t *p4d;
--		pud_t *pud;
--		pmd_t *pmd;
--
--		p4d = p4d_offset(dir, vaddr);
--		pud = pud_offset(p4d, vaddr);
--		pmd = pmd_alloc(NULL, pud, vaddr);
--
--		if (!pmd)
--			return -ENOMEM;
--		if (map_pmd_uncached(pmd, vaddr, end - vaddr, &paddr))
--			return -ENOMEM;
--		vaddr = vaddr + PGDIR_SIZE;
--		dir++;
--	} while (vaddr && (vaddr < end));
--	return 0;
--}
--
--static inline void unmap_uncached_pte(pmd_t * pmd, unsigned long vaddr,
--		unsigned long size)
--{
--	pte_t * pte;
--	unsigned long end;
--	unsigned long orig_vaddr = vaddr;
--
--	if (pmd_none(*pmd))
--		return;
--	if (pmd_bad(*pmd)) {
--		pmd_ERROR(*pmd);
--		pmd_clear(pmd);
--		return;
--	}
--	pte = pte_offset_map(pmd, vaddr);
--	vaddr &= ~PMD_MASK;
--	end = vaddr + size;
--	if (end > PMD_SIZE)
--		end = PMD_SIZE;
--	do {
--		unsigned long flags;
--		pte_t page = *pte;
--
--		pte_clear(&init_mm, vaddr, pte);
--		purge_tlb_start(flags);
--		pdtlb(SR_KERNEL, orig_vaddr);
--		purge_tlb_end(flags);
--		vaddr += PAGE_SIZE;
--		orig_vaddr += PAGE_SIZE;
--		pte++;
--		if (pte_none(page) || pte_present(page))
--			continue;
--		printk(KERN_CRIT "Whee.. Swapped out page in kernel page table\n");
--	} while (vaddr < end);
--}
--
--static inline void unmap_uncached_pmd(pgd_t * dir, unsigned long vaddr,
--		unsigned long size)
--{
--	pmd_t * pmd;
--	unsigned long end;
--	unsigned long orig_vaddr = vaddr;
--
--	if (pgd_none(*dir))
--		return;
--	if (pgd_bad(*dir)) {
--		pgd_ERROR(*dir);
--		pgd_clear(dir);
--		return;
--	}
--	pmd = pmd_offset(pud_offset(p4d_offset(dir, vaddr), vaddr), vaddr);
--	vaddr &= ~PGDIR_MASK;
--	end = vaddr + size;
--	if (end > PGDIR_SIZE)
--		end = PGDIR_SIZE;
--	do {
--		unmap_uncached_pte(pmd, orig_vaddr, end - vaddr);
--		vaddr = (vaddr + PMD_SIZE) & PMD_MASK;
--		orig_vaddr += PMD_SIZE;
--		pmd++;
--	} while (vaddr < end);
-+	return boot_cpu_data.cpu_type == pcxl2 ||
-+		boot_cpu_data.cpu_type == pcxl;
- }
- 
--static void unmap_uncached_pages(unsigned long vaddr, unsigned long size)
-+void arch_dma_prep_coherent(struct page *page, size_t size)
- {
--	pgd_t * dir;
--	unsigned long end = vaddr + size;
--
--	dir = pgd_offset_k(vaddr);
--	do {
--		unmap_uncached_pmd(dir, vaddr, end - vaddr);
--		vaddr = vaddr + PGDIR_SIZE;
--		dir++;
--	} while (vaddr && (vaddr < end));
--}
--
--#define PCXL_SEARCH_LOOP(idx, mask, size)  \
--       for(; res_ptr < res_end; ++res_ptr) \
--       { \
--               if(0 == ((*res_ptr) & mask)) { \
--                       *res_ptr |= mask; \
--		       idx = (int)((u_long)res_ptr - (u_long)pcxl_res_map); \
--		       pcxl_res_hint = idx + (size >> 3); \
--                       goto resource_found; \
--               } \
--       }
--
--#define PCXL_FIND_FREE_MAPPING(idx, mask, size)  { \
--       u##size *res_ptr = (u##size *)&(pcxl_res_map[pcxl_res_hint & ~((size >> 3) - 1)]); \
--       u##size *res_end = (u##size *)&pcxl_res_map[pcxl_res_size]; \
--       PCXL_SEARCH_LOOP(idx, mask, size); \
--       res_ptr = (u##size *)&pcxl_res_map[0]; \
--       PCXL_SEARCH_LOOP(idx, mask, size); \
--}
--
--unsigned long
--pcxl_alloc_range(size_t size)
--{
--	int res_idx;
--	u_long mask, flags;
--	unsigned int pages_needed = size >> PAGE_SHIFT;
--
--	mask = (u_long) -1L;
-- 	mask >>= BITS_PER_LONG - pages_needed;
--
--	DBG_RES("pcxl_alloc_range() size: %d pages_needed %d pages_mask 0x%08lx\n", 
--		size, pages_needed, mask);
--
--	spin_lock_irqsave(&pcxl_res_lock, flags);
--
--	if(pages_needed <= 8) {
--		PCXL_FIND_FREE_MAPPING(res_idx, mask, 8);
--	} else if(pages_needed <= 16) {
--		PCXL_FIND_FREE_MAPPING(res_idx, mask, 16);
--	} else if(pages_needed <= 32) {
--		PCXL_FIND_FREE_MAPPING(res_idx, mask, 32);
--	} else {
--		panic("%s: pcxl_alloc_range() Too many pages to map.\n",
--		      __FILE__);
--	}
--
--	dump_resmap();
--	panic("%s: pcxl_alloc_range() out of dma mapping resources\n",
--	      __FILE__);
--	
--resource_found:
--	
--	DBG_RES("pcxl_alloc_range() res_idx %d mask 0x%08lx res_hint: %d\n",
--		res_idx, mask, pcxl_res_hint);
--
--	pcxl_used_pages += pages_needed;
--	pcxl_used_bytes += ((pages_needed >> 3) ? (pages_needed >> 3) : 1);
--
--	spin_unlock_irqrestore(&pcxl_res_lock, flags);
--
--	dump_resmap();
--
--	/* 
--	** return the corresponding vaddr in the pcxl dma map
--	*/
--	return (pcxl_dma_start + (res_idx << (PAGE_SHIFT + 3)));
--}
--
--#define PCXL_FREE_MAPPINGS(idx, m, size) \
--		u##size *res_ptr = (u##size *)&(pcxl_res_map[(idx) + (((size >> 3) - 1) & (~((size >> 3) - 1)))]); \
--		/* BUG_ON((*res_ptr & m) != m); */ \
--		*res_ptr &= ~m;
--
--/*
--** clear bits in the pcxl resource map
--*/
--static void
--pcxl_free_range(unsigned long vaddr, size_t size)
--{
--	u_long mask, flags;
--	unsigned int res_idx = (vaddr - pcxl_dma_start) >> (PAGE_SHIFT + 3);
--	unsigned int pages_mapped = size >> PAGE_SHIFT;
--
--	mask = (u_long) -1L;
-- 	mask >>= BITS_PER_LONG - pages_mapped;
--
--	DBG_RES("pcxl_free_range() res_idx: %d size: %d pages_mapped %d mask 0x%08lx\n", 
--		res_idx, size, pages_mapped, mask);
--
--	spin_lock_irqsave(&pcxl_res_lock, flags);
--
--	if(pages_mapped <= 8) {
--		PCXL_FREE_MAPPINGS(res_idx, mask, 8);
--	} else if(pages_mapped <= 16) {
--		PCXL_FREE_MAPPINGS(res_idx, mask, 16);
--	} else if(pages_mapped <= 32) {
--		PCXL_FREE_MAPPINGS(res_idx, mask, 32);
--	} else {
--		panic("%s: pcxl_free_range() Too many pages to unmap.\n",
--		      __FILE__);
--	}
--	
--	pcxl_used_pages -= (pages_mapped ? pages_mapped : 1);
--	pcxl_used_bytes -= ((pages_mapped >> 3) ? (pages_mapped >> 3) : 1);
--
--	spin_unlock_irqrestore(&pcxl_res_lock, flags);
--
--	dump_resmap();
--}
--
--static int __maybe_unused proc_pcxl_dma_show(struct seq_file *m, void *v)
--{
--#if 0
--	u_long i = 0;
--	unsigned long *res_ptr = (u_long *)pcxl_res_map;
--#endif
--	unsigned long total_pages = pcxl_res_size << 3;   /* 8 bits per byte */
--
--	seq_printf(m, "\nDMA Mapping Area size    : %d bytes (%ld pages)\n",
--		PCXL_DMA_MAP_SIZE, total_pages);
--
--	seq_printf(m, "Resource bitmap : %d bytes\n", pcxl_res_size);
--
--	seq_puts(m,  "     	  total:    free:    used:   % used:\n");
--	seq_printf(m, "blocks  %8d %8ld %8ld %8ld%%\n", pcxl_res_size,
--		pcxl_res_size - pcxl_used_bytes, pcxl_used_bytes,
--		(pcxl_used_bytes * 100) / pcxl_res_size);
--
--	seq_printf(m, "pages   %8ld %8ld %8ld %8ld%%\n", total_pages,
--		total_pages - pcxl_used_pages, pcxl_used_pages,
--		(pcxl_used_pages * 100 / total_pages));
--
--#if 0
--	seq_puts(m, "\nResource bitmap:");
--
--	for(; i < (pcxl_res_size / sizeof(u_long)); ++i, ++res_ptr) {
--		if ((i & 7) == 0)
--		    seq_puts(m,"\n   ");
--		seq_printf(m, "%s %08lx", buf, *res_ptr);
--	}
--#endif
--	seq_putc(m, '\n');
--	return 0;
--}
--
--static int __init
--pcxl_dma_init(void)
--{
--	if (pcxl_dma_start == 0)
--		return 0;
--
--	pcxl_res_size = PCXL_DMA_MAP_SIZE >> (PAGE_SHIFT + 3);
--	pcxl_res_hint = 0;
--	pcxl_res_map = (char *)__get_free_pages(GFP_KERNEL,
--					    get_order(pcxl_res_size));
--	memset(pcxl_res_map, 0, pcxl_res_size);
--	proc_gsc_root = proc_mkdir("gsc", NULL);
--	if (!proc_gsc_root)
--    		printk(KERN_WARNING
--			"pcxl_dma_init: Unable to create gsc /proc dir entry\n");
--	else {
--		struct proc_dir_entry* ent;
--		ent = proc_create_single("pcxl_dma", 0, proc_gsc_root,
--				proc_pcxl_dma_show);
--		if (!ent)
--			printk(KERN_WARNING
--				"pci-dma.c: Unable to create pcxl_dma /proc entry.\n");
--	}
--	return 0;
--}
--
--__initcall(pcxl_dma_init);
--
--void *arch_dma_alloc(struct device *dev, size_t size,
--		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
--{
--	unsigned long vaddr;
--	unsigned long paddr;
--	int order;
--
--	if (boot_cpu_data.cpu_type != pcxl2 && boot_cpu_data.cpu_type != pcxl)
--		return NULL;
--
--	order = get_order(size);
--	size = 1 << (order + PAGE_SHIFT);
--	vaddr = pcxl_alloc_range(size);
--	paddr = __get_free_pages(gfp | __GFP_ZERO, order);
--	flush_kernel_dcache_range(paddr, size);
--	paddr = __pa(paddr);
--	map_uncached_pages(vaddr, size, paddr);
--	*dma_handle = (dma_addr_t) paddr;
--
--#if 0
--/* This probably isn't needed to support EISA cards.
--** ISA cards will certainly only support 24-bit DMA addressing.
--** Not clear if we can, want, or need to support ISA.
--*/
--	if (!dev || *dev->coherent_dma_mask < 0xffffffff)
--		gfp |= GFP_DMA;
--#endif
--	return (void *)vaddr;
--}
--
--void arch_dma_free(struct device *dev, size_t size, void *vaddr,
--		dma_addr_t dma_handle, unsigned long attrs)
--{
--	int order = get_order(size);
--
--	WARN_ON_ONCE(boot_cpu_data.cpu_type != pcxl2 &&
--		     boot_cpu_data.cpu_type != pcxl);
--
--	size = 1 << (order + PAGE_SHIFT);
--	unmap_uncached_pages((unsigned long)vaddr, size);
--	pcxl_free_range((unsigned long)vaddr, size);
--
--	free_pages((unsigned long)__va(dma_handle), order);
-+	flush_kernel_dcache_range((unsigned long)page_address(page), size);
- }
- 
- void arch_sync_dma_for_device(phys_addr_t paddr, size_t size,
--- 
-2.30.2
+Very interesting!
+I'll give it a spin on real hardware and will come back with the results..=
+.
+
+Thanks!
+Helge
+
+
+> Diffstat:
+>   arch/parisc/Kconfig               |    4
+>   arch/parisc/include/asm/pgtable.h |    1
+>   arch/parisc/kernel/pci-dma.c      |  446 +----------------------------=
+---------
+>   include/linux/dma-map-ops.h       |    1
+>   kernel/dma/Kconfig                |    3
+>   kernel/dma/direct.c               |    4
+>   6 files changed, 24 insertions(+), 435 deletions(-)
 
