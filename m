@@ -2,320 +2,228 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42D586340D4
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Nov 2022 17:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7CCD636360
+	for <lists+linux-parisc@lfdr.de>; Wed, 23 Nov 2022 16:24:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234167AbiKVQFR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 22 Nov 2022 11:05:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39260 "EHLO
+        id S236308AbiKWPYu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 23 Nov 2022 10:24:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234141AbiKVQFN (ORCPT
+        with ESMTP id S236307AbiKWPYr (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 22 Nov 2022 11:05:13 -0500
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE13A18B1B
-        for <linux-parisc@vger.kernel.org>; Tue, 22 Nov 2022 08:05:10 -0800 (PST)
-Received: by mail-pg1-x52b.google.com with SMTP id f9so10239596pgf.7
-        for <linux-parisc@vger.kernel.org>; Tue, 22 Nov 2022 08:05:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mKqixJN/8zapPMiYOY0ZA2E36N6vIQg16uLiOxlikFI=;
-        b=Sxgb7NdwQ/FjyYXzMQLr2Ufh8inWhewppyg2kEhKfSMa5+4xLhcDZFgBkLe+YVojYR
-         b1j/8R8eepdhz2QNEoN59UWxI0C8HtPNMN2hfsnJ2VXdsyzTbL+tlNksQKPnsWg/NtBp
-         chCgU4N95aPK2lbuS5RzKtW5ffOhO3rTLhquzizFSUU3p/ux1MbE2BMO0btBQyCrWeJK
-         WXzMJ1H0fbnItfONfrC7qjjeZVQUnHu7QZDLXM8ZsS1OkeorqU4Yt3+bnHeBb63EIVUM
-         ARM0B0wTMD/PlD/5zjrBQjmOnBQvgdxEwxF1FwYHEN8lHlbB5RkK/8WK1b4hFP6jFplD
-         FuDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mKqixJN/8zapPMiYOY0ZA2E36N6vIQg16uLiOxlikFI=;
-        b=qF+5w1RCZroIzABD2rUitjGSPzxbUTqjOIwk9k6vfv2A0LbFOUJu9sIHsv+FtL6Zc2
-         V1nxP3yk0mRbJrTOFiVz+VRwm/B+CoYYsO/UVSA6CVeqvRpXndQGnd290GJAG/gvVqX3
-         OLuLeln/GUYGWpDLH9BqtSUuSuqxPTLShswFkmT5wbCd8Q0f8t+43yVR5Rf86+L/kUxe
-         F7l65UtEWvWKUIOO3wH/0zXX8arosQXnPEBE3khc4FHhf8laV1bi8/1ZguIYo5VllNIP
-         8m+emQsorGqufgi1gGsg47U7LQeOhArmCWlmXEyxijnIMZCS1rrafHqIWKdhd+AciXUP
-         ZqKw==
-X-Gm-Message-State: ANoB5pnd29ZwWCJ3r47u9henMTDs6O6112o6Tlb+m1oQbByykS5BVyqF
-        F9fwLQ0x5faYLXGdKwb+Rd+7Y+NV23lYGZTXmq3DRg==
-X-Google-Smtp-Source: AA0mqf6JSvaqlcRgOCqphXQ3MBWuxLvJ9cnb0DNFGeizoGOcIFvJAwjnOuz3SuqXXwFDZ3Z3O+rn4vXVPvsxTfgKOLE=
-X-Received: by 2002:a63:501c:0:b0:477:650a:c29a with SMTP id
- e28-20020a63501c000000b00477650ac29amr3900068pgb.541.1669133109958; Tue, 22
- Nov 2022 08:05:09 -0800 (PST)
+        Wed, 23 Nov 2022 10:24:47 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 591146253
+        for <linux-parisc@vger.kernel.org>; Wed, 23 Nov 2022 07:24:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1669217083; bh=027uEDEoyIMA+UzasI1Z+4I8GRT//yG5VhZ4T1R/Nn0=;
+        h=X-UI-Sender-Class:From:To:Subject:Date;
+        b=cVc2fP+zU+UxGicl42lAWMocLQYs0+7O3D9k1u2UFQWfGwuZEmyIjqgd3ivLUZiaO
+         nEb/deKdzJ9LDQZP+LGJpACMkcL77GprxwUy+TaKFWJQXSPu9wk6iOU+ozykX55qEU
+         ep3H0wACf7NVAF1B9Ne4IRgcUQpfidTwHLsSJkmnb3Gw/WrBvYPB66Dh55j5d/gF0s
+         cDcpiOxETMPg+oeocqPodC+Zp6aMKcipJj+GzHEdlKROwyYonM/xj/0V5sgy2dGNJG
+         kxUAyIuUGmZyq8J26zukklAy4+ja3QcCMU7GaJwAAdyRGxbZ/f8qSARIw8LW9ZwfD6
+         P58CJCQTx5oBg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([92.116.168.154]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYvY2-1oT5Ct2nBI-00UpTl for
+ <linux-parisc@vger.kernel.org>; Wed, 23 Nov 2022 16:24:43 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Subject: [PATCH 1/2] parisc: Add unlocked functions for pdc_iodc_getc() and pdc_iodc_print()
+Date:   Wed, 23 Nov 2022 16:24:34 +0100
+Message-Id: <20221123152435.276718-1-deller@gmx.de>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-References: <20220919095939.761690562@infradead.org> <20220919101521.139727471@infradead.org>
- <CAPDyKFqTWd4W5Ofk76CtC4X43dxBTNHtmY9YzN355-vpviLsPw@mail.gmail.com> <Y3UBwYNY15ETUKy9@hirez.programming.kicks-ass.net>
-In-Reply-To: <Y3UBwYNY15ETUKy9@hirez.programming.kicks-ass.net>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 22 Nov 2022 17:04:33 +0100
-Message-ID: <CAPDyKFqzmJdVVrcuJ6Hmr5nNgtpd9Oke_exmUKuTGZEb=PjvjQ@mail.gmail.com>
-Subject: Re: [PATCH v2 12/44] cpuidle,dt: Push RCU-idle into driver
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com,
-        linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org,
-        pavel@ucw.cz, agordeev@linux.ibm.com, linux-arch@vger.kernel.org,
-        vincent.guittot@linaro.org, mpe@ellerman.id.au,
-        chenhuacai@kernel.org, christophe.leroy@csgroup.eu,
-        linux-acpi@vger.kernel.org, agross@kernel.org,
-        geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org,
-        mattst88@gmail.com, mturquette@baylibre.com, sammy@sammy.net,
-        pmladek@suse.com, linux-pm@vger.kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        linux-um@lists.infradead.org, npiggin@gmail.com,
-        tglx@linutronix.de, linux-omap@vger.kernel.org,
-        dietmar.eggemann@arm.com, andreyknvl@gmail.com,
-        gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, senozhatsky@chromium.org,
-        svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        mark.rutland@arm.com, linux-ia64@vger.kernel.org,
-        dave.hansen@linux.intel.com,
-        virtualization@lists.linux-foundation.org,
-        James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com,
-        thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com,
-        linux-s390@vger.kernel.org, vschneid@redhat.com,
-        john.ogness@linutronix.de, ysato@users.sourceforge.jp,
-        linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de,
-        daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org,
-        lenb@kernel.org, linux-xtensa@linux-xtensa.org,
-        kernel@pengutronix.de, gor@linux.ibm.com,
-        linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev,
-        shorne@gmail.com, chris@zankel.net, sboyd@kernel.org,
-        dinguyen@kernel.org, bristot@redhat.com,
-        alexander.shishkin@linux.intel.com, fweisbec@gmail.com,
-        lpieralisi@kernel.org, atishp@atishpatra.org,
-        linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com,
-        will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org,
-        linux-csky@vger.kernel.org, pv-drivers@vmware.com,
-        linux-snps-arc@lists.infradead.org, mgorman@suse.de,
-        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        ulli.kroll@googlemail.com, linux-clk@vger.kernel.org,
-        rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com,
-        tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
-        ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org,
-        davem@davemloft.net, dalias@libc.org, tony@atomide.com,
-        amakhalov@vmware.com, konrad.dybcio@somainline.org,
-        bjorn.andersson@linaro.org, glider@google.com, hpa@zytor.com,
-        sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com,
-        anton.ivanov@cambridgegreys.com, jonas@southpole.se,
-        yury.norov@gmail.com, richard@nod.at, x86@kernel.org,
-        linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu,
-        hca@linux.ibm.com, richard.henderson@linaro.org,
-        stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org,
-        acme@kernel.org, paul.walmsley@sifive.com,
-        linux-tegra@vger.kernel.org, namhyung@kernel.org,
-        andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org,
-        dvyukov@google.com, jgross@suse.com, monstr@monstr.eu,
-        linux-mips@vger.kernel.org, palmer@dabbelt.com,
-        anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net,
-        linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:PWW0fMar43FZZjFRlcUzWuwH14fJb3ZfC0rxDNpEp3C4D2LAEET
+ IMzneJulX55S3cd2chvrhoB3KVDAW6V3b6hYaqOPS9NidxUbg82e1URw1nXj3meaw0Yrtwt
+ lbVasgzRAqHdo4ryaMqXXc4mVYUSl508BNHXGpSMuCJpaAgJFm3qMT+N2G5wB/bcZXXM3Nj
+ Q+ug+ASdSn/3Ua0Gnlr2A==
+UI-OutboundReport: notjunk:1;M01:P0:LTKW4s3jjV0=;5Ov9T96spGH3gNMHZs4UadSzGgA
+ ZpfyH+X/JW361JbYmXebqPSyuyd8+ih1P5+wE1c2sdTAiYeKXaf56oM1lxyO1oJbkg2oHZqct
+ 2B8dJluIOPCICgP7dNvX4In7bo7hLt5/EBZ1EgpcXRI0oLlXuSi4QWgJ3T1FgYt5A0XaG0v/D
+ UBRxx4P/0vCdbovyNZAe8ytdW417G4VR7bc/T1r8hl6PWtTlINuyWA6DtFwkfiNuYyWCflG08
+ dpz1VDkOp5Sn85izsEjIWoBJt5dDmvBgjmlF5zDQF2rfrf4HfZSRokz1Z1fc6CaPZzba/dZuQ
+ j1mOUdP7tyT4MYot0BATQGMeehz60RUwAuSXXoY94JA5f091UaZM1/VDRDqDSmNIQr7Qukpr5
+ nSd4EHBUI7H4bWWejlU0zHHMbEd7W6TM9eAEDhKFprS38aGZ12qGOA+fGJGnRh/POpiY3SlUA
+ OXLcjY0E1NjwOpNlSQk8zYr7TeOWwcU+u+LgjhwT1OdA4IHODH/gwSilRIGM1zW3gGPA8AfQh
+ 3IXpw2sv6sMKvAU0UbSKKuZR9PpcrBe29DTMxew/RUbmeDKQAdgfh6DMeau639T3gLtZQT9M+
+ jtxL88vbjyCAuCWtP1fEyetJ5OsqDLn1RbZrkkZG7hkR4OW5Mvc6a1H48QhSxNDxyLG+DqPa1
+ liARrtpiTr8Rs108agPfhbJStZm699sJJ1jX/XGJzPlQgjLmxjQKi6/UMiaIViSFo+MnjRDdY
+ xzG91oPVkHU0a52SEBMVoWFx8jJFuYWLvKUa1rmjLeffqJJFANPCSuPRDlimhb2BKej1p4fPl
+ hfUS1ljnx1AxoiSdgI6w5d2I/Tf9PUcrehOooTrG0qB6RO21UHVCqbxvyxsiuT+duBA3rtc54
+ EnzeUPM9ScR9WhI2Eq07cNkk4osPcEIuISiwIpcHyX5DKfhmG3PFgzqlWilQtAoXz2JK7Qr8g
+ Emhp+w==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, 16 Nov 2022 at 16:29, Peter Zijlstra <peterz@infradead.org> wrote:
->
->
-> Sorry; things keep getting in the way of finishing this :/
->
-> As such, I need a bit of time to get on-track again..
->
-> On Tue, Oct 04, 2022 at 01:03:57PM +0200, Ulf Hansson wrote:
->
-> > > --- a/drivers/acpi/processor_idle.c
-> > > +++ b/drivers/acpi/processor_idle.c
-> > > @@ -1200,6 +1200,8 @@ static int acpi_processor_setup_lpi_stat
-> > >                 state->target_residency = lpi->min_residency;
-> > >                 if (lpi->arch_flags)
-> > >                         state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-> > > +               if (lpi->entry_method == ACPI_CSTATE_FFH)
-> > > +                       state->flags |= CPUIDLE_FLAG_RCU_IDLE;
-> >
-> > I assume the state index here will never be 0?
-> >
-> > If not, it may lead to that acpi_processor_ffh_lpi_enter() may trigger
-> > CPU_PM_CPU_IDLE_ENTER_PARAM() to call ct_cpuidle_enter|exit() for an
-> > idle-state that doesn't have the CPUIDLE_FLAG_RCU_IDLE bit set.
->
-> I'm not quite sure I see how. AFAICT this condition above implies
-> acpi_processor_ffh_lpi_enter() gets called, no?
->
-> Which in turn is an unconditional __CPU_PM_CPU_IDLE_ENTER() user, so
-> even if idx==0, it ends up in ct_idle_{enter,exit}().
+The built-in kernel debugger (kgdb) deadlocks if we use spinlocks (which
+should protect against concurrent firmware calls) to get keyboard input
+or to output to the console.  Since we are in debugger mode anyway, we
+can simply avoid using this protection mechanism, which is why this
+patch adds unlocked keyboard input/console output functions which will
+be used by a follow-up patch.
 
-Seems like I was overlooking something here, you are right, this
-shouldn't really be a problem.
+In addition save some static bytes by reusing pdc_result[] as
+iodc_retbuf[] and by reducing the memory footprint of iodc_dbuf[].
 
->
-> >
-> > >                 state->enter = acpi_idle_lpi_enter;
-> > >                 drv->safe_state_index = i;
-> > >         }
-> > > --- a/drivers/cpuidle/cpuidle-arm.c
-> > > +++ b/drivers/cpuidle/cpuidle-arm.c
-> > > @@ -53,6 +53,7 @@ static struct cpuidle_driver arm_idle_dr
-> > >          * handler for idle state index 0.
-> > >          */
-> > >         .states[0] = {
-> > > +               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
-> >
-> > Comparing arm64 and arm32 idle-states/idle-drivers, the $subject
-> > series ends up setting the CPUIDLE_FLAG_RCU_IDLE for the ARM WFI idle
-> > state (state zero), but only for the arm64 and psci cases (mostly
-> > arm64). For arm32 we would need to update the ARM_CPUIDLE_WFI_STATE
-> > too, as that is what most arm32 idle-drivers are using. My point is,
-> > the code becomes a bit inconsistent.
->
-> True.
->
-> > Perhaps it's easier to avoid setting the CPUIDLE_FLAG_RCU_IDLE bit for
-> > all of the ARM WFI idle states, for both arm64 and arm32?
->
-> As per the below?
->
-> >
-> > >                 .enter                  = arm_enter_idle_state,
-> > >                 .exit_latency           = 1,
-> > >                 .target_residency       = 1,
->
-> > > --- a/include/linux/cpuidle.h
-> > > +++ b/include/linux/cpuidle.h
-> > > @@ -282,14 +282,18 @@ extern s64 cpuidle_governor_latency_req(
-> > >         int __ret = 0;                                                  \
-> > >                                                                         \
-> > >         if (!idx) {                                                     \
-> > > +               ct_idle_enter();                                        \
-> >
-> > According to my comment above, we should then drop these calls to
-> > ct_idle_enter and ct_idle_exit() here. Right?
->
-> Yes, if we ensure idx==0 never has RCU_IDLE set then these must be
-> removed.
->
-> > >                 cpu_do_idle();                                          \
-> > > +               ct_idle_exit();                                         \
-> > >                 return idx;                                             \
-> > >         }                                                               \
-> > >                                                                         \
-> > >         if (!is_retention)                                              \
-> > >                 __ret =  cpu_pm_enter();                                \
-> > >         if (!__ret) {                                                   \
-> > > +               ct_idle_enter();                                        \
-> > >                 __ret = low_level_idle_enter(state);                    \
-> > > +               ct_idle_exit();                                         \
-> > >                 if (!is_retention)                                      \
-> > >                         cpu_pm_exit();                                  \
-> > >         }                                                               \
-> > >
->
-> So the basic premise is that everything that needs RCU inside the idle
-> callback must set CPUIDLE_FLAG_RCU_IDLE and by doing that promise to
-> call ct_idle_{enter,exit}() themselves.
->
-> Setting RCU_IDLE is required when there is RCU usage, however even if
-> there is no RCU usage, setting RCU_IDLE is fine, as long as
-> ct_idle_{enter,exit}() then get called.
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/include/asm/pdc.h |  2 +
+ arch/parisc/kernel/firmware.c | 70 +++++++++++++++++++++--------------
+ 2 files changed, 45 insertions(+), 27 deletions(-)
 
-Right, I was thinking that it could make sense to shrink the window
-for users getting this wrong. In other words, we shouldn't set the
-CPUIDLE_FLAG_RCU_IDLE unless we really need to.
+diff --git a/arch/parisc/include/asm/pdc.h b/arch/parisc/include/asm/pdc.h
+index fcbcf9a96c11..bca1458b7c44 100644
+=2D-- a/arch/parisc/include/asm/pdc.h
++++ b/arch/parisc/include/asm/pdc.h
+@@ -83,7 +83,9 @@ int pdc_soft_power_button(int sw_control);
+ void pdc_io_reset(void);
+ void pdc_io_reset_devices(void);
+ int pdc_iodc_getc(void);
++int pdc_iodc_getc_unlocked(void);
+ int pdc_iodc_print(const unsigned char *str, unsigned count);
++int pdc_iodc_print_unlocked(const unsigned char *str, unsigned count);
 
-And as I said, consistent behaviour is also nice to have.
+ void pdc_emergency_unlock(void);
+ int pdc_sti_call(unsigned long func, unsigned long flags,
+diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware.c
+index 6a7e315bcc2e..6c2bfd6d36b2 100644
+=2D-- a/arch/parisc/kernel/firmware.c
++++ b/arch/parisc/kernel/firmware.c
+@@ -1288,25 +1288,14 @@ void pdc_io_reset_devices(void)
 
->
->
-> So does the below (delta) look better to you?
+ #endif /* defined(BOOTLOADER) */
 
-Yes, it does!
+-/* locked by pdc_console_lock */
+-static int __attribute__((aligned(8)))   iodc_retbuf[32];
+-static char __attribute__((aligned(64))) iodc_dbuf[4096];
++/* locked by pdc_lock */
++static char __attribute__((aligned(64))) iodc_dbuf[1024];
 
-Although, one minor comment below.
+-/**
+- * pdc_iodc_print - Console print using IODC.
+- * @str: the string to output.
+- * @count: length of str
+- *
+- * Note that only these special chars are architected for console IODC io=
+:
+- * BEL, BS, CR, and LF. Others are passed through.
+- * Since the HP console requires CR+LF to perform a 'newline', we transla=
+te
+- * "\n" to "\r\n".
+- */
+-int pdc_iodc_print(const unsigned char *str, unsigned count)
++int pdc_iodc_print_unlocked(const unsigned char *str, unsigned count)
+ {
+ 	unsigned int i;
+-	unsigned long flags;
 
->
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -1218,7 +1218,7 @@ static int acpi_processor_setup_lpi_stat
->                 state->target_residency = lpi->min_residency;
->                 if (lpi->arch_flags)
->                         state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-> -               if (lpi->entry_method == ACPI_CSTATE_FFH)
-> +               if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
->                         state->flags |= CPUIDLE_FLAG_RCU_IDLE;
->                 state->enter = acpi_idle_lpi_enter;
->                 drv->safe_state_index = i;
-> --- a/drivers/cpuidle/cpuidle-arm.c
-> +++ b/drivers/cpuidle/cpuidle-arm.c
-> @@ -53,7 +53,7 @@ static struct cpuidle_driver arm_idle_dr
->          * handler for idle state index 0.
->          */
->         .states[0] = {
-> -               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
-> +               .flags                  = 0,
++	count =3D min(count, sizeof(iodc_dbuf));
+ 	for (i =3D 0; i < count;) {
+ 		switch(str[i]) {
+ 		case '\n':
+@@ -1322,16 +1311,35 @@ int pdc_iodc_print(const unsigned char *str, unsig=
+ned count)
+ 	}
 
-Nitpick: I don't think we need to explicitly clear the flag, as it
-should already be zeroed by the compiler from its static declaration.
-Right?
+ print:
+-        spin_lock_irqsave(&pdc_lock, flags);
+-        real32_call(PAGE0->mem_cons.iodc_io,
+-                    (unsigned long)PAGE0->mem_cons.hpa, ENTRY_IO_COUT,
+-                    PAGE0->mem_cons.spa, __pa(PAGE0->mem_cons.dp.layers),
+-                    __pa(iodc_retbuf), 0, __pa(iodc_dbuf), i, 0);
+-        spin_unlock_irqrestore(&pdc_lock, flags);
++	real32_call(PAGE0->mem_cons.iodc_io,
++		(unsigned long)PAGE0->mem_cons.hpa, ENTRY_IO_COUT,
++		PAGE0->mem_cons.spa, __pa(PAGE0->mem_cons.dp.layers),
++		__pa(pdc_result), 0, __pa(iodc_dbuf), i, 0);
 
->                 .enter                  = arm_enter_idle_state,
->                 .exit_latency           = 1,
->                 .target_residency       = 1,
-> --- a/drivers/cpuidle/cpuidle-psci.c
-> +++ b/drivers/cpuidle/cpuidle-psci.c
-> @@ -357,7 +357,7 @@ static int psci_idle_init_cpu(struct dev
->          * PSCI idle states relies on architectural WFI to be represented as
->          * state index 0.
->          */
-> -       drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
-> +       drv->states[0].flags = 0;
->         drv->states[0].enter = psci_enter_idle_state;
->         drv->states[0].exit_latency = 1;
->         drv->states[0].target_residency = 1;
-> --- a/drivers/cpuidle/cpuidle-qcom-spm.c
-> +++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-> @@ -72,7 +72,7 @@ static struct cpuidle_driver qcom_spm_id
->         .owner = THIS_MODULE,
->         .states[0] = {
->                 .enter                  = spm_enter_idle_state,
-> -               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
-> +               .flags                  = 0,
->                 .exit_latency           = 1,
->                 .target_residency       = 1,
->                 .power_usage            = UINT_MAX,
-> --- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-> +++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-> @@ -337,7 +337,7 @@ static int sbi_cpuidle_init_cpu(struct d
->         drv->cpumask = (struct cpumask *)cpumask_of(cpu);
->
->         /* RISC-V architectural WFI to be represented as state index 0. */
-> -       drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
-> +       drv->states[0].flags = 0;
->         drv->states[0].enter = sbi_cpuidle_enter_state;
->         drv->states[0].exit_latency = 1;
->         drv->states[0].target_residency = 1;
-> --- a/include/linux/cpuidle.h
-> +++ b/include/linux/cpuidle.h
-> @@ -282,9 +282,7 @@ extern s64 cpuidle_governor_latency_req(
->         int __ret = 0;                                                  \
->                                                                         \
->         if (!idx) {                                                     \
-> -               ct_idle_enter();                                        \
->                 cpu_do_idle();                                          \
-> -               ct_idle_exit();                                         \
->                 return idx;                                             \
->         }                                                               \
->                                                                         \
+ 	return i;
+ }
 
-Kind regards
-Uffe
++/**
++ * pdc_iodc_print - Console print using IODC.
++ * @str: the string to output.
++ * @count: length of str
++ *
++ * Note that only these special chars are architected for console IODC io=
+:
++ * BEL, BS, CR, and LF. Others are passed through.
++ * Since the HP console requires CR+LF to perform a 'newline', we transla=
+te
++ * "\n" to "\r\n".
++ */
++int pdc_iodc_print(const unsigned char *str, unsigned count)
++{
++	unsigned long flags;
++	int ret;
++
++	spin_lock_irqsave(&pdc_lock, flags);
++	ret =3D pdc_iodc_print_unlocked(str, count);
++	spin_unlock_irqrestore(&pdc_lock, flags);
++	return ret;
++}
++
+ #if !defined(BOOTLOADER)
+ /**
+  * pdc_iodc_getc - Read a character (non-blocking) from the PDC console.
+@@ -1339,26 +1347,23 @@ int pdc_iodc_print(const unsigned char *str, unsig=
+ned count)
+  * Read a character (non-blocking) from the PDC console, returns -1 if
+  * key is not present.
+  */
+-int pdc_iodc_getc(void)
++int pdc_iodc_getc_unlocked(void)
+ {
+ 	int ch;
+ 	int status;
+-	unsigned long flags;
+
+ 	/* Bail if no console input device. */
+ 	if (!PAGE0->mem_kbd.iodc_io)
+ 		return 0;
+
+ 	/* wait for a keyboard (rs232)-input */
+-	spin_lock_irqsave(&pdc_lock, flags);
+ 	real32_call(PAGE0->mem_kbd.iodc_io,
+ 		    (unsigned long)PAGE0->mem_kbd.hpa, ENTRY_IO_CIN,
+ 		    PAGE0->mem_kbd.spa, __pa(PAGE0->mem_kbd.dp.layers),
+-		    __pa(iodc_retbuf), 0, __pa(iodc_dbuf), 1, 0);
++		    __pa(pdc_result), 0, __pa(iodc_dbuf), 1, 0);
+
+ 	ch =3D *iodc_dbuf;
+-	status =3D *iodc_retbuf;
+-	spin_unlock_irqrestore(&pdc_lock, flags);
++	status =3D *pdc_result;
+
+ 	if (status =3D=3D 0)
+ 	    return -1;
+@@ -1366,6 +1371,17 @@ int pdc_iodc_getc(void)
+ 	return ch;
+ }
+
++int pdc_iodc_getc(void)
++{
++	unsigned long flags;
++	int ch;
++
++	spin_lock_irqsave(&pdc_lock, flags);
++	ch =3D pdc_iodc_getc_unlocked();
++	spin_unlock_irqrestore(&pdc_lock, flags);
++	return ch;
++}
++
+ int pdc_sti_call(unsigned long func, unsigned long flags,
+                  unsigned long inptr, unsigned long outputr,
+                  unsigned long glob_cfg)
+=2D-
+2.38.1
+
