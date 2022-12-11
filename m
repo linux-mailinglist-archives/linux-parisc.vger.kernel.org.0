@@ -2,204 +2,199 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EF7F646B32
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Dec 2022 09:57:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2200B64935A
+	for <lists+linux-parisc@lfdr.de>; Sun, 11 Dec 2022 10:41:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbiLHI5O (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 8 Dec 2022 03:57:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57922 "EHLO
+        id S229777AbiLKJlk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 11 Dec 2022 04:41:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230092AbiLHI47 (ORCPT
+        with ESMTP id S229475AbiLKJli (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 8 Dec 2022 03:56:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CB7E58BF9
-        for <linux-parisc@vger.kernel.org>; Thu,  8 Dec 2022 00:55:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1670489755;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qZzQND0XXn/ac1VVVRiwKzVF2wPIGejtH8QPoB1hHfA=;
-        b=QPFkG++A/8JL5La+pALQpMxgOwAt4ktwVCkc0B7GKmSOmsQdJwO6bUe02qtZHfivaxVdc3
-        G9Wjgdcy6CTAaGzTr8Cckc2sdx+1EbdNMrC++y5ZAPBbYS5RMOrBZy9yOPYliW8bDkf1S/
-        1Ay3qqX5PGov4onlFtRbv5LxaYRg05Q=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-522-ISWLu7EfPl6eZPMin7vtmA-1; Thu, 08 Dec 2022 03:55:54 -0500
-X-MC-Unique: ISWLu7EfPl6eZPMin7vtmA-1
-Received: by mail-wm1-f69.google.com with SMTP id ay19-20020a05600c1e1300b003cf758f1617so2111869wmb.5
-        for <linux-parisc@vger.kernel.org>; Thu, 08 Dec 2022 00:55:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qZzQND0XXn/ac1VVVRiwKzVF2wPIGejtH8QPoB1hHfA=;
-        b=QhmXm1VThKXGJs53dR1hhMyn5aJJ4AjBlpLyQyOgLgOZdgAx07uQeKcs4Qx1bwREXj
-         dkp1/1EuJx3fA6WrLA34YvK9kq+R5J+k8qnKIBa+x3eV+AJXKqaVmRV21M+0FdPPsKlI
-         EJR5GVnNl9+pygSQe1/uUM2R+vTlDSpwSwi1JDLQHIKh4viaDZC0BHW40ialRbuRx8xf
-         XXTKc4dLRGMisu8k+5ey7gYombN5LSg0eYqn3J2q09MqMtJGJfoIyjcTBLewBxYYBevf
-         pm4uBENXhvaOdwjZ3qRDckyZjAf2K8bcsqBD6I1Jniwc5D6gWhjDBr9EaSZHhkAEqP75
-         absw==
-X-Gm-Message-State: ANoB5pmnEgL+5+8medILQsLNcHirAiMvFlVcagM6Org5fMTtOpaWiYtB
-        l04YL1vTVR9TNZI/8Sube6nX2S2VrHPBuYisiI55MDe1JaosOlOUp6R1Z4opU2kidSNdYxyy8W+
-        bZvnebSsC+5kcqredWFL4jZeg
-X-Received: by 2002:a5d:504d:0:b0:242:246c:2f89 with SMTP id h13-20020a5d504d000000b00242246c2f89mr22919583wrt.108.1670489752974;
-        Thu, 08 Dec 2022 00:55:52 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf668NfxbMXQWSDBD6iCzqqUG4mJSCJROvTfbJs0ERpg3lPeZTVH/8wev7o0MHbpIs1xArxqSg==
-X-Received: by 2002:a5d:504d:0:b0:242:246c:2f89 with SMTP id h13-20020a5d504d000000b00242246c2f89mr22919565wrt.108.1670489752626;
-        Thu, 08 Dec 2022 00:55:52 -0800 (PST)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id o29-20020adfa11d000000b0024278304ef6sm6288982wro.13.2022.12.08.00.55.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Dec 2022 00:55:52 -0800 (PST)
-Message-ID: <c904aa67-1add-119c-162f-e35d8243a11a@redhat.com>
-Date:   Thu, 8 Dec 2022 09:55:49 +0100
+        Sun, 11 Dec 2022 04:41:38 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD688101F9
+        for <linux-parisc@vger.kernel.org>; Sun, 11 Dec 2022 01:41:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1670751684; bh=UJ+iQHJm0x49MdX4/SV2vTQFSZEsO6wv91AkoN09peE=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=qn7Dn2ZF3ciz3Fe9/lR8JR+ZJg5UK3wQWl/pQtS305TiUG1zmurdM21zzMOt3NC0p
+         uO00EwsWgo+3t7qf67p94HhYlZ24tZ8h2vHEsJa82VqOEcC89tzsC2NULV5jft5loX
+         VvNdkzYwxfqocYvh3r60Qaw6bH31wT1gbU8hYgsq0gzcG/f0fqOT5RR8EOlcwOpGS1
+         g1PhYeiMoyuMZfJisiQZGwivQ6BA4AlkSaj8yn4Rr7reDSA6p3Y2Eq+ZU2S5vKtru4
+         zDtwTyZc/nOQSPe2/eUz/Je7zWDjLB0iTqunJF+HzF9M5VICFyqFABzz+XlmYdKzvl
+         ZHmGngnqTSAJg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from ls3530 ([92.116.144.19]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mg6Zq-1oSEzy25hm-00hi90; Sun, 11
+ Dec 2022 10:41:24 +0100
+Date:   Sun, 11 Dec 2022 10:41:17 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [RFC] [PATCH] parisc: Align parisc MADV_XXX constants with all other
+ architectures
+Message-ID: <Y5WlvT3V+2Bp4e29@ls3530>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH mm-unstable RFC 17/26] powerpc/mm: support
- __HAVE_ARCH_PTE_SWP_EXCLUSIVE on 32bit book3s
-Content-Language: en-US
-From:   David Hildenbrand <david@redhat.com>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Hugh Dickins <hughd@google.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Yang Shi <shy828301@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Nadav Amit <namit@vmware.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Peter Xu <peterx@redhat.com>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-snps-arc@lists.infradead.org" 
-        <linux-snps-arc@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-References: <20221206144730.163732-1-david@redhat.com>
- <20221206144730.163732-18-david@redhat.com>
- <8be167b6-3836-25c3-9f69-b8b3916ee5b4@csgroup.eu>
- <0b5b1303-8bcb-c19d-5f63-0e4a3517fea5@redhat.com>
-Organization: Red Hat
-In-Reply-To: <0b5b1303-8bcb-c19d-5f63-0e4a3517fea5@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:Ss/rTTVJ1/sD2VOsVC3vHOZ6SoTWz8JOXwUha7ve23l7k2vYzJw
+ I7pfkjEA35j4mlLvPEbFJVFfXZDIV0uP3qY/PjAb3+oPQgR/5vB3Wycsv1pdva8lDNw1bQl
+ W8JJ4gTp904VxpZZvdoqobNmiG3E6l1zV2w3KskOQjqgLapmKajGk0/AH3fBn/WAuzqYhhL
+ tOp/9vrF7O6DGKrHfxFRQ==
+UI-OutboundReport: notjunk:1;M01:P0:zzhYuGAkqmI=;rgDrvgsNOJvZa7OjQlxKnY2W+e+
+ M85e9ElTxqyMz0Xaww2X3uChpU6Qe8Fk7dh2+1XGHAWSQLDBEGks4jNzWUA14CCFjp3vYNjsn
+ B47d4yxEvkDGn3X8WXI0kUQQrkoq+bL0ldIMVwh0izzT0p3CE5bWMjxzVrwodmyXol1fpkIoQ
+ 4kf8n6vVwdiNJmOZbNNm2Nf9aFItSDIpnq5S03kreJycwSh4F+UCM+hDz0crLS9QNX7PCem2l
+ kQGLwkHprvMlCeV/HvUlECb0lYF7l5Q4u4ok5FfENqmUuVoF23lOOEMwmr4iShJm66jt+EKwI
+ pkoCu5EkLb96ym+Ne1/Ct2OftWiwJjgDr2/L3MCU4vOc5LB07Affn5/vjzCfZaVT8UpkIo9EU
+ 5YJaRojKmJObeg3aky8WoYcaZy/tb3+nFRJX5Ydw4WxA/9F0TQZJ6NflyD1FoJbnoxFFlyp86
+ ELgAneOEc9J3epx4slaNPvl21OVNc61GQI4fQ9l7RD2MTPCngBswYuox2qOTrZfPzPWL9pnLp
+ n9T56CLEt2LX92jlcthOz2eMfZAXMNtsRA5WvsOmz3CUBVjR6Zbt5CKPqcTV4yfpdAPtQ1Ylc
+ bsobAjpRXcIHhRZOAYjuj/qdkW4KVxbU3Zkm/osme5Pua0/spJh12baP3nFkOwJ38kmK80Npk
+ PUSxzUQWDkj7ev3m+URQ299tKMJcWI1EHnPvzGwOKdlGGT83PI3JlO0LcPxwN7I1xSqLVhRu/
+ OLpqtUVgShnxTLMU9/tsNWJCNkil5JVY4hr8eOL2ELOGhY4QRO3gIybMpWe1dZrAtNsDcZEEK
+ Jb32BoBVBLV3DDEUkBkfJZZLQ+0HODhGA4scorxmkv8FftA0sTjiB3yFz1sJL9tCr7kOowU5Y
+ itHiV13RlWX8r9bKFwnw6+zBg5Vs5ixC4De34TDDSBMy9kIluMVdgv905IDinHXDlG3n+EnpA
+ TTj65A==
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 08.12.22 09:52, David Hildenbrand wrote:
-> On 07.12.22 14:55, Christophe Leroy wrote:
->>
->>
->> Le 06/12/2022 à 15:47, David Hildenbrand a écrit :
->>> We already implemented support for 64bit book3s in commit bff9beaa2e80
->>> ("powerpc/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE for book3s")
->>>
->>> Let's support __HAVE_ARCH_PTE_SWP_EXCLUSIVE also in 32bit by reusing yet
->>> unused LSB 2 / MSB 29. There seems to be no real reason why that bit cannot
->>> be used, and reusing it avoids having to steal one bit from the swap
->>> offset.
->>>
->>> While at it, mask the type in __swp_entry().
->>>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Cc: Nicholas Piggin <npiggin@gmail.com>
->>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>     arch/powerpc/include/asm/book3s/32/pgtable.h | 38 +++++++++++++++++---
->>>     1 file changed, 33 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
->>> index 75823f39e042..8107835b38c1 100644
->>> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
->>> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
->>> @@ -42,6 +42,9 @@
->>>     #define _PMD_PRESENT_MASK (PAGE_MASK)
->>>     #define _PMD_BAD	(~PAGE_MASK)
->>>     
->>> +/* We borrow the _PAGE_USER bit to store the exclusive marker in swap PTEs. */
->>> +#define _PAGE_SWP_EXCLUSIVE	_PAGE_USER
->>> +
->>>     /* And here we include common definitions */
->>>     
->>>     #define _PAGE_KERNEL_RO		0
->>> @@ -363,17 +366,42 @@ static inline void __ptep_set_access_flags(struct vm_area_struct *vma,
->>>     #define pmd_page(pmd)		pfn_to_page(pmd_pfn(pmd))
->>>     
->>>     /*
->>> - * Encode and decode a swap entry.
->>> - * Note that the bits we use in a PTE for representing a swap entry
->>> - * must not include the _PAGE_PRESENT bit or the _PAGE_HASHPTE bit (if used).
->>> - *   -- paulus
->>> + * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
->>> + * are !pte_none() && !pte_present().
->>> + *
->>> + * Format of swap PTEs (32bit PTEs):
->>> + *
->>> + *                         1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
->>> + *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
->>> + *   E H P <- type --> <----------------- offset ------------------>
->>
->> That's in reversed order. _PAGE_HASHPTE is bit 30 and should be on the
->> right hand side. Etc ...
-> 
-> Ugh, messed it up while converting back and forth between LSB 0 and MSB 0.
-> 
-> /*
->    * Format of swap PTEs (32bit PTEs):
->    *
->    *                         1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
->    *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
->    *   <----------------- offset ------------------> <- type --> E H P
-> 
-> 
+This patch does introduce an ABI breakage.
 
-Still wrong, the type is only 5 bits:
+It adjusts some MADV_XXX constants to be in sync what their values are
+on all other platforms. There is currently no reason to have an own
+numbering on parisc, but due to this own numbering workarounds were
+required in many userspace sources (e.g. glibc, qemu, ...) which were
+often forgotten.
 
-+ * Format of swap PTEs (32bit PTEs):
-+ *
-+ *                         1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
-+ *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+ *   <----------------- offset --------------------> < type -> E H P
-+ *
+With this change, existing programs will now suddenly receive an -EINVAL
+return code on those specific madvise() calls.  But since madvise() is
+just used to give the kernel an advice about the address range, a
+successfull call shouldn't be required and will probably be ignored by
+userspace. Thus the implication of this change is probably small, but
+allows parisc to stay in sync with other platforms in future and helps
+to keep parisc specific patches in userspace small.
 
+Signed-off-by: Helge Deller <deller@gmx.de>
 
--- 
-Thanks,
+diff --git a/arch/parisc/include/uapi/asm/mman.h b/arch/parisc/include/uap=
+i/asm/mman.h
+index 22133a6a506e..234bc30866a9 100644
+=2D-- a/arch/parisc/include/uapi/asm/mman.h
++++ b/arch/parisc/include/uapi/asm/mman.h
+@@ -49,6 +49,19 @@
+ #define MADV_DONTFORK	10		/* don't inherit across fork */
+ #define MADV_DOFORK	11		/* do inherit across fork */
 
-David / dhildenb
++#define MADV_MERGEABLE   12		/* KSM may merge identical pages */
++#define MADV_UNMERGEABLE 13		/* KSM may not merge identical pages */
++
++#define MADV_HUGEPAGE	14		/* Worth backing with hugepages */
++#define MADV_NOHUGEPAGE 15		/* Not worth backing with hugepages */
++
++#define MADV_DONTDUMP   16		/* Explicity exclude from the core dump,
++					   overrides the coredump filter bits */
++#define MADV_DODUMP	17		/* Clear the MADV_NODUMP flag */
++
++#define MADV_WIPEONFORK 18		/* Zero memory on fork, child only */
++#define MADV_KEEPONFORK 19		/* Undo MADV_WIPEONFORK */
++
+ #define MADV_COLD	20		/* deactivate these pages */
+ #define MADV_PAGEOUT	21		/* reclaim these pages */
 
+@@ -57,21 +70,6 @@
+
+ #define MADV_DONTNEED_LOCKED	24	/* like DONTNEED, but drop locked pages t=
+oo */
+
+-#define MADV_MERGEABLE   65		/* KSM may merge identical pages */
+-#define MADV_UNMERGEABLE 66		/* KSM may not merge identical pages */
+-
+-#define MADV_HUGEPAGE	67		/* Worth backing with hugepages */
+-#define MADV_NOHUGEPAGE	68		/* Not worth backing with hugepages */
+-
+-#define MADV_DONTDUMP   69		/* Explicity exclude from the core dump,
+-					   overrides the coredump filter bits */
+-#define MADV_DODUMP	70		/* Clear the MADV_NODUMP flag */
+-
+-#define MADV_WIPEONFORK 71		/* Zero memory on fork, child only */
+-#define MADV_KEEPONFORK 72		/* Undo MADV_WIPEONFORK */
+-
+-#define MADV_COLLAPSE	73		/* Synchronous hugepage collapse */
+-
+ #define MADV_HWPOISON     100		/* poison a page for testing */
+ #define MADV_SOFT_OFFLINE 101		/* soft offline page for testing */
+
+diff --git a/tools/arch/parisc/include/uapi/asm/mman.h b/tools/arch/parisc=
+/include/uapi/asm/mman.h
+index 506c06a6536f..4cc88a642e10 100644
+=2D-- a/tools/arch/parisc/include/uapi/asm/mman.h
++++ b/tools/arch/parisc/include/uapi/asm/mman.h
+@@ -1,20 +1,20 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+ #ifndef TOOLS_ARCH_PARISC_UAPI_ASM_MMAN_FIX_H
+ #define TOOLS_ARCH_PARISC_UAPI_ASM_MMAN_FIX_H
+-#define MADV_DODUMP	70
++#define MADV_DODUMP	17
+ #define MADV_DOFORK	11
+-#define MADV_DONTDUMP   69
++#define MADV_DONTDUMP   16
+ #define MADV_DONTFORK	10
+ #define MADV_DONTNEED   4
+ #define MADV_FREE	8
+-#define MADV_HUGEPAGE	67
+-#define MADV_MERGEABLE   65
+-#define MADV_NOHUGEPAGE	68
++#define MADV_HUGEPAGE	14
++#define MADV_MERGEABLE  12
++#define MADV_NOHUGEPAGE 15
+ #define MADV_NORMAL     0
+ #define MADV_RANDOM     1
+ #define MADV_REMOVE	9
+ #define MADV_SEQUENTIAL 2
+-#define MADV_UNMERGEABLE 66
++#define MADV_UNMERGEABLE 13
+ #define MADV_WILLNEED   3
+ #define MAP_ANONYMOUS	0x10
+ #define MAP_DENYWRITE	0x0800
+diff --git a/tools/perf/bench/bench.h b/tools/perf/bench/bench.h
+index 6cefb4315d75..a5d49b3b6a09 100644
+=2D-- a/tools/perf/bench/bench.h
++++ b/tools/perf/bench/bench.h
+@@ -10,25 +10,13 @@ extern struct timeval bench__start, bench__end, bench_=
+_runtime;
+  * The madvise transparent hugepage constants were added in glibc
+  * 2.13. For compatibility with older versions of glibc, define these
+  * tokens if they are not already defined.
+- *
+- * PA-RISC uses different madvise values from other architectures and
+- * needs to be special-cased.
+  */
+-#ifdef __hppa__
+-# ifndef MADV_HUGEPAGE
+-#  define MADV_HUGEPAGE		67
+-# endif
+-# ifndef MADV_NOHUGEPAGE
+-#  define MADV_NOHUGEPAGE	68
+-# endif
+-#else
+ # ifndef MADV_HUGEPAGE
+ #  define MADV_HUGEPAGE		14
+ # endif
+ # ifndef MADV_NOHUGEPAGE
+ #  define MADV_NOHUGEPAGE	15
+ # endif
+-#endif
+
+ int bench_numa(int argc, const char **argv);
+ int bench_sched_messaging(int argc, const char **argv);
