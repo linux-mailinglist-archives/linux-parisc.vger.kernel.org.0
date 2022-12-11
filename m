@@ -2,62 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2200B64935A
-	for <lists+linux-parisc@lfdr.de>; Sun, 11 Dec 2022 10:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC7836495F5
+	for <lists+linux-parisc@lfdr.de>; Sun, 11 Dec 2022 20:05:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229777AbiLKJlk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 11 Dec 2022 04:41:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34442 "EHLO
+        id S230071AbiLKTFS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 11 Dec 2022 14:05:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiLKJli (ORCPT
+        with ESMTP id S229477AbiLKTFQ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 11 Dec 2022 04:41:38 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD688101F9
-        for <linux-parisc@vger.kernel.org>; Sun, 11 Dec 2022 01:41:34 -0800 (PST)
+        Sun, 11 Dec 2022 14:05:16 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 257A265C3
+        for <linux-parisc@vger.kernel.org>; Sun, 11 Dec 2022 11:05:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1670751684; bh=UJ+iQHJm0x49MdX4/SV2vTQFSZEsO6wv91AkoN09peE=;
+        t=1670785506; bh=dCnQyw+lLnIlfcfitrXfrV9ISJerZ/ziCrXDbXWxwr8=;
         h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=qn7Dn2ZF3ciz3Fe9/lR8JR+ZJg5UK3wQWl/pQtS305TiUG1zmurdM21zzMOt3NC0p
-         uO00EwsWgo+3t7qf67p94HhYlZ24tZ8h2vHEsJa82VqOEcC89tzsC2NULV5jft5loX
-         VvNdkzYwxfqocYvh3r60Qaw6bH31wT1gbU8hYgsq0gzcG/f0fqOT5RR8EOlcwOpGS1
-         g1PhYeiMoyuMZfJisiQZGwivQ6BA4AlkSaj8yn4Rr7reDSA6p3Y2Eq+ZU2S5vKtru4
-         zDtwTyZc/nOQSPe2/eUz/Je7zWDjLB0iTqunJF+HzF9M5VICFyqFABzz+XlmYdKzvl
-         ZHmGngnqTSAJg==
+        b=NMozHgkcR+o/E5Yay5hexUdlR4RWEwa4gzIH/XVAyb2w8dc5EKziX18rZ00sQEi/E
+         FOLzUh0i5y4gIUD8fmiaoSd1Mz7gkGhNVdJm6cSKJyjC5LDce/qHJ3aOxap5LiOoSo
+         D52gqoGZN3OUVHj2cZCwUV+4m2V7wxVukZJfph7EMpyRrTAzyxShFa7Apeir6DC0jI
+         5XMsR3i+U5TEojSg4PehY0A62UVrCF2PuE8IS23RhtyjtNHekE+Hyen/HbIzIRRCaX
+         OvROiYDVIlhk1SItBiljwAvknYyNC5FWxVBa/MEJPiwMZZpiLOdv3ce3OGZOuECmes
+         tsqLR38S7q4Eg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from ls3530 ([92.116.144.19]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mg6Zq-1oSEzy25hm-00hi90; Sun, 11
- Dec 2022 10:41:24 +0100
-Date:   Sun, 11 Dec 2022 10:41:17 +0100
+Received: from p100 ([92.116.144.19]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MhU9Z-1oQjAX07hD-00edAe; Sun, 11
+ Dec 2022 20:05:06 +0100
+Date:   Sun, 11 Dec 2022 20:05:02 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [RFC] [PATCH] parisc: Align parisc MADV_XXX constants with all other
- architectures
-Message-ID: <Y5WlvT3V+2Bp4e29@ls3530>
+Subject: [RFC] [PATCH v2] parisc: Align parisc MADV_XXX constants with all
+ other architectures
+Message-ID: <Y5Yp3tdDepkY9Q6u@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:Ss/rTTVJ1/sD2VOsVC3vHOZ6SoTWz8JOXwUha7ve23l7k2vYzJw
- I7pfkjEA35j4mlLvPEbFJVFfXZDIV0uP3qY/PjAb3+oPQgR/5vB3Wycsv1pdva8lDNw1bQl
- W8JJ4gTp904VxpZZvdoqobNmiG3E6l1zV2w3KskOQjqgLapmKajGk0/AH3fBn/WAuzqYhhL
- tOp/9vrF7O6DGKrHfxFRQ==
-UI-OutboundReport: notjunk:1;M01:P0:zzhYuGAkqmI=;rgDrvgsNOJvZa7OjQlxKnY2W+e+
- M85e9ElTxqyMz0Xaww2X3uChpU6Qe8Fk7dh2+1XGHAWSQLDBEGks4jNzWUA14CCFjp3vYNjsn
- B47d4yxEvkDGn3X8WXI0kUQQrkoq+bL0ldIMVwh0izzT0p3CE5bWMjxzVrwodmyXol1fpkIoQ
- 4kf8n6vVwdiNJmOZbNNm2Nf9aFItSDIpnq5S03kreJycwSh4F+UCM+hDz0crLS9QNX7PCem2l
- kQGLwkHprvMlCeV/HvUlECb0lYF7l5Q4u4ok5FfENqmUuVoF23lOOEMwmr4iShJm66jt+EKwI
- pkoCu5EkLb96ym+Ne1/Ct2OftWiwJjgDr2/L3MCU4vOc5LB07Affn5/vjzCfZaVT8UpkIo9EU
- 5YJaRojKmJObeg3aky8WoYcaZy/tb3+nFRJX5Ydw4WxA/9F0TQZJ6NflyD1FoJbnoxFFlyp86
- ELgAneOEc9J3epx4slaNPvl21OVNc61GQI4fQ9l7RD2MTPCngBswYuox2qOTrZfPzPWL9pnLp
- n9T56CLEt2LX92jlcthOz2eMfZAXMNtsRA5WvsOmz3CUBVjR6Zbt5CKPqcTV4yfpdAPtQ1Ylc
- bsobAjpRXcIHhRZOAYjuj/qdkW4KVxbU3Zkm/osme5Pua0/spJh12baP3nFkOwJ38kmK80Npk
- PUSxzUQWDkj7ev3m+URQ299tKMJcWI1EHnPvzGwOKdlGGT83PI3JlO0LcPxwN7I1xSqLVhRu/
- OLpqtUVgShnxTLMU9/tsNWJCNkil5JVY4hr8eOL2ELOGhY4QRO3gIybMpWe1dZrAtNsDcZEEK
- Jb32BoBVBLV3DDEUkBkfJZZLQ+0HODhGA4scorxmkv8FftA0sTjiB3yFz1sJL9tCr7kOowU5Y
- itHiV13RlWX8r9bKFwnw6+zBg5Vs5ixC4De34TDDSBMy9kIluMVdgv905IDinHXDlG3n+EnpA
- TTj65A==
+X-Provags-ID: V03:K1:QtK2TyuRaMgM5qhhkMq6PqZwPLmd36sKCLaUSgAjqg/G1Tpz+4x
+ L1Mzr6STRRVc7kBZyzRLvp5fijTFSSx7R0wjstlxuV8ovvmUsT215EmzpEHrSmLr6r/5qj+
+ N6Os5nDy9sIczmPQuUGypJ2uLZGtEveu1z7vwQpsulmtQ0q3FM4nTjMLmqIFTcl0IxK49TN
+ CV5/BhFsUuDVapRi9DJAQ==
+UI-OutboundReport: notjunk:1;M01:P0:LoEKFveoW1w=;oeL7DldaxC+N5X52Lh/k9Dk1TQL
+ pZSQ8mjK6JXxpTH86qB0RjJxfbdwVcKhJW+I8U7uYZyeSWBZK01gXOeXoNpXOdHA6r70D30ed
+ qnSyBFS8Ml3TU08Fqya2FvEZrs6d813VL2Fs4trQ22MtFNJbGd8yP/oS+lpYRotjxMu3+MzHP
+ 0QHK/du6lEjBokbUAATyNc5H+Yn678LEwHB+ImLaLhpJRG5NaIekrPwpnUy/nrslONjxAEdJw
+ aEffNubi218/pb/bmcPQZSOQSgQnfLisIQCyN+Vnvi4ZaSSt/8VsG7ETfv1GxpH+bgpTVOPVN
+ mqJm7rnRw130s3svgq9huQC+3j4xMWqFK/lEMbJEoNFxZhcnTG0oSZwwSrmtFHt9puHrkZrJs
+ Rhj3BAQnI4N0QaGjTJZdsc/CjJTiihA1aSB6T6sc+Q9/7OtMD3HKwBQYj7VboNdIaqRgM9GOD
+ U2qORH49PUV1ySo92B4vzwn+ku+JYfYYm+9YqjmfNJ9s+9vlCNIj14tu0wCwsQ6CdDFHjYFFe
+ uiYaDepuvH5Es8Wv3r5ljP6MzmYZx9nR/pl7SmYFCGwglZnJ/4U5bkqFcSdjzxveydDhmL4Z0
+ l/kPNOakIZrfvBZRvvB5A8KqdcM6bh6cX1D96EEeJ88qvICSoJyazeyb8N935jy7hPAPp0vka
+ Pj4bLEREBw9iutq1r1CrMRjtmDglCoZ/+roRELAWjS+KOySL6L6pDdYMKMmsDtE6ox1NYluEX
+ 00Ydd/vAU+oEKZJdo4I7XGlqdxBRrRNnlWqBP5LfBHx8HcPsVXcfnwz8ZbhdUQjbzUmOk15vy
+ 85ifYvUWKVfpGxOWBwYuo2pY3tJ1crRsJa2VtRUUUpKL3wO5M14u0aQ+66R1kFdrUcY+v8vck
+ cBRLX2cC7aVTt9Vw1JlwZ4hrfuxQFUxqP8y31EiXtHoHMSkBkw1o4A6PvgA2Fg2I0U6n9tkPr
+ 6pmX8Q==
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
@@ -69,27 +69,27 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This patch does introduce an ABI breakage.
+=46rom 60c95270ef643fdda92cb594b78646a7508039d4 Mon Sep 17 00:00:00 2001
+From: Helge Deller <deller@gmx.de>
+Date: Sun, 11 Dec 2022 19:50:20 +0100
 
-It adjusts some MADV_XXX constants to be in sync what their values are
-on all other platforms. There is currently no reason to have an own
-numbering on parisc, but due to this own numbering workarounds were
-required in many userspace sources (e.g. glibc, qemu, ...) which were
-often forgotten.
+Adjust some MADV_XXX constants to be in sync what their values are on
+all other platforms. There is currently no reason to have an own
+numbering on parisc, but it requires workarounds in many userspace
+sources (e.g. glibc, qemu, ...) - which are often forgotten and thus
+introduce bugs and different behaviour on parisc.
 
-With this change, existing programs will now suddenly receive an -EINVAL
-return code on those specific madvise() calls.  But since madvise() is
-just used to give the kernel an advice about the address range, a
-successfull call shouldn't be required and will probably be ignored by
-userspace. Thus the implication of this change is probably small, but
-allows parisc to stay in sync with other platforms in future and helps
-to keep parisc specific patches in userspace small.
+A wrapper avoids an ABI breakage for existing userspace applications by
+translating any old values to the new ones, so this change allows us to
+move over all programs to the new ABI over time.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 
+v2: Add wrapper to avoid ABI breakage
+
 diff --git a/arch/parisc/include/uapi/asm/mman.h b/arch/parisc/include/uap=
 i/asm/mman.h
-index 22133a6a506e..234bc30866a9 100644
+index 22133a6a506e..68c44f99bc93 100644
 =2D-- a/arch/parisc/include/uapi/asm/mman.h
 +++ b/arch/parisc/include/uapi/asm/mman.h
 @@ -49,6 +49,19 @@
@@ -112,7 +112,7 @@ index 22133a6a506e..234bc30866a9 100644
  #define MADV_COLD	20		/* deactivate these pages */
  #define MADV_PAGEOUT	21		/* reclaim these pages */
 
-@@ -57,21 +70,6 @@
+@@ -57,27 +70,13 @@
 
  #define MADV_DONTNEED_LOCKED	24	/* like DONTNEED, but drop locked pages t=
 oo */
@@ -131,10 +131,69 @@ oo */
 -#define MADV_KEEPONFORK 72		/* Undo MADV_WIPEONFORK */
 -
 -#define MADV_COLLAPSE	73		/* Synchronous hugepage collapse */
--
++#define MADV_COLLAPSE	25		/* Synchronous hugepage collapse */
+
  #define MADV_HWPOISON     100		/* poison a page for testing */
  #define MADV_SOFT_OFFLINE 101		/* soft offline page for testing */
 
+ /* compatibility flags */
+ #define MAP_FILE	0
+-#define MAP_VARIABLE	0
+
+ #define PKEY_DISABLE_ACCESS	0x1
+ #define PKEY_DISABLE_WRITE	0x2
+diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_pari=
+sc.c
+index 848b0702005d..bcd317871840 100644
+=2D-- a/arch/parisc/kernel/sys_parisc.c
++++ b/arch/parisc/kernel/sys_parisc.c
+@@ -465,3 +465,31 @@ asmlinkage long parisc_inotify_init1(int flags)
+ 	flags =3D FIX_O_NONBLOCK(flags);
+ 	return sys_inotify_init1(flags);
+ }
++
++/*
++ * madvise() wrapper
++ *
++ * Up to kernel v6.0 parisc had different values than all other
++ * platforms for the MADV_xxx flags listed below.
++ * To keep binary compatibility with existing userspace programs we
++ * translate here the former values to the new values.
++ *
++ * XXX: Remove this wrapper in year 2025 (or later)?
++ */
++
++asmlinkage notrace long parisc_madvise(unsigned long start, size_t len_in=
+, int behavior)
++{
++	switch (behavior) {
++	case 65: behavior =3D MADV_MERGEABLE;	break;
++	case 66: behavior =3D MADV_UNMERGEABLE;	break;
++	case 67: behavior =3D MADV_HUGEPAGE;	break;
++	case 68: behavior =3D MADV_NOHUGEPAGE;	break;
++	case 69: behavior =3D MADV_DONTDUMP;	break;
++	case 70: behavior =3D MADV_DODUMP;	break;
++	case 71: behavior =3D MADV_WIPEONFORK;	break;
++	case 72: behavior =3D MADV_KEEPONFORK;	break;
++	case 73: behavior =3D MADV_COLLAPSE;	break;
++	}
++
++	return sys_madvise(start, len_in, behavior);
++}
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/=
+syscalls/syscall.tbl
+index 8a99c998da9b..0e42fceb2d5e 100644
+=2D-- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -131,7 +131,7 @@
+ 116	common	sysinfo			sys_sysinfo			compat_sys_sysinfo
+ 117	common	shutdown		sys_shutdown
+ 118	common	fsync			sys_fsync
+-119	common	madvise			sys_madvise
++119	common	madvise			parisc_madvise
+ 120	common	clone			sys_clone_wrapper
+ 121	common	setdomainname		sys_setdomainname
+ 122	common	sendfile		sys_sendfile			compat_sys_sendfile
 diff --git a/tools/arch/parisc/include/uapi/asm/mman.h b/tools/arch/parisc=
 /include/uapi/asm/mman.h
 index 506c06a6536f..4cc88a642e10 100644
