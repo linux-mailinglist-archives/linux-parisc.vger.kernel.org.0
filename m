@@ -2,248 +2,268 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6342464CDFA
-	for <lists+linux-parisc@lfdr.de>; Wed, 14 Dec 2022 17:28:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7114564D141
+	for <lists+linux-parisc@lfdr.de>; Wed, 14 Dec 2022 21:34:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238987AbiLNQ2U (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 14 Dec 2022 11:28:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48002 "EHLO
+        id S230175AbiLNUec (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 14 Dec 2022 15:34:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238978AbiLNQ2S (ORCPT
+        with ESMTP id S229914AbiLNUeI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 14 Dec 2022 11:28:18 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 134356144;
-        Wed, 14 Dec 2022 08:28:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671035297; x=1702571297;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=PEm95h/YTHcJiYhCqCHq1kOQJQryjVd8bKLlGnmtus4=;
-  b=dDwbRXbBPTgrFG6iQshoFapNfXE6o/Utsg0DNmKzXZzrgMB7KXNGMI15
-   IgTvfkRzBShJtipJHrKU+PMK0CdTysunbXDlNgqvP0xAYIDc+szmK+9gw
-   gWJdVV2Y02sj9AKL3ma5JI4g3GZGGTH/N1aAZvFobese5EPtx4Gy75Llt
-   RbDeJR8gZBCv/uZ7F3BtQu7KNknt7p0tvqcF6iEiwbcKBBlYuh4mboE/m
-   JWY9jGKmFaJmYY4OkBeVVf5u5NlRsPnxdBVeXuGKMxFzzozduqIdqsKx7
-   +ERfSLfXzomi7IUNx4IuQjrrYPJGNRsLOYbZBWlOxc+7wRFPPUZd2Sf/M
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10561"; a="316085814"
-X-IronPort-AV: E=Sophos;i="5.96,244,1665471600"; 
-   d="scan'208";a="316085814"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2022 08:28:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10561"; a="823349494"
-X-IronPort-AV: E=Sophos;i="5.96,244,1665471600"; 
-   d="scan'208";a="823349494"
-Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 14 Dec 2022 08:28:13 -0800
-Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1p5Uc8-0005ck-1T;
-        Wed, 14 Dec 2022 16:28:12 +0000
-Date:   Thu, 15 Dec 2022 00:27:43 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        linux-parisc@vger.kernel.org, linux-omap@vger.kernel.org,
-        kvm@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 663397d1b469ff57f216d499b74a0b0183a508b8
-Message-ID: <6399f97f.8g32TjfFuyg/ourC%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Wed, 14 Dec 2022 15:34:08 -0500
+Received: from CAN01-YQB-obe.outbound.protection.outlook.com (mail-yqbcan01on2067.outbound.protection.outlook.com [40.107.116.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2112D1D5;
+        Wed, 14 Dec 2022 12:26:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lMk/Zf5AvC0J8OgpALldr+b/Cw7189PdsNbVcI1viFi0fZY5lrlXaRrTqlRKJJ9ozjyNAileq2JTUwQNnjIaVCjpVEiENeWTgyIuF6AzfTYV3vols8WlM8AfN/Wj05U//yh74ZgpcBy6+xWXIPsf8XfPwHlAaxSDxh70yMsOzy5Ji2MVivi7YTidDP5SBCvISTHdN+068fzP9zxz3eLQ7LVBQlOCA02ra9Y0PYchIQlAQleNTlPPcpFkvtngb1TzfG0Xr+4CPgT3LQ+4C77637TYZ/VRXXOT6sU/brfLrPxtjJ5y29XgSkigBSEVjG/iwz61ky5fxpLXENWp1RQiqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WfZwq2on/ekbOK2qwGSlfOb6JvOjZ2FcfokeuNQEib8=;
+ b=d6kf7hyCl2Qp0+fppOFbnR3n5AIX9qh5PP1g8zAj2dcADjCzY2G54FCltMzUWOyCDkK0HVAUjmO9IE1pgFDNs5eyxsfqgtl8fKinGOhiH8HXiqqGltj941Rf/qydWKU2yuNTirtjps9zpWeUkzoAO64GbG9MSOe8w8iOCJeRKc04vnb4qLaMQqtNH+0SJ9jWp74MrX0iyGryTnLsxPqJd7mKQSIqtKGMRu8H9asEdiY5NpneDpCg/vDB4u6/B09xC1IlS4pIahePMy8sNR4k2mkgvxSiaqSXZhHdo1FqtrIyAvqkEJzB8USqjn1DKl1hIeAoqrEK75R6lp1Ltw7s9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WfZwq2on/ekbOK2qwGSlfOb6JvOjZ2FcfokeuNQEib8=;
+ b=J5x0DJEYK2lT2Z9hguLQ/RPLxqcr5G2nXlxO2tpzMLjHOCh5m1vWSG0EONrkFU072ccdUoQtQSCLJuP4KU1/8DzA/nNW8yWIvurq3TJqAq1SnPBqjcz82aIuLLTIKaRQIXBl/IamsbvY32DlT3p2V2Q60SGWTVRsLQHwaJzmoKsmIqwEPVLthFnnQINZvrOPEc3MMDtWNDRyfW3eTsKaB5U5v9ZIygmzlAgXF2W14xKI7cBvP8L1EVlEJQG2g27Qc7KgleD5aA4oyLYK0cb+nQlIwV7KGtkBA/yB65iVlJxgdzyE3YFWLQVzUE+ZnKUEU5mglvDqs8d8h2MeibriTQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=efficios.com;
+Received: from YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c01:24::5)
+ by YT3PR01MB10733.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:95::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.11; Wed, 14 Dec
+ 2022 20:26:29 +0000
+Received: from YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::2bff:5fa3:434e:517]) by YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::2bff:5fa3:434e:517%9]) with mapi id 15.20.5924.011; Wed, 14 Dec 2022
+ 20:26:29 +0000
+Message-ID: <a6e99b31-5719-5f21-3c4f-836f809e893e@efficios.com>
+Date:   Wed, 14 Dec 2022 15:26:27 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [RFC PATCH] Syscall tracing on PPC64_ELF_ABI_V1 without
+ KALLSYMS_ALL
+Content-Language: en-US
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+References: <20221212212159.3435046-1-mjeanson@efficios.com>
+ <39c53bd1-432f-15f6-4cbd-b8551fc261cf@csgroup.eu>
+From:   Michael Jeanson <mjeanson@efficios.com>
+In-Reply-To: <39c53bd1-432f-15f6-4cbd-b8551fc261cf@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YQBPR01CA0140.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:1::40) To YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:24::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: YQBPR0101MB5080:EE_|YT3PR01MB10733:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa2266fc-331f-4308-bee0-08dade117b49
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 1CszFifJ2Uew0l0OeOno6CNVr2VPMuBJG3oXqCcBfP2j7lEIeuYdk9HJT0EuNmxVvzzzK1aAl/BXagOxOsUXSUAi0BLnloWxp0NnywArBtu+URrmoOHJFmfuQC192b72wuLV8A5wJuRQZ6suDSoLpPHc74jxWz/5CAkxz3avLEkQdSGRtYi4UZcXgXSnYviW1HeHWkAPqA1CEW4iHtDjndcuNIqRIxBB/vxMch0f0AInhqYi3hmtlCHMVN3lxXYTKqOaA+POdA0Ln0u1anXkAtKoD/yYDXkRUU2UVUKDAS2fz2QU/4GY77cPg6XNbl+3D8luFRNMT5fcjDFWN46+NsGaJTl1uTOX5YKCn3kbVKblTASi830EFAMOIMmhYZmzZKY4aHWP4IhWq6+5M7Y6ZcpzG/jbBM+brrVFzyEA1h3AqeiZC8zrgYLJQ53jtz3cNA2NBJOs34ocz+nGj3QCeZ9hu/6H+vy2F7p8V4OamdJ6kLKpz6+1YQlqO67yAiMUOzC9mI+gr0FaJqE1HNNLNQqMDMjmRr1FHzW7AnSLaHIGaoau3lO152JMmQzl9Frb+GwNgIj0I87xJb0EN93uivBLqerOjUY7n19WA6Wpu4SmbEaHG/r+cPecc6LgLpTlZF4b7ZaoM9UFmrDQekmiZekMj3gQ61TTPr5eFdkQAxVybl35UpngRa49iUE8kqRToAr9E1jCpjhJR6lOrDrlFcsidlHswrBn1zQ26fY/s9I=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(346002)(376002)(39830400003)(366004)(136003)(396003)(451199015)(4326008)(66556008)(66476007)(8676002)(36756003)(83380400001)(54906003)(316002)(66946007)(110136005)(4001150100001)(2906002)(86362001)(31696002)(41300700001)(38100700002)(7416002)(5660300002)(8936002)(31686004)(6506007)(6486002)(478600001)(2616005)(6512007)(53546011)(186003)(26005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDFydmJFZTBhZzVib1ByRmtEckgrZDcwYklLNFluYVZZbzUvVEhwQXlDamhE?=
+ =?utf-8?B?ZGM4a1djNVFmVGliWVhEN0g0azZUdkVza0xYNkJhN3lvWGNjaHFOMExmYXUx?=
+ =?utf-8?B?U091YkRENGtzUU1GcGREdTYwai9GYkhtSEVaMUEzUEV0ZmZMSkxlZk9mL3o3?=
+ =?utf-8?B?aEVBTkl4eXpmQ0h3N0pSN0JPL01DbXpQdWlaTE4vZWhBODZJRU1XTTZ2VHJo?=
+ =?utf-8?B?WllmZUVzMjlWV1FMOW90aENtVVhDSWErTy84WTFBeUwrN1hqRjM5alFINVZE?=
+ =?utf-8?B?cHROSk1kSUZTOGNOSElCci93eE1tWDhDdnpLTWcyWktNRGNZeEZlZ1M4N09P?=
+ =?utf-8?B?NVpQREVqY3J0aThsRXVPVHVQR2tMY21zTDdRcnAxSjN5S2REalRQYWNCc0c2?=
+ =?utf-8?B?WGZLV1N2aHpkWDgyZEJwNmcwbi9xK09yWFJEVUIxTzRqVThDUFpRb3QyNVhq?=
+ =?utf-8?B?WjNYamhvY1FZWmtuT1N2andzV0dqY2VHeFdPTzRiSFhyNGdTZkFwRjhvUU15?=
+ =?utf-8?B?TFplUndDcU1wVkhpNFlCeHdUb0VxSW54NjFHdi9nZWc3aVp6WkZvV3QrdE45?=
+ =?utf-8?B?YXhXazEvVnZGUlhEMmZSd0UxRUtkL1Zmd2ZWVzFpZWlJdkhmRzlCT2VtY0F5?=
+ =?utf-8?B?NmlEZnJwaXdWMUtFNitmMzVWdWRtQldoMlJ0Y3FjaDRvYU5QVDRZMU9rcWNX?=
+ =?utf-8?B?RzRBNUpCNnVZaFVvTkFUQzk1Ky9iMk15SHk4dWpuRmNzd2JxdTluSnZXWXQ3?=
+ =?utf-8?B?eFgyTml3YytaSEx5NDlkSThXVjNZUndQVTlwMHZkMmVmMzQ3YStOUmVIUENx?=
+ =?utf-8?B?RkdvWnVRejNHWDRMQ1lmT0tBK1cyZUVKcXk5QUwrYlN3Z0FRbjB3UXVzamVy?=
+ =?utf-8?B?NXJYYkF4NFQrWVdoN3BqOWNDTzFBa2VCdThSUHF1UjBKS25ic0FiN1hBQ0lx?=
+ =?utf-8?B?Y2JWZVFwOW1MNlNQODFwb05jRnh4alRKa3U4SmxCSER2WnAxUnVkNHlvUlQy?=
+ =?utf-8?B?dGswU2MrYkR5YTVmMXBtYWhuUnY1QXpuYkNZQ3l4WTk1ZWsrbGR0NXFMQ09H?=
+ =?utf-8?B?MERvbVRLKzZrMW9JdXBteWhyZW5mTWJpcXl6TU9yWkVCbVJXTWJsZW9xRmRY?=
+ =?utf-8?B?NDdXQ1liR0VBK1JIRUVtU2kwYUxwMlVPV0RPVGZzdFZFSnNXWDkzOE12Njdx?=
+ =?utf-8?B?TmdCU2JrVVgwMU1PZTl4MWRrYmJKT1R6N3lBcTEzSlRNNTViL09iZmkvdHZW?=
+ =?utf-8?B?UEVqTVM4dHVGYWJLd3B0dUVQSWdqU3Vsa2c5ZTgramlNTmM4dVhnMkkzUmpp?=
+ =?utf-8?B?RC9FbFh5cDBVS3dVY1pJVmpzUjFhNUxJMUh4M3pIeVBYMW5CaFA2N0lvSERj?=
+ =?utf-8?B?MnJSSTBSSnFSZGtHQ2QxbFB6Mkg5SUx5TElGUUM1U3ovbVcxTXNDYkZkS3lV?=
+ =?utf-8?B?VU1hWjdWbDBlM0pDNVJrNmg0SVNNT1U1K3p1VXU3bWNpTTkzMXlqRHlFVEZD?=
+ =?utf-8?B?VUZ0RjBzTjVXRmExSUNhbFcvUXJSWldEQjZvWW5VbDJpQ1VialAyUkhKQ2h4?=
+ =?utf-8?B?NllUOXh5SUw0TTlnOC9EV3RxSC9tcjNiZHhIdTRUdE1oaDVJQ3dPZjBVOEF5?=
+ =?utf-8?B?bUttekcwT1g5REM5Z3hqSlZaa3J1RkFRY0JNSUxlQjA5THMzREt6eXZseXVh?=
+ =?utf-8?B?R00wUnBpMEJXZjBQOGJjSUNrcmFyRWZNRHhoamZnZ2s3bmxkUUNONUZleUxv?=
+ =?utf-8?B?TmlHemJNTWdzNVR4dlRoeEM3SFJkYmlJN1Rsa2NxSkVyNGEydU15b0RTREYy?=
+ =?utf-8?B?Z09ZTUNlQWxSNmxtaE9qdERSVlFxaHhWYWNXL1NxdkMxRlJnWSt1aEltZ3h0?=
+ =?utf-8?B?TE0rVkhEaXl6SzBBUW93TnA5cyt1KzBhcWsrK2ZJektoOXZUY0o5RjlROWpn?=
+ =?utf-8?B?b0l0Rm9HeDVoSW1mYkV4NEJ3NFMvR2xtcE1XbjVHV3pKVjFLR216KzZ1cjM4?=
+ =?utf-8?B?cXBtY0N4eTJYdDRlNWN5dXgrL2J5SU5xcHV4bFo4dCtEemRSb3ZOVFJSaFZG?=
+ =?utf-8?B?ZDNrbXNmUEQ2OSs4TlhWaWpLVEpjbjRRZzhHQTZLcHNsbk5IRjFlUmg5YS9w?=
+ =?utf-8?Q?0fBr9FdvFvwDnCDAZXVL9p5Ym?=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa2266fc-331f-4308-bee0-08dade117b49
+X-MS-Exchange-CrossTenant-AuthSource: YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Dec 2022 20:26:29.1680
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v/jR/MVLmBR1ZJfyt7V7Vae8wdiGMvcvRJEdIxFTqBNw4d0NXV/ivzcMMJr0VHhGpxkefpQxlY7jTb4H02Oizw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB10733
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 663397d1b469ff57f216d499b74a0b0183a508b8  Add linux-next specific files for 20221214
+On 2022-12-13 02:29, Christophe Leroy wrote:
+> The changes are absolutely not specific to powerpc. You should adjust
+> the subject accordingly, and copy linux-arch and tracing and probably
+> also ia64 and parisc.
 
-Error/Warning reports:
+I was hoping to get feedback from the PPC maintainers before posting something 
+more widely. I'll send an updated patch which addresses your comments.
 
-https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212141410.IlFkWqph-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212141742.w69HZXVa-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212141833.3QHN4iDl-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212142121.vendKsOc-lkp@intel.com
+Thanks.
 
-Error/Warning: (recently discovered and may have been fixed)
+> 
+> Le 12/12/2022 à 22:21, Michael Jeanson a écrit :
+>> In ad050d2390fccb22aa3e6f65e11757ce7a5a7ca5 we fixed ftrace syscall
+>> tracing on PPC64_ELF_ABI_V1 by looking for the non-dot prefixed symbol
+>> of a syscall.
+> 
+> Should be written as:
+> 
+> Commit ad050d2390fc ("powerpc/ftrace: fix syscall tracing on
+> PPC64_ELF_ABI_V1") fixed ....
+> 
+> 
+>>
+>> Ftrace uses kallsyms to locate syscall symbols and those non-dot
+>> prefixed symbols reside in a separate '.opd' section which is not
+>> included by kallsyms.
+>>
+>> So we either need to have FTRACE_SYSCALLS select KALLSYMS_ALL on
+>> PPC64_ELF_ABI_V1 or add the '.opd' section symbols to kallsyms.
+>>
+>> This patch does the minimum to achieve the latter, it's tested on a
+>> corenet64_smp_defconfig with KALLSYMS_ALL turned off.
+>>
+>> I'm unsure which of the alternatives would be better.
+>>
+>> ---
+>> In 'kernel/module/kallsyms.c' the 'is_core_symbol' function might also
+>> require some tweaking to make all opd symbols available to kallsyms but
+>> that doesn't impact ftrace syscall tracing.
+>>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>> Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
+>> ---
+>>    include/asm-generic/sections.h | 14 ++++++++++++++
+>>    include/linux/kallsyms.h       |  3 +++
+>>    kernel/kallsyms.c              |  2 ++
+>>    scripts/kallsyms.c             |  1 +
+>>    4 files changed, 20 insertions(+)
+>>
+>> diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+>> index db13bb620f52..1410566957e5 100644
+>> --- a/include/asm-generic/sections.h
+>> +++ b/include/asm-generic/sections.h
+>> @@ -180,6 +180,20 @@ static inline bool is_kernel_rodata(unsigned long addr)
+>>    	       addr < (unsigned long)__end_rodata;
+>>    }
+>>    
+>> +/**
+>> + * is_kernel_opd - checks if the pointer address is located in the
+>> + *                 .opd section
+>> + *
+>> + * @addr: address to check
+>> + *
+>> + * Returns: true if the address is located in .opd, false otherwise.
+>> + */
+>> +static inline bool is_kernel_opd(unsigned long addr)
+>> +{
+> 
+> I would add a check of CONFIG_HAVE_FUNCTION_DESCRIPTORS:
+> 
+> 	if (!IS_ENABLED(CONFIG_HAVE_FUNCTION_DESCRIPTORS))
+> 		return false;
+> 
+>> +	return addr >= (unsigned long)__start_opd &&
+>> +	       addr < (unsigned long)__end_opd;
+>> +}
+>> +
+>>    /**
+>>     * is_kernel_inittext - checks if the pointer address is located in the
+>>     *                      .init.text section
+>> diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
+>> index 649faac31ddb..9bfb4d8d41a5 100644
+>> --- a/include/linux/kallsyms.h
+>> +++ b/include/linux/kallsyms.h
+>> @@ -43,6 +43,9 @@ static inline int is_ksym_addr(unsigned long addr)
+>>    	if (IS_ENABLED(CONFIG_KALLSYMS_ALL))
+>>    		return is_kernel(addr);
+>>    
+>> +	if (IS_ENABLED(CONFIG_HAVE_FUNCTION_DESCRIPTORS))
+>> +		return is_kernel_text(addr) || is_kernel_inittext(addr) || is_kernel_opd(addr);
+>> +
+> 
+> With the check inside is_kernel_opd(), you can make it simpler:
+> 
+> 	return is_kernel_text(addr) || is_kernel_inittext(addr) ||
+> is_kernel_opd(addr);
+> 
+>>    	return is_kernel_text(addr) || is_kernel_inittext(addr);
+>>    }
+>>    
+>> diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
+>> index 60c20f301a6b..009b1ca21618 100644
+>> --- a/kernel/kallsyms.c
+>> +++ b/kernel/kallsyms.c
+>> @@ -281,6 +281,8 @@ static unsigned long get_symbol_pos(unsigned long addr,
+>>    			symbol_end = (unsigned long)_einittext;
+>>    		else if (IS_ENABLED(CONFIG_KALLSYMS_ALL))
+>>    			symbol_end = (unsigned long)_end;
+>> +		else if (IS_ENABLED(CONFIG_HAVE_FUNCTION_DESCRIPTORS) && is_kernel_opd(addr))
+>> +			symbol_end = (unsigned long)__end_opd;
+> 
+> Same, with the check included inside is_kernel_opd() you don't need the
+> IS_ENABLED(CONFIG_HAVE_FUNCTION_DESCRIPTORS) here.
+> 
+>>    		else
+>>    			symbol_end = (unsigned long)_etext;
+>>    	}
+>> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+>> index 03fa07ad45d9..decf31c497f5 100644
+>> --- a/scripts/kallsyms.c
+>> +++ b/scripts/kallsyms.c
+>> @@ -64,6 +64,7 @@ static unsigned long long relative_base;
+>>    static struct addr_range text_ranges[] = {
+>>    	{ "_stext",     "_etext"     },
+>>    	{ "_sinittext", "_einittext" },
+>> +	{ "__start_opd", "__end_opd" },
+>>    };
+>>    #define text_range_text     (&text_ranges[0])
+>>    #define text_range_inittext (&text_ranges[1])
 
-ERROR: modpost: "___ratelimit" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "__asan_report_load4_noabort" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "__asan_report_load8_noabort" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-ERROR: modpost: "__asan_report_load8_noabort" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "__fentry__" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-ERROR: modpost: "__fentry__" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "__gcov_exit" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-ERROR: modpost: "__gcov_init" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-ERROR: modpost: "_find_next_bit" [arch/x86/events/intel/intel-cstate.ko] undefined!
-ERROR: modpost: "_printk" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-ERROR: modpost: "capable" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "current_task" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "device_create" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "device_destroy" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "ftrace_likely_update" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "kasprintf" [arch/x86/kernel/msr.ko] undefined!
-ERROR: modpost: "memcpy" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-ERROR: modpost: "pcpu_hot" [arch/x86/kvm/kvm-intel.ko] undefined!
-ERROR: modpost: "twofish_dec_blk" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-ERROR: modpost: "twofish_dec_blk_3way" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-ERROR: modpost: "twofish_dec_blk_cbc_3way" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-ERROR: modpost: "twofish_setkey" [arch/x86/crypto/twofish-avx-x86_64.ko] undefined!
-arch/loongarch/kernel/asm-offsets.c:265:6: warning: no previous prototype for 'output_pbe_defines' [-Wmissing-prototypes]
-arch/parisc/include/asm/pgtable.h:169:32: warning: "PMD_SHIFT" is not defined, evaluates to 0 [-Wundef]
-arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
-arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
-drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
-drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
-drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- alpha-buildonly-randconfig-r004-20221213
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- ia64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- loongarch-allyesconfig
-|   `-- arch-loongarch-kernel-asm-offsets.c:warning:no-previous-prototype-for-output_pbe_defines
-|-- m68k-allmodconfig
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- m68k-allyesconfig
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- mips-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- openrisc-randconfig-r005-20221213
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|-- parisc-randconfig-r033-20221214
-|   `-- arch-parisc-include-asm-pgtable.h:warning:PMD_SHIFT-is-not-defined-evaluates-to
-|-- powerpc-allmodconfig
-|   |-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
-|   |-- arch-powerpc-kernel-optprobes_head.o:warning:objtool:optprobe_template_end():can-t-find-starting-instruction
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- s390-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
-clang_recent_errors
-|-- i386-randconfig-a002
-|   `-- ERROR:pcpu_hot-arch-x86-kvm-kvm-intel.ko-undefined
-`-- i386-randconfig-a015
-    `-- ERROR:_find_next_bit-arch-x86-events-intel-intel-cstate.ko-undefined
-
-elapsed time: 740m
-
-configs tested: 67
-configs skipped: 2
-
-gcc tested configs:
-um                             i386_defconfig
-x86_64                            allnoconfig
-um                           x86_64_defconfig
-arc                                 defconfig
-powerpc                           allnoconfig
-alpha                               defconfig
-x86_64                          rhel-8.3-rust
-arm                                 defconfig
-i386                          randconfig-a001
-arc                  randconfig-r043-20221213
-s390                                defconfig
-arm                  randconfig-r046-20221213
-x86_64                        randconfig-a013
-x86_64                        randconfig-a004
-sh                               allmodconfig
-x86_64                           rhel-8.3-bpf
-x86_64                              defconfig
-x86_64                        randconfig-a002
-m68k                             allyesconfig
-ia64                             allmodconfig
-x86_64                          rhel-8.3-func
-i386                          randconfig-a003
-m68k                             allmodconfig
-x86_64                    rhel-8.3-kselftests
-i386                          randconfig-a014
-arc                              allyesconfig
-x86_64                        randconfig-a006
-m68k                       m5475evb_defconfig
-x86_64                           rhel-8.3-syz
-i386                                defconfig
-x86_64                         rhel-8.3-kunit
-x86_64                        randconfig-a015
-x86_64                               rhel-8.3
-x86_64                           rhel-8.3-kvm
-s390                             allmodconfig
-x86_64                        randconfig-a011
-i386                          randconfig-a012
-nios2                            alldefconfig
-i386                          randconfig-a016
-powerpc                          allmodconfig
-riscv             nommu_k210_sdcard_defconfig
-x86_64                           allyesconfig
-i386                          randconfig-c001
-arm64                            allyesconfig
-alpha                            allyesconfig
-s390                             allyesconfig
-i386                          randconfig-a005
-arm                              allyesconfig
-mips                             allyesconfig
-i386                             allyesconfig
-
-clang tested configs:
-hexagon              randconfig-r041-20221213
-hexagon              randconfig-r045-20221213
-riscv                randconfig-r042-20221213
-s390                 randconfig-r044-20221213
-i386                          randconfig-a013
-x86_64                        randconfig-a012
-x86_64                        randconfig-a001
-arm                           spitz_defconfig
-x86_64                        randconfig-a014
-x86_64                        randconfig-a003
-i386                          randconfig-a011
-x86_64                        randconfig-a005
-i386                          randconfig-a015
-i386                          randconfig-a002
-x86_64                        randconfig-a016
-i386                          randconfig-a006
-i386                          randconfig-a004
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
