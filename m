@@ -2,141 +2,107 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C55464FC8D
-	for <lists+linux-parisc@lfdr.de>; Sat, 17 Dec 2022 23:04:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AB5964FC8C
+	for <lists+linux-parisc@lfdr.de>; Sat, 17 Dec 2022 23:04:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbiLQWEr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 17 Dec 2022 17:04:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53666 "EHLO
+        id S229506AbiLQWEq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 17 Dec 2022 17:04:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229624AbiLQWEn (ORCPT
+        with ESMTP id S229611AbiLQWEn (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
         Sat, 17 Dec 2022 17:04:43 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B90AEE011
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB6B3E013
         for <linux-parisc@vger.kernel.org>; Sat, 17 Dec 2022 14:04:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1671314680; bh=xVbiTtplwHmDVtHBadwsyLXpl9f0VXl5L8XmpuJkw6U=;
+        t=1671314680; bh=pKwdDsCdec+OWgQwT0Z/y0rVzZh/45ZL17kX64ShjGw=;
         h=X-UI-Sender-Class:From:To:Subject:Date:In-Reply-To:References;
-        b=VglpqwP8lqfD/AmG1Kz0+0rdrrvqYbLAkPHrFO5Pv24ztD6mt8guuaFstlqZouTHx
-         k+2CjOu8OidYJNuTPGX2zSjgb7AtK5mtRyc5YVaay9MuS6ioFBjifKsA0viwKfsolq
-         iUkYLLkrQS950B74+qsLYmYnxG0nhhZApN8QTVaRj4s7IrnzTrALSNePSaYw1hI6W2
-         Kq3htq5rXYU4gQVmfUb0JTqDWSGsmwUUHRdg5RR+ruRlzdK7MRo79xDKIxRm2/n/YO
-         HQ+l4dQ4/cTv+fitAE3eDXZSOSpO+9xI6poq1BBxv0p3omvCg8M13TdxGqFR5YK//P
-         q8HGDcZANwmIQ==
+        b=q3ag3iH4lWvWrofU+8lHnFE+9y8wkl6Sn1wmSuMYpxARKW7t8cuK/8NG6FegVoN57
+         T/hUug/hvpdPhUmJmXC9M+Pyt5sWktJ1cEQtpVFIXPWdSKkbkHafav7CMIw3kNMyCH
+         JeX/97513BSg91bTlyXmvWVFFWCExPMYtMipUho9FIDJDGxlgtXWiOQa+YY+9dYtpO
+         1ynewn0znWCeiP5U4VIkDgK/67Oq5rBU6TF44fCIPFzNvvTvbFWGVqidVAZSxjorkb
+         MLNtpu4INWqR/vedIw5qf5h/FUiSYXsvAVSD5HuXDtx/nJAqsc9dJJiLeLvNW2E1Wk
+         5aLpaKoFRwLcQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([92.116.160.18]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MhU5R-1oSupH07MZ-00ee3e for
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N79yQ-1oqJ5Y0Rlk-017V3V for
  <linux-parisc@vger.kernel.org>; Sat, 17 Dec 2022 23:04:40 +0100
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
-Subject: [PATCH 2/6] parisc: Fix locking in pdc_iodc_print() firmware call
-Date:   Sat, 17 Dec 2022 23:04:24 +0100
-Message-Id: <20221217220428.383330-2-deller@gmx.de>
+Subject: [PATCH 3/6] parisc: Drop duplicate kgdb_pdc console
+Date:   Sat, 17 Dec 2022 23:04:25 +0100
+Message-Id: <20221217220428.383330-3-deller@gmx.de>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221217220428.383330-1-deller@gmx.de>
 References: <20221217220428.383330-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/09C9W7JQhoE8Uj9MrEpKzYI/zBE4cqo1F0qreqQr9qYKzeVJtk
- gUjPKx8tgZcpMi3DkFPzqR34s6LhGTtLcoyOArLzxEt2BOhZjgUAfXVGddouxKUCFMeYdDH
- h9vcIXwn2wV4p2afntNZh2dCYOPkbD0JjvXpkgdM0we1u3z5qLGHvtnjef3NobsrN1NhlEH
- fJeGgLdRhzwvVWJxJ86HA==
-UI-OutboundReport: notjunk:1;M01:P0:JYeKNydDv7w=;E5nbiLTJ2va3RF2wbfZ+NclldAQ
- EO0/3Q42+HZ3iVSuE2u4RmcRbVUJPCZY3HpjydYv263f9vziC/g85Hve2CqVprICBXk3KTBqO
- XoIPOF1SJVUTWG2mLtBfmswX91Tmx/Q+1G3oCDOVX+ergfRQzdUEvIyoGyCQpCQMMdySreMbB
- ByCUwUjhJ2L39PrHrsk6NeHDRcwpXdu5X2fNW8ehdWTro2kN+0a6SLDf1e9MTdByVk+/ub0RJ
- RFy1sd5AqnLCE8lXLqVTUh3esHuuRwpRRs/IK2uyOeI3zAefaQ6N++c2SoxDqDqbJh/3zP/fF
- yhSrNlF/0qcze/cA1+jKSEWkdngeCgR5YbPLPVyOgVcAof5oR0dSfM/CC7IrPO4bVi577Uu1T
- UOMGSrzdJoOKmrU86okHJYVBKcsf15Z4W234fjXV2w6zsmK0d1nohHuTUWWsmhLdMmHtY07VY
- Y7qloObgjupl6j7uOK7p79QK2Ir1s0T9m8Th5kxPSkOXMObAC56Q0fhr8S6cz3LhMv8mEbP/Y
- bC/g5DZFi3uZfKKDS143Kr9U7jpWnY0JTApSq1kcv5G3qcCQwN7Zt+YMvpEFyXgjFEAjypGoj
- gUszSF7uLA/+rGOdCmUORd8TNGViZ12CuPQb7lRacVRf09zR94wm90wr4MG3P47V84k/Cepph
- qCHkJVnCT+adlmyiSXGu8VMaVZK/RULOjDQqxV7k4WKgA/1Ejg7wQwwUusJ392KFW1Q4goqcd
- UcIx24QdTTVW9tv2vCKbR5EH3Rypb4UHyk0NIBhOc2iFLxjwz1fooL45KRWrVXoV3nzIj7UPe
- iaW2SUsvsaLdPlKe03rjPzLBaKfAOwjjScGrbAxqGYz3acfWwNrt4XHxyyAPWA71mQVyk63Qj
- rwq+Het4YkB1hWvWns44JCwSfh3buYJgyQfKKfzNiA2XTZwreKEjh8WUdgPKYEQqY/BBkxcfa
- sDmFtk/61eXMNlakX2+42CmtDgw=
+X-Provags-ID: V03:K1:EYNo8BBWUSpsyuSWDHcuqZJc/DlcdwY91qSfMiOf9rH4XlchDo8
+ XcDUN3ynjiRVFGHZ2KSb0mPoSrC/8dTD3IoIvSytk+9+YEYchqoJc1ni3vsDrsZCMGH4J3K
+ /Jx38MINIpbIETg0g8WAwSc3WIL/6zCj4K6gcEqgJGeY0jE78Wgz2J6rqnCVw57sCoQ+y7W
+ TBefct422UNmEQJTEPkPA==
+UI-OutboundReport: notjunk:1;M01:P0:ydUprJsfL0A=;GBUHJlIleiSrurA2JTFNJBDunQ1
+ 6/RLfF06VZZ3lLZtc2dJMzIKwhYp7cS7941eMwghz6yP3pJS8R4ps7QFZ6oyKH4ihQY8Jg5bR
+ kcXTwiGllG9Fv+fcUfI34rV6lEr94+gtCOXVE3HBYhNNXXnPqWohADilOaDKmylYLkXkFzVo2
+ jwQluhhfKxykFRboTMj69NW9qHOyTAR/iATFaAEzFIIieESR6BAxWqIqqg1GAE7wU+qIfy/6+
+ Hat1xNjJh11/bjwYQYpIE4Go9NSA/iBz5Xn6xl3bmtP68x59KUC/dVFxnNvOOOxtMtmYrZZf+
+ PPNvFspdHoa5HhRfDLmi85yqDvp14Vg34exYkW+D2TC68VU2tBUj+hwNTkMDfq0vYM5yyV2xI
+ +hfITTB7285K6r+S6F18afz+yo1NwcaRxjXLDvsy2etWGTwUZX5UEZTz6UGdPD8rzZLqRraCn
+ NedMN90ucjGEC6n5BSKWDh11JDJRQ/Ib92kyu1IGvErTABs7hZeQMdBJbcQRh7jZhqfFRkyf5
+ N9rnw0pBphS6CXAb58qzZDT0H/B5n22VHvlP8VWSaGPRvp5LnivQHYeR2dN5TEI9zr+bPaDXb
+ nX+OnCATyBzBdQWn1rhD9vBUznV/Y+Lc0SAd7g40alBxv2yjSe9XjWEdrx+o2xgxKoX2I6Pl6
+ E+OqW7vaJy1qH+D0vKqYVNxtTv82hUgy6s9tBS6J1vSxj84CH28lEEMRadZJuze2LVZm1jD9F
+ UMQEDes8lC5Rgg+C+ep4WJgAMRiQr5DkHG7JpTjuU+1Wyf4iNH42Cs/8ZUGNQbS3kM4IksDGV
+ J627GVKjtD8UJR2w4AGVgvpaDIwACWmWtaiz8QnCT1/zBCTAFNZyThxQYOGGgzvA1XU5Pdh0e
+ azYptbpE7uPh19m/IwBwcuSBO8ITOHu2RRX4heA2fxvvKjHFbDzJ2UpaB2cDVZZHh0a3hunc8
+ 28de6w==
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Utilize pdc_lock spinlock to protect parallel modifications of the
-iodc_dbuf[] buffer, check length to prevent buffer overflow of
-iodc_dbuf[], drop the iodc_retbuf[] buffer and fix some wrong
-indentings.
+The kgdb console is already implemented and registered in pdc_cons.c,
+so the duplicate code can be dropped.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # 6.0+
+Cc: <stable@vger.kernel.org> # 6.1+
 =2D--
- arch/parisc/kernel/firmware.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ arch/parisc/kernel/kgdb.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware.c
-index 6a7e315bcc2e..5bccf0025fbd 100644
-=2D-- a/arch/parisc/kernel/firmware.c
-+++ b/arch/parisc/kernel/firmware.c
-@@ -1288,9 +1288,8 @@ void pdc_io_reset_devices(void)
-
- #endif /* defined(BOOTLOADER) */
-
--/* locked by pdc_console_lock */
--static int __attribute__((aligned(8)))   iodc_retbuf[32];
--static char __attribute__((aligned(64))) iodc_dbuf[4096];
-+/* locked by pdc_lock */
-+static char iodc_dbuf[4096] __page_aligned_bss;
-
- /**
-  * pdc_iodc_print - Console print using IODC.
-@@ -1307,6 +1306,9 @@ int pdc_iodc_print(const unsigned char *str, unsigne=
-d count)
- 	unsigned int i;
- 	unsigned long flags;
-
-+	count =3D min_t(unsigned int, count, sizeof(iodc_dbuf));
-+
-+	spin_lock_irqsave(&pdc_lock, flags);
- 	for (i =3D 0; i < count;) {
- 		switch(str[i]) {
- 		case '\n':
-@@ -1322,12 +1324,11 @@ int pdc_iodc_print(const unsigned char *str, unsig=
-ned count)
+diff --git a/arch/parisc/kernel/kgdb.c b/arch/parisc/kernel/kgdb.c
+index ab7620f695be..b16fa9bac5f4 100644
+=2D-- a/arch/parisc/kernel/kgdb.c
++++ b/arch/parisc/kernel/kgdb.c
+@@ -208,23 +208,3 @@ int kgdb_arch_handle_exception(int trap, int signo,
  	}
-
- print:
--        spin_lock_irqsave(&pdc_lock, flags);
--        real32_call(PAGE0->mem_cons.iodc_io,
--                    (unsigned long)PAGE0->mem_cons.hpa, ENTRY_IO_COUT,
--                    PAGE0->mem_cons.spa, __pa(PAGE0->mem_cons.dp.layers),
--                    __pa(iodc_retbuf), 0, __pa(iodc_dbuf), i, 0);
--        spin_unlock_irqrestore(&pdc_lock, flags);
-+	real32_call(PAGE0->mem_cons.iodc_io,
-+		(unsigned long)PAGE0->mem_cons.hpa, ENTRY_IO_COUT,
-+		PAGE0->mem_cons.spa, __pa(PAGE0->mem_cons.dp.layers),
-+		__pa(pdc_result), 0, __pa(iodc_dbuf), i, 0);
-+	spin_unlock_irqrestore(&pdc_lock, flags);
-
- 	return i;
+ 	return -1;
  }
-@@ -1354,10 +1355,10 @@ int pdc_iodc_getc(void)
- 	real32_call(PAGE0->mem_kbd.iodc_io,
- 		    (unsigned long)PAGE0->mem_kbd.hpa, ENTRY_IO_CIN,
- 		    PAGE0->mem_kbd.spa, __pa(PAGE0->mem_kbd.dp.layers),
--		    __pa(iodc_retbuf), 0, __pa(iodc_dbuf), 1, 0);
-+		    __pa(pdc_result), 0, __pa(iodc_dbuf), 1, 0);
-
- 	ch =3D *iodc_dbuf;
--	status =3D *iodc_retbuf;
-+	status =3D *pdc_result;
- 	spin_unlock_irqrestore(&pdc_lock, flags);
-
- 	if (status =3D=3D 0)
+-
+-/* KGDB console driver which uses PDC to read chars from keyboard */
+-
+-static void kgdb_pdc_write_char(u8 chr)
+-{
+-	/* no need to print char. kgdb will do it. */
+-}
+-
+-static struct kgdb_io kgdb_pdc_io_ops =3D {
+-	.name		=3D "kgdb_pdc",
+-	.read_char	=3D pdc_iodc_getc,
+-	.write_char	=3D kgdb_pdc_write_char,
+-};
+-
+-static int __init kgdb_pdc_init(void)
+-{
+-	kgdb_register_io_module(&kgdb_pdc_io_ops);
+-	return 0;
+-}
+-early_initcall(kgdb_pdc_init);
 =2D-
 2.38.1
 
