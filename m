@@ -2,100 +2,196 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 163A96527A7
-	for <lists+linux-parisc@lfdr.de>; Tue, 20 Dec 2022 21:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E17C3653F3D
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Dec 2022 12:47:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230130AbiLTUOt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 20 Dec 2022 15:14:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50588 "EHLO
+        id S235532AbiLVLr3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 22 Dec 2022 06:47:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233899AbiLTUOS (ORCPT
+        with ESMTP id S229548AbiLVLr0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 20 Dec 2022 15:14:18 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EB71DA42
-        for <linux-parisc@vger.kernel.org>; Tue, 20 Dec 2022 12:14:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1671567255; bh=fVmAih7wVbxi+e8XqfAFT4qbkjufdfXcRr6okO1sqvs=;
-        h=X-UI-Sender-Class:Date:Subject:References:To:From:In-Reply-To;
-        b=WMcJ6y+QDqLnAa5HGMBGxrNYbX29KW6UdeejXMPfPwdXQnFTTftSJUhgzQRQhJiPm
-         ah+e91AQtsPUgbmJHAl3xjUKlhF4b8k2ig2RLoWc64WS/Ibvh5OFa/HdocnkJGbmg4
-         IbHzKyY57qfT4TWbPpFiq2lTQ48xezv4ZIlo4Wv76SJtMaigy8mzrqxLqVNqyFS4Yp
-         nmOvL4q/DqgtUKtJ5tF/L1maftP8uEzhCVwYRtZ9q2KwxEA/d5kF255gjxLCvNqlgS
-         O0sOWXDZXToLuuU11UkTzAgkI5QhRIqSL5vCr6upwqEuo9VTGm7RN49D1pDOipcW6G
-         OyxgGnJbtMP4A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.174.3]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MJE6F-1pRK5V3hyl-00KfOR for
- <linux-parisc@vger.kernel.org>; Tue, 20 Dec 2022 21:14:14 +0100
-Message-ID: <7563f100-63bf-b184-0734-7df20f900828@gmx.de>
-Date:   Tue, 20 Dec 2022 21:14:14 +0100
+        Thu, 22 Dec 2022 06:47:26 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBEB318E1D;
+        Thu, 22 Dec 2022 03:47:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671709645; x=1703245645;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jJG0WtbR+rCKPAOFXgAECJpdIQA2qxIhAt/9hS9GHCs=;
+  b=RrpQORyS/I890Lp0DquOSsvUNL1GKaH1JDdSTSfNsl2C1m725bEPTtYd
+   2gbPUxW6rcwn6XEFWvFWW5Vljmnv1bqmkMYjA4O1Eazo+91b0tyAReZoq
+   Jzo9fDbWXUBuHRqYWWEneTPW4GW4TJMhW2VBV3vKMnfdYzztJJhFGaebP
+   UtUHILqYAS2Hk6ZAaJRPkBPIP4yZZSmNg5AkBl8Kq7mP68UO8EySb/Iqo
+   Muq2mYslgd589BVFyOqvIZZvBwi2BYR9zQZt0q9fDUAzlVtw/MY9lAf+u
+   NeVGoPH4Y/CKHh41k1phIEUbHFYielmoedk8nF9P9Tc2KOONHmYWfyAya
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="318804416"
+X-IronPort-AV: E=Sophos;i="5.96,265,1665471600"; 
+   d="scan'208";a="318804416"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:47:24 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="629504298"
+X-IronPort-AV: E=Sophos;i="5.96,265,1665471600"; 
+   d="scan'208";a="629504298"
+Received: from lab-ah.igk.intel.com ([10.91.215.196])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:47:18 -0800
+From:   Andrzej Hajda <andrzej.hajda@intel.com>
+To:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 00/19] Introduce __xchg, non-atomic xchg
+Date:   Thu, 22 Dec 2022 12:46:16 +0100
+Message-Id: <20221222114635.1251934-1-andrzej.hajda@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Fwd: [PATCH] Reduce number of concurrent KGDB_MAX_BREAKPOINTS
-References: <Y6DhewN27vMnfgzT@p100>
-Content-Language: en-US
-To:     linux-parisc <linux-parisc@vger.kernel.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <Y6DhewN27vMnfgzT@p100>
-X-Forwarded-Message-Id: <Y6DhewN27vMnfgzT@p100>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:7S5NNLXUFwtH8CY+GK3lTB0ms4YbBQxrB329WeaDufaqNxZb/K+
- GY4ITq+Tst27IrxFQ9VSjWfQoxaMYOpP/XcZ9fTa8j1aJnBoN0eo8MoVy4jW9tDfVeHxP1T
- FkMHUWFO45hN5zpC0a8GTbMVp5S8kVyhR1JX/n1DVVAJfJ//gwVAn5xeq2EK65ojIG2RFSU
- yc0PxHZ011tkCnrjsZ6+Q==
-UI-OutboundReport: notjunk:1;M01:P0:gXxcCETHwGY=;f1EINObbE50IByNi86u9MzxvsM5
- ajVMQxv6GlaRU4uxAsDZMoZx5rRcE4utdavU7wfMAhr5MC0q1GutilhiozVR/mJLqck4JrbKG
- YNHA6YlMwyej0SMgMncXGODzsGSB3E3oDk7wJpgv0oKJ4FDcU8RfLpbfKhqoVXHSKPQPgg4Lj
- axvC73uPs6Gkp0pg1ucSX86WFoQqlJN54K7LulG9RvBcYe4c6jvs75BUL0YQEcElYg1Pxh0m5
- 0eEWSBO9ExSKyYrJ/4zkiXZb5Kbcb9VDPkJGG52FF0ovJ36CircHMGmwVAFbbN1uc76dT4ZiM
- faC31WUHDKgbdC03TMOrQiA2eStmqyGbyx4fL0+K9AJsPbhIEFnaQ4OGBIzbub8AkiUb0jLf6
- PnNslhKBGAiqQtzsjhrpwuIQ1eFsweM2VsmOKATXWpvaD5/CeLZRXoGDnN1z5px/8b+dOV/63
- VyUla7D/dzbQ53grypasfWEip5DMDfszOPqpBrVpZ0NxX3KVhIP3tsAziyEbNHd7Wm0Z3j8Th
- bb64xRmu8k9UkcBGIGLz5WKvruug7GCiwh9Jjm5/gkL8M9hFKOYtwP0yjzWIGyFW9bTPoQCod
- 0rDChp49+awucRM+ojj8ZSklf3NKDIaANpoqVLLTkbXVKjzP49FoutVTDCjCl8J0Cnj5BnioK
- lLCgo9c8c5jb3E0q4J1Gy2pawL8zfZq+nKdYlaqOogfnH1LCSSOjGLBCqlHVAed4RwcsEzq7b
- dzHeBujwqGHIbDp0O4QMDctCP8qP4z1xV587OqG9U4V5ft/sx00CI3P2Lta1bv22e4UiejkRy
- egUSRmW46CpOX09zEs1cb+naMfMBlCKw4WnzeYsu1GeU1wBiOXWNJdQN+fqmxvyie1jXlgVZa
- KAjHb1cBofBlNejytIR50ODrVbAjH6xsfOE2C5Tafa6II1jI4gHh/5vVoKvUdkSIJI2IRZ7cA
- cXz87eL/WAVJbTqfd+vAthdq/E4=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-------- Forwarded Message --------
-Subject: [PATCH] Reduce number of concurrent KGDB_MAX_BREAKPOINTS
-Date: Mon, 19 Dec 2022 23:11:07 +0100
-From: Helge Deller <deller@gmx.de>
-To: Jason Wessel <jason.wessel@windriver.com>, Daniel Thompson <daniel.thompson@linaro.org>, Douglas Anderson <dianders@chromium.org>, kgdb-bugreport@lists.sourceforge.net
+Hi all,
 
-On my 32-bit machine, with BREAK_INSTR_SIZE=4 the kgdb_break[] structure
-allocates 16000 bytes of static kernel memory, which is - by default -
-to be able to handle up to 1000 concurrent kgdb breakpoints.  I might be
-wrong, but I doubt that in real life someone really needs that many
-breakpoints, so I suggest to reduce the number of possible kgdb
-breakpoints and thus reduce the memory footprint of kgdb_break[].
+I hope there will be place for such tiny helper in kernel.
+Quick cocci analyze shows there is probably few thousands places
+where it could be useful.
+I am not sure who is good person to review/ack such patches,
+so I've used my intuition to construct to/cc lists, sorry for mistakes.
+This is the 2nd approach of the same idea, with comments addressed[0].
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+The helper is tiny and there are advices we can leave without it, so
+I want to present few arguments why it would be good to have it:
 
-diff --git a/include/linux/kgdb.h b/include/linux/kgdb.h
-index 258cdde8d356..fab81c4f007e 100644
---- a/include/linux/kgdb.h
-+++ b/include/linux/kgdb.h
-@@ -95,7 +95,7 @@ extern char *dbg_get_reg(int regno, void *mem, struct pt_regs *regs);
-  extern int dbg_set_reg(int regno, void *mem, struct pt_regs *regs);
-  #endif
-  #ifndef KGDB_MAX_BREAKPOINTS
--# define KGDB_MAX_BREAKPOINTS	1000
-+# define KGDB_MAX_BREAKPOINTS	40
-  #endif
+1. Code readability/simplification/number of lines:
 
-  #define KGDB_HW_BREAKPOINT	1
+Real example from drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c:
+-       previous_min_rate = evport->qos.min_rate;
+-       evport->qos.min_rate = min_rate;
++       previous_min_rate = __xchg(evport->qos.min_rate, min_rate);
+
+For sure the code is more compact, and IMHO more readable.
+
+2. Presence of similar helpers in other somehow related languages/libs:
+
+a) Rust[1]: 'replace' from std::mem module, there is also 'take'
+    helper (__xchg(&x, 0)), which is the same as private helper in
+    i915 - fetch_and_zero, see latest patch.
+b) C++ [2]: 'exchange' from utility header.
+
+If the idea is OK there are still 2 qestions to answer:
+
+1. Name of the helper, __xchg follows kernel conventions,
+    but for me Rust names are also OK.
+2. Where to put the helper:
+a) as in this patchset include/linux/non-atomic/xchg.h,
+    proposed by Andy Shevchenko,
+b) include/linux/utils.h ? any better name? Some kind
+    of container for simple helpers.
+
+Structure of the patchset:
+17 patches releasing __xchg name from arch files
+1 patch adding __xchg
+1 patch adding users of __xchg
+
+Arnd thanks for convienient set of cross compilers, it was very helpful.
+
+So many words for so small helper :)
+
+[0]: https://lore.kernel.org/lkml/Y5OFSvaYbv4XCxhE@smile.fi.intel.com/T/
+[1]: https://doc.rust-lang.org/std/mem/index.html
+[2]: https://en.cppreference.com/w/cpp/header/utility
+
+Regards
+Andrzej
+
+Andrzej Hajda (19):
+  arch/alpha: rename internal name __xchg to __arch_xchg
+  arch/arc: rename internal name __xchg to __arch_xchg
+  arch/arm: rename internal name __xchg to __arch_xchg
+  arch/arm64: rename internal name __xchg to __arch_xchg
+  arch/hexagon: rename internal name __xchg to __arch_xchg
+  arch/ia64: rename internal name __xchg to __arch_xchg
+  arch/loongarch: rename internal name __xchg to __arch_xchg
+  arch/m68k: rename internal name __xchg to __arch_xchg
+  arch/mips: rename internal name __xchg to __arch_xchg
+  arch/openrisc: rename internal name __xchg to __arch_xchg
+  arch/parisc: rename internal name __xchg to __arch_xchg
+  arch/powerpc: correct logged function names in xchg helpers
+  arch/riscv: rename internal name __xchg to __arch_xchg
+  arch/s390: rename internal name __xchg to __arch_xchg
+  arch/sh: rename internal name __xchg to __arch_xchg
+  arch/sparc: rename internal name __xchg to __arch_xchg
+  arch/xtensa: rename internal name __xchg to __arch_xchg
+  linux/include: add non-atomic version of xchg
+  drm/i915/gt: use __xchg instead of internal helper
+
+ arch/alpha/include/asm/cmpxchg.h              |  6 +++---
+ arch/arc/include/asm/cmpxchg.h                |  4 ++--
+ arch/arm/include/asm/cmpxchg.h                |  4 ++--
+ arch/arm64/include/asm/cmpxchg.h              |  4 ++--
+ arch/hexagon/include/asm/cmpxchg.h            |  6 +++---
+ arch/ia64/include/asm/cmpxchg.h               |  2 +-
+ arch/ia64/include/uapi/asm/cmpxchg.h          |  4 ++--
+ arch/loongarch/include/asm/cmpxchg.h          |  4 ++--
+ arch/m68k/include/asm/cmpxchg.h               |  6 +++---
+ arch/mips/include/asm/cmpxchg.h               |  4 ++--
+ arch/openrisc/include/asm/cmpxchg.h           |  4 ++--
+ arch/parisc/include/asm/cmpxchg.h             |  4 ++--
+ arch/powerpc/include/asm/cmpxchg.h            |  4 ++--
+ arch/riscv/include/asm/atomic.h               |  2 +-
+ arch/riscv/include/asm/cmpxchg.h              |  4 ++--
+ arch/s390/include/asm/cmpxchg.h               |  4 ++--
+ arch/sh/include/asm/cmpxchg.h                 |  4 ++--
+ arch/sparc/include/asm/cmpxchg_32.h           |  4 ++--
+ arch/sparc/include/asm/cmpxchg_64.h           |  4 ++--
+ arch/xtensa/include/asm/cmpxchg.h             |  4 ++--
+ drivers/gpu/drm/i915/gt/intel_engine_cs.c     |  2 +-
+ .../gpu/drm/i915/gt/intel_engine_heartbeat.c  |  4 ++--
+ .../drm/i915/gt/intel_execlists_submission.c  |  4 ++--
+ drivers/gpu/drm/i915/gt/intel_ggtt.c          |  4 ++--
+ drivers/gpu/drm/i915/gt/intel_gsc.c           |  2 +-
+ drivers/gpu/drm/i915/gt/intel_gt.c            |  4 ++--
+ drivers/gpu/drm/i915/gt/intel_gt_pm.c         |  2 +-
+ drivers/gpu/drm/i915/gt/intel_lrc.c           |  6 +++---
+ drivers/gpu/drm/i915/gt/intel_migrate.c       |  2 +-
+ drivers/gpu/drm/i915/gt/intel_rc6.c           |  2 +-
+ drivers/gpu/drm/i915/gt/intel_rps.c           |  2 +-
+ drivers/gpu/drm/i915/gt/selftest_context.c    |  2 +-
+ .../drm/i915/gt/selftest_ring_submission.c    |  2 +-
+ drivers/gpu/drm/i915/gt/selftest_timeline.c   |  2 +-
+ drivers/gpu/drm/i915/gt/uc/intel_gsc_uc.c     |  2 +-
+ drivers/gpu/drm/i915/gt/uc/intel_uc.c         |  2 +-
+ drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c      |  2 +-
+ drivers/gpu/drm/i915/i915_utils.h             |  1 +
+ include/linux/non-atomic/xchg.h               | 19 +++++++++++++++++++
+ 39 files changed, 84 insertions(+), 64 deletions(-)
+ create mode 100644 include/linux/non-atomic/xchg.h
+
+-- 
+2.34.1
+
