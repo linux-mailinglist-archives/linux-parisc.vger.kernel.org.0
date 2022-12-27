@@ -2,106 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A5D6561EF
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Dec 2022 11:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64ACB6567FE
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Dec 2022 08:54:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbiLZKkK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 26 Dec 2022 05:40:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48182 "EHLO
+        id S230201AbiL0HyI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 27 Dec 2022 02:54:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbiLZKkK (ORCPT
+        with ESMTP id S230292AbiL0HyE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 26 Dec 2022 05:40:10 -0500
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6EC10DF;
-        Mon, 26 Dec 2022 02:40:07 -0800 (PST)
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4NgZ6s5zfdz4xVnH;
-        Mon, 26 Dec 2022 18:40:05 +0800 (CST)
-Received: from szxlzmapp01.zte.com.cn ([10.5.231.85])
-        by mse-fl1.zte.com.cn with SMTP id 2BQAe1xc048557;
-        Mon, 26 Dec 2022 18:40:01 +0800 (+08)
-        (envelope-from yang.yang29@zte.com.cn)
-Received: from mapi (szxlzmapp01[null])
-        by mapi (Zmail) with MAPI id mid14;
-        Mon, 26 Dec 2022 18:40:04 +0800 (CST)
-Date:   Mon, 26 Dec 2022 18:40:04 +0800 (CST)
-X-Zmail-TransId: 2b0363a97a04fffffffff67e1b98
-X-Mailer: Zmail v1.0
-Message-ID: <202212261840048448622@zte.com.cn>
-Mime-Version: 1.0
-From:   <yang.yang29@zte.com.cn>
-To:     <james.bottomley@hansenpartnership.com>
-Cc:     <deller@gmx.de>, <linux-parisc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <xu.panda@zte.com.cn>,
-        <yang.yang29@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHQgdjJdIHBhcmlzYzogdXNlIHN0cnNjcHkoKSB0byBpbnN0ZWFkIG9mIHN0cm5jcHkoKQ==?=
-Content-Type: text/plain;
-        charset="UTF-8"
-X-MAIL: mse-fl1.zte.com.cn 2BQAe1xc048557
-X-Fangmail-Gw-Spam-Type: 0
-X-FangMail-Miltered: at cgslv5.04-192.168.250.138.novalocal with ID 63A97A05.000 by FangMail milter!
-X-FangMail-Envelope: 1672051205/4NgZ6s5zfdz4xVnH/63A97A05.000/10.5.228.132/[10.5.228.132]/mse-fl1.zte.com.cn/<yang.yang29@zte.com.cn>
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 63A97A05.000/4NgZ6s5zfdz4xVnH
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+        Tue, 27 Dec 2022 02:54:04 -0500
+X-Greylist: delayed 401 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 26 Dec 2022 23:54:01 PST
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 875AA6567
+        for <linux-parisc@vger.kernel.org>; Mon, 26 Dec 2022 23:54:01 -0800 (PST)
+Received: (qmail 7681 invoked from network); 27 Dec 2022 07:47:15 -0000
+Received: from dyn.ipv6.net-htp.de ([2a02:560:5628:3900:ecef:1c71:d0b:2fa4]:49250 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <james.bottomley@hansenpartnership.com>; Tue, 27 Dec 2022 08:47:15 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     james.bottomley@hansenpartnership.com, yang.yang29@zte.com.cn
+Cc:     deller@gmx.de, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, xu.panda@zte.com.cn,
+        yang.yang29@zte.com.cn
+Subject: Re: [PATCH linux-next v2] parisc: use strscpy() to instead of strncpy()
+Date:   Tue, 27 Dec 2022 08:47:05 +0100
+Message-ID: <2298026.kkTNVCUfUN@daneel.sf-tec.de>
+In-Reply-To: <202212261840048448622@zte.com.cn>
+References: <202212261840048448622@zte.com.cn>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart2316597.IaFIOm8ydW"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Xu Panda <xu.panda@zte.com.cn>
+--nextPart2316597.IaFIOm8ydW
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Rolf Eike Beer <eike-kernel@sf-tec.de>
+To: james.bottomley@hansenpartnership.com, yang.yang29@zte.com.cn
+Date: Tue, 27 Dec 2022 08:47:05 +0100
+Message-ID: <2298026.kkTNVCUfUN@daneel.sf-tec.de>
+In-Reply-To: <202212261840048448622@zte.com.cn>
+References: <202212261840048448622@zte.com.cn>
 
-The implementation of strscpy() is more robust and safer.
-That's now the recommended way to copy NUL-terminated strings.
+Am Montag, 26. Dezember 2022, 11:40:04 CET schrieb yang.yang29@zte.com.cn:
+> From: Xu Panda <xu.panda@zte.com.cn>
+> 
+> The implementation of strscpy() is more robust and safer.
+> That's now the recommended way to copy NUL-terminated strings.
+> 
+> Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
+> Signed-off-by: Yang Yang <yang.yang29@zte.com>
+> ---
+> change for v2
+>  - sizeof(in) is better and simplified, thanks for Helge Deller.
+> ---
+>  drivers/parisc/pdc_stable.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
+> index d6af5726ddf3..d3075445260b 100644
+> --- a/drivers/parisc/pdc_stable.c
+> +++ b/drivers/parisc/pdc_stable.c
+> @@ -274,8 +274,7 @@ pdcspath_hwpath_write(struct pdcspath_entry *entry,
+> const char *buf, size_t coun
+> 
+>  	/* We'll use a local copy of buf */
+>  	count = min_t(size_t, count, sizeof(in)-1);
+> -	strncpy(in, buf, count);
+> -	in[count] = '\0';
+> +	strscpy(in, buf, sizeof(in));
 
-Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
-Signed-off-by: Yang Yang <yang.yang29@zte.com>
----
-change for v2
- - sizeof(in) is better and simplified, thanks for Helge Deller.
----
- drivers/parisc/pdc_stable.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+What is "count" now needed for? Looks like a write only variable at least in 
+these hunks.
 
-diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
-index d6af5726ddf3..d3075445260b 100644
---- a/drivers/parisc/pdc_stable.c
-+++ b/drivers/parisc/pdc_stable.c
-@@ -274,8 +274,7 @@ pdcspath_hwpath_write(struct pdcspath_entry *entry, const char *buf, size_t coun
+Eike
+--nextPart2316597.IaFIOm8ydW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
- 	/* We'll use a local copy of buf */
- 	count = min_t(size_t, count, sizeof(in)-1);
--	strncpy(in, buf, count);
--	in[count] = '\0';
-+	strscpy(in, buf, sizeof(in));
- 	
- 	/* Let's clean up the target. 0xff is a blank pattern */
- 	memset(&hwpath, 0xff, sizeof(hwpath));
-@@ -388,8 +387,7 @@ pdcspath_layer_write(struct pdcspath_entry *entry, const char *buf, size_t count
+-----BEGIN PGP SIGNATURE-----
 
- 	/* We'll use a local copy of buf */
- 	count = min_t(size_t, count, sizeof(in)-1);
--	strncpy(in, buf, count);
--	in[count] = '\0';
-+	strscpy(in, buf, sizeof(in));
- 	
- 	/* Let's clean up the target. 0 is a blank pattern */
- 	memset(&layers, 0, sizeof(layers));
-@@ -756,8 +754,7 @@ static ssize_t pdcs_auto_write(struct kobject *kobj,
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCY6qi+QAKCRBcpIk+abn8
+TreFAJsGRGXqTM4D8ib9NJdGgqNbpJTmUgCeNNVn9q3szniJshUbN+h2L4zJ5sI=
+=oo7x
+-----END PGP SIGNATURE-----
 
- 	/* We'll use a local copy of buf */
- 	count = min_t(size_t, count, sizeof(in)-1);
--	strncpy(in, buf, count);
--	in[count] = '\0';
-+	strscpy(in, buf, sizeof(in));
+--nextPart2316597.IaFIOm8ydW--
 
- 	/* Current flags are stored in primary boot path entry */
- 	pathentry = &pdcspath_entry_primary;
--- 
-2.15.2
+
+
