@@ -2,69 +2,69 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95761656FF2
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Dec 2022 22:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8656D65700A
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Dec 2022 22:38:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229770AbiL0VbU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 27 Dec 2022 16:31:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54854 "EHLO
+        id S231966AbiL0ViU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 27 Dec 2022 16:38:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229742AbiL0VbU (ORCPT
+        with ESMTP id S229731AbiL0ViT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 27 Dec 2022 16:31:20 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B77325C9;
-        Tue, 27 Dec 2022 13:31:18 -0800 (PST)
+        Tue, 27 Dec 2022 16:38:19 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32D552AEE;
+        Tue, 27 Dec 2022 13:38:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1672176637; bh=56htlLHUcU+qWeQhLbsL8ptRSB512sH1ur2RjROHFv0=;
+        t=1672177089; bh=keIeliYcd8sxEhx8+27XdCyPKZIok/NRhLRBs3q1Ogg=;
         h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=qB5clFHjXX3d/b6Lzf83twSzJQdvGjWD2S7wFGPaBic5eUBqTl5R/xovKgNaMKain
-         RFpPO2PH6GzAewmyOJ2AU6JfJ81NLrtsuukOiVHMPzZx367lYgpYTvJU72yLjB3xk9
-         6Ci4gd9EyieOj7q5Wu8VSponmwu9zBoXaO/98f2g9TTAbCQeKh5kxz+2VGX0fHj/R7
-         TcBCMgXmC+VXx9jyK3XuwqNcS7cntKyc3eUrbuLsVrmKJJGXl4H9xa0T/Qh9VR+M36
-         BnPvYR3eh+vk5HDMKzGQumlN4iFeCsbwl+7v+t2Cy8kbyFFj2vMQ6eyYOKGbPmfpM0
-         5Jtfa0Za17nxA==
+        b=E18PPFYQcFPYL+wdtQS24x0woc5EUIXe8IU7TGlLLYk20cXE+5IMRGNXa7EvJ8839
+         bp4GqnOI/5mx/9C66YqeHJTnrn17nW77eWm5g9eDUXHf+Fls/PMt/THa/QMTh27Z/a
+         y7tEMrww9vJGJR/5ILPrQwbQouglP9ip5rzRGQKIbml0lQaM8VRz1HA6JQdcpFU4sP
+         /6TyQHTnplhpUdsO9plyVK5dI8TUrGL6EKHuH6b6LW4Lqv8XCIGDQ5aMYZ4EmltBOd
+         WZND8kHmeoFAaz6oCzfL2B20aUQDJjHJlRDOl9d2dvdd43at7siyzaFWrQPumnW/Vi
+         10m8ocvYVSEwQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.190.3]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mq2jC-1oWFfa3l4M-00nAgK; Tue, 27
- Dec 2022 22:30:36 +0100
-Message-ID: <1d0def42-11b7-0039-368d-d355f348767c@gmx.de>
-Date:   Tue, 27 Dec 2022 22:30:35 +0100
+Received: from [192.168.20.60] ([92.116.190.3]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N6bjy-1omh0I3RZm-017z96; Tue, 27
+ Dec 2022 22:38:08 +0100
+Message-ID: <279ea596-6a20-0bb8-39c3-67b45d7425a6@gmx.de>
+Date:   Tue, 27 Dec 2022 22:38:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.0
-Subject: Re: [PATCH linux-next v2] parisc: use strscpy() to instead of
- strncpy()
+Subject: Re: [PATCH linux-next] parisc: use strscpy() to instead of strncpy()
 Content-Language: en-US
-To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
-        james.bottomley@hansenpartnership.com, yang.yang29@zte.com.cn
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        yang.yang29@zte.com.cn
 Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
         xu.panda@zte.com.cn
-References: <202212261840048448622@zte.com.cn>
- <2298026.kkTNVCUfUN@daneel.sf-tec.de>
+References: <202212231040562072342@zte.com.cn>
+ <0fb8a86a-ca92-8d5f-99da-6815b2d5ec3e@gmx.de>
+ <eaad272203baa65ad65ac2206e5197595c88508e.camel@HansenPartnership.com>
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <2298026.kkTNVCUfUN@daneel.sf-tec.de>
+In-Reply-To: <eaad272203baa65ad65ac2206e5197595c88508e.camel@HansenPartnership.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fzFzyXibYGlFunT25rS5QA0JPUUmHCmc6BTRssFDg4sbaWZWOxU
- 95p1lYwU9Lt3Yoi1vCqmJ3uuBc6xgle8dAV1u2nbHRHyAMI05/cTJSXZsdElLnIq/JlOoGO
- gw6q7z95yWa2oydYj/FNoG+WqdRFXW0uBkXrNcRlyeuutLjHsfYaziIz1esV0On5BPhWcPw
- 2kEs+XQd3rSrC5FyuzNbA==
-UI-OutboundReport: notjunk:1;M01:P0:Yrmu8I+tIOQ=;pKAqIZhx4/65Yn3POPk/3XM0NrY
- XwFYnErerMkCScZNllGiVmYIQcT1f+u8bNZtWDFtnyi9Eel7lVKZL4PWmEEhEYe91zxTN/DNk
- fF6YHESa6WXS/T4iMJXjDgnTtWXgsNiiQ/AMJ7A+ZihHcEQPEtFxYtrVVTagH+hdCuQZypeNo
- qZc9t90B4A+dLkCcOQPg3AtURSuloD80yD7rO6oCkrGYVXbmt6QeBamw0wPcRBmbF20U8Bm2p
- 4GbZwhyQgtnIKnj8Aat2G5dVzzdWIL+6yZaruqs/h/JNpdg18Hvai+r0vpjcNFuR1fMPJlO60
- U4ubm8YdMnlWvQuqwYxs/XkK6eAiqTAmQjbgEATnIjDdWjiu97kjg+0IxusjOBQF7Hg67fNG4
- 20621mfHpfaHBaTwdkKeh9PNO3JvSEKYMCqGVvIdFH5/6mIQ5toGfQRpU00OFQ66qsdQFQG0L
- yXMyUay1R3pVI3sSM16hCaSwZfKEm8SSxoe3sSeXDYWMj22n/ViyJAWzThrn2LAHnTETypli5
- +HJOXWbqKNpuyLkunn5H+PtHxojX0miItTLHnWqkVI100k9cXLlzhhcVmeFAl1nVjeSCSu1DD
- wRDijQSK4UZ7vx0k96KmE51epKUgHlv+S3P6GVSWDWfZN3kw1G85qpqaI8ubnMLeBMH73SlB9
- KMZwflq3QHRHaTejS0D9yQrfB7m6nAnb7A1ICLe/3vcgB/Cs5zCyMx+CgEztxexuMUx7PcUGt
- RYM+Ldi1yG0up09JDFBI8Q83n3oCl4pMcnv8LMcFW48aW25nCKwHchN0BTbAI8hJNyPsNrgy3
- vc309JZoC34/ihXfcSSRrxKmrLI9MVd6mnkcvvdDiqkI8GhkWNK5Wib2hXflS4kzNCIV3o565
- M19UuEle6TSoqckkfzKfIHomGxHbtjBH3ATURchk0CCg2WJ/7v1cEqrvpay1emH1BAGfcj4U9
- uKEEH/ZBdTd23FzCSkZaMd79pg8=
+X-Provags-ID: V03:K1:+NvjDV/A5UhPQPx3tiLXcr1ycyuSq3KhZvBJrFWkiLVBQfUIYBQ
+ RvO9FK/53FpYskPVI9PLS+CoobgKUB2dg1aI+mAAFsbQKSx1RaweENZ/vLvm296kmexabQP
+ OP5jzxZnxZdy48ILp56o3BGOzh6Am77vr5fAFQ9MH3V/Q2uGj4AkTN3h5Cxe3+WMVbjPTAk
+ aMVNQzFFWBkstmE7tWSGA==
+UI-OutboundReport: notjunk:1;M01:P0:0C+5ALWlcIg=;KivZwQnYs/9b8eKt/1r4YK3SD/c
+ mLI8L0bkXOcoahlENooMjy0NcFWzKOqE83KoyolhZ9CTrkMx7MsmcDmySObiGdNWjFwQ3f/Ym
+ /qpdrgmaldeHve+uI2HO3QttVjcRBkaoENIHxsC0ep14MSzo104djof2oVFgeCsRE9OZgQN5G
+ junkG5oWmWSrwOEca2eqWx6u3orXZs5qDy3I18FvQccaKPDb8M2I6ZWuSZhb/zF1HOjTYUJcj
+ wASlIIAbo4QsIt9Vrq1o/uYO+4giocebjfQXa7BmdayDuB8Rtwal5ABBaNCSgucgPOP8tHsLJ
+ gRcVZOR65PAHWPJflwB85yj2b02m0f6hcJiKnjDeqMMVaXk6tZLvhdAhjWQQhIrlIJaD9CQZo
+ n0bxmIL6Dz/R4g2gXOTlJARMB78BXcUvhCNB8fWzxSkjifOON/phEzaaji7eszAZ5g83zAgmB
+ q2Bq9aLCrhMInXLj1Wjw4j9QWAPDBWKUt2f510NW2Ro8Otu5O2GDzl5twQAUzmtRhvFXnQw5j
+ 8dOdDW7AX3DpIEbn1g9D6WGEHF15zUCmzt48NVOQbirgK5KGmiP2xW4e2hoNutrGIa5VFABEq
+ Kh9gsML08nAHvN4bTHeMYIFXkrXn5/4o7awp0HR1zP+w23gnbXeuurlfBfbe88+tWDbrLh7Uo
+ xadbkTXmsTH9sfdv4bRMQyjXCYh/6jKvwZ1pWfWxE+sVM57jG3U665RIqxZaXBLErIdpvoG0o
+ cXw2pUVpqRfkKmKfp0zX0vWSHDHSqyBfbpJ8OLN0xU/Od3DTveoS9JhjwAAR5ty3cm3P1pY6S
+ rlI6X40w1JNAgAqQP7o416qREMkNI40ZMPiRB0y6E68CmhzYyXl/t/Qggi0IeYlciiwDFG/vP
+ yIzTTV53iIl41xoC3eKzpXQYkb2gj4sW5BfQGMfDzcRwCy6HASGLixp2ocX/ps7B9sMxiJzOm
+ emNTdYxE4y7M/ZPMRjOf/4Qqfkg=
 X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
@@ -75,40 +75,49 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 12/27/22 08:47, Rolf Eike Beer wrote:
-> Am Montag, 26. Dezember 2022, 11:40:04 CET schrieb yang.yang29@zte.com.c=
-n:
->> From: Xu Panda <xu.panda@zte.com.cn>
->>
->> The implementation of strscpy() is more robust and safer.
->> That's now the recommended way to copy NUL-terminated strings.
->>
->> Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
->> Signed-off-by: Yang Yang <yang.yang29@zte.com>
->> ---
->> change for v2
->>   - sizeof(in) is better and simplified, thanks for Helge Deller.
->> ---
->>   drivers/parisc/pdc_stable.c | 9 +++------
->>   1 file changed, 3 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
->> index d6af5726ddf3..d3075445260b 100644
->> --- a/drivers/parisc/pdc_stable.c
->> +++ b/drivers/parisc/pdc_stable.c
->> @@ -274,8 +274,7 @@ pdcspath_hwpath_write(struct pdcspath_entry *entry,
->> const char *buf, size_t coun
->>
->>   	/* We'll use a local copy of buf */
->>   	count =3D min_t(size_t, count, sizeof(in)-1);
->> -	strncpy(in, buf, count);
->> -	in[count] =3D '\0';
->> +	strscpy(in, buf, sizeof(in));
->
-> What is "count" now needed for? Looks like a write only variable at leas=
-t in
-> these hunks.
+Hi James,
 
-isn't count the return value?
+On 12/27/22 13:38, James Bottomley wrote:
+> On Fri, 2022-12-23 at 08:55 +0100, Helge Deller wrote:
+>> On 12/23/22 03:40, yang.yang29@zte.com.cn=C2=A0wrote:
+>>> From: Xu Panda <xu.panda@zte.com.cn>
+>>>
+>>> The implementation of strscpy() is more robust and safer.
+>>> That's now the recommended way to copy NUL-terminated strings.
+>>
+>> Thanks for your patch, but....
+>>
+>>> Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
+>>> Signed-off-by: Yang Yang <yang.yang29@zte.com>
+>>> ---
+>>>  =C2=A0 drivers/parisc/pdc_stable.c | 9 +++------
+>>>  =C2=A0 1 file changed, 3 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/drivers/parisc/pdc_stable.c
+>>> b/drivers/parisc/pdc_stable.c
+>>> index d6af5726ddf3..403bca0021c5 100644
+>>> --- a/drivers/parisc/pdc_stable.c
+>>> +++ b/drivers/parisc/pdc_stable.c
+>>> @@ -274,8 +274,7 @@ pdcspath_hwpath_write(struct pdcspath_entry
+>>> *entry, const char *buf, size_t coun
+>>>
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* We'll use a local =
+copy of buf */
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0count =3D min_t(size_=
+t, count, sizeof(in)-1);
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0strncpy(in, buf, count);
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0in[count] =3D '\0';
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0strscpy(in, buf, count + 1)=
+;
+>>
+>> could you resend it somewhat simplified, e.g.
+>> strscpy(in, buf, sizeof(in));
+>
+> I don't think you can: count is the size of buf, if that's < sizeof(in)
+> you've introduced a write beyond end of buffer.  In fact sysfs tends to
+> pass pages as buffers, so there's no actual problem, but if that ever
+> changed ...
+
+Huh?... he doesn't change "count", so what's wrong with the latest patch?
 
 Helge
