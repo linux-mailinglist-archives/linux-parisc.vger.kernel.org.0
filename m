@@ -2,99 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64ACB6567FE
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Dec 2022 08:54:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CFA6656B0F
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Dec 2022 13:40:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230201AbiL0HyI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 27 Dec 2022 02:54:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51182 "EHLO
+        id S231723AbiL0Mje (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 27 Dec 2022 07:39:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230292AbiL0HyE (ORCPT
+        with ESMTP id S232093AbiL0Mi7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 27 Dec 2022 02:54:04 -0500
-X-Greylist: delayed 401 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 26 Dec 2022 23:54:01 PST
-Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 875AA6567
-        for <linux-parisc@vger.kernel.org>; Mon, 26 Dec 2022 23:54:01 -0800 (PST)
-Received: (qmail 7681 invoked from network); 27 Dec 2022 07:47:15 -0000
-Received: from dyn.ipv6.net-htp.de ([2a02:560:5628:3900:ecef:1c71:d0b:2fa4]:49250 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
-        by mail.sf-mail.de (Qsmtpd 0.38dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
-        for <james.bottomley@hansenpartnership.com>; Tue, 27 Dec 2022 08:47:15 +0100
-From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
-To:     james.bottomley@hansenpartnership.com, yang.yang29@zte.com.cn
-Cc:     deller@gmx.de, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, xu.panda@zte.com.cn,
-        yang.yang29@zte.com.cn
-Subject: Re: [PATCH linux-next v2] parisc: use strscpy() to instead of strncpy()
-Date:   Tue, 27 Dec 2022 08:47:05 +0100
-Message-ID: <2298026.kkTNVCUfUN@daneel.sf-tec.de>
-In-Reply-To: <202212261840048448622@zte.com.cn>
-References: <202212261840048448622@zte.com.cn>
+        Tue, 27 Dec 2022 07:38:59 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75951137;
+        Tue, 27 Dec 2022 04:38:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1672144724;
+        bh=Feg6gp26ReY8Yuqxz0JpcMo1IPS+gS/uMRlrbjt4aow=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=e2DNNn7JIjAIjj4fVUAKmwvLjE2OSNcP9EinHNaR4Rj3ZpGGwXBgEq046dYFobUga
+         cn7dOQR3wsSekbpJLzF8ewvNBEHUayMmytx799xn01EUkx08GehTXodNPEVdR7242z
+         Ob6imB8L+TLry9gMnevAQhmxO5sG6mL5wSRdYtvQ=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id D4C741286053;
+        Tue, 27 Dec 2022 07:38:44 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 6QcQOiF4QHbp; Tue, 27 Dec 2022 07:38:44 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1672144724;
+        bh=Feg6gp26ReY8Yuqxz0JpcMo1IPS+gS/uMRlrbjt4aow=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=e2DNNn7JIjAIjj4fVUAKmwvLjE2OSNcP9EinHNaR4Rj3ZpGGwXBgEq046dYFobUga
+         cn7dOQR3wsSekbpJLzF8ewvNBEHUayMmytx799xn01EUkx08GehTXodNPEVdR7242z
+         Ob6imB8L+TLry9gMnevAQhmxO5sG6mL5wSRdYtvQ=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 00ACE128603E;
+        Tue, 27 Dec 2022 07:38:43 -0500 (EST)
+Message-ID: <eaad272203baa65ad65ac2206e5197595c88508e.camel@HansenPartnership.com>
+Subject: Re: [PATCH linux-next] parisc: use strscpy() to instead of strncpy()
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Helge Deller <deller@gmx.de>, yang.yang29@zte.com.cn
+Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        xu.panda@zte.com.cn
+Date:   Tue, 27 Dec 2022 07:38:41 -0500
+In-Reply-To: <0fb8a86a-ca92-8d5f-99da-6815b2d5ec3e@gmx.de>
+References: <202212231040562072342@zte.com.cn>
+         <0fb8a86a-ca92-8d5f-99da-6815b2d5ec3e@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2316597.IaFIOm8ydW"; micalg="pgp-sha1"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---nextPart2316597.IaFIOm8ydW
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Rolf Eike Beer <eike-kernel@sf-tec.de>
-To: james.bottomley@hansenpartnership.com, yang.yang29@zte.com.cn
-Date: Tue, 27 Dec 2022 08:47:05 +0100
-Message-ID: <2298026.kkTNVCUfUN@daneel.sf-tec.de>
-In-Reply-To: <202212261840048448622@zte.com.cn>
-References: <202212261840048448622@zte.com.cn>
-
-Am Montag, 26. Dezember 2022, 11:40:04 CET schrieb yang.yang29@zte.com.cn:
-> From: Xu Panda <xu.panda@zte.com.cn>
+On Fri, 2022-12-23 at 08:55 +0100, Helge Deller wrote:
+> On 12/23/22 03:40, yang.yang29@zte.com.cn wrote:
+> > From: Xu Panda <xu.panda@zte.com.cn>
+> > 
+> > The implementation of strscpy() is more robust and safer.
+> > That's now the recommended way to copy NUL-terminated strings.
 > 
-> The implementation of strscpy() is more robust and safer.
-> That's now the recommended way to copy NUL-terminated strings.
+> Thanks for your patch, but....
 > 
-> Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
-> Signed-off-by: Yang Yang <yang.yang29@zte.com>
-> ---
-> change for v2
->  - sizeof(in) is better and simplified, thanks for Helge Deller.
-> ---
->  drivers/parisc/pdc_stable.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+> > Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
+> > Signed-off-by: Yang Yang <yang.yang29@zte.com>
+> > ---
+> >   drivers/parisc/pdc_stable.c | 9 +++------
+> >   1 file changed, 3 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/parisc/pdc_stable.c
+> > b/drivers/parisc/pdc_stable.c
+> > index d6af5726ddf3..403bca0021c5 100644
+> > --- a/drivers/parisc/pdc_stable.c
+> > +++ b/drivers/parisc/pdc_stable.c
+> > @@ -274,8 +274,7 @@ pdcspath_hwpath_write(struct pdcspath_entry
+> > *entry, const char *buf, size_t coun
+> > 
+> >         /* We'll use a local copy of buf */
+> >         count = min_t(size_t, count, sizeof(in)-1);
+> > -       strncpy(in, buf, count);
+> > -       in[count] = '\0';
+> > +       strscpy(in, buf, count + 1);
 > 
-> diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
-> index d6af5726ddf3..d3075445260b 100644
-> --- a/drivers/parisc/pdc_stable.c
-> +++ b/drivers/parisc/pdc_stable.c
-> @@ -274,8 +274,7 @@ pdcspath_hwpath_write(struct pdcspath_entry *entry,
-> const char *buf, size_t coun
-> 
->  	/* We'll use a local copy of buf */
->  	count = min_t(size_t, count, sizeof(in)-1);
-> -	strncpy(in, buf, count);
-> -	in[count] = '\0';
-> +	strscpy(in, buf, sizeof(in));
+> could you resend it somewhat simplified, e.g.
+> strscpy(in, buf, sizeof(in));
 
-What is "count" now needed for? Looks like a write only variable at least in 
-these hunks.
+I don't think you can: count is the size of buf, if that's < sizeof(in)
+you've introduced a write beyond end of buffer.  In fact sysfs tends to
+pass pages as buffers, so there's no actual problem, but if that ever
+changed ...
 
-Eike
---nextPart2316597.IaFIOm8ydW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCY6qi+QAKCRBcpIk+abn8
-TreFAJsGRGXqTM4D8ib9NJdGgqNbpJTmUgCeNNVn9q3szniJshUbN+h2L4zJ5sI=
-=oo7x
------END PGP SIGNATURE-----
-
---nextPart2316597.IaFIOm8ydW--
-
-
+James
 
