@@ -2,239 +2,100 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 284F665AA60
-	for <lists+linux-parisc@lfdr.de>; Sun,  1 Jan 2023 16:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CE3665AE3C
+	for <lists+linux-parisc@lfdr.de>; Mon,  2 Jan 2023 09:38:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231469AbjAAPia (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 1 Jan 2023 10:38:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34610 "EHLO
+        id S231896AbjABIiG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 2 Jan 2023 03:38:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231424AbjAAPi1 (ORCPT
+        with ESMTP id S231636AbjABIiB (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 1 Jan 2023 10:38:27 -0500
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D8DF38B4
-        for <linux-parisc@vger.kernel.org>; Sun,  1 Jan 2023 07:38:25 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id g10so4784822wmo.1
-        for <linux-parisc@vger.kernel.org>; Sun, 01 Jan 2023 07:38:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ixsystems.com; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4e5rsOVvoPsB8/0IGCnvHUCFwzCz86SgBX4arQD6Bsk=;
-        b=iIz+0dD+Xqd9D7Aclt4WbtMz7FB/uNMAN19vTh+6DwoOScIf+jA5tIb6pl1sZbrOaW
-         XlLYQHnQ/0PyPvz0qvTAbzXKi09qSjTBYmGSnxvzBbdFRVbIvsgwji7HfzL/dg1Gk0Y+
-         V3CYrx7vxebfUhVMmDvLcttZh71xYJ2bXwn2IQvA2brc4xEH/FpvfiNOKwmIE+3+/3a3
-         aGxfOrAg6fPjQzN7n5StTR3W7Zq9HRIvBP9hKK/qbFPVmelZ5Bqrz5fO21NfQtRIVsHM
-         2C27VpRX929Xk3Bf3fEht9dzD2A4sp2tATdthjFDTt8SQ6Z6iV058eZOPa8Nj3UL5qEA
-         EvOg==
+        Mon, 2 Jan 2023 03:38:01 -0500
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FD5FDB3;
+        Mon,  2 Jan 2023 00:38:01 -0800 (PST)
+Received: by mail-qt1-f170.google.com with SMTP id bp44so19416724qtb.0;
+        Mon, 02 Jan 2023 00:38:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4e5rsOVvoPsB8/0IGCnvHUCFwzCz86SgBX4arQD6Bsk=;
-        b=cvCV/aHm5eQVIUiS+xIQFh3/ZFoIuVZLqQuq5za0ufyAqgpPLaAAy1ub2PnaGdauXk
-         CCYAj1uGtpYoLpR7LC30mBlh3+RMF51n6LuDtvwf2U1RMdBvVeBnlBYTsmyKedWNXsMw
-         Pexy9t/LWJS0vKVtWG2tnTZtdz58WBRh0EW+csu7sXFcwzl1y8ln9OzAHog6Z43zmlnS
-         aZyXko4MTy0qX/+cJckmidUceukygBk5sdWbiYE1eYGtaXXi97UmoCjSv2lHjbyaSyj8
-         HEoOUGUW2U/nUaDc9srf9LDN+THIYeytC2qIf25+QcQyG3aHZB81Sr9TWqQcAIK+Weq6
-         b7WA==
-X-Gm-Message-State: AFqh2kqfeZl/pZzvpuw0CWLM7qFD5dm9pUbO8BiSf2b+X7WEy/CfIjz1
-        ZRDblKZqBg+7M3b4c2nMBNSLEw==
-X-Google-Smtp-Source: AMrXdXvmgsB9mkhQhPLutjUrJsEcNZBj3ZzRuTx0yHaXlM7F4s4uXk1dMC6Vuz5WxgOhV0eMYtO5Qw==
-X-Received: by 2002:a05:600c:4998:b0:3cf:68d3:3047 with SMTP id h24-20020a05600c499800b003cf68d33047mr26779179wmp.41.1672587503834;
-        Sun, 01 Jan 2023 07:38:23 -0800 (PST)
-Received: from localhost.localdomain ([2400:adc1:158:c700:ab52:9bd1:ee17:5669])
-        by smtp.googlemail.com with ESMTPSA id c4-20020a05600c0a4400b003cf75213bb9sm46153975wmq.8.2023.01.01.07.38.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Jan 2023 07:38:23 -0800 (PST)
-From:   Ameer Hamza <ahamza@ixsystems.com>
-To:     viro@zeniv.linux.org.uk, jlayton@kernel.org,
-        chuck.lever@oracle.com, arnd@arndb.de, guoren@kernel.org,
-        palmer@rivosinc.com, f.fainelli@gmail.com, slark_xiao@163.com,
-        richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, davem@davemloft.net
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, ahamza@ixsystems.com,
-        awalker@ixsystems.com, sparclinux@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org
-Subject: [PATCH v3] Add new open(2) flag - O_EMPTY_PATH
-Date:   Sun,  1 Jan 2023 20:37:52 +0500
-Message-Id: <20230101153752.20165-1-ahamza@ixsystems.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <202301011901.GyiYVRyd-lkp@intel.com>
-References: <202301011901.GyiYVRyd-lkp@intel.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jo2CI5pKv7C2jtNLeQsFhlozXL/lFYNzin08UvE0x2c=;
+        b=xbgtQV+wPHPwDIM93AuAvm6WX6cGoQ1F4KIkbImS7rbjacPg0vKFBq4dxC58yjG8Mx
+         nIUSNFYwJbl7uPNcHqSDllfZYyOy06mtvncHJc0UuhGQNBQ5JczHS9Df6w48u8eZUzSp
+         TniX6oFCsLk7mSKnIPEkCvDufW/Kl2ChooylfZBACcQhF3dfzfmp7XFudVJ0fgT1AW+w
+         olBLlM2oz9KUSJNOvkpVgkYNYhsRNWl0SRBaEvbOMlm3vNZ6L/+v1VkCVj4yBUy2T8Fm
+         06GLJ8CX/bmFj94jcWysm+KJ7cj4j1WgF9OwIub3Rqxa5Z4WDtNbYXZ7VInQqEDv3x9x
+         AJgA==
+X-Gm-Message-State: AFqh2kq6SDiiBGvB2sRSZkgkOpV7zzeXBk8WjBOEGdI/e7rV1FXYUmKh
+        02pkriV6eTwkcy3mdezcl0xJM5Cqp8oEUA==
+X-Google-Smtp-Source: AMrXdXvvdSLfHxpqthAsfcybCi8mKs5HRIENs/LRGUqFwoQGphvc9t711phFovUpA1CbhJ28EYPN5g==
+X-Received: by 2002:ac8:785:0:b0:3a7:eab2:e461 with SMTP id l5-20020ac80785000000b003a7eab2e461mr42688176qth.25.1672648680473;
+        Mon, 02 Jan 2023 00:38:00 -0800 (PST)
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
+        by smtp.gmail.com with ESMTPSA id fb25-20020a05622a481900b003a5430ee366sm15917725qtb.60.2023.01.02.00.38.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Jan 2023 00:38:00 -0800 (PST)
+Received: by mail-yb1-f169.google.com with SMTP id e141so29641506ybh.3;
+        Mon, 02 Jan 2023 00:38:00 -0800 (PST)
+X-Received: by 2002:a25:d243:0:b0:702:90b4:2e24 with SMTP id
+ j64-20020a25d243000000b0070290b42e24mr2730771ybg.365.1672648260480; Mon, 02
+ Jan 2023 00:31:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <78b23407-bdd0-4b1b-bf6e-ecd4c00294ab@app.fastmail.com> <20221229113338.2436892-1-andrzej.hajda@intel.com>
+In-Reply-To: <20221229113338.2436892-1-andrzej.hajda@intel.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 2 Jan 2023 09:30:48 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVaq9Xg3HrqLo1x5SCuwtJBsczLjWAWmH=23ZtNf_e9hQ@mail.gmail.com>
+Message-ID: <CAMuHMdVaq9Xg3HrqLo1x5SCuwtJBsczLjWAWmH=23ZtNf_e9hQ@mail.gmail.com>
+Subject: Re: [PATCH v2] arch: rename all internal names __xchg to __arch_xchg
+To:     Andrzej Hajda <andrzej.hajda@intel.com>
+Cc:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This patch adds a new flag O_EMPTY_PATH that allows openat and open
-system calls to open a file referenced by fd if the path is empty,
-and it is very similar to the FreeBSD O_EMPTY_PATH flag. This can be
-beneficial in some cases since it would avoid having to grant /proc
-access to things like samba containers for reopening files to change
-flags in a race-free way.
+On Thu, Dec 29, 2022 at 12:34 PM Andrzej Hajda <andrzej.hajda@intel.com> wrote:
+> __xchg will be used for non-atomic xchg macro.
+>
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-Signed-off-by: Ameer Hamza <ahamza@ixsystems.com>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> [m68k]
 
----
-Change in v3:
-resolve O_EMPTY_PATH conflict with __FMODE_NONOTIFY for sparc.
+Gr{oetje,eeting}s,
 
-Change in v2:
-add nonconflicting values for O_EMPTY_PATH on architectures
-where default conflicts with existing flags.
----
----
- arch/alpha/include/uapi/asm/fcntl.h    | 1 +
- arch/parisc/include/uapi/asm/fcntl.h   | 1 +
- arch/sparc/include/uapi/asm/fcntl.h    | 1 +
- fs/fcntl.c                             | 2 +-
- fs/namei.c                             | 4 ++--
- fs/open.c                              | 2 +-
- include/linux/fcntl.h                  | 2 +-
- include/uapi/asm-generic/fcntl.h       | 4 ++++
- tools/include/uapi/asm-generic/fcntl.h | 4 ++++
- 9 files changed, 16 insertions(+), 5 deletions(-)
+                        Geert
 
-diff --git a/arch/alpha/include/uapi/asm/fcntl.h b/arch/alpha/include/uapi/asm/fcntl.h
-index 50bdc8e8a271..ea08341bb9fe 100644
---- a/arch/alpha/include/uapi/asm/fcntl.h
-+++ b/arch/alpha/include/uapi/asm/fcntl.h
-@@ -34,6 +34,7 @@
- 
- #define O_PATH		040000000
- #define __O_TMPFILE	0100000000
-+#define O_EMPTY_PATH	0200000000
- 
- #define F_GETLK		7
- #define F_SETLK		8
-diff --git a/arch/parisc/include/uapi/asm/fcntl.h b/arch/parisc/include/uapi/asm/fcntl.h
-index 03dee816cb13..e6144823ee5b 100644
---- a/arch/parisc/include/uapi/asm/fcntl.h
-+++ b/arch/parisc/include/uapi/asm/fcntl.h
-@@ -19,6 +19,7 @@
- 
- #define O_PATH		020000000
- #define __O_TMPFILE	040000000
-+#define O_EMPTY_PATH	0100000000
- 
- #define F_GETLK64	8
- #define F_SETLK64	9
-diff --git a/arch/sparc/include/uapi/asm/fcntl.h b/arch/sparc/include/uapi/asm/fcntl.h
-index 67dae75e5274..ed99e4e4a717 100644
---- a/arch/sparc/include/uapi/asm/fcntl.h
-+++ b/arch/sparc/include/uapi/asm/fcntl.h
-@@ -37,6 +37,7 @@
- 
- #define O_PATH		0x1000000
- #define __O_TMPFILE	0x2000000
-+#define O_EMPTY_PATH	0x8000000
- 
- #define F_GETOWN	5	/*  for sockets. */
- #define F_SETOWN	6	/*  for sockets. */
-diff --git a/fs/fcntl.c b/fs/fcntl.c
-index 146c9ab0cd4b..7aac650e16e2 100644
---- a/fs/fcntl.c
-+++ b/fs/fcntl.c
-@@ -1027,7 +1027,7 @@ static int __init fcntl_init(void)
- 	 * Exceptions: O_NONBLOCK is a two bit define on parisc; O_NDELAY
- 	 * is defined as O_NONBLOCK on some platforms and not on others.
- 	 */
--	BUILD_BUG_ON(21 - 1 /* for O_RDONLY being 0 */ !=
-+	BUILD_BUG_ON(22 - 1 /* for O_RDONLY being 0 */ !=
- 		HWEIGHT32(
- 			(VALID_OPEN_FLAGS & ~(O_NONBLOCK | O_NDELAY)) |
- 			__FMODE_EXEC | __FMODE_NONOTIFY));
-diff --git a/fs/namei.c b/fs/namei.c
-index 309ae6fc8c99..2b2735af6d03 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -192,7 +192,7 @@ getname_flags(const char __user *filename, int flags, int *empty)
- 	if (unlikely(!len)) {
- 		if (empty)
- 			*empty = 1;
--		if (!(flags & LOOKUP_EMPTY)) {
-+		if (!(flags & (LOOKUP_EMPTY | O_EMPTY_PATH))) {
- 			putname(result);
- 			return ERR_PTR(-ENOENT);
- 		}
-@@ -2347,7 +2347,7 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
- 	if ((flags & (LOOKUP_RCU | LOOKUP_CACHED)) == LOOKUP_CACHED)
- 		return ERR_PTR(-EAGAIN);
- 
--	if (!*s)
-+	if (!*s && unlikely(!(flags & O_EMPTY_PATH)))
- 		flags &= ~LOOKUP_RCU;
- 	if (flags & LOOKUP_RCU)
- 		rcu_read_lock();
-diff --git a/fs/open.c b/fs/open.c
-index 82c1a28b3308..b4ec054a418f 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -1301,7 +1301,7 @@ static long do_sys_openat2(int dfd, const char __user *filename,
- 	if (fd)
- 		return fd;
- 
--	tmp = getname(filename);
-+	tmp = getname_flags(filename, how->flags & O_EMPTY_PATH, NULL);
- 	if (IS_ERR(tmp))
- 		return PTR_ERR(tmp);
- 
-diff --git a/include/linux/fcntl.h b/include/linux/fcntl.h
-index a332e79b3207..bf8467bb0bd2 100644
---- a/include/linux/fcntl.h
-+++ b/include/linux/fcntl.h
-@@ -10,7 +10,7 @@
- 	(O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC | \
- 	 O_APPEND | O_NDELAY | O_NONBLOCK | __O_SYNC | O_DSYNC | \
- 	 FASYNC	| O_DIRECT | O_LARGEFILE | O_DIRECTORY | O_NOFOLLOW | \
--	 O_NOATIME | O_CLOEXEC | O_PATH | __O_TMPFILE)
-+	 O_NOATIME | O_CLOEXEC | O_PATH | __O_TMPFILE | O_EMPTY_PATH)
- 
- /* List of all valid flags for the how->resolve argument: */
- #define VALID_RESOLVE_FLAGS \
-diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
-index 1ecdb911add8..a03f4275517b 100644
---- a/include/uapi/asm-generic/fcntl.h
-+++ b/include/uapi/asm-generic/fcntl.h
-@@ -89,6 +89,10 @@
- #define __O_TMPFILE	020000000
- #endif
- 
-+#ifndef O_EMPTY_PATH
-+#define O_EMPTY_PATH	040000000
-+#endif
-+
- /* a horrid kludge trying to make sure that this will fail on old kernels */
- #define O_TMPFILE (__O_TMPFILE | O_DIRECTORY)
- #define O_TMPFILE_MASK (__O_TMPFILE | O_DIRECTORY | O_CREAT)      
-diff --git a/tools/include/uapi/asm-generic/fcntl.h b/tools/include/uapi/asm-generic/fcntl.h
-index b02c8e0f4057..f32a81604296 100644
---- a/tools/include/uapi/asm-generic/fcntl.h
-+++ b/tools/include/uapi/asm-generic/fcntl.h
-@@ -89,6 +89,10 @@
- #define __O_TMPFILE	020000000
- #endif
- 
-+#ifndef O_EMPTY_PATH
-+#define O_EMPTY_PATH	040000000
-+#endif
-+
- /* a horrid kludge trying to make sure that this will fail on old kernels */
- #define O_TMPFILE (__O_TMPFILE | O_DIRECTORY)
- #define O_TMPFILE_MASK (__O_TMPFILE | O_DIRECTORY | O_CREAT)      
--- 
-2.25.1
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
