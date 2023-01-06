@@ -2,199 +2,118 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FD1B65F130
-	for <lists+linux-parisc@lfdr.de>; Thu,  5 Jan 2023 17:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10BF165FDDB
+	for <lists+linux-parisc@lfdr.de>; Fri,  6 Jan 2023 10:27:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233829AbjAEQaQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 5 Jan 2023 11:30:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33378 "EHLO
+        id S233571AbjAFJ03 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Fri, 6 Jan 2023 04:26:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234054AbjAEQ37 (ORCPT
+        with ESMTP id S234651AbjAFJZe (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 5 Jan 2023 11:29:59 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F397259337
-        for <linux-parisc@vger.kernel.org>; Thu,  5 Jan 2023 08:29:55 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id r2so1845387wrv.7
-        for <linux-parisc@vger.kernel.org>; Thu, 05 Jan 2023 08:29:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hriix7PNjl3Fx5Lwj5vGvmpV6J+F4oqIBHmzWDNV1zY=;
-        b=Xkf28zaruVrLmqa0GfGmuAvqQQX+dB8u4vBIZu3Zqzswl7V0McjDKsYjGqvgAnDPVt
-         JAfXVw2P8vm4NtD5ER0v9cpo5fq34lBw+gZ7lyOmQSBDrvgtT42XqrYiXIz43PC1aoqp
-         dm4offnZy34FIeCS0B3FEa0zUz3dEn5dYFCKk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hriix7PNjl3Fx5Lwj5vGvmpV6J+F4oqIBHmzWDNV1zY=;
-        b=uPAmpEoNo9qLUN/ctuy0EJfvoM5Jwj5xs/KwdbahNhZ3xHMytkRvXZQZGylsfmPF8F
-         fuDoxdoEfwOGR/2JutmGnPj9GmwdosjCOTNdPPxLDCsgDUaelMV7xQ5XH/nqMwFQtovb
-         6s9o6lSWKU8x6cdGZzd6peyKXOfvbcLfuZ24x8/DWMXTRhLa/BGCPO+krLq8l73o3Qf1
-         OV9O6jv3bNNyE6byJbaO/K30g33+oSZMEO3vPPjYS0UyPbv4lPWQidDbMpiTFM7oBYNq
-         u3VZ7y2f1NWIPhCucwhYF4BWKHkDMiDTyO8PnsMLmoNq2Wbgp0bbLhvSaA+rTO0X60yS
-         DENg==
-X-Gm-Message-State: AFqh2komb2je/rUF/whO33CCd2Q+qfUtJOUnFxkkvPCkJVZdf4z5+o2f
-        buqd4m77JpMH7icIZqgz35eeFA==
-X-Google-Smtp-Source: AMrXdXvytt3BictUpSrNMsVMjqYxBg9ULQXEcgl2Nkqae4pxiPmHRRghamOTQFr1zyRYajkEyGj8ag==
-X-Received: by 2002:adf:f9cb:0:b0:285:d0ba:92e2 with SMTP id w11-20020adff9cb000000b00285d0ba92e2mr22521193wrr.47.1672936194547;
-        Thu, 05 Jan 2023 08:29:54 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id x15-20020a5d490f000000b00236883f2f5csm36488463wrq.94.2023.01.05.08.29.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jan 2023 08:29:53 -0800 (PST)
-Date:   Thu, 5 Jan 2023 17:29:51 +0100
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Andrzej Hajda <andrzej.hajda@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        Boqun Feng <boqun.feng@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
-        intel-gfx@lists.freedesktop.org, openrisc@lists.librecores.org,
-        loongarch@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 00/19] Introduce __xchg, non-atomic xchg
-Message-ID: <Y7b6/7coJEVlTVxK@phenom.ffwll.local>
-Mail-Followup-To: Andrzej Hajda <andrzej.hajda@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-m68k@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        Boqun Feng <boqun.feng@gmail.com>, linux-xtensa@linux-xtensa.org,
-        Arnd Bergmann <arnd@arndb.de>, intel-gfx@lists.freedesktop.org,
-        openrisc@lists.librecores.org, loongarch@lists.linux.dev,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-References: <20221222114635.1251934-1-andrzej.hajda@intel.com>
- <20221222092147.d2bb177c67870884f2e59a9b@linux-foundation.org>
- <6e727952-3ad0-fcc3-82f1-c465dcffd56f@intel.com>
+        Fri, 6 Jan 2023 04:25:34 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 484AC6CFFD
+        for <linux-parisc@vger.kernel.org>; Fri,  6 Jan 2023 01:22:02 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-214-FaFPO-QRMv2f2SfbtlhxTQ-1; Fri, 06 Jan 2023 09:21:49 +0000
+X-MC-Unique: FaFPO-QRMv2f2SfbtlhxTQ-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Fri, 6 Jan
+ 2023 09:21:47 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.044; Fri, 6 Jan 2023 09:21:47 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Ameer Hamza' <ahamza@ixsystems.com>
+CC:     "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
+        "jlayton@kernel.org" <jlayton@kernel.org>,
+        "chuck.lever@oracle.com" <chuck.lever@oracle.com>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "guoren@kernel.org" <guoren@kernel.org>,
+        "palmer@rivosinc.com" <palmer@rivosinc.com>,
+        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+        "slark_xiao@163.com" <slark_xiao@163.com>,
+        "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+        "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>,
+        "mattst88@gmail.com" <mattst88@gmail.com>,
+        "James.Bottomley@HansenPartnership.com" 
+        <James.Bottomley@HansenPartnership.com>,
+        "deller@gmx.de" <deller@gmx.de>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "awalker@ixsystems.com" <awalker@ixsystems.com>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>
+Subject: RE: [PATCH v2] Add new open(2) flag - O_EMPTY_PATH
+Thread-Topic: [PATCH v2] Add new open(2) flag - O_EMPTY_PATH
+Thread-Index: AQHZHXO7YJxmMel9jU25EiVio9tPeK6LKkFQgAAJzgCABe+GwA==
+Date:   Fri, 6 Jan 2023 09:21:46 +0000
+Message-ID: <ea8739b122674695ba9bf991b589817c@AcuMS.aculab.com>
+References: <202212310842.ysbymPHY-lkp@intel.com>
+ <20221231235618.117201-1-ahamza@ixsystems.com>
+ <4b39cf528148470c934fb5823b35e9d5@AcuMS.aculab.com>
+ <20230102143538.GA8886@hamza-HP-ZBook-15-G3>
+In-Reply-To: <20230102143538.GA8886@hamza-HP-ZBook-15-G3>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6e727952-3ad0-fcc3-82f1-c465dcffd56f@intel.com>
-X-Operating-System: Linux phenom 5.19.0-2-amd64 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Dec 29, 2022 at 10:54:50AM +0100, Andrzej Hajda wrote:
-> Forgive me late response - Holidays,
+From: Ameer Hamza
+> Sent: 02 January 2023 14:36
 > 
-> On 22.12.2022 18:21, Andrew Morton wrote:
-> > On Thu, 22 Dec 2022 12:46:16 +0100 Andrzej Hajda <andrzej.hajda@intel.com> wrote:
-> > 
-> > > Hi all,
-> > > 
-> > > I hope there will be place for such tiny helper in kernel.
-> > > Quick cocci analyze shows there is probably few thousands places
-> > > where it could be useful.
-> > So to clarify, the intent here is a simple readability cleanup for
-> > existing open-coded exchange operations.
-> 
-> And replace private helpers with common one, see the last patch - the
-> ultimate goal
-> would be to replace all occurrences of fetch_and_zero with __xchg.
-> 
-> > The intent is *not* to
-> > identify existing xchg() sites which are unnecessarily atomic and to
-> > optimize them by using the non-atomic version.
-> > 
-> > Have you considered the latter?
-> 
-> If you mean some way of (semi-)automatic detection of such cases, then no.
-> Anyway this could be quite interesting challenge.
+> On Mon, Jan 02, 2023 at 02:01:38PM +0000, David Laight wrote:
+> > From: Ameer Hamza
+> > > Sent: 31 December 2022 23:56
+> > >
+> > > This patch adds a new flag O_EMPTY_PATH that allows openat and open
+> > > system calls to open a file referenced by fd if the path is empty,
+> > > and it is very similar to the FreeBSD O_EMPTY_PATH flag. This can be
+> > > beneficial in some cases since it would avoid having to grant /proc
+> > > access to things like samba containers for reopening files to change
+> > > flags in a race-free way.
+> > >
+> >
+> > But what does it do?
+> > (Apart from add code to a common kernel code path.)
+> >
+> > 	David
+>
+> It can convert an O_PATH descriptor to one suitable for r/w work.
+> If we already have a file descriptor: {opath_fd = open(&lt;path&gt;, O_PATH);}, we can call
+> {openat(opath_fd, "", O_EMPTY_PATH | O_RDWR)} instead of going through procfs
+> {open(/proc/self/fd/&lt;opath_fd&gt;, O_RDWR)}.
 
-My take is that unless there is very clear demand for this macro from
-outside of i915, it's not worth it. All that fetch_and_zero zero achieved
-is make i915 code a lot more confusing to read for people who don't know
-this thing. And it replaces 2 entirely standard lines of 0, every often
-clearing pointers in data structures where you really want the verbosity
-to have a reminder and thinking about the locking.
+Aren't both of those security problems?
 
-Plus it smells way too much like the cmpxchg family of atomic functions,
-addig further to the locking confuion.
+Testing the file's inode permission allow write access isn't enough
+to verify that the program could actually open the file for writing.
+The program also needs 'directory search' access on all the directories
+back as far as an open directory fd.
 
-Imo the right approach is to just open code this macro in i915 and then
-drop it. Again, unless enough people outside of i915 really really want
-this, and want to lift this to a kernel idiom.
--Daniel
+	David
 
-> 
-> > 
-> > > I am not sure who is good person to review/ack such patches,
-> > I can take 'em.
-> > 
-> > > so I've used my intuition to construct to/cc lists, sorry for mistakes.
-> > > This is the 2nd approach of the same idea, with comments addressed[0].
-> > > 
-> > > The helper is tiny and there are advices we can leave without it, so
-> > > I want to present few arguments why it would be good to have it:
-> > > 
-> > > 1. Code readability/simplification/number of lines:
-> > > 
-> > > Real example from drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c:
-> > > -       previous_min_rate = evport->qos.min_rate;
-> > > -       evport->qos.min_rate = min_rate;
-> > > +       previous_min_rate = __xchg(evport->qos.min_rate, min_rate);
-> > > 
-> > > For sure the code is more compact, and IMHO more readable.
-> > > 
-> > > 2. Presence of similar helpers in other somehow related languages/libs:
-> > > 
-> > > a) Rust[1]: 'replace' from std::mem module, there is also 'take'
-> > >      helper (__xchg(&x, 0)), which is the same as private helper in
-> > >      i915 - fetch_and_zero, see latest patch.
-> > > b) C++ [2]: 'exchange' from utility header.
-> > > 
-> > > If the idea is OK there are still 2 qestions to answer:
-> > > 
-> > > 1. Name of the helper, __xchg follows kernel conventions,
-> > >      but for me Rust names are also OK.
-> > I like replace(), or, shockingly, exchange().
-> > 
-> > But...   Can we simply make swap() return the previous value?
-> > 
-> > 	previous_min_rate = swap(&evport->qos.min_rate, min_rate);
-> 
-> As Alexander already pointed out, swap requires 'references' to two
-> variables,
-> in contrast to xchg which requires reference to variable and value.
-> So we cannot use swap for cases:
->     old_value = __xchg(&x, new_value);
-> 
-> Regards
-> Andrzej
-> 
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
