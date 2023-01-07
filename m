@@ -2,118 +2,130 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10BF165FDDB
-	for <lists+linux-parisc@lfdr.de>; Fri,  6 Jan 2023 10:27:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3336B660E31
+	for <lists+linux-parisc@lfdr.de>; Sat,  7 Jan 2023 12:05:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233571AbjAFJ03 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Fri, 6 Jan 2023 04:26:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44552 "EHLO
+        id S231221AbjAGLE4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 7 Jan 2023 06:04:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234651AbjAFJZe (ORCPT
+        with ESMTP id S230135AbjAGLEz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 6 Jan 2023 04:25:34 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 484AC6CFFD
-        for <linux-parisc@vger.kernel.org>; Fri,  6 Jan 2023 01:22:02 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-214-FaFPO-QRMv2f2SfbtlhxTQ-1; Fri, 06 Jan 2023 09:21:49 +0000
-X-MC-Unique: FaFPO-QRMv2f2SfbtlhxTQ-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Fri, 6 Jan
- 2023 09:21:47 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.044; Fri, 6 Jan 2023 09:21:47 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Ameer Hamza' <ahamza@ixsystems.com>
-CC:     "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
-        "jlayton@kernel.org" <jlayton@kernel.org>,
-        "chuck.lever@oracle.com" <chuck.lever@oracle.com>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "guoren@kernel.org" <guoren@kernel.org>,
-        "palmer@rivosinc.com" <palmer@rivosinc.com>,
-        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-        "slark_xiao@163.com" <slark_xiao@163.com>,
-        "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
-        "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>,
-        "mattst88@gmail.com" <mattst88@gmail.com>,
-        "James.Bottomley@HansenPartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "awalker@ixsystems.com" <awalker@ixsystems.com>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>
-Subject: RE: [PATCH v2] Add new open(2) flag - O_EMPTY_PATH
-Thread-Topic: [PATCH v2] Add new open(2) flag - O_EMPTY_PATH
-Thread-Index: AQHZHXO7YJxmMel9jU25EiVio9tPeK6LKkFQgAAJzgCABe+GwA==
-Date:   Fri, 6 Jan 2023 09:21:46 +0000
-Message-ID: <ea8739b122674695ba9bf991b589817c@AcuMS.aculab.com>
-References: <202212310842.ysbymPHY-lkp@intel.com>
- <20221231235618.117201-1-ahamza@ixsystems.com>
- <4b39cf528148470c934fb5823b35e9d5@AcuMS.aculab.com>
- <20230102143538.GA8886@hamza-HP-ZBook-15-G3>
-In-Reply-To: <20230102143538.GA8886@hamza-HP-ZBook-15-G3>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Sat, 7 Jan 2023 06:04:55 -0500
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9879F4F124;
+        Sat,  7 Jan 2023 03:04:54 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id ay40so2704294wmb.2;
+        Sat, 07 Jan 2023 03:04:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jV2yBF+mbkDE0BvyOwe05ARE6EO7XhtOfB/KJLMsfFA=;
+        b=BzPTx+ODS2RwGu5d9Av3CGI6XJ0NbmKP1pStUzg0M0m6+VF6wu2vf0tqTwK0k6q0qV
+         Fbx7Y4Wluy9p+k8PZjL3FOoLufHJHxtq2K/BaarEwd/dPtd/DgO4uDiDqLUXCcfzSy4g
+         Wd0wz4xfpZYGbxR/O6enZWRjIhs25ZrrKgwvTGouDcupcbkSfLeRveiApotbcr4XMgph
+         w/4+08uhP/RwKAozhcyw6lYPvScMk8zL6fmWwbkyxQOkT9WdSUz8lze9ta3Mlh7zLg9k
+         cM2v76pe7iQT/2ZR+EkGweLVXlhhfTIoWJwjo2u32vXfi3qjeDrWte72tROnSs3wxhtS
+         1Wwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jV2yBF+mbkDE0BvyOwe05ARE6EO7XhtOfB/KJLMsfFA=;
+        b=f6beJaoz3jCOL/c6eOjf3eeUBcHKDVUaH0Uw7trbB+q3preXNB8XQN+BgMEgXIqyrg
+         ztQ0YAwwQaBudBMFT671W0eam+CskRUARfQ2XtTMgg7PiwB16C4qvG0b2DGR8BAeYCdV
+         bjE0ugK+fesG9oz6KyRgSvF1+EPPvRlWpElpDIRlqjl3n5CE931DsOVRR67+Oc0OvvUU
+         qarRyALAo/0CgrsP1WoMbvFscUnStpWk5q7ULbXRDwxCcfn2VYXgqtcJFerXS2Z6O5F8
+         beGTpGvDntwL4xWdS5LKe1BVCIIzmFG6ZI1prA001YwkI8usgU5FZC7q8O2rG9nMPSjr
+         Vt0w==
+X-Gm-Message-State: AFqh2kp6KNn7SZRVsi7FHGQnApV2HTmVi/cE5A8/t+/ipcJNN8L/Cf0I
+        P0aGIHmiHJAhWmac1ay0yUU=
+X-Google-Smtp-Source: AMrXdXuUafS1AFxogNrZXZJj6k6oC1QjVGeJmfZCRFdf2sgwNHMbrVBUD4+y7GGme2gWJhcqxBhA0A==
+X-Received: by 2002:a05:600c:601e:b0:3c6:e61e:ae71 with SMTP id az30-20020a05600c601e00b003c6e61eae71mr50341357wmb.1.1673089493118;
+        Sat, 07 Jan 2023 03:04:53 -0800 (PST)
+Received: from gmail.com (1F2EF507.nat.pool.telekom.hu. [31.46.245.7])
+        by smtp.gmail.com with ESMTPSA id o9-20020a05600c510900b003c6f8d30e40sm10657278wms.31.2023.01.07.03.04.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Jan 2023 03:04:50 -0800 (PST)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Sat, 7 Jan 2023 12:04:47 +0100
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Valentin Schneider <vschneid@redhat.com>
+Cc:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        x86@kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Marcelo Tosatti <mtosatti@redhat.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Marc Zyngier <maz@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Guo Ren <guoren@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v3 3/8] sched, smp: Trace IPIs sent via
+ send_call_function_single_ipi()
+Message-ID: <Y7lRz7oCaAmAhoqS@gmail.com>
+References: <20221202155817.2102944-1-vschneid@redhat.com>
+ <20221202155817.2102944-4-vschneid@redhat.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221202155817.2102944-4-vschneid@redhat.com>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Ameer Hamza
-> Sent: 02 January 2023 14:36
+
+* Valentin Schneider <vschneid@redhat.com> wrote:
+
+> send_call_function_single_ipi() is the thing that sends IPIs at the bottom
+> of smp_call_function*() via either generic_exec_single() or
+> smp_call_function_many_cond(). Give it an IPI-related tracepoint.
 > 
-> On Mon, Jan 02, 2023 at 02:01:38PM +0000, David Laight wrote:
-> > From: Ameer Hamza
-> > > Sent: 31 December 2022 23:56
-> > >
-> > > This patch adds a new flag O_EMPTY_PATH that allows openat and open
-> > > system calls to open a file referenced by fd if the path is empty,
-> > > and it is very similar to the FreeBSD O_EMPTY_PATH flag. This can be
-> > > beneficial in some cases since it would avoid having to grant /proc
-> > > access to things like samba containers for reopening files to change
-> > > flags in a race-free way.
-> > >
-> >
-> > But what does it do?
-> > (Apart from add code to a common kernel code path.)
-> >
-> > 	David
->
-> It can convert an O_PATH descriptor to one suitable for r/w work.
-> If we already have a file descriptor: {opath_fd = open(&lt;path&gt;, O_PATH);}, we can call
-> {openat(opath_fd, "", O_EMPTY_PATH | O_RDWR)} instead of going through procfs
-> {open(/proc/self/fd/&lt;opath_fd&gt;, O_RDWR)}.
+> Note that this ends up tracing any IPI sent via __smp_call_single_queue(),
+> which covers __ttwu_queue_wakelist() and irq_work_queue_on() "for free".
+> 
+> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+> Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-Aren't both of those security problems?
+Acked-by: Ingo Molnar <mingo@kernel.org>
 
-Testing the file's inode permission allow write access isn't enough
-to verify that the program could actually open the file for writing.
-The program also needs 'directory search' access on all the directories
-back as far as an open directory fd.
+Patch series logistics:
 
-	David
+ - No objections from the scheduler side, this feature looks pretty useful.
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+ - Certain patches are incomplete, others are noted as being merged 
+   separately, so I presume you'll send an updated/completed series 
+   eventually?
 
+ - We can merge this via the scheduler tree I suspect, as most callbacks 
+   affected relate to tip:sched/core and tmp:smp/core - but if you have 
+   some other preferred tree that's fine too.
+
+Thanks,
+
+	Ingo
