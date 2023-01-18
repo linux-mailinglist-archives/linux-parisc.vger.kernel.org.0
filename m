@@ -2,102 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43EF366E24D
-	for <lists+linux-parisc@lfdr.de>; Tue, 17 Jan 2023 16:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A016672167
+	for <lists+linux-parisc@lfdr.de>; Wed, 18 Jan 2023 16:35:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233040AbjAQPfn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 17 Jan 2023 10:35:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
+        id S231262AbjARPfz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 18 Jan 2023 10:35:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232536AbjAQPfh (ORCPT
+        with ESMTP id S230320AbjARPfu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 17 Jan 2023 10:35:37 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 78EE341B52;
-        Tue, 17 Jan 2023 07:35:35 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9822A165C;
-        Tue, 17 Jan 2023 07:36:16 -0800 (PST)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.31.153])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACA663F67D;
-        Tue, 17 Jan 2023 07:35:17 -0800 (PST)
-Date:   Tue, 17 Jan 2023 15:35:10 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        nsekhar@ti.com, brgl@bgdev.pl, ulli.kroll@googlemail.com,
-        linus.walleij@linaro.org, shawnguo@kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
-        khilman@kernel.org, krzysztof.kozlowski@linaro.org,
-        alim.akhtar@samsung.com, catalin.marinas@arm.com, will@kernel.org,
-        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
-        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
-        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
-        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
-        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
-        richard@nod.at, anton.ivanov@cambridgegreys.com,
-        johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
-        srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        anup@brainfault.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
-        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
-        cl@linux.com, rostedt@goodmis.org, mhiramat@kernel.org,
-        frederic@kernel.org, paulmck@kernel.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, ryabinin.a.a@gmail.com,
-        glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
-        vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-csky@vger.kernel.org,
+        Wed, 18 Jan 2023 10:35:50 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 869F211EA3;
+        Wed, 18 Jan 2023 07:35:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674056149; x=1705592149;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=V+7w/6DVh6oOTj/5Q6BI82PHATnPnRgB/JN4Ard83Dk=;
+  b=Gz57egnTY6YYvqlojEwpjGrMBhV4JoVeqKWN6u8gYUt037QbG2cfm5L4
+   GnscKpY2cJlEC+u0BFtiv5lTlyH05XcpZeIGFBtX3mWP5QgiAVrijE7H0
+   yBRkLQsBmy7y396IZuGRu0Qz/89PlSDT9PHKJDoYna47pdBzTi3aL6KQH
+   HdQPVFUsdVwDoKmTwZ/gHuwg55DllH6h8lTEFSJgyQIbrji8tBzrmVZEm
+   lVQ2QCb8uEJvcp1+GlGS5aOJzQ/OYg+65HXarOgZbUt92144zIdo6oq66
+   MsPYvODbjMjuNlfX8veHhn4BA77mS/+JPU13yj6/ufzu5hdD/ElZyMC83
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="305381646"
+X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
+   d="scan'208";a="305381646"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 07:35:47 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="833614590"
+X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
+   d="scan'208";a="833614590"
+Received: from lab-ah.igk.intel.com ([10.102.42.211])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 07:35:41 -0800
+From:   Andrzej Hajda <andrzej.hajda@intel.com>
+To:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
         linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
         loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
         linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 00/51] cpuidle,rcu: Clean up the mess
-Message-ID: <Y8bALvyrPpdg++/J@FVFF77S0Q05N.cambridge.arm.com>
-References: <20230112194314.845371875@infradead.org>
- <Y8WCWAuQSHN651dA@FVFF77S0Q05N.cambridge.arm.com>
- <Y8Z31UbzG3LJgAXE@hirez.programming.kicks-ass.net>
- <Y8afpbHtDOqAHq9M@FVFF77S0Q05N.cambridge.arm.com>
- <20230117142140.g423hxisv7djudof@bogus>
+        linux-xtensa@linux-xtensa.org, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH v5 0/7] Introduce __xchg, non-atomic xchg
+Date:   Wed, 18 Jan 2023 16:35:22 +0100
+Message-Id: <20230118153529.57695-1-andrzej.hajda@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230117142140.g423hxisv7djudof@bogus>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -105,68 +74,115 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 02:21:40PM +0000, Sudeep Holla wrote:
-> On Tue, Jan 17, 2023 at 01:16:21PM +0000, Mark Rutland wrote:
-> > On Tue, Jan 17, 2023 at 11:26:29AM +0100, Peter Zijlstra wrote:
-> > > On Mon, Jan 16, 2023 at 04:59:04PM +0000, Mark Rutland wrote:
-> > > 
-> > > > I'm sorry to have to bear some bad news on that front. :(
-> > > 
-> > > Moo, something had to give..
-> > > 
-> > > 
-> > > > IIUC what's happenign here is the PSCI cpuidle driver has entered idle and RCU
-> > > > is no longer watching when arm64's cpu_suspend() manipulates DAIF. Our
-> > > > local_daif_*() helpers poke lockdep and tracing, hence the call to
-> > > > trace_hardirqs_off() and the RCU usage.
-> > > 
-> > > Right, strictly speaking not needed at this point, IRQs should have been
-> > > traced off a long time ago.
-> > 
-> > True, but there are some other calls around here that *might* end up invoking
-> > RCU stuff (e.g. the MTE code).
-> > 
-> > That all needs a noinstr cleanup too, which I'll sort out as a follow-up.
-> > 
-> > > > I think we need RCU to be watching all the way down to cpu_suspend(), and it's
-> > > > cpu_suspend() that should actually enter/exit idle context. That and we need to
-> > > > make cpu_suspend() and the low-level PSCI invocation noinstr.
-> > > > 
-> > > > I'm not sure whether 32-bit will have a similar issue or not.
-> > > 
-> > > I'm not seeing 32bit or Risc-V have similar issues here, but who knows,
-> > > maybe I missed somsething.
-> > 
-> > I reckon if they do, the core changes here give us the infrastructure to fix
-> > them if/when we get reports.
-> > 
-> > > In any case, the below ought to cure the ARM64 case and remove that last
-> > > known RCU_NONIDLE() user as a bonus.
-> > 
-> > The below works for me testing on a Juno R1 board with PSCI, using defconfig +
-> > CONFIG_PROVE_LOCKING=y + CONFIG_DEBUG_LOCKDEP=y + CONFIG_DEBUG_ATOMIC_SLEEP=y.
-> > I'm not sure how to test the LPI / FFH part, but it looks good to me.
-> > 
-> > FWIW:
-> > 
-> > Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-> > Tested-by: Mark Rutland <mark.rutland@arm.com>
-> > 
-> > Sudeep, would you be able to give the LPI/FFH side a spin with the kconfig
-> > options above?
-> > 
-> 
-> Not sure if I have messed up something in my mail setup, but I did reply
-> earlier.
+Hi all,
 
-Sorry, that was my bad; I had been drafting my reply for a while and forgot to
-re-check prior to sending.
+The helper is tiny and there are advices we can live without it, so
+I want to present few arguments why it would be good to have it:
 
-> I did test both DT/cpuidle-psci driver and  ACPI/LPI+FFH driver
-> with the fix Peter sent. I was seeing same splat as you in both DT and
-> ACPI boot which the patch fixed it. I used the same config as described by
-> you above.
+1. Code readability/simplification/number of lines:
+  - decreases number of lines,
+  - it often eliminates local variables,
+  - for real examples see patches 3+.
 
-Perfect; thanks!
+2. Presence of similar helpers in other somehow related languages/libs:
 
-Mark.
+a) Rust[1]: 'replace' from std::mem module, there is also 'take'
+    helper (__xchg(&x, 0)), which is the same as private helper in
+    i915 - fetch_and_zero, see latest patch.
+b) C++ [2]: 'exchange' from utility header.
+
+If the idea is OK there are still 2 questions to answer:
+
+1. Name of the helper, __xchg follows kernel conventions,
+    but for me Rust names are also OK.
+2. Where to put the helper:
+a) as in this patchset include/linux/non-atomic/xchg.h,
+    proposed by Andy Shevchenko,
+b) include/linux/utils.h ? any better name? Some kind
+    of container for simple helpers.
+
+All __xchg conversions were performed using cocci script,
+then manually adjusted if necessary.
+
+There is lot of places it can be used in, I have just chosen
+some of them. I can provide cocci script to detect others (not all),
+if necessary.
+
+Changes:
+v2: squashed all __xchg -> __arch_xchg t one patch (Arnd)
+v3: fixed alpha/xchg_local (lkp@intel.com)
+v4: adjusted indentation (Heiko)
+v5: added more __xchg conversions - patches 3-6, added tags
+
+[1]: https://doc.rust-lang.org/std/mem/index.html
+[2]: https://en.cppreference.com/w/cpp/header/utility
+
+Regards
+Andrzej
+
+Andrzej Hajda (7):
+  arch: rename all internal names __xchg to __arch_xchg
+  linux/include: add non-atomic version of xchg
+  arch/*/uprobes: simplify arch_uretprobe_hijack_return_addr
+  llist: simplify __llist_del_all
+  io_uring: use __xchg if possible
+  qed: use __xchg if possible
+  drm/i915/gt: use __xchg instead of internal helper
+
+ arch/alpha/include/asm/cmpxchg.h              | 10 +++++-----
+ arch/arc/include/asm/cmpxchg.h                |  4 ++--
+ arch/arm/include/asm/cmpxchg.h                |  7 ++++---
+ arch/arm/probes/uprobes/core.c                |  8 ++------
+ arch/arm64/include/asm/cmpxchg.h              |  7 +++----
+ arch/arm64/kernel/probes/uprobes.c            |  9 ++-------
+ arch/csky/kernel/probes/uprobes.c             |  9 ++-------
+ arch/hexagon/include/asm/cmpxchg.h            | 10 +++++-----
+ arch/ia64/include/asm/cmpxchg.h               |  2 +-
+ arch/ia64/include/uapi/asm/cmpxchg.h          |  4 ++--
+ arch/loongarch/include/asm/cmpxchg.h          |  4 ++--
+ arch/m68k/include/asm/cmpxchg.h               |  6 +++---
+ arch/mips/include/asm/cmpxchg.h               |  4 ++--
+ arch/mips/kernel/uprobes.c                    | 10 ++--------
+ arch/openrisc/include/asm/cmpxchg.h           | 10 +++++-----
+ arch/parisc/include/asm/cmpxchg.h             |  4 ++--
+ arch/powerpc/include/asm/cmpxchg.h            |  4 ++--
+ arch/powerpc/kernel/uprobes.c                 | 10 ++--------
+ arch/riscv/include/asm/atomic.h               |  2 +-
+ arch/riscv/include/asm/cmpxchg.h              |  4 ++--
+ arch/riscv/kernel/probes/uprobes.c            |  9 ++-------
+ arch/s390/include/asm/cmpxchg.h               |  8 ++++----
+ arch/s390/kernel/uprobes.c                    |  7 ++-----
+ arch/sh/include/asm/cmpxchg.h                 |  4 ++--
+ arch/sparc/include/asm/cmpxchg_32.h           |  4 ++--
+ arch/sparc/include/asm/cmpxchg_64.h           |  6 +++---
+ arch/sparc/kernel/uprobes.c                   |  7 ++-----
+ arch/xtensa/include/asm/cmpxchg.h             |  4 ++--
+ drivers/gpu/drm/i915/gt/intel_engine_cs.c     |  2 +-
+ .../gpu/drm/i915/gt/intel_engine_heartbeat.c  |  4 ++--
+ .../drm/i915/gt/intel_execlists_submission.c  |  4 ++--
+ drivers/gpu/drm/i915/gt/intel_ggtt.c          |  4 ++--
+ drivers/gpu/drm/i915/gt/intel_gsc.c           |  2 +-
+ drivers/gpu/drm/i915/gt/intel_gt.c            |  4 ++--
+ drivers/gpu/drm/i915/gt/intel_gt_pm.c         |  2 +-
+ drivers/gpu/drm/i915/gt/intel_lrc.c           |  6 +++---
+ drivers/gpu/drm/i915/gt/intel_migrate.c       |  2 +-
+ drivers/gpu/drm/i915/gt/intel_rc6.c           |  2 +-
+ drivers/gpu/drm/i915/gt/intel_rps.c           |  2 +-
+ drivers/gpu/drm/i915/gt/selftest_context.c    |  2 +-
+ .../drm/i915/gt/selftest_ring_submission.c    |  2 +-
+ drivers/gpu/drm/i915/gt/selftest_timeline.c   |  2 +-
+ drivers/gpu/drm/i915/gt/uc/intel_gsc_uc.c     |  2 +-
+ drivers/gpu/drm/i915/gt/uc/intel_uc.c         |  2 +-
+ drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c      |  2 +-
+ drivers/gpu/drm/i915/i915_utils.h             |  1 +
+ include/linux/llist.h                         |  6 ++----
+ include/linux/non-atomic/xchg.h               | 19 +++++++++++++++++++
+ include/linux/qed/qed_chain.h                 | 19 +++++++------------
+ io_uring/io_uring.c                           |  7 ++-----
+ io_uring/slist.h                              |  6 ++----
+ 51 files changed, 126 insertions(+), 155 deletions(-)
+ create mode 100644 include/linux/non-atomic/xchg.h
+
+-- 
+2.34.1
+
