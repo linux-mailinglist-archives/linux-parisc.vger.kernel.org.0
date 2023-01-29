@@ -2,112 +2,138 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34E2D67F768
-	for <lists+linux-parisc@lfdr.de>; Sat, 28 Jan 2023 11:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA81867FEFE
+	for <lists+linux-parisc@lfdr.de>; Sun, 29 Jan 2023 13:43:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233463AbjA1K7Q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 28 Jan 2023 05:59:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54920 "EHLO
+        id S234944AbjA2MnL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 29 Jan 2023 07:43:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230263AbjA1K7P (ORCPT
+        with ESMTP id S232009AbjA2MnK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 28 Jan 2023 05:59:15 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273D715570
-        for <linux-parisc@vger.kernel.org>; Sat, 28 Jan 2023 02:59:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1674903544; bh=0AsZTp4KYHGzvOutkRxBudlgIvWfMyuWKUE3cxaKDfA=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=avIY8f10yeHu+kV16Ai4LOU2RkMoRr//X/SQZsXOMiqqklhfcgEZwPHthqc2EtAM3
-         vi2L+GLJTKarY3z8Fwk8bVLnGV0rUiIczx8UpiwHChtiUJTvGSjglXtPBgsMOJNb4q
-         Nmvr4tSU84Qh0p28x47wEiethGZ/WtcClFYaJiWxwX/Dx6Wb47FMs5CsbPe9p+K8BW
-         APzkhcBNopxCUO7moNu2jp7FFNxuJIl/jKz9vn0JPNqi68dw+L9zndPhnu9OYyKewk
-         9VlJG/88i6E5RqpvYlzUhyDAfRc3iVvIya61gssxDtDO2YI/tuFepjSRogdeVKkpUa
-         NYh6aS8uY2cnw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.166.9]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mk0JM-1oxLOJ3a0m-00kPsv; Sat, 28
- Jan 2023 11:59:03 +0100
-Message-ID: <f1722f22-ecdd-a5c6-f498-5f86173b40ef@gmx.de>
-Date:   Sat, 28 Jan 2023 11:59:00 +0100
+        Sun, 29 Jan 2023 07:43:10 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8620125A7;
+        Sun, 29 Jan 2023 04:43:08 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id C17B2CE09E5;
+        Sun, 29 Jan 2023 12:43:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E716EC433D2;
+        Sun, 29 Jan 2023 12:42:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674996176;
+        bh=8RQZps3hA/u1mdRRQGYSzSx3iKFm4iTs/37kan3EXRs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=nZUZmSKw7/syf9RrBIFurd/O3AkMNzmfegfK+1AS6FvCaH0OhJOzBAu3UXC6av8P5
+         uY9AOa46F/d5yj77Ho8Ndgvw8xxJHw4nNHTmwjtslAXWyegt5vS1IKaYW+Stnwyuiy
+         2a+kHtcUtcTQ5Rqh9d7F2WecpHec0CXwi5TSyt1qClHpJLOA2sydJTb6OF8VZPCNps
+         3fd8EBQ67Wgcl+xTfrf7oQnKtinBQv8tebZZGSc5tamZZbBvwb6yYhdPyn1uALV1nu
+         d2H6gUYCo1lWTN9F7fs+AKTM2279BJ7XhGhJhYj0+jZo3axy2AgunU1xbS8ZdbQ6oz
+         oCSDE8gtPikyw==
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Brian Cain <bcain@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Rich Felker <dalias@libc.org>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Vineet Gupta <vgupta@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-mm@kvack.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, "Mike Rapoport (IBM)" <rppt@kernel.org>
+Subject: [PATCH v2 0/4] mm, arch: add generic implementation of pfn_valid() for FLATMEM
+Date:   Sun, 29 Jan 2023 14:42:31 +0200
+Message-Id: <20230129124235.209895-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH] parisc: Ensure page-aligned addresses in cache flush and
- copy functions
-Content-Language: en-US
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     linux-parisc@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Fabio M . De Francesco" <fmdefrancesco@gmail.com>
-References: <20230127213941.83967-1-deller@gmx.de>
- <Y9Rgor0T8dSzPgiX@casper.infradead.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <Y9Rgor0T8dSzPgiX@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:acFYJ6bi78I0SbTYHQ3CNKSxWT+isCZOoMwQw8DVwE27w5+o8fe
- wm/kZC+dXd1KmU3ql8vFADwq4/Mb087VpOYEcVNwhuXe3z4Ol+gj19hc4UdoxMlQQT3ko2r
- Yku8aZ+OB3ExKhLo+scvQ0QpxsQeRd3UVgeff8di8Ae70ObLfq+2NfhE3b2YsrNCQHrEgT8
- o9/1cDyfgVW2T1b4xtUag==
-UI-OutboundReport: notjunk:1;M01:P0:fZq3tv7o3Kg=;yAZ2/uS1YPvc9+39rBtnh6kJLV6
- wJdzvuRR96Y4u4E9nVGQTmUG5p7ZG2TQmPFFnME+iNo/5Ia/RKBOE6lFrE7yb35B1Z/FlVY79
- M4xq/9pgurKODBRmPfRdjJfnAYDnTBvXlgRB2l5c4vWr7n0icxiLwY2kITNKPIj48xxpBkQvA
- CcHUwkNbRY5tkqXS70mBKCpv1jX9Rm8mA8HAq8xW7iFM/ejX0f81WGcncZWDpVlzbe+b9Tjru
- 4vM7aYn3afF6rLxoRZpPBb0nTqEtLK6CXPE+BI3iFWaoF583vYcd/GxwL9KDeFPI52iCL7cqd
- 4Hm2gmQr8q4gJesRngQjdIUVG/74xqRfg0Gsgl0+vc7/N1ZAW/gachBWU7nm264qp2J8Po3b1
- VAKv+PAmOeFYtZpVBdGzJNn/+8bYFOs6cLRW+EcvtPqjmde9hO88Lh4DEa2VQuAfo0alLm1Af
- DOKetSynsZMpkwUInWl2C2GidydMZp0wfBT6sUKjiWEsZI3dFPLB79FT6/olR0yiKrEta8bqs
- 303BnMwDoP3wjXjPT1ROV1KDmGzj+WMNYt28zMOOdh4OTE6n9GovAaK6is44Q68LRb31hOyAY
- rLs2QisZ0Xg/Z1ARqFSSASndTM6vTSBlBN9+BuKChhHiOPyYfrAKvT8mlvkk57XbSS063srFh
- sDAScgGmitvwco3luf125lj89nL/uNOZzWELYsBTROmVTnjsjpE6LP/POHZQE8hkFKLrbZ1JS
- cjFXhTKiSMeICkGSVoCMeeF7pFH0sUR3cGSAq4Dsf8PCM1p0hEhfF/1hBaoHTBUyoHnvJoas4
- azJqHn6b0bcBCrGffc2CgQ1GE3FCb3Pqg0+gO0VM0Ma+JmseY+3jSScONbTrWvSednPXnTOjt
- WL9RJk531dEVjFpHv+E+m+znCVgf7tuy1B2Aadc0vuadcXUV6trmldO4MhGz3W6DTif5pQrcT
- 4oPPO+YRmjMPL3dnLmbXAPBuUuI=
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 1/28/23 00:39, Matthew Wilcox wrote:
-> On Fri, Jan 27, 2023 at 10:39:41PM +0100, Helge Deller wrote:
->> Matthew Wilcox noticed, that if ARCH_HAS_FLUSH_ON_KUNMAP is defined
->> (which is the case for PA-RISC), __kunmap_local() calls
->> kunmap_flush_on_unmap(), which may call the parisc flush functions with
->> a non-page-aligned address and thus the page might not be fully flushed=
-.
->>
->> To prevent similiar cases, page-align any given address in the
->> following parisc low-level calls:
->> - clear_page_asm(),
->> - copy_page_asm(),
->> - copy_user_page_asm(),
->> - clear_user_page_asm(),
->> - flush_kernel_dcache_page_asm(),
->> - purge_kernel_dcache_page_asm() and
->> - flush_kernel_icache_page()
->
-> I don't think this is the right way to go.  Imagine that we enable
-> large folios on architectures that don't support TRANSPARENT_HUGEPAGE
-> (ie PA-RISC).  Then folio_zero_range() is going to call kmap_local()
-> and kunmap_local() once per folio instead of once per page, and so we'll
-> need to flush the entire folio, not just the page.
+From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-Don't the functions mentioned above in my patch operate on standard 4k pag=
-e size
-for all architectures? So, if you want to flush a whole folio you will pro=
-bably
-not want to call those functions by iterating over the folio-memory, but c=
-all
-some other function, right?
-In that case flush_kernel_dcache_range_asm() is probably better suited the=
-n, as it
-doesn't page-align the given address.
+Hi,
 
-Helge
+Every architecture that supports FLATMEM memory model defines its own
+version of pfn_valid() that essentially compares a pfn to max_mapnr.
+
+Use mips/powerpc version implemented as static inline as a generic
+implementation of pfn_valid() and drop its per-architecture definitions
+
+v2:
+* fix build on ARM and xtensa
+* add Acked- and Reviewed-by, thanks everybody
+
+v1: https://lore.kernel.org/all/20230125190757.22555-1-rppt@kernel.org
+
+Mike Rapoport (IBM) (4):
+  arm: include asm-generic/memory_model.h from page.h rather than
+    memory.h
+  m68k: use asm-generic/memory_model.h for both MMU and !MMU
+  mips: drop definition of pfn_valid() for DISCONTIGMEM
+  mm, arch: add generic implementation of pfn_valid() for FLATMEM
+
+ arch/alpha/include/asm/page.h      |  4 ----
+ arch/arc/include/asm/page.h        |  1 -
+ arch/arm/include/asm/memory.h      |  2 --
+ arch/arm/include/asm/page.h        |  2 ++
+ arch/csky/include/asm/page.h       |  1 -
+ arch/hexagon/include/asm/page.h    |  1 -
+ arch/ia64/include/asm/page.h       |  4 ----
+ arch/loongarch/include/asm/page.h  | 13 -------------
+ arch/m68k/include/asm/page.h       |  6 +-----
+ arch/m68k/include/asm/page_mm.h    |  1 -
+ arch/m68k/include/asm/page_no.h    |  4 ----
+ arch/microblaze/include/asm/page.h |  1 -
+ arch/mips/include/asm/page.h       | 28 ----------------------------
+ arch/nios2/include/asm/page.h      |  9 ---------
+ arch/openrisc/include/asm/page.h   |  2 --
+ arch/parisc/include/asm/page.h     |  4 ----
+ arch/powerpc/include/asm/page.h    |  9 ---------
+ arch/riscv/include/asm/page.h      |  5 -----
+ arch/sh/include/asm/page.h         |  3 ---
+ arch/sparc/include/asm/page_32.h   |  1 -
+ arch/um/include/asm/page.h         |  1 -
+ arch/x86/include/asm/page_32.h     |  4 ----
+ arch/x86/include/asm/page_64.h     |  4 ----
+ arch/xtensa/include/asm/page.h     |  4 ++--
+ include/asm-generic/memory_model.h | 12 ++++++++++++
+ include/asm-generic/page.h         |  2 --
+ 26 files changed, 17 insertions(+), 111 deletions(-)
+
+
+base-commit: 2241ab53cbb5cdb08a6b2d4688feb13971058f65
+-- 
+2.35.1
+
