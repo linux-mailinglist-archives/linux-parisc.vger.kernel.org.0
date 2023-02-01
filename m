@@ -2,78 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE444686F49
-	for <lists+linux-parisc@lfdr.de>; Wed,  1 Feb 2023 20:51:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B2A7686FAD
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 Feb 2023 21:33:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231359AbjBATv5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 1 Feb 2023 14:51:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34420 "EHLO
+        id S229481AbjBAUdi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 1 Feb 2023 15:33:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231382AbjBATvz (ORCPT
+        with ESMTP id S229479AbjBAUdh (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 1 Feb 2023 14:51:55 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1E7125A0
-        for <linux-parisc@vger.kernel.org>; Wed,  1 Feb 2023 11:51:54 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id k4so49226744eje.1
-        for <linux-parisc@vger.kernel.org>; Wed, 01 Feb 2023 11:51:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vLOt8Htpi1Up/DCPSKgd2HVLgjbb3KJvZ9wNHdxeIi0=;
-        b=F70AJ99pkUxssTeL0XhQsULJ+i1q3hIfT9mQJxKYXMRcGN/4hPjNKQXfjgd8TBqpBG
-         BetUorZ/VTlYCLAfd+XP2RRKW0JVrfaxYcX4T9dpsWXY9GYLSKeTv64OlMI8Kd6WjuJ/
-         BWyXoO4myVBwLlBRPvXQouhFGSPXaEWcUSKkI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vLOt8Htpi1Up/DCPSKgd2HVLgjbb3KJvZ9wNHdxeIi0=;
-        b=FKbPs4EZZuBGAO+8kr0lKQH1ZKBSPQSii+UHOOfWN1LD3mc+DC4R3A3ZY0IqnOg2CN
-         Ol3p4EVVd6oku8XkPNB+99oTqt/QyZGYbP7wnl/qaRUvZPQVFNzAzuDOsLwEExxutmdF
-         OkFrHlksz9LKrIc8RovjmHPTh5z+pVEa0+AMZthdr61h71Kn9pZwY5KasGuqEVm2aIUM
-         vJGTN+kQarMcQbKgkzaufLgZ/ex+F4vNOZojouXP5fv1PuneV/vT1cza92954g2gZNvE
-         Z80KAq9oQR2+DX1f6JKhISddyVib0AK1tMBGhHgAmxtaYCywqfCumiA4TjMAh/BCz7Gh
-         X0jQ==
-X-Gm-Message-State: AO0yUKWstK9A8A0mcXhuhcaw5a3Ciu2Yo/hbZwoBTkwKgDi/rJTKQhO8
-        /Yi+yWUsuCiYF0PHVhj/rL3F5vZobaa+5IDgs7U=
-X-Google-Smtp-Source: AK7set9pr75I+NZRXS4wC7tHtvRXP3LmvdsakpvKDt/gDiqZkHaeSxu5CMyFIzLcoAID7tQ5K8D02A==
-X-Received: by 2002:a17:906:b04a:b0:878:814d:bc99 with SMTP id bj10-20020a170906b04a00b00878814dbc99mr3314494ejb.66.1675281112481;
-        Wed, 01 Feb 2023 11:51:52 -0800 (PST)
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
-        by smtp.gmail.com with ESMTPSA id 17-20020a170906059100b0085fc3dec567sm10549262ejn.175.2023.02.01.11.51.51
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Feb 2023 11:51:51 -0800 (PST)
-Received: by mail-ej1-f45.google.com with SMTP id dr8so33096781ejc.12
-        for <linux-parisc@vger.kernel.org>; Wed, 01 Feb 2023 11:51:51 -0800 (PST)
-X-Received: by 2002:a17:906:f8d4:b0:878:51a6:ff35 with SMTP id
- lh20-20020a170906f8d400b0087851a6ff35mr995069ejb.43.1675281111261; Wed, 01
- Feb 2023 11:51:51 -0800 (PST)
+        Wed, 1 Feb 2023 15:33:37 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 737606ACA4
+        for <linux-parisc@vger.kernel.org>; Wed,  1 Feb 2023 12:33:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1675283610; bh=Wf/Vav/xkYTzDcwgz0XtR81PB0yfoWIBycaNFOSD6nY=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=izKveUuMR+BN58EQKDuRTiGYt0wGTqS05HrezIrroNlCq5DywAfRy7qAqHLQ1JOeh
+         USLJ+nPq61pXSrIMBeqsiwKIwO0ra5Sd4Hl3PT8NjPJ8dZs41IhL+B9ju+YtJgTvPR
+         3eZydlpNZZS6/Z8wW4WwqEiaLHw9xAxYPhy4Ihasl58WSeHiMey8YnZnGYD/0M6GHc
+         RmsP9OlXNXR0J2i5ZDpSJnziid6PaTjI5ETsn19Oa8bYZO2sMkkaAViklXDcsCrj9x
+         ikmfw58k/RgXuuLKEzz5HzbOlmWnM3GLXBKOxAZujPL4PES7IQaf91CV0Po3lotbHs
+         XsLZCBGNQHCxA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([92.116.144.73]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N9dwj-1oc8dD0YtR-015Wfz; Wed, 01
+ Feb 2023 21:33:30 +0100
+Date:   Wed, 1 Feb 2023 21:33:28 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH] parisc: Add checks to verify page alignment in cache
+Message-ID: <Y9rMmE5+8Nmp3AxC@p100>
 MIME-Version: 1.0
-References: <Y9lz6yk113LmC9SI@ZenIV> <CAHk-=whf73Vm2U3jyTva95ihZzefQbThZZxqZuKAF-Xjwq=G4Q@mail.gmail.com>
- <Y9mD1qp/6zm+jOME@ZenIV> <CAHk-=wjiwFzEGd_60H3nbgVB=R_8KTcfUJmXy=hSXCvLrXQRFA@mail.gmail.com>
- <8f60f7d8-3e2f-2a91-c7a3-6a005d36d7d3@gmx.de>
-In-Reply-To: <8f60f7d8-3e2f-2a91-c7a3-6a005d36d7d3@gmx.de>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 1 Feb 2023 11:51:34 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whYidrLJSq80s8C0LSui_h9164cxG6WNV1M77Tk_2QFug@mail.gmail.com>
-Message-ID: <CAHk-=whYidrLJSq80s8C0LSui_h9164cxG6WNV1M77Tk_2QFug@mail.gmail.com>
-Subject: Re: [RFC][PATCHSET] VM_FAULT_RETRY fixes
-To:     Helge Deller <deller@gmx.de>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>, Peter Xu <peterx@redhat.com>,
-        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, Michal Simek <monstr@monstr.eu>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:vR7+KJOMEKQB0iPqZ45XYijjLp1F1ZL6xPbtBuMkMRfw5ivAOz7
+ PlBVw949CVoXNC3bfu2OZ0OTkbEaN56Fna38+eii31VlW+0Nw2RjvsyUzww74qEgLTC++RR
+ Sk+tUjfo8QaaolZDfyKSjNL9f7t0x8TABTceBag3Lt/XfIAlno5x/I49qRixzqmWgCPl3u7
+ SN/BoFyIfJ7WKhiJcBsNg==
+UI-OutboundReport: notjunk:1;M01:P0:vWMnAIE+ed8=;Ps04vrtFTkclmOHCZ2KC/VXcbao
+ TRA8UWPUGKXgK9EMjbRkr8mvqJ3LAh6do7zc9U0nO7h0yTInDvM8H73hA+5n1aUzpZfn/jOrr
+ tWUu2UE26eczyVHAhZz3qdO2eSVcBmzmP+EzkMWndl5c9rGYvZVHyk1mIboPd8UrcPjSYeChe
+ qXGaj18TsCJrkcI27SetqRXUA8jxj0anypKH4b+6o+F7x0+2jnXvDiHcRWKaECU3w2Brhex7N
+ 5zFR8YZ08AKC+wywIAgnrLh/YVZWCRDoESwbaYFZmkfQ3gkHLCIx2IJV4KEBb9jOo2FhJD2I1
+ YXdtnJnvGpwohe7mYtUJLcy8TyqCtayh4EF/ojvZT4IMBdy8Wi364PSAEWdepfxgXCpfiL6ka
+ Xm+Alf6tdJeG9c4B+OS0WUPzHwswxfbgiShHrX5w0Bc7BIAdiQnarMN/VgdsMF/ssH8cCbxTX
+ lh4Yv7LcGm4ckBQDma6Y/xVQcmrfLaOrUfkrG8RSPsQnPLypQVv62XLnMzW065Y5TETivmwXC
+ s6hMzFSIz84NDsh2YNTeRfaMPmwYNFCsPSk8tslEBHgr18C1YQjmo9rJ2qn5D5pIeak9+vv0I
+ CA9GkUQaH40dWaUAiW/1Mz4sEVePbOrf4AxpEjaej0HuwjmWXKT61gZZudBet7DwvoRysaFQ1
+ xY3xJZSxl+0a9T++dCFcfZlibf91NKNZCCGNYzHpBNAg83KsR+Unen1wkXBGh7jPjIUvElTTF
+ YFY4ZlHJLiynzkTg19Uvowg3/m75xnnlxm27zq0d7/W3Dst3msixPzuBg0Q0dck5aeCIB2PdD
+ +ylstvwKJieAn35hV9D2h0x4SCNUUC5SzYz2PdYVhyY3LWkF95x1viU3nMrhNfwsEZdBqVVXL
+ CTeNMxDSuyU2GIqLmvpLBCQB/28/vcY0PKx4D4lcKrM/1okIHmoM3KSnSvJoaiTtVXIXNcikN
+ GmjxIw==
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,37 +67,68 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Feb 1, 2023 at 12:21 AM Helge Deller <deller@gmx.de> wrote:
->
-> AFAICS, the only applications which really care about the return
-> code are
-> - testsuites like LTP (i.e. the fstat05 testcase)
+functions
+Reply-To:
 
-Those have actually shown issues with various library implementations,
-exactly because real system calls act very differently in this area
-from library wrappers.
+Add checks to ensure that only page-aligned addresses are provided.
 
-Things like the vdso implementation of gettimeofday() get a SIGSEGV if
-the timeval or timezone pointer is invalid, while the "real system
-call" version returns -1/EFAULT instead.
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-And very similar things happen when glibc ends up wrapping system
-calls and converting buffers manually. At some point, glibc had a
-special 'struct stat' and basically converted the native system call
-to it, so you did 'stat()' on something, and it ended up actually
-using a private on-stack buffer for the system call, followed by a
-"convert that kernel 'struct stat' to the glibc 'struct stat'" phase.
-So once again, instead of -1/EFAULT, you'd first have a successful
-system call, and then get a SIGSEGV  in glibc.
+diff --git a/arch/parisc/include/asm/cacheflush.h b/arch/parisc/include/as=
+m/cacheflush.h
+index 0bdee6724132..ff07c509e04b 100644
+=2D-- a/arch/parisc/include/asm/cacheflush.h
++++ b/arch/parisc/include/asm/cacheflush.h
+@@ -15,6 +15,9 @@ DECLARE_STATIC_KEY_TRUE(parisc_has_cache);
+ DECLARE_STATIC_KEY_TRUE(parisc_has_dcache);
+ DECLARE_STATIC_KEY_TRUE(parisc_has_icache);
 
-And as you say, test suites would notice. But no actual normal app
-would ever care.
++#define PA_CHECK_PAGE_ALIGNED(addr) \
++	WARN_ON_ONCE((unsigned long)addr & ~PAGE_MASK)
++
+ #define flush_cache_dup_mm(mm) flush_cache_mm(mm)
 
-Of course, there's always the abnormal apps. There _are_ the odd cases
-that actually catch faults and fix them up, and can then be confused
-by changes like that.
+ void flush_user_icache_range_asm(unsigned long, unsigned long);
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index 1d3b8bc8a623..595968f708c3 100644
+=2D-- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -317,6 +317,7 @@ __flush_cache_page(struct vm_area_struct *vma, unsigne=
+d long vmaddr,
+ {
+ 	if (!static_branch_likely(&parisc_has_cache))
+ 		return;
++	PA_CHECK_PAGE_ALIGNED(vmaddr);
+ 	preempt_disable();
+ 	flush_dcache_page_asm(physaddr, vmaddr);
+ 	if (vma->vm_flags & VM_EXEC)
+@@ -550,6 +551,7 @@ void flush_kernel_dcache_page_addr(const void *addr)
+ {
+ 	unsigned long flags;
 
-It's very very rare, but it happens - things like emulators do tend to
-do some really strange things.
++	PA_CHECK_PAGE_ALIGNED(addr);
+ 	flush_kernel_dcache_page_asm(addr);
+ 	purge_tlb_start(flags);
+ 	pdtlb(SR_KERNEL, addr);
+@@ -567,8 +569,10 @@ static void flush_cache_page_if_present(struct vm_are=
+a_struct *vma,
+ 	 * a non-access TLB miss. Hopefully, the page has already been
+ 	 * flushed.
+ 	 */
+-	if (ptep && pte_needs_flush(*ptep))
++	if (ptep && pte_needs_flush(*ptep)) {
++		PA_CHECK_PAGE_ALIGNED(vmaddr);
+ 		flush_cache_page(vma, vmaddr, pfn);
++	}
+ }
 
-         Linus
+ void copy_user_highpage(struct page *to, struct page *from,
+@@ -712,6 +716,7 @@ void flush_cache_page(struct vm_area_struct *vma, unsi=
+gned long vmaddr, unsigned
+ {
+ 	if (WARN_ON(!pfn_valid(pfn)))
+ 		return;
++	PA_CHECK_PAGE_ALIGNED(vmaddr);
+ 	if (parisc_requires_coherency())
+ 		flush_user_cache_page(vma, vmaddr);
+ 	else
