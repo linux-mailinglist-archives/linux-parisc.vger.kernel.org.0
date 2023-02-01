@@ -2,64 +2,58 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B2A7686FAD
-	for <lists+linux-parisc@lfdr.de>; Wed,  1 Feb 2023 21:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB8FD6870E6
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 Feb 2023 23:18:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjBAUdi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 1 Feb 2023 15:33:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48786 "EHLO
+        id S231716AbjBAWST (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 1 Feb 2023 17:18:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjBAUdh (ORCPT
+        with ESMTP id S230373AbjBAWSS (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 1 Feb 2023 15:33:37 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 737606ACA4
-        for <linux-parisc@vger.kernel.org>; Wed,  1 Feb 2023 12:33:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1675283610; bh=Wf/Vav/xkYTzDcwgz0XtR81PB0yfoWIBycaNFOSD6nY=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=izKveUuMR+BN58EQKDuRTiGYt0wGTqS05HrezIrroNlCq5DywAfRy7qAqHLQ1JOeh
-         USLJ+nPq61pXSrIMBeqsiwKIwO0ra5Sd4Hl3PT8NjPJ8dZs41IhL+B9ju+YtJgTvPR
-         3eZydlpNZZS6/Z8wW4WwqEiaLHw9xAxYPhy4Ihasl58WSeHiMey8YnZnGYD/0M6GHc
-         RmsP9OlXNXR0J2i5ZDpSJnziid6PaTjI5ETsn19Oa8bYZO2sMkkaAViklXDcsCrj9x
-         ikmfw58k/RgXuuLKEzz5HzbOlmWnM3GLXBKOxAZujPL4PES7IQaf91CV0Po3lotbHs
-         XsLZCBGNQHCxA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([92.116.144.73]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N9dwj-1oc8dD0YtR-015Wfz; Wed, 01
- Feb 2023 21:33:30 +0100
-Date:   Wed, 1 Feb 2023 21:33:28 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Add checks to verify page alignment in cache
-Message-ID: <Y9rMmE5+8Nmp3AxC@p100>
+        Wed, 1 Feb 2023 17:18:18 -0500
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E746B46E;
+        Wed,  1 Feb 2023 14:18:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=HeRJm8KctCrX0oOm/Y7Yhl6b2oWkUrXelanwq9cuW04=; b=s3yDBojwIW+WM0sj9TfKGsKeVt
+        1zdWY36xsTGCDIJSSRer+NXnDlrlVZbUebN/+LRLQk0M3+EJVyJsoALTrbiZEImwAHs0f45oS9z8g
+        /PWZ7U63m3EKmuohEA5H9VFevg7AkoNZrIpQxD/4CjdnbvXiVL5HxesWGUsCEKCOfg1d+HfE4U1fp
+        pfI2jNiCFcdefEoV5mv1vReIcXZMrCnLgX7EJycvGntMjZEpBHZxtfL74GlqXuIjVmiZNck9lLThr
+        blwe/5yHxKuLVnP3D+qY95y5ndViv4oUnFbMBYnPQyeOFAIAKAt4HzRtn3naJhxRZZDhKMo5yMEsr
+        3beybxdg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1pNLQh-005XXV-0t;
+        Wed, 01 Feb 2023 22:18:11 +0000
+Date:   Wed, 1 Feb 2023 22:18:11 +0000
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Peter Xu <peterx@redhat.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, Michal Simek <monstr@monstr.eu>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org
+Subject: Re: [RFC][PATCHSET] VM_FAULT_RETRY fixes
+Message-ID: <Y9rlI6d5J2Y/YNQ+@ZenIV>
+References: <Y9lz6yk113LmC9SI@ZenIV>
+ <CAHk-=whf73Vm2U3jyTva95ihZzefQbThZZxqZuKAF-Xjwq=G4Q@mail.gmail.com>
+ <Y9mD1qp/6zm+jOME@ZenIV>
+ <CAHk-=wjiwFzEGd_60H3nbgVB=R_8KTcfUJmXy=hSXCvLrXQRFA@mail.gmail.com>
+ <Y9mM5wiEhepjJcN0@ZenIV>
+ <CAHk-=wjNwwnBckTo8HLSdsd1ndoAR=5RBoZhdOyzhsnDAYWL9g@mail.gmail.com>
+ <Y9rCBqwbLlLf1fHe@x1n>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:vR7+KJOMEKQB0iPqZ45XYijjLp1F1ZL6xPbtBuMkMRfw5ivAOz7
- PlBVw949CVoXNC3bfu2OZ0OTkbEaN56Fna38+eii31VlW+0Nw2RjvsyUzww74qEgLTC++RR
- Sk+tUjfo8QaaolZDfyKSjNL9f7t0x8TABTceBag3Lt/XfIAlno5x/I49qRixzqmWgCPl3u7
- SN/BoFyIfJ7WKhiJcBsNg==
-UI-OutboundReport: notjunk:1;M01:P0:vWMnAIE+ed8=;Ps04vrtFTkclmOHCZ2KC/VXcbao
- TRA8UWPUGKXgK9EMjbRkr8mvqJ3LAh6do7zc9U0nO7h0yTInDvM8H73hA+5n1aUzpZfn/jOrr
- tWUu2UE26eczyVHAhZz3qdO2eSVcBmzmP+EzkMWndl5c9rGYvZVHyk1mIboPd8UrcPjSYeChe
- qXGaj18TsCJrkcI27SetqRXUA8jxj0anypKH4b+6o+F7x0+2jnXvDiHcRWKaECU3w2Brhex7N
- 5zFR8YZ08AKC+wywIAgnrLh/YVZWCRDoESwbaYFZmkfQ3gkHLCIx2IJV4KEBb9jOo2FhJD2I1
- YXdtnJnvGpwohe7mYtUJLcy8TyqCtayh4EF/ojvZT4IMBdy8Wi364PSAEWdepfxgXCpfiL6ka
- Xm+Alf6tdJeG9c4B+OS0WUPzHwswxfbgiShHrX5w0Bc7BIAdiQnarMN/VgdsMF/ssH8cCbxTX
- lh4Yv7LcGm4ckBQDma6Y/xVQcmrfLaOrUfkrG8RSPsQnPLypQVv62XLnMzW065Y5TETivmwXC
- s6hMzFSIz84NDsh2YNTeRfaMPmwYNFCsPSk8tslEBHgr18C1YQjmo9rJ2qn5D5pIeak9+vv0I
- CA9GkUQaH40dWaUAiW/1Mz4sEVePbOrf4AxpEjaej0HuwjmWXKT61gZZudBet7DwvoRysaFQ1
- xY3xJZSxl+0a9T++dCFcfZlibf91NKNZCCGNYzHpBNAg83KsR+Unen1wkXBGh7jPjIUvElTTF
- YFY4ZlHJLiynzkTg19Uvowg3/m75xnnlxm27zq0d7/W3Dst3msixPzuBg0Q0dck5aeCIB2PdD
- +ylstvwKJieAn35hV9D2h0x4SCNUUC5SzYz2PdYVhyY3LWkF95x1viU3nMrhNfwsEZdBqVVXL
- CTeNMxDSuyU2GIqLmvpLBCQB/28/vcY0PKx4D4lcKrM/1okIHmoM3KSnSvJoaiTtVXIXNcikN
- GmjxIw==
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+In-Reply-To: <Y9rCBqwbLlLf1fHe@x1n>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,68 +61,130 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-functions
-Reply-To:
+On Wed, Feb 01, 2023 at 02:48:22PM -0500, Peter Xu wrote:
 
-Add checks to ensure that only page-aligned addresses are provided.
+> I do also see a common pattern of the possibility to have a generic fault
+> handler like generic_page_fault().
+> 
+> It probably should start with taking the mmap_sem until providing some
+> retval that is much easier to digest further by the arch-dependent code, so
+> it can directly do something rather than parsing the bitmask in a
+> duplicated way (hence the new retval should hopefully not a bitmask anymore
+> but a "what to do").
+> 
+> Maybe it can be something like:
+> 
+> /**
+>  * enum page_fault_retval - Higher level fault retval, generalized from
+>  * vm_fault_reason above that is only used by hardware page fault handlers.
+>  * It generalizes the bitmask-versioned retval into something that the arch
+>  * dependent code should react upon.
+>  *
+>  * @PF_RET_COMPLETED:		The page fault is completed successfully
+>  * @PF_RET_BAD_AREA:		The page fault address falls in a bad area
+>  *				(e.g., vma not found, expand_stack() fails..)
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+FWIW, there's a fun discrepancy - VM_FAULT_SIGSEGV may yield SEGV_MAPERR
+or SEGV_ACCERR; depends upon the architecture.  Not that there'd been
+many places that return VM_FAULT_SIGSEGV these days...  Good thing, too,
+since otherwise e.g. csky would oops...
 
-diff --git a/arch/parisc/include/asm/cacheflush.h b/arch/parisc/include/as=
-m/cacheflush.h
-index 0bdee6724132..ff07c509e04b 100644
-=2D-- a/arch/parisc/include/asm/cacheflush.h
-+++ b/arch/parisc/include/asm/cacheflush.h
-@@ -15,6 +15,9 @@ DECLARE_STATIC_KEY_TRUE(parisc_has_cache);
- DECLARE_STATIC_KEY_TRUE(parisc_has_dcache);
- DECLARE_STATIC_KEY_TRUE(parisc_has_icache);
+>  * @PF_RET_ACCESS_ERR:		The page fault has access errors
+>  *				(e.g., write fault on !VM_WRITE vmas)
+>  * @PF_RET_KERN_FIXUP:		The page fault requires kernel fixups
+>  *				(e.g., during copy_to_user() but fault failed?)
+>  * @PF_RET_HWPOISON:		The page fault encountered poisoned pages
+>  * @PF_RET_SIGNAL:		The page fault encountered poisoned pages
 
-+#define PA_CHECK_PAGE_ALIGNED(addr) \
-+	WARN_ON_ONCE((unsigned long)addr & ~PAGE_MASK)
-+
- #define flush_cache_dup_mm(mm) flush_cache_mm(mm)
+??
 
- void flush_user_icache_range_asm(unsigned long, unsigned long);
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 1d3b8bc8a623..595968f708c3 100644
-=2D-- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -317,6 +317,7 @@ __flush_cache_page(struct vm_area_struct *vma, unsigne=
-d long vmaddr,
- {
- 	if (!static_branch_likely(&parisc_has_cache))
- 		return;
-+	PA_CHECK_PAGE_ALIGNED(vmaddr);
- 	preempt_disable();
- 	flush_dcache_page_asm(physaddr, vmaddr);
- 	if (vma->vm_flags & VM_EXEC)
-@@ -550,6 +551,7 @@ void flush_kernel_dcache_page_addr(const void *addr)
- {
- 	unsigned long flags;
+>  * ...
+>  */
+> enum page_fault_retval {
+> 	PF_RET_DONE = 0,
+> 	PF_RET_BAD_AREA,
+> 	PF_RET_ACCESS_ERR,
+> 	PF_RET_KERN_FIXUP,
+>         PF_RET_HWPOISON,
+>         PF_RET_SIGNAL,
+> 	...
+> };
+> 
+> As a start we may still want to return some more information (perhaps still
+> the vm_fault_t alongside?  Or another union that will provide different
+> information based on different PF_RET_*).  One major thing is I see how we
+> handle VM_FAULT_HWPOISON and also the fact that we encode something more
+> into the bitmask on page sizes (VM_FAULT_HINDEX_MASK).
+> 
+> So the generic helper could, hopefully, hide the complexity of:
+> 
+>   - Taking and releasing of mmap lock
+>   - find_vma(), and also relevant checks on access or stack handling
 
-+	PA_CHECK_PAGE_ALIGNED(addr);
- 	flush_kernel_dcache_page_asm(addr);
- 	purge_tlb_start(flags);
- 	pdtlb(SR_KERNEL, addr);
-@@ -567,8 +569,10 @@ static void flush_cache_page_if_present(struct vm_are=
-a_struct *vma,
- 	 * a non-access TLB miss. Hopefully, the page has already been
- 	 * flushed.
- 	 */
--	if (ptep && pte_needs_flush(*ptep))
-+	if (ptep && pte_needs_flush(*ptep)) {
-+		PA_CHECK_PAGE_ALIGNED(vmaddr);
- 		flush_cache_page(vma, vmaddr, pfn);
-+	}
- }
+Umm...  arm is a bit special here:
+                if (addr < FIRST_USER_ADDRESS)
+			return VM_FAULT_BADMAP;
+with no counterparts elsewhere.
 
- void copy_user_highpage(struct page *to, struct page *from,
-@@ -712,6 +716,7 @@ void flush_cache_page(struct vm_area_struct *vma, unsi=
-gned long vmaddr, unsigned
- {
- 	if (WARN_ON(!pfn_valid(pfn)))
- 		return;
-+	PA_CHECK_PAGE_ALIGNED(vmaddr);
- 	if (parisc_requires_coherency())
- 		flush_user_cache_page(vma, vmaddr);
- 	else
+>   - handle_mm_fault() itself (of course...)
+>   - detect signals
+>   - handle page fault retries (so, in the new layer of retval there should
+>     have nothing telling it to retry; it should always be the ultimate result)
+
+agreed.
+
+    - unlock mmap; don't leave that to caller.
+
+>   - parse different errors into "what the arch code should do", and
+>     generalize the common ones, e.g.
+>     - OOM, do pagefault_out_of_memory() for user-mode
+>     - VM_FAULT_SIGSEGV, which should be able to merge into PF_RET_BAD_AREA?
+>     - ...
+
+AFAICS, all errors in kernel mode => no_context.
+
+> It'll simplify things if we can unify some small details like whether the
+> -EFAULT above should contain a sigbus.
+> 
+> A trivial detail I found when I was looking at this is, x86_64 passes in
+> different signals to kernelmode_fixup_or_oops() - in do_user_addr_fault()
+> there're three call sites and each of them pass over a differerent signal.
+> IIUC that will only make a difference if there's a nested page fault during
+> the vsyscall emulation (but I may be wrong too because I'm new to this
+> code), and I have no idea when it'll happen and whether that needs to be
+> strictly followed.
+
+From my (very incomplete so far) dig through that pile:
+	Q: do we still have the cases when handle_mm_fault() does
+not return any of VM_FAULT_COMPLETED | VM_FAULT_RETRY | VM_FAULT_ERROR?
+That gets treated as unlock + VM_FAULT_COMPLETED, but do we still need
+that?
+	Q: can VM_FAULT_RETRY be mixed with anything in VM_FAULT_ERROR?
+What locking, if that happens?
+	* details of storing the fault details (for ptrace, mostly)
+vary a lot; no chance to unify, AFAICS.
+	* requirements for vma flags also differ; e.g. read fault on
+alpha is explicitly OK with absence of VM_READ if VM_WRITE is there.
+Probably should go by way of arm and pass the mask that must
+have non-empty intersection with vma->vm_flags?  Because *that*
+is very likely to be a part of ABI - mmap(2) callers that rely
+upon the flags being OK for given architecture are quite possible.
+	* mmap lock is also quite variable in how it's taken;
+x86 and arm have fun dance with trylock/search for exception handler/etc.
+Other architectures do not; OTOH, there's a prefetch stuck in itanic
+variant, with comment about mmap_sem being performance-critical...
+	* logics for stack expansion includes this twist:
+        if (!(vma->vm_flags & VM_GROWSDOWN))
+                goto map_err;
+        if (user_mode(regs)) {
+                /* Accessing the stack below usp is always a bug.  The
+                   "+ 256" is there due to some instructions doing
+                   pre-decrement on the stack and that doesn't show up
+                   until later.  */
+                if (address + 256 < rdusp())
+                        goto map_err;
+        }
+        if (expand_stack(vma, address))
+                goto map_err;
+That's m68k; ISTR similar considerations elsewhere, but I could be
+wrong.
