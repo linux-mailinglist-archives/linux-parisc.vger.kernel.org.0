@@ -2,60 +2,65 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F43368A740
-	for <lists+linux-parisc@lfdr.de>; Sat,  4 Feb 2023 01:26:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A353068AA9C
+	for <lists+linux-parisc@lfdr.de>; Sat,  4 Feb 2023 15:41:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231511AbjBDA0x (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 3 Feb 2023 19:26:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33234 "EHLO
+        id S230184AbjBDOlA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 4 Feb 2023 09:41:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231593AbjBDA0u (ORCPT
+        with ESMTP id S229746AbjBDOk6 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 3 Feb 2023 19:26:50 -0500
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A5B8E6A5;
-        Fri,  3 Feb 2023 16:26:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=X1SywhkHbG+zrm/9j112oMCqd94g661HYfNMjX5RclA=; b=l22rn3Nv6NXWTGOgkjEtnA2GLe
-        gE6yjykTrey8R5abzO4M+LY1/1bP94RD/4pRww8GIABSPDrmpY/QNLF6mhIU0YTLPwvuTA9mYQ5DL
-        Z0V+zPIrOBzTzBaaBmzopE0gOhN0hl4voghRUCwzhOR8eB8juSVP6sLogXt97BOp8bqkUBF6uNESd
-        5OwrUzL1nXumwVYN5P62it0hP/GEVLEbSk4gLKR5NwzpyssdlKx4824Kt4N8R7LhTKKVHTuly09mW
-        kYKHF8mB2qbWNOpmHBTVhgnJBGzhR6g66/+qHmyoq2gHxoV+N82EC9zgsyLrSUOVGtLj5O9zsjJH8
-        4WRuP7wA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1pO6O7-0064I1-1l;
-        Sat, 04 Feb 2023 00:26:39 +0000
-Date:   Sat, 4 Feb 2023 00:26:39 +0000
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Peter Xu <peterx@redhat.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, Michal Simek <monstr@monstr.eu>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org
-Subject: Re: [RFC][PATCHSET] VM_FAULT_RETRY fixes
-Message-ID: <Y92mP1GT28KfnPEQ@ZenIV>
-References: <Y9lz6yk113LmC9SI@ZenIV>
- <CAHk-=whf73Vm2U3jyTva95ihZzefQbThZZxqZuKAF-Xjwq=G4Q@mail.gmail.com>
- <Y9mD1qp/6zm+jOME@ZenIV>
- <CAHk-=wjiwFzEGd_60H3nbgVB=R_8KTcfUJmXy=hSXCvLrXQRFA@mail.gmail.com>
- <Y9mM5wiEhepjJcN0@ZenIV>
- <CAHk-=wjNwwnBckTo8HLSdsd1ndoAR=5RBoZhdOyzhsnDAYWL9g@mail.gmail.com>
- <Y9rCBqwbLlLf1fHe@x1n>
- <Y9rlI6d5J2Y/YNQ+@ZenIV>
- <Y9w/lrL6g4yauXz4@x1n>
+        Sat, 4 Feb 2023 09:40:58 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A13B3345B;
+        Sat,  4 Feb 2023 06:40:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1675521648; bh=rKbHQ0P4cuSawW92l/bRnetIeGiXdJyjrDoEndx0j3U=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=iBUmbxNYfJ1CeDFsFCl84LiPU5dCD+wkbmsOTHk9t/XMwmPVbFsIi83QxdaDj4bK1
+         UARPV9OCAlm6bfTizAT83xfZ4LKAPJwD2f/Gdj055+JPryElDW/2g6gHe76e8VDOV2
+         XmIqq5XGGiVnDEizchyanPJAp8lBZkbp93qVzAH3QmR6Eprbi6k5UUs+J5sYu14x4A
+         fqQWHRJHm3JBUfZW4uVC8ZLXWQk6kDz1Mr7NBuQ0w6uzAt5bW2E4+uQa0DK27PpxyF
+         mHY0+H21JqSA34JhuQqmY3v/s8tgNh44uUWphLKr1YkHRU7ZJs6F6dYFC0BkZPwR3P
+         hTs0C+9bs3yYg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([92.116.151.109]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M72sP-1pGLVA46k3-008cBt; Sat, 04
+ Feb 2023 15:40:48 +0100
+Date:   Sat, 4 Feb 2023 15:40:45 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture fixes for v6.2-rc7
+Message-ID: <Y95ubeJ0b96rw/rS@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y9w/lrL6g4yauXz4@x1n>
-Sender: Al Viro <viro@ftp.linux.org.uk>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=ham
+X-Provags-ID: V03:K1:YYKsCD0udyd4IIb6VdJsl9J3YDC+zppquHu9Eyobt8BtHbj1Wh2
+ murd3vSgmBd4MCysjyEqG3+SwRkCIvlXtN5Q0t1jxygKud9slyR1BklpABMtkBrVlKNHBDD
+ +KJ0SRXirGX6Jm+GcFlYd/N+EiXeWEUGuOIslzbigczGgJvSkq0xkqTEj137gNpaIZe/0LW
+ Q0+lcc7ejwhNfXKMN8Hlg==
+UI-OutboundReport: notjunk:1;M01:P0:0doOVu1q20Y=;lB8riK390tF36iYDG6dN+g8o6Zy
+ 1fm8zQhVLay07RZFzEVYlP2Rsdkf9SSXqpxsJacAUl+Hdc2uSr+69OS8O+Wvp7vEVPkqFnNE7
+ GtFL3I6UGEesW2cMTijWB01PNgWxSRtAmMq6fCBNouWBWyVZRgISu8e4efj+VQDY1FnBa0rU/
+ 4PMTMvsAq/auDelr9aEPKYxiG38Ro8/PGGZlvhgDZTACRx8CN2/sc2MPOe3ggSb4hTaChIuSH
+ m3QJov0v40AdiXxc3X6H2h05Y2UYIkXFnCZwED/18dcZnDO6f9Wszbo3EIEKmRkVay913ELMs
+ wyRCjucIKyTkqcxeNjjX1HYPtw5AmFicLIaTo/UC14Ub+5+YktRoxETO3RmL7V9k7pLzcGHV9
+ GBDX2dwvUQW7e84QcB3dy5SinwFftuRegkmNL55ZG1LFXCTjtn3qo9GAWmsfjzyYUfCGN3E3x
+ XtrH7v4MeZetJepPXuyFAn+wCSkQTfF6mc9HFuolywFPlWjPKwwKzhvOmY8afDXIAIORWpeOI
+ wN/0KDOUYHgU6CTJrTRZjjDln0EqRIWn4ns2T1o4ud/gsAqScpNNqlheT9XRsR+WZpm79ffHY
+ QGcO43CTaA6xUrJnYV4nkxzsZ11trQk/9u8KDDZvn8vzWCv1m+JP2Cdsfzqu2IYmo3zcJOlom
+ y98sHaCTIK0M3PXVQYMyB1XaOEo/Ucs9exSUcPATweKUAD8QBx16bBoDqMy5rGj8eyZO5m46q
+ aN0U/iZb3XhW2I1emc/Nut2chZmAseC6wOnpMFLotw3eGqhFMuOvfgQwiSBssyy4S3XfZ5VXQ
+ 3nQAjfrkpxW8VXE/MjW6BvZ2NCof/9UbaCAoP280eYvXocwfrS+kuRv5PmJM2JdAbPLJNX0uK
+ M/XVrX7QLGeZEIXPOE4n86EHv6QGZeuXQV8T+dGeBurY5Zz4D4Pmx+w+AYaEMz6KIB7YX8znR
+ wGK7n61UM8ZEnlEFcrCFIFj7K9A=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,293 +68,49 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Feb 02, 2023 at 05:56:22PM -0500, Peter Xu wrote:
+Hi Linus,
 
-> IMHO it'll be merely impossible to merge things across most (if not to say,
-> all) archs.  It will need to be start from one or at least a few that still
-> shares a major common base - I would still rely on x86 as a start - then we
-> try to use the helper in as much archs as possible.
-> 
-> Even on x86, I do also see challenges so I'm not sure whether a common
-> enough routine can be abstracted indeed.  But I believe there's a way to do
-> this because obviously we still see tons of duplicated logics falling
-> around.  It may definitely need time to think out where's the best spot to
-> start, and how to gradually move towards covering more archs starting from
-> one.
+please pull some small fixes for the parisc architecture, 3 out of 4 are
+tagged for stable series.
 
-FWIW, after going through everything from alpha to loongarch (in alphabetic
-order, skipping the itanic) the following seems to be suitable for all of
-them:
+The most important patch fixes ptrace() for the compat case, which is
+used by latest strace source which now used PTRACE_GETREGS() to get the
+CPU registers.
 
-generic_fault(address, flags, vm_flags, regs)
-{
-	struct mm_struct *mm = current->mm;
-	struct vm_area_struct *vma;
-	vm_fault_t fault;
+Thanks,
+Helge
 
-	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
 
-	if (unlikely(!mmap_read_trylock(mm))) {
-		if (!(flags & FAULT_FLAG_USER) &&
-		    !search_exception_tables(instruction_pointer(regs))) {
-			/*
-			 * Fault from code in kernel from
-			 * which we do not expect faults.
-			 */
-			return KERN;
-		}
-retry:
-		mmap_read_lock(mm);
-	} else {
-		might_sleep();
-#ifdef CONFIG_DEBUG_VM
-		if (!(flags & FAULT_FLAG_USER) &&
-		    !search_exception_tables(instruction_pointer(regs)))
-			return KERN;
-#endif
-	}
-	vma = find_vma(mm, address);
-	if (!vma)
-		goto Eunmapped;
-	if (unlikely(vma->vm_start > address)) {
-		if (!(vma->vm_flags & VM_GROWSDOWN))
-			goto Eunmapped;
-		if (addr < FIRST_USER_ADDRESS)
-			goto Eunmapped;
-		if (expand_stack(vma, address))
-			goto Eunmapped;
-	}
+The following changes since commit b7bfaa761d760e72a969d116517eaa12e404c262:
 
-	/* Ok, we have a good vm_area for this memory access, so
-	   we can handle it.  */
-	if (!(vma->vm_flags & vm_flags))
-		goto Eaccess;
+  Linux 6.2-rc3 (2023-01-08 11:49:43 -0600)
 
-	/* If for any reason at all we couldn't handle the fault,
-	   make sure we exit gracefully rather than endlessly redo
-	   the fault.  */
-	fault = handle_mm_fault(vma, address, flags, regs);
+are available in the Git repository at:
 
-	if (unlikely(fault & VM_FAULT_RETRY)) {
-		if (!(flags & FAULT_FLAG_USER)) {
-			if (fatal_signal_pending(current))
-				return KERN;
-		} else {
-			if (signal_pending(current))
-				return FOAD;
-		}
-		flags |= FAULT_FLAG_TRIED;
-		goto retry;
-	}
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.2-rc7
 
-	if (fault & VM_FAULT_COMPLETED)
-		return DONE;
+for you to fetch changes up to 316f1f42b5cc1d95124c1f0387c867c1ba7b6d0e:
 
-	mmap_read_unlock(mm);
+  parisc: Wire up PTRACE_GETREGS/PTRACE_SETREGS for compat case (2023-02-01 21:42:37 +0100)
 
-	if (likely(!(fault & VM_FAULT_ERROR)))
-		return DONE;
+----------------------------------------------------------------
+parisc architecture fixes for kernel v6.2-rc7:
 
-	if (!(flags & FAULT_FLAG_USER))
-		return KERN;
+- Fix PTRACE_GETREGS/PTRACE_SETREGS for 32-bit userspace on 64-bit kernel
+- pdc_iodc_print() dropped chars for newline in strings
+- Drop constants in favour of PRIV_USER
+- use safer strscpy() function in pdc_stable driver
 
-	if (fault & VM_FAULT_OOM) {
-		pagefault_out_of_memory();
-		return FOAD;
-	}
+----------------------------------------------------------------
+Helge Deller (3):
+      parisc: Fix return code of pdc_iodc_print()
+      parisc: Replace hardcoded value with PRIV_USER constant in ptrace.c
+      parisc: Wire up PTRACE_GETREGS/PTRACE_SETREGS for compat case
 
-	if (fault & VM_FAULT_SIGSEGV)
-		return SIGSEGV;
+Xu Panda (1):
+      parisc: pdc_stable: use strscpy() to instead of strncpy()
 
-	if (fault & VM_FAULT_SIGBUS)
-		return SIGBUS;
-
-	if (fault & VM_FAULT_HWPOISON)
-		return POISON + PAGE_SHIFT;	// POISON == 256
-
-	if (fault & VM_FAULT_HWPOISON_LARGE)
-		return POISON + hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
-
-	BUG();
-
-Eunmapped:
-	mmap_read_unlock(mm);
-	return flags & FAULT_FLAG_USER ? MAPERR : KERN;
-Eaccess:
-	mmap_read_unlock(mm);
-	return flags & FAULT_FLAG_USER ? ACCERR : KERN;
-}
-
-possible return values (and that's obviously not the identifiers to be
-used for real; for now I'm just looking for feasibility of it all):
-	DONE		success, nothing else to be done
-	FOAD		OOM/fatal signal with VM_FAULT_RETRY/
-			signal with VM_FAULT_RETRY from userland - nothing
-			to be done here.
-	KERN		kernel mode failed fault, fixup or oops
-	MAPERR		unmapped address, SIGSEGV/SEGV_MAPERR for you
-	ACCERR		nothing in vm_flags present in ->vm_flags of vma;
-			SIGSEGV/SEGV_ACCERR
-	SIGSEGV		VM_FAULT_SIGSEGV; some architectures treat that
-			as SEGV_MAPERR, some as SEGV_ACCERR.
-	SIGBUS		VM_FAULT_SIGBUS; SIGBUS/BUS_ADRERR
-	POISON + shift	VM_FAULT_HWPOISON and VM_FAULT_HWPOISON_LARGE, with
-			log2(affected page size) encoded into return value.
-
-This is obviously not even close to final helper, but... alpha, arc, arm, arm64,
-csky, hexagon, loongarch convert to that cleanly.
-
-Itanic very much does not (due to weird dual stacks, awful address space layout,
-etc.), but then git rm arch/ia64 is long overdue.
-
-Fairly typical look after conversion:
-
-arc: 
-{
-	struct task_struct *tsk = current;
-	struct mm_struct *mm = tsk->mm;
-	unsigned int mask;
-	unsigned int flags;
-	unsigned int res;
-
-	/*
-	 * NOTE! We MUST NOT take any locks for this case. We may
-	 * be in an interrupt or a critical region, and should
-	 * only copy the information from the master page table,
-	 * nothing more.
-	 */
-	if (address >= VMALLOC_START && !user_mode(regs)) {
-		if (unlikely(handle_kernel_vaddr_fault(address)))
-			goto no_context;
-		else
-			return;
-	}
-
-	/*
-	 * If we're in an interrupt or have no user
-	 * context, we must not take the fault..
-	 */
-	if (faulthandler_disabled() || !mm)
-		goto no_context;
-
-	flags = FAULT_FLAG_DEFAULT;
-	if (user_mode(regs))
-		flags |= FAULT_FLAG_USER;
-	mask = VM_READ;
-	if (regs->ecr_cause & ECR_C_PROTV_STORE) {	/* ST/EX */
-		flags |= FAULT_FLAG_WRITE;
-		mask = VM_WRITE;
-	} else if ((regs->ecr_vec == ECR_V_PROTV) &&
-	         (regs->ecr_cause == ECR_C_PROTV_INST_FETCH)) {
-		mask = VM_EXEC;
-	}
-
-	res = generic_fault(address, flags, mask, regs);
-	if (likely(res == DONE))
-		return;
-	if (res == FOAD)
-		return;
-	if (res == KERN) {
-no_context:
-		if (fixup_exception(regs))
-			return;
-		die("Oops", regs, address);
-	}
-
-	tsk->thread.fault_address = address;
-	if (res == SIGBUS)
-		force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *) address);
-	else
-		force_sig_fault(SIGSEGV, res == ACCERR ? SEGV_ACCERR : SEGV_MAPERR,
-				(void __user *) address);
-}
-
-Or this arm64:
-
-{
-	const struct fault_info *inf;
-	struct mm_struct *mm = current->mm;
-	unsigned long vm_flags;
-	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
-	unsigned long addr = untagged_addr(far);
-	unsigned int res;
-
-	if (kprobe_page_fault(regs, esr))
-		return 0;
-
-	/*
-	 * If we're in an interrupt or have no user context, we must not take
-	 * the fault.
-	 */
-	if (faulthandler_disabled() || !mm)
-		goto no_context;
-
-	if (user_mode(regs))
-		mm_flags |= FAULT_FLAG_USER;
-
-	/*
-	 * vm_flags tells us what bits we must have in vma->vm_flags
-	 * for the fault to be benign, __do_page_fault() would check
-	 * vma->vm_flags & vm_flags and returns an error if the
-	 * intersection is empty
-	 */
-	if (is_el0_instruction_abort(esr)) {
-		/* It was exec fault */
-		vm_flags = VM_EXEC;
-		mm_flags |= FAULT_FLAG_INSTRUCTION;
-	} else if (is_write_abort(esr)) {
-		/* It was write fault */
-		vm_flags = VM_WRITE;
-		mm_flags |= FAULT_FLAG_WRITE;
-	} else {
-		/* It was read fault */
-		vm_flags = VM_READ;
-		/* Write implies read */
-		vm_flags |= VM_WRITE;
-		/* If EPAN is absent then exec implies read */
-		if (!cpus_have_const_cap(ARM64_HAS_EPAN))
-			vm_flags |= VM_EXEC;
-	}
-
-	if (is_ttbr0_addr(addr) && is_el1_permission_fault(addr, esr, regs)) {
-		if (is_el1_instruction_abort(esr))
-			die_kernel_fault("execution of user memory",
-					 addr, esr, regs);
-
-		if (!search_exception_tables(regs->pc))
-			die_kernel_fault("access to user memory outside uaccess routines",
-					 addr, esr, regs);
-	}
-
-	res = generic_fault(addr, mm_flags, vm_flags, regs);
-	if (likely(res == DONE))
-		return 0;
-	if (res == FOAD)
-		return 0;
-	if (res == KERN) {
-no_context:
-		__do_kernel_fault(addr, esr, regs);
-		return 0;
-	}
-	inf = esr_to_fault_info(esr);
-	set_thread_esr(addr, esr);
-	if (res == SIGBUS) {
-		/*
-		 * We had some memory, but were unable to successfully fix up
-		 * this page fault.
-		 */
-		arm64_force_sig_fault(SIGBUS, BUS_ADRERR, far, inf->name);
-	} else if (res > POISON) {
-		arm64_force_sig_mceerr(BUS_MCEERR_AR, far, res - POISON, inf->name);
-	} else {
-		/*
-		 * Something tried to access memory that isn't in our memory
-		 * map.
-		 */
-		arm64_force_sig_fault(SIGSEGV,
-				      res == ACCERR ? SEGV_ACCERR : SEGV_MAPERR,
-				      far, inf->name);
-	}
-
-	return 0;
-}
+ arch/parisc/kernel/firmware.c |  5 +++--
+ arch/parisc/kernel/ptrace.c   | 21 ++++++++++++++++-----
+ drivers/parisc/pdc_stable.c   |  9 +++------
+ 3 files changed, 22 insertions(+), 13 deletions(-)
