@@ -2,141 +2,354 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7A5689BE9
-	for <lists+linux-parisc@lfdr.de>; Fri,  3 Feb 2023 15:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F43368A740
+	for <lists+linux-parisc@lfdr.de>; Sat,  4 Feb 2023 01:26:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233037AbjBCOex (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 3 Feb 2023 09:34:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51054 "EHLO
+        id S231511AbjBDA0x (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 3 Feb 2023 19:26:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233343AbjBCOem (ORCPT
+        with ESMTP id S231593AbjBDA0u (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 3 Feb 2023 09:34:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E48241FC
-        for <linux-parisc@vger.kernel.org>; Fri,  3 Feb 2023 06:33:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1675434833;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QVQjsvvXC5vAa55XgbnpLQZ7ycccPtxDGUTVFYgFp7U=;
-        b=ZsUUH2VT5bjvMUFmFUCQfcdjH46oE8prxIGRVUocot0tbhN61QC2nSwAPiE88iiLTMFn6X
-        p2PTphGyCXwq5FyhIDxqI4sUoJVTbvHtPQKnjXCmoCuFSgGvhUwmcRaKl3B3khOjBbdYEe
-        rPwx4nCQhdWIQ0TFjvpS2DyDrZhSKzI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-252-9tv5gJAmOe2b82ceEIejsg-1; Fri, 03 Feb 2023 09:33:49 -0500
-X-MC-Unique: 9tv5gJAmOe2b82ceEIejsg-1
-Received: by mail-wr1-f69.google.com with SMTP id i9-20020a0560001ac900b002bfda39265aso716482wry.13
-        for <linux-parisc@vger.kernel.org>; Fri, 03 Feb 2023 06:33:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QVQjsvvXC5vAa55XgbnpLQZ7ycccPtxDGUTVFYgFp7U=;
-        b=y+vUcXIEKqCALD9ryyMJ2W2AhzMTAMgfSgppttvJV6t5v9Hf4Do9mBm0y5NpEgY2+4
-         YXQSFKFTvmXJnAAbuAlhG5fwz26mugp7IDw3nFAr00VAorQj6NncPEzBnX0wwcOamg69
-         qmyNlT9XuqrPoN+YVwlRvDnNu83JO/eIC0wNalHigHnRgnbE9s3fFbZqBghP1REHOaZO
-         WqCPYwSNha5LQyf6rrdgbUyJIXbTkTNSlY+chzGwlaJ4NxNzMN/jq/ZnLUC8C68yKgBa
-         YVf5UrL/wKabYRNgyS1pIbPCfN0oFtHSj+gSbmqAD89XLxuUgNxy0GgPXHdH0bBxnY6v
-         KOdQ==
-X-Gm-Message-State: AO0yUKWVM9IcFNTDSkKGNVQBmGo3dG8WMs1PpBf1QGtOhRU09G2lpctV
-        hN2MJ2I/ioX+E1321ikWLBzUSdeO1mwc0izXmY43fFLIWmyRol/EMHShSxzNd0d5rnbmTnTCRGk
-        CGu095qhIFsIqQDTPnqs1336m
-X-Received: by 2002:a05:600c:3514:b0:3df:ead3:c6fc with SMTP id h20-20020a05600c351400b003dfead3c6fcmr1739770wmq.17.1675434828379;
-        Fri, 03 Feb 2023 06:33:48 -0800 (PST)
-X-Google-Smtp-Source: AK7set+nCaLsRgMPjXxFJ2S9nOzpB4vodjtO+Yac8mpKGPJpDWQMNBTnVH2IJfyVyYdKVED3TZv5Cg==
-X-Received: by 2002:a05:600c:3514:b0:3df:ead3:c6fc with SMTP id h20-20020a05600c351400b003dfead3c6fcmr1739731wmq.17.1675434828065;
-        Fri, 03 Feb 2023 06:33:48 -0800 (PST)
-Received: from [192.168.3.108] (p5b0c6376.dip0.t-ipconnect.de. [91.12.99.118])
-        by smtp.gmail.com with ESMTPSA id o35-20020a05600c512300b003cffd3c3d6csm3239260wms.12.2023.02.03.06.33.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Feb 2023 06:33:47 -0800 (PST)
-Message-ID: <de9cb029-b36e-efe9-9d0e-46a382e889b5@redhat.com>
-Date:   Fri, 3 Feb 2023 15:33:45 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v2 4/4] mm, arch: add generic implementation of
- pfn_valid() for FLATMEM
-Content-Language: en-US
-To:     Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Brian Cain <bcain@quicinc.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Fri, 3 Feb 2023 19:26:50 -0500
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A5B8E6A5;
+        Fri,  3 Feb 2023 16:26:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=X1SywhkHbG+zrm/9j112oMCqd94g661HYfNMjX5RclA=; b=l22rn3Nv6NXWTGOgkjEtnA2GLe
+        gE6yjykTrey8R5abzO4M+LY1/1bP94RD/4pRww8GIABSPDrmpY/QNLF6mhIU0YTLPwvuTA9mYQ5DL
+        Z0V+zPIrOBzTzBaaBmzopE0gOhN0hl4voghRUCwzhOR8eB8juSVP6sLogXt97BOp8bqkUBF6uNESd
+        5OwrUzL1nXumwVYN5P62it0hP/GEVLEbSk4gLKR5NwzpyssdlKx4824Kt4N8R7LhTKKVHTuly09mW
+        kYKHF8mB2qbWNOpmHBTVhgnJBGzhR6g66/+qHmyoq2gHxoV+N82EC9zgsyLrSUOVGtLj5O9zsjJH8
+        4WRuP7wA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1pO6O7-0064I1-1l;
+        Sat, 04 Feb 2023 00:26:39 +0000
+Date:   Sat, 4 Feb 2023 00:26:39 +0000
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Peter Xu <peterx@redhat.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, Michal Simek <monstr@monstr.eu>,
         Dinh Nguyen <dinguyen@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Simek <monstr@monstr.eu>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Rich Felker <dalias@libc.org>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Vineet Gupta <vgupta@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, Huacai Chen <chenhuacai@loongson.cn>
-References: <20230129124235.209895-1-rppt@kernel.org>
- <20230129124235.209895-5-rppt@kernel.org>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230129124235.209895-5-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org
+Subject: Re: [RFC][PATCHSET] VM_FAULT_RETRY fixes
+Message-ID: <Y92mP1GT28KfnPEQ@ZenIV>
+References: <Y9lz6yk113LmC9SI@ZenIV>
+ <CAHk-=whf73Vm2U3jyTva95ihZzefQbThZZxqZuKAF-Xjwq=G4Q@mail.gmail.com>
+ <Y9mD1qp/6zm+jOME@ZenIV>
+ <CAHk-=wjiwFzEGd_60H3nbgVB=R_8KTcfUJmXy=hSXCvLrXQRFA@mail.gmail.com>
+ <Y9mM5wiEhepjJcN0@ZenIV>
+ <CAHk-=wjNwwnBckTo8HLSdsd1ndoAR=5RBoZhdOyzhsnDAYWL9g@mail.gmail.com>
+ <Y9rCBqwbLlLf1fHe@x1n>
+ <Y9rlI6d5J2Y/YNQ+@ZenIV>
+ <Y9w/lrL6g4yauXz4@x1n>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y9w/lrL6g4yauXz4@x1n>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 29.01.23 13:42, Mike Rapoport wrote:
-> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+On Thu, Feb 02, 2023 at 05:56:22PM -0500, Peter Xu wrote:
+
+> IMHO it'll be merely impossible to merge things across most (if not to say,
+> all) archs.  It will need to be start from one or at least a few that still
+> shares a major common base - I would still rely on x86 as a start - then we
+> try to use the helper in as much archs as possible.
 > 
-> Every architecture that supports FLATMEM memory model defines its own
-> version of pfn_valid() that essentially compares a pfn to max_mapnr.
-> 
-> Use mips/powerpc version implemented as static inline as a generic
-> implementation of pfn_valid() and drop its per-architecture definitions.
-> 
-> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> Acked-by: Guo Ren <guoren@kernel.org>		# csky
-> Acked-by: Huacai Chen <chenhuacai@loongson.cn>	# LoongArch
-> Acked-by: Stafford Horne <shorne@gmail.com>	# OpenRISC
-> ---
+> Even on x86, I do also see challenges so I'm not sure whether a common
+> enough routine can be abstracted indeed.  But I believe there's a way to do
+> this because obviously we still see tons of duplicated logics falling
+> around.  It may definitely need time to think out where's the best spot to
+> start, and how to gradually move towards covering more archs starting from
+> one.
 
-LGTM with the fixup
+FWIW, after going through everything from alpha to loongarch (in alphabetic
+order, skipping the itanic) the following seems to be suitable for all of
+them:
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+generic_fault(address, flags, vm_flags, regs)
+{
+	struct mm_struct *mm = current->mm;
+	struct vm_area_struct *vma;
+	vm_fault_t fault;
 
--- 
-Thanks,
+	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
 
-David / dhildenb
+	if (unlikely(!mmap_read_trylock(mm))) {
+		if (!(flags & FAULT_FLAG_USER) &&
+		    !search_exception_tables(instruction_pointer(regs))) {
+			/*
+			 * Fault from code in kernel from
+			 * which we do not expect faults.
+			 */
+			return KERN;
+		}
+retry:
+		mmap_read_lock(mm);
+	} else {
+		might_sleep();
+#ifdef CONFIG_DEBUG_VM
+		if (!(flags & FAULT_FLAG_USER) &&
+		    !search_exception_tables(instruction_pointer(regs)))
+			return KERN;
+#endif
+	}
+	vma = find_vma(mm, address);
+	if (!vma)
+		goto Eunmapped;
+	if (unlikely(vma->vm_start > address)) {
+		if (!(vma->vm_flags & VM_GROWSDOWN))
+			goto Eunmapped;
+		if (addr < FIRST_USER_ADDRESS)
+			goto Eunmapped;
+		if (expand_stack(vma, address))
+			goto Eunmapped;
+	}
 
+	/* Ok, we have a good vm_area for this memory access, so
+	   we can handle it.  */
+	if (!(vma->vm_flags & vm_flags))
+		goto Eaccess;
+
+	/* If for any reason at all we couldn't handle the fault,
+	   make sure we exit gracefully rather than endlessly redo
+	   the fault.  */
+	fault = handle_mm_fault(vma, address, flags, regs);
+
+	if (unlikely(fault & VM_FAULT_RETRY)) {
+		if (!(flags & FAULT_FLAG_USER)) {
+			if (fatal_signal_pending(current))
+				return KERN;
+		} else {
+			if (signal_pending(current))
+				return FOAD;
+		}
+		flags |= FAULT_FLAG_TRIED;
+		goto retry;
+	}
+
+	if (fault & VM_FAULT_COMPLETED)
+		return DONE;
+
+	mmap_read_unlock(mm);
+
+	if (likely(!(fault & VM_FAULT_ERROR)))
+		return DONE;
+
+	if (!(flags & FAULT_FLAG_USER))
+		return KERN;
+
+	if (fault & VM_FAULT_OOM) {
+		pagefault_out_of_memory();
+		return FOAD;
+	}
+
+	if (fault & VM_FAULT_SIGSEGV)
+		return SIGSEGV;
+
+	if (fault & VM_FAULT_SIGBUS)
+		return SIGBUS;
+
+	if (fault & VM_FAULT_HWPOISON)
+		return POISON + PAGE_SHIFT;	// POISON == 256
+
+	if (fault & VM_FAULT_HWPOISON_LARGE)
+		return POISON + hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
+
+	BUG();
+
+Eunmapped:
+	mmap_read_unlock(mm);
+	return flags & FAULT_FLAG_USER ? MAPERR : KERN;
+Eaccess:
+	mmap_read_unlock(mm);
+	return flags & FAULT_FLAG_USER ? ACCERR : KERN;
+}
+
+possible return values (and that's obviously not the identifiers to be
+used for real; for now I'm just looking for feasibility of it all):
+	DONE		success, nothing else to be done
+	FOAD		OOM/fatal signal with VM_FAULT_RETRY/
+			signal with VM_FAULT_RETRY from userland - nothing
+			to be done here.
+	KERN		kernel mode failed fault, fixup or oops
+	MAPERR		unmapped address, SIGSEGV/SEGV_MAPERR for you
+	ACCERR		nothing in vm_flags present in ->vm_flags of vma;
+			SIGSEGV/SEGV_ACCERR
+	SIGSEGV		VM_FAULT_SIGSEGV; some architectures treat that
+			as SEGV_MAPERR, some as SEGV_ACCERR.
+	SIGBUS		VM_FAULT_SIGBUS; SIGBUS/BUS_ADRERR
+	POISON + shift	VM_FAULT_HWPOISON and VM_FAULT_HWPOISON_LARGE, with
+			log2(affected page size) encoded into return value.
+
+This is obviously not even close to final helper, but... alpha, arc, arm, arm64,
+csky, hexagon, loongarch convert to that cleanly.
+
+Itanic very much does not (due to weird dual stacks, awful address space layout,
+etc.), but then git rm arch/ia64 is long overdue.
+
+Fairly typical look after conversion:
+
+arc: 
+{
+	struct task_struct *tsk = current;
+	struct mm_struct *mm = tsk->mm;
+	unsigned int mask;
+	unsigned int flags;
+	unsigned int res;
+
+	/*
+	 * NOTE! We MUST NOT take any locks for this case. We may
+	 * be in an interrupt or a critical region, and should
+	 * only copy the information from the master page table,
+	 * nothing more.
+	 */
+	if (address >= VMALLOC_START && !user_mode(regs)) {
+		if (unlikely(handle_kernel_vaddr_fault(address)))
+			goto no_context;
+		else
+			return;
+	}
+
+	/*
+	 * If we're in an interrupt or have no user
+	 * context, we must not take the fault..
+	 */
+	if (faulthandler_disabled() || !mm)
+		goto no_context;
+
+	flags = FAULT_FLAG_DEFAULT;
+	if (user_mode(regs))
+		flags |= FAULT_FLAG_USER;
+	mask = VM_READ;
+	if (regs->ecr_cause & ECR_C_PROTV_STORE) {	/* ST/EX */
+		flags |= FAULT_FLAG_WRITE;
+		mask = VM_WRITE;
+	} else if ((regs->ecr_vec == ECR_V_PROTV) &&
+	         (regs->ecr_cause == ECR_C_PROTV_INST_FETCH)) {
+		mask = VM_EXEC;
+	}
+
+	res = generic_fault(address, flags, mask, regs);
+	if (likely(res == DONE))
+		return;
+	if (res == FOAD)
+		return;
+	if (res == KERN) {
+no_context:
+		if (fixup_exception(regs))
+			return;
+		die("Oops", regs, address);
+	}
+
+	tsk->thread.fault_address = address;
+	if (res == SIGBUS)
+		force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *) address);
+	else
+		force_sig_fault(SIGSEGV, res == ACCERR ? SEGV_ACCERR : SEGV_MAPERR,
+				(void __user *) address);
+}
+
+Or this arm64:
+
+{
+	const struct fault_info *inf;
+	struct mm_struct *mm = current->mm;
+	unsigned long vm_flags;
+	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
+	unsigned long addr = untagged_addr(far);
+	unsigned int res;
+
+	if (kprobe_page_fault(regs, esr))
+		return 0;
+
+	/*
+	 * If we're in an interrupt or have no user context, we must not take
+	 * the fault.
+	 */
+	if (faulthandler_disabled() || !mm)
+		goto no_context;
+
+	if (user_mode(regs))
+		mm_flags |= FAULT_FLAG_USER;
+
+	/*
+	 * vm_flags tells us what bits we must have in vma->vm_flags
+	 * for the fault to be benign, __do_page_fault() would check
+	 * vma->vm_flags & vm_flags and returns an error if the
+	 * intersection is empty
+	 */
+	if (is_el0_instruction_abort(esr)) {
+		/* It was exec fault */
+		vm_flags = VM_EXEC;
+		mm_flags |= FAULT_FLAG_INSTRUCTION;
+	} else if (is_write_abort(esr)) {
+		/* It was write fault */
+		vm_flags = VM_WRITE;
+		mm_flags |= FAULT_FLAG_WRITE;
+	} else {
+		/* It was read fault */
+		vm_flags = VM_READ;
+		/* Write implies read */
+		vm_flags |= VM_WRITE;
+		/* If EPAN is absent then exec implies read */
+		if (!cpus_have_const_cap(ARM64_HAS_EPAN))
+			vm_flags |= VM_EXEC;
+	}
+
+	if (is_ttbr0_addr(addr) && is_el1_permission_fault(addr, esr, regs)) {
+		if (is_el1_instruction_abort(esr))
+			die_kernel_fault("execution of user memory",
+					 addr, esr, regs);
+
+		if (!search_exception_tables(regs->pc))
+			die_kernel_fault("access to user memory outside uaccess routines",
+					 addr, esr, regs);
+	}
+
+	res = generic_fault(addr, mm_flags, vm_flags, regs);
+	if (likely(res == DONE))
+		return 0;
+	if (res == FOAD)
+		return 0;
+	if (res == KERN) {
+no_context:
+		__do_kernel_fault(addr, esr, regs);
+		return 0;
+	}
+	inf = esr_to_fault_info(esr);
+	set_thread_esr(addr, esr);
+	if (res == SIGBUS) {
+		/*
+		 * We had some memory, but were unable to successfully fix up
+		 * this page fault.
+		 */
+		arm64_force_sig_fault(SIGBUS, BUS_ADRERR, far, inf->name);
+	} else if (res > POISON) {
+		arm64_force_sig_mceerr(BUS_MCEERR_AR, far, res - POISON, inf->name);
+	} else {
+		/*
+		 * Something tried to access memory that isn't in our memory
+		 * map.
+		 */
+		arm64_force_sig_fault(SIGSEGV,
+				      res == ACCERR ? SEGV_ACCERR : SEGV_MAPERR,
+				      far, inf->name);
+	}
+
+	return 0;
+}
