@@ -2,79 +2,126 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3132D68ADBC
-	for <lists+linux-parisc@lfdr.de>; Sun,  5 Feb 2023 02:04:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBDDA68AE67
+	for <lists+linux-parisc@lfdr.de>; Sun,  5 Feb 2023 06:10:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbjBEBE3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 4 Feb 2023 20:04:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54060 "EHLO
+        id S229580AbjBEFKd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 5 Feb 2023 00:10:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbjBEBE2 (ORCPT
+        with ESMTP id S229447AbjBEFKb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 4 Feb 2023 20:04:28 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89F623C6F;
-        Sat,  4 Feb 2023 17:04:27 -0800 (PST)
+        Sun, 5 Feb 2023 00:10:31 -0500
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E548111153;
+        Sat,  4 Feb 2023 21:10:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=p/X12mhEonmgqFvC/p6xV+/a6TCrqGOjh0it/f2ls9w=; b=mDnvP88AwbXfl5h0DDgqhjWERO
-        ButqRF5o3LUP0rEmf8o9bbms6DHqxjIU/yl18Ef8BtCQIAmxUWlrgLP5PmZ3vAytKC3FBIq4iyutf
-        QVeIRG2dXqPWlDRPDncOLULTB5hDXl7TZ50xnQkO8kESQ7cl3T3aSo7J7HwEAFPI5rGLThIgaQ8QP
-        M1bbMgZpsz9p7Se7Ayf5/OjbCIwF9GstvQIgiaDdrUKnMudrZSGJ9LBEmSeNCVHLQWngWi40aYIDx
-        q34iaeH1zU3EaSDLKYLJrofEA30/DVecfgyGJMBPyWpzW1iZ7+d/XB9jD0nRGRZa2DOUPu8XOetxz
-        q7jbq4+A==;
-Received: from [2601:1c2:d00:6a60::9526] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pOTSE-005njc-C5; Sun, 05 Feb 2023 01:04:26 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        linux-kbuild@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        linux-doc@vger.kernel.org
-Subject: [PATCH] parisc: update kbuild doc. aliases for parisc64
-Date:   Sat,  4 Feb 2023 17:04:25 -0800
-Message-Id: <20230205010425.11932-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.39.1
+        d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Tr6hHp8aMuyix7W8MPsJcy4qd0T+bfV4ku4SlFkeikM=; b=IPFSEa3/kiVAIcszhJNII+WRya
+        neT68DS6Txm3V+3RoFqVcUT8ACqt2krppBrR0nE0MhgP5v5mx5J+FkCtxLK4NuL44MCdybBXJ3tiE
+        BCK8F3NrQgjudmCQN5DOg8ilOhP8rpQA4KGJCr/zYnDwePVNc7hXeYxhSu01Hl/Whg14RPN+t+Qjn
+        FFeEglPsiR3VQu2OUXAVKINJi5E1JXxnZ627BUZs2iReC5LcTJ5xUmA3LYosBCGyMtMSiIolQQlFF
+        qmHMDBAt2OmyN2m/y5BLyEfjGG8PEi8Syc5yKEtFHYC8gaQDfjK0zoT96DVm80gtbJv84vXLTwm54
+        +Fpb4OAg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1pOXID-006IcI-2c;
+        Sun, 05 Feb 2023 05:10:21 +0000
+Date:   Sun, 5 Feb 2023 05:10:21 +0000
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Peter Xu <peterx@redhat.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, Michal Simek <monstr@monstr.eu>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org
+Subject: Re: [RFC][PATCHSET] VM_FAULT_RETRY fixes
+Message-ID: <Y986PWjDy9YbHBEw@ZenIV>
+References: <Y9lz6yk113LmC9SI@ZenIV>
+ <CAHk-=whf73Vm2U3jyTva95ihZzefQbThZZxqZuKAF-Xjwq=G4Q@mail.gmail.com>
+ <Y9mD1qp/6zm+jOME@ZenIV>
+ <CAHk-=wjiwFzEGd_60H3nbgVB=R_8KTcfUJmXy=hSXCvLrXQRFA@mail.gmail.com>
+ <Y9mM5wiEhepjJcN0@ZenIV>
+ <CAHk-=wjNwwnBckTo8HLSdsd1ndoAR=5RBoZhdOyzhsnDAYWL9g@mail.gmail.com>
+ <Y9rCBqwbLlLf1fHe@x1n>
+ <Y9rlI6d5J2Y/YNQ+@ZenIV>
+ <Y9w/lrL6g4yauXz4@x1n>
+ <Y92mP1GT28KfnPEQ@ZenIV>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y92mP1GT28KfnPEQ@ZenIV>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-ARCH=parisc64 is now supported for 64-bit parisc builds, so add
-this alias to the kbuild.rst documentation.
+On Sat, Feb 04, 2023 at 12:26:39AM +0000, Al Viro wrote:
+> On Thu, Feb 02, 2023 at 05:56:22PM -0500, Peter Xu wrote:
+> 
+> > IMHO it'll be merely impossible to merge things across most (if not to say,
+> > all) archs.  It will need to be start from one or at least a few that still
+> > shares a major common base - I would still rely on x86 as a start - then we
+> > try to use the helper in as much archs as possible.
+> > 
+> > Even on x86, I do also see challenges so I'm not sure whether a common
+> > enough routine can be abstracted indeed.  But I believe there's a way to do
+> > this because obviously we still see tons of duplicated logics falling
+> > around.  It may definitely need time to think out where's the best spot to
+> > start, and how to gradually move towards covering more archs starting from
+> > one.
+> 
+> FWIW, after going through everything from alpha to loongarch (in alphabetic
+> order, skipping the itanic) the following seems to be suitable for all of
+> them:
+> 
+> generic_fault(address, flags, vm_flags, regs)
+[snip]
 
-Fixes: 3dcfb729b5f4 ("parisc: Make CONFIG_64BIT available for ARCH=parisc64 only")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kbuild@vger.kernel.org
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
----
- Documentation/kbuild/kbuild.rst |    1 +
- 1 file changed, 1 insertion(+)
+After looking through other architectures: that needs changes.
 
-diff -- a/Documentation/kbuild/kbuild.rst b/Documentation/kbuild/kbuild.rst
---- a/Documentation/kbuild/kbuild.rst
-+++ b/Documentation/kbuild/kbuild.rst
-@@ -160,6 +160,7 @@ directory name found in the arch/ direct
- But some architectures such as x86 and sparc have aliases.
- 
- - x86: i386 for 32 bit, x86_64 for 64 bit
-+- parisc: parisc for 32 bit, parisc64 for 64 bit
- - sh: sh for 32 bit, sh64 for 64 bit
- - sparc: sparc32 for 32 bit, sparc64 for 64 bit
- 
+AFAICS, the right approach would be to add a pointer to (uninitialized)
+kernel_siginfo.  And let it pass the signal number, etc. through that.
+That way all "we want to raise a signal" return values fold together.
+*IF* the page fault wants to do something extra on SIGSEGV, but not on
+SIGBUS (we have several such), it can key that upon info.si_signo.
+
+Speaking of SIGSEGV, there's a fun situation with VM_FAULT_SIGSEGV:
+
+1) Only x86 and ppc generate VM_FAULT_SIGSEGV in handle_mm_fault()
+without hitting WARN_ON_ONCE().  And neither actually returns it
+to page fault handler - the conditions that would've led to that
+return value (pkey stuff) are checked in the page fault handler
+and handle_mm_fault() is not called in such cases.
+
+2) on alpha, hexagon, itanic, loongarch, microblaze, mips, nios2,
+openrisc, sparc, um and xtensa #PF handler would end up with SEGV_ACCERR
+if it saw VM_FAULT_SIGNAL.
+
+3) on arm, arm64, arc, m68k, powerpc, s390, sh and x86 - SEGV_MAPERR
+(except that neither x86 nor powerpc #PF ever see it)
+
+4) on csky and riscv it would end up with BUG()
+
+5) on parisc it's complicated^Wbroken - it tries to decide which
+one to use after having unlocked mmap and looking at vma in process.
+
+As it is, VM_FAULT_SIGSEGV had ended up as "we need to report some
+error to get_user_pages() and similar callers in cases when
+page fault handler would've detected pkey problem and refused
+to call handle_mm_fault()", with several places where it's
+"we had been called with bogus arguments; printk and return
+something to indicate the things had gone wrong".  It used to
+have other uses, but this is what it had become now - grep and
+you'll see.
+
+AFAICS, all checks for it in page fault handlers are pretty much
+dead code...
