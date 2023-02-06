@@ -2,78 +2,117 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC03D68C73C
-	for <lists+linux-parisc@lfdr.de>; Mon,  6 Feb 2023 21:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D853368C7A1
+	for <lists+linux-parisc@lfdr.de>; Mon,  6 Feb 2023 21:28:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbjBFUGi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 6 Feb 2023 15:06:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46366 "EHLO
+        id S230010AbjBFU2t (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 6 Feb 2023 15:28:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjBFUGh (ORCPT
+        with ESMTP id S229519AbjBFU2s (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 6 Feb 2023 15:06:37 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE6B71EFED;
-        Mon,  6 Feb 2023 12:06:36 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9DE4CB810E5;
-        Mon,  6 Feb 2023 20:06:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0507AC433EF;
-        Mon,  6 Feb 2023 20:06:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675713994;
-        bh=3Yg7D05MkzSc67p0IllIeOFYuHpgtoWHEDyGg89cEn4=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=TrFanAIL/NQxsb91JvfkKgGGInV2GbJv83xXwVospLmonVoYF0qugCWhOe08RPwaX
-         KSz2R1yQLjbocys0qpEKTIJcvGgasxF/iufKfZWM+KLnESrINJ3xvu3fY01VN9IBBd
-         A14tJwz1NoSgpuJDM1gKfn9n4bZjtVGyWg1FSCcjcagioOTF4tpLoxfVEQ3ZgZwQ/X
-         1DTz425W+yIiGefj9MW9+XxaZDTOhpCSDxfOWIbHdEj1cNpx4bg45I7e94f2NXzAcH
-         p/5XOjHti0H5HYdlYMgGbFgyQK/fMQnqBl9p3+VIiziorpSavNm5enxgwyrcpj7Rpb
-         iz3O+/RqhOzlA==
-From:   =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To:     Al Viro <viro@zeniv.linux.org.uk>, linux-arch@vger.kernel.org
-Cc:     linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        Michal Simek <monstr@monstr.eu>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 09/10] riscv: fix livelock in uaccess
-In-Reply-To: <Y9l02DvS6CYThTEG@ZenIV>
-References: <Y9lz6yk113LmC9SI@ZenIV> <Y9l02DvS6CYThTEG@ZenIV>
-Date:   Mon, 06 Feb 2023 21:06:31 +0100
-Message-ID: <87h6vyimns.fsf@all.your.base.are.belong.to.us>
+        Mon, 6 Feb 2023 15:28:48 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AA2329E38;
+        Mon,  6 Feb 2023 12:28:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1675715294; bh=UKZ91KlMlyPDiSEe667DpO0/2hE2Bw/He9ABW0qj/PQ=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=r6tgimBD7+gevlMnjaVPcN0xxlFx/JRazQS7xSIpEWf9JcW2Yv0mwUxBZuq/K5C7x
+         CXEUKNj4xmQLhbvsEPIctTBr7bZRcyoLIks43Fnexd0BhtsatxeO9I8q4NMzZ6zGNd
+         9riOKNPxysaee0eiV6bcu0UjKX1hIm9tIJCbJjGLBiAIeE5L5w/4astqd4CHMMr/IS
+         0BO3JYl7vqLVrrLiWUC3/uR7Ei2KZN0NQUkIzOI42CZNWZkR33VqvZeb6osCXa4LHY
+         slcu/DkgDipyM1xs9iFk824vofDGsjUyYZaLNQ1tS5tz/c47igc7VzX87V2hCBOJK4
+         pEo7uie5gcBKQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([92.116.187.227]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Msq6M-1oabqA0u3k-00tBQk; Mon, 06
+ Feb 2023 21:28:14 +0100
+Message-ID: <9ef640ec-e5da-eed0-3707-cd138504e1c1@gmx.de>
+Date:   Mon, 6 Feb 2023 21:28:06 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v2] parisc: update kbuild doc. aliases for parisc64
+Content-Language: en-US
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        linux-parisc@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kbuild@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        linux-doc@vger.kernel.org
+References: <20230205163752.2535-1-rdunlap@infradead.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20230205163752.2535-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Provags-ID: V03:K1:dQ6w6Sso0DynHymSx1sSf884m02Cyx9zEt3tsu+PEwSKWK42qsx
+ td9FbwJILXt6g4/giaaR1Kfrh6xsQjCZYalzxAlqUHuGR/AaYN0uiBTkiqyMYOHEUFxO/mo
+ 2GOo+c5I68ap6NAYKA8JbMKYgEjwKufeb0XFYejmrtgKoY+txzKmE7Y0wtInktqpwJmDh8+
+ 1Rdb3yY4SzcbSpuQiAmsw==
+UI-OutboundReport: notjunk:1;M01:P0:odzB/JznoNo=;V6tBvW1VkD6tcAb7xj9ggL6C2af
+ F2j4Os9fvNB0BI2HvMJKk13hCM/yD8DFlKJr4UGp+wOMSr7vsHEp0dB9HcF8YAiQXqNgzMPkX
+ Sju94fRaOOKSYHB7KGjVk5t1U1hRSff4fwNfyN4ndGsipggBFC0ayJ36gECMKRuSGBOOoCmjX
+ aHNijTsqcOw4KytMtUDoW3qBWRLkAkGcPA2wQxBXYIdSvdGc3EACYIXPAut18sc3yvoy1bC7r
+ WW73vStGJDUi0mky6O7aIYkPSknusNppw02qC5RW2bevzuDQsDmr26Y4Y4aUrRXx8U6BiJ6aK
+ b/r5fudoAtPFniWiOF2Aiz/0IRAu6Rp4+GT4OosIf7H4FIAWd22MC4JFc0GkIVO862kbcc+hG
+ rcyd6phXitHpnQUSJKY87tmLraSKAmYE7poB5rnJvc6aGY2zCSLBzP4+UF1I79fYw5nQUtpmp
+ Bb/GPuTCPVaNbqylx1BQsW+OWZ5XX8/OjfrzO7zCdzRSTK0Jde9pi7a+2WH3g5hvZfs5cwzXm
+ G35JU1mrlbvmo/5lt5u6W7qZKh/2sMScXWmfSMQp+qk5RWSWXTATfQnBdnAKiDRql6wp75A4X
+ Lm6vJdPYmpHKwE7AzXcCSHVsVt0zypX7NnqwBBMzAVlbQfK8/BIVYKXuvWFgRt7ofrVxQ9M74
+ j1agDp0tFz0mQAUhsmsqz8v4vR7ubyLFz9l+FUl8tCRgMdENaiXKhLW1UppN/hSLE5p5RcDpl
+ HBKnfxO1mPuwoLVG+KUhbYDvVgTm0n0KA8DETE+MCpPLiolT55ilfFscqqOPIn+hr0yy0z9w7
+ WU4Lea1+al9hUMyziZ9aWc7uu9+hcN9lYiMSgsfXJEnBTjVPQV5KQinQkVEQYLyYTJDCjSOjw
+ NsL9yxEuiIOmX6KLRfAi9/c3C9b/DXlq81+g3blNDi3YkMA4bXY0CEOJs4x54pAwQ1jr+EvOh
+ nh5rDG0agzVkpyoKlxHJyM9hpS4=
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Al Viro <viro@zeniv.linux.org.uk> writes:
-
-> riscv equivalent of 26178ec11ef3 "x86: mm: consolidate VM_FAULT_RETRY han=
-dling"
-> If e.g. get_user() triggers a page fault and a fatal signal is caught, we=
- might
-> end up with handle_mm_fault() returning VM_FAULT_RETRY and not doing anyt=
-hing
-> to page tables.  In such case we must *not* return to the faulting insn -
-> that would repeat the entire thing without making any progress; what we n=
-eed
-> instead is to treat that as failed (user) memory access.
+On 2/5/23 17:37, Randy Dunlap wrote:
+> ARCH=3Dparisc64 is now supported for 64-bit parisc builds, so add
+> this alias to the kbuild.rst documentation.
 >
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+> Fixes: 3dcfb729b5f4 ("parisc: Make CONFIG_64BIT available for ARCH=3Dpar=
+isc64 only")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: linux-parisc@vger.kernel.org
+> Cc: Masahiro Yamada <masahiroy@kernel.org>
+> Cc: linux-kbuild@vger.kernel.org
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
+> ---
+> v2: drop "parisc for 32 bit" part since "parisc" is not an alias
 
-Reproduced with Mark's userland program -- thanks!
+Acked-by: Helge Deller <deller@gmx.de>
 
-Tested-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+Thank you, Randy!
+I'll aplly it to the parisc tree.
+
+Helge
+
+>
+>   Documentation/kbuild/kbuild.rst |    1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff -- a/Documentation/kbuild/kbuild.rst b/Documentation/kbuild/kbuild.=
+rst
+> --- a/Documentation/kbuild/kbuild.rst
+> +++ b/Documentation/kbuild/kbuild.rst
+> @@ -160,6 +160,7 @@ directory name found in the arch/ direct
+>   But some architectures such as x86 and sparc have aliases.
+>
+>   - x86: i386 for 32 bit, x86_64 for 64 bit
+> +- parisc: parisc64 for 64 bit
+>   - sh: sh for 32 bit, sh64 for 64 bit
+>   - sparc: sparc32 for 32 bit, sparc64 for 64 bit
+>
+
