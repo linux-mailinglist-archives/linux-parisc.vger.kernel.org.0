@@ -2,110 +2,112 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA32568B39D
-	for <lists+linux-parisc@lfdr.de>; Mon,  6 Feb 2023 02:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D43E168BC6A
+	for <lists+linux-parisc@lfdr.de>; Mon,  6 Feb 2023 13:08:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbjBFBIH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 5 Feb 2023 20:08:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55768 "EHLO
+        id S230166AbjBFMIi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 6 Feb 2023 07:08:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbjBFBIG (ORCPT
+        with ESMTP id S229689AbjBFMId (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 5 Feb 2023 20:08:06 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6181CDF4;
-        Sun,  5 Feb 2023 17:08:05 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7312060C4D;
-        Mon,  6 Feb 2023 01:08:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D781AC433D2;
-        Mon,  6 Feb 2023 01:08:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675645684;
-        bh=XyBLgfQK6ge4EhdCnRlXceT5yEg/NKnPwHNtxHUH0+o=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=TFp/nNwV67HIdFc5vi8rwNLOpB0TJQOS9Z1aAEQk/ywmRw5oWzuETG7y0eeUCCt9D
-         y2jTHN1SPxkaHlNnE5REHYMqcNuF1TyWkgez/DcNJ4lpBiWWlAJglq5QdbuLLIOHC5
-         MdIuF/8k9HYFVpQLRbQ+8Kxj8DZ9t7ONoeKlvMnwpiBxc/+PU3YR97c0sSshrq8jz1
-         fDeb52qd0fYrUJn4ut941v8DgvSOG5InuaQA+RgVoMiyLyEPyumEskJ9OtKZrRKAoO
-         vDwvwkg+u6gX2ZOMDcGcqcdWubdsKDhvqNyNUiZA3ievQ7PlC2hmgrNf6GcdLMvJz9
-         ymV7fu+ecAmZg==
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-15f97c478a8so13428750fac.13;
-        Sun, 05 Feb 2023 17:08:04 -0800 (PST)
-X-Gm-Message-State: AO0yUKXY0Jm0nxyXWB+i+oU4vCuCvx6uAv3c5KOUY3z9c9vlRZiMaPV3
-        iLVt1EyWCaY5KpZwXyYS3ByAhWd0tOtsmv4dn74=
-X-Google-Smtp-Source: AK7set8xoNkkqvVBNjBk9EbvclUMut0KpNh/NqPcJOx0XYTEkZbTCC+vIzJ2aYHACMV0LfSIms6VOVMi0gK5faJxh+M=
-X-Received: by 2002:a05:6870:110f:b0:160:3296:a9b9 with SMTP id
- 15-20020a056870110f00b001603296a9b9mr1494289oaf.287.1675645684087; Sun, 05
- Feb 2023 17:08:04 -0800 (PST)
+        Mon, 6 Feb 2023 07:08:33 -0500
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46402278B;
+        Mon,  6 Feb 2023 04:08:23 -0800 (PST)
+Received: by mail-qt1-f181.google.com with SMTP id h24so12482826qtr.0;
+        Mon, 06 Feb 2023 04:08:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=02Ztaz85YCyWse0OOUudyylXWESo7R0bW8bc2JlaDZc=;
+        b=6ACfGk4Cc6PZzFCtt8NUfiL++D4hT6IM6NhNOMgKyqM2gZ+DVEqw4/JdUtCVB3Tnkk
+         4wVqFFVWn/6V8HrJmmcKDb6ZoG5rXSeNoL5nCxpluOCJOSa/i5eR0YS0z4/9cq/3HgCL
+         6MhfWKflI3J00R4U/chAMiLamGLDUL4Go1/KBgc35FmQjTeovfaEtu4cbaVuRZw0X+dj
+         TRm1ezciK9oIA+n5aolKHFhUbRM42AD9lUi3vRSRT9zhW//uk9e7lTysWoUiPwcJNaN6
+         6uH22m2H0zNLagHNfWlCa+mDsmtpjf24Z9mCL62Xo5xRHcbczrFF+fLfiidTN2MzRbqN
+         VFHw==
+X-Gm-Message-State: AO0yUKWJpC6YMIBEOYY5yXJ5Lqpu97fWR/qML6CE5awgqg2hxmvl+pc2
+        KVKHuEBZHhBnNMlCq565YNj3Eqm7h/D0XA==
+X-Google-Smtp-Source: AK7set/llxk61OazyHQgc3fH/sHdW/g2/iwqMXVMVk+BhO6dxKFZxXZzA1vUeXUo2Uk6NGbpS4ro1g==
+X-Received: by 2002:ac8:58d6:0:b0:3b9:b2ba:9b3d with SMTP id u22-20020ac858d6000000b003b9b2ba9b3dmr31701636qta.54.1675685302188;
+        Mon, 06 Feb 2023 04:08:22 -0800 (PST)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
+        by smtp.gmail.com with ESMTPSA id 142-20020a370694000000b006fbb4b98a25sm7241573qkg.109.2023.02.06.04.08.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Feb 2023 04:08:21 -0800 (PST)
+Received: by mail-yb1-f177.google.com with SMTP id o187so14136627ybg.3;
+        Mon, 06 Feb 2023 04:08:21 -0800 (PST)
+X-Received: by 2002:a25:e912:0:b0:8a0:2a4:a96c with SMTP id
+ n18-20020a25e912000000b008a002a4a96cmr214639ybd.380.1675685301223; Mon, 06
+ Feb 2023 04:08:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20230205163752.2535-1-rdunlap@infradead.org>
-In-Reply-To: <20230205163752.2535-1-rdunlap@infradead.org>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Mon, 6 Feb 2023 10:07:27 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASGAk3sAaK0bDiTMdWR2ocRcRs8UBLekRddv0mizQKxqg@mail.gmail.com>
-Message-ID: <CAK7LNASGAk3sAaK0bDiTMdWR2ocRcRs8UBLekRddv0mizQKxqg@mail.gmail.com>
-Subject: Re: [PATCH v2] parisc: update kbuild doc. aliases for parisc64
-To:     Randy Dunlap <rdunlap@infradead.org>, Helge Deller <deller@gmx.de>
-Cc:     linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+References: <Y9lz6yk113LmC9SI@ZenIV> <Y9pD+TMP+/SyfeJm@FVFF77S0Q05N>
+In-Reply-To: <Y9pD+TMP+/SyfeJm@FVFF77S0Q05N>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 6 Feb 2023 13:08:09 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWtU=2Uq2QDu+eiBLve=uwJ4byU_1K2dKuUTH8wDUHoaw@mail.gmail.com>
+Message-ID: <CAMuHMdWtU=2Uq2QDu+eiBLve=uwJ4byU_1K2dKuUTH8wDUHoaw@mail.gmail.com>
+Subject: Re: [RFC][PATCHSET] VM_FAULT_RETRY fixes
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>, linux-arch@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        Michal Simek <monstr@monstr.eu>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Feb 6, 2023 at 1:37 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+Hi Mark,
+
+On Wed, Feb 1, 2023 at 11:52 AM Mark Rutland <mark.rutland@arm.com> wrote:
+> On Tue, Jan 31, 2023 at 08:02:51PM +0000, Al Viro wrote:
+> > On x86 it had been noticed and fixed back in 2014, in 26178ec11ef3 "x86:
+> > mm: consolidate VM_FAULT_RETRY handling".  Some of the other architectures
+> > had it dealt with later - e.g. arm in 2017, the fix is 746a272e44141
+> > "ARM: 8692/1: mm: abort uaccess retries upon fatal signal"; xtensa -
+> > in 2021, the fix is 7b9acbb6aad4f "xtensa: fix uaccess-related livelock
+> > in do_page_fault", etc.
+> >
+> > However, it never had been done on a bunch of architectures - the
+> > current mainline still has that bug on alpha, hexagon, itanic, m68k,
+> > microblaze, nios2, openrisc, parisc, riscv and sparc (both sparc32 and
+> > sparc64).  Fixes are trivial, but I've no way to test them for most
+> > of those architectures.
 >
-> ARCH=parisc64 is now supported for 64-bit parisc builds, so add
-> this alias to the kbuild.rst documentation.
+> FWIW, when I fixed arm and arm64 back in 2017, I did report the issue here with
+> a test case (and again in 2021, with maintainers all explciitly Cc'd):
 >
-> Fixes: 3dcfb729b5f4 ("parisc: Make CONFIG_64BIT available for ARCH=parisc64 only")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-parisc@vger.kernel.org
-> Cc: Masahiro Yamada <masahiroy@kernel.org>
-> Cc: linux-kbuild@vger.kernel.org
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> ---
-> v2: drop "parisc for 32 bit" part since "parisc" is not an alias
+>   https://lore.kernel.org/lkml/20170822102527.GA14671@leverpostej/
+>   https://lore.kernel.org/linux-arch/20210121123140.GD48431@C02TD0UTHF1T.local/
 >
->  Documentation/kbuild/kbuild.rst |    1 +
->  1 file changed, 1 insertion(+)
->
-> diff -- a/Documentation/kbuild/kbuild.rst b/Documentation/kbuild/kbuild.rst
-> --- a/Documentation/kbuild/kbuild.rst
-> +++ b/Documentation/kbuild/kbuild.rst
-> @@ -160,6 +160,7 @@ directory name found in the arch/ direct
->  But some architectures such as x86 and sparc have aliases.
->
->  - x86: i386 for 32 bit, x86_64 for 64 bit
-> +- parisc: parisc64 for 64 bit
->  - sh: sh for 32 bit, sh64 for 64 bit
->  - sparc: sparc32 for 32 bit, sparc64 for 64 bit
->
+> ... so if anyone has access to those architectures, that test might be useful
+> for verifying the fix.
 
+Thanks a lot! This showed the problem on m68k, and confirmed Al's fix.
 
+I'll give it a try on a few more systems later...
 
+Gr{oetje,eeting}s,
 
-If Helge will pick this up, please feel free to add
+                        Geert
 
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
