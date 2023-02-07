@@ -2,93 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5CFE68DDA8
-	for <lists+linux-parisc@lfdr.de>; Tue,  7 Feb 2023 17:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB3B668E1DB
+	for <lists+linux-parisc@lfdr.de>; Tue,  7 Feb 2023 21:27:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232517AbjBGQMY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 7 Feb 2023 11:12:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35184 "EHLO
+        id S229457AbjBGU14 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 Feb 2023 15:27:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232688AbjBGQMI (ORCPT
+        with ESMTP id S230440AbjBGU1y (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 7 Feb 2023 11:12:08 -0500
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B794E056;
-        Tue,  7 Feb 2023 08:11:55 -0800 (PST)
-Received: by mail-qt1-f173.google.com with SMTP id c2so17246490qtw.5;
-        Tue, 07 Feb 2023 08:11:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IKpFmPELNxMbbdNEgrdFiGaCVQckx4xSvoILv5TiVp4=;
-        b=zUbLIzpwACjD4TI60pRcwCL0xg9USvn8eHQV371WhQdZhlZHWeo3WlShjLsF3tgud+
-         wqlouuAcEj34p/N65XAvWyhJ3KmXbU7B4A8sDgxORoHU2W7GEElG4IS1LHTJc+OG7E60
-         NTRSUt+ENcYpl60UjlkB9k8etiFUuuizxs6YgGn89IGlPRhAf7ZgWt3eMtnf7BeqO+zn
-         SdS9o+jrzb83yURgIk/LFymYM/KSKldkU8Aq+zkbxj+U+68WJ0tDw3/Osx7VdZ71Olfy
-         3b7ZFNBiOt6Vjj6NsePoByu/wxG9IUHXJkWv4YkpNjQev3RVhnQkzDpaG5stVWtDR5su
-         ZHMw==
-X-Gm-Message-State: AO0yUKWFvPh9HDhLtCqOy15jVHIhwY5LxAOYYvt/caNHiJp8F7WqQPCN
-        QfwDnYoT1RsZinqmDDTZ8FkegYFz49MDiQ==
-X-Google-Smtp-Source: AK7set8aKxLwZwlyl1iNj3yvD+11ovSLP8b1YJ8Dz8j785mko9MntkgmA+ZkfFrSwJrZz9vBkXhfGg==
-X-Received: by 2002:a05:622a:1804:b0:3b1:4a8:4665 with SMTP id t4-20020a05622a180400b003b104a84665mr6093586qtc.62.1675786314242;
-        Tue, 07 Feb 2023 08:11:54 -0800 (PST)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
-        by smtp.gmail.com with ESMTPSA id bi15-20020a05620a318f00b006e99290e83fsm9721333qkb.107.2023.02.07.08.11.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Feb 2023 08:11:53 -0800 (PST)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-4b718cab0e4so201604057b3.9;
-        Tue, 07 Feb 2023 08:11:53 -0800 (PST)
-X-Received: by 2002:a0d:f444:0:b0:526:78ad:bb15 with SMTP id
- d65-20020a0df444000000b0052678adbb15mr382260ywf.47.1675786312866; Tue, 07 Feb
- 2023 08:11:52 -0800 (PST)
-MIME-Version: 1.0
-References: <Y9lz6yk113LmC9SI@ZenIV> <Y9l02DvS6CYThTEG@ZenIV>
-In-Reply-To: <Y9l02DvS6CYThTEG@ZenIV>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 7 Feb 2023 17:11:40 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVQusKr_W4dnQzVSWbav7vooCHbiyOQHbnraJCL16bsDQ@mail.gmail.com>
-Message-ID: <CAMuHMdVQusKr_W4dnQzVSWbav7vooCHbiyOQHbnraJCL16bsDQ@mail.gmail.com>
-Subject: Re: [PATCH 09/10] riscv: fix livelock in uaccess
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, Michal Simek <monstr@monstr.eu>,
+        Tue, 7 Feb 2023 15:27:54 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDFEB30E82;
+        Tue,  7 Feb 2023 12:27:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=XM5/DhrpywJuIcEgHHCo/8ZgkbeDJDYpTgAA6DELtws=; b=U421OkqtCK6gXcQf62Ryz9sZ/W
+        LZu+W2C5RVzWjNR1EJOlHTdtbUA8ODN3LbSVdDS3DjxVjKsvyfrdU85iUtIK1EgYxrddQ0m2wTalm
+        OssTp+Q+6OmZYy35VF4f8TBsgThmOB3u+RJ5a68V/pzMcXN/KM/Ez/WO3wthlQHUm0ELHHtc9xZYE
+        D46tkAcEKppoPWtpXr3+JsOkVr4ibVV2RCEgi+21G7Cx3eq2LJAbAe7NpSaz6q0Nunm9jiFI6Bw1a
+        MDE52Mqb5eTuWPKHiCG+W54+Ozx9KzoajI/jLRKPpRgEHssXN6Hk+ibtCKSSi8VsmJPAbnS9pIDOm
+        jRVggYwA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pPUZ1-000XLi-7h; Tue, 07 Feb 2023 20:27:39 +0000
+Date:   Tue, 7 Feb 2023 20:27:39 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     linux-arch@vger.kernel.org
+Cc:     Yin Fengwei <fengwei.yin@intel.com>, linux-mm@kvack.org,
+        linux-alpha@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
         Dinh Nguyen <dinguyen@kernel.org>,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+        openrisc@lists.librecores.org, linuxppc-dev@lists.ozlabs.org,
         linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        linux-xtensa@linux-xtensa.org
+Subject: Re: API for setting multiple PTEs at once
+Message-ID: <Y+K0O35jNNzxiXE6@casper.infradead.org>
+References: <Y9wnr8SGfGGbi/bk@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y9wnr8SGfGGbi/bk@casper.infradead.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Jan 31, 2023 at 9:07 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
-> riscv equivalent of 26178ec11ef3 "x86: mm: consolidate VM_FAULT_RETRY handling"
-> If e.g. get_user() triggers a page fault and a fatal signal is caught, we might
-> end up with handle_mm_fault() returning VM_FAULT_RETRY and not doing anything
-> to page tables.  In such case we must *not* return to the faulting insn -
-> that would repeat the entire thing without making any progress; what we need
-> instead is to treat that as failed (user) memory access.
->
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+On Thu, Feb 02, 2023 at 09:14:23PM +0000, Matthew Wilcox wrote:
+> For those of you not subscribed, linux-mm is currently discussing
+> how best to handle page faults on large folios.  I simply made it work
+> when adding large folio support.  Now Yin Fengwei is working on
+> making it fast.
 
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+OK, here's an actual implementation:
 
-Gr{oetje,eeting}s,
+https://lore.kernel.org/linux-mm/20230207194937.122543-3-willy@infradead.org/
 
-                        Geert
+It survives a run of xfstests.  If your architecture doesn't store its
+PFNs at PAGE_SHIFT, you're going to want to implement your own set_ptes(),
+or you'll see entirely the wrong pages mapped into userspace.  You may
+also wish to implement set_ptes() if it can be done more efficiently
+than __pte(pteval(pte) + PAGE_SIZE).
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Architectures that implement things like flush_icache_page() and
+update_mmu_cache() may want to propose batched versions of those.
+That's alpha, csky, m68k, mips, nios2, parisc, sh,
+arm, loongarch, openrisc, powerpc, riscv, sparc and xtensa.
+Maintainers BCC'd, mailing lists CC'd.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+I'm happy to collect implementations and submit them as part of a v6.
