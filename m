@@ -2,258 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F4DC693689
-	for <lists+linux-parisc@lfdr.de>; Sun, 12 Feb 2023 09:46:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAF706936BD
+	for <lists+linux-parisc@lfdr.de>; Sun, 12 Feb 2023 10:47:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229645AbjBLIqs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 12 Feb 2023 03:46:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60578 "EHLO
+        id S229513AbjBLJrZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 12 Feb 2023 04:47:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjBLIqj (ORCPT
+        with ESMTP id S229468AbjBLJrY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 12 Feb 2023 03:46:39 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE0DD1421F;
-        Sun, 12 Feb 2023 00:46:37 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 74C93B80AB5;
-        Sun, 12 Feb 2023 08:46:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDE1C433D2;
-        Sun, 12 Feb 2023 08:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676191595;
-        bh=fNKiSkZ0o+fOQDkH9eY0UIJa/qeemlNg5a9Sbw7z4oc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JUVV+chRkL08PzBAHoMlpmcJa2IhpSQwAz96rwplIsxNTcOagjdz1FjKgKIZm9Xz7
-         4pv6hHt7b9nmaV+hF833gn5hNvsDucwwTXlMhpuMzThGhvVuFGMqBA2B5yRqwzl9KX
-         2Wc43Xj/4Yfdsa0SIH7Q5qUXhOFTLhOk1YBgVMXYGMKSEd71o/EYsAImLe9oH0tXo8
-         IToPWVX6nfL1eBM61cT0MPNI30pgAm15llCo3a4+ZAa7MfdSDZzLkYkYfIFt92bOZ2
-         SPXfPRn2/UPxDP60AHCYuVhKHfGgEbsnHoBn/wXC8LSi6TGrRpBsT6yHBMhlRtOwBk
-         OSNHjjVZwDwtw==
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     David Airlie <airlied@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Helge Deller <deller@gmx.de>, Matt Turner <mattst88@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
-        dri-devel@lists.freedesktop.org, linux-alpha@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>
-Subject: [PATCH 2/2] char/agp: introduce asm-generic/agp.h
-Date:   Sun, 12 Feb 2023 10:46:11 +0200
-Message-Id: <20230212084611.1311177-3-rppt@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230212084611.1311177-1-rppt@kernel.org>
-References: <20230212084611.1311177-1-rppt@kernel.org>
+        Sun, 12 Feb 2023 04:47:24 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED756EC60;
+        Sun, 12 Feb 2023 01:47:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1676195239; bh=pYaetCeNFhD9jMHtNXjFKYku2v+SnTfT03mlMT6O1XM=;
+        h=X-UI-Sender-Class:Date:To:Cc:From:Subject;
+        b=rkm3trIofjMMTz4VgUiKJfVYFdOeP3jH1Q4nQiAh2Gx+ERChRGjWFrBBgRZ/+6Qc4
+         DnrQHtXzWCcxbwvMF24RwC+5iHDpYvvSwe6kP5NamJ7m7VI//wBx7Lom6qgK2YDJ4f
+         l0aJnEvwfFl8WC67/fUzzGwKtDh71Erd+lYkAwSWP+ZP6e8QWpuw4Cp5Ip6PO9wglO
+         CRPki2b9Kb94zbHF8V5C2inH7WxlEnKiS8hx+ggE2nqfQGucjWVCAwyb8lnOwC/V/W
+         2sizQZMP7LP9WJRgeruVIBqx/3N5bsael88SA7jc69/DwtFAa3DqjAmXouFKw5ZEn8
+         Pk0RRoNIZPVww==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([92.116.190.155]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MZktZ-1p75G53anX-00WlRh; Sun, 12
+ Feb 2023 10:47:18 +0100
+Message-ID: <216beccc-8ce7-82a2-80ba-1befa7b3bc91@gmx.de>
+Date:   Sun, 12 Feb 2023 10:47:17 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Content-Language: en-US
+To:     Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org
+Cc:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+From:   Helge Deller <deller@gmx.de>
+Subject: io_uring failure on parisc (32-bit userspace and 64-bit kernel)
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:XjftiaIWbvhqrScc2lPC+tCpEJ159g3DK+f3C+ayWmzRzbvU0Kr
+ 6petg2N3hGobIAMrGXTO85gvDidJvU/CCyIW8cAZZsnHtHf+HyJyUAd2y+HwCNbG38ul0da
+ kMc/kJh72AoZK5nG1IUTgMj8mKYZCogFBaq87AaZDOrKVQSpmFxEaykWq1OMh385yajMeEf
+ FcdpvEdpIgMt7O9xmCsIg==
+UI-OutboundReport: notjunk:1;M01:P0:uKxSYs4Sc88=;Rx8BxntJfFQq+LrJU2Gs1livdgs
+ zA6eG/xp4qyle3bRd4P87A8vG9f7sndsgujPZqei1qy8avoQNs89P1X5iajuygEgvfrmLd1wb
+ aW1Yxm/lzKzIkJAxQ+L8KZeOYhcU/sBkoKKwhFzTWca7sqDKLhzpSvrM6qMpCVVv/edc0L+pL
+ 8JWW2o1mVvEIVrm2SknjuqwamPlrVwqmxR5ifE4tQieIRBW/7dZVLjHrjAYYqy/3CvyoVq2gr
+ kjz59OnazAK+MvYNYn9O4epYJJdFkE1OpMRFWBJ0lrcPBTN4JuL8ac7AAgKyGo4wX1MMiPnBd
+ xgC7IbKluAHs5doactxB5GKmkXYGLiknXoToHh/e0yrmjhugRtlQUnxl6p+GRlrAPNAK1iMXw
+ DuMIC/K2UpFbniTTAtfTKHDWSgz4xYSWQsRzjZNpJN1QfYtbgB+qg40WZZEjnYvdOp96Xg481
+ AQIZBxBazUmfe9BRWLEbXW1alw9OUa4GVAKth5hX8QD0LqXgmqRwNwOOHxWzAR03MqJDAWk0H
+ 90mYm6jB4iRyRNdobGYSILaEDIuSdgO8ynqxLt+nxcbaxaXyqdPwrBwFF/I3hF0wZn3BtypQy
+ vXicAN2Mwzda+T/8QX+gVSBP7IvaeXenwEB+0NLGoI8X21iMy0sY9xYh3quqVKrfMVfXflh+c
+ kxWImAgqVeG3uRAqedRdFtY9MIHlcvNP/BggPpUOVoYZPtMHMMOjuuvQwbhsNkBUj+xoy2h37
+ j2pGN04mWgcbcYsb5oR8QOteAHfew0xnRJNobtEZIsGO9R1PKSQeH8kgdel0Um1j8hC/b1kU6
+ mJO2BWRecIYvANj9hrIJ2tSC4Kp6gMKo689r0UsVGzoa7ziWPiz9+OVOtW3unb5hmJVkJvEjJ
+ 22gMqYKD13RIL9zlVc74Zr2JAIVVx0cfaL3naurVS7BjhNBtqVM8Y6w4OxkC2/U+etKCtbgLP
+ CdAiJMg5o/gh8d9YYp2k+Z1Xrdk=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+Hi all,
 
-There are several architectures that duplicate definitions of
-map_page_into_agp(), unmap_page_from_agp() and flush_agp_cache().
+We see io-uring failures on the parisc architecture with this testcase:
+https://github.com/axboe/liburing/blob/master/examples/io_uring-test.c
 
-Define those in asm-generic/agp.h and use it instead of duplicated
-per-architecture headers.
+parisc is always big-endian 32-bit userspace, with either 32- or 64-bit kernel.
 
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
----
- arch/alpha/include/asm/Kbuild                 |  1 +
- arch/alpha/include/asm/agp.h                  | 13 ------------
- arch/ia64/include/asm/Kbuild                  |  1 +
- arch/ia64/include/asm/agp.h                   | 21 -------------------
- arch/parisc/include/asm/Kbuild                |  1 +
- arch/parisc/include/asm/agp.h                 | 15 -------------
- arch/powerpc/include/asm/Kbuild               |  1 +
- arch/sparc/include/asm/Kbuild                 |  1 +
- arch/sparc/include/asm/agp.h                  | 11 ----------
- .../include/asm => include/asm-generic}/agp.h |  8 +++----
- 10 files changed, 8 insertions(+), 65 deletions(-)
- delete mode 100644 arch/alpha/include/asm/agp.h
- delete mode 100644 arch/ia64/include/asm/agp.h
- delete mode 100644 arch/parisc/include/asm/agp.h
- delete mode 100644 arch/sparc/include/asm/agp.h
- rename {arch/powerpc/include/asm => include/asm-generic}/agp.h (59%)
+On a 64-bit kernel (6.1.11):
+deller@parisc:~$ ./io_uring-test test.file
+ret=0, wanted 4096
+Submitted=4, completed=1, bytes=0
+-> failure
 
-diff --git a/arch/alpha/include/asm/Kbuild b/arch/alpha/include/asm/Kbuild
-index 42911c8340c7..54f5126628c6 100644
---- a/arch/alpha/include/asm/Kbuild
-+++ b/arch/alpha/include/asm/Kbuild
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- generated-y += syscall_table.h
-+generic-y += agp.h
- generic-y += export.h
- generic-y += kvm_para.h
- generic-y += mcs_spinlock.h
-diff --git a/arch/alpha/include/asm/agp.h b/arch/alpha/include/asm/agp.h
-deleted file mode 100644
-index 4197b3bc78ee..000000000000
---- a/arch/alpha/include/asm/agp.h
-+++ /dev/null
-@@ -1,13 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef AGP_H
--#define AGP_H 1
--
--#include <asm/io.h>
--
--/* dummy for now */
--
--#define map_page_into_agp(page)		do { } while (0)
--#define unmap_page_from_agp(page)	do { } while (0)
--#define flush_agp_cache() mb()
--
--#endif
-diff --git a/arch/ia64/include/asm/Kbuild b/arch/ia64/include/asm/Kbuild
-index f994c1daf9d4..aefae2efde9f 100644
---- a/arch/ia64/include/asm/Kbuild
-+++ b/arch/ia64/include/asm/Kbuild
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- generated-y += syscall_table.h
-+generic-y += agp.h
- generic-y += kvm_para.h
- generic-y += mcs_spinlock.h
- generic-y += vtime.h
-diff --git a/arch/ia64/include/asm/agp.h b/arch/ia64/include/asm/agp.h
-deleted file mode 100644
-index f42c7dcb3d79..000000000000
---- a/arch/ia64/include/asm/agp.h
-+++ /dev/null
-@@ -1,21 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _ASM_IA64_AGP_H
--#define _ASM_IA64_AGP_H
--
--/*
-- * IA-64 specific AGP definitions.
-- *
-- * Copyright (C) 2002-2003 Hewlett-Packard Co
-- *	David Mosberger-Tang <davidm@hpl.hp.com>
-- */
--
--/*
-- * To avoid memory-attribute aliasing issues, we require that the AGPGART engine operate
-- * in coherent mode, which lets us map the AGP memory as normal (write-back) memory
-- * (unlike x86, where it gets mapped "write-coalescing").
-- */
--#define map_page_into_agp(page)		do { } while (0)
--#define unmap_page_from_agp(page)	do { } while (0)
--#define flush_agp_cache()		mb()
--
--#endif /* _ASM_IA64_AGP_H */
-diff --git a/arch/parisc/include/asm/Kbuild b/arch/parisc/include/asm/Kbuild
-index e6e7f74c8ac9..4fb596d94c89 100644
---- a/arch/parisc/include/asm/Kbuild
-+++ b/arch/parisc/include/asm/Kbuild
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- generated-y += syscall_table_32.h
- generated-y += syscall_table_64.h
-+generic-y += agp.h
- generic-y += kvm_para.h
- generic-y += mcs_spinlock.h
- generic-y += user.h
-diff --git a/arch/parisc/include/asm/agp.h b/arch/parisc/include/asm/agp.h
-deleted file mode 100644
-index d193a48490e2..000000000000
---- a/arch/parisc/include/asm/agp.h
-+++ /dev/null
-@@ -1,15 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _ASM_PARISC_AGP_H
--#define _ASM_PARISC_AGP_H
--
--/*
-- * PARISC specific AGP definitions.
-- * Copyright (c) 2006 Kyle McMartin <kyle@parisc-linux.org>
-- *
-- */
--
--#define map_page_into_agp(page)		do { } while (0)
--#define unmap_page_from_agp(page)	do { } while (0)
--#define flush_agp_cache()		mb()
--
--#endif /* _ASM_PARISC_AGP_H */
-diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
-index bcf95ce0964f..419319c4963c 100644
---- a/arch/powerpc/include/asm/Kbuild
-+++ b/arch/powerpc/include/asm/Kbuild
-@@ -2,6 +2,7 @@
- generated-y += syscall_table_32.h
- generated-y += syscall_table_64.h
- generated-y += syscall_table_spu.h
-+generic-y += agp.h
- generic-y += export.h
- generic-y += kvm_types.h
- generic-y += mcs_spinlock.h
-diff --git a/arch/sparc/include/asm/Kbuild b/arch/sparc/include/asm/Kbuild
-index 0b9d98ced34a..595ca0be286b 100644
---- a/arch/sparc/include/asm/Kbuild
-+++ b/arch/sparc/include/asm/Kbuild
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- generated-y += syscall_table_32.h
- generated-y += syscall_table_64.h
-+generic-y += agp.h
- generic-y += export.h
- generic-y += kvm_para.h
- generic-y += mcs_spinlock.h
-diff --git a/arch/sparc/include/asm/agp.h b/arch/sparc/include/asm/agp.h
-deleted file mode 100644
-index 5186924fa673..000000000000
---- a/arch/sparc/include/asm/agp.h
-+++ /dev/null
-@@ -1,11 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef AGP_H
--#define AGP_H 1
--
--/* dummy for now */
--
--#define map_page_into_agp(page)		do { } while (0)
--#define unmap_page_from_agp(page)	do { } while (0)
--#define flush_agp_cache()		mb()
--
--#endif
-diff --git a/arch/powerpc/include/asm/agp.h b/include/asm-generic/agp.h
-similarity index 59%
-rename from arch/powerpc/include/asm/agp.h
-rename to include/asm-generic/agp.h
-index e86f2ce476c9..10db92ede168 100644
---- a/arch/powerpc/include/asm/agp.h
-+++ b/include/asm-generic/agp.h
-@@ -1,7 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _ASM_POWERPC_AGP_H
--#define _ASM_POWERPC_AGP_H
--#ifdef __KERNEL__
-+#ifndef _ASM_GENERIC_AGP_H
-+#define _ASM_GENERIC_AGP_H
- 
- #include <asm/io.h>
- 
-@@ -9,5 +8,4 @@
- #define unmap_page_from_agp(page) do {} while (0)
- #define flush_agp_cache() mb()
- 
--#endif /* __KERNEL__ */
--#endif	/* _ASM_POWERPC_AGP_H */
-+#endif	/* _ASM_GENERIC_AGP_H */
--- 
-2.35.1
+strace shows:
+io_uring_setup(4, {flags=0, sq_thread_cpu=0, sq_thread_idle=0, sq_entries=4, cq_entries=8, features=IORING_FEAT_SINGLE_MMAP|IORING_FEAT_NODROP|IORING_FEAT_SUBMIT_STABLE|IORING_FEAT_RW_CUR_POS|IORING_FEAT_CUR_PERSONALITY|IORING_FEAT_FAST_POLL|IORING_FEAT_POLL_32BITS|0x1f80, sq_off={head=0, tail=16, ring_mask=64, ring_entries=72, flags=84, dropped=80, array=224}, cq_off={head=32, tail=48, ring_mask=68, ring_entries=76, overflow=92, cqes=96, flags=0x58 /* IORING_CQ_??? */}}) = 3
+mmap2(NULL, 240, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_POPULATE, 3, 0) = 0xf7522000
+mmap2(NULL, 256, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_POPULATE, 3, 0x10000000) = 0xf6922000
+openat(AT_FDCWD, "libell0-dbgsym_0.56-2_hppa.deb", O_RDONLY|O_DIRECT) = 4
+statx(4, "", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT|AT_EMPTY_PATH, STATX_BASIC_STATS, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFREG|0644, stx_size=689308, ...}) = 0
+getrandom("\x5c\xcf\x38\x2d", 4, GRND_NONBLOCK) = 4
+brk(NULL)                               = 0x4ae000
+brk(0x4cf000)                           = 0x4cf000
+io_uring_enter(3, 4, 0, 0, NULL, 8)     = 0
 
+
+Running the same testcase on a 32-bit kernel (6.1.11) works:
+root@debian:~# ./io_uring-test test.file
+Submitted=4, completed=4, bytes=16384
+-> ok.
+
+strace:
+io_uring_setup(4, {flags=0, sq_thread_cpu=0, sq_thread_idle=0, sq_entries=4, cq_entries=8, features=IORING_FEAT_SINGLE_MMAP|IORING_FEAT_NODROP|IORING_FEAT_SUBMIT_STABLE|IORING_FEAT_RW_CUR_POS|IORING_FEAT_CUR_PERSONALITY|IORING_FEAT_FAST_POLL|IORING_FEAT_POLL_32BITS|0x1f80, sq_off={head=0, tail=16, ring_mask=64, ring_entries=72, flags=84, dropped=80, array=224}, cq_off={head=32, tail=48, ring_mask=68, ring_entries=76, overflow=92, cqes=96, flags=0x58 /* IORING_CQ_??? */}}) = 3
+mmap2(NULL, 240, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_POPULATE, 3, 0) = 0xf6d4c000
+mmap2(NULL, 256, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_POPULATE, 3, 0x10000000) = 0xf694c000
+openat(AT_FDCWD, "trace.dat", O_RDONLY|O_DIRECT) = 4
+statx(4, "", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT|AT_EMPTY_PATH, STATX_BASIC_STATS, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFREG|0644, stx_size=1855488, ...}) = 0
+getrandom("\xb2\x3f\x0c\x65", 4, GRND_NONBLOCK) = 4
+brk(NULL)                               = 0x15000
+brk(0x36000)                            = 0x36000
+io_uring_enter(3, 4, 0, 0, NULL, 8)     = 4
+
+I'm happy to test any patch if someone has an idea....
+
+Helge
