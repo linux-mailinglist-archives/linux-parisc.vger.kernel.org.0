@@ -2,39 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D271A69608B
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 Feb 2023 11:17:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4755C695E0D
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 Feb 2023 10:05:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232040AbjBNKRo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 14 Feb 2023 05:17:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55734 "EHLO
+        id S231881AbjBNJFy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 14 Feb 2023 04:05:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbjBNKRm (ORCPT
+        with ESMTP id S231944AbjBNJFb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 14 Feb 2023 05:17:42 -0500
-Received: from mailbox.box.xen0n.name (mail.xen0n.name [115.28.160.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7FDF31E5D0;
-        Tue, 14 Feb 2023 02:17:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xen0n.name; s=mail;
-        t=1676365191; bh=i0XIzR1Y5NYJLkaxQFngDX1j91Olf/QjeHaXDd3DD/c=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=AhilTiebsZniB4h/3TCzhrMAQ0m1fI8D/hKY2T+4ArseJ+m3Ze12b64a7BZ4L0BhC
-         Cbii2w7OdAf8LC8paKh0dS4uxyxEGslyDxyzPafGMqQIX/0BH2c+SoMYy+3DyDz8fs
-         BbZrEFqt55X8c4cMx2sqOxvYHoYE3tKQfpxZHtYc=
-Received: from [100.100.57.122] (unknown [58.34.185.106])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mailbox.box.xen0n.name (Postfix) with ESMTPSA id B491D600F8;
-        Tue, 14 Feb 2023 16:59:47 +0800 (CST)
-Message-ID: <f3db61bb-5c89-2724-769f-9d606f587f92@xen0n.name>
-Date:   Tue, 14 Feb 2023 16:59:46 +0800
+        Tue, 14 Feb 2023 04:05:31 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0700C23C76
+        for <linux-parisc@vger.kernel.org>; Tue, 14 Feb 2023 01:04:56 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id co8so11111692wrb.1
+        for <linux-parisc@vger.kernel.org>; Tue, 14 Feb 2023 01:04:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KZk18aUwfr/crPnHPA/QNPK0H4tWzNL+2OmakVamCi8=;
+        b=FuqeOAA0zOBxZDuVrmVbvP8dKvoEf0MRrKKfm5NpFSyLOS1syMedD57gIqKmrL5zko
+         qHpdqh+1Qi4vk3xY+Y+b00Y3rfjpVOFAPuWKFoaNHXYX+NhTIfQLIuO5WcCVUFUjRwy7
+         xMFDBg0c617IjgdOAOjwaUswIiGz5V4UI7DfJ8LBDe8ExR38WilQf/7hqV4J4nMfP3dK
+         +NkXzLhRfCI4LG9OC+J6fTkyG/7he+OYSDs5hlMQV6UXzYF2Dol240t6thsBMIDBZKNF
+         mf4lP1Tmk2bhebKijyv57HPqf77+Ml7M9RiO9cyGc/K41l5a0L/IdrW6ctCufCt4MQrg
+         Mpqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KZk18aUwfr/crPnHPA/QNPK0H4tWzNL+2OmakVamCi8=;
+        b=0aD+n/k38MzcYvX5JpxrZ+vboYX/lKbgjlwApjjl5cOAI4AxdXyKSkc2AtqElaXdvP
+         mOUq7uWnbn3hxpM9ddAL8OevI4KYiO77MEeGW22NPpovocrK2F1fnNdEmowEp9j8+6BV
+         xwc1d2GuRRvlG042Q4IFz0+l1O1JDBGgWeEoMngH4V6znC5rGxgluiDJecklnLiNwakG
+         WN1I7HCVIJqVGb4OKnlivw7OBUg8r6Q32WFEeJuja69tOMFZ5ueIAxZ/d+/iBws6zefB
+         uf+Ud7UplCNkMC9rn4ls0hTx0zvkkW6Fa8zNF7XNNgtOoypCc29Xk9rj17fyft6/j9Nj
+         D/NA==
+X-Gm-Message-State: AO0yUKVMlPNLqx/FS2HcznpitYGoy9HU07R51cBuae5MTO9+oI2D0Akb
+        qW1a32MOlG9faYOhjhEoaDYl3Q==
+X-Google-Smtp-Source: AK7set+jlADAGeMno/J4b9rMaQi1OSFbGE2cOeHJ3WYCoMJkKRkmj2/GQpc+G+sprep4ghyf/aRSVg==
+X-Received: by 2002:a05:6000:8b:b0:2bd:f5bd:5482 with SMTP id m11-20020a056000008b00b002bdf5bd5482mr1310606wrx.28.1676365493352;
+        Tue, 14 Feb 2023 01:04:53 -0800 (PST)
+Received: from [192.168.30.216] ([81.0.6.76])
+        by smtp.gmail.com with ESMTPSA id d13-20020adfe88d000000b002c54f4d0f71sm7494931wrm.38.2023.02.14.01.04.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Feb 2023 01:04:52 -0800 (PST)
+Message-ID: <a018ab25-b545-1227-951b-a7b4e1c25d5e@linaro.org>
+Date:   Tue, 14 Feb 2023 10:04:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: [PATCH v3 10/24] sparc: Remove COMMAND_LINE_SIZE from uapi
-To:     Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Alexandre Ghiti <alexghiti@rivosinc.com>,
+Subject: Re: [PATCH v3 20/24] x86: Remove empty <uapi/asm/setup.h>
+Content-Language: en-US
+To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Richard Henderson <richard.henderson@linaro.org>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -44,6 +67,7 @@ To:     Sergey Shtylyov <s.shtylyov@omp.ru>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
         Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Michal Simek <monstr@monstr.eu>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
@@ -80,59 +104,30 @@ To:     Sergey Shtylyov <s.shtylyov@omp.ru>,
         linux-arch@vger.kernel.org
 Cc:     Palmer Dabbelt <palmer@rivosinc.com>
 References: <20230214074925.228106-1-alexghiti@rivosinc.com>
- <20230214074925.228106-11-alexghiti@rivosinc.com>
- <017f0b40-8021-8b3b-24d2-c70661b6b292@omp.ru>
-Content-Language: en-US
-From:   WANG Xuerui <kernel@xen0n.name>
-In-Reply-To: <017f0b40-8021-8b3b-24d2-c70661b6b292@omp.ru>
+ <20230214074925.228106-21-alexghiti@rivosinc.com>
+From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230214074925.228106-21-alexghiti@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023/2/14 16:50, Sergey Shtylyov wrote:
-> On 2/14/23 10:49 AM, Alexandre Ghiti wrote:
+On 14/2/23 08:49, Alexandre Ghiti wrote:
+> From: Palmer Dabbelt <palmer@rivosinc.com>
 > 
->> From: Palmer Dabbelt <palmer@rivosinc.com>
->>
->> As far as I can tell this is not used by userspace and thus should not
->> be part of the user-visible API.
->>
->> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
->> ---
->>   arch/sparc/include/asm/setup.h      | 6 +++++-
->>   arch/sparc/include/uapi/asm/setup.h | 7 -------
->>   2 files changed, 5 insertions(+), 8 deletions(-)
->>
->> diff --git a/arch/sparc/include/asm/setup.h b/arch/sparc/include/asm/setup.h
->> index 72205684e51e..d1384ed92547 100644
->> --- a/arch/sparc/include/asm/setup.h
->> +++ b/arch/sparc/include/asm/setup.h
->> @@ -7,7 +7,11 @@
->>   
->>   #include <linux/interrupt.h>
->>   
->> -#include <uapi/asm/setup.h>
->> +#if defined(__sparc__) && defined(__arch64__)
-> 
->     Mhm, I don't think these two can be #define'd simulaneously...
+> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+> ---
+>   arch/x86/include/asm/setup.h      | 2 --
+>   arch/x86/include/uapi/asm/setup.h | 1 -
+>   2 files changed, 3 deletions(-)
+>   delete mode 100644 arch/x86/include/uapi/asm/setup.h
 
-I believe it's just a SPARC-ism [1] [2] that may look strange and be 
-easily confused for __aarch64__ (notice the extra 'a')...
-
-[1]: 
-https://github.com/gcc-mirror/gcc/blob/basepoints/gcc-12/gcc/config/sparc/sparc.h#L301
-[2]: 
-https://github.com/llvm/llvm-project/blob/llvmorg-17-init/clang/lib/Basic/Targets/Sparc.cpp#L241
-
--- 
-WANG "xen0n" Xuerui
-
-Linux/LoongArch mailing list: https://lore.kernel.org/loongarch/
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
