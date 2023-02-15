@@ -2,64 +2,45 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FA8469876E
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 22:38:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B407E698775
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 22:39:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbjBOViN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 15 Feb 2023 16:38:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36686 "EHLO
+        id S229798AbjBOVj0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 15 Feb 2023 16:39:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjBOViL (ORCPT
+        with ESMTP id S229644AbjBOVj0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 15 Feb 2023 16:38:11 -0500
-Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B05122B603
-        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 13:38:09 -0800 (PST)
-Received: by mail-io1-xd2b.google.com with SMTP id w24so7678999iow.13
-        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 13:38:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2FjYikXxTsiCqHjFRWAjZux1kBU863fSvE+aPekbauo=;
-        b=GPWhsJvb/WW7pzjrCf75f0Xg2BFGoWV9C2TyCSpjyhFPLqZmLxT82s41O09n/4vDgs
-         X+/1CWpVzO6idwxlMcpdTuH0ft/fEyvNYWuSUK4xz7WJqJDZD+Y172SsHkFUjpWxiWsp
-         zRXE4boMyc9JR9EmhT324QmQEjXiLlOtPWDoAyS73EljI9aLSXDI0AwD0pDqXXftuopK
-         M2Klud7Puba02SuvkOSUyxW+/dxFwLuEI/Yg3rXKMZtaU05cRt0pYEbicDL/hTlba7n6
-         OIEMFTOF06LMBdDgg8E3cXDy2aaoIDhKumwavfsx52UZ0mebEjPH+v9QPbIRDzBG4Kaz
-         kJZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2FjYikXxTsiCqHjFRWAjZux1kBU863fSvE+aPekbauo=;
-        b=IpsdzrBt03SzJAuVcPPZxFqpbApJMwz4FIwNu37Opgc0WRoDpeDH0+eiPiW2SyZPGO
-         xkoSDW3ThAav4qaTDjZI3JeVucoFoZWq9SuIlHBQSkvFZ62E7CD3N/rEQLm16U2SezU/
-         xESaV5phoeArQy+n7zWs1amzXhrxl2i0HJNUXVrmVkkrFvUpMHSdCYPkqbOL9fU9WulW
-         0JDexsC68CrLicp8V2dsm6XEIVlrOODatBFVKpsbacvttNUNPR+ti5a6lmAGWVSiLR3q
-         cXSJomkya1g/NKICUb9HBvq6c1cQ4vKVYXmAuTcNgAAupf8ma98tSV1KOIQF1byenksN
-         QsCQ==
-X-Gm-Message-State: AO0yUKUqKA0RYnbPqfsLmHjXFVT6QKqeOL9ro65JHm8aW5UGSUiR/CPs
-        2TR27CHHj66QNoXP0MylqTgLmQ==
-X-Google-Smtp-Source: AK7set+1bkB/PhttX6TYUt72HaI3+Bx+fvgB52rMdCzu7v7BPKka7b7Mo4j/PszByHO6//OFTTNiQw==
-X-Received: by 2002:a05:6602:4149:b0:707:d0c0:1bd6 with SMTP id bv9-20020a056602414900b00707d0c01bd6mr2359168iob.1.1676497088926;
-        Wed, 15 Feb 2023 13:38:08 -0800 (PST)
-Received: from [192.168.1.94] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id r23-20020a028817000000b003a7c47efde0sm6121552jai.11.2023.02.15.13.38.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Feb 2023 13:38:08 -0800 (PST)
-Message-ID: <aeebb300-f595-e788-80a4-053af4adc0f3@kernel.dk>
-Date:   Wed, 15 Feb 2023 14:38:07 -0700
+        Wed, 15 Feb 2023 16:39:26 -0500
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-005.bell.net [209.71.208.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C44D52C655;
+        Wed, 15 Feb 2023 13:39:24 -0800 (PST)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [174.88.80.151]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 63E35DF700C26604
+X-CM-Envelope: MS4xfC3IQMkdXBhu0u3KzBuLwxQnc588ETT/IIKZWdSOasJEKDXxObhaBd+yl7I8srew9beDjsAqJtSkczrwKgvIMYv1E14LZIx8r/U+vy8Dp9APmhVJQApx
+ nHVDa9XkmIYBxo/j9ouootP/o24x9CyJY5rJQt+n31scXOLArk6pEzCZ7xv09q/OdM3sLAXp/4iHxKbcf9508NXmsEjPpaBLynFyuMOzVJL4zLmdQenJOU13
+ IjWfibFSrTEcmnq0jaK6x4+CrsTr/K/5z88VHHvEFBY1TzFXKHmIk/DejJCvIObonyo60AV5yxQPbJdv7mtmQ9wWLQeHLSdp4ovM/jlFaxxo3AhuuoO3H8Vi
+ Nt2f1gwRGVg7QrABbn4dRB9AcAr8Smu4wXMRBjsCS6RbvFczSe4=
+X-CM-Analysis: v=2.4 cv=AuWNYMxP c=1 sm=1 tr=0 ts=63ed5109
+ a=6Iw0JHgwQEnu+SgMJEJdFQ==:117 a=6Iw0JHgwQEnu+SgMJEJdFQ==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=6tV3kuHN6HInf6AXVRMA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (174.88.80.151) by cmx-mtlrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 63E35DF700C26604; Wed, 15 Feb 2023 16:39:21 -0500
+Message-ID: <5e72c1fc-1a7b-a4ed-4097-96816b802e6d@bell.net>
+Date:   Wed, 15 Feb 2023 16:39:22 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.2
 Subject: Re: io_uring failure on parisc with VIPT caches
 Content-Language: en-US
-To:     John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>, io-uring@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
+From:   John David Anglin <dave.anglin@bell.net>
+To:     Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>,
+        io-uring@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>
 References: <Y+wUwVxeN87gqN6o@p100>
  <006e8db4-336f-6717-ecb0-d01a0e9bc483@kernel.dk>
@@ -74,51 +55,61 @@ References: <Y+wUwVxeN87gqN6o@p100>
  <99a41070-f334-f3cb-47cd-8855c938d71f@bell.net>
  <d8dc9156-c001-8181-a946-e9fdfe13f165@kernel.dk>
  <c7725c80-ba8c-1182-7adc-bc107f4f5b75@bell.net>
-From:   Jens Axboe <axboe@kernel.dk>
 In-Reply-To: <c7725c80-ba8c-1182-7adc-bc107f4f5b75@bell.net>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2/15/23 2:06 PM, John David Anglin wrote:
-> On 2023-02-15 3:37 p.m., Jens Axboe wrote:
->>> System crashes running test buf-ring.t.
->> Huh, what's the crash?
-> Not much info.  System log indicates an HPMC occurred. Unfortunately, recovery code doesn't work.
->>
->>> Running test buf-ring.t bad run 0/0 = -233
->> THis one, and the similar -223 ones, you need to try and dig into that.
->> It doesn't reproduce for me, and it very much seems like the test case
->> having a different view of what -ENOBUFS looks like and hence it fails
->> when the kernel passes down something that is -ENOBUFS internally, but
->> doesn't match the app -ENOBUFS value. Are you running a 64-bit kernel?
->> Would that cause any differences?
-> I'm running a 64-bit kernel (6.1.12).
-> 
-> I believe 32 and 64-bit kernels have same error codes.
-> 
-> I see three places in io_uring where -ENOBUFS is returned.  They have similar code:
-> 
-> retry_multishot:
->         if (io_do_buffer_select(req)) {
->                 void __user *buf;
->                 size_t len = sr->len;
-> 
->                 buf = io_buffer_select(req, &len, issue_flags);
->                 if (!buf)
->                         return -ENOBUFS;
+On 2023-02-15 4:06 p.m., John David Anglin wrote:
+> On 2023-02-15 3:37 p.m., Jens Axboe wrote:
+>>> System crashes running test buf-ring.t.
+>> Huh, what's the crash?
+> Not much info.  System log indicates an HPMC occurred. Unfortunately, recovery code doesn't work.
+The following occurred running buf-ring.t under gdb:
 
-buf-ring is using a kernel mapped user ring, so may indeed be the same
-kind of coloring issue that we saw with the main rings.
+INFO: task kworker/u64:9:18319 blocked for more than 123 seconds.
+       Not tainted 6.1.12+ #4
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/u64:9   state:D stack:0     pid:18319 ppid:2 flags:0x00000000
+Workqueue: events_unbound io_ring_exit_work
+Backtrace:
+  [<0000000040b5c210>] __schedule+0x2e8/0x7f0
+  [<0000000040b5c7d0>] schedule+0xb8/0x1d0
+  [<0000000040b66534>] schedule_timeout+0x11c/0x1b0
+  [<0000000040b5d71c>] __wait_for_common+0x194/0x2e8
+  [<0000000040b5d8ac>] wait_for_completion+0x3c/0x50
+  [<0000000040b46508>] io_ring_exit_work+0x3d8/0x4d0
+  [<0000000040268da8>] process_one_work+0x238/0x520
+  [<00000000402692a4>] worker_thread+0x214/0x778
+  [<0000000040276f94>] kthread+0x24c/0x258
+  [<0000000040202020>] ret_from_kernel_thread+0x20/0x28
+
+INFO: task kworker/u64:10:18320 blocked for more than 123 seconds.
+       Not tainted 6.1.12+ #4
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/u64:10  state:D stack:0     pid:18320 ppid:2 flags:0x00000000
+Workqueue: events_unbound io_ring_exit_work
+Backtrace:
+  [<0000000040b5c210>] __schedule+0x2e8/0x7f0
+  [<0000000040b5c7d0>] schedule+0xb8/0x1d0
+  [<0000000040b66534>] schedule_timeout+0x11c/0x1b0
+  [<0000000040b5d71c>] __wait_for_common+0x194/0x2e8
+  [<0000000040b5d8ac>] wait_for_completion+0x3c/0x50
+  [<0000000040b46508>] io_ring_exit_work+0x3d8/0x4d0
+  [<0000000040268da8>] process_one_work+0x238/0x520
+  [<00000000402692a4>] worker_thread+0x214/0x778
+  [<0000000040276f94>] kthread+0x24c/0x258
+  [<0000000040202020>] ret_from_kernel_thread+0x20/0x28
+
+gdb was sitting at a break at line 328.
 
 -- 
-Jens Axboe
-
+John David Anglin  dave.anglin@bell.net
 
