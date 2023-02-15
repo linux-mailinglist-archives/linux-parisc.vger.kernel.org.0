@@ -2,45 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62BDA69810C
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 17:39:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE726698185
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 18:01:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbjBOQjJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 15 Feb 2023 11:39:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48992 "EHLO
+        id S229956AbjBORBR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 15 Feb 2023 12:01:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjBOQjG (ORCPT
+        with ESMTP id S229959AbjBORBO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 15 Feb 2023 11:39:06 -0500
-Received: from cmx-torrgo002.bell.net (mta-tor-001.bell.net [209.71.212.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB0F93F2;
-        Wed, 15 Feb 2023 08:38:57 -0800 (PST)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [174.88.80.151]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 63E4C09200A01652
-X-CM-Envelope: MS4xfMXXOonea0nOowVsPp2s8/RuCnajqsfkDyiVd3Zdx0DBhoxsORiwtqj3IjU/TAG24DzoHxsWWx177XX/zeL7UQJzRv/HaPjB1oU5W6+9bePJRDCtt8rG
- YLlPQhjwBFwWU58E0EB3sVXtAC4egKoVIxUEzkXMmpVYSlOBgoOYQYvpICuDAL+0naF5MW8Z4oyGe5AiZyDCjPskigiePCD3SvvKMx9lOJ8bvHvpft/ZFobO
- rMEx7DTXLJRNR5n2XM7+RqGanrRsQT4Na8bHdEW9m5XN/GcoXDPggmxwGp8PRrJeVZw23SSo2lMAJN18DHj7jmEI3YEpdcdMW5YrDJjevllb554bq23xfoF3
- 9Yu/O6avUHw6wu7QxH+f0KpKjRlL1KC0xEZ2gek3ZH8g+fTV2wk=
-X-CM-Analysis: v=2.4 cv=ULS+oATy c=1 sm=1 tr=0 ts=63ed0a9d
- a=6Iw0JHgwQEnu+SgMJEJdFQ==:117 a=6Iw0JHgwQEnu+SgMJEJdFQ==:17
- a=IkcTkHD0fZMA:10 a=xNf9USuDAAAA:8 a=FBHGMhGWAAAA:8 a=lrTyYbZB3KvdHd6MpVcA:9
- a=QEXdDO2ut3YA:10 a=jYJgLHWX644A:10 a=SEwjQc04WA-l_NiBhQ7s:22
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (174.88.80.151) by cmx-torrgo002.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
-        id 63E4C09200A01652; Wed, 15 Feb 2023 11:38:53 -0500
-Message-ID: <0bfe6cdb-2749-c08d-a1b2-ef46fed1ded3@bell.net>
-Date:   Wed, 15 Feb 2023 11:38:54 -0500
+        Wed, 15 Feb 2023 12:01:14 -0500
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BEAB3B3F1
+        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 09:01:12 -0800 (PST)
+Received: by mail-il1-x134.google.com with SMTP id u8so7704369ilq.13
+        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 09:01:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yiqWM6HH7+wfgiaknMVF3VR6f19OKxKeSu0RZUiYVGk=;
+        b=45gjb4i/0MTIDwkfJ6dZE5Jz0dcdhUOFOUM8bTz1+6A0nxO0O7brl+nnhETurQdpMQ
+         7R1gNMFrOxY7Di9zWBpYCwqLF7fIfpcmoE/qWv9uFZrj+zZnt3dhmqxOLf5Kjv7Z88Yp
+         MFKYbcz7kqMA6myTQyzM6gP1c2tc4HoaUrJY6kRZzx7vLjofwIrJCz1VWW5VY1k6xBtR
+         AxaMfsAAfp1n/b34MW8CFk++YDGbjZgrJ2t9VxSwmlejIMjwL+jNptz0AFfnDPmyTG6Z
+         tf9UCofiICm2R4u9OnQPg4ap+yip5dtXsgvttv+lhSKN+P/BqLM4BITsbH99gyxrZ0D8
+         m7rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yiqWM6HH7+wfgiaknMVF3VR6f19OKxKeSu0RZUiYVGk=;
+        b=WIEEXb9qUSQp3NTUqIwWR/f+NTZOGjjm04vmzP8sOp2EMTIKjZGoJDqWXGTc90kmUx
+         E4ORlLiozjP9rjwrusQT2TIiVTI+OQS0aLk13WVDHmRlVZJduqczUijkvQnR5PQlB/p9
+         TVeVJUsa4A9KnJTB2k2v4CI5z0D3mvkmGPq0bHsznyzrUgV5Ww126A03vqBpAPd3YwDD
+         8RLS4p8q1ekld238uD/YAPDDHpJUYcx8Cvp0ZP62hkanK5tPPbZkJIS8P7qii3eUo0GN
+         qRSYe79NyhavTocG0ar1qALjh3y2qaIFyUfIXP5zeoDSAMypXl9EZOadpPJsnbRfzfRE
+         FOFQ==
+X-Gm-Message-State: AO0yUKUAHn4cVpDrrlkbgwQkQXOJbXfslJmWWHKc+gISkLoMUmGOyMIt
+        Jal0ZB38iOSwlKvDToWcQYKzBs3TGjYVxlwm
+X-Google-Smtp-Source: AK7set+0PdSdOe8ctFCIoMj4TlvlgMGDvtl7A9O50LRmfdUTJpDe4Bq3X8eQwS7Ih3eJ1ELd9JbAOg==
+X-Received: by 2002:a05:6e02:ece:b0:315:2b2a:f458 with SMTP id i14-20020a056e020ece00b003152b2af458mr1857881ilk.3.1676480471640;
+        Wed, 15 Feb 2023 09:01:11 -0800 (PST)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id c11-20020a02a40b000000b003bf39936d1esm5547415jal.131.2023.02.15.09.01.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Feb 2023 09:01:11 -0800 (PST)
+Message-ID: <a03d75b9-a9b8-b950-c53d-6df85fe8adc4@kernel.dk>
+Date:   Wed, 15 Feb 2023 10:01:10 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.2
 Subject: Re: io_uring failure on parisc with VIPT caches
 Content-Language: en-US
-To:     Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>,
-        io-uring@vger.kernel.org, linux-parisc@vger.kernel.org,
+To:     John David Anglin <dave.anglin@bell.net>,
+        Helge Deller <deller@gmx.de>, io-uring@vger.kernel.org,
+        linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>
 References: <Y+wUwVxeN87gqN6o@p100>
  <006e8db4-336f-6717-ecb0-d01a0e9bc483@kernel.dk>
@@ -48,30 +67,47 @@ References: <Y+wUwVxeN87gqN6o@p100>
  <5f02fa8b-7fd8-d98f-4876-f1a89024b888@kernel.dk>
  <2b89f252-c430-1c44-7b30-02d927d2c7cb@gmx.de>
  <f7c3ef57-f16c-7fe3-30b7-8ca6a9ef00ee@kernel.dk>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <f7c3ef57-f16c-7fe3-30b7-8ca6a9ef00ee@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+ <0bfe6cdb-2749-c08d-a1b2-ef46fed1ded3@bell.net>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <0bfe6cdb-2749-c08d-a1b2-ef46fed1ded3@bell.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-02-15 10:56 a.m., Jens Axboe wrote:
->> Is there maybe somewhere a more detailled testcase which I could try too?
-> Just git clone liburing:
->
-> git clone git://git.kernel.dk/liburing
->
-> and run make && make runtests in there, that'll go through the whole
-> regression suite.
-Here are test results for Debian liburing 2.3-3 (hppa) with Helge's original patch:
-https://buildd.debian.org/status/fetch.php?pkg=liburing&arch=hppa&ver=2.3-3&stamp=1676478898&raw=0
+On 2/15/23 9:38 AM, John David Anglin wrote:
+> On 2023-02-15 10:56 a.m., Jens Axboe wrote:
+>>> Is there maybe somewhere a more detailled testcase which I could try too?
+>> Just git clone liburing:
+>>
+>> git clone git://git.kernel.dk/liburing
+>>
+>> and run make && make runtests in there, that'll go through the whole
+>> regression suite.
+> Here are test results for Debian liburing 2.3-3 (hppa) with Helge's original patch:
+> https://buildd.debian.org/status/fetch.php?pkg=liburing&arch=hppa&ver=2.3-3&stamp=1676478898&raw=0
+
+Most of the test failures seem to be related to O_DIRECT opens, which
+I'm guessing is because it's run on an fs without O_DIRECT support?
+Outside of that, I think some of the syzbot cases are just generally
+broken on various archs.
+
+Lastly, there's a few of these:
+
+Running test buf-ring.t                                             bad run 0/0 = -233
+
+and similar (like -223) which I really don't know what is, where do
+these values come from? Ah hang on, they are in the parisc errno,
+so that'd be -ENOBUFS and -EOPNOTSUPP. I wonder if there's some
+discrepancy between the kernel and user side errno values here?
 
 -- 
-John David Anglin  dave.anglin@bell.net
+Jens Axboe
+
 
