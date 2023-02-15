@@ -2,105 +2,130 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20A1A69743C
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 03:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FE76975C7
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 06:22:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232625AbjBOCPv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 14 Feb 2023 21:15:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51944 "EHLO
+        id S233287AbjBOFWa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 15 Feb 2023 00:22:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232267AbjBOCPu (ORCPT
+        with ESMTP id S233083AbjBOFW3 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 14 Feb 2023 21:15:50 -0500
-X-Greylist: delayed 120 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Feb 2023 18:15:49 PST
-Received: from cmx-mtlrgo001.bell.net (mta-mtl-005.bell.net [209.71.208.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF3920685;
-        Tue, 14 Feb 2023 18:15:48 -0800 (PST)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [174.88.80.151]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 63E35DF700AA57BB
-X-CM-Envelope: MS4xfF+ZAqY6fgv7W+Z/KMjKKHw6Cb2dAcCC87DIpjYmRmHFLMCe0+cPyAz6MXK9XVm7r9ldi4VeNkgrn2hgepihVjcJy+rNkvJrRtl6lkk8GqvHY6u1slFm
- 4BEr+J3WqToEZtI8WpLrUyaUl0W8UEOTRm25nzRbWrgxEbJ8e2yj0vmrqxTe3NrLgZ5VRy33xUhcRx9Jejp0NtHNygq3sI2u/zeg8fU2IDPo8tNp2vpcsQCT
- 7jFnSW8gvdY1iddWdhgnEOK8q9AZVFPiWbM4/mewjXkGJlH7vj7eJN1jH2swA7EhxXAp66yifOyW+c3AJZ7xY/iHHrB9nV2kReEQwrrH9mxqe01f608FpjH+
- FtxgJQ7j2oQyUiCnl+c1r8JRpsx5CO7RwmxuH0ONke2jpCe/Ydk=
-X-CM-Analysis: v=2.4 cv=AuWNYMxP c=1 sm=1 tr=0 ts=63ec3f88
- a=6Iw0JHgwQEnu+SgMJEJdFQ==:117 a=6Iw0JHgwQEnu+SgMJEJdFQ==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=JPfK03Pn82aHAJPgZp0A:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (174.88.80.151) by cmx-mtlrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
-        id 63E35DF700AA57BB; Tue, 14 Feb 2023 21:12:24 -0500
-Message-ID: <626cee6f-f542-b7eb-16ca-1cf4e3808ca6@bell.net>
-Date:   Tue, 14 Feb 2023 21:12:24 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: io_uring failure on parisc with VIPT caches
-To:     Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>,
-        io-uring@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <Y+wUwVxeN87gqN6o@p100>
- <006e8db4-336f-6717-ecb0-d01a0e9bc483@kernel.dk>
-Content-Language: en-US
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <006e8db4-336f-6717-ecb0-d01a0e9bc483@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Wed, 15 Feb 2023 00:22:29 -0500
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E2E34009
+        for <linux-parisc@vger.kernel.org>; Tue, 14 Feb 2023 21:22:25 -0800 (PST)
+Received: by mail-pf1-x434.google.com with SMTP id bw10so1958170pfb.0
+        for <linux-parisc@vger.kernel.org>; Tue, 14 Feb 2023 21:22:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tV+nl5/6nbPk/6HA5pQX/rHuTHF5S4E9f4KJMF/h5x0=;
+        b=fhWxOvSg47bnqh1vlUb0tg8U7zRfENd11uhGOf5Jsz/ZocWHFEI68pLXo5d9vBVXvT
+         wSDFNO3/CV6QVriW/uJf7uSjBsTIo2nfhwr90ljf0Mtrv3l+ZNz03APZ/NoeYJxIi8AS
+         eT1BnG6scYkTL0mRsKAhicVLLfSox5xFSJlK+m4CcZ2f/19AZeBmn0TeLDNpHHUJ+j//
+         pNGe52xRL7NHFqYuRqi8NBAMhHiUAqm3krXcV9gB6lQ+ZUL8htkaq+hcUOto2vJWmQ/P
+         1t61ly6hek8z31+cUX+0shb1PAvYlU/KvbO9KdB05jwbmNe1/Zq0XZpFJiImeu8sqMJC
+         uFRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tV+nl5/6nbPk/6HA5pQX/rHuTHF5S4E9f4KJMF/h5x0=;
+        b=hUbuIba7PTfH+oxvz2zU5eJIg78fH3vtZL7VG5AKAz+auxgS1coNLQlgSQokkvvenf
+         5XFXrtONRueaPYsctViMbYqXzvSjcjRJjuydtcMs2WVuf6Pj0Pg8xUQDBOdr8Bqrbbv9
+         c94vlehG0f142vRMMw8gdVmEXqBawf7kBPSBCG8okU1dJGQx2rRxDklXCFmLoILGnMK3
+         2x1ZZhSNXtT34xWq3IMbsaZjgAw0u0gU/ZBhokEKFL34CeZ/HcdNb9IYTO7U1JffsmiJ
+         vFlPLeUGPkKozpFh3NG/JdVTYNOicN7RZi1TUwNOx5ljuLR9KrSFg8ZZZuV76By64gPH
+         FHrQ==
+X-Gm-Message-State: AO0yUKVv2WKgq+BszW23LtS48JmwELlFR9lyo9XR04s+/zztf2RSkD76
+        nEgBFAH+20QpBFZk+FJPzXXWmg==
+X-Google-Smtp-Source: AK7set/rdrNLm8tItidqjsvagDbtl5rYMULe1MueAmQXNPzlIf4+Jxy35EVuWqAlcqe6sRrK/ndqkQ==
+X-Received: by 2002:aa7:9f85:0:b0:577:272f:fdb with SMTP id z5-20020aa79f85000000b00577272f0fdbmr600755pfr.29.1676438545117;
+        Tue, 14 Feb 2023 21:22:25 -0800 (PST)
+Received: from localhost ([135.180.226.51])
+        by smtp.gmail.com with ESMTPSA id n14-20020aa78a4e000000b005a8d396ae27sm2788868pfa.8.2023.02.14.21.22.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Feb 2023 21:22:24 -0800 (PST)
+Date:   Tue, 14 Feb 2023 21:22:24 -0800 (PST)
+X-Google-Original-Date: Tue, 14 Feb 2023 21:22:11 PST (-0800)
+Subject:     Re: [PATCH 13/19] arch/riscv: rename internal name __xchg to __arch_xchg
+In-Reply-To: <20221222114635.1251934-14-andrzej.hajda@intel.com>
+CC:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, andrzej.hajda@intel.com,
+        Arnd Bergmann <arnd@arndb.de>, rodrigo.vivi@intel.com,
+        akpm@linux-foundation.org, andriy.shevchenko@linux.intel.com,
+        peterz@infradead.org, boqun.feng@gmail.com, mark.rutland@arm.com
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     andrzej.hajda@intel.com
+Message-ID: <mhng-e75808d7-21de-4ef8-a606-b7c652a1f38e@palmer-ri-x1c9>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-02-14 6:29 p.m., Jens Axboe wrote:
-> On 2/14/23 4:09 PM, Helge Deller wrote:
->> * John David Anglin<dave.anglin@bell.net>:
->>> On 2023-02-13 5:05 p.m., Helge Deller wrote:
->>>> On 2/13/23 22:05, Jens Axboe wrote:
->>>>> On 2/13/23 1:59?PM, Helge Deller wrote:
->>>>>>> Yep sounds like it. What's the caching architecture of parisc?
->>>>>> parisc is Virtually Indexed, Physically Tagged (VIPT).
->>>>> That's what I assumed, so virtual aliasing is what we're dealing with
->>>>> here.
->>>>>
->>>>>> Thanks for the patch!
->>>>>> Sadly it doesn't fix the problem, as the kernel still sees
->>>>>> ctx->rings->sq.tail as being 0.
->>>>>> Interestingly it worked once (not reproduceable) directly after bootup,
->>>>>> which indicates that we at least look at the right address from kernel side.
->>>>>>
->>>>>> So, still needs more debugging/testing.
->>>>> It's not like this is untested stuff, so yeah it'll generally be
->>>>> correct, it just seems that parisc is a bit odd in that the virtual
->>>>> aliasing occurs between the kernel and userspace addresses too. At least
->>>>> that's what it seems like.
->>>> True.
->>>>
->>>>> But I wonder if what needs flushing is the user side, not the kernel
->>>>> side? Either that, or my patch is not flushing the right thing on the
->>>>> kernel side.
->> The patch below seems to fix the issue.
->>
->> I've successfuly tested it with the io_uring-test testcase on
->> physical parisc machines with 32- and 64-bit 6.1.11 kernels.
->>
->> The idea is similiar on how a file is mmapped shared by two
->> userspace processes by keeping the lower bits of the virtual address
->> the same.
->>
->> Cache flushes from userspace don't seem to be needed.
-> Are they from the kernel side, if the lower bits mean we end up
-> with the same coloring? Because I think this is a bit of a big
-> hammer, in terms of overhead for flushing. As an example, on arm64
-> that is perfectly fine with the existing code, it's about a 20-25%
-> performance hit.
-The io_uring-test testcase still works on rp3440 with the kernel flushes removed.
+On Thu, 22 Dec 2022 03:46:29 PST (-0800), andrzej.hajda@intel.com wrote:
+> __xchg will be used for non-atomic xchg macro.
+>
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> ---
+>  arch/riscv/include/asm/atomic.h  | 2 +-
+>  arch/riscv/include/asm/cmpxchg.h | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/riscv/include/asm/atomic.h b/arch/riscv/include/asm/atomic.h
+> index 0dfe9d857a762b..bba472928b5393 100644
+> --- a/arch/riscv/include/asm/atomic.h
+> +++ b/arch/riscv/include/asm/atomic.h
+> @@ -261,7 +261,7 @@ c_t arch_atomic##prefix##_xchg_release(atomic##prefix##_t *v, c_t n)	\
+>  static __always_inline							\
+>  c_t arch_atomic##prefix##_xchg(atomic##prefix##_t *v, c_t n)		\
+>  {									\
+> -	return __xchg(&(v->counter), n, size);				\
+> +	return __arch_xchg(&(v->counter), n, size);			\
+>  }									\
+>  static __always_inline							\
+>  c_t arch_atomic##prefix##_cmpxchg_relaxed(atomic##prefix##_t *v,	\
+> diff --git a/arch/riscv/include/asm/cmpxchg.h b/arch/riscv/include/asm/cmpxchg.h
+> index 12debce235e52d..2f4726d3cfcc25 100644
+> --- a/arch/riscv/include/asm/cmpxchg.h
+> +++ b/arch/riscv/include/asm/cmpxchg.h
+> @@ -114,7 +114,7 @@
+>  					    _x_, sizeof(*(ptr)));	\
+>  })
+>
+> -#define __xchg(ptr, new, size)						\
+> +#define __arch_xchg(ptr, new, size)					\
+>  ({									\
+>  	__typeof__(ptr) __ptr = (ptr);					\
+>  	__typeof__(new) __new = (new);					\
+> @@ -143,7 +143,7 @@
+>  #define arch_xchg(ptr, x)						\
+>  ({									\
+>  	__typeof__(*(ptr)) _x_ = (x);					\
+> -	(__typeof__(*(ptr))) __xchg((ptr), _x_, sizeof(*(ptr)));	\
+> +	(__typeof__(*(ptr))) __arch_xchg((ptr), _x_, sizeof(*(ptr)));	\
+>  })
+>
+>  #define xchg32(ptr, x)							\
 
--- 
-John David Anglin  dave.anglin@bell.net
-
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
