@@ -2,43 +2,47 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CB16976FB
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 08:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A70E6697C8C
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 14:00:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232544AbjBOHFP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 15 Feb 2023 02:05:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36498 "EHLO
+        id S233865AbjBONAq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 15 Feb 2023 08:00:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233111AbjBOHEj (ORCPT
+        with ESMTP id S231229AbjBONAn (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 15 Feb 2023 02:04:39 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B7A25B98;
-        Tue, 14 Feb 2023 23:04:28 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4PGpwB16Cyz4x5V;
-        Wed, 15 Feb 2023 18:04:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-        s=201909; t=1676444666;
-        bh=JUTkPQAgfduuGSuPZGMfN9jX5ig96F9RnCKqmUbpwX8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=c9jhtw7yA0XcW4ZIPKehScWAnBIE+yzQpATJfnqks6S8ZJ2HNm+BGFL2euWeBOt8a
-         OhWOKbt3aSBVpTmFcz15w7a7UuhkDO05uNLtnmT22dKVJC01MB7W9tPpnBm9YQMsGK
-         RYNgu0G4CP5zVuci+an4PNoxZ0HU0g5JR/uSa4eE8zpo9iyyuHKEmh9FPQybvgw+KY
-         d58FT+wdEKfgJkLAPaL0Cw6X5qfGspbdggu7TZ1U8VrT0mS5Jx5jrv8cpfFyy5N9KE
-         2xLTt+2MVtXNE6iyfLrIZtYM6caEuBGdw8QxqlgG0gE7FVIBHx1EiyfBSI2iWVwldk
-         /dc0iTP1Vtrhw==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Jonathan Corbet <corbet@lwn.net>,
+        Wed, 15 Feb 2023 08:00:43 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 459D26180;
+        Wed, 15 Feb 2023 05:00:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=T80Dv/pbeHv4yQbIV1WRGowSCcOuo+FwhGVSDYirNyo=; b=typStl4V61M+0LWV6CYl45n1NF
+        m4W0eM90AoKd85qmixDcPpthnLk+b95bwsgFFcBvnssjyLxRNyWUkf38MBdHnC5hJMHQXzrAXfE4u
+        sjXI9CnPsT2tyWCtaFGJReOhVBJ7C1Ky0fJf6uDeq4qgqxhR8LjP5C0F4+mFpu0QYM/1ri8+MwHzB
+        Qf+rKkAOQgWN+tf3cp48UNgtPLftSBYrStzhBTXcXjZymQMX0JdBeGP5uBPfD69mswliqG6fC1C8X
+        g8JyK0lQvJ+nNDGbGSfSRKRlMGVdmWQAdYU5t1SmOnXYVevrwp2QWkhQ7cr4d8xZJhXA4l/PEejz+
+        YbEfXprg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60068)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pSHNj-0006l6-Uv; Wed, 15 Feb 2023 12:59:31 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pSHNS-0004uV-TZ; Wed, 15 Feb 2023 12:59:14 +0000
+Date:   Wed, 15 Feb 2023 12:59:14 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
         Richard Henderson <richard.henderson@linaro.org>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
         Vineet Gupta <vgupta@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
         Huacai Chen <chenhuacai@kernel.org>,
@@ -46,8 +50,9 @@ To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Michal Simek <monstr@monstr.eu>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Nicholas Piggin <npiggin@gmail.com>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
         Paul Walmsley <paul.walmsley@sifive.com>,
@@ -75,18 +80,18 @@ To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
         linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org
-Cc:     Palmer Dabbelt <palmer@rivosinc.com>
-Subject: Re: [PATCH v3 09/24] powerpc: Remove COMMAND_LINE_SIZE from uapi
-In-Reply-To: <20230214074925.228106-10-alexghiti@rivosinc.com>
+        linux-arch@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>
+Subject: Re: [PATCH v3 03/24] arm: Remove COMMAND_LINE_SIZE from uapi
+Message-ID: <Y+zXIgwO5wteLQZ5@shell.armlinux.org.uk>
 References: <20230214074925.228106-1-alexghiti@rivosinc.com>
- <20230214074925.228106-10-alexghiti@rivosinc.com>
-Date:   Wed, 15 Feb 2023 18:04:04 +1100
-Message-ID: <87357776l7.fsf@mpe.ellerman.id.au>
+ <20230214074925.228106-4-alexghiti@rivosinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230214074925.228106-4-alexghiti@rivosinc.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,18 +99,18 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Alexandre Ghiti <alexghiti@rivosinc.com> writes:
+On Tue, Feb 14, 2023 at 08:49:04AM +0100, Alexandre Ghiti wrote:
 > From: Palmer Dabbelt <palmer@rivosinc.com>
->
+> 
 > As far as I can tell this is not used by userspace and thus should not
 > be part of the user-visible API.
->
+> 
 > Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-> ---
->  arch/powerpc/include/asm/setup.h      | 2 +-
->  arch/powerpc/include/uapi/asm/setup.h | 2 --
->  2 files changed, 1 insertion(+), 3 deletions(-)
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Looks good to me. What's the merge plan for this?
 
-cheers
+Thanks.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
