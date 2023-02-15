@@ -2,44 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C5DF69858A
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 21:28:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F9446985B4
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 21:38:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbjBOU2C (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 15 Feb 2023 15:28:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48828 "EHLO
+        id S229897AbjBOUiE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 15 Feb 2023 15:38:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbjBOU2C (ORCPT
+        with ESMTP id S229823AbjBOUh4 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 15 Feb 2023 15:28:02 -0500
-Received: from cmx-torrgo001.bell.net (mta-tor-002.bell.net [209.71.212.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8913803F;
-        Wed, 15 Feb 2023 12:27:58 -0800 (PST)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [174.88.80.151]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 63EA076D004969AF
-X-CM-Envelope: MS4xfA9BiB1NbR/q2cKniMlxVecT1eNnYOYg+226wRCNt4Nnw7cRbb5q/ZI7F94clHvroDLaPGTmdouk/JWY39cP709vNw7HS0Y+bPPLVa5l7wWOBiA9Y/dq
- 3qzU5/jhL3r2dFRTIeXa3MVKECIraLIxeIoRqd69rK2H0N2SWj6+avFSE4QpUUAMb01q59HVSSqt5RengfVzTaHzkjGm9NcRlLG56Z+4mV2Tu1cToUX5WWfp
- LLVfHUqefYkdOKM4Pi3sXI8hh0RLa3oqR5O4DwimP6ZWno3yIv4JiSR72msQO4/reCGJXbY5n7Uf9ZrpupMWuabHjw+UVmBMmEM1fpN1QZBmMaLDvVR4cLou
- KhLLGsZW3wKwAkndHsXSCgkza6L437Sun46Kw1GNe31ZnqHECAg=
-X-CM-Analysis: v=2.4 cv=M8Iulw8s c=1 sm=1 tr=0 ts=63ed404a
- a=6Iw0JHgwQEnu+SgMJEJdFQ==:117 a=6Iw0JHgwQEnu+SgMJEJdFQ==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=9pz9FOdkCKetEUiEys8A:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (174.88.80.151) by cmx-torrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
-        id 63EA076D004969AF; Wed, 15 Feb 2023 15:27:54 -0500
-Message-ID: <99a41070-f334-f3cb-47cd-8855c938d71f@bell.net>
-Date:   Wed, 15 Feb 2023 15:27:55 -0500
+        Wed, 15 Feb 2023 15:37:56 -0500
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A44EC42DEE
+        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 12:37:46 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id j4so7620665iog.8
+        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 12:37:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1676493466;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PrkDG495JT5jJxasz0lULim4hK80dGGHdBfRwWvEZkQ=;
+        b=RPv+mkthx4oE9y+OK8bv40r5XjJ3pWctpZu9h4j+VGIS6YWNelk6cvKYAGUpSgmiV4
+         mnz2XwN43t+KlCo13toN1LeeQ7geHDXd06ZHEbn/2CQl+z09XJRRW4ZEYycpQ4v+J139
+         J/4DaYgbhtSqW0yKzT6gthOQiIzZkML9kOqnggxoIW1grVSsuFytwXzeZPKB91S4KapM
+         IZcoN5vWByTn9QCHMK6FDOcQL9TnF4g7WVO/TXWFFimYs4QxO8++ZFutAwThePq06aMG
+         Tdl6cdP9JiV3ehevE5U5uQs7IJsuxQQxmzRQecbyPDYJnqWQQJBbOTghxER0f114BQHg
+         ZUSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1676493466;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PrkDG495JT5jJxasz0lULim4hK80dGGHdBfRwWvEZkQ=;
+        b=QS/axndEnQJ25W28JrI6R/1GjCg9ez6pN+2YZ4knUE1UBcyn5iSZYPgxfaPIfvQd0D
+         sqOAi678pOJTdrl+bCqLFBkzOFFOOAEKbgHH+jUGciw4DK13zThMpR5d7N0JFJaqkOnm
+         744Ice5e1HCLgKw4TPyHvVQrs6oj6A7ZWSrhcYiRxmIxjxTtzr25Z+yrxuqoNOMjaG32
+         hL24Jy1ni6wsypQeNHJyT0lnZpSpfldo/w3S3jurm94jzeOP+Qt5SKz8RdMx6PVeJewP
+         xMGgKaqddUNZBNWpXaK9j2X1cuwzGVrI/GftxPIooQTkcBaQPqgbm3TsvaO3sWad/4fP
+         7bjw==
+X-Gm-Message-State: AO0yUKVYHwAzn1BqIa7skT345wgLgQNH3TCyiVgTUf0usEukrlWBRevu
+        hpFKrLJNRZz+KjhwXPFu1votRA==
+X-Google-Smtp-Source: AK7set93Ycv5nwSwt0hsbOsta66VZCWNHJAPIfBhb15oX8ppTbO40FavEVYNNNyYblG5/xcnSOY0RQ==
+X-Received: by 2002:a6b:b493:0:b0:718:2903:780f with SMTP id d141-20020a6bb493000000b007182903780fmr2447928iof.2.1676493465814;
+        Wed, 15 Feb 2023 12:37:45 -0800 (PST)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id y3-20020a02bb03000000b003b331f0bbdfsm5930302jan.97.2023.02.15.12.37.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Feb 2023 12:37:45 -0800 (PST)
+Message-ID: <d8dc9156-c001-8181-a946-e9fdfe13f165@kernel.dk>
+Date:   Wed, 15 Feb 2023 13:37:44 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.2
 Subject: Re: io_uring failure on parisc with VIPT caches
 Content-Language: en-US
-To:     Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>,
-        io-uring@vger.kernel.org, linux-parisc@vger.kernel.org,
+To:     John David Anglin <dave.anglin@bell.net>,
+        Helge Deller <deller@gmx.de>, io-uring@vger.kernel.org,
+        linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>
 References: <Y+wUwVxeN87gqN6o@p100>
  <006e8db4-336f-6717-ecb0-d01a0e9bc483@kernel.dk>
@@ -51,153 +71,52 @@ References: <Y+wUwVxeN87gqN6o@p100>
  <a03d75b9-a9b8-b950-c53d-6df85fe8adc4@kernel.dk>
  <07810314-94f6-0e9a-984b-0a286cbb59d3@kernel.dk>
  <4f4f9048-b382-fa0e-8b51-5a0f0bb08402@kernel.dk>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <4f4f9048-b382-fa0e-8b51-5a0f0bb08402@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+ <99a41070-f334-f3cb-47cd-8855c938d71f@bell.net>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <99a41070-f334-f3cb-47cd-8855c938d71f@bell.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-02-15 2:16 p.m., Jens Axboe wrote:
-> In any case, with the silly syzbot mmap stuff fixed up, I'm not seeing
-> anything odd. A few tests will time out as they simply run too slowly
-> emulated for me, but apart from that, seems fine. This is running with
-> Helge's patch, though not sure if that is required running emulated.
-I'm seeing two problematic tests:
+On 2/15/23 1:27?PM, John David Anglin wrote:
+> On 2023-02-15 2:16 p.m., Jens Axboe wrote:
+>> In any case, with the silly syzbot mmap stuff fixed up, I'm not seeing
+>> anything odd. A few tests will time out as they simply run too slowly
+>> emulated for me, but apart from that, seems fine. This is running with
+>> Helge's patch, though not sure if that is required running emulated.
+> I'm seeing two problematic tests:
+> 
+> test buf-ring.t generates on console:
+> TCP: request_sock_TCP: Possible SYN flooding on port 8495. Sending
+> cookies.  Check SNMP counters.
 
-test buf-ring.t generates on console:
-TCP: request_sock_TCP: Possible SYN flooding on port 8495. Sending cookies.  Check SNMP counters.
+Pretty sure that's from connect.t, not from buf-ring.t. But yes, this
+happens on all platforms, haven't looked into it. The test works, but
+would be nice to clean that up.
 
-System crashes running test buf-ring.t.
+> System crashes running test buf-ring.t.
 
-dave@mx3210:~/gnu/liburing/liburing$ make runtests
-make[1]: Entering directory '/home/dave/gnu/liburing/liburing/src'
-make[1]: Nothing to be done for 'all'.
-make[1]: Leaving directory '/home/dave/gnu/liburing/liburing/src'
-make[1]: Entering directory '/home/dave/gnu/liburing/liburing/test'
-make[1]: Nothing to be done for 'all'.
-make[1]: Leaving directory '/home/dave/gnu/liburing/liburing/test'
-make[1]: Entering directory '/home/dave/gnu/liburing/liburing/examples'
-make[1]: Nothing to be done for 'all'.
-make[1]: Leaving directory '/home/dave/gnu/liburing/liburing/examples'
-make[1]: Entering directory '/home/dave/gnu/liburing/liburing/test'
-Running test 232c93d07b74.t 5 sec [5]
-Running test 35fa71a030ca.t 5 sec [5]
-Running test 500f9fbadef8.t 25 sec [25]
-Running test 7ad0e4b2f83c.t 1 sec [1]
-Running test 8a9973408177.t 1 sec [0]
-Running test 917257daa0fe.t 0 sec [0]
-Running test a0908ae19763.t 0 sec [0]
-Running test a4c0b3decb33.t Test a4c0b3decb33.t timed out (may not be a failure)
-Running test accept.t 1 sec [1]
-Running test accept-link.t 1 sec [1]
-Running test accept-reuse.t 0 sec [0]
-Running test accept-test.t 0 sec [0]
-Running test across-fork.t 0 sec [0]
-Running test b19062a56726.t 0 sec [0]
-Running test b5837bd5311d.t 0 sec [0]
-Running test buf-ring.t bad run 0/0 = -233
-test_running(1) failed
-Test buf-ring.t failed with ret 1
-Running test ce593a6c480a.t 1 sec [1]
-Running test close-opath.t 0 sec [0]
-Running test connect.t 0 sec [0]
-Running test cq-full.t 0 sec [0]
-Running test cq-overflow.t 12 sec [11]
-Running test cq-peek-batch.t 0 sec [0]
-Running test cq-ready.t 0 sec [0]
-Running test cq-size.t 0 sec [0]
-Running test d4ae271dfaae.t 0 sec [1]
-Running test d77a67ed5f27.t 0 sec [0]
-Running test defer.t 4 sec [3]
-Running test defer-taskrun.t 0 sec [0]
-Running test double-poll-crash.t Skipped
-Running test drop-submit.t 0 sec [0]
-Running test eeed8b54e0df.t 0 sec [0]
-Running test empty-eownerdead.t 0 sec [0]
-Running test eploop.t 0 sec [0]
-Running test eventfd.t 0 sec [0]
-Running test eventfd-disable.t 0 sec [0]
-Running test eventfd-reg.t 0 sec [0]
-Running test eventfd-ring.t 1 sec [0]
-Running test evloop.t 0 sec [0]
-Running test exec-target.t 0 sec [0]
-Running test exit-no-cleanup.t 0 sec [0]
-Running test fadvise.t 0 sec [1]
-Running test fallocate.t 0 sec [0]
-Running test fc2a85cb02ef.t Test needs failslab/fail_futex/fail_page_alloc enabled, skipped
-Skipped
-Running test fd-pass.t 0 sec [0]
-Running test file-register.t 4 sec [4]
-Running test files-exit-hang-poll.t 1 sec [1]
-Running test files-exit-hang-timeout.t 1 sec [2]
-Running test file-update.t 0 sec [0]
-Running test file-verify.t Found 262144, wanted 786432
-Buffered novec reg test failed
-Test file-verify.t failed with ret 1
-Running test fixed-buf-iter.t 0 sec [0]
-Running test fixed-link.t 0 sec [0]
-Running test fixed-reuse.t 0 sec [0]
-Running test fpos.t 0 sec [1]
-Running test fsnotify.t Skipped
-Running test fsync.t 0 sec [0]
-Running test hardlink.t 0 sec [0]
-Running test io-cancel.t 3 sec [4]
-Running test iopoll.t 2 sec [2]
-Running test iopoll-leak.t 0 sec [0]
-Running test iopoll-overflow.t 1 sec [1]
-Running test io_uring_enter.t 0 sec [1]
-Running test io_uring_passthrough.t Skipped
-Running test io_uring_register.t Unable to map a huge page.  Try increasing /proc/sys/vm/nr_hugepages by at least 1.
-Skipping the hugepage test
-0 sec [0]
-Running test io_uring_setup.t 0 sec [0]
-Running test lfs-openat.t 0 sec [0]
-Running test lfs-openat-write.t 0 sec [0]
-Running test link.t 0 sec [0]
-Running test link_drain.t 3 sec [3]
-Running test link-timeout.t 1 sec [1]
-Running test madvise.t 0 sec [1]
-Running test mkdir.t 0 sec [0]
-Running test msg-ring.t 0 sec [0]
-Running test msg-ring-flags.t Skipped
-Running test msg-ring-overflow.t 0 sec [0]
-Running test multicqes_drain.t 26 sec [26]
-Running test nolibc.t Skipped
-Running test nop-all-sizes.t 0 sec [0]
-Running test nop.t 0 sec [1]
-Running test openat2.t 0 sec [0]
-Running test open-close.t 0 sec [0]
-Running test open-direct-link.t 0 sec [0]
-Running test open-direct-pick.t 0 sec [0]
-Running test personality.t Not root, skipping
-0 sec [0]
-Running test pipe-bug.t 6 sec [6]
-Running test pipe-eof.t 0 sec [1]
-Running test pipe-reuse.t 0 sec [0]
-Running test poll.t 1 sec [0]
-Running test poll-cancel.t 0 sec [0]
-Running test poll-cancel-all.t 0 sec [0]
-Running test poll-cancel-ton.t 0 sec [1]
-Running test poll-link.t 1 sec [0]
-Running test poll-many.t 18 sec [19]
-Running test poll-mshot-overflow.t 0 sec [0]
-Running test poll-mshot-update.t 21 sec
-Running test poll-race.t 2 sec
-Running test poll-race-mshot.t Bad cqe res -233
-Bad cqe res -233
-Bad cqe res -233
-Bad cqe res -233
-...
+Huh, what's the crash?
 
-This run was on ext4 file system.
+> Running test buf-ring.t bad run 0/0 = -233
+
+THis one, and the similar -223 ones, you need to try and dig into that.
+It doesn't reproduce for me, and it very much seems like the test case
+having a different view of what -ENOBUFS looks like and hence it fails
+when the kernel passes down something that is -ENOBUFS internally, but
+doesn't match the app -ENOBUFS value. Are you running a 64-bit kernel?
+Would that cause any differences?
+
+I don't see this on qemu with the 32-bit kernel, nor does it happen on
+other platforms.
 
 -- 
-John David Anglin  dave.anglin@bell.net
+Jens Axboe
 
