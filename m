@@ -2,147 +2,207 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D050D697CB2
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 14:05:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E5A5697F4B
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Feb 2023 16:16:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233172AbjBONFY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 15 Feb 2023 08:05:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49616 "EHLO
+        id S230120AbjBOPQ1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 15 Feb 2023 10:16:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230456AbjBONFW (ORCPT
+        with ESMTP id S229901AbjBOPQZ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 15 Feb 2023 08:05:22 -0500
-Received: from new2-smtp.messagingengine.com (new2-smtp.messagingengine.com [66.111.4.224])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBCDE36FEA;
-        Wed, 15 Feb 2023 05:05:21 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 2D40B582003;
-        Wed, 15 Feb 2023 08:05:20 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Wed, 15 Feb 2023 08:05:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm3; t=1676466320; x=1676473520; bh=NzdIn9sEy/
-        TdUrl/ZdBVY4dMEk2Tnlph7NyUne+YOMM=; b=PPD6X7vdu8v5pQCFFeEkwZ+xGH
-        hQxkzIm/THMwEiH6lmaNEBYbBzt3pargJVOdi2J1QMA6KHvLC9K1XeMABvJeeUMa
-        lTPgSxuAXiTHnvnPs7+H7Vr/fKIWrN+XZApp3CpAC5yE5WgT9W327fh6++AuDJlF
-        B9gywk5zLcSwCMvFm6irNxbf5/UMEQOklyQcP+yNMbxqWsOqNEYHAAgGHFLNZqZS
-        WLgt7CmsFbv+vqD/Mh8pW6i09fttS8BnRngWkrvO1YOvB+eqJf9YBCzB8hRdQL8g
-        Zrmyq7fkrOXYnHgcPd99guxknzQGmfAMstEvWh3k4ZTVkZadU+R5weMlaG7A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm1; t=1676466320; x=1676473520; bh=NzdIn9sEy/TdUrl/ZdBVY4dMEk2T
-        nlph7NyUne+YOMM=; b=Tp/P1vDtiwaXsxOOvmxonT9LDeiFaEudeIfZX0AV5xmw
-        X3ENq+2GlESFOAR7xURKTITb3Q9/bLEcQhyKkak30WygkBgQXOUwH+1TEYwAnfSW
-        VN79grgOoloKlVxQxKg9d/GE/aNuuNhUwV2IHK4xpJLpSY9XO1XpwbGHxBbR0DF/
-        IjnWEESEaF5s9xx5Zj0yYZVtiwtJOFrRCp6Vfpm8unxAKwLTF76Egia3fqB+SRTf
-        HhmCGeRY4V0PNJ2mo3ZpzkurciWsN1Fx3VZnNvLG3nNn/NwNqCwiyIzXTWlmQOpN
-        G3WAp6KoO5IxE4n9w+AW7QNxTKU5fRGQe3g4//HLhw==
-X-ME-Sender: <xms:jdjsY_Wh-8LcQ3nmLEwGZ7X-cUO_UZrmKOzBi9pl67XX_YGZ0IXNyA>
-    <xme:jdjsY3kveCSQ-Laj-6oAgDyXLkBUjq7fx_C7UYY5m4XU_HQAFhNFJiZGPFSylztsR
-    Jx6pcGWaR_WFw62yQQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudeihedggeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:jdjsY7ZEvyr4y1ulYt1S1iPqX3mkImnPSdU2AD0rfL5VPKqJb7xP1w>
-    <xmx:jdjsY6Ux13tFNHeawURlV0JH7DjSnY4lgf_B232j8MtUR1dl7xMefQ>
-    <xmx:jdjsY5klmieqtEjUAp2jmIMBcwIQHQA6TF9wkqBiRc9-j4DSJjfhdQ>
-    <xmx:kNjsY5_DeMdprgdbaWkVv0vgYRqpvs9Cxn7CSU6n-WZIW-e7MJJXrA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 79450B60086; Wed, 15 Feb 2023 08:05:17 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-156-g081acc5ed5-fm-20230206.001-g081acc5e
-Mime-Version: 1.0
-Message-Id: <f3e1585c-0d9d-4709-9b21-74a63d8cc9ac@app.fastmail.com>
-In-Reply-To: <Y+zXIgwO5wteLQZ5@shell.armlinux.org.uk>
-References: <20230214074925.228106-1-alexghiti@rivosinc.com>
- <20230214074925.228106-4-alexghiti@rivosinc.com>
- <Y+zXIgwO5wteLQZ5@shell.armlinux.org.uk>
-Date:   Wed, 15 Feb 2023 14:04:59 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Russell King" <linux@armlinux.org.uk>,
-        "Alexandre Ghiti" <alexghiti@rivosinc.com>
-Cc:     "Jonathan Corbet" <corbet@lwn.net>,
-        "Richard Henderson" <richard.henderson@linaro.org>,
-        "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
-        "Matt Turner" <mattst88@gmail.com>,
-        "Vineet Gupta" <vgupta@kernel.org>,
-        "Catalin Marinas" <catalin.marinas@arm.com>,
-        "Will Deacon" <will@kernel.org>,
-        "Huacai Chen" <chenhuacai@kernel.org>,
-        "WANG Xuerui" <kernel@xen0n.name>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Michal Simek" <monstr@monstr.eu>,
-        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        "Helge Deller" <deller@gmx.de>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        "Nicholas Piggin" <npiggin@gmail.com>,
-        "Christophe Leroy" <christophe.leroy@csgroup.eu>,
-        "Paul Walmsley" <paul.walmsley@sifive.com>,
-        "Palmer Dabbelt" <palmer@dabbelt.com>,
-        "Albert Ou" <aou@eecs.berkeley.edu>,
-        "Heiko Carstens" <hca@linux.ibm.com>,
-        "Vasily Gorbik" <gor@linux.ibm.com>,
-        "Alexander Gordeev" <agordeev@linux.ibm.com>,
-        "Christian Borntraeger" <borntraeger@linux.ibm.com>,
-        "Sven Schnelle" <svens@linux.ibm.com>,
-        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
-        "Rich Felker" <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
-        "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Chris Zankel" <chris@zankel.net>,
-        "Max Filippov" <jcmvbkbc@gmail.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        "Palmer Dabbelt" <palmer@rivosinc.com>
-Subject: Re: [PATCH v3 03/24] arm: Remove COMMAND_LINE_SIZE from uapi
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        Wed, 15 Feb 2023 10:16:25 -0500
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1006634320
+        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 07:16:03 -0800 (PST)
+Received: by mail-io1-xd2e.google.com with SMTP id o1so7187830ioo.10
+        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 07:16:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1676474162;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a+kkzf0UWHNPl+5naiodtaW1TD7S43liDP2k5jIkWrk=;
+        b=0whkR+ubiX4T5Logt95QBOfye98nq/f0PuZYAkVfJWTR4vt2FPZdOVWA3imbnC6Byz
+         Gsf5+ydoxU82uPI/xNvaFnxLlrK1NhJQtuM9RPKqB2SMDqBhepH0PpDe2Q6MlW12d+TY
+         klZj/8fCxteQAcsICVmSBLVNjf8FKpD2+51mOvWDgwmEb5wAVjE8J9t320tQw7csWu8b
+         idJBttcnOX8B+fTsKIet+nNARi+19BnBMPev3QKl+ltQSMY5m0gTmmeWllRlu1WX1MnN
+         LKoVbpj3o1x8rm33sCKu/1Cg5WjYQ1+9khHw8/mVN+ybUL5hM6S9SxDhz7pL6R+fWjyk
+         842g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1676474162;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a+kkzf0UWHNPl+5naiodtaW1TD7S43liDP2k5jIkWrk=;
+        b=WKaAe1KOHcpRNTYGgZ/jOjXsz8cYDseFXo1X39FJo7YeOacuNYh0rSyY3IDjorkZVY
+         9q9oebbQNp7YZwRzHyQxLmVpUhiYgwEkeqt++7DpJhT27TebTD0l/oaqw3hvmzqLWbpx
+         vyJ6Qla2qjwOZezP3ns2knmwa2ZPkLhiqKE6mz3QZmDWu/d70jTZFXUNid8Y+g78faqR
+         uPNmkWlBQVlJ0liU/vN8Q3Irj99GcmoggbMuMKbz2bg0KqOfOAhmRbriqNM3TSixCUvP
+         sHcS83NQUbDA4FQz0GdPRdAZ+y+j9OE4NBu0UJfP0h94I6nG2k/D9KOZT0sQdEXxPaZz
+         CW7w==
+X-Gm-Message-State: AO0yUKVB72aT+GHZho/QQoAXlsjDA8uoaXrev5iHW/qgHOdrid3YpICI
+        s5FogKu2ijWU5Npwf77XFdC/dA==
+X-Google-Smtp-Source: AK7set8TQPQxK38MX+KZm1NcpNZlSvqYA18slrj0+3c+PzO1IqkapAsMyaA3P+FcMos1Ss4NNt83kQ==
+X-Received: by 2002:a05:6602:17ce:b0:73a:397b:e311 with SMTP id z14-20020a05660217ce00b0073a397be311mr1896247iox.0.1676474162295;
+        Wed, 15 Feb 2023 07:16:02 -0800 (PST)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id l9-20020a02cce9000000b003c4860eb853sm5975547jaq.109.2023.02.15.07.16.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Feb 2023 07:16:01 -0800 (PST)
+Message-ID: <5f02fa8b-7fd8-d98f-4876-f1a89024b888@kernel.dk>
+Date:   Wed, 15 Feb 2023 08:16:00 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: io_uring failure on parisc with VIPT caches
+Content-Language: en-US
+To:     John David Anglin <dave.anglin@bell.net>,
+        Helge Deller <deller@gmx.de>, io-uring@vger.kernel.org,
+        linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <Y+wUwVxeN87gqN6o@p100>
+ <006e8db4-336f-6717-ecb0-d01a0e9bc483@kernel.dk>
+ <626cee6f-f542-b7eb-16ca-1cf4e3808ca6@bell.net>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <626cee6f-f542-b7eb-16ca-1cf4e3808ca6@bell.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Feb 15, 2023, at 13:59, Russell King (Oracle) wrote:
-> On Tue, Feb 14, 2023 at 08:49:04AM +0100, Alexandre Ghiti wrote:
->> From: Palmer Dabbelt <palmer@rivosinc.com>
->> 
->> As far as I can tell this is not used by userspace and thus should not
->> be part of the user-visible API.
->> 
->> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+On 2/14/23 7:12?PM, John David Anglin wrote:
+> On 2023-02-14 6:29 p.m., Jens Axboe wrote:
+>> On 2/14/23 4:09?PM, Helge Deller wrote:
+>>> * John David Anglin<dave.anglin@bell.net>:
+>>>> On 2023-02-13 5:05 p.m., Helge Deller wrote:
+>>>>> On 2/13/23 22:05, Jens Axboe wrote:
+>>>>>> On 2/13/23 1:59?PM, Helge Deller wrote:
+>>>>>>>> Yep sounds like it. What's the caching architecture of parisc?
+>>>>>>> parisc is Virtually Indexed, Physically Tagged (VIPT).
+>>>>>> That's what I assumed, so virtual aliasing is what we're dealing with
+>>>>>> here.
+>>>>>>
+>>>>>>> Thanks for the patch!
+>>>>>>> Sadly it doesn't fix the problem, as the kernel still sees
+>>>>>>> ctx->rings->sq.tail as being 0.
+>>>>>>> Interestingly it worked once (not reproduceable) directly after bootup,
+>>>>>>> which indicates that we at least look at the right address from kernel side.
+>>>>>>>
+>>>>>>> So, still needs more debugging/testing.
+>>>>>> It's not like this is untested stuff, so yeah it'll generally be
+>>>>>> correct, it just seems that parisc is a bit odd in that the virtual
+>>>>>> aliasing occurs between the kernel and userspace addresses too. At least
+>>>>>> that's what it seems like.
+>>>>> True.
+>>>>>
+>>>>>> But I wonder if what needs flushing is the user side, not the kernel
+>>>>>> side? Either that, or my patch is not flushing the right thing on the
+>>>>>> kernel side.
+>>> The patch below seems to fix the issue.
+>>>
+>>> I've successfuly tested it with the io_uring-test testcase on
+>>> physical parisc machines with 32- and 64-bit 6.1.11 kernels.
+>>>
+>>> The idea is similiar on how a file is mmapped shared by two
+>>> userspace processes by keeping the lower bits of the virtual address
+>>> the same.
+>>>
+>>> Cache flushes from userspace don't seem to be needed.
+>> Are they from the kernel side, if the lower bits mean we end up
+>> with the same coloring? Because I think this is a bit of a big
+>> hammer, in terms of overhead for flushing. As an example, on arm64
+>> that is perfectly fine with the existing code, it's about a 20-25%
+>> performance hit.
 >
-> Looks good to me. What's the merge plan for this?
+> The io_uring-test testcase still works on rp3440 with the kernel
+> flushes removed.
 
-The easiest way is probably if I merge it through the whole
-series through the asm-generic tree. The timing is a bit
-unfortunate as we're just ahead of the merge window, so unless
-we really need this in 6.3, I'd suggest that Alexandre resend
-the series to me in two weeks with the Acks added in and I'll
-pick it up for 6.4.
+That's what I suspected, the important bit here is just aligning it for
+identical coloring. Can you confirm if the below works for you? Had to
+fiddle it a bit to get it to work without coloring.
 
-     Arnd
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index db623b3185c8..1d4562067949 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -72,6 +72,7 @@
+ #include <linux/io_uring.h>
+ #include <linux/audit.h>
+ #include <linux/security.h>
++#include <asm/shmparam.h>
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/io_uring.h>
+@@ -3200,6 +3201,51 @@ static __cold int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return remap_pfn_range(vma, vma->vm_start, pfn, sz, vma->vm_page_prot);
+ }
+ 
++static unsigned long io_uring_mmu_get_unmapped_area(struct file *filp,
++			unsigned long addr, unsigned long len,
++			unsigned long pgoff, unsigned long flags)
++{
++	const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
++	struct vm_unmapped_area_info info;
++	void *ptr;
++
++	ptr = io_uring_validate_mmap_request(filp, pgoff, len);
++	if (IS_ERR(ptr))
++		return -ENOMEM;
++
++	/* we do not support requesting a specific address */
++	if (addr)
++		return -EINVAL;
++
++	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
++	info.length = len;
++	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
++	info.high_limit = arch_get_mmap_base(addr, current->mm->mmap_base);
++	info.align_mask = PAGE_MASK;
++	info.align_offset = (unsigned long) ptr;
++#ifdef SHM_COLOUR
++	info.align_mask &= (SHM_COLOUR - 1);
++	info.align_offset &= (SHM_COLOUR - 1)
++#endif
++
++	/*
++	 * A failed mmap() very likely causes application failure,
++	 * so fall back to the bottom-up function here. This scenario
++	 * can happen with large stack limits and large mmap()
++	 * allocations.
++	 */
++	addr = vm_unmapped_area(&info);
++	if (offset_in_page(addr)) {
++		VM_BUG_ON(addr != -ENOMEM);
++		info.flags = 0;
++		info.low_limit = TASK_UNMAPPED_BASE;
++		info.high_limit = mmap_end;
++		addr = vm_unmapped_area(&info);
++	}
++
++	return addr;
++}
++
+ #else /* !CONFIG_MMU */
+ 
+ static int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+@@ -3414,6 +3460,8 @@ static const struct file_operations io_uring_fops = {
+ #ifndef CONFIG_MMU
+ 	.get_unmapped_area = io_uring_nommu_get_unmapped_area,
+ 	.mmap_capabilities = io_uring_nommu_mmap_capabilities,
++#else
++	.get_unmapped_area = io_uring_mmu_get_unmapped_area,
+ #endif
+ 	.poll		= io_uring_poll,
+ #ifdef CONFIG_PROC_FS
+
+-- 
+Jens Axboe
+
