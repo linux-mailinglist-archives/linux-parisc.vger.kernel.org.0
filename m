@@ -2,34 +2,44 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D17699653
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Feb 2023 14:50:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DCFE69983F
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Feb 2023 16:03:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229933AbjBPNun (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 16 Feb 2023 08:50:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
+        id S229676AbjBPPDK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 16 Feb 2023 10:03:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbjBPNum (ORCPT
+        with ESMTP id S229603AbjBPPDK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 16 Feb 2023 08:50:42 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 618683B670;
-        Thu, 16 Feb 2023 05:50:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=Ibnv8g16Ve+hYFdGWqnh6F06K0enaspoNkBCEKjxOJc=; b=IoxP6R7Cl/R9XNaQb6AwS9idS+
-        J/BHLHSnaMKMw/FKz4eMaKhyhz3faSEajfaAsYu/iWYOsXbMRPLG21wgk7bDPIfk/2wCR9YZiczUt
-        FyKt9rgYAYnZHLAbNEuLIUegoi0FJDND6zodaG1pv6gAHqt0iZvw0eMMYZiYGVbo2JS0+G9UVEA7/
-        SNWZbkGFeQl4eANlk6P/qceI1sgaNrjtvjiotpFYoVc9kYU0i+eObR2W5D7hb7Dabl7V+idn3mwQp
-        WvBKjEwLzODwbW+4/ORdXRb2sZOAEPKjTCPFSs1hJe7R2LuUJBz7H57qAYsZtGFVIqURyXZf1jCpd
-        xQNhJH2A==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pSeee-008SPM-1C; Thu, 16 Feb 2023 13:50:32 +0000
-Date:   Thu, 16 Feb 2023 13:50:31 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Baoquan He <bhe@redhat.com>
+        Thu, 16 Feb 2023 10:03:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B46131
+        for <linux-parisc@vger.kernel.org>; Thu, 16 Feb 2023 07:02:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1676559742;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=pa9Fy5Ubq9jmjLtkh5hpgt9BGts1NKer0SZauUxszzs=;
+        b=Z8WaMKAfq2sDj/pZsXjCDwyqo/2+cQKO5XEif583LRZpbRtpCVg0VpNoxmbZ30BguG3uXU
+        f2WTxMBV70KCiQwI2iosd2KEaQ8HNu7muvvgeiXIYIZKnFpW+nXdtyRt7GM+vvZen5tWsa
+        Q6CxHu/tAACNhpSxKaEJwl/XhpzbZ0g=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-605-2YzRB7XnMcGoT6pRyxinQg-1; Thu, 16 Feb 2023 10:02:17 -0500
+X-MC-Unique: 2YzRB7XnMcGoT6pRyxinQg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43635857A88;
+        Thu, 16 Feb 2023 15:02:14 +0000 (UTC)
+Received: from localhost (ovpn-12-99.pek2.redhat.com [10.72.12.99])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 746FD1121314;
+        Thu, 16 Feb 2023 15:02:13 +0000 (UTC)
+Date:   Thu, 16 Feb 2023 23:02:09 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     Matthew Wilcox <willy@infradead.org>
 Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         akpm@linux-foundation.org, christophe.leroy@csgroup.eu,
         hch@infradead.org, agordeev@linux.ibm.com,
@@ -38,31 +48,54 @@ Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
 Subject: Re: [PATCH v4 12/16] parisc: mm: Convert to GENERIC_IOREMAP
-Message-ID: <Y+40p3oegc2Of9w2@casper.infradead.org>
+Message-ID: <Y+5Fcc6wsbr0qmoN@MiWiFi-R3L-srv>
 References: <20230216123419.461016-1-bhe@redhat.com>
  <20230216123419.461016-13-bhe@redhat.com>
+ <Y+40p3oegc2Of9w2@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230216123419.461016-13-bhe@redhat.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y+40p3oegc2Of9w2@casper.infradead.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Feb 16, 2023 at 08:34:15PM +0800, Baoquan He wrote:
-> Meanwhile, add macro ARCH_HAS_IOREMAP_WC since the added ioremap_wc()
-> will conflict with the one in include/asm-generic/iomap.h, then an
-> compiling error is seen:
+On 02/16/23 at 01:50pm, Matthew Wilcox wrote:
+> On Thu, Feb 16, 2023 at 08:34:15PM +0800, Baoquan He wrote:
+> > Meanwhile, add macro ARCH_HAS_IOREMAP_WC since the added ioremap_wc()
+> > will conflict with the one in include/asm-generic/iomap.h, then an
+> > compiling error is seen:
+> 
 
-Huh?  ARCH_HAS_IOREMAP_WC comes up nowhere else in this patchset, and
-the current definition of ioremap_wc() is guarded by an ifndef ioremap_wc
+Thanks for reviewing.
 
-> +#define ioremap_wc(addr, size)  \
-> +	ioremap_prot((addr), (size), _PAGE_IOREMAP)
+> Huh?  ARCH_HAS_IOREMAP_WC comes up nowhere else in this patchset, and
+> the current definition of ioremap_wc() is guarded by an ifndef ioremap_wc
 
-This should be enough all by itself.
+Because another patch of powerpc has got ARCH_HAS_IOREMAP_WC in the
+existed code.
+
+> 
+> > +#define ioremap_wc(addr, size)  \
+> > +	ioremap_prot((addr), (size), _PAGE_IOREMAP)
+> 
+> This should be enough all by itself.
+
+It's not if including asm-generic/iomap.h. The ARCH_HAS_IOREMAP_xx is to
+avoid redefinition there.
+
+include/asm-generic/iomap.h:
+----
+#ifndef ARCH_HAS_IOREMAP_WC
+#define ioremap_wc ioremap
+#endif
+
+> 
+
