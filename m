@@ -2,143 +2,160 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07160698AA0
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Feb 2023 03:50:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C83698E4D
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Feb 2023 09:09:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229575AbjBPCuj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 15 Feb 2023 21:50:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49058 "EHLO
+        id S229729AbjBPIJr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 16 Feb 2023 03:09:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjBPCui (ORCPT
+        with ESMTP id S229492AbjBPIJq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 15 Feb 2023 21:50:38 -0500
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA5653772F
-        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 18:50:36 -0800 (PST)
-Received: by mail-pj1-x102f.google.com with SMTP id mg23so592792pjb.0
-        for <linux-parisc@vger.kernel.org>; Wed, 15 Feb 2023 18:50:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4uMjxhxFHjySjL+vxoDs9eO7EP8MX5ZBhdRrrNMScvQ=;
-        b=EwI2nujTj7A9kblVuPbWlosvlYwe+tt+EwjeuYqstXX1CBCXyz7CRvgLShLQijRYF2
-         q/iEk2rJ+yrv2x9dZTD/CSbHmq/7pFJUHLqu2/E6v07gU53uAGDsZ90+l6jBwbyB9Opn
-         svWaL6V7xD4tp4ZpE9AKdLWwQgIZVmbAz4CJX1l65/eD6Z7z0VAqUzatA3coi0V4OIl8
-         mvzEWaIM/M3J0jrxq96CxvedJT8zOIcVueOg0tXqgqBSHCafR8HgbDxU3odRHEf4zQ34
-         51Mg5cPvp2psdV9CJ7bAx6dLuvLIG6VCvpiZkTFCx2sBesXmf16RR8zpRPVTMNocnOFM
-         QxIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4uMjxhxFHjySjL+vxoDs9eO7EP8MX5ZBhdRrrNMScvQ=;
-        b=N5Qwau0+8dFLfuvrIbvNLGtFLeB6uBGzCdM1Z5VNtdAn2uaRTAHtgzbXtnXQ2jIbrp
-         B8Wa2ue8LHdfaGDAdybot9LmczazXCw/BjjK3pSeYYTOZ7izdZHxIpnKLmjPskNNBxD6
-         5zxpKd0LFIm8oI8SevJ2Tj9xYAXAa4DglBiSnldNQURqYiJG3FgqLwMkZ14c+xUMKAcI
-         h7lvLBrDjkI4neIDJ0NUU0D801ITb+oVFUzo30YeHhIyVoHl721a8hTvHBdj5PlTdfKu
-         VROGGFR4yfSt2mikm+BwUl+1Rvjx0cuaZgivaamzmFA/sFDtoDPLGz/yjrza8WKPtkAF
-         lAtg==
-X-Gm-Message-State: AO0yUKW8VAhSkeAgNAYiQgU1TMkeLBBxCYLke0eWiszOfZ2x6sf/uLhc
-        IwqFLQ282cOj+5bdyMe6PfFA7Q==
-X-Google-Smtp-Source: AK7set8AeJ8/Vs+q9RYitAvW8Tb59+OOD/BGvkmWLrNS0dSBVug5J+zEpylQZusrZz4B/5+kuyG4TQ==
-X-Received: by 2002:a17:902:ced0:b0:19a:7060:948 with SMTP id d16-20020a170902ced000b0019a70600948mr5031525plg.1.1676515836270;
-        Wed, 15 Feb 2023 18:50:36 -0800 (PST)
-Received: from [192.168.1.136] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id t7-20020a1709027fc700b0019a74841c9bsm46385plb.192.2023.02.15.18.50.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Feb 2023 18:50:35 -0800 (PST)
-Message-ID: <3a7e342c-844e-8071-7dde-86b88bbb2dc4@kernel.dk>
-Date:   Wed, 15 Feb 2023 19:50:34 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: io_uring failure on parisc with VIPT caches
-Content-Language: en-US
-To:     John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>, io-uring@vger.kernel.org,
+        Thu, 16 Feb 2023 03:09:46 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E12C32366B;
+        Thu, 16 Feb 2023 00:09:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1676534980; i=deller@gmx.de;
+        bh=VXuq6M/jcXpKTzmIaMHBMtYSC4LLAn7eTneX1IbXWDY=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=Yz95HRk+ZJZ9hi0NSGqYol2pFtS/iaT4BjnzH0bJ0MgxYHgQwxxAUU/O/WMuWXwEY
+         8AGncPYIG+qOUNkdV66jnU1DEbz686ZNZlop/puOgl8MfYMY2awMEA4xxftYlHoyLx
+         eQl4/OF3lfjwLIsVwDc5L2MMQhlripKONd6ZuQr2WskOaYBU+GxJtquWerUL7zMVBg
+         7LFyD1hQh0KYxpf5pO832veJ3Pgt7Mz7l/SH2vjlN1H4fnApB+ViTDfrTfOs1j8bzI
+         l1zVBjIfhz35JFNq7H1o/jYk4t8U/4dfL1O6OTADVyCLq0/2LhMEshmUii73XlwjQk
+         zxz/tQ5XGSkXA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([92.116.164.173]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MgNcz-1oudIZ2f8R-00hzM5; Thu, 16
+ Feb 2023 09:09:40 +0100
+Date:   Thu, 16 Feb 2023 09:09:38 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     io-uring@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
         linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <Y+wUwVxeN87gqN6o@p100>
- <006e8db4-336f-6717-ecb0-d01a0e9bc483@kernel.dk>
- <626cee6f-f542-b7eb-16ca-1cf4e3808ca6@bell.net>
- <5f02fa8b-7fd8-d98f-4876-f1a89024b888@kernel.dk>
- <2b89f252-c430-1c44-7b30-02d927d2c7cb@gmx.de>
- <f7c3ef57-f16c-7fe3-30b7-8ca6a9ef00ee@kernel.dk>
- <0bfe6cdb-2749-c08d-a1b2-ef46fed1ded3@bell.net>
- <a03d75b9-a9b8-b950-c53d-6df85fe8adc4@kernel.dk>
- <07810314-94f6-0e9a-984b-0a286cbb59d3@kernel.dk>
- <4f4f9048-b382-fa0e-8b51-5a0f0bb08402@kernel.dk>
- <99a41070-f334-f3cb-47cd-8855c938d71f@bell.net>
- <d8dc9156-c001-8181-a946-e9fdfe13f165@kernel.dk>
- <c7725c80-ba8c-1182-7adc-bc107f4f5b75@bell.net>
- <5e72c1fc-1a7b-a4ed-4097-96816b802e6d@bell.net>
- <c100a264-d897-1b9e-0483-22272bccd802@bell.net>
- <73566dc4-317b-5808-a5a5-78dc195ebd77@kernel.dk>
- <1237dc53-2495-a145-37bf-47366ca75e71@bell.net>
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <1237dc53-2495-a145-37bf-47366ca75e71@bell.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH v2] io_uring: Adjust mapping wrt architecture aliasing
+ requirements
+Message-ID: <Y+3kwh8BokobVl6o@p100>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:HuRly+6I2ZVZxgRB37kwF/0rTbMdOwk6HjZWbTNF149OfHHIval
+ Mo9d9hOV7pHzUGr7xqtMFR9GsaDJmCpO0jkSlSuBDMet7cPzQYb+P9teF7T5vt01qfZDtW4
+ FRZwAmaOlc4KmVRa8trkZE8uJY24QWbHTJMiBlRDIS0AwBxgreR2Z+v84jITd9Wrhz92eNh
+ osdDMQ/Na+tYliy32EYKg==
+UI-OutboundReport: notjunk:1;M01:P0:053D7Zbs3vc=;bMk1zaqtbqyi0IgUECRK20p6NsX
+ Z/8se2PEPQlKVmehP1xDTJunM90D139EQrhgbW7r1EaIwxpeCpcSmbYuGuHAm/EnxZpUayAp7
+ qtRkNpg+2a4V9eQsTKysk3B36HrqV9jNm/5MQH+Uk9dDGvLC2+TPrZByACPvDrD8eWK5Uy1lx
+ 9/XX5Ee1zDHm5FLTO4LHARlBrq8euIw+eoYwcnZrYDRb5ybuNT3zcBCwpcGRHvr6CK8ACwIAd
+ Vx59npCR843qFEHsnQHOde/FP0ePx7eoG1pq6sy5lmJKwtzfXNGhkNKrHnoCiv8F8+oo7UZUW
+ q+NjxRwYd4hLLr/g8oG06H2SpbdnpXatDxOCQd0AEVOe3wxI0azcopnM75uZDzPEiJxXmeQVz
+ vOjg+P9J76ByziDoexIegfeFeY3A71trY5bjkmLH5mEoPvCYz7FNPzKuFKbKwcLQmlfcYIWyE
+ TWvaVjG4hf3lxDp2XVqbo21oMNJ9918v0lqDmJVm4onxxySQC9WYa84QJe2bkRuvFC3mfa0cq
+ 2VfNg3LzkhLDWnYzcpjbQmo6HZymQMvyxvs6F8QUYE6zaJF+bIjNX78BF7OTExy3YMJhj/JWf
+ fW0XLExTAjd+wfOXsaPV++rcidQgzZua4/50TbdPJrRCfO5Wipb/9j5rmHDL50eLez7ZDV+Mt
+ wUCUqcABYUeKxNg8TfDnl1vSEJpeOnLY6vsUX3YpDjHEGsGUPsmG1Dvnz58jFX1ve338JfGjj
+ 3+zhKD4koPx+PrYlReqf2NCi+c3CAJeQvx8F4tIO8H1fkHIHWZCesrf94qXMb83SneyqJw1f/
+ tpnNS5NJ+9SielPdvyor4VrFU96g92mmWLXa19V89oi3JeFxf/rocitr1rifOIMvqj9md8nOg
+ UYiYtyEIP7BP/ElVPkBUcMlYExJnP9iQcjcHObMYbaThiI39A1cW1vODiCPDrZFXoB+j6UtDP
+ 071xgQ==
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2/15/23 7:40 PM, John David Anglin wrote:
-> On 2023-02-15 6:02 p.m., Jens Axboe wrote:
->> This is not related to Helge's patch, 6.1-stable is just still missing:
->>
->> commit fcc926bb857949dbfa51a7d95f3f5ebc657f198c
->> Author: Jens Axboe<axboe@kernel.dk>
->> Date:   Fri Jan 27 09:28:13 2023 -0700
->>
->>      io_uring: add a conditional reschedule to the IOPOLL cancelation loop
->>
->> and I'm guessing you're running without preempt.
-> With 6.2.0-rc8+, I had a different crash running poll-race-mshot.t:
-> 
-> Backtrace:
-> 
-> 
-> Kernel Fault: Code=15 (Data TLB miss fault) at addr 0000000000000000
-> CPU: 0 PID: 18265 Comm: poll-race-mshot Not tainted 6.2.0-rc8+ #1
-> Hardware name: 9000/800/rp3440
-> 
->      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-> PSW: 00010000001001001001000111110000 Not tainted
-> r00-03  00000000102491f0 ffffffffffffffff 000000004020307c ffffffffffffffff
-> r04-07  ffffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffff
-> r08-11  ffffffffffffffff 000000000407ef28 000000000407f838 8400000000800000
-> r12-15  0000000000000000 0000000040c424e0 0000000040c424e0 0000000040c424e0
-> r16-19  000000000407fd68 0000000063f08648 0000000040c424e0 000000000a085000
-> r20-23  00000000000d6b44 000000002faf0800 00000000000000ff 0000000000000002
-> r24-27  000000000407fa30 000000000407fd68 0000000000000000 0000000040c1e4e0
-> r28-31  400000000000de84 0000000000000000 0000000000000000 0000000000000002
-> sr00-03  0000000004081000 0000000000000000 0000000000000000 0000000004081de0
-> sr04-07  0000000004081000 0000000000000000 0000000000000000 00000000040815a8
-> 
-> IASQ: 0000000004081000 0000000000000000 IAOQ: 0000000000000000 0000000004081590
->  IIR: 00000000    ISR: 0000000000000000  IOR: 0000000000000000
->  CPU:        0   CR30: 000000004daf5700 CR31: ffffffffffffefff
->  ORIG_R28: 0000000000000000
->  IAOQ[0]: 0x0
->  IAOQ[1]: linear_quiesce+0x0/0x18 [linear]
->  RP(r2): intr_check_sig+0x0/0x3c
-> Backtrace:
-> 
-> Kernel panic - not syncing: Kernel Fault
+Some architectures have memory cache aliasing requirements (e.g. parisc)
+if memory is shared between userspace and kernel. This patch fixes the
+kernel to return an aliased address when asked by userspace via mmap().
 
-This means very little to me, is it a NULL pointer deref? And where's
-the backtrace?
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+v2: Do not allow to map to a user-provided addresss. This forces
+programs to write portable code, as usually on x86 mapping to any
+address will succeed, while it will fail for most provided address if
+used on stricter architectures.
 
--- 
-Jens Axboe
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 862e05e6691d..01fe7437a071 100644
+=2D-- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -72,6 +72,7 @@
+ #include <linux/io_uring.h>
+ #include <linux/audit.h>
+ #include <linux/security.h>
++#include <asm/shmparam.h>
 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/io_uring.h>
+@@ -3059,6 +3060,54 @@ static __cold int io_uring_mmap(struct file *file, =
+struct vm_area_struct *vma)
+ 	return remap_pfn_range(vma, vma->vm_start, pfn, sz, vma->vm_page_prot);
+ }
 
++static unsigned long io_uring_mmu_get_unmapped_area(struct file *filp,
++			unsigned long addr, unsigned long len,
++			unsigned long pgoff, unsigned long flags)
++{
++	const unsigned long mmap_end =3D arch_get_mmap_end(addr, len, flags);
++	struct vm_unmapped_area_info info;
++	void *ptr;
++
++	/*
++	 * Do not allow to map to user-provided address to avoid breaking the
++	 * aliasing rules. Userspace is not able to guess the offset address of
++	 * kernel kmalloc()ed memory area.
++	 */
++	if (addr)
++		return -EINVAL;
++
++	ptr =3D io_uring_validate_mmap_request(filp, pgoff, len);
++	if (IS_ERR(ptr))
++		return -ENOMEM;
++
++	info.flags =3D VM_UNMAPPED_AREA_TOPDOWN;
++	info.length =3D len;
++	info.low_limit =3D max(PAGE_SIZE, mmap_min_addr);
++	info.high_limit =3D arch_get_mmap_base(addr, current->mm->mmap_base);
++#ifdef SHM_COLOUR
++	info.align_mask =3D PAGE_MASK & (SHM_COLOUR - 1UL);
++#else
++	info.align_mask =3D PAGE_MASK & (SHMLBA - 1UL);
++#endif
++	info.align_offset =3D (unsigned long) ptr;
++
++	/*
++	 * A failed mmap() very likely causes application failure,
++	 * so fall back to the bottom-up function here. This scenario
++	 * can happen with large stack limits and large mmap()
++	 * allocations.
++	 */
++	addr =3D vm_unmapped_area(&info);
++	if (offset_in_page(addr)) {
++		info.flags =3D 0;
++		info.low_limit =3D TASK_UNMAPPED_BASE;
++		info.high_limit =3D mmap_end;
++		addr =3D vm_unmapped_area(&info);
++	}
++
++	return addr;
++}
++
+ #else /* !CONFIG_MMU */
+
+ static int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+@@ -3273,6 +3322,8 @@ static const struct file_operations io_uring_fops =
+=3D {
+ #ifndef CONFIG_MMU
+ 	.get_unmapped_area =3D io_uring_nommu_get_unmapped_area,
+ 	.mmap_capabilities =3D io_uring_nommu_mmap_capabilities,
++#else
++	.get_unmapped_area =3D io_uring_mmu_get_unmapped_area,
+ #endif
+ 	.poll		=3D io_uring_poll,
+ #ifdef CONFIG_PROC_FS
