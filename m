@@ -2,250 +2,215 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6021469C9B9
-	for <lists+linux-parisc@lfdr.de>; Mon, 20 Feb 2023 12:24:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7969B69D589
+	for <lists+linux-parisc@lfdr.de>; Mon, 20 Feb 2023 22:11:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231789AbjBTLYa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 20 Feb 2023 06:24:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49066 "EHLO
+        id S232748AbjBTVLZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 20 Feb 2023 16:11:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231649AbjBTLYZ (ORCPT
+        with ESMTP id S232721AbjBTVLY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 20 Feb 2023 06:24:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FA905FEE
-        for <linux-parisc@vger.kernel.org>; Mon, 20 Feb 2023 03:23:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1676892214;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JGvEUYyDyInAU1qTOkUUwH1+5Pn5/FfAg09zLJh1EcU=;
-        b=LJ4z/ydlreQO2yAtfBGq5VjJCLgp297eaAHVbIuZOwUBIi2Z0QExyTv6nd/ARNoqMqdjn1
-        /zMysMRY0+wYzE6vrOvE/OCyAU5zz2zZy4+k6HBeuFrxSJpfHYMdYB4k5d6NnCqUnBPAwg
-        e5+N+BoK+DPErZpuJFnQdtZCGVRIc3E=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-538-IXK7nJANO8mxVb3xXm_mDg-1; Mon, 20 Feb 2023 06:23:33 -0500
-X-MC-Unique: IXK7nJANO8mxVb3xXm_mDg-1
-Received: by mail-wr1-f71.google.com with SMTP id d14-20020adfa34e000000b002bfc062eaa8so178363wrb.20
-        for <linux-parisc@vger.kernel.org>; Mon, 20 Feb 2023 03:23:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JGvEUYyDyInAU1qTOkUUwH1+5Pn5/FfAg09zLJh1EcU=;
-        b=pgd73nXiKPejb9qDFRIoXT7IQ/ZAwauLtnoDPE9B+yZEZ4yGixDIqJuBbF9WO2Jsc7
-         SKWYSWIig7tKDyl/TbIwXdyNkrzdF7ZlOFx6cfp4Ok2AQmoKNm5SHCbCDkTMQ84YMiGa
-         SDbdkilkvbwPLcmtTUZeOGMEqGxWQEDIZCS8Lk55Q20hu75Q86m6hC/xymrHhosKEv7x
-         l/X8a/JiD2/SaQsCroH77uMjOB+mMUuQGSPYj0Nz7wDrLy/m6QObTNAtQ0EcXNemtTnp
-         1rokQWrH8Jg0h+MqSh323u5QfABfTrTul4GIoDn1rSeV+HrBqYRRgg88G1aWAob4NSd3
-         F4/g==
-X-Gm-Message-State: AO0yUKVVsQawdg0sgtbi/vErtV7vpEFDtUIVL2Nymerps4DxGmIzxjnw
-        zj+68tkoVaeqoysMtJ0M+t40k2sU6OHbC28n8p3yBncTpqHtu+n3nYlZQPNgNWeYvtJ3Exlfmcj
-        RFm0qVPDkZXKMmGbG92AEt/i9
-X-Received: by 2002:adf:e889:0:b0:2bf:ae19:d8e4 with SMTP id d9-20020adfe889000000b002bfae19d8e4mr1431246wrm.16.1676892211956;
-        Mon, 20 Feb 2023 03:23:31 -0800 (PST)
-X-Google-Smtp-Source: AK7set8MwtYqrZBvXsoQ9yPZN/bwu32QfvZtBFBM6ley7E2vAkMmUmM+SZmaWRHMAwPacrP/Dgjyyg==
-X-Received: by 2002:adf:e889:0:b0:2bf:ae19:d8e4 with SMTP id d9-20020adfe889000000b002bfae19d8e4mr1431211wrm.16.1676892211619;
-        Mon, 20 Feb 2023 03:23:31 -0800 (PST)
-Received: from ?IPV6:2003:cb:c705:8300:e519:4218:a8b5:5bec? (p200300cbc7058300e5194218a8b55bec.dip0.t-ipconnect.de. [2003:cb:c705:8300:e519:4218:a8b5:5bec])
-        by smtp.gmail.com with ESMTPSA id u13-20020a5d434d000000b002c55ec7f661sm154441wrr.5.2023.02.20.03.23.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Feb 2023 03:23:30 -0800 (PST)
-Message-ID: <f50daeb7-7b41-0bed-73f0-b6358169521b@redhat.com>
-Date:   Mon, 20 Feb 2023 12:23:28 +0100
+        Mon, 20 Feb 2023 16:11:24 -0500
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3221C7F9;
+        Mon, 20 Feb 2023 13:11:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=a3LVf7whnZNYyM6/9fdisQFTTZR3PEoZf4vidzT7dAA=; b=hlkUxn03fuq/S0qUoMM49EqkJF
+        urfitedtlgNx6Ht4oiZc8WVrWUofRNLcgg/bZQFIwWbPQILcahhRffjDdBa6FuLv+Th6443P4bcTu
+        Mn3ZqzEP+CqaVEcSv30gKpUDS+13mpnjBSRfFie687p/LE8NolSEjW0n5503gGE08v2RHcB+mHxCZ
+        gU6PW8eDiCVhB+PIXBQEHxWlvT0pYFE+c1Miek0Z+jhxqMarBnFihNsHhAoQkm934KmxHHqXDWZbB
+        4he43jUsHt3OZJX8J2RnMMLZS8nrfPezH3EeYT6VvjMpOqRXmlZL+Lbh7rS9diDcyBMJ8CRm/alfa
+        m9J6Oj4g==;
+Received: from [179.232.147.2] (helo=localhost)
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+        id 1pUDRJ-00990y-5t; Mon, 20 Feb 2023 22:11:13 +0100
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To:     linux-parisc@vger.kernel.org, deller@gmx.de
+Cc:     linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
+        kernel@gpiccoli.net, "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Jeroen Roovers <jer@xs4all.nl>
+Subject: [PATCH v4] parisc: Replace regular spinlock with spin_trylock on panic path
+Date:   Mon, 20 Feb 2023 18:11:05 -0300
+Message-Id: <20230220211105.151401-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: [PATCH v6 13/41] mm: Make pte_mkwrite() take a VMA
-Content-Language: en-US
-To:     Rick Edgecombe <rick.p.edgecombe@intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Balbir Singh <bsingharora@gmail.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Cyrill Gorcunov <gorcunov@gmail.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Eugene Syromiatnikov <esyr@redhat.com>,
-        Florian Weimer <fweimer@redhat.com>,
-        "H . J . Lu" <hjl.tools@gmail.com>, Jann Horn <jannh@google.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Kees Cook <keescook@chromium.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Nadav Amit <nadav.amit@gmail.com>,
-        Oleg Nesterov <oleg@redhat.com>, Pavel Machek <pavel@ucw.cz>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Weijiang Yang <weijiang.yang@intel.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        John Allen <john.allen@amd.com>, kcc@google.com,
-        eranian@google.com, rppt@kernel.org, jamorris@linux.microsoft.com,
-        dethoma@microsoft.com, akpm@linux-foundation.org,
-        Andrew.Cooper3@citrix.com, christina.schimpe@intel.com,
-        debug@rivosinc.com
-Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        Michal Simek <monstr@monstr.eu>,
-        Dinh Nguyen <dinguyen@kernel.org>, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        xen-devel@lists.xenproject.org
-References: <20230218211433.26859-1-rick.p.edgecombe@intel.com>
- <20230218211433.26859-14-rick.p.edgecombe@intel.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230218211433.26859-14-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 18.02.23 22:14, Rick Edgecombe wrote:
-> The x86 Control-flow Enforcement Technology (CET) feature includes a new
-> type of memory called shadow stack. This shadow stack memory has some
-> unusual properties, which requires some core mm changes to function
-> properly.
-> 
-> One of these unusual properties is that shadow stack memory is writable,
-> but only in limited ways. These limits are applied via a specific PTE
-> bit combination. Nevertheless, the memory is writable, and core mm code
-> will need to apply the writable permissions in the typical paths that
-> call pte_mkwrite().
-> 
-> In addition to VM_WRITE, the shadow stack VMA's will have a flag denoting
-> that they are special shadow stack flavor of writable memory. So make
-> pte_mkwrite() take a VMA, so that the x86 implementation of it can know to
-> create regular writable memory or shadow stack memory.
-> 
-> Apply the same changes for pmd_mkwrite() and huge_pte_mkwrite().
-> 
-> No functional change.
-> 
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-csky@vger.kernel.org
-> Cc: linux-hexagon@vger.kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: loongarch@lists.linux.dev
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: Michal Simek <monstr@monstr.eu>
-> Cc: Dinh Nguyen <dinguyen@kernel.org>
-> Cc: linux-mips@vger.kernel.org
-> Cc: openrisc@lists.librecores.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> Cc: xen-devel@lists.xenproject.org
-> Cc: linux-arch@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> 
-> ---
-> Hi Non-x86 Arch’s,
-> 
-> x86 has a feature that allows for the creation of a special type of
-> writable memory (shadow stack) that is only writable in limited specific
-> ways. Previously, changes were proposed to core MM code to teach it to
-> decide when to create normally writable memory or the special shadow stack
-> writable memory, but David Hildenbrand suggested[0] to change
-> pXX_mkwrite() to take a VMA, so awareness of shadow stack memory can be
-> moved into x86 code.
-> 
-> Since pXX_mkwrite() is defined in every arch, it requires some tree-wide
-> changes. So that is why you are seeing some patches out of a big x86
-> series pop up in your arch mailing list. There is no functional change.
-> After this refactor, the shadow stack series goes on to use the arch
-> helpers to push shadow stack memory details inside arch/x86.
-> 
-> Testing was just 0-day build testing.
-> 
-> Hopefully that is enough context. Thanks!
-> 
-> [0] https://lore.kernel.org/lkml/0e29a2d0-08d8-bcd6-ff26-4bea0e4037b0@redhat.com/#t
-> 
-> v6:
->   - New patch
-> ---
->   Documentation/mm/arch_pgtable_helpers.rst    |  9 ++++++---
->   arch/alpha/include/asm/pgtable.h             |  6 +++++-
->   arch/arc/include/asm/hugepage.h              |  2 +-
->   arch/arc/include/asm/pgtable-bits-arcv2.h    |  7 ++++++-
->   arch/arm/include/asm/pgtable-3level.h        |  7 ++++++-
->   arch/arm/include/asm/pgtable.h               |  2 +-
->   arch/arm64/include/asm/pgtable.h             |  4 ++--
->   arch/csky/include/asm/pgtable.h              |  2 +-
->   arch/hexagon/include/asm/pgtable.h           |  2 +-
->   arch/ia64/include/asm/pgtable.h              |  2 +-
->   arch/loongarch/include/asm/pgtable.h         |  4 ++--
->   arch/m68k/include/asm/mcf_pgtable.h          |  2 +-
->   arch/m68k/include/asm/motorola_pgtable.h     |  6 +++++-
->   arch/m68k/include/asm/sun3_pgtable.h         |  6 +++++-
->   arch/microblaze/include/asm/pgtable.h        |  2 +-
->   arch/mips/include/asm/pgtable.h              |  6 +++---
->   arch/nios2/include/asm/pgtable.h             |  2 +-
->   arch/openrisc/include/asm/pgtable.h          |  2 +-
->   arch/parisc/include/asm/pgtable.h            |  6 +++++-
->   arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +-
->   arch/powerpc/include/asm/book3s/64/pgtable.h |  4 ++--
->   arch/powerpc/include/asm/nohash/32/pgtable.h |  2 +-
->   arch/powerpc/include/asm/nohash/32/pte-8xx.h |  2 +-
->   arch/powerpc/include/asm/nohash/64/pgtable.h |  2 +-
->   arch/riscv/include/asm/pgtable.h             |  6 +++---
->   arch/s390/include/asm/hugetlb.h              |  4 ++--
->   arch/s390/include/asm/pgtable.h              |  4 ++--
->   arch/sh/include/asm/pgtable_32.h             | 10 ++++++++--
->   arch/sparc/include/asm/pgtable_32.h          |  2 +-
->   arch/sparc/include/asm/pgtable_64.h          |  6 +++---
->   arch/um/include/asm/pgtable.h                |  2 +-
->   arch/x86/include/asm/pgtable.h               |  6 ++++--
->   arch/xtensa/include/asm/pgtable.h            |  2 +-
->   include/asm-generic/hugetlb.h                |  4 ++--
->   include/linux/mm.h                           |  2 +-
->   mm/debug_vm_pgtable.c                        | 16 ++++++++--------
->   mm/huge_memory.c                             |  6 +++---
->   mm/hugetlb.c                                 |  4 ++--
->   mm/memory.c                                  |  4 ++--
->   mm/migrate_device.c                          |  2 +-
->   mm/mprotect.c                                |  2 +-
->   mm/userfaultfd.c                             |  2 +-
->   42 files changed, 106 insertions(+), 69 deletions(-)
+The panic notifiers' callbacks execute in an atomic context, with
+interrupts/preemption disabled, and all CPUs not running the panic
+function are off, so it's very dangerous to wait on a regular
+spinlock, there's a risk of deadlock.
 
-That looks painful but IMHO worth it :)
+Refactor the panic notifier of parisc/power driver to make use
+of spin_trylock - for that, we've added a second version of the
+soft-power function. Also, some comments were reorganized and
+trailing white spaces, useless header inclusion and blank lines
+were removed.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Jeroen Roovers <jer@xs4all.nl>
+Acked-by: Helge Deller <deller@gmx.de> # parisc
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
+---
+V4:
+- rebase against v6.2 (build-tested).
+
+V3:
+- s/in/on as per Jeroen's suggestion - thanks!
+
+V2:
+- Added Helge's ACK - thanks!
+
+
+Hey Helge, this is the V4 - just rebased and build-tested on v6.2.
+I remember we discussed the possibility of this getting merged through
+the series I've submitted [0], but happens the series is "gone", most of
+the patches were picked by maintainers, others I'm dropping. This is really
+a standalone fix, similar ones were merged in other notifiers.
+
+I'd appreciate if you/James could pick it for the next kernel, there's no
+rush at all, but there's also no series we could throw this patch to get
+merged with heh
+
+Thanks in advance,
+
+
+Guilherme
+
+[0] https://lore.kernel.org/lkml/43de5653-7587-3e8e-274c-b2729649d0fd@gmx.de/
+
+
+ arch/parisc/include/asm/pdc.h |  1 +
+ arch/parisc/kernel/firmware.c | 27 +++++++++++++++++++++++----
+ drivers/parisc/power.c        | 17 ++++++++++-------
+ 3 files changed, 34 insertions(+), 11 deletions(-)
+
+diff --git a/arch/parisc/include/asm/pdc.h b/arch/parisc/include/asm/pdc.h
+index 40793bef8429..2b4fad8328e8 100644
+--- a/arch/parisc/include/asm/pdc.h
++++ b/arch/parisc/include/asm/pdc.h
+@@ -80,6 +80,7 @@ int pdc_do_firm_test_reset(unsigned long ftc_bitmap);
+ int pdc_do_reset(void);
+ int pdc_soft_power_info(unsigned long *power_reg);
+ int pdc_soft_power_button(int sw_control);
++int pdc_soft_power_button_panic(int sw_control);
+ void pdc_io_reset(void);
+ void pdc_io_reset_devices(void);
+ int pdc_iodc_getc(void);
+diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware.c
+index 6817892a2c58..cc124d9f1f7f 100644
+--- a/arch/parisc/kernel/firmware.c
++++ b/arch/parisc/kernel/firmware.c
+@@ -1232,15 +1232,18 @@ int __init pdc_soft_power_info(unsigned long *power_reg)
+ }
+ 
+ /*
+- * pdc_soft_power_button - Control the soft power button behaviour
+- * @sw_control: 0 for hardware control, 1 for software control 
++ * pdc_soft_power_button{_panic} - Control the soft power button behaviour
++ * @sw_control: 0 for hardware control, 1 for software control
+  *
+  *
+  * This PDC function places the soft power button under software or
+  * hardware control.
+- * Under software control the OS may control to when to allow to shut 
+- * down the system. Under hardware control pressing the power button 
++ * Under software control the OS may control to when to allow to shut
++ * down the system. Under hardware control pressing the power button
+  * powers off the system immediately.
++ *
++ * The _panic version relies on spin_trylock to prevent deadlock
++ * on panic path.
+  */
+ int pdc_soft_power_button(int sw_control)
+ {
+@@ -1254,6 +1257,22 @@ int pdc_soft_power_button(int sw_control)
+ 	return retval;
+ }
+ 
++int pdc_soft_power_button_panic(int sw_control)
++{
++	int retval;
++	unsigned long flags;
++
++	if (!spin_trylock_irqsave(&pdc_lock, flags)) {
++		pr_emerg("Couldn't enable soft power button\n");
++		return -EBUSY; /* ignored by the panic notifier */
++	}
++
++	retval = mem_pdc_call(PDC_SOFT_POWER, PDC_SOFT_POWER_ENABLE, __pa(pdc_result), sw_control);
++	spin_unlock_irqrestore(&pdc_lock, flags);
++
++	return retval;
++}
++
+ /*
+  * pdc_io_reset - Hack to avoid overlapping range registers of Bridges devices.
+  * Primarily a problem on T600 (which parisc-linux doesn't support) but
+diff --git a/drivers/parisc/power.c b/drivers/parisc/power.c
+index 456776bd8ee6..8512884de2cf 100644
+--- a/drivers/parisc/power.c
++++ b/drivers/parisc/power.c
+@@ -37,7 +37,6 @@
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/notifier.h>
+ #include <linux/panic_notifier.h>
+ #include <linux/reboot.h>
+ #include <linux/sched/signal.h>
+@@ -175,16 +174,21 @@ static void powerfail_interrupt(int code, void *x)
+ 
+ 
+ 
+-/* parisc_panic_event() is called by the panic handler.
+- * As soon as a panic occurs, our tasklets above will not be
+- * executed any longer. This function then re-enables the 
+- * soft-power switch and allows the user to switch off the system
++/*
++ * parisc_panic_event() is called by the panic handler.
++ *
++ * As soon as a panic occurs, our tasklets above will not
++ * be executed any longer. This function then re-enables
++ * the soft-power switch and allows the user to switch off
++ * the system. We rely in pdc_soft_power_button_panic()
++ * since this version spin_trylocks (instead of regular
++ * spinlock), preventing deadlocks on panic path.
+  */
+ static int parisc_panic_event(struct notifier_block *this,
+ 		unsigned long event, void *ptr)
+ {
+ 	/* re-enable the soft-power switch */
+-	pdc_soft_power_button(0);
++	pdc_soft_power_button_panic(0);
+ 	return NOTIFY_DONE;
+ }
+ 
+@@ -193,7 +197,6 @@ static struct notifier_block parisc_panic_block = {
+ 	.priority	= INT_MAX,
+ };
+ 
+-
+ static int __init power_init(void)
+ {
+ 	unsigned long ret;
 -- 
-Thanks,
-
-David / dhildenb
+2.39.1
 
