@@ -2,182 +2,327 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A4ED6A4775
-	for <lists+linux-parisc@lfdr.de>; Mon, 27 Feb 2023 18:01:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE8146A48EE
+	for <lists+linux-parisc@lfdr.de>; Mon, 27 Feb 2023 18:58:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230328AbjB0RBx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Feb 2023 12:01:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
+        id S230311AbjB0R6Q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Feb 2023 12:58:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbjB0RBw (ORCPT
+        with ESMTP id S230184AbjB0R6J (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Feb 2023 12:01:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C7B1DBB9
-        for <linux-parisc@vger.kernel.org>; Mon, 27 Feb 2023 09:01:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1677517266;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=S+gj+IVlpRNML/WhRdwS5WpJ1kIzGGA+IXuZi3TvglQ=;
-        b=MrzMv/usUX5QJ7MfXIzP6UasX8styJCjS6RvawQpVwkFJTJOAASaI3SZ5dopTQUIU2Zlwb
-        fFv2C5AK3/shy165dPEMHzG5GwjEMDWq1z6CVJqfoEp601rjg1yQUlLqvpWHqkeV+0JXA4
-        RoBVkKJCkvGWUQ/safPk0USMCnYoBWc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-321-Ep_tFYWSMOKvc0CpGr357w-1; Mon, 27 Feb 2023 12:01:04 -0500
-X-MC-Unique: Ep_tFYWSMOKvc0CpGr357w-1
-Received: by mail-wr1-f69.google.com with SMTP id n4-20020a5d5984000000b002c3b562d76cso1027131wri.12
-        for <linux-parisc@vger.kernel.org>; Mon, 27 Feb 2023 09:01:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S+gj+IVlpRNML/WhRdwS5WpJ1kIzGGA+IXuZi3TvglQ=;
-        b=n2vAJ79VhPGwOexsV31f9zOLhWn62RCZXIKAfX2sJPoisdVcxPK013akYMwsAXuPrW
-         jUCy53i6uKGgJWWOZCVcpN+XKA4ql3DCoEzSbgrKEWq3CAadQmtAv4BoGuFZ5WGklwCX
-         r3TiYOzyFJEeBF+Jk/LBj5ntWJrBUgeMklHDHHr+L7bdtxTPyo5Qr8nlbW/fS5vwuG7d
-         TTQ30LUVdyhKX8D+4+kJgxplksaqUMNECUK9YJtsmMucdpxiNxPzgXm+ZMyOFEs31v/y
-         YK9GG0spPFM3JdEmHt+P+JsXldgFEmPowFhO5VZBVDwshWoPFAyX/VUH1GYbE++lB+yQ
-         ngDQ==
-X-Gm-Message-State: AO0yUKUADp1BEyMQnYvn9QyycTEjfzAM33Y803KhieQphGRBfu+kmu4Y
-        pfaew/vdd3QkjRiJ2YEMjvm+U8a36Om9m09AisSZMVIpUmTzsZ26w5jmMypAbe0kZmXNSeYFmac
-        az58OGlcPT261sbPCfjY+mmYH
-X-Received: by 2002:a5d:570e:0:b0:2bf:d940:29b6 with SMTP id a14-20020a5d570e000000b002bfd94029b6mr22317897wrv.54.1677517263063;
-        Mon, 27 Feb 2023 09:01:03 -0800 (PST)
-X-Google-Smtp-Source: AK7set/UUjV2lk6TzBDGO2RyIGoSkW6MncSJyiWPHsxHHIhpKbsx37PxyO7HkStEnBG5FTknvHrGmg==
-X-Received: by 2002:a5d:570e:0:b0:2bf:d940:29b6 with SMTP id a14-20020a5d570e000000b002bfd94029b6mr22317842wrv.54.1677517262720;
-        Mon, 27 Feb 2023 09:01:02 -0800 (PST)
-Received: from [192.168.3.108] (p5b0c68fb.dip0.t-ipconnect.de. [91.12.104.251])
-        by smtp.gmail.com with ESMTPSA id l4-20020a05600c1d0400b003db0ad636d1sm15217382wms.28.2023.02.27.09.01.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Feb 2023 09:01:02 -0800 (PST)
-Message-ID: <c145a2db-f92c-65aa-3e68-07dbb2e097a6@redhat.com>
-Date:   Mon, 27 Feb 2023 18:01:00 +0100
+        Mon, 27 Feb 2023 12:58:09 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD327241D6;
+        Mon, 27 Feb 2023 09:57:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        Content-Type:Content-ID:Content-Description;
+        bh=f4iId2jx8WHA9aYmBaR2cIQrZXvmhrhHuZFPGqlcK5c=; b=sXww9wYgiCgowKq5XLFEcyHEop
+        XW6NMHGVnb1oO6+9T/76a2+Y82dHeefnUfZBzhIxGcCj398YBLNFNhhOzidlolrvWvJDBitd7gk6/
+        am0yPVhFVNjf0/sdLFDqtWWhhNPXUrCXLh3zWC65Ttfpe+YSGMzQVnMGiwQZ3tAl4z+0gNOg09MfO
+        RbigdZKOs0HwmktTL3Nl7hlzt1lhRKZbgsXReR+3nfUSk1gBCKQd3Ptp4XFepzP80wwCq+3zLcwY8
+        BWekd31pqnO73HDQhIWPmiQk4cxwfGgkLWx7V3AyvsUeWFPQlM2V2KaWXdd3FR8UhtiB1ZOCB1b8S
+        wMs5O4gQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pWhkv-000IXs-9X; Mon, 27 Feb 2023 17:57:45 +0000
+From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To:     linux-mm@kvack.org, linux-arch@vger.kernel.org
+Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        linux-kernel@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: [PATCH v2 17/30] parisc: Implement the new page table range API
+Date:   Mon, 27 Feb 2023 17:57:28 +0000
+Message-Id: <20230227175741.71216-18-willy@infradead.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20230227175741.71216-1-willy@infradead.org>
+References: <20230227175741.71216-1-willy@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: [PATCH mm-unstable v1 11/26] microblaze/mm: support
- __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Hugh Dickins <hughd@google.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Yang Shi <shy828301@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Nadav Amit <namit@vmware.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-        x86@kernel.org, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        Michal Simek <monstr@monstr.eu>
-References: <20230113171026.582290-1-david@redhat.com>
- <20230113171026.582290-12-david@redhat.com>
- <CAMuHMdX-FDga8w=pgg1myskEx6wp+oyZifhPPPFnWrc1zW7ZpQ@mail.gmail.com>
- <9ed766a6-cf06-535d-3337-ea6ff25c2362@redhat.com>
- <CAMuHMdWSaoKqO1Nx7QMDCcXrRmFbqqX8uwDRezXs8g+HdEFjKA@mail.gmail.com>
-Content-Language: en-US
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <CAMuHMdWSaoKqO1Nx7QMDCcXrRmFbqqX8uwDRezXs8g+HdEFjKA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
->>>>    /*
->>>>     * Externally used page protection values.
->>>> diff --git a/arch/microblaze/include/asm/pgtable.h b/arch/microblaze/include/asm/pgtable.h
->>>> index 42f5988e998b..7e3de54bf426 100644
->>>> --- a/arch/microblaze/include/asm/pgtable.h
->>>> +++ b/arch/microblaze/include/asm/pgtable.h
->>>> @@ -131,10 +131,10 @@ extern pte_t *va_to_pte(unsigned long address);
->>>>     * of the 16 available.  Bit 24-26 of the TLB are cleared in the TLB
->>>>     * miss handler.  Bit 27 is PAGE_USER, thus selecting the correct
->>>>     * zone.
->>>> - * - PRESENT *must* be in the bottom two bits because swap cache
->>>> - * entries use the top 30 bits.  Because 4xx doesn't support SMP
->>>> - * anyway, M is irrelevant so we borrow it for PAGE_PRESENT.  Bit 30
->>>> - * is cleared in the TLB miss handler before the TLB entry is loaded.
->>>> + * - PRESENT *must* be in the bottom two bits because swap PTEs use the top
->>>> + * 30 bits.  Because 4xx doesn't support SMP anyway, M is irrelevant so we
->>>> + * borrow it for PAGE_PRESENT.  Bit 30 is cleared in the TLB miss handler
->>>> + * before the TLB entry is loaded.
->>>
->>> So the PowerPC 4xx comment is still here?
->>
->> I only dropped the comment above __swp_type(). I guess you mean that we
->> could also drop the "Because 4xx doesn't support SMP anyway, M is
->> irrelevant so we borrow it for PAGE_PRESENT." sentence, correct? Not
-> 
-> Yes, that's what I meant.
-> 
->> sure about the "Bit 30 is cleared in the TLB miss handler" comment, if
->> that can similarly be dropped.
-> 
-> No idea, didn't check. But if it was copied from PPC, chances are
-> high it's no longer true....
+Add set_ptes(), update_mmu_cache_range(), flush_dcache_folio()
+and flush_icache_pages().  Change the PG_arch_1 (aka PG_dcache_dirty) flag
+from being per-page to per-folio.
 
-I'll have a look.
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+---
+ arch/parisc/include/asm/cacheflush.h |  14 ++--
+ arch/parisc/include/asm/pgtable.h    |  28 +++++---
+ arch/parisc/kernel/cache.c           | 101 +++++++++++++++++++--------
+ 3 files changed, 99 insertions(+), 44 deletions(-)
 
-> 
->>>>     * - All other bits of the PTE are loaded into TLBLO without
->>>>     *  * modification, leaving us only the bits 20, 21, 24, 25, 26, 30 for
->>>>     * software PTE bits.  We actually use bits 21, 24, 25, and
->>>> @@ -155,6 +155,9 @@ extern pte_t *va_to_pte(unsigned long address);
->>>>    #define _PAGE_ACCESSED 0x400   /* software: R: page referenced */
->>>>    #define _PMD_PRESENT   PAGE_MASK
->>>>
->>>> +/* We borrow bit 24 to store the exclusive marker in swap PTEs. */
->>>> +#define _PAGE_SWP_EXCLUSIVE    _PAGE_DIRTY
->>>
->>> _PAGE_DIRTY is 0x80, so this is also bit 7, thus the new comment is
->>> wrong?
->>
->> In the example, I use MSB-0 bit numbering (which I determined to be
->> correct in microblaze context eventually, but I got confused a couple a
->> times because it's very inconsistent). That should be MSB-0 bit 24.
-> 
-> Thanks, TIL microblaze uses IBM bit numbering...
-
-I assume IBM bit numbering corresponds to MSB-0 bit numbering, correct?
-
-
-I recall that I used the comment above "/* Definitions for MicroBlaze. 
-*/" as an orientation.
-
-0  1  2  3  4  ... 18 19 20 21 22 23 24 25 26 27 28 29 30 31
-RPN.....................  0  0 EX WR ZSEL.......  W  I  M  G
-
-
-So ... either we adjust both or we leave it as is. (again, depends on 
-what the right thing to to is -- which I don't know :) )
-
+diff --git a/arch/parisc/include/asm/cacheflush.h b/arch/parisc/include/asm/cacheflush.h
+index ff07c509e04b..0bf8b69d086b 100644
+--- a/arch/parisc/include/asm/cacheflush.h
++++ b/arch/parisc/include/asm/cacheflush.h
+@@ -46,16 +46,20 @@ void invalidate_kernel_vmap_range(void *vaddr, int size);
+ #define flush_cache_vmap(start, end)		flush_cache_all()
+ #define flush_cache_vunmap(start, end)		flush_cache_all()
+ 
++void flush_dcache_folio(struct folio *folio);
++#define flush_dcache_folio flush_dcache_folio
+ #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+-void flush_dcache_page(struct page *page);
++static inline void flush_dcache_page(struct page *page)
++{
++	flush_dcache_folio(page_folio(page));
++}
+ 
+ #define flush_dcache_mmap_lock(mapping)		xa_lock_irq(&mapping->i_pages)
+ #define flush_dcache_mmap_unlock(mapping)	xa_unlock_irq(&mapping->i_pages)
+ 
+-#define flush_icache_page(vma,page)	do { 		\
+-	flush_kernel_dcache_page_addr(page_address(page)); \
+-	flush_kernel_icache_page(page_address(page)); 	\
+-} while (0)
++void flush_icache_pages(struct vm_area_struct *vma, struct page *page,
++		unsigned int nr);
++#define flush_icache_page(vma, page)	flush_icache_pages(vma, page, 1)
+ 
+ #define flush_icache_range(s,e)		do { 		\
+ 	flush_kernel_dcache_range_asm(s,e); 		\
+diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+index e2950f5db7c9..78ee9816f423 100644
+--- a/arch/parisc/include/asm/pgtable.h
++++ b/arch/parisc/include/asm/pgtable.h
+@@ -73,14 +73,7 @@ extern void __update_cache(pte_t pte);
+ 		mb();				\
+ 	} while(0)
+ 
+-#define set_pte_at(mm, addr, pteptr, pteval)	\
+-	do {					\
+-		if (pte_present(pteval) &&	\
+-		    pte_user(pteval))		\
+-			__update_cache(pteval);	\
+-		*(pteptr) = (pteval);		\
+-		purge_tlb_entries(mm, addr);	\
+-	} while (0)
++#define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, addr, ptep, pte, 1)
+ 
+ #endif /* !__ASSEMBLY__ */
+ 
+@@ -391,11 +384,28 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+ 
+ extern void paging_init (void);
+ 
++static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
++		pte_t *ptep, pte_t pte, unsigned int nr)
++{
++	if (pte_present(pte) && pte_user(pte))
++		__update_cache(pte);
++	for (;;) {
++		*ptep = pte;
++		purge_tlb_entries(mm, addr);
++		if (--nr == 0)
++			break;
++		ptep++;
++		pte_val(pte) += 1 << PFN_PTE_SHIFT;
++		addr += PAGE_SIZE;
++	}
++}
++
+ /* Used for deferring calls to flush_dcache_page() */
+ 
+ #define PG_dcache_dirty         PG_arch_1
+ 
+-#define update_mmu_cache(vms,addr,ptep) __update_cache(*ptep)
++#define update_mmu_cache_range(vma, addr, ptep, nr) __update_cache(*ptep)
++#define update_mmu_cache(vma, addr, ptep) __update_cache(*ptep)
+ 
+ /*
+  * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index 984d3a1b3828..16057812103b 100644
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -92,11 +92,11 @@ static inline void flush_data_cache(void)
+ /* Kernel virtual address of pfn.  */
+ #define pfn_va(pfn)	__va(PFN_PHYS(pfn))
+ 
+-void
+-__update_cache(pte_t pte)
++void __update_cache(pte_t pte)
+ {
+ 	unsigned long pfn = pte_pfn(pte);
+-	struct page *page;
++	struct folio *folio;
++	unsigned int nr;
+ 
+ 	/* We don't have pte special.  As a result, we can be called with
+ 	   an invalid pfn and we don't need to flush the kernel dcache page.
+@@ -104,13 +104,17 @@ __update_cache(pte_t pte)
+ 	if (!pfn_valid(pfn))
+ 		return;
+ 
+-	page = pfn_to_page(pfn);
+-	if (page_mapping_file(page) &&
+-	    test_bit(PG_dcache_dirty, &page->flags)) {
+-		flush_kernel_dcache_page_addr(pfn_va(pfn));
+-		clear_bit(PG_dcache_dirty, &page->flags);
++	folio = page_folio(pfn_to_page(pfn));
++	pfn = folio_pfn(folio);
++	nr = folio_nr_pages(folio);
++	if (folio_flush_mapping(folio) &&
++	    test_bit(PG_dcache_dirty, &folio->flags)) {
++		while (nr--)
++			flush_kernel_dcache_page_addr(pfn_va(pfn + nr));
++		clear_bit(PG_dcache_dirty, &folio->flags);
+ 	} else if (parisc_requires_coherency())
+-		flush_kernel_dcache_page_addr(pfn_va(pfn));
++		while (nr--)
++			flush_kernel_dcache_page_addr(pfn_va(pfn + nr));
+ }
+ 
+ void
+@@ -365,6 +369,20 @@ static void flush_user_cache_page(struct vm_area_struct *vma, unsigned long vmad
+ 	preempt_enable();
+ }
+ 
++void flush_icache_pages(struct vm_area_struct *vma, struct page *page,
++		unsigned int nr)
++{
++	void *kaddr = page_address(page);
++
++	for (;;) {
++		flush_kernel_dcache_page_addr(kaddr);
++		flush_kernel_icache_page(kaddr);
++		if (--nr == 0)
++			break;
++		page += PAGE_SIZE;
++	}
++}
++
+ static inline pte_t *get_ptep(struct mm_struct *mm, unsigned long addr)
+ {
+ 	pte_t *ptep = NULL;
+@@ -393,26 +411,30 @@ static inline bool pte_needs_flush(pte_t pte)
+ 		== (_PAGE_PRESENT | _PAGE_ACCESSED);
+ }
+ 
+-void flush_dcache_page(struct page *page)
++void flush_dcache_folio(struct folio *folio)
+ {
+-	struct address_space *mapping = page_mapping_file(page);
+-	struct vm_area_struct *mpnt;
+-	unsigned long offset;
++	struct address_space *mapping = folio_flush_mapping(folio);
++	struct vm_area_struct *vma;
+ 	unsigned long addr, old_addr = 0;
++	void *kaddr;
+ 	unsigned long count = 0;
++	unsigned long i, nr;
+ 	pgoff_t pgoff;
+ 
+ 	if (mapping && !mapping_mapped(mapping)) {
+-		set_bit(PG_dcache_dirty, &page->flags);
++		set_bit(PG_dcache_dirty, &folio->flags);
+ 		return;
+ 	}
+ 
+-	flush_kernel_dcache_page_addr(page_address(page));
++	nr = folio_nr_pages(folio);
++	kaddr = folio_address(folio);
++	for (i = 0; i < nr; i++)
++		flush_kernel_dcache_page_addr(kaddr + i * PAGE_SIZE);
+ 
+ 	if (!mapping)
+ 		return;
+ 
+-	pgoff = page->index;
++	pgoff = folio->index;
+ 
+ 	/*
+ 	 * We have carefully arranged in arch_get_unmapped_area() that
+@@ -422,15 +444,29 @@ void flush_dcache_page(struct page *page)
+ 	 * on machines that support equivalent aliasing
+ 	 */
+ 	flush_dcache_mmap_lock(mapping);
+-	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
+-		offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+-		addr = mpnt->vm_start + offset;
+-		if (parisc_requires_coherency()) {
+-			pte_t *ptep;
++	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff + nr - 1) {
++		unsigned long offset = pgoff - vma->vm_pgoff;
++		unsigned long pfn = folio_pfn(folio);
++
++		addr = vma->vm_start;
++		nr = folio_nr_pages(folio);
++		if (offset > -nr) {
++			pfn -= offset;
++			nr += offset;
++		} else {
++			addr += offset * PAGE_SIZE;
++		}
++		if (addr + nr * PAGE_SIZE > vma->vm_end)
++			nr = (vma->vm_end - addr) / PAGE_SIZE;
+ 
+-			ptep = get_ptep(mpnt->vm_mm, addr);
+-			if (ptep && pte_needs_flush(*ptep))
+-				flush_user_cache_page(mpnt, addr);
++		if (parisc_requires_coherency()) {
++			for (i = 0; i < nr; i++) {
++				pte_t *ptep = get_ptep(vma->vm_mm,
++							addr + i * PAGE_SIZE);
++				if (ptep && pte_needs_flush(*ptep))
++					flush_user_cache_page(vma,
++							addr + i * PAGE_SIZE);
++			}
+ 		} else {
+ 			/*
+ 			 * The TLB is the engine of coherence on parisc:
+@@ -443,27 +479,32 @@ void flush_dcache_page(struct page *page)
+ 			 * in (until the user or kernel specifically
+ 			 * accesses it, of course)
+ 			 */
+-			flush_tlb_page(mpnt, addr);
++			for (i = 0; i < nr; i++)
++				flush_tlb_page(vma, addr + i * PAGE_SIZE);
+ 			if (old_addr == 0 || (old_addr & (SHM_COLOUR - 1))
+ 					!= (addr & (SHM_COLOUR - 1))) {
+-				__flush_cache_page(mpnt, addr, page_to_phys(page));
++				for (i = 0; i < nr; i++)
++					__flush_cache_page(vma,
++						addr + i * PAGE_SIZE,
++						(pfn + i) * PAGE_SIZE);
+ 				/*
+ 				 * Software is allowed to have any number
+ 				 * of private mappings to a page.
+ 				 */
+-				if (!(mpnt->vm_flags & VM_SHARED))
++				if (!(vma->vm_flags & VM_SHARED))
+ 					continue;
+ 				if (old_addr)
+ 					pr_err("INEQUIVALENT ALIASES 0x%lx and 0x%lx in file %pD\n",
+-						old_addr, addr, mpnt->vm_file);
+-				old_addr = addr;
++						old_addr, addr, vma->vm_file);
++				if (nr == folio_nr_pages(folio))
++					old_addr = addr;
+ 			}
+ 		}
+ 		WARN_ON(++count == 4096);
+ 	}
+ 	flush_dcache_mmap_unlock(mapping);
+ }
+-EXPORT_SYMBOL(flush_dcache_page);
++EXPORT_SYMBOL(flush_dcache_folio);
+ 
+ /* Defined in arch/parisc/kernel/pacache.S */
+ EXPORT_SYMBOL(flush_kernel_dcache_range_asm);
 -- 
-Thanks,
-
-David / dhildenb
+2.39.1
 
