@@ -2,54 +2,50 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB1246A62EE
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Feb 2023 23:57:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F130F6A63B3
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 Mar 2023 00:13:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229525AbjB1W5s (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 Feb 2023 17:57:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50564 "EHLO
+        id S229694AbjB1XNN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 Feb 2023 18:13:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjB1W5r (ORCPT
+        with ESMTP id S229548AbjB1XNM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 Feb 2023 17:57:47 -0500
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2092F3644D;
-        Tue, 28 Feb 2023 14:57:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=HhC+CeDXQ7gPGIdMC9D+ydrQrRw7f5eYoVKO6gIUIQU=; b=b+bU0BwLdSlEPuAWTJxKPFliQs
-        fF0uc0NeMyOv5FkV5ROv7Nzl5plJHwZ0DpMLWxztZCacserxJOGR6R9ne9u87Z89xpJj5bfxZrBal
-        Fq+acpGv0JBaQ0OPzqoRWy6MsLcnK7QsuN48gwji5+uwNBNH+MVhuGyI8qjJ2dEaZ8JEwQpKrBBDW
-        RfxudAhIyUSJrFpBZ+XUi2Phw3HJraptnTkUzSHlECOqeQWeCQCmXk1CiT8fmnAvEzUjS5l5FM+I/
-        V4H0ERsZsIj5Y9U2fj9QnzFHNXjoGeqieL2VI9/VmCgRcEklVJ1Tq9O/nIE0GwWAtPEky9X0wv1pY
-        6odKM55g==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1pX8uk-00CwCe-1I;
-        Tue, 28 Feb 2023 22:57:42 +0000
-Date:   Tue, 28 Feb 2023 22:57:42 +0000
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-arch@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH 08/10] parisc: fix livelock in uaccess
-Message-ID: <Y/6G5qCEKh68VOcQ@ZenIV>
-References: <Y9lz6yk113LmC9SI@ZenIV>
- <Y9l0w4M91DwYLO3N@ZenIV>
- <84b1c2e4-c096-ed19-9701-472b54a4890c@gmx.de>
- <Y/47PMmpLDX5lPWx@ZenIV>
- <e9972a0e-14e6-987c-fcee-005a50d28e46@gmx.de>
- <Y/5Sf3fXn0uOUXTw@ZenIV>
- <39436c4d-f5a2-edd5-24ba-19e4812ea364@gmx.de>
- <215b226f-7ffd-70d8-4e7b-85b37f288062@gmx.de>
- <2646c13f-33b8-1047-7cfe-bf7e394344b6@gmx.de>
+        Tue, 28 Feb 2023 18:13:12 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 174707DAC;
+        Tue, 28 Feb 2023 15:13:10 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4PRCp86559z4x7x;
+        Wed,  1 Mar 2023 10:13:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1677625985;
+        bh=0+laPdOYcc037NqVOAd/LAR9BTIYDIohensY42Dxvvo=;
+        h=Date:From:To:Cc:Subject:From;
+        b=eb9TRUh2q0CW13Cxb9spftI0SddmnwFykcx4Y6iX5LVYNhWGvAftgmFJ0dRZJISh8
+         FbfXzKrc+lE6pqYojUK48/2ptZDGd26PgwN1pwZb/8sfUel4ZXgnkPq/KU2a0qcDyT
+         afMxxZGamtKg7AMoVuG2nZ/CvXfgJWKCZiim+zJteQyNzasC18/5DoUCXuNsDIMxcp
+         FT1h1uIGn/upxsEIuBap3tSHro84zmrLByYQV58FOQlnN0ihBfQjgoZeQOR1vSpfPv
+         /c+aliMH+9FXKGNVJOJGLNPCxtyjcHbEGrRL9+C8+iakkuVjNOMMRMInCNvhGosQgj
+         F4+LKy20j6Jig==
+Date:   Wed, 1 Mar 2023 10:13:03 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Helge Deller <deller@gmx.de>
+Cc:     Parisc List <linux-parisc@vger.kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: duplicate patch in the input tree
+Message-ID: <20230301101303.2223f88e@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2646c13f-33b8-1047-7cfe-bf7e394344b6@gmx.de>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Type: multipart/signed; boundary="Sig_/F2.+VUjmh4HTtoVA0Dac5n=";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,19 +53,43 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Feb 28, 2023 at 09:22:31PM +0100, Helge Deller wrote:
+--Sig_/F2.+VUjmh4HTtoVA0Dac5n=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> Now I can confirm (with the adjusted reproducer), that your patch
-> allows to kill the process with SIGKILL, while without your patch
-> it's not possibe to kill the process at all.
-> I've tested with a 32- and 64-bit parisc kernel.
-> 
-> You may add
-> Tested-by: Helge Deller <deller@gmx.de> # parisc
-> to the patch.
-> 
-> If you want me to take the patch (with the warning regarding missing msg variable fixed)
-> through the parisc tree, please let me know.
+Hi all,
 
-What message do you prefer there?  It matters only for the case when
-we are hitting an oops there, but...
+The following commit is also in the parisc-hd tree as a different commit
+(but the same patch):
+
+  586dc36226dd ("Input: hp_sdc_rtc - mark an unused function as __maybe_unu=
+sed")
+
+This is commit
+
+  ab898955932e ("input/misc: hp_sdc_rtc: mark an unused function as __maybe=
+_unused")
+
+in the parisc-hd tree.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/F2.+VUjmh4HTtoVA0Dac5n=
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmP+in8ACgkQAVBC80lX
+0Gy6tAf/XQ3GFVHd3/CEGVKFP6I0uOuRg7nnNYEryHQ6pNwg+FO4H1Zmz4YVNa2n
+HnaSS7jIWSj1P2oOCExmkR/a69UX46piEEhGr4y8dSA39f/rtRnS/Q9VmqYqwZFe
+QTU2cvQbPj5KlFAiHfrrLbJEHaGtlwswgjrMifQ/urqTuzdbVkjTimAn/dPb0yQO
+2jZbrLEW2Zsx+7G8ETwr6DdK2zXRZvX6yOP2wzmmuwf9ypO4rvxuA/FvCtBwB0dV
+X+rsXB7Wyiil5jEGQ8r9qdCLVsH91tVQJ0YLFfQmrNfOHxem3PxT9kD7eF1gMVHg
+l/n2+2zkWtc5IMwJ0pJej/TX6od6iw==
+=Xq7f
+-----END PGP SIGNATURE-----
+
+--Sig_/F2.+VUjmh4HTtoVA0Dac5n=--
