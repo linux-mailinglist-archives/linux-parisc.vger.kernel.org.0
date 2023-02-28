@@ -2,73 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8BF6A4FD6
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Feb 2023 00:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA17C6A501B
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Feb 2023 01:20:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbjB0Xu7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 27 Feb 2023 18:50:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54780 "EHLO
+        id S229524AbjB1AUp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 27 Feb 2023 19:20:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjB0Xu7 (ORCPT
+        with ESMTP id S229481AbjB1AUo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 27 Feb 2023 18:50:59 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED87E1CF78;
-        Mon, 27 Feb 2023 15:50:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=hhWZAIlF6fKDyP0S3ixh+SYLF7C8k6DfSQC71GqLDbo=; b=h7ru2jVjhP1Mih+iVVS4dfvE5M
-        khcalHp6b5AL5G5v+ZNog4NPOgDwbb/RKRbf3hwYrQ38q7lpueSts6B2JB78Z5x8tmMsbglDKDUB0
-        zqOT1w6Gl4DVvypUwkIty/3QOJcINRhwmPKNGkmRnJUOoL9nZHcw2sPGdceYV6x9oFMyBTVPiVXpA
-        Z/SubpBTl/6EC7vHG480+SspytkBU7I1q9pevrl9NcEx8fMiZk3GweGr7c3HI5cRfcVWixsBquGCF
-        kxMUkyT5QSE83ptxH1ezTjzFCiqeC/RRP8fPC+ou2Taf21tWaJEXGqC0MWzCCxW1uU6JF+aj8fptr
-        73EikYlQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pWnGe-000U9E-MG; Mon, 27 Feb 2023 23:50:52 +0000
-Date:   Mon, 27 Feb 2023 23:50:52 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     John David Anglin <dave.anglin@bell.net>
-Cc:     linux-mm@kvack.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH v2 17/30] parisc: Implement the new page table range API
-Message-ID: <Y/1B3BhgZp5aHry6@casper.infradead.org>
-References: <20230227175741.71216-1-willy@infradead.org>
- <20230227175741.71216-18-willy@infradead.org>
- <d97b8a56-89cc-1eb4-1298-7b16079b3b46@bell.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d97b8a56-89cc-1eb4-1298-7b16079b3b46@bell.net>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        Mon, 27 Feb 2023 19:20:44 -0500
+Received: from smtp.gentoo.org (mail.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671C01A96D
+        for <linux-parisc@vger.kernel.org>; Mon, 27 Feb 2023 16:20:43 -0800 (PST)
+Content-Type: multipart/signed;
+        boundary="Apple-Mail=_61B96087-3F55-4777-9491-A770255F919D";
+        protocol="application/pgp-signature";
+        micalg=pgp-sha512
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.400.51.1.1\))
+Subject: Re: [PATCH] parisc: Ensure page-aligned addresses in cache flush and
+ copy functions
+From:   Sam James <sam@gentoo.org>
+In-Reply-To: <20230127213941.83967-1-deller@gmx.de>
+Date:   Tue, 28 Feb 2023 00:20:22 +0000
+Cc:     linux-parisc@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Fabio M . De Francesco" <fmdefrancesco@gmail.com>
+Message-Id: <71A3B07F-296F-4017-B2EE-710590637107@gentoo.org>
+References: <20230127213941.83967-1-deller@gmx.de>
+To:     Helge Deller <deller@gmx.de>
+X-Mailer: Apple Mail (2.3731.400.51.1.1)
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Feb 27, 2023 at 05:49:18PM -0500, John David Anglin wrote:
-> > @@ -104,13 +104,17 @@ __update_cache(pte_t pte)
-> >   	if (!pfn_valid(pfn))
-> >   		return;
-> > -	page = pfn_to_page(pfn);
-> > -	if (page_mapping_file(page) &&
-> > -	    test_bit(PG_dcache_dirty, &page->flags)) {
-> > -		flush_kernel_dcache_page_addr(pfn_va(pfn));
-> > -		clear_bit(PG_dcache_dirty, &page->flags);
-> > +	folio = page_folio(pfn_to_page(pfn));
-> > +	pfn = folio_pfn(folio);
-> > +	nr = folio_nr_pages(folio);
-> > +	if (folio_flush_mapping(folio) &&
-> Shouldn't this call be to folio_mapping()?
 
-For pages in the swap cache, folio_mapping() will return the swap cache
-mapping, which isn't what we want.  folio_file_mapping() will return the
-swap file mapping, which is also not what we want.  folio_flush_mapping()
-returns NULL, which is what we want.
+--Apple-Mail=_61B96087-3F55-4777-9491-A770255F919D
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
 
+
+
+> On 27 Jan 2023, at 21:39, Helge Deller <deller@gmx.de> wrote:
+>=20
+> Matthew Wilcox noticed, that if ARCH_HAS_FLUSH_ON_KUNMAP is defined
+> (which is the case for PA-RISC), __kunmap_local() calls
+> kunmap_flush_on_unmap(), which may call the parisc flush functions =
+with
+> a non-page-aligned address and thus the page might not be fully =
+flushed.
+>=20
+> To prevent similiar cases, page-align any given address in the
+> following parisc low-level calls:
+> - clear_page_asm(),
+> - copy_page_asm(),
+> - copy_user_page_asm(),
+> - clear_user_page_asm(),
+> - flush_kernel_dcache_page_asm(),
+> - purge_kernel_dcache_page_asm() and
+> - flush_kernel_icache_page()
+>=20
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Cc: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+
+Is this patch obsolete as of =
+https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/co=
+mmit/?h=3Dfor-next&id=3D76008c1008dca3cdd7709f4a468b0c3ff9787632
+or still relevant?
+
+Asking because I want to know if I should carry on testing with it or =
+not.
+
+Thanks!
+
+--Apple-Mail=_61B96087-3F55-4777-9491-A770255F919D
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename=signature.asc
+Content-Type: application/pgp-signature;
+	name=signature.asc
+Content-Description: Message signed with OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iNUEARYKAH0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCY/1IyF8UgAAAAAAuAChp
+c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB
+NkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MAAKCRBzhAn1IN+R
+kMrbAQCWYdP/5MPN/YgCt3PLPC5Xp3kRfc2rBMDMi03OMgmcQwD/bOBbU4qb6cld
++L7PmmvVEJF5l3PtnxXIOPsTy8/TlQA=
+=MnTP
+-----END PGP SIGNATURE-----
+
+--Apple-Mail=_61B96087-3F55-4777-9491-A770255F919D--
