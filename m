@@ -2,74 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 354506A5EE0
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Feb 2023 19:39:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC9C6A5EEE
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 Feb 2023 19:45:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229700AbjB1Sje (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 Feb 2023 13:39:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41032 "EHLO
+        id S229593AbjB1Spc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 Feb 2023 13:45:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbjB1Sje (ORCPT
+        with ESMTP id S229668AbjB1Spc (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 Feb 2023 13:39:34 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F06CFBDC7;
-        Tue, 28 Feb 2023 10:39:32 -0800 (PST)
+        Tue, 28 Feb 2023 13:45:32 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EAD623C54;
+        Tue, 28 Feb 2023 10:45:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1677609557; i=deller@gmx.de;
-        bh=DtFxm0e8Z7VF1ewH1Ljpw+R4WIItkXIaof9L5puDsAs=;
+        t=1677609913; i=deller@gmx.de;
+        bh=xC4mv9H9pJblFBF7YkDJhJo1H9/5OAuWYUzB/h8CUhU=;
         h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=R3QsjA7OGtTQYeS9wl3oOXsylwtm/n6JHgbAyIDLSQ7/BtZgqpmDP5lN1Fdcv2wAq
-         WuJJsV522M6WcMBYNfd9OmH0KrwgsCQVl9w47tPCXhArXEqV6zMHeBaN3SUVLKZ2Xz
-         pOCguLbsYiy522ururdZq5B7EDtUgidu/PmOfL8Qg8hVlO1J5Ce5T45N78bhS6Mydm
-         uP+IE09E88gpS3iqWAB4SC4oUz4qFXaVADHybhIbziAyhjfxJ3Ro8IxjYzmdef5yQS
-         a7hfuz6HXk42zAVLRwRvekYEb3J418s3NGOb8oQ/s1E3FEkC3doH7rZF4uu5cGbUjc
-         DVvYi4H5GQ2jw==
+        b=TM9TVncuNGf2j70P02Ae9jnrDYn77Br667yprt8G7iKDZtOSyfc1Cg6d9dIZ+u/4q
+         gJGatpl0X8YoVHnd1CeGnRqoVGm+mUveFUBDah6WGHCCxKcy6IIf0oKnguWuDTfZrn
+         StJgiBVsQ2A2G2w+X0lX1hVhAentpnVDI42+kZAIoB2rH9rzilBGcVePGqZEpJsVNn
+         c10qdzLaV1J1hp88z/d3R3Zv+s1Xm998IJ4Q2IcX/hu59FVtNWqf7ukvLbMsuLqmXJ
+         SWcrrMSRib7+Tjr/fCYk51afgYalpmNLfJnrP1e/lpkJV0/ejSJVpLfvtXpia2nyHL
+         R5s9vYMcypJ/A==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.60] ([92.116.156.241]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MfYLa-1orQXF2oSO-00fydD; Tue, 28
- Feb 2023 19:39:17 +0100
-Message-ID: <ae6a9ed0-bf62-9a32-310d-286119ffb9e2@gmx.de>
-Date:   Tue, 28 Feb 2023 19:39:15 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N7R1T-1oQAnF3QqL-017mkM; Tue, 28
+ Feb 2023 19:45:12 +0100
+Message-ID: <9b75b8ec-4006-9606-2db4-e1ad5a0b3f8d@gmx.de>
+Date:   Tue, 28 Feb 2023 19:45:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
-Subject: Re: [PATCH] input/misc: hp_sdc_rtc: mark an unused function as
- __maybe_unused
+Subject: Re: [PATCH v4] parisc: Replace regular spinlock with spin_trylock on
+ panic path
 Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        linux-m68k@lists.linux-m68k.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org
-References: <20230209010125.23690-1-rdunlap@infradead.org>
- <CAMuHMdXWLAbXFUHg+TT45AqVq6kHxK=FN=5wEHnpdiR0dn2L_g@mail.gmail.com>
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        linux-parisc@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
+        kernel@gpiccoli.net,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Jeroen Roovers <jer@xs4all.nl>
+References: <20230220211105.151401-1-gpiccoli@igalia.com>
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <CAMuHMdXWLAbXFUHg+TT45AqVq6kHxK=FN=5wEHnpdiR0dn2L_g@mail.gmail.com>
+In-Reply-To: <20230220211105.151401-1-gpiccoli@igalia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:YPUa2tSq33RwVxYoUl1Og8gJjlzv+5Pq307UknXdNF9GZXxz/wG
- O7hZHPiRUgUyAiIjP1zGJ9Rc2K8v4axpmHTV2Lyjacl+tu6fFwO4ax8QYBomsrjF1yYiCwe
- sgJmF0Pv7gG/Tob5Gw87oRL3bmssx5AHntnMYA8h/obcw+OHM//j28M3uXihwoxMLa4bYeh
- zsfSf7eXslMV4uEyHEQbQ==
-UI-OutboundReport: notjunk:1;M01:P0:Vsl/N89OQdI=;qzEhaOtysIsq/QzRGMbknE1N4Bk
- uRZMQ7Jsa0cMQI4QTxl/SFOcGOpQIh2wJUPEZq/Mf70Oj5olhyKyltInx88KlbVSPMYsudk4L
- rNQJDKk0CTr1N9IxsA1CZjaUT0IJ7P4PLharuQT4OXWiY8sAD35VGaHQzFPVx/2PPl4C6dBrn
- cLjPLydKc/3Ps+GYMhHbXOr4XKGTj0j7ChwxPWtErbMpNgjW7ff1+TMzoU88JxouVj2DNOBn8
- 4pH65yyg2nKKPJilbmMVpDHvBZDExE7ws9UVWwY5SoUTnD0Cr1cj3GfFxrNsoAyzREDgnE0Wb
- 2CEKxkkFj2A+KgsRcMusQRc/u8tFJFSN7EIum18aMw+m74F2vMRVs22yV676q4+3S+8ZyO4AS
- hcV/Sc2Z/0jHLCLQJNl6uVJny+bt1tmBwnGYPCSh7jFaMuY9BKNSYg0M1O7wiXFkGYuKpysGI
- GIUJWGhAiw/YXjild8low0+m13YNPRmETmKpu3YLpGaJyDySbWXtYqfJCf+ZPFo0SGQWiVR/z
- aVJ6lEsk0ez74SyPCRmYEU+gqbxGh3NdafdPtXA3AchB1AQMvjb+5l96TZyaFvamZ4HvKJCPQ
- tuYySLdOFKuv8/t02bM9nnpIJ5Od2BBzIIBpV4oXNwcIGBCuiq50asfBJzEnOdy5bRbxJ2Hzd
- dXgqp6S2U+1P8+Ikva5ukGl84hdjp8fd9kxAw2YVfhKYmARiM7GAmJFwovypr2gAkm+QRo2ZT
- YE0FJQvvlhgeUJp0UgnkB7oeytH4ricD/zB/pDkJj6BQfkji77g/jkuk5VMFjIFFtiy7BlQLx
- tTxxxNvsl93lJfNxCaZlnHfKm8w00C/Dqn7Gg5myH1IddkM1egNRuwSsok4ZOgk8ugd6fUaC0
- 7TXqn6DegTluaMbqUMdgexV+cA3iUPHrOCZF82WClIgweid4V91Ntj7MpJuEXLmwwf7R5njDq
- 1axp0L6c9YjtSy37/ZPc5WmclxU=
+X-Provags-ID: V03:K1:AYEo+fLw83pVG8JaWlKFqryBjkR6m1sEIwz5xZj4D8CSC7w+seF
+ y0D4fmkPH7L+NmsDKNrHCx9iyrbgxvIi3gEyqIuEG0Xu60W+zYlATRSRNyzVOq91dOP1lR7
+ YAXYGegmufj23cVsWIw2gg+e7NGLx6VysR0krg0QEBgYTMc6CpnLTihi49e0hIYuLRxisE6
+ Dd8WRBB/7286y/h+qCpyQ==
+UI-OutboundReport: notjunk:1;M01:P0:4ynow6gXnfU=;5+1L77mAidF6JB78375blQj7xiY
+ sf1ABrLon9fbj8HBbtZvARGX8JcmTjhLOESp53hFE7t6uWyIOCVMicU17SoeI4qLnyDtb8Dwv
+ 6q/GgE5Ykf6Tk0ShUPibtzxdqxYeO+Sep5PZ8uWHe1c4MRiA55qFwbZ8cI1svalUawkcWDixN
+ Mr5UYBfoofu1dZdSPnzzgHGWpU62gW4rND0fxs5BbHe94DnBS2lqOMp4VFxDBv32BholCokhT
+ 7anQliH5HDGzWNWPkmTXiDjDuNHRMJB7wbQ8Gg9piPZrBVKt/jslVeo8TPTH7+Kx9PmV2rPE1
+ 4EDC3rgFb9IiQJs/ZHbWNe+SU3HTM5EuAHBMSxuEuyPMLyTlSQf7XTd9dnAID5jnqyYWim4lc
+ zcm4Ld3YUTlOx5O9YzA0BVGuFFqnHw7xtF88u3lF8y5qRlvw7CzfjUk/9P4MckiJZsuco/dJO
+ Sfexrd6plPI57OHntPgOJGgRtp/2BohAp55VgYFdgAuo6hjV2SKvvhrvNzkQ7I3RaurV1TWAd
+ ssXFjEveiu8p+G2ZVOfwSteqQm1sbMJnPxtOjRF+BWgFo59k1WvgNDFiknEdc2vpNSiALnTrb
+ a53auPddxopdgQNZyupmphFgTnWL+c77MbRNkU48ncmI/DexMkHQw5IrHgsQcmgBj4mNjfufa
+ R20XcfshyopD4DlcegCwjC3qHOcHhHox1gUxh3Y/xZkp3wPd5YhoGRsDJ2n1ZP2AftbuRLia2
+ pe3+UHC6O72cAKgyEdVzLaS0fqMig21T423o0VilJuFxDV+XgpZXu3fdKAeqzNE+2OMt0eKT3
+ e118oOqaBH8h2w7wraThsz7XKOx5V1A6xyh7bYOzN7YNFw3yj4ilCHnG1eaHMb744S1b+Kzba
+ JHKNZi6S47ufIz6aICqHkSPshuO5gQrbsTykMzGr5Q5uaMT65+atMske6BnQaeh8Dfz0s5J8J
+ 7gY9rBSDa3ftd64OooNUcW4G5vk=
 X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
@@ -80,25 +77,181 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2/9/23 14:56, Geert Uytterhoeven wrote:
-> On Thu, Feb 9, 2023 at 2:04 AM Randy Dunlap <rdunlap@infradead.org> wrot=
-e:
->> When CONFIG_PROC_FS is not set, one procfs-related function is not
->> used, causing a build error or warning.
->> Mark this function as __maybe_unused to quieten the build.
->>
->> ../drivers/input/misc/hp_sdc_rtc.c:268:12: warning: 'hp_sdc_rtc_proc_sh=
-ow' defined but not used [-Wunused-function]
->>    268 | static int hp_sdc_rtc_proc_show(struct seq_file *m, void *v)
->>        |            ^~~~~~~~~~~~~~~~~~~~
->>
->> Fixes: c18bd9a1ff47 ("hp_sdc_rtc: Don't use create_proc_read_entry()")
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+On 2/20/23 22:11, Guilherme G. Piccoli wrote:
+> The panic notifiers' callbacks execute in an atomic context, with
+> interrupts/preemption disabled, and all CPUs not running the panic
+> function are off, so it's very dangerous to wait on a regular
+> spinlock, there's a risk of deadlock.
 >
-> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Refactor the panic notifier of parisc/power driver to make use
+> of spin_trylock - for that, we've added a second version of the
+> soft-power function. Also, some comments were reorganized and
+> trailing white spaces, useless header inclusion and blank lines
+> were removed.
+>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Jeroen Roovers <jer@xs4all.nl>
+> Acked-by: Helge Deller <deller@gmx.de> # parisc
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+>
+> ---
+> V4:
+> - rebase against v6.2 (build-tested).
+>
+> V3:
+> - s/in/on as per Jeroen's suggestion - thanks!
+>
+> V2:
+> - Added Helge's ACK - thanks!
+>
+>
+> Hey Helge, this is the V4 - just rebased and build-tested on v6.2.
+> I remember we discussed the possibility of this getting merged through
+> the series I've submitted [0], but happens the series is "gone", most of
+> the patches were picked by maintainers, others I'm dropping. This is rea=
+lly
+> a standalone fix, similar ones were merged in other notifiers.
+>
+> I'd appreciate if you/James could pick it for the next kernel, there's n=
+o
+> rush at all, but there's also no series we could throw this patch to get
+> merged with heh
+>
+> Thanks in advance,
+> Guilherme
 
-applied to parisc tree.
+Thank you Guilherme!
 
-Thanks,
+I've now picked it up in the parisc-for-next tree.
+
 Helge
+
+
+>
+> [0] https://lore.kernel.org/lkml/43de5653-7587-3e8e-274c-b2729649d0fd@gm=
+x.de/
+>
+>
+>   arch/parisc/include/asm/pdc.h |  1 +
+>   arch/parisc/kernel/firmware.c | 27 +++++++++++++++++++++++----
+>   drivers/parisc/power.c        | 17 ++++++++++-------
+>   3 files changed, 34 insertions(+), 11 deletions(-)
+>
+> diff --git a/arch/parisc/include/asm/pdc.h b/arch/parisc/include/asm/pdc=
+.h
+> index 40793bef8429..2b4fad8328e8 100644
+> --- a/arch/parisc/include/asm/pdc.h
+> +++ b/arch/parisc/include/asm/pdc.h
+> @@ -80,6 +80,7 @@ int pdc_do_firm_test_reset(unsigned long ftc_bitmap);
+>   int pdc_do_reset(void);
+>   int pdc_soft_power_info(unsigned long *power_reg);
+>   int pdc_soft_power_button(int sw_control);
+> +int pdc_soft_power_button_panic(int sw_control);
+>   void pdc_io_reset(void);
+>   void pdc_io_reset_devices(void);
+>   int pdc_iodc_getc(void);
+> diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware=
+.c
+> index 6817892a2c58..cc124d9f1f7f 100644
+> --- a/arch/parisc/kernel/firmware.c
+> +++ b/arch/parisc/kernel/firmware.c
+> @@ -1232,15 +1232,18 @@ int __init pdc_soft_power_info(unsigned long *po=
+wer_reg)
+>   }
+>
+>   /*
+> - * pdc_soft_power_button - Control the soft power button behaviour
+> - * @sw_control: 0 for hardware control, 1 for software control
+> + * pdc_soft_power_button{_panic} - Control the soft power button behavi=
+our
+> + * @sw_control: 0 for hardware control, 1 for software control
+>    *
+>    *
+>    * This PDC function places the soft power button under software or
+>    * hardware control.
+> - * Under software control the OS may control to when to allow to shut
+> - * down the system. Under hardware control pressing the power button
+> + * Under software control the OS may control to when to allow to shut
+> + * down the system. Under hardware control pressing the power button
+>    * powers off the system immediately.
+> + *
+> + * The _panic version relies on spin_trylock to prevent deadlock
+> + * on panic path.
+>    */
+>   int pdc_soft_power_button(int sw_control)
+>   {
+> @@ -1254,6 +1257,22 @@ int pdc_soft_power_button(int sw_control)
+>   	return retval;
+>   }
+>
+> +int pdc_soft_power_button_panic(int sw_control)
+> +{
+> +	int retval;
+> +	unsigned long flags;
+> +
+> +	if (!spin_trylock_irqsave(&pdc_lock, flags)) {
+> +		pr_emerg("Couldn't enable soft power button\n");
+> +		return -EBUSY; /* ignored by the panic notifier */
+> +	}
+> +
+> +	retval =3D mem_pdc_call(PDC_SOFT_POWER, PDC_SOFT_POWER_ENABLE, __pa(pd=
+c_result), sw_control);
+> +	spin_unlock_irqrestore(&pdc_lock, flags);
+> +
+> +	return retval;
+> +}
+> +
+>   /*
+>    * pdc_io_reset - Hack to avoid overlapping range registers of Bridges=
+ devices.
+>    * Primarily a problem on T600 (which parisc-linux doesn't support) bu=
+t
+> diff --git a/drivers/parisc/power.c b/drivers/parisc/power.c
+> index 456776bd8ee6..8512884de2cf 100644
+> --- a/drivers/parisc/power.c
+> +++ b/drivers/parisc/power.c
+> @@ -37,7 +37,6 @@
+>   #include <linux/module.h>
+>   #include <linux/init.h>
+>   #include <linux/kernel.h>
+> -#include <linux/notifier.h>
+>   #include <linux/panic_notifier.h>
+>   #include <linux/reboot.h>
+>   #include <linux/sched/signal.h>
+> @@ -175,16 +174,21 @@ static void powerfail_interrupt(int code, void *x)
+>
+>
+>
+> -/* parisc_panic_event() is called by the panic handler.
+> - * As soon as a panic occurs, our tasklets above will not be
+> - * executed any longer. This function then re-enables the
+> - * soft-power switch and allows the user to switch off the system
+> +/*
+> + * parisc_panic_event() is called by the panic handler.
+> + *
+> + * As soon as a panic occurs, our tasklets above will not
+> + * be executed any longer. This function then re-enables
+> + * the soft-power switch and allows the user to switch off
+> + * the system. We rely in pdc_soft_power_button_panic()
+> + * since this version spin_trylocks (instead of regular
+> + * spinlock), preventing deadlocks on panic path.
+>    */
+>   static int parisc_panic_event(struct notifier_block *this,
+>   		unsigned long event, void *ptr)
+>   {
+>   	/* re-enable the soft-power switch */
+> -	pdc_soft_power_button(0);
+> +	pdc_soft_power_button_panic(0);
+>   	return NOTIFY_DONE;
+>   }
+>
+> @@ -193,7 +197,6 @@ static struct notifier_block parisc_panic_block =3D =
+{
+>   	.priority	=3D INT_MAX,
+>   };
+>
+> -
+>   static int __init power_init(void)
+>   {
+>   	unsigned long ret;
 
