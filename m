@@ -2,217 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4A16A66BD
-	for <lists+linux-parisc@lfdr.de>; Wed,  1 Mar 2023 04:46:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 414E06A66D7
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 Mar 2023 05:00:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230009AbjCADqF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 28 Feb 2023 22:46:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46028 "EHLO
+        id S229712AbjCAEAP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 28 Feb 2023 23:00:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230083AbjCADpk (ORCPT
+        with ESMTP id S229592AbjCAEAO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 28 Feb 2023 22:45:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA93F392A8
-        for <linux-parisc@vger.kernel.org>; Tue, 28 Feb 2023 19:44:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1677642266;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=99eazzzTFBToyKXpL3t6V+dSWN05gSUQFL5P6G3WrHg=;
-        b=jAEA39YbEXUG+7JXR8157Cr2ftknX6XcvMXopBoeaxvRsx8fnqI0OXEaTtYfEZJ8PY3JQW
-        zVvrykPrJT3wgErBrWY2cnl3Gz6vQZJUdI3oG1HYsEKB9UVv408Cx2QBmRkP30E6I+ilst
-        C3OHUeJQAaaHppvt65idDUCQpmXv0Ks=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-19-6sAzv9xMOeutBMapOHumyA-1; Tue, 28 Feb 2023 22:44:21 -0500
-X-MC-Unique: 6sAzv9xMOeutBMapOHumyA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CE48E811E6E;
-        Wed,  1 Mar 2023 03:44:20 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (ovpn-13-180.pek2.redhat.com [10.72.13.180])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 51C3FC15BAD;
-        Wed,  1 Mar 2023 03:44:15 +0000 (UTC)
-From:   Baoquan He <bhe@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-arch@vger.kernel.org, linux-mm@kvack.org, arnd@arndb.de,
-        christophe.leroy@csgroup.eu, hch@infradead.org,
-        agordeev@linux.ibm.com, wangkefeng.wang@huawei.com,
-        schnelle@linux.ibm.com, David.Laight@ACULAB.COM, shorne@gmail.com,
-        willy@infradead.org, Baoquan He <bhe@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH v5 13/17] parisc: mm: Convert to GENERIC_IOREMAP
-Date:   Wed,  1 Mar 2023 11:42:43 +0800
-Message-Id: <20230301034247.136007-14-bhe@redhat.com>
-In-Reply-To: <20230301034247.136007-1-bhe@redhat.com>
-References: <20230301034247.136007-1-bhe@redhat.com>
+        Tue, 28 Feb 2023 23:00:14 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E1AFE060;
+        Tue, 28 Feb 2023 20:00:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1677643211; i=deller@gmx.de;
+        bh=meuqcVimTIOxn+m7ODPWNf8ZSnlWVL0T//mg7FZcKV0=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=i/h2Oeh9RHzcgJbkedeRqlNuK14+s1GxkSqfowrTuWIVrPDz5bIyajpd+wKIcUW/a
+         TgMggBoSd5j2Hv485NZGHIFYc7AL84R7lnnCk4AVMP1aTFTpkLYhLslAq4W8GSPIwu
+         X0oRTfK0N0CW7KU/GgtDPFhY4Izm2Nqj0TlB8QdP7JT0RMxSQz9RT0Bl5BObeKDyrC
+         IyGXFCrCw7xT7Zgo9o2B9YqpWmX/3sD3WKruBSWgm2fSP4PsvCzMGNSzeiuzAVmj20
+         qIAuZ1AyMcWR/8ZUsSdbqBazjdLLCtlnaE79MbgddvOhUWnAXnTa/XFI2vVQK+1WmU
+         ZKK+FMPNDPOFQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([92.116.156.241]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MsHs0-1odSW928a2-00to3w; Wed, 01
+ Mar 2023 05:00:11 +0100
+Message-ID: <11cfe564-a620-4d0b-210f-c0525c16a236@gmx.de>
+Date:   Wed, 1 Mar 2023 05:00:11 +0100
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH 08/10] parisc: fix livelock in uaccess
+Content-Language: en-US
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     linux-arch@vger.kernel.org, linux-parisc@vger.kernel.org
+References: <Y9lz6yk113LmC9SI@ZenIV> <Y9l0w4M91DwYLO3N@ZenIV>
+ <84b1c2e4-c096-ed19-9701-472b54a4890c@gmx.de> <Y/47PMmpLDX5lPWx@ZenIV>
+ <e9972a0e-14e6-987c-fcee-005a50d28e46@gmx.de> <Y/5Sf3fXn0uOUXTw@ZenIV>
+ <39436c4d-f5a2-edd5-24ba-19e4812ea364@gmx.de>
+ <215b226f-7ffd-70d8-4e7b-85b37f288062@gmx.de>
+ <2646c13f-33b8-1047-7cfe-bf7e394344b6@gmx.de> <Y/6G5qCEKh68VOcQ@ZenIV>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <Y/6G5qCEKh68VOcQ@ZenIV>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ZaAmX5KNS7WeFFOlCpamknrtGgj7KHP2+2qtf1IUetMVq/ls45I
+ hwpMHDOmw2C13DmuC7T769IeXqjywZ82F0HsNfcbB0XeE280ut8ZOvr0I38s3CJ4hJ+z22g
+ Qye8i8FlIqg5FeQp9pNxOfCLBjvaR4nx0rTNztXN9by2lDa+l9c4JYypwqb25Pl36v/O4Jb
+ u/CaVHnAGGA6IiGqxOPeg==
+UI-OutboundReport: notjunk:1;M01:P0:RXxhvFuXcFE=;OlmQ9BObwyXzn/bMi23tGTFfybU
+ 5HhxWsHQMOmpIDuY7ZShfdZrPbaHZ3I6eaKIL7/my5wVD3LQiKVBp/oQI/GHGcv8VLjewwjpn
+ QYTUl6QqiySuZMpzYytpTxr2gkK8H+lh7OaZnpsdZFK85Ke6qJWkSyK4wmN9L4tYjgKq0umCA
+ QKmgbLJDRat+6+ZfgvGVeIY5mV6uWhrycVD3gaPM4YOwoZae7nEUPN4PyntE9k2gBmPdLfN3J
+ ST/73Hv+E2ed62WBH6W4Knkw6lkeoU3aRS/v7cagOWiI6NX3u7+Ms+7bt76+nmjXsfOka+53g
+ FnRu/1RSYsk59f/xA7X/ryCp+8dnUhElGIUjUHIDCi+FnriRQJD2j5/zBfniG+3hZM0ms4Fay
+ Nj/jAw6bwTM5EsEL775Mf6AOmnQi/OTVH1/ib9s9Hk4TtE9EOMdDzBoWzBeBCymVUJdLV2wEP
+ c9qcJcnk6L5+amL7e89l4eIHc/F/TysT8flKHUwOsjvsSO8AsTxk6jU1PsqsERq+8PbcN9Egn
+ pAVPyp4/Ot6t3vlni2SI8aVgyNUEDvCpWuIp0Ql37ts9h9noY60oDPHXfl7z3mfTWw0EDqlYy
+ GQ1j0EKCroqP2HTWIGmZWbwuorm0MKijYzZLC99SqnBEuhFRk/IE+SXzPv07a9vrhuH+2116k
+ ZaqEEo0P69YaylLoPSY+ewsOnJf9zDMRtc+XKZFoQCjUrq+m5J2eQJs3Z/o272Wk4YIFHtpQF
+ Z1rq3w1QOtYdfsnpFaOrFeOjPKTAOj+xLBPP2/l3L/l/i6BhilqFVSfHeK7eHjUL4BmQsUIde
+ SpQlFPUYahZZNjgZcWhDw3JzJLrg2YKk2/Yxr/tDWO2iF9SNCr1p5dUoRuJl0ss6RPXHqBep1
+ ZRi7InvG+/fqzsozf0v8I1JfCAaNVxT3SqScjRjKx+oq8SsjUeO+toBOR1L7dRpyBwIdNLXSf
+ 6IeRzvoEIyPMz2YPlufci1EhBDY=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
-generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
-and iounmap() are all visible and available to arch. Arch needs to
-provide wrapper functions to override the generic versions if there's
-arch specific handling in its ioremap_prot(), ioremap() or iounmap().
-This change will simplify implementation by removing duplicated codes
-with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
-functioality as before.
+On 2/28/23 23:57, Al Viro wrote:
+> On Tue, Feb 28, 2023 at 09:22:31PM +0100, Helge Deller wrote:
+>
+>> Now I can confirm (with the adjusted reproducer), that your patch
+>> allows to kill the process with SIGKILL, while without your patch
+>> it's not possibe to kill the process at all.
+>> I've tested with a 32- and 64-bit parisc kernel.
+>>
+>> You may add
+>> Tested-by: Helge Deller <deller@gmx.de> # parisc
+>> to the patch.
+>>
+>> If you want me to take the patch (with the warning regarding missing ms=
+g variable fixed)
+>> through the parisc tree, please let me know.
+>
+> What message do you prefer there?  It matters only for the case when
+> we are hitting an oops there, but...
 
-Here, add wrapper function ioremap_prot() for parisc's special operation
-when iounmap().
+I have no preference on that message. Maybe "Page fault: fault signal on k=
+ernel memory"
+is too generic, so I'm fine with any better idea/wording you come up with.
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
----
- arch/parisc/Kconfig          |  1 +
- arch/parisc/include/asm/io.h | 15 ++++++---
- arch/parisc/mm/ioremap.c     | 62 +++---------------------------------
- 3 files changed, 15 insertions(+), 63 deletions(-)
-
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index a98940e64243..0ed18e673aba 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -36,6 +36,7 @@ config PARISC
- 	select GENERIC_ATOMIC64 if !64BIT
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_PCI_IOMAP
-+	select GENERIC_IOREMAP
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_ARCH_TOPOLOGY if SMP
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index c05e781be2f5..366537042465 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -125,12 +125,17 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
- /*
-  * The standard PCI ioremap interfaces
-  */
--void __iomem *ioremap(unsigned long offset, unsigned long size);
--#define ioremap_wc			ioremap
--#define ioremap_uc			ioremap
--#define pci_iounmap			pci_iounmap
-+#define ioremap_prot ioremap_prot
-+
-+#define _PAGE_IOREMAP (_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | \
-+		       _PAGE_ACCESSED | _PAGE_NO_CACHE)
- 
--extern void iounmap(const volatile void __iomem *addr);
-+#define ioremap_wc(addr, size)  \
-+	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-+#define ioremap_uc(addr, size)  \
-+	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-+
-+#define pci_iounmap			pci_iounmap
- 
- void memset_io(volatile void __iomem *addr, unsigned char val, int count);
- void memcpy_fromio(void *dst, const volatile void __iomem *src, int count);
-diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
-index 345ff0b66499..fd996472dfe7 100644
---- a/arch/parisc/mm/ioremap.c
-+++ b/arch/parisc/mm/ioremap.c
-@@ -13,25 +13,9 @@
- #include <linux/io.h>
- #include <linux/mm.h>
- 
--/*
-- * Generic mapping function (not visible outside):
-- */
--
--/*
-- * Remap an arbitrary physical address space into the kernel virtual
-- * address space.
-- *
-- * NOTE! We need to allow non-page-aligned mappings too: we will obviously
-- * have to convert them into an offset in a page-aligned mapping, but the
-- * caller shouldn't need to know that small detail.
-- */
--void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
-+void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
-+			   unsigned long prot)
- {
--	void __iomem *addr;
--	struct vm_struct *area;
--	unsigned long offset, last_addr;
--	pgprot_t pgprot;
--
- #ifdef CONFIG_EISA
- 	unsigned long end = phys_addr + size - 1;
- 	/* Support EISA addresses */
-@@ -40,11 +24,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
- 		phys_addr |= F_EXTEND(0xfc000000);
- #endif
- 
--	/* Don't allow wraparound or zero size */
--	last_addr = phys_addr + size - 1;
--	if (!size || last_addr < phys_addr)
--		return NULL;
--
- 	/*
- 	 * Don't allow anybody to remap normal RAM that we're using..
- 	 */
-@@ -62,39 +41,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
- 		}
- 	}
- 
--	pgprot = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY |
--			  _PAGE_ACCESSED | _PAGE_NO_CACHE);
--
--	/*
--	 * Mappings have to be page-aligned
--	 */
--	offset = phys_addr & ~PAGE_MASK;
--	phys_addr &= PAGE_MASK;
--	size = PAGE_ALIGN(last_addr + 1) - phys_addr;
--
--	/*
--	 * Ok, go for it..
--	 */
--	area = get_vm_area(size, VM_IOREMAP);
--	if (!area)
--		return NULL;
--
--	addr = (void __iomem *) area->addr;
--	if (ioremap_page_range((unsigned long)addr, (unsigned long)addr + size,
--			       phys_addr, pgprot)) {
--		vunmap(addr);
--		return NULL;
--	}
--
--	return (void __iomem *) (offset + (char __iomem *)addr);
--}
--EXPORT_SYMBOL(ioremap);
--
--void iounmap(const volatile void __iomem *io_addr)
--{
--	unsigned long addr = (unsigned long)io_addr & PAGE_MASK;
--
--	if (is_vmalloc_addr((void *)addr))
--		vunmap((void *)addr);
-+	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
- }
--EXPORT_SYMBOL(iounmap);
-+EXPORT_SYMBOL(ioremap_prot);
--- 
-2.34.1
-
+Helge
