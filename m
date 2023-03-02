@@ -2,103 +2,88 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E0326A6FFA
-	for <lists+linux-parisc@lfdr.de>; Wed,  1 Mar 2023 16:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 952196A79E3
+	for <lists+linux-parisc@lfdr.de>; Thu,  2 Mar 2023 04:17:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229959AbjCAPll (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 1 Mar 2023 10:41:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33318 "EHLO
+        id S229880AbjCBDR2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 1 Mar 2023 22:17:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229903AbjCAPlj (ORCPT
+        with ESMTP id S229651AbjCBDR0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 1 Mar 2023 10:41:39 -0500
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F01D4392D
-        for <linux-parisc@vger.kernel.org>; Wed,  1 Mar 2023 07:41:36 -0800 (PST)
-Received: by mail-pj1-x102a.google.com with SMTP id kb15so13779371pjb.1
-        for <linux-parisc@vger.kernel.org>; Wed, 01 Mar 2023 07:41:36 -0800 (PST)
+        Wed, 1 Mar 2023 22:17:26 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 839E44FAA7
+        for <linux-parisc@vger.kernel.org>; Wed,  1 Mar 2023 19:17:18 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id p3-20020a17090ad30300b0023a1cd5065fso1396632pju.0
+        for <linux-parisc@vger.kernel.org>; Wed, 01 Mar 2023 19:17:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677685296;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T04RMfKzSUFRrZ3CYc3+bErGU8vpxkP2QVI3mwlpG78=;
-        b=RacUjtkKVhkSdFUBywOGho+8dt8NsK+GHdxWXdQ69WX2yCf/yYWl7r6icMXBWT/ShM
-         KzbzJEeKqlnWntlEh4Hu5sno9Ak81pDzhFum2pY94j4Sv2hldxTUvXOesOtDXjR8r6gc
-         qTgIZDS9fRsSDLNbTTTqAFsgPsTJ/DQ+0jjGE9ek1g+5UBhUcmjFAxCNoVki1FxJorhz
-         1mqoDsTuoBLwUNz+cTKmWUvmBN0WlvjuL/8NCCPe/UsZ69pgJ+6lNteW1mdicJGes/KY
-         sz2TvcyHAjAaMaJRH5/VJiCFama3PVa+Xs98E38Ow6CsZfQ4ni3p2/e/LUrMvV5jGCLw
-         yEmQ==
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677727038;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hgpf8cgLJj50M86L5F9BUoIAMwjT++SeEfR1/zwwwE0=;
+        b=05BK9h2oN73d+vLQZ8AXICX+yqZH9PJw8eGQwQu3aLpPw/PQkKLBM+zl4FHFPDCMbr
+         oT2a7ycW9j4IvNJVs7ZNd3qeiw85Qtha4m0oAo5Q0QiPipyRwzSV4J3XcelEef5d8yqB
+         I4KXQDK7qQ+mAPYeZvAqQG78vIyZoGQH/5i1rIXtVNLbcQNF9Kn0gW9O7HWaBv1Z1Hfx
+         4q2OGZuaoqmuPypq3KgIWVltCxcy5gmQYJ+016KcQmuC/U0yrGY0o6z+m+PHYIZUzGYI
+         1grLiGwuTn7D4jkc5r6I/7tUA73EppBwvM41vkni8yrDAA+aUFBNlGO/ZUE432ubFqlh
+         lUug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677685296;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20210112; t=1677727038;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=T04RMfKzSUFRrZ3CYc3+bErGU8vpxkP2QVI3mwlpG78=;
-        b=jNwX9VM7dzEWqPTW5sWfVikFW2/SZ8/OA/Uoq5f0NNzM6pgbRht3tSlG6oMpXtzAML
-         0mH+Hm9sUpcUMK1NslyFe0WiKZc87/fJtnu52XzLB3qS9wg8+N3253f5NcoIQll1jlR1
-         bYssDlDcnN2YwfpRNfQ4ahnFMTsU3v/2E5I++uXB/ByBI97YBnwG7uHjNqzJosidvlZ7
-         oEXweu7Cwlv0jvdXN/PEZWy0gLUqblhG6vEwpgxU8muPZFPTFhAuNOCidLHoamygZ21P
-         EAlhTlSYIJzavnoch2olcImeYCKy6KSlAMBm2AOquJzfkGOAo2fgVSBjhEXr1tfPBK2f
-         rE+A==
-X-Gm-Message-State: AO0yUKVfBCTksrkt+EQyKyNR0s8arWLxcRqHrSJeGUoHR8vGjBdMub21
-        KM1HQaAUGoazMTSo620UgPpA5Q==
-X-Google-Smtp-Source: AK7set89u8u7K351sr+Ck6r7PKKsfq0NxjZus48TDBYC9SmTqwP5jGqb0tSf18Db2RC/D0Tp3KOSQg==
-X-Received: by 2002:a05:6a20:2444:b0:cc:ac05:88f7 with SMTP id t4-20020a056a20244400b000ccac0588f7mr8304959pzc.34.1677685295782;
-        Wed, 01 Mar 2023 07:41:35 -0800 (PST)
-Received: from debug.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id l12-20020a62be0c000000b005821c109cebsm8058970pff.199.2023.03.01.07.41.32
+        bh=hgpf8cgLJj50M86L5F9BUoIAMwjT++SeEfR1/zwwwE0=;
+        b=AbeRLWPfvmjMRrNdfOHfUSS2cAgpb4+QgcgxnvF2ATklv6TF50dPMqgVh4ssp1oBCQ
+         rewWIyu0ZOllZzvxqymN5po4se8A+krheQ8GIW/JtOA+Mi+8q/jHtuOTP447jhgYFcN4
+         Y4rlyQEJ+IPMP+G981yteewShlk0FSb6+0TJnXrDCcM2iM2j/IOufsLA926svf2Y6MaI
+         tMJWqt2Bk38j4Ol1vo4rBGO41fhkwK48wMJgx22T29hL7dKDYbPpX8Mo7KIApv3QEcJx
+         srEo5F1o+yLK8CbQJyNXpiUqLiV5uY77xwZQ3Pqf4LKmnJq+MaAwiZz6vsOCXq7E3zqa
+         0H3w==
+X-Gm-Message-State: AO0yUKXQRVFZ2KBAkhLaJo6JxA5XFWWRmYnpDe+V/dW3VhscF/Ye0Bp5
+        z7dWqjDaHVp1BxUFGhnoRHtC/w==
+X-Google-Smtp-Source: AK7set9sdV/+BdUm2bBjL395AsIYL1A1j9eCLS8ecMxY0Ws8WD4l1oqL273WzlVwyO1Yv4lm9xFKPQ==
+X-Received: by 2002:a05:6a20:1bde:b0:cc:de56:957a with SMTP id cv30-20020a056a201bde00b000ccde56957amr8709472pzb.13.1677727037881;
+        Wed, 01 Mar 2023 19:17:17 -0800 (PST)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id h192-20020a636cc9000000b00502f5cd216bsm8183287pgc.6.2023.03.01.19.17.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 07:41:35 -0800 (PST)
-Date:   Wed, 1 Mar 2023 07:41:30 -0800
-From:   Deepak Gupta <debug@rivosinc.com>
-To:     Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc:     x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Balbir Singh <bsingharora@gmail.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Cyrill Gorcunov <gorcunov@gmail.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Eugene Syromiatnikov <esyr@redhat.com>,
-        Florian Weimer <fweimer@redhat.com>,
-        "H . J . Lu" <hjl.tools@gmail.com>, Jann Horn <jannh@google.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Kees Cook <keescook@chromium.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Nadav Amit <nadav.amit@gmail.com>,
-        Oleg Nesterov <oleg@redhat.com>, Pavel Machek <pavel@ucw.cz>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Weijiang Yang <weijiang.yang@intel.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        John Allen <john.allen@amd.com>, kcc@google.com,
-        eranian@google.com, rppt@kernel.org, jamorris@linux.microsoft.com,
-        dethoma@microsoft.com, akpm@linux-foundation.org,
-        Andrew.Cooper3@citrix.com, christina.schimpe@intel.com,
-        david@redhat.com, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        Wed, 01 Mar 2023 19:17:16 -0800 (PST)
+Date:   Wed, 01 Mar 2023 19:17:16 -0800 (PST)
+X-Google-Original-Date: Wed, 01 Mar 2023 18:55:30 PST (-0800)
+Subject:     Re: [PATCH v3 03/24] arm: Remove COMMAND_LINE_SIZE from uapi
+In-Reply-To: <874b8076-b0d1-4aaa-bcd8-05d523060152@app.fastmail.com>
+CC:     alexghiti@rivosinc.com, linux@armlinux.org.uk, corbet@lwn.net,
+        Richard Henderson <richard.henderson@linaro.org>,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, chenhuacai@kernel.org,
+        kernel@xen0n.name, geert@linux-m68k.org, monstr@monstr.eu,
+        tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
         loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        Michal Simek <monstr@monstr.eu>,
-        Dinh Nguyen <dinguyen@kernel.org>, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 13/41] mm: Make pte_mkwrite() take a VMA
-Message-ID: <20230301154130.GB3505369@debug.ba.rivosinc.com>
-References: <20230218211433.26859-1-rick.p.edgecombe@intel.com>
- <20230218211433.26859-14-rick.p.edgecombe@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230218211433.26859-14-rick.p.edgecombe@intel.com>
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org
+From:   Palmer Dabbelt <palmer@rivosinc.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Message-ID: <mhng-78901e66-16df-4563-9e2c-3a9744ef2828@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
@@ -108,54 +93,50 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, Feb 18, 2023 at 01:14:05PM -0800, Rick Edgecombe wrote:
->The x86 Control-flow Enforcement Technology (CET) feature includes a new
->type of memory called shadow stack. This shadow stack memory has some
->unusual properties, which requires some core mm changes to function
->properly.
+On Thu, 23 Feb 2023 05:09:17 PST (-0800), Arnd Bergmann wrote:
+> On Thu, Feb 23, 2023, at 10:54, Alexandre Ghiti wrote:
+>> On Wed, Feb 15, 2023 at 2:05 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>>>
+>>> On Wed, Feb 15, 2023, at 13:59, Russell King (Oracle) wrote:
+>>> > On Tue, Feb 14, 2023 at 08:49:04AM +0100, Alexandre Ghiti wrote:
+>>> >> From: Palmer Dabbelt <palmer@rivosinc.com>
+>>> >>
+>>> >> As far as I can tell this is not used by userspace and thus should not
+>>> >> be part of the user-visible API.
+>>> >>
+>>> >> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+>>> >
+>>> > Looks good to me. What's the merge plan for this?
+>>>
+>>> The easiest way is probably if I merge it through the whole
+>>> series through the asm-generic tree. The timing is a bit
+>>> unfortunate as we're just ahead of the merge window, so unless
+>>> we really need this in 6.3, I'd suggest that Alexandre resend
+>>> the series to me in two weeks with the Acks added in and I'll
+>>> pick it up for 6.4.
+>>
+>> Sorry for the response delay, I was waiting to see if Palmer would
+>> merge my KASAN patchset in 6.3 (which he does): I have to admit that
+>> fixing the command line size + the KASAN patchset would allow 6.3 to
+>> run on syzkaller, which would be nice.
+>>
+>> If I don't see this merged in 6.3, I'll send another round as you
+>> suggested in 1 week now :)
 >
->One of these unusual properties is that shadow stack memory is writable,
->but only in limited ways. These limits are applied via a specific PTE
->bit combination. Nevertheless, the memory is writable, and core mm code
->will need to apply the writable permissions in the typical paths that
->call pte_mkwrite().
+> Hi Alexandre,
 >
->In addition to VM_WRITE, the shadow stack VMA's will have a flag denoting
->that they are special shadow stack flavor of writable memory. So make
->pte_mkwrite() take a VMA, so that the x86 implementation of it can know to
->create regular writable memory or shadow stack memory.
->
->Apply the same changes for pmd_mkwrite() and huge_pte_mkwrite().
->
->No functional change.
->
->Cc: linux-doc@vger.kernel.org
->Cc: linux-kernel@vger.kernel.org
->Cc: linux-alpha@vger.kernel.org
->Cc: linux-snps-arc@lists.infradead.org
->Cc: linux-arm-kernel@lists.infradead.org
->Cc: linux-csky@vger.kernel.org
->Cc: linux-hexagon@vger.kernel.org
->Cc: linux-ia64@vger.kernel.org
->Cc: loongarch@lists.linux.dev
->Cc: linux-m68k@lists.linux-m68k.org
->Cc: Michal Simek <monstr@monstr.eu>
->Cc: Dinh Nguyen <dinguyen@kernel.org>
->Cc: linux-mips@vger.kernel.org
->Cc: openrisc@lists.librecores.org
->Cc: linux-parisc@vger.kernel.org
->Cc: linuxppc-dev@lists.ozlabs.org
->Cc: linux-riscv@lists.infradead.org
->Cc: linux-s390@vger.kernel.org
->Cc: linux-sh@vger.kernel.org
->Cc: sparclinux@vger.kernel.org
->Cc: linux-um@lists.infradead.org
->Cc: xen-devel@lists.xenproject.org
->Cc: linux-arch@vger.kernel.org
->Cc: linux-mm@kvack.org
->Tested-by: Pengfei Xu <pengfei.xu@intel.com>
->Suggested-by: David Hildenbrand <david@redhat.com>
->Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
->
+> I have no plans to still pick up the series for 6.3. The patches
+> all look fine to me, but it's clearly too late now. What is the
+> actual dependency for KASAN, do you just need a longer command
+> line or something else? If it's just the command line size,
+> I would suggest that Palmer can still pick up a oneline change
+> to increase it and refer to this thread in the changelog as a
+> reference for why it is not an actual UAPI break.
 
-Acked-by: Deepak Gupta <debug@rivosinc.com>
+Sorry for being slow here, I just queued up the original patch in the 
+RISC-V tree and intend on sending it for 6.3 -- the main worry was that 
+it's a uABi change and we're confident it's not.  It's late, but I'd 
+prefer to have this as it should let us start running syzkaller now and 
+that'll probably find more bugs than this is likely to trigger.
+
+https://lore.kernel.org/r/mhng-b5f934ff-a9bb-4c2b-9ba6-3ab68312077a@palmer-ri-x1c9a/
