@@ -2,231 +2,128 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1806A8263
-	for <lists+linux-parisc@lfdr.de>; Thu,  2 Mar 2023 13:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFCCC6A872D
+	for <lists+linux-parisc@lfdr.de>; Thu,  2 Mar 2023 17:46:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229752AbjCBMjC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 2 Mar 2023 07:39:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35770 "EHLO
+        id S229970AbjCBQqe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 2 Mar 2023 11:46:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjCBMjB (ORCPT
+        with ESMTP id S229642AbjCBQqd (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 2 Mar 2023 07:39:01 -0500
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87A5510A89;
-        Thu,  2 Mar 2023 04:38:57 -0800 (PST)
-Received: (Authenticated sender: alex@ghiti.fr)
-        by mail.gandi.net (Postfix) with ESMTPSA id B7D6960008;
-        Thu,  2 Mar 2023 12:38:45 +0000 (UTC)
-Message-ID: <6b206e38-2e2e-0236-1b7d-96a537d0038e@ghiti.fr>
-Date:   Thu, 2 Mar 2023 13:38:45 +0100
+        Thu, 2 Mar 2023 11:46:33 -0500
+X-Greylist: delayed 118 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 02 Mar 2023 08:46:31 PST
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-002.bell.net [209.71.208.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B667B34C2D;
+        Thu,  2 Mar 2023 08:46:31 -0800 (PST)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [174.88.80.104]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 63F6814000DA1401
+X-CM-Envelope: MS4xfLVO8ITc1kj8qoxJFtfOPz1EuT7a95tpUZP4sXes5k+K6EBHSG976j7A+uSPtTUw4nb7P2L+8EePjZy+fJ0k7kzOAlWBq7pDr3YMv2wHDQMTnvASGOiD
+ iZko+LpnFwlDJ00F7UdTQYrQWfNNROBalCvTEMRb4+VMkb0AC3XHCv7i5S96s4V1KAZoemqGkL+tlWfdN3QqdEz/71NqzV2pV2+amkfBZGBenRwRwFGJ4bh8
+ ew3+rQUOOrZhFjB4suCAdJttJrIkkJ+WjltCUv2E1b9/svjrx+FvzK7Hr7TD0xFRsL72s/lN1vksOizeo54w8mgDkxFWnDE8209jNglwa40Gp90LnLmShC8S
+ lcF2SLNoqjABa9jsVh0rcZ51aWoUCoLSzGNcIejRSxWRUN0hEx30W36VcUNxyvs60vSdKG3uddxVX+kKVtwKH5YRUMUFIpYIdYkEnP/F/wCiTpA5z3cWsY2E
+ ogcxm4d3FqCHPgB2
+X-CM-Analysis: v=2.4 cv=GcB0ISbL c=1 sm=1 tr=0 ts=6400d21a
+ a=jp24WXWxBM5iMX8AJ3NPbw==:117 a=jp24WXWxBM5iMX8AJ3NPbw==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=Sjfu5S3q6Ak1qpNjs2gA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (174.88.80.104) by cmx-mtlrgo002.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 63F6814000DA1401; Thu, 2 Mar 2023 11:43:06 -0500
+Message-ID: <9bb5280e-c875-6eee-b28e-2abc03427e5f@bell.net>
+Date:   Thu, 2 Mar 2023 11:43:06 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v4 00/24] Remove COMMAND_LINE_SIZE from uapi
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v3 18/34] parisc: Implement the new page table range API
+To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        linux-mm@kvack.org, linux-arch@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+References: <20230228213738.272178-1-willy@infradead.org>
+ <20230228213738.272178-19-willy@infradead.org>
 Content-Language: en-US
-From:   Alexandre Ghiti <alex@ghiti.fr>
-To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-References: <20230302093539.372962-1-alexghiti@rivosinc.com>
- <040104fc-81b7-fd45-b268-111e39f2927f@ghiti.fr>
-In-Reply-To: <040104fc-81b7-fd45-b268-111e39f2927f@ghiti.fr>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <20230228213738.272178-19-willy@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On 2023-02-28 4:37 p.m., Matthew Wilcox (Oracle) wrote:
+> Add set_ptes(), update_mmu_cache_range(), flush_dcache_folio()
+> and flush_icache_pages().  Change the PG_arch_1 (aka PG_dcache_dirty) flag
+> from being per-page to per-folio.
+I have tested this change on rp3440 at mainline commit e492250d5252635b6c97d52eddf2792ec26f1ec1
+and c8000 at mainline commit ee3f96b164688dae21e2466a57f2e806b64e8a37.
 
-On 3/2/23 11:06, Alexandre Ghiti wrote:
-> Hi Arnd,
->
-> On 3/2/23 10:35, Alexandre Ghiti wrote:
->> This all came up in the context of increasing COMMAND_LINE_SIZE in the
->> RISC-V port.  In theory that's a UABI break, as COMMAND_LINE_SIZE is the
->> maximum length of /proc/cmdline and userspace could staticly rely on
->> that to be correct.
->>
->> Usually I wouldn't mess around with changing this sort of thing, but
->> PowerPC increased it with a5980d064fe2 ("powerpc: Bump COMMAND_LINE_SIZE
->> to 2048").  There are also a handful of examples of COMMAND_LINE_SIZE
->> increasing, but they're from before the UAPI split so I'm not quite sure
->> what that means: e5a6a1c90948 ("powerpc: derive COMMAND_LINE_SIZE from
->> asm-generic"), 684d2fd48e71 ("[S390] kernel: Append scpdata to kernel
->> boot command line"), 22242681cff5 ("MIPS: Extend COMMAND_LINE_SIZE"),
->> and 2b74b85693c7 ("sh: Derive COMMAND_LINE_SIZE from
->> asm-generic/setup.h.").
->>
->> It seems to me like COMMAND_LINE_SIZE really just shouldn't have been
->> part of the uapi to begin with, and userspace should be able to handle
->> /proc/cmdline of whatever length it turns out to be.  I don't see any
->> references to COMMAND_LINE_SIZE anywhere but Linux via a quick Google
->> search, but that's not really enough to consider it unused on my end.
->>
->> This issue was already considered in s390 and they reached the same
->> conclusion in commit 622021cd6c56 ("s390: make command line
->> configurable").
->>
->> The feedback on the v1 seemed to indicate that COMMAND_LINE_SIZE really
->> shouldn't be part of uapi, so this now touches all the ports. I've
->> tried to split this all out and leave it bisectable, but I haven't
->> tested it all that aggressively.
->>
->> Changes since v3 
->> <https://lore.kernel.org/all/20230214074925.228106-1-alexghiti@rivosinc.com/>:
->> * Added RB/AB
->> * Added a mention to commit 622021cd6c56 ("s390: make command line
->>    configurable") in the cover letter
->>
->> Changes since v2 
->> <https://lore.kernel.org/all/20221211061358.28035-1-palmer@rivosinc.com/>:
->> * Fix sh, csky and ia64 builds, as reported by kernel test robot
->>
->> Changes since v1 
->> <https://lore.kernel.org/all/20210423025545.313965-1-palmer@dabbelt.com/>:
->> * Touches every arch.
->>
->> base-commit-tag: next-20230207
->>
->> Palmer Dabbelt (24):
->>    alpha: Remove COMMAND_LINE_SIZE from uapi
->>    arm64: Remove COMMAND_LINE_SIZE from uapi
->>    arm: Remove COMMAND_LINE_SIZE from uapi
->>    ia64: Remove COMMAND_LINE_SIZE from uapi
->>    m68k: Remove COMMAND_LINE_SIZE from uapi
->>    microblaze: Remove COMMAND_LINE_SIZE from uapi
->>    mips: Remove COMMAND_LINE_SIZE from uapi
->>    parisc: Remove COMMAND_LINE_SIZE from uapi
->>    powerpc: Remove COMMAND_LINE_SIZE from uapi
->>    sparc: Remove COMMAND_LINE_SIZE from uapi
->>    xtensa: Remove COMMAND_LINE_SIZE from uapi
->>    asm-generic: Remove COMMAND_LINE_SIZE from uapi
->>    alpha: Remove empty <uapi/asm/setup.h>
->>    arc: Remove empty <uapi/asm/setup.h>
->>    m68k: Remove empty <uapi/asm/setup.h>
->>    arm64: Remove empty <uapi/asm/setup.h>
->>    microblaze: Remove empty <uapi/asm/setup.h>
->>    sparc: Remove empty <uapi/asm/setup.h>
->>    parisc: Remove empty <uapi/asm/setup.h>
->>    x86: Remove empty <uapi/asm/setup.h>
->>    xtensa: Remove empty <uapi/asm/setup.h>
->>    powerpc: Remove empty <uapi/asm/setup.h>
->>    mips: Remove empty <uapi/asm/setup.h>
->>    s390: Remove empty <uapi/asm/setup.h>
->>
->>   .../admin-guide/kernel-parameters.rst         |  2 +-
->>   arch/alpha/include/asm/setup.h                |  4 +--
->>   arch/alpha/include/uapi/asm/setup.h           |  7 -----
->>   arch/arc/include/asm/setup.h                  |  1 -
->>   arch/arc/include/uapi/asm/setup.h             |  6 -----
->>   arch/arm/include/asm/setup.h                  |  1 +
->>   arch/arm/include/uapi/asm/setup.h             |  2 --
->>   arch/arm64/include/asm/setup.h                |  3 ++-
->>   arch/arm64/include/uapi/asm/setup.h           | 27 -------------------
->>   arch/ia64/include/asm/setup.h                 | 10 +++++++
->>   arch/ia64/include/uapi/asm/setup.h            |  6 ++---
->>   arch/loongarch/include/asm/setup.h            |  2 +-
->>   arch/m68k/include/asm/setup.h                 |  3 +--
->>   arch/m68k/include/uapi/asm/setup.h            | 17 ------------
->>   arch/microblaze/include/asm/setup.h           |  2 +-
->>   arch/microblaze/include/uapi/asm/setup.h      | 20 --------------
->>   arch/mips/include/asm/setup.h                 |  3 ++-
->>   arch/mips/include/uapi/asm/setup.h            |  8 ------
->>   arch/parisc/include/{uapi => }/asm/setup.h    |  0
->>   arch/powerpc/include/asm/setup.h              |  2 +-
->>   arch/powerpc/include/uapi/asm/setup.h         |  7 -----
->>   arch/s390/include/asm/setup.h                 |  1 -
->>   arch/s390/include/uapi/asm/setup.h            |  1 -
->>   arch/sh/include/asm/setup.h                   |  2 +-
->>   arch/sparc/include/asm/setup.h                |  6 ++++-
->>   arch/sparc/include/uapi/asm/setup.h           | 16 -----------
->>   arch/x86/include/asm/setup.h                  |  2 --
->>   arch/x86/include/uapi/asm/setup.h             |  1 -
->>   arch/xtensa/include/{uapi => }/asm/setup.h    |  0
->>   include/asm-generic/Kbuild                    |  1 +
->>   include/{uapi => }/asm-generic/setup.h        |  0
->>   include/uapi/asm-generic/Kbuild               |  1 -
->>   32 files changed, 31 insertions(+), 133 deletions(-)
->>   delete mode 100644 arch/alpha/include/uapi/asm/setup.h
->>   delete mode 100644 arch/arc/include/uapi/asm/setup.h
->>   delete mode 100644 arch/arm64/include/uapi/asm/setup.h
->>   create mode 100644 arch/ia64/include/asm/setup.h
->>   delete mode 100644 arch/m68k/include/uapi/asm/setup.h
->>   delete mode 100644 arch/microblaze/include/uapi/asm/setup.h
->>   delete mode 100644 arch/mips/include/uapi/asm/setup.h
->>   rename arch/parisc/include/{uapi => }/asm/setup.h (100%)
->>   delete mode 100644 arch/powerpc/include/uapi/asm/setup.h
->>   delete mode 100644 arch/s390/include/uapi/asm/setup.h
->>   delete mode 100644 arch/sparc/include/uapi/asm/setup.h
->>   delete mode 100644 arch/x86/include/uapi/asm/setup.h
->>   rename arch/xtensa/include/{uapi => }/asm/setup.h (100%)
->>   rename include/{uapi => }/asm-generic/setup.h (100%)
->>
-> Björn noticed that I should also remove the command line size for 
-> riscv since it was picked up in 6.3 by Palmer...I send a v6 right now, 
-> sorry about that.
->
-> Alex
->
+So far, I haven't seen an issues on c8000.  On rp3440, I saw the following:
 
-Hmmm when implementing the riscv patch, I noticed that the patches that 
-introduce a new include/asm/setup.h file add the following SPDX header:
+_swap_info_get: Unused swap offset entry 00000320
+BUG: Bad page map in process buildd  pte:00032100 pmd:003606c3
+addr:0000000000482000 vm_flags:00100077 anon_vma:0000000066f61340 mapping:0000000000000000 index:482
+file:(null) fault:0x0 mmap:0x0 read_folio:0x0
+CPU: 0 PID: 6813 Comm: buildd Not tainted 6.2.0+ #1
+Hardware name: 9000/800/rp3440
+Backtrace:
+  [<000000004020af50>] show_stack+0x70/0x90
+  [<0000000040b7d408>] dump_stack_lvl+0xd8/0x128
+  [<0000000040b7d48c>] dump_stack+0x34/0x48
+  [<00000000404513a4>] print_bad_pte+0x24c/0x318
+  [<00000000404560dc>] zap_pte_range+0x8d4/0x958
+  [<0000000040456398>] unmap_page_range+0x1d8/0x490
+  [<000000004045681c>] unmap_vmas+0x10c/0x1a8
+  [<0000000040466330>] exit_mmap+0x198/0x4a0
+  [<0000000040235cbc>] mmput+0x114/0x2a8
+  [<0000000040244e90>] do_exit+0x4e0/0xc68
+  [<0000000040245938>] do_group_exit+0x68/0x128
+  [<000000004025967c>] get_signal+0xae4/0xb60
+  [<000000004021a570>] do_signal+0x50/0x228
+  [<000000004021ab38>] do_notify_resume+0x68/0x150
+  [<00000000402030b4>] intr_check_sig+0x38/0x3c
 
-/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+Disabling lock debugging due to kernel taint
+_swap_info_get: Unused swap offset entry 000003a9
+BUG: Bad page map in process buildd  pte:0003a940 pmd:003606c3
+addr:0000000000523000 vm_flags:00100077 anon_vma:0000000066f61340 mapping:0000000000000000 index:523
+file:(null) fault:0x0 mmap:0x0 read_folio:0x0
+CPU: 2 PID: 6813 Comm: buildd Tainted: G    B              6.2.0+ #1
+Hardware name: 9000/800/rp3440
+Backtrace:
+  [<000000004020af50>] show_stack+0x70/0x90
+  [<0000000040b7d408>] dump_stack_lvl+0xd8/0x128
+  [<0000000040b7d48c>] dump_stack+0x34/0x48
+  [<00000000404513a4>] print_bad_pte+0x24c/0x318
+  [<00000000404560dc>] zap_pte_range+0x8d4/0x958
+  [<0000000040456398>] unmap_page_range+0x1d8/0x490
+  [<000000004045681c>] unmap_vmas+0x10c/0x1a8
+  [<0000000040466330>] exit_mmap+0x198/0x4a0
+  [<0000000040235cbc>] mmput+0x114/0x2a8
+  [<0000000040244e90>] do_exit+0x4e0/0xc68
+  [<0000000040245938>] do_group_exit+0x68/0x128
+  [<000000004025967c>] get_signal+0xae4/0xb60
+  [<000000004021a570>] do_signal+0x50/0x228
+  [<000000004021ab38>] do_notify_resume+0x68/0x150
+  [<00000000402030b4>] intr_check_sig+0x38/0x3c
+[...]
+pagefault_out_of_memory: 1158973 callbacks suppressed
+Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
 
-To me we should not add "WITH Linux-syscall-note" as this header is not 
-part of the user visible headers: any opinion before I send the v5?
+Rebooted rp3440.  Since then, I haven't seen any more problems.
 
-Thanks,
+Dave
 
-Alex
+-- 
+John David Anglin  dave.anglin@bell.net
 
