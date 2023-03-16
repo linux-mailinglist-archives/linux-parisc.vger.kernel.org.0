@@ -2,135 +2,143 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB4EF6BCC56
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Mar 2023 11:18:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 899A36BCD10
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Mar 2023 11:44:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbjCPKSZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 16 Mar 2023 06:18:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44902 "EHLO
+        id S230111AbjCPKo0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 16 Mar 2023 06:44:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230020AbjCPKSY (ORCPT
+        with ESMTP id S230107AbjCPKoZ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 16 Mar 2023 06:18:24 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D08F826851;
-        Thu, 16 Mar 2023 03:18:18 -0700 (PDT)
+        Thu, 16 Mar 2023 06:44:25 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B67A210A;
+        Thu, 16 Mar 2023 03:44:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1678961896; i=deller@gmx.de;
-        bh=SBXPKDzuZZfFGMrYb3LjDl1gDF+p48WKKOIO5JV2inQ=;
-        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
-        b=drTKG8Y6nqNsTXcHxQiVL60HROzUKsbMQfQf2pbh0R7CKAqRqEOePWpQqTC1QnzmX
-         40JNzbSdCMdCAsKMDerHPZAAYOuW5o6FeThg4qjOKF2NAwvMb1/BNBiQMTsbAlHYiO
-         3yVfs60TqHBtOVGWQJ+ornrFkBAFFkkkuU3CWaOnVieKttPBau1bqBN4muSaEi0emZ
-         XJtk9WA4BI1oRS215jV+xxdy+QZ+uj/mNpJxEdCc7WcTmbQf1lfX6hjQwmjC2U6hfX
-         Fux6TbH3f3mCQqfD49i8kJo98tiBnW83F9D/uS34mu8buzMowJp+yPXuHDu740+Jt4
-         669SkT9jOI57g==
+        t=1678963459; i=deller@gmx.de;
+        bh=2s7QerBaS9X0wvTjyfDhJZktPqxrJpqluagPebLzD4g=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=tSkdSMupbErjLZqs6kXKomVYdUMTSDQoxRbCxhQupHsGuF9XMXUc3oTqVDj1EAFv9
+         b3Z+4M/x/+v0p8/2T8WHFNUttDtbn550SEmZFtX994GDy3vj5BFkT8VDBbZWZWP7gY
+         5WV504aHCs0QhkR09Sop+U6I8lHoWOGJMZHiCRmJ2hnzAgEMGrTfse2F4vJQrYosJ4
+         72GRm7FYkICICb171GnJjsoF7wGvkwTm9MgOH8PMhLgU7/y0wNvFeQ4Rzvxuad6ihI
+         SUP1mbrJLhrOI9UVJH1uK6ECCsfnAU9Ok1VLkEm6qPrplzcj1ZloTk1i95bcjr1ZFi
+         PBDzXqkYE6CuA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.149.95]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MqaxO-1qGC6K1X0q-00maBw; Thu, 16
- Mar 2023 11:18:16 +0100
-Message-ID: <619c16b8-1844-0287-40ee-7efaeea36b09@gmx.de>
-Date:   Thu, 16 Mar 2023 11:18:15 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCHSET 0/5] User mapped provided buffer rings
-Content-Language: en-US
-To:     Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org,
-        linux-parisc <linux-parisc@vger.kernel.org>
-References: <20230314171641.10542-1-axboe@kernel.dk>
- <0eeed691-9ea1-9516-c403-5ba22554f8e7@gmx.de>
- <3dcf3e0c-d393-cb95-86ab-00b4d8cf3c75@gmx.de>
- <88b273f6-a747-7d2e-7981-3d224fdac7be@kernel.dk>
- <41a23244-a77a-01c4-46de-76b85a6f4d63@kernel.dk>
+Received: from ls3530.fritz.box ([94.134.149.95]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M2O6Y-1pfWFZ1z4g-003vtk; Thu, 16
+ Mar 2023 11:44:19 +0100
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <41a23244-a77a-01c4-46de-76b85a6f4d63@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     linux-fbdev@vger.kernel.org, linux-parisc@vger.kernel.org
+Cc:     deller@gmx.de
+Subject: [PATCH] fbdev: stifb: Provide valid pixelclock and add fb_check_var() checks
+Date:   Thu, 16 Mar 2023 11:44:18 +0100
+Message-Id: <20230316104418.53585-1-deller@gmx.de>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:kNtsjd4d1PkWkuUidycw18kPmgmHsvFcD31lWM/ondOXAKohZjQ
- LgJDgdnyGFSYaVYC0kPmH7eJH+2v0WghrOaA8d4kJtMiEg1TfeTPEutLm4gsVgRkOWafbs1
- iC/gNIjbS+A/VATZl/AnApalyvxzzQAh1vj4NuecZAIkR9wbPKjI4A9HZ8q/xFL8HO9UfSf
- 5Niyeg3hu7fgXJR6kgo7Q==
-UI-OutboundReport: notjunk:1;M01:P0:wPJRajn5y00=;S9IKB2qyeQVWYuGi9H8e3Rql0sf
- oKz3AWelpXkArRDzVRNxYiwmVLz1HMojjl4c52XMnJn1LIdrBcv02T2312LnMA16obaoe8TOM
- EfClLswesIFA2txaErmhnp0rDLHSZxhCMCLzWmG8eOmpxDJacbiB0OOqEMiD9L/ezB8vQhmU2
- 1Iz2P+iPH9YuktJTVF7d7bs0Q7Zl92XC0+4qSWfycIWXIV2u7g3RSTo35C1aIbUP4QhGAyLd9
- 7yvxbMNK95H9nPbYtd2nBqee46DWGeIqJ1H9M6xArEpUa/Erxb5tSxUIiZ3LkzvlR0u8YDNjW
- 96QePY+sidSMCuQ2U/pbDuEeyim2tQ+ZySk4VwmEWeIcpVt/99j0bWkMhD81Wql6OqfBBTKcf
- DPhd6takSvJRw6PE78QrXHzGajNRlkZwf5X7vh0K4Jm9zBEVrPGfrtS/wBQbiciUq7YGA4BsU
- BbfKeDQbrPH1LLBN997xqFJkhY5ycOO/a3yTF3HWBqpL86+Shk6sREHDPsgAY8DwBH703nW0c
- KGOJOX3VVqaEEksdL2R52K/TL/lOPTLgGUJqzL0f/3jCsXzR7swBacXQFp74bt9EUByQ/X0vf
- AA4QQv0wm/IVSOMZyFeevwzM1GQdq+bRjzHTyrqRaVLmwbMAMmaup1LjxWQahKG9HpiE4Gl5R
- Fmhhv1sWy7sYived88ghHHJazDnIGMCDLzmeY+L10PVEXJYO9j3188inXPzhblZHxzeNOpiln
- sC88Yvx9fefXaVSjmR6PlPiFNq42wLj3YNBBjoeKijMmFkKeHqvvGB1Un0ELXTE1NiWwP52TM
- CZq/ksB2Lohw48wmGOUx6ZUB+FHlQMn30AaCuL3QVp/pgkQzOhcB9mkiWlKKF17608Fqem9mM
- ErnKoLlYBBVkEvtKVXxG5xkDqi7+JYjUp8EZi3UfmiF11VzQs0Li0mqQD61nTY/TbCUCB+gQf
- tzLl8fKdtPO/s1cujP6ev8AdVZ0=
+X-Provags-ID: V03:K1:SZEMMxgzeVuoP6yW3rfFeXc/EGD1kOyY4NRpxILCN6oU1Ov5qeR
+ lXBTldT0pk5hIPssdiqyDqDSFryGmMQ38mLloB3wELUjrjk/QFRkNPPs3JyGpqRKqQ1/La+
+ GSvNvyVuIlxVWnP3Er3aTRkhv5LCb9WN2GPtO0jjLFKnG6PHPdVzZEAGCccvMPh9+vBkLFC
+ 0Fev5wDrW82uzPmzCMkbA==
+UI-OutboundReport: notjunk:1;M01:P0:ksDxpN3pcsI=;YJ0FGmywclJWPdQQFMlqBVLE962
+ KRwHLSpXHtlZqsLkIn21S+Vwe+khP0Wf0cPDqLz21/mmHsEpD2WPosN9oZouPHW9WzxtGo9km
+ siyok7H3PLorlEqcv2NUmuaNjYVw+R+fqEafOjwNUKu4fIDk5fEk2paefHT4WC1bR9hHsOyTc
+ uclqhnkVCEp2aLljlSA4R/y9gbCo3VqyAgRBZ4MNfaM0JIh7bXrJDkFlMcC7ZPamIE+7qLMUs
+ TjTWOjlFEvu1/Q56p0oa7vKSfWgsZTZUVJdVCraDR4F9A8snO0TRdHfuUv3e360tSXJdZJKm2
+ wuujWprGWIhH5e2VDKKRV1rqwp4rX+Qs3GefopKdaWP+Moj6noZLNCW6WRN0ROE4soUEJBpT+
+ cNh/0hMSsJl2RDUUtc01m07Nhr3ggU8YK9NuMsb/fEzPANqewnqOkqkIbtN78JSEFXNAF+Ah3
+ lW9xq6d5NuW/OBXuG3HxyRyaf6M+AR1oXUnCPCZpRZ6TfQmkokCLePUx/gNWU/i6iaalMjAYu
+ 9HOMwHHBaPNyiC1IRoYvifszMNjAc5W3PLUHFvMgn3xDxVbUZTc2QmDatkWsYx56EL+CF9R41
+ pRgsuDpT4Sfp3IkLmXHeG0Y79krgFpAtVeSw/GOnbyMUSz/FwrZvNiwlVnNKUf9fOWlGBNBAc
+ HdokOSMAgTqVTpb4D81LuIcEmGXW/NXf6hcQJi8a6Pct6mIzXP9P/oAtkFuRBu+j8FXC9VIuP
+ 8dytKLVvYwQZpzLp0NoVOzQ3BJtBg8Acu7RRJC64Zy2pBWtGgOP5uC/A5DZQ6FnV3+gNhasdL
+ nxoVHbCIWmETgDVmrTYWaQ8GFtXKlhoZxg79X9gbKZdvyrM9USgEQNVIXNgqnoxJZho61i4mi
+ 4yS8rQ+U6NSfkFn6cn9m96IR32m9QiJB1v496rsDsY+9adB9+qESe4LdpoMZc9ip2Q766a6Jd
+ vto/HHTPJdlMuYSg4xSMeszSUoY=
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 3/15/23 22:18, Jens Axboe wrote:
-> On 3/15/23 2:38=E2=80=AFPM, Jens Axboe wrote:
->> On 3/15/23 2:07?PM, Helge Deller wrote:
->>> On 3/15/23 21:03, Helge Deller wrote:
->>>> Hi Jens,
->>>>
->>>> Thanks for doing those fixes!
->>>>
->>>> On 3/14/23 18:16, Jens Axboe wrote:
->>>>> One issue that became apparent when running io_uring code on parisc =
-is
->>>>> that for data shared between the application and the kernel, we must
->>>>> ensure that it's placed correctly to avoid aliasing issues that rend=
-er
->>>>> it useless.
->>>>>
->>>>> The first patch in this series is from Helge, and ensures that the
->>>>> SQ/CQ rings are mapped appropriately. This makes io_uring actually w=
-ork
->>>>> there.
->>>>>
->>>>> Patches 2..4 are prep patches for patch 5, which adds a variant of
->>>>> ring mapped provided buffers that have the kernel allocate the memor=
-y
->>>>> for them and the application mmap() it. This brings these mapped
->>>>> buffers in line with how the SQ/CQ rings are managed too.
->>>>>
->>>>> I'm not fully sure if this ONLY impacts archs that set SHM_COLOUR,
->>>>> of which there is only parisc, or if SHMLBA setting archs (of which
->>>>> there are others) are impact to any degree as well...
->>>>
->>>> It would be interesting to find out. I'd assume that other arches,
->>>> e.g. sparc, might have similiar issues.
->>>> Have you tested your patches on other arches as well?
->>>
->>> By the way, I've now tested this series on current git head on an
->>> older parisc box (with PA8700 / PCX-W2 CPU).
->>>
->>> Results of liburing testsuite:
->>> Tests timed out (1): <send-zerocopy.t> - (may not be a failure)
->>> Tests failed (5): <buf-ring.t> <file-verify.t> <poll-race-mshot.t> <ri=
-ngbuf-read.t> <send_recvmsg.t>
->
-> If you update your liburing git copy, switch to the ring-buf-alloc branc=
-h,
-> then all of the above should work:
->
-> axboe@c8000 ~/g/liburing (ring-buf-alloc)> test/buf-ring.t
-> axboe@c8000 ~/g/liburing (ring-buf-alloc)> test/send_recvmsg.t
-> axboe@c8000 ~/g/liburing (ring-buf-alloc)> test/ringbuf-read.t
-> axboe@c8000 ~/g/liburing (ring-buf-alloc)> test/poll-race-mshot.t
-> axboe@c8000 ~/g/liburing (ring-buf-alloc)> git describe
-> liburing-2.3-245-g8534193
+Find a valid modeline depending on the machine graphic card
+configuration and add the fb_check_var() function to validate
+Xorg provided graphics settings.
 
-Yes, verified. All tests in that branch pass now.
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
+=2D--
+ drivers/video/fbdev/stifb.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-Thanks!
-Helge
+diff --git a/drivers/video/fbdev/stifb.c b/drivers/video/fbdev/stifb.c
+index 3feb6e40d56d..cca88823df1f 100644
+=2D-- a/drivers/video/fbdev/stifb.c
++++ b/drivers/video/fbdev/stifb.c
+@@ -921,6 +921,28 @@ SETUP_HCRX(struct stifb_info *fb)
+
+ /* ------------------- driver specific functions ------------------------=
+--- */
+
++static int
++stifb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
++{
++	struct stifb_info *fb =3D container_of(info, struct stifb_info, info);
++
++	if (var->xres !=3D fb->info.var.xres ||
++	    var->yres !=3D fb->info.var.yres ||
++	    var->bits_per_pixel !=3D fb->info.var.bits_per_pixel)
++		return -EINVAL;
++
++	var->xres_virtual =3D var->xres;
++	var->yres_virtual =3D var->yres;
++	var->xoffset =3D 0;
++	var->yoffset =3D 0;
++	var->grayscale =3D fb->info.var.grayscale;
++	var->red.length =3D fb->info.var.red.length;
++	var->green.length =3D fb->info.var.green.length;
++	var->blue.length =3D fb->info.var.blue.length;
++
++	return 0;
++}
++
+ static int
+ stifb_setcolreg(u_int regno, u_int red, u_int green,
+ 	      u_int blue, u_int transp, struct fb_info *info)
+@@ -1145,6 +1167,7 @@ stifb_init_display(struct stifb_info *fb)
+
+ static const struct fb_ops stifb_ops =3D {
+ 	.owner		=3D THIS_MODULE,
++	.fb_check_var	=3D stifb_check_var,
+ 	.fb_setcolreg	=3D stifb_setcolreg,
+ 	.fb_blank	=3D stifb_blank,
+ 	.fb_fillrect	=3D stifb_fillrect,
+@@ -1164,6 +1187,7 @@ static int __init stifb_init_fb(struct sti_struct *s=
+ti, int bpp_pref)
+ 	struct stifb_info *fb;
+ 	struct fb_info *info;
+ 	unsigned long sti_rom_address;
++	char modestr[32];
+ 	char *dev_name;
+ 	int bpp, xres, yres;
+
+@@ -1342,6 +1366,9 @@ static int __init stifb_init_fb(struct sti_struct *s=
+ti, int bpp_pref)
+ 	info->flags =3D FBINFO_HWACCEL_COPYAREA | FBINFO_HWACCEL_FILLRECT;
+ 	info->pseudo_palette =3D &fb->pseudo_palette;
+
++	snprintf(modestr, sizeof(modestr), "%dx%d-%d", xres, yres, bpp);
++	fb_find_mode(&info->var, info, modestr, NULL, 0, NULL, bpp);
++
+ 	/* This has to be done !!! */
+ 	if (fb_alloc_cmap(&info->cmap, NR_PALETTE, 0))
+ 		goto out_err1;
+=2D-
+2.39.2
+
