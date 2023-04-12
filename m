@@ -2,144 +2,70 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D3606DFF5C
-	for <lists+linux-parisc@lfdr.de>; Wed, 12 Apr 2023 22:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A96306DFF7F
+	for <lists+linux-parisc@lfdr.de>; Wed, 12 Apr 2023 22:17:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229523AbjDLUFU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 12 Apr 2023 16:05:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54628 "EHLO
+        id S229521AbjDLURU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 12 Apr 2023 16:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbjDLUFT (ORCPT
+        with ESMTP id S229451AbjDLURT (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 12 Apr 2023 16:05:19 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E7451B7;
-        Wed, 12 Apr 2023 13:05:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1681329912; i=deller@gmx.de;
-        bh=DhiBhSI+RKwKHjN5fzhNl0KOn0kW2D3gA0VJTq059aw=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=llgcc53DMxxE6lpZd5HyuAX1EYgvG3AyV0ww1S/ozYH6kLhL7wp+j6n2wNq0+3W4L
-         vCQWpBCwaYbW4CD1LZO7ws9qHj5VSjkjO8gu0CMR4DAzp0xsf7qgpdfUlocN0FdbhT
-         PdEcuQuawOnPFSr/GtELlAw/i5neuudZC6PRAsf6AX5aDBkYUgsU+xLo7EpDAbYplL
-         CiO5l0DaYU0VPZTRFo/kckeeVV27/WbQAwtYp4i9NZNY0fa8Ud0zdfmHQQTk02BKRy
-         +8MsVFODiP6amZKil2Z1Z6LiE6N2T3dXIBppyGDG2DLqKy1rUBju61fNz2/+ri9aHB
-         ZNgAmGyrN8W1g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.156.74]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MMofc-1q3Fd61ygm-00ImUk; Wed, 12
- Apr 2023 22:05:12 +0200
-Message-ID: <9d0c09c0-73ff-d655-d5d2-17c90b3e69ec@gmx.de>
-Date:   Wed, 12 Apr 2023 22:05:12 +0200
+        Wed, 12 Apr 2023 16:17:19 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998344217
+        for <linux-parisc@vger.kernel.org>; Wed, 12 Apr 2023 13:17:18 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id a640c23a62f3a-94a34a0fc1dso302719566b.1
+        for <linux-parisc@vger.kernel.org>; Wed, 12 Apr 2023 13:17:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681330637; x=1683922637;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xi9uq08Lc7qgSHIkc+cRozRgpnVzBfheYQcmgwPVIi4=;
+        b=Sl+/7KnMx2MJLCzLl2cHKlp9boxVpQxY8EdL5FCFbC+3pJhsW3o56Zkg1G3R5wj5sE
+         Y0SkvF9JR7G7oUNHxaAJLYcN+sdt5/23VUXgb+RyxSK/+Tj6kAZvvkmHzjtVigcQ8l/d
+         ArsuDxnlnqnm5Me+mEjf4jdiwewXOTnO9M3y5oA/SyKwPVNr4kGSQS8G6TufTguRfqD3
+         gAnuacshl8H3f+Y6qMjpW7uoEovkJy50lBfS49zOz3OKszhUpbmrMH00lT2iN0ltlvka
+         5B2So7Uj/08nu4qVRMrSUWH14Cwb4bq1rtquw2/04Sw4EWjMewtxs7z0Z3bceOwoewAm
+         CrTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681330637; x=1683922637;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xi9uq08Lc7qgSHIkc+cRozRgpnVzBfheYQcmgwPVIi4=;
+        b=KTRbAct2eyvH97UM57ssGpsYzrFjcL9Zmf14SVdJ61UdJaJ884Q/C5DgAv+07s4c54
+         TMWzrTnEm+MxhJljt3Wo+VYUXlJkiK8i6aS4htglfhxdOCxDmUGecR/avO4YdmhH5nmk
+         E8GL1X671ay8TLNvf1DCg/KDpYjV7SxUMYV/QVNjDndvyoVJG6Edh4VazfpMidNPaOxn
+         gvUwaNI3lm1zm/G9PF3N+WMTPFh6n8WbGwIqOXTkx+Dai0XKR0O2a89XN43QokezQQBP
+         MOmUhIPaiBsyWUULSNoEG5kufGWPg/VY5KzycP1x7lnjrNYNG3D9kMfM82uskdavPHdB
+         PmOg==
+X-Gm-Message-State: AAQBX9fjYxObiRBlKRFBmmiY6q3kc2E2Fxkdj26ykXLDAizv9ykGnj5r
+        tUkJXve3VUFvOpKk+FIkW/LRrE/WoyH6sOegAw==
+X-Google-Smtp-Source: AKy350a68q1PTw4hMlm0tYdw+/XVddVgXJMoE1EWAMDcPhsq0ooEQwFyE+whGDgidh3QSkgSwzoe9fyWNtRhs+3p414=
+X-Received: by 2002:a50:9ec1:0:b0:505:50a:a4d0 with SMTP id
+ a59-20020a509ec1000000b00505050aa4d0mr1553393edf.2.1681330636992; Wed, 12 Apr
+ 2023 13:17:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] fbdev: modedb: Fix kernel crash in fb_videomode_to_var()
-Content-Language: en-US
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-parisc@vger.kernel.org
-References: <ZB4GS3zT3oh/afkf@ls3530> <ZDb6IF6Jj0xtVlme@phenom.ffwll.local>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <ZDb6IF6Jj0xtVlme@phenom.ffwll.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:3jgaTRHzRGNrj0o+HV3TGa0EqKAIuiqEQiypQJXVw2r6YHDpUjN
- 5IqVgbeqHbvWMGCsU8CiZkS6uCydMwnV2LuikyGBKTR8J6azhwPiQPL9a63g49T9ldT+tPy
- kNXwZdrPGXnGXQd5c+u+nuEN21SoPi491Y1sFrZY96rm/gubGYjzYWxqtOvi4rBwpXw565M
- jz8L9HmaIymVrTYPwGvnw==
-UI-OutboundReport: notjunk:1;M01:P0:fTaMX4pGaiQ=;GlzweesCCZ9Rclzl/v7IJobYtvL
- SRDIN3kr7Y18uN/DgIuCcKJl9BEmECkMd31L4jGx7ICRDCeva3ouZjpajYcZKXHVJ69QoiKO5
- z/lgijr1ytdwOfDgHuIGpvQ3RfG1m+c09CAMoF6J57jJJWSYb3zVjFFlfh81wgs1RVj4xKTE4
- LAOblf8ENfgxrloggfD/nsUmahonIkMq626q5FtK5qwROmJVxUevTsvkA9Vri0HvnLgodIitq
- oK42O120SA0iBHFU+dn5YOstXQghZSoOC4CzZDUoA8WfvUrRUYiqJfaJUWEN28b/gIEn+v7sT
- s45YJfxEX7OHi4RvI1W6G1a+EH0hmgQgouVsCF3/NMmoWcP/yRvmtHtYG2spZPr8fvqrz6P+O
- K3/T20BEB9A51Ub+Qv99WjZ8fynodtFe5CUCrhQxyQXy562sdXj7NnixFGfpPpgIak/EXZL0I
- A9n+wHYembAjfdh4eHcqtmmPGZHs6Bs8m4cVXoUjI1Gy8/Ba4qETcl8hEhvGRFOvFZ1zPWywk
- A8V/GMjSEh2VIEbkkWk8ZaHt1p32tcLLnpueencVzk8bmWhosPNqiimz+ZQ9bxbQQMTWU3cJe
- 67qf3fyxdvWkDlDhqNtUI6B54DPU0uHcHWTUCBOzbK/UMR80/42tUpr2Jpd8J77MPKzHU2rFB
- Yow2h/XHevAkkUPGrhWZnrh3vkW9PW+jhc8tuRBKsSHNqVOvyIXfu2Z8wEAgEIQjFv/ngbiyM
- Ulr0ykrWxb06KTOXlNIlVX664nTxvWm336oepLakr1sQ7GEVLj2fu1d0LFrvkYoIvK68fZL+p
- 1ba+YdsFxzZJimuXVKDKmj6ZNcSoHq70dysRfW5VRAo1gLZPTjwY8NMQkjpczz2CnF4AqgIyo
- 6Zo2tYMQWYCvE9uMer8P9bwTwImnp/XntVn0hDDiKeO50cXFJg5JDwyfdAajPAve7+CQrz2sg
- oFrqoQ==
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a17:907:a64b:b0:94e:4efe:3da6 with HTTP; Wed, 12 Apr 2023
+ 13:17:16 -0700 (PDT)
+Reply-To: nepk08544@gmail.com
+From:   Leihservice <bhin5459@gmail.com>
+Date:   Wed, 12 Apr 2023 13:17:16 -0700
+Message-ID: <CAOczzx_Y+2Z4SSJjTtxQ2g5e5u-9NqhaRxRy6BAkwWk1jngq9Q@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 4/12/23 20:36, Daniel Vetter wrote:
-> On Fri, Mar 24, 2023 at 09:21:31PM +0100, Helge Deller wrote:
->> Fix a kernel crash in the fbdev modedb code which can happen if you boo=
-t
->> a system without any graphic card driver, in which case the dummycon
->> driver takes the console. If you then load a fbdev graphics driver and
->> start a the X11-fbdev the kernel will crash with a backtrace:
->>
->>    IAOQ[0]: fb_videomode_to_var+0xc/0x88
->>   Backtrace:
->>    [<10582ff8>] display_to_var+0x28/0xe8
->>    [<1058584c>] fbcon_switch+0x15c/0x55c
->>    [<105a8a1c>] redraw_screen+0xdc/0x228
->>    [<1059d6f8>] complete_change_console+0x50/0x140
->>    [<1059eae0>] change_console+0x6c/0xdc
->>    [<105ab4f4>] console_callback+0x1a0/0x1a8
->>    [<101cb5e8>] process_one_work+0x1c4/0x3cc
->>    [<101cb978>] worker_thread+0x188/0x4b4
->>    [<101d5a94>] kthread+0xec/0xf4
->>    [<1018801c>] ret_from_kernel_thread+0x1c/0x24
->>
->> The problem is, that the dummycon driver may not have a valid monitor
->> mode defined (which is ok for that driver), so the mode field in
->> fbcon_display can be NULL.
->>
->> Fix the crash by simply returning from fb_var_to_videomode()
->> if the video mode field is NULL.
->>
->> Signed-off-by: Helge Deller <deller@gmx.de>
->> Cc: stable <stable@kernel.org>
->
-> Also here since the other thread is private: I don't think this makes
-> sense, and it shouldn't happen that disp->mode is bogus when we have an
-> fbdev bound for that vc.
->
-> I think the below might work, I spotted this while auditing code around
-> this (but it turned out to be a dead-end for the bug I was chasing):
->
-> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core=
-/fbcon.c
-> index eb565a10e5cd..1f2ab00ec6d4 100644
-> --- a/drivers/video/fbdev/core/fbcon.c
-> +++ b/drivers/video/fbdev/core/fbcon.c
-> @@ -2684,8 +2684,8 @@ static void fbcon_modechanged(struct fb_info *info=
-)
->   	p =3D &fb_display[vc->vc_num];
->   	set_blitting_type(vc, info);
->
-> +	var_to_display(p, &info->var, info);
->   	if (con_is_visible(vc)) {
-> -		var_to_display(p, &info->var, info);
->   		cols =3D FBCON_SWAP(ops->rotate, info->var.xres, info->var.yres);
->   		rows =3D FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
->   		cols /=3D vc->vc_font.width;
->
-> If this works I can bake it into a real patch.
-
-Daniel, thanks for your suggested patch!
-Actually I currently can't reproduce my original problem any longer.
-It happened with a specific fbdev driver which I'm currenlty working on, a=
-nd
-in which I probably missed to set a valid video mode, which then led to th=
-e patch
-I originally sent.
-So, for now just ignore my patch.
-
-If it happens again I'll test your patch and report back.
-
-Thanks!
-Helge
+-- 
+Holen Sie sich ein einfaches Darlehen mit einem Zinssatz von 2 %.
