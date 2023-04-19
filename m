@@ -2,39 +2,39 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 347AB6E7678
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Apr 2023 11:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B6CA6E79D6
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Apr 2023 14:38:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232450AbjDSJi1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 19 Apr 2023 05:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36142 "EHLO
+        id S232969AbjDSMi2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 19 Apr 2023 08:38:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231590AbjDSJi0 (ORCPT
+        with ESMTP id S231592AbjDSMi1 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 19 Apr 2023 05:38:26 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 532DCE7;
-        Wed, 19 Apr 2023 02:38:25 -0700 (PDT)
+        Wed, 19 Apr 2023 08:38:27 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDFD0A5C8;
+        Wed, 19 Apr 2023 05:38:21 -0700 (PDT)
 From:   Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1681897102;
+        s=2020; t=1681907899;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=3ahWW2+Q3S/RvB6qR72sS8HIsTdCuAt1S9bqdH2z+7w=;
-        b=qc5CvobL2r3hZWvSzSJqNdvsc3YOVQi05uwUK7zoWReiby465BIJI/zuxMUu5qXpSXXyVJ
-        vzTv9ILxgQrJkJR8zzEJpve7BFlEE6OioXHOKbuuQuiRK8FoLk871pSTksNqCCIxl8ucz5
-        wmXiG7xJVjNb7Bo6RoRV9J4Lz7UUc8BPgbwLe4YNDPdH4DGHf7Ptnhs3DupHwgSPtRAHBW
-        rOKHJXmOZJEWGQe1t29Q6HPEqx9hwBtb4vRyuoV7kVeWG6zEx76YqS0yoDbWMbvMs5WCQW
-        MFgUf5iaArW/mcuy/Cw2R/4IofuuCDjuJoLMyvJOsnpRGsf+HQwI40VP2uCO1Q==
+        bh=TzrbFJX0mLRnVyg6gK50wjW8gAdRTyt3eKsS6bO2Ho8=;
+        b=UQOJzBaZIKBAqIIp2iqE9MqaQt4o5jf4X54iENF8PIgb3XVSKHeAToYhSAetn/VDc3XDSc
+        vbXK6VM/E7725N29s2FSKaatj7nI1wyCTjA86cgr2JkrX8DxeEun3hjlUqogLtb5s5zfSa
+        SywUUUueeIYsZNv4w36kFnEjVOxY/DSPPwkyq+kebzFI7z2gYg0r9CnlmtgFv9TqDyfAlD
+        YKid0ziPPcge9cOBT8GWWTc95C+prcMhIbymQfHwn03mi0EsBFOddKVOKY2XMi3tesk7+V
+        TiCAx54bzs6ELiLXkmKcxWv4fFnjWSoKaHB0PW1kBv0yCnbUWTFXcy/RdtQ2bA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1681897102;
+        s=2020e; t=1681907899;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=3ahWW2+Q3S/RvB6qR72sS8HIsTdCuAt1S9bqdH2z+7w=;
-        b=h9kGxEZF0/449e5pzKL8RjkYF5PGK7O3l0s7czECIEu7mvAFDvboALol8fOrjIlj6I4Yg9
-        stFZXVlGYGrqZrAQ==
+        bh=TzrbFJX0mLRnVyg6gK50wjW8gAdRTyt3eKsS6bO2Ho8=;
+        b=G/PDlG02+awXAj/Znv2ir94TrCNuE4soVJYG72z/i6F9KUyMxTR0qJUk/z9cfxNZH98BUp
+        FAdnV9eglXscn1DA==
 To:     Paul Menzel <pmenzel@molgen.mpg.de>
 Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
         David Woodhouse <dwmw2@infradead.org>,
@@ -69,13 +69,14 @@ Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
         Mark Rutland <mark.rutland@arm.com>,
         Sabin Rapan <sabrapan@amazon.com>
 Subject: Re: [patch 00/37] cpu/hotplug, x86: Reworked parallel CPU bringup
-In-Reply-To: <8592a301-9933-1cad-bd61-8d97e7c7493b@molgen.mpg.de>
+In-Reply-To: <87a5z443g2.ffs@tglx>
 References: <20230414225551.858160935@linutronix.de>
  <8247ce4d-15b7-03b2-0c9b-74f8cd6cad50@molgen.mpg.de> <87wn2a4la5.ffs@tglx>
  <bd5a6a93-def1-9248-2258-c3d3b40071ef@molgen.mpg.de> <87ttxd4qxz.ffs@tglx>
  <87r0sh4m7a.ffs@tglx> <8592a301-9933-1cad-bd61-8d97e7c7493b@molgen.mpg.de>
-Date:   Wed, 19 Apr 2023 11:38:21 +0200
-Message-ID: <87a5z443g2.ffs@tglx>
+ <87a5z443g2.ffs@tglx>
+Date:   Wed, 19 Apr 2023 14:38:18 +0200
+Message-ID: <877cu83v45.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -88,30 +89,46 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Paul!
-
-On Tue, Apr 18 2023 at 22:10, Paul Menzel wrote:
-> Am 18.04.23 um 10:40 schrieb Thomas Gleixner:
->> Can you please provide the output of cpuid?
+On Wed, Apr 19 2023 at 11:38, Thomas Gleixner wrote:
+> On Tue, Apr 18 2023 at 22:10, Paul Menzel wrote:
+>> Am 18.04.23 um 10:40 schrieb Thomas Gleixner:
+>>> Can you please provide the output of cpuid?
+>>
+>> Of course. Here the top, and the whole output is attached.
 >
-> Of course. Here the top, and the whole output is attached.
+> Thanks for the data. Can you please apply the debug patch below and
+> provide the dmesg output? Just the line which is added by the patch is
+> enough. You can boot with cpuhp.parallel=off so you don't have wait for
+> 10 seconds.
 
-Thanks for the data. Can you please apply the debug patch below and
-provide the dmesg output? Just the line which is added by the patch is
-enough. You can boot with cpuhp.parallel=off so you don't have wait for
-10 seconds.
+Borislav found some a machine which also refuses to boot. It turns of
+the debug patch was spot on:
+
+[    0.462724] .... node  #0, CPUs:      #1
+[    0.462731] smpboot: Kicking AP alive: 17
+[    0.465723]  #2
+[    0.465732] smpboot: Kicking AP alive: 18
+[    0.467641]  #3
+[    0.467641] smpboot: Kicking AP alive: 19
+
+So the kernel gets APICID 17, 18, 19 from ACPI but CPUID leaf 0x1
+ebx[31:24], which is the initial APICID has:
+
+CPU1		0x01
+CPU2		0x02
+CPU3		0x03
+
+Which means the APICID to Linux CPU number lookup based on CPUID 0x01
+fails for all of them and stops them dead in the low level startup code.
+
+IOW, the BIOS assignes random numbers to the AP APICs for whatever
+raisins, which leaves the parallel startup low level code up a creek
+without a paddle, except for actually reading the APICID back from the
+APIC. *SHUDDER*
+
+I'm leaning towards disabling the CPUID lead 0x01 based discovery and be
+done with it.
 
 Thanks,
 
         tglx
----
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -814,6 +814,7 @@ static int wakeup_secondary_cpu_via_init
- 	unsigned long send_status = 0, accept_status = 0;
- 	int maxlvt, num_starts, j;
- 
-+	pr_info("Kicking AP alive: %d\n", phys_apicid);
- 	preempt_disable();
- 	maxlvt = lapic_get_maxlvt();
- 
