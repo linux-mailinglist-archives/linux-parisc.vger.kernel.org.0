@@ -2,44 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34E9A6E8C25
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Apr 2023 10:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67F606E8CCD
+	for <lists+linux-parisc@lfdr.de>; Thu, 20 Apr 2023 10:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233969AbjDTIGk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 20 Apr 2023 04:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41322 "EHLO
+        id S234256AbjDTIc1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 20 Apr 2023 04:32:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234035AbjDTIGj (ORCPT
+        with ESMTP id S233914AbjDTIcY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 20 Apr 2023 04:06:39 -0400
-Received: from mail.craftsplex.pl (mail.craftsplex.pl [162.19.155.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8A213E
-        for <linux-parisc@vger.kernel.org>; Thu, 20 Apr 2023 01:06:29 -0700 (PDT)
-Received: by mail.craftsplex.pl (Postfix, from userid 1002)
-        id 1D9F2242BD; Thu, 20 Apr 2023 08:06:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=craftsplex.pl;
-        s=mail; t=1681977988;
-        bh=PcMncQpBfIZCnTOfZJY5G1G+gaLn4c9QPfFvoXrE4rA=;
-        h=Date:From:To:Subject:From;
-        b=k+eTJf+cdbQt4D5PGL2HW4y47yk/Uy2xKJopVhR3sC2EMqD2TqLFMOSBhHulDV41Z
-         tjk+m0LHTfeQ42XfCXQ1okDjmQ4YtEE/t+t8EKqEim9CKUJYQcodUZ133fbS5grQ0O
-         YdIsJI2+7aWqswIbGx2tStCv3tl3x8HiPzyyBUaNmfQT31JiAO/ucv9Hes/Jcjo0i9
-         ht5sFr2lvch49kiPQEdbum+UpyE/CF5AK0hGPzwiGOi2QG6vlH0iuneKxXt4CRPvtw
-         oPEHLB//ZX3X8ZOAsFpiMbU25XnDbd0B8tjxMobFpgguLoD9FnBXuDtwbrfN0Mwx4m
-         HZ/W4/WqBMRyQ==
-Received: by mail.craftsplex.pl for <linux-parisc@vger.kernel.org>; Thu, 20 Apr 2023 08:05:42 GMT
-Message-ID: <20230420064500-0.1.5o.q9rw.0.xaec5pq6th@craftsplex.pl>
-Date:   Thu, 20 Apr 2023 08:05:42 GMT
-From:   "Kamil Tralewski" <kamil.tralewski@craftsplex.pl>
-To:     <linux-parisc@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.craftsplex.pl
+        Thu, 20 Apr 2023 04:32:24 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A677B40C9;
+        Thu, 20 Apr 2023 01:32:22 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1681979541;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=I+ebiUykc2oGiW9xPV9ZKUG/P8FsTezy0HSUaGX7/pY=;
+        b=Jz/cXv5/DHLlLjV0z8BL66SPZKoeNMGD449tum189TN4LYaNtkzbsEgLqCXxeR5D2x4DmB
+        AiiH4E3wu4mBGTwiuHyl8BJq1iKIMjEryKHI4Rwh2aIdHQXjHwgf71hZZEbZyP9aBjU6fv
+        3zXpJo+I3lE6AOTbjLnufJBUwJfr8usMbNL18Mci5Spg10fimG4h36b3KXVFHqqEKIS4NL
+        6O/vuWFYSqyD35wd+FaTjGBiDpyu2BeCfT9L9YjBMhEbpDoYxV0wuRUxlhwDe39bW/c/BG
+        Fut9OwTjPUuzPGtLKQMIt2adUOVPSweDTmlzV8g0EUacW9ueX1QxUKw2lpWF0g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1681979541;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=I+ebiUykc2oGiW9xPV9ZKUG/P8FsTezy0HSUaGX7/pY=;
+        b=fiV2/prU9cb5dhmyq+s9y7Q+ypTlDxy8b3yL8uPmb2zNIq4Xu7UguxKO2bu7hAd0D1st/s
+        PIPzYABPo+6ab0BQ==
+To:     Andrew Cooper <andrew.cooper3@citrix.com>,
+        Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Gerst <brgerst@gmail.com>,
+        Arjan van de Veen <arjan@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul McKenney <paulmck@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Piotr Gorski <lucjan.lucjanov@gmail.com>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Usama Arif <usama.arif@bytedance.com>,
+        =?utf-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        xen-devel@lists.xenproject.org,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        linux-csky@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@vger.kernel.org,
+        "James E. J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        linux-riscv@lists.infradead.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sabin Rapan <sabrapan@amazon.com>
+Subject: Re: [patch 00/37] cpu/hotplug, x86: Reworked parallel CPU bringup
+In-Reply-To: <c2aaa4fb-a5ba-d5bf-634a-dcf4fd8ad246@citrix.com>
+References: <20230414225551.858160935@linutronix.de>
+ <8247ce4d-15b7-03b2-0c9b-74f8cd6cad50@molgen.mpg.de> <87wn2a4la5.ffs@tglx>
+ <bd5a6a93-def1-9248-2258-c3d3b40071ef@molgen.mpg.de> <87ttxd4qxz.ffs@tglx>
+ <87r0sh4m7a.ffs@tglx> <8592a301-9933-1cad-bd61-8d97e7c7493b@molgen.mpg.de>
+ <87a5z443g2.ffs@tglx> <877cu83v45.ffs@tglx> <874jpc3s3r.ffs@tglx>
+ <0f5463fd-9c4a-6361-adbb-dd89dbb9138d@citrix.com>
+ <c2aaa4fb-a5ba-d5bf-634a-dcf4fd8ad246@citrix.com>
+Date:   Thu, 20 Apr 2023 10:32:19 +0200
+Message-ID: <871qkf3qek.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,18 +94,60 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Wed, Apr 19 2023 at 17:21, Andrew Cooper wrote:
+> On 19/04/2023 2:50 pm, Andrew Cooper wrote:
+>> What I'm confused by is why this system boots in the first place.=C2=A0 =
+I can
+>> only think that's is a system which only has 4-bit APIC IDs, and happens
+>> to function when bit 4 gets truncated off the top of the SIPI destinatio=
+n...
+>
+> https://www.amd.com/system/files/TechDocs/42300_15h_Mod_10h-1Fh_BKDG.pdf
+>
+> This system does still require the IO-APICs to be at 0, and the LAPICs
+> to start at some offset, which is clearly 16 in this case.=C2=A0 Also, th=
+is
+> system has configurable 4-bit or 8-bit wide APIC IDs, and I can't tell
+> which mode is active just from the manual.
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+That document contradicts itself:
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+  "The ApicId of core j must be enumerated/assigned as:
+   ApicId[core=3Dj] =3D (OFFSET_IDX) * MNC + j
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+   Where OFFSET_IDX is an integer offset (0 to N) used to shift up the
+   core ApicId values to allow room for IOAPIC devices.
 
-Pozdrawiam
-Kamil Tralewski
+   It is recommended that BIOS use the following APIC ID assignments for
+   the broadest operating system sup- port. Given N =3D MNC and M =3D
+   Number_Of_IOAPICs:
+
+   =E2=80=A2 Assign the core ApicId=E2=80=99s first from 0 to N-1, and the =
+IOAPIC IDs
+     from N to N+(M-1)."
+
+Oh well. If the rest of these docs is of the same quality then it's not
+a surprise that BIOSes are trainwrecks.
+
+> But, it does mean that the BIOS has genuinely modified the APIC IDs of
+> the logic processors.=C2=A0 This does highlight an error in reasoning with
+> the parallel bringup code.
+
+Yes.
+
+> For xAPIC, the APIC_ID register is writeable (at least, model
+> specifically), and CPUID is only the value it would have had at reset.=C2=
+=A0
+> So the AP bringup logic can't actually use CPUID reliably.
+>
+> This was changed in x2APIC, which made the x2APIC_ID immutable.
+>
+> I don't see an option other than the AP bringup code query for xAPIC vs
+> x2APIC mode, and either looking at the real APIC_ID register, or falling
+> back to CPUID.
+
+I'm pondering to simply deny parallel mode if x2APIC is not there.
+
+Thanks,
+
+        tglx
