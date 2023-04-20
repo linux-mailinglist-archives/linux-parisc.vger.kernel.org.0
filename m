@@ -2,45 +2,45 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 601246E8B83
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Apr 2023 09:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34E9A6E8C25
+	for <lists+linux-parisc@lfdr.de>; Thu, 20 Apr 2023 10:06:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233939AbjDTHiA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 20 Apr 2023 03:38:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47758 "EHLO
+        id S233969AbjDTIGk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 20 Apr 2023 04:06:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233928AbjDTHh7 (ORCPT
+        with ESMTP id S234035AbjDTIGj (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 20 Apr 2023 03:37:59 -0400
-Received: from mail.arnisdale.pl (mail.arnisdale.pl [151.80.133.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5475435AA
-        for <linux-parisc@vger.kernel.org>; Thu, 20 Apr 2023 00:37:55 -0700 (PDT)
-Received: by mail.arnisdale.pl (Postfix, from userid 1002)
-        id F06F6250D7; Thu, 20 Apr 2023 07:37:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=arnisdale.pl; s=mail;
-        t=1681976263; bh=6DhEsVYOGxxfetVY3oiVeew+7Cm34ArcvgDq2WQYIRw=;
+        Thu, 20 Apr 2023 04:06:39 -0400
+Received: from mail.craftsplex.pl (mail.craftsplex.pl [162.19.155.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8A213E
+        for <linux-parisc@vger.kernel.org>; Thu, 20 Apr 2023 01:06:29 -0700 (PDT)
+Received: by mail.craftsplex.pl (Postfix, from userid 1002)
+        id 1D9F2242BD; Thu, 20 Apr 2023 08:06:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=craftsplex.pl;
+        s=mail; t=1681977988;
+        bh=PcMncQpBfIZCnTOfZJY5G1G+gaLn4c9QPfFvoXrE4rA=;
         h=Date:From:To:Subject:From;
-        b=ytx77mj9UbgLWiXKqmCSkZbMJM/yrVBhTqt69MY72ZdNNU0Y1uPsXbDrozy43JAwG
-         r8xZGiq9p8euj7WW6qsksIEwI7LwaFk/lP1F3Yz116PQepPIsWkDfIQBqZw7+aKeJg
-         nB3/1mksCBr3+tK/u1dyd4YCyk0SHcpTOsSSlJ1lbMCkGcG6Cf3uvWbcBHrMY4Ay2e
-         Ub/yO+4cVWuu2Dxdo8M5CjddUGA0JYLQuE0cg48LdFgnEcpUF36/zrIL9W9Oc71850
-         u4q0d2x/iiw74icZseLW3OoHaTXoT/D7laH72QJ2Da8et1TwkNaAs9pf6oc6q5OgA0
-         dDPQztVzWldfQ==
-Received: by mail.arnisdale.pl for <linux-parisc@vger.kernel.org>; Thu, 20 Apr 2023 07:35:49 GMT
-Message-ID: <20230420064500-0.1.41.1gjrh.0.b5x5mn5ll9@arnisdale.pl>
-Date:   Thu, 20 Apr 2023 07:35:49 GMT
-From:   "Maciej Telka" <maciej.telka@arnisdale.pl>
+        b=k+eTJf+cdbQt4D5PGL2HW4y47yk/Uy2xKJopVhR3sC2EMqD2TqLFMOSBhHulDV41Z
+         tjk+m0LHTfeQ42XfCXQ1okDjmQ4YtEE/t+t8EKqEim9CKUJYQcodUZ133fbS5grQ0O
+         YdIsJI2+7aWqswIbGx2tStCv3tl3x8HiPzyyBUaNmfQT31JiAO/ucv9Hes/Jcjo0i9
+         ht5sFr2lvch49kiPQEdbum+UpyE/CF5AK0hGPzwiGOi2QG6vlH0iuneKxXt4CRPvtw
+         oPEHLB//ZX3X8ZOAsFpiMbU25XnDbd0B8tjxMobFpgguLoD9FnBXuDtwbrfN0Mwx4m
+         HZ/W4/WqBMRyQ==
+Received: by mail.craftsplex.pl for <linux-parisc@vger.kernel.org>; Thu, 20 Apr 2023 08:05:42 GMT
+Message-ID: <20230420064500-0.1.5o.q9rw.0.xaec5pq6th@craftsplex.pl>
+Date:   Thu, 20 Apr 2023 08:05:42 GMT
+From:   "Kamil Tralewski" <kamil.tralewski@craftsplex.pl>
 To:     <linux-parisc@vger.kernel.org>
-Subject: =?UTF-8?Q?Nawi=C4=85zanie_wsp=C3=B3=C5=82pracy?=
-X-Mailer: mail.arnisdale.pl
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.craftsplex.pl
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,16 +49,16 @@ X-Mailing-List: linux-parisc@vger.kernel.org
 
 Dzie=C5=84 dobry,
 
-Czy jest mo=C5=BCliwo=C5=9B=C4=87 nawi=C4=85zania wsp=C3=B3=C5=82pracy z =
-Pa=C5=84stwem?
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-Z ch=C4=99ci=C4=85 porozmawiam z osob=C4=85 zajmuj=C4=85c=C4=85 si=C4=99 =
-dzia=C5=82aniami zwi=C4=85zanymi ze sprzeda=C5=BC=C4=85.
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Pomagamy skutecznie pozyskiwa=C4=87 nowych klient=C3=B3w.
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-Zapraszam do kontaktu.
-
-
-Pozdrawiam serdecznie
-Maciej Telka
+Pozdrawiam
+Kamil Tralewski
