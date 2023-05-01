@@ -2,182 +2,169 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B7AE6F263F
-	for <lists+linux-parisc@lfdr.de>; Sat, 29 Apr 2023 22:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 090046F3B1E
+	for <lists+linux-parisc@lfdr.de>; Tue,  2 May 2023 01:58:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjD2UOa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 29 Apr 2023 16:14:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43766 "EHLO
+        id S231741AbjEAX6r (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 1 May 2023 19:58:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230154AbjD2UO2 (ORCPT
+        with ESMTP id S233219AbjEAXz5 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 29 Apr 2023 16:14:28 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CDE1BE
-        for <linux-parisc@vger.kernel.org>; Sat, 29 Apr 2023 13:14:25 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-24782fdb652so834475a91.3
-        for <linux-parisc@vger.kernel.org>; Sat, 29 Apr 2023 13:14:25 -0700 (PDT)
+        Mon, 1 May 2023 19:55:57 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3A835B0
+        for <linux-parisc@vger.kernel.org>; Mon,  1 May 2023 16:55:55 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-63b5ce4f069so3695754b3a.1
+        for <linux-parisc@vger.kernel.org>; Mon, 01 May 2023 16:55:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682799264; x=1685391264;
+        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682985354; x=1685577354;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EvNXrGU7f9AyBgQxPAxIH8w5LQ2sGDY5VhYCeQmIsvg=;
-        b=ztXNyujPGJ3TImj9rkWYO2n2FifWKitTQShNykqcCXMnlMDmDVUdGDZxkkAjoc2LxT
-         wjlkNuWu5MpGZ0hx2IY/BfGicm00cVl+x8sMPYhvJYOTMhGVFNRcq+t2+IhK1Zbg1HBm
-         TwPyb5IfXHXgdYm4kQQJO8mCutMWnoA0MAQG1HObQV2DkWdvKA82EPwFFy15NEoVvzDJ
-         YaFLlQv2/hnRBo+Kg2l+LFcBMREq5GVfs5levwZlW+i9w9qFVpvKUrXtIKJRJqUd1KUC
-         DRDHp5Z7Fs9kgbXLfeVSACxaLJ8vDKqbLXNf+pwsIg4BCZFLNo8FmqNy+hScbEds+O2l
-         SL9w==
+        bh=QuwyJlMhOzHc7pD19rcBJm7YGGdkgt4st5TSnBpxtCA=;
+        b=u7Fbet5GsM/a+tKDG1jIQjylhg8yDIGsEfB3R3METzXxmxTlMfZIrKJcjG1Eg5BKJj
+         MlFOPCIdB1Kzok6k4VO3kofHLnjOICQw4gU2tuQOBg05zhDbFsggy6hJcjAmZMRGAXf0
+         rUtZb8K8J1C2NtGocYCnTuPL/7q8UuOvuWeleHqtXMOc3hyp4VTgoMKde+PprRxEq3U9
+         3NCfHp5mczh1hPm51YYXtT/w0nBzMFK+Xv4D4Xzjfds97FS7WzOT/O5styDeQpozCahx
+         aw/N9G2On9yOd5m0BdC1sLbhcBfoO3yIW/1WaAekonzfxEBWX3WbGIXs9NTSCve1lAj1
+         n8sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682799264; x=1685391264;
+        d=1e100.net; s=20221208; t=1682985354; x=1685577354;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EvNXrGU7f9AyBgQxPAxIH8w5LQ2sGDY5VhYCeQmIsvg=;
-        b=GMIPH7K1ecwfocHDjgxkvm3cUklGoZcyehOLeaOUkWHeOb5Wi3Nu1cGaahepYY2J/j
-         SbIbhZny9j3LwuDJmlWUvi+owam9AoDkwEEaBis4mpYYp83NKaicVIU66h9cQIQyNlCk
-         HIvJySNUezKgwLRPa4H4UzE06Wkj1IbOad1jd2FWeqoXIy+ZDEM2iRh0fI6eKxR+qkRV
-         o9KrLN92sYfDRvSx//IJU0le5m0EH2gZPi8jDsxJpk8g/VsqSxANIGSlMW0ihRKR0wi0
-         vBPN9P2Xha7JHmrbaxJfP21vBv+6Qy7y+ThDWpcx2AE6i1Wx3N7J92tdS4IJl7oHtWBf
-         KYZA==
-X-Gm-Message-State: AC+VfDwYfqVn9izFGY0sCpo/mnf5PzVxnB5ImRYQbsYEBHpE0E6oRQ1k
-        FANfQFT/HX7HsQwhTpbqiGn9/Q==
-X-Google-Smtp-Source: ACHHUZ7pgoIToYashe1bFzQ1hUq7/0xuSIbhdV55MwhX+AUZI7FSn+oK96sUBgsJukxkcTmiriVdYg==
-X-Received: by 2002:a17:902:ef45:b0:1a6:dd9a:62c5 with SMTP id e5-20020a170902ef4500b001a6dd9a62c5mr8875345plx.10.1682799264493;
-        Sat, 29 Apr 2023 13:14:24 -0700 (PDT)
+        bh=QuwyJlMhOzHc7pD19rcBJm7YGGdkgt4st5TSnBpxtCA=;
+        b=J426faQXqme9QL3Zi6S2c40KvSK0VJrth6y2BKMZtvKCndpl9CFDP/8U9qTK51rrHl
+         IyowsDEMrHlnNLbPGufrzXquAslKKpYkTpQy55S01oSyc5s+hMgrQ+3xxfK8MmA6W/gj
+         qTzGxkelBa5Zfnd0nGwVzytrDCPTk6XAJdLXA+i3PkwZenQBgl+0JQj/DBxG7ow5UoSh
+         nFjTTHaFfB/Eo0dPcxgX2/KPkB61KqaDNTDzDY34CFrZpEF56zfJMfElErwJMhVuJvTp
+         9WSIzpWshiSy4WjH/A4O1AsEucgCNpHucOXTQrt+sTqXgL/kDAU6s2xMPWrSTX1U+RQM
+         QiwA==
+X-Gm-Message-State: AC+VfDyDtroF8mK0aA5y2MTkVYNTiQ8f32OmTBc/DT9+YFf+gs1V8IiX
+        5njaVUdYR6eRWHGhsWnC9UyiyA==
+X-Google-Smtp-Source: ACHHUZ4SgBzSoTxFJ9j/mzMx+FBKsdjE/IfAfq6NZWT2hwrYFJsUY4cczelg66bWFkmYBXKaJT4LqQ==
+X-Received: by 2002:a05:6a20:6f03:b0:f8:b39b:b24e with SMTP id gt3-20020a056a206f0300b000f8b39bb24emr16225285pzb.11.1682985354255;
+        Mon, 01 May 2023 16:55:54 -0700 (PDT)
 Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id g2-20020a170902740200b001a4f7325466sm15179442pll.276.2023.04.29.13.14.23
+        by smtp.gmail.com with ESMTPSA id t2-20020a628102000000b0063b1e7ffc5fsm20413877pfd.39.2023.05.01.16.55.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Apr 2023 13:14:23 -0700 (PDT)
-Date:   Sat, 29 Apr 2023 13:14:23 -0700 (PDT)
-X-Google-Original-Date: Sat, 29 Apr 2023 13:14:07 PDT (-0700)
-Subject:     Re: [PATCH] Remove HAVE_VIRT_CPU_ACCOUNTING_GEN option
-In-Reply-To: <20230429063348.125544-1-npiggin@gmail.com>
-CC:     Arnd Bergmann <arnd@arndb.de>, npiggin@gmail.com,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vgupta@kernel.org, linux-snps-arc@lists.infradead.org,
-        bcain@quicinc.com, linux-hexagon@vger.kernel.org,
-        chenhuacai@kernel.org, loongarch@lists.linux.dev,
-        geert@linux-m68k.org, linux-m68k@lists.linux-m68k.org,
-        monstr@monstr.eu, tsbogend@alpha.franken.de,
-        linux-mips@vger.kernel.org, dinguyen@kernel.org,
-        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
-        shorne@gmail.com, linux-openrisc@vger.kernel.org,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        linux-parisc@vger.kernel.org,
+        Mon, 01 May 2023 16:55:53 -0700 (PDT)
+Date:   Mon, 01 May 2023 16:55:53 -0700 (PDT)
+X-Google-Original-Date: Mon, 01 May 2023 16:55:31 PDT (-0700)
+Subject:     Re: [patch 26/37] riscv: Switch to hotplug core state synchronization
+In-Reply-To: <20230414232310.817955867@linutronix.de>
+CC:     linux-kernel@vger.kernel.org, x86@kernel.org, dwmw@infradead.org,
+        andrew.cooper3@citrix.com, brgerst@gmail.com,
+        arjan@linux.intel.com, pbonzini@redhat.com, paulmck@kernel.org,
+        thomas.lendacky@amd.com, seanjc@google.com,
+        oleksandr@natalenko.name, pmenzel@molgen.mpg.de,
+        gpiccoli@igalia.com, lucjan.lucjanov@gmail.com,
         Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
-        ysato@users.sourceforge.jp, dalias@libc.org,
-        glaubitz@physik.fu-berlin.de, linux-sh@vger.kernel.org,
-        davem@davemloft.net, sparclinux@vger.kernel.org, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        linux-um@lists.infradead.org, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, khilman@baylibre.com, frederic@kernel.org
+        linux-riscv@lists.infradead.org, dwmw@amazon.co.uk,
+        usama.arif@bytedance.com, jgross@suse.com,
+        boris.ostrovsky@oracle.com, xen-devel@lists.xenproject.org,
+        linux@armlinux.org.uk, Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, guoren@kernel.org,
+        linux-csky@vger.kernel.org, tsbogend@alpha.franken.de,
+        linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, linux-parisc@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>, sabrapan@amazon.com
 From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     npiggin@gmail.com
-Message-ID: <mhng-7ec0443b-2201-41b7-996c-78c3a61f0230@palmer-ri-x1c9a>
+To:     tglx@linutronix.de
+Message-ID: <mhng-fd944caa-93db-40e0-8ea8-bc52772a261a@palmer-ri-x1c9a>
 Mime-Version: 1.0 (MHng)
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, 28 Apr 2023 23:33:48 PDT (-0700), npiggin@gmail.com wrote:
-> This option was created in commit 554b0004d0ec4 ("vtime: Add
-> HAVE_VIRT_CPU_ACCOUNTING_GEN Kconfig") for architectures to indicate
-> they support the 64-bit cputime_t required for VIRT_CPU_ACCOUNTING_GEN.
+On Fri, 14 Apr 2023 16:44:55 PDT (-0700), tglx@linutronix.de wrote:
+> Switch to the CPU hotplug core state tracking and synchronization
+> mechanim. No functional change intended.
 >
-> The cputime_t type has since been removed, so this doesn't have any
-> meaning. Remove it.
->
-> Cc: linux-arch@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: Vineet Gupta <vgupta@kernel.org>
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: Brian Cain <bcain@quicinc.com>
-> Cc: linux-hexagon@vger.kernel.org
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: loongarch@lists.linux.dev
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: Michal Simek <monstr@monstr.eu>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: linux-mips@vger.kernel.org
-> Cc: Dinh Nguyen <dinguyen@kernel.org>
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: linux-openrisc@vger.kernel.org
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-parisc@vger.kernel.org
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 > Cc: Paul Walmsley <paul.walmsley@sifive.com>
 > Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
 > Cc: linux-riscv@lists.infradead.org
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> Cc: linux-sh@vger.kernel.org
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: sparclinux@vger.kernel.org
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> Cc: linux-um@lists.infradead.org
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: x86@kernel.org
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Kevin Hilman <khilman@baylibre.com>
-> Cc: Frederic Weisbecker <frederic@kernel.org>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
-> Hi,
+>  arch/riscv/Kconfig              |    1 +
+>  arch/riscv/include/asm/smp.h    |    2 +-
+>  arch/riscv/kernel/cpu-hotplug.c |   14 +++++++-------
+>  3 files changed, 9 insertions(+), 8 deletions(-)
 >
-> Could we tidy this? I don't know what tree it can go in, timers,
-> sched, asm-generic, probably doesn't matter.
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -116,6 +116,7 @@ config RISCV
+>  	select HAVE_RSEQ
+>  	select HAVE_STACKPROTECTOR
+>  	select HAVE_SYSCALL_TRACEPOINTS
+> +	select HOTPLUG_CORE_SYNC_DEAD if HOTPLUG_CPU
+>  	select IRQ_DOMAIN
+>  	select IRQ_FORCED_THREADING
+>  	select MODULES_USE_ELF_RELA if MODULES
+> --- a/arch/riscv/include/asm/smp.h
+> +++ b/arch/riscv/include/asm/smp.h
+> @@ -64,7 +64,7 @@ asmlinkage void smp_callin(void);
 >
-> The only thing this actually does is gate VIRT_CPU_ACCOUNTING_GEN and
-> NO_HZ_FULL so if your arch has some other issue that requires this
-> then the documentation needs to change. Any concerns from the archs?
-> I.e., 32-bit that does *not* define HAVE_VIRT_CPU_ACCOUNTING_GEN
-> which looks to be:
+>  #if defined CONFIG_HOTPLUG_CPU
+>  int __cpu_disable(void);
+> -void __cpu_die(unsigned int cpu);
+> +static inline void __cpu_die(unsigned int cpu) { }
+>  #endif /* CONFIG_HOTPLUG_CPU */
 >
-> arc
-> hexagon
-> loongarch 32-bit with SMP
-> m68k
-> microblaze
-> mips 32-bit with SMP
-> nios2
-> openrisc
-> parisc 32-bit
-> riscv 32-bit
+>  #else
+> --- a/arch/riscv/kernel/cpu-hotplug.c
+> +++ b/arch/riscv/kernel/cpu-hotplug.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/sched.h>
+>  #include <linux/err.h>
+>  #include <linux/irq.h>
+> +#include <linux/cpuhotplug.h>
+>  #include <linux/cpu.h>
+>  #include <linux/sched/hotplug.h>
+>  #include <asm/irq.h>
+> @@ -48,17 +49,15 @@ int __cpu_disable(void)
+>  	return ret;
+>  }
+>
+> +#ifdef CONFIG_HOTPLUG_CPU
+>  /*
+> - * Called on the thread which is asking for a CPU to be shutdown.
+> + * Called on the thread which is asking for a CPU to be shutdown, if the
+> + * CPU reported dead to the hotplug core.
+>   */
+> -void __cpu_die(unsigned int cpu)
+> +void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
+>  {
+>  	int ret = 0;
+>
+> -	if (!cpu_wait_death(cpu, 5)) {
+> -		pr_err("CPU %u: didn't die\n", cpu);
+> -		return;
+> -	}
+>  	pr_notice("CPU%u: off\n", cpu);
+>
+>  	/* Verify from the firmware if the cpu is really stopped*/
+> @@ -75,9 +74,10 @@ void arch_cpu_idle_dead(void)
+>  {
+>  	idle_task_exit();
+>
+> -	(void)cpu_report_death();
+> +	cpuhp_ap_report_dead();
+>
+>  	cpu_ops[smp_processor_id()]->cpu_stop();
+>  	/* It should never reach here */
+>  	BUG();
+>  }
+> +#endif
 
-Nothing's jumping out, though I haven't tested this yet so I'm not 100%.  
-I assume this isn't aimed for this merge window, given the timing?  
-Probably best to give this sort of thing time to bake in linux-next, but 
-I doubt anyone is even paying attention to rv32/NO_HZ_FULL so no big 
-deal either way on my end.
-
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com> # RISC-V
-
-> sh
-> sparc 32-bit
-> um 32-bit
-> x86 32-bit
->
-> Thanks,
-> Nick
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
