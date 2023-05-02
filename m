@@ -2,169 +2,152 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 090046F3B1E
-	for <lists+linux-parisc@lfdr.de>; Tue,  2 May 2023 01:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0BF06F4474
+	for <lists+linux-parisc@lfdr.de>; Tue,  2 May 2023 15:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231741AbjEAX6r (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 1 May 2023 19:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58674 "EHLO
+        id S234314AbjEBNCh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 2 May 2023 09:02:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233219AbjEAXz5 (ORCPT
+        with ESMTP id S234295AbjEBNCa (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 1 May 2023 19:55:57 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3A835B0
-        for <linux-parisc@vger.kernel.org>; Mon,  1 May 2023 16:55:55 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-63b5ce4f069so3695754b3a.1
-        for <linux-parisc@vger.kernel.org>; Mon, 01 May 2023 16:55:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682985354; x=1685577354;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QuwyJlMhOzHc7pD19rcBJm7YGGdkgt4st5TSnBpxtCA=;
-        b=u7Fbet5GsM/a+tKDG1jIQjylhg8yDIGsEfB3R3METzXxmxTlMfZIrKJcjG1Eg5BKJj
-         MlFOPCIdB1Kzok6k4VO3kofHLnjOICQw4gU2tuQOBg05zhDbFsggy6hJcjAmZMRGAXf0
-         rUtZb8K8J1C2NtGocYCnTuPL/7q8UuOvuWeleHqtXMOc3hyp4VTgoMKde+PprRxEq3U9
-         3NCfHp5mczh1hPm51YYXtT/w0nBzMFK+Xv4D4Xzjfds97FS7WzOT/O5styDeQpozCahx
-         aw/N9G2On9yOd5m0BdC1sLbhcBfoO3yIW/1WaAekonzfxEBWX3WbGIXs9NTSCve1lAj1
-         n8sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682985354; x=1685577354;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QuwyJlMhOzHc7pD19rcBJm7YGGdkgt4st5TSnBpxtCA=;
-        b=J426faQXqme9QL3Zi6S2c40KvSK0VJrth6y2BKMZtvKCndpl9CFDP/8U9qTK51rrHl
-         IyowsDEMrHlnNLbPGufrzXquAslKKpYkTpQy55S01oSyc5s+hMgrQ+3xxfK8MmA6W/gj
-         qTzGxkelBa5Zfnd0nGwVzytrDCPTk6XAJdLXA+i3PkwZenQBgl+0JQj/DBxG7ow5UoSh
-         nFjTTHaFfB/Eo0dPcxgX2/KPkB61KqaDNTDzDY34CFrZpEF56zfJMfElErwJMhVuJvTp
-         9WSIzpWshiSy4WjH/A4O1AsEucgCNpHucOXTQrt+sTqXgL/kDAU6s2xMPWrSTX1U+RQM
-         QiwA==
-X-Gm-Message-State: AC+VfDyDtroF8mK0aA5y2MTkVYNTiQ8f32OmTBc/DT9+YFf+gs1V8IiX
-        5njaVUdYR6eRWHGhsWnC9UyiyA==
-X-Google-Smtp-Source: ACHHUZ4SgBzSoTxFJ9j/mzMx+FBKsdjE/IfAfq6NZWT2hwrYFJsUY4cczelg66bWFkmYBXKaJT4LqQ==
-X-Received: by 2002:a05:6a20:6f03:b0:f8:b39b:b24e with SMTP id gt3-20020a056a206f0300b000f8b39bb24emr16225285pzb.11.1682985354255;
-        Mon, 01 May 2023 16:55:54 -0700 (PDT)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id t2-20020a628102000000b0063b1e7ffc5fsm20413877pfd.39.2023.05.01.16.55.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 May 2023 16:55:53 -0700 (PDT)
-Date:   Mon, 01 May 2023 16:55:53 -0700 (PDT)
-X-Google-Original-Date: Mon, 01 May 2023 16:55:31 PDT (-0700)
-Subject:     Re: [patch 26/37] riscv: Switch to hotplug core state synchronization
-In-Reply-To: <20230414232310.817955867@linutronix.de>
-CC:     linux-kernel@vger.kernel.org, x86@kernel.org, dwmw@infradead.org,
-        andrew.cooper3@citrix.com, brgerst@gmail.com,
-        arjan@linux.intel.com, pbonzini@redhat.com, paulmck@kernel.org,
-        thomas.lendacky@amd.com, seanjc@google.com,
-        oleksandr@natalenko.name, pmenzel@molgen.mpg.de,
-        gpiccoli@igalia.com, lucjan.lucjanov@gmail.com,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        linux-riscv@lists.infradead.org, dwmw@amazon.co.uk,
-        usama.arif@bytedance.com, jgross@suse.com,
-        boris.ostrovsky@oracle.com, xen-devel@lists.xenproject.org,
-        linux@armlinux.org.uk, Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, guoren@kernel.org,
-        linux-csky@vger.kernel.org, tsbogend@alpha.franken.de,
-        linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, linux-parisc@vger.kernel.org,
-        Mark Rutland <mark.rutland@arm.com>, sabrapan@amazon.com
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     tglx@linutronix.de
-Message-ID: <mhng-fd944caa-93db-40e0-8ea8-bc52772a261a@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+        Tue, 2 May 2023 09:02:30 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86D1D618B;
+        Tue,  2 May 2023 06:02:27 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id B905921F7C;
+        Tue,  2 May 2023 13:02:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1683032545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=4/HqMKMsbulxem0YZHptZtjI0v2zedDTIGVljFbx4A0=;
+        b=0/jQzGQjxcsbLoXKHnJlmsUT3JVv9NcXNh8VApsEzclPgvqXiOMOMMUZX42s6shx2N3wH5
+        WKHaUtVeQypvLRNNq5+GiVa4PzEli+F2Vu0ozdPBwnWfJ7TE/B8ck8OEhS+oYSIR6iBLCA
+        bcVHsdu2aNC7jCqqUglALcBQKHVFWvM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1683032545;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=4/HqMKMsbulxem0YZHptZtjI0v2zedDTIGVljFbx4A0=;
+        b=pr+0WmwF1A765+pq5Lr5jvAUfbVCp6UWP2ciA0hJDFgk5xiDi/CqmkpdDug/1NYyvo/HBE
+        9l77+O3JrXAysKCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 58447134FB;
+        Tue,  2 May 2023 13:02:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id tiGhFOEJUWRYTQAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 02 May 2023 13:02:25 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, geert@linux-m68k.org, javierm@redhat.com,
+        daniel@ffwll.ch, vgupta@kernel.org, chenhuacai@kernel.org,
+        kernel@xen0n.name, davem@davemloft.net,
+        James.Bottomley@HansenPartnership.com, arnd@arndb.de,
+        sam@ravnborg.org
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-parisc@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v3 0/6] fbdev: Move framebuffer I/O helpers to <asm/fb.h>
+Date:   Tue,  2 May 2023 15:02:17 +0200
+Message-Id: <20230502130223.14719-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, 14 Apr 2023 16:44:55 PDT (-0700), tglx@linutronix.de wrote:
-> Switch to the CPU hotplug core state tracking and synchronization
-> mechanim. No functional change intended.
->
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: linux-riscv@lists.infradead.org
-> ---
->  arch/riscv/Kconfig              |    1 +
->  arch/riscv/include/asm/smp.h    |    2 +-
->  arch/riscv/kernel/cpu-hotplug.c |   14 +++++++-------
->  3 files changed, 9 insertions(+), 8 deletions(-)
->
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -116,6 +116,7 @@ config RISCV
->  	select HAVE_RSEQ
->  	select HAVE_STACKPROTECTOR
->  	select HAVE_SYSCALL_TRACEPOINTS
-> +	select HOTPLUG_CORE_SYNC_DEAD if HOTPLUG_CPU
->  	select IRQ_DOMAIN
->  	select IRQ_FORCED_THREADING
->  	select MODULES_USE_ELF_RELA if MODULES
-> --- a/arch/riscv/include/asm/smp.h
-> +++ b/arch/riscv/include/asm/smp.h
-> @@ -64,7 +64,7 @@ asmlinkage void smp_callin(void);
->
->  #if defined CONFIG_HOTPLUG_CPU
->  int __cpu_disable(void);
-> -void __cpu_die(unsigned int cpu);
-> +static inline void __cpu_die(unsigned int cpu) { }
->  #endif /* CONFIG_HOTPLUG_CPU */
->
->  #else
-> --- a/arch/riscv/kernel/cpu-hotplug.c
-> +++ b/arch/riscv/kernel/cpu-hotplug.c
-> @@ -8,6 +8,7 @@
->  #include <linux/sched.h>
->  #include <linux/err.h>
->  #include <linux/irq.h>
-> +#include <linux/cpuhotplug.h>
->  #include <linux/cpu.h>
->  #include <linux/sched/hotplug.h>
->  #include <asm/irq.h>
-> @@ -48,17 +49,15 @@ int __cpu_disable(void)
->  	return ret;
->  }
->
-> +#ifdef CONFIG_HOTPLUG_CPU
->  /*
-> - * Called on the thread which is asking for a CPU to be shutdown.
-> + * Called on the thread which is asking for a CPU to be shutdown, if the
-> + * CPU reported dead to the hotplug core.
->   */
-> -void __cpu_die(unsigned int cpu)
-> +void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
->  {
->  	int ret = 0;
->
-> -	if (!cpu_wait_death(cpu, 5)) {
-> -		pr_err("CPU %u: didn't die\n", cpu);
-> -		return;
-> -	}
->  	pr_notice("CPU%u: off\n", cpu);
->
->  	/* Verify from the firmware if the cpu is really stopped*/
-> @@ -75,9 +74,10 @@ void arch_cpu_idle_dead(void)
->  {
->  	idle_task_exit();
->
-> -	(void)cpu_report_death();
-> +	cpuhp_ap_report_dead();
->
->  	cpu_ops[smp_processor_id()]->cpu_stop();
->  	/* It should never reach here */
->  	BUG();
->  }
-> +#endif
+(was: fbdev: Use regular I/O function for framebuffers)
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fbdev provides helpers for framebuffer I/O, such as fb_readl(),
+fb_writel() or fb_memcpy_to_fb(). The implementation of each helper
+depends on the architecture, but they are all equivalent to regular
+I/O functions of similar names. So use regular functions instead and
+move all helpers into <asm-generic/fb.h>
+
+The first patch a simple whitespace cleanup.
+
+Until now, <linux/fb.h> contained an include of <asm/io.h>. As this
+will go away patches 2 to 4 prepare include statements in the various
+drivers. Source files that use regular I/O helpers, such as readl(),
+now include <linux/io.h>. Source files that use framebuffer I/O
+helpers, such as fb_readl(), also include <asm/fb.h>.
+
+Patch 5 replaces the architecture-based if-else branching in 
+<linux/fb.h> by helpers in <asm-generic/fb.h>. All helpers use Linux'
+existing I/O functions.
+
+Patch 6 harmonizes naming among fbdev and existing I/O functions.
+
+The patchset has been built for a variety of platforms, such as x86-64,
+arm, aarch64, ppc64, parisc, m64k, mips and sparc.
+
+v3:
+	* add the new helpers in <asm-generic/fb.h>
+	* support reordering and native byte order (Geert, Arnd)
+v2:
+	* use Linux I/O helpers (Sam, Arnd)
+
+Thomas Zimmermann (6):
+  fbdev/matrox: Remove trailing whitespaces
+  ipu-v3: Include <linux/io.h>
+  fbdev: Include <linux/io.h> in various drivers
+  fbdev: Include <linux/io.h> via <asm/fb.h>
+  fbdev: Move framebuffer I/O helpers into <asm/fb.h>
+  fbdev: Rename fb_mem*() helpers
+
+ drivers/gpu/ipu-v3/ipu-prv.h                |   1 +
+ drivers/video/fbdev/arcfb.c                 |   1 +
+ drivers/video/fbdev/arkfb.c                 |   2 +
+ drivers/video/fbdev/aty/atyfb.h             |   2 +
+ drivers/video/fbdev/aty/mach64_cursor.c     |   4 +-
+ drivers/video/fbdev/chipsfb.c               |   3 +-
+ drivers/video/fbdev/cirrusfb.c              |   2 +
+ drivers/video/fbdev/core/cfbcopyarea.c      |   2 +-
+ drivers/video/fbdev/core/cfbfillrect.c      |   1 +
+ drivers/video/fbdev/core/cfbimgblt.c        |   1 +
+ drivers/video/fbdev/core/fbmem.c            |   4 +-
+ drivers/video/fbdev/core/svgalib.c          |   3 +-
+ drivers/video/fbdev/cyber2000fb.c           |   2 +
+ drivers/video/fbdev/ep93xx-fb.c             |   2 +
+ drivers/video/fbdev/hgafb.c                 |   3 +-
+ drivers/video/fbdev/hitfb.c                 |   2 +-
+ drivers/video/fbdev/kyro/fbdev.c            |   5 +-
+ drivers/video/fbdev/matrox/matroxfb_accel.c |   8 +-
+ drivers/video/fbdev/matrox/matroxfb_base.h  |   6 +-
+ drivers/video/fbdev/pm2fb.c                 |   3 +
+ drivers/video/fbdev/pm3fb.c                 |   2 +
+ drivers/video/fbdev/pvr2fb.c                |   4 +-
+ drivers/video/fbdev/s3fb.c                  |   2 +
+ drivers/video/fbdev/sm712fb.c               |   2 +
+ drivers/video/fbdev/sstfb.c                 |   4 +-
+ drivers/video/fbdev/stifb.c                 |   6 +-
+ drivers/video/fbdev/tdfxfb.c                |   5 +-
+ drivers/video/fbdev/tridentfb.c             |   2 +
+ drivers/video/fbdev/vga16fb.c               |   3 +-
+ drivers/video/fbdev/vt8623fb.c              |   2 +
+ drivers/video/fbdev/wmt_ge_rops.c           |   2 +
+ include/asm-generic/fb.h                    | 102 ++++++++++++++++++++
+ include/linux/fb.h                          |  53 ----------
+ 33 files changed, 167 insertions(+), 79 deletions(-)
+
+-- 
+2.40.1
+
