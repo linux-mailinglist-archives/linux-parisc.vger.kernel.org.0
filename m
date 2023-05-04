@@ -2,39 +2,60 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B556F641F
-	for <lists+linux-parisc@lfdr.de>; Thu,  4 May 2023 06:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 661BD6F6327
+	for <lists+linux-parisc@lfdr.de>; Thu,  4 May 2023 05:13:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229672AbjEDEsH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 4 May 2023 00:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43394 "EHLO
+        id S229648AbjEDDNd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 3 May 2023 23:13:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjEDEsG (ORCPT
+        with ESMTP id S229735AbjEDDNa (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 4 May 2023 00:48:06 -0400
-Received: from mail.peterfykh.hu (mail.peterfykh.hu [84.206.67.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74F71199E;
-        Wed,  3 May 2023 21:48:04 -0700 (PDT)
-Received: from mail.peterfykh.hu (localhost [127.0.0.1])
-        by mail.peterfykh.hu (Postfix) with ESMTP id E87F2153C;
-        Thu,  4 May 2023 03:24:36 +0200 (CEST)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Thu, 04 May 2023 03:24:36 +0200
-From:   MK <kalocsai.csilla@peterfykh.hu>
-To:     undisclosed-recipients:;
-Subject: Hallo Liebling, wie geht es dir?
-Reply-To: MK008@bahnhof.se
-Mail-Reply-To: MK008@bahnhof.se
-Message-ID: <3526d71e1f701f7c7dd2dd2623b6293a@peterfykh.hu>
-X-Sender: kalocsai.csilla@peterfykh.hu
-User-Agent: Roundcube Webmail/1.2.3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peterfykh.hu; s=mail; t=1683163477; bh=rVIYmyTMr9e2pmFORyFYVECWhTYWU/b5lUY+9NyQKzk=; h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Subject:Reply-To:Message-ID; b=dWRzc8hVQbGllJ3m4cXv+VrYqbeGg3efFQPBTGevN62M9y/ggrOe/1ASj4RyzjEQIt2DRsRDmXgkMUNaZnyrlYo+D25gf+YogUzZdCNAxlAXqq8SVqzbJ27WcYglJJq3vlEWq62uqUIw+AYTl7M3XimLd1JhSH0gAWlfw4Sljsk=
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        Wed, 3 May 2023 23:13:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E807F107;
+        Wed,  3 May 2023 20:13:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C33761142;
+        Thu,  4 May 2023 03:13:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E06DFC433D2;
+        Thu,  4 May 2023 03:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683170008;
+        bh=4fzGFUbk2IxyPs28j1fiZXOG5k6nDVG5tTY8Mi72EuE=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=MwDc2ycPv2+Af97IALXrpnkooInfwhFRzK4/JOlafdTnSNmkBh4AFdpCPWdAgGkR3
+         WlNAxNz/yZWYDa4bskczLIFB2U31cVLdkle1GNxAx3zW4uCQTYtfbQOcgIGbGMZpCn
+         M36KZj1DmonR1bqJSd4bDAukNRpAln7NUhNoF1JxdWsHWDl5I32QT9a0z+1IQbuqOt
+         uS5rhQXWhebhnT0S+J3nU7ut6xncJAZqCAGRmQgUbMtbR+59GmFpAiPpajHMJ4mVNd
+         YgnhmtQHNi2mkEawmzkonzRvEYfx2wuqgvyz/sQCEi+PI2Kv83cH2OXgvqQFcn7wIi
+         hdmCkl+s8yaMw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CEAF4E5FFC9;
+        Thu,  4 May 2023 03:13:28 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture fixes for v6.4-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <ZFLGNBvD7LbjKbu7@p100>
+References: <ZFLGNBvD7LbjKbu7@p100>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <ZFLGNBvD7LbjKbu7@p100>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.4-1
+X-PR-Tracked-Commit-Id: 6e3220ba3323a2c24be834aebf5d6e9f89d0993f
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 1a5304fecee523060f26e2778d9d8e33c0562df3
+Message-Id: <168317000883.23861.1282965046184313922.pr-tracker-bot@kernel.org>
+Date:   Thu, 04 May 2023 03:13:28 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,22 +63,15 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hallo, Schatz,
+The pull request you sent on Wed, 3 May 2023 22:38:12 +0200:
 
-Es tut mir leid, Sie zu stören, aber ich bin Single, einsam und brauche 
-einen fürsorglichen, liebevollen und romantischen Begleiter.
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.4-1
 
-Ich bin ein heimlicher Verehrer und würde gerne die Gelegenheit nutzen, 
-mehr voneinander zu erfahren.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/1a5304fecee523060f26e2778d9d8e33c0562df3
 
-Hoffentlich wird es der Beginn einer langfristigen Kommunikation 
-zwischen uns sein.
+Thank you!
 
-Bitte lassen Sie mich wissen, was Sie denken, senden Sie einfach eine 
-Antwort auf meine Nachricht, ich freue mich, von Ihnen zu hören.
-
-Umarmungen und Küsse,
-
-Heimlicher Verehrer,
-
-MK.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
