@@ -2,187 +2,165 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A637B6F905B
-	for <lists+linux-parisc@lfdr.de>; Sat,  6 May 2023 09:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEEAB6F9313
+	for <lists+linux-parisc@lfdr.de>; Sat,  6 May 2023 18:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231680AbjEFHxc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 6 May 2023 03:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51606 "EHLO
+        id S229684AbjEFQWn (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 6 May 2023 12:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230413AbjEFHxa (ORCPT
+        with ESMTP id S229446AbjEFQWm (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 6 May 2023 03:53:30 -0400
-Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com [66.111.4.221])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E82AA9ED0;
-        Sat,  6 May 2023 00:53:28 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 8739E580382;
-        Sat,  6 May 2023 03:53:26 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Sat, 06 May 2023 03:53:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1683359606; x=1683366806; bh=qirqUm7PnGWHwQwNur2abUio9msrv//9RED
-        Pco6ZlX4=; b=oUIJ95rOpDfmRIzT7ndjLdYZNMy36XDlyo33IIEnHSZ33J0jADb
-        s8Wl2kVkXJ9JJL3ahFR6/tUlWgUg4T+5GlAeuQgXbA623ytSHMI6w33pgrL5gPkQ
-        W8F9RgVjYAsbzO0gAELiS07CjrceJMlDMNGbnMT9Ppt63zRALUtziJnVtHYJYrC3
-        a3r22nW3NOQdW6Hcx+hp4tzQSpvzL4utHV+ScKAqMXRif/hqb3qf7dOQ+j3mOiYB
-        /Gww6To5Kxu+ozfU/ZCYuINBO6ysg5uyjP/XCWJL1nSywHzOgGamR8pUcOoc8zW0
-        PzXXzWMa17DEz49ZSDc7azQgksBHteG3XQg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-        1683359606; x=1683366806; bh=qirqUm7PnGWHwQwNur2abUio9msrv//9RED
-        Pco6ZlX4=; b=FTFVgfgd6MPCYHuvSvrDTPt1RQM4i9lYAY8vCVwWMXDobvjkv3Z
-        98lyhl/R4Z82PvVH4ieQeChYq9mxrO3Tqs0Z+otZq+jWQa7lpVJmdHx3vCIv562k
-        5ADJwfkwb6kvs1asZ6WGFKig2+74Ll9eG8vGoZajkWbn1RTVNMqQfOy884BWhLTb
-        wyeVn3+UcWjPWKhyA06U/+/+qwSQ0waDdwo3IioSt1GthWkBHvBi5WzfTDLUwgBQ
-        WNv1APC6NvhnyRkD36wa/v9PZN6oR9vyEi3DbLbtGzb4baYhlYxJ8FSQ9iQVXYTE
-        oKIRXNMC90D9Vu2ER6odZWG3KS51wOQMKDA==
-X-ME-Sender: <xms:cwdWZIyxfxC9bvjRyqPyh0ib1bw6Vq3YOOk7GDOHuGHr104jlhllfw>
-    <xme:cwdWZMR86By_Es81Fs24nFfL6mcjYvXqEeFR5y0ciKrGphskxtRvTK7MWwtAln-3I
-    9slHMOPYz1bwza1C4s>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeffedguddvhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
-    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
-    grthhtvghrnhepgfekueelgeeigefhudduledtkeefffejueelheelfedutedttdfgveeu
-    feefieegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:cwdWZKWPJSNKGJ1BoPCjHJFB41ohvbYc5lXNMEaSpXVx65fcImDOSA>
-    <xmx:cwdWZGjTC32HbA-ZJkwR9iDyfFZL5rCJIdL47Ja82EI69IRoNBcwbA>
-    <xmx:cwdWZKA3HC6RuBSTtV_3Bfdw9CRHScG4KYDshiiNwwwPwz9AjH93HQ>
-    <xmx:dgdWZEwIsTjJdExHIHSo4sMn188isLdlE6P98sPFv2qrASynbBpX8w>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id CB166B60086; Sat,  6 May 2023 03:53:23 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-386-g2404815117-fm-20230425.001-g24048151
-Mime-Version: 1.0
-Message-Id: <b464c1e7-f185-46d1-8b15-9592fa0cfc25@app.fastmail.com>
-In-Reply-To: <CAJF2gTSRuj3-AgynXxZeXc2vGSH8Ohn5eP2hsuKi8rTzSPLhRQ@mail.gmail.com>
-References: <20230327121317.4081816-1-arnd@kernel.org>
- <20230327121317.4081816-10-arnd@kernel.org>
- <CAJF2gTT2VCVMJs1NvgK66uD+BhObjM2WNxf2RY7wTZsho4sjVA@mail.gmail.com>
- <f460ad77-aa76-43bb-b2bb-e3b6dbcd8b03@app.fastmail.com>
- <CAJF2gTSRuj3-AgynXxZeXc2vGSH8Ohn5eP2hsuKi8rTzSPLhRQ@mail.gmail.com>
-Date:   Sat, 06 May 2023 09:53:03 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     guoren <guoren@kernel.org>
-Cc:     "Arnd Bergmann" <arnd@kernel.org>,
-        "Christoph Hellwig" <hch@lst.de>, linux-kernel@vger.kernel.org,
-        "Vineet Gupta" <vgupta@kernel.org>,
-        "Will Deacon" <will@kernel.org>,
-        "Russell King" <linux@armlinux.org.uk>,
-        "Neil Armstrong" <neil.armstrong@linaro.org>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        "Catalin Marinas" <catalin.marinas@arm.com>,
-        "Brian Cain" <bcain@quicinc.com>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Michal Simek" <monstr@monstr.eu>,
-        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        "Dinh Nguyen" <dinguyen@kernel.org>,
-        "Stafford Horne" <shorne@gmail.com>,
-        "Helge Deller" <deller@gmx.de>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        "Christophe Leroy" <christophe.leroy@csgroup.eu>,
-        "Paul Walmsley" <paul.walmsley@sifive.com>,
-        "Palmer Dabbelt" <palmer@dabbelt.com>,
-        "Rich Felker" <dalias@libc.org>,
-        "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Max Filippov" <jcmvbkbc@gmail.com>,
-        "Robin Murphy" <robin.murphy@arm.com>,
-        "Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "Conor.Dooley" <conor.dooley@microchip.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        "linux-oxnas@groups.io" <linux-oxnas@groups.io>,
+        Sat, 6 May 2023 12:22:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D00F4680;
+        Sat,  6 May 2023 09:22:41 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1683390158;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=NXHfBgcGHt/ZfPwa+T595dnepfFJKJnpLjR3JhBl6Q0=;
+        b=1czMZh1cRjeqiQ2TZA6GbMVHHXEF93eQIVvQioB8FE/pRwMNCJ9iNbT002o3Vf8Q1PmjjT
+        pMzD7AC5NROe0zWPr/xkstx8tP21FQigIYhXnCedHf48++FNK52empvCyZE4IMSf7ryah7
+        wwDm68n14K3LZeFvyQ99Fwubq6JJjmTxOyIllycil0ZJfXjm8tULzw2/ivE/eeRZ3vZ2Ce
+        eFzoWJEYtyiUQ3YTBmQpXzsA8QFgMuJS8CeTY8f2OfEh+NvACDq69zDAubztHsM41nl1p1
+        k+Q1vY7kiaQqTaWRFrb4KJC+127qTmzlxib6lozIfkeM3gQq7L3F5SIRCIw/xg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1683390158;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=NXHfBgcGHt/ZfPwa+T595dnepfFJKJnpLjR3JhBl6Q0=;
+        b=qtQ0xS4FhuHdv2/qWAJNtp26GqvWQxksH6Mo/Q1MgLXE9WE0n6Pih7C913p3eWGR7QXk2c
+        rCYD41DUjLVIXsBw==
+To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     "x86@kernel.org" <x86@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Brian Gerst <brgerst@gmail.com>,
+        Arjan van de Veen <arjan@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul McKenney <paulmck@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Piotr Gorski <lucjan.lucjanov@gmail.com>,
+        Usama Arif <usama.arif@bytedance.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
         "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-        linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org,
-        "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org
-Subject: Re: [PATCH 09/21] riscv: dma-mapping: skip invalidation before bidirectional
- DMA
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Sabin Rapan <sabrapan@amazon.com>
+Subject: RE: [patch V2 38/38] x86/smpboot/64: Implement
+ arch_cpuhp_init_parallel_bringup() and enable it
+In-Reply-To: <BYAPR21MB168869144087644F89BAC89FD7739@BYAPR21MB1688.namprd21.prod.outlook.com>
+References: <20230504185733.126511787@linutronix.de>
+ <20230504185938.393373946@linutronix.de>
+ <BYAPR21MB168869144087644F89BAC89FD7739@BYAPR21MB1688.namprd21.prod.outlook.com>
+Date:   Sat, 06 May 2023 18:22:37 +0200
+Message-ID: <87sfc92zw2.ffs@tglx>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Sat, May 6, 2023, at 09:25, Guo Ren wrote:
-> On Fri, May 5, 2023 at 9:19=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> w=
-rote:
->>
->> This is something we can consider. Unfortunately, this is something
->> that no architecture (except pa-risc, which has other problems)
->> does at the moment, so we'd probably need to have a proper debate
->> about this.
->>
->> We already have two conflicting ways to handle DMA_FROM_DEVICE,
->> either invalidate/invalidate, or clean/invalidate. I can see
-> I vote to invalidate/invalidate.
+On Sat, May 06 2023 at 00:53, Michael Kelley wrote:
+> From: Thomas Gleixner <tglx@linutronix.de> Sent: Thursday, May 4, 2023 12:03 PM
+> [snip]
 >
-...
+>> @@ -934,10 +961,10 @@ static void announce_cpu(int cpu, int ap
+>>  	if (!node_width)
+>>  		node_width = num_digits(num_possible_nodes()) + 1; /* + '#' */
+>> 
+>> -	if (cpu == 1)
+>> -		printk(KERN_INFO "x86: Booting SMP configuration:\n");
+>> -
+>>  	if (system_state < SYSTEM_RUNNING) {
+>> +		if (num_online_cpus() == 1)
 >
->> that flush/invalidate may be a sensible option as well, but I'd
->> want to have that discussion after the series is complete, so
->> we can come to a generic solution that has the same documented
->> behavior across all architectures.
-> Yes, I agree to unify them into a generic solution first. My proposal
-> could be another topic in the future.
+> Unfortunately, this new check doesn't work.  Here's the output I get:
+>
+> [    0.721384] smp: Bringing up secondary CPUs ...
+> [    0.725359] smpboot: x86: Booting SMP configuration:
+> [    0.729249] .... node  #0, CPUs:        #2
+> [    0.729654] smpboot: x86: Booting SMP configuration:
+> [    0.737247]       #4
+>
+> Evidently num_online_cpus() isn't updated until after all the primary
+> siblings get started.
 
-Right, I was explicitly trying to exclude that question from my
-series, and left it as an architecture specific Kconfig option
-based on the current behavior.
+Duh. Where is that brown paperbag?
 
->> In particular, if we end up moving arm64 and riscv back to the
->> traditional invalidate/invalidate for DMA_FROM_DEVICE and
->> document that driver must not rely on buffers getting cleaned
-> After invalidation, the cache lines are also cleaned, right? So why do
-> we need to document it additionally?
+> When booting with cpuhp.parallel=0, the output is good.
 
-I mentioned the debate in the cover letter, the full explanation
-is archived at
-https://lore.kernel.org/all/20220606152150.GA31568@willie-the-truck/
+Exactly that was on the command line when I quickly booted that change :(
 
-In short, the problem that is addressed here is leaking sensitive
-kernel data to user space or a device as in this sequence:
+The below should fix it for real.
 
-1. A DMA buffer is allocated in the kernel and contains stale data
-   that is no longer needed but must not be exposed to untrusted
-   userspace, i.e. encryption keys or user file pages
-2. allocator uses memset() to clear out the buffer
-3. buffer gets mapped into a device for DMA_FROM_DEVICE
-4. writeback cache gets invalidated, uncovering the sensitive
-   data by discarding the zeros
-5. device returns less data than expected
-6. buffer is unmapped
-7. whole buffer is mapped or copied to user space
+Thanks,
 
-Will added his patch for arm64 to prevent this scenario by using
-'clean' instead of 'invalidate' in step 4, and the same behavior
-got copied to riscv but not most of the other architectures.
-The dma-mapping documentation does not say anything about this
-case, and an alternative approach would be to document that
-device drivers must watch out for short reads in step 5, or that
-kzalloc() should clean the cache in step 2. Both of these come
-at a cost as well.
-
-     Arnd
+        tglx
+---
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -951,9 +951,9 @@ static int wakeup_secondary_cpu_via_init
+ /* reduce the number of lines printed when booting a large cpu count system */
+ static void announce_cpu(int cpu, int apicid)
+ {
++	static int width, node_width, first = 1;
+ 	static int current_node = NUMA_NO_NODE;
+ 	int node = early_cpu_to_node(cpu);
+-	static int width, node_width;
+ 
+ 	if (!width)
+ 		width = num_digits(num_possible_cpus()) + 1; /* + '#' sign */
+@@ -962,7 +962,7 @@ static void announce_cpu(int cpu, int ap
+ 		node_width = num_digits(num_possible_nodes()) + 1; /* + '#' */
+ 
+ 	if (system_state < SYSTEM_RUNNING) {
+-		if (num_online_cpus() == 1)
++		if (first)
+ 			pr_info("x86: Booting SMP configuration:\n");
+ 
+ 		if (node != current_node) {
+@@ -975,11 +975,11 @@ static void announce_cpu(int cpu, int ap
+ 		}
+ 
+ 		/* Add padding for the BSP */
+-		if (num_online_cpus() == 1)
++		if (first)
+ 			pr_cont("%*s", width + 1, " ");
++		first = 0;
+ 
+ 		pr_cont("%*s#%d", width - num_digits(cpu), " ", cpu);
+-
+ 	} else
+ 		pr_info("Booting Node %d Processor %d APIC 0x%x\n",
+ 			node, cpu, apicid);
