@@ -2,60 +2,112 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFBCB6FC240
-	for <lists+linux-parisc@lfdr.de>; Tue,  9 May 2023 11:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D74C6FC29C
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 May 2023 11:20:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233462AbjEIJCh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 9 May 2023 05:02:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
+        id S235091AbjEIJUs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 9 May 2023 05:20:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233813AbjEIJCg (ORCPT
+        with ESMTP id S234945AbjEIJUY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 9 May 2023 05:02:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9398F8A57
-        for <linux-parisc@vger.kernel.org>; Tue,  9 May 2023 02:01:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683622908;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Cm14icj1xcLZwuyrUAh+VMkzJdTwWmftCly76BVpCHQ=;
-        b=NNiaF7CoOkE7DvWc/FUaVCtcfLMxhWk47OWdRAgIH9DH27HJsHWLL7CHJRuOMikiRMk8CD
-        8+SfgFk5tLCLgZ8PQq7PcvFh29fkC2Y8/ZpfWLeyaGHcRd+rN5i9LqrOHilBdl+TBK4MJy
-        M/0wYOv+mC7yfJp9EeBTP56s3hfD7Uc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-515-jYw41fAHM-2pUokrhyocWA-1; Tue, 09 May 2023 05:01:46 -0400
-X-MC-Unique: jYw41fAHM-2pUokrhyocWA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 525CC101A55C;
-        Tue,  9 May 2023 09:01:46 +0000 (UTC)
-Received: from localhost (ovpn-12-139.pek2.redhat.com [10.72.12.139])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 8ED4B40C2063;
-        Tue,  9 May 2023 09:01:45 +0000 (UTC)
-Date:   Tue, 9 May 2023 17:01:42 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Simon Horman <horms@kernel.org>
-Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>,
-        kexec@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] parisc: kexec: include reboot.h
-Message-ID: <ZFoL9ntYCCfZFCNs@bhe.users.ipa.redhat.com>
-References: <20230508-parisc-kexec-include-reboot-v1-1-78a155a8a0a4@kernel.org>
+        Tue, 9 May 2023 05:20:24 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8CCE100C0;
+        Tue,  9 May 2023 02:20:17 -0700 (PDT)
+Received: from [192.168.1.103] (178.176.73.203) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Tue, 9 May 2023
+ 12:20:06 +0300
+Subject: Re: [patch v3 33/36] x86/apic: Save the APIC virtual base address
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>
+CC:     <x86@kernel.org>, David Woodhouse <dwmw2@infradead.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Brian Gerst <brgerst@gmail.com>,
+        Arjan van de Veen <arjan@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul McKenney <paulmck@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Piotr Gorski <lucjan.lucjanov@gmail.com>,
+        Usama Arif <usama.arif@bytedance.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        <xen-devel@lists.xenproject.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        <linux-csky@vger.kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        <linux-mips@vger.kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, <linux-parisc@vger.kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        <linux-riscv@lists.infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sabin Rapan <sabrapan@amazon.com>,
+        "Michael Kelley (LINUX)" <mikelley@microsoft.com>
+References: <20230508181633.089804905@linutronix.de>
+ <20230508185219.070274100@linutronix.de>
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <a6f48a7b-484c-31af-f568-cb1de0d766d4@omp.ru>
+Date:   Tue, 9 May 2023 12:20:06 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230508-parisc-kexec-include-reboot-v1-1-78a155a8a0a4@kernel.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20230508185219.070274100@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [178.176.73.203]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 05/09/2023 08:58:12
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 177218 [May 07 2023]
+X-KSE-AntiSpam-Info: Version: 5.9.59.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 510 510 bc345371020d3ce827abc4c710f5f0ecf15eaf2e
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.73.203 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.73.203 in (user)
+ dbl.spamhaus.org}
+X-KSE-AntiSpam-Info: 178.176.73.203:7.4.1,7.7.3;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {iprep_blacklist}
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.73.203
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/09/2023 09:07:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 5/9/2023 6:00:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,45 +115,29 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 05/09/23 at 09:01am, Simon Horman wrote:
-> Include reboot.h in machine_kexec.c for declaration of
-> machine_crash_shutdown and machine_shutdown.
-> 
-> gcc-12 with W=1 reports:
-> 
->  arch/parisc/kernel/kexec.c:57:6: warning: no previous prototype for 'machine_crash_shutdown' [-Wmissing-prototypes]
->     57 | void machine_crash_shutdown(struct pt_regs *regs)
->        |      ^~~~~~~~~~~~~~~~~~~~~~
->  arch/parisc/kernel/kexec.c:61:6: warning: no previous prototype for 'machine_shutdown' [-Wmissing-prototypes]
->     61 | void machine_shutdown(void)
->        |      ^~~~~~~~~~~~~~~~
-> 
-> No functional changes intended.
-> Compile tested only.
-> 
-> Signed-off-by: Simon Horman <horms@kernel.org>
+Hello!
 
-Acked-by: Baoquan He <bhe@redhat.com>
+On 5/8/23 10:44 PM, Thomas Gleixner wrote:
 
-We may need to find out the places in all architectures and fix all of
-them.
-
-> ---
->  arch/parisc/kernel/kexec.c | 2 ++
->  1 file changed, 2 insertions(+)
+> From: Thomas Gleixner <tglx@linutronix.de>
 > 
-> diff --git a/arch/parisc/kernel/kexec.c b/arch/parisc/kernel/kexec.c
-> index 5eb7f30edc1f..db57345a9daf 100644
-> --- a/arch/parisc/kernel/kexec.c
-> +++ b/arch/parisc/kernel/kexec.c
-> @@ -4,6 +4,8 @@
->  #include <linux/console.h>
->  #include <linux/kexec.h>
->  #include <linux/delay.h>
-> +#include <linux/reboot.h>
-> +
->  #include <asm/cacheflush.h>
->  #include <asm/sections.h>
->  
-> 
+> For parallel CPU brinugp it's required to read the APIC ID in the low level
+> startup code. The virtual APIC base address is a constant because its a
+> fix-mapped address. Exposing that constant which is composed via macros to
+> assembly code is non-trivial dues to header inclusion hell.
 
+   s/dues/due/?
+
+> Aside of that it's constant only because of the vsyscall ABI
+> requirement. Once vsyscall is out of the picture the fixmap can be placed
+> at runtime.
+> 
+> Avoid header hell, stay flexible and store the address in a variable which
+> can be exposed to the low level startup code.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Tested-by: Michael Kelley <mikelley@microsoft.com>
+
+[...]
+
+MBR, Sergey
