@@ -2,109 +2,96 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3634C6FCF27
-	for <lists+linux-parisc@lfdr.de>; Tue,  9 May 2023 22:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24F9E6FD4F7
+	for <lists+linux-parisc@lfdr.de>; Wed, 10 May 2023 06:12:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbjEIULK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 9 May 2023 16:11:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48730 "EHLO
+        id S229527AbjEJEMp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 10 May 2023 00:12:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbjEIULJ (ORCPT
+        with ESMTP id S229524AbjEJEMn (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 9 May 2023 16:11:09 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6479A1729;
-        Tue,  9 May 2023 13:11:07 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1683663065;
+        Wed, 10 May 2023 00:12:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2446E6A
+        for <linux-parisc@vger.kernel.org>; Tue,  9 May 2023 21:11:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1683691918;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=GDHRmjiERMZtAMWS8NswxcpsZgr8pqyf8cBJN0UwKq4=;
-        b=qRz1Wt3JIbNYLISqAbJr1CMERh+G2fMl0sqNUINGFnuAglUDS20PR5mShGM7iQQQaOXzUO
-        6p1nBmlJSh5FISuh/gxPpyFl5N/5lIcPzXiWCbOhc/BY9nLjejGZdozuMFQuDWHB0czbQ3
-        N334596N1dIxTBUtYyzDiKqjfnYYlcCALsa05iyDdZ772j72RpkHn+oDxyP4ObL7l+piSu
-        ZhZkepOsryy7f/3f8Xvt0ySi2CMPDVnx0tsF8XLS0QXVKSABEb0ZDeaHvlrFZfnZHg6sEY
-        EkUkcA416BPYsfyNhOSk3xIjz0pEBaTy2eNw1t0P+tqJe8e17B+vC1YPI9z1/Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1683663065;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=GDHRmjiERMZtAMWS8NswxcpsZgr8pqyf8cBJN0UwKq4=;
-        b=Xlcesbr/mowxxv4d+xv21wM9Nh14MEM6CP2UULmrKClB0/ijd/XoMlkIURymgqxjfMwTM5
-        2x4mgfol9jpnTzDw==
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv@lists.infradead.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        David Woodhouse <dwmw@amazon.co.uk>
-Subject: Re: [patch v3 08/36] x86/smpboot: Split up native_cpu_up() into
- separate phases and document them
-In-Reply-To: <20230509100421.GU83892@hirez.programming.kicks-ass.net>
-References: <20230508181633.089804905@linutronix.de>
- <20230508185217.671595388@linutronix.de>
- <20230509100421.GU83892@hirez.programming.kicks-ass.net>
-Date:   Tue, 09 May 2023 22:11:05 +0200
-Message-ID: <87fs85z2na.ffs@tglx>
+        bh=EhMhj5d/G7n1EDqnhcO4ODQXL3YvB1dKGcoGs91Uegg=;
+        b=b5KIAiyZJAU9GPE13VTHohcrcThAqZcgUH1PIlNO8bbBJjKXzKuloyw+cFThQoCnFNmQ7n
+        0tO0TWSPErtDxE/uq8OL9kewr0NIlNfikKH0L9JLAtsctPi/tP+7U4bhZFZeHrwKeRhgR/
+        7LcDSMYEUYpIM5R7oaURwa3x9vEgm7c=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-222-b1P_QNRuOCqoEZ1_-JsbBw-1; Wed, 10 May 2023 00:11:52 -0400
+X-MC-Unique: b1P_QNRuOCqoEZ1_-JsbBw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB3F529DD990;
+        Wed, 10 May 2023 04:11:51 +0000 (UTC)
+Received: from localhost (ovpn-12-62.pek2.redhat.com [10.72.12.62])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id B37A61121314;
+        Wed, 10 May 2023 04:11:50 +0000 (UTC)
+Date:   Wed, 10 May 2023 12:11:47 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     Simon Horman <horms@kernel.org>
+Cc:     "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>,
+        kexec@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] parisc: kexec: include reboot.h
+Message-ID: <ZFsZg0fvPA2/eysa@MiWiFi-R3L-srv>
+References: <20230508-parisc-kexec-include-reboot-v1-1-78a155a8a0a4@kernel.org>
+ <ZFoL9ntYCCfZFCNs@bhe.users.ipa.redhat.com>
+ <ZFo0Gd/Eucw/0gtC@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZFo0Gd/Eucw/0gtC@kernel.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, May 09 2023 at 12:04, Peter Zijlstra wrote:
-> On Mon, May 08, 2023 at 09:43:39PM +0200, Thomas Gleixner wrote:
-> Not to the detriment of this patch, but this barrier() and it's comment
-> seem weird vs smp_callin(). That function ends with an atomic bitop (it
-> has to, at the very least it must not be weaker than store-release) but
-> also has an explicit wmb() to order setup vs CPU_STARTING.
->
-> (arguably that should be a full fence *AND* get a comment)
+On 05/09/23 at 01:52pm, Simon Horman wrote:
+> On Tue, May 09, 2023 at 05:01:42PM +0800, Baoquan He wrote:
+> > On 05/09/23 at 09:01am, Simon Horman wrote:
+> > > Include reboot.h in machine_kexec.c for declaration of
+> > > machine_crash_shutdown and machine_shutdown.
+> > > 
+> > > gcc-12 with W=1 reports:
+> > > 
+> > >  arch/parisc/kernel/kexec.c:57:6: warning: no previous prototype for 'machine_crash_shutdown' [-Wmissing-prototypes]
+> > >     57 | void machine_crash_shutdown(struct pt_regs *regs)
+> > >        |      ^~~~~~~~~~~~~~~~~~~~~~
+> > >  arch/parisc/kernel/kexec.c:61:6: warning: no previous prototype for 'machine_shutdown' [-Wmissing-prototypes]
+> > >     61 | void machine_shutdown(void)
+> > >        |      ^~~~~~~~~~~~~~~~
+> > > 
+> > > No functional changes intended.
+> > > Compile tested only.
+> > > 
+> > > Signed-off-by: Simon Horman <horms@kernel.org>
+> > 
+> > Acked-by: Baoquan He <bhe@redhat.com>
+> > 
+> > We may need to find out the places in all architectures and fix all of
+> > them.
+> 
+> I did check. It seemed to be needed for riscv, m68k and parisc.
+> I've sent out patches for all three. But I may have missed something.
 
-TBH: I'm grasping for something 'arguable': What's the point of this
-wmb() or even a mb()?
+That's great, thanks. I didn't notice the other two.
 
-Most of the [w]mb()'s in smpboot.c except those in mwait_play_dead()
-have a very distinct voodoo programming smell.
-
-Thanks,
-
-        tglx
