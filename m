@@ -2,110 +2,122 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 321E56FF89D
-	for <lists+linux-parisc@lfdr.de>; Thu, 11 May 2023 19:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2AEC6FFA30
+	for <lists+linux-parisc@lfdr.de>; Thu, 11 May 2023 21:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238035AbjEKRhE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 11 May 2023 13:37:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36448 "EHLO
+        id S229834AbjEKTeh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 11 May 2023 15:34:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238452AbjEKRhD (ORCPT
+        with ESMTP id S232629AbjEKTef (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 11 May 2023 13:37:03 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CAB165B4
-        for <linux-parisc@vger.kernel.org>; Thu, 11 May 2023 10:36:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1683826546; i=deller@gmx.de;
-        bh=APZhjLF9mod3j9ntIwszQATnZm6cFG6DYbfw9hK+sU0=;
-        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
-        b=IiK2VMXImZmPPBRoEUUg0QzZ4NCo1mZumA3WfF+GliGjr22Oty7zZ/DQEaDD87eNS
-         MZXC9F/xPQU8UPPO3PYfCKxVIU/RQWhXZXN1+14Gt+i2xTW/9PLic3rpWErVwWAPbX
-         ViH/bc6++1AQvLp1YhHNPiLZaP2AafXtS5f+aekV/NxjzMC8Qi0ACJE02xHTgvH5+I
-         ERd7sqVl0QXNRhFHerzEw62XQWbjg2sxNZHXLRjuBay9uvUZMJ9mNL1fqBAlU4W7L6
-         G5PvCv/fftA6wxfbjCojLKYhsln4964KxmP6J/L0tlB4YAL++f1wC50kzsHNsGYHEI
-         0cTZpJ7i8hOsQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.146.253]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Ml6qC-1qby862Jxc-00lRN3; Thu, 11
- May 2023 19:35:46 +0200
-Message-ID: <85aef102-8407-68c7-2dc2-87e5a866906b@gmx.de>
-Date:   Thu, 11 May 2023 19:35:46 +0200
+        Thu, 11 May 2023 15:34:35 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2C1F59D0;
+        Thu, 11 May 2023 12:34:34 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-619be7d7211so42158626d6.3;
+        Thu, 11 May 2023 12:34:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683833674; x=1686425674;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OkRg4aBIGd+Ujeyjhqn0VJEzJVlq0iY77Z11k0mAFFM=;
+        b=D8VOr21Fczrl0K1COf0x4Ck7WHMsRogiYEEbrY2VpNny+n3MR+tJuDH09I9YAsS652
+         swT6GvFknXTnMBZPWlOxHk2u05+SeKUhRFMH/ZtDMNfuFTmqhV28jtrPoFuIwQ/bqAzu
+         JEHJCZ22+ejNPu9sQ5B4mFAObz8laeWoYTSRIa0MiOnPq0OszLg5zmMrWPnpqMS2qlwN
+         5gjqnyxgdjPUMVEd0f/03my+5DYNfTma/sJ3vnrs+cTqKEwezFl9LOtEmPAD5vfhXfNX
+         JrpZrTJ+uj1uIfEyrp6lAwR5J8sidiziH5Wld/lDfUFxzbjgvyiL15VatExShfnoJdEm
+         /ImQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683833674; x=1686425674;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OkRg4aBIGd+Ujeyjhqn0VJEzJVlq0iY77Z11k0mAFFM=;
+        b=I+e0iSK5LM2XRHfR9+c8Jb9mN0NXDz/nBDRNymh9Jue2t28UrKxRqYi2LAE/un8HXU
+         l/OOq8L0LY8OQVbmwAoWH/BaM0Ae7AY9L0YOjjmHDWt730qnBQmLmnym9oZ0iBbXqNd4
+         gVWJ/+zsy+LxKr+tRpoHswUe1SZbbfIEoedYAQpdDDuJhDQ9bPUD+tQZOHpUrKSAnejI
+         9u0b9DBVMJn0eyhNC8EAk9eFmoxMjQNvibNIGd9h2L1Z5YH86xENlUi8nWwFAHrkiOJK
+         PSsMWFQ6fFXlQaVDIh+PXUezizXqkF3zz0KM+XkAcsoqlQlFCMJuRs4XbetYVKblN/5h
+         jOmQ==
+X-Gm-Message-State: AC+VfDzTm74CQfiyLWsMkFQ3vTps7tfH1fUU0rEwsZ8jQoJJSlcyDrj/
+        Q3nS9z5o1ebkDUsZdHKTVKEx7Y1ZNHkeOKrul8Y=
+X-Google-Smtp-Source: ACHHUZ6FKXu0op+KxzAVHeFuNCXe2D1xFAp09jFVR7D1aeGdyycJWyp3G5ZLoEExaajX1pb4elh/5/+JF1DIDbKGBFc=
+X-Received: by 2002:ad4:5dec:0:b0:5a1:6212:93be with SMTP id
+ jn12-20020ad45dec000000b005a1621293bemr33993641qvb.29.1683833673901; Thu, 11
+ May 2023 12:34:33 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Regression with kernel 6.3 "kernel BUG at
- include/linux/swapops.h:472!"
-Content-Language: en-US
-To:     Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
-        linux-parisc@vger.kernel.org
-References: <1683740497@msgid.manchmal.in-ulm.de>
- <8889a75f-1a81-905e-8bc4-a733de32985f@gmx.de>
- <1683825030@msgid.manchmal.in-ulm.de>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <1683825030@msgid.manchmal.in-ulm.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20230510195806.2902878-1-nphamcs@gmail.com> <874joja6vz.fsf@mail.lhotse>
+In-Reply-To: <874joja6vz.fsf@mail.lhotse>
+From:   Nhat Pham <nphamcs@gmail.com>
+Date:   Thu, 11 May 2023 12:34:23 -0700
+Message-ID: <CAKEwX=OHMaUzEG9hoMz20m9DnyFD4xC78KiNV1Qu0bUhkrYhAA@mail.gmail.com>
+Subject: Re: [PATCH] cachestat: wire up cachestat for other architectures
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     akpm@linux-foundation.org, linux-mm@kvack.org,
+        linux-api@vger.kernel.org, kernel-team@meta.com,
+        linux-arch@vger.kernel.org, hannes@cmpxchg.org,
+        richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, linux@armlinux.org.uk, geert@linux-m68k.org,
+        monstr@monstr.eu, tsbogend@alpha.franken.de,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        ysato@users.sourceforge.jp, dalias@libc.org,
+        glaubitz@physik.fu-berlin.de, davem@davemloft.net,
+        chris@zankel.net, jcmvbkbc@gmail.com, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:9gmnXuGyjsk//qiXVWwpQQNW1BI5X/1u3gISjGwIoySeLAiNkX1
- l79kAEEyfRX7BhdIagKJY6Dkz2K9Thz7WIIX5qnZxQvQpeR81PSmgYswraJvYIrK2O++5va
- k0O0qHBI1EMnSo0HsqHdHHe4i0cK/lvNAjMafb2rt5U9mmmUDICrKO8JCrFidCqAeEsPoRO
- 2bdPoMbM4ykDBVa4e88ew==
-UI-OutboundReport: notjunk:1;M01:P0:TLkSCZxgoK8=;iRaKV3DXG5oY0sM10+ZZTYNHY76
- lD3nGIOIQtf+UsDLDDT3IZBlxjxglT1CNVfldCMKP3IKC5KZ8t3sr1BA7DBLkRfCFj0U7OjX4
- rqvhFALab2I4Os4LcVSQGWUjaqS649uoiz4BwR/b4Sxzd+1FKIIX7r/MKBuZW7HMXJ8B8Phxs
- SNEtL43SbZJWvnfBhOiwRJDyJs26ers2KjiMnsHazWeBZwOGHrNd/EuxRB6tp5O5C1vKZxVi4
- OC7JlB8FeJmkXxkDOpVd0wtLXHt0pUsBhIEIswNcwUdGahA0UDrTR4yQ72Bw8ot/WkXLbfiN7
- +sySS65oOGACMEhX1jbpA9lKQs7Wet9hV628iJ3HV+mlwW+rUGBBDyfDxBl0CAVqSY1zWYzW1
- vMH6Yvu8e9e0mGEM6pmJ7t8pPDoDV5wE0oioBD5sVLjLyaUawGLlDIrW5W4eoM6RcVLg8ytZg
- KKdGuD5lDVoOA+nrdso6nKAlEot20IpiD2xTCzxU9Tk2QQLRTj1jUxnHSU+Ve7zRsK5rXqw2f
- sjK2YINeBuNdMsNSfBWitMmh2gVGM9uNjTCjTAWy5KA/VX+2XBiJA8kWI8hSqbs0X57Q19e2S
- 5osEywB/QQR8oDxihgqfKvgkFU0yn2OTWXtyQvtsjFcF4hVSiaQXOuYDxRMzyln2dZbK0ROWl
- 6Sfx4aFRMfqM5aDCqn000MIY1qqD8tSn0YPmkIyyYUTDclDrOLraEIUTNWzyzwV2UqHgLD2zS
- wqfigntdnZy1mWkT5WtodlP0Y2A0+ok6OfUKzjueS4IeIBaftHr4ksJNQO3hyWmFtiA4zKRlO
- g3znQg7aeO+VWUIT0DrsRsYUUScskChZUOJwCNOvePAHvRZAZXqodGy3Mpat+k1xyI17oWtnB
- dV8kzZkbQncWqPi5YebK/sHA+ZMWHs873Ml406pWViv3PVErdPAIPq5IZZZSOgj350tmR1nI8
- sddRSw==
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/11/23 19:22, Christoph Biedl wrote:
-> Helge Deller wrote...
+On Wed, May 10, 2023 at 8:23=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.a=
+u> wrote:
 >
->> I haven't used kernel 6.3 much yet, but the kernel BUG below seems
->> to be triggered by CONFIG_MIGRATION.
->> You could try to disable that config option first to verify if
->> it fixes your crash.
->> This might help to narrow down the problem....
+> Nhat Pham <nphamcs@gmail.com> writes:
+> > cachestat is previously only wired in for x86 (and architectures using
+> > the generic unistd.h table):
+> >
+> > https://lore.kernel.org/lkml/20230503013608.2431726-1-nphamcs@gmail.com=
+/
+> >
+> > This patch wires cachestat in for all the other architectures.
+> >
+> > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+> > ---
+> >  arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
+> >  arch/arm/tools/syscall.tbl                  | 1 +
+> >  arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
+> >  arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
+> >  arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
+> >  arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
+> >  arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
+> >  arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
+> >  arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
+> >  arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
 >
-> Looks good, still have a running system after 45 minutes, never got that
-> far with the initial kernel configuration.
+> With the change to the selftest (see my other mail), I tested this on
+> powerpc and all tests pass.
 
-Good!
+Saw the change you proposed, Michael! It looks good to me.
+Thanks for helping me make the selftest suite more robust :)
 
-> In the meantime I realized only some 16 commits between v6.2 and v6.3
-> affect arch/parisc. Do you think it's worth check right around those?
-
-Don't think so.
-Very unlikely is this one:
-commit	88d7b12068b95731c280af8ce88e8ee9561f96de
-highmem: round down the address passed to kunmap_flush_on_unmap()
-
-> Also, if you can think of a way to trigger the crashes, that would ease
-> the testing a lot.
-
-Since you run the 32-bit kernel, huge-pages are not involved as they
-aren't available in the 32-bit kernels.
-So I think swapping is triggering it.
-You could try to find a test program which triggers swapping, e.g. LTS tes=
-tcases?
-Another test could be to enable CONFIG_MIGRATION again and disable
-all swap spaces and see if it survives.
-
-Helge
+>
+> Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+>
+>
+> cheers
