@@ -2,182 +2,125 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BD026FEEB3
-	for <lists+linux-parisc@lfdr.de>; Thu, 11 May 2023 11:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B62476FEEDC
+	for <lists+linux-parisc@lfdr.de>; Thu, 11 May 2023 11:31:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237493AbjEKJYs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 11 May 2023 05:24:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47092 "EHLO
+        id S237169AbjEKJbJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 11 May 2023 05:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237507AbjEKJY0 (ORCPT
+        with ESMTP id S236592AbjEKJbH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 11 May 2023 05:24:26 -0400
-Received: from 189.cn (ptr.189.cn [183.61.185.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4777093FF;
-        Thu, 11 May 2023 02:24:18 -0700 (PDT)
-HMM_SOURCE_IP: 10.64.8.43:41672.1278492290
-HMM_ATTACHE_NUM: 0000
-HMM_SOURCE_TYPE: SMTP
-Received: from clientip-114.242.206.180 (unknown [10.64.8.43])
-        by 189.cn (HERMES) with SMTP id A55DC102960;
-        Thu, 11 May 2023 17:24:14 +0800 (CST)
-Received: from  ([114.242.206.180])
-        by gateway-151646-dep-85667d6c59-fm8l8 with ESMTP id 5b86e81d35b5461da10c14d4d6e27d84 for tzimmermann@suse.de;
-        Thu, 11 May 2023 17:24:17 CST
-X-Transaction-ID: 5b86e81d35b5461da10c14d4d6e27d84
-X-Real-From: 15330273260@189.cn
-X-Receive-IP: 114.242.206.180
-X-MEDUSA-Status: 0
-Sender: 15330273260@189.cn
-Message-ID: <70c03ea4-c863-d3f7-c057-421f31c57238@189.cn>
-Date:   Thu, 11 May 2023 17:24:13 +0800
+        Thu, 11 May 2023 05:31:07 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4884EEC;
+        Thu, 11 May 2023 02:31:06 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-757741ca000so500431385a.2;
+        Thu, 11 May 2023 02:31:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683797466; x=1686389466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=44LgLHJDIULJkMBem069KICIq3uxO214CaUgM8dXQT8=;
+        b=BDA3XAW6HVHBBCTylbjq0CrSvwep3z/RKHIin6eHkOxIgxSvF9oCpp4JdMxjhKCg8a
+         t6De61RAZB8nwhqVhhnd+GwGOl5A9f6x8ta1mhnXQNHIA8XVVWTsZ3z2sLNVKJGzzpnv
+         pVJ84YIgNXNe3zzg0Bt2DTwq5JDGQGStI/fGod4pqnCGfyQ7QKofa8hYUqI7j01kYIh5
+         pdBpovGUxFwqp+4kZG7VlWddqhNwbB9KXu5x5m7XiaxjuDvLIgeFm1gLHxbutaTsEe0t
+         4R0BYZnEDMzRXc8veBcbo5PxiVrNC+0sZriJIWCU7Z1JN7IWfsEaHn66MIjE5tmEuP4w
+         GExw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683797466; x=1686389466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=44LgLHJDIULJkMBem069KICIq3uxO214CaUgM8dXQT8=;
+        b=dOB9EqJRKU9yOdD/XZ2T/hNNSCFQtAGKxLUU16T6mVKz6TCWCNalINroxiiD+sbp+Q
+         N406tuWlnXrlHLE2XghdpM1R3uUH36/6YyhUpY3pcf530A7VBgwc1oc16edXX3Ev6GXs
+         LBNQKqX1qhl2XbgpqAYRY9CZ87xGR7xBkKEcvVQw3uWauWfGtzjMRZV4IMh71TRci4jH
+         SFrooGCERFq2zkzbvwiIg/zPCHBSsLTZ1IZ/vFfLCZyAEVJcl917xswax7omKu2TB8gr
+         Eh7yq94a71+WRcFrOC+k7GuokGZbJbvPS8EGTWotP4K3o7XyytgSr1KhNmmjNqyFGvI7
+         Wfrg==
+X-Gm-Message-State: AC+VfDzWHForSBQse/Glxvyj0A7Qwsifs7e0vqzajeOPLXEXBtCnBeU2
+        uMOe012FZ5yNduh3m9Uq3zTkdCRCOOUnWZCK5tk=
+X-Google-Smtp-Source: ACHHUZ4gCIyUNhd/+bbAhcP9wNcKpLhKmfok0Ws6ilq/cfwGVAdfDhZw6m7PSHSI2kufFJi8oJq2AHQm2PPca7W1ngo=
+X-Received: by 2002:ad4:5961:0:b0:621:4551:c6dc with SMTP id
+ eq1-20020ad45961000000b006214551c6dcmr7378789qvb.39.1683797465598; Thu, 11
+ May 2023 02:31:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v6 1/6] fbdev/matrox: Remove trailing whitespaces
-To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
-        geert@linux-m68k.org, javierm@redhat.com, daniel@ffwll.ch,
-        vgupta@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
-        davem@davemloft.net, James.Bottomley@HansenPartnership.com,
-        arnd@arndb.de, sam@ravnborg.org
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org
-References: <20230510110557.14343-1-tzimmermann@suse.de>
- <20230510110557.14343-2-tzimmermann@suse.de>
- <0e13efbf-9a48-6e70-fdf3-8290f28c6dc7@189.cn>
- <a2315b9a-0747-1f0f-1f0a-1c6773931db4@suse.de>
-Content-Language: en-US
-From:   Sui Jingfeng <15330273260@189.cn>
-In-Reply-To: <a2315b9a-0747-1f0f-1f0a-1c6773931db4@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FROM_LOCAL_DIGITS,
-        FROM_LOCAL_HEX,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20230510195806.2902878-1-nphamcs@gmail.com> <0d8e2503-5d4f-4b60-84ff-01a23bcf557f@app.fastmail.com>
+In-Reply-To: <0d8e2503-5d4f-4b60-84ff-01a23bcf557f@app.fastmail.com>
+From:   Nhat Pham <nphamcs@gmail.com>
+Date:   Thu, 11 May 2023 02:30:54 -0700
+Message-ID: <CAKEwX=OFVkc2GL3jmoC-qAuwZvzxfs7v__aWY=8bLY3MeMq9hA@mail.gmail.com>
+Subject: Re: [PATCH] cachestat: wire up cachestat for other architectures
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-api@vger.kernel.org, kernel-team@meta.com,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Heiko Carstens <hca@linux.ibm.com>, gor@linux.ibm.com,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        borntraeger@linux.ibm.com, Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S . Miller" <davem@davemloft.net>, chris@zankel.net,
+        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi
+On Thu, May 11, 2023 at 12:05=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrot=
+e:
+>
+> On Wed, May 10, 2023, at 21:58, Nhat Pham wrote:
+> > cachestat is previously only wired in for x86 (and architectures using
+> > the generic unistd.h table):
+> >
+> > https://lore.kernel.org/lkml/20230503013608.2431726-1-nphamcs@gmail.com=
+/
+> >
+> > This patch wires cachestat in for all the other architectures.
+> >
+> > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+>
+> The changes you did here look good, but you missed one
+> file that has never been converted to the syscall.tbl format:
+> arch/arm64/include/asm/unistd32.h along with the __NR_compat_syscalls
+> definition in arch/arm64/include/asm/unistd.h, please add those
+> as well, and then
+>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-On 2023/5/11 15:55, Thomas Zimmermann wrote:
-> Hi
->
-> Am 10.05.23 um 20:20 schrieb Sui Jingfeng:
->> Hi, Thomas
->>
->>
->> I love your patch, yet something to improve:
->>
->>
->> On 2023/5/10 19:05, Thomas Zimmermann wrote:
->>> Fix coding style. No functional changes.
->>>
->>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->>> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
->>> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
->>> Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
->>> Tested-by: Sui Jingfeng <suijingfeng@loongson.cn>
->>> ---
->>>   drivers/video/fbdev/matrox/matroxfb_accel.c | 6 +++---
->>>   drivers/video/fbdev/matrox/matroxfb_base.h  | 4 ++--
->>>   2 files changed, 5 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/drivers/video/fbdev/matrox/matroxfb_accel.c 
->>> b/drivers/video/fbdev/matrox/matroxfb_accel.c
->>> index 9cb0685feddd..ce51227798a1 100644
->>> --- a/drivers/video/fbdev/matrox/matroxfb_accel.c
->>> +++ b/drivers/video/fbdev/matrox/matroxfb_accel.c
->>> @@ -88,7 +88,7 @@
->>>   static inline void matrox_cfb4_pal(u_int32_t* pal) {
->>>       unsigned int i;
->>> -
->>> +
->>>       for (i = 0; i < 16; i++) {
->>>           pal[i] = i * 0x11111111U;
->>>       }
->>> @@ -96,7 +96,7 @@ static inline void matrox_cfb4_pal(u_int32_t* pal) {
->>>   static inline void matrox_cfb8_pal(u_int32_t* pal) {
->>>       unsigned int i;
->>> -
->>> +
->>>       for (i = 0; i < 16; i++) {
->>>           pal[i] = i * 0x01010101U;
->>>       }
->>> @@ -482,7 +482,7 @@ static void matroxfb_1bpp_imageblit(struct 
->>> matrox_fb_info *minfo, u_int32_t fgx,
->>>               /* Tell... well, why bother... */
->>>               while (height--) {
->>>                   size_t i;
->>> -
->>> +
->>>                   for (i = 0; i < step; i += 4) {
->>>                       /* Hope that there are at least three readable 
->>> bytes beyond the end of bitmap */
->>> fb_writel(get_unaligned((u_int32_t*)(chardata + i)),mmio.vaddr);
->>> diff --git a/drivers/video/fbdev/matrox/matroxfb_base.h 
->>> b/drivers/video/fbdev/matrox/matroxfb_base.h
->>> index 958be6805f87..c93c69bbcd57 100644
->>> --- a/drivers/video/fbdev/matrox/matroxfb_base.h
->>> +++ b/drivers/video/fbdev/matrox/matroxfb_base.h
->>> @@ -301,9 +301,9 @@ struct matrox_altout {
->>>       int        (*verifymode)(void* altout_dev, u_int32_t mode);
->>>       int        (*getqueryctrl)(void* altout_dev,
->>>                       struct v4l2_queryctrl* ctrl);
->>
->> Noticed that there are plenty of coding style problems in 
->> matroxfb_base.h,
->>
->> why you only fix a few of them?   Take this two line as an example, 
->> shouldn't
->>
->> they be fixed also as following?
->
-> I configured my text editor to remove trailing whitespaces 
-> automatically. That keeps my own patches free of them.  But the editor 
-> removes all trailing whitespaces, including those that have been there 
-> before. If I encounter such a case, I split out the whitespace fix and 
-> submit it separately.
->
-> But the work I do within fbdev is mostly for improving DRM. For the 
-> other issues in this file, I don't think that matroxfb should even be 
-> around any longer. Fbdev has been deprecated for a long time. But a 
-> small number of drivers are still in use and we still need its 
-> framebuffer console. So someone should either put significant effort 
-> into maintaining fbdev, or it should be phased out. But neither is 
-> happening.
->
-Ok, no problem, that sound fine and reasonable then.
+Just sent a follow-up fixlet for this:
 
-The lines being modified has trailing whitespaces.
+https://lore.kernel.org/linux-mm/20230511092843.3896327-1-nphamcs@gmail.com=
+/T/#u
 
-And I tested your patch again last night on loongarch and mips platform.
-
-It still works in my testing case.
-
-> Best regards
-> Thomas
->
->>
->>
->>       int        (*verifymode)(void *altout_dev, u_int32_t mode);
->>       int        (*getqueryctrl)(void *altout_dev,
->>                       struct v4l2_queryctrl *ctrl);
->>
->>
->>> -    int        (*getctrl)(void* altout_dev,
->>> +    int        (*getctrl)(void *altout_dev,
->>>                      struct v4l2_control* ctrl);
->>> -    int        (*setctrl)(void* altout_dev,
->>> +    int        (*setctrl)(void *altout_dev,
->>>                      struct v4l2_control* ctrl);
->>>   };
->
+Thanks for the suggestion!
