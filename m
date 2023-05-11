@@ -2,157 +2,259 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05E316FF388
-	for <lists+linux-parisc@lfdr.de>; Thu, 11 May 2023 16:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FC566FF447
+	for <lists+linux-parisc@lfdr.de>; Thu, 11 May 2023 16:28:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238254AbjEKOEX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 11 May 2023 10:04:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51214 "EHLO
+        id S238545AbjEKO2S (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 11 May 2023 10:28:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238236AbjEKOEW (ORCPT
+        with ESMTP id S238546AbjEKO2A (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 11 May 2023 10:04:22 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A353F10FF;
-        Thu, 11 May 2023 07:04:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=agTIVDV40QlNuRDmtaMpYQzLmx8ylyt8K8o0YwfCE44=; b=lL2e25Q7Ym9Z2f1ilo2kWwHtLS
-        4LEtDqoDAi/1aC4kjoeLMlHtLt+a+FS4EW3ttxbaQDhTXZfyi02WOEzNc3/vCsr0owbyF5PEsIwHc
-        4EGA9zShanxJYpMWANvO4AfYvUXSJigLrvPdNGyjPeVrrNrqH+tCpFoKNI6P6bYEGIKsYYtBzAtzu
-        8Ajl8g5ng54yFG0pf0AiaE1GeB3gEJ+vkOMxu+NkdXV1EBgexS5qxecZBXe6DpvnyQd7D8QuN/WHz
-        qIZBX6djd2pg1T+ptsLEa/faZBnf92py7b8vnk1aHVuruD1rplz5XIZSxcsHdZBQZO/oPVfH/8958
-        /oI/ASsA==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1px6sh-00HGyK-LW; Thu, 11 May 2023 14:02:55 +0000
-Date:   Thu, 11 May 2023 15:02:55 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Hugh Dickins <hughd@google.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Helge Deller <deller@gmx.de>,
-        John David Anglin <dave.anglin@bell.net>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Michel Lespinasse <michel@lespinasse.org>
-Subject: Re: [PATCH 00/23] arch: allow pte_offset_map[_lock]() to fail
-Message-ID: <ZFz1j1slZHCQmwMJ@casper.infradead.org>
-References: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com>
- <ZFs0k2rrLPH9A/UU@casper.infradead.org>
- <d7f3c7b2-25b8-ef66-98a8-43d68f4499f@google.com>
+        Thu, 11 May 2023 10:28:00 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F7411B4C;
+        Thu, 11 May 2023 07:27:15 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 8AE131FF17;
+        Thu, 11 May 2023 14:27:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1683815233; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RgVMOzog0CbY5kAJjGieXuOcfsVfP8OP1lrWJlFGyqo=;
+        b=0GisIYMdtqN2+kETF+1umedZznqDFEu6Bq1m9PgaXvaIzayPg2BLMDEwVJOrubA2AdIyyp
+        kkCrk6xHT+djO0rZNjg4pMZObXIx2lXXe7Ng7TRtvcMzUgq3S5AJbEFINWkMmT7ss5cR1C
+        Mx0yG8dfxMgx7J4ZuPX71cS4HCQ38MI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1683815233;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RgVMOzog0CbY5kAJjGieXuOcfsVfP8OP1lrWJlFGyqo=;
+        b=wLrtUwDBN1VzyHXOkRCKHtQqxV4KGA9pFjcoEcxdzOW7B/PsYo4XgPVw6tGQ/cKmGuyyUW
+        L0Tmr27yMC5M0LBg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 22D33134B2;
+        Thu, 11 May 2023 14:27:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id vfePB0H7XGTlSQAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Thu, 11 May 2023 14:27:13 +0000
+Message-ID: <e7bd021c-1a6b-6e47-143a-36ae2fd2fe6b@suse.de>
+Date:   Thu, 11 May 2023 16:27:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d7f3c7b2-25b8-ef66-98a8-43d68f4499f@google.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v6 1/6] fbdev/matrox: Remove trailing whitespaces
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>, Sui Jingfeng <15330273260@189.cn>,
+        geert@linux-m68k.org, javierm@redhat.com, daniel@ffwll.ch,
+        vgupta@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
+        davem@davemloft.net, arnd@arndb.de, sam@ravnborg.org
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-parisc@vger.kernel.org
+References: <20230510110557.14343-1-tzimmermann@suse.de>
+ <20230510110557.14343-2-tzimmermann@suse.de>
+ <0e13efbf-9a48-6e70-fdf3-8290f28c6dc7@189.cn>
+ <a2315b9a-0747-1f0f-1f0a-1c6773931db4@suse.de>
+ <15fe1489-f0fa-bbf6-ec08-a270bd4f1559@gmx.de>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <15fe1489-f0fa-bbf6-ec08-a270bd4f1559@gmx.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------oqkBIdidQhXHM6LZbZ0g22gh"
+X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, May 10, 2023 at 09:35:44PM -0700, Hugh Dickins wrote:
-> On Wed, 10 May 2023, Matthew Wilcox wrote:
-> > On Tue, May 09, 2023 at 09:39:13PM -0700, Hugh Dickins wrote:
-> > > Two: pte_offset_map() will need to do an rcu_read_lock(), with the
-> > > corresponding rcu_read_unlock() in pte_unmap().  But most architectures
-> > > never supported CONFIG_HIGHPTE, so some don't always call pte_unmap()
-> > > after pte_offset_map(), or have used userspace pte_offset_map() where
-> > > pte_offset_kernel() is more correct.  No problem in the current tree,
-> > > but a problem once an rcu_read_unlock() will be needed to keep balance.
-> > 
-> > Hi Hugh,
-> > 
-> > I shall have to spend some time looking at these patches, but at LSFMM
-> > just a few hours ago, I proposed and nobody objected to removing
-> > CONFIG_HIGHPTE.  I don't intend to take action on that consensus
-> > immediately, so I can certainly wait until your patches are applied, but
-> > if this information simplifies what you're doing, feel free to act on it.
-> 
-> Thanks a lot, Matthew: very considerate, as usual.
-> 
-> Yes, I did see your "Whither Highmem?" (wither highmem!) proposal on the
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------oqkBIdidQhXHM6LZbZ0g22gh
+Content-Type: multipart/mixed; boundary="------------cF7ELr8NEJdtB0AS8Jfn35yF";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Helge Deller <deller@gmx.de>, Sui Jingfeng <15330273260@189.cn>,
+ geert@linux-m68k.org, javierm@redhat.com, daniel@ffwll.ch,
+ vgupta@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
+ davem@davemloft.net, arnd@arndb.de, sam@ravnborg.org
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-parisc@vger.kernel.org
+Message-ID: <e7bd021c-1a6b-6e47-143a-36ae2fd2fe6b@suse.de>
+Subject: Re: [PATCH v6 1/6] fbdev/matrox: Remove trailing whitespaces
+References: <20230510110557.14343-1-tzimmermann@suse.de>
+ <20230510110557.14343-2-tzimmermann@suse.de>
+ <0e13efbf-9a48-6e70-fdf3-8290f28c6dc7@189.cn>
+ <a2315b9a-0747-1f0f-1f0a-1c6773931db4@suse.de>
+ <15fe1489-f0fa-bbf6-ec08-a270bd4f1559@gmx.de>
+In-Reply-To: <15fe1489-f0fa-bbf6-ec08-a270bd4f1559@gmx.de>
 
-I'm glad somebody noticed the pun ;-)
+--------------cF7ELr8NEJdtB0AS8Jfn35yF
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-> list, and it did make me think, better get these patches and preview out
-> soon, before you get to vanish pte_unmap() altogether.  HIGHMEM or not,
-> HIGHPTE or not, I think pte_offset_map() and pte_unmap() still have an
-> important role to play.
-> 
-> I don't really understand why you're going down a remove-CONFIG_HIGHPTE
-> route: I thought you were motivated by the awkardness of kmap on large
-> folios; but I don't see how removing HIGHPTE helps with that at all
-> (unless you have a "large page tables" effort in mind, but I doubt it).
+SGkNCg0KQW0gMTEuMDUuMjMgdW0gMTU6MDUgc2NocmllYiBIZWxnZSBEZWxsZXI6DQo+IE9u
+IDUvMTEvMjMgMDk6NTUsIFRob21hcyBaaW1tZXJtYW5uIHdyb3RlOg0KPj4gSGkNCj4+DQo+
+PiBBbSAxMC4wNS4yMyB1bSAyMDoyMCBzY2hyaWViIFN1aSBKaW5nZmVuZzoNCj4+PiBIaSwg
+VGhvbWFzDQo+Pj4NCj4+Pg0KPj4+IEkgbG92ZSB5b3VyIHBhdGNoLCB5ZXQgc29tZXRoaW5n
+IHRvIGltcHJvdmU6DQo+Pj4NCj4+Pg0KPj4+IE9uIDIwMjMvNS8xMCAxOTowNSwgVGhvbWFz
+IFppbW1lcm1hbm4gd3JvdGU6DQo+Pj4+IEZpeCBjb2Rpbmcgc3R5bGUuIE5vIGZ1bmN0aW9u
+YWwgY2hhbmdlcy4NCj4+Pj4NCj4+Pj4gU2lnbmVkLW9mZi1ieTogVGhvbWFzIFppbW1lcm1h
+bm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+DQo+Pj4+IFJldmlld2VkLWJ5OiBBcm5kIEJlcmdt
+YW5uIDxhcm5kQGFybmRiLmRlPg0KPj4+PiBSZXZpZXdlZC1ieTogU2FtIFJhdm5ib3JnIDxz
+YW1AcmF2bmJvcmcub3JnPg0KPj4+PiBSZXZpZXdlZC1ieTogU3VpIEppbmdmZW5nIDxzdWlq
+aW5nZmVuZ0Bsb29uZ3Nvbi5jbj4NCj4+Pj4gVGVzdGVkLWJ5OiBTdWkgSmluZ2ZlbmcgPHN1
+aWppbmdmZW5nQGxvb25nc29uLmNuPg0KPj4+PiAtLS0NCj4+Pj4gwqAgZHJpdmVycy92aWRl
+by9mYmRldi9tYXRyb3gvbWF0cm94ZmJfYWNjZWwuYyB8IDYgKysrLS0tDQo+Pj4+IMKgIGRy
+aXZlcnMvdmlkZW8vZmJkZXYvbWF0cm94L21hdHJveGZiX2Jhc2UuaMKgIHwgNCArKy0tDQo+
+Pj4+IMKgIDIgZmlsZXMgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygt
+KQ0KPj4+Pg0KPj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy92aWRlby9mYmRldi9tYXRyb3gv
+bWF0cm94ZmJfYWNjZWwuYyANCj4+Pj4gYi9kcml2ZXJzL3ZpZGVvL2ZiZGV2L21hdHJveC9t
+YXRyb3hmYl9hY2NlbC5jDQo+Pj4+IGluZGV4IDljYjA2ODVmZWRkZC4uY2U1MTIyNzc5OGEx
+IDEwMDY0NA0KPj4+PiAtLS0gYS9kcml2ZXJzL3ZpZGVvL2ZiZGV2L21hdHJveC9tYXRyb3hm
+Yl9hY2NlbC5jDQo+Pj4+ICsrKyBiL2RyaXZlcnMvdmlkZW8vZmJkZXYvbWF0cm94L21hdHJv
+eGZiX2FjY2VsLmMNCj4+Pj4gQEAgLTg4LDcgKzg4LDcgQEANCj4+Pj4gwqAgc3RhdGljIGlu
+bGluZSB2b2lkIG1hdHJveF9jZmI0X3BhbCh1X2ludDMyX3QqIHBhbCkgew0KPj4+PiDCoMKg
+wqDCoMKgIHVuc2lnbmVkIGludCBpOw0KPj4+PiAtDQo+Pj4+ICsNCj4+Pj4gwqDCoMKgwqDC
+oCBmb3IgKGkgPSAwOyBpIDwgMTY7IGkrKykgew0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqAg
+cGFsW2ldID0gaSAqIDB4MTExMTExMTFVOw0KPj4+PiDCoMKgwqDCoMKgIH0NCj4+Pj4gQEAg
+LTk2LDcgKzk2LDcgQEAgc3RhdGljIGlubGluZSB2b2lkIG1hdHJveF9jZmI0X3BhbCh1X2lu
+dDMyX3QqIHBhbCkgew0KPj4+PiDCoCBzdGF0aWMgaW5saW5lIHZvaWQgbWF0cm94X2NmYjhf
+cGFsKHVfaW50MzJfdCogcGFsKSB7DQo+Pj4+IMKgwqDCoMKgwqAgdW5zaWduZWQgaW50IGk7
+DQo+Pj4+IC0NCj4+Pj4gKw0KPj4+PiDCoMKgwqDCoMKgIGZvciAoaSA9IDA7IGkgPCAxNjsg
+aSsrKSB7DQo+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoCBwYWxbaV0gPSBpICogMHgwMTAxMDEw
+MVU7DQo+Pj4+IMKgwqDCoMKgwqAgfQ0KPj4+PiBAQCAtNDgyLDcgKzQ4Miw3IEBAIHN0YXRp
+YyB2b2lkIG1hdHJveGZiXzFicHBfaW1hZ2VibGl0KHN0cnVjdCANCj4+Pj4gbWF0cm94X2Zi
+X2luZm8gKm1pbmZvLCB1X2ludDMyX3QgZmd4LA0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCAvKiBUZWxsLi4uIHdlbGwsIHdoeSBib3RoZXIuLi4gKi8NCj4+Pj4gwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgd2hpbGUgKGhlaWdodC0tKSB7DQo+Pj4+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc2l6ZV90IGk7DQo+Pj4+IC0NCj4+Pj4gKw0K
+Pj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGZvciAoaSA9IDA7IGkg
+PCBzdGVwOyBpICs9IDQpIHsNCj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIC8qIEhvcGUgdGhhdCB0aGVyZSBhcmUgYXQgbGVhc3QgdGhyZWUgcmVh
+ZGFibGUgDQo+Pj4+IGJ5dGVzIGJleW9uZCB0aGUgZW5kIG9mIGJpdG1hcCAqLw0KPj4+PiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZmJfd3JpdGVsKGdl
+dF91bmFsaWduZWQoKHVfaW50MzJfdCopKGNoYXJkYXRhIA0KPj4+PiArIGkpKSxtbWlvLnZh
+ZGRyKTsNCj4+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvdmlkZW8vZmJkZXYvbWF0cm94L21h
+dHJveGZiX2Jhc2UuaCANCj4+Pj4gYi9kcml2ZXJzL3ZpZGVvL2ZiZGV2L21hdHJveC9tYXRy
+b3hmYl9iYXNlLmgNCj4+Pj4gaW5kZXggOTU4YmU2ODA1Zjg3Li5jOTNjNjliYmNkNTcgMTAw
+NjQ0DQo+Pj4+IC0tLSBhL2RyaXZlcnMvdmlkZW8vZmJkZXYvbWF0cm94L21hdHJveGZiX2Jh
+c2UuaA0KPj4+PiArKysgYi9kcml2ZXJzL3ZpZGVvL2ZiZGV2L21hdHJveC9tYXRyb3hmYl9i
+YXNlLmgNCj4+Pj4gQEAgLTMwMSw5ICszMDEsOSBAQCBzdHJ1Y3QgbWF0cm94X2FsdG91dCB7
+DQo+Pj4+IMKgwqDCoMKgwqAgaW50wqDCoMKgwqDCoMKgwqAgKCp2ZXJpZnltb2RlKSh2b2lk
+KiBhbHRvdXRfZGV2LCB1X2ludDMyX3QgbW9kZSk7DQo+Pj4+IMKgwqDCoMKgwqAgaW50wqDC
+oMKgwqDCoMKgwqAgKCpnZXRxdWVyeWN0cmwpKHZvaWQqIGFsdG91dF9kZXYsDQo+Pj4+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdHJ1Y3QgdjRsMl9x
+dWVyeWN0cmwqIGN0cmwpOw0KPj4+DQo+Pj4gTm90aWNlZCB0aGF0IHRoZXJlIGFyZSBwbGVu
+dHkgb2YgY29kaW5nIHN0eWxlIHByb2JsZW1zIGluIA0KPj4+IG1hdHJveGZiX2Jhc2UuaCwN
+Cj4+Pg0KPj4+IHdoeSB5b3Ugb25seSBmaXggYSBmZXcgb2YgdGhlbT/CoMKgIFRha2UgdGhp
+cyB0d28gbGluZSBhcyBhbiBleGFtcGxlLCANCj4+PiBzaG91bGRuJ3QNCj4+Pg0KPj4+IHRo
+ZXkgYmUgZml4ZWQgYWxzbyBhcyBmb2xsb3dpbmc/DQo+Pg0KPj4gSSBjb25maWd1cmVkIG15
+IHRleHQgZWRpdG9yIHRvIHJlbW92ZSB0cmFpbGluZyB3aGl0ZXNwYWNlcw0KPj4gYXV0b21h
+dGljYWxseS4gVGhhdCBrZWVwcyBteSBvd24gcGF0Y2hlcyBmcmVlIG9mIHRoZW0uwqAgQnV0
+IHRoZQ0KPj4gZWRpdG9yIHJlbW92ZXMgYWxsIHRyYWlsaW5nIHdoaXRlc3BhY2VzLCBpbmNs
+dWRpbmcgdGhvc2UgdGhhdCBoYXZlDQo+PiBiZWVuIHRoZXJlIGJlZm9yZS4gSWYgSSBlbmNv
+dW50ZXIgc3VjaCBhIGNhc2UsIEkgc3BsaXQgb3V0IHRoZQ0KPj4gd2hpdGVzcGFjZSBmaXgg
+YW5kIHN1Ym1pdCBpdCBzZXBhcmF0ZWx5Lg0KPj4NCj4+IEJ1dCB0aGUgd29yayBJIGRvIHdp
+dGhpbiBmYmRldiBpcyBtb3N0bHkgZm9yIGltcHJvdmluZyBEUk0uDQo+IA0KPiBTdXJlLg0K
+PiANCj4+IEZvciB0aGUNCj4+IG90aGVyIGlzc3VlcyBpbiB0aGlzIGZpbGUsIEkgZG9uJ3Qg
+dGhpbmsgdGhhdCBtYXRyb3hmYiBzaG91bGQgZXZlbiBiZQ0KPj4gYXJvdW5kIGFueSBsb25n
+ZXIuIEZiZGV2IGhhcyBiZWVuIGRlcHJlY2F0ZWQgZm9yIGEgbG9uZyB0aW1lLiBCdXQgYQ0K
+Pj4gc21hbGwgbnVtYmVyIG9mIGRyaXZlcnMgYXJlIHN0aWxsIGluIHVzZSBhbmQgd2Ugc3Rp
+bGwgbmVlZCBpdHMNCj4+IGZyYW1lYnVmZmVyIGNvbnNvbGUuIFNvIHNvbWVvbmUgc2hvdWxk
+IGVpdGhlciBwdXQgc2lnbmlmaWNhbnQgZWZmb3J0DQo+PiBpbnRvIG1haW50YWluaW5nIGZi
+ZGV2LCBvciBpdCBzaG91bGQgYmUgcGhhc2VkIG91dC4gQnV0IG5laXRoZXIgaXMNCj4+IGhh
+cHBlbmluZy4NCj4gDQo+IFlvdSdyZSB3cm9uZy4NCg0KSSdtIG5vdC4gSSBkb24ndCBjbGFp
+bSB0aGF0IHRoZXNlIGRyaXZlcnMgYXJlIGFsbCBicm9rZW4uIEJ1dCBmYmRldiBhcyBhIA0K
+d2hvbGUgaXMgYml0LXJvdHRpbmcgYW5kIG5vIG9uZSBhdHRlbXB0cyB0byBhZGRyZXNzIHRo
+aXMuIFRoZXJlIGFyZSANCnNldmVyYWwgcmVjZW50IGV4YW1wbGVzIG9mIHRoaXM6DQoNCiAg
+KiBJIHJlY2VudGx5IHNlbmQgb3V0IGEgMTAwLXBhdGNoZXMgc2VyaWVzIHRvIGltcHJvdmUg
+cGFyYW1ldGVyIA0KcGFyc2luZyBhbmQgYXZvaWQgbWVtb3J5IGxlYWtzLiBUaGF0IGdvdCBz
+aG90IGRvd24uIEkgZGlkbid0IGF0dGVtcHQgdG8gDQpzdXBwb3J0IHBhcmFtZXRlciBwYXJz
+aW5nIGZvciBtb2R1bGUgYnVpbGRzLg0KDQogICogVGhlcmUncyBiZWVuIGEgMTUteXJzIG9s
+ZCBidWcgaW4gZmJkZXYncyByZWFkL3dyaXRlIHdoZXJlIHRoZXkgDQpyZXR1cm4gYW4gaW5j
+b3JyZWN0IHZhbHVlLg0KDQoqIFNlZSB0aGUgb3RoZXIgZGlzY3Vzc2lvbiBvbiB0aGlzIHBh
+dGNoc2V0IG9uIHRoZSBzdGF0ZSBvZiBoaXRmYi4NCg0KICAqIFRoZSBmYmRldiBjb2RlIEkg
+cmVjZW50bHkgY2xlYW5lZCB1cCBoYWQgYnVncyBpbiBob3cgaXQgdXNlcyBzb21lIG9mIA0K
+ZmJkZXYncyBiYXNpYyBidWlsZGluZyBibG9ja3MgKHNlZSB0aGUgc2NyZWVuX2Jhc2Uvc2Ny
+ZWVuX2J1ZmZlciBjb25mdXNpb24pLg0KDQogICogPGFzbS1nZW5lcmljL2ZiLmg+IGhhcyBi
+ZWVuIGluIHRoZSB0cmVlIHNpbmNlIDIwMDkgYW5kIG5vIG9uZSANCmF0dGVtcHRlZCB0byBp
+bmNsdWRlIGl0IHVudGlsIG5vdy4NCg0KTm9uZSBvZiB0aGlzIGlzIGEgc2lnbiBvZiBnb29k
+IG1haW50ZW5hbmNlLg0KDQpBcyBJJ3ZlIHdvcmtlZCBvbiBEUk0ncyBmYmRldiBlbXVsYXRp
+b24gYSBsb3QsIEkgdHJ5IHRvIGJlIGEgZ29vZCBrZXJuZWwgDQpjaXRpemVuIGFuZCBjbGVh
+biB1cCBpbiBmYmRldiBhcyB3ZWxsIHdoZW4gSSBzZWUgYSBwcm9ibGVtLiBCdXQgSSdkIA0K
+cmVhbGx5IGxpa2UgdG8gc2VlIG1vc3Qgb2YgdGhlc2UgZHJpdmVycyBiZWluZyBtb3ZlZCBp
+bnRvIHN0YWdpbmcgYW5kIA0KZGVsZXRlZCBzb29uIGFmdGVyd2FyZHMuIFVzZXJzIHdpbGwg
+Y29tcGxhaW4gYWJvdXQgdGhvc2UgZHJpdmVycyB0aGF0IA0KYXJlIHJlYWxseSBzdGlsbCBy
+ZXF1aXJlZC4gVGhvc2UgbWlnaHQgYmUgd29ydGggdG8gc3BlbmQgZWZmb3J0IG9uLg0KDQo+
+IA0KPiBZb3UgZG9uJ3QgbWVudGlvbiB0aGF0IGZvciBtb3N0IG9sZGVyIG1hY2hpbmVzIERS
+TSBpc24ndCBhbiBhY2NlcHRhYmxlDQo+IHdheSB0byBnbyBkdWUgdG8gaXQncyBsaW1pdGF0
+aW9ucywgZS5nLiBpdCdzIGxvdy1zcGVlZCBkdWUgdG8gbWlzc2luZw0KPiAyRC1hY2NlbGVy
+YXRpb24gZm9yIG9sZGVyIGNhcmRzIGFuZCBhbmQgaXQncyBpbmNhcGFiaWxpdHkgdG8gY2hh
+bmdlIHNjcmVlbg0KPiByZXNvbHV0aW9uIGF0IHJ1bnRpbWUgKGp1c3QgdG8gbmFtZSB0d28g
+b2YgdGhlIGJpZ2dlciBsaW1pdGF0aW9ucyBoZXJlKS4NCg0KWW91IGNhbiBjaGFuZ2UgcmVz
+b2x1dGlvbiBhdCBydW50aW1lOyBqdXN0IG5vdCB0aHJvdWdoIGZiZGV2IGlvY3Rscy4gDQpU
+aGVyZSdzIG5vIHRlY2huaWNhbCBsaW1pdGF0aW9uIGhlcmUuIE5vIG9uZSBmb3VuZCBhbnkg
+dXNlIGZvciB0aGlzLCBzbyANCml0J3Mgbm90IHRoZXJlLg0KDQo+IFNvLCB1bmxlc3Mgd2Ug
+c29tZWhvdyBmaW5kIGEgZ29vZCB3YXkgdG8gbW92ZSBzdWNoIGRyaXZlcnMgb3ZlciB0byBE
+Uk0NCj4gKHdpdGggYSBzZXQgb2YgbWluaW1hbCAyRCBhY2NlbGVyYXRpb24pLCB0aGV5IGFy
+ZSBzdGlsbCBpbXBvcnRhbnQuDQoNCjJkIGFjY2VsZXJhdGlvbiBpcyBtb3N0bHkgdXNlZnVs
+IGZvciB0aGUgZnJhbWVidWZmZXIgY29uc29sZS4gWW91IGNhbiBkbyANCnRoYXQgd2l0aCBE
+Uk0gYW5kIGRyaXZlcnMgaGF2ZSAobm91dmVhdSkuIEl0IGp1c3QgZGlkbid0IG1ha2UgYSAN
+Cm1lYW5pbmdmdWwgZGlmZmVyZW5jZSBpbiBtb3N0IGNhc2VzLg0KDQpCZXN0IHJlZ2FyZHMN
+ClRob21hcw0KDQo+IA0KPiBBY3R1YWxseSwgSSBqdXN0IGRpZCB0ZXN0IG1hdHJveGZiIGFu
+ZCBwbTJmYiBzdWNjZXNzZnVsbHkgYSBmZXcgZGF5cyANCj4gYmFjaywgYW5kDQo+IHRoZXkg
+d29ya2VkLiBGb3Igc29tZSBzbWFsbGVyIGlzc3VlcyBJJ3ZlIHByZXBhcmVkIHBhdGNoZXMs
+IHdoaWNoIGFyZSBvbiANCj4gaG9sZA0KPiBkdWUgY29uZmxpY3RzIHdpdGggeW91ciBsYXRl
+c3QgZmlsZS1tb3ZlLWFyb3VuZC0gYW5kIHdoaXRlc3BhY2UtY2hhbmdlcyANCj4gd2hpY2gg
+YXJlIHBhcnRseQ0KPiBpbiBkcm0tbWlzYy4NCj4gQW5kIEkgZG8gaGF2ZSBzb21lIHVwY29t
+aW5nIGFkZGl0aW9uYWwgcGF0Y2hlcyBmb3IgY29uc29sZSBzdXBwb3J0Lg0KPiANCj4gSGVs
+Z2UNCg0KLS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Bl
+cg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNz
+ZSAxNDYsIDkwNDYxIE51ZXJuYmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3
+IE15ZXJzLCBBbmRyZXcgTWNEb25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChB
+RyBOdWVybmJlcmcpDQo=
 
-Quite right, my primary concern is filesystem metadata; primarily
-directories as I don't think anybody has ever supported symlinks or
-superblocks larger than 4kB.
+--------------cF7ELr8NEJdtB0AS8Jfn35yF--
 
-I was thinking that removing CONFIG_HIGHPTE might simplify the page
-fault handling path a little, but now I've looked at it some more, and
-I'm not sure there's any simplification to be had.  It should probably
-use kmap_local instead of kmap_atomic(), though.
+--------------oqkBIdidQhXHM6LZbZ0g22gh
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-> But I've no investment in CONFIG_HIGHPTE if people think now is the
-> time to remove it: I disagree, but wouldn't miss it myself - so long
-> as you leave pte_offset_map() and pte_unmap() (under whatever names).
-> 
-> I don't think removing CONFIG_HIGHPTE will simplify what I'm doing.
-> For a moment it looked like it would: the PAE case is nasty (and our
-> data centres have not been on PAE for a long time, so it wasn't a
-> problem I had to face before); and knowing pmd_high must be 0 for a
-> page table looked like it would help, but now I'm not so sure of that
-> (hmm, I'm changing my mind again as I write).
-> 
-> Peter's pmdp_get_lockless() does rely for complete correctness on
-> interrupts being disabled, and I suspect that I may be forced in the
-> PAE case to do so briefly; but detest that notion.  For now I'm just
-> deferring it, hoping for a better idea before third series finalized.
-> 
-> I mention this (and Cc Peter) in passing: don't want this arch thread
-> to go down into that rabbit hole: we can start a fresh thread on it if
-> you wish, but right now my priority is commit messages for the second
-> series, rather than solving (or even detailing) the PAE problem.
+-----BEGIN PGP SIGNATURE-----
 
-I infer that what you need is a pte_access_start() and a
-pte_access_end() which look like they can be plausibly rcu_read_lock()
-and rcu_read_unlock(), but might need to be local_irq_save() and
-local_irq_restore() in some configurations?
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmRc+0AFAwAAAAAACgkQlh/E3EQov+Bi
+iRAAtaCufj1wKBEDwcVW2hAm0FlOY6eQRBE0+/+DOMroBsoSkru4r/jRnu6tuY1DQCLVsyu1GTvA
+MqQhdJdmhe3j7uCgQ3aOA73Df3X5ZUYKYUKvUZPybfuLrKTr5AyVHlmyiAXUeREigTVlCcsLUD5D
+RWswEEuCsdCbwzxGOFohrHOTEBjjiv97mYRtjKpOhVXVHv//46FXQY75FBH71ZV4iJnW6iDO12i7
+TgRempXREKbpq3fcfdrRZRVjz708GlRppeowU/QAdbwQF3S60msxp1QEX6OmDqNOmGq50Jjb1+x2
+xOX1nQjIeSavFxi5ZJtSGCzc9YgexKwXVwIws1itGvZrYG6793n1o3i/9jn4y50Lnk2coTNXrRQV
+pNFXbHSS4bA7WuPiSs//FeJPsmHDpywx7rOw3SKjFOikIK7h1JZe+eqdJZSWb5mZjAZ3nPtS1jlb
+oubB4STRq9WJ3F4eHAP2l313OMut1Q9eVv4TSn7nhWNJAXvIOmu9QUhJMTd63gyyLy6g21wZXhWl
+utoRg/Qdf1loG3hH8/kMh/HHuq/B1p+QyjftTDsgfnQBIbScD9SkV/jKyHh010KXY2sF6BPMV22J
+ObeOe9GiboYfQwBNJj2bjAmhmo8nKYMwLGx4rkvGvsxheZBIkgnlVXrTrTg9cJNy6+lsXjJs/9eB
+m1k=
+=ZGtI
+-----END PGP SIGNATURE-----
 
-We also talked about moving x86 to always RCU-free page tables in
-order to make accessing /proc/$pid/smaps lockless.  I believe Michel
-is going to take a swing at this project.
+--------------oqkBIdidQhXHM6LZbZ0g22gh--
