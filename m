@@ -2,208 +2,271 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB2EE70071A
-	for <lists+linux-parisc@lfdr.de>; Fri, 12 May 2023 13:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75937701014
+	for <lists+linux-parisc@lfdr.de>; Fri, 12 May 2023 23:07:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240347AbjELLp3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 12 May 2023 07:45:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34318 "EHLO
+        id S238824AbjELVHC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 12 May 2023 17:07:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240490AbjELLp0 (ORCPT
+        with ESMTP id S238595AbjELVHB (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 12 May 2023 07:45:26 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C05E4420F;
-        Fri, 12 May 2023 04:45:24 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 79447221A9;
-        Fri, 12 May 2023 11:45:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1683891923; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=tXKUOtR/PIk89HqE7MgG8GxQHnfyvtKDvaIsJ4SR4K4=;
-        b=waIBtqdaFPdJRAOeODnnJqOGhRE4T811/kUYD0x0fR7PbJ7Y+7Iy9KhCcvOFra39frB0Xe
-        gCK2KglZlA3kvVbdSXoxpQtjYMnh/hMD3eln7r4iQ4kSgT64lEl/mLlCcGMOL6DCQhOO9o
-        QGvaCxBQzGe3H8g4l6QGPVM7UPooUew=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1683891923;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=tXKUOtR/PIk89HqE7MgG8GxQHnfyvtKDvaIsJ4SR4K4=;
-        b=YOfvR57P0MXGkU7butoyJCOSKO/XEs4hWBDCAffYPCrU5aQIYFSjZ5GKbxdp4bnQmKKiIS
-        bhcl2rT9h6O/G1BA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F297E13499;
-        Fri, 12 May 2023 11:45:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id dyNVOtImXmRkCQAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Fri, 12 May 2023 11:45:22 +0000
-Message-ID: <ab63aa0b-0db8-dfa0-cb63-2f16a66fe2f2@suse.de>
-Date:   Fri, 12 May 2023 13:45:22 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH v7 1/7] fbdev/hitfb: Cast I/O offset to address
-Content-Language: en-US
-To:     David Laight <David.Laight@ACULAB.COM>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "geert@linux-m68k.org" <geert@linux-m68k.org>,
-        "javierm@redhat.com" <javierm@redhat.com>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "vgupta@kernel.org" <vgupta@kernel.org>,
-        "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
-        "kernel@xen0n.name" <kernel@xen0n.name>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "James.Bottomley@HansenPartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "sam@ravnborg.org" <sam@ravnborg.org>,
-        "suijingfeng@loongson.cn" <suijingfeng@loongson.cn>
-Cc:     "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-snps-arc@lists.infradead.org" 
-        <linux-snps-arc@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Artur Rojek <contact@artur-rojek.eu>
-References: <20230512102444.5438-1-tzimmermann@suse.de>
- <20230512102444.5438-2-tzimmermann@suse.de>
- <c25758dd7b4a4563b0d33c751da8cf6d@AcuMS.aculab.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <c25758dd7b4a4563b0d33c751da8cf6d@AcuMS.aculab.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------JM5nB8sgx4nqVg9dYq6bHUNg"
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        Fri, 12 May 2023 17:07:01 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9662CE;
+        Fri, 12 May 2023 14:06:59 -0700 (PDT)
+Message-ID: <20230512203426.452963764@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1683925617;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=gnTvflJCY17ngq7v3t1VaZ+udg1fVO8xaD7NmVGfdtM=;
+        b=hpItgE596OZsCHwd4RZltNwkaoUY+M4nxaNk5aijZSoKnJnX+Z1ftHJzFxXeLlwiR7CBVO
+        kAeU5V6ipd8kuvNmo2jUYlgeJQZcAoQ/B2gtcPpMbKBJ5Hdb19cpdNKmIFAdiRriVPQFBq
+        TB+mebv9nD57p/zwHVWvLj1xYW2llen6ecBlhNLpiB4mMX8ISxfhUt0cg8NuDkltKRGqwv
+        kwkihKVbLzgwH4zA3a4gu5TjBLy8knJzdeBq4mfGSlsG3QssoI+I+YLWMjEKtJyMnCZYCb
+        q0UpvbfNJvV5gxrJ96IhSco7wHR/BgKJzA+FPEk8wMxiA3axwjVqCn3rrplQeA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1683925617;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=gnTvflJCY17ngq7v3t1VaZ+udg1fVO8xaD7NmVGfdtM=;
+        b=MX4k3gwiR3uPG3aHdqZkMbzsCUhWKscxACmgEvdnthaN7mX9Y50PkiqEAK2jw11B2rBJ5s
+        0yIwakfLrEZSxWCw==
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     x86@kernel.org, David Woodhouse <dwmw2@infradead.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Brian Gerst <brgerst@gmail.com>,
+        Arjan van de Veen <arjan@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul McKenney <paulmck@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Piotr Gorski <lucjan.lucjanov@gmail.com>,
+        Usama Arif <usama.arif@bytedance.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        xen-devel@lists.xenproject.org,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        linux-csky@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        linux-riscv@lists.infradead.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sabin Rapan <sabrapan@amazon.com>,
+        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        Ross Philipson <ross.philipson@oracle.com>
+Subject: [patch V4 00/37] cpu/hotplug, x86: Reworked parallel CPU bringup
+Date:   Fri, 12 May 2023 23:06:56 +0200 (CEST)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------JM5nB8sgx4nqVg9dYq6bHUNg
-Content-Type: multipart/mixed; boundary="------------W0dMN7bLCE0vgvZ6rIE6p3Tq";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: David Laight <David.Laight@ACULAB.COM>, "deller@gmx.de" <deller@gmx.de>,
- "geert@linux-m68k.org" <geert@linux-m68k.org>,
- "javierm@redhat.com" <javierm@redhat.com>, "daniel@ffwll.ch"
- <daniel@ffwll.ch>, "vgupta@kernel.org" <vgupta@kernel.org>,
- "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
- "kernel@xen0n.name" <kernel@xen0n.name>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "James.Bottomley@HansenPartnership.com"
- <James.Bottomley@HansenPartnership.com>, "arnd@arndb.de" <arnd@arndb.de>,
- "sam@ravnborg.org" <sam@ravnborg.org>,
- "suijingfeng@loongson.cn" <suijingfeng@loongson.cn>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- kernel test robot <lkp@intel.com>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
- "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, Artur Rojek <contact@artur-rojek.eu>
-Message-ID: <ab63aa0b-0db8-dfa0-cb63-2f16a66fe2f2@suse.de>
-Subject: Re: [PATCH v7 1/7] fbdev/hitfb: Cast I/O offset to address
-References: <20230512102444.5438-1-tzimmermann@suse.de>
- <20230512102444.5438-2-tzimmermann@suse.de>
- <c25758dd7b4a4563b0d33c751da8cf6d@AcuMS.aculab.com>
-In-Reply-To: <c25758dd7b4a4563b0d33c751da8cf6d@AcuMS.aculab.com>
+Hi!
 
---------------W0dMN7bLCE0vgvZ6rIE6p3Tq
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+This is version 4 of the reworked parallel bringup series. Version 3 can be
+found here:
 
-SGkNCg0KQW0gMTIuMDUuMjMgdW0gMTM6MTYgc2NocmllYiBEYXZpZCBMYWlnaHQ6DQo+IEZy
-b206IFRob21hcyBaaW1tZXJtYW5uDQo+PiBTZW50OiAxMiBNYXkgMjAyMyAxMToyNQ0KPj4N
-Cj4+IENhc3QgSS9PIG9mZnNldHMgdG8gcG9pbnRlcnMgdG8gdXNlIHRoZW0gd2l0aCBJL08g
-ZnVuY3Rpb25zLiBUaGUgSS9PDQo+PiBmdW5jdGlvbnMgZXhwZWN0IHBvaW50ZXJzIG9mIHR5
-cGUgJ3ZvbGF0aWxlIHZvaWQgX19pb21lbSAqJywgYnV0IHRoZQ0KPj4gb2Zmc2V0cyBhcmUg
-cGxhaW4gaW50ZWdlcnMuIEJ1aWxkIHdhcm5pbmdzIGFyZQ0KPj4NCj4+ICAgIC4uL2RyaXZl
-cnMvdmlkZW8vZmJkZXYvaGl0ZmIuYzogSW4gZnVuY3Rpb24gJ2hpdGZiX2FjY2VsX3dhaXQn
-Og0KPj4gICAgLi4vYXJjaC94ODYvaW5jbHVkZS9hc20vaGQ2NDQ2MS5oOjE4OjMzOiB3YXJu
-aW5nOiBwYXNzaW5nIGFyZ3VtZW50IDEgb2YgJ2ZiX3JlYWR3JyBtYWtlcyBwb2ludGVyDQo+
-PiBmcm9tIGludGVnZXIgd2l0aG91dCBhIGNhc3QgWy1XaW50LWNvbnZlcnNpb25dDQo+PiAg
-ICAgMTggfCAjZGVmaW5lIEhENjQ0NjFfSU9fT0ZGU0VUKHgpICAgIChIRDY0NDYxX0lPQkFT
-RSArICh4KSkNCj4+ICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-Xn5+fn5+fn5+fn5+fn5+fn5+fn5+fg0KPiAuLi4NCj4+ICAgICA1MiB8IHN0YXRpYyBpbmxp
-bmUgdTE2IGZiX3JlYWR3KGNvbnN0IHZvbGF0aWxlIHZvaWQgX19pb21lbSAqYWRkcikNCj4+
-ICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgIH5+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+Xn5+fg0KPj4NCj4+IFRoaXMgcGF0Y2ggb25seSBmaXhlcyB0aGUgYnVp
-bGQgd2FybmluZ3MuIEl0J3Mgbm90IGNsZWFyIGlmIHRoZSBJL08NCj4+IG9mZnNldHMgY2Fu
-IGxlZ2FsbHkgYmUgcGFzc2VkIHRvIHRoZSBJL08gaGVscGVycy4gSXQgd2FzIGFwcGFyZW50
-bHkNCj4+IGJyb2tlbiBpbiAyMDA3IHdoZW4gY3VzdG9tIGludygpL291dHcoKSBoZWxwZXJz
-IGdvdCByZW1vdmVkIGJ5DQo+PiBjb21taXQgMzRhNzgwYTBhZmViICgic2g6IGhwNnh4IHBh
-dGFfcGxhdGZvcm0gc3VwcG9ydC4iKS4gRml4aW5nIHRoZQ0KPj4gZHJpdmVyIHdvdWxkIHJl
-cXVpcmUgc2V0dGluZyB0aGUgSS9PIGJhc2UgYWRkcmVzcy4NCj4gDQo+IERpZCB5b3UgdHJ5
-IGNoYW5naW5nIHRoZSBkZWZpbml0aW9uIG9mIEhENjQ0NjFfSU9CQVNFIHRvIGluY2x1ZGUN
-Cj4gYSAodm9sYXRpbGUgdm9pZCBfX2lvbWVtICopIGNhc3Q/DQoNCkkgdGhvdWdodCBhYm91
-dCBpdCwgYnV0IGRpZG4ndCB0cnkgaXQuIEkgZGlkbid0IHdhbnQgYmVuZCB0aGUgbWVhbmlu
-ZyBvZiANCk9GRlNFVCBhbmQgSU9CQVNFIHRvbyBtdWNoLiBUaGV5IHNvdW5kIGxpa2UgaW50
-ZWdlciBjb25zdGFudHMgdG8gbWUuDQoNCj4gQSBsb3QgbGVzcyBjaHVybi4uLg0KPiANCj4g
-SSdtIGd1ZXNzaW5nIHRoYXQgJ3NoJyBkZW9zbid0IGhhdmUgaW4vb3V0IGluc3RydWN0aW9u
-cyBzbyB0aGlzDQo+IGlzIHNvbWV0aGluZyB0aGF0IGlzIGFsd2F5cyBtYXBwZWQgYXQgYSBm
-aXhlZCBrZXJuZWwgdmlydHVhbCBhZGRyZXNzPw0KDQpObyBpZGVhLiBJIGNhbm5vdCB0cnkg
-dGhlIGRyaXZlciBhbmQgd2FzIG9ubHkgYWJsZSB0byBidWlsZCBpdCBieSANCmhhY2tpbmcg
-dXAgc29tZXRoaW5nIHRoYXQgbWFrZXMgQ09NUElMRV9URVNUIHdvcmsuDQoNClRoZSBjdXJy
-ZW50IHBhdGNoIHNlZW1lZCBsaWtlIHRoZSBzYWZlc3QgYmV0LCBldmVuIHdpdGggdGhlIGNo
-dXJuLg0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KPiAJRGF2aWQNCj4gDQo+IC0N
-Cj4gUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZh
-cm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQo+IFJlZ2lzdHJhdGlvbiBObzogMTM5
-NzM4NiAoV2FsZXMpDQo+IA0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBE
-cml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgN
-CkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55DQpHRjogSXZv
-IFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGllbiBNb2VybWFu
-DQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
+   https://lore.kernel.org/lkml/20230508181633.089804905@linutronix.de
 
---------------W0dMN7bLCE0vgvZ6rIE6p3Tq--
+This is just a reiteration to address the following details:
 
---------------JM5nB8sgx4nqVg9dYq6bHUNg
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+  1) Address review feedback (Peter Zijlstra)
 
------BEGIN PGP SIGNATURE-----
+  2) Fix a MIPS related build problem (0day)
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmReJtIFAwAAAAAACgkQlh/E3EQov+Cg
-KBAAwMnnYbZmaroQcFpzQ9rorvEdj50+6Ae0gk1HnRN5cp8HoaN/apdvOmnvlN50RTGFEBUG8lV2
-SAPnVNx5ud8av/a5pRKfuX4zBDpOW2v+oQAL7ZQBf6BzWv6Sv0twB9aCMEUSW1X9Zvua3y+Buod/
-DPVplFTrGvCp8qHEc0zMrgOfNSYtTHOv1Cjwl81wW0pzx2r+1lPxyVXddQGZKpZgsZeAif/a4/ia
-4qo5OuosEL9coiQ3BQ8fmYvguybgZJQ1ZRqLRaXNmi7kw6Ydt4v4j0u1LTJWuTY5Z5U+Rhd5/knX
-654E+P6fZb89OC1VUopjqk2+NpT13xlZArniWG/JwApwQcj3Y42YABUMAGfVkRdb90zWvkwreZgZ
-OX6kkOaLP+AnL8TSBvy9G0oOQaKcafQZI+WiwDqdXCwZ25J+i9bFOvNwaydt+VvEY0deCJs3HCmH
-IVSrhELOuxDrXcMXWKNO/NUNW94LUiXEZpUwxeczy/StApXcge4KvmJAM8fdihHFOIY0QXKnKPlu
-St4p/ajQMo3gmt0dKAh4hfV6f0WZ0T+IB6JCI7HgSawxGOngg4Vl0mvW1jRE4Ry3LitYJydtTH37
-eYXAqIPqBAMiD4CfOUdGSSGuISnTR5jET1pNgHogc24rooXpOnGN/fy27iYNIbxbbnLnS/P5p0h0
-yYA=
-=F4EL
------END PGP SIGNATURE-----
+Other than that there are no changes and the other details are all the same
+as in V3 and V2.
 
---------------JM5nB8sgx4nqVg9dYq6bHUNg--
+It's also available from git:
+
+    git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git hotplug
+
+Diff to V3 below.
+
+Thanks,
+
+	tglx
+---
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index f5e0f4235746..90c71d800b59 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -690,7 +690,7 @@ void flush_tlb_one(unsigned long vaddr)
+ EXPORT_SYMBOL(flush_tlb_page);
+ EXPORT_SYMBOL(flush_tlb_one);
+ 
+-#ifdef CONFIG_HOTPLUG_CPU
++#ifdef CONFIG_HOTPLUG_CORE_SYNC_DEAD
+ void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
+ {
+ 	if (mp_ops->cleanup_dead_cpu)
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index 0438802031c3..9cd77d319555 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -290,8 +290,7 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 
+ 	/*  APIC ID not found in the table. Drop the trampoline lock and bail. */
+ 	movq	trampoline_lock(%rip), %rax
+-	lock
+-	btrl	$0, (%rax)
++	movl	$0, (%rax)
+ 
+ 1:	cli
+ 	hlt
+@@ -320,8 +319,7 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 	movq	trampoline_lock(%rip), %rax
+ 	testq	%rax, %rax
+ 	jz	.Lsetup_gdt
+-	lock
+-	btrl	$0, (%rax)
++	movl	$0, (%rax)
+ 
+ .Lsetup_gdt:
+ 	/*
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 5caf4897b507..660709e94823 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -161,31 +161,28 @@ static inline void smpboot_restore_warm_reset_vector(void)
+ 
+ }
+ 
+-/*
+- * Report back to the Boot Processor during boot time or to the caller processor
+- * during CPU online.
+- */
+-static void smp_callin(void)
++/* Run the next set of setup steps for the upcoming CPU */
++static void ap_starting(void)
+ {
+ 	int cpuid = smp_processor_id();
+ 
+ 	/*
+-	 * If waken up by an INIT in an 82489DX configuration the alive
+-	 * synchronization guarantees we don't get here before an
+-	 * INIT_deassert IPI reaches our local APIC, so it is now safe to
+-	 * touch our local APIC.
++	 * If woken up by an INIT in an 82489DX configuration the alive
++	 * synchronization guarantees that the CPU does not reach this
++	 * point before an INIT_deassert IPI reaches the local APIC, so it
++	 * is now safe to touch the local APIC.
+ 	 *
+ 	 * Set up this CPU, first the APIC, which is probably redundant on
+ 	 * most boards.
+ 	 */
+ 	apic_ap_setup();
+ 
+-	/* Save our processor parameters. */
++	/* Save the processor parameters. */
+ 	smp_store_cpu_info(cpuid);
+ 
+ 	/*
+ 	 * The topology information must be up to date before
+-	 * calibrate_delay() and notify_cpu_starting().
++	 * notify_cpu_starting().
+ 	 */
+ 	set_cpu_sibling_map(cpuid);
+ 
+@@ -197,7 +194,7 @@ static void smp_callin(void)
+ 
+ 	/*
+ 	 * This runs the AP through all the cpuhp states to its target
+-	 * state (CPUHP_ONLINE in the case of serial bringup).
++	 * state CPUHP_ONLINE.
+ 	 */
+ 	notify_cpu_starting(cpuid);
+ }
+@@ -274,10 +271,7 @@ static void notrace start_secondary(void *unused)
+ 	rcu_cpu_starting(raw_smp_processor_id());
+ 	x86_cpuinit.early_percpu_clock_init();
+ 
+-	smp_callin();
+-
+-	/* Otherwise gcc will move up smp_processor_id() before cpu_init() */
+-	barrier();
++	ap_starting();
+ 
+ 	/* Check TSC synchronization with the control CPU. */
+ 	check_tsc_sync_target();
+diff --git a/arch/x86/realmode/rm/trampoline_64.S b/arch/x86/realmode/rm/trampoline_64.S
+index 2dfb1c400167..c6de4deec746 100644
+--- a/arch/x86/realmode/rm/trampoline_64.S
++++ b/arch/x86/realmode/rm/trampoline_64.S
+@@ -40,17 +40,13 @@
+ .macro LOAD_REALMODE_ESP
+ 	/*
+ 	 * Make sure only one CPU fiddles with the realmode stack
+-	 */
++	*/
+ .Llock_rm\@:
+-	btl	$0, tr_lock
+-	jnc	2f
+-	pause
+-	jmp	.Llock_rm\@
++        lock btsl       $0, tr_lock
++        jnc             2f
++        pause
++        jmp             .Llock_rm\@
+ 2:
+-	lock
+-	btsl	$0, tr_lock
+-	jc	.Llock_rm\@
+-
+ 	# Setup stack
+ 	movl	$rm_stack_end, %esp
+ .endm
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 60b4093fae9e..005f863a3d2b 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -294,14 +294,14 @@ enum cpuhp_sync_state {
+  * cpuhp_ap_update_sync_state - Update synchronization state during bringup/teardown
+  * @state:	The synchronization state to set
+  *
+- * No synchronization point. Just update of the synchronization state.
++ * No synchronization point. Just update of the synchronization state, but implies
++ * a full barrier so that the AP changes are visible before the control CPU proceeds.
+  */
+ static inline void cpuhp_ap_update_sync_state(enum cpuhp_sync_state state)
+ {
+ 	atomic_t *st = this_cpu_ptr(&cpuhp_state.ap_sync_state);
+-	int sync = atomic_read(st);
+ 
+-	while (!atomic_try_cmpxchg(st, &sync, state));
++	(void)atomic_xchg(st, state);
+ }
+ 
+ void __weak arch_cpuhp_sync_state_poll(void) { cpu_relax(); }
+@@ -829,7 +829,11 @@ static int bringup_cpu(unsigned int cpu)
+ 	/*
+ 	 * Some architectures have to walk the irq descriptors to
+ 	 * setup the vector space for the cpu which comes online.
+-	 * Prevent irq alloc/free across the bringup.
++	 *
++	 * Prevent irq alloc/free across the bringup by acquiring the
++	 * sparse irq lock. Hold it until the upcoming CPU completes the
++	 * startup in cpuhp_online_idle() which allows to avoid
++	 * intermediate synchronization points in the architecture code.
+ 	 */
+ 	irq_lock_sparse();
+ 
+
+
