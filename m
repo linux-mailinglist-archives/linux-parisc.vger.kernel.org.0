@@ -2,205 +2,113 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE78701AE8
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 May 2023 02:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 535F1701E4C
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 May 2023 18:52:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229834AbjENAJT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 13 May 2023 20:09:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51940 "EHLO
+        id S230252AbjENQwL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 14 May 2023 12:52:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjENAJS (ORCPT
+        with ESMTP id S230009AbjENQwK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 13 May 2023 20:09:18 -0400
+        Sun, 14 May 2023 12:52:10 -0400
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81066268E
-        for <linux-parisc@vger.kernel.org>; Sat, 13 May 2023 17:09:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5493F271E;
+        Sun, 14 May 2023 09:52:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1684022950; i=deller@gmx.de;
-        bh=5jw/wRILs4DtAJ+yvzf7JywjXhQ92Gn++P8EJLIOeNk=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=itPKFx5GrEFJIc4abT3qglWIQv10G1FadFpFDky2TjGv45qCd+Eb5xKKwhdETj3NG
-         AGOtfnhv8IW48IeP73WfER3VXJSHrwJN+aOFq58ECTNbY3a8boZRxshL0e8OmbfmBv
-         ZRt18HLMs+u+ahoTKhCRoI3oUG1md5cw9cY4tmc+lQYyqbPIiUf08oiHuWTQ/77oGo
-         nZ6f1NYctBAjDeoOCAOZFnvdok5Lx6JbetOZxdKC5CzFSHYYdeAMuHQf0CjQlIBUhj
-         QT4wTvXu7Vbcn0iW7GE2zrAB3lw7TdUcJ3f4NboPMxuSIQ/YWVSRgtx7zG0m44diV4
-         MtdKw4H8GwOdQ==
+        t=1684083115; i=deller@gmx.de;
+        bh=NYdzANhdv5BBLf5RtYD2CTwHtFaSt5mvBTNZdOOnbHo=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=GZqehjTMlgIxEy3T0CfeA/4tRDk2YpnrEiEwU1mXQov8ZtUN/LBgSQUQqs/lJoEKk
+         Wo8RkXItba1glhe+KhF7i+FfEPXgkUsra+p4AN8wepoX9jLyD8/vsT4Nbew7J+kCw3
+         P+sbkE4u3CxHSWXPdz1Zb4K4U4JhEyy7tWfuZmyF29zq6V1C7J2euCRNOqTxJaDeJt
+         /ygKwe3ifhYQjKDFqVt/VgruMapN4dbVCnPlscU1NOxaHzDCWC7SLORfoVpYrpjCoy
+         BMnD+yaWRcQ+4TDzSf/HHfoX6LjnvB76+hTe8LhWE8ebJEZqrSA7UvbDZTD6GIZ2wv
+         KNVKpbs42b5EQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.158.250]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M6Ue3-1q4tBv20PR-006y5q; Sun, 14
- May 2023 02:09:10 +0200
-Message-ID: <383c0cb0-d47e-1e32-01f8-8eb4a9f4ceb1@gmx.de>
-Date:   Sun, 14 May 2023 02:09:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Regression with kernel 6.3 "kernel BUG at
- include/linux/swapops.h:472!"
-Content-Language: en-US
-To:     David Hildenbrand <david@redhat.com>,
-        Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-Cc:     linux-parisc@vger.kernel.org
-References: <1683740497@msgid.manchmal.in-ulm.de>
- <8889a75f-1a81-905e-8bc4-a733de32985f@gmx.de>
- <1683825030@msgid.manchmal.in-ulm.de>
- <85aef102-8407-68c7-2dc2-87e5a866906b@gmx.de>
- <1683928214@msgid.manchmal.in-ulm.de> <ZF9+OYqQS/vy7Oq5@p100>
- <8d23bbd1-adcb-d52e-791b-42faae04c14e@redhat.com>
- <0ae03822-01ee-cd57-ac33-7d9df6774bd7@gmx.de>
- <aa47c2f2-2bee-6f73-9987-cd1800433a39@redhat.com>
+Received: from p100 ([94.134.155.91]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MY6Cl-1pfMe73Xnp-00YR92; Sun, 14
+ May 2023 18:51:54 +0200
+Date:   Sun, 14 May 2023 18:51:52 +0200
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <aa47c2f2-2bee-6f73-9987-cd1800433a39@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture fixes for v6.4-rc2
+Message-ID: <ZGERqF1P4VlazwPG@p100>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:GQWN2sGTb1ChSM2ogQQMsGLBY9jvky5S/AY/9dz8B4hADEWwjRE
+ G5JiGPv9tyMVaEHXbyNoTqLX0YwHzm55w23lPvkcEJIm5ANrd3uczmnH4sYywatd6aUXsjg
+ 3ua3nRy8GDCAhFprO+IOz7kWFPefUTDhkM8vo+r7i3t6SqHbp5iM/0BXMBZHMMHL0x17Dih
+ 1YEopunguCvo1Wa00etVQ==
+UI-OutboundReport: notjunk:1;M01:P0:lb8dOl++ufk=;x6FFGw4a8xWUqosE7dR+hZTkiwb
+ Y5hQGM5rFOv54mUHM0AtRTuMFPgNDjZRtU2UOHl5K1xRl7tf5ZvHvdMkvf6virqJcIA+7a0iD
+ LKwo5vH9Qmk6/yEQojrcBmUs3IVWbXGoR7MDJZ8p4TMllHF6yDMSyyQZmN084gIjn8tB1Cgp4
+ U+OGgBXcqabPXydQyKgVp++wTtlTLQKzxlelhmxC0Z8CiOBbekV1aqEMGCBWPQDcTPKlk9vOw
+ DVDUFiKQOttwnmZkMz20NLuPtYoxPE3TXaoDAp9F+InNfxqm9ogxW10oV2O4xQcqY854SswbI
+ pSXTpp2Oq9wXfMbSEotTDyKS3jIXQOvl/27Y+Ed55KE5l7zJm6yTh8ONtDT4hY1rbQHy1zxhd
+ UURqp5M87s6AdrQ/gmVUqIPAV5JKoj1UbjzxvkOETDIr+zDYGvjcZsEcyOAvHk3eY32aCQRBA
+ dJY8jnYey7zX/pKSkv8FF2b8e9AtrpPccyNWbeelFRTEJNQw369qi4WrfVzsiz4dMd1fj91VT
+ 8s44WdFArk/dwIdTayMVTa35FXQpxZLpkBRZOJmL3Atob5fhFc+N0rY8qc167dfweKXuWLOE1
+ lRpEIyejOhIwjEwdVffkuVS74kvfF1rSh8UAiHX9YmdNVn3svi507Oros33k8+bXAVfrUIJxO
+ uLpH/4Wx0Zcia2q0HkQLHkkO16DLLIMMcKPeJ3xTHVn3MfAKOvyguEUjMf0gmPH+vHOAwni/Y
+ LTp1TZ9zCiIQwBZ6TErPEi0VvwiAHpqAobBwFZ1a3/xAZJYCGUAoNh2hhu2EOzb6N72Uuhaih
+ rcvu/wNeudlwO3msbZp85hE4zxiIBMespOHoNGHh5WYncjHPFQVg2G8v6CsWzEqrhjNGvW5x+
+ oNPXQA7/R25FEyIvq4y9/ulI+vFeyNDd50uTT0SLl3PAbxo7OJT3u8il7YvfBF4OJudb4rNmw
+ GEEzwg==
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GHG1mGJhNz69JzvF4SxDoh8vHLq78+GKcjmHFR7HJZEzoLtzqFq
- VVYGv7BvbAs14RWCi9kfDJ5sDisbo4pDHjFNZqS7hWJuGDBsicLBRkGa8QMCbvDEkO762gX
- 5N1B2C1oDJi924abwK8wJGdyePtm4dVzIzCNk7rEarnkM4bAN+vGEuNWelv/HVXK6pu+VdJ
- 7bNgfD9shBf96KJZVzunw==
-UI-OutboundReport: notjunk:1;M01:P0:Kl7QiLmAsNw=;+u7sXN7Dapul3GgFrmlwLZn/UlH
- TaWli4jCRw/8+oLfebc/kIIKCP3D1gXmJWkinRhdQys9YF5bGLSt2THJusSJneTXHwQCJYG9A
- eQARmKBLlZFDKUyWlmYocCorV8YIz8toXEwmZhCTrmMonTJStvTRCUmOJ3HJG702zhbCfWwN1
- eIpYb/RHtctnw90uynBHjcffDBP+rqDAcfhB4Ox7wm1f+1zdxNcp9hcpWeJeDwW4g+iCqlnBt
- aWNFqRp5G03Yxbc7FJF5XohotObye8zLAMJlQ22xNWnPZuVQJ0KrkXPCfd0Nrsz7GeJBnF5ZV
- z9T3xgOW1hyY7e6Yu8qcj9z/ZSraijV5xHAY1dWu6JfxLLHA9oPKgVvo3OsUM7wbX5pTG3Bio
- WwCZ4ft3QCRdVeE1b5AIlvsj9EGiRe64OPWKliIDwozqz/3/Q1s8SHMPlxLo1PsutQTniZ0//
- rV+eU097BUSUfnXD3BGe/orgwyQN/fUMrBDlvtSUbmJGIXzSbWNKjCZv9L/4Lp4XUB7g3gZQE
- Rr7iahegTooZ5vMFR4kVCfoNELhP4k1o6lUrH1SAh8f2KH4N+PdYKO7fhAOWnV/HNew/CZz/m
- khwAfItwiFJduMoUoKZCJZ9eC/uHLu/n1SoicgAiawr9j5E/L06eZQfVyeN8khVa6GIH5WpYy
- ORzAW41IjYJyN7BlAUV7hSM4iLQ0AhxVOMe3pb6qn5HSx+8WESZMxoweb74a3PjYSWtZ+lvrI
- uU9Sr2pHWkO4VxXNjagp08mvZ9JLjaRcpiaREfQjadK2m3SlZKWmLzJI5lw57S+bKvw8aZy80
- Su+POgGNMjO2nttP0OPh7I1wgaeAk2fGVkvn9S5flsuXTg53PQx5CdF6Wy0iyy/eti5chskbO
- Mq1TvvJfJ74iA8cywX5qV7WqBkGXwcLcdbd1fdVJ5Ob57u3f3WHk1M+obM4i+6i4/1q/0PBiv
- YmD3pg==
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/14/23 01:32, David Hildenbrand wrote:
->>>
->>> This fix makes it work like the layout I documented.
->>
->> Yes, and your layout looks good for me.
->
-> Good :)
->
->>
->>> What I originally tried doing was reusing one of the spare bits instea=
-d of reworking
->>> the layout. Apparently, I got the old layout wrong. :(
->>
->> Don't worry! Your patch harmonizes parisc to the other platforms, which=
- is good.
->>
->>> So if I understood the layout right this time, maybe we can just use o=
-ne of the two
->>> spare bits: _PAGE_HUGE (or alternatively, _PAGE_DIRTY_BIT)?
->>
->> Yes, or keep what you suggested.
->>
->> What I don't understand yet is the original code:
->> #define __swp_type(x)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (=
-(x).val & 0x1f)
->> #define __swp_offset(x)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ( (((x).val >=
-> 6) &=C2=A0 0x7) | \
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (((x).val >> 8) & ~0x7) )
->> #define __swp_entry(type, offset)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 ((swp_entry_t) { (type) | \
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ((offset &=C2=A0=
- 0x7) << 6) | \
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ((offset & ~0x7)=
- << 8) })
->>
->> Don't we loose one of the offset bits?
->
-> Let's assume we have the offset 0xff. Encoding it with type 0 would be
->
-> ((0xff & 0x7) << 6) | ((0xff & ~0x7) << 8)
-> -> (0x7 << 6) | (0xf8 << 8)
-> -> 0x1c0 | 0xf800
-> -> 0xf9c0
->
-> Extracting the offset:
->
-> ((0xf9c0 >> 6) & 0x7) | ((0xf9c0 >> 8) & ~0x7)
-> -> (0x3e7 & 0x7) | (0xf9 & ~0x7)
-> -> 0x7 | 0xf8
-> -> 0xff
->
-> I think it's correct.
+Hi Linus,
 
-Yes. Seems good.
+please pull two small fixes for the parisc architecture for 6.4-rc2.
 
-> The confusing part (that resulted in the BUG here) is that we end up was=
-ting bit #26, because there is a spare bit between the type and the offset=
-.
->
-> Maybe a relic from the past -- or copy-and-paste, because some archs sup=
-ported types with > 5 bits, but core-MM only ever uses 5 bits.
+Fix the swap entry encoding calculation (tagged for backport) and avoid a
+gcc-12 warning.
 
-Hard to say. It has been as such since a long time....
-
->> Mask 0x7 is 3 bits, but we shift by 6 and 8 (=3D2 bits difference), so =
-I believe the second shift should be 9.
->> If it would be 9, then no &0x07 is needed and only one shift would be s=
-ufficient.
->>
->> I don't know much in the swap pte area, but isn't the previous original=
- code wrong?
->> Which bits of the swp_entry are used where?
-> I think the old code was correct. There are apparently two spare bits th=
-at we can use. I just messed up the old layout, thinking there is only one=
-.
->
-> So we can either use the new layout I documented (with the fix you propo=
-se), or use another layout.
-
-I think I prefer the layout which you documented.
-
-> In any case, we *gain* one more bit for the offset compared to the old l=
-ayout.
->
->
-> I'm more than happy to keep the new layout. Regarding your fix, maybe av=
-oid the other ~0x7 as well by using similar shifting in __swp_entry()
->
->
->  =C2=A0#define __swp_entry(type, offset)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 ((swp_entry_t) { \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ((type) & 0x1f) | \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ((of=
-fset &=C2=A0 0x7) << 5) | \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ((of=
-fset >> 3) << 10) })
->
-> So it's easier to match to the logic/values in __swp_offset().
-
-Yes, it's much better.
-I fixed it up like this in my current git tree.
-
-> In any case,
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-
-Great. Thanks for your help & suggestions!
-
+Thanks,
 Helge
+
+=2D--
+The following changes since commit ac9a78681b921877518763ba0e89202254349d1=
+b:
+
+  Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git ta=
+gs/parisc-for-6.4-2
+
+for you to fetch changes up to 6f9e98849edaa8aefc4030ff3500e41556e83ff7:
+
+  parisc: Fix encoding of swp_entry due to added SWP_EXCLUSIVE flag (2023-=
+05-14 02:04:27 +0200)
+
+=2D---------------------------------------------------------------
+parisc architecture fixes for kernel v6.4-rc2:
+
+- Fix encoding of swp_entry due to added SWP_EXCLUSIVE flag
+- Include reboot.h to avoid gcc-12 compiler warning
+
+=2D---------------------------------------------------------------
+Helge Deller (1):
+      parisc: Fix encoding of swp_entry due to added SWP_EXCLUSIVE flag
+
+Simon Horman (1):
+      parisc: kexec: include reboot.h
+
+ arch/parisc/include/asm/pgtable.h | 8 ++++----
+ arch/parisc/kernel/kexec.c        | 2 ++
+ 2 files changed, 6 insertions(+), 4 deletions(-)
