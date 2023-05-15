@@ -2,123 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25C12703CDA
-	for <lists+linux-parisc@lfdr.de>; Mon, 15 May 2023 20:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD9527040FB
+	for <lists+linux-parisc@lfdr.de>; Tue, 16 May 2023 00:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244343AbjEOSji (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 15 May 2023 14:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44504 "EHLO
+        id S243631AbjEOW2V (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 15 May 2023 18:28:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244225AbjEOSjh (ORCPT
+        with ESMTP id S231202AbjEOW2U (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 15 May 2023 14:39:37 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A05446B2
-        for <linux-parisc@vger.kernel.org>; Mon, 15 May 2023 11:39:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1684175974; i=deller@gmx.de;
-        bh=ogVJgMcsHmRzazCQYeUi56cS8088BBJ04HFt8AfJvGc=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=MiwORGnhWG+0rx1GfRGu3THCMBUHmESwuvGZkdtUW5dgUYo7lvZEJh4fv5H6RU6/K
-         j/gb1IRKncsF6usV1YT9hnw2RY6lngNJonqF+GU6MpW3E8puZfp1+QAlkERJnz7Fw+
-         KqDui5yw6lPBBPDEPqZMfZ5zLSLn3vNFLIhaZ23ktl+NbV0qb8xhB+erU6gSzlCIy9
-         ybKSqY3B/yVFmoe/E1cpaI5IQJyAodWV+5xwSPKYINZpyi2pSLullMAgOFXMzLhyri
-         I4rafpxvH2+aEO2Zpzoq1buTiJWH8e4hKMvfr/Vrs/lRNCJQGUvqn5OwemfZtbujrN
-         8sFlt/Hsy6JHQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.155.144]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mlf0K-1qOaFo3PDm-00in9x; Mon, 15
- May 2023 20:39:34 +0200
-Date:   Mon, 15 May 2023 20:39:33 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Subject: [PATCH] parisc: improve cach flushing in arch_sync_dma_for_cpu()
-Message-ID: <ZGJ8ZcPZbckX7VNB@p100>
+        Mon, 15 May 2023 18:28:20 -0400
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-005.bell.net [209.71.208.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A4258A5B
+        for <linux-parisc@vger.kernel.org>; Mon, 15 May 2023 15:28:19 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [142.181.186.176]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 645FE0CF0030C386
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehkedguddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuuefgnffnpdfqfgfvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpefhieegtdduvdevteefvdefvdevtefgtefhieefhfevveevhfegfeefudejueekgfenucfkphepudegvddrudekuddrudekiedrudejieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedugedvrddukedurddukeeirddujeeipdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprghuthhhpghushgvrhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhgvghokffrpeevtedpoffvtefjohhstheptghmgidqmhhtlhhrghhotddtvd
+X-CM-Envelope: MS4xfA49dB+jc5l7WSF5i9dHy9ruzMhoVfAblm5pW5CcQ4FxHkSrsBAxKmEgviK3H8z+H3A0ySuTVLVlKy0MKyZnulenbOjwaU5Yd9qRr+fYhVPIZHg5JQSC
+ rymUM6cSRFged7dAMpu6KrYZ8k6T0fXt0paAOPPxDEaZ/KKHMiA0CWnb9RGXUO5WhgvAnOYIu9w+R4tMJw92xpRAVJrVmXVP5/2ao130EqN2+RM6mwP2KuTo
+ ykmCUgIDfdCMLDlZQ77DF2tCEpDNnA2fKBxU3HcklxedvVMyiU/60bs5/h2TKvJx
+X-RazorGate-Vade-Verdict: clean 0
+X-CM-Analysis: v=2.4 cv=Tf71CTch c=1 sm=1 tr=0 ts=6462b200
+ a=4B+q39mD0Bm0IdZjDiNhQQ==:117 a=4B+q39mD0Bm0IdZjDiNhQQ==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=G5Gv66TajD-kTQwMLHwA:9 a=QEXdDO2ut3YA:10
+ a=ATlVsGG5QSsA:10 a=9gvnlMMaQFpL9xblJ6ne:22
+X-RazorGate-Vade-Classification: clean
+Received: from [192.168.2.49] (142.181.186.176) by cmx-mtlrgo002.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 645FE0CF0030C386; Mon, 15 May 2023 18:28:16 -0400
+Message-ID: <4664024c-1312-64b5-5150-e60bf3fc49bb@bell.net>
+Date:   Mon, 15 May 2023 18:28:17 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:UA9XT5+4OA2gvqGzj8QYdojUZXc8IxJOFfDo1+sekNAUQ6rvHFg
- pprHjjMDdoHy+XiLR//8v71gMkEev+qF7bKeqc1SxMzlmPtaZyJPI0EuhzQIxxzIPCgVs9S
- tZM840/1UN4+9b+tAbYC/JEDBIZTOeaxqwL99kw/2c3XKD9e7pjRAeLIGdFYQsI7tZbnEBK
- cdB/IPH7ePHGM/Qfonogg==
-UI-OutboundReport: notjunk:1;M01:P0:ljIVd04DUBw=;i0tfkNXEMcAYZIQV47oDAl4K1Eu
- IFUAy5+Yy4UEcul5ONRk12pOGkjJ8H08TQC+A7dZaMeQtKvIYilEmRvlm13Jb6HNwkRI1tL1z
- x5wFREvke7GR299am0ELy7ze6CgpWIBFNdfEUJ+t0bghrzFuFz2E7gI0UF5a6QFrxMB491T8+
- HjOjXdylEYLqC++L5DNM16qIhkwql+rL4ijKOwVN4ssbCaE1xn3isr6sIHL1Njr/qOsM8ANYw
- RsgnWNWj8jrDuCFp8km3JkttaMVestlpMo16BbIcb/I/8yv8Ya5qITD9amT/Jj9qmjaR0C7NO
- 1f3TziY3C9c+ibg6OOqhfrf7HY4lmHAEV2H8DyvM4vzYZX+g6xFP+VqQ/zao2V4ryl4GY1Ct6
- yCqItY7SfelESnsuQo89Y+we27Qf+Cp/cwp01QCnAo74PVglWEXGtv5FENCi/glhCqPFbrjeh
- vcsRQdAbn8LH77PyD5cGlZ49sq6aK78QhLf60GHdYD5pHhqrpZCfCW+hw5xtFdOHVyPW4mqLF
- M5/Ph4XDTl+3t578NjTXWFAaFACvVXBcmXN8v3M8k1xmay45KtkeCuu4u6M2slP8vNP9EDYOD
- 1c0hQgSHepH9yiA4c+Q5cv34YrNaRf1AN2xI2V5vzILZXjHbZ00PLqq/C++EAv2qanuh+FLfv
- bOFi0UK6S7ZKY4VTbdqu4A6LqmRw2nqfJTO1E5JssDHVsgcI9ueICBab9Ghz+Oi84q//Ffgz2
- DatdUHfr+jD2vaFtt+OzIwlL0J/nuQGoD26s6LIKS/6iuVtD07wPcXk5vGNSXjyYQK7mDhjHB
- djkwaWiIjchYiJlz27Nhn1kIe1arOeuEWWupcOlj1ed7lJk4CLJsXCN+LPn31+/2RijowpycK
- nONBKjhr9lNBpJeQ8D6Z6eLBZOCCtttu7GWSLK4iG8z2LFOeD6i2FQdY5w3vWq+K1e05u02EK
- 7Cmakm2Yfw3RUpCv2PmV76dNdeg=
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] parisc: improve cach flushing in arch_sync_dma_for_cpu()
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+References: <ZGJ8ZcPZbckX7VNB@p100>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <ZGJ8ZcPZbckX7VNB@p100>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Handle the direction flag in arch_sync_dma_for_device() and
-arch_sync_dma_for_cpu().
+On 2023-05-15 2:39 p.m., Helge Deller wrote:
+> +	case DMA_BIDIRECTIONAL:
+> +		flush_kernel_dcache_range(addr, size);
+> +		purge_kernel_dcache_range_asm(addr, addr + size);
+I don't think flush and purge are both needed.
 
-When receiving data from the device (DMA_FROM_DEVICE and DMA_BIDIRECTIONAL=
-)
-purge the data cache in arch_sync_dma_for_cpu().
+Dave
 
-Run-tested on C8000 workstation.
+-- 
+John David Anglin  dave.anglin@bell.net
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
-index ba87f791323b..f8337c1820fc 100644
-=2D-- a/arch/parisc/kernel/pci-dma.c
-+++ b/arch/parisc/kernel/pci-dma.c
-@@ -446,11 +446,36 @@ void arch_dma_free(struct device *dev, size_t size, =
-void *vaddr,
- void arch_sync_dma_for_device(phys_addr_t paddr, size_t size,
- 		enum dma_data_direction dir)
- {
--	flush_kernel_dcache_range((unsigned long)phys_to_virt(paddr), size);
-+	unsigned long addr =3D (unsigned long) phys_to_virt(paddr);
-+
-+	switch (dir) {
-+	case DMA_TO_DEVICE:
-+		flush_kernel_dcache_range(addr, size);
-+		break;
-+	case DMA_FROM_DEVICE:
-+	case DMA_BIDIRECTIONAL:
-+		flush_kernel_dcache_range(addr, size);
-+		purge_kernel_dcache_range_asm(addr, addr + size);
-+		break;
-+	default:
-+		BUG();
-+	}
- }
-
- void arch_sync_dma_for_cpu(phys_addr_t paddr, size_t size,
- 		enum dma_data_direction dir)
- {
--	flush_kernel_dcache_range((unsigned long)phys_to_virt(paddr), size);
-+	unsigned long addr =3D (unsigned long) phys_to_virt(paddr);
-+
-+	switch (dir) {
-+	case DMA_TO_DEVICE:
-+		flush_kernel_dcache_range(addr, size);
-+		return;
-+	case DMA_FROM_DEVICE:
-+	case DMA_BIDIRECTIONAL:
-+		purge_kernel_dcache_range_asm(addr, addr + size);
-+		break;
-+	default:
-+		BUG();
-+	}
- }
