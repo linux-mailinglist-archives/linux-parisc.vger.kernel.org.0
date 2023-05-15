@@ -2,124 +2,227 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A209702003
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 May 2023 23:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30833702808
+	for <lists+linux-parisc@lfdr.de>; Mon, 15 May 2023 11:13:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230108AbjENVtZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 14 May 2023 17:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54204 "EHLO
+        id S238693AbjEOJNf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 15 May 2023 05:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjENVtY (ORCPT
+        with ESMTP id S238900AbjEOJMq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 14 May 2023 17:49:24 -0400
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A8290;
-        Sun, 14 May 2023 14:49:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=zygIhDyV8ht+xJs1lmqnA3sy7ZHDhj2x5W8U9MyDTpM=; b=AtfoJ+yRkuDm9gCWovg7bgbFzv
-        zvtG8omqD3Ee2e5vtlK1211bbhN7KzcG9ZOV/p9gXghTUS1HF9EaelwoM4SQo/b4sWNMb2wsJsVAh
-        ryLGjfB/dL5jQW5LWnI6h4gq4lKj2LKWt1eQxsKNKi4CYTHPi2D+7G5csc6so1Mr3IZqjzYXfvDre
-        Wa2IYRFjoBiG9xBoaM3MR/ceTkMFFWkX6SNnbTUn4IT7Xv2Ef1OD3QTBmf65tsdUdiBBhGBc7WMfJ
-        YjLmEKzf9bN3ap+iE91yCmvTRvaupsrf+ACH5S2PsgkJyDm/ZJKotc9YiiD6FM6FqFSv7z1nQGLn3
-        n3J6H6Qw==;
-Received: from [177.189.3.227] (helo=[192.168.1.60])
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-        id 1pyJaT-009SDU-MC; Sun, 14 May 2023 23:49:06 +0200
-Message-ID: <b4733705-7014-49c6-57ab-a67459954f28@igalia.com>
-Date:   Sun, 14 May 2023 18:48:50 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [patch V4 00/37] cpu/hotplug, x86: Reworked parallel CPU bringup
-Content-Language: en-US
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>
-Cc:     x86@kernel.org, David Woodhouse <dwmw2@infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
+        Mon, 15 May 2023 05:12:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50DB82109
+        for <linux-parisc@vger.kernel.org>; Mon, 15 May 2023 02:10:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1684141846;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=SkuBcRmfwXAx+LokLW8LUvbvQG1M59NAVaKGe2qHG6A=;
+        b=SUNgUzfNmLUzo3HyHHHww6dCGQ+UCOdidwxKWbndjaf0Dkm2lJsikZDMTJ+OoO+CQtVe9H
+        W5u9ElXnHafYO/WUSbREvWmL6xEGztuNs/zwzaZX8qv8pOPnH4XAkYduF9vVEVMpvfTF/o
+        8ZfTJVDDqYuCVxqzQ2FsxIKdTySQ3C4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-401-iME_X8SqMeeI4gcmlx700w-1; Mon, 15 May 2023 05:10:43 -0400
+X-MC-Unique: iME_X8SqMeeI4gcmlx700w-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 75F7C85C069;
+        Mon, 15 May 2023 09:10:42 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-32.pek2.redhat.com [10.72.12.32])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4973E40C2063;
+        Mon, 15 May 2023 09:10:34 +0000 (UTC)
+From:   Baoquan He <bhe@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-arch@vger.kernel.org, linux-mm@kvack.org, arnd@arndb.de,
+        christophe.leroy@csgroup.eu, hch@infradead.org,
+        agordeev@linux.ibm.com, wangkefeng.wang@huawei.com,
+        schnelle@linux.ibm.com, David.Laight@ACULAB.COM, shorne@gmail.com,
+        willy@infradead.org, deller@gmx.de, Baoquan He <bhe@redhat.com>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv@lists.infradead.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Ross Philipson <ross.philipson@oracle.com>
-References: <20230512203426.452963764@linutronix.de>
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <20230512203426.452963764@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        linux-parisc@vger.kernel.org
+Subject: [PATCH v5 RESEND 13/17] parisc: mm: Convert to GENERIC_IOREMAP
+Date:   Mon, 15 May 2023 17:08:44 +0800
+Message-Id: <20230515090848.833045-14-bhe@redhat.com>
+In-Reply-To: <20230515090848.833045-1-bhe@redhat.com>
+References: <20230515090848.833045-1-bhe@redhat.com>
+MIME-Version: 1.0
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 12/05/2023 18:06, Thomas Gleixner wrote:
-> Hi!
-> 
-> This is version 4 of the reworked parallel bringup series. Version 3 can be
-> found here:
-> 
->    https://lore.kernel.org/lkml/20230508181633.089804905@linutronix.de
+By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
+generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
+and iounmap() are all visible and available to arch. Arch needs to
+provide wrapper functions to override the generic versions if there's
+arch specific handling in its ioremap_prot(), ioremap() or iounmap().
+This change will simplify implementation by removing duplicated codes
+with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
+functioality as before.
 
+Here, add wrapper function ioremap_prot() for parisc's special operation
+when iounmap().
 
-Hi Thomas, thanks for series! I was able to test it on the Steam Deck
-(on top of 6.4-rc2), and everything is working fine; also tested S3
-suspend/resume, working as expected.
+Meanwhile, add macro ARCH_HAS_IOREMAP_WC since the added ioremap_wc()
+will conflict with the one in include/asm-generic/iomap.h, then an
+compiling error is seen:
 
-Some logs from boot time:
+./include/asm-generic/iomap.h:97: warning: "ioremap_wc" redefined
+   97 | #define ioremap_wc ioremap
 
+And benefit from the commit 437b6b35362b ("parisc: Use the generic
+IO helpers"), those macros don't need be added any more.
 
-Parallel boot
-[    0.239764] smp: Bringing up secondary CPUs ...
-[...]
-[    0.253130] smp: Brought up 1 node, 8 CPUs
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Acked-by: Helge Deller <deller@gmx.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: linux-parisc@vger.kernel.org
+---
+ arch/parisc/Kconfig          |  1 +
+ arch/parisc/include/asm/io.h | 15 ++++++---
+ arch/parisc/mm/ioremap.c     | 62 +++---------------------------------
+ 3 files changed, 15 insertions(+), 63 deletions(-)
 
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 466a25525364..be6ab4530390 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -36,6 +36,7 @@ config PARISC
+ 	select GENERIC_ATOMIC64 if !64BIT
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_PCI_IOMAP
++	select GENERIC_IOREMAP
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_ARCH_TOPOLOGY if SMP
+diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+index c05e781be2f5..366537042465 100644
+--- a/arch/parisc/include/asm/io.h
++++ b/arch/parisc/include/asm/io.h
+@@ -125,12 +125,17 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
+ /*
+  * The standard PCI ioremap interfaces
+  */
+-void __iomem *ioremap(unsigned long offset, unsigned long size);
+-#define ioremap_wc			ioremap
+-#define ioremap_uc			ioremap
+-#define pci_iounmap			pci_iounmap
++#define ioremap_prot ioremap_prot
++
++#define _PAGE_IOREMAP (_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | \
++		       _PAGE_ACCESSED | _PAGE_NO_CACHE)
+ 
+-extern void iounmap(const volatile void __iomem *addr);
++#define ioremap_wc(addr, size)  \
++	ioremap_prot((addr), (size), _PAGE_IOREMAP)
++#define ioremap_uc(addr, size)  \
++	ioremap_prot((addr), (size), _PAGE_IOREMAP)
++
++#define pci_iounmap			pci_iounmap
+ 
+ void memset_io(volatile void __iomem *addr, unsigned char val, int count);
+ void memcpy_fromio(void *dst, const volatile void __iomem *src, int count);
+diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
+index 345ff0b66499..fd996472dfe7 100644
+--- a/arch/parisc/mm/ioremap.c
++++ b/arch/parisc/mm/ioremap.c
+@@ -13,25 +13,9 @@
+ #include <linux/io.h>
+ #include <linux/mm.h>
+ 
+-/*
+- * Generic mapping function (not visible outside):
+- */
+-
+-/*
+- * Remap an arbitrary physical address space into the kernel virtual
+- * address space.
+- *
+- * NOTE! We need to allow non-page-aligned mappings too: we will obviously
+- * have to convert them into an offset in a page-aligned mapping, but the
+- * caller shouldn't need to know that small detail.
+- */
+-void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
++void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
++			   unsigned long prot)
+ {
+-	void __iomem *addr;
+-	struct vm_struct *area;
+-	unsigned long offset, last_addr;
+-	pgprot_t pgprot;
+-
+ #ifdef CONFIG_EISA
+ 	unsigned long end = phys_addr + size - 1;
+ 	/* Support EISA addresses */
+@@ -40,11 +24,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
+ 		phys_addr |= F_EXTEND(0xfc000000);
+ #endif
+ 
+-	/* Don't allow wraparound or zero size */
+-	last_addr = phys_addr + size - 1;
+-	if (!size || last_addr < phys_addr)
+-		return NULL;
+-
+ 	/*
+ 	 * Don't allow anybody to remap normal RAM that we're using..
+ 	 */
+@@ -62,39 +41,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
+ 		}
+ 	}
+ 
+-	pgprot = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY |
+-			  _PAGE_ACCESSED | _PAGE_NO_CACHE);
+-
+-	/*
+-	 * Mappings have to be page-aligned
+-	 */
+-	offset = phys_addr & ~PAGE_MASK;
+-	phys_addr &= PAGE_MASK;
+-	size = PAGE_ALIGN(last_addr + 1) - phys_addr;
+-
+-	/*
+-	 * Ok, go for it..
+-	 */
+-	area = get_vm_area(size, VM_IOREMAP);
+-	if (!area)
+-		return NULL;
+-
+-	addr = (void __iomem *) area->addr;
+-	if (ioremap_page_range((unsigned long)addr, (unsigned long)addr + size,
+-			       phys_addr, pgprot)) {
+-		vunmap(addr);
+-		return NULL;
+-	}
+-
+-	return (void __iomem *) (offset + (char __iomem *)addr);
+-}
+-EXPORT_SYMBOL(ioremap);
+-
+-void iounmap(const volatile void __iomem *io_addr)
+-{
+-	unsigned long addr = (unsigned long)io_addr & PAGE_MASK;
+-
+-	if (is_vmalloc_addr((void *)addr))
+-		vunmap((void *)addr);
++	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
+ }
+-EXPORT_SYMBOL(iounmap);
++EXPORT_SYMBOL(ioremap_prot);
+-- 
+2.34.1
 
-Regular boot (with cpuhp.parallel=0)
-[    0.240093] smp: Bringing up secondary CPUs ...
-[...]
-[    0.253475] smp: Brought up 1 node, 8 CPUs
-
-
-Feel free to add (to the series):
-
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-
-Cheers,
-
-
-Guilherme
