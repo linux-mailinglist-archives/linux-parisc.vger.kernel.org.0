@@ -2,231 +2,100 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D219370459B
-	for <lists+linux-parisc@lfdr.de>; Tue, 16 May 2023 08:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAE17045CE
+	for <lists+linux-parisc@lfdr.de>; Tue, 16 May 2023 09:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230353AbjEPGxU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 16 May 2023 02:53:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59774 "EHLO
+        id S230316AbjEPHJ2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 16 May 2023 03:09:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230313AbjEPGxO (ORCPT
+        with ESMTP id S230318AbjEPHJ0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 16 May 2023 02:53:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7100CA;
-        Mon, 15 May 2023 23:52:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C3C6763490;
-        Tue, 16 May 2023 06:52:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F0DC433D2;
-        Tue, 16 May 2023 06:52:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684219967;
-        bh=C0maaaVYK0mlVYQIVRRneqJu0UHwybB7kjeIlSX8s+c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ktUM9ZWmnUySfqn0dRbUi1RPkXZM7EWikWs/v1GpYveJR1uPzQzk0+/FfcfDBpqXC
-         p3yM2yFo2r+0z6dhJPXt6O82UVUkhnq+BPUR39J0obtuJsU2hIh9OONWzRZDQqXWRM
-         Kry9gKuwN/e6DjXnVp0oyrkxXzjqeS0B2pMuFfL6ROrU6RoBKezlU9UD2AlnBVGn41
-         G0m6RgzFPv4jREJgAAwgL1pdG9liUN1PJlsyRmeE5lMf68eJaLyfZLm03tCww17mix
-         dZPm8SQQC/JwPC/3mdw9tpeiWXl6wcY6muzoQtgLvKxSlMyIV5MNNn4H+tEPz3HMEP
-         WyWH5G+ixYUxw==
-Date:   Tue, 16 May 2023 09:52:39 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Baoquan He <bhe@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, arnd@arndb.de, christophe.leroy@csgroup.eu,
-        hch@infradead.org, agordeev@linux.ibm.com,
-        wangkefeng.wang@huawei.com, schnelle@linux.ibm.com,
-        David.Laight@aculab.com, shorne@gmail.com, willy@infradead.org,
-        deller@gmx.de,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org
-Subject: Re: [PATCH v5 RESEND 13/17] parisc: mm: Convert to GENERIC_IOREMAP
-Message-ID: <ZGMoN/FiwWnvjAjS@kernel.org>
-References: <20230515090848.833045-1-bhe@redhat.com>
- <20230515090848.833045-14-bhe@redhat.com>
+        Tue, 16 May 2023 03:09:26 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E9193C3D
+        for <linux-parisc@vger.kernel.org>; Tue, 16 May 2023 00:09:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1684220959; i=deller@gmx.de;
+        bh=Qd1Q+TLs9o5df4idaoVcKfzE9+gvb7pIxhYHZtU6Z68=;
+        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+        b=k4bWwsJz45r93eHO602eGVqwTjJuvwkk7ONJikpaeRaonk2pCO3Q/XC2oaScibT3o
+         0uyRn8LF2QOE7k3oc4FkulugTnMHomAMJPEK/6Q4uuP814l6ZyAIKTBy4seumkgP2T
+         T5x2tjlagGR9EMhYSUY3DSAf/ftNbIPT5FEeNyBXxD/m4rws/t8FoytZGAPVJ1G2dx
+         2+bRGbYMcSDcjXYcGtGuyog4VlB2G+YV8MhdA6i5w0ThdYmOcYbkkhK9Jy1UNGF7gU
+         G46gMvMfKhleXvQAeiHk/hwjkaw/igohOO+h5Xcc5avxIqtLgfNoka6OkzLnLrngmp
+         AoOyuXvQlX98w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.150.20]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MJVHe-1pjToV2Lnc-00JrhI; Tue, 16
+ May 2023 09:09:19 +0200
+Message-ID: <7bcc14b4-408a-d884-a78c-b0436789e58d@gmx.de>
+Date:   Tue, 16 May 2023 09:09:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230515090848.833045-14-bhe@redhat.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] parisc: improve cach flushing in arch_sync_dma_for_cpu()
+Content-Language: en-US
+To:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org
+References: <ZGJ8ZcPZbckX7VNB@p100>
+ <4664024c-1312-64b5-5150-e60bf3fc49bb@bell.net>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <4664024c-1312-64b5-5150-e60bf3fc49bb@bell.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ZAz7S7mX1i71y8tY4aJYbLvsQUsOQ2S64r1JPAJl/cxfSMjoi+Q
+ dtQqaa7BeTD071Lc1EovzvDawiV/hZ1/EzdUHeajMULf/soiGBC/Z+9l45GA5+3naLFmGNd
+ qIUviVgcTbh6QMmpGjRBBbQCfqj8IUW1HXBA5bxVsrqlhOATKNJqunT7s+g6kTHzAp85szW
+ W43T8Gwxi8O/WzEExMnew==
+UI-OutboundReport: notjunk:1;M01:P0:B8O0BYQiR4M=;Pw/5qJexUS4jjoSoVod/84PSOhq
+ DiS9f152+YTjyMuoivdNxSxr7ovM2o8339PELE5a9TMK8w5+qfynEcXXcyrLAWhhvs/kf0MhI
+ vQMxY6PMdWmiIh82PuWr+hmnAb+cMpoJ5lFOH2kUp2v2Mom/rvQ5W0aZPlUH/pnk6PKb+Nugz
+ 86GhptzrLKaPylNVEvrUvHM/wHjRzTy12xutO53EYfBPRuOz5kbsR7kbn0XOFY1xCbbODVPdA
+ xAIl39doLPgvufWMf+JKUB308CC3jaPe1te08rmUxRUk1Kdnhe5gxcclXXXEtX/SyQj3gfj10
+ 8pInHclbw+MeQNbHMDkTkQf6fQ1zUF58Puf+3sSwjIrbM0Mybk7fpX1c4Y8vYG4elrZr/fmr0
+ cmd+hgbhpuP4qsvH54y2enfp5NilyhOmG2WyMZvU8TtcuNdakGGWcpOYEavYfd8YFNS/EGnuX
+ lbrBTPjZ3b4GjJ+4O3pF6jMonQqyY+qBGn6aL1Nb5cJrBH168KaniYTDX4XGlV3zkQQRT7TY5
+ iha7/Q46pz19kf+ekY36qFf4dJcWMY87QGOqTcfA/3kipy6XFS9ZOwroaILWHiMWuX8HaGhqJ
+ 2SXCSsyzXo8tkTWMxLMr/42UWLN0vAz7oWihesF2diq7EzriFs8bOC/HoicicV7zgOyGK2XP4
+ 9Zm9hVdyhlcjR5iZx/AhnuCCSFVj17FWSurZ7CDr+kk2F8pMhNkmS1lrn3q0XWv14bWet7mT1
+ 9XmXuSG+fzmO3jUii1fni9nnpDIjLs+uSPKDlIaBRKAG7DsQbG1wJlJOLAHwgjOrkcVzACbQZ
+ CFB+2j4Q6CVl6+5paWA7Gopb27dXCtaw3Thwe0kCO218gpDYsXpRaEC5RRxnuE1OqyYuxY91A
+ kiP/96PlynxjCejKcXM1t+Dw4F+dWDjmjeLQh/+8DTPby77p/w0Eozb/LDsNDojo4ps2ost99
+ ZSzCu6eY/Sglij+5paraplIglw0=
+X-Spam-Status: No, score=-6.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, May 15, 2023 at 05:08:44PM +0800, Baoquan He wrote:
-> By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
-> generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
-> and iounmap() are all visible and available to arch. Arch needs to
-> provide wrapper functions to override the generic versions if there's
-> arch specific handling in its ioremap_prot(), ioremap() or iounmap().
-> This change will simplify implementation by removing duplicated codes
-> with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
-> functioality as before.
-> 
-> Here, add wrapper function ioremap_prot() for parisc's special operation
-> when iounmap().
-> 
-> Meanwhile, add macro ARCH_HAS_IOREMAP_WC since the added ioremap_wc()
-> will conflict with the one in include/asm-generic/iomap.h, then an
-> compiling error is seen:
+On 5/16/23 00:28, John David Anglin wrote:
+> On 2023-05-15 2:39 p.m., Helge Deller wrote:
+>> +=C2=A0=C2=A0=C2=A0 case DMA_BIDIRECTIONAL:
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flush_kernel_dcache_range(a=
+ddr, size);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 purge_kernel_dcache_range_a=
+sm(addr, addr + size);
+> I don't think flush and purge are both needed.
 
-Looks like this paragraph is outdated, as an earlier patch in the series
-removes use of ARCH_HAS_IOREMAP_WC?
- 
-> ./include/asm-generic/iomap.h:97: warning: "ioremap_wc" redefined
->    97 | #define ioremap_wc ioremap
-> 
-> And benefit from the commit 437b6b35362b ("parisc: Use the generic
-> IO helpers"), those macros don't need be added any more.
-> 
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> Acked-by: Helge Deller <deller@gmx.de>
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: linux-parisc@vger.kernel.org
-> ---
->  arch/parisc/Kconfig          |  1 +
->  arch/parisc/include/asm/io.h | 15 ++++++---
->  arch/parisc/mm/ioremap.c     | 62 +++---------------------------------
->  3 files changed, 15 insertions(+), 63 deletions(-)
-> 
-> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-> index 466a25525364..be6ab4530390 100644
-> --- a/arch/parisc/Kconfig
-> +++ b/arch/parisc/Kconfig
-> @@ -36,6 +36,7 @@ config PARISC
->  	select GENERIC_ATOMIC64 if !64BIT
->  	select GENERIC_IRQ_PROBE
->  	select GENERIC_PCI_IOMAP
-> +	select GENERIC_IOREMAP
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
->  	select GENERIC_SMP_IDLE_THREAD
->  	select GENERIC_ARCH_TOPOLOGY if SMP
-> diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-> index c05e781be2f5..366537042465 100644
-> --- a/arch/parisc/include/asm/io.h
-> +++ b/arch/parisc/include/asm/io.h
-> @@ -125,12 +125,17 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
->  /*
->   * The standard PCI ioremap interfaces
->   */
-> -void __iomem *ioremap(unsigned long offset, unsigned long size);
-> -#define ioremap_wc			ioremap
-> -#define ioremap_uc			ioremap
-> -#define pci_iounmap			pci_iounmap
-> +#define ioremap_prot ioremap_prot
-> +
-> +#define _PAGE_IOREMAP (_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | \
-> +		       _PAGE_ACCESSED | _PAGE_NO_CACHE)
->  
-> -extern void iounmap(const volatile void __iomem *addr);
-> +#define ioremap_wc(addr, size)  \
-> +	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-> +#define ioremap_uc(addr, size)  \
-> +	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-> +
-> +#define pci_iounmap			pci_iounmap
->  
->  void memset_io(volatile void __iomem *addr, unsigned char val, int count);
->  void memcpy_fromio(void *dst, const volatile void __iomem *src, int count);
-> diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
-> index 345ff0b66499..fd996472dfe7 100644
-> --- a/arch/parisc/mm/ioremap.c
-> +++ b/arch/parisc/mm/ioremap.c
-> @@ -13,25 +13,9 @@
->  #include <linux/io.h>
->  #include <linux/mm.h>
->  
-> -/*
-> - * Generic mapping function (not visible outside):
-> - */
-> -
-> -/*
-> - * Remap an arbitrary physical address space into the kernel virtual
-> - * address space.
-> - *
-> - * NOTE! We need to allow non-page-aligned mappings too: we will obviously
-> - * have to convert them into an offset in a page-aligned mapping, but the
-> - * caller shouldn't need to know that small detail.
-> - */
-> -void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
-> +void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
-> +			   unsigned long prot)
->  {
-> -	void __iomem *addr;
-> -	struct vm_struct *area;
-> -	unsigned long offset, last_addr;
-> -	pgprot_t pgprot;
-> -
->  #ifdef CONFIG_EISA
->  	unsigned long end = phys_addr + size - 1;
->  	/* Support EISA addresses */
-> @@ -40,11 +24,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
->  		phys_addr |= F_EXTEND(0xfc000000);
->  #endif
->  
-> -	/* Don't allow wraparound or zero size */
-> -	last_addr = phys_addr + size - 1;
-> -	if (!size || last_addr < phys_addr)
-> -		return NULL;
-> -
->  	/*
->  	 * Don't allow anybody to remap normal RAM that we're using..
->  	 */
-> @@ -62,39 +41,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
->  		}
->  	}
->  
-> -	pgprot = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY |
-> -			  _PAGE_ACCESSED | _PAGE_NO_CACHE);
-> -
-> -	/*
-> -	 * Mappings have to be page-aligned
-> -	 */
-> -	offset = phys_addr & ~PAGE_MASK;
-> -	phys_addr &= PAGE_MASK;
-> -	size = PAGE_ALIGN(last_addr + 1) - phys_addr;
-> -
-> -	/*
-> -	 * Ok, go for it..
-> -	 */
-> -	area = get_vm_area(size, VM_IOREMAP);
-> -	if (!area)
-> -		return NULL;
-> -
-> -	addr = (void __iomem *) area->addr;
-> -	if (ioremap_page_range((unsigned long)addr, (unsigned long)addr + size,
-> -			       phys_addr, pgprot)) {
-> -		vunmap(addr);
-> -		return NULL;
-> -	}
-> -
-> -	return (void __iomem *) (offset + (char __iomem *)addr);
-> -}
-> -EXPORT_SYMBOL(ioremap);
-> -
-> -void iounmap(const volatile void __iomem *io_addr)
-> -{
-> -	unsigned long addr = (unsigned long)io_addr & PAGE_MASK;
-> -
-> -	if (is_vmalloc_addr((void *)addr))
-> -		vunmap((void *)addr);
-> +	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
->  }
-> -EXPORT_SYMBOL(iounmap);
-> +EXPORT_SYMBOL(ioremap_prot);
-> -- 
-> 2.34.1
-> 
-> 
+I'm not sure...
 
--- 
-Sincerely yours,
-Mike.
+Just to fully understand it. Is this short summary correct: ?
+- flush_kernel_dcache_range: flush cache back to memory, but keep data in =
+cache.
+	Next read fetches the data which is still in the cache, thus the next
+	read doesn't checks if data in memory has been modified in the meantime (=
+e.g. via DMA).
+- purge_kernel_dcache_range_asm: ignore currently cached data & drop any c=
+ached data in that range.
+	Even if cache has dirty memory which hasn't been written back yet, drop i=
+t and don't write back.
+	Next read will fetch data from memory, thus return what DMA could have st=
+ored there.
+
+Helge
