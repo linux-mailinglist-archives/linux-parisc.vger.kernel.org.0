@@ -2,100 +2,104 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BAE17045CE
-	for <lists+linux-parisc@lfdr.de>; Tue, 16 May 2023 09:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BB24704AEF
+	for <lists+linux-parisc@lfdr.de>; Tue, 16 May 2023 12:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230316AbjEPHJ2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 16 May 2023 03:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44086 "EHLO
+        id S232397AbjEPKnh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 16 May 2023 06:43:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230318AbjEPHJ0 (ORCPT
+        with ESMTP id S229664AbjEPKng (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 16 May 2023 03:09:26 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E9193C3D
-        for <linux-parisc@vger.kernel.org>; Tue, 16 May 2023 00:09:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1684220959; i=deller@gmx.de;
-        bh=Qd1Q+TLs9o5df4idaoVcKfzE9+gvb7pIxhYHZtU6Z68=;
-        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
-        b=k4bWwsJz45r93eHO602eGVqwTjJuvwkk7ONJikpaeRaonk2pCO3Q/XC2oaScibT3o
-         0uyRn8LF2QOE7k3oc4FkulugTnMHomAMJPEK/6Q4uuP814l6ZyAIKTBy4seumkgP2T
-         T5x2tjlagGR9EMhYSUY3DSAf/ftNbIPT5FEeNyBXxD/m4rws/t8FoytZGAPVJ1G2dx
-         2+bRGbYMcSDcjXYcGtGuyog4VlB2G+YV8MhdA6i5w0ThdYmOcYbkkhK9Jy1UNGF7gU
-         G46gMvMfKhleXvQAeiHk/hwjkaw/igohOO+h5Xcc5avxIqtLgfNoka6OkzLnLrngmp
-         AoOyuXvQlX98w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.150.20]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MJVHe-1pjToV2Lnc-00JrhI; Tue, 16
- May 2023 09:09:19 +0200
-Message-ID: <7bcc14b4-408a-d884-a78c-b0436789e58d@gmx.de>
-Date:   Tue, 16 May 2023 09:09:18 +0200
+        Tue, 16 May 2023 06:43:36 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50C2E8;
+        Tue, 16 May 2023 03:43:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=aFE52arMbeuGVCs81HtFqwlRw7vUUbocXdncBereG0Q=; b=FkkqeXjyINXcZ0dn67fZnclgj5
+        cM/jyQTU2OOfVb/EiYFiDE06liJQP27KDAcpUH/jvL5QV5T8XRtCJzU+4kg1GW4V/NzKuN4GPJCdQ
+        0sqkIOfozkG/6bRoKC331l4E55SrRg5QgVT5Oax7JRzQ8FaceCgUVhX3+9fgImj0uvsScOdj/gykc
+        BiRVVw7g07fwYDhA/dioi9Gx9dHD4NjilKqhgdxQMUfWU0+KUYPlLl+nB8lai821mGMHryLvk+NSQ
+        Eh+gOFJ/bYjCd1MgOmvB2ulDNpaXZcyForWW7zbsHFkP4U9F6xTP8XOIUJ9iT/VeLM4yXgttg5d8o
+        HZ+p+e2A==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1pys7y-00C5WG-2z;
+        Tue, 16 May 2023 10:41:59 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D21DF30008D;
+        Tue, 16 May 2023 12:41:52 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id A9E932013503C; Tue, 16 May 2023 12:41:52 +0200 (CEST)
+Date:   Tue, 16 May 2023 12:41:52 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Hugh Dickins <hughd@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        Michel Lespinasse <michel@lespinasse.org>
+Subject: Re: [PATCH 00/23] arch: allow pte_offset_map[_lock]() to fail
+Message-ID: <20230516104152.GH2587705@hirez.programming.kicks-ass.net>
+References: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com>
+ <ZFs0k2rrLPH9A/UU@casper.infradead.org>
+ <d7f3c7b2-25b8-ef66-98a8-43d68f4499f@google.com>
+ <ZFz1j1slZHCQmwMJ@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] parisc: improve cach flushing in arch_sync_dma_for_cpu()
-Content-Language: en-US
-To:     John David Anglin <dave.anglin@bell.net>,
-        linux-parisc@vger.kernel.org
-References: <ZGJ8ZcPZbckX7VNB@p100>
- <4664024c-1312-64b5-5150-e60bf3fc49bb@bell.net>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <4664024c-1312-64b5-5150-e60bf3fc49bb@bell.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZAz7S7mX1i71y8tY4aJYbLvsQUsOQ2S64r1JPAJl/cxfSMjoi+Q
- dtQqaa7BeTD071Lc1EovzvDawiV/hZ1/EzdUHeajMULf/soiGBC/Z+9l45GA5+3naLFmGNd
- qIUviVgcTbh6QMmpGjRBBbQCfqj8IUW1HXBA5bxVsrqlhOATKNJqunT7s+g6kTHzAp85szW
- W43T8Gwxi8O/WzEExMnew==
-UI-OutboundReport: notjunk:1;M01:P0:B8O0BYQiR4M=;Pw/5qJexUS4jjoSoVod/84PSOhq
- DiS9f152+YTjyMuoivdNxSxr7ovM2o8339PELE5a9TMK8w5+qfynEcXXcyrLAWhhvs/kf0MhI
- vQMxY6PMdWmiIh82PuWr+hmnAb+cMpoJ5lFOH2kUp2v2Mom/rvQ5W0aZPlUH/pnk6PKb+Nugz
- 86GhptzrLKaPylNVEvrUvHM/wHjRzTy12xutO53EYfBPRuOz5kbsR7kbn0XOFY1xCbbODVPdA
- xAIl39doLPgvufWMf+JKUB308CC3jaPe1te08rmUxRUk1Kdnhe5gxcclXXXEtX/SyQj3gfj10
- 8pInHclbw+MeQNbHMDkTkQf6fQ1zUF58Puf+3sSwjIrbM0Mybk7fpX1c4Y8vYG4elrZr/fmr0
- cmd+hgbhpuP4qsvH54y2enfp5NilyhOmG2WyMZvU8TtcuNdakGGWcpOYEavYfd8YFNS/EGnuX
- lbrBTPjZ3b4GjJ+4O3pF6jMonQqyY+qBGn6aL1Nb5cJrBH168KaniYTDX4XGlV3zkQQRT7TY5
- iha7/Q46pz19kf+ekY36qFf4dJcWMY87QGOqTcfA/3kipy6XFS9ZOwroaILWHiMWuX8HaGhqJ
- 2SXCSsyzXo8tkTWMxLMr/42UWLN0vAz7oWihesF2diq7EzriFs8bOC/HoicicV7zgOyGK2XP4
- 9Zm9hVdyhlcjR5iZx/AhnuCCSFVj17FWSurZ7CDr+kk2F8pMhNkmS1lrn3q0XWv14bWet7mT1
- 9XmXuSG+fzmO3jUii1fni9nnpDIjLs+uSPKDlIaBRKAG7DsQbG1wJlJOLAHwgjOrkcVzACbQZ
- CFB+2j4Q6CVl6+5paWA7Gopb27dXCtaw3Thwe0kCO218gpDYsXpRaEC5RRxnuE1OqyYuxY91A
- kiP/96PlynxjCejKcXM1t+Dw4F+dWDjmjeLQh/+8DTPby77p/w0Eozb/LDsNDojo4ps2ost99
- ZSzCu6eY/Sglij+5paraplIglw0=
-X-Spam-Status: No, score=-6.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZFz1j1slZHCQmwMJ@casper.infradead.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/16/23 00:28, John David Anglin wrote:
-> On 2023-05-15 2:39 p.m., Helge Deller wrote:
->> +=C2=A0=C2=A0=C2=A0 case DMA_BIDIRECTIONAL:
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flush_kernel_dcache_range(a=
-ddr, size);
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 purge_kernel_dcache_range_a=
-sm(addr, addr + size);
-> I don't think flush and purge are both needed.
+On Thu, May 11, 2023 at 03:02:55PM +0100, Matthew Wilcox wrote:
 
-I'm not sure...
+> We also talked about moving x86 to always RCU-free page tables in
+> order to make accessing /proc/$pid/smaps lockless.  I believe Michel
+> is going to take a swing at this project.
 
-Just to fully understand it. Is this short summary correct: ?
-- flush_kernel_dcache_range: flush cache back to memory, but keep data in =
-cache.
-	Next read fetches the data which is still in the cache, thus the next
-	read doesn't checks if data in memory has been modified in the meantime (=
-e.g. via DMA).
-- purge_kernel_dcache_range_asm: ignore currently cached data & drop any c=
-ached data in that range.
-	Even if cache has dirty memory which hasn't been written back yet, drop i=
-t and don't write back.
-	Next read will fetch data from memory, thus return what DMA could have st=
-ored there.
-
-Helge
+Shouldn't be too controversial I think -- effectively everybody already
+has it enabled because everybody builds with KVM enabled.
