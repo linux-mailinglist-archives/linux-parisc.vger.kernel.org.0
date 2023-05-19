@@ -2,221 +2,75 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F7B87078A8
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 May 2023 05:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0101709628
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 May 2023 13:18:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbjERDzE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 17 May 2023 23:55:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56074 "EHLO
+        id S231696AbjESLSK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 19 May 2023 07:18:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229929AbjERDzA (ORCPT
+        with ESMTP id S231824AbjESLSH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 17 May 2023 23:55:00 -0400
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D9F0211F
-        for <linux-parisc@vger.kernel.org>; Wed, 17 May 2023 20:54:57 -0700 (PDT)
-Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-33164ec77ccso89645ab.0
-        for <linux-parisc@vger.kernel.org>; Wed, 17 May 2023 20:54:57 -0700 (PDT)
+        Fri, 19 May 2023 07:18:07 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 516CC10D2
+        for <linux-parisc@vger.kernel.org>; Fri, 19 May 2023 04:18:04 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-5112cae8d82so773442a12.2
+        for <linux-parisc@vger.kernel.org>; Fri, 19 May 2023 04:18:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684382096; x=1686974096;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9khFylmCpzBPme3ZtDYCgoUUvcfw4FULGkoHOgcc0KM=;
-        b=OtT2/7tHsR0mkLxE+tteXxPcg6MrlNcFg0G5I9eGDu3QXmGMkNfiKQAmaZV3iHsLOy
-         KvBwRb86mCBSW5K+fo3bB0OzyHWYQfq8WYY7V34Wl2O1XMDxBGbcn/IV0m7PtOk7HJda
-         c89hAPTrd4qkdM3hWLsBUoAG5FkhJNQR3Ok7wXo3uXPqwhV3baxT4Rln7xS8mq39dhbx
-         qOuusMgtlWs9BqwzBIeXdFdI51FIIuPDCB234CD52+YVw9RAw8YjJ2P5lJNa4Gq5z7Aw
-         sFAfqfVk3Kpn7/YqW+IXdEbR20bMQrR0mel5STdzmbGDX/hRj53kdv8aa1BTUmNsGwPK
-         QqOg==
+        d=gmail.com; s=20221208; t=1684495083; x=1687087083;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YmxaI1amCfTksu6ynk2557PwK0HJxrBQmYIx/Pz5hBs=;
+        b=Wt/WzQmS095ww6zzUgoSSAlrCDxwL2gSoVBMsVxHRKn23YcliDiJyBLjqweTRoToj1
+         ufUOgV4j5pHE/9SR+dsRPr9gpju7XpaMYkUmYe1T6vrhoZIvsQDtFJjwfPWr0ZA8MwEK
+         A8xkN8RoXHrnV8mxXNMusUB3EToMcUvt2JPOXJbMgVYPwdz45S3ERx+Nyqo+cmGrrOa8
+         vd+RSV3BkQDybrevFx7U7UuvnFt+9sOfqdHCxo6t6nUsXpAQmNebiCtg7JMDFdLkqxgM
+         8PXBgbynXWRxC6QXqoh8bbtvc/aqA5Z2+Ycz9m8q7U5s8LdUBFb9kcl7MTOhQK2ZKsRi
+         q6Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684382096; x=1686974096;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9khFylmCpzBPme3ZtDYCgoUUvcfw4FULGkoHOgcc0KM=;
-        b=QubWOWrocnHIe+aFm/gQTnbmFZUKqwZGADNVtHbl/avp0OrxQ0mcZfbQUXVG6m57Vg
-         a+wumoKtn/BP9tSguDfNb9GAxQ2eSJkKMcgJXVDJ2ijwdT2cGSM8leMgqL2Gd6YGoz0P
-         z6qdhMKQ9G/88QSugYEmYxFTS3FuH0Ec1b/nPaCGWNTI+NaqGOkWDwacBlPxVOZDheFf
-         /UzOPj0l5lfJvmeLDlNCbjzHwNdeZ/4soHUT/viNSId0LM0BGsFoQfqwAGH8jQOC/wCz
-         Th1mzhmXE0b5s/g2O3g2GcOn9iiKbSDW0GTTw1mUE0hUczoossGlG4V3mk+XU75diunc
-         3iag==
-X-Gm-Message-State: AC+VfDwVuYOLMNQkeym5QPDddqd3cB+olj2Y1BUHSObuKHoPGpaVJB0r
-        D2tdFN9GQnU8cbOQk/zjp+ELmQ17wXpauOosp2Zx5w==
-X-Google-Smtp-Source: ACHHUZ717zmrczolPQ87hbWdJhPbrvKwtnmjQulUOZnWQ5Q0uegRkL12ChK1bcl526dLzNN00CxdtF2jaAUwZjfOdVw=
-X-Received: by 2002:a05:6e02:2145:b0:331:4d3c:db55 with SMTP id
- d5-20020a056e02214500b003314d3cdb55mr133492ilv.4.1684382096471; Wed, 17 May
- 2023 20:54:56 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684495083; x=1687087083;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YmxaI1amCfTksu6ynk2557PwK0HJxrBQmYIx/Pz5hBs=;
+        b=G+5gKmQwJF4uivs8ABvjvCaSed1fBW2c50OE356FHY22NFlyPr8XjLd5/7Koz/LKoZ
+         5MraxtAExbSwNJLecnzTBBZ1f1iVitFYS7x0SnEhDj/98kR0GYrB0pj0MCXk1mnl6zCY
+         /u+m24PJ0fB5BcemxSTn/R/HbSmGagl4OMWHcXTr4zdI/hlkj7hdEdQX+J6LlcWfyEEI
+         FMshxL7A1YHQeDFWbNyOZeoJR3o5k+jRXHemlul7tsp+zFwnSTVk4UsKgp0BLk5uH8bn
+         bdk/CUJe041XuaXbQF0SM1TyKDT9jXwRnLyWzNVchh2VxaPbtCd7vClVZsOa6F4K89c9
+         SCug==
+X-Gm-Message-State: AC+VfDxaQ3AOLfGLCdyIrGZPLp+xHHpetpgqZSZI1umO6oqT3PFADybe
+        c5dlCLATOlTXYbS1tNZ8TGq9bEJ4mAo+xqHXhZs=
+X-Google-Smtp-Source: ACHHUZ4u0RD9o3Kl8FtNeecPkKIUUkqQP5EKCQy8Odb3BCVRQ/plvct7PNXp53hldLkfZ7jyXh0W2roGP4wdAWIFYf4=
+X-Received: by 2002:a17:906:af64:b0:966:5730:c3fe with SMTP id
+ os4-20020a170906af6400b009665730c3femr1223003ejb.52.1684495082502; Fri, 19
+ May 2023 04:18:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230517131102.934196-1-arnd@kernel.org> <20230517131102.934196-10-arnd@kernel.org>
-In-Reply-To: <20230517131102.934196-10-arnd@kernel.org>
-From:   David Gow <davidgow@google.com>
-Date:   Thu, 18 May 2023 11:54:44 +0800
-Message-ID: <CABVgOSnu4B2O49O012=ywvmskso3cfbYRbdhX2RXA1C1v-ymSw@mail.gmail.com>
-Subject: Re: [PATCH 09/14] kunit: include debugfs header file
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@redhat.com>,
-        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Christoph Lameter <cl@linux.com>, Pavel Machek <pavel@ucw.cz>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Waiman Long <longman@redhat.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        audit@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000008d355805fbefc459"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a17:907:7dab:b0:94f:7d03:8e8b with HTTP; Fri, 19 May 2023
+ 04:18:02 -0700 (PDT)
+Reply-To: ninacoulibaly03@myself.com
+From:   nina coulibaly <ninacoulibaly199@gmail.com>
+Date:   Fri, 19 May 2023 04:18:02 -0700
+Message-ID: <CAM7Z2JAs+q6RsD5Hw352ZDFruUVR5ngjAamir+4ZCakNdZyceg@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
---0000000000008d355805fbefc459
-Content-Type: text/plain; charset="UTF-8"
+Dear,
 
-On Wed, 17 May 2023 at 21:12, Arnd Bergmann <arnd@kernel.org> wrote:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> An extra #include statement is needed to ensure the prototypes
-> for debugfs interfaces are visible, avoiding this warning:
->
-> lib/kunit/debugfs.c:28:6: error: no previous prototype for 'kunit_debugfs_cleanup' [-Werror=missing-prototypes]
-> lib/kunit/debugfs.c:33:6: error: no previous prototype for 'kunit_debugfs_init' [-Werror=missing-prototypes]
-> lib/kunit/debugfs.c:102:6: error: no previous prototype for 'kunit_debugfs_create_suite' [-Werror=missing-prototypes]
-> lib/kunit/debugfs.c:118:6: error: no previous prototype for 'kunit_debugfs_destroy_suite' [-Werror=missing-prototypes]
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
+Please grant me permission to share a very crucial discussion with
+you. I am looking forward to hearing from you at your earliest
+convenience.
 
-Nice catch, thanks. I'm fine with this going in via -mm, but if you'd
-prefer it to go via kselftest/kunit, let me know.
-
-Reviewed-by: David Gow <davidgow@google.com>
-
-Cheers,
--- David
-
->  lib/kunit/debugfs.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
-> index b08bb1fba106..22c5c496a68f 100644
-> --- a/lib/kunit/debugfs.c
-> +++ b/lib/kunit/debugfs.c
-> @@ -10,6 +10,7 @@
->  #include <kunit/test.h>
->
->  #include "string-stream.h"
-> +#include "debugfs.h"
->
->  #define KUNIT_DEBUGFS_ROOT             "kunit"
->  #define KUNIT_DEBUGFS_RESULTS          "results"
-> --
-> 2.39.2
->
-> --
-> You received this message because you are subscribed to the Google Groups "KUnit Development" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to kunit-dev+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/kunit-dev/20230517131102.934196-10-arnd%40kernel.org.
-
---0000000000008d355805fbefc459
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
-IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
-dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
-6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
-c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
-I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
-AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
-BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
-CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
-AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
-MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
-My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
-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
-9IGQSBx2i4m+hGXJpET+MEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
-dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
-AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
-c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
-LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
-LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
-Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQCRI3Z4cAidgFcv
-Usqdz765x6KMZSfg/WtFrYg8ewsP2NpCxVM2+EhPyyEQ0k0DhtzdtGoI/Ug+jdFDyCKB9P2+EPLh
-iMjMnFILp7Zs4r18ECHlvZuDZfH9m0BchXIxu5jLIuQyKUWrCRDZZEDNr510ZhhVfYSFPA8ms1nk
-jyzYFOHYQyv5IfML/3IBFKlON5OZa+V8EZYULYcNkp03DdWglafj7SXZ1/XgAbVYrC381UvrsYN8
-jndVvoa1GWwe+NVlIIK7Q3uAjV3qLEDQpaNPg1rr0oAn6YmvTccjVMqj2YNwN+RHhKNzgRGxY5ct
-FaN+8fXZhRhpv3bVbAWuPZXoMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
-R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
-MDIwAhABAz5xDls09r2CKyYRqnNbMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDy
-NkOhXvFQzVSUzEL0U7yvjVToTpRRBqjD19aTuf2q2DAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMzA1MTgwMzU0NTZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
-BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEASZj0gEQ+5lxvkjrq4q9q
-5mjjTag80+oStNj31xLxqT9znMHS6iSot1ydtlpdvi9KdzvHQkJ5IfDglO7zxa85QP3Lhwohu3HQ
-1cbrnbPsqFIuxwtIedSAC+CdtmId3fIoU+8q92Zza/gTeeyK3s8SRAEIR+zVMTo6nht+KGLmnbjS
-jDw7GiibXzfchEqEe8JdqMANIZ8AcQHWuSZ38ur+pCivS7W1SNK9aGCYOOnal1mK/1wdBSpcih2H
-Vn7dKVT/tdMUCJlrZroJgr8RVfnmuLzPayYKnQyrYyEvM41vYYv6cMaW24VTXfFEaf5srz2yzOhq
-zEItkzXw9MlVZ+tLJA==
---0000000000008d355805fbefc459--
+Mrs. Nina Coulibal
