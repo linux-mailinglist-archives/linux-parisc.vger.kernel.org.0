@@ -2,172 +2,126 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF186709E80
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 May 2023 19:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C556570A599
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 May 2023 07:11:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230492AbjESRqk (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 19 May 2023 13:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50328 "EHLO
+        id S229951AbjETFLc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 20 May 2023 01:11:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230426AbjESRqi (ORCPT
+        with ESMTP id S230489AbjETFLG (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 19 May 2023 13:46:38 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B38113D;
-        Fri, 19 May 2023 10:46:35 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34JFMfDd012512;
-        Fri, 19 May 2023 17:45:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=eudHzY6WP7JinnfOr70AykPZvSkkpEMxuNg8hMfppYo=;
- b=DMV0U+nIXEVCY+aepXRfFYvdfBeVO+N4QF0je1NreoKWWMhdhmNCmkCFY69GHp3G1MUl
- W4uLhQQIfJlWzCmL2UlwpB67SLBLlnvd3eaMcPBXY3xpzTd4DPesNiwRSj6AMqZBspVo
- 08MDwx36HiK4jQA4XpyJQxV1CWo2sx0aEh71PEANzSjVcRsNE8URDp/9OH/+p2Kh4/Bd
- u8dY8/MWw20kSLCJ06My3a975QQQC9ySq7nhEqEvzzuIHXWUfJmJ+Gzj0a0CNBUiRPUE
- dcRr1k8AfSKrqIM3q0pDGScz3hGnOYsEF+bviVQ6TCuLFhAIK7GTUA+1LUQeisPdvBFr pg== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qp95v0w04-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 19 May 2023 17:45:03 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34JHj1wR008027
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 19 May 2023 17:45:01 GMT
-Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Fri, 19 May
- 2023 10:44:59 -0700
-Message-ID: <ebe36911-024a-839c-3b7e-05c99bfb0d66@quicinc.com>
-Date:   Fri, 19 May 2023 11:44:58 -0600
+        Sat, 20 May 2023 01:11:06 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A36F1701
+        for <linux-parisc@vger.kernel.org>; Fri, 19 May 2023 22:10:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1684559455; i=deller@gmx.de;
+        bh=Y0/5zMRnvdvzauPKdYx83NFel+82dnGtRQqqXx2M8Uw=;
+        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+        b=m+e/mcAnA8l/V2wXygVawoLjaKHuKlYMerrSFzPfDQOOEoJ2idgtEcmU2tP9lTVPi
+         YS5OXIIH5LKIKxjwrmFVALYze/b+rQPO+lkHJbKf2BV7pWYTshPkq1NgC3ZtZGpIz2
+         BXevJ+cdhHMKJvmPAVo4y2DKfo2OUSQYAiOCCBWqQuTCAKHPkYKfZWSO/5wdy97Y/G
+         f+p+KId3FhEEqrufLcV57GTqYWya59PGETRBXGkRJgcf+9dwVaycPC8LJp6plVG0fM
+         Z9usEM78yR5btr0RemJjL0wGm1VdzTDSOHhhTTcwfjb90Uy5q3lF3hNMpaANrPEefD
+         h3B2b4EuPHUAQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.147.136]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MTzay-1paLzp1VOU-00Qz68; Sat, 20
+ May 2023 07:10:55 +0200
+Message-ID: <86484810-11e7-ea49-b093-c1c2144738ee@gmx.de>
+Date:   Sat, 20 May 2023 07:10:54 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [patch V4 36/37] x86/smpboot: Support parallel startup of
- secondary CPUs
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] parisc: improve cach flushing in arch_sync_dma_for_cpu()
 Content-Language: en-US
-To:     Andrew Cooper <andrew.cooper3@citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>
-CC:     <x86@kernel.org>, Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        <xen-devel@lists.xenproject.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        <linux-csky@vger.kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        <linux-mips@vger.kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, <linux-parisc@vger.kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        <linux-riscv@lists.infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        David Woodhouse <dwmw@amazon.co.uk>
-References: <20230512203426.452963764@linutronix.de>
- <20230512205257.411554373@linutronix.de>
- <16562305-3bc0-c69f-0cb5-1b9da1014f19@quicinc.com>
- <0cafbfcb-2430-6d90-ee77-4e5de08ee1da@citrix.com>
-From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
-In-Reply-To: <0cafbfcb-2430-6d90-ee77-4e5de08ee1da@citrix.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: wzgfaxTFUND7jtAhGx51l9t9Ic-_fDjs
-X-Proofpoint-GUID: wzgfaxTFUND7jtAhGx51l9t9Ic-_fDjs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-19_12,2023-05-17_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 phishscore=0 bulkscore=0 adultscore=0
- mlxscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305190152
+To:     John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org
+References: <ZGJ8ZcPZbckX7VNB@p100>
+ <4664024c-1312-64b5-5150-e60bf3fc49bb@bell.net>
+ <7bcc14b4-408a-d884-a78c-b0436789e58d@gmx.de>
+ <0c0a6071-d518-4d6c-17be-934e5f1a1199@bell.net> <ZGPEwk3JEc/skrBx@p100>
+ <fe9e116a-a814-36f0-a4d0-fd5dbcb692f6@bell.net>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <fe9e116a-a814-36f0-a4d0-fd5dbcb692f6@bell.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:PqKVZ25dG59RWo0tp+rw56ZG+fgohXPGb2JDpsJfJBcaa9GEmzr
+ KZWDrNmf+45roUiGXmH3ktq1FjUhJnQk8Hika3navApo/Wdti/TBFXESZRhdUyoA3OQU0ow
+ aKdpFMrBsh/UNPQlTDtcV5WKOQteopz9Wgs7uh3f0eDu9WGhBIYqAcva0TR5jIHKARh7SEN
+ L8mRKAKUOahp4sTCmQMKg==
+UI-OutboundReport: notjunk:1;M01:P0:9WHaMcKSXX8=;MxAm+0qb/Rk26VJmeU7ojCPYyHj
+ kUmbnrJWAnQL8H0Qv5K/ZA6jry+iZxTol6kOOzvTn7vTO3ImcDXN1lAJ1msX6QlEG/l374DVX
+ VyqquXDufmrcY8oe2hVdXYgPPpy/KrJStHhk1f+j1odinkDHLDD/+pqEer8WiKREoXBzNZywx
+ s0UBfyXTjSUl4H8DI5pq7jWXSm8hlsibDyNcKHBuX0LmGxg9O4mtupmeeyXwqD5lzsuOK9ryO
+ k7iGVANNoUv+mLoEPWIB81KbdfY8i0E1Li45wmXX/rpurr4VOGgYuMGgnfRs3HsbtsPVhiGFH
+ y6sv4A2/WO062OyuWTazKUdgkE2+P/DdvCNJggEsevqW7UJfrNqWa2vOEKpjAhEhBok1yShst
+ 0LbUWCC2Lg3+b6xxsInzwUOsr2bZ+nlQzdxnKZgP0Uvn5dALC1SVF3D/CFqCawrMOROK8OFHi
+ HRlHHMYiEFgDKVem13dUn59+9abLHsq80TGXgdu/lypnhvuBQ31d/i7gqE+kpkeThrsCSbWHq
+ ++cHGRDZr7UJZ1eyyzGvVYh3XXpoGMNqImryDc5S7Zc4wDtnh54B2SC54G0wTB8Y70KAnnX22
+ +hGByWJQvg1FZPPnyJEhkWOcbipbeQgCq6IV8TaZGsbX9gjAN+1k7Xj6giiTNyCOnsZZ0B/Wn
+ r3b+CaRka/zlFM1lqRT2EbRFqLhbFpXyO6CdNIM7UxQCRh+Cr2tTEph1m3oTZkXDOuG5CR49r
+ uwa/ewIBbZlmYTl8D69TCNG1EmJ7WPoi/u+thEMRTL2HC3oX0pq/rFkMIXgVnw1D7GP1XIfcQ
+ Fcyh2G7FX3nAAvGVrZLAhiyhH9OtmNvewD3aMYw9E+Rpx52hOe/NlzjajNqPS9Or8tlc+4lUc
+ JfqYYMU+lRkkvIf4N2OoeyMrOpUAAD9JtPrk06FxNtfM4NidVqyjFquObDYe302CpEsSwtpEa
+ 12l4QA==
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/19/2023 10:57 AM, Andrew Cooper wrote:
-> On 19/05/2023 5:28 pm, Jeffrey Hugo wrote:
->>    DESCEND objtool
->>    INSTALL libsubcmd_headers
->>    CALL    scripts/checksyscalls.sh
->>    AS      arch/x86/kernel/head_64.o
->> arch/x86/kernel/head_64.S: Assembler messages:
->> arch/x86/kernel/head_64.S:261: Error: missing ')'
->> arch/x86/kernel/head_64.S:261: Error: junk `UL<<10)' after expression
->>    CC      arch/x86/kernel/head64.o
->>    CC      arch/x86/kernel/ebda.o
->>    CC      arch/x86/kernel/platform-quirks.o
->> scripts/Makefile.build:374: recipe for target
->> 'arch/x86/kernel/head_64.o' failed
->> make[3]: *** [arch/x86/kernel/head_64.o] Error 1
->> make[3]: *** Waiting for unfinished jobs....
->> scripts/Makefile.build:494: recipe for target 'arch/x86/kernel' failed
->> make[2]: *** [arch/x86/kernel] Error 2
->> scripts/Makefile.build:494: recipe for target 'arch/x86' failed
->> make[1]: *** [arch/x86] Error 2
->> make[1]: *** Waiting for unfinished jobs....
->> Makefile:2026: recipe for target '.' failed
->> make: *** [.] Error 2
->>
->> This is with GCC 5.4.0, if it matters.
->>
->> Reverting this change allows the build to move forward, although I
->> also need to revert "x86/smpboot/64: Implement
->> arch_cpuhp_init_parallel_bringup() and enable it" for the build to
->> fully succeed.
->>
->> I'm not familiar with this code, and nothing obvious stands out to me.
->> What can I do to help root cause this?
-> 
-> Can you try:
-> 
-> -#define XAPIC_ENABLE    (1UL << 11)
-> -#define X2APIC_ENABLE    (1UL << 10)
-> +#define XAPIC_ENABLE    BIT(11)
-> +#define X2APIC_ENABLE    BIT(10)
-> 
-> The UL suffix isn't understood by older binutils, and this patch adds
-> the first use of these constants in assembly.
+On 5/19/23 18:07, John David Anglin wrote:
+> On 2023-05-16 2:00 p.m., Helge Deller wrote:
+>> * John David Anglin <dave.anglin@bell.net>:
+>>> On 2023-05-16 3:09 a.m., Helge Deller wrote:
+>>>> On 5/16/23 00:28, John David Anglin wrote:
+>>>>> On 2023-05-15 2:39 p.m., Helge Deller wrote:
+>>>>>> +=C2=A0=C2=A0=C2=A0 case DMA_BIDIRECTIONAL:
+>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flush_kernel_dcache_ran=
+ge(addr, size);
+>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 purge_kernel_dcache_ran=
+ge_asm(addr, addr + size);
+>>>>> I don't think flush and purge are both needed.
+>>>> I'm not sure...
+>>>>
+>>>> Just to fully understand it. Is this short summary correct: ?
+>>>> - flush_kernel_dcache_range: flush cache back to memory, but keep dat=
+a in cache.
+>>> No.=C2=A0 If present, fdc writes addressed cache line to memory if and=
+ only if line is dirty.=C2=A0 It
+>>> then invalidates line.=C2=A0 It does not keep data in cache.
+>>>
+>>> Next read loads from memory.
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Next read fetches the data which is sti=
+ll in the cache, thus the next
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0read doesn't checks if data in memory h=
+as been modified in the meantime (e.g. via DMA).
+>>>> - purge_kernel_dcache_range_asm: ignore currently cached data & drop =
+any cached data in that range.
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Even if cache has dirty memory which ha=
+sn't been written back yet, drop it and don't write back.
+>>> if present, pdc invalidates line.=C2=A0 At privilege level zero, an im=
+plementation may optionally write
+>>> back a dirty line to memory.=C2=A0 At non-zero privilege levels, fdc a=
+nd pdc are effectively the same.
+>>>
+>>> I don't know how to determine whether pdc does write back or not. It w=
+ould be specified in processor
+>>> ERS.
+>> Thanks for the explanation!
+>> With that, I've attached an updated (untested) patch below.
 
-Ah, makes sense.
+> Seems to work okay on c8000.=C2=A0 Don't know if it helps performance.
 
-Your suggested change works for me.  No more compile error.
+Probably no performance change for c8000.
+I noticed that pci-dma.c is only compiled on 32-bit kernels (for PCX-T mac=
+hines) :-)
 
-I assume you will be following up with a patch to address this.  Feel 
-free to add the following tags as you see fit:
-
-Reported-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-
--Jeff
+Helge
