@@ -2,48 +2,48 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7358970AA28
-	for <lists+linux-parisc@lfdr.de>; Sat, 20 May 2023 20:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEE0B70AA3E
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 May 2023 20:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232038AbjETSZK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 20 May 2023 14:25:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43774 "EHLO
+        id S232265AbjETS1f (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 20 May 2023 14:27:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232215AbjETSYt (ORCPT
+        with ESMTP id S232050AbjETS1O (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 20 May 2023 14:24:49 -0400
+        Sat, 20 May 2023 14:27:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D75A61BDB;
-        Sat, 20 May 2023 11:24:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08BD1BD1;
+        Sat, 20 May 2023 11:26:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3BAB60F97;
-        Sat, 20 May 2023 18:23:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5BAC433D2;
-        Sat, 20 May 2023 18:23:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C7B4616DC;
+        Sat, 20 May 2023 18:23:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2050CC433EF;
+        Sat, 20 May 2023 18:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684606987;
+        s=k20201202; t=1684607022;
         bh=IxY9yD28x09t6EP3qwL6MxSZUKwa8NFQn8cpurereZI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eimFAZ5tETb9nxsw1Nwjk4sMj1O6+Mg0tUWm2hagTKKgz/JUR4vA6ZB9+3XEEMa7g
-         x7/RgQr+25xhKQ1N7nZVhITJCtDe6l2rejI2IctLDTobm/hMO2OiPBYCUA8NR8cFen
-         wVCAnoNNkj3JNsvRm31m6KzXWX12C499WtlCGL+uIZZA+iWa0MO2QdMFzAtnSzMjdH
-         dxqBdFBBcHoqFcPo8XsxoiaSmgSCrybKDGK7Ndia5hMeiMTKVJCd1JrgCEnt7s/P/O
-         e+sQhMm3//LayUlkdKGZiFHX2zL+4wp9AUjDIuOtcoGaf86K8pfb0+HA5oKCNvTRHd
-         ULz4kER0NI73Q==
+        b=Kn4AMl67KztiySEze11OljhVPcYxsjl5JJSAWk/668UwsSZBd7FrthqRT3l7RCzIb
+         dRMfJyb6qoMEufRoUgYKarlNyfEmsLFqryOVme1egll4J1Pm4txv28tNZ/IxeORD8T
+         FihdrBLnlf6kVOZufJZDF1BAy8h75FDd+jbBEOZLfIefBXwQfy9On2je/GGHilr6Nw
+         /JOi+dtCm7jgwXbVBzi1UUfU6jQSC0Fh66c47ChupcBz8ssItokYwND58F2DvBdJyC
+         GuoLwmX6gvn3md1DwiIC5BO5I78M29B+nRe6jF1krgrb2z/eKfIrChpKhxT7/y8epp
+         ttB1ScswXyWHw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
         James.Bottomley@HansenPartnership.com,
         linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
         dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 09/11] fbdev: stifb: Fix info entry in sti_struct on error path
-Date:   Sat, 20 May 2023 14:22:12 -0400
-Message-Id: <20230520182215.845131-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 6/8] fbdev: stifb: Fix info entry in sti_struct on error path
+Date:   Sat, 20 May 2023 14:23:10 -0400
+Message-Id: <20230520182312.851751-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230520182215.845131-1-sashal@kernel.org>
-References: <20230520182215.845131-1-sashal@kernel.org>
+In-Reply-To: <20230520182312.851751-1-sashal@kernel.org>
+References: <20230520182312.851751-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
