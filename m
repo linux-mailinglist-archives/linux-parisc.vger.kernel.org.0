@@ -2,216 +2,103 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CBB970C93B
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 May 2023 21:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C71870CB93
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 May 2023 22:51:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235298AbjEVTqC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 22 May 2023 15:46:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40576 "EHLO
+        id S229748AbjEVUvz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 22 May 2023 16:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235274AbjEVTp5 (ORCPT
+        with ESMTP id S229562AbjEVUvz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 22 May 2023 15:45:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A01192;
-        Mon, 22 May 2023 12:45:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F36F162A4A;
-        Mon, 22 May 2023 19:45:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1426CC433D2;
-        Mon, 22 May 2023 19:45:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684784752;
-        bh=hjg+nEkGnT5wX4cHznoLQRDdNnOeCH9yJ5NNOV5v5V8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hA34ih2YynFmHhjBrG8aSg5C3lBqNWxO+7zUy6BcX+aQ+XsHNhgCm4xunK35wUfDJ
-         04AL6sb9/gUSPWXOZMaAq5Y7JIXyvMtkGkZMTG9vTCt4A8+skUC7ElqxtgBp2x2krK
-         KXPIKvhskol6TlkDwgxlGGlJ5y2FCniz+hQ98V0mD9bUkw4wvKfKbmP/xvUTM9q8Ve
-         fONIqzl3Sgg70s+V3M83exiIb/68r7UKMiD+x7d50jdm3a/1eRP+3d2dz9MSWt954u
-         vNN+OVP0DZVxqN+BeDQuT8WJBBnv0iFmhuwNmLFk5+EAJ8WntO0QmIY8JmuCh+aiqH
-         WbAh9K2p4Y8cA==
-Date:   Mon, 22 May 2023 20:45:41 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv@lists.infradead.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        David Woodhouse <dwmw@amazon.co.uk>
-Subject: Re: [patch V4 33/37] cpu/hotplug: Allow "parallel" bringup up to
- CPUHP_BP_KICK_AP_STATE
-Message-ID: <4ca39e58-055f-432c-8124-7c747fa4e85b@sirena.org.uk>
-References: <20230512203426.452963764@linutronix.de>
- <20230512205257.240231377@linutronix.de>
+        Mon, 22 May 2023 16:51:55 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EFFC92;
+        Mon, 22 May 2023 13:51:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1684788705; i=deller@gmx.de;
+        bh=PlwiIjbt31eASWGjhy+grQ3UHqKEgPfDTNdFcM3wHws=;
+        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+        b=K1nPPummJSI7JYFm698wuU7sJnI2n88QjQUGQQFafh4GPbY/tGRfk6UZaRqDds0+9
+         lRYunmX3LVguH9+ZUdBbLXwCxiNyYNanP0RVwwws+GTt/70/DgfarEUs0zj4FOdqYR
+         IYVHcelzhecBk3N7I6d32+0XX9BuMYyOFpkVm8NlynjpD6ytAUX60QpKL20Ny8eYNm
+         YA2hz76eO5iEOEQYSSGhAq2psD0pKVw5cY5T0MFM04gFNT1+LnjJY6Onn+m8yT1Ra9
+         XdBFKC2HyBI6uk12pCC1WnJQV5h43XNSj9P9Iyw/bgWEI4++XtrGO4eRDNDDlIYxH0
+         hyB6u/a9k1O7g==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.144.112]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mxm3Q-1qLKd520vW-00zEA6; Mon, 22
+ May 2023 22:51:45 +0200
+Message-ID: <8bd7faad-abf4-f7b3-03c9-e06f9b5d2148@gmx.de>
+Date:   Mon, 22 May 2023 22:51:43 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="nxuSzC5SBKt722Ku"
-Content-Disposition: inline
-In-Reply-To: <20230512205257.240231377@linutronix.de>
-X-Cookie: Even bytes get lonely for a little bit.
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: spinlock recursion in aio_complete()
+Content-Language: en-US
+To:     Bart Van Assche <bvanassche@acm.org>,
+        Linux SCSI List <linux-scsi@vger.kernel.org>,
+        linux-aio@kvack.org, linux-parisc <linux-parisc@vger.kernel.org>
+References: <5057d550-c3f4-be34-d3e6-390790051232@gmx.de>
+ <89053bf1-6bc3-3778-7662-14d15bd778a3@acm.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <89053bf1-6bc3-3778-7662-14d15bd778a3@acm.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:b4PH3HvBV4wZ7jefTyqXdSuXHKGxrGZFZOLEaNETAjmjdcbdgUG
+ RPL+bpFkCh4Sxdhdrm7k9c0PvqUpkJx9F0GBZAXutdYKAoy8k3a5GHWwDOZEmz4kPci13sG
+ UAvnLp6jvJ92mloPTBqT6ruydbjuyNkAWHa2c+g6rCyWFfuPFVk9Dil/mzuHz9SafR935hw
+ yX9n6in/hjYr/9iCKVMNQ==
+UI-OutboundReport: notjunk:1;M01:P0:WPRbdojmkes=;i2ZnPMdoqwtiOk0LjluAg/Y53OP
+ t5WSN7xaPblH0knq0JFHD4aa3rB91gYl0q/uSDzmzDb0RXd3gcFidCzN4gloSjiQoWB5byohS
+ 1SZvZxxK+yKOYij26ixu2nqEXaOYMSjLoR8xgNikDVO5NMSAAOg1mVOPC+joC+F3ebc84z6D5
+ zlaifXiewPvCkEqIZng/SPRGo+zcUOxs6MBxCKDZQ+5GBjGyGRfBREibNDIWBA1mXTpB12LZ0
+ bk3nMUA4iRWpLBn4AZS3iLKb6Rs29a6nvKgLN9e5gqV3Jifa+If09BHvirpAylUFKATixLm8F
+ ut1K+dji9oeloM4zZzgnLEc5KVTG1gwhxuingVm1oHCyNe71hbvUxCzYXYPLdm7uXzlZsuzaN
+ dTV4oYuX/LGzCSr9lC3JYuaGXSFwOBXaXM8z6z5F1oEbEOBIoDt54C8KZitfOuqec0x7WdR4w
+ 1NH69iCKadYDkM6VttxKQGtD3O90V2ecO671AcCMrc/P7oHCNzbc23kYSyCvgh3+/ejLXytlp
+ W8Cn+Ni/SOF2YQfm2JQStqWA+g29nKcR64xlaLOArKVf+1hN+DI7eD1t3GgVXdMYtgaDidEUJ
+ 3q7kJdkK/6w4RQYMiXmV85XfH5DsAASNy9rU5cEgVZgEuHKur4d/w25NXYBu1oMYnysnzy4y8
+ GalYw8sudY0+Onm3x4P6xKMgy423Dr4Hy0kwTvWjRAgJjQ7/HgkLR0rseZbNkIqQxWZKzn+0b
+ nI/LHsZXd6MfeVTs8K93PQbgNRMRxRqnSo28o/e6rSu6hVg7Rd5jpKA8sZ25qOr0VMBBMhdF8
+ ha2BXBEDPIWj1e0cPsWVq/cv4Q6oSEm51Ih6a+oNc0N04xrRD1U/CGJmveTJ6CRZwNbI0pE+T
+ JQpTiAeWReAbhRpG7pQZeaFapmeZj64pIt0N2pB5zoqkIsuzOW00hfECpc+UVu7Cskql2j1Qi
+ xHYf+g==
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On 5/22/23 21:28, Bart Van Assche wrote:
+> On 5/20/23 22:43, Helge Deller wrote:
+>> On a single-CPU parisc64 machine I face the spinlock recursion below.
+>> Happens reproduceably directly at bootup since kernel 6.2 (and ~ 6.1.5)=
+.
+>> Kernel is built for SMP. Same kernel binary works nicely on machines wi=
+th more than
+>> one CPU, but stops on UP machines.
+>> Any idea or patch I could try?
+>
+> How about performing one or more of the following actions?
+> * Translating aio_complete+0x68 into a line number.
 
---nxuSzC5SBKt722Ku
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It hangs in fs/aio.c:1128, function aio_complete(), in this call:
+	spin_lock_irqsave(&ctx->completion_lock, flags);
 
-On Fri, May 12, 2023 at 11:07:50PM +0200, Thomas Gleixner wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
->=20
-> There is often significant latency in the early stages of CPU bringup, and
-> time is wasted by waking each CPU (e.g. with SIPI/INIT/INIT on x86) and
-> then waiting for it to respond before moving on to the next.
->=20
-> Allow a platform to enable parallel setup which brings all to be onlined
-> CPUs up to the CPUHP_BP_KICK_AP state. While this state advancement on the
-> control CPU (BP) is single-threaded the important part is the last state
-> CPUHP_BP_KICK_AP which wakes the to be onlined CPUs up.
+> * Repeating the test with lockdep enabled.
 
-We're seeing a regression on ThunderX2 systems with 256 CPUs with an
-arm64 defconfig running -next which I've bisected to this patch.  Before
-this commit we bring up 256 CPUs:
+Hmm... We don't have LOCKDEP yet on parisc :-(
 
-[   29.137225] GICv3: CPU254: found redistributor 11e03 region 1:0x00000004=
-41f60000
-[   29.137238] GICv3: CPU254: using allocated LPI pending table @0x00000008=
-818e0000
-[   29.137305] CPU254: Booted secondary processor 0x0000011e03 [0x431f0af1]
-[   29.292421] Detected PIPT I-cache on CPU255
-[   29.292635] GICv3: CPU255: found redistributor 11f03 region 1:0x00000004=
-41fe0000
-[   29.292648] GICv3: CPU255: using allocated LPI pending table @0x00000008=
-818f0000
-[   29.292715] CPU255: Booted secondary processor 0x0000011f03 [0x431f0af1]
-[   29.292859] smp: Brought up 2 nodes, 256 CPUs
-[   29.292864] SMP: Total of 256 processors activated.
+> * Bisecting this issue.
 
-but after we only bring up 255, missing the 256th:
+Will try, but this process is *very* slow as it happens on one machine onl=
+y,
+it's only accessible remotely, uses endless time to reboot and I have no
+easy way to netboot kernels...
 
-[   29.165888] GICv3: CPU254: found redistributor 11e03 region 1:0x00000004=
-41f60000
-[   29.165901] GICv3: CPU254: using allocated LPI pending table @0x00000008=
-818e0000
-[   29.165968] CPU254: Booted secondary processor 0x0000011e03 [0x431f0af1]
-[   29.166120] smp: Brought up 2 nodes, 255 CPUs
-[   29.166125] SMP: Total of 255 processors activated.
-
-I can't immediately see an issue with the patch itself, for systems
-without CONFIG_HOTPLUG_PARALLEL=3Dy it should replace the loop over
-cpu_present_mask done by for_each_present_cpu() with an open coded one.
-I didn't check the rest of the series yet.
-
-The KernelCI bisection bot also isolated an issue on Odroid XU3 (a 32
-bit arm system) with the final CPU of the 8 on the system not coming up
-to the same patch:
-
-  https://groups.io/g/kernelci-results/message/42480?p=3D%2C%2C%2C20%2C0%2C=
-0%2C0%3A%3Acreated%2C0%2Call-cpus%2C20%2C2%2C0%2C99054444
-
-Other boards I've checked (including some with multiple CPU clusters)
-seem to be bringing up all their CPUs so it doesn't seem to just be
-general breakage.
-
-Log from my bisect:
-
-git bisect start
-# bad: [9f258af06b6268be8e960f63c3f66e88bdbbbdb0] Add linux-next specific f=
-iles for 20230522
-git bisect bad 9f258af06b6268be8e960f63c3f66e88bdbbbdb0
-# good: [44c026a73be8038f03dbdeef028b642880cf1511] Linux 6.4-rc3
-git bisect good 44c026a73be8038f03dbdeef028b642880cf1511
-# good: [914db90ee0172753ab5298a48c63ac4f1fe089cf] Merge branch 'for-linux-=
-next' of git://anongit.freedesktop.org/drm/drm-misc
-git bisect good 914db90ee0172753ab5298a48c63ac4f1fe089cf
-# good: [4624865b65777295cbe97cf1b98e6e49d81119d3] Merge branch 'next' of g=
-it://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git
-git bisect good 4624865b65777295cbe97cf1b98e6e49d81119d3
-# bad: [be7220c44fbc06825f7f122d06051630e1bf51e4] Merge branch 'for-next' o=
-f git://github.com/cminyard/linux-ipmi.git
-git bisect bad be7220c44fbc06825f7f122d06051630e1bf51e4
-# good: [cc677f7bec0da862a93d176524cdad5f416d58ef] Merge branch 'for-next' =
-of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
-git bisect good cc677f7bec0da862a93d176524cdad5f416d58ef
-# bad: [cdcc744aee1b886cbe4737798c0b8178b9ba5ae5] next-20230518/rcu
-git bisect bad cdcc744aee1b886cbe4737798c0b8178b9ba5ae5
-# bad: [8397dce1586a35af63fe9ea3e8fb3344758e55b5] Merge branch into tip/mas=
-ter: 'x86/mm'
-git bisect bad 8397dce1586a35af63fe9ea3e8fb3344758e55b5
-# bad: [0c7ffa32dbd6b09a87fea4ad1de8b27145dfd9a6] x86/smpboot/64: Implement=
- arch_cpuhp_init_parallel_bringup() and enable it
-git bisect bad 0c7ffa32dbd6b09a87fea4ad1de8b27145dfd9a6
-# good: [ab24eb9abb9c60c45119370731735b79ed79f36c] x86/xen/hvm: Get rid of =
-DEAD_FROZEN handling
-git bisect good ab24eb9abb9c60c45119370731735b79ed79f36c
-# good: [72b11aa7f8f93449141544cecb21b2963416902d] riscv: Switch to hotplug=
- core state synchronization
-git bisect good 72b11aa7f8f93449141544cecb21b2963416902d
-# good: [f54d4434c281f38b975d58de47adeca671beff4f] x86/apic: Provide cpu_pr=
-imary_thread mask
-git bisect good f54d4434c281f38b975d58de47adeca671beff4f
-# bad: [bea629d57d006733d155bdb65ba4867788da69b6] x86/apic: Save the APIC v=
-irtual base address
-git bisect bad bea629d57d006733d155bdb65ba4867788da69b6
-# bad: [18415f33e2ac4ab382cbca8b5ff82a9036b5bd49] cpu/hotplug: Allow "paral=
-lel" bringup up to CPUHP_BP_KICK_AP_STATE
-git bisect bad 18415f33e2ac4ab382cbca8b5ff82a9036b5bd49
-# first bad commit: [18415f33e2ac4ab382cbca8b5ff82a9036b5bd49] cpu/hotplug:=
- Allow "parallel" bringup up to CPUHP_BP_KICK_AP_STATE
-
---nxuSzC5SBKt722Ku
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRrxmQACgkQJNaLcl1U
-h9CiKAf8DZMz9GmmJSE2csjdGdRu7caRKW0Tt5rUN3Rk8slC+Fb2FYWsc6BSJXU7
-bN4/F3Oie4ukVf5oamB42/30Iemh8OdOE3aC/ceb9n2OmF9rKnQHIrC8q2xZo5S/
-jZDRUq5Y91IMU6dsMy8Teoctmt4UCyXbSm6r5hA2hfepTZnZ0MszdpwdkfKTtb2h
-nXXb54WH18u/i1vmPWTNpfHfTXXhKPSkRJ4NcJWt6NaRINld+kJBqdU1usQBnxG3
-mn4C2p3YYPtd0fv66x2tPLxbXyjmGYv0/fsSg1INqS0A8Jq/piohEK9rqAeBi6BD
-BEFqLrxN7XtuQjD2ksUH5UcvrDWwVw==
-=FllZ
------END PGP SIGNATURE-----
-
---nxuSzC5SBKt722Ku--
+Helge
