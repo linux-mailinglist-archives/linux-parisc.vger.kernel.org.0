@@ -2,105 +2,90 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6800270CBB5
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 May 2023 22:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D7BF70CBC2
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 May 2023 22:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbjEVU5r (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 22 May 2023 16:57:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57434 "EHLO
+        id S235367AbjEVU7K (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 22 May 2023 16:59:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbjEVU5q (ORCPT
+        with ESMTP id S234636AbjEVU6y (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 22 May 2023 16:57:46 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386D894
-        for <linux-parisc@vger.kernel.org>; Mon, 22 May 2023 13:57:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1684789063; i=deller@gmx.de;
-        bh=qvd/Fr8OWURoc9q8jhplDSFUQ4XJgtmm1GV4xbeZnQ4=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=X0y0lHRkk08voOOhgPBgFDzfGlp2+hYohgTzN43FTd5CP+VBZVdop/CKHeYlCIZ2e
-         1KEyESbZCIij58aT4OlLZ/zeWFcXFl4o770dWJKtnTs6+xPuHN4rL2h5R/2MTWWc7n
-         bLS/tSGWNfAcIT5p7ONEYuERdkGWihpR2RR66Nu/wHSujkhC1m81b6bh0NSE+jwwbx
-         Wpl24Xv7OKRw1JY7JA3C8g/F8KgalNUwTQ4QxUCEHAt6+M2+kby1y6ewhg9GVMimJA
-         1sNRrd8ksv/DbaQMYjuQaNjn3Fj6bzjP7ULDSUzbF/2FhJFOd0WCs5prFn6Edzlhou
-         Na8gOjsYuqZhA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100.fritz.box ([94.134.144.112]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbRk3-1qXnOY1TGz-00btF1; Mon, 22
- May 2023 22:57:43 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>
-Subject: [PATCH] parisc: Allow to reboot machine after system halt
-Date:   Mon, 22 May 2023 22:57:30 +0200
-Message-Id: <20230522205730.309803-1-deller@gmx.de>
-X-Mailer: git-send-email 2.38.1
+        Mon, 22 May 2023 16:58:54 -0400
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4221A6;
+        Mon, 22 May 2023 13:58:47 -0700 (PDT)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-64d30ab1f89so2770560b3a.3;
+        Mon, 22 May 2023 13:58:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684789127; x=1687381127;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2MFmEunz7XB8mdTYQaL515OHE+e6+GxqvAEqkfTAdhU=;
+        b=DfZSpgTwLVisa2SDfbgg1MoB4tY2vx8GST7urcIezpD7aoGKX3CqMqi0zsAeriY/yK
+         YHBvAXlwgmpoXpx2I5SFsOMQekR4cVvirvkHW6zlY194/w2OOLw1qk/fn6Nosvcvu1xB
+         Vaovu/QWjuq/Afm2AB8E5HoA6p/G1hfieqLnVG9En0ORe2F5+O+HAxertvUe98SzB93H
+         QtMfV7onOxZsf3J6jvNBNRqH07amztn7jQnqC5QqlJNMUD4a+wYhRivvht4N3cZX0XGw
+         KmWWLdxSNW8sKjkSvIwafGEkTy7x2ax37N073AmXXFQpjTJh4waoO8BsKfBlVFaPK1S/
+         T0Ag==
+X-Gm-Message-State: AC+VfDw9IYHHuGGup4StOlgpFxy/mM4RDRgybCu2+s5+xfMbw6ftZGjF
+        UpbF4E2ZTW5qd3eTDrJjjR51SvtHKAY=
+X-Google-Smtp-Source: ACHHUZ5J7UC/nrn8zwx6ZpRHATcXDWf3HvvBs6ysazZR7zn9EoKEkGFcd0kHcMVG8Ou8afFGf9vcvQ==
+X-Received: by 2002:aa7:888f:0:b0:64d:b0d8:a396 with SMTP id z15-20020aa7888f000000b0064db0d8a396mr4693470pfe.7.1684789126866;
+        Mon, 22 May 2023 13:58:46 -0700 (PDT)
+Received: from ?IPV6:2620:15c:211:201:642f:e57f:85fb:3794? ([2620:15c:211:201:642f:e57f:85fb:3794])
+        by smtp.gmail.com with ESMTPSA id q24-20020a62e118000000b005d22639b577sm3281185pfh.165.2023.05.22.13.58.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 May 2023 13:58:46 -0700 (PDT)
+Message-ID: <077b00a6-9587-2e28-3f8a-44871f9428ca@acm.org>
+Date:   Mon, 22 May 2023 13:58:44 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Zv/uoA2RLa5WFdi1UkoVUPsYjavac+XokBf2qsHvSfUSvNm8Tsc
- NVTUwZCAPNOMNNdeoqo5RzQZ7VgR6aK8BqfGPrtW++60nX7oVl+KVarEcggWu/OAnfAHvat
- 81rlUgrYNPqkCvBJ2F48iqRU5jIl8ZmEOsRAJuySV11DgbVA8k+z8mOS6KH4h3NFvOL1Gyt
- txnILnwg7DAg2Q/oLERzQ==
-UI-OutboundReport: notjunk:1;M01:P0:3p82IVxSRBs=;N2feq2NhjPvGZgJvBg8SG5chqRH
- Pjz9PPWDTntfpAt3GOGXeDtKWKNtTxq+dgmHkKg4g5nfJJiT9JttrNXhj5Mfnv4ebjTN27ZhP
- PZ9RjOh1U4LY8FEveI+MQMtXRydbithD0Bc0/PgbrU3Z/hVHIkmQOfX2v5jv090aim9aKJkud
- Nxbyxs9MZfGQuMUXmYWUU2wALp14zaR1RTzHk/QgQX2k+kQCQYyLY33waMl2SH3cx4s979UCJ
- KmIMuiVxdEYYRWLO+YLQwhskXtg/4m7hGyVdWE8TbRB7NIcVSde/8UUt2PCYqM8/bgXeYI+wh
- OmHoCIz0FLaFiaQQOLYbcjtO7pNmuJclVggf6fNKaqsNVAXHY6tWMbE51EbjQvswCHicSkW5s
- Rl5B9QLJzYb60FA4fSl/OJNW8Mv8BApyVkDBOCJZOz3GigCFvYJYoedmszq7vfAwvBE3cfsjH
- AvpLrVJM4MpaIgn5HR3ROvDNKmt+53oxBcrQ2rYyy9dsNx022j4TkAp0wDAFRhWmv+wFPG+tC
- qpFWttY+ZV/8Z7Sol7smiUokGgR+gst/dN4Eu/R34cF5cqykTa4RDVXythCpKN/fRnMHClc4A
- 1rOXwF8sxKOLbUMUgGeF2nsdFMAJWG5v1WfDZfxhSlcyOMwTqx615pnAbsWeBGygRBp+f5XL5
- 1iWI5onGL72E91v93fOuvIF/P6Jr0SrmHt6khzpV07RVsn+rFBHIVm9Cs2mSA9bCwew93UKCd
- qINKdNQMj9jYyZ510wN3PsFg0ppRreiq4FDGE1sx46uq3PMCOcQAe3QkJx4eNOANpze559Ky8
- 9ZAIRyBHzt1mbszz6hvxKEYFvuQOjJ/rWD0q3vC4729jjQ2dZLWyT7XWuwj5YNZiIcEo4uCl8
- qr/lt3Y+hp7PjY36/6MYtMJTbNHqSFz7hpKVnpzOddb3BXLeKHVmyWBnB2hnYOjCBuLlbgasY
- M4YucA==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: spinlock recursion in aio_complete()
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>,
+        Linux SCSI List <linux-scsi@vger.kernel.org>,
+        linux-aio@kvack.org, linux-parisc <linux-parisc@vger.kernel.org>
+References: <5057d550-c3f4-be34-d3e6-390790051232@gmx.de>
+ <89053bf1-6bc3-3778-7662-14d15bd778a3@acm.org>
+ <8bd7faad-abf4-f7b3-03c9-e06f9b5d2148@gmx.de>
+From:   Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <8bd7faad-abf4-f7b3-03c9-e06f9b5d2148@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-In case a machine can't power-off itself on system shutdown,
-allow the user to reboot it by pressing the RETURN key.
+On 5/22/23 13:51, Helge Deller wrote:
+> On 5/22/23 21:28, Bart Van Assche wrote:
+>> On 5/20/23 22:43, Helge Deller wrote:
+>>> On a single-CPU parisc64 machine I face the spinlock recursion below.
+>>> Happens reproduceably directly at bootup since kernel 6.2 (and ~ 6.1.5).
+>>> Kernel is built for SMP. Same kernel binary works nicely on machines with more than
+>>> one CPU, but stops on UP machines.
+>>> Any idea or patch I could try?
+>>
+>> How about performing one or more of the following actions?
+>> * Translating aio_complete+0x68 into a line number.
+> 
+> It hangs in fs/aio.c:1128, function aio_complete(), in this call:
+>      spin_lock_irqsave(&ctx->completion_lock, flags);
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- arch/parisc/kernel/process.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+All code that I found and that obtains ctx->completion_lock disables IRQs.
+It is not clear to me how this spinlock can be locked recursively? Is it
+sure that the "spinlock recursion" report is correct?
 
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index c064719b49b0..ec48850b9273 100644
-=2D-- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -122,13 +122,18 @@ void machine_power_off(void)
- 	/* It seems we have no way to power the system off via
- 	 * software. The user has to press the button himself. */
+Thanks,
 
--	printk(KERN_EMERG "System shut down completed.\n"
--	       "Please power this system off now.");
-+	printk("Power off or press RETURN to reboot.\n");
-
- 	/* prevent soft lockup/stalled CPU messages for endless loop. */
- 	rcu_sysrq_start();
- 	lockup_detector_soft_poweroff();
--	for (;;);
-+	while (1) {
-+		/* reboot if user presses RETURN key */
-+		if (pdc_iodc_getc() =3D=3D 13) {
-+			printk("Rebooting...\n");
-+			machine_restart(NULL);
-+		}
-+	}
- }
-
- void (*pm_power_off)(void);
-=2D-
-2.38.1
+Bart.
 
