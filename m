@@ -2,90 +2,177 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D7BF70CBC2
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 May 2023 22:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F7770CBE5
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 May 2023 23:04:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235367AbjEVU7K (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 22 May 2023 16:59:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57824 "EHLO
+        id S235133AbjEVVEX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 22 May 2023 17:04:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234636AbjEVU6y (ORCPT
+        with ESMTP id S234660AbjEVVEW (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 22 May 2023 16:58:54 -0400
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4221A6;
-        Mon, 22 May 2023 13:58:47 -0700 (PDT)
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-64d30ab1f89so2770560b3a.3;
-        Mon, 22 May 2023 13:58:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684789127; x=1687381127;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2MFmEunz7XB8mdTYQaL515OHE+e6+GxqvAEqkfTAdhU=;
-        b=DfZSpgTwLVisa2SDfbgg1MoB4tY2vx8GST7urcIezpD7aoGKX3CqMqi0zsAeriY/yK
-         YHBvAXlwgmpoXpx2I5SFsOMQekR4cVvirvkHW6zlY194/w2OOLw1qk/fn6Nosvcvu1xB
-         Vaovu/QWjuq/Afm2AB8E5HoA6p/G1hfieqLnVG9En0ORe2F5+O+HAxertvUe98SzB93H
-         QtMfV7onOxZsf3J6jvNBNRqH07amztn7jQnqC5QqlJNMUD4a+wYhRivvht4N3cZX0XGw
-         KmWWLdxSNW8sKjkSvIwafGEkTy7x2ax37N073AmXXFQpjTJh4waoO8BsKfBlVFaPK1S/
-         T0Ag==
-X-Gm-Message-State: AC+VfDw9IYHHuGGup4StOlgpFxy/mM4RDRgybCu2+s5+xfMbw6ftZGjF
-        UpbF4E2ZTW5qd3eTDrJjjR51SvtHKAY=
-X-Google-Smtp-Source: ACHHUZ5J7UC/nrn8zwx6ZpRHATcXDWf3HvvBs6ysazZR7zn9EoKEkGFcd0kHcMVG8Ou8afFGf9vcvQ==
-X-Received: by 2002:aa7:888f:0:b0:64d:b0d8:a396 with SMTP id z15-20020aa7888f000000b0064db0d8a396mr4693470pfe.7.1684789126866;
-        Mon, 22 May 2023 13:58:46 -0700 (PDT)
-Received: from ?IPV6:2620:15c:211:201:642f:e57f:85fb:3794? ([2620:15c:211:201:642f:e57f:85fb:3794])
-        by smtp.gmail.com with ESMTPSA id q24-20020a62e118000000b005d22639b577sm3281185pfh.165.2023.05.22.13.58.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 May 2023 13:58:46 -0700 (PDT)
-Message-ID: <077b00a6-9587-2e28-3f8a-44871f9428ca@acm.org>
-Date:   Mon, 22 May 2023 13:58:44 -0700
+        Mon, 22 May 2023 17:04:22 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE08C94;
+        Mon, 22 May 2023 14:04:19 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1684789457;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=NByQKI51jy2j672ZUXdG7FihvnPAeSwdTvvAedoGpTg=;
+        b=MX+9r6HXu/5QEBqc2yVGdayzLN9QC3Spcof7x6wlSwPAvG+JCGl3dIF3Tqjwo831B+7A0z
+        HjgfkuU57m3Mx12VWLwF1kWcZOoV7A8fkpM0+EmI1ItXgmcU/k6TXgHZPx8IDVYMbQizgt
+        tGVREPK3sLYjlK2mAsLydenhzGmSLA3xyVTQNIN837Vka6O+yHpXvp2jLe0l2HJV7Nc9Qe
+        pnPkq0PwnFymxCDoDBNb/vRRCWh8VNuMos17F9fUWM3d52sMdPly/QVK6LuLIuAUqckaId
+        NvxIeaxkD6G74LbIeNkj/Kr2rL0IzG/VT2eU1eqW2iuY9+IYD3SC/W2JWHiiMQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1684789457;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=NByQKI51jy2j672ZUXdG7FihvnPAeSwdTvvAedoGpTg=;
+        b=vhXfTHSmkg8sMek6N/YM9Kxa/vm8sXoYRsypyfUtGXP1dQSKCaL+3v90Q5MYWJoZJcTP6l
+        6NVrzQcJMR+6yiAA==
+To:     Mark Brown <broonie@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Brian Gerst <brgerst@gmail.com>,
+        Arjan van de Veen <arjan@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul McKenney <paulmck@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Piotr Gorski <lucjan.lucjanov@gmail.com>,
+        Usama Arif <usama.arif@bytedance.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        xen-devel@lists.xenproject.org,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        linux-csky@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        linux-riscv@lists.infradead.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sabin Rapan <sabrapan@amazon.com>,
+        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        Ross Philipson <ross.philipson@oracle.com>,
+        David Woodhouse <dwmw@amazon.co.uk>
+Subject: Re: [patch V4 33/37] cpu/hotplug: Allow "parallel" bringup up to
+ CPUHP_BP_KICK_AP_STATE
+In-Reply-To: <4ca39e58-055f-432c-8124-7c747fa4e85b@sirena.org.uk>
+References: <20230512203426.452963764@linutronix.de>
+ <20230512205257.240231377@linutronix.de>
+ <4ca39e58-055f-432c-8124-7c747fa4e85b@sirena.org.uk>
+Date:   Mon, 22 May 2023 23:04:17 +0200
+Message-ID: <87bkicw01a.ffs@tglx>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: spinlock recursion in aio_complete()
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>,
-        Linux SCSI List <linux-scsi@vger.kernel.org>,
-        linux-aio@kvack.org, linux-parisc <linux-parisc@vger.kernel.org>
-References: <5057d550-c3f4-be34-d3e6-390790051232@gmx.de>
- <89053bf1-6bc3-3778-7662-14d15bd778a3@acm.org>
- <8bd7faad-abf4-f7b3-03c9-e06f9b5d2148@gmx.de>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <8bd7faad-abf4-f7b3-03c9-e06f9b5d2148@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/22/23 13:51, Helge Deller wrote:
-> On 5/22/23 21:28, Bart Van Assche wrote:
->> On 5/20/23 22:43, Helge Deller wrote:
->>> On a single-CPU parisc64 machine I face the spinlock recursion below.
->>> Happens reproduceably directly at bootup since kernel 6.2 (and ~ 6.1.5).
->>> Kernel is built for SMP. Same kernel binary works nicely on machines with more than
->>> one CPU, but stops on UP machines.
->>> Any idea or patch I could try?
->>
->> How about performing one or more of the following actions?
->> * Translating aio_complete+0x68 into a line number.
-> 
-> It hangs in fs/aio.c:1128, function aio_complete(), in this call:
->      spin_lock_irqsave(&ctx->completion_lock, flags);
+On Mon, May 22 2023 at 20:45, Mark Brown wrote:
+> On Fri, May 12, 2023 at 11:07:50PM +0200, Thomas Gleixner wrote:
+>> From: Thomas Gleixner <tglx@linutronix.de>
+>> 
+>> There is often significant latency in the early stages of CPU bringup, and
+>> time is wasted by waking each CPU (e.g. with SIPI/INIT/INIT on x86) and
+>> then waiting for it to respond before moving on to the next.
+>> 
+>> Allow a platform to enable parallel setup which brings all to be onlined
+>> CPUs up to the CPUHP_BP_KICK_AP state. While this state advancement on the
+>> control CPU (BP) is single-threaded the important part is the last state
+>> CPUHP_BP_KICK_AP which wakes the to be onlined CPUs up.
+>
+> We're seeing a regression on ThunderX2 systems with 256 CPUs with an
+> arm64 defconfig running -next which I've bisected to this patch.  Before
+> this commit we bring up 256 CPUs:
+>
+> [   29.137225] GICv3: CPU254: found redistributor 11e03 region 1:0x0000000441f60000
+> [   29.137238] GICv3: CPU254: using allocated LPI pending table @0x00000008818e0000
+> [   29.137305] CPU254: Booted secondary processor 0x0000011e03 [0x431f0af1]
+> [   29.292421] Detected PIPT I-cache on CPU255
+> [   29.292635] GICv3: CPU255: found redistributor 11f03 region 1:0x0000000441fe0000
+> [   29.292648] GICv3: CPU255: using allocated LPI pending table @0x00000008818f0000
+> [   29.292715] CPU255: Booted secondary processor 0x0000011f03 [0x431f0af1]
+> [   29.292859] smp: Brought up 2 nodes, 256 CPUs
+> [   29.292864] SMP: Total of 256 processors activated.
+>
+> but after we only bring up 255, missing the 256th:
+>
+> [   29.165888] GICv3: CPU254: found redistributor 11e03 region 1:0x0000000441f60000
+> [   29.165901] GICv3: CPU254: using allocated LPI pending table @0x00000008818e0000
+> [   29.165968] CPU254: Booted secondary processor 0x0000011e03 [0x431f0af1]
+> [   29.166120] smp: Brought up 2 nodes, 255 CPUs
+> [   29.166125] SMP: Total of 255 processors activated.
+>
+> I can't immediately see an issue with the patch itself, for systems
+> without CONFIG_HOTPLUG_PARALLEL=y it should replace the loop over
+> cpu_present_mask done by for_each_present_cpu() with an open coded one.
+> I didn't check the rest of the series yet.
+>
+> The KernelCI bisection bot also isolated an issue on Odroid XU3 (a 32
+> bit arm system) with the final CPU of the 8 on the system not coming up
+> to the same patch:
+>
+>   https://groups.io/g/kernelci-results/message/42480?p=%2C%2C%2C20%2C0%2C0%2C0%3A%3Acreated%2C0%2Call-cpus%2C20%2C2%2C0%2C99054444
+>
+> Other boards I've checked (including some with multiple CPU clusters)
+> seem to be bringing up all their CPUs so it doesn't seem to just be
+> general breakage.
 
-All code that I found and that obtains ctx->completion_lock disables IRQs.
-It is not clear to me how this spinlock can be locked recursively? Is it
-sure that the "spinlock recursion" report is correct?
+That does not make any sense at all and my tired brain does not help
+either.
+
+Can you please apply the below debug patch and provide the output?
 
 Thanks,
 
-Bart.
-
+        tglx
+---
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 005f863a3d2b..90a9b2ae8391 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1767,13 +1767,20 @@ static void __init cpuhp_bringup_mask(const struct cpumask *mask, unsigned int n
+ {
+ 	unsigned int cpu;
+ 
++	pr_info("Bringup max %u CPUs to %d\n", ncpus, target);
++
+ 	for_each_cpu(cpu, mask) {
+ 		struct cpuhp_cpu_state *st = per_cpu_ptr(&cpuhp_state, cpu);
++		int ret;
++
++		pr_info("Bringup CPU%u left %u\n", cpu, ncpus);
+ 
+ 		if (!--ncpus)
+ 			break;
+ 
+-		if (cpu_up(cpu, target) && can_rollback_cpu(st)) {
++		ret = cpu_up(cpu, target);
++		pr_info("Bringup CPU%u %d\n", cpu, ret);
++		if (ret && can_rollback_cpu(st)) {
+ 			/*
+ 			 * If this failed then cpu_up() might have only
+ 			 * rolled back to CPUHP_BP_KICK_AP for the final
