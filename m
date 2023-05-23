@@ -2,138 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37FB070CE87
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 May 2023 01:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B383870D481
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 May 2023 09:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232149AbjEVXMb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 22 May 2023 19:12:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59358 "EHLO
+        id S232450AbjEWHHF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 May 2023 03:07:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232143AbjEVXMa (ORCPT
+        with ESMTP id S235318AbjEWHHE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 22 May 2023 19:12:30 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48408CD;
-        Mon, 22 May 2023 16:12:29 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684797146;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=C7TsK7GgGmkvmWTTcWM2ucSNGAZooIPJARpsVm1elw0=;
-        b=yrUtqJV10ki6ehHolL2hnu9DMcCIuWlud8kBCfHX2rWfH90kquusd5JROH50fXuSFSmQwU
-        PKNQy6H0pPg6Mk5OQdYPhKYbeQI1YUR9KMUd/a7Qt8XePk2e/SyRiHPAMSjuFqp7Gvl67j
-        jsYzQTS2roesS5yiUarkF8GfeI3DeGPf6Ebcoc4Ljc1KYqKx7NP63xqe3/V5tuO0wj3vfK
-        JFIGfRt4eOzIcmOGPkAafZCHGsIxOB41QQ0hviBcfX4KV8V6SP+E8PZS1myMMBnon3NhCD
-        iok8IPIaOi8QqOj9b+eAxWl9vgJ4JWbE94zRxWOk3/fV7mjhSGxDcyoSZunF8g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684797146;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=C7TsK7GgGmkvmWTTcWM2ucSNGAZooIPJARpsVm1elw0=;
-        b=LsHOhlHhAmIjOmv4OFf6rm8oVhRsGLXF3Ede/E4PfuqZRooT2DLrTIb9VMr4oD66YERTjE
-        beGkkZmQ8Ci6bkBQ==
-To:     Mark Brown <broonie@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv@lists.infradead.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        David Woodhouse <dwmw@amazon.co.uk>
-Subject: Re: [patch V4 33/37] cpu/hotplug: Allow "parallel" bringup up to
- CPUHP_BP_KICK_AP_STATE
-In-Reply-To: <2ed3ff77-c973-4e23-9e2f-f10776e432b7@sirena.org.uk>
-References: <20230512203426.452963764@linutronix.de>
- <20230512205257.240231377@linutronix.de>
- <4ca39e58-055f-432c-8124-7c747fa4e85b@sirena.org.uk> <87bkicw01a.ffs@tglx>
- <2ed3ff77-c973-4e23-9e2f-f10776e432b7@sirena.org.uk>
-Date:   Tue, 23 May 2023 01:12:26 +0200
-Message-ID: <87wn10ufj9.ffs@tglx>
+        Tue, 23 May 2023 03:07:04 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F0D130
+        for <linux-parisc@vger.kernel.org>; Tue, 23 May 2023 00:06:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1684825606; i=deller@gmx.de;
+        bh=vg2JvloSRx5BBPL4y8QGGCUFScITIJL6WPifEAxLIyg=;
+        h=X-UI-Sender-Class:From:To:Subject:Date;
+        b=mtTPV/bJ9Fbbn27+TYoI0ffjriYijtdHQNMXVxfl//2Ij3No3z5ZbQAAK+D5fjSnF
+         OZRuf2CYEifS47IME8RCbZ+z6nb5om5M6+hSkHvJcqj5eWi/BAztd/856PIiwg2YOR
+         LgfrVjZTe01TlWCYdtdXhWU651GZo5jSsTqKm3UXSq0Rv7BBx/ZPFHITDTGq6P82BL
+         0epYEbrWSf/2sZ/zD991NYXnH0mKTQOpjKXUOUk0cupjadgWgATCNXd+YgBv/C4GMo
+         0+ELujCz/RbPQ/GQGLVn29Q78v6BQK3nLTRSecbDjCrwxJuSe3WWj73UP+n/G4wA87
+         lh7NKJIrdxe7Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([94.134.145.169]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MI5QF-1pwesz09w7-00F9aw for
+ <linux-parisc@vger.kernel.org>; Tue, 23 May 2023 09:06:46 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc: Enable LOCKDEP support
+Date:   Tue, 23 May 2023 09:06:40 +0200
+Message-Id: <20230523070640.82764-1-deller@gmx.de>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0Qd8t4cOJdf7xBnkh7CMTJrK6nNx8aCBRsfpAnQ3kyCSPUnP7ko
+ Tt/AHijSst8U0vnRcyuE7ib4/9YvVCJA42p7wiyELbvt93E4/bryxCBdMYC3B5GPTHYuQow
+ vdowG8ZtJ0emWojTqAvM6bEUxcLmk/Bak65M6aMI6rpv3XGZqpWdyQ1lOCi+IS9rsRIYrR+
+ 43ipzcbF3W7GCHd2ypFBA==
+UI-OutboundReport: notjunk:1;M01:P0:ZNMAjMbHqSQ=;yA+8ftvf5exMHeBqRjyj1dM+dbg
+ dfiXcGvNXlQyk7QUoq29zdLjbcWRZZ5qqf4z5pd8RAlmFzDBWrcwfrNlQdAW+59NEhi3ChC/Q
+ B19OT3Hw6vq0O9vbygbVM9S05ifGRicPXFuaYkjlWjHoDHtaY/4IxvKMLW2TwcZKrnUYZI9SH
+ 0U+ZyUqYoRHVFKoiFIpRfEjceWXNtWCGhOhSLB2PIPHbvuVkDCJaq4B8chCGlLCW6x8kUnUl9
+ sPpIEP9Xt5GkCGK1RIbqisocuHIP7ezRRqSCsZXuV7nJtU4xJlOV4kjLg1cNJ7JbYHwv8C4KB
+ R01bxiqj4H4xToNAh+cC6l7ZDdGLOjvQ43U4sglSaxXemCWJty1tozi5EIJOflloDNhNzq6M4
+ DLqnZI1+69785EU4JhsJRcB+ipD3M2wu2qq1hm4zURSaYsdid2lhQy13scPn2hl4f3kBr/vQR
+ ZqZ9CmvtYk6Hg6K+xrpwZ1fR+4VAXe74dE7Ks6xgASg3+BSDYym82fkuGk5Mwg3isbG+r7YXi
+ LeI6+IQvPQdcikrz+j2EIwpqAoIe/3sxdT52jvsuitu5/+ldThoRNIfxVkCK2RWuyLuh+lH3V
+ KK9wtN4a7cdE8boF7cU2YBU2lqKocl4TNV3CpiwuEXB11VF2CxugdqaQGAatku5WQs+yoLo7E
+ vNG5agfSe1xbGI6kwqCGJU7VfvJsAdPKlrOWN2u8v9vDde5VHBaTZZy4/hZzXnfD2PsXqIF38
+ GPVCJSWMXH2JyNBwJXjsKqkvLffskqolWhdQcEWJUpkphIqhdHE/V2i22INdqE6g+N4x24UCN
+ 0uPpFBNr7jw6hI5DDEkxuVtkeAIcYGyg1aSpv2kHujfKvxvJWWSlRvFTuLnnw58bBXmYXaFmQ
+ vu2o2rqA5pGweccL1MHjmRfGfnbRniOYIq01PcyzA/WLIjUTR3ft4O7QVj0APAzORdTti4TwX
+ lBRyBA==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, May 22 2023 at 23:27, Mark Brown wrote:
-> On Mon, May 22, 2023 at 11:04:17PM +0200, Thomas Gleixner wrote:
->
->> That does not make any sense at all and my tired brain does not help
->> either.
->
->> Can you please apply the below debug patch and provide the output?
->
-> Here's the log, a quick glance says the 
->
-> 	if (!--ncpus)
-> 		break;
->
-> check is doing the wrong thing
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Obviously.
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index a98940e64243..67c26e81e215 100644
+=2D-- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -129,6 +129,10 @@ config PM
+ config STACKTRACE_SUPPORT
+ 	def_bool y
 
-Let me find a brown paperbag and go to sleep before I even try to
-compile the obvious fix.
-
----
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 005f863a3d2b..88a7ede322bd 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1770,9 +1770,6 @@ static void __init cpuhp_bringup_mask(const struct cpumask *mask, unsigned int n
- 	for_each_cpu(cpu, mask) {
- 		struct cpuhp_cpu_state *st = per_cpu_ptr(&cpuhp_state, cpu);
- 
--		if (!--ncpus)
--			break;
--
- 		if (cpu_up(cpu, target) && can_rollback_cpu(st)) {
- 			/*
- 			 * If this failed then cpu_up() might have only
-@@ -1781,6 +1778,9 @@ static void __init cpuhp_bringup_mask(const struct cpumask *mask, unsigned int n
- 			 */
- 			WARN_ON(cpuhp_invoke_callback_range(false, cpu, st, CPUHP_OFFLINE));
- 		}
++config LOCKDEP_SUPPORT
++	bool
++	default y
 +
-+		if (!--ncpus)
-+			break;
- 	}
- }
- 
+ config ISA_DMA_API
+ 	bool
+
+=2D-
+2.38.1
+
