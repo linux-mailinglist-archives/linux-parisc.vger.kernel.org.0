@@ -2,103 +2,167 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1204F70E64B
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 May 2023 22:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2580A70E668
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 May 2023 22:24:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232847AbjEWUMj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 May 2023 16:12:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58382 "EHLO
+        id S232847AbjEWUY5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 May 2023 16:24:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230160AbjEWUMi (ORCPT
+        with ESMTP id S232824AbjEWUY4 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 May 2023 16:12:38 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 770C4120;
-        Tue, 23 May 2023 13:12:37 -0700 (PDT)
+        Tue, 23 May 2023 16:24:56 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 016A4129;
+        Tue, 23 May 2023 13:24:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1684872739; i=deller@gmx.de;
-        bh=yuwHIW/1YtWzgHXNZUZyEoqfBptWG5Tjh93c//38xj8=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=X6P1YwS2E2v2IRSAlK2UpshmJ5c4/mqpux3uzkDjWqUG6FeUwbsTrMnfcJCnRQuoF
-         KecrgfBpaVmv3SosI7qdxZ6M8HL1GleQnIJyPgTKQyibJOkm0mj4EQfTRMPOadq2bA
-         wOdf7FU3xpFgQO5U4cnG2mQC7Tnr3dGzznW0h1S1JTY425bCmSvQE96d55T7THqdLf
-         trCyiWlVp8SY1hLqk8yr8yA6Ipg6HLOJ70SYFWLnnE723mB8ZoKitIcA5CUByIZ8ZS
-         KjGJiHE3tnSy0SLJ5xbCKUHYGuNGMHTAy1pP6TcKQS/P9LD8aEt/W05/S2jcBWt/Hz
-         hE3sF7mLuJViw==
+        t=1684873472; i=deller@gmx.de;
+        bh=2kEL5Dvnd1+2zbMBSC2c9hvepYwfnHhDy1edLyedfDs=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=LZQeCcU2fqY/tfblu74/xTXb4P06zZTgADhRPt2PlDb2dMoZVzr6ghpmhTlGKw3J8
+         ylLwKX0D5zmt3BObVdR/9Sh8Xt8GbItCqP+dT+KlclEjmz5lPNf0pS8R5/diC2mbnN
+         +z3w3JIHRCb7uqvjTEv48TvVi1bG8rj1sNpmAJ2QCKKj1DRs7u40t7tEtOwC4kyJtP
+         nuh24wXfhR+k7UZpYDp8VViMWuTCmk20Xs4q0ELa60y7HVb4FJQkcFkLH0zp78c7+r
+         zS3yle4lr2GQE57OIX6Gfm7LkiL3gdAZobrNm0rHXH7kwoR9k4A+mfLydzlhUIG6XZ
+         bo8vP0gC+MRGw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.145.169]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MfYPY-1qd3z11ovA-00fzPd; Tue, 23
- May 2023 22:12:19 +0200
-Message-ID: <fab032d7-def2-0763-7f40-b607479063fb@gmx.de>
-Date:   Tue, 23 May 2023 22:12:15 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: spinlock recursion in aio_complete()
-Content-Language: en-US
-To:     Bart Van Assche <bvanassche@acm.org>,
-        "Russell King (Oracle)" <linux@armlinux.org.uk>,
-        Dinh Nguyen <dinguyen@kernel.org>
-Cc:     Linux SCSI List <linux-scsi@vger.kernel.org>, linux-aio@kvack.org,
-        linux-parisc <linux-parisc@vger.kernel.org>,
+Received: from p100 ([94.134.145.169]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3DJl-1pxzen2okn-003cCf; Tue, 23
+ May 2023 22:24:32 +0200
+Date:   Tue, 23 May 2023 22:24:30 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Helge Deller <deller@gmx.de>
+Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Linux SCSI List <linux-scsi@vger.kernel.org>,
+        linux-aio@kvack.org, linux-parisc <linux-parisc@vger.kernel.org>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>
+Subject: Re: spinlock recursion in aio_complete()
+Message-ID: <ZG0g/lNdsfLAPv15@p100>
 References: <5057d550-c3f4-be34-d3e6-390790051232@gmx.de>
  <89053bf1-6bc3-3778-7662-14d15bd778a3@acm.org>
  <8bd7faad-abf4-f7b3-03c9-e06f9b5d2148@gmx.de>
  <077b00a6-9587-2e28-3f8a-44871f9428ca@acm.org>
  <5e684a22-dcc1-095f-ac18-fd1b3bf81cd6@gmx.de>
  <4d786f73-8c6f-4fd1-cdd6-42f2d59d6120@gmx.de>
- <ZGyawdtBhNnvvTv3@shell.armlinux.org.uk> <ZG0bkNJ5jQC1a3pY@p100>
- <9fa519ab-a470-9e32-d3dc-f342ddad1026@acm.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <9fa519ab-a470-9e32-d3dc-f342ddad1026@acm.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <ZGyawdtBhNnvvTv3@shell.armlinux.org.uk>
+ <ZG0bkNJ5jQC1a3pY@p100>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gS8zyaHTD7rRYgW/2gPPA1ZyXTkiEtBVY3hOgeNE7HRpUjqYD73
- 03c4oKxs5ai8aOOy2qGK2LlnFkj2r2RMR9r0hgP2JA1c8HaVdicFHReS4HbdSf5w/mhtYni
- VkWiLBqj2eZJC4pkumAEJzo8H6fgtIZ/mKFYI859ZsfpKKrWd1F+dyJuVTFi6g2nH4T8l6c
- fo75iccZJ1DxOYvkxKiMw==
-UI-OutboundReport: notjunk:1;M01:P0:vfIqBDgR3rI=;oDDmt4gWWAmwOaYdQW63iD/EYQk
- /Oi7Xi8pUknnBhzdFX+eGWbH4DG237rxtStOUVHgoofeG6wEdvlFumMrLNiS54CwVSmOKPXme
- piyrNaNgTD9koYbXiTb8VlfmV38mVxkAHKMp5sNmpaK1dINQySLqxNVUyt96ATjsuTnQSVQU+
- FMZblgbIhUZGJ+lO2SIFQ21zZQS+rGxrWKMUn0OEY6TrxTjLnaXJFbEKVwCfTaP9D2+pECR15
- ER0JA6dOdYNVACPbdufDb3nbPBPho0OrV2lMez14qEeEGshkBEj0vQqaN4tiWHEL3Rjk0VyFy
- pC1PgGsn4z7qYwoR0xjv1KyV3+UohuNauLpKQiOf3gKfzZxDa5EnEBu0deC1OXDN14aegMtpP
- ndv3kPQ5ri4BipAAM1EJ0tqb5oG6PqpVZuMv+SSltX4YctsZe0UoPTycPy6BYBn1myjvi6Nd7
- iRUdiypsSjb0I2Ja8SVKqSmSuchytK8NEdr3aYfUezho1Q819SVTi6nnh3SIXsmH+huG1Jhwj
- 5fBBqNqLTBI2isZ+ieBqx82KmvRArSZ65Wge5Ujcjtj1PTPYt6uAa6iB3dL4i8oGppNXyVuZE
- Gbb8AYY2Bwn33AkpTS2zCUELGF47zCsK80tS6UVD1U32Y9v2GUIIT3xNuRZrDVkg+LWy3e0RT
- ++CY5dQMlwR/SeFYYnev6vXt6gazOp2AhbYjkrjzRx1e8NkUcWrcw1SJ/HxEzHHJem0jfdGfX
- +YaZQ3o7k6+W8P/k9zGfH0j20zXdZVRJ1u+m1PMdDEVfVJGqotczdC2uyhJ1PYYK5TQ+ZE557
- dxSNLy2egjs55Gej4VbtJJ6Ah5gXwZoYoM1oUPftZXGaiXmTRxl5E1TqlSkKewiMouvfeSIw8
- BBW6R+oHE5u0l1ku3BVnTYTFD7WS7AkkCaFUi3/N/sDeKVbuBN8fEguBiPHVHDRq2ddZ1dGkF
- tc0r2A==
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZG0bkNJ5jQC1a3pY@p100>
+X-Provags-ID: V03:K1:lmIYwKLwvr2gie/jntN6+MGDwTWp114p2fpu7nKOiJaa6oxZl0j
+ oksvo41zJCmC9PLT+nvNkRCM806u9TDW76k3OsONqgkMuBZTFqdWi5s74KXjz7yKVB5urqK
+ U30p4570yXPmVQhuUX70FCXim4Tis1h0N+SnrAUMvas6uUoVtPWTm/0WUEurYBD/uN6Cqu2
+ SF3nucF5C0DQAEDeKgLaw==
+UI-OutboundReport: notjunk:1;M01:P0:48iNxykj62g=;bcKhvR+pMRtkckgWzK+hR6FEAxh
+ 9vvsbJ0xZ6zEzMiei8K08MvKQ0PhMiwbGE6P+mX3czQho+TAG9ni6NuL5yb7fHCECDxpjKy6P
+ CmIUxqGrKsf5owmxykcIpxfdOBRAm9WZh0C80C0B8zpFncbxqAJPeo0ovxaL20lXdge1fgVcR
+ QyAwctukGQHIW3Iizqr1FYKVmJXL+ey9TFv4y7aF5gz2SaMPXCpVlJl0ukZhA/HbC2uIXGM76
+ gwj/gtBXaOGsRNOTyULaQLKtO2RHbPfdYTlkz4hu7ECEb70d6sAmlbNv3sA0yeXph7lR5+Kl8
+ LwTVvxjPGaTszAyud5/srU6WlEdZakkl7TA7AfT57ZUgFek7LotWK9b73N/ZDZd3NOGOceL8R
+ wFQ58wKRDMlsVOFdEoxrdYkLboik4FuKCFQ1aqbWGiACeMmLAWLnEj2IBx1bh9NVUHqKBqxjx
+ heSDyGBflPLIunzIaSWNdWMfKvuIaf1qk+Tsmqb4taWVagYEpYkOf2brVZ1bA445lfDs4lzoN
+ X4zhoQF8oBOpCNfp3Y/iafliLfYHOP5x1x9dfiU+xh6nP/XxaATybnMrEbEzPkLMbXiM/AyDe
+ pNDUmoPz5zgFSslgBKe33dNWZvI/pAtG3f2BLbqDhHt9FG2yZib1nabLx7/r2IOhkyAP2vaFW
+ FnWdbMMzlSZSuDKRPYpQHkG/3UaF5dUOtlp641z/1bNsHhTE1/VCK60xQ7fz4t8fT4SzIK+Z0
+ gg1mAk/ahouBO1EzC1glzCj3PxazmXMllqn4Z0p+AlZrV3OzhsE8wp51Pb/wearpRqLxOtkvN
+ IrCOJjoes4+zqDPoR3Z06Z1R6hva7fxx4k9N+ghmuCNEzDs/2at0Jy3alhc9kaVCxNR7jvusx
+ PpUnIGAg6v3Uoalv1/e4eF7t2NGqXSuNfs7fXm/VA+PPAufKDyjRA/7cTcFRL8uJ/z7Ga65XO
+ 92XNe1sFffowy/L/gE8Xq/JxtFA=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/23/23 22:06, Bart Van Assche wrote:
-> On 5/23/23 13:01, Helge Deller wrote:
->> Subject: [PATCH] Fix flush_dcache_page() for usage in irq context
->>
->> flush_dcache_page() can be called with IRQs disabled, e.g. from
->> aio_complete().
->>
->> Fix flush_dcache_page() on the arm, parisc and nios2 architectures
->> to not unintentionally re-enable IRQs by using xa_lock_irqsave() instea=
-d
->> of xa_lock_irq() for the flush_dcache_mmap_*lock() functions.
+* Helge Deller <deller@gmx.de>:
+> * Russell King (Oracle) <linux@armlinux.org.uk>:
+> > On Tue, May 23, 2023 at 12:24:04PM +0200, Helge Deller wrote:
+> > > On 5/22/23 23:22, Helge Deller wrote:
+> > > > > > It hangs in fs/aio.c:1128, function aio_complete(), in this ca=
+ll:
+> > > > > > =A0=A0=A0=A0=A0spin_lock_irqsave(&ctx->completion_lock, flags)=
+;
+> > > > >
+> > > > > All code that I found and that obtains ctx->completion_lock disa=
+bles IRQs.
+> > > > > It is not clear to me how this spinlock can be locked recursivel=
+y? Is it
+> > > > > sure that the "spinlock recursion" report is correct?
+> > > >
+> > > > Yes, it seems correct.
+> > > > [...]
+> > >
+> > > Bart, thanks to your suggestions I was able to narrow down the probl=
+em!
+> > >
+> > > I got LOCKDEP working on parisc, which then reports:
+> > > 	raw_local_irq_restore() called with IRQs enabled
+> > > for the spin_unlock_irqrestore() in function aio_complete(), which s=
+houldn't happen.
+> > >
+> > > Finally, I found that parisc's flush_dcache_page() re-enables the IR=
+Qs
+> > > which leads to the spinlock hang in aio_complete().
+> > >
+> > > So, this is NOT a bug in aio or scsci, but we need fix in the the ar=
+ch code.
+> >
+> > You can find some of the background to this at:
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/commi=
+t/?id=3D16ceff2d5dc9f0347ab5a08abff3f4647c2fee04
+> >
+> > which introduced flush_dcache_mmap_lock(). It looks like Hugh had
+> > questions over whether this should be _irqsave() rather than _irq()
+> > but I guess at the time all callers had interrupts enabled, and
+> > it's only recently that someone came up with the idea of calling
+> > flush_dcache_page() with interrupts disabled.
+> >
+> > Adding another arg to flush_dcache_mmap_lock() to save the flags
+> > may be doable, but requires a patch that touches not only architecture=
+s
+> > that have a private implementation, but also various code in mm/.
 >
-> Please consider adding a Fixes: tag such that this patch is picked up
-> automatically by the stable tree maintainers.
-Sure. I'll probably split it up as per-arch patch as well. Just wanted
-to get some feedback first.
+> I've tested the attached patch on parisc, and it solves the issue.
+> I've not compile-tested it on arm and nios2, both seem to be
+> the only other affected platforms.
+
+For your convenience, here is the hunk I used to trigger the bug.
+It triggers immediately at bootup when starting userspace.
 
 Helge
+
+diff --git a/fs/aio.c b/fs/aio.c
+index b0b17bd098bb..6076b0ab5580 100644
+=2D-- a/fs/aio.c
++++ b/fs/aio.c
+@@ -1127,6 +1127,7 @@ static void aio_complete(struct aio_kiocb *iocb)
+ 	 */
+ 	spin_lock_irqsave(&ctx->completion_lock, flags);
+
++	BUG_ON(!arch_irqs_disabled());
+ 	tail =3D ctx->tail;
+ 	pos =3D tail + AIO_EVENTS_OFFSET;
+
+@@ -1139,7 +1140,10 @@ static void aio_complete(struct aio_kiocb *iocb)
+ 	*event =3D iocb->ki_res;
+
+ 	kunmap_atomic(ev_page);
++	BUG_ON(!arch_irqs_disabled());
++	/* the next flush_dcache_page() should keep IRQs disabled */
+ 	flush_dcache_page(ctx->ring_pages[pos / AIO_EVENTS_PER_PAGE]);
++	BUG_ON(!arch_irqs_disabled());
+
+ 	pr_debug("%p[%u]: %p: %p %Lx %Lx %Lx\n", ctx, tail, iocb,
+ 		 (void __user *)(unsigned long)iocb->ki_res.obj,
+
+
