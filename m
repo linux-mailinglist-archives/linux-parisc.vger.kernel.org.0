@@ -2,126 +2,125 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6823A70DA37
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 May 2023 12:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B62AA70DA68
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 May 2023 12:24:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235914AbjEWKTo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 May 2023 06:19:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50616 "EHLO
+        id S235100AbjEWKYh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 May 2023 06:24:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbjEWKTn (ORCPT
+        with ESMTP id S230041AbjEWKYg (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 May 2023 06:19:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EFDA94;
-        Tue, 23 May 2023 03:19:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1241161D96;
-        Tue, 23 May 2023 10:19:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C28C433EF;
-        Tue, 23 May 2023 10:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684837181;
-        bh=Hw4JvCY5c+o4xH0G4/ilqKI5AiMs+w7Ev9t6iQW4VSA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oF2yAr9oIBfEhw1WDj0+q079mjfRIQXD6lWaXj8yNXAn1n4z5I3T3WlcM2TNAp7BF
-         3+mepvSeWgLSFPGRpuTo+CmYRAec4PvQfzIorMGn6yyibuLZ+uMHnKEPKbGU/cqsEL
-         HIGrssrbPot9AwfgDePO4CWvJXLEo2uEycOdlIOPtFLlMGIpRPahL70lwHpFEa+/X0
-         VMbLgxkGmQ2R6F7FOqgy2ab4kG5KRr2d+OOQm9hFDt2oSgWdT83u8H5GBi+RujDc0e
-         O4ePjS+L2NzuJecudp/Eshc86kg5/RUvBP1TJO5lUtLG1gH6E0FDVmMY2aqUv7Oz66
-         lyfVOGhf/Vr2A==
-Date:   Tue, 23 May 2023 11:19:30 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv@lists.infradead.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        David Woodhouse <dwmw@amazon.co.uk>
-Subject: Re: [patch V4 33/37] cpu/hotplug: Allow "parallel" bringup up to
- CPUHP_BP_KICK_AP_STATE
-Message-ID: <7377ca00-cb66-430f-9c97-55c60bf5d40e@sirena.org.uk>
-References: <20230512203426.452963764@linutronix.de>
- <20230512205257.240231377@linutronix.de>
- <4ca39e58-055f-432c-8124-7c747fa4e85b@sirena.org.uk>
- <87bkicw01a.ffs@tglx>
- <2ed3ff77-c973-4e23-9e2f-f10776e432b7@sirena.org.uk>
- <87wn10ufj9.ffs@tglx>
+        Tue, 23 May 2023 06:24:36 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3412E94;
+        Tue, 23 May 2023 03:24:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1684837450; i=deller@gmx.de;
+        bh=LnrOaZKOZPkWsLvDI4WNIWvJEIR5zNBixanXhsXOf50=;
+        h=X-UI-Sender-Class:Date:From:To:References:Subject:In-Reply-To;
+        b=hfjScB2UoBvfqAxVP255N9PqMNrvDv9KpvZ0eChwFS1gQBJ++C2oNLXFAy5r4IiW6
+         1PSl1UjILx1+BNDbBFqe7PCVoTrHTOHnIuMiPWGMCizfK9lh7dVLhPAQKfhe6NHgOI
+         RCJgJ+R1P46pPSnh7TwQ3AyluNLpnZnsiWfZQ18L7ziqsvnlg4erBAnnqdgAwqFsZ1
+         IPIBj6q7oFW3PM3p3E0UIp1Z5KcQn4SqkVV2yOUPR2icsD+mm0BGAtcEt2iGpA1ezh
+         hQ1H7PCtdPqaNTZrSFP4ImcLP0yWa7QmJ8ifZCtt2MiWDkkFLDuYwsOpSHP3lfygBx
+         7UESRgVrlaCFA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.145.169]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M8QWG-1q5muI0VRA-004SXQ; Tue, 23
+ May 2023 12:24:10 +0200
+Message-ID: <4d786f73-8c6f-4fd1-cdd6-42f2d59d6120@gmx.de>
+Date:   Tue, 23 May 2023 12:24:04 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Folw/pFEu4pCxXPv"
-Content-Disposition: inline
-In-Reply-To: <87wn10ufj9.ffs@tglx>
-X-Cookie: Beware of low-flying butterflies.
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+From:   Helge Deller <deller@gmx.de>
+To:     Bart Van Assche <bvanassche@acm.org>,
+        Linux SCSI List <linux-scsi@vger.kernel.org>,
+        linux-aio@kvack.org, linux-parisc <linux-parisc@vger.kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+References: <5057d550-c3f4-be34-d3e6-390790051232@gmx.de>
+ <89053bf1-6bc3-3778-7662-14d15bd778a3@acm.org>
+ <8bd7faad-abf4-f7b3-03c9-e06f9b5d2148@gmx.de>
+ <077b00a6-9587-2e28-3f8a-44871f9428ca@acm.org>
+ <5e684a22-dcc1-095f-ac18-fd1b3bf81cd6@gmx.de>
+Subject: Re: spinlock recursion in aio_complete()
+In-Reply-To: <5e684a22-dcc1-095f-ac18-fd1b3bf81cd6@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:auW7OuoOvYAf9oQI5PN5n/Tnt+1xnbElNxtUVpNi0k/OgIqHud2
+ TqoKVr0GSEQz4qxLAJFLwyBwKcrC3HQqG1wjLKa4lRrpbtVLIib9g42Pcd2FKZw/POXneAe
+ 1rV9OWomTfiussVhLe43JV3YypaivVh9nuAZGZlC3kDKsKIO3xEqVp2VttGcMr5YlT+Lqb8
+ aiV+thm8immNkiAoLOtvA==
+UI-OutboundReport: notjunk:1;M01:P0:gqsxP5t/FpA=;yBxdOI+PCebRGyif+DYLl6b+iY9
+ /cFp/JBxGAY4L6FgaO6Yy1K1PRW8F+FX4GPeQZPYYB8Rku2U2dy/fnTd+HbpuWVghHo5EJ+NV
+ 08NVcGPDTJVsuk9+Jbtr9rb0kZPgKVpm0TlEv1E08VO/UPGvNJckushpqNjK8eEfW9Ny37o3S
+ 9Mzj47YkhMIHrhE6yHurDMyKWOgcByqgLXf+DXdj60Vah+cCRsBvHeM3hIq7EZIvI39bq20S8
+ 1ghbXJybadi0zfxu+wXCMl1lr/2uRt2MeOZBwHEQAJNtZaLbolrgxVtB6xVG/pJIHH/p6RmLd
+ Y1rRf9DPkLUUSF81obgw38INEB0aA01Xpj2Q7TTkoBiknXZUJgpl45nn9rXkUEl1zv8xZmHi7
+ HNyrqosgpKpLMLNcoCUoVatpr0qB1jzqg5fmDuJH+bL1kTFpcFlYAutYSBlC4YkIv3yLAAK+i
+ /ApN056WtVmNlendIDvaTiUL8uqlCyA3vQMJxumrgnWKqVlw8yMpD8X4kMsbQu6DMMzYi0Cdk
+ Xr8SvLYubeVaqq3RvU127252U9QCeLnnEFFI6cZ1kPOdjDLHxO3ToTFXIjqMsU2KpPLHenfnn
+ coSO4pSU2JJwpDpDdMcse2FSNe+wgWc4kWzyDNGB0MJNj+bxi6esCmFFultNVivCSvmHq0tR0
+ pzTM0uHp9cKjrr0RpETYf3ShwdIPs7ichuHCV2+ue87qLlSsu+TxK5l8Q7hYyno96y3VE6/q2
+ wSComp136SyxtL1L7E/sCbE7BoulxaBiH00zThOkWRRs/eGiUXwsLuRmOg1echf0Jz3TscDYR
+ +OzmCZPPUqEOxFyVjb/BYARydYKw7wctn+rksqHJWtE9sEpFwWNn41wS27Ed5XBuTp+5mYpYE
+ PASQMRHvM8IjIRtAca618q9mIIK54I5zdYmSoIHz+woTLL+XoXay98qmnIwtsfICMVPieCqWH
+ SQkoR45L+N6XCsMGZV45HgT0psM=
+X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On 5/22/23 23:22, Helge Deller wrote:
+>>> It hangs in fs/aio.c:1128, function aio_complete(), in this call:
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0spin_lock_irqsave(&ctx->completion_lock,=
+ flags);
+>>
+>> All code that I found and that obtains ctx->completion_lock disables IR=
+Qs.
+>> It is not clear to me how this spinlock can be locked recursively? Is i=
+t
+>> sure that the "spinlock recursion" report is correct?
+>
+> Yes, it seems correct.
+> [...]
 
---Folw/pFEu4pCxXPv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Bart, thanks to your suggestions I was able to narrow down the problem!
 
-On Tue, May 23, 2023 at 01:12:26AM +0200, Thomas Gleixner wrote:
+I got LOCKDEP working on parisc, which then reports:
+	raw_local_irq_restore() called with IRQs enabled
+for the spin_unlock_irqrestore() in function aio_complete(), which shouldn=
+'t happen.
 
-> Let me find a brown paperbag and go to sleep before I even try to
-> compile the obvious fix.
+Finally, I found that parisc's flush_dcache_page() re-enables the IRQs
+which leads to the spinlock hang in aio_complete().
 
-That fixes the problem on TX2 - thanks!
+So, this is NOT a bug in aio or scsci, but we need fix in the the arch cod=
+e.
 
-Tested-by: Mark Brown <broonie@kernel.org>
 
---Folw/pFEu4pCxXPv
-Content-Type: application/pgp-signature; name="signature.asc"
+While checking flush_dcache_page() re-enables IRQs, I see on parisc and AR=
+M(32):
+flush_dcache_page()  calls:
+   -> flush_dcache_mmap_lock()   /  flush_dcache_mmap_unlock()
+which uses: xa_lock_irq()	/  xa_unlock_irq()
 
------BEGIN PGP SIGNATURE-----
+So, the call to xa_unlock_irq() re-enables the IRQs unconditionally
+and triggers the hang in aio_complete().
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRskzEACgkQJNaLcl1U
-h9BsgAf9GF4VsHf+jkaRuKOvlac1rE2bFEpVYeMuNf6KbqeD4odFEYIAUQA+YDLK
-cQfMclu7qJPPej3ztYBbyVR+3mXH9m+tx5c784FHFJnEyG4Fz5bbVGEBLlcT+PCQ
-AIM3pioDp3hHXcHZFKw8MyT/3VII4gf4yGIsw/rtWZZgPOvk0a1G3nctOClgwrqm
-asYtDEGLWUnXYKNWNv5dqfCq7olIGl+y4R3mn9KobyW13YvPEmn9uhHz7WuOGHrI
-XeXeNgg92QVhmIrSrSbLU+lUrxTqdNNE1CBav+R6fS0nmwNoKdMqgdlZok0toOUw
-PoCHQ6x7O7dUMlMoIsrUsIcDOSqrdw==
-=lXgK
------END PGP SIGNATURE-----
+I temporarily #defined flush_dcache_mmap_lock() to NOP and the kernel boot=
+ed nicely.
 
---Folw/pFEu4pCxXPv--
+Not sure yet what the best fix is...
+
+Helge
