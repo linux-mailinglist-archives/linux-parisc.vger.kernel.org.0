@@ -2,125 +2,108 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B62AA70DA68
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 May 2023 12:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73EA470DAE5
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 May 2023 12:52:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235100AbjEWKYh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 May 2023 06:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53616 "EHLO
+        id S236617AbjEWKwL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 May 2023 06:52:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230041AbjEWKYg (ORCPT
+        with ESMTP id S236610AbjEWKvx (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 May 2023 06:24:36 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3412E94;
-        Tue, 23 May 2023 03:24:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1684837450; i=deller@gmx.de;
-        bh=LnrOaZKOZPkWsLvDI4WNIWvJEIR5zNBixanXhsXOf50=;
-        h=X-UI-Sender-Class:Date:From:To:References:Subject:In-Reply-To;
-        b=hfjScB2UoBvfqAxVP255N9PqMNrvDv9KpvZ0eChwFS1gQBJ++C2oNLXFAy5r4IiW6
-         1PSl1UjILx1+BNDbBFqe7PCVoTrHTOHnIuMiPWGMCizfK9lh7dVLhPAQKfhe6NHgOI
-         RCJgJ+R1P46pPSnh7TwQ3AyluNLpnZnsiWfZQ18L7ziqsvnlg4erBAnnqdgAwqFsZ1
-         IPIBj6q7oFW3PM3p3E0UIp1Z5KcQn4SqkVV2yOUPR2icsD+mm0BGAtcEt2iGpA1ezh
-         hQ1H7PCtdPqaNTZrSFP4ImcLP0yWa7QmJ8ifZCtt2MiWDkkFLDuYwsOpSHP3lfygBx
-         7UESRgVrlaCFA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.145.169]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M8QWG-1q5muI0VRA-004SXQ; Tue, 23
- May 2023 12:24:10 +0200
-Message-ID: <4d786f73-8c6f-4fd1-cdd6-42f2d59d6120@gmx.de>
-Date:   Tue, 23 May 2023 12:24:04 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-From:   Helge Deller <deller@gmx.de>
-To:     Bart Van Assche <bvanassche@acm.org>,
+        Tue, 23 May 2023 06:51:53 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C789D11A;
+        Tue, 23 May 2023 03:51:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=nNaVVitAdqly0HV3wb/gpkjgT9kyHVKcL6u7vHyYEuo=; b=tZQeapXf+QATFM4a3PS6TRgoJc
+        1ccZwWLDnCgasphlRBVwQmZ5rT6ozj6PDDHRoqmMnKjszz4T9KdpIhwmDxHrUnDq7KA4s0OxTd4xq
+        j/XftNjnyOMUEf+itf+JgO2LT8lUEbLQqWYcEdyyZK0L+orUCxF+qQvytMUMi0mrqrv4K+/3J6xOO
+        VBDpnlw2klvY+vydmdriPp4tPQXLng08oq/Q0us4pRTPh23lKlfUzjUmmsT/FAWy4V5DpdDM0FWZt
+        Rj7dPHCUywOtL8+88Gj/QUIdzlT5PW7kE0bLAqBvhzzRZd1tQZ//Ii4nVnGBtl9COM82vPKbHic6f
+        rtqgDUdw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49026)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1q1PcK-0000ET-9C; Tue, 23 May 2023 11:51:48 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1q1PcH-0000Vk-28; Tue, 23 May 2023 11:51:45 +0100
+Date:   Tue, 23 May 2023 11:51:45 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Helge Deller <deller@gmx.de>
+Cc:     Bart Van Assche <bvanassche@acm.org>,
         Linux SCSI List <linux-scsi@vger.kernel.org>,
         linux-aio@kvack.org, linux-parisc <linux-parisc@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>
+Subject: Re: spinlock recursion in aio_complete()
+Message-ID: <ZGyawdtBhNnvvTv3@shell.armlinux.org.uk>
 References: <5057d550-c3f4-be34-d3e6-390790051232@gmx.de>
  <89053bf1-6bc3-3778-7662-14d15bd778a3@acm.org>
  <8bd7faad-abf4-f7b3-03c9-e06f9b5d2148@gmx.de>
  <077b00a6-9587-2e28-3f8a-44871f9428ca@acm.org>
  <5e684a22-dcc1-095f-ac18-fd1b3bf81cd6@gmx.de>
-Subject: Re: spinlock recursion in aio_complete()
-In-Reply-To: <5e684a22-dcc1-095f-ac18-fd1b3bf81cd6@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:auW7OuoOvYAf9oQI5PN5n/Tnt+1xnbElNxtUVpNi0k/OgIqHud2
- TqoKVr0GSEQz4qxLAJFLwyBwKcrC3HQqG1wjLKa4lRrpbtVLIib9g42Pcd2FKZw/POXneAe
- 1rV9OWomTfiussVhLe43JV3YypaivVh9nuAZGZlC3kDKsKIO3xEqVp2VttGcMr5YlT+Lqb8
- aiV+thm8immNkiAoLOtvA==
-UI-OutboundReport: notjunk:1;M01:P0:gqsxP5t/FpA=;yBxdOI+PCebRGyif+DYLl6b+iY9
- /cFp/JBxGAY4L6FgaO6Yy1K1PRW8F+FX4GPeQZPYYB8Rku2U2dy/fnTd+HbpuWVghHo5EJ+NV
- 08NVcGPDTJVsuk9+Jbtr9rb0kZPgKVpm0TlEv1E08VO/UPGvNJckushpqNjK8eEfW9Ny37o3S
- 9Mzj47YkhMIHrhE6yHurDMyKWOgcByqgLXf+DXdj60Vah+cCRsBvHeM3hIq7EZIvI39bq20S8
- 1ghbXJybadi0zfxu+wXCMl1lr/2uRt2MeOZBwHEQAJNtZaLbolrgxVtB6xVG/pJIHH/p6RmLd
- Y1rRf9DPkLUUSF81obgw38INEB0aA01Xpj2Q7TTkoBiknXZUJgpl45nn9rXkUEl1zv8xZmHi7
- HNyrqosgpKpLMLNcoCUoVatpr0qB1jzqg5fmDuJH+bL1kTFpcFlYAutYSBlC4YkIv3yLAAK+i
- /ApN056WtVmNlendIDvaTiUL8uqlCyA3vQMJxumrgnWKqVlw8yMpD8X4kMsbQu6DMMzYi0Cdk
- Xr8SvLYubeVaqq3RvU127252U9QCeLnnEFFI6cZ1kPOdjDLHxO3ToTFXIjqMsU2KpPLHenfnn
- coSO4pSU2JJwpDpDdMcse2FSNe+wgWc4kWzyDNGB0MJNj+bxi6esCmFFultNVivCSvmHq0tR0
- pzTM0uHp9cKjrr0RpETYf3ShwdIPs7ichuHCV2+ue87qLlSsu+TxK5l8Q7hYyno96y3VE6/q2
- wSComp136SyxtL1L7E/sCbE7BoulxaBiH00zThOkWRRs/eGiUXwsLuRmOg1echf0Jz3TscDYR
- +OzmCZPPUqEOxFyVjb/BYARydYKw7wctn+rksqHJWtE9sEpFwWNn41wS27Ed5XBuTp+5mYpYE
- PASQMRHvM8IjIRtAca618q9mIIK54I5zdYmSoIHz+woTLL+XoXay98qmnIwtsfICMVPieCqWH
- SQkoR45L+N6XCsMGZV45HgT0psM=
-X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+ <4d786f73-8c6f-4fd1-cdd6-42f2d59d6120@gmx.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4d786f73-8c6f-4fd1-cdd6-42f2d59d6120@gmx.de>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/22/23 23:22, Helge Deller wrote:
->>> It hangs in fs/aio.c:1128, function aio_complete(), in this call:
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0spin_lock_irqsave(&ctx->completion_lock,=
- flags);
->>
->> All code that I found and that obtains ctx->completion_lock disables IR=
-Qs.
->> It is not clear to me how this spinlock can be locked recursively? Is i=
-t
->> sure that the "spinlock recursion" report is correct?
->
-> Yes, it seems correct.
-> [...]
+On Tue, May 23, 2023 at 12:24:04PM +0200, Helge Deller wrote:
+> On 5/22/23 23:22, Helge Deller wrote:
+> > > > It hangs in fs/aio.c:1128, function aio_complete(), in this call:
+> > > >      spin_lock_irqsave(&ctx->completion_lock, flags);
+> > > 
+> > > All code that I found and that obtains ctx->completion_lock disables IRQs.
+> > > It is not clear to me how this spinlock can be locked recursively? Is it
+> > > sure that the "spinlock recursion" report is correct?
+> > 
+> > Yes, it seems correct.
+> > [...]
+> 
+> Bart, thanks to your suggestions I was able to narrow down the problem!
+> 
+> I got LOCKDEP working on parisc, which then reports:
+> 	raw_local_irq_restore() called with IRQs enabled
+> for the spin_unlock_irqrestore() in function aio_complete(), which shouldn't happen.
+> 
+> Finally, I found that parisc's flush_dcache_page() re-enables the IRQs
+> which leads to the spinlock hang in aio_complete().
+> 
+> So, this is NOT a bug in aio or scsci, but we need fix in the the arch code.
 
-Bart, thanks to your suggestions I was able to narrow down the problem!
+You can find some of the background to this at:
 
-I got LOCKDEP working on parisc, which then reports:
-	raw_local_irq_restore() called with IRQs enabled
-for the spin_unlock_irqrestore() in function aio_complete(), which shouldn=
-'t happen.
+https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/commit/?id=16ceff2d5dc9f0347ab5a08abff3f4647c2fee04
 
-Finally, I found that parisc's flush_dcache_page() re-enables the IRQs
-which leads to the spinlock hang in aio_complete().
+which introduced flush_dcache_mmap_lock(). It looks like Hugh had
+questions over whether this should be _irqsave() rather than _irq()
+but I guess at the time all callers had interrupts enabled, and
+it's only recently that someone came up with the idea of calling
+flush_dcache_page() with interrupts disabled.
 
-So, this is NOT a bug in aio or scsci, but we need fix in the the arch cod=
-e.
+Adding another arg to flush_dcache_mmap_lock() to save the flags
+may be doable, but requires a patch that touches not only architectures
+that have a private implementation, but also various code in mm/.
 
-
-While checking flush_dcache_page() re-enables IRQs, I see on parisc and AR=
-M(32):
-flush_dcache_page()  calls:
-   -> flush_dcache_mmap_lock()   /  flush_dcache_mmap_unlock()
-which uses: xa_lock_irq()	/  xa_unlock_irq()
-
-So, the call to xa_unlock_irq() re-enables the IRQs unconditionally
-and triggers the hang in aio_complete().
-
-I temporarily #defined flush_dcache_mmap_lock() to NOP and the kernel boot=
-ed nicely.
-
-Not sure yet what the best fix is...
-
-Helge
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
