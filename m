@@ -2,65 +2,84 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DCC270FE05
-	for <lists+linux-parisc@lfdr.de>; Wed, 24 May 2023 20:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC4B870FEE6
+	for <lists+linux-parisc@lfdr.de>; Wed, 24 May 2023 22:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234184AbjEXStO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 24 May 2023 14:49:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33908 "EHLO
+        id S229489AbjEXUAq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 24 May 2023 16:00:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237472AbjEXStI (ORCPT
+        with ESMTP id S229937AbjEXUAp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 24 May 2023 14:49:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C66718D;
-        Wed, 24 May 2023 11:49:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A2C263FCC;
-        Wed, 24 May 2023 18:49:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB2DC433D2;
-        Wed, 24 May 2023 18:48:57 +0000 (UTC)
-Date:   Wed, 24 May 2023 19:48:55 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Will Deacon <will@kernel.org>, Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@redhat.com>,
-        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Christoph Lameter <cl@linux.com>, Pavel Machek <pavel@ucw.cz>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Waiman Long <longman@redhat.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        audit@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-Subject: Re: [PATCH 13/14] thread_info: move function declarations to
- linux/thread_info.h
-Message-ID: <ZG5cF6pYCoaLEvFH@arm.com>
-References: <20230517131102.934196-1-arnd@kernel.org>
- <20230517131102.934196-14-arnd@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230517131102.934196-14-arnd@kernel.org>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        Wed, 24 May 2023 16:00:45 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F5BBB;
+        Wed, 24 May 2023 13:00:44 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 8EB125C0041;
+        Wed, 24 May 2023 16:00:41 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Wed, 24 May 2023 16:00:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1684958441; x=1685044841; bh=Z6
+        85X3s6lr/pGMeM6m/E6EEB6rBEVa5HnxnBbFtkgqs=; b=IrycefV5/kRwKBVlkj
+        gPLAV/1DOJiUWDDDMhExRNgNXq1KTFTzVl8p7o55kA3ZPKLAiqhzoA2yb4vNt+9n
+        gf1xsLnwGGMLt3neuQhs5liAL4RviPL2G4ToHFfisDYR9EBwQX20dEXjBrbV+roL
+        c9R+jbhIK/d/S1oT2fSR9O8PBNZ0kX/OunlmJeSA6/HayB3vZeUvechOorYlxZp4
+        kAl92/nbmP34SGM/8HqbvyekaUSpfL8AKSHHxtReqzamPTkKsUoJwPMohxDKTt1S
+        rhpMiEVrOhDrYHsF4FvOjHCob8UkI9w3RvGq3zUsGBCG6NeCpPNR0hHI3crIiG55
+        k6Iw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1684958441; x=1685044841; bh=Z685X3s6lr/pG
+        MeM6m/E6EEB6rBEVa5HnxnBbFtkgqs=; b=o69JxLntHustMK0x1nRHWVwxWc2ti
+        903LG96W/NtxmX3I23aCR2t7PCjnP1ob4vXnsVhbiAgcz0w4ArWdXlyPfj1EP9Gx
+        iYmqiuMOhvYV/FduuMlyB65xxD78WrPgq9sTAsncaQ+bPsQIRCkzVQ8zFr5eG5fA
+        fcx1CUYfmZvaNzvNDPGv7zznTd2KAcFzw0D6jrx2kIPMKFzlyZ9FasdkGkAYydaL
+        fOq3PhwyQU75hv53Rmmf+8WEZAIfZUF86r8/mLXbBZoHh48vj6tHS5X6MQ9EKviE
+        mrqsPNETGb6b6wzuRghK+ruoudSWmQIEIfP//zACa0BRoGUOxWsOgBcGA==
+X-ME-Sender: <xms:6GxuZLSWczlarO1-UynyBF1EW07ihGI4ulnpj5CIM-noa3CNJGRwMA>
+    <xme:6GxuZMz-gp07UgEUjgOcMyCJmOB1IpPqQQK7N61W5tKEe93Eoj6Riej0ksYE-ACQO
+    R9PgpiFcEZb5N4oLic>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejhedgudegudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:6GxuZA0dIoXNbdvrJh0-PvY8JpYSBfYfcfx-5M2oq_yglhFLsiFkWA>
+    <xmx:6GxuZLB4f6g2ysoM1ftXUJJMZQgI7ByRZAwSF69sRBZy4y9o_3kH8w>
+    <xmx:6GxuZEhHOGPfwNhGzCsm7-v_EAcIyvDX-sj-NeRgP5Kqh-MWGljpjw>
+    <xmx:6WxuZNsQHeiiRa6WgQXQTTk06eodTz6S5QZfK2-8E8mt9ZkDfeM5pw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 73314B60086; Wed, 24 May 2023 16:00:40 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-441-ga3ab13cd6d-fm-20230517.001-ga3ab13cd
+Mime-Version: 1.0
+Message-Id: <3e131821-7665-47f0-a8a6-44b3e4d7a88a@app.fastmail.com>
+In-Reply-To: <20230524152633.203927-2-deller@gmx.de>
+References: <20230524152633.203927-1-deller@gmx.de>
+ <20230524152633.203927-2-deller@gmx.de>
+Date:   Wed, 24 May 2023 22:00:14 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Helge Deller" <deller@gmx.de>,
+        "Russell King" <linux@armlinux.org.uk>,
+        "Dinh Nguyen" <dinguyen@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-parisc@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/3] arm: Fix flush_dcache_page() for usage from irq context
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,22 +87,30 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, May 17, 2023 at 03:11:01PM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> There are a few __weak functions in kernel/fork.c, which architectures
-> can override. If there is no prototype, the compiler warns about them:
-> 
-> kernel/fork.c:164:13: error: no previous prototype for 'arch_release_task_struct' [-Werror=missing-prototypes]
-> kernel/fork.c:991:20: error: no previous prototype for 'arch_task_cache_init' [-Werror=missing-prototypes]
-> kernel/fork.c:1086:12: error: no previous prototype for 'arch_dup_task_struct' [-Werror=missing-prototypes]
-> 
-> There are already prototypes in a number of architecture specific headers
-> that have addressed those warnings before, but it's much better to have
-> these in a single place so the warning no longer shows up anywhere.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On Wed, May 24, 2023, at 17:26, Helge Deller wrote:
+> Since at least kernel 6.1, flush_dcache_page() is called with IRQs
+> disabled, e.g. from aio_complete().
+>
+> But the current implementation for flush_dcache_page() on ARM
+> unintentionally re-enables IRQs, which may lead to deadlocks.
+>
+> Fix it by using xa_lock_irqsave() and xa_unlock_irqrestore()
+> for the flush_dcache_mmap_*lock() macros instead.
+>
+> Cc: Russell King (Oracle) <linux@armlinux.org.uk>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Signed-off-by: Helge Deller <deller@gmx.de>
 
-For arm64:
+Cc: stable@vger.kernel.org
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+From what I can tell, the behavior in aio_complete has been
+there for over 10 years, since 21b40200cfe96 ("aio: use
+flush_dcache_page()"). Others may have done the same already
+back then.
+
+I also see you sent patches for nios2 and parisc, but not
+for csky, which appears to need the same thing.
+
+     Arnd
