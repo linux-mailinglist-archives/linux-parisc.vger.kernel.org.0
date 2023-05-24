@@ -2,167 +2,127 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2580A70E668
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 May 2023 22:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E193970EA3E
+	for <lists+linux-parisc@lfdr.de>; Wed, 24 May 2023 02:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232847AbjEWUY5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 23 May 2023 16:24:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33080 "EHLO
+        id S238493AbjEXA3e (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 23 May 2023 20:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232824AbjEWUY4 (ORCPT
+        with ESMTP id S229539AbjEXA3c (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 23 May 2023 16:24:56 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 016A4129;
-        Tue, 23 May 2023 13:24:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1684873472; i=deller@gmx.de;
-        bh=2kEL5Dvnd1+2zbMBSC2c9hvepYwfnHhDy1edLyedfDs=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=LZQeCcU2fqY/tfblu74/xTXb4P06zZTgADhRPt2PlDb2dMoZVzr6ghpmhTlGKw3J8
-         ylLwKX0D5zmt3BObVdR/9Sh8Xt8GbItCqP+dT+KlclEjmz5lPNf0pS8R5/diC2mbnN
-         +z3w3JIHRCb7uqvjTEv48TvVi1bG8rj1sNpmAJ2QCKKj1DRs7u40t7tEtOwC4kyJtP
-         nuh24wXfhR+k7UZpYDp8VViMWuTCmk20Xs4q0ELa60y7HVb4FJQkcFkLH0zp78c7+r
-         zS3yle4lr2GQE57OIX6Gfm7LkiL3gdAZobrNm0rHXH7kwoR9k4A+mfLydzlhUIG6XZ
-         bo8vP0gC+MRGw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.145.169]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3DJl-1pxzen2okn-003cCf; Tue, 23
- May 2023 22:24:32 +0200
-Date:   Tue, 23 May 2023 22:24:30 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Helge Deller <deller@gmx.de>
-Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Tue, 23 May 2023 20:29:32 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765BE193
+        for <linux-parisc@vger.kernel.org>; Tue, 23 May 2023 17:29:19 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1a950b982d4so8495ad.0
+        for <linux-parisc@vger.kernel.org>; Tue, 23 May 2023 17:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1684888159; x=1687480159;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=p+iGDu91GXvHaUJ4/GkDIwXiVromlKTEDnrVX/jdHHE=;
+        b=oCPd/VMBzehzBIwxKD0CUQlcv9XnCqSIGnZFpfNhT9159UiXp4+4s0dt1T5T+r2N8u
+         ejdMVEW9GWrQK3u8D/R+OgCl4fi8an2VY0K+/eeCPWT2cGGSET/E3kHkr5iqimXeopNz
+         1LhLEfNIl9101bv8HdubYyq2hpbrF89XLwyNahFvZOtnckCP7CoEZsh2L+2+OK9q9Yjc
+         K9vC86dI9TWXu3/6r3ILFI/gvIY8hkiVXH1FcP052iNl13PiuUL4NAyi+n5JDzxUMMjc
+         YVmWP+V4GT0WZnv89R5QJMFswFGyufptXG7L83ZUIfYIL/yWyXKcEjeZvi21gEBg088G
+         o5Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684888159; x=1687480159;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p+iGDu91GXvHaUJ4/GkDIwXiVromlKTEDnrVX/jdHHE=;
+        b=gqNVKS5QPThPzmgXrVeZHYV+MLpDB2zcba1MQ+SXODgafeEHhyRCmnjgAOJh11J2+z
+         NBYur+Y+u8HKzCNlVJS4zv28KlM05K22BOyWSIRg2rx5tdYUTekvlvaVrzBJ/qy4xDDQ
+         MCFixi1NXlrwtrCf/7CxcTqUTASzWtbXgw3vgGJtajvqIdhVnevagfeBgCHeoRosdQus
+         U6QxwtDQnnp2HWOrkybvaThlSQ4auXsawzbxO2scEn/67TIrHAG5uPWfXi1fdf4oM9rS
+         9FOD5HsnOL9iW460zIxDJAjiSa5mzF2piOHgveQmGPqnK0BuzJtnZaW39Q6HBpjb5D+4
+         OuUQ==
+X-Gm-Message-State: AC+VfDwvbJ0jA5sCSqxInkPEQcfGRQ2B4KHILAcvkwKhc0mFruRV/AAa
+        GzkbFCAxX4ls5VjughDlXD6ezg==
+X-Google-Smtp-Source: ACHHUZ4WC86fv/HCojVq6Z7bo1LnEN2P8Qa/JJdhSbqAvm7x1JKXoIG4BePTyVsmdwlyiuzkRQj4Vw==
+X-Received: by 2002:a17:902:e847:b0:1af:90ce:5263 with SMTP id t7-20020a170902e84700b001af90ce5263mr107385plg.26.1684888158675;
+        Tue, 23 May 2023 17:29:18 -0700 (PDT)
+Received: from [2620:0:1008:11:c789:c1fb:6667:1766] ([2620:0:1008:11:c789:c1fb:6667:1766])
+        by smtp.gmail.com with ESMTPSA id n20-20020a17090a929400b0024de0de6ec8sm137193pjo.17.2023.05.23.17.29.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 May 2023 17:29:18 -0700 (PDT)
+Date:   Tue, 23 May 2023 17:29:17 -0700 (PDT)
+From:   David Rientjes <rientjes@google.com>
+To:     Vlastimil Babka <vbabka@suse.cz>
+cc:     Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Qin Jian <qinjian@cqplus1.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Dinh Nguyen <dinguyen@kernel.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Linux SCSI List <linux-scsi@vger.kernel.org>,
-        linux-aio@kvack.org, linux-parisc <linux-parisc@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: spinlock recursion in aio_complete()
-Message-ID: <ZG0g/lNdsfLAPv15@p100>
-References: <5057d550-c3f4-be34-d3e6-390790051232@gmx.de>
- <89053bf1-6bc3-3778-7662-14d15bd778a3@acm.org>
- <8bd7faad-abf4-f7b3-03c9-e06f9b5d2148@gmx.de>
- <077b00a6-9587-2e28-3f8a-44871f9428ca@acm.org>
- <5e684a22-dcc1-095f-ac18-fd1b3bf81cd6@gmx.de>
- <4d786f73-8c6f-4fd1-cdd6-42f2d59d6120@gmx.de>
- <ZGyawdtBhNnvvTv3@shell.armlinux.org.uk>
- <ZG0bkNJ5jQC1a3pY@p100>
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/slab: rename CONFIG_SLAB to CONFIG_SLAB_DEPRECATED
+In-Reply-To: <20230523091139.21449-1-vbabka@suse.cz>
+Message-ID: <be109b49-8510-5887-72ae-738db9945619@google.com>
+References: <20230523091139.21449-1-vbabka@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <ZG0bkNJ5jQC1a3pY@p100>
-X-Provags-ID: V03:K1:lmIYwKLwvr2gie/jntN6+MGDwTWp114p2fpu7nKOiJaa6oxZl0j
- oksvo41zJCmC9PLT+nvNkRCM806u9TDW76k3OsONqgkMuBZTFqdWi5s74KXjz7yKVB5urqK
- U30p4570yXPmVQhuUX70FCXim4Tis1h0N+SnrAUMvas6uUoVtPWTm/0WUEurYBD/uN6Cqu2
- SF3nucF5C0DQAEDeKgLaw==
-UI-OutboundReport: notjunk:1;M01:P0:48iNxykj62g=;bcKhvR+pMRtkckgWzK+hR6FEAxh
- 9vvsbJ0xZ6zEzMiei8K08MvKQ0PhMiwbGE6P+mX3czQho+TAG9ni6NuL5yb7fHCECDxpjKy6P
- CmIUxqGrKsf5owmxykcIpxfdOBRAm9WZh0C80C0B8zpFncbxqAJPeo0ovxaL20lXdge1fgVcR
- QyAwctukGQHIW3Iizqr1FYKVmJXL+ey9TFv4y7aF5gz2SaMPXCpVlJl0ukZhA/HbC2uIXGM76
- gwj/gtBXaOGsRNOTyULaQLKtO2RHbPfdYTlkz4hu7ECEb70d6sAmlbNv3sA0yeXph7lR5+Kl8
- LwTVvxjPGaTszAyud5/srU6WlEdZakkl7TA7AfT57ZUgFek7LotWK9b73N/ZDZd3NOGOceL8R
- wFQ58wKRDMlsVOFdEoxrdYkLboik4FuKCFQ1aqbWGiACeMmLAWLnEj2IBx1bh9NVUHqKBqxjx
- heSDyGBflPLIunzIaSWNdWMfKvuIaf1qk+Tsmqb4taWVagYEpYkOf2brVZ1bA445lfDs4lzoN
- X4zhoQF8oBOpCNfp3Y/iafliLfYHOP5x1x9dfiU+xh6nP/XxaATybnMrEbEzPkLMbXiM/AyDe
- pNDUmoPz5zgFSslgBKe33dNWZvI/pAtG3f2BLbqDhHt9FG2yZib1nabLx7/r2IOhkyAP2vaFW
- FnWdbMMzlSZSuDKRPYpQHkG/3UaF5dUOtlp641z/1bNsHhTE1/VCK60xQ7fz4t8fT4SzIK+Z0
- gg1mAk/ahouBO1EzC1glzCj3PxazmXMllqn4Z0p+AlZrV3OzhsE8wp51Pb/wearpRqLxOtkvN
- IrCOJjoes4+zqDPoR3Z06Z1R6hva7fxx4k9N+ghmuCNEzDs/2at0Jy3alhc9kaVCxNR7jvusx
- PpUnIGAg6v3Uoalv1/e4eF7t2NGqXSuNfs7fXm/VA+PPAufKDyjRA/7cTcFRL8uJ/z7Ga65XO
- 92XNe1sFffowy/L/gE8Xq/JxtFA=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-* Helge Deller <deller@gmx.de>:
-> * Russell King (Oracle) <linux@armlinux.org.uk>:
-> > On Tue, May 23, 2023 at 12:24:04PM +0200, Helge Deller wrote:
-> > > On 5/22/23 23:22, Helge Deller wrote:
-> > > > > > It hangs in fs/aio.c:1128, function aio_complete(), in this ca=
-ll:
-> > > > > > =A0=A0=A0=A0=A0spin_lock_irqsave(&ctx->completion_lock, flags)=
-;
-> > > > >
-> > > > > All code that I found and that obtains ctx->completion_lock disa=
-bles IRQs.
-> > > > > It is not clear to me how this spinlock can be locked recursivel=
-y? Is it
-> > > > > sure that the "spinlock recursion" report is correct?
-> > > >
-> > > > Yes, it seems correct.
-> > > > [...]
-> > >
-> > > Bart, thanks to your suggestions I was able to narrow down the probl=
-em!
-> > >
-> > > I got LOCKDEP working on parisc, which then reports:
-> > > 	raw_local_irq_restore() called with IRQs enabled
-> > > for the spin_unlock_irqrestore() in function aio_complete(), which s=
-houldn't happen.
-> > >
-> > > Finally, I found that parisc's flush_dcache_page() re-enables the IR=
-Qs
-> > > which leads to the spinlock hang in aio_complete().
-> > >
-> > > So, this is NOT a bug in aio or scsci, but we need fix in the the ar=
-ch code.
-> >
-> > You can find some of the background to this at:
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/commi=
-t/?id=3D16ceff2d5dc9f0347ab5a08abff3f4647c2fee04
-> >
-> > which introduced flush_dcache_mmap_lock(). It looks like Hugh had
-> > questions over whether this should be _irqsave() rather than _irq()
-> > but I guess at the time all callers had interrupts enabled, and
-> > it's only recently that someone came up with the idea of calling
-> > flush_dcache_page() with interrupts disabled.
-> >
-> > Adding another arg to flush_dcache_mmap_lock() to save the flags
-> > may be doable, but requires a patch that touches not only architecture=
-s
-> > that have a private implementation, but also various code in mm/.
->
-> I've tested the attached patch on parisc, and it solves the issue.
-> I've not compile-tested it on arm and nios2, both seem to be
-> the only other affected platforms.
+On Tue, 23 May 2023, Vlastimil Babka wrote:
 
-For your convenience, here is the hunk I used to trigger the bug.
-It triggers immediately at bootup when starting userspace.
+> As discussed at LSF/MM [1] [2] and with no objections raised there,
+> deprecate the SLAB allocator. Rename the user-visible option so that
+> users with CONFIG_SLAB=y get a new prompt with explanation during make
+> oldconfig, while make olddefconfig will just switch to SLUB.
+> 
+> In all defconfigs with CONFIG_SLAB=y remove the line so those also
+> switch to SLUB. Regressions due to the switch should be reported to
+> linux-mm and slab maintainers.
+> 
+> [1] https://lore.kernel.org/all/4b9fc9c6-b48c-198f-5f80-811a44737e5f@suse.cz/
+> [2] https://lwn.net/Articles/932201/
+> 
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-Helge
+Acked-by: David Rientjes <rientjes@google.com>
 
-diff --git a/fs/aio.c b/fs/aio.c
-index b0b17bd098bb..6076b0ab5580 100644
-=2D-- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -1127,6 +1127,7 @@ static void aio_complete(struct aio_kiocb *iocb)
- 	 */
- 	spin_lock_irqsave(&ctx->completion_lock, flags);
-
-+	BUG_ON(!arch_irqs_disabled());
- 	tail =3D ctx->tail;
- 	pos =3D tail + AIO_EVENTS_OFFSET;
-
-@@ -1139,7 +1140,10 @@ static void aio_complete(struct aio_kiocb *iocb)
- 	*event =3D iocb->ki_res;
-
- 	kunmap_atomic(ev_page);
-+	BUG_ON(!arch_irqs_disabled());
-+	/* the next flush_dcache_page() should keep IRQs disabled */
- 	flush_dcache_page(ctx->ring_pages[pos / AIO_EVENTS_PER_PAGE]);
-+	BUG_ON(!arch_irqs_disabled());
-
- 	pr_debug("%p[%u]: %p: %p %Lx %Lx %Lx\n", ctx, tail, iocb,
- 		 (void __user *)(unsigned long)iocb->ki_res.obj,
-
-
+The Kconfig option says that SLAB will be removed in a few cycles.  I 
+think we should wait until at least the next LTS kernel is forked at the 
+end of the year so that users who upgrade to only the LTS releases can be 
+prompted for this change and surface any concerns.  Slab allocation is a 
+critical subsystem, so I presume this is the safest and most responsible 
+way to do the SLAB deprecation.  Hopefully that timeline works for 
+everybody.
