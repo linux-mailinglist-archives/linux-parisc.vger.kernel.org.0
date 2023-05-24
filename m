@@ -2,116 +2,75 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B690B70FF6F
-	for <lists+linux-parisc@lfdr.de>; Wed, 24 May 2023 22:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B8870FF85
+	for <lists+linux-parisc@lfdr.de>; Wed, 24 May 2023 22:57:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235394AbjEXUsj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 24 May 2023 16:48:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44940 "EHLO
+        id S229650AbjEXU47 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 24 May 2023 16:56:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236057AbjEXUsh (ORCPT
+        with ESMTP id S229646AbjEXU46 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 24 May 2023 16:48:37 -0400
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01666187;
-        Wed, 24 May 2023 13:48:27 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 564803200B1C;
-        Wed, 24 May 2023 16:48:24 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Wed, 24 May 2023 16:48:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-         h=cc:cc:content-type:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm2; t=1684961303; x=
-        1685047703; bh=GIQrYXVIJfghlyJeZVTwMC4NvSXNZTZ81GeVUDK35vA=; b=t
-        V78D8AQWQriaLyjLryKXcRouM18sDnenIWh1Yu+0MLtrKqbfxYSkYAP7Ah45z0C0
-        wqrRshdZnP8Fzs3Y74J2dEDBmVYWYkp0Dr1xsrl5u5j90fMLI6BY4GxnFIanI2ra
-        ZHoNHyFdoiSeY0hssG0uaEFpYzR9Lz3q64/uyyqR22r9Bp9R7utjmhCAN40FS5yl
-        LMsNTY7sC/uKblPAscJfx1OowRzqDWvUUksw9EcLsmJ5dxmskbo1njKOtT/uAEJb
-        p8CBABZQSKnGrDpi9R3ukiBCGNRVKr8j1xz53Ydve6A5EMl4OC/qVLH06zs0pCt+
-        L7IqaBqFdMvHDowOKkSCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1684961303; x=1685047703; bh=GIQrYXVIJfghl
-        yJeZVTwMC4NvSXNZTZ81GeVUDK35vA=; b=YXeLdPNcTaSCsiCsBeJv2f5p9SuP4
-        8PNIAd5OHvvHh0zi0J6sHQ2iDxJi3KUZPgxTwHgsCiBnsG4iFJMa5e9VSO/9SRsp
-        1uf6gxH+qkDhvA2KvyiORL0inPnSLCOCJ7W/hgwUyUdJI1MHVbrXnbq8uhCmMqay
-        QCl1ZWzVXrCzb30GT0XC1Wta3d7Y3WxRKULau+sNOAow3o6ZJP+eHzUVYtEPFdUO
-        SEJPLcn5mgVKhWahWT0mp2x4brRIS3jKZQ5jeti0GnxZf5j3AV7cUWQLho6bY9Hg
-        bJgTAAYblxZs0e6yU12BJKusEGvIJR9TETpkuLHQittJSabdfnNE4zZlw==
-X-ME-Sender: <xms:FnhuZDTH2VncK0GAbUd4QSuubawcVJEemEMmfWagwDdFrmymqbynRw>
-    <xme:FnhuZEylmO4WOFyEi63qXNPS7KmYBZh0Oi4Ko1ah2WyXbPpIb5vWyfJ0rtnlScPMf
-    YwGNKBrFecAJTAStLU>
-X-ME-Received: <xmr:FnhuZI0B8fy9Ol2lnVR91k-mp_zuw1fzrmbcod9KqT-pVjgXEb11Z3-99qaxPUeQ45cz-A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejhedgudehudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttddttddttddvnecuhfhrohhmpedfmfhi
-    rhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllhesshhhuhhtvghmohhvrd
-    hnrghmvgeqnecuggftrfgrthhtvghrnhephfeigefhtdefhedtfedthefghedutddvueeh
-    tedttdehjeeukeejgeeuiedvkedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgv
-X-ME-Proxy: <xmx:FnhuZDDD4TIO_TlTLMdLlTBKIBaI4Z9lylnIe3wBeaO4FVJJxTQ0FA>
-    <xmx:FnhuZMj_AEyzunCa7U0nUvY822b_W_v3y-MdIwmWBPCWgqMitbF1og>
-    <xmx:FnhuZHo0gf_JVrLFUK-EgR8w02dXTQBT2P7OqLOR94f80xY3JTy1xg>
-    <xmx:F3huZHB2sQNsFiPjk9M0j2hsG8Xww7Nt8oC4qQnHLKoB8ZE2QQW6hQ>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 24 May 2023 16:48:21 -0400 (EDT)
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 49820109F9F; Wed, 24 May 2023 23:48:18 +0300 (+03)
-Date:   Wed, 24 May 2023 23:48:18 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv@lists.infradead.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [patch v3 31/36] x86/apic: Provide cpu_primary_thread mask
-Message-ID: <20230524204818.3tjlwah2euncxzmh@box.shutemov.name>
-References: <20230508181633.089804905@linutronix.de>
- <20230508185218.962208640@linutronix.de>
+        Wed, 24 May 2023 16:56:58 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA11812E;
+        Wed, 24 May 2023 13:56:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1684961802; i=deller@gmx.de;
+        bh=RuuhT55mt/C93pVbMB7MjnuUe2g516L6GXgAlvUtRiU=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=axf4bK2RwknNKEo9wlfHGam2vXSUuNWZ9HB/E3JM/oKf6SZhG1+sPs4aCFvUkN8yY
+         xqfHxoIaB2X+Ej9TvB3POBXUIAaMpXIhrbekBCElDKfebvtTpNz/ILs07IwxBXm/Ti
+         +8J6SZA1hsAdq5g1OmnoAy8aTCsBLlwc+fSOY8PFe9/e9tcJwnGBtCm4Jv0Vtfg6eW
+         uxmaFjrTs+UU/mOAgCA8ujBkEwTk58bkB3H77DK6sYEhJXmrc7GwfpW6g+wFmwIUq1
+         FFbyaoIkG7xgAzHOx0ugj0vD1OBEJFTPNwsyHLWI1emkyVhnMKVji0Ri8Rlg8r1ORi
+         D/Ie7ZZNAJYOw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.145.4]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNbkv-1pm9q502x9-00P4JO; Wed, 24
+ May 2023 22:56:42 +0200
+Message-ID: <f97510ab-a1c0-ea96-5d81-69fbd10a5269@gmx.de>
+Date:   Wed, 24 May 2023 22:56:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230508185218.962208640@linutronix.de>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 1/3] arm: Fix flush_dcache_page() for usage from irq
+ context
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org
+References: <20230524152633.203927-1-deller@gmx.de>
+ <20230524152633.203927-2-deller@gmx.de>
+ <3e131821-7665-47f0-a8a6-44b3e4d7a88a@app.fastmail.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <3e131821-7665-47f0-a8a6-44b3e4d7a88a@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:NzLqJJsuiRaAL1WmQPOsId51ZP3sgOpqQl9vs4Vpk2MjybabwQF
+ EhYdWXIP/fJGblHPgVA71Lsv0yi8cZHobgjf5XoLsweu8PKwvJ055MpH/PJF68KaRQgsMhA
+ NeBY5FXbvmuWMfPqYIRbbWzcYk4Ii3JOL8NiomPJEjsbqMJCmNy1jDge3kM/4lBb5M9wK/2
+ jkJ30Vw43rrGiIQWRv0PQ==
+UI-OutboundReport: notjunk:1;M01:P0:LuYL/VzftTQ=;oqSsiFvks7AvTGvGVRWhMkKCt5H
+ 8ze/UcWSwE4y64EL4kQ/KnFRX5EIaHI3RYF9uWUN9g369746Jwf4cubjjMb7pF/rCVqw4xetf
+ CczdmHu5Zf4WkmwBAPNJO8oGLfZ4qqs2m0OD7IyIPiY5yLPSOgH4dIhp2sHUxpyicOKJLqAeB
+ CDVfeBP02CwvoWT9WxeZ8VD0jDEgompeTss6H5/FQudtaxeaix20wfWbDZG0hy3R1xkAkaNaB
+ 5KB22h9GZVxPF9ByRskADJsTWa9U7dryDQwyHmC3ZJt0iprEWcmmYGkF+z0lU3vg1skGGTnJ7
+ pmh9wkJshq08+NplgShj6uD5FYyaWi4ec2ejzvUmImAO44OWKvA8dNdCK97BOPYXubAONYVZ0
+ MtzFlmIvSfh1aqQ5i74s6MedSp6Uy7JbNk7YzTaAL96zPsD6KrrQQpMo3sekcFXCGbHW0bQKd
+ IV2tIk8bPdFo2SYPjNPUfM6JOxI//kQHoVrclRbnI9HGtPr/t2jqpwNhhWiVN8zXmwgtdVIRM
+ bw1JJdQwGRCg0PBd3HBUeHObgOrBLi5LynsZiWjvX+eCATGn+1vi6zhF5iC0YKH3+lfTKwuAz
+ qwVipSYS66cIXGdeAAJcAAs524HpKWEt7+eS9+w1jsyXo6YEMIKDwgQoMa/o1Wowmp23sS+i2
+ sVRzTHK5qZo841TrocPU/88zGZHN3zjso0TshS4ZugGug4cwbAXfbm663o/K0BOpfcLnmeivr
+ ctGRRp/lTtpJtODC0wC4KlMyAbt8/yuUhGFfP0i8ZnpSqxOCnuPD/cbXRAnwBmcaoLXUc27HV
+ PgDfFLH1w2e/B2uBRiHlIaD52ntZk3rEj8VrSYp+fPXte9tE60PmnSARrriOyY9UCY7UqGYhX
+ JgB+DLn4zzHf+WR5I52GzqEXMFCqRWaLVyInZYliPua4SA/VGb7ojYTi7ojmMVzqyP4nDFLwu
+ 1QmtAQ==
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -119,65 +78,40 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, May 08, 2023 at 09:44:17PM +0200, Thomas Gleixner wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
-> 
-> Make the primary thread tracking CPU mask based in preparation for simpler
-> handling of parallel bootup.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Tested-by: Michael Kelley <mikelley@microsoft.com>
-> 
-> 
-> ---
->  arch/x86/include/asm/apic.h     |    2 --
->  arch/x86/include/asm/topology.h |   19 +++++++++++++++----
->  arch/x86/kernel/apic/apic.c     |   20 +++++++++-----------
->  arch/x86/kernel/smpboot.c       |   12 +++---------
->  4 files changed, 27 insertions(+), 26 deletions(-)
-> ---
-> 
+On 5/24/23 22:00, Arnd Bergmann wrote:
+> On Wed, May 24, 2023, at 17:26, Helge Deller wrote:
+>> Since at least kernel 6.1, flush_dcache_page() is called with IRQs
+>> disabled, e.g. from aio_complete().
+>>
+>> But the current implementation for flush_dcache_page() on ARM
+>> unintentionally re-enables IRQs, which may lead to deadlocks.
+>>
+>> Fix it by using xa_lock_irqsave() and xa_unlock_irqrestore()
+>> for the flush_dcache_mmap_*lock() macros instead.
+>>
+>> Cc: Russell King (Oracle) <linux@armlinux.org.uk>
+>> Cc: Arnd Bergmann <arnd@arndb.de>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-...
+Thanks!
+I assume it's picked up in the arm git tree then.
 
-> @@ -2386,20 +2386,16 @@ bool arch_match_cpu_phys_id(int cpu, u64
->  }
->  
->  #ifdef CONFIG_SMP
-> -/**
-> - * apic_id_is_primary_thread - Check whether APIC ID belongs to a primary thread
-> - * @apicid: APIC ID to check
-> - */
-> -bool apic_id_is_primary_thread(unsigned int apicid)
-> +static void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid)
->  {
-> -	u32 mask;
-> -
-> -	if (smp_num_siblings == 1)
-> -		return true;
->  	/* Isolate the SMT bit(s) in the APICID and check for 0 */
-> -	mask = (1U << (fls(smp_num_siblings) - 1)) - 1;
-> -	return !(apicid & mask);
-> +	u32 mask = (1U << (fls(smp_num_siblings) - 1)) - 1;
-> +
-> +	if (smp_num_siblings == 1 || !(apicid & mask))
-> +		cpumask_set_cpu(cpu, &__cpu_primary_thread_mask);
->  }
-> +#else
-> +static inline void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid) { }
->  #endif
->  
->  /*
+>  From what I can tell, the behavior in aio_complete has been
+> there for over 10 years, since 21b40200cfe96 ("aio: use
+> flush_dcache_page()").
 
-This patch causes boot regression on TDX guest. The guest crashes on SMP
-bring up.
+Oh, then those arches are broken since then.
 
-The change makes use of smp_num_siblings earlier than before: the mask get
-constructed in acpi_boot_init() codepath. Later on smp_num_siblings gets
-updated in detect_ht().
+> Others may have done the same already back then.
+>
+> I also see you sent patches for nios2 and parisc, but not
+> for csky, which appears to need the same thing.
 
-In my setup with 16 vCPUs, smp_num_siblings is 16 before detect_ht() and
-set to 1 in detect_ht().
+csky doesn't use flush_dcache_mmap_lock() inside it's
+flush_dcache_page() function, so I think it's not affected.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Helge
