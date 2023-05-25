@@ -2,318 +2,189 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9893771033B
-	for <lists+linux-parisc@lfdr.de>; Thu, 25 May 2023 05:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD40271063B
+	for <lists+linux-parisc@lfdr.de>; Thu, 25 May 2023 09:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbjEYDRh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 24 May 2023 23:17:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56270 "EHLO
+        id S234383AbjEYHZe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 25 May 2023 03:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjEYDRg (ORCPT
+        with ESMTP id S233805AbjEYHZ1 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 24 May 2023 23:17:36 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D775E7;
-        Wed, 24 May 2023 20:17:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684984654; x=1716520654;
-  h=date:from:to:cc:subject:message-id;
-  bh=rGF7bJDuC9HkXMKz/2MVhGFmVqEFCFiZ72imjZjWERA=;
-  b=B/ZUqRjvlqB4xEwFHerUjBSE+B3BDtqcDjegZfaCfKtuPXR1iuLgqJos
-   iJmXZWBmxkUEFx7bMoa/rgztvUbKw84cQ5tK5xrBF7gdBjlmhtBnGub0j
-   eIvv8F+BxKpgU3Za9WCx9H/QnQwEuK8OtKmSFRkB0UbZ8Yyx0agYciI3C
-   dFPrveDNk/WbuI6QSTLEewDIdoDYBsZqbSyrDzEcgM6yWVJRi3RaRRecD
-   9SecEwNUOX6+ADMoFOn4QKzaDOvyb23Md/TH9psfinI/qfYCg6Jeu4Qbu
-   Ee1XNCaW1g84SyBHnNlsJ3jZF/X66q+4r35A945t36vE8AAHbE1CrKR+3
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="343237190"
-X-IronPort-AV: E=Sophos;i="6.00,190,1681196400"; 
-   d="scan'208";a="343237190"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2023 20:17:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="794463813"
-X-IronPort-AV: E=Sophos;i="6.00,190,1681196400"; 
-   d="scan'208";a="794463813"
-Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 24 May 2023 20:17:31 -0700
-Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q21Tm-000FPR-2i;
-        Thu, 25 May 2023 03:17:30 +0000
-Date:   Thu, 25 May 2023 11:16:32 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Linux Memory Management List <linux-mm@kvack.org>,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        linux-parisc@vger.kernel.org, linux-xfs@vger.kernel.org
-Subject: [linux-next:master] BUILD REGRESSION
- cf09e328589a2ed7f6c8d90f2edb697fb4f8a96b
-Message-ID: <20230525031632.GDH30%lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        Thu, 25 May 2023 03:25:27 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A14841BD;
+        Thu, 25 May 2023 00:25:26 -0700 (PDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34P7MZUR027615;
+        Thu, 25 May 2023 07:24:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=55klH+MHDRtIEEtWGbvAfPxNnN6EmMw4scwT5+fq3XI=;
+ b=RCtuVZMVyLY0xGNcOr1uNeKOK8ntfwHROTFHQ4+AHlf2PWmk9UMR5C1PwZzqTymLhX3F
+ YS8x9sdj4rnAtSDt7d3OIlvETB4UqOoJw503GtHvkqIIk34L6d4qe/5QAfXKoRiw8KQ3
+ q2vN+VSVcbXRkWC9E/KmFqhp4J9Uk1or/sNjytHkFA/FLMsoMkRIv3iKpmsDaSpOHta9
+ CUHKBISpNyljOYab0uO1Fpi++beo28ogb584RD8aDiv+J9GeRUJVo/dWdX2F0D18x38T
+ iFptJIA55GKyv/jWO+T8QXxUyFt7k1uiwhkDKMXzQji2/r8sTbD6T9TT2CpRLV4sxd42 RQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qt32yg93r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 25 May 2023 07:24:01 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34P7CWdL024922;
+        Thu, 25 May 2023 07:24:00 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qt32yg92j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 25 May 2023 07:24:00 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+        by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34P4rUxB029511;
+        Thu, 25 May 2023 07:23:57 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+        by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3qppcuaahq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 25 May 2023 07:23:57 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+        by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34P7NrqW22610506
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 25 May 2023 07:23:53 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B0BFA20043;
+        Thu, 25 May 2023 07:23:53 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0955820040;
+        Thu, 25 May 2023 07:23:53 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+        by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Thu, 25 May 2023 07:23:52 +0000 (GMT)
+Date:   Thu, 25 May 2023 09:23:51 +0200
+From:   Claudio Imbrenda <imbrenda@linux.ibm.com>
+To:     Hugh Dickins <hughd@google.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Hildenbrand <david@redhat.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 15/23] s390: allow pte_offset_map_lock() to fail
+Message-ID: <20230525092351.7671f2a4@p-imbrenda>
+In-Reply-To: <b64cd153-18e8-81a6-b852-c04d8b1381d@google.com>
+References: <77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com>
+        <94aec8fe-383f-892-dcbf-d4c14e460a7@google.com>
+        <20230517123546.672fb9b0@p-imbrenda>
+        <4a15dbaa-1614-ce-ce1f-f73959cef895@google.com>
+        <20230523140056.55b664b1@p-imbrenda>
+        <b64cd153-18e8-81a6-b852-c04d8b1381d@google.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qRLyp44GLiE9zXh3PageqjkrZmyh07xV
+X-Proofpoint-GUID: uXGxTdAMLt8o-nI3lVA1NmtMWFctokRx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-25_03,2023-05-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ spamscore=0 clxscore=1015 lowpriorityscore=0 mlxlogscore=999
+ impostorscore=0 bulkscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305250057
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: cf09e328589a2ed7f6c8d90f2edb697fb4f8a96b  Add linux-next specific files for 20230524
+On Tue, 23 May 2023 18:49:14 -0700 (PDT)
+Hugh Dickins <hughd@google.com> wrote:
 
-Error/Warning reports:
+> On Tue, 23 May 2023, Claudio Imbrenda wrote:
+> > 
+> > so if I understand the above correctly, pte_offset_map_lock will only
+> > fail if the whole page table has disappeared, and in that case, it will
+> > never reappear with zero pages, therefore we can safely skip (in that
+> > case just break). if we were to do a continue instead of a break, we
+> > would most likely fail again anyway.  
+> 
+> Yes, that's the most likely; and you hold mmap_write_lock() there,
+> and VM_NOHUGEPAGE on all vmas, so I think it's the only foreseeable
+> possibility.
+> 
+> > 
+> > in that case I would still like a small change in your patch: please
+> > write a short (2~3 lines max) comment about why it's ok to do things
+> > that way  
+> 
+> Sure.
+> 
+> But I now see that I've disobeyed you, and gone to 4 lines (but in the
+> comment above the function, so as not to distract from the code itself):
+> is this good wording to you?  I needed to research how they were stopped
+> from coming in afterwards, so wanted to put something greppable in there.
+> 
+> And, unless I'm misunderstanding, that "after THP was enabled" was
+> always supposed to say "after THP was disabled" (because splitting a
+> huge zero page pmd inserts a a page table full of little zero ptes).
 
-https://lore.kernel.org/oe-kbuild-all/202305240732.wUCsRNAj-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202305241902.UvHtMoxa-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202305250935.6XsyIBcZ-lkp@intel.com
+indeed, thanks for noticing and fixing it
 
-Error/Warning: (recently discovered and may have been fixed)
+> 
+> Or would you prefer the comment in the commit message instead,
+> or down just above the pte_offset_map_lock() line?
+> 
+> It would much better if I could find one place at the mm end, to
+> enforce its end of the contract; but cannot think how to do that.
+> 
+> Hugh
+> 
+> --- a/arch/s390/mm/gmap.c
+> +++ b/arch/s390/mm/gmap.c
+> @@ -2537,7 +2537,12 @@ static inline void thp_split_mm(struct mm_struct *mm)
+>   * Remove all empty zero pages from the mapping for lazy refaulting
+>   * - This must be called after mm->context.has_pgste is set, to avoid
+>   *   future creation of zero pages
+> - * - This must be called after THP was enabled
+> + * - This must be called after THP was disabled.
+> + *
+> + * mm contracts with s390, that even if mm were to remove a page table,
+> + * racing with the loop below and so causing pte_offset_map_lock() to fail,
+> + * it will never insert a page table containing empty zero pages once
+> + * mm_forbids_zeropage(mm) i.e. mm->context.has_pgste is set.
+>   */
+>  static int __zap_zero_pages(pmd_t *pmd, unsigned long start,
+>  			   unsigned long end, struct mm_walk *walk)
 
-arch/parisc/kernel/traps.c:312:25: error: 'SPINLOCK_BREAK_INSN' undeclared (first use in this function)
-drivers/base/regmap/regcache-maple.c:113:23: warning: 'lower_index' is used uninitialized [-Wuninitialized]
-drivers/base/regmap/regcache-maple.c:113:36: warning: 'lower_last' is used uninitialized [-Wuninitialized]
-drivers/gpu/drm/i915/display/intel_display.c:6012:3: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-drivers/gpu/drm/i915/display/intel_display.c:6012:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c:312:14: error: initializer element is not a compile-time constant
-
-Unverified Error/Warning (likely false positive, please contact us if interested):
-
-fs/xfs/scrub/fscounters.c:459 xchk_fscounters() warn: ignoring unreachable code.
-kernel/watchdog.c:40:19: sparse: sparse: symbol 'watchdog_hardlockup_user_enabled' was not declared. Should it be static?
-kernel/watchdog.c:41:19: sparse: sparse: symbol 'watchdog_softlockup_user_enabled' was not declared. Should it be static?
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-randconfig-s053-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-|-- arc-allyesconfig
-|   |-- drivers-base-regmap-regcache-maple.c:warning:lower_index-is-used-uninitialized
-|   `-- drivers-base-regmap-regcache-maple.c:warning:lower_last-is-used-uninitialized
-|-- csky-randconfig-s032-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-|-- i386-randconfig-m021-20230524
-|   `-- fs-xfs-scrub-fscounters.c-xchk_fscounters()-warn:ignoring-unreachable-code.
-|-- i386-randconfig-s001-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-|-- i386-randconfig-s002-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-|-- i386-randconfig-s003-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-|-- ia64-randconfig-s053-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-|-- parisc-randconfig-r015-20230524
-|   `-- arch-parisc-kernel-traps.c:error:SPINLOCK_BREAK_INSN-undeclared-(first-use-in-this-function)
-|-- parisc-randconfig-s033-20230524
-|   `-- arch-parisc-kernel-traps.c:error:SPINLOCK_BREAK_INSN-undeclared-(first-use-in-this-function)
-|-- x86_64-randconfig-s021-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-|-- x86_64-randconfig-s022-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-|-- x86_64-randconfig-s023-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-|-- x86_64-randconfig-s041-20230524
-|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-`-- x86_64-randconfig-s042-20230524
-    |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
-    `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
-clang_recent_errors
-|-- i386-randconfig-i011-20230524
-|   `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
-|-- i386-randconfig-i014-20230524
-|   `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
-|-- i386-randconfig-i015-20230524
-|   `-- drivers-gpu-drm-i915-display-intel_display.c:error:unannotated-fall-through-between-switch-labels-Werror-Wimplicit-fallthrough
-|-- riscv-buildonly-randconfig-r002-20230524
-|   `-- drivers-gpu-drm-panel-panel-samsung-s6d7aa0.c:error:initializer-element-is-not-a-compile-time-constant
-|-- x86_64-randconfig-r025-20230522
-|   `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
-|-- x86_64-randconfig-x091-20230524
-|   `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
-`-- x86_64-randconfig-x096-20230524
-    `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
-
-elapsed time: 1262m
-
-configs tested: 159
-configs skipped: 4
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r022-20230521   gcc  
-alpha                randconfig-r024-20230521   gcc  
-alpha                randconfig-r025-20230521   gcc  
-alpha                randconfig-r026-20230522   gcc  
-arc                              allyesconfig   gcc  
-arc                          axs101_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r023-20230521   gcc  
-arc                  randconfig-r023-20230522   gcc  
-arc                  randconfig-r032-20230524   gcc  
-arc                  randconfig-r034-20230524   gcc  
-arc                  randconfig-r036-20230524   gcc  
-arc                  randconfig-r043-20230524   gcc  
-arm                              alldefconfig   clang
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         at91_dt_defconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r035-20230524   clang
-arm                  randconfig-r046-20230524   gcc  
-arm                         s5pv210_defconfig   clang
-arm                           stm32_defconfig   gcc  
-arm                         wpcm450_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r011-20230524   clang
-arm64                randconfig-r012-20230524   clang
-arm64                randconfig-r021-20230522   clang
-csky                             alldefconfig   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r006-20230524   gcc  
-csky                 randconfig-r014-20230524   gcc  
-hexagon      buildonly-randconfig-r001-20230524   clang
-hexagon      buildonly-randconfig-r004-20230524   clang
-hexagon              randconfig-r024-20230522   clang
-hexagon              randconfig-r041-20230524   clang
-hexagon              randconfig-r045-20230524   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i011-20230524   clang
-i386                 randconfig-i012-20230524   clang
-i386                 randconfig-i013-20230524   clang
-i386                 randconfig-i014-20230524   clang
-i386                 randconfig-i015-20230524   clang
-i386                 randconfig-i016-20230524   clang
-i386                 randconfig-i056-20230524   gcc  
-i386                 randconfig-i061-20230524   gcc  
-i386                 randconfig-i062-20230524   gcc  
-i386                 randconfig-i063-20230524   gcc  
-i386                 randconfig-i064-20230524   gcc  
-i386                 randconfig-i065-20230524   gcc  
-i386                 randconfig-i066-20230524   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r031-20230524   gcc  
-m68k                             allmodconfig   gcc  
-m68k         buildonly-randconfig-r003-20230524   gcc  
-m68k                                defconfig   gcc  
-microblaze   buildonly-randconfig-r006-20230524   gcc  
-microblaze           randconfig-r013-20230524   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           ci20_defconfig   gcc  
-mips                         cobalt_defconfig   gcc  
-mips                         db1xxx_defconfig   gcc  
-mips                     loongson1c_defconfig   clang
-mips                        qi_lb60_defconfig   clang
-mips                          rb532_defconfig   gcc  
-mips                          rm200_defconfig   clang
-mips                         rt305x_defconfig   gcc  
-nios2        buildonly-randconfig-r005-20230524   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r033-20230524   gcc  
-openrisc             randconfig-r001-20230524   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r015-20230524   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                 mpc8315_rdb_defconfig   clang
-powerpc                 mpc834x_itx_defconfig   gcc  
-powerpc              randconfig-r021-20230521   gcc  
-powerpc                     tqm8540_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv        buildonly-randconfig-r002-20230524   clang
-riscv                               defconfig   gcc  
-riscv                randconfig-r004-20230524   gcc  
-riscv                randconfig-r042-20230524   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r026-20230521   gcc  
-s390                 randconfig-r044-20230524   clang
-sh                               allmodconfig   gcc  
-sh                             espt_defconfig   gcc  
-sh                   randconfig-r002-20230524   gcc  
-sh                   randconfig-r016-20230524   gcc  
-sh                   secureedge5410_defconfig   gcc  
-sh                     sh7710voipgw_defconfig   gcc  
-sh                  sh7785lcr_32bit_defconfig   gcc  
-sparc                               defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230524   gcc  
-x86_64               randconfig-a002-20230524   gcc  
-x86_64               randconfig-a003-20230524   gcc  
-x86_64               randconfig-a004-20230524   gcc  
-x86_64               randconfig-a005-20230524   gcc  
-x86_64               randconfig-a011-20230524   clang
-x86_64               randconfig-a012-20230524   clang
-x86_64               randconfig-a013-20230524   clang
-x86_64               randconfig-a014-20230524   clang
-x86_64               randconfig-a015-20230524   clang
-x86_64               randconfig-a016-20230524   clang
-x86_64               randconfig-r022-20230522   clang
-x86_64               randconfig-r025-20230522   clang
-x86_64               randconfig-x051-20230524   clang
-x86_64               randconfig-x052-20230524   clang
-x86_64               randconfig-x053-20230524   clang
-x86_64               randconfig-x054-20230524   clang
-x86_64               randconfig-x055-20230524   clang
-x86_64               randconfig-x056-20230524   clang
-x86_64               randconfig-x061-20230524   clang
-x86_64               randconfig-x062-20230524   clang
-x86_64               randconfig-x063-20230524   clang
-x86_64               randconfig-x064-20230524   clang
-x86_64               randconfig-x065-20230524   clang
-x86_64               randconfig-x066-20230524   clang
-x86_64               randconfig-x071-20230524   gcc  
-x86_64               randconfig-x072-20230524   gcc  
-x86_64               randconfig-x073-20230524   gcc  
-x86_64               randconfig-x074-20230524   gcc  
-x86_64               randconfig-x075-20230524   gcc  
-x86_64               randconfig-x076-20230524   gcc  
-x86_64               randconfig-x081-20230524   gcc  
-x86_64               randconfig-x082-20230524   gcc  
-x86_64               randconfig-x083-20230524   gcc  
-x86_64               randconfig-x084-20230524   gcc  
-x86_64               randconfig-x085-20230524   gcc  
-x86_64               randconfig-x086-20230524   gcc  
-x86_64               randconfig-x091-20230524   clang
-x86_64               randconfig-x092-20230524   clang
-x86_64               randconfig-x093-20230524   clang
-x86_64               randconfig-x094-20230524   clang
-x86_64               randconfig-x095-20230524   clang
-x86_64               randconfig-x096-20230524   clang
-x86_64                               rhel-8.3   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+looks good, thanks
