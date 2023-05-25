@@ -2,116 +2,318 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B8870FF85
-	for <lists+linux-parisc@lfdr.de>; Wed, 24 May 2023 22:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9893771033B
+	for <lists+linux-parisc@lfdr.de>; Thu, 25 May 2023 05:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbjEXU47 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 24 May 2023 16:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48698 "EHLO
+        id S229658AbjEYDRh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 24 May 2023 23:17:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229646AbjEXU46 (ORCPT
+        with ESMTP id S229459AbjEYDRg (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 24 May 2023 16:56:58 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA11812E;
-        Wed, 24 May 2023 13:56:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1684961802; i=deller@gmx.de;
-        bh=RuuhT55mt/C93pVbMB7MjnuUe2g516L6GXgAlvUtRiU=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=axf4bK2RwknNKEo9wlfHGam2vXSUuNWZ9HB/E3JM/oKf6SZhG1+sPs4aCFvUkN8yY
-         xqfHxoIaB2X+Ej9TvB3POBXUIAaMpXIhrbekBCElDKfebvtTpNz/ILs07IwxBXm/Ti
-         +8J6SZA1hsAdq5g1OmnoAy8aTCsBLlwc+fSOY8PFe9/e9tcJwnGBtCm4Jv0Vtfg6eW
-         uxmaFjrTs+UU/mOAgCA8ujBkEwTk58bkB3H77DK6sYEhJXmrc7GwfpW6g+wFmwIUq1
-         FFbyaoIkG7xgAzHOx0ugj0vD1OBEJFTPNwsyHLWI1emkyVhnMKVji0Ri8Rlg8r1ORi
-         D/Ie7ZZNAJYOw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.145.4]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNbkv-1pm9q502x9-00P4JO; Wed, 24
- May 2023 22:56:42 +0200
-Message-ID: <f97510ab-a1c0-ea96-5d81-69fbd10a5269@gmx.de>
-Date:   Wed, 24 May 2023 22:56:41 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 1/3] arm: Fix flush_dcache_page() for usage from irq
- context
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org
-References: <20230524152633.203927-1-deller@gmx.de>
- <20230524152633.203927-2-deller@gmx.de>
- <3e131821-7665-47f0-a8a6-44b3e4d7a88a@app.fastmail.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <3e131821-7665-47f0-a8a6-44b3e4d7a88a@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:NzLqJJsuiRaAL1WmQPOsId51ZP3sgOpqQl9vs4Vpk2MjybabwQF
- EhYdWXIP/fJGblHPgVA71Lsv0yi8cZHobgjf5XoLsweu8PKwvJ055MpH/PJF68KaRQgsMhA
- NeBY5FXbvmuWMfPqYIRbbWzcYk4Ii3JOL8NiomPJEjsbqMJCmNy1jDge3kM/4lBb5M9wK/2
- jkJ30Vw43rrGiIQWRv0PQ==
-UI-OutboundReport: notjunk:1;M01:P0:LuYL/VzftTQ=;oqSsiFvks7AvTGvGVRWhMkKCt5H
- 8ze/UcWSwE4y64EL4kQ/KnFRX5EIaHI3RYF9uWUN9g369746Jwf4cubjjMb7pF/rCVqw4xetf
- CczdmHu5Zf4WkmwBAPNJO8oGLfZ4qqs2m0OD7IyIPiY5yLPSOgH4dIhp2sHUxpyicOKJLqAeB
- CDVfeBP02CwvoWT9WxeZ8VD0jDEgompeTss6H5/FQudtaxeaix20wfWbDZG0hy3R1xkAkaNaB
- 5KB22h9GZVxPF9ByRskADJsTWa9U7dryDQwyHmC3ZJt0iprEWcmmYGkF+z0lU3vg1skGGTnJ7
- pmh9wkJshq08+NplgShj6uD5FYyaWi4ec2ejzvUmImAO44OWKvA8dNdCK97BOPYXubAONYVZ0
- MtzFlmIvSfh1aqQ5i74s6MedSp6Uy7JbNk7YzTaAL96zPsD6KrrQQpMo3sekcFXCGbHW0bQKd
- IV2tIk8bPdFo2SYPjNPUfM6JOxI//kQHoVrclRbnI9HGtPr/t2jqpwNhhWiVN8zXmwgtdVIRM
- bw1JJdQwGRCg0PBd3HBUeHObgOrBLi5LynsZiWjvX+eCATGn+1vi6zhF5iC0YKH3+lfTKwuAz
- qwVipSYS66cIXGdeAAJcAAs524HpKWEt7+eS9+w1jsyXo6YEMIKDwgQoMa/o1Wowmp23sS+i2
- sVRzTHK5qZo841TrocPU/88zGZHN3zjso0TshS4ZugGug4cwbAXfbm663o/K0BOpfcLnmeivr
- ctGRRp/lTtpJtODC0wC4KlMyAbt8/yuUhGFfP0i8ZnpSqxOCnuPD/cbXRAnwBmcaoLXUc27HV
- PgDfFLH1w2e/B2uBRiHlIaD52ntZk3rEj8VrSYp+fPXte9tE60PmnSARrriOyY9UCY7UqGYhX
- JgB+DLn4zzHf+WR5I52GzqEXMFCqRWaLVyInZYliPua4SA/VGb7ojYTi7ojmMVzqyP4nDFLwu
- 1QmtAQ==
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Wed, 24 May 2023 23:17:36 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D775E7;
+        Wed, 24 May 2023 20:17:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684984654; x=1716520654;
+  h=date:from:to:cc:subject:message-id;
+  bh=rGF7bJDuC9HkXMKz/2MVhGFmVqEFCFiZ72imjZjWERA=;
+  b=B/ZUqRjvlqB4xEwFHerUjBSE+B3BDtqcDjegZfaCfKtuPXR1iuLgqJos
+   iJmXZWBmxkUEFx7bMoa/rgztvUbKw84cQ5tK5xrBF7gdBjlmhtBnGub0j
+   eIvv8F+BxKpgU3Za9WCx9H/QnQwEuK8OtKmSFRkB0UbZ8Yyx0agYciI3C
+   dFPrveDNk/WbuI6QSTLEewDIdoDYBsZqbSyrDzEcgM6yWVJRi3RaRRecD
+   9SecEwNUOX6+ADMoFOn4QKzaDOvyb23Md/TH9psfinI/qfYCg6Jeu4Qbu
+   Ee1XNCaW1g84SyBHnNlsJ3jZF/X66q+4r35A945t36vE8AAHbE1CrKR+3
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="343237190"
+X-IronPort-AV: E=Sophos;i="6.00,190,1681196400"; 
+   d="scan'208";a="343237190"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2023 20:17:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="794463813"
+X-IronPort-AV: E=Sophos;i="6.00,190,1681196400"; 
+   d="scan'208";a="794463813"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 24 May 2023 20:17:31 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q21Tm-000FPR-2i;
+        Thu, 25 May 2023 03:17:30 +0000
+Date:   Thu, 25 May 2023 11:16:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Linux Memory Management List <linux-mm@kvack.org>,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        linux-parisc@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: [linux-next:master] BUILD REGRESSION
+ cf09e328589a2ed7f6c8d90f2edb697fb4f8a96b
+Message-ID: <20230525031632.GDH30%lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/24/23 22:00, Arnd Bergmann wrote:
-> On Wed, May 24, 2023, at 17:26, Helge Deller wrote:
->> Since at least kernel 6.1, flush_dcache_page() is called with IRQs
->> disabled, e.g. from aio_complete().
->>
->> But the current implementation for flush_dcache_page() on ARM
->> unintentionally re-enables IRQs, which may lead to deadlocks.
->>
->> Fix it by using xa_lock_irqsave() and xa_unlock_irqrestore()
->> for the flush_dcache_mmap_*lock() macros instead.
->>
->> Cc: Russell King (Oracle) <linux@armlinux.org.uk>
->> Cc: Arnd Bergmann <arnd@arndb.de>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Signed-off-by: Helge Deller <deller@gmx.de>
->
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: cf09e328589a2ed7f6c8d90f2edb697fb4f8a96b  Add linux-next specific files for 20230524
 
-Thanks!
-I assume it's picked up in the arm git tree then.
+Error/Warning reports:
 
->  From what I can tell, the behavior in aio_complete has been
-> there for over 10 years, since 21b40200cfe96 ("aio: use
-> flush_dcache_page()").
+https://lore.kernel.org/oe-kbuild-all/202305240732.wUCsRNAj-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202305241902.UvHtMoxa-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202305250935.6XsyIBcZ-lkp@intel.com
 
-Oh, then those arches are broken since then.
+Error/Warning: (recently discovered and may have been fixed)
 
-> Others may have done the same already back then.
->
-> I also see you sent patches for nios2 and parisc, but not
-> for csky, which appears to need the same thing.
+arch/parisc/kernel/traps.c:312:25: error: 'SPINLOCK_BREAK_INSN' undeclared (first use in this function)
+drivers/base/regmap/regcache-maple.c:113:23: warning: 'lower_index' is used uninitialized [-Wuninitialized]
+drivers/base/regmap/regcache-maple.c:113:36: warning: 'lower_last' is used uninitialized [-Wuninitialized]
+drivers/gpu/drm/i915/display/intel_display.c:6012:3: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+drivers/gpu/drm/i915/display/intel_display.c:6012:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c:312:14: error: initializer element is not a compile-time constant
 
-csky doesn't use flush_dcache_mmap_lock() inside it's
-flush_dcache_page() function, so I think it's not affected.
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
-Helge
+fs/xfs/scrub/fscounters.c:459 xchk_fscounters() warn: ignoring unreachable code.
+kernel/watchdog.c:40:19: sparse: sparse: symbol 'watchdog_hardlockup_user_enabled' was not declared. Should it be static?
+kernel/watchdog.c:41:19: sparse: sparse: symbol 'watchdog_softlockup_user_enabled' was not declared. Should it be static?
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-randconfig-s053-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+|-- arc-allyesconfig
+|   |-- drivers-base-regmap-regcache-maple.c:warning:lower_index-is-used-uninitialized
+|   `-- drivers-base-regmap-regcache-maple.c:warning:lower_last-is-used-uninitialized
+|-- csky-randconfig-s032-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+|-- i386-randconfig-m021-20230524
+|   `-- fs-xfs-scrub-fscounters.c-xchk_fscounters()-warn:ignoring-unreachable-code.
+|-- i386-randconfig-s001-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+|-- i386-randconfig-s002-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+|-- i386-randconfig-s003-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+|-- ia64-randconfig-s053-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+|-- parisc-randconfig-r015-20230524
+|   `-- arch-parisc-kernel-traps.c:error:SPINLOCK_BREAK_INSN-undeclared-(first-use-in-this-function)
+|-- parisc-randconfig-s033-20230524
+|   `-- arch-parisc-kernel-traps.c:error:SPINLOCK_BREAK_INSN-undeclared-(first-use-in-this-function)
+|-- x86_64-randconfig-s021-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+|-- x86_64-randconfig-s022-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+|-- x86_64-randconfig-s023-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+|-- x86_64-randconfig-s041-20230524
+|   |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+|   `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+`-- x86_64-randconfig-s042-20230524
+    |-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_hardlockup_user_enabled-was-not-declared.-Should-it-be-static
+    `-- kernel-watchdog.c:sparse:sparse:symbol-watchdog_softlockup_user_enabled-was-not-declared.-Should-it-be-static
+clang_recent_errors
+|-- i386-randconfig-i011-20230524
+|   `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
+|-- i386-randconfig-i014-20230524
+|   `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
+|-- i386-randconfig-i015-20230524
+|   `-- drivers-gpu-drm-i915-display-intel_display.c:error:unannotated-fall-through-between-switch-labels-Werror-Wimplicit-fallthrough
+|-- riscv-buildonly-randconfig-r002-20230524
+|   `-- drivers-gpu-drm-panel-panel-samsung-s6d7aa0.c:error:initializer-element-is-not-a-compile-time-constant
+|-- x86_64-randconfig-r025-20230522
+|   `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
+|-- x86_64-randconfig-x091-20230524
+|   `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
+`-- x86_64-randconfig-x096-20230524
+    `-- drivers-gpu-drm-i915-display-intel_display.c:warning:unannotated-fall-through-between-switch-labels
+
+elapsed time: 1262m
+
+configs tested: 159
+configs skipped: 4
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r022-20230521   gcc  
+alpha                randconfig-r024-20230521   gcc  
+alpha                randconfig-r025-20230521   gcc  
+alpha                randconfig-r026-20230522   gcc  
+arc                              allyesconfig   gcc  
+arc                          axs101_defconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r023-20230521   gcc  
+arc                  randconfig-r023-20230522   gcc  
+arc                  randconfig-r032-20230524   gcc  
+arc                  randconfig-r034-20230524   gcc  
+arc                  randconfig-r036-20230524   gcc  
+arc                  randconfig-r043-20230524   gcc  
+arm                              alldefconfig   clang
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                         at91_dt_defconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r035-20230524   clang
+arm                  randconfig-r046-20230524   gcc  
+arm                         s5pv210_defconfig   clang
+arm                           stm32_defconfig   gcc  
+arm                         wpcm450_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r011-20230524   clang
+arm64                randconfig-r012-20230524   clang
+arm64                randconfig-r021-20230522   clang
+csky                             alldefconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r006-20230524   gcc  
+csky                 randconfig-r014-20230524   gcc  
+hexagon      buildonly-randconfig-r001-20230524   clang
+hexagon      buildonly-randconfig-r004-20230524   clang
+hexagon              randconfig-r024-20230522   clang
+hexagon              randconfig-r041-20230524   clang
+hexagon              randconfig-r045-20230524   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i011-20230524   clang
+i386                 randconfig-i012-20230524   clang
+i386                 randconfig-i013-20230524   clang
+i386                 randconfig-i014-20230524   clang
+i386                 randconfig-i015-20230524   clang
+i386                 randconfig-i016-20230524   clang
+i386                 randconfig-i056-20230524   gcc  
+i386                 randconfig-i061-20230524   gcc  
+i386                 randconfig-i062-20230524   gcc  
+i386                 randconfig-i063-20230524   gcc  
+i386                 randconfig-i064-20230524   gcc  
+i386                 randconfig-i065-20230524   gcc  
+i386                 randconfig-i066-20230524   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r031-20230524   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r003-20230524   gcc  
+m68k                                defconfig   gcc  
+microblaze   buildonly-randconfig-r006-20230524   gcc  
+microblaze           randconfig-r013-20230524   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                           ci20_defconfig   gcc  
+mips                         cobalt_defconfig   gcc  
+mips                         db1xxx_defconfig   gcc  
+mips                     loongson1c_defconfig   clang
+mips                        qi_lb60_defconfig   clang
+mips                          rb532_defconfig   gcc  
+mips                          rm200_defconfig   clang
+mips                         rt305x_defconfig   gcc  
+nios2        buildonly-randconfig-r005-20230524   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r033-20230524   gcc  
+openrisc             randconfig-r001-20230524   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r015-20230524   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                 mpc8315_rdb_defconfig   clang
+powerpc                 mpc834x_itx_defconfig   gcc  
+powerpc              randconfig-r021-20230521   gcc  
+powerpc                     tqm8540_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv        buildonly-randconfig-r002-20230524   clang
+riscv                               defconfig   gcc  
+riscv                randconfig-r004-20230524   gcc  
+riscv                randconfig-r042-20230524   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r026-20230521   gcc  
+s390                 randconfig-r044-20230524   clang
+sh                               allmodconfig   gcc  
+sh                             espt_defconfig   gcc  
+sh                   randconfig-r002-20230524   gcc  
+sh                   randconfig-r016-20230524   gcc  
+sh                   secureedge5410_defconfig   gcc  
+sh                     sh7710voipgw_defconfig   gcc  
+sh                  sh7785lcr_32bit_defconfig   gcc  
+sparc                               defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230524   gcc  
+x86_64               randconfig-a002-20230524   gcc  
+x86_64               randconfig-a003-20230524   gcc  
+x86_64               randconfig-a004-20230524   gcc  
+x86_64               randconfig-a005-20230524   gcc  
+x86_64               randconfig-a011-20230524   clang
+x86_64               randconfig-a012-20230524   clang
+x86_64               randconfig-a013-20230524   clang
+x86_64               randconfig-a014-20230524   clang
+x86_64               randconfig-a015-20230524   clang
+x86_64               randconfig-a016-20230524   clang
+x86_64               randconfig-r022-20230522   clang
+x86_64               randconfig-r025-20230522   clang
+x86_64               randconfig-x051-20230524   clang
+x86_64               randconfig-x052-20230524   clang
+x86_64               randconfig-x053-20230524   clang
+x86_64               randconfig-x054-20230524   clang
+x86_64               randconfig-x055-20230524   clang
+x86_64               randconfig-x056-20230524   clang
+x86_64               randconfig-x061-20230524   clang
+x86_64               randconfig-x062-20230524   clang
+x86_64               randconfig-x063-20230524   clang
+x86_64               randconfig-x064-20230524   clang
+x86_64               randconfig-x065-20230524   clang
+x86_64               randconfig-x066-20230524   clang
+x86_64               randconfig-x071-20230524   gcc  
+x86_64               randconfig-x072-20230524   gcc  
+x86_64               randconfig-x073-20230524   gcc  
+x86_64               randconfig-x074-20230524   gcc  
+x86_64               randconfig-x075-20230524   gcc  
+x86_64               randconfig-x076-20230524   gcc  
+x86_64               randconfig-x081-20230524   gcc  
+x86_64               randconfig-x082-20230524   gcc  
+x86_64               randconfig-x083-20230524   gcc  
+x86_64               randconfig-x084-20230524   gcc  
+x86_64               randconfig-x085-20230524   gcc  
+x86_64               randconfig-x086-20230524   gcc  
+x86_64               randconfig-x091-20230524   clang
+x86_64               randconfig-x092-20230524   clang
+x86_64               randconfig-x093-20230524   clang
+x86_64               randconfig-x094-20230524   clang
+x86_64               randconfig-x095-20230524   clang
+x86_64               randconfig-x096-20230524   clang
+x86_64                               rhel-8.3   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
