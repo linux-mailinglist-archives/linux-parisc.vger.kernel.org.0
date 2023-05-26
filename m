@@ -2,145 +2,91 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09E7B71244E
-	for <lists+linux-parisc@lfdr.de>; Fri, 26 May 2023 12:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1813712FF2
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 May 2023 00:22:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236874AbjEZKO2 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 26 May 2023 06:14:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58636 "EHLO
+        id S237655AbjEZWWt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 26 May 2023 18:22:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbjEZKO1 (ORCPT
+        with ESMTP id S237792AbjEZWWr (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 26 May 2023 06:14:27 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84BDD10A;
-        Fri, 26 May 2023 03:14:24 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685096062;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=l0JCLWaWxAiVqnK2HID86lF3S13SCfgrB4rF/jITy/I=;
-        b=ip+IsKji95mPrphWLVAUcdYl0y7pMoo/0rzxXxKZorc2i1ogyDwgLlmNAyb0qqipND//Q9
-        mcdcjSKoJ1BmMv2yfve0Ih3RShF4W067n1L36VQOlRFjew11DbOIHP9BY3hPEmKWEMkYtF
-        3++Mlj3E1pedAPDLuSJp8O8yrjmKl61cO3sikLlCo0aFQA4sDzjqIug5Y2sHJzxAouulen
-        yWchVZzHYCyYvLl2IBhaE7LhZZ90HvEDnnYiIPfmZVnM5oPDhrPgISY7m926weiwqHfWOw
-        VMBPX/ASMwnX6UaU0XNMhsxdic6Oppo5GnIK5pHcSkZVNuJmv/nyAhmosdGW7Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685096062;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=l0JCLWaWxAiVqnK2HID86lF3S13SCfgrB4rF/jITy/I=;
-        b=mQPEsm7iwifOjyLdaiqWmBusXWewAsMMsfF7/82drVMMawEZjza+eT9dmICykmFbK9zGX6
-        K4OvjM1+WRhVDmDw==
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv@lists.infradead.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [patch v3 31/36] x86/apic: Provide cpu_primary_thread mask
-In-Reply-To: <20230524204818.3tjlwah2euncxzmh@box.shutemov.name>
-References: <20230508181633.089804905@linutronix.de>
- <20230508185218.962208640@linutronix.de>
- <20230524204818.3tjlwah2euncxzmh@box.shutemov.name>
-Date:   Fri, 26 May 2023 12:14:21 +0200
-Message-ID: <87y1lbl7r6.ffs@tglx>
+        Fri, 26 May 2023 18:22:47 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1336D12A;
+        Fri, 26 May 2023 15:22:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=IzItOB3HiwfECPzC/ygFZaFi0mtHzGOxDJyi3k00e5g=; b=XhKaA/EFveChr6XSzEIIdk96Bd
+        N/LzOSqRdpRE7noKTonD+Npx3tdNYEMg39PuqpF/5A+X7Rw+T8IQtL1E5EPqgyiVX0Oi4e6kd75pq
+        U4hEQsQLOzOCu8bOewafR1MzBn2xWevyIAUl8L3vtHkl1jRfzAn8NZZGFDhr8vemSMCFa+BDB0Pt4
+        /Uy2Fv3S28wHZaRMri6FbXMzWNqC4Rpplr5I2Njcr1wFuI2AOrDufkOQedrb1dGfZHJl9mjP7u7A2
+        G5hlUz2qYXz+Uj9ZCPTx04v3CeLnTvYxH2HPb4GU9gyOs8xv1NMxN69hRutCYC51allOLJKCOcf00
+        j46705Ig==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1q2fp1-0047Uh-28;
+        Fri, 26 May 2023 22:22:07 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     keescook@chromium.org, yzaikin@google.com, ebiederm@xmission.com,
+        dave.hansen@intel.com, arnd@arndb.de, bp@alien8.de,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        tglx@linutronix.de, mingo@redhat.com, x86@kernel.org,
+        hpa@zytor.com, luto@kernel.org, peterz@infradead.org,
+        brgerst@gmail.com, christophe.jaillet@wanadoo.fr,
+        kirill.shutemov@linux.intel.com, jroedel@suse.de
+Cc:     j.granados@samsung.com, akpm@linux-foundation.org,
+        willy@infradead.org, linux-parisc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH v2 0/2] kernel/sysctl.c: remove to major base directories
+Date:   Fri, 26 May 2023 15:22:04 -0700
+Message-Id: <20230526222207.982107-1-mcgrof@kernel.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, May 24 2023 at 23:48, Kirill A. Shutemov wrote:
-> On Mon, May 08, 2023 at 09:44:17PM +0200, Thomas Gleixner wrote:
->>  #ifdef CONFIG_SMP
->> -/**
->> - * apic_id_is_primary_thread - Check whether APIC ID belongs to a primary thread
->> - * @apicid: APIC ID to check
->> - */
->> -bool apic_id_is_primary_thread(unsigned int apicid)
->> +static void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid)
->>  {
->> -	u32 mask;
->> -
->> -	if (smp_num_siblings == 1)
->> -		return true;
->>  	/* Isolate the SMT bit(s) in the APICID and check for 0 */
->> -	mask = (1U << (fls(smp_num_siblings) - 1)) - 1;
->> -	return !(apicid & mask);
->> +	u32 mask = (1U << (fls(smp_num_siblings) - 1)) - 1;
->> +
->> +	if (smp_num_siblings == 1 || !(apicid & mask))
->> +		cpumask_set_cpu(cpu, &__cpu_primary_thread_mask);
->>  }
->> +#else
->> +static inline void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid) { }
->>  #endif
->>  
->>  /*
->
-> This patch causes boot regression on TDX guest. The guest crashes on SMP
-> bring up.
+Changes on this v2:
 
-I rather call it a security feature: It makes TDX unbreakably secure.
+  o remove header changes to architecture code. If they were already
+    comiling this should not fail
 
-> The change makes use of smp_num_siblings earlier than before: the mask get
-> constructed in acpi_boot_init() codepath. Later on smp_num_siblings gets
-> updated in detect_ht().
->
-> In my setup with 16 vCPUs, smp_num_siblings is 16 before detect_ht() and
-> set to 1 in detect_ht().
+Now that Joel has cleaned up and removed one of the routines which we wanted
+to deprecate, remove two major arrays from kernel/sysctl.c which are empty or
+almost empty. One of them, the debug one just needs moving to its source, so
+do that.
+                                                                                                                                                                                              
+The move for the signal sysctl costs us 23 bytes but we have already saved
+1465 bytes with the other recent cleanup Joel made. The next step is to
+depreecate one more call and then we can simplify the registration to only
+use ARRAY_SIZE() completely and remove the extra empty entries all over.
+That should save us tons of bytes all around in the kernel and we'd then 
+later kill for good all recursion possible sysctl registration calls.
+                                                                                                                                                                                             
+These patches apply on top of sysctl-next [0] which already carry Joel's
+patches.                                                                                                             
+                                                                                                                                                                                              
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/log/?h=sysctl-next  
 
-  early_init_intel(c)
-    if (detect_extended_topology_early(c) < 0)
-       detect_ht_early(c);
+Luis Chamberlain (2):
+  sysctl: remove empty dev table
+  signal: move show_unhandled_signals sysctl to its own file
 
-  acpi_boot_init()
-    ....
+ kernel/signal.c | 23 +++++++++++++++++++++++
+ kernel/sysctl.c | 19 -------------------
+ 2 files changed, 23 insertions(+), 19 deletions(-)
 
-  identify_boot_cpu(c)
-    detect_ht(c);
-
-Aaargh. That whole CPU identification code is a complete horrorshow.
-
-I'll have a look....
-
+-- 
+2.39.2
 
