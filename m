@@ -2,159 +2,165 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EB9D712FF0
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 May 2023 00:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A55971350E
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 May 2023 15:40:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243077AbjEZWWr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 26 May 2023 18:22:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40812 "EHLO
+        id S232746AbjE0NkK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 27 May 2023 09:40:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237800AbjEZWWq (ORCPT
+        with ESMTP id S231872AbjE0NkK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 26 May 2023 18:22:46 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE3D5BB;
-        Fri, 26 May 2023 15:22:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=7I+m1g7na/yjhxthJGIYbRam59qypHh9f0/DcF7s0Gw=; b=dTUKjzHilPPj4bODYepSmnAgwc
-        w+I1BnJkTV6SLiZU1ESKgv3XJ/LpPQLmmg2i0wDMbTMVXOwuR3r6JPDkCIaaNtYDLfPRhYzZs/nvS
-        UQIVNecH2dRYmp28N3EtL/kAILDyt78RGKD+sSMi+aljzmL1YF4zBY6kyBh13xgIQmNYrU8r70EXi
-        uyJ/ku2pbhwvF5XZKjt8dSDHlAvO7F1TqOHEKw4uXgf2fesaLtoCtPHf2rF76DECaW2AW8tQmYNlQ
-        JMzsAQpbwWkUmiFxDcwqFH9mR4ukBp6tla30VYj1dFy2mTiWi5w65dnfLYYw9AQTb46ZL4ik1mikq
-        v2//tw0Q==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1q2fp1-0047Un-2S;
-        Fri, 26 May 2023 22:22:07 +0000
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     keescook@chromium.org, yzaikin@google.com, ebiederm@xmission.com,
-        dave.hansen@intel.com, arnd@arndb.de, bp@alien8.de,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        tglx@linutronix.de, mingo@redhat.com, x86@kernel.org,
-        hpa@zytor.com, luto@kernel.org, peterz@infradead.org,
-        brgerst@gmail.com, christophe.jaillet@wanadoo.fr,
-        kirill.shutemov@linux.intel.com, jroedel@suse.de
-Cc:     j.granados@samsung.com, akpm@linux-foundation.org,
-        willy@infradead.org, linux-parisc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH v2 2/2] signal: move show_unhandled_signals sysctl to its own file
-Date:   Fri, 26 May 2023 15:22:06 -0700
-Message-Id: <20230526222207.982107-3-mcgrof@kernel.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230526222207.982107-1-mcgrof@kernel.org>
-References: <20230526222207.982107-1-mcgrof@kernel.org>
+        Sat, 27 May 2023 09:40:10 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 471EEDE;
+        Sat, 27 May 2023 06:40:08 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1685194803;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=uhphG4bdKEhlSrLILx8LQHUnhtq5h2kh7PjylDw7WHk=;
+        b=c7tPQEf1tDSaswC+udb6n2rEFtodyCz+0hqKKRaloSAWHscsivpNExWbDw/lNzJYugWAC1
+        Jm29ndY/DVZdilpSdABXMmg7zcNPlf2ipCdzoFFpOsDlGdRTaa/cDp4VQIgvIIuUN9JR/Z
+        4wJQUUIDzQZJXqPtRi0VknCvN575jHF4GBgn5HyL1/e+ips0AysDA2DuVxTFjRXavrRMCR
+        ErEe1ocMuKOicQKxwfjXlIfBvhnKCrT8khka2tjtWb5cZaLE3ZEkUSF51OwhE4SNq1hAJg
+        OsmAHNMb9ZxT3Z/Q3tFuCRyz5jSjP+VvrhVlox0l3Z4ceASC3h0ieO88IF9MuA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1685194803;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=uhphG4bdKEhlSrLILx8LQHUnhtq5h2kh7PjylDw7WHk=;
+        b=IAhogYOgiDrfm9G9lFn3jmOMGU4kEEQCTcf6iURfWSFeMNN2CJaahVSnX2MzxuXmnO+mLX
+        zbrDN0kZP7Q4fvCA==
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Brian Gerst <brgerst@gmail.com>,
+        Arjan van de Veen <arjan@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul McKenney <paulmck@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Piotr Gorski <lucjan.lucjanov@gmail.com>,
+        Usama Arif <usama.arif@bytedance.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        xen-devel@lists.xenproject.org,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        linux-csky@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        linux-riscv@lists.infradead.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sabin Rapan <sabrapan@amazon.com>,
+        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [patch v3 31/36] x86/apic: Provide cpu_primary_thread mask
+In-Reply-To: <87y1lbl7r6.ffs@tglx>
+References: <20230508181633.089804905@linutronix.de>
+ <20230508185218.962208640@linutronix.de>
+ <20230524204818.3tjlwah2euncxzmh@box.shutemov.name> <87y1lbl7r6.ffs@tglx>
+Date:   Sat, 27 May 2023 15:40:02 +0200
+Message-ID: <87sfbhlwp9.ffs@tglx>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Luis Chamberlain <mcgrof@infradead.org>
-X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The show_unhandled_signals sysctl is the only sysctl for debug
-left on kernel/sysctl.c. We've been moving the syctls out from
-kernel/sysctl.c so to help avoid merge conflicts as the shared
-array gets out of hand.
+On Fri, May 26 2023 at 12:14, Thomas Gleixner wrote:
+> On Wed, May 24 2023 at 23:48, Kirill A. Shutemov wrote:
+>> This patch causes boot regression on TDX guest. The guest crashes on SMP
+>> bring up.
 
-This change incurs simplifies sysctl registration by localizing
-it where it should go for a penalty in size of increasing the
-kernel by 23 bytes, we accept this given recent cleanups have
-actually already saved us 1465 bytes in the prior commits.
+The below should fix that. Sigh...
 
-./scripts/bloat-o-meter vmlinux.3-remove-dev-table vmlinux.4-remove-debug-table
-add/remove: 3/1 grow/shrink: 0/1 up/down: 177/-154 (23)
-Function                                     old     new   delta
-signal_debug_table                             -     128    +128
-init_signal_sysctls                            -      33     +33
-__pfx_init_signal_sysctls                      -      16     +16
-sysctl_init_bases                             85      59     -26
-debug_table                                  128       -    -128
-Total: Before=21256967, After=21256990, chg +0.00%
+Thanks,
 
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+        tglx
+----
+Subject: x86/smp: Initialize cpu_primary_thread_mask late
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Fri, 26 May 2023 21:38:47 +0200
+
+Marking primary threads in the cpumask during early boot is only correct in
+certain configurations, but broken e.g. for the legacy hyperthreading
+detection.
+
+This is due to the complete mess in the CPUID evaluation code which
+initializes smp_num_siblings only half during early init and fixes it up
+later when identify_boot_cpu() is invoked.
+
+So using smp_num_siblings before identify_boot_cpu() leads to incorrect
+results.
+
+Fixing the early CPU init code to provide the proper data is a larger scale
+surgery as the code has dependencies on data structures which are not
+initialized during early boot.
+
+Move the initialization of cpu_primary_thread_mask wich depends on
+smp_num_siblings being correct to an early initcall so that it is set up
+correctly before SMP bringup.
+
+Fixes: f54d4434c281 ("x86/apic: Provide cpu_primary_thread mask")
+Reported-by: "Kirill A. Shutemov" <kirill@shutemov.name>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- kernel/signal.c | 23 +++++++++++++++++++++++
- kernel/sysctl.c | 14 --------------
- 2 files changed, 23 insertions(+), 14 deletions(-)
+ arch/x86/kernel/apic/apic.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 8f6330f0e9ca..5ba4150c01a7 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -45,6 +45,7 @@
- #include <linux/posix-timers.h>
- #include <linux/cgroup.h>
- #include <linux/audit.h>
-+#include <linux/sysctl.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/signal.h>
-@@ -4771,6 +4772,28 @@ static inline void siginfo_buildtime_checks(void)
- #endif
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -2398,6 +2398,21 @@ static void cpu_mark_primary_thread(unsi
+ 	if (smp_num_siblings == 1 || !(apicid & mask))
+ 		cpumask_set_cpu(cpu, &__cpu_primary_thread_mask);
  }
- 
-+#if defined(CONFIG_SYSCTL)
-+static struct ctl_table signal_debug_table[] = {
-+#ifdef CONFIG_SYSCTL_EXCEPTION_TRACE
-+	{
-+		.procname	= "exception-trace",
-+		.data		= &show_unhandled_signals,
-+		.maxlen		= sizeof(int),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec
-+	},
-+#endif
-+	{ }
-+};
 +
-+static int __init init_signal_sysctls(void)
++/*
++ * Due to the utter mess of CPUID evaluation smp_num_siblings is not valid
++ * during early boot. Initialize the primary thread mask before SMP
++ * bringup.
++ */
++static int __init smp_init_primary_thread_mask(void)
 +{
-+	register_sysctl_init("debug", signal_debug_table);
++	unsigned int cpu;
++
++	for (cpu = 0; cpu < nr_logical_cpuids; cpu++)
++		cpu_mark_primary_thread(cpu, cpuid_to_apicid[cpu]);
 +	return 0;
 +}
-+early_initcall(init_signal_sysctls);
-+#endif /* CONFIG_SYSCTL */
-+
- void __init signals_init(void)
- {
- 	siginfo_buildtime_checks();
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index a7fdb828afb6..43240955dcad 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -2331,24 +2331,10 @@ static struct ctl_table vm_table[] = {
- 	{ }
- };
++early_initcall(smp_init_primary_thread_mask);
+ #else
+ static inline void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid) { }
+ #endif
+@@ -2544,7 +2559,8 @@ int generic_processor_info(int apicid, i
+ 	set_cpu_present(cpu, true);
+ 	num_processors++;
  
--static struct ctl_table debug_table[] = {
--#ifdef CONFIG_SYSCTL_EXCEPTION_TRACE
--	{
--		.procname	= "exception-trace",
--		.data		= &show_unhandled_signals,
--		.maxlen		= sizeof(int),
--		.mode		= 0644,
--		.proc_handler	= proc_dointvec
--	},
--#endif
--	{ }
--};
--
- int __init sysctl_init_bases(void)
- {
- 	register_sysctl_init("kernel", kern_table);
- 	register_sysctl_init("vm", vm_table);
--	register_sysctl_init("debug", debug_table);
+-	cpu_mark_primary_thread(cpu, apicid);
++	if (system_state >= SYSTEM_BOOTING)
++		cpu_mark_primary_thread(cpu, apicid);
  
- 	return 0;
+ 	return cpu;
  }
--- 
-2.39.2
-
