@@ -2,44 +2,44 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B205713D9F
-	for <lists+linux-parisc@lfdr.de>; Sun, 28 May 2023 21:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4BE9713F9C
+	for <lists+linux-parisc@lfdr.de>; Sun, 28 May 2023 21:47:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230102AbjE1T1a (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 28 May 2023 15:27:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44268 "EHLO
+        id S231322AbjE1TrO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 28 May 2023 15:47:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230122AbjE1T10 (ORCPT
+        with ESMTP id S231326AbjE1TrN (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 28 May 2023 15:27:26 -0400
+        Sun, 28 May 2023 15:47:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCA1BB;
-        Sun, 28 May 2023 12:27:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45EE79C;
+        Sun, 28 May 2023 12:47:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AEAA61C5E;
-        Sun, 28 May 2023 19:27:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A3CC433D2;
-        Sun, 28 May 2023 19:27:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7B0A61FA4;
+        Sun, 28 May 2023 19:47:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F6FC433D2;
+        Sun, 28 May 2023 19:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302037;
-        bh=zat9A3bkxgnPlqSAEL/uUU/TRoUcHrfCv3PHsXPcp9Y=;
+        s=korg; t=1685303231;
+        bh=OhNtKccyYq3RM40OnqyRVr74Btf0s7uzQWI6Typ/TJs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vb5KpvZxjow6q5KagjY9Y5utXaQpj4AM0CGC3fD6DzR9o+xYzoCTF0b5uujIhgGhz
-         Rn6il2vWRqMBNBkdlYxnzTYAjQg8kIyUuym7Ai6JI8R8Gpk7GM4FsjaUTm7J7hBlsz
-         bFBfqWy8JjBTNQ9RummFA+UdvVLdPsEdekyld7fQ=
+        b=HtoUxyx50al9/C2AURVTUbDlDyoE81mUG0UayZisMaJkLf8hJHSVBfMsGX2ppaChJ
+         TZFB0fKSlHApw2uRla38XsHAWQUpg3A/JLgIPHOOIfmMRs0MJHJChtoEUgDKMCdxuR
+         +72M3ZXvufAq1Cicz+rB56BCwbpHhUSe4tnYTstA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, linux-parisc@vger.kernel.org,
         Helge Deller <deller@gmx.de>, stable@kernel.org
-Subject: [PATCH 5.4 136/161] parisc: Fix flush_dcache_page() for usage from irq context
-Date:   Sun, 28 May 2023 20:11:00 +0100
-Message-Id: <20230528190841.290607543@linuxfoundation.org>
+Subject: [PATCH 5.10 180/211] parisc: Fix flush_dcache_page() for usage from irq context
+Date:   Sun, 28 May 2023 20:11:41 +0100
+Message-Id: <20230528190847.966718240@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -92,7 +92,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	flush_kernel_dcache_page(page);			\
 --- a/arch/parisc/kernel/cache.c
 +++ b/arch/parisc/kernel/cache.c
-@@ -328,6 +328,7 @@ void flush_dcache_page(struct page *page
+@@ -327,6 +327,7 @@ void flush_dcache_page(struct page *page
  	struct vm_area_struct *mpnt;
  	unsigned long offset;
  	unsigned long addr, old_addr = 0;
@@ -100,7 +100,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	pgoff_t pgoff;
  
  	if (mapping && !mapping_mapped(mapping)) {
-@@ -347,7 +348,7 @@ void flush_dcache_page(struct page *page
+@@ -346,7 +347,7 @@ void flush_dcache_page(struct page *page
  	 * declared as MAP_PRIVATE or MAP_SHARED), so we only need
  	 * to flush one address here for them all to become coherent */
  
@@ -109,7 +109,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
  		offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
  		addr = mpnt->vm_start + offset;
-@@ -370,7 +371,7 @@ void flush_dcache_page(struct page *page
+@@ -369,7 +370,7 @@ void flush_dcache_page(struct page *page
  			old_addr = addr;
  		}
  	}
