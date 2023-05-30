@@ -2,119 +2,125 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC143716865
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 May 2023 18:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9426F7169EE
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 May 2023 18:42:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233096AbjE3QAw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 May 2023 12:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48132 "EHLO
+        id S230404AbjE3Qmf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 30 May 2023 12:42:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233089AbjE3QAu (ORCPT
+        with ESMTP id S230096AbjE3Qmf (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 May 2023 12:00:50 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B074B2;
-        Tue, 30 May 2023 09:00:49 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685462447;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=m93yS995VjAenJm1Tq30bXHcCehNtX8a6hAD3sks2W4=;
-        b=AfBAWRGV89Mc653n/xLqy7vteib+6M5/l2mZj+wR8AGKO3PMoCQnprQPz2JjGFxvFh3npR
-        75LwJDM0EE4g+P7BnJV6fDBo0D5A2wsMq2qcoO+Epgc1++GT/hm/IsyZQlfl88sd3wNdLj
-        HacEZyX2iikiKMUlVpHMaBRfI2+ABpbUurQzM9ir/bGUnTaJbVHwLys+6ejBpuK/Ql2gfK
-        8t5edlP2m1H7BWSDdUEp+QUPxhedXZYO6JcbMtV5DS0rwT2VI36zKlSE9ot+0iGtjPkQ+7
-        L4moXOZFPonmdPVRaj68CTj/NyhRRfgqXsWZ04Esn64uoqL2rtpo8bp2DKqCyA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685462447;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=m93yS995VjAenJm1Tq30bXHcCehNtX8a6hAD3sks2W4=;
-        b=kHOcw6J0QHtLvp0yEL0d0xC3npNrA5vZH/XdZXuEI3If84/jq/yLIElk56Kjr2Nz9yF9mV
-        nI3pJZIHdR0bsSDw==
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Tom Lendacky <thomas.lendacky@amd.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv@lists.infradead.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [patch] x86/smpboot: Disable parallel bootup if cc_vendor != NONE
-In-Reply-To: <20230530122951.2wu5rwcu26ofov6f@box.shutemov.name>
-References: <20230524204818.3tjlwah2euncxzmh@box.shutemov.name>
- <87y1lbl7r6.ffs@tglx> <87sfbhlwp9.ffs@tglx>
- <20230529023939.mc2akptpxcg3eh2f@box.shutemov.name> <87bki3kkfi.ffs@tglx>
- <20230529203129.sthnhzgds7ynddxd@box.shutemov.name>
- <20230530005428.jyrc2ezx5raohlrt@box.shutemov.name> <87mt1mjhk3.ffs@tglx>
- <87jzwqjeey.ffs@tglx> <87cz2ija1e.ffs@tglx>
- <20230530122951.2wu5rwcu26ofov6f@box.shutemov.name>
-Date:   Tue, 30 May 2023 18:00:46 +0200
-Message-ID: <87wn0pizbl.ffs@tglx>
+        Tue, 30 May 2023 12:42:35 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8E3798;
+        Tue, 30 May 2023 09:42:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+        bh=HkEq4u4fLQqPB9+Uc8LE0j+FzQ0s2Sx6MblZeP2TWf0=; b=KngQ/44PUjpXp8Yv1nIcHLhU0D
+        Prf0gH/CTO3tTP8+TyWljcFhPbZeWdpdBjc0uMjQYwEjuPZnPMvK2op/qN7E/EuV9Nn7zVxXWLw7D
+        yFuxjNtVjuQqKwchHCl3r6jewZYdpSpeXfoaFkVBH+dBM8Wau3tRgDdupj1ldSrNBqLsz0pGK+oel
+        DVgPLH8iV1lvaAyWGP6j8pvunRui6JQW/FWxp6vw2vaTMrER6MP21EhQ15HDSyLTyzmL2skbsCZBy
+        5mtGdfpAhjatcbQqmw/Am5vJrdIIRJy2z7cVvdFIo68HTivNGmtH+jybTmu2A5KbIBq48c4ltN55I
+        +2pgfO6w==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1q42Q8-00EbtC-1O;
+        Tue, 30 May 2023 16:42:04 +0000
+Date:   Tue, 30 May 2023 09:42:04 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Joel Granados <j.granados@samsung.com>
+Cc:     keescook@chromium.org, yzaikin@google.com, ebiederm@xmission.com,
+        dave.hansen@intel.com, arnd@arndb.de, bp@alien8.de,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        tglx@linutronix.de, mingo@redhat.com, x86@kernel.org,
+        hpa@zytor.com, luto@kernel.org, peterz@infradead.org,
+        brgerst@gmail.com, christophe.jaillet@wanadoo.fr,
+        kirill.shutemov@linux.intel.com, jroedel@suse.de,
+        akpm@linux-foundation.org, willy@infradead.org,
+        linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] sysctl: remove empty dev table
+Message-ID: <ZHYnXKb8g0zSJe7+@bombadil.infradead.org>
+References: <20230526222207.982107-1-mcgrof@kernel.org>
+ <CGME20230526222249eucas1p1d38aca6c5a5163bd6c48b3a56e2618b4@eucas1p1.samsung.com>
+ <20230526222207.982107-2-mcgrof@kernel.org>
+ <20230529200457.a42hwn7cq6np5ur4@localhost>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20230529200457.a42hwn7cq6np5ur4@localhost>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, May 30 2023 at 15:29, Kirill A. Shutemov wrote:
-> On Tue, May 30, 2023 at 02:09:17PM +0200, Thomas Gleixner wrote:
->> The decision to allow parallel bringup of secondary CPUs checks
->> CC_ATTR_GUEST_STATE_ENCRYPT to detect encrypted guests. Those cannot use
->> parallel bootup because accessing the local APIC is intercepted and raises
->> a #VC or #VE, which cannot be handled at that point.
->> 
->> The check works correctly, but only for AMD encrypted guests. TDX does not
->> set that flag.
->> 
->> Check for cc_vendor != CC_VENDOR_NONE instead. That might be overbroad, but
->> definitely works for both AMD and Intel.
->
-> It boots fine with TDX, but I think it is wrong. cc_get_vendor() will
-> report CC_VENDOR_AMD even on bare metal if SME is enabled. I don't think
-> we want it.
+On Mon, May 29, 2023 at 10:04:57PM +0200, Joel Granados wrote:
+> On Fri, May 26, 2023 at 03:22:05PM -0700, Luis Chamberlain wrote:
+> > Now that all the dev sysctls have been moved out we can remove the
+> > dev sysctl base directory. We don't need to create base directories,
+> > they are created for you as if using 'mkdir -p' with register_syctl()
+> > and register_sysctl_init(). For details refer to sysctl_mkdir_p()
+> > usage.
+> >=20
+> > We save 90 bytes with this changes:
+> >=20
+> > ./scripts/bloat-o-meter vmlinux.2.remove-sysctl-table vmlinux.3-remove-=
+dev-table
+> > add/remove: 0/1 grow/shrink: 0/1 up/down: 0/-90 (-90)
+> > Function                                     old     new   delta
+> > sysctl_init_bases                            111      85     -26
+> > dev_table                                     64       -     -64
+> > Total: Before=3D21257057, After=3D21256967, chg -0.00%
+> >=20
+> > Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+> > ---
+> >  kernel/sysctl.c | 5 -----
+> >  1 file changed, 5 deletions(-)
+> >=20
+> > diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+> > index fa2aa8bd32b6..a7fdb828afb6 100644
+> > --- a/kernel/sysctl.c
+> > +++ b/kernel/sysctl.c
+> > @@ -2344,16 +2344,11 @@ static struct ctl_table debug_table[] =3D {
+> >  	{ }
+> >  };
+> > =20
+> > -static struct ctl_table dev_table[] =3D {
+> > -	{ }
+> > -};
+> > -
+> >  int __init sysctl_init_bases(void)
+> >  {
+> >  	register_sysctl_init("kernel", kern_table);
+> >  	register_sysctl_init("vm", vm_table);
+> >  	register_sysctl_init("debug", debug_table);
+> > -	register_sysctl_init("dev", dev_table);
+> > =20
+> >  	return 0;
+> >  }
+> > --=20
+> > 2.39.2
+> >=20
+> LGTM.
 
-Right. Did not think about that.
+BTW, please use proper tags like Reviewed-by, and so on even if you use
+LGTM so that then if anyone uses things like b4 it can pick the tags for
+you.
 
-But the same way is CC_ATTR_GUEST_MEM_ENCRYPT overbroad for AMD. Only
-SEV-ES traps RDMSR if I'm understandig that maze correctly.
+> But why was dev there to begin with?
 
-Thanks,
+I will enhance the commit log to mention that, it was there because
+old APIs didn't create the directory for you, and now it is clear it
+is not needed. I checked ant he dev table was there since the beginning
+of sysctl.c on v2.5.0.
 
-        tglx
+  Luis
