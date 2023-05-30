@@ -2,124 +2,162 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B6CA7163CE
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 May 2023 16:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC0A7163F2
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 May 2023 16:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233130AbjE3OVc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 May 2023 10:21:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60586 "EHLO
+        id S231565AbjE3OZf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 30 May 2023 10:25:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233167AbjE3OVT (ORCPT
+        with ESMTP id S232341AbjE3OYo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 May 2023 10:21:19 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CC761A2;
-        Tue, 30 May 2023 07:20:03 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-64d18d772bdso5189454b3a.3;
-        Tue, 30 May 2023 07:20:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685456390; x=1688048390;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=+KFzTDLcAELo4/qAfwlsys8YbTJv+6TEu1EwszVUPXM=;
-        b=K6sXzcPZ9u3sVm6s05HsH7s2jLM6pRqQ3bkJsL62EAPyiFL5931sc34uFQ1NH7lGeP
-         5TBxzLPAp+giS79MiStXCSDGLFOV7yUajamStGzSwE/HmuP/xlPsPm3zp/5pURscHlqj
-         Pv1gd51G2QAbrenlXZzss7T36t4ZhZWXDbKexqc0alZn/2SEllmLkNlhUvlfHPIY9LPe
-         Krq5/pS06izA/JOGnzAzq2O4UCmNAThEoLN6smqPSGKVWtDuUGezZ++hX4oTNKQpiqHG
-         PwdPEsGV6AYXcahBCjvozuv+Xlo93EQsi6PlVOUxYPiudfVsMw8HK+j97d4CBXnCXUhq
-         TIzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685456390; x=1688048390;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+KFzTDLcAELo4/qAfwlsys8YbTJv+6TEu1EwszVUPXM=;
-        b=aTwKGGOg4LvTRkrPgjWaxSOW5S/+Gc0Bafzsm0F4J9aucNrx3zHFQd4bU9ZZrbVNA0
-         9ouHGRL4USZC+nit/2qidZ9BUb/3kkuHyfge0kMBatZ3kRppid5KGmHomfz8Dze6V5rs
-         nxNfJYKUMC4ahp/lJr4LhgI5u0H6Di4jYlGeevsyK9tUsqRn7hiZXnOXK2rEoNykJH7j
-         7UMrBlyfsTQzFAPfulfgQqfwLaKyD4lxOpRqB67zxWseC+bRyZLAw8J0qDo2dHZWPE4g
-         b7HZWTBhnn5tsPtwyr99Lf7IozVmD8IcCzYWsR0TqL4xsveSIJ5SMXKuoyT2AKwmh1KP
-         ktWw==
-X-Gm-Message-State: AC+VfDwO05cpF8has+V7iUU0qzWGu7CN3J/r1zwoYFY8gFI2DxyZExhA
-        OPGWHHCO3v/YIv1dCxe+j4IlHOJEeLE=
-X-Google-Smtp-Source: ACHHUZ4Oh+YH8nEpx1yXhToEkvXAvMyIljOPyb2fwCnMrXEr6SqNrXocFPEUJwDIU0ZB3L6XFWcYOg==
-X-Received: by 2002:a05:6a00:1389:b0:645:1081:98ec with SMTP id t9-20020a056a00138900b00645108198ecmr3286264pfg.13.1685456389855;
-        Tue, 30 May 2023 07:19:49 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c12-20020aa7880c000000b00646ebc77b1fsm1702962pfo.75.2023.05.30.07.19.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 07:19:49 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 30 May 2023 07:19:47 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Helge Deller <deller@gmx.de>
-Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH] parisc: Enable LOCKDEP support
-Message-ID: <1e406b76-77c2-4ffd-ba51-943f36416a6b@roeck-us.net>
+        Tue, 30 May 2023 10:24:44 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B2D1B8;
+        Tue, 30 May 2023 07:23:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=NWEmuGkLTCUa79jBEH3/UxEeJ1XI0nknDfWdtfSsgPs=; b=Ct+KeY0bR7Fd2pFV938dRGSXTb
+        +T51wSDRsfKeMuSei4YQEsU4Xi76eoiaYVk/lttEnZJBJ2NUxa0nAwt21F7XjN8xiXMXaKvYxsPjv
+        1JwrujAB4owDEhg+CCV3cNBdBGPbJO1CWCIJ3zo7ADAp/AyyICHpHTcJDGSsXcUaQJ2nQQY3rFLU9
+        SCt5AhrjoGTUAJR4EssZvVmoJZxXtj67WW2fm46MJfmTOgqrwkt1CaD0nt4+OU3de5LcfLLr02uIQ
+        paqW6ykLF99/+KF3EKEe2ruu40MWJIAj+6KGzGVrsLeK2a2sThWNiV/lisP1NFlavwALCeW8DS4eD
+        ytHa5ABQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1q40FD-006M99-Vy; Tue, 30 May 2023 14:22:42 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E4605300233;
+        Tue, 30 May 2023 16:22:32 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id A11CD2414735F; Tue, 30 May 2023 16:22:32 +0200 (CEST)
+Date:   Tue, 30 May 2023 16:22:32 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     torvalds@linux-foundation.org
+Cc:     corbet@lwn.net, will@kernel.org, boqun.feng@gmail.com,
+        mark.rutland@arm.com, catalin.marinas@arm.com, dennis@kernel.org,
+        tj@kernel.org, cl@linux.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, joro@8bytes.org, suravee.suthikulpanit@amd.com,
+        robin.murphy@arm.com, dwmw2@infradead.org,
+        baolu.lu@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
+        penberg@kernel.org, rientjes@google.com, iamjoonsoo.kim@lge.com,
+        Andrew Morton <akpm@linux-foundation.org>, vbabka@suse.cz,
+        roman.gushchin@linux.dev, 42.hyeyoo@gmail.com,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-s390@vger.kernel.org,
+        iommu@lists.linux.dev, linux-arch@vger.kernel.org,
+        linux-crypto@vger.kernel.org, sfr@canb.auug.org.au,
+        mpe@ellerman.id.au, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, linux-parisc@vger.kernel.org
+Subject: Re: [PATCH v3 08/11] slub: Replace cmpxchg_double()
+Message-ID: <20230530142232.GA200270@hirez.programming.kicks-ass.net>
+References: <20230515075659.118447996@infradead.org>
+ <20230515080554.453785148@infradead.org>
+ <20230524093246.GP83892@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20230524093246.GP83892@hirez.programming.kicks-ass.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Helge,
-
-On Tue, May 23, 2023 at 09:06:40AM +0200, Helge Deller wrote:
-> Cc: <stable@vger.kernel.org> # v6.0+
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> ---
->  arch/parisc/Kconfig | 4 ++++
->  1 file changed, 4 insertions(+)
+On Wed, May 24, 2023 at 11:32:47AM +0200, Peter Zijlstra wrote:
+> On Mon, May 15, 2023 at 09:57:07AM +0200, Peter Zijlstra wrote:
 > 
-> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-> index 466a25525364..967bde65dd0e 100644
-> --- a/arch/parisc/Kconfig
-> +++ b/arch/parisc/Kconfig
-> @@ -130,6 +130,10 @@ config PM
->  config STACKTRACE_SUPPORT
->  	def_bool y
->  
-> +config LOCKDEP_SUPPORT
-> +	bool
-> +	default y
-> +
->  config ISA_DMA_API
->  	bool
->  
+> > @@ -3008,6 +3029,22 @@ static inline bool pfmemalloc_match(stru
+> >  }
+> >  
+> >  #ifndef CONFIG_SLUB_TINY
+> > +static inline bool
+> > +__update_cpu_freelist_fast(struct kmem_cache *s,
+> > +			   void *freelist_old, void *freelist_new,
+> > +			   unsigned long tid)
+> > +{
+> > +#ifdef system_has_freelist_aba
+> > +	freelist_aba_t old = { .freelist = freelist_old, .counter = tid };
+> > +	freelist_aba_t new = { .freelist = freelist_new, .counter = next_tid(tid) };
+> > +
+> > +	return this_cpu_cmpxchg_freelist(s->cpu_slab->freelist_tid.full,
+> > +					 old.full, new.full) == old.full;
+> > +#else
+> > +	return false;
+> > +#endif
+> > +}
+> > +
+> >  /*
+> >   * Check the slab->freelist and either transfer the freelist to the
+> >   * per cpu freelist or deactivate the slab.
+> > @@ -3359,11 +3396,7 @@ static __always_inline void *__slab_allo
+> >  		 * against code executing on this cpu *not* from access by
+> >  		 * other cpus.
+> >  		 */
+> > -		if (unlikely(!this_cpu_cmpxchg_double(
+> > -				s->cpu_slab->freelist, s->cpu_slab->tid,
+> > -				object, tid,
+> > -				next_object, next_tid(tid)))) {
+> > -
+> > +		if (unlikely(!__update_cpu_freelist_fast(s, object, next_object, tid))) {
+> >  			note_cmpxchg_failure("slab_alloc", s, tid);
+> >  			goto redo;
+> >  		}
+> > @@ -3736,11 +3769,7 @@ static __always_inline void do_slab_free
+> >  
+> >  		set_freepointer(s, tail_obj, freelist);
+> >  
+> > -		if (unlikely(!this_cpu_cmpxchg_double(
+> > -				s->cpu_slab->freelist, s->cpu_slab->tid,
+> > -				freelist, tid,
+> > -				head, next_tid(tid)))) {
+> > -
+> > +		if (unlikely(!__update_cpu_freelist_fast(s, freelist, head, tid))) {
+> >  			note_cmpxchg_failure("slab_free", s, tid);
+> >  			goto redo;
+> >  		}
+> 
+> This isn't right; the this_cpu_cmpxchg_double() was unconditional and
+> relied on the local_irq_save() fallback when no native cmpxchg128 is
+> present.
 
-This patch results in a bunch of WARNING message with each parisc boot if
-CONFIG_PROVE_LOCKING and CONFIG_DEBUG_LOCKDEP are enabled.
+This means this_cpu_cmpxchg128 is expected to be present on all 64bit
+archs, except Mark just found out that HPPA doens't support __int128
+until gcc-11.
 
-WARNING: CPU: 0 PID: 0 at kernel/locking/lockdep.c:5545 check_flags+0x24c/0x274
-Backtrace:
- [<1026d44c>] lock_acquire+0xdc/0x388
- [<10e8c66c>] _raw_spin_lock_irqsave+0x64/0x98
- [<10e922dc>] down_trylock+0x20/0x58
- [<102768c8>] __down_trylock_console_sem+0x44/0x114
- [<1027b768>] vprintk_emit+0xa8/0x3dc
- [<1027bac4>] vprintk_default+0x28/0x38
- [<1027c574>] vprintk+0xa4/0xb4
- [<10e6c62c>] _printk+0x30/0x40
- [<10e37700>] report_bug+0x338/0x35c
- [<101c19fc>] handle_interruption+0x654/0x768
- [<101bb070>] intr_check_sig+0x0/0x38
+(I've been building using gcc-12.2)
 
-WARNING: CPU: 0 PID: 0 at kernel/context_tracking.c:367 ct_irq_enter+0x94/0xb0
-Backtrace:
- [<101f0c1c>] irq_enter+0x18/0x30
- [<101c2dec>] do_cpu_irq_mask+0x7c/0x388
- [<101bb064>] intr_return+0x0/0xc
+And because the cmpxchg128 fallback relies on '==' we can't trivally
+fudge that with a struct type either :/ Now, afaict it all magically
+works if I use:
 
-Is that going to be fixed, or should I disable CONFIG_PROVE_LOCKING
-for parisc in my testing ?
+#ifdef __SIZEOF_INT128__
+typedef __s128 s128
+typedef __u128 u128
+#else
+#if defined(CONFIG_PARISC) && defined(CONFIG_64BIT)
+typedef long double u128;
+#endif
+#endif
 
-Thanks,
-Guenter
+but that is *super* gross.
+
+The alternative is raising the minimum GCC for PARISC to gcc-11..
+
+Yet another alternative is using a struct type and an equality function,
+just for this.
+
+Anybody?
