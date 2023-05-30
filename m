@@ -2,113 +2,119 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1418671681E
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 May 2023 17:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC143716865
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 May 2023 18:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbjE3PyC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 May 2023 11:54:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40430 "EHLO
+        id S233096AbjE3QAw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 30 May 2023 12:00:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232176AbjE3Px7 (ORCPT
+        with ESMTP id S233089AbjE3QAu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 May 2023 11:53:59 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC17100
-        for <linux-parisc@vger.kernel.org>; Tue, 30 May 2023 08:53:42 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-53f70f5ef60so1838369a12.1
-        for <linux-parisc@vger.kernel.org>; Tue, 30 May 2023 08:53:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685462022; x=1688054022;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WNArju2Q8+Sr5dwcNQgGMkuM+vdAY/tBFjavnfU7aAs=;
-        b=m6P4SpRmIhLWilK2bwoWEMQsEWk/K6yhndm14R57q2fmXCIxmQD0hmLtubyT0ltNsD
-         5mzb/C0TgKgAvGKJRMLkGevN9ywiUjPUBVA17GMkjuXksQd7uKuMPAsayxRi957MlXgz
-         VF+5Lk9yteg1zp99/PHovVO1luQYBqZR1begl5GE6xnlUaOH7P8fp/y6TJyqCQrhfJOz
-         GmSLlBKjWMEbPAFAhBZaduYCAy/a7mb7dItIGo7O38cxcSSHJ3fi4GVHm5aPyFiNx0y7
-         0Ylcwe2+d6CvCscSCSmWp1hLDgSsGszHIHhs0OZ+Ti2EwuimZiT8yf6j1niWNwR5h9Dm
-         4p7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685462022; x=1688054022;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WNArju2Q8+Sr5dwcNQgGMkuM+vdAY/tBFjavnfU7aAs=;
-        b=UIGuMT0cPbtRtQ2kRfP0sb0GKBcoP3XTkLejQFbwxtdA6px1IVk5UMrxdfE0hSsTM6
-         iZrPwSwsPkl5moUZ2aDz7RHY+r1qUd/Oo2nPkgY1ZNIFjmTdBznvod2G7een+Lt7oT4I
-         7SN5yaFZ/S2765N0je2YE/rDhpMOcwZ0Ov0hQhC4+dqD2tL7l58pISbVKTC0X0r2wCgD
-         CEUz5SmjU8J14yA9bYu5sM5RI8GsxmJdSL7zP2r7/fhKHfpZZMhv3/OHKxz93WkXiwHp
-         9Xc1vjVfOaXSOJAa57R/K+6/yZUAQM9HH9HqDBJbe9kF7l7wYCqH9WM6rW/u59MVBZzx
-         CmHw==
-X-Gm-Message-State: AC+VfDy/E7gnEIzBpYIMn9iKYLq+ur6t7dxOST44Qk5tQ4dpzL2ZyFVD
-        d8Wbt5gwB6Ms/3E13n+n24ycyox971EnL3Vp2UY=
-X-Google-Smtp-Source: ACHHUZ7sn3ztVKnJjhBggbCbONyO+AsW8XNE2yHvSV08ahzB8uFM1wykgNjVYghRFNCNNXUNIoLTKjLnsrfc/pmUUYs=
-X-Received: by 2002:a17:90a:bf8c:b0:253:25c3:7a95 with SMTP id
- d12-20020a17090abf8c00b0025325c37a95mr11888507pjs.14.1685462021937; Tue, 30
- May 2023 08:53:41 -0700 (PDT)
+        Tue, 30 May 2023 12:00:50 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B074B2;
+        Tue, 30 May 2023 09:00:49 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1685462447;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=m93yS995VjAenJm1Tq30bXHcCehNtX8a6hAD3sks2W4=;
+        b=AfBAWRGV89Mc653n/xLqy7vteib+6M5/l2mZj+wR8AGKO3PMoCQnprQPz2JjGFxvFh3npR
+        75LwJDM0EE4g+P7BnJV6fDBo0D5A2wsMq2qcoO+Epgc1++GT/hm/IsyZQlfl88sd3wNdLj
+        HacEZyX2iikiKMUlVpHMaBRfI2+ABpbUurQzM9ir/bGUnTaJbVHwLys+6ejBpuK/Ql2gfK
+        8t5edlP2m1H7BWSDdUEp+QUPxhedXZYO6JcbMtV5DS0rwT2VI36zKlSE9ot+0iGtjPkQ+7
+        L4moXOZFPonmdPVRaj68CTj/NyhRRfgqXsWZ04Esn64uoqL2rtpo8bp2DKqCyA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1685462447;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=m93yS995VjAenJm1Tq30bXHcCehNtX8a6hAD3sks2W4=;
+        b=kHOcw6J0QHtLvp0yEL0d0xC3npNrA5vZH/XdZXuEI3If84/jq/yLIElk56Kjr2Nz9yF9mV
+        nI3pJZIHdR0bsSDw==
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Tom Lendacky <thomas.lendacky@amd.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Brian Gerst <brgerst@gmail.com>,
+        Arjan van de Veen <arjan@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul McKenney <paulmck@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Piotr Gorski <lucjan.lucjanov@gmail.com>,
+        Usama Arif <usama.arif@bytedance.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        xen-devel@lists.xenproject.org,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        linux-csky@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        linux-riscv@lists.infradead.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sabin Rapan <sabrapan@amazon.com>,
+        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [patch] x86/smpboot: Disable parallel bootup if cc_vendor != NONE
+In-Reply-To: <20230530122951.2wu5rwcu26ofov6f@box.shutemov.name>
+References: <20230524204818.3tjlwah2euncxzmh@box.shutemov.name>
+ <87y1lbl7r6.ffs@tglx> <87sfbhlwp9.ffs@tglx>
+ <20230529023939.mc2akptpxcg3eh2f@box.shutemov.name> <87bki3kkfi.ffs@tglx>
+ <20230529203129.sthnhzgds7ynddxd@box.shutemov.name>
+ <20230530005428.jyrc2ezx5raohlrt@box.shutemov.name> <87mt1mjhk3.ffs@tglx>
+ <87jzwqjeey.ffs@tglx> <87cz2ija1e.ffs@tglx>
+ <20230530122951.2wu5rwcu26ofov6f@box.shutemov.name>
+Date:   Tue, 30 May 2023 18:00:46 +0200
+Message-ID: <87wn0pizbl.ffs@tglx>
 MIME-Version: 1.0
-Received: by 2002:a05:7022:ba3:b0:65:5d1b:9a16 with HTTP; Tue, 30 May 2023
- 08:53:41 -0700 (PDT)
-Reply-To: jkirinec101@gmail.com
-From:   marine <jessicakirinec1@gmail.com>
-Date:   Tue, 30 May 2023 16:53:41 +0100
-Message-ID: <CACrLz9RUfqd1XDcU1qQ-MXYbKcZCtOrXa35uzso1LTdRbsO_FQ@mail.gmail.com>
-Subject: Hallo
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:532 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4998]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [jkirinec101[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [jessicakirinec1[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [jessicakirinec1[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hallo, es tut mir so leid, Ihre Privatsph=C3=A4re zu verletzen. Es hei=C3=
-=9Ft:
-=E2=80=9EEin Bild sagt mehr als tausend Worte, aber als ich Ihres sah, war =
-es
-mehr, als Worte erkl=C3=A4ren k=C3=B6nnten.=E2=80=9C Das charmante Profil i=
-st
-unwiderstehlich, obwohl es eine kleine pers=C3=B6nliche Nachricht ist, aber
-Ihr Aussehen verr=C3=A4t viel =C3=BCber eine nette Person ... Also musste i=
-ch
-der charmanten Person mit diesem tollen Profil eine Nachricht
-hinterlassen. Ich glaube, es ist die Neugier, die mich in einer
-solchen Zeit zu Ihnen f=C3=BChrt. Ich muss noch einmal sagen, dass es mir
-leid tut, wenn das Schreiben an Sie Ihrer moralischen Ethik
-widerspricht. Ich m=C3=B6chte dich einfach besser kennenlernen und ein
-Freund sein oder mehr. Ich hoffe, irgendwann von Ihnen zu h=C3=B6ren.
+On Tue, May 30 2023 at 15:29, Kirill A. Shutemov wrote:
+> On Tue, May 30, 2023 at 02:09:17PM +0200, Thomas Gleixner wrote:
+>> The decision to allow parallel bringup of secondary CPUs checks
+>> CC_ATTR_GUEST_STATE_ENCRYPT to detect encrypted guests. Those cannot use
+>> parallel bootup because accessing the local APIC is intercepted and raises
+>> a #VC or #VE, which cannot be handled at that point.
+>> 
+>> The check works correctly, but only for AMD encrypted guests. TDX does not
+>> set that flag.
+>> 
+>> Check for cc_vendor != CC_VENDOR_NONE instead. That might be overbroad, but
+>> definitely works for both AMD and Intel.
+>
+> It boots fine with TDX, but I think it is wrong. cc_get_vendor() will
+> report CC_VENDOR_AMD even on bare metal if SME is enabled. I don't think
+> we want it.
+
+Right. Did not think about that.
+
+But the same way is CC_ATTR_GUEST_MEM_ENCRYPT overbroad for AMD. Only
+SEV-ES traps RDMSR if I'm understandig that maze correctly.
+
+Thanks,
+
+        tglx
