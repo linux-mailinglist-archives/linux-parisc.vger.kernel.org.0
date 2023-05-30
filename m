@@ -2,135 +2,113 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48CEF7166E3
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 May 2023 17:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1418671681E
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 May 2023 17:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229999AbjE3PWE (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 30 May 2023 11:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52426 "EHLO
+        id S231787AbjE3PyC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 30 May 2023 11:54:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbjE3PWD (ORCPT
+        with ESMTP id S232176AbjE3Px7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 30 May 2023 11:22:03 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D67D7B0;
-        Tue, 30 May 2023 08:21:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1685460105; i=deller@gmx.de;
-        bh=vTIHiQonw99HwoGqxwwqwXaUuoEBzUMMXLvJyYETUjw=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=qXtWwxea1BNr1sWzLPP19hX6sXKn10d0d/FCP8BHD/aYrz9g5XYV5clElO7zt7aP9
-         mS4jeoUA7/KKpJpfjhbATBU0yEltR1vSu8boyJ2NfwYvM2e4Myskb9Kippl/pNgd0p
-         Z8xAeLeVebLcIO0Hh+/WTMTy9GMpxWpeVRJK5ft7k6kSNGQHLfZb6IdhoMtSp4sWJ/
-         SJI7720vAfr1a4x+nNpaLrkXs+qN/G2TiVyVwcBNI7/3oaJC4uAnv3gtyPXjFU2kM/
-         lollBfsYSCfGlBsPRReJd+IX2ujFfGmABd/BGuflpQ8POQ69f4Re6iyoR+mjgaAacV
-         /TeiGIJ+fwDqA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.145.122]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MStCe-1peHO3085O-00UH8w; Tue, 30
- May 2023 17:21:45 +0200
-Message-ID: <35c48a28-db5d-731f-b2c3-fb63e5274c3e@gmx.de>
-Date:   Tue, 30 May 2023 17:21:44 +0200
+        Tue, 30 May 2023 11:53:59 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC17100
+        for <linux-parisc@vger.kernel.org>; Tue, 30 May 2023 08:53:42 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-53f70f5ef60so1838369a12.1
+        for <linux-parisc@vger.kernel.org>; Tue, 30 May 2023 08:53:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685462022; x=1688054022;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WNArju2Q8+Sr5dwcNQgGMkuM+vdAY/tBFjavnfU7aAs=;
+        b=m6P4SpRmIhLWilK2bwoWEMQsEWk/K6yhndm14R57q2fmXCIxmQD0hmLtubyT0ltNsD
+         5mzb/C0TgKgAvGKJRMLkGevN9ywiUjPUBVA17GMkjuXksQd7uKuMPAsayxRi957MlXgz
+         VF+5Lk9yteg1zp99/PHovVO1luQYBqZR1begl5GE6xnlUaOH7P8fp/y6TJyqCQrhfJOz
+         GmSLlBKjWMEbPAFAhBZaduYCAy/a7mb7dItIGo7O38cxcSSHJ3fi4GVHm5aPyFiNx0y7
+         0Ylcwe2+d6CvCscSCSmWp1hLDgSsGszHIHhs0OZ+Ti2EwuimZiT8yf6j1niWNwR5h9Dm
+         4p7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685462022; x=1688054022;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WNArju2Q8+Sr5dwcNQgGMkuM+vdAY/tBFjavnfU7aAs=;
+        b=UIGuMT0cPbtRtQ2kRfP0sb0GKBcoP3XTkLejQFbwxtdA6px1IVk5UMrxdfE0hSsTM6
+         iZrPwSwsPkl5moUZ2aDz7RHY+r1qUd/Oo2nPkgY1ZNIFjmTdBznvod2G7een+Lt7oT4I
+         7SN5yaFZ/S2765N0je2YE/rDhpMOcwZ0Ov0hQhC4+dqD2tL7l58pISbVKTC0X0r2wCgD
+         CEUz5SmjU8J14yA9bYu5sM5RI8GsxmJdSL7zP2r7/fhKHfpZZMhv3/OHKxz93WkXiwHp
+         9Xc1vjVfOaXSOJAa57R/K+6/yZUAQM9HH9HqDBJbe9kF7l7wYCqH9WM6rW/u59MVBZzx
+         CmHw==
+X-Gm-Message-State: AC+VfDy/E7gnEIzBpYIMn9iKYLq+ur6t7dxOST44Qk5tQ4dpzL2ZyFVD
+        d8Wbt5gwB6Ms/3E13n+n24ycyox971EnL3Vp2UY=
+X-Google-Smtp-Source: ACHHUZ7sn3ztVKnJjhBggbCbONyO+AsW8XNE2yHvSV08ahzB8uFM1wykgNjVYghRFNCNNXUNIoLTKjLnsrfc/pmUUYs=
+X-Received: by 2002:a17:90a:bf8c:b0:253:25c3:7a95 with SMTP id
+ d12-20020a17090abf8c00b0025325c37a95mr11888507pjs.14.1685462021937; Tue, 30
+ May 2023 08:53:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] parisc: Enable LOCKDEP support
-Content-Language: en-US
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <1e406b76-77c2-4ffd-ba51-943f36416a6b@roeck-us.net>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <1e406b76-77c2-4ffd-ba51-943f36416a6b@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Received: by 2002:a05:7022:ba3:b0:65:5d1b:9a16 with HTTP; Tue, 30 May 2023
+ 08:53:41 -0700 (PDT)
+Reply-To: jkirinec101@gmail.com
+From:   marine <jessicakirinec1@gmail.com>
+Date:   Tue, 30 May 2023 16:53:41 +0100
+Message-ID: <CACrLz9RUfqd1XDcU1qQ-MXYbKcZCtOrXa35uzso1LTdRbsO_FQ@mail.gmail.com>
+Subject: Hallo
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cWCnI6OTSQI8LLk/nvjCwjwL3FcAM3drSFBthvX2ti3FRxAtO8P
- yws30pCYetS4pPPqOEatT5Q8oWH05nMuQVA+hzK6kqBjr0WfszKw2WbdYE+19F6UL391NFN
- PRHBo11AQfsW9TrWFF6ymo420fhld4zGty9GrsTS9kscREcFr2CPIYQA60c5+njVuXIB0XT
- DowoH5XqFWrUWqv/B/9Qg==
-UI-OutboundReport: notjunk:1;M01:P0:pGF1PEqkgIw=;IL53ncp8LsIIKIL2Tj7RUXyyE5E
- f0cho/9yxoNiLhWcWne/Vn+UWuDtRJYMY//8gjIKnLa30I6eEcCPSRfkZaDZW171X3QeCJ4ZL
- 7yudV3wRWSAhZ2KDTW4orM27L58JYN7piIe3XDgd4UXJpsczvPdKhigKxSrK9Poykh7KjOgrK
- W+8q8q96Od6c/gS4xD3ZK9e15a+Ve4QzzFuSd2d2SOLX4XmcKGcWcr4E13xPeviJQPygJSV2d
- K3+Ok4ttYjvOJwbaBZ6TWBf/UaVwD62xSXBNaqKjHb4oSipmjdbtDQ+Fd4GeXnYVkct3DIpCz
- gFGDDkHmxzXCoJe31To4xUVmJv4WMhUsFsdBIUo74jD9LpfTE0+jQyAHLKYWWc8VeVZUjyaO+
- qGoFYt/3cDePEIL+KFBBU4ZDycvUV0YQjjrdn5QkHDuByINfXTi9LAv1Yg6BFR0K8Tn60ukQe
- pgM5F7nm/S3mn3fTaOG4MN3OAfOlXEKnIwINiVg0Ap4PFu1Nm9yvB9TQ+blPJMM2jm9EH4KIm
- Yv5UMZOl+je6icFDf9r9FiWnlduXrSJapFkDOs5pFFa5uOSx3/u/v+DLL8XA0rEk6IogDVPoY
- Qrs2RIR/MMWIRo2hNyRtIAbepK81MQWRHKYj6Jqmc7QIZLGH7O9ou0uqRDciQZJXhznroviMw
- odzQ1cg92S55DWlLnDHsaYSfSKfq281EgvMPGmJy5uCqHoSitm/NwZ/nKaQO5K7o+BIOToLgM
- E5y/7HxGFHkSITLatgKg89v3ACbVF2TpKiCc5q7ica89fD/9yKIeYVv5HkXwieYFahjlNWOXW
- mr+x7wyYlZhb/DSw20tHjO79pv+UDVWJdzAaKY045ToiVrB5/Sfw/Bhp/BJLUxhiZpxz+f8rr
- Z/vva+guFNR0KTqQ0jTZJ65moNNgyawN6KluAg3uApyzjnr/yNpQiQpxhzOVV6B1qemuGWFWG
- ysq3dA==
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:532 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4998]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [jkirinec101[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [jessicakirinec1[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [jessicakirinec1[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/30/23 16:19, Guenter Roeck wrote:
-> Helge,
->
-> On Tue, May 23, 2023 at 09:06:40AM +0200, Helge Deller wrote:
->> Cc: <stable@vger.kernel.org> # v6.0+
->> Signed-off-by: Helge Deller <deller@gmx.de>
->> ---
->>   arch/parisc/Kconfig | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
->> index 466a25525364..967bde65dd0e 100644
->> --- a/arch/parisc/Kconfig
->> +++ b/arch/parisc/Kconfig
->> @@ -130,6 +130,10 @@ config PM
->>   config STACKTRACE_SUPPORT
->>   	def_bool y
->>
->> +config LOCKDEP_SUPPORT
->> +	bool
->> +	default y
->> +
->>   config ISA_DMA_API
->>   	bool
->>
->
-> This patch results in a bunch of WARNING message with each parisc boot i=
-f
-> CONFIG_PROVE_LOCKING and CONFIG_DEBUG_LOCKDEP are enabled.
->
-> WARNING: CPU: 0 PID: 0 at kernel/locking/lockdep.c:5545 check_flags+0x24=
-c/0x274
-> Backtrace:
->   [<1026d44c>] lock_acquire+0xdc/0x388
->   [<10e8c66c>] _raw_spin_lock_irqsave+0x64/0x98
->   [<10e922dc>] down_trylock+0x20/0x58
->   [<102768c8>] __down_trylock_console_sem+0x44/0x114
->   [<1027b768>] vprintk_emit+0xa8/0x3dc
->   [<1027bac4>] vprintk_default+0x28/0x38
->   [<1027c574>] vprintk+0xa4/0xb4
->   [<10e6c62c>] _printk+0x30/0x40
->   [<10e37700>] report_bug+0x338/0x35c
->   [<101c19fc>] handle_interruption+0x654/0x768
->   [<101bb070>] intr_check_sig+0x0/0x38
->
-> WARNING: CPU: 0 PID: 0 at kernel/context_tracking.c:367 ct_irq_enter+0x9=
-4/0xb0
-> Backtrace:
->   [<101f0c1c>] irq_enter+0x18/0x30
->   [<101c2dec>] do_cpu_irq_mask+0x7c/0x388
->   [<101bb064>] intr_return+0x0/0xc
->
-> Is that going to be fixed, or should I disable CONFIG_PROVE_LOCKING
-> for parisc in my testing ?
-
-They should be looked at and fixed over time. Right now please disable
-for now, as I personally won't have time to check as I'm leaving
-for vacation. You may send me your .config in private mail though, in
-case I find time.
-
-Helge
+Hallo, es tut mir so leid, Ihre Privatsph=C3=A4re zu verletzen. Es hei=C3=
+=9Ft:
+=E2=80=9EEin Bild sagt mehr als tausend Worte, aber als ich Ihres sah, war =
+es
+mehr, als Worte erkl=C3=A4ren k=C3=B6nnten.=E2=80=9C Das charmante Profil i=
+st
+unwiderstehlich, obwohl es eine kleine pers=C3=B6nliche Nachricht ist, aber
+Ihr Aussehen verr=C3=A4t viel =C3=BCber eine nette Person ... Also musste i=
+ch
+der charmanten Person mit diesem tollen Profil eine Nachricht
+hinterlassen. Ich glaube, es ist die Neugier, die mich in einer
+solchen Zeit zu Ihnen f=C3=BChrt. Ich muss noch einmal sagen, dass es mir
+leid tut, wenn das Schreiben an Sie Ihrer moralischen Ethik
+widerspricht. Ich m=C3=B6chte dich einfach besser kennenlernen und ein
+Freund sein oder mehr. Ich hoffe, irgendwann von Ihnen zu h=C3=B6ren.
