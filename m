@@ -2,161 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DDB8718451
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 May 2023 16:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66B677184C5
+	for <lists+linux-parisc@lfdr.de>; Wed, 31 May 2023 16:22:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237565AbjEaOK4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 31 May 2023 10:10:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51688 "EHLO
+        id S237240AbjEaOWx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 31 May 2023 10:22:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237567AbjEaOKf (ORCPT
+        with ESMTP id S237301AbjEaOWc (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 31 May 2023 10:10:35 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20627.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe5a::627])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D483D1987;
-        Wed, 31 May 2023 07:07:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m2BiljUrZZTfJBEcts5DmGB6ZjiptPo85N9xgBHJKUQdURejyS39JrMNDesCr9BufjhnmdticUpMACn41djJ0SNvY24fcuMJHggeISmaTiglgGCYOP8TiYkt1DY1T9QU/kYMR9snaoJjeREIr+3j4N6s4+C4Oy28gDSekttxF1XHO1raoJPCwgzlXP2i/MSsZvEprMx0Y2QmTcvtIu5XwQeUMax+b63H8UUDogi3Vr+47psZ0xusTDoX2zczAfjWdl866ic89Z+mn4UpoT8amFZaEZpmcjT1nkkWlNntoTAYjl+2/b9IDLkCCslwEyjfVJlBm76dTr4Pi8b/2LeRnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qtxROaJ2cZo1BV7fUmgud+j50U5EMZBzNTbpu4eKHKs=;
- b=boFmLhoOfD70+Cj0gkM7arlaF9/Ga/CEVomnbo6NpOezlE46R0jxdqzzwjTZOP3SRtsjemABK2DSuvVfkoHltIYy6hDmeZ60z8GvjMmZuFkz1CaHw894f4mHQO5JgrHFEZjPFKVplvVvHWUlTf4h8vCt9xckkR2RxyuWbDjdI5fJk4jEn3vEXEyUdzyRS/bGDpDx5PZxbczp0rfaboouzW36WYvBD/R4wg02kF1y4pmyo4ONrSg4Yl5fC1V2h/kVLu5OK6NUYoGOlTJ6GIWgtryGv6rCtc+gP9ZwRKOUOsyzyZCupLVwpNs4QeQuplP/Of3lkHhFBn5LdNvhK6zA7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qtxROaJ2cZo1BV7fUmgud+j50U5EMZBzNTbpu4eKHKs=;
- b=ns+3+TgGYV217fh/mknzE28XO0h8YNhAsk9S+KcdDqzGhF08unZOBnIYwEjkrQX0p2fgNu9Q07+fN+3Z79qLSPm4g2ElW8+Zw6Dt1u9wpuunWzVd14nXtxctA9iQgo5P90NNryrUE9vqRj4+7jHXcNla96BLuyl6V+VzEHGqWtw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by CH3PR12MB9171.namprd12.prod.outlook.com (2603:10b6:610:1a2::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.22; Wed, 31 May
- 2023 13:58:48 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::61f6:a95e:c41e:bb25]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::61f6:a95e:c41e:bb25%3]) with mapi id 15.20.6455.020; Wed, 31 May 2023
- 13:58:48 +0000
-Message-ID: <c4e8d060-deb5-bce9-cb65-cd0dc9ed7735@amd.com>
-Date:   Wed, 31 May 2023 08:58:43 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [patch] x86/smpboot: Fix the parallel bringup decision
-Content-Language: en-US
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Sean Christopherson <seanjc@google.com>
-Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
-        LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Arjan van de Veen <arjan@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Paul McKenney <paulmck@kernel.org>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Piotr Gorski <lucjan.lucjanov@gmail.com>,
-        Usama Arif <usama.arif@bytedance.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv@lists.infradead.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sabin Rapan <sabrapan@amazon.com>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-References: <87sfbhlwp9.ffs@tglx>
- <20230529023939.mc2akptpxcg3eh2f@box.shutemov.name> <87bki3kkfi.ffs@tglx>
- <20230529203129.sthnhzgds7ynddxd@box.shutemov.name>
- <20230530005428.jyrc2ezx5raohlrt@box.shutemov.name> <87mt1mjhk3.ffs@tglx>
- <87jzwqjeey.ffs@tglx> <87cz2ija1e.ffs@tglx>
- <20230530122951.2wu5rwcu26ofov6f@box.shutemov.name> <87wn0pizbl.ffs@tglx>
- <ZHYqwsCURnrFdsVm@google.com> <87leh5iom8.ffs@tglx>
- <8751e955-e975-c6d4-630c-02912b9ef9da@amd.com> <871qiximen.ffs@tglx>
- <b6323987-059e-5396-20b9-8b6a1687e289@amd.com> <87ilc9gd2d.ffs@tglx>
-From:   Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <87ilc9gd2d.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR08CA0033.namprd08.prod.outlook.com
- (2603:10b6:805:66::46) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|CH3PR12MB9171:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e9cb5d1-b8b6-422e-33eb-08db61df2755
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fzAmz9SFY2eJh6vMKmZxjFl0l64ppKu3/HM7wuk9+Rgg4pPEP1A8sYGCrSE6+jBmzowRfVDiClRSxCiYLN/cdMAGsCT0s6X+08EPYRm6bETMwmfYT4amLYITyeb0wpxgwBiLILYk+FMBkfeF8gb+OowQ91NNqiaXNscwPt3u9beogaKyxu5WXPJe0dWCKRNc5hHWZc3TnHWqpkeeyEWKx2v6CdRxagfTp7xtRdCxAiHo8LolmWL9E7G/WY5GiLszoEszQH+Wfh2bg9F4kqFDYQdqpcTpRAooePWwBni5ce/0YbXNYTjf2ozVQo/x+efpjaSd+8CAvt1kOYQz8oEwob8JAXc8Ro7c/pTKcVGZZI3mXPv8Ed4oWUzUCKu8/Duu/voPeQL3ydtE3aFg2IxdCIwWpVSCQ6Du/L1oM9uVAKbC7iICVq5H6nZuALVyBqQrJQHRcyKNhbmWiSnrVDK6C2REIUfsDLBv6+C3AlQ94v5+pK4wiWJrm7tIVTSivagLb3qIiXNZYK6Nd7VL2lgSrUtZWtvMllAAqkqVIuuKJCcteqqjqxBDjFAJ0xxCZCdQZoR/aVddFQsuSMjo9PRSU115U1lJnUjyiju0BMlRw9/H1Hhq7kQQ+IDQbFQizQxnPKIZa/U5RsrjeTbvZtOeXA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(376002)(396003)(346002)(136003)(39860400002)(451199021)(6486002)(6666004)(478600001)(186003)(36756003)(53546011)(26005)(6506007)(6512007)(83380400001)(2616005)(38100700002)(86362001)(31696002)(4326008)(316002)(66556008)(66476007)(66946007)(41300700001)(2906002)(7406005)(7416002)(31686004)(5660300002)(110136005)(8936002)(8676002)(54906003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TGNoenZtcWtSa0Fnd3R6U3ExQkRaNzF5LzRFeCs5aFllTy9rUmVNRVJRbG5G?=
- =?utf-8?B?VG41TGlhd2hDNDB5OWNXVE9WTGFwVTNJaVp4NmJXTGZwMnhmV1VpeG9vR1VZ?=
- =?utf-8?B?RXVvMkNDRHZkNUFvelJzZ1ZlYmZaM2dsbzZVb3gwK2toNDF1NEh2UFRRQ0lm?=
- =?utf-8?B?TFZvWUFUU1FlNC93U2hWUVdvNjZpdENqYmxjZW41NGFqSFpWQ0NyME5relNN?=
- =?utf-8?B?RVpPbmh6M215V2FRNUk5c2EyTE9RcUZpUE5tSkowaElPTkxQcHNQZ0d1Zjg5?=
- =?utf-8?B?S2VXRmloYlVheFg2aVVkeXIrNGNnbjRlUFdibDZiUVFweGFjRU1uYVk5eFBO?=
- =?utf-8?B?SUdJakVsb0wyK2VGVFhicDgwRWRKa2tjUUZlSmRKQm9GTjhHSm0zOWhtNDZP?=
- =?utf-8?B?eEdLdXdKNVB4RU42dEhLOGJ4dmZaaDZZR3ZSbjhyU2lUNXBhSkVCMGlGM3d3?=
- =?utf-8?B?anpwTkJ5ZkVocWV1RVQ3a2xtMyt1eS9RZ2ZnR2xoWTJZWTMvMW1EUkJmVGdw?=
- =?utf-8?B?UGxXVjlKKzdjVHUzZ3VHTTdpYXFqMmt3ZXlDaUVBczIvSkMzRDJBWUNBTDE0?=
- =?utf-8?B?dWVaZGRwcmhad0VJUXJzZ29WaWhhTkhwdFdVakVLZ0ZvUmNIOU1pNmJ3aStC?=
- =?utf-8?B?Y3NyRU9sUXN1TnhDbWpBUXBnUkhiSWdGUXBucEUzdkhROGliTnlzZ3ZHQnNS?=
- =?utf-8?B?cEhrR0lyV2QydmczVkd2UzY5VmFkMjhKbFVlS1pFaS91TmNORkFrZ1g3MDlm?=
- =?utf-8?B?cWVZbVVGK053dDhLVTZVbVJwUFVOQnlHOXJxZHRyQ2lhTnh1REpzU2pqWUpz?=
- =?utf-8?B?bUZQQkNRRnpucjVuZE4wS1phM09IejlUVllrcUFrckRVMG11RjBSTVhMZmsv?=
- =?utf-8?B?RjJMbHhYY0ZRMldpeXREZEo3Tm5zWjhYZjlmTGZKNXNkOTFmUkpoYm03Ykxh?=
- =?utf-8?B?aXN1U3BWQnhJd09CZEkxNDlQZTB1ZW5TSElaaCtPVk80T0tiUktEY2gxbXUw?=
- =?utf-8?B?ZVMrSm9DRWFjSE9xeG5nZk1XVHplUjRtU1lkaUhPSGtCUEpwY1BRcXdYRTJ5?=
- =?utf-8?B?V3kvZXdmRG5lZTI4V0hjd1lzMTJZbUxWa3lRSGpnbnNsNXhncFVnRnJrSnRk?=
- =?utf-8?B?VC9LUW9Pb0NyTW1ZNWtVS1JNRnJRWkFiZUhKenBIQXJvQVB5SGpYWUlOckR6?=
- =?utf-8?B?aVFOV2N5ek84RVphNXI2aTU2MFZRL2p6QUpjSG1iajM2RjFPcHlSdktsRjN5?=
- =?utf-8?B?azlndWkreDlFUkpkSFZaWlp3UlFFOWhYV1l2ZUpUR24vMUlPb2tOZ01HUU40?=
- =?utf-8?B?akptYjh2RkRBOXVKazU5dWpIM1lTTjRmU1lPUG9jcmpWdVpKbitiMG1PY3Ir?=
- =?utf-8?B?TzFMWExnS2tJT3dBdk5xN0YzMjVSd3VNdGx2VnVuS2lhM0IzdkpSWkhib2VI?=
- =?utf-8?B?cUFpcDBXK3pNY0NEd0tLeTQ5SmJRcU5JeHR4WjNxT1RhaUZib3JzZ3FQdGtv?=
- =?utf-8?B?Wis4VUVCVTlIOStqRUxna1JtcVplMTRHZm9PeU0yRmI1OHY0cDR6Vk9OSXpE?=
- =?utf-8?B?U0FlcE5yWHpabEtnSVRhRHJuMUF5RTlVMXJaazBZS081SjVKb0hxWVkrVjNa?=
- =?utf-8?B?KzRYcFV3aHoxMnM3WUtYb0ticTM1UVM1SGFwQVN3M2N1S1pkMzZCQXU3Wmpu?=
- =?utf-8?B?V3E0V0paZmxRd2dWa05xOEZWVDMzUGJDOXZ6ZjNIdnFmQzBranY2VWU1bnZU?=
- =?utf-8?B?cVA3d0NxQVZLU0tRUEMzbzArQUxXL0UyWlFldnArTktmRi9iYmVwdjB5ZENR?=
- =?utf-8?B?QWlaWDVFbEFNekhZWVBJcE9XZER2VmpudUR5UkQ3VkdFeEJHdk5CbTdDbFRL?=
- =?utf-8?B?L0VKMFh1b05ObkRqNWNvYUpxN1V5SkZPSVhFN2Z0bzVXeDRsUXVqcmJsNWk3?=
- =?utf-8?B?K0ZHWlZOUVRtdStHOFJBMDhSUGU1VUdnZ1FWQURRM09ocVJKNXFMRVBlUk1J?=
- =?utf-8?B?dWpXSmFEaWRqYnBkbkp6d0J6d0VrRzRobzBWQnpoTGJOQ1VxYndYYWNsRlNx?=
- =?utf-8?B?ZHJhbmExVFNoVXhJUEhqUlpZYUswMjd2dTB3MDlhV25OWDdnQUlnMUlGTHdY?=
- =?utf-8?Q?N80BHVCoJMzH+lm69lWrGA3GD?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e9cb5d1-b8b6-422e-33eb-08db61df2755
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2023 13:58:47.9896
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 88Y4Jy7srjnspesxLBMjsqFOTBNL9rgFVHeVNC0hsaZzxgwsRjwVWWFOSAH8I9y4LORY8ikBNHMwAi2nZedIMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9171
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        Wed, 31 May 2023 10:22:32 -0400
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE2EE51;
+        Wed, 31 May 2023 07:21:49 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 44D65580177;
+        Wed, 31 May 2023 10:21:45 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Wed, 31 May 2023 10:21:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1685542905; x=1685550105; bh=EB
+        qVSuczL8zsM7Z+quPoEDfVsyxlfcBd6Pp556uYrbw=; b=OzFEpTKSe5S3pZEmFP
+        KK1uM3LsgMCSyqEpKXgp8mQacr9rZEDCmrd2k8BVEDg3tEc7xY/t0qJaQdSDGOT2
+        bU9zqMXGeLUQtd2ZGrrNxWGkpEIaVxk071lBAmfAeMQCHDxFTt1RXc0tTa+8BNvc
+        dHGAYyoqxLWEz0DRWsqrZCl7jyQXG+IYTwZfBGL3jP6UuAq+xC/o+0owjbxmZ2CX
+        jKHn0znJCe5sFHF0XfK674YIkVcUuVTivSqn6lMR/WSjKrRbWWAoJGIngDeXfeY4
+        rj3t8KhnnMw/ULtpMFDj7NVn9Ce9QDTK6Kw9M2KCXxWhhGFtgzM636rI9Ixm3L54
+        I9vA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1685542905; x=1685550105; bh=EBqVSuczL8zsM
+        7Z+quPoEDfVsyxlfcBd6Pp556uYrbw=; b=oHsmrYj795DmAa232WElXIyigX6QS
+        0lEvQFY80QEb+Xv0tRxVq8oUZFcRlC2iXWMf6A9EQv2H5cUZwOYXI3ksFh0MS95T
+        a/00JTDEw8+IydUghKJpXfKrc3inW8q2ucI7PDOEPvDnPWUUJno8vH4RJtk3SbTY
+        Xo+OOCRlKmOMcOOakCRfPh4R5icttoicQwN5NjWzxihP8oZl/jY89WgumqrZIZXm
+        4AoaMaI7N608rPOsEyznGm2POVWr2Onut7ICia06/ESVNpGopI564yXoSbydFLpg
+        hbe4TBBj3hxrtKP7i4wcLhqKNVYnyN+0hkR0iUv05alMTrQZU5p/u+1Vw==
+X-ME-Sender: <xms:91d3ZBqipQsTqKHY6NRTD4pyQkRXLNRO_yNlvk1OpXfTPQ31eLUkEA>
+    <xme:91d3ZDp9FwkAkFZcsZEtPeT3CVkRHmUMy4T3RxqVKzTCMhojIEgOsZyV2jdVmH5Ey
+    jaX7xNsSz1_QTWZOGA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekledgjeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:91d3ZOPFWq78uKB_gUsNnnF0OeIzGpfUdYgHxMmkoms0hJmzyG_XXA>
+    <xmx:91d3ZM6fl1ZFbJDMuACkoSnRzDO_6enBMAgadt8Tx1-uTxmtBRgJMQ>
+    <xmx:91d3ZA7jTUqIpcQxCcujApE4FZxs0WEfQdlu7IS1-X3dmHdmqcfy7g>
+    <xmx:-Vd3ZFWRn8mhzfxV02UCF_CEnRSQ6iF8oeqZ00eFXYcYhyAZq5xkxQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 0E183B60086; Wed, 31 May 2023 10:21:42 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-447-ge2460e13b3-fm-20230525.001-ge2460e13
+Mime-Version: 1.0
+Message-Id: <70a69deb-7ad4-45b2-8e13-34955594a7ce@app.fastmail.com>
+In-Reply-To: <20230531132323.722039569@infradead.org>
+References: <20230531130833.635651916@infradead.org>
+ <20230531132323.722039569@infradead.org>
+Date:   Wed, 31 May 2023 16:21:22 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Peter Zijlstra" <peterz@infradead.org>,
+        "Linus Torvalds" <torvalds@linux-foundation.org>
+Cc:     "Jonathan Corbet" <corbet@lwn.net>,
+        "Will Deacon" <will@kernel.org>,
+        "Boqun Feng" <boqun.feng@gmail.com>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        "Catalin Marinas" <catalin.marinas@arm.com>, dennis@kernel.org,
+        "Tejun Heo" <tj@kernel.org>, "Christoph Lameter" <cl@linux.com>,
+        "Heiko Carstens" <hca@linux.ibm.com>, gor@linux.ibm.com,
+        "Alexander Gordeev" <agordeev@linux.ibm.com>,
+        borntraeger@linux.ibm.com, "Sven Schnelle" <svens@linux.ibm.com>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel" <joro@8bytes.org>,
+        suravee.suthikulpanit@amd.com,
+        "Robin Murphy" <robin.murphy@arm.com>,
+        "David Woodhouse" <dwmw2@infradead.org>,
+        "Baolu Lu" <baolu.lu@linux.intel.com>,
+        "Herbert Xu" <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Pekka Enberg" <penberg@kernel.org>,
+        "David Rientjes" <rientjes@google.com>,
+        "Joonsoo Kim" <iamjoonsoo.kim@lge.com>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        "Vlastimil Babka" <vbabka@suse.cz>,
+        "Roman Gushchin" <roman.gushchin@linux.dev>,
+        "Hyeonggon Yoo" <42.hyeyoo@gmail.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-s390@vger.kernel.org, iommu@lists.linux.dev,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        linux-crypto@vger.kernel.org,
+        "Stephen Rothwell" <sfr@canb.auug.org.au>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "Helge Deller" <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: Re: [PATCH 07/12] percpu: #ifndef __SIZEOF_INT128__
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -164,130 +118,45 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/31/23 02:44, Thomas Gleixner wrote:
-> The decision to allow parallel bringup of secondary CPUs checks
-> CC_ATTR_GUEST_STATE_ENCRYPT to detect encrypted guests. Those cannot use
-> parallel bootup because accessing the local APIC is intercepted and raises
-> a #VC or #VE, which cannot be handled at that point.
-> 
-> The check works correctly, but only for AMD encrypted guests. TDX does not
-> set that flag.
-> 
-> As there is no real connection between CC attributes and the inability to
-> support parallel bringup, replace this with a generic control flag in
-> x86_cpuinit and let SEV-ES and TDX init code disable it.
-> 
-> Fixes: 0c7ffa32dbd6 ("x86/smpboot/64: Implement arch_cpuhp_init_parallel_bringup() and enable it")
-> Reported-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+On Wed, May 31, 2023, at 15:08, Peter Zijlstra wrote:
+> Some 64bit architectures do not advertise __SIZEOF_INT128__ on all
+> supported compiler versions. Notably the HPPA64 only started doing
+> with GCC-11.
 
-Still works for SEV-ES/SEV-SNP with parallel boot properly disabled.
+I checked the other compilers to be sure that anything else
+we support (gcc-5.1 and up) across all 64-bit architectures
+does support int128.
 
-Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
+It would be nice to have the hack more localized to parisc
+and guarded with a CONFIG_GCC_VERSION check so we can kill
+it off in the future, once we drop either gcc-10 or parisc
+support.
 
-> ---
->   arch/x86/coco/tdx/tdx.c         |   11 +++++++++++
->   arch/x86/include/asm/x86_init.h |    3 +++
->   arch/x86/kernel/smpboot.c       |   19 ++-----------------
->   arch/x86/kernel/x86_init.c      |    1 +
->   arch/x86/mm/mem_encrypt_amd.c   |   15 +++++++++++++++
->   5 files changed, 32 insertions(+), 17 deletions(-)
-> 
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -871,5 +871,16 @@ void __init tdx_early_init(void)
->   	x86_platform.guest.enc_tlb_flush_required   = tdx_tlb_flush_required;
->   	x86_platform.guest.enc_status_change_finish = tdx_enc_status_changed;
->   
-> +	/*
-> +	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
-> +	 * bringup low level code. That raises #VE which cannot be handled
-> +	 * there.
-> +	 *
-> +	 * Intel-TDX has a secure RDMSR hypercall, but that needs to be
-> +	 * implemented seperately in the low level startup ASM code.
-> +	 * Until that is in place, disable parallel bringup for TDX.
-> +	 */
-> +	x86_cpuinit.parallel_bringup = false;
+> +#ifndef __SIZEOF_INT128__
+> +#define raw_cpu_generic_try_cmpxchg_memcmp(pcp, ovalp, nval)		\
+> +({									\
+> +	typeof(pcp) *__p = raw_cpu_ptr(&(pcp));				\
+> +	typeof(pcp) __val = *__p, __old = *(ovalp);			\
+> +	bool __ret;							\
+> +	if (!__builtin_memcmp(&__val, &__old, sizeof(pcp))) {		\
+> +		*__p = nval;						\
+> +		__ret = true;						\
+> +	} else {							\
+> +		*(ovalp) = __val;					\
+> +		__ret = false;						\
+> +	}								\
+> +	__ret;								\
+> +})
 > +
->   	pr_info("Guest detected\n");
->   }
-> --- a/arch/x86/include/asm/x86_init.h
-> +++ b/arch/x86/include/asm/x86_init.h
-> @@ -177,11 +177,14 @@ struct x86_init_ops {
->    * struct x86_cpuinit_ops - platform specific cpu hotplug setups
->    * @setup_percpu_clockev:	set up the per cpu clock event device
->    * @early_percpu_clock_init:	early init of the per cpu clock event device
-> + * @fixup_cpu_id:		fixup function for cpuinfo_x86::phys_proc_id
-> + * @parallel_bringup:		Parallel bringup control
->    */
->   struct x86_cpuinit_ops {
->   	void (*setup_percpu_clockev)(void);
->   	void (*early_percpu_clock_init)(void);
->   	void (*fixup_cpu_id)(struct cpuinfo_x86 *c, int node);
-> +	bool parallel_bringup;
->   };
->   
->   struct timespec64;
-> --- a/arch/x86/kernel/smpboot.c
-> +++ b/arch/x86/kernel/smpboot.c
-> @@ -1267,23 +1267,8 @@ void __init smp_prepare_cpus_common(void
->   /* Establish whether parallel bringup can be supported. */
->   bool __init arch_cpuhp_init_parallel_bringup(void)
->   {
-> -	/*
-> -	 * Encrypted guests require special handling. They enforce X2APIC
-> -	 * mode but the RDMSR to read the APIC ID is intercepted and raises
-> -	 * #VC or #VE which cannot be handled in the early startup code.
-> -	 *
-> -	 * AMD-SEV does not provide a RDMSR GHCB protocol so the early
-> -	 * startup code cannot directly communicate with the secure
-> -	 * firmware. The alternative solution to retrieve the APIC ID via
-> -	 * CPUID(0xb), which is covered by the GHCB protocol, is not viable
-> -	 * either because there is no enforcement of the CPUID(0xb)
-> -	 * provided "initial" APIC ID to be the same as the real APIC ID.
-> -	 *
-> -	 * Intel-TDX has a secure RDMSR hypercall, but that needs to be
-> -	 * implemented seperately in the low level startup ASM code.
-> -	 */
-> -	if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT)) {
-> -		pr_info("Parallel CPU startup disabled due to guest state encryption\n");
-> +	if (!x86_cpuinit.parallel_bringup) {
-> +		pr_info("Parallel CPU startup disabled by the platform\n");
->   		return false;
->   	}
->   
-> --- a/arch/x86/kernel/x86_init.c
-> +++ b/arch/x86/kernel/x86_init.c
-> @@ -126,6 +126,7 @@ struct x86_init_ops x86_init __initdata
->   struct x86_cpuinit_ops x86_cpuinit = {
->   	.early_percpu_clock_init	= x86_init_noop,
->   	.setup_percpu_clockev		= setup_secondary_APIC_clock,
-> +	.parallel_bringup		= true,
->   };
->   
->   static void default_nmi_init(void) { };
-> --- a/arch/x86/mm/mem_encrypt_amd.c
-> +++ b/arch/x86/mm/mem_encrypt_amd.c
-> @@ -501,6 +501,21 @@ void __init sme_early_init(void)
->   	x86_platform.guest.enc_status_change_finish  = amd_enc_status_change_finish;
->   	x86_platform.guest.enc_tlb_flush_required    = amd_enc_tlb_flush_required;
->   	x86_platform.guest.enc_cache_flush_required  = amd_enc_cache_flush_required;
-> +
-> +	/*
-> +	 * AMD-SEV-ES intercepts the RDMSR to read the X2APIC ID in the
-> +	 * parallel bringup low level code. That raises #VC which cannot be
-> +	 * handled there.
-> +	 * It does not provide a RDMSR GHCB protocol so the early startup
-> +	 * code cannot directly communicate with the secure firmware. The
-> +	 * alternative solution to retrieve the APIC ID via CPUID(0xb),
-> +	 * which is covered by the GHCB protocol, is not viable either
-> +	 * because there is no enforcement of the CPUID(0xb) provided
-> +	 * "initial" APIC ID to be the same as the real APIC ID.
-> +	 * Disable parallel bootup.
-> +	 */
-> +	if (sev_status & MSR_AMD64_SEV_ES_ENABLED)
-> +		x86_cpuinit.parallel_bringup = false;
->   }
->   
->   void __init mem_encrypt_free_decrypted_mem(void)
+> +#define raw_cpu_generic_cmpxchg_memcmp(pcp, oval, nval)			\
+> +({									\
+> +	typeof(pcp) __old = (oval);					\
+> +	raw_cpu_generic_try_cmpxchg_memcpy(pcp, &__old, nval);		\
+> +	__old;								\
+> +})
+
+Instead of having this in include/asm-generic under
+!__SIZEOF_INT128__, could you just move this into the parisc
+files with a compiler version check?
+
+     Arnd
